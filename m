@@ -4,92 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C73CCCA0FE1
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD58CA0FE1
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 12:28:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 204F18E0016; Mon, 25 Aug 2025 08:18:52 -0400 (EDT)
+	id 8A94D8E0017; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DC458E0001; Mon, 25 Aug 2025 08:18:52 -0400 (EDT)
+	id 881248E0001; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1194F8E0016; Mon, 25 Aug 2025 08:18:52 -0400 (EDT)
+	id 7BDB58E0017; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F3BFB8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:18:51 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFAD0B92FD
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:18:51 +0000 (UTC)
-X-FDA: 83815183662.15.9C244D9
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3D3FB100011
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:18:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=htDE4r67;
-	spf=pass (imf05.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A7E88E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 08:28:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BE4183F9C
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:28:12 +0000 (UTC)
+X-FDA: 83815207224.23.BA5E2C8
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1F449C0007
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 12:28:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TPjj42HA;
+	spf=pass (imf28.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756124330;
+	s=arc-20220608; t=1756124890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=enQjVH9CPVENIVsHk7gsCn5/5+hGNNH2XndDe1QIK7w=;
-	b=kq/cUqCq11pWrhgkkdnwhGOmdO5GnSX16tSvVMGV8AL6JVVomIoVL7elbk2TK+8NRVDMKX
-	RfBPIKZlqLL10OPbxwLZ8UENvzVdisM2vJ3dysctXcfxpyIG02U3L3xbO4vc83bmhIbbfZ
-	TbB2vZvUb+cLR6pZgQrtoH1j0TazWa0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=htDE4r67;
-	spf=pass (imf05.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756124330; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kPfDBfbpwUW+KOvZVoZK+orl1I1HkIgHCfW1U8nixbM=;
+	b=oAoicysMHBObRD14GjU5JIbxekHCezrDrT6JaRKe5DFvyBLwuMW4+9zHOH3MJNyy36AWv+
+	E47joV71n9uF1EwstvupDH6n19iCpJqFoK77l0k5vqQs2LekjO+2quXOpHz6nUNj3S0cNk
+	cLhXBMcXHM6IWfcCJwJ4y7T7wSozYTs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756124890; a=rsa-sha256;
 	cv=none;
-	b=0V0QCS4ge0UqCIUzaW0xpQNnRcYs6nc/8uR2wGffgkt46bo/1/X8Dp+VMu/PZJyplsQ2mo
-	U7SKoZKK3MApr/eHzUlpgOkbefZLIehmCfmL2HbJlnx+SMN39R235k8sDpZDW6eeen3eNP
-	zVzZ16Vtn6P5IeSLGlSqUKd6Cr1C2UU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=en
-	QjVH9CPVENIVsHk7gsCn5/5+hGNNH2XndDe1QIK7w=; b=htDE4r67TWRW8/4/23
-	/qk3oo/CzwSXo0U2Fmra438wGVC795bfCZXAVAIaRY7dX8aio69L7Jf0x+eSTBc8
-	6jYS9HXn+8Ln/d1RjYbMWF+WJkGUMSmc4DxPQRFWFFKuOx+q3GLj0QEfB482ZDpf
-	qrSfHIurifvyA2n9H1bHX2weg=
-Received: from mi-work.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wBHsTdyVKxoeChoDw--.61651S4;
-	Mon, 25 Aug 2025 20:17:55 +0800 (CST)
-From: yangshiguang1011@163.com
-To: harry.yoo@oracle.com
-Cc: vbabka@suse.cz,
-	akpm@linux-foundation.org,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	glittao@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	yangshiguang <yangshiguang@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] mm: slub: avoid wake up kswapd in set_track_prepare
-Date: Mon, 25 Aug 2025 20:17:37 +0800
-Message-ID: <20250825121737.2535732-1-yangshiguang1011@163.com>
-X-Mailer: git-send-email 2.43.0
+	b=k0953aprQQYzy6e+EwmKR9Xz3EH7iZ7cp1blwlNi+5pToxe79TiDrKboYUFnPLzmMZ29xo
+	6482JPEcORGzT+tnh1QyHHGP4qMQbBAD6Sp4xJ6qk9kpZ3JSn9a3+lBYIefBzImk63qDk1
+	J2QGSgDado56D4qkeaNxv0MDh830Kew=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TPjj42HA;
+	spf=pass (imf28.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3c79f0a5fe0so1043990f8f.3
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756124888; x=1756729688; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPfDBfbpwUW+KOvZVoZK+orl1I1HkIgHCfW1U8nixbM=;
+        b=TPjj42HA6o5t/ScmeieApokOFIwp0+LrE5IAXYwS7qMnbmYHoKq55EbQXQvwCAvEd8
+         X+VVR/6KGqzdV9HXf8xbEf3t2Ry6zZO0MrtFY83hiZ+6/eKPvHbMeBtWiM/JbyghiJVi
+         aUEaHPQmWMPvVSGLs6WKz76o4Rz36rWI9KvWa61YuHLm4VJhah3bz3on2jfLfg98R6r9
+         5a3CqqCC+Ln3cNeko3xFTXmcJYyPIjOLjMV5NSDXxLzZyQ6NvvybcS6hCqouZjgKchXm
+         kJ0q4W085Aj31gKWEPLna9GHh95zFp19of5+axnt5tlf680XF/uEUMUUj0YszwmUXm3U
+         kBNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756124888; x=1756729688;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kPfDBfbpwUW+KOvZVoZK+orl1I1HkIgHCfW1U8nixbM=;
+        b=XBuRt0rTOqQvjGFHEe3tuMfKVKlP0VEU6RZIe+GAcIEh9P0xOCMjJiIBQmWF/ziRUb
+         s6bA9+0zZn/G6LR98weqQYCOhK1ernfhvaubbbNq3+14SOfEkr5rLvKM7FbR0ZTt/08z
+         AbMWlVzIs7QRUgSShX+hTOU1DXfMLwR5euobD2+UUbOAlZw+JMKGhAb56B2fdw37jf79
+         4WYK5+egCeHgNtMYHGbHk0xS7mFtTmP81dmtKxJmBBxBgOjBN19QLDM8926/ECwLxmjs
+         rhK2H1P8uRKchrrFZL16jsR0kHVdJ/Rl6bYcJ/6hQAMyMC2rUxF2wvceu0TQ1Lw1/4yy
+         d1Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCWPGE9JWVHDCUpDGMdOlkWMSTJyaZIAr3k5VujRemKg20RywuGIKtXd9Ej2zGv0iBWs8Yv9QWf4Ng==@kvack.org
+X-Gm-Message-State: AOJu0YxCebDTu+XUj0MDEm2Z+cE9NeBbEXtZuYSDeHQDFyGYDKbaVjUF
+	lfBMZvH8y9MeWwBAGs8zmEKRlaN7Ywc+7Fae7hz68/ICI5lg3F8CVCgF
+X-Gm-Gg: ASbGncvC3rXAdwhkziICf63H7S6lOF5z99e5wTc7fOSARE1tPHz7VZKYwQQKes/Rvdl
+	JLfZme4bkIwTmyslvOlM70vBkBlQgo6TYA2XqQU1/hDB3v+N+4JZqet9BxVv+63/4sJ9hpYYDPR
+	F4FyyHqkNG5ooLdNS7IadPL3L9WwtddqVx1EcCjIPIZda2MxWIiv++Dh1opQcaVjsOvnFa1IPks
+	zaY2yZlorXXD/EW+L+b3ggFavsash0hit+InY6HqhWM0nflR7UNvIDoH8TXpiblLV7tQXapFpMH
+	f7uOxr45qrD7k/HIlaD5SlO1SsZahbXvEUcakb7c/UJI2Gd38DZBM3Ij0Ifq8eKxI4LPyKv+CaY
+	I+/mUwhE6io6qlJZJdUNWzCAA75pr4Ajn5uk=
+X-Google-Smtp-Source: AGHT+IESgx9HYKPain/SQOUHC5A3qxDYmJ3/amsQb6PIdB8JBVmGFTgZXWbCC7qK1K4LPP+7blyqdQ==
+X-Received: by 2002:a05:6000:2585:b0:3b9:16a3:cf9b with SMTP id ffacd0b85a97d-3c5da64a8fbmr10103861f8f.5.1756124888325;
+        Mon, 25 Aug 2025 05:28:08 -0700 (PDT)
+Received: from f (cst-prg-2-200.cust.vodafone.cz. [46.135.2.200])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b5753adf7sm107780735e9.7.2025.08.25.05.28.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Aug 2025 05:28:07 -0700 (PDT)
+Date: Mon, 25 Aug 2025 14:27:58 +0200
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH] mm: readahead: improve mmap_miss heuristic for
+ concurrent faults
+Message-ID: <ynl23xmeglxarrkrmh4r3sj3idvqbofwatrnhgx6tsl4zfrsxp@juc5kmjelwjn>
+References: <20250815183224.62007-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHsTdyVKxoeChoDw--.61651S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7CryfpF
-	W7WFy3tF48AF1jqFWUCw4Uur1SvrZ3CrW8Cr43Wa4ruF1Yvr48GFW7tFyYvFW5ArykuanF
-	ka109Fn3Ww4UXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07juUDAUUUUU=
-X-Originating-IP: [1.202.162.48]
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbBMRq05WisT9l87gAAs6
-X-Stat-Signature: ndwwzqeob66en9xjmupkdayj4mcgwwau
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250815183224.62007-1-roman.gushchin@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3D3FB100011
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756124328-346490
-X-HE-Meta: U2FsdGVkX1+iUyLj5augq7RSHDkqsKTU3M0iy9gvaJLt369zS+DdoGJD+/GMq/GYJekrGqS3a4OCTGQlrVV/x6/6sBBhM+6ZfMRqLEGdI3KfxNSqUiE7Rvgz7o35qWVdgvUbOYPszWooxWtj/BMMEpj1khQ98vfqeV/mlmAAA0c7xqNn6RtIunBFsXFdDDyqt0S5GJiK6phOoyWX7AfSVCzXqiRtvgl1mue3hBQWCr2emZS7cDvRdge8MI2Xst/lGEhUeYjdufXmdHq7AlE08DFEMMqjTT1gjssuEasyeoeeWSgk0EF8SwzdJ8oAtLH2ZVxlh0rQhlIKuPIHcxcOUXYgN+tYDELGgnnzrYBHtfh4YsPgoTxG8A97Nwe/g6eH7fmL8W8LgnINKPEvxxojNu5lxh4zfwe2igk0n0dfAD1iJx1N8afHWNU4XnLCq/spZjN8tiayLGqZRRNPkmBJRKUw1mIGR04WDXQeQHZYVJhqkTYx8rF0BdGum7E27fDT0XCac0OSynirCk8gkc8lAz9ZwrkGRpuV9MqY/nMgjlq8A83t4qaMfnQqjqImUtBbsoxQfpG2aJNVfqFNfnFxnai0PBuG000HhImeIJrw53z2fkr80CZJGZKRLiteQ7sRi9elk1yLd01FG4Oc6tgvp5zGgdZrMF6VOsqTInTgHOJNyHzVXptLa4ULW/rgpXL0Ru/MUeSBEgwoh5dBHqef6+aOAbde+smUce9wfvxlT0K1+9f5k2N4ceMEPaDOyBlplML5I2raOXJqvztHVa9hlxQTu4jguMuMrwMbko/wQ1DRgf+5rjR9fQ0yOm0+pCiDOZpbBRnwlwzyK8gDH7eci2QZacEMXnCINv8g7xfrOcDLbXtz/fEXYf1F63FzfiU9nSs2seL0yfWgLm+V9w6nFVWuFFAo8Fo8fwNdJimkC4it0G2gGZSndTEMQbR3/XSqGrx1fYIcRDvSXwjkKkQ
- TpvD9TpQ
- jL5nCkGaqE6QwvqJCUr8A+PSRu1pTLzJikC2Ai/8pw0pmoiwqD9py7/w6vHdM3L0oC8wdZlUuCzb0MnkJtgA08Htwio1P+O+hqAQkEWpbGmXPCYCRugppJW59JU2yW5qR6jRm6raabKU0hpQuXrVvLXbliwgYYR+V8xRpIHemn2u8CMHIAACs5YaEY2dij82s4zAVS80cddOuTpgN4rZvBBbz9eUmLqqFx9dkqJZmB48USvtq28tLBESv8MAmXcXtOEwTr568bWEgIm5lv631rIAp2lco0L9KXcQiDg/IK02tOn5CGc2UuGnSrFCJ4zdYu1yPjS1ohW9gEHXSMN9Gqu9m23VFBjcKyD2JmaSfYteueOKQ+C+6P9hNw8TWby9mjJGvumZNSq7lwXBm/FiCAEdKyPICRjbpkoh3OlgQk0PS6j2xvinruvsU/uq2wAOEHkorUXW1jcOKgFrvCEfHERwOoYESM3fNeeHNcdmfh/9pHFk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1F449C0007
+X-Stat-Signature: zxqz6byjwdfd5s5myikgnbsnef8n8h1n
+X-HE-Tag: 1756124889-153512
+X-HE-Meta: U2FsdGVkX181UPupxIe5addK0gcKYzUnp/4Tueq2dIblbp74SAAvlMUIk8fTHqpnKhQBZ6HFvzaoi65+bnvTvaQyPm5efGz/mc3p6ilOe1SyItv5+62c+RPbpEHm4ku2BENfe8RYUEhn/XtSJDtoaQq1ZL3BK37NJ4j2/VPcuXV0xE8mYbBfkFlDzjrdcO9qSzO6HLHUQD3JrQYF2pQuYoPA/StZxwa+p/XFdIAcuB56YB9VWlunOkAvhxspF/FgbvUDRuPLOS4ek+vK+qXGfQeyNZnJDv9L9XpMasz2TvoqpjCB71wD5FNGfqQ6RDE7ij8DNl9R/PvS78w10/J/WdDEgYwreoCLD+z/HtaDPuK2BGVpHQb4GWXjN3KOdyLhFg2sWzei3OqOwjv3hyuVIZNX7qcSBI2VF+tZhby12l5V6YJ78kw3H/2VdY6iY4xsNQ+xoKUXsWQQbfKgk+UM5KELHFYPIleTrtEVuK+cnpNnkeh1jA9UuuGBlyCJjN/qIlVGVYlvVOKNDK+HXYFY6Ry08/u8JZrkhPw6NH8broYsdXzWkzD1wc/cT+weDpPxMwls0N9P+f5e2p8I2xcJmlUf07OGw0MTRTVrnBQxHDab6wj/L/QX19GlD+k26cyNvChS/IpjzRDB/d64SwsA0sIXB/KB3cuVCxhhm3iGP/BkiwOsc45jiuVQstjvpoYQXEtLKMX8GUFRhnkWlXMlkPHTGHUDs2cwdB/1eLULQ0vQ/GasYZpz+ibaZeNdpSJK34QL/wZb9eqihAIuNm6MSZ8BJUUaNLKCnES8JFRbB8wwD4kdvCNNVAHM/dokrawvtLqFlIM+t5gu01XT4I72QnkCQ6S/1AgNWsHz9DzZm7Xt8ev0968Wmr++eVmWPBoJjsHskh4jj1QCwGu6AbjMRmNPAJ3AiQ3lto9gUDXDSjoolq4pJ50gMhXxrBLdnQbcszyCjMDb9EL8NnZ9OrI
+ ZUWLB/Y9
+ G/A+uAhPYd6AxW72jRcaoP9TZcjE2i352pFflxU9xBoh1nwl+1CieM7XbrHS2lPy248EBiAMTtEY53MVbjC844dIIlWJicVkcNjMuoYVvZYG0qzWX1ISwNZhL567Cc0rjAk3yYIryIjUFJGUcj0fZe3zyAuKJvKwpenSTMYnPLlb1S0SQ8LJMHaXvW+ZM5kjCjvy2zVZz91V1BclKMDB0m5t49MCBh+IM27ZwG5NqYonWFa1pZiQFmVWhgVjwIkynGfnQQlAY0eomK9RFnTFcTmCIvuAHQhJ9n6OmhxOAt0jtFPKqvQzejGSCOtZGQ+fHK0Ok6D7YExo6G512mFs8FZUyy+z3WdNI7ZCVlyXtyS5UJyf7mHi6P3gfvCsGSJw+/ktnQVHxIXDXETJGItmbIi2Vdn++9NOhZhm5+vs5zzRcc8CRX6FKuQsRIPCCg+F5d9T5/wt6LwKpaxgHucE2wH8Ze1RHOGVsLR9sG27gLI/7NOwxmyLu8InT1Nn4RG6qSDUNz8wA3DUpGbNgiWE1woKTnGZoaA1080en4Nss9V5c3cuGwSwotBFBrU1lWzJdhOi84rjDTOgD0jJjWEG4g9PD9A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,160 +119,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+On Fri, Aug 15, 2025 at 11:32:24AM -0700, Roman Gushchin wrote:
+> If two or more threads of an application faulting on the same folio,
+> the mmap_miss counter can be decreased multiple times. It breaks the
+> mmap_miss heuristic and keeps the readahead enabled even under extreme
+> levels of memory pressure.
+> 
+> It happens often if file folios backing a multi-threaded application
+> are getting evicted and re-faulted.
+> 
+> Fix it by skipping decreasing mmap_miss if the folio is locked.
+> 
+> This change was evaluated on several hundred thousands hosts in Google's
+> production over a couple of weeks. The number of containers being
+> stuck in a vicious reclaim cycle for a long time was reduced several
+> fold (~10-20x), as well as the overall fleet-wide cpu time spent in
+> direct memory reclaim was meaningfully reduced. No regressions were
+> observed.
+> 
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: linux-mm@kvack.org
+> ---
+>  mm/filemap.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index c21e98657e0b..983ba1019674 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3324,9 +3324,17 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+>  	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
+>  		return fpin;
+>  
+> -	mmap_miss = READ_ONCE(ra->mmap_miss);
+> -	if (mmap_miss)
+> -		WRITE_ONCE(ra->mmap_miss, --mmap_miss);
+> +	/*
+> +	 * If the folio is locked, we're likely racing against another fault.
+> +	 * Don't touch the mmap_miss counter to avoid decreasing it multiple
+> +	 * times for a single folio and break the balance with mmap_miss
+> +	 * increase in do_sync_mmap_readahead().
+> +	 */
+> +	if (likely(!folio_test_locked(folio))) {
+> +		mmap_miss = READ_ONCE(ra->mmap_miss);
+> +		if (mmap_miss)
+> +			WRITE_ONCE(ra->mmap_miss, --mmap_miss);
+> +	}
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+I'm not an mm person.
 
-set_track_prepare() can incur lock recursion.
-The issue is that it is called from hrtimer_start_range_ns
-holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-and try to hold the per_cpu(hrtimer_bases)[n].lock.
+The comment implies the change fixes the race, but it is not at all
+clear to me how.
 
-Avoid deadlock caused by implicitly waking up kswapd by
-passing in allocation flags.
-
-The oops looks something like:
-
-BUG: spinlock recursion on CPU#3, swapper/3/0
- lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-Call trace:
-spin_bug+0x0
-_raw_spin_lock_irqsave+0x80
-hrtimer_try_to_cancel+0x94
-task_contending+0x10c
-enqueue_dl_entity+0x2a4
-dl_server_start+0x74
-enqueue_task_fair+0x568
-enqueue_task+0xac
-do_activate_task+0x14c
-ttwu_do_activate+0xcc
-try_to_wake_up+0x6c8
-default_wake_function+0x20
-autoremove_wake_function+0x1c
-__wake_up+0xac
-wakeup_kswapd+0x19c
-wake_all_kswapds+0x78
-__alloc_pages_slowpath+0x1ac
-__alloc_pages_noprof+0x298
-stack_depot_save_flags+0x6b0
-stack_depot_save+0x14
-set_track_prepare+0x5c
-___slab_alloc+0xccc
-__kmalloc_cache_noprof+0x470
-__set_page_owner+0x2bc
-post_alloc_hook[jt]+0x1b8
-prep_new_page+0x28
-get_page_from_freelist+0x1edc
-__alloc_pages_noprof+0x13c
-alloc_slab_page+0x244
-allocate_slab+0x7c
-___slab_alloc+0x8e8
-kmem_cache_alloc_noprof+0x450
-debug_objects_fill_pool+0x22c
-debug_object_activate+0x40
-enqueue_hrtimer[jt]+0xdc
-hrtimer_start_range_ns+0x5f8
-...
-
-Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
-Cc: stable@vger.kernel.org
----
-
-v1 -> v2:
-    propagate gfp flags to set_track_prepare()
-v2 -> v3:
-    Remove the gfp restriction in set_track_prepare()
-
-[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
-[2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
----
- mm/slub.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 30003763d224..443411713e2f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -962,19 +962,21 @@ static struct track *get_track(struct kmem_cache *s, void *object,
- }
- 
- #ifdef CONFIG_STACKDEPOT
--static noinline depot_stack_handle_t set_track_prepare(void)
-+static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	depot_stack_handle_t handle;
- 	unsigned long entries[TRACK_ADDRS_COUNT];
- 	unsigned int nr_entries;
-+	/* Preemption is disabled in ___slab_alloc() */
-+	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
- 
- 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
--	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-+	handle = stack_depot_save(entries, nr_entries, gfp_flags);
- 
- 	return handle;
- }
- #else
--static inline depot_stack_handle_t set_track_prepare(void)
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	return 0;
- }
-@@ -996,9 +998,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
- }
- 
- static __always_inline void set_track(struct kmem_cache *s, void *object,
--				      enum track_item alloc, unsigned long addr)
-+				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
- {
--	depot_stack_handle_t handle = set_track_prepare();
-+	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
- 
- 	set_track_update(s, object, alloc, addr, handle);
- }
-@@ -1921,9 +1923,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
- static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
- static inline int check_object(struct kmem_cache *s, struct slab *slab,
- 			void *object, u8 val) { return 1; }
--static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
- static inline void set_track(struct kmem_cache *s, void *object,
--			     enum track_item alloc, unsigned long addr) {}
-+			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
- static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
- 					struct slab *slab) {}
- static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-@@ -3878,7 +3880,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			 * tracking info and return the object.
- 			 */
- 			if (s->flags & SLAB_STORE_USER)
--				set_track(s, freelist, TRACK_ALLOC, addr);
-+				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 			return freelist;
- 		}
-@@ -3910,7 +3912,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			goto new_objects;
- 
- 		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
-+			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 		return freelist;
- 	}
-@@ -4422,7 +4424,7 @@ static noinline void free_to_partial_list(
- 	depot_stack_handle_t handle = 0;
- 
- 	if (s->flags & SLAB_STORE_USER)
--		handle = set_track_prepare();
-+		handle = set_track_prepare(__GFP_NOWARN);
- 
- 	spin_lock_irqsave(&n->list_lock, flags);
- 
--- 
-2.43.0
-
+Does it merely make it significantly less likely?
 
