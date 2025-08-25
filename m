@@ -4,132 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01B39CA0EFA
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 09:46:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84740CA0EFA
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 09:46:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CB868E000B; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
+	id CE2768E000C; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A36E8E0001; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
+	id CBABB8E0001; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B9528E000B; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
+	id BF6D78E000C; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 293ED8E0001
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:46:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D470914033D
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:22 +0000 (UTC)
-X-FDA: 83814799404.18.E43BEA3
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CB64C120006
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="US/l6LPu";
-	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ABEE98E0001
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 05:46:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59A6A160352
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:27 +0000 (UTC)
+X-FDA: 83814799614.15.B40D681
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 75ABF1C0006
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 09:46:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YnXlke4o;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756115185; a=rsa-sha256;
+	cv=none;
+	b=RgnO50Wp4rnrz2/UxlIPOu146orVK6TbcD7X4L9X+KtQ4EnKHszED2WuJ7NChPigtEgnHf
+	oroZNAoqlnZNzBejjGyREburh5eQNhgg3q7vsTCiO58KLfCIT2X9CeUyD0GtIn8o81wQyh
+	ld3hX7BO++2P9G4GC4UUbBxxghZ3D8E=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YnXlke4o;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756115180;
+	s=arc-20220608; t=1756115185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
-	b=EMPJD7dUYVeollN+uPEAfZqP3YhCoTHkx/YUlOoeckw5fFRUcj6VOQZm5p/RA9NVP8iQ7a
-	p3a9bB6mhEAxUnvOg2Eaq71leDrV3SdY7qJqP0AvALHYH5IJo860l4T5v3h6FdUF8QqSJU
-	mDwniHWF+cCkXc/BqmgJa/RCCs60Bb4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756115180; a=rsa-sha256;
-	cv=none;
-	b=ck/YQZGq7yUQc3KEVGWbeMvpGZ5NBaguR+DZ2+PZguHxIQxhE/hwmDZRihsyACN4gdoYT0
-	bnONWWGbJFCVumCqGfoHrlF1FZ19EhzOCvk/Hw9jIVadbktHRATnrBw25UsRBWkbZKu688
-	OK/tSsBf/IFSks/DKXmf9sjymcg0gyE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="US/l6LPu";
-	spf=pass (imf29.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3367cd3b7f3so594761fa.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 02:46:20 -0700 (PDT)
+	bh=85vlzJV0/y5OBvRtH7AoGcRMx7r7vPAIreX71H+x3bg=;
+	b=IWq3A2IZfH8GIaJxuljk2hYDoUbiNYmWu2LTzFjECGNpW4qvS2WNT7sfXlP/7y/3B5Piqv
+	z6WExXCLG/83T+17gY1pOlx/zEpaXtT+7L29dKSzf7/SJ/UYNU6GeEi256jj+gI/XJXxPw
+	V/i+SeevaOWH+Yf7jVIFUr6/KR5YkuI=
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3e94fc4de34so36595145ab.3
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 02:46:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756115179; x=1756719979; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
-        b=US/l6LPudBoTtTEyDkHQ9f06ag2hy+HLobrTm2k4JVx18QkWGkGd6SugpNwCYf8P+w
-         kUA/e00rNCynLdCTSXdTLIGF9m2FF9SbniaO83WGhlvqSaNT14B4UtlBygDgUttdg3BE
-         SU3Dsp7G/H550UN9QRJYlhWHoyWHw0dxaizfxAWfTzJLXEUUptCbygRccI9UDcg1QHkm
-         uY+lOHbzwU+9QrftzV2HZP0ZM2wBD6vWerPheEH6tjD0UWWyrR8OWnKIyqHkn+uGzfVK
-         L0Dk3O5J7ZlK3FQQKx8NLsNTt4eoW/vruWPmJl9nGlN4I7kyteI4Kc1iFjasCvZtP4cL
-         wePg==
+        d=gmail.com; s=20230601; t=1756115184; x=1756719984; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=85vlzJV0/y5OBvRtH7AoGcRMx7r7vPAIreX71H+x3bg=;
+        b=YnXlke4op9R4HXJwIH4Jg4FoWIDOb8NqQOtlnUWW0t6K2MnFHzvf6MGwBBqXTz5Lm0
+         GF+QHfHHP9owMcwPTnw6ONKL0f2mlfYw7c0oCbcYg8ZbH8Uh31aLmdRdURLwKHmN0PWa
+         He/Y1Fm9F2Pf7K1EVSHZQmoDxqyQCKa9ID1LygwJLbmSLi+vuX4s25eXQ5ubM31HjcSd
+         33W5qdJiJKcwfKGX5VC0/xz4OVC51RHbtPsmMsbWgns8nQWdLIKl0lJ+fqmv6ZntSvAs
+         rqj2iGkWNTypNiON80XLBJxX+s6WaAjbU62qFoaQVzc7vQD6GXfPq/bpOgOW4VqBN8yE
+         vhCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756115179; x=1756719979;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vA6vI044zEdIbfha2CiMeRJA/WTffOEZFr4+NNjxx2k=;
-        b=FWs5L2MVPmEs0DtTY+vfinkVha3OoTvVFVqCwI93U7B3/ybHrN9S0ZK+JZkT3N2AbC
-         cQRCMTRP5Vz+x5AmyAWbXPfxGjzUofNKf0WfoBxvH1q4QTXHpoNxiIbEtPpZK1LHm++F
-         cLcPAc+mlb1w4nyHMhAKkAmOIPI7f+ngk5vySmDVxH11iM/kGh482TDf2En0g8iMx0CX
-         MLWi7IXjjBAuVMQlMXpSfh0q0BFdPecnPyW1SF4EZbTdVay64q2n4MOkQ5U0SOFUOXCO
-         p7B0Vb9fCchN2eeKosUn/16LYaNF6hHFgLoYNLUBaSg5GFxxcMnHImVBALRll691Pdkf
-         oQAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWl9AFBwpHm6WqKHLkMXhcVcKaOeC1BFOx0qx31yG0fxBoijJuvTXzJPBB6XbZ2MJNI24i2N/YMw==@kvack.org
-X-Gm-Message-State: AOJu0YwLY0apfF0lxL0sQf27JnP6Kg1ybxwJgELu8u8jLN4SZLt0VDlI
-	HsvJacJhm+/zqyq5YF90zkUIashgUANE7/DNHlSZmrlK8R3sSwBg/8aL
-X-Gm-Gg: ASbGnctSbZjAzf5HQro91zs8A8iCaiQaK/Edm6J0+zih3D0s+Vee/PVJidbsTrX4/ho
-	R5Zj2Dk+bxr0iDAdGu6X+0H8jNb7/5n8F0jTguwOmrSv/6GU8nl3hHaQNevr5Nm53uYJI6Ey3lg
-	5WWSAZ/HZ8+6DTEKE2NGuXs62LCswsIygYIxYBvzLjpUxTekU/vSMzK6yust7ebzdkpaxQXCAp5
-	G89CigEQIoqXq8wPUzu0V+Gigqyt2ZpOKqV4hzqnqjO33+sHp6BhU0/E3rxxeio+zAsYu3tw+Ma
-	MaRfQy53uCACkW1jXwhOH3KxcjynCrQbq0StNTqiifMF+0CmmOAI31Uq17ivInliEWi4YCbDYpr
-	EPN1BFN3BAgSfN3DzLFS9JW+il1ot
-X-Google-Smtp-Source: AGHT+IH1efX+K+mAJdmcOpmqJG6368qZBIn8i/p3/9xVotsBIWed+ijE4z8OQ+KPmvT3ummuxgSxVg==
-X-Received: by 2002:a05:6512:2527:b0:553:ad91:d400 with SMTP id 2adb3069b0e04-55f0cce52f4mr1975986e87.6.1756115178725;
-        Mon, 25 Aug 2025 02:46:18 -0700 (PDT)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c12072sm1557498e87.44.2025.08.25.02.46.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 02:46:17 -0700 (PDT)
-Message-ID: <8077d344-580b-431b-b7dc-a84dc4ba6b44@gmail.com>
-Date: Mon, 25 Aug 2025 11:46:12 +0200
+        d=1e100.net; s=20230601; t=1756115184; x=1756719984;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=85vlzJV0/y5OBvRtH7AoGcRMx7r7vPAIreX71H+x3bg=;
+        b=ADaFAIuKVMIi3Y+vZDTcfebzLUDPMjCe+TIBN7Tdnu6VccnEcdddjKU3DM4BC7YQmt
+         QNi8I/vapCaeG0gmhflyKUsdO7tWVKM8kp/ao0aqRkvQHP5OgsmEh0Jh7PPUTn8H+SOK
+         1YQxBzKQNVyIySlA0LPhT216sTYb9TQKOnsdOdGy5wmG452aUQOjqtqxO/R2MWvZYtfB
+         0AQWeJ8J1I7mAiXnwZwMHvaJBITsIBXPmcESwtiKRB6WTWDB3HLlsfSoKPd9RbX+Dg8M
+         FoIK/sW1S6a+/h0mjGtyoGSSm53+Pyaz0nnRKn4ulSp8QZSlFkviyCbuIc/+p/Y/Ol3z
+         wsxg==
+X-Gm-Message-State: AOJu0YwI9i8D90zKwEQtpcayt+n/9W+9YfHAWt30lEsAuyk/gYdx8C1r
+	wSWl2WeY4QJKtSmv/9uWfR9ecmXgqcC9Lm4cVrqKWueztJSUB6sMqyUklveL1YoSHaKoh6fBfH6
+	6JIpi41poIG6bcmUiSucZ6TD2jHYQz9Y=
+X-Gm-Gg: ASbGncuCJCl00GhIr3fJKUDcUoFU5QOf1oxpSn7j2WStnOqTWv/bcKmYyF+fvhJwT5B
+	vh+JKaQpEO4BJLZOy3/DGL/apr4zvrtREsHODbwREFpOTlsI3xKG8vhWf6fQtRfpuqoQ1DyqxUm
+	e89dCuAdreIHnpFl8DQMZ/ZcMDUIAwjlzQkLkOjitecIS2rKSLBEwXWTpkO613+0CQZonlbK9CU
+	6D5GV0=
+X-Google-Smtp-Source: AGHT+IFAikaEYsWSht+/wJX3ArSZEhVcZhprdsD3mK3udXZtsifbgz8EMPUifSFtpWWEExAg/dCHwUQXkLQBVXtvV2I=
+X-Received: by 2002:a05:6e02:1988:b0:3e5:3521:46e3 with SMTP id
+ e9e14a558f8ab-3e9228e492amr4932105ab.23.1756115184473; Mon, 25 Aug 2025
+ 02:46:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: fix KASAN build error due to p*d_populate_kernel()
-To: Dave Hansen <dave.hansen@intel.com>, Harry Yoo <harry.yoo@oracle.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, andreyknvl@gmail.com,
- aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, apopple@nvidia.com,
- ardb@kernel.org, arnd@arndb.de, bp@alien8.de, cl@gentwo.org,
- dave.hansen@linux.intel.com, david@redhat.com, dennis@kernel.org,
- dev.jain@arm.com, dvyukov@google.com, glider@google.com,
- gwan-gyeong.mun@intel.com, hpa@zyccr.com, jane.chu@oracle.com,
- jgross@suse.de, jhubbard@nvidia.com, joao.m.martins@oracle.com,
- joro@8bytes.org, kas@kernel.org, kevin.brodsky@arm.com,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, luto@kernel.org,
- maobibo@loongson.cn, mhocko@suse.com, mingo@redhat.com, osalvador@suse.de,
- peterx@redhat.com, peterz@infradead.org, rppt@kernel.org,
- ryan.roberts@arm.com, stable@vger.kernel.org, surenb@google.com,
- tglx@linutronix.de, thuth@redhat.com, tj@kernel.org, urezki@gmail.com,
- vbabka@suse.cz, vincenzo.frascino@arm.com, x86@kernel.org,
- zhengqi.arch@bytedance.com
-References: <20250821093542.37844-1-harry.yoo@oracle.com>
- <20250821115731.137284-1-harry.yoo@oracle.com>
- <3976ef5d-a959-408a-b538-7feba1f0ab7a@intel.com> <aKfDrKBaMc24cNgC@hyeyoo>
- <79027c6f-f2f3-41b2-9ff3-c5576fc06c5c@intel.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <79027c6f-f2f3-41b2-9ff3-c5576fc06c5c@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-6-ryncsn@gmail.com>
+ <0fc6e083-b7be-4144-a50c-d1a7a2e1c3a5@linux.alibaba.com>
+In-Reply-To: <0fc6e083-b7be-4144-a50c-d1a7a2e1c3a5@linux.alibaba.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 25 Aug 2025 17:45:46 +0800
+X-Gm-Features: Ac12FXxCEasX7WZXCdIE6kaZfUf7KCWB60OtwzH07oeIYEid6isVhNYOyBR6OGo
+Message-ID: <CAMgjq7A7_ZbSWJQj8wjhPb6vt=iLhHc5r=cJdzMeNpog-PcstQ@mail.gmail.com>
+Subject: Re: [PATCH 5/9] mm/shmem, swap: remove redundant error handling for
+ replacing folio
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
+	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CB64C120006
-X-Stat-Signature: tjumccc55kcrqw3s86znjkbc61d8q1bz
-X-HE-Tag: 1756115180-203586
-X-HE-Meta: U2FsdGVkX1/EDW7HnFwZMOdFcRqf29y1ZHRixuVlWjPlHd7XZvNP+9NTGCcqEETCEFInqYtYDhbqT8Iod1MBMqFzA2n162iMExntjnxaJolIgIG1ciINivT/pPnCIRavaWMRo4IJw+FxIM9wzHB4w6lk4z7BOAE07WLh1O5tHbIMQOQkcELnShlY5tgZiEfs4BJfLWDZMmnIAH392JQyBvwrtTIJWgaUF8ZcXnqb+za6c8MFarNkQIDEIPPQi8UCw988/4AxXdnz9puC47Gx1b8XEM2TGSrIxyDic+AhwbRzbse5t4BEK/z/NXVdcoS0zXT/A2Jw5Vbx47jySjQCGMrg9mZeJVc6TdZBSM6sgzZS2TE5U3N/iV/z95/96omeAU110WXzmPG/sQ4GDDOJTbu5iW1rIejPokDpVrnVnkg1zHL3nn06xJgtjmbpLks71Mnkev+TvzIV27UJ3KosbYZ2b6NKgULWNdLpOi6y5GJxkir4xSq2QQ2X4vJsR7j7E8jlIvxsYmbnD5TknpUdm8Ls/x73I26njegTLYq6sD4IBMfEivQ7a7j34n2v+IrHByf/JfGJ6LUb1ErIlfIJJdogsPHDjRD4pAkRYvhG1NwNjuV7wWyDASsPkQmtAAsCyXP0oC8aSasR+pHgKJtENIdX83xMV8FWnAvQZqSRPhPp2tqtcbHz+Ygd4TDO4kyb2rjm/2LKN8YM+IyGFcf+EyYCd+ctFemqTpYse7LuMX6DkEMyVeGNag+TYvIEKri8/WlPonmFrCD0zucec9+KNjcUz06CPYoyKad4nGmNbCCPIWCO7WqVMdThRU1zie3sdJQwHEyFbLznIw9iVSe5HfcPUPpkNlhq5+PUoAoqopyaSqj8RgK/z98/0zJIgJ2tHh9pl8rnEeNdVQmd1N0SYeuB+1gdR29BG2H+bODhYLlxmp42pYXvUyOKXsdDHvGcW4MPrrC5HJy+8i2bIoH
- e2ruK35U
- d+oRf8zn+yi2knFWhh9JI3TqlG6F9cKYjSGc2Rtk3ZnYsaeqjSkhz2B49C6cbeDvTW9ZYZ6PDZLkNTZVZhXFXL/WubQJ3RUoeZw7WV0SkXZj/R+S766WVFjt6Zcxv6VBS5l3T6OLCoDHuivJIBJROLFdKlHCo/mVAFDzHLS7Bo1sfj7eUj3CIXuQN+hpEBLBboNTfBHv0ZVfFdRJjsFnz6NxLLjHzz1HJQP2g7ht+VsMWoZRkzdhA8aQd4Blo1pULq3OTBOWH9ms/XbvteECZiTmH5W0xswyAh1c6CChsPb4G5fzHwcF1eUb9QDuwv5kSQ0MYuzeipbniq0YL1p5U/Xf6HfT3sv6RxLo0X4DE6IooYB28E5nYyRu2SE1ZnkfEMX+bLsjbBSLy1lTqLUbKLN4EKMO28cmsxcsggY0V9k7Xcd8/j2zvmtwnd27lXgQGGAtyJCCYFpZH39DM+ZOby14FNGJ+ZGoGNGosCQ1Yp48kxpT+oH6VBYGAEySqSbzaC54X/9iCnKcEDSx4z/ksus5Uunco0b6J7ysRicM21sr1lE80PPst3oA6EA==
+X-Rspamd-Queue-Id: 75ABF1C0006
+X-Stat-Signature: me9sxoszqpfe5zcefg4ba45d9813z5ru
+X-HE-Tag: 1756115185-450717
+X-HE-Meta: U2FsdGVkX1+xcur8rU4b4XAbM7Y2STQP1UPiYnFan9x1IWBERgFjsxyakukgUj9UHW2Mg/WyWWfYw/Chzavm5U6M+zxlF80S9mDJVbl+zgzGAtSsW1JxG/gZaDKSFCCJXRtnV72c//h2kyn2HUUNfrurjpaXblGXCjRqnG8M4iM+yjGfaJOsDDGZCawL+eXP9Sfei1lJ9MaqnEI6oWkMcKRQgtYIr//FSmfhpxYiJOpNHyAHjqGTBBT/dFtTVuwVF5O+k04OZoUXsMpBHAA07YmX2C8jZeuVXUDYpeRALT7WuPLg1yhMSdKdXGAx3W+s5n32RZ2vK/f5euxBdR4tyqN4cjfVLIUeULQWdkWU+2DHmPXXPCiEUMSM0Ffj8hQW+ZpEVBs/5KVxeIRdhZ/ms6ByfgdEXJtSe6rjaqDenpPgtgBH+p0vpzDaeU/vFEwQDEsnq0bcg9srxlIbVLeIlQXufQUg8QJbrnKRN2eXsNwnI2SHXIBvAU5dq9PoRhXH8NaMdT2CuWg/dxZNqaH1yXjAxIkBETdhp9p5p43OJuZu2zHR5RKLlLCwn3HQwGFdc+35B0+q/HchqXzp7i2scrNfP/kvukGBYc4d8R9GBhKv4ljbhfwQxVKXeN9QlKLCWAhLwbbRwEDfbbrutxdn11GTnLEkB5dCAalC7R8gaN3h5ElpcmqeDcnRZ0XAYTZvQ1jY0IFEgB1JUhGh6gLr5Alc00ouBeQ7BXxQ/sNnwvJ5cbSq4jzubobl9YrRy2CIg1r8X7y4SQR4rpA0RHhIjJVlTasEREIP8te3tFatDhDo3Af5NFnu8G8PHZE93G+Ivws5waUp/O8DXQv/U87+HPR9U/pMeXa1KuA0vPrOfWaAKTb1D1CeKNQFqASxhwohw+D9QGtqxdrYQOeVKXmdLzoSuOTykgNRZH6gaKO3E9m8fcNIZ16IZVNL8Avx8RaD21/H53kXJBBiaesUXzN
+ FXZl4QVz
+ 6YlCup75KRzjb5HA48Jqb0MlYeDY/htoRtCD0Jt97Xuxt+yeDnazYKZnjCwRx6GJ30EACza284SUgAj/Thy3mhmYuQkCIfiCI0y4Tep47WrGmQLU7GTfy93VgE7opZlIaL/AqpQ6dUxuxhDMd7r9nNl1VX4Rohx4mpmTrZwj5qMIf2iT+UZyAZbxRiwZ1Qd9WtWdxsxEeGA1YfhnlFWgmveFS5i6Qm5FPZ3S1sdwGa9TLFqu5B7EYBpvn5KE0JHKeVEPKZuIHMkFoyTs6TEQ2IbhstSkwurp+M550mMZmajCh3e8koTuSQnN3we+4XvEJjvR7yDCm1FSM0d+D0h04wrvxeHSdDwramRw9PtBgyQS3bbsA/CYQp0wnm2HpWhvdNxlxxU2Tjp83VqNWKPVYqZcvjQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,76 +122,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Aug 25, 2025 at 11:09=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+>
+>
+> On 2025/8/23 03:20, Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > Shmem may replace a folio in the swap cache if the cached one doesn't
+> > fit the swapin's GFP zone. When doing so, shmem has already double
+> > checked that the swap cache folio is locked, still has the swap cache
+> > flag set, and contains the wanted swap entry. So it is impossible to
+> > fail due to an Xarray mismatch. There is even a comment for that.
+> >
+> > Delete the defensive error handling path, and add a WARN_ON instead:
+> > if that happened, something has broken the basic principle of how the
+> > swap cache works, we should catch and fix that.
+> >
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >   mm/shmem.c | 28 +++-------------------------
+> >   1 file changed, 3 insertions(+), 25 deletions(-)
+> >
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index b4d39f2a1e0a..e03793cc5169 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -2158,35 +2158,13 @@ static int shmem_replace_folio(struct folio **f=
+oliop, gfp_t gfp,
+> >       /* Swap cache still stores N entries instead of a high-order entr=
+y */
+> >       xa_lock_irq(&swap_mapping->i_pages);
+> >       for (i =3D 0; i < nr_pages; i++) {
+> > -             void *item =3D xas_load(&xas);
+> > -
+> > -             if (item !=3D old) {
+> > -                     error =3D -ENOENT;
+> > -                     break;
+> > -             }
+> > -
+> > -             xas_store(&xas, new);
+> > +             WARN_ON_ONCE(xas_store(&xas, new));
+> >               xas_next(&xas);
+> >       }
+> > -     if (!error) {
+> > -             mem_cgroup_replace_folio(old, new);
+> > -             shmem_update_stats(new, nr_pages);
+> > -             shmem_update_stats(old, -nr_pages);
+> > -     }
+>
+> It looks like the shmem statistics update was mistakenly deleted?
 
+Ah, you are right, I'll need to add it back. I somehow misread this as
+the error handling path. Need to add it back just drop the !error
+check.
 
-On 8/22/25 7:08 PM, Dave Hansen wrote:
-> On 8/21/25 18:11, Harry Yoo wrote:
->> On Thu, Aug 21, 2025 at 10:36:12AM -0700, Dave Hansen wrote:
->>> On 8/21/25 04:57, Harry Yoo wrote:
->>>> However, {pgd,p4d}_populate_kernel() is defined as a function regardless
->>>> of the number of page table levels, so the compiler may not optimize
->>>> them away. In this case, the following linker error occurs:
->>
->> Hi, thanks for taking a look, Dave!
->>
->> First of all, this is a fix-up patch of a mm-hotfixes patch series that
->> fixes a bug (I should have explained that in the changelog) [1].
->>
->> [1] https://lore.kernel.org/linux-mm/20250818020206.4517-1-harry.yoo@oracle.com
->>
->> I think we can continue discussing it and perhaps do that as part of
->> a follow-up series, because the current patch series need to be backported
->> to -stable and your suggestion to improve existing code doesn't require
->> -stable backports.
->>
->> Does that sound fine?
->>
->>> This part of the changelog confused me. I think it's focusing on the
->>> wrong thing.
->>>
->>> The code that's triggering this is literally:
->>>
->>>>                         pgd_populate(&init_mm, pgd,
->>>>                                         lm_alias(kasan_early_shadow_p4d));
->>>
->>> It sure _looks_ like it's unconditionally referencing the
->>> 'kasan_early_shadow_p4d' symbol. I think it's wrong to hide that with
->>> macro magic and just assume that the macros won't reference it.
->>>
->>> If a symbol isn't being defined, it shouldn't be referenced in C code.:q
->>
->> A fair point, and that's what KASAN code has been doing for years.
->>
->>> The right way to do it is to have an #ifdef in a header that avoids
->>> compiling in the reference to the symbol.
->>
->> You mean defining some wrapper functions for p*d_populate_kernel() in
->> KASAN with different implementations based on ifdeffery?
-> 
-> That would work.
-> 
-> So would something like:
-> 
-> #if CONFIG_PGTABLE_LEVELS >= 4
-> extern p4d_t kasan_early_shadow_p4d[MAX_PTRS_PER_P4D];
-> #else
-> #define kasan_early_shadow_p4d NULL
-> #endif
-> 
+Thanks for the review.
 
-This won't work. It will fix the linker error, but will introduce runtime bug instead:
-
-lm_alias(kasan_early_shadow_p4d) -> __va(__phys_addr_symbol(NULL))
-
-On arm64:
-
-phys_addr_t __phys_addr_symbol(unsigned long x)
-	VIRTUAL_BUG_ON(x < (unsigned long) KERNEL_START ||
-		       x > (unsigned long) KERNEL_END);
-
-And NULL is < KERNEL_START.
-
-Since __phys_addr_symbol() isn't pure or const,  compiler has no right to eliminate such
-call even though the return value is unused.
-
+>
+> ( Continue to understand the whole series:) )
+>
+> >       xa_unlock_irq(&swap_mapping->i_pages);
+> >
+> > -     if (unlikely(error)) {
+> > -             /*
+> > -              * Is this possible?  I think not, now that our callers
+> > -              * check both the swapcache flag and folio->private
+> > -              * after getting the folio lock; but be defensive.
+> > -              * Reverse old to newpage for clear and free.
+> > -              */
+> > -             old =3D new;
+> > -     } else {
+> > -             folio_add_lru(new);
+> > -             *foliop =3D new;
+> > -     }
+> > +     folio_add_lru(new);
+> > +     *foliop =3D new;
+> >
+> >       folio_clear_swapcache(old);
+> >       old->private =3D NULL;
+>
+>
 
