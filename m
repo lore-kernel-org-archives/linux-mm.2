@@ -4,114 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87A83CA0EED
-	for <linux-mm@archiver.kernel.org>; Sun, 24 Aug 2025 23:19:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 124ABCA0EED
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 00:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 821216B0005; Sun, 24 Aug 2025 19:19:51 -0400 (EDT)
+	id DDE006B0092; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D2A46B0007; Sun, 24 Aug 2025 19:19:51 -0400 (EDT)
+	id D8EEF6B0093; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69A646B0008; Sun, 24 Aug 2025 19:19:51 -0400 (EDT)
+	id CA5166B0095; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 508E96B0005
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 19:19:51 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1B5516025A
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 23:19:50 +0000 (UTC)
-X-FDA: 83813220540.15.A0ACAF6
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 133BD180007
-	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 23:19:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="AyR5g/Qh";
-	spf=pass (imf06.hostedemail.com: domain of mallikarjunst09@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=mallikarjunst09@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BB5C86B0092
+	for <linux-mm@kvack.org>; Sun, 24 Aug 2025 20:04:42 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80DF3B7C6D
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 00:04:42 +0000 (UTC)
+X-FDA: 83813333604.27.66E6B70
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E59C51C0006
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 00:04:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jkRx1u6W;
+	spf=pass (imf21.hostedemail.com: domain of ramsonpetros006@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ramsonpetros006@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756077589;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UmM40kFHu7y6w1kDElLTxjdz9xSmHdOgb73sn9dXdkQ=;
-	b=dvVqYz++yc+Vy4dtB4G75GIzb7imnfxZAqa5nN1iNB8FN+YfG1SGr4vBpDY+a1EK+DX5+N
-	lasmjcOvkcOxbp9/+dzB2A4F+/8mDa8gOwyERctdfT6GNW1HyEH8MVNgoqFYrsu7zf3pdi
-	/IRUKiCcrDGbv5URQiFVlgwFQxD/r8U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756077589; a=rsa-sha256;
+	s=arc-20220608; t=1756080281;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vtGll6+zndhKXIeObjmr1nBAsXHtf0JgNgfznIpa1hc=;
+	b=hlhJvpiIic6dsLK6BmWPvzMqLCr49fHVFCUiluQz6p2qbLlY5xNQ/2Ea2602ztmg/zxXHp
+	yfEa5IaR8A8/Qzkm+fsqoK8bClrcmiwLHOYA+KrV1yZzBT8MAiMzOwM7GmgPcHQjXsCGjs
+	fWlu8fCR4Kd00p9v69ebMogf2FbJFy8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756080281; a=rsa-sha256;
 	cv=none;
-	b=hBrtGsFghY0h1GtcowclXVy8KF9A8DoOM5Ngs5zqmZh4r1PX5hKrLo9C9ZcDbjosP4g9mj
-	VHojfu4TqGJqSuUoew2+/prPLXTBra2IV3oL35cAl6+HLmOLZNck1srzzc/FYNqwbnocTD
-	oIAo8FzA+Ie1nIIC8KpuRtpI1Vy8U+A=
+	b=i0H49t8NUkLOnaVRrxFGWU0Lge4S+g8u4z/yzS2QF41/iGzUyOi9Tzo/36gT2GyE1qVW+R
+	ybXrGOdNCpqzLJxowqzYw9zcap0yHbmdiy1ThOzSg8catSUWnuQfFwes5kkfZAuIZt7sQZ
+	F/BE8zeCvTSFK/7Xf2ip2Utp+tAqToc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="AyR5g/Qh";
-	spf=pass (imf06.hostedemail.com: domain of mallikarjunst09@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=mallikarjunst09@gmail.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jkRx1u6W;
+	spf=pass (imf21.hostedemail.com: domain of ramsonpetros006@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=ramsonpetros006@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55f3a3f2f60so985557e87.2
-        for <linux-mm@kvack.org>; Sun, 24 Aug 2025 16:19:48 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45b4d892175so17509665e9.2
+        for <linux-mm@kvack.org>; Sun, 24 Aug 2025 17:04:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756077587; x=1756682387; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UmM40kFHu7y6w1kDElLTxjdz9xSmHdOgb73sn9dXdkQ=;
-        b=AyR5g/QhuJOL75peikx6f+axYzNOhiClA1U0NyfU2p54iUKsCC3gH2dhZtI1Yli50j
-         pVVr9x+ZQbvRhsf1vYWYHBX6dCeZWqHrTqReKRpxhMjd3QzFJE2tWWvHFVzdWH4dFWr8
-         wUkni8p1cGrUv83N4HjGjwOZxvaddvfTqakURmbvJD1NzXXRHVV379WN+9qZEiixnroq
-         Au5S1hKZA/i3E4CnSLNdvmRUNnOpPUJGk30mTSZpvKcAZnw2INsIuWdGAaEed9MV0rTj
-         ziz6l34T5AmT2nTgKR96HkQ1HmM6CRgBYPsNrGVC9Kf61xZSea3jq4/j6GgYRq6wAKMQ
-         ghmQ==
+        d=gmail.com; s=20230601; t=1756080279; x=1756685079; darn=kvack.org;
+        h=date:subject:reply-to:to:from:mime-version:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vtGll6+zndhKXIeObjmr1nBAsXHtf0JgNgfznIpa1hc=;
+        b=jkRx1u6WG7MSIcWLKpk/ZL/gRT3XKDL2/i9VgiSd+MSXbAZh64Pr6qHx8Yr6/5fBiv
+         /XEHiC3abv5WCnUGCLN+Kp/9pq1PWQpvFeWQVoF/ORJXHxBjbSZy4Rv67wb/EJv3EhAk
+         H5XUk405/l+EDLuAcfE+gYHt3vMZVtUcccUpzT/kFDSbduklPfcEWeNvuo6MJO6oXFxe
+         870S0ZtaYl9gDP8esinUn3JqJrTY4jRuaJxQnnY1+wgclHc5xmlMab8QrRar3uor9xAO
+         GEBwAOCOZTbob7a1v7AxOLv8qUppaHz6mCxMihj5PWjcH1CipbCPFsr/7o+dpuzxj/nj
+         jDtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756077587; x=1756682387;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UmM40kFHu7y6w1kDElLTxjdz9xSmHdOgb73sn9dXdkQ=;
-        b=Hc4EhNE3mnmy7YliCcG9d5BsqVwuszgbAYbA+l2+ICjE4h5zcHYRvvFelzbZFjp23a
-         pkAkbmOxeGYjLMi8RM5N7SrHVMvB8cBk7n7OsdSgAcz2h5G0DUbvenkiKKRnHdS6mbQS
-         1vIHNMNoKRTDYZ8EPt4KxicBbLmSlOTh07cfDfCu0G9kX05M8hM0VDZUnzby24ki/YFx
-         sSvgR2Fp+L5LoBtvwkfWgoa6qXuoURD/4xpUwERJLNCc6k7mtbQEwX7Gw/9mUczMcUt7
-         TNGOK3PNKtP3FD811OP4EHXFtuqApIXPNWem3aZy/jKFa+VetlL0ovKRLcGGrjGERR94
-         FNRQ==
-X-Gm-Message-State: AOJu0YwdwgxbfAXC2Evs++LQnrIuByxN5jIIP6Cxk/iV0msvd3sRxTBI
-	xtd3zUPGgh+N03FoJ+daaL6oA1zlJGlJnjR/puWhSCszhZYdHUPSCsv+
-X-Gm-Gg: ASbGncu1R455CX2jkr4FcZe1eaoXv9tmYVJNKIks/QncbpizboPc4k8dEDRNLvj/cek
-	dgOxMFRhKdkE5dQUnGqkWdkjMU9dPkvDnvfrNMRz8G16nb9pd/C6Hay2OSbP0kKSlqjbCzZKd6N
-	DpVwnUgQ7NVhs3WV6AxvfYqJCcEpKmnUykpKd9kkgvFDo8z0BD6j/NLncff0aVf76QSuCIaHyEd
-	PPhg7Mw5GUfjmpmrJYEdoVNHB3UK8b+C9TX7DlkuJF/XQMKfGlEr8PqOefAPBEim8x1ZuxOj1TS
-	gpae5k1zIyrHJH5wubrefg/0qGXu4f/SznK8Wcm9ILlQlmDl6UMswV524rwfAaCq3QYOh9YZGqS
-	rTgbLWqWe2ErcgBogtzGhd5MfOpBlkOzTZ//6D3Urp1xhHEs+nFllF2cK3yZ/AQbTO01n64hhPs
-	zlHQUdvT+j4Rsl1PPYJpq/A5qlIzBsu+qoaNeUOMuOkLtOa3IlrTzKrw==
-X-Google-Smtp-Source: AGHT+IFH8Gguydnj/gZwYUIqVoUJZDcXxQXD16TPLJVRIthpGvYhR/+6vI99F1aFwVlA/sgsldzduw==
-X-Received: by 2002:a05:6512:234c:b0:55f:42b8:b11 with SMTP id 2adb3069b0e04-55f42b80c99mr817992e87.45.1756077586954;
-        Sun, 24 Aug 2025 16:19:46 -0700 (PDT)
-Received: from ip-172-31-45-110.eu-north-1.compute.internal (ec2-13-51-206-214.eu-north-1.compute.amazonaws.com. [13.51.206.214])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f35c9a199sm1294898e87.110.2025.08.24.16.19.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Aug 2025 16:19:46 -0700 (PDT)
-From: Mallikarjun Thammanavar <mallikarjunst09@gmail.com>
-To: nphamcs@gmail.com,
-	shuah@kernel.org,
-	hannes@cmpxchg.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mallikarjun Thammanavar <mallikarjunst09@gmail.com>
-Subject: [PATCH] selftests/cachestat: fix grammar and debug prints
-Date: Sun, 24 Aug 2025 23:19:42 +0000
-Message-ID: <20250824231942.3910-1-mallikarjunst09@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20230601; t=1756080279; x=1756685079;
+        h=date:subject:reply-to:to:from:mime-version:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vtGll6+zndhKXIeObjmr1nBAsXHtf0JgNgfznIpa1hc=;
+        b=iSK4CXr6aK9ssTTqPFvkCudI17QyziyYqRq0slpX3/lExmxvNRCB4XzAcvCcv8Zzy0
+         Lzn5BnbT2yTIpY09ZVjraoT+tvPnLvmg1EnEmRS8XyddTboGTvh1G5Uy/NU0/sLxuRzI
+         zqiCfRwKGPS43yRWMxuHyT/wxvBe7nTcFjV27/TuHrS41Q3bc/9r8u9/t2DUuDzbm0D8
+         FudaAH2xFjQgYHeTNrrD0vR4onAjV55kSeUwi65DdRIysA31guQkST3hvVKYCiEc902P
+         2oegqCsq30grkKSko6VsMdRhctsuWzjFdTbPLIriFDvi5+cYIeHE37mGVRqyDyE4jwAW
+         XBSg==
+X-Gm-Message-State: AOJu0YzYHq7mCRVc4e3pDS5/fCyr0MemVfr0A/YS4eMbSuX2eIrEKOcw
+	5dLKPpZnRz0l5zveF8I/1FYPg2DNO1dX1uS4u3vKxXbrwAUkxKMcsXfv+84mscv4
+X-Gm-Gg: ASbGnctZYkAM2KmhTHjTH+oFCcf8t2GQbRWPOuR7/r0uGPTRjKmdD9jFJOdyJ9gV2uS
+	LH4S8ahesMn5AAyvLa+1RJk+okx7DDjlYuYjqgwQEyQV7eP5FGkqIaRwtolSCEw7VUc+6E58jwu
+	7XTrM2qtxag5Qbx3mr02UfrcbaujTHbxcD4VTHLPsKYSVI4xi8gggdpU0y6judt7OuI1vI9XV+8
+	i4mHKfAo3azWuNwmMUtN36PVy4Qxh6rM/wPCTEAKwfcOdhgpRjYj3rQNncb6ff7cY2tkW8VJdIz
+	s1L90AHWv2gCsoF6qhsjuvdBDbNKbccduJoORs9d8S0z7ErXij+ZtaSIrR/FwYbNQMP4SsYqDCK
+	bumiZvS7ZKmcoY+URg+UzRL5L9NEu7/nfxhVgRKZKDJpunI1uLbMhMUsztlBgj6CZoXq4OuU0FX
+	UWpe3XGg==
+X-Google-Smtp-Source: AGHT+IHvfcay25Z4epGB+BRoODVWMOn1Dav9p2OFZWOw0R9bRQRdjb2NXkGS66mE8HLIrXrieJKr+Q==
+X-Received: by 2002:a05:600c:1d1e:b0:458:ba04:fe6d with SMTP id 5b1f17b1804b1-45b517a069emr64198675e9.14.1756080279127;
+        Sun, 24 Aug 2025 17:04:39 -0700 (PDT)
+Received: from [192.168.0.200] ([105.113.116.69])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b506bdd9csm79741785e9.3.2025.08.24.17.04.36
+        for <linux-mm@kvack.org>
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sun, 24 Aug 2025 17:04:38 -0700 (PDT)
+Message-Id: <UM31KU1L-BNY0-VEOZ-43ZR-KNZK6SZKMU0T@gmail.com>
+Mime-Version: 1.0
+From: Retired Colonel John Marshall Bill <ramsonpetros006@gmail.com>
+To: "linux-mm" <linux-mm@kvack.org>
+Reply-To: johnmarshallbill@outlook.com
+Subject: Urgent Attention
+Date: Mon, 25 Aug 2025 01:04:35 +0100
+X-Bounce-Tracking-Info: <bGludXgtbW0JCQlsaW51eC1tbUBrdmFjay5vcmcJVXJnZW50IEF0dGVudGlvbgk4MzM4CQk1OTkJYm91bmNlCW5vCW5v>
+Content-type: multipart/alternative; Boundary="--=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN"
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 133BD180007
-X-Stat-Signature: izqd1o6omd1ewxig5oe1ohcbhjsk1xdp
+X-Rspamd-Queue-Id: E59C51C0006
+X-Stat-Signature: j3efbu3wt7htbicpjgph7omdm8qxzrt8
 X-Rspam-User: 
-X-HE-Tag: 1756077588-685753
-X-HE-Meta: U2FsdGVkX1+4/fxVfwpu9CPlrClKkyDV2SMpVJDylgk1sxGxdV459Uzn3zkjcCrMq/Ese9EDw3D9nIlhj+Z9sJe+Ixte8ZkxIpCf94RNhvGdpT/Uvm5oOKrOa1w0NfURu4NwnEHYyY1cFwDgmyoZC6bZ4uthbuQZyMJCIvbVCc/nKztnu5UZSChtmSJlM7pfWcZU3iSkwOSGLWfFQvfOaAbe7tMr7PxlCFRPEDuOegf7RrNrhhkdoT4zEwqCdJZLTBYbAuTGRTboOz+1CCqdwtOe2XGY1sy7AdwpaB5EnEw/RouYikGtKgqgmUO+8/uCdgbFMP9hFzoHAvX4dcxmHcIv5QIXJu4buawIwdxRbEngm2hdMnoiFf1j/H+0T/UX+2r/21qJDKRZi4B8pbaZZIUztRJ8BjbmcYRdnVFdZ2UiO3FJRvZ3ppghuDUvo+KJq3djo0c9odI9HDSAvB2X/f0439Y/2F7dwHJTeQ9In7JJKPJWdMBHlCqeXj8XHb1q0stAdaHWIC5b49PhacgL1NB7tm26hCDYrD60nPvDzPayMStj9UA7mMGTvtrxbjMAh3xCRtfpOafhTh6UskW9YEVaNAGCJF36L0ryC+ys5UsPvLllfvXrIGKa4tZjzrY1D3YRjnLbCQ1iEp/9sifIIC5fe3CTSRaApLDBhkOSBoawV+Xnz9bGpww8dZENjdNIWEaOyRcGWAZ51aoIRfcmQUF/9raHV0BPmpRHqiUminwSRM3vPA1PUpjNzYiySixPgxwekbIy/wCCVktANyya9Z6J+2viamSYzkoR1I0KD5qWsQFnqaUPG/92e5caNbdOPaNyrMM8W7dbGNaH28+XJvxqacSueMc+Wcu1Eyjm4Fx7W+wjgl3YwEcA67TJZ7l3uGy+idPJqlVvPN4dY0/34FCZtv8HKDp6F/x8BFQFOu2+9C88STALuqiEeON+4TqXqZ9Y667fdtLxFQTt1td
- W/jabXrD
- 8/tEwlaB8lcV7p1ENWAMQLhpgk5i8Pfk6VPzPMerYp5E5RWjFk9FI7c7mbQ9qOl8QEvfmsIuB8JdnpUBz60KsAd2jhZw0e18nUAuP7RH8ohuFhybC2yOSmWvgSoXT188K4PeyeUV0mFz7wG/YxyhyecCmGqMNiKKlBwUAS+oISAEwE9NSixlZwe7TKPiCvRou8TOmRInzVKamVi73HtWof1P/B8rGrW1jE4Nws6fKxsHpxao7dVA1p+KAct/JUkerp8sxXalT1H2i7TsWl2oHkq8luNjo60uLJ8bp2yYVkGOAe4YX61dmSOfmSmiMpxog3ZO8+ZrEbj8xHyOjr3GAnrDhJwf5xTisW5bV0ki4gZbITajuhUrqAGVKvvXLIUHCCvX1p4EfCYcVr95sYca3QI8mzf+SPHEJ8fP/IZDo6fPOLsKSBJjvqs/iupKlpxEFJh8fR7U+dZSCavGZjHK1sjAC/w0/3FdGgQjMDGUCB4AfGC476QPlfOVwDQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1756080280-314504
+X-HE-Meta: U2FsdGVkX1+/n+Iu8x5x2XS5eVwrVVGfFLtCHOD0xy0OVmPiDwv1jL/7+Cf8BfRVTkWR5nY3ZOKbIdv+gzSftCFCaidIqsXetYfTFenVfly5fNQsuffg7TjNCvdhopMP3w7/S2IJCSVUiC9zOvFOr2SEnXHysRaI6jwCSN3NuZHARFS+ENIQsDFnPzpM9bR3ljgJScAsGERBffFXjDKfZsIZuPq8ov+e7hQm8qpl1Q336LGwjEr7WROptx/X6gp7wNz5NzQl5oaCLmkCJG3S5dGC2uNwnGrhgRcPK356cW81GKNytKUvafAkHS9gkTKYHcBY6swY9/csaMo4zvINO6FQHekA+F2vj48rBbN8/1CdXylB/ssZyiGbiLOz+Ed/qhUteZmVNpAolnoL78o0TzqsjC71EIAb1SW9d9ZyuG1R2VGEwKEO6Q9HkWgVTqk4/2HlbXHAYkwrpi1pEhAU1/5zicsWOSfy5rryfwLnZ/aF6XxsjpEcvV0exhMSgFNhL+90AqcZXTp8G9UEtkOak4RiWKvW1xyNMvPUkWaKvZPwJnARzm+eahtlLcPAqI6fMH0UxGNz+GJxVCLPG6pSwZ/Fcjp2Xw9Sw9fFaEDzJPo4tGrsvYlbSqpBFwErSJ7aO58JKfVMqoIKb5IV4mFAViy3G4HSVdicIzoB5zJX4XqHE/BL2gaFlRvGQtnEQ4XE/cT4KEUcmb4TV/LHgZoSXG61uKGR2JupgES8NHf3dySqe9pPGQ6f1KS0mZM3K5of8vctVVtZEBXa5TkMFfsiFI+wF1ecEhecL8nztXuS9gLWhJOzhK/OVM5M7KnZpLWYQ0nhh+VhH5BC/T7qOl1V50YuVH/KLjiP1umqcy7YYEfxL5O//igFPwIhGbZQG4FbTS5Jbj5j+OkBYe8dierXBtLZlN4qKWXDxqTyxYp3I1PYvJoM/J24imduvk2wQsR5lxEPaEVjOn5/wAU32sj
+ 8j1/BhSK
+ kef+PlHpf5FBhpnQOFJHgBRCutErvjZU6sxtVsBmRQZZf7U4pN8g34j/mtSoKKdIuDP99r87vB0VB7iRy7ptE7JOTcTvl1NijZrKEVlnQ10FzzvNho4iwNobAVskUMUcm0MN9l9MkyV2CPVzFAI4CG5FQVe129YR2yygntIinBKdcHEEm4NIgUi/Raj/zFgiMlBAmQ+2BzDMgpsHFcfHZp2UNws6kVXXoghmE+zbJMUnZVoaNqZTuVLkXAMmKhIfnLt18oFx49EFqgX7W4oLyn3xplA==
+X-Bogosity: Unsure, tests=bogofilter, spamicity=0.455221, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,36 +113,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix minor grammar in ksft_print_msg() output for better readability.
+This message is in MIME format. Since your mail reader does not understand
+this format, some or all of this message may not be legible.
 
-Signed-off-by: Mallikarjun Thammanavar <mallikarjunst09@gmail.com>
----
- tools/testing/selftests/cachestat/test_cachestat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+----=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN
+Content-type: text/plain; charset=iso-8859-1; format=flowed
+Content-transfer-encoding: quoted-printable
 
-diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
-index 632ab44737ec..1417d7fb7910 100644
---- a/tools/testing/selftests/cachestat/test_cachestat.c
-+++ b/tools/testing/selftests/cachestat/test_cachestat.c
-@@ -76,7 +76,7 @@ bool write_exactly(int fd, size_t filesize)
- 		ssize_t write_len = write(fd, cursor, remained);
- 
- 		if (write_len <= 0) {
--			ksft_print_msg("Unable write random data to file.\n");
-+			ksft_print_msg("Unable to write random data to file.\n");
- 			ret = false;
- 			goto out_free_data;
- 		}
-@@ -183,7 +183,7 @@ static int test_cachestat(const char *filename, bool write_random, bool create,
- 				if (cs.nr_dirty) {
- 					ret = KSFT_FAIL;
- 					ksft_print_msg(
--						"Number of dirty should be zero after fsync.\n");
-+						"Number of dirty pages should be zero after fsync.\n");
- 				}
- 			} else {
- 				ksft_print_msg("Cachestat (after fsync) returned non-zero.\n");
--- 
-2.43.0
+Good day to you,
+
+Have you received my proposal? Are you willing and ready to work with me? P=
+lease confirm your readiness if you are willing and ready to work with me t=
+o enable me to let you in on the next line of action=2E
+
+I wait for your earliest response=2E
+
+Best Regards,
+
+John Marshall Bill
+
+----=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN
+Content-type: text/html; charset=iso-8859-1
+Content-transfer-encoding: quoted-printable
+
+<html>
+<head>
+<title>HTML Message</title>
+<meta name=3Dgenerator content=3DAdvanced HTML parser v2>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+</head>
+<body>
+<table border=3D"0" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0">
+<tr>
+<td>
+<font face=3D'Segoe UI' size=3D'2'>Good day to you,<br><br>Have you receive=
+d my proposal? Are you willing and ready to work with me? Please confirm yo=
+ur readiness if you are willing and ready to work with me to enable me to l=
+et you in on the next line of action=2E<br><br>I wait for your earliest res=
+ponse=2E<br><br>Best Regards,<br><br>John Marshall Bill<br></font>
+</td>
+</tr>
+</table>
+</body>
+</html>
+
+
+----=BOUNDARY_82514_IMWJ_UDHK_EBEL_LWIN--
+
 
 
