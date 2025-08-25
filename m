@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A08E1C8303F
-	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:29:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6E66C8303F
+	for <linux-mm@archiver.kernel.org>; Mon, 25 Aug 2025 20:29:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E43A78E0077; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
+	id 0FDD68E0078; Mon, 25 Aug 2025 16:29:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF3338E0038; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
+	id 0AE5D8E0038; Mon, 25 Aug 2025 16:29:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C97E68E0077; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
+	id EB83B8E0078; Mon, 25 Aug 2025 16:29:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B0BD18E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:29:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 70F80160534
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:26 +0000 (UTC)
-X-FDA: 83816419932.04.DD4FA2F
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D68B08E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 16:29:47 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9750D59624
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:47 +0000 (UTC)
+X-FDA: 83816420814.08.3EA0CC8
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 470AEA0007
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dMNcrVXW;
-	spf=pass (imf25.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153764; a=rsa-sha256;
-	cv=none;
-	b=R9OE4DGk1EA0G/WmEecQi2lfxwbI4dPBf4rsryN5d7d3QedjAM/y1vPhhrvNzjH023QBuO
-	2DmPO/O0CJp45x0sCFNz3Z5RtdjBomHkcwhX89AQFJqwuSrMm5wcRIWUxS8kFzDOsjWrnq
-	I5T3tsdwcegpNka7WOLv7vkwm0p7vs0=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dMNcrVXW;
-	spf=pass (imf25.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6848240007
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 20:29:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dian+jXT;
+	spf=pass (imf01.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756153764;
+	s=arc-20220608; t=1756153785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vtq72QdDzuyXtvGk9IlmoBuW1v+doc629hK/mnAoeUQ=;
-	b=tfkF+m1PDLzVwRUk+88BqDA5qdiGAdt+M5VAQjqCu2FV2x6i6lXndp4LPj2qXgC5MItUSr
-	b2KwPGMjasVqvtX74Td971xlSS+57pMdXrY10NfJxT22+OyI7P3znxjlYxIr0s8fjWG74b
-	XNKliHq9AaD897/f80t6Ke/KzcrRqv4=
+	bh=Ex520mDAAluSLXFdiYJ04d7IrdUaRDN9zWUBH2TlPCk=;
+	b=lAfN8gKc22zFoaoUozA9qIvZs8yypty6AsD8Sgf6Mvnlu3nzeIXXiyhaUowPxTRElMJ8ye
+	EyUaXAkboXsFIXFCxxRYs118xik8g4d/VPdXMHVCuRqredgV2nWv3i9V8Sh2FSLMCxXagT
+	ipbpNOu3AL7/qaOuMvKiirn92QYsXSc=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dian+jXT;
+	spf=pass (imf01.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756153785; a=rsa-sha256;
+	cv=none;
+	b=iU2rJS7pxP1Rg38Nxk0VCPFSDzg+lmWkk+g2QkX1AYr2LNgT1mN21VJ0GDQun9E9I9eOHN
+	4AEvXPQDWw5DZUkn5iY9L/WuUMjCHKSthwKVKZHaT8AaZUeFTMx56IFmWFInyfL+owl31S
+	f3d0fRRsFP+2mCHIpb5OEdFyRd6EP7Y=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756153764; x=1787689764;
+  t=1756153785; x=1787689785;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UlbhFGz226HIxGPpl32TNHWjf4s+OegZMHU4Z5wVVAQ=;
-  b=dMNcrVXW2dqdFKO6K2QFPU+qRTx7jq/G1YGWVNuiHBmgkb8OmUvT3Xbu
-   z8ahOiGiwnzbd4zsrS9W9bXMCiYdzIOy5njTcX/3Dt6mLzSxxE+WsvI3L
-   pqWbRU77SQxO67weVtQy/rqpYgiMZL8eHtTN3Il+rMjcfIIhL4Ge2yIqE
-   SzFllKAIfyZsS/Ky6F4GlXRpnaxurCzq14U6j5kJTj1nbp6DNkHs2anYJ
-   Q/UH1PMoBj0dVZV+ZdrTWSciJW6Xe8qZYF/FenwOykZrjX2UrwjNzeaKa
-   EYwihvBROPo9T19rgmUEKHPS9hRL9LzveOTSZnDZ4WZCGSdGBdP+3MD4q
+  bh=9AhOaWTatNb4QMfmox2H6CEYyqT3KnhFIot1r52xKmg=;
+  b=dian+jXTupm4mBFdeCqUV8qY5p3sv6MpDJfT6nd4OEyd0VmnQrXbL//p
+   mWIWs5AYwqljdYNUDDUaNyre9nxAiDb5H8SxB6kpMZFBBshgQkFKrxT4s
+   tIG4TXf6NQ9/HsDaNFjq1deH408IcosjGPo78sRKSaVUz5rWv4QlQuDVG
+   0u4b+Yt7BE+9vX39Dwor67Q28oJS0fZwBWhK5j1D1w/r4p09WdKnLM98n
+   q5Q1KVZ6lFHo+qMIG080+3neatUwjgAcyFPkyT7SZZCQnJsnUL5cdR8M1
+   Cq4UpiFcIN27xs0Oo8oWyLOQlbaOGJSqKOK6gXrKGkcwIXcfY6QhWKVow
    A==;
-X-CSE-ConnectionGUID: mFJgzXnAR1qeL8Q71HW2iQ==
-X-CSE-MsgGUID: Dg3KP1eUTEWxTCMIdKEcDA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68970777"
+X-CSE-ConnectionGUID: bDx6hyQgQW6nBfDPONGGHw==
+X-CSE-MsgGUID: 5ulhAyImR9i9JRaT3HJOTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68970836"
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="68970777"
+   d="scan'208";a="68970836"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:29:23 -0700
-X-CSE-ConnectionGUID: 2iU/MAdEQzuCmnajWPCpwA==
-X-CSE-MsgGUID: Li6ndXn4Q1+50YJZ69xiow==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:29:43 -0700
+X-CSE-ConnectionGUID: dPjkVayTRFCsnqA9Ybv36w==
+X-CSE-MsgGUID: H249bgJTR6CaQrcj46DBWQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169780561"
+   d="scan'208";a="169780586"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO wieczorr-mobl1.intel.com) ([10.245.245.6])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:29:02 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:29:23 -0700
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 To: sohil.mehta@intel.com,
 	baohua@kernel.org,
@@ -157,22 +157,22 @@ Cc: x86@kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v5 11/19] x86: LAM initialization
-Date: Mon, 25 Aug 2025 22:24:36 +0200
-Message-ID: <ffd8c5ee9bfc5acbf068a01ef45d3bf506c191a3.1756151769.git.maciej.wieczor-retman@intel.com>
+Subject: [PATCH v5 12/19] x86: Minimal SLAB alignment
+Date: Mon, 25 Aug 2025 22:24:37 +0200
+Message-ID: <c9dfcee8bd04161394f41a21f78fc3e01a007ddb.1756151769.git.maciej.wieczor-retman@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 470AEA0007
-X-Stat-Signature: dh7j6u8tnwqxom8b44641wwmkpw88kdz
+X-Stat-Signature: a5mfwrwaa8xpajpjfiki5w7sno4s65rb
 X-Rspam-User: 
-X-HE-Tag: 1756153764-892786
-X-HE-Meta: U2FsdGVkX18vYHQaEe7h4yYFVpyqmgpZFLmFU+ujzG2DGHf1O1xwFyK4MxL1F79/vkqucLdfTJKbB9kGOzlncc0JX3p2nfy2+T/myfVfe1gTec/o0n2qhPVvykIWIr3+hW0sbvqM8giplQxSP1I9HGKBy5fuRjXthhkgrmkflHfqWfUl67pSAE14+vLNLylByZ05wjKCWqct0fd0CXIGnTcEjSvkd9C99llzta07KYNPTjeS42gwlABq5rnFu9eIFW6r28BOwbfdH8IeXwsl9jm1eIE30tI9FMzFFS4KPsY1o6lOwK4FmxK4Q36fJB+aEsXDbQTkvF1MqhEbhZ8s1OyArf+3G4WCyJ2i5Rpxkky6PChakrsablbinc4pQrlWynSnJAU1lvTtdy+0ITI+RZko9t2ray2HkGTgNgNT12b9RjLEJa+N/VuledQvao2mpEqmp+tnPxI1OCnfaP8DQ+JHdWa8IIvPXsQ0rJD3YES0YzjjmUeY24gC1dxwm7IyzqmLqDjVAn3aTYlS06fOs01yYIy1Yfw06lIdypZgTsXQV03NeuuhG+SKt187dKU9+wtlT3rdPc7z4ah46ttF6NnunrWHNbhcTUhGCIEjjYIn4i8/jRvFeO10+Vs8VY0D9IA088nFH8gJCxaDnp8UgaQkljjjKfuRWADRZt7IQ+S2YKe+dPfrLUE13xoN7AA7E6JeEqwYBQQbaHOqCuSXXeaLzMg11vPgKj27ydG3lIfWReR90o6K1vlNhEcrsc4OdMV693T6NvK/nAXTtiCoVa9blCpj2VRrkcsX1NukfSktUv7HvY3bIehTfdfmzFKKkgGr438go1bMvYenIpPZ7RfJKTzww7vVAW/OSf1HNo/wfEWuubO3ld7mfAMz3Upq31Himd/6RNovWx52qXKa4DFrjXzGX5Sh3I8YssS7K6HHuqfejY/m0AildE4pye9xLBywkz4Xe81H0W5wRNW
- KLvOF9R8
- 4D/PwPUmq3XOnG2EknMATIu+nYWiPvTEgyuDDxGVUo71A0sDfF0OJveZfeRFPQC9wF+cJqicwEmdQ8FnB/2fMf0TF0CmLZEhsYoiwt0rsyPlT8TEsultWLjUY3NHuklEHcmTT1ZETW25ovWGOyUWAx9k6aCA2PLafTUK8cU8H69c+KeGn7khuFHrC4xka+eK0oXsKJ0mI5libZ1XbYOM9AyZp7ZJJBOFWCV5rQ374sqwRamK7T+Yt6hvIOq5lGXiofq2j
+X-Rspamd-Queue-Id: 6848240007
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756153785-770279
+X-HE-Meta: U2FsdGVkX1/OI7jS7EmGF5rM5ugnjv20RjS6lVNvrjLhEGQHK7DwvwLgDWfV1g+DFmm4AZzPANP08dWjeQtrWj/s6xjjJWJPRoahyziaOLTYoT7s71jwnavIjvK0NtaiK7NVTnSIYsJ/TeliRA/5wDu0gu/IKGLIvmj/ULNmQsZelmIrsjaP31yBJdRHMyPBBW/F9CXk06c8jr3wipY1behn1RZFAKgL1c/an5gq6IzoFSzLwgmYD2roeNdDsOPmkknxkdsPqq0zz5bTOFXRrf0attzhcsRbm/3PDITlYyQ9mWBSdTC0Ip0B0/ODPKcdf7DWQbeHi0tM3LDwbDZevkZxdC0IUZJK9/v/gKk9BVwdDfhoxw0xKYReRyf3yynxXJLyN/F5u4PAImqN+/k9eBkUAsUuJxz4jWtveK+vaffMgb9uJJNIpkLPXREMDXtFnSfqaP6p1D3J3m9xhX9to9Vg2pzAIyqepp86qdB4zV67A0EE0jdIjen6U7uxLDgirK4M8KJ8sxPvVd4DuGCUEYDgqNOXycwrHfv9g4rzeDECLH7QO0xsslTyXvp6ZSP+TcYDyDa3xKarIqtHxX2z4YrsBGy9L2ftqlyY3CgnWAfoDpwOddosSWPUoeFWd68P84VnIrcAxu9kGSYOcqkOuNrfsdlvDXzER6KvmxvXb8ZABu/Yj3iobbb7xpoO8qkuTWjOQv3MhCv8BaL8jXW1rgAoblqYffCyh0TiYBIZ5f0BMgvsAxGdY3EFDE+OWp+mJkUH/7LR1cWJzTnfin38ws1nGcZcMNDMMKzuFU4BVMQ/R3+kQH5jgZswsLSw/e7pHxzHBq+uEWSQ63mJuEIvxruOKBDb8UlRy6i4KQJszursxybP52hUd2IOzPi00H3Ub4KnnORs0Lr2DSVPNhZtwpsJFS2t2q1zV/ozdy9lCs0Y+QBDsUFLPl6ExOQa8DzzYwx2mbHQZ0kNrHt49PU
+ FWGpCuky
+ o7iqbKhb0mxvBtzuz58IShkUdsLki1JmcyzAslKMpng4089yLlpsfoQhNWHLxZ9GIMX37gwbpHir1Eys5ujzA88ruyaSQOH4SY4gzgKsOH+Zv5gxdrYhNKdI8Xih8q8oVAKyBcHk9SZx9jwNdkEU1LLbWhxtF4Emi0vLw++uYGf/io8R8t20hPxZePGfmQDDln2x/hHo/1PajO+v3UWoDoiKdPqUYo77Vi3q9I1C2xWGLmJ8qLpmN74uFs6fTZ2U8pube
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,49 +181,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To make use of KASAN's tag based mode on x86, Linear Address Masking
-(LAM) needs to be enabled. To do that the 28th bit in CR4 has to be set.
+8 byte minimal SLAB alignment interferes with KASAN's granularity of 16
+bytes. It causes a lot of out-of-bounds errors for unaligned 8 byte
+allocations.
 
-Set the bit in early memory initialization.
+Compared to a kernel with KASAN disabled, the memory footprint increases
+because all kmalloc-8 allocations now are realized as kmalloc-16, which
+has twice the object size. But more meaningfully, when compared to a
+kernel with generic KASAN enabled, there is no difference. Because of
+redzones in generic KASAN, kmalloc-8' and kmalloc-16' object size is the
+same (48 bytes). So changing the minimal SLAB alignment of the tag-based
+mode doesn't have any negative impact when compared to the other
+software KASAN mode.
 
-When launching secondary CPUs the LAM bit gets lost. To avoid this add
-it in a mask in head_64.S. The bitmask permits some bits of CR4 to pass
-from the primary CPU to the secondary CPUs without being cleared.
+Adjust x86 minimal SLAB alignment to match KASAN granularity size.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
- arch/x86/kernel/head_64.S | 3 +++
- arch/x86/mm/init.c        | 3 +++
- 2 files changed, 6 insertions(+)
+Changelog v4:
+- Extend the patch message with some more context and impact
+  information.
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 3e9b3a3bd039..18ca77daa481 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -209,6 +209,9 @@ SYM_INNER_LABEL(common_startup_64, SYM_L_LOCAL)
- 	 *  there will be no global TLB entries after the execution."
- 	 */
- 	movl	$(X86_CR4_PAE | X86_CR4_LA57), %edx
-+#ifdef CONFIG_ADDRESS_MASKING
-+	orl	$X86_CR4_LAM_SUP, %edx
-+#endif
- #ifdef CONFIG_X86_MCE
- 	/*
- 	 * Preserve CR4.MCE if the kernel will enable #MC support.
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index bb57e93b4caf..756bd96c3b8b 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -763,6 +763,9 @@ void __init init_mem_mapping(void)
- 	probe_page_size_mask();
- 	setup_pcid();
+Changelog v3:
+- Fix typo in patch message 4 -> 16.
+- Change define location to arch/x86/include/asm/cache.c.
+
+ arch/x86/include/asm/cache.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/x86/include/asm/cache.h b/arch/x86/include/asm/cache.h
+index 69404eae9983..3232583b5487 100644
+--- a/arch/x86/include/asm/cache.h
++++ b/arch/x86/include/asm/cache.h
+@@ -21,4 +21,8 @@
+ #endif
+ #endif
  
-+	if (boot_cpu_has(X86_FEATURE_LAM) && IS_ENABLED(CONFIG_KASAN_SW_TAGS))
-+		cr4_set_bits_and_update_boot(X86_CR4_LAM_SUP);
++#ifdef CONFIG_KASAN_SW_TAGS
++#define ARCH_SLAB_MINALIGN (1ULL << KASAN_SHADOW_SCALE_SHIFT)
++#endif
 +
- #ifdef CONFIG_X86_64
- 	end = max_pfn << PAGE_SHIFT;
- #else
+ #endif /* _ASM_X86_CACHE_H */
 -- 
 2.50.1
 
