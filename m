@@ -4,94 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B492C8303F
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 03:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6702BCA0EFA
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 03:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64ACC8E008E; Mon, 25 Aug 2025 23:21:49 -0400 (EDT)
+	id 2EC538E008F; Mon, 25 Aug 2025 23:36:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 622D88E0038; Mon, 25 Aug 2025 23:21:49 -0400 (EDT)
+	id 29B508E0090; Mon, 25 Aug 2025 23:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55F4A8E008E; Mon, 25 Aug 2025 23:21:49 -0400 (EDT)
+	id 1897E8E0091; Mon, 25 Aug 2025 23:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 441868E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:21:49 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CB18A160608
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:21:48 +0000 (UTC)
-X-FDA: 83817459096.13.CE46B45
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4895E14000B
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:21:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VvH4P9Lp;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0080C8E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:36:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6A066B9E10
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:36:35 +0000 (UTC)
+X-FDA: 83817496350.17.1918312
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AF1C4C000B
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:36:31 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756178507;
+	s=arc-20220608; t=1756179392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gDWTvF6BmDxoWohIIWxk4CZjLYF0kTQu96WIqr9r/5E=;
-	b=R8oMdGJ6YZQngAI8dizTbzbpIed8mcDWH9BclcjcsNXsb0XMHMQuNgiWC657ucudLrxMZD
-	BuLvLGDrMoIKLFx6nDmInDyFREIyCj2Lc/8vctjQRvbTJd4iNJtBqh06KriiqyvSgpqmiT
-	PeZKkmptSxFKjEIAbhOa5Hnqd920UT0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VvH4P9Lp;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756178507; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=YzvNlOmUI6wjvR7/OKOhOTnnrM9QDlI0WnWtOEkcJnU=;
+	b=VJr3dVyLRrP9MKGF8ZDqvq1qVEHwWvgt5vSQzWCIqz6joAO5ug4pD0BMf0+DxHGZ+J7re+
+	wSimvtIlBrKB5JRXuEt1kRpRMboXvdeRYZll2RauEFTXA2Dd0uAzVQGiMPr11cVInxQMz2
+	L8nHt695Dq8ZgbPwG+z/g8ow0ROpnJY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756179392; a=rsa-sha256;
 	cv=none;
-	b=c0Waq3dwpmTvTkRNMsibowGUqTYMouMXi2fm3iKuaRxJnmX7ACX5gar/oPUPOpMV6GnWy5
-	L75PcXaCkgGHJDJZ5UbRaHg6oVazodwUuSAYUlzJAeUlLwaE69hNZnoqUdU3ErQU8+ElrH
-	YdjlRtjOS7vOpuYLDBdU8rjD2y4a7q8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 221445C503A;
-	Tue, 26 Aug 2025 03:21:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F63C4CEF1;
-	Tue, 26 Aug 2025 03:21:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756178505;
-	bh=d34m/47r/gW2GjojamdCWHSBbGXyInVrT1/39iuDcD4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvH4P9LpSYd94n3iE4sPzDcQ5/ChVR4EK/bjjtdwrzaHWi4J0OWSOLZ12n6IUPVf+
-	 j8XYw4knhalBrX8elCacnZubPpMrQuQibfMquhN8s9qD3WftFlra71MTDUK70xTVwC
-	 5Ka7mG816aYss450yQ8M07tCgQQYm6uQ+saukJ5VeJvbFA2Dk8MBbbjL2Rt53RLbmv
-	 zgbrdBq63J3F18MVDABo5G37nCokCCk0+1W8jSjyPsdP7IzTbwYNJ0ihl8JEAxLzDu
-	 yIeETEe/GPxsp27ox1QzWXtSMUG8qdE99/wMh4nOxR6d400H7JnQPn73nLYANehgWm
-	 4S9fVIJz0rh6g==
-From: SeongJae Park <sj@kernel.org>
-To: Quanmin Yan <yanquanmin1@huawei.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	wangkefeng.wang@huawei.com,
-	zuoze1@huawei.com,
-	kernel-team@meta.com,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v2 03/11] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
-Date: Mon, 25 Aug 2025 20:21:43 -0700
-Message-Id: <20250826032144.49491-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <7de69c95-bbf7-4dd0-91e9-640da8b8cd5c@huawei.com>
-References: 
+	b=QYmsXbwnMnQ4ahDRr34HMfQYrZZWI+NlXgRng/z4Oa4nkIJmGlBvURTpG6LSiGQQ70ZIEt
+	epi3eDvmrY4Of9P+4enCRmdtBQd0D4VIyMwlKhEZJEdkE65jQgCNkUzmteAnbgzIhJFrC+
+	+wXUjPpvbngEaFbfUm2eYMUhZMwnt7g=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of yanquanmin1@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c9tY804Frz1R9BL;
+	Tue, 26 Aug 2025 11:33:32 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id ACCB5140296;
+	Tue, 26 Aug 2025 11:36:27 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
+ (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 26 Aug
+ 2025 11:36:27 +0800
+From: Quanmin Yan <yanquanmin1@huawei.com>
+To: <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+Subject: [RFC PATCH 0/2] mm/damon: void divide-by-zero in DAMON module's parameters application
+Date: Tue, 26 Aug 2025 11:36:51 +0800
+Message-ID: <20250826033653.1208227-1-yanquanmin1@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4895E14000B
-X-Stat-Signature: 11y693yw6174rochqno77nsdnec89qdk
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
 X-Rspam-User: 
-X-HE-Tag: 1756178507-346966
-X-HE-Meta: U2FsdGVkX1+OrzLcJYQ675OvU3vzgt5s8MNV0xPzilH7i7Aj1GFployiFibKucV1kPMcc2WbsCZLQexUByynQQ5gYaRBAAhR9+CR9fVU3VG8lpNA8EPPYpTENuBcB/gW/1j/33k6i4zFNhxMX9fSoOBeCDPvijwEHNizAo1ZA/18vZvPbep9nHmAQuojZAu3viuL40uxReynqg8rHXWnINKhM3KSkxVLWQdTw5lxU2oF2f8dzYVusyV2doYefwVBmgKDzMnt5hRBQ9p7+MrV7J0XVirNo/MSEqX/QCk4SATICH5wLXgjK+9NnLRw1NTqLW/AZzCW/84TE2zUPFZJjOp2oBELlnqdgSFazN1MNmoknX8HdAYvfqG9RFlH1RfKipv4hKf0GYSHWf7fGn2/rNnqNYSk/1vVBY1Nw6e/Fbmhh/hDhzNZxigkrBuzcgNlfnTMV2j93aiDL0ju1KbMBsMACrOIfhnfbgAyiL1mxmV1qbeM/KKkzzbMBYq6RON3vHd/ehe+eljWSWOsqgxqmmuv2C4oM5PhomwCyKlOt29viOWbtRai3Qw6ZxyzDcUVF20zxIiE81pCbuLj6NCD8W9Bww3S5KgrgXH68GE6j0GXylDYzK8PTuDSYOZLTE0BjsP9hSXBNZls7e/a0soI6QNrgHP4EYIvGV1PdFKuF4Re/uSVimdzv0lPf4oQP4e1FPHejMVvy3YbVxfLQP445JSCZ3QCfNTY1DikdYCbTM+xUJJ4zrz/2iiKnter2XU5B6KvHAvUVs1YUGIRHfaqWCEhnDfufF8cYX0Y71zMp+fBBqSHqVS6qPWhYppsUB9xMssOPYwUSb6kRnnQTaAWQA2KxRo2yP66Vwjj4FCx0eWoDI5kZfrefwzhtW4YpjJKUOuo0PywVT8j/IAAuOK7s7xhGkOoGHqrKsjrc2qvVQTa1LsWvl527CHmKpo8JwuVGpFws8fc2KEinGB32e6
- H74HxOii
- jkYlW
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AF1C4C000B
+X-Stat-Signature: eefbj4z6o3bc1rhmueuyrnzchifwxmkx
+X-HE-Tag: 1756179391-287083
+X-HE-Meta: U2FsdGVkX18SaY7/pkKzRuhCuW2NQNnwFS7EOiOsA4ZiDnpqNgxUitjeLLCHUFYXUkROCFV1tvT6IIqccdbH/HwBJE6/Mb2gfcXeeOSFTEbRZKzJLtFofqwJeTGVxzqN3EuGohc+WHpIfwmfmvZCub//l+BxvInRHbOmm/TXbvRVxLIxAk3k0ubeGvbYBOZPqTMWyCNt/ejebvyJJww3pj5J7Q4oAUpoF/HPFoBpTgIU2y41GI/hp6i+hS+H2HfU13qJOc8IYQB2gzzDl2DLyKZdSWO04ARq5f6vc+7wvXpYXm2bSAlMULrbPKfRUior583zvxGU+QzV/cvEffTV84N9FoRYJGzsLl0EXAs7en8lJ8PEr0QW8dR7DPGbTKVNGj3jx336oaESAgmWQ5l7lbJwBfveOexds7l6gzDK4mqCqQ1WmGq9wFthAsVjJN14PeaWJWJnXt5jOrHWjZWUpMVjJoXtEqFsRNwDYX8cjsA5zrdMdns5FeNaVafu6eS+CWr9CyhEkyeQrfUpA4tyWPAulwqrTwGD9W+NpQeej7tcH8y15aPifAmc0muPN9uDib5c2LYH8yNA6rSPNzMabeQgzDg56qN03OpE90/x8GpW+BVHH68Th1ENRNctcxxBL8gN6rGzFcM8VOS2NLiTTyLevYlx0VNsLc9Vf1sKrKiqqpxpjKBQlnXL8RRThWDEb3BugjV9y037d9iY/VV94ZvtuXuyfpLV0kxkLGYSc3h5pZ6dTZuSBg0zuC66adJxmDbE7tkfVjJ7zMa0w2gv0FIw6qu4a+A4GVebW/DGW7YDB5k/hVtIn4ly5bPoTfe1cq+YX2DVOaPvPMW7NJ0l5TMvGwe6UQrAdsLEWtiF0jYS5NyZ8hO9ly3yFBvRDbg4iXJfBiu3NVzUqxRkJSLC4ZFXLx4Z8D5koUPc7ebLNvEPNYYEZfL/dItYvEjg1YIG2nSbL1EjBGzNqmGOw65
+ bTEahEK1
+ fumcQHIUCLl5xn7E1GyEiiDB/Oj61Nh5MPyNwXsXL0Xb9uqUJLmGxG2rLXP51x7F+/BYKKu0UpNYqE6i1Z2Q6yCHs8p6fqrS3f3Kmu28eWRIupMoPmvzHpTrWBXq1KoYhpAYRYfnrJLo5QJVl+1Lxql3GFiwiHE8EiRCM4j5Lvm2mhQs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,58 +89,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 Aug 2025 11:16:56 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+DAMON's RECLAIM or LRU_SORT modules perform no validation on
+user-configured parameters during application, which may lead
+to division-by-zero errors.
 
-> 
-> 在 2025/8/25 23:12, SeongJae Park 写道:
-> > On Fri, 22 Aug 2025 17:34:11 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
-[...]
-> > ==== Attachment 0 (0001-mm-damon-paddr-use-do_div-on-i386-for-damon_pa_pageo.patch) ====
-> >  From hackermail Thu Jan  1 00:00:00 1970
-> > From: SeongJae Park <sj@kernel.org>
-> > To: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: SeongJae Park <sj@kernel.org>
-> > Cc: damon@lists.linux.dev
-> > Cc: kernel-team@meta.com
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-mm@kvack.org
-> > Date: Mon, 25 Aug 2025 07:41:33 -0700
-> > Subject: [PATCH 1/3] mm/damon/paddr: use do_div() on i386 for damon_pa_pageout()
-> >           return value
-> >
-> > Otherwise, __udidi3 linking problem happens on certain configs.
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202508241831.EKwdwXZL-lkp@intel.com/
-> > Signed-off-by: SeongJae Park <sj@kernel.org>
-> > ---
-> >   mm/damon/paddr.c | 14 +++++++++++++-
-> >   1 file changed, 13 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> > index 5fad2f9a99a0..09c87583af6c 100644
-> > --- a/mm/damon/paddr.c
-> > +++ b/mm/damon/paddr.c
-> > @@ -135,6 +135,18 @@ static bool damon_pa_invalid_damos_folio(struct folio *folio, struct damos *s)
-> >   	return false;
-> >   }
-> >   
-> > +/* convert physical address to core-layer address */
-> > +static unsigned long damon_pa_core_addr(phys_addr_t pa,
-> > +		unsigned long addr_unit)
-> > +{
-> > +#ifdef __i386__
-> 
-> Can we use the following condition instead?
-> 
-> #if !defined(CONFIG_64BIT) && defined(CONFIG_PHYS_ADDR_T_64BIT)
+Avoid the divide-by-zero by adding validation checks when DAMON
+modules attempt to apply the parameters.
 
-To my understanding, this issue happens only on i386, not every 32bit
-architectures.  So I think i386 specific condition is better.
+Quanmin Yan (2):
+  mm/damon/lru_sort: avoid divide-by-zero in
+    damon_lru_sort_apply_parameters()
+  mm/damon/reclaim: avoid divide-by-zero in
+    damon_reclaim_apply_parameters()
 
+ mm/damon/lru_sort.c | 5 +++++
+ mm/damon/reclaim.c  | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-Thanks,
-SJ
+-- 
+2.43.0
 
-[...]
 
