@@ -4,155 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC610CA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 15:24:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05E13CA0EFA
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 15:29:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E9236B00A9; Tue, 26 Aug 2025 11:24:33 -0400 (EDT)
+	id 3B7966B02A1; Tue, 26 Aug 2025 11:29:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0896B00AA; Tue, 26 Aug 2025 11:24:33 -0400 (EDT)
+	id 367E06B02A2; Tue, 26 Aug 2025 11:29:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AF686B015C; Tue, 26 Aug 2025 11:24:33 -0400 (EDT)
+	id 256B46B02A3; Tue, 26 Aug 2025 11:29:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A2716B00A9
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:24:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B241B117460
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:24:32 +0000 (UTC)
-X-FDA: 83819280384.16.D3601E4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2BCBE4000B
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:24:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BsD9Bioj;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 0FD826B02A1
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:29:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B9A21401B3
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:29:28 +0000 (UTC)
+X-FDA: 83819292816.13.7FA8AB3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0B98F140003
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:29:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ScM4Zifz;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756221870;
+	s=arc-20220608; t=1756222166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8dRYmdfYPQDBHIeqCHeCxbojw8+BOvuY6ncQfuP6l7w=;
-	b=UBxJJJgB0x+W05SrV5hB0KvkWdkjcdfn4Xh08T4W/8rZLJhux2QAUCd3Tw4N2eh2AIC+MF
-	ZS7E04cTK0PjobNU0KEfJg7+IYkBgjReo2AlrwzcrCn+Qze+PHl8G9ZVvU/iKbHmMUeGBP
-	QBcmganFHocO01QCP71gdXpjXsAzrEA=
+	bh=do4WI3cnFIT5RXypWP+bXcW94By+P7ccCifFaWq58Zk=;
+	b=2etaTtNhM7Co7Pyrxc4okSq18/QIBKPeOqjArcbfPZZBDkVcyGttcZyyhDMtCzPClMIZPT
+	uQa+ZgVKlHIgMUQ5l0j1maRo5bWEsHzoivroGHjnynGmo7ExdJ4JSDMgT8CLLswvAVLkhS
+	rjVwv/SVhKmnqg10yr3imeXcniPYXs4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BsD9Bioj;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ScM4Zifz;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756221870; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756222166; a=rsa-sha256;
 	cv=none;
-	b=bk7wOUUCViIsnDDUg3vwuczYovDzrDgqCedwinprYlxxppkSNXTdxcpvstgIXVaghvjfYj
-	sSCMDq4L3UFotZ8jflH8gcP4HuXCJNF5edOZ2YJ8QitwMNoGs+HqFtmKqA1Kms+raNTJb8
-	oBvZFICMm3+p+HjGRcG+J2asbELdAI0=
+	b=pbFidXqW1bX2JcvgoWrrvGAkc3nzUAj9CTX2UJBpjoUXdUTp2rUq6Vcv9CkpOupixacvd+
+	lIlQsksx/iFdFsyR9J+PFrXuMcXMQBmzF8oP/TlzfudeyZ2hZ34rS6N+QcwWyR8gnPh0HU
+	PcWHSS2C4MrvSO4Yz1nhcC8Wf9SOQU0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756221869;
+	s=mimecast20190719; t=1756222165;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8dRYmdfYPQDBHIeqCHeCxbojw8+BOvuY6ncQfuP6l7w=;
-	b=BsD9BiojwOxEFeuZZZo0p9josyMGXEMznxdTFEIkWDzcfGGFmxZOw1VbfZhsgDbhOvKlhB
-	K8LaA6mchO00t+JTLiQXPCorIq+mgsuON874Vm9SVprXaeEPtvfEclkXE8NZuRUp6tEGH/
-	GU5WUVcwdWNt8cDd2EtvS1M6kH5ETJg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=do4WI3cnFIT5RXypWP+bXcW94By+P7ccCifFaWq58Zk=;
+	b=ScM4Zifz6gI8u9YO6SsrLHJxD9jh7SZckxU/zjz1J2DG8R2Usce8OyWUeFyMQzXSnZ+e7m
+	uUSnMnfQDiUZKJPJftWsSUwTkdJ7ub3vb5Hg+Vtj3OpKQeI3newbbRxp/w4BwgjtFJkl2+
+	8VKVJugAKgcgqbktohMnU3bbotGRxl0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-wqHtl89gNIi8mo86twZZig-1; Tue, 26 Aug 2025 11:24:27 -0400
-X-MC-Unique: wqHtl89gNIi8mo86twZZig-1
-X-Mimecast-MFC-AGG-ID: wqHtl89gNIi8mo86twZZig_1756221867
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3b9dc5c2ba0so2212274f8f.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:24:27 -0700 (PDT)
+ us-mta-322-wQ17IkOONhqscIkxJXri4Q-1; Tue, 26 Aug 2025 11:29:23 -0400
+X-MC-Unique: wQ17IkOONhqscIkxJXri4Q-1
+X-Mimecast-MFC-AGG-ID: wQ17IkOONhqscIkxJXri4Q_1756222162
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45a1b05d8d0so40712925e9.1
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:29:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756221866; x=1756826666;
+        d=1e100.net; s=20230601; t=1756222162; x=1756826962;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8dRYmdfYPQDBHIeqCHeCxbojw8+BOvuY6ncQfuP6l7w=;
-        b=VKIsdW35AOiJCB7+3XsIoxL/gF3TUxySLIT9Q8eon4IROdK+y3fWy8oKJhTf/dka6Y
-         jLdTn/PQLmLVPgHUB9GFUp8EJVVDCqdXpYCazOU8tsXBxkpwb2MQzCW5KEmdicj+HcHU
-         M6+NZyc5/Q01GC9/R9I9BJZR3CUDvr0K1AptReZZh3qhNYQcI74LiVCJX9fQN6t14mOC
-         DnobDN+E8qgvlrpea61oxDI0CcKgi0/aOgSdiE8zbpa5difPrXdsaeoj2E5W15oXJxlJ
-         jkoKAqWegaloeHhlfnIiFNCBbJvKmH5NgdiDUrx/R8MgEu8aPdeA3OHOPG91IFjxNjaO
-         qvtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWTpqOs4Fdj7sHEoHTlsDGUcTQeox1rJoS7Q/dReavt4YqI9b/vUrHrK36PmACT6xHebr9zGEMuAw==@kvack.org
-X-Gm-Message-State: AOJu0YwAai4LFELuSgoM4xM9xjU4g8GQleg3nvoGS38Mg+ciqHNwABrL
-	5U7IClfEoUa3VztaaLnH+QfNQfLRzVOeiT3ZiCsu+Zxp7gzSrC8r9GAA7K4/G5zZYRqP/79tlli
-	yuONOhSnKYwEduYRJFyklElakDHs/UzEQ043PSd08thWRcocoEJUZ
-X-Gm-Gg: ASbGncuLyC6jTlCZdRAcqeT5XBhYpiUjtVLjOsV4LwDVXStJ08PqRmkHjkG2CMJJ9sq
-	OT3HiP5PwFkFKkSBRvYUOuBgxOZFmasI9WkfOleNVfRP/JUFJWx/+2SWz0P1/RM1ZI289A89Di2
-	r3HCoP4XPCQnh3n9r3wQgKC5qaUoweseLjDoXnGDpEt6uohrxyxncyz7HQRND7GO/zYqPV69cxU
-	uDm882Eqwt4/FnKLLCW0UMik2ZWfaofOGbfatFYc+bTeI9CzKurYz/oVtN1F/6aIgHklwv1f3Oh
-	7INT9Zp2rGy7gqZU6hSWhMcL9uPx6Kzr8/7SvMtVtoTAHLtKuOuu8rsnDqQekuqGx80v7x29Vw=
+        bh=do4WI3cnFIT5RXypWP+bXcW94By+P7ccCifFaWq58Zk=;
+        b=WBIKJoaRAH/U/prfNUEBRacfqbPOT6Q8JADFUhwFp5EyrDWjzKgiF8DG1DXam9kEvQ
+         0IssYfuTpVA6pZU2MpNlujzujFJ4+1nidkIkYc7mII6gKVpffzYpOHFavjHv1aA3kCJt
+         D2kibi/6FDKanwV7NCb1Awpk4n0PD30UoM9Ad7m4lDO9hERTfDB6h/UvYl9oO6AlpVLs
+         fVCW0GFCYKM26exshkqkFnHHOg80Rbei0eTQPwW5FWDKyC87fdfPH7PAMZiCHy29PkV6
+         cKvCkfGpb/tqA7in1tVBYyTjotTDm/VU0nD+K/ki6O250d4UQzzEf3dXbkLzx6M8440F
+         tMEg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0FellkjNrd2E62Z0sZqiSlxQNUZY0ps4v9I5zXmgGj22vgUGtKvMd7RqXmz2O3hvlYBfLNZjvig==@kvack.org
+X-Gm-Message-State: AOJu0YyPgM43E9URyw0fF0k+9o5gA6Q26ugGAGnTxfNvpHwFWiPUTEbe
+	2ruIxkcuc1r3DClkPaNVdJViYOL7YfKsyN19Ser5PK8FHbR3sLhY+Zi3rMewfTgTdMxgLPaNoAM
+	KVc48hanPlQFiFyD66h5czKUkDrhKhkTlDIqXGpO+RH8G4CZV7t2H
+X-Gm-Gg: ASbGncudXQ3rhnfK7fPnpPuxeFugyf/Q705OS5Vd5XeUZvWH8h35+6lUJ6ttm54/gj+
+	73t16AnPoTg9jiCoIl7yw/B289dmovAGxt1soq1owMfW57vkvG3IXsZLWjgIckwXL7E28jrtIW+
+	DARDik0mLC+fWGgZRf6Kw9YtlYB9HKs/iBZQEf8KgBvFp5Kt3iv7nSd8dGe/J88ODtpOB9IfRBD
+	BBCxk8ykHqvvdWq0pXN4p4JfXegQoZe+55V+KCsTrfw6jQvSADzOhfAp5XUzdEMW+wVDZUJiSTF
+	ZyR8vXMTx/B8J6BD+JVGl3P74+3me1uNjj0fMT0/JfyZNtqvHyBWtdgasHNDVnvh53J4qt25CA=
 	=
-X-Received: by 2002:a05:6000:178a:b0:3c8:9438:8b93 with SMTP id ffacd0b85a97d-3c894388fa3mr7039284f8f.60.1756221866156;
-        Tue, 26 Aug 2025 08:24:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH7tUX8+axqOYguUOQKRRwlbVCfKARwI+7junufYEnF30XOVYwqq/xeCLNzXlGq7X6f4v1Ocg==
-X-Received: by 2002:a05:6000:178a:b0:3c8:9438:8b93 with SMTP id ffacd0b85a97d-3c894388fa3mr7039200f8f.60.1756221865437;
-        Tue, 26 Aug 2025 08:24:25 -0700 (PDT)
+X-Received: by 2002:a05:600c:198e:b0:458:b068:777a with SMTP id 5b1f17b1804b1-45b517d2dcemr166931905e9.30.1756222161898;
+        Tue, 26 Aug 2025 08:29:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHjuleVZkW2DNolLWkkCKtnMy1FO+l/+yq4s46DCO60Q2NyuR0T7hKxNuT4OlPeWKxwsUu72Q==
+X-Received: by 2002:a05:600c:198e:b0:458:b068:777a with SMTP id 5b1f17b1804b1-45b517d2dcemr166931635e9.30.1756222161495;
+        Tue, 26 Aug 2025 08:29:21 -0700 (PDT)
 Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c70eb7eed5sm16180834f8f.18.2025.08.26.08.24.23
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b5753550esm156005865e9.5.2025.08.26.08.29.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 08:24:24 -0700 (PDT)
-Message-ID: <e91f7a38-3b17-4a0c-aedb-8b404d40cf59@redhat.com>
-Date: Tue, 26 Aug 2025 17:24:22 +0200
+        Tue, 26 Aug 2025 08:29:20 -0700 (PDT)
+Message-ID: <01a9a40d-b19e-4730-8771-2a19a01f7788@redhat.com>
+Date: Tue, 26 Aug 2025 17:29:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] mm: update fork mm->flags initialisation to use
- bitmap
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
- <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kan Liang <kan.liang@linux.intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>,
- Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
-References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
- <9fb8954a7a0f0184f012a8e66f8565bcbab014ba.1755012943.git.lorenzo.stoakes@oracle.com>
- <73a39f45-e10c-42f8-819b-7289733eae03@redhat.com>
- <d4f8346d-42eb-48db-962d-6bc0fc348510@lucifer.local>
- <d39e029a-8c12-42fb-8046-8e4a568134dc@redhat.com>
- <1743164d-c2d2-44a1-a2a9-aeeed8c13bc8@lucifer.local>
+Subject: Re: [PATCH 2/2] mm/pageblock-flags: simplify MIGRATETYPE_MASK
+ definition
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, vbabka@suse.cz,
+ linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>
+References: <20250826093148.30190-1-richard.weiyang@gmail.com>
+ <20250826093148.30190-3-richard.weiyang@gmail.com>
+ <a78883c4-5b71-4880-8d6f-ebaebba7d1d6@redhat.com>
+ <20250826151926.re6p3yemvgcycosy@master>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -198,21 +157,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <1743164d-c2d2-44a1-a2a9-aeeed8c13bc8@lucifer.local>
+In-Reply-To: <20250826151926.re6p3yemvgcycosy@master>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mtbhKZius-8J6enxZNJyGaVTiVafgr4_lBBWfONO1VE_1756221867
+X-Mimecast-MFC-PROC-ID: o7gzI7QUzzezt7HWoWo6lQaXCZfVLaHMZ4X0QkvC-oo_1756222162
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2BCBE4000B
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0B98F140003
+X-Stat-Signature: sy6jdug6cjqhrrpmb9bjpiajkjxkootz
 X-Rspam-User: 
-X-Stat-Signature: pd7br3to6otatg3ics9sj7tu4so5whke
-X-HE-Tag: 1756221869-465137
-X-HE-Meta: U2FsdGVkX1/o0M7n/5cOSwOaGTVKYgR67HPvCd0XETaa1rlrtEzpsyoUqMpZKJXvsPL1eA+0Jjniw1cyc4WjVwCMFVWCxDwewkq8H3tTDW2alTww/0HZ9J81L1ZpwtoOISlvWvLOCBc8TkB+GGt1KNZ2DPm2NdHEWeLSx/lLFh9Wajc8McN7FN3cJeYmLhLjLR1MM0NJ1SfyF++cddWBKopSWzzozg9M4bD3uW7nMcR03Ck7zr7Eo4MKbKkUrubdCMeKfPF+UzKDDmluxoFPurG2W4UpFA6xSwe4TsO/2aTA01hUkvub+j6DmXAWBNYQoMh/L/52j+q/bUg8HtWIdPYDQ0d4rrxoSInyGYrFQWHMXo69LVAMUi3GEFI6RF36G2F7lTeQW4eUYEIM7+kMsxEsbo2y10TGyT1LYui3e216h9pb5JmJyZdo8nc/VLhR089cPieZePN35s3wGYN2KdZxepnlNsJMSxXFX+nYUW5WTHpac3EsRlb762X6YuvzGrl5xUxohCcDeaFpPPOPIEq931RoNvffxBefdkKZNiKV7vCS98rHvtmbCGpkUjupphM9NoirESXKNGUEx62yFpqzgayxjqToNwSYj+hDDBU+Xy5F5Y16rOnK3i7qmLJFBbdKpDUZgZoHTJjUHRaCf7adpDY1SZ7S97PvjLT7vWEPf2KO639BMA06ItHuGZehTkQtlIXeJ85NBn3NrAY6Wq3Bqy9m4WTBigJmwDlgmR3YTlS0ntkLcfd9ZhVy2cRwy9cVtfe7ng7mlntW4aHuhgnmBZph3CoLQzWmsqJanyi0gKtiZBw7bn1/KE5+JT+ki4JqFtfdQJe836slR9rZ/Q/5D+UIMhtIl7yEhCFmU71og2HTDIbZzu6jtfY9N1FFCyweWF6pnvMVE7ie4B7LPEqUktVCLO8OedW4DeIF0lvCHuukPFsl89izK0ZKVmnzJ+3rAJoqcuPYtPM+c4W
- pldsSQu1
- aYzdn3lCDrjQG3DamZMnm/QZpjVxZ4uaxgu1v5LVBnGtMa5My2a2CUi9a1di3avC4+CCPE/L7zN7t5hVRkiTrYykk57irUQaudtZyALei1+q0s2BynSWq/qt4aqqFNCpJ1FPOU3Cj47/dbQ84zUDb7R0Y8EfEhJOjj5SojIvYdQ3JLxV0p18D0v8/MmBNl9ivIOCbdSJhlW8iCcoXMBQ3ZOnDsHaa2z8uFM2O366baRG+2BlB0ot5eRayMmtkMejGTngKzV0CCSZL2tSSr/xtT87IxzSm6Y9m/BVVLAtZ5D4qTBSp+4S3hUnJ8sLDdKq5u04CLBzVZO+zxHGxuMoiXKZ7y3U1FJdnQtA+68HDUniSQavJECb52ej3+3RpooahWv6NgmKNNqjIfSPnUlZMHT2cVFtmP21pm+Sz2GBdTCkJc75XDs/iCwhyjuy5D1RSX6GAlIVU8Di/Iqw=
+X-HE-Tag: 1756222165-383967
+X-HE-Meta: U2FsdGVkX1+FZRXlPKG03Hxb0xsmSEKZZ+kWOqRKocMq6gjGwnrHDrjExoC27k7xO+GVyaAnCTLn2s1UcrFAvUbNb7Z+bw1p6LBBmlWmPOelR/a0srM5PpF3fMfpSQZD5Op4zeuJtFBVQl4k/ZsornWrZ7OXH5bKUP0cHrYxSNHqqMpxAUv87SsB9S/7WmbpN9tNMqwYjxNuK6YsqgaIwyUJN7tdTbgvcJRCd7QCokK1dyZ6pSV4RO26nm7KD62hfUPiY/303vRMyWkEtQT4sRXmUt69SsnEjqboBfjQ7nEEkDEFu7b3Gnosb9XGyPwPEyxeEcLmC7jgA4XbTbxCgIdzMqM992BH+OuTwFX1gTkAeLNcVvoSdyX9iGFYC4ya4Sl9W6B0CNHguS/pTb+Zxiq8MvPhVxTqKS5owM56ZCZP5rSFz4kjdammEuWO/tgcW1bXgNRKDb1J+RcaCX/erIwJ46EpPkWhWiGHWi8RHQ0tfr3nHSHgWXsTVWbDbosWYshC8ZSdXCHZQsHs7GEbVIPiaVQZ5SrW2SQ6AJ0/a8AJ+ypmXlb6LGjqhWRNmlcUtgdQm37ClLkskXtqAw2wgJCIBiyV85ScXk8wV3+1ZAHL6Ty193kDZJjdh2nTQQ47SINRf1nVkFhyTlV1vH4M4D32zvNoTr3/QjWeEcLLM16zruO3kN2aBX6XC+mb2FrMwtJ6nKzVzm+U+ox5rS5T45fFCj3Bzn15CvsczenBAtjJwPMyIJnCT0ik6C/1Vw/jtop39tuGtSIjlIJPK9pl+W0rEnUHwIaGrIpQm5KOZm8djCOgnrLf6DtCrI76/qskSARKZfguXj4ew4++yDiclVWsBVWf5Neu3t9s0yOSIMWA9+TFiWWPMz+TeNAg/b+YO7mFMFV0z0nYF17aFtUmyjmwJRYG9e91y0qh20U5HPIBVdjfAqMjyfZ5thaHyENien444GTLjshrPyFoMGi
+ Iqp/K2vP
+ J9vZprHBrx5aXb+CM9W4+xAFU+8g3G8+KqVoJvJAXcW+Af+8w9VEeur3zkpp8V8fMUUDAREsGkGbjmVyg6qx/73Reuhd0fCrchC9BS5lvBq3tgZP2Lu5dgTtO8M4ke2k5IBqMyUPr6Ky8scKmNI3SS1BgZQ4foiVafR09exMJVIywNVPq3+Sbg8WXUfWqdFRRDJtWKsh327Rym9sdVnrbcRKy8//iYLpgfHmRz+HTqDJqmqXIVRX8SioQtsvZSwq7MD9C3gHGTv36gGNxBWJkUH76wPCHo22kRsEw1npxj/k1Lwz2mZU4M3Oc8cOcxd21vQjMZGHsIpD9uRrUSwXPJHfI2KBMzbAmnHe1lZzJkXwpqPP7MC1rQxZHW1Y5cv3+EsJmBXtM1OkNii6Ee/qYrpu+DljmbTsnwLOiEGvO7QHwsRvYAShdg0lKlMo8ORVJZkCSQFUF+OWBxaLf4yXtFdYyfszpoUbgmg396rhd+DxnkNwcQZWJlIs0HEO66oZxTEysmGeU0uP+OG+Q5pGhYa/VFCImiPvfGKSpf6BOtWoMzW0JAYksDwuPXiGzEmlac0bxmPqQiX/0Y95HxRXK+/JKteHvGB9MGIWGikNQ8unwLII=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -221,77 +180,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26.08.25 16:32, Lorenzo Stoakes wrote:
-> On Tue, Aug 26, 2025 at 04:28:20PM +0200, David Hildenbrand wrote:
->> On 26.08.25 16:21, Lorenzo Stoakes wrote:
->>> On Tue, Aug 26, 2025 at 03:12:08PM +0200, David Hildenbrand wrote:
->>>> On 12.08.25 17:44, Lorenzo Stoakes wrote:
->>>>> We now need to account for flag initialisation on fork. We retain the
->>>>> existing logic as much as we can, but dub the existing flag mask legacy.
->>>>>
->>>>> These flags are therefore required to fit in the first 32-bits of the flags
->>>>> field.
->>>>>
->>>>> However, further flag propagation upon fork can be implemented in mm_init()
->>>>> on a per-flag basis.
->>>>>
->>>>> We ensure we clear the entire bitmap prior to setting it, and use
->>>>> __mm_flags_get_word() and __mm_flags_set_word() to manipulate these legacy
->>>>> fields efficiently.
->>>>>
->>>>> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>>>> ---
->>>>>     include/linux/mm_types.h | 13 ++++++++++---
->>>>>     kernel/fork.c            |  7 +++++--
->>>>>     2 files changed, 15 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
->>>>> index 38b3fa927997..25577ab39094 100644
->>>>> --- a/include/linux/mm_types.h
->>>>> +++ b/include/linux/mm_types.h
->>>>> @@ -1820,16 +1820,23 @@ enum {
->>>>>     #define MMF_TOPDOWN		31	/* mm searches top down by default */
->>>>>     #define MMF_TOPDOWN_MASK	_BITUL(MMF_TOPDOWN)
->>>>> -#define MMF_INIT_MASK		(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
->>>>> +#define MMF_INIT_LEGACY_MASK	(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
->>>>>     				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
->>>>>     				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
->>>>> -static inline unsigned long mmf_init_flags(unsigned long flags)
->>>>> +/* Legacy flags must fit within 32 bits. */
->>>>> +static_assert((u64)MMF_INIT_LEGACY_MASK <= (u64)UINT_MAX);
->>>>
->>>> Why not use the magic number 32 you are mentioning in the comment? :)
+On 26.08.25 17:19, Wei Yang wrote:
+> On Tue, Aug 26, 2025 at 03:34:13PM +0200, David Hildenbrand wrote:
+>> On 26.08.25 11:31, Wei Yang wrote:
+>>> MIGRATETYPE_MASK is defined to be the mask of possible migratetype.
 >>>
->>> Meh I mean UINT_MAX works as a good 'any bit' mask and this will work on
->>> both 32-bit and 64-bit systems.
+>>> Define it with PB_migratetype_bits directly would be more clear.
 >>>
->>>>
->>>> static_assert((u32)MMF_INIT_LEGACY_MASK != MMF_INIT_LEGACY_MASK);
+>>> Also, MIGRATETYPE_AND_ISO_MASK is MIGRATETYPE_MASK add isolation bit.
+>>> Use MIGRATETYPE_MASK in the definition of MIGRATETYPE_AND_ISO_MASK looks
+>>> cleaner.
 >>>
->>> On 32-bit that'd not work would it?
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>> Cc: Zi Yan <ziy@nvidia.com>
+>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>> Cc: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>    include/linux/pageblock-flags.h | 5 ++---
+>>>    1 file changed, 2 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
+>>> index 6a44be0f39f4..1489c062a5a7 100644
+>>> --- a/include/linux/pageblock-flags.h
+>>> +++ b/include/linux/pageblock-flags.h
+>>> @@ -37,11 +37,10 @@ enum pageblock_bits {
+>>>    #define NR_PAGEBLOCK_BITS (roundup_pow_of_two(__NR_PAGEBLOCK_BITS))
+>>> -#define MIGRATETYPE_MASK ((1UL << (PB_migrate_end + 1)) - 1)
+>>> +#define MIGRATETYPE_MASK (BIT(PB_migratetype_bits) - 1)
+>>>    #ifdef CONFIG_MEMORY_ISOLATION
+>>> -#define MIGRATETYPE_AND_ISO_MASK \
+>>> -	(((1UL << (PB_migrate_end + 1)) - 1) | BIT(PB_migrate_isolate))
+>>> +#define MIGRATETYPE_AND_ISO_MASK (MIGRATETYPE_MASK | BIT(PB_migrate_isolate))
+>>>    #else
+>>>    #define MIGRATETYPE_AND_ISO_MASK MIGRATETYPE_MASK
+>>>    #endif
 >>
->> On 32bit, BIT(32) would exceed the shift width of unsigned long -> undefined
->> behavior.
 >>
->> The compiler should naturally complain.
+>> Hm, I wonder if we can get rid of PB_migratetype_bits
+>>
+>> diff --git a/include/linux/pageblock-flags.h
+>> b/include/linux/pageblock-flags.h
+>> index 6a44be0f39f45..70c988dbdddc8 100644
+>> --- a/include/linux/pageblock-flags.h
+>> +++ b/include/linux/pageblock-flags.h
+>> @@ -13,12 +13,11 @@
+>>
+>> #include <linux/types.h>
+>>
+>> -#define PB_migratetype_bits 3
+>> /* Bit indices that affect a whole block of pages */
+>> enum pageblock_bits {
+>> -       PB_migrate,
+>> -       PB_migrate_end = PB_migrate + PB_migratetype_bits - 1,
+>> -                       /* 3 bits required for migrate types */
+>> +       PB_migrate_0,
+>> +       PB_migrate_1,
+>> +       PB_migrate_2,
+>>         PB_compact_skip,/* If set the block is skipped by compaction */
+>>
+>> #ifdef CONFIG_MEMORY_ISOLATION
+>>
+>> And then just work with the bits. No magical computations.
 > 
-> Yeah, I don't love that sorry. Firstly it's a warning, so you may well miss it
-> (I just tried), 
-
-Upstream bots usually complain at you for warnings :P
-
-> and secondly you're making the static assert not have any
-> meaning except that you expect to trigger a compiler warning, it's a bit
-> bizarre.
-
-On 64 bit where BIT(32) *makes any sense* it triggers as expected, no?
-
+> Something like this?
 > 
-> My solution works (unless you can see a reason it shouldn't) and I don't find
-> this approach any simpler.
+> diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
+> index 6a44be0f39f4..a09b79a1fb7d 100644
+> --- a/include/linux/pageblock-flags.h
+> +++ b/include/linux/pageblock-flags.h
+> @@ -13,12 +13,11 @@
+>   
+>   #include <linux/types.h>
+>   
+> -#define PB_migratetype_bits 3
+>   /* Bit indices that affect a whole block of pages */
+>   enum pageblock_bits {
+> -	PB_migrate,
+> -	PB_migrate_end = PB_migrate + PB_migratetype_bits - 1,
+> -			/* 3 bits required for migrate types */
+> +	PB_migrate_0,
+> +	PB_migrate_1,
+> +	PB_migrate_2,
+>   	PB_compact_skip,/* If set the block is skipped by compaction */
+>   
+>   #ifdef CONFIG_MEMORY_ISOLATION
+> @@ -37,11 +36,10 @@ enum pageblock_bits {
+>   
+>   #define NR_PAGEBLOCK_BITS (roundup_pow_of_two(__NR_PAGEBLOCK_BITS))
+>   
+> -#define MIGRATETYPE_MASK ((1UL << (PB_migrate_end + 1)) - 1)
+> +#define MIGRATETYPE_MASK (BIT(PB_migrate_2 + 1) - 1)
 
-Please explain to me like I am a 5 yo how your approach works with 
-BIT(32) on 32bit when the behavior on 32bit is undefined. :P
+I'd just do PB_migrate_0|PB_migrate_1|PB_migrate_2 and have code that
+is easier to parse.
 
 -- 
 Cheers
