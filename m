@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50EB3CA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 14:34:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F08ABCA0FE7
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 14:36:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F0368E00EF; Tue, 26 Aug 2025 10:34:09 -0400 (EDT)
+	id 4771A8E00F0; Tue, 26 Aug 2025 10:36:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A0AA8E00EC; Tue, 26 Aug 2025 10:34:09 -0400 (EDT)
+	id 427FB8E00EC; Tue, 26 Aug 2025 10:36:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7748E00EF; Tue, 26 Aug 2025 10:34:09 -0400 (EDT)
+	id 33DB08E00F0; Tue, 26 Aug 2025 10:36:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 74F318E00EC
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:34:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E720C0165
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:34:09 +0000 (UTC)
-X-FDA: 83819153418.08.953E52B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C3888E00EC
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:36:28 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C20121D9F3C
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:36:27 +0000 (UTC)
+X-FDA: 83819159214.01.1C5CCA3
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 74AA1180018
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:34:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gnPlZeT1;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3050EC0013
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:36:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ayhHbx5X;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756218986; a=rsa-sha256;
+	cv=none;
+	b=GmDfAtu/VfBUgZRQ9G20mzUxwP48SO8EjNkaS+f5HkIRgAQGuXlDR5SumWVCmiYOP/zZhv
+	C7MW9dgjeHk/utfyhlj+WcC0cY4bvAa1uVuKapKwfp5uar9ATkH0SuTTNCbox3DaZxfG6i
+	mYpJK5E3VXcC2mWIO9C+2y3bBHFV1Ls=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ayhHbx5X;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756218847;
+	s=arc-20220608; t=1756218986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oNLq9u2Z+E8t4cZIvpZo46q8jPTTbHKG5bESA492VYI=;
-	b=l1IawBd0lU1UYlCtlzFk+8cOfMRSeJmRhQRuIbo2NCmtE2PQ7GbpgnsGVKVz/2NzoXy82P
-	9ySHBQ4UjnoHg9aZAeam+FYePzlS6gIs3t2xe+Mo8Cn6f2xsczcrra9xcBlY4ztISJFn7J
-	l0/4As8AztzSIPE4tpvL8hoJQbkDxkE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756218847; a=rsa-sha256;
-	cv=none;
-	b=I7caMBl3mTE6EIvb3rSLQac76kJ97YKr+vM0XtEX3yN8JBeEbe9zR/Uhb6LoTBsSD4FMf6
-	ROkp8GoKiU+Cog9ORoS1owE5UcJF4vBitfAu4mOAImfIrJCmm6vglapSWVeAF78q0g+o+k
-	WrDo41ApZmybQRQ88DIXkWcOC1i+sqM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gnPlZeT1;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=xdhaanYvjiF8STVB0irsdvgCmdV8Djd5Nsw+zQr24j0=;
+	b=aRPpsg2tAALT8a2j353bG8aOvVmUB3bkJga+/XMH0VYN4jI7vaJgYGh2gR+Rp/NtLtEzIj
+	PhRflxnQTokupUpjgZpyrDgJbQ0onAafa/M9SsT8NpSpAx9D60ezGqmkLujX0mfxxDC7pr
+	DWgf2JE35cqSmDx8By+G3ZyBhS13Ksg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A51EA5C6203;
-	Tue, 26 Aug 2025 14:34:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0F5C116B1;
-	Tue, 26 Aug 2025 14:34:05 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 57C115C4D64;
+	Tue, 26 Aug 2025 14:36:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C286FC4CEF1;
+	Tue, 26 Aug 2025 14:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756218846;
-	bh=3CPQkzt4NICb75OBiOuTfVapvMeLDLHP2WG42NRv1Ss=;
+	s=k20201202; t=1756218983;
+	bh=cm3c4GhML4E6RLlw/VFFFI6QieoD1VhZ+qpko2GXjyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnPlZeT12A7JO4iiikyj8vx8JpEqez55iewEUUeoZjdP3ViwMVcOe3tqzcuUThY68
-	 3it7q5IAggDs98ad26LHx5dIuIr4Dix6yvQzFIrPcKFi5D/Tkhhc8uZoaJBTdRgXFt
-	 RX8nLImLMLg8xltiyiXVh70WmflcOyxmn1ntXwGqO3wzmalTMSntpZMJz2OqmzmDkp
-	 +kOxCsQ2vfEOVNr3QPJvg0VFobm3GaJX7dudktQMMa2dQt42n6YrLqPObXij8Cm+Ui
-	 uNgi/pMakahoBRCqxmaDaE9bTilG7A+5vHDzbvPmIE+La//I/655cqt8cuRmWIBcq7
-	 UqWDBmL0w7V9g==
+	b=ayhHbx5XdlTVbBQ83nz6wO1nSS9vqlStNZOOG4jTgJgJDS3VtRKhdkP7ZLrRpWPaT
+	 JB5ee9SGB2pMIarQFFwO7fifRY1djZycI6TrkVkSDCwqxbkH0Q7NuBBLYnWdnWCT0a
+	 fW8fMzjMky/bJjZLQM9Ov/3pXgAlzNv6Q/9NmqTKgdY0dk+8RFJx6s1KVfEXqATzd+
+	 QJgN6H7qIlZmqy2y5YspLoUP6ZQiJFR9DMjyA7hlZfUS83FUbZWCsYKIfY767lQfzT
+	 RmjLh2JzIjKVAfaGeZbzRaW8s7y5iagKdA7GkXnZm7Kq6rpWS2VOBUTwIeAIlmHtUN
+	 q9O3WJBQauSgA==
 From: SeongJae Park <sj@kernel.org>
 To: Quanmin Yan <yanquanmin1@huawei.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -72,22 +72,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	wangkefeng.wang@huawei.com,
 	zuoze1@huawei.com
-Subject: Re: [RFC PATCH 2/2] mm/damon/reclaim: avoid divide-by-zero in damon_reclaim_apply_parameters()
-Date: Tue, 26 Aug 2025 07:34:03 -0700
-Message-Id: <20250826143404.54232-1-sj@kernel.org>
+Subject: Re: [RFC PATCH 0/2] mm/damon: void divide-by-zero in DAMON module's parameters application
+Date: Tue, 26 Aug 2025 07:36:22 -0700
+Message-Id: <20250826143622.54331-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250826033653.1208227-3-yanquanmin1@huawei.com>
+In-Reply-To: <20250826033653.1208227-1-yanquanmin1@huawei.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 74AA1180018
-X-Stat-Signature: fi9pmgp7fqsqe9p964zi46yhu1wip5nt
-X-HE-Tag: 1756218847-191250
-X-HE-Meta: U2FsdGVkX1858Egg3En1HrtHvNk78HKNK+VS7n9H4dwNFc+O2RYcSxFEJuV2O24MxEZYDKhH4Znn16gqU8HeACr46Vs26rllFrms5wojGDytZOCdncU3bf1KJ7XRriAOWJQH6QdaCYds+74CsKhs/XR5JkY3hWsgqN+e6jCvOyiEUIpPzaag7djJZ/xfsBCH8DNPe2RCm2qMcIvAkwo+tnv9rQsoB3scpVd6UetNpInuGlAAJM9duFQXwLjfJ6pr2sdcN6oh7+m/DqZKPhXZivIzEISPGLB9pYZq50+Nve1WGlyHTuvUUMrt4gUTzswWoJAKCTvMiWlz3RnTYPqSAkSB7C00msbnw4oRTikLKOV15qIb5Zll8s/dorKp8EdO8XME7PcTZqflfVc6/XuuNDWahaiH2YzZxTgdquHHNQhgkFR6YESeIaAJJ9Rxj5auLdXRBvcSi9uArRnaSYxu66BCag5Nu4MlPi5ToDgAOMaj2KYG+GKhelSRwdVAoZ/bU6DivdA3M7X8+IMHd9B9LRGLm2SnZPl2upphIcLS3W6v0o14K12wxP5e0TAgSXxXZQ+HVHMuQz0Qc2Dkgcj0jDDYdaFnQ9d0/WX0hHz0+9JgabGZr99KB5DAMNS3rtu4UHMhpgLAn+x5CaPasiOvIg73oggW3EZOc6SIBAKeyCGJ1Mua4GwDX61wnUg1SoPgDI0ZNE27TDrxTkj1eVGij6+97GPFdrrWgZfy1xtInNyzoV+oW2CiSd2DKFYFM4hx/9fFG1PHLuv4OxoNiuYoYV8vZua2y7hWARJGwfS7TRteSUTheu//07JBuRHmJKseSN9DYLhDxpWimLUjVidauFEgUd4jp+L/r9/u6xWI14yRoxmdaihc/6HbumNc7UqnE2K/1Q0qS6DdIJOp2qqbnzS7l/MEc2OCyUiJHji5ngBHifVPt/ZEfBYhO4X9f6SzCkJbOAHXYNQM8qsX6uV
- q/F/OoA7
- hoCKnPL4GTcdt+jBK6WLsyPY7Exu+95B/DvPMFpnFTv593Z9EZcEwFo1bXyzXDflIoZW3IB+3DVcxl2QnjpXcMWJpouJh+Ewb5w2DGGwGDs99vAYTtMEast66OFhE8IWaMmR3HMIc2vXppWQ5m2oB7Y4feADGcgfMZ8zSSpmZwtNGCa7Weqn8nhRJ9vWxAvzQwI7mcwo9wt2J55SDQu/mSKPn3yU4hg1xs7VfdvAe4p7O3f7skrCLugozj2KOxj9cnrzQwzmKxSqdgJnRv3swsrZVn6mdXt3KCkUAKoplx47kaMA=
+X-Rspamd-Queue-Id: 3050EC0013
+X-Stat-Signature: h3yyt1c9a7ux3x8yujwdfyd1wx5hwntw
+X-HE-Tag: 1756218986-919272
+X-HE-Meta: U2FsdGVkX19aIL4eeQvyFftppm0iWz05xgBvzDlD5V6o4EIknpifZ/UJQ0FVKmvyuldEzGBgv9yVTJRsyLQ6qvpAuLOVM9hWyjCSiYCE60h0o2AOMoRCtper17L8KhZqIhW/LvCSEAInvyUJ8f8Teo7MtJBSBxDXutKujJIz+9qiLsJyZUUukhgW9PpP4XtDhFepDZ2mFbODyTsJeI7bixcgUXlTKhxA4PjmEf+r8IH4ASyjWf7gt/4WSPREtu26wzEqWYcSflr5MqOBbIrssrHZF6x8DTsriZUxs1sMbe1j64y8Zt7QWOtDBfXgBGJbfejokaNjgzCsrD47c0ixpa1AcMegXrqGs32JgbiETVtxd9WoyD/P4ldOF6jTb+lBbh/WYxHTfEZyPrPES4ssD0yiY0hwOXU5bZAuqYPNIdpTFvC4pMHF0deeoSE9kIJ+oHMR7ZhPMncu/g2UG6eRvHqK4rF+exp0HZljyWn/E1bcrF2SXEtGkLK21E/tGaQ3z8y7/nJzLdltqAZuX5NMGUDdJ9sj0Ma/K9vZsCQkvjm8vA/D7xlb5tJQmjXCHm2ofPwh+2BQU5Rwf0qDQ6ibs3Gq0sbhrsl4BoJ23vVL2rRJCrYtELUrDcxz39UyJKEjjCGjYzfoB2Wp+Vs8QKxbhioXG6FFgeCfPvS6PETNdXecjczScpoRwCZtXnU0GyxwBp3pv/t0GqTIYrYNw2vh8yVQw4MD8yeWe6BJEvVul2SL9g+pYCGOYkbOWAJeqGyzWVheY5CoA/tLUIg5AGGX471eBE5tloM6xurIRWrId3PrgWCotevTtKfI8qjU+mUGT5RP7EJuP4hkC3h4hPZT4ouaO5PwizvCNkeVuN8MeS5rmQ5AsPnKPrvmPzS7qOVuObI3wzW8XTFdItYzjAJKxI+e7MMCyhSIBEb2oBBY16MY4TQE7dVUBw9Cz0hfaFoLsee0pq2MHnnTJnHHcYb
+ UgcEx52L
+ JBetcQag+Ji7AdyG7XlMVYFy74SkYEwQfU/pmKherikUFOQVeTlxBXB49/lunQ4c21UdIC7tueXRgbVKDEkCbfESTdGVCpsC0HlnUNMJrrwXgHKUmxzqsbJcs5nRrnQ34LNoD5Zgt6FKiZ5g3DWVys4tOwN+EzTAGHW4LqrULFYa4+EJuYJEls9rBDWMNnhsI4U4aM3gdQLgH56PTFjSacP6wlbfRa0ysnJS9RWE7ke/ssFZ/gxZkhA6o6ViYJqmxh9cjQetcVaG2xIO/0TFV3bUmyA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,23 +96,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 Aug 2025 11:36:53 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Tue, 26 Aug 2025 11:36:51 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
-> When creating a new scheme of DAMON_RECLAIM, the calculation
-> of 'min_age_region' uses 'aggr_interval' as the divisor, which
-> may lead to division-by-zero errors. Fix it by directly returning
-> -EINVAL when such a case occurs.
-
-Nice catch, thank you for this patch!
-
+> DAMON's RECLAIM or LRU_SORT modules perform no validation on
+> user-configured parameters during application, which may lead
+> to division-by-zero errors.
 > 
-> Fixes: f5a79d7c0c87 ("mm/damon: introduce struct damos_access_pattern")
+> Avoid the divide-by-zero by adding validation checks when DAMON
+> modules attempt to apply the parameters.
 
-Let's add Cc: stable@
-
-> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Thank you for finding and fixing these problems, Quanmin!  All looks good,
+though I think it would be better to add 'Cc: stable@' tags to each patch.
 
 
 Thanks,
