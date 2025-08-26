@@ -4,177 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF614CA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 08:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30394CA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 08:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12522900002; Tue, 26 Aug 2025 04:04:55 -0400 (EDT)
+	id 606DE8E00BB; Tue, 26 Aug 2025 04:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D4C78E00A8; Tue, 26 Aug 2025 04:04:55 -0400 (EDT)
+	id 5B63E8E00A8; Tue, 26 Aug 2025 04:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E904A900002; Tue, 26 Aug 2025 04:04:54 -0400 (EDT)
+	id 4F7888E00BB; Tue, 26 Aug 2025 04:06:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F18F98E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 04:03:35 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 981A91DE1FF
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:03:35 +0000 (UTC)
-X-FDA: 83818169190.26.149C5BD
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 23ADA1C000D
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:03:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zb5uZ1Ij;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sDCf7YV8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mFTUJo16;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JLFR3swe;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756195413; a=rsa-sha256;
-	cv=none;
-	b=ilY/fMHJSi2/YLZCbU+IcdFSk26Z1WeG3ScocxuLj9SEPKooAgoa5PXUfEqW9f/HVXp4to
-	lVXXMBX00uqsodEUSgF/HJZ2bfHJIYiwxIrb2RYTDps4bvNXf9itnyHndn4F5hjslW4PWi
-	sChJ4Xi7nAB6bhtulohT4lfkNMKXMLg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zb5uZ1Ij;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sDCf7YV8;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mFTUJo16;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JLFR3swe;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 29B188E00A8
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 04:06:04 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C2575C069A
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:06:03 +0000 (UTC)
+X-FDA: 83818175406.03.5176ED9
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 559A01C000B
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:05:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756195413;
+	s=arc-20220608; t=1756195561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZOnM5TJgUgBgtssYK/pUO0RTc/rdRZVOmP7g13VKi4A=;
-	b=bBxOgYtEnIVqm4EEiPE5u+zPO5cZTkpUzWW2KhykHMXb+VMw70EBVtHyBHdxTM2UFQ1V0z
-	/qSjwAEPtutrac+Q179B0z9eW8acQQa7m+yACVJp4mmDQ2zZu2XXUY+v2Xl39v9ntd9Dka
-	0mFHx7UjrGJwbVh18H/tMb1R/sdWrh0=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7D2E51F78B;
-	Tue, 26 Aug 2025 08:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756195411; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZOnM5TJgUgBgtssYK/pUO0RTc/rdRZVOmP7g13VKi4A=;
-	b=zb5uZ1IjW/hqKXfIyWrIHEMvWaDbqNAAqJ/zFE3JtLGjFsH3YweQs60kFQvuvLxxvf3o3p
-	XBEzbuQ7yRIHzhDBjkjwH1/ELPmzg2izmQIFmIiIFZp4tZk7YBi4wvn2luHzGGDd2+tGgE
-	dCvYyCvyaPHFSVqa2sCPNsTpwJhgiV4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756195411;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZOnM5TJgUgBgtssYK/pUO0RTc/rdRZVOmP7g13VKi4A=;
-	b=sDCf7YV8rS9ANknr98HRI0+AW5m+tbof7uEfNWfqjOUCKjtnfUoxpWEW2MO8N2b1aFTauZ
-	vxj2ZgZMNzaEJwAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756195410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZOnM5TJgUgBgtssYK/pUO0RTc/rdRZVOmP7g13VKi4A=;
-	b=mFTUJo16T8PfpwMuoIsgJlciQO8BQtSSkKtSRm+97faX4B4N1xmaBv3nS1omCgIuJECQsN
-	+0SInBpryxKaO+PnFcOVgzQXDzD4swZnTAs7V/CMPWYXmqCE1i3HmFvnydYLVZDC8jPnjj
-	CZckSFEUz3RekaVTJVbLojmzmzVJbAo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756195410;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZOnM5TJgUgBgtssYK/pUO0RTc/rdRZVOmP7g13VKi4A=;
-	b=JLFR3sweUFLCWSfZvIgrRWRKHrY/CdY/EiAwSmyZ/sGDAcSLCPjR2y1GkdW1F1BoB9NGSD
-	79yGZC61Jgv8L9CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6610A13479;
-	Tue, 26 Aug 2025 08:03:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tnKRGFJqrWhoRgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 26 Aug 2025 08:03:30 +0000
-Message-ID: <446b0ed2-16e5-45fa-82a1-09ed99108558@suse.cz>
-Date: Tue, 26 Aug 2025 10:03:30 +0200
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=JsiUDWQbOcGFuPGH4PdCWZtqKbgsyDLjVXptYLbp/fM=;
+	b=CVIs+6dIHgq81CBFPxhwlZ60bkiFOuzuOIlWX3XjZo8nXqyTOZfrDbunOR4RFE30mT0prX
+	QpXfLcCjFcKU73Smqkc6lA6tgwYSRwB+RhLP+QdH3q6GNyQJVzAGlRtFmmpl6g3cHvcZZr
+	ui/q/fnVWWwCyCO91K82OYSvObljfYg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756195561; a=rsa-sha256;
+	cv=none;
+	b=EXxAFccAjFVK9VeMb26Q9HRG6iiibjTqwBjFL/NnwQdQKAfq2ON93LuuuyyyOe2j1xr9eV
+	5+4+9R+4KNEDCZDkMyD11doN4EYGTHdnOgnxStWDqQmSoVvtNeOHPfNLlxxUE5jB7QrpAC
+	d5O1K7lJmD0z/zWeL4Aq9BBcmLvtF0A=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cB0V95MQ1zdcjH;
+	Tue, 26 Aug 2025 16:01:21 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 685F01402CF;
+	Tue, 26 Aug 2025 16:05:47 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 26 Aug 2025 16:05:47 +0800
+Received: from huawei.com (10.173.125.236) by kwepemq500010.china.huawei.com
+ (7.202.194.235) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 26 Aug
+ 2025 16:05:46 +0800
+From: Miaohe Lin <linmiaohe@huawei.com>
+To: <akpm@linux-foundation.org>
+CC: <david@redhat.com>, <nao.horiguchi@gmail.com>, <linmiaohe@huawei.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3] mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Date: Tue, 26 Aug 2025 15:57:10 +0800
+Message-ID: <20250826075710.278412-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/14] slab: add opt-in caching layer of percpu sheaves
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
- maple-tree@lists.infradead.org
-References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
- <20250723-slub-percpu-caches-v5-1-b792cd830f5d@suse.cz>
- <aKL7yYL8coNuQpAP@harry>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aKL7yYL8coNuQpAP@harry>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.173.125.236]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 559A01C000B
+X-Stat-Signature: urxarmc6uwamg7ei9pjbj8j7g5cycsfb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23ADA1C000D
-X-Stat-Signature: 1rh8zjs79mksxc3qf4mooy7iu5xqrkqz
-X-HE-Tag: 1756195412-609663
-X-HE-Meta: U2FsdGVkX1/W4xUoNBZ+rjI4n/mDlmrB9XIVOYZy5e2RbfeJCE4Csuf0u5WVk8Hgz9zlPzGX2ADRgRW0t8FYXd1s6OGphOl2+GAIdC84+80CJRosZwYKHbSsv7ekYnZ2BZav25jyWNtgKRXTIzxXLfoncarI0IvQu/AEOaJm2EeuhP/ASmwc2cc3wIQ0nDiFyXHnxfpeWeV2f+NWCvxFe9dnGu1zEbRZSI1HQRCGHFQK4oLzgf97rVXsD7Wb2Fo0P+GWSzi6qqAOAj6rPYxPmpCcl5Kt414hE/EcBjkH2j8sPBGq7GcTM/Db/S4ms5sbRFGtKSYEftMtF65fpDacOfkoDHqJTw1lYdPEZBndDPAL/9Ad04C7zSik18BOPEHguLkZu94NZMnDZlGDa1kIAAqlI9ogllhjmeYxsaTjXZRcHonIDGIFwZ/M1EXHokqcHe8MmxaHwBGmYuc60wHhY8tBA50W8SfPNtHYFUEJlmhXI3kfxfmt7kwiw0VLG+r2/9uZl4FisKSurFhHnrym0Z6cKYCoj1Sj92qL37jexRNsNSpPfwnYmHVs2uihFUISYtm1rw76m+VufXBA2AC4ZF8efvYH/1uAWdiEpAVRAFow71BRzU1ApDjwIFPeTiNFOJlaYr6pMD2BaUIYXcQJOF+IhEjUjn17MDIbfzHY1lEAdP0BG2vFTcjNo3QewG/jQaIMsF8cJ7UneyxLkoN27D4pVdtq0fJGY7ku8svE8FBK68nsk/iUzE0n+MieuqL4JvaD6uy7NCCtDrpI58ymJdrykInYt+t15raX2r+ptifK/0nkq4GqiWdX4dPdzqYR/0c4w0y/oBH2C7n6Y0oy6vs035Z0I16VYgLF9uBXP+7VkakhXovQdqFvuqghZPY9i2C8IgnBGIHhxeWv4Ea9QJjc5dd2N1xBZwUgJ59Bx5hB/4IytqTnoIp7kPimtrWjEYzpV0IZMpd4u6mRjcL
- NgSwlOcX
- 0Wtnfa593/nIDWINKVUJ6eB66rwHwP1MejE5vbUYgPB38d8hjwvHDoLjAo87eGXCU6hDt9kxSo7LUGLwMCJDivhtj9RAGsxP5gqofz82ARu9Z370gYGR7WKG+tynvzilhKhkgQ/pApkPDIwdiivSq3yjsndqLIprPHSqGwWK4uHR22Zwpcca4MyUodnalrOUWElissowE+Qy6oj2dvppOpvYRS9XPp90wzrOFIFCI1qBeHIdfvqVHrmAaYQ1tqm49SvR6SaNMf1oZIl6wHMNEao2nbNdyHpIVaf07
+X-HE-Tag: 1756195559-231285
+X-HE-Meta: U2FsdGVkX1/vHgtBxR87O7uHsw9MSbETA8rFzIsPK+H3C6yVaYSyyli34ljL8CL2Y0KSV6eblHE1vPBjvt2A9peJQrczSYwrN2K5bnX8DK0ZFGAAFsxnN6X8PsHMUhd4bcP3nQbytqtPKF1EsIOtDt4OT0awz4RjiG1Mjnb/sWG6WhVyDXqtSlfaMjV3kk4n14gI5nGIGpfkCBFwpOZ+/fuSBVZ84q2vmjBT7w/DTNyhU8hCoHV6ruxYnUpRigVE22Y08SaYH2n8UPtuTWfIlLsQpCelkQQp9AYcG2ztzrCMpAAXPO2eGDnivLilcKWa2dZ6LVwYX7TUkmzlgBaLqvIlU/3E83m/p6JsTXA/SRsfCD2WKDs4xR4zlRv5FwK2GQ891UW8EEF6/aTULwR/WDeLlP+bYRPMiiEI6N8nQ6khE+x6Zmk65Oe4i58hTuBMDGJWRq2GjLfx6+P3ZCZoiqYsCR2cWK3PHS/BdkjkSPAQ6I4nc6VWAXZJmW6rsJbubRiUPOYroH5Q+N/Y2O7goZIIOqqhwYNTspvLDTBRWvkLTQthfQ2IyHihpl29snBUIXDL9q3kbDlSqrfMkD16I9OJ7RWrgkUulA7rb/4R5nmRFaD7XRx9L87pWnDRGxjv1+JVnUh8Sjw+NBYxG68vYOSXJO0cEYT4P6ddeOkRUOkdnKRNDSAlmVERdmafkdSuktkz2aZZlYFLSkULFfYEbk7t7oREM8P07/uojpfKiXYqGwR6buXxfHUF25XZjbW+tBh0CKSH/SVikxtC5K10/vW37wX5NnDUkwPHwFDW45wjnFt37JGVW7cOsIW+9X+bIezZwAMNKyuDCrcStWPDpdFE7x0XYBhlELSSbbmIhlb3CzCOYhOYyo0NNcO8BEErJYCybV0EpIX6UgWRqwc469Jj+SWcqiw0cbNf9S1jpbrs8w8AWBEfcbH0//bSk5oBRnlgqvo9adtf+6U72RA
+ tfpiLCKv
+ c3xHQfkbSzRk9tvp3DQLGDtrd5CLowWO/RY7zQRHscVKfTEvHmiDhafMGKF8SgrpjW0xWUqxVApmzNrtv4txkJZUWg/SEW3NS9/Riv0JSxacEOpzRVWF0Tc9+DbZxmml9z0PZ5K5HzKwVrgHnaPD/LttsYutE1Evxw4q8u41Pnlayr9WodZBOFoy4i1J1ccmT4jQGFzDJFzUda/zKHCkzoMWTEYkCfEtVdatTBXIxT987yUHxeV82qX3EujNGTlcnmGKkn+LuYWIVVKJ3eQbO1bgQMvmrWmmP5nw3MGT9jgySWDAigixcwTwqHncD808qiZLo74cTjF7HNtg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,40 +92,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/18/25 12:09, Harry Yoo wrote:
->> +alloc_empty:
->> +	local_unlock(&s->cpu_sheaves->lock);
->> +
->> +	empty = alloc_empty_sheaf(s, GFP_NOWAIT);
->> +	if (empty)
->> +		goto got_empty;
->> +
->> +	if (put_fail)
->> +		 stat(s, BARN_PUT_FAIL);
->> +
->> +	if (!sheaf_flush_main(s))
->> +		return NULL;
->> +
->> +	if (!local_trylock(&s->cpu_sheaves->lock))
->> +		return NULL;
->> +
->> +	/*
->> +	 * we flushed the main sheaf so it should be empty now,
->> +	 * but in case we got preempted or migrated, we need to
->> +	 * check again
->> +	 */
->> +	if (pcs->main->size == s->sheaf_capacity)
->> +		goto restart;
-> 
-> I think it's missing:
-> 
-> pcs = this_cpu_ptr(&s->cpu_sheaves);
-> 
-> between local_trylock() and reading pcs->main->size().
+When I did memory failure tests, below panic occurs:
 
-Oops, yes, thanks!
-Also fixed up the other things you pointed out.
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
 
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page. So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered. This can be reproduced by below steps:
+1.Offline memory block:
+ echo offline > /sys/devices/system/memory/memory12/state
+2.Get offlined memory pfn:
+ page-types -b n -rlN
+3.Write pfn to unpoison-pfn
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
 
+This scene can be identified by pfn_to_online_page() returning NULL.
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+---
+v2:
+  Use pfn_to_online_page per David. Thanks.
+v3:
+  Simply fail if pfn_to_online_page() == NULL per David. Thanks.
+---
+ mm/memory-failure.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index c15ffee7d32b..212620308028 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2572,7 +2572,9 @@ int unpoison_memory(unsigned long pfn)
+ 	if (!pfn_valid(pfn))
+ 		return -ENXIO;
+ 
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	folio = page_folio(p);
+ 
+ 	mutex_lock(&mf_mutex);
+-- 
+2.33.0
 
 
