@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDE26CA0EE4
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 06:23:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E292CA0EE4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 06:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D9238E00A3; Tue, 26 Aug 2025 02:23:31 -0400 (EDT)
+	id 6CD718E00A4; Tue, 26 Aug 2025 02:23:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B1E38E0090; Tue, 26 Aug 2025 02:23:31 -0400 (EDT)
+	id 656838E0090; Tue, 26 Aug 2025 02:23:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE32A8E00A3; Tue, 26 Aug 2025 02:23:30 -0400 (EDT)
+	id 56A1A8E00A4; Tue, 26 Aug 2025 02:23:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB49A8E0090
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 02:23:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 726A61DD9A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:23:30 +0000 (UTC)
-X-FDA: 83817916980.17.6DEA3A3
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 93C5A1C0006
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:23:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GVNbe1dM;
-	spf=pass (imf21.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F0238E0090
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 02:23:34 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 049F1118D42
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:23:33 +0000 (UTC)
+X-FDA: 83817917148.01.53773B2
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2CE7140004
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:23:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NyAIxpR+;
+	spf=pass (imf07.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756189408;
+	s=arc-20220608; t=1756189412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KZyZNf4Dr55KEIlR75zNWS/ByBEDgqsfEHPE537c8XU=;
-	b=XUMClOf9yDmc42hiPkWqWpfloLjI07i0WhPYbmZPVhN6VcFoV1R+GDpjgi356Y4Sid8nTk
-	Utl2YHHckQbpgmugp49kq9jPMhiBCdSOnLN/3sytdi8vU6NdLuTOyHMFzTPHfJXQmXp0X+
-	VeDll4wfWZsZoXf1Qcl6t2MLTB7H+AY=
+	bh=OIkwDyhxeRC9KaW10KQxZAmgX/lJ0Jk/lOkmMojQenc=;
+	b=oak/UL9flAIjgzdsXvWTixEm8zBvzHlbciKi1w9vSH8Qn1TC0LZhUwmOULmfwHilt4tzLj
+	41Oyc8u/tdY7mq91j+7zFPS1KxLBIIZsFlA8/mtrgRmejtD3Q6wmi0BGJq6MFMu9BdsPvn
+	jmKr4OmVTUn09lpyXYdNr3vvx5npvU4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GVNbe1dM;
-	spf=pass (imf21.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NyAIxpR+;
+	spf=pass (imf07.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756189408; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756189412; a=rsa-sha256;
 	cv=none;
-	b=ilwxEGnAsdItSVu6/6woNMn4Oj5q5Puic+Y18VWD1D5HNP5YZCViJXuS7vMQydMYNAdvk9
-	PLSAWa6WFbd11zADBx89/FY6OqtRyo+2BprYWfU4QMLp+K87uPypDruRswxR/tRNJVPAyg
-	hTeWuNCDz27SuDsq9CPQ2g8Wh1wbkPo=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-771e15ce64eso1360532b3a.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:23:28 -0700 (PDT)
+	b=jTnXvUExMLAK/MxfowkLax7jThR7KkzO1kYX06+W/l9IYf0E91ckeusP7O4yhbaEEi2G84
+	/NEnTvgDBPXgvRg3KrcseAdIDCqhDe2mmfT9BArfb7x73t34FcpQeL4SY5Z3PZFLqaXwqS
+	a+cNcl+0Et2fADEOBpb5F0E9wecWPtw=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-76e2ea6ccb7so3998852b3a.2
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:23:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756189407; x=1756794207; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756189411; x=1756794211; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KZyZNf4Dr55KEIlR75zNWS/ByBEDgqsfEHPE537c8XU=;
-        b=GVNbe1dMkvI2Ov0770Pc6/td6x9MAiVnEWZYL4mpXnc938jiC+mPsGNZm+bZpFQ96Q
-         uvxQTsjSUUQOQ2HqPHb4Ye9ldf5RD0kR9sXXSAt1i7ADAQ4C2Bd0qdT20XiApQZqstlP
-         P4nb5MMaDHTuxYiklTaUVjdmZgKxRUnGsdaov6Q/fS0f8jnG85bld64hziNhg3iVGI53
-         8Q5bSEJm7wb1DV7mxCZZrdzK5jDRg6abI1vpdIaY1WyAkYDz1IOSd5kleRdetU6DVAlI
-         Yh44lAXUUs3eSwgYJzF5JXmZAgAQ6QPP3VZjL/U2qet9Kaa4CRGGJltuPEBUUIV9euD3
-         ls7w==
+        bh=OIkwDyhxeRC9KaW10KQxZAmgX/lJ0Jk/lOkmMojQenc=;
+        b=NyAIxpR+NehKc9AL9wh0HK+3YWnlQbmVSDTs3nkwuKl/EvHCYsKTluzhdFDXve8i4N
+         DOaLjWXPCh+sIHcFsg1xlX/e92XwzSUEM6mwdRjyFWq29i1V7Bs8LZakwGaZKXemKJtm
+         0DSSz0yXT5fy9UVTTBB2+BfFAt3aUWS4LDK4fl8F6/WA76mBsDJe5bDz0njANiZPAaq0
+         YVWTwZNmb7R80co9VRjhsOfUz25voPxAWmDLCqKJ80T9FOMgEmYkbp/zQNSFA14MJj92
+         cYA72Ghnj5j+d7r3Aqpk8TgE0/D8aAcn9aJgIQNak3wYz9VTCLSgzYGmFFgEWVqvJuff
+         D5yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756189407; x=1756794207;
+        d=1e100.net; s=20230601; t=1756189411; x=1756794211;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KZyZNf4Dr55KEIlR75zNWS/ByBEDgqsfEHPE537c8XU=;
-        b=uXkHL2tuPSMzIckf/24GxUhSMhhOIWV8bt+405HRO9vewJ2AMAzly67MuPJM1PcEw/
-         E3jC6Mf+8KsI7eJZ/xVgLnppOyuFg1vv+KaYRcePb/aV3fWW8ntyvGP88pKlZUYWH8cI
-         T7L/sudv+ZunnUNuOOksC4d8x4fJd2z7fr4N3A32vyXrpnc58mpO1uT+Oq4j8T1e5SFz
-         fcXlEPUErA6pFUaq3SH2VDn2f4NtUkuBIHmU4zjrJqUTeH4iTm2kBtTBDLUO2aVVnwgv
-         9PK9hKPwLKigsH4upnSdXM1d4AgGh73CUFO2eqdnZZZvCFxnPpi/4KkC1PJDEjj/p/4E
-         5nfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0Dg73+f2JOgExJI/g5d42HuU3aiUnuOX+zuAyzHLY0MoVwvcUc+StD8cGFXRz8D5xk4wCdqZxaQ==@kvack.org
-X-Gm-Message-State: AOJu0YwGQMS1hRMYROw3eRebucYug9OIKboYAp0/orhLXr6Zuww/gL9g
-	Kmoax5DI//sQJLxZKHYzUzDKIT7Vqy9h6B777F6cgcwJPz0DXosdBeAqn4n3y89N
-X-Gm-Gg: ASbGncutTINtha63/hFBx7hi+ZWG00oPONEpGy6wze4XqQWHZSTIxp+v0oqhLGRDxf2
-	7IW6+DPysnlqDd9ZhK4IcJJ82znVrHpTbJ5uM32ohHqfuoesB2icZ2w4QhHslXDACIt6i9Vpryy
-	ncA2BLxJAgHA3dkvhfP4hXqX0CKUGdu5qaKBiSgvO/PIXfhOmvy17WxozLN/ScKFUTSRTbKtKAU
-	i6vt0oKgw2XcydAsl6+pBtti7lMXf8eQT8DHKXi3HA9bpAcZ7UfMHuV33Ns4GJpcHu/jxdDhITH
-	xXPMU9aK/r2/R3auXI/5n7enM4hABwGKUDqaZgc/FLNGapoRJIAClsMwdAA9wpvjxcqGGzJ1uxi
-	EnqnAJ6oHe+jYFJlz2XLXK8yBQ5ahkJdnxerRAj7rClhjVwtgt25FjvUz5dYdVP4aetbhD5keeA
-	==
-X-Google-Smtp-Source: AGHT+IGoeyYkfTdO7uF1s8t48caGzsyOPfqYIDXRxUuDxsAVNHKoMtxa7xfOKLylp93hCfDdks4Gqg==
-X-Received: by 2002:a05:6a20:1586:b0:243:253a:fb7d with SMTP id adf61e73a8af0-24340d2c163mr19908117637.34.1756189407377;
-        Mon, 25 Aug 2025 23:23:27 -0700 (PDT)
+        bh=OIkwDyhxeRC9KaW10KQxZAmgX/lJ0Jk/lOkmMojQenc=;
+        b=H5XrOUgRyxZr+R7LZwMpanojuarQM6GpncRasN3rcF6940h5i8p/gbTeMvW99lss95
+         xRLZlJgahRkr5HEpIno9FiKcroC0gcfrMoCEgk7LPykDZts2tTvgUgm7JpRtw+EmzCZN
+         OGY98TYG9skNbUtFjoJp6zRJatQhkDIH5dW8DvNxKQXeq5UDFiXKl1Z2r6aRvsA7Lft9
+         Llnx5N2+8ADomgRV92fI78V10+UcO0IuTgjqiuao6mn7hktYecTeTpr7x6VdecIgaywt
+         OnoJN6Dpt8NQLCdUj/fbIZYvqBOfTlEutGmSBKweykYEmKx7pTRVJWBImpZ1hWp1iSLA
+         aWJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkVgO2vTRU6YIKoTLOA0Xq33NRnMt1hbCyzvLWzzMEc+j2eDwVAbo/kF/AMlxLsjRRLOvUO4ipzw==@kvack.org
+X-Gm-Message-State: AOJu0Yxmdj+dl7hcduWzny1CKhHI99J2I13AZlmWOzG/p+Rh5KnqMboA
+	lg/b6wMjQ4fpfAngoxASEP5RXw00BrK5UfgTgY+cET/n0IDOpYIiicMN
+X-Gm-Gg: ASbGnctD03Xq39qnUoZJof2ExHtYdqXlpgbRhsh6UK2Uu9TJMKEPbWhWqwU/X/RD1RQ
+	PspZssLlOJI09dKUHrZx2kcdQ1MJXCmg8S4U5UHzYnBlj5236kUOr4oxRHHGausXQDFkqxBeZA/
+	/fYgqa/PQ+C50C+EDijJ0HUp0Ji5ZeMBoUMwC72FNwh2nuNLCsUbjjVHGLtMxslikH31WFMWwBC
+	gWV6tDU25KSTknynVAsWe4CMvZWTWtuP3OPfTtGldTVVlMA2UyIWARXF56UNcXw/T65fGU0yOu3
+	orvIDZmTKMT5RKpdKzDG3BupUUcGTD3oNj5PIC/NbAaods/WyHjltwQ+yp364mQX10w7gh+cqds
+	yl8HFBhGVb+7TADvv5+ih1TY+8qH9r6n6SaN/h12S69n+Euug4aCDshFARy/BiBw=
+X-Google-Smtp-Source: AGHT+IEVmakc1sTT/jj4NROLgnG5GSB/qkE6B1uuzuSzoJh9ZET6//lRRxrnhGh2veVhZQOgT7nbwg==
+X-Received: by 2002:a05:6a00:2d0c:b0:771:f393:ceb3 with SMTP id d2e1a72fcca58-771f3a31abcmr3337714b3a.16.1756189410887;
+        Mon, 25 Aug 2025 23:23:30 -0700 (PDT)
 Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771fbbc3bb0sm492535b3a.66.2025.08.25.23.23.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771fbbc3bb0sm492535b3a.66.2025.08.25.23.23.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 23:23:27 -0700 (PDT)
+        Mon, 25 Aug 2025 23:23:30 -0700 (PDT)
 From: Kuan-Wei Chiu <visitorckw@gmail.com>
 To: vbabka@suse.cz,
 	akpm@linux-foundation.org
@@ -106,24 +105,23 @@ Cc: cl@gentwo.org,
 	c.yuanhaur@wustl.edu,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: [PATCH v2 1/2] mm/slub: Fix cmp_loc_by_count() to return 0 when counts are equal
-Date: Tue, 26 Aug 2025 14:23:14 +0800
-Message-Id: <20250826062315.644520-2-visitorckw@gmail.com>
+	Kuan-Wei Chiu <visitorckw@gmail.com>
+Subject: [PATCH v2 2/2] mm/slub: Replace sort_r() with sort() for debugfs stack trace sorting
+Date: Tue, 26 Aug 2025 14:23:15 +0800
+Message-Id: <20250826062315.644520-3-visitorckw@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250826062315.644520-1-visitorckw@gmail.com>
 References: <20250826062315.644520-1-visitorckw@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 93C5A1C0006
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2CE7140004
+X-Stat-Signature: nzf8pd6h1egncwac37mqgttw1k1racya
 X-Rspam-User: 
-X-Stat-Signature: 9pp5fdkxoyq8iq9x9gi4p33rwabwruzn
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756189408-845721
-X-HE-Meta: U2FsdGVkX1/oiql7ZgDZxL1ig7Du7KSCTV4NO1vy0stUD2Jg3CcuDpYDxyR5uIwmlgJ2/f0Ztap/mCygqCPUPoxeiobOLJdEbgOL2CofKanM++7EagNbNHLTQJhnXYaIEtI0I4eew5E+j3cMOMMUoP0ECVvEpSyVwk78xSIozapoeQno0mKWsYsbEhkvgRl57igWeqIOBTG/SqyCcfskTKMOQ5FYLXEoVmhjL1YeEKmf2yN1hP4qK1I3siFKkYJcdHDp8cXiZzwRpxJW8St5YYljZLOdpQ8/iFo3ZJozNY/njKmiW/vMvE/y43gAGhVKt25/T3xgUtXc5k4w/zBsSPZjXL5Pv2LtSRxylU9Nsh7nRnVPBcjvPz8rYEWhxCgOiBZK/nl1BCBGT7W9pxT17yle3vcY9si0gK4f/qJtjkRtPYhUMXM7jX/4MtxbyIxBWBppg+r8TrEApxgWM5qdtsoyjwavuM14kH2I1jNZkyjqcGXN+xS1Kwa2HdI6uOJsFb1bmK4wZz5lTOj6CA6JN4Fa0wcQEhUTwkMeGF0XFN2xEy/TYWO6A9kAHQHWTU1G3P+oDFSjyCjhvQmNj4WQOZIwegyBhKvCDIV3esk9xDdbgGGIxcao6t7LSXcO3Wn+eIlvVb6CWU+no9byNnpS3Bbeny1MAcdkMtI0KeoKx78QYpm/mG1mDS9p0XNVT1A+QkE8ERgKrCEmxo2qJv63wgZy/S98yNmqeQcOUzXf2LCEmKZMFBEuSGF16UcygInqtGHEW6UIMJde1H/77OkLiZxbRO0EhoLnfBibvYONccT9kciY72eU/6K/rZukmJZdN/BDZMN9a5DtofT/Pk5NyqSxhtEEY0+txwVnimHCf8L/oT/MKAB3cU1bHlWxOK+Rp00QyfjmxSB1AKPVtnIv461ejI/13aT5VGkt4Q947Vnt6nwtTlF7j4zdlRg5bNDXARti9IOfbnK5QscTnVZ
- KMQKjLWs
- LX5cfiMD7HaP74aahRSJ9blYUMXaOEQ4vxEYilDnK6ON5KwhzUNV7UMosW+QBFJl1LISyhaaShOgVxG2sKlpnpm8SoJxkyhhORtWDJi2B9jCqG7JaF/+qN6wEDROVC4E+CXEN/OvF1IUpsiO3OW6m4bZKim4Ep0TEE7vtF/E7QUWO+b1kNxc0ZPJPcSYAEWmHKF3DjgoLobQKMHcQstYQILN10PlKXRBZkYzFOCJyH5xYgXiygG/oS8/RQug7LOCDNKkeHI1pQDrLhUFXlIRfYnl91t9Yal85ns+Yxf8EjPkKEQltk9129TE2zC56ocCgKhiDIed8k1Kcf8KgTEKmeMJD9Vlb3EmUlWGoIaUET/JZUargHxk8eKSZ2Ulin9qATbHMj9B1xIWdusb1wiXfR3a2YTkpcBgwF/xViWlsDaRskLUVV35cbcmtrqKjKCHXUEuR5b2xrdK8419xNo6/CsBpKu3k+x5nIvY5GKFCMPahpwY8gcJpWE+htzbYO1CrUL5PtyZzifdqHKbAbF6uRlLYGw==
+X-HE-Tag: 1756189411-472359
+X-HE-Meta: U2FsdGVkX1+mzAQHRe6t5grrD+GWLQ+OlAVuYPj/PwF6STnxJjrORMh6fw07oE35RHOc2FX8zwxJHsUc521qGW47iVRGM11a5U3GlUbOeoDmCaGslgcz6yVFBZ6dmymQwtFJcGRFgafBuqzZgnkenmbUkpN79R+YHtKwXLWrpG2KfOt5taBEY8E8cT9KUIisH5RjWOXd/jIZK+eRdTMnysSOlcjE4USjoPFOql3pndY71zzSRUo5opx2GObS3JuT/TrelCWhBha+FuXRNVc+JYmZQ+4KmymPdeOu9NcnAPyjr/9NS66ixukvuVKfl8eDaOAkHA3InAaf8jkj/fBvYxVJow4phWPylI+2RpWO0xJ3od8fb/ETPI7S6+5/DQYELhCO5JLKbO8qMO1TqjCLS3Qi3hd2PdZ4PC20gGX/+2cA2BLbcNSlh3Qpx5o+mTioPS+ljl8teyLRLPw3zaZnautBELC6+x6FYFJLBkdJq0ZuiEmOVspAfqJ2GKY4hDY6pNSJ5DoH/WroMMlZX8l4XGticgLqMeUuGxmSdKtPlYfwdK9FkV2dZi6TxvxUjf+fMpBQ5rOfe6yCvm7uU8FG5ldA8F0jYHYLj6jbQ6E2OTsvEkNmaWPE02RXvBVvAbWff0zNzwS86/c7n729P9obf7vnA04jMaLOpijRdWZiXDG/W1OKFVriUTsg47xtNuhftuXaPLTmioo/hP9fU+mxnQD5dazv56YAAwKe+Ej2TEvM0lOI8rVs18+bVmvCPg45uViKtXofwFWuKnJMaFY9vLQNDkmOmZttPjwMiwobb/PFhaFfXLRm5JNzqVZvy+qhb9tPMJT10zcH1uM61YSo0PeXaBK0eX0se3U4qmQk7D7ubd5JWrIh6x/c1HKuy2H4TtneT6Z/0Bcp5pM1GSGooBuCsLAP66upnBEaJQSCyxsSCabAPdc/Gu8qYhsWsa3zPxvG39RrQFAT5H2zfRi
+ ZRiBMhg3
+ CyHQRdUGrFi/Kql55zYzPQWSJ+6FsoDmNJyHjtq8+CabE30ASKsgm7r34W7alc6soyLCMqUm1sYEVHzTM31VXWTfrPhJEbA21qIgYi5VrGo+pAg90OTgSy11HnukzZxaAdfRBONl/IRFGveRY1QGAlebn0d0YRvII15zQBinYT09CuIkgpBXqjG2xYACAex+cAyKyPfTpptmgAxCvk02nDW+MhxahPK23stAN92Y3Luz055WXra58cCdtSXyZ+YP02S8MoGXjvwMjN2skVK/qvabltreKRZr/kW+sz/ulbumjmy/t3SAmHzI0nAfjHQMZpZDLGkT2BeLvDV6dG+PqXbgPYw6mMI4TVGc4VT63Ha4GhZoQl+7SY67iUc3pYqU839NAVtXnACL/kLtxKPr+pESAVJ2u5+YqP5RHRfxQHHbvSwtkwA/QMmaW+nMHtg6UIgTOsraTF37zNm4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,40 +130,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comparison function cmp_loc_by_count() used for sorting stack trace
-locations in debugfs currently returns -1 if a->count > b->count and 1
-otherwise. This breaks the antisymmetry property required by sort(),
-because when two counts are equal, both cmp(a, b) and cmp(b, a) return
-1.
+The comparison function used to sort stack trace locations in debugfs
+never relied on the third argument. Therefore, sort_r() is unnecessary.
+Switch to sort() with a two-argument comparison function to keep the
+code simple and aligned with the intended usage.
 
-This can lead to undefined or incorrect ordering results. Fix it by
-updating the comparison logic to explicitly handle the case when counts
-are equal, and use cmp_int() to ensure the comparison function adheres
-to the required mathematical properties of antisymmetry.
-
-Fixes: 553c0369b3e1 ("mm/slub: sort debugfs output by frequency of stack traces")
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 ---
- mm/slub.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ mm/slub.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 30003763d224..081816ff89ab 100644
+index 081816ff89ab..39a238384892 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -7716,10 +7716,7 @@ static int cmp_loc_by_count(const void *a, const void *b, const void *data)
- 	struct location *loc1 = (struct location *)a;
- 	struct location *loc2 = (struct location *)b;
- 
--	if (loc1->count > loc2->count)
--		return -1;
--	else
--		return 1;
-+	return cmp_int(loc2->count, loc1->count);
+@@ -7711,7 +7711,7 @@ static void *slab_debugfs_next(struct seq_file *seq, void *v, loff_t *ppos)
+ 	return NULL;
  }
  
- static void *slab_debugfs_start(struct seq_file *seq, loff_t *ppos)
+-static int cmp_loc_by_count(const void *a, const void *b, const void *data)
++static int cmp_loc_by_count(const void *a, const void *b)
+ {
+ 	struct location *loc1 = (struct location *)a;
+ 	struct location *loc2 = (struct location *)b;
+@@ -7778,8 +7778,8 @@ static int slab_debug_trace_open(struct inode *inode, struct file *filep)
+ 	}
+ 
+ 	/* Sort locations by count */
+-	sort_r(t->loc, t->count, sizeof(struct location),
+-		cmp_loc_by_count, NULL, NULL);
++	sort(t->loc, t->count, sizeof(struct location),
++	     cmp_loc_by_count, NULL);
+ 
+ 	bitmap_free(obj_map);
+ 	return 0;
 -- 
 2.34.1
 
