@@ -4,120 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B569CA0FE9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 12:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B53ECA0FED
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 12:49:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C4896B0207; Tue, 26 Aug 2025 08:49:35 -0400 (EDT)
+	id 701B16B0208; Tue, 26 Aug 2025 08:49:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 775256B0208; Tue, 26 Aug 2025 08:49:35 -0400 (EDT)
+	id 6B2656B020A; Tue, 26 Aug 2025 08:49:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664F26B0209; Tue, 26 Aug 2025 08:49:35 -0400 (EDT)
+	id 5A27F6B020B; Tue, 26 Aug 2025 08:49:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 524FC6B0207
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:49:35 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D22D15B7E4
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E8396B0208
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:49:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F19E81392B3
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:49:36 +0000 (UTC)
+X-FDA: 83818889952.22.DA07F51
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BC2ECC0014
 	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:49:34 +0000 (UTC)
-X-FDA: 83818889868.07.C7BD647
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C43B1140005
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:49:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hevt3vtk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756212572; a=rsa-sha256;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=s+TvbI2s;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf10.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756212574; a=rsa-sha256;
 	cv=none;
-	b=gGzweBT95w7hTbC3dhv4WybW7kxdxQn/sec0ic85uhbsaE4xzSnnIfB3b5qfm9XFNZgjSm
-	Fj6v/9KZBA/+AIOGUKH+vi8hRzvrGlykQx56ktxY2fGxe8/ZBhq0rX9L0LRvnLkubgrTxq
-	XULBi07tnfrYECRp+sHJKGojZ2QY6Ww=
+	b=2UQQXpgdl1JpkNyNTbHzqtdxEybu7eOq89O3swgB1F+nLYI0eTDltZrou175kOEDzdWRIM
+	JYsIoMIiZOFcDQSP/zS2Y0azjWGzjidOlUBv/dSQh0VWn68rQztXsuGIXrZtQuEFo8l5Wf
+	MMMjCBV8gfP2ALNTjlXOgydzS0kT64w=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hevt3vtk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=s+TvbI2s;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf10.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756212572;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756212574;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E9Sbt6rcunNyWvDfSlRKWRHDJPajA+dW2r+/5L7KKtw=;
-	b=jFwpJOXW0AHIDZYB1wfBCm83GyS8qQqVyjxrsh2oluAG+LsikOcVzKp1e8UVs6otkNi9g7
-	WYsnL76X6RWac/Ho3CZoMuu6PAmTJHY0i4eJgUUec/Kz3rRYUakkhkVaTrA861Guk/YhlE
-	au+mihALWKXbZvH7HzkbpD9SbUn+QOk=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb78d5dcbso795651166b.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 05:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756212571; x=1756817371; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E9Sbt6rcunNyWvDfSlRKWRHDJPajA+dW2r+/5L7KKtw=;
-        b=hevt3vtk0DMWwWPs9TJCrIVGwO9hFrHoILCgXFD9tVmgF57UgtZ59qVZjwe7RhUr5R
-         YYoBSnwPe1ihmHq/cfLkb7zL8H/R98jMD/+EDo8v8FdW/LTCzAycG+Evrad0X7NF0GIJ
-         oVfMQQ0WTV8h+4G9dSofbkTjaWAOBSSiG7BpkMvcYfjONMi6ZzfgGvqWo9CjcLqEFqdT
-         UzWuaPH0lBOepO73r+8ddDqC7bi3H3Lb1+2H91WA2hILseI8FKqpUFz6dZhKSNmMsseq
-         isOzG0tqevg02SxPUAIo2ubNR/PHKTiUxuFJtsNeEE+eVVr/yQJnpQTwPDPU9AG4qv9h
-         FjcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756212571; x=1756817371;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=E9Sbt6rcunNyWvDfSlRKWRHDJPajA+dW2r+/5L7KKtw=;
-        b=JT6tOg3QuYDMrIy8cp5djwQieSiLcAs/8UvQLqPIcoFpz1YSPjDr83Lvft+R68h3yr
-         00kP0r2+Ne40eS4608L8lJcOfhFllfKW7vrjAY2TrIrfHY/kaolhFwb+MUSvZ1yddk/V
-         JA2gdW2/pehW5zuV7LdCoA0Cm6NX31snJQHKXuaTHSr8Mmmygt7VeEsGo2ql3OiB5YhL
-         Xx37bYi7T6VTCDVgA5TnxFtMFgXteGA0K3kti59gAKM7j9/RAYHlMOpBOS6EX0+Mhmzu
-         rkjeekDlN95bRkqIdVBmMj2JN9CS6lXx+y/ytOI97zpdpbJS+S2wgBW1QXlBjCvGuUF8
-         z5rw==
-X-Forwarded-Encrypted: i=1; AJvYcCWjsceiODrH+jP6ba6dXTeUj98pzZXzu1u4zas6Vw2iYCYGlpoHpvB/MR/tgH/cRYtW8C5ObytUtw==@kvack.org
-X-Gm-Message-State: AOJu0YzYvPhcz/AZ+qXHobUTTMHFVNGDj7DV7BFvJsciFesCw0kQsFBo
-	QhJ3wI9NjZAtL4wBokA4SKYGwAMQzNV/VbIFZHS9P1Jhi8BO7qaxFj6o
-X-Gm-Gg: ASbGnct2Ned7WUv6CoXqO5LcbWi218sOXfsWW6PnoM917KrnjjQfOCAQfboVYnNj4Ct
-	QB7Wwq9+7uORJXLDkWyANrpBJALF20MbUB7xP7U07VcKSEkI2iUy3L6I1FdjB35zKo0KnZF61VV
-	kBYW1HnZdCABcBuscSM2/+LjtOEdda2RNhTBZx0roNjuLgW9BSEaOC4wfRFlY58yYKdg3OGxl+I
-	JGKEiQbt6L/G1qlU2HyfQNpWBGQfzIToq3X18tm80X3klMhsDkFSH8WMiTiUcutBHQzcUaQRsQA
-	tRzy5zo2mB4ObLSckFCGW4wS4cMQ/ux6FMR+eTYa4k+FoE62n7OTU2L4cYK654oLcCjjxzKV5hD
-	bvTElsWT+YpFLSmMvx1Ur5fj4JNL1oRpdbM2H
-X-Google-Smtp-Source: AGHT+IH7PQQbfmJgJD7GH8Vm6B00ERalcVbwZY3ujfWQ/Sk8USaPy2rNxpFq+BU/9m6gePXLTLpqZQ==
-X-Received: by 2002:a17:907:7b8a:b0:afa:f1:ff98 with SMTP id a640c23a62f3a-afe2953d368mr1503376866b.37.1756212570825;
-        Tue, 26 Aug 2025 05:49:30 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe49310dc1sm771790266b.86.2025.08.26.05.49.29
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 26 Aug 2025 05:49:30 -0700 (PDT)
-Date: Tue, 26 Aug 2025 12:49:29 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	linux-mm@kvack.org, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: fix the address passed to notifier on
- testing young
-Message-ID: <20250826124929.w5zll53rzgdfok3u@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250822063318.11644-1-richard.weiyang@gmail.com>
- <0a2004c2-76e7-43ea-be47-b6c957e0fc14@redhat.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DAGGijW6cNEN/XBrOA32YvUP9CyWMG6BMXPWcFXNn2I=;
+	b=Nn6+hwF9Lq94wvvEemuPNYLTK+renUbnSSjv4uyk6nysU0/UxCLmbLOi82V3sgLGTWD4ET
+	mzkgyDKt3xA8xdIb1mBV0iGNFigsyGA2CJOeXlnr48VJ6pySdoRJKNz0ESzja7NyPidw3c
+	dIqk2kCS9lmxvyspiuEn7hCyfajqbgI=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57Q8ksQW008022;
+	Tue, 26 Aug 2025 12:49:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=DAGGijW6cNEN/XBrOA32YvUP9CyWMG6BMXPWcFXNn
+	2I=; b=s+TvbI2sAU9sNskdBsITQy/SnQsX2PDdG/v+wg+7zC/ckqvadWvTTY65Z
+	+YgTcK3EriSOM/psnUfBUs07SRzjhbUJeIry8nQzB2N2qDf87bwcwa7Eka4iGMiL
+	usqiBpmKHqkKltaG8rXHm5YmAt5vqh1fzkkotOhIPCYCmaCFlx2YFzy9UxhQwM16
+	Xm0qfL+mmKxRD7VHcmJ0MLFCVktTKHhT5I6pxBew/T8vrpve8AtbQCzlCfItZNH7
+	KRF+I1Eo4N3rETA0mvnMGS2mM5gkSdv6ucc2xON9LfHmCDtdgpfWGWGGQ/DuOCPw
+	vkJx4VDn/kX3X77UbIpZc1a/vUnCA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q42hxj2j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Aug 2025 12:49:33 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57QCkfdv032135;
+	Tue, 26 Aug 2025 12:49:33 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q42hxj2h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Aug 2025 12:49:33 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57Q8pp0a002524;
+	Tue, 26 Aug 2025 12:49:32 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qt6magwr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Aug 2025 12:49:32 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57QCnSO453805510
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Aug 2025 12:49:28 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4FCFB20043;
+	Tue, 26 Aug 2025 12:49:28 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DFAB120040;
+	Tue, 26 Aug 2025 12:49:25 +0000 (GMT)
+Received: from li-218185cc-29b5-11b2-a85c-9a1300ae2e6e.in.ibm.com (unknown [9.109.215.183])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 26 Aug 2025 12:49:25 +0000 (GMT)
+From: Donet Tom <donettom@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Donet Tom <donettom@linux.ibm.com>
+Subject: [PATCH 1/2] mm/ksm: Reset KSM counters in mm_struct during fork
+Date: Tue, 26 Aug 2025 18:19:21 +0530
+Message-ID: <2e662107e01417bf9af23bc7f52863cd538419be.1756211338.git.donettom@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a2004c2-76e7-43ea-be47-b6c957e0fc14@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAxMCBTYWx0ZWRfXydYkEKYVYR12
+ 9GYbng7zDTwaFmkIyJ+1SHjYxLupFkAQYTBOEytf0HF6SthYXCjLx1K7UOCkvFV+DQoaY4OgRdU
+ EuADlD7T5u+W2Ng4cjr5/9qeLp23k/obauCT2cqGeAtSEhrdXGWmd5Y12LXPlhNUgC8M123f5Rw
+ J/kdDw3n13wzPJnEG3gedGUe6JnAVVPyEus94r6R8tIgC2na9VGv3HS4Z3pzgjAWAJ/INvKyMZr
+ /H7J1NmTn1uZXdM5HqYKA1IWIhZdZk+M2KjdhUf8lS3sKHiGwYdEAwJtZoFkkTQTdSCqfCutp4C
+ ctEV9OIs5W6bUX/7o0t1eg9iPOmXB+gsjP9aSOdKbJ7T+ZZw+FkCHYXs5uYgjtCtWPmZzxR33m9
+ vYPo1Qrn
+X-Proofpoint-ORIG-GUID: X1kt7dpWXr41pu_7Z6YhmU7QhZ9kIS_o
+X-Proofpoint-GUID: Dz170ztLRn2G-QQbmUmmLpUe42C34bRS
+X-Authority-Analysis: v=2.4 cv=evffzppX c=1 sm=1 tr=0 ts=68adad5d cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=bffXwCTgIVeg__Yz0z8A:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-26_02,2025-08-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ impostorscore=0 clxscore=1011 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230010
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C43B1140005
-X-Stat-Signature: 7d437gqygepechzyh5ozqnmu1basboco
-X-HE-Tag: 1756212572-882149
-X-HE-Meta: U2FsdGVkX19L9g0km5v4KsWvXVnTgy0gfu+PNtqEP6jHz9p6/Tj4fI+GsrVZnxyWjnGan1hnCbIOZ+OiAnKvhVzbrWM8C5DBuAlkmgBnGoV19VKiAAwcdP0R1iB2FksSNCpABT0nKkoK7c5YW/INTNpRalh0RoEbt1uK3OQ4+UP3TbyxDYcf0odchDmM7lD5gSieRs4qighEXMHzDFbPKtAyhLFXKc6ME3cw+Ti9bFr0MfwZcVJrIDfVaPVt8TN/CvmW7tu+4FUmyHav8qyBzP/Hvb+4FMUc5+5R0Kcm4R5Xjqn0k1Gr1BXOo7fTNNoUaFgTmZhkT8EQk8QB1FjMnpYZaBiIf1mt5cykofFyNgpk/hNf3D2yAFdP7HJy/0P+tQAOM8EPBiI+AE9z+5auONg0sYbhjhUgKK0DRM6JDjAmfl9/+13yGKEV7lvKFxO+q8EUClvFe3c1oQECqjEiXUNheSiBTtdp/PeGHCiXFhJKFGaQbKPj3FaLUUAA8mv9IuyJRpDY0wQwQ+u/XA8EY1Y8k59a/mlR7cqjgIhJwphCKzY8zDl4DvhvW8IFEllw+6ShwHSK3ond66WaDu58viBLOAwndbwuJydDS2A+oaOW40Y76TWxmV5xf8JEEuHrwtUvoWWzQSc3L0Sji9GxqTu87cZy2tdp8l6TU+hHeuzEfTRrIIq9/hYtcbtZgKWRfATuik9MfA/dXP3h4+fSUjp/M+hxVL3TILJnD7bNfBcAsjp+jltcbgUpRoTzj2SXeGRlGsiNTJ4LqRpjEqOJpN1GLYNn6J8BQnRLh8+BGrpoCta4XRuo3NZYCaQ0wx32F2aTPWSvgtb+IUKgBXKdmVhXS8d4BQT4uUjvITO4PcFzsOjflrUUkh6VLZxERpnP73xm0THUM1Ob7NeYqXbXBVrC4aUaJ0rxjCcWhM08SvXYJMslE4cM/tcJFZXc6z/IezbXT0GBijevTkrPdNU
- Nu/7x5JD
- 2FCaN2qricGhgeaAiMaaST2gDKFxAYByElt9MwY7GGByv/ilSwIXcjdcIUTpBXQ9eDzMZTJ8OdGiHq3Fkpwoqw2pPqi+dp/Ts1MmCFD+ntOBCmONpXY53BrO0ahdRj311Bppj4dWiG2PwpeLrQHQxdrZWNns/AVnvAt0adooC00OWvUHr8Xq9JG+Hdi4zOe89xcyHi+djZ04Vfs0SBqQUNP3X5QWmXX/fBSe80PgW5THd04SpCJvBoKfAJZoFVkLkzOQzWKOi+MvTBDayV7pRPpsX4RJvGtuKW8fa8SXGe7EA3mmr+MJTrutX4BiSYDRF3dSvlHRRYx/3eyrfOmU/yLg3M/UaKdARs2ShFQ8OGIoliOGIj9mtLTw4bG+DXXzEErOSD4wkcjUEpm6vFZm+qSwJphUKhlRfLayHryPQV0HJ9gSBFv8c3EyQVo6tndeTQISRSZymAJsB0WzKDfyqT26Xb8srkNKnvoiyzuCPg8iaWRZAMs+Gy+UxaaWPQX2kFKvhy7cIv66zijAmnSzYi2vtCrElqQ1HF1Zaj2lfZnMdhURAvc+ySZfaygbt0FowEBfMh9K0sLrsDdn7DkebPjwCPAHHCnObhqrhyvp+/gXGgMTLOzLLkqXQVfXPqUJFYh0q7t6CMJJ8/11ulFTZ8ksqJmRxI99irIuioqX6LfPXCfGnR9nCLhRNgPqGbOGjDa3vKofWONXVvhxzft49cWc8akuJcC+Osqu+9iyIsDEfpyGlVt/5qa0U+Lj+XSVRfsZlU4RUILl7WrjQuQoOKhwJSz/D0G0T5+Xs1wVdTmFcUwf0dugt4tF7iTCoX8+OwPc84Cj2T5I6CBhocoU4EXlnlhGo0eX732UKtqEHC3/W7QCUqRethZoJvg==
+X-Rspamd-Queue-Id: BC2ECC0014
+X-Stat-Signature: 73hbyxgqeu1eugewhkyrwyjrqydizodf
+X-HE-Tag: 1756212574-301936
+X-HE-Meta: U2FsdGVkX18jQGyVQliPL0iobU8K+IhC0Yx8fdUVMhMsBuo3V5CyBKVfK4FjYSRsyF77+jZRUO/ATnK0ohZm9xnWvBWuGA28xU8l99jcBmrS8a37TOmRmezdA2aJYoSkzCqjNz0+sqOs/DvAPFIhPxAT8l/ZuzuO8hUENU0sSjqnwMSZy8YVQoeo83zM78j+lobix3cI8aRk2PVctDTtC+CFMmFqixTBOZHe8B6BYs8vD+SpaQ50sHTQITlyLnOYCi0Y2PGrn7FT8l6K2UjI5V6ZXeevjDyAqtbVTazYtdsHBqzfyQovYdCOuawmeiVfqgP0Fzykxx6uxjDxagSfHmHHxflNiOQwUs4xTSVDSnzr404Z+GYjbnFOj4pwzTr/kb+ZURaxF4Oz7vKzf8oh0p9Gp8R/MHOrm2IfS8SIfsmAetHOtLb7o1C2Q/KBkWVhOLve6WEh6WufUiN2YhXGBvxNoJAQ2DvKAiNM0Ww2qE8HQa/o53C/8ffyT3wosS+PtaD2S2aHqVS7+G6LhzhlxTgTVh86VmFxepBrwf+zRRRDZBmxLGf3q1zecG+/afbSXD79KBXuyZxgTeHgNt06c92/wUUv615WyK9KYLPIbkd+ZZai8cTZyqS5nZ1L3khqjEvAKyAESOjY7N/YPZ5yblo2izCDHXTDo6dXm8pAW6ScB1Yx+4++FsHsLNnoToQWslty/i8/sYapkaEnEA7qMUOmcb7J66pg9howpcyr5kCyL6DjDub3JkCLhnU+cNkhhKHHuQpYoYAHm7+2YmdGbwXBYLMaU91kzggBLWEMK77DUZ4sxXhcujR73GBZaTzry9xRcDuwX5zB7TISIGzWB8jCzJpl5xvclI3249ELybXyxrY+14SYtkgPS+7J2pV1LXrvCUaVOzP1MF1x8PCEa9+rsYmpJExwEF5Pi+6ynYL6EGwheDsyxOkDPO3AbF78nny4kx9uhGm2UrKTt1h
+ 6vCYTrwL
+ eIcqP+D4HlLTOHJETswhjXpIQRbh1Tcku55VDkGfVMMfZOyt6owF3yNU+cusgispz+Y6aYdKO5ADAT2QFVaBRxopsyONgL+yeSwg4TcAJwv0r21XFhri+sv9COaq4wmiSFfXl/wJwNC0Gs3T53PajhCN6vaNxSTiZ7QE3U+1T6tzWMdk/eaJ5L35IlTjDsZzzLFcZNgdVgU0urZgYIDwarmHryWwQ8NeOObDZbcYCLNy0rjtBImKqFxEAOOBq9oyn6i05Zslb/VNb8lBdFEFhYvSlpjj8k2Mikj9915Kz79fcgYqoO/2jILWD7Ihk7+7IQjRerxO515o4541wDjMtJVjye1K6RXgRVSe9XE25EcABkJO04qWvXMuOspkUTM5xlpi8qqyJtNH2PCbmVESAiiBMmH0SUNKZkbN+BvTOAhQbDPt8YTwH9FBRlvsQFmp/9qjE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,80 +142,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 26, 2025 at 10:53:45AM +0200, David Hildenbrand wrote:
->On 22.08.25 08:33, Wei Yang wrote:
->> Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
->> mmu_notifier_test_young(), but we should pass the address need to test.
->
->... "but we are passing the wrong address".
->
->> In xxx_scan_pmd(), the actual iteration address is "_address" not
->> "address". We seem to misuse the variable on the very beginning.
->> 
->> Change it to the right one.
->> 
->> Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
->> Cc: Nico Pache <npache@redhat.com>
->> Cc: Ryan Roberts <ryan.roberts@arm.com>
->> Cc: Dev Jain <dev.jain@arm.com>
->> Cc: Barry Song <baohua@kernel.org>
->> CC: <stable@vger.kernel.org>
->> 
->> ---
->> The original commit 8ee53820edfd is at 2011.
->> Then the code is moved to khugepaged.c in commit b46e756f5e470 ("thp:
->> extract khugepaged from mm/huge_memory.c") in 2022.
->> ---
->>   mm/khugepaged.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 24e18a7f8a93..b000942250d1 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -1418,7 +1418,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
->>   		if (cc->is_khugepaged &&
->>   		    (pte_young(pteval) || folio_test_young(folio) ||
->>   		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
->> -								     address)))
->> +								     _address)))
->
->Please just put that into a single line, that's a perfectly reasonable case
->to exceed 80 chars.
->
->
->Acked-by: David Hildenbrand <david@redhat.com>
+Currently, the KSM-related counters in `mm_struct` such as
+`ksm_merging_pages`, `ksm_rmap_items`, and `ksm_zero_pages` are
+inherited by the child process during fork. This results in
+incorrect accounting, since the child has not performed any
+KSM page merging.
 
-Thanks.
+To fix this, reset these counters to 0 in the newly created
+`mm_struct` during fork. This ensures that KSM statistics
+remain accurate and only reflect the activity of each process.
 
-@Andrew
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+---
+ include/linux/ksm.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Would you mind adjust the changelog and put it into one line?
-
->
->>   			referenced++;
->>   	}
->>   	if (!writable) {
->
->Maybe, just maybe, it's because of *horrible* variable naming.
->
->Can someone please send a cleanup to rename address -> pmd_addr and
->_address -> pte_addr or sth like that?
->
->pretty much any naming is better than this.
->
->-- 
->Cheers
->
->David / dhildenb
-
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index 22e67ca7cba3..61b8892c632b 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -56,8 +56,12 @@ static inline long mm_ksm_zero_pages(struct mm_struct *mm)
+ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ {
+ 	/* Adding mm to ksm is best effort on fork. */
+-	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm))
++	if (mm_flags_test(MMF_VM_MERGEABLE, oldmm)) {
++		mm->ksm_merging_pages = 0;
++		mm->ksm_rmap_items = 0;
++		atomic_long_set(&mm->ksm_zero_pages, 0);
+ 		__ksm_enter(mm);
++	}
+ }
+ 
+ static inline int ksm_execve(struct mm_struct *mm)
 -- 
-Wei Yang
-Help you, Help me
+2.51.0
+
 
