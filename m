@@ -4,107 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50C5ECA0FED
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 09:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87CBCCA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 09:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87F486B0102; Tue, 26 Aug 2025 05:34:21 -0400 (EDT)
+	id F108C6B0103; Tue, 26 Aug 2025 05:34:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 830666B0103; Tue, 26 Aug 2025 05:34:21 -0400 (EDT)
+	id EE7356B0104; Tue, 26 Aug 2025 05:34:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 745ED6B0104; Tue, 26 Aug 2025 05:34:21 -0400 (EDT)
+	id DFCEC6B0105; Tue, 26 Aug 2025 05:34:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 652316B0102
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B9DAE6B0103
 	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 05:34:21 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CDDFC1A0718
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:34:20 +0000 (UTC)
-X-FDA: 83818397880.27.3C9A39F
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 288EF1A0004
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:34:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IkcExV7z;
-	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 724DD5AC14
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:34:21 +0000 (UTC)
+X-FDA: 83818397922.29.31F4897
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A8BC82000D
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:34:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QiIltMmf;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756200859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=W6VbYwRmXo+r5ZTKqVvWwn6M3gW5k+dEdUuyrT2OM6I=;
-	b=t1QzRlcDscB48Gjf5MOqbQ5kIxmXnuD1SoR3xjjs7aEQh2NOVA4ysB2KaepMiS0WLbzE0m
-	PPuDhV+Vi6b4tSqZq1KL79vRWz385FV6Jcrtoop1sLr/cakwkdLRUaLMRcwa5urLovedtb
-	rCnBJmJjJoDC+y2WplXvJpXZF8SJmH4=
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=oK8HCeGcHpUOHPUJVPFqJNeZg0ZfF3cRIFZbaCfOHg8=;
+	b=ByH8V/O6IOBgrBUztAkWsvJhUnTCabQtydhE35beOGIfgZnITOgplQIGZ1VsECQBeHFYvz
+	bYIW34+zlqVe3n4tx9GY5iuA8boTzwD8pQY4jKbap+n2t8joobX5L0n3medPBW30S4cpon
+	xCiZE4RXS97HR5HPTcZ+/Sy9ctg7RfI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IkcExV7z;
-	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QiIltMmf;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756200859; a=rsa-sha256;
 	cv=none;
-	b=MXeMFmsK/R7t2aNqLts9wYNF5ovPhIlbne0eL3I4L6FdxQjFsoySA/PtNBgt+7cc57OE6y
-	5TJ70tnzGYBno3jLSqTbSzQRAfb+BMsjT37uaBzdsQhXIJVqJoSDgaj10eG2ZTm99guQlz
-	yvCNlbZzBGxEEl8ORolCC94zgtnsJto=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7a8dd3dso800980366b.3
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 02:34:18 -0700 (PDT)
+	b=LmCk5JY8/ZrgQJJofUh9SVCnlP0grbhHBqaR4bLD2CrqYJ+2bqU9PLMfOHRYUs2/FOVYTE
+	5SQkJqbpU6Dm4X90QgwpSZJOtwt2yV65MBK5qQijyLiTZhOhAo5FV3p9B/Sn1fW+wnZRvh
+	4/bf1h7zZN81/nigBOHv0tOkD8yEeZE=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-61c26f3cf0dso5917649a12.1
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 02:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756200857; x=1756805657; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W6VbYwRmXo+r5ZTKqVvWwn6M3gW5k+dEdUuyrT2OM6I=;
-        b=IkcExV7zux1slkyNzoDvQ17nCWlxjZvUHzmxRMUmaVGNovyCwVBQtD1IXmKSlPePNY
-         BxqNHmmBghSEzH6QmnqcA65u5aXKxt5niemsDWG9rFXB9/Jz8KqCb/L4kloSiRs15MoV
-         KatPexYsRWF/LltVNMIOrtrmVGnGbcN/nzV1Z5sCqZiYO6JU2TKb9ZKmCU23AiQWo5Tp
-         74LhPxYim2PmtpLg1U6buhhoHfC0lX+fRLu+ppeGPyrcT2s+53JnJsm2DtQkTvtFWiLu
-         T8y61cOf3lYtBc6D3N6IkFGWbJsz9IoQZvw8cgBBa/WezuhBhuFgYz8pFUGGt0DpPAnK
-         xuyg==
+        d=gmail.com; s=20230601; t=1756200858; x=1756805658; darn=kvack.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=oK8HCeGcHpUOHPUJVPFqJNeZg0ZfF3cRIFZbaCfOHg8=;
+        b=QiIltMmfkT/aYVkrPhcUCmb47uTnNpSbwtdk7u6wPDxuIuZCzJDytSEIBFgmzBjb9B
+         oXnkZvIOBHmUlrcICqurEtavDPEdMOrL8gWCqefC6SW5AiSKPeOSp6GVEC2OTI/C5wIY
+         c51BCcbU5NsIV4VsqbOgmGxbPgrpZxUOFzcLFlRSuXnjkpVTH8GEP8YlOEqVRKgyP2xn
+         +O8pXEGFCSJVFYH91SJJOWulpEeSmqoHjc1FnlbMkXngHbAaj6dtVxg5G7qhY7jD89bp
+         ae1NCCBMAU+wQ5eAYar6N+biiuG5n2mpCkb2xrPyx+Fl3Js0pD6UTPhI356IfuTe/37e
+         EwRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756200857; x=1756805657;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W6VbYwRmXo+r5ZTKqVvWwn6M3gW5k+dEdUuyrT2OM6I=;
-        b=o9Urs6xqdeFDIwLQSnucCvI2r0cyyXbItHBnk7j4Vh5oP/dvgnOAVIEMNsDqGMcvWx
-         EXfHDMBNew0l7+rzoGN+TfxCpnWgpeMSd9Qu2hWQUZaFjBXFlYd0aZl9uTUuyLhcfN+/
-         oVO+5GQk7wjkw4CFi3pRVfh5l8zMI+Ows2DSXj7bBysdqqnY+Nu07fwEhWX4UcyLfRDi
-         IxcfkOdULc/OUXVkUZCaBHj34KsOcog/WMFTh4OVNxWLheieqn1dr1wjNqcoSH3k29oA
-         fOkysD1k7prx78e5t8iqx1hWwAdgIPhhfb50s6ZdtApzYdCR9dWSf6XcJ1lOxfBqIRJs
-         mdhQ==
-X-Gm-Message-State: AOJu0YxWXek8Pyv80w43OH7duKyL6HNJjSR6y63obN8OJCcZYaLNECGG
-	PJJUJYnRSPfwqu2tK1U9e2cibuwmnFZOnmML77ylNY21PKS4iv9vfHcx
-X-Gm-Gg: ASbGncvttjYu0VFS3TdqRizo7miUkShF9g9WiamI2XWmCANZgtr8JbeMGvhBYXIMUxI
-	jX/kCgcDVHl1pvgFIx/dTXFN99B/B3H7EBQfgrFQqVsAqqTwLxeGXMuOzPdeORodNcmJ2BkVv3X
-	sychiIlhcndh/qFOuE91LsVk7V3oLSIVmBzR36gn1ijY1p5f8mTrwqah8nCWGuo+OgiXaFD0bL9
-	2PWVV3HVa+2hcs4s7tP6idqvxfWYznPEPVxlnaIl0nt5DLlDq6Vb+qMj7WG9II1AMZmt9uBb5BJ
-	/A9xlze18O2iwsLua8Z3mdtRTkDQYd9lJwLW0hhM0a3M7+loSwZxeuXClY1aYu3cZwePhu8dOnv
-	SmHzG3z6zfwlM55A2AjiHs5/MyDbNUEw4UsuI
-X-Google-Smtp-Source: AGHT+IEqkeGXpXT9SHkf+O7A3MCrh7tBOFn8Qh5Kt05zat9aq6V2/wb339LbkJ0E7k/1YF/FVri49w==
-X-Received: by 2002:a17:907:72d2:b0:afa:1453:662c with SMTP id a640c23a62f3a-afe28fe7093mr1203611066b.8.1756200857183;
+        d=1e100.net; s=20230601; t=1756200858; x=1756805658;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oK8HCeGcHpUOHPUJVPFqJNeZg0ZfF3cRIFZbaCfOHg8=;
+        b=T9GhGtxmiO80bbs6R1ypQ4EwAv5nRGDcjCGwF1LaacF/rbO5o55J75oSceGRaOrFVw
+         yRzUZu6w5yiFw5/+n7D48h/HVq4XTV+WgCsAsaXPDPU10t4n3EG3G1cgInZp64Ry0rzM
+         eKIOrSj/wBm4qoyoe+GLIR7kfI2LeXnYqM+1wds1qMXFAjCi5eLuFo639n6/YCcD/yoD
+         LuBYEnn/vwIXOkznk/PmutfnC2Am06sACt9noG5FRzswrJYWt0T12kzKqktCju2MDuzG
+         i9PrxRMGymtRblhdAt/NtIXRlyKzRSTvmthwyK5xMFWzXDWW9rTCmZEbBzlQ8DXpvrV6
+         g53Q==
+X-Gm-Message-State: AOJu0YxoX6ra9JufvM9g74tGng1UWA+XI7MyEGIxpR+kf2yXkTV2G00T
+	wQnwLjZ0qMGtvnb6C3a7o85EfgN9Qe9BLsrzSBArI60yJcCJWiIK9836
+X-Gm-Gg: ASbGncs0KB+9KkIH7WpTWmi287iOJVGjHhmymC6GWWt9caOimHX84TGvSd4+g73zNPV
+	qNppzi86GucAaMcfwO5C6oymtr8wbslWZV82UM9hTAu692lBTg1XKn9vw0CU44c7xatT/XZ/w7B
+	/c4p6b+aF2dG1UqF6/BLrBHHC9hM5MQ4/jWCwdt5Oq04ywGtooAlXRlWfWeQ0Nz2b/vQa04++BP
+	94WNSBnDgu2NbbEEcUGHm5Qu0jhEvnxokdEAhTQN3tgdttFihJcCvqxjQc62h6lPfcU3S4/L0/E
+	fgBWyJGF6rGbaey6b4B8d4BX74GJmRA7KBPbKnXmTkOiPk+a9onmyAR+xYRq5xdkhbuSw9QgzQP
+	3Sos3UgGpKK+sR6+M2Nhbi1TVyw==
+X-Google-Smtp-Source: AGHT+IEG+pe2e6vNX+FnqElrLIHyA36Yw+925BjEOZD3Tj9fF0tiPeRMgiFZN0jIEk24dKQjmf1oZg==
+X-Received: by 2002:a05:6402:2787:b0:61c:5264:ad97 with SMTP id 4fb4d7f45d1cf-61c5264b027mr7240581a12.30.1756200857988;
         Tue, 26 Aug 2025 02:34:17 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe48fc3de9sm746721466b.34.2025.08.26.02.34.16
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61c316f5017sm6505641a12.35.2025.08.26.02.34.17
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 26 Aug 2025 02:34:16 -0700 (PDT)
+        Tue, 26 Aug 2025 02:34:17 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
 	lorenzo.stoakes@oracle.com,
 	vbabka@suse.cz
 Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [PATCH 0/2] mm/pageblock: improve readability of some pageblock handling
-Date: Tue, 26 Aug 2025 09:31:46 +0000
-Message-Id: <20250826093148.30190-1-richard.weiyang@gmail.com>
+	Wei Yang <richard.weiyang@gmail.com>,
+	Zi Yan <ziy@nvidia.com>
+Subject: [PATCH 1/2] mm/page_alloc: use xxx_pageblock_isolate() for better reading
+Date: Tue, 26 Aug 2025 09:31:47 +0000
+Message-Id: <20250826093148.30190-2-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
-X-Rspamd-Queue-Id: 288EF1A0004
-X-Rspamd-Server: rspam04
+In-Reply-To: <20250826093148.30190-1-richard.weiyang@gmail.com>
+References: <20250826093148.30190-1-richard.weiyang@gmail.com>
+X-Stat-Signature: topww91ieg8nfsjxd8s5z3fxoitwcopp
 X-Rspam-User: 
-X-Stat-Signature: cg7wmxmtxo9kckjfnwjjbduwm1c16w9q
-X-HE-Tag: 1756200858-853742
-X-HE-Meta: U2FsdGVkX1+eBnrNDd4bB2QTXRSEbZ3g3Kl6qNw6F++sqardDX2ZNbnVFu9ZOANEhrrxeQSyOPZ5V+DIB6UNkgViemthtZ+oQgn1VmS5IYM/TtY8zTw9HSOtBWlqUFnYAGpO710S5W9j3anoy262kgoaidEZRxSl+3b2snveriA3uSMLllfWYA06q6O08ZEYlt36/o6/0Nv5T6yvM4rOJZ6k7zxNLlv6yOb2KkDFdBPpoNfA9z0mnXy3803jPaR38LfDmMFpGZ848GUxau/Wf6khBWb8qvdlUZ/2iHQoAl4nBwJWCcvM0rpLflO0k+B6v3JyUixg/uDt1aG4vTUvV27xm9fLejIxlap4aroLCQGUcjDrtNSmWXGQ3lG+g91KWohO+8wEGw05ppWCz3EphO36tLxJsKS6Tf2G+C1eO3hYL8SqdNfTmdBUXqQCIRlfoHxFkgpW/wmZeRX4u8YbaTrC+6DwDrpEsjc/GEbwOAFdBT0zsplKBQeCgo3tPgFQ3sbfph0eHgg8X1jhmzOAMFfTo0wDNAuPX7bwNKI3FglwNzRUN9wwWBP1BWx5uGlHj7NBBnT4c1Hs5Oxrj5xsIDCQX9lWMW6wQaPwJC3P6D6U0L0E3VK29NYqaEK3lBXAy0DsH93pK95KCzJqDmYgAx5ltRw769pkTqwUtqokXt4UtqfWHUhyEUvn9MMnrCrAwkZ/gvygoe2hJ2eVrf70HSPO1UH4QzWM0OYAe7SDHEJqLkN9zi6SeN8z33AiFL/4lfpOpY0aG97BOXkY4bq/Yux2qGH2mSBJGYrrdsbjNaPaV/gxtfpJpen4BDEIOosCz3S4R/RdgMjrkY4mGEjOXlr8jnEWQ7IaVaqVlAGREpCOmlf2MGUPTKuwGOnjVrUndOPYOEMBA5h30dK2urNxMZSALgjuc1LkwWuxKPviLotd+DR5MY+BTutvq14g/B+YSmQgmoUh1S9/tiR84y9
- 6i5JvAwI
- t1sjLu0lq3x2H3Jq16Tl3UPEibCJ0LjPrPSgfC8xmR08a/XVoENSRz6HXD91n4dQAT2gB67RCvK3rbgUbxTgwWs/Hvkou84GguTJz+On4Dgw7bCN0G0eGXYEOH7n5L0enIuXlRCfuEU5AsLNdCONq3xOd/iIRi1XZQOEFoTKhPgY6R6W7dx8dxFzxJ3Xl1jbCthd3qvHCEyfHbji5RzvUG64fEmuEGCZc2QzT+9r2IPopDWS0jzF0Xd2nhcVCPu8NPlZQBF7rvkyE5lfw3fqnCxtxugUPBRJ8yJJJ/UY1Xim6u4jXJ9NjxfBoX8lZAZXVpPbaLKqLph/gyM6/A7Meld08rNayZq0FUyq1907fhVzoYXdhgy7G93R0pHVUu8WtqkXLmrYhKSpeNPfV6PJxrob0G0j8PmsVKb43ET0IXxyx+LPslnm0tYXcLkVcxaNM2YoCX2auGPwU2dYP3lMS1RZAvt1VRI+nC3WiQqf+ALv1zaUoviD4W8vM7A==
+X-Rspamd-Queue-Id: A8BC82000D
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756200859-783852
+X-HE-Meta: U2FsdGVkX191A3cwZ8k3lmM3fRs6uiiJKhwLDU6QcXYeQqJGOnDjKftdQMKzzah2EPHPb+ChLC1o/R+Mlm2dfMuLsXTCiBPloW9bzH+0dzmXcjYIEM/6cRB18jIdNtrCNrIOHQ2FxdiORe1Ib9TL5F19tBO1Y3JNOwJzQMHaeXZo3QCJi67eA21gkuai51n46xnqQ//n0ku54nijmfkiB4BG9ZON4J1q0NZD78ewyPSvACWJ6RWA/771kkSZinAxrW6fhNAxK+22PkXqCZDTZeXlFo6onym4CHyxq9AzPToKY3/I+b6SM0mOomkgFGZ0Bg/J0C+k3ODT0Z992VDQoqEbQa9GbuEGm4CEC5OcCBgjm+LiCQ6vPwcSEuAZYIL5Xkv1XpMn/NdhyeXJ2lOd6QZjZuq4AvUDFWlNHMaqWKR494IlBRJOH9PMbVjkRbjqCfOV94g4DWYdcqD322a8wI63FbtttmuLvwOLVi/6kg96nwJBbrzU4n4+/xJSdsWGlhpzK4lk/IpfVv4GLujO39F23hgIGoYXvaVJzDyZf2D1T0k8xDXvNAQayoop3a3b8PPsPTvHsEA56KKacf3EAd0RoavHcJ27nBXZ37FP2AutW2BKspWad2AF9m+DWc7WouwrrVdaxyizDdSK+lEff0euMs9SOLUFrJD65blANXIwot+7f69bmOe+LtAbh//WSIdGmIOz1rQNsyHjWxAGlRwhmCAcv5tbc0h6m08BVx9sb8N/t+K6Z1RUVOtRDAirnB1/Y/5/p3EhJumoQGcJiPaVxrfZCjyN6Nzg2Sauj4EWEXOiNj9v+2lpCz4Vxv3Cbc3woAZFE03Nx/kiJJKN5l6KiBQ+GTYtL73Uib0Pj5lzhRzLMj7RbytJxjx1pHPxz8CF02pcKhg8uRbyO1zlrWRzcw69zTCSdUfkpakj6g0fW24rE1C65N4QUs7M79Vh0gr35B3sG2lbJM+4xY+
+ geazb6zC
+ pwJmFvVuwWV4r4jijdb0inzGnNosRZA9AISPhCpcNf8upj0ejvEri3IrfxQc7p7O181IMYBRlIoHUXabiup7guXa65hfpQ+U6IF8MMbwkhqVlfxR6x46MqqkB4zS9HtZCVqBW2VS/qcIzU6fgQXAw9rR/DjCq0OyYQsfHKh+uGog7HUmcrcRRHwVUeFV9RAdFGKpUKZPBXdOzDC6nrPqOU9CIJy5EWmBjXLmb8ZjjECljtPLq/iCTTFqVbxqyV9RjUEfDbWsQ9cS7Hx0TBMejUO+tTlWE2cjRMDO4KZjKkmVz7QY8gVHMlCkn0TPkk5/NQCXHOhIbVobUWj0K++160q7nI2Tn7d0ca5zTO9ChqV775fEJrEG64AVK062s3WUMiiw+ENdvweGBUl5253TFI+LOmpDaV1Qgvsrp/IA6/mALne0T/drabQ08WNge1Y/NqirTrcFKOujZ66gt9CqzAkc+YsZFWO+UKoBl8nShiOHkHpkiQpiw7AszPAggHrSq8gVjssBQeIOW5czA0+nwir4nDDEZ+JNdc1VnFZ2T5rGVUpJtf3WMGvSwZu5WfvIYZjpPZ+Tj97oWeaPCUewTUpSQoSrAJat9VubfCb/cu67bUcQYtBQ80tEswqMHiHNy2HzqUZY6L2dSB+ZLQfaLRzgfQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,24 +117,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-During code reading, found two possible points to improve the readability of
-pageblock handling.
+Since commit e904bce2d9d4 ("mm/page_isolation: make page isolation a
+standalone bit"), it provides dedicated helper to handle isolation.
 
-Patch 1: isolate bit is standalone and there are dedicated helpers. Instead of
-check the bit directly, we could use the helper to do it.
+Change to use these helpers to be better reading.
 
-Patch 2: First we could use PB_migratetype_bits to define MIGRATETYPE_MASK.
-Second use MIGRATETYPE_MASK to define MIGRATETYPE_AND_ISO_MASK instead of
-duplicate the definition.
+No functional change intended.
 
-Wei Yang (2):
-  mm/page_alloc: use xxx_pageblock_isolate() for better reading
-  mm/pageblock-flags: simplify MIGRATETYPE_MASK definition
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
+---
+ mm/page_alloc.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
- include/linux/pageblock-flags.h | 5 ++---
- mm/page_alloc.c                 | 7 +++----
- 2 files changed, 5 insertions(+), 7 deletions(-)
-
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index baead29b3e67..e534f31a6b39 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -538,8 +538,7 @@ static void set_pageblock_migratetype(struct page *page,
+ 			"Use set_pageblock_isolate() for pageblock isolation");
+ 		return;
+ 	}
+-	VM_WARN_ONCE(get_pfnblock_bit(page, page_to_pfn(page),
+-				      PB_migrate_isolate),
++	VM_WARN_ONCE(get_pageblock_isolate(page),
+ 		     "Use clear_pageblock_isolate() to unisolate pageblock");
+ 	/* MIGRATETYPE_AND_ISO_MASK clears PB_migrate_isolate if it is set */
+ #endif
+@@ -2058,9 +2057,9 @@ static unsigned long find_large_buddy(unsigned long start_pfn)
+ static inline void toggle_pageblock_isolate(struct page *page, bool isolate)
+ {
+ 	if (isolate)
+-		set_pfnblock_bit(page, page_to_pfn(page), PB_migrate_isolate);
++		set_pageblock_isolate(page);
+ 	else
+-		clear_pfnblock_bit(page, page_to_pfn(page), PB_migrate_isolate);
++		clear_pageblock_isolate(page);
+ }
+ 
+ /**
 -- 
 2.34.1
 
