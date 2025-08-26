@@ -4,105 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F15CA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 19:36:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5A18CA0FE7
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 19:37:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EFD88E0103; Tue, 26 Aug 2025 15:36:03 -0400 (EDT)
+	id EE2478E00FB; Tue, 26 Aug 2025 15:37:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C5FC8E00FB; Tue, 26 Aug 2025 15:36:03 -0400 (EDT)
+	id E90D26B00B0; Tue, 26 Aug 2025 15:37:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6035A8E0103; Tue, 26 Aug 2025 15:36:03 -0400 (EDT)
+	id D80F98E00FB; Tue, 26 Aug 2025 15:37:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C7FB8E00FB
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:36:03 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0DC02139218
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:36:03 +0000 (UTC)
-X-FDA: 83819914206.04.0EF3414
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8BE80100010
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:36:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C61EE6B00AE
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:37:33 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D7871602C0
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:37:33 +0000 (UTC)
+X-FDA: 83819917986.09.CC1E60E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CEC0814000D
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:37:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf05.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756237051; a=rsa-sha256;
+	cv=none;
+	b=bhaU0bwMD0GBhXE2OjiRcqf+5lFrv4o7+0NEn6tWBrVrLaOuTx+/4StfEYAopdqwD7LdkJ
+	bMyJnhizB1S2280WNdv4hhdsUUEw66nDHlsdgWBs3QdOSzrJ1QihKX/FkQrmUS9icJhoBC
+	fagGjohmdq2lSVnU8bl5Jzfkp9SXpjU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756236961;
+	s=arc-20220608; t=1756237051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bhqILukENv/ledIyFSlAii39xkbLgWJ8CFSuI0YMkPY=;
-	b=pRCnD0VDcSItNepbtW4jsRFuqvkOFQiowAAqJ79EiFbXnFXK3hr6WOPwLxfivV2sLfCzDR
-	kdYlN4LlW7GB1mCmZ41B7VlNddz87grk8gI9NyETiY14qqToOmGioDT8J58tP5UWIJenG/
-	FVpFKg/ozo70yx/Bv3TT/irZRrFOkgw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf05.hostedemail.com: domain of cmarinas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756236961; a=rsa-sha256;
-	cv=none;
-	b=d8fQP0vCTn1QmxgbkicQ+m15ZLhzgHXYouaqUYqI6e133AHpIqY/F2qPgE+EpD5HdrF9CC
-	NnchG/pPDeJGfG27aGKuUTaLThkHLCy+vrbPRk/lErRLwgyYfhPodC3w+sow7PBAWLnDqX
-	FmrV5ui9IHPnVEzDNx9TnOTcHamH8Ys=
+	bh=BfGmMAoezQc5DK5kMx/5G44xYw4KZvjsu6kro4fq1cw=;
+	b=bWcM2jZe6zD0TKwEqpBVDlCQdaZY5TByYTM8uoQg9l5sHeYZNIb6loDZuYYj8XsysGrVGF
+	yooFCSDv+5+9g/8Psd8q9CLjJeFymZaB0VIAXoibE8D5BC0jBWsahTkdIs33ELcvG3b+I2
+	ShaYB84HsXZMwuLLPjNxgsL3o3Tbg/U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E166601F5;
-	Tue, 26 Aug 2025 19:36:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEA5C4CEF1;
-	Tue, 26 Aug 2025 19:35:47 +0000 (UTC)
-Date: Tue, 26 Aug 2025 20:35:49 +0100
+	by sea.source.kernel.org (Postfix) with ESMTP id E2A0543E9C;
+	Tue, 26 Aug 2025 19:37:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28118C4CEF1;
+	Tue, 26 Aug 2025 19:37:29 +0000 (UTC)
+Date: Tue, 26 Aug 2025 20:37:31 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com,
-	kbingham@kernel.org, weixugc@google.com, Liam.Howlett@oracle.com,
-	alexandre.chartre@oracle.com, kas@kernel.org, mark.rutland@arm.com,
-	trintaeoitogc@gmail.com, axelrasmussen@google.com,
-	yuanchu@google.com, joey.gouly@arm.com, samitolvanen@google.com,
-	joel.granados@kernel.org, graf@amazon.com,
-	vincenzo.frascino@arm.com, kees@kernel.org, ardb@kernel.org,
-	thiago.bauermann@linaro.org, glider@google.com, thuth@redhat.com,
-	kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com,
-	nick.desaulniers+lkml@gmail.com, vbabka@suse.cz,
-	kaleshsingh@google.com, justinstitt@google.com,
-	alexander.shishkin@linux.intel.com, samuel.holland@sifive.com,
-	dave.hansen@linux.intel.com, corbet@lwn.net, xin@zytor.com,
-	dvyukov@google.com, tglx@linutronix.de,
-	scott@os.amperecomputing.com, jason.andryuk@amd.com,
-	morbo@google.com, nathan@kernel.org, lorenzo.stoakes@oracle.com,
-	mingo@redhat.com, brgerst@gmail.com, kristina.martsenko@arm.com,
-	bigeasy@linutronix.de, luto@kernel.org, jgross@suse.com,
-	jpoimboe@kernel.org, urezki@gmail.com, mhocko@suse.com,
-	ada.coupriediaz@arm.com, hpa@zytor.com, leitao@debian.org,
-	peterz@infradead.org, wangkefeng.wang@huawei.com, surenb@google.com,
-	ziy@nvidia.com, smostafa@google.com, ryabinin.a.a@gmail.com,
-	ubizjak@gmail.com, jbohac@suse.cz, broonie@kernel.org,
-	akpm@linux-foundation.org, guoweikang.kernel@gmail.com,
-	rppt@kernel.org, pcc@google.com, jan.kiszka@siemens.com,
-	nicolas.schier@linux.dev, will@kernel.org, andreyknvl@gmail.com,
-	jhubbard@nvidia.com, bp@alien8.de, x86@kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 01/19] kasan: sw_tags: Use arithmetic shift for shadow
- computation
-Message-ID: <aK4MlVgsaUv-u7mS@arm.com>
-References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
- <7e314394fc5643def4cd4c6f34ebe09c85c43852.1756151769.git.maciej.wieczor-retman@intel.com>
+To: Gu Bowen <gubowen5@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Waiman Long <llong@redhat.com>, stable@vger.kernel.org,
+	linux-mm@kvack.org, Breno Leitao <leitao@debian.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Lu Jialin <lujialin4@huawei.com>
+Subject: Re: [PATCH v5] mm: Fix possible deadlock in kmemleak
+Message-ID: <aK4M-2ZWN3aq7mwx@arm.com>
+References: <20250822073541.1886469-1-gubowen5@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7e314394fc5643def4cd4c6f34ebe09c85c43852.1756151769.git.maciej.wieczor-retman@intel.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8BE80100010
-X-Stat-Signature: uqq6imxo14somszdtq6ekhjgs6k9d6ha
+In-Reply-To: <20250822073541.1886469-1-gubowen5@huawei.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CEC0814000D
+X-Stat-Signature: q6psfumf5nscy8uikrwc7pb8jwcg6nxw
 X-Rspam-User: 
-X-HE-Tag: 1756236961-298812
-X-HE-Meta: U2FsdGVkX18wb2P2kEQKz64NWT3Qg7UATvW2u9V3p7uQHU53uQsRS6vq2arPsZUKi0w2vmmUFCY2dldByOUE1FAFGbgD069HQdbYyR+WbhoR7WIdwwmhAmi71ilsq7tC5mkEpXotevLiYqh0nM+SzM2oP07rIcoAR0MrdxhaJISXWJIug6zD1x8kwMsA2RzxXQt+1BhUp54GmR92xOI+I9hSIxrCGdGZ30rqnBn3jlABoF2ioIc8CVbNHibUkYeT+NpArlpPSZ25PVdYYZh3Nq6733pdg883bGiSJp49jsZWNNorRoUcM7gtsbkfJiPEeWE6T0jEj+f0VjobBaXc8CHhEnIM4Lp/+/B1+4J1YUBiNK0s99cWt56jnoDtiEcpIFxC19WJmIRg59cy423GZ2q0L0yYV88mLHI0QwBXSZuDbX+NTkXsBrl+I+wxw9hIjxGG6V5bxzLZa+4m2TPww3ZjAlhozZ2A0BYGdhGS93isDluikjSuk6IRVwGbwS4iPmFE749DwyEyUks/L0lcOGtqz/QKRxlOZtPpZWo4CQVdVc2q18o5iMsE3znWv1jRQLBbkrcNiWC/9ks+YopAf2VGoAvDZ80Is1Sx0ZwGg3d+Wxex9hYsY0CGY1hAqIt4UnEDLPHeJaFDHAS2c2A65Kxj7Ry60PFvarGsPuWJ3cAjeUsN+P+cdsXhr8XoEEw6Z8RcX6BTJK1iLLs8NX5AoTVf025j51yLW/9/chrKuYjaBAaqeMdHX5SbFkgjeaHtNFHTg9GyaiGpgh7OtSF7XqtdMEBos5iW/kZyeB34KBTO+WNvfgKBLqwEa1l7pT4bMcNvsLiNYLP3FH89wgmPikAj/FmrKb5gpnO5q8WtqKxml8ehpeu2fyE9w0BYOUNSKiWP5p10yz8p7ni6YAvvyjfA+hlUN7UU41acCmq+JHJ6LkmipnjG2TKnubn2XclQaWL+8kZdfxzAGC1jX/P
- U2QmcDkP
- vbkJofKegHMl5UkSr03cq5hDw7HnrA8J/lAaeJv3+P3WKgmCxBf2r1rjp6GBu5vBbmcEqhgN3ddDGrNmlPaucvVHlK1zgb1RJL/HESCsrs9of0RTQaCbeMoa3uLpMmXw5sugbMWCoGXQy7CZk2F9puHGqyPNx84wMOTjAksYCffW+K6P1NWWGKKMx65zjipFp45jclrQhkYBsm7XATU0C4H35NqezFtOa6virf62X1cTdcemH5NXVNFCClzzctWDOuLX3tNZCcV4Bryo5PV/oSgygoD4dycNEP/d9bS/6lJ2EWDjurJ2gfb4vpN4Pw+VfOYzb5/MjjSiLGzsqUyEnmu/oMY+4ubdfwTD9tqTLM4wX69+Y1AfiPTLqT8mPzpGu4wY9E0lQZHgDiiE5qvItbLZhHMTs1E8nbe0SGerv3Z8aCSLl4lvqjyBv4zHjX+D7jEHgu+tDVPFBoq5+fKfphczURx0OwzxLHFrDBOXMnZjIKNztX4O/hOsCy8P4Orw2cRo9BD/ATGfkLeDs2qo5HWlpTQ==
+X-HE-Tag: 1756237051-320932
+X-HE-Meta: U2FsdGVkX1+epJjbBORE9hqy6v6HZPlCoYVtvvuBfbzHGI8kN+SYi1TgLLOK6NQpmHk8Rhf8AzQ9w6sEG5QxRScyLlGwIIutlYLCQ1DKvQpYiQpCCcrzWQqRIgQd+Z2SQ6HT0wDLgDgDfui6YOiy4aGSLTRoocPevkpKgXuin9YVDXZA6j3l9CRVT7kEMdzgmusbOdfiiCWCZWhyL0FWGemDyXZ9wltHe11vPgl2jyAHl05ZTYtOOfJlx1zXdSCBLGjVvq9YhhXo+n1R/rT/FsCf79LmbDPabUyIz2L1rsyu+ownqDy3pcJhq3nDVilArwTegMirlvpYAhwAng/4dEAJUKYt5WVqtvWCSQ+eg/sM6GjG1SRr8VAliBVVAQZPjtxbIGsf4Y23yBEMSjJB1xm6sHGPCAAWZAgpMOJhZqJKflWhbWSmazOkiq50JtHmEKWPKAzRIMOQm0Inj0+aGhmD0NZccrdr1rabuEPP/i4UP/v4k51g+V0dOSMObCs2YfaarSXJj0r2Q8QWxV7deTklkFu0Pf4Zyh2Pwk1ZMFO1UiAYVxrLPSpd+006UC+9S6I90UCD5QpIK4xc3BKgb9v23qY3d8cV45xRLDWgtaNn/4AdAPUk6T3tWwfo9bWCS3IxX0Ot0iAkldYSmD5iVTtjrKPH0mTVzkr+KopOkU7XxzyS+RBOzQ7KtHmuKdGG34gO5vlmqDro8ibJS5fz8d/WsuPAgX7K0WH5Efpp3oNQdBzwt/K5MCYJuR8GaRL7sd7v3LrP7Se3BEYzpzakAZE94QFKeg4CBTL0wl4+g1LRU8xFLj6NXTb1g39KRppKTebPJB3a/dpJTFMh4bQ2x518Cfy81VwSOSSolCc+eqcG+32z07gNxGifAZAdfwIkf7SHawAAC6ui7c1K2D4S+7o3/cVygAilICffjIPNVFj6T9cHbXVgdoOyImDQRvXc+OC0Qfdk65EddkWyYzR
+ 9HV2Inou
+ i/L85ttV26MMAcnajCwGuXt50mVPL+2f6xk3rIu4bqwtI4Hv016thiXQobi++VoO2NCh729jTIxWM8Rdgc0F3bFQthzdFE5R7mNlEOM5AAw6m485sBkVURJ/nJhIOxftbVnAbGsxRQ93WOuVDLxX8Y19LHxdQSgN8Kg17NiQG5sUQL0Ch/GghG781S02vwPK067ymT3y6+wERmxsk6j5IcwgRXU+c3Y203hxR1WKuOQB5j4CPBHk65AvLtW0ce0iAENCKZ7u3SFV86I+vVyuHA65vGsvKCsK1dqKMRWI/02IxYGWzNnEbMsqtGCtfs3bBfvByb5jRyNkSBdTrijLNAV1lhwLwSQFEbtgTmXYI4fB3Trn0Lq/lEnuVtvS45pQXz/UR6/Ki81AioJPj1V4JPJ3B7of771GuxtLzgk6DNq+WIuKnDAeeSTMJEgqv+jn9lmzPZNx7ROlz1dujwFIb1udqZ84h554BIerim2NwaC3NlP4YrEYPN29kfg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,90 +85,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 10:24:26PM +0200, Maciej Wieczor-Retman wrote:
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index e9bbfacc35a6..82cbfc7d1233 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -431,11 +431,11 @@ config KASAN_SHADOW_OFFSET
->  	default 0xdffffe0000000000 if ARM64_VA_BITS_42 && !KASAN_SW_TAGS
->  	default 0xdfffffc000000000 if ARM64_VA_BITS_39 && !KASAN_SW_TAGS
->  	default 0xdffffff800000000 if ARM64_VA_BITS_36 && !KASAN_SW_TAGS
-> -	default 0xefff800000000000 if (ARM64_VA_BITS_48 || (ARM64_VA_BITS_52 && !ARM64_16K_PAGES)) && KASAN_SW_TAGS
-> -	default 0xefffc00000000000 if (ARM64_VA_BITS_47 || ARM64_VA_BITS_52) && ARM64_16K_PAGES && KASAN_SW_TAGS
-> -	default 0xeffffe0000000000 if ARM64_VA_BITS_42 && KASAN_SW_TAGS
-> -	default 0xefffffc000000000 if ARM64_VA_BITS_39 && KASAN_SW_TAGS
-> -	default 0xeffffff800000000 if ARM64_VA_BITS_36 && KASAN_SW_TAGS
-> +	default 0xffff800000000000 if (ARM64_VA_BITS_48 || (ARM64_VA_BITS_52 && !ARM64_16K_PAGES)) && KASAN_SW_TAGS
-> +	default 0xffffc00000000000 if (ARM64_VA_BITS_47 || ARM64_VA_BITS_52) && ARM64_16K_PAGES && KASAN_SW_TAGS
-> +	default 0xfffffe0000000000 if ARM64_VA_BITS_42 && KASAN_SW_TAGS
-> +	default 0xffffffc000000000 if ARM64_VA_BITS_39 && KASAN_SW_TAGS
-> +	default 0xfffffff800000000 if ARM64_VA_BITS_36 && KASAN_SW_TAGS
->  	default 0xffffffffffffffff
->  
->  config UNWIND_TABLES
-> diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memory.h
-> index 5213248e081b..277d56ceeb01 100644
-> --- a/arch/arm64/include/asm/memory.h
-> +++ b/arch/arm64/include/asm/memory.h
-> @@ -89,7 +89,15 @@
->   *
->   * KASAN_SHADOW_END is defined first as the shadow address that corresponds to
->   * the upper bound of possible virtual kernel memory addresses UL(1) << 64
-> - * according to the mapping formula.
-> + * according to the mapping formula. For Generic KASAN, the address in the
-> + * mapping formula is treated as unsigned (part of the compiler's ABI), so the
-> + * end of the shadow memory region is at a large positive offset from
-> + * KASAN_SHADOW_OFFSET. For Software Tag-Based KASAN, the address in the
-> + * formula is treated as signed. Since all kernel addresses are negative, they
-> + * map to shadow memory below KASAN_SHADOW_OFFSET, making KASAN_SHADOW_OFFSET
-> + * itself the end of the shadow memory region. (User pointers are positive and
-> + * would map to shadow memory above KASAN_SHADOW_OFFSET, but shadow memory is
-> + * not allocated for them.)
->   *
->   * KASAN_SHADOW_START is defined second based on KASAN_SHADOW_END. The shadow
->   * memory start must map to the lowest possible kernel virtual memory address
-> @@ -100,7 +108,11 @@
->   */
->  #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
->  #define KASAN_SHADOW_OFFSET	_AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
-> +#ifdef CONFIG_KASAN_GENERIC
->  #define KASAN_SHADOW_END	((UL(1) << (64 - KASAN_SHADOW_SCALE_SHIFT)) + KASAN_SHADOW_OFFSET)
-> +#else
-> +#define KASAN_SHADOW_END	KASAN_SHADOW_OFFSET
-> +#endif
->  #define _KASAN_SHADOW_START(va)	(KASAN_SHADOW_END - (UL(1) << ((va) - KASAN_SHADOW_SCALE_SHIFT)))
->  #define KASAN_SHADOW_START	_KASAN_SHADOW_START(vabits_actual)
->  #define PAGE_END		KASAN_SHADOW_START
-> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-> index d541ce45daeb..dc2de12c4f26 100644
-> --- a/arch/arm64/mm/kasan_init.c
-> +++ b/arch/arm64/mm/kasan_init.c
-> @@ -198,8 +198,11 @@ static bool __init root_level_aligned(u64 addr)
->  /* The early shadow maps everything to a single page of zeroes */
->  asmlinkage void __init kasan_early_init(void)
->  {
-> -	BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=
-> -		KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
-> +	if (IS_ENABLED(CONFIG_KASAN_GENERIC))
-> +		BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=
-> +			KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
-> +	else
-> +		BUILD_BUG_ON(KASAN_SHADOW_OFFSET != KASAN_SHADOW_END);
->  	BUILD_BUG_ON(!IS_ALIGNED(_KASAN_SHADOW_START(VA_BITS), SHADOW_ALIGN));
->  	BUILD_BUG_ON(!IS_ALIGNED(_KASAN_SHADOW_START(VA_BITS_MIN), SHADOW_ALIGN));
->  	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END, SHADOW_ALIGN));
+On Fri, Aug 22, 2025 at 03:35:41PM +0800, Gu Bowen wrote:
+> There are some AA deadlock issues in kmemleak, similar to the situation
+> reported by Breno [1]. The deadlock path is as follows:
+> 
+> mem_pool_alloc()
+>   -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+>       -> pr_warn()
+>           -> netconsole subsystem
+> 	     -> netpoll
+> 	         -> __alloc_skb
+> 		   -> __create_object
+> 		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+> 
+> To solve this problem, switch to printk_safe mode before printing warning
+> message, this will redirect all printk()-s to a special per-CPU buffer,
+> which will be flushed later from a safe context (irq work), and this
+> deadlock problem can be avoided. The proper API to use should be
+> printk_deferred_enter()/printk_deferred_exit() [2]. Another way is to
+> place the warn print after kmemleak is released.
+> 
+> [1]
+> https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
+> [2]
+> https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
+> ====================
+> 
+> Signed-off-by: Gu Bowen <gubowen5@huawei.com>
 
-For the arm64 parts:
-
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-
-I wonder whether it's worth keeping the generic KASAN mode for arm64.
-We've had the hardware TBI from the start, so the architecture version
-is not an issue. The compiler support may differ though.
-
-Anyway, that would be more suitable for a separate cleanup patch.
-
--- 
-Catalin
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
