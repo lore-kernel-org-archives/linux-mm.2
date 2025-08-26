@@ -4,128 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 978A6CA0FF0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 23:16:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DABBCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 23:23:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75C158E010D; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
+	id A4EE18E010E; Tue, 26 Aug 2025 19:23:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70AAF8E0105; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
+	id 9FF708E0105; Tue, 26 Aug 2025 19:23:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D3BE8E010D; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
+	id 8EDF38E010E; Tue, 26 Aug 2025 19:23:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4708C8E0105
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 931C61A0375
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:16:42 +0000 (UTC)
-X-FDA: 83820470244.05.6C5E377
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A1940180011
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:16:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=RHHAs0SD;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf06.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7876D8E0105
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:23:28 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 226DA589D8
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:23:28 +0000 (UTC)
+X-FDA: 83820487296.26.2985B08
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7D7D780009
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:23:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XYkNLHdW;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756250605; a=rsa-sha256;
+	cv=none;
+	b=b8UOvyZ6t88yRmkx2cI6e3Tpj6gah8Tw1F3jrQ7iyVGoRcFazCYK2mt/UrHVA34cU7aIMJ
+	ZfRaNrixt0ZcL7ZjGYYP+zKJGbAmE/MFZ57gjpKmlFhPWVywrpytYq1fa8fITsEhk+DRvP
+	VWSlrEThvV4z4HS60hnb49EjOfFV+TA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XYkNLHdW;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756250200;
+	s=arc-20220608; t=1756250605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qetrqf3MczqPduYKizayxhW6O6ZOA8BdxBOfHLUC1/Q=;
-	b=FA0gD6nYfTN9Dvx1yq2DttcQHFQ1kEiqqjSeM3smwaLcBj6L1If0lSkFhVkkpyAKw5EtXZ
-	0EVz0Rvx9ksK6vDF2Sska/m3sn/nrBodiJMyRM/5hGb05evdjTdNmUqaRAUrejlWgjlOMQ
-	/giyAWlT5CxRHEWwJZINFUItE24CgiY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=RHHAs0SD;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf06.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756250200; a=rsa-sha256;
-	cv=none;
-	b=4tIlRBFFGBretAkPdJqDeUsJU7kXo01eBTOa8pHX0cSEMyykbh72mAJ5Nr1osQvFFfFDNg
-	41i4Ru+EdSMhwQ5/+QbFaqBSe6LN36SaqT6eHBtSK8uZHSJYCyC1WKm3ua6yq+zaGChVAH
-	ZuaiA+hivpdNIZNV+aYB/VHAcFCe7x4=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb73394b4so882998966b.0
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 16:16:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756250199; x=1756854999; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qetrqf3MczqPduYKizayxhW6O6ZOA8BdxBOfHLUC1/Q=;
-        b=RHHAs0SD7yJOgsiPlX9x8IHGXoDO71rXML6hdSkHg00cIDQFu+Z9lExYwT+qvqovPL
-         FB4kDXxP0ZVdcEhsACA4z3n2pyVE9JPW/dWCTLBmWdt8MfVr2LERD4IPV9qwy4n7R6Rw
-         jYnfTe67lrfjZ2Jd3apXcfP7DNp6kuGHkz8dFUFy1jdB0PXsfGKnRXtwgaiBzxOiijv1
-         iF9q6BZaOaQWvm1TxQ+H2wqC6b74VEzeAxaQv/Fql0gmgQLdtGGVWMvlxqDo/hk1L1D0
-         Lgb+bXslgz9J3kadIVx3dhX2k+afNAEARI0IIUur89oBQqJRoqDldLF+oFJRREsPAW/W
-         ha8g==
+	bh=PfV453EylzFjDMotqL0A6T4TqEkZwnGf9pcGEH+odnM=;
+	b=B4bSBuwTMhvWFbDu86fGNlu8bFk/Io4FE2Ds8OH5XQYdrWbYAECi4CkrBSPNF5ScrTpzgG
+	VeMsXmVG5HeHxdeumIMht6rsMusaUmiBccJ6l3YtRjnQkb9ZbTrK+Dyv9r0Z/AMZcciBIM
+	/pl6Y4T7ZORC0U+XeVFrIIFRYiA7kyo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756250604;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PfV453EylzFjDMotqL0A6T4TqEkZwnGf9pcGEH+odnM=;
+	b=XYkNLHdWI+0FxmBQbTFRT+3ltN7g6Fae9LBIdXm+HQjB/yK8Ia3uXaxBKDMeGjwi88aIqC
+	xDaVjPabHmp5yxa7xZ88Xri8ObEDVfp5A3Oe/jZ8Qmpj8fmL1SlabmwXcO+U4NQAcfnjg+
+	7gmJnrWa70K54m4Xp2go7tMcXt8aCa4=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479-DMelG4rJNeOeh8k8BHGdBw-1; Tue, 26 Aug 2025 19:23:23 -0400
+X-MC-Unique: DMelG4rJNeOeh8k8BHGdBw-1
+X-Mimecast-MFC-AGG-ID: DMelG4rJNeOeh8k8BHGdBw_1756250603
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-70a9f55eb56so120776136d6.2
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 16:23:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756250199; x=1756854999;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qetrqf3MczqPduYKizayxhW6O6ZOA8BdxBOfHLUC1/Q=;
-        b=vc3BGWNSHvclWDxY31X2dl0MYWWM5szLiH4Gjp0amIucTRk7NoDtM6dEY7uLoZmv4p
-         avBvfQ/3gfRSIQYEPnH95dzvW15+CKBDfl5i9X3axbIbY4LgPEYzvLMKB9VexhfqpXIG
-         j8VuUSeuK2xu7uB5yVUVNIu5qo5bOc8qzV7zQKSNb9sFF6OkrNdn0wNL4xzeRtTQvO+g
-         +tffJdrArWmVgFy4snMxNVkK5LYtLaZGGLJbYJMyO6wAHWvAD45jJ0CksqcV8KP4ee7P
-         1PHmEZpY1O7XpSe3wbSg+kMGAJZpeyCD8Ep3/JRhoqwx/wLYAVMj+B1baFER7/7xIUPs
-         xYRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwiHadPTJdH2KGHIo2Vdma3YHhH6MzA3qbxDXQhC8KSEQCHC65HkJhHW+4Wyo1aPSDmEqwWR0RFA==@kvack.org
-X-Gm-Message-State: AOJu0Yx2lRczK0NfjT9fdcKnW48o+L7pXOfifncQmQeEKzmPEcYmJ6dY
-	Gr05v6BduwRUzvEARSZCo/2IPC7j+ovvY7+Qv+LbymRrnzuyDNAg/w9dhm5d9PMO8X4=
-X-Gm-Gg: ASbGncuvTwBcoKbMp/QwH21wTCrpQED9hDfunVWWmS9t92fK8KIaQ0eKceFsnQSdar/
-	6+zGiEQy8Q5PgWu6bIiQ06bpS4HlcNDKofv6iAsLIO9DMRVQvuw6DI78ypMEihBxvRWQE1xXHNa
-	b3WJ84fOaeqNkng0edeoewQAYq4p1ZYjKmOpztCk9MJxZhuRbjuYxWuWObu1arCkaK5pRt/Si9Q
-	snpdSEFRRsFUpnu/5/SH6Nrjnds7flbCDa2oPqMNbuGpvf72DN99/wB0ZurCkJQ7JhJp6Ym9VSp
-	3jpP+TM+FuY1zMRQv4cPJYXarHz7/JOJYxco1olPCnQkuBqUGSY1W9B4vJGChe5PrmM8I3VLXPJ
-	gGVXTeUSXhhf4iv6tYbYacG826+GVpF+a2E6vc5RtorYm6yp/4pZY5jp7yzsdc6EhtEjPjUCbNF
-	glIdk8qYFyZMwSS1TQpm+XsgR7LmOfFFt7
-X-Google-Smtp-Source: AGHT+IE74yfqVMKiPyh0C08W2ABt3qXIpU354P0qAPryu5ETmoDrG7LlzRcdx7ZJnXUVlOl7635fBw==
-X-Received: by 2002:a17:907:7e9c:b0:af9:8c1f:b290 with SMTP id a640c23a62f3a-afe28f6a866mr1381335366b.29.1756250199096;
-        Tue, 26 Aug 2025 16:16:39 -0700 (PDT)
-Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afec3251fdesm23170666b.77.2025.08.26.16.16.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 16:16:38 -0700 (PDT)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shikemeng@huaweicloud.com,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	chrisl@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH 2/2] mm/swap: add BUG_ON(folio==NULL) to folios_put_refs()
-Date: Wed, 27 Aug 2025 01:16:25 +0200
-Message-ID: <20250826231626.218675-2-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250826231626.218675-1-max.kellermann@ionos.com>
-References: <20250826231626.218675-1-max.kellermann@ionos.com>
+        d=1e100.net; s=20230601; t=1756250603; x=1756855403;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PfV453EylzFjDMotqL0A6T4TqEkZwnGf9pcGEH+odnM=;
+        b=hUPURCFfvN9DbE08TW5MKdh40b+pzSUTZGNMz9Jzd6CMwZ2KvdmTfcKHKqr8fJ+/4V
+         cBkEw4qdwlgyZ8m5qsgpSTEJ1e4a3FQpQElvwwYp0/TcBMVWjS84g/7LcYVgFYtdoUJG
+         jmpjEop5wMddg4Ll2+t04yt2ru5FbYpFH/sUs5wzk0rFPd9ikpxw+t2nRPRWV6WPbyCP
+         GBsoyU3+6a+zVWTO0bjBgAY/7WTNdxFCOSJMFxCEhD1R7+GHzV0Vo8Q3dwtDvmHW3yFM
+         rSObey6JQ89Vgv3M1BTMumyNESYSDQIU8Y/8o28y3phtKysnx7vtKKfS8kJegog2zKOo
+         n1NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxS8nXzjDmTsBVNrC0Y5V5sY6ZKd+aqayI5kCNQMsAv1wUz0JuRzVTJkbBoqDdFkZyIibi2xsJEg==@kvack.org
+X-Gm-Message-State: AOJu0YxJbr1iXZ9eX/sFcSDWzOEfiSElnxdJp6FqXYtrb8sY4XNyjhx3
+	diJB89NsxUrBMT2MnSQv88xYYvLpOFtiK+lLT6JFoUPDSAVTbuxuOM1OCsjUfjyWRS/c+o9eeek
+	Nc4TRC1eeGI6B6csFqiYxIVUT/d3v6bicVjqp05ZqdzJM+iyVyigK
+X-Gm-Gg: ASbGncswHU/s8h3sE2lCBv07Ks5gFDjWRTkfaocrRBKvt8AzgCYpmZHFOubEGYJ/S9s
+	GaO40tvBbQ7zoGBlHhXSRe7E2AOPN+7HWulVPtImxPDhb+Ya7fd/dJGYEK2s67mM51tkZf/wZQ2
+	5XxB7p/b7eR4Atar1YunfhFcWTeZsdxq3Zv/Wi2hIU911M0FFdtwa7TFMDTtOGM6X2KvPXsVr2O
+	nhnHw5p8/iW/4x/7/jPDE8ortdhPPHrqzCmh6mtYeikYal5sxOYeUlV57Qn8wok2WaS0vyeI8Ee
+	mRU4E2kh6hKME6x1UmytCLRr8ATiNuavYGW4VdX3tlq32PkmhuuMUDe6s4uNYYxJeiXIen4K/Xx
+	H6gyHvJpCOw==
+X-Received: by 2002:a05:6214:262c:b0:707:6665:eb67 with SMTP id 6a1803df08f44-70d970d80acmr196728796d6.27.1756250602656;
+        Tue, 26 Aug 2025 16:23:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEagzZGepQvPjAZ7woLBtEEbKkKtRRVScJpVsy+SdVoofoUKsJC2jnzOZHnQCCSJR5pLARGzw==
+X-Received: by 2002:a05:6214:262c:b0:707:6665:eb67 with SMTP id 6a1803df08f44-70d970d80acmr196728556d6.27.1756250602132;
+        Tue, 26 Aug 2025 16:23:22 -0700 (PDT)
+Received: from ?IPV6:2601:188:c180:4250:ecbe:130d:668d:951d? ([2601:188:c180:4250:ecbe:130d:668d:951d])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70da72aff6esm72585926d6.53.2025.08.26.16.23.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 16:23:21 -0700 (PDT)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <ccb63d79-8c7f-4d0f-b92c-3ecb94471cd7@redhat.com>
+Date: Tue, 26 Aug 2025 19:23:20 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A1940180011
-X-Stat-Signature: 19dg53mto77d3swwo5k1xnsfk4ht4egr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] mm: Fix possible deadlock in kmemleak
+To: Gu Bowen <gubowen5@huawei.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Waiman Long <llong@redhat.com>
+Cc: stable@vger.kernel.org, linux-mm@kvack.org,
+ Breno Leitao <leitao@debian.org>, John Ogness <john.ogness@linutronix.de>,
+ Lu Jialin <lujialin4@huawei.com>
+References: <20250822073541.1886469-1-gubowen5@huawei.com>
+In-Reply-To: <20250822073541.1886469-1-gubowen5@huawei.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: L29fbYWkJ7j5Xuws-3o83iBfRcuJgs4vZd__CkFp7Eo_1756250603
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756250200-581870
-X-HE-Meta: U2FsdGVkX1/3rVvbY6kCbtoe9enEKPtlqG0ktnvSDwN6j0b2DyHuz30YMTFqdM1ClhSXdxuDV6UC5FWzsGTJmrf2oWF9TZIn6Lmu1uL6JqkmpYVAsb+NGHYNwTvPMzEaSPNFKHD0PAqlz968l4WSGTSCoVZMPgXteL765pjwUwC+AuvYEdajVhouoU0ppyRjre9njmKF53W6d73xMKLz4LkfEPV5h7NE2eVsV15Ou8DVJ/2KGb96AMqct8ZwZkVTYlYA6fwm2yn9QC9ZCijL//JOLC9LuO7l5ydSe+kbEWMjw6zU7Y8xyfs8GjMZzuuu5rDFW5Pmy5ies0DAUTO+Np35MR5Z0q4NbtAsBZT5GskCOFUFawjkcMYZDKdRjF9u7tNA4oQksHfdaa5dSQSiquBAr4aex6mM44rmBbTwcRHJ/qPf/FrZhaG34fTJNFbGV2/7+49NxvNGR+ubAA3njaZWSxQfU1rrnoolj690uKPgYxCy8H6RLhu9otnlTCaqzkqTw8bKiKAawDDbjZYCkeE4kM3fTAFhrP76VtYraEmIQ2tp2t3InzmiESJCuZclIWBsb0yUxqhNnSUmkAPV8zwBbKa5YB5H+c4cy6MTdxeH9gqRCi2SaCb38ueXxY5n7mIkzFNdpy0wkAaBP7p05QBv4d3p4O9ueYGeONFSjcdQRUgsCtpsY4lW2/q8kE2o0fmR86GXTjlb4j6nw9zKdu2QvBkGwS+v0I0kAGUKVXE5TAHhiRP/1h5fa9P1aZIAVkgkSmaEY5j+AkR9+WSuaIxeXo5y5WKUdz3a/C9uvfP5z7IUpEyqW0t8C4Rq4SLvzcime5YYPyE4VuLt5O42CwjTmCd6PcjcqEPYuVDk9z/X1KgmFG57SjY7JLiB7bAEehBfHYgf+PgeIhUDyiHuCsQpUzpR8Y9Lr4svZe9pS3rj/GNb+TcONSGUK7hPd/w98Cb9VJEld6Nym60uD23
- yafCW3Rq
- MGfBN45e+iyyKP7Dxb3lZ1M9qqJnqQxcEgyyZ+z7TvC+UYdBmcWk5GoywEiB4yhPF2zpa4WNRUuvZbRYrao5/ikZ2h5KfA9goieswJGKpTWji+YTtmpqCzRHu4SNibIDFHIY98DTCASUZoL/hTHbOt8cfUYw4LFjQo5eIgSW8YSKBL4DK1dFFQS/QYdKmMkBntB5YU5jlkHv8Iwq/fQqt1WyQzrFbiRlcBVwOsZNmkuKKxSPx+NlQTJ6a+QhgMSE8wadiMpoygDpObuqixuUDy6mj0mNfSn+IrXztrwR7pLbnzt1x//yc816PkZiH2BdyUQ0RlkUlSUsrGzKcp9t3EAKmVgTuu9ML+QXRYEon+Pvdd2TFRY2fVCAhrZep6rtCBwhuSTrVpD3LlIHcqUhSzsJO0Q==
+X-Rspamd-Queue-Id: 7D7D780009
+X-Stat-Signature: cmb3xhwru76q843gpe5wifgynpxx1neu
+X-HE-Tag: 1756250605-221407
+X-HE-Meta: U2FsdGVkX19aN5UbfWPRxHf89RxX9isZZ8jx2Cw3FUF4DWviaeYFa+QeEDaf/gfsWIm8MsHGHyi3rncYEF0uKpugPTKcPAHkIVHRPTvB/zhytlabRdKQ4glxgx7QGAtoVbsDQomXwkh1ArTzB/kRYbBojBJj2Z2E+GZVBrWGnGfd9Jjvr0qpWpzxbbFZov+l7e7i/Prq73QZ8SMZTPvZChy1fNtuzHpgBoDU/k5uzg8rpJ3q5IpPefsriKcEKae+sgMO5V+v+uVie2kox9TNgRfLAgVHSGr3EtIGt5tJhXjP5oobJjLSYGLtd6yoT9lfFNmPC+L352Non2vClCBwhuukYPm7jk/ofcEU2CLfAcf15y1LTCg8FkiLqtKmz4vIjoTyGFwQ0gwr8GskiMdeECById7wAMy+VKTOKANC5D4bHXzXbW515L0sSP1RGRamy4FOPeuIOGGBhH+lg6xCsce+E1D2L9xscP1ObP6yCexr0r6jff901Tjiuhh+eB441+ZwXl7PhCufdjf15Q2PfT2lFjrowF9tPDfwCLRGhOeDKEfBojDsHifWp5zsWTbfJgQYi8USw3vEzt62Owix+sdgTF7aMrU26t5cmzPBGpCjafMoFaa5/4JmHeMuMpbIhCbLzNdbnCxGEk+NAowU2Or524suydkn0n0g0LMSPdnOnfH2RFksYaEoRI0NPWb/6at7kGNbOL3a2NjvM2+biFrq7w0dRqZVfKnQPe2RJsgAx5uW0zCyt/trzFvi2JAoadfqnzRzNQ01+sApl7pE21Q+ThqNGl2H7eDJ6QxQCGwugAUE4YsUv41TmkU9LCEF60diGRsp+HeS2Ori+wvx0IulD7L38AN+cuDAR8IiYLRbB9IpP9vmgs1o6AqoVN5j3h522nowQsCyG/3SbuFbhRN4KplJwIHadiHLnQ9RQj/ri8yt/nyR8MAhOHiync6xhUIzeW1sk5jwKTKEOIL
+ 9COov/oi
+ yBDDp7ZKTW5mwjK/pOilCAYac/OjMzlsxvSCisrocqgfku/YagT+Q7zEyUdUBxTRDEHx7kx/gV61iR591cPo9DDh3IwxCLBnwN+uiaRUGN7SyI1MBZCWPPa/NahAoJj5jYwvCl/dNqHvneiZ4owuLi0qLOVFYKjVcvkmP3/cSn7l3ZzhRNSPmqyc01CDBzXeoRSYwC+RuWJCH9PTf07nKuEVXnkG4oEGk3aiMkVSaBE4lolxkRG8zgc+HfHI71mTnSsaeBEYs14HgOd/Tdy45qQL60cakd1q4XV0xn9EPHp4Qsf/AzZfucaNmAkp8oOH6h95HIoogsKenvc7XqAfF4+CvKgCiPhmR0vyGRUy5vbV/ruZEt+M+VwHPpQ4kzclWFI7AKeEqBVHT8Q8DG5li8IKweurF148l6Rk+lpmDgdVDrnlWZ7SKxU3mB9CxKm/+lK/7NuVJ4jVbDlH8Wt/0eK97PD9963G8HMjlmqNPkuX60OV52Lt2WEzWE3LmuHXBmlGuCWlkEBdqk+C/kiFrCQ/Kv0dx2TFGHFaRJGrYYhowMSo6chtVK+T8EAx2mxSNJxis
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,34 +136,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It is not legal to have NULL pointers in a folio_batch.
-
-However, the Ceph code does exactly this, and a refactoring patch gone
-wrong has exposed this to folios_put_refs(), see
-https://lore.kernel.org/ceph-devel/aK4v548CId5GIKG1@swift.blarg.de/
-
-I believe this should Oops instead of crashing due to NULL pointer
-reference (guarded by is_huge_zero_folio(), which may silently hide
-the bug).
-
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
- mm/swap.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/mm/swap.c b/mm/swap.c
-index 3632dd061beb..07ccda00e7ee 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -952,6 +952,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
- 	for (i = 0, j = 0; i < folios->nr; i++) {
- 		struct folio *folio = folios->folios[i];
- 		unsigned int nr_refs = refs ? refs[i] : 1;
-+		BUG_ON(folio == NULL);
- 
- 		if (is_huge_zero_folio(folio))
- 			continue;
--- 
-2.47.2
+On 8/22/25 3:35 AM, Gu Bowen wrote:
+> There are some AA deadlock issues in kmemleak, similar to the situation
+> reported by Breno [1]. The deadlock path is as follows:
+>
+> mem_pool_alloc()
+>    -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+>        -> pr_warn()
+>            -> netconsole subsystem
+> 	     -> netpoll
+> 	         -> __alloc_skb
+> 		   -> __create_object
+> 		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+>
+> To solve this problem, switch to printk_safe mode before printing warning
+> message, this will redirect all printk()-s to a special per-CPU buffer,
+> which will be flushed later from a safe context (irq work), and this
+> deadlock problem can be avoided. The proper API to use should be
+> printk_deferred_enter()/printk_deferred_exit() [2]. Another way is to
+> place the warn print after kmemleak is released.
+>
+> [1]
+> https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
+> [2]
+> https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
+> ====================
+>
+> Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+> ---
+>   mm/kmemleak.c | 27 ++++++++++++++++++++-------
+>   1 file changed, 20 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+> index 84265983f239..1ac56ceb29b6 100644
+> --- a/mm/kmemleak.c
+> +++ b/mm/kmemleak.c
+> @@ -437,9 +437,15 @@ static struct kmemleak_object *__lookup_object(unsigned long ptr, int alias,
+>   		else if (untagged_objp == untagged_ptr || alias)
+>   			return object;
+>   		else {
+> +			/*
+> +			 * Printk deferring due to the kmemleak_lock held.
+> +			 * This is done to avoid deadlock.
+> +			 */
+> +			printk_deferred_enter();
+>   			kmemleak_warn("Found object by alias at 0x%08lx\n",
+>   				      ptr);
+>   			dump_object_info(object);
+> +			printk_deferred_exit();
+>   			break;
+>   		}
+>   	}
+> @@ -736,6 +742,11 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
+>   		else if (untagged_objp + parent->size <= untagged_ptr)
+>   			link = &parent->rb_node.rb_right;
+>   		else {
+> +			/*
+> +			 * Printk deferring due to the kmemleak_lock held.
+> +			 * This is done to avoid deadlock.
+> +			 */
+> +			printk_deferred_enter();
+>   			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
+>   				      ptr);
+>   			/*
+> @@ -743,6 +754,7 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
+>   			 * be freed while the kmemleak_lock is held.
+>   			 */
+>   			dump_object_info(parent);
+> +			printk_deferred_exit();
+>   			return -EEXIST;
+>   		}
+>   	}
+> @@ -856,13 +868,8 @@ static void delete_object_part(unsigned long ptr, size_t size,
+>   
+>   	raw_spin_lock_irqsave(&kmemleak_lock, flags);
+>   	object = __find_and_remove_object(ptr, 1, objflags);
+> -	if (!object) {
+> -#ifdef DEBUG
+> -		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
+> -			      ptr, size);
+> -#endif
+> +	if (!object)
+>   		goto unlock;
+> -	}
+>   
+>   	/*
+>   	 * Create one or two objects that may result from the memory block
+> @@ -882,8 +889,14 @@ static void delete_object_part(unsigned long ptr, size_t size,
+>   
+>   unlock:
+>   	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
+> -	if (object)
+> +	if (object) {
+>   		__delete_object(object);
+> +	} else {
+> +#ifdef DEBUG
+> +		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
+> +			      ptr, size);
+> +#endif
+> +	}
+>   
+>   out:
+>   	if (object_l)
+Reviewed-by: Waiman Long <longman@redhat.com>
 
 
