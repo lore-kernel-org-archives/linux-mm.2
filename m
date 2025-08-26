@@ -4,112 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FF43CA0FE9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 19:34:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4499CA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 19:35:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B574E8E0101; Tue, 26 Aug 2025 15:34:07 -0400 (EDT)
+	id D7C108E0102; Tue, 26 Aug 2025 15:35:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B08748E00FB; Tue, 26 Aug 2025 15:34:07 -0400 (EDT)
+	id D2CB48E00FB; Tue, 26 Aug 2025 15:35:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D0208E0101; Tue, 26 Aug 2025 15:34:07 -0400 (EDT)
+	id C69B28E0102; Tue, 26 Aug 2025 15:35:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 81B018E00FB
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:34:07 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1E51358057
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:34:07 +0000 (UTC)
-X-FDA: 83819909334.21.66629D1
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4FE31C0005
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:34:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxidbnxD;
-	spf=pass (imf10.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id B46558E00FB
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:35:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81A2613914B
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:35:13 +0000 (UTC)
+X-FDA: 83819912106.14.B6A28E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BCE9940006
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:35:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756236845;
+	s=arc-20220608; t=1756236912;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UgrS4RlDzmuPVEoYRuL5n3FdVX6RzYDiuXN16UyzzCo=;
-	b=su2J3HV7hRb4757LX0YSm5rMuEQLTUKmUoWQKnEn6v5YpWk24Eoa6HQ8d8Kiq6OZgWjG3G
-	Sw9ydHRBBab6ml/uhgDttyIHhcbXHNexgl+fxD962loOcXrBb804dAxd7n20yCF3dreq9i
-	xrj9IfLUK6dWb0XakFoh3Mb2/90pbnQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FrT6fWaydhPGhOboMRkcmdWPYPAgiXGPSbIYcSJKONM=;
+	b=NQ9GteQVCQOUD1ESjtzl37f3AJxI1SKjn2pf27B/B7NFDyxqIUO/KtzBcn6WnUyNBURcLT
+	tpTYyGEMijwUQM5QchAWAdAehZwfRUhgC50jQaQcmHawmTe4aGhiBaFYkHVssDioe3HAaQ
+	B4JK6rUbbDcLQd7sUzUxsL6eLLJcbI8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HxidbnxD;
-	spf=pass (imf10.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756236845; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
+	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756236912; a=rsa-sha256;
 	cv=none;
-	b=MpGQ1X6SwEm4nc0B7IH+AEOE0+AG0gL01nW62n5crihIjRqQQawtcYDnLPuuLFLM2xXxeN
-	fwyLR/ilocp82Gi1sGiD6bb8/un+2z8qXFHBW7JZ3zSsImIdOMHd1NNU8GdIKkZeDUKZ6l
-	Hv6TsSHxzlsjfOvtGkTqnaWazoBxLDY=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-770522b34d1so209580b3a.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:34:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756236844; x=1756841644; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UgrS4RlDzmuPVEoYRuL5n3FdVX6RzYDiuXN16UyzzCo=;
-        b=HxidbnxD66b6woC8hVjxx6l9/zZ+03RigwuthMUDHSan5fbLq80EZz2LOPPpf4eiCd
-         ZKGaARNFWFBi9KVAmAX9hiVDv352QuRS57/o7RjdmejGhpTifTiwgRO4zrPJter+8wtc
-         GNv/TC8rS1YfUDXZ17lLdLV9WUG2JvVa05hwR3fWWFh8flGfzMkCygxTVBo+QbMCpbao
-         FY2PaCz4mKLa+GZvcJci9mMAfRsiW08A6eM7cvkXKMaldHthqiJNBgOd9JErXBCBL3mi
-         54JWkyCsn8fceXOh/QcOgxRQwXWxHI5W/mPdBjxD9MtSCctbjwwlEVj39LtG2zV03HX2
-         HuNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756236844; x=1756841644;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UgrS4RlDzmuPVEoYRuL5n3FdVX6RzYDiuXN16UyzzCo=;
-        b=Tx5PEnP5F0mAjteLCEcrT9ozSD75c/DfN76TzoBTaxr2ljYd6TvMqqadf93VS+8fww
-         8UDCWGiHbjx5mIw6nIaG4h41yyZsDAZzDOUAt/es3H2NcG8FTO14qWZs/vHQzgJt/f9a
-         0WTJH22l5bP/JwlvoxroiWsB6+yaSAS0hf7Ek00cSaJUdUVoL7Hg3NK98lct9THsHdeu
-         F3HGgo9ndJNx6X2ZhGbwNX52OO5/UPlt5Fn72YwRGonwI3WulAOwcsdESiIo9WzjZA53
-         8tcqeJhxRI2Kq2yrEq5z6Z2TeS+rcbrmtJGe5UY6vD1SgbEH9ZtmVRulyMMjhAdPegkf
-         HeFg==
-X-Gm-Message-State: AOJu0Yys+ZnEHw4Qj0NYs/B1WQ4j7Zumeq8De+TdJQM+wsIlSgpbIuu5
-	6W3g735nUfi2OxCyD3mXAfCHsw7l8QCbWZJ0lLwoiobQ9gbhLVSvuCmJPhq18w==
-X-Gm-Gg: ASbGncs06pFAmk6BXnFuE05lRZlSrY18ZUpCqDGMap7l3eGf/CktnzeRgJjnOvqYNg7
-	h3J3lhbr2N1jnsMsnxwLvIXfx/na4o0RKGJWgEBOCfG3BhV3FsDDtUW2OXRwJbdQ/yw3Nq1qGxt
-	pOL13N4kJcUCFVOqj+1djghsInAcOBRDT4B2A9ckEYEerPGrNjYtziUD+sHFaIMNIIdyRwL/wkf
-	gIKHbLlDOvpvSLGMJAq5x7NWNg5phpSSDty2f97xPJmzNRd0VOmW1nF61K41zSEwV2M9BVOAtk3
-	bhuPqMiNMLdiG6EfESmxNxw8IfHNYyg+q5eeEBqNeINHthQTDofx8s2579vSKvYKHA1ipL8yIK2
-	5rQTp+qFf68ExQN5CAffmtZMR66x2MakC27ptk8SLa8GjiHD+QMZEiA==
-X-Google-Smtp-Source: AGHT+IH/E8LX9DdP14eamZ2LRF4BG3tJOFJ+GpntOt1nypltTCHQQ8wSzlJBqbosmyTo6axuqcj0Nw==
-X-Received: by 2002:a05:6a20:a12c:b0:240:d246:dacc with SMTP id adf61e73a8af0-2438fad3083mr3720822637.10.1756236843741;
-        Tue, 26 Aug 2025 12:34:03 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7705647e03esm8054053b3a.59.2025.08.26.12.34.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 12:34:02 -0700 (PDT)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: [PATCH 7/7] virtio_balloon: Stop calling page_address() in free_pages()
-Date: Tue, 26 Aug 2025 12:32:58 -0700
-Message-ID: <20250826193258.902608-8-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250826193258.902608-1-vishal.moola@gmail.com>
-References: <20250826193258.902608-1-vishal.moola@gmail.com>
+	b=hW54CN8CmtgiJjg34eXTiw8CXMoURjOcpAbRKgDun+4RbhPkpAbOi/KvnWznkMY4wwuVrt
+	Zuj1eivfl/CzpYjOs19/u+NcptioCzDMBWjXwWt3jJxs7jYwUuo3HSr6BPaJWNklLvxrQx
+	VbvUsoOGdsjhyajv0Pj5z/lqFwf2yN8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 68941437BD;
+	Tue, 26 Aug 2025 19:35:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D065C4CEF1;
+	Tue, 26 Aug 2025 19:34:57 +0000 (UTC)
+Date: Tue, 26 Aug 2025 20:35:00 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com,
+	kbingham@kernel.org, weixugc@google.com, Liam.Howlett@oracle.com,
+	alexandre.chartre@oracle.com, kas@kernel.org, mark.rutland@arm.com,
+	trintaeoitogc@gmail.com, axelrasmussen@google.com,
+	yuanchu@google.com, joey.gouly@arm.com, samitolvanen@google.com,
+	joel.granados@kernel.org, graf@amazon.com,
+	vincenzo.frascino@arm.com, kees@kernel.org, ardb@kernel.org,
+	thiago.bauermann@linaro.org, glider@google.com, thuth@redhat.com,
+	kuan-ying.lee@canonical.com, pasha.tatashin@soleen.com,
+	nick.desaulniers+lkml@gmail.com, vbabka@suse.cz,
+	kaleshsingh@google.com, justinstitt@google.com,
+	alexander.shishkin@linux.intel.com, samuel.holland@sifive.com,
+	dave.hansen@linux.intel.com, corbet@lwn.net, xin@zytor.com,
+	dvyukov@google.com, tglx@linutronix.de,
+	scott@os.amperecomputing.com, jason.andryuk@amd.com,
+	morbo@google.com, nathan@kernel.org, lorenzo.stoakes@oracle.com,
+	mingo@redhat.com, brgerst@gmail.com, kristina.martsenko@arm.com,
+	bigeasy@linutronix.de, luto@kernel.org, jgross@suse.com,
+	jpoimboe@kernel.org, urezki@gmail.com, mhocko@suse.com,
+	ada.coupriediaz@arm.com, hpa@zytor.com, leitao@debian.org,
+	peterz@infradead.org, wangkefeng.wang@huawei.com, surenb@google.com,
+	ziy@nvidia.com, smostafa@google.com, ryabinin.a.a@gmail.com,
+	ubizjak@gmail.com, jbohac@suse.cz, broonie@kernel.org,
+	akpm@linux-foundation.org, guoweikang.kernel@gmail.com,
+	rppt@kernel.org, pcc@google.com, jan.kiszka@siemens.com,
+	nicolas.schier@linux.dev, will@kernel.org, andreyknvl@gmail.com,
+	jhubbard@nvidia.com, bp@alien8.de, x86@kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 14/19] arm64: Unify software tag-based KASAN inline
+ recovery path
+Message-ID: <aK4MZGzTvJ8bBQvn@arm.com>
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <eb073b008b547cf87722390cc94fe6e9d21c514e.1756151769.git.maciej.wieczor-retman@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4FE31C0005
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eb073b008b547cf87722390cc94fe6e9d21c514e.1756151769.git.maciej.wieczor-retman@intel.com>
+X-Stat-Signature: obdgpxqyyosjggqa591b1riefw5mjhxm
 X-Rspam-User: 
-X-Stat-Signature: ir388ggzj7b6uj1n3qewpx3sghmz5rpf
-X-HE-Tag: 1756236845-789693
-X-HE-Meta: U2FsdGVkX19hVt+lpliVBeGbA8+vxSoh1DFCv6jTY/AxF72B7Mqj8gePatOuRGAe/NvMr7uazS61g3nm0fyYF9zVnr+eyCYfuP7ZM7rUkALG6Mw6peCxJcNKbcr7UmlnOM/Z7/xzxAOjEJWTBzcRRDPU+nordQw54DZ0hQawkYZPAJ5dmWzf3uIFQ1ZFqANIOJzdmIXSSpHVt4oSPQ5nJR2G89o5y94qTAbVVTLlmDd9YKTS0yxcC+iyL/6u9+s5CzoC8BoUmgLLb8B/B+w5mrTAx1v5h6yDGcg/bd8vjAMeF0c6izL3k8HZePy5CT0nE9Uzip/FqkJaDhEKk8RPkQlLcUzc8C89KG8UWh/DHr30td+b5PTsllu8cC9sfI8XtNo8buU8KoAAVcgtqxu54kjiBu+kQvBdXAZNT3ogPtfASSFIETBXN/yBgUgO+BrCK20/0LCazVByQZ+8YJXpBCSe8mYpcVpTP7f49beL4WDJ8kq4TW58KtI3KS+BXHJpxxp1KmsQHkwfru1GyHbLAS8qMf0owrTBPfgxxZ8/62r8mw+emSlCUvmFa5uiCX63qqcphV56ZJqW5jXyiHsaxiyo5OHtWURi7/IFeri+C+RSoGqVsMS3/X0VmEZ2JblboZ8A/Hpe04c9C2dbgtW+G8HotlBrCROycG+KB/uzQVh72cAGJf4SuEXJp1W/wmhzQYjGI6d+nVmAsdn4yXj0quiocvRkqRqkiGXgo4wo4a4sQSJIRUtXWG0b/noJj5ARB/k0gYS/3+6iK4jG2CD9PH7zhfEoAY8DIegEmQ93Rmbj2hJRmLo7WLNfv31YBdWXPdmJkqObS3HyLYcx8qxS4MNqdJd6YYf4QHUR6LJv79ilqS/8ZpptS8ALgXW7HEaRj8ZMxUYElKTDYgghfjeswNvqLeSFhwUcO2IlcdX0xKhye0d73NFDIYMOlG3uX0Fpsod9GnAk8Ax6reVrv3t
- q4Le3+d9
- YM51a3er6KzOqUXqBhMFSnaK+O45psDu7vAPrXFLC1L8GWJfVvh0ifAKguwS6eFfeYU6H2HI1omoMjYiccn3o4e6X8UkQqic8NxaO8InpHenaFxvrVqQbrlyXKAkdKwuxFTwJ22Ke3qTU6ufP44TXCz+C3L8zzrjterpLaOhjtN4vGkkES4QJQ6FeR1KckcmWoqGHDcUKys2/7vp58QqvmSrpqcxe0DBg0RpQ9lXRcV6Mwx05taB+gFsMhg6Pr6b8ykXZfyWoXMqSrtfVKQhpr7D/OcYm+sQU8mn9/ejavfMPRbVmvLYbaJfCjT0YJcRbZ6Uj6pgafxud97wqbTNDY6HLZ13qJwiQVX7GudDtR3NlVfm9hPOUNibxvBV90O+E8iE1oSQB4C/C1yKg7gHF7msoUptEJjZmPD4Gzn0l4BHerXt9rrVjC/lj7sCVgZI40vmMW6FzTVq7mbrqVNNizOvbDX7YZM/ozAOCeFwbsVK2bulQb+b3oTTF0F2Yc7G6FUWU1Vf2pjErxOs=
+X-Rspamd-Queue-Id: BCE9940006
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756236911-912173
+X-HE-Meta: U2FsdGVkX1+twvCXSF3oruXdVQUi5i+kKKFKXKPPxDw9waJmOSGQN5f0S4z/JuT7oI3q8DKT4OfyRZB7KBIXqSyCEInaK2AiE2DgazIbGWKvz1ES7wh4zP0lGe5CzczCAIrUo8f1IR79iSCwLcWCvgx8YayHUORKKb6uG4R8mMt1L4+bE+ldtisrX+NdRPUF9OC/nc4x3figMLm5TyvcrigwvLOpCwVwKCT+CDhoLyxKzUm/0f81295nELP7YCVumJvB8PuaL532ErjlSF8F5gBuknPjJhPlUrlSk1cex12EOTfdKhMUlNTkxQaUqP/BVHufmALjEe3Sbsb77ktJANAfknTQtsxA8rj2DOuoCYgew/+5DIyJ3j5wdhThMqaVK5Pq6b4NuYPIe7kNSBoahqcbFH8baBWYJdmN8+0+GzDVYmHcCLIVBp/YPW+jTOoOMwMPufIcwf9zteiHd7LPmVplWuB3rOjg/qpSFNKStZHWX+CoYPpqh/b6nM+lGcUpNi54mm4HeKL38VdsOcbMvXjrQAW4GeRtkSJ0HDpRTBERQjZSJsW4xctpIARCCBVz8h9Xyz4OLIOki7tqrwJtpWsJdT/4pbPjHLVOmfayZqvRELN9F15yPIR38PURvctszQsbh/ZXlL2Af0t98q2z4/ZpxUg6dnv94oQtZ0391SG/3pyiaz8vqqnG+0v7kGY1y9RAvSdxkop19ZP1MFJJrGtiqseHi8BfMjCJ8WLP9NZPysbhchrVR1zNCzxU2MtDbt3A7mMaTIbFyTquFNAhprly+md/Sx7m9jADXns06D/DLps8MOyKpUvpcZOS0NQwbVZRjtYUZQYYUO5Jt/M9cCa1PrLn+D0vnJ5EAWcgYPFDkGdVndjH/CPieC1EZPfVGMjFAfDklo2zXB7r2UWAk1srD+znrcP7qNypntNt8hFR1PS1Qg3oNdpiHnhVJe/UTF1j6PW3pKi7nM/pZBB
+ QxbGiC2d
+ sPSTyKAEJd8UNVxvD6d0CvYGrpHmhJE04VnLQet5iwTFIbu9HSWhnB2p6KEYxEARN2S0XE/gtCSAz0xLuS3S/nN8vUequwZv/TKYB/7BBTuob9k6r56jX1tX8btGs88CfUsjEtWBU2jxADi/2hQddPdBcaDgX1tfQIU18WQKwl67pyZRMCTK0v22AuBF6AbaNS3DMLnhW4V9QorZIe9gKbHHDrCsgic3HBDjj+N8vOiYecBtCuz2A21d/jrM08r8dbiQQ7OqG0NEVOMPQk9l2NLdAQsJRCeJcrDvq5CvAwvMYSSrMFSyeOiNMsOentbNKSeycRFrVKSsmZpRxJ/NMZnQhvczM3W3uPP9LiKh55GumPlQ+HQxbkrFu0dITmeTaOvxCd0F7oHUfvt5yUxAmf/iQBACqcD3Q6eE1DfBK0yaeMxzc3x4dsjKQBbjafXgo+nVCZNo9X6yshuqt5ntKt0qB3ZoDxJ7Mjnf9fituyYqUsOecKRVgDayVHIHhHgCNJqPe7wvIjh7pxC9lIDch4d9JDQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,29 +111,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-free_pages() should be used when we only have a virtual address. We
-should call __free_pages() directly on our page instead.
+On Mon, Aug 25, 2025 at 10:24:39PM +0200, Maciej Wieczor-Retman wrote:
+> To avoid having a copy of a long comment explaining the intricacies of
+> the inline KASAN recovery system and issues for every architecture that
+> uses the software tag-based mode, a unified kasan_inline_recover()
+> function was added.
+> 
+> Use kasan_inline_recover() in the kasan brk handler to cleanup the long
+> comment, that's kept in the non-arch KASAN code.
+> 
+> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
----
- drivers/virtio/virtio_balloon.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-index eae65136cdfb..d4e6865ce355 100644
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -488,8 +488,7 @@ static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
- 		page = balloon_page_pop(&vb->free_page_list);
- 		if (!page)
- 			break;
--		free_pages((unsigned long)page_address(page),
--			   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-+		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
- 	}
- 	vb->num_free_page_blocks -= num_returned;
- 	spin_unlock_irq(&vb->free_page_list_lock);
--- 
-2.51.0
-
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
