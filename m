@@ -4,256 +4,199 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C73FACA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 17:24:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3F37CA0FF2
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 18:01:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 048F56B0169; Tue, 26 Aug 2025 13:24:44 -0400 (EDT)
+	id CF7878E00F7; Tue, 26 Aug 2025 14:01:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3B3D6B016A; Tue, 26 Aug 2025 13:24:43 -0400 (EDT)
+	id CA8E38E00EC; Tue, 26 Aug 2025 14:01:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5246B016B; Tue, 26 Aug 2025 13:24:43 -0400 (EDT)
+	id B701D8E00F7; Tue, 26 Aug 2025 14:01:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C37D56B0169
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:24:43 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 700891182B3
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:24:43 +0000 (UTC)
-X-FDA: 83819583246.30.4A6217C
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0137A1A0004
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:24:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kc5CJDDj;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="q/370a7y";
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A43948E00EC
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:01:30 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5159E1A026F
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:01:30 +0000 (UTC)
+X-FDA: 83819675940.21.8B1C13D
+Received: from CAN01-YT3-obe.outbound.protection.outlook.com (mail-yt3can01on2136.outbound.protection.outlook.com [40.107.115.136])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3911EC001A
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:01:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=SSWi586e;
+	dmarc=pass (policy=none) header.from=efficios.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+	spf=pass (imf28.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.115.136 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756229080;
+	s=arc-20220608; t=1756231287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=;
-	b=BL2qcOHgD93QrYfqXlzddM3tyO8jSheTDr86kjkWuUGsRL9QDe/jr8eLu7GeWZMOkigf/t
-	rK8QrCKolsqh8bj5C4fPp63rdg29g/ZqWlGaeKxyChTnK1F7LjopMZ5i8b839C7lYpNQRq
-	H1wGNmY9YTmw/0kQOF6FvJ6R5S8CYzo=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756229080; a=rsa-sha256;
-	cv=pass;
-	b=xkExLO8YyTT/AfJMN8wcXRfmVvuTYL8up2pmn9Kt63ghHDLNTl1vZdPjagbAG14/apDcbP
-	lcrGYIriekbIHOM6kI5arJyTXyUhcTA0h4EOEniwxuJdlpNvEUeH9O1mqJk+2w+BPJAg3B
-	1yO0Jol3dsB1Grssk4s9B5NSH7CHOxM=
+	bh=qvsPQ6h6AjFAfgGui8xqt5DP1fsmJdqpxYNRKlmQgTE=;
+	b=PW0N8c70ugFxLnek9XldWNm0DrFHTkGlaBl7FRbDOFzcu8L30x+STqSXoxxxnJawcUQxxW
+	GL4Yr555CmABDMFZ3/71nEkg+vPccOTwi6q/5x3zXc0kGP+A5NQ0FEyZXgeBiM3nuhxVm0
+	WmcJoD8uFxpaHD8wuZI5nNMjYqG0fR4=
 ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kc5CJDDj;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="q/370a7y";
+	imf28.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=selector1 header.b=SSWi586e;
+	dmarc=pass (policy=none) header.from=efficios.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57QGfrUg021413;
-	Tue, 26 Aug 2025 17:24:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=; b=
-	kc5CJDDj4vGmuGb91AROPrTPUIUIKmlFnjq5tDmpKiA3zAi+uIIUutl+D24jw5mF
-	nfHYe7MnzvoVddlbYDFMWSJo9K1NFMLsDQgbmHqigPCzmZ2qEoO+9KCzXSbdGeI8
-	OuUK0e4JKA+mYIlg5RVVPiRsfhSufxpgBKajQCOe8IFBmxtV1bPNBaUAG19ld+Tb
-	mYHVt0nBRjZXrhGHW1t56l0hhQah4SuttApeZGINkxXZkRXeYBb6Mx0pWcDpFJLq
-	dX4ABrtVka0qTXOZzE4v5fckMKHeDwHIXOv0v7/QabYxiHuKtb8EsSNUEE6HZFJl
-	Q0cz+uZ1vzYrlKgLscwslw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q5pt51qv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 26 Aug 2025 17:24:14 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57QH5Po5019707;
-	Tue, 26 Aug 2025 17:24:13 GMT
-Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04on2060.outbound.protection.outlook.com [40.107.102.60])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48q439vf5y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 26 Aug 2025 17:24:13 +0000
+	spf=pass (imf28.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.115.136 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756231287; a=rsa-sha256;
+	cv=pass;
+	b=tf0hpfDA3oYWnP4iOa7rhxPWEoYYXWltjAQPy9H0AJySjfBOIapej09kKkMUFgxv3zeIJI
+	5PFCk5WUdFGNlLcg3jS7RYVSUvTGTm5fpeD1eBQD5UURWLvnfq151Cp+u+vJWo9tbqJP0n
+	AvucCOtyKTCaDGZF9NN90ABq5DzhMvc=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SYoUNfUWavGOjmjXC5IAzIc1MvPfvTo/KPCAgdrqORY8e0e670kLP9UwB/ebzvfAvynwMW/CK8zMwIsrkTlNDMn1dEC/BK0m0TKzNOuRKHIEibq9VyvCQ9Ehqxn72xHNkkEQ2v7Mmk592QeuvOnweaDtfbQ0Y8XInUFaxzKuf/rcdSVg5IASWKxZ1KoMZOB+nzAWFGbyhDC2q8QPtuLOQ50HtZtOKOeKhHdeg7NHcR6JR59JWDjeZGd/wGlGss8cJXkcOduz9+qlOu1XOflHxzsClmPfzJyBuvnOVIHAyJHv+aG2TiDDD3OQtMKKx/+ER/7LUmd2jPOYGO9cdruxzQ==
+ b=s2lwdDz/+0LyJruw2FNAJV95LlSZIgYspKU6qrwfoMCPVeV6OZCVRTtaNvFmMrr7VPKtDe3pcUS6bFw8LpNVHxx+tkMwxW4IyoW4EzsY1ketYsZAsKTfoiIT7PyBnBzX2nm7y3L2lpEIm3kIWvdzXlli4FoEmCVneTHUeYeUMr77+8KIjCXOp238cQUrao68Uun3QQBQ9Rlzl/zCfAC5qKtNRLqCnif52/8Xu1SJQbVSCk5EJxQ+n6t0LY7b/fDJfCs+e1hlob9HbNxr+hGIY1uIVigvoD7m1qrV2S/fMwzpzpFbXTX/Wd4PTFI1+KDdE5vo0XhFO74c/96JZJbYtg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=;
- b=jL/a5n91IJkl997tbXxOkWdagp1RaHEIYWQ1QgOjFOopC9cXcclXsLEYYVJkQgf781jGv8t6qGf4MlHUyk45OzFyy55DhAAWUHLFMR5yAR+p8NGB7zs4sN8r2DF5yLCnSx3gANjRcp4MqSJO1g5TOS19g0JA8zrKqYFHDrMsNPtU6LQZ3/o1zwyAtUvs0m/om7n/HL1NK4WuahHxzWHPCjzYQX9onahc13JHTPWR/X9UigTs5/GrbFN0tSZJbg5EdMrWdUT8L15wmSQotz944xpccgBYpl+v4UGyKxqdc0GsNCp9UXNZmOPIo2TlTPurDD3s6jWKS0mJHMeiZN/FQg==
+ bh=qvsPQ6h6AjFAfgGui8xqt5DP1fsmJdqpxYNRKlmQgTE=;
+ b=Fn7oIlicMyKY9Mjac9Vlv6fABQzDfIl4Ik9Lqr8wlKyi5WuHtI+Nh3tT0FDcw6JcpPhOxH68cEUGpSPRYJf4Ho35EVUPVkuwRCRQmqwfVWkYkIpvNK26YYYrszC/9xNBU506Hse7mYnQI8yAJCgUvXqEiU8tJyksEGbrFNoV+gFXwjfA1T6VuJfC7rFz62vcr53hkBm+UkZeTNHdmE92WGaci1iUXb890a67tePGp2dWovMv6Qems0x60qWCvGnqbvcoBur2cVAgCtwY1sZNY8tWjBFdeGVvds0qe9NaCVOIvOBXvNHCb0HJtq8wt1F4neym8ahr8k/kLxWW6cr3kA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
+ dkim=pass header.d=efficios.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=;
- b=q/370a7ylx4nUFcs7qIXEqg8EOYLi2obQkB5H3moPWt4fSzi+/en2JGcUn8utuWa3v1rcZ/+Gb7G88GNkJqfXCrbTcZqcrGjbLlwrMDi4eyDwEjsQqUnk4++F06YPw3ToqCZPFvb1oks8NK5eDgiQhxJXp02FkT8m0K5rmNeX9M=
-Received: from DS0PR10MB7364.namprd10.prod.outlook.com (2603:10b6:8:fe::6) by
- DM4PR10MB7475.namprd10.prod.outlook.com (2603:10b6:8:187::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.21; Tue, 26 Aug 2025 17:24:10 +0000
-Received: from DS0PR10MB7364.namprd10.prod.outlook.com
- ([fe80::b7d7:9d3f:5bcb:1358]) by DS0PR10MB7364.namprd10.prod.outlook.com
- ([fe80::b7d7:9d3f:5bcb:1358%6]) with mapi id 15.20.9052.017; Tue, 26 Aug 2025
- 17:24:10 +0000
-Message-ID: <714d066a-a06e-4b49-b66f-68952c6520d9@oracle.com>
-Date: Tue, 26 Aug 2025 10:24:07 -0700
+ bh=qvsPQ6h6AjFAfgGui8xqt5DP1fsmJdqpxYNRKlmQgTE=;
+ b=SSWi586eu5+K8ENIEJOihVn8yKK3D/9k+R5k+zyt3jGcdrJocytxt4rVtedxZAMw/lNcp2S6LvjOLQBfVUE7TfWkFDJvFFLXrygeQ8MPnxHaKdyWtMC7v5D3OyKV1JWJrRhj/bmTo8Lu7sokZpYwE5u82FH5oYkf/gKUD3rXMG2iw65kUV3B3hBY8DnHpDUUXCCZMu687rXdNAkaN89jQiKNcoWH4z4B8P9lhka1Rwo8oQ5MS9G4LLJtNNqkITrciwEII3ZreSOOJ+cGoXF6WS4ftnE2cADVyf/Q1Dfmysi87dNa8lfWQxwOtJdeNdBHrls9PoPwUXwTYZk+x/pMGA==
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
+ by TO1PPFFCB747AAC.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b08::6ac) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Tue, 26 Aug
+ 2025 18:01:15 +0000
+Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::50f1:2e3f:a5dd:5b4%3]) with mapi id 15.20.9052.021; Tue, 26 Aug 2025
+ 18:01:14 +0000
+Message-ID: <d5183516-92ea-4a76-9506-2f7e4da0b0ad@efficios.com>
+Date: Tue, 26 Aug 2025 14:01:12 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on already
- poisoned pages
-To: Kyle Meyer <kyle.meyer@hpe.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Jiaqi Yan <jiaqiyan@google.com>,
-        akpm@linux-foundation.org, david@redhat.com, tony.luck@intel.com,
-        bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-edac@vger.kernel.org, lorenzo.stoakes@oracle.com,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, nao.horiguchi@gmail.com,
-        osalvador@suse.de
-References: <20250821164445.14467-1-kyle.meyer@hpe.com>
- <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
- <aKd1K3ueTacGTf1W@hpe.com>
- <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
- <14a0dd45-388d-7a32-5ee5-44e60277271a@huawei.com> <aKyKort2opfQYqgA@hpe.com>
- <2bd5c32b-dfc4-4345-8cc8-bbda5acdc596@oracle.com> <aK0UTovxnKfjPwXs@hpe.com>
+Subject: Re: [PATCH v2 2/4] rseq: Run the mm_cid_compaction from
+ rseq_handle_notify_resume()
+To: Gabriele Monaco <gmonaco@redhat.com>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, "Paul E. McKenney"
+ <paulmck@kernel.org>, linux-mm@kvack.org,
+ Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.org>
+References: <20250716160603.138385-6-gmonaco@redhat.com>
+ <20250716160603.138385-8-gmonaco@redhat.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Content-Language: en-US
-From: jane.chu@oracle.com
-In-Reply-To: <aK0UTovxnKfjPwXs@hpe.com>
+In-Reply-To: <20250716160603.138385-8-gmonaco@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH8P220CA0028.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:348::6) To DS0PR10MB7364.namprd10.prod.outlook.com
- (2603:10b6:8:fe::6)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBP288CA0009.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6a::7) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:be::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7364:EE_|DM4PR10MB7475:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85dd6ae3-4d3a-4778-954e-08dde4c55e6c
+X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|TO1PPFFCB747AAC:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2215fc70-1ed6-410c-df45-08dde4ca8beb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?azMyMUpZYTd6T1FzR0Jnbkl4RjltakRydTExMDZkN3JPeS8yYTI5dEF5dlEy?=
- =?utf-8?B?Vmc3SGFqRkdiVEl6NTVaRThoRXBWRjA0R2IrNkZZeEJCNVJKMThwRUR1bnZ2?=
- =?utf-8?B?UEcrUUZPc0toMlQ1dDlJUlJGcFhWUjJ4NmRzdWQyWlZIbGsxMDlTTStVR3dO?=
- =?utf-8?B?MkhPaVppbVREMS9lNlBWZk1HTzVrWEM5U3FSZGI2VTZrZ2JQRXU4TWQ2TkVl?=
- =?utf-8?B?ZjVZd2tMdWlnS2Rlc29VSG9wRnFMWjlQUC9TYWxzS1pFSmRvbm91c1UydGVX?=
- =?utf-8?B?RUpCa1RNazVsKzNvTFBEWDNmcUFEOTR3Z3ppU3Z5SHhpb1BmYThyZHVBK1dm?=
- =?utf-8?B?Vmd3R0thNHBoVVpSdlgxdU1MM3NxVEk5c1g5N1JRN3FOd0JuQW81QWJ3Y25X?=
- =?utf-8?B?WTlCNXUzemNsci9HdUxQWkt3MllRTnJWS1I3L1hSMzgwa2d5QzN1TVlnUUY2?=
- =?utf-8?B?Qy93M3F0OEN5VFVjQlVucjVzMXVEdXZXdHIzZnQ2NWxidjFDVW5OTERBVDFB?=
- =?utf-8?B?dkwyODAxTXRVZmR5RTFhR0F6OC9hdkJPTzFIRFdpYmdrdks5aEpDblR0Q2lu?=
- =?utf-8?B?REZwWDVTV2x1UDBKV0lJWHkyektRYXZnajVqUmRzN0hCbzlXZHZuNWdLa1M0?=
- =?utf-8?B?SWNqQytPaEgyVmFWTEF2Qm9qZzMwd2Nqd284WFlEaTltdjU2QmdQVHpjNk5O?=
- =?utf-8?B?eXpIRlpNOVQ3Tm9SVFE4WlFCbmN0MzkzUGZ3dVBYRXpFN211SzY0OVB0VjMz?=
- =?utf-8?B?L3dsbzJudUgxdzFWdExPRGVxZzYvWEVoYVZYMnZUaXhlQTcycUZRM3VLazJ0?=
- =?utf-8?B?WGtCNmkxSmhvTG5TWTlwNzdnV3QyRkorbi9zNkhqbVJZMHlmcWdhU1ZCY20x?=
- =?utf-8?B?T2wrb01heW5pdmpNQ3BZeFRqRGJuSjdsY1VGWis0aFU5UkVWeS9Bbmd2MFVI?=
- =?utf-8?B?aTEydEgrVE9yL0dLM0xRQnBvUU1kYmQxczYxc1F5MEkrc0JraHNwNEIvZWsx?=
- =?utf-8?B?MDFpRWpGblByK2hWR0RlSE04eUVYOVk4Sno0N1BBTEt6ZTlkUHUwVVltSmta?=
- =?utf-8?B?UXpwMVVya2l6YmlLam5COUZWS2NibUQ3ZFhSeHlneHR3aWRMbWNUWVJHZ0Rr?=
- =?utf-8?B?TVB5TTV5K1ROM3JMTE5MeExqUDNwdG5SeEhyQ1RZT2kyKy81UFl0TFlJNmNB?=
- =?utf-8?B?ajBrS3U3NDZkYWY3TkZJMkZma04yVXIxRTFVSnhKS0s3QmdlbVZzRjZ5L1lY?=
- =?utf-8?B?ajk2a2h1eHdPWHNFRVVJQXpWdXhNNkZUc2psVjFZOTZESmk4MmdiYU5UUGRv?=
- =?utf-8?B?U0ppRnhoMkdxUys5MGxpZVU0T2YwQkRYOHNVZ1R3dElnQmJIUmE5bG9Xa1R2?=
- =?utf-8?B?R0NkOXZ0V1F0bi9VTUpNUGFqRkJsVHZGMHJ1Q0NLSi9abUNtK3Mwdld6SkZG?=
- =?utf-8?B?ajdRZGRGMFRWKzNJZHN3Q2pJM1M0bGpYODh3MEtFSldtQWF0SzdDdkJ2aTZX?=
- =?utf-8?B?aHNSVXdaOHVSbnJ1UFh4cFJycllJNURzaG5BSEVUdGhQTWJKaEZvUng0MlJQ?=
- =?utf-8?B?M3ZwOTdVS3pyM0gvc2l5NHF4cEtSbDY5eVl4RVM5QUxkQWxNUXlUS2Irb3pI?=
- =?utf-8?B?WGc5YXR4TXBhTU1QV2hrUWRHWUxrYTNaMXVVZVB3WTR2VXJra1NNUzFIOU5T?=
- =?utf-8?B?R1FNaGF1SkhHb0grY2tRV2JNS0NpNWxYNXVHdTZ1TjFpaVY4NjlhUTVpQ2Zv?=
- =?utf-8?B?V2kwRXQxZm1POVA3c0VVM3p2dG9MRTRQOCsxZVVRS0dqUkVNbkF4eVhYNWRw?=
- =?utf-8?B?YVgwTmFoK0xIM3B4NGpYQ3VTZ1dGbjJ1TEpvSXhWSktrMzF2RkdZRG5SUVhW?=
- =?utf-8?B?Ynh1YlJYcUxFSjVyd2lsemZaekJMUnRGRS9mNW5BWVJWc01iZTR1QmFRVDZW?=
- =?utf-8?Q?1jocP1FCCOk=3D?=
+	=?utf-8?B?dDNkTG9RUVZsWDB0UTRyTlRxN1loYTl2MmdETUdPcG5MUmh4dzcwL2hxVEFx?=
+ =?utf-8?B?d1Y4eTIrNHRLVTBNUEtZejNCOWlrUitvZ0VSaXNWZ3ZoaDZ5dksyK0c1Wjl1?=
+ =?utf-8?B?MG5ZR1FkaHlmN2NsL1crWGVDMWRvNE42OWQvd3ZCbFkwQkpkK3VNSGtHZFRT?=
+ =?utf-8?B?U1c5L0dKUnZTcFdkeFdqdnhCR1hRWEdOTXZBQkI5aTRyeHhqL0x3b3BGd2FR?=
+ =?utf-8?B?NjN1TVNMY04zRGZucDBJMUVMNFgxbXMrZHZvUTVPVjBBYjljUERPRnV1VGhi?=
+ =?utf-8?B?Qm1lWTU5dUhRc0pvVDVyZWo4SU9OTi8vS1BQL3hvNUY1azYzOU1HWVM3YUNY?=
+ =?utf-8?B?UUVkbXkwQ1BUVlhqM2cxWTd2VEtjTnVCc1AyZ3Z5Y0pUUXlVQzh0WWRGeXkz?=
+ =?utf-8?B?Vk1ReHNZQWlqWkVrcUhzeEdLajI5cloxU2F5THpsNXJXVldrSDlsL3JCWFJz?=
+ =?utf-8?B?d0dHT0ppOTJqemIrcHdNMCtQMDRaR2g0YmR6QlUwMVUzT0FFZXYvbVljU3dC?=
+ =?utf-8?B?UG5Ka0ZkQWozQ09mZ1hXUzdiQldoeUZRZUlQNUlucm1TZ3F1TnRLSUxxNDJS?=
+ =?utf-8?B?NERrMFNyZ1g5VzlJTjJGT0M3ZXRQNVIxaVNsRkNqU0owVEtxcjlqL2VGNElK?=
+ =?utf-8?B?cjhEZm5DQlB3UlFveVpaYkRsZm9wRldmV05wVTUvdGdsWnlPRVZsVFRyUUY4?=
+ =?utf-8?B?TTZ4WDRPSVk3M0JjLzVtaFVIMlRKSXpIcFBOTnE2QnVvZ0x4TzU1WU1jQ3J0?=
+ =?utf-8?B?MXBPUUpPc3RsSklaSTRPUzY5RFd5bTFuc2FiZlprS2prUXNUKzhJYS9nOGQx?=
+ =?utf-8?B?UHQ0dTZPVEF4UWhTK3luZm1XYnRhT1RmemRMejIydTZmK2UrVytRbkFuNGN6?=
+ =?utf-8?B?L2s5SjBnWWkvRzNQVE5xb1pVdlJWVTVVSm9HenVnMk5qbExzRWp1RFlRbzNX?=
+ =?utf-8?B?eEtGWFFIclpYNUhsOE1nYW9odkM0czB6VWNucmVvbjBFcW9McW5sUm9zejBn?=
+ =?utf-8?B?YnZWSUZSbVFWQXV3K0V6RW1EcTlaZXM2ZjF4M0lqM000cHdCQWxXT2k5NGJC?=
+ =?utf-8?B?VGVYRVYzZWtVYis1cEQyQ0hEbXQxaHgvbXZlUzRLcTNEbmRIOTF2OGRaZERC?=
+ =?utf-8?B?b3RrNTB3b1diS01xZThuR2RaQVdNNDBaYmFnWGUwRktXYW8rcFJWeW1CM3FX?=
+ =?utf-8?B?VG5IekdGN09mMDJUL0F0NWZtenQ4QlhTM2RLTTErbFVQREZtbnVjM1Q4RTZW?=
+ =?utf-8?B?c0JHYUlyQTlVZ2Vxb2NlT0dqa3ZWU2x5WDNDTTJJcExTN3p1WmJ1Rzc2QVBK?=
+ =?utf-8?B?SjJtbmcyTmIvbzQzcUtHNGVnbzRoOURxcldBZFp6ZGpYZGR3ZCtHaWthMTRm?=
+ =?utf-8?B?UXJHKzd2SzZoUVp6L09yUjB6MDRoWmI0MzhjQ21nL1V2Y1RaTTJRWUdzRndG?=
+ =?utf-8?B?dGxpTWpOSHVxcmVWYlhtMlJHa1hIZzVPaDlIOE5nTWJ3UVBlRS8zeTk2T2dM?=
+ =?utf-8?B?dnB5UHRyck12ajBlNDlFYkRTYUpzZXA3NFY2QnlPRkp1Zk1xNnBKZnZncS9L?=
+ =?utf-8?B?VWN5bm5pZm5pU0RSVzNDeXA4R3J4WCtlMU5Ecmx2Ujd2bG9COU45dUFVbFlR?=
+ =?utf-8?B?blVtWFY3Y01oNy9oVExZaUlsZkxoTGVJS3d5YTdGL1BGbUVXZGFiUWU1Z1Vp?=
+ =?utf-8?B?bkcxRG1WWXVlQmNPOXpLVHRaRHBVRDhYMndqTXB0NXgxV01zN2ptS3hndk82?=
+ =?utf-8?B?M3VZYTRVcWtkQ1NnWGxmSk91MDFyaXlNaStpYkorSkhDd3hhV0JPSmxyb0pq?=
+ =?utf-8?Q?Q3iVaXbg8nKZOZUzJyRfJQhyHlg1vaND8J1TE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7364.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Nm45N044NDg2Uk81a0tuSTh1SWtrbG1OUVczMVhHN01PWXZRQThxL1Q2bzlR?=
- =?utf-8?B?NnhFWU9MRmIwOWpqK0krNmpUQTkvWHNIRlc1UElMR1pucEpoUzRiT1FiNElV?=
- =?utf-8?B?NGRiR2pneUVaeU5BWDlpaGVRN2xucTJLYkdKTFN3STRKUDFyUmhzVEcvaUlV?=
- =?utf-8?B?aXhZMUg0YVlNa1lTaTVZaTJmZlVyNkQ4SWo0YXpibHRpb0laeC9IZFRvZk9D?=
- =?utf-8?B?cmdwSjk3M2ZyNWhnczIwQXJlVjVjNnZyd1k4R085ZFFnZUpwc2ljNXFYYWhO?=
- =?utf-8?B?TmRmcjR0d09EbU5ha05GcWZRSUJnOEczRGp0Si80aWl2bDVKRGVSRnkrdU9n?=
- =?utf-8?B?R0FVcHZobDNwcjJXSW84bzZ2QWZYTTU2QXB4WEpJOUJEcW9rTkhMSFgxRU5K?=
- =?utf-8?B?TnBCWXdhSDB3SGJ2WVdkZ0dDUnlXdnUvZmdaTjNmR1dWUGw5d3lPZTFKc2JZ?=
- =?utf-8?B?UlByR0RzU0pVY3ptZXIyUjV2MWZsc3BWYzl3czQxYk93dXlraWtKYlhFcVhT?=
- =?utf-8?B?NUMxdTB0YThXMS9sSFozQ2RGejloOStQOWNoMTlFMERCNVh3MVlTdVJSeXdF?=
- =?utf-8?B?ZWF1blo5ZEN2S3BuaXpHUG1xczJ3QkJtblZIejZiaTdnUkRnNmZnb2RjVENP?=
- =?utf-8?B?R1ZZdWNQaEZpNnhmTWpxMCs4S204OTJHWjBKOGpxSU0xUHQvUC9TV1g5aXpI?=
- =?utf-8?B?SmtjTWd6SnJhTUFKaFRXaXhONTJKUnRIWHp2V0ZaNUhjVWcxRmhSK3RmU21m?=
- =?utf-8?B?cVB0WlQxQ21Zdng1SnR0M1ZTS213K0g5K1RQVnNXUDkveDNsWEJqTWRSRzVj?=
- =?utf-8?B?eWhicjMvNm83ZENTV2poZ1U1V3Q0d3NZUzdSMTMvVDFwcEQyZEQ3cXI5Ti9z?=
- =?utf-8?B?RXg3N3RTTGhWWTZVSkt6R2k0RGhjalMrcjJyNmZPVDlsRm41VjFmcGxTWktT?=
- =?utf-8?B?U2hQelJQaGw2UW1nb01UWlE5dXd5WEZDcldocUErU0x4bWptUzduc0ViZkh2?=
- =?utf-8?B?REtxaUR2NDdKcDlHaW1JZk9FREJZSlFMTDYzVFhEL01QMlBzdXh2OXM2WWtP?=
- =?utf-8?B?RkM0OElGMlFNU2RUWmhmenNxc0Z1ajMzUnE5TldoSjBoNEFMTm1JdzlTTjk4?=
- =?utf-8?B?TGE2cmVzZkQwL1VMVVQ3aE1oZnZ6bXFFS1ZoN2JMbUc1VW5UL0hFclRxWW5J?=
- =?utf-8?B?YVM4aUw0MGNGMHFXWExuUEdodXlGMzdVT1Zid1Q3MkV3ZnN2dmVaV2JxOU80?=
- =?utf-8?B?ZVVRbHR2OUkvTkRLRkFrK2tvZFNaWWczNS9ISzhHVGZteStDMGZ4a0V1YXBn?=
- =?utf-8?B?eDNmV1E4ODl4dVNLTi9CaXhqN0RZKzRzc2RoQjFXUXNaaU0wV3ZxWGw4c09o?=
- =?utf-8?B?U2FhY0tacVdjWmxPRmZ6RFBRYXJRRS92U2JYWmFtc2xmYmJWSkJmSW85Vk02?=
- =?utf-8?B?UXJaY2pGais2SDNWdHgzTTNOenVSd2VoNk04UjQxOXh5alRma1NuZmIvb2xT?=
- =?utf-8?B?dlIyTkJYTXRPeEJJM0xmaTF3S1kvWmZ3SFNOWE84UEhCaElSWDNNWW9Ic1Nt?=
- =?utf-8?B?ZGhudmdueVN0TlpZSGdrRzUzd0wwNjdRZnFDWkJ4OHFnQlpCbzFxM0pveXlO?=
- =?utf-8?B?bVJsekswb3pLcURpMXlaRXdPa0lYWm9rWDh3WU05dW5pQzdwTVFEaFNXOHFB?=
- =?utf-8?B?TVdRY1l3Nm45clJXNy8vbHNXeGJ4NzZadlgxRFQvMzRBYUl0SnZUK1hWeTRw?=
- =?utf-8?B?VThyWFFpZU5WWmtRRWFTNUExdStTMjBIU0ZaZ1ZXRFpBSlpobWFrREJ2STdt?=
- =?utf-8?B?bytPNWx5UTczZE9Mc21Dc2tmbUk0L2ZaSytQdE9JR3VOUXFoSExvTG1MUFh6?=
- =?utf-8?B?cVlXU1I1d2NyVEdHUmU4eXJDNkNIRmlsQ1NOa1FnVXZ5cEZOTXo2dEVKQy9x?=
- =?utf-8?B?anIwZlFWUlFjemJFcEx2ajgvcHNzdDRTZ1drcmE4VzVtd1BKUGRVblEzSU1I?=
- =?utf-8?B?LzNPVkFPT3NuTjJCa29RZ3ZMRHNqbWcrZHJKOFJwbjkwRmIzRTc3UkhzZGRH?=
- =?utf-8?B?Sjc3cFFacUl1UHJTMU54UzRlNSt6QUdrdndpRStZczAxbE84QlgyWDV1TWtY?=
- =?utf-8?Q?3/jFsRlZeSebyzJA4WbSbFZy3?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	I1gebEa9ftUVrlStuhgGQ41bPh2AzjQKyFLvNWWl80/NCA8WJsGAgpvxUxi3VqOvgzf9ULJWS7LzE1qvDYx6VyGLk9Uj466+ZYjODmJYiq40hCxsMxoClpdAEkllomQhCydhDUhvyD6PbqtftIUxncRz18KHEyQ9K6ELywgG1QZR61roOysbY1NyMf3nnz8DBSO9ByuBK+JiXXXHQROuyTW/f5FX4YR2//buj0Dsk/ICk4CQnuhmHoQuEIQQS3SOxZRv3+5/7P9/NNV5AY2Inje1ik3swc0YkLsMwGX48dlRZVY2/jPlblvXHnCZzI8rM51IxtfaEB+tcv8I3C60s9zyf30EWJc/go5ArW5EJUGo3dITRIcdBUuZo8LDzO0RDRpS7dMLNzcl7qTHTuRhhuJMQ8Kk27xLG/fau8UZxKDdQzVpEuKk5y+sUhf6EHXa4SRO/V1/KSjUKjvk2IViwhQ4kiHfEFr1qikwJueY1hBNMLmK0Gq3aGAJk/6MPlk0rpB3ZUnPiAyCsozLON6REfs1YS///uuBQXMSgOu7tfD0ATeRX6nP4GSXsOAxhDInl2lHHEvzYK4UzXM/bG4cOPgMDljCedO4i70oOb5ZPRQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85dd6ae3-4d3a-4778-954e-08dde4c55e6c
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7364.namprd10.prod.outlook.com
+	=?utf-8?B?QkhwTWM2Zkw0bG5ramd6ZXdqd2t3d1o4Uk0zL1hiNU9mZ0FDNGVWdXM4RHhn?=
+ =?utf-8?B?Yld2UDdXSmdTRjBhK2dxLzI1WDcwZWpjVFVZWHptL0xSc0Z2VHBNR05MelJO?=
+ =?utf-8?B?MnR4Z3hkcTBGWlBWdldSYkxNNkxXVG9oUjVya0xzQVFNUHZtN1lRSnpiM0Yy?=
+ =?utf-8?B?M2czcEFiQ3ZnUDU0TEZUTFZ6a1ZLVjVmQ0t6OUlkNW9zbS96L0t6RFlHREh0?=
+ =?utf-8?B?Z3ZQR1E0aDNOQThhOHc1RlJseFExNXkyM3VtN3Y1cUJSKzF2aDV4SUZUd2Vu?=
+ =?utf-8?B?ZVk0cDcwdFZxZDhSc1V4azAxRjRyVURiN213ZjArc1hqejdqTHFxV2V4cHFP?=
+ =?utf-8?B?U1lPajRTMEJra0VyTEM2cHhINXczL3ZDNTQ4RUU1R2FJUGsyY1ByQVk3SVoz?=
+ =?utf-8?B?NEF3WFZDbHJlNkVyUVZuelpGeTM4VlpBYVN4RUNZek1pNFlBQWNEQzV0cDFV?=
+ =?utf-8?B?RjZQRGYycExiUXVUODlvVnE1eDZMYWpmTXlJTllnM1Vqd0JNbFM1a0NnZkxn?=
+ =?utf-8?B?SGpOOUI5ZGFwUDRUOFpyTmFlTzR0c3A3RnlWZmxkaE9zazE3VjRwRWFIallm?=
+ =?utf-8?B?dHA3WW5HMXhSQmZDZG1PRm9ieENzUTFqSjh5R1paSGFrNW5kYVlEZ1Q5RUFs?=
+ =?utf-8?B?eGRUK0FoNDR2R0xpdnNzWnhCMXhnUDhvMjNkZXF6K1F2Unp3QkFrbGFVbEl0?=
+ =?utf-8?B?Q3prZkV6ZDlsT0FrOWFDcmVjMkIrUkt5aWozeWowWll1blBWVXlGOUFGa1Fx?=
+ =?utf-8?B?NXpzZVhiQ3Nka2h2K0d6ZDZWVGVKWE50WHF5TlhLZFlFNExvRlVJT2VTQmxr?=
+ =?utf-8?B?NnZJWXo3a2NuZVdHOG5zUXZ3OElqcUc0WnRnelNKNHFQVGV6Y3BVcFlnM1gz?=
+ =?utf-8?B?TkFtQ3dtbCtZdlVkajhsalgwVS92dkZsZ3Qxd1J5OGpMeGJucmxkYXhqTzd4?=
+ =?utf-8?B?YWtheUk2Q2dJMlFtWmFmWFdDS1Q4dHp1d3psMlB4b2ZtVSt6YjNyeHQ0ZEVq?=
+ =?utf-8?B?NDJuMGs3WDFzRlZLVVZsRE5LNzlRc2V4cVN0c0Fka3JWRDN0MzFaeVRYRjJL?=
+ =?utf-8?B?bDhzRzVkbVV4bUJZMkg0dlVCOGliQ0xBNDM3YkFDSjNzWGMxaU9pYjlwZlZr?=
+ =?utf-8?B?YXpReGkyWUlGZTQzelVzb2VxT0YrWnhMczR0ZEtkV0x2Z3NiV0tPQUVBRG5t?=
+ =?utf-8?B?WitmOHN3TS9ZUUdxTEsvQjc3NnhhRHpwZUd0cWFXbzVKL1FoTndpZDZDMWsy?=
+ =?utf-8?B?ODFZTVBHejJaVWZuRFB3Q0sxdDYxTE03QTMwRit5VlNoZHArbXNnRlNvZkJC?=
+ =?utf-8?B?b1pHcXMvMk5Kbi9CQ0tseEpzeEZ1SWVZYUpIQWZIZmJuVDNpVkFQMTNDbENj?=
+ =?utf-8?B?bENvMDg1dDVwRnE1cUc3T1U2S0dURDRUZVJxYmd5SFFIZDFvRHl0Y095QlJG?=
+ =?utf-8?B?K2ZsamVyQzl1Yitla0FWZzFQc3JpNEVwbERhM3I1bHBXbXR6cm85N1ZCM2Fi?=
+ =?utf-8?B?eG9IRCtwYzFVOHdhMUR5andCekxuYVd1WXlVeDE4UkhkY21yWHNOMllXdnpP?=
+ =?utf-8?B?cHBIT1RKU1JHMFpWNXpLYXZpcWhmNmZqeGs1bXNFRVJqYXUremtHcllCaXY3?=
+ =?utf-8?B?WkRId0N4ZGZ4ZFpsZXhCd0pXdm84elY3TnczaG56TDIrcEs1RlEwVjdmNy94?=
+ =?utf-8?B?b2xOUEw1MVRqKzErNnU1enA5S1NBeWhPcXVkY0JtZzY2anVtQWR1THU0Q1B5?=
+ =?utf-8?B?bFdEOEk4UWxRYXB3Zks0L1hybWYyTkJJajQzcWZ6aWtCK2VVTkdRdDhGQXZY?=
+ =?utf-8?B?RDhNaThlWHo5ZlVNVEVDSE5kbHNkTW9reDlxSGpMQUFlTHlQQjNITEZIVnNx?=
+ =?utf-8?B?S2pLVk8xK01jQ2JkaXB5WFRvc1l6clNueVQ2dVBCdXpYQy80MDVnNWRzaGNy?=
+ =?utf-8?B?YnpTMndmdDhUTWUzajFsazc0dFBSNEM1VnovSWNNYTMxSHdJVm0xMHVsYWVq?=
+ =?utf-8?B?UEd0Q2ZsK3B2bzlSRWV6ajkyVjU3L1BCWGpUcnVZYWgxTWNNa1cyRmdYYmNS?=
+ =?utf-8?B?bnhQMWVYTzVrS25RNUhaQmFJRVI4YWQ2K00vZWhvVWJuaVk0bVJJWGN4UXhk?=
+ =?utf-8?B?MUlHV21MNkRrWU1sRXppbFpVN3psQzBwYUMxbXkrait3dHZhMWpWbjROck4v?=
+ =?utf-8?Q?UVcyFQwNtRPiHa97CgjPenM=3D?=
+X-OriginatorOrg: efficios.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2215fc70-1ed6-410c-df45-08dde4ca8beb
+X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 17:24:10.2890
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 18:01:14.0323
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eKBGNwArO3lz6Ao3PkCmPj3jXxaLK6Ul7OIPdUDnH5LBtHcIHb0ZOz8sSVrPdxNfq8ccFIMFFa3daM4JRMOOwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB7475
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-26_02,2025-08-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
- mlxscore=0 phishscore=0 bulkscore=0 malwarescore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2508260153
-X-Proofpoint-ORIG-GUID: lgcthk5b6kY469CeZEaRuNvRYF-km2R_
-X-Proofpoint-GUID: lgcthk5b6kY469CeZEaRuNvRYF-km2R_
-X-Authority-Analysis: v=2.4 cv=EcXIQOmC c=1 sm=1 tr=0 ts=68adedbe cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=MvuuwTCpAAAA:8
- a=1XWaLZrsAAAA:8 a=TudOMMRRcpkxdpn9tkcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMCBTYWx0ZWRfX6rSAR9ie8YYE
- vlxwL23m8pzYv9lCCd/XOIxvJOjynxIg3pRU8XdIeGt0EyW0Ambc2SuxO0Gl8vkOk0gN6bABS6T
- qI4d0lFE/9KqUE5Ifh4vvBm6I3aqyvZvwCYQK3gqnx2iKvnzx5Vf07NmDfN3Ai8U0ZvcnezExCN
- OZpcZxdl6YJDFfWhvETrEX+S0Fg7J5qweKgIE/wUqCxu9/eavFpAE6jYxzh8+I+ELGQQ+f7IcYb
- 0mBAQN/CeWVyZbP2evyBe2Dzt5tLO3mEZeIjHOIXQFHFaEpsx2zimTE/hWMETDO2UnPXzFWYQBo
- 9CBV4GiqltXgvY+k+NzPeH1QAqzCmDurGOui3y7r5IERpY55+SSYt6cPWjT9slK1zeLUnaQ7q6Y
- VLt6NaFM
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0137A1A0004
-X-Stat-Signature: pd75mbh9fpuksi6oajs34rq5kirw613e
+X-MS-Exchange-CrossTenant-UserPrincipalName: mFY6sXXz9MBtxOhJVayEakUo1h4pkK1qVUPJidDkNbih52MuUQ/zGVm+9h6WKuQ3nPgKikkVruZRJw7cjbPQgA08Lw51VzsqBr2imiKV2i4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TO1PPFFCB747AAC
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3911EC001A
+X-Stat-Signature: kjuwufy1ipi71c1omsg1g9zfhc46kixb
 X-Rspam-User: 
-X-HE-Tag: 1756229079-715542
-X-HE-Meta: U2FsdGVkX1+UlrPeHVwikftDoxDeCgmSzYkhpgG5OTWvFUadYJkxEdpymCOwz++QzZMe1H/22EmD345jV0c6oji2JEe1xWWQ/zB03zsOhjMKaMxdHIUThOpkkTRzrpO0Ve9UEE45u7RO30700inabIFy+P17ie/Stl0S+zIady21HKvK0rPnqsLWJwiPRVAcW2T2VwajzmIOWuftw3Xz8qCZeweCJ0/ro0IKwKeYSyobj4nTq/buj9fnfUgPgAWy9/Xu/RDelITw4H9oJqSk56IWvClfXDBnAAy8WEWJuRWSEYy3vdqlX/xmbz2Zkygy7mGs9+Nq9o2+5JEnKgl5gFjLD0lZsIBp6kK9oCWGsFGoq9EUBUeROjzw/Orz4H3q7+La1hDWxFkBixIfnRNUZfbmVd9F62qNI1Nq6hq6zDk5H6cOkIOrciDLLzpIX5tnM1GzG64MHEL2+iaMRZ1pNq3saL7rkkWXVVsAhUctHfTH7LAktH0R030aIzhw3/NHi7LYL89Bb13bErT3A7gDQaykvRkO9bEl6KXy9tcL3DZUpTVYabqkSpO7OZVWVcs17UQzE1OwRCLRy11KhRAKYwyLNzTn/vy3q9S2uLDxeWKyD6FTzSXC3YTYLMHvNsl0Dnrd70WsERYV+PQUGN12pmjlwsSelxgX45gTQbzfZH+XlL/mxDIxnljgBIqmDiLJR9MlI1qqA2vM7qFrQXuAFN7FtxeLkeK/eniR6azo4qfcqZOaNtCBcXbde3tfBUEsgTI8+YWD4t6N2Sny1zUEfoZ1VRPU5JIfiViOx9G7B+xFYnemU8eaLJPX6/o0VFTcdYKy51qdWxrTlmC3LZ7BW+jbUEaFOjyXODWfcWpdUAewipqOEz7iJTnE4kBWDvk5OGhJU8RV/Nx3OfqFrIOwSp9NS2ezti5ZFuW1Ic5DUtY2sO6SjciOlaMZAiNNyMR7knoE6Jfp1HNBeCVvtyV
- 2DFvyeNa
- ooT/9b5CuCvnD6HVBpnhZBKEAIVuy6sxnjGInsf18wjBelaS3lrci4lSMWNkJ0Qa+M56HFJH1wkvt50bDpAQD7OigxKcRzQjFxKXgjHcfuDJmbQglwB/ru8shwPktTLs/MmJy6bqwNticCXrW8qGUoZKZZKdyUbn6xkngX9+xe6z8av+gaDDpOTxwRKP+yu9ifWgrqr4PgaKnYwCvvdldKIL1+CRyrcTQ2BWud8QYEC2HgKIF0RRtqyuO68rNfCtfRqGsPOhTiXr804VFYSVprJXBRiFbcf6wvUVn5k9Duuu88JvmkP3ZF25iRC4nmPrM1Prp87WoA9PdR93czuo5/t8sTfy4zxh4iBdesCq3/GbeG2bMNu270tqnYo3BTuSm3CRFoeZ2KHcXxsqPx/eihLMf+cheWzgpEOaF94dEgBC1v6J6G17zczi+p3mnYOVkFnXl0GG7Jdai1GaG2DKkiH1zzoSvn1Qbk7tNw0IOITHSVZjxX1RFhjxTo47fG6iwg4zZXcsqi/NxL7iyQV71jVImhWccRstfChVkLykPQRxsvI+ltrfTK+uO2wZw4No0xs9KOEpHdh8bOgyeq02bER+yv3k/glAKleDZbW18cY87jdZfB7y/57prrbW4dgy73DL8v6ahNgjZV0Hj1bMgyiAbXS1JJPlLCmgqlfYu4WzavvcruaS7O1U3EekLU9FP37fNWxNF7hCKhFjjDoqQhGqqmk3cbDnEZBE4J9NSTKjC3X6b2OVE+B/xd5AYuffXcMunvGiHTDSQUv6ZVfvRajMux5E2sFb0FDs0GKd3ltulfk30xyDmkMH8RUhI1aKNfSy2y0LHt5PWAouBvGjvqTQoyDScJpSbEF3jHws/v/tERk1+dhGZvAFHo0EM/vER8toDE/JqjgXAdyRJy0nA8Ad3n7w2etXgZAm13HzPikEx0hXQmySJ8MIzuA==
+X-HE-Tag: 1756231286-288374
+X-HE-Meta: U2FsdGVkX19JT9Gmk+UDLgJv04Vum+JJKIgj3r7M5KIeh1r9CYBR7hZosCIRGaGgkPEZz/0N2HlUkN8ALcpQ7085pAsPrXNnGdpZQ7s9wWi5vhEgWEhbm3wVc6pBCSz7MT5uUBW6YjAXOb6PuGXpmN/yMP+Ges2dMtaEVpSp5ZTKAPg2yHxObVOlaBE9pk7CD2K3byXUBWUw3/6WGB/P37OXnyB0VJM3CvzmMnlL2KmwP18qPuRhkQkgdECJfjX28HfLeKQrQCia0xBrdegSxqJ2MdK01ET4vvAKbvUURzGUQyFOtjQ5RY2MVvI9UniUxfgg2v4jyItmqf/WQ1Pgu0N5WpnsZFsp9IQVyKnN0iHOKhKAkVw4hJjSmlT4oQTuq1KOsXHFjlwJKvWfxGnWoR3+NZCMdAqoIdOxD6xSu44+peIBh1jLz0XFZQ6pc5HEvgFQWAaE/6U+ZwWbE4//IZLHqkxoKxPaP4Bi7Qqi/rCv+tpFNgvLN7qNBH20YBv5+hI0EIewUQtX8bdGxrAjWQHw/PnmTo8pXW28WomNfAm3VDZbVIJ7aiBAzH4tFc179qF2omoKM9Mx8CkSktUIlNUL3lV7JHj7xwZJYb/cd//8L2JIc1g2E3y6y0MpszJU+qNDHt/6pQ2CuzE2xCzeVAN2VRllJiZZbjyXee9iRyptXuyornLRzCR5IIy9BaNp972id/meQscSLusx55KcxYRaybIKy/b82HVSzqs8aeb6xiWm3Uxe07gD9l6MgbBjPmcpIHUKuy5wSTeQ7rmrbAaYx7s6vmAZO3JpnBu6ODc1Zt7WCZesaipw9+3LrIfVczjbT4AtHbQcN2XKR+OYPxcAkxTURN4pK+gDp2XoTld63sdYAIF7HHYUFq7JA9M4lh04q0liVcn0Gw+0aOsdnDjpOLznESDtl58ZNR1bzUAeRfnHRdURmK9lSrGeMTHFTduAV4Wl5X3xPIhxmvp
+ naO3gW4g
+ 3zseCg2MuGHb6fGDVERdceNUuEne67DBnp9sYg+wD2SLegvn+qG9+BXlQybFT68aX3i4T6iSO5gdhHKfbwUE5zZ8W3acZ/Vvp3yR4ieJ8KBNbJeooQWmaAZgVN1k3LZX1NacRMTw1Uy9B3k5y+JMVr410BAb6AHeZTuBheITIIM3BIUZY60qXWXC+wxuFyDGhdq9UH1lpLESiImFXDDUCshK5du4DRFqX6Kiux8hxV1jP95tD7lNiU53W5uQYgK5bY5OZTuSl1ohvmQTc50Pl9BcawKSnPSxZy4Lg/sULrgU7eHwq7kdnfsHF+kGkRJMH9brqnItgrVmRru6hasvMD++ScqL65yO5e7ckZhFK/r61wUo5/4vhaj/uUSGFtXF/D1rmzJpALZoFbdG21GrGAnivl9HIhR3axHjaQPHLXORjBUPkUXNWmohjf0VbcfO7c0W1D7lrGMwoJLkJZG8yIrI4Rc3eWYgPZy9Yz0tZJtwZTjCEINh5Lewsb2hXz3SniauxHGpRSOagERfWD53g4H4jdSAIhr5LrJqT42EIe8ro/p6tIjyySBSeNjyMkOprfM2FEK8TduoyJee3UCAjHsoBdR8Hi5edcv+aX1YxIuXuc4lAgNf+yVVeFdDZlIgir+AWNIn7tGqoZGvelr2Bx6T5nW7A+CwrxxGLFESsJX9Aqe3OdnQYApycqapKwIs1tGVx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -262,178 +205,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2025-07-16 12:06, Gabriele Monaco wrote:
+> Currently the mm_cid_compaction is triggered by the scheduler tick and
+> runs in a task_work, behaviour is more unpredictable with periodic tasks
+> with short runtime, which may rarely run during a tick.
+> 
+> Run the mm_cid_compaction from the rseq_handle_notify_resume() call,
+> which runs from resume_user_mode_work. Since the context is the same
+> where the task_work would run, skip this step and call the compaction
+> function directly.
+> The compaction function still exits prematurely in case the scan is not
+> required, that is when the pseudo-period of 100ms did not elapse.
+> 
+> Keep a tick handler used for long running tasks that are never preempted
+> (i.e. that never call rseq_handle_notify_resume), which triggers a
+> compaction and mm_cid update only in that case.
 
-On 8/25/2025 6:56 PM, Kyle Meyer wrote:
-> On Mon, Aug 25, 2025 at 03:36:54PM -0700, jane.chu@oracle.com wrote:
->> On 8/25/2025 9:09 AM, Kyle Meyer wrote:
->>> On Mon, Aug 25, 2025 at 11:04:43AM +0800, Miaohe Lin wrote:
->>>> On 2025/8/22 8:24, Jiaqi Yan wrote:
->>>>> On Thu, Aug 21, 2025 at 12:36 PM Kyle Meyer <kyle.meyer@hpe.com> wrote:
->>>>>>
->>>>>> On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
->>>>>>> On Thu, Aug 21, 2025 at 9:46 AM Kyle Meyer <kyle.meyer@hpe.com> wrote:
->>>>>>>>
->>>>>>>> Calling action_result() on already poisoned pages causes issues:
->>>>>>>>
->>>>>>>> * The amount of hardware corrupted memory is incorrectly incremented.
->>>>>>>> * NUMA node memory failure statistics are incorrectly updated.
->>>>>>>> * Redundant "already poisoned" messages are printed.
->>
->> Assuming this means that the numbers reported from
->>    /sys/devices/system/node/node*/memory_failure/*
->> do not match certain expectation, right?
->>
->> If so, could you clarify what is the expectation?
-> 
-> Sure, and please let me know if I'm mistaken.
-> 
-> Here's the description of total:
-> 
-> What:		/sys/devices/system/node/nodeX/memory_failure/total
-> Date:		January 2023
-> Contact:	Jiaqi Yan <jiaqiyan@google.com>
-> Description:
-> 		The total number of raw poisoned pages (pages containing
-> 		corrupted data due to memory errors) on a NUMA node.
-> 
-> That should emit the number of poisoned pages on NUMA node X. That's
-> incremented each time update_per_node_mf_stats() is called.
-> 
-> Here's the description of failed:
-> 
-> What:		/sys/devices/system/node/nodeX/memory_failure/failed
-> Date:		January 2023
-> Contact:	Jiaqi Yan <jiaqiyan@google.com>
-> Description:
-> 		Of the raw poisoned pages on a NUMA node, how many pages are
-> 		failed by memory error recovery attempt. This usually means
-> 		a key recovery operation failed.
-> 
-> That should emit the number of poisoned pages on NUMA node X that could
-> not be recovered because the attempt failed. That's incremented each time
-> update_per_node_mf_stats() is called with MF_FAILED.
-> 
-> We're currently calling action_result() with MF_FAILED each time we encounter
-> a poisoned page (note: the huge page path is a bit different, we only call
-> action_result() with MF_FAILED when MF_ACTION_REQUIRED is set). That, IMO,
-> breaks the descriptions. We already incremented the per NUMA node MF statistics
-> to account for that poisoned page.
+Your approach looks good, but please note that this will probably
+need to be rebased on top of the rseq rework from Thomas Gleixner.
 
-Thanks!  My reading is that these numbers are best as hints, I won't 
-take them literately.  As you alluded below, kill_accessing_process is 
-applied only if MF_ACTION_REQUIRED is set, though the page is already 
-marked poisoned.  Besides, there can be bug that renders a poisoned page 
-not being properly isolated nor being properly categorized.  If you're 
-looking for something precise, is there another way? maybe from firmware?
+Latest version can be found here:
+
+https://lore.kernel.org/lkml/20250823161326.635281786@linutronix.de/
+
+Thanks,
+
+Mathieu
 
 > 
->>>>>>>
->>>>>>> All agreed.
->>>>>>>
->>>>>>>>
->>>>>>>> Do not call action_result() on already poisoned pages and drop unused
->>>>>>>> MF_MSG_ALREADY_POISONED.
->>>>>>>
->>>>>>> Hi Kyle,
->>>>>>>
->>>>>>> Patch looks great to me, just one thought...
->>>>
->>>> Thanks both.
->>>>
->>>>>>>
->>>>>>> Alternatively, have you thought about keeping MF_MSG_ALREADY_POISONED
->>>>>>> but changing action_result for MF_MSG_ALREADY_POISONED?
->>>>>>> - don't num_poisoned_pages_inc(pfn)
->>>>>>> - don't update_per_node_mf_stats(pfn, result)
->>>>>>> - still pr_err("%#lx: recovery action for %s: %s\n", ...)
->>>>>>> - meanwhile remove "pr_err("%#lx: already hardware poisoned\n", pfn)"
->>>>>>> in memory_failure and try_memory_failure_hugetlb
->>>>>>
->>>>>> I did consider that approach but I was concerned about passing
->>>>>> MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. The message is a
->>>>>> bit misleading.
->>>>>
->>>>> Based on my reading the documentation for MF_* in static const char
->>>>> *action_name[]...
->>>>>
->>>>> Yeah, for file mapped pages, kernel may not have hole-punched or
->>>>> truncated it from the file mapping (shmem and hugetlbfs for example)
->>>>> but that still considered as MF_RECOVERED, so touching a page with
->>>>> HWPoison flag doesn't mean that page was failed to be recovered
->>>>> previously.
->>>>>
->>>>> For pages intended to be taken out of the buddy system, touching a
->>>>> page with HWPoison flag does imply it isn't isolated and hence
->>>>> MF_FAILED.
->>>>
->>>> There should be other cases that memory_failure failed to isolate the
->>>> hwpoisoned pages at first time due to various reasons.
->>>>
->>>>>
->>>>> In summary, seeing the HWPoison flag again doesn't necessarily
->>>>> indicate what the recovery result was previously; it only indicate
->>>>> kernel won't re-attempt to recover?
->>>>
->>>> Yes, kernel won't re-attempt to or just cannot recover.
->>>>
->>>>>
->>>>>>
->>>>>> How about introducing a new MF action result? Maybe MF_NONE? The message could
->>>>>> look something like:
->>>>>
->>>>> Adding MF_NONE sounds fine to me, as long as we correctly document its
->>>>> meaning, which can be subtle.
->>>>
->>>> Adding a new MF action result sounds good to me. But IMHO MF_NONE might not be that suitable
->>>> as kill_accessing_process might be called to kill proc in this case, so it's not "NONE".
->>>
->>> OK, would you like a separate MF action result for each case? Maybe
->>> MF_ALREADY_POISONED and MF_ALREADY_POISONED_KILLED?
->>>
->>> MF_ALREADY_POISONED can be the default and MF_ALREADY_POISONED_KILLED can be
->>> used when kill_accessing_process() returns -EHWPOISON.
->>>
->>> The log messages could look like...
->>>
->>> Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: None
->>> 	and
->>> Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: Process killed
->>
->> Agreed with Miaohe that "None" won't work.
+> Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+> ---
+>   include/linux/mm.h       |  2 ++
+>   include/linux/mm_types.h | 11 ++++++++
+>   include/linux/sched.h    |  2 +-
+>   kernel/rseq.c            |  2 ++
+>   kernel/sched/core.c      | 55 +++++++++++++++++++++++++---------------
+>   kernel/sched/sched.h     |  2 ++
+>   6 files changed, 53 insertions(+), 21 deletions(-)
 > 
-> What action is M-F() taking to recover already poisoned pages that don't have
-> MF_ACTION_REQUIRED set?
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index fa538feaa8d95..cc8c1c9ae26c1 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2294,6 +2294,7 @@ void sched_mm_cid_before_execve(struct task_struct *t);
+>   void sched_mm_cid_after_execve(struct task_struct *t);
+>   void sched_mm_cid_fork(struct task_struct *t);
+>   void sched_mm_cid_exit_signals(struct task_struct *t);
+> +void task_mm_cid_work(struct task_struct *t);
+>   static inline int task_mm_cid(struct task_struct *t)
+>   {
+>   	return t->mm_cid;
+> @@ -2303,6 +2304,7 @@ static inline void sched_mm_cid_before_execve(struct task_struct *t) { }
+>   static inline void sched_mm_cid_after_execve(struct task_struct *t) { }
+>   static inline void sched_mm_cid_fork(struct task_struct *t) { }
+>   static inline void sched_mm_cid_exit_signals(struct task_struct *t) { }
+> +static inline void task_mm_cid_work(struct task_struct *t) { }
+>   static inline int task_mm_cid(struct task_struct *t)
+>   {
+>   	/*
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index d6b91e8a66d6d..e6d6e468e64b4 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1420,6 +1420,13 @@ static inline void mm_set_cpus_allowed(struct mm_struct *mm, const struct cpumas
+>   	WRITE_ONCE(mm->nr_cpus_allowed, cpumask_weight(mm_allowed));
+>   	raw_spin_unlock(&mm->cpus_allowed_lock);
+>   }
+> +
+> +static inline bool mm_cid_needs_scan(struct mm_struct *mm)
+> +{
+> +	if (!mm)
+> +		return false;
+> +	return time_after(jiffies, READ_ONCE(mm->mm_cid_next_scan));
+> +}
+>   #else /* CONFIG_SCHED_MM_CID */
+>   static inline void mm_init_cid(struct mm_struct *mm, struct task_struct *p) { }
+>   static inline int mm_alloc_cid(struct mm_struct *mm, struct task_struct *p) { return 0; }
+> @@ -1430,6 +1437,10 @@ static inline unsigned int mm_cid_size(void)
+>   	return 0;
+>   }
+>   static inline void mm_set_cpus_allowed(struct mm_struct *mm, const struct cpumask *cpumask) { }
+> +static inline bool mm_cid_needs_scan(struct mm_struct *mm)
+> +{
+> +	return false;
+> +}
+>   #endif /* CONFIG_SCHED_MM_CID */
+>   
+>   struct mmu_gather;
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index aa9c5be7a6325..a75f61cea2271 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1428,7 +1428,7 @@ struct task_struct {
+>   	int				last_mm_cid;	/* Most recent cid in mm */
+>   	int				migrate_from_cpu;
+>   	int				mm_cid_active;	/* Whether cid bitmap is active */
+> -	struct callback_head		cid_work;
+> +	unsigned long			last_cid_reset;	/* Time of last reset in jiffies */
+>   #endif
+>   
+>   	struct tlbflush_unmap_batch	tlb_ubc;
+> diff --git a/kernel/rseq.c b/kernel/rseq.c
+> index b7a1ec327e811..100f81e330dc6 100644
+> --- a/kernel/rseq.c
+> +++ b/kernel/rseq.c
+> @@ -441,6 +441,8 @@ void __rseq_handle_notify_resume(struct ksignal *ksig, struct pt_regs *regs)
+>   	}
+>   	if (unlikely(rseq_update_cpu_node_id(t)))
+>   		goto error;
+> +	/* The mm_cid compaction returns prematurely if scan is not needed. */
+> +	task_mm_cid_work(t);
+>   	return;
+>   
+>   error:
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index 81c6df746df17..27b856a1cb0a9 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -10589,22 +10589,13 @@ static void sched_mm_cid_remote_clear_weight(struct mm_struct *mm, int cpu,
+>   	sched_mm_cid_remote_clear(mm, pcpu_cid, cpu);
+>   }
+>   
+> -static void task_mm_cid_work(struct callback_head *work)
+> +void task_mm_cid_work(struct task_struct *t)
+>   {
+>   	unsigned long now = jiffies, old_scan, next_scan;
+> -	struct task_struct *t = current;
+>   	struct cpumask *cidmask;
+> -	struct mm_struct *mm;
+>   	int weight, cpu;
+> +	struct mm_struct *mm = t->mm;
+>   
+> -	WARN_ON_ONCE(t != container_of(work, struct task_struct, cid_work));
+> -
+> -	work->next = work;	/* Prevent double-add */
+> -	if (t->flags & PF_EXITING)
+> -		return;
+> -	mm = t->mm;
+> -	if (!mm)
+> -		return;
+>   	old_scan = READ_ONCE(mm->mm_cid_next_scan);
+>   	next_scan = now + msecs_to_jiffies(MM_CID_SCAN_DELAY);
+>   	if (!old_scan) {
+> @@ -10643,23 +10634,47 @@ void init_sched_mm_cid(struct task_struct *t)
+>   		if (mm_users == 1)
+>   			mm->mm_cid_next_scan = jiffies + msecs_to_jiffies(MM_CID_SCAN_DELAY);
+>   	}
+> -	t->cid_work.next = &t->cid_work;	/* Protect against double add */
+> -	init_task_work(&t->cid_work, task_mm_cid_work);
+>   }
+>   
+>   void task_tick_mm_cid(struct rq *rq, struct task_struct *curr)
+>   {
+> -	struct callback_head *work = &curr->cid_work;
+> -	unsigned long now = jiffies;
+> +	u64 rtime = curr->se.sum_exec_runtime - curr->se.prev_sum_exec_runtime;
+>   
+> +	/*
+> +	 * If a task is running unpreempted for a long time, it won't get its
+> +	 * mm_cid compacted and won't update its mm_cid value after a
+> +	 * compaction occurs.
+> +	 * For such a task, this function does two things:
+> +	 * A) trigger the mm_cid recompaction,
+> +	 * B) trigger an update of the task's rseq->mm_cid field at some point
+> +	 * after recompaction, so it can get a mm_cid value closer to 0.
+> +	 * A change in the mm_cid triggers an rseq_preempt.
+> +	 *
+> +	 * B occurs once after the compaction work completes, neither A nor B
+> +	 * run as long as the compaction work is pending, the task is exiting
+> +	 * or is not a userspace task.
+> +	 */
+>   	if (!curr->mm || (curr->flags & (PF_EXITING | PF_KTHREAD)) ||
+> -	    work->next != work)
+> +	    test_tsk_thread_flag(curr, TIF_NOTIFY_RESUME))
+>   		return;
+> -	if (time_before(now, READ_ONCE(curr->mm->mm_cid_next_scan)))
+> +	if (rtime < RSEQ_UNPREEMPTED_THRESHOLD)
+>   		return;
+> -
+> -	/* No page allocation under rq lock */
+> -	task_work_add(curr, work, TWA_RESUME);
+> +	if (mm_cid_needs_scan(curr->mm)) {
+> +		/* Trigger mm_cid recompaction */
+> +		rseq_set_notify_resume(curr);
+> +	} else if (time_after(jiffies, curr->last_cid_reset +
+> +			      msecs_to_jiffies(MM_CID_SCAN_DELAY))) {
+> +		/* Update mm_cid field */
+> +		int old_cid = curr->mm_cid;
+> +
+> +		if (!curr->mm_cid_active)
+> +			return;
+> +		mm_cid_snapshot_time(rq, curr->mm);
+> +		mm_cid_put_lazy(curr);
+> +		curr->last_mm_cid = curr->mm_cid = mm_cid_get(rq, curr, curr->mm);
+> +		if (old_cid != curr->mm_cid)
+> +			rseq_preempt(curr);
+> +	}
+>   }
+>   
+>   void sched_mm_cid_exit_signals(struct task_struct *t)
+> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> index 475bb5998295e..90a5b58188232 100644
+> --- a/kernel/sched/sched.h
+> +++ b/kernel/sched/sched.h
+> @@ -3606,6 +3606,7 @@ extern const char *preempt_modes[];
+>   
+>   #define SCHED_MM_CID_PERIOD_NS	(100ULL * 1000000)	/* 100ms */
+>   #define MM_CID_SCAN_DELAY	100			/* 100ms */
+> +#define RSEQ_UNPREEMPTED_THRESHOLD	SCHED_MM_CID_PERIOD_NS
+>   
+>   extern raw_spinlock_t cid_lock;
+>   extern int use_cid_lock;
+> @@ -3809,6 +3810,7 @@ static inline int mm_cid_get(struct rq *rq, struct task_struct *t,
+>   	int cid;
+>   
+>   	lockdep_assert_rq_held(rq);
+> +	t->last_cid_reset = jiffies;
+>   	cpumask = mm_cidmask(mm);
+>   	cid = __this_cpu_read(pcpu_cid->cid);
+>   	if (mm_cid_is_valid(cid)) {
 
-The action taken toward poisoned page not under MF_ACTION_REQUIRED is 
-typically isolation, that is, remove the pte or mark the pte as poisoned 
-special swap entry, so that subsequent page fault is given a chance to
-deliver a SIGBUS. That said, things might fail during the process, like
-encountering GUP pinned THP page.>
->> "Process killed" sounds okay for MF_MSG_ALREADY_POISONED, but
->> we need to understand why "Failed" doesn't work for your usecase.
->> "Failed" means process is killed but page is not successfully isolated which
->> applies to MF_MSG_ALREADY_POISONED case as well.
-> 
-> So that accessing process is killed. Why call action_result() with MF_FAILED?
-> Doesn't that indicate we poisoned another page and the recovery attempt failed?
 
-What I recall is that, "recovery" is reserved for page that is clean, 
-isolated, and even by chance, unmapped.  "failed" is reserved for page 
-that has been(or might not?) removed from the page table, page might be 
-dirty, certainly mapped, etc. A SIGBUS doesn't make recovery an 
-automatic success.
-
-Others please correct me if I'm mistaken.
-
-thanks,
--jane
-
-> 
-> Thanks,
-> Kyle Meyer
-
-
-
-
-
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
 
