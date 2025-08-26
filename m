@@ -4,111 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63B21CA0FE9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 08:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B5DDCA0EFA
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 08:23:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95C7E6B0177; Tue, 26 Aug 2025 04:20:13 -0400 (EDT)
+	id A4EFA6B0178; Tue, 26 Aug 2025 04:23:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 934C86B0178; Tue, 26 Aug 2025 04:20:13 -0400 (EDT)
+	id 9FF936B017A; Tue, 26 Aug 2025 04:23:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8710C6B0179; Tue, 26 Aug 2025 04:20:13 -0400 (EDT)
+	id 8C7226B017B; Tue, 26 Aug 2025 04:23:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 67F8B6B0177
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 04:20:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 17008847DD
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:20:13 +0000 (UTC)
-X-FDA: 83818211106.10.4BCC166
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 142D480013
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:20:10 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oKSUGfzM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 71FB86B0178
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 04:23:18 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BB0915A869
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:23:17 +0000 (UTC)
+X-FDA: 83818218834.28.0D0D77D
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D580B140004
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:23:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756196411;
+	s=arc-20220608; t=1756196595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5qb1sBBxeGorHMHWQVVai+4xMA9ma3fz49qaUJb2LR0=;
-	b=v1U7OanC/YXnmetcmVR8WlU/QAm+3ZfvfkDlmpdDPAALN8PXYhNpURRrLOj0A4tMA7yvCO
-	iuI53uAqCnVIjZmBQhkYXMK1pQEYnF0YIadjzJKnLWf4RgjuHqbL0KZortJPeBT4TkjtNq
-	oqI4cbS29x4stcYsLfX1r2qK0695oes=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eoEgUhgTXs7cJfDCjUXiIDAL+Ic7fYFRZOTC/mkCXTI=;
+	b=AMXWclh5OzMyRSJhyF0isMVc2GttqwfWAuwN04Pf7mxyTm1Vtl1eZUn8ZU26y823kNJoGL
+	6FvU0rTZ5lRerVRoAn9TeP/6YhdDu4tK+d9ItpcTx0g7OWA6epKqzKnSskX0YEiBTlXOFG
+	DEP7nS2AJHNLzGebddl0JZUbyBLScOg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oKSUGfzM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756196411; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756196595; a=rsa-sha256;
 	cv=none;
-	b=RtNjQsInkfkyedinTYCjxRDMZ/dc1yO20h0IetHFTMxJ70Rqe2b4+MAVrTGjdOCpp3+ZTo
-	bmuQKWY4KLJHrsVKYpF7gd0FU7Tb7DQuoZz+lZD9iugK77hrFEJqgfwRcOS5+Rufd1f9TT
-	uyfmS8+2FEUvnDJfWxWvrmolGNDy24g=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 2FC2E5C5E46
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:20:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753DBC116C6
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:20:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756196409;
-	bh=sONuKki8B7TwWJ64reiC6mneIthkd8HsVY+Is145MIc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oKSUGfzMWHSaT+dHxVefkn5yvRO3lWoP1wYvSflK6QtQviyBA9S1sKEUU5boLItSv
-	 Rt7Zu9KsM7t5axAyt4jja/yVYEWvWAGECiPMHlW++fvcFdvARRM7rBm2om5P+at7Bl
-	 aaNZWBtT9OiI3v2wDwid1+Rz9DCshMQRU+i0gRgQAhtd4/6Wxy++xV+kPxSMYUHTMV
-	 Q7a4nJuTcIoqb6Oi7rqhA9wtYkuhEnSFdVBZbNllBMtK3e+lnCbllPMoZ3tv0PQVq7
-	 Ux6ajmGnrXLVminGBQ7te0wQqAywQjT5+dXfbThbJg+v5XWnRftO2Nezw75VrqXhuH
-	 i3SRgXQrZhujg==
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d603acc23so41753127b3.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 01:20:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXxkzQjT8UltHDmiVNspVmY9s9LTp73HiQyAsa927amHcVX6h8zBI1eXAhOzJhFHj1dlwE94WTr/g==@kvack.org
-X-Gm-Message-State: AOJu0YzYPVd4HtjgJepwSgDMcFDNs519MDvolSzfiTeDAATV28P9hoG9
-	g5sSDLlsAjbpru7KxVpquUyXOp3HNZMoNDXFvhbs6N7v6jhChbzT3TtX00/bBbZk3Nuv8IB+fdX
-	wVyfN525JqWAZt/SCb7kU2UD0QVCrir1rgsULnhS5rg==
-X-Google-Smtp-Source: AGHT+IHhfA6toD9smW5R9Eqp3FwdYkE9zYj/5v7I/pPYUBkwflme2INXRlkFY6LnUaCPhnYcS6FDPoXOU1MLbVE8P1c=
-X-Received: by 2002:a05:690c:74c7:b0:719:f1b0:5c29 with SMTP id
- 00721157ae682-71fdc2b00efmr155584287b3.3.1756196408693; Tue, 26 Aug 2025
- 01:20:08 -0700 (PDT)
+	b=xhF4Ga7bZnmM/UtUK/pj6NCEZOHIbxx4BTOvuTiTDDUaKK+o/ld3hHZnDapnYU4c4fE3lq
+	dhWubfeCNRWHmQoeLuhuUJJUyzMRI1yMFrl2RjSJZwNvywiBhgTpg5G4qhZ+b/7ALkrPQ4
+	H38T4d5snGo4mzT5uS+YWBo9Kd3Wi8s=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-61a8c134533so10961853a12.3
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 01:23:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756196594; x=1756801394;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoEgUhgTXs7cJfDCjUXiIDAL+Ic7fYFRZOTC/mkCXTI=;
+        b=I225bFx1Cqe8/oj5S8qlvNzM1Cz2fyrJSAz8EX0bnJOFbXNHE+XB4eReW6Rgi2XcFF
+         bhV2ObHqD8ObVqehsjHvMP3Xz77mEc1oOaR1509Mo+4ORpv1sHuPvHduz8O1lmDY0FLq
+         mtzO/fqaS2GswCO0cKFo13eCQOwLcFUP8Y8Nvs5bg21csfHOuGwm+mBh8uouiWYH3Yym
+         uPF8RqNyMVVtQvuMoVS5fP6sXL/yPsWroQEY3f5aqW0+zREx2h5pGo2YBh0EaHArGuKH
+         B9tuLmTdAQoQYxLgGX0LFSngvsWnqKUzoS12ucH3Cv7Wxz4rA0P5Di/S48jUmKfJRT+3
+         7vKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXWIfVYCn7JeDWhPQDdhZ85VvWYoM/jY/YHHBx2q1mzvLhCPh+hr07BWCktMBykT9lA5ZPqcpWCxg==@kvack.org
+X-Gm-Message-State: AOJu0Yy2VmhX1NpP+c4wMvk+7I0mQVChoaNCSKjkSfsLqwy3O9fjeAdV
+	SMkJi6lRBaal5UoAhFm3BTdF0z6Vgw6jIedj8qzwaIM2o/hoC13jP+IE
+X-Gm-Gg: ASbGncvdtnoABdQPTiq6aOlwCFqBB+pbcQfJ6oYGvnkVzJZkTwWyrKyfp9I5yXNZBsr
+	re6OF1/eSHembRPzeh2HurMmORRaobnGVQ076kwQZ7jlZ/JObqlYyVIRHilFantYlC69Lhr1caU
+	rwq8BebSymiYSgFHnYJWmCaqa08Ua90oDOIn0CLH+/hfcW/+qJURog4gYS0b9UYIo8I/6EPDtGo
+	xJhbK4DYypdAEokPe6jiSMCYsDwR2++qmZj/BNwWbNFozYT/ldFcnGqO2ZFNcAidOxk16zHUFoa
+	S1BBZBhvn9bHdisL9JRCxjZGWvZCmpUMxx2Sb339U0/bY5ZDXai+vaWjgx9yg1A5S18IFZZnNXU
+	g692PLiFDu7FP
+X-Google-Smtp-Source: AGHT+IGX5sDuhW+5W6VbsXdfJT3rGtM8X/CzpCSqDXv2mDL8i0YM9mxTFCKQLQee6hpN7FF6DkcmCA==
+X-Received: by 2002:a05:6402:4390:b0:618:2fde:8fba with SMTP id 4fb4d7f45d1cf-61c1b45c326mr12436871a12.4.1756196594167;
+        Tue, 26 Aug 2025 01:23:14 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:1::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61c533e96dfsm4883755a12.18.2025.08.26.01.23.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Aug 2025 01:23:13 -0700 (PDT)
+Date: Tue, 26 Aug 2025 01:23:11 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gu Bowen <gubowen5@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Waiman Long <llong@redhat.com>, stable@vger.kernel.org, linux-mm@kvack.org, 
+	John Ogness <john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>
+Subject: Re: [PATCH v5] mm: Fix possible deadlock in kmemleak
+Message-ID: <fv4epzbozkpbyuaqt37zt5th3diwmav73cfzdap5kx23j456im@7u5kw5eip3xd>
+References: <20250822073541.1886469-1-gubowen5@huawei.com>
 MIME-Version: 1.0
-References: <uyxkdmnmvjipxuf7gagu2okw7afvzlclomfmc6wb6tygc3mhv6@736m7xs6gn5q>
- <CAF8kJuMo3yNKOZL9n5UkHx_O5cTZts287HOnQOu=KqQcnbrMdg@mail.gmail.com>
- <aKC+EU3I/qm6TcjG@yjaykim-PowerEdge-T330> <CAF8kJuNuNuxxTbtkCb3Opsjfy-or7E+0AwPDi7L-EgqoraQ3Qg@mail.gmail.com>
- <aKROKZ9+z2oGUJ7K@yjaykim-PowerEdge-T330> <CAF8kJuPUouN4c6V-CaG7_WQUAvRxBg02WRxsMtL56_YTdTh1Jg@mail.gmail.com>
- <aKXeLCr9DgQ2YfCq@yjaykim-PowerEdge-T330> <CAF8kJuM4f2W6w29VcHY5mgXVMYmTF4yORKaFky6bCjS1xRek9Q@mail.gmail.com>
- <aKgD7nZy7U+rHt9X@yjaykim-PowerEdge-T330> <CAF8kJuMb5i6GuD_-XWtHPYnu-8dQ0W51_KqUk60DccqbKjNq6w@mail.gmail.com>
- <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330>
-In-Reply-To: <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 26 Aug 2025 01:19:57 -0700
-X-Gmail-Original-Message-ID: <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
-X-Gm-Features: Ac12FXxNgoR7PbdQwij3wHUVAMYghI2NtgP6p7nAs3QGQFBgR0Y0mJ6P0oIqaU8
-Message-ID: <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
-	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 142D480013
-X-Stat-Signature: or98dzyygkthnfrtjzwu4ufnbs76eyu3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822073541.1886469-1-gubowen5@huawei.com>
+X-Stat-Signature: fchw6pby5oicj5rp3peu6zbwbqaw7hbt
 X-Rspam-User: 
-X-HE-Tag: 1756196410-94835
-X-HE-Meta: U2FsdGVkX1++ypyUzDgPgDc+Rr+Ivna4sVwS9e7csbSTUonOxSxOcy8mG7+AZb57pL36+9YXZ/toQHta3VAPOUAZZr78BhG4unqy7101a6P0rXN2AXGC7Kx4XBZp5favDRni5c46lhEw4rkWNBolomEmCDzkQOO8hUxisSwgT8bEhwBUxtaJjs5T/zoQDXniWHbPue53RU/PLX94CeRqyY1xTcaK6F1ZrRc8QowhrwJCOiluE63S8+iaKlY7ogxrrdllQgK6jZfH4/QZinJTkv2Z4ff3TTX1Q9PLm348qKNEj8UuUJ8vnjICmERD1tPIAsAJHEfl5J5G5HRApFK+csbr6oD2JuUyiDfRCBnaG9dBd3fK8mNLFv7Vy1DS9vwJSvZjx7G74a0wVuOFhmF7VnPRT8G0iCZCo/uNKqgI9E3JZvIKPm5cDOMZu8G+5RXjwYTVQGmhUvtdZwSKIzSCgNeOjVAgBx+0VjhQkHNhmFK1pst/0TEeV1Cx/xwXZDRfN4uUVNhzqNFXvtVrWcBoDYmYcKlXVKJ3TyYhEx+dGUqIP2B3ty5F0gahzQmH945wkbBtWz8ThByohIgg6PLKdRCp8LnQ7R+ORqK4R6vopsuMMgoLoBvX1FVZTC2zRHdYya/Zsvj0ySFz1r7ss7rXg3ZKLoa7DTZUzYylY9VWZSkE3PpQ+jtUC1p86HURnXOnjZ+vQ+ODPn69P4c50QNGTkGiQgTU7aHLMMPsxm54tb7fsx1sqvGMM9GfkF6SQjlo0+vnqQEpl54rSPSbhZ4dxtYG0jQhNH3aRc7LxMoDlzfV2wDdPWgdsoSld4zaWok3FQC++Gj+iUXzFq/15xe4RAPgUeRv2QXJTvXbLbPF89OJZlkGQjSJJnhetA89/Y4u/0w7jG6XDcZLNZ2BHmqxD6wVDJCc6dYxMt37f4OfJaK6i2pegBuzPS/7XcSC/dlln6tty7C5qJC/VYMwp0Y
- AUjiJcMY
- L8yPVCMy7KGBZ73Gj0/xATtwSZiYouw4j2NPX/4HvOwDNbWbNuZHmQ+UutRj92/pw0N9/+8iFW3Bin0MiNfVzIeDyQCAAGJtJUp4DWHEtr97f4pZCCMdJZ6UdTs+Wr7FcAQ3yAvFe5Fmpm0u49SG8bMQWchK13CogiQV3GkcATZ28RkPyEsM/nnNStihjZMRl8tHkRidmgs6XG1YpXpRCo4IkbsI9Q6vM/H/dsO4+5+WWYZMkH5pwt6ZGAtiQpEfMLsY5e70jXH2BM78psjDCUhkybbSPO9x7IkcMzhh+9WiP7XH92VNuWCdGdORRyXZeHJpBe1ziPkRnyEg=
+X-Rspamd-Queue-Id: D580B140004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756196595-764533
+X-HE-Meta: U2FsdGVkX195pZjFX+tUxMrou3bUntNfRiWA3NBTulqZv6tjKgjkqD5G9X5Ds4sRS5NFYA+bOrzJyXSvMDgKzqxcakgBvSRSucWKvMo2GaGbiqxX8mwmILECp/B5UahNdcApJP5KxYzTfXeJLqZDGpIe5JPzJeZjF+hY1HCMl/+R4VvJ2u5OKSGScJREICzWAannKk9lH8/mZOLXhw8WdyGaL1WQxg3mViBhvVkRYy8kT8dLKTfa3KQZP7HtYsnAZV+gIIJEhr/G/QynZTCq0OSNLiHRXEwvaqS0PUcbrziJG6A2vUO20sOt9AnR/2J/VB0uwmYnXI+yk94cbMmEADVQlmYgDeukgT75qDej3dSRUYHv84Rt6DncxloXGhHn1JA8oC73jvORTFHlu5Vcrq3KbCtJwU47kQSYKHe6hHMVLWnCxIiMYtUGNgX3g7/50U5yg3wcZ4G8dAuJbYheCHYOyRAUf01LrDQYso0QR3CePO/ZRlSWfg6PnwP4BMB63jSNKRW34LVP3noOsi7G9Tgd7kI+uw1k0i+r45S2BRJL4hFCRobGI2tGP8w6/CSdWkKR1/ldytV1DuepMEhrK/Us8cCXJCFJP9K5Q12+roqJckGgmg53AxwFIw8nX2z4+AdnXpEp3fBLBlat7qwFA6s9uWZ2FBD9jkfBYBboSNEIuxipyaW/iNtiJl0LoYL6IOtrCKwRhPc8/T+CJaAhAh/n9LxxX0t8UbdOkZ1ifP/Mr/V3NVO3qSDPvyGSSdz7XDkIBvOzVOsmt08zAse0T26SLD5mBYjdLka88tLRuPKFyJrP2E1EakAIgRWkhjlbNeazxNDeBulJm/uF6y8qORTsaHr7sMTxtaEjNpi6SElBmywbQUUVEhlPZfNt4RLSnrxQpUEI7cMLTCGwGK2+X3+STn9G0IjhXoV7UZ7vMNMy4mhWyxMPLP8madipc+JsxTKbYkwgz68RKO9mq9S
+ lEOYHwv+
+ 1/uOAi3y2pIanjhix7ZdardrBZpX2lA5cZF3fMk4gdGoiXjvBREFNC9ezXCMfJ1LtFYZygGrll/hcJvb5kD+eImK5x+nrjSVLi3oCh/biBjl0QSyPLzgRiXwYoVACU40p9+TD3R+7+SWYd+lLULtq1HxLcizWhvAG+TNuQp1jcITBvX+TknDar6FOD04Lavpz4nJ0ETqhNDPbkP01GDJUtAQSLSyFiTK0fGXE+4HYmvS5l16SVfoRxEpNM40pzo196krpxvb0ZEwotYNLE8sFEgH5s5cyLEkzuTsqSFETTQOifaGr3l+OKMhXsI+8AK0aTh7nTtd2tCBLzatyp+PH6yty4wwXmWynguiLikDE7GsWHMMpFwor+n/LSX32T3cU7iyGi8VhW/MFjuvuyCzhFc3oFeTrMuCGJk1nRe7QKOOHs5pPqyVb1gKd19wibmoAiKmRrnQe7HX0kuU9ZuUH4oygGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,202 +106,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 24, 2025 at 5:05=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> > How do you express the default tier who shall not name? There are
-> > actually 3 states associated with default. It is not binary.
-> > 1) default not specified: look up parent chain for default.
-> > 2) default specified as on. Override parent default.
-> > 3) default specified as off. Override parent default.
->
-> As I understand, your intention is to define inheritance semantics depend=
-ing
-> on the default value, and allow children to override this freely with `-`=
- and
-> `+` semantics. Is that correct?
+On Fri, Aug 22, 2025 at 03:35:41PM +0800, Gu Bowen wrote:
+> There are some AA deadlock issues in kmemleak, similar to the situation
+> reported by Breno [1]. The deadlock path is as follows:
+> 
+> mem_pool_alloc()
+>   -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+>       -> pr_warn()
+>           -> netconsole subsystem
+> 	     -> netpoll
+> 	         -> __alloc_skb
+> 		   -> __create_object
+> 		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+> 
+> To solve this problem, switch to printk_safe mode before printing warning
+> message, this will redirect all printk()-s to a special per-CPU buffer,
+> which will be flushed later from a safe context (irq work), and this
+> deadlock problem can be avoided. The proper API to use should be
+> printk_deferred_enter()/printk_deferred_exit() [2]. Another way is to
+> place the warn print after kmemleak is released.
+> 
+> [1]
+> https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
+> [2]
+> https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
+> ====================
+> 
+> Signed-off-by: Gu Bowen <gubowen5@huawei.com>
 
-Right, the "+" and "-" need to place in the beginning without tier
-name, then it is referring the default.
-
->
-> When I originally proposed the swap cgroup priority mechanism, Michal Kou=
-tn=C3=BD
-> commented that it is unnatural for cgroups if a parent attribute is not
-> inherited by its child:
-> (https://lore.kernel.org/linux-mm/rivwhhhkuqy7p4r6mmuhpheaj3c7vcw4w4kavp4=
-2avpz7es5vp@hbnvrmgzb5tr/)
-Michal only said you need to provide ways for child cgroup to inherit
-the parent.
-The swap.tiers does provide such a mechanism. Just don't override the
-default.  I would not go that far to ban the default overwrite. It is
-useful no need to list every swap tier.
-
-BTW, Michal, I haven't heard any feedback from you since I started the
-swap.tiers discussion. If you have any concerns please do voice out.
-
-> Therefore, my current thinking is:
-> * The global swap setting itself is tier 1 (if nothing is configured).
-> * If a cgroup has no setting:
->   - Top-level cgroups follow the global swap.
->   - Child cgroups follow their parent=E2=80=99s setting.
-> * If a cgroup has its own setting, that setting is applied.
-> (child cgroups can only select tiers that the parent has allowed.)
-
-That is too restrictive. The most common case is just the parent
-cgroup matters, the child uses the exact same setting as the parent.
-However, if you want the child to be different from the parent, there
-are two cases depending on your intention. Both can make sense.
-1) The parent is more latency sensitive than the child. That way the
-child will be more (slower) tired than the parent. Using more tiers is
-slower, that is the inverted relationship. Your proposal does not
-allow this?
-2) The parent is latency tolerant and the child is latency sensitive.
-In this case, the child will remove some swap files from the parent.
-This is also a valid case, e.g. the parent is just a wrapper daemon
-invoking the real worker as a child. The wrapper just does log
-rotation and restarting the child group with a watchdog, it does not
-need to be very latency sensitive, let say the watchdog is 1 hours.
-The child is the heavy lifter and requires fast response.
-
-I think both cases are possible, I don't see a strong reason to limit
-the flexibility when there is no additional cost. I expect the
-restriction approach having similar complexity.
-
-> This seems natural because most cgroup resource distribution mechanisms f=
-ollow
-> a subset inheritance model.
-
-I don't see a strong reason to make this kind of restriction yet. It
-can go both ways. Depending on your viewpoint, having more swap tier
-does not mean it is more powerful, it can be less powerful in the
-sense that it can slow you down more.
-
-> Thus, in my concept, there is no notion of a =E2=80=9Cdefault=E2=80=9D va=
-lue that controls
-> inheritance.
-
-Then you need to list all tiers to disable all. It would be error
-prone if your tier list is long.
->
-> > How are you going to store the list of ranges? Just a bitmask integer
-> > or a list?
->
-> They can be represented as increasing integers, up to 32, and stored as a
-> bitmask.
-
-Great, that is what I have in mind as well.
-
-> > I feel the tier name is more readable. The number to which actual
-> > device mapping is non trivial to track for humans.
->
-> Using increasing integers makes it simpler for the kernel to accept a uni=
-form
-> interface format, it is identical to the existing cpuset interface, and i=
-t
-> expresses the meaning of =E2=80=9Ctiers of swap by speed hierarchy=E2=80=
-=9D more clearly in my
-> view.
-
-Same.
-
->
-> However, my feeling is still that this approach is clearer both in terms =
-of
-> implementation and conceptual expression. I would appreciate it if you co=
-uld
-> reconsider it once more. If after reconsideration you still prefer your
-
-Can you clarify what I need to reconsider? I have the very similar
-bitmask idea as you describe now.
-I am not a dictator. I just provide feedback to your usage case with
-my reasoning.
-
-> direction, I will follow your decision.
->
-> > I want to add another usage case into consideration. The swap.tiers
-> > does not have to be per cgroup. It can be per VMA. [...]
->
-> I understand this as a potential extension use case for swap.tier.
-> I will keep this in mind when implementing. If I have further ideas here,=
- I
-> will share them for discussion.
-
-That means the tiers definition needs to be global, outside of the cgroup.
-
-> > Sounds fine. Maybe we can have "ssd:100 zswap:40 hdd" [...]
->
-> Yes, this alignment looks good to me!
->
-> > Can you elaborate on that. Just brainstorming, can we keep the
-> > swap.tiers and assign NUMA autobind range to tier as well? [...]
->
-> That is actually the same idea I had in mind for the NUMA use case.
-> However, I doubt if there is any real workload using this in practice, so=
- I
-> thought it may be better to leave it out for now. If NUMA autobind is tru=
-ly
-> needed later, it could be implemented then.
-
-I do see a possibility to just remove the NUMA autobind thing if the
-default swap behavior is close enough. The recent swap allocator
-change has made huge improvements in terms of lock contention and
-using smaller locks. The NUMA autobind might not justify the
-complexity now. I wouldn't spend too much effort in NUMA  for the MVP
-of swap.tiers.
-
-> This point can also be revisited during review or patch writing, so I wil=
-l
-> keep thinking about it.
-
-Agree.
-
-> > I feel that that has the risk of  premature optimization. I suggest
-> > just going with the simplest bitmask check first then optimize as
-> > follow up when needed. [...]
->
-> Yes, I agree with you. Starting with the bitmask implementation seems to =
-be
-> the right approach.
->
-> By the way, while thinking about possible implementation, I would like to=
- ask
-> your opinion on the following situation:
->
-> Suppose a tier has already been defined and cgroups are configured to use=
- it.
-> Should we allow the tier definition itself to be modified afterwards?
-
-If we can set it the first time, we should be able to set it the
-second time. I don't recall such an example in the kernel parameter
-can only be set once.
-
-
-> There seem to be two possible choices:
->
-> 1. Once a cgroup references a tier, modifying that tier should be disallo=
-wed.
-
-Even modify a tier to cover more priority range but no swap device
-falls in that additional range yet?
-I think we should make the change follow the swap on/swap off
-behavior. Once the swap device is swapped on, it can't change its tier
-until it is swapped off again. when it is swapped off, there is no
-cgroup on it. Notice the swap file belongs to which tier is not the
-same as the priority range of the tier. You can modify the range and
-reorder swap tiers as long as it is not causing swap on device jump to
-a different tier.
-
-> 2. Allow tier re-definition even if cgroups are already referencing it.
-
-You can still swap off even if cgroup is still using it.
-
-> Personally, I prefer option (1), since it avoids unexpected changes for
-> cgroups that already rely on a particular tier definition.
-
-Swap off and on already have similar problems. We can't change the
-priority when the swap device is swapon already. We can go through a
-swap off to change it.
-
-Chris
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
