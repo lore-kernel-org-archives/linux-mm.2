@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC718CA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 07:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFDDFCA0EFA
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 07:19:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBEDF8E00A9; Tue, 26 Aug 2025 03:07:52 -0400 (EDT)
+	id 240FB8E00AA; Tue, 26 Aug 2025 03:19:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D75048E00A8; Tue, 26 Aug 2025 03:07:52 -0400 (EDT)
+	id 1F1CE8E00A8; Tue, 26 Aug 2025 03:19:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAC918E00A9; Tue, 26 Aug 2025 03:07:52 -0400 (EDT)
+	id 107C38E00AA; Tue, 26 Aug 2025 03:19:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B216F8E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:07:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64258BA967
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:07:52 +0000 (UTC)
-X-FDA: 83818028784.13.1521155
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C05D81C0006
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:07:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F37938E00A8
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:19:55 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66C181A0698
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:19:55 +0000 (UTC)
+X-FDA: 83818059150.23.844D3DD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C3B4B140003
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:19:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sdgKK5NM;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756192070;
+	s=arc-20220608; t=1756192793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ui/bniHOXISjDlVmRpJRQWkjdsRtFdvaFdofPM0F/Ho=;
-	b=hXsjfKAf71hyGd5WeOVF42ehyysAKOqCrS9ATBEVwp/dn1e+XeHQjjlznSvPZwGR70AlYC
-	Z5+DeNpD5FLFLssLSLG/lts5y3FjQvZttbmkqU1JDvzTXZ981e9om8LyZ0djG4JD+1nXNM
-	JTq3JLIzExVjNJqsXaRBhtjd4Gw/EGg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756192070; a=rsa-sha256;
-	cv=none;
-	b=z/YquEPqGB+A+eNA5t1dM1xRqvCO1jhSTxwX/Cp6gOXUvvd1fIVOgXyqdsfVpw+At+CfC7
-	lElnP95ySG1iJ/dqfAvZaeOOvF9sE2nn7owX4ZSsyi8vmLVwxOWXBiL2rY7b6HgsKJALhO
-	+uugMkr12R72QuMrHtpjCNMgF40gv8I=
+	 in-reply-to:references:dkim-signature;
+	bh=s4MfRbOx/PfJdqzudFixXlPsu9Rk1LL03ujYMZgklIk=;
+	b=GQVuLsZJLUC9Y+SMJGF/OT25gD80sTkSHp+EyTmwe81mtcfXzn4+HPGqN0nPfxFAhG+K/I
+	YfDi4j6PQ07VKug0fB3DWRs3PN7guQ6yhPKLuAULzVCmFsh6VgzEW3snjkV1jLLon+n5D3
+	AGHyHcmi2wWRmzVShfqONbCt3PTBBQc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B63031BC0;
-	Tue, 26 Aug 2025 00:07:41 -0700 (PDT)
-Received: from localhost.localdomain (unknown [10.163.65.202])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4CB183F63F;
-	Tue, 26 Aug 2025 00:07:43 -0700 (PDT)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	shuah@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH 2/2] selftests/mm/uffd-stress: Stricten constraint on free hugepages before the test
-Date: Tue, 26 Aug 2025 12:37:05 +0530
-Message-Id: <20250826070705.53841-3-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250826070705.53841-1-dev.jain@arm.com>
-References: <20250826070705.53841-1-dev.jain@arm.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sdgKK5NM;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756192793; a=rsa-sha256;
+	cv=none;
+	b=LpRot6r9OIb4DYLfsaT+peVFMMCt0mleS5gd0BCZ+5DN40mQeXBDyVppzQQsbySlPUhBiS
+	cPs5n5UtmWjK8SmSUaQvTKbA6PHDTVdgzdFzQQqIt+uFZPam+qv4J50Kd7qzRqLnewGFIW
+	SCoI5Yhc/TJchIFxxfIYLgn2EgZRTsI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 792B1403BD;
+	Tue, 26 Aug 2025 07:19:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C343AC4CEF1;
+	Tue, 26 Aug 2025 07:19:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756192792;
+	bh=+PZJcpckpQZWq32DLv7x5km52DGDqx/XmxaGBNY8ZqU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sdgKK5NM1tDNEgsXTnvq26XugvjucYJ4kit5xOKN5Wgc6IfvlszRa9kW/Xm7LZp+z
+	 LQxaOCLPZ2w8VapMKHiCS5KgiTdoEg/i0dvwuLrugGUrkQiMjcFrJCS41a7/dOdr+6
+	 B2pWCbGoPveA9UmX1RheYgCyXtac850SQ1beWjkinM+m3x6Nd9ll8qQfTYzcXHpSWH
+	 1J8scG50xjhxtgfxf3oESRFjWKdUeexMU20z4ZcW9yjlKb86572kU4Zpv9XFiIqdT4
+	 g5wOD3VYOj97N0VjdfQK0coteGLeU2+/lhfhEdGFuHKNFX2nraAaMrtuvR9Ko3yO3o
+	 qtOZzpNkIVjfw==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] memblock: fix kernel-doc for MEMBLOCK_RSRV_NOINIT
+Date: Tue, 26 Aug 2025 10:19:46 +0300
+Message-ID: <20250826071947.1949725-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wb5c5cgtxrm6z6u65g5gffhj1tew6nrn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C05D81C0006
-X-Stat-Signature: 5wiua5kpj9198in3kpckawjsppg15ibd
-X-HE-Tag: 1756192070-544622
-X-HE-Meta: U2FsdGVkX1/jRtj50RfVFLP6ErzcA8v8pOFahoS4aEiYiIRyIO3WwH2vPy+ChNlCN9ThKN0JnP/Gh+K+jTfBE7e5b2d/g5I6UDV9LRbYE0HHCGtNQqOwxG0rNhzksY4n3fRSpdvWaaIHqOzis18gCtZ/rTBTit9U2l96rCQFwFx6CCm9aYS/BIK3c8PqfuC9i/VowhkhgKIAvg9zdJeymisxxWo4i888uZ1U3gnEIKXst1R8ApZqO+pC7aMV8+1iWUckQnWxs1Vu8jPCwwACSTpdDoBlwg9x+d6MYxj6hTEIbhpuQ0A/UcejAgPZCaZ4CV1Tg33Xytay4kS9DOs1g6GURAjP1u9yQZ+OVZ2JPqWFqsudx3I+saXnMJ4W0Ise1GgcM9wpHmmjNAPTEy40VPt4DmjPE49ENEBib4ssICRLC7Yr8i/vpA6vnLMVwMRjcyz2PX1Rmns5U5jXtAfDGGv/sQmk3aChrhGR33QvjjEbCmmIP+8ZRAvFi0T2jpQ1wKM5H044YSjis4seIBws6s5yPynOssZgrzpNRRnkpwwb2BGUly/kjToBwVCJXquxmJIzE3jkGRCpDXBTpMrRjUNiFzH7QudmxBVrrL8mrpuIkqJ0SzG1AzX+7owa2gKRcbpqOOGwiHWKm8ZefNFWJcaUW27mLQ03slvPxn+rLJjbizDd5wb4EN6sahRcaVmnaid1GXu/pCHSpkZMuivLS0oFuTarUczCleV1RTPPu1qi6bBLT5oZX9iMrG5ZRf2uOZS82m7a79ZhQGSwFdX19/r1lmWnA+xQHDmihIY/tUirNlChjQHcWAzxr3BDV6g2biTEiMEbKkTSlPQpHpI5AnlTU6eJiQYo3MZZFbg+fvQBTLLyoCWx+IIFgU58Bfk/w+yXzH1H3dWEKxys2xtXd5Ix/jwvOG8gRk+zRfY3LmFnrBKC0OEHz2tWBO+KHSUSOhziOGnMrpRRy/FAt/V
- g3nPCLm/
- UXAhLxWc+9u/x9EMc4STbZfJTnpFkbkd+p3M0B5yWj7sjLXvg8LKS9HjQq1VcLXbYqqqoChAfPWu6NjAnzj1z/9iHyBQ0ILYgZUkyjBuQPMDBtc6GZnwaNgSVLFae/N2ErPjUlWqOmmXqqu/LXMeUWi8jHQ==
+X-Rspamd-Queue-Id: C3B4B140003
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756192793-123946
+X-HE-Meta: U2FsdGVkX1+Ph3qsWkJg7ibcnGnGUWc1h+b+4YfpGnczLOaGOVefPS8KgbBjGneYwur7tPZXQUAGuEu3lqcdDw8qyWfkenViwOOVZI2+ttePCsKp3QwVpnul7QjClFvO6koZcwK2XurhWf3s6Es4DlX7IYE1ZitCrkievfbDN4xwR2Kxh0dksDHxyC+JgPeSfLVJPUASANV/3Bjx0POU6wT/9lels/Z9IcXeMQyLq/Vt5hDfcozRTe89ge967VFS/JlcSukebnl+thrH+reamlnESuwJzqeP1a1PRDfjPRw6Amllidxm3/DUZHxlrRqc3aKWd2mSFf7Aq42PwnrZqFUfszHubAGs5I88rCG8MUAEFlT/FRO+3znq7IZQ/dsFg/JkyTcZ0v7C1/2KQhHLRmnEwHCGnt32j91FTtrNEwpt058sh3K/0m3qBeJWfqG+BWRevc+ngcf7Yx4fiYr0qjgRZiCnKuigH19oB+28xZg2BzCsrBfqTsuZql6TFeti+CcA3UVZ+x4kFuKssHUe/acjptpd661mfa5DY5zkvRiLK27G7Lmz1o1P6CvKP6FP72hzNSLayIwEJJKOsBLngVKr3yJnM1GY/ko38E2UKMu0quc9k0Bnk+8EoOia0U4pkKhUDkdr3ae4p3czVqb1uhnIJvaD1/wyWZF7LBRy8o8ILxKN3ayacoz88ZJWIp2MfQOakBI+GBsGnz0gz3llhDnxEI6w+f8vzZCBBw/bnWIjgLkf85DELJf4xyFxeL4legLCMQ0Pg4I31j0HXBNDcSwFKPk7QTd/Np6/Evlx5fYuyaJw0Hhuvc8lCzGZmd205zixBrf9ExehrE0Czu195RTtYSl3ezgs1lqRLjCuzGQI5dwLRRuKoBGZoKi5Ky3iYrcbqpcPiRzXPT5zCRGBsieYmV6YGLRaJ8jtOoXIrJqKkhY7pcHLLzwYTI1pmFV07Cps/ODwqWag5k+mahv
+ PeBGkmpa
+ ZHBmv4J6vTSzQQlLBO2cDtKOTkRspgzPatg+6DNoeBOaoCPZjNoqLEcRnqKf5uddnW/SEEDd+90WkSOrj8hH+jimHp5ItR9jlnN1BeYa507D5kwMfae3EH8JogCmJtQQoeuuenxkBhojLKC406nA2PP3pLyPSdJ7Eh7uSHV44xr/0Ipjxvw8weSUNDYmscBTRlcYeAlLmmhdIob8VHD5Kt6ZF4hyFCUaAiA5SYQmshwaA8NAWnwdLVDaVHmKiLnOPORa4pmoQdsu6kof0xc8CiNLfmg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,35 +91,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test requires at least 2 * (bytes/page_size) hugetlb memory, since
-we require identical number of hugepages for src and dst location. Fix
-this.
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Along with the above, as explained in patch "selftests/mm/uffd-stress:
-Make test operate on less hugetlb memory", the racy nature of the test
-requires that we have some extra number of hugepages left beyond what is
-required. Therefore, stricten this constraint.
+The kernel-doc description of MEMBLOCK_RSRV_NOINIT and
+memblock_reserved_mark_noinit() do not accurately describe their
+functionality.
 
-Fixes: 5a6aa60d1823 ("selftests/mm: skip uffd hugetlb tests with insufficient hugepages")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
+Expand their kernel doc to make it clear that the user of
+MEMBLOCK_RSRV_NOINIT is responsible to properly initialize the struct pages
+for such regions and add more details about effects of using this flag.
+
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/uffd-stress.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/memblock.h |  5 +++--
+ mm/memblock.c            | 15 +++++++++++----
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-index 40af7f67c407..eb0b37f08061 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -449,7 +449,7 @@ int main(int argc, char **argv)
- 	bytes = atol(argv[2]) * 1024 * 1024;
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index b96746376e17..fcda8481de9a 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -40,8 +40,9 @@ extern unsigned long long max_possible_pfn;
+  * via a driver, and never indicated in the firmware-provided memory map as
+  * system RAM. This corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED in the
+  * kernel resource tree.
+- * @MEMBLOCK_RSRV_NOINIT: memory region for which struct pages are
+- * not initialized (only for reserved regions).
++ * @MEMBLOCK_RSRV_NOINIT: reserved memory region for which struct pages are not
++ * fully initialized. Users of this flag are responsible to properly initialize
++ * struct pages of this region
+  * @MEMBLOCK_RSRV_KERN: memory region that is reserved for kernel use,
+  * either explictitly with memblock_reserve_kern() or via memblock
+  * allocation APIs. All memblock allocations set this flag.
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 154f1d73b61f..46b411fb3630 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1091,13 +1091,20 @@ int __init_memblock memblock_clear_nomap(phys_addr_t base, phys_addr_t size)
  
- 	if (test_type == TEST_HUGETLB &&
--	   get_free_hugepages() < bytes / page_size) {
-+	   get_free_hugepages() < 2 * (bytes / page_size) + 10) {
- 		printf("skip: Skipping userfaultfd... not enough hugepages\n");
- 		return KSFT_SKIP;
- 	}
+ /**
+  * memblock_reserved_mark_noinit - Mark a reserved memory region with flag
+- * MEMBLOCK_RSRV_NOINIT which results in the struct pages not being initialized
+- * for this region.
++ * MEMBLOCK_RSRV_NOINIT
++ *
+  * @base: the base phys addr of the region
+  * @size: the size of the region
+  *
+- * struct pages will not be initialized for reserved memory regions marked with
+- * %MEMBLOCK_RSRV_NOINIT.
++ * The struct pages for the reserved regions marked %MEMBLOCK_RSRV_NOINIT will
++ * not be fully initialized to allow the caller optimize their initialization.
++ *
++ * When %CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, setting this flag
++ * completely bypasses the initialization of struct pages for such region.
++ *
++ * When %CONFIG_DEFERRED_STRUCT_PAGE_INIT is disabled, struct pages in this
++ * region will be initialized with default values but won't be marked as
++ * reserved.
+  *
+  * Return: 0 on success, -errno on failure.
+  */
 -- 
-2.30.2
+2.50.1
 
 
