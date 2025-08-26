@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94A0CA0FF0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 20:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402A0CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 20:56:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6F388E0107; Tue, 26 Aug 2025 16:56:38 -0400 (EDT)
+	id E5AE18E0108; Tue, 26 Aug 2025 16:56:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD0BF8E0105; Tue, 26 Aug 2025 16:56:38 -0400 (EDT)
+	id DBD1B8E0105; Tue, 26 Aug 2025 16:56:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE81D8E0107; Tue, 26 Aug 2025 16:56:38 -0400 (EDT)
+	id CFA048E0108; Tue, 26 Aug 2025 16:56:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A50298E0105
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 16:56:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71AE5117A51
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 20:56:38 +0000 (UTC)
-X-FDA: 83820117276.20.7AF0C96
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A5A16C0007
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 20:56:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AEMYanw9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B70078E0105
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 16:56:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8AFDE13931D
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 20:56:39 +0000 (UTC)
+X-FDA: 83820117318.02.840E161
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B63CB18000B
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 20:56:37 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IScVRFBe;
+	spf=pass (imf16.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756241796;
+	s=arc-20220608; t=1756241797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YzlN+dsEa0DyjaimvacceBZBAxpbehfow7bvljEAvnc=;
-	b=GDSjC1IXH5iyqqBfnsCsgRnxabB6X5aGysLB43JqWHp3VAYlVONq3g8RSc6bEEDe4ZF9Tz
-	IK52InWK0TJreoC1CxOPpsBCDaQ0jHuS0ZV9O6ndmbp9uTmibiYNcO7erv/QGt3h0FJFB/
-	lZtTHeF9INPunFYDydWchTgEBbjjmag=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AEMYanw9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756241796; a=rsa-sha256;
+	bh=UgrS4RlDzmuPVEoYRuL5n3FdVX6RzYDiuXN16UyzzCo=;
+	b=11U33kH9fzdR1AUHDmeTcIWIA8du+6P4hqylrrNv6PlKvyPmZbsoc9XTBSy9Okzt+G9d6B
+	Vbax04BUo5L2igJd7AearY0fwJtXPPFP5Bloo7Ua8XBbAw5U8jdTnjrrtjurEN0aTNO69m
+	8Nb77mrIn4xClw3DcapKQXtwQZp44Po=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756241797; a=rsa-sha256;
 	cv=none;
-	b=P0931SoGhXgOJ32VB9VTtqtOImLGknVGtlEhBCGduM1kJ0NNow+dSzV5ZjYTkal1IcRSWO
-	JfzgWZwyw0WN9MbkLGRc1bCEVoXndrSkJSgyAtYtM0Dmf2WcvoIYJ93s0vvhQ0uAoFmn2N
-	lL2TpueHqEtZgsj5I0zpWRtJNPkUG/Y=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76e434a0118so7084328b3a.0
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:56:36 -0700 (PDT)
+	b=WGXnuk/sSb6OPpKcndLWNSGpJaF4OPg7xirtyqc3TiawNfrSAmTM6nwVb+rrX6oT55TElP
+	Lm9ghaYdv4qeEfP8iH6n3rAI00s0ulLbJW73myeYkhftpPS04gfUNt3RB9fqhyB/VTKJb/
+	HzT+ahyBIvFBrdjE2fNemr/uBmv7Auk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IScVRFBe;
+	spf=pass (imf16.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-771f90a45easo1212833b3a.1
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:56:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756241795; x=1756846595; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756241796; x=1756846596; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YzlN+dsEa0DyjaimvacceBZBAxpbehfow7bvljEAvnc=;
-        b=AEMYanw9GPO6tvT/brZj3jOKkudAYWUYxIN/MNuXBHvMGce9xlZ1Q8naCByPGA5A+R
-         qBZBA9h+QdcQd0e5i1NHbBeY1+g2bJOXDlkfuG6IfkT1KD+y1c+4zVLg5KCP3uMbc81d
-         jUNXxle6SdigOhwSh1eDbHjEngDzoHkIkrefxvOi6Q8c/JsyHwmGIiep4zrSjsu00XHr
-         B+vmgei2a+NfYFA392qTyB0WyfwF5k6cyR0U7sFECk7zQHEGOyxrVE6jQJ8SskPGoXFl
-         CKWY2qV+x+LqjDGgNI/DiZ2bsjc2RlmYr4bxToCPeqwLRPGIXHcfXaL/5pMmkuED+gpW
-         o61Q==
+        bh=UgrS4RlDzmuPVEoYRuL5n3FdVX6RzYDiuXN16UyzzCo=;
+        b=IScVRFBefxVEKwu+/8YjY46Ot4sIckfEeU7HcJn0vXERrXhiRZpo4lZKebem3my9PC
+         kDqc+ZJiPG6bqcTV4nNDaYlmTl+gq0vgx7I1Nl586frTulkxrYioKq76PmfgiWUsvCka
+         TPEzIBPqCl49wjQoFwPN9PjS/D8N89H0IZ43CKiDerSXM9qyunoo1Cxyot9sjDHhvGTv
+         /Z5b4Y05jaynpgzlQW4gHItcsipDIdBtWT3hCaOby04Zjgyn+7aaHiExUDQ/nB0k0SWf
+         KH8MoCKFA1rQryYdsuDqvjHfCnL6gi48rjiIOrkHo0gANWk63ICKKbbm1hCSRaoqtu2e
+         tfVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756241795; x=1756846595;
+        d=1e100.net; s=20230601; t=1756241796; x=1756846596;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YzlN+dsEa0DyjaimvacceBZBAxpbehfow7bvljEAvnc=;
-        b=L3WI9SnNU84iwrSd9RibgfRbzQIdBKvGziUq/4MDWNcCYjPiseukCKaG0+xhCG8RXy
-         0vFSXc2xqCk0inA/w8SVnth35MAE7XKNDDkogsz1zHd6a4R544UIuIrjSXgOoDQjtJ+t
-         77VUFkRdvszZQmL/MPXfYcwPYapuMJosuLu2HaqSZZxjAcXeRsYK6ETQ4RFdON+tMK5e
-         WcGvxyidecwcAjIrm3h39sLCOJoVZNnCXxsPY4KVxkyU0Dtl6fGojCJDgDpVOoTQwJu2
-         zvBeV0ZiVorQKWmQigQBV3rvNBu9n0o9jxj71/XuZdfnw15m2/fQd90XP9IPQe9sj4IB
-         OE3w==
-X-Gm-Message-State: AOJu0YxosjIpTA5uVATXmKy8ga958Gorl6bKpRrE0iCt2FJp62gFF77r
-	WTxIz5HDETPBuyIAV9hEsO0BUHiTtdMgkZk5ggVt2FA2TGoxSQcyTQAO/FjxwQ==
-X-Gm-Gg: ASbGncsdlvozXutkF2Jku+L6YIakIwALaI+G8D6vCLLEjExjzDrZqsOnUcnHRpRVnw6
-	zgekaL1nsjgrEn9+ygY+b8ZrYcH4nP41bNsh9nY4uYkyRSm7zPIk6sug1jaWOdjS8MMMRSTkf9l
-	MJsaFLkTF26dUHiRibwDMU//A29Js14n4CqDbK39WD8fi8BIj+4kyhskIRZtngSr+dzhyu9gkIn
-	qsI3x96+OTQ3lO4nsmveP0h9wKVwnWij5ierPN8pQtuYWE58fU1BQdLl3qDzJrXq7JsOawCRSR6
-	WvN0ZgotkHuuTGnWdMzpaJFVrGQT7ZFLCJKOOLVKIQQpGvDdHaoIiYA39g9qdVk6vYzt3oPnIEG
-	tvw4P+58HtgmoIBVlSJhj+M+8zfHsSUthkbCgAABnJ0jLZAMB6O2Y0IOv85PxrO6u
-X-Google-Smtp-Source: AGHT+IE6v8CNLQIgw+Ku+i/WxqO4TvinQJJMdkDw3LTLIMW5yYdgZnYjPm9+vx14ZzpiizsAY7GNkA==
-X-Received: by 2002:a05:6a00:10ce:b0:76b:f01c:fefd with SMTP id d2e1a72fcca58-7702f9df093mr22128819b3a.7.1756241794935;
-        Tue, 26 Aug 2025 13:56:34 -0700 (PDT)
+        bh=UgrS4RlDzmuPVEoYRuL5n3FdVX6RzYDiuXN16UyzzCo=;
+        b=Q5zgq/Po6b5EUyHIHHMOCWXtSWn7hVfvzpdET+HQKs3BuR6vvZtL05EjNdP49n/b5i
+         Ei6AGIkKQI9x2vb7Jh9K9prHapUYklpO5yQA1flYwgR2MbDEfnfQZRMoCzZ21ogPZcnT
+         cw61PrEAfIpt+6e7uqK9CMQQvrfNkMdv1Ncxce4gxrH3544r3/IJQW7Agd5ZRyR4uLkY
+         br07dxEt0/lJdfsWiAyx4ddWD4+5tmXhUlUq8Do8AftsCFS2PQiNefqIp/ZWg3c9sHT0
+         qmjs1ZH/hYs0zAf6ZLsUCi7tOMJ8DiobKNMSrxucE8YRFK3AEbC7NkF9eGB2tcdSyEwN
+         2q6A==
+X-Gm-Message-State: AOJu0Yw9hkHrz+97J/AHlCC1HyrTfcQcyMLAgtKa5khgIBPGo0gsxLJI
+	MuJV9UFVpCxo32IJk1pu0CyMDKTSEx1LH/8EKPWkPjdNk+lp0Y5DfPq/XhFftA==
+X-Gm-Gg: ASbGncuGuIa/OTSs6M9Xc3/QW77N/4Gi9IuKdufMgsjJgeUA0E8heRTGfKOrl8rEoS4
+	OtzrZ2GebwG8o/rBVg5Qyt5cXJ15Ty8APGxCsP0pJ4Nb8fYMC2lDvHhIZrjzr6muiWlJI+vZqHO
+	kLm71pQarCDfY6rmy7GzDYCIJL5VfoER+m54Ws+7jHa28I4xUxLYj162SJOHOkd/nR7SCo/x6Yu
+	2GhSKdut1KUTRxKimOSWYsk3UrkdHwqvgtempqsdxJHbhTDcbleJ9K27n7kCuUVCQCnG5HZNhnF
+	Wx0xK1izGRS+4dp32nTQxKPWVZe1bSrQhnIszfY0lG6sGHdDc3Xlw8KzBjRxaEbVU8YkYaKWa7x
+	dhTxuAyjWpw7sjN5mfc7dr3Tl6QIr/VwwXT8qgtGpb3wpBA5PKEXrBg==
+X-Google-Smtp-Source: AGHT+IEbOPgwcWY4znAzk+xsxvGrwmBJQhhbWaA2d4cWZJEHNQJ6Rz2YR1r4+4mBHFS8WJ+nt+eFzQ==
+X-Received: by 2002:a05:6a00:398a:b0:76b:c882:e0a with SMTP id d2e1a72fcca58-7702f9d8ebamr18348240b3a.5.1756241796134;
+        Tue, 26 Aug 2025 13:56:36 -0700 (PDT)
 Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-771e814cbccsm5817935b3a.35.2025.08.26.13.56.33
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-771e814cbccsm5817935b3a.35.2025.08.26.13.56.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 13:56:34 -0700 (PDT)
+        Tue, 26 Aug 2025 13:56:35 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
 	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH v2 6/7] arm64: Stop calling page_address() in free_pages()
-Date: Tue, 26 Aug 2025 13:56:16 -0700
-Message-ID: <20250826205617.1032945-7-vishal.moola@gmail.com>
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 7/7] virtio_balloon: Stop calling page_address() in free_pages()
+Date: Tue, 26 Aug 2025 13:56:17 -0700
+Message-ID: <20250826205617.1032945-8-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250826205617.1032945-1-vishal.moola@gmail.com>
 References: <20250826205617.1032945-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A5A16C0007
-X-Stat-Signature: go3hobeqa499koq5aabqosymm66f69hf
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B63CB18000B
+X-Stat-Signature: di8aj5kjkmc3imnnqhkp1o9wzy1bnota
 X-Rspam-User: 
-X-HE-Tag: 1756241796-116301
-X-HE-Meta: U2FsdGVkX1+6VqCWt8dFAJZjkrsxuVi4V8LquoPb2IW7lFl1/Ysv9OHkkQkEGOcb9QiEorabAB2sIWPSF9TYJNr0seZ3BEjJt+O8btRL+IHzKU2oZg98hL5hAwVx8eosFw4f4J5Deh4M2BdrO3Yx9np9PR7iYS0BnIMK8E+fBdeU0Tj7oJTDM90TzXmnqI/gAoBtfd3hiSOMdFj1IK9zwn2HrZZATSEMk3CRWmlfVD5l1f6rp4bMyktq1cs3vCLt901K6vS7FiSyivr71HNrWlZQ0El63IjbGBJYBb/arzZOvWgnPfi7A4loAlOaqTHVruISwJPN3gq7tnJHmQ69bjpDxAJhIfMk+DXTeuNMrsctoaiS1iIikocjg0qGP+2gu0IIp3z8+dr2pq/oyjzvqNxgXY2I8NXCr2YtAXwmlPQzD9BUGHuYX6KJCqWUQW0E21wxe/qcBU38WzK3p1MHgkWdJNUm8wZuvf/0HYlZLBW41Q30N44sqee0qAhIy1Ikh22onejNpHFiHcVm0OS6kjJJvIg0fmqMrExQdTvxoXEeb1JXeLB8BVIVpoNY0IIDh31Jev1OwodtYW20N/tdyX9peeUsJ5ZsaU91lmu+4NnfV1ec1omBKcLVf1gL+0KQKrWOWwZm1B67TbB6IdbfMxQwKxhcm3HqxDvZ9NKFN/z9/r/hW8saLi9E74QNuiwDUkUeTjiwOr4QdJxl4aeMmJWrIwlU5KukehsGRk8zDBfuSMJ2YA9Dz60vXtlAhtMd7aMsoi9HQjwXBSBE2++qjhCFGt5AunuHAO6eK1ZzS538LxdaQJ1KliaJBYQXSlWCJDaV0lGzxf4XJyEyCl6EYm8nAB9pCSZBFRYXqPouyxAuZCuohElNIMx6A3JpjIRCYeQS2cRMULg7Pcp/yGZw+TzPKZuPxoSc0Hqw8LELfKkGEdzlvmrfcTbqRXb76wct7JqDD81vkqTeT9hdEDM
- u5cL+v86
- qOEnxrfYLmZnOA4NL8YzeqHT3ONEVMnpQY045iaCjnZVIJa2InNzSTkIGOu+Uw+S4/3gUwP2ow2c3c7Gz1HvChXV9yhS9nZMdM3PDfjssL/Nwn7U7KB2W7AkL9wH7IaXlgnfqzKr4BZg9PRdyj0+gSfBodCFmSWINt1RMVATiaxBmuO51X6UWXA46rjiHaf1isZuMrAfkUOa3hINbvnzMmCksjgtbkq7F7S6WPBxh1qgscBraQz5KENByyKrld2pcX8G2SYhpRTi1aXsfWSNRxQui+5VQwFmQAeSQsKYOn/65naGGmdzVAMDSY6LzRXg3erdXqvOBfLcJ4m0NFcm5evoQM9C9T3Qy8yT3g95oNNPGDzvweHJTzU5/hX+B3y/g+NGJ5yDpYjN1/E+LzshajPevWICRorlypUswprDwhOrXf4fxeDbCD9QUaJKKNNlhVaX/Ev08TFy0hXpVCzgH0HMt4PeqBwVCBHqyf6TgR5nKE6RP8ZW7AiGpuUtyLiB37NRcvxIpm9Us6m2neJzZvHb5q+c5NgQp3jcmIQs3vJTWaOSfHJ9jxRYh+g==
+X-HE-Tag: 1756241797-745089
+X-HE-Meta: U2FsdGVkX1/KQDcnBEl0rAZMIufHY332I0oj+Cl8pgRPtn6MuF2N6DxvnyodlAtK/5Pcl0HFV8dYzRFtheF10nzEKvLJy/dIp6jYQiBXFOnwI0yCCWnrmiNiRvNUdJl/VgBuAJVX54GhKXUNf8CMQJLxhafRjGuNWFgBMS8H59KNE0DJp8z3nKlUZm3hjHnvAfyBxwPGAccVk6V5valk4JXWxnnaFvkMcMy4RG6XjYhlwoIJuoa6797rYoH7WF3f6+U5Yd01ZuEOOEc7EcW1vKvsGOC7dLsQ1L1Ft3zD686x6EgOoPLG8RcxWbgTXELWLexHp03LJEAvAMubY2n99XwJK9tUkwC14Lw827FK/CraTyK8dMOYRlA7PaGLKAfzqZ08g9/nJuAaolH9wE8Yp5I3119LnR3bNt42yiWzOEtTSSG3UynOHoU6lCqXihJLloLFEypmqTvOKTqZZ70QwSA4Xh7f6FfBBkaQfjeu8e4DW9c4Gplx2gS2QwGn+6AlzsnmtNXXu1sR0JaiTUxqSX0aRnaJusV8T3feUoOR/vXEXi7ZvMk+I0Me8sTar27nghMtriDcU++dxTsTKEOiY8HfAMOYPMbxcC5NRNt0MsbcNp7fIZz8xtFxVEqKyYRpsIYm8fv2aiQUtAxcxqixo2WvUi4hYX/MrpgY9Amq7WSbNraqUMI2YB1RGTZ2ctPZPL27AKZOkR2ASkoG1eA3rSIczMfyggkRy1Q9ZH4wRVEK2TfaciwLKv3VlKvMSVXkoE3zInKcSxohEMvROw62MdhESGpfNeRZDmnCVR8h4tsdol6VrzdPEQuwmakUeqd/cyMeWVgr2qGVs9jNYEw9/mOczl2pS9pE+F0dqOiqPtM75TAsIU6qIFLmtFE3thOChO6bwQrpiAmEQTaKUXWqCHKRqK6rMFXKWovllueVnf3r5GdK0Jzqyr3Bel1VXCEWYY5aH60hHHt13U323tO
+ X+aqerpJ
+ onxt0IYq1m/vsppZUZuaHFTMsnYsIXbiDaU0Y4nh+DflWqPvP+sMG0Kvm6bNhxBMGvzre3jIqHqSBm+uVGr20bpFxSDhL8Z4BElMGSf7UVI0rehywn/Bm1ICFlQwpOIXOdNxGpp9ZAPnes72I/oCM8PYkaB82ABPTQ5Z3nVj0bTeskkRTLpjousVltrYGrvRJxycJAJauaw37slCH+68y8qCJYnfqtCgpwNzzTr4Pkcukmp/HGHpNHlswtpsW8gP8hPHW9QfFo/SweveNbaj1bMMoWOXl+uX+gBm7Iy7JghcB5I0BuE2sxGdKrNvQCd28n5MjttXZIuyTbrVj7cIH6MqXFVbxMNwGTpTavvz6g9WuLAxAr3572DDFKGG9i3OGB/RR3j/JiIZNMtLYbdqGd8oUWK7mJAy372OuBvIEgtD9W6A8biUnYfqj3gG4qppciypXSccxrUN//D+5YJwtSfjjU25MNOIs3hkj7b4PlvnclcKoZQ0B5lgY55p4YHy+EInf37F/WNL9Iw8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,22 +125,23 @@ should call __free_pages() directly on our page instead.
 
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- arch/arm64/mm/mmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virtio/virtio_balloon.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 34e5d78af076..e14a75d0dbd3 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -843,7 +843,7 @@ static void free_hotplug_page_range(struct page *page, size_t size,
- 		vmem_altmap_free(altmap, size >> PAGE_SHIFT);
- 	} else {
- 		WARN_ON(PageReserved(page));
--		free_pages((unsigned long)page_address(page), get_order(size));
-+		__free_pages(page, get_order(size));
+diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+index eae65136cdfb..d4e6865ce355 100644
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -488,8 +488,7 @@ static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
+ 		page = balloon_page_pop(&vb->free_page_list);
+ 		if (!page)
+ 			break;
+-		free_pages((unsigned long)page_address(page),
+-			   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
++		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
  	}
- }
- 
+ 	vb->num_free_page_blocks -= num_returned;
+ 	spin_unlock_irq(&vb->free_page_list_lock);
 -- 
 2.51.0
 
