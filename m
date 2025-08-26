@@ -4,119 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70853CA0FF0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 21:22:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3250CA0FF0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 21:46:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B36B58E010A; Tue, 26 Aug 2025 17:22:23 -0400 (EDT)
+	id F3E056B02FC; Tue, 26 Aug 2025 17:46:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0FCD8E0105; Tue, 26 Aug 2025 17:22:23 -0400 (EDT)
+	id F15966B02FD; Tue, 26 Aug 2025 17:46:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FD788E010A; Tue, 26 Aug 2025 17:22:23 -0400 (EDT)
+	id E05656B02FE; Tue, 26 Aug 2025 17:46:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B7508E0105
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:22:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3CA151186CA
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 21:22:23 +0000 (UTC)
-X-FDA: 83820182166.19.C2B2E16
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 62B0B120015
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 21:22:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=j5hnS0Iw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756243341; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CC2126B02FC
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:46:00 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6332058714
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 21:46:00 +0000 (UTC)
+X-FDA: 83820241680.15.69110A3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id DF6CF10000C
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 21:45:57 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P7thbh47;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756244758; a=rsa-sha256;
 	cv=none;
-	b=YjDRCtqrE+Pf8Yju6fHLHk/m8x5ypmnuvwKftu1oa0Gp69TmGi4Hb7i7ERdPrwjMiKq9BY
-	yudKYszbBcUY2uSjEqpEODmo/m0mNJhAcAe/L+E3Qy3aCkOcBEWfI28ShTS+aoycbaL8T7
-	Oak6gFZTpl/24trd31RLzThd5DUbkLs=
+	b=smlDMQ5nYKwuyVDi7NEm5E9HbvH9tKgp4j3U0O4YcBpetfFLMkIQnbDqVNIFZZfDL+Mjrh
+	StHsEyKHHsn/uw+pF1e4GOB0q6njOocjkmtA0h9ufNL9nkUBY8N2n9IBN5XIWxo7YhQwtH
+	KPvRE8at9YUSPOLfpB+aOIG/baiKhwQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=j5hnS0Iw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P7thbh47;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756243341;
+	s=arc-20220608; t=1756244758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9jpPNZ8lISdv+Dhq7ZXaCZZODxLUSaWGXHiRUxlbj5w=;
-	b=rkdWm/3pFt7Vvzw5Lp+lZbFpp3FLSzy9nM3CEP/30mk3Ug/KjtGW0P7W6ZLQUZ+LOwkKK+
-	ylrcM0105xBxkMig+y9t9ucYdP7VYt/uLpHMtaxRQSEk1eVn6WKxvePZbtQ5Ss2NZnDXHs
-	Pnm3wWHM9Qu+LHofe8CDmfuBlkQvYHQ=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-459fc779bc3so7985e9.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:22:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756243340; x=1756848140; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9jpPNZ8lISdv+Dhq7ZXaCZZODxLUSaWGXHiRUxlbj5w=;
-        b=j5hnS0Iw6+3GhKFTpHY8P4OlumSNKky9+Ee0lS9IJy3xJFGrmAjDgOxZtEeqmiBUJ1
-         UubRFoD709MedJY8+cea6yOkc72rRDka4zmLiiv2E+FtWYnEhVJWPwgkdQhUkMEgASrq
-         0WQwV1twlNqyMgPkPQKkL8DAbAaohm0pCwmBGj4yU6mtID6XFcOOTGWBEQhTwDzJLcsu
-         d9HEgmuuLa7CKqiFWQXd1W4T7AjqbRMV9gnF73h10/rV8WrU9poCO5CqUacWS6jNJu/a
-         aiSpYXS9fUTI/le8eKoXpDrD1nvWsTDJbnFMTm7Gmhsyel9wFI1Gbx9a9pd2pKuG/91h
-         SI8g==
+	bh=a/vc4qp1pUCM7kmm0HrDCp6zpxDPynWNzUG6wIf8EQM=;
+	b=aMPLj0a+LmSP4yaqJsNZ/d1stJPGF/W4gdyU53usc4Ab4j5lPCSMPz3VDJA16Twf/Q0U2s
+	ph7SlJp14gDE8RiE6vRCscPTV2G09osBwhExh0GCy1Jy306gsehD9TO2/Ejo3aHlNBdtcL
+	pq8KDTbz5PIiWwkiWTxRPYsmiD+MtjY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756244757;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=a/vc4qp1pUCM7kmm0HrDCp6zpxDPynWNzUG6wIf8EQM=;
+	b=P7thbh47UJtmx4xMoUiOts1cVNSzCX4y2qQwUqIJi2iNa6D/Mqj2lqB6hj0xggwRibTj/B
+	v1WI+u2bR8ErJf7hMburZP6UbLaQpYUTbuZxUExhbOQ2+QgEh1elE5eqHssFnj8+Cphp2l
+	hxGwRJyz1SibzzZFS3pKj8TTSn3CI70=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-278-Zs9lXEAwOlGi2nJ7t6sE2g-1; Tue, 26 Aug 2025 17:45:55 -0400
+X-MC-Unique: Zs9lXEAwOlGi2nJ7t6sE2g-1
+X-Mimecast-MFC-AGG-ID: Zs9lXEAwOlGi2nJ7t6sE2g_1756244754
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a1b0514a5so26966325e9.1
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:45:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756243340; x=1756848140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9jpPNZ8lISdv+Dhq7ZXaCZZODxLUSaWGXHiRUxlbj5w=;
-        b=V0xUs2dCNnImRmdez2cEUAKpa4lfDSKhCiI+dyI5M27H5/WdOD4RK2qwUBoCGksnP6
-         cUbNX97miT8+ECDnDQlrnrRe2YPLTx3OJ8fc6wxlleFg3MMdM6UoHIW6g8z5G4keLwH7
-         95e/KvRxmAC/VzVvNKbnHorDlKeuvMP7d+vasUZyhplz/Eul3UTNybSGsxANYRC+VbSc
-         L2/lErexv54EIyDLeZPc15fv/OZD36wb5/wH61U9nNV1gAG5SvZ1YqyRE2G4FYHlpsE6
-         uawu83+QvyQKuCWyLUOuyxYpqx4VygEaGFASfb2SALQ1z0RALpEJNi9IQPZHFfSCk7g4
-         2ctg==
-X-Forwarded-Encrypted: i=1; AJvYcCWpTjd4OHCm8fCbgmAqo0RPnnFcSz89UniLr0WcoKxc5GPTWjMGRtLXMZojKEX1erqwQ8SGq6CA6A==@kvack.org
-X-Gm-Message-State: AOJu0YxMj0SNnvZ00186uDH6sJPzZwjzKTP4ByVaBKpAVSZKWbap9iqe
-	dIOtZWSfMHj9BTCCMwo+fYEEO1XhSNqBygVVyoZ3VB7Wznm0kSd3TbhzF1org/ypIsj6ze6qhR1
-	vam37h9u8dQ9FW/Nlmn225AqOLCpHth0+6GoWQPxa
-X-Gm-Gg: ASbGncuqpUC6P9gX4J5eDh+BQjhng0LrkZat/Iud25GPlt6Z9udtZ4kUoUcIJP2dBqX
-	QrmRR7dcDVM5Xuv3MAoUB2LDnF5y2+hQwPGn33knvnTRAtHHVCg2KPzEj7lG0u7gLzD9yp90UzJ
-	QMbRL6msj3mm1KlepBS6s0bQDHDQaId/AWmY2Af8vnAWSKbgEin8wQaxJe4nGEQiuGl9qBTOMQ9
-	oN428vJaFMfLBlMeIS/WtCJCiE8WLCj4UXxpsjUgy9TyFzGB7ArgoQ=
-X-Google-Smtp-Source: AGHT+IHWb/iGY2zxWEzy1j1Mu3+I3ku1JITkNvPq6UT+dcJ5yYMgM9SwHqFRIknb827acU4jRh04vE/b7tdVOttHKaM=
-X-Received: by 2002:a05:600c:4a28:b0:45b:4acd:836d with SMTP id
- 5b1f17b1804b1-45b6697dacdmr1183155e9.5.1756243339304; Tue, 26 Aug 2025
- 14:22:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756244754; x=1756849554;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a/vc4qp1pUCM7kmm0HrDCp6zpxDPynWNzUG6wIf8EQM=;
+        b=GI6MLD3ODpnj/Lqe9s4uklPXryrJ3XRwKPDvWVwVJkcoK2iwhd+2SS1sFL+IfsAqEh
+         DR4S0C0zylOmzF5PgJ4G0SQyMXaxy2lNVrHvoNUOf1bqtKRKKdKClicAjyHV31YpxBgC
+         72ucO0PTrGwvK1O+oFkgXRRLzTX0YjSNFMUwaFp4j57jOAAPnFq48Eoyy7VIJ5r535QC
+         VmNzJWWZPGi3gFqaChys4iU2T5RvL6I+SkE3bgDxgY9SUipNlftCcVwgB0YdNGG6k2m6
+         P/TZdBXxjFTUGiGyByfVUhe+CKAsGu9ksNaI6/S7R6Bj0KbBf/Pp8qfgDbO0Y9Qx1aHm
+         2GFA==
+X-Gm-Message-State: AOJu0YzY3CRuFLP6k5ClwKfVtLJ+QdLa6t586AwP2HnjKqAQZvgt02e4
+	cAYl6A87pC1syfdOH1ETZKqc35rb9Z3WuRJvtxz5wIzalQ/3sfEKZ3YbtBqlXltKTBHW0AZkaBU
+	pSM/Bup22NJ2eXR9sksaIlgfag095GvEoheCNGrtTWPuPwYezTPW85YCCW19K
+X-Gm-Gg: ASbGncsKZuLuWk288eqkNzH6XO6mUaWaTJXlM1RDKL+zJKlRUlb/eE99hq6uz4eJv3g
+	/54AtXeGXlmubex8jK3d105H+4GR07MG+zQOjHBEoKZ8M0tEJfdg9tyKb+DD5EfRhMz7ey5zewV
+	6CBH1SrhuEvfz11a/3T80MP/F2mDEz6V9I8IhXDI5KUvODAm4nqVYlfyZ9kv+mVDYrwEASPJrZV
+	M7jiur/WWcKDrnasgYNbwd/On5dCwAHEs7fgoxf9JgFv7Y0SypnyM9b6liy8uloGDjHN5tl/RLB
+	2PYjvjPaejl1aIPcIKd8w6soSv04D8iHBOHQCyANcEkImFpetkHS0HUGbxfPJhc2xFSJvy/SmFU
+	fwZk=
+X-Received: by 2002:a05:600c:4687:b0:45b:47e1:ef71 with SMTP id 5b1f17b1804b1-45b517f8e7fmr146285835e9.36.1756244754485;
+        Tue, 26 Aug 2025 14:45:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEb/Aj6nbFuHpObWZu3G+WkZ5PlRw+qMiPwtTihkacz55171aqz2gqBvrSr559j9qTQw4SSqw==
+X-Received: by 2002:a05:600c:4687:b0:45b:47e1:ef71 with SMTP id 5b1f17b1804b1-45b517f8e7fmr146285715e9.36.1756244754084;
+        Tue, 26 Aug 2025 14:45:54 -0700 (PDT)
+Received: from ?IPV6:2a01:599:91c:5f74:9ede:f58f:efc3:8b41? ([2a01:599:91c:5f74:9ede:f58f:efc3:8b41])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0d7448sm2992255e9.9.2025.08.26.14.45.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 14:45:53 -0700 (PDT)
+Message-ID: <a959a7f8-20c0-4c2a-9cef-ffad4f8b805b@redhat.com>
+Date: Tue, 26 Aug 2025 23:45:52 +0200
 MIME-Version: 1.0
-References: <20250821164445.14467-1-kyle.meyer@hpe.com> <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
- <aKd1K3ueTacGTf1W@hpe.com> <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
- <14a0dd45-388d-7a32-5ee5-44e60277271a@huawei.com> <aKyKort2opfQYqgA@hpe.com>
- <2bd5c32b-dfc4-4345-8cc8-bbda5acdc596@oracle.com> <aK0UTovxnKfjPwXs@hpe.com>
- <714d066a-a06e-4b49-b66f-68952c6520d9@oracle.com> <aK4Ksy872gR7WuQF@hpe.com>
-In-Reply-To: <aK4Ksy872gR7WuQF@hpe.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Tue, 26 Aug 2025 14:22:06 -0700
-X-Gm-Features: Ac12FXyZq2QuV8uyQ0XiJC-UJJLJHPA1321axAxYENUGY5wCfC3LnKnzP71Qm40
-Message-ID: <CACw3F53dULMH2UZLz8SR2GMuGTmjC-u9Mvomzi61oejeLEn3_Q@mail.gmail.com>
-Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on already
- poisoned pages
-To: Kyle Meyer <kyle.meyer@hpe.com>, jane.chu@oracle.com, 
-	Miaohe Lin <linmiaohe@huawei.com>, russ.anderson@hpe.com
-Cc: akpm@linux-foundation.org, david@redhat.com, tony.luck@intel.com, 
-	bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-edac@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: make folio page count functions return unsigned
+To: Matthew Wilcox <willy@infradead.org>, Aristeu Rozanski <aris@ruivo.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+References: <20250826153721.GA23292@cathedrallabs.org>
+ <aK4EOf-EE43pi-xq@casper.infradead.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aK4EOf-EE43pi-xq@casper.infradead.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: lpFILb-VnwYFcRR6f-pGqONU9AvAASi_eVGqwg5Wi6s_1756244754
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DF6CF10000C
+X-Stat-Signature: fhskx3muzxeb6djhcqrbtrn64u8gsykf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 62B0B120015
-X-Stat-Signature: 6ue5bmkqe1k5wzzpsh6stabgowdqtwx9
-X-HE-Tag: 1756243341-621580
-X-HE-Meta: U2FsdGVkX18A7GeNkGyLFRTtZE2PUOrtHtqB98vJ5ihKw1Zn+XSRAmlRe7OVwy4WM51vpowxdF6Y6MYof+ZUKnNvExJoZl36hxmT4JhGgKgJ22b2o+QYrMoIal/T5sPjX7aeVbdMlMJkjEgO67Pba3SKxNHytPJgEDNxU9C4Ek+ETgknHsKRArghLKm4qMIOe23KaAEpmsgQsHaIEMQePnmEA1FSb07nAQohNUta5/oimby+CCyQ/IiWGtNdZuDpBgqiXZ94Dk9NzeGBOC4R43p0u4+3NU8pD8UiQrEIjhs50aTc6gxCJGTcGGXAMv6rU1/NReRfxiUeCjNNNJGOI7KGUITIZXWLcd+MEJ6/RKE66hDvP22SRTBXkopLc5wVGQszaecd7zqcO+yOImnI8BKNQZ9rKtUEYA/2qiawDUIzpPwSr22JSwnb5TjPPSPQO1k2afgg7LtNfKrKG0VN9TLeRHc9RGtLQs6OK33vpOe7n+l0rGFb2+/fjvbgSlncnDJQfQGCA5aKZ/4puhUMo//iRth4f/IetqTsvs7tHvzLTa+UYP51GgGbi63QKrfMYEEbQjxN0WL8eW5Qa+GHFYVCJ1Wl/dlIop28J7Jfh4vL/8mfJIV8PQr0/DWcsL3G4QV0YfIhdCyY02OKP/vWWyj2wjBIWH5M5StkIWoulRYG+PshqVT0NFpV2bzbwiFXsNe98+mOq3VZPhKXDK/q6veQTFPxoK7xF/wnKLOKNenZgas25DmWsPOUbsYJhPcQHe+xOgM4JsoENH3h7mwRR+gWVMyNq4ecVBvUlkH47JU+6O0pMtAjnQKy0+tdZbpD8Y10fzYONxm0K6PF90U/bolrofXCPJ4yUYzABlmnhymp+JLcQIiyEz14dLGEPsR9fKrP00CwfpPm1MnZ8eLshXFkFsfZUZ81ckRPeIR3DyiPXllPqLB/9Ath9vRlFe/21rT1woZviBUTuFRywtp
- Jjk5ueFc
- g66ZvzVjuyZGpKoA9MfETjlQ7cTMX37bHW7qV9Drxka8cTvvzNO2Nb5MZvw==
+X-HE-Tag: 1756244757-230897
+X-HE-Meta: U2FsdGVkX18s5ZF5gsAdGGJp6iIBwP+YvaDGyUEOA58VK+YR5qOLhEH3VP48EWwl/FoUpVPS+j+Kw8ZJZ7KXs5MiF32bEjy5NY+EKTVoMDL5H0nAYQtYKFOeLvssu5bzE3lzL85E0/RaA0nuq+x4iwjrH4QF4tSVFydgskg2BoJsw8T1SaEr7q77DlJkFzjEb4hbWTZDYMc+ENAHUvCxalsOejzbcEtMgr9kP3WhVRQ4uo6ukBg1GchHpHL8pkdyL4In8l/RfdJSKOvcJY2ZqqgSFGZLNbuCwyDGQtzEUBN0swd3TPVvapFuJMRIr9v8FWSvnYopTvmQDrHOwkQA2u84FZhDmHWl7uhZtcGEeh70cM98TFx0M7964uv43BHSRQl/4UqYrAQprhu02eoXT1qSoxb6sUMUoZNpf5mdABp2fwLRaOaIl46CNzDuFscCfpl4WdEshPKend9ksRTt9LVdlTpgCVJxNUW3A4iP/8b5Do3xXSjcEWO7Ouj4u4lskgadZbRMFj36QYhNoqu7gWTc1MPCaOJ5YBY67aNBwNdPp2gpg71khK9Js8S76/Y3GilSc3TfPjw4h6JWQuYOvbUuZKY3DG6ddM0v7mf6L64djqiZFZDV/IlOWryLYMigY4HVpLXjLvs6C46IXI+somnqZ/gBZySIu5M3w5mQSADsU4hHx3cfT0Sur1bsqKh7c2jS91PhpUZ7kG+D1kw5xOpJXsk8Tcu/wp6XwcqJVh1H+uHuDfzOIuAKDjZ1gHDRBaP0BT3dw6O6LTwaOn3XZaTnpcmPPD0wfCJeaqk0hPOMin67WrNfuDiRLr1Lj5qi3B5FY/GD5JKbIe/XD6z9GEFvFKWszqHPtGigMXlvNckkC1tN29UCYkO6ovAG+Di87UNFs4Rzgdyu+SX1kzHzN+dBdhX9IjduKlGPicKz4icnIbDUSFNPhdK04+VAKrvRhD7sBb8LSLz35v25ibN
+ qaSaaFLq
+ vQ9GzSEnRtcXeF7mBYg2rWj1hqeEnc0ILDhLdw7nb0dBrGipHjJ0hMSSFDvb0V2NXtkAz0irnKtk67A7BSkU/NAwLc7xqp6DSOPIyk27vpc7K4kw5NZzzf0VBglYiZeRK1HvFSVF5zAu0UvUNIFYA0QhsjGhLBVqibhs1TdrS8CH9NN4f0UynDpkSYCrbUCsAkZHjfMocJVWtMveUBF7xGcpQKtUzu92HwRROqRe87izPw12koHi/UkGGfLpAqwrUeUAP3WtdZAKyLmSHYkm3HmRdNm68xdGfE8GScxKCgbutNooiwPLNBagegYJsOkiE8UhXptCI5gtyLJSag/9Hb0fQj4sHVIJ5ck7j4MKSJuXOQkCL00LYm1MxJAvrgBaRMjvtf+ZUX4mALUMv6h62Q2kYCHeLC3OUBr601t/rmwQYHLo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,259 +178,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 26, 2025 at 12:28=E2=80=AFPM Kyle Meyer <kyle.meyer@hpe.com> wr=
-ote:
->
-> On Tue, Aug 26, 2025 at 10:24:07AM -0700, jane.chu@oracle.com wrote:
-> >
-> > On 8/25/2025 6:56 PM, Kyle Meyer wrote:
-> > > On Mon, Aug 25, 2025 at 03:36:54PM -0700, jane.chu@oracle.com wrote:
-> > > > On 8/25/2025 9:09 AM, Kyle Meyer wrote:
-> > > > > On Mon, Aug 25, 2025 at 11:04:43AM +0800, Miaohe Lin wrote:
-> > > > > > On 2025/8/22 8:24, Jiaqi Yan wrote:
-> > > > > > > On Thu, Aug 21, 2025 at 12:36=E2=80=AFPM Kyle Meyer <kyle.mey=
-er@hpe.com> wrote:
-> > > > > > > >
-> > > > > > > > On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
-> > > > > > > > > On Thu, Aug 21, 2025 at 9:46=E2=80=AFAM Kyle Meyer <kyle.=
-meyer@hpe.com> wrote:
-> > > > > > > > > >
-> > > > > > > > > > Calling action_result() on already poisoned pages cause=
-s issues:
-> > > > > > > > > >
-> > > > > > > > > > * The amount of hardware corrupted memory is incorrectl=
-y incremented.
-> > > > > > > > > > * NUMA node memory failure statistics are incorrectly u=
-pdated.
-> > > > > > > > > > * Redundant "already poisoned" messages are printed.
-> > > >
-> > > > Assuming this means that the numbers reported from
-> > > >    /sys/devices/system/node/node*/memory_failure/*
-> > > > do not match certain expectation, right?
-> > > >
-> > > > If so, could you clarify what is the expectation?
-> > >
-> > > Sure, and please let me know if I'm mistaken.
-> > >
-> > > Here's the description of total:
-> > >
-> > > What:               /sys/devices/system/node/nodeX/memory_failure/tot=
-al
-> > > Date:               January 2023
-> > > Contact:    Jiaqi Yan <jiaqiyan@google.com>
-> > > Description:
-> > >             The total number of raw poisoned pages (pages containing
-> > >             corrupted data due to memory errors) on a NUMA node.
-> > >
-> > > That should emit the number of poisoned pages on NUMA node X. That's
-> > > incremented each time update_per_node_mf_stats() is called.
-> > >
-> > > Here's the description of failed:
-> > >
-> > > What:               /sys/devices/system/node/nodeX/memory_failure/fai=
-led
-> > > Date:               January 2023
-> > > Contact:    Jiaqi Yan <jiaqiyan@google.com>
-> > > Description:
-> > >             Of the raw poisoned pages on a NUMA node, how many pages =
-are
-> > >             failed by memory error recovery attempt. This usually mea=
-ns
-> > >             a key recovery operation failed.
-> > >
-> > > That should emit the number of poisoned pages on NUMA node X that cou=
-ld
-> > > not be recovered because the attempt failed. That's incremented each =
-time
-> > > update_per_node_mf_stats() is called with MF_FAILED.
-> > >
-> > > We're currently calling action_result() with MF_FAILED each time we e=
-ncounter
-> > > a poisoned page (note: the huge page path is a bit different, we only=
- call
-> > > action_result() with MF_FAILED when MF_ACTION_REQUIRED is set). That,=
- IMO,
-> > > breaks the descriptions. We already incremented the per NUMA node MF =
-statistics
-> > > to account for that poisoned page.
-> >
-> > Thanks!  My reading is that these numbers are best as hints, I won't ta=
-ke
-> > them literately.  As you alluded below, kill_accessing_process is appli=
-ed
-> > only if MF_ACTION_REQUIRED is set, though the page is already marked
-> > poisoned.  Besides, there can be bug that renders a poisoned page not b=
-eing
-> > properly isolated nor being properly categorized.  If you're looking fo=
-r
-> > something precise, is there another way? maybe from firmware?
->
-> Firmware records the number of memory errors that have been detected and
-> reported, but it doesn't record how Linux responded to those memory error=
-s.
->
-> Checking the ring buffer, the amount of hardware corrupted memory, and th=
-e
-> per NUMA node memory failure statistics is a simple way to determine how =
-Linux
-> responded.
->
-> Since commit b8b9488d50b7, that has become unreliable. The same memory er=
-ror
-> may be reported by multiple sources and now each report increments the am=
-ount of
+On 26.08.25 21:00, Matthew Wilcox wrote:
+> On Tue, Aug 26, 2025 at 11:37:21AM -0400, Aristeu Rozanski wrote:
+>> As raised by Andrew [1], a folio/compound page never spans a negative number
+>> of pages. Consequently, let's use "unsigned long" instead of "long"
+>> consistently for folio_nr_pages(), folio_large_nr_pages() and compound_nr().
+>>
+>> Using "unsigned long" as return value is fine, because even
+>> "(long)-folio_nr_pages()" will keep on working as expected. Using "unsigned
+>> int" instead would actually break these use cases.
+> 
+> I wish I'd written down what this broke, but it did.
+> 
+> Sometimes we pass -folio_nr_pages() to functions.  If it has an unsigned
+> long type, things can go wrong.
 
-To me this multiple counting is an existing issue, and what Kyle
-originally targeted. It seems to me that as long as the
-mf_action_page_type is MF_MSG_ALREADY_POISONED (or HWPoison flag is
-set), action_result shouldn't invoke statistic related ops, and
-mf_results just become irrelevant (wrt
-/sys/devices/system/node/nodeX/memory_failure/*), right? IWO, we can
-decouple the two issues:
-1. how to update statistics correctly?
-2. what log msg to show for recovery result, MF_FAILED or something else/ne=
-w?
+IIRC, the issue is if we pass -folio_nr_pages() to functions that expect 
+a "long" and we are using "unsigned int" as return type.
 
-While Kyle fixing issue #1, can we just keep MF_FAILED as is?
+Then, e.g., -1 will be (unsigned int)0xffffffff, and casting that to 
+"long" means trouble, because we wouldn't sign-extend properly and get 
+(long)0x00000000ffffffff.
 
-> hardware corrupted memory and the per NUMA node memory failure statistics=
-. Isn't
-> that a regression?
->
-> The per NUMA node memory failure statistics might not always be 100% accu=
-rate,
-> but this issue seems preventable.
->
-> > > > > > > > >
-> > > > > > > > > All agreed.
-> > > > > > > > >
-> > > > > > > > > >
-> > > > > > > > > > Do not call action_result() on already poisoned pages a=
-nd drop unused
-> > > > > > > > > > MF_MSG_ALREADY_POISONED.
-> > > > > > > > >
-> > > > > > > > > Hi Kyle,
-> > > > > > > > >
-> > > > > > > > > Patch looks great to me, just one thought...
-> > > > > >
-> > > > > > Thanks both.
-> > > > > >
-> > > > > > > > >
-> > > > > > > > > Alternatively, have you thought about keeping MF_MSG_ALRE=
-ADY_POISONED
-> > > > > > > > > but changing action_result for MF_MSG_ALREADY_POISONED?
-> > > > > > > > > - don't num_poisoned_pages_inc(pfn)
-> > > > > > > > > - don't update_per_node_mf_stats(pfn, result)
-> > > > > > > > > - still pr_err("%#lx: recovery action for %s: %s\n", ...)
-> > > > > > > > > - meanwhile remove "pr_err("%#lx: already hardware poison=
-ed\n", pfn)"
-> > > > > > > > > in memory_failure and try_memory_failure_hugetlb
-> > > > > > > >
-> > > > > > > > I did consider that approach but I was concerned about pass=
-ing
-> > > > > > > > MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. =
-The message is a
-> > > > > > > > bit misleading.
-> > > > > > >
-> > > > > > > Based on my reading the documentation for MF_* in static cons=
-t char
-> > > > > > > *action_name[]...
-> > > > > > >
-> > > > > > > Yeah, for file mapped pages, kernel may not have hole-punched=
- or
-> > > > > > > truncated it from the file mapping (shmem and hugetlbfs for e=
-xample)
-> > > > > > > but that still considered as MF_RECOVERED, so touching a page=
- with
-> > > > > > > HWPoison flag doesn't mean that page was failed to be recover=
-ed
-> > > > > > > previously.
-> > > > > > >
-> > > > > > > For pages intended to be taken out of the buddy system, touch=
-ing a
-> > > > > > > page with HWPoison flag does imply it isn't isolated and henc=
-e
-> > > > > > > MF_FAILED.
-> > > > > >
-> > > > > > There should be other cases that memory_failure failed to isola=
-te the
-> > > > > > hwpoisoned pages at first time due to various reasons.
-> > > > > >
-> > > > > > >
-> > > > > > > In summary, seeing the HWPoison flag again doesn't necessaril=
-y
-> > > > > > > indicate what the recovery result was previously; it only ind=
-icate
-> > > > > > > kernel won't re-attempt to recover?
-> > > > > >
-> > > > > > Yes, kernel won't re-attempt to or just cannot recover.
-> > > > > >
-> > > > > > >
-> > > > > > > >
-> > > > > > > > How about introducing a new MF action result? Maybe MF_NONE=
-? The message could
-> > > > > > > > look something like:
-> > > > > > >
-> > > > > > > Adding MF_NONE sounds fine to me, as long as we correctly doc=
-ument its
-> > > > > > > meaning, which can be subtle.
-> > > > > >
-> > > > > > Adding a new MF action result sounds good to me. But IMHO MF_NO=
-NE might not be that suitable
-> > > > > > as kill_accessing_process might be called to kill proc in this =
-case, so it's not "NONE".
-> > > > >
-> > > > > OK, would you like a separate MF action result for each case? May=
-be
-> > > > > MF_ALREADY_POISONED and MF_ALREADY_POISONED_KILLED?
-> > > > >
-> > > > > MF_ALREADY_POISONED can be the default and MF_ALREADY_POISONED_KI=
-LLED can be
-> > > > > used when kill_accessing_process() returns -EHWPOISON.
-> > > > >
-> > > > > The log messages could look like...
-> > > > >
-> > > > > Memory failure: 0xXXXXXXXX: recovery action for already poisoned =
-page: None
-> > > > >         and
-> > > > > Memory failure: 0xXXXXXXXX: recovery action for already poisoned =
-page: Process killed
-> > > >
-> > > > Agreed with Miaohe that "None" won't work.
-> > >
-> > > What action is M-F() taking to recover already poisoned pages that do=
-n't have
-> > > MF_ACTION_REQUIRED set?
-> >
-> > The action taken toward poisoned page not under MF_ACTION_REQUIRED is
-> > typically isolation, that is, remove the pte or mark the pte as poisone=
-d
-> > special swap entry, so that subsequent page fault is given a chance to
-> > deliver a SIGBUS. That said, things might fail during the process, like
-> > encountering GUP pinned THP page.>
-> > > > "Process killed" sounds okay for MF_MSG_ALREADY_POISONED, but
-> > > > we need to understand why "Failed" doesn't work for your usecase.
-> > > > "Failed" means process is killed but page is not successfully isola=
-ted which
-> > > > applies to MF_MSG_ALREADY_POISONED case as well.
-> > >
-> > > So that accessing process is killed. Why call action_result() with MF=
-_FAILED?
-> > > Doesn't that indicate we poisoned another page and the recovery attem=
-pt failed?
-> >
-> > What I recall is that, "recovery" is reserved for page that is clean,
-> > isolated, and even by chance, unmapped.  "failed" is reserved for page =
-that
-> > has been(or might not?) removed from the page table, page might be dirt=
-y,
-> > certainly mapped, etc. A SIGBUS doesn't make recovery an automatic succ=
-ess.
-> >
-> > Others please correct me if I'm mistaken.
->
-> Thank you very much for taking the time to explain everything.
->
-> Thanks,
-> Kyle Meyer
+Using "unsigned long" instead work perfectly fine.
+
+e.g., -1 will be (unsigned long)0xffffffffffffffff. Passing that to a 
+function that expects "long" or "unsigned long" works as expected.
+
+At least that's what I remember :)
+
+-- 
+Cheers
+
+David / dhildenb
+
 
