@@ -4,133 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA1ADCA0FE9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 07:22:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A2BCA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 07:22:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37E238E00B5; Tue, 26 Aug 2025 03:22:04 -0400 (EDT)
+	id 26D0E8E00B6; Tue, 26 Aug 2025 03:22:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32EF08E00A8; Tue, 26 Aug 2025 03:22:04 -0400 (EDT)
+	id 245228E00A8; Tue, 26 Aug 2025 03:22:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21E4F8E00B5; Tue, 26 Aug 2025 03:22:04 -0400 (EDT)
+	id 15AAE8E00B6; Tue, 26 Aug 2025 03:22:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DFC68E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:22:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD32A1DE215
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:22:03 +0000 (UTC)
-X-FDA: 83818064526.13.3F6C142
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EB0E2120008
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:22:01 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MAEIx8KP;
-	spf=pass (imf29.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 016D18E00A8
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:22:09 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B552E139780
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:22:09 +0000 (UTC)
+X-FDA: 83818064778.01.4B981DC
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 35C09160004
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:22:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=JjmObyhP;
+	dmarc=pass (policy=none) header.from=lwn.net;
+	spf=pass (imf08.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756192928; a=rsa-sha256;
+	cv=none;
+	b=zxeJjmn8tHlKKVRR+JysnJVcZBuE55xAZ+VoiCKZKWUFigJH7WbaUm1Lia0kkX1DrMccVq
+	GLKXw4FZ4dGFg4o78BvHCO0hAwxP+K/485MbUvJnMh1Yf4bRTfu6HhVh+U2hcuA8Jx1Csu
+	g+4Qll5KV7htg+u2j09/XkBnrsjKOLE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=JjmObyhP;
+	dmarc=pass (policy=none) header.from=lwn.net;
+	spf=pass (imf08.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756192922;
+	s=arc-20220608; t=1756192928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wbac2bbB4Agf6ejMhEQ8dWLbxrMb1NMiLXWF/bBnvXI=;
-	b=Hd4CnFx1rjgMsVMo0wgxn3MDO6FXtXTroAcc3GYlxXI/NJLWsMJZ9cJdQj/g4kMYQgFXnH
-	l9U794mArKmJzfGn4xhlSo7HvDLOSrihIRmZxsAL+1Tj0TooFioxug/GT6+CPIsChKeQBF
-	MnL90W9hjGYMYAIdv6zYX/GlbVHpIcY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MAEIx8KP;
-	spf=pass (imf29.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756192922; a=rsa-sha256;
-	cv=none;
-	b=sK/Ujw4BU04p61AmG57W85J/ElLxPbhLgVzUG3R9MFUeCJwRadeCZ+hM/OVdNSakuqNrJN
-	MsNZNK+gtzSb4NqbGR2x7zXGnk1x3TPj1PF4yVjahYiz0jhWITi6TBe9Z5MCqwrF1EMnP+
-	DUg6dkJm8al+qXdJNEYVngrLauoWoQQ=
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-771f3f89952so659160b3a.0
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 00:22:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756192921; x=1756797721; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Wbac2bbB4Agf6ejMhEQ8dWLbxrMb1NMiLXWF/bBnvXI=;
-        b=MAEIx8KPTU7iFKePqtxThR+ydK4/u1V3J8oLr1vQLJMW49Q+6Q9M/GDI4d1vPGZzqB
-         0HdtzvJvJc8Mh77/6i9qINoHgO0dFhG8O847jm4h6CLWq3gC1zsOdK9cfGZi4ydu9wO6
-         IzuHT06mpQtg9KoO/C4HP2ZlElT3NWs4aZztA9YBeDBv/+c7/l+YJWGl2HTbyKM0JSa/
-         9xojk8ajBSPyjMLFqg5oftbtGSjFPonmh6Ojs8S0DhSPI4+ArJbkzBvi9iSf9LeAV80k
-         a/7N7sXU7LJ5Ud4F4gmsC3gbHQBldr9iJa6srx+uRABnoUqSWFx5GwkEDuGzgHfIC9mQ
-         Unfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756192921; x=1756797721;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Wbac2bbB4Agf6ejMhEQ8dWLbxrMb1NMiLXWF/bBnvXI=;
-        b=ALPh2EyskHbmBMB8966imMJnwGOVxHRpm19gpRKVQQXAHHbC5+4f5ez6oXp29nibik
-         IZi87MVJrFCi3jYwQogRmXSmRsFeoAvHZFP3mEhBnSD2XDSSSpG52iw43SF6qkaKNEKI
-         XignXRO6FfZ2ehtVRjYXo5vK4mmAwRUQNjgX1i9pUY5pDa6/QI0zVk5P4uq+wOcsgy3R
-         W+SulMVXb+n4BH4P9MJg09Wr2wne30jkVPUTEhxyYu7nAv1nIIyIhIkMF84Nf1waoPNl
-         LvDSOuUqkwsjfmaRuX5ZfFBaVVxxRNkCA6RU9e9C4dfrugpD8CV6iMMYLXuCmxwxW/o0
-         AgrA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZdCXdFXOMs4on0zDrjw93D05i6GK9Wq2IK/0+zc8xZ9JNbboIQtvMAQA1OvX1pO0tX2Zb7rY/XQ==@kvack.org
-X-Gm-Message-State: AOJu0YwZjU3aXJzFUCikV3JPxREpui2OcxuxDzce9PzqXDah6sior0le
-	PSAvQl/EtAFAkaCWLsY+OqKFyqAI8AbuvdS+B+3bGe0GapNtx6b+Bwnf
-X-Gm-Gg: ASbGnctH0hUIWW4yiJZurlneaFKcs06OOqo0sT9aM5z4nzvvzfraAau8meSoiIxPhSg
-	I5vPNSIIVYjQzuxqejREh3NZxDhqXsIjdaPglfnIxo4DVUVtGDhzYUY+TD6MLn2bpUXcBHVzi4v
-	5a5yM9JIt9rvb+t3N2HnhOEM6B6/Y8HFAB8qp4HxAZvyMEMHVPNYodWuzBSccIxo3yM77XMXRyo
-	f1a3k2jbX0VZU8t1CsGm3F0/ZHEG3CCjSw3Q6gx+sjfcn8upZFiOW0pTuqoJ71wYDg9v12fs9m8
-	75rDpZE7dcJCqpe0pL264KqC1wesJSEveU4rBVXzhVgwXn0jxOUw9IwmBN+HE4xtLxc+LbkG9I5
-	8hi3d7apNQkN51zVgrkcS766S7MtOxTicHiLnsteAW3JBsosG2aQEJ18/fsVFrqypMa31SKUtVu
-	d7nVtuMu7OFsd77Q==
-X-Google-Smtp-Source: AGHT+IHDKkxVACQPZ2nUxU4qBHmNtw5UPdoF1DrAv6TDPleHClAcC9RQjauPOEwrVtJF+n2mv+hsyg==
-X-Received: by 2002:a05:6a00:3d47:b0:76e:99fc:db91 with SMTP id d2e1a72fcca58-771fc292f2dmr715991b3a.3.1756192920839;
-        Tue, 26 Aug 2025 00:22:00 -0700 (PDT)
-Received: from localhost.localdomain ([101.82.213.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-770401ecc51sm9686052b3a.75.2025.08.26.00.21.51
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 26 Aug 2025 00:22:00 -0700 (PDT)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	hannes@cmpxchg.org,
-	usamaarif642@gmail.com,
-	gutierrez.asier@huawei-partners.com,
-	willy@infradead.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	ameryhung@gmail.com,
-	rientjes@google.com,
-	corbet@lwn.net
-Cc: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v6 mm-new 10/10] MAINTAINERS: add entry for BPF-based THP adjustment
-Date: Tue, 26 Aug 2025 15:19:48 +0800
-Message-Id: <20250826071948.2618-11-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
-In-Reply-To: <20250826071948.2618-1-laoar.shao@gmail.com>
-References: <20250826071948.2618-1-laoar.shao@gmail.com>
+	bh=veJtPEJ9bn56lBUtIQcGh3y1q+MNYjksl24KT7dK3Es=;
+	b=GYLb4orTKXJGcPXTSZVGodBeqQ5yw03aunmbO7bGoJgZjb8MDrTlRJ9y/5jA07woR6EYZu
+	8T5Hub+unLj+f/R/y88Pn4Xjy44pYc/cl8ADse/akWSFSITAicuXgRnV9XsEEhfZq0tpWk
+	D0TML2PTTAH6CZJ1RzoXWXRjz/Yvpr8=
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 0709740AE7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1756192926; bh=veJtPEJ9bn56lBUtIQcGh3y1q+MNYjksl24KT7dK3Es=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=JjmObyhP4Lb0+RL6pxoFBnUSA535OOZOcSswlP+P2+Rlxcur4RwDbbgMTKcp/LObl
+	 h/T6FbF0rz0iMWlpqxFycxdJzlP2FCUU+Z82Skqjco6nM2mZCHX2E3yC/+V0nL4K+n
+	 UDEV/oN1wql6lL5kXt3afkJ0+gQfl1Qp4/e4jvJ5e+1hPIj1jb7wjoLczbO+HwRzgg
+	 iOeS6VkMOnbjT+/c6EtSuOBdtwaY4OYMdp5SNrkML1YMyrkgWBLeJgTvEOw3wvm18B
+	 kldGgFK9IyTFep3dQES83dx0+nWDIVf/xDzl4niA34sgF6tTxkf8WRbYcv5l3ca0OV
+	 6bA3r989KEGow==
+Received: from localhost (mdns.lwn.net [45.79.72.68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 0709740AE7;
+	Tue, 26 Aug 2025 07:22:05 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Harry Yoo <harry.yoo@oracle.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, "Liam
+ R . Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, David Hildenbrand <david@redhat.com>, Kees
+ Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Jann Horn
+ <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Rik van Riel
+ <riel@surriel.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Harry Yoo <harry.yoo@oracle.com>
+Subject: Re: [PATCH V1 1/2] docs/mm: explain when and why rmap locks need to
+ be taken during mremap()
+In-Reply-To: <20250826065848.346066-1-harry.yoo@oracle.com>
+References: <20250826065848.346066-1-harry.yoo@oracle.com>
+Date: Tue, 26 Aug 2025 01:22:03 -0600
+Message-ID: <87v7mabl9g.fsf@trenco.lwn.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EB0E2120008
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 35C09160004
+X-Stat-Signature: 44gmd5ayr1eopznfxctn5hy3mfgzttx4
 X-Rspam-User: 
-X-Stat-Signature: 9z7ssdm4w6xifyxe1w1airnnf5ub6u7a
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756192921-804491
-X-HE-Meta: U2FsdGVkX18CuCEADPPwTe2z8SKIwah787+X+76KPLlppuE7qszDVJXvawQoMkliY7IZrtg4DM3lRRdTTBLe6DZSrIAyeo1YgyaCEi3TR6TB9Nc6ewZZNPmB1qQjc1dRByDL/x328RgVAJiiqmgtq4/MGEEv3rN4yT3s+5PD2uzdhrgb64hyKSxVbYjotsmEL09gAE9TNG1PP3TIaDkLpjuo7v9hVa62fq0SZQWnaG/gpFMr+OwuI8TPcFINWM8f1ksXzjrWpDCiLduT5VMmp/J2VXTYPg4kU5JLjBclhPrtAH+03h5RgdQy8vF2FSLnIoY2i624e9CGMe46C8ueGiHHwSc3AxrzhovmOdlemcfwmRRsc25+W280D7ZpZzG1PfU9gkdYcvD5sA2pUGDEG3x2TdKcmyc4/4ozPs6EfMGrfAAzvvoRUFHO6QN6X5yAbARVUxfYpbVRUYfvbaGr8OOhwPTzh5EJFP64WnOkxQ36O/A2XDGT0mXksW7yBwLzJM8PlPwGL+w9YLpEZd+iiVrz2muxl+Ft8vixuZUp7S+h0CTyWovT+gtVHYWzIHU1U7xM8WKdsvnEMCvuqWDoYfzspdnLfyfhnBZtG23Q3D09daOs365saYHAv9iF9ijPBVGZHcZv+jO3EBLsVK0RUHmEurhlAgoLHKR0XF09x35xkQfRPMY+TFZuFw/hrm408gix10orcdSJa1OHnjA4uFXd5RjhG2uSL/+B4iQTHzUouJWjbob8Ilq22xktayxBkdxbr2S3HoILXNJ8uB2DkiftcdIqkjnd0p/q8cusEmnKxjBTOPQtqcvIEGNGsQe+plm/aaJExkzL8MsxqNQtCFSSbp+TXi85D3aMfmVmTeoqR2DDEeRPlYyxL9Kyb7T4i8iUBCzQrlbC7aFT16ekDK/UfTEIYM5O37q89qokJF/MQhx+EIozBnm4O5F+wSOd+BrrToFQ5lW1ZmCseqS
- JfC9thaK
- QlrVu8l4++niAL5h5mRjEId9EBp4I1G2BImzGQXh7uSo7tMtce3LN4zSa/tYl4AhdL800Gz4LU87K7eWJq5YtxICINAQrsGnXkIIChKSPwlYeVTxNTlOEkLK9W+zjOzPG1M7QfnXK/bwHRPkFU/WpJzCznhTnowgVZA6pg/jcuTGgwH5sCpDvHOAOL3zgIFriEh/9/Pi1h9yJHQzAdWhrPB4m4yqrsYqu870Sc6fnO0PJcpzSecg3EHxNUub5ACQxml3cxaT1gAZo6MuTfNDibYgWCJ1liSPiqoR2QSEYFmVA5WTxY0TLQIaKHwQxLvkTOI8BQl3JsF8r0Vbf1REMg65yUKaimzaVBQNR7lNbcIRZykUFWuKK63RFBgLY9enttE1iJGT2FXhBjpjKGfPzhCJqU+CF6Iso0hPK+Tp15C0f08g0kkMHCdAwe1Ye2JKIpN1JD8SllA92yI301FRHUzpTpV1DpHsIl2cB84n1hmFgtqGGTwauORrNvNaF6jTDzoV0ACZUiF7OzvEmvX0ocoe6ZY2EtwRroj2VcU8xQ1qgOoNJhbjO02tTDRSqnbaQFwhiBjH1fmHjd/HDU4fjexa2ymdsh1hDxLiyNy6HJSJznTTRx2tYiWow+s25W5NGPpc5XIKu0dwbSvBhwXDv8J1J6+nDsEOkY4BgkH50sM3GmhM=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756192927-970928
+X-HE-Meta: U2FsdGVkX1/zBnLJkUjl6ea/KY3r7O/QBgaLIB5lK9yZaPF1mcUmanN37B+ub/22QLjBI5S4r53RD+cSAKLkVcw5Og9DSVNchvuhf7Of0ief7XT7ezznH8JSeL3x36zPfZ54j5wBR3mPWZ0jtuqMSWzXdN0xSFu4qcE9Dxml2TK52iSCZfR5LFRmTqWQJG5x81MhNDaK6xY6+bBoDE9K436C+2PtdVUhOpv9LGTEznc5Dr/iToPLuIReL+sopYKHEBWYgOZJ3M6dq3JxEmmZ/cduRgIrqfwyYjAKnnuHX0jam7zupIwuBd0XyPmVlpc11qYnQArBhRfyS3nEqKNK2IW9glGX+yM8jx46+VdocyapqwTh1r63IwhTOd43OEb7AFnVEw426/14uS0t+0atV0szICUH3Z2D/qcSOn/N4NW8I9J0P0dyh6almoMJIfdKC/wBhzZbapTjKYXEPqxw/O+p7SlkBGUL7N6dTDrITy3PMr0YpFnXK4XnLl75HO1V1UXWTgry852lrp7SQqGmDzmEgdFSz0kBpKpn5/tn91/+Gwqts+5AhC9QMT+YISMakGM/8TW4lvARzTsjsnM40PMARvrAFKsbJJ1WIgeEYK6hYcgaGC2o/jg3kW7k4mXPbPEWEp+lr55tucFDxd12SS1yrhP43ButUTfRjV2zV2fpS0tvVIlBYdzgkuFglvQpvneubzfWxdHl2XDrtlY7cIfQi61ZgZ5Ypo0zY3S3Oa6ATfWsmGXhnK9om27sBnbVlRcj242jnKJdwrs1zIJhEAcEEmEknI1T5afq+cwHO/ZvCnow+6Ef+JFZzdF39/QGzFobxXEjM7MJIiliR6kAplG18G2P4Wq7uh/vAAGAjFniX8xeV4Y5C8N7ln88GqIduVNyYf5tcLQUm+ji4loc9Nqj3vsJ/uoysxPV3UV2Togxs6Y+UsoY116jaNkOF0ZGtesUQOTLLPV3CAPijwx
+ LgjoKM7c
+ WlOCTEbENOTXaMOq6oJsyYXhcf9tvZ68vYi+LUmWKw0g/eC/FOlEIAw9efg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,45 +99,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add maintainership entry for the experimental BPF-driven THP adjustment
-feature. This experimental component may be removed in future releases.
-I will help with maintenance tasks for this feature during its development
-lifecycle.
+Harry Yoo <harry.yoo@oracle.com> writes:
 
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
----
- MAINTAINERS | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+> While move_ptes() has a comment explaining why rmap locks are needed,
+> Documentation/mm/process_addrs.rst does not. Without being aware of that
+> comment, I spent hours figuring out how things could go wrong and why,
+> in some cases, rmap locks can be safely skipped.
+>
+> Add a more comprehensive explanation to the documentation to save time
+> for others.
+>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  Documentation/mm/process_addrs.rst | 32 ++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+>
+> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+> index be49e2a269e4..ee7c0dba339e 100644
+> --- a/Documentation/mm/process_addrs.rst
+> +++ b/Documentation/mm/process_addrs.rst
+> @@ -744,6 +744,38 @@ You can observe this in the :c:func:`!mremap` implementation in the functions
+>  :c:func:`!take_rmap_locks` and :c:func:`!drop_rmap_locks` which perform the rmap
+>  side of lock acquisition, invoked ultimately by :c:func:`!move_page_tables`.
+>  
+> +.. note:: If :c:func:`!mremap()` -> :c:func:`!move_ptes()` does not take rmap
+> +          locks, :c:func:`!rmap_walk()` may miss a pte for the folio.
+> +
+> +          The problematic sequence is as follows:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 390829ae9803..71d0f7c58ce8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16239,6 +16239,7 @@ F:	Documentation/admin-guide/mm/transhuge.rst
- F:	include/linux/huge_mm.h
- F:	include/linux/khugepaged.h
- F:	include/trace/events/huge_memory.h
-+F:	mm/bpf_thp.c
- F:	mm/huge_memory.c
- F:	mm/khugepaged.c
- F:	mm/mm_slot.h
-@@ -16246,6 +16247,15 @@ F:	tools/testing/selftests/mm/khugepaged.c
- F:	tools/testing/selftests/mm/split_huge_page_test.c
- F:	tools/testing/selftests/mm/transhuge-stress.c
- 
-+MEMORY MANAGEMENT - THP WITH BPF SUPPORT
-+M:	Yafang Shao <laoar.shao@gmail.com>
-+L:	bpf@vger.kernel.org
-+L:	linux-mm@kvack.org
-+S:	Maintained
-+F:	mm/bpf_thp.c
-+F:	tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-+F:	tools/testing/selftests/bpf/progs/test_thp_adjust*
-+
- MEMORY MANAGEMENT - USERFAULTFD
- M:	Andrew Morton <akpm@linux-foundation.org>
- R:	Peter Xu <peterx@redhat.com>
--- 
-2.47.3
+Please don't use :c:func: - just write function() and all the right
+things will happen.  (For extra credit, fix the existing usages :)
 
+Thanks,
+
+jon
 
