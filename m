@@ -4,117 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B25D7CA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 11:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF7E4CA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 11:16:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D58E38E00CC; Tue, 26 Aug 2025 07:15:03 -0400 (EDT)
+	id 175236B009A; Tue, 26 Aug 2025 07:16:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D30718E00A8; Tue, 26 Aug 2025 07:15:03 -0400 (EDT)
+	id 14D2F8E00A8; Tue, 26 Aug 2025 07:16:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6D6A8E00CC; Tue, 26 Aug 2025 07:15:03 -0400 (EDT)
+	id 063706B00A2; Tue, 26 Aug 2025 07:16:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B4A708E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:15:03 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 673F95B40A
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:15:03 +0000 (UTC)
-X-FDA: 83818651686.13.0462AD7
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 93D94120006
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:15:01 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ypKryOtx;
-	spf=pass (imf29.hostedemail.com: domain of matteorizzo@google.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=matteorizzo@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756206901; a=rsa-sha256;
-	cv=none;
-	b=Eu4Dnc6IRlWKvpQ358dpinNdrg3O64Fzzs95+/S4NbAlHXquy4oMShG7a8uL5G3Qj3TrNQ
-	tIbhjAmmR+m8J+2zdwZFdl0C/A94Tfss7OGiMqzWzvZfmco58JHlYlX4+Pjl3Zi0C3NjV3
-	JdmdMdQf4vrfRcvqRrEZV+yVoQh13YA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ypKryOtx;
-	spf=pass (imf29.hostedemail.com: domain of matteorizzo@google.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=matteorizzo@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EAE8C6B009A
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:16:39 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A751FBB33A
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:16:39 +0000 (UTC)
+X-FDA: 83818655718.17.AE860AC
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 396F4180014
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:16:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=IRsdJO+P;
+	spf=pass (imf06.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756206901;
+	s=arc-20220608; t=1756206998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yNKW1svPWQYfwzN+Mwhz8LUQicThZsVtWpSBP88B/Xg=;
-	b=jzCx4cnx+QAewD0DT9iF5mp4nrIvTDNsU2qtoOE7ZtRyC4PmR1HvX1FAQrDFG52wVReppR
-	jB1l+T6B5TRLgwqa4IBuvf0bN+ndVYChan5K0N11JzbiEgr4ZMpOcCD0S1D2wNXLfmLHgh
-	cE9V6f4l47iRBBPnv+FhWzU8/VmM+Oc=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-70ddab8117cso310996d6.0
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 04:15:01 -0700 (PDT)
+	bh=13+ZKZHSBSlxWn30sItlJ+MHDakals4QsmIVvRoAzjM=;
+	b=W/rl5BnzPFPmj4PoeAD8stYMEhOiZRoI4xHN6xPqtGLVXPoLrtfjo31RUQgTLHX8GCyLE4
+	RFkRzbRNRniLW2a3UmMivIJJc3yrPz+pxhC6NVdKSpsAWImTiOnWE2jD2XSTF2sDYH2lub
+	tTPuiX/U0J75yPzlxAoPo8apfVmwSXo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756206998; a=rsa-sha256;
+	cv=none;
+	b=tbpzORWh4uhLkguIk0F00YcdwDk9fEaWldU/ZZcykpKB3HNAX55G4E0cofqa1cCiOEEpTm
+	XHJHcsmg/b6ginooimzv8Ci0W6n+MxhSAd09Fqo7n9lzfxtKuYplPP77A6BsnVXYb08y+z
+	0+P7HsRxCRcVkVBFhRBO+nTB2kb4184=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=IRsdJO+P;
+	spf=pass (imf06.hostedemail.com: domain of linyongting@bytedance.com designates 209.85.221.180 as permitted sender) smtp.mailfrom=linyongting@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-541f5f6385cso602460e0c.1
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 04:16:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756206900; x=1756811700; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yNKW1svPWQYfwzN+Mwhz8LUQicThZsVtWpSBP88B/Xg=;
-        b=ypKryOtx7IpfjQ9CHzSM5/LhTsxayWaW5M7QRN53JKhUzWGpnKouBFGWSsxYQOR6Qx
-         3oL2QM1AAqfmSva61hnPXi7mDNkILy9o9K0mydqm43p0zr6qSuJDWk4t8hlIdUBNJfTS
-         pQw+sfuZhiEc5Ka+eOPnqD1oHZW1sPYYY8rHPjWZ7UgX/QuA4cuaGPXB4ovip/syiuyb
-         dPMjF0qQn3H8hNyzXvCoplE6R9BMYkeTWYBWGZJxhUHN03N0yEPYfxWi2tFoWphIhP0y
-         vyZAZ7LXSQXLhHLrEsDTtXqppmbcZyycrRkrjFhi1DzlbPfLOX4cmTwXaB++21JUDEyR
-         Z9+g==
+        d=bytedance.com; s=google; t=1756206996; x=1756811796; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=13+ZKZHSBSlxWn30sItlJ+MHDakals4QsmIVvRoAzjM=;
+        b=IRsdJO+P2b/KEw+ZSlLK+5uSPtEU5XnLpicOwIYpmDxN2lGEHx7S4e4SfT3DCSPMJQ
+         2HqL1MrBpDcensudLLPtPIi1S/+3wJkFS+XiToT+tYfCdHBaauMsJ/h0VMJNToNFqtq9
+         6tIUt6RNSkGnoOdCadllFuSkYCq78+JsvnVmHibDAGYhj45/hokgOogu4kB4gfxqMHn9
+         CEFnvEAfUMnPPILXdPOdmUy5wLi8VvHQ8mXC+KA98pewTjc7KnrE3shEj5XKEIFKRxGG
+         YPD7j8+WVSUB5qxW1io3HkqyZgm72YWcNza/GQkAXJQ4DaUhbbktbXnik1WU6Bm4isCY
+         5++g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756206901; x=1756811701;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yNKW1svPWQYfwzN+Mwhz8LUQicThZsVtWpSBP88B/Xg=;
-        b=B0gkkOd5Qnasn7XMQ746Y3p0E4o2fNITmZm81zv0Ls4BxFS0ChmxiQlLXQFd16ps78
-         Xpzr4sXDprvpoPInMs5FGFOMux/IMP5nSxVtf4a/+PSSaO/WXL7uS9FWE5J4Kn5Vway9
-         YfaqxXPxIATYoBUwYJGqIp/GFra7ZWs4VkzxRTWrl/sBJVTQ6vES6ghbIZsjJwEdjPz7
-         u+BHaukf0pgeDuxHNfD9+C2Djfe/Lyq7kdDc3DRUEINGDtMnhm3asZW7crVGzWHWGCn2
-         0IAnzp/W7a1Wv1aWcthK5YebeU+UhstwsymSNYr70QcINoy5Dr1SlL2wpw/2RH7x1ERr
-         5OLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVBwOQJVmzFVM3hAqXBbnsrhiHw1Hn3e6xai60qDQFSM+m954iSuB+IWgufrHhHFEbheivgNBfJ4w==@kvack.org
-X-Gm-Message-State: AOJu0Yx13+pQza8DAcKUbvDCrfLRX2fRpGYFXovckq9l/aW2iSKZOXy3
-	uNlFrPrloHB5KFZeduA2yD4n60/iwFa0uMEaoDS3GstYWzYNKQl74T+9B1iPitxBdH4P2v4Q0//
-	51/X5Cbk+/FUpJevlu49MjWOVyjJO2xK5FPBDPwzD
-X-Gm-Gg: ASbGncsrgbmwMbOLuRyGzvH+OpJ0kJZFgu6THRwQvqWBs34gndyJTqPJZ/6v30P1Mmt
-	BN5ib3hpYGCgkejvCKKzGRLfG3bT6+Z67R5uGeoF841q9qIlRr6wqsbRdAseGhg2uhnzIjcSf8c
-	4NGW1i+VUh+a9bTMsZuq9HD9OentEOF2vGY5aBRRxaU2r2ZDPdwq87dLlc0BTPjVHbBSybx/eyJ
-	TEhwJV6+rkm2ne3T0O+a3Vrtg5us3oA53HbKrtKTb0cGMCa8JYhqq0=
-X-Google-Smtp-Source: AGHT+IGipSwQ9H+9lir4i7sthp7jXgbze4rk/DAEYQJrO9h7c1f6+7P3RPCSiB/lbUAJre41WiVi6jclfFNB3YTBRpg=
-X-Received: by 2002:a05:6214:20e6:b0:70d:8665:3c5b with SMTP id
- 6a1803df08f44-70d970b2b0dmr209892786d6.12.1756206899995; Tue, 26 Aug 2025
- 04:14:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756206996; x=1756811796;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=13+ZKZHSBSlxWn30sItlJ+MHDakals4QsmIVvRoAzjM=;
+        b=PLRSHbrxYtYWEVQLhX4F0BEQ3xGVOoWwXCuZ4Tj2OdVcyNsNlNkCa4VJBnWjtYi5U7
+         UKmEuvwo4UACh/Sj9tD8oPXzo7BaFOTKeQoTGJjrZeaH4mZGNGe8CWwiOAzcexI03m5s
+         hhiFcL6U+d60YJ+Ab96c2KGP5Rh8MlbU7t/I4qxpKUJIdoFkyWZZbPKSBcaYJ/Q+vafM
+         JDgxo07dql/ZIzOdTkAOVqXIu7DSuw+3pd2SYnPkBBp5FOVhtzdCxhAwUiUuDIoAHEqF
+         2tw0juh3w6iXJm+0ABhhh4fXrJi7SykgSnymTZ7cXHTLZROSzq32caUGDwZNBgQ2fS9m
+         6t1A==
+X-Forwarded-Encrypted: i=1; AJvYcCWxVx2MFJlgIQYZdbZnseF16zv/ibGqezraw0EZILS6k2dVFkqiR9o9GxioFXV8wwx5YwBN4CEohQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyd3cXRUnOpPzEIqePQlW5EsOUOO7ksB9ueazdDK8DhGjFCJ/Ou
+	9btexEu1hnH6f2zhcn9w/RDFYM6EII5nKcaM6MWZcmIIekQ4QeJaGb3Z7iZ/gydIN7e1FQ4r788
+	TGkQj0Nvd0AjIApEpl5lHBlhJ1hSh5mkZZTsDwb0pGw==
+X-Gm-Gg: ASbGncv/urbcMIPrYoS6wc0UdwkBDxWRIUYcsbzAP1Ysf/R44aGCI8o0+4+w6CEsaEg
+	TaUYZxzIIabsqErQfYFHqvT+sY4xbPrb24kUAzp8VTlkGQ44ESuCllLaluIEQBXt8vNux5nby37
+	MqWzWUe4J5t6/SEpm0YuPKOpglBnwbGtoPrv5Qm2oAJ8lQhooHlvMMu85TOPV2kk10RLozKzuRr
+	9S8XvTp/iRtnsUOrOe6BQdLG0rv
+X-Google-Smtp-Source: AGHT+IGLaaBqvt9XEIIWuswTMJEBdxRtANkhP57jHYijW1XkWUKRdvmPkMfPUDOxuY2T7Sa3m41LxDUj4QvUufum+Qo=
+X-Received: by 2002:a05:6122:181d:b0:531:4041:c4c5 with SMTP id
+ 71dfb90a1353d-53c8a31dcbfmr3724012e0c.7.1756206995825; Tue, 26 Aug 2025
+ 04:16:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250825154505.1558444-1-elver@google.com> <aKyT2UKmlznvN2jv@hyeyoo>
-In-Reply-To: <aKyT2UKmlznvN2jv@hyeyoo>
-From: Matteo Rizzo <matteorizzo@google.com>
-Date: Tue, 26 Aug 2025 13:14:48 +0200
-X-Gm-Features: Ac12FXyU3fT-SuKRuDR_nD8uSQNd7DGjj8J1BVXdXRtps1xhjblio7NMt2GtdbY
-Message-ID: <CAHKB1wKZmp2Rpw0zry70i16-c3FVkwtb3-XpLs5P1s4eABDD=A@mail.gmail.com>
-Subject: Re: [PATCH RFC] slab: support for compiler-assisted type-based slab
- cache partitioning
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Marco Elver <elver@google.com>, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Alexander Potapenko <glider@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Florent Revest <revest@google.com>, 
-	GONG Ruiqi <gongruiqi@huaweicloud.com>, Jann Horn <jannh@google.com>, 
-	Kees Cook <kees@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-hardening@vger.kernel.org, linux-mm@kvack.org
+References: <20250825145719.29455-1-linyongting@bytedance.com>
+In-Reply-To: <20250825145719.29455-1-linyongting@bytedance.com>
+From: Yongting Lin <linyongting@bytedance.com>
+Date: Tue, 26 Aug 2025 19:16:24 +0800
+X-Gm-Features: Ac12FXyevGRiMRbSCI3kYQcBRsrIKMzDdG8JNBs40u_qfXYdnjAXQlDzDqSNaHc
+Message-ID: <CAFuXZ_WHC6XtzuiuS-VBpAotOs+e5Z3toHY0jES3+hCXC9AUgw@mail.gmail.com>
+Subject: Re: [PATCH 0/8] Add selftests for mshare
+To: anthony.yznaga@oracle.com, khalid@kernel.org, shuah@kernel.org, 
+	linyongting@bytedance.com
+Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	akpm@linux-foundation.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 93D94120006
-X-Stat-Signature: q3mqkkryq8p9un46zd8uxrrdrd59s13b
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 396F4180014
+X-Stat-Signature: mkd3abdo53g8nez969x9qcaiw3c4zkmt
 X-Rspam-User: 
-X-HE-Tag: 1756206901-236093
-X-HE-Meta: U2FsdGVkX19EGsKk55ws1+AdxCDkIoLkV2Z1XwNRRAEm4clAKr9czh7Hg0fuvK1KIDjER7mt+nn2SQmEoiERuovqmOBLa9zOMThyCgd9lJMF3OZ90C/tdaxoYIoD3ufhiaVzA6dnhQpopUJ6GHgZQy1SHzB4syoAd09qk2+6zCeNVgs1qvR5LGJaNzbTCQ+mjxfYcvVS3K6EFdEnGeIpsbdK4cY9oDvIFWf0e/OhzO/qKHeT306iP5YaN32tkk/poIao/+8l6IrIL81OGAajQQ270UwFNrJPxWuy599X2FvQTfJDgs5LcUydxtQkq1A3W98t2eP0OGytSzyhcxleZlWk5FXv2IlJQT5v4AXyxYBCWtDXHj/UzcLYj+AuqfbrIuZJaot6e2Ryk2Gk+iglntZed7P3TPWCK5i8Ys1JJybSM+k2eanMj6F/p90oWUz1IcG5mGHxjmPwsO1wpi4He48a2WSFkka8/7kFZ3ZgaNOTtjujeGDKGjnu5EP91UjNi8DFpMyJm8QbvdOXSy3IXkqcMYWlqbgFRywZKxR9npgQ68FEzBhIEE/FzwIsB1NtCaQdLQszhUv/4OPXao+gUZPhiFx1zcjiSBIehLxTqSvAoABw8NahUWY6LPLv1F5+8EOoXdwINj455oGf3uN94FoAzbnx645ZmM2donBUyJNPICfMRhGTzqEkVjDiZxppXnliI8Q2OPXHUHouOFHRAFvxgTirGbhV63T49QNrVDQd/PXLWtVVEaRj1nSQgOlvETxcyYZXGt9GUTNYi0EPK2m+IW48E8NMYaAcFO5y7gpjQSCLy41u3apVcp+SfysB2oUTBtsUGkZJladn9tl/ZTMvEUpLfWqU9DFfnlZPF4dXrO0PE3Sa+8lx7ZSHSTHcRq2sUsAiEZICUw4YtrVbCqRHrwJIbGPrElSLa4HByEWgKIqxApMIxnxwRYKwi0zw8azy3YKr0373UrZnPY0
- xaKYMvVw
- Qv7bF8VsrpbH5KZZgIhrgduj2JVph8ZlZfqt0J2IrmMotA1JBc7WGIj4HWjytUQaw3Ce2bpYHAX+7KReIBSc8jKlJEd5ZO69mz1K33uYkko/p3O1bx7Gl2HCZoj09JcxIk88OyaJur0weEdvcBLWlgcz9drBVgBkYHPuynatBI4cJNP7EnuspD9/LHlrXJ5322xSHtDhDzx1zuLzf14uq4vZfXFnLZ60WZoYo
+X-HE-Tag: 1756206997-358100
+X-HE-Meta: U2FsdGVkX18ZSk3dBIVPrG8Hx8w6cW5MP5l/A+qf5JjI/4xwsG8dxxTfN0wBYTLfjIEQvSW+IJf9v123nZN7A2+POBBW1iL/hsWW0nxIsSDIwECbEN9CBUBuGZiM+JQ9ichZhgv+KYCHHODaLrSOGzP5rtQefmleUKq1px0YoqSbN+hBkAd78gz4UloPMIa2jVCKxbviKqqFicIUuSnqN5UBULBfXyQhI+nNV/+4HQ8GColkcIX7PV42hkVQT9xeOhweGtf4eHeGDcqc3orJIVwzJWO2s3JomRhHA2D6nQAqBVu8kbsNK0xcYuB2hDHEEZQzUywtEAMvI16QGcSNddK8vyylHz0jdvr8Jkbg2Yt/GDW7eag8iB0rk9hMtyX7QWLea7T/tmQj+PmaVtDXn7iQMaWZ/TwsZC90hsBKbwt4n562/UUJkjB5H1OfpAvRC4JAYRofBp/VNdvE9jrRveEqaq9hILHDWjsusb7/qA0rPtTlikhkBW7PVRXlSWpltZBwKxPiRasvQC56BgBgY8JT+kyPGsTI7NbFJqq8dq+pPb1ql54Ms3TbYq8zAdovDUFxrqQT8wr2rZ6xDcDF9jLhVPzJgh7Zf0vK4Avm4Z0sE5C/lhWs8bO2LNKQPgzKzdvYlPRxo7F0/fufItk+iebtZqPuoOud+AHf0rNNyes2I9/nfRfs7slkm3asi1hnDoUsl2hm41cadFpC13fTUM5GbFsPzhYT7Oqp/ii01w8MsBd+rtHpJP2nTvQh2bHLsvH3UtpfDgbNNAnIZiTQwQSfM/XatpXq4ZHSt8YvkWeoy1iDgUO+BvcHJkD0aK+XN2Qkt6DhDU8MF3BzEJQ5nG/IbZN9JMsmyKkjsmALpn2z2eAeWsH9RSmDbvL6rsM/mJw86jRYxT1JoPxDqPAihHbjUweFiZ2pn38CzUc21ag=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,14 +115,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 Aug 2025 at 18:49, Harry Yoo <harry.yoo@oracle.com> wrote:
+Sorry for the mistake! I accidentally sent each individual patch twice,
+except for the cover letter. Please ignore the duplicated ones at the
+bottom.
+
+Apologies again for the noise.
+
+Yongting Lin.
+
+On Mon, Aug 25, 2025 at 10:57=E2=80=AFPM Yongting Lin <linyongting@bytedanc=
+e.com> wrote:
 >
-> Not relevant to this patch, but just wondering if there are
-> any plans for SLAB_VIRTUAL?
-
-I'm still working on it, I hope to submit a new version upstream soon.
-There are a few issues with the current version (mainly virtual memory
-exhaustion) that I would like to solve first.
-
-Matteo
+> Mshare is a developing feature proposed by Anthony Yznaga and Khalid Aziz
+> that enables sharing of PTEs across processes. The V3 patch set has been
+> posted for review:
+>
+> https://lore.kernel.org/linux-mm/20250820010415.699353-1-anthony.yznaga@o=
+racle.com/
+>
+> This patch set adds selftests to exercise and demonstrate basic
+> functionality of mshare.
+>
+> The initial tests use open, ioctl, and mmap syscalls to establish a share=
+d
+> memory mapping between two processes and verify the expected behavior.
+>
+> Additional tests are included to check interoperability with swap and
+> Transparent Huge Pages.
+>
+> Future work will extend coverage to other use cases such as integration
+> with KVM and more advanced scenarios.
+>
+> This series is intended to be applied on top of mshare V3, which is
+> based on mm-new (2025-08-15).
+>
+> Yongting Lin (8):
+>   mshare: Add selftests
+>   mshare: selftests: Adding config fragment
+>   mshare: selftests: Add some helper function for mshare filesystem
+>   mshare: selftests: Add test case shared memory
+>   mshare: selftests: Add test case ioctl unmap
+>   mshare: selftests: Add some helper functions for reading and
+>     controlling cgroup
+>   mshare: selftests: Add test case to demostrate the swaping of mshare
+>     memory
+>   mshare: selftests: Add test case to demostrate that mshare doesn't
+>     support THP
+>
+>  tools/testing/selftests/mshare/.gitignore |   3 +
+>  tools/testing/selftests/mshare/Makefile   |   7 +
+>  tools/testing/selftests/mshare/basic.c    | 108 ++++++++++
+>  tools/testing/selftests/mshare/config     |   1 +
+>  tools/testing/selftests/mshare/memory.c   |  82 +++++++
+>  tools/testing/selftests/mshare/util.c     | 251 ++++++++++++++++++++++
+>  6 files changed, 452 insertions(+)
+>  create mode 100644 tools/testing/selftests/mshare/.gitignore
+>  create mode 100644 tools/testing/selftests/mshare/Makefile
+>  create mode 100644 tools/testing/selftests/mshare/basic.c
+>  create mode 100644 tools/testing/selftests/mshare/config
+>  create mode 100644 tools/testing/selftests/mshare/memory.c
+>  create mode 100644 tools/testing/selftests/mshare/util.c
+>
+> --
+> 2.20.1
+>
 
