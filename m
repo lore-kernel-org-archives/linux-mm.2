@@ -4,99 +4,206 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B447CA0FF2
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 17:07:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB9ACA0FE7
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 17:08:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DDE46B016F; Tue, 26 Aug 2025 13:07:14 -0400 (EDT)
+	id 7ED4B6B0172; Tue, 26 Aug 2025 13:08:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B37E6B0170; Tue, 26 Aug 2025 13:07:14 -0400 (EDT)
+	id 7C4C86B0173; Tue, 26 Aug 2025 13:08:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C96C6B0171; Tue, 26 Aug 2025 13:07:14 -0400 (EDT)
+	id 6B3906B0174; Tue, 26 Aug 2025 13:08:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 285E66B016F
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:07:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9907B6A2D
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:07:13 +0000 (UTC)
-X-FDA: 83819539146.10.1035DA3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C42511C0007
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:07:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Oznd+yRk;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756228031;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B9AA6B0172
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:08:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EAA9B1DA170
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:08:47 +0000 (UTC)
+X-FDA: 83819543094.07.56E6A4A
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2054.outbound.protection.outlook.com [40.107.243.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0E2FE10000E
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:08:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ouF1RLq1;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 40.107.243.54 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756228125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YBzx3ViW4EtXrDzQLBj1kqbllLCE4w7CGaagrpml8nU=;
-	b=J6l03Pq8saXvDeWD00qz37oJdWGUFJoFc6FLZ2fTt5NMiBh+m2Tii8g5JbJ0Bi24wnQjUE
-	2xnLP7CRnGKHsqz5uoSGjbyTHxh5nx7EB5JAO9Z+BIXjko6PyzSJFmxqetD/DU7FkdCZ/y
-	s+TKC9X2+QxDRl2KAsa2MTqAG3qh65c=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Oznd+yRk;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756228031; a=rsa-sha256;
-	cv=none;
-	b=VddlShnPx2EkUmWeHfX8Pbz8Nrg+clzkedGQRWoWYZPkURBwrv7VaQ3sSnWmO3/tixmQK+
-	ZLaPh9Ssh5Ivby8lyR+19aYIyOGxnKPTQZBKACs5P84m+BxtjLQ8mRlHwNn9jkJOnrO30Q
-	SY/0yAPbdQH7G5QBQMThrPMn/h8M5r0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756228031; x=1787764031;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Xim6uq+1U5KRge/G8NjQ7QH9Y4Ln6m7wN1iOQxDfl44=;
-  b=Oznd+yRkJ2vORgoAxKGpBPFhvEhmVZrwhs/IgP8KYpFsZXPoweQLt7yh
-   O4eCe+jEZlIvFEOkkWMLFLQaxWDOBXDHrHhymofBlmgSKanQMo96vwdz1
-   N+o6+hYoqHiKD+QJDxIH3SgP1aH/pt5UeLOorkPTc2hijCHqdbCTUBBxq
-   TZuWhf239bf2mhOYqMve++P1f3zRRb7NTecbZVBD3tpAlevsSaIZlPOYk
-   QSiydLsvok1yNH6jIRwqRhaztoenMDhpTCTNMmh+Xqfo6Ll2SLFbYyDXf
-   eaQiJDCKn6B6adiXSafoVN/4cASZkR0OwXd4vu29UoISEYhzFyLkm6+4i
-   w==;
-X-CSE-ConnectionGUID: a055brBNToWDYIqWpRlgJA==
-X-CSE-MsgGUID: AH5KPlw1TyGwcu5N2qI/qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62307064"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62307064"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 10:07:10 -0700
-X-CSE-ConnectionGUID: rSUJ+LV/RFOGFzOpJACbOQ==
-X-CSE-MsgGUID: yAa0CKbXRqy/yTvxK6l9gw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="174931831"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 26 Aug 2025 10:07:07 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uqx8R-000SFH-2I;
-	Tue, 26 Aug 2025 17:07:05 +0000
-Date: Wed, 27 Aug 2025 01:06:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-unstable 23/220] arch/arm64/kernel/kexec_image.c:79:6:
- error: 'struct kexec_buf' has no member named 'random'
-Message-ID: <202508270141.fyzLcWqi-lkp@intel.com>
-MIME-Version: 1.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NH2IWF9H0ASDVqAeYaJ8uSYGxAxnr3OC25u4GoHQhts=;
+	b=oSUuOwgm63pAWGAsAXZw6vfDM3/jnvMPAGLueHkz4QpxqN8jfpprTTYbNeOBkVS36U2cnx
+	QaFYfnTODh3nU0Vp7rKaKmKalEuZG5wZicfEZX5LfpJ8Bj5lQck2PvLxbgQ+QmmMwQRqqW
+	mX0Ah/lLSDslwGG8E0xLPO0nUkHJzbs=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ouF1RLq1;
+	spf=pass (imf14.hostedemail.com: domain of jgg@nvidia.com designates 40.107.243.54 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756228125; a=rsa-sha256;
+	cv=pass;
+	b=ZX0VIMSZ/SOOdQJPDpQ52HWLPeR9y5HI/A1zX3l1HOtssZtDNSjjBAW0Mg4Bt4bsqrdJk9
+	qubt+iCGKg68j/eHoJg9tH98Cp+aykki2LaBy9owuFSRrfKe1Yz77H5FshFqUvbnlJgWev
+	A4fhya+KrsAGmZtsOFOPUWKk9m4r/sQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V6q5gCy8mZ9cOQ7h//qExVXWEuYs7cqPGp6KkBU52lnFdXYhA2S3sj/Q8AAbkGpl8FHQ803FsIXLCKI2ois7yeb1t42ULp7tjOcKkqS9QtM6cLkyrDEQ/0iKmbO54S+hMik+0SKJTwEMRE3z9nmYzsIDcC7QS9SALEytKzm8tz+NoLUC2MvmPZ4QIZ1Gye/Dqk9iG2wc6IP6QHh2th3vlVX4uFrb7NmsEbqqnfeBlZ5BEvAHd62pBCJnSTQ2+aIpknJ2FyL4NJzQjD/eZw5FTVsUzskPtBaI2Hmm+M8ONkENazF7dlZ6qDpHAtfwk81DGRKGEsJVk8y4OUzMkbxmLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NH2IWF9H0ASDVqAeYaJ8uSYGxAxnr3OC25u4GoHQhts=;
+ b=sGb3i3yt1C05Ry37tpWPIUz4pVbZ/HLFDjPruAyYGQjJJ5Vg/wrvcPZJpVlvaNyUAB1qXK/cITNKwyKn86ZbYkwERj3Nm+TsLCh4ze+ctCWt+rUjgzPohjWLwJnFkkUcoPvXKb5Zc69vLZC0HIXHU075uW/qZH4HbfQ9vr2ubdTLgwwj+m+n1S50j4qoQkhqYwAzVE/XaQzucXPixgMgkIXuKrSN2jJiC80dRZm928w1Y9GVQ0n5jRcxPtcEv1nxiL9dBEtCS4Fv2P5fZEFpPRcVJS/ZKE0k6lW5x228o0TJrb/io4lXkzD+rHT9MzVxeVhsieWL2hp6VQRbedlEcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NH2IWF9H0ASDVqAeYaJ8uSYGxAxnr3OC25u4GoHQhts=;
+ b=ouF1RLq1/jxOOdZJtbi46t8WXi5Iir6RrGXtn9dlFpnGsgc1+mFnYbdcmQEyy4F9ITdRRI6G0nlzneNmhdtHInwGUJWosKw9nqLDA34GGysrjYIWLPtg/5hrOomeLyYlQEHXJFOgfKxtdWypTIFKk/2HirU20h+28xyOtXKsaNTbsC73WH5FDwE/1DkrUH8s4J7uNi1iYITN8JGJ0jI/D5/02kAeSRHicpW66J4HyeU3MxW934hlIBqyCK2BSImFP1bY1ykI6L/hpEvZJtjkQXSWSae7IY4MsyPCRAShx5HFLYS/PAeGAjPokbosgnXnGpfDXb6WBBqJx8yDqnHgvQ==
+Received: from SA1PR12MB8641.namprd12.prod.outlook.com (2603:10b6:806:388::18)
+ by CY8PR12MB7195.namprd12.prod.outlook.com (2603:10b6:930:59::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Tue, 26 Aug
+ 2025 17:08:41 +0000
+Received: from SA1PR12MB8641.namprd12.prod.outlook.com
+ ([fe80::9a57:92fa:9455:5bc0]) by SA1PR12MB8641.namprd12.prod.outlook.com
+ ([fe80::9a57:92fa:9455:5bc0%4]) with mapi id 15.20.9052.019; Tue, 26 Aug 2025
+ 17:08:41 +0000
+Date: Tue, 26 Aug 2025 14:08:39 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>, jasonmiu@google.com,
+	graf@amazon.com, changyuanl@google.com, rppt@kernel.org,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
+	witu@nvidia.com
+Subject: Re: [PATCH v3 00/30] Live Update Orchestrator
+Message-ID: <20250826170839.GF2130239@nvidia.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <mafs0ms7mxly1.fsf@kernel.org>
+ <CA+CK2bBoLi9tYWHSFyDEHWd_cwvS_hR4q2HMmg-C+SJpQDNs=g@mail.gmail.com>
+ <20250826142406.GE1970008@nvidia.com>
+ <CA+CK2bBrCd8t_BUeE-sVPGjsJwmtk3mCSVhTMGbseTi_Wk+4yQ@mail.gmail.com>
+ <20250826151327.GA2130239@nvidia.com>
+ <CA+CK2bAbqMb0ZYvsC9tsf6w5myfUyqo3N4fUP3CwVA_kUDQteg@mail.gmail.com>
+ <20250826162203.GE2130239@nvidia.com>
+ <CA+CK2bB9r_pMzd0VbLsAGTwh8kvV_o3rFM_W--drutewomr1ZQ@mail.gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C42511C0007
-X-Stat-Signature: 3wb1j5bn57sxzp9jharj9ortfr1ai7iz
+In-Reply-To: <CA+CK2bB9r_pMzd0VbLsAGTwh8kvV_o3rFM_W--drutewomr1ZQ@mail.gmail.com>
+X-ClientProxiedBy: BYAPR08CA0028.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::41) To SA1PR12MB8641.namprd12.prod.outlook.com
+ (2603:10b6:806:388::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB8641:EE_|CY8PR12MB7195:EE_
+X-MS-Office365-Filtering-Correlation-Id: d266cdac-556f-4aac-515f-08dde4c3349e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?H+36CWtAAt1w+RUBXCp36JOnA2yTgdbNw3xaCU3BoksqXBqvz2TSmxiuIcFJ?=
+ =?us-ascii?Q?CxNPwGvQnbmUeogDj0v20YRwfCWJ2hXdjb+x9TrHu9lV0wz5T32Zc0Nos0Mj?=
+ =?us-ascii?Q?VinSeI/0/qD/iMep4HXSR9wvZIFc1ZOYq8LAFz22w+Wznd7JdZ9mNPoZZTTg?=
+ =?us-ascii?Q?p4aTzW/RqCPnC/1mB0tfV+kONvEVLcR2LdXkf/XcWDqn8axVwsjFwGKc4gSd?=
+ =?us-ascii?Q?R+SgqvAUsuLEVpdvTIMtBN42Q3vbdm3XqlSdhfL2mbV/vozfl1zvskZ0SPMw?=
+ =?us-ascii?Q?EfHokAHHuc+Vm33lqZnm27ZhXn7Yb5T8M9kSkEgyYEKYE4kQWlkqpB8T59c7?=
+ =?us-ascii?Q?TbZY/Z3Ub9HhO/pwqYIUW1EU1xmyfn8hyYFj0qj+91glYbxjIfNxsxyD+iMN?=
+ =?us-ascii?Q?slhBgVQfwT22apKIzt0l3+HMh/tcU8sA/SSos5uBpW5EGCBUvPy5Akeito7Y?=
+ =?us-ascii?Q?z5/fsA2hna73J2IvuzTQZzUACULXA+NiwexyfSYGxIo2CD3WOqwpyykTEMGz?=
+ =?us-ascii?Q?z2qpV7VgGFPFpeXXTelaq3m6gkQHXiHgpuIiVAE9RJNLUPuS6Gs0yMt48mAZ?=
+ =?us-ascii?Q?sk8EO8qoK328q0A9JmkKsHooMRPXgIYhI1orEqSTqzMcInfgZiV1BcIr6f/p?=
+ =?us-ascii?Q?pkOZUO/KzBNIH3l6nyhOL7kEiRSdzvAcuWSxQmTZ84gnsY3B7duv2RPBbNRd?=
+ =?us-ascii?Q?j2DzvtdumdB8nmSMqYIjnTwW75OwjqKhND5zomMvUhEIn4zUDfeBvJ0QVinX?=
+ =?us-ascii?Q?w2YuZQrZ+F1TtPk5Rx/T1s6wt/TjVEax00AhiXp/c20RSPnyC2X/Xj9/qarE?=
+ =?us-ascii?Q?pMeH08gEIRSvvSKW6cNFyaxJxV5ArJ+pIgGNyjTqZdfZQ9LVVzrTA/r9sH9Z?=
+ =?us-ascii?Q?HmEDr0sLrYaIwdFpSny5a+hjHV9yHVAlIsRMyh762012tk7qXAts5dcOE3Ys?=
+ =?us-ascii?Q?KXVOnToOt9lpxlYeBqPERHOvmBuEnndTs7Ocq93B1+J5VtbVmonAd02ire35?=
+ =?us-ascii?Q?So0Mi80BbhRNHY1JYtfZeajAi0gBLTCgnAVoHMwtnm+92iAOzAqIvFRarMYH?=
+ =?us-ascii?Q?geWeVxBDlqdn7rpr/piEJwQwJLKI+HEvhmWWmZo/yidojT9A6ZjdDjTwMwfi?=
+ =?us-ascii?Q?SrjTkU8a7ERUeWl9/pmvJegozgleSDYJIzUTGBsRue1TL5RqTTr7NnZkMxMA?=
+ =?us-ascii?Q?NdIMR1bb3GfLRjxvmlY/kilM15MNPBalmBO4dimbikmgwCQ9iWTOpo9ZleuL?=
+ =?us-ascii?Q?broA2uh2mCrskZEJ4a6gbXUeb7Bs5ObgQ+H5rofHKlfg9NMJKFq9qAM/x668?=
+ =?us-ascii?Q?U1IZFGs6cZR220bmOGcnfISEBpkwMr+Z/D0AU5wW2IADSk9EaN7bVPmGlPeC?=
+ =?us-ascii?Q?0oATZqwbh0A92ipeZaM5eQ8zwjaDWwAvdwyNLLZSibw6Xin7hw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB8641.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4JjRLjhdJu8Ta6FhTNO/9VCJvIAB0gTDZSbg9ITKh2biE3fTrDcLSeTRViwu?=
+ =?us-ascii?Q?dytPQBEDEzsHmXGEwE4Xga7sxRGGeHv446+fgygYpUlZU7mfXWE4T5qDx7lU?=
+ =?us-ascii?Q?H7JPjW+PQl745id2fEq57+UOGNwn1tIF8MjTz+gz2Fvt3igVVF6rTtMWMUm/?=
+ =?us-ascii?Q?ofdoU96/Afyytb7FeB42ZRZ2100C9j9xJoffq2r0KKGN4TKcXzFPawrUGxAN?=
+ =?us-ascii?Q?mW96kNyB5w/iCmJOwyQ+b4ldhvoYy9iaJxAJvXjgmMwiiKlrhjrDToLColOj?=
+ =?us-ascii?Q?d93dDiboQwXBJFsRHOK5cE1q5acf82/hiLSzeFY73OElZxEzgRdDWj2+jnb3?=
+ =?us-ascii?Q?LYfmcTs7YUlOG8EE2z4s/6zcxVKmo9plDtQNQHxF/hPTXtqTz9lBBLOg80HR?=
+ =?us-ascii?Q?yef/8Fd5gJX/0YbQxS6G4nEw96QBbO6OFaEU/MH92VcAW7y7yA8FrTi7T6HF?=
+ =?us-ascii?Q?TauzynGOphAbLOvjs1+BdLR8JQ/F+RbRd+NuNUJ/kK1Pctu9SkwWQIEToBDc?=
+ =?us-ascii?Q?mfeYb+OG2cr2RHHSFnNdDYqmd6gLKm5NR1L+LESsb7KjN89usdjBI1dRPbzH?=
+ =?us-ascii?Q?70dREKYIHyrwdTDV6+XDrmoBgOxAQo+XOKPbPf0bijUBDEqvmEAXSNUIdu0r?=
+ =?us-ascii?Q?rKb8r8va4a9XyqvdWpw744fdegEYOdoRYkQWiRzUPpXAE7fj7CIZKtYEtWsY?=
+ =?us-ascii?Q?jUNh7Jp0KuvScoBq6cjY8Y7VjdihvbSbK9/G7okc4HmftW8XBL4JRxDVKNkQ?=
+ =?us-ascii?Q?nvpkSP8fblyX6FN7Rg/VijdNZOv76MH6cgTFNOrm0ayjzer45q1FBQDhdQnt?=
+ =?us-ascii?Q?7BqfdA3tXvgllPbuJ6+PlJ4KJiq5lJS2i0ePXva3+sdQghJMAqP2X9ZsN+sz?=
+ =?us-ascii?Q?3RVDYEilWEn4IG7YQK2r4yyaMFX6u4lnWZgJOmaB6LAodLubCej3c9eUeswr?=
+ =?us-ascii?Q?MLUgzP2m//W3udnolMpOZUhItaV66B+MVQzC86wkKmVhotBBmO5PFFP+bk6f?=
+ =?us-ascii?Q?05WKVSEN9mIQg8keVdlbJioNuNrgJxDL0/6S3mmxzpkc0QeimRxFYbzVCs+Y?=
+ =?us-ascii?Q?fFgPN/megyNsnoKNuULDwdL8foat22zp6YbFoLyl5wReJ0PreF4ynrcEQxKT?=
+ =?us-ascii?Q?EanNRyA5JcvcAjOU5CXc2OJnYhRptzgGbnRvhtIiS5G/ki1IrT4VOHe5Xw/D?=
+ =?us-ascii?Q?uwoQs2ftyjenKsScmKHdqL5I5ECQOWkY1Pis9m2MpSgpC/kA1zNgaiyu/DvF?=
+ =?us-ascii?Q?uWti8zBFT0EDbO2/elQ1emTplcs0g4Bi8YhMeaoBsB1Au+G4MAfE/GiP6OXK?=
+ =?us-ascii?Q?SdkmJMQPrSHOGQGvY9KoKgLbB+EVBgoQzdIhmMmEeZpxW26Q2WIOnE1lL60O?=
+ =?us-ascii?Q?/HGr8P2dcK/JQcTkwinm/PgmPI538llqlr9+PY9mtmU8AlvDWS899fdtII6T?=
+ =?us-ascii?Q?Uucn92tYw6atXdEk3HYpW7CIY9QwY4mhZVvROnu/Z4YTBx2iK10NRArm9nnh?=
+ =?us-ascii?Q?Byz2Ry4ZBgnrrxOgJE8HibO0eKX/JV4DeRFXjViSKNhaf7alshVsgh6H6SIh?=
+ =?us-ascii?Q?3pKq9oeiEYumIK9Bk00o9YFeVCxIX78F7qyaiH76?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d266cdac-556f-4aac-515f-08dde4c3349e
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB8641.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 17:08:41.1431
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nnHM3t2Xk0hrbI/1WXgwM38tWJuEjvSRDJIbTgJtdnJK7DCMLzj98qzF/iLyC/I5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7195
+X-Rspamd-Queue-Id: 0E2FE10000E
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756228030-798482
-X-HE-Meta: U2FsdGVkX1869mPurp4FOeUKJQAKDQihPQ2tcZeky+a4cvj6J3vPETK6vkDN2ZeKf5FWrLK8k6vPUOFaOqnZg4rWRkN0v7if4sdUq9ocEQ/IAIeF05JjmqPDDPamm7ceom6UfXvv5iByBa7vjLLeQt7O1o51OgLqc4LJC6c/zg5Etd7ZKDPI182uVQOJFRcmpy1I0OEv1A39H3DG4e8eK6t43dPAzVe6EmlGROVMFIzQQjcZzIBEw1AjZoGdIyx424wEh6ZVLCrnMhnEPw52GatFSsJToT1oOOS5Hg+aUqcDfXO3QbVD/uTAKBHcxV3QAi4KMyxGgKrKreHtzWTu+rNAoRnx5dEysRWRt6rud+2Rn9v9Vg/4TnLRmIddQEM8vPtslwIb7tbunC+SoDRNvpwmTyITs4NQT+p7qbhIZcdWFrW7SXGMVPziQwJPLkJ4Ew2azWAPkmS3GXId1boOzi9UcxNgxJkBgPpiKtj0h6YQbzzuKJAy9Igyzwh5SQgOuKVnXcLfrdP2X1ah+NzbL8HdG+Kuqvt4SRJ5LqckTwjnaBIAzbW+tkX4bYC5eKOw2Yt3bNAHCujVGJlGxLBwQqumr8DZp5wcR2AXdJBnZ0E3LlvYNMa/Wr5+4QeEj7MPdB5lVA33Q6r9St2d/taD4LekT/CmGn77MEpR/62sswBAvXUiTqQbgBWCilD927jr6M9uEWiGhaFTtEr+RjkA9/wqdfXt6d5WNMuiKBtqmfTbTKPa9gQu9JZoUdRDhcvT39vgyxdNohrzR1k22V68wEeox4ktGl/6aaGIV05EbmGcPARXunVZUuM4njnUj/281eaZJQPFEwYTehMHCNa56zRF4MtMyjFj6cM8S6AuT5QQD3ZQpnCwhZvmu8PcpQMedFHTTdfBmXY+L4z0g/j+BBA0Zro2l86qrcZtbLn2gNaD/MRWCtpkW1s5JovYwYROWmGc+IBuFPOo8I0PTzz
- OBOtHftG
- k/apEu6XOv6kiSMsYRMfXBnNTj12h6xvtBZgRL7aaRyhQVnmEksf7LCNaPp1i87gKNgbLryVQ5OgS5R+axNLr+KikFJSKx+jBAZnu+XVswH7FGU/dWPYrwB0qzMzKtWJBLEFRdQ1AyaLOdVV9B8kf9qXdACZBffBYrrzEyvBGuqUnpLkq9uh7mFxquiKt8KYIpOBCfa+hX85q3C0MvsYwhwR828hES9qZ1Ek5j+5jJhcOH1ezxqSb/sNXFC6iMLRMXcFsipWZODN7dz23mXp6vHZgZaePlUT3UWQ1XdM3xzx1h1qDbNKFXAwzSfn1RLtCZ6RfJb2akTxIP874V1SEuzbAItMoed9FX77NHsLQNJP9jlkuqH8ogkOBqw==
+X-Stat-Signature: bcbjykucbgfotx6ezhj19yzmqmp33upk
+X-HE-Tag: 1756228124-431093
+X-HE-Meta: U2FsdGVkX1/0UVOXxEiqY18Dg2QJdJnRZul5y+zQlgL2OjyU85sRdHZ9qNLOzE+0KSuV0YQop2PZxwEmLbGPGHCop4lhdilVyAQ1A6IQx5GzHctWtR49l+w5dC4wUR6rTvBcxEf/HMnOJOaKAqJrg6/YgUR9TjvlVGGElQ42Htkx44sOwA2FomR3b+ZJ+PdbcTnH6XJUmuz8xY/h7x72KcdTNNDGqnkJHaqpUKWYy9DRuC2wtXg7ztmWOGKCczr7RVN7k2qmEEKcNMl0aDXDe9oTwLz/3E50EeESM8aWWCB8ZQpzROKQFbHkJEBNqH0h80YUvaptDFVLDoxe0Rlj125nm+7J8vBeZH7YIPArCqcJmTbFd4gQ4ono36mc+CKe/B//PSWkoYL7F+ME0shUcPAL5y9rbAcklQnDMBAjsfN83L2f0utyVZJ2yD7mDoTM0UrEKPOSolAehzZS0X6qu9ROGAFQ5Z99l3DRjzBTLvKG2cLjy11klWU3w/yjsmJFqbzvd6p6W8QzE0bGtP164QEMlVSb4ZtrYVj0FerxqOItxi68JVdjr32Vqit0vus1hjaG5OPGhcFY6qnLQAdvePQDsNbXVhzkHLjFw2l9XuxJJwKel0+btS8As+5VvgQ2q6NkoluaD+lknnlp/lGg/nVFKagBiAMGTPsVOoCLvwTuss6JFzCpXQOfK1k8m3AiDWXpE8iQFzIAfZptkRxBbKBo6HTvsp/6K7MDQmjvP2uTkDWNzo0QxWDfKcjd+FbdYhTrMMoRmGM1tpFb7xbKfN2j7pvdrfq+RO5eLVCrUSeWmjsfIweYt5/w6tCtuG2ctNmgqWydO3Fw8R9QAKUPV3SRho11/tY5krPFqnFVNmBPGZIKcpLKXHk3BtVHI34yEmAswatmKJHxEobF2GsmHJwFtrJWs5zBJsP0EpSjVabFDEDcM3VcNOfos52VZBBZ3FghmIgnxoWLEW2QMmy
+ eKpgQOOZ
+ bqpW4m1N17pEFhkXOtLFO387fKewWdkN3SOhF0X+Pzi1z1TZvkMQddDB7SXv/Bfdgt/wPYS4ckjw9KYFQ+b1fs7CQMFkBsNX7Mf8JOIomkpMHJqC0OBCGKt739SpZ0FyZc4XCXBimb94t4vFg4Y3I0DC143N/cX8FL8XJSl6pS2drfMjhUsWIUYyRXYBvd+hDt//iUnnjEPvYTuPn9RTmP6nEwWY01mTbZaedTacKWlK1B6ZsSRSFlvToqRd0dbIXSpTlQqqYxDpieaIhmAkz+ZiW/yDK0lWLTlrnscq/wjVk+CD5dozjUiapk8rjS/VjKnG0v6Vnbf2kg1QfxMsMsxG+LX2ixMQVLs8VUiAzST25RzR4wJSehzyhFGB4sOscYvlImi+rw0Edur28lc8ZxpStHzd+RUoNCEX0L1HA/47Z84A+5u+CaEFtdjcQGdrpH3O7gufMe/y/clAUxfeXyk5lP/Vxi97IMJAytbMgv+0oDOUjthTOIdLbzdvNWc+3O0YeDwaVGkqPr1Jn3mRoYBbo5dTNu7dK+EUthSJIKUGkmbWicPygqBwdgyjEwWzDegkF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,128 +212,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   f279bb633c0aace9bb737f2cfcd7e91deef13356
-commit: d2567dc490b0051381940a31f95c98d76ea0e5c1 [23/220] kexec/arm64: initialize the random field of kbuf to zero in the image loader
-config: arm64-randconfig-004-20250826 (https://download.01.org/0day-ci/archive/20250827/202508270141.fyzLcWqi-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250827/202508270141.fyzLcWqi-lkp@intel.com/reproduce)
+On Tue, Aug 26, 2025 at 05:03:59PM +0000, Pasha Tatashin wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508270141.fyzLcWqi-lkp@intel.com/
+> Perhaps, we should add session extensions to the kernel as follow-up
+> after this series lands, we would also need to rewrite luod design
+> accordingly to move some of the sessions logic into the kernel.
 
-All errors (new ones prefixed by >>):
+This is what I imagined at least..
 
-   arch/arm64/kernel/kexec_image.c: In function 'image_load':
->> arch/arm64/kernel/kexec_image.c:79:6: error: 'struct kexec_buf' has no member named 'random'
-     kbuf.random = 0;
-         ^
+I wouldn't even try to do anything with pid if it can't solve the
+whole problem.
 
-
-vim +79 arch/arm64/kernel/kexec_image.c
-
-    35	
-    36	static void *image_load(struct kimage *image,
-    37					char *kernel, unsigned long kernel_len,
-    38					char *initrd, unsigned long initrd_len,
-    39					char *cmdline, unsigned long cmdline_len)
-    40	{
-    41		struct arm64_image_header *h;
-    42		u64 flags, value;
-    43		bool be_image, be_kernel;
-    44		struct kexec_buf kbuf;
-    45		unsigned long text_offset, kernel_segment_number;
-    46		struct kexec_segment *kernel_segment;
-    47		int ret;
-    48	
-    49		/*
-    50		 * We require a kernel with an unambiguous Image header. Per
-    51		 * Documentation/arch/arm64/booting.rst, this is the case when image_size
-    52		 * is non-zero (practically speaking, since v3.17).
-    53		 */
-    54		h = (struct arm64_image_header *)kernel;
-    55		if (!h->image_size)
-    56			return ERR_PTR(-EINVAL);
-    57	
-    58		/* Check cpu features */
-    59		flags = le64_to_cpu(h->flags);
-    60		be_image = arm64_image_flag_field(flags, ARM64_IMAGE_FLAG_BE);
-    61		be_kernel = IS_ENABLED(CONFIG_CPU_BIG_ENDIAN);
-    62		if ((be_image != be_kernel) && !system_supports_mixed_endian())
-    63			return ERR_PTR(-EINVAL);
-    64	
-    65		value = arm64_image_flag_field(flags, ARM64_IMAGE_FLAG_PAGE_SIZE);
-    66		if (((value == ARM64_IMAGE_FLAG_PAGE_SIZE_4K) &&
-    67				!system_supports_4kb_granule()) ||
-    68		    ((value == ARM64_IMAGE_FLAG_PAGE_SIZE_64K) &&
-    69				!system_supports_64kb_granule()) ||
-    70		    ((value == ARM64_IMAGE_FLAG_PAGE_SIZE_16K) &&
-    71				!system_supports_16kb_granule()))
-    72			return ERR_PTR(-EINVAL);
-    73	
-    74		/* Load the kernel */
-    75		kbuf.image = image;
-    76		kbuf.buf_min = 0;
-    77		kbuf.buf_max = ULONG_MAX;
-    78		kbuf.top_down = false;
-  > 79		kbuf.random = 0;
-    80	
-    81		kbuf.buffer = kernel;
-    82		kbuf.bufsz = kernel_len;
-    83		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
-    84		kbuf.memsz = le64_to_cpu(h->image_size);
-    85		text_offset = le64_to_cpu(h->text_offset);
-    86		kbuf.buf_align = MIN_KIMG_ALIGN;
-    87	
-    88		/* Adjust kernel segment with TEXT_OFFSET */
-    89		kbuf.memsz += text_offset;
-    90	
-    91		kernel_segment_number = image->nr_segments;
-    92	
-    93		/*
-    94		 * The location of the kernel segment may make it impossible to satisfy
-    95		 * the other segment requirements, so we try repeatedly to find a
-    96		 * location that will work.
-    97		 */
-    98		while ((ret = kexec_add_buffer(&kbuf)) == 0) {
-    99			/* Try to load additional data */
-   100			kernel_segment = &image->segment[kernel_segment_number];
-   101			ret = load_other_segments(image, kernel_segment->mem,
-   102						  kernel_segment->memsz, initrd,
-   103						  initrd_len, cmdline);
-   104			if (!ret)
-   105				break;
-   106	
-   107			/*
-   108			 * We couldn't find space for the other segments; erase the
-   109			 * kernel segment and try the next available hole.
-   110			 */
-   111			image->nr_segments -= 1;
-   112			kbuf.buf_min = kernel_segment->mem + kernel_segment->memsz;
-   113			kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
-   114		}
-   115	
-   116		if (ret) {
-   117			pr_err("Could not find any suitable kernel location!");
-   118			return ERR_PTR(ret);
-   119		}
-   120	
-   121		kernel_segment = &image->segment[kernel_segment_number];
-   122		kernel_segment->mem += text_offset;
-   123		kernel_segment->memsz -= text_offset;
-   124		image->start = kernel_segment->mem;
-   125	
-   126		kexec_dprintk("Loaded kernel at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-   127			      kernel_segment->mem, kbuf.bufsz,
-   128			      kernel_segment->memsz);
-   129	
-   130		return NULL;
-   131	}
-   132	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Jason
 
