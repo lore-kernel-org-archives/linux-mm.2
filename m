@@ -4,151 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2643CCA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 13:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECE28CA0FE7
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 13:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 613CB8E00D4; Tue, 26 Aug 2025 09:05:38 -0400 (EDT)
+	id 248C76B0148; Tue, 26 Aug 2025 09:08:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EBCF8E00A8; Tue, 26 Aug 2025 09:05:38 -0400 (EDT)
+	id 1FA5B6B0149; Tue, 26 Aug 2025 09:08:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D9FE8E00D4; Tue, 26 Aug 2025 09:05:38 -0400 (EDT)
+	id 09A606B014A; Tue, 26 Aug 2025 09:08:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D7538E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:05:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DC20A11904A
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:05:37 +0000 (UTC)
-X-FDA: 83818930314.11.1B7E773
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E549F6B0148
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:08:17 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A3791407B3
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:08:17 +0000 (UTC)
+X-FDA: 83818937034.23.E19335A
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F29F140016
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:05:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gkNCk8L3;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf30.hostedemail.com (Postfix) with ESMTP id EA96E80010
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:08:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DcyAQm9N;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756213535; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756213695; a=rsa-sha256;
 	cv=none;
-	b=e1jmwQzhxzSImRmBzM1R+YcCqUH6QHOhtrv+qeByvTa1lekG45jKvivHoqiJRnqmYtwNhR
-	TiMinOmK22xvbHDQuTNleq4U3h564uiGJKEDPa+S4LVlf2VKKTXDOIuLEFs8FGHFb1xeEr
-	GKjAvjshPDxEExDoD1YebRpnwTJf6zA=
+	b=kmv2rNPZ7gLXBkkyiJo9xwmLiEc6Wim1/uF2v7+NmrELqZEe1CTZPf0PY9IzA6Hcb+wWjo
+	jqG1F2Vsk8tVW2/CDgVCaqtrONnxMK+G1/O5MX56k1P3a8ByukscPdpqqZZYGJ+aMoVJ/N
+	5CgamVx2ijRLiwgLJ49mHgcWyAOGjwU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gkNCk8L3;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DcyAQm9N;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756213535;
+	s=arc-20220608; t=1756213695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1BB02iWNVIJ9mg9RLb+t+28O/xwbqNfMBkX4EOOZu44=;
-	b=NLasTKMIMv3uTJQmV2Su391VafR8+YEaAY60ZSYWihkfali8WxOSq0yAnKioKm/uuvawh/
-	xKjeX20ANLsXuVs4KQcFJRPJVzDw/xA+tyGJTv8WQxQCXsqZLZDTU8KxWBSwjVW6wijQ8a
-	+hF4P5/CFN1ZUFodQtWhp7baiZtZJKI=
+	bh=+33Ue2Cu5Y5oxJByCwLn3TsnRWViKb51w/F+XvIasfg=;
+	b=v0lbmZZ/2Gfypd0Goqh8r+WDtGkzVmDcCO2IPqWmjnIzhVZH9Z9pxduEWHTggGHGcKG9tX
+	neEgCvcwrdcFugnYBPsHz79Ntu+IPFDTky8JkkIH0EvqYXWMh4cPXRlYa/Yzbv9ne242DB
+	OHgj4dOz2snUKqOAjOsoKDuTuagAxHs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756213534;
+	s=mimecast20190719; t=1756213694;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1BB02iWNVIJ9mg9RLb+t+28O/xwbqNfMBkX4EOOZu44=;
-	b=gkNCk8L3/8fsanUdnqZNfJBNNS3rDuiK7CCEZIK20PO5gTTXkAvwWKf6a4Ar07qtcd/gkF
-	I/oJymxWjN2G5GN5GgNNoe0HJ6k5lG3ZSzDDxd/h1NnHFva7qr5VP30lqFIEx/7SBqaL3e
-	h4anDE8bKgClgvqip/m2X9/8oPWARCE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=+33Ue2Cu5Y5oxJByCwLn3TsnRWViKb51w/F+XvIasfg=;
+	b=DcyAQm9NeNX0gNflVUjQyILC7pOSj8BOQuPJkoc9Ws5tkI4pIyooy809jkrmo/dtSfvM0u
+	hfeTmrpUGOhtQW9NHApP4OmOlmgQVVx3j5nklKh0erN9odZL3Y8P3mYu2mSgxKFENZBUi4
+	RKRvrldVHpFiQsfFXa2rkx/Re4Oy2Ro=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-Zw7PR-JFN3SPndVI96uNmw-1; Tue, 26 Aug 2025 09:05:33 -0400
-X-MC-Unique: Zw7PR-JFN3SPndVI96uNmw-1
-X-Mimecast-MFC-AGG-ID: Zw7PR-JFN3SPndVI96uNmw_1756213532
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1b05a59cso39497795e9.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:05:33 -0700 (PDT)
+ us-mta-558-hGbKcFpBMxqeQLQOH3ncuw-1; Tue, 26 Aug 2025 09:08:13 -0400
+X-MC-Unique: hGbKcFpBMxqeQLQOH3ncuw-1
+X-Mimecast-MFC-AGG-ID: hGbKcFpBMxqeQLQOH3ncuw_1756213692
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b612dbc28so13620035e9.0
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:08:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756213532; x=1756818332;
+        d=1e100.net; s=20230601; t=1756213692; x=1756818492;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1BB02iWNVIJ9mg9RLb+t+28O/xwbqNfMBkX4EOOZu44=;
-        b=SitU9T8/WpcsE2Hvg+kNsq+rA1lxxQV4QiyGtBmyN86kr7CxjIOGMth5XINCkx68Bo
-         YC8qGiQ+Syf4VhmLaznkGWR7vwBUxhsFqouLRLi1HQMdaIWcaDgd+w5epC0PgiIZTNbt
-         eMoSkxjVoGuQdpBP2QEJp3m1IFRl+UtioxdmacI/p+mtDGwBgwwbyOO/Umbe/sQ2MrPc
-         TkKJWmLIWRItWQaL5rGv4ggB4puSrGbrvaIHeTU5EGL0+pEnRIEbWdRFcQmtHLYQWJjC
-         cbGLIfRvcOm/BuHIusdMlPEqNRPB9C6OCoTN28lHXfY3JFvmVh6c1N0RvkO9U0Jc2wKZ
-         Iexg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYw3U4nOnrdRNRZ+kJ91YcIt/y30T5wjpX+SelEGMeK0ez8WAvWQbdHHGXm8S9ziPjNHh5/HJcZw==@kvack.org
-X-Gm-Message-State: AOJu0Yx4Mt7ISW4oD8QZ0UmaFSca6yMrAiiNQRRaeznCzM/bhnzKr8fI
-	gMQVcDh9sAEdHaf+eNWC8MOfbpmm6sk2WWoDCaVYCi6pQxbG2T+bFmF0ZC1zFhej0vFM139O34Y
-	btNu399S1DUD0x30SYwgvNd+x9MbHr0LoOkDk2mcczjR7TCQPuzPd
-X-Gm-Gg: ASbGncteddjrGhFqK/H0/NhmZIv/mK9koMxVMt0ruUDNrCMquFsIGDm9dVAlwkv6517
-	pcfK1uIJPESbC56T6P4b/ukdXPOzox/6Gn3ohnyDmCxTIb+F6VvwBhGLU7BTnbzx1neESHIYkvq
-	OUNey5tozRuLWT9pblKT/1PdVoyC9urY2/iMNlAt35h0ZBvEZCfsAwo0ugHQP4f4WIetlt2KDSb
-	SlUvf4Sj70Solg2jMxams9jOYaRFk5+qPXuSHsW/bQRDZe8T33a4lEu+Gq7Te85V/8yhay/84uj
-	SBldSzZLVbLzf3FRLeOdc7jxfrBiNfvy3Js9NiB0Fz/lxajjInytjo2r57sXE8OlUWKnM0DbZw=
+        bh=+33Ue2Cu5Y5oxJByCwLn3TsnRWViKb51w/F+XvIasfg=;
+        b=MuWxYH5Ksmjn07sc9VhBMtlvqNg7jfDNV3CBNxvBUsT18KwLBX+AGodId9jNxLQLNP
+         +4EgmzB0AbtqhsaRRJgNrpRKaC1zPqGnW6UuN7CD6l916jBDbDILhfDH5vwpbpGDa83z
+         UR2bisGznghNVipUifvAjf8r/tH/HyNFsYQgBgIp5/4Ri0r387iEb1BUph738APcrc34
+         ft1mS489ptlLw2pukzCJPjTg99FisqfDU8kbSldvXKlActaZPHL08UkogLi8h07Mv2MJ
+         CcaoroPUJOBno1CNsyX2fzId1cDeNYqnJuRq1IzAYJzFUFUVphnJG204zwzfnE3dFnky
+         5dUw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5/iGlARM6K1F9gmqGyx+w1Vw2MSSsgw9G4WaTWtdOIfHBSxOZ8ksk7sx5g7Me6ItLx/pSaLhlkA==@kvack.org
+X-Gm-Message-State: AOJu0YyNEBo0fO2inV1sxUUpdCq9sTPiobUYQIJzWjh29a4DzlIuyLDI
+	CUm6X8hxRpxFTMvfpERWT3dfZJqVVrVPVSdWy8qpMMagBwVymjz8OCEZ42RnlDqJ0RgGmVorDbs
+	LNT0dUZqeIeLQSRtsc4sZi5Rd0QZOBIl1mLiXNd7MvrRqUBJGs+NC
+X-Gm-Gg: ASbGncs9+AMgAtZT/1xk0Se4T46ElLyzwHgjeQDI8Xqfa+7scrUkXNqfv+g16RCEssJ
+	RSDm0DY5/zcG3GiYo1gnaL/QZqms+ioaIm5B8hU9+7l5s5XGRdVNMSYVXB/WzK0oS0lLCGqyJg1
+	E1tvj1ckLczVcvZK2tKuTq3wIG//yBAYMvaXkuh8QWZ3QGTYmqzImF56kkf0NjCcgmI7Cr/Kyit
+	ygGkzh7q5i5U/06deOLRULfha9LI6gaBtXrDOD0rUY+0flkL3qQl8Qgoahz+mRimGqfVoHgsv5k
+	qemEo2Q+2bHigzI4+Ds9N22YWa6hB4/2tSU7a8quufgrlEV8NIY1Vo9c2KN6z8rEkTUMru8Itg=
 	=
-X-Received: by 2002:a5d:5d0a:0:b0:3c7:6348:4086 with SMTP id ffacd0b85a97d-3c763484467mr7275241f8f.1.1756213531675;
-        Tue, 26 Aug 2025 06:05:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IED6aZTaK2lqB/sF3ARmnAdAwZO8b9lpHwjPZdqb85yBXUF5jouz9AriJp/YIpO7DcxRXsArw==
-X-Received: by 2002:a5d:5d0a:0:b0:3c7:6348:4086 with SMTP id ffacd0b85a97d-3c763484467mr7275175f8f.1.1756213531071;
-        Tue, 26 Aug 2025 06:05:31 -0700 (PDT)
+X-Received: by 2002:a05:600c:19cb:b0:458:6733:fb5c with SMTP id 5b1f17b1804b1-45b517d2751mr126238475e9.28.1756213691624;
+        Tue, 26 Aug 2025 06:08:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE0uVvd3bkBu8Q9HfrtdCgTiP652NIGyMgKGC7lB/H2NXiQPCgnz3LGDq701BEdJbsSh2Pm8g==
+X-Received: by 2002:a05:600c:19cb:b0:458:6733:fb5c with SMTP id 5b1f17b1804b1-45b517d2751mr126238015e9.28.1756213691060;
+        Tue, 26 Aug 2025 06:08:11 -0700 (PDT)
 Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c7117d5b10sm16090666f8f.47.2025.08.26.06.05.28
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b57444963sm165603375e9.3.2025.08.26.06.08.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 06:05:30 -0700 (PDT)
-Message-ID: <f77fd9af-5824-4f5d-ba97-54d70bbd1935@redhat.com>
-Date: Tue, 26 Aug 2025 15:05:27 +0200
+        Tue, 26 Aug 2025 06:08:10 -0700 (PDT)
+Message-ID: <ecc599ee-4175-4356-ab66-1d76a75f44f7@redhat.com>
+Date: Tue, 26 Aug 2025 15:08:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/10] mm: correct sign-extension issue in MMF_* flag
- masks
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
- <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Kees Cook <kees@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kan Liang <kan.liang@linux.intel.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>,
- Mateusz Guzik <mjguzik@gmail.com>, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org
-References: <cover.1755012943.git.lorenzo.stoakes@oracle.com>
- <f92194bee8c92a04fd4c9b2c14c7e65229639300.1755012943.git.lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH RFC 21/35] mm/cma: refuse handing out non-contiguous page
+ ranges
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+ Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
+ Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
+ Zi Yan <ziy@nvidia.com>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-22-david@redhat.com> <aK2QZnzS1ErHK5tP@raptor>
+ <ad521f4f-47aa-4728-916f-3704bf01f770@redhat.com> <aK2wlGYvCaFQXzBm@raptor>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -194,21 +178,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <f92194bee8c92a04fd4c9b2c14c7e65229639300.1755012943.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <aK2wlGYvCaFQXzBm@raptor>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IWdlpC6E4MFJPk_sOu0_k6SYBmOjjuICXFuVVs3xuy8_1756213532
+X-Mimecast-MFC-PROC-ID: fvYTdahga0O2C-3bNDwTB96nkpnbEuPB4QuXMHo4VJM_1756213692
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F29F140016
-X-Stat-Signature: 5s958r4jgrciagtunq76sx5g5mjst35f
+X-Rspamd-Queue-Id: EA96E80010
+X-Stat-Signature: irg5jy1jpzgy6g411e7pxygzcdyodyqz
 X-Rspam-User: 
-X-HE-Tag: 1756213534-264837
-X-HE-Meta: U2FsdGVkX1+YzJ+t1fmzhhhIdsqTLxSJz/N5n2g96hA9oVkW8T/L2Ax8scSkRykcH0tLkIpiD6h0c0lJzLhFwuaZZs0xUW65WSPecS4TKi4nKzRdxvZ+r6xDLy/vuGiK7QV7oLPeXN3sk8jaxQ4AyvQWvhLQcROFZHnrUyQeQwyWtoeoZ0GRGLPLOn2pQs8zpwo+kvB4v29zSermca33bOTeM2hhrlE5I6X+dDRDm5qFoxT1nVq3VWMWEtiZjvvWTiEL7LY4wLAECKcR8Wuas67PH802GbyCzzvHFtXRFDFDWUONh24HEcQ8sCGhB/PKzSkMehF02BJpX2ORK+Z3gTd+UWU5w1uIR4euZ8LI58Q7KCemkFDUAV9jCwDoJ/D4QO3UF9SADdTcvYLYAFpEeebd5LDN/Rrqiis/IRGRNw4e1yD9AD7j+ZpL2RgJe+24WJSp8LyKTuALLGBDAC+W/BAUJis80i6o2neogB5Pb1mwxRu7gGc1ip607fbEHgWXCQci3VqiHxM/IArekA2elb9uX4Wr+XvXGWFAMpl3HFwcuD0sf/DszKDSgYSiMR/FYsMOV1p2Q3c+MXRWRL90FWKgpJsWfYrupiE7/n3A4pOqpobI7SiikixZ39u43gYQ0tQZ2RjDjfPhMa8UGBJub7yIhm/05BFDn67pZB6z+5SFfCaOq8hgf9b3a/tHVRdB/1R2+ZjHBU2QoN76+LcwnyYExjmfYmAz+wpobCGvowIAqJXUOHY66gIrY6LBDKODi31aMb2e9gSkpRZtN61axWsRFvnsp7pO3z7Hglt8PfWF4GNzO6BnScqbEfQ+KvW6YOvTE5y3aFq8qDjO3WloUv8itnmNGXUsvDiYgoLfg3RJ0bf9wLB04OuLmXoYvXW82Ch+6mtKEmi9jiEncIM6uqHxyXvMrgqsc/vcs32tuf+R2maDBLvdMrpOSGIS38S9UXeIUYAwqr+M6WEcgLQ
- UreAGSa6
- CaPZ+wwQR+EfHWyFHVNbzPV/WkkK299MQLur+/Avz1S9Wd2KXq24fHbGUrVJeKHIxlln7m9XsTru+bv9DmYs4dQimzG4zxW/EKMXNXP63LASDt7/hL4AiWlwyHm4MdvOW/TotL2K05Z8/DGo+gC26tE+KGK78s6g7bZ7BMqnaSVtdKCgfzYnFvLFy0WYeiXlD2HcsX7js8SXVcsJD6nLFr1i9L+EQwsPTM3b/4f5Hq7D0Np7MgKL32CvG8j2EF3tunRt3nREnXGyzhOtnBFw+V+3ltRoXMV/AGojx1oF43yraXhrKDqd+iqoGmy0lL+6Aszlt1dQofju4k1fUV7oKD7zAxD5nxcpgFO+/+Uv2/7DcjZdXgfhlriv6Nq05YvvzlSpUp/EdZo0WpOyY1diRsLVpGfiiVNVeEVt+QPOTaoBEpPOww7USmXmOMDszSACzUyxacWLa80udpw4n3eS8bgwFo9WdJtvWW4aR
+X-HE-Tag: 1756213694-196271
+X-HE-Meta: U2FsdGVkX1+sMBaIDXSYbmLZVyyyxQnMQXKjRPM1Laz2rGumCCXxOIBBdYpsxUXR4gRwocqhPQF+i3ZvAgyECG3WOvuELbkPMCjYy9+hU1dqrl+IlQLW/RQC1yUX/9Aa9qZQ0HPCfh0z9Mz/pVvTaiAFrfrRB8x/hUGUQZHnHVVnzhpa8qZFYvN69V5YOJSxUbfw/hOnckV3aXSOKV3hcUbF1/ht+MSFmLLEIX0lJAAIbFzcgT+rg2N9H83k+6MOeNsWpZHCoZsQEgU0m6vcnBBqMAtd7DG0/5Fjy4oFgO3+ZrIgqz8brP/HiMRg0at0nGzoDqOkvZl6HEw1G69LrtyC+ALXuCirNpLgNbuq3kcAvBwjAIyxMEX4CWUaqC3GazsZy+wxgkfZzXFMr2QQmDZZMTFthnotFmZU89zrfulGrFROMCUO+fkU/nhPkwAvJuKJCy0XnFw6nNl3vO/QnJyvzUUTrK5EzsZR16fgRiF+M6M2xLpTSR05F52oI2VefPV+VUVHBFrFuXLLahdJs7B1klxhnWWmRw83hBW4oNG9iGfDTeTygc7P+ctu+Hccu4O5ReP9bwGahKZCe+L9kjv6QJv6hWkH3P8tthnT6usKvfXHPVkkWPzsQTBjb3BaOuYN7YbJkoyCodoHgN9ZWoprvmWTKE9XrhUgusYdCuSwTbfeIcKzKguQoxaPtL+7dofucCw6+m8HOhZXzYmIJIQziSp1mHD4lSzrCzjoAo5H9DT5qQJYc+htX4bR/QmVMG3vS4cfpy9y61RRiQ24aU7YhuPmOIYzz76ox9SoIgllAkHK6yGpgmlderwfxabya+QUo5IFe8SA/uVvSRQQZzRf4wTSdOxE3wNXUvPy2Cn95NvQjMvIihS+J1d6osR+xpPaJRB574c0SmQCuNpJ2qUcvn5lDICF5Llg9jlW89y8iei6mbYB9kXih30TvxVfcHEEnGTCUGHvRT4AqR3
+ rK6obvJk
+ +mZJgdhgQaR88MSKFXGeBEq6TK3XF6iUXAu4b5eYyzdAst8ChN4zPe9I5RNmlSU/4sCkNKI3QdENbt2p/FfDAWSQQfwuujToqCmnd176CzknqYqAH3dI7n4KwbOrqP4FKlWCJwHgF3u0iBaG8RwWrC7DX/nYNiV9+q58s3k0kk3BmaOsScTrvRtlRUuf6ytr0sCXtK+5zIbLcXflPnfnGnSvTguDcdHeecp+aMZzTZLNyOGg8f94vFLxMMK95iE24iprjXXGYCHpmn5q3jTN9w7jFYaZnwshbSjAvvqpkm077sJiRLJDWViJu1GyZhgMwUR0H+oEu7CHJryJTkdW426KkpvMqSzHOLFJWVBuo95LJ5K1KA4JM4c0VKr478Ko3g2DIUifcLoIOVVykY2aW7haR2T4TvTVJCInRipT2YV6ShHUxjdqCoQbC7ZjsGXj9+1rzOxf4lCYaqPlgBKM8vdLY3J9auuB+aYZq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -217,53 +201,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 12.08.25 17:44, Lorenzo Stoakes wrote:
-> There is an issue with the mask declarations in linux/mm_types.h, which
-> naively do (1 << bit) operations. Unfortunately this results in the 1 being
-> defaulted as a signed (32-bit) integer.
+On 26.08.25 15:03, Alexandru Elisei wrote:
+> Hi David,
 > 
-> When the compiler expands the MMF_INIT_MASK bitmask it comes up with:
+> On Tue, Aug 26, 2025 at 01:04:33PM +0200, David Hildenbrand wrote:
+> ..
+>>> Just so I can better understand the problem being fixed, I guess you can have
+>>> two consecutive pfns with non-consecutive associated struct page if you have two
+>>> adjacent memory sections spanning the same physical memory region, is that
+>>> correct?
+>>
+>> Exactly. Essentially on SPARSEMEM without SPARSEMEM_VMEMMAP it is not
+>> guaranteed that
+>>
+>> 	pfn_to_page(pfn + 1) == pfn_to_page(pfn) + 1
+>>
+>> when we cross memory section boundaries.
+>>
+>> It can be the case for early boot memory if we allocated consecutive areas
+>> from memblock when allocating the memmap (struct pages) per memory section,
+>> but it's not guaranteed.
 > 
-> (((1 << 2) - 1) | (((1 << 9) - 1) << 2) | (1 << 24) | (1 << 28) | (1 << 30)
-> | (1 << 31))
+> Thank you for the explanation, but I'm a bit confused by the last paragraph. I
+> think what you're saying is that we can also have the reverse problem, where
+> consecutive struct page * represent non-consecutive pfns, because memmap
+> allocations happened to return consecutive virtual addresses, is that right?
+
+Exactly, that's something we have to deal with elsewhere [1]. For this 
+code, it's not a problem because we always allocate a contiguous PFN range.
+
 > 
-> Which overflows the signed integer to -788,527,105. Implicitly casting this
-> to an unsigned integer results in sign-expansion, and thus this value
-> becomes 0xffffffffd10007ff, rather than the intended 0xd10007ff.
-> 
-> While we're limited to a maximum of 32 bits in mm->flags, this isn't an
-> issue as the remaining bits being masked will always be zero.
-> 
-> However, now we are moving towards having more bits in this flag, this
-> becomes an issue.
-> 
-> Simply resolve this by using the _BITUL() helper to cast the shifted value
-> to an unsigned long.
+> If that's correct, I don't think that's the case for CMA, which deals out
+> contiguous physical memory. Or were you just trying to explain the other side of
+> the problem, and I'm just overthinking it?
 
-Hmm, I thought BIT() should be used and would just fine?
+The latter :)
 
-include/linux/bits.h includes <vdso/bits.h> where we have
-
-#define BIT(nr)			(UL(1) << (nr))
-
-In contrast, _BITUL is a uapi thingy from include/uapi/linux/const.h ...
-as it seems.
-
-$ git grep "_BITUL" -- include/linux/
-include/linux/mm_types.h:#define MMF_DUMPABLE_MASK (_BITUL(MMF_DUMPABLE_BITS) - 1)
-include/linux/mm_types.h:       ((_BITUL(MMF_DUMP_FILTER_BITS) - 1) << MMF_DUMP_FILTER_SHIFT)
-include/linux/mm_types.h:       (_BITUL(MMF_DUMP_ANON_PRIVATE) | _BITUL(MMF_DUMP_ANON_SHARED) | \
-include/linux/mm_types.h:        _BITUL(MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF)
-include/linux/mm_types.h:# define MMF_DUMP_MASK_DEFAULT_ELF     _BITUL(MMF_DUMP_ELF_HEADERS)
-include/linux/mm_types.h:#define MMF_DISABLE_THP_MASK   (_BITUL(MMF_DISABLE_THP_COMPLETELY) | \
-include/linux/mm_types.h:                                _BITUL(MMF_DISABLE_THP_EXCEPT_ADVISED))
-include/linux/mm_types.h:#define MMF_HAS_MDWE_MASK      _BITUL(MMF_HAS_MDWE)
-include/linux/mm_types.h:#define MMF_VM_MERGE_ANY_MASK  _BITUL(MMF_VM_MERGE_ANY)
-include/linux/mm_types.h:#define MMF_TOPDOWN_MASK       _BITUL(MMF_TOPDOWN)
-
-Oh, hey, it's only your changes :P
-
-We should better just be using BIT().
+[1] https://lkml.kernel.org/r/20250814064714.56485-2-lizhe.67@bytedance.com
 
 -- 
 Cheers
