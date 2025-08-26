@@ -4,117 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81CEACA0FE9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 10:46:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9840CA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 10:46:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AFC06B01A3; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
+	id E50958E00C5; Tue, 26 Aug 2025 06:46:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65FEB6B01A4; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
+	id E28A68E00A8; Tue, 26 Aug 2025 06:46:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5754D6B01A5; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
+	id D3E458E00C5; Tue, 26 Aug 2025 06:46:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 42BD86B01A3
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6EDC139A33
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:46:00 +0000 (UTC)
-X-FDA: 83818578480.22.FBFC24D
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 17A1D40002
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:45:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=NlCKuFu8;
-	spf=pass (imf17.hostedemail.com: domain of elver@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C05D68E00A8
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:46:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3FDF21DE3BC
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:46:14 +0000 (UTC)
+X-FDA: 83818579068.24.14FFF6A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9E53A40008
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:46:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756205159;
+	s=arc-20220608; t=1756205172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZGOLh5cQuaV0+vt4hcjFj06C3bqSM1fNgF6Sjp1p1nM=;
-	b=Se5IIJw2fuTBT//AyQYrg0wRuVRbkOsxm7JeTkIJUyLTQm0Q4/h9FuAhwVnKwaZrqmA75M
-	Gh8AAwBQCQxhdROpC07ixREI8mldeUgVjFIwKkl2BzBmkqkjiWyI0XAOtFtayYHAK9/grx
-	bUYTgFj5o2kgXMnCabP1Sh+BI6PABaw=
+	 in-reply-to:in-reply-to:references:references;
+	bh=9psFt/Yy9/q5Gaj5Xh49YriPzaysEXZb7xyINMu8P/Y=;
+	b=352743H697g9a3SWujCn6IcA/L9FNQxIlYpg1joODrO8xUUAcMr9/hTrQ07Bgbbu8p1Kwp
+	aE8PP99JxT9GR1N4GpyG0efqi7C/0YR6UMp1iU4aWrUgIAu/zft324p5ZED26cH45D5tOH
+	DVlEukGhLmpnf7pdzOKcAKM/LiHj0lY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=NlCKuFu8;
-	spf=pass (imf17.hostedemail.com: domain of elver@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756205159; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756205172; a=rsa-sha256;
 	cv=none;
-	b=ggXV18xzEC+Z8alFUe51jDj2IKkd5S3A4ycRMXEu1x5kV/+GUHyN7io1nziLbmi/KvGCqE
-	YzFiKuwid94HWog/VCHUBe2dshk99oE5h7JlRgnsFyH6l1HWgJbB8qoXxZBFc6jeBcMa4i
-	a3AJxZh+eIwdPjRX0vaYsHx4b7TU0to=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2460757107bso49645975ad.2
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:45:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756205158; x=1756809958; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZGOLh5cQuaV0+vt4hcjFj06C3bqSM1fNgF6Sjp1p1nM=;
-        b=NlCKuFu8RM14wPBeVRDP4RcEitBxI1UbZCryV288C4Bc6WtWmNZ8QGzyBDTZlopSb3
-         6J/q5W8g3fMumUtz4jL0wP5pyHWv9IEScIXqbnycsetjjaYsHLqtsIWM/Flt6AwLg92p
-         kuNkk3AYykpClLVctGsS5yVffnVLQdUpJxYpfw4pCSnboT2j+Uo6LYRBaDPZdc3Ayg8m
-         fyzGhsPLc19YCDo5oTKtpc0qCEiqrHDRjWMh39qX3vLQ33Cj3pTTbCpQ7aVZAX2QMcKk
-         2lv9QUxesqUusYtlXeytQaZ2PM0/d22qrXjNnz6290Eq2G8/c0scBrcHxRHKkYk1bHmO
-         h2qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756205158; x=1756809958;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZGOLh5cQuaV0+vt4hcjFj06C3bqSM1fNgF6Sjp1p1nM=;
-        b=NovL8C6NLo2fhYVr2mbOQ33T3nRWhH5k/y7QE3isiVCP3e9AIfoyq/OdT7TWZLkRmr
-         GgKWZqL+isZ+ll6rcNDGg6+bUf6PucnaAWOmfV2DrM0WWsQL/XTz2hWUMTYxoJ8h2fu/
-         Oofh3a3+j//d2ZOd0IFm/zpOYRfnGLmHcP1fEY9ez/rXxR1OtaThEaR+YbTtuqZLsu0g
-         G3lAclpoNYY/9QQ70/Zf83kSgLOmAZ8uRcSiRAt9ROkG4q/7OS2MZuyfh4cuS/OMXpp1
-         fNwfCSXkc1UVpDkiedbGjxf5U4cByr22GXQ0RSlxo+ISgeDf+8LaFX5QUqv2IvMpTtV4
-         Rw8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVLfcwGsfxXwe0FhPVg1XuCyjGC4PejMFxqcLUCVGnZIU61/WteR5JkE4k9I7TQ4/dFHNG/kKLFdg==@kvack.org
-X-Gm-Message-State: AOJu0Ywj/tlTYYgxJBjgDtOhqTVpWMqiDb+ftV5+xnS0qc2UA5GA4b1A
-	UpkF4107nBk0/8kjgiXNE58rDVwbR1sVtP9le56MIMZfmiNJsQNScSI4nKdefgBrOHaO+OFilS7
-	G3iTDGLwPSJic2LcUsNfC2ScI1vwFJyGBbXFEdfJe
-X-Gm-Gg: ASbGncujNtVCKvARA+u26ExCcl+PMc8AWEfLdSQRwWgKEid3eI6Ar4BBR9fQzncZzR4
-	+x8YLbs3x5vGFpcN7QdOc7SxQmCMVKZr04ZSwaISuwb71XImhk58x9e7Mh5oHzDypunUwSWksws
-	vb/jxoT6SN+8Ni2qr3yKZFOE0o4ScWf0cBttFjkvK6L8qifMLcFCTMA0FDWC5Ljh7kv3wbvPIZP
-	QSVtLX1sinV3k5lHpxOxDP4654=
-X-Google-Smtp-Source: AGHT+IHaZIymcSNO51VzrGvkl+EzFgf+EwvT7kBpe3gUWu+Fy0TGd2k7zRtskb+cPodn3Z41b2nZl1YDZatmO+4LcFc=
-X-Received: by 2002:a17:902:dad1:b0:240:8262:1a46 with SMTP id
- d9443c01a7336-2462ee54512mr199229855ad.25.1756205157527; Tue, 26 Aug 2025
- 03:45:57 -0700 (PDT)
+	b=p+dlwOedlzHRGnNTCYCcCl01k6Mu0sjIv2LBII+fY5DQXBuNfz2mmIuz39TBpOzSxCqPIF
+	IKp837lEtlnLX6feo5lsOSeIzJv/H6fKbIRi/89s6U7lyXw2M+Z2jlpbKUZdSUHbWQuLxH
+	66Q/ti+xR93g8cg46UUXXIcOOr0uUQc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0AD2A1A00;
+	Tue, 26 Aug 2025 03:46:01 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 93FC13F694;
+	Tue, 26 Aug 2025 03:46:01 -0700 (PDT)
+Date: Tue, 26 Aug 2025 11:45:58 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
+	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+	Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH RFC 21/35] mm/cma: refuse handing out non-contiguous page
+ ranges
+Message-ID: <aK2QZnzS1ErHK5tP@raptor>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-22-david@redhat.com>
 MIME-Version: 1.0
-References: <20250825154505.1558444-1-elver@google.com> <aKyT2UKmlznvN2jv@hyeyoo>
-In-Reply-To: <aKyT2UKmlznvN2jv@hyeyoo>
-From: Marco Elver <elver@google.com>
-Date: Tue, 26 Aug 2025 12:45:19 +0200
-X-Gm-Features: Ac12FXxpah0HkZevruBg4QeHMNDjWXsh7--6Kjx5Kp37atP55Mt7D7-5zFmt0B8
-Message-ID: <CANpmjNPUsbkyg5VvzUSYqVvaScXpqdfsb_oq2PuKV6VbkZLqFA@mail.gmail.com>
-Subject: Re: [PATCH RFC] slab: support for compiler-assisted type-based slab
- cache partitioning
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Alexander Potapenko <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, David Hildenbrand <david@redhat.com>, 
-	David Rientjes <rientjes@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Florent Revest <revest@google.com>, GONG Ruiqi <gongruiqi@huaweicloud.com>, 
-	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matteo Rizzo <matteorizzo@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-hardening@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: kcsrgmix7ngxup8kk95n61b3zu8gy69o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250821200701.1329277-22-david@redhat.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9E53A40008
+X-Stat-Signature: w71bc1u17uscdwuzn6ffe6tezh19msnd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 17A1D40002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756205158-248358
-X-HE-Meta: U2FsdGVkX18/7kEk+jgTtat7ZsqsyLRYtWRiBsSc5wgdQG1cfhxdTyX1+uld8F3YTxl/Su2+Xxf0QU8oG6siURT8mPZlMir5JLEmDp+rhNUE9z0JI0tnjo5cTZe34H6GMNKg0xpXW2w9/uLEXljADWfVeDFQGaj2QwtDNjoGuPJ11E9BaDbZ1tw/o9hDPjuf0ISeOZmfG3MKJUTQ/GpUYMNTkS85AljLEiEBkiN+hF8VIhT3H1F64RrsMzobtEfX6JJnGJgfsiG05P41c7VY9UvcfdGiCOmATKk9QbD+gOy/uq9tYFfnx90Lj53LXJk5+PkGB4ya4vHZseGtRm53BgKn+Z9ZFvSm7DaBl3A2ygc8oPXS30oqqA4S3RG4WQEpJrI6H69pjHf/HLCNzVSXEz4AySg3aiMyoENHWHXOWtQM8VM5Yqf5KWr6im5h8sJxIfLWjZiVU5Gp+Od0lAq/sjv/C3wmEJblqo9aDzWVVmGklRZnk3mZKnOTIeqkTexTnmlCYlyV/4VYjmJCkv92+gHFnLP7y6MWBS7qAjNNGykws8ZVTcGAlBC8EMl6BWW//8GCXNymo2ATOt9/feWfKeMiNXbhuDqJW6Xp1WP7++95HxHWx5UctPR8X7tlf8kpWAKbG4mO0ED0NHCAkznjFqQ2ennrImEaAGBCksJ1wXJKVyr9xftetwND4jMn5Kq0Zlg6niD6G1O142YGklb9SgsZpwIoO/cZBn9VF1EC2p6/be8IgJXcucw+dJ5Dx6r3+NoIPWq/x8hzJxnxrvRkJzktYgNItFibr162MW+fs50XGdn2uCP8pSe3dvioQPEWFJEqGtkjAO7AyadzqOVuq0Yp0ODLNXx7uyQnht4VLfO8ffTDs5YV3QP+amMkFRmdDwuM/OVk86yJv2k/eur8OWoaOfo1n+lDrmTvNQOUGzCZCGL6DcjthAKkUmgOSaaUJvFCJxf7HJY12ruNEVa
- fhvmxxTK
- jGOIRIHdvN6l/w5HGSaHaztq8PMAeUZdWk2vDVzQ9YqjKa7z+QZTBz9iwIosruNDHR9AMJjyt0FVW1vzGx/ahObLsWGWTkomk6H4BATq35ngQfUz8plOLIO8pDdWWU5wGTGe3NZibBgmBnK+PEdckJ0QqGEdBRBJfaQQwBDp4/XkCr6Ywfs8NWWtGNiuGNxf3cpDLujjwVb81KDnwCgE5v91agf2JPBZL3v9IAK/19EElBQJji0kf+4MEYNJz1m5E8GM7zRdCmWh7s2r3cz/Alc3moA==
+X-HE-Tag: 1756205170-681173
+X-HE-Meta: U2FsdGVkX19odxc/nB0ZFWeOmxUT9Yk7LzCU226vqWea097EaW48zc3iFLC1k2FNcBEMJHCTPdcKsTqoCK0NyGReufaY9V8HifmH+Qh7iVEa3u6Yfffu4EbjddtuipwRPp9paER3OTvTLw2iNoyarj7luVfhuGjk9ZcTQbE7FrzcCCFC93nFJgAHphiEGvAft5lTzDbS66B+b/79YcIn0lF9B2AYp09imink3Ru+i1cmJg4J/IkBd4R9GvoFKbJ2ds8F3h6I0G3hRoEfoL70vTM2IVy60yJp65CkzM5qhiiHi+SdFLjOba73pSDmKySlqDPfRSSG5a3k8S1R4C+HnOH3w4LfnE8+CZmXjh6d2MtWDnMsXasDN0AcyB8bgzH1JZZo0J7mUTYj7W+izuH9fnNQQVt/5udfM7hWV6MmkBdtuZ4EIC2pZERToPZ7OK+fgC3+gF53YBvgh1tvnRBMap4OL9u0hd1EaHea5MRm/dJEb4Jnlmjg6o1osZTnkMIx12NWiQHxb6ZzSPY89PS5mKSWsVUCHlxym6Ms56BLfXczm0zkCsXvwQoSvskdXFBqyMgYJTC3f6HW49vmuQneGmk1QaaMcjzDUxuhImkeXOjCLZnJ+BWOAGEjzBCi9dwi0q5c/IFHwhe7B03h9nSKG1KfcCJ1W7if/U84iwkrCSFiF8kF6GlWPvpEpK81VOTcRCBoIZddhAPB1Ab1UlWwI7vdJdM7jlwCI67zNtMbagULgW2DltwAwAgVcESM9DaSqHBuk19e2a+UPpPss2Wf3/LGAdebWGk96HtVBc1F+T2tXrW6rmp60nDZhwLqqJ/8mrnfekhSeT2zRcto9eLGtWPx0g7sGWtWFWCUDyd6DsKOW8btAgzABARpcnR6C6kjWzO1Z186+tQz00EWRkMEgZVOQB8K4MyAc1jugR0q5Oe32sE0qW3GpvOnInT+Fa8mlk0xw4/kIxAbN60IwuL
+ 8mG5x8Ko
+ fpTEtLa9FLWYYWJ8IzNDc2hm5xKv4IubG5a7xLHTebM5CKmF50IDef4vLBGlkI18kTdG/UHxIJ2jYyDoOQ80TPqOHVI6ouXMrMss0V27o16opmZWxNGU8uoQWh4mQmKiTZC4VMvDvz8NS7RiPfK8dp0FdZjlg5t0GKvjM1oa1EAAUCmB/bvoavL0Fw/97l44QudMmdp2KD2WTX4tY7yYBqla1bA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,99 +109,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 25 Aug 2025 at 18:49, Harry Yoo <harry.yoo@oracle.com> wrote:
-[...]
-> > This mechanism allows the compiler to pass a token ID derived from the
-> > allocation's type to the allocator. The compiler performs best-effort
-> > type inference, and recognizes idioms such as kmalloc(sizeof(T), ...).
-> > Unlike RANDOM_KMALLOC_CACHES, this mode deterministically assigns a slab
-> > cache to an allocation of type T, regardless of allocation site.
->
-> I don't think either TYPED_KMALLOC_CACHES or RANDOM_KMALLOC_CACHES is
-> strictly superior to the other (or am I wrong?).
+Hi David,
 
-TYPED_KMALLOC_CACHES provides stronger guarantees on how objects are
-isolated; in particular, isolating (most) pointer-containing objects
-from plain data objects means that it's a lot harder to gain control
-of a pointer from an ordinary buffer overflow in a plain data object.
+On Thu, Aug 21, 2025 at 10:06:47PM +0200, David Hildenbrand wrote:
+> Let's disallow handing out PFN ranges with non-contiguous pages, so we
+> can remove the nth-page usage in __cma_alloc(), and so any callers don't
+> have to worry about that either when wanting to blindly iterate pages.
+> 
+> This is really only a problem in configs with SPARSEMEM but without
+> SPARSEMEM_VMEMMAP, and only when we would cross memory sections in some
+> cases.
+> 
+> Will this cause harm? Probably not, because it's mostly 32bit that does
+> not support SPARSEMEM_VMEMMAP. If this ever becomes a problem we could
+> look into allocating the memmap for the memory sections spanned by a
+> single CMA region in one go from memblock.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  include/linux/mm.h |  6 ++++++
+>  mm/cma.c           | 36 +++++++++++++++++++++++-------------
+>  mm/util.c          | 33 +++++++++++++++++++++++++++++++++
+>  3 files changed, 62 insertions(+), 13 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index ef360b72cb05c..f59ad1f9fc792 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -209,9 +209,15 @@ extern unsigned long sysctl_user_reserve_kbytes;
+>  extern unsigned long sysctl_admin_reserve_kbytes;
+>  
+>  #if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
+> +bool page_range_contiguous(const struct page *page, unsigned long nr_pages);
+>  #define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
+>  #else
+>  #define nth_page(page,n) ((page) + (n))
+> +static inline bool page_range_contiguous(const struct page *page,
+> +		unsigned long nr_pages)
+> +{
+> +	return true;
+> +}
+>  #endif
+>  
+>  /* to align the pointer to the (next) page boundary */
+> diff --git a/mm/cma.c b/mm/cma.c
+> index 2ffa4befb99ab..1119fa2830008 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -780,10 +780,8 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+>  				unsigned long count, unsigned int align,
+>  				struct page **pagep, gfp_t gfp)
+>  {
+> -	unsigned long mask, offset;
+> -	unsigned long pfn = -1;
+> -	unsigned long start = 0;
+>  	unsigned long bitmap_maxno, bitmap_no, bitmap_count;
+> +	unsigned long start, pfn, mask, offset;
+>  	int ret = -EBUSY;
+>  	struct page *page = NULL;
+>  
+> @@ -795,7 +793,7 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+>  	if (bitmap_count > bitmap_maxno)
+>  		goto out;
+>  
+> -	for (;;) {
+> +	for (start = 0; ; start = bitmap_no + mask + 1) {
+>  		spin_lock_irq(&cma->lock);
+>  		/*
+>  		 * If the request is larger than the available number
+> @@ -812,6 +810,22 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+>  			spin_unlock_irq(&cma->lock);
+>  			break;
+>  		}
+> +
+> +		pfn = cmr->base_pfn + (bitmap_no << cma->order_per_bit);
+> +		page = pfn_to_page(pfn);
+> +
+> +		/*
+> +		 * Do not hand out page ranges that are not contiguous, so
+> +		 * callers can just iterate the pages without having to worry
+> +		 * about these corner cases.
+> +		 */
+> +		if (!page_range_contiguous(page, count)) {
+> +			spin_unlock_irq(&cma->lock);
+> +			pr_warn_ratelimited("%s: %s: skipping incompatible area [0x%lx-0x%lx]",
+> +					    __func__, cma->name, pfn, pfn + count - 1);
+> +			continue;
+> +		}
+> +
+>  		bitmap_set(cmr->bitmap, bitmap_no, bitmap_count);
+>  		cma->available_count -= count;
+>  		/*
+> @@ -821,29 +835,25 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
+>  		 */
+>  		spin_unlock_irq(&cma->lock);
+>  
+> -		pfn = cmr->base_pfn + (bitmap_no << cma->order_per_bit);
+>  		mutex_lock(&cma->alloc_mutex);
+>  		ret = alloc_contig_range(pfn, pfn + count, ACR_FLAGS_CMA, gfp);
+>  		mutex_unlock(&cma->alloc_mutex);
+> -		if (ret == 0) {
+> -			page = pfn_to_page(pfn);
+> +		if (!ret)
+>  			break;
+> -		}
+>  
+>  		cma_clear_bitmap(cma, cmr, pfn, count);
+>  		if (ret != -EBUSY)
+>  			break;
+>  
+>  		pr_debug("%s(): memory range at pfn 0x%lx %p is busy, retrying\n",
+> -			 __func__, pfn, pfn_to_page(pfn));
+> +			 __func__, pfn, page);
+>  
+>  		trace_cma_alloc_busy_retry(cma->name, pfn, pfn_to_page(pfn),
 
-This particular proposed scheme is the result of conclusions I
-gathered from various security researchers (and also reconfirmed by
-e.g. [2]), and the conclusion being that many successful exploits gain
-a write primitive through a vulnerable plain data allocation. That
-write primitive can then be used to overwrite pointers in adjacent
-objects.
+Nitpick: I think you already have the page here.
 
-In addition, I have been told by some of those security researches
-(citation needed), that RANDOM_KMALLOC_CACHES actually makes some
-exploits easier, because there is less "noise" in each individual slab
-cache, yet a given allocation is predictably assigned to a slab cache
-by its callsite (via _RET_IP_ + boot-time seed). RANDOM_KMALLOC_CACHES
-does not separate pointer-containing and non-pointer-containing
-objects, and therefore it's likely that a vulnerable object is still
-co-located with a pointer-containing object that can be overwritten.
+>  					   count, align);
+> -		/* try again with a bit different memory target */
+> -		start = bitmap_no + mask + 1;
+>  	}
+>  out:
+> -	*pagep = page;
+> +	if (!ret)
+> +		*pagep = page;
+>  	return ret;
+>  }
+>  
+> @@ -882,7 +892,7 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
+>  	 */
+>  	if (page) {
+>  		for (i = 0; i < count; i++)
+> -			page_kasan_tag_reset(nth_page(page, i));
+> +			page_kasan_tag_reset(page + i);
 
-That being said, none of these mitigation are perfect. But on systems
-that cannot afford to enable KASAN (or rather, KASAN_HW_TAGS) in
-production, it's a lot better than nothing.
+Had a look at it, not very familiar with CMA, but the changes look equivalent to
+what was before. Not sure that's worth a Reviewed-by tag, but here it in case
+you want to add it:
 
-[2] https://blog.dfsec.com/ios/2025/05/30/blasting-past-ios-18
+Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
 
-> Would it be reasonable
-> to do some run-time randomization for TYPED_KMALLOC_CACHES too?
-> (i.e., randomize index within top/bottom half based on allocation site and
-> random seed)
+Just so I can better understand the problem being fixed, I guess you can have
+two consecutive pfns with non-consecutive associated struct page if you have two
+adjacent memory sections spanning the same physical memory region, is that
+correct?
 
-It's unclear to me if that would strengthen or weaken the mitigation.
-Irrespective of the top/bottom split, one of the key properties to
-retain is that allocations of type T are predictably assigned a slab
-cache. This means that even if a pointer-containing object of type T
-is vulnerable, yet the pointer within T is useless for exploitation,
-the difficulty of getting to a sensitive object S is still increased
-by the fact that S is unlikely to be co-located. If we were to
-introduce more randomness, we increase the probability that S will be
-co-located with T, which is counter-intuitive to me.
+Thanks,
+Alex
 
-> > Clang's default token ID calculation is described as [1]:
-> >
-> >    TypeHashPointerSplit: This mode assigns a token ID based on the hash
-> >    of the allocated type's name, where the top half ID-space is reserved
-> >    for types that contain pointers and the bottom half for types that do
-> >    not contain pointers.
-> >
-> > Separating pointer-containing objects from pointerless objects and data
-> > allocations can help mitigate certain classes of memory corruption
-> > exploits [2]: attackers who gains a buffer overflow on a primitive
-> > buffer cannot use it to directly corrupt pointers or other critical
-> > metadata in an object residing in a different, isolated heap region.
-> >
-> > It is important to note that heap isolation strategies offer a
-> > best-effort approach, and do not provide a 100% security guarantee,
-> > albeit achievable at relatively low performance cost. Note that this
-> > also does not prevent cross-cache attacks, and SLAB_VIRTUAL [3] should
-> > be used as a complementary mitigation.
->
-> Not relevant to this patch, but just wondering if there are
-> any plans for SLAB_VIRTUAL?
-
-The relevant folks are Cc'd, so hopefully they are aware.
-
-[...]
-> > Additionally, when I compile my kernel with -Rpass=alloc-token, which
-> > provides diagnostics where (after dead-code elimination) type inference
-> > failed, I see 966 allocation sites where the compiler failed to identify
-> > a type. Some initial review confirms these are mostly variable sized
-> > buffers, but also include structs with trailing flexible length arrays
-> > (the latter could be recognized by the compiler by teaching it to look
-> > more deeply into complex expressions such as those generated by
-> > struct_size).
->
-> When the compiler fails to identify a type, does it go to top half or
-> bottom half, or perhaps it doesn't matter?
-
-It picks fallback of 0 by default, so that'd be the bottom half, which
-would be the pointer-less bucket. That also matches what I'm seeing,
-where the majority of these objects are variably sized plain buffers.
-The fallback itself is configurable, so it'd also be possible to pick
-a dedicated slab cache for the "unknown type" allocations.
+>  	}
+>  
+>  	if (ret && !(gfp & __GFP_NOWARN)) {
+> diff --git a/mm/util.c b/mm/util.c
+> index d235b74f7aff7..0bf349b19b652 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1280,4 +1280,37 @@ unsigned int folio_pte_batch(struct folio *folio, pte_t *ptep, pte_t pte,
+>  {
+>  	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr, 0);
+>  }
+> +
+> +#if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
+> +/**
+> + * page_range_contiguous - test whether the page range is contiguous
+> + * @page: the start of the page range.
+> + * @nr_pages: the number of pages in the range.
+> + *
+> + * Test whether the page range is contiguous, such that they can be iterated
+> + * naively, corresponding to iterating a contiguous PFN range.
+> + *
+> + * This function should primarily only be used for debug checks, or when
+> + * working with page ranges that are not naturally contiguous (e.g., pages
+> + * within a folio are).
+> + *
+> + * Returns true if contiguous, otherwise false.
+> + */
+> +bool page_range_contiguous(const struct page *page, unsigned long nr_pages)
+> +{
+> +	const unsigned long start_pfn = page_to_pfn(page);
+> +	const unsigned long end_pfn = start_pfn + nr_pages;
+> +	unsigned long pfn;
+> +
+> +	/*
+> +	 * The memmap is allocated per memory section. We need to check
+> +	 * each involved memory section once.
+> +	 */
+> +	for (pfn = ALIGN(start_pfn, PAGES_PER_SECTION);
+> +	     pfn < end_pfn; pfn += PAGES_PER_SECTION)
+> +		if (unlikely(page + (pfn - start_pfn) != pfn_to_page(pfn)))
+> +			return false;
+> +	return true;
+> +}
+> +#endif
+>  #endif /* CONFIG_MMU */
+> -- 
+> 2.50.1
+> 
+> 
 
