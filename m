@@ -4,107 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B558FCA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 13:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9672DCA0FE7
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 13:12:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFF376B00A6; Tue, 26 Aug 2025 09:11:47 -0400 (EDT)
+	id E394A6B0258; Tue, 26 Aug 2025 09:12:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0476B00A8; Tue, 26 Aug 2025 09:11:47 -0400 (EDT)
+	id E10AF6B0260; Tue, 26 Aug 2025 09:12:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC5EA6B00A9; Tue, 26 Aug 2025 09:11:47 -0400 (EDT)
+	id D4DD36B0261; Tue, 26 Aug 2025 09:12:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE4C36B00A6
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:11:47 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EF511A07F8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:11:47 +0000 (UTC)
-X-FDA: 83818945854.03.1487281
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A57074000B
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:11:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id C46686B0258
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 09:12:16 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F4DD5B76F
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:12:16 +0000 (UTC)
+X-FDA: 83818947072.20.0595308
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1E54F160004
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:12:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=H3G4vCiM;
+	spf=pass (imf08.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756213905;
+	s=arc-20220608; t=1756213934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o0dIKLq7mMxlWwZyWFQYffTfikp/TwVGT+xrqhNBlKs=;
-	b=3v9bnmabOg7o1aks6PnlZ/QHDwz0L+9DV5wWAn6f00c/kUflCo2vbXs+eDNmH5GPi/LkcI
-	wFPOwvEeeDwwOli2VlzljV5lILepPUSz5yKX3+Ov5gRN3DlXDDAiVmGFNbQXsLvE5mLWCk
-	wmzBwBhM/71E042uiP0oZqhgWe9yZFo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:references:dkim-signature;
+	bh=ytSqwcHPS5KmoFqBJtl5DsyS758vO0cD13s/5MVs99w=;
+	b=UMAUiiBnSF02hBO9RoLHamxn+YATYgJ4o65i4zpLA69dIBLOR/ct5ut0XVb35hDjrKxaAK
+	6CGQXSrPR1H4n7WZz7xfHtCjwujFX1nboqWoRIBLatIV9KQ1ps34qoyLL16QouocAHqfSu
+	0YUgj8WtDKyDsQ2zkZ03vFtD7WNpTuI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of alexandru.elisei@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=alexandru.elisei@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756213905; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=H3G4vCiM;
+	spf=pass (imf08.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756213934; a=rsa-sha256;
 	cv=none;
-	b=PnspEkRpyVN1eJjgD1asrb6LyJA0Kk6RK9roCecVlxRDZ/tqq3oAhyhFpFIL86tlsX1YSN
-	wJcCyQM0y9sma74oMAN2Z+szugtlxqyRBTjziVNLf+AVU0UYS0nvQyBHFTdgEWoZsEj+HL
-	FhNk8UiCakXwZzQ0/kYo+jde7sexAEo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7C1B82BF2;
-	Tue, 26 Aug 2025 06:11:36 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B7A13F63F;
-	Tue, 26 Aug 2025 06:11:36 -0700 (PDT)
-Date: Tue, 26 Aug 2025 14:11:34 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
-	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
-	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
-	Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
-	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 21/35] mm/cma: refuse handing out non-contiguous page
- ranges
-Message-ID: <aK2yhtQ0M_0hqQHh@raptor>
-References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-22-david@redhat.com>
- <aK2QZnzS1ErHK5tP@raptor>
- <ad521f4f-47aa-4728-916f-3704bf01f770@redhat.com>
- <aK2wlGYvCaFQXzBm@raptor>
- <ecc599ee-4175-4356-ab66-1d76a75f44f7@redhat.com>
+	b=q+/h97FvjbKaIPeLv6IUJUmh38jEpT4TEeHqKjYe6EYQf9ME4CEkPYohq3CP789+2fDUe+
+	ogqFoDSQ8ptxomsl0EvOv5e3utCsFnhpXi1nYWn0RdPAnRC74w4HaUTBgz2gMNUYT69+bO
+	9n/DH6Bnh6A87WtNMiRX7rvJqcEsBSU=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250826131211euoutp0281328793484a24443bf27127f59be72f~fU0QcDN-j0287102871euoutp02e
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:12:11 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250826131211euoutp0281328793484a24443bf27127f59be72f~fU0QcDN-j0287102871euoutp02e
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756213931;
+	bh=ytSqwcHPS5KmoFqBJtl5DsyS758vO0cD13s/5MVs99w=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=H3G4vCiMCg3qUNBmNNU341fG5gDMCNltVXV6hREPZRJXZSPIBP5D6WxK3QNyAHKwK
+	 h5lfxvl0LWZxLl8pYq2AJp9Uy0b7yGOEpbfqYqDefoPEYDy72PcGrLIvdCvWzQTMnn
+	 atiWfSbqWv2zs3TWL11vUvtSoSNCm71822iM0tcc=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250826131210eucas1p21a27a684042f37080b7a19599f479b7a~fU0PynAJh2350723507eucas1p2T;
+	Tue, 26 Aug 2025 13:12:10 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250826131210eusmtip29b9a21b0c58ecf0ce713cf25b4b45afc~fU0PXArTq0684106841eusmtip2S;
+	Tue, 26 Aug 2025 13:12:10 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, "Matthew Wilcox (Oracle)"
+	<willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, David
+	Hildenbrand <david@redhat.com>, Miklos Szeredi <mszeredi@redhat.com>, Joanne
+	Koong <joannelkoong@gmail.com>
+Subject: [PATCH] mm: fix lockdep issues in writeback handling
+Date: Tue, 26 Aug 2025 15:09:48 +0200
+Message-Id: <20250826130948.1038462-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ecc599ee-4175-4356-ab66-1d76a75f44f7@redhat.com>
-X-Rspamd-Queue-Id: A57074000B
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250826131210eucas1p21a27a684042f37080b7a19599f479b7a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250826131210eucas1p21a27a684042f37080b7a19599f479b7a
+X-EPHeader: CA
+X-CMS-RootMailID: 20250826131210eucas1p21a27a684042f37080b7a19599f479b7a
+References: <CGME20250826131210eucas1p21a27a684042f37080b7a19599f479b7a@eucas1p2.samsung.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1E54F160004
+X-Stat-Signature: gib84t8eax3yu9weah3odz9nxeb6tf7d
 X-Rspam-User: 
-X-Stat-Signature: qyq6prikx4ck5u3w736pjkjiafj41rsh
-X-HE-Tag: 1756213905-261011
-X-HE-Meta: U2FsdGVkX1+000zvnfOLp1JnHQek54Kq4cCmP2WYU6QUyzAt3H/XGIFN0f4/8wjuQYCgHJi1QApaW4ser20nQYILSakf7JhjYbjDY0rZ4tFQu91HVQQ/9QqddqQqTSt3xYT4IoTy51WIFHlvEPIbelVhLGws1Dm3/OOCerKjeY+DtEjBRBZkIDscvVxyTrPrhelelz22ducEuFuUxqkt/R28XV9Rgw4i5Xo5U+xjMzC8fw81S2slsqkmMR/weyl0gib2oY568Obc3zbZfjL2IByRlEsqt31bQDDdV1+1gNzast9F2eN+95LP57D7xrkqcivwq5PlLujVGOSi9kldSn+0Fe6fc9FIknqGSmWmqfR7vUiJNyZi+5sIvM6Zs4giSduhMU33G1YBjLv33j/mEwVoyzhhLscX34D/I30ap7a4W8REaoWh44cDRIrzkbDFltLWWpadq5C/5QCrlDr70+iRZKOIZa06qzcQznJsoNOjPNbD7UJe05mjY8OrDyXbaw1GX1+oWdMHAAO4nC/1zctwHG9CkLIAMgy2A8O1hoGwZHZGVGmZFS7QRA6Enf1ZtoB4lZ2mrgQlC43QHs/9UajyzsS+4NeZ5B9tpbARXXSm0PojR43e6chPKv4ejf0eiq39sfJTSgaV6UWLeIAgnK7Z+0NuE2qTHl9SqR0BVq7L5xaJB9hbo/WP8iwGmxGtIuJ+Ba0mybw1FqoCO+MmZS5/cXruDqjqTzBak+TzIdp7KwdMvE/Hxv5hAVSM/yZAE2iQNRVM3KvOB98ZpRBaS+CEAT+J55qC+tQzNgnV+eD9w9gALg22HAoTFAAqG9GezdNGhpi7kCCORKs9Eb4RAwHpfn8Pomp92tsCCXQuFWDDS1m2do2ay2VTsNxfKGOgOFwZiEyOs8pPO7TrJfV0gbdYPfle9Oq3LLiw/MVRSirXXhAt61cVyRtK50a/qjItRJ8Okol50ssLAr65mDH
- XFnyjEpL
- lg28Q+htK3ZdWzMfDZBqL0HoJXE22tVQijycz7iiQe/Qmt4YLgWDsmuiTiqbNsyUW4wR8lOYThSD/r4ZRDLG3beQw8U1nPcOvSpCWtQ5TkRhe6rQpSCRVWNhl+NeXStK58uFelZQJ3WfadsI=
+X-HE-Tag: 1756213933-139614
+X-HE-Meta: U2FsdGVkX1/1zsABTfElK60j9n44airSlDydwOinA4tc9iDw/hIU35+NJILj1RRP33ajf5JhajCj9fQ2QQec3KyFQHnVE2FQrezazJ/avzuSI10RB+ewdY16mjFCtq9csTO2+j6VWt0jeYvIWq9NTYa4TaPNlMqY09HLxbTAy5FQiVpopV7eNE25U/auBkbz0/TBYUFNL59udcYpQ5mH3+JVw6edkSGfagrqW/ZblY1HKBAIGTjbbR2nrFvYjvdtkZ0zXPz3lqvKvcVy7m/kW+gfWFLw4CcA4W5eakYBEbGKE5EotzgCl5/ub35S7abonswV/sEZ50KRzZJHQ88N+RCLP+t66BJrlJ7TAWpAd3Hq79tchbtdizKUUArZf8AZDUJmSZZ06HYHYZk35G/H1iTiMzNWhMcDpfNfgMiVIv0tPxdaZmebth36YjPRMHq+MU/pr1yMY+IwWMBBmbrEJpjVMgpB+mOiQholr9Co2cXf2ZyE6jY+ngJOzKBxhTPc9PHu8OoXXweaSAElH8NXymP+A4nAc+P8+i00qhvk4gpwtoJBizxRHCmP0Rbb49vjp25RB0T5uQ0nk5iOnhEcWdYZDzESbY05IcwDOXpAYcLHUjWJPWp/lPxEg+cc6nYQ7CNlc7IJVnocv86nUbczOFT0FSTSYtRscwM+UcaNfnf0JM3Z7bj+2xFmGjM14Yipy7Spb2Ud2RLtX315DNZswmdyAT44qgBqJX5DieP51ildFSN86GGZPE1fCAt/POnIba3dX0C0tadV8lBRePLMllFnk9dUlfOrIoTf4mXMhhPihthNYxOLyJxi3iPdpkSUHL6c0YYk03Bx/e6dBF1dYS2CszKfti0QM4WGMzRf6rtBGz33MwktzwQXuFFa0M+o7ApbINu9Oun/MkaE0auCyhncFPF3Pw4nZfLXcf5JPfjyJKUPvG2Tfn1doYCUZEM0mT9nM3J5li3mZaPL5x1
+ aB7DI7kA
+ 7kPAWErpInBZ2cJG41OEYtvgkpnAw1hD6eaNz5/Xg7aRX3mU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,46 +104,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+Commit 167f21a81a9c ("mm: remove BDI_CAP_WRITEBACK_ACCT") removed
+BDI_CAP_WRITEBACK_ACCT flag and refactored code that depend on it.
+Unfortunately it also moved some variable intialization out of guarded
+scope in writeback handling, what triggers a true lockdep warning. Fix
+this by moving initialization to the proper place.
 
-On Tue, Aug 26, 2025 at 03:08:08PM +0200, David Hildenbrand wrote:
-> On 26.08.25 15:03, Alexandru Elisei wrote:
-> > Hi David,
-> > 
-> > On Tue, Aug 26, 2025 at 01:04:33PM +0200, David Hildenbrand wrote:
-> > ..
-> > > > Just so I can better understand the problem being fixed, I guess you can have
-> > > > two consecutive pfns with non-consecutive associated struct page if you have two
-> > > > adjacent memory sections spanning the same physical memory region, is that
-> > > > correct?
-> > > 
-> > > Exactly. Essentially on SPARSEMEM without SPARSEMEM_VMEMMAP it is not
-> > > guaranteed that
-> > > 
-> > > 	pfn_to_page(pfn + 1) == pfn_to_page(pfn) + 1
-> > > 
-> > > when we cross memory section boundaries.
-> > > 
-> > > It can be the case for early boot memory if we allocated consecutive areas
-> > > from memblock when allocating the memmap (struct pages) per memory section,
-> > > but it's not guaranteed.
-> > 
-> > Thank you for the explanation, but I'm a bit confused by the last paragraph. I
-> > think what you're saying is that we can also have the reverse problem, where
-> > consecutive struct page * represent non-consecutive pfns, because memmap
-> > allocations happened to return consecutive virtual addresses, is that right?
-> 
-> Exactly, that's something we have to deal with elsewhere [1]. For this code,
-> it's not a problem because we always allocate a contiguous PFN range.
-> 
-> > 
-> > If that's correct, I don't think that's the case for CMA, which deals out
-> > contiguous physical memory. Or were you just trying to explain the other side of
-> > the problem, and I'm just overthinking it?
-> 
-> The latter :)
+Fixes: 167f21a81a9c ("mm: remove BDI_CAP_WRITEBACK_ACCT")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ mm/page-writeback.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Ok, sorry for the noise then, and thank you for educating me.
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 99e80bdb3084..3887ac2e6475 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -2984,7 +2984,7 @@ bool __folio_end_writeback(struct folio *folio)
+ 
+ 	if (mapping && mapping_use_writeback_tags(mapping)) {
+ 		struct inode *inode = mapping->host;
+-		struct bdi_writeback *wb = inode_to_wb(inode);
++		struct bdi_writeback *wb;
+ 		unsigned long flags;
+ 
+ 		xa_lock_irqsave(&mapping->i_pages, flags);
+@@ -2992,6 +2992,7 @@ bool __folio_end_writeback(struct folio *folio)
+ 		__xa_clear_mark(&mapping->i_pages, folio_index(folio),
+ 					PAGECACHE_TAG_WRITEBACK);
+ 
++		wb = inode_to_wb(inode);
+ 		wb_stat_mod(wb, WB_WRITEBACK, -nr);
+ 		__wb_writeout_add(wb, nr);
+ 		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
+@@ -3024,7 +3025,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
+ 	if (mapping && mapping_use_writeback_tags(mapping)) {
+ 		XA_STATE(xas, &mapping->i_pages, folio_index(folio));
+ 		struct inode *inode = mapping->host;
+-		struct bdi_writeback *wb = inode_to_wb(inode);
++		struct bdi_writeback *wb;
+ 		unsigned long flags;
+ 		bool on_wblist;
+ 
+@@ -3035,6 +3036,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
+ 		on_wblist = mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK);
+ 
+ 		xas_set_mark(&xas, PAGECACHE_TAG_WRITEBACK);
++		wb = inode_to_wb(inode);
+ 		wb_stat_mod(wb, WB_WRITEBACK, nr);
+ 		if (!on_wblist) {
+ 			wb_inode_writeback_start(wb);
+-- 
+2.34.1
 
-Alex
 
