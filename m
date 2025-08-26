@@ -4,109 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51366CA0EE4
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 05:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DA75CA0EFA
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 06:17:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DACD8E009F; Tue, 26 Aug 2025 01:38:57 -0400 (EDT)
+	id 49C068E00A0; Tue, 26 Aug 2025 02:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88C1E8E0090; Tue, 26 Aug 2025 01:38:57 -0400 (EDT)
+	id 44D148E0090; Tue, 26 Aug 2025 02:17:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A12B8E009F; Tue, 26 Aug 2025 01:38:57 -0400 (EDT)
+	id 3149E8E00A0; Tue, 26 Aug 2025 02:17:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 66E378E0090
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 01:38:57 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC13EC0631
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 05:38:56 +0000 (UTC)
-X-FDA: 83817804672.30.B6412A5
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 205BF180009
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 05:38:54 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lTLEZ1Ho;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of aha310510@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=aha310510@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AEA08E0090
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 02:17:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A7B61377E5
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:17:25 +0000 (UTC)
+X-FDA: 83817901650.20.595FB55
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8BF2E4000E
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:17:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=biJr6aci;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756186735;
+	s=arc-20220608; t=1756189043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Axk4UMbWJGlYVE8LjjJYFMnLZB/ZM8rZIyTcTh59eoY=;
-	b=ANX8tfErLudpZ2vIguGaOxcIF8m2TTDaIbbN35UlLUpilaAtrh9tMOgjRUvyjMjFHKbTrT
-	ZAQXPzswCFpefQU+kTc6PwOk9ptFaslQiLdqDFZiFlX8H44rAHBJrCJxfIp44d6jVZaBT3
-	+3kBbi5cTIWdN+J5qDXENu7tJpE3IRc=
+	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
+	b=tqgASHNlYHuyXzxvUw0+jhYmSKXeVHUa7IwnrK6lBkTIUZCJCOXY7EftmO46tbW3qMtGVL
+	AjDq+JjBvEOgMXJXYgWuxnHp/8bRhLK/oxsx73okVIEBWrZysAfl9KbZpfLssJofJJXfD+
+	P/WDVIsxpBOqQC/Iaey5Etao0cQn1+o=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lTLEZ1Ho;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of aha310510@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=aha310510@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756186735; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=biJr6aci;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756189043; a=rsa-sha256;
 	cv=none;
-	b=cPm9zIaSAUoXwV4afmMFLuogVBClK/GF8oUwZM1HIw1rlLGHdYw7+rkImKqo9+BXSPmeNZ
-	VN4qKfDRzqW3Uv8Mh8d8iDJWFz4jmZZxdBgmTuBTEcNomWHsb6z8IokiFS4SZLKTWbEK9Y
-	sRJnxSiGzEDVxUi4TcT7MP2IN3FX0w0=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-24646202152so38065905ad.0
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 22:38:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756186734; x=1756791534; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Axk4UMbWJGlYVE8LjjJYFMnLZB/ZM8rZIyTcTh59eoY=;
-        b=lTLEZ1Hob6CFiB5S02xIjh+mN1TcVvdVYWJXQrSMlUyWYswt+C/PtOxNKc4+SaQbEP
-         WfUkvvY5uLba/+Tr9c04RPmVvkDv8Lm/J78FOCpzjBZ0T8wTBdABYAf7CZFz1eqBDymH
-         Z8DimWWxaq7TRj2TkS7mcUttqiXlNt96O/AQeMIK1YOfVNG17B4Sc//4M6d5GBs64f/t
-         0bQGHoeyXYmwqzQ3WCTaHpRqJVpQAwpUG4o4Y1ClSXb4AyHzF1m0oGx6RuVRWUzGnEgx
-         CZPke8YUs4IwuB5MGsrrF+PlTjkHKNFLqQKhOMq6RRWIh9CCBDwfmxNOhKnoafOb4RhU
-         DNDg==
+	b=5eLpzXiaZuzkSU5igw9R+/ZevmFcdxDHS6QKTI2e0Ma94F4iLPqOPbzHOiTs9cQ8fsyTb7
+	8of1/KpZxmhc+4Gc9D/ovLc8ViciWvUgs9kaD32P6AXM0KQMYA90DwTFT4UhrvN3BN9Ryk
+	rlceWDhBbyVJDMVs4Vozrx7P37O0r4E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756189040;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
+	b=biJr6aci7fN8j25yHr1p0PUE5A0aF6f/xPFadYx/jOfrrZSrS94Kozj9JZo/wdfvP2utRK
+	A/H3z0uAQkvGiqMnBRpb39LDi+Nf6+Wdt4i6kY4TI8r+C8fvMctDE1pG+mwVIIPsPMiGM6
+	QqIUVHHJohFT5URC1jiPfhzLVRrQPn8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-RxiJZ5u_PNWlJ0SsIyJRYA-1; Tue, 26 Aug 2025 02:17:19 -0400
+X-MC-Unique: RxiJZ5u_PNWlJ0SsIyJRYA-1
+X-Mimecast-MFC-AGG-ID: RxiJZ5u_PNWlJ0SsIyJRYA_1756189038
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1b0511b3so30463475e9.1
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:17:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756186734; x=1756791534;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1756189037; x=1756793837;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Axk4UMbWJGlYVE8LjjJYFMnLZB/ZM8rZIyTcTh59eoY=;
-        b=TiiVADudCJ8xcX8nH0eFYlfe0J/Hbub0li4FZ59Ni0TUHsu+GkprlFAgPYCth9popM
-         gJwDGARijgFlaJWjB1RHZttDK6+qAg6laYqzJ2+5/+hYpl6FcPB9dKDumnNdHDOKZ68q
-         6MmKKYdma4oc8THVorXr2baWIRSnm3Y/x2CgyrMzIVBA98yWyDTdo2qkkbkDWBBMSjNw
-         UlAmr930OV3Oi3JhTc+fBCxJxgN4fIhuzHIRqvvhhHQUWnPjkmdIlKxDjmzYKEudNqkK
-         jXqMNsxTxvyuahDcn/yXzBkKRnHsVUWPz43TMrsKwqQhEXKv2MAE/GHMGvfBizJBh4Fl
-         DTuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ0V2ImC2ZgvHAjX8Lg6uGkjMHb68eQdVogd+17igjX4ECcrvdLkwGlnuCIVTrWXoTcRbOD8wBvQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy4wTpQSUlqMyvQPBc15NHOsfKsQI/KIZy2BWr6P0aME9L31iII
-	9Mc/uCxQ6gKxW+9Gt94HYvrVt8VU+OtUbhxPyOTTH0bYvze0q2PXqTYgRGurqQLxIqO5y9+Wf0/
-	/SnwpYsS0cXw5arrA6zOCUJvG8Z3IUIU=
-X-Gm-Gg: ASbGnctG13pVZQsykU9Fgk3Ju5OYgFGNWhtsmu3ywLRCO19FW2lKmQZTKN8jPgsn/Io
-	YXTJ9VkIa7IyyoW+CmwZisgRE3895Y5+DrTH07VDRtE30b/xpJCQj/kg4AvhxKcmKxWZRwVf0jn
-	Lm6DQy4/YZBRUkXZpRtY/NtA5Sdf0Xt4q8xwVWzIL2hUIDQ9C9MGYINUYB3UxoNi9ACnnjIvexC
-	/AMdSo5tg==
-X-Google-Smtp-Source: AGHT+IF4WuKBgonA7wU0ychyL9+0BwzHp/2OyDxJKY+LcRtfGkh/0Hes5UCWFkbHCHBvEeIsWBm5YuUo9FxCtDtnwqo=
-X-Received: by 2002:a17:902:d54a:b0:246:eac1:50cf with SMTP id
- d9443c01a7336-246eac1548cmr69886865ad.12.1756186733913; Mon, 25 Aug 2025
- 22:38:53 -0700 (PDT)
+        bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
+        b=aJxqJX4OAwv2LWyP68/KHIj0/yQcwBNkLA1QRZYIA+mtJ6PXdavmMbHN9duGxjg2ji
+         nB5JboQSoC2Dl9OwGQ+ilLWbbOzpNHcT39i6qDnUiX4Lr4N1EOeqQo0tCZDtkYhxqCKM
+         +xelpUMkdYU6o1EzpWX4q6jm1bNl2Pk5eE691wlXHT2D27/Vf9Opr9hJV94WPGuMd234
+         qwkVaWE9sfXacHkPtcXOPU4C7tGdFvzrWK+Gd0rApl2RGzrOkJtUsNMwgFDrkm5+iAYF
+         0PdFqQpYRVkVv43BiPfgp/O85nYy/grucEk4wLv+khd2ffTfBrk6H67lmD1SS8INRtpR
+         LPJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcWURyoFR7nC/T+UWJixDAVv/YNy6XABsf9KCYEkxsMaNeHa5KgloaPbdJtGvypijOLZOwhPa6Ig==@kvack.org
+X-Gm-Message-State: AOJu0Yx2qSwOgG/OzSxwxZJlMMQWw201h71CJl/YCfnwCyy033Di6GCm
+	5dNiCLtQSxGCnINzmo+6lJTtqJ5b23kPO3SNrq1nm24jz+JMtFHLhym/Ospu8igtzYlPOnqBU4l
+	dWTYkYIj+50Uw/NMT1DSX609+r/UBLyu9q5YoYxA74JgGXOFJsDTl
+X-Gm-Gg: ASbGnctjT4yu8qcPIAEXPCjAJlLC4CuUDsr5UdysMomfLGD48RC7AGOFKdcEFpVxcAu
+	aYohbul9L0ryHFjJmxMHh3CIhQbcl2MOr4cJDC6A96VRoqccwGCMWMVxphUzoe25fJ32/m76ggO
+	1wjRflstL/9wI2agOcdMqRx6x8h3Ua3OXXbRWg5adLs67Pnz+N/UY1P2QpPWJZiKtJdFMAN0IXU
+	Fw/L748ZdVvL/DILL5nm+Esse//ET4hp6ZDAk0XbVc120Z4LGgnJcilK4SLmWe6uxQNoKGfmdt3
+	xXaXx6s+FHs7rvT2qoo4sbL4oJKvb/GLv7HVdDSIfaS3WpmygXZdxu4WJIG2c0rxJ9qKKQ/brw=
+	=
+X-Received: by 2002:a05:600c:3b26:b0:456:19b2:6aa8 with SMTP id 5b1f17b1804b1-45b517caa99mr120121815e9.19.1756189037434;
+        Mon, 25 Aug 2025 23:17:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5JT88KMbfYqdABB2ZNx/5fJ3ePuTbJHoO0rv18+tnNMdWIHHT7WWjXjYCyLy3ILR8WgCBpw==
+X-Received: by 2002:a05:600c:3b26:b0:456:19b2:6aa8 with SMTP id 5b1f17b1804b1-45b517caa99mr120121265e9.19.1756189036964;
+        Mon, 25 Aug 2025 23:17:16 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6619b53asm9727285e9.1.2025.08.25.23.17.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 23:17:16 -0700 (PDT)
+Message-ID: <f3e626ab-9bf9-4a08-b626-e739515727eb@redhat.com>
+Date: Tue, 26 Aug 2025 08:17:14 +0200
 MIME-Version: 1.0
-References: <20250823182115.1193563-1-aha310510@gmail.com>
-In-Reply-To: <20250823182115.1193563-1-aha310510@gmail.com>
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Tue, 26 Aug 2025 14:38:46 +0900
-X-Gm-Features: Ac12FXzfcd38LF-GMC-8K74D550K73mNo7BnkYALEHmVGNLD52tzBppBnZCL1DI
-Message-ID: <CAO9qdTF1OZRX0mbcG9hQy8m32RvrZaEBa0EWpDREBjfBSqrrYg@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/hugetlb: add missing hugetlb_lock in __unmap_hugepage_range()
-To: muchun.song@linux.dev, osalvador@suse.de, david@redhat.com, 
-	akpm@linux-foundation.org
-Cc: leitao@debian.org, sidhartha.kumar@oracle.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/11] mm/memory: convert print_bad_pte() to
+ print_bad_page_map()
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
+ nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
+ Lance Yang <lance.yang@linux.dev>
+References: <20250811112631.759341-1-david@redhat.com>
+ <20250811112631.759341-9-david@redhat.com>
+ <923b279c-de33-44dd-a923-2959afad8626@redhat.com>
+ <9ad69d4f-69b7-4998-9639-4e8f679a2d9d@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <9ad69d4f-69b7-4998-9639-4e8f679a2d9d@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: wK_2GdIg8uttAZZhJpu1dnk-_atYyulLQ_6WR-nczrg_1756189038
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 205BF180009
-X-Stat-Signature: ejbyw8n6soiud1wrfqtuhxbknxit93k1
+X-Rspamd-Queue-Id: 8BF2E4000E
+X-Stat-Signature: pptyxg7f3m6j4hxoecsmu46g6rq5mwss
 X-Rspam-User: 
-X-HE-Tag: 1756186734-19119
-X-HE-Meta: U2FsdGVkX1+6GxFwP2wbZ/D3HUtyxUA1KISW60AEnCWLbalj8zes/tpX0FM4zn8h6+BsVj7wAqzp7CT2BDDPtEoeGvO3rv6n5llw+a1OjJPOyQHnhTiZdxu/QAHWTnJVPichQFSL5t0rpmysanpDl3jObd8c//AIztsB5pNl78BZ6os0Q1NubiGYf18+IApr/9VqXCj98jByviAaUT2Q0M1Qi8OUmMr9QBeRwkgevucvUrgy4sa4kqK9ig9AUMqHvryaOnHR6p2wAQwDcJFtCsIb/hyBUg25DcvUk/O7tNZnqPfDDDGPuSUWiScyLpxBm/N9bNMuz744sxAQL3tl3BzU2m70c9H/wtB8F3SXf3tRdU6veWYDEVBRi/sgXN/7pH9EMx+yJ/nxtBK1e1WWjsWiyB5uKcXMdL0Rc1iqASmZbX5wUHgAF+Z/UYPenunvgZp0MiASYZLoensbbg/pbZS8dTt2gZWF3x0ws7UIV1txhQ8PgkN5IeRhoSNCrHGb54zvHcrgbZ4aKyL+UEDnPHGZXgY9MqPJjsCxM7l6I6OAMQgRcVG7y2VJNrGs8/1O7k+h1WevE7kJ0pAN7OvCGRj5LBoA6ans/KgsGNrqQtSMddAaT+qzpBfnet5jndh8LiVrsDojelSk9fmCS2FfvejOXuFLlX9fwx4QJ7HurwcqKrEK5CgUAHRCbvx6wsTSujFMGPgYtom+P9B3nHuiMt7pdz1J9/WFdZaYp5xDPDJ8QB3RsMTjuvev6L7P4N6DJbdqWVbaJCJ6D+GU7JMibjVLsMr0QFgk0nJTa4rpPwl5QhokttYwGZZAef1sxCV1h4e0KOWr0W9BU32vwx7C4cbGVm4R9Npe4lXGOmzsA13PwJOewCn3/gPKRcRQNQvI+pGjrKqmr+S9uNtfmgw99AJNH5pGx27KXQehNPUXfmlpG3b/HX3oj5AQCFn0XlGs7kOOq0ga3fqzwWH2XvD
- sQWWmkoc
- 0vnqD35rXb/4oz11/8c26gYynUWt3GeP9+zM3GNlt5GUiFzimx0pkNrt3GjBGeY68WZsY6+vA9PQTNAWFySREo1q50i4aOCRixoED9OxZvCLoMY+GLtJZqAMRhBV2wcBafBtFLO6zgVEE3VIB4E5yP691PEx3HMOxtur4bwJTt5Zokj/gXjiZZSypPHcFDQeb74+J0mzbM5sNpPJqoygxp3KGzX+i3UBemj9x02gzjv9uw0brRS9GbQtAlUMoZ5OQ7x1L/PgmTgRAc5xW3Y4LB3566Tm2eUGtxUznbd58kvn2Hc9FSaDWL0O2Ck/FNbSKeeNH/KF7c1v+0V9QhSHxpfhVesFNCb80AK6cgNJMjs/3Jzspqdb1mNyXAssgx3+XfdWH/TSNY7BPWJDZx6dC3hdwKnXs78PFamh+ufGDIvlMv0Vc+gOFil1Sh6h2pA2l/kIk8PfZfPCRmNQ68opg6ZR5gdcmUwe++U2lw+ciKvvEsYpz6q8NzmqTvohBWd/we4uPA7cCYyYnIpO5YYOA1sMoFsWcCaMm+sHpn3XlY2Jw//rniBYJo1hOD3P2iuTkEjaheagp5BOZMgTaVx8Xt7llItzTfb4Fz2jEvltsfTdSuAQG7lzAvB1ySK6B5HdFCp3TOMJb0ueJi6wLfKjlBbUxo42gmox64pfYkdXwqAsZsRhFwxpMPVTGpw==
+X-HE-Tag: 1756189041-431437
+X-HE-Meta: U2FsdGVkX19BhC61bq8VWiY1uxuV43DhYW3t2OqfU41Z/qhYKLbZxIelcLVslnu5irlgri9Lfd/30HpvDPAsxA/7zHlhBp4qY+2A47aZhRDMChhriVhz5WoSY2hp12iirqLrCFwF6WXi4v4yBeyIMdEo+kowS6a9TNbzEZvqa4GG+5mCHBVv18vG6cyiF8wUypISzw4JjYljA+DIlWCc2hx78UoAesnj1Gf+HLvaqYurSHhBm6RRqELMKPm4237oAy273/fw7hQXdV1Ql5yMUbMkk9g+t0z5tnbNaNTI6pISG34NGA/Mbt0xupJcuQKpv5wLvg+Y8UAFRR5KUiDkgxjZL4LWsTtTnKN2y5hV21/uN7AdcBLallPkD7kWsNWmdXexaIyZMHMlAqdljonyDGVA27m0zv3NPI1kFcZQ74Kvtxhqxmfvdn49kIJ1cO9kWiu0KoU4vSnVDPrxFHOkHv7ntkyr4HAalv21hwQlKBT3Yg2DYe1qvihL/PX09hbZgXIjO62zAUU87CGaI/6Uy9jP4Ffn7k4CJT9rur9Qb9F2ZVNOdQo0t7ZUGjVKbSA00wWxr82qkI6NjsMPDu9ntNItky4hODnfkmm3rUfATJfKWb6DBu2HYndsuf2h4XEJYtNxbuXD87dLmjt6Xa+14RkEQmX2EmxmshEfvfe+2b1AN++D0dr6ucncKpZ5FqQ9s71yWKWbFdJG5NxC1eIZaMWqkQ3hd63fFQ0uW72gtx4HQa83B6xaYerb81fhhkuMB6QpZ0Ci0Ohsqhjqoa56TlTkNaRCQORWumyT8NpMo9krXzSnqZ83e6ZAGtvSUIxGpvj2OXBjKXTKq7UZCXGNfLb0K6Gj95Vk6XkZYgc7Z6ggc9Gg1JnWKGD7hlTvieS8Y/oIX2Eq4/UeupOSlT++xc8XJymGt7TASqRmXqRGXO+d23P+fEymo83rLBilZKlXsR15jVy6DSMPz5YBQhF
+ Cj/STF7L
+ HjPbFgV1DCsg8nVP0MkDYiAWcg7PCGU0VT4+xn4bzxAk0PHoZDzAMEx5VziLqkxtdhbuXoTn0x1HaxZsH073Tk7q9/f+6H/S07CARtwlJUNtFp6e9MgLnk9q9B/GQwt6cOnXya15P987pyms6ybbufbq+UkokvitXuCGgQwiEXqkZon3vrE+sSJgm+Enhz9nnIiUiniSudNd5v8DJAe6cpzEEKwJX19siCqJchEovjwaKcJe/22+U4ZDSAC0E8bx7Jc3NLPepflpcROOTV4b6IdYVSMSpiIMDZmN1L0sEa8mStURB4puKAOvDtS/YrcY9bbBq525Bof9R20GmQzX9RP0D78mqzCU4xVw2wF79NE+2tH6HLreSFEdJLBsUdCi4zyMAhoDARK+NCqWDD7kMLspsKxx7WisWVR3LFsSi+3tIbbRQhYGBYHWtcUJUA77IqUI+KCiFlA4CznTy7+ppzjcXvA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,84 +201,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jeongjun Park <aha310510@gmail.com> wrote:
->
-> When restoring a reservation for an anonymous page, we need to check to
-> freeing a surplus. However, __unmap_hugepage_range() causes data race
-> because it reads h->surplus_huge_pages without the protection of
-> hugetlb_lock.
->
-> And adjust_reservation is a boolean variable that indicates whether
-> reservations for anonymous pages in each folio should be restored.
-> Therefore, it should be initialized to false for each round of the loop.
-> However, this variable is not initialized to false except when defining
-> the current adjust_reservation variable.
->
-> This means that once adjust_reservation is set to true even once within
-> the loop, reservations for anonymous pages will be restored
-> unconditionally in all subsequent rounds, regardless of the folio's state.
->
-> To fix this, we need to add the missing hugetlb_lock, unlock the
-> page_table_lock earlier so that we don't lock the hugetlb_lock inside the
-> page_table_lock lock, and initialize adjust_reservation to false on each
-> round within the loop.
->
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=417aeb05fd190f3a6da9
-> Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
+On 26.08.25 07:25, Lorenzo Stoakes wrote:
+> On Mon, Aug 25, 2025 at 02:31:00PM +0200, David Hildenbrand wrote:
+>> On 11.08.25 13:26, David Hildenbrand wrote:
+>>> print_bad_pte() looks like something that should actually be a WARN
+>>> or similar, but historically it apparently has proven to be useful to
+>>> detect corruption of page tables even on production systems -- report
+>>> the issue and keep the system running to make it easier to actually detect
+>>> what is going wrong (e.g., multiple such messages might shed a light).
+>>>
+>>> As we want to unify vm_normal_page_*() handling for PTE/PMD/PUD, we'll have
+>>> to take care of print_bad_pte() as well.
+>>>
+>>> Let's prepare for using print_bad_pte() also for non-PTEs by adjusting the
+>>> implementation and renaming the function to print_bad_page_map().
+>>> Provide print_bad_pte() as a simple wrapper.
+>>>
+>>> Document the implicit locking requirements for the page table re-walk.
+>>>
+>>> To make the function a bit more readable, factor out the ratelimit check
+>>> into is_bad_page_map_ratelimited() and place the printing of page
+>>> table content into __print_bad_page_map_pgtable(). We'll now dump
+>>> information from each level in a single line, and just stop the table
+>>> walk once we hit something that is not a present page table.
+>>>
+>>> The report will now look something like (dumping pgd to pmd values):
+>>>
+>>> [   77.943408] BUG: Bad page map in process XXX  pte:80000001233f5867
+>>> [   77.944077] addr:00007fd84bb1c000 vm_flags:08100071 anon_vma: ...
+>>> [   77.945186] pgd:10a89f067 p4d:10a89f067 pud:10e5a2067 pmd:105327067
+>>>
+>>> Not using pgdp_get(), because that does not work properly on some arm
+>>> configs where pgd_t is an array. Note that we are dumping all levels
+>>> even when levels are folded for simplicity.
+>>>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>    include/linux/pgtable.h |  19 ++++++++
+>>>    mm/memory.c             | 104 ++++++++++++++++++++++++++++++++--------
+>>>    2 files changed, 103 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>> index bff5c4241bf2e..33c84b38b7ec6 100644
+>>> --- a/include/linux/pgtable.h
+>>> +++ b/include/linux/pgtable.h
+>>> @@ -1966,6 +1966,25 @@ enum pgtable_level {
+>>>    	PGTABLE_LEVEL_PGD,
+>>>    };
+>>> +static inline const char *pgtable_level_to_str(enum pgtable_level level)
+>>> +{
+>>> +	switch (level) {
+>>> +	case PGTABLE_LEVEL_PTE:
+>>> +		return "pte";
+>>> +	case PGTABLE_LEVEL_PMD:
+>>> +		return "pmd";
+>>> +	case PGTABLE_LEVEL_PUD:
+>>> +		return "pud";
+>>> +	case PGTABLE_LEVEL_P4D:
+>>> +		return "p4d";
+>>> +	case PGTABLE_LEVEL_PGD:
+>>> +		return "pgd";
+>>> +	default:
+>>> +		VM_WARN_ON_ONCE(1);
+>>> +		return "unknown";
+>>> +	}
+>>> +}
+>>
+>> One kernel config doesn't like the VM_WARN_ON_ONCE here, and I don't think we
+>> really need it. @Andrew can you squash:
+> 
+> Out of interest do you know why this is happening? xtensa right? Does
+> xtensa not like CONFIG_DEBUG_VM?
 
-Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+We don't happen to include mmdebug.h in a xtensa configuration.
 
-Sorry, I forgot to add the reviewed-by tag.
+Briefly thought about using a BUILD_BUG_ON_INVALID(), but decided to 
+just drop it completely.
 
-> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> ---
-> v2: Fix issues with changing the page_table_lock unlock location and initializing adjust_reservation
-> - Link to v1: https://lore.kernel.org/all/20250822055857.1142454-1-aha310510@gmail.com/
-> ---
->  mm/hugetlb.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 753f99b4c718..eed59cfb5d21 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5851,7 +5851,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->         spinlock_t *ptl;
->         struct hstate *h = hstate_vma(vma);
->         unsigned long sz = huge_page_size(h);
-> -       bool adjust_reservation = false;
-> +       bool adjust_reservation;
->         unsigned long last_addr_mask;
->         bool force_flush = false;
->
-> @@ -5944,6 +5944,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->                                         sz);
->                 hugetlb_count_sub(pages_per_huge_page(h), mm);
->                 hugetlb_remove_rmap(folio);
-> +               spin_unlock(ptl);
->
->                 /*
->                  * Restore the reservation for anonymous page, otherwise the
-> @@ -5951,14 +5952,16 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->                  * If there we are freeing a surplus, do not set the restore
->                  * reservation bit.
->                  */
-> +               adjust_reservation = false;
-> +
-> +               spin_lock_irq(&hugetlb_lock);
->                 if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
->                     folio_test_anon(folio)) {
->                         folio_set_hugetlb_restore_reserve(folio);
->                         /* Reservation to be adjusted after the spin lock */
->                         adjust_reservation = true;
->                 }
-> -
-> -               spin_unlock(ptl);
-> +               spin_unlock_irq(&hugetlb_lock);
->
->                 /*
->                  * Adjust the reservation for the region that will have the
-> --
+-- 
+Cheers
+
+David / dhildenb
+
 
