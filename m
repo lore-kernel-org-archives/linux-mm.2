@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F989C8303F
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 01:57:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9D99CA0EFA
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 03:06:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93A978E0089; Mon, 25 Aug 2025 21:57:52 -0400 (EDT)
+	id C68C58E008A; Mon, 25 Aug 2025 23:06:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EAFA8E0038; Mon, 25 Aug 2025 21:57:52 -0400 (EDT)
+	id C18C38E0038; Mon, 25 Aug 2025 23:06:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D9B48E0089; Mon, 25 Aug 2025 21:57:52 -0400 (EDT)
+	id AE0AA8E008A; Mon, 25 Aug 2025 23:06:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AE788E0038
-	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 21:57:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6B35118804
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 01:57:51 +0000 (UTC)
-X-FDA: 83817247542.27.0855145
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 44B1B20004
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 01:57:45 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=OdestZrw;
-	spf=pass (imf03.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 993138E0038
+	for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:06:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1CEFC1DE168
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:06:14 +0000 (UTC)
+X-FDA: 83817419868.19.FEFA4F3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8A9FA80008
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:06:12 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u1KYSH54;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756173469;
+	s=arc-20220608; t=1756177572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q3e2ypT3Kx6Yk73bwvacvSvu/yuGOsKJ/34CpZyahLM=;
-	b=SF+ALHMntjLDBJjBmKj9UBHf2KX5WAkEsIR0qfSjroY6e6IfMBhATBCOjK5MG05E3j+6vt
-	VNAG+JHcqc8w5+q5a/FgIr6s1s1nBVc7ybvyRcgx4Bzc1ocO7T+k0Uk+1eK7GKQoN1DPBl
-	VUc30iCo1ynTmK5g2NImsn7nm3usDaE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=OdestZrw;
-	spf=pass (imf03.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756173469; a=rsa-sha256;
+	bh=u//TJFO04Zfapo+eEPrU9YifMzUhV/eh39OW/BvrF8A=;
+	b=X5Cg0Tu/BJhYro8yY12XsPkWcIgJdBHGAnKoOlhBIT7xAiUdwnGrR+AmkECrQqQMBeH93h
+	5bxTvFsVBKn5XLUR7TN1NVvHQUg3HCKYoOJreTkXqI3Qkp6DGUT5FntlEnSwqrdgCIHGTy
+	z0T/AzFdr573zsbtz2vTO0qVFr1CptU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756177572; a=rsa-sha256;
 	cv=none;
-	b=xYFaBaD30/AGt9NJHfS8HHk2Xjq6Yi3rotL/T2YACjouRhMfkQKEA2jkzqRNFjSVE5MIoz
-	Mxd0IFqe/Jsx/3RGEMVTe6U85H4WfB9XZd4BSnUnJ6o/N4unel4PKo5i4MUK5vmpYYxG2W
-	gZGRrzLrLNmI2ILV6WjP7z8vry5AVK8=
-Received: from pps.filterd (m0134425.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57PIhYOX010998;
-	Tue, 26 Aug 2025 01:56:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=q3
-	e2ypT3Kx6Yk73bwvacvSvu/yuGOsKJ/34CpZyahLM=; b=OdestZrwhcBNQMcaOB
-	NuxwGYIa/nrXisiL9KNmm877OTiNmM1AKTmg/0rCGWxm9WQGMdWKoXNObrxbu30O
-	GN+kSa2pLDgTdczlN+3FXkpmfJ1mdZNodesZ4wRyr8/xAl4DTMitRxZF+sMjoqK2
-	0tGa2sP+0yytiriXLLO2Gp0rTUUhwbkABQPth2IEYwhIzfevqEBIXWL0qOAijBI+
-	vJTXM08nhOkCF8t+ZEIHEdhKvX9rkXw7MCokl7Tx5F1f7C5yDURteWoaJLHu5lvU
-	wNh6i7DSgFKR7l2jAxvvM1xtEHe5ZjSDWGkzX5iiEqYyIDFl1dDBgIWLQ18MpQ0E
-	2qIQ==
-Received: from p1lg14878.it.hpe.com ([16.230.97.204])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 48rwc12t1g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 26 Aug 2025 01:56:56 +0000 (GMT)
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id E061C130EC;
-	Tue, 26 Aug 2025 01:56:35 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id D1FEF8014CE;
-	Tue, 26 Aug 2025 01:56:32 +0000 (UTC)
-Date: Mon, 25 Aug 2025 20:56:30 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: jane.chu@oracle.com
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Jiaqi Yan <jiaqiyan@google.com>,
-        akpm@linux-foundation.org, david@redhat.com, tony.luck@intel.com,
-        bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-edac@vger.kernel.org, lorenzo.stoakes@oracle.com,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-        surenb@google.com, mhocko@suse.com, nao.horiguchi@gmail.com,
-        osalvador@suse.de
-Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on
- already poisoned pages
-Message-ID: <aK0UTovxnKfjPwXs@hpe.com>
-References: <20250821164445.14467-1-kyle.meyer@hpe.com>
- <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
- <aKd1K3ueTacGTf1W@hpe.com>
- <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
- <14a0dd45-388d-7a32-5ee5-44e60277271a@huawei.com>
- <aKyKort2opfQYqgA@hpe.com>
- <2bd5c32b-dfc4-4345-8cc8-bbda5acdc596@oracle.com>
+	b=sSNt08IGc2F/+WyfJGJh3LlBgINVfPyPhDvmzsC6nL8oLHsYuR8oRAd6eknfERzrdc7kA4
+	8gVjJXqgpy2fI+xD5QG0qU+6bJMTz1s55DqM3NAm+RrJk6hf/J16VqtRiXeu3lU4kNqJDA
+	C1ejt97Dui5Rkqac/RKJUxJ4qLgYhH0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u1KYSH54;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B6DE2601EC;
+	Tue, 26 Aug 2025 03:06:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE7FC4CEF1;
+	Tue, 26 Aug 2025 03:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756177571;
+	bh=3e4hvzpDH6EODnkYI8p9FQ9wL3jJv36ugO7+Ag6HcVA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=u1KYSH54VdstYOlsRJ7bZRGckzrCWNXRvBKWbeYaET9GZnEar0BMrUxNQQv2UfKp0
+	 UlH2DKwBqde+W/Y8njuZOdU/vZD+3O83g98NE/xqceYm6q0SR2dwe1Swl+fODTkJ7P
+	 Pgc4mnskWH9RAGbDUnJatiXnHke7v8Is3VnEMpZ0HLzShRI0G9APMG3D6eBsZJ+jmi
+	 2LUu8H3MGvcjxuspcag4ORR2lp9eeL+n129vez9wiFcPUyCSXVjRgBQ4cNsxJSal13
+	 oekjc7lenkJOnt7w6hModY1ZLC2t+a4HBMkYNtZ1NFagqNQ1xlAYtgmRteGO/ul4fh
+	 qorS4x0wx4wXA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Quanmin Yan <yanquanmin1@huawei.com>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 04/11] mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
+Date: Mon, 25 Aug 2025 20:06:08 -0700
+Message-Id: <20250826030608.44305-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250825151353.36392-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2bd5c32b-dfc4-4345-8cc8-bbda5acdc596@oracle.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI2MDAxNCBTYWx0ZWRfX77CJDoR4U+bo
- adA0Byap4kY4QNffTn/8w4l6Y0Di6CfcyCKXwdkK/7sIZTalDyO7Dw8qfIb06flAOD/C+dbK4Ck
- 4KVI/94bV+VSbzwhWpZFvrAR9DUBi4ji1MoCYrvZwL+t9huiE0bzbQY54MH739HWD/T2oRiNnYY
- 5eRrgWIU+JnxELLMgWyDNSm9l+NhFWtVbv+xHOVM8TOeocNGJf29+1S/LKNSW8+6V8tTHwASige
- Kj/xsvL/wtZOhiZ2Gsfmv/vM8rJ95FQgDoNCcmsoHMqe0VueEmMc1ouQMg2bqZxUjxflBnicEM1
- emquCn8wvGd+X3wdDi3h7utZk+5i/kSqfiazPzit/6sjnOYWeZZ6WjkyHxq34ny3H/byvoy9kOG
- 5JFbqAP8RKyGnOlcROihqSby3nWxHPBkfEDFAEvVB6NpmRecJ+4G+Th2/RDuZQ3OiJ7bW/I6
-X-Authority-Analysis: v=2.4 cv=EMYG00ZC c=1 sm=1 tr=0 ts=68ad1468 cx=c_pps
- a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=yPCof4ZbAAAA:8 a=MvuuwTCpAAAA:8
- a=1XWaLZrsAAAA:8 a=VzHv1wIHhfcjo_lpb9wA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: sIWRHfsPa6103QyDutpgkX3sUVCctQYx
-X-Proofpoint-GUID: sIWRHfsPa6103QyDutpgkX3sUVCctQYx
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-26_01,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 suspectscore=0 impostorscore=0
- lowpriorityscore=0 mlxscore=0 mlxlogscore=999 adultscore=0 spamscore=0
- malwarescore=0 phishscore=0 bulkscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508260014
-X-Rspamd-Queue-Id: 44B1B20004
-X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 74dwst7dxexecyz7kpid1a3eazqikfqr
-X-HE-Tag: 1756173465-187170
-X-HE-Meta: U2FsdGVkX1+anctFqhlo/U8x0zlk+jV/4ABnu1pIpa1VOM2n8M9TDSFk264Jh5MKGpm9mSmAyxf5llQNFuagMzA+ipgsHE1MvCGaeHq/HTh9TMf1xk/pjsm58cs0c/M1WTzaT2wYisPFC060rgPoNr2PNgkWvqDgFHstN2fF0nazd5Gd4PmogbeCaLXJgCq4q14m7dGQa3BuQ2q+8k+98nl0KEsOi+WDHdS+77C7AQZp5lB0Jrhb216JYZCtUZl+3QrGoeI0yIxaJ/W1CF5NDfllaBwr8tzO4SYiuLqANGEs/w+Ipaeu0CGM10RmuXuK50NmmWtbBvkwR8ZZ71aEMHNHDjsozxQ/ivnzj2Jf4UZk/yaFYd48L/RdFflzlkXdPYNEnmWT0ScTJ065rc3QU2PipEHJTqzmPYEH0cvXduJFK1C1+PqbfDHVpqON3biqch5ZmAtEMHEBlDK7+AHbpzN8ooeKI8YdtE+2cRk7OwSC2oAHAs5srdqw3IGxfSXhLWRMIn2+lJhO65AaOvWWWy+E8iV/cY0o9kKwTc0nDtUsXMcKBvnM5LW64k3FUXJvGae1i+n6GTbu7G07G1SHO+f95wSEJHsCAY7fyTqfcPXMIuE1CdxtzuwHgsu9JT+i7mi4S7T675wSZFnGx1XqVTv15vCinCTyYJuyLOTpr+HHPaN7C59kfXbe4uVNpnrHqHW2eAtYLarYUvnS+jaGcJ4MC4Iq41f8LYVRQtD8akLkMuW+rDvVMuG2MjCRxxthIr/zA0JPeYlQPiJDCgikld5o6NyL4A5qMZjHG2QkkEO4wfgns3ZekvRo/I8gRKvL580F44dVYl5lLFsUZqjl1YvUAwL6UvKkgN9bsvygmbUdD0jF9PKDdRSnYZ1yWYbX4krj+vyy6SWXLkQsMznqbnjiHwZSHXPauaamXuDY42qTulDD2+jiF/yU4ZdrZeWJKsYFgcm7uAGn4MHzyvs
- ywjXdyBv
- Rs1Sx11AV5i2tOuj1MHdUesZ/Ur6sdwoiNvD3AEnHDzdiLsA7f5EwsAacU0q6TOznmehnz/Xkc+XNnSSXEJchQ6x5tMAxC/1uOdX7sM1AvSkzK3kt2DIcWeNOvUeNFCTDGOAxfuRqU0XbJeJ8gEeKjjcw48qo7smEzZjcem4Im9XXqaNIf5DRqQGRlU+yFo2E4HgG3YoKNnqKkVJotMN3xKhKekQtJ8b76wRTykFgPSrjOGyZ+kQGNgm5RWM32LEE10Ruoqu7M3e4wEfjQETJVZl6jxUCkuPnuahxVIogW+kZAKK1uNry4a3rXeiDqxOfl39+TJl6qPhnLBX6M542m4Dt34V0bRj8efLoX66+4QhqwRehoRNPw+xhD8561AOPiejrTnX9fkhO0Nc6PAxb3O/I5BlAU1ofbdE6tiUIefmLo25i6GavfunEntdvrxn9/rn4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8A9FA80008
+X-Stat-Signature: dn6rnn53em4c88c7k5jnf8gmzm6kscqe
+X-HE-Tag: 1756177572-273673
+X-HE-Meta: U2FsdGVkX1/n6cKMuvVpE3uDPUA766Y/gbHBjZQXHH1W7P6fe2qButiMw8jU8e3DzDD/rOl4gLp50yQBhKyW/vmdoah6BmGh81ZW8aiDEcFaQLqXJL7E7ONCuW2HRS4opR/142U2lkuEjv2uajQ2qP0UUffYTQt9EPyuo1U9cVSybO7Kdi/P5NIPuyRQI3oqHUtz1tjzMDXudOWQgr0FnRFdsmwAS2q8Tq69Le0yyaJd7pjhWWnl1KnIvUlUXz3Wc1OIX60LtG9qx/9jRrNLmRnGSN9RHLez4vKpl2DlDkxwSBClFJ5O8zDvLmQchiUDE9SHbYeEEl0jExMJMSIghJDZXVXx5mxABmTZVsYJ133GH60YIsaEs3Jh4c7BURXumaoL34nYLW/yr/+JtgRG9lZ2UHv1e9lLp/xi6SA4ApxjqeUycQm3LyIRi5UtflNamPYx3fDHLoI+cHfRSCZzkcMzTZEFvYBLNlz7aFG5Ns6HMTMnDQh4XVEmiZH/BsF38+pwsi26/DLstRLHE4wY08fyHoyhAV4Jg4W/9IAS2Tu+Lfn/aiPms6m8dqL2m3Uq2D4fDz21POIC25m27rN0GGNhpFAoZDB7n+PoFY4BGn9UFyB2VyVuIK4jhpL14FB/XNZ81cqGHPtYhlC81wSA2gSh0njeAVVFku952meNVk7bmrWmbG1Nf9RXQiCTVApsoGpcx95k6rKmu6KvZmr7QmAF/rLcCJpH/8oQ/3Y8EtEKzdc5kR1hNTlazTMdKCUouHXRdwV//eQrmuPjV6/4ZL+7vHCRPVqD/UgunLM0+onTwYhDe1UymHfst68Fb+Sj/8rxVXbDK787fGCR5+bHytb/zPbZ8lcpw/z3Uby3uCo3Fy4J+PagptlY6GREIWnzt5pS/2G33K2zaF7AmtNdAEBafc243wuCi3YQArM0DDXnN0DVSu2TJVi3Td7rY6soUUjjZ321YiyPs+ELlNM
+ OtDqS/KB
+ mwzRAgn2hyhGc0UOvoqHK18CbG79+j8tjKSZU8xLqRZHLlwBJ02oAaYegUyMTVIV/79Q+bwEVR61jWdMw4TYJhbrBQTVSkQk0jDVJGGkHtzLaFqTTPGnqxXu8W/tay2M1c2AVFEcjjO2p6Mkj6ErCquOY4sG4P45EWBcVGzVR9Oi98QBO0EyEd/wdOrHZBTjlFgwYKjME+F4H9aNTofB3LUkFSCSrbunpNGXyquDtNPPxWGR1UGWEvUFkMhVsvOp6x7C19U3hrezoeObNEGKfbj2851bPmJ//a8vIHtyidOTdfO6xLOGe9nNuIwMSnyn8QuOn3RjHZKy1kM7b4xX1oPGO9AJPydnQXaHEJSBR72HL4GgLvlfHtkQ+zZYkHGfqkepd+tVaWavin47G52Y9ahJn1r1JfuEbWDbSuEwgpTI/8RSl7Xba5bfkh/SAO7PCiiMRxIzG9+zsleg56afmnmCZdb38HzUmto6tnTXK/9a00D7AA7S+5Hztdg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,146 +97,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 03:36:54PM -0700, jane.chu@oracle.com wrote:
-> On 8/25/2025 9:09 AM, Kyle Meyer wrote:
-> > On Mon, Aug 25, 2025 at 11:04:43AM +0800, Miaohe Lin wrote:
-> > > On 2025/8/22 8:24, Jiaqi Yan wrote:
-> > > > On Thu, Aug 21, 2025 at 12:36 PM Kyle Meyer <kyle.meyer@hpe.com> wrote:
-> > > > > 
-> > > > > On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
-> > > > > > On Thu, Aug 21, 2025 at 9:46 AM Kyle Meyer <kyle.meyer@hpe.com> wrote:
-> > > > > > > 
-> > > > > > > Calling action_result() on already poisoned pages causes issues:
-> > > > > > > 
-> > > > > > > * The amount of hardware corrupted memory is incorrectly incremented.
-> > > > > > > * NUMA node memory failure statistics are incorrectly updated.
-> > > > > > > * Redundant "already poisoned" messages are printed.
+On Mon, 25 Aug 2025 08:13:53 -0700 SeongJae Park <sj@kernel.org> wrote:
+
+> On Fri, 22 Aug 2025 17:34:12 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 > 
-> Assuming this means that the numbers reported from
->   /sys/devices/system/node/node*/memory_failure/*
-> do not match certain expectation, right?
+> > From: SeongJae Park <sj@kernel.org>
+> > 
+> > Add support of addr_unit for DAMOS_LRU_PRIO and DAMOS_LRU_DEPRIO action
+> > handling from the DAMOS operation implementation for the physical
+> > address space.
+> [...]
+> > -	return applied * PAGE_SIZE;
+> > +	return applied * PAGE_SIZE / addr_unit;
+> >  }
 > 
-> If so, could you clarify what is the expectation?
-
-Sure, and please let me know if I'm mistaken.
-
-Here's the description of total:
-
-What:		/sys/devices/system/node/nodeX/memory_failure/total
-Date:		January 2023
-Contact:	Jiaqi Yan <jiaqiyan@google.com>
-Description:
-		The total number of raw poisoned pages (pages containing
-		corrupted data due to memory errors) on a NUMA node.
-
-That should emit the number of poisoned pages on NUMA node X. That's
-incremented each time update_per_node_mf_stats() is called.
-
-Here's the description of failed:
-
-What:		/sys/devices/system/node/nodeX/memory_failure/failed
-Date:		January 2023
-Contact:	Jiaqi Yan <jiaqiyan@google.com>
-Description:
-		Of the raw poisoned pages on a NUMA node, how many pages are
-		failed by memory error recovery attempt. This usually means
-		a key recovery operation failed.
-
-That should emit the number of poisoned pages on NUMA node X that could
-not be recovered because the attempt failed. That's incremented each time
-update_per_node_mf_stats() is called with MF_FAILED.
-
-We're currently calling action_result() with MF_FAILED each time we encounter
-a poisoned page (note: the huge page path is a bit different, we only call
-action_result() with MF_FAILED when MF_ACTION_REQUIRED is set). That, IMO,
-breaks the descriptions. We already incremented the per NUMA node MF statistics
-to account for that poisoned page.
-
-> > > > > > 
-> > > > > > All agreed.
-> > > > > > 
-> > > > > > > 
-> > > > > > > Do not call action_result() on already poisoned pages and drop unused
-> > > > > > > MF_MSG_ALREADY_POISONED.
-> > > > > > 
-> > > > > > Hi Kyle,
-> > > > > > 
-> > > > > > Patch looks great to me, just one thought...
-> > > 
-> > > Thanks both.
-> > > 
-> > > > > > 
-> > > > > > Alternatively, have you thought about keeping MF_MSG_ALREADY_POISONED
-> > > > > > but changing action_result for MF_MSG_ALREADY_POISONED?
-> > > > > > - don't num_poisoned_pages_inc(pfn)
-> > > > > > - don't update_per_node_mf_stats(pfn, result)
-> > > > > > - still pr_err("%#lx: recovery action for %s: %s\n", ...)
-> > > > > > - meanwhile remove "pr_err("%#lx: already hardware poisoned\n", pfn)"
-> > > > > > in memory_failure and try_memory_failure_hugetlb
-> > > > > 
-> > > > > I did consider that approach but I was concerned about passing
-> > > > > MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. The message is a
-> > > > > bit misleading.
-> > > > 
-> > > > Based on my reading the documentation for MF_* in static const char
-> > > > *action_name[]...
-> > > > 
-> > > > Yeah, for file mapped pages, kernel may not have hole-punched or
-> > > > truncated it from the file mapping (shmem and hugetlbfs for example)
-> > > > but that still considered as MF_RECOVERED, so touching a page with
-> > > > HWPoison flag doesn't mean that page was failed to be recovered
-> > > > previously.
-> > > > 
-> > > > For pages intended to be taken out of the buddy system, touching a
-> > > > page with HWPoison flag does imply it isn't isolated and hence
-> > > > MF_FAILED.
-> > > 
-> > > There should be other cases that memory_failure failed to isolate the
-> > > hwpoisoned pages at first time due to various reasons.
-> > > 
-> > > > 
-> > > > In summary, seeing the HWPoison flag again doesn't necessarily
-> > > > indicate what the recovery result was previously; it only indicate
-> > > > kernel won't re-attempt to recover?
-> > > 
-> > > Yes, kernel won't re-attempt to or just cannot recover.
-> > > 
-> > > > 
-> > > > > 
-> > > > > How about introducing a new MF action result? Maybe MF_NONE? The message could
-> > > > > look something like:
-> > > > 
-> > > > Adding MF_NONE sounds fine to me, as long as we correctly document its
-> > > > meaning, which can be subtle.
-> > > 
-> > > Adding a new MF action result sounds good to me. But IMHO MF_NONE might not be that suitable
-> > > as kill_accessing_process might be called to kill proc in this case, so it's not "NONE".
-> > 
-> > OK, would you like a separate MF action result for each case? Maybe
-> > MF_ALREADY_POISONED and MF_ALREADY_POISONED_KILLED?
-> > 
-> > MF_ALREADY_POISONED can be the default and MF_ALREADY_POISONED_KILLED can be
-> > used when kill_accessing_process() returns -EHWPOISON.
-> > 
-> > The log messages could look like...
-> > 
-> > Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: None
-> > 	and
-> > Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: Process killed
+> This can cause __udivdi3 linking issue similar to the report [1] from kernel
+> test robot.  Andrew, could you please add below attaching fixup?
 > 
-> Agreed with Miaohe that "None" won't work.
+> [1] https://lore.kernel.org/oe-kbuild-all/202508241831.EKwdwXZL-lkp@intel.com/
 
-What action is M-F() taking to recover already poisoned pages that don't have
-MF_ACTION_REQUIRED set?
+Hi Andrew, I posted three fixups for the __udivdi3 issue, and I see you picked
+two of those in mm tree.  But this one is not yet picked.  Could you please
+also add this fixup to mm tree?
 
-> "Process killed" sounds okay for MF_MSG_ALREADY_POISONED, but
-> we need to understand why "Failed" doesn't work for your usecase.
-> "Failed" means process is killed but page is not successfully isolated which
-> applies to MF_MSG_ALREADY_POISONED case as well.
-
-So that accessing process is killed. Why call action_result() with MF_FAILED?
-Doesn't that indicate we poisoned another page and the recovery attempt failed?
 
 Thanks,
-Kyle Meyer
+SJ
+
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
+> ==== Attachment 0 (0002-mm-damon-paddr-use-do_div-on-i386-for-damon_pa_de_ac.patch) ====
+> From hackermail Thu Jan  1 00:00:00 1970
+> From: SeongJae Park <sj@kernel.org>
+> To: Andrew Morton <akpm@linux-foundation.org>
+> Cc: SeongJae Park <sj@kernel.org>
+> Cc: damon@lists.linux.dev
+> Cc: kernel-team@meta.com
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Date: Mon, 25 Aug 2025 07:45:24 -0700
+> Subject: [PATCH 2/3] mm/damon/paddr: use do_div() on i386 for
+>          damon_pa_de_activate() return value
+> 
+> Otherwise, __udivdi3 linking issue happens on certain configs.
+> 
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  mm/damon/paddr.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+> index 09c87583af6c..6fb92ecc513d 100644
+> --- a/mm/damon/paddr.c
+> +++ b/mm/damon/paddr.c
+> @@ -236,7 +236,7 @@ static inline unsigned long damon_pa_mark_accessed_or_deactivate(
+>  		folio_put(folio);
+>  	}
+>  	s->last_applied = folio;
+> -	return applied * PAGE_SIZE / addr_unit;
+> +	return damon_pa_core_addr(applied * PAGE_SIZE, addr_unit);
+>  }
+>  
+>  static unsigned long damon_pa_mark_accessed(struct damon_region *r,
+> -- 
+> 2.39.5
 
