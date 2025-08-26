@@ -4,118 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0986FCA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 10:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81CEACA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 10:46:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61FD6B0187; Tue, 26 Aug 2025 06:44:09 -0400 (EDT)
+	id 6AFC06B01A3; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D39726B0189; Tue, 26 Aug 2025 06:44:09 -0400 (EDT)
+	id 65FEB6B01A4; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4ED76B018A; Tue, 26 Aug 2025 06:44:09 -0400 (EDT)
+	id 5754D6B01A5; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B19766B0187
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:44:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 208F8139A45
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:44:09 +0000 (UTC)
-X-FDA: 83818573818.08.DE990FB
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1746440003
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:44:06 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fuVTo2n8;
-	spf=pass (imf12.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 42BD86B01A3
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:46:01 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6EDC139A33
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:46:00 +0000 (UTC)
+X-FDA: 83818578480.22.FBFC24D
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 17A1D40002
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:45:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NlCKuFu8;
+	spf=pass (imf17.hostedemail.com: domain of elver@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756205047;
+	s=arc-20220608; t=1756205159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HDKS+KolO/eydDQPsO0aMd3COpPar50Oa0wPAykDNNk=;
-	b=caq2DwSb7cKQKYn3TMVfwoG85JbkHPxiysMbPHFJH9nTo4+ZI77gHufcS8w1SMfwGETJrv
-	DqMSX82CcMsD2sGH4OsAGukkWYxpECWOockRtWSn5OkOII9hx2eg+SbCBqExRUNUQohTeS
-	xwjRXSHAhI3zyBU9p05VQ8SCsbDxpxw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756205047; a=rsa-sha256;
-	cv=none;
-	b=0KHF33+sqcJ7MIIZN3PY0NFN/kRGyJBO9u2BjPzYKlSZwXqSMYDPAPCZmAYcp5qflM34NB
-	xK1tQO+tFRy8l3+iqhBv0EsjUpiDy9NXhq85qqpOr9WlQfDv9gkNm372Y2/KafmpHxvVb/
-	4bGRPIuJlQI/FTlYUmec9gO812HSvcI=
+	bh=ZGOLh5cQuaV0+vt4hcjFj06C3bqSM1fNgF6Sjp1p1nM=;
+	b=Se5IIJw2fuTBT//AyQYrg0wRuVRbkOsxm7JeTkIJUyLTQm0Q4/h9FuAhwVnKwaZrqmA75M
+	Gh8AAwBQCQxhdROpC07ixREI8mldeUgVjFIwKkl2BzBmkqkjiWyI0XAOtFtayYHAK9/grx
+	bUYTgFj5o2kgXMnCabP1Sh+BI6PABaw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fuVTo2n8;
-	spf=pass (imf12.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2462ae29714so5556785ad.0
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:44:06 -0700 (PDT)
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NlCKuFu8;
+	spf=pass (imf17.hostedemail.com: domain of elver@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756205159; a=rsa-sha256;
+	cv=none;
+	b=ggXV18xzEC+Z8alFUe51jDj2IKkd5S3A4ycRMXEu1x5kV/+GUHyN7io1nziLbmi/KvGCqE
+	YzFiKuwid94HWog/VCHUBe2dshk99oE5h7JlRgnsFyH6l1HWgJbB8qoXxZBFc6jeBcMa4i
+	a3AJxZh+eIwdPjRX0vaYsHx4b7TU0to=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2460757107bso49645975ad.2
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:45:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756205046; x=1756809846; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HDKS+KolO/eydDQPsO0aMd3COpPar50Oa0wPAykDNNk=;
-        b=fuVTo2n8II8/tLKLDTVDeHyNZzCVOZz+EEdcmA0qqje57X0yMKZjLy3OqS4BeSb4tK
-         VTN8wk99FAPmeIBhtBTgFuKt5A4/MYlkgWR9M0gA7pl9znEbMefvTmSBV7rznJhhJZWY
-         LgZqT4MFu2KnQRTUI6lQc6GoxpZ4o+rBTHYRDGJgulGiMm+nefcLzwacXEWItAbxA4H0
-         XdPb+vfQFmqVdajipTeWhGC0wbeG9DikTx58sbiu0d/903jfeQT+DiQ4iq/mNnccCCG5
-         raUom67y+i/ryuTzqQGytsRzIyGwQMaOZ+kKohP73dKAdUqUIBt5UfxHxiisIxwUL2En
-         Z4zQ==
+        d=google.com; s=20230601; t=1756205158; x=1756809958; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZGOLh5cQuaV0+vt4hcjFj06C3bqSM1fNgF6Sjp1p1nM=;
+        b=NlCKuFu8RM14wPBeVRDP4RcEitBxI1UbZCryV288C4Bc6WtWmNZ8QGzyBDTZlopSb3
+         6J/q5W8g3fMumUtz4jL0wP5pyHWv9IEScIXqbnycsetjjaYsHLqtsIWM/Flt6AwLg92p
+         kuNkk3AYykpClLVctGsS5yVffnVLQdUpJxYpfw4pCSnboT2j+Uo6LYRBaDPZdc3Ayg8m
+         fyzGhsPLc19YCDo5oTKtpc0qCEiqrHDRjWMh39qX3vLQ33Cj3pTTbCpQ7aVZAX2QMcKk
+         2lv9QUxesqUusYtlXeytQaZ2PM0/d22qrXjNnz6290Eq2G8/c0scBrcHxRHKkYk1bHmO
+         h2qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756205046; x=1756809846;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HDKS+KolO/eydDQPsO0aMd3COpPar50Oa0wPAykDNNk=;
-        b=Vzc3f4EVnG/bEy0uaZdvODIhEzVvI1sri9J6DhLLKZGCJ+/pJba4pdt4h6ac+NCSBZ
-         TxtxlOplQO8VdYxtjGzOj6j/j6MyyCcnX+Xx1jCoEDTMp6N7YPPuz4pFzgQU/3z19+mP
-         pcfX8IPel+vBpm8XO3m8xo6bFy7xtxdYbnTuZ6touxsZNLl4ESB1RNCCYTk4WEsVL7GU
-         CuAyZr86ZNp64gsoXdn3/9pus7KtaGOkjcH5j8APfyeZufPbGgYWd6O4urxc+7AlQJwm
-         UA2baTCuvqfaYWMu2HWd6h14kXdfaQ0VUMqHImtehxI1BXg4WK2axyjoHEZgU0gF5Lzh
-         uRkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXWQj9dR6nDcOwnYL2978La6aWvdC5bqVvpyvKuXmY8ynqfebRCGOo/0x8FVhAQUKY4ax1/1aE7dw==@kvack.org
-X-Gm-Message-State: AOJu0Yzpegf9b+G3PrKwLttd2trlkSpajSx/tc+4ar/hHlGzTP8hopZU
-	X41BbPvB6FLf3P/5bvVfQjaLuIUue8vTZqAztaI0l8WHgJnKnNULU117S14Mx03R7jxhWB6zEza
-	08DQPUZ8vPa5pFBvb+m84gUIFJtvXEag=
-X-Gm-Gg: ASbGnctOcSqii7+SfdTIRdTO3LCFa9p5gNgUcrVAG8wD5pWa3tHkO1AiqaX6bnxTIWY
-	RxxcxhNCQZFafQpQscDLNdid71bSk0xuI/44H1UKWN1qZQ7AMHdv4R77zPzi8oPmaYK55z7QKEH
-	I4UAL75NsFOBdn5kqNtD7xa9PqPINZSLZLsVqfQK46hhWOKYRoEX+e6CcmhX/fLT3uX+xokhhGF
-	wmII+hboLjY4nVL4QvSkgBV7ZeYC9za+GOG9j+sOdggjzH8nIqDRLbHssCjQW+li458rM5SZpmz
-	+4gVSleLBQpP8Y9dCIiiLy0z2g==
-X-Google-Smtp-Source: AGHT+IHy/EFT4NAQTm/VDalLdL9wyv7Nfx5A+2q25XWbuNpKH+YzA8fCrpu4i2ytIGN/IJVVqj62gC1+2NW2EOHuzos=
-X-Received: by 2002:a17:902:d506:b0:246:b1cf:fec2 with SMTP id
- d9443c01a7336-246b1d002d1mr61475435ad.4.1756205045763; Tue, 26 Aug 2025
- 03:44:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756205158; x=1756809958;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZGOLh5cQuaV0+vt4hcjFj06C3bqSM1fNgF6Sjp1p1nM=;
+        b=NovL8C6NLo2fhYVr2mbOQ33T3nRWhH5k/y7QE3isiVCP3e9AIfoyq/OdT7TWZLkRmr
+         GgKWZqL+isZ+ll6rcNDGg6+bUf6PucnaAWOmfV2DrM0WWsQL/XTz2hWUMTYxoJ8h2fu/
+         Oofh3a3+j//d2ZOd0IFm/zpOYRfnGLmHcP1fEY9ez/rXxR1OtaThEaR+YbTtuqZLsu0g
+         G3lAclpoNYY/9QQ70/Zf83kSgLOmAZ8uRcSiRAt9ROkG4q/7OS2MZuyfh4cuS/OMXpp1
+         fNwfCSXkc1UVpDkiedbGjxf5U4cByr22GXQ0RSlxo+ISgeDf+8LaFX5QUqv2IvMpTtV4
+         Rw8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVLfcwGsfxXwe0FhPVg1XuCyjGC4PejMFxqcLUCVGnZIU61/WteR5JkE4k9I7TQ4/dFHNG/kKLFdg==@kvack.org
+X-Gm-Message-State: AOJu0Ywj/tlTYYgxJBjgDtOhqTVpWMqiDb+ftV5+xnS0qc2UA5GA4b1A
+	UpkF4107nBk0/8kjgiXNE58rDVwbR1sVtP9le56MIMZfmiNJsQNScSI4nKdefgBrOHaO+OFilS7
+	G3iTDGLwPSJic2LcUsNfC2ScI1vwFJyGBbXFEdfJe
+X-Gm-Gg: ASbGncujNtVCKvARA+u26ExCcl+PMc8AWEfLdSQRwWgKEid3eI6Ar4BBR9fQzncZzR4
+	+x8YLbs3x5vGFpcN7QdOc7SxQmCMVKZr04ZSwaISuwb71XImhk58x9e7Mh5oHzDypunUwSWksws
+	vb/jxoT6SN+8Ni2qr3yKZFOE0o4ScWf0cBttFjkvK6L8qifMLcFCTMA0FDWC5Ljh7kv3wbvPIZP
+	QSVtLX1sinV3k5lHpxOxDP4654=
+X-Google-Smtp-Source: AGHT+IHaZIymcSNO51VzrGvkl+EzFgf+EwvT7kBpe3gUWu+Fy0TGd2k7zRtskb+cPodn3Z41b2nZl1YDZatmO+4LcFc=
+X-Received: by 2002:a17:902:dad1:b0:240:8262:1a46 with SMTP id
+ d9443c01a7336-2462ee54512mr199229855ad.25.1756205157527; Tue, 26 Aug 2025
+ 03:45:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
-In-Reply-To: <20250823130420.867133-1-vitaly.wool@konsulko.se>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 26 Aug 2025 12:43:51 +0200
-X-Gm-Features: Ac12FXwcIt7AKSolN3DwtlXw09gRC9vffEcEHqjr33ENcT1V7Bz1nEJE6ebXjz8
-Message-ID: <CANiq72kQv9nJYyiuHvTdaJs2SvZ_bFAnexoEBgjb0CDzPjBTYQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] rust: zpool: add abstraction for zpool drivers
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org
+References: <20250825154505.1558444-1-elver@google.com> <aKyT2UKmlznvN2jv@hyeyoo>
+In-Reply-To: <aKyT2UKmlznvN2jv@hyeyoo>
+From: Marco Elver <elver@google.com>
+Date: Tue, 26 Aug 2025 12:45:19 +0200
+X-Gm-Features: Ac12FXxpah0HkZevruBg4QeHMNDjWXsh7--6Kjx5Kp37atP55Mt7D7-5zFmt0B8
+Message-ID: <CANpmjNPUsbkyg5VvzUSYqVvaScXpqdfsb_oq2PuKV6VbkZLqFA@mail.gmail.com>
+Subject: Re: [PATCH RFC] slab: support for compiler-assisted type-based slab
+ cache partitioning
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Alexander Potapenko <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, David Hildenbrand <david@redhat.com>, 
+	David Rientjes <rientjes@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Florent Revest <revest@google.com>, GONG Ruiqi <gongruiqi@huaweicloud.com>, 
+	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matteo Rizzo <matteorizzo@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, linux-hardening@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: kcsrgmix7ngxup8kk95n61b3zu8gy69o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1746440003
-X-Stat-Signature: m6ui11yzwtk6qnhminwxmrg5is6ifm1y
-X-HE-Tag: 1756205046-257898
-X-HE-Meta: U2FsdGVkX1+tW1dzBmqL7lfHwWO/RENYj/s/d71MZZkliMp89dx0mIPXYQxyZrpAlse2rnn46i0c5TVHGc+axjG0JhUl+BOoZO2DotlJq7yzZkAjl0shDX/ZQ8Y2AahfcTZpgNxKTuw98aFNbMaoZhjj74nEm6mn6ht9AwO25VPtGz1fbUAB1L4Oute3gFvwBVJX0WoDGfxpvvhhDYDrr3l9s91Q8QH6esXt4R55KIt5QtLskbMBBg2tuQU55o7dv3+B2Px8DTxLFqQ8VgRly6y5yZ+iqqqMmMlwiaRbwvhlr0in8WIHopTATMPJf8cQ9MSkRM9JHI/ZzvG/hjolKwZgJF9hxJ6MudaBiZ22x/JboWHmSLZdUHdS+euU7/QxBaJvgJVyGhsN3tTHYSTmV2UIoBxNg2ak4dTXy5n0uze7xuLZ7k8lMMp8uWbiieC/ewqyptU5fHFMsmpDZJpQKPcXn7TKPtOVq6VN4XCNdFmGi2xFW/NfZ7+lbMyaYQ+5OQ0I4ZhdNx7JEj8il3yFDxSmr+oZA5y51OrYm3vd2N0M22mucWFd+pu9k89cHseDUnOwdqLVhY9b2ewM9R5NO73yX0lcXYXSuC9+Z8l5Cyz6ec4oMT1peNltiNfJpziHxkvqNSWrLlc8a61Lo0HN5Gurz0WNtw1EH21ta6nA7K9lPEUHWJEWZF7mU6EMi07CFyvywFp19QfRC0xaUPkfhDA+Mnlz3MBS05LxczpnQmlbTAfqj9F/vtOnt6JdlkY5u+g1R/f1/MWaER7Bvaz7sPOl9qgRJ1rBE+EKRqI9xnO2Pcu49xu2PLwFW/9uZ6lGVAb/4YIsn6TPeHKSguCk+insTb6yw3XlBxl4B594Th2yNrs4TdKbK4DQawsWbttoidxonJETQs3l9mVxKxfakAw5zt7yDGGlGmeGM8zAD28a1LLaCECPRRq3nJQeJ7IayjHJgrn2LxmuQLBld0c
- R1t77O5k
- pZZ5TCj86RtU32iQxcFwut8LgUuSzlcLi3doWyIcxxjDRkpC0s+p5gLRJe99mcHcGbzWV/l4iZneHZlAcOer+EK/PrYKC252UJkwrXpd9Yg75nzGxV5zJ8NAzRvfkmfNgj80zV4J0UsSyYInJxrrpae4hWQ+b9gSrh+6OtW8yYKMzwqh+4n6719GKf6INb46SpHqpMQJ8IbG0TBD0hXQxvrqBwAy8bLlSIs0OecR0rVGayC1GHvzcx3O4YW6HnVNDS6ybLpRlIKrrtRq4UZ7OC9wFwUVU3QLI+FEylVExEysycQO2yeemNSy6k3eC7gJCsG2EXQMt1lbSoGv+bCLN19v+R+DYt8CcHSRkppXoWK5qCHu6MbFtn9+r+1JSHOL5SEWUr5T9pGamLAMxcwtn29g7XroAYPmyNG7ik2S7zNGbiL13/mgpakFgN5qtX98ymkXfK85GKOr4Ae4=
+X-Rspamd-Queue-Id: 17A1D40002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756205158-248358
+X-HE-Meta: U2FsdGVkX18/7kEk+jgTtat7ZsqsyLRYtWRiBsSc5wgdQG1cfhxdTyX1+uld8F3YTxl/Su2+Xxf0QU8oG6siURT8mPZlMir5JLEmDp+rhNUE9z0JI0tnjo5cTZe34H6GMNKg0xpXW2w9/uLEXljADWfVeDFQGaj2QwtDNjoGuPJ11E9BaDbZ1tw/o9hDPjuf0ISeOZmfG3MKJUTQ/GpUYMNTkS85AljLEiEBkiN+hF8VIhT3H1F64RrsMzobtEfX6JJnGJgfsiG05P41c7VY9UvcfdGiCOmATKk9QbD+gOy/uq9tYFfnx90Lj53LXJk5+PkGB4ya4vHZseGtRm53BgKn+Z9ZFvSm7DaBl3A2ygc8oPXS30oqqA4S3RG4WQEpJrI6H69pjHf/HLCNzVSXEz4AySg3aiMyoENHWHXOWtQM8VM5Yqf5KWr6im5h8sJxIfLWjZiVU5Gp+Od0lAq/sjv/C3wmEJblqo9aDzWVVmGklRZnk3mZKnOTIeqkTexTnmlCYlyV/4VYjmJCkv92+gHFnLP7y6MWBS7qAjNNGykws8ZVTcGAlBC8EMl6BWW//8GCXNymo2ATOt9/feWfKeMiNXbhuDqJW6Xp1WP7++95HxHWx5UctPR8X7tlf8kpWAKbG4mO0ED0NHCAkznjFqQ2ennrImEaAGBCksJ1wXJKVyr9xftetwND4jMn5Kq0Zlg6niD6G1O142YGklb9SgsZpwIoO/cZBn9VF1EC2p6/be8IgJXcucw+dJ5Dx6r3+NoIPWq/x8hzJxnxrvRkJzktYgNItFibr162MW+fs50XGdn2uCP8pSe3dvioQPEWFJEqGtkjAO7AyadzqOVuq0Yp0ODLNXx7uyQnht4VLfO8ffTDs5YV3QP+amMkFRmdDwuM/OVk86yJv2k/eur8OWoaOfo1n+lDrmTvNQOUGzCZCGL6DcjthAKkUmgOSaaUJvFCJxf7HJY12ruNEVa
+ fhvmxxTK
+ jGOIRIHdvN6l/w5HGSaHaztq8PMAeUZdWk2vDVzQ9YqjKa7z+QZTBz9iwIosruNDHR9AMJjyt0FVW1vzGx/ahObLsWGWTkomk6H4BATq35ngQfUz8plOLIO8pDdWWU5wGTGe3NZibBgmBnK+PEdckJ0QqGEdBRBJfaQQwBDp4/XkCr6Ywfs8NWWtGNiuGNxf3cpDLujjwVb81KDnwCgE5v91agf2JPBZL3v9IAK/19EElBQJji0kf+4MEYNJz1m5E8GM7zRdCmWh7s2r3cz/Alc3moA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,31 +123,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 23, 2025 at 3:04=E2=80=AFPM Vitaly Wool <vitaly.wool@konsulko.s=
-e> wrote:
+On Mon, 25 Aug 2025 at 18:49, Harry Yoo <harry.yoo@oracle.com> wrote:
+[...]
+> > This mechanism allows the compiler to pass a token ID derived from the
+> > allocation's type to the allocator. The compiler performs best-effort
+> > type inference, and recognizes idioms such as kmalloc(sizeof(T), ...).
+> > Unlike RANDOM_KMALLOC_CACHES, this mode deterministically assigns a slab
+> > cache to an allocation of type T, regardless of allocation site.
 >
-> This patch provides the interface to use Zpool in Rust kernel code,
-> thus enabling Rust implementations of Zpool allocators for Zswap.
+> I don't think either TYPED_KMALLOC_CACHES or RANDOM_KMALLOC_CACHES is
+> strictly superior to the other (or am I wrong?).
 
-In v1 the usual use case question was asked -- could we get some more
-details in the cover letter or ideally in the patch itself?
+TYPED_KMALLOC_CACHES provides stronger guarantees on how objects are
+isolated; in particular, isolating (most) pointer-containing objects
+from plain data objects means that it's a lot harder to gain control
+of a pointer from an ordinary buffer overflow in a plain data object.
 
->  bindings/bindings_helper.h |    1
->  helpers/helpers.c          |    1
->  helpers/zpool.c            |    6 +
->  kernel/alloc.rs            |    5
->  kernel/lib.rs              |    2
->  kernel/zpool.rs            |  338 ++++++++++++++++++++++++++++++++++++++=
-+++++++++++++++++++++++++++
+This particular proposed scheme is the result of conclusions I
+gathered from various security researchers (and also reconfirmed by
+e.g. [2]), and the conclusion being that many successful exploits gain
+a write primitive through a vulnerable plain data allocation. That
+write primitive can then be used to overwrite pointers in adjacent
+objects.
 
-Should a `MAINTAINERS` change be added? Was maintenance in general discusse=
-d?
+In addition, I have been told by some of those security researches
+(citation needed), that RANDOM_KMALLOC_CACHES actually makes some
+exploits easier, because there is less "noise" in each individual slab
+cache, yet a given allocation is predictably assigned to a slab cache
+by its callsite (via _RET_IP_ + boot-time seed). RANDOM_KMALLOC_CACHES
+does not separate pointer-containing and non-pointer-containing
+objects, and therefore it's likely that a vulnerable object is still
+co-located with a pointer-containing object that can be overwritten.
 
-By the way, the diffstat here in the cover letter seems to be
-generated w.r.t. `rust/` for some reason.
+That being said, none of these mitigation are perfect. But on systems
+that cannot afford to enable KASAN (or rather, KASAN_HW_TAGS) in
+production, it's a lot better than nothing.
 
-Thanks!
+[2] https://blog.dfsec.com/ios/2025/05/30/blasting-past-ios-18
 
-Cheers,
-Miguel
+> Would it be reasonable
+> to do some run-time randomization for TYPED_KMALLOC_CACHES too?
+> (i.e., randomize index within top/bottom half based on allocation site and
+> random seed)
+
+It's unclear to me if that would strengthen or weaken the mitigation.
+Irrespective of the top/bottom split, one of the key properties to
+retain is that allocations of type T are predictably assigned a slab
+cache. This means that even if a pointer-containing object of type T
+is vulnerable, yet the pointer within T is useless for exploitation,
+the difficulty of getting to a sensitive object S is still increased
+by the fact that S is unlikely to be co-located. If we were to
+introduce more randomness, we increase the probability that S will be
+co-located with T, which is counter-intuitive to me.
+
+> > Clang's default token ID calculation is described as [1]:
+> >
+> >    TypeHashPointerSplit: This mode assigns a token ID based on the hash
+> >    of the allocated type's name, where the top half ID-space is reserved
+> >    for types that contain pointers and the bottom half for types that do
+> >    not contain pointers.
+> >
+> > Separating pointer-containing objects from pointerless objects and data
+> > allocations can help mitigate certain classes of memory corruption
+> > exploits [2]: attackers who gains a buffer overflow on a primitive
+> > buffer cannot use it to directly corrupt pointers or other critical
+> > metadata in an object residing in a different, isolated heap region.
+> >
+> > It is important to note that heap isolation strategies offer a
+> > best-effort approach, and do not provide a 100% security guarantee,
+> > albeit achievable at relatively low performance cost. Note that this
+> > also does not prevent cross-cache attacks, and SLAB_VIRTUAL [3] should
+> > be used as a complementary mitigation.
+>
+> Not relevant to this patch, but just wondering if there are
+> any plans for SLAB_VIRTUAL?
+
+The relevant folks are Cc'd, so hopefully they are aware.
+
+[...]
+> > Additionally, when I compile my kernel with -Rpass=alloc-token, which
+> > provides diagnostics where (after dead-code elimination) type inference
+> > failed, I see 966 allocation sites where the compiler failed to identify
+> > a type. Some initial review confirms these are mostly variable sized
+> > buffers, but also include structs with trailing flexible length arrays
+> > (the latter could be recognized by the compiler by teaching it to look
+> > more deeply into complex expressions such as those generated by
+> > struct_size).
+>
+> When the compiler fails to identify a type, does it go to top half or
+> bottom half, or perhaps it doesn't matter?
+
+It picks fallback of 0 by default, so that'd be the bottom half, which
+would be the pointer-less bucket. That also matches what I'm seeing,
+where the majority of these objects are variably sized plain buffers.
+The fallback itself is configurable, so it'd also be possible to pick
+a dedicated slab cache for the "unknown type" allocations.
 
