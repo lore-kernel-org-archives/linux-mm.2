@@ -4,133 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4020CA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 18:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB6FCA0FED
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 18:58:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECFD98E00F9; Tue, 26 Aug 2025 14:19:52 -0400 (EDT)
+	id 784586B02CF; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA6EB8E00EC; Tue, 26 Aug 2025 14:19:52 -0400 (EDT)
+	id 70E476B02D0; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBBD18E00F9; Tue, 26 Aug 2025 14:19:52 -0400 (EDT)
+	id 5D5E76B02D1; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C97F18E00EC
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:19:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60FBC83EED
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:19:52 +0000 (UTC)
-X-FDA: 83819722224.13.F75D9E1
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3C99D40008
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:19:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=xCJx2vL3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 482486B02CF
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C79B81402A5
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:58:46 +0000 (UTC)
+X-FDA: 83819820252.18.1E35418
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E371740019
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:58:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PV4zNNTv;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756232390;
+	s=arc-20220608; t=1756234725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-	b=vBBY9HjR0TXoICGuT7ShbcSmzbNF0lr4TR4STok98MKcGQ2z/mEAm4ZK7a1uYIMtovOzGK
-	N5wS2ZFASWoguS7BirwDi2OC0XR5SpC7iBkq+aXt8Bk8W7IQaxquYZjAuccmcotgZLXeNi
-	tbjDn9HRYLgb9Yagr0sVOhvAPqiLoNw=
+	bh=pJME+1KmU2SzOA/lb1+BnOW4h/J3iSbhKPhNpdWiID4=;
+	b=ycqEw/PxX8FsQ30Z7NNJq+QprTaxPD34XxUjDDghnJNPGmJu8Zq+NgNbIMHuAwCDpXnbaN
+	fzIJ5KvDB0G2q53RlL1B4jKEP2+6+QNlsnDuMgyQlUt+m/RCv6DrlH2qDRGuCVCwRzEYCy
+	nIQfxGONYHjUzeENVILjFGNfGE0MgsE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=xCJx2vL3;
-	dmarc=none;
-	spf=none (imf04.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.47) smtp.mailfrom=brgl@bgdev.pl
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756232390; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PV4zNNTv;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756234725; a=rsa-sha256;
 	cv=none;
-	b=Gkjzr1w9KLnTBpD0QRFMcVA7JwjiOToH4y/PLoLftgkoomL8EEKk7V0/7v1R0e7vvO672L
-	U17ufV+5BCasZa0wzJydSs37uQCI+Qw9eKdzivgxPG3tjF+kY146sn55ZeWFNqjei6A9um
-	MIUIcxxE39zQN/+iofLn26JYaHtpCg4=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55f3fc15e09so2779055e87.3
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:19:49 -0700 (PDT)
+	b=YrX9mYuJDRwf0dH+WpGwnSYDXc/E7CA2dctF/NFsT1a3z4zqzqtiqd5E6Cw2MSDdV0yIpc
+	i9EnDPSTnY/lOMNL+2eRWjKUH+fAqEhxJdMfZvJ95QTYUpD/BuyM36389JvFGSWKj/TmS0
+	J3SNtciqREWb4sG2liTI775mSHzumV8=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b109c4af9eso49037551cf.3
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:58:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756232388; x=1756837188; darn=kvack.org;
+        d=soleen.com; s=google; t=1756234724; x=1756839524; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-        b=xCJx2vL3MGcT5HoZZId0BzA3cK6GN3ywiV2au5B/2zNDwd39kFOAqZkTJ5LYpK1Ojv
-         kWpWh64U8iYJ50dNZQhQE7ib454MxL7kBfbxSpfBke5uylvuNU7fXP/mMEjsRiuVpWa1
-         cFKPL9U3dvHAra2Eos5UJnRwjt/+5Nqiud7QYX30Fc23iO4ygYKZNw2cije5KcA0gZOI
-         WfsFiqYyk3/eXkG0tRGl98ACuoaVEZm6PjRF5iYCdMYSDJSSYDRkRkkYLryIPU88sxVy
-         Wnd/4WTN+JUkuN41/fQ7IEUg8AyatKzuOQRXnoxfTiT4gZeKr0SQS6WiaeAPp38ulzJA
-         8cvA==
+        bh=pJME+1KmU2SzOA/lb1+BnOW4h/J3iSbhKPhNpdWiID4=;
+        b=PV4zNNTv249ze6+EtXYDo+sbVpZZ4UqL3WHykPyyq2TfzziZ3LWxrudrETOh2AAtga
+         k0ISRG4/gmwBysoz6WVTf+TvpDgwJxkcn7lDnepGc/gjc2BXN9q2o2z0uCoiKs4Oa0Av
+         +hVIFTXebW2568jQIn4RbINRQcpLRPZlVErST4YRRh0SoKcoVSND3oDNAlqXQdhVIg4W
+         fxU7lhO4NiLp+7wSZ7ov7Ez2dx7hb4bUBhC1mWJq4X2/wILUbKKmZgfTPNVIiICeTbeD
+         SaYGSu01WvpUM3tVANet98G3TIfRh/GJVBcAxmjhRu0naT+vTLDUOnRwpYBw97KNbtJ/
+         2SCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756232388; x=1756837188;
+        d=1e100.net; s=20230601; t=1756234724; x=1756839524;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XQz/VrYK3cwCtAlJzmwCDIZSeNenI6Rm8ZKZbd4vuEk=;
-        b=us8Jlo7cirlXQph7dc8PNxskDrRWIBMtR6mcNFs5CqynoGJH8QtTlUaBBDbDVlxF3v
-         rx7NpfqRXlGJE3DriRxSufuRiQq3B86S+QtXheT16A47I/rzOKOrNZO4JUahCFhW/iWQ
-         1E2+ZkpH/bY4dWAvp/Mxz5Nw2PxsCyW7Y1woQYzx/4V3m5h4y8S1CfXtQuRWYc6rNoX/
-         vU+pYap8uqd7p7bqEYpzxnJFgnWxqRxcNr+8levkxFIKtVXIUX+fnEFXF2SZ5yzuaMlA
-         TC9RCjRb2POTBUh/ivfrSvUVsXCH+3kx3u7w1h9EJQCcob0JrZMXWpkN0HgP7cx4wlLA
-         2Spg==
-X-Forwarded-Encrypted: i=1; AJvYcCVFuE6H7kyOCy/YgwRsyJerFhiF1br+eujrgCI8vcDMv0K2KYR/YTCrKBAhtPAL78q9YrmjVOCSEw==@kvack.org
-X-Gm-Message-State: AOJu0Yx9W4Uv6v97bruOPxveNDx+NTFhFqm5iNNBd+M43W5QSImRLYUS
-	ynnxtKaEEYhTEU9xs9W6ZXkRTFE4GCB1QyB8OAKUhmMrFc/run924U+By61AMONQRWVamBg+z2j
-	ZqCMfuCtwshK5arn+C2oPb/KAFyinBqXWlRj6MhseOg==
-X-Gm-Gg: ASbGnctZcdlxf6oo8MxHf83Eiw82afz8DoVg0xO5iHvl9aibjI3chbH0GlAE6+f+400
-	3wd+Yoc/HccV0dP3xp1ECD6E+A0uaIiVf+D7Ir27fsVEyNJiZ+sZzpgYew9JZ044F2pCB+6XKyy
-	cd5PVDOHOngtOVFUd6i4oUrXTorWf6r0KjErBK2MuJ7se8mZqlLNeeuQNVk2cwih+JYDhkEIr09
-	XBI/RMFCzdbLmKBNq6vgLiD8PNMUi8yQIIxncJnu5jQFAisBTKfG4RtxccA
-X-Google-Smtp-Source: AGHT+IH9/wDD1C5c1pzIo5M6703fhe2Ju79J3Cg57MCbuHB+kMzD9Ry2MpuHtwyxY9EgNTzhw0WfnDm8emGE0JQOveU=
-X-Received: by 2002:a05:6512:3d87:b0:55f:3d7c:387b with SMTP id
- 2adb3069b0e04-55f3d7c3badmr3365498e87.12.1756232388100; Tue, 26 Aug 2025
- 11:19:48 -0700 (PDT)
+        bh=pJME+1KmU2SzOA/lb1+BnOW4h/J3iSbhKPhNpdWiID4=;
+        b=XuyLJVOntFBkcAVPKmnzctNsyf06dYrpsY1PXg7/zumvMv1vvkvqY7rPu0Gejx7AXc
+         Qb+MbbVrpJ3YPvPIlPIHLS7USlVAxdMgDsOaHsDcD6NGhUha661guYrB9PUUI7eEvFt4
+         mIz+o2Tvuavy9vRganoso/Jb2X4xrLrUE9Bibjvire+BaKmJIN41N9+02boDXGeBx9O7
+         ij79vgDiS5RBbNR3UXm/oE8iuQNYA5tl4vYWPyAzmKEhqGt1Hd6az2JDduel3E9o6t5q
+         TP8FeKFh0n23tlZ9/4f2dn673ryqmroOfI1azwgwMag/K1ERn5SLDtUBvcMQ8MaSzbot
+         4V5g==
+X-Forwarded-Encrypted: i=1; AJvYcCW3CvcCG1Wu8wVK8jPFs1Dj9RzCQO5WQyaxB7pPYeNzKtKM2wiKM+0yjHeCSLTpMXAxX+/9drXysQ==@kvack.org
+X-Gm-Message-State: AOJu0YyHKt/BgEdwg+bb/pwbESW9Ii1MXMHFddYmGfulOkFFsURbfkj/
+	ZA/5IExTBs6NHoFQZWN3b7HDVC6nan5CD//5399Yt/FlZ2r3JZtH2NpJ1C0YU8A9ArBdpMEySk/
+	UzrW684isa/YiFFALUuA2FlCtpa2/rbQgUFYOjV/aeQ==
+X-Gm-Gg: ASbGncu5mqwY0u4Zpa3WiCmDQW0F1ghbLKswyj9mJqjqDAqK1ybJLr9uToRzruYuq3W
+	1qb9b5dH71qMTmHqLVUu4xBEOzxgGrznq6n5akmnVrKVjOTvwEBvv7G2pQ4qRXpzaVq6NrN14Oc
+	m4IIZhnCkVWgQ5g9lFE/WGlS1EBviqJjtpYL1B9PHS0ZXAh+/Sjp3Y24eK7NotwB01RJamCcd8B
+	D7Q
+X-Google-Smtp-Source: AGHT+IH7x6PzB/jpkOPVprK93HcHA2jlE9LSPDmfVuRTuFZ8graOQso5EGuliHqnNQqcqLY5o7Pky9G7peBJC7yYL1M=
+X-Received: by 2002:a05:622a:286:b0:4b2:d5bf:20a1 with SMTP id
+ d75a77b69052e-4b2d5bf2602mr93874511cf.23.1756234723572; Tue, 26 Aug 2025
+ 11:58:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
- <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
- <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
- <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com> <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
-In-Reply-To: <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 26 Aug 2025 20:19:37 +0200
-X-Gm-Features: Ac12FXxAYIw0w_2T1YaN-IyY2JYcpKwwddZS_ZNL3wGJGwAsl60-M2w6oLQOL30
-Message-ID: <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-20-pasha.tatashin@soleen.com> <20250826160307.GC2130239@nvidia.com>
+In-Reply-To: <20250826160307.GC2130239@nvidia.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Tue, 26 Aug 2025 18:58:05 +0000
+X-Gm-Features: Ac12FXzbC4_094zxu3z9fUDRO3yQVd4QdY6g8DyMrUl3RDt_kmv57pEA7HFGGV8
+Message-ID: <CA+CK2bCR84H90dZP40yFw086JP+YwH4=V0ncFfNoR8Mo5+azkA@mail.gmail.com>
+Subject: Re: [PATCH v3 19/30] liveupdate: luo_sysfs: add sysfs state monitoring
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
+	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
+	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
+	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
+	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
+	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
+	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
+	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
+	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
+	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
+	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
+	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
+	leonro@nvidia.com, witu@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3C99D40008
-X-Stat-Signature: pozexkk3q1u9tcezp55jj85dheunfhyr
+X-Rspamd-Queue-Id: E371740019
+X-Stat-Signature: y7i9izoubofe4oekjcred3uxafmbc5z7
 X-Rspam-User: 
-X-HE-Tag: 1756232389-795322
-X-HE-Meta: U2FsdGVkX18WEnaG/UTSVJ9V0+PPVW4RPq3A2i3+q9db2tUZIM9QOEttI2BdRq4xjfnMKVVc1TFTe6EQevn576x7EVEKcjMeKcwqXpzjzbt6GUuiaymYm9P3+RissAVe9e2amOAGCCj/T4rstlOTURiYmQF5kD0HUB7lhNmO96ZTIQj1NwPzgsF+DIaHwywS5R/WDeiWUGNsi6TuyQWVQ8gAU2vOd8vzXJCMLR20h9DJJo0dwLwXLT++3dulzlvvJmrIyOob05co144TgzsRuSQeiRs6+0n/LopbZg0L8fwGJps0ESVMpzr8LxFLe7yHyAOksdGdbaIdQJJ1NR3oZD8bQTxq4qWQlDWshW7B2sKoHTM24BxR1MxnvpwcTXxfQhigevA7NOMTHTPpmKX1OKw1UcSXeYpdP5044IqIifDS8Cwcph2XGEykebhtEJl2fbd76d7rjNSsdkPgqd1LfLHUnFgZZQdtXF+U5acO64laCKRUI0H1mpO1ArJtPAwtR2TDfP9+AhhUwJrTfyLtDHDR93I/uWX0jPpbEH1r6i9wTHufsAo5Vi2qFIs1xmBuJAv2i3ieJIfhUvCggwfXTI4o2YuJKtHS07I31o/ZB7sJytLW+XVs4ePi/v3fCft4W/Mx5Vl5CQ7rrJP6awklLM2k8E37E/LLF9DSfnESce6CNcbxTl3cZroLp3Iopa6w9naPYzLn7Ye+fZpEUWCxDyR5tupbLw/z0XGAC+GKDDTDQiNlCDBF4fvNBZR7z5kT2O7JUYr53a4VH3d97HWLy+W9YZ/bV4dM9EIpB4sg09pd86s0HoudYOFlbds9raIR8XU0bVAP2IhmRYvTPK4T6ojXV4AK77vwF9P8X2af2lP5ASSyPcalUAWTyU3TPd0N4ANwksm5C6qcd18oFGdeF7C/HYqJ5x7QMzhggF0KPF0Sye9NXDNG9QB8tqB5lpE+IExkR5UKMehMzG6Q+DQ
- F2B2OAJ2
- nDePt+ffUBm8PEAsBmVus5A1c2VzypjHnqpT1Z4qJMa1fhcd2SEupQa5AFZEPbhFpDZL9UFRk2HYRmFbPjWz0sR/G+jVYWWkos53/95a61tIvVVbaB8AC391lhG66Sol3kKQb566kQ+6/6p0bcUXVgkFlLbxD6bzuMzGChMC0yTJ02PJ47bm07Cu/qpOjt7ezXdPk/HhQTGu3kJS5g5ze8HMQQAJA6C6nOSvQ8GXV1Zy+yJnuguFYjZwvLj35hYZJF4SGsq02smgMb4R0nA9pkPLVoaSX3RrXnjD82QSDTmUlrpk=
+X-HE-Tag: 1756234724-395687
+X-HE-Meta: U2FsdGVkX1+Ox+xzhRMt40ECHUf2Ko4rxNqLMfEzGGJXjatPnMhq9uh0Aa99xdBIlM37KAamnRGxPKtpbXVDjy5VpHvoCTbXnzUDlcflBNer+fYTNU6KaEM52Tv/8ByNBqJHwl/KiewXzoXNYM7nEmon3mxmo23DBZxsDEmLzHtknUdpXObq++uA6tL+WK27F7CPJXkqU7UdTDlB++ThGn2/xZt9yHULDfORZPmmKlARNpZZMI1guo7yumZpjc5+sL9kV2qsOnd+CNtVekvgkgVPiBSuoy0sT6/15arU/u4S3z2CH8DV59gxFbwWhkutbU8T5h4wPh9RFhjXo9DQvfSoA4LHDzKI/XThI79XS9hQEHF3sLT5mvmYrtvnsODP6nv+OCVt34BuUQivADCc4P9SunCL+n4ppvjsFpOpvCnpSaWtqLFdPIxcDNzncRLrCcUe1PH0JEqnIAN3rkhgbGbvWyMYt8+7KS/K4dIXGy1p6NvEbiSn8Z4i+i+HVIj8iBm5iBIr3OJK0NlPB7Dq5IQ/smoj9MX0fMc9cCQeiOT3ymng92HMIUuywCAFkUM0CcfYzkLHHcs6PLR9DzAGv4gsJN/EFH2AofLGkmWufvJ8Osylt2N4coS/ERz/z0WwX8xhq1rHaaAeq5rc80lFDfgiDN9hOLoaR6PFqn0nmRZmyYHYN0rtunpQoy4Kp0biF2NpipOxqDTbU+FDSzRjVgC2yL8hsl+SYSPsBOWIdTTcX0qpBJ/b+iVTla1FeVb3EWSdU0oxqJKLFLIatXXlBuJKTsy6eWOqj+RRPWC6Z/Qdih8B6GiegRZW5jjgzly29YHnXzB31g0ZgjleF61gMERjKe/vd6JKtouDEexBaYxDEoS0hIFB6mAaUdfw4KZNcI2QPSwiFNQY5ee0DAiaHsP8twGLyfzEsmZVgAieSrk+t21QC6oJJOaKka6M0q9NKjFpvVcc65vihbbelYh
+ yOLmSYTe
+ pAAmamsRn2c6QmNybfxiPzzCbMRVCwEcoeaC3RxCoGIMSxoaLvKfP9qFI+rso2GnG21vHCLD8W/FLA9ICmTZl9DnP1lEPERmKOla3EtHmQ8fDdBU06tLpwT0eUoH1xTVHkS62W82/NOh/Hg+5AZhF5yL9+r/V6neP7HehPpj6tsHiwfkeCXFDcBRfItsK6NkS1xaDtCIG25/Wc8wZjaL8JQj70MXxTEmU4WsQqIQ5E451iyB+xjCxLh/5FqG96DF2kNnnxc3onAKrvbbv98ZOyi06lL4T5kFKoI1d5dDxK6vgldaVJAAUyKNgAfsGHrPiM68voi4nIDLol01ghH/bSUlvPptkjd2mNV8d7ABvxDVH0LXvpV8uavH7z+4PXQJNTxTCG9aFJ7d/kEPTcVdjGoIV+7H72nvX1xBEYo3P/6ZYZUoW3v2tHuwCgxFJqC1buC7S7W+obRnEu0o/dczF57BMGhZyW0DFAR4xte4TnYYpPIYobEtNtkOfgL0CiNcY5MVS2X36RRp43G976zmy+mjMH1F1oxfhxJGFr6HI0uaE81X5NPtbeJ8UX0mVQImj6rHG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,20 +139,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 20, 2025 at 8:41=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
+On Tue, Aug 26, 2025 at 4:03=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
+ote:
 >
-> On Wed, Aug 20, 2025 at 09:12:49AM +0200, Linus Walleij wrote:
+> On Thu, Aug 07, 2025 at 01:44:25AM +0000, Pasha Tatashin wrote:
+> > Introduce a sysfs interface for the Live Update Orchestrator
+> > under /sys/kernel/liveupdate/. This interface provides a way for
+> > userspace tools and scripts to monitor the current state of the LUO
+> > state machine.
 >
-> > The qualcomm 32bit platforms fail in next anyway so I dropped the patch=
-es
-> > for now.
+> Now that you have a cdev these files may be more logically placed
+> under the cdev's sysfs and not under kernel? This can be done easially
+> using the attribute mechanisms in the struct device.
 >
-> FWIW the i.MX8MP also seems to have been broken by this:
->
+> Again sort of back to my earlier point that everything should be
+> logically linked to the cdev as though there could be many cdevs, even
+> though there are not. It just keeps the code design more properly
+> layered and understanble rather than doing something unique..
 
-I can't test it unfortunately - would you mind sharing some info on
-what's failing exactly?
+I am going to drop this patch entirely, and only rely on "luoctl
+state" (see https://tinyurl.com/luoddesign) to query the state from
+"/dev/liveupdate"
 
-Bartosz
+Pasha
 
