@@ -4,106 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C72CA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 06:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA2D9CA0EE4
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 06:23:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A22F88E00A1; Tue, 26 Aug 2025 02:21:06 -0400 (EDT)
+	id DF87D8E00A2; Tue, 26 Aug 2025 02:23:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FA668E0090; Tue, 26 Aug 2025 02:21:06 -0400 (EDT)
+	id DD0308E0090; Tue, 26 Aug 2025 02:23:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 937188E00A1; Tue, 26 Aug 2025 02:21:06 -0400 (EDT)
+	id CE5BC8E00A2; Tue, 26 Aug 2025 02:23:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8320E8E0090
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 02:21:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01DC2140606
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:21:05 +0000 (UTC)
-X-FDA: 83817910932.22.D40D77B
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3BC5F1C0002
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:21:04 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=rxgg7nAh;
-	spf=pass (imf18.hostedemail.com: domain of naresh.kamboju@linaro.org designates 209.85.215.174 as permitted sender) smtp.mailfrom=naresh.kamboju@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BCBCC8E0090
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 02:23:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BE1DBA931
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:23:28 +0000 (UTC)
+X-FDA: 83817916896.18.759C2F4
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B8DA31A000E
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:23:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DpskVHtq;
+	spf=pass (imf19.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756189264;
+	s=arc-20220608; t=1756189404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=MFYRl1ZFHjhZrd7h6GtCM5LUiRUxEc7ppUKwn5M/+7g=;
-	b=JUik0CDkUstxGRTN2p4ihlytXRBEI8KvY/GBd+U+UKVp21NoNDwwYlHowjviF0vQr1sJnq
-	bpgsFg/U1ZAFy292Wfy4veHpHnDCJCvg4CwtEN+mNDhTgrdTS+6O4Hl65XG9qzoxn3Mydk
-	R2EoJGB3YH/golLw3imZxXsan8Ki2ok=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GSS9CL1BDt/KxL+nujeo0VUaPSx+hlw1HrZE8dR99xo=;
+	b=wB/wAFXvz1yfCkkOH1MjG/eTP6w5VwLoCrnWeNW42V++tZtiK9Xjt+jY2oHPv9CqVLJOKO
+	A/kab4/YZkZ76biPurwwef+eS1iYPD7vezdsxpRz0PcjcD4MvDttejZmesBPWKgixddXWN
+	vOzDoQ7NCx6o9de0cLi8XCLDD6QMENQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=rxgg7nAh;
-	spf=pass (imf18.hostedemail.com: domain of naresh.kamboju@linaro.org designates 209.85.215.174 as permitted sender) smtp.mailfrom=naresh.kamboju@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756189264; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DpskVHtq;
+	spf=pass (imf19.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=visitorckw@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756189404; a=rsa-sha256;
 	cv=none;
-	b=gG7E6gM7nXZ2yyzqChPSd1AbV5pH71cDy+v1nQKsSm8QrStczNX9rqfzNvnyAXc1biLBQX
-	PGrABfFpOVPRM5q5Xht88FpY/vhv5AMBOlfZ9MldqVbHvZOT7hkpD736BerbRG/JQkXfTV
-	jNRyOf4kFmsbHb58ItUosFlmKu5sYvo=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b4717543ed9so3522844a12.3
-        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:21:03 -0700 (PDT)
+	b=MNiaeQvWfVbr0/ThNPnyT8v/yQXJxVdXgfk7GekoyixLxomji59uLmutYb0YX0S75zxIKD
+	WOp+C7hecKjLI4yhHq28GlGZ9bUSGG8RZ3Vd1J2pVmws04XbcC3wVK1arseE3+Wy4iytsl
+	gu2dQwkFCn94KFhA8EXomHEotixb36M=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7718408baf7so2099199b3a.3
+        for <linux-mm@kvack.org>; Mon, 25 Aug 2025 23:23:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756189263; x=1756794063; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MFYRl1ZFHjhZrd7h6GtCM5LUiRUxEc7ppUKwn5M/+7g=;
-        b=rxgg7nAh/ojtaRN0nTeKvPSDNHvT3jdAtJfWLEwyuCaGQ88UKwv4Ukc/jXX/bSquNg
-         WM72of6xDaSs6EMvGeixM41e8VYORhxSZOCrsKdQSlUiSC6dxS6cswDbzNXfDC0zIJ8E
-         cJrS3Oq7dmQWFyDjUMM6Wi907Scuty4CN/ZtmD/fOQXQJFn4voj77SZxDrozfAfBm+HX
-         jUuKu9tbeLcKWtgkIH4xsPPzzINcrBfKVyMDjgmCHVAu2euX+/wFVzaDZi6RAT6TrHKh
-         lC1ucuUtIuXXnEcVVapw7ItjHU6XvH1ct3hied+HfFBNY6qTbskY+l5U6x6W446J/j0s
-         LuKw==
+        d=gmail.com; s=20230601; t=1756189403; x=1756794203; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GSS9CL1BDt/KxL+nujeo0VUaPSx+hlw1HrZE8dR99xo=;
+        b=DpskVHtq5MSEQzfRU3AcITK+g+hcMpKapnUfJl44LqpdpnFYHGqPOb/7Ep6PtIXu9B
+         tWwpOUpPg9c04eXVmEpfX8jYVZbq981/OmIVZbfVgrUMtQ+ahDpBlgsR00ztjQUZ20sj
+         watfEOwTB2VcLNEslUfndRwE5GDoyEEpMXQoimiv8UJHTwHwBAMxVM57Oi+uG8LzCd+h
+         lzjm0G4lKEIOzJcn6mBY6IVF+XpftDt31P+rRDfIY0vhAFH/EbBhxiL/F6+jUE1J08Fg
+         2aEbFG3/5hF53mnqzrCGW9h674HZLnNW4xMQbSjFEEpYMZuhTRtjpnlbaHR8vz/JwWFD
+         s9xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756189263; x=1756794063;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MFYRl1ZFHjhZrd7h6GtCM5LUiRUxEc7ppUKwn5M/+7g=;
-        b=qJ9FuiUWsKShQlhWkX72F9Tv4PEfpIBUpVULJR/G3GzcG5dZOMpUNfg83iKCWkw5AX
-         PL5poOq0fLjk2sUmGzY8N5i+CeLO+fAtMFcAShGI9vRR0OzcHLfcVmS5jbQZ0Ra9JrHH
-         ad3cXQdSmqCIB3ySEiqfnlinjJMlm02sbGb0/AHxYDlZCOh4+pBTpTOJbPXh6LtQrD1+
-         hNq8TuPikwZUtjtMeZJ60+mBIN39dNsY86ivDCBrSgL/pwUoq3RuEkrkZ3WCxIrnyoon
-         iXYw0i5mM3mKNAApZZVJpL2e+A+bBCknnxeavLK42qIV0dQsYTRz1PmtVxhlm2z4ZwgY
-         cnPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcJrZVRy/CM/Gm7KKDZzDoLei5yhlgB1i57DqTa58F3suqZnxvn2B78o9wiWs13F7UZSoNDMFqDQ==@kvack.org
-X-Gm-Message-State: AOJu0YxHVUDTsmc6jQlJNLNgZ8GRO4x5dkplT9CCTeh0S9Gu4nlvSvXg
-	egkVmJ86iUYrXNCI+APih5VPv/cmZykI/gIx5qeR32ucotBZ353+E3UAyKikqv1tlDQw0OYwf0w
-	q1arOyaV1hO4Qn8EGE5p1czc4rMXFIuEJ8Exs4ljYKQ==
-X-Gm-Gg: ASbGncvPB0ugmAgy3iyvI7yKvw0rFLadC4UobUTndHNm/Iih012sFVeSPhD+GtGdGam
-	/hV/7Xy56spM+tTb5FEr1noiy/FplLSsFse7up6omsMJt+BXOUvB7pLzK24VUPyu7RTK/9udhjc
-	6KQynG1bMuQLoQApdVDvA4/gdrovC2sRepVem6/Rxs//INxFIXf83ji6rLIi1dcGZTPjstq04b8
-	GixetP1+ckqoDvfypDrxJ3UB3tlKpwmIha/Awc=
-X-Google-Smtp-Source: AGHT+IEaOAsyEwvYZhL6gwxls7OPv3CjgiN4RcC1NbjL3gx6dd9cjdG1OkopmuigZ7xW+OLJUx5JyXWtdmH6vWAFnIU=
-X-Received: by 2002:a17:902:d585:b0:246:b41a:bb90 with SMTP id
- d9443c01a7336-246b41ac045mr106384895ad.2.1756189262339; Mon, 25 Aug 2025
- 23:21:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756189403; x=1756794203;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GSS9CL1BDt/KxL+nujeo0VUaPSx+hlw1HrZE8dR99xo=;
+        b=qvZZSdDtjI7/cMpELGKAhLgZKVwYpNjWAhzkDNtLEey7VE9fxVY1WKuWrdK47DV8EM
+         TxwrtpRNlswYbWAy/S5vgwDnxHZNLsNldMmb3DDRNtz7kQs0P7ftnO116rnC1fFfArGc
+         1YKROxieiiOBi6ntQwsuaIU92TEe8J10djr6ptiE81tTmzRNPdaIR6ilzdabcTexDWwd
+         yognSwfuocLtAow7xLleF+3us1Ab+M5bqVt6c43OuWkVYpXDBYydrr6rqENnfetNCdAE
+         5C3ZPOBmJPOLDJVGsFfRt3InWsHWx/br1k4ulPjU3wr0Pl798BMwsXF4IIrM0k3Vack2
+         pTYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPt7P+0+W1IHX72WWP7RFKmJWnVRZkrtQVKBLWqiTFKbuTjm4XUOL4vXKEUQJR1+yn8BasZEtdNA==@kvack.org
+X-Gm-Message-State: AOJu0YzhMOMJuel6kBdISQn9sR8gnY5DGgi3EiUDkcwFDvuHAc2hIaGl
+	ULlnBi7Rv0RVyqQm+Bq1tBwQ0Mk+K8Wj8jDDwi1XkYNi1shligUgDAaT
+X-Gm-Gg: ASbGnctZaWpju7FVJnok+s78gBuCXWWWl5cHxuuTuLJAdU8eY3+jvo3KCJ60VphDMnV
+	UqfElvwWERnMMwOLlT6LsegdSsRiZIqUsRM71jeqghIaEuAbwvXpUYQp1mGNxmQCpGYoww9B5B9
+	6boSr2p3QHbX0us28iP9GTLrrL669she183x2ZoBwEA3wOwF2BKPfRM1GxtyYwavvj7mn1DCNLN
+	/AyNKhXq6g5T2GQztAOjmUmxshyRBZL3bgy6sx7wv98SOLcEEuIZzjwPD3avJ/CTs2qvB+Vg8Zj
+	s2GhZa274KV0AYuWmliNEV965qUInbEDCEpxQjStq8LwVvPyDw/DuNJacFwpdazTJKTjRIumKQa
+	MVsxKsXGKnJfH6IYRm60XQyVMKzrLTk1YuMfJtnBdyPYtyL6zOOWK1d+pvqMRumA=
+X-Google-Smtp-Source: AGHT+IGRLTtVhf5gNNom+FlSyhvO5Na/XW6FPBbeHGtKXN2dl2ENf9MJuoeexJXgu1MdjlMBXZURAA==
+X-Received: by 2002:a05:6a20:3948:b0:240:16af:401a with SMTP id adf61e73a8af0-24340cd32b2mr21363713637.32.1756189403516;
+        Mon, 25 Aug 2025 23:23:23 -0700 (PDT)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771fbbc3bb0sm492535b3a.66.2025.08.25.23.23.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Aug 2025 23:23:23 -0700 (PDT)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: vbabka@suse.cz,
+	akpm@linux-foundation.org
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	harry.yoo@oracle.com,
+	glittao@gmail.com,
+	jserv@ccns.ncku.edu.tw,
+	chuang@cs.nycu.edu.tw,
+	cfmc.cs13@nycu.edu.tw,
+	jhcheng.cs13@nycu.edu.tw,
+	c.yuanhaur@wustl.edu,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Kuan-Wei Chiu <visitorckw@gmail.com>
+Subject: [PATCH v2 0/2] mm/slub: Fix debugfs stack trace sorting and simplify sort call
+Date: Tue, 26 Aug 2025 14:23:13 +0800
+Message-Id: <20250826062315.644520-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 26 Aug 2025 11:50:50 +0530
-X-Gm-Features: Ac12FXxpo9Z2nstlPDzyogezkDDH4eyaoMNNWqxf1iMYZc7Yw19lKOYzdQTyf50
-Message-ID: <CA+G9fYs2Wp33dq0jeuWqU+67z3VzP2LyHBXSD+SecqqG2OiJfw@mail.gmail.com>
-Subject: next-20250825: riscv: pgtable.h:951:40: error: incompatible type for
- argument 2 of 'page_table_check_pud_clear'
-To: linux-riscv <linux-riscv@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	lkft-triage@lists.linaro.org, Linux Regressions <regressions@lists.linux.dev>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: fuc5hj7u9zmhbdg7zrcsambxc8qdz6ty
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: q4ow3b7sn4qthg7e4pcdcmbus7iwf438
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3BC5F1C0002
+X-Rspamd-Queue-Id: B8DA31A000E
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1756189264-298917
-X-HE-Meta: U2FsdGVkX1/VS89eJWCoDxfZaiD7STFTMKUru68c1JXur3HovzNa1LaxkqttCEATxmrRrveO2Ar3LDD7LYNXyIN5MMAhADeMfTwUl8/8eKu8akZThNBEU8m+Skliq7T9D20rkEZg2I97MXvo9zbRAqh7SFyRKhKqb5PkAlRPSc3+Eh8BbvP0TPAVtTZ61zCZ39yq0CNQvPDE8p6gTL8nD7IXg+j8mSkRWl5kwfJqQfV4eGL8rXjFMFzDYmmqWs+oKisKLjDyPdx7hb9m4ZLZmxEIkoSZ9i7N7wkeTCzwgSsk8iTi4jPWPibyI7Ayy1ZCHRi5CyA3fdSKJrtHPxpqPtpHlgJaTjMmQLBOJ2Fb40FUDvVm3Aw6AirdG3p8/s6E5/HRg67Uo1B+KQTGE/imRslIJkXbTS6TyMav0ICvoc6PCqKfmHUODYCk4u5/g9sWuHzbYBxJCqQ7cRPe+epWy67jAkY7IL0LF0gL3EM8XeX72MAT3vI6tbum5SFZjea2esaVCbs6JfK6Z3AWEzbZJbRqczuTFBGJatv0o2347uBkLVjl6ddI6uDeJNeU40LUKnmUUCwtCtNxB4AyytzAyaE/HbblLlQCirlwXVDRZXi6NdCPlzeW+iMTmh37p8madgXz6739aNe99Qh6RgLc1qojZWsYNUAD/0Vp37edbQtPDwLpNfEllg/kmcKCBhZoUTrIG1gDTlKF55ZfAxZRCHgxLrAQcgWjb6UWV9KdI5wNbxljKYiYSnFPjH8yWE3djX53kPGvzIdwdlh5kR0huVKS+jwO7/gNs6wK92kDqbsqwq9mcru70IvYLs1EeWjXqHnrgtPUXXUxOteWRbSJEASIKPkivH5qlbANud/TFdp8pOd7YV20nIj7RHbkWOVE22L7TI8aqYpr3B7pXLwdGY5L1cBJfB5rtlXF4k2fRqh1uqNbCQ9d3LCCFNJinUrZtINJ9Ad3hRwhelR+e1j
- XR2UaZmy
- fUFNW1Wgbz6v0oWXmPTCMMDCdewDJ41LnLyLfdZ+5+agnOCqnGAnBJ6sDhbBdkHx0Bnmp+iwCGpb6XZ4RKsqnmOqljwSYfsn9F1kZ72Hluq4M288bSYhfxcUdCUGt4MDu+ClpBKMzj3EkYZA+4T+Ngiv620QCZccyXBe5Lj6ETAKu0AYN3OkPgcyNadu7hDaH1ZV9Zi5bRwoFwhg7iYJWDBIrNMpow09ErFy/GfbTmUvXaDvOed2nb4v/2Ew1kb+FwQX5desqKSRQp8SfvyLsL1rKlrNm4jMzpesnSQZVq8aQr+COrBYBUFNbSOgcAYPbmX5geKLtjMmW+KBtBctYJK1BewGGLZvLnHrYVyZqgEi69hy5YT3V5Sbayg==
+X-HE-Tag: 1756189404-248454
+X-HE-Meta: U2FsdGVkX18Hux+NXw15SZuhywT5Dkl2PieJ0rfOqmO90Bg/D0DqEdY3yNgCYeJIexqWOaHhK09ezIaCFM0MFwU1eZMavpuF0ecnyK70bVarzPTM4zdDQq5OFIJeZFwBRswyPWdB1nDP15u1mUIVutQXDVlQDo4RmkKnyW7D10GwjLzG63qbCZpJeZDoLP575CeAXQNw42SldfVoD2SiLQlt1YOJibqKUwVXyo3m4IIL0PNBSp83HpTLrXb389j7UOGOmS48zCbegVaYmWxHxGwPYKYgbvzGYClND9pxZ0ex+/hlnpDYdOszSRXShAchkrY6MM5MprM4gbXw7Knh0A0g7krQeBecW6qF5CIUeORRBTRnpP3EoW3MtSPAtjn4WUhakj9fcm/VK26ivYtxanswlY06MHXa3mQrDz9q7mJXQdqRoqREdtkSN58MGpC7CKLNcYsB4LDpSuJE6silGGtI6vEtBLJfIEDFGVs8U+t3uc53SGnRhA0hImPFBc2QbI85EbElmYeiUTgAWTq+v8d5o/Bc6VQrEPY/CDm5r8oElc8gu3UcnD5bN0MNUO9wokmfoizZQ+Hc9GJOfOE7d00oWDl9YGvcMC65ykxvI7xHpcaywLIFKHvy1KLdnq1wrVmRQ8FFvKxHP3V+56LsXIiEpdBzMZpJ6GxrXtsyTObhaqorN7ylsgCjYmgTral1yGjB3DMqfMFbtcyYd4KE/KXpu87OIZiMPlyED1iTk/f9amxqdcdxEFXqas2K+LTESJlqqtmlF0Z4ZhzE+p1bdbPxWuHW8vmqWYGqRIpKlYm/PVZCcixk2o5fML5yRiVmEh8cwuxH9qud80GeccyT89JQ7tzjYMeTrghaAT2QznTNnGPCdajvwPrQEKvYiqSg6Gan03g6l0ujYnCjj19jWkQ1f8etz29EuPhzQ14mDTRqVDh/jVHYp1HWxt8PNI4XjkXsQDXKRyxOf+s1Q3J
+ TxfomlqT
+ VM8K1QjHx7PvH6GMlJnYn/vsHcleQZbnng4TncuwodWbxHMoAt4Ok2HHMEmCuUMtVa/ERFRfx3Yj3S9NpkO7THJh0zW4NGMKzFEi25sQT3/V+3eQaeuk++s7Agd/ZFO/m3xQz6TDQmVzqonCi4Tqa5ygT/pPT/Ojv6tL01YmOq1D+ibhbEw2PZspGyl/+BpfdiGW8+7YP1r8Uj1jHiP36UddjPPpF03PNzLMklsPI+8AUt1ZpFtdYTRMDPPACQUdytRVr53dwUvgojrTNKC3/c1PQxxkTwEWhzgo8ncSdTBYN0YVXJF0k/d/yU6BykwKth4HqM1HHPoesUK+DMqfWP5hGfEUBa8vmYzEC7E4BE3ruvFGJvYYmgcEF5C+Tz7z0c/ubU5hjAVyI/UnQV/3vvzFGP5tBtweSp3gQ0whMxzPybZrsHFoWwmCkXg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,76 +127,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The following build warnings / errors are noticed with riscv defconfig with
-clang-20 and gcc-13 toolchains.
+Fix the comparison function used for sorting stack trace locations in
+the slub debugfs interface. The original implementation violated the
+antisymmetry property required by sort(), which could lead to
+unreliable ordering of the output. The patches correct the comparison
+function to return 0 when counts are equal and replace the unnecessary
+use of sort_r() with the simpler sort().
+---
+Changes in v2:
+* Use cmp_int().
+* Drop Cc stable. 
 
-Regression Analysis:
-- New regression? yes
-- Reproducibility? yes
+v1: https://lore.kernel.org/lkml/20250825013419.240278-1-visitorckw@gmail.com/
 
-Build regression: next-20250825 riscv pgtable.h:951:40: error:
-incompatible type for argument 2 of 'page_table_check_pud_clear'
+Kuan-Wei Chiu (2):
+  mm/slub: Fix cmp_loc_by_count() to return 0 when counts are equal
+  mm/slub: Replace sort_r() with sort() for debugfs stack trace sorting
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+ mm/slub.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-riscv:
-  build:
-    * gcc-13-lkftconfig-rcutorture
-    * gcc-13-lkftconfig
-    * gcc-13-allyesconfig
-    * clang-20-lkftconfig
-    * gcc-13-lkftconfig-libgpiod
+-- 
+2.34.1
 
-## Build log
-In file included from include/linux/pgtable.h:6,
-                 from include/linux/mm.h:31,
-                 from arch/riscv/kernel/asm-offsets.c:8:
-arch/riscv/include/asm/pgtable.h: In function 'pudp_huge_get_and_clear':
-arch/riscv/include/asm/pgtable.h:951:40: error: incompatible type for
-argument 2 of 'page_table_check_pud_clear'
-  951 |         page_table_check_pud_clear(mm, address, pud);
-      |                                        ^~~~~~~
-      |                                        |
-      |                                        long unsigned int
-In file included from arch/riscv/include/asm/pgtable.h:139:
-include/linux/page_table_check.h:125:75: note: expected 'pud_t' but
-argument is of type 'long unsigned int'
-  125 | static inline void page_table_check_pud_clear(struct mm_struct
-*mm, pud_t pud)
-      |
-     ~~~~~~^~~
-arch/riscv/include/asm/pgtable.h:951:9: error: too many arguments to
-function 'page_table_check_pud_clear'
-  951 |         page_table_check_pud_clear(mm, address, pud);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-include/linux/page_table_check.h:125:20: note: declared here
-  125 | static inline void page_table_check_pud_clear(struct mm_struct
-*mm, pud_t pud)
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
-make[3]: *** [scripts/Makefile.build:182:
-arch/riscv/kernel/asm-offsets.s] Error 1
-
-## Source
-* Kernel version: 6.17.0-rc3-next-20250825
-* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
-* Git describe: next-20250825
-* Git commit: 6c68f4c0a147c025ae0b25fab688c7c47964a02f
-* Architectures: riscv
-* Toolchains: clang-20 gcc-12
-* Kconfigs: defconfig+lkftconfig
-
-## Build
-* Build log: https://qa-reports.linaro.org/api/testruns/29652465/log_file/
-* Build details:
-https://regressions.linaro.org/lkft/linux-next-master/next-20250825/build/gcc-13-lkftconfig/
-* Build error details:
-https://regressions.linaro.org/lkft/linux-next-master/next-20250825/log-parser-build-gcc/gcc-compiler-arch_riscv_include_asm_pgtable_h-error-too-many-arguments-to-function-page_table_check_pud_clear/
-* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/31lrb0XugzFZYDePlPNpSIVTzeB
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/31lrb0XugzFZYDePlPNpSIVTzeB/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/31lrb0XugzFZYDePlPNpSIVTzeB/config
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
