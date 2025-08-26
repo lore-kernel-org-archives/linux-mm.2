@@ -4,146 +4,256 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CAE3CA0FF2
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 17:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C73FACA0FE7
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 17:24:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B56636B02C6; Tue, 26 Aug 2025 13:15:02 -0400 (EDT)
+	id 048F56B0169; Tue, 26 Aug 2025 13:24:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6CF6B02C7; Tue, 26 Aug 2025 13:15:02 -0400 (EDT)
+	id F3B3D6B016A; Tue, 26 Aug 2025 13:24:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 980C96B02C8; Tue, 26 Aug 2025 13:15:02 -0400 (EDT)
+	id DB5246B016B; Tue, 26 Aug 2025 13:24:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 78BBB6B02C6
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:15:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7363583B93
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:15:01 +0000 (UTC)
-X-FDA: 83819558802.12.4566BDF
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DECD8180011
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:14:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=HEqDWIIz;
-	spf=pass (imf06.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756228499;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C37D56B0169
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 13:24:43 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 700891182B3
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:24:43 +0000 (UTC)
+X-FDA: 83819583246.30.4A6217C
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0137A1A0004
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:24:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kc5CJDDj;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="q/370a7y";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756229080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sIIY+Ur2rqJSQSBwUezrJ90xeU4rtN9bpG3yYRpDXzA=;
-	b=bl7Eki4z8e2+rVYp96YuhQ1++zTrxThnEIbLIXiOU69FdBY0jdDVHNoqq/lVE1cqVAj1H/
-	PNvJCB45yHJVvZ8gDJGmcSPOHfQFsEtGz9c3YIAg72ADFsmPKgWZEDeBJ451O9h1YOkiZB
-	V7Dy6771sxlRBcgAoQMBswocfBTalD0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=HEqDWIIz;
-	spf=pass (imf06.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756228499; a=rsa-sha256;
-	cv=none;
-	b=DXGHl2B0yYbSdjz0lv9u8+r2mf1adJTZSQeG3f3Gzmu4Y8IJHLUkk/W0rhUNGoLop+pcKo
-	Lmrg90QkE05mmKRRllW8ZRWPKvxASWgrKum7dUqLkqVQTzi6hq5tPzYX89gffHO8POYIz4
-	4oONCTR5l3KR/s4qK+womi+Dowd6NFE=
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57QCoIQt007747
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:14:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=sIIY+Ur2rqJSQSBwUezrJ90x
-	eU4rtN9bpG3yYRpDXzA=; b=HEqDWIIz/efIx5MBARqcKHWuPgHxgk4tMAm6oh6I
-	++GWgbsFKgkkr3/CttCsmJ2I9tmQFIE+1tV613LvgckmMOMGxylPNxOOMLYv+5fe
-	1XC50jWzSd7swI52CiaIKg60OVxe49bo0uyElkQbneIXRqBgZ4CM2du+6NAPxW+5
-	kV1QMMZcXfsCLU0HVmUcAbHVCbNSmT+EWBY/0dYKDiZMjkU1dpGtPBXM7OVg5Oe5
-	cS3NRaMtilkYWb5v3Jf23ZLzZy+DKy1yPmV3zDcmI9SDRxxBp4n28UVcIM3kss5L
-	uYFAjewYYPqRgIeokFpV3LRYfMTeFc5QGL1PQUgPcw59/Q==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5xfhrfs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:14:57 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b4c2c09a760so1245651a12.2
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:14:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756228495; x=1756833295;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sIIY+Ur2rqJSQSBwUezrJ90xeU4rtN9bpG3yYRpDXzA=;
-        b=lyKaasj3tFtlwU/LLW3Jp+6KaRGcFCgR2+W2svI1w8hoxJI6C8n9H2XpG4e3Ise5Gy
-         vtGK9hO1kF+FLaNc3ld+6dHcDeCDNrLIh+5ejyYdffpqaYbPCG62PeulGg2U7nclKtol
-         ZpUcYE70rIWQ9Rx6B8QXhgFX0tdDQ6EoldMjDtQKWq8ZexWcYGE/an2D+8Owv1JbgBJ+
-         00YOC0D1ad26AIqfYGoi/yiuTNooe6l7LWQgHlNQeMzCBghkrfOd+dTeCdkKsiSscoMb
-         r0MGZo1t5jEOG6p7/IYMUvlbh0IiSrYhRe14L23oo5Hr1OAFSXyGLYC7CZxppFN1Z+BL
-         5IIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAr6sJYSmp/cpPIcW+fos3H/jhv+3I2SAAF/r4TDAKMoSNBLTa0fjNY1q8yFDKX4jFPD1/lQITcg==@kvack.org
-X-Gm-Message-State: AOJu0Yxepi6sFY8JIpXj8msq5VzC31MejI60qiztCbQcfmGWmxOTk7S1
-	7gTxnm/P3lbTS/I6ISqWkKipReh43Le6lZvWFaEw5C1fZcY+k5HNpCUskV5ABtMz6lvPtz/aVXD
-	WtyGecfAWDZZHFf2vGWFpNmHlRpPCno+itSgb3qOr9oqE56bPdjJqIA==
-X-Gm-Gg: ASbGnct4o0KRc0HrWfh4WiZQ2vmv1bNmdZxehMJlH0XonuHwnWODK1dr+jfa4Hh/e59
-	CtwZI/Ssv60p+2TELHZQSNtKna5DQ+ny7VaLOO0xWjdKcOv1xT7Q6dPTdZGZcDh+Pxj3G1P+Qhn
-	Idq95w2aw2eharbpItkeYPsfJxSK86A4WtIDBrW99FS7Istp9l5W1ju8vxu4XIUSW/D+88epvOO
-	EJIrDWDzDi8jX8d2CdincM9FrsxwCZBsrtEduR/0K9krhfDdMfunhuyFm8QhzAe4OuHtO0HKMWe
-	GvuL7oc2lRL04lH8pyU8eyScloEUkrxSvf1581RuP2d6VaB8oZdiV/GXhGfv/wCIC0Y=
-X-Received: by 2002:a17:902:ce8b:b0:240:52c8:2564 with SMTP id d9443c01a7336-2462ee8e8f4mr245573505ad.26.1756228494720;
-        Tue, 26 Aug 2025 10:14:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHntt0G+q9NMI/UOZT8ywGbkhH4ZHMChCz25hbho9klF3RDxKSos+Um1MoE6z7OkYJ8G1s4w==
-X-Received: by 2002:a17:902:ce8b:b0:240:52c8:2564 with SMTP id d9443c01a7336-2462ee8e8f4mr245573115ad.26.1756228494074;
-        Tue, 26 Aug 2025 10:14:54 -0700 (PDT)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-246688801bdsm101007075ad.123.2025.08.26.10.14.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 10:14:53 -0700 (PDT)
-Date: Tue, 26 Aug 2025 22:44:47 +0530
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: Eugen Hristev <eugen.hristev@linaro.org>
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
-        andersson@kernel.org, pmladek@suse.com,
-        linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
-        corbet@lwn.net, mojha@qti.qualcomm.com, rostedt@goodmis.org,
-        jonechou@google.com, tudor.ambarus@linaro.org
-Subject: Re: [RFC][PATCH v2 00/29] introduce kmemdump
-Message-ID: <20250826171447.6w77day5wddppy3s@hu-mojha-hyd.qualcomm.com>
-References: <20250724135512.518487-1-eugen.hristev@linaro.org>
+	bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=;
+	b=BL2qcOHgD93QrYfqXlzddM3tyO8jSheTDr86kjkWuUGsRL9QDe/jr8eLu7GeWZMOkigf/t
+	rK8QrCKolsqh8bj5C4fPp63rdg29g/ZqWlGaeKxyChTnK1F7LjopMZ5i8b839C7lYpNQRq
+	H1wGNmY9YTmw/0kQOF6FvJ6R5S8CYzo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756229080; a=rsa-sha256;
+	cv=pass;
+	b=xkExLO8YyTT/AfJMN8wcXRfmVvuTYL8up2pmn9Kt63ghHDLNTl1vZdPjagbAG14/apDcbP
+	lcrGYIriekbIHOM6kI5arJyTXyUhcTA0h4EOEniwxuJdlpNvEUeH9O1mqJk+2w+BPJAg3B
+	1yO0Jol3dsB1Grssk4s9B5NSH7CHOxM=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=kc5CJDDj;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="q/370a7y";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57QGfrUg021413;
+	Tue, 26 Aug 2025 17:24:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=; b=
+	kc5CJDDj4vGmuGb91AROPrTPUIUIKmlFnjq5tDmpKiA3zAi+uIIUutl+D24jw5mF
+	nfHYe7MnzvoVddlbYDFMWSJo9K1NFMLsDQgbmHqigPCzmZ2qEoO+9KCzXSbdGeI8
+	OuUK0e4JKA+mYIlg5RVVPiRsfhSufxpgBKajQCOe8IFBmxtV1bPNBaUAG19ld+Tb
+	mYHVt0nBRjZXrhGHW1t56l0hhQah4SuttApeZGINkxXZkRXeYBb6Mx0pWcDpFJLq
+	dX4ABrtVka0qTXOZzE4v5fckMKHeDwHIXOv0v7/QabYxiHuKtb8EsSNUEE6HZFJl
+	Q0cz+uZ1vzYrlKgLscwslw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q5pt51qv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Aug 2025 17:24:14 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57QH5Po5019707;
+	Tue, 26 Aug 2025 17:24:13 GMT
+Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04on2060.outbound.protection.outlook.com [40.107.102.60])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48q439vf5y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Aug 2025 17:24:13 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SYoUNfUWavGOjmjXC5IAzIc1MvPfvTo/KPCAgdrqORY8e0e670kLP9UwB/ebzvfAvynwMW/CK8zMwIsrkTlNDMn1dEC/BK0m0TKzNOuRKHIEibq9VyvCQ9Ehqxn72xHNkkEQ2v7Mmk592QeuvOnweaDtfbQ0Y8XInUFaxzKuf/rcdSVg5IASWKxZ1KoMZOB+nzAWFGbyhDC2q8QPtuLOQ50HtZtOKOeKhHdeg7NHcR6JR59JWDjeZGd/wGlGss8cJXkcOduz9+qlOu1XOflHxzsClmPfzJyBuvnOVIHAyJHv+aG2TiDDD3OQtMKKx/+ER/7LUmd2jPOYGO9cdruxzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=;
+ b=jL/a5n91IJkl997tbXxOkWdagp1RaHEIYWQ1QgOjFOopC9cXcclXsLEYYVJkQgf781jGv8t6qGf4MlHUyk45OzFyy55DhAAWUHLFMR5yAR+p8NGB7zs4sN8r2DF5yLCnSx3gANjRcp4MqSJO1g5TOS19g0JA8zrKqYFHDrMsNPtU6LQZ3/o1zwyAtUvs0m/om7n/HL1NK4WuahHxzWHPCjzYQX9onahc13JHTPWR/X9UigTs5/GrbFN0tSZJbg5EdMrWdUT8L15wmSQotz944xpccgBYpl+v4UGyKxqdc0GsNCp9UXNZmOPIo2TlTPurDD3s6jWKS0mJHMeiZN/FQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pq2UChQULsDwyLB/YRbRcPzk/JtI4WcFQ8eB8L9RVNI=;
+ b=q/370a7ylx4nUFcs7qIXEqg8EOYLi2obQkB5H3moPWt4fSzi+/en2JGcUn8utuWa3v1rcZ/+Gb7G88GNkJqfXCrbTcZqcrGjbLlwrMDi4eyDwEjsQqUnk4++F06YPw3ToqCZPFvb1oks8NK5eDgiQhxJXp02FkT8m0K5rmNeX9M=
+Received: from DS0PR10MB7364.namprd10.prod.outlook.com (2603:10b6:8:fe::6) by
+ DM4PR10MB7475.namprd10.prod.outlook.com (2603:10b6:8:187::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9052.21; Tue, 26 Aug 2025 17:24:10 +0000
+Received: from DS0PR10MB7364.namprd10.prod.outlook.com
+ ([fe80::b7d7:9d3f:5bcb:1358]) by DS0PR10MB7364.namprd10.prod.outlook.com
+ ([fe80::b7d7:9d3f:5bcb:1358%6]) with mapi id 15.20.9052.017; Tue, 26 Aug 2025
+ 17:24:10 +0000
+Message-ID: <714d066a-a06e-4b49-b66f-68952c6520d9@oracle.com>
+Date: Tue, 26 Aug 2025 10:24:07 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory-failure: Do not call action_result() on already
+ poisoned pages
+To: Kyle Meyer <kyle.meyer@hpe.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Jiaqi Yan <jiaqiyan@google.com>,
+        akpm@linux-foundation.org, david@redhat.com, tony.luck@intel.com,
+        bp@alien8.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-edac@vger.kernel.org, lorenzo.stoakes@oracle.com,
+        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com, nao.horiguchi@gmail.com,
+        osalvador@suse.de
+References: <20250821164445.14467-1-kyle.meyer@hpe.com>
+ <CACw3F53KmKRJyH+ajicyDUgGbPZT=U3VE4n+Jt3E62BxEiiCGA@mail.gmail.com>
+ <aKd1K3ueTacGTf1W@hpe.com>
+ <CACw3F527M-x=UeB0tN_sjCgp_YP_8yLkVRCLP2dLO2bzXrqWsA@mail.gmail.com>
+ <14a0dd45-388d-7a32-5ee5-44e60277271a@huawei.com> <aKyKort2opfQYqgA@hpe.com>
+ <2bd5c32b-dfc4-4345-8cc8-bbda5acdc596@oracle.com> <aK0UTovxnKfjPwXs@hpe.com>
+Content-Language: en-US
+From: jane.chu@oracle.com
+In-Reply-To: <aK0UTovxnKfjPwXs@hpe.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH8P220CA0028.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:348::6) To DS0PR10MB7364.namprd10.prod.outlook.com
+ (2603:10b6:8:fe::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250724135512.518487-1-eugen.hristev@linaro.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX8h3s+Dak1dHm
- 7uDQpaOn3G07SU0LcvOGZ60DoP2OEjMV+PZ3PbhVhtYyYZKiJrPXK7RLu6z1OKnu/GSY6RJyZEq
- 7t1fkoULGpsNoqZgtyT1yDd++8sESFtpkgrQPaU8lXzKsCagh5z2Ket+Re/+IuK11CPH9YEHs8q
- 4CKiAgwSlHasRDRiQW7/S/+6XCsJShQD6Xh70v7UyR9Vfzjbs0YInvvJd73MLjmNLqkvUiGW4qP
- og3a/LGsKqcFMGm+Q8WAszf6nnuy7dZ6jiRpX/wW2ePao8yQ+wkVLiKTh6Td6ujxp9oWkNDYl2V
- fSIYtI8klLbAXp3weUnCx4WJARewNQK1FXh7JM2QAVsNo9Rpk5NnDp9c0L0ZtRBEHLbHieWWHXP
- HQRelWI6
-X-Proofpoint-GUID: iqg6kclpXpfhWiE01PRecGvQlh-HmrMS
-X-Authority-Analysis: v=2.4 cv=MutS63ae c=1 sm=1 tr=0 ts=68adeb91 cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=Oh2cFVv5AAAA:8 a=VwQbUJbxAAAA:8
- a=KKAkSRfTAAAA:8 a=vnREMb7VAAAA:8 a=COk6AnOGAAAA:8 a=bLXd17yOAAAA:8
- a=1XWaLZrsAAAA:8 a=349LBZSuyFQcu3wEsZwA:9 a=CjuIK1q_8ugA:10
- a=x9snwWr2DeNwDh03kgHS:22 a=7KeoIwV6GZqOttXkcoxL:22 a=cvBusfyB2V15izCimMoJ:22
- a=TjNXssC_j7lpFel5tvFf:22 a=XOuVWTVwyKTMzSnUH6Op:22
-X-Proofpoint-ORIG-GUID: iqg6kclpXpfhWiE01PRecGvQlh-HmrMS
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR10MB7364:EE_|DM4PR10MB7475:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85dd6ae3-4d3a-4778-954e-08dde4c55e6c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?azMyMUpZYTd6T1FzR0Jnbkl4RjltakRydTExMDZkN3JPeS8yYTI5dEF5dlEy?=
+ =?utf-8?B?Vmc3SGFqRkdiVEl6NTVaRThoRXBWRjA0R2IrNkZZeEJCNVJKMThwRUR1bnZ2?=
+ =?utf-8?B?UEcrUUZPc0toMlQ1dDlJUlJGcFhWUjJ4NmRzdWQyWlZIbGsxMDlTTStVR3dO?=
+ =?utf-8?B?MkhPaVppbVREMS9lNlBWZk1HTzVrWEM5U3FSZGI2VTZrZ2JQRXU4TWQ2TkVl?=
+ =?utf-8?B?ZjVZd2tMdWlnS2Rlc29VSG9wRnFMWjlQUC9TYWxzS1pFSmRvbm91c1UydGVX?=
+ =?utf-8?B?RUpCa1RNazVsKzNvTFBEWDNmcUFEOTR3Z3ppU3Z5SHhpb1BmYThyZHVBK1dm?=
+ =?utf-8?B?Vmd3R0thNHBoVVpSdlgxdU1MM3NxVEk5c1g5N1JRN3FOd0JuQW81QWJ3Y25X?=
+ =?utf-8?B?WTlCNXUzemNsci9HdUxQWkt3MllRTnJWS1I3L1hSMzgwa2d5QzN1TVlnUUY2?=
+ =?utf-8?B?Qy93M3F0OEN5VFVjQlVucjVzMXVEdXZXdHIzZnQ2NWxidjFDVW5OTERBVDFB?=
+ =?utf-8?B?dkwyODAxTXRVZmR5RTFhR0F6OC9hdkJPTzFIRFdpYmdrdks5aEpDblR0Q2lu?=
+ =?utf-8?B?REZwWDVTV2x1UDBKV0lJWHkyektRYXZnajVqUmRzN0hCbzlXZHZuNWdLa1M0?=
+ =?utf-8?B?SWNqQytPaEgyVmFWTEF2Qm9qZzMwd2Nqd284WFlEaTltdjU2QmdQVHpjNk5O?=
+ =?utf-8?B?eXpIRlpNOVQ3Tm9SVFE4WlFCbmN0MzkzUGZ3dVBYRXpFN211SzY0OVB0VjMz?=
+ =?utf-8?B?L3dsbzJudUgxdzFWdExPRGVxZzYvWEVoYVZYMnZUaXhlQTcycUZRM3VLazJ0?=
+ =?utf-8?B?WGtCNmkxSmhvTG5TWTlwNzdnV3QyRkorbi9zNkhqbVJZMHlmcWdhU1ZCY20x?=
+ =?utf-8?B?T2wrb01heW5pdmpNQ3BZeFRqRGJuSjdsY1VGWis0aFU5UkVWeS9Bbmd2MFVI?=
+ =?utf-8?B?aTEydEgrVE9yL0dLM0xRQnBvUU1kYmQxczYxc1F5MEkrc0JraHNwNEIvZWsx?=
+ =?utf-8?B?MDFpRWpGblByK2hWR0RlSE04eUVYOVk4Sno0N1BBTEt6ZTlkUHUwVVltSmta?=
+ =?utf-8?B?UXpwMVVya2l6YmlLam5COUZWS2NibUQ3ZFhSeHlneHR3aWRMbWNUWVJHZ0Rr?=
+ =?utf-8?B?TVB5TTV5K1ROM3JMTE5MeExqUDNwdG5SeEhyQ1RZT2kyKy81UFl0TFlJNmNB?=
+ =?utf-8?B?ajBrS3U3NDZkYWY3TkZJMkZma04yVXIxRTFVSnhKS0s3QmdlbVZzRjZ5L1lY?=
+ =?utf-8?B?ajk2a2h1eHdPWHNFRVVJQXpWdXhNNkZUc2psVjFZOTZESmk4MmdiYU5UUGRv?=
+ =?utf-8?B?U0ppRnhoMkdxUys5MGxpZVU0T2YwQkRYOHNVZ1R3dElnQmJIUmE5bG9Xa1R2?=
+ =?utf-8?B?R0NkOXZ0V1F0bi9VTUpNUGFqRkJsVHZGMHJ1Q0NLSi9abUNtK3Mwdld6SkZG?=
+ =?utf-8?B?ajdRZGRGMFRWKzNJZHN3Q2pJM1M0bGpYODh3MEtFSldtQWF0SzdDdkJ2aTZX?=
+ =?utf-8?B?aHNSVXdaOHVSbnJ1UFh4cFJycllJNURzaG5BSEVUdGhQTWJKaEZvUng0MlJQ?=
+ =?utf-8?B?M3ZwOTdVS3pyM0gvc2l5NHF4cEtSbDY5eVl4RVM5QUxkQWxNUXlUS2Irb3pI?=
+ =?utf-8?B?WGc5YXR4TXBhTU1QV2hrUWRHWUxrYTNaMXVVZVB3WTR2VXJra1NNUzFIOU5T?=
+ =?utf-8?B?R1FNaGF1SkhHb0grY2tRV2JNS0NpNWxYNXVHdTZ1TjFpaVY4NjlhUTVpQ2Zv?=
+ =?utf-8?B?V2kwRXQxZm1POVA3c0VVM3p2dG9MRTRQOCsxZVVRS0dqUkVNbkF4eVhYNWRw?=
+ =?utf-8?B?YVgwTmFoK0xIM3B4NGpYQ3VTZ1dGbjJ1TEpvSXhWSktrMzF2RkdZRG5SUVhW?=
+ =?utf-8?B?Ynh1YlJYcUxFSjVyd2lsemZaekJMUnRGRS9mNW5BWVJWc01iZTR1QmFRVDZW?=
+ =?utf-8?Q?1jocP1FCCOk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7364.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Nm45N044NDg2Uk81a0tuSTh1SWtrbG1OUVczMVhHN01PWXZRQThxL1Q2bzlR?=
+ =?utf-8?B?NnhFWU9MRmIwOWpqK0krNmpUQTkvWHNIRlc1UElMR1pucEpoUzRiT1FiNElV?=
+ =?utf-8?B?NGRiR2pneUVaeU5BWDlpaGVRN2xucTJLYkdKTFN3STRKUDFyUmhzVEcvaUlV?=
+ =?utf-8?B?aXhZMUg0YVlNa1lTaTVZaTJmZlVyNkQ4SWo0YXpibHRpb0laeC9IZFRvZk9D?=
+ =?utf-8?B?cmdwSjk3M2ZyNWhnczIwQXJlVjVjNnZyd1k4R085ZFFnZUpwc2ljNXFYYWhO?=
+ =?utf-8?B?TmRmcjR0d09EbU5ha05GcWZRSUJnOEczRGp0Si80aWl2bDVKRGVSRnkrdU9n?=
+ =?utf-8?B?R0FVcHZobDNwcjJXSW84bzZ2QWZYTTU2QXB4WEpJOUJEcW9rTkhMSFgxRU5K?=
+ =?utf-8?B?TnBCWXdhSDB3SGJ2WVdkZ0dDUnlXdnUvZmdaTjNmR1dWUGw5d3lPZTFKc2JZ?=
+ =?utf-8?B?UlByR0RzU0pVY3ptZXIyUjV2MWZsc3BWYzl3czQxYk93dXlraWtKYlhFcVhT?=
+ =?utf-8?B?NUMxdTB0YThXMS9sSFozQ2RGejloOStQOWNoMTlFMERCNVh3MVlTdVJSeXdF?=
+ =?utf-8?B?ZWF1blo5ZEN2S3BuaXpHUG1xczJ3QkJtblZIejZiaTdnUkRnNmZnb2RjVENP?=
+ =?utf-8?B?R1ZZdWNQaEZpNnhmTWpxMCs4S204OTJHWjBKOGpxSU0xUHQvUC9TV1g5aXpI?=
+ =?utf-8?B?SmtjTWd6SnJhTUFKaFRXaXhONTJKUnRIWHp2V0ZaNUhjVWcxRmhSK3RmU21m?=
+ =?utf-8?B?cVB0WlQxQ21Zdng1SnR0M1ZTS213K0g5K1RQVnNXUDkveDNsWEJqTWRSRzVj?=
+ =?utf-8?B?eWhicjMvNm83ZENTV2poZ1U1V3Q0d3NZUzdSMTMvVDFwcEQyZEQ3cXI5Ti9z?=
+ =?utf-8?B?RXg3N3RTTGhWWTZVSkt6R2k0RGhjalMrcjJyNmZPVDlsRm41VjFmcGxTWktT?=
+ =?utf-8?B?U2hQelJQaGw2UW1nb01UWlE5dXd5WEZDcldocUErU0x4bWptUzduc0ViZkh2?=
+ =?utf-8?B?REtxaUR2NDdKcDlHaW1JZk9FREJZSlFMTDYzVFhEL01QMlBzdXh2OXM2WWtP?=
+ =?utf-8?B?RkM0OElGMlFNU2RUWmhmenNxc0Z1ajMzUnE5TldoSjBoNEFMTm1JdzlTTjk4?=
+ =?utf-8?B?TGE2cmVzZkQwL1VMVVQ3aE1oZnZ6bXFFS1ZoN2JMbUc1VW5UL0hFclRxWW5J?=
+ =?utf-8?B?YVM4aUw0MGNGMHFXWExuUEdodXlGMzdVT1Zid1Q3MkV3ZnN2dmVaV2JxOU80?=
+ =?utf-8?B?ZVVRbHR2OUkvTkRLRkFrK2tvZFNaWWczNS9ISzhHVGZteStDMGZ4a0V1YXBn?=
+ =?utf-8?B?eDNmV1E4ODl4dVNLTi9CaXhqN0RZKzRzc2RoQjFXUXNaaU0wV3ZxWGw4c09o?=
+ =?utf-8?B?U2FhY0tacVdjWmxPRmZ6RFBRYXJRRS92U2JYWmFtc2xmYmJWSkJmSW85Vk02?=
+ =?utf-8?B?UXJaY2pGais2SDNWdHgzTTNOenVSd2VoNk04UjQxOXh5alRma1NuZmIvb2xT?=
+ =?utf-8?B?dlIyTkJYTXRPeEJJM0xmaTF3S1kvWmZ3SFNOWE84UEhCaElSWDNNWW9Ic1Nt?=
+ =?utf-8?B?ZGhudmdueVN0TlpZSGdrRzUzd0wwNjdRZnFDWkJ4OHFnQlpCbzFxM0pveXlO?=
+ =?utf-8?B?bVJsekswb3pLcURpMXlaRXdPa0lYWm9rWDh3WU05dW5pQzdwTVFEaFNXOHFB?=
+ =?utf-8?B?TVdRY1l3Nm45clJXNy8vbHNXeGJ4NzZadlgxRFQvMzRBYUl0SnZUK1hWeTRw?=
+ =?utf-8?B?VThyWFFpZU5WWmtRRWFTNUExdStTMjBIU0ZaZ1ZXRFpBSlpobWFrREJ2STdt?=
+ =?utf-8?B?bytPNWx5UTczZE9Mc21Dc2tmbUk0L2ZaSytQdE9JR3VOUXFoSExvTG1MUFh6?=
+ =?utf-8?B?cVlXU1I1d2NyVEdHUmU4eXJDNkNIRmlsQ1NOa1FnVXZ5cEZOTXo2dEVKQy9x?=
+ =?utf-8?B?anIwZlFWUlFjemJFcEx2ajgvcHNzdDRTZ1drcmE4VzVtd1BKUGRVblEzSU1I?=
+ =?utf-8?B?LzNPVkFPT3NuTjJCa29RZ3ZMRHNqbWcrZHJKOFJwbjkwRmIzRTc3UkhzZGRH?=
+ =?utf-8?B?Sjc3cFFacUl1UHJTMU54UzRlNSt6QUdrdndpRStZczAxbE84QlgyWDV1TWtY?=
+ =?utf-8?Q?3/jFsRlZeSebyzJA4WbSbFZy3?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	I1gebEa9ftUVrlStuhgGQ41bPh2AzjQKyFLvNWWl80/NCA8WJsGAgpvxUxi3VqOvgzf9ULJWS7LzE1qvDYx6VyGLk9Uj466+ZYjODmJYiq40hCxsMxoClpdAEkllomQhCydhDUhvyD6PbqtftIUxncRz18KHEyQ9K6ELywgG1QZR61roOysbY1NyMf3nnz8DBSO9ByuBK+JiXXXHQROuyTW/f5FX4YR2//buj0Dsk/ICk4CQnuhmHoQuEIQQS3SOxZRv3+5/7P9/NNV5AY2Inje1ik3swc0YkLsMwGX48dlRZVY2/jPlblvXHnCZzI8rM51IxtfaEB+tcv8I3C60s9zyf30EWJc/go5ArW5EJUGo3dITRIcdBUuZo8LDzO0RDRpS7dMLNzcl7qTHTuRhhuJMQ8Kk27xLG/fau8UZxKDdQzVpEuKk5y+sUhf6EHXa4SRO/V1/KSjUKjvk2IViwhQ4kiHfEFr1qikwJueY1hBNMLmK0Gq3aGAJk/6MPlk0rpB3ZUnPiAyCsozLON6REfs1YS///uuBQXMSgOu7tfD0ATeRX6nP4GSXsOAxhDInl2lHHEvzYK4UzXM/bG4cOPgMDljCedO4i70oOb5ZPRQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85dd6ae3-4d3a-4778-954e-08dde4c55e6c
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7364.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 17:24:10.2890
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eKBGNwArO3lz6Ao3PkCmPj3jXxaLK6Ul7OIPdUDnH5LBtHcIHb0ZOz8sSVrPdxNfq8ccFIMFFa3daM4JRMOOwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB7475
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-26_02,2025-08-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 adultscore=0 spamscore=0 malwarescore=0
- suspectscore=0 clxscore=1011 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230033
-X-Rspamd-Queue-Id: DECD8180011
-X-Rspamd-Server: rspam04
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 phishscore=0 bulkscore=0 malwarescore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2508260153
+X-Proofpoint-ORIG-GUID: lgcthk5b6kY469CeZEaRuNvRYF-km2R_
+X-Proofpoint-GUID: lgcthk5b6kY469CeZEaRuNvRYF-km2R_
+X-Authority-Analysis: v=2.4 cv=EcXIQOmC c=1 sm=1 tr=0 ts=68adedbe cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=MvuuwTCpAAAA:8
+ a=1XWaLZrsAAAA:8 a=TudOMMRRcpkxdpn9tkcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMCBTYWx0ZWRfX6rSAR9ie8YYE
+ vlxwL23m8pzYv9lCCd/XOIxvJOjynxIg3pRU8XdIeGt0EyW0Ambc2SuxO0Gl8vkOk0gN6bABS6T
+ qI4d0lFE/9KqUE5Ifh4vvBm6I3aqyvZvwCYQK3gqnx2iKvnzx5Vf07NmDfN3Ai8U0ZvcnezExCN
+ OZpcZxdl6YJDFfWhvETrEX+S0Fg7J5qweKgIE/wUqCxu9/eavFpAE6jYxzh8+I+ELGQQ+f7IcYb
+ 0mBAQN/CeWVyZbP2evyBe2Dzt5tLO3mEZeIjHOIXQFHFaEpsx2zimTE/hWMETDO2UnPXzFWYQBo
+ 9CBV4GiqltXgvY+k+NzPeH1QAqzCmDurGOui3y7r5IERpY55+SSYt6cPWjT9slK1zeLUnaQ7q6Y
+ VLt6NaFM
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0137A1A0004
+X-Stat-Signature: pd75mbh9fpuksi6oajs34rq5kirw613e
 X-Rspam-User: 
-X-Stat-Signature: b3xif3hkb5et3h1p3g4c1165fnt81nea
-X-HE-Tag: 1756228498-106141
-X-HE-Meta: U2FsdGVkX18IheXxPGxXrS4Xa0sFWLK5iUgTKvZyQPj86/HUx50s15T4/nzJrcwFTZihg9E/y5vlqY3dY6E6ni5q82ix7t+liWFT8UIGFpM+X8XHSyNRNiGR0eG84xDysX1h85/5uQ9Z0iKkSv7FPTh+6zgD58IMg9ZgI8Rr2F0FuFArpT0kHlqunk3wnJoU85ngMGBDruiTdtAqlDur6i0tJDI6HOx1HGu8Ue/xMfq2ZgCg1PW4sCpNlXm9Kd60ywHEe8Bx7QRQysOUduHa2Ehwcmi7MuN9obxrl2bRH8IuwwtUVDBT/CYT6146A7+p8oUL0bPBXx8bEZERwYI2KgwBWdlgV08QeOnQHk7HXP7wjFkrfdM0lqiq56rKTYv5m73C+kLg4sbYHJPOrrhsx7GrMycOgRVdUTArzNtUUS2ZEO23Kb0MkzZ61ytMvGJ6WcDJ4dWnDUhV25OIVfkrqp8vg1BA4EUTzeHSiFvbEoqNuE+KlxzyEYpvNGWjaAg5PYM9naYMa04HtEVXIzVAIz9PVOz3lOpqhJt1mtZ1IVV1csc7xnKCgotzeB/BClfC9gxGuSHIWzEdjZB64p3alzcIC9SbSgiQ2xWbCK6anzUoe7qvLOCwnz6xANUXcbr83XybPjcHTTtl+LRKSnHjAm87NhFusJ+4X4hq2v3IWoEzqEvu2vYKH+o6FnoGcLU/q+pB/vsC/gQo+oz7DdqDIRc6SjjDv2bfZxoEcXh5vWZXbu3lJQ3Ym+boWe0RgEWMslPN3BkBdKfpZ4IjFy9QR0szMm4tXmD0Ztqvdc1dnjmiD4YTaBqIz8/bwiuv8NdJFaJQr8bQJrGQd4GJEhKBZKZQvSC4ijrVZGN6tvZhFkpfothd/k+9ZzMR+ngELOBuCMlOosw+J7HuAiNTQoqpRNEz9ktnumueEo9qgufiSPlJRRrkrpyIJ9+FjaxEhuKFkiLYWB4zjUgDiRBpMdq
- M+1TWZxY
- PP0j1ZCXO+KEVW2dufrM3JwpUjOKzy61gsQKgq4gWsuksjxxwG2r5e9qhq3lCQH1AhA03vcFVeiEAsYmZZBMHtHfA6ZpDE83VhcpU+F+CjGjjvCB7JFn/ffueEIWWV4h0qDqtC9i6CCa/nIWMvJRAqmmdeDiuh9aQ16dr1LabGl7xvpdnUKe8wD4FwGfJBXRKt7XPKn0CkDCmO/EIqx3+0UYySJOjv3F/7JwZ8ejVrYCI9dRjIOV6nna39yX4dA/xCYzzEsvxMY5YEEs/TSJD/H5qrullVR3g6KGtiSd2nhPCTB4cReiMvK7thGtD1VAZfFeViR9IY9ECLG6zpwi4AlOdD5kDlo9BR6UGMAvSCw5w77vx5UicAY5SuOVHW3jYWIhxZEd5IsVbkvXquGG7gnh66T1UyG9gvWbslc0G8Evp85yrVGd/jGVTYbfSK0BwWFsMSq2JbDVLD4eYkktGDDnzDlzveHEEW7jie+MLACom/uaOcF/fIZOp7R8/8GIhrA/2TCPiSpzbGdTgB8hlYi83WUyzJTnat52KQq4Uf5GOzQZE4qR3TPORhnFvd10ZqKFv4c1KC+7HEOM2QVOfHxG1m09lVOo7fkLpNN91nPwI1u1X8Fqzz88wkx4avwNqKnB3EZOixxBeIELQ4SRCXzZ9JTKWD3Oq6TyhoZhWnJ1TaKU=
+X-HE-Tag: 1756229079-715542
+X-HE-Meta: U2FsdGVkX1+UlrPeHVwikftDoxDeCgmSzYkhpgG5OTWvFUadYJkxEdpymCOwz++QzZMe1H/22EmD345jV0c6oji2JEe1xWWQ/zB03zsOhjMKaMxdHIUThOpkkTRzrpO0Ve9UEE45u7RO30700inabIFy+P17ie/Stl0S+zIady21HKvK0rPnqsLWJwiPRVAcW2T2VwajzmIOWuftw3Xz8qCZeweCJ0/ro0IKwKeYSyobj4nTq/buj9fnfUgPgAWy9/Xu/RDelITw4H9oJqSk56IWvClfXDBnAAy8WEWJuRWSEYy3vdqlX/xmbz2Zkygy7mGs9+Nq9o2+5JEnKgl5gFjLD0lZsIBp6kK9oCWGsFGoq9EUBUeROjzw/Orz4H3q7+La1hDWxFkBixIfnRNUZfbmVd9F62qNI1Nq6hq6zDk5H6cOkIOrciDLLzpIX5tnM1GzG64MHEL2+iaMRZ1pNq3saL7rkkWXVVsAhUctHfTH7LAktH0R030aIzhw3/NHi7LYL89Bb13bErT3A7gDQaykvRkO9bEl6KXy9tcL3DZUpTVYabqkSpO7OZVWVcs17UQzE1OwRCLRy11KhRAKYwyLNzTn/vy3q9S2uLDxeWKyD6FTzSXC3YTYLMHvNsl0Dnrd70WsERYV+PQUGN12pmjlwsSelxgX45gTQbzfZH+XlL/mxDIxnljgBIqmDiLJR9MlI1qqA2vM7qFrQXuAFN7FtxeLkeK/eniR6azo4qfcqZOaNtCBcXbde3tfBUEsgTI8+YWD4t6N2Sny1zUEfoZ1VRPU5JIfiViOx9G7B+xFYnemU8eaLJPX6/o0VFTcdYKy51qdWxrTlmC3LZ7BW+jbUEaFOjyXODWfcWpdUAewipqOEz7iJTnE4kBWDvk5OGhJU8RV/Nx3OfqFrIOwSp9NS2ezti5ZFuW1Ic5DUtY2sO6SjciOlaMZAiNNyMR7knoE6Jfp1HNBeCVvtyV
+ 2DFvyeNa
+ ooT/9b5CuCvnD6HVBpnhZBKEAIVuy6sxnjGInsf18wjBelaS3lrci4lSMWNkJ0Qa+M56HFJH1wkvt50bDpAQD7OigxKcRzQjFxKXgjHcfuDJmbQglwB/ru8shwPktTLs/MmJy6bqwNticCXrW8qGUoZKZZKdyUbn6xkngX9+xe6z8av+gaDDpOTxwRKP+yu9ifWgrqr4PgaKnYwCvvdldKIL1+CRyrcTQ2BWud8QYEC2HgKIF0RRtqyuO68rNfCtfRqGsPOhTiXr804VFYSVprJXBRiFbcf6wvUVn5k9Duuu88JvmkP3ZF25iRC4nmPrM1Prp87WoA9PdR93czuo5/t8sTfy4zxh4iBdesCq3/GbeG2bMNu270tqnYo3BTuSm3CRFoeZ2KHcXxsqPx/eihLMf+cheWzgpEOaF94dEgBC1v6J6G17zczi+p3mnYOVkFnXl0GG7Jdai1GaG2DKkiH1zzoSvn1Qbk7tNw0IOITHSVZjxX1RFhjxTo47fG6iwg4zZXcsqi/NxL7iyQV71jVImhWccRstfChVkLykPQRxsvI+ltrfTK+uO2wZw4No0xs9KOEpHdh8bOgyeq02bER+yv3k/glAKleDZbW18cY87jdZfB7y/57prrbW4dgy73DL8v6ahNgjZV0Hj1bMgyiAbXS1JJPlLCmgqlfYu4WzavvcruaS7O1U3EekLU9FP37fNWxNF7hCKhFjjDoqQhGqqmk3cbDnEZBE4J9NSTKjC3X6b2OVE+B/xd5AYuffXcMunvGiHTDSQUv6ZVfvRajMux5E2sFb0FDs0GKd3ltulfk30xyDmkMH8RUhI1aKNfSy2y0LHt5PWAouBvGjvqTQoyDScJpSbEF3jHws/v/tERk1+dhGZvAFHo0EM/vER8toDE/JqjgXAdyRJy0nA8Ad3n7w2etXgZAm13HzPikEx0hXQmySJ8MIzuA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,282 +262,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 24, 2025 at 04:54:43PM +0300, Eugen Hristev wrote:
-> kmemdump is a mechanism which allows the kernel to mark specific memory
-> areas for dumping or specific backend usage.
-> Once regions are marked, kmemdump keeps an internal list with the regions
-> and registers them in the backend.
-> Further, depending on the backend driver, these regions can be dumped using
-> firmware or different hardware block.
-> Regions being marked beforehand, when the system is up and running, there
-> is no need nor dependency on a panic handler, or a working kernel that can
-> dump the debug information.
-> The kmemdump approach works when pstore, kdump, or another mechanism do not.
-> Pstore relies on persistent storage, a dedicated RAM area or flash, which
-> has the disadvantage of having the memory reserved all the time, or another
-> specific non volatile memory. Some devices cannot keep the RAM contents on
-> reboot so ramoops does not work. Some devices do not allow kexec to run
-> another kernel to debug the crashed one.
-> For such devices, that have another mechanism to help debugging, like
-> firmware, kmemdump is a viable solution.
-> 
-> kmemdump can create a core image, similar with /proc/vmcore, with only
-> the registered regions included. This can be loaded into crash tool/gdb and
-> analyzed.
-> To have this working, specific information from the kernel is registered,
-> and this is done at kmemdump init time, no need for the kmemdump user to
-> do anything.
-> 
-> This version of the kmemdump patch series includes two backend drivers:
-> one is the Qualcomm Minidump backend, and the other one is the Debug Kinfo
-> backend for Android devices, reworked from this source here:
-> https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/drivers/android/debug_kinfo.c
-> written originally by Jone Chou <jonechou@google.com>
-> 
-> Initial version of kmemdump and discussion is available here:
-> https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
-> 
-> Kmemdump has been presented and discussed at Linaro Connect 2025,
-> including motivation, scope, usability and feasability.
-> Video of the recording is available here for anyone interested:
-> https://www.youtube.com/watch?v=r4gII7MX9zQ&list=PLKZSArYQptsODycGiE0XZdVovzAwYNwtK&index=14
-> 
-> The implementation is based on the initial Pstore/directly mapped zones
-> published as an RFC here:
-> https://lore.kernel.org/all/20250217101706.2104498-1-eugen.hristev@linaro.org/
-> 
-> The back-end implementation for qcom_minidump is based on the minidump
-> patch series and driver written by Mukesh Ojha, thanks:
-> https://lore.kernel.org/lkml/20240131110837.14218-1-quic_mojha@quicinc.com/
-> 
-> *** How to use kmemdump with minidump backend on Qualcomm platform guide ***
-> 
-> Prerequisites:
-> Crash tool with target=ARM64 and minor changes required for usual crash mode
-> (minimal mode works without the patch)
-> A patch can be applied from here https://p.calebs.dev/49a048
-> This patch will be eventually sent in a reworked way to crash tool.
-> 
-> Target kernel must be built with :
-> CONFIG_DEBUG_INFO_REDUCED=n ; this will have vmlinux include all the debugging
-> information needed for crash tool.
-> 
-> Otherwise, the kernel requires these as well:
-> CONFIG_KMEMDUMP, CONFIG_KMEMDUMP_COREIMAGE, and the backend
-> CONFIG_KMEMDUMP_QCOM_MINIDUMP_BACKEND
-> 
-> Kernel arguments:
-> Kernel firmware must be set to mode 'mini' by kernel module parameter
-> like this : qcom_scm.download_mode=mini
-> 
-> After the kernel boots, and qcom_minidump module is loaded, everything is ready for
-> a possible crash.
-> 
-> Once the crash happens, the firmware will kick in and you will see on
-> the console the message saying Sahara init, etc, that the firmware is
-> waiting in download mode. (this is subject to firmware supporting this
-> mode, I am using sa8775p-ride board)
-> 
-> Example of log on the console:
-> "
-> [...]
-> B -   1096414 - usb: init start
-> B -   1100287 - usb: qusb_dci_platform , 0x19
-> B -   1105686 - usb: usb3phy: PRIM success: lane_A , 0x60
-> B -   1107455 - usb: usb2phy: PRIM success , 0x4
-> B -   1112670 - usb: dci, chgr_type_det_err
-> B -   1117154 - usb: ID:0x260, value: 0x4
-> B -   1121942 - usb: ID:0x108, value: 0x1d90
-> B -   1124992 - usb: timer_start , 0x4c4b40
-> B -   1129140 - usb: vbus_det_pm_unavail
-> B -   1133136 - usb: ID:0x252, value: 0x4
-> B -   1148874 - usb: SUPER , 0x900e
-> B -   1275510 - usb: SUPER , 0x900e
-> B -   1388970 - usb: ID:0x20d, value: 0x0
-> B -   1411113 - usb: ENUM success
-> B -   1411113 - Sahara Init
-> B -   1414285 - Sahara Open
-> "
-> 
-> Once the board is in download mode, you can use the qdl tool (I
-> personally use edl , have not tried qdl yet), to get all the regions as
-> separate files.
-> The tool from the host computer will list the regions in the order they
-> were downloaded.
-> 
-> Once you have all the files simply use `cat` to put them all together,
-> in the order of the indexes.
-> For my kernel config and setup, here is my cat command : (you can use a script
-> or something, I haven't done that so far):
-> 
-> `cat memory/md_KELF1.BIN memory/md_Kvmcorein2.BIN memory/md_Kconfig3.BIN \
-> memory/md_Kmemsect4.BIN memory/md_Ktotalram5.BIN memory/md_Kcpu_poss6.BIN \
-> memory/md_Kcpu_pres7.BIN memory/md_Kcpu_onli8.BIN memory/md_Kcpu_acti9.BIN \
-> memory/md_Kjiffies10.BIN memory/md_Klinux_ba11.BIN memory/md_Knr_threa12.BIN \
->  memory/md_Knr_irqs13.BIN memory/md_Ktainted_14.BIN memory/md_Ktaint_fl15.BIN \
-> memory/md_Kmem_sect16.BIN memory/md_Knode_dat17.BIN memory/md_Knode_sta18.BIN \
-> memory/md_K__per_cp19.BIN memory/md_Knr_swapf20.BIN memory/md_Kinit_uts21.BIN \
-> memory/md_Kprintk_r22.BIN memory/md_Kprintk_r23.BIN memory/md_Kprb24.BIN \
-> memory/md_Kprb_desc25.BIN memory/md_Kprb_info26.BIN memory/md_Kprb_data27.BIN \
-> memory/md_Krunqueue28.BIN memory/md_Khigh_mem29.BIN memory/md_Kinit_mm30.BIN \
-> memory/md_Kinit_mm_31.BIN memory/md_Kunknown32.BIN memory/md_Kunknown33.BIN \
-> memory/md_Kunknown34.BIN  memory/md_Kunknown35.BIN memory/md_Kunknown36.BIN \
-> memory/md_Kunknown37.BIN memory/md_Kunknown38.BIN memory/md_Kunknown39.BIN \
-> memory/md_Kunknown40.BIN memory/md_Kunknown41.BIN memory/md_Kunknown42.BIN \
-> memory/md_Kunknown43.BIN memory/md_Kunknown44.BIN memory/md_Kunknown45.BIN \
-> memory/md_Kunknown46.BIN memory/md_Kunknown47.BIN  memory/md_Kunknown50.BIN \
-> memory/md_Kunknown51.BIN memory/md_Kunknown52.BIN \
-> memory/md_Kunknown53.BIN > ~/minidump_image`
-> 
-> Once you have the resulted file, use `crash` tool to load it, like this:
-> `./crash --no_modules --no_panic --no_kmem_cache --zero_excluded vmlinux minidump_image`
-> 
-> There is also a --minimal mode for ./crash that would work without any patch applied
-> to crash tool, but you can't inspect symbols, etc.
 
-Unfortunately for me, only with --minimal option, I could see the 'log'.
+On 8/25/2025 6:56 PM, Kyle Meyer wrote:
+> On Mon, Aug 25, 2025 at 03:36:54PM -0700, jane.chu@oracle.com wrote:
+>> On 8/25/2025 9:09 AM, Kyle Meyer wrote:
+>>> On Mon, Aug 25, 2025 at 11:04:43AM +0800, Miaohe Lin wrote:
+>>>> On 2025/8/22 8:24, Jiaqi Yan wrote:
+>>>>> On Thu, Aug 21, 2025 at 12:36 PM Kyle Meyer <kyle.meyer@hpe.com> wrote:
+>>>>>>
+>>>>>> On Thu, Aug 21, 2025 at 11:23:48AM -0700, Jiaqi Yan wrote:
+>>>>>>> On Thu, Aug 21, 2025 at 9:46 AM Kyle Meyer <kyle.meyer@hpe.com> wrote:
+>>>>>>>>
+>>>>>>>> Calling action_result() on already poisoned pages causes issues:
+>>>>>>>>
+>>>>>>>> * The amount of hardware corrupted memory is incorrectly incremented.
+>>>>>>>> * NUMA node memory failure statistics are incorrectly updated.
+>>>>>>>> * Redundant "already poisoned" messages are printed.
+>>
+>> Assuming this means that the numbers reported from
+>>    /sys/devices/system/node/node*/memory_failure/*
+>> do not match certain expectation, right?
+>>
+>> If so, could you clarify what is the expectation?
+> 
+> Sure, and please let me know if I'm mistaken.
+> 
+> Here's the description of total:
+> 
+> What:		/sys/devices/system/node/nodeX/memory_failure/total
+> Date:		January 2023
+> Contact:	Jiaqi Yan <jiaqiyan@google.com>
+> Description:
+> 		The total number of raw poisoned pages (pages containing
+> 		corrupted data due to memory errors) on a NUMA node.
+> 
+> That should emit the number of poisoned pages on NUMA node X. That's
+> incremented each time update_per_node_mf_stats() is called.
+> 
+> Here's the description of failed:
+> 
+> What:		/sys/devices/system/node/nodeX/memory_failure/failed
+> Date:		January 2023
+> Contact:	Jiaqi Yan <jiaqiyan@google.com>
+> Description:
+> 		Of the raw poisoned pages on a NUMA node, how many pages are
+> 		failed by memory error recovery attempt. This usually means
+> 		a key recovery operation failed.
+> 
+> That should emit the number of poisoned pages on NUMA node X that could
+> not be recovered because the attempt failed. That's incremented each time
+> update_per_node_mf_stats() is called with MF_FAILED.
+> 
+> We're currently calling action_result() with MF_FAILED each time we encounter
+> a poisoned page (note: the huge page path is a bit different, we only call
+> action_result() with MF_FAILED when MF_ACTION_REQUIRED is set). That, IMO,
+> breaks the descriptions. We already incremented the per NUMA node MF statistics
+> to account for that poisoned page.
 
-./crash --no_modules --no_panic --no_kmem_cache --zero_excluded vmlinux minidump_image
-
-WARNING: kernel version inconsistency between vmlinux and dumpfile
-
-crash: read error: kernel virtual address: ffffff8ed7f380d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffff8ed7f510d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffff8ed7f6a0d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffff8ed7f830d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffff8ed7f9c0d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffff8ed7fb50d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffff8ed7fce0d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffff8ed7fe70d8  type: "IRQ stack pointer"
-crash: read error: kernel virtual address: ffffffc0817c5d80  type: "maple_init read mt_slots"
-crash: read error: kernel virtual address: ffffffc0817c5d78  type: "maple_init read mt_pivots"
-crash: read error: kernel virtual address: ffffff8efb89e2c0  type: "memory section root table"
-
-Looks like something more you are using in your setup to make it work.
-
--Mukesh
+Thanks!  My reading is that these numbers are best as hints, I won't 
+take them literately.  As you alluded below, kill_accessing_process is 
+applied only if MF_ACTION_REQUIRED is set, though the page is already 
+marked poisoned.  Besides, there can be bug that renders a poisoned page 
+not being properly isolated nor being properly categorized.  If you're 
+looking for something precise, is there another way? maybe from firmware?
 
 > 
-> Once you load crash you will see something like this :
+>>>>>>>
+>>>>>>> All agreed.
+>>>>>>>
+>>>>>>>>
+>>>>>>>> Do not call action_result() on already poisoned pages and drop unused
+>>>>>>>> MF_MSG_ALREADY_POISONED.
+>>>>>>>
+>>>>>>> Hi Kyle,
+>>>>>>>
+>>>>>>> Patch looks great to me, just one thought...
+>>>>
+>>>> Thanks both.
+>>>>
+>>>>>>>
+>>>>>>> Alternatively, have you thought about keeping MF_MSG_ALREADY_POISONED
+>>>>>>> but changing action_result for MF_MSG_ALREADY_POISONED?
+>>>>>>> - don't num_poisoned_pages_inc(pfn)
+>>>>>>> - don't update_per_node_mf_stats(pfn, result)
+>>>>>>> - still pr_err("%#lx: recovery action for %s: %s\n", ...)
+>>>>>>> - meanwhile remove "pr_err("%#lx: already hardware poisoned\n", pfn)"
+>>>>>>> in memory_failure and try_memory_failure_hugetlb
+>>>>>>
+>>>>>> I did consider that approach but I was concerned about passing
+>>>>>> MF_MSG_ALREADY_POISONED to action_result() with MF_FAILED. The message is a
+>>>>>> bit misleading.
+>>>>>
+>>>>> Based on my reading the documentation for MF_* in static const char
+>>>>> *action_name[]...
+>>>>>
+>>>>> Yeah, for file mapped pages, kernel may not have hole-punched or
+>>>>> truncated it from the file mapping (shmem and hugetlbfs for example)
+>>>>> but that still considered as MF_RECOVERED, so touching a page with
+>>>>> HWPoison flag doesn't mean that page was failed to be recovered
+>>>>> previously.
+>>>>>
+>>>>> For pages intended to be taken out of the buddy system, touching a
+>>>>> page with HWPoison flag does imply it isn't isolated and hence
+>>>>> MF_FAILED.
+>>>>
+>>>> There should be other cases that memory_failure failed to isolate the
+>>>> hwpoisoned pages at first time due to various reasons.
+>>>>
+>>>>>
+>>>>> In summary, seeing the HWPoison flag again doesn't necessarily
+>>>>> indicate what the recovery result was previously; it only indicate
+>>>>> kernel won't re-attempt to recover?
+>>>>
+>>>> Yes, kernel won't re-attempt to or just cannot recover.
+>>>>
+>>>>>
+>>>>>>
+>>>>>> How about introducing a new MF action result? Maybe MF_NONE? The message could
+>>>>>> look something like:
+>>>>>
+>>>>> Adding MF_NONE sounds fine to me, as long as we correctly document its
+>>>>> meaning, which can be subtle.
+>>>>
+>>>> Adding a new MF action result sounds good to me. But IMHO MF_NONE might not be that suitable
+>>>> as kill_accessing_process might be called to kill proc in this case, so it's not "NONE".
+>>>
+>>> OK, would you like a separate MF action result for each case? Maybe
+>>> MF_ALREADY_POISONED and MF_ALREADY_POISONED_KILLED?
+>>>
+>>> MF_ALREADY_POISONED can be the default and MF_ALREADY_POISONED_KILLED can be
+>>> used when kill_accessing_process() returns -EHWPOISON.
+>>>
+>>> The log messages could look like...
+>>>
+>>> Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: None
+>>> 	and
+>>> Memory failure: 0xXXXXXXXX: recovery action for already poisoned page: Process killed
+>>
+>> Agreed with Miaohe that "None" won't work.
 > 
->    KERNEL: /home/eugen/linux-minidump/vmlinux  [TAINTED]
->     DUMPFILE: /home/eugen/new
->         CPUS: 8 [OFFLINE: 7]
->         DATE: Thu Jan  1 02:00:00 EET 1970
->       UPTIME: 00:00:29
->        TASKS: 0
->     NODENAME: qemuarm64
->      RELEASE: 6.16.0-rc7-next-20250721-00029-gf8cffdbf0479-dirty
->      VERSION: #5 SMP PREEMPT Tue Jul 22 18:44:57 EEST 2025
->      MACHINE: aarch64  (unknown Mhz)
->       MEMORY: 34.2 GB
->        PANIC: ""
-> crash> log
-> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd4b2]
-> [    0.000000] Linux version 6.16.0-rc7-next-20250721-00029-gf8cffdbf0479-dirty (eugen@eugen-station) (aarch64-none-linux-gnu-gcc (Arm GNU Toolchain 13.3.Rel1 (Build arm-13.24)) 13.3.1 20240614, GNU ld (Arm GNU Toolchain 13.3.Rel1 (Build arm-13.24)) 2.42.0.20240614) #5 SMP PREEMPT Tue Jul 22 18:44:57 EEST 2025
-> 
-> 
-> *** Debug Kinfo backend driver ***
-> I don't have any device to actually test this. So I have not.
-> I hacked the driver to just use a kmalloc'ed area to save things instead
-> of the shared memory, and dumped everything there and checked whether it looks
-> sane. If someone is willing to try it out, thanks ! and let me know.
-> I know there is no binding documentation for the compatible either.
-> 
-> Thanks for everyone reviewing and bringing ideas into the discussion.
-> 
-> Eugen
-> 
-> Changelog since the v1 of the RFC:
-> - Reworked the whole minidump implementation based on suggestions from Thomas Gleixner.
-> This means new API, macros, new way to store the regions inside kmemdump
-> (ditched the IDR, moved to static allocation, have a static default backend, etc)
-> - Reworked qcom_minidump driver based on review from Bjorn Andersson
-> - Reworked printk log buffer registration based on review from Petr Mladek
-> 
-> I appologize if I missed any review comments. I know there is still lots of work
-> on this series and hope I will improve it more and more.
-> Patches are sent on top of next-20250721
-> 
-> Eugen Hristev (29):
->   kmemdump: introduce kmemdump
->   Documentation: add kmemdump
->   kmemdump: add coreimage ELF layer
->   Documentation: kmemdump: add section for coreimage ELF
->   kmemdump: introduce qcom-minidump backend driver
->   soc: qcom: smem: add minidump device
->   init/version: Annotate static information into Kmemdump
->   cpu: Annotate static information into Kmemdump
->   genirq/irqdesc: Annotate static information into Kmemdump
->   panic: Annotate static information into Kmemdump
->   sched/core: Annotate static information into Kmemdump
->   timers: Annotate static information into Kmemdump
->   kernel/fork: Annotate static information into Kmemdump
->   mm/page_alloc: Annotate static information into Kmemdump
->   mm/init-mm: Annotate static information into Kmemdump
->   mm/show_mem: Annotate static information into Kmemdump
->   mm/swapfile: Annotate static information into Kmemdump
->   mm/percpu: Annotate static information into Kmemdump
->   mm/mm_init: Annotate static information into Kmemdump
->   printk: Register information into Kmemdump
->   kernel/configs: Register dynamic information into Kmemdump
->   mm/numa: Register information into Kmemdump
->   mm/sparse: Register information into Kmemdump
->   kernel/vmcore_info: Register dynamic information into Kmemdump
->   kmemdump: Add additional symbols to the coreimage
->   init/version: Annotate init uts name separately into Kmemdump
->   kallsyms: Annotate static information into Kmemdump
->   mm/init-mm: Annotate additional information into Kmemdump
->   kmemdump: Add Kinfo backend driver
-> 
->  Documentation/debug/index.rst      |  17 ++
->  Documentation/debug/kmemdump.rst   | 104 +++++++++
->  MAINTAINERS                        |  18 ++
->  drivers/Kconfig                    |   4 +
->  drivers/Makefile                   |   2 +
->  drivers/debug/Kconfig              |  55 +++++
->  drivers/debug/Makefile             |   6 +
->  drivers/debug/kinfo.c              | 304 +++++++++++++++++++++++++
->  drivers/debug/kmemdump.c           | 239 +++++++++++++++++++
->  drivers/debug/kmemdump_coreimage.c | 223 ++++++++++++++++++
->  drivers/debug/qcom_minidump.c      | 353 +++++++++++++++++++++++++++++
->  drivers/soc/qcom/smem.c            |  10 +
->  include/asm-generic/vmlinux.lds.h  |  13 ++
->  include/linux/kmemdump.h           | 219 ++++++++++++++++++
->  init/version.c                     |   6 +
->  kernel/configs.c                   |   6 +
->  kernel/cpu.c                       |   5 +
->  kernel/fork.c                      |   2 +
->  kernel/irq/irqdesc.c               |   2 +
->  kernel/kallsyms.c                  |  10 +
->  kernel/panic.c                     |   4 +
->  kernel/printk/printk.c             |  28 ++-
->  kernel/sched/core.c                |   2 +
->  kernel/time/timer.c                |   3 +-
->  kernel/vmcore_info.c               |   3 +
->  mm/init-mm.c                       |  12 +
->  mm/mm_init.c                       |   2 +
->  mm/numa.c                          |   5 +-
->  mm/page_alloc.c                    |   2 +
->  mm/percpu.c                        |   3 +
->  mm/show_mem.c                      |   2 +
->  mm/sparse.c                        |  16 +-
->  mm/swapfile.c                      |   2 +
->  33 files changed, 1670 insertions(+), 12 deletions(-)
->  create mode 100644 Documentation/debug/index.rst
->  create mode 100644 Documentation/debug/kmemdump.rst
->  create mode 100644 drivers/debug/Kconfig
->  create mode 100644 drivers/debug/Makefile
->  create mode 100644 drivers/debug/kinfo.c
->  create mode 100644 drivers/debug/kmemdump.c
->  create mode 100644 drivers/debug/kmemdump_coreimage.c
->  create mode 100644 drivers/debug/qcom_minidump.c
->  create mode 100644 include/linux/kmemdump.h
-> 
-> -- 
-> 2.43.0
-> 
+> What action is M-F() taking to recover already poisoned pages that don't have
+> MF_ACTION_REQUIRED set?
 
--- 
--Mukesh Ojha
+The action taken toward poisoned page not under MF_ACTION_REQUIRED is 
+typically isolation, that is, remove the pte or mark the pte as poisoned 
+special swap entry, so that subsequent page fault is given a chance to
+deliver a SIGBUS. That said, things might fail during the process, like
+encountering GUP pinned THP page.>
+>> "Process killed" sounds okay for MF_MSG_ALREADY_POISONED, but
+>> we need to understand why "Failed" doesn't work for your usecase.
+>> "Failed" means process is killed but page is not successfully isolated which
+>> applies to MF_MSG_ALREADY_POISONED case as well.
+> 
+> So that accessing process is killed. Why call action_result() with MF_FAILED?
+> Doesn't that indicate we poisoned another page and the recovery attempt failed?
+
+What I recall is that, "recovery" is reserved for page that is clean, 
+isolated, and even by chance, unmapped.  "failed" is reserved for page 
+that has been(or might not?) removed from the page table, page might be 
+dirty, certainly mapped, etc. A SIGBUS doesn't make recovery an 
+automatic success.
+
+Others please correct me if I'm mistaken.
+
+thanks,
+-jane
+
+> 
+> Thanks,
+> Kyle Meyer
+
+
+
+
+
 
