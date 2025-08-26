@@ -4,116 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7EE7CA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 14:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85589CA0FEB
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 14:07:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 232FF8E00E3; Tue, 26 Aug 2025 10:06:21 -0400 (EDT)
+	id AE8408E00E4; Tue, 26 Aug 2025 10:07:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BC4C8E00DC; Tue, 26 Aug 2025 10:06:21 -0400 (EDT)
+	id A971F8E00DC; Tue, 26 Aug 2025 10:07:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0840B8E00E3; Tue, 26 Aug 2025 10:06:21 -0400 (EDT)
+	id 938648E00E4; Tue, 26 Aug 2025 10:07:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E2B9F8E00DC
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:06:20 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8DB051A0135
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:06:20 +0000 (UTC)
-X-FDA: 83819083320.11.9FD742D
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9870D1A000C
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:06:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aZ3dD4Ii;
-	spf=pass (imf19.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D1888E00DC
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:07:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CE54160143
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:07:04 +0000 (UTC)
+X-FDA: 83819085168.15.AF36E7B
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6E44280014
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:07:02 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="kK/mGweh";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3hb-taAgKCAgriksuivjowwotm.kwutqv25-uus3iks.wzo@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3hb-taAgKCAgriksuivjowwotm.kwutqv25-uus3iks.wzo@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756217222; a=rsa-sha256;
+	cv=none;
+	b=DM6bTLp1akqtN8gTJ4cLrrFj47hvY/VMx3f9XNo5UrfX9S24FjtimJOd5ht5xUcD8T4HDe
+	PDISAuWm2wx7mSP/NYfZG6nQAMJChd1C4pcEAsim4lpfzx/+tLZRYIjPGywPx9/x1QGmOf
+	SZWNKtxtbY/zxbS4majrPbypVph4dK8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="kK/mGweh";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of 3hb-taAgKCAgriksuivjowwotm.kwutqv25-uus3iks.wzo@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3hb-taAgKCAgriksuivjowwotm.kwutqv25-uus3iks.wzo@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756217178;
+	s=arc-20220608; t=1756217222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MlKAEubDhdWXLTp3RgKe1j2zx0nuB/WOtFKlQ/1PMDc=;
-	b=QcJHnEEvpCmCJ/LievZ4W7IvJFg7E97BGr9/0YYKr+O8KRsk5ZcICTlF5nyeWpL0plKejK
-	V/ZzIKIF8g6tK4LhwOZhz4xZcLYdCVfi/LY3x9cefPjnzyiX5rKaWCBZRvy6m4nfAfs8nv
-	XsfKZXzzG3EDEDOUzsVUi1ShaSGeqTU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aZ3dD4Ii;
-	spf=pass (imf19.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756217178; a=rsa-sha256;
-	cv=none;
-	b=FIP9ndtxgxqf/rpBEyfSmU/AUZSH/2+WtxHctj2+QCyxSoGPJo6gCjb/0A87XQuPX4CR4A
-	UirA67pZOdkayHu9PwzOrjVeW41cDOFHrNZR+/76GhLPnlHpsj+H2eT4/cHNXesaS3Yti+
-	AT2VenKB1aWMDcTUuhBF4V8NcFPR7Yk=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3c79f0a604aso1682275f8f.2
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:06:18 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=MIM/U1loAWy1WHGaIaxXWm/mISmivdeS4MOXtnSHfXI=;
+	b=o39gPzMKNx0ex4OyOfL5xzBg/Tb5i3xsXqiY1chTN97j3qOND2oIqP6+y+W4+f/OmvPCDo
+	cyGP2mClRUWqcZoFZfuhxoUFtlYQrtdmqcwYALO3woDtheay8+T01aSnGXCmpIGSLHkwC3
+	rgxYwW5bX4/WnHvfD189OY1hDCL+a+o=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3cbd6cd78efso345461f8f.1
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756217177; x=1756821977; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MlKAEubDhdWXLTp3RgKe1j2zx0nuB/WOtFKlQ/1PMDc=;
-        b=aZ3dD4IivZbEKo2F6EfbDLUJiYfKxu96BQYVlCdvleC+RVc0C19+reSDT5asS1nR+M
-         /H30n4MTdWwjH/P0MgWbLHhlSSKSYQEsHTnthu9mY1CB6rwcQ12MbJmwaAvTD3NXWgm6
-         8AMo7a07IAU65QWEkVbER69kOt7xEstwtylDWmUTTUNQQtZXS9GfzDvU54riLawZ6mBc
-         p+yuEPfZqqLKt02xvQRj/zOjrDCdaFg7ji/vdaIuWj6JK/4LNvWeCAz8IBqiTqlGTZbK
-         MKqbGnJOhRdS1uEoBpf8SD5f1yXpzwfiJS0UzulbVVWhGPB3pVI0oClFbUwyT887jxQi
-         ZIaQ==
+        d=google.com; s=20230601; t=1756217221; x=1756822021; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MIM/U1loAWy1WHGaIaxXWm/mISmivdeS4MOXtnSHfXI=;
+        b=kK/mGwehELinqURuaZjaH2HphC1r7pgdvEMHB4OGO293n427twjEY8vXjBJfdM6uJq
+         nJ9voFco0K+wmzKfGTkF/T6vv45bOTuxfTNvK/pcEy0mMpmT6fBWtcyk7fNCvpqk10b+
+         5lm2DHeN3Yr++c6TF7H57xHdbpXdC5NKn/QxOPmCmcgqoj0QokaccwNJeJcAhPjRYVq5
+         oQWvhEc6ZFvUZPLYYsqmKxkhKV+IjDIj/LTiIRyDRvhAo1otvGI5TxM20ro4VFWla817
+         sEej7Cqoz0l65oBfC3z3yUdV7tMsBf+vJZ5yK5X4PQXnk9vM7VSROhxXG0KGMCQ3HCgp
+         7mOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756217177; x=1756821977;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MlKAEubDhdWXLTp3RgKe1j2zx0nuB/WOtFKlQ/1PMDc=;
-        b=a3301t18rPxLwis72RmAeFPKQjqbHyN+vqN9xa4mwWtKlR8pf2Y4FnWQSh3Tc4YQ5s
-         gC7Ut0Zkwr4CZMuW8AHN+7dFBclNA7zdEyJdS7qUXb6MjqwPA/eLf9QXAsKLiC983iVc
-         HzetvddfyM45sE5jw9T2KQ2GEWDTmh8mnWa5m/zvn88yToYRBTKB+nqB2MAe0KGGl52o
-         9QzY+rFbbOYB7afjoyZDnelb6O0baZXpTxZSLY1G/bBvXcvtZ61jCXvZYyFat2BFR4bz
-         7XWduQoGI6UBHt5Y2fouRgcz10iArStKMEEDViLvcGFFlWxB2t3GNL+vVHNFlYiaO5/l
-         KEKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXjSbnRPPUVywTieti7kAIkPKieKvvFTDhSGKEfQnCiTerXxf0IZ8f59NYNdE7Q+hF0grv4rUaiBA==@kvack.org
-X-Gm-Message-State: AOJu0YwBQ559w6me8UmMN5SFtwFT7ceaxNmL36oHmiPY529m6rw0KW6q
-	qvFyPXcIG/aEg9NXmGEWCgbVND8E749Vq104RT1e7jIBF30ffUDwcE2D
-X-Gm-Gg: ASbGncvYZ5J2R1ehR1ylmA+eg8In4Ubytk1Jdj7RnpjMrEruO6Et/7N3xqqsOqynYZ4
-	Bx5zWwvFaykKejOVvA64onMXbSsAH6YPLDocsgH9rm9HIRT5Lm6nzgqdoFHdOwpLRnf3cuPQe/v
-	7lkCIxA4TGfBiIWC5JZy/7RUvz2SioBAeijmrKVvP108cZXE0TX28TVoKj8PtZ8GAv++AiVywnP
-	cUPWEGsB0yI60ujuQuRkEE7QRMHgulIk6tHrA9y5a40U5ly2KNjMy3EwBfcWg0Tuu+WAWjrNVlO
-	Pm+bP+dtLmrqy1yWVq2B84gNlNz2lG76jYvXNx94QL4h5+LJ6Mq+VzySW8VRVvBf/PzCO/teHMW
-	MLWmx8UImBQLy+CsRUThQzy3WEXMiusgUjAbi0cE=
-X-Google-Smtp-Source: AGHT+IG22gPI5488uIPs25oszBDX56Yi53KPVP8VjvbYnpIG7qN6HDEcXj2kkT7vF5pcH3GSgehc9g==
-X-Received: by 2002:a05:6000:1446:b0:3c7:f0fb:834 with SMTP id ffacd0b85a97d-3c7f0fb0c5amr8807636f8f.42.1756217176808;
-        Tue, 26 Aug 2025 07:06:16 -0700 (PDT)
-Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:54::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c712178161sm16263514f8f.67.2025.08.26.07.06.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 07:06:16 -0700 (PDT)
-Date: Tue, 26 Aug 2025 07:06:13 -0700
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
-Message-ID: <aK2/Vesgr9Xcl5gy@devbig569.cln6.facebook.com>
-References: <cover.1755190013.git.pyyjason@gmail.com>
- <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
- <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com>
- <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9870D1A000C
-X-Stat-Signature: o8grx1xk9aqgyfa6an7cojz88yaij6dm
+        d=1e100.net; s=20230601; t=1756217221; x=1756822021;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MIM/U1loAWy1WHGaIaxXWm/mISmivdeS4MOXtnSHfXI=;
+        b=UccWntiDjPySbWN5ZmPD4q1rBfRiOkKwuzw+0uC8qCZcA1nXin+rhLUwT/aYWm51OZ
+         Dg0eEmf6xQtXPbzBqI8b2J2vFkwcIVqsz4AF+qg3Rb1cRFKEGUncXI6F7Fl3HFyUhfHf
+         NZPPMkQMFm+9peviJKneA8VYca7V7nkU0VBZLLN5Yr7bIbiNIUjtiuI1OPnagFQLV25+
+         +bHWEOBfc25sqGoLjVgsw2UPPc/FgzOp9QJMu16xNveKhh2XtNbj2Tu0q+NU1alN6l4k
+         pcL9yPrfAb7zQI3sBoxSnK7TQ3BmJ9NMYZ4FjaIygSkQkwoRaETwSEem4utXZMXqNyws
+         zeyQ==
+X-Gm-Message-State: AOJu0Yxz7IqlBavRWu83Y/HSBzagWTXA8Rs+PndylTSJRqVvxu/KGF+Q
+	gAqQ+JUdvXUlImlPlagMHwenM/dBS205DnNoOZ5FwvVDKyBp5KlrjJzlvhI5NJ0GVP+xHLPMbTp
+	pxoNtQiJxCJscRw==
+X-Google-Smtp-Source: AGHT+IE5PDrKa9lrBaPKlhqfT8IBKuaqTzSTLSoAm/eLHLIugHPgVuptHw9Og68GQkPrK5CfjMfI5EsdL9bWgQ==
+X-Received: from wmsr15.prod.google.com ([2002:a05:600c:8b0f:b0:45b:5f83:6ae4])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:652:b0:3cb:a9e4:5a56 with SMTP id ffacd0b85a97d-3cba9e47299mr1276970f8f.30.1756217221050;
+ Tue, 26 Aug 2025 07:07:01 -0700 (PDT)
+Date: Tue, 26 Aug 2025 14:06:54 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAH2/rWgC/x3MSwqEMAwA0KtI1ha04Ge8iojUNI4BbUuqMoN4d
+ 4vLt3kXRBKmCF12gdDJkb1LKPMMcDHuS4ptMuhCV0Wra4UrGXcEFRd/rHZEvwWD+yi0y199sJ4 qtHNrdQOpCEIz/96+H+77ATQ84N1uAAAA
+X-Change-Id: 20250826-cleanup-should_compact_retry-9c6b5cdf8d27
+X-Mailer: b4 0.14.2
+Message-ID: <20250826-cleanup-should_compact_retry-v1-1-d2ca89727fcf@google.com>
+Subject: [PATCH] mm/page_alloc: Harmonize should_compact_retry() type
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756217178-34045
-X-HE-Meta: U2FsdGVkX18MEqCfnZA5n/K49LzAUHZlbmRj97ZesjGjKw1YjJXV9byKOwuvvEiVLvM3hcZgQFegMwzkWx9oSr5uFKzowxlF34gfy/I8Nht8z1u3d/EVd1+MoSaA4TIvbstm/s09PW7Xwwi5OkgmXedPmp0st7nnO3vdKr95YtoOYsrimg+EEtDhAOnaxiTvp2gHk7QIUdCeYWH4oy5dQ7DS9QTAKeGSDAbGXuelO/i/gNVxOVSpvx12D5jwNFyod/JVoowos+A+n6QhL5UHBiClust1XZQ+q4uCWW4v4Hxj4VeLmq0qEh1j+U2BDJBMVQqiuiwfCC+1Z31At5rSRCpfubyBcINDsSqcopWCcWZEZc+BthFn1DS/KUDxY3feLxboiyF5cNFoqxmBUEQD47ZlElzPz4JVED/4dN+mtEyVklyJEuI2fvKCw2tVmB/lcgYIJKFST+DLweeYwTvkdq3rF8tliUlZ8v+33NmfTNG0SnsHgI9RhDh4wUWpKM//+aptskZKnfcnh6VLcE6QpJwFFzNe2WRdJfzCrI8Dxy5bfIj2M1NL6UgvLnZk9+dSpUC4K3VDN/0VefJ3yPampkwg1ZeqjlleLFiK83YGt7w3GzD5ZtUfODqvxzvOtTQRmbMQRWle4Jlc5meqHCRvI5DPt8rkfQL8m+9+Nbzk7+QbRxyMoOvyPgFhO73NHyl+og4E8HefhX3VxBK4Zd6MAci/eejiuS24TlMd+PWHQbYkry5eP2Ki64NR4Doiuo5AtV21CvEL6VVxddg4BFCtp6VvrSEiO9vVrWKfxPut67bX2KWKJPlWjeci+lTRI8OJFnvdjLy4pqn88VsNmvxJvAeRpuPpr9Z/a6Hr7D5FkZDaZjPSNoo68e2x45guaBaa6WRXulYXxJuNtkIkF4R4QE6F/uezUBF1uR4DmnEsnNTIkU/2m/H0AKo/s3oGr4yYSyuOdVtP+aaLZobcGvZ
- 0Q2okjGp
- VOecRE8LNkTei7pgifrGxnnJgKafLXhTOV2AD6ZcvqLT+QvPPA4I2VKUJj8hndTe+yGlgVDkhnMB58AX8FHtJNtwL6SV3QpnRW/lCUdy2YuoPN6ELB+2nRoZ76wFkbum7iNe9akdtIbrSf/jKn2KzIRhcHzec/SCuIBHWO0eoY8yOOguaiS9jWeypD/lZyPd7mga7X7hQigCXrnCaxAjXZ/3o+pdr6VjSsh0C2U8Wk9w+bUFlU2Ab1rPn8P9vFn9e4+FGPDgtOUwR090XcdVU53fmfIUZaC6223CvMlp6BgVn8cUJuy5ixXx5+c5HSxnMDjR7oxq9ItftOiJXYo9gH0J5hTMPztmxcL8tRIbA0kuKialI1iFvwoJPJW4ypzZCLGhVRv3DeM+xCjI3T7EVWTqOI17ACo8up1eOfpQqfgSPlcOzj6HjAVC7IMxYM9JETUB3rFcscLnvwo5Z3dxdWpaiuTnFMHj1r7nZQ97EMxiYKlN/gKLeBnFHig==
+X-Rspamd-Queue-Id: 6E44280014
+X-Stat-Signature: fxzyw5bme71afokxpwzfz6sbd5c59s8n
+X-HE-Tag: 1756217222-934353
+X-HE-Meta: U2FsdGVkX1/lylRYzH6MgB15xm6uOgiEu7fm0tRWQ2YX/bq4+iuUf8gUtQFSvLfXGT2/hcXqLFcC5W5AWSAr1qXX6f09/qCl4mFzsDJUX5iMtUin1Sy9yA1KzTsDhz0XVgvrMG3fO3D0DzpC7mWZEbHFpNMjr5j2F05JZSrxgoGOVF8chhE+X/dSbemHY3gg42KMES9Z891g/SdhmBGAzbFGPRJkDmWbMLurV0Q7kocWawTUayhFQ2vtuy2kcL1agFoTzllJHrWxWWJ7JOpJ9qALvIBy8xZGx6pT9eD99TixKwfcQaP4TOnVCUckwxvwoGWnH6Wlic43NEW3RJV7Ct75Z5eanO3Dr0nw3QTClCNdArE7kUWkXKUtV6KXKS8i4ehb+QZXJcyOQ+tdDdVeAij3vX9L4zD8rFQxreFCj0B/jMs1HUnAr7iNg+IGqFP0x3O1xoFfsWYK/1ATvZfh9PuUSyEDU5ArTbUuFlBdfLqA60mack/iCBw48lUduVdJYq+SnH4hv0bw12zqiTrYVawLQAQlx5iilwJrgEnPt6ESPUJ7odQpoTv0I2Rud8KF/ejSoBcR6Tv6UOTzeCuSCgH+Y6FQlyVcYtqZJHqtU8wbghTPMVIkbDlRgOK0FFp18hG+rXLyad5mcRFoIKvDvtAIBxpwO9D6Vcb2ygFFWHFCyLxtYmLYFxsCC+pgl5JKX1qWkzOpf+dOKl2W9SeAM9VTYFrbs4ptyZlmmoT7rB3S4ruqKZuHiZs95WSvnb8/IUzpqPvTTh4QkljeWjX+YgyBC4Qr3bMm0UypBYI5yKXosTywV34ROAtIFkc/NOGA8fiyH/XT5qdkkdgd8lAuexqDgIK+/CnOlNYQ8C23dcTaFxCM2Khemx/CJuXAQfiSyDC6AgXSa2dDev1ym1wAClH4CHHAIjZr39UshF+5kXgqOVAFh0+QMcfpPM7Rv9ooaN85raXBO3VfRvaOFLJ
+ 881UXx+X
+ LjYGuxPC2TtkQNhgGVYtqiiMc1AL1BmuSLEUH2DIO51NvRYZ8c+ci/xmsg/lUiv8Q3WqRLsJ1oxat09cTzaV6fOKSu/T3VTxieyYvuIlG0hBr8YilnRlQKVK6lVE1mMZQ8NT8zFat0/d2NpEog5Plzp1b1RvuGyc84ztyXTbKqeLJEOdUSrdRKm5XeuYi2JrarW3zk7OF5W8g9jbTsiaGNG1+PUNb00T8i6XgUD0hFPn3VXnQ3zpptBnEArILU1Wqyw4yiL6hcs6Lhf33FmL4OEaI9B5cwS1HBOEn+XItV6wXwgCA1eV5f4wEhdP0oASOBnRU+y58fM7KUHL9O5hlSkfVx4cbQ4pnJOdlP3YOboU3fNXvdAZSUZZyJG+WXpz1jIR6EbCF+MhmvNjxPW+uTcf3W2j9IU0e56C6qT0joE5e/JCRIZ8DLvbTqlaRr5Q1HHUdp97LkS+Brq1YwC7mJzLsmWDt4tRafny1beFSreHv/XLH12kFuV8ePP90WBaYjv56RER6WDfRZjBINTww2ZWqV4D66jAxVF/vvROXXHeYj++FJE405Rbif3f4Ie5N5JWUf6gS56SDcRaRt03bYxVEmqRWZ461wnBFj6LR1OiS1dozlzGK0I/BhKmnj39wAjD7gAJTH1Oc6eM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,57 +110,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 12:53:03PM -0700, Shakeel Butt wrote:
-> On Thu, Aug 21, 2025 at 12:18:00PM -0700, Yueyang Pan wrote:
-> > On Thu, Aug 21, 2025 at 11:35:19AM -0700, Shakeel Butt wrote:
-> > > On Thu, Aug 14, 2025 at 10:11:56AM -0700, Yueyang Pan wrote:
-> > > > Right now in the oom_kill_process if the oom is because of the cgroup 
-> > > > limit, we won't get memory allocation infomation. In some cases, we 
-> > > > can have a large cgroup workload running which dominates the machine. 
-> > > > The reason using cgroup is to leave some resource for system. When this 
-> > > > cgroup is killed, we would also like to have some memory allocation 
-> > > > information for the whole server as well. This is reason behind this 
-> > > > mini change. Is it an acceptable thing to do? Will it be too much 
-> > > > information for people? I am happy with any suggestions!
-> > > 
-> > > For a single patch, it is better to have all the context in the patch
-> > > and there is no need for cover letter.
-> > 
-> > Thanks for your suggestion Shakeel! I will change this in the next version.
-> > 
-> > > 
-> > > What exact information you want on the memcg oom that will be helpful
-> > > for the users in general? You mentioned memory allocation information,
-> > > can you please elaborate a bit more.
-> > > 
-> > 
-> > As in my reply to Suren, I was thinking the system-wide memory usage info 
-> > provided by show_free_pages and memory allocation profiling info can help 
-> > us debug cgoom by comparing them with historical data. What is your take on 
-> > this?
-> > 
-> 
-> I am not really sure about show_free_areas(). More specifically how the
-> historical data diff will be useful for a memcg oom. If you have a
-> concrete example, please give one. For memory allocation profiling, is
+Currently order is signed in one version of the function and unsigned in
+the other. Tidy that up.
 
-Sorry for my late reply. I have been trying hard to think about a use case. 
-One specific case I can think about is when there is no workload stacking, 
-when one job is running solely on the machine. For example, memory allocation 
-profiling can tell the memory usage of the network driver, which can make 
-cg allocates memory harder and eventually leads to cgoom. Without this 
-information, it would be hard to reason about what is happening in the kernel 
-given increased oom number.
+In page_alloc.c, order is unsigned in the vast majority of cases. But,
+there is a cluster of exceptions in compaction-related code (probably
+stemming from the fact that compact_control.order is signed). So, prefer
+local consistency and make this one signed too.
 
-show_free_areas() will give a summary of different types of memory which 
-can possibably lead to increased cgoom in my previous case. Then one looks 
-deeper via the memory allocation profiling as an entrypoint to debug.
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+ mm/page_alloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Does this make sense to you?
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d1d037f97c5fc76f8a7739e8515d7593e0ad44f9..8faa0ad9f461fbe151ec347e331d83c2fdc8cad2 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4182,7 +4182,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+ }
+ 
+ static inline bool
+-should_compact_retry(struct alloc_context *ac, unsigned int order, int alloc_flags,
++should_compact_retry(struct alloc_context *ac, int order, int alloc_flags,
+ 		     enum compact_result compact_result,
+ 		     enum compact_priority *compact_priority,
+ 		     int *compaction_retries)
 
-> it possible to filter for the given memcg? Do we save memcg information
-> in the memory allocation profiling?
+---
+base-commit: fab1beda7597fac1cecc01707d55eadb6bbe773c
+change-id: 20250826-cleanup-should_compact_retry-9c6b5cdf8d27
 
-Thanks
-Pan
+Best regards,
+-- 
+Brendan Jackman <jackmanb@google.com>
+
 
