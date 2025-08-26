@@ -4,123 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96036CA0FE7
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 14:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5941ACA0FE7
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 14:22:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA3718E00E7; Tue, 26 Aug 2025 10:21:23 -0400 (EDT)
+	id A44FC8E00E8; Tue, 26 Aug 2025 10:22:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7B238E00E5; Tue, 26 Aug 2025 10:21:23 -0400 (EDT)
+	id 9F5A98E00E5; Tue, 26 Aug 2025 10:22:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A90B48E00E7; Tue, 26 Aug 2025 10:21:23 -0400 (EDT)
+	id 9329E8E00E8; Tue, 26 Aug 2025 10:22:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 900DF8E00E5
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:21:23 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F049DC015F
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:21:22 +0000 (UTC)
-X-FDA: 83819121204.16.6D0E9E7
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D0DC2A0012
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:21:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=EOkv4oi2;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mkoutny@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8072D8E00E5
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:22:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 477A0563A0
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:22:00 +0000 (UTC)
+X-FDA: 83819122800.07.01EC1A8
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8DD9040017
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:21:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QnGD6shU;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756218118; a=rsa-sha256;
+	cv=none;
+	b=IEmMqj2VK75vgHe6XJuORwjdrPdyKMyzDm/HxkzTUDr3Bd3PZrwLBG19zqptjobOaRiSB7
+	xHPKxprTDLhssCIGcW08qPIEqhHWCHQuDaB2qedP0T+ZtZkXmFU0Mbxk142jtOosylIbIr
+	qeNT/h0N91MbIpXU32+mh46EONtjLZo=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QnGD6shU;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756218081;
+	s=arc-20220608; t=1756218118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I+VWRhdnTUjnI3XomDtbZckS18oyRmRBoSQJRcxV7jQ=;
-	b=Bwy8sdZg71cip2BtbnYoyXLdMpPwCZ/BgzPLR+MqAE/J4a2Nhl66BKRBCETBq/mPLApJt8
-	YoX0+ksYTOJM/Y2AiNgAv3NqD8FChcqsXDwJHDCuwsmG5+CtJhEiGiGdvoXDeTcUA9D4bk
-	kLUoFaGuXnXMECgCChqW9OBJkhyGlkw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=EOkv4oi2;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf15.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756218081; a=rsa-sha256;
-	cv=none;
-	b=ae5KRH+pCgBEPTabFOivaxYbWR3xr0Q/ccf2Juo6tRyep9NgEW9B4Yy0qmusGSg4AjYnHS
-	R+ezLWs7jNrBlAQt4151GsxBT1hBDQITaAd9f8uEM0cjQfLGzVpUTeaKpfIX8HXdrC/evh
-	hJUTe6My6v2rn99G9aZchHPD4aGAeYU=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3c84925055aso1991310f8f.2
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:21:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756218079; x=1756822879; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I+VWRhdnTUjnI3XomDtbZckS18oyRmRBoSQJRcxV7jQ=;
-        b=EOkv4oi2v9PVY2/k55B1+NVXkiJc7TMqs0YmY1os82Na8O4LHEqQaz4joSKAxsOOnm
-         CJuJHyWW3CV86KSD9u5Cqyc93NVTGRpgEILqco6tA7ZqJh9JRQABLO2gT1eT1AkoAw2l
-         4qCv3tSF62pxJbPYiDLdy2KvS2YZkGBs7P8LeaOEe7x1BqLmrVoVVs0/9QqoJyfmKMKF
-         TlDbPwKNCjeSqwK01kqzJJUN29PQJQPKmzpuZ+Bkn3zGylp/EqNM0x4TmZs37tYJizl+
-         8s8l/JXC1Hr38q0Sxoe1TMkz3m7vgIrv+Cciuuj3GFpSWukjj35zsbQ4DJk3ipkCVSVv
-         isAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756218079; x=1756822879;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I+VWRhdnTUjnI3XomDtbZckS18oyRmRBoSQJRcxV7jQ=;
-        b=cjMCk7vl1PcPoiTrA65obEM6qICKbDEsbTgck35vhh04uCXagMI1+A/F+tCM0w45IC
-         3uqTJZJTAGFH/iBtZxO4DYvW+UkdCxvFnBBwEJoif1psb5fo9DjJXOmzbuIXNsK3JMVz
-         hogpkP/ThwiMT4uvgVh8zm1YMFmL0sA9ia1pIfZsMwBpOQcwQiSvWtkNdYGGuys9WDyu
-         gxFVi7NQ2TV4SZGejCtLwik87vRP4Z122Wa5EDd2FyQ9AAhPr6j4YEtsAGufDixwzDRW
-         3ZmMABBFjqz4ehyVl18CuWOo1H0AlGvBV6F/3VkLDr7XuidBC6sbsrmb8/L/OOfWzXTQ
-         fzYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBvJjzio3oZAFXC2neZyx+rODASTZ1cy1hr1Ppyt6PeAkGMo/N7L010M1if6COeY0jhF7+HFQiCA==@kvack.org
-X-Gm-Message-State: AOJu0YwbXC69DHDD/4rop6ndgWstDf0JxEAO0R+zPv+9fZSmEaAdRGGv
-	DHVkz+yDto88fRz3tVpkCPA+sv2zE+qJcZH9mnCBxKOSJMMoBFrY4KMQ5JdBgzQUFEA=
-X-Gm-Gg: ASbGncvp1L1cQB771Y7KuBZWgm+tm6/dM24YbS6So6PzifHGMo7stsWVnttx2XEyW/o
-	qqRc1KSX4oFfVICzWtLthghIuF9l90lEhClHe2fNQUbEPn5CE8cDBohowRFSVuWf14E2FTwYCYf
-	CYxl6goKhkfmMbSEjjWju6YAlvn3zdqWauvO4jeu+WhT1ETYO0qUlbYPdBPTxcNh6WS2Q2xDKT8
-	4pgNXub9F5Oa6BGkwRAcZKyijPyMjA36WaiaYMYlQGTH26QaD0K6Ub6YO8KtxA8eRFkgXVtRJQ3
-	aY+9KXstuy1ocTf4gwak2rhmb//EzpnzzQEwB1mZCuoNyq7K9bYVG8b4dhLWWX/NJN8nNzw3jnc
-	ATANY7SS+c/DFjUZynyl6rE25O9XHv+NKp12tWGSR0HIhgtinEH/cZA==
-X-Google-Smtp-Source: AGHT+IF1onmcmCLINy+0Rdj3SUnLle5wvn3JPSHU/RzbuH+Mf9JjVWxvuwon82t0M3+JcME7Da8B9g==
-X-Received: by 2002:a05:6000:24c9:b0:3b7:93d3:f478 with SMTP id ffacd0b85a97d-3c5dce01212mr13313281f8f.51.1756218079134;
-        Tue, 26 Aug 2025 07:21:19 -0700 (PDT)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32760f2686dsm377332a91.0.2025.08.26.07.21.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 07:21:18 -0700 (PDT)
-Date: Tue, 26 Aug 2025 16:20:58 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Maarten Lankhorst <dev@lankhorst.se>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, 
-	'Thomas =?utf-8?Q?Hellstr=C3=B6m'?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maxime Ripard <mripard@kernel.org>, Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"'Liam R . Howlett'" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
-Message-ID: <qd3ioegpvmrrrwdy2qntxznyrnwq3bhe74lmuxio7sy4sjggtt@tm6nqds3pyvj>
-References: <20250819114932.597600-5-dev@lankhorst.se>
+	bh=wurazuL2BIBrZ3LPD7cqhPNZzCm36PU8RAUwUPqzcAU=;
+	b=7JjJNpM0w5lW57YJct8G1ny4mpbmLeiffhJBdT7C/B7X+HU6j1keNpfmUComRj+pz5Cxj4
+	k9uEfXYLSH5aB+5SVGl2hsBJJeKibk6vtsvthXUMzBF25Ncy54f2QvOkYEgFd2j4zlyCks
+	ZofE0oIBsIp/cLZDJdMbxK3EAGMqwuc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 83D095C61BA;
+	Tue, 26 Aug 2025 14:21:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07367C113CF;
+	Tue, 26 Aug 2025 14:21:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756218117;
+	bh=feW4U7ohinlgGVmRvgwizm/FFoHAZFSnfVYUwDEFhBY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QnGD6shUMLWWB5w8MDuseZc3fub+Aj7VB6CmQ6avNhIIPUXCDje46h8Ed98L/xoan
+	 n9/X7AqowrCMgyKT3JxEmVmjch50OqqC6ALGG9Q2Avly66fyf8ZImxO9IW0ELG26lz
+	 kO/Vu1sk59Vv1H/Li9opDxRDCJRhANo7x8DE1rkPUUUPtrJXCxDOr9rJTm4pImdO4I
+	 Yjk9DsQRrf9Tn0ZnNIdxxlP+bMLcsJEOwpqDNKICO0N+LcrJ6sJidPs6wl2UrS79YX
+	 XcorS7q08TZ8dUqZB3ZsH2qYqPBTu4MFuc+PJiqpBMJr4zrSOKrEx+B4pg0JvWrVUL
+	 7W9dHkbDzzaBQ==
+From: SeongJae Park <sj@kernel.org>
+To: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com,
+	kernel-team@meta.com,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v2 03/11] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+Date: Tue, 26 Aug 2025 07:21:55 -0700
+Message-Id: <20250826142155.53632-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <464f9f46-6ed5-4a78-8e06-878869f2afc4@huawei.com>
+References: 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n4nu53c6pb6rlauk"
-Content-Disposition: inline
-In-Reply-To: <20250819114932.597600-5-dev@lankhorst.se>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D0DC2A0012
-X-Stat-Signature: 49mskyo4hczbsbe1u8ffqhwo9nem8yoj
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8DD9040017
+X-Stat-Signature: ab4ur8r3xndjhiynj7ws5iruoy6iajjz
 X-Rspam-User: 
-X-HE-Tag: 1756218080-82929
-X-HE-Meta: U2FsdGVkX1+QLd0l+iYD2Lm0lEOFEIdeLLkcwvBZWPNzihiSDIkaqF8zSe475JovzaZHAs9Q8EgP97qM/MLmZqMYgnr3KLPYD41k3zcI2jGIsi50ACiUDIuN+wgiVr9jkSH5JoDE13R1w1XPYoB7ljgUoUWxwbeLDEkwE6ZEacau4Irfz69cnPzGTJvQLPnJALdbU008nGqGbz1VpoRNuNWvw8PmoYI2bW5k+uirpRRmuqlrFm87SRbzN1ScFqUzW5TojHYBqOjOjejcFoq+0tjNOaRj9eFgdEKFCJXRizQrUmghchiN71bR8mSyWsg46cTsMnJZDqXs8fRWqnlsOWEX/SBfyc6zCt9IWZSWq2ccLxGObl6nrIs2hpvqdMHmk6oRIe1wpVe0WRElVXWzWLl+RAls0Tt9HSR/YEDucBrzqXTgmiEofziCulZbz9u0WfRHNX4WOH/RWG3n2bpjckCmTSu+dwtzW7RaM2s8fJs3cRHNjfI345h9tKuSxjzIhaRw+/ePG4BZ8qCjJPW1VdyDP0Wg8AGGEl2PwBlEHZx76+wNC+gfbepQ7f/dsnptJ4IOmJ2YTZBTvZ+TnMe7mjb1+sYxz7q/rLdBnWHk5Ls8YQOZvbH+GNKrxfoo3X3mYtn4d0AN8JKrWUYrqvNu+5uSHlEfMghuKKQ/A7LbqreTF1jTr8hVHADma6L2SL6K34IeRBFWyPfcpq2me014leBJ6lKR2WGmf7mwR8svHZfg6wFBSebIedqW3aGdPTjYRZO/pPrkhkxLIeTZgGCFvn9En2ojH5VG08CBbLCCZXCn5VB+WJJ5WWjHt32sIhup9YAGtB3dWtrSwqIYOSXVvRGWWD0rayHy5pNoqWHrEJmw0JLs+ONABZeUgQCxUjP0/AAl2/qThzuQlu3/6XhPfSh9ZUaxInkBDQ8OLI/4XyNK5sUe+fT7CzHQbH/4IlZSr0RWKjzotkaVT/Gfi2z
- StM06Zin
- 4Ja3/7y1FJulYA88Za+4tc4qUu9fLobDl4GGHszQy4RByUZfQkIxyPBbj34JJnXibYM4aa0j/DIUAVGFxyMFU/rdqVrs6Zh1AK1LvayI3eLF0TkCxQF9GG1+OecMuQb0eAXxXLqIxatRFw4ZIzprD02ZcLZmYceex+tdPzQ0yX+7zjk5PLq/fvSWTPpUiv16s6sn+oKeBqWjCwzEFlnWEfvIusvvjaDmueTINIOwOvAlPguohfU2TOPIaQCrS4QsucwXCzbQSpIctfXvY4WJCm8oEusi/xlrDWeyhqNJeoXdJJ391iLrCgg6jvpCyW22fVLMT2svK/5WQlTEmPQN01NtgtuShUJqayEQnkKr8IPSlgV1mxNZXmpUyRc88rD1vU60WU45XIEWWFDowOXW0TSYxiFKIfUsCcJeOoJmi+rQlYi+2zl/6wY6xbg==
+X-HE-Tag: 1756218118-354747
+X-HE-Meta: U2FsdGVkX1/gawqqVQ8NfMxVDPN98iQLoPIXXYMbON1DD9rkX6BHei3sVYDkpdqFLvtLU93/68M4O2ZIRzNb2FX7U1bZL7XJ8Vtx980lqSzM/fDjB8ghhV+56sM99glEYOhT6oJhvgD7EOm/pFbmQA04QjYMdCghyUt+osk95SMypbJ/gEDnNb6ZYxFZBLb8H84IO/dEH42OoFu4DaOJ/ltgVO7Eq/QtPWPv61rKrGkICVOTu2h+VuFRE6bvZbC3J17NUsaH1Xloyf2XlvtDn0WXih4PTLQnPV/s63VZmir6hl4ESnLe8vsVG4TEK54kMhboBihWTTDYrD6LIuv8nz7l4izAqPkg5Z1Rw2JAP4WlAVb8D6KrvlaphJ8dSFpn8TLhhzSgIkLKLdD60IasRAbGVEDo8fSDKgTcAaJNKDr53imSjYMMBwhvZJ2y8I+Zz0GgbavzillncgV9olR/Xyb4IGfUHrmC9hd6JMZRfzF5zkqhlr2vKn60BLHgBM1MDmzUEbWVFrlDvt0HdpyM0hW+Vuw9k9BYqt07K258swANJgSsHhrwho/nl91HfKsioI9v7EQc+Wa8wvIh2K0xWHM0k8gORysCrFu55RUExYWF8R4i1ZQDWjU5whL7FSf6BWg/j2Gq4yFw1RRr6I6zhA4WqXLcyZz9yQP736oc1aXp6xw6C1DBVsZ1EYjjAFI3mPiTCknb34FKK2gUQM4thuGnsob7/qUsHWYu3/4F6MM1gkq6A0im+jxWKB3GD8eMJ7GDx9Rwf8ck1FLLeNZIbUuu0C3DZCyf3Lj/1flo/EgHJUwsP5oXVaMR5dHccok5allhpbyP5wXiPSqIDj6rCtj82M/H1nAW0Pk0uYS5AM9KVWFEFh+uM2A7AYDpjMJn2FD08xNiarlkURM6vQM14DrcwDhs+qVHTUfd+/H+ogM7rjyOo2l41U10dX1zf7N7k5h6CsdV5up5+KOQtvZ
+ SkiZZSB4
+ g89zVTikseTdAweaP0CnZP3bsvHF4/el4wxwM/YLjC4FlL1Ma7VF5WGjoulEPvY6BxMQROHyQESaz7F4u/JFmMV9/DVdCNRn4duyHvyRJcofk+vxI4Gqh3HP1bXQHz+ntaeYQmf4OzgsyPbI7HOqa6a9h7xRBbIkrgaicTCu60mUZkq/UHBlSe80CLyg6YjevStBEsVKHuhFn6bgXWHHXToG8E+0iIDefi5CDgSw9DDoIano3rKryGkMGgLWtQLI4rHCQ36Q7+yE/GI6XxSL9LByRU3+QKDyJCdZ3hXJBdK/KMJl0UZo7sc65vDfEo4bgBB3YgCD87IP35C2N5xYp6iEgl/9Aa7vUZ5Ul5H0Ys9Y34JUG+wuT64VYEy/CBUpaplOt6zjDDtGIxs9qUNaUF4H6guaLapbi+ZdBX3+BaWCEY3cD94wU6flrQfMYU7oSztaIvudeiety90kSFSyOuVDQCBoSyrS7AnX0MVvnZsOP0+8eabKK8RBQnTALrvecE+Hhe0uVgBrpoy6s8xkPQZvqJp2urOj2kUnPR75kzytvPD8YNh3d6AUrDr/dUDMmBy0M
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,56 +100,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 26 Aug 2025 12:51:17 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
---n4nu53c6pb6rlauk
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
-MIME-Version: 1.0
+> Hi SJ,
+> 
+> 在 2025/8/26 11:21, SeongJae Park 写道:
+> > [...]
+> >
+> >>> ==== Attachment 0 (0001-mm-damon-paddr-use-do_div-on-i386-for-damon_pa_pageo.patch) ====
+> >>>   From hackermail Thu Jan  1 00:00:00 1970
+> >>> From: SeongJae Park <sj@kernel.org>
+> >>> To: Andrew Morton <akpm@linux-foundation.org>
+> >>> Cc: SeongJae Park <sj@kernel.org>
+> >>> Cc: damon@lists.linux.dev
+> >>> Cc: kernel-team@meta.com
+> >>> Cc: linux-kernel@vger.kernel.org
+> >>> Cc: linux-mm@kvack.org
+> >>> Date: Mon, 25 Aug 2025 07:41:33 -0700
+> >>> Subject: [PATCH 1/3] mm/damon/paddr: use do_div() on i386 for damon_pa_pageout()
+> >>>            return value
+> >>>
+> >>> Otherwise, __udidi3 linking problem happens on certain configs.
+> >>>
+> >>> Reported-by: kernel test robot <lkp@intel.com>
+> >>> Closes: https://lore.kernel.org/oe-kbuild-all/202508241831.EKwdwXZL-lkp@intel.com/
+> >>> Signed-off-by: SeongJae Park <sj@kernel.org>
+> >>> ---
+> >>>    mm/damon/paddr.c | 14 +++++++++++++-
+> >>>    1 file changed, 13 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+> >>> index 5fad2f9a99a0..09c87583af6c 100644
+> >>> --- a/mm/damon/paddr.c
+> >>> +++ b/mm/damon/paddr.c
+> >>> @@ -135,6 +135,18 @@ static bool damon_pa_invalid_damos_folio(struct folio *folio, struct damos *s)
+> >>>    	return false;
+> >>>    }
+> >>>    
+> >>> +/* convert physical address to core-layer address */
+> >>> +static unsigned long damon_pa_core_addr(phys_addr_t pa,
+> >>> +		unsigned long addr_unit)
+> >>> +{
+> >>> +#ifdef __i386__
+> >> Can we use the following condition instead?
+> >>
+> >> #if !defined(CONFIG_64BIT) && defined(CONFIG_PHYS_ADDR_T_64BIT)
+> > To my understanding, this issue happens only on i386, not every 32bit
+> > architectures.  So I think i386 specific condition is better.
+> 
+> I understand. However, the aforementioned general condition is essential,
+> and we should propose a new patch to address this. After introducing addr_unit,
+> any 32-bit architecture should support monitoring of 64-bit phys_addr_t.
 
-Hello Maarten.
+The issue is that we cannot divide 64bit values with plain '/' operator on
+"i386", and hence this patch makes it to use do_div() instead of '/' on "i386".
+No such or other problems at supporting 64-bit phys_addr_t is found on other
+32bit architectures, to my understanding.  My understanding is that at least
+you confirmed that on your arm-based test environment.  So we don't need a new
+patch to my understanding.
 
-On Tue, Aug 19, 2025 at 01:49:33PM +0200, Maarten Lankhorst <dev@lankhorst.=
-se> wrote:
-> Implementation details:
->=20
-> For each cgroup up until the root cgroup, the 'min' limit is checked
-> against currently effectively pinned value. If the value will go above
-> 'min', the pinning attempt is rejected.
+Am I missing somthing?
 
-How is pinning different from setting a 'min' limit (from a user
-perspective)?
-
->=20
-> Pinned memory is handled slightly different and affects calculating
-> effective min/low values. Pinned memory is subtracted from both,
-> and needs to be added afterwards when calculating.
->=20
-> This is because increasing the amount of pinned memory, the amount of
-> free min/low memory decreases for all cgroups that are part of the
-> hierarchy.
-
-What is supposed to happen with pinned memory after cgroup removal?
-I find the page_counter changes little bit complex without understanding
-of the difference between min and pinned. Should this be conceptually
-similar to memory.stat:unevictable? Or rather mlock(2)? So far neither
-of those needed interaction with min/low values (in memcg).
 
 Thanks,
-Michal
+SJ
 
---n4nu53c6pb6rlauk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaK3CyBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AgF3wD/T7sV0i+cdg06NdkqMGry
-p4ywSWT/m1ixLxww8iCRQjcBAIu13/A09vj6nD3AYjTurMoAlJUuSFWDZE0IA9G4
-7jEP
-=0oC5
------END PGP SIGNATURE-----
-
---n4nu53c6pb6rlauk--
+[...]
 
