@@ -4,133 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB6FCA0FED
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 18:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C037CA0FED
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 19:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 784586B02CF; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
+	id 6016F6B02D0; Tue, 26 Aug 2025 15:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70E476B02D0; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
+	id 5D9786B02D2; Tue, 26 Aug 2025 15:00:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D5E76B02D1; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
+	id 4EF066B02D3; Tue, 26 Aug 2025 15:00:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 482486B02CF
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 14:58:47 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C79B81402A5
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:58:46 +0000 (UTC)
-X-FDA: 83819820252.18.1E35418
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E371740019
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:58:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=PV4zNNTv;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id 39E136B02D0
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:00:18 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0397F1A02B5
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:00:17 +0000 (UTC)
+X-FDA: 83819824116.11.9C5CAE1
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 826FC120021
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:00:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TKuqsMOw
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756234725;
+	s=arc-20220608; t=1756234816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pJME+1KmU2SzOA/lb1+BnOW4h/J3iSbhKPhNpdWiID4=;
-	b=ycqEw/PxX8FsQ30Z7NNJq+QprTaxPD34XxUjDDghnJNPGmJu8Zq+NgNbIMHuAwCDpXnbaN
-	fzIJ5KvDB0G2q53RlL1B4jKEP2+6+QNlsnDuMgyQlUt+m/RCv6DrlH2qDRGuCVCwRzEYCy
-	nIQfxGONYHjUzeENVILjFGNfGE0MgsE=
+	bh=V4kacEIEMCQjuCS3jRmYUFJOyZV+6C7MDRucR5sR/j8=;
+	b=pe2cGhP3R9EYyBroOWUp2ZJNs2VT4K8MH0rdVPMEKaWU62AqeffS0WZ5Ib9pJtvLhbJcF+
+	9uNcWU6f6uybjw/GlK+K8BZwfPExC+Tzfa6uqvBhY/c+IM0A27WwRpfDgIEHhNmmUfp6TZ
+	pC44/hLdRasQ2+RHYuHsByrELkzx4cQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=PV4zNNTv;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756234725; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TKuqsMOw;
+	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756234816; a=rsa-sha256;
 	cv=none;
-	b=YrX9mYuJDRwf0dH+WpGwnSYDXc/E7CA2dctF/NFsT1a3z4zqzqtiqd5E6Cw2MSDdV0yIpc
-	i9EnDPSTnY/lOMNL+2eRWjKUH+fAqEhxJdMfZvJ95QTYUpD/BuyM36389JvFGSWKj/TmS0
-	J3SNtciqREWb4sG2liTI775mSHzumV8=
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b109c4af9eso49037551cf.3
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:58:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1756234724; x=1756839524; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pJME+1KmU2SzOA/lb1+BnOW4h/J3iSbhKPhNpdWiID4=;
-        b=PV4zNNTv249ze6+EtXYDo+sbVpZZ4UqL3WHykPyyq2TfzziZ3LWxrudrETOh2AAtga
-         k0ISRG4/gmwBysoz6WVTf+TvpDgwJxkcn7lDnepGc/gjc2BXN9q2o2z0uCoiKs4Oa0Av
-         +hVIFTXebW2568jQIn4RbINRQcpLRPZlVErST4YRRh0SoKcoVSND3oDNAlqXQdhVIg4W
-         fxU7lhO4NiLp+7wSZ7ov7Ez2dx7hb4bUBhC1mWJq4X2/wILUbKKmZgfTPNVIiICeTbeD
-         SaYGSu01WvpUM3tVANet98G3TIfRh/GJVBcAxmjhRu0naT+vTLDUOnRwpYBw97KNbtJ/
-         2SCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756234724; x=1756839524;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pJME+1KmU2SzOA/lb1+BnOW4h/J3iSbhKPhNpdWiID4=;
-        b=XuyLJVOntFBkcAVPKmnzctNsyf06dYrpsY1PXg7/zumvMv1vvkvqY7rPu0Gejx7AXc
-         Qb+MbbVrpJ3YPvPIlPIHLS7USlVAxdMgDsOaHsDcD6NGhUha661guYrB9PUUI7eEvFt4
-         mIz+o2Tvuavy9vRganoso/Jb2X4xrLrUE9Bibjvire+BaKmJIN41N9+02boDXGeBx9O7
-         ij79vgDiS5RBbNR3UXm/oE8iuQNYA5tl4vYWPyAzmKEhqGt1Hd6az2JDduel3E9o6t5q
-         TP8FeKFh0n23tlZ9/4f2dn673ryqmroOfI1azwgwMag/K1ERn5SLDtUBvcMQ8MaSzbot
-         4V5g==
-X-Forwarded-Encrypted: i=1; AJvYcCW3CvcCG1Wu8wVK8jPFs1Dj9RzCQO5WQyaxB7pPYeNzKtKM2wiKM+0yjHeCSLTpMXAxX+/9drXysQ==@kvack.org
-X-Gm-Message-State: AOJu0YyHKt/BgEdwg+bb/pwbESW9Ii1MXMHFddYmGfulOkFFsURbfkj/
-	ZA/5IExTBs6NHoFQZWN3b7HDVC6nan5CD//5399Yt/FlZ2r3JZtH2NpJ1C0YU8A9ArBdpMEySk/
-	UzrW684isa/YiFFALUuA2FlCtpa2/rbQgUFYOjV/aeQ==
-X-Gm-Gg: ASbGncu5mqwY0u4Zpa3WiCmDQW0F1ghbLKswyj9mJqjqDAqK1ybJLr9uToRzruYuq3W
-	1qb9b5dH71qMTmHqLVUu4xBEOzxgGrznq6n5akmnVrKVjOTvwEBvv7G2pQ4qRXpzaVq6NrN14Oc
-	m4IIZhnCkVWgQ5g9lFE/WGlS1EBviqJjtpYL1B9PHS0ZXAh+/Sjp3Y24eK7NotwB01RJamCcd8B
-	D7Q
-X-Google-Smtp-Source: AGHT+IH7x6PzB/jpkOPVprK93HcHA2jlE9LSPDmfVuRTuFZ8graOQso5EGuliHqnNQqcqLY5o7Pky9G7peBJC7yYL1M=
-X-Received: by 2002:a05:622a:286:b0:4b2:d5bf:20a1 with SMTP id
- d75a77b69052e-4b2d5bf2602mr93874511cf.23.1756234723572; Tue, 26 Aug 2025
- 11:58:43 -0700 (PDT)
+	b=OvS7WUUglSUrYsqAexs/sK708hJoGRg70Pz97Y+UKkV7TYKZLMyyEWUKOwBx6VJumSsVpI
+	+Hu5CHJT/xKE5UbIy18odNSDCBrwWmtfyFPImRVqtamYvQnV6qVezMsHsm9YtBZohfdwpX
+	99QNQvy2BlNyx5tYKtKbLjLXEMxMEWY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=V4kacEIEMCQjuCS3jRmYUFJOyZV+6C7MDRucR5sR/j8=; b=TKuqsMOwUwQf72PpA1+edS48be
+	qKs1l3dX14NgEit+mzoeIRSIasxhWwhqNNnITeLGwj0xRY9KZK0KV6hCW2yoVpwYEy3xrgs2QySsC
+	e1H3zmJv4bMMpD1hrFULM+OvP/w30bUTW5IU4sCCwEs7/CZqkfVgZKB+Ypc7gWaywcKNRVCdtnEUd
+	J/sne89uQLzv9RadQxz3uUltMlyYPNBHAqXS6iBnpdUPrFi+rAV8GizpK+w2sGtR7+XHN4XtYAnXi
+	AwCCMGDDhHYFH4+HnJV735qIB44rLCnetP0NN8hi6JHz59ZGsO+r4kLIi/6IoXEyitP4mu27+k/D8
+	uQjNmmzQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uqytt-000000080i7-1BLX;
+	Tue, 26 Aug 2025 19:00:09 +0000
+Date: Tue, 26 Aug 2025 20:00:09 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Aristeu Rozanski <aris@ruivo.org>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Subject: Re: [PATCH] mm: make folio page count functions return unsigned
+Message-ID: <aK4EOf-EE43pi-xq@casper.infradead.org>
+References: <20250826153721.GA23292@cathedrallabs.org>
 MIME-Version: 1.0
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-20-pasha.tatashin@soleen.com> <20250826160307.GC2130239@nvidia.com>
-In-Reply-To: <20250826160307.GC2130239@nvidia.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 26 Aug 2025 18:58:05 +0000
-X-Gm-Features: Ac12FXzbC4_094zxu3z9fUDRO3yQVd4QdY6g8DyMrUl3RDt_kmv57pEA7HFGGV8
-Message-ID: <CA+CK2bCR84H90dZP40yFw086JP+YwH4=V0ncFfNoR8Mo5+azkA@mail.gmail.com>
-Subject: Re: [PATCH v3 19/30] liveupdate: luo_sysfs: add sysfs state monitoring
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E371740019
-X-Stat-Signature: y7i9izoubofe4oekjcred3uxafmbc5z7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250826153721.GA23292@cathedrallabs.org>
+X-Stat-Signature: eeud3yfjk7bwus6ffkc1hwr6sr53ideh
 X-Rspam-User: 
-X-HE-Tag: 1756234724-395687
-X-HE-Meta: U2FsdGVkX1+Ox+xzhRMt40ECHUf2Ko4rxNqLMfEzGGJXjatPnMhq9uh0Aa99xdBIlM37KAamnRGxPKtpbXVDjy5VpHvoCTbXnzUDlcflBNer+fYTNU6KaEM52Tv/8ByNBqJHwl/KiewXzoXNYM7nEmon3mxmo23DBZxsDEmLzHtknUdpXObq++uA6tL+WK27F7CPJXkqU7UdTDlB++ThGn2/xZt9yHULDfORZPmmKlARNpZZMI1guo7yumZpjc5+sL9kV2qsOnd+CNtVekvgkgVPiBSuoy0sT6/15arU/u4S3z2CH8DV59gxFbwWhkutbU8T5h4wPh9RFhjXo9DQvfSoA4LHDzKI/XThI79XS9hQEHF3sLT5mvmYrtvnsODP6nv+OCVt34BuUQivADCc4P9SunCL+n4ppvjsFpOpvCnpSaWtqLFdPIxcDNzncRLrCcUe1PH0JEqnIAN3rkhgbGbvWyMYt8+7KS/K4dIXGy1p6NvEbiSn8Z4i+i+HVIj8iBm5iBIr3OJK0NlPB7Dq5IQ/smoj9MX0fMc9cCQeiOT3ymng92HMIUuywCAFkUM0CcfYzkLHHcs6PLR9DzAGv4gsJN/EFH2AofLGkmWufvJ8Osylt2N4coS/ERz/z0WwX8xhq1rHaaAeq5rc80lFDfgiDN9hOLoaR6PFqn0nmRZmyYHYN0rtunpQoy4Kp0biF2NpipOxqDTbU+FDSzRjVgC2yL8hsl+SYSPsBOWIdTTcX0qpBJ/b+iVTla1FeVb3EWSdU0oxqJKLFLIatXXlBuJKTsy6eWOqj+RRPWC6Z/Qdih8B6GiegRZW5jjgzly29YHnXzB31g0ZgjleF61gMERjKe/vd6JKtouDEexBaYxDEoS0hIFB6mAaUdfw4KZNcI2QPSwiFNQY5ee0DAiaHsP8twGLyfzEsmZVgAieSrk+t21QC6oJJOaKka6M0q9NKjFpvVcc65vihbbelYh
- yOLmSYTe
- pAAmamsRn2c6QmNybfxiPzzCbMRVCwEcoeaC3RxCoGIMSxoaLvKfP9qFI+rso2GnG21vHCLD8W/FLA9ICmTZl9DnP1lEPERmKOla3EtHmQ8fDdBU06tLpwT0eUoH1xTVHkS62W82/NOh/Hg+5AZhF5yL9+r/V6neP7HehPpj6tsHiwfkeCXFDcBRfItsK6NkS1xaDtCIG25/Wc8wZjaL8JQj70MXxTEmU4WsQqIQ5E451iyB+xjCxLh/5FqG96DF2kNnnxc3onAKrvbbv98ZOyi06lL4T5kFKoI1d5dDxK6vgldaVJAAUyKNgAfsGHrPiM68voi4nIDLol01ghH/bSUlvPptkjd2mNV8d7ABvxDVH0LXvpV8uavH7z+4PXQJNTxTCG9aFJ7d/kEPTcVdjGoIV+7H72nvX1xBEYo3P/6ZYZUoW3v2tHuwCgxFJqC1buC7S7W+obRnEu0o/dczF57BMGhZyW0DFAR4xte4TnYYpPIYobEtNtkOfgL0CiNcY5MVS2X36RRp43G976zmy+mjMH1F1oxfhxJGFr6HI0uaE81X5NPtbeJ8UX0mVQImj6rHG
+X-Rspamd-Queue-Id: 826FC120021
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756234815-823378
+X-HE-Meta: U2FsdGVkX18AQYRh6w5UXfOZbI2kyL9wvQEAKj+vdrjmMJviPQeDSp4DVRpm1Vgrjdgfh3QO4y97fHIHXDG25PC5gi3DaxT6WVkc2ycbFpsd/FkLv1xtmjCiFoNgqbxLzdUdzptO1qO56+2JF/Cxg6NI64IyedJp9avHrJCYDrlfyD3kU5H4sIL4XyDZvlVe5VbOfflOcZIocdkfMBqpNxtt2qTltbq3t6zfrC01gXludyAdNsF06xLQeE0Vx97po43iwPRnptTwX+RDxbum+sZs0WUIKlwnsfRVmWge+Lm2oVBhug0AB4ki9sAgQnD9MDGVTX0K3kcA9J+lsFaHuCe5rHys9M1d0O4IooCD72WhhZkq62WBnuHxE+cBjQ+KEh5bLUrnwv8zTlFeyyTGNucF4GXLnvWiMRsAvjVMxQRpBf6XyyB8w2A5dK1ZNwDC+DFeueIWeqRGo5qeKXmH3cXGLoICD8F7huak14fWr8hLLTyxcRJTQ7OCUcM/jjMZIdVi1qygjaM3opLGAdSNco2yiVKu/HY3A4aD9GG0a7gAeYcegyUmaB2uN78wzTylMFHx1Eh4LdRYaif/mqNCy250c7hVca2D79eLmfOkSQJU82iF3ISZ3WiY/SN8GoyBjkK0m5X16tny7F6SNVtx8+c6wXKXDW/R8dAY/nkNHNpkLhC8bxSnfR+fM5cZOqdfTxpm2VMQM/wRK280n0Wga47fqS25ehTcu6CpCrPd0A178ii2LWT5z3U6FuXcto+QD0Cd87fhKtM3sIAgu2D7Ti/f9RsyRrHPnVWTRlPyMxiJGfpRawWzbluORjCWm4kEeYp/Z1VaYUkAxCAjIk0NuHC50u0T1MnabJ1cG5RVC6LlXM2Qnmcve6y7a9lEZe4AkAfL6s4vLDsu7wgayRWj3sC/TsUYPgqQoi/Q/Dv910s7R3J3uEum3/8EO/g19NNmHx5w2DyAaPrrctj2dwe
+ ZXBmPjua
+ ZJ4gIejo5rCh34NWc6sqNwc3hF4E+hZcG7v7tCcP8qOBYiZvajscZYzlUIyRgcJYu/k9jPdfIsrIYY7OPVor0BIa70yKHEDU3kDSOvR05WZESz7kUPQJprMhylSHRaKjLmSTlO6zAVvxFSbZOHdSuel2efsvjGJ47hWK0ibxzSL34L/Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,27 +91,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 26, 2025 at 4:03=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Thu, Aug 07, 2025 at 01:44:25AM +0000, Pasha Tatashin wrote:
-> > Introduce a sysfs interface for the Live Update Orchestrator
-> > under /sys/kernel/liveupdate/. This interface provides a way for
-> > userspace tools and scripts to monitor the current state of the LUO
-> > state machine.
->
-> Now that you have a cdev these files may be more logically placed
-> under the cdev's sysfs and not under kernel? This can be done easially
-> using the attribute mechanisms in the struct device.
->
-> Again sort of back to my earlier point that everything should be
-> logically linked to the cdev as though there could be many cdevs, even
-> though there are not. It just keeps the code design more properly
-> layered and understanble rather than doing something unique..
+On Tue, Aug 26, 2025 at 11:37:21AM -0400, Aristeu Rozanski wrote:
+> As raised by Andrew [1], a folio/compound page never spans a negative number
+> of pages. Consequently, let's use "unsigned long" instead of "long"
+> consistently for folio_nr_pages(), folio_large_nr_pages() and compound_nr().
+> 
+> Using "unsigned long" as return value is fine, because even
+> "(long)-folio_nr_pages()" will keep on working as expected. Using "unsigned
+> int" instead would actually break these use cases.
 
-I am going to drop this patch entirely, and only rely on "luoctl
-state" (see https://tinyurl.com/luoddesign) to query the state from
-"/dev/liveupdate"
+I wish I'd written down what this broke, but it did.
 
-Pasha
+Sometimes we pass -folio_nr_pages() to functions.  If it has an unsigned
+long type, things can go wrong.
+
+Please don't do this.
 
