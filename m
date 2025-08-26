@@ -4,103 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28F29CA0FED
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 22:00:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F20E1CA0FF0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 22:01:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 350886B00B6; Tue, 26 Aug 2025 18:00:35 -0400 (EDT)
+	id 1CAF98E010B; Tue, 26 Aug 2025 18:01:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3289D6B00B9; Tue, 26 Aug 2025 18:00:35 -0400 (EDT)
+	id 17B9F8E0105; Tue, 26 Aug 2025 18:01:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 265926B00BB; Tue, 26 Aug 2025 18:00:35 -0400 (EDT)
+	id 091D18E010B; Tue, 26 Aug 2025 18:01:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 169EB6B00B6
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:00:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7AD95B8A64
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:00:34 +0000 (UTC)
-X-FDA: 83820278388.08.B261FF6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 583CF140020
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:00:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fUtamZV8;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EABBF8E0105
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 18:01:04 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 76DC81A034B
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:01:04 +0000 (UTC)
+X-FDA: 83820279648.16.ABF0825
+Received: from lobo.ruivo.org (lobo.ruivo.org [173.14.175.98])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 89D73140017
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:01:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=none (imf23.hostedemail.com: domain of aris@ruivo.org has no SPF policy when checking 173.14.175.98) smtp.mailfrom=aris@ruivo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756245632;
+	s=arc-20220608; t=1756245662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SYgOuAEbsNRNFaEndOqyqENnWJjPztlc9vKjQKlk+gs=;
-	b=MOAXqlVB7EaVWdjQORYT9RysGMNmF0hjzB4BfMx8dhiIveULxGKoEJHazPMtGmHogKVQQ3
-	eaNYsyAHThfhh2qihdQjxfp81mLxqu0Cn8rCHq0evJ8FdtC32pXtsdhINRlJluLiUxzpTl
-	Z+gp5vyzXoXLkUq+77UtdnXm16iXhTw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756245632; a=rsa-sha256;
-	cv=none;
-	b=UZlhrZk224Mn9eH30z504gZlQDg/ge6K7+Fry+U2ynC9k3nwV/u8VZOS4WjpYYgCdanD2a
-	UXIFPaX6TE695u6XZV6+4GfsV13IAlfxKcbDA/ap3NP4M+ZJuTPUaBCiSwRam1Y2cktoei
-	TaNzqjdT+IUifbzlgrYSCyKs4I6QVxc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0x5Xj4NGXhoikuoW+nUhn+/CSEwIITWgKqBqA0XFyq8=;
+	b=0FBJj3tyHoa5u/udJgQ3TSVBeWn/XNoT1WGFzzBR2/AvUuCCX7hjlBmBxeC2JRiMlcXntg
+	62Nu9pefO/eygYZ7pg7wUc41BpyeLh3/BvxtYdEmIj88tACffzdLFHLzuDxaW8z31tAMNn
+	qn/URiB60hb/YVCtYv1M6cOZiEs+qwI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fUtamZV8;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD1A945122
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:00:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB720C116B1
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:00:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756245630;
-	bh=pWOdIofYcd2BVstz+MOo3lsC+kzLhH9iyv0DoflFa54=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fUtamZV8gWk/4de3o3UGqCPEPue5eEHD0j8H2Ej11wZV2yVn5PyVy6YauGqhE07mq
-	 YXsdQcfyNq/ggCU+rxxlZI0wDbh9/yMr517q0qVb45kRFvUS5xHTuIzHaBBB0wu5mQ
-	 d34JkK0UuRAmg5kX7FBE59mZp7TyXJkFWsa68KZqsQXxPD0M2Xz6mN+u3sEgZA/tA0
-	 ccXaGSFjgw4zW+G4V32Mpsw1zj9+uuyDin/oiV6Z2RKsLa2tcQjLKcpmA7rn3mMSvy
-	 37BlY9macyX81A+VxBplILG+F4XXrLJww/5fccuFvTEFubtwUdWRzj+sEqVpePb90C
-	 ouhm/qCBG3lBg==
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-459fc675d11so11965e9.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 15:00:30 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzYnvBtsdm+mv/JfPJmXJvr0FR9x2PYp/Bizz4TgJGwNSE3szOE
-	sD6e0ZLl2ZeuZhizdIz2gWr8CpCBzv/I8hZzhoJLafpfvTGmMwMxuZ+WSGyOVexuyXNacM9hXjN
-	1lKainhM3hmYua6M/z+vXSbgiXsfPwOcGyxxNuLDS
-X-Google-Smtp-Source: AGHT+IFFTxvgOgSqw04QBrhAUuN83/2UNWCNNQoSfb+IBD7KvPA/aZk8w3052+HFEplww/6pof07vUVot5s+RaGWfWs=
-X-Received: by 2002:a05:600c:3495:b0:453:65f4:f4c8 with SMTP id
- 5b1f17b1804b1-45b6696b9c8mr2691575e9.3.1756245629266; Tue, 26 Aug 2025
- 15:00:29 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=none (imf23.hostedemail.com: domain of aris@ruivo.org has no SPF policy when checking 173.14.175.98) smtp.mailfrom=aris@ruivo.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756245662; a=rsa-sha256;
+	cv=none;
+	b=bBCW+l8bWUedubdFMVe7PD7umDPPUiXi8iupa/9rWhJ1PZoDo20qgyTMTrw3Qdj7s8i0n5
+	fy3yiN+qyz3HdD4Gr7AMjlyJ4gdrY/zJF23BzvxjGUoCcxZGv70LIndnv9p/LYtebBKRKi
+	C71wI71yRG8Bn3oHToBUp2ryiOdrw7g=
+Received: by lobo.ruivo.org (Postfix, from userid 1011)
+	id 831C252723; Tue, 26 Aug 2025 18:01:01 -0400 (EDT)
+Received: from jake.ruivo.org (bob.qemu.ruivo [192.168.72.19])
+	by lobo.ruivo.org (Postfix) with ESMTPSA id A8D62523AA;
+	Tue, 26 Aug 2025 18:00:41 -0400 (EDT)
+Received: by jake.ruivo.org (Postfix, from userid 1000)
+	id 8BAF517A0A4B; Tue, 26 Aug 2025 18:00:41 -0400 (EDT)
+Date: Tue, 26 Aug 2025 18:00:41 -0400
+From: Aristeu Rozanski <aris@ruivo.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Subject: Re: [PATCH] mm: make folio page count functions return unsigned
+Message-ID: <20250826220041.GS3581799@cathedrallabs.org>
+References: <20250826153721.GA23292@cathedrallabs.org>
+ <aK4EOf-EE43pi-xq@casper.infradead.org>
+ <a959a7f8-20c0-4c2a-9cef-ffad4f8b805b@redhat.com>
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com>
-In-Reply-To: <20250822192023.13477-1-ryncsn@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 26 Aug 2025 15:00:18 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuNinT1sZG1edUDMXbdCJ8W_enDcnviAuj5=MViNZ1AczQ@mail.gmail.com>
-X-Gm-Features: Ac12FXzVFLxJhUeNWdbvaFLtBNcpDNkz8bxPDbSkalAjd85ceadZ4fbjUsUIo5c
-Message-ID: <CAF8kJuNinT1sZG1edUDMXbdCJ8W_enDcnviAuj5=MViNZ1AczQ@mail.gmail.com>
-Subject: Re: [PATCH 0/9] mm, swap: introduce swap table as swap cache (phase I)
-To: Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a959a7f8-20c0-4c2a-9cef-ffad4f8b805b@redhat.com>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Stat-Signature: hdk7cy9ip188wf581pacs7i46k5jjzfk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 583CF140020
-X-Stat-Signature: giw771epqx4w8ynjgbx3oeaz59mqjhhf
-X-HE-Tag: 1756245632-464260
-X-HE-Meta: U2FsdGVkX1/wBJBSp9nN3A+A9vZFua3g/zLVVhRFSGeGZOVBAExoKAphk8QYICfyKy62NEzOde6PKDX1ZwBqe21wycPyKsD/no5IT+9FdbALmz8ebmQnbhY2jyw5UCQprTjQquQs/LQPccsyDUnRBSMXTj1lEeqGZOcgXq8+gRFxlZAISLAUcmw8+HWiv7/ZsyvLXayBu4WzbHDjAVOlXcjKDBxWY2h/O+zLBy6wZ0TmPxLIUntNipKp458/Jj9u197PSzZSXbn64GVZoOL4vM7gte3o69l0pPCC57Z1QbJUZZ9Qj6LgaqZRwAyzVWSbu6JhXYTN7fI65B9JJ5AtsltQte3GAy9RlDEhqoMLYoQPU9rkwN7akEQZBwDlFwpyOvzNXnOZVkohEXiXlBoCvfh6H9fgtPFVzZZmD2Hgym4X07cLJqnvltd619hWRj2auDHsameOMp9IZDobfjYIEubCjQb+XHCCKzG/6t+Qqqh3fdqAG1JNAfHPZoLy+8fBWRcLrB9z0vAWSRLgq3tagI1w/X8r5kRP1k1ES+83G3p4nnkIcA03PBinc//1XpjjtCQpqwejbqDuIJ1DCKkIQtXsuPmoxHyA/Zns5sC0Y7MZ7fuTeAlpXK0q5ZoG4B1fmrA/huIJbZ41fM8EsVkygXhU/9PFsHfLQ5Dqhvz5Os9lVeZKQXNzeFqGiVSjwJc3qRxIOaH9rM45CKuFpcScRqeVY/4J5ixeM8jB7kgcrckOuu5M+bMpcETo7ZqCYnJs27DZAQ9H9FzPMgTLD3eCUx18HLO5mxltjsTKXGyZ+UWNu3JkrZefoUyCZmck1FQr9OaYppU87cN5HAB0yE4KjI0xvc3B7Ufp33KzXs+R971cAVjFkHZOTkysEejPSjHVM/wjqTR2wk7Rw+5TcwGW6amOC2eZEjZm5GmZWWiAdQHKu8hpvNF1Z8oeTU9lmx8ykv6A2gt7VTc6NCix8ck
- +3VmbGA5
- T2awNP8K4kqJgn3YjCl/c3QQOVzxJbbeoDm9AOoRBtI62wIHEHED+4CEyb8hN4gnB5cpXJa5tHvagbTbMnSxeg5PN7t1fNmzDSOUw92i7BvcyBIPeupJpE/GMAYUZ5C7KKgEHu6MbO6nS61tsEUGHTDen84rTmo+FTSzQaxv2vLL11Aklbh3AaRfzEL+kcRjVhRL0UBhAGNr/IiRokJYGXE1pz5jUzoYSX+5Iy5Yl0pJniPuurliZdOwDEfmyMoWO6kEyHHEV6EFQZXXgeKTytbFzKu+vOKxb0HVzklHBtBM5fzK/1+Lnx5Qo8yPApFQ2qUqnbCwRHBdg/y8=
+X-Rspamd-Queue-Id: 89D73140017
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756245662-532400
+X-HE-Meta: U2FsdGVkX1/+5FGBT/kEM3wNr2Yq6VNJ+SkQY7vjxLpU9LIWsPKJQLexNaAj/boa8c4eTeYcqmLhsoxXFDyJj/Zsl1+uMCrdx5LZgDrlFOkR4FKKwOgHmOKKx1+EJTDSQob2CUGhl2HYMpIEKzwseAPfRnBIXLZMnSS2LYHB9j63xy3yeYy2SckpTMBjeeTLmPa7BCMSN++Z/vyquIgs4uNHBHr8J4SlkZP8oEcmMIkvJ2zE7PzpEchMWUqmUBsbZbA1y4bPDfXh9JwUuvExayE7Wx8dU2mMtwDUu4xP2fMQI7k1aj9tV6MciC8Id2d5q070DG0jWXMpPRU6ZPgQzpoULnu4rFxrdQSVCLi90kMY5WE1cXdXkMgUoA+pLc/vayCQWjtjZbYNB1E5QqjFSV0r7FjApVW9J5J+w5qn4J/azsgdPa5DOrWtW1jX6GKA+uiiEEdrJ7MVh+vqbnyqoqqJF8IVifnSyCoIwXDwG75lq5p2lRos8TIOpWP8TUgkHBv8GKcaNx0I+iY+A+NJkrZvP938/80r2BISExs34jhpNkXp8Sfq5tlaZ042hznQIAFJrsAgQw+c67VS1MfABfcytslwgIJfytS7hqurqMEXGylDZP0AjILy/WF1Api8aFnJwDio3QDGhudBHX88f9yVekhulJAsZzDGoRAfOVeXQdPjVIFes6ft8YCTHOMems2ksxfBTwZKwAWMClusQgDMDQHgUmFW2tm5sngB99KrzPq8ilnlzMtuF5tHJToKrPbtK6W4X0r9Obd0ve/GzQnPZYzDCboSkCl1ea6eLr6jABSFvoRCzYcHqbSAU+XL8G4UNjkjWn5myhS0YcwZ5fFryjXV0bKs1pJ9Wzrfu53uujh4gIe7/onEQqoEqP12HSS70TPyzpeZ0HeioU0BFf/zI05bFRxWUiYaUiSmUyRwKYc56/+UcQ22v80RidiAfgT82nQJmYMCFLWfFQl
+ zB9OKmgE
+ sOj6JEeP/I8I7Q2MDhy4nGDkan05oDHlJN0vwWZc3BHM1WZAX+YrXMd0+Z7ndbe8Jg1OrRasCmWwqP7I+s+uoWLUGPNkTTYfzjo4Q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,50 +90,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 12:20=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> This is the first phase of the bigger series implementing basic
-> infrastructures for the Swap Table idea proposed at the LSF/MM/BPF
-> topic "Integrate swap cache, swap maps with swap allocator" [1].
->
-> This phase I contains 9 patches, introduces the swap table infrastructure
-> and uses it as the swap cache backend. By doing so, we have up to ~5-20%
-> performance gain in throughput, RPS or build time for benchmark and
-> workload tests. This is based on Chris Li's idea of using cluster size
-> atomic arrays to implement swap cache. It has less contention on the swap
-> cache access. The cluster size is much finer-grained than the 64M address
-> space split, which is removed in this phase I. It also unifies and cleans
-> up the swap code base.
+On Tue, Aug 26, 2025 at 11:45:52PM +0200, David Hildenbrand wrote:
+> IIRC, the issue is if we pass -folio_nr_pages() to functions that expect 
+> a "long" and we are using "unsigned int" as return type.
 
-Thanks for making this happen. It has gone a long way from my early
-messy experimental patches on replacing xarray in swap caches. Beating
-the original swap_map in terms of memory usage is particularly hard. I
-once received this feedback from Matthew that whoever wants to replace
-the swap cache is asking for a lot of pain and suffering. He is
-absolutely right.
+some actually expect an int (e.g. memcg1_charge_statistics()), it'd be a good
+idea to get those fixed.
 
-I am so glad that we are finally seeing the light of the other end of
-the tunnel.  We are close to a state that is able to beat the original
-swap layer both in terms of memory usage and CPU performance.
+> Then, e.g., -1 will be (unsigned int)0xffffffff, and casting that to 
+> "long" means trouble, because we wouldn't sign-extend properly and get 
+> (long)0x00000000ffffffff.
+> 
+> Using "unsigned long" instead work perfectly fine.
+> 
+> e.g., -1 will be (unsigned long)0xffffffffffffffff. Passing that to a 
+> function that expects "long" or "unsigned long" works as expected.
 
-Just to recap. The current swap layer per slot memory usage is 3 + 8
-bytes. 3 up front static, 1 from swap map, 2 from swap cgroup. The 8
-byte dynamic allocations are from the xarray of swap cache.
-At the end of this full series (27+ patches) we can completely get rid
-of the 3 up front allocation. Only dynamic allocate 8 byte per slot
-entry. That is a straight win in terms of memory allocation, no
-compromise was made there.
-The reason we can beat the previous CPU usage is that each cluster has
-512 entries. Much smaller than the 64M xarray tree. The cluster lock
-is a much smaller lock than the xarray tree lock. We can do lockless
-atomic lookup on the swap cache that is pretty cool as well.
+We could run into problems if folio_nr_pages() ever returns an unsigned long
+larger than LONG_MAX :^)
 
-I will do one more review pass on this series again soon.
+-- 
+Aristeu
 
-Very exciting.
-
-Chris
 
