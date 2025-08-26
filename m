@@ -4,115 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C49AFCA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 12:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D01CA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 12:20:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECE498E00CE; Tue, 26 Aug 2025 08:16:26 -0400 (EDT)
+	id 3D9198E00CF; Tue, 26 Aug 2025 08:20:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7D968E00A8; Tue, 26 Aug 2025 08:16:26 -0400 (EDT)
+	id 363308E00A8; Tue, 26 Aug 2025 08:20:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBA488E00CE; Tue, 26 Aug 2025 08:16:26 -0400 (EDT)
+	id 22ADF8E00CF; Tue, 26 Aug 2025 08:20:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C7B358E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:16:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 786EB8E00A8
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 08:20:23 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 52D9A1A07CA
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:16:26 +0000 (UTC)
-X-FDA: 83818806372.15.0725787
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 86E6E4001E
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:16:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=WTljuCaC;
-	spf=pass (imf11.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1DF3FC078D
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:20:23 +0000 (UTC)
+X-FDA: 83818816326.15.6061274
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 535861C000D
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 12:20:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XlOXyKEv;
+	spf=pass (imf18.hostedemail.com: domain of dakr@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756210821; a=rsa-sha256;
+	cv=none;
+	b=UvXk2knE3BJCwaZ6xDGPpGuGUN0iQxO6U/Vbx67Z12j7J1YifvpHLniMaqBxsDI2kv1HM/
+	3Qjm+O/WpJwweCrWDcu9u+ujWKugu5/WT6nPhTDX+gxe9t0TK4kDl75dP/wGtENw4auWTV
+	sZbc1LJwr2WLnf9qbkklctrscaQf0ZE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XlOXyKEv;
+	spf=pass (imf18.hostedemail.com: domain of dakr@kernel.org designates 139.178.84.217 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756210584;
+	s=arc-20220608; t=1756210821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=gI8Rkz2xs2TNrO5rkZwGpMdZoPF3RS/IxewK8Qap8Ak=;
-	b=hTA71JTIcOlELPaoxG6ycgSMJqEB+7Sa5MJuyTzIFhDUraMhIXg97x/o+BBUz4LpKO7RDn
-	76Bp7+X3Zo8n4PDHjrHjwDgPGCYNvLCIjKa1GUQl1HPJ7Bcbo9Fpr2d2/f01VLfMANwYyf
-	SUP20pgkFFJSkkesRriLQQKn7Rkh4do=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=WTljuCaC;
-	spf=pass (imf11.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756210584; a=rsa-sha256;
-	cv=none;
-	b=68Ru+wKm4wjOg9PF2uVDOHMdOeq+eNSFA335BffmZ8BdHSS8wXyDffQtKJQwplVKXNC3ns
-	jtqwNEdoemHhK+ZA8RFsrJLt9+qdm1GgZ+tAcjKHhDDDyjYqTvYjUSiXHMRXRGuVA+jHgH
-	Fxl+X1Iihj0ImhUExP/HceH96wGAMWg=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2445806df50so41967785ad.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 05:16:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1756210582; x=1756815382; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gI8Rkz2xs2TNrO5rkZwGpMdZoPF3RS/IxewK8Qap8Ak=;
-        b=WTljuCaCWDNqpA2Y/cPkSQMyUcyz2+ywnHaHPSfTNSekSU2XGc95i2KUH1KvYLHtKh
-         WmG9KLAcJRrNCrrpvmhfAxka4sTeta+av3FDMwDQuBCzR9BxDMUsUU4ZCH32k/7pspf2
-         6GZSbEyZ5cyITHVujssiyiFduSiBt1f0gi/zWYNorm1d1S7W+8XwhlZf7gPrrTyk1Jt3
-         d4E4w//9qpCLFBgOuta0WBrmPm4/tIc3yb8kyUtWcp3CFTOvLdNRs+kuxy31OMezgpnA
-         YncG9I00WOnjONNogmXGqx1ISneWTdZfRUtALmW350dBU9cbIjzrp+622KYDNGDtVwJq
-         ASLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756210582; x=1756815382;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gI8Rkz2xs2TNrO5rkZwGpMdZoPF3RS/IxewK8Qap8Ak=;
-        b=hSkvnweUfD6cUrc75mffYH5FoQjTDLylJ6AML4IlXQRot3af2A1Yp9kEn3vt+Xx3s/
-         rtee0wq3ORXFIFrsfqdyNBaK3ztXrs3sGJhITtZRavy1lrONjXlH3/BE0opEE2ASSdP8
-         ZimpSUj3gUFMAQnSbptDS0YI3TVZOLjPw+Tz/gELy1pe4P49cdgrgRyuhb7s6rMQnn7C
-         gybjCWC8rkUzEmGhTsumaAkCj29ypwL5Wk5jHBmr0NZGiAJ4TBVLBuYxggiTuzyVbB+h
-         zQQw3UlvhgBhbwjO2DGfNWQ6OaY3rmAbcA99dklTjhNom0eECFB4DPMbeDVN5LRgDpMn
-         Rttw==
-X-Forwarded-Encrypted: i=1; AJvYcCURjwt514ZoJhdMrgF8h2+GaQLvy4cMlzEkwrxk5k33ucd1q/1TJ2D3ah+bRy94YormWDukcK5fng==@kvack.org
-X-Gm-Message-State: AOJu0YyrH7irkBdO2MWquJaVvq+2wJKl75PILVguMGK4zpR2dKAHMZRC
-	9VcWbASTyh1nOJKiYYWDhSJc0OgsbZ62+JwgopzZz4o4YuOYmRaG/7YtHzyDgDuviEE=
-X-Gm-Gg: ASbGnctzd2I8lUM5nSkRYLcFN+FEwNLMwM1NyBUADVp8jgdsg6PcoeYlbLVy1hRG0ks
-	z2/UQAoBJ4pVMsxDK3zgb101d+U0tqAsDm/QbjRQ0AyKWJ8VHGgdlrF48Y9H/aqUpJBC2xJ+NT+
-	Vx9vjtOO44iawzQfvmvsTJnJ9qVuOyXS9j9wc7QaIGqFHFjs6vytSPHK032KdK/cNlPuyjpZpF+
-	Ios4SNO++CfLIMzTM2t0dBLR2i8VLsu6s3F/x1hS9TuajV5paGjaJ6GrgQivZhuLSQacl5F3xvV
-	Dc18x9QIbQo+WKzO3wVqzkEiE3ksDoai8X4QqVFcPhgyHFTYEymJNotnxzyyhwv/5E0v64iV29W
-	cYVQ/Cl6+An+NzI2ieDwe6DRdwg6X9g==
-X-Google-Smtp-Source: AGHT+IFqn3VtdQOuMTY/ZFF0B1ec+ONaoq3koATTk6iUYsrDd3VlLlXjAabCYWVUIup+ISfCqmsHZg==
-X-Received: by 2002:a17:903:2f08:b0:246:3583:394d with SMTP id d9443c01a7336-2463583555emr192356195ad.29.1756210581656;
-        Tue, 26 Aug 2025 05:16:21 -0700 (PDT)
-Received: from localhost ([106.38.226.128])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-246687a59b1sm95376665ad.42.2025.08.26.05.16.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 05:16:21 -0700 (PDT)
-From: Julian Sun <sunjunchao@bytedance.com>
-To: cgroups@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: tj@kernel.org,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	jack@suse.cz
-Subject: [PATCH v2] memcg: Don't wait writeback completion when release memcg.
-Date: Tue, 26 Aug 2025 20:16:18 +0800
-Message-Id: <20250826121618.3594169-1-sunjunchao@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 61mtnxnwunf8qkqrg5bqtxnkd136914j
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s5pgEHoLyIjtQKGuoK90Twn4lkvfS3fdRIX7qZcRhlI=;
+	b=3R+0ElG6yBagsvjixagvW3YSKcZKlj4Ri0+yeUY0FzOdQLQQE3Pg23NMZlVhj+BoSwsPny
+	Ssdam0uuB8iOaNxZFzMmhetWj615lkjgCodJG57w1f0iQg3RHfL9+3Kc5x0n+O4uuzv2QC
+	aPCA0rbFeS/xuH4+npuhwnwm9cfUrJ0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 599455C4D82;
+	Tue, 26 Aug 2025 12:20:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81482C4CEF4;
+	Tue, 26 Aug 2025 12:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756210820;
+	bh=qEjT78mgIQq7OSX5He9ED1JWcvsyTbb52dl5uA8a6Vg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=XlOXyKEve4kWvmASe4UcwUnmjoqmjlj8bOBuSax2q6LEjrGiz8cfy6C8csI9QNZD+
+	 YXN7X1aqAQlRNqdTli2pHO5F4fEjxOgvuobXO01ASaQMqfoQEQwJwuO+c7HGpWrel1
+	 fB5UByB9WtaVsvfVeHqB7WJJRPFN4oAlNUVYcOrpUAjn88kCG5/87E74Bjl9zAaUd6
+	 K9eaBi2FedFXc/abgP3hZ5n65ii/LUnEMkwwg/oRQ1H6jqXBJs5gTqUAgUcp8x4gdO
+	 P1XVRvrOM2JQz0rza36sCMMkEdVyvbKN8D2IHnGkpuSim+1vkvXTE0WvY+4cqqAacY
+	 4/5Xklgx3vxlg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 Aug 2025 14:20:14 +0200
+Message-Id: <DCCCRYEUVJWZ.2AUDA0DXK0XSF@kernel.org>
+Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
+ Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>, "Johannes Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed"
+ <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
+ <linux-mm@kvack.org>
+To: "Vitaly Wool" <vitaly.wool@konsulko.se>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
+ <20250823130522.867263-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250823130522.867263-1-vitaly.wool@konsulko.se>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 535861C000D
+X-Stat-Signature: kdc1eb9n9qdong6sqhdi1fbccnno7mct
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 86E6E4001E
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756210583-866615
-X-HE-Meta: U2FsdGVkX1+bkKC6v6CEqFUvHXEc93Vih8kjj+0QsmG/WBrdoNQvgV1KXIye2G1eA6Pbhh+xMjd9QEqSZfP8AfFZH1k/Iq2NQTEvx89kwXVmkHundsaJWtFe/nQdGASpK2ekwSqoBW7KGAXQfp0XLqpN/ybTaP39LDMD2ncyoVu+CZn4NTNR8lQzkbcTw/1OUdIt1i8C+wiLaQha4ALB5D+CzfZ6mGA6SKWp7O8s866N+Z/Yl01l1sZgB9rNKmWP0hGgPkXceMoSddO6+LRydovt/Z337jhaJ/Sj3SMkWYFRNZ2ul9akp39zDrD38IJAd2rcTVY7Kwut+KHb8YeIRq+B79Fyk/7nX0Y3rUmbRPagww2RSTAP6ACqtYSfSbQu/pGMEVQ9qn2vH7hh+IyoRWM7JwCOMZNYu2yju9c4/vbXmHVbVdlpshgCYGt6ZHPHTUIDAGRBvKhOf8lu2RGa8vzcdGztQlsk06LiUgY7l3ypQv9IYwk2HOCAEgA70rk11Y2fV2R+O+XPwc7+0z8arbWitJTzafvnmtdV8HR5CtTplhRbjKObC3Yu5Jcl+7QRq+YqfJAOVk8zcEY1USNvLQDwXQUBT07cJrUKLAeCpfzCSM2671+ierU7dSVCobLd+sNvM8LnmJ1hkbi2jW5PbvOpxv1iKvsEAEwABLcLKxNCFI6kysk78PQ2+fN7m+gWVfO43s9ZWGjJA9shq8Gi40NI+UA82LNSLfABX+r5gqDlC+b/nCF2DiE6UcBj1DBTr0em6V+Vrju7lWGZB+G6urc7IPCTdE+WpjtlQBtekhTUpjQjg6ydwVwwbw4GPH6i6JV5UlYtqguR3uG7nbCkoPEsuN/qA8FZCOBhnWcToeY9/ZjhpL4Adpt9DDQVa3IqFw+B98N7MwZy3f9O+ulY9K+VXhDODbklSL2qtg3BqaHsCIIU2vhPmN4jxxImULq/EadRLO4nua6YUPKq7IV
- v3L+lOVt
- swozV2nuRfgK3/lfYQLunYWRHU6yJkXJvay/S4LDQ56HaOJORvqVCdZGhXp0kK6c0p0CyYZN0qx9bUO/t2Fh6YdPUkfof/Kr32xpqoLJd7eoO3yQkluS0ojzq9p53KRt2XpSJpynbrKicDVtOivU4inMfHEKZka4x3CJoMDfmCbDQvN4iJZBZTp5eOMP7Tn/89zgws05i2kLspHHzX1CCO7MEm3Z3bzOtiVR4fmVeeE0fIcCVx1ASH6BMJd7rjsqXh7U0hS+u8KBSxmBFkfmu761driviVx3+zB3Ugfs+rKKxIRcF/EVj5bZu6QgHREinIXB/
+X-HE-Tag: 1756210821-619033
+X-HE-Meta: U2FsdGVkX1+kH4vWSWMcPwugqoNX2Ftd4hsXdvQQwxI7lMhhT+7B2N0M8y6HrswRaLenbgLefjEPqbN64iNHIC59Akxst76GrFfnUSQ1yUJztb1gYYJd+GbwXkduy0UF9k48hCW2zg4KD/LukB0s+zN+ieRTP4QkB55SkT4YmS4fdRyNVTm73hIBrosyHnUBTfxRnSYv9T3B6VRXo23ngWBwvsOpBBwLGgYYIWtzE5L2hcbLH5BM9KeF4qZdijP9bP6N590jPFJH52E2yZTS77LKpBs8FzilduRtaoDkWdOCSvsOyMXkixkY7Paf8telNMPN1rj7tLog35O2MQVLLKQwEb3Jogxu3c90/UnfsaGHgCp0qO0LSEB24ZUoSb12AI6T0/isnJho9izO5D8uSIjG0x6W6IlasXPzOM09cIWfq+FoKF7WO2sTA17lgzhOACn4y3MjjYCOiM0/nANRLZ4etiXLr+bBx1Q39qK52GeruAvS9Umyi1rggSqI1Z19FmjWQDZUGmheOJQvMVxbWr856gVtR6HSNHb62qmaqJvTFYtu6LvhXcr+p5/lL/F5XJjO1Tj4TFCvFG298/52XN1jgccOJMw9AWzH/D1n5CCV2CvUSoQ9t1GGCaBavLWTc/VBoBlUUpdwxkd/gpF/yN1DkUkbub47AqQVEbe5fpt/hhmtnWtFBDBHIooyxteVHBzMByLbhyQcNTRfCQkjqum+/nN035UBEyAwR5Vo5gQTssART+JTxC5wRdUao/5PZpgUGEFdC6Fer6f81AMtUYDjHqtxJClVJYFqzx+gvKYMo/kVFTAbkg2P6KYBLfBFkQd6KGiemPLPiuiDadD2csWKLNNTL5QzILZJmOVX5W9NUtadGYz9/TowuvAxc0N/gGf+UBmmVw7k8Vp2bpzgaCCygEL/QWxlyuPKZ9zeTw3rB8ARI0SMTdkZayq74Jau9PTSn2imLzPz6Fhe0am
+ sqlSxgs6
+ cWWHeO27VhYEuT/Zjv+m5jtjH5ElRopBEo6S4pJgjGfq6KVnfojc/MfSiLup6dVFZqO60IWJtfTfTYCwTh6ioVZ3JD6alZNeBwZk+AePITWCbHOSdyk+eYMyQ1HmWd1ZxKbqa/oG1czphq2LdzzI6eWGRARsrxL2+kYSGLFfPLyCPzQsFGPNaEs2+kye12Eh+3s852e7YpiOvAqzp5+AoDlrqA0+VSTQ9teISRR1LAG5e74k/rGw6wGMInPIDRBLMACp91x5iG/r5Wua1Xbj2sZ/UDcjtqr+XlVGOdFFj3yf4sv1pob2Vc9qOJrEfNYfd/aaVjh8El390VxVWFIUkmzRxC3QKoOQ8H9LY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,249 +102,341 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Recently, we encountered the following hung task:
+On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
+> +/// Zpool API.
+> +///
+> +/// The [`ZpoolDriver`] trait serves as an interface for Zpool drivers i=
+mplemented in Rust.
+> +/// Such drivers implement memory storage pools in accordance with the z=
+pool API.
+> +///
+> +/// # Example
+> +///
+> +/// A zpool driver implementation which uses KVec of 2**n sizes, n =3D 6=
+, 7, ..., PAGE_SHIFT.
+> +/// Every zpool object is packed into a KVec that is sufficiently large,=
+ and n (the
+> +/// denominator) is saved in the least significant bits of the handle, w=
+hich is guaranteed
+> +/// to be at least 2**6 aligned by kmalloc.
+> +///
+> +/// ```
+> +/// use core::ptr::{NonNull, copy_nonoverlapping};
+> +/// use core::sync::atomic::{AtomicU64, Ordering};
+> +/// use kernel::alloc::{Flags, KBox, KVec, NumaNode};
+> +/// use kernel::page::PAGE_SHIFT;
+> +/// use kernel::prelude::EINVAL;
+> +/// use kernel::zpool::*;
+> +///
+> +/// struct MyZpool {
+> +///     name: &'static CStr,
+> +///     bytes_used: AtomicU64,
+> +/// }
+> +///
+> +/// struct MyZpoolDriver;
+> +///
+> +/// impl ZpoolDriver for MyZpoolDriver {
+> +///     type Pool =3D KBox<MyZpool>;
+> +///
+> +///     fn create(name: &'static CStr, gfp: Flags) -> Result<KBox<MyZpoo=
+l>> {
+> +///         let my_pool =3D MyZpool { name, bytes_used: AtomicU64::new(0=
+) };
+> +///         let pool =3D KBox::new(my_pool, gfp)?;
+> +///
+> +///         Ok(pool)
+> +///     }
+> +///
+> +///     fn destroy(p: KBox<MyZpool>) {
+> +///         drop(p);
+> +///     }
+> +///
+> +///     fn malloc(pool: &mut MyZpool, size: usize, gfp: Flags, _nid: Num=
+aNode) -> Result<usize> {
+> +///         let mut pow: usize =3D 0;
+> +///         for n in 6..=3DPAGE_SHIFT {
+> +///             if size <=3D 1 << n {
+> +///                 pow =3D n;
+> +///                 break;
+> +///             }
+> +///         }
 
-INFO: task kworker/4:1:1334558 blocked for more than 1720 seconds.
-[Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy css_free_rwork_fn
-[Wed Jul 30 17:47:45 2025] Call Trace:
-[Wed Jul 30 17:47:45 2025]  __schedule+0x934/0xe10
-[Wed Jul 30 17:47:45 2025]  ? complete+0x3b/0x50
-[Wed Jul 30 17:47:45 2025]  ? _cond_resched+0x15/0x30
-[Wed Jul 30 17:47:45 2025]  schedule+0x40/0xb0
-[Wed Jul 30 17:47:45 2025]  wb_wait_for_completion+0x52/0x80
-[Wed Jul 30 17:47:45 2025]  ? finish_wait+0x80/0x80
-[Wed Jul 30 17:47:45 2025]  mem_cgroup_css_free+0x22/0x1b0
-[Wed Jul 30 17:47:45 2025]  css_free_rwork_fn+0x42/0x380
-[Wed Jul 30 17:47:45 2025]  process_one_work+0x1a2/0x360
-[Wed Jul 30 17:47:45 2025]  worker_thread+0x30/0x390
-[Wed Jul 30 17:47:45 2025]  ? create_worker+0x1a0/0x1a0
-[Wed Jul 30 17:47:45 2025]  kthread+0x110/0x130
-[Wed Jul 30 17:47:45 2025]  ? __kthread_cancel_work+0x40/0x40
-[Wed Jul 30 17:47:45 2025]  ret_from_fork+0x1f/0x30
+Why not just use next_power_of_two()? I think the same logic could also be
+achieved with
 
-The direct cause is that memcg spends a long time waiting for dirty page
-writeback of foreign memcgs during release.
+	size.next_power_of_two().trailing_zeros().max(6).min(PAGE_SHIFT)
 
-The root causes are:
-    a. The wb may have multiple writeback tasks, containing millions
-       of dirty pages, as shown below:
+> +///         match pow {
+> +///             0 =3D> Err(EINVAL),
+> +///             _ =3D> {
+> +///                 let vec =3D KVec::<u64>::with_capacity(1 << (pow - 3=
+), gfp)?;
 
->>> for work in list_for_each_entry("struct wb_writeback_work", \
-				    wb.work_list.address_of_(), "list"):
-...     print(work.nr_pages, work.reason, hex(work))
-...
-900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
-1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
-1275228 WB_REASON_FOREIGN_FLUSH 0xffff969d9b444bc0
-1099673 WB_REASON_FOREIGN_FLUSH 0xffff969f0954d6c0
-1351522 WB_REASON_FOREIGN_FLUSH 0xffff969e76713340
-2567437 WB_REASON_FOREIGN_FLUSH 0xffff9694ae208400
-2954033 WB_REASON_FOREIGN_FLUSH 0xffff96a22d62cbc0
-3008860 WB_REASON_FOREIGN_FLUSH 0xffff969eee8ce3c0
-3337932 WB_REASON_FOREIGN_FLUSH 0xffff9695b45156c0
-3348916 WB_REASON_FOREIGN_FLUSH 0xffff96a22c7a4f40
-3345363 WB_REASON_FOREIGN_FLUSH 0xffff969e5d872800
-3333581 WB_REASON_FOREIGN_FLUSH 0xffff969efd0f4600
-3382225 WB_REASON_FOREIGN_FLUSH 0xffff969e770edcc0
-3418770 WB_REASON_FOREIGN_FLUSH 0xffff96a252ceea40
-3387648 WB_REASON_FOREIGN_FLUSH 0xffff96a3bda86340
-3385420 WB_REASON_FOREIGN_FLUSH 0xffff969efc6eb280
-3418730 WB_REASON_FOREIGN_FLUSH 0xffff96a348ab1040
-3426155 WB_REASON_FOREIGN_FLUSH 0xffff969d90beac00
-3397995 WB_REASON_FOREIGN_FLUSH 0xffff96a2d7288800
-3293095 WB_REASON_FOREIGN_FLUSH 0xffff969dab423240
-3293595 WB_REASON_FOREIGN_FLUSH 0xffff969c765ff400
-3199511 WB_REASON_FOREIGN_FLUSH 0xffff969a72d5e680
-3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
-3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
+Why use u64 and 1 << (pow - 3), rather than simply u8 and 1 << pow?
 
-    b. The writeback might severely throttled by wbt, with a speed
-       possibly less than 100kb/s, leading to a very long writeback time.
+(Btw. you could also just use VBox<u8; PAGE_SIZE>::new_uninit() for all
+allocations to keep the example simple.)
 
->>> wb.write_bandwidth
-(unsigned long)24
->>> wb.write_bandwidth
-(unsigned long)13
+> +///                 let (ptr, _len, _cap) =3D vec.into_raw_parts();
+> +///                 pool.bytes_used.fetch_add(1 << pow, Ordering::Relaxe=
+d);
+> +///                 Ok(ptr as usize | (pow - 6))
+> +///             }
+> +///         }
+> +///     }
+> +///
+> +///     unsafe fn free(pool: &MyZpool, handle: usize) {
+> +///         let n =3D (handle & 0x3F) + 3;
+> +///         let uptr =3D handle & !0x3F;
+> +///
+> +///         // SAFETY:
+> +///         // - uptr comes from handle which points to the KVec allocat=
+ion from `alloc`.
 
-The wb_wait_for_completion() here is probably only used to prevent
-use-after-free. Therefore, we manage 'done' separately and automatically
-free it.
+That's not true, you modified the pointer you got from KVec. Please explain=
+ why
+it is always safe to use lower 6 bits for something else.
 
-This allows us to remove wb_wait_for_completion() while preventing
-the use-after-free issue.
+What does "`alloc`" refer to?
 
-Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty flushing")
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
----
+NIT: `uptr`, `KVec`
 
- Changes in v2:
-  * Use custom waitq function to free resources.
+> +///         // - size =3D=3D capacity and is coming from the first 6 bit=
+s of handle.
+> +///         let vec =3D unsafe { KVec::<u64>::from_raw_parts(uptr as *mu=
+t u64, 1 << n, 1 << n) };
 
- include/linux/backing-dev-defs.h |  7 ++++
- include/linux/memcontrol.h       |  8 ++++-
- mm/memcontrol.c                  | 62 +++++++++++++++++++++++++++-----
- 3 files changed, 67 insertions(+), 10 deletions(-)
+Why do you set the length (not the capacity) of the Vector to 1 << n? I thi=
+nk
+technically it doesn't matter, but you should explain that in the safety
+comment.
 
-diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
-index 2ad261082bba..6c1ed286da6a 100644
---- a/include/linux/backing-dev-defs.h
-+++ b/include/linux/backing-dev-defs.h
-@@ -65,6 +65,13 @@ struct wb_completion {
- 	wait_queue_head_t	*waitq;
- };
- 
-+static inline void wb_completion_init(struct wb_completion *done,
-+									  struct wait_queue_head *waitq)
-+{
-+	atomic_set(&done->cnt, 1);
-+	done->waitq = waitq;
-+}
-+
- #define __WB_COMPLETION_INIT(_waitq)	\
- 	(struct wb_completion){ .cnt = ATOMIC_INIT(1), .waitq = (_waitq) }
- 
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 785173aa0739..f6dd771df369 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -157,11 +157,17 @@ struct mem_cgroup_thresholds {
-  */
- #define MEMCG_CGWB_FRN_CNT	4
- 
-+struct cgwb_frn_wq_entry {
-+	struct wb_completion *done;
-+	struct wait_queue_entry wq_entry;
-+};
-+
- struct memcg_cgwb_frn {
- 	u64 bdi_id;			/* bdi->id of the foreign inode */
- 	int memcg_id;			/* memcg->css.id of foreign inode */
- 	u64 at;				/* jiffies_64 at the time of dirtying */
--	struct wb_completion done;	/* tracks in-flight foreign writebacks */
-+	struct wb_completion *done;	/* tracks in-flight foreign writebacks */
-+	struct cgwb_frn_wq_entry *frn_wq; /* used to free resources when release memcg */
- };
- 
- /*
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 8dd7fbed5a94..b47f3972c1ed 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3459,7 +3459,7 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
- 		    frn->memcg_id == wb->memcg_css->id)
- 			break;
- 		if (time_before64(frn->at, oldest_at) &&
--		    atomic_read(&frn->done.cnt) == 1) {
-+		    atomic_read(&frn->done->cnt) == 1) {
- 			oldest = i;
- 			oldest_at = frn->at;
- 		}
-@@ -3506,12 +3506,12 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
- 		 * already one in flight.
- 		 */
- 		if (time_after64(frn->at, now - intv) &&
--		    atomic_read(&frn->done.cnt) == 1) {
-+		    atomic_read(&frn->done->cnt) == 1) {
- 			frn->at = 0;
- 			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id);
- 			cgroup_writeback_by_id(frn->bdi_id, frn->memcg_id,
- 					       WB_REASON_FOREIGN_FLUSH,
--					       &frn->done);
-+					       frn->done);
- 		}
- 	}
- }
-@@ -3702,13 +3702,26 @@ static void mem_cgroup_free(struct mem_cgroup *memcg)
- 	__mem_cgroup_free(memcg);
- }
- 
-+static int memcg_cgwb_waitq_callback_fn(struct wait_queue_entry *wq_entry, unsigned int mode,
-+					int flags, void *key)
-+{
-+	struct cgwb_frn_wq_entry *frn_wq_entry = container_of(wq_entry,
-+							struct cgwb_frn_wq_entry, wq_entry);
-+
-+	list_del_init_careful(&wq_entry->entry);
-+	kfree(frn_wq_entry->done);
-+	kfree(frn_wq_entry);
-+
-+	return 0;
-+}
-+
- static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+> +///         drop(vec);
+> +///         pool.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
+> +///     }
+> +///
+> +///     unsafe fn read_begin(_pool: &MyZpool, handle: usize) -> NonNull<=
+u8> {
+> +///         let uptr =3D handle & !0x3F;
+> +///         // SAFETY: uptr points to a memory area allocated by KVec
+
+Please use markdown and end sentences with a period. (Applies to the entire
+file.)
+
+> +///         unsafe { NonNull::new_unchecked(uptr as *mut u8) }
+> +///     }
+> +///
+> +///     unsafe fn read_end(_pool: &MyZpool, _handle: usize, _handle_mem:=
+ NonNull<u8>) {}
+> +///
+> +///     unsafe fn write(_p: &MyZpool, handle: usize, handle_mem: NonNull=
+<u8>, mem_len: usize) {
+> +///         let uptr =3D handle & !0x3F;
+> +///         // SAFETY: handle_mem is a valid non-null pointer provided b=
+y zpool, uptr points to
+> +///         // a KVec allocated in `malloc` and is therefore also valid.
+> +///         unsafe {
+> +///             copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as =
+*mut c_void, mem_len)
+> +///         };
+> +///     }
+> +///
+> +///     fn total_pages(pool: &MyZpool) -> u64 {
+> +///         pool.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
+
+I'm not sure what the semantic of this function is; the documentation says
+"Get the number of pages used by the `pool`".
+
+However, given that you give out allocations from a kmalloc() bucket in
+malloc(), this pool might be backed by more pages than what you calculate h=
+ere.
+
+So, what is done here is calculating the number of pages you could fill wit=
+h
+the memory that is kept around, but not the number of backing pages you con=
+sume
+memory from.
+
+Using VBox<u8; PAGE_SIZE>::new_uninit() for all allocations might simplify =
+this.
+
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +pub trait ZpoolDriver {
+> +    /// Opaque Rust representation of `struct zpool`.
+> +    type Pool: ForeignOwnable;
+> +
+> +    /// Create a pool.
+> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
+> +
+> +    /// Destroy the pool.
+> +    fn destroy(pool: Self::Pool);
+> +
+> +    /// Allocate an object of size `size` bytes from `pool`, with the al=
+location flags `gfp` and
+
+"of `size` bytes"
+
+> +    /// preferred NUMA node `nid`. If the allocation is successful, an o=
+paque handle is returned.
+> +    fn malloc(
+> +        pool: <Self::Pool as ForeignOwnable>::BorrowedMut<'_>,
+> +        size: usize,
+> +        gfp: Flags,
+> +        nid: NumaNode,
+> +    ) -> Result<usize>;
+> +
+> +    /// Free a previously allocated from the `pool` object, represented =
+by `handle`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` must be a valid handle previously returned by `malloc=
+`.
+> +    /// - `handle` must not be used any more after the call to `free`.
+> +    unsafe fn free(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>, h=
+andle: usize);
+> +
+> +    /// Make all the necessary preparations for the caller to be able to=
+ read from the object
+> +    /// represented by `handle` and return a valid pointer to the `handl=
+e` memory to be read.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` must be a valid handle previously returned by `malloc=
+`.
+> +    /// - `read_end` with the same `handle` must be called for each `rea=
+d_begin`.
+
+What can potentially happen if we don't? I.e. how is this different from
+malloc()?
+
+> +    unsafe fn read_begin(
+> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+> +        handle: usize,
+> +    ) -> NonNull<u8>;
+> +
+> +    /// Finish reading from a previously allocated `handle`. `handle_mem=
+` must be the pointer
+> +    /// previously returned by `read_begin`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` must be a valid handle previously returned by `malloc=
+`.
+> +    /// - `handle_mem` must be the pointer previously returned by `read_=
+begin`.
+> +    unsafe fn read_end(
+> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+> +        handle: usize,
+> +        handle_mem: NonNull<u8>,
+> +    );
+> +
+> +    /// Write to the object represented by a previously allocated `handl=
+e`. `handle_mem` points
+> +    /// to the memory to copy data from, and `mem_len` defines the lengt=
+h of the data block to
+> +    /// be copied.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `handle` must be a valid handle previously returned by `malloc=
+`.
+> +    /// - `handle_mem` must be a valid pointer to an allocated memory ar=
+ea.
+
+"must be a valid pointer into the allocated memory aread represented by
+`handle`"
+
+> +    /// - `handle_mem` + `mem_len` must not point outside the allocated =
+memory area.
+> +    unsafe fn write(
+> +        pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>,
+> +        handle: usize,
+> +        handle_mem: NonNull<u8>,
+> +        mem_len: usize,
+> +    );
+> +
+> +    /// Get the number of pages used by the `pool`.
+> +    fn total_pages(pool: <Self::Pool as ForeignOwnable>::Borrowed<'_>) -=
+> u64;
+> +}
+> +
+> +/// An "adapter" for the registration of zpool drivers.
+> +pub struct Adapter<T: ZpoolDriver>(T);
+> +
+> +impl<T: ZpoolDriver> Adapter<T> {
+> +    extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void=
  {
- 	struct memcg_vmstats_percpu *statc;
- 	struct memcg_vmstats_percpu __percpu *pstatc_pcpu;
- 	struct mem_cgroup *memcg;
- 	int node, cpu;
--	int __maybe_unused i;
-+	int __maybe_unused i = 0;
- 	long error;
- 
- 	memcg = kmem_cache_zalloc(memcg_cachep, GFP_KERNEL);
-@@ -3763,9 +3776,23 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- 	INIT_LIST_HEAD(&memcg->objcg_list);
- #ifdef CONFIG_CGROUP_WRITEBACK
- 	INIT_LIST_HEAD(&memcg->cgwb_list);
--	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
--		memcg->cgwb_frn[i].done =
--			__WB_COMPLETION_INIT(&memcg_cgwb_frn_waitq);
-+	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
-+		struct memcg_cgwb_frn *frn = &memcg->cgwb_frn[i];
-+
-+		frn->done = kmalloc(sizeof(struct wb_completion), GFP_KERNEL);
-+		if (!frn->done)
-+			goto fail;
-+
-+		frn->frn_wq = kmalloc(sizeof(struct cgwb_frn_wq_entry), GFP_KERNEL);
-+		if (!frn->frn_wq) {
-+			kfree(frn->done);
-+			goto fail;
-+		}
-+
-+		wb_completion_init(frn->done, &memcg_cgwb_frn_waitq);
-+		init_wait_func(&frn->frn_wq->wq_entry, memcg_cgwb_waitq_callback_fn);
-+		frn->frn_wq->done = frn->done;
-+	}
- #endif
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	spin_lock_init(&memcg->deferred_split_queue.split_queue_lock);
-@@ -3775,6 +3802,12 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
- 	lru_gen_init_memcg(memcg);
- 	return memcg;
- fail:
-+#ifdef CONFIG_CGROUP_WRITEBACK
-+	while (i--) {
-+		kfree(memcg->cgwb_frn[i].done);
-+		kfree(memcg->cgwb_frn[i].frn_wq);
-+	}
-+#endif
- 	mem_cgroup_id_remove(memcg);
- 	__mem_cgroup_free(memcg);
- 	return ERR_PTR(error);
-@@ -3912,8 +3945,19 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
- 	int __maybe_unused i;
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
--	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
--		wb_wait_for_completion(&memcg->cgwb_frn[i].done);
-+	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
-+		struct memcg_cgwb_frn *frn = &memcg->cgwb_frn[i];
-+
-+		if (atomic_dec_and_test(&frn->done->cnt)) {
-+			kfree(frn->done);
-+			kfree(frn->frn_wq);
-+		} else
-+			/*
-+			 * Not necessary to wait for wb completion which might cause task hung,
-+			 * only used to free resources. See memcg_cgwb_waitq_callback_fn().
-+			 */
-+			__add_wait_queue_entry_tail(frn->done->waitq, &frn->frn_wq->wq_entry);
-+	}
- #endif
- 	if (cgroup_subsys_on_dfl(memory_cgrp_subsys) && !cgroup_memory_nosocket)
- 		static_branch_dec(&memcg_sockets_enabled_key);
--- 
-2.20.1
+> +        // SAFETY: the memory pointed to by name is guaranteed by zpool =
+to be a valid string
 
+What about the lifetime of the string? In the abstraction you assume 'stati=
+c,
+how is this guaranteed?
+
+> +        let pool =3D unsafe { T::create(CStr::from_char_ptr(name), Flags=
+::from_raw(gfp)) };
+> +        match pool {
+> +            Err(_) =3D> null_mut(),
+> +            Ok(p) =3D> T::Pool::into_foreign(p),
+> +        }
+> +    }
+
+Please add an empty line in between function definitions.
+
+> +    extern "C" fn destroy_(pool: *mut c_void) {
+> +        // SAFETY: The pointer originates from an `into_foreign` call.
+> +        T::destroy(unsafe { T::Pool::from_foreign(pool) })
+> +    }
+> +    extern "C" fn malloc_(
+> +        pool: *mut c_void,
+> +        size: usize,
+> +        gfp: u32,
+> +        handle: *mut usize,
+> +        nid: c_int,
+> +    ) -> c_int {
+> +        // SAFETY: The pointer originates from an `into_foreign` call. I=
+f `pool` is passed to
+> +        // `from_foreign`, then that happens in `_destroy` which will no=
+t be called during this
+> +        // method.
+> +        let pool =3D unsafe { T::Pool::borrow_mut(pool) };
+
+Wait, can't this happen concurrently to all the other functions that borrow=
+ the
+pool? This would be undefined behavior, no?
+
+> +        from_result(|| {
+> +            let real_nid =3D match nid {
+> +                bindings::NUMA_NO_NODE =3D> NumaNode::NO_NODE,
+> +                _ =3D> NumaNode::new(nid)?,
+> +            };
+> +            let h =3D T::malloc(pool, size, Flags::from_raw(gfp), real_n=
+id)?;
+> +            // SAFETY: handle is guaranteed to be a valid pointer by zpo=
+ol.
+> +            unsafe { *handle =3D h };
+> +            Ok(0)
+> +        })
+> +    }
+> +    extern "C" fn free_(pool: *mut c_void, handle: usize) {
+> +        // SAFETY: The pointer originates from an `into_foreign` call. I=
+f `pool` is passed to
+> +        // `from_foreign`, then that happens in `_destroy` which will no=
+t be called during this
+> +        // method.
+> +        let pool =3D unsafe { T::Pool::borrow(pool) };
+> +
+> +        // SAFETY: the caller (zswap) guarantees that `handle` is a vali=
+d handle previously
+
+Why does this mention zwap here and in the other functions below?
+
+> +        // allocated by `malloc`.
+> +        unsafe { T::free(pool, handle) }
+> +    }
 
