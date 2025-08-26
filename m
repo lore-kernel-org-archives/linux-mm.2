@@ -4,170 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F206BCA0EFA
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 10:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CFD4CA0EFA
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 11:01:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 481888E00CA; Tue, 26 Aug 2025 06:58:39 -0400 (EDT)
+	id 728986B00A0; Tue, 26 Aug 2025 07:01:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 459498E00A8; Tue, 26 Aug 2025 06:58:39 -0400 (EDT)
+	id 6AAC96B00A1; Tue, 26 Aug 2025 07:01:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36FC28E00CA; Tue, 26 Aug 2025 06:58:39 -0400 (EDT)
+	id 572436B00A2; Tue, 26 Aug 2025 07:01:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 22E478E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 06:58:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4223C0741
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:58:38 +0000 (UTC)
-X-FDA: 83818610316.21.830E29B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 599F3A0004
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 10:58:36 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F95B6B00A0
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:01:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E8C355B186
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:01:43 +0000 (UTC)
+X-FDA: 83818618086.05.DE188F0
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 18AD9A0004
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 11:01:41 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="iNNDr2/R";
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=google.com header.s=20230601 header.b=2jDTKlLl;
+	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756205916;
+	s=arc-20220608; t=1756206102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+EgA37MBCBDy1a1mdvBoYVq3fWogkvWCdD/YDwlv/rs=;
-	b=FyEnf6kUOGTEXqwmBEO6P3bvyIbLfoeVXJzKMKjPWWFbquYCN0UngnudffPRP4LL8VreGd
-	ijg/CyktJNhOuJCjSnJ2DwrylaOmLZu6E/+oz0GtvntrkB6xIjPMx6pdVs2tnTiJ/OKfGv
-	ZgpPaKTRY7ja8POlZkeoMorsb6C0pUQ=
+	bh=O7NeKTyWKueL+wvA2d/ehbUAGIe9IQuhF4UrqPvxaVg=;
+	b=dI0ra8BdT7gbB1lkFePgg1b1uz025jSSmN55MwJyozDKSgfGB7DPaD0tFmu6tPxSzfGAPS
+	KE+k5U1Hc8bLwcit5/sSvYdbohBMdVcpWtdUWD+Vuds4Lot81pN3XItweT07iV4JAD+dl1
+	IYbop4QYZHnA3VQcrzmhGzQU3IyQ6S4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756206102; a=rsa-sha256;
+	cv=none;
+	b=ML3GlEeSLmvJ4F9x+BBoM5JaeVXgsnZc3aKpGKcERRdaMN764UeS2MGsuTjEwulqo5nuBY
+	r+tfUMKa95vKV2C5Dzr0onm9bVLvXjXGcieVxpzzHmuorQuEeRZFmnImSZNBrILohj3r2l
+	DQ2Zz3J8Z0j1Q2+nPo6bp0BDX9cxtlk=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="iNNDr2/R";
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756205916; a=rsa-sha256;
-	cv=none;
-	b=Qboo310dHaYZap9oggle12oDsmWRA9foprI+Az43T2D2xCwFj1PfCKEhVJ7Y7Y6OLtMIXy
-	Pu5pq2tsDj6Cgf4O0TH/GUsmSi+qBgb7XeWQAajMSUNTngbsRfU0Dx3iTqHh/d5ma1yuHi
-	eAhC731v5NMAyEelGfuHQOMbjt/OBig=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756205915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+EgA37MBCBDy1a1mdvBoYVq3fWogkvWCdD/YDwlv/rs=;
-	b=iNNDr2/RvlNA88UOvEx4kOAOSKuhw3xSaJPboi5UN2Bjw2YMBLN7h6rIXAJklt/OEz0HdD
-	Oid6LgTHPEBgsBW692gsqLo/F6CW8b0rI3ekJ778qPnSyoFuh0FAxoqsYI2blCVZl7cNHy
-	3iurwKaakQsMbeXdTrV9TfBjaHpszkE=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-348-UYCPTI1lPWG91avn0yFLuQ-1; Tue, 26 Aug 2025 06:58:32 -0400
-X-MC-Unique: UYCPTI1lPWG91avn0yFLuQ-1
-X-Mimecast-MFC-AGG-ID: UYCPTI1lPWG91avn0yFLuQ_1756205911
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-afeb71cc67cso4382966b.2
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:58:31 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20230601 header.b=2jDTKlLl;
+	spf=pass (imf25.hostedemail.com: domain of elver@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-246aef91e57so31467075ad.1
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 04:01:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756206101; x=1756810901; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=O7NeKTyWKueL+wvA2d/ehbUAGIe9IQuhF4UrqPvxaVg=;
+        b=2jDTKlLlKgLbUQyJA/J05QLIk24qVnK+LB3azYhix7GR/UySTCcYiyTxcJcJzq8MgZ
+         S1gBfQW1tzr0iAt127Mf1FQRLnKAJXjN5fOpP9fmtbV2c2GtYH6oWZ/RcEsCJwN5rgN7
+         8n0+0VsqmGRJFswbKy4cvBgmoeLS6sROCqoZ/eSUxB9D6yhwDZVFlATKcHxPicUTv1QK
+         aeaisIQPAOyyM9Z0LHMaCxhyWDjcyBWbAHE3qS6PaC8pgv7fsKQxp9tVEv9iDNBN+WuJ
+         SHMKiXv2aG9J5XLAkmrEw8BRWty8Hr1tZ44uwpNUE1muBZbw5PAa67pEHLsTDI4+cxO/
+         ZhPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756205911; x=1756810711;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1756206101; x=1756810901;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+EgA37MBCBDy1a1mdvBoYVq3fWogkvWCdD/YDwlv/rs=;
-        b=OU22J24g11r4hMsthR0Y899Hvq2Amo8SRur6MgzGUfBTgtx+W7fRiQTbQLNBaFNX0S
-         vcQ7k9vHH9fYJtJPk6JcHPLoX3nc+4Dw9Q8x6D8T5zE8sPpifYQMHkEwkXDdSNYEMllc
-         HPzrgVX0q2K30DyE8oGkf2NSLVAMdtZx5VMJ7RmVRiYdlGe8+fCSw6ul+f80Y15WGP8R
-         BDQtE0Fz2tBozMSmq2/JiKzGWu4ZYlRNtImF5XRzgKyGcbkmH621onz0dAWXIbbv0oNJ
-         vqRKSqiPFSzxjacVwHZxDI7tJffJSC8L4NM7bSIP1mzHuSJmiFOPb+trJfWWSNYmK7Vo
-         T41w==
-X-Forwarded-Encrypted: i=1; AJvYcCUZHQuMXc7c+LD+uI9jWIC2PMEshwpTBPO2DGyXzlWDhxlCzvh9DgptcI/FLG399v9UHfZYp7THDg==@kvack.org
-X-Gm-Message-State: AOJu0YyMEt5msZtRLz3j0gEmpKfsPkdj6PKLgcJFpi9x4SF1b3kXJILM
-	4o+DWFs3OShRpuaWpGB80iwXlAXSIE4Sqr/zK7gRzTQxz/xNiBRhFtmGzrk3Oxf6LsnuY1rrNY7
-	S/UNrAqyXZiJIoDZqJ483eBCe2eh+BuY1KPBzjsVoahoTjTi/ugMU
-X-Gm-Gg: ASbGncuxnBlS7cfvD2eYpd381ZpLWG2t7c2E3N6RK4d4KlxeE2J673QL2KkBiBRkUX9
-	tz9Glh6FsOUpK0Yp9O70S2n93uFvnux20FM/vie8B8XxRj0eM7jX9TA842k32jcSvt7rqEcXzRB
-	0LkjtIPMb0yBeG8sZqsiPQ2O8viKcATTSK6ejZM9Wz83ntpVPXZovyB8/jsFkpGDaaxKHHqxcX1
-	I1Nan55vFB/L/RXKWybkgBiEmQpaua+Ua7WtigAn8agAs88zryVbGJv9wT8T1ggDmCizL+8Vn+7
-	+eL/FUOGnFMs4q6A7j7xskRc0fEDAmdegwQH7JyxfvJ1n1k2jpTaKxyYdWQKsL7g1WM0YO9w4Q=
-	=
-X-Received: by 2002:a17:907:7e90:b0:afe:8a40:49bb with SMTP id a640c23a62f3a-afe8a404c32mr464659466b.22.1756205910814;
-        Tue, 26 Aug 2025 03:58:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFTLyoMdzRtcueTqbkFT6EPOfAzQtyAZfbsUKrCCUFnpYC2rska742i1k7jJ3Lbarg7QFoSFw==
-X-Received: by 2002:a17:907:7e90:b0:afe:8a40:49bb with SMTP id a640c23a62f3a-afe8a404c32mr464657866b.22.1756205910364;
-        Tue, 26 Aug 2025 03:58:30 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe6a3d7cd5sm566241666b.6.2025.08.26.03.58.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 03:58:29 -0700 (PDT)
-Message-ID: <5eb5dbc1-274a-4932-8c77-8000509deadb@redhat.com>
-Date: Tue, 26 Aug 2025 12:58:28 +0200
+        bh=O7NeKTyWKueL+wvA2d/ehbUAGIe9IQuhF4UrqPvxaVg=;
+        b=qTO3MJj3tScwM4tljL2ITiqj9SFbtC6Tyg5Q+3d9ZsLJbDJSKrJWboO97RP2KP3kwx
+         kTkOAVNP2rsShY50dRnGBtfFrV7dGHsuM273S6hW8QibsKJxmI+WA08meoOcca0mEp5M
+         SkdlNzyxdHPGo+G5DOKX5XR8IToWKKv3hsRAj+meap9+1v7Fg5N/8qgZn+oRj1BtJPjm
+         8P4FuMKOIydSopFvpnhIQ/9Op2VXb2hS48kSa9kko9Oai3GCDh7eLgqC3rE84Fsrepjx
+         UtqesVD7zpu/wPv6I/Wnr+rkh5ZWM+YpECSEaOt9XAMaxBDszNG5OgexqRa1W8YrPtK4
+         gsUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdEt3pqwzQ05ozso7tXVjXmw9jzOjX5m/f0t5NMKC5pHTUc86rKZyjUkYM2oWNr9Du6VYTMCyA5g==@kvack.org
+X-Gm-Message-State: AOJu0YyFXLrMc3v3CXTfATEK1cC6pW5ubttuzkym6u56QVfQ62Dh7UMN
+	29/ZaMYJxOaaVX80TloLCGwIxtEIHjlwPjPUGUwGZ9gH6M8Hl4ULmLA1uJjNBaApHtU8MVedo5n
+	vTPE/Ej0z0g/4ybbGtvcTTjlu6dQmyvBXA+XlmbSU
+X-Gm-Gg: ASbGncv1XN2TbC4D3tTbpXMDWGVguv/bc/5b6ynWej1tGnswqj8Rf8GL1qFg1CWz3Uc
+	3DN45Bi7wk4CXngof33/C9YaFWEPXDx/APRfSl4c5GcgjRd5msJXNqCfDSIiKFcWwbgYW8rH5fB
+	Kd/UPbL8AN7B0rrEetQoZbTqighKv+WpZRe8epGpPBFQXWS4JS98OBSXXF2gEvvI0MiWwmG0rfy
+	yLdqIPQLGdOYqMK
+X-Google-Smtp-Source: AGHT+IEbRYts5Q2lruIn6/nB+O/HdMCkYF/AkmdpLyFbfgBNrhZYvvCShyGMbpT48VX2Q32imRPFKl5g6OIxfhSyNvg=
+X-Received: by 2002:a17:903:240c:b0:246:cb50:f42f with SMTP id
+ d9443c01a7336-246cb50fe74mr114988865ad.19.1756206100525; Tue, 26 Aug 2025
+ 04:01:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/memory-failure: fix
- VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
-To: Miaohe Lin <linmiaohe@huawei.com>, akpm@linux-foundation.org
-Cc: nao.horiguchi@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250826075710.278412-1-linmiaohe@huawei.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250826075710.278412-1-linmiaohe@huawei.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: L2DUERlVK56w_9JDWzGChVNs5bKCDBcXhOWrjwpmr_g_1756205911
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 599F3A0004
-X-Stat-Signature: ui5se498qkybsdzuddsfhzb331fuc1hr
+References: <20250825154505.1558444-1-elver@google.com> <97dca868-dc8a-422a-aa47-ce2bb739e640@huawei.com>
+In-Reply-To: <97dca868-dc8a-422a-aa47-ce2bb739e640@huawei.com>
+From: Marco Elver <elver@google.com>
+Date: Tue, 26 Aug 2025 13:01:03 +0200
+X-Gm-Features: Ac12FXxae71NaV6L-XhwcBeMdDL6EXr8UiNrPYGSHEYHL3QrAfVUO23SnPsEAGQ
+Message-ID: <CANpmjNMkU1gaKEa_QAb0Zc+h3P=Yviwr7j0vSuZgv8NHfDbw_A@mail.gmail.com>
+Subject: Re: [PATCH RFC] slab: support for compiler-assisted type-based slab
+ cache partitioning
+To: GONG Ruiqi <gongruiqi1@huawei.com>
+Cc: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Alexander Potapenko <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, David Hildenbrand <david@redhat.com>, 
+	David Rientjes <rientjes@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Florent Revest <revest@google.com>, Harry Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>, 
+	Kees Cook <kees@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matteo Rizzo <matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, linux-hardening@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 18AD9A0004
+X-Stat-Signature: keqf3gospt1ti4mtkatj3uou9ar96nsp
 X-Rspam-User: 
-X-HE-Tag: 1756205916-260891
-X-HE-Meta: U2FsdGVkX18mUTqOfpllMcfMZmeyXpBuxEKIBT4bNd1vnzHn86UjYDGYRyQEBIxp+8f00UcmDB/9ct993YRLUMLB+ThElWuNCbWUpS8/8kAYRK2Wu/McYPMoqlXjM4YhaGbuROL+J9Eg4RN/P57XazqA5/L5BnnH2gi1ZGjq/3ZHya1vJmpAjOEjJovOYDFLlbEPL66Rb+sw4JaVHY9pl5zAE4J/kr8mhe4GujMsOphxvHATohWbiOg2qF5XnzUrcb6PO1h5Y49S+a43/radzBwfOPYajFq4ZAiqKGz8YZG4zhT4nuhrhepsQsPPYzSLp71N5UX1PLxCro0QmxfKxOcBFmSwvUDofgYFobEsLIDYkOm4jSW0LiwgNjlAmLaxawsTJQqae0ditRrIzrgVOYizTE4Xn8o/93oJ+IRtr7Ut2Vzq6A6gUTqT3cGSxEmmeABfHQW+UHOqS+imO9AQcwBwu+g6WgKjGl7fEC0VlcMfdp3JD69mp+xF5iTJSo1IQzR6NJzzklh1AMGAIvlI2QwgWWELxnx+eiozrInUHbmoEaeErjEGV/uArOyjLo1KfI8xfa5VgIIte1xW6xTtAV9VJNIt4muxPouCMCZq4qmsx2JmixTf0yvtFoDS8h0txf/3u7Y2l3niXJIlLmtiY6T7ceAkad/isGvIVOMi2FCNPvkRiMxoUllHYk1mbXRhKNXfjRjMdaErLs3a7ZWZjQZuaT3k5brT7qX2nnRpA6oTX90xVjskJpPE8+tS44rU35YSx0i7XSL7yh9hG6KI5qKGO1YQwNWqoE7+0Ruedm9tYJopxiDu+D3DZyooXdFFvT5a6N2VN2LUzwImkVw0eh3O1poDU41GFt7IU7VMA//Nxc6zw0Uy9xWuf85+ZZX9RTT+ci+zcio6aQc5fA2QTiAPCPUeuws5GTH6O+JwuF7iWZ6U6203zgybKJDt8WK80cKkF7Gvaf86sg7mgD/
- 49u8f+es
- PKocdf9T6cphNhusB7hl3g9HKyDHWGD4gAfyOo6bvsHJx+TsYAY1NdQFIN2aXSPxjNZjQKucm2HShHzSOCmRcD8TuNsIUpW8+nLU8hsOPi3vvrbCjw5YxcA1+5o+Gmx/LsxcC31re0qUGkFYHbPdCmZBaZsMWxXyOpogsFb5Qu+fLo+OS6HM80GgVSc9uwG1lvmbBITGnrZfR298t2tsmSkrIa//0Gv+xjdI3GsFRtdqiUgse4aIROn8Vl4rRU3Fnvky+i7YWpy2s1d7BMGzZiwOJ+sp59vf+7AfHMKPeHV9Li8yIqNVYAoAHmCCvNSir9v+qjsUFPpxPdoPwioUVvPnEizIARQfo67/TPTvaSA+9+2U53voHZum78e2I+4W/ivxrzXyOEEh3YRSSQ/CDXs4Nk4B4+TyLhljWCYaCTo2xbbrMzkW+cqWHYnIFermFFoJH6DTLdmpnx8lUbzbOQOffBN8tWGyrIgo1oODmtD2GB9xbarIFJrDw47TSkDuVZdYlJ2k3s/JPk0Ad/Bkpi0XREuY3gCHtpw4oFNvMcHng90RmJK3YxqsIlqNqDUr8Z3ij+fDaaFLJG83vu2Qt4UQhxw7aFUQABnMT2ueZmEsqNqXxnkbvjal4al7aoGFvjVny4YZOWW3B8LkZptB+AmsFTh/Qdf0/4k0V
+X-HE-Tag: 1756206101-376293
+X-HE-Meta: U2FsdGVkX1+ZcRQCnlESboTaUoxME5AUZYcOrT8XEBT5At174ixA/Fm41dfu7/Dmpd7dr1BTtyADylV1987rCfK39AHWpgPaMoJh5aLz4lOivR6EhoVE86R8L/nk+cM5diuRbz1Nph9H9qYLaoNoNFBoZG3crfublJMEETrMA/L8lz/+zO0pQebo+F2ZC6Qbm8A2uGPKwFroCrMYisNw3j5JjJxBipVz6T/7KpHOra0oggVZGPDL6cl+LEp94KKbo33iJIjfzKYk3l1fdEy96t2ZYKGqNM9HBCeEUQMSJM6322bE7jB3NEXKEDnp4KPbmXbvRoXCD3peNWetSWKMdnt5tZAm/YqWNqUf76CelWQX/jXLO8kf/6R5K5SNvPcNH37LlP8ZuPytptk69BmzMzMFKFzclun0A0UI0tsOq99dn/A5JtZFB91g0/cj/iQBGGeFsPhXKGpQ+6fM+gZjJ78IiQr1J8VH573qHiGJjLqkHM/Delr2dNgsWC01NE36rxWAGI1CnQdxL+wU/5px4xzO8iIS6+bTe6xpMzorWN2rL5RddZMvdodNEksaxRsZp/xVYqZlXFRjKkBNpm+9ukxDAe1r2P7EunAKVHhER8YSg8MPKB8ceF7+RAHjLrNIg/sjovUdGQxLZY9fNWCuciD9/YWTaTC0ht9jfxvQzjzRRvnBJ6t8VZd6FNnZFxPjjNMBArGRWLDIm/QgVVTIMwcyyGjl5AYJuZP6d7oE8nCGEntS+OrXZI4LQtMvj+h7ESMucLwFTHjmpIScJFqyWWkELHFSmAfEajjjdb8bNvacIioUBCBs/4FCkMpGfo2DgShg3am4SEsP1znLUqLMgUWHMKMPcxOtnzObLiAWF1WeEk4EuY+ksgEkKku5zBJGnlMOujWieTP+OxKly2evONeptnAvt05yO1AaApOhbtK1yxx7/QLPeuHXsYa2fY5a20IbWmWaPWVfk+EZLlR
+ d3OqH6/7
+ pHjWRjjDsF+RHvOEOMHhcdKLZmdw8fB3WYBNS1wJ599Zr59gxu/QwqqOgi56fBy7ud6hLOY8D/XQ6slNCgWxSAxNFgb5EYdEbtuO+uek9QWXexgatNjpJG+LMsbrMrOUMtPPe9N2WDZkDFYlRmZYXAt83WRudwQYXzm2tjxUypK15mivkDNatK76kRB2E+YgZAIvA9Zby8eBDr602ZjXPzD9OaenfHeT8un/T
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,130 +123,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26.08.25 09:57, Miaohe Lin wrote:
-> When I did memory failure tests, below panic occurs:
-> 
-> page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
-> kernel BUG at include/linux/page-flags.h:616!
-> Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-> CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
-> RIP: 0010:unpoison_memory+0x2f3/0x590
-> RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-> RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-> RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-> RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-> R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-> R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-> FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-> Call Trace:
->   <TASK>
->   unpoison_memory+0x2f3/0x590
->   simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
->   debugfs_attr_write+0x42/0x60
->   full_proxy_write+0x5b/0x80
->   vfs_write+0xd5/0x540
->   ksys_write+0x64/0xe0
->   do_syscall_64+0xb9/0x1d0
->   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f08f0314887
-> RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-> RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
-> RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
-> RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
-> R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
->   </TASK>
-> Modules linked in: hwpoison_inject
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:unpoison_memory+0x2f3/0x590
-> RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
-> RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
-> RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
-> RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
-> R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
-> R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
-> FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
-> Kernel panic - not syncing: Fatal exception
-> Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-> ---[ end Kernel panic - not syncing: Fatal exception ]---
-> 
-> The root cause is that unpoison_memory() tries to check the PG_HWPoison
-> flags of an uninitialized page. So VM_BUG_ON_PAGE(PagePoisoned(page)) is
-> triggered. This can be reproduced by below steps:
-> 1.Offline memory block:
->   echo offline > /sys/devices/system/memory/memory12/state
-> 2.Get offlined memory pfn:
->   page-types -b n -rlN
-> 3.Write pfn to unpoison-pfn
->   echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
-> 
-> This scene can be identified by pfn_to_online_page() returning NULL.
-> And ZONE_DEVICE pages are never expected, so we can simply fail if
-> pfn_to_online_page() == NULL to fix the bug.
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+On Tue, 26 Aug 2025 at 06:59, GONG Ruiqi <gongruiqi1@huawei.com> wrote:
+> On 8/25/2025 11:44 PM, Marco Elver wrote:
+> > ...
+> >
+> > Introduce a new mode, TYPED_KMALLOC_CACHES, which leverages Clang's
+> > "allocation tokens" via __builtin_alloc_token_infer [1].
+> >
+> > This mechanism allows the compiler to pass a token ID derived from the
+> > allocation's type to the allocator. The compiler performs best-effort
+> > type inference, and recognizes idioms such as kmalloc(sizeof(T), ...).
+> > Unlike RANDOM_KMALLOC_CACHES, this mode deterministically assigns a slab
+> > cache to an allocation of type T, regardless of allocation site.
+> >
+> > Clang's default token ID calculation is described as [1]:
+> >
+> >    TypeHashPointerSplit: This mode assigns a token ID based on the hash
+> >    of the allocated type's name, where the top half ID-space is reserved
+> >    for types that contain pointers and the bottom half for types that do
+> >    not contain pointers.
+>
+> Is a type's token id always the same across different builds? Or somehow
+> predictable? If so, the attacker could probably find out all types that
+> end up with the same id, and use some of them to exploit the buggy one.
 
-Similar to
+Yes, it's meant to be deterministic and predictable. I guess this is
+the same question regarding randomness, for which it's unclear if it
+strengthens or weakens the mitigation. As I wrote elsewhere:
 
-commit 96c804a6ae8c59a9092b3d5dd581198472063184
-Author: David Hildenbrand <david@redhat.com>
-Date:   Fri Oct 18 20:19:23 2019 -0700
+> Irrespective of the top/bottom split, one of the key properties to
+> retain is that allocations of type T are predictably assigned a slab
+> cache. This means that even if a pointer-containing object of type T
+> is vulnerable, yet the pointer within T is useless for exploitation,
+> the difficulty of getting to a sensitive object S is still increased
+> by the fact that S is unlikely to be co-located. If we were to
+> introduce more randomness, we increase the probability that S will be
+> co-located with T, which is counter-intuitive to me.
 
-     mm/memory-failure.c: don't access uninitialized memmaps in memory_failure()
-     
-     We should check for pfn_to_online_page() to not access uninitialized
-     memmaps.  Reshuffle the code so we don't have to duplicate the error
-     message.
-     
-     Link: http://lkml.kernel.org/r/20191009142435.3975-3-david@redhat.com
-     Signed-off-by: David Hildenbrand <david@redhat.com>
-     Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")      [visible after d0dc12e86b319]
-     Acked-by: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-     Cc: Michal Hocko <mhocko@kernel.org>
-     Cc: <stable@vger.kernel.org>    [4.13+]
-     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-     Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+I think we can reason either way, and I grant you this is rather ambiguous.
 
-We should likely just use the exact same Fixes:
-
-Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")      [visible after d0dc12e86b319]
-
-
-Not sure about CCing stable. This is a pure debugging feature (depends on DEBUG_KERNEL),
-and someone really has to trigger it manually to provoke this. So I would not CC stable.
-
-> ---
-> v2:
->    Use pfn_to_online_page per David. Thanks.
-> v3:
->    Simply fail if pfn_to_online_page() == NULL per David. Thanks.
-> ---
->   mm/memory-failure.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index c15ffee7d32b..212620308028 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2572,7 +2572,9 @@ int unpoison_memory(unsigned long pfn)
->   	if (!pfn_valid(pfn))
->   		return -ENXIO;
->   
-> -	p = pfn_to_page(pfn);
-> +	p = pfn_to_online_page(pfn);
-> +	if (!p)
-> +		return -EIO;
-
-I think we can just drop the pfn_valid() check now. pfn_to_online_page() implies a pfn_valid() check.
-
--- 
-Cheers
-
-David / dhildenb
-
+But the definitive point that was made to me from various security
+researchers that inspired this technique is that the most useful thing
+we can do is separate pointer-containing objects from
+non-pointer-containing objects (in absence of slab per type, which is
+likely too costly in the common case).
 
