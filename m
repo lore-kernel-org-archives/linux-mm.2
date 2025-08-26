@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED33CA0FF0
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 23:16:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 978A6CA0FF0
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 23:16:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEDCC8E010C; Tue, 26 Aug 2025 19:16:40 -0400 (EDT)
+	id 75C158E010D; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D99728E0105; Tue, 26 Aug 2025 19:16:40 -0400 (EDT)
+	id 70AAF8E0105; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD5FE8E010C; Tue, 26 Aug 2025 19:16:40 -0400 (EDT)
+	id 5D3BE8E010D; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD11E8E0105
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:16:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C34F1A0378
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4708C8E0105
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:16:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 931C61A0375
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:16:42 +0000 (UTC)
+X-FDA: 83820470244.05.6C5E377
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A1940180011
 	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:16:40 +0000 (UTC)
-X-FDA: 83820470160.06.1B221AF
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3BC9680004
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:16:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=DG1yVBHI;
-	spf=pass (imf30.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=RHHAs0SD;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf06.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756250198;
+	s=arc-20220608; t=1756250200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=aK14C8WHtwfr9yBqD7cQYdKpQBzE143ZMlJ2OollMC0=;
-	b=RHIn08+fK2zZNh+tReTdB0GbPtyOYNRmHNGu9N5GWYv0DxFE96WucUr8K+V3pjaT9z7IYu
-	YRf7AZRPBhVWbpU63BwbhhHy8epyuyn5RfQMRPqFXfoCF4imI9Gez2/NPHk5my/ZB7elKi
-	j9CWJSw6hg3aCdV1A6fMDAP+Yp8P6wk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qetrqf3MczqPduYKizayxhW6O6ZOA8BdxBOfHLUC1/Q=;
+	b=FA0gD6nYfTN9Dvx1yq2DttcQHFQ1kEiqqjSeM3smwaLcBj6L1If0lSkFhVkkpyAKw5EtXZ
+	0EVz0Rvx9ksK6vDF2Sska/m3sn/nrBodiJMyRM/5hGb05evdjTdNmUqaRAUrejlWgjlOMQ
+	/giyAWlT5CxRHEWwJZINFUItE24CgiY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=DG1yVBHI;
-	spf=pass (imf30.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756250198; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=RHHAs0SD;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf06.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756250200; a=rsa-sha256;
 	cv=none;
-	b=wVCKgCpcK8606RBviI87fOI+8Iv6WGcV+iw2iugQ4xn/RK769g4W21YrX3prRAdnUE7fc+
-	3J8yKIv1JXupGiGfFdYd5RoxmCB45V57aFotgJGEqjOpRZf2Tqj6Ks/6ZeprahBoaSehrs
-	9XDe/nKSPjDGXeshcpcDEaJYJA31ds0=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afebb6d3f2bso65905666b.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 16:16:37 -0700 (PDT)
+	b=4tIlRBFFGBretAkPdJqDeUsJU7kXo01eBTOa8pHX0cSEMyykbh72mAJ5Nr1osQvFFfFDNg
+	41i4Ru+EdSMhwQ5/+QbFaqBSe6LN36SaqT6eHBtSK8uZHSJYCyC1WKm3ua6yq+zaGChVAH
+	ZuaiA+hivpdNIZNV+aYB/VHAcFCe7x4=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb73394b4so882998966b.0
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 16:16:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756250197; x=1756854997; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aK14C8WHtwfr9yBqD7cQYdKpQBzE143ZMlJ2OollMC0=;
-        b=DG1yVBHIzJYJAYRA8VLqvK8vuQmKE3AXRk8NzqHUQ1cqL85/XaTbSoxJpbpwvrBylg
-         zxV/iGAFXyJYK6EAFd8j+RJERMe/W0BxQ1UY68Z5FX7rb+4JR5kyKZmuLs0Vtap5AmDE
-         AZTX0rS5JeGD3ZqI4SunH5B3HnF9vnfN7ZMD5mvMd0SgoT7RS/UQt+ap1Q0DRE/LfXRx
-         //b3zDecBbV1Xs3Ai7BsfCvNzRECmZSEX2RrfcGBviyrKN1t/g+hITlDOCdu6ZO4pPvB
-         tm+F0WnVsfCBoL4jCiTOEFZcgxRJLDAbCcVSG/PT4xoHvrXgVWAChli+adfbGDKK2mSL
-         rC2A==
+        d=ionos.com; s=google; t=1756250199; x=1756854999; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qetrqf3MczqPduYKizayxhW6O6ZOA8BdxBOfHLUC1/Q=;
+        b=RHHAs0SD7yJOgsiPlX9x8IHGXoDO71rXML6hdSkHg00cIDQFu+Z9lExYwT+qvqovPL
+         FB4kDXxP0ZVdcEhsACA4z3n2pyVE9JPW/dWCTLBmWdt8MfVr2LERD4IPV9qwy4n7R6Rw
+         jYnfTe67lrfjZ2Jd3apXcfP7DNp6kuGHkz8dFUFy1jdB0PXsfGKnRXtwgaiBzxOiijv1
+         iF9q6BZaOaQWvm1TxQ+H2wqC6b74VEzeAxaQv/Fql0gmgQLdtGGVWMvlxqDo/hk1L1D0
+         Lgb+bXslgz9J3kadIVx3dhX2k+afNAEARI0IIUur89oBQqJRoqDldLF+oFJRREsPAW/W
+         ha8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756250197; x=1756854997;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aK14C8WHtwfr9yBqD7cQYdKpQBzE143ZMlJ2OollMC0=;
-        b=Nag9t8YoyD4u37l0MiVrsFzxEms4+fDzFGeqkkJ+loKV4gTZn5C3eexmzslcH2wMUL
-         jS+eR2m1muskW2smRbzzOy1VID3esDMkjUplJMHSpfv1HmtrzYQotfWMBroIGQO11Lie
-         1wl8Q3y8joDtyCey2/WY2+zJpTv2FTZUp9An8TgSGwQmcAAeUDPj4JYHdlpEImYEaEKJ
-         KfOeQ8ZqAA1ef77HKhsMHGER9eHd34XJjKrmgV3mi1LCK/RJnOO3cmJ5wKtRY8uPqY7f
-         iRp318u6dWccH64XpruMmEWBXIRJhnaewstKPwBclWEKoL6Mpf1wZjpkSwkS/RMXA+/a
-         /sfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIHE3NfZyB/vKxK1UJ2mdUJ0kwtpjquBKhVfEBQ6XWJ2PWOJ/VNcxA8GfMsKoi/u6wwWtiH7011Q==@kvack.org
-X-Gm-Message-State: AOJu0YwE1IohofogRLKeEer7gi/bKd20uzMWJhj2FTqeQE1ilzrM7UaH
-	rcRNKWuP5UEMiduBIvOz03B8qKAUEcvypSM3zvY7xeguguKh3xY8Nd7DhR21gCSkPpc=
-X-Gm-Gg: ASbGncslkHjCbd29cTjwNd89lc0Nr70hmdkNoa+ApF5e/BayGkqugGlEbZTE04GCz1A
-	g375zcY8dnrn25xYhih1+5MH0AmwVh5A57ci45FiMZIzrBtafI36tTKoS9pMciBW34+O4onztq0
-	+uYQTTT3gVNqLoUYHyUiJKHKpMuoOpJaetjSA6GJVeF/nrz3gxwoX8JDCPSWISMDWmKO5LVsc2v
-	9mU/g+MHY+qmNtmp33074P3icvS6WrMKd9UGmDfyjLV+bs0AJ1goJ+kbNewIQz+BSRNqJBZ8g36
-	Osg2N3PxiKH9+xCuLnKpLjn2GK8fzzFeZ1fPjZtb6huYaXmX+fmGEmPVwmEMf9EX/iVOPQQ1yOw
-	9ed0zFLovssXpaZHa4UW0XIfyOP/RPk8WP6OGl5zgkVJYUihIXhuv+2tL92bZ9cjxSYB9mbK/Gk
-	e3bvnjbNe+IjHJKCHOr0G0Ew==
-X-Google-Smtp-Source: AGHT+IFiG6h5lI6W9GmtX6eyyZFaeAkkYu/4EvN9xMb66KhJPYTSBOh+0PHK7R6lz+1qTP8H7JPHOA==
-X-Received: by 2002:a17:906:d511:b0:afe:8d25:770f with SMTP id a640c23a62f3a-afe8d25818bmr502309566b.3.1756250196702;
-        Tue, 26 Aug 2025 16:16:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756250199; x=1756854999;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qetrqf3MczqPduYKizayxhW6O6ZOA8BdxBOfHLUC1/Q=;
+        b=vc3BGWNSHvclWDxY31X2dl0MYWWM5szLiH4Gjp0amIucTRk7NoDtM6dEY7uLoZmv4p
+         avBvfQ/3gfRSIQYEPnH95dzvW15+CKBDfl5i9X3axbIbY4LgPEYzvLMKB9VexhfqpXIG
+         j8VuUSeuK2xu7uB5yVUVNIu5qo5bOc8qzV7zQKSNb9sFF6OkrNdn0wNL4xzeRtTQvO+g
+         +tffJdrArWmVgFy4snMxNVkK5LYtLaZGGLJbYJMyO6wAHWvAD45jJ0CksqcV8KP4ee7P
+         1PHmEZpY1O7XpSe3wbSg+kMGAJZpeyCD8Ep3/JRhoqwx/wLYAVMj+B1baFER7/7xIUPs
+         xYRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwiHadPTJdH2KGHIo2Vdma3YHhH6MzA3qbxDXQhC8KSEQCHC65HkJhHW+4Wyo1aPSDmEqwWR0RFA==@kvack.org
+X-Gm-Message-State: AOJu0Yx2lRczK0NfjT9fdcKnW48o+L7pXOfifncQmQeEKzmPEcYmJ6dY
+	Gr05v6BduwRUzvEARSZCo/2IPC7j+ovvY7+Qv+LbymRrnzuyDNAg/w9dhm5d9PMO8X4=
+X-Gm-Gg: ASbGncuvTwBcoKbMp/QwH21wTCrpQED9hDfunVWWmS9t92fK8KIaQ0eKceFsnQSdar/
+	6+zGiEQy8Q5PgWu6bIiQ06bpS4HlcNDKofv6iAsLIO9DMRVQvuw6DI78ypMEihBxvRWQE1xXHNa
+	b3WJ84fOaeqNkng0edeoewQAYq4p1ZYjKmOpztCk9MJxZhuRbjuYxWuWObu1arCkaK5pRt/Si9Q
+	snpdSEFRRsFUpnu/5/SH6Nrjnds7flbCDa2oPqMNbuGpvf72DN99/wB0ZurCkJQ7JhJp6Ym9VSp
+	3jpP+TM+FuY1zMRQv4cPJYXarHz7/JOJYxco1olPCnQkuBqUGSY1W9B4vJGChe5PrmM8I3VLXPJ
+	gGVXTeUSXhhf4iv6tYbYacG826+GVpF+a2E6vc5RtorYm6yp/4pZY5jp7yzsdc6EhtEjPjUCbNF
+	glIdk8qYFyZMwSS1TQpm+XsgR7LmOfFFt7
+X-Google-Smtp-Source: AGHT+IE74yfqVMKiPyh0C08W2ABt3qXIpU354P0qAPryu5ETmoDrG7LlzRcdx7ZJnXUVlOl7635fBw==
+X-Received: by 2002:a17:907:7e9c:b0:af9:8c1f:b290 with SMTP id a640c23a62f3a-afe28f6a866mr1381335366b.29.1756250199096;
+        Tue, 26 Aug 2025 16:16:39 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afec3251fdesm23170666b.77.2025.08.26.16.16.35
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afec3251fdesm23170666b.77.2025.08.26.16.16.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 16:16:36 -0700 (PDT)
+        Tue, 26 Aug 2025 16:16:38 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -109,20 +110,22 @@ To: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
 Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH 1/2] huge_mm.h: is_huge_zero_folio(NULL) should return false
-Date: Wed, 27 Aug 2025 01:16:24 +0200
-Message-ID: <20250826231626.218675-1-max.kellermann@ionos.com>
+Subject: [PATCH 2/2] mm/swap: add BUG_ON(folio==NULL) to folios_put_refs()
+Date: Wed, 27 Aug 2025 01:16:25 +0200
+Message-ID: <20250826231626.218675-2-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250826231626.218675-1-max.kellermann@ionos.com>
+References: <20250826231626.218675-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bw4ofbx3co1b4sbp4geiit68dzkmqxup
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A1940180011
+X-Stat-Signature: 19dg53mto77d3swwo5k1xnsfk4ht4egr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3BC9680004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756250198-839332
-X-HE-Meta: U2FsdGVkX18+Rif2+Jaqn/fzhQBRXk6lMSyURvQHR/FXYlgwrw3XN6TVvIq1UGn04T9hyFXGEpZowjKs5mBX0BXPdv6sNfq9qDyZOjU83N7m2FNpDT+ZKaa7188LduEDDfhjzq3WmJms6XxffYy+Igifn0awkToebZUyYvDyV9DY9Il8SwPpF8MW8XNNCJYp7c0iQq0XOYfbV3hQzl5UgHP8Ryn42NabYcY7xs9aH4hZObvl+RGrslYqN0JLJVxKM6OF8W2E9peZtmZ41gSrjJ5bh3NNV6vhWjlieZIg2IKxsEoHVw7VX5PGqWdmUQ9eMWkTL8sxp70KI95aYgWjYk5A2NSbzdICMuc2ICtwM4RDVNjhYTTs0W/eqleSoWRkn4/GEJCLB8GU8pxA8T8Py9Gq5TqUlyNtIMGVM5atgi16Y0v5Rsm+oE8c8vHYNJ0lR6039+GKK6NX5OVyZSpIWZPeOTzWZQmbUBRWXEvFP0U7/PXlAj4COldVbzFH3c84lutJEkp3IGNusvQynO3sSU7WNlCRTBS10Zmqb6eVzHpPxxYWEaOzCQnt0Q0r/LxvnnG9GQmRamv8gVwYNUo7tmR2sDiDjpcvqu8R+t4RX7YwWArdwer81G3cypfhaZGHmJiJqnEocqV/GfO4FErQk+sznoP+JXNNQ00nqTXDuXIz6Vsje3rFov4/2T7A4JtUajuVpbNqCO9ViLbuCsWti687PQYaL7W7afU+fRR6N4p0xRAE1bZUzmS/l+44g48S0RGDzdB5feFAF7WTbS65d65HToekiEaM2aX1XUL+30U2ooa/I7X4yPI6gNjXj12U9/k9pCN9YQwHrREyZ6Kll92iQN2jZInD6wB2pQ3JUWiLjngXuuLi1GBRSeTatCYQZwEco+YJNVzBAImc/vcG8ENiY4zzOXTSPboWc/mzlcediZgmhH4+2ZS3tfCOUc/nMmuszFqbQCytS1moHSJ
- RLjVpyvx
- j476z+ub2bcJyeEIIbim9S58KraIoPH5vjJiINYIz5RcLY5lWaRObpCbwjlITkyVo2m+XJXe/UMPaKHlUMSUI1PWh91Gh1QAkwlVUyfm55aPuXnNp+gCULnDowMbRnQ8w3Wx7q7zDruTisRGdbVELnEYRwDXGW9X0HRso9wezIe0YY312g5VVM0JROT0pUAD6weggQOZtz27l/QSQhxr6aDRhE9sOjPj9jvRSE2lc2k+yVCXjd9fo2oyugUIKR3AQ/qd2WrVBNEarxuEOOsBtWTSBqGvyGxKSzbDDewyBfayCvP6ljBQWVZbt5yTpCICKoQT+azBAu0BRbf9wce/J83j8F8OKEFphz8TSepCc8j5+gVgzfQIhYnSFc8eXDEHc/z50
+X-HE-Tag: 1756250200-581870
+X-HE-Meta: U2FsdGVkX1/3rVvbY6kCbtoe9enEKPtlqG0ktnvSDwN6j0b2DyHuz30YMTFqdM1ClhSXdxuDV6UC5FWzsGTJmrf2oWF9TZIn6Lmu1uL6JqkmpYVAsb+NGHYNwTvPMzEaSPNFKHD0PAqlz968l4WSGTSCoVZMPgXteL765pjwUwC+AuvYEdajVhouoU0ppyRjre9njmKF53W6d73xMKLz4LkfEPV5h7NE2eVsV15Ou8DVJ/2KGb96AMqct8ZwZkVTYlYA6fwm2yn9QC9ZCijL//JOLC9LuO7l5ydSe+kbEWMjw6zU7Y8xyfs8GjMZzuuu5rDFW5Pmy5ies0DAUTO+Np35MR5Z0q4NbtAsBZT5GskCOFUFawjkcMYZDKdRjF9u7tNA4oQksHfdaa5dSQSiquBAr4aex6mM44rmBbTwcRHJ/qPf/FrZhaG34fTJNFbGV2/7+49NxvNGR+ubAA3njaZWSxQfU1rrnoolj690uKPgYxCy8H6RLhu9otnlTCaqzkqTw8bKiKAawDDbjZYCkeE4kM3fTAFhrP76VtYraEmIQ2tp2t3InzmiESJCuZclIWBsb0yUxqhNnSUmkAPV8zwBbKa5YB5H+c4cy6MTdxeH9gqRCi2SaCb38ueXxY5n7mIkzFNdpy0wkAaBP7p05QBv4d3p4O9ueYGeONFSjcdQRUgsCtpsY4lW2/q8kE2o0fmR86GXTjlb4j6nw9zKdu2QvBkGwS+v0I0kAGUKVXE5TAHhiRP/1h5fa9P1aZIAVkgkSmaEY5j+AkR9+WSuaIxeXo5y5WKUdz3a/C9uvfP5z7IUpEyqW0t8C4Rq4SLvzcime5YYPyE4VuLt5O42CwjTmCd6PcjcqEPYuVDk9z/X1KgmFG57SjY7JLiB7bAEehBfHYgf+PgeIhUDyiHuCsQpUzpR8Y9Lr4svZe9pS3rj/GNb+TcONSGUK7hPd/w98Cb9VJEld6Nym60uD23
+ yafCW3Rq
+ MGfBN45e+iyyKP7Dxb3lZ1M9qqJnqQxcEgyyZ+z7TvC+UYdBmcWk5GoywEiB4yhPF2zpa4WNRUuvZbRYrao5/ikZ2h5KfA9goieswJGKpTWji+YTtmpqCzRHu4SNibIDFHIY98DTCASUZoL/hTHbOt8cfUYw4LFjQo5eIgSW8YSKBL4DK1dFFQS/QYdKmMkBntB5YU5jlkHv8Iwq/fQqt1WyQzrFbiRlcBVwOsZNmkuKKxSPx+NlQTJ6a+QhgMSE8wadiMpoygDpObuqixuUDy6mj0mNfSn+IrXztrwR7pLbnzt1x//yc816PkZiH2BdyUQ0RlkUlSUsrGzKcp9t3EAKmVgTuu9ML+QXRYEon+Pvdd2TFRY2fVCAhrZep6rtCBwhuSTrVpD3LlIHcqUhSzsJO0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,50 +134,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Calling is_huge_zero_folio(NULL) should not be legal - it makes no
-sense, and a different (theoretical) implementation may dereference
-the pointer.  But currently, lacking any explicit documentation, this
-call is legal.
+It is not legal to have NULL pointers in a folio_batch.
 
-But if somebody really passes NULL, the function should not return
-true - this isn't the huge zero folio after all!  However, if the
-`huge_zero_folio` hasn't been allocated yet, it's NULL, and
-is_huge_zero_folio(NULL) just happens to return true, which is a lie.
+However, the Ceph code does exactly this, and a refactoring patch gone
+wrong has exposed this to folios_put_refs(), see
+https://lore.kernel.org/ceph-devel/aK4v548CId5GIKG1@swift.blarg.de/
 
-I believe this is a negligible corner case and I don't want to add any
-overhead for this; but in debugging kernels, it may be helpful to add
-this check, therefore I put it inside an `#ifdef CONFIG_DEBUG_VM`.
-
-This weird side effect prevented me from reproducing a kernel crash
-that occurred when the elements of a folio_batch were NULL - since
-folios_put_refs() skips huge zero folios, this sometimes causes a
-crash, but sometimes does not.  For debugging, it is better to reveal
-such bugs reliably and not hide them behind random preconditions like
-"has the huge zero folio already been created?"
+I believe this should Oops instead of crashing due to NULL pointer
+reference (guarded by is_huge_zero_folio(), which may silently hide
+the bug).
 
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- include/linux/huge_mm.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/swap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 7748489fde1b..e4c617c0b445 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -479,7 +479,12 @@ extern unsigned long huge_zero_pfn;
+diff --git a/mm/swap.c b/mm/swap.c
+index 3632dd061beb..07ccda00e7ee 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -952,6 +952,7 @@ void folios_put_refs(struct folio_batch *folios, unsigned int *refs)
+ 	for (i = 0, j = 0; i < folios->nr; i++) {
+ 		struct folio *folio = folios->folios[i];
+ 		unsigned int nr_refs = refs ? refs[i] : 1;
++		BUG_ON(folio == NULL);
  
- static inline bool is_huge_zero_folio(const struct folio *folio)
- {
--	return READ_ONCE(huge_zero_folio) == folio;
-+	const struct folio *hzf = READ_ONCE(huge_zero_folio);
-+#ifdef CONFIG_DEBUG_VM
-+	if (hzf == NULL)
-+		return false;
-+#endif
-+	return hzf == folio;
- }
- 
- static inline bool is_huge_zero_pfn(unsigned long pfn)
+ 		if (is_huge_zero_folio(folio))
+ 			continue;
 -- 
 2.47.2
 
