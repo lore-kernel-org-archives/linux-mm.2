@@ -4,109 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 462FCCA0FE9
-	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 07:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A68CA0FE9
+	for <linux-mm@archiver.kernel.org>; Tue, 26 Aug 2025 07:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3534C8E00B7; Tue, 26 Aug 2025 03:37:02 -0400 (EDT)
+	id 4BF168E00B8; Tue, 26 Aug 2025 03:42:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3034B8E00A8; Tue, 26 Aug 2025 03:37:02 -0400 (EDT)
+	id 496E58E00A8; Tue, 26 Aug 2025 03:42:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A44B8E00B7; Tue, 26 Aug 2025 03:37:02 -0400 (EDT)
+	id 385788E00B8; Tue, 26 Aug 2025 03:42:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEFBA8E00A8
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:37:01 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 97BDA139923
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:37:01 +0000 (UTC)
-X-FDA: 83818102242.20.27130A4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4995B10000B
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:36:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BwxPwsCu;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 26D378E00A8
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 03:42:40 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9950814065C
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:42:39 +0000 (UTC)
+X-FDA: 83818116438.24.5F45B4D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 46ABE180012
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 07:42:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="iM/ajq/g";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756193819;
+	s=arc-20220608; t=1756194157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/DqKcew5Rz/o9MXbzchAR4oz9Jo4JF0aUKr1yU928n0=;
-	b=HSth43cIlsdKUITyvyVYqfTDOa7kb21gx1PLN3h8ejZpTBiHSNyGACR0vfOE+W51Cx0lbN
-	PV3TcrFZ7iLfT5O64YAP0BYleacyLWpHJsrJd0IFPeiKka4qIW6pXfPnoMKyLsxsuo3Q/c
-	DIvWory9S+csXfpqwgLbCb1xvkhyOnM=
+	bh=Z7i9YDbg96XPkSuor69lux2weqUhbZRVG7R4LIN4byE=;
+	b=LJ7QcFZgIqRlzRvidoxceOFbzi7ywusgYuWeRzHgFBPFKt8sc0JOkoMxnYdc1styvCkfjN
+	wbBju3gAcKqTngXsIV0OW6VbFibQX59VNvC2+uHuh0MWUPr4xcO22PmEgG/so8KdAQsha+
+	bhWYTd3fTYlFgdlLWhEYph/V0RaR36g=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BwxPwsCu;
-	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756193819; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="iM/ajq/g";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756194157; a=rsa-sha256;
 	cv=none;
-	b=Uqxz/VEkXVCf6z2+6Uz7eywS+mkggQy0uBgLb1eWaIK0eQzWzUomQqdFgN7YSP1CAWuHfq
-	IfIuOL7wgE8eJQ/DaeTUdQuj0QiJDk2wflOuep9YzYsMqhctLLyMwingM03GUtqhZujA4b
-	w7Qe0NFOEKLfeDuokw6cNvxn5wndVsE=
+	b=u7MXVxyeDnbJTMOBEa8nmRAeO7u1Pm4PnnJVeQkbTrXdn/IjyGT706Ndjy2PSmoew6uaB6
+	SddOqJv/sSRTGb4M1UXQjKlrKX+9aaNPVssrZLSy6oIFo1Jxd0TOqGxgXi+HNPn7oBiwmr
+	M+h9/1XJJ9ZvpJTLgFS+0GU6rINCX8A=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756193818;
+	s=mimecast20190719; t=1756194156;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/DqKcew5Rz/o9MXbzchAR4oz9Jo4JF0aUKr1yU928n0=;
-	b=BwxPwsCuJqf6ROoCRjlkrHW9dnAsgXXzdlY7vIGS5khyhgpwVyFo8TD7v4uYeaJuuu9TjY
-	fmymruqbWD64mbPcZmBt7pnfV6q9Yh3bfxhNCfnYPbArfjRJG1MiCGbxpMDgb65wjIZnci
-	L2vmYupIWH3BZhpM0LB2xupYFXRIZ9E=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Z7i9YDbg96XPkSuor69lux2weqUhbZRVG7R4LIN4byE=;
+	b=iM/ajq/geB/t4xXQEewZwBE22hBRkeIBFyUcfbwzjUSEco+EEN+fjbeaJICBKHz43TEVpm
+	Q1yoatk1R46PVdWbPAl5Lu7zKm+3BOCP+rCO8FNb+ADBO8vFExgc9vUqm6fg/PfWOc9FWN
+	9KBqde0m3n2w2SK35qrZW9iVUDPo3uw=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-HgkA4F4eMAqi5ME-1b2S9w-1; Tue, 26 Aug 2025 03:36:55 -0400
-X-MC-Unique: HgkA4F4eMAqi5ME-1b2S9w-1
-X-Mimecast-MFC-AGG-ID: HgkA4F4eMAqi5ME-1b2S9w_1756193815
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3cbd6cd78efso56348f8f.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 00:36:55 -0700 (PDT)
+ us-mta-562-dMoj9Cf6NMi2uxowrMw3pw-1; Tue, 26 Aug 2025 03:42:34 -0400
+X-MC-Unique: dMoj9Cf6NMi2uxowrMw3pw-1
+X-Mimecast-MFC-AGG-ID: dMoj9Cf6NMi2uxowrMw3pw_1756194153
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-afe81959c3cso220965866b.2
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 00:42:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756193815; x=1756798615;
+        d=1e100.net; s=20230601; t=1756194153; x=1756798953;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/DqKcew5Rz/o9MXbzchAR4oz9Jo4JF0aUKr1yU928n0=;
-        b=GzXaMhSlNMRevxe5UtkIDfMYA796WX3e/5KVvLAXMbWwP8laW8G2S/wR4yJdWJQzjT
-         xOE4We3BQ5yWO2838Q3FovPNjk+WD+iYYOo1W2Ta/XxHqnXx1aQOU4AhqvBqEqzOYq8/
-         4cGTDKPKnsQzX6QkwVj7RamzeQQ2/xTvv4Nn6fbgtDRxuMMR2ojN6Yk1Xh/LnLllbD+S
-         78X3waYCi63vIyd7E1XpnykREy5k6rZcyI2ELNA4FCM5I7CwgrE0DK3wPZBK1WLc1V03
-         pvArnN7tgoyVsp4xCqb3jZCQTjcrcQAQXzBkU3txHUcYCCzHenlBmBsXxs3lebMNEMKO
-         vnwA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvq/0g2NR9Xbo62qqc741Oad8BSwtD1MIkDpi3F0v14M6jQVZfA18xnbhAddh+QUPuc9qqAAbXag==@kvack.org
-X-Gm-Message-State: AOJu0YwWZnqRQ5kSFAOj1GgXTznb41vJFudkSUIoBfLhG0H2r20RKrkQ
-	6+hHoxgXAwvh76G0FvKknLOwHK5NUvirJmcjg9R9PDG+9H73UQcAn3snlw5DUEznbflAiW8a2pM
-	FlcpdoAP/FJqzJzdJlPcs8Ub10FTXed4mE1Ay2rK56q4oVtki+KRY
-X-Gm-Gg: ASbGncvN+xTg5SOk9U7X+eAdG3QjpuI7DPdWCzXsAxE1Zha9i9cqzPrbTjOG+E+NYeI
-	k8cPZDjv5UKh36tq1z0rcmlGgWfq61N5uB6Js29SXntBJN7FmMdyHulfMCVCs0RNmHJoR1S+zpr
-	N5Ouxlmm3orLOfx5FOMhgQ5eKxfbCu/E7hIE9qcuxGiP+08yZzOkfJw3Haywse5UldJy/EcptyU
-	fzbG5awN2xZnK38BnF8tKsm00oouu51TR6hCHige3y8PiNM0tUutKH9TFQgnbhOm1x2PEfEl4J8
-	7ra3ml9myhaz4pRzhK6i1EZbZ3GVwkc0v5wvRBpUSYcvmgmewCYtBjnyN837hkhuETgbdA3PvA=
+        bh=Z7i9YDbg96XPkSuor69lux2weqUhbZRVG7R4LIN4byE=;
+        b=rPCFqEe7HxTPwg9+KtgP7QIGUISmWj300J269Yre4bxqr9aXBgcwq10ZJ0C6UQ+G3D
+         jWULJbM1wP5oocTcv4aXvgInhbE0MKFauMDmCiYMfIVVxfk5NTZayiN6n0/0xqcr8geP
+         JZPIvdCzNbAETWgOUJfjnOyQuor8Vv+QH76WNkbU7ippSVtvo11BVFrvS0CVISsAJ88Y
+         9dyh8v4gsE5w8m3IkuYTBhpy7Y+M4eZ0ANlEmnIENfkTnhrnPaKmGMWU+8OMvXr4RKA3
+         TLoMov02n9FobHVH0NL/5GqEhe3Wsaz0/KwrTrZqMlvJpd5jF4fPdpUTpVoFyVCpND00
+         MexA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2IvCFmItDM9VMS/olPeqm5O/3U9yvJc/TSIANYMNSCA3PspZpWwrrCJK8uGjpp7U+T1T7RNE5CQ==@kvack.org
+X-Gm-Message-State: AOJu0YzSxRF+OLyxqJJzyl4iovXaN4KiI31HBTtGiii7f4I6tI/rci96
+	ohb66Yrb72Y8TynEoqF4hqwAjpxzoW3iHQnKt2tr8RIu2TtIDmXu+5wGXe3SeqA2ttOYxW7x6jE
+	NKH2TTqDXJCZ57YdeawaSOjmKdScwp3lr3/zZO6AolFmAf/2qmQcP
+X-Gm-Gg: ASbGncsxNuvE7O+pPyuYfIWD68hVkvShGA/T+Wn9VMMHfLrleTubVGtbOYpDjjd+7Be
+	qPjuSeIXFQU4sQgA5LoFGAPNfDR85NXMTGnmuUZmANbP4c4d3q2gzht7Hk/CK4QbeLb1Vw8TKAQ
+	+ODjTDiNm9pZjbq/9rrkpmL/yZ9ymQYqO4FEGCfXKdwCkgmRKLoSHjpjNIVPsbO4dhQ6bm/fx8F
+	+aN7lJrSpANcUos9J4phksdT3UalNwrOBrzNKmqiMhlFB5rG6E+pADdGX9vzjwn4pgwt5N/KMxF
+	QlX4R2drmGiOMxCyb7OqGRoiPlyhe/OJQ1KldUbwyubC2kodH3InQ/Ne2OcqiUnZZ/g23b3CQQ=
 	=
-X-Received: by 2002:a05:6000:4211:b0:3c7:95cb:baae with SMTP id ffacd0b85a97d-3c795cbc786mr7756336f8f.36.1756193814697;
-        Tue, 26 Aug 2025 00:36:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFsBN52r2cwxKT8YU6u0g1yU35TW6zYizCEwIpjz1zfPH23ZIMqoMpz6jBaY5R0HVd+02BGDQ==
-X-Received: by 2002:a05:6000:4211:b0:3c7:95cb:baae with SMTP id ffacd0b85a97d-3c795cbc786mr7756316f8f.36.1756193814278;
-        Tue, 26 Aug 2025 00:36:54 -0700 (PDT)
+X-Received: by 2002:a17:907:3f08:b0:ae6:f163:5d75 with SMTP id a640c23a62f3a-afe28ffbfcemr1407481366b.11.1756194152782;
+        Tue, 26 Aug 2025 00:42:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFlXdN5Emxb0ONjeXO0an5VSsBo5+DtdMvl/wre4Bq+MCj3yWiGfw8uKRt2GgJjy2gdrHrI8A==
+X-Received: by 2002:a17:907:3f08:b0:ae6:f163:5d75 with SMTP id a640c23a62f3a-afe28ffbfcemr1407477966b.11.1756194152305;
+        Tue, 26 Aug 2025 00:42:32 -0700 (PDT)
 Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c70e4ba41bsm15565515f8f.10.2025.08.26.00.36.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe75109c4bsm458246966b.70.2025.08.26.00.42.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 00:36:53 -0700 (PDT)
-Message-ID: <2ff628c7-dc0b-4af9-98e2-8abf6d0708bb@redhat.com>
-Date: Tue, 26 Aug 2025 09:36:52 +0200
+        Tue, 26 Aug 2025 00:42:31 -0700 (PDT)
+Message-ID: <d8f723c4-4cb0-431d-9df2-ba4ec74c7b43@redhat.com>
+Date: Tue, 26 Aug 2025 09:42:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] memblock: fix kernel-doc for MEMBLOCK_RSRV_NOINIT
-To: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
-References: <20250826071947.1949725-1-rppt@kernel.org>
+Subject: Re: [PATCH v6 mm-new 00/10] mm, bpf: BPF based THP order selection
+To: Yafang Shao <laoar.shao@gmail.com>, akpm@linux-foundation.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com,
+ gutierrez.asier@huawei-partners.com, willy@infradead.org, ast@kernel.org,
+ daniel@iogearbox.net, andrii@kernel.org, ameryhung@gmail.com,
+ rientjes@google.com, corbet@lwn.net
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org
+References: <20250826071948.2618-1-laoar.shao@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -152,21 +158,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250826071947.1949725-1-rppt@kernel.org>
+In-Reply-To: <20250826071948.2618-1-laoar.shao@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 3g2Zxr-LIIHKdgOpIPHLMJ7Pxtv0qQZ03eVNRUJyU54_1756193815
+X-Mimecast-MFC-PROC-ID: hxAwPyAUQEz1DzGPelCuZV-IeaVeZAPr4t-IyE_8QOg_1756194153
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nut3npcuucx1we48erscm4es8bz96ssj
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 46ABE180012
+X-Stat-Signature: agmiri7f6bt8ubpszcahbpxrrs5zf9p5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4995B10000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756193819-833958
-X-HE-Meta: U2FsdGVkX19ioXe0awnRVpYNHPh9SYRiELhKY7qq/9ZjVZ7tor/txRiw+id072E66D18qLIVNo/Tvm8GHyLoweW9miZoj2YksJYoYFbnJcTTFPbrVIUXBx0zTxqJWDvTCxyHyNryQKVTIErkRNbx8C+BQw/2eu+ZJbP+RT83EDEX/EK8kSdMFfnODU1LEUajpYNLbA/YG/FPZh8F4ASCaHuLwexiTXo+TuTCzsEmRFAUHmnlDGJksx6gkf+FmliPz2G/RD0vpjZdhr77L/y6oZS64de5dE9v48AgTZfRHUY+gdLP43NPjvO2USGelT/hK76tf80VsdJScqyjcSZZztrErIWsn2fyGmc7yrKTaqW2UId6F8C9aaLDmYRKwnOGVU4Jlghy5V2DYsfBZpenCytTGYjJ+K06MH7gkdgVijv6835BQ+4j8HVG7iDcngxni8oAtt3TqqV6w0ySVVzjWHf1xWDyS/d5P/bvVmh8f2ojEbpHmymoJBMzqqtM1vXFNKL3NWBBeY9Ub1QGDxseX5JVIgmuogcnejwF8+xEGEp3f0h3gmSbdkIdvhJRJuK5lRvo5d2gCd0UqbIA4EMV3hy4r6c4nmrs1k9hhPjmT23BtHgF2MUgnAtfzJM+8PP65BzX1stHaJQUmn/gOnEoNgzQMXx4HjbVnrDsOND0HETr5dlGuErk4lCv2EiDNhiD2MlfgqTst6gI5SGUfDqpDvKMnWY/tes/uVmoPb+oZUnX9+RiE5/ijM8r0XhOpY2MCKspaZoPlpKA2QU1j9Il1FW9fKpDWWk9FX/swrgMgPQBwNEVLOstzLPFghpnRJTO7t3wn/SgyZZKcPIP2MkGnJA5uIU11JYo2EStz9I4y3qA9vKEXzCErFUQF4vy1HDWp8BRnVqPbINjqR9ZNgWCPBi2R5owMEN8VIBw2AIwat/89+r/CxuXYodclzaER8d5cv97fjfTn7FLq1jUHkx
- 8azPIcsA
- H7HwwjGaK3DFVC/KI9tLtB4XXMw/nDFTJu81fOS2aQRMB+681IXGpa5Erp9Ka+hJQxXgZJnRBQWf8lPPQLiaf0LirRIKMANm+YaGUvPUwryZAGPc7sfIveV1xKMwP4eSONphlPrsuhos+ZZy9jffr//MJoPLKY5CJpngGrJ1pzTZZJFlg3BjrAI9Zc1FyrvAfwHgNsIp89NPvsi4GN3KBrbiNZpdpyAvUzm07Jqs0uOgTaNMJ2fQfz55fXm5zVEP0t/sOH5MuN7D4t3+1hn69z5ON0vwmwdtqRhkmtjaXaNqsUxsXd8tinhPJ2f+c0kWhetkU+RuG8Qd/5AAi7FtEncRvTUSxcCIZMu+IkqLqWYpIJCKidvJlAfX/649TNF3ZrMD00rNA70I9Nv6bTs5VXi4FLjCoP8HhLgYBJng9qX/rICBcFzSsmPoXlrm8OuiZAxDr7oonD4Ez9nxT/kKy+wAZUeKDzF61kD1KFNMBEE3j5LQ=
+X-HE-Tag: 1756194157-798566
+X-HE-Meta: U2FsdGVkX1+y41pyktbdVtEf6Rkrg2uXhpUee+W82xgfMmUFhqR/0mcVAWZo1vu2qqU6eTXcoza18BhSgMs0QWgaKR2XVAtDZOULM5kscU0e02VKF4rmRVpIedMeYe98lv1hRNijoswykT7iR9JlpE6nsTo4ljwTAjh7XCC3kZ+tVZVcT4W318/ChqrNXgozpUKNRmpbeAfMwtT/s394PQNxw3oq5hVONLD2IZwemmYdNxnhhI1v8lp22XB1upgiSqrnPLXEpn6t5HIbqQ0ZdZXbwxel1tnulq2mU+gbasR/ZKcN8/qh7EUCPn1+OsN+1BU6GBBpmamRbY2/BD7MEqtCpL7pymobvCzqrPgWnlz1Qvk/d9RqOOW86TMLyT8B5Tq2+DHMD1DupfL2wODRUjhlOl+qM3gog9ECRkuuQGMLmW+ePFYfrFuTpdKlADZVAPZwgbXA0VLuz6w7VUbOHtWX45OQQdWBlfAmyHCJI6OFzGHO0+01jzIGaATFSmgQ3k85c7SqpDYaOSB97IbFF32E/ZWDbBMED/ZGVBP5ZN5WwkafbPHHNLVCW7krPx1n7uUaLYWp3b66HcE6q6HvSh7Gi773FyxtrH2bi9mus368IbFgvi06nWkLS/gPaiyqgGtZFYFBlTvx43EJWW/mdctHFlNo5BKqeUBKKPHm8pQzkVxCpQrYMrQ3eHOkmPm3eW2+wZMs+Yr5iE5AoqBjm6vgprMZA9yq3Ir3H3HjsFJ7mxD82e45I3mhqGLOocUdMdBpIEi6BICY1nxItMl1E4bVuhDbTquCfDqiT8WlMqzbYlLxXz1WnpnB6gh99JDJ/RwTqAGi28eXBSnlNWl4UDvJbob2lOs6BgBsvbtdemu5ProkYbMePlUgqwGeZhOxzwij4MHSIZWN+i36V1UA00gx93q+yTa0ggEMzpAj9qgoaU070IgVYSx0Mt7iydBA5REgAPbkNueOscMhGaj
+ NcXZHdcH
+ 8BRE53kX9HZcngXsu8GydnbO7aRy2lYQgOPiAv4NjTrGezKr3W/Y6dQJEWnE8BfxLT4tz0/tMc+/F8LEcEK1mYcbHv2vZsWDUwugQ8pdc/a3IVFDcNvUvdmV3ZPce3hzqRVkcvVqpFRopRcKCQ447umis/AsQmnVPR4FUcE8w2MEgVPxHpNdgqlHdglOK56CYzlsJBihTF65ynhjIZbWCVM9RjL6KHtP+JvxyhkvmzsAwBVrP5d/yHGMMyBA7JackQLl2Wzmr06FpZU4bQImmA6qPrIRhiQfRPq8UE4e9YgfbzK57rz/krVAeccrbUI3YNmMP6aivE12MTj0DLNTq/+vpwd/lvejPmjFfBG2ySFYLAs1SaiZ9ytFZ+Vt7pe6/acdAyS7IXdfpppHq2+WjrYThNP56b09OSxM0b0JksGRtOncxLYZ9nvzsZ2T+Co4d4Dn/EBQwc4k41oELPCkMwE5PHJDc3xVHOSmK2sbhRq5i0+a3vAi2D6hwCRgy5bx8tEEXWpUC3BfDpmdpEIEz/VAq4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -175,70 +181,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26.08.25 09:19, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 26.08.25 09:19, Yafang Shao wrote:
+> Background
+> ==========
 > 
-> The kernel-doc description of MEMBLOCK_RSRV_NOINIT and
-> memblock_reserved_mark_noinit() do not accurately describe their
-> functionality.
+> Our production servers consistently configure THP to "never" due to
+> historical incidents caused by its behavior. Key issues include:
+> - Increased Memory Consumption
+>    THP significantly raises overall memory usage, reducing available memory
+>    for workloads.
 > 
-> Expand their kernel doc to make it clear that the user of
-> MEMBLOCK_RSRV_NOINIT is responsible to properly initialize the struct pages
-> for such regions and add more details about effects of using this flag.
+> - Latency Spikes
+>    Random latency spikes occur due to frequent memory compaction triggered
+>    by THP.
 > 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   include/linux/memblock.h |  5 +++--
->   mm/memblock.c            | 15 +++++++++++----
->   2 files changed, 14 insertions(+), 6 deletions(-)
+> - Lack of Fine-Grained Control
+>    THP tuning is globally configured, making it unsuitable for containerized
+>    environments. When multiple workloads share a host, enabling THP without
+>    per-workload control leads to unpredictable behavior.
 > 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index b96746376e17..fcda8481de9a 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -40,8 +40,9 @@ extern unsigned long long max_possible_pfn;
->    * via a driver, and never indicated in the firmware-provided memory map as
->    * system RAM. This corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED in the
->    * kernel resource tree.
-> - * @MEMBLOCK_RSRV_NOINIT: memory region for which struct pages are
-> - * not initialized (only for reserved regions).
-> + * @MEMBLOCK_RSRV_NOINIT: reserved memory region for which struct pages are not
-> + * fully initialized. Users of this flag are responsible to properly initialize
-> + * struct pages of this region
->    * @MEMBLOCK_RSRV_KERN: memory region that is reserved for kernel use,
->    * either explictitly with memblock_reserve_kern() or via memblock
->    * allocation APIs. All memblock allocations set this flag.
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 154f1d73b61f..46b411fb3630 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -1091,13 +1091,20 @@ int __init_memblock memblock_clear_nomap(phys_addr_t base, phys_addr_t size)
->   
->   /**
->    * memblock_reserved_mark_noinit - Mark a reserved memory region with flag
-> - * MEMBLOCK_RSRV_NOINIT which results in the struct pages not being initialized
-> - * for this region.
-> + * MEMBLOCK_RSRV_NOINIT
-> + *
->    * @base: the base phys addr of the region
->    * @size: the size of the region
->    *
-> - * struct pages will not be initialized for reserved memory regions marked with
-> - * %MEMBLOCK_RSRV_NOINIT.
-> + * The struct pages for the reserved regions marked %MEMBLOCK_RSRV_NOINIT will
-> + * not be fully initialized to allow the caller optimize their initialization.
-> + *
-> + * When %CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, setting this flag
-> + * completely bypasses the initialization of struct pages for such region.
-> + *
-> + * When %CONFIG_DEFERRED_STRUCT_PAGE_INIT is disabled, struct pages in this
-> + * region will be initialized with default values but won't be marked as
-> + * reserved.
->    *
->    * Return: 0 on success, -errno on failure.
->    */
+> Due to these issues, administrators avoid switching to madvise or always
+> modes—unless per-workload THP control is implemented.
+> 
+> To address this, we propose BPF-based THP policy for flexible adjustment.
+> Additionally, as David mentioned [0], this mechanism can also serve as a
+> policy prototyping tool (test policies via BPF before upstreaming them).
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+There is a lot going on and most reviewers (including me) are fairly 
+busy right now, so getting more detailed review could take a while.
+
+This topic sounds like a good candidate for the bi-weekly MM alignment 
+session.
+
+Would you be interested in presenting the current bpf interface, how to 
+use it,  drawbacks, todos, ... in that forum?
+
+David Rientjes, who organizes this meeting, is already on Cc.
 
 -- 
 Cheers
