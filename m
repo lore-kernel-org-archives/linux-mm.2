@@ -4,116 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E85CFCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 00:19:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EF4CA0FF0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 00:46:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 375A16B0180; Tue, 26 Aug 2025 20:19:27 -0400 (EDT)
+	id 02EA66B030C; Tue, 26 Aug 2025 20:46:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34CEB6B0182; Tue, 26 Aug 2025 20:19:27 -0400 (EDT)
+	id F21F66B030D; Tue, 26 Aug 2025 20:46:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 263778E0105; Tue, 26 Aug 2025 20:19:27 -0400 (EDT)
+	id E10546B030E; Tue, 26 Aug 2025 20:46:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 141F76B0180
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 20:19:27 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD5926B030C
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 20:46:23 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8D5D158B6A
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 00:19:26 +0000 (UTC)
-X-FDA: 83820628332.05.7BEF53C
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B1B37140004
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 00:19:24 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DtRFxSXv;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 89C01B9404
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 00:46:23 +0000 (UTC)
+X-FDA: 83820696246.05.002E04E
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A9C2E20002
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 00:46:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=YMHByVIj;
+	spf=pass (imf13.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756253964;
+	s=arc-20220608; t=1756255581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SE4j56bcgneni+baZfrodSksw7MRxk2x9FNKN/g2SD4=;
-	b=w3sAa1/i21neUKkXk3jiKy5/BbVmKOyVkDZKpJ2DymkY0NSQIQ8bnM489Pyae86Tr/Nb65
-	jD9YekEndwkByZ/vZKEUXIGU9V/kplBN4rRuONf0sfY5Ni0gZFcHOwWFcxFuBkRR6ZY2xU
-	zECfGyA8D5fRpG49Y9dvErPu+AijvcM=
+	bh=zclw1iBD4zpqjkUTKL/tBf6jKpfLRB4Ld2/pw8/YSMc=;
+	b=px8sAv/ssogJMKYgsnl3LpBUm8JsUU7Z/vEfaadk/0ypQ9ji8n2AYbfdjNQOoVcA8pWqKV
+	BGG6wDkpgqwOMSwvbg5A2w+Yz2RnOAFl5Og51Yucrc9SYdozqFZIv0M4C0IrSLcSHyG5gd
+	ocJjhMaynAtkSCqG5j/zQ94olXGwzPo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DtRFxSXv;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756253964; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=sifive.com header.s=google header.b=YMHByVIj;
+	spf=pass (imf13.hostedemail.com: domain of samuel.holland@sifive.com designates 209.85.166.176 as permitted sender) smtp.mailfrom=samuel.holland@sifive.com;
+	dmarc=pass (policy=reject) header.from=sifive.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756255581; a=rsa-sha256;
 	cv=none;
-	b=rfYg36E1gNggTJhe0DzXIW7pA0V/MPIYDkOD0V/yKtDIEzg1zsMWS4e2Y/pKdsT/sHIHbS
-	CPI9Z0ysVjOSfIUKDWKvYG4xpCvoGoE1wZnqdljCN++FnfytUqR+wcxGhgWlzi5t0bB4Rg
-	8X5ChwWRN7VBi/gZ6iMZ6jjwoXddV6E=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4b29b715106so80061cf.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:19:24 -0700 (PDT)
+	b=eqwom1BC3KSaKpL+UBCZbHc4Owo2GOtyOMRX8Xanh8eRfePsS9jh8YRAqhLojAXLvnEZJ5
+	6UI7BhiAXl838LO9QDZWs5nQ3WPV1puKczjv0ipSWizJzywyBQmjXP0zrWmPuUf/ulFsKk
+	jtNEtonno9Lv31UwBgTiQ9fe35QAqZQ=
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3ec3b5f05e8so16058925ab.0
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 17:46:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756253964; x=1756858764; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SE4j56bcgneni+baZfrodSksw7MRxk2x9FNKN/g2SD4=;
-        b=DtRFxSXvEVPkTDAZvYczTKUBlSw1i+xlcdw3Qp2rkPFzVS1ZwIHYMyv9kSDT0vo/16
-         jaEWoxenL7JeFW1CghE8Nk+RAUq0qC/m3DXlAQlH1lvi8YTv5mdlFkXXepVDWM6ctREN
-         dL/hKNVtK7WOrYMWfbTdgjaP4vyzqlkI1dtoQXtup+5zhMB+VQ5t7BC6SDNCoXwvJzMZ
-         VZwNTjXLz+AznqH9jHIMHItsQOhPALQQrgE8j6lUIfySaqIYLfIVpuFblOy4mhSwAG/H
-         GO7tOLMJddHDosXDx/cYPLaPseBjGYYLuLjd2m6zjqP14HSYLPJft3Sgf1NDIAjbT4Hx
-         n+Hw==
+        d=sifive.com; s=google; t=1756255581; x=1756860381; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zclw1iBD4zpqjkUTKL/tBf6jKpfLRB4Ld2/pw8/YSMc=;
+        b=YMHByVIjPe/mKB6dZPIg4wn8g31IOMCkppJPVxX1Mx48y0ZQ4JquUi1ablR9IGw0wF
+         LWJAN275CqXJwDNmBB6ZPmsromaT5KaeURiemM2FltVjUr+wh3tXywartD8LcGHtbZkG
+         UggTs/aIGmiITcCSRSzGsAc5qJYRldv4n0851u3XjazXvKKyZp/dcJuNdzOlVYUjRIS2
+         pGpeN0QiWybbepGJj4K/sZiblDDJ6tDjuL+onl6BV8ZN66yglaDV1owERE3HbIp5rZGC
+         HvpdCS3KRABCrFhPnvUQWUYqX/sg6gV33F5CHD+q6tIhljgxPZffbfVfEHTWNDpMaic3
+         BSAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756253964; x=1756858764;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SE4j56bcgneni+baZfrodSksw7MRxk2x9FNKN/g2SD4=;
-        b=veOUqV/arf+kqIlNX9cpXSRBJc69T5oosxbdKbkVP+K1yZUboMh242SU+qoz8di5R+
-         UNRbDy3/kjUOyWWnXA+ZQ0pE6Czuq6OBszICT4HF/pkERoQxioEel2DlShHTCTUatiE9
-         a0VMPBZhyO3pVXPGZFS3CWO0ohGPxefv+ffolpkyS0HVlns35EmpSq2IkhA2rO4vECUT
-         nmGcGu5fawzJMq1+5t8bPiPX+qvMGp3DKnvhn1AGwki1DyVHijMdM+Pvj8Rpl1IP0TQE
-         H9CV1G0wPnaHrn9FXhlQfmn7w0js07VVkyMu2ke9v9EG1kQqfAw3QcKOxa4hMQAGkpOR
-         mTlg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTkDMlsqN5xMURcSQbCl0u+vD0olg7RLppasSfbaiciA1Xi1gAfgnab5B1LmrJBIYkjdI40MeDkg==@kvack.org
-X-Gm-Message-State: AOJu0YyVytMjptnVbGfGHSMjLmeQ3pmm61XFmfpb3WSUM687S34yDWS5
-	l62+2K9bZ3+EFQF8WTXTlvTnS0NSOe8J51iiH7/9dvrdmaMhAqm8zM179dRfguBeCyU8IjvTeh2
-	a9Oct2mXH5hXHwd21s7SGoxrzFS1tfT5iYn0L1wFp
-X-Gm-Gg: ASbGncsiJqjOr/+NWEQZNKwHezShMoLOelLeSU9Tz2ken9SCVGKAXBGNGAqzCxbhNaW
-	QrJTqWrLieiC9sqPRnJsYZL4p1V/F6snHmAcd7st+9qKUDsYT1I9zh7g1YN2fLjUpLEX0gq+SPm
-	aa9xPm+JO1K9bF1HWJeaYWllJPag0V2HySncQm/15Dnm6VYay9T0xyuJ0mMz5e7Hvftib/OkHUI
-	j7qwcNkwh8Z5gmBcPTqIag=
-X-Google-Smtp-Source: AGHT+IHKzkOVA97IoeFOhKzhjh88sPk1YwIXvTlOSZoPINFWeat9lSKrAMubEHDbEHy9C13HrZIHNUop3Q+tYrmsAvA=
-X-Received: by 2002:ac8:5a42:0:b0:4b2:939c:9c1a with SMTP id
- d75a77b69052e-4b2e2c4f835mr7873931cf.13.1756253963326; Tue, 26 Aug 2025
- 17:19:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756255581; x=1756860381;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zclw1iBD4zpqjkUTKL/tBf6jKpfLRB4Ld2/pw8/YSMc=;
+        b=nJk5HjMI4a53gKOvB6C+dica8z3eMpRK4A4EoaJ7VaRquUtYu70/6WopBpkfcghbqq
+         IthD/CLxCiFo7MpwV4AYFSaK4Ax3XVmqyJrTAeCm2MXrbRgFXoye91JppZuDTBmFjy69
+         llnTIawUKtpvg9BBoT3eCKu7wVLJE0M3opbCcsuaxhyeK0EajI81D+AMdRzvM6HIY7am
+         4JMMNDsJyV5j9pzsz9Tq0hg5HQKFAKSdga/HYHWLpBs+VPsHGDb4UP1V/Aa59GPmHsLI
+         NYPxCw6Msh/JntyDQtMsDmJHMBH4oBo43C6kXxVainnBO1MtsFEr0dgPhFSiSC3JXRX7
+         K8tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXl3+hPDdxHRmdMPPGrI0YO3AEL8XfHzb+JYVKv3/2nulGOuj0fmmRcpfVUQiSutcPCHhN2eiJVNw==@kvack.org
+X-Gm-Message-State: AOJu0YwUM5hmNdY/fwDqPxEpz6d3e5FY+JXBUvug6IOmhqdd9hx0nqIh
+	MBKZRaWKHn20sWVPWZpnoJnQ/2zxsANLgWVRjEXH/T7Hui80mH/FFGt8obOXvVEqm6Y=
+X-Gm-Gg: ASbGnctCWX/nk23sl6fWs6IGN30YoLap4aLePp+byl5EIXyxMseav7KRqOSaN8sDbZR
+	vrotg9nChYpBUreMj0rQM6tpEbGUd7AmfvvKdJ1/dppS6bZ2FK6iCYv+BMUShwCG8GO0egLcjAQ
+	lJ2KAxNTEN0u2LMirp5Ar9LnwsvBBZSagZ32kpOghwvYA2t0TEI/Yyu8s9B0hrApSBMN3UB8MfG
+	3I2DhsIGkE6uaVHgTuKcovvvy7RKQZVsas/9D70VRm+dbR4DMmk2VMB/Dm9pX9406/OUHCAa6NE
+	EB5TesmmnYifxouO3VbMIeUfkXLcww19O+6vUizmNKrnhEzZRCLva8XzmUepuuxsskzt43sMN7s
+	HKFIZCmHaQ8h9phiLLV3nryuiAIyCkLj9++M8kg==
+X-Google-Smtp-Source: AGHT+IGfh2W97xdVpFCgiQyq3Pb9/ifBsTlwqyh1OAHr3R34PnfYQnj+aQ8bMShNsAl8EpMrNrhaMQ==
+X-Received: by 2002:a05:6e02:1b0c:b0:3ef:1b56:c8ea with SMTP id e9e14a558f8ab-3ef1b56c9f9mr43866025ab.11.1756255580619;
+        Tue, 26 Aug 2025 17:46:20 -0700 (PDT)
+Received: from [100.64.0.1] ([170.85.11.2])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3ef2ff2dd60sm14606295ab.9.2025.08.26.17.46.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 17:46:20 -0700 (PDT)
+Message-ID: <2e9ee035-9a1d-4a7b-b380-6ea1985eb7be@sifive.com>
+Date: Tue, 26 Aug 2025 19:46:19 -0500
 MIME-Version: 1.0
-References: <20250723-slub-percpu-caches-v5-0-b792cd830f5d@suse.cz>
- <20250723-slub-percpu-caches-v5-5-b792cd830f5d@suse.cz> <CAJuCfpHR=hceuAcnaCr3Hg-3mknvsmYy7jSScA8SATn7iwoN_w@mail.gmail.com>
- <711d539d-da4b-4f77-9be6-ca11b6fa5162@suse.cz>
-In-Reply-To: <711d539d-da4b-4f77-9be6-ca11b6fa5162@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 26 Aug 2025 17:19:11 -0700
-X-Gm-Features: Ac12FXzxRQWqZVSs96sDjlJgMo-UL6e05LwJ4TtNEU1hDljVd05nsUaqKjsm23A
-Message-ID: <CAJuCfpFC6XELVof1xbJ2rZoxX3rHQfd34Du3=N_UeinM2DzPVA@mail.gmail.com>
-Subject: Re: [PATCH v5 05/14] tools: Add testing support for changes to rcu
- and slab for sheaves
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
-	maple-tree@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: dt9noyjpwrtun7a4qbbn15771rt134rm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/19] x86: LAM compatible non-canonical definition
+To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+ Dave Hansen <dave.hansen@intel.com>
+Cc: x86@kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org,
+ llvm@lists.linux.dev, linux-kbuild@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <c1902b7c161632681dac51bc04ab748853e616d0.1756151769.git.maciej.wieczor-retman@intel.com>
+ <c68330de-c076-45be-beac-147286f2b628@intel.com>
+ <4rkxgsa5zfrvjqtii7cxocdk6g2qel3hif4hcpeboos2exndoe@hp7bok5o2inx>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <4rkxgsa5zfrvjqtii7cxocdk6g2qel3hif4hcpeboos2exndoe@hp7bok5o2inx>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A9C2E20002
+X-Stat-Signature: nebxx3zpbbydt3y3kas8wxwjsd8fsjci
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B1B37140004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756253964-835735
-X-HE-Meta: U2FsdGVkX18xxB9SMDUfhom0kvXc16hTw3IwLBJ2a5jdOcKS+2dCM/RmP9Xqg56BIdMmiEZErfFodwVuDFX5FDkW64xGSMl5qXogzuoyiAHvu1ogovrdR/7devj2ACe0/yu0L5Kty0KUTcv36X+6z54p567x4lZh3aZ52ECLVB+WIycW1Gj+0sxaXz2ue0t7IYWqf1vmvXoh80Sa+1QVqHYHpPDS6t/lYCV+FkJxhUrLTepPhKuiz4YpL76N8zpTAxsYjpKdIcgoua7cVIZtv0hVaOPlIH3FGEVKokvfTJ84qlmCSH1B3xK/HYJEJOO3v8CSq/akpSnO/cQt7NXDtlCMB+nGEvIlmArPebXqoMsyQiO99qhmYzGMxmdtctGGnUUsjkaUI8X4IPql2qSVL8oCX3MXumR5M9u6FQRPI68RYhPJwGsbVOZBo66by7YMLy9cGvOYWz3sHPaOx/2BWgLua3alOIiK4oykMWlVijEhQ7X6yQFFpDNShAowrxvrILokm8PkbpG8qDcQgYngSPz3iOULYw9djFWBGShXE+Nk/3gasE0dmtygNxxlN43S6DGgCeTR1Kq0WbucHxw14LPBdYfhy9aorjh1qE9EIF0gfEKYpTibqYtviaUCbSbycwnfUSwwgCF/bZZ+GcqTmJeQqfUvpSqsE3qlEUjMVE0gPqsrdrCS5du8o8lc7bJ0us0FnmU5X62o3FEeCJmk5KToS1jZ0eBtS7oxOq7zpqJxaaINsmw4UjM+d/6d0Rs2oMRmgDgEXqOk9Rl5QCUatjJoASpB7mfLWIFqGn+lkDDPOTU+G5MWXpuQ/extb6Ij9g6iRmB16QbXjHt09L7PCmzYKyirEDANX5SB3BSFlM0q7yZvfDKusa5T63KTFaBMrmsMEgvoRuzKTKlo1XxHsgiYGn+HK1jVmdluTwc7DkyLy8LVwu1yDEy69pDzfBLIUxS1cddHJHZldH1jJtH
- xyD43rei
- Ifxk9nl3kivUn2T5Elpl5ODeb5hBIvBhf0CnCphU+lZPWWjQVDiKa0cgJWWrTbN/3eJNf1YwDPJLhpWapdgHHdQS1RxrxBAlZtFj2s3PkPgP8bm1WoFMsMMlU7TVywWqVQK0uPv9X6voCFk0MZtinePkbTqhizJ9y/B1hX25ufvZZQacF0VXVirVCK6a9YVt7Z6ZLe3BB9Z6+8avLME/iz72d2QvPFNvV8aP1
+X-HE-Tag: 1756255581-599038
+X-HE-Meta: U2FsdGVkX1+jk+Pp4EhPX7wHP7BJSyivBezIA/oqzcQJx+sTpWDuazQz3BB9yeEupca2h0hIVBwFzM8yuYbcfzyA/JCiSR77IUZuhl6gJBIGcEnsySxOMeh5XvIYSPhP5xnCZYQRgNnRtQu3GE32heMZCWinbsoGd1H/CZDBgqrUja3awe+lw95kfQYtNWFTPywXy2cBHt6yp5aJnlaxHjhYY9w4JYICY9nZD7lYZQtVsXPs3vCV7lEiDC1dYWwS3MaiKPF9RnqV/For7cnhtU+BJ1q+X32qPCpKLpC2Z6kEKRZTRhkhNrDgFvyzjEdLRPR24MAf/RCtczXnTI6z9WoV3Cyhdn/VRrkbHFWtLL5cO0oo5kXNQbSaTggWgdBB5M1SZhytkSar29zXu06KlzjRjg9EL2a4Jofqu7nPX1HfcJqLyVW2YJG34y2m7Q8Kt5TB+ymy0W42qfOtMi1nlGoJ9qr158cnk+IhtBQtjvAM1sOuyARCthmAep1HjmQnBopMfuPYCeL3LjTtmro8qUXk3s8KenWfTdpdqzv83Go6vJHlTl+DMrEdZ5EoJe6dwyIoCPo2qb4pw/qhhST/h+VXebEzNPurPgNfFTHUXSsgCE1khhCs7yMmLi0F7TQlwv5g92q/BeHKZgWgKdTbBco6ld3kHGrAUQHof0Ji1d7RjNM5OkeKLXLaCTinLiMuI2vtiI/7jnNrtADWO1ZNO1lUbGCvm15pbqPuVYdky+CcfBjw821B0Fx+NjT6/mWSrfhdHBQRswDd6fuNFzVElxXCFhzHcao7SDS69nZvGCsneg6pvZcvq8SCTmFSsLPYsXzUb3tqcTcFVnx6am1pSsxiYtHGjzaAYTCXfMRh3xPyDZAjE+/Au689FCNzeJ23c0whkg5cW9PJs+qaA+TnwNQYyAyVLemjyEXPvN29Sw1o2u6xuRKEyz8LYky8+p5wlxF9OejTrrFoYqnRRRD
+ Q70nMbQi
+ Hjm41Hd0WM4F2XP/Cvk1PfGSZGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,79 +127,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 26, 2025 at 2:32=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 8/22/25 18:28, Suren Baghdasaryan wrote:
-> >> diff --git a/tools/testing/shared/linux/rcupdate.h b/tools/testing/sha=
-red/linux/rcupdate.h
-> >> index fed468fb0c78db6f33fb1900c7110ab5f3c19c65..c95e2f0bbd93798e544d7d=
-34e0823ed68414f924 100644
-> >> --- a/tools/testing/shared/linux/rcupdate.h
-> >> +++ b/tools/testing/shared/linux/rcupdate.h
-> >> @@ -9,4 +9,26 @@
-> >>  #define rcu_dereference_check(p, cond) rcu_dereference(p)
-> >>  #define RCU_INIT_POINTER(p, v) do { (p) =3D (v); } while (0)
-> >>
-> >> +void kmem_cache_free_active(void *objp);
-> >> +static unsigned long kfree_cb_offset =3D 0;
-> >> +
-> >> +static inline void kfree_rcu_cb(struct rcu_head *head)
-> >> +{
-> >> +       void *objp =3D (void *) ((unsigned long)head - kfree_cb_offset=
-);
-> >> +
-> >> +       kmem_cache_free_active(objp);
-> >> +}
-> >> +
-> >> +#ifndef offsetof
-> >> +#define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
-> >> +#endif
-> >> +
-> >
-> > We need a comment here that concurrent kfree_rcu() calls are not
-> > supported because they would override each other's kfree_cb_offset.
->
-> I think it's a bit more complex and related to the commit log sentence "T=
-his
-> only works with one kmem_cache, and only the first one used.". The first
-> call to kfree_rcu sets kfree_cb_offset (but what if the rhv offset is
-> actually 0?) so the others won't update it. So concurrent calls will work=
- as
-> far as from the same cache thus same offset. But I'd like Liam's
-> confirmation and the comment text, if possible :)
->
-> > Kinda obvious but I think unusual limitations should be explicitly
-> > called out.
-> >
-> >> +#define kfree_rcu(ptr, rhv)                                          =
-  \
-> >> +do {                                                                 =
-  \
-> >> +       if (!kfree_cb_offset)                                         =
-  \
-> >> +               kfree_cb_offset =3D offsetof(typeof(*(ptr)), rhv);    =
-    \
-> >> +                                                                     =
-  \
-> >> +       call_rcu(&ptr->rhv, kfree_rcu_cb);                            =
-  \
-> >> +} while (0)
-> >
-> > Any specific reason kfree_rcu() is a macro and not a static inline func=
-tion?
->
-> Think it's needed for the typeof() to work. The kernel's kfree_rcu() is
-> similar in this aspect.
+Hi Maciej,
 
-Ah, got it. Thanks!
+On 2025-08-26 3:08 AM, Maciej Wieczor-Retman wrote:
+> On 2025-08-25 at 14:36:35 -0700, Dave Hansen wrote:
+>> On 8/25/25 13:24, Maciej Wieczor-Retman wrote:
+>>> +/*
+>>> + * CONFIG_KASAN_SW_TAGS requires LAM which changes the canonicality checks.
+>>> + */
+>>> +#ifdef CONFIG_KASAN_SW_TAGS
+>>> +static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
+>>> +{
+>>> +	return (vaddr | BIT_ULL(63) | BIT_ULL(vaddr_bits - 1));
+>>> +}
+>>> +#else
+>>>  static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
+>>>  {
+>>>  	return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
+>>>  }
+>>> +#endif
+>>
+>> This is the kind of thing that's bound to break. Could we distill it
+>> down to something simpler, perhaps?
+>>
+>> In the end, the canonical enforcement mask is the thing that's changing.
+>> So perhaps it should be all common code except for the mask definition:
+>>
+>> #ifdef CONFIG_KASAN_SW_TAGS
+>> #define CANONICAL_MASK(vaddr_bits) (BIT_ULL(63) | BIT_ULL(vaddr_bits-1))
+>> #else
+>> #define CANONICAL_MASK(vaddr_bits) GENMASK_UL(63, vaddr_bits)
+>> #endif
+>>
+>> (modulo off-by-one bugs ;)
+>>
+>> Then the canonical check itself becomes something like:
+>>
+>> 	unsigned long cmask = CANONICAL_MASK(vaddr_bits);
+>> 	return (vaddr & mask) == mask;
+>>
+>> That, to me, is the most straightforward way to do it.
+> 
+> Thanks, I'll try something like this. I will also have to investigate what
+> Samuel brought up that KVM possibly wants to pass user addresses to this
+> function as well.
+> 
+>>
+>> I don't see it addressed in the cover letter, but what happens when a
+>> CONFIG_KASAN_SW_TAGS=y kernel is booted on non-LAM hardware?
+> 
+> That's a good point, I need to add it to the cover letter. On non-LAM hardware
+> the kernel just doesn't boot. Disabling KASAN in runtime on unsupported hardware
+> isn't that difficult in outline mode, but I'm not sure it can work in inline
+> mode (where checks into shadow memory are just pasted into code by the
+> compiler).
 
->
-> >> +
-> >>  #endif
-> >>
-> >> --
-> >> 2.50.1
-> >>
->
+On RISC-V at least, I was able to run inline mode with missing hardware support.
+The shadow memory is still allocated, so the inline tag checks do not fault. And
+with a patch to make kasan_enabled() return false[1], all pointers remain
+canonical (they match the MatchAllTag), so the inline tag checks all succeed.
+
+[1]:
+https://lore.kernel.org/linux-riscv/20241022015913.3524425-3-samuel.holland@sifive.com/
+
+Regards,
+Samuel
+
+> Since for now there is no compiler support for the inline mode anyway, I'll try to
+> disable KASAN on non-LAM hardware in runtime.
+> 
+
 
