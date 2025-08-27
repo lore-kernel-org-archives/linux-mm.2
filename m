@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29EEFCA0FF6
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 11:04:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E979BCA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 11:04:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3FF48E0137; Wed, 27 Aug 2025 07:04:49 -0400 (EDT)
+	id C7BB18E0138; Wed, 27 Aug 2025 07:04:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E27068E0105; Wed, 27 Aug 2025 07:04:49 -0400 (EDT)
+	id BB6C68E0105; Wed, 27 Aug 2025 07:04:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D70A38E0137; Wed, 27 Aug 2025 07:04:49 -0400 (EDT)
+	id ACB268E0138; Wed, 27 Aug 2025 07:04:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BB0008E0105
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:04:49 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4587F598B7
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:49 +0000 (UTC)
-X-FDA: 83822254698.22.8ADFCA7
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 76C231C0016
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xOYyb0T4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of 3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756292687; a=rsa-sha256;
-	cv=none;
-	b=TT43ZGA8E0qL5JUSMIv90FAeypDqf3Z17uW+UKGf02ROcpySYxij5f9M8kG4xcEvlBSXij
-	ox04jm8H3LZgJwChfXfRTzGN/berik4O7IWzINwMuD3x0qLAxjqvg2+rrlLmREjCCKs/87
-	7N8/2ZlLxN1FKV9RXKCzYUXCfa9A/0A=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xOYyb0T4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf20.hostedemail.com: domain of 3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9426B8E0105
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:04:50 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4391A13903D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:50 +0000 (UTC)
+X-FDA: 83822254740.09.EEBA387
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6D855C0017
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wNIrF283;
+	spf=pass (imf28.hostedemail.com: domain of 3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756292687;
+	s=arc-20220608; t=1756292688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B1JLDczBck6DvgDcQzS2GBWgdu9LwuHv0ctBDRr5UCA=;
-	b=rQOVUwKJPGwtHq/YJwa3UYW+1ULjr6M3ghc1fT68Ftcc2yupJ0GFKqvFvA5y2neLniiHOi
-	MWujI12C64vZr6FcyYVbHzy8q2Si67NKTr8pPuqN+1m5m5kBK5Q5JgE1IIFaZde3ze3Ug9
-	x1Yq0shGzBNtJaQ9rtOwG5fIDzOt6Q8=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45b71fe31ffso3501735e9.2
+	bh=pAE5CII86KHK3JlA1J37woP/VEU59D1d2hbqyEmTE24=;
+	b=wXxxs5ij96Zzjw9R43lYpSdSYzOwEPqKKUBOsUiCF4FyVG76684Kwn3hW7ssosEiFU+q+N
+	Bf667cCCPeHCKOiihwC2DMVpSI88LE0yN9H1g08+3REw2efNgI22ju9CMbfHblVxCfPN8d
+	Ar2hSnPhzgKBnpCToFobT4aZxOIVwEc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=wNIrF283;
+	spf=pass (imf28.hostedemail.com: domain of 3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3TuauaAgKCCMI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756292688; a=rsa-sha256;
+	cv=none;
+	b=Ds0pUl2wngmFgn2PO3DO7MrJ44XhtuR3qbltus88FNppA9y4kzrHFXv4XHUpzeOQDrD+dc
+	scWVatEOIS/tsUEirrXqhtKI41aDiuSbW7lbyZxGJs8HMWdQSHAMRtfvZMFCoZxuy9nKt0
+	zVETwErXtRSu4mDF0tQEG9KsdvZF5lU=
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-afcb7348249so583174066b.0
         for <linux-mm@kvack.org>; Wed, 27 Aug 2025 04:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756292686; x=1756897486; darn=kvack.org;
+        d=google.com; s=20230601; t=1756292687; x=1756897487; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B1JLDczBck6DvgDcQzS2GBWgdu9LwuHv0ctBDRr5UCA=;
-        b=xOYyb0T4v/ai4Jm64IUS2PE1EzPU5bx2nqF48K7MJdXqTZMBJyG91QbzsEU1RcrC/5
-         UldUDUiaYW4OOlCz01891Pc4zqE60TyzwYudOo3LTAKZo3n6O1RAwQ/MSnP2acJ5ejO7
-         VbHQQ6VnuU9imo2YakMLvMP9BbHP0nOlrYD/zVboaALYNNBvpOvyG7xwEE0Cx7pOVWeE
-         Q9lHHh65XmqJrt5gSRjZsFAMGqRB4COkFRbuDs1sZfFshidAJqCTJ7uQElpkfNDgl0u5
-         Zc4/PoCiGfjYmrrzMc/7vjeOpNwgdqsOjRCjM6uU4Zt7QysCOYXSLEcIxE0w4/FKMZW/
-         DePw==
+        bh=pAE5CII86KHK3JlA1J37woP/VEU59D1d2hbqyEmTE24=;
+        b=wNIrF283NgJ4B011MPQi3kGopQ3xZUa8AmRYIOvEC/tQaV/8ZIaUHseQSA6EcSSidt
+         L+zuxl4EszeivscYWqe9yaOPSTXpwsSByhb7W199qvS/+H6gDsrGKc0PMjC4SK0+4wuj
+         DHl+IhnOGLuuI/6WTM5iHyMxYn4bK3zHpq9vcPqONDMXrymppDuYGpReqJUxIc5OSrLD
+         EtENAd82tJPCi4rk1uhc/7enuZahKDx1PieMxt97vDkAtFDrfbCFFgcWJq2+PNfvLpIz
+         p7yupji/oYYsenNqY0x5eE3LgPfi0s2r0my2oCdMTaFnZBk791QUuBiNsISPVLBoaT07
+         zjiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756292686; x=1756897486;
+        d=1e100.net; s=20230601; t=1756292687; x=1756897487;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B1JLDczBck6DvgDcQzS2GBWgdu9LwuHv0ctBDRr5UCA=;
-        b=fPYNZDCWkE78N8XenDl1A4nRqabS/bT+BOvWg2RSdylZra9kIUG4M24s7UFjzSicwF
-         q2I+KxZ/gjCh2xmleDf+VPWAJZob+EslSE4ZT7Xwb+vLdjHhU8qfYa+Y2tKg1uxcV0qw
-         TyFfz9SClNFjbXK2qkbU06ao7rVNp0v8H5z+I6/3/6FstTBjrfxcE9gcz+cPDJ6DjzPJ
-         pQTRRBFDnGr/7S6YCzRqvTFBeorCqeEESTaqC/BQgRYFWWrgIoaW0eh1KECzhSJHZxvo
-         4tMJpPiY5h1ENCvVtRtBKKI3cg+Qcpd8YKujIgQ5pdlTP8l+4pvtbk7Jz4tbj74M4yQ4
-         TxMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjZ1wmnbBGjiWmWhD6jrNoNpPir+JRLgO6reqNpPInrd8K22me17rs1ilBk9UeOPmOBE3O8G7cJQ==@kvack.org
-X-Gm-Message-State: AOJu0YxwP2pkmaccftcYawhjyWeTEtThpXK88uqUQ17zMwYFw496zLoz
-	ZlOxuyw1pLJX7QoIlSifRB8W5ARfhjRFDYvA8wzYn4jq98Ee8EV0bKuHj47zLVDZCMe+4H5fS06
-	PzneAyJKDEIwYhA==
-X-Google-Smtp-Source: AGHT+IGrAcbdSroEv8381iwG9fFa7HIZzG92rr8VYjO8Tn1BstPgPDU22+oW3fciclP7XBaLivl8yhvcXwvINQ==
-X-Received: from wmbhe13.prod.google.com ([2002:a05:600c:540d:b0:459:dcca:571e])
+        bh=pAE5CII86KHK3JlA1J37woP/VEU59D1d2hbqyEmTE24=;
+        b=YgIcpygd3jrcKviDTRH8ORV2krN2ue2S+VIWzGw9y7tt0ZnfzN2SF2oldHGj5Ijz34
+         CsV8rZU8fVlPMnHhgPquCfbaG68w+FIgv/HDb+W3XLBwgbA/7Ac7frtYo/ohu9coA7ad
+         I7MucaMZSqMj0tUUeEA2mIiK0KPyjEQQ8WCWAVtFtw/DEnd2ZwnSKOZ7QgFdThH2qX7V
+         vXQly1dz4olEgAdyTEXw2ujj1+owcmO+Gsjt4fDcY8N7BWvJqhVBGnVOJv4qxGRsZkhH
+         yhAzr3Bx/jhwn2IcKQppb2Z2gJEw0pGV6iSp2H5DE9nWUz6AKjRESuTIiogPA7ove6Hv
+         obng==
+X-Forwarded-Encrypted: i=1; AJvYcCX1AguiEhWDmQQ0L4n/2zL3sN0QJFQ3hHPPyalamozdV3/xiY4D6STJWAPsSW/cnhbyR2RjW0aR9A==@kvack.org
+X-Gm-Message-State: AOJu0YzGTk/xLylLd39gl0jsYfCpBuiExvUeb8Exatw0fSE9GxRd2i/l
+	8uolIYH0CKC+KjOV5JUwM2c/hvcd9MgemsVxDBoI2t1p/ElMMx0oXtfJikxemW8VIfh9l11MBJ9
+	7alHBckJD3Dzl6w==
+X-Google-Smtp-Source: AGHT+IFps824G1+9A1E1L6AAWpNXIwur9m1JpZYdYKH4pXCtjT5yIMTBrMWE7hKq5tOG/iUqapsb98A/ivv/rA==
+X-Received: from ejctk13.prod.google.com ([2002:a17:907:c28d:b0:afe:94a7:8b97])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5251:b0:455:f380:32e2 with SMTP id 5b1f17b1804b1-45b517ca54cmr175548825e9.18.1756292686018;
+ 2002:a17:907:1c93:b0:af9:d80f:645d with SMTP id a640c23a62f3a-afe29793340mr1744344266b.57.1756292686965;
  Wed, 27 Aug 2025 04:04:46 -0700 (PDT)
-Date: Wed, 27 Aug 2025 11:04:41 +0000
+Date: Wed, 27 Aug 2025 11:04:42 +0000
 In-Reply-To: <20250827-b4-vma-no-atomic-h-v1-0-5d3a94ae670f@google.com>
 Mime-Version: 1.0
 References: <20250827-b4-vma-no-atomic-h-v1-0-5d3a94ae670f@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20250827-b4-vma-no-atomic-h-v1-1-5d3a94ae670f@google.com>
-Subject: [PATCH 1/3] tools: testing: Allow importing arch headers in shared.mk
+Message-ID: <20250827-b4-vma-no-atomic-h-v1-2-5d3a94ae670f@google.com>
+Subject: [PATCH 2/3] tools: testing: Use existing atomic.h for vma/radix-tree tests
 From: Brendan Jackman <jackmanb@google.com>
 To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
@@ -95,14 +95,14 @@ To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-found
 Cc: linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, 
 	linux-mm@kvack.org, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam03
+X-Stat-Signature: ft49i8g1rx879jowxrfypss9gkxbznmy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 76C231C0016
-X-Stat-Signature: qrudy6hmttyywwhfnmqkwewee18ufxae
-X-HE-Tag: 1756292687-185769
-X-HE-Meta: U2FsdGVkX18VUdY/gMpKadcfhM8An7NZtRie+xNeYuOHqxydPGVYjJ3Wu2wVfiTWB0uzUsU70B6twGDLM0stORM53ZQZEbNInQLykjeeff+f2bt06liJHBU+JtIOGEld9Sfq5bysCwXmTe9alESU6MwUpmnwvyOlBdAWHdmGIh4GcGu9ZZswEqLqeLeHh/97VdPDsto2Z+BLbF0XGRSLc1fjctDKmTgDlR7dOSfNhOIU+PLb//6QVawpJ/u3a4vU/WsRVTdauFdO5644ZvMcPgfI/O4U4DPlWZ8nPClyKR8pAPwInQStV/MsdtZZalLaOYh9Cx73mdmdr0q+RGjoBTczmRXm0DNeh6535GLZdyJ2g2OyzWh9cll9nP7JMOAqYffPgmB8VA3ciqA8ikCd3X8Z+rvc5DMjuYe2+S3imxU7CJ9CmE7U8bFvZTMAEPq9tKvhcsX8fpRea974AdAjmAWPMYKJNRJZc1bxaKaTZ/GytGaQqlJFoX2wWM1iwEmRJ+HRcm5EnsBWdyQOwKdlUKO45tuCAFQrDHcZ3xWm6D8bor8OaPBSOR525i9C9qGxNgaliljmSsmB6DvyRZ+ApWOOZ1WzYwAxhPTzVPPwHtbcsqyl/34QnseaJdgUrQ+AmZHk+8aVLjxhoL/6pVhjJ5Eyt5B7RvIWT9ubfZR/STOq/WIxEqPYeW5F5rC+NoKf/2hfmfU/k2GHPZ9am4nLyDFEVVQqrEoX4j7CoSYtFLassbU+92B0vs5xovcIYVU3w0kAMkYe4ARGA5jZzZkBATdNFwppCuxmNSQgt8dcidGLjbbBx/+yfNDMB/+y3xmJLuh3r7QwbvDqwTYWFJbbgmFUTW0HeEtKebuL+3iWJf61KXSFqY+StFYjASyyVtZBDzuFrBR5/e5tDGI+Hk2rjaSNUrV3sD7mRas3Rwae8Ut/adoLV9QgPSJA3Bzy9bwkpCKOd1kNep7aG5QtyOz
- uFEn/c+m
- YlnmnYOA8nBf9GiUx1SZEFLMYhB+/mm2lmTNW6mz0OiRvmveC4/njbpjjeWRslHxJBxIu7CGOu1tn0o966UxLXueWff8Xdh88vYAZIKXqnagLWVjdGEMuaQAJ0U6DAHgELvj31sctK6t84vIxdYxMLEQKwblKaaPr6gOpHLdxC0qHS2eRT4q4UTl5G1AIuWaMORkfgadXW3rz14VaFw9n40CPMT0kAl6NT+UZ6r4WG34GTKqT8+LjmwabTtk5us67NaivO5R0GXtKIAzr+aFu2Wpg2cwyKos6Qltcsgb7IB861Z/5xWoR2/ms6XGKZL5Ru5jpmh/qvQlmMt4RfxoKs5WRB20Ob1lYl8my+q9bP6zIZ7hg/37B+PlZxAHH0wsfU7WFSwJAnIWlv23nrs9+TsC4QcIhp1IeAaE0gMH3CXeRT7sJqvr+XAFoDQIOul5vXxnGjuo7uGRuNeAZ5EZKPinZj5R61ZmGHcPxJ9vGcYSrawqr6grkvxrL167E2cwfmEedRPBSbAMBJNvgXU+wunyp3Cy0QlNL8qe9KGleH+66G8Etuc9j8KWMAQ==
+X-Rspamd-Queue-Id: 6D855C0017
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756292688-625846
+X-HE-Meta: U2FsdGVkX1/6flXWs/u800NgbyVzConT7a4OCeqRQBZ7ih+JPjglLwijXCDcHeLZZutauTIjL30fjgh0/azQgaplh3UdIuV55nL+q6T6eIWoTOSNU51j6F8ukZ1/F48ElPdwjr0jlnypLqrKm7ZtfAcCmmWzigBucGaXDBC9ia0Ux/P0s+WuVVB4/mqYhclSu9GvTtoYR5Cdmrw0xdE5/6+zpgS/OLTN6UO/e8K3hvkTWtPL+5VYLsVrkmxeEPEmHznwkQXZlCkXlkNk999DwOg6bglUDHXW+k7w17FklgyI62pLqkKV6wUetvh8oq8p6Zonhm6w8YhmqpjITSOEuHsjplhqqavXKvSgYxappn3VyLEcosmgW4t1Si/s76HpyDEnoIbqLMDDWgXTGT9DjebiPKc6GUSavN/pTSrkUPJROz4Ag4eLDu5DlU6JhFJWJ6hYBXRvTl57cktHZbwpdhsAzRIkIy+Cnf/84lDHQjvvKn+UaxwZ/kMOfVaivuVr1xldx9L9+5YFVUndI/fKUxGANvZEWo10IluQS06o0goN9YCaiZRusyKvBiD3XadmxBlgvPpV5Svpp0Bu1sJhzcy9prUspPQa0ofJ5tFgswvyQyNmLUN+PVs41tiI1ULulll9p/T5/Q+B8UUIeTy7KdleaHK5yD+/hAf693W3VnV1MAbaRLp+2Yt8FopT36E3JdHAXwplHbJ0zoFmjrzgafSEEBwwAcoOMxxtLGPvt9VqtNOy8zibyEnHU24lu64S2QmnL8Hl+lKKHLHjZYeQTnoG+BxXPKLH/qadM43uiHKumahfRblW+2CQASYI903pGTRwBSIn0ypj49LFucmxOnlrU/EBfLhLkT/T9gn/t6MxHFL9z8d4Qxz1ayWUCZtNpGQb+UR7iVNIFpN8CXCEwFvmXmZdTyjjc0iScLJU3FotaabJg+0hrs6IhUC92bNCUh4O5BNgnac/BU+VTMm
+ 7qtLXK2K
+ UvNmFEQ2702D/FIUTN80dQILbHD5NpIMXXtU/xHsjilO1DyuSnnjFOHP7lZwi1fcSQtHGWOA7w44CM6l8BSwV70bsGvmjaye8xi+T78iSBbuwjzUeWckawZzbcRiEaRyRHicr+W430cR3V63yrl4IHt5msOBnZUiyTgQM6UNWX1e0pq3+ODS/5WNVTxzLmv5tzeVrH8slDqscxR+jK4HGxPrcAv88maiCsTXtgVW++D+qixr7IXcb+2sQ2yEphZ8akoMIBjg7SRHI5vLEdG6LmBfUcPgVs/KWby34+nuQiEpmwzDf3Y9tfGAgLNBCibIhJ3tZmy9c2RKwHNKl/v0vKUt7wKzcW9YqJCjyPsOFES33e+7ET2XliAUmn6Trkfqzvcuvdv8RaTt/NkJhfG+lqoNc1S96vHZY5cGcoNFodPSXKJm8UyBCSmchHIbC+3UGQxaGy0ElS1iMiYw/ByqoQYmm8coSUMtG4sEBih8eGXjjZvqCP1MdDCXsnMt0H1rvo5f8AZyAUGki653+uQt3jt/7QbiT++Aqyr+umiFGiZkaVx70GvFhyOAe/W1sgTbfK4wQLkBAJ1QNpQkNXiN0finXvg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,40 +111,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is an arch/ tree under tools. This contains some useful stuff, to
-make that available, import the necessary Make helper file and then add
-it to the -I flags.
+The shared userspace logic used for unit-testing radix-tree and VMA code
+currently has its own replacements for atomics helpers. This is not
+needed as the necessary APIs already have userspace implementations in
+the tools tree. Switching over to that allows deleting a bit of code.
 
-There still aren't that many headers so also just smush all of them into
-SHARED_DEPS instead of starting to do any header dependency hocus pocus.
+Note that the implementation is different; while the version being
+deleted here is implemented using liburcu, the existing version in tools
+uses either x86 asm or compiler builtins. It's assumed that both are
+equally likely to be correct.
+
+The tools tree's version of atomic_t is a struct type while the version
+being deleted was just a typedef of an integer. This means it's no
+longer valid to call __sync_bool_compare_and_swap() directly on it. One
+option would be to just peek into the struct and call it on the field,
+but it seems a little cleaner to just use the corresponding atomic.h
+API. On non-x86 archs this is implemented using
+__sync_val_compare_and_swap(). It's not clear why the old version uses
+the bool variant instead of the generic "val" one, for now it's assumed
+that this was a mistake.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- tools/testing/shared/shared.mk | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/shared/linux/maple_tree.h |  6 ++----
+ tools/testing/vma/linux/atomic.h        | 17 -----------------
+ tools/testing/vma/vma_internal.h        |  3 ++-
+ 3 files changed, 4 insertions(+), 22 deletions(-)
 
-diff --git a/tools/testing/shared/shared.mk b/tools/testing/shared/shared.mk
-index 923ee2492256b693c5cf16cc014d9d2410be5457..937aaa7623320da1085a8e0f43f6a728ddd3ab1c 100644
---- a/tools/testing/shared/shared.mk
-+++ b/tools/testing/shared/shared.mk
-@@ -1,6 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
-+include ../../scripts/Makefile.arch
+diff --git a/tools/testing/shared/linux/maple_tree.h b/tools/testing/shared/linux/maple_tree.h
+index f67d47d32857cee296c2784da57825c9a31cd340..7d0fadef0f11624dbb110ad351aabdc79a19dcd2 100644
+--- a/tools/testing/shared/linux/maple_tree.h
++++ b/tools/testing/shared/linux/maple_tree.h
+@@ -1,7 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0+ */
+-#define atomic_t int32_t
+-#define atomic_inc(x) uatomic_inc(x)
+-#define atomic_read(x) uatomic_read(x)
+-#define atomic_set(x, y) uatomic_set(x, y)
++#include <linux/atomic.h>
++
+ #define U8_MAX UCHAR_MAX
+ #include "../../../../include/linux/maple_tree.h"
+diff --git a/tools/testing/vma/linux/atomic.h b/tools/testing/vma/linux/atomic.h
+deleted file mode 100644
+index 788c597c4fdea7392307de93ff4459453b96179b..0000000000000000000000000000000000000000
+--- a/tools/testing/vma/linux/atomic.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-
+-#ifndef _LINUX_ATOMIC_H
+-#define _LINUX_ATOMIC_H
+-
+-#define atomic_t int32_t
+-#define atomic_inc(x) uatomic_inc(x)
+-#define atomic_read(x) uatomic_read(x)
+-#define atomic_set(x, y) uatomic_set(x, y)
+-#define U8_MAX UCHAR_MAX
+-
+-#ifndef atomic_cmpxchg_relaxed
+-#define  atomic_cmpxchg_relaxed		uatomic_cmpxchg
+-#define  atomic_cmpxchg_release         uatomic_cmpxchg
+-#endif /* atomic_cmpxchg_relaxed */
+-
+-#endif	/* _LINUX_ATOMIC_H */
+diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
+index 3639aa8dd2b06ebe5b9cfcfe6669994fd38c482d..a720a4e6bada83e6b32e76762089eeec35ba8fac 100644
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -21,6 +21,7 @@
  
--CFLAGS += -I../shared -I. -I../../include -I../../../lib -g -Og -Wall \
-+CFLAGS += -I../shared -I. -I../../include -I../../arch/$(SRCARCH)/include \
-+	  -I../../../lib -g -Og -Wall \
- 	  -D_LGPL_SOURCE -fsanitize=address -fsanitize=undefined
- LDFLAGS += -fsanitize=address -fsanitize=undefined
- LDLIBS += -lpthread -lurcu
-@@ -11,6 +13,7 @@ SHARED_DEPS = Makefile ../shared/shared.mk ../shared/*.h generated/map-shift.h \
- 	generated/bit-length.h generated/autoconf.h \
- 	../../include/linux/*.h \
- 	../../include/asm/*.h \
-+	../../arch/$(SRCARCH)/include/asm/*.h \
- 	../../../include/linux/xarray.h \
- 	../../../include/linux/maple_tree.h \
- 	../../../include/linux/radix-tree.h \
+ #include <stdlib.h>
+ 
++#include <linux/atomic.h>
+ #include <linux/list.h>
+ #include <linux/maple_tree.h>
+ #include <linux/mm.h>
+@@ -1381,7 +1382,7 @@ static inline int mapping_map_writable(struct address_space *mapping)
+ 	do {
+ 		if (c < 0)
+ 			return -EPERM;
+-	} while (!__sync_bool_compare_and_swap(&mapping->i_mmap_writable, c, c+1));
++	} while (!atomic_cmpxchg(&mapping->i_mmap_writable, c, c+1));
+ 
+ 	return 0;
+ }
 
 -- 
 2.50.1
