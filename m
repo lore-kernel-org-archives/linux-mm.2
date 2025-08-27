@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC61CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EECE7CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:10:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFC406B0005; Wed, 27 Aug 2025 18:10:35 -0400 (EDT)
+	id 4BFC08E0018; Wed, 27 Aug 2025 18:10:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDA796B00AB; Wed, 27 Aug 2025 18:10:35 -0400 (EDT)
+	id 496D38E0001; Wed, 27 Aug 2025 18:10:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE99E6B00AC; Wed, 27 Aug 2025 18:10:35 -0400 (EDT)
+	id 3AD308E0018; Wed, 27 Aug 2025 18:10:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3C16B0005
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:10:35 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 649F6119541
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:10:35 +0000 (UTC)
-X-FDA: 83823932430.11.7517437
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 29C138E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:10:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1E9C1606DD
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:10:51 +0000 (UTC)
+X-FDA: 83823933102.30.1B9B237
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AC16640008
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:10:33 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YcpE9LNV;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 160051A0003
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:10:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BZANU+85;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332633;
+	s=arc-20220608; t=1756332650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KMi10d6QgZutAbGzL3nSBlY7ky4aRhvMewcb8M9EfzA=;
-	b=MXOSG595lLvNVP7bbA7UaHxqnRUBWKPzfLfH/Av3VZy3H04i6dzW24oXkA5Po8EgcUDazv
-	NRNEdFKDkxP+3GjGjHx34SzZTLjwSrmX/6PcPPkiXIM/w9Ga8uGVyzPS3vvmE56xTrloco
-	aWABKCnzg3jFnFewas4/xyVGA723lp4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332633; a=rsa-sha256;
-	cv=none;
-	b=nUHhgjvGvmWYRcMNbUa6Ja/FWwryeWO2lAVBWschBoBU/XbaLzXJmpBtiamMZcRKYdOwhG
-	MV1g3KaHrDgpOnsEKlAQ4KobMnQqq0y5SZsqChLDWz7S+db82f7g3cFPS5ctOTlJdMX9fk
-	wv5KZAZyiXnVyai6kBDqrWh4ClNqIBQ=
+	bh=YpVNTL/msyfj4quk+zG5idx/zOSmESitaXX9oJyyDlo=;
+	b=4rQOYvk1Q0j2zHpujD7TwvXEpHVI1fqaIH1n+koHwQVA1zKWZ6r0xjtAUyXy9GYUfGExjw
+	+7au1vP62hBZFU2viXjsRJicSXByJ+cAFPdOW/dFhBVjsKydmtF9DoYEKLmSDu6EkFdi75
+	mC0IbSvjL2upd/nUhYooO8bwseaNzQw=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YcpE9LNV;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BZANU+85;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332650; a=rsa-sha256;
+	cv=none;
+	b=DMoXv4wrT376fy6vPF/PX6Q1ND4BXz1mgJt+N7zHl4kEfbAGSG6tGjl9bONot8upTxUPtP
+	DBOpXgk/q0EMhfQnVgPDEPJ9ZH9FpJ/d0Y638ES8EuMewjGcKoe3NmfhNqC/3cl1MHxrKY
+	c187d2PwQ8QViBAenFsLCmD1UJvL3i0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332633;
+	s=mimecast20190719; t=1756332649;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KMi10d6QgZutAbGzL3nSBlY7ky4aRhvMewcb8M9EfzA=;
-	b=YcpE9LNVWGzsK3hAM6dSvjjl7XVgCdr4GQxEpMplRiHX1B4WliaXzsW+4aLsNWk8sOvRok
-	7gJtd+zzpvOgwacuIcy8LjkTxIrfPI0CHuU1m75sfJtwWFB+czoiHrI+D4+SY5sSpYSb6R
-	Rqy46nUO1gbS/yudP6afalie1lGWkzs=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=YpVNTL/msyfj4quk+zG5idx/zOSmESitaXX9oJyyDlo=;
+	b=BZANU+85yB7tncPYN+YM40dTTsFwGWz1MbbHv6KfK82f3hAJ7qHAATi6b9tst0N6VcSqon
+	7UgfHw5uxhB4quho9m14oG//1ktqnK+uRrGDin8jQaQwcpFX6Ah5EgsCMSOMiBmdR16pGz
+	VIZAffm7Ssvnct6KuYXevzajzpISQBw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-Kk9fYkzwMM6MQxKq-D-h2g-1; Wed,
- 27 Aug 2025 18:10:29 -0400
-X-MC-Unique: Kk9fYkzwMM6MQxKq-D-h2g-1
-X-Mimecast-MFC-AGG-ID: Kk9fYkzwMM6MQxKq-D-h2g_1756332624
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-sl5k46szNKGimV3zS5dDew-1; Wed,
+ 27 Aug 2025 18:10:45 -0400
+X-MC-Unique: sl5k46szNKGimV3zS5dDew-1
+X-Mimecast-MFC-AGG-ID: sl5k46szNKGimV3zS5dDew_1756332640
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0FA831956087;
-	Wed, 27 Aug 2025 22:10:24 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 75B6D180034F;
+	Wed, 27 Aug 2025 22:10:40 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DC4FD30001A1;
-	Wed, 27 Aug 2025 22:10:07 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A20E430001A1;
+	Wed, 27 Aug 2025 22:10:24 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
 	Bart Van Assche <bvanassche@acm.org>,
+	Doug Gilbert <dgilbert@interlog.com>,
 	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Alexander Potapenko <glider@google.com>,
@@ -126,22 +127,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 29/36] scsi: scsi_lib: drop nth_page() usage within SG entry
-Date: Thu, 28 Aug 2025 00:01:33 +0200
-Message-ID: <20250827220141.262669-30-david@redhat.com>
+Subject: [PATCH v1 30/36] scsi: sg: drop nth_page() usage within SG entry
+Date: Thu, 28 Aug 2025 00:01:34 +0200
+Message-ID: <20250827220141.262669-31-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Stat-Signature: 4qiqm5rf88ngmjocfmj3utesxcabxpj7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AC16640008
-X-Stat-Signature: 6zzheo1f3rsn88mhs37woy6higt9y6g9
-X-HE-Tag: 1756332633-238549
-X-HE-Meta: U2FsdGVkX1/mbnmodJpps1lLc2EivUSnItTkS1qYRHoEi1y9keKq1ViEyy32kB6DQ0bPtBp+Yy2h6EAWPqV/YMWOvhWhdw2g/h0ITS68JeGWI2rICr+STz8apbKIECD7IuN3zSBm7Y1f/DF+w4RsGq3zmfdJN4v21i6587LDkXjXt7wdLtjQSyRPTWBO/4NeR27DPAhhhxxWVc44RozzERI1a0QG00cg6clcWpASECJ6AeKEpcnfhQFa9IoKAEV6f+/FC9Qtx95Pq0mblz/OxDpct1VJ1ERuX4Mg5TOYjjBDkdHngFERZccnOo4exaMa7iTX7uuHJJDU08RQZAqdgV0SshTn5gTGtmk/QhSVGChV4tqXbhrZ/McXONMKlqYukRJH+ceDsyk3c2S3YQAXobsySaU+MVELB5aOWH202CHwFBSHm2TVh+wdeiIM+ORuCW+mADQiy9DetZLgTi3CF/umDkyiMXrUX6Z5FpsC9jEMj/p4BuDOAK1HvOEP1vx7GBHy6x0yLKwt20W9+EsAjhO9n0Yt1Vm2CGO27t64OJu0D2Fcvs2gUKc9+h7aoPFPRzA539FVnfxmFZLhUfIdy0n7mGjjLBGiENCn+CQYRa8tvE18YtrksqsYh8faJfob9/jEG2KvU3GDtZ24fMklOf4QXKZftaCUNvyWp0UOJR+U6ecgFxKndDKgHxzoHfTWcuD2jAVc8wdHf+aLmHLsHW/UfdjriBGOQfR+EGenErgWIJYaVom96Ns2p8h0HNA2uLH/ATupHj3S7jOeTFHeBCA1QIx1c8aXkoOkJlA9tkr0DKrP00DHLAJqqV252Fi5+2ptnHv4MhoFF7338F/jDj/zvp7RfmxIYOkkquDkadIcnwiR4bkOS6VMRnChJ4w+NJpLo4blSLqEjbge8lRB1R2R2YSdq74GOOP1J8ngXwg3N/0vMO00spvQSBvtrOpQCz+O/ntspbinHMiV1Fs
- 91RYWUS0
- 3puexsIzAc1F2ja0XVs6UetegjYumUPikHYs51BvoeHLerfk3D7MdcvpwgPRsw+DmO/oECCeoDgiQamYnqKl4KWhbhuoQDyTDaA+p1UMcPs7ePSn/wsvHp8HiEBLO9PjwDSvi6sEKSW531Mrkrc00arSVLnjzv04DTGS00E38JsUVyauSRxwCOPWkk/ecFQT2bU+w7/YCMo+ZjlScIXWXKzdKKzso7FS5fgUv2xeubVpo3LLpjWahepGMUdlTxzll3rKJPVd5S5AxbhJbf+S7cwdMia9q8E8e+EhK0xES8Qgt7Jd0K+DzqpgVc2V4GfNy8XGwbOgnIOuxcLI95tYt58msZdkjTBqlKQmHU3OdSiNR9j//h7EDPrt/WLtTW8COODYwTw8ZQ654FEi4Me646fqvTGNoB5kzDLZwsyDaF83GBTyBwDM0J55N3eW90ZXElmnV3EPZmjS0a/toa+bmeiED1HEfQUN1Gmc4NSXy8Shs3k0=
+X-Rspamd-Queue-Id: 160051A0003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756332649-650857
+X-HE-Meta: U2FsdGVkX18tQXZF6JraBAJMWbQZaljivU7huNvGnf+RME//caydOSnsqjuTSSr3JcP3l8JJsxGjFX7GBeg9XRZf8BnE+fxCO6W8R0gxM+mtPrTU1b6UXpI3g2BtVlKWwWFZ32K+8Q8A/k3XLp+J4njmMqSD87NyhKRhEUV0sZMf0sNv+Uv66lgLMxgAYgRFIG2PKRpWhztYUrKYlzU8vVP5BhvfghG+vBmVwJYAP8yavjU03GpL+Wx0Uuren5E8ADRntlB9+/BtT3RdYiQQ2SKGGmqGecVvUIaOvmCHL7XHXuIT3AiyX4JOYnUYsHw/+frK8+864cEXDozcwN0Zv1pw0oHuRqI83HAlEz7GfMf0XHhaVqLsgXXBYPWqH3mWBW/vxPzDd3MCntBQli4Kes0s3OjBNkWmkuEyq3g4tRQnOU/6vgU0NQEARonInqaO9wlMkvqQkCBpzkh6FcMjiacrmCO+6GdYB1gACiHOh0SB/n9Kx3iIGcnv0cAT2r8KqyVy80rymLz9L9a7GQa2nb2IVd3z3ftnJdERygsWyZP3xLTUivLeqpWkLwrHnADo53fAamPkZNAEuKyepA3xZa8WSr35SF0IbvJ9eFaahJ2ExqxFPovSNBd5OSqGNBrfjC6kWs8kycoafh+oeGF/bku6J9lCGQmoJcVaEQUqlRvwU+NdTA5g6D/8mIayEMo36lRUvPWNIcVOM3E7aCev4SZBtKziz9NSEOYOB5B0KRZj6RxLbM+kX+OftuewYVMETNpy9MuebVdx2C9wPvrp4lpWDHgegErf07gT7YNb72203e9+7cPquHl+q1YeHPJwcanQGbn+y+U2HyuGFf8seaf/UqnfJAfoalTq9s92kut66BIWCdNsP3c56InQdRV/goA3bWmXEzc2i71quonyigxC5zGNhnAzI7nQvKvS7GTVaEwBaQ50jtbcdnPmSQolZRixofT2oT4flBBVZI6
+ Gcrgl+s3
+ 0n+cyX2qY3l1Zk2XXH/angmOJmJ20KG3om5uisjbrNS5Nz9LkACBTEgBPSt9eBX7udqiF5E6ti1beBQLWcp6mOYOMPz9aSZPzkVKIAXaE8LZTdSwJK8XLnp2h9ZVZFQoEwEdtatt+I3RR2mV1ONM/jchhzbpjo2NzQX2dFkSa4qGw2ZxUEplGpPSTM/oSZXbqkeOocDkP6JMeJUzMeMNFbI8LgpgfbWB32MWIXCQ61H02E4RZ0tFXhKSGUQyl2AEQ4d+9Q8p35Lp+X+QoQGKyBdUlsXr/hitFZX2DVLkk7i+kVjiwh+NO0gYJ/z3xEeGn+1/Q/eOgIa3dnnCLCalgWcvI27jrs0u3yw2274x8mv4GQVdOLWTbRpTRRGv6uUsz4g/EVBtTUrnJQ7+yEeI9v/qWehFgbR481FIbjoikYy6eTh6x2tNY7nqzTnuAmzZdd4GjZ5e63mCRb+dCdgddakO0ULXifYJYKaravvbillmp1pYhneKFhS4Tamm4CaY0rNeYWrDohjVQawB7cKhUJXJN+fHI0xm9doj0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,27 +155,28 @@ It's no longer required to use nth_page() when iterating pages within a
 single SG entry, so let's drop the nth_page() usage.
 
 Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Cc: Doug Gilbert <dgilbert@interlog.com>
 Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
 Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/scsi/scsi_lib.c | 3 +--
+ drivers/scsi/sg.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 0c65ecfedfbd6..d7e42293b8645 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -3148,8 +3148,7 @@ void *scsi_kmap_atomic_sg(struct scatterlist *sgl, int sg_count,
- 	/* Offset starting from the beginning of first page in this sg-entry */
- 	*offset = *offset - len_complete + sg->offset;
- 
--	/* Assumption: contiguous pages can be accessed as "page + i" */
--	page = nth_page(sg_page(sg), (*offset >> PAGE_SHIFT));
-+	page = sg_page(sg) + (*offset >> PAGE_SHIFT);
- 	*offset &= ~PAGE_MASK;
- 
- 	/* Bytes in this sg-entry from *offset to the end of the page */
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 3c02a5f7b5f39..4c62c597c7be9 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1235,8 +1235,7 @@ sg_vma_fault(struct vm_fault *vmf)
+ 		len = vma->vm_end - sa;
+ 		len = (len < length) ? len : length;
+ 		if (offset < len) {
+-			struct page *page = nth_page(rsv_schp->pages[k],
+-						     offset >> PAGE_SHIFT);
++			struct page *page = rsv_schp->pages[k] + (offset >> PAGE_SHIFT);
+ 			get_page(page);	/* increment page count */
+ 			vmf->page = page;
+ 			return 0; /* success */
 -- 
 2.50.1
 
