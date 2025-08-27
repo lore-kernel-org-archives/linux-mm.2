@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A47DCA0FF7
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C66F1CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:04:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A08476B0092; Wed, 27 Aug 2025 18:04:15 -0400 (EDT)
+	id 1A4466B0095; Wed, 27 Aug 2025 18:04:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E03D6B0093; Wed, 27 Aug 2025 18:04:15 -0400 (EDT)
+	id 17C446B0096; Wed, 27 Aug 2025 18:04:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F5F96B0095; Wed, 27 Aug 2025 18:04:15 -0400 (EDT)
+	id 092126B0098; Wed, 27 Aug 2025 18:04:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 79D0B6B0092
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:04:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B9891DE8B6
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:15 +0000 (UTC)
-X-FDA: 83823916470.25.F790ACB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC0436B0095
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:04:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C26B1DE950
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:29 +0000 (UTC)
+X-FDA: 83823917058.29.94D9279
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 89B7514000C
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WcvxaeAU;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id D559114001F
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:27 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UnMe9JRW;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332253;
+	s=arc-20220608; t=1756332267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eNV0RLrXImII8MTHVic+30uUi4HjChlJ3z+rf2azYps=;
-	b=11KphENsTNLRpW0uoHMZkJ0xpm4STwdHeatf/PsxW3kk6+7Ta03tYiwUZKuvRIiqxeSOpC
-	oUTea6Bup90MeNfXM6w8mhXykIYwBQXwXTh3KI+etwbYN7eG8cRVh2Zhft4DYEGcv4f5n1
-	GPpRWJ73AACVyo1l3xul7bBVZ6aClaA=
+	bh=L6FCsZfzSN7fAFSGFsxI24ix2lgnSyrxfbvzUHWhoBg=;
+	b=QHK9EofgZ4XraMroWr9snrWzoYUDWhvoVDZf30xMBv+xJ6pMeoRUJPsU8aVlYhlW/LgtPB
+	gSChwnxDTpuJEUQWFqRMO76/qDw3T4b28qXhPBwZFEUQosrbQC/rt0+R1vOsPeaFnuqQbg
+	HihRoVwxxZo3rubVy/VEJe9wg7+T5/s=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WcvxaeAU;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332253; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UnMe9JRW;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332267; a=rsa-sha256;
 	cv=none;
-	b=Kzd3hkP/SkKPZvxaEr4vSGZtg3hF0kB25Qg/XjF9hhTSkahoD9F5XeKnlasnqYsNROPBRo
-	uvW9Uf96OrNw913NI1UOKiANKmlMsoPHPicfk2p5TVwyfW9Gd/BiBWkoHeXTujXUzTXNZw
-	m8qHBGJF3aDP4Sj2qPlvtLDTvU6H1gM=
+	b=JQjXymUkG9pFWkQVsFrpIm7TFAOuCqmSWNTrIFpHAuEReqHVUUJoNMH3KkSrRcNZnOxblK
+	YtE7PdgiwNo6K8fP9S7XQsWed7/MhGVzklLXt7/wsydq7HjYmSeb85456cdBkQnSnzsmdE
+	5yfz/MzEdqSglDc3K1NOULy4e60BsyI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332253;
+	s=mimecast20190719; t=1756332267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eNV0RLrXImII8MTHVic+30uUi4HjChlJ3z+rf2azYps=;
-	b=WcvxaeAUWBOw4JbR5AaBMtJixruvBNBVo7IGXJaM2q8O3SKXStyXSTzC7HiKxUdo9UYeLF
-	JTq1dAnGXo0/IFPhsZtvVACCz3TdxWGP1muxWLLhBCmQiEF2fe1oJq8kpiBS622iPeXEBQ
-	/VJ/k5uDTu8lLfqVqlS7DbxJ7I6p8uk=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	bh=L6FCsZfzSN7fAFSGFsxI24ix2lgnSyrxfbvzUHWhoBg=;
+	b=UnMe9JRWlzOTDNrwJv3bo6U4o0cWGoRiUWj8p1Wi3xJ5HQcRaFiEUvHuH4TrteWOyGqPeG
+	pdRX0AissJu9TdHkKqNu6/mLQDAJbLBRZOEju+LEQA7e34YpaaZVirdB8la8YuDMTzw/dS
+	xB0zqL35lOOluBjqxKGu5yFnVoWmWqE=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-41-stGls3aeOcqifozns1n-DA-1; Wed,
- 27 Aug 2025 18:04:08 -0400
-X-MC-Unique: stGls3aeOcqifozns1n-DA-1
-X-Mimecast-MFC-AGG-ID: stGls3aeOcqifozns1n-DA_1756332243
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-DyeoCm-sNhqCtBzBrbRJIA-1; Wed,
+ 27 Aug 2025 18:04:25 -0400
+X-MC-Unique: DyeoCm-sNhqCtBzBrbRJIA-1
+X-Mimecast-MFC-AGG-ID: DyeoCm-sNhqCtBzBrbRJIA_1756332260
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1021B19560B8;
-	Wed, 27 Aug 2025 22:04:03 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 15140195609F;
+	Wed, 27 Aug 2025 22:04:20 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 14DAD30001A1;
-	Wed, 27 Aug 2025 22:03:47 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A03B330001A1;
+	Wed, 27 Aug 2025 22:04:03 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
 	SeongJae Park <sj@kernel.org>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -123,23 +122,24 @@ Cc: David Hildenbrand <david@redhat.com>,
 	virtualization@lists.linux.dev,
 	Vlastimil Babka <vbabka@suse.cz>,
 	wireguard@lists.zx2c4.com,
-	x86@kernel.org
-Subject: [PATCH v1 06/36] mm/page_alloc: reject unreasonable folio/compound page sizes in alloc_contig_range_noprof()
-Date: Thu, 28 Aug 2025 00:01:10 +0200
-Message-ID: <20250827220141.262669-7-david@redhat.com>
+	x86@kernel.org,
+	Zi Yan <ziy@nvidia.com>
+Subject: [PATCH v1 07/36] mm/memremap: reject unreasonable folio/compound page sizes in memremap_pages()
+Date: Thu, 28 Aug 2025 00:01:11 +0200
+Message-ID: <20250827220141.262669-8-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 89B7514000C
-X-Stat-Signature: ppwn9usg8qoe4edt3urpapz7bm17ddhh
+X-Stat-Signature: 8bytr81zeqjk7js4hykwu1rz5tyhtmsc
 X-Rspam-User: 
-X-HE-Tag: 1756332253-395107
-X-HE-Meta: U2FsdGVkX1+fwIUeNoQOM/qTrz+lA7tP5gRQq+H3dyEnHoDUWlpiFhabFGJS73WgXUgvH+GEg7phivneQ/WlmJOJLxH0jbwXwWYTX5BIEkFVcWScFx8toFNdpKry5jutwbkc87cF7RH5NW4bV982h2jhItdFrCekgSGf0pbwTMpH7QWvmD0O1VqiF9SCl+jBy6R3HsWCV1rv8EXvfGrWZso2l2cVMH9h/cwkih/cUHpL9FNz/d0oo84HQZoReJkTiuWfm+LKg3LKIZzS+vSavj7n456XE33q1mvzH7ZJZgmqCXMedojqFqL9twNbX2GQHkdkRSUxOjexZ45AHR/l3XZNCqvJ5nKyb/5VwYMLPLDgvlJf704eZsm0wI93cgAw+iyBL4TAmj6WDkedBhnd80jVDbZV/teCJQse1MxzM0LYmjiW1Dn2zG7WQj6w1Axvqar0RSgUS8w5tgBwziDlazBHCeI9+o1ByI0xHuCjdB16x52BJqDqhLL4fKDnAMDcMbhbTePQP6Xw8YBaL4O2F7VoethqFCJXb8MNwRBunPFruwzTP9A+37aPpyREyLWnANJAiHd3LcT1UlCf7OhSprn6IDc8XKh6BcOmfwau3fW9W3jlag+wN1Fep0ijdBliEmY73RsPVm9BJs9fq/yy34Q/VKIaeNdZRknQTgWOjzehPHFZsIpPRd//hwxeqFEWuL8g2ROGVyof/qQErWfDpeFSRyogi4lSQKO8NURl0uiGbeiyDudZX6H8F/fWw1neYZtjx0+JqiqZAjeDxrfCquPq6x9kbRsMpLMqLTQZ/PUIGqPmfzYB1QXZhuGajpVKRbRl3Vl5Zm0YI3Tq1ClLrLf6lszmki/2ZpFnJjeTQGcsd7l9OqkrIs8ATjSUs/aqG8XtbAsbW6EYafzg8Ya0mzxrQxNAuMSBicH3qQzg+L5atAoO/f9f9sO7lKw7MSrFgZCmeOK8VtmwZ6QCt5N
- ARFZXL/7
- aTOO8Fj7YdrgiISHGCUvkUv8kPtEkGobJxsV+JJsEKsvr3M9X9rCmATn6dzCZXeO93zFTsHhuVBLXJOahugmuNgW1e+wmy7wzCqekGxhODP2K0EpdI/popXxkdoadYFQlX+AAYltSRwU9iPFnmVJPR/P9PAcrcZypUwA3H/4/RhI98dNaqcS6xNPLMY9zdoeMZS2fGXWG+EbzBBiqdjnlohDatQQF+/1RuWvVTAci++4aW0fghZ8ndszM3alqDPBMP67/bRxBbRNe0M0WwW93euKQPKJ0P2ZFZC070mK0msRP+FxXDFwpQCG572zmjzdcKrXdWrVIBiHM1QzRg/FAT/6LpsSkOlbvkvsme4s7nQjzDccAIL4RoIo6vaq8k3IEWXOv6DZxgvMbLlYZAkc3V9zA5vlJlSMXufc558bktAK2yO0=
+X-Rspamd-Queue-Id: D559114001F
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756332267-876789
+X-HE-Meta: U2FsdGVkX1/NLfQb5qaqZZnE4jU0bmuItF0xOECKxjZvN+IpHm3oY2v0V6I7mHc+C51EAAsfuZemZ6LIIKeGWjGqB4d35aTKj1MQzMIRN5zIWVe/+9/f9//Evrn4Iq4Mu5LeUmnU6J4z07UscbHwWUmo+i97KFGuQyfsOX321np2MlPe3G1Uesw0PycAxGRAcwExBG7yKbq+UIg7LFn9vBVw5tyAl44xoEN7E9z8pZTnJIo06hheAW430Gp2NIUrJkUUuclv/F8GzdymIGXafJ3Kjs7gpO7VZ6GZin2COWavLAkZBT5mCJqFlEOdDz5YWECeGZBxtqdgDWdn1JDF/M8Hp43xocmC+0dQwQ77wCmIexGmbX6TK+9oYOadE7aLxXoAGcr5oAwdLxnbHPqudCNiDmC5YO4VMDkYD4WhYOuRHetXA497xU2F2c1oD2GRCEwk/zrJsnr0frap3zo7aWi6GxLgGflWi+EW4CPLIDcbOGiS9/dt0q4hqQJvPnBjnvaWeV5lo/ABcR5Lm4JQiLwJJs9w9cAvuSQZAJIDasS4VbTPzBfp8fBsaf7NN4Wa9+e97Bg2NopVfkXl56dSKXEGyK7Q32oSQ97O8bOcOLuhKk2qQRNqwPRY7fIQotf4i1RKKYkcF6HPDkvGXThDPdLYt9Ksno8uln+Dbs+aESidu8Cfhe07BGzaI0m/lkdIMvoB0Tru+GLnCn5g347orjrNskYEz/jUHR2T8E9sjKrx2D9VZyCCuEIw8ra6dvv80r2538df11Nox8AYVYUSnHDjrAyiWTu9jyP3lPMWxJRLbNSJrmMcy2ZUGTVMLWI3DflLlYf1NAdgCfq5o4ZHwI4cyVzP+Nu+O1YJ8Vtx7MFRVVihiT0Ea0SHxD8a6yP7p/64almgmLS4uQg6GArXYXQWneAzI+lxQF9RUIOs1jlVNV8dh2anJ1vNQBINtWeXR20ZjbbuzFc6LGm4d++
+ gKsw2ZsJ
+ oHPd5VEvlAZfHsJG6th2BLFohIqcxufxg+Wze0Rbb9dL3yuuYg79tX4C2cvWmlcS0UPqyPgVPL5HRu6E1bIZ6MkYChTcSnYLpJYoUBwLCgwA8xfU58uyAxAF9BpUPE/hHPF8AqvB+ZF+zYQW/f6Y1IuFLDybscxp+3otlF9JVsZkEUOTz20pgjGXFrXYPSImfNwq2ZHnP5AxKXp5mYBjDL88I7ho6ZOA2mNIciopabYefc5nvmyRzQzgCpD7fM7qU2A4U0qz5YiT0OozMvdlcv31z9Fhw0AjtFwvT9a2aoOTaIoLtN/N+BiL+ruOoONc8jjJ6jM2Kfwa+z74PbhjEaW++k/aH4aME7PWn/Ove+dN1uh8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,70 +148,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's reject them early, which in turn makes folio_alloc_gigantic() reject
-them properly.
+Let's reject unreasonable folio sizes early, where we can still fail.
+We'll add sanity checks to prepare_compound_head/prepare_compound_page
+next.
 
-To avoid converting from order to nr_pages, let's just add MAX_FOLIO_ORDER
-and calculate MAX_FOLIO_NR_PAGES based on that.
+Is there a way to configure a system such that unreasonable folio sizes
+would be possible? It would already be rather questionable.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+If so, we'd probably want to bail out earlier, where we can avoid a
+WARN and just report a proper error message that indicates where
+something went wrong such that we messed up.
+
 Acked-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/mm.h | 6 ++++--
- mm/page_alloc.c    | 5 ++++-
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ mm/memremap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 00c8a54127d37..77737cbf2216a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2055,11 +2055,13 @@ static inline long folio_nr_pages(const struct folio *folio)
+diff --git a/mm/memremap.c b/mm/memremap.c
+index b0ce0d8254bd8..a2d4bb88f64b6 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -275,6 +275,9 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
  
- /* Only hugetlbfs can allocate folios larger than MAX_ORDER */
- #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
--#define MAX_FOLIO_NR_PAGES	(1UL << PUD_ORDER)
-+#define MAX_FOLIO_ORDER		PUD_ORDER
- #else
--#define MAX_FOLIO_NR_PAGES	MAX_ORDER_NR_PAGES
-+#define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
- #endif
+ 	if (WARN_ONCE(!nr_range, "nr_range must be specified\n"))
+ 		return ERR_PTR(-EINVAL);
++	if (WARN_ONCE(pgmap->vmemmap_shift > MAX_FOLIO_ORDER,
++		      "requested folio size unsupported\n"))
++		return ERR_PTR(-EINVAL);
  
-+#define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
-+
- /*
-  * compound_nr() returns the number of pages in this potentially compound
-  * page.  compound_nr() can be called on a tail page, and is defined to
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index baead29b3e67b..426bc404b80cc 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6833,6 +6833,7 @@ static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
- int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 			      acr_flags_t alloc_flags, gfp_t gfp_mask)
- {
-+	const unsigned int order = ilog2(end - start);
- 	unsigned long outer_start, outer_end;
- 	int ret = 0;
- 
-@@ -6850,6 +6851,9 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 					    PB_ISOLATE_MODE_CMA_ALLOC :
- 					    PB_ISOLATE_MODE_OTHER;
- 
-+	if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
-+		return -EINVAL;
-+
- 	gfp_mask = current_gfp_context(gfp_mask);
- 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
- 		return -EINVAL;
-@@ -6947,7 +6951,6 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 			free_contig_range(end, outer_end - end);
- 	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
- 		struct page *head = pfn_to_page(start);
--		int order = ilog2(end - start);
- 
- 		check_new_pages(head, order);
- 		prep_new_page(head, order, gfp_mask, 0);
+ 	switch (pgmap->type) {
+ 	case MEMORY_DEVICE_PRIVATE:
 -- 
 2.50.1
 
