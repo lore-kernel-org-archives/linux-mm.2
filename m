@@ -4,111 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FED4CA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 09:13:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 309F8C8303F
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 09:15:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1443E6B0381; Wed, 27 Aug 2025 05:13:17 -0400 (EDT)
+	id 456CD8E012F; Wed, 27 Aug 2025 05:15:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F57F6B0382; Wed, 27 Aug 2025 05:13:17 -0400 (EDT)
+	id 4066A8E0105; Wed, 27 Aug 2025 05:15:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFF648E0105; Wed, 27 Aug 2025 05:13:16 -0400 (EDT)
+	id 2CE508E012F; Wed, 27 Aug 2025 05:15:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D34876B0381
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 05:13:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11EA1139C13
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:13:16 +0000 (UTC)
-X-FDA: 83821973592.24.3D4BB34
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 759561C0007
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:13:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BmA/SGWq";
+	by kanga.kvack.org (Postfix) with ESMTP id 125B58E0105
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 05:15:05 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CE00EC051A
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:15:04 +0000 (UTC)
+X-FDA: 83821978128.02.FC6606A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 786FBC000B
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:15:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pch5YCGy;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756286102; a=rsa-sha256;
+	cv=none;
+	b=o1WjmqcP/eYxmYs9xh2iTuI3TOmN9k1utY9fU5+ReCQFly8vvoYIQIyep8xmMH/AGCPpWW
+	mcb0b6gdElJ2MblpWyxBEpd7+fr7SvKDg+mc3gCVCXE1aDL1ZvDhr5s+6md5cYYrT+cYzi
+	bsyXYySkmI2M48K+ge5V18oMMYznHug=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pch5YCGy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756285993;
+	s=arc-20220608; t=1756286102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x3R5UIBu60N8GGCrwU0rXeHVTKJbO3dfGTf6qmwj8MI=;
-	b=bOCXkx85j1FPlsAlLp6iGDqe842994HXCMIyR+iy69niVN0va8yhiCEW2N6SjJVXZE5APj
-	7TKcQIa+NZuDJPZvJrY8A3SH4DbKoUwPS5aIQTM42BSOGwK2HcQ0zNFZH5LIC78Xu9VBN6
-	P5I0pnMpbKXxBYQdfaFrHgxjEM55fwQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BmA/SGWq";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756285993; a=rsa-sha256;
-	cv=none;
-	b=U5nOJslstI2BdA9fJuCTr+s8J8boBpQTYaTuczsGnsOoUvujzH6EDVZfmc5s+XRQr2llc1
-	9Nrb5VjIkb/ZVGEcogJMYsV7qlmFw9PszKhbX9K8fKzwBNvpn9C2IZYbFMVTvuTPwW1W3J
-	6ls5Y0ZFLDWJeS0KP26MUDZS0wBqOoc=
+	bh=JFYArG1HJZsUAczDlyYIIUDn+FFv+3hnPLzf8oxcMao=;
+	b=X+GGLpECmoZuvDh1OmL8D1zNTPmydQeNVg0aFJ8zwvjJnh3e+xzI38Zty+Yw6ZB6MldKMA
+	RX0g7IQ8JmIWFsgFlUmm/xpJNXVinc8cNRxlJ4GCbgjhIg6nLlSyq7/AcD91lP94uL+raX
+	1BAbEQaJRPcky5lFrgbkY2jbS4QJ7Cg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756285992;
+	s=mimecast20190719; t=1756286101;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=x3R5UIBu60N8GGCrwU0rXeHVTKJbO3dfGTf6qmwj8MI=;
-	b=BmA/SGWqCWULwSLB2ngxz8hUYiIO4bPj0Q6XJ3xkv2QTnrsyjzPDVM+OT0+4Ub9X7njqCO
-	ityt2fLk30uaOacc4NV7Y/b5jeDi+j/Gld4TAUyme4rfr02gk2maB9ixV5BSBREaRBbYFv
-	xCnLERD18zUCcCOVpd/kUjrpY5byjsA=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JFYArG1HJZsUAczDlyYIIUDn+FFv+3hnPLzf8oxcMao=;
+	b=Pch5YCGy+Cbt1P6cpO44bvFFtj7RQr1w/U6TxKkPDQeLQlKpGFrzuzauMD+ZRaPCKT8Egi
+	GovsLujyS8WMLLihcqCNfb1ODHwituHHTHi7x1WgoJ7XumMrinLoRs9DWTXSC3fFBDgVGi
+	OxZBKJe7qbqw17oTL7TYN+anaucUNro=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-nDPFarWtNs6GSX1vTeoHcQ-1; Wed, 27 Aug 2025 05:13:08 -0400
-X-MC-Unique: nDPFarWtNs6GSX1vTeoHcQ-1
-X-Mimecast-MFC-AGG-ID: nDPFarWtNs6GSX1vTeoHcQ_1756285988
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7f674810ddbso266796485a.3
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:13:08 -0700 (PDT)
+ us-mta-612-aiDE6ZTuOmuIHRuk91N-zw-1; Wed, 27 Aug 2025 05:15:00 -0400
+X-MC-Unique: aiDE6ZTuOmuIHRuk91N-zw-1
+X-Mimecast-MFC-AGG-ID: aiDE6ZTuOmuIHRuk91N-zw_1756286100
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4b2f9e8dca6so641621cf.3
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:15:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756285988; x=1756890788;
+        d=1e100.net; s=20230601; t=1756286100; x=1756890900;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=x3R5UIBu60N8GGCrwU0rXeHVTKJbO3dfGTf6qmwj8MI=;
-        b=TyJ7jLwqrthENNYRqbVIWwwxlMaBhpBEqam7l/dHmN4hPhD6utcXGJaKS5qcypTNzA
-         3XoFPRrKlgtGqBaAziPfdFDgkS8a1OLr9WJLSbaDk2kOu/oTIpnE+bixj5gnB/ItAvQd
-         aDp13+wlLTOSxV3ouIehtIvEGhjL5HWJ5Xvobl8snJl/v50WRzjoYMEkINAGtnRqWv/+
-         cGxZqulAR0z41JckTgerxsija3drcsUPhqYBfrmOuT9N+JEmZ4Cb0+d4nxWLXbymM4o8
-         TxABclejPHM8fJDUoIYN8ir3KfPnLEYMJDSyb2u8g368TEQDNLYXRNKvHNa6/jhVs+ii
-         /CXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWyUqSBlr3US2e8Bnvlt0dZsM7rNnuYTu91YEE8QhLnR+Cwd0zHf4wDMNgvQOk8jB/bgnmVGmqpSA==@kvack.org
-X-Gm-Message-State: AOJu0YwOS7pDZCPvjfUIjdU6XorWYYmYECCvCY/pps9dsK5kjV14f+cb
-	bQb1KXN35AcwvFnKMyNpX14zTwR7DTCpli/am6NeP3horIqkAkfQ2ioP72s8/O3Tdbh2wcwDu/I
-	+G5wdOW9Zqf538LeMXte/Pwf9xjZSx5eSpKR4EIqP+T1rjkixryij
-X-Gm-Gg: ASbGncuPopUoHa+7zPCaVfRfKocbP9LAZmME5T08th1P/cWCRRUY4ZtwNw+EiFErqDA
-	dJoZQ/Phphw9GEHCWLd3z4oyyv4kRUmr4rwbqAqe/3RutmgOkkZTuZJpcEcbFlwTPSD4MucDF3r
-	IGhm+gqftycEJfTtxEoo0rVZ+7IGPeigsmW44uFyaxA4i4e6wmEWDMp9ajKH+hZZxPc6jQwEpFo
-	CFDdkxoVdWLufeHImZHkoMuvYXXFbPH8aDnnEKobgEXF23brQf9+asvHSScl40wekSOjOS/yEK5
-	w+8cvQCX37MY7tdQ9qppcWs4kLJWPs8bTC4rE/bdP7QCVrye3S2apeKX4FCkTw==
-X-Received: by 2002:a05:620a:bd6:b0:7e6:218e:ff2 with SMTP id af79cd13be357-7ea10fd9fe5mr1992934285a.20.1756285987753;
-        Wed, 27 Aug 2025 02:13:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE25yZ28t05+y+8tGkTrMZGNC04YKUGA762w/1HEenRyoEnjTTJpHwY5f7MnLOX5vOcptcYXQ==
-X-Received: by 2002:a05:620a:bd6:b0:7e6:218e:ff2 with SMTP id af79cd13be357-7ea10fd9fe5mr1992931585a.20.1756285987096;
-        Wed, 27 Aug 2025 02:13:07 -0700 (PDT)
+        bh=JFYArG1HJZsUAczDlyYIIUDn+FFv+3hnPLzf8oxcMao=;
+        b=Jrq/7QDM0NEQB6IzQgzFMNnXMrRFn6/bnTlRvSWnqE5/hZ/ja6ClzSlRI7HtQqvAhZ
+         BNJbSyR54n260MF4uudezXjAPoPYB1KPAkcz0i19hkgNEvJKrCZK0DiyF4tTtGpXxJvQ
+         HdjPLqR8BdQmJrAO2vWSqbWrKJqzwZ5wdGEr2dPaeoVDzL49CMCYpxrPcwzc+nugGQ0B
+         NOlVNPQdQOWZIY0WXUxiY6UPoVaYihWrCA7Va72ASLdRtzVVGanXq0Bw7YkDd6AmRfLa
+         3VxQJzcvBv+4FQph18VzTzj2q77RRkRp6XcoModAoubnodRkcNdkMcUGXk9Sr8Cf4vGb
+         bxgg==
+X-Gm-Message-State: AOJu0YxoTwbuDMRipTX5vhi+W/ZUK+rqQMyUHAB87isz2bdyk/DXmBcu
+	9JlG4HGe7UcTyUZ1NaGlwEayYbFXDkAixpY2iM1qtZmXskWFz/rmaKmiCHa7qw9F5dXpUsb4azv
+	NdwYLiv43qy50ufWfwCMOfk/AYUAzE13JFuj5t5SuWVRzb5yqcN65
+X-Gm-Gg: ASbGncu0j0dVR6bhJ2l4OD8kFCw1WUpDZ04W1/kC9i/J3ey6c5PI675x/DBudj7MbzH
+	01KGRiLDssGYKeyFECeroe2Cuw6+bRZOEXb4drYOkqwRGL0/BU4D698eztfAe4uGaL16E2/Ux1q
+	0L4MmToivICx8AukxCyqF0J1O4KG5hmomeCvugLA75IFraBaLJSfnEFgX2BvfT9VcZjEF9EDjrE
+	/5bYQidMfbAvVf+wxKBB0mWtA0Z2nHXe8j4pDb27uuTkxGbfm3lnGZVYxHLO428jGxm8R5co+V8
+	gbRIYbapoYMHlLELiS2SF/j0ONEgDHbag56BJ2y2YJSY72B+zEybelHlANQP5g==
+X-Received: by 2002:a05:622a:54e:b0:4b0:ead9:97fa with SMTP id d75a77b69052e-4b2aab050f2mr226856641cf.44.1756286099850;
+        Wed, 27 Aug 2025 02:14:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF9jkF62DqJ7HOEmD8rIQ+BRG3yjmZsBt0WHPem24PuhV2ZxmNM4ZLQXxcDZZAOAiBfzvjd6g==
+X-Received: by 2002:a05:622a:54e:b0:4b0:ead9:97fa with SMTP id d75a77b69052e-4b2aab050f2mr226856401cf.44.1756286099411;
+        Wed, 27 Aug 2025 02:14:59 -0700 (PDT)
 Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ebed8911aesm830103585a.19.2025.08.27.02.13.04
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2d4d048bfsm55006761cf.53.2025.08.27.02.14.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Aug 2025 02:13:06 -0700 (PDT)
-Message-ID: <d4f8365a-a840-4024-8d25-d7930035947f@redhat.com>
-Date: Wed, 27 Aug 2025 11:13:03 +0200
+        Wed, 27 Aug 2025 02:14:58 -0700 (PDT)
+Message-ID: <6dd69fbb-b043-4c18-be14-e9f70b6c0c06@redhat.com>
+Date: Wed, 27 Aug 2025 11:14:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: make folio page count functions return unsigned
-To: Aristeu Rozanski <aris@ruivo.org>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+To: Matthew Wilcox <willy@infradead.org>, Aristeu Rozanski <aris@ruivo.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
 References: <20250826153721.GA23292@cathedrallabs.org>
+ <aK4EOf-EE43pi-xq@casper.infradead.org>
+ <a959a7f8-20c0-4c2a-9cef-ffad4f8b805b@redhat.com>
+ <20250826220041.GS3581799@cathedrallabs.org>
+ <aK5daUurTM8ET2gf@casper.infradead.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -154,21 +157,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250826153721.GA23292@cathedrallabs.org>
+In-Reply-To: <aK5daUurTM8ET2gf@casper.infradead.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HowV5Rn54PnhSxIiH7eR95JF5iMvnFFScKGQBOYnbus_1756285988
+X-Mimecast-MFC-PROC-ID: P59wMz2I_mbybP7xL5b5ysm8RbCxQPRbXJQ66F07Vm8_1756286100
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 759561C0007
-X-Stat-Signature: jgmuz8f38rb9nzyiytc7ozc5eppknfw4
+X-Rspamd-Queue-Id: 786FBC000B
+X-Stat-Signature: enit19ejyg7djqnpugbtqpyh6r941psn
 X-Rspam-User: 
-X-HE-Tag: 1756285993-14652
-X-HE-Meta: U2FsdGVkX1/Rf2hC84hpkZIaviuxSLzlvnCL81tOvZIg/7P/nUhQY/S7j4ONn5lmZbHQIboyAkdmpPg7HyyQuiarwn6GYw3b9HCNgToAAmxXz3uYE2JwuXK9cTlfh76v4cHIUD389KhGHiVL/FbpskbuTmVeSamiEK3j0m6ylusXpYN+VT84GYuO0+gElHNm1CF4bt+yOHGA5s5kWYpBFJD8+hBhM9SdtcESkVVJ7G+T05pbcU69ftiFVng9pO/+Ndbl/BiYexKd1s8Ubascm0ldXNHKKdjgVkmI7LI6Eop2MzbuwDEvzfj8g6IETYC1fDJS/b18Fg4jARTI1k+FovokDFn5/vA79nwwLI6Vupb96rHCUxy61abkN1/mjTIkSxX0ANxjTuvXuE46IYOJxp5h+4qEw6Muz46JcuUgfDt3WHUeg5fDK6WZWYrEdPj5mAEoV6Uh/8EcEqbVuureHEEyLMP+n8PpfjI8xzrpkosbIwsLg3GcXw4FgZmaOkKpUNkVW81k8yGDjoZkRB+iPhWg1/UeSlvXakrs5gbLrrmAFfZLH2TqFT7/6qrketuXGpN6qzImUIXQJwf25NUb7jGcJPAZWi8vy2sChtX6/ZOaSv8yCovNRgJa+CeGMMalgHfRKgR6Q/qivQWJeoSlVjTErbpLzD9FmVsJHiuxkM6MepxB8iejge+i7v0wCZ5Xum6RRaeUg8VJDGOWVkQlfqJrsbUMQC+2O0/Okd2JaIvVKvm5o7FXYXUohYw58DGDxLYqKJievHIWIZ+3sh1/1yLNuyFErHZGApcs1BXesF8w+ps74aTiU9haZQDOgYM4IpZNlMCHd9iifVXFVRWfplwRw5VDzEHKmzVckQYIa9KYa7gTmmVLR7gsx7o70Javt82/u4ywtC5UXGp/8mwRZ94KwgP6eXBmEvVBQL+Bgm+VMzJtI1t2ATJn1SmCmDVuDalAB0FlSIbYB+LQGl3
- 1azJSZup
- 1FCowdq2oc9JPpO1WPHue+AWsozDwa2RJkgh7cIM1nCTTZmQi2vXpm1XMU/RFlQ9DHq2m/rtJMya+2EYbdR/p/Tp3DYVsfR6mqKyvYwaMWUEeDS4qN8mN1mAKpRGxj+fRmaI2JN2Z4Ng8MAcNqMpVJqeblD/a/WinxsDq35j+f+NBCjIzJVFmulM1Az3c8aJvAoiRY8c8TerrtoRv2TpjNEBgagVr+y7v+zMEHbQDGwZlCzx4dvv+QS7jvc3DZ46AXLqE8BeDGroShPWZCUZYXWP81zq6nH1wXv6JZZVYNwdvR75c3cjiXXyKDRL/8caUWbPFWtiLpE1uW0QS6K5x3q1V72OpM5Awvo74L1RjBxe+KTmBkW09pZKLfpaHXyVA0/H0ScPp8Nl4Edm5RBFQuZ0HJa/McmAlCHmB8peRkasZIGj/kPAAvRzuKz2dXcXbhYcutWu5eELjJzLHejf36iaMuHyKtMkLOt1AImtUIFi+nWXo9A86xau57bHK9Djwk5tOQ/UQBpQBoS03yLx941Ar07Y4HuksHNF9fuilxNoGdF0=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756286102-68062
+X-HE-Meta: U2FsdGVkX19teMiGF0QcOiAvRyoxRY36OU6W+icYFANeXiB7qSPLUz1bdVbfKPrSYwzHMd1hRKolocujoUFDIrJ7GjApMdY+Y2Ijz/N6iaObODOl5VJv0bquzNo4KiYk9XKbpTFwjcEVMTueDfemYgS6jiJz1f9q/uduNLsy+osLwnTNru7om8+DWCl9CEEsNlqsiStAv1L+wErjeB3j2JYWsk0p9PQPUxKPWXg7D2XNI2spjvl8BvYacD4o2mZRMyQbTxQw52RIl6fn/XbAFPjZfXn8u+NpdgBOjGE7xDaVUP2DYCDwgBCkgo6T9xGxm03+EZTo86U65vf74qP9r3H8iPPJTpxm0OIFsS6FQwxnv8p8SCZp2Lm8P+pAl6dfmpyEnnaW29upu5tgl87PYvqHKXyC9Aex+5JaDARsHgG5mY5Z1Xg+09SBX7w4f/Rs+LoQ94PxPquW9vin81eXwTsTcqKRo533IqvpP3FAz6ilm3lw31h+oKz5SYeyAyscDoQC52mXZ6MOT4i/wsHrrOF7hcelqHtkWv4ezQOCTIbmrvdVZcQUTQq9RWaZzbjiFYrAf3rlBD1dtiSgfYsI0VeLTuXgw/dtRwanfftgfXm/KDeoJyoRuy6PcNb7DKLBVTl2zi5tzuA9MILp342OIHGpNJdYx3PQvW7JjeOIJ4VYIUKymbGQHNW79qdHjeqJCd3NQzCq4idu9LfjR2a+ciHTPtV1rbek5A6mNDWrJFe5k/n5plYw038wAgB/0m1LEfIfccxFksZ0hVL4o1qtWXK7qvTL2ucrJmzIpLIAWKrwGb1+fOhtxQav3sgllSx21LO2nfkkvwRlRjhfHhAaOd97IOrXNpXacOxVEdSWuM+XA8lzwTZg6FfVSzmBdzwnabHbufhfSpmLIC349H2nPI80oKNecNqrdu5RxHu+GSvC4Mrz+rxU7hfIugRilokOHKbWjIYBwVD3FYM/Fga
+ 490NJAQJ
+ eMAQYov6787op+LxbhJ5Nh3HZ4+SRhuW2b0xBEySpwhxsaIUB098L7+VIalEx7hm0Ogr+OIi/KGG02lhJRre+sbzTWnTe2bso0hyS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,403 +180,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26.08.25 17:37, Aristeu Rozanski wrote:
-> As raised by Andrew [1], a folio/compound page never spans a negative number
-> of pages. Consequently, let's use "unsigned long" instead of "long"
-> consistently for folio_nr_pages(), folio_large_nr_pages() and compound_nr().
+On 27.08.25 03:20, Matthew Wilcox wrote:
+> On Tue, Aug 26, 2025 at 06:00:41PM -0400, Aristeu Rozanski wrote:
+>> some actually expect an int (e.g. memcg1_charge_statistics()), it'd be a good
+>> idea to get those fixed.
 > 
-> Using "unsigned long" as return value is fine, because even
-> "(long)-folio_nr_pages()" will keep on working as expected. Using "unsigned
-> int" instead would actually break these use cases.
+> Yes.
 > 
-> This patch takes the first step changing these to return unsigned long (and
-> making drm_gem_get_pages() use the new types instead of replacing min()).
+>>> Then, e.g., -1 will be (unsigned int)0xffffffff, and casting that to
+>>> "long" means trouble, because we wouldn't sign-extend properly and get
+>>> (long)0x00000000ffffffff.
+>>>
+>>> Using "unsigned long" instead work perfectly fine.
+>>>
+>>> e.g., -1 will be (unsigned long)0xffffffffffffffff. Passing that to a
+>>> function that expects "long" or "unsigned long" works as expected.
+>>
+>> We could run into problems if folio_nr_pages() ever returns an unsigned long
+>> larger than LONG_MAX :^)
 > 
-> In the future, we might want to make more callers of these functions to
-> consistently use "unsigned long".
-> 
-> [1] https://lore.kernel.org/linux-mm/20250503182858.5a02729fcffd6d4723afcfc2@linux-foundation.org/
-> 
-> Link: https://lore.kernel.org/linux-mm/20250503182858.5a02729fcffd6d4723afcfc2@linux-foundation.org/
-> Signed-off-by: Aristeu Rozanski <aris@ruivo.org>
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> 
+> I feel comfortable saying that we'll never support a folio size larger
+> than 2^31 bytes on 32-bit or 2^63 bytes on 64-bit because folio_size()
+> returns a size_t so that constrains us.
+Right, otherwise we're back in highmem days where "unsigned long pfn" 
+works but "unsigned long long size" is required.
 
-TL;DR
-
-Acked-by: David Hildenbrand <david@redhat.com>
-
-
-
-I agree with Andrew that using an unsigned type is clearer, and it confused me in
-the past.
-
-When I last looked at that, I realized that "unsigned int" is problematic
-(the hard way ...)  and concluded that "unsigned long" should work as well.
-
-commit 1ea5212aed0682ae1249cba9df7ad7ef539d0a7d
-Author: David Hildenbrand <david@redhat.com>
-Date:   Mon Mar 3 17:29:55 2025 +0100
-
-     mm: factor out large folio handling from folio_nr_pages() into folio_large_nr_pages()
-     
-     Let's factor it out into a simple helper function.  This helper will also
-     come in handy when working with code where we know that our folio is
-     large.
-     
-     While at it, let's consistently return a "long" value from all these
-     similar functions.  Note that we cannot use "unsigned int" (even though
-     _folio_nr_pages is of that type), because it would break some callers that
-     do stuff like "-folio_nr_pages()".  Both "int" or "unsigned long" would
-     work as well.
-
-
-compound_nr() used "unsigned long" before.
-
-I did a quick test below to make sure I am not missing something.
-
-"unsigned long" works as expected except. The only exception would be 32bit
-when we would have a function that expects a signed or unsigned "long long".
-
-Should we be using "unsigned long long"? I don't think so.
-
-
-Using long long / unsigned long long for something nr_pages (or PFN) related
-is highly questionable and should be cleaned up.
-
-Because I am curious, si I looked around (I hope I caught most cases):
-
-$ git grep -e "\- *folio_nr_pages"
-include/linux/mm_inline.h:                      -folio_nr_pages(folio));
-
--> consumes "long nr_pages"
-
-include/linux/vmstat.h: __mod_zone_page_state(folio_zone(folio), item, -folio_nr_pages(folio));
-include/linux/vmstat.h: mod_zone_page_state(folio_zone(folio), item, -folio_nr_pages(folio));
-include/linux/vmstat.h: __mod_node_page_state(folio_pgdat(folio), item, -folio_nr_pages(folio));
-include/linux/vmstat.h: mod_node_page_state(folio_pgdat(folio), item, -folio_nr_pages(folio));
-
--> consume "long delta"
-
-include/linux/vmstat.h: __lruvec_stat_mod_folio(folio, idx, -folio_nr_pages(folio));
-include/linux/vmstat.h: lruvec_stat_mod_folio(folio, idx, -folio_nr_pages(folio));
-
--> Consume "int val"
-
-mm/khugepaged.c:                        -folio_nr_pages(folio));
-
--> Consumes "long nr"
-
-mm/memcontrol-v1.c:     memcg1_charge_statistics(memcg, -folio_nr_pages(folio));
-
--> Consumes "int nr_pages"
-
-mm/migrate.c:                                   folio_is_file_lru(folio), -folio_nr_pages(folio));
-
--> consume "long delta"
-
-mm/migrate.c:   folio_ref_unfreeze(src, expected_count - folio_nr_pages(src));
-
--> expected_count is an "int"
-
-mm/migrate.c:                               folio_is_file_lru(src), -folio_nr_pages(src));
-
--> Consumes "long nr"
-
-
-$ git grep -e "\-= *folio_nr_pages"
-fs/bcachefs/fs-io-buffered.c:                   ractl->_index -= folio_nr_pages(folio);
-
--> "pgoff_t _index" -> "unsigned long"
-
-fs/btrfs/extent_io.c:                   wbc->nr_to_write -= folio_nr_pages(folio);
-fs/ext4/inode.c:        mpd->wbc->nr_to_write -= folio_nr_pages(folio);
-fs/ext4/inode.c:        mpd->wbc->nr_to_write -= folio_nr_pages(folio);
-
--> "long nr_to_write"
-
-mm/memory-failure.c:            count -= folio_nr_pages(page_folio(p));
-
--> "int count"
-
-mm/page-writeback.c:            wbc->nr_to_write -= folio_nr_pages(folio);
-
--> "long nr_to_write"
-
---
-
-$ gcc tst.c -o tst; ./tst
-Testing: receive_unsigned_long_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_unsigned_long_long(-return_long_long())
-         PASS
-Testing: receive_unsigned_long_long(-return_unsigned_long())
-         PASS
-Testing: receive_unsigned_long_long(-return_long())
-         PASS
-Testing: receive_unsigned_long_long(-return_unsigned_int())
-         FAIL
-Testing: receive_unsigned_long_long(-return_int())
-         PASS
-Testing: receive_long_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_long_long(-return_long_long())
-         PASS
-Testing: receive_long_long(-return_unsigned_long())
-         PASS
-Testing: receive_long_long(-return_long())
-         PASS
-Testing: receive_long_long(-return_unsigned_int())
-         FAIL
-Testing: receive_long_long(-return_int())
-         PASS
-Testing: receive_unsigned_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_unsigned_long(-return_long_long())
-         PASS
-Testing: receive_unsigned_long(-return_unsigned_long())
-         PASS
-Testing: receive_unsigned_long(-return_long())
-         PASS
-Testing: receive_unsigned_long(-return_unsigned_int())
-         FAIL
-Testing: receive_unsigned_long(-return_int())
-         PASS
-Testing: receive_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_long(-return_long_long())
-         PASS
-Testing: receive_long(-return_unsigned_long())
-         PASS
-Testing: receive_long(-return_long())
-         PASS
-Testing: receive_long(-return_unsigned_int())
-         FAIL
-Testing: receive_long(-return_int())
-         PASS
-Testing: receive_unsigned_int(-return_unsigned_long_long())
-         PASS
-Testing: receive_unsigned_int(-return_long_long())
-         PASS
-Testing: receive_unsigned_int(-return_unsigned_long())
-         PASS
-Testing: receive_unsigned_int(-return_long())
-         PASS
-Testing: receive_unsigned_int(-return_unsigned_int())
-         PASS
-Testing: receive_unsigned_int(-return_int())
-         PASS
-Testing: receive_int(-return_unsigned_long_long())
-         PASS
-Testing: receive_int(-return_long_long())
-         PASS
-Testing: receive_int(-return_unsigned_long())
-         PASS
-Testing: receive_int(-return_long())
-         PASS
-Testing: receive_int(-return_unsigned_int())
-         PASS
-Testing: receive_int(-return_int())
-         PASS
-
-$ gcc -m32 tst.c -o tst; ./tst
-Testing: receive_unsigned_long_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_unsigned_long_long(-return_long_long())
-         PASS
-Testing: receive_unsigned_long_long(-return_unsigned_long())
-         FAIL
-Testing: receive_unsigned_long_long(-return_long())
-         PASS
-Testing: receive_unsigned_long_long(-return_unsigned_int())
-         FAIL
-Testing: receive_unsigned_long_long(-return_int())
-         PASS
-Testing: receive_long_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_long_long(-return_long_long())
-         PASS
-Testing: receive_long_long(-return_unsigned_long())
-         FAIL
-Testing: receive_long_long(-return_long())
-         PASS
-Testing: receive_long_long(-return_unsigned_int())
-         FAIL
-Testing: receive_long_long(-return_int())
-         PASS
-Testing: receive_unsigned_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_unsigned_long(-return_long_long())
-         PASS
-Testing: receive_unsigned_long(-return_unsigned_long())
-         PASS
-Testing: receive_unsigned_long(-return_long())
-         PASS
-Testing: receive_unsigned_long(-return_unsigned_int())
-         PASS
-Testing: receive_unsigned_long(-return_int())
-         PASS
-Testing: receive_long(-return_unsigned_long_long())
-         PASS
-Testing: receive_long(-return_long_long())
-         PASS
-Testing: receive_long(-return_unsigned_long())
-         PASS
-Testing: receive_long(-return_long())
-         PASS
-Testing: receive_long(-return_unsigned_int())
-         PASS
-Testing: receive_long(-return_int())
-         PASS
-Testing: receive_unsigned_int(-return_unsigned_long_long())
-         PASS
-Testing: receive_unsigned_int(-return_long_long())
-         PASS
-Testing: receive_unsigned_int(-return_unsigned_long())
-         PASS
-Testing: receive_unsigned_int(-return_long())
-         PASS
-Testing: receive_unsigned_int(-return_unsigned_int())
-         PASS
-Testing: receive_unsigned_int(-return_int())
-         PASS
-Testing: receive_int(-return_unsigned_long_long())
-         PASS
-Testing: receive_int(-return_long_long())
-         PASS
-Testing: receive_int(-return_unsigned_long())
-         PASS
-Testing: receive_int(-return_long())
-         PASS
-Testing: receive_int(-return_unsigned_int())
-         PASS
-Testing: receive_int(-return_int())
-         PASS
-
---
-
-#include <stdio.h>
-#include <stdbool.h>
-
-volatile int orig_val = 1234;
-volatile int receive_val = -1234;
-
-static unsigned long long return_unsigned_long_long(void)
-{
-	return orig_val;
-}
-
-static long long return_long_long(void)
-{
-	return orig_val;
-}
-
-static unsigned long return_unsigned_long(void)
-{
-	return orig_val;
-}
-
-static long return_long(void)
-{
-	return orig_val;
-}
-
-static unsigned int return_unsigned_int(void)
-{
-	return orig_val;
-}
-
-static int return_int(void)
-{
-	return orig_val;
-}
-
-static bool receive_unsigned_long_long(unsigned long long val)
-{
-	return val == receive_val;
-}
-
-static bool receive_long_long(long long val)
-{
-	return val == receive_val;
-}
-
-static bool receive_unsigned_long(unsigned long val)
-{
-	return val == receive_val;
-}
-
-static bool receive_long(long val)
-{
-	return val == receive_val;
-}
-
-static bool receive_unsigned_int(unsigned int val)
-{
-	return val == receive_val;
-}
-
-static bool receive_int(int val)
-{
-	return val == receive_val;
-}
-
-#define TEST(cmd) \
-	do { \
-		printf("Testing: " #cmd "\n"); \
-		if (cmd) \
-			printf("\tPASS\n"); \
-		else \
-			printf("\tFAIL\n"); \
-	} while(0)
-
-int main(int ac, char** av) {
-	TEST(receive_unsigned_long_long(-return_unsigned_long_long()));
-	TEST(receive_unsigned_long_long(-return_long_long()));
-	TEST(receive_unsigned_long_long(-return_unsigned_long()));
-	TEST(receive_unsigned_long_long(-return_long()));
-	TEST(receive_unsigned_long_long(-return_unsigned_int()));
-	TEST(receive_unsigned_long_long(-return_int()));
-	TEST(receive_long_long(-return_unsigned_long_long()));
-	TEST(receive_long_long(-return_long_long()));
-	TEST(receive_long_long(-return_unsigned_long()));
-	TEST(receive_long_long(-return_long()));
-	TEST(receive_long_long(-return_unsigned_int()));
-	TEST(receive_long_long(-return_int()));
-	TEST(receive_unsigned_long(-return_unsigned_long_long()));
-	TEST(receive_unsigned_long(-return_long_long()));
-	TEST(receive_unsigned_long(-return_unsigned_long()));
-	TEST(receive_unsigned_long(-return_long()));
-	TEST(receive_unsigned_long(-return_unsigned_int()));
-	TEST(receive_unsigned_long(-return_int()));
-	TEST(receive_long(-return_unsigned_long_long()));
-	TEST(receive_long(-return_long_long()));
-	TEST(receive_long(-return_unsigned_long()));
-	TEST(receive_long(-return_long()));
-	TEST(receive_long(-return_unsigned_int()));
-	TEST(receive_long(-return_int()));
-	TEST(receive_unsigned_int(-return_unsigned_long_long()));
-	TEST(receive_unsigned_int(-return_long_long()));
-	TEST(receive_unsigned_int(-return_unsigned_long()));
-	TEST(receive_unsigned_int(-return_long()));
-	TEST(receive_unsigned_int(-return_unsigned_int()));
-	TEST(receive_unsigned_int(-return_int()));
-	TEST(receive_int(-return_unsigned_long_long()));
-	TEST(receive_int(-return_long_long()));
-	TEST(receive_int(-return_unsigned_long()));
-	TEST(receive_int(-return_long()));
-	TEST(receive_int(-return_unsigned_int()));
-	TEST(receive_int(-return_int()));
-	return 0;
-}
+(I hope we'll never have to deal with highmem on 6bit :D ... well, and 
+that we can get rid of highmem support on 32bit)
 
 -- 
 Cheers
