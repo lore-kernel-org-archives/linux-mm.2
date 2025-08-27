@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B18D7CA0FF0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 02:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 355AECA0FF0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 02:15:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8B938E0116; Tue, 26 Aug 2025 22:15:29 -0400 (EDT)
+	id 034408E0117; Tue, 26 Aug 2025 22:15:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E632B8E0105; Tue, 26 Aug 2025 22:15:29 -0400 (EDT)
+	id F26828E0105; Tue, 26 Aug 2025 22:15:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2A998E0116; Tue, 26 Aug 2025 22:15:29 -0400 (EDT)
+	id D9FD98E0117; Tue, 26 Aug 2025 22:15:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B815C8E0105
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:15:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 814951A0410
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:15:29 +0000 (UTC)
-X-FDA: 83820920778.21.4C71406
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BD93940007
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:15:27 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="bxDqgoY/";
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C3DDB8E0105
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:15:30 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8493BC040E
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:15:30 +0000 (UTC)
+X-FDA: 83820920820.08.C61BFC7
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BB731100006
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:15:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OuzAJwJP;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756260927;
+	s=arc-20220608; t=1756260928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=i9yGig0Idr2fpe7UYWg3D0zUqXiTMpFVh0D7qgxLxlQ=;
-	b=aML4TzH6SkMQ+QVB1hfoX39jyyIkEg6fHapPKt8XDwvLboa3iZhxDI0xPUzMpqE8JU3Wpc
-	U75B3uTnR7bgIid9MLXvSW08mteX2ScRpIikXlMnPs7TqsGtzHvYj4sT9B/cbwcReUID3C
-	H9elJ7qB9tDmdMk2x5tS3sDQIMKWRnI=
+	bh=4U3e/+xyZb6ERPsH6QApfN6YyzzzDOLs7mAotq8BYHE=;
+	b=b7lbxxDOirqTEXgZhXKRy8i6DUMAhW0ahSYWcY6AA4lzUx9K/2cNS/SwVgufbr9Bg2wtBk
+	dLnuKW59t7FvxwzeO0HOe6MmF3+jIIyXH7eMBt89EJZytwFVBccw8++6cYxbX+pHn/vajr
+	+OUyhNXbUs9aGqxmUJeDJoFKzOQtfDw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="bxDqgoY/";
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OuzAJwJP;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756260927; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756260928; a=rsa-sha256;
 	cv=none;
-	b=5aXhyxTwgbZCgTFcLH0LzRsJvpHm1OHUDGuDWh1la7YbrXexT1dmJK+VKlWvRd7QlWBzZZ
-	8laJfSY9b/Gvj7xqAAUxzafFcPQVy4GgkKyiUTGGjvMA6rsuFlH8zJ1Y3A1btHMLkgWGPo
-	ikkm7W3KbeWIeqZWbzu59DPSycU1fbo=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so8726786a12.0
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:15:27 -0700 (PDT)
+	b=vxbPalLVlRe/5Rynri7oYHDb0XuoIi9oOZqDQdNQfm4pqIwjlJHu6klSGqOmv6/L2fIm0A
+	/i8UgDhCywUbf921v9vz6vJ2d8DC9yEajNirnbkoFi87ThStk3YyiPMi596D6Lg3E2aPwa
+	RnIGq6PTU0+QSWDDii1EPUQA0yOu3jA=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-61cb4370e7bso316638a12.3
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:15:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756260926; x=1756865726; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756260927; x=1756865727; darn=kvack.org;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=i9yGig0Idr2fpe7UYWg3D0zUqXiTMpFVh0D7qgxLxlQ=;
-        b=bxDqgoY/RwQAiC2n09hHNI921kDS8YFT9uBa96yRF56az1Hy45EE5M9WtKjOj9/Swq
-         sS8G53xRKWdH6l8RUHMp+fpB1flp7bq+ebmj1TkzMD062i3QQcM7X40/kivJBJAd44OT
-         +xci54a033+u1xXY9/lrAxAZjx5ubj6U03HNQutiLFs/tRRgHjw5BJRKjOatx2c+I4kq
-         lEShMWPKjz6RjnBVEHBnMqOajGB8ayuAWhQGMJzAOWpLQ2ri5CCOoYIMZci66Pwtov9W
-         9UUAOe3pt7/FySkKHBao/QC3zmjTPTqSBPaZHXDh1U3DLI7fh/tfiK6J4pEACfWIX2nm
-         /d3g==
+        bh=4U3e/+xyZb6ERPsH6QApfN6YyzzzDOLs7mAotq8BYHE=;
+        b=OuzAJwJPEZxaDjyvYsPKvESFOEvw9zXJtTDB/vJsWwAYmbNpZhR0WiXT0cocfLlG5m
+         tHu/QPcUJ4Sy69Copk1RkYtUn2ta3L6V5qHd5lmq884EIx6+M7mlezFuAJKDejtqrgJX
+         /iQxreDB8l+WSs4ktD+qhbvh6evWcBBWVVa54Cl71q4mu12ZR1ktRI1zealnZM2YoGfs
+         FwrToM+QxEAwzMMgoEEFzH+mLYSq+t7sujEiHUYFn5LRNjXAAHGOxwkZJ53/SpgPNrOI
+         7btivV/K1Y4pGPcSYR/j0C+1S8DfPqOxMTfzmVnRxE/2OHMrlka3H/8JnmgRE76iKv9Z
+         fPaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756260926; x=1756865726;
+        d=1e100.net; s=20230601; t=1756260927; x=1756865727;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i9yGig0Idr2fpe7UYWg3D0zUqXiTMpFVh0D7qgxLxlQ=;
-        b=hsbk79mYcHqvoHePLHpKsiv3wGdmWq/wdAsO++HaI9NmN53Ew1+yRO/A8tpEbaUXrX
-         hPlPbfOoAl/NEtlLFx2K59mVb+gB3YFkLbZ2k6HkKaPLMdDYcTrp6V8iayQlalfgL8fm
-         rmQoV4NR5VRco37q2LErMRYsBEf0pf0NwgD+9F7sE4rztE4RNZKo/LqYnpGix/IJdaw4
-         TVDLdx+Gv7eacwgtlxMwAKKkZMZHNI6uVVRHRs+CTR4F4ynjZEZl5l2J6csgEE5HdRIF
-         Ogy7fZQ6h4CytleaI5K/TUnTbI8BiR70rjizjjn7LWKHOrOsVKUfqml2aUaqOfrBfIVz
-         +gIA==
-X-Gm-Message-State: AOJu0YyKtcIMO1+xD8YVGkDWB3zcXcSd9kcwMGpt9yzdjkNnVDvRpJD9
-	m5sywEvFIlujsDfwTKQrCrTx04so8sMVcp5+odPz2HsG5+qG1YAujakE
-X-Gm-Gg: ASbGncu9e6CQf2PGLmROHTNaraVdKNFfxURk/GcA6CBAFcOXzwvr//ytwTQ36MKQ7A8
-	XbNn2WwngN/tUW4MememwqcR2IM8IrVLJO6G97Tlpb9HQqT5BLRPRhEQWUHN9Zunm+2KTitHfQV
-	MJxih2ykliVaVDN0EOXJRUGRjZ6ESgIrBCAXOe4XlsrkD62AvaFS9AFa/Kkd/f3IawIdPry1Xbj
-	bnH9/ern6r2rrJoRtWs4wDybJmTMEn4FxqYwt+JBJCs+7dRYMFqbYKKeuQ7QTmqVNzhwo2+LGDP
-	RB4I5n2BM7TM0Y8l0VQ1nl1gaKQ2oyvKR8izFDCgzDfCVZHiakSpS3kBDoEfEfFKNKBw+pFS2KZ
-	ZJJZUE/isAzqfTF1wa6AtHSyA+Gg5jsHHIQXH
-X-Google-Smtp-Source: AGHT+IG+kxqSZSQJHy7xDc/Y63pS9Yhru87Ye4QgwBd4Ru4iRABfoHWh5/0W5DEzRZuscLPqkri8ZQ==
-X-Received: by 2002:a05:6402:3589:b0:61c:5e86:7a93 with SMTP id 4fb4d7f45d1cf-61c5e867fa2mr7167249a12.38.1756260926187;
-        Tue, 26 Aug 2025 19:15:26 -0700 (PDT)
+        bh=4U3e/+xyZb6ERPsH6QApfN6YyzzzDOLs7mAotq8BYHE=;
+        b=kCFYNm0cSwbwnFb7dht93lM1f6zVlo6i1x2eH0Dckmw/kGVhphNmhaGyWUTqxGfRM9
+         QSYIm986geApvCCqGex9SH+xilpmdennJhllsPzU6wLx6g7xo7MnbL6j/EIA3MipRfmm
+         TN9E2lhxRL/F0WUhr6BZuRFZ7xLJRHRcWtdxSWe96K2G+N04MbnJq+11K9HL1Nqlg7v7
+         cEDDijUe3pMxkFKKXKBXjy0sjrQFqCUt5SlUeZdl89VagV2Obwutj/wG6KjGRZyRrDyj
+         TIvXDB4DPv5TKCI2IRZKc2LkO5h5x8P6L0pd345rmqRJVZQjOA/LHCXgLVYYMBQYZVw4
+         TMnw==
+X-Gm-Message-State: AOJu0Yw9fQbCo4rYytAobEbCehf0OQoo8j6C7dwulo6GJjjV0zWmw9QN
+	e7Ej7bI+j4hlT4z0lMforiz8OiVLAmTsU1pe+yELNP/J62x3ougJ/XgJ
+X-Gm-Gg: ASbGnctmEIY7yfH5M6F5LieA9cgBg76v3adKr+7X81bp1vUosi3GDcIfBVjfvBzI/P7
+	SBODJ55GlgiSLtz4uYz2JYm5m8yeshuPub62tRkr692uFUX2SRWafM8GlBuq7RhymhOiOlq+vhb
+	XZ3yavdH9EDiRAupOD8c5HLzGPBV2ZkL4VpSNAKA6yn1bIVvFBcU9+UDMnhAUGbVDMwJ1jxIsc8
+	EwPuweSR7MsObHi/1BseU3a3dPNZnMT9cB0OcU5bBPU/2u+/t7VSpLA3gv9tV/9dVGX04V8kUyl
+	STzDXTvUZ6eCiuNX2e5UdMiTsBIRj/5YNe1IeEa8lGWWgueMkLMStGqNwEgN8sqkLgwPLoXwtT5
+	5t5GktC46iWsRQxlXaTTzIADwE7Q9MMmOVuPy
+X-Google-Smtp-Source: AGHT+IHNEeHx1gHaE1Di4Bi13stn3zu69YCDOM0TBCTeypctvnMy3UrkrvSIqk1wKhZCu5IhZOE3Vg==
+X-Received: by 2002:a17:907:3f0f:b0:ae0:b3be:f214 with SMTP id a640c23a62f3a-afe28ec592dmr1566292466b.9.1756260927172;
+        Tue, 26 Aug 2025 19:15:27 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61c316f4fc9sm7871788a12.34.2025.08.26.19.15.24
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe7f59b14bsm544898366b.104.2025.08.26.19.15.26
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 26 Aug 2025 19:15:25 -0700 (PDT)
+        Tue, 26 Aug 2025 19:15:26 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -95,20 +95,20 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	Wei Yang <richard.weiyang@gmail.com>,
 	Zi Yan <ziy@nvidia.com>
-Subject: [Patch v2 1/2] mm/page_alloc: use xxx_pageblock_isolate() for better reading
-Date: Wed, 27 Aug 2025 02:11:20 +0000
-Message-Id: <20250827021121.13645-2-richard.weiyang@gmail.com>
+Subject: [Patch v2 2/2] mm/pageblock-flags: remove PB_migratetype_bits/PB_migrate_end
+Date: Wed, 27 Aug 2025 02:11:21 +0000
+Message-Id: <20250827021121.13645-3-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20250827021121.13645-1-richard.weiyang@gmail.com>
 References: <20250827021121.13645-1-richard.weiyang@gmail.com>
-X-Stat-Signature: exwtogwij5z3fnst66c4ahg858dh7aq6
+X-Rspamd-Queue-Id: BB731100006
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BD93940007
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756260927-425931
-X-HE-Meta: U2FsdGVkX1/TD9F4uuw+9RCb0LA2ijHU3lCZqmwLOy8fH9PJXKDYJ4QzvWfXK23zmWMtPYH8WB9vc269V9FDwkTtdh6CjP+ByUOSWJzhr153aG1SaaYWfm33RBp1OHNpOdUrJtxmMow3pfiM6xWBgE3uRQ9TNl9ZOnm77mgpnquKYnfHfzOgKkFFnH//54yPjpXFODP3iIv+2wGZ6GKE+5iNBIEZZStmZsz52kG+hyeV65tf4AxbUMpxykQsl8jTPVE7+ltKXfztHS5F419byq865dlzP4fnTxGwv+SNyxaUEsQWNL/CpJmGMALki1ZgQj9oWT4xNefIOvZqAYzSonAwKj2iqrEJkxiziFS5N2l7j+WwU5sTyLNwZMEhH4PRwBLNHbaT4FEOZjdcSnBm32PXgIoLdUVuKnQTonUR1V5MorkG84+/xuHv5tykcDBd3uKz4eGLgKIKtpLovXDLum0jvKSNazCLZ7S9TAep7afEYIQsNuyKuO6nv8lLz7lYx8fyyClCA+gWbIO+E/1BH53EVsBsmGuJ9HRvUgnUBJPhUv1kRpyAHIHFCV7Qbg9LP4nw2n7fTE4NHkf+/cQ8WjFACumcsdk9kEJUX0tFkIgGIQ3UPZ309JXbxVAB2AshV4YVkZxIk07KY/xB0F0xO4e9/5LMzGQfCv1LnTFKvz2LKpZqGdwF3R+GdSVPsFTr4HkcZ6FC2tfTOLcVDXTaO0qBZcMCV4fFUpQu20OKggrKPmwBirgzRGtRlJd3YEFTTP3NzhpLdy/UbUdJPpt/CzztyCFv+3EP+jpWJI7cUyebgidHXBNvvckl1b/a0oqC3KwzoQD8MHZV7dqVkFWFfFJAeH5wi1fiQ1T9LG/1qQlPpcTvS9c8d5aL/gN71vdAQavJie8fxp5EmbxdAUguVGqtVND2ugFIXwxzeT5AIATuOeKM+GJBSjI/RCRa3EZt76XyL0d6HGNtOIyavyx
- FW6Rckl5
- J8e/r/FR6DVP7zvTqnlfc03BlTdL+7k824IYlCe+o99ZBSU6WCHt30+WNZ6H0poGfWSw4eRhUpEsmVZb+wRew/q1Pf+x+TVPqakrSr78U4fP/2pZ8FTPfy8FdtTFZfoMFL6UuPALWb+ahFXprs93+npgPPcHeaFqHNCfZ4tL8N5t3oiw0LPHDLzzOzgl5DFsPsWbWtWdgxRDGusV+AjLy/Fcw6G1OyLssrOuRZ8eCWzjz7l/A8p+NIJJ1K5y3ISAP6oUzlLBRyPARdtlWyyClDbXmhHn/A6oh/JX5AM1arQzWcUQAfbrbPs7wWQ5YPMG5/oUsMgSYd9d7bsCKxKGTXE/7yVjYa0Smm/DsQMgDNEPxIie9pMt+5A5cWOEEd2LQP8YQPJZ0ZK8kd3rf0UM6BbSo2+P9ozur3Co1kIs56Nuu0zxKVchg/7qMO4v4HtKWF4Yp0MErrNqw+2KXKSnhktS0y1h6Wu9DSn5JCDEGVHt2WIYyjE3sv86spFpmvZ5EmMOAGchJ3K1Tw29meD8H7DCBaIwB7s9FASs9sJfhToIMUXCdPOoVyFqdOPBT7xDUrnznoDLF13E/mv6nmc+TNmOe81PIQDp9BbmrwFRbWBhhNERETV/GERfwuISi1MkLcwtaPLa1tblBbcYZK1cjYxeIew==
+X-Stat-Signature: s57qm7dnkkqqaq5neziffpkunjbtcqnn
+X-HE-Tag: 1756260928-271817
+X-HE-Meta: U2FsdGVkX18fZnCTfsHWFvR7tsVbbGRb0U1X4j7hxtUtF8rnSFbQQfBx0cpx/SFfh1miE4CBqK9RMxiJG3NiUm1ADeRd+1Fup+Sj810V9qZYCPaPM+eQD+HA8GvQ8pRoylvtCmIDrUCIGmivIDc7zkeu7sfBDnIXOiF8szoo9BYX610D8JgPp4vxk/0PimYsIuIQGhRfXmO4jz+3kbgY79YTE3SfFpyWTmFQoVH2qbcYObc7KN0w1nGmR1mpKZJLnFse5k9dSRjwGctCxTrbwSdknUfuO9E5drU01jAkd3yPHvga3g9gY+juhKQsZBMoxeC6kHNyK0NLFL1U/TAI6ghXlLRUW/6zzdOS+3u0Pj7kgOmv7rewXO+1926gGSXsjmjg4x5HlEeV474IzrTbXkK6sRklqOB3htkhNosYKnEH+BXezlo+t8mUaYDYdkIfzsIyvIoX32R4Wt1xbqy/kWyA8paPlO+5u24oiknVMh0M5tG+fwSZpGdIZduv4K3fy07/ssoqSePMlWq75e4MszN1JAjNagCfCbcSQTj62WmmI3fNDHtpq/rDJ+KTjO8m8G0buyRVoZxmLg4s7fvTM8AGszFdsCT5+I8U7vwvt6HDW/8rPkDO2ineEY7WVVDxFda5QOaaljuJb6AsgVIELbSJcfPTpmwLKASvRsvotNJOnqAi5D/GzeRbS8w41EJwA7fn/I0LV55JDuyu79cZMKy2mYEcmNRtDx7D0MEP2IK+wybeKfrhcX9e4QAfSjuUepPotW+T1CV5HKdgmJg8+5XX2+ozmJiSyiwr4NmGAWmI/kIx5+6eutWLVqv2U3Q4piYJsWDsJXFgdXnfLbobjyaayWChlXGEqpOD1dlzki7arYuRLySP/XpfWWV4+vh0BqZs3lOXIrwC9G5P9FdDPmQrbibB7/OpndZ2Fk75Kzi+rzRLsYyhvTINNmHHs973Fml2qZOPY92E6lyQH4U
+ +cnDccs0
+ /gd5yXnrDBs/5WxdIU7PAx5iuKmEYeUbvKwazPWxWp9rIQYDWrWFUBeFBcgTMozH88uCvIaCxr7FO5ALqvNU4+y3IbJwYFSae6GfcaDk/hoa1NgxLXuzYlJ7JaMeES79imMJZX87U8aU0J9NI4fNkuWYPAVSjeyP6mDGC/b1Akojb+a4g9wBaep+uefSqHPJMSC0M8OVHwoTO70ofDeSYsQYcAB0R6Fxrwi9B9Dl48U4bwC9DGafmAm1eWiyREvfnflnkHtQWlhf3Ot1Lk3LdqRgHwY2maRWb86ZSa5QW1KG1Tw6Wh7NbH5g3lEXC5EHK+kl69rzvylhY0oP6n5T8VldjaHf0sPpyX8ZYOuHxoZNUfXfTg3WQnGcMFNsoI3sDtng2V10Vc2lBRfLMB5qnPHrbEsEbwkOdCyXIC4J+xSXec4wVvf0x9GPr6Xz9/yFD1ZdVVKa4Hl2eeEoYdsF5rt7Sl3C2BGMqqslkCw1gldx9X9Bemf05hZ3Mok5ZKQ/bKBB14wc8cWGiHP8o/7ZN7ceCFoC+EPCd2VzfEE9Ge6GhEeWx6txcBqTKMiH6fK6vSwUHYRh1N+n4QUT9TzyxatXG9jKLp2ANdzmtsGFEe2oY2RU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,10 +117,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit e904bce2d9d4 ("mm/page_isolation: make page isolation a
-standalone bit"), it provides dedicated helper to handle isolation.
+enum pageblock_bits defines the meaning of pageblock bits. Currently
+PB_migratetype_bits says the lowest 3 bits represents migratetype and
+PB_migrate_end/MIGRATETYPE_MASK's definition rely on it with magical
+computation.
 
-Change to use these helpers to be better reading.
+Remove the definition of PB_migratetype_bits/PB_migrate_end. Use
+PB_migrate_[0|1|2] to represent lowest bits for migratetype. Then we can
+simplify related definition.
+
+Also, MIGRATETYPE_AND_ISO_MASK is MIGRATETYPE_MASK add isolation bit.
+Use MIGRATETYPE_MASK in the definition of MIGRATETYPE_AND_ISO_MASK looks
+cleaner.
 
 No functional change intended.
 
@@ -128,38 +136,71 @@ Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 Cc: Zi Yan <ziy@nvidia.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
----
- mm/page_alloc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Suggested-by: David Hildenbrand <david@redhat.com>
 
+---
+v2: remove PB_migratetype_bits and PB_migrate_end
+---
+ include/linux/pageblock-flags.h | 12 +++++-------
+ mm/page_alloc.c                 |  4 ++--
+ 2 files changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
+index 6a44be0f39f4..6e4c2da15706 100644
+--- a/include/linux/pageblock-flags.h
++++ b/include/linux/pageblock-flags.h
+@@ -13,12 +13,11 @@
+ 
+ #include <linux/types.h>
+ 
+-#define PB_migratetype_bits 3
+ /* Bit indices that affect a whole block of pages */
+ enum pageblock_bits {
+-	PB_migrate,
+-	PB_migrate_end = PB_migrate + PB_migratetype_bits - 1,
+-			/* 3 bits required for migrate types */
++	PB_migrate_0,
++	PB_migrate_1,
++	PB_migrate_2,
+ 	PB_compact_skip,/* If set the block is skipped by compaction */
+ 
+ #ifdef CONFIG_MEMORY_ISOLATION
+@@ -37,11 +36,10 @@ enum pageblock_bits {
+ 
+ #define NR_PAGEBLOCK_BITS (roundup_pow_of_two(__NR_PAGEBLOCK_BITS))
+ 
+-#define MIGRATETYPE_MASK ((1UL << (PB_migrate_end + 1)) - 1)
++#define MIGRATETYPE_MASK (PB_migrate_0|PB_migrate_1|PB_migrate_2)
+ 
+ #ifdef CONFIG_MEMORY_ISOLATION
+-#define MIGRATETYPE_AND_ISO_MASK \
+-	(((1UL << (PB_migrate_end + 1)) - 1) | BIT(PB_migrate_isolate))
++#define MIGRATETYPE_AND_ISO_MASK (MIGRATETYPE_MASK | BIT(PB_migrate_isolate))
+ #else
+ #define MIGRATETYPE_AND_ISO_MASK MIGRATETYPE_MASK
+ #endif
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index baead29b3e67..e534f31a6b39 100644
+index e534f31a6b39..c1a18aaf8b41 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -538,8 +538,7 @@ static void set_pageblock_migratetype(struct page *page,
- 			"Use set_pageblock_isolate() for pageblock isolation");
- 		return;
- 	}
--	VM_WARN_ONCE(get_pfnblock_bit(page, page_to_pfn(page),
--				      PB_migrate_isolate),
-+	VM_WARN_ONCE(get_pageblock_isolate(page),
- 		     "Use clear_pageblock_isolate() to unisolate pageblock");
- 	/* MIGRATETYPE_AND_ISO_MASK clears PB_migrate_isolate if it is set */
- #endif
-@@ -2058,9 +2057,9 @@ static unsigned long find_large_buddy(unsigned long start_pfn)
- static inline void toggle_pageblock_isolate(struct page *page, bool isolate)
+@@ -355,7 +355,7 @@ static inline int pfn_to_bitidx(const struct page *page, unsigned long pfn)
+ 
+ static __always_inline bool is_standalone_pb_bit(enum pageblock_bits pb_bit)
  {
- 	if (isolate)
--		set_pfnblock_bit(page, page_to_pfn(page), PB_migrate_isolate);
-+		set_pageblock_isolate(page);
- 	else
--		clear_pfnblock_bit(page, page_to_pfn(page), PB_migrate_isolate);
-+		clear_pageblock_isolate(page);
+-	return pb_bit > PB_migrate_end && pb_bit < __NR_PAGEBLOCK_BITS;
++	return pb_bit >= PB_compact_skip && pb_bit < __NR_PAGEBLOCK_BITS;
  }
  
- /**
+ static __always_inline void
+@@ -370,7 +370,7 @@ get_pfnblock_bitmap_bitidx(const struct page *page, unsigned long pfn,
+ #else
+ 	BUILD_BUG_ON(NR_PAGEBLOCK_BITS != 4);
+ #endif
+-	BUILD_BUG_ON(__MIGRATE_TYPE_END >= (1 << PB_migratetype_bits));
++	BUILD_BUG_ON(__MIGRATE_TYPE_END > MIGRATETYPE_MASK);
+ 	VM_BUG_ON_PAGE(!zone_spans_pfn(page_zone(page), pfn), page);
+ 
+ 	bitmap = get_pageblock_bitmap(page, pfn);
 -- 
 2.34.1
 
