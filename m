@@ -4,112 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0CDECA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 16:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5897BCA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 16:59:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 004C76B0011; Wed, 27 Aug 2025 12:54:23 -0400 (EDT)
+	id 874496B0025; Wed, 27 Aug 2025 12:59:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1E8B6B0012; Wed, 27 Aug 2025 12:54:22 -0400 (EDT)
+	id 825206B0026; Wed, 27 Aug 2025 12:59:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5B8B6B0024; Wed, 27 Aug 2025 12:54:22 -0400 (EDT)
+	id 6ECBF6B0027; Wed, 27 Aug 2025 12:59:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D4BDB6B0011
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:54:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8AB44BB54E
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:54:22 +0000 (UTC)
-X-FDA: 83823135564.20.8483E20
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 327EC1A000C
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:54:19 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=RYKDHcv5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.222.53 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id 553FE6B0025
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:59:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EFAEA84ED0
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:59:25 +0000 (UTC)
+X-FDA: 83823148290.07.91FB92F
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EFE37180013
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:59:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EOVimeAJ;
+	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756313964; a=rsa-sha256;
+	cv=none;
+	b=ouISGwvb7DrVGmLPipCaPK0SjR36B7q4c1Mn47PrQ+CMfABVo36QmdQkP6H6c3rE+hbnLH
+	6X0aS7vzX9ozGWYYdtISmsNae60tzunvEeKJ5GWeBuw3A8uG2FwcXaC4XCOsc6beA0zNfg
+	AznPRRIATdnahZkx2h7H2jbtvT88jSk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EOVimeAJ;
+	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756313660;
+	s=arc-20220608; t=1756313964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qFx44C3vvYAz2/lccGCqIrxYWdr0NAByaOrZje54PSU=;
-	b=4QlPjba+XYvLb/q8Nh/uZEviPJtqsYAVck+h+W5mVqBxSck1mPEGWkUZdIJGbedGez8AS3
-	7ThC0CWFyImSoeI028vQ30m0R8pe0LFOIazOQv2o6inLBKqfOYUTHY/3lkLICx2G4hYsBv
-	dq+NUjG6BSk+h75UOKesQSFunOi59Cw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=RYKDHcv5;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf19.hostedemail.com: domain of sunjunchao@bytedance.com designates 209.85.222.53 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756313660; a=rsa-sha256;
-	cv=none;
-	b=d/OlknRg00wekhlhQsYHQU6h6yuLVAHHVv60T4uOexaZnmgcSyZaJkoDMefFgS+sCKfTYJ
-	L1CozOchZtk+Pnxtj13InHi4SPmZb6tAncMYdzBKf87rz1x0b7BFJPV5KD8NB0POLOXBwR
-	ZA6/LiUssG+xxUlOTBt388iWAR+Akb8=
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-890190d9f89so3691604241.2
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:54:19 -0700 (PDT)
+	bh=cSz+0Jdl3rsxgIMqjiE4eLITB/Ptqi8xoIkjq9Q3i9w=;
+	b=Ssr6YPm4r8FBKdKn3p8j8iM53Ttrgne4rUw3+23rv67MyROHwnuJXWfWCcGkGeSrh1USqY
+	sWagqsNeePN1J27pqtyvgHBRwKwsNwn2gfBnI31SLFjuK18tgXJLGIMIRLHjKfuNcfKtQ9
+	0U/PoxpKKAX4jQYJ/MeEDvxjaAnZ0Mo=
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-33670e8c975so278481fa.3
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:59:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1756313659; x=1756918459; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qFx44C3vvYAz2/lccGCqIrxYWdr0NAByaOrZje54PSU=;
-        b=RYKDHcv5GC7k9Nv7tXf/32roHQIqcNpn+FCEhSNJ/2+e/E+MSdnjeppiS2V8udGzY0
-         g4VKLTMXsAMjuFJXX1Xrg1ZiyWJYIZzErY6EfYhCOkDk4xeI3NuCXCMDIr3BnzT/kLgr
-         La8RHvco18yYPyOkoM7W9ev1P7uFD/eBrXNd1EarxjRyzRCq8P/yJDpFg9reVtR/ERlB
-         hb88AxNAM/ZBghnyjl479+OSYDJXTmMI1eX2yi2wkyFmEVbqX+X/Q1nqCNJxZztqVMJl
-         a01VDZeqmspCCWtZc+ERLl9s9SCNGkkgHBlLXs2IB51H/yRqqKAwTx2FHKlC0QCt/ioA
-         5Jjg==
+        d=gmail.com; s=20230601; t=1756313962; x=1756918762; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cSz+0Jdl3rsxgIMqjiE4eLITB/Ptqi8xoIkjq9Q3i9w=;
+        b=EOVimeAJc1DvgjUt5b1F2/v1Nk89LVJBwGRdu3N7BpTvJqqxWPK76TTQy4N/wRTu96
+         bN/8H8KUwDoOVTwBLOVaA7Qq+/Sl3PPJ/TagwmFpnNXw2lv9danm1b7uhUmdr3esm2fa
+         4HyqPhzRAnh1LOyuBLi9MNQnOsHFxegEUyeJXYCxFqz7uqJ7a/yUr1ybkw9IhpwUlXgE
+         IMTVO74NKrNhchzeUGAOZ1ymV+ZoRX0VoPXzRhtZmeyjkQlTPb1xC8Q4O0WUvZNkKFoN
+         /pkCp/pvWo8coTUWgOrNRVPIdeFuWsgXOI4S878u5/4Irvy1TcU8Kp6CwvDb04BnzU1g
+         p+tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756313659; x=1756918459;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qFx44C3vvYAz2/lccGCqIrxYWdr0NAByaOrZje54PSU=;
-        b=NSe/vrjhQhw2KcHjKUOsoJSG6/VsPo6fK57z/SchKN/Sk/FFKi5iOD4qeMqx38XXbo
-         +C1gzrhgpSFwBG40wfuTlUmNNyt7sTPq5FnDuxuBaRotC8aNdW3UexN9FxdkcW6TnwOj
-         +a+wIFKh5tHJDbfcvVDk42f8UXId04wcWC/PWTY8E4LdJ+UqqfbTNBSkBTRCvDBT/oBi
-         IR2mUNb/d4Woor/uTfMtliHgQRXbj/xzdNXs3Q2WEtqcaAey4+klNrHXWT4YasxeJMCs
-         YisBPcAb3Xyh1KUgwi3U8rIlvOa5o4EFOAOnic80AV3Bn1nPDwBSFg/ISoKGJkXVBR3T
-         tJiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVb4nzX3VOHICtKOvB1ujooQQJR+zxi8iRXYwfcMqGedADHodkGaUwhw35O6v8Z5O7eYf1IK/RGlQ==@kvack.org
-X-Gm-Message-State: AOJu0YyM70FX2ujWyO6IRd6i9TuD6cG/x64FsGofWSNFQBHwB7JTjrrm
-	aF/V4XkHmCwC0L++TSJrNucdTQjb9z5nlw0fGpoO7XTR7k9XwRQCAMKY/B9Dhy5UGt/YCgO3DxN
-	1KhjgMe7z2f4zOSWrZpywIi3nH04xVIRpoY4D22MpxzcSTDr9TCg8vAEA92hCEmo=
-X-Gm-Gg: ASbGnculI0dsGWBnWZPJKZs4L7q/QESOi4NSCixo1ECDZ7BUyEwjXShZ+ZbBBiTfzXR
-	M10h8kqVoJ649OnmlM8OJ3gGHEaZzS5GDS8+ydzD4jSCA4LYVYvHy9a9jo3w9Jn4/yogKJPbp+L
-	YDaQ9eN1NEkAggckl3Ef62g+7qPtjSQGV1TvAB2pyMYryt6qRZmehVJe9aba9XDLIzmulGQyVKq
-	wfDFgCX6MDYlMo=
-X-Google-Smtp-Source: AGHT+IGIDLPPvvGPZSkU0yF1OlwVp8wo5TpW96HY5AFkJVH60zz8xFo64ZIU2PS+GFi0if9nTHq0FFg5B2nbtrfvmnY=
-X-Received: by 2002:a05:690c:60c6:b0:721:3157:fe98 with SMTP id
- 00721157ae682-72131580029mr85929007b3.23.1756313240178; Wed, 27 Aug 2025
- 09:47:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756313962; x=1756918762;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cSz+0Jdl3rsxgIMqjiE4eLITB/Ptqi8xoIkjq9Q3i9w=;
+        b=jPM59xqPmJHE2rkm7XofxxSEcFdoI4thggUs5XwSTqFCi1ZEMTv49tEeAcWnG3cCSn
+         2QIEslqd4oVYsowAqiB+Pxh15YRVZ7eC8Z6TFn8UvBY22WF0Znaf5rK4yCQssPMqWj+7
+         tieTzodMY6UCYWrcWZsRB34RQujcDWJVD3CHZF+rGURivwYlpeCYGzFyibDvMU8Dlj2D
+         QKbltJlpSMc7MY8nsp18HlYc48VuslU3y224OgKw3WAkrciyg3asKEbiByqmxvlNAFb2
+         eWM/GaP0b8IFI/dpUT1unqZShTmoUoz8LUJOPHFSI1ghfEGkxPmHFGO8AN55zPdQVA68
+         TKsg==
+X-Forwarded-Encrypted: i=1; AJvYcCWa1oo7fVBM6HpdH3UuIi5CoKKbPFpd1M8Fo/wpwIyKcdql4UTxOPr42rxXhMojG50+pLaifHx2vg==@kvack.org
+X-Gm-Message-State: AOJu0YwcgSKh2O5C6EyU6Y3P+xGTJc9Ld4lwaI5m/yJWj7Lu5hOkKFBz
+	ft5/B1C5UoG5EzGkITLdtZpDAYaJEHiXxRa1fMDnSrdsK1NIb1Us29BK
+X-Gm-Gg: ASbGncvPN5ppDuqzKppMX8Zrk/+xp+MNuaLQoORcmfraFkc/sr58fZWD8sVTXZec3dZ
+	gJh2Rj9OkgGcnT0s7cJeBA0X+3V4HbjEnbOq1MM+hvu8WAx7XSPF2QPPvXjMfRXfYHuNrztiibI
+	Xmbhs8Sz7/ZgaIAruSeKSsFiRwVAS96m6qItyjKp5MQvgRwET6BmJyWZyF0HtvB5Ltl2ojCWq6R
+	roQGQ5oLdQB58lUwa/v6NYF9v10aNOVaZPRzPcXt9Qh6YJ52ybqJ8dsJQb8sZCv+i0R13glngGG
+	w/+7wtnHwXT4KEoGSInwp9xrURxhTdsMytE/TF9VLzh9sZWGOlI5nQlFiYsq5s9wVEYlWflvsNh
+	pLtP8uoRgiURwUeaBASNmB3EGM6SKJmUZ6D/1LqhnOVBXymin60ZW
+X-Google-Smtp-Source: AGHT+IG4BeCx/VIPO9rnbCc0YcRdZMlua4eVbdX3PpKt/fKDdzrBfr7yiiTFTWfK/4UfPVTpR7vpyQ==
+X-Received: by 2002:a2e:be03:0:b0:336:7eed:2f8f with SMTP id 38308e7fff4ca-3367eed3c67mr29987221fa.32.1756313961794;
+        Wed, 27 Aug 2025 09:59:21 -0700 (PDT)
+Received: from pc636 (host-90-233-205-219.mobileonline.telia.com. [90.233.205.219])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3365e5da244sm27443611fa.58.2025.08.27.09.59.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 09:59:21 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Wed, 27 Aug 2025 18:59:16 +0200
+To: Kees Cook <kees@kernel.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
+ consistently
+Message-ID: <aK85ZPVwBIv-sH85@pc636>
+References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
+ <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+ <aIgSpAnU8EaIcqd9@hyeyoo>
+ <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
+ <aIkVRTouPqhcxOes@pc636>
+ <69860c97-8a76-4ce5-b1d6-9d7c8370d9cd@lucifer.local>
+ <aJCRXVP-ZFEPtl1Y@pc636>
+ <aJHQ9XCLtibFjt93@kernel.org>
+ <aJItxJNfn8B2JBbn@pc636>
+ <202508251436.762035B@keescook>
 MIME-Version: 1.0
-References: <20250826121618.3594169-1-sunjunchao@bytedance.com> <aK8xilDSEaRB3mjj@slm.duckdns.org>
-In-Reply-To: <aK8xilDSEaRB3mjj@slm.duckdns.org>
-From: Julian Sun <sunjunchao@bytedance.com>
-Date: Thu, 28 Aug 2025 00:47:09 +0800
-X-Gm-Features: Ac12FXyPuppi4FaYe2QZD17lqpKjInxiPaB0BJGOE1U29q5b-AHy7UZmtW1lgyQ
-Message-ID: <CAHSKhte2u+Af-_p4ezdGBk_R4f9EtHE7nzpys685kE2oOwY=Aw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2] memcg: Don't wait writeback completion
- when release memcg.
-To: Tejun Heo <tj@kernel.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	muchun.song@linux.dev, jack@suse.cz
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 327EC1A000C
-X-Stat-Signature: crj3exfbmnk16iezxsgkt4qrfikp4wd6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202508251436.762035B@keescook>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EFE37180013
+X-Stat-Signature: zrngrtzwq57ixeeadssf4i9wqgnbwqna
 X-Rspam-User: 
-X-HE-Tag: 1756313659-808343
-X-HE-Meta: U2FsdGVkX194a4BZdqO07oyvXzvuoWjkG8qjqPH4RdEe4uDtx+gEjw5hTk0Yl9C3wLmzHBxmoruCGtzbWymvmImukY7YVx63ccLRrb+aRZnZvNsYLyJO/Gc8kjq/Kaj7yeApe5LZafdHBQhQLKFG5c45So9Bwo02MOBQvoih18E2XVUFyLmQrpdRcPY3cf5NKpSAEjsdR143GRVuc+PnbIezpZMRABqOUg87NrdLxy/5shaNLHvnfQOWtPWAlIUyhzELWG0nR0SHFe21U+zKVMjLSmG1BjLuPfuWiB7ssIAXGf3Ob7d9+gvZg4q3+z1Hui0lwIKJNVslErIBEbb9EhVqkd7AFHlf6OJI6WE0s7j8PRDqyi6SCz/aXG/VuMA3hcwNqeEt3obvZRAWXWYU+B5XfUCdQr4emw9xfcQL+mzW1R4tUeEV4U37az3MbIDIQLHXJFs1m1eaHROYWYSXzOoEPAdhS2LI+xEpJn95iqdezHV6v/OZUGVEuCRQ9x2qDRHxJPnU+8ICSrttLllxIajyLTL7Y16r+Z9LxOtzSuoo7nWybFXz61MacXnHlhI2RhZYlWC01aIwcGUqXq+DG6HHO9ZKl+LiOpeiLLonVaVdQVA2PxJCtGoyAdCuDQkNYNghicbx9Y1VliDNKMLHiT9GeR/KS4TMrgzusx7qUokI1lJ/s2ji8FYyghcCGHkeLgEdxwvQ0ExNeAFA8NFxVWl8As/XsqTSkZFo4ckshrkqSjpijGAnReXVgL20iwE9QUFbyLKVGdvMZxaJg6vw5PURSOHrR1a35LSOJF52WDQ71wEYGDKlg8CUjbrdxTnb+ZsdN3QziIdYLpnu+K2zYE8lLo1cADbZVOfB7C4gHXYA+VX+BarV2a7vGWPxl8pxY/2N2MEwSju+GP6hWfarJ9BpvSEaK57ilqcv0H9vI8BpgxBuFax4lC82GbmpXYzGvQjixdlGL8AbYlvyLsi
- COwODOdP
- bOrMC0epsYpS3Oiu4ZZRJyA/ONBiibC3hG/kt4nrUjroBwuCIHw84dx8pQ0XwLvepSaklKXtpl+SqFvZiYV+9KONDSj12klbsJ3vcsYp6NBiGTFpaTc/9xv12jzgFpxll2qrs4o+3Ka9GvysDPDCgyjxoG2flMTa7sIqF2qYb7IQreqPxhDezob5b2OOf5GJeLX1qelyZaTKNjF3z68IVRqZ2YA==
+X-HE-Tag: 1756313963-225825
+X-HE-Meta: U2FsdGVkX19ML2O/Na5YNKdKglJ8MtHcEjhRitjJjKOzzum7udddFKTQIDvJLqnKOCUizPi2lL0zHYSxrp02VQN2qFnkk4/Bwkz0Hpb+AHKw10NFicVJ5mHJe0lmvb/FvvoU3IUKzRY1unATAq3CmWkjEX6i6sFuEUprhXtAmIU3KPagPg+IEMAdOgsBavOjZ7AXmtdOu8wgJTfZIJMM6TKSSDnDcU/6T5uHudxvBeKTdK76hlvegn0Pt1qDk6446zGcShBkvCd+FhO5yqg22PY18K4ncp0D5K9P+oCvl07BF5GsRJ1USuJd5k1JjB5hcUQdXShXjrAqN6p2pFOp5yU/vrCiERsB5MfnFnwJDmfJUpd+Uw7hxiHDdvK0zifnfDqyueGopH1bXIJY4VoVnaF8LYwPAACou4sDuQFnxUF0k25nav29h9a5ZwkmRH1+wWjxSskrYNiExMEuxAkuFhZEZKWibdw3VyzEHSagb1NjebGlzlQO7YwmT3nhbl2K87BVp/4GyyO2KmunHT71K9dmQ6x5AS7xHAE7OEEe+CncUTOsd15y4XdOgjpNdhCoERp0LSex+PuWqJJ0acOx2vCL/2BqlbsiyMjbECp61kyGtZg4xOIy7mrjzvE2G+Iuxs/XMCmoa3nzT72TR+mDKRgkPgMEDwcmhO2zchQDWX1bWrd0N+iUS+G9zrHhnMmyXU9GZWrkIQXLX7EPtO9IFrtIZcZhXa7LzxK1sTSL88V1NqpoSzjI+ENkON2edkhYqs0gD4chZW7X7cVaRbvNfAsuIoXK7Z0Wd2+SQa2h/qIzF36HqLZ3Q1xuF427J6OOQLBld1ENwg75l3Sl3eJpCzykN1+rHDDMnwvIwwa4lSB6dAMNIfT73j+rbtuo81pAy8r8vu+QjP8nJJhxkOCKlnWiX41sNMJEnVVp8Cv7gejFNY5WpYk6hwtAXKJTQICX8P0A/1OvWR8B2YBnxAC
+ Mi6CwSti
+ 2ZdMzc+sbUM8CZ4e+eoShQaXRRLT/TcGRXd3XUbzTxlLLrlhZeVws8mfot/8v7P6iGGV7nQvvraWNbK9Mp4fFzYCvOiUJMD9Xq6DQa09Kc8PmjAIQbz0PA4uaZwa3vT8et1WyfAHSi5FS5qqJFX0LVyt5i2ARHbxLupA11iGhrKhzJQaGKWcCFmNcMy4o/ZPVhJ+zPGyqjMylP4kgaeM7ps1xdbZTiqCp6M/pHrh9tydwgfg45nxekKgdor787Afhj3HBS1k4YazNSkUcmMRPYeT20E/HJXZQkEzudwkDen4UBLpWQOyRdl8LppfR8zEfII3zvgmgbRe1IxIl32XIqxWWBAkK0ItNVEHXmJL/NmuPqtKGDm5LNm7twH9oPFHN9CTOcXpNAzJeFnNUhd9nYU+PPYHepeOMuYEKGxsdxi+R8QjCdfpFlniCCpdf376SyQuqL5QzX7yhS5+IvHmkCqeZIdPOGiT/WUaP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,76 +176,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Mon, Aug 25, 2025 at 02:37:11PM -0700, Kees Cook wrote:
+> On Tue, Aug 05, 2025 at 06:13:56PM +0200, Uladzislau Rezki wrote:
+> > I agree. Also it can be even moved under vmalloc.c. There is only one
+> > user which needs it globally, it is usercopy.c. It uses find_vmap_area()
+> > which is wrong. See:
+> > 
+> > <snip>
+> > 	if (is_vmalloc_addr(ptr) && !pagefault_disabled()) {
+> > 		struct vmap_area *area = find_vmap_area(addr);
+> > 
+> > 		if (!area)
+> > 			usercopy_abort("vmalloc", "no area", to_user, 0, n);
+> > 
+> > 		if (n > area->va_end - addr) {
+> > 			offset = addr - area->va_start;
+> > 			usercopy_abort("vmalloc", NULL, to_user, offset, n);
+> > 		}
+> > 		return;
+> > 	}
+> > <snip>
+> > 
+> > we can add a function which just assign va_start, va_end as input
+> > parameters and use them in the usercopy.c. 
+> 
+> Yes please! I'd must rather use some exported validation routine than
+> having it hand-coded in usercopy.c. :)
+> 
+I will do it :)
 
-On Thu, Aug 28, 2025 at 12:25=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
->
-> Hello,
->
-> On Tue, Aug 26, 2025 at 08:16:18PM +0800, Julian Sun wrote:
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index 785173aa0739..f6dd771df369 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -157,11 +157,17 @@ struct mem_cgroup_thresholds {
-> >   */
-> >  #define MEMCG_CGWB_FRN_CNT   4
-> >
-> > +struct cgwb_frn_wq_entry {
-> > +     struct wb_completion *done;
-> > +     struct wait_queue_entry wq_entry;
-> > +};
->
-> Why not embed wb_completion in the sturct? Also, can you name it
-> cgwb_frn_wait instead?
-
-Sure, will update it in next version.
->
-> >  struct memcg_cgwb_frn {
-> >       u64 bdi_id;                     /* bdi->id of the foreign inode *=
-/
-> >       int memcg_id;                   /* memcg->css.id of foreign inode=
- */
-> >       u64 at;                         /* jiffies_64 at the time of dirt=
-ying */
-> > -     struct wb_completion done;      /* tracks in-flight foreign write=
-backs */
-> > +     struct wb_completion *done;     /* tracks in-flight foreign write=
-backs */
-> > +     struct cgwb_frn_wq_entry *frn_wq; /* used to free resources when =
-release memcg */
->
-> And the field just "wait". I know wq is used as an abbreviation for waitq
-> but it conflicts with workqueue and waitq / wait names seem clearer.
-
-Reasonable. Will update it in next version.
->
-> > +static int memcg_cgwb_waitq_callback_fn(struct wait_queue_entry *wq_en=
-try, unsigned int mode,
-> > +                                     int flags, void *key)
-> > +{
-> > +     struct cgwb_frn_wq_entry *frn_wq_entry =3D container_of(wq_entry,
-> > +                                                     struct cgwb_frn_w=
-q_entry, wq_entry);
-> > +
-> > +     list_del_init_careful(&wq_entry->entry);
->
-> Why list_del_init_careful() instead of just list_del()?
->
-> > +     kfree(frn_wq_entry->done);
-> > +     kfree(frn_wq_entry);
->
-> If done is embedded, this will become one free, right?
-
-Yes, this makes it look clearer. Thank you for your review.
->
-> Thanks.
->
-> --
-> tejun
-
-
-Thanks,
---=20
-Julian Sun <sunjunchao@bytedance.com>
+--
+Uladzislau Rezki
 
