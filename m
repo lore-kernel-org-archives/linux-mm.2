@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D7CCA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8830CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:07:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E0388E0013; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
+	id D43028E0014; Wed, 27 Aug 2025 18:07:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B1068E0001; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
+	id D1AB28E0001; Wed, 27 Aug 2025 18:07:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C7878E0013; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
+	id C30DA8E0014; Wed, 27 Aug 2025 18:07:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B7688E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 156B7140892
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:56 +0000 (UTC)
-X-FDA: 83823923232.24.25A621D
+	by kanga.kvack.org (Postfix) with ESMTP id B1AB58E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:07:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7567D5BA9E
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:07:12 +0000 (UTC)
+X-FDA: 83823923904.23.5C9E157
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 312482000D
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H6ikshVo;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id B7C29120006
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:07:10 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ftvEY9Qb;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332414;
+	s=arc-20220608; t=1756332430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6MroGOug632a51ffxPVHU3ATCsOwaa4b3tJ1MTGryys=;
-	b=AwetZ+SsDXHt0CjhMrN6fohdwU6og+OTCdrRu/g4gngtOz0NzQn/FDNVUie4ZrhTvk9kPF
-	pHhIx9Owr+gGKAuX+gw8jkK9+DYLlnxkgpMtM2ty73zeLmsTNIt14DmUBgFlhliyMr1mkP
-	nkGX/FZFYit8x6KqC/1XchjM1c679As=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332414; a=rsa-sha256;
-	cv=none;
-	b=SWvuKQwo2P6L+rbTDEukf9/+PGPiXY1PFiMiZ+cSlTxr4pF0lKBXkl6PwPnaoArcNkD7Ug
-	oZ12qZaWBdS7NvVUF1DF2sXeGldAJ+9kTwsGvkkg6Zbs4KrdtniKkIPI/qcaIf5jb2fO46
-	qKOwxXEcAZX+o92KXxVQkzUKo2i2tSM=
+	bh=QCvnB/7xI7T/4p4mwWx/D4+W6s//h9G2+oSyfbDOFZs=;
+	b=Ez5SsK++8NzcO4EgqbgZ7tmgFN8Uiqfli0Rb62LelV299xcqtaQh3Sg4lFprv72p3Gr5Gl
+	js3D/zoMskMOomFehLuRvDy1DRfnJyKZK15GRCO7U2jGKMAHm4EcOPZVaNzPy26xYIh/Th
+	3QTPd7sJsej+z3JwV4B4m5IloKZx2EA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H6ikshVo;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ftvEY9Qb;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332430; a=rsa-sha256;
+	cv=none;
+	b=3kRh6C0MPwNJHkEjGXPta0wUd17w2sknQRtAgOsL4U4mEut7V2OZAl5huq183UWxvUATsW
+	4ANG84bU9dSIKgkmbXHfMTVG1vk++zIyDq3qJv7964dwYTTpWw8+UuQiYHiWDUuWLJ1qdR
+	goK9J0y0raUntQBvUCNww+krUQH5MwY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332413;
+	s=mimecast20190719; t=1756332430;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6MroGOug632a51ffxPVHU3ATCsOwaa4b3tJ1MTGryys=;
-	b=H6ikshVocCN9ovfDDNAd34H4MNLOjAcK+d61ojQBlU1vR5uP9OdzxqUkAHRO3eiey0ECkJ
-	i0KxSVULsQ9Y9X9+OIc1Nr+SClgv2Fc5JVJb68qzgr8DAlaXv7eB2nvg/msgaMVCu2DkvF
-	dVSm9oWy9knpHSI9RmLiJo/EAMYY9q0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=QCvnB/7xI7T/4p4mwWx/D4+W6s//h9G2+oSyfbDOFZs=;
+	b=ftvEY9QbbtpEdWEFwA9LZnhZo1kLdEz8iioe4D0O2C7Hz2PdubtD9nFct8FV4nRddsAl+B
+	IDwUFzXhynhjn0LWdtAaX5+FC7OmH5RFCWToTiWXFj3ZVDjNLj87ldzjTtI5R4BqJbLLzA
+	K6PdnxExzO9KK9evt4bUtsc4/Axt6j4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-a2F6JvbVP--8yuHhX8WRDg-1; Wed,
- 27 Aug 2025 18:06:50 -0400
-X-MC-Unique: a2F6JvbVP--8yuHhX8WRDg-1
-X-Mimecast-MFC-AGG-ID: a2F6JvbVP--8yuHhX8WRDg_1756332405
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-ClQKmaRWPAKB1M2iEYT62g-1; Wed,
+ 27 Aug 2025 18:07:06 -0400
+X-MC-Unique: ClQKmaRWPAKB1M2iEYT62g-1
+X-Mimecast-MFC-AGG-ID: ClQKmaRWPAKB1M2iEYT62g_1756332421
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2834019541AC;
-	Wed, 27 Aug 2025 22:06:45 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B7B791800285;
+	Wed, 27 Aug 2025 22:07:01 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C0E530001A1;
-	Wed, 27 Aug 2025 22:06:29 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B7D6F30001A1;
+	Wed, 27 Aug 2025 22:06:45 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -123,22 +123,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 16/36] fs: hugetlbfs: cleanup folio in adjust_range_hwpoison()
-Date: Thu, 28 Aug 2025 00:01:20 +0200
-Message-ID: <20250827220141.262669-17-david@redhat.com>
+Subject: [PATCH v1 17/36] mm/pagewalk: drop nth_page() usage within folio in folio_walk_start()
+Date: Thu, 28 Aug 2025 00:01:21 +0200
+Message-ID: <20250827220141.262669-18-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Stat-Signature: 7h433o7nj3s859enw6sbzc8zp9uxro6x
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 312482000D
-X-Stat-Signature: 8muikcg7814b57qaqz9nah74kasu9dnp
-X-HE-Tag: 1756332414-499227
-X-HE-Meta: U2FsdGVkX19wMBs6dpSqxpNrsWXLMvq9OJpA0IirJJlRq66lsTJoHhN6WrKZIY40h4htqyaFA6JM6IC2UoeEsEDHNDML/QrloYyqsWWxrHn8qUXfCqrrm+DcznjaKD5gODXjIv2WbrTuMdc3m+ZH+ig7deEPeAkxMp9omqpiPgVaiU8P4ay3DxXWdlJgmH+OQzykIqZNTUdNsUVGtCbnNF+Rm1JNF1Re4nY6ZENSDTScQexM/V/92WY/yWrr3kmQAD/Y8tLz0kF7ANZqywM23+TYAxQtvPalIuE0MjvTjoub+4gaiQzo3hr/xob2QXsIA2WVNSKR0FoVtyaNZQrCGZSHFlg3Xe9D3jv+tBdNV9CGqTkGoEcjMXTj78HKu+UF6yvKmsmH4cgVpz5bgCxfxqW9j5aX9/2PaIazRy3L2HEB0nD1fcXIC80oopjq+hhJFptYmArYZrGhwxTQf1QKb6NDF8ffQ/gHg8QIrzns/S7cUhj/FgBraK5/uZzIHAAsT7zWwMIO83CfkUZQo775pwXmDlEiEz0/RLRNwb/go0ddV6HsqY+tQJ0WQbk4cVtv44AkYL3DVjfI3XbQphD3b6k52hlgLJzyAN97huZ2vZ4nEd2QOL6jRk70wItworTaf3kIT4/+Ep9IPeHQCs8Wga8Ivijy/tn5KkgQWL5DshVwh7hiu9PnB7zK1ylyWp2Bu22IXWwpYeufqHc4M0gIu1UZJpe3hOeWN7Hn4qqezsdNUCHR8zWW0dU1nUaXferZMkgdy0WoZAEdNZHsJWf545LFyuRhq36IxH6J/Zfg5o5+lhEnfKL31LZ1cABpqwWwW5FGimKdMpDaCgSfM4fwZJDbBGpFTan4ouau/Sk5QiWr0EJghA5TLlMW9xBO/rDxTwV3z8+Xh0ueKW1tiRvzlpFh790q9CEd/XeHwqwhz0NQ4M/+z4loAG3dn/4eCTkMamu0zMR7DqtTbXtFB1b
- +RmMGNPu
- ZMv7M/BJtUD+WvdnGb7YX3/Ng9OESjVLWpEc7tHvVwh2YNm3tTOvaUgnj+6iG38+K9GDd9tyqvahjPi3mJ07z4kh28G7AGdllWv5FGTFM9waCXm9JCgEhOckV3FyNKYyLpQySiIo5UDsUL0zlyJcphZsdvq21MyaOJG/OCyI6+r1ZldKjMMRkEXOZXYRdqxQuUNMEg1tOdcRxE+qwujdbKWADKJOkn5pFLiPOYj8UTg/HaffGcKN7o0YA8hw70z37zG4/K1d/o+McdHG0RVEJXEbADF6U4f9NCyHCjeIHbJxh4nlfX6uIugheRxeZY114Ep0MVRhCr6syYOzAm+Rj62SU/lFkdhkbDJXH0+Kci/2kCk490RNv9XjpIJGFjtiNBt87
+X-Rspamd-Queue-Id: B7C29120006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756332430-581095
+X-HE-Meta: U2FsdGVkX1/00at8QRNqR4G/VhHS+hHSA8AcWcfufCGAYmQj9ruMBsJmzgVUCe34iE46wiIUh2HNm8TLGCrDhL0jEE92FxfuS287lhaKF9jY2ehnwOPUgDBInKvp4qf7gT2eHbT3mL1+fhJw3Vslmllwxh/51/zK0bjHvG1k1cnq2pHWgonERsoM4vZP9v4sDwfeLE5G25MzAllz5+z/8c7wgRe3UDbdEf7cgX6KGbZyxPk0sCRk/76k0/fLfz93l0Dc0oe1Qe+aQx0JyeVvWU4ecjF4A52AYh5KY09WQPjD78UQFNYSevq8SGYB2N2VL2C0WePBitqrmsCMGyrzxLz/amQXL1TQpmcKAZg4iU1ojvwX4r7OvufTJiZ9kcpuXdVyv7NUnfSHotCNOXX5Czr+/xGmqL+E2hd0cLc1MSoAEDxTFSL131wUuaEVHXxYfRujMR4o2WLTehVEpmQIlhOpaPl5+19eKNl1OC+z6XZRDSy5XFVPV0FTLSO+q4H2bIFuFDhLa7eemVBhaa3SzqEKYR2VO56p1SJK/1D8hkOA/pPcsFKIml84ieLb+OmLcI0jCv0uZ8fnHlFNyP03SZ3cyQcTzlHGY+2XElTbf6pDnxaVrQnf3sLDl8mBlYknoWkKbvG/Lt9Reji5Rt8YawoRUgDIbfJcbKFCrZM05gxyGpeppCQtLHOIKxpr/BrmNIWktPlP3ecbpWg/XDswSBw9thSVC24AC2coaGAtL1N7Q7BOzga7HZINOAEU7IJcWbJu2uq7Smdfandky3W1ApeMEVx0yFTpUYBTpxu0uGzvsEd2Hv4I1zKF83nm7ocTfEOAlyXABHA/4bC4h5pBJxE9i6vP0sYMW5iZXFE3c+JgQe83PK/Hf0q+59Yd0uPpbdZ3c+X2DgC9roGmtuEAnDrU9TA0Vf8xVls5IPJir25UGGPV+8BfdkqCQchm0UsYczEMJKHDRR3qNNfDi+L
+ bjcR3MNg
+ Ixa1wTOzxrYBBdCziC6mN1zbSNzSJeYwawP25tAvI1ZGJWOZ21/Rr+Ukeo5QPDQxdJfaqvSqsEdDaml6rGULR9FiWZSEJ0wAx2KA57MjCb5BWAxCILzS9OXPbnnkhuKDOMswP05eDEwwMq3eVet2i8VGLESco9+SdzSthxr/seZ6XMomwELwiG2QWYRzYV0g9j1nLtmn2uIuzRFWWMlCA+qolES6FcTzSpHPb/7VhG7ajTYUDMMI9s8OwFoOlbUrwXjum3rBurW31TBwLQ6xZHKLHAGjQHXzxSwpevxbPm6cw58iiR6hGSDkWYPgKka9AqViF8NGJ0yX4MwREmPCseGasZK71kuHras4dS/dwKMdg5y1I7DF5/lDhyC+0xOqH8Z5z2cHOO2YtqHihqcRG5kpBU2IE+kGL00AnPcZ105XpVZ63sRKj9fNb9FbQIWS2eiBc+W3jLVtXPPsVWj3T8CxwgwcrdRM93hWGt0qJkqbOb+jULPGF1W3sFw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,60 +147,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's cleanup and simplify the function a bit.
+It's no longer required to use nth_page() within a folio, so let's just
+drop the nth_page() in folio_walk_start().
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- fs/hugetlbfs/inode.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ mm/pagewalk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index c5a46d10afaa0..6ca1f6b45c1e5 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -198,31 +198,20 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
- static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
- 		size_t bytes)
- {
--	struct page *page;
--	size_t n = 0;
--	size_t res = 0;
--
--	/* First page to start the loop. */
--	page = folio_page(folio, offset / PAGE_SIZE);
--	offset %= PAGE_SIZE;
--	while (1) {
--		if (is_raw_hwpoison_page_in_hugepage(page))
--			break;
-+	struct page *page = folio_page(folio, offset / PAGE_SIZE);
-+	size_t safe_bytes;
-+
-+	if (is_raw_hwpoison_page_in_hugepage(page))
-+		return 0;
-+	/* Safe to read the remaining bytes in this page. */
-+	safe_bytes = PAGE_SIZE - (offset % PAGE_SIZE);
-+	page++;
- 
--		/* Safe to read n bytes without touching HWPOISON subpage. */
--		n = min(bytes, (size_t)PAGE_SIZE - offset);
--		res += n;
--		bytes -= n;
--		if (!bytes || !n)
-+	for (; safe_bytes < bytes; safe_bytes += PAGE_SIZE, page++)
-+		if (is_raw_hwpoison_page_in_hugepage(page))
- 			break;
--		offset += n;
--		if (offset == PAGE_SIZE) {
--			page++;
--			offset = 0;
--		}
--	}
- 
--	return res;
-+	return min(safe_bytes, bytes);
- }
- 
- /*
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index c6753d370ff4e..9e4225e5fcf5c 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -1004,7 +1004,7 @@ struct folio *folio_walk_start(struct folio_walk *fw,
+ found:
+ 	if (expose_page)
+ 		/* Note: Offset from the mapped page, not the folio start. */
+-		fw->page = nth_page(page, (addr & (entry_size - 1)) >> PAGE_SHIFT);
++		fw->page = page + ((addr & (entry_size - 1)) >> PAGE_SHIFT);
+ 	else
+ 		fw->page = NULL;
+ 	fw->ptl = ptl;
 -- 
 2.50.1
 
