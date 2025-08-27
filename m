@@ -4,105 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EB9FCA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 15:30:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73631CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 15:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A9F26B0008; Wed, 27 Aug 2025 11:30:32 -0400 (EDT)
+	id A9AEB6B0010; Wed, 27 Aug 2025 11:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75ACC6B000D; Wed, 27 Aug 2025 11:30:32 -0400 (EDT)
+	id A726E6B0011; Wed, 27 Aug 2025 11:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670CD6B000E; Wed, 27 Aug 2025 11:30:32 -0400 (EDT)
+	id 9B5446B0012; Wed, 27 Aug 2025 11:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 562596B0008
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:30:32 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 89DD26B0010
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:34:44 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5CA25A791
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:30:31 +0000 (UTC)
-X-FDA: 83822924262.12.8A6C8AE
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 12DADA0004
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:30:29 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xbgvymuZ;
-	spf=pass (imf25.hostedemail.com: domain of 3lCSvaAgKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3lCSvaAgKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756308630; a=rsa-sha256;
-	cv=none;
-	b=BPNRORFcjDquTk/+imKMdtorSYVnKpzdhQ0AtJH1DKK5WEhiqIh1rE+c0EsNxeO3nne+7P
-	sNjKkZYyFisEkXzgRea8BjdM5z+FS3wH06XA4bRqI/mMGn1Zg9nsg1np/9wigOWCQcvmYt
-	SWvVZ3xJReo6ZfpJflhNNcgA88NugOE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xbgvymuZ;
-	spf=pass (imf25.hostedemail.com: domain of 3lCSvaAgKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3lCSvaAgKCOUQHJRTHUINVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3D9CEBB321
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:34:44 +0000 (UTC)
+X-FDA: 83822934888.12.B3E791B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 718A018000A
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:34:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e6v+GpFx;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756308630;
+	s=arc-20220608; t=1756308882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+2lcoD1SkCJi8dEvMItuNydCcCeq1NBdI+5d9T3pGQk=;
-	b=IM4ouIXCkweEfgeF+j4UeiyXuoOaeuAysak2pXGQVb/wIBd0a0yOP76O6WaZrD1SyjbsYl
-	hYwaSGDs+pLBSmMB1lAtpI2dzcsvY9BUN7aNo47Vc09EEDkPGPFf44ekObgbgJECnCV/Zd
-	Dz0eXVuwZu4obpRHb+3HaVtlYOYcN9k=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3c79f0a5feaso2692719f8f.2
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:30:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756308628; x=1756913428; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+2lcoD1SkCJi8dEvMItuNydCcCeq1NBdI+5d9T3pGQk=;
-        b=xbgvymuZUZ9JOv53gXxoOK7fiYwvAWSl7yHRWvE84Z7912LfF5ON0NtW1wWitZgmEq
-         0qskKWEmZPRjuD6K0QtB/1WMREIbBrbU8sqgduD+4bE8IYJqLj2VEJSgM7La8RmtxK8y
-         EBoNy9WvVtME35RAB6BLAGXmGcAoIpdGaTMrITiuZo5/jBFFdNHWb9TN0jBTDCOj7+sO
-         7YlrQOpfrGDCEraxY6GxNcXlPGfz0AUyRpPbhibtlnEj+pEEjFz7LdzhlQKgjseTzjXk
-         TWoB4I//YiM+cveBO3wHmFP15ms3XUAmCZF/JnmyWR56v46ONyIFLEQHzVKdznkbB+xY
-         PNXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756308628; x=1756913428;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+2lcoD1SkCJi8dEvMItuNydCcCeq1NBdI+5d9T3pGQk=;
-        b=TawRwprCA7wr2RRlFlIY8caALfd3dE2Py4B2iQkeSvJxl00Ilj0btX0WYVWfc1xG4s
-         WC2gCyDWqdE2FIkkX0fjyh8LM563aUbau3KRLHmoUM1OZG0JIRMiS0NE/S+SkVDvkjPY
-         67rtsIqvTNapFec+NLT4NRvlGaeg6izSTw/BVyhML6VdcllmVjEjDCXD18AC0SvlN4Nz
-         +90wRteHnqdUWox+gxlAAxpdKhgev9WQhzr+ZroW6ztRss00rHRDypTfJsBZ9nGyRjo6
-         ZQW17VhrfPSe9XI3n07fZFFq36g2SYo8jM+0tojy7bGyNWT5ttQ6Bl+vpcKcKWgSTgAo
-         gmNA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7s/AO7Ez/2/Gk3uo5u/G7rpDkj0Vn+8Lo3MXgQpDnzjNDSHkvS1qFbRG5Yv93/4/OFWU3IDGXFw==@kvack.org
-X-Gm-Message-State: AOJu0YzTv/549B28K8kVkObU33oTwJoXX4tH4DDvHhU8a6i33DPkD5hX
-	/QJuAArKjI081ZphdRp7l84yuttucy9dVbEVXEnheMp7p9li7nMXjnGI1XnueOncD5XXi2yRV7E
-	H3dUnXzkgJZ3Yeg==
-X-Google-Smtp-Source: AGHT+IEvXocNCcysmhKTOTVqBVS/7zQEmjrI1mwpeLDOcAO5bM1y/TcdWjOA2UfYgroW31bB46gdDNVFr0ea3Q==
-X-Received: from wmte19.prod.google.com ([2002:a05:600c:8b33:b0:45b:73cf:2862])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1994:b0:45b:7185:9e4 with SMTP id 5b1f17b1804b1-45b71850b8cmr27223015e9.11.1756308628229;
- Wed, 27 Aug 2025 08:30:28 -0700 (PDT)
-Date: Wed, 27 Aug 2025 15:30:27 +0000
-In-Reply-To: <20250826191320.d5aa551eb5abef316de41175@linux-foundation.org>
-Mime-Version: 1.0
-References: <20250826-cleanup-should_compact_retry-v1-1-d2ca89727fcf@google.com>
- <20250826191320.d5aa551eb5abef316de41175@linux-foundation.org>
-X-Mailer: aerc 0.20.1
-Message-ID: <DCDBG4WR1ZDF.23COVR1IO2OSJ@google.com>
-Subject: Re: [PATCH] mm/page_alloc: Harmonize should_compact_retry() type
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, <linux-mm@kvack.org>, 
-	<linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 12DADA0004
-X-Stat-Signature: 87gye4u4idzzz8y88erb5ymyewaeok3c
+	bh=fmJBZQv42HVCGPEvA8cfxESd+YMYRejwuN3HV6o/S1E=;
+	b=8YkkuadpED1RwcJH0d3f+UUSYG1gTiIVzl4dojs58aRL+fiU21gnVPoN6N7C17v/yK+VDy
+	jemYMa1Hb7YQtwDtuT05uSWeq+VvAuiRq0A0OJQ1xQyc+Yxd60jn4hvk18hy+6Wfi/ScFd
+	59jO64AJRMu9wgL9zH+IvdfRUD0wpVY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756308882; a=rsa-sha256;
+	cv=none;
+	b=lI7KBYbHFMo++pvDOFbtfCFD8nKgMSbRUkVRER/ddfrtifEGYdw9ktvcdFnVmbg3rhT0J4
+	MDOLrpWIkYYlSwk/ZoPOS20m8uop3krTwRCoWZPhc1mUfQUxI2uOgKsZSw2IuFPB4rRcYr
+	MiYVCQIlMdNnIiMxX0wiO4AHGnpe1Fc=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e6v+GpFx;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 06AB943416;
+	Wed, 27 Aug 2025 15:34:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC4AC4CEF0;
+	Wed, 27 Aug 2025 15:34:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756308880;
+	bh=/hHoYvlbaeWmt9yGXT8TP2XYUsiA//N6BuAAiOClRwY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=e6v+GpFxja9vW9YNrveOO418XZOPc4iSrQvWmcZAoH6Mc4PKvw7UBBQ60MGplx8OJ
+	 aoiC9hnqMNugU0Xj0H2VpaLaqrXLxVMtj8qdu7PogapUHHlTYMMod3aNgdyrNzrJN5
+	 jmtfsaPmnSptrjABNdhm5J1zvmRLRd8pCh/OOhD0fxETxQeHxFSOe/nlKZg2fj+ZoT
+	 KD7gSbtqY7kjdvRsSJUwACMaSJ2HmJZxOU9clnPNVBzB4RssvVAWJHfsVm2f/lcqsn
+	 wrDmCM6GjAFmlZobcWtXrgwFnEWMrVvQ5xDd1fvmkcjujpbQ9twhauEaGtD+wOX4CF
+	 q2OX9DZbgo5fQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
+  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
+  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
+  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
+  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
+  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
+  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
+  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
+  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
+  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com
+Subject: Re: [PATCH v3 17/30] liveupdate: luo_files: luo_ioctl: Unregister
+ all FDs on device close
+In-Reply-To: <20250807014442.3829950-18-pasha.tatashin@soleen.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+	<20250807014442.3829950-18-pasha.tatashin@soleen.com>
+Date: Wed, 27 Aug 2025 17:34:29 +0200
+Message-ID: <mafs07byoye0q.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1756308629-60682
-X-HE-Meta: U2FsdGVkX1+OgWYhRdN1CZ++XOTRLprZEX+KUNYC5QK9G7yleusGgHOxuHJz0eQeTI3AydupECogQ3T/aql1Mh+dCAkI+WHSOdcpHK7N6i9Zh8qPsv1tI8YHhcYhwyBG1KYsi1lzHr8eHZ4hZRamuvZ0N6XhbXMKMVkfntLNKHuLFngvj6w/Yvtg9SIvHFURLy/KiloOFn9BMIozdLuQ8FuOCyPeaV0gJ7deAfbEBWHJXITil/2t9Olks5bQarGURnmwyPmQuJA0bHMs2Iycsfg6Khe4xP8jmaBUoApJv9KlRykWL4HX19Bu9A1tFDb8uUq/Bi7TggNcaCiabskc/CsLu3ipOVt4FYuO4RP/Bmd9EUqmitlwFMdlVQVkHw1UHics3KlO8Mmb6UJ2/wRaUffQY2jZYXvvQX+GfhmF1HyVTbYWwpoWWTKPUXhKzi8ds8PfBnkcmHryPKm1z3RhNT1vD70yanpiSuaz2P9EVxfm1sH4HNtBpH0nRwempdeG/sZaZ3hAK6AThHOCTMC/+eEAVUOqLo+ngZD4NMwqmPMjQr9TVFsBQ1vn9WXNjeaJGZquuTHZe5EqS92/fl3chNhOx0MNucqbUVrYkRVYcAHqYc401kLRdGhRiV+x/hm/beNABA8uSLAipE37E3Lqb2/nmQsIOWQ65yTEYJSiQEjTc4McEFayp9ZxfGtkxwBk5vbDB2kyodtEAaaZFj3gUsqqugV1mkkoLBYBQCqCwE8kY5MaJlK4907dLsLNKWa/79yrpLYTAS1suA3zK3tp5SeYAylWknzM93N5Uki6d77Y2C6j+aiVyzMoKdUKm6+TOSMvyPlKfWirGvWKAOrGyDMT/FajN7HaLb4QrA27aHjJqwcWEKKY/LytgCJUwoqxg2yQ7IyxUQXkCOaAwGqb1h1v2yIHIK9RgsY7PFbdjpEyZt3NgDvm1Wd2p0xCxa+3rdepvwy/WTMx4WGIJ0a
- DHR9pepw
- cJr6ootE16yEpX0/4obPWrx37/zkHe2J4zSNMMdxkOa3P752kbyDmWdnn8YJCPV1LjRGTqQ31cDtSg536a/hCHqoZeyCT3f0V2Wigait96TgSKDaNR3RUEGZ7sX2lYPQEyVsyh+khfm0qOEmi3XhtEhgiSXwwta0rExY5E036wSl+t5Y62rhB9V1vA6dmddmr4kRY/E3joU298ZAJa1eoGGnMRNmEOZKWVC2O8CU9adGWJAiDI4kLE7HDSoEB8xXHwc8MKCj4b4iG9nEkKRaiZcc0AejAHnBoKXNAfOcjnZU4vW98oxxBe9+mcfS2lrArpncyUXWh23bksJvOLZZTPkKYjlMbrs6+OG/XcZMitVrlxlTcEPFhcRXQhvlPgvyyPns1NxXf8clMYRQApbieZoq+HlfW3Sdinh30DROfGjgu18orxaJCUqWaEAsWWaTSUKeKZqqBjd/LF8Y8bc8gXO7dRwWSNha9HenG5Px510MKdeXtjmJzzCK/mZIyjDGqMyzhPcJtV1Aa07g3CSD0riPPnD1v4mtFbTP7GOYySL8yhNl+YWvClxP9MQLbKs+B1ZwrwOL4TKoLMALUCISZB/8v6pK+R2e6diib
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 718A018000A
+X-Stat-Signature: 6s3penw19wh79yjgufh9d9cfrnwhjwpu
+X-HE-Tag: 1756308882-510379
+X-HE-Meta: U2FsdGVkX19vFCLmg1RV2Ng1osR7oGSRGnbeEhVm61+2qc9VoG084Zg5vPTuQbOxkj+VrPLijZ8WLJQX3lN7xkbSqUoSQxcweK84Z8GoVoOAn1q28NatCVcbKDqMGXTxUwmzAzL3rh4u9ahfFDj7PlSX9Ed+lIRI9ycCWURIVdbQWl1RbhUpwZLVglQPS8UbztcM8abMiVYSputQng30SDXM5ThCNNHn2zHD3d1mNPah3uPMcCoCVBlU0AkcxXNPXjQJneBZc/IkF3OQMFedyWGtQm7sUvWDijnrYQwWCDJ05CtM96BBxdrDDeVDIC0MrPfn4bfEv0SQwZh6SZk42McqIiFOxv5NynlP9lLpRnqltPnPQ/0alAPEHyR8jdHbjhcE8GSricdayAagkx5bfvhtFFKA5rosXGxDIDE0U2ksuTCVqYOEG80J7dgpr35S1mf8FqMABWRGKS8iWGu+OskXdHFYi825zKAMT213UfsHOxjuYckPGbkLVIrXzo5NWQ6RAilgpw+k0/RdgSHKtSC2CkkVEylLChtmEbyI+iB/hpfPxf9hsEb6uRRM4hBFfeFTRApIFticH2fQmMAfP49rTu7mFUuWk5c1hLb+693S2lTsfO/75uiGNm8zhGLmu0F+gbapgvf+0XyCNQa5OzjPJ/IxKacwcj8WIIoDGqn9XLsQYwCXYYVacR0CBLSCVlnTFDCtyJSDnttxRbsr1BllYy2EE2NIhQu2wxYtZuaUQfl6Xrsgdj3rg5vCNhYnibZRQn2r2UIy2Qc0Yo2ZjLXu3tRJytIM307PloAzoedZxzW7OLJFgHndQTaTpLliQlVDzZMnQYbOHEFFyoJREy8rXYOIqca2hiHnTswY8R8q2QLExRt7dnjyrxo1CZFq/7XjUZ11XtW2DgdhW7opYyHv+tLS8t8ltfXEXq5aE9Udk71JTVh2QSnO4oAZh3vV77n3OLR3NZbW7nwXSR2
+ HumPOPnf
+ EhQ+c5MZBmLjfJOeeoNI6wYw50eM8pu1PMZcXwlByhr/LyoeNXAUSHcHpzJobUZox3RUL3oCVJlRn8GvUsY2XY0Btj8MADNGnmrh5AeAeSM4vwHNfqrzym0E09J0OWJgZgmPOWvSutz9yv2gvvqOi3nglM1ALGhqyoRuAfR02szE5g5VuklvXI91CCfuJbgiiJj+gTwByxbrb5tUUXZiKRmb5ZXY5xwUp9GKkiL4eXAHFw1ifNouOlo7tSOMaHh4VbgQ7k6WdjgJe8LDtmxZ8wWmPfudzSyhpKhrI3iF6HjC1zqAQCQZU9JMnVGdlkFkiaw7KpKMmWr3T8UXs/OejY6RN7fgZDRYGAuDk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,31 +117,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 27, 2025 at 2:13 AM UTC, Andrew Morton wrote:
-> On Tue, 26 Aug 2025 14:06:54 +0000 Brendan Jackman <jackmanb@google.com> wrote:
->
->> Currently order is signed in one version of the function and unsigned in
->> the other. Tidy that up.
->> 
->> In page_alloc.c, order is unsigned in the vast majority of cases. But,
->> there is a cluster of exceptions in compaction-related code (probably
->> stemming from the fact that compact_control.order is signed). So, prefer
->> local consistency and make this one signed too.
->> 
->
-> grumble, pet peeve.  Negative orders make no sense.  Can we make
-> cc->order unsigned in order (heh) to make everything nice?
+Hi Pasha,
 
-I think we can't "just" do that:
+On Thu, Aug 07 2025, Pasha Tatashin wrote:
 
-/*
- * order == -1 is expected when compacting proactively via
- * 1. /proc/sys/vm/compact_memory
- * 2. /sys/devices/system/node/nodex/compact
- * 3. /proc/sys/vm/compaction_proactiveness
- */
-static inline bool is_via_compact_memory(int order)
-{
-	return order == -1;
-}
+> Currently, a file descriptor registered for preservation via the remains
+> globally registered with LUO until it is explicitly unregistered. This
+> creates a potential for resource leaks into the next kernel if the
+> userspace agent crashes or exits without proper cleanup before a live
+> update is fully initiated.
+>
+> This patch ties the lifetime of FD preservation requests to the lifetime
+> of the open file descriptor for /dev/liveupdate, creating an implicit
+> "session".
+>
+> When the /dev/liveupdate file descriptor is closed (either explicitly
+> via close() or implicitly on process exit/crash), the .release
+> handler, luo_release(), is now called. This handler invokes the new
+> function luo_unregister_all_files(), which iterates through all FDs
+> that were preserved through that session and unregisters them.
+
+Why special case files here? Shouldn't you undo all the serialization
+done for all the subsystems?
+
+Anyway, this is buggy. I found this when testing the memfd patches. If
+you preserve a memfd and close the /dev/liveupdate FD before reboot,
+luo_unregister_all_files() calls the cancel callback, which calls
+kho_unpreserve_folio(). But kho_unpreserve_folio() fails because KHO is
+still in finalized state. This doesn't happen when cancelling explicitly
+because luo_cancel() calls kho_abort().
+
+I think you should just make the release go through the cancel flow,
+since the operation is essentially a cancel anyway. There are subtle
+differences here though, since the release might be called before
+prepare, so we need to be careful of that.
+
+
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  kernel/liveupdate/luo_files.c    | 19 +++++++++++++++++++
+>  kernel/liveupdate/luo_internal.h |  1 +
+>  kernel/liveupdate/luo_ioctl.c    |  1 +
+>  3 files changed, 21 insertions(+)
+>
+> diff --git a/kernel/liveupdate/luo_files.c b/kernel/liveupdate/luo_files.c
+> index 33577c9e9a64..63f8b086b785 100644
+> --- a/kernel/liveupdate/luo_files.c
+> +++ b/kernel/liveupdate/luo_files.c
+> @@ -721,6 +721,25 @@ int luo_unregister_file(u64 token)
+>  	return ret;
+>  }
+>  
+> +/**
+> + * luo_unregister_all_files - Unpreserve all currently registered files.
+> + *
+> + * Iterates through all file descriptors currently registered for preservation
+> + * and unregisters them, freeing all associated resources. This is typically
+> + * called when LUO agent exits.
+> + */
+> +void luo_unregister_all_files(void)
+> +{
+> +	struct luo_file *luo_file;
+> +	unsigned long token;
+> +
+> +	luo_state_read_enter();
+> +	xa_for_each(&luo_files_xa_out, token, luo_file)
+> +		__luo_unregister_file(token);
+> +	luo_state_read_exit();
+> +	WARN_ON_ONCE(atomic64_read(&luo_files_count) != 0);
+> +}
+> +
+>  /**
+>   * luo_retrieve_file - Find a registered file instance by its token.
+>   * @token: The unique token of the file instance to retrieve.
+> diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+> index 5692196fd425..189e032d7738 100644
+> --- a/kernel/liveupdate/luo_internal.h
+> +++ b/kernel/liveupdate/luo_internal.h
+> @@ -37,5 +37,6 @@ void luo_do_subsystems_cancel_calls(void);
+>  int luo_retrieve_file(u64 token, struct file **filep);
+>  int luo_register_file(u64 token, int fd);
+>  int luo_unregister_file(u64 token);
+> +void luo_unregister_all_files(void);
+>  
+>  #endif /* _LINUX_LUO_INTERNAL_H */
+> diff --git a/kernel/liveupdate/luo_ioctl.c b/kernel/liveupdate/luo_ioctl.c
+> index 6f61569c94e8..7ca33d1c868f 100644
+> --- a/kernel/liveupdate/luo_ioctl.c
+> +++ b/kernel/liveupdate/luo_ioctl.c
+> @@ -137,6 +137,7 @@ static int luo_open(struct inode *inodep, struct file *filep)
+>  
+>  static int luo_release(struct inode *inodep, struct file *filep)
+>  {
+> +	luo_unregister_all_files();
+>  	atomic_set(&luo_device_in_use, 0);
+>  
+>  	return 0;
+
+-- 
+Regards,
+Pratyush Yadav
 
