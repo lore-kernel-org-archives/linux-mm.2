@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 014B0CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D7CCA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:06:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DDA98E0012; Wed, 27 Aug 2025 18:06:42 -0400 (EDT)
+	id 6E0388E0013; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B4E48E0001; Wed, 27 Aug 2025 18:06:42 -0400 (EDT)
+	id 6B1068E0001; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CB548E0012; Wed, 27 Aug 2025 18:06:42 -0400 (EDT)
+	id 5C7878E0013; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BC048E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:06:42 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8101BA042
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:41 +0000 (UTC)
-X-FDA: 83823922602.29.3813F6A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A167912001A
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eYYLK3IB;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B7688E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:06:56 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 156B7140892
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:56 +0000 (UTC)
+X-FDA: 83823923232.24.25A621D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 312482000D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:54 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H6ikshVo;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332400;
+	s=arc-20220608; t=1756332414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rjZeFWjCbDhCMUqSkeYcKpAMeyN7QE5gKijkCrCFfpU=;
-	b=ShDI7Ci3I/QDIMNq6Po95VOo0DgjjwXKS22dgX0xppEUYo8NYMIUERKSz6z4HRCj/oO4Cw
-	DfxYGt9HGDFz7yOMCqvPfzH4HO6QO2qNxaVqpsf8z5UJgYvBou/wXLqXpYTuhWmSJAZzsV
-	aNQllvVzc2Dnc9IrJGbEANTJs81te2U=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eYYLK3IB;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332400; a=rsa-sha256;
+	bh=6MroGOug632a51ffxPVHU3ATCsOwaa4b3tJ1MTGryys=;
+	b=AwetZ+SsDXHt0CjhMrN6fohdwU6og+OTCdrRu/g4gngtOz0NzQn/FDNVUie4ZrhTvk9kPF
+	pHhIx9Owr+gGKAuX+gw8jkK9+DYLlnxkgpMtM2ty73zeLmsTNIt14DmUBgFlhliyMr1mkP
+	nkGX/FZFYit8x6KqC/1XchjM1c679As=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332414; a=rsa-sha256;
 	cv=none;
-	b=wALupfuKtUCqGQmLrN+B0qCB25BTr/goYRRNS773VcbIEysfhnz1elN9f5KbR+lApvCdcx
-	BNcWthe931d5Hc8DRGVNkX55y69/swB9pJ2zN9aBG5qwt4siCasFwA2qePyf6Up32I2ojP
-	RPEoCm7QsqiZF/z2j9C8n7MRZw34Yb4=
+	b=SWvuKQwo2P6L+rbTDEukf9/+PGPiXY1PFiMiZ+cSlTxr4pF0lKBXkl6PwPnaoArcNkD7Ug
+	oZ12qZaWBdS7NvVUF1DF2sXeGldAJ+9kTwsGvkkg6Zbs4KrdtniKkIPI/qcaIf5jb2fO46
+	qKOwxXEcAZX+o92KXxVQkzUKo2i2tSM=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=H6ikshVo;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332399;
+	s=mimecast20190719; t=1756332413;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rjZeFWjCbDhCMUqSkeYcKpAMeyN7QE5gKijkCrCFfpU=;
-	b=eYYLK3IB8uFx/89P4gC16vVZZaR2xKA3QEbS0Iq+SCAFB60JZVoi2lJcifFmPfPgPupMIZ
-	PWH+BfzAhOsVVlST56+55fOFjL2S9x5IyDZiD6yP+sWynEaMivIDtUwXFkhvkSReQomunP
-	Flcq2G5s/XGG9JZTyzZIH1NrWtHPQyU=
+	bh=6MroGOug632a51ffxPVHU3ATCsOwaa4b3tJ1MTGryys=;
+	b=H6ikshVocCN9ovfDDNAd34H4MNLOjAcK+d61ojQBlU1vR5uP9OdzxqUkAHRO3eiey0ECkJ
+	i0KxSVULsQ9Y9X9+OIc1Nr+SClgv2Fc5JVJb68qzgr8DAlaXv7eB2nvg/msgaMVCu2DkvF
+	dVSm9oWy9knpHSI9RmLiJo/EAMYY9q0=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-lA8LiC6sONKppwkqSITe_w-1; Wed,
- 27 Aug 2025 18:06:37 -0400
-X-MC-Unique: lA8LiC6sONKppwkqSITe_w-1
-X-Mimecast-MFC-AGG-ID: lA8LiC6sONKppwkqSITe_w_1756332389
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-a2F6JvbVP--8yuHhX8WRDg-1; Wed,
+ 27 Aug 2025 18:06:50 -0400
+X-MC-Unique: a2F6JvbVP--8yuHhX8WRDg-1
+X-Mimecast-MFC-AGG-ID: a2F6JvbVP--8yuHhX8WRDg_1756332405
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F080119541A4;
-	Wed, 27 Aug 2025 22:06:28 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2834019541AC;
+	Wed, 27 Aug 2025 22:06:45 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AB5F630001A1;
-	Wed, 27 Aug 2025 22:06:13 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C0E530001A1;
+	Wed, 27 Aug 2025 22:06:29 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -123,22 +123,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 15/36] fs: hugetlbfs: remove nth_page() usage within folio in adjust_range_hwpoison()
-Date: Thu, 28 Aug 2025 00:01:19 +0200
-Message-ID: <20250827220141.262669-16-david@redhat.com>
+Subject: [PATCH v1 16/36] fs: hugetlbfs: cleanup folio in adjust_range_hwpoison()
+Date: Thu, 28 Aug 2025 00:01:20 +0200
+Message-ID: <20250827220141.262669-17-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Stat-Signature: fwwkbziufrddsqd6fpoiqq8qrojejoqx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A167912001A
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756332399-886283
-X-HE-Meta: U2FsdGVkX19JTNd+gb9paYKgzLPi8vTmaCIkEOxti+4msZkQtHAux7sIzsNt2p1MjnzVw++ncXqGUdFjq8cGW/LnniRen0pZgoyQ3gwCU4x36LvE5z4n/fWYFo1pMbL5nz3zbTYjYeko4QaSADDUvh08E9E3TyL00anxrnHRurP00uxC6JGy1O7g3UsaiefOYO4WzAlgo+O3ewSH20yaqQhzTb85oMs8sdAjfGXlxdY7CCxzvAktKU5tN1UKUV2BnsipBNJwsKYguyPlkLeT/dLSW+TRR+vHUNHhD4iKzZvK1esQvDBX3KzZ8hnVMlMF+tn2yhwxtQeedNieRsErU4NBT98bqhJgNhcD86gYhfrMsGKR6qGn/1Tj+FxMRW3cBj+zPh2TIyptdPUjER89y5LnjubLEoic7imwjUVMPEGJV4JEohO3nvdYt37YhrXIN32dyNeoTgroPDzC9x5S0qKQH476wwF0qWvWhFs3TBZY+likrDFmxGbsav5P7PBeuSm6EYI0L4/qt9UoEBGi8LV2oU+cWc6e6exr5zUjyNkLnqhadb6fDNnEasoHqShSaW+B0sl18D+WCMDTmRyCcMKt5S2LNwqlNQfgj4K9eCW300yRkahg8QCiVi/wSf1yGyZY2/DtjV9KVZHTr60M0g+nKbSAKkSbr3Pu3WnXPeSgboffs/rlmQAs9evJlBh6+7XCIzLCZ+kdCkZPFdFiGV8RC5BF3jlwelQwFjBYXX9W+lVivxFR7RCBuGkZXnu+U4AT9NLpVCzlpYfs9YALQoTgToFFLULGMmq5vOCHyDWNIIyxJlk8AVWjBBko2JVdE7DD04eYpweDxID+RABaJDLQEdZ//TljDZhWN0/m6gX0ZZ1q0hW2uG7od6oaxdzQ0joZu18ass/jTC3cvgzps4AWxNAQ5/9S8wWUqOggwrsVc9+ObhZWiT1hEQgPYZAthMels1OMHs6W7zPksMv
- Gc+UDfXq
- 5UURF4unqjF60Uaeu5hNM/h2ZKjMAfFDfRkgCGNA6gCjvFyF4qEDcj9/8l40KGqn51Giw9HBQxeaAn8ss/FUrV4ou+cv7s32BZt+HaB4m6aaceax+MsCStj2Y5rRg4x0RHyfXLS7KMbGU13sMp3lM3uYGCvgWwTLfIZhGmKvl2DILHUnH163FfeS/WdfArin7JdBeQQrgDB/MRohCQ8nzIOotKp+bWLJZ6O/7xEuWHjMOLir0h2DZ6tEZALDot4XNrElg8Zc16gEWX9VbZLJe703d64AgXsp+CMLVLBrjZkuB+Jl0r1bPVDPVT1aWGif/JUJbVaYnDR+SWspOUo6Er5eeN2WXxF9Yft2/TM0+kD3zhYnzSq74pvL6huIvbnDgWKTE
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 312482000D
+X-Stat-Signature: 8muikcg7814b57qaqz9nah74kasu9dnp
+X-HE-Tag: 1756332414-499227
+X-HE-Meta: U2FsdGVkX19wMBs6dpSqxpNrsWXLMvq9OJpA0IirJJlRq66lsTJoHhN6WrKZIY40h4htqyaFA6JM6IC2UoeEsEDHNDML/QrloYyqsWWxrHn8qUXfCqrrm+DcznjaKD5gODXjIv2WbrTuMdc3m+ZH+ig7deEPeAkxMp9omqpiPgVaiU8P4ay3DxXWdlJgmH+OQzykIqZNTUdNsUVGtCbnNF+Rm1JNF1Re4nY6ZENSDTScQexM/V/92WY/yWrr3kmQAD/Y8tLz0kF7ANZqywM23+TYAxQtvPalIuE0MjvTjoub+4gaiQzo3hr/xob2QXsIA2WVNSKR0FoVtyaNZQrCGZSHFlg3Xe9D3jv+tBdNV9CGqTkGoEcjMXTj78HKu+UF6yvKmsmH4cgVpz5bgCxfxqW9j5aX9/2PaIazRy3L2HEB0nD1fcXIC80oopjq+hhJFptYmArYZrGhwxTQf1QKb6NDF8ffQ/gHg8QIrzns/S7cUhj/FgBraK5/uZzIHAAsT7zWwMIO83CfkUZQo775pwXmDlEiEz0/RLRNwb/go0ddV6HsqY+tQJ0WQbk4cVtv44AkYL3DVjfI3XbQphD3b6k52hlgLJzyAN97huZ2vZ4nEd2QOL6jRk70wItworTaf3kIT4/+Ep9IPeHQCs8Wga8Ivijy/tn5KkgQWL5DshVwh7hiu9PnB7zK1ylyWp2Bu22IXWwpYeufqHc4M0gIu1UZJpe3hOeWN7Hn4qqezsdNUCHR8zWW0dU1nUaXferZMkgdy0WoZAEdNZHsJWf545LFyuRhq36IxH6J/Zfg5o5+lhEnfKL31LZ1cABpqwWwW5FGimKdMpDaCgSfM4fwZJDbBGpFTan4ouau/Sk5QiWr0EJghA5TLlMW9xBO/rDxTwV3z8+Xh0ueKW1tiRvzlpFh790q9CEd/XeHwqwhz0NQ4M/+z4loAG3dn/4eCTkMamu0zMR7DqtTbXtFB1b
+ +RmMGNPu
+ ZMv7M/BJtUD+WvdnGb7YX3/Ng9OESjVLWpEc7tHvVwh2YNm3tTOvaUgnj+6iG38+K9GDd9tyqvahjPi3mJ07z4kh28G7AGdllWv5FGTFM9waCXm9JCgEhOckV3FyNKYyLpQySiIo5UDsUL0zlyJcphZsdvq21MyaOJG/OCyI6+r1ZldKjMMRkEXOZXYRdqxQuUNMEg1tOdcRxE+qwujdbKWADKJOkn5pFLiPOYj8UTg/HaffGcKN7o0YA8hw70z37zG4/K1d/o+McdHG0RVEJXEbADF6U4f9NCyHCjeIHbJxh4nlfX6uIugheRxeZY114Ep0MVRhCr6syYOzAm+Rj62SU/lFkdhkbDJXH0+Kci/2kCk490RNv9XjpIJGFjtiNBt87
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,27 +147,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The nth_page() is not really required anymore, so let's remove it.
-While at it, cleanup and simplify the code a bit.
+Let's cleanup and simplify the function a bit.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- fs/hugetlbfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hugetlbfs/inode.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
 diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 34d496a2b7de6..c5a46d10afaa0 100644
+index c5a46d10afaa0..6ca1f6b45c1e5 100644
 --- a/fs/hugetlbfs/inode.c
 +++ b/fs/hugetlbfs/inode.c
-@@ -217,7 +217,7 @@ static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
+@@ -198,31 +198,20 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+ static size_t adjust_range_hwpoison(struct folio *folio, size_t offset,
+ 		size_t bytes)
+ {
+-	struct page *page;
+-	size_t n = 0;
+-	size_t res = 0;
+-
+-	/* First page to start the loop. */
+-	page = folio_page(folio, offset / PAGE_SIZE);
+-	offset %= PAGE_SIZE;
+-	while (1) {
+-		if (is_raw_hwpoison_page_in_hugepage(page))
+-			break;
++	struct page *page = folio_page(folio, offset / PAGE_SIZE);
++	size_t safe_bytes;
++
++	if (is_raw_hwpoison_page_in_hugepage(page))
++		return 0;
++	/* Safe to read the remaining bytes in this page. */
++	safe_bytes = PAGE_SIZE - (offset % PAGE_SIZE);
++	page++;
+ 
+-		/* Safe to read n bytes without touching HWPOISON subpage. */
+-		n = min(bytes, (size_t)PAGE_SIZE - offset);
+-		res += n;
+-		bytes -= n;
+-		if (!bytes || !n)
++	for (; safe_bytes < bytes; safe_bytes += PAGE_SIZE, page++)
++		if (is_raw_hwpoison_page_in_hugepage(page))
  			break;
- 		offset += n;
- 		if (offset == PAGE_SIZE) {
--			page = nth_page(page, 1);
-+			page++;
- 			offset = 0;
- 		}
- 	}
+-		offset += n;
+-		if (offset == PAGE_SIZE) {
+-			page++;
+-			offset = 0;
+-		}
+-	}
+ 
+-	return res;
++	return min(safe_bytes, bytes);
+ }
+ 
+ /*
 -- 
 2.50.1
 
