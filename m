@@ -4,82 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D69FCA0FFB
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A0FCA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:03:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BB9B6B002B; Wed, 27 Aug 2025 18:03:07 -0400 (EDT)
+	id 96B5B6B0030; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 793496B002C; Wed, 27 Aug 2025 18:03:07 -0400 (EDT)
+	id 91A436B0032; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A9296B002D; Wed, 27 Aug 2025 18:03:07 -0400 (EDT)
+	id 7E2996B007B; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 59E8C6B002B
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:03:07 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 032DE119449
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:06 +0000 (UTC)
-X-FDA: 83823913614.20.BD41BAD
+	by kanga.kvack.org (Postfix) with ESMTP id 6B6656B0030
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 027B01DE9F8
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:29 +0000 (UTC)
+X-FDA: 83823914580.26.C1FF666
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5931540005
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hPZoyu9O;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 493F52000E
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:28 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IMBUmo2L;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332185;
+	s=arc-20220608; t=1756332208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5DykevL+FF0TVTnCIKFrimPfVjOwsHIDZG+ZjBK1smY=;
-	b=fhyBDxat5Z8pS+J3UHuMg0PJhVZxN4kepA624hktaX8BP3ogHseF0cnGQd0KbuGpK8WwQZ
-	l19VoG5+B5BgTAnoPOfj8hQR4J5QclpiK9MxdssZ5b6R3vNhhqq9OyYsY+utqqQoTF31VW
-	YHK4M5w18GDEmxSGIMn8ZabVHMuZWKU=
+	bh=3wE/qMBAOI7UvFOFlFaewQkiF5uwI4kbjc+EesVZbC4=;
+	b=uDSiz5TE6TaJbYgq230U/snmgSnmmWeE22V40VSFDZo0feCNhBLRv4hNkHqtROvt3yhjGr
+	diNLaoKlLidn24g7xK2HGvxw7/gzBPXs+6Iv4kjspNJDwSctUmibtSoOjt0b+no7lrMfh8
+	QdoEqwITpzTPHEHyquSYEWdTu+AKooo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hPZoyu9O;
-	spf=pass (imf01.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IMBUmo2L;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332185; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332208; a=rsa-sha256;
 	cv=none;
-	b=4xQO4aAhROnVFZV9Fjuf/LWZZ3ixghHijG7XqpMPGUJ371zAGMyH40JwCOHoX0HFShIFAZ
-	sPMYUbhnJAY2QwwF6bEdY09E6pOIGQTQfkKXHD6Ejf3WS8lr/GThqhMlYtn3yvTERIiiIR
-	Baxny0UKmBioV+Rex7OrIPhjjTIwLvw=
+	b=LkUGGmhS7gR45PQw3WXFs2Hl5TsoscYbJ6DdVJm+vKnSA2CSMmCdXiSZ2XtXRZG0dg+QWK
+	9SrMP0r1D1okv+DuiOuv90iBgA/d07fzhd5o3HbGFLfnTDNKtUnvuWne9XyBoCLn6rVfFn
+	I3hHrhQ7AoqFs8OQHl1bax6K+y0Pxwk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332184;
+	s=mimecast20190719; t=1756332207;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5DykevL+FF0TVTnCIKFrimPfVjOwsHIDZG+ZjBK1smY=;
-	b=hPZoyu9OtCgVCULnXHohMbkH46ltt0I2mh50xypXVDFoNtHFjnYz555TB/JZligpa4n7aB
-	7zKC/xN4l7Mjv+HCdDy5pJ6KtDYNdLtt6rt3zb8/KIjKlmsTy68XJQjxV6cuFbauwdELvW
-	AivoGgSkl0S211qN76Mfuu3toP1f0SU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=3wE/qMBAOI7UvFOFlFaewQkiF5uwI4kbjc+EesVZbC4=;
+	b=IMBUmo2LlpXyveIhg0016FK/l69vP4AKnkXCC2XYeNTX2e8zNa7XUBNVR8IfABOGWSEGUK
+	DefxBc9zk/Kb6ScSUA08+Q9atzjF1H5p4XaBHN4WmtlinxX+qWC8x4v1SavLpJoWsYhZyQ
+	eofvAVZYuCkxrDYjl3U9mx5wG1/WxMI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-QHoxSYI_OH-QMUQwo98hZg-1; Wed,
- 27 Aug 2025 18:03:02 -0400
-X-MC-Unique: QHoxSYI_OH-QMUQwo98hZg-1
-X-Mimecast-MFC-AGG-ID: QHoxSYI_OH-QMUQwo98hZg_1756332177
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-48-aWxloNfqN1GfaKF83zeK5A-1; Wed,
+ 27 Aug 2025 18:03:23 -0400
+X-MC-Unique: aWxloNfqN1GfaKF83zeK5A-1
+X-Mimecast-MFC-AGG-ID: aWxloNfqN1GfaKF83zeK5A_1756332194
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 050E619560A2;
-	Wed, 27 Aug 2025 22:02:56 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 931F81800352;
+	Wed, 27 Aug 2025 22:03:13 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F159030001A5;
-	Wed, 27 Aug 2025 22:02:39 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8DC1330001A1;
+	Wed, 27 Aug 2025 22:02:56 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -125,22 +128,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 02/36] arm64: Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
-Date: Thu, 28 Aug 2025 00:01:06 +0200
-Message-ID: <20250827220141.262669-3-david@redhat.com>
+Subject: [PATCH v1 03/36] s390/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+Date: Thu, 28 Aug 2025 00:01:07 +0200
+Message-ID: <20250827220141.262669-4-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: 5931540005
-X-Rspamd-Server: rspam04
+X-Stat-Signature: pk4s5gty7cmwjkppf8q5oxfimuucz4h3
 X-Rspam-User: 
-X-Stat-Signature: sbdqotea3s3ffcu96kr7wf89jdh4tr1g
-X-HE-Tag: 1756332185-431787
-X-HE-Meta: U2FsdGVkX186NqS3xUliulDjtFFKqbHygDiYuE+pY2fcS8KYIh4NcegxycDI7wOJTKlAHzYbdbL5gO88QX2qJOAZa1I1p/UfTJNG3wzzZvQbe1dVH3+qovJi50ahnaX9AmylAuPiej7xtQzQOMahEPQMBYCLJzY4Ncz1LQDPDQsY3YoKUhJT88GFGerNEWSAu1HTxtUj7ZPOWefQj5ovkCAy+2GNuqYeFMxqPcq1iyX4+1ksVgmpPdVFb58hY5NOE+WwCv5zQFRIpilVFbgP6zh0OTJ1/QGTohGTY2kmS27IjULuekVStobfiapD911cPP1p+Z5k0O25ds37HXcPNhhuelObcalh0hIhioCR1Sgv3u6u67Sfdh+qlVFY8x+AL7vqcayg4xEQUdglVCZWQmRwgJ47mOFhqg9A1hXt1P4zkRK4UquN4w0hxWKanNjcfAXF09fPM6XfHYqh6eFjSFBiMSBpB6W99XeKGUc2RrQXqpfCOEDDHBQdCajjdwI5/Bp3C6YeEq1zRgiWnVhSb4DHKwIBm1Cx4z2+nYLgAJeihNuAvs/dT6vGVE9REUOKokkmjjlHBaF4TVb208zM0ALdbtn+c2BG+LcpqITi+wmlzoYyyifF0o7VGHYL+XyGri787B/pZ2AWHl0QpyN/f2hu1csgVaq53SShTPDpDe4/dnPzZRJzojxIjvi8c0d1lOwocHJThMDRi3TFARKKzZqUDWMoDEka4GSP3+yGLjLn5UP7aiimze0q0OiRYbB/dSXELyFrTj+NfZzO3aC1ZfapshWImAScGh/RreDKAWiEZmBQUbjjepkgzMgp54wtuAiZS0ecnJ9KQJE2iOKwMgEWfaB8wA8vahenBQRacxfGnTpDLb40F0hhrtQPo5psrnEzeGW8ylkmHdgkTtg26ovBmzSMXxGIO8KLRk3w+7d7EQ1VGfcAf+UDtWbHXdxfboivhZt5ZZu47La0I/c
- 0R+5NA2n
- yunuqPfsNe23nnr4Asl9eXL0EVft3Aq44CaBzmpGejZRiiutqH1KEBcdyy2z7eIx/2Wbz97z2YbbflvjsJN+O2uCxSlNuBT3Tr1/jss3Ny8Q/nsAkUt9+FJl/H4Kag3aAZKiJEtCYtN4UO17NUo7NJKQvR+RNUC3bq6zjXmgNzgs/HDm8SCaHOexw0G+b7xA8+8ZW1WfkECpbRMeGc+RKSZVQgalDV3CxcMdv
+X-Rspamd-Queue-Id: 493F52000E
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756332208-28597
+X-HE-Meta: U2FsdGVkX197b5wAiJBOVzL3B+aVTSWAwaq0JmALgJTuMWBygBer7Esvvdw4u6zLLXJLwpB0PQkGEQClu5sJKo0Ta5MMu0l2iJQ3OPRlyvq+0BSQ+5MvBJYya0478XB1XXXm1WbFlb/ulp7NXYew3GWd98rZq79lAJZnaDdJLiAP1H6UtOvbIxBBYPcSJaNe6pKwng/Jhmvb/U6aM7jI1QCWmqkcqB80tE4a+gGUMHzcwwLB81KRBLxgY3l3zjl9YoLcXVdQlPta3JMe0bheAusbeQXIE42XLYm8niLsSP/+1bg7+QZxnl17eYAjQm673oov6P5EwTlB61mjzlimoJSZgLLSk1sQ41c+gcf+1i0FzOwHcrXuJkLBx3uaw3iaDxMj2hxCeu2N4t42Bpqu5J9WWABXYmyLetkNJPew3ab95j17LFTQO4aZ8afXRBLT7KUvQ5mmOwXD/NCUWVh+T86cFcFdfyh+fMelYGtWQinlWtErVydlvOIzGHFoO32lh0ymJ8SUz4aDJJVdLg8+hqQ8LpQmRgRgoGoR2EdUe4d7P2mUFXhez4bTae25TaPYMXD+nknGS0ntD2rjLEk/BPGhxyDoHGx3Tp+jJrRvJBLwoRNQV1wB/8JqYcuPC2KG7rlCV7LAmDe/bMcQjP44RQ4NsrP9RF7IuMh1sM+z5YVWB6shYtvp1bwBqSSriPqhWMzHUweRZS1czroeQoJyFwPEbdL8bsB81FJVBAYcIn5v/YOWaD9KmMezxiyG9rI7lo4n7utEUGRfIjpgIoWuO2bruHS0Yq04Yic9v5Qzru3YSmg9acbX1c398zzUvAqX9BHERIwDsiYvWVdvda9EpFUPNKP872CzRy0Dcc5GUhBWe2msC1DXcJIPh9uIRrtQ+lgtHYpvjq88EhAp1bGakSnJ6aWuXVs21SO3Ae/t2V/JxVUvS3V155MMSTw9i6hu2assm1RY7RZWrDQcQo6
+ BuA+Zche
+ CJOnPfIiMbAu7sF+ckKb8YbTgqa55Xf46gO9nU8yq5uH4EmvF/RIUWQXZCg0nElXc8qLge14vWEz8KRSVgc8cTSsF9mJCeGG83Y6vDcAt2mcjWBKGJsNVCoASVHCBcRBAOH7JhXYxSvhJKaKfzbXxx/R14JHbwY4xAwIyzdKgqU6zBymB+41TmaGOLdoYuvHCtTDT4L/+w0mwGH6QnLIH8kxoJffwpRo5BbK/qXj5N7Xoe+4VmIY2jw25P1qsDG7ASrAGMv9lYKcQIiREVYQymBXNUOfhQx0q9JbcMdKd0DI/vA5qX4sEpc/HSV/udwmxXDKetVm8nxsZHxr8clKhWGAJnTJ5R3cLjSU2VUeRMBVBLS+mjqWM/MTXldHl8TleaxDr7Y1M5cTB0ALzhk5YlP1w+8OR2ob8f4qCo2Otei7ZmzutDyNRQhkM4WcIeg9Ubjmk/9Z9qBCbjx5R33DMAJIxDXNYeptGTi5KNSz3DfzLh+CeRxuEFQDHy+AVB/ZbuM2L5kZ9GJb9f+FI3/3xsiVpDBTf036k8/XU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,24 +156,27 @@ Now handled by the core automatically once SPARSEMEM_VMEMMAP_ENABLE
 is selected.
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/arm64/Kconfig | 1 -
+ arch/s390/Kconfig | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index e9bbfacc35a64..b1d1f2ff2493b 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1570,7 +1570,6 @@ source "kernel/Kconfig.hz"
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index bf680c26a33cf..145ca23c2fff6 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -710,7 +710,6 @@ menu "Memory setup"
  config ARCH_SPARSEMEM_ENABLE
  	def_bool y
  	select SPARSEMEM_VMEMMAP_ENABLE
 -	select SPARSEMEM_VMEMMAP
  
- config HW_PERF_EVENTS
+ config ARCH_SPARSEMEM_DEFAULT
  	def_bool y
 -- 
 2.50.1
