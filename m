@@ -4,115 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B947CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 11:51:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1B4ACA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 11:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBB7C6B027F; Wed, 27 Aug 2025 07:51:23 -0400 (EDT)
+	id 0234C6B0280; Wed, 27 Aug 2025 07:56:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C935B6B0280; Wed, 27 Aug 2025 07:51:23 -0400 (EDT)
+	id F0FAD6B0282; Wed, 27 Aug 2025 07:56:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B81EC6B0281; Wed, 27 Aug 2025 07:51:23 -0400 (EDT)
+	id DD75F6B0283; Wed, 27 Aug 2025 07:56:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A56E86B027F
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:51:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 24037BA483
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:51:23 +0000 (UTC)
-X-FDA: 83822372046.19.C805A3F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8B560140014
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:51:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MAXy15HG;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C921A6B0280
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:56:19 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 474D4139D92
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:56:19 +0000 (UTC)
+X-FDA: 83822384478.28.416A4A6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 971A640003
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:56:16 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Wx5o7ttt;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756295480;
+	s=arc-20220608; t=1756295776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kj+WQqNx6mfeEUrQ2egTOZFN5drPRSU994Gb6Ia13Mw=;
-	b=Na4dlEgFyTuqhABVEdpRzBTYo23oNTZMBaEj4ztmTqWHVwmRP9c+mjLiR8IHp5ynPLW+dI
-	Ae4udpl97FsBeDZqFT6xKt6/JWZzowaFx9ka81njonSleUFOHfWj8cgK+hGWgd2MIgE7FV
-	GAcZfy9ASFGJFW0G575q0zeRzApnovQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756295480; a=rsa-sha256;
+	bh=UcP+MKIMKTIXme29nP4iQa3HplkH4GbIfVhPmf/w8b4=;
+	b=72I03VDzLFNxz4n4SvQOHXUdfFyjKzrc79yZZS/0ivd8VBuzf11wWlLQpnH9+ekOB+1F1u
+	v6hfgdXDauZwsx73IKRyXtU8hvsWnJ+4hcnFUjTzhsnu1QH+qvTEw4h6kxRzdKuzo/GqMt
+	zY24OGRG0e4vznEWVufa2ShYcWxRetQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756295776; a=rsa-sha256;
 	cv=none;
-	b=Wjry58iJPGyDrN3UOV6PivS4V90z1y97QNXCx4TSdbi4NKV/rAKp66krUHmp/YXlfn9kIl
-	RD7ng/HZC+nQFO9wtUZYpT0ilhfk2kBtR4IhO8R3x4KfXszNpqMOXWsZJljrb7v4pv3U3w
-	+4LksydKRa0olIdT+LTEdCQwJfWVP+4=
+	b=aEE0R3H/DH9NkWKZ832jWTlwR01rNvhduQ0bhp8s+T4liZFYKceF9gnshKG+3BH4TD6hj1
+	lIvWx42a/sZqbiVGooFF9AD3VXGJH/2AJTafZBSMZqoFdnVL28hpYqXuKs6WUSMIDhek+X
+	Xeb1OvRHGQGBHGPjPkD/pgJhThEFbkE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MAXy15HG;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Wx5o7ttt;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756295479;
+	s=mimecast20190719; t=1756295776;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Kj+WQqNx6mfeEUrQ2egTOZFN5drPRSU994Gb6Ia13Mw=;
-	b=MAXy15HG3gUkj7W1p/nCk0OtFwU6oyf6Y5p8+KkxUty6LZzvqzVW2hil0BcKASwkPKaw0K
-	Z0df1BJTJHAUEfodRFO9SAkp2N/BI+85xmekvQuTAIU9mDlOSJ0Z++NM8sVD5zjBmJ9I0c
-	gizvopzsxQ+N/JYbKhYybE+zURDrzmY=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=UcP+MKIMKTIXme29nP4iQa3HplkH4GbIfVhPmf/w8b4=;
+	b=Wx5o7ttt0tnBE5qCgHCWUMS3bD3hOqWmkbUcayrQlqqcsFHXB/3l/wNT8rUELLpbEXSank
+	NnOEikjS2mJ8HML4mPJfzMV4WE4+yAJYw56tacBL8cx9CXmKJWs/cbrE44H3w2J2EltnkJ
+	snn4+gwogqdUxi5WAzqMn7gq6xTz/lo=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-zxM8z_T4Nfqef9n_3SQ4Yw-1; Wed, 27 Aug 2025 07:51:18 -0400
-X-MC-Unique: zxM8z_T4Nfqef9n_3SQ4Yw-1
-X-Mimecast-MFC-AGG-ID: zxM8z_T4Nfqef9n_3SQ4Yw_1756295478
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e86f8f27e1so215976485a.0
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 04:51:18 -0700 (PDT)
+ us-mta-531-oVeUBxriNd-_njYfKEaclQ-1; Wed, 27 Aug 2025 07:56:14 -0400
+X-MC-Unique: oVeUBxriNd-_njYfKEaclQ-1
+X-Mimecast-MFC-AGG-ID: oVeUBxriNd-_njYfKEaclQ_1756295774
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-70ddbb816f3so12655036d6.2
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 04:56:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756295478; x=1756900278;
+        d=1e100.net; s=20230601; t=1756295774; x=1756900574;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Kj+WQqNx6mfeEUrQ2egTOZFN5drPRSU994Gb6Ia13Mw=;
-        b=W5muRHbuydaLPcCeHYjbuhdNS1FpeyIN8a+lV0d3i0eZuDIQRox94K2/DxiP+VKzFW
-         egQwDgHXNC15EuXCst+WnZQC5lImj64ZE1YaKKtzXHs3pgy5AObJN3R2eaaUVGjxss6n
-         PiD7nFmC0QY5gY5uacU6CdXBgK3e108b1xW1FImzdj0A9FjudQK/vPM+8o4tv8JRx/QV
-         A5aPY4kCNA1TnHyIzUIfrlqfWdlfbiapxiegsBH1Igbs9L9h0bIBhLGHJb06K0UYSbtQ
-         LsJ6TR6aUzsmk8AW8t6Bn/QJX6OoMed6bu9Ad5kIzkjgy3Dy+DJsUwtwAbECrHZeovXB
-         LlIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIdIBI3cjz29StxpZRWnhM8r4Yvnzb9yi6RoqyoPEjT8VlYVimpEsfgmm4U/siKswv6ioEyIObJw==@kvack.org
-X-Gm-Message-State: AOJu0Yzappp8zLMWGu0yOOJICPTRnnmsdSZASHcZzUJXBLfqg5c/mTe2
-	5I+tMB5xE3eBtRBTfK4Ig6Shf9fB1N4Hvaowg8qdeIOH2wuaZh704i1TAvlxiBfGrkgDuF9M6TL
-	ifmxPTcbM1hAWd0zFtipz6lVRvV3yKtC8wNgoRNnCmCqobC/6+lRB
-X-Gm-Gg: ASbGncvMO0CydNoabDZM/UnKrWGOCEcnb9qT5gRWs5NXHw2oCZjbulLgTHnBGUTVwUu
-	bffxKnn7KDau9yOQ8CFK9HO4+fxFf9Fg5md2ofyXZSgUqm65DQHs3ep9P14oNyagAfXMSE/w2HC
-	rpyGHi/JXB+AevuYwcjDlRUSk106IOrPDIB2Mod2ObHOzPL7i6co5AznvR8tzGTtJa12py5RWvy
-	6pRHbh3UFrmNA//AdcBvFanchC1qceXumngS1GPMhCu70j/YYPVcpZnLwFEzhvQ/If22rSO9RfX
-	YeVQ9ScSoiriebZbWyIYrlVPVpU2T3qvadBdlFFnG79/lXJYDAze/xJQvbgjag==
-X-Received: by 2002:a05:620a:3885:b0:7f6:9f86:4e76 with SMTP id af79cd13be357-7f69f865039mr312099485a.23.1756295478098;
-        Wed, 27 Aug 2025 04:51:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVmBzDtfDq10Nt79ue8F/PO01PWq9Aj/sKChiNk7iQU5whHjgTqD35dLozWe6HEX9Zy0TzKw==
-X-Received: by 2002:a05:620a:3885:b0:7f6:9f86:4e76 with SMTP id af79cd13be357-7f69f865039mr312096285a.23.1756295477451;
-        Wed, 27 Aug 2025 04:51:17 -0700 (PDT)
+        bh=UcP+MKIMKTIXme29nP4iQa3HplkH4GbIfVhPmf/w8b4=;
+        b=oY9AsuhSsG5I+9DW+jJAP+W+0DSNvsHd/Ja5qdEXSD75yogwUHSK+FQZqAmZfFBY9o
+         z6y2PNCA5k+5GbQzV7OK4KZoUzYe4QmxbJ+hXZtmFr4LuYcUmDAlYImDXnJgy56HVLpm
+         hzS9voFOasLdAfLd3cbw9NOhY54gKRqQ2WxQaPi2R0nxPehmK9ySw4QcmTsG5pLbtS53
+         XOEpPbdaqQlMwNtQopUvTz8kza5pGO24x0Y7L1ImyhnJKSR7M4gQ014qfYiyxXDDzbTK
+         bXlTRLEDUUl0E8nJG5yYr3rpLQhdxhwpnCLgB7XMbRdMF18Y3Mfk78zNyiadepzX6fcr
+         +X5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVOyQ3U6PAAAmKRlG3rualqmeFFRrdUHTAP3OW6ZkpjvkTpqFYO7yBf4Ck87yk27lMTQF9JWAuGWQ==@kvack.org
+X-Gm-Message-State: AOJu0YwCNn4XGv7lYzDaEwf5FLN50klM2YrXzELcQlZDJHW5jL8BO0bi
+	EbzXIrja023rA+33XElGcTL9PqM9OAtDQDIHOHieWtDfTx+jRBEyxUbS5+xEI0GonDfkuSJ0cWT
+	9Q4XYbZH7ae8ftHyDmEDQjvoSq51N7gQCaSeY2RrbOuJhxQspndpR
+X-Gm-Gg: ASbGncvHaX7JrN3D0a1Dda4mUoQ1PHNGIbg+yTmiAFDXvFptcKjOsyFysb48JGt42pk
+	sa9zepSZZEB76jm0FsT5IVucXJ++J9QeBXDY14I17006dkZyz1FdrQ78xYTelAQoUnDMZt8hzpQ
+	/CzJ4ZysW71CUoXqfQrRKHqZoRYjFRxVuq0Fe0jWc47nlH0CgXZOLYkgXeSl0aZhdfZ2rz2lZZp
+	rcu+Dmky5xJxGQDUoE+51VDACOKjVCnk9fzUm6Vykl33Qdqen0P+nARGa0YuQe+uIvKVcuqK5jB
+	wYmF2GnGVIcv7TjVx5932t5Yrptqx6VDx0wXF3tHALU+ceMT5LNAyEF4jGKkzg==
+X-Received: by 2002:a05:6214:1d09:b0:70d:b0d3:e50c with SMTP id 6a1803df08f44-70db0d3f0b8mr164309666d6.3.1756295774001;
+        Wed, 27 Aug 2025 04:56:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGP+7/f9Dza6Dboh0+crUGjlYh2k6wyTyltwaqvnIJ5dLoNHOMhcL4Qv2lqiKTxRR93kuSh9A==
+X-Received: by 2002:a05:6214:1d09:b0:70d:b0d3:e50c with SMTP id 6a1803df08f44-70db0d3f0b8mr164309146d6.3.1756295773424;
+        Wed, 27 Aug 2025 04:56:13 -0700 (PDT)
 Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ebecb1825bsm848326885a.10.2025.08.27.04.51.15
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70da717df65sm81671596d6.30.2025.08.27.04.56.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Aug 2025 04:51:17 -0700 (PDT)
-Message-ID: <1be63942-f3a8-404f-bf26-cfe7eaf2ef58@redhat.com>
-Date: Wed, 27 Aug 2025 13:51:14 +0200
+        Wed, 27 Aug 2025 04:56:12 -0700 (PDT)
+Message-ID: <11a5d391-3a13-4376-98f1-34b529d3c583@redhat.com>
+Date: Wed, 27 Aug 2025 13:56:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hugetlb: two-phase hugepage allocation when
- reservation is high
-To: "Li,Rongqing" <lirongqing@baidu.com>,
- "muchun.song@linux.dev" <muchun.song@linux.dev>,
- "osalvador@suse.de" <osalvador@suse.de>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "giorgitchankvetadze1997@gmail.com" <giorgitchankvetadze1997@gmail.com>
-Cc: "Xu,Wenjie(ACG CCN)" <xuwenjie04@baidu.com>
-References: <33c9676b1fda4cbaa42857787e03c7ec@baidu.com>
+Subject: Re: [PATCH 1/2] huge_mm.h: is_huge_zero_folio(NULL) should return
+ false
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, shikemeng@huaweicloud.com, kasong@tencent.com,
+ nphamcs@gmail.com, bhe@redhat.com, chrisl@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250826231626.218675-1-max.kellermann@ionos.com>
+ <20250826185515.7fbe1821713195b170ac1b31@linux-foundation.org>
+ <CAKPOu+9wz9g0VuYDPiNDYdaGG-gdK86h1gGSCmVPsC2a5f-GPA@mail.gmail.com>
+ <e5783c3d-7eeb-41d9-9fe7-730155f9bf17@redhat.com>
+ <CAKPOu+_8_gfko=Sh-YKpbgcMy0aJB=m9yrC5JJKEZm=yeYPOgA@mail.gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -158,21 +161,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <33c9676b1fda4cbaa42857787e03c7ec@baidu.com>
+In-Reply-To: <CAKPOu+_8_gfko=Sh-YKpbgcMy0aJB=m9yrC5JJKEZm=yeYPOgA@mail.gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HXdlHDanItjehbD-IQ0D_phgmEMkRF_4CVKgegfDou0_1756295478
+X-Mimecast-MFC-PROC-ID: 8AD0uAJX03X7bT5EMa0nGNB6HJTk33m8byR-HjxtxBI_1756295774
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8B560140014
-X-Stat-Signature: gbaygy6x9d1up1jhfgexoxs5c8u6ow5e
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1756295480-663115
-X-HE-Meta: U2FsdGVkX1/kPzAmdGCozmPoHOU77e9Fl0BbW3NFa1wdiJF9MZz3j8qEPIyOGLb/wnf+OUI+SPKr6eJA96oSo9uX6wU9X2vMlbid0txNuADCXYTqW+zPfz0qlLNBdmN/fXtibUfKQhechv7GASrK6/iRPfQMBhEuXB8tqhH3oomCnmbGDMq39McwhR8QrIyYe5Nj8HocWZgUsPbqT3iwkueJABr4mw0CktsJkH4dl8RX5rmLMxwnpM56TlNazBTIRyVB8XxrH9cnkftw2zwxzq0+wTjDN94bIjJ4O8scszdXCZOVzvqT93euo7Bi5LylmrLzKLczOQFUhNUUzwrNy4ke+MSZ7B6CdXaqIEmeILOZ3FF4TE3BjZ21xIIii4Qw0Ht5xH6l/4wUl9JfBVOvf/6nJJuFc0yZS1wPUZ4Xg0c/LA7TBPIRV8uoxol0v98gEs65b5f92EvrsWzafA4tEIPuJtqYTK0FyWW5phpjKav7XHffAcU38Lf1UBCDIxWriv2HvhbV2IJebYq4oousLIMAEa0ATTRVyxwhOhJ2ZNZrejP2B4Wt3HIkLSGmkiiaSfjE2M4FzZVIb0tEmG8di9eym7T6Z2vvEH11gs11fksSRtRHhYr90rCuROOO5LVPekD52PrpHsPouSSJESGmNByflWdubZ0ghkekQruIIH/kieyWiY1knY33zY6WNBq2uJLreD9IRpVxTi7oF/t76V+5JRX8wTIN0MnY/Ke4YZcQt+/V5bTTQNMLWf0dUmWtNOGND7hW7nyjipD1U2F9NNfilLelq3Of762Zuoqv7h2lwjrx0Q986xTb0rKfAMcL1cPcT7MzSU0EeNpEWI0zmbRoKsrIe5kvpOQLwoRmpH6c//WtDwfl/CrOMpaz0d3O8oMFyoTp901f3raLrbmfLOaw+ZulZKFRJWL2WacdeVvo6sl9IuDqGTs4OL6//voNnSBvoDoPdz9y8yRBXID
- hz+Bv753
- N1Ig2Ug6fMksQ7sYbtKjNmqV1mXk/zv2fn/NXrY9LgSqPc/fGGd4ZliiCHWaM7heKuE9aH8flATpJz/bZJ7FwN0EhGD+nXHXqeb3+iQutFzlIDthkDLnkAl5loMAiFWtso5cVpHz66OC6qD98CiOT0HOhnvsiuERiIFNJnDDEGs4VFLNrMh0UwYwaYijQ6EraM8+yvax6CXAAiDI2s2kixO2I7qysNq2DqgnUbkSOA4JS8NXcJORgKhln2FuNkPduJA+Hej2llZFLfL7mKevl2MtFy5zn3W25ZVJbPMy9zDLV37IEn/Rxh6sm7bsPL88R3PSipiwbtbyvqE856iTQjSsKZNjCAvi1YEGZgFx+nDRAIYSGnT9mtWloXry7OL8+30WmlWGTW2El0/ounjAiJ81Xfq5HvMBmjSgEJHJ55VsJcKkbVmX0bD+iLbyCqH/dhwsP5ZLhhkmPpAo=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 971A640003
+X-Stat-Signature: tkkems9omq9dhc5xj66whf3ud63biwkg
+X-HE-Tag: 1756295776-327939
+X-HE-Meta: U2FsdGVkX18/h1TjeZNvpEwKUxsMV1QxmRfX3f66Vm3YzdjwGjBrE45VRm49319lUn2ETe7UYE/tJ4CXXDv3OmFLqlo2QDWdZm4RD6V7D9rTXmPtWgvf58eH9UVORTobfEUy14wInQXQAagH493YoMJxdijYNL3n0q530z4RFspEsgYMTkDGzQDcblJIxUWwu27EHbHbr+SVQn1RDqPmFMswyhjXxpE/VRP/MRNSjfVWegDIoys6yYJ0iYALJNo4SPeFfvdBN4I7UwLwRxRM2J5iYxnAryEEK98QWRSuHbXbeHJ6rF7FMFJe1mHDhZU/y83C6ApeUipzDDS9usxbw4R9/aOxx50U4gxekZ7dZ2st81VPe39rfahTipmdJ3QlcrkdS0/BAAQDcZg5Dy8owwmNlYHFBmHTUoXPFMwIrNAnB15t5SQd6Mq4U9vwbZh9CVPCA2Gir1z3Y1NqB/djCDncwzRI8YcH2wgaR8ck9HGotXKtQ3cgvIH82UoLoMTvsw/shuD/AuExpb+jSJTdROXaqeJyNLW4gWxhf/ZLN7zg0/WjMjOdcEXJ5lqoe4vcSzg4ICE+wEOPgj8307oe+vxhJWOqKK524FeYGLNzoVbY2OuEgBKYiJzdN8WoJro/IND6YvhIBdoQf2870T6RxrfCuglMiph3cJSfnWzY6o350Cv2g1WIueDvnZrd+GlPZmspYQx1MpL3d0XtdSfdCmk/dQ9s8yFR4GKTme2clrvxaYxsmW4XO3GzImpmO8KgmMrbrRIpnMjqzr9yQA+EBmXyZKhcdikB6ndd2kvi3tPGgkH65a5A7HsdNwtA70/jfWOzoZtggGRFD+rwg5tVbSDm0K98efPcEj93iaC57fK2dyhrlhgWDCbiRcP4hZhtqLFZrGGPOW4Sw4J5dAzyxoOCcMOEI3lYtj4Kgw2s4qrmgR7go7TwPN+AqKhVN6WQtAr0XC0cDjyGKAPKgER
+ R/nvJpt6
+ 9/VTbOiGmX+kXcIcopAkKX5/UwK5r1JL+rzXffvVVLDaC7WtiZ3yNfNnEc/GWEMDAZH5GgKIYHg4sKpCSM9y9i3kUdnN+Gzyi0mFoqQRzc8DPLVonD+mDBlyT0unyd8uhoE+PNPOESICiejyGFnr3UO+WkFeZlQ8HG4PWswU9e6XzPMJwvvbqXD7Vl9bE/pNgVJFhLBw+NjMh5aIGV2ooMFzJgOw1VmiQ4G/4K8x8w/nNxB7P5eGxtgQmVvddW4YExLcXRZ57hQduIMzy3xrlH8SdxqvkiLfnpuoICpITCO9JxSMx9xXqyFdtRliShVbF3E13rIpVqhiNW5GBRRgJgG2Xde4GtMLV+Kp9IealzhoIeLxSnTZ5QdYE52i0sZ7CsaAyDUBm8xJFu0nL4yIeDdYRB/p6Og9wzKp80kCkrk5VhEfhg/+PKRKKkTv47B/4bcRgZOxoV+Tpr4hEvKeabsVEFJIpmRw4AxpS4Fe5VPkrGVFYkF9zKLVI3etZVoUX9JNjsG+OjAEBg9pz0EjBACoWACE0fJk6u3XH4CcybytWvXz1KHkLsvlkFNlF36FJB0CANY+y9CN6GRt6RspM7EmWgfiX4Fb7RGes
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,98 +184,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27.08.25 06:12, Li,Rongqing wrote:
+On 27.08.25 12:13, Max Kellermann wrote:
+> On Wed, Aug 27, 2025 at 11:36 AM David Hildenbrand <david@redhat.com> wrote:
+>> Why should it be allowed to pass in garbage (folio == NULL) into a
+>> function that operates on valid folios?
 > 
-> .
->>
->> Also, can't we fail lightly during the first attempt and dynamically decide if we
->> should do a second pase?
->>
-> 
-> 
-> Good idea, like below
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 753f99b..425a759 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3589,6 +3589,7 @@ static unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)
-> 
->          unsigned long jiffies_start;
->          unsigned long jiffies_end;
-> +       unsigned long remaining;
-> 
->          job.thread_fn   = hugetlb_pages_alloc_boot_node;
->          job.start       = 0;
-> @@ -3620,6 +3621,18 @@ static unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)
-> 
->          jiffies_start = jiffies;
->          padata_do_multithreaded(&job);
-> +
-> +       if (h->nr_huge_pages != h->max_huge_pages && hugetlb_vmemmap_optimizable(h)) {
-> +               remaining = h->max_huge_pages - h->nr_huge_pages;
-> +               /* vmemmap optimization can save about 1.6% (4/250) memory */
-> +               remaining = min(remaining, (h->nr_huge_pages * 4 / 250));
+> This patch isn't about the function parameter but about the global
+> variable being NULL.
+> (Don't mix up with my other patch.)
 
-I don't like hard coding that here.
+Huh?
 
-> +
-> +               job.start       = h->nr_huge_pages;
-> +               job.size        = remaining;
-> +               job.min_chunk   = remaining / hugepage_allocation_threads;
-> +               padata_do_multithreaded(&job);
-> +       }
+"Calling is_huge_zero_folio(NULL) should not be legal - it makes no
+sense, and a different (theoretical) implementation may dereference
+the pointer."
 
-Thinking out load, can't we try in a loop until either
+And then
 
-a) We allocated all we need
+"But currently, lacking any explicit documentation, this
+call is legal."
 
-b) We don't make any more progress
-
-
-Not sure if something like the following could fly:
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 1f42186a85ea4..dfb4d717b8a02 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3595,8 +3595,6 @@ static unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)
-         unsigned long jiffies_end;
-  
-         job.thread_fn   = hugetlb_pages_alloc_boot_node;
--       job.start       = 0;
--       job.size        = h->max_huge_pages;
-  
-         /*
-          * job.max_threads is 25% of the available cpu threads by default.
-@@ -3620,10 +3618,24 @@ static unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)
-         }
-  
-         job.max_threads = hugepage_allocation_threads;
--       job.min_chunk   = h->max_huge_pages / hugepage_allocation_threads;
-  
-         jiffies_start = jiffies;
--       padata_do_multithreaded(&job);
-+       /* TODO: comment why we retry and how it interacts with vmemmap op. */
-+       while (h->nr_huge_pages != h->max_huge_pages) {
-+               unsigned long remaining = h->max_huge_pages - h->nr_huge_pages;
-+
-+               job.start       = h->nr_huge_pages;
-+               job.size        = remaining;
-+               job.min_chunk   = remaining / hugepage_allocation_threads;
-+               padata_do_multithreaded(&job);
-+
-+               if (hugetlb_vmemmap_optimizable(h))
-+                       break;
-+
-+               /* Stop if there is no progress. */
-+               if (remaining == h->max_huge_pages - h->nr_huge_pages)
-+                       break;
-+       }
-         jiffies_end = jiffies;
-  
-         pr_info("HugeTLB: allocation took %dms with hugepage_allocation_threads=%ld\n",
-
+No. It isn't. It never was.
 
 -- 
 Cheers
