@@ -4,100 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05CCDCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 16:18:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED376CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 16:25:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 273946B000D; Wed, 27 Aug 2025 12:18:38 -0400 (EDT)
+	id 0B00C8E0007; Wed, 27 Aug 2025 12:25:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24B246B000E; Wed, 27 Aug 2025 12:18:38 -0400 (EDT)
+	id 086BB8E0002; Wed, 27 Aug 2025 12:25:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 187E86B002A; Wed, 27 Aug 2025 12:18:38 -0400 (EDT)
+	id F04FE8E0007; Wed, 27 Aug 2025 12:25:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 05A616B000D
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:18:38 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A67B7BA8F0
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:18:37 +0000 (UTC)
-X-FDA: 83823045474.25.FEA8D95
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE49B8E0002
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:25:50 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 648C9140757
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:25:50 +0000 (UTC)
+X-FDA: 83823063660.17.AD12D17
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D18BB180019
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:18:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nmDWPNTe;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756311516; a=rsa-sha256;
-	cv=none;
-	b=yjq5eB4VutdFmsde0AhRXNaMVSzJ+AgHdqXNQsXnGVyYFbq9QrPaC0x4nkIOpcbV8xrmNN
-	SAkIg4/9A/9Rx6U+zKlhvBHHGR3o1rjIDQL4buXOau+B/0rKDfgrern/DKToHVhj5SSCwG
-	JmOzUBrZlS3G21UNHcI5SwQcFqsaASQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nmDWPNTe;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id A312040008
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:25:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cjJ9xvvq;
+	spf=pass (imf27.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756311516;
+	s=arc-20220608; t=1756311948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tfoPaaeOIRNCfEepHGnQn4iKbImNgrLO4uQ+UyF8jpM=;
-	b=07L/4pJO5gmddID2UxqWKyvbCTebuXFEjjtdxfUo6B0/AMy1VPQi7+hkJpAcXTrDmOb9Af
-	xoRabiYKqiYLRDmlg+49TwbYe1be0cZ+0X/9yxM+NJo7Uw3xTw5XJObmCI4Rk/MLqJW0yb
-	G5ALJDZ7qfy2WFFty2Zh6njZsryGSYA=
+	bh=tSCaJkIP8YQHgNZO6e4AJDEYvSZTGqal04/k8MTfglo=;
+	b=z4k8x2DCURVHcl1sW0+4YZ2tjtAblft5m10CDFXW7Ptjnn7HbWsQM4BucoX3S/awxgaH29
+	5ZsRChLKm4i43jHt3/nWRoxzUcFyXDKQKRiqEmGX7fF0CpqiNzxvQp5lM/hBUA6McrBYGC
+	70D5Tx3LuWTNXQQzqKvsJDSO3nlEBqY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cjJ9xvvq;
+	spf=pass (imf27.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756311948; a=rsa-sha256;
+	cv=none;
+	b=DLDIG7r2Q2sXJlQrDxGNsjygKcZSRKxVPg1PkA90Vm1llDkquP0B3czoK0Arpm8/52bWfh
+	jHeSOe8c42tdskTeSzKZKv26oxz4Odt7VAOqCjvKp4NyRC7tEo/wgr24aw+YRMzMdnN9N5
+	LGhltE+YiNL2T/bn95rG9iO0yy6KFBc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5981401C8;
-	Wed, 27 Aug 2025 16:18:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFF3C4CEEB;
-	Wed, 27 Aug 2025 16:18:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9390C4391C;
+	Wed, 27 Aug 2025 16:25:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518C9C4CEEB;
+	Wed, 27 Aug 2025 16:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756311514;
-	bh=28j+S/AtE11EZh6wqHFI1d6l2NcH4n7hMOYZwMPL8LY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmDWPNTelfD/NRgVrsRxG+nJkWkrNTMjTXii7PepcV7C18daPPt/ALdgDI2p7+XUw
-	 ieYdCH9jmTvedk7vUbDgqllmQnTRK4FttkqI54pIqjkKtfhRp8OQnkmgv4BgcbgjmE
-	 xP5oUmn//0iXEWd9BxE37u4+sB6ED0viyMOtvnUKVxiTb9ox3uFGAHegnUX0nyIZW+
-	 FmSfEfmNfgYMnA9wcsH0bSRPnn0T5XIAofLHahCQSY2iAA1nf98EIPk2xP7KDsznnq
-	 ybV/gyWx8zwZ+OM0lFkCS+mAG6s+cmJ6RIrdHSHak+ljOyu8JlXgUSja+36wMfMCgq
-	 eJCp8MN4yd9QQ==
-From: SeongJae Park <sj@kernel.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Takero Funaki <flintglass@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Subject: Re: [PATCH v5] mm/zswap: store <PAGE_SIZE compression failed page as-is
-Date: Wed, 27 Aug 2025 09:18:32 -0700
-Message-Id: <20250827161832.164192-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <CACePvbWGPApYr7G29FzbmWzRw-BJE39WH7kUHSaHs+Lnw8=-qQ@mail.gmail.com>
-References: 
+	s=k20201202; t=1756311947;
+	bh=gUhEN5tEu43m9pD4c2NTudOZiEOt6pOHbaOxrqZLM0s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cjJ9xvvqWUAkSFGEZk8Qpb8Z4fK1Qez66zMB16FAR3EZRXnPfFN+/M2VtQB7EJWKd
+	 ZBVYQPaWkqpX3gtXw9Bgsu9dhQuBucLWt6n/PIsjvGhd9exmyGw9JMcLpwiuwsTTf5
+	 Bu5SdCVAsmndsNVwXIys2J9gOTGHw/+zCtzQHhH7L8SAspXOz73z3ExXCNV410mU0r
+	 GMTmGzLJypWrwJKdaohy/mMOjdMrzTX56Ky9OFHzGGwc0BRTyqBE2HSyks7YIUxz/M
+	 lZ4wKql2/5whmPBdC5zYVbDo7ytdAUcJoVecvnDsm/kln+NS+b0awHkz4Wy1SSyTDf
+	 6XtAohwc0RssA==
+Date: Wed, 27 Aug 2025 06:25:46 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, jack@suse.cz
+Subject: Re: [PATCH v2] memcg: Don't wait writeback completion when release
+ memcg.
+Message-ID: <aK8xilDSEaRB3mjj@slm.duckdns.org>
+References: <20250826121618.3594169-1-sunjunchao@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D18BB180019
-X-Stat-Signature: 811izpzjzd1d474rja4p9jkyzjy544d9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250826121618.3594169-1-sunjunchao@bytedance.com>
+X-Rspamd-Queue-Id: A312040008
 X-Rspam-User: 
-X-HE-Tag: 1756311515-953058
-X-HE-Meta: U2FsdGVkX19kl4JVjcXYY+sdpUpQN9rMN5DWJogiB3SOKdQG0Kisq6QQVreoME4bTTqXNNKY07BUpGggsOxlG2X9/Lv2ENdE/j6rrl+k5Hzyu6HIFfQ/WaSX2XHkFnuhysfSi01f5s8BtbVM2LjyraKl6jZK1t9Mc5HfkRAeZdppBErCoGBcrVlRhpEct0ioY3cWHVzeeE5IpTgAdwjuCCtHIHDNWGsDjZlaTS40y6eO5y42muzwWHeIkFwBmhec2IDpjaSXOWLo+9d+iqCwhqGSlRPmzXUh01ak6275KjBDDpiiOj7T6x/P23zTxPIGH9I1Sn/CLWfLzT4LUjt8oyj7ujTOepCwSMArc3ERZWWFjehPrgasdHc+O4pOXGGzEggj5yRlVjaJahwJPkKmtP5MnHiSBKQHphCpuIINwxK8hGVlq/uFktcknKtGbOk2Czotyc3fXkRzczEioul4uZ5Jy2mgMrT5iZw+VSWDR4L2u8Yxkvt03M8d/qPWff0U85Hh/Om/tkaaiQGEdb3WKIrnxZihCSGjr1ahuPRYFfWRhGaShXqeaIm/4cZA8B2o36ADlsVFYgX8yAa8jFsJCLxqXKWM4JEE+ZBkFDDjHCnGok5aR+9LZwSdccGABqtqDGR+nt+mE8lulhteP96pNofSTIgiGZx5eHXVcUtWU6DQZXcBxq5/XW/WjgY7OVgdVSauFOTAVKN9A4nssxlKgpXw/xm8sYmtFlUEGPnGOelrYZIIzYL0B9268AL9WCVeMGk8IvcEm+pveE8fDTjam2D2SPIyr+spaqvObB3zxu68w+eE+66UGvSBJT68yoBMHviQDri7aAl0zPNNYGCPJN0cH8YGR0BLk5M5cAqiCs0GSQBezit0ouKfucnIfIsEivL/S+8NniBKHVulMF+7uPsboU6WUoBhgAZm7pG6heQ2LdPzn+8wfaqju2gEXV1JaUXb9R+w4L+MR4ev1xP
- o7MBgqJw
- 2vxLB5ZEUDPkGkZDoVLvjXjVNnOB64b2Rl4NcbLwZJv6c3vdnhXL4iWxjJw97mtzUcusPKaDpmyWpM5LPDM5d/KTkAz2bHBBCGrN/gENaywMQeoZN4GoJyuyE3LrDHBBmwEYR/Vqkb4DWyq6dr4BgFQF5OEe1LLHaphb41k9Hr7MVeTfWzrLyglsNc92By2e3lj8cHU7gxcyx9/8nVW7LPdw5xa/yfMmO/6/OW2tPGuju7a4inK7VlE3dud0FtWDLfQngwTSx1dPYIkxqEEGXX1n9J6Y4lECsH23eh4jXPkivEPzchvmQJjb78A==
+X-Stat-Signature: mb8dtmzk7314rbpwdto7scdkmr778ep8
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756311948-435706
+X-HE-Meta: U2FsdGVkX1/hj6NCffUEyH8roZuFDisbLTqmA1IAE3L/COWyFTcO8al0tnHc//1kMvj5bkNQGLdyAtCk2AbG5hwKOUqiUNidxtMBL2whh/RBvsNlBa8SoKbeDd9t+8VmASlT5ZnU+YQLB6fT5slBiRzJh503vrVE9b7lnHh1hLG3QP+lmHfmFXz0JFpxGaGnjsefQSi0ykAziVKM0IRmL6x0NrP4ZTPp+p7T4NBpTENYf/vcHIFikt87NbaAiECGdBz2jiu+hZmaZjfgqk4eVEuSZGN5nurgx1iKZIXRO46vpwIcVG0irT/bxLiowp3wERvAGHnRvI+OcRwpnLtFEqewYX5e4Tpaxb8t/YGqEyXPHm8/2Ra6VIfyD1e9wQ1D8l37eSkuaoXoTeXe7zQy1ywriHixg1ZSGntYvZi5b5JhtDw0U7LcNoLQrA6Vz3D5Q42j3CykGI7g97ea5HJm8StFZgcOk+/ELUnNaNVCpHsHFp15nxhc0d3hfhlv7xnPrFNKc7QRiPPRqhG6Hlf5UC7EhbhYZ9kt5eUl1BKGPAwBrT+gkXNAyGfaN0L5jcTnO6+TMmgrZm4fRmmDatsx/TPJK9AasFNLpBZWzb9NTHGFhPhKABIJC+rUOWNveTyjqadOL/dIisuXjuqGAzoxeeQt+Mla2an+zQDcGiYcdmrcsPpS/pW8DK9YXOnfQLZIrU+zD+l5fMJ3YFIH9fz8nxQ36RXR5GiWsg9y5XCjMWJOlt7ZSZ4n5EyYhmrJlTRh3xXatuXXkLOcthIeTBSJVqegbv9RcX6wawepmXRGiqlmltWI9l1RyueEvUYeNHsDP4Mc35zB28HRQg1u1sJF8HK2EzlZ7wm6PBit+yL6TfKBvlUt+KAvnsRWN2S+tIgZBdXpUw+CwI8JUfZbe82kTgJadr5ZPBFVxH/4N8eOu4QLK2u7StDgLtv975eFUbFvLwzCYzm3uteSEu2bHhs
+ ojXLkJur
+ 5M6AmJtqHkxs6zafff5gWZ+xrAFEC0zCYUVWLkpRrg13pqfqaYVUoK49UT0+4gVYu2ev6H2RFC52vRcV0o7W1H1Y6a061MBqxTGYz9F13d57vAo5+NXRO0Pnl8TTBwNaNfQGQ+6pHYUOgc88wmTfymddyN7qmiE8e/6A7fAH17RGxqAPZMN9NlIE0FyL/58U1QSJQxY6dYDTjjm4KDcd4WHBEl3LIdvPqzvahIhNn9uKuKZxWxCOkIw84OQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,190 +93,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 Aug 2025 08:52:35 -0700 Chris Li <chrisl@kernel.org> wrote:
+Hello,
 
-> Hi SeongJae,
-> 
-> I did another pass review on it. This time with the editor so I saw
-> more source code context and had more feedback.
-> Mostly just nitpicks. See the detailed comments below.
+On Tue, Aug 26, 2025 at 08:16:18PM +0800, Julian Sun wrote:
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index 785173aa0739..f6dd771df369 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -157,11 +157,17 @@ struct mem_cgroup_thresholds {
+>   */
+>  #define MEMCG_CGWB_FRN_CNT	4
+>  
+> +struct cgwb_frn_wq_entry {
+> +	struct wb_completion *done;
+> +	struct wait_queue_entry wq_entry;
+> +};
 
-Thank you for your review!
+Why not embed wb_completion in the sturct? Also, can you name it
+cgwb_frn_wait instead?
 
-> 
-> On Fri, Aug 22, 2025 at 12:08 PM SeongJae Park <sj@kernel.org> wrote:
-> > @@ -971,8 +975,26 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
-> >          */
-> >         comp_ret = crypto_wait_req(crypto_acomp_compress(acomp_ctx->req), &acomp_ctx->wait);
-> >         dlen = acomp_ctx->req->dlen;
-> > -       if (comp_ret)
-> > -               goto unlock;
-> > +
-> > +       /*
-> > +        * If a page cannot be compressed into a size smaller than PAGE_SIZE,
-> > +        * save the content as is without a compression, to keep the LRU order
-> > +        * of writebacks.  If writeback is disabled, reject the page since it
-> > +        * only adds metadata overhead.  swap_writeout() will put the page back
-> > +        * to the active LRU list in the case.
-> > +        */
-> > +       if (comp_ret || !dlen)
-> > +               dlen = PAGE_SIZE;
-> > +       if (dlen >= PAGE_SIZE) {
-> 
-> I think these two if can be simplify as:
-> 
-> if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
->               dlen = PAGE_SIZE;
-> 
-> then you do the following check.
-> That way when goto unlock happens, you have dlen = PAGE_SIZE related
-> to my other feedback in kunmap_local()
-> 
-> > +               if (!mem_cgroup_zswap_writeback_enabled(
-> > +                                       folio_memcg(page_folio(page)))) {
-> > +                       comp_ret = comp_ret ? comp_ret : -EINVAL;
-> > +                       goto unlock;
-> > +               }
-> > +               comp_ret = 0;
-> > +               dlen = PAGE_SIZE;
-> 
-> Delete this line if you use the above suggestion on: dlen = PAGE_SIZE;
+>  struct memcg_cgwb_frn {
+>  	u64 bdi_id;			/* bdi->id of the foreign inode */
+>  	int memcg_id;			/* memcg->css.id of foreign inode */
+>  	u64 at;				/* jiffies_64 at the time of dirtying */
+> -	struct wb_completion done;	/* tracks in-flight foreign writebacks */
+> +	struct wb_completion *done;	/* tracks in-flight foreign writebacks */
+> +	struct cgwb_frn_wq_entry *frn_wq; /* used to free resources when release memcg */
 
-Thank you for nice suggestion!
+And the field just "wait". I know wq is used as an abbreviation for waitq
+but it conflicts with workqueue and waitq / wait names seem clearer.
 
-> 
-> > +               dst = kmap_local_page(page);
-> > +       }
-> >
-> >         zpool = pool->zpool;
-> >         gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE;
-> > @@ -985,6 +1007,8 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
-> >         entry->length = dlen;
-> >
-> >  unlock:
-> > +       if (dst != acomp_ctx->buffer)
-> > +               kunmap_local(dst);
-> 
-> I think this has a hidden assumption that kmap_local_page() will
-> return a different value than acomp_ctx->buffer. That might be true. I
-> haven't checked the internals. Otherwise you are missing a
-> kunmap_local(). It also looks a bit strange in the sense that
-> kumap_local() should be paired with kmap_local_page() in the same
-> condition. The same condition is not obvious here.
+> +static int memcg_cgwb_waitq_callback_fn(struct wait_queue_entry *wq_entry, unsigned int mode,
+> +					int flags, void *key)
+> +{
+> +	struct cgwb_frn_wq_entry *frn_wq_entry = container_of(wq_entry,
+> +							struct cgwb_frn_wq_entry, wq_entry);
+> +
+> +	list_del_init_careful(&wq_entry->entry);
 
-Good point, I agree.
+Why list_del_init_careful() instead of just list_del()?
 
-> How about this to
-> make it more obvious and get rid of that assumption above:
-> 
-> if (dlen = PAGE_SIZE)
->                kunmap_local(dst);
+> +	kfree(frn_wq_entry->done);
+> +	kfree(frn_wq_entry);
 
-However, if the execution reached here because compression failed and writeback
-was disabled, kmap_local_page() wouldn't be called, so we could try to unmap
-unmapped memory.
+If done is embedded, this will become one free, right?
 
-What do you think about adding another bool vairable for recording if
-kunmap_local() need to be executed?  For example,
+Thanks.
 
-"""
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -952,6 +952,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
-        struct zpool *zpool;
-        gfp_t gfp;
-        u8 *dst;
-+       bool dst_need_unmap = false;
-
-        acomp_ctx = acomp_ctx_get_cpu_lock(pool);
-        dst = acomp_ctx->buffer;
-@@ -994,6 +995,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
-                comp_ret = 0;
-                dlen = PAGE_SIZE;
-                dst = kmap_local_page(page);
-+               dst_need_unmap = true;
-        }
-
-        zpool = pool->zpool;
-@@ -1007,7 +1009,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
-        entry->length = dlen;
-
- unlock:
--       if (dst != acomp_ctx->buffer)
-+       if (dst_need_unmap)
-                kunmap_local(dst);
-        if (comp_ret == -ENOSPC || alloc_ret == -ENOSPC)
-                zswap_reject_compress_poor++;
-"""
-
-> 
-> That assumes you also take my suggestion above to assign dlen PAGE_SIZE earlier.
-> 
-> 
-> >         if (comp_ret = -ENOSPC || alloc_ret = -ENOSPC)
-> >                 zswap_reject_compress_poor++;
-> >         else if (comp_ret)
-> > @@ -1007,6 +1031,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
-> >         acomp_ctx = acomp_ctx_get_cpu_lock(entry->pool);
-> >         obj = zpool_obj_read_begin(zpool, entry->handle, acomp_ctx->buffer);
-> >
-> > +       /* zswap entries of length PAGE_SIZE are not compressed. */
-> > +       if (entry->length = PAGE_SIZE) {
-> > +               memcpy_to_folio(folio, 0, obj, entry->length);
-> 
-> The following read_end() followed by acomp unlock() duplicates the
-> normal decompress ending sequence. It will create complications when
-> we modify the normal ending sequence in the future, we need to match
-> it here.How about just goto the ending sequence and share the same
-> return path as normal:
-> 
->  +                  goto read_done;
-> 
-> Then insert the read_done label at ending sequence:
-> 
->         dlen = acomp_ctx->req->dlen;
-> 
-> + read_done:
->         zpool_obj_read_end(zpool, entry->handle, obj);
->         acomp_ctx_put_unlock(acomp_ctx);
-
-I agree your concern and this looks good to me :)
-
-> 
-> If you adopt that, you also will need to init the comp_ret to "0"
-> instead of no init value in the beginning of the function:
-> 
->         struct crypto_acomp_ctx *acomp_ctx;
-> -        int decomp_ret, dlen;
-> +       int decomp_ret = 0, dlen;
->         u8 *src, *obj;
-
-We may also need to initialize 'dlen' as PAGE_SIZE ?
-> 
-> 
-> > +               zpool_obj_read_end(zpool, entry->handle, obj);
-> > +               acomp_ctx_put_unlock(acomp_ctx);
-> > +               return true;
-> 
-> Delete the above 3 lines inside uncompress if case.
-> 
-> Looks good otherwise.
-> 
-> Thanks for the good work.
-
-Thank you for your kind review and nice suggestions!  Since the change is
-simple, I will post a fixup patch as reply to this, for adopting your
-suggestions with my additional changes (adding dst_need_unmap bool variable on
-zswap_compress(), and initializing dlen on zswap_decompress()) if you have no
-objection or different suggestions for the my addition of the changes.  Please
-let me know if you have any concern or other suggestions for my suggested
-additional changes.
-
-
-Thanks,
-SJ
-
-> 
-> Chris
-> 
+-- 
+tejun
 
