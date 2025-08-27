@@ -4,115 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E81DCA0FF0
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 02:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA77CCA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 02:32:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A42946B0324; Tue, 26 Aug 2025 22:31:49 -0400 (EDT)
+	id 2C9E86B0326; Tue, 26 Aug 2025 22:32:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1A3A8E0105; Tue, 26 Aug 2025 22:31:49 -0400 (EDT)
+	id 2A2398E0105; Tue, 26 Aug 2025 22:32:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92FA16B0326; Tue, 26 Aug 2025 22:31:49 -0400 (EDT)
+	id 1B7D86B0328; Tue, 26 Aug 2025 22:32:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B5CB6B0324
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:31:49 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27F881403F9
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:31:49 +0000 (UTC)
-X-FDA: 83820961938.27.87B5590
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 40E4E1C000B
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:31:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OQ8EhWdl;
-	spf=pass (imf18.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756261907; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 08C016B0326
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:32:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A75FD1DDB1D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:32:31 +0000 (UTC)
+X-FDA: 83820963702.05.ECEE4AA
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CE0DE20002
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:32:29 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Q9j2djnN;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756261949; a=rsa-sha256;
 	cv=none;
-	b=7i0Mn/aZHDTHs7JtFunoUm8/Xxj+Gu5F0oz9WdjoBkX7P5KFzmdWR/W86/NVTWIJMy1cSy
-	gS9+/3txr7ZQ/fU8MHF1fAhtvSamy1bwdPTVrINQ3cYMayOX627TjcUK6iq5HfZWrTDi3E
-	nVBhDiCnAAaT+/BcIWf31v24HqSsij8=
+	b=glQtNchWuXfWcwAp1ya9ypkqPu5Ba42Xok/05io0Kji3pta/cweBOwYL8ftj2btr6X8A6C
+	WAxBUArNtfUM4/kY+FJTaUk2aNTUtVc8q3NqGeSv2UDYpd5omsnKd4CgVJBfjZ3+q9zzdF
+	Z1p2H60gGwVYS5/miovHMrEIne9AFuk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OQ8EhWdl;
-	spf=pass (imf18.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Q9j2djnN;
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756261907;
+	s=arc-20220608; t=1756261949;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vPZ0cjHpX9ISkQzDoldFUyRE8ewsbgZ6deVAAiBZcHA=;
-	b=Mv3vtJq6Pq+biWPf8T96Kh3nzijJqIhTi1wk13QrCghAvBG7WNS4RwR40t3sgsZnCpY4q7
-	6WaLt7xOlHnh69bpAFFVHBhDYQrQX7Qn2VctF0ZSNozGOll0vXemf8FqDMqqU6WdQeWG/w
-	apxRg7LJAy+mF2x6aMQ7BNzjMh7KrtA=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45a1b0bde14so33687775e9.2
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:31:46 -0700 (PDT)
+	bh=phLICMoxD4JP6sKT1DeC5mUYYErOOuHJsUqnVc0nu0Y=;
+	b=i/WF1RBrP6yxSCU7LdsPzdcnqyaE8sVT8hHtXmWjfAxqFB5YriatRASqAFukdsKZBY16Pt
+	jzBc5oevJ8NsSaY54tj01j6P8+JiX8EJXkDsw9GIpifKMRjPqAC/0KF+QjHPb2hxEjNvxG
+	JWNAo5KMoCC3haJAoRE9XNYqPoosybc=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4b12b123e48so159601cf.0
+        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:32:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756261906; x=1756866706; darn=kvack.org;
+        d=google.com; s=20230601; t=1756261949; x=1756866749; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vPZ0cjHpX9ISkQzDoldFUyRE8ewsbgZ6deVAAiBZcHA=;
-        b=OQ8EhWdlOeGHbC1o75+PjzQUNrhA8J6sxpq93Lc4bF7oTqgcCtgIMt7UvROG/QHG/z
-         Wz1FNO1ddUrHokhyXA7iXyJI5jpFNVmpR6cR09R4Fq8rTlL0K6TlL5CK1ieSiOa3C7Hb
-         v4gfDR0sjH4BWiJT4H2EDULlq8bVIkCutnIMbOQ6hnIJnJZ6FLJURCPCwh2X80o9gBf0
-         eScondVavjy8dsm6caT67qT2B0QZpp449s5sOyt6+6BjW9RKftIwmzQ4BdhGJ0GapZWc
-         ildZ2aQbOkbzNyfj9H7/OUm5hEBIJpLgmRkWQsqSnjbKoK4u6xzxa99DFKuWvS2mdlXD
-         HYcQ==
+        bh=phLICMoxD4JP6sKT1DeC5mUYYErOOuHJsUqnVc0nu0Y=;
+        b=Q9j2djnNL/u0qQ6MvUejRX5mf/7JNR+iSUv1ljuIIppN7G0Ey8ydHf3sba46vLsPVY
+         Ir48XKECxlcj0lWPvLlWMS/kOLjnOSTPwoQEXElZLOefGZZsXaCNhDMTFtvEQ5Nct6MG
+         slT2ovWH5QLqzCJPiYUvsiTp/DnwRSorJFe6kWiOpZfptdfiuFOsI0bEkY+H/qSvQTC4
+         PomwA3NyXC7EoimH1fwCTe5T+Pg2PoqGywJc1xNWbATZPSpXXHO208gHxBYmWakCnSPS
+         sWDzj8wEpHVZs2OXG8C7AYn41TbOo6Wuoa1vixBaD1hzdxeEv372rT4iDfAqGL78AE8d
+         gzjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756261906; x=1756866706;
+        d=1e100.net; s=20230601; t=1756261949; x=1756866749;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vPZ0cjHpX9ISkQzDoldFUyRE8ewsbgZ6deVAAiBZcHA=;
-        b=pdtBOasRupj/+boX9yrTEHXzaVlktIY9ME8xNwwvJcIGInzPcYpxcLvGi0KgwCZibp
-         P3cje5baNcSDoKTwVh6ScS7/b8XYr1o9eIxIB5aSiQp9kCNsTPMK/JKsBgKgdJnnP/NS
-         EOVQ3nbrCgOxUY5UdtgMcVyuNBwH4K/OMrHvuqHQy2kiYWK8S5Srf5Q63xoo2LC5ey0s
-         ZT83R34nY+n4jvpq/XzbBf095fd42D0vSAQiMQn8kDGRERtUJqErWorD0iuAdOjIUO9L
-         JWVWmniXqwZp/AciOfyrJ4NjlZvTahsDB1dWZcb4fleVj2c6JbpFDW1LtmmtO/KeN5vX
-         P2uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlSm4LPVtTWH3JZisJadjNK/d9Fj/KVoJC8i1ooz8/cWr5tyGZ8MX91tRlL0SeAP14WOC00uktiA==@kvack.org
-X-Gm-Message-State: AOJu0YwiOmqU/RMB+eZ76+hJ7U0kkDzMIexYxpT4bykew59+RFiKwlMU
-	48vhSSSUqNrldS5BJt9dqKAnJy3klAYoyHHIwHpQED2SSnw7kSIPGWVcU0FWUsTU229hHMJR/vz
-	/bYhjd13bfnglA3q+X7bvlkxOV9gmdVg=
-X-Gm-Gg: ASbGnct51NoLLVoS95Gf5/uon6XBBKamBN5oo9yiwG3T5agkN7mcuJMwrP6OX8K/qss
-	LstVxzNnPND4fD2pS/Kk7R79izXMDE9gsfnlGsUzXmdgpIngORIm3oDBurl5s4FaPTQE+VU5B88
-	FpRkpCDNonkILSGAhZWL0/bjKSinlm7+GNXFVTFEGorxfY+tWmdmNWhBP6zR7HcWR67cZH6wrVm
-	kxnupl2jb8y76D9CULZzwOiHSNNt+SA/RtsO/lErHJUWkNlX7Zyf56E2w==
-X-Google-Smtp-Source: AGHT+IEGvo/30kFFrtTrRRK4xdcQTRYg7nDPi1UfUAg7xHV+Ke7cIP+dwEKwVCmAa/gFohW6TR4IoCcu37qvVrTeKAo=
-X-Received: by 2002:a05:600c:4743:b0:458:bfe1:4a82 with SMTP id
- 5b1f17b1804b1-45b5179683dmr206749405e9.16.1756261905648; Tue, 26 Aug 2025
- 19:31:45 -0700 (PDT)
+        bh=phLICMoxD4JP6sKT1DeC5mUYYErOOuHJsUqnVc0nu0Y=;
+        b=s0QsevcUjgHE3bFw1gcsNdZzb2iORtO9NLnDN+zSAviGyw9SER2ojwyETkEAv7d65K
+         OYQgkgUK7BjyTPUsoubhw2KMHXf5SqI6IDLEiZBF6ncTiLdASR8Vof+2xKcFHqGqORRH
+         2qNiUFpfa8GNAgWGG5oX4irDKZ4BCDYeO1jzTR2bgebTOasbTAs3ZxK1nyx0+AgaVUbV
+         yFVdVP38+Z84Ow5XjXYW55tmsusX1DMuXJTgt4T4cefqYY8NINO3M39/9U6HkVLIRSND
+         Q6G0eHXGRQUV33tO2kW8tbGUOaidKhvIfCwooHP10OsokuoE4jNShwVk4mL6OwTu8931
+         aHfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHUUc1NRzSEqNfDy7qQXljfK7LSA9edK3/hB+xbYBCn1SSK2GoGIQaHIioCPqU4xKgMpkJbwB31A==@kvack.org
+X-Gm-Message-State: AOJu0YwwQx3tHmRF9cb4g2szBPH5mTacJ8Id6GGsi5GjvmTpyymUywjf
+	5xTuCOM1wu2RfPpVHgYgllkC4aSb+W7dx0YnFhWOGMJP0ye5hO5T9N0Y8fLKIScPD1cTL8ibZW/
+	uP9pxzvwsHoeAykrfygCwB0jjYpiFudBdyl++EMmtgjFUmJDYL3hD9kVtzso=
+X-Gm-Gg: ASbGncuH1g9j9GNr6QvQ8m8stGw0H8LL0QZWm6ggfzu5kwZu/9lvvk+y73hs0OrJZvE
+	LjRSx5CCP1GpjcVAJDjzPH8qotLnJPKPo0efhqOidUQYrSQnaJVvLl4fnHdWQVrXGUU1njR9cZQ
+	+6BS1Fa67DPSIhMIysLKIhmfO5FO9zTeWI0N2JJt5RyN6jwu7rcqBO8kMBYJQLTu2fE4yWjM494
+	2xP9BK9q9BL
+X-Google-Smtp-Source: AGHT+IGEkFxoIeaU31PPrER+XD5lzwwgqgu6SIDi6/2BzLmU7aGrEqvMu3SzdfymXhnaZAVtazALtqj98L/HKOhu2Pg=
+X-Received: by 2002:ac8:5a49:0:b0:4ae:d2cc:ad51 with SMTP id
+ d75a77b69052e-4b2e2b6d63dmr9758151cf.1.1756261948495; Tue, 26 Aug 2025
+ 19:32:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250716022950.69330-1-alexei.starovoitov@gmail.com>
- <20250716022950.69330-6-alexei.starovoitov@gmail.com> <aKvqT-BAXGkjW7JT@hyeyoo>
-In-Reply-To: <aKvqT-BAXGkjW7JT@hyeyoo>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 26 Aug 2025 19:31:34 -0700
-X-Gm-Features: Ac12FXwjjsZ2EvcANqqa7llhwppJYGqGgQVuUglhvIlTkrBSooCtpKFyYoUNJlg
-Message-ID: <CAADnVQJ3vhBsRqgYEG13neTuXbSU1hNngYmWHqKCLTRr8+QVhw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] slab: Introduce kmalloc_nolock() and kfree_nolock().
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: bpf <bpf@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, 
-	Sebastian Sewior <bigeasy@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>
+References: <cover.1755190013.git.pyyjason@gmail.com> <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
+ <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com> <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
+In-Reply-To: <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 26 Aug 2025 19:32:17 -0700
+X-Gm-Features: Ac12FXx-amMNGfYthUlKXoV2KJV8Ivl2glrfWFB94kYjwtAlLlUunZcwpQnXXCU
+Message-ID: <CAJuCfpHyXWwrKkFmmbHTGtG9L-JK2eCt03ku9364i4v6SJKFbA@mail.gmail.com>
+Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Yueyang Pan <pyyjason@gmail.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 40E4E1C000B
-X-Stat-Signature: o57rnf7fdf3siubpae1tkxtiqj9rp3e3
+X-Rspamd-Queue-Id: CE0DE20002
+X-Stat-Signature: u18q8nj7e876epo757u15nuwatjwp8s8
 X-Rspam-User: 
-X-HE-Tag: 1756261907-337656
-X-HE-Meta: U2FsdGVkX189H2SyrCADE65tE1WeFKuq9yE3lptY4EWjIBxp7Qg3hZ39YOI7u/tlUwXCppPuNyZ2XFoNZ3ImjeSzgkQJ6RBA4+jOKUw6pNUySYUhE8YLojo70PqG+eZ4iznpfWrEnOHdZXopV4T5p/A3hEq15wxPcIqXlhyxgTXTYudIgtwxWqy6vwCHRN8FtfdJ07HWlbmFnpHzGCt8N+PDm89u/HtezydD7yrkkcO56Akb5tXWarUlKFGhGYR2aKWeVKeV6152t6tZwmUeuuBiXN5r2cdRljXehdTYXtTSS7sr8PNPc6pB9YLas3AkpdgsFRfAcWlLQPpusCm82GktSjg+sB9+OLwD3BT8KZNG41Z3EIuMA5WObeQlrsob7SFtJLlJzdKh6qLo4nYiY4PuJX4Pcc81LONk34aMJ6JrBbpj5Fiqbe9BuqzntkJRfUCXMfl0lNJQOSVZUid2fCzDV3t7YZFJc4YMqIh2WuTYcLV2kOpaAO05ive/edp6OWeZBL/AA3+NxV4Wu2pnHa3UnJV2ufUKnCE/XJIt5gawXuXJY8bHVsH+/m/F4VC6qRy9zucne4xpy5PqaW0H1y0ZbsXqHWU5BzP85O0epCfBCp0cyV1VAgwyUjsMwuBGFaonMH3Z2jBMJ627g2Rxgg4mqBWBPMx6puqH4lItfOTpocKlB0HXHdzNzgS4Jwvz8oP0xynO8VPP7pk8xMooa9v8vwpu6AHMvlMyqC2l76u2nlGnQ5R2VFSYZk7IQ1UPqThiXX8t3YsnIouZbLSHMsXRz5ZGWIpxGqwpl5ejAC0Vb9fkZwpWtz9AebAPuuj92egh5OfpMT1jDb996HVuCfTqosU17tMW9I1ToTniLJA51Boa1wMQbLq3bBNTb9sbGJIRCruGJwDZRsVbwLZ//k/U00PTAyr3+dAmcJ/fppy4J7VRuO7NwfgWBKP8R84odyEwxZ49cqAh/j5nYNE
- 6mcceVJf
- 50NKN/mfd7WAjBCNAmousBgz0lTiG3Lg2YfVWKQrBUbzbkHiHymjM7ZP0sWyDUhowH2BuwTwZWihaIG7y/mQ8L6QJ+mBO0kB0+OmxcT55qFUrNPbmxWVlrFdJQUEnIWsewPJsCAbUUFxanhRzLaME+CgarPOgW/0iMCaJn/l80mSJReoUuNeyCaQ0zpOT/BsCBcZk3apatKXjlDXFfxAEPDDhBxBnWAgbAUn5QQ3lolrD/hcU89St1PGN3CJCCMF4C1q7zDBeDtUuUMBW+dDu2ljsm26BQqKvR+K80T6zuWquvWWxXmFYOVgojgQC9EmsVDrMaKNgisA/WJ0fgLenMGh+d7/nJ3VRjLdvtqJ9SBTDGlaqz/iR6DFnZJaDblcESYEXYL2m/m270MXxB9YXkM5K3aT7HdWHQuLf8GFf1/tepIR1tUz4wFibMXNG9HPv75ZvGG5SC64dln8AQJutOjx7u9iO/YaUplN3coHTNRNyg1g=
+X-HE-Tag: 1756261949-892100
+X-HE-Meta: U2FsdGVkX18T/g3+Cvjj+FDmnonzWvXECJt6bgbawAOKvsJj5mT9mou+wO/iRe2NLJCY5jwUmav344gQzUc0yRNVfXfTZoWBx1GnQP1VsCWnQIXXgHECysSjlGArhipotH+Tb/+wdLN6DI01qpcA/ZvIOjsoSFFfszEdTmFA+pV9RmrnW6kgkOxaj2jf1CzSEoU7+ES4/RU7GSM48PydzgUsDjkZJg15tyFYNK7c4HmjYOEu9xMJofQySdLUT6X10hFIiAgzicLaSpOM6kvbRDRGImCUc4pLJHQo8PdHB0I4rN6r/BuZpwvmC3EOZ/Db/G6NmH3BZbPvqHiufRn/kEbAxKiHr0zuRoAYg4NHFfobGy8bS9noFA3s5mIfwMj48jn4hveSyA5HqSDBSZ+8o2ibWmEJDbRtw7OK3V3kqNw85J1Lj/oIoshhfQdxgKmTNp6t6wKTtbfwFz2+4Cwo0JD3I71+DMohFxuFh+YC8HObW+zBX0OdeSJEXDZrWa6L9i86mqOmqemIBuPYCP5BCcsAA91QrMtrN5PZrc8U/1zh9FV8ziJmPTHEnUf7dISYJriFw5iZQ8wj0/FTeASg6XeVqavICFw1UaGNq92Cq+eM+Klv84/oJg5ZzObltFuE4fbd84viDpmGJ5PlN44SIqh1DwNyF6e1pBcws72QFD/e05iTGRFDkZYb2uWVDbcPZDaw2o01Ihl9iBYSZoFmZFhBmECm1c4bFs6GW84wDWBDPvrpMbzrCVPK2/TdkNGkQNA06eNQ/d/tKptNr4AJxek63zehKaYMl1iakbxu4fNN3Nd5UWOR+cSHlPyXFAYranNCDQjqoOnq4p6+EagaWRkjWicaDM9Qt+SvIZQsbFVoTxUdCKWxdnCBdNeQn7J9YEBnEDs/VvNcqwLyvHxDYDWXgnx/mB8kgxWKufkfkbV4KgmNd/E9albv03Gyiei3RQx+Gdhf3LwkvXCw4Rx
+ 69bzSV6Q
+ IT3zcccKzt66YFZrbEGVMuGzNSfma4BnNvV4RrU7Gf7NfZx7e7t33aYaUl+uHBCtOuJ8KFsImKpIfxecuOcDu1qLnZJvrTsqn0rj2PQBgnLWBb7kN/t3wkyqrZwIGooiclBjCrXNJdjr9g9BzCcVeoljaOwdGfKtMGew4p9Y29ha1qF/oviRZPoQomKhmSTPnGrKbzQXhkqoll9GYaWS+rA9BvIqn/TUT/Exc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,81 +117,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 24, 2025 at 9:46=E2=80=AFPM Harry Yoo <harry.yoo@oracle.com> wr=
-ote:
+On Thu, Aug 21, 2025 at 12:53=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.d=
+ev> wrote:
 >
-> On Tue, Jul 15, 2025 at 07:29:49PM -0700, Alexei Starovoitov wrote:
-> > From: Alexei Starovoitov <ast@kernel.org>
+> On Thu, Aug 21, 2025 at 12:18:00PM -0700, Yueyang Pan wrote:
+> > On Thu, Aug 21, 2025 at 11:35:19AM -0700, Shakeel Butt wrote:
+> > > On Thu, Aug 14, 2025 at 10:11:56AM -0700, Yueyang Pan wrote:
+> > > > Right now in the oom_kill_process if the oom is because of the cgro=
+up
+> > > > limit, we won't get memory allocation infomation. In some cases, we
+> > > > can have a large cgroup workload running which dominates the machin=
+e.
+> > > > The reason using cgroup is to leave some resource for system. When =
+this
+> > > > cgroup is killed, we would also like to have some memory allocation
+> > > > information for the whole server as well. This is reason behind thi=
+s
+> > > > mini change. Is it an acceptable thing to do? Will it be too much
+> > > > information for people? I am happy with any suggestions!
+> > >
+> > > For a single patch, it is better to have all the context in the patch
+> > > and there is no need for cover letter.
 > >
-> > kmalloc_nolock() relies on ability of local_lock to detect the situatio=
-n
-> > when it's locked.
-> > In !PREEMPT_RT local_lock_is_locked() is true only when NMI happened in
-> > irq saved region that protects _that specific_ per-cpu kmem_cache_cpu.
-> > In that case retry the operation in a different kmalloc bucket.
-> > The second attempt will likely succeed, since this cpu locked
-> > different kmem_cache_cpu.
+> > Thanks for your suggestion Shakeel! I will change this in the next vers=
+ion.
 > >
-> > Similarly, in PREEMPT_RT local_lock_is_locked() returns true when
-> > per-cpu rt_spin_lock is locked by current task. In this case re-entranc=
-e
-> > into the same kmalloc bucket is unsafe, and kmalloc_nolock() tries
-> > a different bucket that is most likely is not locked by the current
-> > task. Though it may be locked by a different task it's safe to
-> > rt_spin_lock() on it.
+> > >
+> > > What exact information you want on the memcg oom that will be helpful
+> > > for the users in general? You mentioned memory allocation information=
+,
+> > > can you please elaborate a bit more.
+> > >
 > >
-> > Similar to alloc_pages_nolock() the kmalloc_nolock() returns NULL
-> > immediately if called from hard irq or NMI in PREEMPT_RT.
+> > As in my reply to Suren, I was thinking the system-wide memory usage in=
+fo
+> > provided by show_free_pages and memory allocation profiling info can he=
+lp
+> > us debug cgoom by comparing them with historical data. What is your tak=
+e on
+> > this?
 > >
-> > kfree_nolock() defers freeing to irq_work when local_lock_is_locked()
-> > and in_nmi() or in PREEMPT_RT.
-> >
-> > SLUB_TINY config doesn't use local_lock_is_locked() and relies on
-> > spin_trylock_irqsave(&n->list_lock) to allocate while kfree_nolock()
-> > always defers to irq_work.
-> >
-> > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> > ---
-> >  include/linux/kasan.h |  13 +-
-> >  include/linux/slab.h  |   4 +
-> >  mm/Kconfig            |   1 +
-> >  mm/kasan/common.c     |   5 +-
-> >  mm/slab.h             |   6 +
-> >  mm/slab_common.c      |   3 +
-> >  mm/slub.c             | 454 +++++++++++++++++++++++++++++++++++++-----
-> >  7 files changed, 434 insertions(+), 52 deletions(-)
 >
-> > +static void defer_free(struct kmem_cache *s, void *head)
-> > +{
-> > +     struct defer_free *df =3D this_cpu_ptr(&defer_free_objects);
-> > +
-> > +     if (llist_add(head + s->offset, &df->objects))
-> > +             irq_work_queue(&df->work);
-> > +}
-> > +
-> > +static void defer_deactivate_slab(struct slab *slab)
-> > +{
-> > +     struct defer_free *df =3D this_cpu_ptr(&defer_free_objects);
-> > +
-> > +     if (llist_add(&slab->llnode, &df->slabs))
-> > +             irq_work_queue(&df->work);
-> > +}
-> > +
-> > +void defer_free_barrier(void)
-> > +{
-> > +     int cpu;
-> > +
-> > +     for_each_possible_cpu(cpu)
-> > +             irq_work_sync(&per_cpu_ptr(&defer_free_objects, cpu)->wor=
-k);
-> > +}
->
-> I think it should also initiate deferred frees, if kfree_nolock() freed
-> the last object in some CPUs?
+> I am not really sure about show_free_areas(). More specifically how the
+> historical data diff will be useful for a memcg oom. If you have a
+> concrete example, please give one. For memory allocation profiling, is
+> it possible to filter for the given memcg? Do we save memcg information
+> in the memory allocation profiling?
 
-I don't understand the question. "the last object in some CPU" ?
-Are you asking about the need of defer_free_barrier() ?
+Actually I was thinking about making memory profiling memcg-aware but
+it would be quite costly both from memory and performance points of
+view. Currently we have a per-cpu counter for each allocation in the
+kernel codebase. To make it work for each memcg we would have to add
+memcg dimension to the counters, so each counter becomes per-cpu plus
+per-memcg. I'll be thinking about possible optimizations since many of
+these counters will stay at 0 but any such optimization would come at
+a performance cost, which we tried to keep at the absolute minimum.
 
-PS
-I just got back from 2+ week PTO. Going through backlog.
+I'm CC'ing Sourav and Pasha since they were also interested in making
+memory allocation profiling memcg-aware. Would Meta folks (Usama,
+Shakeel, Johannes) be interested in such enhancement as well? Would it
+be preferable to have such accounting for a specific memcg which we
+pre-select (less memory and performance overhead) or we need that for
+all memcgs as a generic feature? We have some options here but I want
+to understand what would be sufficient and add as little overhead as
+possible.
+Thanks,
+Suren.
 
