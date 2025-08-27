@@ -4,141 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD86CA0FF7
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CE9ACA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:06:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0488B8E000F; Wed, 27 Aug 2025 18:06:12 -0400 (EDT)
+	id 85FA28E0010; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01FDE8E0001; Wed, 27 Aug 2025 18:06:11 -0400 (EDT)
+	id 8365A8E0001; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E78008E000F; Wed, 27 Aug 2025 18:06:11 -0400 (EDT)
+	id 774438E0010; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D7BEC8E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:06:11 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB0DD1A071E
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:11 +0000 (UTC)
-X-FDA: 83823921342.01.B0DB868
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 019171C000D
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="RNul/T2n";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 63A6E8E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3AC2011954F
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:23 +0000 (UTC)
+X-FDA: 83823921846.13.F207FB2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A83E5140004
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cJQ/ThAi";
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332370;
+	s=arc-20220608; t=1756332381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jt1gUZzcr2XqEG7AN90PiEkY48hGbYno8tKmbdcHa9Y=;
-	b=mSdJQAkyLH9HdcVfcWDffSb2P+UPSd1IdShjMhS5eo9vf16ond5nQrsr+6rHxY5Mxrpmva
-	AvH5ZJKoY+u0a0/nZyZZvqFVDsUswHyCpZQiFk4A7oVTedJ5ZJzPRwVkdfvwzXTygvYqZ+
-	YraQMDVH9Kk0QrzEbH7u2zBpt3Y0crU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="RNul/T2n";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332370; a=rsa-sha256;
-	cv=none;
-	b=q/EQoDJkKRr+8Q+EKkibm90C4mq9qWiPcV/MOxrJG6Tve/6UV+DJdgxM7AD9SQQIhgwLAm
-	lZK3ydT3qkqvIlsGLVVtVvl+x3CwcO6YkKgNZzDNPL2dODhimRhrrzQuL2Diouz9tlqEAS
-	4hK7Kc455/s922ByXv0S8FoF2i5jC0o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332369;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jt1gUZzcr2XqEG7AN90PiEkY48hGbYno8tKmbdcHa9Y=;
-	b=RNul/T2n8dyVChbU0ULLxg9Qpt0BkTDKQR1zY61jS16RSLixUwu2vJfoOOcqNJvvqn60eL
-	I0ZTd1+wSJEHo2Y5QSiG4o7JZFtLfyrw1f9p9YrfpfjNoRGMPIFwsFTh4nl15afiJGHyZq
-	ww8UzzroUI/dnBr67FVvRijanJulwdM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-J9sCWjtzNZKv3p8K8yqDNQ-1; Wed,
- 27 Aug 2025 18:06:02 -0400
-X-MC-Unique: J9sCWjtzNZKv3p8K8yqDNQ-1
-X-Mimecast-MFC-AGG-ID: J9sCWjtzNZKv3p8K8yqDNQ_1756332357
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 230CF19560B0;
-	Wed, 27 Aug 2025 22:05:57 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5908830001A1;
-	Wed, 27 Aug 2025 22:05:42 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: David Hildenbrand <david@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	io-uring@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	kasan-dev@googlegroups.com,
-	kvm@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-arm-kernel@axis.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	netdev@vger.kernel.org,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	virtualization@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	wireguard@lists.zx2c4.com,
-	x86@kernel.org,
-	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 13/36] mm/hugetlb: cleanup hugetlb_folio_init_tail_vmemmap()
-Date: Thu, 28 Aug 2025 00:01:17 +0200
-Message-ID: <20250827220141.262669-14-david@redhat.com>
-In-Reply-To: <20250827220141.262669-1-david@redhat.com>
-References: <20250827220141.262669-1-david@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 019171C000D
-X-Stat-Signature: 8d76ewpm4kc8p5d81rmkuyburs4mz18a
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p/QVbMlOVzQZDOQn1d2bRvCwftcA4hFeaZoH38uIzLQ=;
+	b=Nugwt7FrA7Spn7YKpE0gXbtvG5ocKPg9b/Wz/zndlEmBGxzeg+lR0QGkY4WUQgY9xwdqz9
+	PuX8s/P7raCVNjlYYynyYWcugHR8ZQ4pU75cfx2tGVJnQe1wTlGtp58I3okW7UeR+DHxVZ
+	X9OqeQjwRmcTb7K2SvOVuWIy4qLnBOQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cJQ/ThAi";
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332381; a=rsa-sha256;
+	cv=none;
+	b=UxCiejBZ5/lojCcNLBQYnrOX+ea2XWON6v3dR5b7jyMd+mKoJJ3NaYqDTQXEWMWMJBsqRX
+	Jk1ZbCRCk2RAMaPUklAF2dkjzrJZEXKtoZ1WoVk0AdEF0U+SmszfHpgtb0jgpyDYd2CdcK
+	4h9nWnuAush2tDg0Pi8NfTY3I1GCWhg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A563E43F19;
+	Wed, 27 Aug 2025 22:06:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A622C4CEEB;
+	Wed, 27 Aug 2025 22:06:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756332380;
+	bh=QtZo2wLiVrvIDs2z9ZU576b2zdkNZlOfu/w0v8RzTyg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cJQ/ThAi5yoG32jd5YVCjvLgkJikRs+8dIWYeDUSIQWJlAVUHVCDFk+DbZjXzo5pu
+	 D4flKoikmxH5XOGDCcJXUsdft4DTEqTNgOexDp4nd0Sedd3EeJ+GNTHkUvNmvk7/ow
+	 KhBUBGsDfq6f2HuNoA2o3P7VbewK4UZHYq7mW5/g=
+Date: Wed, 27 Aug 2025 15:06:19 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yueyang Pan <pyyjason@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
+ kernel-team@meta.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] mm/show_mem: Add trylock while printing alloc
+ info
+Message-Id: <20250827150619.4e468e68988f224f9f9bea6f@linux-foundation.org>
+In-Reply-To: <7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
+References: <cover.1756318426.git.pyyjason@gmail.com>
+	<7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A83E5140004
+X-Stat-Signature: gobk4stmi1mokamih8obd3rskrtmkksu
 X-Rspam-User: 
-X-HE-Tag: 1756332369-956777
-X-HE-Meta: U2FsdGVkX19Vgkcr4cwt1wpuqk8gkNeDcv1tFLJcxapmTg9cb0gqEbc1J9LwgKob4rtVwkKc/wbTOQbnR3Ka5T8w+sSe5LJUCxvB4ye8l8q/RSevBraGqtg2vpC36oBiS0fuz/nPriDxjaa34npAI+fcVXGStovQk32qu3pPDgEdAS70wS57FeyRZstg/M3k617j/zsqx63BMI+IFvaFbkuiX94Q4STZz9sq/UEG9/z4sbO+m/GgGz408UCBpiLUdt5oejlmw+RHfljUqz0TC1botbnXBM4fLRM+JIuIkpw3URrzIgS/hKmuv6Bh6X94bCSY1zyNn2mEnNFOV5tAJRHssOIa3reSHofep8hF0HXu+cKyG1sEXDUUsblbNMwop8cSiD4CTuC4yAhFFYc+mT8AV5TnWyQ9XyNca0440wzguyfbmgTVgH21jrIrnC/kLcMOUvF+foJ+yrhzj4r3FGY9DA/nfFriwmbBftdm5kexiLYmstGbtxecZnvwmObaimSSYEpB3ofXeF6ksGWMu26+U9jfWpK5DFvv9LiCC3I10GNL7r3SAPWEPaFL14BAcAy1pbI8SBCnXZBf+sURdl4w3DbrDih7hLCvIBmZQxZLrCqZrytlFXkERFf1f/SHZ/lmng9OlsJGONKO0Idik5nbtg3+gW7HEqSrYWmcZXRSNR2E974IltVH/Sh3XYxNhFjGAvq7jFOb/ta+Pvmn8OPq/yBkAfEt9fPd+p+82tbh1lnEv+t/JIFwVth795nn8wN5VVtejRn90oQlcXnQjDHenRTV5ctx7gQSsQQb2QjMO8NkEOoWEBCYBxFJm1FpvHuMnt+53ErcDWxnAfdYI8QTKMXzZq5zt0wU3VhNwuKCLvrRymX8Nm98hWZVhEPZuXArs9k+mY7xKH49P2EWkTvc++ct3sAMeLTH5sFpCGWDug2McOnnSusMKM1WSPwjubrZUtl0/gE1Az/F+VG
- LdhZEDuv
- OHmVRlcZ2KkLsxjI8UkXfsbJOoWOIn6KQ8zimTSlStT96D688O8avKOJHl9y78pgTS1RwRhq2YOa6r4yboxQliAzHXWksPl2MPV35XTPWqWtZr97KDYRLksCgO/OeAZrfh7+TCXK/I/fcCjftGvi6RP4XtnJSMev3l6s4N6xOiHYtOZ8SY5TgQ4vCCStYZucP0pubPPnoGu4OSGTqci7zwaq+pAWtvTFj5bwkSfCwUI/SIuEqOYa1NFSmQce+K9wx24WpWnEnwb0vSHZeax+OrnUCALYsT70+lHElnMIOaghMvk3whFV5ZnbVFkhE8kGt97w8mlevyWy04afAvrbsBdizZs6x/4HLUe+AqPL+g5iPZAYcObzDblQ4BVvsDnoF2TQH
+X-HE-Tag: 1756332381-958497
+X-HE-Meta: U2FsdGVkX19VsFPIVv7hCUbAFSRNA0NoUWi0ESpxMw40NSd+mCPRLJu2TByCdJ6oI+iv5EIsnIWbLJFNteDhS2C2OqIaszvUW9nO6f1jdnAJUFw2FiGEC1GzEQvq4J6O4EObBuf8v0U//nbfCOBQycpcl8WpkyC54EJ+hBSIr4FzlFbL39vhFsO2mIUVEetRnqOd11FlSn1jEb+IHzXXTnLvzt6mSzWR+H/GY44v9879bIWe6PbrK8UgxPSEsQHTb1Q+Ets5A60HjKjeeOFGMqf/9aLfPoF+i/2E8CXmiSuF1yxmBo8NRx6KqyrBlsOiSqh6r9J65lxv+ffFKwELxyg/xXPUzlqRWvw3jY1ExOC2lgR6iCzq/PBWIlR7cRzy5U3VGFs2ulHQdDIM9nYFVGdfNwfBN+Bh69EOj+J9+zJrzQokXvNEEzgVpUBRygAnoXY+5lOcGy/KcSwwnGCMyy8azkyGKlwgLOSmBxKhqhy7ohhyipQytnWpqLzOfqYcJLESHdbOn5wXSYtGtpAOFRAAzEim61bNLWsdd7y0EpwkWcDpxCPJEmxn0RbhVD9NBbRnkD+gstSrVCbcVturpUMwmkwTuK5mWnpy8DvSEeknvRQeziUJrQcqo7MyEAsnjM7o7RbbcoQ/RJmJC8IzwZHbb7ZXpNnCtUCD/YiTbuNTQ/ZJji+Zd7KuvnXguE0HSU/pUgJwcoiZZLLPu2GCj0yKYnh0dAyquUpzyJjkatq/N8H+Zn2GRDFoDRiUrIgzE4dPZfAEId7+MUmj+gM2mbKg8UBoAAszOhg57TRyQpo1teWgDO1o42Bo9n6MsLStuKtjPnChsYXyId/5p6988bCZAS/aLXicIsIavvaMTSTr/iuswBw36bgu01qEmlQQeY9SilsD8TK/Ai3f7n08DEYXVE6ezNlBCI3VvKQfgP6Ytne0E+H6CUA+iK7uRoatOwz67+RNlXHu5dxadj3
+ w7EYEEvv
+ hlKWZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,77 +95,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We can now safely iterate over all pages in a folio, so no need for the
-pfn_to_page().
+On Wed, 27 Aug 2025 11:34:23 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
 
-Also, as we already force the refcount in __init_single_page() to 1,
-we can just set the refcount to 0 and avoid page_ref_freeze() +
-VM_BUG_ON. Likely, in the future, we would just want to tell
-__init_single_page() to which value to initialize the refcount.
+> In production, show_mem() can be called concurrently from two
+> different entities, for example one from oom_kill_process()
+> another from __alloc_pages_slowpath from another kthread. This
+> patch adds a mutex and invokes trylock before printing out the
+> kernel alloc info in show_mem(). This way two alloc info won't
+> interleave with each other, which then makes parsing easier.
+> 
 
-Further, adjust the comments to highlight that we are dealing with an
-open-coded prep_compound_page() variant, and add another comment explaining
-why we really need the __init_single_page() only on the tail pages.
+Fair enough, I guess.
 
-Note that the current code was likely problematic, but we never ran into
-it: prep_compound_tail() would have been called with an offset that might
-exceed a memory section, and prep_compound_tail() would have simply
-added that offset to the page pointer -- which would not have done the
-right thing on sparsemem without vmemmap.
+> --- a/mm/show_mem.c
+> +++ b/mm/show_mem.c
+> @@ -23,6 +23,8 @@ EXPORT_SYMBOL(_totalram_pages);
+>  unsigned long totalreserve_pages __read_mostly;
+>  unsigned long totalcma_pages __read_mostly;
+>  
+> +static DEFINE_MUTEX(mem_alloc_profiling_mutex);
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/hugetlb.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+It would be a bit neater to make this local to __show_mem() - it didn't
+need file scope.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4a97e4f14c0dc..1f42186a85ea4 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3237,17 +3237,18 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
- {
- 	enum zone_type zone = zone_idx(folio_zone(folio));
- 	int nid = folio_nid(folio);
-+	struct page *page = folio_page(folio, start_page_number);
- 	unsigned long head_pfn = folio_pfn(folio);
- 	unsigned long pfn, end_pfn = head_pfn + end_page_number;
--	int ret;
--
--	for (pfn = head_pfn + start_page_number; pfn < end_pfn; pfn++) {
--		struct page *page = pfn_to_page(pfn);
- 
-+	/*
-+	 * We mark all tail pages with memblock_reserved_mark_noinit(),
-+	 * so these pages are completely uninitialized.
-+	 */
-+	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
- 		__init_single_page(page, pfn, zone, nid);
- 		prep_compound_tail((struct page *)folio, pfn - head_pfn);
--		ret = page_ref_freeze(page, 1);
--		VM_BUG_ON(!ret);
-+		set_page_count(page, 0);
- 	}
- }
- 
-@@ -3257,12 +3258,15 @@ static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
- {
- 	int ret;
- 
--	/* Prepare folio head */
-+	/*
-+	 * This is an open-coded prep_compound_page() whereby we avoid
-+	 * walking pages twice by initializing/preparing+freezing them in the
-+	 * same go.
-+	 */
- 	__folio_clear_reserved(folio);
- 	__folio_set_head(folio);
- 	ret = folio_ref_freeze(folio, 1);
- 	VM_BUG_ON(!ret);
--	/* Initialize the necessary tail struct pages */
- 	hugetlb_folio_init_tail_vmemmap(folio, 1, nr_pages);
- 	prep_compound_head((struct page *)folio, huge_page_order(h));
- }
--- 
-2.50.1
+Also, mutex_unlock() isn't to be used from interrupt context, so
+problem.
 
+Something like atomic cmpxchg or test_and_set_bit could be used and
+wouldn't involve mutex_unlock()'s wakeup logic, which isn't needed
+here.
+
+>  static inline void show_node(struct zone *zone)
+>  {
+>  	if (IS_ENABLED(CONFIG_NUMA))
+> @@ -419,7 +421,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+>  	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
+>  #endif
+>  #ifdef CONFIG_MEM_ALLOC_PROFILING
+> -	if (mem_alloc_profiling_enabled()) {
+> +	if (mem_alloc_profiling_enabled() && mutex_trylock(&mem_alloc_profiling_mutex)) {
+>  		struct codetag_bytes tags[10];
+>  		size_t i, nr;
+>  
+> @@ -445,6 +447,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+>  						  ct->lineno, ct->function);
+>  			}
+>  		}
+> +		mutex_unlock(&mem_alloc_profiling_mutex);
+>  	}
+
+If we're going to suppress the usual output then how about we let
+people know this happened, rather than silently dropping it?
+
+pr_notice("memory allocation output suppressed due to show_mem() contention\n")
+
+or something like that?
 
