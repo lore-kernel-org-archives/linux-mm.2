@@ -4,89 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CE9ACA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F3F3CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:06:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85FA28E0010; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
+	id BBADD8E0011; Wed, 27 Aug 2025 18:06:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8365A8E0001; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
+	id B92958E0001; Wed, 27 Aug 2025 18:06:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 774438E0010; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
+	id A80978E0011; Wed, 27 Aug 2025 18:06:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 63A6E8E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:06:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3AC2011954F
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:23 +0000 (UTC)
-X-FDA: 83823921846.13.F207FB2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A83E5140004
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cJQ/ThAi";
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 924CE8E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:06:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5A6CD1408B1
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:28 +0000 (UTC)
+X-FDA: 83823922056.14.F2A8A0F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 989551C0003
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PoXHJwEz;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332381;
+	s=arc-20220608; t=1756332386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p/QVbMlOVzQZDOQn1d2bRvCwftcA4hFeaZoH38uIzLQ=;
-	b=Nugwt7FrA7Spn7YKpE0gXbtvG5ocKPg9b/Wz/zndlEmBGxzeg+lR0QGkY4WUQgY9xwdqz9
-	PuX8s/P7raCVNjlYYynyYWcugHR8ZQ4pU75cfx2tGVJnQe1wTlGtp58I3okW7UeR+DHxVZ
-	X9OqeQjwRmcTb7K2SvOVuWIy4qLnBOQ=
+	bh=TaqjYk7qiFpFT4dP16wKMuC8fiQfbkUwRRgQVKGzHC8=;
+	b=fFB/tTSxeNLzn924ebXQz3Z8V2QHEkdS9e0QquFBHTVM9CE04iKzGr55odPzOrYK5jBAz5
+	6263zpn+sglmd0r2MhmDWNz61BUVKAmcaGSCwJ/acKx2l5QBWyRfAvfwfmzDTX+AVtUnWN
+	j12QQJfbWpTRrYdcrCddYw6qYavd+iw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cJQ/ThAi";
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332381; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PoXHJwEz;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332386; a=rsa-sha256;
 	cv=none;
-	b=UxCiejBZ5/lojCcNLBQYnrOX+ea2XWON6v3dR5b7jyMd+mKoJJ3NaYqDTQXEWMWMJBsqRX
-	Jk1ZbCRCk2RAMaPUklAF2dkjzrJZEXKtoZ1WoVk0AdEF0U+SmszfHpgtb0jgpyDYd2CdcK
-	4h9nWnuAush2tDg0Pi8NfTY3I1GCWhg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A563E43F19;
-	Wed, 27 Aug 2025 22:06:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A622C4CEEB;
-	Wed, 27 Aug 2025 22:06:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756332380;
-	bh=QtZo2wLiVrvIDs2z9ZU576b2zdkNZlOfu/w0v8RzTyg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cJQ/ThAi5yoG32jd5YVCjvLgkJikRs+8dIWYeDUSIQWJlAVUHVCDFk+DbZjXzo5pu
-	 D4flKoikmxH5XOGDCcJXUsdft4DTEqTNgOexDp4nd0Sedd3EeJ+GNTHkUvNmvk7/ow
-	 KhBUBGsDfq6f2HuNoA2o3P7VbewK4UZHYq7mW5/g=
-Date: Wed, 27 Aug 2025 15:06:19 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
- <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
- kernel-team@meta.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] mm/show_mem: Add trylock while printing alloc
- info
-Message-Id: <20250827150619.4e468e68988f224f9f9bea6f@linux-foundation.org>
-In-Reply-To: <7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
-References: <cover.1756318426.git.pyyjason@gmail.com>
-	<7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A83E5140004
-X-Stat-Signature: gobk4stmi1mokamih8obd3rskrtmkksu
+	b=e6ehoqe2ByeX+eB9tXO/nVAACGm6SC4jzpWuvHx2KLahJs7k5/UNtupAo5f/7Gq2dNUvmE
+	wZslLCtrZkoBwKKjhIeht6mEcyc98xl00Sf8SjDj4bgtF5wUQ021OV+RN8rUCV9qWTeGNc
+	JUrmPbd3ZLV+3aEPFgdd8WjdZ3+1CKs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756332385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TaqjYk7qiFpFT4dP16wKMuC8fiQfbkUwRRgQVKGzHC8=;
+	b=PoXHJwEzk7w2QrZiRN5qwswFGzO4Fur9KbS2Pq0kw3vH+sjIV8DfkOy5vjMjGF3DFFk/9W
+	FyvaBZ7ulBVM5XZsqIJ30EIBKMC296H30G5XkHH0wvHUb/ZgeCZY1AU/dMk8X2bD1PaLfS
+	XxcbE1lvXXaONrNyGeeCHMcoMU3rGME=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-990HNXa9P7CWji11STEtIQ-1; Wed,
+ 27 Aug 2025 18:06:21 -0400
+X-MC-Unique: 990HNXa9P7CWji11STEtIQ-1
+X-Mimecast-MFC-AGG-ID: 990HNXa9P7CWji11STEtIQ_1756332373
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36F19180028E;
+	Wed, 27 Aug 2025 22:06:13 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.22.80.195])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B193D30001A1;
+	Wed, 27 Aug 2025 22:05:57 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	io-uring@vger.kernel.org,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	netdev@vger.kernel.org,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev,
+	Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com,
+	x86@kernel.org,
+	Zi Yan <ziy@nvidia.com>
+Subject: [PATCH v1 14/36] mm/mm/percpu-km: drop nth_page() usage within single allocation
+Date: Thu, 28 Aug 2025 00:01:18 +0200
+Message-ID: <20250827220141.262669-15-david@redhat.com>
+In-Reply-To: <20250827220141.262669-1-david@redhat.com>
+References: <20250827220141.262669-1-david@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Stat-Signature: akauxyrasxi8wwcp6mdtr8icwwy5hwp7
 X-Rspam-User: 
-X-HE-Tag: 1756332381-958497
-X-HE-Meta: U2FsdGVkX19VsFPIVv7hCUbAFSRNA0NoUWi0ESpxMw40NSd+mCPRLJu2TByCdJ6oI+iv5EIsnIWbLJFNteDhS2C2OqIaszvUW9nO6f1jdnAJUFw2FiGEC1GzEQvq4J6O4EObBuf8v0U//nbfCOBQycpcl8WpkyC54EJ+hBSIr4FzlFbL39vhFsO2mIUVEetRnqOd11FlSn1jEb+IHzXXTnLvzt6mSzWR+H/GY44v9879bIWe6PbrK8UgxPSEsQHTb1Q+Ets5A60HjKjeeOFGMqf/9aLfPoF+i/2E8CXmiSuF1yxmBo8NRx6KqyrBlsOiSqh6r9J65lxv+ffFKwELxyg/xXPUzlqRWvw3jY1ExOC2lgR6iCzq/PBWIlR7cRzy5U3VGFs2ulHQdDIM9nYFVGdfNwfBN+Bh69EOj+J9+zJrzQokXvNEEzgVpUBRygAnoXY+5lOcGy/KcSwwnGCMyy8azkyGKlwgLOSmBxKhqhy7ohhyipQytnWpqLzOfqYcJLESHdbOn5wXSYtGtpAOFRAAzEim61bNLWsdd7y0EpwkWcDpxCPJEmxn0RbhVD9NBbRnkD+gstSrVCbcVturpUMwmkwTuK5mWnpy8DvSEeknvRQeziUJrQcqo7MyEAsnjM7o7RbbcoQ/RJmJC8IzwZHbb7ZXpNnCtUCD/YiTbuNTQ/ZJji+Zd7KuvnXguE0HSU/pUgJwcoiZZLLPu2GCj0yKYnh0dAyquUpzyJjkatq/N8H+Zn2GRDFoDRiUrIgzE4dPZfAEId7+MUmj+gM2mbKg8UBoAAszOhg57TRyQpo1teWgDO1o42Bo9n6MsLStuKtjPnChsYXyId/5p6988bCZAS/aLXicIsIavvaMTSTr/iuswBw36bgu01qEmlQQeY9SilsD8TK/Ai3f7n08DEYXVE6ezNlBCI3VvKQfgP6Ytne0E+H6CUA+iK7uRoatOwz67+RNlXHu5dxadj3
- w7EYEEvv
- hlKWZ
+X-Rspamd-Queue-Id: 989551C0003
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756332386-962224
+X-HE-Meta: U2FsdGVkX1+yDx4U0oOjoO9SB4iGHki5d8xGa4KwBwsY1dVawE0V3h6SJIlwDaXZ5xpwjCEOXC8APmhMKSI6yJFPPfdCtYBVBav/yhOa1WmRQ+I0043D5+OMINl/yRkXrkDYT57VNenPGkmnUxyydR1Mfw0JmBTLeJxy0ORoXP9zSz731CQbyd/KqaQql6smyPaUF3joZbRuzypA21YvBchlPB1e72XIdb3h/E/Q7Y+awKbhSifazDs2I2saWd4SXAsL4kG0WPvR85wqQaVkf1f4vLTq1uFN1SP2MDcxhhO6+GnLhcQom9gmv7afEamu0CmtVla1MitPowQxV3IOPxtLrFMBb+g2ci/l8go593hxmQ6zs9GqD/Rg2B1yLzISjHGE4+h+PhjmeUxfCJ7fjEF4Yl1k2ajIz9bpA9THhfZb/6iJm7pwZ0stb1eek84vq8e1vI09znnaoJwzDZQ7xue69IB79/3EE18MUrWhDTi9lIkkSxzCouj5UZeb6j1FHiTUP5pnWACREwx0Gqt9YuCkkd7/sVz1FvoaqO1OnWT4YANRB0c4h+sQF5jOw4fqefwOzwy8wnA7dIFtIE6i99KV9mvAAmbXrLUg3IddH+Yt6B7Pmh4s/5OcP1HmNAeovPx/vCpVINzVVZY2NDBR7QBKYhb8jIdscivOYZsBda4S6rX6BkbN7QNQldln+zvqjJlj/SQBdGo7UtN4vTxPbNrQVOi69oFHc0iB94iRzOvD6kflHtSHEt6HzW4gj2/sCagchQ0p+a8P53hFOWqM5vxFsSol3I7Ngqd33RgUVbBeq9IPRQIp/ZBs6G+lnQMoZRJPPPjniR8RdNtD97Hm8atL6KV1d/4+JXNIUvAmcNV6g5nzxxK3I3bBdaNLGOPuF9iBFTc1rmyoMd+OnrIzDLPE3igd15KdNXvmoZPV4PVWUGsWmW3LBfM74OcXP9xM1o9c3VH8BP8PUIwRy2A
+ bnSuS0aH
+ t4bVNuGurIe5vL9MK4hkHky4EUMIk9YSBlTMo9m3ol2YrdMKRrzxmjYW5NGjnMLNWNPv4onkVbM2yCNFdPHpuzirjxV7EbvBtkMgr/eL96kQDFgwqaxaVyb/izC6YIFBlGgTKVdhN9bZZUJRteB+oTQAnv9v97JxwIj58dwA6d8LEGKIG9N5ESzWNmMEtF7ddio8wpqqGlaVonDOcUXwpStdjNVQvJax0FN3y1Vx++aiCjrNNh9vAmrdZbEDADMEy1pTWdBpjSPQuLrUCwUZ5in1Rd/h+IgbcFhf+YOxnjrTI7JQ7tHHIz6zSMJ+1pWaKPpHCLWC+jYvR3M7ifFOiAmnLOF2TH3obUbcNd/jLnhGTB4Ywdglj+xnMrVw0kLP+5Q/QANQ46pGFEu903JcLkonWEe36U/3oo5IKmuquHgX3mXKwPfFhmZkUxTvb77RrRMllx+h7CNcz9ukEjXgh1o4YEzzhADwA3fjiOoru6XBk0HCewUtuW6p/OIHwrwbz4sdI5zfL1+TDyvbtGLFeq5xm2Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,59 +147,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 27 Aug 2025 11:34:23 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
+We're allocating a higher-order page from the buddy. For these pages
+(that are guaranteed to not exceed a single memory section) there is no
+need to use nth_page().
 
-> In production, show_mem() can be called concurrently from two
-> different entities, for example one from oom_kill_process()
-> another from __alloc_pages_slowpath from another kthread. This
-> patch adds a mutex and invokes trylock before printing out the
-> kernel alloc info in show_mem(). This way two alloc info won't
-> interleave with each other, which then makes parsing easier.
-> 
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/percpu-km.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Fair enough, I guess.
+diff --git a/mm/percpu-km.c b/mm/percpu-km.c
+index fe31aa19db81a..4efa74a495cb6 100644
+--- a/mm/percpu-km.c
++++ b/mm/percpu-km.c
+@@ -69,7 +69,7 @@ static struct pcpu_chunk *pcpu_create_chunk(gfp_t gfp)
+ 	}
+ 
+ 	for (i = 0; i < nr_pages; i++)
+-		pcpu_set_page_chunk(nth_page(pages, i), chunk);
++		pcpu_set_page_chunk(pages + i, chunk);
+ 
+ 	chunk->data = pages;
+ 	chunk->base_addr = page_address(pages);
+-- 
+2.50.1
 
-> --- a/mm/show_mem.c
-> +++ b/mm/show_mem.c
-> @@ -23,6 +23,8 @@ EXPORT_SYMBOL(_totalram_pages);
->  unsigned long totalreserve_pages __read_mostly;
->  unsigned long totalcma_pages __read_mostly;
->  
-> +static DEFINE_MUTEX(mem_alloc_profiling_mutex);
-
-It would be a bit neater to make this local to __show_mem() - it didn't
-need file scope.
-
-Also, mutex_unlock() isn't to be used from interrupt context, so
-problem.
-
-Something like atomic cmpxchg or test_and_set_bit could be used and
-wouldn't involve mutex_unlock()'s wakeup logic, which isn't needed
-here.
-
->  static inline void show_node(struct zone *zone)
->  {
->  	if (IS_ENABLED(CONFIG_NUMA))
-> @@ -419,7 +421,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
->  	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
->  #endif
->  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> -	if (mem_alloc_profiling_enabled()) {
-> +	if (mem_alloc_profiling_enabled() && mutex_trylock(&mem_alloc_profiling_mutex)) {
->  		struct codetag_bytes tags[10];
->  		size_t i, nr;
->  
-> @@ -445,6 +447,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
->  						  ct->lineno, ct->function);
->  			}
->  		}
-> +		mutex_unlock(&mem_alloc_profiling_mutex);
->  	}
-
-If we're going to suppress the usual output then how about we let
-people know this happened, rather than silently dropping it?
-
-pr_notice("memory allocation output suppressed due to show_mem() contention\n")
-
-or something like that?
 
