@@ -4,115 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 612BFCA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 12:09:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 070D4CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 12:14:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B15E6B0283; Wed, 27 Aug 2025 08:09:05 -0400 (EDT)
+	id 4DA8A8E0149; Wed, 27 Aug 2025 08:14:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 961D46B0284; Wed, 27 Aug 2025 08:09:05 -0400 (EDT)
+	id 48B8F8E0147; Wed, 27 Aug 2025 08:14:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8508D6B0285; Wed, 27 Aug 2025 08:09:05 -0400 (EDT)
+	id 3C83E8E0149; Wed, 27 Aug 2025 08:14:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DFEC6B0283
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:09:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFBAE84C12
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:09:04 +0000 (UTC)
-X-FDA: 83822416608.28.8DED3F7
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D9C4D80014
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:09:02 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UzRJLNBo;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 29C048E0147
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:14:51 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D02A81DD5B1
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:14:50 +0000 (UTC)
+X-FDA: 83822431140.24.CFC3DB6
+Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 89BAA14000E
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:14:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf26.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756296543;
+	s=arc-20220608; t=1756296889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vX8WnxRhim6a/G891Mxzmq6M4cjiItYNLRPlcq6KrU8=;
-	b=Dvuvus5ac/BXo/GKSeIGFz5qtHsO2xaQf3Kq86wcEXw6wt2wQR8da4LNbDEjlKAL9EfnZF
-	g6reqW0zU26ovdVvJN1mju+xNipercFNlKdGyCZfuPZ8eof7RK/+1L1fC0GjhccM2/bzb+
-	h5iyz8o1I+bj/Xzek04vxrTZNDCK5Is=
+	 in-reply-to:in-reply-to:references:references;
+	bh=yG7480RqKLX1PJuDP5QQCS0vMQ3rUqFw1a56aOnsuXc=;
+	b=b8oJqZ6JrhBi7brA6NdN6uJLamRj2qoKVpoFS1XC9lsKldzNtVlY1Z4EL3k9TiazYAfGoc
+	OhhRU1CmbVLciNiu+rd9JHfMLjeyL0/QxaHSCfv+GY7nCETj7uEGExSmXsbFKV+10s7HzE
+	Ro0UPrKGLGPkY6F33mrOeaVAm69t2BE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UzRJLNBo;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756296543; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf26.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756296889; a=rsa-sha256;
 	cv=none;
-	b=KAOG98gdUArUsMvE+rq/7SZsapJs8SGC1iHVrQiYwKHbOZIR617MrAAH16yO2gPD94W1bx
-	xxujNd7pMS5qI2B3bBUujh4+99UoQfKzkmp/1pFiZ3+bNDw0wTKkLid/QiqgwkH7dLE1Q/
-	8i9q5Wepf+Mjz7aTJEboPCQXx4/fO3E=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so895407366b.3
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 05:09:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756296541; x=1756901341; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vX8WnxRhim6a/G891Mxzmq6M4cjiItYNLRPlcq6KrU8=;
-        b=UzRJLNBoqHVCrzFFI3ciPvsJUWQ2Is3bgwNQOrIn6DtK3iUkUEp74VbqHvYOfnNptZ
-         3vdOykGAiOO6BYTjUTtj4+jfcCM9jbLUhEbAG5Xqcn49kd/4qNqFG2TbkNrRPu5Y2XTU
-         vKILKuXCb3UImNhcFng+fLt92nimIzvmGxD5HOz9U9886gL/sl6WAh/A+FO72NENV+uH
-         S5vpRtU/zvJ3XzG9HWJi9w6Ea+CXUrHwIGKECzHf4OGwG6xPvn+rq6UyRD1+BqTLBewF
-         vTKdHKAaMwKUqqbTYVUIuQs21GqzJtsUaBlWAIc1BeK5qcKId6WkJnpsYaUM5gSLGyeD
-         /DUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756296541; x=1756901341;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vX8WnxRhim6a/G891Mxzmq6M4cjiItYNLRPlcq6KrU8=;
-        b=jQG/BQVxfpSkgMQ5POH07bbwkqmb3TN2dbBeNE3HGTTu2NRZJUWAwe1aeGwvyRAGbZ
-         vCyBuNvNL18dBGYWOYr5Rb0pWy+1ipwZeYd/WzQIBUX3r/70vOardB1JMFRqJ1QHF95o
-         BZ2W0up5pjTCEBV5DLU0Ywieo5PgShOzkjlF1UM+eptbZ0v3Hqlf5coPEibwP0mryJNS
-         EByEKa/QG4gqzWJumjE4P1NR30Ode4TjMiMXZkXyTXiXRyzjqxFAB6jhmU1aPsI4wrjz
-         /ju0l02Y3sZIB7Rk+5IVHMkAbxfj1aUhr0lFZnZhYA8k6NaZeutehoghQV0O/yZXr+AI
-         0few==
-X-Forwarded-Encrypted: i=1; AJvYcCXkAAQvHCrb9x1YDrWKKlo0FN9rqyFTHNRZF/Z9dq71m020+ZN0J8bt2+4CrXqX4SV/BErG9BMYIw==@kvack.org
-X-Gm-Message-State: AOJu0YycMDDHZ+jdFYP7XUjnZ+zm8LIX92iUjZ0BqlERBFzLmj+QASBB
-	MntiEbwizTk4N7m+Xs1Otr3XHAtq8NuffwgSG7qBD2KCAmc/lFC/8Hn6voVSBDZMzvU=
-X-Gm-Gg: ASbGncuqNNA+vHbD1kWDvhvAXbwX6ooD8ck+0VaZK9Cno4pV+wEVfwwhGqfWZO4VTX/
-	JfRUsF1kSRIrARD1p+zO2vBxXoexJPbcfg41tiVucmMZ6pf4N+vTcCxWT0DDeQ3PwZbuIzSdPqk
-	QtZ+wwLRTGM7KObgCnCNmgj9QSYHWUhqqGbv9nwFwHqrawGIP/REMoTw5T+Loo1tErQXmV+BLkX
-	2722zeRsHDjFQFw1/MagOV6H+hUgaNzx2+3BHFCgmb0d7NXZd0X510ZFpMhvCs4KLnjq1c0u9ls
-	ynNjwSievrrSYv4WxDmVUXDF2Bb7xOvh2FIgeA7vyil534ereoRAG+Uz4qtyCJO99x5EVIPoCnT
-	gBaMGtwP+l8JzwhiOZ5GJvg2TlYa9hXpA
-X-Google-Smtp-Source: AGHT+IFkV6Q0CKt4qC6zznsx4y1Vd+1Uv+hwAtPFJ4LUzI7MVdaA7UgPt9OrIwzGQLCbth5PUkMCkQ==
-X-Received: by 2002:a17:907:94cd:b0:afe:c767:2ad8 with SMTP id a640c23a62f3a-afec7672c80mr139290666b.31.1756296540875;
-        Wed, 27 Aug 2025 05:09:00 -0700 (PDT)
-Received: from localhost (109-81-18-37.rct.o2.cz. [109.81.18.37])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-afeb049133dsm321386166b.75.2025.08.27.05.09.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 05:09:00 -0700 (PDT)
-Date: Wed, 27 Aug 2025 14:08:59 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, liam.howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, liulu.liu@honor.com, feng.han@honor.com
-Subject: Re: [PATCH v5 1/2] mm/oom_kill: Do not delay oom reaper when the
- victim is frozen
-Message-ID: <aK71W1ITmC_4I_RY@tiehlicka>
-References: <20250825133855.30229-1-zhongjinji@honor.com>
- <20250825133855.30229-2-zhongjinji@honor.com>
+	b=rzVYC59/yew0rUTvU/8qjMxw5RFL5DpXCznnFCe9JKeoSlZ7dMmWGUhVQ31y/KDdkc3yUG
+	FXleXmIjr8pphkC5FxmJtqCp13rFs/hkVlkAacENA/L17wVvUZ4U293Lilkm99Ovbo0rOY
+	un2HpHx2dCOWwGOQBeMxns58FJZmKb8=
+Received: from w013.hihonor.com (unknown [10.68.26.19])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4cBk3h0zcJzYlHYL;
+	Wed, 27 Aug 2025 20:14:24 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w013.hihonor.com
+ (10.68.26.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 27 Aug
+ 2025 20:14:41 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 27 Aug
+ 2025 20:14:40 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <mhocko@suse.com>
+CC: <akpm@linux-foundation.org>, <feng.han@honor.com>,
+	<liam.howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <liulu.liu@honor.com>, <lorenzo.stoakes@oracle.com>,
+	<rientjes@google.com>, <shakeel.butt@linux.dev>, <tglx@linutronix.de>,
+	<zhongjinji@honor.com>
+Subject: Re: [PATCH v5 1/2] mm/oom_kill: Do not delay oom reaper when the victim is frozen
+Date: Wed, 27 Aug 2025 20:14:36 +0800
+Message-ID: <20250827121436.10795-1-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <aK71W1ITmC_4I_RY@tiehlicka>
+References: <aK71W1ITmC_4I_RY@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250825133855.30229-2-zhongjinji@honor.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D9C4D80014
-X-Stat-Signature: jwaw8mm3wu399mac4h1bydahm9dtekn3
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w002.hihonor.com (10.68.28.120) To a018.hihonor.com
+ (10.68.17.250)
+X-Stat-Signature: c15zb5gf6forjjo5pyg8897crdbkw7eq
 X-Rspam-User: 
-X-HE-Tag: 1756296542-838711
-X-HE-Meta: U2FsdGVkX18/Tf9dN4m+XSI0/n6IuG+ZdVP79dYwykivDgBo/OQFsVNyrhVPm1pTcbQORJ4ZG8KavlQlQvjvgpy4VMd0s3VxDvf5zuHxCiWItMcM/wVF+o6KRK5tOWPlCkZ59Y1aYPxirDZG+VuWgQTxsa0pZwhMMn9MRqSj9aT+1nsYgOBNDYp9WkhuII5PcwC2Sw4wfjKowWrlEnUTf+f4Vt8d94XeNJS7isoJNEwQgrDdCzVO34HTIXWTtg97BPdXqOlNUiIJy0ZsWCN/yiUjIZ6CzKGsJgdBVQ7odTk3KClJtFT2TxpJ5f4bZj5t7eSR9icMBN2FdLEcSOx4QOh16db1rX8F7i+BUp8/a2BsB84/n6diU6HeahswC2QIFS0rAjGCoWoUtp5Ioer4eAop/J8yIzLshNsP55/zNHa+bG2DD1RTfWDY0WiGURi9ir/E2o7rjT6ADPSuKFR++wngbB77VX6Js0DXOeIC4Eit6+/ScCTXGfEfhHZWNwvw0SOkmh+Vx/f3kW7CTjDxKqBB9uRifSauZ1hDrVZSLktpKlReLIgHNk6qymfVwFaVnnA+pktiaNcWMkgtfgElNG5Voou1kiqLDurLGiBntrm3nCVSmZgKY8L1YqnDVGItWke255ahCEjh5SEv/238c9vuB9dCMvilhij/X5EczzHmGFJgik9SbY9u7aDAXxU1FfN294xkA2Yu953MyIlz2uBAbM3JSIwDX70UAuouXnBkaYYDmHIjtYUQPVmFmWILzpZiAURuaZYSe0+wYDf1UFZYIbifkaC3oB9ImhHjyWaVBTTAKtAttwGirxwnv8tErOMRVoEuGNF3/ttaGISjzQ85P3Oyh9up4vnP9fgplAS4TBIvN1Jjccfzp1GBaqZx0C4RyQWskDyYTPcAOc5cc5HOaZRHxGaec6W5fdUsn4Q5cLLHn6j1Ofo+Iql1JMiTM9Hq5ahMjrTAfNI6rWh
- 6gKE+2xT
- s0iDE2ePGYx9zOEbsRPItteMxDA==
+X-Rspamd-Queue-Id: 89BAA14000E
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756296888-833458
+X-HE-Meta: U2FsdGVkX18y0B2OqNI/MW9OQO/zH8WWrmELKFVyYdSwZQJesuoMC1uF8vQPswM3iSaRyqtyhkeCEPx77xUs6ypzACZHr4qAdFbQh/tqz2bPfxv3k+OOhnt0K33H3Bqclm9QyqLsqCzrvfJdtIocIyzknKw1WC3zjtbHdLY2+8V893UeUMiYJjurP57OjeU21foFBcbd+7Ezrs442jZJO8Mj1AVpP0EqR4AOikTBz81DL/mZPH9ekPJ44V462aq/jHm/p/J7Jb1fsh//QlA7v8tYNYRe3e0CDNEwDLGTE2PrK5IiWVk16OICTzLebtylJlwy40h2U7bPj2fKTZfQvHi774TqwVXhvy6B+iydpEMIq5OgiqNcsfQqYTB+Ik7EkjShhAXPG/v3ZH6AOBtPoxAWuHOb5nIGilj4m5DAQDlfXA/ReN9LtVNI9MS+jD4W1A2wCkEEj16rqmn9l8ORUvhNH5Qk0J3ZBW7wzuiNv5kiGGVtJznwkjsfQQsy+JBxTBbsbw1K48kDWn0Lu23YMf+LwTUGSCxETJMQgHPf1Qh5zcDvQoLlROcOruQRahxBZce98lBTotqBB2LEoqul+8ZzMrXqOfeUPFn5IlKFsByzCrqxojOVnLCO8Za6pOsY8YnrTjFFsompCuKM3YV3RS+AHLITv5hg25iHXBsplIav9pJcFuWOMnqpxPPN+hF5zMeAO7QkMEBfJ9au7fzYFFtiKVtbM/telXo2JDvNpEfMnOwvyW/sNkbWe85v1HC+Y9sHVWjlY2Vof0+rV5EZcNXCSsoiBPC0X729NXvClClPHQ+uBmvAQx+iudZD9S6q0bxLw5dPW/d6eQXFUtuGhgUUbFhBywfLLnJWb/v9sjqJkNssGEr0CK23ZXzdLBCa+V4EwaZRYm7mXNs2hIdarYF2shkC64sOt6tEE9HgXJlqgu+vdYTy8HF6dsBoXYtdojYHoM2Far1XNtZxHn0
+ h40QSPFW
+ O5z5g8EO+B4XrLiyPLH31gtp8e2G9/5j0FC96p5ZcQP8PfrKiaJ2GH7JBiSja8iVm5zhe4/aupR9iKaLaVgQ9GvS06OByrjLTKayTMaet6rN/FlF1xC4AZn5xCW8Hg51FoGoSU0CqYM5GGcTOoaid8vTpOw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,40 +93,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 25-08-25 21:38:54, zhongjinji wrote:
-> The OOM reaper can quickly reap a process's memory when the system
-> encounters OOM, helping the system recover. If the victim process is
-> frozen and cannot be unfrozen in time, the reaper delayed by two seconds
-> will cause the system to fail to recover quickly from the OOM state.
+> On Mon 25-08-25 21:38:54, zhongjinji wrote:
+> > The OOM reaper can quickly reap a process's memory when the system
+> > encounters OOM, helping the system recover. If the victim process is
+> > frozen and cannot be unfrozen in time, the reaper delayed by two seconds
+> > will cause the system to fail to recover quickly from the OOM state.
+> > 
+> > When an OOM occurs, if the victim is not unfrozen, delaying the OOM reaper
+> > will keep the system in a bad state for two seconds. Before scheduling the
+> > oom_reaper task, check whether the victim is in a frozen state. If the
+> > victim is frozen, do not delay the OOM reaper.
 > 
-> When an OOM occurs, if the victim is not unfrozen, delaying the OOM reaper
-> will keep the system in a bad state for two seconds. Before scheduling the
-> oom_reaper task, check whether the victim is in a frozen state. If the
-> victim is frozen, do not delay the OOM reaper.
+> I do not think this changelog captures the essence of the change really
+> well and it suggests that this might be a performance optimization. As I
+> have explained on several occasions the oom reaper is not meant to be a
+> performance optimization but rather a forward progress guarantee. I
+> would suggest this wording instead.
+> 
+> "
+> The oom reaper is a mechanism to guarantee a forward process during OOM
+> situation when the oom victim cannot terminate on its own (e.g. being
+> blocked in uninterruptible state or frozen by cgroup freezer). In order
+> to give the victim some time to terminate properly the oom reaper is
+> delayed in its invocation. This is particularly beneficial when the oom
+> victim is holding robust futex resources as the anonymous memory tear
+> down can break those.
+> 
+> On the other hand deliberately frozen tasks by the freezer cgroup will
+> not wake up until they are thawed in the userspace and delay is
+> effectively pointless. Therefore opt out from the delay for cgroup
+> frozen oom victims.
+> "
 
-I do not think this changelog captures the essence of the change really
-well and it suggests that this might be a performance optimization. As I
-have explained on several occasions the oom reaper is not meant to be a
-performance optimization but rather a forward progress guarantee. I
-would suggest this wording instead.
+Thank you, I will update it.
 
-"
-The oom reaper is a mechanism to guarantee a forward process during OOM
-situation when the oom victim cannot terminate on its own (e.g. being
-blocked in uninterruptible state or frozen by cgroup freezer). In order
-to give the victim some time to terminate properly the oom reaper is
-delayed in its invocation. This is particularly beneficial when the oom
-victim is holding robust futex resources as the anonymous memory tear
-down can break those.
-
-On the other hand deliberately frozen tasks by the freezer cgroup will
-not wake up until they are thawed in the userspace and delay is
-effectively pointless. Therefore opt out from the delay for cgroup
-frozen oom victims.
-"
-
-Thanks!
--- 
-Michal Hocko
-SUSE Labs
+> 
+> Thanks!
+> -- 
+> Michal Hocko
+> SUSE Labs
 
