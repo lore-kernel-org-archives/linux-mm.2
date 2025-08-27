@@ -4,105 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B1EDCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 17:45:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE8D0CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 17:45:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 420F66B0011; Wed, 27 Aug 2025 13:45:07 -0400 (EDT)
+	id 162AE6B0008; Wed, 27 Aug 2025 13:45:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F7CC6B0012; Wed, 27 Aug 2025 13:45:07 -0400 (EDT)
+	id 138B76B0012; Wed, 27 Aug 2025 13:45:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3343B6B0022; Wed, 27 Aug 2025 13:45:07 -0400 (EDT)
+	id 076426B0022; Wed, 27 Aug 2025 13:45:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2134C6B0011
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 13:45:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BABB9140765
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:45:06 +0000 (UTC)
-X-FDA: 83823263412.02.4C82FC2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AF3DB180006
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:45:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5ue+xJU;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EB4DD6B0008
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 13:45:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B67584EE9
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:45:18 +0000 (UTC)
+X-FDA: 83823263916.10.C2D59C3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C8C7BA0007
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:45:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nqWg0qOk;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756316704;
+	s=arc-20220608; t=1756316716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hhYib2aPpohMOLuJp+CW4mT/+LdYLOc6zODOGtufGDM=;
-	b=nXa5k5npETfyKJ80dYtSCunwMTO53eI+V9UEiC7jFppMFvb4BINr9kq9WFqiMymmKmsfcF
-	PXHyoJxhb5TD//pxS5jV45QO025QLlE0EMbzt1VGc/4qmWq7P1C729wJ2bKjIMfGApK1gE
-	nz58jKDjYwwIr05Yi1NmsIoW2oTwqjc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M5ue+xJU;
-	spf=pass (imf16.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756316704; a=rsa-sha256;
+	bh=SDgmGrewKPcgMJN7yTANkJNnqpiZONDVW+jF9TiuPPE=;
+	b=v1Mn//cKyh/FCdpeXVvJdU4Z/dbgVS8mATOHrdjnG2jnwA/VY5xh3/9wE94Wxt9VyWnJjf
+	B+0noSCd+CfAOrIElqA6J+bF2d99rBcQREGEVyKvkfSCxorHjrdx1cb588YePBPC/4J3Be
+	G6dMkvVOFxDoCH/4oFktpC9YQIgu4UE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756316716; a=rsa-sha256;
 	cv=none;
-	b=YQEFi5zWoMdwSzrGssGTletOV4u2m5eqhzc5uIy/gRSDRA0tSKYxpHn6dR/jd+NA4kvTW9
-	sA9Gzgkb8wZJKYtrRKujfk+eewmN3hGuXdwTk5li5dMYmWVND0zFp21sXFDCY2cT+u1vPF
-	lvDWjPypqPfjZa4lse4E/i3j0iwWmTs=
+	b=OOup5JQv3pgEFRduaePCCXO8Q3EfscZWcKnbNp2uwTtrWIeZLoEFlp5CzbbLFIg0m3KTjS
+	8EPJUQOVKsJ75liIIGWicQAveXSxKDQEEN7BWhc1rAaNFz9FUwOka5gCUmO3OO0AWlvFZ7
+	k0IT6u56u5XEZph3gBOQDyo0zosuUxs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nqWg0qOk;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8693344BD3
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:45:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173ACC113CF
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:45:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2E3C1600BB;
+	Wed, 27 Aug 2025 17:45:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2842C4CEEB;
+	Wed, 27 Aug 2025 17:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756316703;
-	bh=VljAt2p7DCm9K1DJ9W5ibhxr8MfRLAstnSf6W0A2afY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=M5ue+xJURTG/EgdBNYWtP+ifnWp2Ed2MP+Ov2D2UuseEPEzh5hV7UIHH8kqqMu3+j
-	 wDZXcQe1260d/nBipOgJtyJ5jhjPkwhiyXVT6HhL39Z155SVa8+054WMphWyXnB3bI
-	 znly89wf+mFgf9ElB4up40Bm522fdV8Jg0LVYIc7pz1/PqfAst6U72D+k0jDovOcRH
-	 32JQJdrX7/04ejpWNKbT+3WYPbK+i4t+fXxVecwRVvNkzafItb7tjwlO7uUn5d9Fcb
-	 DMRb1WSdr8+Jd4QYMdSfIQ5eCyUCRV6Y5EpYY2hgOwuhfbaUVnDl35aFiCqxOtKcVR
-	 MwgyVwKnuZyKQ==
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e96e987fc92so14045276.2
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 10:45:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWiUHp/AnB1kb++TdwFve116n9YmQu5Bq5TKvrIqCiym5BoGvFC0QJE5Zm+JBnNiLg7mBsJiajtLg==@kvack.org
-X-Gm-Message-State: AOJu0Yz58RYuRQPwVRN2ldSFSeXfUVSS6MelRGcSO+sNLo9xjQnl7rOS
-	mkYqNYAL6vqr7VaKbbhm5SHYjRSr6Lv8pvc7CLpVo9CkxGiF1QMnoKTk9V52pqVrY7j/P23rlVO
-	qu6S0hNuK1j2nlT5tPUCkzc6pncW/9iFKXsFW6oDZLw==
-X-Google-Smtp-Source: AGHT+IH410Dh0xmyIvjcmTpUNdArM69ZBr6i/qkg9Xier1rDRpXe/jJcgUeuDZjb9l+R3aRee1wIqjnRi3hTBWoa+Qk=
-X-Received: by 2002:a05:6902:1505:b0:e8c:b1d:22a7 with SMTP id
- 3f1490d57ef6-e951c3c67a4mr21352497276.36.1756316702255; Wed, 27 Aug 2025
- 10:45:02 -0700 (PDT)
+	s=k20201202; t=1756316715;
+	bh=xNXfkQNLNU/BZsp01k5SlSuBU7HR3c29BlOg7gV0ovI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nqWg0qOkA4M0KvkNSQboRV2/gRMhu963zpbZfFBU2EnOYYCph/tVq8MRRXEQDbrWl
+	 UsQEm5EVyNNG0rC9qwR/AORLxw/UPyO3C8fed3sVLzafRYnpt4iFMUFOvk83HWoBpK
+	 zl5Sn9VPzhDXM7NqXgauYnK9bvSBe4kQNdG8EI71huvvoL/i79zARblG2+zgpOyNxy
+	 CtFtvuNlWHHS8b6eeG4y36AMQACsyvOYiRYExF8Al2418ipTmSkxBWOKQ4wwRFKXnc
+	 CBLBkSXX8+HWGTVhRS4DwS0b/KkDSITU2MHY0Xuv6GG6z5OKDXJIg6DdPsqEwXtpuG
+	 ZxZkFU/pvlbww==
+From: SeongJae Park <sj@kernel.org>
+To: Chris Li <chrisl@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Takero Funaki <flintglass@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH v5] mm/zswap: store <PAGE_SIZE compression failed page as-is
+Date: Wed, 27 Aug 2025 10:45:13 -0700
+Message-Id: <20250827174513.47171-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <CACePvbWzyqJJxP8BFXS_NDLcXCz-YXkt8eYBxv3CER9RpnJVXA@mail.gmail.com>
+References: 
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-5-ryncsn@gmail.com>
- <aK5/1so7a0i80+dz@MiWiFi-R3L-srv>
-In-Reply-To: <aK5/1so7a0i80+dz@MiWiFi-R3L-srv>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 27 Aug 2025 10:44:50 -0700
-X-Gmail-Original-Message-ID: <CACePvbU8pnjWCiWcSXRr4UdpuD_wdtrouLMz_fNB_=KRrdHLmQ@mail.gmail.com>
-X-Gm-Features: Ac12FXxitBgRzLWlNc1poHTuU4JtqvULJx8hBNZ7d5PhlQeGIAkFrGOgwUutM1U
-Message-ID: <CACePvbU8pnjWCiWcSXRr4UdpuD_wdtrouLMz_fNB_=KRrdHLmQ@mail.gmail.com>
-Subject: Re: [PATCH 4/9] mm, swap: tidy up swap device and cluster info helpers
-To: Baoquan He <bhe@redhat.com>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: hhmm4j56qtqui7pxzujfc43xq8yejzqs
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C8C7BA0007
+X-Stat-Signature: wbzcq45f7ekzeihh4ydb3agzjyawbi3i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AF3DB180006
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756316704-472847
-X-HE-Meta: U2FsdGVkX19TuJ+c0s1kp4WqmIbbBtkIyJbgtxpgl8EwJlT7cHWoMeiqcORVkWL+4xiqyW/KZx0vz6sfcZHcvR9/VIuCSxtQE/PYhlRPHYQyGJ8hGb/RnaCS4Daw40jgLXI4se6jjQDcvwGnKhRhKKK3bZLIv4dkR9d+UaOckEv8AkJgyNgh2l9z9CCsOwHvJwpMVo99epr7oMWHpMr5vvpy+Kjy7li77zE+StdDuv5dtuuUt4IEEBsT049kZDDTNdbjKboiOvGxotxEDuwsxZONDWmMcUX5bWeUokd1hTJmCcYwuPBBokezYd7QAEd3JKewCV3134iGB4G8oxCISGm9oV6AnkcEpjgdwNxxI3Pl0uRxDUTvBZIud15pTLTPQY5UL4G8psujFouq3PyTXnW6vVwEjmndAo1xqX/cCtojiF18bxBh+wT74yQnXYG4xRq4/whsGlh9608awpMjZhNNlXe+2DBnGuoZjMT16VSALPzhj7NPmkDPtdfKFvWIkQxc78wG5cDW1nk2peBuvyLbFUE3ZG0aPYhfokUeqhoFhsHyCDxkIYvUdW/g8Iyo6tKUpCBEW6QaaM+FmZi91dEECJeZ+ZJcfjeH/oRVO8Pi3LeGhgOgfDCpnp9ksO0XiCdv18wXO3KnS5XPPoeKnJSXUMvA5j4DEzPLrUmytMh2xOUTLx1HZsbybmoeccBtRxx+vwE9K0Gf1IDNpZwUjvoC4b4g5ZNH1gj9n2qUkIHx7hUJ1eMcdrISMD7lrDwZ/rVP6ku9VndeqIj8diVKj/8pjoFEMa+KAC8wo0Yx3ovaxb/WKjbCCNxrFv3oQFr07ZwUsCIFTMTpfgkCvKRczYqnW2lFNTkGinFudlwkBiW9B5SJBrzvQmVqbyZV1KOY2Vs0z/3lGpeg6KZ+TV6h8S2biXTXVlec3rj2DmvJrY1ankvgQ5kvvVuVS69atyLElguOvn4JDokwDZkYosg
- 1R8Mno8g
- t5/WrsLGkIsbQMy+CfqKgJH+hGgfE0/gfteZLQN55vOhM36BTtpaTvI149TGRMceaJrpUzjM03ubHArXJmJW93eG0WomsjIdDex+syU8tvqhLo4lmG0SxT5ymZ6aVXXF4lIgWbl3sGWTgrxqY9hmMquZDmYuvZa5ZUTi/YHWXXgvGEF6d6PA6pcHnxhZMMhJHfITcDZM9yT66F429zt1fK2zk76vJenzP5FcwMY1AsDuc1bPSquWwNlzPLfvEpPhZXNVtUkxi6iClHa9AF9jaMVjEQNhm7HOQvZpP4AsC7N4KNrjWsixsxPuiaA==
+X-HE-Tag: 1756316716-414464
+X-HE-Meta: U2FsdGVkX19I63riQd1ctBqHZqLwtI3FoW/09JcoqjOquufcmAMz1veHLdr1e6CXu8SDXRS/7Nv0/7v4guMqr7eP44A8oGrUIqkOHrLO0Maf6WVpQ9w9IcPq4Mn9aQb+2yULzHrDgDbdj9+19dmPXDiwIBRAtuq6IRQPGHfRjiwBu5sZcHyNIHdUQf0bxf9SLc7Cd2hcdAIXM4n0CAswGDbWw4aaZchFIQnqOrajvugOpPRFVMWMN6DUxwjBYdAX88WF24746Sg5WgEbdyNQYnw3ru2V1fkAC1rLzUveLwftI36i5b085gGOW21HKzV+eu5YEQnzRzwla07trrbBmLA0zCZARefmetXnaYRxCd7Hvs6jVv3jChRt01d7HAu0QWkAf99mHhSRu6JJkmYXlhYE4+MkgBRlFx0fpOZVI8LT5LqtMmkU3/W6cO2XWlZigbOrMATGOPsT1S8w49hEirX6oNanC2SBEZEPy7K5R2+yGZkLL2RFnC4sRsf0zoLFvBFBa5ijaxUjhVeYAzvajjYiHFNSDu69lBNZ0MdJkyywcrpGWN2HpThfmlQFduNOG1Hnxa7YjVdi3B2pSFzmnXuW8WFvbXtSaCWXrOp6IfL3edDY39Ps8iKw5wIGZgUMNOAPHcZJD3SVGx17VGAGNwkUXwz7V51a7JKCTgbJe5d8VcyRnj5K5wp7RHjbOK3TcVewQE0roOL70or9pPYbXy6PB7annPbU8Q3yQIX6rYz3Pw/Lu0Qtu8Ffb8b3TLuxn2mbBu4WR/CbRyfvGzUqrNs/uXOX1Hwzl1fdTaDT/gqnHyf5Ocm2hFrCxWTan01As95bMA9j53dluXdFNfL1pH9ofXUvjMxlqkLxTWcnN9WGQVBoMLciIZnfZgKhJE1W9RCI86+ixh5IA/X23xGlHo14h1LE4VYfbL2Hj3TqaUXWZT0xfTWe4Y3cfXWG9XwVIVNNgPLEkpIdS3mgT0e
+ zmz8hHEt
+ LihRI0ExKKUdEVG6SloC0kwgYGDurIXwQCYop4LyFrmeC623nr0OkqZp2UP1JSY1U6TxPgKQxuHFDdPIKareVhkob8R6fLRSeNMt2GtIEXLFxfEs2yacf8zpLW/WdvTISTeVLdQ0DDGxkQevSIjDzsb5n0djlTN/HYIJZR8m7H1gvjlMaxKeXc1O9ooK3cLNRuvTBISdpq+ilM2UYqmuJAw4Fy1DwOkshw36Dr/bwsHSrbgP4mQAc22+RIqJHFDsVoLMJiluEAkydX8oSD2ppOiK/fW1TMswj4YTNt1qXtfsd8BaYVYLebTnk5A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,62 +106,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 26, 2025 at 8:47=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
->
-> On 08/23/25 at 03:20am, Kairui Song wrote:
-> ......
-> > diff --git a/mm/swap.h b/mm/swap.h
-> > index 223b40f2d37e..7b3efaa51624 100644
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> > @@ -15,6 +15,8 @@ extern int page_cluster;
-> >  #define swap_entry_order(order)      0
-> >  #endif
+On Wed, 27 Aug 2025 10:33:38 -0700 Chris Li <chrisl@kernel.org> wrote:
+
+> On Wed, Aug 27, 2025 at 9:18 AM SeongJae Park <sj@kernel.org> wrote:
 > >
-> > +extern struct swap_info_struct *swap_info[];
-> > +
-> >  /*
-> >   * We use this to track usage of a cluster. A cluster is a block of sw=
-ap disk
-> >   * space with SWAPFILE_CLUSTER pages long and naturally aligns in disk=
-. All
-> > @@ -53,9 +55,28 @@ enum swap_cluster_flags {
-> >  #include <linux/swapops.h> /* for swp_offset */
-> >  #include <linux/blk_types.h> /* for bio_end_io_t */
+> > On Tue, 26 Aug 2025 08:52:35 -0700 Chris Li <chrisl@kernel.org> wrote:
 > >
-> > +/*
-> > + * Callers of all swp_* helpers here must ensure the entry is valid, a=
-nd
-> > + * pin the swap device by reference or in other ways.
-> > + */
-> > +static inline struct swap_info_struct *swp_type_info(int type)
-> > +{
-> > +     struct swap_info_struct *si;
-> > +
-> > +     si =3D READ_ONCE(swap_info[type]); /* rcu_dereference() */
-> > +     VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swa=
-poff */
-> > +     return si;
-> > +}
-> > +
-> > +static inline struct swap_info_struct *swp_info(swp_entry_t entry)
-> > +{
-> > +     return swp_type_info(swp_type(entry));
-> > +}
->
-> swp_type_info() is only used by swp_info() in the whole series, can we
-> open code it in swp_info()?
+> > > Hi SeongJae,
+> > >
+> > > I did another pass review on it. This time with the editor so I saw
+> > > more source code context and had more feedback.
+> > > Mostly just nitpicks. See the detailed comments below.
+> >
+> > Thank you for your review!
+> 
+> Thank you for the good work.
+> 
+> >
+> > >
+> > > On Fri, Aug 22, 2025 at 12:08 PM SeongJae Park <sj@kernel.org> wrote:
+[...]
+> > """
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -952,6 +952,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+> >         struct zpool *zpool;
+> >         gfp_t gfp;
+> >         u8 *dst;
+> > +       bool dst_need_unmap = false;
+> 
+> A bit nitpicky. That variable name is too long as a C local variable.
+> We want local auto variables to be short and sweet. That is why you
+> have "dst" rather than  "u8 *destination_compressed_buffer;"
+> The local variable name is too long and it can hurt the reading as well.
+> Can we have something shorter? e.g. "mapped" or "has_map"
 
-BTW, off topic here. I really don't like the "_info" suffix. Anything
-you can put into a C struct by definition is some kind of information.
-Same to the _struct. Anything defined by a struct is a struct. Don't
-need to say that.
-The "struct swap_info_struct" gets two of the unnecessary words. It
-should be something like  "struct swap_file" or "struct swap_device".
-Renaming it is too invasive to the code base and it will mess up the
-git annotation history.
+I agree your points, and thank you for suggestions.  I will take "mapped".
 
-Oh well.
+[...]
+> > > > @@ -1007,6 +1031,14 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+> > > >         acomp_ctx = acomp_ctx_get_cpu_lock(entry->pool);
+> > > >         obj = zpool_obj_read_begin(zpool, entry->handle, acomp_ctx->buffer);
+> > > >
+> > > > +       /* zswap entries of length PAGE_SIZE are not compressed. */
+> > > > +       if (entry->length = PAGE_SIZE) {
+> > > > +               memcpy_to_folio(folio, 0, obj, entry->length);
+> > >
+> > > The following read_end() followed by acomp unlock() duplicates the
+> > > normal decompress ending sequence. It will create complications when
+> > > we modify the normal ending sequence in the future, we need to match
+> > > it here.How about just goto the ending sequence and share the same
+> > > return path as normal:
+> > >
+> > >  +                  goto read_done;
+> > >
+> > > Then insert the read_done label at ending sequence:
+> > >
+> > >         dlen = acomp_ctx->req->dlen;
+> > >
+> > > + read_done:
+> > >         zpool_obj_read_end(zpool, entry->handle, obj);
+> > >         acomp_ctx_put_unlock(acomp_ctx);
+> >
+> > I agree your concern and this looks good to me :)
+> >
+> > >
+> > > If you adopt that, you also will need to init the comp_ret to "0"
+> > > instead of no init value in the beginning of the function:
+> > >
+> > >         struct crypto_acomp_ctx *acomp_ctx;
+> > > -        int decomp_ret, dlen;
+> > > +       int decomp_ret = 0, dlen;
+> > >         u8 *src, *obj;
+> >
+> > We may also need to initialize 'dlen' as PAGE_SIZE ?
+> 
+> If there is a code path can lead to dlen use not initialized value? If
+> not then we don't have to assign it.
 
-Chris
+The success return path of zswap_decompress() checks dlen together with
+decomp_ret as below.  So I think we need to initialize dlen, too.  Please let
+me know if I'm missing something.
+
+    if (!decomp_ret && dlen == PAGE_SIZE)
+            return true;
+
+[...]
+> > Thank you for your kind review and nice suggestions!  Since the change is
+> > simple, I will post a fixup patch as reply to this, for adopting your
+> > suggestions with my additional changes (adding dst_need_unmap bool variable on
+> > zswap_compress(), and initializing dlen on zswap_decompress()) if you have no
+> > objection or different suggestions for the my addition of the changes.  Please
+> > let me know if you have any concern or other suggestions for my suggested
+> > additional changes.
+> 
+> I am fine with a fix up patch or a new version. Does not matter to me
+> in the slightest. I care more about the final landing code itself more
+> than which vehicle to carry the code.  Assume you do all those fix up
+> you mention above, you can have my Ack in your fix up:
+> 
+> Acked-by: Chris Li <chrisl@kernel.org>
+
+Thank you, Chris!
+
+I will post the fixup by tomorrow morning (Pacific time) unless I
+hear other opinions or find my mistakes on the above plan by tonight.
+
+
+Thanks,
+SJ
+
+[...]
 
