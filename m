@@ -4,120 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFA1ECA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 14:42:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18A7ACA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 14:43:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CCC36B000E; Wed, 27 Aug 2025 10:42:01 -0400 (EDT)
+	id 62A738E0007; Wed, 27 Aug 2025 10:43:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A5246B0010; Wed, 27 Aug 2025 10:42:01 -0400 (EDT)
+	id 601EE8E0001; Wed, 27 Aug 2025 10:43:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E1438E0001; Wed, 27 Aug 2025 10:42:01 -0400 (EDT)
+	id 53F378E0007; Wed, 27 Aug 2025 10:43:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D5EB6B000E
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 10:42:01 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8EDDDBAEA0
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:42:00 +0000 (UTC)
-X-FDA: 83822802000.07.E1044D0
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8EF09180006
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:41:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="WgmO/Zt5";
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 432378E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 10:43:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFFC71DE69A
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:43:09 +0000 (UTC)
+X-FDA: 83822804898.26.6FE57FC
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E781C80003
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:43:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C79zpCxZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756305788; a=rsa-sha256;
+	cv=none;
+	b=AjJssfYWnSAwrirH82M24n2TGEEjg26YBmS4YJ/cxB+0oItFwDgB1vWDk1YmOKOM4V3JPC
+	Z1/5S2yzeqePRiWSN2VpgziEbLgWsX9kR/brAHa8QdXoq4wEn3LBmiI3ROSTybMnrbjaOl
+	jF65FHuOQmXXhWL2MLfxmCqAbk0Y54g=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C79zpCxZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756305718;
+	s=arc-20220608; t=1756305788;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P6vIrA2DQOHDf/Q4IwHsVjkoNuFaBasbd/XbLZkvLWE=;
-	b=EmjDTerLuWdByMfRSbfoPcZnxlk4mkFsIe+HIB8KmbtpqBkWyC5e4mGfiBt6FZC5Kc2Au3
-	CwofudU5pXQjE6bmK+ISPiNTlOPKN3DKNWuEIjAz/3w2UyAzreqT9EwfASaIMxodtL6+iq
-	HSuNwT1xtN31RE59brTE5vsliG4b104=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756305718; a=rsa-sha256;
-	cv=none;
-	b=GXb33GHOkSiD4U5EMa2hx5Ho+tn1zUtrTJgrOkTKJr2hzACzRT3LfFR4KbI1RqRziUuyXu
-	/pqVygwp4rApyrNgzMDtlgX/I4sMnX83aqI1jpaEPIkMw/5tmuXuTd8zOLtBUCPgOhWjNj
-	FdRJSaT00M8B73QUSJRtqIqB8CXnM6A=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="WgmO/Zt5";
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb7a2befdso1040486466b.2
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:41:58 -0700 (PDT)
+	bh=h7IZRDRVBKlmRBjlak6RScREmXVoipJRAnzz5R2AIjQ=;
+	b=Go6Qe2uji/xvk8GFVFWa4GgE52SsxKHihLLpOtdQCvhjrp7zje7WbMyzrNrk/cv4FpBP/t
+	6PeBkJPdoOIv0BnM5K9nz4iMFI46GJUZmFr662Dy8O+35btoYU2aC2UyZR8iUZd+1H3+ud
+	vXxd8nlyBUZshNhBeF+GmUJbdWIOtnU=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb73394b4so987165466b.0
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756305717; x=1756910517; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756305786; x=1756910586; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P6vIrA2DQOHDf/Q4IwHsVjkoNuFaBasbd/XbLZkvLWE=;
-        b=WgmO/Zt5Hhh8creXkadQ3tyAJXVLU6gL6djPItzO4RY0yHkHYroY/KHYUMkxiQPE5m
-         lZ0UpPmfOnso+c4qMq1XjI83nGyU3ulFzHFatSXHW18CbrBnlPnmFDPWbktOYhNMEAwi
-         KrNe3jX1CqABUeAnMuhyUNuryboqcL/yCUlCqftQyk3PlJRNj5JO07lQmDJI4qMtowXR
-         2PBxdU/b7LQ/6KekcKdUWk3UZnFvL8eGun5Sc9pbHSR3SZ/ZfGflWBI3oOgL1HRxtlm0
-         4+iwR1AcXnT4vzm08BA5aQ6gUZFvkwV1VHD6OCyNpoIE9HCedetywbv9HmsKPxscJW+6
-         6smg==
+        bh=h7IZRDRVBKlmRBjlak6RScREmXVoipJRAnzz5R2AIjQ=;
+        b=C79zpCxZ/+/MfYhzAsi4exHD7wdtj5tbVpx/RzRovux68XIAbu1W3Eq2u6Hbyo5jhI
+         d/cPlnMkbC/7qydHS1J8utptYgkxxsTc4LNZ76L96UqAqFlrTZFoH/u3uYqx5jSjlqgN
+         LxwdAirQDIe9zpldIfhRaYLV7v6LDA4bCl3eJz9nyMmiMvzMcHeDB0MLGH9sjVgyDFy7
+         +G8WWcvQwNpHmZdmyl6+xP0pDZ6ZasxapYr+GMw/rUadzbyFIrVfHSz9SrBaISwy0Vmf
+         5pf6Fpcxo/sX8u+hbWrPE+7DHSFtmn4VtSuU3whnAF56yXU0DY8Zb81uNe76l1tfyy+E
+         m4zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756305717; x=1756910517;
+        d=1e100.net; s=20230601; t=1756305786; x=1756910586;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=P6vIrA2DQOHDf/Q4IwHsVjkoNuFaBasbd/XbLZkvLWE=;
-        b=dUt60qDPoBFrPOu88Kk00jNjbYj6H2c5oidqYCLNIby4cVjQ3UXc0pcrWUC3HKs0ux
-         diksuC+wDy45shJPIo9ySuUR1ERR48+DilUsq79ZXBASyfMWoORAmRWDr7TlpiiUCAI0
-         aH+8ZfUlOX9UZtkSOLmAuqPHXByogEcYU7lmtzhxmbBJ011UfHVsxAhlbW+mrvWgf4Tf
-         WO4am0FNJGFI5l2hACP4rx2xlkUtMJgKYUtMIBkKC5rZs4wbNKNI/NMYnfv75RLD9c6T
-         kY9iC5aujlXXVUIw5bUhH3OwojgDM5vGmAX6eC4V5NFG4OwFo4Gd0bhmdxbKKsrCVNNf
-         BWWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUp6HSJz89XUKnJ/HkT/+25fHBQCQq9QTggx3MCtUklfmMfaL3eV3RmE31bDiCMEbPCon1xqDDATw==@kvack.org
-X-Gm-Message-State: AOJu0Yx5hw1HNHLfGZgysL6G9VD2SiJMv7aonLBy3+PWrEVfppkiba3+
-	lw2b9n76SWHhyfq1bKrqTMYyToYdi09zGxU05/sjARZm/6H09EoxEceS
-X-Gm-Gg: ASbGncuIM1DeEXshCiz1Qj2SRaIc09JOS+OkKWue+qoE8pSRemNEgBUb4pFLna9W3yY
-	6pkDam/hlnlmF+VyO3a/PSZO6s3gSeD3vHkTosAvhEgtWSJtRt0f9nJ+pRgjKt5Pdw8tRlixe3w
-	nYZRr/CMmqllrZqgQXnqWELQfPdxAOZSoOODPmFWaYYl9JJUDJye+R3Y2Z33JWbYeuKgIziw/ul
-	HvmRGx7Ass4RNjC0fSxvjF5VQqXSehRafh6K8cGZgmgxgkP3yTkVV2/fqSJulwqFTrwd9FSu9s1
-	Vhu/PX3gnXTHzQgkw3uNOTpH68DG9icZlmPQQ4ei3OLG2MPz4iPRd1OsO3KkgkxLTXXqJ9FjGwl
-	N1BXgxOKQp0VymxcgaKQ5ZByf0WoV9dFdF2+j
-X-Google-Smtp-Source: AGHT+IHcbfYShha277hCZP/20JeN5pm2jbLcLGas/E8ofVINO7+kU4+fWXoIZYlc3WgabQ8leZIlpA==
-X-Received: by 2002:a17:906:7943:b0:ae3:b2b7:7f2f with SMTP id a640c23a62f3a-afe296e74c2mr1936528866b.40.1756305716610;
-        Wed, 27 Aug 2025 07:41:56 -0700 (PDT)
+        bh=h7IZRDRVBKlmRBjlak6RScREmXVoipJRAnzz5R2AIjQ=;
+        b=gAgXVApJ70m7A8T0LnQ5DjczP3oBlbtNDUSmAKBuptpDFeq0HeAvKXpSVdpLMgFxvo
+         /igLKxxvDGkjmBnTalGmo3nnKLCptrCkuJXGpFiEvN0zHqWzl/u4ekm/sTdux/6v1rzQ
+         6zN0KtcrtPqS0OpOUtcnN0wRKDpLOrL/pcwQCI4UnXi977aRM7a7Adg6zRwtf8QXRQdk
+         GT2E49ZaTK0uS7n1326YkygRMd6ht5pq6w5p5v0ZEeTvjAOYsdnpfspqP0RrJqf7RJFi
+         BMmxlQeNnweY5vGlygJUTws/1iphzbu2BWX3NVOaZzYrxj6dfz7HeXFUcBe47fuWhFq1
+         uFIw==
+X-Forwarded-Encrypted: i=1; AJvYcCV23cNi7inBBFIPv2TG/ZQ4aemhb2EDCKbQtlPagDfwV4F1mZA/Y6skCiBrwzyf7fXfsv6+/H/moA==@kvack.org
+X-Gm-Message-State: AOJu0Yx6v3sVIrEB40/n7xrWtsKN+CKE3pSgU6JBQcqDao7ApU0hqQao
+	xFT6ULIGiruxggUhSAHqwA+Czm7vVdizN3ptJ4p3H1iNEHEdJbLREhbJ
+X-Gm-Gg: ASbGncvJwcLpbPnhAMZ6ZfrNJurfVdoD/aUpOo+0G24GmRHeKiPfP6O/zDjZESSD7Lb
+	X6vF8QFk50cpusnC+iqUvQ9WEWt0P/FSyQAQfL8vEth1Kn66VIeqmHMxsHhCNSI4S13LXMXrj4M
+	ijUUZj8NHr10gNV7TaHtxJFvIoGR7QdisK8rL3dkXkFrd2dSBLcPvuubL22wyaUl2VNoAW87RUk
+	yHExoZymuSu2K7RmsEPAJH1thqmvZoVMah4+TktKNDI/2k4OVn7aKSl7IrYTtS1hhyaLyzq9gUp
+	6Wwn0R5gIPGdsLFav0iQNCbEBbg6UKhRbvWtKrglD7IbFaQs+CNd5LHGwhR2j6B5+Q25xLZuehc
+	MRsBoCf++ynxKMKJcU+1f3oOIyQ==
+X-Google-Smtp-Source: AGHT+IHF4tvA56wSqinjDHbP9DHVeUfxBR/Yo9eC0OQJ9ac9gpPoPbPgaeKveEpnCMnZsoBulPK9bQ==
+X-Received: by 2002:a17:907:94cc:b0:afe:a7f0:80e6 with SMTP id a640c23a62f3a-afea7f08490mr664160266b.33.1756305786378;
+        Wed, 27 Aug 2025 07:43:06 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe87c2a0cesm617144766b.2.2025.08.27.07.41.56
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afeb167670esm328732766b.112.2025.08.27.07.43.05
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 27 Aug 2025 07:41:56 -0700 (PDT)
-Date: Wed, 27 Aug 2025 14:41:55 +0000
+        Wed, 27 Aug 2025 07:43:06 -0700 (PDT)
+Date: Wed, 27 Aug 2025 14:43:05 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Zi Yan <ziy@nvidia.com>,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	vbabka@suse.cz, linux-mm@kvack.org
-Subject: Re: [Patch v2 2/2] mm/pageblock-flags: remove
- PB_migratetype_bits/PB_migrate_end
-Message-ID: <20250827144155.5gen2cdhiauamr6p@master>
+To: syzbot ci <syzbot+ci5d256d8b5e60a751@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com, richard.weiyang@gmail.com,
+	vbabka@suse.cz, ziy@nvidia.com, syzbot@lists.linux.dev,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot ci] Re: mm/pageblock: improve readability of some
+ pageblock handling
+Message-ID: <20250827144305.pecww62n7sjz2cbr@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20250827021121.13645-1-richard.weiyang@gmail.com>
- <20250827021121.13645-3-richard.weiyang@gmail.com>
- <9D5D10F9-0D76-4C31-B03C-27A3A2B526AD@nvidia.com>
- <20250827064352.o5vw3f332ptlemrg@master>
- <c3f5deea-4d42-4991-86b2-98d3de73afed@redhat.com>
+ <68aebc03.a70a0220.3cafd4.0012.GAE@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c3f5deea-4d42-4991-86b2-98d3de73afed@redhat.com>
+In-Reply-To: <68aebc03.a70a0220.3cafd4.0012.GAE@google.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: E781C80003
+X-Stat-Signature: 8f9gyipikccs5eifmjbos7ybhk3jy7e9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8EF09180006
-X-Stat-Signature: 8fchpf66w3hmsrpc9umh1hhzy1qbzmfx
-X-HE-Tag: 1756305718-587776
-X-HE-Meta: U2FsdGVkX189ekOB5TCL3sP5GH9BH1ptAAyuEaNNIJmSgqu1xyg/0qI7MZgMPY/PZUtNYmmwLBNld+i08488uKTHLzSrbIj8/Lze5hqA1tbLIoKCv3+G+y53J5WIMsNBFzfhuwR+LoF0UJu9dryuS1rJgntXnT4ZvvRw3/hwS6ErgZc/5nA0CeFd6lQqYYuJ+v71KGA7H9xqM5jtqaP9aaMrBDRuzfruV5bC5FAXqT4QF2iSTb1t2vFCqA/DBTEOnMsW993KNwZhNwFWpaFwDNWLXYqdPSjQsjEdRdLVxfmXqxq6EXbAofmZ4ZB4n7n1PATyHFiTqnkU+nZ3QrY7663yUsRFgUZlyhR6thiOS3iJOIrgoMtvnFIGwZ0qKfyhLroLf599d9fMOViAzhY2ekCEluYGmWtGEybawe6vQyhq48wQDHo9AmLCctodGOn5/luJVnzz57FUnD83iladT1q0qWAxWfQvteXODB2AnxmMibWBVzVhM0SMphGG0c2HeGLAJaiZURuPebQibh6O0k+WtaXde47TF+lRamOWq4dwj4FnUmPcdr5VNwdmG/LSkQNSG1LbMCFCZe+F3eJE1tpvmCFTqdQWUUA68Oe1EZ87eMDJwihRtoobcXHc1nSlFfmT3q7lUDk7wS0YjAj6ifHqlxpnlPXTEEBqfdVMCtRIKMyLNiCViZAqa4Le7EaS0C80ncTprXogmPW6UFJZ+MYO9MBZo+w7w67ossV4LNBAODgw0Kw9UFvRpylQtCPuiiUCxUEAhXL1Z2lKVjbEBYkl/EQlzqvvl9qHtckEi4uGEMMiFyJXPev3HQd6X2o1XYM0DP+gGPlOMlgknMXMnYZCSG9sZvM/VSwdjIf+nkLLRhHHWlTK10h21oCqXiAtfrnDWVMF/SaYxY06swaDlEx1rJPG0dqkhhCXkyskU2fPBHwsWVSz0X1qf1V8ejjs72xueM2e2uMNZRTu+Jv
- pUe4kbI4
- yHgTTJTzJDR43T9B3+dCI0RV3hPidlZocAB6vmWhM2KCIT9D4DuU6k0s1nrvvPmkHpbpjm2K4vZAyxDhGgLEp1jPwkZqp2GFP6MC8dtdtZUPXbs9yF3ztA9GuNjpPB4pWAoIXk3+pKYoiDa04pmUAW1iloBJDnA848HDlDEIixAI4l78Ndo19TiVoht9T17CZEPdk+2BejkcAtN9aoj08j5TdJyKDW2Wj92RgmFRfKpD8bX8Skr9yhE/iwJQ/Sh4gIjcwwUR+2Fq/aF+mC/c+iTmygfNcA5SlUKCQtoYcvtTFs0LhiS8DPy04f1SdC0qcwlSluqS+ZpeJj7wLv9AsTB5sKEFv8Va51x9aE9juCXPr56+Gr2e+yF7FMcYwB4OVqqPWbl7tF8RINUl0XZo0wIAI9DVg4dWzoPa6EgEJfyZkkY7Fedz09sVGu8O4RHOjwUYYmV1EohSVQZojO8BCL4jtf7uutN4Mpjbpw85aZp+fl4lT0IlkCZkrgQQfYPUKUJ0FSwEndR1miKfi6oT0LiNStYjeiu9nXMObQQm5MTC6oGp5D4fC+i8TW+UEbabTTQFcA8IYXc+GtgccSvZ4hTLmPfKCytVWv62/Jc2RySvFUIDM+c0QIvBqE1BsG2bABKH4EFn7yasd1byegwIFTWmnNoeoCIzquyWBGpV7j7IXzvMvbIYqnMwKV5kv6y8y4E9QTQODBu1xr+K8pu4NYyxwwnp+3zOpQalzb6WclDgQutSq30AVrIb2jQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756305787-991893
+X-HE-Meta: U2FsdGVkX193ozznK7iZI06qvBaypV8FjxJaNqL4Mc0UJpb+3tPhpbRoMozh/M/3c1GAg9U937Jnc9LHiDj+ZY72cUMeqgCuheoW+BoObGYjM3JEciy19d+9c1xW27GI5cMbcEwv1KUCy1LlZCJ4opUuH943azEwW66u8mPX1GcRzE6uODXXWXtis4ib86tGFUbvX609fETZq8ghHsn00V4hNR83R/9aAzSNSPy1aPmNt0ZsqjtejEEReV9NxAQ6fNkxvO0M6EM2MbdAePPzF4h+k5FSJJVoLYffgP+zVrMD1kENoq/L1fKUQ9qEqPLeHCJp3R15uEinyEHQO5fWvwgIIi7JKdCD5NI+wu0O13zyp1RrNoOmhKqDuFIWxybS72WVFNJOjYVB0cgFudMu2CmRFxD2bzFbFbq3QstACbN5tPoI65ee5T7OoX1x5G6vGQtGn2gx/DZazD4FwNp7oA9Za+2grRPg2c+MxwX1jJ/n/g4RMnw9sq9UeWWnXqs2jr5ooGt5HmWFGZgroaKCZPH6336eg13ivL1FEAG/4lTvHLLv2bEhwQNUV/2bLF13qVrnubEoUyR9UaEKXdgMQvg8j1o4yQTd4c33ggjX0KGqnXdIy/QVqzQvJ+N5v7IONJckO87HoCu7vxzucULH6xBk845nnBFC6r62MfWY5hTqa0+QKrtieJtPK/1RnbNkumUb0QDBuR7aYevDp2+qvjcCjDEL4P+q2v53Kklc3+iaD7y4BGhjev/GNx/HgLw12nyVAhEAlLRxNE+UtahLt/wm3gr5iLXqArQ9TxOuD+Ab++va5JuRxeWTVYMMbJPXNZ3z9zl0ylapfMBYvTw9NJJlOQvn1HVnkGjHj7IUzK0OejHSsm5tMQPfi+Ds8fsLbJ15KCngi9Zt8MrF8wx2PAV6rO2rv7UJGUrdqJ2D/82AoeVkSy+blFqw1YCf0GJI2qWQ9ZhrKNBNxYmyVMY
+ 3tRyrASr
+ SAud8Z/AIvM2SKNVj1+JsblyHUvvfPy5LkjBRdrrTdC70LSOEwFbrzmJxc7jUhUYj6yk9DVsl7Ny7XIQIaRBNHSSgubEx5W2LzciP2MmPkSEZzKXKlPC6lgVQCIYD3mW2QFgtcE3wlUXkCcGjofNbzlSv6hZodqoRNaXaFuFAVAR66qRZ+eYGw5KObz0mG1oYTJRmSYiFqSC7ZUYrfwcTJh+MLXsuNX+GlaSrt7kjM0zeP+fTO2k5tXC2jI7TrFXTyVR2m/pI/ark5ckZ/szkCrhHXvCIJam8WZdH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,37 +124,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 11:16:02AM +0200, David Hildenbrand wrote:
-[...]
->> > > 
->> > >   #define NR_PAGEBLOCK_BITS (roundup_pow_of_two(__NR_PAGEBLOCK_BITS))
->> > > 
->> > > -#define MIGRATETYPE_MASK ((1UL << (PB_migrate_end + 1)) - 1)
->> > > +#define MIGRATETYPE_MASK (PB_migrate_0|PB_migrate_1|PB_migrate_2)
->> > 
->> > I think David meant
->> > 
->> > #define MIGRATETYPE_MASK (BIT(PB_migrate_0)|BIT(PB_migrate_1)|BIT(PB_migrate_2))
+On Wed, Aug 27, 2025 at 01:04:19AM -0700, syzbot ci wrote:
+>syzbot ci has tested the following series
 >
->Yes :)
+>[v2] mm/pageblock: improve readability of some pageblock handling
+>https://lore.kernel.org/all/20250827021121.13645-1-richard.weiyang@gmail.com
+>* [Patch v2 1/2] mm/page_alloc: use xxx_pageblock_isolate() for better reading
+>* [Patch v2 2/2] mm/pageblock-flags: remove PB_migratetype_bits/PB_migrate_end
 >
->> > 
->> 
->> Oops, I thinks you are right.
+>and found the following issue:
+>kernel build error
 >
->It goes without saying: please test your patches before submitting ;)
+>Full report is available here:
+>https://ci.syzbot.org/series/51db4b94-ae73-4ea0-8cf3-4ea5b7715cf1
+>
+>***
+>
+>kernel build error
+>
+>tree:      torvalds
+>URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+>base:      fab1beda7597fac1cecc01707d55eadb6bbe773c
+>arch:      amd64
+>compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+>config:    https://ci.syzbot.org/builds/49ee15fe-3add-4064-a3a9-1461fbba8c85/config
+>
+>mm/page_alloc.c:373:2: error: call to '__compiletime_assert_1636' declared with 'error' attribute: BUILD_BUG_ON failed: __MIGRATE_TYPE_END > MIGRATETYPE_MASK
 >
 
-To be honest, I tested before submitting. And I confused why I don't see
-error.
+Thanks, this is noticed by Zi Yan.
 
-Finally I found the reason is I don't set CONFIG_CMA... fortunate or
-unfortunate...
-
->-- 
->Cheers
+>***
 >
->David / dhildenb
+>If these findings have caused you to resend the series or submit a
+>separate fix, please add the following tag to your commit message:
+>  Tested-by: syzbot@syzkaller.appspotmail.com
+>
+>---
+>This report is generated by a bot. It may contain errors.
+>syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
 -- 
 Wei Yang
