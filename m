@@ -4,85 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8A2CA0FF7
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D59CCA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:11:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E35C8E0019; Wed, 27 Aug 2025 18:11:09 -0400 (EDT)
+	id AB4368E001A; Wed, 27 Aug 2025 18:11:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BA7D8E0001; Wed, 27 Aug 2025 18:11:09 -0400 (EDT)
+	id A64AA8E0001; Wed, 27 Aug 2025 18:11:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D1128E0019; Wed, 27 Aug 2025 18:11:09 -0400 (EDT)
+	id 92C6A8E001A; Wed, 27 Aug 2025 18:11:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BF138E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:11:09 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F2458E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:11:30 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13D3CC0894
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:11:09 +0000 (UTC)
-X-FDA: 83823933858.04.82CC62F
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 489BA1A0879
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:11:30 +0000 (UTC)
+X-FDA: 83823934740.04.F7A9772
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 60A811C000B
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:11:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MrlsuVIS;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5FDCF140002
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:11:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N115Q9Nu;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332688; a=rsa-sha256;
+	cv=none;
+	b=U3MFH2pcHY9UQnwRBMNYciCQFXx21NYSet0Q+yUsIadWCGds1DqwMgFzLiETO3skDJKwmw
+	zBSwNFkxx20xtNlEq3lZldPfwEVg4oKJEDxNht/qN973x88p+B4RVJJdhaKsYQ6AKq/6m2
+	/X/KJxlWU2ZLpKfvTo34kdesA8l3BFo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N115Q9Nu;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332667;
+	s=arc-20220608; t=1756332688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIthYg0x+2djveHghlw2Jb9wmVGYKVQz7R4ULrPQfiU=;
-	b=nq1VeTXBtfK8ZU7xhJZTOuOlp6X2SkI7VRqzwxKKUNu/2TVs+RLIAKkgm+4gFApAq5pgAm
-	SinyuaJBZ9Dvk02Rgsad9Hhb7ZSSQofVJ36vUp/QnBKg6vjymBqqfvHaV6vNxKWGmMv+Zk
-	A+KJeMc4oswKhTMbK+DTMQUNnf1iP6E=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MrlsuVIS;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332667; a=rsa-sha256;
-	cv=none;
-	b=YV54aSPUbJVyLpKCDPTxcdGBqfZgXkMNcqHpqC5CB+oPVqjNtutVWgWyNOxypPkw72IF3X
-	68u8CuLM4O3BpRwqKuhYAerICCJbU8Izb83DtWZwg9M6dYTUbCASHSKkL3q6mhNedjSmNu
-	9SK8fH52gLfYK7W1W6gYQEQvl2Nm6po=
+	bh=BOaasCb4pmSrDWTZ4dnyfdi01+ddZ5bW0CVKvkbWo5U=;
+	b=KsBWmg2FnfmeTmnKEtDnmwW5BskUjtFcm6DA0Z2TfxFifeM6Ux3HrtBsCJ7YgyGzx6NSH/
+	iMftlB1SbTnTmXxrtyhA5Yjk9KcgUbnAnRex4JlsNToPeuLDIjxbJWGrXGiQ74UkYH62/f
+	Ve/SQzMGtAyUBZGlQuJKvqYXCxYEMTc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332666;
+	s=mimecast20190719; t=1756332687;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uIthYg0x+2djveHghlw2Jb9wmVGYKVQz7R4ULrPQfiU=;
-	b=MrlsuVISi2aPutnaNaV4eFNC0qPNYCB/E66YlHQ4uAMTLskobUZC48EcW4ZTkbnPl21Qrd
-	myVugYhqOSz0Q/NSTmT9lhfKp/ICAT9bPy2rwGZXHmgMEUm3d1aDJA/8Zz1ZolynDSoP2V
-	eO83bQyvjMAnR5zx0vbxRwqPbymf1Mg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=BOaasCb4pmSrDWTZ4dnyfdi01+ddZ5bW0CVKvkbWo5U=;
+	b=N115Q9Nu9E965gfofQRNTvfBXhn5gFpQZFihcvi0SVB3GRWOKpyIoPfp/NqaZnSvc6TEIq
+	ZfxVMhi4R+xgvu9CJB1VxP1hhC3e5bIjjPYiqhv6Nwye1hmJsb+nCBQ8eMC70gF/J1u6c9
+	oydd1JBQbM+uE6XnSrvZkz4eS/bpsDc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-ssFK63pfMnq5S88UlMY_DQ-1; Wed,
- 27 Aug 2025 18:11:04 -0400
-X-MC-Unique: ssFK63pfMnq5S88UlMY_DQ-1
-X-Mimecast-MFC-AGG-ID: ssFK63pfMnq5S88UlMY_DQ_1756332659
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-Y03DoB7kMGejm_4jhOvFCg-1; Wed,
+ 27 Aug 2025 18:11:23 -0400
+X-MC-Unique: Y03DoB7kMGejm_4jhOvFCg-1
+X-Mimecast-MFC-AGG-ID: Y03DoB7kMGejm_4jhOvFCg_1756332676
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C780E180035B;
-	Wed, 27 Aug 2025 22:10:58 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F89C195419F;
+	Wed, 27 Aug 2025 22:11:16 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 10AB430001A1;
-	Wed, 27 Aug 2025 22:10:40 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 61BFE30001A5;
+	Wed, 27 Aug 2025 22:10:59 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -129,22 +125,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 31/36] vfio/pci: drop nth_page() usage within SG entry
-Date: Thu, 28 Aug 2025 00:01:35 +0200
-Message-ID: <20250827220141.262669-32-david@redhat.com>
+Subject: [PATCH v1 32/36] crypto: remove nth_page() usage within SG entry
+Date: Thu, 28 Aug 2025 00:01:36 +0200
+Message-ID: <20250827220141.262669-33-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 60A811C000B
-X-Stat-Signature: rihamc7mwgp5qscmsqwpznei14ohgphr
+X-Rspamd-Queue-Id: 5FDCF140002
+X-Stat-Signature: ukin6tc85pw681ogf5xmpt79qgjeuef1
 X-Rspam-User: 
-X-HE-Tag: 1756332667-710682
-X-HE-Meta: U2FsdGVkX1+yNWp0C7uomnW3znGNiE/3O8mbDvyfxtHGOm9S8p60U7CuGxIEfgy0JDIVUCc33M2U1UyMK3KBKTDHiB9YPCWXI5SsEiBQmSna5rZ5Nvc792w+657ILjn0q0EfZqFQDxYUJ9WLjF5T2YpYQSHXZdGBlB3GX2WK16EoTxdJ7M/dqDXpgiVwkWHPr/ket1ldlO12SP1Hd31FAbP6xIpH5PCIi7x3z/uQj/R3CHg6XnZNp9U6bcUwVhd5NgT4kJO5eqSfZsvTlRqO4vxxgF6tSoBhHun4bhdjSawEoN5A3WH7qKnwS0PEMCtPW1Xx4+su5daqhyiWY8x6DWKBvse2pX9LGp+RKpDXTJYGbxz8J/7NjX/ygZIxZS/xcVGX2UpDIdq9UIKWG/1v7rTo1Lm/HcA00ZEglMVL9hg6WQ38BQNX/7opRZ+Ay8goPmeyL5+iXAxMz2Ji4qiOwPBKxgchTR88qxpeFINpS6NSoXFHbdJ1ymN6GcRj2+ry+uFNg0sDFxOGOAGW40pUBmBW8hgt7B7mirICgvJ1XklKrxQzyxhKxgf5TLVKlALRfNgeSiUgdc6830Axgdkaf+lsFwShGiVwMZzjr/Y3PSjqxRWxMJ4Rvn4cc+m04+uNlrUqCOqOrvte1MdQrVeKaP7otPP+wKg8Cd2zUn5P0BrKRm5luij9MtdhJxRpfNLSkVXwdt33oUGbDqWVv0+1qnjaU7XeZHNTqWzyN9chfJ54yxFSCQ+GoBJKVMm4Ua+m1rJ3m4oqF3Kiv5/LNB79Xx8i+5nxsb512ZBqpBY3PuMyJzVgBuz8mEwJoED+1BuiU4ZcLcsG8H3wfk+lapn75AyL+DKawaV5/Ja8H3CwE3sKu20aaFkiRNHR+KAxbYyQHpKYE6sNt5eAKSBdf2WrK0lAqNJFNPnYpZ7XhqKubrVYUdtze0ACLhjl0xicbE82cFG7Se3oniijdXgc+BH
- JuMdEyca
- UZmboiFzZxmpxnMbeJweoP0ceQ1TVLQOum/q2pzxFDvf/8JJS2kcIzVBTv6qlDoqtdrVstYlLeQqw5gffIWjnukVLkV3JIvO7OtPwlbqYkVtT1O6lhkAwP9hAuZWW18pE6DqT+X9P1UGv+4dnxqjZnZc2LnDXX9ldvVhZYIEvgqjySCFVFRbpM+ILEkv2nLaDwQCX0ORRmip3gaSkXqjQ0R77jQRyKIRNUPXGUvlmdr35s6Zd6DNGB1ok3MvuIQqXTyT/+qNR7GC+oO3bQH8HEEJxIUVENYtem6f5aad57OEHfMpRn8lWLnrrtNs2u4pxewX5YFS4EkrJ1ve9hZNePSpVJ11Gh/Vp3oIKDZG8ujPDrbK2acL1MFCzPGhiIVBxvOPPQOUzSykEzgDtRQuLwiMH9NKYRVWOhR0GkpR4qs/0KllAiamLf7iih3Dek+XNuUEK+Hjgx5y9Y+M2eniQgpVZbb1pmlYVA8Lxk0LWCU7GlugOrbIDv7KLglLl1qNugFQ+01SwqVmqe/9IgAJIIt1QcTj5FFu6kmN76mHfaXcWFY2RF9G2dUMMcK/qNxRvYjDHukG7Ku49Nhtghp7CwFbfPOmNARFKo8Z0cNWgj8q9dfN/PVqIKbFLN/bslRPoiM5aLoW1LxrC7HU=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756332688-635728
+X-HE-Meta: U2FsdGVkX18mnrMlgjZBfRqS43mna5hJJNVEMKeIXctsnHgUzjQFO7NGFQ8XTG3bVD/cKOrwNfKnq3z2ybs6CbwP3wGOebx6LIKIJJvDfdtroDi/ogO82lMg2viqAcxecG/ZOR9NCMKGh0bPIWIkib+xB7WJp6KQsJm9N8kIzyImOatAOnt8AQt9MnsbQptLVy2zgvsjFIZemts263yGeoB9gwD3toIXVYPPZgWX3fFfY8sTpnAFWbfqiXqJRj+aE4J1N7JGRlCbe9tuw+kzNoxG+hfF9lLb/nVta8yvuHtIC5k0dby0fDYnbVt7+A3vYEvofQdZmt0B5yzGbyl6dpUodZg183EXkBY92fQfuFEHp+XWI3hyOzviIW7Z4M4a67v5gw6HsBU6N60qoveZ3C0qQqVgMmBK2jHu9PBonhXvmNTmcsBAraGut7lQxRIEWF/a6eeyv2Qi11sHkKhe7Ivl+X6s1NXPdB0pZ1p9IkqCEn5l8uP/ITjS+U6Dh7RS02Ez+QX/aKf7UKr2paTK2uCrGyFioGIR+2gImcTvbfOL9pagULRvySrP5aigxb8jQp3ic5P+/fY+kfLuctKSTZnmjSMc5tWuAJcmXQ02WWhxVAq1AVMM2BRyFAe+JmYAL55cD4Z6HhaxV7ZyQd6XSdLn4MCqW3zjRwER6xVF4KqW2nwDOsKoj8y7SI27r7aEfROee4E+OoJ4K2MGDE4GvmG2dRHfNjAVTxiVpLfsEaO2aUjksF6D+CoV3GM4lBLnYAaaBAnAbpBs9AKmXifih1aqTGzqbKmAQgkCGWdfaByZ38SnKviuZeLaqBsok3gNctdEzzptFxhJOXzRvyaUS+KRtPzHSyeIrF2xM5XXFEEKSQeLx1ZDe7S5XavAf9pKtQjUT/gghSEbqGdXbFCARtxUKrNG7/LiISjLuAatP+9n4TVKCRwxbxd2VcAAD6THOEOM7rUVOCPVZr6PB7X
+ D5ursRjp
+ N+YmwV53TbylglVr5cPhey1jyYbMpxeeCNEB2Lmn3MedqNO5lBOzernsvXnsBu6IJM3r6b1D0uTXdaq+D40FZdVZrqKXh1H/BI8Y191dSuckpLKhB3PgWKbcz3x+gfL4td73OTRuMnK8Jc0fFkKzvWgpAmb78Szr+R819O43JX3WcjKPXJef9GmBDAO0Ut+152/cHW/DT6hBdisvwPeZOL91BTr/wJBiED3slBf4IBUjtQ7GXEQbflNgQiasbLx1O3P3cCKLMxR26kv6Jv1KkvMNDOyDf4IX+2npj1WzCj/ClpG2qrw18luocO971/4j8kzxV6+n8n/1CLAsI+SMzhFWSJPzm9j6AYWfzkWVD6aPGueUy2VQExQpV8aBL7S3B0lKGAxTvXAXcEHEFNjnePe9WoVqG8DbyeOGFf/uylyVXFoYmAkBNSv7SeeSQhJTbVi+2YKKmYb6/WsE7SnjBA1Dfc7U3DYAhpr870VEUYvS3wmQLFcIrbCqgNSeQcO08ZBSKXIE5njqyJzU4devqcQMN+h8vyMBgh1dDdvOwV5sqv/iyTaGpqTN67CQcYMDukA0bggZWqovZY980JIaQf5yj/Umy8B+1R3LBAsQ7Yq/p510=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,46 +152,96 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 It's no longer required to use nth_page() when iterating pages within a
 single SG entry, so let's drop the nth_page() usage.
 
-Cc: Brett Creeley <brett.creeley@amd.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Yishai Hadas <yishaih@nvidia.com>
-Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc: Kevin Tian <kevin.tian@intel.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/vfio/pci/pds/lm.c         | 3 +--
- drivers/vfio/pci/virtio/migrate.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ crypto/ahash.c               | 4 ++--
+ crypto/scompress.c           | 8 ++++----
+ include/crypto/scatterwalk.h | 4 ++--
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/vfio/pci/pds/lm.c b/drivers/vfio/pci/pds/lm.c
-index f2673d395236a..4d70c833fa32e 100644
---- a/drivers/vfio/pci/pds/lm.c
-+++ b/drivers/vfio/pci/pds/lm.c
-@@ -151,8 +151,7 @@ static struct page *pds_vfio_get_file_page(struct pds_vfio_lm_file *lm_file,
- 			lm_file->last_offset_sg = sg;
- 			lm_file->sg_last_entry += i;
- 			lm_file->last_offset = cur_offset;
--			return nth_page(sg_page(sg),
--					(offset - cur_offset) / PAGE_SIZE);
-+			return sg_page(sg) + (offset - cur_offset) / PAGE_SIZE;
+diff --git a/crypto/ahash.c b/crypto/ahash.c
+index a227793d2c5b5..dfb4f5476428f 100644
+--- a/crypto/ahash.c
++++ b/crypto/ahash.c
+@@ -88,7 +88,7 @@ static int hash_walk_new_entry(struct crypto_hash_walk *walk)
+ 
+ 	sg = walk->sg;
+ 	walk->offset = sg->offset;
+-	walk->pg = nth_page(sg_page(walk->sg), (walk->offset >> PAGE_SHIFT));
++	walk->pg = sg_page(walk->sg) + (walk->offset >> PAGE_SHIFT);
+ 	walk->offset = offset_in_page(walk->offset);
+ 	walk->entrylen = sg->length;
+ 
+@@ -226,7 +226,7 @@ int shash_ahash_digest(struct ahash_request *req, struct shash_desc *desc)
+ 	if (!IS_ENABLED(CONFIG_HIGHMEM))
+ 		return crypto_shash_digest(desc, data, nbytes, req->result);
+ 
+-	page = nth_page(page, offset >> PAGE_SHIFT);
++	page += offset >> PAGE_SHIFT;
+ 	offset = offset_in_page(offset);
+ 
+ 	if (nbytes > (unsigned int)PAGE_SIZE - offset)
+diff --git a/crypto/scompress.c b/crypto/scompress.c
+index c651e7f2197a9..1a7ed8ae65b07 100644
+--- a/crypto/scompress.c
++++ b/crypto/scompress.c
+@@ -198,7 +198,7 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 		} else
+ 			return -ENOSYS;
+ 
+-		dpage = nth_page(dpage, doff / PAGE_SIZE);
++		dpage += doff / PAGE_SIZE;
+ 		doff = offset_in_page(doff);
+ 
+ 		n = (dlen - 1) / PAGE_SIZE;
+@@ -220,12 +220,12 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 			} else
+ 				break;
+ 
+-			spage = nth_page(spage, soff / PAGE_SIZE);
++			spage = spage + soff / PAGE_SIZE;
+ 			soff = offset_in_page(soff);
+ 
+ 			n = (slen - 1) / PAGE_SIZE;
+ 			n += (offset_in_page(slen - 1) + soff) / PAGE_SIZE;
+-			if (PageHighMem(nth_page(spage, n)) &&
++			if (PageHighMem(spage + n) &&
+ 			    size_add(soff, slen) > PAGE_SIZE)
+ 				break;
+ 			src = kmap_local_page(spage) + soff;
+@@ -270,7 +270,7 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 			if (dlen <= PAGE_SIZE)
+ 				break;
+ 			dlen -= PAGE_SIZE;
+-			dpage = nth_page(dpage, 1);
++			dpage++;
  		}
- 		cur_offset += sg->length;
  	}
-diff --git a/drivers/vfio/pci/virtio/migrate.c b/drivers/vfio/pci/virtio/migrate.c
-index ba92bb4e9af94..7dd0ac866461d 100644
---- a/drivers/vfio/pci/virtio/migrate.c
-+++ b/drivers/vfio/pci/virtio/migrate.c
-@@ -53,8 +53,7 @@ virtiovf_get_migration_page(struct virtiovf_data_buffer *buf,
- 			buf->last_offset_sg = sg;
- 			buf->sg_last_entry += i;
- 			buf->last_offset = cur_offset;
--			return nth_page(sg_page(sg),
--					(offset - cur_offset) / PAGE_SIZE);
-+			return sg_page(sg) + (offset - cur_offset) / PAGE_SIZE;
- 		}
- 		cur_offset += sg->length;
+ 
+diff --git a/include/crypto/scatterwalk.h b/include/crypto/scatterwalk.h
+index 15ab743f68c8f..83d14376ff2bc 100644
+--- a/include/crypto/scatterwalk.h
++++ b/include/crypto/scatterwalk.h
+@@ -159,7 +159,7 @@ static inline void scatterwalk_map(struct scatter_walk *walk)
+ 	if (IS_ENABLED(CONFIG_HIGHMEM)) {
+ 		struct page *page;
+ 
+-		page = nth_page(base_page, offset >> PAGE_SHIFT);
++		page = base_page + (offset >> PAGE_SHIFT);
+ 		offset = offset_in_page(offset);
+ 		addr = kmap_local_page(page) + offset;
+ 	} else {
+@@ -259,7 +259,7 @@ static inline void scatterwalk_done_dst(struct scatter_walk *walk,
+ 		end += (offset_in_page(offset) + offset_in_page(nbytes) +
+ 			PAGE_SIZE - 1) >> PAGE_SHIFT;
+ 		for (i = start; i < end; i++)
+-			flush_dcache_page(nth_page(base_page, i));
++			flush_dcache_page(base_page + i);
  	}
+ 	scatterwalk_advance(walk, nbytes);
+ }
 -- 
 2.50.1
 
