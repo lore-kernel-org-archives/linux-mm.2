@@ -4,100 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18DD9C8303F
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 08:34:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FD9CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 08:40:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 669B88E012E; Wed, 27 Aug 2025 04:34:13 -0400 (EDT)
+	id 9D2A26B037D; Wed, 27 Aug 2025 04:40:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6419B8E0105; Wed, 27 Aug 2025 04:34:13 -0400 (EDT)
+	id 9839B6B037E; Wed, 27 Aug 2025 04:40:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57DE88E012E; Wed, 27 Aug 2025 04:34:13 -0400 (EDT)
+	id 84AF66B037F; Wed, 27 Aug 2025 04:40:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CC4A8E0105
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 04:34:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D41501604A0
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:34:12 +0000 (UTC)
-X-FDA: 83821875144.18.2DD00EC
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DEAFB120017
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:34:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of gongruiqi1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=gongruiqi1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BC946B037D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 04:40:26 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 15C3B59449
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:40:26 +0000 (UTC)
+X-FDA: 83821890852.05.AF63728
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6159140015
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:40:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2DtpxI1t;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gJKtCpQW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2DtpxI1t;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gJKtCpQW;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756283651;
+	s=arc-20220608; t=1756284023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JzkLrI8sqeFJUFJANuhx098MDlg2CjKbPr6/Bv0iHz4=;
-	b=cU+ohQnDsI1POrgguuv3CZ8/Fn4zoT416u2KWaJQOXHc1dl85Jd+3FEdaBRxaODUF4+XjK
-	VJ4850traAHYwhbN4h7pQjElApkpCA5yqhNSEGFVjXGHPcUme2TaDoXIqJYUFxHOnhKsS/
-	hePGVS35N36pXmFt8wsIlwCTNOkKrqo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=M/tOzaXU/v30nyaJclkRa9DTMfAcxqf3+f7uGHrzdOY=;
+	b=4EWhR8Q7gj/P4Uh7N9/QfxcR9fBo8EONfYB6hYG5SjDrWDOd2V+XZOmvjd/7IzgNuQiIGu
+	ycsUGSty29gOWnnLlpUOlOEhQ1i8mDdnVa66m5FrdwMeWbKrxePD/afCz1OMMl/wGjVrvC
+	fCoqCSCp/+bIOas4NoazlPJwGEPWDXQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of gongruiqi1@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=gongruiqi1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756283651; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2DtpxI1t;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gJKtCpQW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2DtpxI1t;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gJKtCpQW;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756284023; a=rsa-sha256;
 	cv=none;
-	b=dvF0TrCOANa0bCMuwyTLbjk+s8ddjseF0c0ySABtr3U/gHDcwgfKQXrsDqQjZ/EhApWf+1
-	BUynEAyrA1ro3gzU0Co2EtD3y5gfIxkdFXoYV0caGUc8Kp/5yGFZFOOAXWqopfPA03UxAx
-	9HGtUGhGj864IIpwuD5E6wHIZPxvvGg=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cBd492l4szFrnD;
-	Wed, 27 Aug 2025 16:29:29 +0800 (CST)
-Received: from kwepemk100018.china.huawei.com (unknown [7.202.194.66])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8E97814011F;
-	Wed, 27 Aug 2025 16:34:05 +0800 (CST)
-Received: from [10.67.110.48] (10.67.110.48) by kwepemk100018.china.huawei.com
- (7.202.194.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 27 Aug
- 2025 16:34:04 +0800
-Message-ID: <0f718809-9efc-44a3-b45e-a0297f456f7d@huawei.com>
-Date: Wed, 27 Aug 2025 16:34:04 +0800
+	b=25zLplKfeAxZw+/EJPNij8CZnfWCA484pLrBI9wA6Flghx07cnkLwshokh++f88GA4BhJp
+	9N6s1VgWwV5wj/uVkmEuXbzg0qL6C4M96LfbipSSpqUzYR1RXjZqb8dZiNfmKZQlyxSNMl
+	u/W4Iwz/5VXqEh+2/8YcFd9NC6DjfuU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A809834241;
+	Wed, 27 Aug 2025 08:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756284021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=M/tOzaXU/v30nyaJclkRa9DTMfAcxqf3+f7uGHrzdOY=;
+	b=2DtpxI1tNUP1aErxnD1LtBf1D+4YFDJD788uwNaFkQfNuuljvMGyzRZjJxgXj9YpuRsoxI
+	9BZu/xdj6ou9K4r7yv3PHFaI1olIewBRhTK+oumwCNl0eomGbxfyfaeuZFs01PBoI82/pn
+	cD3UK5yYxrOmk8sZ9oKkwaVd+PDDuZM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756284021;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=M/tOzaXU/v30nyaJclkRa9DTMfAcxqf3+f7uGHrzdOY=;
+	b=gJKtCpQWW9IlsSW0Cl8FuQd56yskrl1nGy2WyOdSjwPIWlZ1QrXJVrLjPYXMDefs7G5cNb
+	C1NL7e75Y0/9PdCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756284021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=M/tOzaXU/v30nyaJclkRa9DTMfAcxqf3+f7uGHrzdOY=;
+	b=2DtpxI1tNUP1aErxnD1LtBf1D+4YFDJD788uwNaFkQfNuuljvMGyzRZjJxgXj9YpuRsoxI
+	9BZu/xdj6ou9K4r7yv3PHFaI1olIewBRhTK+oumwCNl0eomGbxfyfaeuZFs01PBoI82/pn
+	cD3UK5yYxrOmk8sZ9oKkwaVd+PDDuZM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756284021;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=M/tOzaXU/v30nyaJclkRa9DTMfAcxqf3+f7uGHrzdOY=;
+	b=gJKtCpQWW9IlsSW0Cl8FuQd56yskrl1nGy2WyOdSjwPIWlZ1QrXJVrLjPYXMDefs7G5cNb
+	C1NL7e75Y0/9PdCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8EBF713310;
+	Wed, 27 Aug 2025 08:40:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Krt8InXErmhgBAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 27 Aug 2025 08:40:21 +0000
+Message-ID: <fc6f7372-efb4-48e3-b217-c8bec0065b97@suse.cz>
+Date: Wed, 27 Aug 2025 10:40:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] slab: support for compiler-assisted type-based slab
- cache partitioning
-To: Marco Elver <elver@google.com>
-CC: <linux-kernel@vger.kernel.org>, <kasan-dev@googlegroups.com>, "Gustavo A.
- R. Silva" <gustavoars@kernel.org>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Alexander Potapenko <glider@google.com>, Andrew
- Morton <akpm@linux-foundation.org>, Andrey Konovalov <andreyknvl@gmail.com>,
-	David Hildenbrand <david@redhat.com>, David Rientjes <rientjes@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Florent Revest <revest@google.com>, Harry
- Yoo <harry.yoo@oracle.com>, Jann Horn <jannh@google.com>, Kees Cook
-	<kees@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Matteo Rizzo
-	<matteorizzo@google.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
-	<rppt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Roman Gushchin
-	<roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, Vlastimil
- Babka <vbabka@suse.cz>, <linux-hardening@vger.kernel.org>,
-	<linux-mm@kvack.org>
-References: <20250825154505.1558444-1-elver@google.com>
- <97dca868-dc8a-422a-aa47-ce2bb739e640@huawei.com>
- <CANpmjNMkU1gaKEa_QAb0Zc+h3P=Yviwr7j0vSuZgv8NHfDbw_A@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: slub: avoid wake up kswapd in set_track_prepare
 Content-Language: en-US
-From: GONG Ruiqi <gongruiqi1@huawei.com>
-In-Reply-To: <CANpmjNMkU1gaKEa_QAb0Zc+h3P=Yviwr7j0vSuZgv8NHfDbw_A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+To: yangshiguang <yangshiguang1011@163.com>, Harry Yoo <harry.yoo@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org,
+ cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ glittao@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
+References: <20250825121737.2535732-1-yangshiguang1011@163.com>
+ <aKxZp_GgYVzp8Uvt@casper.infradead.org>
+ <54d9e5ac-5a51-4901-9b13-4c248aada2d7@suse.cz> <aK6U61xNpJS0qs15@hyeyoo>
+ <6e1ab9d8.6595.198ea7d7a78.Coremail.yangshiguang1011@163.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <6e1ab9d8.6595.198ea7d7a78.Coremail.yangshiguang1011@163.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.110.48]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemk100018.china.huawei.com (7.202.194.66)
-X-Rspamd-Queue-Id: DEAFB120017
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6159140015
+X-Stat-Signature: bmugtj4id97fosrmi189qhw73quxzy49
 X-Rspam-User: 
-X-Stat-Signature: ir5ys43h3niannb3kcbxggzq1ch66orj
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756283649-347727
-X-HE-Meta: U2FsdGVkX1/9k7vF+IafRl+kfWRHSoFGEVUK06YPe4/oc3aKRGmbZS9WCxMxozkVzOiun/q1+igmWCs+M8MX6zTWa7MipT+i/owS5Hy7wUkqJP6q1jOSKvzh//uxExFS0lpNSdAiyKb/+Vp+F8As+YMUnOrTOZv1vTN1fBfm/Cjvm6R6hd6rqMfhjVNuiyfkcyY+umFq7YgEqQuKR1IvzJo5xXhmKqcoR2Q9SqVU2S88Pe+T5sgzns9up48Jcs0fKxWHrWIEOsrPCmn1JIkaj75Dz5bRrozZH1pYK8UI7TTjcojRdME8Pm7he0/b9zXx1xsY1ocp1hk6AxxcR9YCjjK/BCMwyOaVod+AxiWPyXZpNKgz5Zn88d9j0SFLdEOLZFGjZFrodJ+Gj/pFVHG00/c5RhgMFDGlsiGxDgRjoSCYnp+eWuhKzTZGW25PDuAYSorYuBowl0qt7V3Cfr3+6S5ScXwl/FF8OM8i/EBVgzrOESfXy2uv0W4AMt1L/qZcHRLf6O32OlP7294xYebofkvKr+lZYEDXf86xRwTg9gOaBrVzZsVQ6yPIHpe+qubcziPWIt4sqPz3jXL/Jfj7bpXbZIUF9sMii1g1tt8Df2UIQGqW6ajx1HVidiU0u6WmbmDhrx/ukQY52gF5n26OWLyj75cbpd7akiOOFyEKX3R/IPvgI02Q3pw/JI0JD00NPusglAHkZb6Lr00N4eV3Bn7Ci9sVVPJkUokv3beZwpMfPsoNgo8Pr9ZddmXWAGAH//z27Bm/9Nm+jZsTzE/NQykCVn2NKJ+P0o52Oy5SkpGL/CIxCK2BoxAM8Dtiu96CcskpkDW3TOyPx/E1Cv2SON3gHPl0kfksvHoZ1f0tiKIUdx2yNWFXD5jpPnKzrY6+f1geEqMOBGnDyZRS65XDMc0GhKfs9xcVw9WLIRX0aPufRq/Z/0defrM6vMi4bTwaHzQ+TsQTcqyKQkpydHj
- UJuQFNXa
- FTWR4Y2ZK8ts7ZZlT9fy93SK2UbcvoEt6iMqkaJ7oLG4fk7lqC579STteqwerEWLqh4I62OIw61sHt/xHG7Q5f7mifmNsJlakPq8hGaUS3nlo+Ac/Toe2x3mIoUKeFlFUbAaJ/+pd+l9kPEoTyTHAF5RbqMgM1FvusOWDpzJl/F+BNk+8bGIDtqSy4Xme3xWEG3dDz3U3l6j3NWAQS+FXZvUkD+WgLX1gUZOuEHWCOYQMrqGYsvsLNy9KAQ==
+X-HE-Tag: 1756284023-935097
+X-HE-Meta: U2FsdGVkX1+nVrcdlomucuSsMWeb7N9TcQODNakT2g9TC2acL+Tb1Tey+3GRx8v0vCoELUT8MfcvQuVYngcNYWEF73v8r+SEHvL7svv5pMdGkOjnVXNYXK3vQb9lKr/uxgONquSKEJcSKRGl40vKeRqL8aitqY6mK8MwX05QS/ZlHVyp1L53wD5jmd1gWa3uRMt5qRuKxxB2GKtYKWZUfvCv4mkZhfI4Ek3oLgew2o4L9WbChxKdrr5cKyFhg+naWEJfsb+x9QR/TnjUWFEqlwaHDnAS7adHlagpacnszjdVLfQSSGEmdAO2wRMu9ER+ANGKA1OCobQETUXmZgPyXZBO08/Hof57XRZyAT4ykoUe12ESE713yg5zRmq3VhYvSOpgDOjkr1tMfeMXoV/cNhl2jJT4KVjOWDhuUJ7OZCruicT70ELtSxrj1WXecPDnA2LSv+z2lkMJPbtwXM9UrVemcgKi4bgMYPHWrEk5CWFeHfanB4482LlhsOcjzFvp+YFSJnH9vEhPYmwy7j81xI65PpAKdOWaJBJwSAcaY+18xW6KdzoZJkLMnZo1AiKaXMLDNIgbkDl9ZbBhwqD0PZR62v/qVhviemcQJAdOrNgHwANv+4ikk57aRF2ggVzVORItpR9YnbR5ilz/1wvQJABLzeqpLhNdyuProJR/9nA/qo1uiWyVQ0yAMOlvKwlYSMb7hQt7wkY93WYmXGlEeIjqjp7I1Xc84dmp9qWvI8DA5jekvG8JQPwQhWXKYpPDjYoKWhY4nbW911mezJc54r/lOnFXZ85NjeoTPT4w80sVGqPcwBXbPL/4TA/C84MGVXaKpjsdQ+9VdqRk08Gv501dw0F2veWRc7qdxvI6POw5prynkmmMON69Jzk+LdHFiUKEKIduOWvPacFhsM6zRYTLD0x78qApvlVo9y3z8BicSJIcv8aQVZ47DfFSaG1kr5w+vtNpnmnhfI0lIIR
+ RmDKmuHt
+ V1ehnHkBqpoxq/mZHmo10zmozzqCND3tq+EFVU6FopvXv3gajvq8nDXz3lO0wcwK/+YAoaWmquzMPRewHQfeR4T0HYdq5Ug5IkJB1Ew2Rm6XzH8MYDqIeenSxDntbkw1mxAn0AJ0AMaBEPHmZ0Sp+xFJ5VuuDYi7n7CdT3VHNL5GEYuyfk8Dm/sr+1PF/5d0MY/SPREk23zFQ1Xc7XWxC4ffTw27+RglA7duXm1j8WagyBFlOWefmQrygixe560rY3V4bufgSr5uCvnKs3CreG5y+7jazbz+FbzgT6BCHQAamR7aHGERM75I9/ekJCH8fRLR2dPcNwItLg687eChc8OKVvDSthv0nogjZLMn9jPqMHBO9kVSZaljL7QffBb+B3betMbaDvOcFvLGDzhsCtra5UA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,81 +181,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/26/2025 7:01 PM, Marco Elver wrote:
-> On Tue, 26 Aug 2025 at 06:59, GONG Ruiqi <gongruiqi1@huawei.com> wrote:
->> On 8/25/2025 11:44 PM, Marco Elver wrote:
->>> ...
->>>
->>> Introduce a new mode, TYPED_KMALLOC_CACHES, which leverages Clang's
->>> "allocation tokens" via __builtin_alloc_token_infer [1].
->>>
->>> This mechanism allows the compiler to pass a token ID derived from the
->>> allocation's type to the allocator. The compiler performs best-effort
->>> type inference, and recognizes idioms such as kmalloc(sizeof(T), ...).
->>> Unlike RANDOM_KMALLOC_CACHES, this mode deterministically assigns a slab
->>> cache to an allocation of type T, regardless of allocation site.
->>>
->>> Clang's default token ID calculation is described as [1]:
->>>
->>>    TypeHashPointerSplit: This mode assigns a token ID based on the hash
->>>    of the allocated type's name, where the top half ID-space is reserved
->>>    for types that contain pointers and the bottom half for types that do
->>>    not contain pointers.
+On 8/27/25 09:45, yangshiguang wrote:
+> 
+> 
+> 
+> 
+> At 2025-08-27 13:17:31, "Harry Yoo" <harry.yoo@oracle.com> wrote:
+>>On Mon, Aug 25, 2025 at 05:42:52PM +0200, Vlastimil Babka wrote:
+>>> On 8/25/25 14:40, Matthew Wilcox wrote:
+>>> > On Mon, Aug 25, 2025 at 08:17:37PM +0800, yangshiguang1011@163.com wrote:
+>>> >> Avoid deadlock caused by implicitly waking up kswapd by
+>>> >> passing in allocation flags.
+>>> > [...]
+>>> >> +	/* Preemption is disabled in ___slab_alloc() */
+>>> >> +	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
+>>> > 
+>>> > If you don't mean __GFP_KSWAPD_RECLAIM here, the explanation needs to
+>>> > be better.
+>>> 
+>>> It was suggested by Harry here:
+>>> https://lore.kernel.org/all/aKKhUoUkRNDkFYYb@harry
+>>> 
+>>> I think the comment is enough? Disabling preemption means we can't direct
+>>> reclaim, but we can wake up kswapd. If the slab caller context is such that
+>>> we can't, __GFP_KSWAPD_RECLAIM already won't be in the gfp_flags.
 >>
->> Is a type's token id always the same across different builds? Or somehow
->> predictable? If so, the attacker could probably find out all types that
->> end up with the same id, and use some of them to exploit the buggy one.
+>>To make it a little bit more verbose, this ^^ explanation can be added to the
 > 
-> Yes, it's meant to be deterministic and predictable. I guess this is
-> the same question regarding randomness, for which it's unclear if it
-> strengthens or weakens the mitigation. As I wrote elsewhere:
+>>changelog?
 > 
->> Irrespective of the top/bottom split, one of the key properties to
->> retain is that allocations of type T are predictably assigned a slab
->> cache. This means that even if a pointer-containing object of type T
->> is vulnerable, yet the pointer within T is useless for exploitation,
->> the difficulty of getting to a sensitive object S is still increased
->> by the fact that S is unlikely to be co-located. If we were to
->> introduce more randomness, we increase the probability that S will be
->> co-located with T, which is counter-intuitive to me.
-
-I'm interested in such topic. Let's discuss multiple situations here.
-
-If S doesn't contains a pointer member, then your pointer-containing
-object isolation completely separates S against T. No problem, and
-nothing to do with randomness.
-
-If S does, then whether they co-locate is completely based on the token
-algorithm, which has two problems: 1. The result is deterministic and so
-can be known by everyone including the attacker, so the attacker could
-analyze the code and try to find out an S suitable for being exploited.
-And 2. once such T & S exist, we can't interfere in the algorithm, and
-the defense fails for all builds (of the same or nearby kernel versions
-at least).
-
-Here I think randomness could help: its value is not just about
-separating things based on probability, but more about blinding the
-attacker. In this scenario, with randomness we could let the attacker
-unable to find out the suitable S, so they couldn't exploit it even
-though such S & T exist. As you mentioned (somewhere else), the attacker
-might still be able to "take off the eye mask" and locate S & T by some
-other methods, e.g. analyzing the resource information at runtime, but
-that's not randomness to blame. We could do something else about that
-(e.g. show less for random-candidate slab caches), and that's another story.
-
 > 
-> I think we can reason either way, and I grant you this is rather ambiguous.
+> ok, will be easier to understand.
 > 
-> But the definitive point that was made to me from various security
-> researchers that inspired this technique is that the most useful thing
-> we can do is separate pointer-containing objects from
-> non-pointer-containing objects (in absence of slab per type, which is
-> likely too costly in the common case).
+>>
+>>> But I think we should mask our also __GFP_NOFAIL and add __GFP_NOWARN?
+>>
+> 
+>>That sounds good.>
+>>> (we should get some common helpers for these kinds of gfp flag manipulations
+>>> already)
+>>
+>>Any ideas for its name?
+>>
+>>gfp_dont_try_too_hard(),
+>>gfp_adjust_lightweight(),
+>>gfp_adjust_mayfail(),
+>>...
+>>
+>>I'm not good at naming :/
+> 
+>>
+> 
+> How about this? 
+> 
+>         /* Preemption is disabled in ___slab_alloc() */
+> -       gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
+> +       gfp_flags = (gfp_flags & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL)) |
+> +                                       __GFP_NOWARN;
 
-Isolating pointer-containing objects is the key point indeed. And for me
-it's orthogonal with randomness, and they can be combined to achieve
-better hardening solutions.
+I'd suggest using gfp_nested_flags() and & ~(__GFP_DIRECT_RECLAIM);
+
+>  >-- 
+>>Cheers,
+>>Harry / Hyeonggon
 
 
