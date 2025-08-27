@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E775DCA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 20:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9748CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 21:15:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45D9E8E000C; Wed, 27 Aug 2025 16:50:30 -0400 (EDT)
+	id AAE5E8E000A; Wed, 27 Aug 2025 17:15:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 433F48E0001; Wed, 27 Aug 2025 16:50:30 -0400 (EDT)
+	id A5E8E8E0001; Wed, 27 Aug 2025 17:15:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 370DD8E000C; Wed, 27 Aug 2025 16:50:30 -0400 (EDT)
+	id 94D6A8E000A; Wed, 27 Aug 2025 17:15:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2584E8E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:50:30 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CB023160843
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 20:50:29 +0000 (UTC)
-X-FDA: 83823730578.20.5F923ED
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 32DDA14000C
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 20:50:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SWaJ2uAL;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 80DD38E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:15:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 439E416088B
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:15:31 +0000 (UTC)
+X-FDA: 83823793662.06.6AEA1BA
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 32D7380009
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:15:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HM+MoNbM;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756327828;
+	s=arc-20220608; t=1756329329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hU0YOlK0A/OqZMyBRHKhwszszuzq0q1K7KKT0zAgw28=;
-	b=fDIKQNLoK5QNQ0sxB7l+KPh0uQY3lvw2Q08GpHuOAGsMtV3ICSPbLgjXQ/eBOW4TE6zgUR
-	YheIzc3CDbSc5R25qnvWJG0W3F0wcQqMWJfiY0IVrmZ0KMoILfI6dl6ER6kKeVFq3MYFGj
-	Bn5YkITLBANoIx6EPBjMoy7esk6FWE8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SWaJ2uAL;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756327828; a=rsa-sha256;
+	bh=Rcc5U5sbYk7C+fJouaFaLhZUqm8inNlgZ+ZSLJCNPX4=;
+	b=OhCFBSIev3WwB3KoHWpcv2G/0DxBlrmR+qCXmBKbGTYrioBnoGoma5EK/oPNryQgZ+ycIP
+	3IEZ/KsrAiYlxH3tBwjcwXq2A9dX74BpGwTA2PZ7o3VVMe/jkagG6Lb3mGJzkLRvBFZYTZ
+	1qANtI7K85AAfCukkXecYoMYjsRCO7E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756329329; a=rsa-sha256;
 	cv=none;
-	b=hWUNJlr4JV7//6nFx12EPrsj3mUT0HDkKD04lLutJ29TXSQxIaH+Xn1DyjfQJ6CMfFrdyd
-	XXHmjfEr7paNvHNjE49CfIFP53ah/dpZNvcoEqn8sUDRPSlLBSb2SOuXVVeSuTy+5xUL1L
-	fyH4VrignLfvKwdrI9n4K3PMkiBygZ4=
-Date: Wed, 27 Aug 2025 13:50:18 -0700
+	b=EVrznAWiLEE9uLWN/XgFQli4IqXvugDcgd2PyLRUMFZ0ToZSCfH/+DEK+ntM1LTrrn8noy
+	ns5ShB8Eo19N69HuLV8RYrU0XxlGFFebruj92ZWgaxoDCHZi8Uu5lKb9oVPbZmGEunaxYY
+	Ma5BZBaXqhAkcXRSXd28G6uuX53emfM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HM+MoNbM;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 27 Aug 2025 14:15:20 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756327825;
+	t=1756329326;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hU0YOlK0A/OqZMyBRHKhwszszuzq0q1K7KKT0zAgw28=;
-	b=SWaJ2uALZ8vtxrsSMGlZicuxcZtKzYLZ5zOq+nER83qcGJHzjsbJG+3kQZgTR8c9LRHw+Z
-	qs6XzeEp5SNJCVsppiIRiZiDLXzV26Afzt5nnqbN7wJLlHvU/ZX0CUx21gwCn/1NM1kznV
-	kc5Trl+1k8U4eGZCKdMgZ+cjawMI08g=
+	bh=Rcc5U5sbYk7C+fJouaFaLhZUqm8inNlgZ+ZSLJCNPX4=;
+	b=HM+MoNbMsASGnf9PdqLIBZiLT7S/fvLPSA+4c+b2WmnR90L0kJ3APowlgO5+qbgAzEU6Lq
+	UiCQbQHsZyBvPNuf1ozbITBcpLgxRV4AThg5lumSZk/ANCftpc5c7/iITOteh9CZQh0sMv
+	fnZBlC+Cy8vru9NSp39gtom8KRaS2/M=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Yafang Shao <laoar.shao@gmail.com>, akpm@linux-foundation.org, 
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	hannes@cmpxchg.org, usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH v6 mm-new 02/10] mm: thp: add a new kfunc
- bpf_mm_get_mem_cgroup()
-Message-ID: <3m6jhfndkoshnoj76wyjjgmqa55p4ij4desc45yz6g7gbpxnrd@xumacckayj4t>
-References: <20250826071948.2618-1-laoar.shao@gmail.com>
- <20250826071948.2618-3-laoar.shao@gmail.com>
- <299e12dc-259b-45c2-8662-2f3863479939@lucifer.local>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Yueyang Pan <pyyjason@gmail.com>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
+Message-ID: <5o52rxp4ujglel53cs6ii2royaczuywuejyn7kbij6jknuglmf@frk4omt5ak7d>
+References: <cover.1755190013.git.pyyjason@gmail.com>
+ <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
+ <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com>
+ <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
+ <CAJuCfpHyXWwrKkFmmbHTGtG9L-JK2eCt03ku9364i4v6SJKFbA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <299e12dc-259b-45c2-8662-2f3863479939@lucifer.local>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpHyXWwrKkFmmbHTGtG9L-JK2eCt03ku9364i4v6SJKFbA@mail.gmail.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 32DDA14000C
-X-Stat-Signature: su161h5s9jxf5cintzpon89nkh3kz1gt
 X-Rspam-User: 
-X-HE-Tag: 1756327827-201842
-X-HE-Meta: U2FsdGVkX18FsOz1kYar+kN6o3cLXqOOP8wqfr5JejO88Bdss1Nk5kc0EubAzhaiwuf9StM7NMH+PXMXOIRdAF86V03zxx/PSphyRSiTs1Crdv+EkTWr4q4kWf2Vek5qMXa8NXsJqOhTmtZtOTNpXafiUUehwUYOY9A+3DNC76EKs3p3MDXyUO65FvzHBA7jCVu/4ziUy8q7t259jXisrdejcszhd+lBHKXBKqv8GXfMa7t9nOm4nNIlwwJ9KCn1oQT8+/zGHT4PfeXcl7nSW3G+909EQML8F+E5RRPgHpXmnR3BGIm1NCBuqU/0TzeVxcEJD7B5EXt3SSybDFpUPnXRbe8Egw6ATWpBEgvBGN/0oQbdl/fcP2YHHVthKcz8A+IKGrkOwOjoJj4n61+hWs3boxtHEF3zqqxUKEq2tFnzegL/Cp7SdZXb9gyIOxtW9cNiL/nEgRHs/KDPq/rNqhr00EtPk1MDeLTUqRA+JY+/ijsxZPptrAI16G6pofmWoJU4RqVQpRFF0+ENMHkhGhbOnBLOr64z+6D5O0YFTlPl9/DhRvTWBYH7ODbpS/0VAF8Kw9NzNAEYgVv0N4k12nDTQ6VA7soJfy3wtV+nHXLwRnL2hRAdE7r35V3bbQjtBZWme4s5nH19wMmIxknULUzMsdQC7CEkLlObPW5qNBo/3+bPNigBc//Ya739ITGNs+One509lmpyjC3qVNcTF4vwhA/+iwI6FfonfQ2DUnrpnEFwgte7L9VskoNXoqYLAy8s3uqMkpggq+OWVWeNvUTmYRWdQkd8+xJTNn5h2LOFfTPKOQLiCqwL9ejU5n1V+MXmYk9G/Dop3NwbLHly2Oyw7/0PdieWUXEcQ9QNN606RdcJC3c44XG2VJpDsw8B5bgbeWWedBuu9+wJrQwdP1zDjOzaDok8pl+IJf+iZgvLnbL14FzwbmAsfqfTDXKnH1GzyIATCNn1zuuXClV
- 6ic7LYbl
- ppIwf6vawaUa11U0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 32D7380009
+X-Stat-Signature: 9wgn7hj44p9zha7nh5x9tgkq7zymg61d
+X-HE-Tag: 1756329328-54833
+X-HE-Meta: U2FsdGVkX1+mjEZmonj/okwBU00dtz1ON7DdnHl5t3jmVmBC/dZhccmr4XTbNceWaA7y+uHz0y92WFjucNVLCmHgYHiCePWF5QZXKov/h6PKFYkGx3x0GRjSjJUfvkXwkeMFMJ8pzBdvhwYYZl9ytBz6vgxA0Fdhredm9o0AziiMft1AWOzPRa7LYE0WcXZAWEI+ugMp9KmUV6R9nqkqzFSxeseoot3tH8Z4y6HUjnKevsiV8eYbNYRBA2dJAxtbhO/zLzptnxLKN0n0R3zAq3OD64L0s07cNyZg1iFZvkOFbFBqaMZBa3oAzTDMW/+2gw4wuME/KYoflnORMD6KeemnCnV4ZxYutaaZfqEODh+VS6ay/9WCKPKF9/O+soeJAY4Y3gP37+p/SHq0NbCDPgCo7h4wVpGM/V463AJeVl7aqtMLyIFBz3hgBFlXf0xao5GwFXKwYmAlvhtRCVwiM7aLb/FC5r1k63PMfDEZUCvCuerwT0tBfnKgGX7KtrByeseoOvs/sa6R2beJBP1U2cpVnCOUgXj0dmUAegIn3nKM1w7iPG+Yd26ZPW9Y0JQO7No5IvDaMXFtBqiLst8Rkwip1l65jCmYBgl9Nvs9RRT6f7GkTZPXMobFbOFGgAvhz8xmeCoTapcnkSoaz90D+5Qrt7QXmSBYcCzJHG+UKLk3Ltp+z8XlLftUqJhv9W0IyCKZXokj+JlaKS3tu2msZS7sXj9yHhgC7m1/NuECjxg9SDM3QtU2/GouYS240pdjP5rHgaodiM/R7029FUNgNdcAS0nq5LmOvlOJ0okKjWohyAoXvhy0sdQvoHheh9DeFSV0IjDJjInbGilKLwjZY93mxdvvob07TN+KzNURmPxgiNQpdcNg6WTfvjHsD29bwkEMkBlIO3vFPbKamyNA/ySzfoNdQEa1rNAbK7Cw1zKprDyt4Z7AfavE1IEStwuqKmG64tvFmUv7faGMytw
+ jDTOC9fl
+ bayw4rUi66iYkX+1tZS8NTRXi1G6plUFhgY3YugCFqq7uC+yXznF4WOlHknUSA1iqVYZvcwYbDLySmKIGwja+NMhWK148rQgtfG+IVw+bCq+bLNBnQxtoJumZm5+WBdty+EXi9P0GK6p3N6ToSLHUkhjQPNrh/HwBxmlERl4XS7xtmTlZQD8nQu9JoBRJSFn9/NUgnIEVG7QBTFz1Yk3oy8fCDQg7A/qV4PC26qCkrx63uIO+A+fSJI+MrhuZbzCfoX1yQIx2I068F74=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,56 +95,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 04:34:48PM +0100, Lorenzo Stoakes wrote:
-> > +__bpf_kfunc_start_defs();
-> > +
-> > +/**
-> > + * bpf_mm_get_mem_cgroup - Get the memory cgroup associated with a mm_struct.
-> > + * @mm: The mm_struct to query
-> > + *
-> > + * The obtained mem_cgroup must be released by calling bpf_put_mem_cgroup().
-> > + *
-> > + * Return: The associated mem_cgroup on success, or NULL on failure. Note that
-> > + * this function depends on CONFIG_MEMCG being enabled - it will always return
-> > + * NULL if CONFIG_MEMCG is not configured.
+On Tue, Aug 26, 2025 at 07:32:17PM -0700, Suren Baghdasaryan wrote:
+> On Thu, Aug 21, 2025 at 12:53 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > On Thu, Aug 21, 2025 at 12:18:00PM -0700, Yueyang Pan wrote:
+> > > On Thu, Aug 21, 2025 at 11:35:19AM -0700, Shakeel Butt wrote:
+> > > > On Thu, Aug 14, 2025 at 10:11:56AM -0700, Yueyang Pan wrote:
+> > > > > Right now in the oom_kill_process if the oom is because of the cgroup
+> > > > > limit, we won't get memory allocation infomation. In some cases, we
+> > > > > can have a large cgroup workload running which dominates the machine.
+> > > > > The reason using cgroup is to leave some resource for system. When this
+> > > > > cgroup is killed, we would also like to have some memory allocation
+> > > > > information for the whole server as well. This is reason behind this
+> > > > > mini change. Is it an acceptable thing to do? Will it be too much
+> > > > > information for people? I am happy with any suggestions!
+> > > >
+> > > > For a single patch, it is better to have all the context in the patch
+> > > > and there is no need for cover letter.
+> > >
+> > > Thanks for your suggestion Shakeel! I will change this in the next version.
+> > >
+> > > >
+> > > > What exact information you want on the memcg oom that will be helpful
+> > > > for the users in general? You mentioned memory allocation information,
+> > > > can you please elaborate a bit more.
+> > > >
+> > >
+> > > As in my reply to Suren, I was thinking the system-wide memory usage info
+> > > provided by show_free_pages and memory allocation profiling info can help
+> > > us debug cgoom by comparing them with historical data. What is your take on
+> > > this?
+> > >
+> >
+> > I am not really sure about show_free_areas(). More specifically how the
+> > historical data diff will be useful for a memcg oom. If you have a
+> > concrete example, please give one. For memory allocation profiling, is
+> > it possible to filter for the given memcg? Do we save memcg information
+> > in the memory allocation profiling?
 > 
-> What kind of locking is assumed here?
+> Actually I was thinking about making memory profiling memcg-aware but
+> it would be quite costly both from memory and performance points of
+> view. Currently we have a per-cpu counter for each allocation in the
+> kernel codebase. To make it work for each memcg we would have to add
+> memcg dimension to the counters, so each counter becomes per-cpu plus
+> per-memcg. I'll be thinking about possible optimizations since many of
+> these counters will stay at 0 but any such optimization would come at
+> a performance cost, which we tried to keep at the absolute minimum.
 > 
-> Are we protected against mmdrop() clearing out the mm?
+> I'm CC'ing Sourav and Pasha since they were also interested in making
+> memory allocation profiling memcg-aware. Would Meta folks (Usama,
+> Shakeel, Johannes) be interested in such enhancement as well? Would it
+> be preferable to have such accounting for a specific memcg which we
+> pre-select (less memory and performance overhead) or we need that for
+> all memcgs as a generic feature? We have some options here but I want
+> to understand what would be sufficient and add as little overhead as
+> possible.
 
-No locking is needed. Just the valid mm object or NULL. Usually the
-underlying function (get_mem_cgroup_from_mm) is called in page fault
-context where the current is holding mm. Here the only requirement is
-that mm is valid either through explicit reference or the context.
-
-> 
-> > + */
-> > +__bpf_kfunc struct mem_cgroup *bpf_mm_get_mem_cgroup(struct mm_struct *mm)
-> > +{
-> > +	return get_mem_cgroup_from_mm(mm);
-> > +}
-> > +
-> > +/**
-> > + * bpf_put_mem_cgroup - Release a memory cgroup obtained from bpf_mm_get_mem_cgroup()
-> > + * @memcg: The memory cgroup to release
-> > + */
-> > +__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
-> > +{
-> > +#ifdef CONFIG_MEMCG
-> > +	if (!memcg)
-> > +		return;
-> > +	css_put(&memcg->css);
-> 
-> Feels weird to have an ifdef here but not elsewhere, maybe the whole thing
-> should be ifdef...?
-> 
-> Is there not a put equivalent for get_mem_cgroup_from_mm()? That is a bit weird.
-> 
-> Also do we now refrence the memcg global? That's pretty gross, could we not
-> actually implement such a helper?
-> 
-> Is it valid to do this also? Maybe cgroup people can chime in.
-
-There is mem_cgroup_put() which should handle !CONFIG_MEMCG configs.
+Thanks Suren, yes, as already mentioned by Usama, Meta will be
+interested in memcg aware allocation profiling. I would say start simple
+and as little overhead as possible. More functionality can be added
+later when the need arises. Maybe the first useful addition is just
+adding how many allocations for a specific allocation site are memcg
+charged.
 
 
