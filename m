@@ -4,111 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB81BCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 15:04:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 653E4CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 15:04:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0EC66B0012; Wed, 27 Aug 2025 11:04:10 -0400 (EDT)
+	id B65596B0022; Wed, 27 Aug 2025 11:04:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE60E6B0022; Wed, 27 Aug 2025 11:04:10 -0400 (EDT)
+	id B3CF16B0023; Wed, 27 Aug 2025 11:04:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E22A36B0023; Wed, 27 Aug 2025 11:04:10 -0400 (EDT)
+	id A53106B0024; Wed, 27 Aug 2025 11:04:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CCC776B0012
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:10 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 74548139FD6
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:04:10 +0000 (UTC)
-X-FDA: 83822857860.18.1954125
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 97C9B180011
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:04:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GFB7Oh1e;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 956246B0022
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:17 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4BD131A06F2
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:04:17 +0000 (UTC)
+X-FDA: 83822858154.04.AA7DE63
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 12693C0008
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:04:14 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b="dt/RfV1L";
+	spf=pass (imf22.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756307048;
+	s=arc-20220608; t=1756307055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WkvzwrO1SQlYRdK0kj/cRhQRQVSLpCMG56CK6ugABik=;
-	b=ovdKbYKvsATspfS2h9qdSx1qFz4Pft6NtOxBUGOJ6916D1/fg49fE9KYNC+dFVvA/jfEze
-	eXiHStLFJs9AzbuY9onQszK+XRoIYSMQqKrgNPGBN79UavK/RLbkbNjV+AUIin2XjWBtyI
-	B5wQTO6K/vREMc5g9KcUOlYe9JVSIr0=
+	bh=FN3etd68yjlykSE7mt0F2RHD6jpI0nU5EsyPecY0KV8=;
+	b=5Amm3aO+ubLwYbUG2pmZqnObBg0uK/SHKauDoKZU8DBUkmN6JbelXspRYgqpvpypn7/yWd
+	NmlTPOaeOpSizQJ4z102Re3DXFmXty9oa2b2SIi4C+IauMozsr3nAXWiHc46v2XwSbKKQf
+	mZfeRtqX7V4C3ej7SLG1P/h7IXPsGmQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GFB7Oh1e;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756307048; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b="dt/RfV1L";
+	spf=pass (imf22.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756307055; a=rsa-sha256;
 	cv=none;
-	b=K05P8cNgvu/4lDsls0AgnyajVL0iIpmbyAIQpct1Wx6bmJYcJCLQUzj67Q/kzoAGIGLjHN
-	Gbl+8KFMIdjUzMl3HKoHcdOBUXMlJrHmkI6ba8NvP1Fm/nKCovGEXobT0IIQinrbpbr6xH
-	PMF+h49LDmnULZvQ0esvSNVjl+fkVLs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 743D34478C;
-	Wed, 27 Aug 2025 15:04:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D109C4CEEB;
-	Wed, 27 Aug 2025 15:03:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756307047;
-	bh=uo4Ob9kTPdoJmgAnEx6L4XzAms4E4Sy8+Nf0B+A98EM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GFB7Oh1eo+TReZoN3bwTBKHsq/yKs0Ec6wezEhYD6I52VzGWuajG/VUdqJlHo9GBa
-	 sP5uM0oIsz73s+GR3PHPfQM4FtpF3efam0U/5zWK0ivK0fj6LbZC5fFyPNQgTeW63w
-	 E7NL4+4i6tYIG42apLWejr2ppn7Fn5cZUKPnTLphMA4LKIcV/vG6hX/sMNARHSiFsV
-	 jQkO6X8RnOY4b/EE++uh5xQ5m0rgUa3Pqfc7MVaJ/KmZBiq0S0kt05UaAncWvIBfdx
-	 M34cS7vYly+aHvBfVvWPLH1rZ41QgDItwMsH34hBP87mp3hJpu4GzWzammLxdZZMf/
-	 wwiiTIEjNHQnQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  pratyush@kernel.org,
-  jasonmiu@google.com,  graf@amazon.com,  changyuanl@google.com,
-  rppt@kernel.org,  dmatlack@google.com,  rientjes@google.com,
-  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
-  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
-  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
-  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
-  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
-  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
-  leonro@nvidia.com,  witu@nvidia.com
-Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-In-Reply-To: <20250826162019.GD2130239@nvidia.com>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
-	<20250807014442.3829950-30-pasha.tatashin@soleen.com>
-	<20250826162019.GD2130239@nvidia.com>
-Date: Wed, 27 Aug 2025 17:03:55 +0200
-Message-ID: <mafs0bjo0yffo.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=NLUOlUm4orSz5IS6DX7wYbMjn2NSJfZabrebeurB2HAFLzL9Nr1+zuTb4V7+soh94P1QEd
+	JI+bPXOMiXaXgw+gpV5qjRQiWLIbJ1QpomKdkW8QnwDeVQl2ANQ5iZQCIjVK2wguoA8O3j
+	mDtrF+M6bvWfz19amb67FzF81TKbUUM=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3c4e9efb88aso3843498f8f.2
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 08:04:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1756307053; x=1756911853; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FN3etd68yjlykSE7mt0F2RHD6jpI0nU5EsyPecY0KV8=;
+        b=dt/RfV1LR175m4bx3Kw9lcil7BTRPMfd5xZ5wFvFOot1RoyWgyqacD9LgFqXoy6Bbm
+         5o2fbN+lmBEgdO++Ter5CWrVB07YnDlUZDQ4ovdcibyALCkD2VnLN9vmNzmVixtMLlsq
+         AHjuBRa6HHYrr/WddNZf8Q70mdyZSpGSaRZTlIviwdj9dZnf1BljIWv9Hc978i70K2FO
+         BXFdCd/ChEtweMLeS0iCicGSy/4dh7Ox++MJZ0aKBn8h3xvmjpU4YM/A2atNzqAi3wy+
+         IQHmHB65r9CusXP+axq8XCZHZuTXqUY7msVN7JxibkHronlUFRtj86SPD89bj3nZ8Hb8
+         FLaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756307053; x=1756911853;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FN3etd68yjlykSE7mt0F2RHD6jpI0nU5EsyPecY0KV8=;
+        b=q67ybiEDNpn0vn6NN0Nilj16fPsQ54EvEhWcVJ5nNin1yVSpdtDUURt6vP0M9VTEJT
+         GuMUHaeqSX5QIywqi6ROUflAQvB8w5egTYOPOiZi+uWLuSlbgreglQXSIpCZTbfTcrYm
+         Dg+unbNyfrWEM/Ftp1yYP3R+3SQD6OcfLpIGysC7T424KO0IirivRUQJYazxNufueeYX
+         +vnjNjrCmeklefDcrMSfgcl8or3KWv8wwcUZcdaQi552guM72rJE8N4uIt9vZ+HTcpox
+         AV366y92fRv6BV2qxRJPys8yTYXdzEnnfE+gmPdS5wywoQN+T+45cbfHUYsj9YiTp7TZ
+         6udQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3w4fuw+YS/yqtu+Tbl4d3F7ehpET8MDMyHVd6SrGrUFYlTVcI+wZRde1CA/iIo1TTqySh1euTjA==@kvack.org
+X-Gm-Message-State: AOJu0Yw5S8zflHzrp6pyd+j1IpYNkNRlT1JR3FgyfsJ/9HsTcjXq2Nto
+	EyCUdIHmUbT+Bw36N0Ohd7a+vVPp0RI2seqsAQrKnTu6WqSZFtm61I2Q6w0oTH7V7q8=
+X-Gm-Gg: ASbGncv9bteBLC4Co6CpZ+gwR+1MUVAOJGEvsYkDr7IaK0Mv6XxzgJM13q7VKirQY0S
+	ZrlHwEkYmM4gtpa58rF2WKNxAzKj9JcdPbvSTe3VzK3e05sftkru35SiNWHtB+77TV3cRMOUSjY
+	WNRXoFFNvdljXzewqcdPi7WlJDcx7pBjfCSN9XTctRSOflLBjyYSDFTc4SaEOXSbGyarqhw8OMc
+	NiHsHQbVANHC+fynUUtV72EEFg0hmk70/0LqfS8C2UkqnUjpEsOX04eGFYjcsfa6foW/od7tt/w
+	AVsppamOBK8z17iyA4EPSySy0jV1rV+459xJzLwqungVKod3WAeB0cxzEbditsEoDmGTI365COu
+	k1BznQbbqHEnmZ1qxcns13f800IFTzQpI+2pu9lzKkb723FCpo3/1Hp0KPF0fMLAgdOQNiiq/wa
+	g+Q4NvQu7uK2GPg87ja06CKA==
+X-Google-Smtp-Source: AGHT+IGrW72g0ILq4UifqCK6TBTWBT1mHH+uWmSaygxM231xFkoJ/nzT7KcZcVt1YLhfij5DkpLHmw==
+X-Received: by 2002:a05:6000:26cc:b0:3c9:9ec0:2055 with SMTP id ffacd0b85a97d-3c99ec02f3amr8669458f8f.39.1756307053288;
+        Wed, 27 Aug 2025 08:04:13 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cc98998781sm3421790f8f.49.2025.08.27.08.04.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 08:04:12 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shikemeng@huaweicloud.com,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	chrisl@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH v2] huge_mm.h: disallow is_huge_zero_folio(NULL)
+Date: Wed, 27 Aug 2025 17:03:30 +0200
+Message-ID: <20250827150330.280399-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <2aa3f478-9c87-4102-b83e-bf235372d834@redhat.com>
+References: <2aa3f478-9c87-4102-b83e-bf235372d834@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 97C9B180011
-X-Stat-Signature: 856iemiyxwsya9pro5bpk639w9hedk3t
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 12693C0008
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756307048-826496
-X-HE-Meta: U2FsdGVkX19UG8iG7z7rZ7t7LxQcpI7YgrPB1qjF5wlFAQD74RHbFG0Iv+tjP8EQoSEC21Yg+ivAUVr+maSbA7Bd8lhNOFjGm46lAL88ntY6/rzfAhhydiuC1CxWxbF3Js86UOucX83R72mz4etJCGAuD9+iJNxEtGYSR60Urqr0zxFA4VquthJ/7l/57IKkc7vBmZXVXSOL2r4BuvhFagAdWlDLxoHxmsQpdnNXty0k87r66RlSgEHQD7PmT00PSRklQ0IT3EVNt9LzdvsSOZfx7YCffdCGvOaLN5mKa+01wx0L2/Pv6tFBHO/1qyvd7rCC9n68lbBtH4cPVyNi6JXkn3+vSgGYJKhw+Kjwp3l+h74ZmImhrI6Kxglm1mO70QI8mEXuX12+jsMBZKYGAp5NfHxqiO+rHf9m8T5Wey4mjmwnNimg8Zu+pIJoSQs3Pn/LrfFBSLB3w5ZRjpdqcNaE7kUC32hLJllMmX9iZSWE5laeMoE9ke07yKFk+MA6tM2nMJ1B7F5mwz6rQlMAw5ynXuIDoty+/aIkHH09f5zWE2K4dXoyTbyXsdmqFnRm73cOFDpA+LIz8/X2wV7cPq/krIWnRE4y37Sxe1wCa7r67aAEfaaG3x+KkqAcoLkVjlr6u0tWVJUA+LWZD/1qvI0EwRt/e+lHNSKw/ga+wAKDj2djGwzE/M81c34MTMxaSnc3B5VvTVqnAp/pCUXh1RPsS8wuhVQLplLEtQQ7m9/zTS/A1GODpDVyvWRBw9pJvr3WRBc7n8rOuFMGbBIq51cCL+TQW+ayX1ddE8b52khkI6txgCLOpSg5lhijdCVwQwDhEjO9jyVFP0tZDcEMqW8cFK150V0SSvLHTIzJogdolmN/+6Zrb5AGzG6QClNLBMZEyHeqKLn2csWEty8MiOSTeOXjh2j68L1Ok0vWozov/gXnTk+L3MbkV6J6xG9pJMRzxdbtQ4stqx5oW9g
- oQoUzbAE
- uf6M5tcBMlFIqWvvXRfzFk7/oxVhuTXzszM1nzuS13fXciCdHw0WrojW7oJZumK78DYX9G1cQIhwcI5oVTbsEqwt9wKvxPMQCG73OR8qoc5Z3axLCFGIAN46rIlwh06udYDJ0H1I1gfMJbuqZVO2KfTQQHlakDXhvpvJJZdE5KMQB6GKLnlPJLQrHervDpN/DF1gNjY3s1JK9N8Y=
+X-Stat-Signature: iqjyd6xscjjadm3xh3cwmas6n7aeuun1
+X-HE-Tag: 1756307054-784349
+X-HE-Meta: U2FsdGVkX1/xv8mXNfBi9qOTNPHTo1cEVDGpgRWbaz1HrzO/eHY2qM5WgsBA/eRJgPCvVt9E/UogultHUiBiTzELLnXTorVk1i06IVavzYh9BscL+onHla3aFw5hsagCLX0Vm3f/Dztg8FvkHDQ7ZC7+NUbaw5Sstj83MzexGP6sy30N0vL4MNqXidOuaFdqRl9m9jjwwFR0JYNwx/LPst4Z0viL9YMue74K/otNOw4n+geBink3Bpvw0hTfYBKJmIU/4GXxnM4zfTYys3Ssi/9C3W6N955n2Ip2zczBFLQWG8zDYJnQWctjAGZYCjpltUvyfRQJ6mzlQU2Yd+c5ye1qLrQGOSGD/MRBKxcl2Px7pAvbtWnLKhxPwJJyGSl8jnBSciP8H5qjr0FIeLqioJq7W8C5IP3ojOZPwlRBkWqNJ7sR0qLayg4GGol2jrYl8N/ad/Hy+jJp/NLnCW1Fg+1BmGnz7ag0lUG3raNeMJWr9HN778XOm0pbPvu8ONRz/LIH4/nUVqBo1v3iMOdzTd2FQX2ViqSha73gASccP0oZtJhdmUX0rWU6rkWKUrYIIPMLpMhfZ5Lz1Fw7c7wfojrz+5Aq6ns1N4k/avV1mNHjGyknePuAarY/zRhkKypPB9kWcxUMltlpeFwEpPajHYquUMERmTx63QLb17+hbn9KqzS2YhzIYPjz3WHxgiTjlUtUz0C/ASbb+bmV3LNjncVZj9ZF6VlRMojnLDRkcr1U9iZdf4Wc1zPkTt8PrXNZc8O2iW+bVQXya87QcuGisxnp9wBEOkqQZBvJCH9wfFTNxzQC5DaeNChn6UkzWhFN3HoN/eelACxIOt91N4yC7XWC8EsFXcZlbuM5YIn3Ly/yAof3Fur0dDCyIBDyX+9S0g5ebztJiilRD4EOp3wua2XMLcyFNt8Ei0AC1Tg46qz7PGyYek0aRmDXtFwXK7gQX/VN9XFtE/EaldtcJvW
+ MTkaC/Gd
+ XLj3lQloxBpk6aByT4sP3M6xGVzYeVgMZtEUmM1tah/0Pz+jtdDMWHuHh1L2DSK09uXCZVbZAiN+x/t5m4ON2TCvuXBtvrP5rkuPwQDyXZ0L/btDzmysEOWUnqtPsDERtskq4JfSyphAz91CTnmwjmBIuRKX40qBcvEjQSW8FTSOx0euOJwXtmzsnTpTlrVUUFqkrie5xvqZNrea/cjwW0nzwMplxylr+II7E3scNUzvpNW7vwM1nwehmF94sdzbpPIe+/LHsYJmsiOcIP+fNiqUE2/OvPU5GQheD81I0pnyVrlCIBiPYBI2LE6ZDMTKvXvwknE4hMibOPjrF0WyPUHzNW+cs64w02HmGYFgwz7wnysqD69f0YWZCkYybqLjkCXqHL3PK8ENLVarMBl/mwodKfMIKBxSUTmJd5pD2YR3Fmt2QagTJszeZqARAE1OFT4Gxe1o2SdzQhk8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,220 +134,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+Calling is_huge_zero_folio(NULL) should not be legal - it makes no
+sense, and a different (theoretical) implementation may dereference
+the pointer.  But currently, lacking any explicit documentation, this
+call is possible.
 
-Thanks for the review.
+But if somebody really passes NULL, the function should not return
+true - this isn't the huge zero folio after all!  However, if the
+`huge_zero_folio` hasn't been allocated yet, it's NULL, and
+is_huge_zero_folio(NULL) just happens to return true, which is a lie.
 
-On Tue, Aug 26 2025, Jason Gunthorpe wrote:
+This weird side effect prevented me from reproducing a kernel crash
+that occurred when the elements of a folio_batch were NULL - since
+folios_put_refs() skips huge zero folios, this sometimes causes a
+crash, but sometimes does not.  For debugging, it is better to reveal
+such bugs reliably and not hide them behind random preconditions like
+"has the huge zero folio already been created?"
 
-> On Thu, Aug 07, 2025 at 01:44:35AM +0000, Pasha Tatashin wrote:
->
->> +	/*
->> +	 * Most of the space should be taken by preserved folios. So take its
->> +	 * size, plus a page for other properties.
->> +	 */
->> +	fdt = memfd_luo_create_fdt(PAGE_ALIGN(preserved_size) + PAGE_SIZE);
->> +	if (!fdt) {
->> +		err = -ENOMEM;
->> +		goto err_unpin;
->> +	}
->
-> This doesn't seem to have any versioning scheme, it really should..
+To improve detection of such bugs, David Hildenbrand suggested adding
+a VM_WARN_ON_ONCE().
 
-It does. See the "compatible" property.
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ include/linux/huge_mm.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-    static const char memfd_luo_compatible[] = "memfd-v1";
-
-static struct liveupdate_file_handler memfd_luo_handler = {
-	.ops = &memfd_luo_file_ops,
-	.compatible = memfd_luo_compatible,
-};
-
-This goes into the LUO FDT:
-
-	static int luo_files_to_fdt(struct xarray *files_xa_out)
-	[...]
-	xa_for_each(files_xa_out, token, h) {
-		[...]
-		ret = fdt_property_string(luo_file_fdt_out, "compatible",
-					  h->fh->compatible);
-
-So this function only gets called for the version 1.
-
->
->> +	err = fdt_property_placeholder(fdt, "folios", preserved_size,
->> +				       (void **)&preserved_folios);
->> +	if (err) {
->> +		pr_err("Failed to reserve folios property in FDT: %s\n",
->> +		       fdt_strerror(err));
->> +		err = -ENOMEM;
->> +		goto err_free_fdt;
->> +	}
->
-> Yuk.
->
-> This really wants some luo helper
->
-> 'luo alloc array'
-> 'luo restore array'
-> 'luo free array'
->
-> Which would get a linearized list of pages in the vmap to hold the
-> array and then allocate some structure to record the page list and
-> return back the u64 of the phys_addr of the top of the structure to
-> store in whatever.
->
-> Getting fdt to allocate the array inside the fds is just not going to
-> work for anything of size.
-
-Yep, I agree. This version already runs into size limits of around 1 GiB
-due to the FDT being limited to MAX_PAGE_ORDER, since that is the
-largest contiguous piece of memory folio_alloc() can give us. On top,
-FDT is only limited to 32 bits. While very large, it isn't unreasonable
-to expect metadata exceeding that for some use cases (4 GiB is only 0.4%
-of 1 TiB and there are systems a lot larger than that around).
-
-I think we need something a luo_xarray data structure that users like
-memfd (and later hugetlb and guest_memfd and maybe others) can build to
-make serialization easier. It will cover both contiguous arrays and
-arrays with some holes in them.
-
-I did it this way mainly to keep things simple and get things out. But
-Pasha already mentioned he is running into this limit for some tests, so
-I think I will experiment around with a serialized xarray design.
-
->
->> +	for (; i < nr_pfolios; i++) {
->> +		const struct memfd_luo_preserved_folio *pfolio = &pfolios[i];
->> +		phys_addr_t phys;
->> +		u64 index;
->> +		int flags;
->> +
->> +		if (!pfolio->foliodesc)
->> +			continue;
->> +
->> +		phys = PFN_PHYS(PRESERVED_FOLIO_PFN(pfolio->foliodesc));
->> +		folio = kho_restore_folio(phys);
->> +		if (!folio) {
->> +			pr_err("Unable to restore folio at physical address: %llx\n",
->> +			       phys);
->> +			goto put_file;
->> +		}
->> +		index = pfolio->index;
->> +		flags = PRESERVED_FOLIO_FLAGS(pfolio->foliodesc);
->> +
->> +		/* Set up the folio for insertion. */
->> +		/*
->> +		 * TODO: Should find a way to unify this and
->> +		 * shmem_alloc_and_add_folio().
->> +		 */
->> +		__folio_set_locked(folio);
->> +		__folio_set_swapbacked(folio);
->> 
->> +		ret = mem_cgroup_charge(folio, NULL, mapping_gfp_mask(mapping));
->> +		if (ret) {
->> +			pr_err("shmem: failed to charge folio index %d: %d\n",
->> +			       i, ret);
->> +			goto unlock_folio;
->> +		}
->
-> [..]
->
->> +		folio_add_lru(folio);
->> +		folio_unlock(folio);
->> +		folio_put(folio);
->> +	}
->
-> Probably some consolidation will be needed to make this less
-> duplicated..
-
-Maybe. I do have that as a TODO item, but I took a quick look today and
-I am not sure if it will make things simple enough. There are a few
-places that add a folio to the shmem page cache, and all of them have
-subtle differences and consolidating them all might be tricky. Let me
-give it a shot...
-
->
-> But overall I think just using the memfd_luo_preserved_folio as the
-> serialization is entirely file, I don't think this needs anything more
-> complicated.
->
-> What it does need is an alternative to the FDT with versioning.
-
-As I explained above, the versioning is already there. Beyond that, why
-do you think a raw C struct is better than FDT? It is just another way
-of expressing the same information. FDT is a bit more cumbersome to
-write and read, but comes at the benefit of more introspect-ability.
-
->
-> Which seems to me to be entirely fine as:
->
->  struct memfd_luo_v0 {
->     __aligned_u64 size;
->     __aligned_u64 pos;
->     __aligned_u64 folios;
->  };
->
->  struct memfd_luo_v0 memfd_luo_v0 = {.size = size, pos = file->f_pos, folios = folios};
->  luo_store_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. identifier for this fd..>, /*version=*/0);
->
-> Which also shows the actual data needing to be serialized comes from
-> more than one struct and has to be marshaled in code, somehow, to a
-> single struct.
->
-> Then I imagine a fairly simple forwards/backwards story. If something
-> new is needed that is non-optional, lets say you compress the folios
-> list to optimize holes:
->
->  struct memfd_luo_v1 {
->     __aligned_u64 size;
->     __aligned_u64 pos;
->     __aligned_u64 folios_list_with_holes;
->  };
->
-> Obviously a v0 kernel cannot parse this, but in this case a v1 aware
-> kernel could optionally duplicate and write out the v0 format as well:
->
->  luo_store_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. identifier for this fd..>, /*version=*/0);
->  luo_store_object(&memfd_luo_v1, sizeof(memfd_luo_v1), <.. identifier for this fd..>, /*version=*/1);
-
-I think what you describe here is essentially how LUO works currently,
-just that the mechanisms are a bit different.
-
-For example, instead of the subsystem calling luo_store_object(), the
-LUO core calls back into the subsystem at the appropriate time to let it
-populate the object. See memfd_luo_prepare() and the data argument. The
-version is decided by the compatible string with which the handler was
-registered.
-
-Since LUO knows when to start serializing what, I think this flow of
-calling into the subsystem and letting it fill in an object that LUO
-tracks and hands over makes a lot of sense.
-
->
-> Then the rule is fairly simple, when the sucessor kernel goes to
-> deserialize it asks luo for the versions it supports:
->
->  if (luo_restore_object(&memfd_luo_v1, sizeof(memfd_luo_v1), <.. identifier for this fd..>, /*version=*/1))
->     restore_v1(&memfd_luo_v1)
->  else if (luo_restore_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. identifier for this fd..>, /*version=*/0))
->     restore_v0(&memfd_luo_v0)
->  else
->     luo_failure("Do not understand this");
-
-Similarly, on restore side, the new kernel can register handlers of all
-the versions it can deal with, and LUO core takes care of calling into
-the right callback. See  memfd_luo_retrieve() for example. If we now have
-a v2, the new kernel can simply define a new handler for v2 and add a
-new memfd_luo_retrieve_v2().
-
->
-> luo core just manages this list of versioned data per serialized
-> object. There is only one version per object.
-
-This also holds true.
-
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 7748489fde1b..bc9ca7798f2e 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_HUGE_MM_H
+ #define _LINUX_HUGE_MM_H
+ 
++#include <linux/mmdebug.h> // for VM_WARN_ON_ONCE()
+ #include <linux/mm_types.h>
+ 
+ #include <linux/fs.h> /* only for vma_is_dax() */
+@@ -479,6 +480,8 @@ extern unsigned long huge_zero_pfn;
+ 
+ static inline bool is_huge_zero_folio(const struct folio *folio)
+ {
++	VM_WARN_ON_ONCE(folio == NULL);
++
+ 	return READ_ONCE(huge_zero_folio) == folio;
+ }
+ 
 -- 
-Regards,
-Pratyush Yadav
+2.47.2
+
 
