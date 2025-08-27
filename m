@@ -4,103 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9D63CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 02:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C95ACA0FF0
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 02:13:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 117448E0113; Tue, 26 Aug 2025 22:12:27 -0400 (EDT)
+	id D75408E0114; Tue, 26 Aug 2025 22:13:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C96F8E0105; Tue, 26 Aug 2025 22:12:27 -0400 (EDT)
+	id D4E788E0105; Tue, 26 Aug 2025 22:13:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E157C8E0113; Tue, 26 Aug 2025 22:12:26 -0400 (EDT)
+	id C428A8E0114; Tue, 26 Aug 2025 22:13:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C94418E0105
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:12:26 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E823C03F5
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:12:26 +0000 (UTC)
-X-FDA: 83820913092.03.E754A2F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6E31A100005
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:12:24 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9NsJStQ;
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B2E7F8E0105
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 22:13:24 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6956D1DD9C7
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:13:24 +0000 (UTC)
+X-FDA: 83820915528.24.F86FE61
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CEDDE140002
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:13:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hgTIAS6y;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756260744;
+	s=arc-20220608; t=1756260802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=92ufSU3QMirtn/fHDO/1rgNKvLi3yd0ndFnVmv977Dk=;
-	b=Z+rqgXgwy5ILbwQoYVZAd6aHhSAJahXgnumLjIFLpjOKf26uZ6NN3/KDZe6DbRJdr5Cc0u
-	j0Z83x7lx1R65QA6V40JiX7UnlrBxJZa7kC7t4JNzp5j2pY5q+RDbPzyU8+XL9G7PaJADH
-	OF5CNk3w5oA6LXorthgQhNwaq6g9Yfg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756260744; a=rsa-sha256;
-	cv=none;
-	b=UwMll1T8GFFeQJY3SBl0h/CzKot2CIqE3LK8psMVja2kA1Sg63oJY1DWI0G4UvASFZly5q
-	Ww0AuSsGDX5TvkGDLV97O7gf4rthzWGSCk+WPED0piljVusseARK2QPG94B056XMkRelm9
-	YPWQdZHjc+c5auQ4kCNpYmsqr9e8YiU=
+	bh=jkbp71U0nIYFKHOywQ8zqs/UwnsEonKSptVh3r3UG04=;
+	b=Hahpqmo9APdS2ClH+ch87h3UU9FajJRRXyavvDx9IRzzHNa8c8s9Tx7f+KG7jT/rleKwOu
+	WbJMcP9kC/oHVqGTKTBe9zbzMwS6+nTaE0R19STq/n2msXYPOL5zJfVbA7uMc2sz/VZQGQ
+	R3Z9KBIaAeM11AWy34yc4T0wBMk8HHk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O9NsJStQ;
-	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hgTIAS6y;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756260802; a=rsa-sha256;
+	cv=none;
+	b=aqZ7c8QwJ7yPIDxyS5wMSLOHot2lbUaCvHELYTvetoi6W8UmYAsnYkpJU//AVxaBuy3l0q
+	z7FGDLp/VSJpW9gAYgOr4JDTIOp3lfEY9IxdXIsMHpzNcDDt2kTDOxqI6NG7x6fXPyQf4Z
+	zzDUOhqcEgMf+pKT29BVL7PmhWNNaFc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 68FFD4518F
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:12:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FE1C4AF09
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:12:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756260743;
-	bh=q3BHnTyprndOuKphk/986OLRZxR8Lf0Nb5L1CnkrEIQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O9NsJStQ4Q1w1TG2G5Ijni7Gm7CF8SUUTRJf0rDWlpomG0JQ5O6P5Cad9ZkqtQ2nD
-	 C3PkIOCJfEDGFAbNSIj4FoRQPzR7xeyhZshY1D43Fu1q7EaT1R4IWp4cTg3AxP21C4
-	 fKI1dfmDzGxjUXtEtS576GlgOItwJoR8ZwnEiM1+s+RYG1wuMWBU5MzirRKqiI7eUX
-	 +jwW4ZYNibE+1wMTUF5DH47wakIeyv93bGMu6qxbngdV2jNzGBa3CgSRI33Tntawuh
-	 GJzGf3VY/OG3q3QpONjsMO6N8JPhFy9S4sMOAgJlAS2NF1Q/dy62p1g8iOu3HPR5Ur
-	 Ps7O4+2GbhWCA==
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-71d603a9cfaso45177857b3.1
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 19:12:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWBO9WjnmzHJBvipbobqvUAjMRP9Vsb2OwTgUEg8lyFKjYoNUJ87fnoisGwyb5fgo3rTmMRRQvAhQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxn3Qdv0uhD5uHCRIYI/qsD/yDQ6wUz2gTRw51mXCY44eLHvo3d
-	faZKUq+pfQq6Pyua/pkB4JnvqGZbEKQr9SCAKMSUXjPoiVZ/kiYx2ZDGziII3FMyHIqMRvKPaQi
-	M7W942hqS4TuGPJ5zvzr0vUX5ieumxwB4vrlYyknUDw==
-X-Google-Smtp-Source: AGHT+IEDyAmgqIwD4iHxr016hc/sN+CLBgPqqTEe+4xgcqDUeB/dlcmPyaawZhUoORiYlJxetixb6mEsNqqbhawFvw8=
-X-Received: by 2002:a05:690c:d82:b0:71c:4091:3c61 with SMTP id
- 00721157ae682-71fdc30b412mr220214347b3.22.1756260742402; Tue, 26 Aug 2025
- 19:12:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250826231626.218675-1-max.kellermann@ionos.com>
- <20250826231626.218675-2-max.kellermann@ionos.com> <BA16C3BF-C843-4976-8FCC-159324B2E477@nvidia.com>
-In-Reply-To: <BA16C3BF-C843-4976-8FCC-159324B2E477@nvidia.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 26 Aug 2025 19:12:10 -0700
-X-Gmail-Original-Message-ID: <CACePvbW4AG5nyohmEMS1BrmJNm+Xtaz8_rCCGdSu9Y1iOG-nqQ@mail.gmail.com>
-X-Gm-Features: Ac12FXyA8McbAPcgcSwRJ4XPhqPTQ1ZXjfdNh9v53BJi2bHEYOaY-70OWXZymKE
-Message-ID: <CACePvbW4AG5nyohmEMS1BrmJNm+Xtaz8_rCCGdSu9Y1iOG-nqQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/swap: add BUG_ON(folio==NULL) to folios_put_refs()
-To: Zi Yan <ziy@nvidia.com>
-Cc: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, shikemeng@huaweicloud.com, 
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6E31A100005
-X-Stat-Signature: aqaw7t7pffdd7t7gow9owj6txodmadsr
+	by tor.source.kernel.org (Postfix) with ESMTP id F21B56022C;
+	Wed, 27 Aug 2025 02:13:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70614C4CEF1;
+	Wed, 27 Aug 2025 02:13:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756260801;
+	bh=31xzUCd2w+RjdiecsXImYkR5SG0HS35zBroNDDwiWR0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hgTIAS6yP/wrdJ0SA2Mce6/+XNZ4GoM0RcWE+3Y8geFt4RR8cFij/JCSKDywrlkZt
+	 HjEkPsZWhSn1ogFHu5QDI2c6dSrV2vc0Pm0jjbC/Acz5cZAXiKpekrSZrwORbESDo2
+	 koHcbNaKVIyqOUCnwuzCqRatMlcik1tLtH7ZHZjg=
+Date: Tue, 26 Aug 2025 19:13:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/page_alloc: Harmonize should_compact_retry() type
+Message-Id: <20250826191320.d5aa551eb5abef316de41175@linux-foundation.org>
+In-Reply-To: <20250826-cleanup-should_compact_retry-v1-1-d2ca89727fcf@google.com>
+References: <20250826-cleanup-should_compact_retry-v1-1-d2ca89727fcf@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CEDDE140002
+X-Stat-Signature: ibakzf4jyjx3e9bajhhfij8zufpndkfd
 X-Rspam-User: 
-X-HE-Tag: 1756260744-678710
-X-HE-Meta: U2FsdGVkX1+B3/2a+/iNOTJ0jERDyz0YEKWiq3dNf0GPvxeVNVvjENZ+Q+IR3eWN6fTWDy/u1xfhtDIaORxgFpU/JkNckrAnb/XdDv4NUWFBWR8oh5Eq4lGikEBUkIyn/h2fE6AhlbvotviTPHvWY5d4cpsRzq7qTHLVuPViJIuqgdIOOe3yo1uAIRO9Ey554QlLIa+QZo0MVQyRTISXIaw5CjQWk0eb353MTu175YKCsvRLyWuDQQypjJLG9Ljm13NXt6b79staXlWHZRp6ENJYtWVvcdnHIOEbL1uLQocab3XxgIxouhoS4czZLsnqjbWnMfDoRZYhw8rfMkqmtEFgPR8hVSdCZyRvSEf6WTQMcxQ6xOjezE9P2sMGCyynuOJEkgph7Vh22PBb0VjnzwA9X5/z8EJ3BKd7fN7VlS3+1cP1s/huhu3TVQ7S2ATsZp4RN+Bvh+ELvKNgCXS/miGV70bCoDStCjNuLW2Ie+T2P3wUCCVcM1rAejUw4znfqx+2CvLIXBw2tiy5nhYMWYGjdeq3yooLPJWB3nDmBmwaD3VNnXHxMsStSrTxOQ0WGxpixpZQzDfxBcQ44yLqt0Gjx9vdkG2NEgtLENCIHtukAni1Ubwc9HUdRlFAS53o7OyE0umT9cs+LGo2dsR116hJXyqrfyYqPI+TOzqG/hk1M8XYStBGrmvNjNmOKC3CqpqFPHgr4jRspkH8tvU1bmSGlUOUD1Rlxkx7nsvtuLl6wBckqUd2Mrl6231u6VJ7U7SEEHx3RiMiNiKOdexN6Wdu5CdVom9+Ta24cwKTuh37s7ZslQ80dnmGW8MlZI6UkJv5uWf1hfLFb/NXj+YtT6Ec1NYKRGiADmF3FOeuHN8Rl+S2/x038qb3Yp2YtND952k+DEIHNC5KW/CdVqn9NTzv31k2EWZHeAhhskwCYFexg15H16mAf8I9ZoUcnd95UIyo7ikzzR9P7U30ZeX
- lNtxqQu7
- nRkPDRkE8JJw3oKKbID+5FJMJ2TVvwPLvWJUO
+X-HE-Tag: 1756260802-516475
+X-HE-Meta: U2FsdGVkX19B8b+1WPx5zM6BhtsUFAHQjZ6REqH8tqjeeL19U3vulntfHkiOV1j+IjRTrQjAGetLDQBYWZuN8xDoWUG2FR9vBU/FDP7ELeAdkgDRhEsIG4jkT0RuZSb//AQ9DKMZNnceYGODWfDgV73tYgcR14JHmwWwCNwIfaGVXJN+3QHzGQqgH8fuFdTgL1dVmA/kFN4vDqnDKpP0bzKnSf/7O0OMzh7dmQnDDD2aLQa4oJRZGrC1GVt/fx6Hqsx+LvCd0QBCq1qz5Ux3QbD4fONKmFrhUCzlz8UV0b0MA/RWSZmXTkKoyvnZWWupY2J3qtookIveSO6aI7j6GsGmj53gOFAhKIhrLyP2+PcFVe1jNUNcKzMlLsQxnaiVsGs6Fqd+BCUR6H+G6ccaUFHSxZT+0nhaQ1MJ2JBWDc2otAPXekHIHq5rKNResl7GACtLbi+bIWXXP0Bd1fM8YCdrc6BX3jgGCRdodvDQqQUdJJdGnYacBIposbOukeUmgERtUK0nbcAgwuefdbEYcHTJ+8FMCXcVTevOOVlGKGWS/Pdvb5mVo2P31ABbWx3IZL6FMiKWg6jnrZWwjLaXWjfORsBYZMPh03ci4NyYQpmzGMO54k3LcKxVz6DGV8aN3qnSpM/vaQ9UsM8mMkPBKnJFsdp92Hy5xSrIu52y2HnKdb8d51cq8AoifORL4bkxDZjbtnqTejjxq7togXIxuNwtkJVKbNGeaKv0S0gEZAmCDUlK64PrVI2tr6t3kmKQwXTJrSc5gV2T9X1lAFbSVg049sDybADBs7/bpXOsnneyqxdtOoVvN4cVJsI9ZeED7NJI87otXoFb5rXo2ZS7RNuI0OQW2OIqWnrpkmODAGs2uHnzq0lm2vUYeyBLsw5mMPUmx10S1HaGiHFxQrybgrxX620gZTN59ke4qyol/Mmroo89EDYPejB1VDtU4LjsacwmhOu8MDNNOgDHqUJ
+ +oheMU4f
+ y0zQdHATKmySt8Ou23QHxozA1L/ZNW73DWK8Sf0acb+LWr7x/2heESyy62G5+8ZOV5iLDe1mkqwWA49WkuaT/tsQKt7EOFBwbvCTL4xJmV5wg6Dn0DcpyBIVt13FyKchhCiwzWYScEEXliinogG6hmyvyxgPn65PjLwznsNjGjuWhE6TC3JVXvldzzcCjg6LUZcvd+d+IVLZzVXxSs0+5ogt4Rnq0AS0Z/VJkUGBlJo2/5KJ8RQcUiKfHvw4eBw1VZ/ehkeMN3sCOd4T6UBLNYQmNWg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,26 +92,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 26, 2025 at 6:43=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
-> > --- a/mm/swap.c
-> > +++ b/mm/swap.c
-> > @@ -952,6 +952,7 @@ void folios_put_refs(struct folio_batch *folios, un=
-signed int *refs)
-> >       for (i =3D 0, j =3D 0; i < folios->nr; i++) {
-> >               struct folio *folio =3D folios->folios[i];
-> >               unsigned int nr_refs =3D refs ? refs[i] : 1;
-> > +             BUG_ON(folio =3D=3D NULL);
-> >
-> >               if (is_huge_zero_folio(folio))
-> >                       continue;
->
-> We are moving away from BUG_ON. It is better to use WARN_ON_ONCE and skip
-> NULL values:
->
-> if (WARN_ON_ONCE(!folio))
->         continue;
+On Tue, 26 Aug 2025 14:06:54 +0000 Brendan Jackman <jackmanb@google.com> wrote:
 
-+1
+> Currently order is signed in one version of the function and unsigned in
+> the other. Tidy that up.
+> 
+> In page_alloc.c, order is unsigned in the vast majority of cases. But,
+> there is a cluster of exceptions in compaction-related code (probably
+> stemming from the fact that compact_control.order is signed). So, prefer
+> local consistency and make this one signed too.
+> 
 
-Chris
+grumble, pet peeve.  Negative orders make no sense.  Can we make
+cc->order unsigned in order (heh) to make everything nice?
+
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4182,7 +4182,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  }
+>  
+>  static inline bool
+> -should_compact_retry(struct alloc_context *ac, unsigned int order, int alloc_flags,
+> +should_compact_retry(struct alloc_context *ac, int order, int alloc_flags,
+>  		     enum compact_result compact_result,
+>  		     enum compact_priority *compact_priority,
+>  		     int *compaction_retries)
+> 
+
 
