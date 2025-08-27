@@ -4,72 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E9FCA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 21:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0DDACA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 21:48:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 357436B0062; Wed, 27 Aug 2025 17:31:08 -0400 (EDT)
+	id B1E2E6B0062; Wed, 27 Aug 2025 17:48:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 308096B007B; Wed, 27 Aug 2025 17:31:08 -0400 (EDT)
+	id AF5906B007B; Wed, 27 Aug 2025 17:48:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21DA86B0088; Wed, 27 Aug 2025 17:31:08 -0400 (EDT)
+	id A32436B0088; Wed, 27 Aug 2025 17:48:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A3EC6B0062
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:31:08 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 99A681A083E
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:31:07 +0000 (UTC)
-X-FDA: 83823832974.24.26C6754
-Received: from manchmal.in-ulm.de (manchmal.in-ulm.de [217.10.9.201])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9C1A280003
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:31:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=manchmal.in-ulm.de;
-	spf=pass (imf02.hostedemail.com: domain of linux-kernel.bfrz@manchmal.in-ulm.de designates 217.10.9.201 as permitted sender) smtp.mailfrom=linux-kernel.bfrz@manchmal.in-ulm.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9480B6B0062
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:48:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0DA6A1608A0
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:48:36 +0000 (UTC)
+X-FDA: 83823877032.19.E74842C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 52335A0004
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:48:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J3meIb1R;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756330266;
+	s=arc-20220608; t=1756331314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UYWGQPmX6bVwZclzC4hrEojML/ykl94D8lch15dFTbk=;
-	b=pCmvIlbrTT3VAGMDS9tdpiS/PyfmajCMwze/IldZGkm4yCNLrOfAk4EVQ9JAJOuo5VUZrZ
-	bqYMkWo4bEBYn7arbeASHi0o9SebG+HR7KhXI7rm0db+atbaMMdtaWcfv/SkjJWzA87Uu5
-	GLvXf97GA4HocnNJko0ce6R9KqavVI4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fmyXnG0yJwF/HL4SodHdLyc1Rm1EPk0Rs1d6dlQVnVE=;
+	b=zeCzNNjb3LJ36pEhc35DqXJSUAsD7ax1Qqc8KUX+8C1Ba8jqUxA1kWCZXXUklE86sK+xaU
+	DeldcS96qplMn7ycASVuczZ3gS0BGzzUYe3ftESsQEAzQ8PCSoI0tXtYVMQVLt52Ywgp88
+	a2BL/02MZjrBIeQ19g3I2iiX7u8aBCA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=manchmal.in-ulm.de;
-	spf=pass (imf02.hostedemail.com: domain of linux-kernel.bfrz@manchmal.in-ulm.de designates 217.10.9.201 as permitted sender) smtp.mailfrom=linux-kernel.bfrz@manchmal.in-ulm.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756330266; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=J3meIb1R;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756331314; a=rsa-sha256;
 	cv=none;
-	b=ONpl4qOtRgk/dqk0bco79Ab5cbIlSj4RW2d3g/94N8pElS8uUgDW30Q4yaE8L2XtZbkxNW
-	ai4loG00/1E2YVVQd7zrlYRQ7ZbkIyfqSCHfPA/DOkObB/Z5eb0Yc8XYQUDN6LRYCmSZ0G
-	UZ5quNf39uKrlsiJqe7UtakaFrmmAlg=
-Date: Wed, 27 Aug 2025 23:31:02 +0200
-From: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-To: Helge Deller <deller@gmx.de>
-Cc: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Linux Kernel Development <linux-kernel@vger.kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-parisc <linux-parisc@vger.kernel.org>
-Subject: Re: 6.16-pre-rc1: BUG: Bad page state in process swapper on parisc
-Message-ID: <1756327287@msgid.manchmal.in-ulm.de>
-References: <5a004aef-9df1-4126-b167-1aae27d4240d@gmx.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a004aef-9df1-4126-b167-1aae27d4240d@gmx.de>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9C1A280003
-X-Stat-Signature: rkkz6187dfb33nbmnudokxyt61mudxs8
+	b=nf1qAk3Ga55e79gkFnZcvRH7Z0nfQCBo1bfrFtpq4FfST9FCTz2HOR66cDcyzqXhyTGVTk
+	Oi+1TGWQwJWn7Y2RaM8ppsAxRRw+jF66c42RKrc1BP+axYT1AWJvbH9NAvluhSOLj/OEIO
+	8vG0YMj4ebCvL+jooYQtou4xA/U7Gxo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 363BE41B72;
+	Wed, 27 Aug 2025 21:48:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB648C4CEEB;
+	Wed, 27 Aug 2025 21:48:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756331313;
+	bh=wxEepMxFMucuVNOWTttN26FKUa4fU/adFqguDNxZrX4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=J3meIb1RK2YZnMMG7UCvwivy9aKF/I3vkmftYzJ7hn5Mwbk7tjwH9r5FMlizxAufA
+	 Yrqdl6ZAgo5WRmHdJFE572ZlA9c/pBBJw6J9yTm5WmyGaczBcvfOefOAEhQRZ+6MNt
+	 95+lqa4PTha8j3+MIyAUuzozy+ap4IzfoNt0ViLk=
+Date: Wed, 27 Aug 2025 14:48:32 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: add `const` to lots of pointer parameters
+Message-Id: <20250827144832.87d2f1692fe61325628710f4@linux-foundation.org>
+In-Reply-To: <20250827192233.447920-1-max.kellermann@ionos.com>
+References: <20250827192233.447920-1-max.kellermann@ionos.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 52335A0004
 X-Rspam-User: 
-X-HE-Tag: 1756330265-640172
-X-HE-Meta: U2FsdGVkX1/Ho7izIyBhyM6DKWyVEoqTa+EM5o6W3fuSluopq1jz3BY6bojjzyCnNvWpdP9j/bsbPETlDynXCxCsVe7V1M65w09MazJGmqSsKxS+9waDUr1i2f0Tkl4EbLoxHG+JNQFbAay7G/Ca22xjEcvN0gPnzt1hOYuA2HeAH+WqwNlh2tBkYaQzYqb2U/Jbn3qlRgYiEtF+JE8kFCwcbNO9ksMwYD6J1KGfYj+MRlPRscL7pMD7/Zrj1APZARiAIUs08JhZtVAZk4j7eyOOakb/7Gbl0zV7qduMQY8F7AZVXcpvVIegLB5kJgYxky5elDsjbKVe6Iy4Hs3LYIULRYs/vNfGIbZXw4ZwM0BhGlsw2uTib3Vo60jxcnvO31g0lctfoYHIeJoCwCjlcL/zDISUjvpr7RbSSPSnjCWs5nH4jSd0MxY4G6ryP5bvwptcwYNz7xqpy/96VSnGKR6mRsyytvBPAIRok9cVbmt23jPGoJgHl6lXuz1Ehd8Htt/qlC13x93Mc6XvTk1GuAxRWg7UcXpanqHckotgS9sVTLpJM6FJCJB4+uk7KRgORcjuAYnKbcTv4dYizAZ/IluaQStM+7eKamiEnXqKv9bIpBzQc9BDENuvQsPyte5EMSdzRydfNfm59E9dRjqy4E/rltdKPSjDY7sZGmNRjFr9dRCDxPHOFjXi8/RvWXQIf5EcRJ7lpXNsiIcsZLsGLrzTMaVMBmFso9HzIKo2pnk37BiinfL3CUW/d2QON9/bRmfTJ/3ZbH55z5uNAyv5F5Hnmvb3GUkA6jphAjDGBt5cqfamnoVlMl1CtLxGnLiA+ySCHceMjLVkYFUNJ01/KVFXITUpjaxKlGoAvpvz9moTsiJpU1UGpBxdIMR2K7v85fZ5SuAk3BRIFJPaUwFWGMLq9jyuxx0m/6iJ+oxmKFzlOwHBbFDnH851Mvy+8zfMBA1C+jsxt0mk6+VhDU4
- InX2qon1
- qopc+mzH0QMJPQIdKg8x+wQQPFbI+2ezPaVyXCGsRV7O5OkU6s/tYQXCjqUHBGYkRUoUCuFJ19w5Azuk=
+X-Stat-Signature: bqp5jpc7gzgwkgqz15ak73wtq635fzax
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756331314-866104
+X-HE-Meta: U2FsdGVkX1/yRBV6rAlxJ974qg2xdA/evkO6JlyEArKFJBBa+AVAW9bNAzPrZedSuVr4XLSeHzPu6a5HdjK+b4KQHsxWDXA7XBYnvez5DAV3UzJWe2SuGJeZ790YFwGToTuc6hijgq98HZOet4fo41oIBbPzd/2H5oWz9l8OsLiRDClGakdE15hXPEoiRDkpUGHSqa1O/q8GebqzaTCIkd2joH0eqknfIyjGOqC0dkAAWESdzNrYbuTRdrHvPKihN8SV/6iW2FW/WX8+257SdzGdeTtD4+E+UvzQL3fkRg+9euP+m5KbdSGCvCdVa/Bxzdvm26en/1oSPUYNEX9Nfh/n/TviDYBbB6bDPjqggy9XYSt3/koTRl3nqSICHvqwsQdBrmEqRUbD0fYbqdsLU10AZNvNY4orkLBgO+TI9CNkrwh8s8NPmvwg1Fioy79K5/eawcCPlwczxIbLv+Xn9SB3MhHe5BVKUxmDyiIv78bIgyeoJ2L0asbQcYrzogClbj+uF5tkPNhgIijawC1CkmU0+t78PNC4tKMY4ZM0c3zmWL2A3CmA05QtW2KIilqKLnhrym4yZbmfP4QRnMyqsYN+0SkB9RntNi1TSf5wP05XXJ/KVJjLDKwKIkGZYLLj8YTNrrAwJxyMQoWyN5Fj1qL9RaMhaI5ehU5f++vyXFNpw7HI6AiP2E6N4ueK+49TnC0tXbUvQr85tU5kEnS9t30jP4XkqQUq3VEMUDkGiRX01KRD70H9xOxH/XxyxxPF4tlegNCPC5GF5N5soE2Y/As5doHNHw59Dn/Y6pQVkiDUNGCcZyh4ihx2Esj0d4TAEUnT2ZtqLiLiZ9KGHoNDopRJ73/t/eJ1cyZ4EFY6/02qSU5C9xnkUkCV1notkqYysKqcoC+FrzjmIOm/hz0ubof617z1+6auGFLirBxmGZ0LHd6AGkuOJe8SGPzuUSm3ScCoTt42TDHAuOOG2de
+ /9ZWFB/B
+ 5znSmTyrYU8YdHT9TLzZfLcslwmfdwiMe103vQQGGVP1PvOtFMMP1e9mwbmVAtIIy0SX+NWGjHOuheDeBdqNc1CBzJ+sp5rlSize28ZnRoDGgc0bIYgHhfoafYayxWOukgajERwnGajmRxTxQ5oISssg4+ehvbw7IuzDwUV9B7fz06K2EfEtG11Smn4z4H82JKdUJK0yvXlFc8bo63LPjOHWpwavKgzrEVO/R2Iuken4K8gll9BLXS3paqnqy/7RCqUVwt3ZI41q0eR346/3a3nVvKhIHljMPyDlbnU+wRNzj6BMFDk1w3Wor2Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -78,71 +91,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry for being somewhat late to the party ...
+On Wed, 27 Aug 2025 21:22:33 +0200 Max Kellermann <max.kellermann@ionos.com> wrote:
 
-Helge Deller wrote a few weeks ago ...
+> For improved const-correctness.
 
-> I'm facing a kernel crash on the 32-bit parisc platform with git head.
-> 
-> git bisecting leads to this patch which triggers the crash:
-> commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them when destroying the pool")
-> 
-> Syslog:...
-> [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 131072
-> [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-> [    0.000000] stackdepot: allocating hash table via alloc_large_system_hash
-> [    0.000000] stackdepot hash table entries: 32768 (order: 6, 262144 bytes, linear)
-> ..
-> [    0.000000] MEMBLOCK configuration: (I added this output during debugging:)
-> [    0.000000]  memory size = 0x20000000 reserved size = 0x01f0ed2a
-> [    0.000000]  memory.cnt  = 0x1
-> [    0.000000]  memory[0x0]     [0x00000000-0x1fffffff], 0x20000000 bytes flags: 0x0
-> [    0.000000]  reserved.cnt  = 0xa
-> [    0.000000]  reserved[0x0]   [0x00000000-0x0008a0b0], 0x0008a0b1 bytes flags: 0x0
-> [    0.000000]  reserved[0x1]   [0x0008a0c0-0x0008a130], 0x00000071 bytes flags: 0x0
-> [    0.000000]  reserved[0x2]   [0x0008a140-0x0008a143], 0x00000004 bytes flags: 0x0
-> [    0.000000]  reserved[0x3]   [0x0008a150-0x0008a153], 0x00000004 bytes flags: 0x0
-> [    0.000000]  reserved[0x4]   [0x0008a160-0x0008a2d3], 0x00000174 bytes flags: 0x0
-> [    0.000000]  reserved[0x5]   [0x0008a2e0-0x0008a5e3], 0x00000304 bytes flags: 0x0
-> [    0.000000]  reserved[0x6]   [0x0008a5f0-0x0008a6b3], 0x000000c4 bytes flags: 0x0
-> [    0.000000]  reserved[0x7]   [0x0008a6c0-0x0008acc3], 0x00000604 bytes flags: 0x0
-> [    0.000000]  reserved[0x8]   [0x0008acd0-0x000f6d8f], 0x0006c0c0 bytes flags: 0x0
-> [    0.000000]  reserved[0x9]   [0x00100000-0x01f17fff], 0x01e18000 bytes flags: 0x0
-> [    0.000000] BUG: Bad page state in process swapper  pfn:000f7
-> [    0.000000] page: refcount:0 mapcount:0 mapping:00000000 index:0x0 pfn:0xf7
-> [    0.000000] flags: 0x0(zone=0)
-> [    0.000000] raw: 00000000 118022c0 118022c0 00000000 00000000 00000000 ffffffff 00000000
-> [    0.000000] raw: 00000000
-> [    0.000000] page dumped because: page_pool leak
-> [    0.000000] Modules linked in:
-> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc1-32bit+ #2730 NONE
-> [    0.000000] Hardware name: 9000/778/B160L
-> [    0.000000] Backtrace:
-> [    0.000000]  [<1041d1f4>] show_stack+0x34/0x48
-> [    0.000000]  [<10412dd8>] dump_stack_lvl+0x80/0xc8
-> [    0.000000]  [<10412e3c>] dump_stack+0x1c/0x2c
-> [    0.000000]  [<106ece88>] bad_page+0x14c/0x17c
-> [    0.000000]  [<10406c50>] free_page_is_bad.part.0+0xd4/0xec
-> [    0.000000]  [<106ed180>] free_page_is_bad+0x80/0x88
-> [    0.000000]  [<106ef05c>] __free_pages_ok+0x374/0x508
-> [    0.000000]  [<1011d34c>] __free_pages_core+0x1f0/0x218
-> [    0.000000]  [<1011a2f0>] memblock_free_pages+0x68/0x94
-> [    0.000000]  [<10120324>] memblock_free_all+0x26c/0x310
-> [    0.000000]  [<1011a4d8>] mm_core_init+0x18c/0x208
-> [    0.000000]  [<10100e88>] start_kernel+0x4ec/0x7a0
-> [    0.000000]  [<101054d0>] start_parisc+0xb4/0xc4
+OK...
 
-The same occured here but due to time constraints and hardware issues I
-couldn't dig into this earlier.
+>
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -537,7 +537,7 @@ struct address_space {
+>  /*
+>   * Returns true if any of the pages in the mapping are marked with the tag.
+>   */
+> -static inline bool mapping_tagged(struct address_space *mapping, xa_mark_t tag)
+> +static inline bool mapping_tagged(const struct address_space *mapping, xa_mark_t tag)
+>  {
+>  	return xa_marked(&mapping->i_pages, tag);
+>  }
 
-Bisecting in the 6.15.y stable series led to commit c30ae60f41f9 which
-was cherry-picked from ee62ce7a1d90 ("page_pool: Track DMA-mapped pages
-and unmap them when destroying the pool").
+I'd actually be in favor of making all incoming args const (C should
+have made this the default).
 
-The problem still exists in 6.17-rc2.
+Because modifying an incoming arg is just obnoxious.  That value should
+be viewed as part of the calling environment and should not be altered.
 
-| HP-UX model name: 9000/785/C3600
-if that matters.
+Try modifying a lengthy function and wanting to get at an incoming arg
+only to find that something in the preceding 100 lines has gone and
+messed with it.  Or forget to check fr this and get a nasty surprise when
+testing.
 
-    Christoph
+Not that I'm suggesting that someone go in and make this change.
+
+On the other hand, it would be neat if gcc had an option to warn when
+someone does this.  I bet it would be simple to add.
 
