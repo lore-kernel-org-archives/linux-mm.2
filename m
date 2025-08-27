@@ -4,111 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327E4C8303F
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 07:01:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD09ECA0FF7
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 07:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D3016B00C5; Wed, 27 Aug 2025 03:01:29 -0400 (EDT)
+	id 2BDCA8E0126; Wed, 27 Aug 2025 03:04:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 886DF6B00C6; Wed, 27 Aug 2025 03:01:29 -0400 (EDT)
+	id 295248E0105; Wed, 27 Aug 2025 03:04:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7722C6B00C7; Wed, 27 Aug 2025 03:01:29 -0400 (EDT)
+	id 1AB248E0126; Wed, 27 Aug 2025 03:04:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5830F6B00C5
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:01:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07419139A96
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:01:29 +0000 (UTC)
-X-FDA: 83821641498.09.714D1A2
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3DA4E10000F
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:01:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mq8W9FMQ;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 097CA8E0105
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:04:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BE96F1604A8
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:04:07 +0000 (UTC)
+X-FDA: 83821648134.29.1ED2C0F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DD89040007
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:04:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PVG+ybQ9;
+	spf=pass (imf01.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756278087;
+	s=arc-20220608; t=1756278246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=taSzyI5siF68QPNshwGF71KTVjq9HZ3hznPcWh1RZcU=;
-	b=byGb9S/16jvarh+iwDIUiF5zwv9z1XT+lNcPtUieVATk9ts39sXyhYItNa4q0UvjA7KhaF
-	NpIlbopez1Cqo8zHHqoVzUFgRuLzxR5veiLjnaQ429dW0QjVCuYXzJqntiCGlkMXQocNMn
-	nqeyxrFFnvabR68MmfjoODjivzFMyo8=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cSThdWAT/nGAXZF67VC/+d+YRcvjTybQi2meKMsrIsE=;
+	b=Kn/UWAnhUUPFVJM0c1A44shVXcbS+hHLkxcAXz0HHk3sWOrL7d04DJLwPLm2oCsOLrxs2i
+	StsNa4XZz4f25cXB3djvCk37MnBWxXo5qfrkU+M4xw/M1LQENPa5hCkC7p+w9m3+YIjYQi
+	WBrKGcXPIhCgb+h6TlCz3snRcg9D2EE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mq8W9FMQ;
-	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756278087; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PVG+ybQ9;
+	spf=pass (imf01.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756278246; a=rsa-sha256;
 	cv=none;
-	b=lXn0raxxY9XqLq7CtfiCCD2G6NldtbicNxKc2B+keutMDN9RXfyQih0LNoaCGbFGJnkYn/
-	Jtf841IL/OiMjHlpAAnKWAuRnQrKXSVG9tUy92hvitf8u/SO4HiWLwhOSW9gN7HOTN/Vy9
-	GexYgsfY42yLsInOqRkN87UeF1e/nrA=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afcb7a2befdso970607566b.2
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 00:01:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756278086; x=1756882886; darn=kvack.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=taSzyI5siF68QPNshwGF71KTVjq9HZ3hznPcWh1RZcU=;
-        b=Mq8W9FMQ7poc0kch3jC83nDROn1dJACJUvk75Y4bDz5DHGH2PI/hGupIiiEZ0Vh8gc
-         BwQyjpUyH+jp+RuZIg2/h6ey7bM02LLnEjLY/2PK9UzX8gPB/4O260LX5eYWPJr7Pj0s
-         9BhLdhXUIkntFL/Nj5lcytah0PNg1jO2TOd4XJMhfqaQ+bN3YojaIJMJDZINHcxw2iiQ
-         JtUTiLXAyCv6+rkUVpboEPvlbx5omxtKPMlK2AdkQl6XEWn2Tn5pdUVu1+0EUHrUW/FG
-         i+qnHQ7OCET/+NYbOefZQxeqLozlQnNHq6Hd1Cc0ms7FwOAZGeGLAU0mU26KMdzck0Fy
-         pl1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756278086; x=1756882886;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=taSzyI5siF68QPNshwGF71KTVjq9HZ3hznPcWh1RZcU=;
-        b=j7QbAScG7+ZgZXaoJUNuyip4PT6YOblEuGzIwoX0CXxVx4RrwcxtiwLhCKOgvLSNHf
-         8pVLAh/LHfy+NdquBe+gyV9HZg9GqwNd83Mf30Rz7ubNuAqgaTvlY439CLgvD2TRuD25
-         41VOAFVYvGeVJOIv5fAU2r1hjOiBSTB5AdmetohuyHftzr8+aOj3lIIOXl4edxc2pNqv
-         AbAnYEtSBMg0L4IPOXcS56YqhyVDEJHozx9zG8GCSA9b6ylIqKiZGBsxmjYeAx04Mw+q
-         EMur7o2SE6LQpltrPWhnTBI86kwiO3ov8EAeFpNOvnuuZXg7/2hN0AWd1zgtujk2+KOH
-         ziCQ==
-X-Gm-Message-State: AOJu0Yyo6Yahf0u+MXVarDt7Bv2oXQIu1iLF/Oy3ck9JQfvoBTm0br/v
-	8mvJwfEDxuWN7+5NB7bV8I/klY/KwGMR+iVRYDi5y44xy4oaw8R35ZcS
-X-Gm-Gg: ASbGncuvgJeJPkFyumkQ9pjuXic5DdINhKzml2fagqmei9jwRgCckgzprt28SRp8LBA
-	B78G3Da7db0yghIo+XC0A65gydv9l1oSvR32BUY3htDLnJKKSrPmyVF3jTwopUBZBhs2mHv5qDB
-	U9UUV4WlmlsaWGOD9wuaknqSl31e5StezkNn02nXqgS/hp+IMu/8WFUA2nu5tB5y3hbfSQu0dK2
-	a4EyC7riuws0Z0wzuBYVt6nudLOMlPnPizYy8FhhkxePjgRdO06Iv4+sz98UFKrnYjRyv2ND9RG
-	x2y1VBKfWy5fZpAGjtlx3VZl1A6ABW9s35dAnBsxTvd1Dc1uAwej+mU8dkWDNk2Q+8vOQly10np
-	GvPCwU9shVHYDGY4oD0Xb07gYoEd0AFvxq4nr
-X-Google-Smtp-Source: AGHT+IHQPgf/uOHiArouC8bhaUZXLjZjO25FW9FUeWVvPSXS0WLe88GmgktrcblLtrsDLDs57U30aA==
-X-Received: by 2002:a17:906:c10d:b0:afe:c2e7:36f1 with SMTP id a640c23a62f3a-afec2e7424emr100306466b.0.1756278085695;
-        Wed, 27 Aug 2025 00:01:25 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe9f7a1b2fsm359040866b.38.2025.08.27.00.01.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 27 Aug 2025 00:01:25 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	vbabka@suse.cz
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Zi Yan <ziy@nvidia.com>
-Subject: [Patch v3 2/2] mm/pageblock-flags: remove PB_migratetype_bits/PB_migrate_end
-Date: Wed, 27 Aug 2025 07:01:05 +0000
-Message-Id: <20250827070105.16864-3-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20250827070105.16864-1-richard.weiyang@gmail.com>
-References: <20250827070105.16864-1-richard.weiyang@gmail.com>
-X-Rspamd-Queue-Id: 3DA4E10000F
+	b=5Y3qjTPCavZ3bEgKvCOg8jSuOvokqyt+/i+hMpeUpUM4KP452U4YZy0wuhA7EtvZhkXh2e
+	csCMu+wAwENX0LvChBY0YkK20I/H1iFRENyq5cNB2vVTO1Zu6akZlOz6aifAjg12Gzn3nD
+	7LGMsvFTauDQBfnUd4rvmjpWVerox/o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EE0E444E3
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:04:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37242C16AAE
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756278244;
+	bh=H5CZ2tzbkSmKe4NS8/T4DKNGORhGlbgAW543kjz/iq8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PVG+ybQ97gAPd4LFhIR+G+kvrjKv5810J1QRkFAKGzZgz1DE7OJii/r2BNoPZGfUu
+	 7N9Rm8U6y7iLF+KFMZT5TwrDWYOZEq3cgR3462BUv3UG3WRUhbEwC7Jadl69YN3LLs
+	 kflnravkk/zUwRDIpr/5sJLyXhOBTquduWLT8LPWOgASvRLLKrIzFyCFU6NSLZq8Xa
+	 PJDhiH2B1vblu+tcNjydq4Yj3XPxCXuTTxlansUWkNVhPO2Zh4fN3o9vpxOtkTMf6r
+	 Y+J9WF2+6Br5+Z9/jmaKNovnECLjWNbjetoIS3APzDc0scdpfDAEbQFez1PiBiy6oY
+	 kC8HlH4aMlTOQ==
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45b72f7f606so6085e9.1
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 00:04:04 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyzbnwyCIGoaHNsa9lZuGj8z8AOgBfx4iVH87t2ylb3tjtVZ6hQ
+	ZtdlpvEvBStAp+hzGgUcapH97UXo2IDpFbPr+6Esm3IE1cjkaXXPhKN7zrKYUJc25PFAC5JmrKF
+	TtLjtFB5x4h7JCx5boVSptv/IIObHwSrcWGwvnweq
+X-Google-Smtp-Source: AGHT+IGBj0S1YqcNqOkhVcoHPopUd0x4JO1ktWGHJxrJEhQxDs2ayKTTjYgC0+ca8SME3350p2Zfcb964yCWaq4vMqc=
+X-Received: by 2002:a05:600c:793:b0:442:feea:622d with SMTP id
+ 5b1f17b1804b1-45b669691bcmr1716945e9.1.1756278242844; Wed, 27 Aug 2025
+ 00:04:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-3-ryncsn@gmail.com>
+In-Reply-To: <20250822192023.13477-3-ryncsn@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 27 Aug 2025 00:03:51 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com>
+X-Gm-Features: Ac12FXy8dmeBtEZtyu95HnMDsR5nhtEyMNmwLO0U59Mi-B1KEbZy2QkKBB2jnbM
+Message-ID: <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com>
+Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
+ before use
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DD89040007
+X-Stat-Signature: 8jdskkijg5t614crshjjeych81m68waa
 X-Rspam-User: 
-X-Stat-Signature: afi9x4nwdce1sge43zojjotn4gt6pcgn
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756278087-444250
-X-HE-Meta: U2FsdGVkX18TJtr5EHEvCRo7ZxjMCPObTkQ1KwVV4aruoBBjssJ+dYz/cbzQW4/Az/0YYAfOUdpby+eMqAuncvpN0cM8G90JRgFI+KiDRmGPkWOm4RBZCD/WNExS/pMmKNCaI1aUuyEiZx/dikJHJJ3+8Se7RZMm5dChcePVXJKHom86lgqy74EQMu2TWm68+42YvuzK4k/MtpU4p/WiNu6IFgJp0pVSsdzqSiN2FS2IJLPEKaULMxyOUllDsDcOxlhP4KG/5H29KRketQTgd4N8sxnwU4tkCZMICAgCmNdkz/zJxTR1eMJz5dbxrbUEMkNJITW+ECVnh4ob022C+uvoSsoV1pEW4HeUPutR4OeuIH8zkyuTP8jH6xznrseJe2CPqcUibSlpuZrFRLuOuV6nctJOxKfHjjmETx8b2G2tRMX7IWVP+CUch+xvVjta4aRFQSbItwud+ydyWW1t72XitG/KLeNQ1oSIfqLwv/q4g/tBvjM2cWoCQW5mNILuznaO1Gfu+5L4ebJ1Eq0KaCGKLpyvBfKGPvkW8H4KpLN5Ky0/5NlJfHu8favJZui8359+xfUHgehvhk27N1Hb6xfMeUUruIcyN7IzTB/p0RTHpJuU7qM3StKOGRCjxj5UR+ykPSUKSWmbx/BTBV8XRUyz2+rr/767gZ8N+srrVqHoesD8GpMSdBscd8BCdj6n4SMiKKqb8QfUJtN6N71rj0+nwt05NV8tEtwRbmnWkItF9ypgyfL5S6Ox3ptqMRPWUKbFuhcugCwx79GAWUC61EbRdPecfBiUJFp1a3AIZEHParW+YRHOo4nAdvVKlk0SmZZXoeUaB+SVZ3CY79a2grWnC8HQGXIjuFPJCPyoYalvphDMggJ/3q5288m0I0gEHCducKMokXfTH/oOCw2snt/YzwvE3Ij9xz8t1vT7hDxAt6YwXfmtwhcR4n5wXP7xPL43b8RIWQ5rs6tBUSv
- x/lN0i/5
- s5QDjdPQoxtohYgOF1xI6Uk1NntoNE9yDKwWPE9H6m9tz/hlFUAZ1tsz1VdDMaslZhTsLHVMwDyuUHx06cWD0FqZEHt3zU6a5wUqVqn7hO0dcbSuxgJ/t4/y/nd0ZQPhaTyItD6N5oV18iIdjFZL1vzIY16qUTKAMK/eCcb4Yk0K8jATW+FXqr6AlKYAtg2oZPcd+M1ZoEQ81eRu+8z0H/CJ76xGQIMrKJBnXcYUiR8FcdhITGYDAzmV7NdD+/81wgZfMNAVX8WNnY3hb9aGktLYz7m4jx2ilMPpW6A3V/eXwE0yESBrjRMc0S08hVU0RNX90mMsdGRfseDnxKXSRBWkVYKylERaOdoEkMhI1XYS+LJcgQjdKjPyw+bc0w2k5IBS35ynsdX94SY8ERtwhg2488Pm6fjR4P3jhc78aScfxBtEgOXzEjNQoDYkKp1d8ZBep6D4fGwMS5l6GkWjyuc8oN/Vyks/vOW2EjQCHT7OQYOIMTGmdwaNNB8OFi2gJkAHpOZIkn4YBz65V+qYEUQm0zx+xnQcx6Ea45/GDNYwiD640zkol4veP9ldM4M8F+IYK7sAcXijZhPVFmbK4rgDiBxtJ7q9AwAGf03Qw2X+tr+0FYWMffOhUq2lUaLmbymoHuiT9IJblEOesTvokJVRIsQ==
+X-HE-Tag: 1756278245-739941
+X-HE-Meta: U2FsdGVkX1+0UVgBa4fkXImmAiCRp/HLHfMdVM5YvTggc8693FwkiEAnvqyHOftw21cT3QyFhbPJocs31lclkhUjG1LhSh8fIvBLc/OTjwjcfiQrg9aXXUjha35qQixI/IbdMeGDd2zzinHurIRhjpR6Vdd0MtHK2NA29WzooD0/MEGz3WzNYhSyVuUPnAmjmIxp4HN4y1E0a0d7AsWYSvASsWGu8/NdYJnL59gkvSHNY32s6xCxJs4HaIJV9yXqIwkItbRTZgZNlROVn4nrPbsATmMGiyBoOTtk+M/dzGIIUfUSCIkhfOoR2OBA/CLUBeRy+KFM6p4fQmkpU6QH7mse7F3Ef0IQrQ4Q0TtHoZDZ1Gc7TfUhEZZvepDQMJx5hopiPUi1I88O/EWICX1kPY6Ul9QYfn8JTJbTO1a2tSSSQUywy2JPkN4lGJ1KDEZSGw9Cxaqgc4PFuQAc/dQwGs8bWi4phFMhI8N7jrik4xyBUl9t/750PnbpP8sLj41hvZ7brbMUVLAgHXmfBMTgtL7elb9C7dlbCEMcxDH/DISBwn5VW7LOwfnWHhnZM27P2qPYapOs23BxeE6F7lW6xdPRHWcZn0frzvaLnnrjmz7vlpyL4ecVXrgogT0Fj2paXYMPDGiYfw2MhNG3rLwNK7uvCiG2a0B7ASg9akg/ww7IO16OiVycsKoR2nImdnW1+2PquMEiILD39QN205Npr4LBuhPoGAejLLzomPbEfiFqodOdP178DgZdThwnf7PVe8OTRK50mf+tg2AoUN7pV7wzN9B5LsI9izouAPylNYNDZ/P/Lizifqu05bt8d6zZyUB6xV0UAzZr1zAbx1iiA9V8h28xKnWK7zDYHU8X+dWKCeDuX+CFVxxLRqCcpOUysvY8dTPk5nVY/AWvgeBE9RsjXfTYWmb+ddfCoUUKOwk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,93 +108,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-enum pageblock_bits defines the meaning of pageblock bits. Currently
-PB_migratetype_bits says the lowest 3 bits represents migratetype and
-PB_migrate_end/MIGRATETYPE_MASK's definition rely on it with magical
-computation.
+On Fri, Aug 22, 2025 at 12:21=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
 
-Remove the definition of PB_migratetype_bits/PB_migrate_end. Use
-PB_migrate_[0|1|2] to represent lowest bits for migratetype. Then we can
-simplify related definition.
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index e9d0d2784cd5..b4d39f2a1e0a 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -2379,8 +2379,6 @@ static int shmem_swapin_folio(struct inode *inode, =
+pgoff_t index,
+>                         count_vm_event(PGMAJFAULT);
+>                         count_memcg_event_mm(fault_mm, PGMAJFAULT);
+>                 }
+> -       } else {
+> -               swap_update_readahead(folio, NULL, 0);
 
-Also, MIGRATETYPE_AND_ISO_MASK is MIGRATETYPE_MASK add isolation bit.
-Use MIGRATETYPE_MASK in the definition of MIGRATETYPE_AND_ISO_MASK looks
-cleaner.
+Also this update readahead move to later might have a similar problem.
+All the bail out in the move will lose the readahead status update.
+The readahead deed is already done. Missing the status update seems
+incorrect.
 
-No functional change intended.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+>         }
+>
+>         if (order > folio_order(folio)) {
+> @@ -2431,6 +2429,8 @@ static int shmem_swapin_folio(struct inode *inode, =
+pgoff_t index,
+>                 error =3D -EIO;
+>                 goto failed;
+>         }
+> +       if (!skip_swapcache)
+> +               swap_update_readahead(folio, NULL, 0);
+>         folio_wait_writeback(folio);
+>         nr_pages =3D folio_nr_pages(folio);
 
----
-v3: fix MIGRATETYPE_MASK defition, thanks ziy
-v2: remove PB_migratetype_bits and PB_migrate_end
----
- include/linux/pageblock-flags.h | 12 +++++-------
- mm/page_alloc.c                 |  4 ++--
- 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
-index 6a44be0f39f4..e046278a01fa 100644
---- a/include/linux/pageblock-flags.h
-+++ b/include/linux/pageblock-flags.h
-@@ -13,12 +13,11 @@
- 
- #include <linux/types.h>
- 
--#define PB_migratetype_bits 3
- /* Bit indices that affect a whole block of pages */
- enum pageblock_bits {
--	PB_migrate,
--	PB_migrate_end = PB_migrate + PB_migratetype_bits - 1,
--			/* 3 bits required for migrate types */
-+	PB_migrate_0,
-+	PB_migrate_1,
-+	PB_migrate_2,
- 	PB_compact_skip,/* If set the block is skipped by compaction */
- 
- #ifdef CONFIG_MEMORY_ISOLATION
-@@ -37,11 +36,10 @@ enum pageblock_bits {
- 
- #define NR_PAGEBLOCK_BITS (roundup_pow_of_two(__NR_PAGEBLOCK_BITS))
- 
--#define MIGRATETYPE_MASK ((1UL << (PB_migrate_end + 1)) - 1)
-+#define MIGRATETYPE_MASK (BIT(PB_migrate_0)|BIT(PB_migrate_1)|BIT(PB_migrate_2))
- 
- #ifdef CONFIG_MEMORY_ISOLATION
--#define MIGRATETYPE_AND_ISO_MASK \
--	(((1UL << (PB_migrate_end + 1)) - 1) | BIT(PB_migrate_isolate))
-+#define MIGRATETYPE_AND_ISO_MASK (MIGRATETYPE_MASK | BIT(PB_migrate_isolate))
- #else
- #define MIGRATETYPE_AND_ISO_MASK MIGRATETYPE_MASK
- #endif
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e534f31a6b39..c1a18aaf8b41 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -355,7 +355,7 @@ static inline int pfn_to_bitidx(const struct page *page, unsigned long pfn)
- 
- static __always_inline bool is_standalone_pb_bit(enum pageblock_bits pb_bit)
- {
--	return pb_bit > PB_migrate_end && pb_bit < __NR_PAGEBLOCK_BITS;
-+	return pb_bit >= PB_compact_skip && pb_bit < __NR_PAGEBLOCK_BITS;
- }
- 
- static __always_inline void
-@@ -370,7 +370,7 @@ get_pfnblock_bitmap_bitidx(const struct page *page, unsigned long pfn,
- #else
- 	BUILD_BUG_ON(NR_PAGEBLOCK_BITS != 4);
- #endif
--	BUILD_BUG_ON(__MIGRATE_TYPE_END >= (1 << PB_migratetype_bits));
-+	BUILD_BUG_ON(__MIGRATE_TYPE_END > MIGRATETYPE_MASK);
- 	VM_BUG_ON_PAGE(!zone_spans_pfn(page_zone(page), pfn), page);
- 
- 	bitmap = get_pageblock_bitmap(page, pfn);
--- 
-2.34.1
+>
+> diff --git a/mm/swap.h b/mm/swap.h
+> index efb6d7ff9f30..bb2adbfd64a9 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -52,6 +52,29 @@ static inline pgoff_t swap_cache_index(swp_entry_t ent=
+ry)
+>         return swp_offset(entry) & SWAP_ADDRESS_SPACE_MASK;
+>  }
+>
+> +/**
+> + * folio_contains_swap - Does this folio contain this swap entry?
+> + * @folio: The folio.
+> + * @entry: The swap entry to check against.
+> + *
+> + * Swap version of folio_contains()
+> + *
+> + * Context: The caller should have the folio locked to ensure
+> + * nothing will move it out of the swap cache.
+> + * Return: true or false.
+> + */
+> +static inline bool folio_contains_swap(struct folio *folio, swp_entry_t =
+entry)
+> +{
+> +       pgoff_t offset =3D swp_offset(entry);
+> +
+> +       VM_WARN_ON_ONCE(!folio_test_locked(folio));
+> +       if (unlikely(!folio_test_swapcache(folio)))
+> +               return false;
+> +       if (unlikely(swp_type(entry) !=3D swp_type(folio->swap)))
+> +               return false;
+> +       return offset - swp_offset(folio->swap) < folio_nr_pages(folio);
+> +}
+> +
+>  void show_swap_cache_info(void);
+>  void *get_shadow_from_swap_cache(swp_entry_t entry);
+>  int add_to_swap_cache(struct folio *folio, swp_entry_t entry,
+> @@ -144,6 +167,11 @@ static inline pgoff_t swap_cache_index(swp_entry_t e=
+ntry)
+>         return 0;
+>  }
+>
+> +static inline bool folio_contains_swap(struct folio *folio, swp_entry_t =
+entry)
+> +{
+> +       return false;
+> +}
+> +
+>  static inline void show_swap_cache_info(void)
+>  {
+>  }
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index ff9eb761a103..be0d96494dc1 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -70,10 +70,12 @@ void show_swap_cache_info(void)
+>  }
+>
+>  /*
+> - * Lookup a swap entry in the swap cache. A found folio will be returned
+> - * unlocked and with its refcount incremented.
+> + * swap_cache_get_folio - Lookup a swap entry in the swap cache.
+>   *
+> - * Caller must lock the swap device or hold a reference to keep it valid=
+.
+> + * A found folio will be returned unlocked and with its refcount increas=
+ed.
+> + *
+> + * Context: Caller must ensure @entry is valid and pin the swap device, =
+also
+Is the "pin" the same as  "lock the swap device or hold a reference"?
+Not sure why you changed that comment to "pin".
 
+It seems to me that you want to add the comment for the return value check.
+Is that it?
+
+> + * check the returned folio after locking it (e.g. folio_swap_contains).
+>   */
+>  struct folio *swap_cache_get_folio(swp_entry_t entry)
+>  {
+> @@ -338,7 +340,10 @@ struct folio *__read_swap_cache_async(swp_entry_t en=
+try, gfp_t gfp_mask,
+>         for (;;) {
+>                 int err;
+>
+> -               /* Check the swap cache in case the folio is already ther=
+e */
+> +               /*
+> +                * Check the swap cache first, if a cached folio is found=
+,
+> +                * return it unlocked. The caller will lock and check it.
+> +                */
+>                 folio =3D swap_cache_get_folio(entry);
+>                 if (folio)
+>                         goto got_folio;
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 4b8ab2cb49ca..12f2580ebe8d 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -240,12 +240,12 @@ static int __try_to_reclaim_swap(struct swap_info_s=
+truct *si,
+>          * Offset could point to the middle of a large folio, or folio
+>          * may no longer point to the expected offset before it's locked.
+>          */
+> -       entry =3D folio->swap;
+> -       if (offset < swp_offset(entry) || offset >=3D swp_offset(entry) +=
+ nr_pages) {
+> +       if (!folio_contains_swap(folio, entry)) {
+>                 folio_unlock(folio);
+>                 folio_put(folio);
+>                 goto again;
+>         }
+> +       entry =3D folio->swap;
+
+Can you also check this as well? The "goto again" will have entries
+not assigned compared to previously.
+Too late for me to think straight now if that will cause a problem.
+
+To be continued.
+
+Chris
 
