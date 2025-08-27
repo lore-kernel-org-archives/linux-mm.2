@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 262C1CA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 13:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F90ECA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 13:46:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72E028E0006; Wed, 27 Aug 2025 09:46:18 -0400 (EDT)
+	id B9C478E0007; Wed, 27 Aug 2025 09:46:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 705E98E0001; Wed, 27 Aug 2025 09:46:18 -0400 (EDT)
+	id B4CF68E0001; Wed, 27 Aug 2025 09:46:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 642A28E0006; Wed, 27 Aug 2025 09:46:18 -0400 (EDT)
+	id A89AE8E0007; Wed, 27 Aug 2025 09:46:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 544758E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:46:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D04D31A0672
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 13:46:17 +0000 (UTC)
-X-FDA: 83822661594.30.773723F
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CFEF7C000B
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 13:46:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K3PvJGyt;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 96ED88E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 09:46:57 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C248BA7C4
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 13:46:57 +0000 (UTC)
+X-FDA: 83822663274.23.18F66C5
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4FD1A40009
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 13:46:55 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K1EyJHYo;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756302375;
+	s=arc-20220608; t=1756302415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LFRDMAfXrpTt084bQ+g9mSlAgJeODKNC5KadgSAUjYA=;
-	b=NTKiGYe0lYJKZB0biW9wTgytZVtPDhbyrHN79fAPZCmcML0LiNI4M9LtWMxIx31icEmZqV
-	OBViY01LAqIF+mMTn3aEBVKDUvDdLEU+GZ1Flw1hwWN4Tc8DMhxy0OCiSI6SG7avxTbYyD
-	XY23w3q87M+ENsWEuV00yldiGgeElgo=
+	bh=tWdtgwMC4xOmfKmxCHPIWNUnKj2dqPGspbwOLyOacsE=;
+	b=Gye3XGwKtPL5igIvw/iiHm193sC7LPBolGjqqntPqhvvBFb3OWKcOVUK2WKXuFSGuDxxKn
+	wQz1/42C+gnHq3ziVF5fvPmh7vTuiQHHOLnyexn4PjV4xJXJCY7kT2eUM8xRnO6kqZ9kIP
+	KiHsgVbYDoRdRR+yfiWxbqyg0zr4ewI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K3PvJGyt;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K1EyJHYo;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756302376; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756302415; a=rsa-sha256;
 	cv=none;
-	b=X8UUtGO+pZm0gVMyad8dI3OQp4+x5c//fR0hW6ynMdgo+sAMYRmEgumcFtTUgWtVxd/nB4
-	CPu18xW/qZ2QHk3uoLxxxE9El8++mNMV1Q/GM9OyNGbU0jMpJpeRq09wehX8ZY+VdehnUf
-	YCSxLU7zFKm0AlzaxTjF7lP/v4JWzWk=
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55f48d62057so3131875e87.1
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:46:15 -0700 (PDT)
+	b=vH+kycim1nbr+Sw+0KRbtfBurqRRaGjDERnMDY+ol1usYqAd7taRjp78ZUjJvpCOdRKIQh
+	VFou2odS6FBhiGenJUpcX4ZnrmVgXsL3KK7HyWpMtWUbwflOXkaWv9F5zodcfS/mBUCdNv
+	Z4PZoshxtXjHcp3ssi5Ttv78hF25QqM=
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-333f92a69d4so50280881fa.2
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:46:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756302374; x=1756907174; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756302414; x=1756907214; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LFRDMAfXrpTt084bQ+g9mSlAgJeODKNC5KadgSAUjYA=;
-        b=K3PvJGytk2iTnR45CBdrZHrZ8Vay4N6l8b1jgISQafIylFnOphQMZTjjG7RiTj8GZS
-         Okzj4qlwThoPjW7qptlcb8q8GYLYIIK+wSkkSsD8Q9hLXf+YR74OBxeO0QqKFb6BNrjM
-         MlGD2mmVUm/6mHNqMgmsntT9DNHPhfa3/uAC0kEJwAVYqAT/KG7ST6iHLYsZYZMmwGo5
-         f8NjxM45es/hq9d6NzaPPmohkV3cJXSnuQJZgN3e0LzmMvgovhlCP7MrhsuoftmDmEGB
-         eldkJifvKfuzpYRTAdBacNH0AMQmEY7aBJUf8rhX3ZQqzdfA+En3Arwifz0zjgVkRssp
-         ul4Q==
+        bh=tWdtgwMC4xOmfKmxCHPIWNUnKj2dqPGspbwOLyOacsE=;
+        b=K1EyJHYocSQXKtIWvbdhiSc3eELq6lCIBJvtA/g+j/U0kJm2Qt0NOiRdKgasmjjL/6
+         D9WZuav6s2PlPATHT9l+ixy5Y3PhF9rnKBt4y1QLjAPYkUCkCiDWz8kfzupkfrm0haeA
+         LG2U0abwuLzrTwRGALb7YMzZkc5wcP3j418SUykDcWEcdcGWtGlHjeCB6H6h+lF0CBFf
+         zb8eReCTtaOlSny3SFXIkx2tYVkZTVFlhf+uz/GMDmjdyVN/s4/87nNAzjtG7Dq2qzoB
+         AnyEWVdcnL7fCIHZ1ownLnMsD423iMBX67w8Qj7qeMkQp/d3l/UWO1IuhDQ6slEzi9FV
+         Apow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756302374; x=1756907174;
+        d=1e100.net; s=20230601; t=1756302414; x=1756907214;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LFRDMAfXrpTt084bQ+g9mSlAgJeODKNC5KadgSAUjYA=;
-        b=mieGGhp6okULdsyD0qruV4G/WG0hKc6G5GZSDR3ydGwKN1jDSkR8PGuITIEqG0EBTY
-         GVyOO06ZKyiLVtRLm6xHHbqyREf8EAjuXCCXibkbzY6Z2w/p1Us5H3GoYAn2uAXYbpJW
-         VQddPu5S1PsO+ZWFw06UKPdX+sb5S+CR9yufIlIPL+E9KpIkWt4ZyWt6NpKVXwbQhctB
-         YGrUkAAWgYSvzm7JC+ZpvF0OLzx+snUe+Gov2Hv+1JTAl2eCqtx0zH/sr7BQn7NIY8Tt
-         5fPUgntL7p9mCV+fPfJkuixPKmQHV9qTxBbmoXtvRVPsQrRoQcAvYhNqpO7Y8gLYPmPT
-         VHug==
-X-Gm-Message-State: AOJu0Yy3yPFrGuhHHHGT9ACyNrqG1K57Q6kxAJOgQ5AhOYNSoPfrcIM8
-	ZuJILEWN70eSOR/b74pNghsERHG7ywBx3Tb9Ef82Ywr5nRAIJIQ2Dh8BeNaD83RVX1yqfdRRdjV
-	1uop5SxY2IrsNBdZdLYgivFFYce0S2kk=
-X-Gm-Gg: ASbGncsIZbvJ3yiQ5pghLIhlJSnF0/E+NskNlycw+2kIbV3pNsZuFxc1VThM+jywBuv
-	+TVPSnAKrjiP32vR7kBwT/v+34GHHRCwA19OntkNix9KtAZpctypy0p98IynUEgkXFO8CqNmEmn
-	nBNauLkIDGrtiBvcwpjo8L0SzfiK8P7liEcHejZ21G1CabvA70l7qAeVHDRTAZ4PxQZ6UYo7MYk
-	acMx8U=
-X-Google-Smtp-Source: AGHT+IEYHuR6gfJdiLBGSpeEswdu20gBKOMU0JDLMv1I7vqQePEP9QabRFd8h22nJHdGG91tT1kqE5UM8Ml1p9wi64w=
-X-Received: by 2002:a05:6512:10c9:b0:55f:4255:36e6 with SMTP id
- 2adb3069b0e04-55f425539d7mr4441999e87.38.1756302373904; Wed, 27 Aug 2025
- 06:46:13 -0700 (PDT)
+        bh=tWdtgwMC4xOmfKmxCHPIWNUnKj2dqPGspbwOLyOacsE=;
+        b=CnZc1mA7uAVaIk62jhaXMDh3GVFqCTmdCkm9z8Qjc4azVDNt5KDvUgP8wV0ePuCecO
+         KSRZIxRU5BHBdyu3oqowf5267O5+yRiQrjxnfRQ4DjY1hN3sCpSHumAT/gzYtsBVG0/n
+         VrrRi/Mw6nOuwSztCYGV3KhewFSRraVgvAh8yZNQF0nypi2oqkcdxeF1pVmXhzuPud/K
+         1P2dMwNDm/vaXqj/JgNlVG86NYcfQW67zqiYbDJfzH4TtpfvpLT9G560GmvxlVV2iHdB
+         2+eINSqbuqgDKe3lHSUaQtEiDv+7exnIViviDoL2kCQwDD0KcYXxZcgnBGkX9hzj9Qcu
+         +5Jw==
+X-Gm-Message-State: AOJu0YywzWiVdjWHCeXwGXKU1U60EENvuSOhNibSuKGJfzLlWmg77GZl
+	6PqqSp+PEwXuglv0khE6dLQq+aqyuJeal7xwUjqIDPx4enY2y3fZ128h3bwQqRhi9IKF4u1QMuB
+	GU1e1BAnz4O2Gr+hkrowf3pAoE7BuUZfcJzFhOc8=
+X-Gm-Gg: ASbGncv+FPevkD/rLDj4lTPEkDntMN26zUOrtxhORk7CilIJwydnLUa1gZv54KklzER
+	s+B4UIYPNxUHC4Gktz9Sf7bxm6Ad7tbyJhjBBYTAuuwPTPLH7IBrjc+ae9+RDjOreUlJjEivRFP
+	L39vTPBmdgwckW/Y492Ecl2bf3tSXy+nRSQb0Cdjk6qNZ2kLdY4+p2C5Xioj9Ft2Gpx1HsjqEz8
+	VuqKz4=
+X-Google-Smtp-Source: AGHT+IFjPl2md36EjKemozMYhYwDLSCZh2KeLt3TyuHDY9I2P4jqHFGfc3BYtzJxAKzHDYtC6+Y3UQVaMl8l54xjk0g=
+X-Received: by 2002:a2e:a4b7:0:b0:336:8c6d:dfe3 with SMTP id
+ 38308e7fff4ca-3368c6de41emr11268681fa.18.1756302413473; Wed, 27 Aug 2025
+ 06:46:53 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-2-ryncsn@gmail.com>
- <CACePvbW_tkBAhj6-kQzyU2Jh-1dDy63Qc4K3RFyyA4=yt-_D5Q@mail.gmail.com>
-In-Reply-To: <CACePvbW_tkBAhj6-kQzyU2Jh-1dDy63Qc4K3RFyyA4=yt-_D5Q@mail.gmail.com>
+ <aK6A76NVcV2j+J57@MiWiFi-R3L-srv>
+In-Reply-To: <aK6A76NVcV2j+J57@MiWiFi-R3L-srv>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 27 Aug 2025 21:45:37 +0800
-X-Gm-Features: Ac12FXzqIeYmGaBF6gJppSKenyNXvWRYwIEsb0FwO90gJWmXpQVNRCnB-I1egIY
-Message-ID: <CAMgjq7BYTmJ6rTod2KMHeVYZxJwQ3w7-pkarrGB+_c3a7wu7GQ@mail.gmail.com>
+Date: Wed, 27 Aug 2025 21:46:16 +0800
+X-Gm-Features: Ac12FXyR4V0OeH51yDQpMdfxm3IPqgbIMY4zg2e5mYKtqWnw1-Pko8dcKcOhbWI
+Message-ID: <CAMgjq7D93cj6CHxJDKc1ax5SCeb9QvFt38YWQM_rrF7SRi+zCA@mail.gmail.com>
 Subject: Re: [PATCH 1/9] mm, swap: use unified helper for swap cache look up
-To: Chris Li <chrisl@kernel.org>
+To: Baoquan He <bhe@redhat.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
+	Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
 	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
@@ -106,14 +106,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: z35i68c4xdfqb4m35edtctw3ocprjtc4
+X-Stat-Signature: s7rsfgtdhsfe55optjn5pcr9fxbbad1m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CFEF7C000B
+X-Rspamd-Queue-Id: 4FD1A40009
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1756302375-469556
-X-HE-Meta: U2FsdGVkX19i3o2tCGEliERTMe+I9SZaJXlmhBaKpifgI1xGpS8yzOOTZa3Lj5HVM+kU9+Mu6shiOMxXuj3o1ecP7126XUcJRg+caSyLgEXUbhdFTEWOuUoKblre+JsFbu76ZDqOLwds63MCatUF8h9yIPOyLsqNiq+0REUWg3dFflvL72DFTmHBBauCjONO4LiV4GRAh4LGCN3MpAbF/X4PwPRPvJevCTXO3KaKFIs4dM02etEto9tzehrRgOugZFfW5704J6xxyhLKjFT7tyAb1A7xFeSArottu+3QgByluwTCs05xOuYWk+3si93VwVjomnkH6/zLk695XuPVxYOYyF6p15EJ4zQjCcecJSa+S3UNiSWo1kI/QVKeYPDIiAwYZigmdgrPC0zTWHDl0fjHpTjJRh1/jU3H/YJo208cTLXOLMYeq6foTjbeKpfqXA68JI002Lw41TqxclFh1ZplTtJ9z113RDfhVPrkj9JRoCpBRMHQama3as/Mi64+DHflLvn1+kZspntFk7sHbAq0MmYjZ7gIRLFuYdKb6uoexRfihvHTcDaE9FmpjSwItuP9gtQXnnm3wojAEUENOL2wejoK5WMjY4wKTmnC9Xox0pHS963i0C4Nz/nBmM0ZPOoA1q5N/ez3gAwZFPDynMvPMGD5jsyb5zauKbZ2HSUPHo6HmQFYzOMas0NKBBw2dVYqNlabPsmrqHnB58CI4nvzuA/0vXumNhxSUu1wksy6tYMj0EL7tmxcChaCbvh0RXUDy4spdDAWV5EYrBH2fJzdhehSSLEdLDYQXzcvz3AmSh//Nk5ubQDishU5towbyogrrOqLMVLNvp/Lckp67GKLunrq0euPLMXJt8G693q0+BCSFyQmXgXuzFWXKlZvXEEvYj5KDz08Usu5WqQAs8x0vQNmY4hsVxTaF5fgroSpZdLMzb4Q/jrTepmQ0S6+AP5qYEgDg4adlP1+tIT
- BorE13Ui
- q42YKIIObMbEgFb0/dpCLIBVRsO8Feu4H73PkpP5FRAhx6IDVEGeKiP54Ae+lC1iG7EJR9iIvRNo49WwWei50Nz3F3r0urQ4p2HI+E87sKXT4+DqFDR8fyBY1zaXCRQ6t8A4Xlylx+cIdnopc0Ax5fbChQ6FqmtCwv2/6dQkgN1Q29nfZl77l4WBk26Z4Qc5Z2G2epal9Jv77FF3YOCTM7FHWBs54JUBHKl2givQQSGtadU52YDtETK3HO2KEUov5TiBuirYa7TCAKzq3YX1oku/y6GNm2/EI7QsBtyJA9ezyP91x1oUhIsWr/JDSLIhZdC+pccoMZmlbIrMLW6w+/2zxxiuQ54yHff+pvv6OckJakq3Ag0FvLbYR8OU6W0204hDl
+X-HE-Tag: 1756302415-279086
+X-HE-Meta: U2FsdGVkX1+FcrTpt8b07Py+RmV7h1Uw4RdIetBGQCtbOzvSo1oCnD2P7mbim16HTJm/rGA+ZOEqe729FoQWtynQjcUNmW8OTUVI+qzmutNQhn6DuiGEX7Z9J36K29PwEpOg8KFXp2HCr7mtv+ApebyWSae5VfWNJHx32lCv27JHuxvjHlR7yTxeaxoTlp4SUt/AaJRoNQ6avba2VF1XjiGrPB8elJOktsbKuFFt8OLxwXuPA6Zy5ag49HhPRW4TWrhW1XeU+uiljqg6bUKa6tMlHdPinK35dUUWVNiW99jKASgBSM4wvOVosXAgO+b3JczuCdm4gbfZh9tNZ9vhXadwpYytvNj3n4Mk2VHYfosr4WSadKE6LvUDL9kLJZ93Li3a53J1oSuLDSQbLPLaxYOv/3AQa/CSYXFtD4ywt/qjYn3MtwJm3rnS6sAK9wXnBZdMpSHbnH3nuKwnop65G+O8JHQYG9hku8Pdf7wt/88pt/dd9z78UgKfwaFwkhfXtn/heCBqAIwz0DFN+JUqhHIBJ1nxkS3VJhGU0T37CHhzVWWT2nukE+2129Uzfh1sPec8oItO/3fnjk5hgCR9WxYGT8eEqZK9hbf+X9WpRVRPCgzhr2ZKFwTQvJuUhyQZyKHARR8I71pPEhMWDk1HKjoz4vSuynO+PH7W9hoiEUIglZ4Ed9mn82i6HvqoH/zluAvT+Ssd5zce/sVQgJEIHjE2fSOVDzQyfSHX0CYUVCgMIDMMxZ9nT6N6O8twcxnBQs7imxMCJVv69ob7UA9j8GCCIHJyi+m0ZrEMRbOR3lVSDvh/e4KmfThvVYj4azAbWwPdK/dwjBcnhjM8GJcT4mHNzSqf0lCDc7sYcWqcWj6BrhTpD5YqxUgGmHsothbFDfuN0W2FzzD+HplmOunSHWZS5IEyRKuaAFyc+TvJc2dYKlnBmGcpbvil2EnCa4BEMlmHHI6LsYn7kzVXlyw
+ UGF5joqC
+ /Z6r8nuPE763K/GnvDR6APSHePuIRwM4QM8Hdf+IQIptnMUBftLvGyd8hxUXWfH/sXpBTiAAG4A47lopc6KfiDL4XL13v/9h6NDA4EQfwIvIjoa7chcj4/UyJOL6+yG9kMgphENtEF/+9OQraiQDi2RV8umR31Q/Z+zOn8WfQOoSdEqnxW7g1X3jmAaCgyBjFlCkMr8s4tqwu4zXtEUm5aimNBZpLpZYl7so5I0MreCKgDIQFWrVeBS8Aoy3CMsaGtEaQH0lFj8vBTuJVg7De9f1aMorLTpaLxSDtIhgMIbQKPjTfE8wkmKmTYwItp+6RYQQ/lGRU8Lm7jWuct/CBvd8m/4Hn1faII5nZSXiZ8Q8mD0+M9GSBpM8K53OPdn5SpBpMr8BJEY5X9wMrcHAgH4i+qQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,32 +122,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 10:59=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
-:
+On Wed, Aug 27, 2025 at 12:48=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
 >
-> Hi Kairui,
+> On 08/23/25 at 03:20am, Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> ......snip...
+> > diff --git a/mm/swap_state.c b/mm/swap_state.c
+> > index 99513b74b5d8..ff9eb761a103 100644
+> > --- a/mm/swap_state.c
+> > +++ b/mm/swap_state.c
+> > @@ -69,6 +69,21 @@ void show_swap_cache_info(void)
+> >       printk("Total swap =3D %lukB\n", K(total_swap_pages));
+> >  }
+> >
+> > +/*
+> > + * Lookup a swap entry in the swap cache. A found folio will be return=
+ed
 >
-> This commit message can use some improvement, I feel the part I am
-> interested in, what changed is buried in a lot of detail.
->
-> The background is that swap_cache_get_folio() used to do readahead
-> update as well. It has VMA as part of the argument. However, the
-> hibernation usage does not map swap entry to VMA. It was forced to
-> call filemap_get_entry() on swap cache instead, due to no VMA.
->
-> So the TL; DR; of what this patch does:
->
-> Split the swap readahead outside of swap_cache_get_folio(), so that
-> the hibernation non VMA usage can reuse swap_cache_get_folio()  as
-> well. No more  calling filemap_get_entry() on swap cache due to lack
-> of VMA.
->
-> The code itself looks fine. It has gone through some rounds of
-> feedback from me already. We can always update the commit message on
-> the next iteration.
->
-> Acked-by: Chris Li <chrisl@kernel.org>
+> Lookup is a noun, we should use 'look up' which is a verb here instead?
 
-Thanks for the review and suggestions. Sounds good to me, I'll update
-this commit message accordingly in the next version.
+Hi Baoquan,
+
+I just checked filemap.c to see how page cache helpers describe
+themselves, 'Look up' is better indeed. Thanks for the review.
 
