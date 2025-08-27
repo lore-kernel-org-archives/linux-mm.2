@@ -4,129 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16FFBCA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 10:22:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8807CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 11:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A0636B0278; Wed, 27 Aug 2025 06:22:07 -0400 (EDT)
+	id B8F908E0136; Wed, 27 Aug 2025 07:04:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4781E6B0279; Wed, 27 Aug 2025 06:22:07 -0400 (EDT)
+	id B40B68E0105; Wed, 27 Aug 2025 07:04:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B5686B027A; Wed, 27 Aug 2025 06:22:07 -0400 (EDT)
+	id A566B8E0136; Wed, 27 Aug 2025 07:04:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A6A16B0278
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:22:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A63C7160538
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 10:22:06 +0000 (UTC)
-X-FDA: 83822147052.10.02058E1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C63BDC0015
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 10:22:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMY73pat;
-	spf=pass (imf28.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 91C5D8E0105
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:04:48 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6888784B30
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:48 +0000 (UTC)
+X-FDA: 83822254656.09.DFAE3EC
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf20.hostedemail.com (Postfix) with ESMTP id AED061C0007
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:04:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hW9vECZU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of 3TOauaAgKCCEG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3TOauaAgKCCEG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756292686; a=rsa-sha256;
+	cv=none;
+	b=wgZTsFM/T+lbG7FDF6agwL8FydUJvOLvDF+I/k542avKzwNN4Rus/k3F2mRHmwrTGCRlLi
+	7uo2eT9fIH6lqIZDDMxEX3VzrLZ6A+ebLlhBANs0Lw+8OVbgvLvw7IKby7XYyT2/C7xb4a
+	DBXoY1eT4KvGjOXcqggLlwKE/4bdha4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hW9vECZU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of 3TOauaAgKCCEG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3TOauaAgKCCEG79HJ7K8DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756290125;
+	s=arc-20220608; t=1756292686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=feIeFoFe/NIkaHWsBJ6sykJyPk/bFO1DqGerlF+Pkfg=;
-	b=vlaLf0l5fZQxZo7tZMcduGzR0Lgqp+WpjKTh02ZSCbZPtO9EtdwVs3ExNaxJtkJZe5GBd8
-	hn0OKL042mfCWxOf/m+gzl6NMQYJj98FLCR+iWSDl7p2ex16Dvf4RA9zyMS0qdiBugdyMC
-	DHiifgiLV5belldOh8ZyEmoudYqfLzI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CMY73pat;
-	spf=pass (imf28.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756290125; a=rsa-sha256;
-	cv=none;
-	b=RLjJRxkor2gVzQ0Y3guaiQAPwJL9N6vsPh5TIFM8OgG/QxlLWsLwgV0ho5BiOgb9/fKpEd
-	QT4tBHFmhDO06KQSixIK09JKeBONZWThuG8oSp55cRBjRcldHB/kS+KV7ZBTjxvBLvpjOQ
-	6952weYsvbQxaWlhSb3gkCOMi2M/lzM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4E3E344A47;
-	Wed, 27 Aug 2025 10:22:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E6FC4CEEB;
-	Wed, 27 Aug 2025 10:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756290123;
-	bh=feIeFoFe/NIkaHWsBJ6sykJyPk/bFO1DqGerlF+Pkfg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CMY73patfhFBm1cWrO0GjSOUppBTmRm9w9tK3Op5eYvw95EorabzAemE8TKMQjBN0
-	 AFJLkvpc/07xvzw49PtfcXgo1jyfgqSIyA3tv8EQho2HxgcPu5RJ7YIj6+5ZO0Jjfj
-	 ejeS0GRY1n7Mq9lcoiSrFgud7UC1CHzgBEAzXF9wgw4H35uLjqwGgcAgwRdWTSnps4
-	 uVbcQD9zxttmWF0K8GiZTPHDS7eDEZN1k6CLQV5sYnoFYmqneHGPBxowx91U05F03k
-	 g5jrxQjovkqZ6CO/JHFUeS2pHASrfBK5fwYnJi/a4eamilP7bDZYeUuhHoJFoX+o0y
-	 IaB8i4S88yEdA==
-Date: Wed, 27 Aug 2025 11:21:46 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v5 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-Message-ID: <1804d9dc-8814-47d4-af88-c819c3f17bc0@sirena.org.uk>
-References: <20250815-pinctrl-gpio-pinfuncs-v5-0-955de9fd91db@linaro.org>
- <CACRpkdaDGmdhaik+1saRv7Ts4myQ+tg1aQqGU3xQyT7ma8dJFw@mail.gmail.com>
- <CAHp75VephepLq61HrVy=PX2oKUQd5NK2qS-vOC5h_NR65td3Uw@mail.gmail.com>
- <CACRpkda4soRCLF5=W=6R4wnwT3pjk743j022XfJxjTTQzuarAA@mail.gmail.com>
- <534ad082-08fa-42c0-9c24-f0c11af7d5b2@sirena.org.uk>
- <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2cfgNcmAX2xoMgwh"
-Content-Disposition: inline
-In-Reply-To: <CAMRc=Mdn0_yPXyYq4sbvH4P9-h71vEc4arLPBfSk1PiEFaB7jQ@mail.gmail.com>
-X-Cookie: Most people prefer certainty to truth.
-X-Stat-Signature: tunsjt9nnwb9jmojxzjctc34kgkbxpns
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=nB1CmJyIyqxVpV0Pl3/V76Kj4yMDeN/qorkLS0QOWhU=;
+	b=oiT+JbN0RJhlh5K6yt5mDHCyN6MtiAgA/bJuvtzUDrBG8BGT7OiESF7fNfmGD5EKvhVyXW
+	cB+IIIzrLR0Ulf3q9egCEncgMoOEdnsxgcie+qhMorStGS3GwNytwBPvOFwp7SENu/RHuk
+	XwKl6X8tXnQvhPjMg6hXik3xGhk6fXM=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3c68ee43c76so3522498f8f.0
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 04:04:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756292685; x=1756897485; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nB1CmJyIyqxVpV0Pl3/V76Kj4yMDeN/qorkLS0QOWhU=;
+        b=hW9vECZUZE2OWFFo3uKtiwQJhwVlDkuewFcA/PfjHuHocfsvZopVpSqCUKNYRwOXL2
+         jGQSp6OO4kn5kS3LMhiiOW+PwEEUqWQHP3zpjAOadNJNZizYwsJ4GNv+YFsHufsH7JyB
+         w9Era11FdcbaASuJzRNvqPaOTDCnsnT+4DWHo3zDYZVGQLOnSamjXzmRX74s1LDuo7fz
+         W3dMhGOtJYFoa7rmsXgrx5rVAf8FnWZv/Ra7SbiD1e17AzIYsPvAY1Gqv8HIjX0zR50B
+         52INWGX3BWGMmkPzTNkOZ5s1PUlIQGPITjcVwt7wiZIUoxk5UPM81QPNZKkyjDcNYO76
+         5RCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756292685; x=1756897485;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nB1CmJyIyqxVpV0Pl3/V76Kj4yMDeN/qorkLS0QOWhU=;
+        b=wE9fRs1sBzGzsx2+2veXH0NkTHHbATCrLhX+GCQMGuE0HwAiBnrmId6wxeY+gSMIoG
+         VXrLz0CVcf+BHyARPunGoHI71nTHhqEl8E4P9I/98+OFyqlDDZqUN7SVIeSt7rRQswOy
+         2cEDIb0YrRa/Ygqow7SaLb7L+yJmLQna/ZltjnigqHMtDDyiOBWtczZdNQ6Ase6MywZF
+         JnhmdktGt/xVDuWBOKdX+Amq2DOAx/vs4tFSiGGh0wmishPM13iRNEg+qx2DWcATS6dT
+         pKJSNTOWiCZ2Pa2KIW7r+saQy1RTEI8n0SOtGA4YIRZOGyv4HoC1WCOZeFYMa05rvEat
+         Ai6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUFHOS+dMVAHVP2kolRL4kRI3SIOFb6GeWbq3XF7Y8/pgpK1NvH27FZAXwf8FAOEw/2l7uBN5rG2A==@kvack.org
+X-Gm-Message-State: AOJu0YxmVsKSo02GkihggKy5ichsJgUm4x14t3sYvizXARfNrFdSTjCR
+	49MhlaEn9f9GDf6KU/74Nn9BgDEn0mGcNBfpFArUNuuXOsU+LbJFES37qM96Uiv5R79e83ZUBBc
+	4nmMEPPlj/02n5g==
+X-Google-Smtp-Source: AGHT+IEd9aTPTeG1vOmcHudzjwY0uo766zrOkD71aEEMOUty/fhnuFFnG6BwWe3wjgjw7hkKGY7L+IqxtUb1Mw==
+X-Received: from wrbgw10.prod.google.com ([2002:a05:6000:40ca:b0:3cb:e27d:1247])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1a8d:b0:3ca:2bc7:e821 with SMTP id ffacd0b85a97d-3ca2bc7ef61mr7837430f8f.53.1756292684905;
+ Wed, 27 Aug 2025 04:04:44 -0700 (PDT)
+Date: Wed, 27 Aug 2025 11:04:40 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAEjmrmgC/x3MTQqAIBBA4avIrBswMfq5SrRQG2sWamhEEN09a
+ fkt3nugUGYqMIkHMl1cOMWKthHgdhM3Ql6rQUnVyUH1aDVewWBMaM4U2OGO0g9knfKk/Qg1PDJ 5vv/pvLzvB4/5rLFkAAAA
+X-Change-Id: 20250827-b4-vma-no-atomic-h-0f8ebc2fe4f9
+X-Mailer: b4 0.14.2
+Message-ID: <20250827-b4-vma-no-atomic-h-v1-0-5d3a94ae670f@google.com>
+Subject: [PATCH 0/3] tools: testing: Use existing atomic.h for vma/radix-tree tests
+From: Brendan Jackman <jackmanb@google.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, 
+	linux-mm@kvack.org, Brendan Jackman <jackmanb@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: AED061C0007
+X-Stat-Signature: 6i7kdfyyy3pboh7hbnfh599j3433w8bs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C63BDC0015
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756290124-281788
-X-HE-Meta: U2FsdGVkX1+dIwCSLqam9gtjzFS9ijVq+T2tDn00ebdCnMrvxHg0AlHm7upxymWkt8vOPHLEdM3EsRPn/5sBfmZFeC9RVFxvHc4RKuodv6iNB4O4vTFgtTzYUBQZjN9+9RdeYtrEEIFVCHgoAihrsTAAsuPlgsz1KTINNC5lgju4JbEaJLKj1xGrYyWDLvXp8SPYcIHnvKtH1qO9bjhhJf2o5hLIYmkMLBJlvF37N1f5j4UlqfuSQufeyOx2ahhVONkvu/TSsUBHfyGUEOEeQndjHUnwFy5/LuJOlwpRrDnjn6jD4cxi/W/whfR5rAMc/PPTWaBwBSevlWeRQtn2P5sWb7MKvZuAL70qLTKfL49zDCW/wA2vQ0i2lljrGVl6sWwgxPZSa6d7BneFoNM/2f6XueWfUWCoFk93Qlps6pMlD9rTnnBlKJwsxyP1BDOqVfjnoTNApymTfWNUlqMQ25ZmDHO/Z8OSw21ypC6rgOvHfihy695+7+b3XkxW/t4G+0FveE7g31/MOUh/CtBzyJdoZLzxrJcUdjoRLDg1WfuBbCYeQoqT356N1SrMWCjqoHT6XJO99qRR3EejbwPazaHCG2bpR/z7Wyf/MOyi+LwqVEwHpOKQvJzlsWYv++Fgf3x4pFMIAXrjn5Et9AotFz5KITUx4PnTYbROo1Qz1rh5VAcJ47OiS8LXKCx19knJ7iSd70SsDuBFQo/G1F8Ihyh+uPsdPw9xADktxq/BpTYqNW+RbIxrS6wcxcKcmxltqQYe/IOnjlNReFJSlYnjHM0vh/5M0BEjLeWIofrBi2Rxn9ncGRx8jygHMQkmcTxfjkbdTPuCiIFULyaAAfgbHyAxnKurigtPyZ1EDNAoXw0M+EFe5jC8Uuy8CZgOfEuvYYFYyJTkVuyKKa2xPDc0A9OuOXXmSWq6m4uVndqppWjXsuIjylh66FjyAU/ref/+mO9fkwba9INcRsdUb2m
- 6qTsCL9U
- YU/NyVZkC2hxpAGogBqncmDiE++YhZDTv9FDBEQXQpiF2gHe7L5E0DguZ6ma9SIKLCx98NQJw/5/WlYxh58BcBihDkI95tippygwkROv0Gr3rNSPuRZuTA6EfF8V05CK2XewZirSeUgR77sHbOKtoqimnOgSaQmeIYKpmEo16yIfLLOXu02Z91Bg64MOibcNofN9XRvWIanJSBHzddRFkCTcRahey3jMADAjS0XCnhowt0/MAXrIL4l/liBdDnvNZnteR8Ozq+SL6wdtq5EXWB6nGwRtpw3uDdgrisX4OGJgV5jNPJrSTvd3nUfOwoglZBbJWA0T4nXDGRTGb9KWBEkP/a/J3+SiV0rgvXQP8eyF413knTfg5HcLNU49pi4Q/4rBFSGLKttlcm9TagY0CvvVQw0vfI4Q/Tt1A+ep48Dr+4k4=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756292686-698750
+X-HE-Meta: U2FsdGVkX1/UKEzNJTvwAMPiBktSeQaU4JiZS7s0h1peoUL6CpEwx5Ma2AQkb0TgxB9N7vwNtHk9hLqxagblddY3Nx5UVWOrCCU99+EPaUO6oMFZXFcjQBCwIXhvdL8sIHZ/RA1xBy0lQ5rvceASl3T9VDEdwWsr5EZmj+LNe83Ju71VVw6zCwLrsCRY9tXzi+VW0GeuGsrNo945N+V5As/xNbylsKJQyo+9rV2ZHcPWu1RUkfxwUT4aE2Y6YDyybzxZZE5BQuc6JkEH7P9bt8R4PBcJBbW7Wt6RdDRQgGrMzDnb3Ad9xfUmcDebKuftY5j3a01ULOMoggVETm/q9rYKSSkhj0qNOqjAJsrMKsebv+uvIO/6kJmQ/Ch4vFa4B7NA4sLrGhFzsAwoDDLzM4ev/KJAMNfdKUyry7j1LbQyRvDukcVX/WMwH0UUBkaJXTkwasc/U1l/7whBXhotamO19juNs5x9qBP50nX8yEtTB3SDU+n6Th+KJdZFmwWuJ4BollowVUBxUbH/R9MQk8PHc/X3j92IJtkgALnK+xOoGEjfS0Avx8dZxOlNYLNVQ/fRZOyce2e973vh9ALL+rYHB1pfMgtR+lEtO7bfbDkN5PI3votNTjKhdd6AgcMQHWxTPOMZOTpH4RPGl32750+6QyxOclvzWS/3lxYbsEbu0GWbCbW9uiCp4fBeb0669gMu3/RPI2eFiKJnSRa6jIw4YKjpbmArKC3/XXNpscruqipbs2g5AJ6jcYbAjOz1cagjYzfqNh3Ig9onUUXr3RrYsFw94iZMWygm8xUie31CDOsdMFSXNK6Y9NRv6P4bF4VgSHKqQMsMfPFBzu5nhV6RFwYmmcr2tFbsEHHKs9PedZTluQ6x/ly6QDQkgZt+gPMUSeaNpRuC141P5QD45hzM+9qhPupcSQt+GFknDeNuVIekeNditpyrDkzQ34Xi0eNfn92vav1NbW4yHhp
+ OL2qkQIB
+ imh0GlCJeofVKZVg5GMvoHjqyLygfKZbp0Oye4czbdX2oh7BxtE2PgSGIqiZSJF4KPtRCeMvMnGzGeDSFzVzKVcidQf/9UYzidiAPQ6htvEqBXkCQc2fNkRdVfzHT2tXRqd03UyZfkKJnLUglXhO1J/59jlRsNfWKUqsaUfJNNBroQ0RE5Rjqtyhv8xj8szOJ/+pprgxArUAyQpLS01PNEyPfPAOJR7lO8LGL1CCwPEgQlAhb5/xWDrV5czTKk/itfmvt3eY9U0j8Qj0jC4J9TizPow==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,42 +111,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+De-duplicating this lets us delete a bit of code. 
 
---2cfgNcmAX2xoMgwh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ulterior motive: I'm working on a new set of the userspace-based unit
+tests, which will need the atomics API too. That would involve even more
+duplication, so while the win in this patchset alone is very minimal, it
+looks a lot more significant with my other WIP patchset.
 
-On Tue, Aug 26, 2025 at 08:19:37PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Aug 20, 2025 at 8:41=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
-rote:
-> > On Wed, Aug 20, 2025 at 09:12:49AM +0200, Linus Walleij wrote:
+I've tested these commands:
 
-> > > The qualcomm 32bit platforms fail in next anyway so I dropped the pat=
-ches
-> > > for now.
+make -C tools/testing/vma -j 
+tools/testing/vma/vma
 
-> > FWIW the i.MX8MP also seems to have been broken by this:
+make -C tools/testing/radix-tree -j
+tools/testing/radix-tree/main
 
-> I can't test it unfortunately - would you mind sharing some info on
-> what's failing exactly?
+Note the EXTRA_CFLAGS patch is actually orthogonal, let me know if you'd
+prefer I send it separately.
 
-I've just got the log I linked above.
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+Brendan Jackman (3):
+      tools: testing: Allow importing arch headers in shared.mk
+      tools: testing: Use existing atomic.h for vma/radix-tree tests
+      tools: testing: Support EXTRA_CFLAGS in shared.mk
 
---2cfgNcmAX2xoMgwh
-Content-Type: application/pgp-signature; name="signature.asc"
+ tools/testing/shared/linux/maple_tree.h |  6 ++----
+ tools/testing/shared/shared.mk          |  6 +++++-
+ tools/testing/vma/linux/atomic.h        | 17 -----------------
+ tools/testing/vma/vma_internal.h        |  3 ++-
+ 4 files changed, 9 insertions(+), 23 deletions(-)
+---
+base-commit: fab1beda7597fac1cecc01707d55eadb6bbe773c
+change-id: 20250827-b4-vma-no-atomic-h-0f8ebc2fe4f9
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+-- 
+Brendan Jackman <jackmanb@google.com>
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiu2/8ACgkQJNaLcl1U
-h9AN7gf9EwrkCMDKQJ3+l64opijlSNrt1Fb1YRWh9KvdN/1+7aQ7T/xu5C8tCq/f
-8Egc7c8xmS27/9OO0NDM90NRmoDvRBfCYsrX0yqXzJ/SMQ27wrw9H/OnNqrrq9V1
-OU0NsJVeKrt5FELD7Zd1UbdrMmQXQlJeWx80plpgQDCxBzBliPEFiSg3OkTc+mqd
-Ef9KfjLAlIwsCVBOC1uwPq3Z0vsIDMzbxXq/e9R6nmwhHZMI3puSNp8ZmUBXBSeq
-D8k41vgIAo2YLmAdLfeiepGWT3CcfFlmbEHdeRIRVUS4zoUK0u0/OIedQnCwXknI
-ucg20UGLpA7K1JhJlA678HGIBlpJcg==
-=VNoC
------END PGP SIGNATURE-----
-
---2cfgNcmAX2xoMgwh--
 
