@@ -4,104 +4,240 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC53DC8303F
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 06:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A32DC8303F
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 06:28:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C2E58E0122; Wed, 27 Aug 2025 02:13:45 -0400 (EDT)
+	id 799396B024A; Wed, 27 Aug 2025 02:28:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09AA68E0105; Wed, 27 Aug 2025 02:13:45 -0400 (EDT)
+	id 749DD6B024C; Wed, 27 Aug 2025 02:28:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF1A28E0122; Wed, 27 Aug 2025 02:13:44 -0400 (EDT)
+	id 5EA406B024E; Wed, 27 Aug 2025 02:28:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DCECD8E0105
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:13:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95723B9B5C
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:13:44 +0000 (UTC)
-X-FDA: 83821521168.03.2830A93
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9E501100010
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:13:42 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GNyIBn/K";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756275222;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 46E3F6B024A
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 02:28:00 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C403A16048B
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:27:59 +0000 (UTC)
+X-FDA: 83821557078.12.726D1D4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5A94940007
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:27:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LFvTBeYS;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf01.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756276076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8yKonsBvVaDfndHNz+uuZHiBd8qaUWz52QSO3kv0A/0=;
-	b=vn4a9KXWcza8IiMaAzuhD7s2pjFBVHyFHoJlOesU9wjZPmiFOAuUilcR9RU9O5L7WeOI6w
-	fiijHldre+3DI9dDSM9E49CZhmYjZv3x6SgBKavS6zKxlnKA5BFAhgyFxnK6mfGugPhGAD
-	OhKC5/BuVct4i1sR2QmcNgmPJa+TTGI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="GNyIBn/K";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756275222; a=rsa-sha256;
-	cv=none;
-	b=YDs5rgRvpjKJEtDqoSdTGatpo7YXT4uGfZx4G+4262jCvFS/Bpk1qhZQocJJoLfXCeVOLr
-	D9zUeObr02WTW17cIgy7rrOQjLVmtc8WVY+M6+JTU+WrOHtJmcEpsKaz3PMx9uZsGGarpD
-	a+rGGY8OOE6M831LNkfNFAjPKB9Ev90=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91C4F44761
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:13:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0BEC2BC86
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 06:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756275221;
-	bh=58IM4CO3GzYGElXulUjCsmon9Noi6X7JoteWvqArny4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GNyIBn/KRQ/og/VQKH755dpknO2+GXDkzJLCpL3KoWXhhz2LhLZM29MshWyG4D8K8
-	 Uevl4ItL+8+BE6QtpgplXL50evCZHc6gjeKzfOFRAFAleB1Zs45a+LlYtAMbP4L8Mf
-	 K2fGeCQHiRA/Z8ecdQfPk/fzSMTae0hVHk1Dc4aBCZnCskgQInO0CqBgISJGGNLyIw
-	 0+aNpmagrg+ktCWLxrFmJeDHfdCblb00Dc5QP+hpzM8kTFRgvqVu1S3E5gxnbEQU+j
-	 pkqcopQ3CQ4IeDnYwVA6qAguoSiXehOKIrqPeZl7kFIFebAR582mFWAA3zBjXh06IK
-	 MIBFvLyHt2akQ==
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-459fbc92e69so43055e9.0
-        for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:13:41 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxlSgnVMifCw8CVM8af0iwZxAfypvqN8a9l1oHzNGGu9dgaeAhm
-	oQFBGxTibvztvaBlsxBo/isu0XDO7bAkFeMf8kDTbtKllpXPtZz9xLOEsULX17oWwMD9gWU+5he
-	A4JfRjmfxts4EWHj3w66FWtxliYVHLypdHfmHC8yG
-X-Google-Smtp-Source: AGHT+IF/M5nnBkFj8JCQ/wd31/i7BTMrdvdLwr55gMNN7OSMKTtQEybe9ApR8eFYMcDo9u87NtRAOyds2X9C13tVmGA=
-X-Received: by 2002:a05:600c:8219:b0:45a:2861:3625 with SMTP id
- 5b1f17b1804b1-45b65ee0f36mr3307965e9.4.1756275219801; Tue, 26 Aug 2025
- 23:13:39 -0700 (PDT)
+	bh=upLp/c7nvkarhi4wcLqwrYCCMpql68JhA2mtGehnRQ0=;
+	b=ZcsqeKLhZmnjIh1miZ6VQorXaTIbvJvFuYgzzrHoAlqiC37hJXE9uVIWw7FoQ0jymBTqhD
+	ZUjhA6X7lJL0X0BlLmVtWy1yaoefvqBIvDuhP/9vxpSoUm0Q89Pn8tMA0O/EIEw5NXKGz1
+	kmaeDAmsUXUDmhWEDK5NaGS99Zx13l0=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LFvTBeYS;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf01.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756276076; a=rsa-sha256;
+	cv=fail;
+	b=i4MMSt2cSC63L82d0qPpfJGJZPzgtiVHhFnYzhl9JCEi6zHx5szqJtRUlwlHihc39Dzv2z
+	z1qo677D9A3NUzDisa1NhRUyCTY6PjE22UlPm1e5WnqlOWYTogdzpkaj7GhI3FuQLNeRTm
+	GP1ao9ikgXY4S54+jKAkBGxdKOd0Xek=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756276075; x=1787812075;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=KPZrZIUv9EJCyN1pepa5g2AqO71ULOtbbt9NJiC+bpc=;
+  b=LFvTBeYSkhaQ0zW5l7nxBCCrjhTpn6+dOt+hBsp9EEK3u0Jjm8Agh2AJ
+   Ha6FYFh/Wzj68IkwNmODICdTC/ISoRwcoBnEf/zBUEp+2TZ7NCWg7L1K3
+   dR6QpUmo72Qt4JYbiJLxeS7xZY3YjVkSyjeCq7Pz51hIalHq0PpxKTATM
+   XlpsLP7mxqZTQ0FZ3sj271vyZvGLE7Lq1sUbYWYpEmEv71Mf/eO09zVuy
+   q4mO+N3BIH6VtmWIUzuSDLwAlDV3qGEal+COJ+Nxr4YNV3CNZ9A8zXRiB
+   S2Up/LKoNm2cMlT+JwPtu0jSpq6NUe4sdb3AdUV7k/qEe5zKRVEX1iW4I
+   g==;
+X-CSE-ConnectionGUID: qhr4qm4ARwGJkjJ+jg+Xtg==
+X-CSE-MsgGUID: Dlq+1s1GTf+KgrVNgHzqZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="68793037"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="68793037"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 23:27:53 -0700
+X-CSE-ConnectionGUID: lDlwUV6VRQmZfNG/Em730Q==
+X-CSE-MsgGUID: xJ4vvhNARniivyoKtrt0yw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="169282837"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 23:27:51 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 26 Aug 2025 23:27:50 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Tue, 26 Aug 2025 23:27:50 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.88)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 26 Aug 2025 23:27:50 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vINRHoRpojvcpAkkGb6akgenB3uNiD25VFfNnVrgCloPUdmIT3+5E3FjFZYd8N1xrJAtcab69SN1g7NSv0KjHfInebkOQTa7KnyoVZV11D1wyKcvQ7iyrNBF2/bFg4DrQDXXUdhv+NGhdaRPey82Ehu3daVlAnlWWFDA0oxgMxUAUOlEHyoB9O64Gv/+9wRDCiBeeEawAgUMdUHx8BonRaylWlHNFUCT9UqluW4ZnYccxeWBaU/yJDykw2LwSUZ8PIqee/RmXzKqXZKoa1trL90R2z/oZdQC3iLa5bkKuAc42ImD43cQgK0/ZQuDzsDm+o2kQu5t+UxaPMi4LEYGjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qVpgQuu4a18qaU1w6d1i9ExUt4jSKqQzEQxvdVOOTXo=;
+ b=A6nHjYU4Nu+mpWIc8tOPmAwOiBtUC8ZmEHX/XbB5TV5NX3ehQNxjvHaA7OOXmH09vTdhRGd/48eMzzBFs9FYGq0Flk+FT3gV1APpGb3ubhyHrOIM6OsSyhtLcMQgUSPRf8ZD14OHusjCe2R8wCJ/MiuILBtHm8yutqwotbz322cKFM+YdmMdGct6KpZrcNUzJu2TPMdS/aRhtIHfIeQpKVLwUncaz7K5oeri4pmNleP6goYuDcsrhs2T/D/vuiA3TUCABsblwWcuCJn7+WhhWlyujL6DKMxFlKZPUdjCgBJlVWRQIBUD5s56N5wo5h7r1oSQZsT9gdTvJs9f1dw6Lg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN2PR11MB3934.namprd11.prod.outlook.com (2603:10b6:208:152::20)
+ by SA0PR11MB4527.namprd11.prod.outlook.com (2603:10b6:806:72::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Wed, 27 Aug
+ 2025 06:27:42 +0000
+Received: from MN2PR11MB3934.namprd11.prod.outlook.com
+ ([fe80::45fd:d835:38c1:f5c2]) by MN2PR11MB3934.namprd11.prod.outlook.com
+ ([fe80::45fd:d835:38c1:f5c2%6]) with mapi id 15.20.9052.019; Wed, 27 Aug 2025
+ 06:27:42 +0000
+Date: Wed, 27 Aug 2025 08:26:57 +0200
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+CC: <sohil.mehta@intel.com>, <baohua@kernel.org>, <david@redhat.com>,
+	<kbingham@kernel.org>, <weixugc@google.com>, <Liam.Howlett@oracle.com>,
+	<alexandre.chartre@oracle.com>, <kas@kernel.org>, <mark.rutland@arm.com>,
+	<trintaeoitogc@gmail.com>, <axelrasmussen@google.com>, <yuanchu@google.com>,
+	<joey.gouly@arm.com>, <samitolvanen@google.com>, <joel.granados@kernel.org>,
+	<graf@amazon.com>, <vincenzo.frascino@arm.com>, <kees@kernel.org>,
+	<ardb@kernel.org>, <thiago.bauermann@linaro.org>, <glider@google.com>,
+	<thuth@redhat.com>, <kuan-ying.lee@canonical.com>,
+	<pasha.tatashin@soleen.com>, <nick.desaulniers+lkml@gmail.com>,
+	<vbabka@suse.cz>, <kaleshsingh@google.com>, <justinstitt@google.com>,
+	<alexander.shishkin@linux.intel.com>, <samuel.holland@sifive.com>,
+	<dave.hansen@linux.intel.com>, <corbet@lwn.net>, <xin@zytor.com>,
+	<dvyukov@google.com>, <tglx@linutronix.de>, <scott@os.amperecomputing.com>,
+	<jason.andryuk@amd.com>, <morbo@google.com>, <nathan@kernel.org>,
+	<lorenzo.stoakes@oracle.com>, <mingo@redhat.com>, <brgerst@gmail.com>,
+	<kristina.martsenko@arm.com>, <bigeasy@linutronix.de>, <luto@kernel.org>,
+	<jgross@suse.com>, <jpoimboe@kernel.org>, <urezki@gmail.com>,
+	<mhocko@suse.com>, <ada.coupriediaz@arm.com>, <hpa@zytor.com>,
+	<leitao@debian.org>, <peterz@infradead.org>, <wangkefeng.wang@huawei.com>,
+	<surenb@google.com>, <ziy@nvidia.com>, <smostafa@google.com>,
+	<ryabinin.a.a@gmail.com>, <ubizjak@gmail.com>, <jbohac@suse.cz>,
+	<broonie@kernel.org>, <akpm@linux-foundation.org>,
+	<guoweikang.kernel@gmail.com>, <rppt@kernel.org>, <pcc@google.com>,
+	<jan.kiszka@siemens.com>, <nicolas.schier@linux.dev>, <will@kernel.org>,
+	<andreyknvl@gmail.com>, <jhubbard@nvidia.com>, <bp@alien8.de>,
+	<x86@kernel.org>, <linux-doc@vger.kernel.org>, <linux-mm@kvack.org>,
+	<llvm@lists.linux.dev>, <linux-kbuild@vger.kernel.org>,
+	<kasan-dev@googlegroups.com>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v5 01/19] kasan: sw_tags: Use arithmetic shift for shadow
+ computation
+Message-ID: <cwxjbxch5mu6ji7dhus2kfygys2kky2agu4gqrusnz2autk22t@k2cq7qgqmmvm>
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
+ <7e314394fc5643def4cd4c6f34ebe09c85c43852.1756151769.git.maciej.wieczor-retman@intel.com>
+ <aK4MlVgsaUv-u7mS@arm.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aK4MlVgsaUv-u7mS@arm.com>
+X-ClientProxiedBy: DUZPR01CA0006.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:3c3::13) To MN2PR11MB3934.namprd11.prod.outlook.com
+ (2603:10b6:208:152::20)
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-3-ryncsn@gmail.com>
-In-Reply-To: <20250822192023.13477-3-ryncsn@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 26 Aug 2025 23:13:28 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuMX_WTg7vyACBxskNmDHB4C-ZkowuKYP71gQ8qyKuwAaA@mail.gmail.com>
-X-Gm-Features: Ac12FXx6j9Ld3lDohs75YQOI64HdH5xtgDz7f-SuJOL8YjcKUe9IiesbxU2NYqw
-Message-ID: <CAF8kJuMX_WTg7vyACBxskNmDHB4C-ZkowuKYP71gQ8qyKuwAaA@mail.gmail.com>
-Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
- before use
-To: Kairui Song <kasong@tencent.com>
-Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9E501100010
-X-Stat-Signature: yhowurtpi5zf5ufcnpwezxr9wka5sk57
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR11MB3934:EE_|SA0PR11MB4527:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15383612-209b-4714-8cfe-08dde532d40c
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?fT5bBLm23rX6Auf5KPDQwPGN+axElsWmRu8oSKqwKCSehhzShBiSiDYyfx?=
+ =?iso-8859-1?Q?pT3nIPOMf5vG5c2GGFErRbR5wjb/8lPbggFY4mR/Chw85GDU0hxcSziZGp?=
+ =?iso-8859-1?Q?cZrOhn3SUnzwuuO5QOczMKOyrfyQTd9ceLkccHmXqOZ6M20fhw7OMIK4+P?=
+ =?iso-8859-1?Q?OyMeQEMkogW2TnqB1ozWZaICilLN0tL0TUV7R1zBURqKhXps67qq75iViW?=
+ =?iso-8859-1?Q?06heReNhZt2zNbVJDTzm+vxJTxB7ne/Yhi5gHvgiNmdrX+7YQ6CH4Fk1Z5?=
+ =?iso-8859-1?Q?purz9HNcNw5N6Eph/nDDF7VVFOt70Gtz7Dqx0zr2DX5D1/Dqy8NfCSEzPC?=
+ =?iso-8859-1?Q?0/jGw1+YWRcmazMpRSDupKU2IFoXgiwyIeeK6aQLCEnlKkmpeWo/SuUXOX?=
+ =?iso-8859-1?Q?MQ7Od0j+2zJY3qrlaCobFgpa+1depuRMDy+wiS1Axii9Fyna6DV+Prk6TJ?=
+ =?iso-8859-1?Q?MhQUCwFCdgHxuj+Hl11DHUDlbZ3G5P2pli1k73o4iYq5+mMEiOmDvfT7hS?=
+ =?iso-8859-1?Q?W1U1ScFd5Cab9u43pfsq8WmRemoovcl7/3tLfTDqUzaPeKqMQNuL2t41mM?=
+ =?iso-8859-1?Q?UBeCZ9zBcQ9iA0fZp9gm9F2CARODLUl+KhzlsFM+QsWZCgPb1zT/BPE5kn?=
+ =?iso-8859-1?Q?yFfVTlUhhJM7xJ+ilL6jLLqz3Hd69uZH3dQPN6Noj7qoKwfzN+QtzGWaVO?=
+ =?iso-8859-1?Q?Z3VpXOM8vBkWbXEaCpK66m7qWNuAvtyoBU0DxdwioAZ6532UoGynix/4sw?=
+ =?iso-8859-1?Q?yRCxUj9viREzoijuLmrKrdqR+PLddv77xdsFUXlGsSt94cNhkJiG4MkFwS?=
+ =?iso-8859-1?Q?zaLOJc+fXGZfxr/z+A6jjdiCcvlYnZDi63iWy6uSsvfjnSvArlkyURPfdk?=
+ =?iso-8859-1?Q?9YUkgwDAObeUQ4YDPBJrwC0MyZxE483kgyRMgXg89cOQk1QKe192lUpyd7?=
+ =?iso-8859-1?Q?OCzUsjwjlU+5ku9Yos57SIkgVf/4yKxEzb05tLtcsmDyy5TAWDGNQR/Te2?=
+ =?iso-8859-1?Q?fY+BHh9HoQuq2bKn37Xl8wtn1/yETYdrTBnw/SNflf6zYjhfpS1hdQYQtq?=
+ =?iso-8859-1?Q?LOMMhJHsJD6h2e4ziAv3sBQkI2/YaINVZKiSg0nXgXaE/sqKU61LA/gtvg?=
+ =?iso-8859-1?Q?eJ0plP6dJLSU6LZOxYe5aUIqpSQcytxe3LdFdfsxumh9cYcK5K84TfQbTN?=
+ =?iso-8859-1?Q?OR3VDQd1N2yWmYt1YTbe4j/nz+oWWR/iqMVjwsIcBldUpwUjGKuCsc59dh?=
+ =?iso-8859-1?Q?2sdZiK0RsNBwe9VIx/dcy4J0wgC1gOufGRE1huSYbzrA9jP8OhjPQoXR0E?=
+ =?iso-8859-1?Q?rSkNPLbg4MWRIgFTLHEGX1gzQoulcBMTmXuKmqalWMpGLIV1JCod1jSeid?=
+ =?iso-8859-1?Q?7jUi8pq0NsSGnmSBHB2EFWW0MwEymMAEhgEv7ybtyMaKXrgodQyq2lEHSy?=
+ =?iso-8859-1?Q?p+7oAMUmKjJR07OyPssf54rxoTj9C4o+f6yYT7TcGUoKUDmP/G8xRxgec1?=
+ =?iso-8859-1?Q?g=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3934.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?sRJpjmF2TPhOSFBW0EZPcQnkPMTHh6ok7SDGyELJr3xrUeHD3WbTZyTDWt?=
+ =?iso-8859-1?Q?w7qe8z+wSYlusmleHbhowdJ3uqElF4qzDvHoE1FpTSxhcSFXwelsKI4alv?=
+ =?iso-8859-1?Q?3o+YdaObrdyH+oHTV2NqqFRUeiaScEhqR4ljLoPcQBBjDsAWAnOLfQVT03?=
+ =?iso-8859-1?Q?P7YlRYYOZOkfe07GAcMBUNJkDZ8KVlE7ewDaIpao0mWfurVBTuwOIQ5D6+?=
+ =?iso-8859-1?Q?HC78YyshcT27QNVERGcUwHK6gRcz6X4eyWiO5OAAm7+8KB42LUDeSrk+o7?=
+ =?iso-8859-1?Q?/wbBJOQiAHPrkGhWzCNtKu5EhwbLL2BFyNsgBKijwyrZABapI3yuaxt6Xb?=
+ =?iso-8859-1?Q?X45O5fuSx0RQVCJtouNuAcamvzZ+rJp8BDXU+vaS+uwdgxyeCmmy04yYgQ?=
+ =?iso-8859-1?Q?rNWKjttO/OREFyOOQSHePpb7HVIXBrQslwLM3gQrZF4GWzn5ppFaUEoPLh?=
+ =?iso-8859-1?Q?jAJ3ITvy2H+WMUvY0zDj3fx2KnjMbCD+YKGsymtqcMKGL6gJplhcsFwcI5?=
+ =?iso-8859-1?Q?EjZZB8C4uofbQf6fos43o+v/Ke8kf29EgxdessMxi3pOhx5ntk75KZtoLX?=
+ =?iso-8859-1?Q?CqCM1vMhbE1kpY4W3+dtEw8RAJNBZFxbLMZm5KerymC4XcuO6O62i2w6Bh?=
+ =?iso-8859-1?Q?kYvfIudFseor0XDi2aqRArvdRPsR6s14JY4lHYL5FEnN2Mbf2MeTteH1d8?=
+ =?iso-8859-1?Q?bujm/s66kIv9VbUHlUMC1ZoVG0WH9F+9KyGPusGIhGjZW5v8DBY1U4DQMH?=
+ =?iso-8859-1?Q?Bzl3nvg+M8OrCCOg6mOEh6Rox9EhHZeNRFro7A+6Z6vkXV3oamB74EZNBx?=
+ =?iso-8859-1?Q?TlEpMbKLIh2swzC7aPeQV3lblaXo3E5trRorn1KdEzpV8CDai/Vdj78j1g?=
+ =?iso-8859-1?Q?daQPcb/2c+ZlGH6OQlGeflgwhsSBPUL7qPZM4fiygZHeyCURMqNS04CKLT?=
+ =?iso-8859-1?Q?E1UhvARP5GS09RvGAbcsSDDtpL1joK8FOcqD8XchPnd56DG62cR8f7Kby9?=
+ =?iso-8859-1?Q?jsCyYB6RzLk6qf7C9qe9Wk/v4tjBat3zfeKH9UDf4bMtXRNpkXC2JzQltv?=
+ =?iso-8859-1?Q?8eHiSLaOjKYgNtYADODaSa6jIZxbaXesYxt2Dyu25sY8OIr+Jh73iEK6cQ?=
+ =?iso-8859-1?Q?C30/NYa6AFACxrG6TFraR27asjbgRXTjBhRAgj0LQUbkYDmvu6nQSftYnP?=
+ =?iso-8859-1?Q?rAPOGyutJmZvXUmfjor53YEQHMGRmk46/7Y3tst+6dYeEqcrKmyTiC1t3P?=
+ =?iso-8859-1?Q?SYAM8WXrYjaH584LwFu4fdBWKjEiPZvafineY0VGop+Wy2pwDxSjNYWPlL?=
+ =?iso-8859-1?Q?u3hHGJz3+P7ztLubSBfjTs6q9bxEbKvhST306rt7PXRSRNFKgVFTJt1YwR?=
+ =?iso-8859-1?Q?9J0RCazgNZ0qGf3MkliB/UhfO0ekc3G542ZZ54unIyNpl/Y/kUp84AI8Dv?=
+ =?iso-8859-1?Q?ub6mQ0URqUOg3D5bNqugI5nB7ki1wmI/wOEHX8JXGi2PFB1QvbJ8/5I/HA?=
+ =?iso-8859-1?Q?Hk7EGmL10F4HRSoOVxRnUkFyplqHlEyBpts+523Kt128xltaQrzNLRPZyV?=
+ =?iso-8859-1?Q?XgGAtKuShQKh9iF+dtE4oMR4y8PfZwN182P6xxnlU+agU8jSvi3f1PesWH?=
+ =?iso-8859-1?Q?04vL8vn7b20RJbh/P01m2BpUYTeOwg6rhpwdWWPdbDVRgdq1zwS44r1PlQ?=
+ =?iso-8859-1?Q?0AQMH44nCCEFeD9cJAA=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15383612-209b-4714-8cfe-08dde532d40c
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3934.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 06:27:42.7355
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8z+9UnGK4WCySK15LQLISgdosoGoW01wH3bshDOyqSxxhx36p//3GPdVPX22t9vb98rxhapvs5bB+AczScPamOhRz5eT06Ssi5XF2u2PnE4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4527
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5A94940007
+X-Stat-Signature: 1ende1x1mfcgohqpdw8tzbhp99kc59w3
 X-Rspam-User: 
-X-HE-Tag: 1756275222-725447
-X-HE-Meta: U2FsdGVkX1+kXbfMJa4GKLH5clhix4jbDQRdc1PnM0EudVJaFtEM/8eu/mW4Rr1Rf04IwD5oHY/6TNwE/CrnsLQ2dq9vNLYUETySjh7jgsQLUyRdpRCOVhWkwbMSvlEhWNGwoDNvZQkRoqZEKSDRYPX0GrpA0hp6peLwxJMh5pQPJc2z0lH5LqfQGVvf/Q3FtDRPWJ6eS/siNmayYhNgRu/8pXpAVnYMHagsHZV2GNYnYSqCJ9CQYnQt9djqPWBQvxzz0EZ59K1hJxsKpFAptc/w6q+5hCK1lyflrtXVSr/mvMzqtphlghkSnjM9/tQ61XOtQ6NZB5NDSiUpcsPgglD0DGglL23zGFCKOlAZb1uIxruIt/7KRHw8ODLNnqdbf6Qnp6agHIgGyP6eTeaFkS4y+GwIdAktdHxEcyfTkPxdySBTf6Bi1pfoem0LTo1X8F+hPQ8epnY7aySHEcNG8xP49TfD+xSVkynxuNFAwon/jF5cBBGPPgr9EBcn/sF2mGVXnLMbaKZBLiYMCVVqGd5s0YnUozv6QaP9D1osckypPjko3YrK6GYRK8+u6X7e1sFtYsiUAFEb/VKE7xPVFEmIIkV7eurCMg4Pnqw0KQiI9odAomJZ9aczrgzOjFL+6/f4rxB3dHPMa5PSFGfGrGn3HHIiBX/DnhdeBCleZ6blsy2LFivjk5qVFNc/aEAfRskCilKU9UHOiIFrv9HU4GjHiXt0XOr/mMXs40VUh/m+M6V5U+yKE5UiCES+wW2hpXUVUyvbW3AcX42LK7VuYpgTU0SY2FaNIzd7mvUD+hnICCxkbLd/Yg0z3XEua6XCt+Zm6uxM4ma+9S1W1qZ2o8A0Ob8xsUqNc12kV+Bgss+C0TsU1/LKC7YlCYnwewYLWE48ipxjFr93M/jgIOGPubuu9FmNjliV9i2yM1+kr/wEo0Lh5uL8cixqdIyG6We9MyAeo2th0bK4u6YzPw/
- Yj5iX0zt
- V+xd6gGuHtESPL0kMnSfyVXSQxK1QPeRuQk27N2kbzoBnVnfoFo54F3p0g7apx9vGK/SkmqEgNZRg5t+EmmtY6a+vY2LEYyLEMeKu6n81iQky/w+z+9hdfdW2Vv6XkKAvpMXRS0L7m/tNOhlP/cFBSKhuy5D+3usC396ucVZWh1b2YKXhFF1NYH3bZ5ilVOLFj24ywvKj5LDXSdo1yT72W2x0RItcbiXsTRZN8giGeGrWx4kfOxlwZ80oRH5Hox0Fx3zU6deIFIyeZ4CPee6FAMvdPuHtMwQY12B3sLuJxTQFHbi0yAudOcsIgqJGibOBmHgDwdnyLE071SQ=
+X-HE-Tag: 1756276075-950675
+X-HE-Meta: U2FsdGVkX188wgcEqBSnFUXVSQEhVyA013myQuDWRsrprzpUcFGpjet41JwM07W4PwWr5J3m1Uddp82DAaOHzIuI16HzotS3g8pprwsdy+hcSg8CP9gIw1WsaTzDjb9olJ1kIVROYzIhk777oMRIsM+rlB/PKJ3P+cpnqenM1xRuZf14DObdkaJi2/YRUIOzWCyGW29ytoD/vliju43TX+sTJj0bzFg5lyq8qgxYbv28XPa81shETcNXwxy5sDmmsL7AcSaItlpyjDuLae9+Zr71qKKT1z75r9WGWXhO2zDsWctylO7IsaqGZFMK/puvNQ+44fvVVtw6EBCkJntJmU25qMYnIqj23/9RKWd+Hts4WPwfUAyK+mHS8EsqnLKbxbTkFUt4bKrMNwM+nN8cPYMZoW9dqVRNmApNDD2asw1HxnvqC0QzA1xUshSIA58XRlU4EbM2yIjgsrRkDT2tZU5mKugCuu6xSoRJLuq+ggKhd9NiRIcQkimiDUXaoJdwK/Bw/z4ueOeDtuVRFV9kBnUkNHC4qBV3h+48U1Hs2s9PlZ5gallfzIbV/kVezEGCW0LpCXErh2b4lfVVm2fckR5TSVWCaevHnxeRpAs4OX11oTUQ0s8elJOd85Zzou7Rdk6Ls6WBfUOS0CnzdafC95HfYBV8mzKP/6Guybl05JaO9umv/PPFcLvmKB/mgeWYsSw951pPySTZ0S50jF+x5hZWUBU5nPDBD+TzYab3UQx3xlHBj1WBT1+0CH/JXn/LBWpGrBAnokQk8HehCVvawGeOtruzIvp6XcCQnF0/6fCWXIYq5mwXXF1LDezmLGws5N2igXrZxbhOCHP8Wnb7R16xhqeH+F3mwIK0T6kSiq3CnGjVhZ2eZBLwobCRng6Je03CKj/p4gnPQqMKlN2SQ16tF2LOddjNOPJmZv8egeuJ/+y8oG9fb6zn7LitB4N38YC26BCRCfM+kKoLNj4
+ 9/M1l9lQ
+ ukFRJjpXTj2wHS25K1yjvkqThUbtZ+/Nd4W6e+Ew2ENgjRCB72c0dgoLJxdfxV9YnfMc0ICQKG7+yNpzGD21xTIG4yUbmpGG5uj8v9dbAJhc6GNHELlIBEI/qijVirvZPVH0eHr7OACy7mptZvetFpn7e3XFwUjM8TyRo16n3QmpJTOawkw0AfPiqDaT64aTiu7S1N7/e/5Plmw/ztZfE7KuHX7fcvqwrST+M++v4BJn6ABCLovrIxN//MRygU0ZYFrzL2/vT+NnPoxjTEvoMyX+dxd3dP8LFtOWQJkklTtrGiTvjk+v0LtP9qoZZ356EySK42R2YyHkUX43sAr+EefVmnPPyVYpxwIUIC93TUpPHp0s/n5qUy/SgPpjwZ01fZSiPJEfI/y1eKD8J/23Xu4Dkmv1OgDhJ12GHgkokKi3NBqKqvTtGPMyORKDQFv44MGACFR8v0p4HLbzhYVKWZS/E7fOLG97Scf21OmCuAez87gEyBEqBELofSTR9ByRhgey0Y0FehIcVjhb8RqwmxBY9IEo3Rfc/DmV55LhS6r0mi/QIzGTu5h8P4LlznhgiSPVKJpBaFJxli/fALjYpFwrTSbNTXousyFABmreoTgqTtUEVMKdIp/iXs13LE17SeGf1DfEsXDvwm49nXAI7vp9wRobS0te2uizk3QkltLy+DtDzXFtgZn7kblO5udSVEtYoX1oUcFfN1+udHTv+CyJOUZivhhmPCSeib354u3r56oaUBmuZL7Z+Wsammu6z5w+BbqdRNoXYN6U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,274 +246,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 22, 2025 at 12:21=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
-te:
+On 2025-08-26 at 20:35:49 +0100, Catalin Marinas wrote:
+>On Mon, Aug 25, 2025 at 10:24:26PM +0200, Maciej Wieczor-Retman wrote:
+>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> index e9bbfacc35a6..82cbfc7d1233 100644
+>> --- a/arch/arm64/Kconfig
+>> +++ b/arch/arm64/Kconfig
+>> @@ -431,11 +431,11 @@ config KASAN_SHADOW_OFFSET
+>>  	default 0xdffffe0000000000 if ARM64_VA_BITS_42 && !KASAN_SW_TAGS
+>>  	default 0xdfffffc000000000 if ARM64_VA_BITS_39 && !KASAN_SW_TAGS
+>>  	default 0xdffffff800000000 if ARM64_VA_BITS_36 && !KASAN_SW_TAGS
+>> -	default 0xefff800000000000 if (ARM64_VA_BITS_48 || (ARM64_VA_BITS_52 && !ARM64_16K_PAGES)) && KASAN_SW_TAGS
+>> -	default 0xefffc00000000000 if (ARM64_VA_BITS_47 || ARM64_VA_BITS_52) && ARM64_16K_PAGES && KASAN_SW_TAGS
+>> -	default 0xeffffe0000000000 if ARM64_VA_BITS_42 && KASAN_SW_TAGS
+>> -	default 0xefffffc000000000 if ARM64_VA_BITS_39 && KASAN_SW_TAGS
+>> -	default 0xeffffff800000000 if ARM64_VA_BITS_36 && KASAN_SW_TAGS
+>> +	default 0xffff800000000000 if (ARM64_VA_BITS_48 || (ARM64_VA_BITS_52 && !ARM64_16K_PAGES)) && KASAN_SW_TAGS
+>> +	default 0xffffc00000000000 if (ARM64_VA_BITS_47 || ARM64_VA_BITS_52) && ARM64_16K_PAGES && KASAN_SW_TAGS
+>> +	default 0xfffffe0000000000 if ARM64_VA_BITS_42 && KASAN_SW_TAGS
+>> +	default 0xffffffc000000000 if ARM64_VA_BITS_39 && KASAN_SW_TAGS
+>> +	default 0xfffffff800000000 if ARM64_VA_BITS_36 && KASAN_SW_TAGS
+>>  	default 0xffffffffffffffff
+>>  
+>>  config UNWIND_TABLES
+>> diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memory.h
+>> index 5213248e081b..277d56ceeb01 100644
+>> --- a/arch/arm64/include/asm/memory.h
+>> +++ b/arch/arm64/include/asm/memory.h
+>> @@ -89,7 +89,15 @@
+>>   *
+>>   * KASAN_SHADOW_END is defined first as the shadow address that corresponds to
+>>   * the upper bound of possible virtual kernel memory addresses UL(1) << 64
+>> - * according to the mapping formula.
+>> + * according to the mapping formula. For Generic KASAN, the address in the
+>> + * mapping formula is treated as unsigned (part of the compiler's ABI), so the
+>> + * end of the shadow memory region is at a large positive offset from
+>> + * KASAN_SHADOW_OFFSET. For Software Tag-Based KASAN, the address in the
+>> + * formula is treated as signed. Since all kernel addresses are negative, they
+>> + * map to shadow memory below KASAN_SHADOW_OFFSET, making KASAN_SHADOW_OFFSET
+>> + * itself the end of the shadow memory region. (User pointers are positive and
+>> + * would map to shadow memory above KASAN_SHADOW_OFFSET, but shadow memory is
+>> + * not allocated for them.)
+>>   *
+>>   * KASAN_SHADOW_START is defined second based on KASAN_SHADOW_END. The shadow
+>>   * memory start must map to the lowest possible kernel virtual memory address
+>> @@ -100,7 +108,11 @@
+>>   */
+>>  #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+>>  #define KASAN_SHADOW_OFFSET	_AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
+>> +#ifdef CONFIG_KASAN_GENERIC
+>>  #define KASAN_SHADOW_END	((UL(1) << (64 - KASAN_SHADOW_SCALE_SHIFT)) + KASAN_SHADOW_OFFSET)
+>> +#else
+>> +#define KASAN_SHADOW_END	KASAN_SHADOW_OFFSET
+>> +#endif
+>>  #define _KASAN_SHADOW_START(va)	(KASAN_SHADOW_END - (UL(1) << ((va) - KASAN_SHADOW_SCALE_SHIFT)))
+>>  #define KASAN_SHADOW_START	_KASAN_SHADOW_START(vabits_actual)
+>>  #define PAGE_END		KASAN_SHADOW_START
+>> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+>> index d541ce45daeb..dc2de12c4f26 100644
+>> --- a/arch/arm64/mm/kasan_init.c
+>> +++ b/arch/arm64/mm/kasan_init.c
+>> @@ -198,8 +198,11 @@ static bool __init root_level_aligned(u64 addr)
+>>  /* The early shadow maps everything to a single page of zeroes */
+>>  asmlinkage void __init kasan_early_init(void)
+>>  {
+>> -	BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=
+>> -		KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
+>> +	if (IS_ENABLED(CONFIG_KASAN_GENERIC))
+>> +		BUILD_BUG_ON(KASAN_SHADOW_OFFSET !=
+>> +			KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
+>> +	else
+>> +		BUILD_BUG_ON(KASAN_SHADOW_OFFSET != KASAN_SHADOW_END);
+>>  	BUILD_BUG_ON(!IS_ALIGNED(_KASAN_SHADOW_START(VA_BITS), SHADOW_ALIGN));
+>>  	BUILD_BUG_ON(!IS_ALIGNED(_KASAN_SHADOW_START(VA_BITS_MIN), SHADOW_ALIGN));
+>>  	BUILD_BUG_ON(!IS_ALIGNED(KASAN_SHADOW_END, SHADOW_ALIGN));
 >
-> From: Kairui Song <kasong@tencent.com>
+>For the arm64 parts:
 >
-> Swap cache lookup is lockless, it only increases the reference count
-> of the returned folio. That's not enough to ensure a folio is stable in
-> the swap cache, so the folio could be removed from the swap cache at any
-> time. The caller always has to lock and check the folio before use.
->
-> Document this as a comment, and introduce a helper for swap cache folio
-> verification with proper sanity checks.
->
-> Also, sanitize all current users to use this convention, and use the new
-> helper when possible for easier debugging. Some existing callers won't
-> cause any major problem right now, only trivial issues like incorrect
-> readahead statistic (swapin) or wasted loop (swapoff). It's better to
-> always follow this convention to make things robust.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/memory.c     | 28 +++++++++++++---------------
->  mm/shmem.c      |  4 ++--
->  mm/swap.h       | 28 ++++++++++++++++++++++++++++
->  mm/swap_state.c | 13 +++++++++----
->  mm/swapfile.c   | 10 ++++++++--
->  5 files changed, 60 insertions(+), 23 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 10ef528a5f44..9ca8e1873c6e 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4661,12 +4661,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->                 goto out;
->
->         folio =3D swap_cache_get_folio(entry);
-> -       if (folio) {
-> -               swap_update_readahead(folio, vma, vmf->address);
-> -               page =3D folio_file_page(folio, swp_offset(entry));
-> -       }
->         swapcache =3D folio;
-> -
+>Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
-Can simplify as:
-           folio =3D swapcache =3D swap_cache_get_folio(entry);
+Thanks :)
 
->         if (!folio) {
->                 if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
->                     __swap_count(entry) =3D=3D 1) {
-> @@ -4735,20 +4730,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->                 ret =3D VM_FAULT_MAJOR;
->                 count_vm_event(PGMAJFAULT);
->                 count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
-> -               page =3D folio_file_page(folio, swp_offset(entry));
-> -       } else if (PageHWPoison(page)) {
-> -               /*
-> -                * hwpoisoned dirty swapcache pages are kept for killing
-> -                * owner processes (which may be unknown at hwpoison time=
-)
-> -                */
-> -               ret =3D VM_FAULT_HWPOISON;
-> -               goto out_release;
+>
+>I wonder whether it's worth keeping the generic KASAN mode for arm64.
+>We've had the hardware TBI from the start, so the architecture version
+>is not an issue. The compiler support may differ though.
+>
+>Anyway, that would be more suitable for a separate cleanup patch.
+>
+>-- 
+>Catalin
 
-Here you move the HWPosion(page) bail out from before taking the page
-lock to after the page lock. The HWPosion page should be able to bail
-out without taking the lock.
+I want to test it at some point, but I was always under the impression (that at
+least in theory) different modes should be able to catch slightly different
+errors. Not a big set but an example being accessing wrong address, but
+allocated memory - on Generic it should be okay since shadow memory only says if
+and how much is allocated. On sw-tags it will fault because randomized tags
+would mismatch. Now I can't think of any examples the other way around but I
+assume there is a few.
 
->         }
->
->         ret |=3D folio_lock_or_retry(folio, vmf);
->         if (ret & VM_FAULT_RETRY)
->                 goto out_release;
->
-> +       page =3D folio_file_page(folio, swp_offset(entry));
->         if (swapcache) {
->                 /*
->                  * Make sure folio_free_swap() or swapoff did not release=
- the
-> @@ -4757,10 +4745,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->                  * swapcache, we need to check that the page's swap has n=
-ot
->                  * changed.
->                  */
-> -               if (unlikely(!folio_test_swapcache(folio) ||
-> -                            page_swap_entry(page).val !=3D entry.val))
-> +               if (!folio_contains_swap(folio, entry))
->                         goto out_page;
->
-> +               if (PageHWPoison(page)) {
-> +                       /*
-> +                        * hwpoisoned dirty swapcache pages are kept for =
-killing
-> +                        * owner processes (which may be unknown at hwpoi=
-son time)
-> +                        */
-> +                       ret =3D VM_FAULT_HWPOISON;
-> +                       goto out_page;
-
-It seems you bail out with the page still locked, that seems like a bug to =
-me.
-
-I think this HWPoision() check move order with the page lock is problematic=
-.
-
-Can you double check?
-
-To be continued.
-
-Chris
-
-> +               }
-> +
-> +               swap_update_readahead(folio, vma, vmf->address);
-> +
->                 /*
->                  * KSM sometimes has to copy on read faults, for example,=
- if
->                  * folio->index of non-ksm folios would be nonlinear insi=
-de the
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index e9d0d2784cd5..b4d39f2a1e0a 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2379,8 +2379,6 @@ static int shmem_swapin_folio(struct inode *inode, =
-pgoff_t index,
->                         count_vm_event(PGMAJFAULT);
->                         count_memcg_event_mm(fault_mm, PGMAJFAULT);
->                 }
-> -       } else {
-> -               swap_update_readahead(folio, NULL, 0);
->         }
->
->         if (order > folio_order(folio)) {
-> @@ -2431,6 +2429,8 @@ static int shmem_swapin_folio(struct inode *inode, =
-pgoff_t index,
->                 error =3D -EIO;
->                 goto failed;
->         }
-> +       if (!skip_swapcache)
-> +               swap_update_readahead(folio, NULL, 0);
->         folio_wait_writeback(folio);
->         nr_pages =3D folio_nr_pages(folio);
->
-> diff --git a/mm/swap.h b/mm/swap.h
-> index efb6d7ff9f30..bb2adbfd64a9 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -52,6 +52,29 @@ static inline pgoff_t swap_cache_index(swp_entry_t ent=
-ry)
->         return swp_offset(entry) & SWAP_ADDRESS_SPACE_MASK;
->  }
->
-> +/**
-> + * folio_contains_swap - Does this folio contain this swap entry?
-> + * @folio: The folio.
-> + * @entry: The swap entry to check against.
-> + *
-> + * Swap version of folio_contains()
-> + *
-> + * Context: The caller should have the folio locked to ensure
-> + * nothing will move it out of the swap cache.
-> + * Return: true or false.
-> + */
-> +static inline bool folio_contains_swap(struct folio *folio, swp_entry_t =
-entry)
-> +{
-> +       pgoff_t offset =3D swp_offset(entry);
-> +
-> +       VM_WARN_ON_ONCE(!folio_test_locked(folio));
-> +       if (unlikely(!folio_test_swapcache(folio)))
-> +               return false;
-> +       if (unlikely(swp_type(entry) !=3D swp_type(folio->swap)))
-> +               return false;
-> +       return offset - swp_offset(folio->swap) < folio_nr_pages(folio);
-> +}
-> +
->  void show_swap_cache_info(void);
->  void *get_shadow_from_swap_cache(swp_entry_t entry);
->  int add_to_swap_cache(struct folio *folio, swp_entry_t entry,
-> @@ -144,6 +167,11 @@ static inline pgoff_t swap_cache_index(swp_entry_t e=
-ntry)
->         return 0;
->  }
->
-> +static inline bool folio_contains_swap(struct folio *folio, swp_entry_t =
-entry)
-> +{
-> +       return false;
-> +}
-> +
->  static inline void show_swap_cache_info(void)
->  {
->  }
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index ff9eb761a103..be0d96494dc1 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -70,10 +70,12 @@ void show_swap_cache_info(void)
->  }
->
->  /*
-> - * Lookup a swap entry in the swap cache. A found folio will be returned
-> - * unlocked and with its refcount incremented.
-> + * swap_cache_get_folio - Lookup a swap entry in the swap cache.
->   *
-> - * Caller must lock the swap device or hold a reference to keep it valid=
-.
-> + * A found folio will be returned unlocked and with its refcount increas=
-ed.
-> + *
-> + * Context: Caller must ensure @entry is valid and pin the swap device, =
-also
-> + * check the returned folio after locking it (e.g. folio_swap_contains).
->   */
->  struct folio *swap_cache_get_folio(swp_entry_t entry)
->  {
-> @@ -338,7 +340,10 @@ struct folio *__read_swap_cache_async(swp_entry_t en=
-try, gfp_t gfp_mask,
->         for (;;) {
->                 int err;
->
-> -               /* Check the swap cache in case the folio is already ther=
-e */
-> +               /*
-> +                * Check the swap cache first, if a cached folio is found=
-,
-> +                * return it unlocked. The caller will lock and check it.
-> +                */
->                 folio =3D swap_cache_get_folio(entry);
->                 if (folio)
->                         goto got_folio;
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 4b8ab2cb49ca..12f2580ebe8d 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -240,12 +240,12 @@ static int __try_to_reclaim_swap(struct swap_info_s=
-truct *si,
->          * Offset could point to the middle of a large folio, or folio
->          * may no longer point to the expected offset before it's locked.
->          */
-> -       entry =3D folio->swap;
-> -       if (offset < swp_offset(entry) || offset >=3D swp_offset(entry) +=
- nr_pages) {
-> +       if (!folio_contains_swap(folio, entry)) {
->                 folio_unlock(folio);
->                 folio_put(folio);
->                 goto again;
->         }
-> +       entry =3D folio->swap;
->         offset =3D swp_offset(entry);
->
->         need_reclaim =3D ((flags & TTRS_ANYWAY) ||
-> @@ -2150,6 +2150,12 @@ static int unuse_pte_range(struct vm_area_struct *=
-vma, pmd_t *pmd,
->                 }
->
->                 folio_lock(folio);
-> +               if (!folio_contains_swap(folio, entry)) {
-> +                       folio_unlock(folio);
-> +                       folio_put(folio);
-> +                       continue;
-> +               }
-> +
->                 folio_wait_writeback(folio);
->                 ret =3D unuse_pte(vma, pmd, addr, entry, folio);
->                 if (ret < 0) {
-> --
-> 2.51.0
->
->
+-- 
+Kind regards
+Maciej Wieczór-Retman
 
