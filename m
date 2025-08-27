@@ -4,180 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97E78CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 14:34:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD85CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 14:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 999198E0002; Wed, 27 Aug 2025 10:34:46 -0400 (EDT)
+	id D47E18E0006; Wed, 27 Aug 2025 10:36:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94B558E0001; Wed, 27 Aug 2025 10:34:46 -0400 (EDT)
+	id D1E568E0001; Wed, 27 Aug 2025 10:36:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 811688E0002; Wed, 27 Aug 2025 10:34:46 -0400 (EDT)
+	id C349F8E0006; Wed, 27 Aug 2025 10:36:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FFB98E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 10:34:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23EA2118388
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:34:46 +0000 (UTC)
-X-FDA: 83822783772.06.95859CA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9AC0A12000A
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:34:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CHMh2154;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756305283; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B03738E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 10:36:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 64C321A0171
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:36:32 +0000 (UTC)
+X-FDA: 83822788224.29.5538A26
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A6361100014
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:36:30 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MSIY8E47;
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756305390; a=rsa-sha256;
 	cv=none;
-	b=uf48vPp677gGigUjUvYWm5UZ+WO/pd64Gu8yZZpdZ0jPTlYlSjU23N9YZalCwDxCVeDzuH
-	Mzf/boWLTp8fGJPOeKSZIY2B+cG1oNeisSwBsqxjVdihopABsQ8cPG9wEYbYlCu09DtQ4f
-	i6SSg8cCMhg5AkeOWcCxX6FsmOLswmA=
+	b=fGDatG8PxDj2fRlTs3vi1ureggF3BGEa4VB/6Mdin84kfml1yNy6U97P/LsHGqXeYkow6W
+	VP/30qeRreWtMqn/QN1EkC4psE5QnKQnnP0Bej0kFZL65b+aPZLT1D5SZIxUHa18iWEQ+L
+	0s24CbIM4krTh8EbmRBEtAC/9+4Efug=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CHMh2154;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MSIY8E47;
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756305283;
+	s=arc-20220608; t=1756305390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O+6J27g3PzVLwPT69v8xrD/Pf9wlMRrglSVCG5aMSNo=;
-	b=yyap1g0O/fSjWZKTuG/RLOrN1doV1P8XFa9+GIDd4i8iTWZTujFQdG2hiHG5Duf9lR0wbI
-	DIOUU89T4RStZpITGhr6jDEeGnZcHYk2bAQT24GCSI2bht2ZWCj7OqvM3DPti0km5kWUg0
-	VY6oV/Btxc6NH6uHKtFWXxRfoJSfVLo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756305282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O+6J27g3PzVLwPT69v8xrD/Pf9wlMRrglSVCG5aMSNo=;
-	b=CHMh21546hCM4yV1NE2YdMQiJOHm3NdN1W7eZix16h1MPzCv/ewhWMuhs1NfhtnebBLVMv
-	9lZM4P8SKcnNc5+jnjZPdG3p6DQlz0JVcMqe93VHXHPUHKHd21Fx2aXutKF4BsL2MkB7bL
-	5zyIYfDNDMDOHmWDkPLzBIe8fLbNsx8=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-489-wJBPXSAcNFSJY1ty104ndg-1; Wed, 27 Aug 2025 10:34:41 -0400
-X-MC-Unique: wJBPXSAcNFSJY1ty104ndg-1
-X-Mimecast-MFC-AGG-ID: wJBPXSAcNFSJY1ty104ndg_1756305281
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4b109c7ad98so239222161cf.3
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:34:41 -0700 (PDT)
+	bh=yER43C8X788IpQP0esrNVi7SuiWvauhx8PuShr745bA=;
+	b=ac1e8kR0IWL6OoNOjzlUGwx7jaLAIxu5QdGwiz8S+upyIZLJItFNaoQQYYdZ0cSDb9kJrD
+	q/XxriYaynPkTF/y3015l6vWTSt7/w+ZsCGYaOKwNJ1bycuNl8OofI3Nb7vSmImlQGkeqD
+	FbGbPTc0WcqSVkpASbGiHBgdZkOQAGU=
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-336989ed3a4so4350991fa.3
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:36:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756305389; x=1756910189; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yER43C8X788IpQP0esrNVi7SuiWvauhx8PuShr745bA=;
+        b=MSIY8E476odPRM92DcY6IEqzLh7Ydz1jCvZMBLwgjRGzhV82Dklou0Y2VwBHKaycrE
+         ufkTjdaS5DLRwlT0aINTqQXO622MGA/IVwe6Le7y0gpfAWz8n7iUzV4qm8VqjO3O4Ob5
+         oSFUV2mYAFKsgHp7IVjMr8tYKAoYrttIGcah/BqLyPs2nE0ioZLSim3jkMG7uIpyBBa3
+         xmaI902ViO9RBrxx3kqRmt4BhtOxktxsfnTQlYTtarh1uiajDxP9GsSixjOaCCZ0NhK8
+         mjIKWzAyCiaF5wogIltQjFPwW6bYJtrvDK077mIn1eNQ2g2Q2FQAixItCVKDGQPV8XC/
+         sfLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756305281; x=1756910081;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O+6J27g3PzVLwPT69v8xrD/Pf9wlMRrglSVCG5aMSNo=;
-        b=L9PDDXy7nVtECbHTGIKjXFrwmQnQfRrEJs6NRrKL7Y5eOFj8C7ec3YQeTjrHjmAHVI
-         c95fGWjRsItjY+8f25647ayzXDyUkURolQjeJeVT8LmC+9TArW2St8GD+rZO4EK29tVe
-         XIob8ernhBNOVPNRk7uVXpOXGtNgyer28TULj+Pr4pNj7fnPZz9a05f7MmaLgzKz5LaZ
-         4r+5LkR7y4nUYNXxDg4LKw8C8TyhVTWOhMu2g1cRW5nwJvt8m6E5//fwsbYLYC+1Lm6L
-         oS7N8zvjnPXKp+nBA+dQP9Bg4TTOh9XE09h3jC/3CZzJMHCEJm6GWVmgNXtcd/Kdn3pE
-         aZFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWpdead1wMGcBPRb9YYyLaWo0vYiMq8RIIy2+zGVI2m2DQxcHYH+FdvfONF/aPQ4ttyapcpUy/gYQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy3zULuVnpmyHDlrHPmnBb0H9/GDENxe1AwvVONNPapux0fB0cn
-	YnckNaPxxy2wXl6qzHXyXASzrbdwiaLSZLsCRMhp5Reiwnbe7TE6/Ydym8C7W+tuucWfjWf8ck6
-	j+mSptYSGgfS7SZ/9KZyNB7DU/JAWd6xE7Bde2ZqzonFVIGuvfbAg
-X-Gm-Gg: ASbGncuK8bwDvGH25o9D+tMwXT8VRp3V623rfk75yiBFx4s3Z4Tz9we9i45G4sN9KcA
-	zS0DrFAT/SNcI58z1pJWjFCNiFuH+sWsjnY8jn32gewLLLm/jGgSZQ9uKZ92cs/+kAwcJWWNKuq
-	rL1rhtuqTF1VeNE0/ew4xLWXaj5V7N0sg8Jmb3DSvdbnYFTRtaBTvIUJQPLKavDlNkeo2lZ23fU
-	z007b5pSZowqyX9qvoxMrO71fyxW0onTKUhZ06uCi6NSMviP0KGzB64/iFsd9LIOqJo2IEk5lsH
-	W8ZI8DjqXizaIJixJEr4Xh8ItzIC3rt/tjYwfJlNh3qIPFJrC65IrXfFnxr/xQ==
-X-Received: by 2002:a05:622a:207:b0:4b2:d946:f722 with SMTP id d75a77b69052e-4b2d946fe59mr109270021cf.42.1756305280853;
-        Wed, 27 Aug 2025 07:34:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE17UoC6BDTwBhYei22ueJMYZMNMRV/5hNaLrpO80gJoTKIKbD1rlCYod8CxcHQ3MIZfR/MvA==
-X-Received: by 2002:a05:622a:207:b0:4b2:d946:f722 with SMTP id d75a77b69052e-4b2d946fe59mr109269461cf.42.1756305280316;
-        Wed, 27 Aug 2025 07:34:40 -0700 (PDT)
-Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2b8c693a3sm94776351cf.1.2025.08.27.07.34.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Aug 2025 07:34:39 -0700 (PDT)
-Message-ID: <2aa3f478-9c87-4102-b83e-bf235372d834@redhat.com>
-Date: Wed, 27 Aug 2025 16:34:36 +0200
+        d=1e100.net; s=20230601; t=1756305389; x=1756910189;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yER43C8X788IpQP0esrNVi7SuiWvauhx8PuShr745bA=;
+        b=MSIzoh36mn++Blwm0GaH44uj4Z4/rQYjFDMCZoue1T8lA+S2/t/CRSxlYfCX/IbtdM
+         7EFmKnBYp0MtxxBIh0eiy7OvbDh2bQ71VF3Mb9HfGo+euhFUxjZGlfibuOWEwh+h7oOS
+         SGjoEerYKsGh/VAc9sJG47VLHhKvC2gk80XZYAwbZfopL/rFisaK1zlFSfBTNVMGP6y2
+         E3v5vWRY3OHjpFCnSCsKA4cyaJg5FAQTqmPVG2GHMehUuuKKhOPDbc+kER1mVLJImm1h
+         lU5qwDH2CWjOOJ961Xac9EXcQ6rm4GFPUfjTj/ZK+tdCpQsMEQPFGcrxKDegTWSmtrU8
+         crZA==
+X-Gm-Message-State: AOJu0YzRn97uXqgjssVQwT1pMZE3Tuq5QYc8LwysKwSNLS6apDbmOB10
+	v1PX8gf99Ckb54lclwPeldrnhNLIgfkkjqDQrNFPeS9Eks2K9MzSAoP2t36a0f7v1OUC8XJsapg
+	Az2GaTOC9BK5X9dFYitULwgPq3x1BXgY=
+X-Gm-Gg: ASbGnctt2c+0o3RLjowhknhb7Zw0WGOY3X8Q7a4vYphgCgS+Ujjl+xuy1hpZ2wCzp0U
+	PAnIJ5l7fUHlRz8rl6xGXg6zunYXQ+RphlR3jsWZvd9kVGG1jKTvbVpNwq3FtwgNxorKo8iXXCC
+	EJMYSdq/H4nj5b0tTOr6L7FP2s+MSCkjrWHF3AMJEAOnqiAXr6YnPZQEQ2HxUJE+UHsOj2Tdsnz
+	aA4+xE=
+X-Google-Smtp-Source: AGHT+IEdOj0pKOFhGzu8gBtRzFTYOZWkbszM7Fmdw5DNtYW3ObU2NnNlfYN3QQ35XVly64iYYt24LonYJUdBbferTSA=
+X-Received: by 2002:a2e:b8c2:0:b0:336:74c6:37b with SMTP id
+ 38308e7fff4ca-33674c6093amr32296471fa.22.1756305388609; Wed, 27 Aug 2025
+ 07:36:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] huge_mm.h: is_huge_zero_folio(NULL) should return
- false
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, shikemeng@huaweicloud.com, kasong@tencent.com,
- nphamcs@gmail.com, bhe@redhat.com, chrisl@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20250826231626.218675-1-max.kellermann@ionos.com>
- <20250826185515.7fbe1821713195b170ac1b31@linux-foundation.org>
- <CAKPOu+9wz9g0VuYDPiNDYdaGG-gdK86h1gGSCmVPsC2a5f-GPA@mail.gmail.com>
- <e5783c3d-7eeb-41d9-9fe7-730155f9bf17@redhat.com>
- <CAKPOu+_8_gfko=Sh-YKpbgcMy0aJB=m9yrC5JJKEZm=yeYPOgA@mail.gmail.com>
- <11a5d391-3a13-4376-98f1-34b529d3c583@redhat.com>
- <CAKPOu+9j5+w6ydvygdWnryZM24AFPSVJB_21VH8Odi_xdrNksg@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAKPOu+9j5+w6ydvygdWnryZM24AFPSVJB_21VH8Odi_xdrNksg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: CO0FgKHv_gVrsVXaiP_hQtMd-983IivToYRR9O-hfIA_1756305281
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-3-ryncsn@gmail.com>
+ <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com>
+In-Reply-To: <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 27 Aug 2025 22:35:51 +0800
+X-Gm-Features: Ac12FXwm2WfLl0mEmBMmQ0g2aVDQZhjEraUkxB4QSctNwOn_Ntr7pZee2ZGHLyY
+Message-ID: <CAMgjq7AkUc7hKrEL8cQ7jJTeXYBq7WqM55uQ_SZNNY8vJ7+ODQ@mail.gmail.com>
+Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
+ before use
+To: Chris Li <chrisl@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9AC0A12000A
-X-Stat-Signature: ssop7135i636mr5cdhp7hhwprp1fofdp
+X-Rspamd-Queue-Id: A6361100014
+X-Stat-Signature: tcjdzcaj1z8msazmbm9xzx6tqrqrupnh
 X-Rspam-User: 
-X-HE-Tag: 1756305283-842005
-X-HE-Meta: U2FsdGVkX189YuJZXdvXZvadsC7gk4xNdkCT+MiIrN8YsfaLT6LZVvJupnne4yJoOYfQjy7H3tGvLtStshLlbDOZ8Ll1bNfs5y9SmaRtmT8pNPnNjG0/YUD4iC5k0qZ0nCBglV12QuAZNQBwotbBK78oT1iRJhV+JfRJk32v2/EgzxnYweboqOUiJWM5j9vmdhEhyo+44JbL10DxBAkUCd/9akVZVips9Vv4ohnaGHTW43LeqiuslAjjNd1w3QCdTZ0gB7DcGfZsEi1xIqdJX1BUEO7y3ibd4iL0h0JvoyYZvf+u7SQfJjuSxATSl09zX+rEIgiYnZiwpOVxiFtjbIaOj6Sxtcl5vmEMweHxAzkFja19JWeKCarr9Q/XNZvAnpCb3QlKrw5ejoaLOxqiU03VyzJrp4diIkSqC2k0Aat4tHCEENK8rzk5JuFioQVr31Q4/uwvpE4iGVOWpXW4IOenQ9EdWK08R05e/EjENRSssW2aRCoOabYfJFYWm8YTxFfFEKm7OBcr8SX4CrLN2dbeS5EBtkgqwy0WL45cfp1OAfaSeXUbGcT2AgrooyOOCOEAQLNP9cQ0t59l5/AXtWaLGVa0aMPVuywoXb77e9iXgQM507KgRba+EahZTncByQHucFnqdxv3sFGCJX6JEC2d/j9Qi3MwKuMxy21GrD6V76w3HGRW2ky0wfBB6q0wdRWalrnoIyAjEh9I7bLJEFeQJ/twnF4921bMpaCKSf9JBsLmb9nO2IHIcJXRL2tVGu9IBWYo6aoObG3hSyOT8XXD7dllTAEg11oLKr44HrXxBB3w2zF/tUyPnAC7gaGTnnunrX/xh+TvLjzSJn+a2t0Y7ZC6jTPzJRV0nj1CGOcXOU67mi5NUf5kGC+1oYSbGkfz3nfleho9/NweRrc4fB7gg7pTlB0pvg+HCxEhllZwYhA2Y7zBiegNVGpxNUydk9g4T8T6lzUe6x4ALTQ
- EGbHEpOL
- xUf9jQT9WEEujBaDgbBOCQ9LsXw/LH/nW65vnRA52XfJJmlyresaYyPw4EsTasTR3AWAZ84IcISqsJMoGuVZ4TURGVA+ryVVrTr5rdth7o+AUIf6yHDj1NloRa0M9gImtkUBsioiTdgBEAGOdGqoThMbe0IP/PI2CBpRJat4WA8SAv/JlEe6L/aY+uDhpCnNKJLoytGqi2kkjP94Q+6+kgcQHkcs8/vmvbk4nHEQf9+R1XfLYuJjlj0NbErjnjiVxwCQ49kROCeKP9WOBb41V/wmXfCSNMpZQL39c6eBNNVXyR8LTPVIguDYJ9G0zuVL3PyB3y0NJdFCgJmtIH4DCdcPoKOGFXm8SlvWd5+7lBjXvksubeBP8kPXvmFH1FCvv+0KeHxcc1j9vzZqHt5FzTLoSHxck4KGtmyHDCVgb3lKnMXHM2r1i7vnRnqc8azai3es0EvhkOb3RILdHdm8WuJH0TCwWlpb9IIsG56nj99/OYcW0SpccJ9aAefgOZaMNTIld0AXx6cfiNNC7+AIBpnSOWQSeLDN2bEizRYpn561oJviYRcoRgVyQYmFRGN+5BoQI0+r+kVKzeVwlizbFhorgd7bIecmAsF46
+X-HE-Tag: 1756305390-425225
+X-HE-Meta: U2FsdGVkX1+PQOPc83ximpeBQH0v4XKyrtjpPmkoO6IGsVJcjFLO4SHQPFeWHUJSDo+765q3kEYv6vkfVV8hYF+5nFBkBNEjSuJrDYY1mFxwJ3VnsOmwtTOAnseY9q3RHsAISHqlrau8WZr3TBQL3g+O2sEhqd53tdz+fcDnwG9mCXXHUmIcgph7qVFJCimM43huvwz9+OeClKZqJgqNfjd+rV7W1we62KUihbFTEce/FnOvyCDSzj/b37oxEzEapLUrxyXzqetR8vWp4e6hbVT7rN+UUCcmnHwtnxjkV8c2JTyRC3E2/xMKikr7Ff953IwFNaWja0aerIPouUTUB1ax9n74wLYWxaT0At+t/F1KTzuz/8lo2MPGDA79UwzJQUnAX9NkURfnEndEM5zDZCDBrDQSbBnUIxxwu7ANo23gNXKboo2/jQfhLwV/9KlIVDB5cwrNflfGv3kZGuo5apCMPzK0jBztAXaiZxmvHgf9Farqnzl5f9RBXivh+mLRyjuNuntMEYmuvAjgnwXc1+j1wFmUeST/13w2QvuP1qtCl2OhCGT7vuBVKJbdY/E+eo1JVaHh636mEScjnHg1zioWMBd9Uk6pa0cfAV4A7VRI69Sh+XPb+e1djIBfgGNe1b5rRso7+FC29wzUFPM4QOR/MKKFOGJlliSG69Pxl0meLC9c2Tom62ObeZNRcOjTrwSAYOvl5Dfh8holwmHK+ZkoQZTkn1ps3bZiPBNEJXGxi7G2O9Xo4vQDqKc2eS4em0IKtShIdl97lOi6/zADZUfTnlhIiAnqQ+BZ7Rdbw5wM1Y+MPHxNC+3TQbUkSblCGGMA0ao6KBkK9lAnRC/RdsKbUgGy2ehNIqqge1QTVZBL4v0z5FvDVjynPqB+tm/jye8GNGbJmLg9bGom86a3ANAuDqYsvFou2TTg9gVJ14kq7O/QVSB7Su5OZmaL+LJ8LWB6ub2ZnNU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,58 +121,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27.08.25 15:06, Max Kellermann wrote:
-> On Wed, Aug 27, 2025 at 1:56 PM David Hildenbrand <david@redhat.com> wrote:
->>> This patch isn't about the function parameter but about the global
->>> variable being NULL.
->>> (Don't mix up with my other patch.)
->>
->> Huh?
-> 
-> Oh, I see the misunderstanding. You are right here, yes my patch is
-> indeed about passing NULL to is_huge_zero_folio(). My previous reply
-> was confusing.
-> 
-> But you were replying to a sub-thread by Andrew who questioned whether
-> a call is_huge_zero_folio() is legal at all before the huge zero folio
-> has been created.
+On Wed, Aug 27, 2025 at 4:21=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+>
+> On Fri, Aug 22, 2025 at 12:21=E2=80=AFPM Kairui Song <ryncsn@gmail.com> w=
+rote:
+>
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index e9d0d2784cd5..b4d39f2a1e0a 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -2379,8 +2379,6 @@ static int shmem_swapin_folio(struct inode *inode=
+, pgoff_t index,
+> >                         count_vm_event(PGMAJFAULT);
+> >                         count_memcg_event_mm(fault_mm, PGMAJFAULT);
+> >                 }
+> > -       } else {
+> > -               swap_update_readahead(folio, NULL, 0);
+>
+> Also this update readahead move to later might have a similar problem.
+> All the bail out in the move will lose the readahead status update.
+>
+> The readahead deed is already done. Missing the status update seems
+> incorrect.
 
-Sure it is, I mean on some systems it is never initialized.
+Thanks for the detailed review.
 
-> The question I asked Andrew, which you replied to, was not about
-> passing NULL to is_huge_zero_folio(), but about whether the call to
-> is_huge_zero_folio() is legal at all, no matter which parameter value.
+The only change I wanted here is that swap readahead update should be
+done after checking the folio still corresponds to the swap entry
+triggering the swapin. That should have slight to none effect compared
+to before considering the extremely tiny time window. We are only
+following the convention more strictly.
 
-Yes, see how get_huge_zero_folio() dynamically allocates it on demand to 
-then update huge_zero_folio.
+In theory it might even help to reduce false updates: if the folio no
+longer corresponds to the swap entry, we are hitting an unrelated
+folio, doing a readahead update will either mislead vma readahead's
+address hint, or could clean up the readahead flag of an unrelated
+folio without actually using it. If the folio does get hit in the
+future, due to the missing readahead flag, the statistic will go
+wrong.
 
-> 
-> I agree with you that is_huge_zero_folio(NULL) should not be legal and
-> makes no sense. It's a bug somewhere in the caller.
-> But I saw that the current implementation effectively (randomly) hides
-> a bug in another part of the kernel (= Ceph), one that I'd rather like
-> to be visible (and get fixed). And that is the point of my patch, and
-> is the reason why I chose to have the additional debug-only code
-> inside an #ifdef - I don't want normal users to pay the price for a
-> debugging feature, no matter how small the price.
-> 
-> David, what is your opinion here?
-> 
-> - leave it as it is; is_huge_zero_folio(NULL) may randomly return true
-> or false (= reject this patch)
-> - add the huge_zero_folio==NULL check, but guarded with #ifdef DEBUG
-> (= this patch)
-> - add the huge_zero_folio==NULL check unconditionally (suggested by Zi Yan)
+>
+>
+> >         }
+> >
+> >         if (order > folio_order(folio)) {
+> > @@ -2431,6 +2429,8 @@ static int shmem_swapin_folio(struct inode *inode=
+, pgoff_t index,
+> >                 error =3D -EIO;
+> >                 goto failed;
+> >         }
+> > +       if (!skip_swapcache)
+> > +               swap_update_readahead(folio, NULL, 0);
+> >         folio_wait_writeback(folio);
+> >         nr_pages =3D folio_nr_pages(folio);
+>
+>
+> >
+> > diff --git a/mm/swap.h b/mm/swap.h
+> > index efb6d7ff9f30..bb2adbfd64a9 100644
+> > --- a/mm/swap.h
+> > +++ b/mm/swap.h
+> > @@ -52,6 +52,29 @@ static inline pgoff_t swap_cache_index(swp_entry_t e=
+ntry)
+> >         return swp_offset(entry) & SWAP_ADDRESS_SPACE_MASK;
+> >  }
+> >
+> > +/**
+> > + * folio_contains_swap - Does this folio contain this swap entry?
+> > + * @folio: The folio.
+> > + * @entry: The swap entry to check against.
+> > + *
+> > + * Swap version of folio_contains()
+> > + *
+> > + * Context: The caller should have the folio locked to ensure
+> > + * nothing will move it out of the swap cache.
+> > + * Return: true or false.
+> > + */
+> > +static inline bool folio_contains_swap(struct folio *folio, swp_entry_=
+t entry)
+> > +{
+> > +       pgoff_t offset =3D swp_offset(entry);
+> > +
+> > +       VM_WARN_ON_ONCE(!folio_test_locked(folio));
+> > +       if (unlikely(!folio_test_swapcache(folio)))
+> > +               return false;
+> > +       if (unlikely(swp_type(entry) !=3D swp_type(folio->swap)))
+> > +               return false;
+> > +       return offset - swp_offset(folio->swap) < folio_nr_pages(folio)=
+;
+> > +}
+> > +
+> >  void show_swap_cache_info(void);
+> >  void *get_shadow_from_swap_cache(swp_entry_t entry);
+> >  int add_to_swap_cache(struct folio *folio, swp_entry_t entry,
+> > @@ -144,6 +167,11 @@ static inline pgoff_t swap_cache_index(swp_entry_t=
+ entry)
+> >         return 0;
+> >  }
+> >
+> > +static inline bool folio_contains_swap(struct folio *folio, swp_entry_=
+t entry)
+> > +{
+> > +       return false;
+> > +}
+> > +
+> >  static inline void show_swap_cache_info(void)
+> >  {
+> >  }
+> > diff --git a/mm/swap_state.c b/mm/swap_state.c
+> > index ff9eb761a103..be0d96494dc1 100644
+> > --- a/mm/swap_state.c
+> > +++ b/mm/swap_state.c
+> > @@ -70,10 +70,12 @@ void show_swap_cache_info(void)
+> >  }
+> >
+> >  /*
+> > - * Lookup a swap entry in the swap cache. A found folio will be return=
+ed
+> > - * unlocked and with its refcount incremented.
+> > + * swap_cache_get_folio - Lookup a swap entry in the swap cache.
+> >   *
+> > - * Caller must lock the swap device or hold a reference to keep it val=
+id.
+> > + * A found folio will be returned unlocked and with its refcount incre=
+ased.
+> > + *
+> > + * Context: Caller must ensure @entry is valid and pin the swap device=
+, also
+> Is the "pin" the same as  "lock the swap device or hold a reference"?
+> Not sure why you changed that comment to "pin".
 
-VM_WARN_ON_ONCE(!folio);
+Yes it's the same thing. We don't lock the device though, the device
+can be pinned by the refcounf (get_swap_device) or locking anything
+that is referencing the device (locking PTL the a PTE that contains an
+swap entry pointing to the device, or locking a swap cache folio of a
+swap entry that points to the device). So I juse used the word "pin".
+I added some comments in mm/swap.h in later commits about what the
+"pin" means.
 
-Should allow for catching such bugs without causing any runtime overhead 
-on non-debug kernels.
+>
+> It seems to me that you want to add the comment for the return value chec=
+k.
+> Is that it?
 
+Right, the caller has to check the folio before use, so I'm trying to
+document this convention.
 
--- 
-Cheers
+> > + * check the returned folio after locking it (e.g. folio_swap_contains=
+).
+> >   */
+> >  struct folio *swap_cache_get_folio(swp_entry_t entry)
+> >  {
+> > @@ -338,7 +340,10 @@ struct folio *__read_swap_cache_async(swp_entry_t =
+entry, gfp_t gfp_mask,
+> >         for (;;) {
+> >                 int err;
+> >
+> > -               /* Check the swap cache in case the folio is already th=
+ere */
+> > +               /*
+> > +                * Check the swap cache first, if a cached folio is fou=
+nd,
+> > +                * return it unlocked. The caller will lock and check i=
+t.
+> > +                */
+> >                 folio =3D swap_cache_get_folio(entry);
+> >                 if (folio)
+> >                         goto got_folio;
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 4b8ab2cb49ca..12f2580ebe8d 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -240,12 +240,12 @@ static int __try_to_reclaim_swap(struct swap_info=
+_struct *si,
+> >          * Offset could point to the middle of a large folio, or folio
+> >          * may no longer point to the expected offset before it's locke=
+d.
+> >          */
+> > -       entry =3D folio->swap;
+> > -       if (offset < swp_offset(entry) || offset >=3D swp_offset(entry)=
+ + nr_pages) {
+> > +       if (!folio_contains_swap(folio, entry)) {
+> >                 folio_unlock(folio);
+> >                 folio_put(folio);
+> >                 goto again;
+> >         }
+> > +       entry =3D folio->swap;
+>
+> Can you also check this as well? The "goto again" will have entries
+> not assigned compared to previously.
+> Too late for me to think straight now if that will cause a problem.
 
-David / dhildenb
+Oh, thanks for pointing this part out. This patch is correct, it's the
+original behaviour that is not correct. If the folio is no longer
+valid (the if check here failed), changing the `entry` value before
+could lead to a wrong look in the next attempt with `goto again`. That
+could lead to reclaim of an unrelated folio. It's a trivial issue
+though, only might marginally slow down the performance. Maybe I
+should make a seperate patch to fix this issue first in case anyone
+wants to backport it.
 
+>
+> To be continued.
+>
+> Chris
+>
 
