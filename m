@@ -4,93 +4,197 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32096CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 21:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4834CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:02:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6259E6B0025; Wed, 27 Aug 2025 17:55:34 -0400 (EDT)
+	id 215368E0008; Wed, 27 Aug 2025 18:02:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FBC76B0026; Wed, 27 Aug 2025 17:55:34 -0400 (EDT)
+	id 1ECD48E0001; Wed, 27 Aug 2025 18:02:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5117F6B0027; Wed, 27 Aug 2025 17:55:34 -0400 (EDT)
+	id 0DBFF8E0008; Wed, 27 Aug 2025 18:02:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AA876B0025
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:55:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 00A84C088B
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:55:33 +0000 (UTC)
-X-FDA: 83823894588.20.FF7AC26
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4C76A40007
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:55:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf04.hostedemail.com: domain of 3036vaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3036vaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id EA7F98E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:02:32 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A5A05BAB9
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:02:32 +0000 (UTC)
+X-FDA: 83823912144.18.A501671
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7C6C01C0011
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:02:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T6CojULO;
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756331732;
+	s=arc-20220608; t=1756332150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=xF+jtFQ9b8zMRrU/Cm5qYAVQe6xzCcpYtRD3ii11fhQ=;
-	b=kDLWAI7r65RworCyCTrvtOOxlFGva9ZSLP2HO6Pc1Un9EKLBNA0OKZCcWkuWl2iQ/qA101
-	62bb0XW+Bkr7Pbu1OnYL4FaZInXO6vUxcLXAqhQrUJiU6s3UsbPrf31qRYyVzTGJ3GQmZ4
-	8Cz5f2aVGyiJ4Aq4hUKhGErM6B3AA6c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756331732; a=rsa-sha256;
-	cv=none;
-	b=8DdxQBp9Khh6WTMOqjdjCMQEJ3Cv5OlNGTn4rQ7diaSXCvkhzKC2dOLVwW4uz+7O438G5S
-	V+yMHV48lMke5xczam1FTjgnHMDD9KGLccTrWs+WeiMTWO1xHpAzFLqEVczwEbEQgOYq9k
-	0r0P8oRNv3yrEK//WN7Q6Glrb9p3x/k=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=f98zaxrJvycSnAQcu/39hCOw4ptNGiOoTMWM+eDqoaw=;
+	b=fML8qrnK03f8HBaUQ4RtwQ0YdjYqdwIHMHVqjt7wJm9Ib6At5z3ffIXdWW2EZMDBYyybk0
+	DPIYHwYnR8L/+1zwomdzrNt1KSv9cU9QuQIwK86QsSXITPww8PNbHL2pzHroyWTibO6ucd
+	edqP996PovK/udi6dKE5mplos5ffn+0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf04.hostedemail.com: domain of 3036vaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3036vaAkbANoOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3f0d4ad1c3aso4042045ab.2
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:55:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756331731; x=1756936531;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xF+jtFQ9b8zMRrU/Cm5qYAVQe6xzCcpYtRD3ii11fhQ=;
-        b=XkYIUtPb5mC2oBCkxin6rCI4Wik7l8phgIA0G12pzOUPLke2W+09Wf3UNIFC4Q4lN5
-         WQ8/vgF8VO8a4N6H12I1s9wbCS9D5bjny45vAQmBQxL5+jrAIKQVwbeFOxlud475CiGi
-         CkuGHdi0xjYx319RCWdF+OqoeUODfY9Q7oFvw8OKyzbC8/ZwUVNDp1ME5hsCf6qA8fE0
-         qGwn3xI/HRPI4nlq8F9jWfLz5QoDyuGJCqcmHtl0Xh7svVtM4KVLRP4y1bhepVqfiKGe
-         haGP1Ocl+2Q/2P5ELjhzDPHMOA0l8z2i6d/m5VZs+qGALftidrApFOgQ2zjp9/D0KICC
-         vBiA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5zaaeUY4eiytDUmaxeDk6K1zdTfyngnoN/11k93aQzu+LFBJSCKts2cvE3mJQ788uLsAHpJTuAA==@kvack.org
-X-Gm-Message-State: AOJu0Ywx/osVJ5pOQE+bNBynk3Ju7FLVvwUbInDgq1bUYq8xyMAiJusK
-	pOFTYZ3EsLg9kCgb0kq4rxr/1waNA2TX349JF8wZLu1ds/Dr/w2M7NYwBFBuke74nw+9WUjwYQd
-	ZtKuRX+Ml7MAVzPuvmdWEtvhaJUWJjZOc0UMXyt1Uh5yYUFabTWnaDSrNmx4=
-X-Google-Smtp-Source: AGHT+IES9W9i5BDPnigPWHyPwFFVK8HYOg02PCDU4wDRx1cddarSx3N77jLS8b/A0OljZ6ZaxmpeRG+Ewn6Lzi0PSQIKRrS28joC
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T6CojULO;
+	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332150; a=rsa-sha256;
+	cv=none;
+	b=ptB+XciTGbJI2EIWl0qbC1o5MPo8Tx97M70e5JLWzMNFqV30GFH7JKOvioSFer95Efuene
+	LieL+7toDfqG99uWztyO7BVbszhxb2olGyt6XpcBovis4xh/zPFNgEF0g1FZHpasJC3B/3
+	CCVMwEtqy86mllOPSORaThjpHVzf93g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756332149;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=f98zaxrJvycSnAQcu/39hCOw4ptNGiOoTMWM+eDqoaw=;
+	b=T6CojULOwIlzTR4jO35cJFjgP715Mo8mme6INj+Bp2GCNdiypOdWM0XbL8HM4UmM1633r5
+	Aoz9Ah5HCXisyXqYtTLImJysuuRP4Gh6Nh+PuR+YmvgR2kfzLTOXRzuSRKjQpvSdwgZKi3
+	FJm3vw6MoV4WT4786NPGk7s6Efx6wy8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-4tIPN8FiOvyy6eG037Xd4A-1; Wed,
+ 27 Aug 2025 18:02:26 -0400
+X-MC-Unique: 4tIPN8FiOvyy6eG037Xd4A-1
+X-Mimecast-MFC-AGG-ID: 4tIPN8FiOvyy6eG037Xd4A_1756332141
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 65CEE19541AC;
+	Wed, 27 Aug 2025 22:02:18 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.22.80.195])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E90FC30001A5;
+	Wed, 27 Aug 2025 22:01:42 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-mmc@vger.kernel.org,
+	linux-arm-kernel@axis.com,
+	linux-scsi@vger.kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-mm@kvack.org,
+	io-uring@vger.kernel.org,
+	iommu@lists.linux.dev,
+	kasan-dev@googlegroups.com,
+	wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Alex Dubov <oakad@yahoo.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Airlie <airlied@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Doug Gilbert <dgilbert@interlog.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lars Persson <lars.persson@axis.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Maxim Levitsky <maximlevitsky@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	SeongJae Park <sj@kernel.org>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: [PATCH v1 00/36] mm: remove nth_page()
+Date: Thu, 28 Aug 2025 00:01:04 +0200
+Message-ID: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:148f:b0:3f0:78c3:8fc5 with SMTP id
- e9e14a558f8ab-3f078c392cdmr43149115ab.5.1756331731412; Wed, 27 Aug 2025
- 14:55:31 -0700 (PDT)
-Date: Wed, 27 Aug 2025 14:55:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68af7ed3.a00a0220.2929dc.0004.GAE@google.com>
-Subject: [syzbot] [mm?] [usb?] WARNING in __alloc_skb (4)
-From: syzbot <syzbot+5a2250fd91b28106c37b@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@redhat.com, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, 
-	matthew.brost@intel.com, rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4C76A40007
-X-Stat-Signature: nt3p636mhag4b1cqesdqmaobpuonmwmf
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: -ndNRb930v4qk4iqL4EPr90ExkmehS0WlLGenTgEWCE_1756332141
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7C6C01C0011
+X-Stat-Signature: gorgotqspwobpsuzriwum61nr3rbyt1a
 X-Rspam-User: 
-X-HE-Tag: 1756331732-85236
-X-HE-Meta: U2FsdGVkX1/BOwZBp4RCQseoouhxK1VjamM0Jf8azKtmixsomRYGsuMJAGjCtBG/HaQ0avAo7l+9C1FyrkRvQaE57xHTlXISm6OCBUbaqgQneAs+p5UhSsh77dX0B0F75Ih0TvF6tp+p1LnGGWVbJjHTTEGSG6PwuKT6KES5Vhb8ZWzIKzntHh2O6kk91fHeq5gBxJkdVAK1TSwfQb8HLFhGXBME/srVzFcE99VjgzhSueWOGPSXdIoh93n5EKYcUwZw/OjFB0ptUc2FVFs+3b1B5vxaZ/9Of7/A9ybTo6rR0WOXUi4qhkRG4KExwvbwF7Yj+pAtjAEBY5Q+3Yji6xM9RZt3gKwrOJucbxt1H0+K+NR1kwZWnCN/mKJ/AvaFSPZQ5kw/tIHDFMDaP35AOcLfDj13l9NBD5JNkR+EAk3Ov1wtTqjvXiKlYpMG18MRRTuqXhUzW0f8SAURPdmI6Ix+OFgxIDmN13k8AvMG18SWlMAOsBRgV8SVjOSUlX/GNQ16NhVhoTi478TUVP1EGN5sEuiAH/TWtwYbxsLrx+k80J6EL8xBJX/4ZEuDgecxTuAua8BDPVT8cCgj8Ptb7R5bBg0zbOyaT0idk7hNloFGugDQrA1UjraAsG7B4iAOPnOXi4fc8NXMMNASYZ8J6MeQWtfSkU3Uwqcr7qTLeFsRmoNJhMkpxreSuoEtwLmlZrSmvoW8awx5o2dAUGZdfB0Lj8VCeItZxTP/SrL3fEgIaJCIX0iP0YAEFlCafHdU3KljKiIAEHTMdjl+UW+7215e6U8ntIJsSzuAYQ7D0Wuw028iAqsofdGEDIfE85gI7iHb/ZeTJXJoiBHd7kfuiBRY3ygk5C71Qdhke9P/uwgU4DKFv8q3/4WB0vd1Sb7Twpzlp3iZXMQtNbO91pL4uX651DD3zI6ki7iZpAuZLaC+CAxL4ZPFghxc9nJRIY2IoDrO5xw9ogqaV/15pG7
- IxeTLSsB
- yuUhzcSqtG8O5SmTaB5pxz/bCVu+q+amCV0jf5Py4eC2NjMEHLHq0xlG0YEvH3/pnjAVIH0dlSJCK4TiFWsWgSFIQuXL40Mre0WKIhL/x/A69xGgHG9sJ55LmFkHI5puOozVexvjTDbbsYaZPNvdRoJZst/4FJBmbOnb8s0JR8N7tLU0B4SfHLYejW60kJxXp1UdrLHN43TYvdfUanZBu6Z1rxOAD8XLfcixT87oJePdu209Y/rZ4x8tHpcyQPz8vvQ3qvtOp7r0IqZC2oyO1aedSS0lhMfx92QtL9PGAka9lGXGs1Suz/+pPDzDok18ezzL8lS61CDkYb0JY4vRjRkpaHTguTMTnt/Tn+our51xOXttM9v34xh9mbY2HeCLo5HF/2YJdFH0eEO6iZhtZZaRGNpMLS2uewUPDDgKfi8vqINIORFZaqsWwWvchM9t6LX0b429Q7LYY7kT3VRAnvL/Qv846rvGq66g9S5fsUIyAq1zy+OG+qNU7kkzhO8Q6cAAoFOr3oUdcIHEKfanWyYrhkYxwvzwAQXbpWnVZMI/jLs5A6bCghpstyyu3Fnhns2B137sSHahGt8KZYH01DJpxle66b39+5Jzvx5tYwA+g1XQxbJXM1aZmUgfT4D1J3F9fbUP2opVjCMFhMd0S5hdW8NqavrlJAOXxXvrtuMkbUkSnrbwcVIGklC2cP7FDX8M01xG/bX4cOOQ2fn4zhUfOLR0+EVyQFNCvkwtTs60V46fb5O+BBM4zKhWgJ/AA+2lg9+hKUBXnGMvv90PO1EwrvICfv+JY7RMTuPV8ht17HQyvAWNo3FTz0Wj90euGIWxQ02YidPuQ8JUcRO/Ayr85RO2IhDqbEEM5QmeGPZmF0GlL9w+9jyr66gyDL5MJstp+abjHAOyYqNUjVwhhbGhDrSSZ03IP86K6pfp/0Kj0Kzy1jWj9SU9fF9YRFDL8VAVv+QwBO47O0vA61hA8UFtyJ/VX
- Swijomrt
- qfwlVOg33OSoSjwFiUk6sS+TuDIlfwc7thwFjtc0LXVxNiWHp8AC4HkNmhuSkxcaYB18RMG3Zu2fjqZwinHxr29cD6w2AwLrume/9Sdsn+boONt05oPPCwUVkeRCFy1uHybC9xl0RuAj02iURrOL0AeyamP/+qXiZRrK3Okign8TTh5jzFrzaoqP7qoAnb+mKyMCPfOOyeBTdF4AUPqJ5wXoUsqalgrbNdBLtikgrmaaHJWXu+sYWhlH84h3dj73Icik3P8vfp81bqYFzI3sAnbW/fU2XI5nLftGVVnBmSlbnFV9IhGAhOXg97VC+Cf6aKzxBLCrGz09C46AXyx/JyPnPMjHc+gh7yOQB5t9eTlXs8fxoESsBTtpyTg6A5gV6pm8wQE/A/kYj4sBoQo94ZoPkkjKSEf8a7NbK06RbniwQHE/H6+K7Iw1qBZLlHyQwYrpUPwvNH8q/WE1h525ohOJvHh46zrpoxQjLsmL3/ORezYzNVYbOA==
+X-HE-Tag: 1756332150-213215
+X-HE-Meta: U2FsdGVkX194jlFmdJb1cjfoURPE9zFPaJP1PhNqSNcqC9PVbyx/6dLHU8FnGI8+o1zx6XddpEQNbHTLCiixHRBAEBkDabxqbt7P1et/BF9f0RRYY6tmyQN43Sx7RElZqDBmsCZpUK3SbS9PeWgit7io9DELsXvS95iibBhIUq6dKEd2N0BHQrnZ9PLwQpBnuJtzryrF1SxVjwEi4nFztUKXXuqd9sIkiSTiDG19olY0sg6l8FJMx9wVAOBQI58EDccbUM5vwRx/N0VfqYQ45yxUU0nWKATYCei2SCAkIo4jufYMK452gJ5TqQybxmN5uKg7nwYFh8TbiJUNe2MN5/HaA8MyFlG9+hJIHnhTud5X4W64ju37jckw5o7pVczA4ioTnVGcoGmSUTDqTBbgWq8ZULFRNYsXXmpcSqd/roIV/krNEiIyKSVsEwTvRAUzv0hJ/g1KTEAC+RyFLAS5hwCq0wrk/vNnBeetQcqcPX7nkSb5RDXnln3NC/GkZyBjR+gZGPRy2Vk7pcNLTP2+7wZl4HFQLNSBuREV1iwFlqpiJalcaCp/EeA4zLsX5d3D6rXtcsu+fvGY8R9FWmBE83hxrg3OV+GiM5nSndMOucFtx0DGXMz6BcTnA2avraPzNmJZDc21aggl3t70xpGLzrcjvTH/b2YKO1T431HbpRvqJHwGSJHXj28uWRa9N2N99vPxsn8n3tc49MpAYKni4UQpGqQlb7Rlwqz9r7iLq6KTokRpONAexSiYylgG4m37XVbwvccm5uFWOCPRYYUAoD9VdfsCdyLCnXUtjirpGN0uEGq5EXDxzPbvd7biVT23v66cnMNVu/DspKH5GJW6o8dfSdxWl4hF7z+URnwvqiFYdbYqQ+XLtmCSNEUbPL/czh/bSRfFlEkI7wejIJyuJpeFXtt6ToTjIz8XEp+0u7RwtqMdCwdNe/4cyNd5M+Q/sA2+WxXPbLfyo6wypKg
+ fbZhSWlp
+ UzkAAzp9x6Bw/19PjW0AImgR4btI2a7mJtPo1awPplxyAQHMhqRl/ezw33IRWH1YMBNivBN6Ix+sPcQZUitAD//jWl7DnWwD8EiDBTCFd/n6teiwyQXxlCn/I/khELLibfqftQBnwQxCOGDr/v5JvFkmvNxri8BlnNXJ3SkuvoeqOOtyU+nmHderNRXotW1hxeI4UYZXwr4E9b+alAUgEwTrmBxqzOhbTdYjXnzpOsfDOxQBuXnHjnY7niVc4wR4GMJ5KaYftr/7AZZ9atVxPLDSWsAWWVjJ9wUgLwe27IHm1nttX9NHpRldljv5rFRYo3Sos0aaHUDJvfMzmkbSQkfqA6Z/E7e/V+0poRu5PXregdbt7zS1lTkT7rQgA75pBezjCBpA9r26sMSyVziXdc/x7XkuMcfS633i0lzfQ5wJZn1IEhqrmOQnfIhxX3r+Y3eFXHK4Ef6MMjWV6x89Lepp3GCKCpzVL++7m+0CfeMnEt6foR7FNneuedNBJA90XqcSepuTO35PjLfn2DxcReeRer4+uaenhca1Z7AOlEIbEPN4QyCU4whlW5VXpg9h5Ii0YAUxXIH273aU8ECk8qHE9Q4HcmN2RR/+CUMEp5BNEJb0YbPGuTWBnClIyGW2Fl6mEtHWEUylF6YM1tvPj9lb3CiCZdx5SQN7dnfA1oNedtXCm15KSGBE1+7oc3QxMh4cgVNzSbRA1A5ztwLZcfDmvzVEIQiBxtDBr5NoLaSg5Lt6Cr5nvEkR6ji9FY4Vc9hyMPEH13fD7nNSHceFSBX41x45cmdT70SqxfrKuoLpPEIsJtnq49PbIobopCgUELyvAM/bxWOPgCJ+uQe4/kMMZILbHqIS8lg13sILkzC9On67ZHZ1j7gTk6bedV/KrCqm33JhNF/sHAu7SNQW9F1k09CkHurTr3mwCHjQbdyqX1eTO0lomUduk0pxlZ5IC/3F6ANP054GNbUwwDte2vIjQK9Sd
+ PQ6n3MMW
+ tFMdyQ1P9Xf3cs9OCjs6XY4YJjRXO4K82UNTZrBxUxrkh511RyoF2GoQhptZ+x3j5VrijQe1yvx5CqZEnWfJz3Fk2l4H3RQj9pzdXflrr8Qy7aEU6YC7rV5hHsgw+TK223S/IWF0sA7OEE8K2e6AhZPLfDEJNWYIFpA8q8zjD2QUQyPhVIsvAvnRDIT00+8I6W7m+EMWbIvQLByIHKoObCeORnONaDGJP2P/FFA8qA8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,112 +203,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+This is based on mm-unstable.
 
-syzbot found the following issue on:
+I will only CC non-MM folks on the cover letter and the respective patch
+to not flood too many inboxes (the lists receive all patches).
 
-HEAD commit:    7fa4d8dc380f Add linux-next specific files for 20250821
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=11fecc42580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=ae76068823a236b3
-dashboard link: https://syzkaller.appspot.com/bug?extid=5a2250fd91b28106c37b
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14c94858580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=108ea7bc580000
+--
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/63178c6ef3f8/disk-7fa4d8dc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c5c27b0841e0/vmlinux-7fa4d8dc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/9a8832715cca/bzImage-7fa4d8dc.xz
+As discussed recently with Linus, nth_page() is just nasty and we would
+like to remove it.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5a2250fd91b28106c37b@syzkaller.appspotmail.com
+To recap, the reason we currently need nth_page() within a folio is because
+on some kernel configs (SPARSEMEM without SPARSEMEM_VMEMMAP), the
+memmap is allocated per memory section.
 
-------------[ cut here ]------------
-WARNING: mm/page_alloc.c:5124 at __alloc_frozen_pages_noprof+0x2c8/0x370 mm/page_alloc.c:5124, CPU#0: dhcpcd/5530
-Modules linked in:
-CPU: 0 UID: 0 PID: 5530 Comm: dhcpcd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:__alloc_frozen_pages_noprof+0x2c8/0x370 mm/page_alloc.c:5124
-Code: 74 10 4c 89 e7 89 54 24 0c e8 f4 11 0d 00 8b 54 24 0c 49 83 3c 24 00 0f 85 a5 fe ff ff e9 a6 fe ff ff c6 05 fe aa b7 0d 01 90 <0f> 0b 90 e9 18 ff ff ff a9 00 00 08 00 48 8b 4c 24 10 4c 8d 44 24
-RSP: 0018:ffffc90000007780 EFLAGS: 00010246
-RAX: ffffc90000007700 RBX: 0000000000000014 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc900000077e8
-RBP: ffffc90000007870 R08: ffffc900000077e7 R09: 0000000000000000
-R10: ffffc900000077c0 R11: fffff52000000efd R12: 0000000000000000
-R13: 1ffff92000000ef4 R14: 0000000000060820 R15: dffffc0000000000
-FS:  00007f4fd75a9740(0000) GS:ffff8881257c4000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffebb07e018 CR3: 000000001dadc000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2416
- ___kmalloc_large_node+0x5f/0x1b0 mm/slub.c:4306
- __kmalloc_large_node_noprof+0x18/0x90 mm/slub.c:4337
- __do_kmalloc_node mm/slub.c:4353 [inline]
- __kmalloc_node_track_caller_noprof+0x34d/0x4a0 mm/slub.c:4384
- kmalloc_reserve+0x1b8/0x290 net/core/skbuff.c:608
- __alloc_skb+0x142/0x2d0 net/core/skbuff.c:669
- __netdev_alloc_skb+0x108/0x970 net/core/skbuff.c:733
- rx_submit+0x100/0xab0 drivers/net/usb/usbnet.c:-1
- rx_alloc_submit+0xa6/0x140 drivers/net/usb/usbnet.c:1538
- usbnet_bh+0x9a5/0xd70 drivers/net/usb/usbnet.c:1607
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
- bh_worker+0x2b1/0x600 kernel/workqueue.c:3579
- tasklet_action+0xc/0x70 kernel/softirq.c:854
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- do_softirq+0xec/0x180 kernel/softirq.c:480
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x17d/0x1c0 kernel/softirq.c:407
- __dev_open+0x694/0x880 net/core/dev.c:1690
- __dev_change_flags+0x1ea/0x6d0 net/core/dev.c:9549
- netif_change_flags+0x88/0x1a0 net/core/dev.c:9612
- dev_change_flags+0x130/0x260 net/core/dev_api.c:68
- devinet_ioctl+0xbb4/0x1b50 net/ipv4/devinet.c:1200
- inet_ioctl+0x3c0/0x4c0 net/ipv4/af_inet.c:1001
- sock_do_ioctl+0xd9/0x300 net/socket.c:1238
- sock_ioctl+0x576/0x790 net/socket.c:1359
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:598 [inline]
- __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:584
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f4fd76a9378
-Code: 00 00 48 8d 44 24 08 48 89 54 24 e0 48 89 44 24 c0 48 8d 44 24 d0 48 89 44 24 c8 b8 10 00 00 00 c7 44 24 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 07 89 d0 c3 0f 1f 40 00 48 8b 15 49 3a 0d
-RSP: 002b:00007ffc26f40168 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000016 RCX: 00007f4fd76a9378
-RDX: 00007ffc26f50360 RSI: 0000000000008914 RDI: 0000000000000016
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc26f60500
-R13: 00007f4fd75a96c8 R14: 0000000000000028 R15: 0000000000008914
- </TASK>
+While buddy allocations cannot cross memory section boundaries, hugetlb
+and dax folios can.
+
+So crossing a memory section means that "page++" could do the wrong thing.
+Instead, nth_page() on these problematic configs always goes from
+page->pfn, to the go from (++pfn)->page, which is rather nasty.
+
+Likely, many people have no idea when nth_page() is required and when
+it might be dropped.
+
+We refer to such problematic PFN ranges and "non-contiguous pages".
+If we only deal with "contiguous pages", there is not need for nth_page().
+
+Besides that "obvious" folio case, we might end up using nth_page()
+within CMA allocations (again, could span memory sections), and in
+one corner case (kfence) when processing memblock allocations (again,
+could span memory sections).
+
+So let's handle all that, add sanity checks, and remove nth_page().
+
+Patch #1 -> #5   : stop making SPARSEMEM_VMEMMAP user-selectable + cleanups
+Patch #6 -> #13  : disallow folios to have non-contiguous pages
+Patch #14 -> #20 : remove nth_page() usage within folios
+Patch #21        : disallow CMA allocations of non-contiguous pages
+Patch #22 -> #32 : sanity+check + remove nth_page() usage within SG entry
+Patch #33        : sanity-check + remove nth_page() usage in
+                   unpin_user_page_range_dirty_lock()
+Patch #34        : remove nth_page() in kfence
+Patch #35        : adjust stale comment regarding nth_page
+Patch #36        : mm: remove nth_page()
+
+A lot of this is inspired from the discussion at [1] between Linus, Jason
+and me, so cudos to them.
+
+[1] https://lore.kernel.org/all/CAHk-=wiCYfNp4AJLBORU-c7ZyRBUp66W2-Et6cdQ4REx-GyQ_A@mail.gmail.com/T/#u
+
+RFC -> v1:
+* "wireguard: selftests: remove CONFIG_SPARSEMEM_VMEMMAP=y from qemu kernel
+   config"
+ -> Mention that it was never really relevant for the test
+* "mm/mm_init: make memmap_init_compound() look more like
+   prep_compound_page()"
+ -> Mention the setup of page links
+* "mm: limit folio/compound page sizes in problematic kernel configs"
+ -> Improve comment for PUD handling, mentioning hugetlb and dax
+* "mm: simplify folio_page() and folio_page_idx()"
+ -> Call variable "n"
+* "mm/hugetlb: cleanup hugetlb_folio_init_tail_vmemmap()"
+ -> Keep __init_single_page() and refer to the usage of
+    memblock_reserved_mark_noinit()
+* "fs: hugetlbfs: cleanup folio in adjust_range_hwpoison()"
+* "fs: hugetlbfs: remove nth_page() usage within folio in
+   adjust_range_hwpoison()"
+ -> Separate nth_page() removal from cleanups
+ -> Further improve cleanups
+* "io_uring/zcrx: remove nth_page() usage within folio"
+ -> Keep the io_copy_cache for now and limit to nth_page() removal
+* "mm/gup: drop nth_page() usage within folio when recording subpages"
+ -> Cleanup record_subpages as bit
+* "mm/cma: refuse handing out non-contiguous page ranges"
+ -> Replace another instance of "pfn_to_page(pfn)" where we already have
+    the page
+* "scatterlist: disallow non-contigous page ranges in a single SG entry"
+ -> We have to EXPORT the symbol. I thought about moving it to mm_inline.h,
+    but I really don't want to include that in include/linux/scatterlist.h
+* "ata: libata-eh: drop nth_page() usage within SG entry"
+* "mspro_block: drop nth_page() usage within SG entry"
+* "memstick: drop nth_page() usage within SG entry"
+* "mmc: drop nth_page() usage within SG entry"
+ -> Keep PAGE_SHIFT
+* "scsi: scsi_lib: drop nth_page() usage within SG entry"
+* "scsi: sg: drop nth_page() usage within SG entry"
+ -> Split patches, Keep PAGE_SHIFT
+* "crypto: remove nth_page() usage within SG entry"
+ -> Keep PAGE_SHIFT
+* "kfence: drop nth_page() usage"
+ -> Keep modifying i and use "start_pfn" only instead
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@gentwo.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: x86@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-ide@vger.kernel.org
+Cc: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-mmc@vger.kernel.org
+Cc: linux-arm-kernel@axis.com
+Cc: linux-scsi@vger.kernel.org
+Cc: kvm@vger.kernel.org
+Cc: virtualization@lists.linux.dev
+Cc: linux-mm@kvack.org
+Cc: io-uring@vger.kernel.org
+Cc: iommu@lists.linux.dev
+Cc: kasan-dev@googlegroups.com
+Cc: wireguard@lists.zx2c4.com
+Cc: netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+
+David Hildenbrand (36):
+  mm: stop making SPARSEMEM_VMEMMAP user-selectable
+  arm64: Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+  s390/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+  x86/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+  wireguard: selftests: remove CONFIG_SPARSEMEM_VMEMMAP=y from qemu
+    kernel config
+  mm/page_alloc: reject unreasonable folio/compound page sizes in
+    alloc_contig_range_noprof()
+  mm/memremap: reject unreasonable folio/compound page sizes in
+    memremap_pages()
+  mm/hugetlb: check for unreasonable folio sizes when registering hstate
+  mm/mm_init: make memmap_init_compound() look more like
+    prep_compound_page()
+  mm: sanity-check maximum folio size in folio_set_order()
+  mm: limit folio/compound page sizes in problematic kernel configs
+  mm: simplify folio_page() and folio_page_idx()
+  mm/hugetlb: cleanup hugetlb_folio_init_tail_vmemmap()
+  mm/mm/percpu-km: drop nth_page() usage within single allocation
+  fs: hugetlbfs: remove nth_page() usage within folio in
+    adjust_range_hwpoison()
+  fs: hugetlbfs: cleanup folio in adjust_range_hwpoison()
+  mm/pagewalk: drop nth_page() usage within folio in folio_walk_start()
+  mm/gup: drop nth_page() usage within folio when recording subpages
+  io_uring/zcrx: remove nth_page() usage within folio
+  mips: mm: convert __flush_dcache_pages() to
+    __flush_dcache_folio_pages()
+  mm/cma: refuse handing out non-contiguous page ranges
+  dma-remap: drop nth_page() in dma_common_contiguous_remap()
+  scatterlist: disallow non-contigous page ranges in a single SG entry
+  ata: libata-eh: drop nth_page() usage within SG entry
+  drm/i915/gem: drop nth_page() usage within SG entry
+  mspro_block: drop nth_page() usage within SG entry
+  memstick: drop nth_page() usage within SG entry
+  mmc: drop nth_page() usage within SG entry
+  scsi: scsi_lib: drop nth_page() usage within SG entry
+  scsi: sg: drop nth_page() usage within SG entry
+  vfio/pci: drop nth_page() usage within SG entry
+  crypto: remove nth_page() usage within SG entry
+  mm/gup: drop nth_page() usage in unpin_user_page_range_dirty_lock()
+  kfence: drop nth_page() usage
+  block: update comment of "struct bio_vec" regarding nth_page()
+  mm: remove nth_page()
+
+ arch/arm64/Kconfig                            |  1 -
+ arch/mips/include/asm/cacheflush.h            | 11 +++--
+ arch/mips/mm/cache.c                          |  8 ++--
+ arch/s390/Kconfig                             |  1 -
+ arch/x86/Kconfig                              |  1 -
+ crypto/ahash.c                                |  4 +-
+ crypto/scompress.c                            |  8 ++--
+ drivers/ata/libata-sff.c                      |  6 +--
+ drivers/gpu/drm/i915/gem/i915_gem_pages.c     |  2 +-
+ drivers/memstick/core/mspro_block.c           |  3 +-
+ drivers/memstick/host/jmb38x_ms.c             |  3 +-
+ drivers/memstick/host/tifm_ms.c               |  3 +-
+ drivers/mmc/host/tifm_sd.c                    |  4 +-
+ drivers/mmc/host/usdhi6rol0.c                 |  4 +-
+ drivers/scsi/scsi_lib.c                       |  3 +-
+ drivers/scsi/sg.c                             |  3 +-
+ drivers/vfio/pci/pds/lm.c                     |  3 +-
+ drivers/vfio/pci/virtio/migrate.c             |  3 +-
+ fs/hugetlbfs/inode.c                          | 33 +++++--------
+ include/crypto/scatterwalk.h                  |  4 +-
+ include/linux/bvec.h                          |  7 +--
+ include/linux/mm.h                            | 48 +++++++++++++++----
+ include/linux/page-flags.h                    |  5 +-
+ include/linux/scatterlist.h                   |  3 +-
+ io_uring/zcrx.c                               |  4 +-
+ kernel/dma/remap.c                            |  2 +-
+ mm/Kconfig                                    |  3 +-
+ mm/cma.c                                      | 39 +++++++++------
+ mm/gup.c                                      | 14 ++++--
+ mm/hugetlb.c                                  | 22 +++++----
+ mm/internal.h                                 |  1 +
+ mm/kfence/core.c                              | 12 +++--
+ mm/memremap.c                                 |  3 ++
+ mm/mm_init.c                                  | 15 +++---
+ mm/page_alloc.c                               |  5 +-
+ mm/pagewalk.c                                 |  2 +-
+ mm/percpu-km.c                                |  2 +-
+ mm/util.c                                     | 34 +++++++++++++
+ tools/testing/scatterlist/linux/mm.h          |  1 -
+ .../selftests/wireguard/qemu/kernel.config    |  1 -
+ 40 files changed, 202 insertions(+), 129 deletions(-)
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+base-commit: efa7612003b44c220551fd02466bfbad5180fc83
+-- 
+2.50.1
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
