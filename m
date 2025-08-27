@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C66F1CA0FED
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13420CA0FFB
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A4466B0095; Wed, 27 Aug 2025 18:04:30 -0400 (EDT)
+	id 54E646B0026; Wed, 27 Aug 2025 18:04:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17C446B0096; Wed, 27 Aug 2025 18:04:30 -0400 (EDT)
+	id 525C86B0098; Wed, 27 Aug 2025 18:04:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 092126B0098; Wed, 27 Aug 2025 18:04:30 -0400 (EDT)
+	id 414816B0099; Wed, 27 Aug 2025 18:04:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC0436B0095
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:04:29 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C26B1DE950
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:29 +0000 (UTC)
-X-FDA: 83823917058.29.94D9279
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D559114001F
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UnMe9JRW;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F8556B0026
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:04:47 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B205B5BAFD
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:46 +0000 (UTC)
+X-FDA: 83823917772.03.FF1AEBA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C8A8A100017
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:04:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RXbo7jlo;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332285; a=rsa-sha256;
+	cv=none;
+	b=rrbSbqrna/EG+oBq/SvHo+8i4daAeD23UIYKDw/yg3GNnK1kWkpuwhgG+LnsyFi7NeEBMs
+	y8VaZLeU7YQ1ysNiIJHTJfZBj7a2BNQgGzbmPIHp8+xylxtwK031NxKcK9xSxNJRCe0+NR
+	UpS6LcenS57ecN1MqKFYOOQKmyrhrUE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RXbo7jlo;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332267;
+	s=arc-20220608; t=1756332285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L6FCsZfzSN7fAFSGFsxI24ix2lgnSyrxfbvzUHWhoBg=;
-	b=QHK9EofgZ4XraMroWr9snrWzoYUDWhvoVDZf30xMBv+xJ6pMeoRUJPsU8aVlYhlW/LgtPB
-	gSChwnxDTpuJEUQWFqRMO76/qDw3T4b28qXhPBwZFEUQosrbQC/rt0+R1vOsPeaFnuqQbg
-	HihRoVwxxZo3rubVy/VEJe9wg7+T5/s=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UnMe9JRW;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332267; a=rsa-sha256;
-	cv=none;
-	b=JQjXymUkG9pFWkQVsFrpIm7TFAOuCqmSWNTrIFpHAuEReqHVUUJoNMH3KkSrRcNZnOxblK
-	YtE7PdgiwNo6K8fP9S7XQsWed7/MhGVzklLXt7/wsydq7HjYmSeb85456cdBkQnSnzsmdE
-	5yfz/MzEdqSglDc3K1NOULy4e60BsyI=
+	bh=IPdRkz39C6GEGewoqOPx6e5B77yZ10PZ9TzgCgWDUu8=;
+	b=nN90E/CmmvHcEPeYNuPIkN9QewNiMmg+/4o11mI39lC/CMSSh8dggbZSfuLDBsNhPhYwzE
+	CCAsOGy7aBXYFUd3n9a42oDY3tX02BER5mkZ0gg6+S0uzsFjo/kW4XqdFV7N8k3B0abDb8
+	E0QZ080oMWmFT3F56lUvJc5didbrzqw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332267;
+	s=mimecast20190719; t=1756332284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L6FCsZfzSN7fAFSGFsxI24ix2lgnSyrxfbvzUHWhoBg=;
-	b=UnMe9JRWlzOTDNrwJv3bo6U4o0cWGoRiUWj8p1Wi3xJ5HQcRaFiEUvHuH4TrteWOyGqPeG
-	pdRX0AissJu9TdHkKqNu6/mLQDAJbLBRZOEju+LEQA7e34YpaaZVirdB8la8YuDMTzw/dS
-	xB0zqL35lOOluBjqxKGu5yFnVoWmWqE=
+	bh=IPdRkz39C6GEGewoqOPx6e5B77yZ10PZ9TzgCgWDUu8=;
+	b=RXbo7jloDqD6rJfmfSxHdq7ICOTO4EncjNN6NSnwYcfOAcMwpCYeBxwsT2Jx8BudPfxyxv
+	8zskoMpajFuLltu1TTZius8qkUk7J7tVdTzexl2ma9WDVlHR/EQ2CTZadlRv7NhVkF+B/A
+	qIusWWUfHqXNBrYA78WlHx6pp8CB6ic=
 Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-DyeoCm-sNhqCtBzBrbRJIA-1; Wed,
- 27 Aug 2025 18:04:25 -0400
-X-MC-Unique: DyeoCm-sNhqCtBzBrbRJIA-1
-X-Mimecast-MFC-AGG-ID: DyeoCm-sNhqCtBzBrbRJIA_1756332260
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-140-ejq5WAESPvyYJNhJ8vcpMw-1; Wed,
+ 27 Aug 2025 18:04:41 -0400
+X-MC-Unique: ejq5WAESPvyYJNhJ8vcpMw-1
+X-Mimecast-MFC-AGG-ID: ejq5WAESPvyYJNhJ8vcpMw_1756332276
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 15140195609F;
-	Wed, 27 Aug 2025 22:04:20 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C407195608E;
+	Wed, 27 Aug 2025 22:04:36 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A03B330001A1;
-	Wed, 27 Aug 2025 22:04:03 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9EB3E30001A1;
+	Wed, 27 Aug 2025 22:04:20 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	SeongJae Park <sj@kernel.org>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -124,22 +123,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 07/36] mm/memremap: reject unreasonable folio/compound page sizes in memremap_pages()
-Date: Thu, 28 Aug 2025 00:01:11 +0200
-Message-ID: <20250827220141.262669-8-david@redhat.com>
+Subject: [PATCH v1 08/36] mm/hugetlb: check for unreasonable folio sizes when registering hstate
+Date: Thu, 28 Aug 2025 00:01:12 +0200
+Message-ID: <20250827220141.262669-9-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Stat-Signature: 8bytr81zeqjk7js4hykwu1rz5tyhtmsc
+X-Rspamd-Queue-Id: C8A8A100017
+X-Stat-Signature: waxnexszgm7cb35famxm5iodq11wiks6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D559114001F
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756332267-876789
-X-HE-Meta: U2FsdGVkX1/NLfQb5qaqZZnE4jU0bmuItF0xOECKxjZvN+IpHm3oY2v0V6I7mHc+C51EAAsfuZemZ6LIIKeGWjGqB4d35aTKj1MQzMIRN5zIWVe/+9/f9//Evrn4Iq4Mu5LeUmnU6J4z07UscbHwWUmo+i97KFGuQyfsOX321np2MlPe3G1Uesw0PycAxGRAcwExBG7yKbq+UIg7LFn9vBVw5tyAl44xoEN7E9z8pZTnJIo06hheAW430Gp2NIUrJkUUuclv/F8GzdymIGXafJ3Kjs7gpO7VZ6GZin2COWavLAkZBT5mCJqFlEOdDz5YWECeGZBxtqdgDWdn1JDF/M8Hp43xocmC+0dQwQ77wCmIexGmbX6TK+9oYOadE7aLxXoAGcr5oAwdLxnbHPqudCNiDmC5YO4VMDkYD4WhYOuRHetXA497xU2F2c1oD2GRCEwk/zrJsnr0frap3zo7aWi6GxLgGflWi+EW4CPLIDcbOGiS9/dt0q4hqQJvPnBjnvaWeV5lo/ABcR5Lm4JQiLwJJs9w9cAvuSQZAJIDasS4VbTPzBfp8fBsaf7NN4Wa9+e97Bg2NopVfkXl56dSKXEGyK7Q32oSQ97O8bOcOLuhKk2qQRNqwPRY7fIQotf4i1RKKYkcF6HPDkvGXThDPdLYt9Ksno8uln+Dbs+aESidu8Cfhe07BGzaI0m/lkdIMvoB0Tru+GLnCn5g347orjrNskYEz/jUHR2T8E9sjKrx2D9VZyCCuEIw8ra6dvv80r2538df11Nox8AYVYUSnHDjrAyiWTu9jyP3lPMWxJRLbNSJrmMcy2ZUGTVMLWI3DflLlYf1NAdgCfq5o4ZHwI4cyVzP+Nu+O1YJ8Vtx7MFRVVihiT0Ea0SHxD8a6yP7p/64almgmLS4uQg6GArXYXQWneAzI+lxQF9RUIOs1jlVNV8dh2anJ1vNQBINtWeXR20ZjbbuzFc6LGm4d++
- gKsw2ZsJ
- oHPd5VEvlAZfHsJG6th2BLFohIqcxufxg+Wze0Rbb9dL3yuuYg79tX4C2cvWmlcS0UPqyPgVPL5HRu6E1bIZ6MkYChTcSnYLpJYoUBwLCgwA8xfU58uyAxAF9BpUPE/hHPF8AqvB+ZF+zYQW/f6Y1IuFLDybscxp+3otlF9JVsZkEUOTz20pgjGXFrXYPSImfNwq2ZHnP5AxKXp5mYBjDL88I7ho6ZOA2mNIciopabYefc5nvmyRzQzgCpD7fM7qU2A4U0qz5YiT0OozMvdlcv31z9Fhw0AjtFwvT9a2aoOTaIoLtN/N+BiL+ruOoONc8jjJ6jM2Kfwa+z74PbhjEaW++k/aH4aME7PWn/Ove+dN1uh8=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756332284-36295
+X-HE-Meta: U2FsdGVkX1/ygURSRDe7qwmd83SLAJa8lARrHxOx9TbypeWaYIqLxd/crUqAH4Rsy7vOTUeAD9gQKneFJis/+ARBf6P6aPSyXlrCpNl+RPotOumhYq5EOEHAK2AVxxyf8TtBQg5pJVxHP1uGagP2VaB/rOp3XM29ZfGG9f7UBWU252HW2jb3e6K4DX32D01q5izUc7oNIXh6o9igkBs4BTk9p1VyDzk8KJbz5wAi+ZdxETm7aJYB9pssBSZASG5G9r2OhJHf5Fj71Oqmei/MKn3pI5mt4ULtN2VoIOZlcTo4EtoktS2MO7soMRp8vLD42+/9KLfHkScWCxWj22x9DXFfrbI5Jud7WbgpAt2sO4QBirxrejYwgWy9sgwpv34t04QKTKrsQQnxAzey0GIxt+MB06ol+m69+rjX2vTGfjPYHm0hxs86PtHMl+AhLIyAaSFqlpaf8EVB7bZaiAMxDuIEBUOhPYoKJMCzFT6j8g+V2MR/loONvEmlYlnAJI2wFNl/NxMoZF8eRRJXNAmyMVuroxJB6KACyfALWbBy4CKEQMtO+x7RfXvB5mWPv0N+eVu+KXL1iWczVO243nRQdsBqrmuOLYZgZijy1mNYXmwpNRiI2rzrn60hYGjwcoskFmTCMO6Cqq8E+MxUM0rOjBrvjsIfjAs3ByPk3S3arU28RZBlKJ157SolYYt0cscVKH8c/oyXoLChMJkdlapRlJGkpQy4S9MD8Yy0xDUIvT/BaZ5r99/YccdvYTQgMvEQtZbA8LmMVLFqp3m2uh4wpvnhCxdtECns+YMhUiBv+U+RJqKRLivdgSpdclqTmVF+qavYQ2Kw1srDzOpwA71IQhduEgRhefSA9J42xTrSJij25TpPVwwtbUTNMB61Db7zWaXKkWhhl7dlCbtgZ0509V3/1SHKFYFfrH22IBtsuuMogLrXQDx4fhQAn7Y24s/YdHeiSFn8dXu4iBLOFWf
+ 8vX35I4Z
+ 3jxYDBgkMdeS+HxnlTYY3FR/9rCEdwDqDoCGboWCCDDMz0zOg+/xXjPrzNXH+ZrMQHZlkDwbUbf7zdoMJcwsUtq/viz7zFx85OEhhStxVUJglecOxax6VGGvweammE7FQhmt6bbWdcDCMjXkTLfz9LRvPS6ozvU7PSSCpdfA0oHd7kjxBVfwAr34rH/mjdL8ak/VGhZunvUM1sc/8/9zxgix+5j+Tl9pA2UGzklXwwQz5zBZ1KHppO6rH0qoAYzTMunbYZ0NzFd2iaf2NBVT8mj7L+TyLq9SMASnXFwR47994mm/xDgEA+NSj/h1YkQnvMQ3Dg7O3vM9pSpODkm5yF6TI7S1cw5PVTe9cjz3gWjM5vgO4wDIVbrjlrrvAE9QW/eB2GXrnVviFR5FCKCFEcgfwgt8ETEFVTUij/WkHAi6eERj41GEo2NWWcSs9sx95d0+8kODQnEgN5bjN3QmuiCT/aJaPKmhcdKJPwPV1oJQ3moM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,37 +147,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's reject unreasonable folio sizes early, where we can still fail.
-We'll add sanity checks to prepare_compound_head/prepare_compound_page
-next.
+Let's check that no hstate that corresponds to an unreasonable folio size
+is registered by an architecture. If we were to succeed registering, we
+could later try allocating an unsupported gigantic folio size.
 
-Is there a way to configure a system such that unreasonable folio sizes
-would be possible? It would already be rather questionable.
+Further, let's add a BUILD_BUG_ON() for checking that HUGETLB_PAGE_ORDER
+is sane at build time. As HUGETLB_PAGE_ORDER is dynamic on powerpc, we have
+to use a BUILD_BUG_ON_INVALID() to make it compile.
 
-If so, we'd probably want to bail out earlier, where we can avoid a
-WARN and just report a proper error message that indicates where
-something went wrong such that we messed up.
+No existing kernel configuration should be able to trigger this check:
+either SPARSEMEM without SPARSEMEM_VMEMMAP cannot be configured or
+gigantic folios will not exceed a memory section (the case on sparse).
 
-Acked-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/memremap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/hugetlb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index b0ce0d8254bd8..a2d4bb88f64b6 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -275,6 +275,9 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 572b6f7772841..4a97e4f14c0dc 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
  
- 	if (WARN_ONCE(!nr_range, "nr_range must be specified\n"))
- 		return ERR_PTR(-EINVAL);
-+	if (WARN_ONCE(pgmap->vmemmap_shift > MAX_FOLIO_ORDER,
-+		      "requested folio size unsupported\n"))
-+		return ERR_PTR(-EINVAL);
+ 	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
+ 			__NR_HPAGEFLAGS);
++	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
  
- 	switch (pgmap->type) {
- 	case MEMORY_DEVICE_PRIVATE:
+ 	if (!hugepages_supported()) {
+ 		if (hugetlb_max_hstate || default_hstate_max_huge_pages)
+@@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int order)
+ 	}
+ 	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+ 	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
++	WARN_ON(order > MAX_FOLIO_ORDER);
+ 	h = &hstates[hugetlb_max_hstate++];
+ 	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+ 	h->order = order;
 -- 
 2.50.1
 
