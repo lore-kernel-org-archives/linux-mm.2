@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E8A4C8303F
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 07:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71159CA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 07:52:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58A006B0132; Wed, 27 Aug 2025 03:46:21 -0400 (EDT)
+	id 8F61B8E0127; Wed, 27 Aug 2025 03:52:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53AF86B0133; Wed, 27 Aug 2025 03:46:21 -0400 (EDT)
+	id 8A5888E0105; Wed, 27 Aug 2025 03:52:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 450776B0134; Wed, 27 Aug 2025 03:46:21 -0400 (EDT)
+	id 794AE8E0127; Wed, 27 Aug 2025 03:52:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E04C6B0132
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:46:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A1F971A04DF
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:46:20 +0000 (UTC)
-X-FDA: 83821754520.13.18C05AD
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0B71020002
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:46:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="L GzVdU1";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf13.hostedemail.com: domain of yangshiguang1011@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 663848E0105
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:52:34 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDA0614049D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:52:33 +0000 (UTC)
+X-FDA: 83821770186.08.513B059
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id F163940009
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 07:52:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cUF6RM26;
+	spf=pass (imf17.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756280778;
+	s=arc-20220608; t=1756281152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0MmrPy+E8embJExjeJmQiky6NuUvRVQ/YGgyEIJXCLY=;
-	b=n7m6NFv03ZKjS00a64aNWk3RAAJGj1Gn1pTNFJ3p/ypAbHJ/aM3U0aM7pAhBT/VBwNc1g4
-	DB3OAS/sA+fdfwrCVtb7JJJ8ymlOGlnLDtEm3mDaWHFFnjZr0PJ0aiS8+9duNHqy21PTh8
-	bOK3IWYjhZRQ8Yw8h7R3swIhfURTGg0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=N6SntE+UiHIpGFBxOP3k+c2SCeNJCrXgtm7HmQ15Vds=;
+	b=TaF+aIyY3t77MD2Q7bmrqT87vx8K6S2zpx6mvSLZGmwVZWMGf3XhEKJQ6HoxjmbWMJf8fW
+	Xc1Ik6LWny6XMvOE6CHeRje4txVwMjUMqEUTXZFgg0Km70CF+XlqhP5Y5vZhBd5pFDpnCF
+	aQP83Y21NEqONDOUWPofHIcBjAx2pf4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="L GzVdU1";
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf13.hostedemail.com: domain of yangshiguang1011@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756280778; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cUF6RM26;
+	spf=pass (imf17.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756281152; a=rsa-sha256;
 	cv=none;
-	b=g+JmFMRSYwdMCqIg60ymnotZByCpDSXsyFLXy6ezF3DcfEptlQssm9+DuM8GS0Lsp7Ytc9
-	mwQzTAErhvs/Oa3kXX2RA75/MHdS/gCZZIVdkDf0k5y8Qa3pYZmRGMG+qApFoN9i6fYcPt
-	T1jLTIsIyQHp8TQEVweosZQjZy8cR1A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=2Q4BVcfMJ9wvZWMC/mZ7cNqnTcVJUHQ74bJz30nxEJQ=; b=L
-	GzVdU1vI/trXXe3VPhkZrntZSiOp0+sLZDHI4PjQh4amNDClKG+uCaNgiaA2K4Gm
-	8hz333L/LBsNFOCPreA2udFPNEnXTkKaebazpgT6JFDVpSuoLZo7xZz0bCIhfa4s
-	MIemJRxq2XaRtDbW1pjFkhOBV8Bqdjx6T46lvhojk4=
-Received: from yangshiguang1011$163.com ( [1.202.162.48] ) by
- ajax-webmail-wmsvr-40-108 (Coremail) ; Wed, 27 Aug 2025 15:45:48 +0800
- (CST)
-X-Originating-IP: [1.202.162.48]
-Date: Wed, 27 Aug 2025 15:45:48 +0800 (CST)
-From: yangshiguang  <yangshiguang1011@163.com>
-To: "Harry Yoo" <harry.yoo@oracle.com>
-Cc: "Vlastimil Babka" <vbabka@suse.cz>,
-	"Matthew Wilcox" <willy@infradead.org>, akpm@linux-foundation.org,
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
-	glittao@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
-Subject: Re:Re: [PATCH v3] mm: slub: avoid wake up kswapd in
- set_track_prepare
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20250519(9504565a)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <aK6U61xNpJS0qs15@hyeyoo>
-References: <20250825121737.2535732-1-yangshiguang1011@163.com>
- <aKxZp_GgYVzp8Uvt@casper.infradead.org>
- <54d9e5ac-5a51-4901-9b13-4c248aada2d7@suse.cz> <aK6U61xNpJS0qs15@hyeyoo>
-X-NTES-SC: AL_Qu2eBP6Tv08v7iadbekfmUgRj+k6WsK3s/sn3oNfP5B+jCLp1RAuT3NTGmvR89CDKD2NnQiHYDh85sR+ZaZKQoML7HSsXXB4Qm/WIcirldzZ5g==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	b=SbdYgmGDHwE+HAwbXOyijcRvzIwCMlugTVtttz/qS3fBPhnbiaaOCclCzQyKMRYEaxNPK7
+	XMFn23ioryxaVIn7pta6IiBduAjGUO8yCTQpzra0I3aa42NW6WY9PWAFv0ZX2Mh9fomnv/
+	gjAznxXo17fJJ7S3V4nX0+pr1iCEl6s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756281151;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=N6SntE+UiHIpGFBxOP3k+c2SCeNJCrXgtm7HmQ15Vds=;
+	b=cUF6RM26pCf3yJnPX+AhiBNz/s7LmM1F5pN7QLswrOXByDo4YOhs97bQZq6vvzzwoqCR7R
+	UHN17J1eaU7ifBil2oapsK6lnTHifUij7E9DwJFqjwQJ1/j+oUkNWqBe69VWL8LaqtyHMK
+	mRj4Hd9P68tUIPtQ9NcO9dA6kd4+r2Q=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-76-iZHGTYBHNge45eseCba7nw-1; Wed,
+ 27 Aug 2025 03:52:25 -0400
+X-MC-Unique: iZHGTYBHNge45eseCba7nw-1
+X-Mimecast-MFC-AGG-ID: iZHGTYBHNge45eseCba7nw_1756281140
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5354319560B4;
+	Wed, 27 Aug 2025 07:52:20 +0000 (UTC)
+Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4A23E180044F;
+	Wed, 27 Aug 2025 07:52:13 +0000 (UTC)
+From: Chunyu Hu <chuhu@redhat.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	shuah@kernel.org,
+	linux-mm@kvack.org
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	chuhu@redhat.com
+Subject: [PATCH 0/2] Fix va_high_addr_switch.sh test failure
+Date: Wed, 27 Aug 2025 15:52:07 +0800
+Message-ID: <20250827075209.2347015-1-chuhu@redhat.com>
 MIME-Version: 1.0
-Message-ID: <6e1ab9d8.6595.198ea7d7a78.Coremail.yangshiguang1011@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:bCgvCgD3v1ett65oVdEiAA--.1986W
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiEA625WiuiUfH0QAGsV
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0B71020002
-X-Stat-Signature: roif5gcokna88crd9y13emxsase835hc
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Rspamd-Queue-Id: F163940009
 X-Rspam-User: 
-X-HE-Tag: 1756280774-362467
-X-HE-Meta: U2FsdGVkX19RVwFAys4+OICePVp+76O5u30GJNn5qRqbnMCuf0o/N+ZkszlQvvYcEeCmyqUkJIXc98VzsUnuP/vUFpaISvLYq7HuolSNxyjDAoOV3ikdvbl60VVH6BONJGJXBFYQvXiW0I1PsfFKEaJh0EBS7S1IHP7ZZoJvI3Qojnlz2nKCR7nV6wC3GW4gtEAa04EFCY7KWtGI5huHz6gEPMUNkZgE9FHEX5PkMvImqnFJ1nTgVGZZ5wPfuUdNqXlLomfkrbVKd9jHJoZywOTJkbWarMvD/6SiuOemqCToZ9Dv5gsg2TYLYM0mwdR2nvSO6lzhcY1lqDscu8Lr7uH49Nv1t6UeOmI0Slk5EEsh3mLrjp7cGpcXBfLZX/GeyiyZ9Pb2XvK0U8fK3k6YYODjYlZUvoPEPwlU6oZdnoaovo1jaV/UgqxnZ1xYMosDNJla4AcA4d3VhgLy+AYZy4BoS5MFHrVMDmuvj9SToi5JaG11RrZZKBCYAe8rQ/0f7y3RPfkLqf7xjtCW0aLrT6HXG+88GUurkShqX4UgVDp5dGbjG3+aCwi3bbpHkD2YD/rqerP5eVdjEgv1um1O4MQm9oueLIMhFxLPmaeKJFq8I/mVwF1vF3kzF/yMvjuN+P5lNYcV6KuW98+iW1hcHwdWwtu7OK/2yAgghDJIWvPcgwhMnocd9+85qPiodw1ui5SwOc5gxLffGrJu1/78LfHmZEZ2IjglRfY3UzwOQGdf9yDEyAUYlSbZlAvU/a+nTuyFDML4yWcgBWg3gVUlbXvby0+QUt0mccgt2ikWt+LAaZ/4UimLL0xCy3wSswsPbauzFw1GE6JXKRPgooGG+pDMM63myTkiQfZXwJPyAgKhmrL8x8o+mKgrqkXLHlcNbDRAgIHOLvSnfv7j4qVyK/TRtbByyd1z+p9cRMtEjJe5YEuqGyMDKGXiiNUJfMAxlBJg8NZbjbYQGGcXEfL
- GUtW+bJQ
- eGQXTHYYs4EXTIgUK6Ekbv48I2Bj9H8aWzy6z9v5jLjtwRlc/v/CreyUeNalvfG/3qte+mWpBoFJl5ZvHHNqeRr+AgufRwpMdhGyTzL53G4PMloYfevLPW3WN5u7oC6O1QtDvyMGrzAR09Z0aMR6nvMt7IuNkah7lPQ5knMUh3Vx/WmPGKwsNFKP0jnZnrl7eBsxKa+bYLDElEl/qQOyHfRIS7bNl45anf/Xd9dKIfBwvYZXOLFiB4wU4ixAhJnQ1kaSw5ecFiAkUaiMzfsYl2XIm++K6zyr5EVU05ch4x0r4si5Gi1yQs/WY3SXqr00120YMdMrveG7j11Ehay2aB8J6Y4fyMQLlc/hAcchfc+xxozDDm7rYisdPKjd40bwv+Lypjmk/9080cAjrbOX7vz3hJQXdlEhxjPRIOW7tnrv4P/BOdrpuvvCggQouu4NUj9jUayLk/nisLag15wO7Q31mcQ68IFRaRT2HpnbBh9GABGQZULUjbn8WBq8cWhbNEgRMxUSP7kR6qAbugpFR9pKojo3uBia1tdFZXuMEFgTzd80Y6i/Fof01xYcmlfxhuzny0fabNTBmR7uwP1vBfjGv6UNC4HVVoX0mze3XusZvAsqJN7VIjpadtPbgk+ra2BcAsIYCzwObGTX1+CLYbb/DvA==
+X-Stat-Signature: jd638tbwouq7y1h3jm5zfobn955tsqu9
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756281151-264854
+X-HE-Meta: U2FsdGVkX18yjgXVb/yo11DZO1O9AHkYs3Y8QElada7DnDkEv7NBOvgRXG9krmFaeVqfnGs76aZlvbbp/7lXv4mXCQFPEbQXafMUbdiVcHtlx+4hzAPWLcW4sdX/eOfuKVIHax+ryxbZLAEbzxa4/GstQdkLYKmHNb5lyTri06jnTikV7kI6Z8thNnwt7arM2pKGahqntk5oA2UoypQl9/0PhjVLt3zAZjvGsAXey1trBFbRyHJT4BYOJvBlJ+5VNeVIsTqv8YxCojg41cc0MfmMOebuo0Z9gc7W6QP3OnoOtdpTXVwzaEco1YzVI+Hvr9aXVD3q8QcRxoZMxK8o39ruzIhkq05Gr/LIv9ZmiftAv6X8bYRU1b+ycRqeQWUKuCzWxxnp2nn7yK2HAt2CW+HxSjucBt+DXVrW5p+TnBCS3GDvAdbZL6//e14fhlEifInKLBdc/3+pV2cCawnsjwnP+12UrAAiMxPXn4g76wMF/Uo5Bj2gS7DIJc0pnBnEsBDvejAIgmJ744kq/bIu98ijJkcpBTbWXDkhVYUMAcGR4PflisPZ9LSZtZ62IlC7xXJq9LN7AwoGAHv8KylYOgp4dTZ9JfPJtMFXrI/fnFjWRUX93tXkIFuFBSgfZYzg85GED4xmfKftuPoLk5oqJGGyon5jsNjcU1GL+lrL/9N4g6wUwmHIekuIwmeaIrpvVNCTWtiySeukCfEbcOprDwTCSxUeTBop/Zu+0Xr4cOkEewZyebqulG3eahzH75wHanQ2NG4NQm37xVTbDZimTgtcadsI7sYTXXErTCYXF9py7TjSmvQmgbiKzDHo/kJXSfE10Up6GlnlB4YfPVeR3WlZ3cRQbYgDc1wMcjr1sxHmR2scrTGZ2reIUrDSK+6AMMvVPvBbWinVpvxVnZQSajvdB82yERm+6ZBCHrEaip/EmEuto++IXbNYkCOEtgy9Zs62qUO3KHsDh5eAV5X
+ eO3GKUVG
+ 3D4QrLaQOMD0+L4KRZnk4qYGssnKyC2ZI284Lpg25KEhdro4OZJaZZNIa1ZPi/9USDDQI8qBfRaSnx5frmZYRtx51t9RnYzXU9AmeDUj834mqS+3NDlUMfUoPWqjMUC+FUmB/WRWDkxjpYE9wGCDIH0APqUgaFbI0ayA0wEgAhxD4h9Zek7O1xnx2zBOmekNYen8sR7TGsd4nxcfei/iMgGZeoKj5sJdOhJf6AW/LpljRjqwSfP2Cqc21RGDWw5CAbsNNkBWwx8TMlYWtz3EYqChgfwz3UnSxmlAniSEIvjY6/dGviGe6HebUgGaiT6dkoYrEaHrfus3p2H1Fw6ugr3H85xlSX/SHiz5p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,33 +109,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CgoKCkF0IDIwMjUtMDgtMjcgMTM6MTc6MzEsICJIYXJyeSBZb28iIDxoYXJyeS55b29Ab3JhY2xl
-LmNvbT4gd3JvdGU6Cj5PbiBNb24sIEF1ZyAyNSwgMjAyNSBhdCAwNTo0Mjo1MlBNICswMjAwLCBW
-bGFzdGltaWwgQmFia2Egd3JvdGU6Cj4+IE9uIDgvMjUvMjUgMTQ6NDAsIE1hdHRoZXcgV2lsY294
-IHdyb3RlOgo+PiA+IE9uIE1vbiwgQXVnIDI1LCAyMDI1IGF0IDA4OjE3OjM3UE0gKzA4MDAsIHlh
-bmdzaGlndWFuZzEwMTFAMTYzLmNvbSB3cm90ZToKPj4gPj4gQXZvaWQgZGVhZGxvY2sgY2F1c2Vk
-IGJ5IGltcGxpY2l0bHkgd2FraW5nIHVwIGtzd2FwZCBieQo+PiA+PiBwYXNzaW5nIGluIGFsbG9j
-YXRpb24gZmxhZ3MuCj4+ID4gWy4uLl0KPj4gPj4gKwkvKiBQcmVlbXB0aW9uIGlzIGRpc2FibGVk
-IGluIF9fX3NsYWJfYWxsb2MoKSAqLwo+PiA+PiArCWdmcF9mbGFncyAmPSB+KF9fR0ZQX0RJUkVD
-VF9SRUNMQUlNKTsKPj4gPiAKPj4gPiBJZiB5b3UgZG9uJ3QgbWVhbiBfX0dGUF9LU1dBUERfUkVD
-TEFJTSBoZXJlLCB0aGUgZXhwbGFuYXRpb24gbmVlZHMgdG8KPj4gPiBiZSBiZXR0ZXIuCj4+IAo+
-PiBJdCB3YXMgc3VnZ2VzdGVkIGJ5IEhhcnJ5IGhlcmU6Cj4+IGh0dHBzOi8vbG9yZS5rZXJuZWwu
-b3JnL2FsbC9hS0toVW9Va1JORGtGWVliQGhhcnJ5Cj4+IAo+PiBJIHRoaW5rIHRoZSBjb21tZW50
-IGlzIGVub3VnaD8gRGlzYWJsaW5nIHByZWVtcHRpb24gbWVhbnMgd2UgY2FuJ3QgZGlyZWN0Cj4+
-IHJlY2xhaW0sIGJ1dCB3ZSBjYW4gd2FrZSB1cCBrc3dhcGQuIElmIHRoZSBzbGFiIGNhbGxlciBj
-b250ZXh0IGlzIHN1Y2ggdGhhdAo+PiB3ZSBjYW4ndCwgX19HRlBfS1NXQVBEX1JFQ0xBSU0gYWxy
-ZWFkeSB3b24ndCBiZSBpbiB0aGUgZ2ZwX2ZsYWdzLgo+Cj5UbyBtYWtlIGl0IGEgbGl0dGxlIGJp
-dCBtb3JlIHZlcmJvc2UsIHRoaXMgXl4gZXhwbGFuYXRpb24gY2FuIGJlIGFkZGVkIHRvIHRoZQoK
-PmNoYW5nZWxvZz8KCgpvaywgd2lsbCBiZSBlYXNpZXIgdG8gdW5kZXJzdGFuZC4KCj4KPj4gQnV0
-IEkgdGhpbmsgd2Ugc2hvdWxkIG1hc2sgb3VyIGFsc28gX19HRlBfTk9GQUlMIGFuZCBhZGQgX19H
-RlBfTk9XQVJOPwo+Cgo+VGhhdCBzb3VuZHMgZ29vZC4+Cj4+ICh3ZSBzaG91bGQgZ2V0IHNvbWUg
-Y29tbW9uIGhlbHBlcnMgZm9yIHRoZXNlIGtpbmRzIG9mIGdmcCBmbGFnIG1hbmlwdWxhdGlvbnMK
-Pj4gYWxyZWFkeSkKPgo+QW55IGlkZWFzIGZvciBpdHMgbmFtZT8KPgo+Z2ZwX2RvbnRfdHJ5X3Rv
-b19oYXJkKCksCj5nZnBfYWRqdXN0X2xpZ2h0d2VpZ2h0KCksCj5nZnBfYWRqdXN0X21heWZhaWwo
-KSwKPi4uLgo+Cj5JJ20gbm90IGdvb2QgYXQgbmFtaW5nIDovCgo+CgpIb3cgYWJvdXQgdGhpcz8g
-CgogICAgICAgIC8qIFByZWVtcHRpb24gaXMgZGlzYWJsZWQgaW4gX19fc2xhYl9hbGxvYygpICov
-Ci0gICAgICAgZ2ZwX2ZsYWdzICY9IH4oX19HRlBfRElSRUNUX1JFQ0xBSU0pOworICAgICAgIGdm
-cF9mbGFncyA9IChnZnBfZmxhZ3MgJiB+KF9fR0ZQX0RJUkVDVF9SRUNMQUlNIHwgX19HRlBfTk9G
-QUlMKSkgfAorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgX19HRlBfTk9X
-QVJOOwoKID4tLSAKPkNoZWVycywKPkhhcnJ5IC8gSHllb25nZ29uCg==
+The two patches fix the va_high_addr_switch.sh test failure on x86_64.
+Patch 1 fixes the hugepages setup issue that nr_hugepages is reset too
+early in run_vmtests.sh and break the later va_high_addr_switch testing.
+Patch 2 fixes the test failure caused by the hint addr align method change
+in hugetlb_get_unmapped_area().
+
+Chunyu Hu (2):
+  selftests/mm: fix hugepages cleanup too early
+  selftests/mm: fix va_high_addr_switch.sh failure on x86_64
+
+ tools/testing/selftests/mm/run_vmtests.sh        | 9 +++++++--
+ tools/testing/selftests/mm/va_high_addr_switch.c | 4 ++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+-- 
+2.49.0
+
 
