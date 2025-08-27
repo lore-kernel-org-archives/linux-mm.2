@@ -4,119 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6899CA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 18:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E92BECA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 18:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52AAD8E000C; Wed, 27 Aug 2025 14:34:31 -0400 (EDT)
+	id 3A3F48E000D; Wed, 27 Aug 2025 14:34:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DBC38E0001; Wed, 27 Aug 2025 14:34:31 -0400 (EDT)
+	id 353F18E0001; Wed, 27 Aug 2025 14:34:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37C7C8E000C; Wed, 27 Aug 2025 14:34:31 -0400 (EDT)
+	id 21CC38E000D; Wed, 27 Aug 2025 14:34:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E5FD8E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:34:31 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9E3B160664
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:34:30 +0000 (UTC)
-X-FDA: 83823387900.23.A91ACFF
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0562D180003
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:34:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=m77X10gV;
-	spf=pass (imf24.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C2A18E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 14:34:38 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B3AD9BB84D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:34:37 +0000 (UTC)
+X-FDA: 83823388194.03.604B5C0
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E88C780005
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:34:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=GfOCaaj9;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf02.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756319675; a=rsa-sha256;
+	cv=none;
+	b=ktqcpbekN3HP2D2M9TYSI5xIUFOI0DvZaIBZtA7UkNjgB2iWl7BKxmElpIs0N8tCEcGQjJ
+	9k2zMZ3tpEQTfyw9X4xPmjDO/mbT9tJBP21A+gTE1yDUreDVQYOwJ1b5sScEQ/V1Ftifqd
+	r2oYMCKMg7WRyjNkIMgSDs/X5ChE3F4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=GfOCaaj9;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf02.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756319669;
+	s=arc-20220608; t=1756319675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YA6lB2OHRh04z8ztLcpTUu2sKqTDk2Id/2bOxOEc5ac=;
-	b=MoGIOZvtp1vHWzGwPeWOHWmYhMXd+frRfKLmsRrks4XesTMrWztVo7q/C8nfZx5agvYeNx
-	zd0b85jOcnhBDllkRWt1ANc2RWlcmmOFFmTLF4G5WOoixkVHxe6q0pihLbMUWTjZ72txe+
-	BnZwdsEetpCnnTVC9VgdMIXLsOilLto=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756319669; a=rsa-sha256;
-	cv=none;
-	b=faeFQuSGBEuX5vVnEWErWF0kXYbGbLnBCEaby60/PM4wnV043jSxK/COCAjMWq2cTeLJHJ
-	KZOkZwDUuVn2q6V84a5YyIHPVXwRFvJ/p8kGXTprrUJsBRJq+U/ulAGYBH/iFsIQXQW6Hi
-	GKCs6ZN3Oxb29ByhagH8T+N5TEuGmgs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=m77X10gV;
-	spf=pass (imf24.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45a20c51c40so835055e9.3
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:34:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756319667; x=1756924467; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YA6lB2OHRh04z8ztLcpTUu2sKqTDk2Id/2bOxOEc5ac=;
-        b=m77X10gVbLKmx2leg+5pmNjMmQle3ENbf9of+5F/qVQQLbR1cFjCLKofGhDRMngXes
-         4r6SLy37ElXJo6O5gzr1hihz1hevYc/vA6CVhAA3Wn0qliKr1eOZwpbLPgIcTDUE3XH5
-         s94xI595jBTkEFXwSX9ud3hrGrhXq/YWvQ2vbgU0w+l9PivaQr5GP59kJSxGazc0edBJ
-         AVJyb29dMIPWENmclQ20nA1UQT/5WG+kQIeTRvpw++duNAY09+Vs8Oy7uB/FjGUACdhz
-         yKjNWCBsFXhuhc+dTwhRnCi9ynqR32DQTsIh0GZ2KdBGCQE63pyZc1yfzq4MAngdK1RH
-         0r+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756319667; x=1756924467;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YA6lB2OHRh04z8ztLcpTUu2sKqTDk2Id/2bOxOEc5ac=;
-        b=VChjLzjSNbLF5JWQjCoPRWW0NqR4vXtYqJPNaiEhz8e9slDWiapNM/U3+JeWAUCOXB
-         MLZYWF2t8Z0lPGvzz/Mi6fFOriDhWsKgLz+Eo+UIWmQ2DeMQpD0MAhtytLCOZL8uqWSP
-         AGNfKs5rG7XZFPiKwTXubDdwBdvBDFhQPGOAl9KZ4UrQ5w6zaf92i6Ue45VLjQDtfUFt
-         L5KVaeL39FX/IW9QBXM38ypamqHy91UfiVVPmxCYZ7fyXeS3U6su93xKEQUgs+UOsdkf
-         aXHhh61V8qGD5ExKa2NHG0udUylOIN4En5Z8UlJVZtoaJWdH/7SEsTD9N9XfIsJfdWZ3
-         XRGg==
-X-Gm-Message-State: AOJu0YzWw8dJkP6ZAT1i/q2g6czfHS5G/ycfxI3iUIdbtHF4ZPvPGln5
-	YvXb5LrzdTaEgmDsydWPTgOpZSaU/37D3j+WzB1GtYbQpuGCAkclmbP9
-X-Gm-Gg: ASbGncs20GEOQL05OZdFyl6b1lbaz0QprwcSa0isumYfvdDWOnWBbbhNBrqzYOFZYsG
-	OCBkgpibSGfq1vupi5Jcb8tIkjNajDvbtGGmQRhO4GiG8xQJX24iW+5LEpnmAqx7/XC/tUNE1sd
-	zByHsoK2EucBoaKmDnZcbUOJaGnN7mEkkKp2IyvBXXOhSYOknhD0w0OdPpYhzNnEYojkZaZPBb1
-	iXsOVFudyV929P7G1ZdhtjoaN7KAhcbqJoYmcAQfUYYDmOt4l2bXzbv/fqIRogYl13ec/L8wfJ8
-	w3XzlgCE40goQR3j8vhAufEZLM63pPCOISnjld03YZ402IyFO6s9DT4A0nRrcBnve6cJPCDEgZ2
-	/MYEjrG5hffc=
-X-Google-Smtp-Source: AGHT+IE0hXtxhpjlhfM+hRo7ji39tkDJ8DWU2BUHg+pIVaprTDiApHeE6ZCxx0FjYX9RgVOZ2NgUxA==
-X-Received: by 2002:a05:600c:1c14:b0:459:d780:3604 with SMTP id 5b1f17b1804b1-45b771b5ca1mr1652945e9.3.1756319667550;
-        Wed, 27 Aug 2025 11:34:27 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cce1724939sm3580972f8f.26.2025.08.27.11.34.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 11:34:27 -0700 (PDT)
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Usama Arif <usamaarif642@gmail.com>
-Cc: linux-mm@kvack.org,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] mm/show_mem: Add trylock while printing alloc info
-Date: Wed, 27 Aug 2025 11:34:23 -0700
-Message-ID: <7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1756318426.git.pyyjason@gmail.com>
-References: <cover.1756318426.git.pyyjason@gmail.com>
+	bh=0vmdefCDmyt9ywh+yymejY1N8ERx9TnrKiWiAjIj7Kg=;
+	b=U+01E379BV8kWUG7e2kr238Fa8KIm6eVbipMAvPBR0GLEOLr5AG3l13MqoMem+2ukqJwei
+	TzeoDHtYarmi0847pHI3/xiYaBknVKFOOCu+6BSdoYZJlAi3bbrLlwJUDnz5p6h7IMAbsd
+	nIR9Yd/2tqz2oiqhUpwUsN4P61Lezw0=
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250827183432euoutp022b1a1341cce3de2bc24c4e4e98066082~fs2-Lut0V0097500975euoutp028
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:34:32 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250827183432euoutp022b1a1341cce3de2bc24c4e4e98066082~fs2-Lut0V0097500975euoutp028
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756319672;
+	bh=0vmdefCDmyt9ywh+yymejY1N8ERx9TnrKiWiAjIj7Kg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=GfOCaaj9iz+LW9wShqGApHa6/ZXQqOzHlqMklQXcYYC4w2as50eHruUBxlDoQeKd8
+	 DY/qvufuUXCjNJZCjcFtYZOg42voEjT8ILaKIyRgs5ZzcIS53QnL52Zy2vmMoiK5eP
+	 O2zDW8gyof+yqtT2zRTYPNi1no0gLH3CNcPp47nY=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250827183431eucas1p18406106ab84b10142c924ddc8afe26ba~fs2_wamdm0942609426eucas1p1k;
+	Wed, 27 Aug 2025 18:34:31 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250827183431eusmtip29186bce2444aa1e212b09f3beb37a98d~fs292QuJH0603806038eusmtip2h;
+	Wed, 27 Aug 2025 18:34:30 +0000 (GMT)
+Message-ID: <8f6aa9a5-54bf-4884-aaf8-d2e3cef6ec78@samsung.com>
+Date: Wed, 27 Aug 2025 20:34:30 +0200
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [syzbot] [fs?] [mm?] linux-next test error: WARNING in
+ __folio_start_writeback
+To: Joanne Koong <joannelkoong@gmail.com>, Aleksandr Nogikh
+	<nogikh@google.com>
+Cc: syzbot <syzbot+0630e71306742d4b2aea@syzkaller.appspotmail.com>, David
+	Hildenbrand <david@redhat.com>, mszeredi@redhat.com,
+	akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-next@vger.kernel.org, sfr@canb.auug.org.au,
+	syzkaller-bugs@googlegroups.com, willy@infradead.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CAJnrk1Ziam4ZqqyzOpbUD8j=RwJOK22Uz3VMqWZsUNiJ5bkBrg@mail.gmail.com>
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250827183431eucas1p18406106ab84b10142c924ddc8afe26ba
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250827164428eucas1p1e184d31f56fbcbb0d0526d2354d730a5
+X-EPHeader: CA
+X-CMS-RootMailID: 20250827164428eucas1p1e184d31f56fbcbb0d0526d2354d730a5
+References: <68a841d7.050a0220.37038e.0051.GAE@google.com>
+	<CANp29Y5zWmwXDq1uuzxi43_VXieykD2OOLF12YvBELCUS_Hibg@mail.gmail.com>
+	<CGME20250827164428eucas1p1e184d31f56fbcbb0d0526d2354d730a5@eucas1p1.samsung.com>
+	<CAJnrk1Ziam4ZqqyzOpbUD8j=RwJOK22Uz3VMqWZsUNiJ5bkBrg@mail.gmail.com>
+X-Rspamd-Queue-Id: E88C780005
+X-Stat-Signature: yrbbzrmk6ih99xhinigp71h4mrpno3rj
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0562D180003
-X-Stat-Signature: zcaha4p3m6eesj153y4gyhzhsqzae49m
-X-HE-Tag: 1756319668-780957
-X-HE-Meta: U2FsdGVkX1+zPbIk003WarmQlIFjhBB4RhRcjdgBiQ62V3gMEPPNjGLnHM7rSORaQ2mCmV1TEeLjsLBkDIaRPNjOdh3bTHEoQe1NV6t3hClcfG88rzJWTzvqN0xNHdR2yEasj2sTOA/iILiZrxEdPoRU73f0nMUtc2l5E0AIqljDmeqdKnThcjCcl0MUzsZk3YnJwaUspMVO/VREWGXy8OBK1GVaZzXbwon4hWX2+eC4qP6dtlitL3AZCYXKCO3I5Ww2KecRRXkS4yvwmZfSmTG/NNyj30PlS/ioB7uOuW1Bwpn/zLHOe9ak869dzfOAW2gMes0KsVKiMbnWlRszE2uxb6DI8s6LmYE0XU7Wy797AgpnDbxKlU0Jkum3C4qoiqhMFlBtAPdavn2I+cXxBCHIIQDLzCo7U1EJkLsNH26SZxiZOtdtYGPgBK2voVIOaeOBB4G0Z5Z6PsL9kdLHmZryAuaZXZvTlEEeWnkB5zl9PALgegxa132ucnQfZwFFXauKy9mOkajR5GEhjupVNIhYO1hj8pEOFWQ2dyzpMEQBEp7BivgMRhhT+SykaQVUlK2NxIPRlQN8cWC+13iP3x7pi9kINnMroBvejGJWEvFYUWXjhSn08LOBQV9Szd2KI9f8YbiWqYixgWKTJLsl1HOUWmNSQSY/ReQuRt8xmDKqM0YGCnZNpJjKkBHzEEBNuA481paS67LlLdFnv+EFY6NeItCj5zlo6O1sfbW8OBfBaBv++yAoSNz94/u1aeq5RD64aqdXVLNOkd7UZb2qLVFVrZimp2fVzlZo5JuhTSIZKzNEbFTjK0qpfpyEKkSW/JEpobdbz8Lvf24q27d3lls1xXs27Y8ebhFUD9h1eEV/MIqP6FJ+acskIb8DcTri3JZp+S/nLkDuOHXaPq024A8fm+wfbObw72quxZ100EflPYTf9z5Lw8VYUySkGkQAwoMd5CG07wGQgA4iGxq
- 4bdFKTUT
- HFfhitK8U8eNAmMnAGHfRLsitQUgNMnOzSobJ8hsXeH1xASx79qPpYEyPCONSWjDRsnOk+S+TcID/fgiGR/j+t7UgG0zkgjANDtXzkntnu4w0abFTci3wZH9xT7SRvkeZyuvDQdnZKs5C5Kl3RK3kHgWnfVFY8ne3wU/S/YgOdUIGqFTVKapYXpvSs9bL2ufz22ba34DpaZWG4mWz/NrOjhrw/cSjObNpwJTLbz/JMqQjeufJxuzHCcC6g3004qBeC4WowrE8SaOHWvmLktX4grNTj+dsAz+D4R43oP4KL0DWmXOAK+9YvHwk/iD3bWAv9Ds82zQOEO0HN7Uabyssf/OhrYKmjuo4WREdHgReVkp9z4DpBKi5PCZ4SDYnpEgSZCY8vHEWhZKEpwtcdJRC1qrMRodMXl4HBOtr9VtQsUiKRcAF4yNJwoYgxf8OYp4xdTDQt1u92LAWhyuKR1rHBzNECb9xqt/QFItx3dNrwDtg45y086T7iJjTMqcmrS/lcU3V
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756319674-186196
+X-HE-Meta: U2FsdGVkX1+WtSAsavC3zdPsg2kOr62NQoydNsIYP/sTyMvyWRKbayHzuTF7khg4rW0H0otArPNt6ltkdWRPOmt1p3j1rVTEdZUK+PbS88/R0ttsLJUWAeUt161MZmqo50o0I68OsuKlBVUbbFb7q1esxIPoq2SCRyPSQ4kID6gGLEq/iuTHgKDJajJfGXjloeXmqeoxmwJu65anT2bSr0aHsd3l3rBqeREmpRzfB087Ck4UjJy5tTK4gNJcGUKrLZCkNMZaTHk25MUADO8p8Hm9medBwnZ0J+S76ie1Pk+tEGE45/icKXchg9Qrc0Ar/HMUBBTib0f+z5DuMnHkCxCL81M6HbvmLNd9faJeqAlE6rqEXJpsTCNkkt8f2PHEzPD+etrvIoNMBl0VdGotzZcbMOelDkbWitPPB9o2mNzq/qaRW1v5qkXbLrTn8mx7ovZzxlemhwPj9tZwc2wGo+Eq5obPYglwSrClXyUJn3hyRGhrGICaJtUUnBI4oViKAK2gefzxuaL2f14c/GRsYPOPjUAypdMbVbDOXb0mFCVlfhU92NoNWMecNj2NZX30dq/j3NUF/7/plMuHJI0900LimhMQLP/6X0idqgB/3mexqasVPPGZlyPEJIaveRXcFSNJO4fBwT/bCN/vm3S8MzYDOw9xPfhh5Jj8raJQLz3+sJyinXJuS16n1usEzC2Vzf/SYw2Lfje4lbgTGpmo6oOKJTOsBfyXnhrHe0Q/oOnELF2o2NG5H0C5qQBGcR3a/X2pMa4rhryQLIv/i+nBwt6eqCwH8A8ysL3csVIHmpgQO+kP5kPkAljtpDhuZ326rp4FjRAAE5aMIEZmTPmcfqd/lf8qdulMcctawiwODM1EqXql49BGSXfQQ/O/DWPj3aaRv6jOE6zP+U2tFW2khwJiZ2w03TZb2uyB/5FDccm/5IFK1yrkxLPy03LAe0cZhian62Q5ePmTz6Zler0
+ wHhYmIfR
+ TDi6cT+Dy7yWNwVQIFFeZhQF6pPfOJeg9fC6SKQPh12OX2fwnFAoFKGsbVjH1vTVUtkFWhgDprgpRArMMdb+5V1Km3q8TNOkiVSuAirAZ4IevO8rx5uk1sAFgQYAcw9iVXRFcjOtHq/OcDgrlahtvgQPEx3RmMHIWI4P6N1u/wdaFBUP9y53sgFl1ilA8NB7KHszCwAl07ASZzjc6qrazWeIVrry1fPybXc15qnRDYD0Is9ge8KpaBFiMYLPltkVArqSrBrgZ2Fet6d+qmhefI/AFN/Fh9TNJSCyEiH4H8/iF3QLLIa/9jI4PyzbQAiql4B3Oa0VoPkj9s/PBjHe93QqDaFgdq9zFvH56s9O8HDgaSwCmiZRdh+d2hsTdPb1o35VY4QQunh40wqL8owEmpDfVdQJgQ0BcOIwRDl/DsAnE0dxrbaJyLOVyga5bAmORAW/bDa0zdkXlgWtiFJno1mFje7WyV91Fc4VL0W88koaUgoxz6+SNvl5kwkQViCUN8pBP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,49 +112,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In production, show_mem() can be called concurrently from two
-different entities, for example one from oom_kill_process()
-another from __alloc_pages_slowpath from another kthread. This
-patch adds a mutex and invokes trylock before printing out the
-kernel alloc info in show_mem(). This way two alloc info won't
-interleave with each other, which then makes parsing easier.
+On 27.08.2025 18:42, Joanne Koong wrote:
+> On Wed, Aug 27, 2025 at 6:45 AM Aleksandr Nogikh <nogikh@google.com> wrote:
+>> I've bisected the problem to the following commit:
+>>
+>> commit 167f21a81a9c4dbd6970a4ee3853aecad405fa7f (HEAD)
+>> Author: Joanne Koong <joannelkoong@gmail.com>
+>> Date:   Mon Jul 7 16:46:06 2025 -0700
+>>
+>>      mm: remove BDI_CAP_WRITEBACK_ACCT
+>>
+>>      There are no users of BDI_CAP_WRITEBACK_ACCT now that fuse doesn't do
+>>      its own writeback accounting. This commit removes
+>>      BDI_CAP_WRITEBACK_ACCT.
+>>
+>> Joanne Koong, could you please take a look at the syzbot report below?
+> Hi Aleksandr,
+>
+> Thanks for bisecting this. This is a duplicate of what Marek reported
+> in [1]. His patch in [2] fixes the warning getting triggered.
+>
+> Marek, could you submit your patch formally to the mm tree so it could
+> be picked up?
 
-Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
----
- mm/show_mem.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+I've already did that:
 
-diff --git a/mm/show_mem.c b/mm/show_mem.c
-index b71e222fde86..8814b5f8a7dc 100644
---- a/mm/show_mem.c
-+++ b/mm/show_mem.c
-@@ -23,6 +23,8 @@ EXPORT_SYMBOL(_totalram_pages);
- unsigned long totalreserve_pages __read_mostly;
- unsigned long totalcma_pages __read_mostly;
- 
-+static DEFINE_MUTEX(mem_alloc_profiling_mutex);
-+
- static inline void show_node(struct zone *zone)
- {
- 	if (IS_ENABLED(CONFIG_NUMA))
-@@ -419,7 +421,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
- 	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
- #endif
- #ifdef CONFIG_MEM_ALLOC_PROFILING
--	if (mem_alloc_profiling_enabled()) {
-+	if (mem_alloc_profiling_enabled() && mutex_trylock(&mem_alloc_profiling_mutex)) {
- 		struct codetag_bytes tags[10];
- 		size_t i, nr;
- 
-@@ -445,6 +447,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
- 						  ct->lineno, ct->function);
- 			}
- 		}
-+		mutex_unlock(&mem_alloc_profiling_mutex);
- 	}
- #endif
- }
+https://lore.kernel.org/all/20250826130948.1038462-1-m.szyprowski@samsung.com/
+
+
+
+>
+> Thanks,
+> Joanne
+>
+>
+> [1] https://lore.kernel.org/linux-fsdevel/a91010a8-e715-4f3d-9e22-e4c34efc0408@samsung.com/T/#u
+> [2] https://lore.kernel.org/linux-fsdevel/a91010a8-e715-4f3d-9e22-e4c34efc0408@samsung.com/T/#m3aa6506ee7de302242e64861f8e2199f24e4ad46
+>
+>> On Fri, Aug 22, 2025 at 12:09 PM syzbot
+>> <syzbot+0630e71306742d4b2aea@syzkaller.appspotmail.com> wrote:
+>>> Hello,
+>>>
+>>> syzbot found the following issue on:
+>>>
+>>> HEAD commit:    0f4c93f7eb86 Add linux-next specific files for 20250822
+>>> git tree:       linux-next
+>>> console output: https://protect2.fireeye.com/v1/url?k=1fb70741-7eccadc9-1fb68c0e-74fe4860018a-55254c3abc8830cc&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fsyzkaller.appspot.com%2Fx%2Flog.txt%3Fx%3D172c07bc580000
+>>> kernel config:  https://protect2.fireeye.com/v1/url?k=7674b464-170f1eec-76753f2b-74fe4860018a-dc792d3947085adc&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fsyzkaller.appspot.com%2Fx%2F.config%3Fx%3D21eed27c0deadb92
+>>> dashboard link: https://protect2.fireeye.com/v1/url?k=cc82c51b-adf96f93-cc834e54-74fe4860018a-15cd3914e26f6b7e&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fsyzkaller.appspot.com%2Fbug%3Fextid%3D0630e71306742d4b2aea
+>>> compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+>>>
+>>> Downloadable assets:
+>>> disk image: https://protect2.fireeye.com/v1/url?k=e6bff250-87c458d8-e6be791f-74fe4860018a-800b933a7034a696&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fstorage.googleapis.com%2Fsyzbot-assets%2F669ede8f5d66%2Fdisk-0f4c93f7.raw.xz
+>>> vmlinux: https://protect2.fireeye.com/v1/url?k=2603018e-4778ab06-26028ac1-74fe4860018a-9b89a99c7853c7f0&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fstorage.googleapis.com%2Fsyzbot-assets%2F50feda89fe89%2Fvmlinux-0f4c93f7.xz
+>>> kernel image: https://protect2.fireeye.com/v1/url?k=420b962e-23703ca6-420a1d61-74fe4860018a-a965e5c8c6b4614a&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fstorage.googleapis.com%2Fsyzbot-assets%2F317a0d3516fb%2FbzImage-0f4c93f7.xz
+>>>
+>>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>>> Reported-by: syzbot+0630e71306742d4b2aea@syzkaller.appspotmail.com
+>>>
+>>> ------------[ cut here ]------------
+>>> WARNING: ./include/linux/backing-dev.h:243 at inode_to_wb include/linux/backing-dev.h:239 [inline], CPU#1: kworker/u8:6/2949
+>>> WARNING: ./include/linux/backing-dev.h:243 at __folio_start_writeback+0x9d5/0xb70 mm/page-writeback.c:3027, CPU#1: kworker/u8:6/2949
+>>> Modules linked in:
+>>> CPU: 1 UID: 0 PID: 2949 Comm: kworker/u8:6 Not tainted syzkaller #0 PREEMPT(full)
+>>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+>>> Workqueue: writeback wb_workfn (flush-8:0)
+>>> RIP: 0010:inode_to_wb include/linux/backing-dev.h:239 [inline]
+>>> RIP: 0010:__folio_start_writeback+0x9d5/0xb70 mm/page-writeback.c:3027
+>>> Code: 28 4c 89 f8 48 c1 e8 03 42 80 3c 28 00 74 08 4c 89 ff e8 ce a2 29 00 49 8b 07 25 ff 3f 00 00 e9 1b fa ff ff e8 7c 04 c6 ff 90 <0f> 0b 90 e9 d6 fb ff ff e8 6e 04 c6 ff 48 c7 c7 a0 f8 5f 8e 4c 89
+>>> RSP: 0018:ffffc9000bb06ea0 EFLAGS: 00010293
+>>> RAX: ffffffff81fad344 RBX: ffffea00050de8c0 RCX: ffff88802ee29e00
+>>> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+>>> RBP: ffffc9000bb07010 R08: ffffc9000bb06f97 R09: 0000000000000000
+>>> R10: ffffc9000bb06f80 R11: fffff52001760df3 R12: ffffea00050de8c8
+>>> R13: 0000000000000000 R14: ffff888023060880 R15: ffff888023060660
+>>> FS:  0000000000000000(0000) GS:ffff8881258c3000(0000) knlGS:0000000000000000
+>>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>>> CR2: 00007f7354907000 CR3: 000000000e338000 CR4: 00000000003526f0
+>>> Call Trace:
+>>>   <TASK>
+>>>   __block_write_full_folio+0x75f/0xe10 fs/buffer.c:1928
+>>>   blkdev_writepages+0xd1/0x170 block/fops.c:484
+>>>   do_writepages+0x32e/0x550 mm/page-writeback.c:2604
+>>>   __writeback_single_inode+0x145/0xff0 fs/fs-writeback.c:1680
+>>>   writeback_sb_inodes+0x6c7/0x1010 fs/fs-writeback.c:1976
+>>>   __writeback_inodes_wb+0x111/0x240 fs/fs-writeback.c:2047
+>>>   wb_writeback+0x44f/0xaf0 fs/fs-writeback.c:2158
+>>>   wb_check_old_data_flush fs/fs-writeback.c:2262 [inline]
+>>>   wb_do_writeback fs/fs-writeback.c:2315 [inline]
+>>>   wb_workfn+0xaef/0xef0 fs/fs-writeback.c:2343
+>>>   process_one_work kernel/workqueue.c:3236 [inline]
+>>>   process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
+>>>   worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+>>>   kthread+0x711/0x8a0 kernel/kthread.c:463
+>>>   ret_from_fork+0x47c/0x820 arch/x86/kernel/process.c:148
+>>>   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>>>   </TASK>
+>>>
+>>>
+>>> ---
+>>> This report is generated by a bot. It may contain errors.
+>>> See https://protect2.fireeye.com/v1/url?k=d9d7c080-b8ac6a08-d9d64bcf-74fe4860018a-5a4a20c239e4ea82&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fgoo.gl%2FtpsmEJ for more information about syzbot.
+>>> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>>>
+>>> syzbot will keep track of this issue. See:
+>>> https://protect2.fireeye.com/v1/url?k=03a49fa8-62df3520-03a514e7-74fe4860018a-9a57f917485c2c59&q=1&e=3aa7e54d-e6d6-43e9-ade0-0a94ae0545e0&u=https%3A%2F%2Fgoo.gl%2FtpsmEJ%23status for how to communicate with syzbot.
+>>>
+>>> If the report is already addressed, let syzbot know by replying with:
+>>> #syz fix: exact-commit-title
+>>>
+>>> If you want to overwrite report's subsystems, reply with:
+>>> #syz set subsystems: new-subsystem
+>>> (See the list of subsystem names on the web dashboard)
+>>>
+>>> If the report is a duplicate of another one, reply with:
+>>> #syz dup: exact-subject-of-another-report
+>>>
+>>> If you want to undo deduplication, reply with:
+>>> #syz undup
+>>>
+Best regards
 -- 
-2.47.3
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
