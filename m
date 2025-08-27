@@ -4,85 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A0FCA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:03:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B40F7CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 22:03:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96B5B6B0030; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
+	id 06A6A6B0006; Wed, 27 Aug 2025 18:03:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91A436B0032; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
+	id 041C96B007B; Wed, 27 Aug 2025 18:03:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E2996B007B; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
+	id E99F56B0088; Wed, 27 Aug 2025 18:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B6656B0030
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:03:30 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 027B01DE9F8
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:29 +0000 (UTC)
-X-FDA: 83823914580.26.C1FF666
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 493F52000E
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:28 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IMBUmo2L;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D805D6B0006
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 18:03:42 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 890161A087B
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:42 +0000 (UTC)
+X-FDA: 83823915084.29.37F5915
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 94E1E14000D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:03:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A9QSC4g0;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332220; a=rsa-sha256;
+	cv=none;
+	b=fVXXljCKCTlSPgzY/At1sanh654rNNF5iLbldLr9esaomX/EALcS69kGDqzMt/hy3dtjme
+	YUIJ3WcnWA22MGye5N6plswSzkNIT124K0cjzG5/6DMHwDjtpde5myhChuUIZRWoDABiFh
+	FiaxgW51xX6NjYvP/6U8fcdSXYll5rw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A9QSC4g0;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756332208;
+	s=arc-20220608; t=1756332220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3wE/qMBAOI7UvFOFlFaewQkiF5uwI4kbjc+EesVZbC4=;
-	b=uDSiz5TE6TaJbYgq230U/snmgSnmmWeE22V40VSFDZo0feCNhBLRv4hNkHqtROvt3yhjGr
-	diNLaoKlLidn24g7xK2HGvxw7/gzBPXs+6Iv4kjspNJDwSctUmibtSoOjt0b+no7lrMfh8
-	QdoEqwITpzTPHEHyquSYEWdTu+AKooo=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IMBUmo2L;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756332208; a=rsa-sha256;
-	cv=none;
-	b=LkUGGmhS7gR45PQw3WXFs2Hl5TsoscYbJ6DdVJm+vKnSA2CSMmCdXiSZ2XtXRZG0dg+QWK
-	9SrMP0r1D1okv+DuiOuv90iBgA/d07fzhd5o3HbGFLfnTDNKtUnvuWne9XyBoCLn6rVfFn
-	I3hHrhQ7AoqFs8OQHl1bax6K+y0Pxwk=
+	bh=BoCigziN+sd3886gtncwVGrOobwk0eDvjUtVkuDjFuc=;
+	b=AD0czLm3ZGkySWmOsO1OygGSISV88cQsEXCj3N/wCZd6a4sKaWisMsqbaKqDsN1cGCJj5T
+	EHBuUpz0N5qGwl2/NWs+J3E1uTMpKUQf2v+5h17Zr+Trzds60k1EXRGDTpngsmGTnjjzxx
+	xmPIFnwhZL4KbbH9wlTUxSCezBSgFO8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756332207;
+	s=mimecast20190719; t=1756332220;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3wE/qMBAOI7UvFOFlFaewQkiF5uwI4kbjc+EesVZbC4=;
-	b=IMBUmo2LlpXyveIhg0016FK/l69vP4AKnkXCC2XYeNTX2e8zNa7XUBNVR8IfABOGWSEGUK
-	DefxBc9zk/Kb6ScSUA08+Q9atzjF1H5p4XaBHN4WmtlinxX+qWC8x4v1SavLpJoWsYhZyQ
-	eofvAVZYuCkxrDYjl3U9mx5wG1/WxMI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=BoCigziN+sd3886gtncwVGrOobwk0eDvjUtVkuDjFuc=;
+	b=A9QSC4g0CGzrVfvhtWAEcGT6ZhURCbFxtuCW34qMtP+EPwfb4wGA3PF//rDA2fy8UXX7KI
+	Z/uY05xT9TlLHbEY9uu11nB4Dqaeb9AlHsnpxVSyifBidIkzQ+4wx3kqgM/fuujNyxFo41
+	X3+n0lUb4kel2uDwn8I9ffNrMQavl+M=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-48-aWxloNfqN1GfaKF83zeK5A-1; Wed,
- 27 Aug 2025 18:03:23 -0400
-X-MC-Unique: aWxloNfqN1GfaKF83zeK5A-1
-X-Mimecast-MFC-AGG-ID: aWxloNfqN1GfaKF83zeK5A_1756332194
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-389-k0g0ERAQMDW3c6U23kRavw-1; Wed,
+ 27 Aug 2025 18:03:37 -0400
+X-MC-Unique: k0g0ERAQMDW3c6U23kRavw-1
+X-Mimecast-MFC-AGG-ID: k0g0ERAQMDW3c6U23kRavw_1756332211
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 931F81800352;
-	Wed, 27 Aug 2025 22:03:13 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACA3A195608E;
+	Wed, 27 Aug 2025 22:03:30 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.22.80.195])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8DC1330001A1;
-	Wed, 27 Aug 2025 22:02:56 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2E8CE30001A5;
+	Wed, 27 Aug 2025 22:03:13 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -128,22 +127,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v1 03/36] s390/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
-Date: Thu, 28 Aug 2025 00:01:07 +0200
-Message-ID: <20250827220141.262669-4-david@redhat.com>
+Subject: [PATCH v1 04/36] x86/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+Date: Thu, 28 Aug 2025 00:01:08 +0200
+Message-ID: <20250827220141.262669-5-david@redhat.com>
 In-Reply-To: <20250827220141.262669-1-david@redhat.com>
 References: <20250827220141.262669-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Stat-Signature: pk4s5gty7cmwjkppf8q5oxfimuucz4h3
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 493F52000E
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756332208-28597
-X-HE-Meta: U2FsdGVkX197b5wAiJBOVzL3B+aVTSWAwaq0JmALgJTuMWBygBer7Esvvdw4u6zLLXJLwpB0PQkGEQClu5sJKo0Ta5MMu0l2iJQ3OPRlyvq+0BSQ+5MvBJYya0478XB1XXXm1WbFlb/ulp7NXYew3GWd98rZq79lAJZnaDdJLiAP1H6UtOvbIxBBYPcSJaNe6pKwng/Jhmvb/U6aM7jI1QCWmqkcqB80tE4a+gGUMHzcwwLB81KRBLxgY3l3zjl9YoLcXVdQlPta3JMe0bheAusbeQXIE42XLYm8niLsSP/+1bg7+QZxnl17eYAjQm673oov6P5EwTlB61mjzlimoJSZgLLSk1sQ41c+gcf+1i0FzOwHcrXuJkLBx3uaw3iaDxMj2hxCeu2N4t42Bpqu5J9WWABXYmyLetkNJPew3ab95j17LFTQO4aZ8afXRBLT7KUvQ5mmOwXD/NCUWVh+T86cFcFdfyh+fMelYGtWQinlWtErVydlvOIzGHFoO32lh0ymJ8SUz4aDJJVdLg8+hqQ8LpQmRgRgoGoR2EdUe4d7P2mUFXhez4bTae25TaPYMXD+nknGS0ntD2rjLEk/BPGhxyDoHGx3Tp+jJrRvJBLwoRNQV1wB/8JqYcuPC2KG7rlCV7LAmDe/bMcQjP44RQ4NsrP9RF7IuMh1sM+z5YVWB6shYtvp1bwBqSSriPqhWMzHUweRZS1czroeQoJyFwPEbdL8bsB81FJVBAYcIn5v/YOWaD9KmMezxiyG9rI7lo4n7utEUGRfIjpgIoWuO2bruHS0Yq04Yic9v5Qzru3YSmg9acbX1c398zzUvAqX9BHERIwDsiYvWVdvda9EpFUPNKP872CzRy0Dcc5GUhBWe2msC1DXcJIPh9uIRrtQ+lgtHYpvjq88EhAp1bGakSnJ6aWuXVs21SO3Ae/t2V/JxVUvS3V155MMSTw9i6hu2assm1RY7RZWrDQcQo6
- BuA+Zche
- CJOnPfIiMbAu7sF+ckKb8YbTgqa55Xf46gO9nU8yq5uH4EmvF/RIUWQXZCg0nElXc8qLge14vWEz8KRSVgc8cTSsF9mJCeGG83Y6vDcAt2mcjWBKGJsNVCoASVHCBcRBAOH7JhXYxSvhJKaKfzbXxx/R14JHbwY4xAwIyzdKgqU6zBymB+41TmaGOLdoYuvHCtTDT4L/+w0mwGH6QnLIH8kxoJffwpRo5BbK/qXj5N7Xoe+4VmIY2jw25P1qsDG7ASrAGMv9lYKcQIiREVYQymBXNUOfhQx0q9JbcMdKd0DI/vA5qX4sEpc/HSV/udwmxXDKetVm8nxsZHxr8clKhWGAJnTJ5R3cLjSU2VUeRMBVBLS+mjqWM/MTXldHl8TleaxDr7Y1M5cTB0ALzhk5YlP1w+8OR2ob8f4qCo2Otei7ZmzutDyNRQhkM4WcIeg9Ubjmk/9Z9qBCbjx5R33DMAJIxDXNYeptGTi5KNSz3DfzLh+CeRxuEFQDHy+AVB/ZbuM2L5kZ9GJb9f+FI3/3xsiVpDBTf036k8/XU
+X-Rspamd-Queue-Id: 94E1E14000D
+X-Stat-Signature: sxgi8rhnj4mw7fg6as4nm3g4td9qytm6
+X-HE-Tag: 1756332220-753669
+X-HE-Meta: U2FsdGVkX1/ejsQV1GswnqB2fiRBPGSr3c/lWVcs9Gh9wQkO1u1dcZQ5gB4Qm0hJgV/gPPW6lZZfDMRGLMRQMUDSUZBDIs8MrdiC1kVek3Qfx0XFDRK6979kNg5ATBq7ob+s/XmgrsFwgCC8rQiJjLK7PbU7KNEKskWnN9bxknfynChWIACDIwc5C/+wYtFmfLwG6ukumyRcauwh0tEC2eu0ndV/NViFv3S9shYKrd8AoWetH+56IVBcmBMN0N/eXBXOq6EiIetUKAH5q+4aaCE9A3tkg5TL9eY+v6qC+HFYG14VGRDA26MUm302sc3GzU4t5XuaqGWidF9ejDBmcKE9v2c7EeWZjy5B04rueoxXjIp8Rok87rhr8HL1Nc4QGfaKDlST+Zx3QcjY+qPipg2efaksnaHqQag5a2qDAlUPqQ2AvLBsQtRhxwIz57vqUPJuuM99fW7czgzGHFuaJZiQxD1QpzWa5QZW4HD+WxSQW2geIHXfpkL0STNmoa1RbcLDtKjdiR8kRq3LyOW7WQmzocxGOyt8TqQEcFKmbaIuSn3z7ZxSOoBtW8O/FT7S/5FXr1gIuuMbyzG9NRN4zyelNuPUL0E+fSkkuW88vlUHX+S7tnBdNVpPRxV+Sn7LglZH/vXC2GQMIZLr0hXP9+II3xEIL/3G6RhEY73fZnJvgefxRpu0nUB99XJUtrBqnDb7wxiM1nwq7UXDcll0X1+dNq3qbQPFFHYp1WkzguAGcZB0/vqU7atS6spkKnZcQZPP0zlmY0yqS7zlr7ILHDZ8BUYY4sGI87RFVkBBnvKcSi8iPE72Ff0yLo6cUphdH5fU+biilnX6VxdBmjfLRKk6DLPQEGaCBVPbwzVLd+0/ntwnYwWPjfXoxFKueS7SZPJCKo0esB+LEIRR+m2/dJm7wqSnEDcVk3OGPOQO0g59F6mLVJJlpb8Kcs7Wvp1Va89Y2BWYR5X+2OwEXEb
+ E5725FA5
+ oifKIflBffc5VCRr++jFSO/VDGSDJqv+Md7Mplbv3IiFGG2dYMNnYKsqLXtEDYdAjlYNZz1wCin7ckJ7AWJ3WkgWiGPCkYdB0eUx32jcRUGNGhRdlooyi/ycRqmu9m0Hveex8tURB8dw+zNcz0+0l/LYl4HhNbn/10+CH0zJ7H3L13/JDZ8n5foQopD1+hpfb3YYa51QdLjI8RxKCC5xkRacizVafiLitGqUnzDr6WbV7f7SX3FtLg5tI/HdCMroAIIX93leXJIuy1+KBMTc9MZDKUUUeyZ8qJzOBraTG0Kz708qNNM0MwrxaeilAodVFV/Ol/pM+850IKpfSjIx/UPLy5ZbDcpABnjGuS9LQZ/QS3fMcWHPeI6nmwcjM9J8oLp+JkIIQnGclkvvSeOcN2DXBk8VGxsVfb3c9ELRkHtA8HjuBT8vyUEZhJtiWDfefbWYYSFYomIj899UeI2DpKG+Nf1jGhOzLGy6SVEptpfIU2zdYyzKNBMtWq6s6nOQ+xOkRlkz1R/mnRNSRaGLFpHTwa9w04tVXSpfW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,28 +155,27 @@ Now handled by the core automatically once SPARSEMEM_VMEMMAP_ENABLE
 is selected.
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/s390/Kconfig | 1 -
+ arch/x86/Kconfig | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index bf680c26a33cf..145ca23c2fff6 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -710,7 +710,6 @@ menu "Memory setup"
- config ARCH_SPARSEMEM_ENABLE
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 58d890fe2100e..e431d1c06fecd 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1552,7 +1552,6 @@ config ARCH_SPARSEMEM_ENABLE
  	def_bool y
- 	select SPARSEMEM_VMEMMAP_ENABLE
--	select SPARSEMEM_VMEMMAP
+ 	select SPARSEMEM_STATIC if X86_32
+ 	select SPARSEMEM_VMEMMAP_ENABLE if X86_64
+-	select SPARSEMEM_VMEMMAP if X86_64
  
  config ARCH_SPARSEMEM_DEFAULT
- 	def_bool y
+ 	def_bool X86_64 || (NUMA && X86_32)
 -- 
 2.50.1
 
