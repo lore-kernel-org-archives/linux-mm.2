@@ -4,85 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA12C8303F
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 03:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BABBCA0EFF
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 03:37:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BE688E011D; Tue, 26 Aug 2025 23:35:57 -0400 (EDT)
+	id A123A8E011E; Tue, 26 Aug 2025 23:36:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 357358E0105; Tue, 26 Aug 2025 23:35:57 -0400 (EDT)
+	id 9E9FE8E0105; Tue, 26 Aug 2025 23:36:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26CC98E011D; Tue, 26 Aug 2025 23:35:57 -0400 (EDT)
+	id 926B48E011E; Tue, 26 Aug 2025 23:36:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1491B8E0105
-	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:35:57 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B83EB58E6D
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:35:56 +0000 (UTC)
-X-FDA: 83821123512.25.A4299D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id ED1F7C0002
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:35:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="I/bLRoD/";
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756265755; a=rsa-sha256;
-	cv=none;
-	b=yKYYIS0aKmLYExuAya1r1MDOUqdtFU1uMN7AiFDesz4MgNs8DPMxsPyBnXJ0VKklNtT2BK
-	TVdxfMBPyoA+zfuHaxvBBIxWa7fML084+5OKWEYAmqcMrv2L3DnYuSgfvE4927NX6OB/Aj
-	AJ7L51rb/jg39gonHCgW0o6M4ZSmSSo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="I/bLRoD/";
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 80C8C8E0105
+	for <linux-mm@kvack.org>; Tue, 26 Aug 2025 23:36:59 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48AF713983B
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:36:59 +0000 (UTC)
+X-FDA: 83821126158.11.24A4303
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CF4E1120003
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 03:36:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="W/t+IltW";
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756265755;
+	s=arc-20220608; t=1756265817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mKJy6xKalopPSxX5SySGROyl8/Hix7E0tzIZR3u3LUk=;
-	b=27D3E6ubJguoesJoUShledZcnGoox4Q9l7fWmv0MrYDYZJzOaXM8tS7Z3UVDS3krLKM0I5
-	vXq+HdEE/8ws6op+dWTqSW9Asu8tvoKl+LhdPPkL/k2P4tcL5O6eQk89+e9ZviRUsGyTrP
-	y2x2y9FWyLNQWNm/rfK5esroG2orpWE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6408401C0;
-	Wed, 27 Aug 2025 03:35:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706B8C4CEEB;
-	Wed, 27 Aug 2025 03:35:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756265753;
-	bh=SM4xb832pE5rvEBqKKRa+/0EhP96sXD1OR2lz67r2k0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I/bLRoD/8nIla49/f1C7uUseCKIzQcE0Pyq0JXmCakfN4IycnEKNIWTFvMotNyyy2
-	 aUiy4sltWllRxRJA26414bEgzCKpzRWepEmynuRP52ORskRAI55JzXbxcOogXnIKit
-	 4DxN9YwsfKrbzHKVK92wmbaUC8OaQhLhB2HB0UiE=
-Date: Tue, 26 Aug 2025 20:35:52 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@redhat.com>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] Revert
- "hugetlb: make hugetlb depends on SYSFS or SYSCTL"
-Message-Id: <20250826203552.b4340b12b16a374396f49343@linux-foundation.org>
-In-Reply-To: <20250826030955.2898709-1-linmiaohe@huawei.com>
-References: <20250826030955.2898709-1-linmiaohe@huawei.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ED1F7C0002
-X-Stat-Signature: 7rmogbg59zmgtgh5xapz6fnfdstqrfhe
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=osf2lC7q38sNCnKuyHhBN8JOUYIvz4KkJg1qo705u0E=;
+	b=Bv95OQy5BEcs8xWN0sJixFfZawraU5ee0IBMxRoNTTGhTKaVbTWz7r+Vfblih0ZcAN3XaU
+	5JuM+bRY1LxH48jG25G+mpZ8IcOvo+c7zIw4lRu3UxKUg8rswUrEEfw22aRs6XkjW2YHHr
+	DCOJtB3p/PjSU5G61oug47eaHjw6JKo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="W/t+IltW";
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756265817; a=rsa-sha256;
+	cv=none;
+	b=SKYYhQcmie/eyKT8fN628dAGOlnJzT+yneHKF3/euLBERds0RcWsE+MZfUAzR1CySjyyww
+	RNXu8OJuV/29unusbnXNJ9aKF0gtatEdiByh5VQEZUvvmh/JtDoHlpeXFxb6vfbIgfs1Ya
+	jSt21QaQJ+5crgoB1r8tT3lzuxCduJo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756265817; x=1787801817;
+  h=date:from:to:cc:subject:message-id;
+  bh=xWpjumiHx1/HDK3jMXqWkS/QwDDbw8/Y4Z9oCeGx3zY=;
+  b=W/t+IltW1zGz0XshtaVsotbYSyPWwHUWFhLLQ3vzCPLisfG65DBOApD3
+   FOJs2oG4s++xSNZrkD23PoQeHCDKgk/WDRvJFeZO+cyfFf03oEB/inXpI
+   uBD5tFC/DG8unApmqx7b+LP9mLRxEcAK6zcloypHgkveYj2vFny5gyjva
+   CyR4ZP80JTpLNzpFTvEGXktmG0IOoO3UoMb6hJDX33LL3H2jZCedkHBJb
+   zgroYmOeW26PEcuCJhUuLkdhqfpRr7IkG8oFI7mgBMOCX4H3rO0CgEwGO
+   oudb4DRBhLtx1O+fR/OBcEtZ4eU1Aq9CgKnn0zugmgLIcW3AnUobjGU7h
+   A==;
+X-CSE-ConnectionGUID: RpNqpTLfTK6uBJUJoctbRg==
+X-CSE-MsgGUID: JR4eULpZQ7K2GhjQCN+QLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="69884192"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="69884192"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2025 20:36:55 -0700
+X-CSE-ConnectionGUID: HY3T7u3QR2KFH9CHV5Ztrg==
+X-CSE-MsgGUID: 3Y/SqUP6R9aEtyQGtafJnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="169917853"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 26 Aug 2025 20:36:54 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ur6xF-000SdT-1Z;
+	Wed, 27 Aug 2025 03:36:27 +0000
+Date: Wed, 27 Aug 2025 11:35:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [rppt-memblock:fixes] BUILD SUCCESS
+ b3dcc9d1d806fb1e175f85978713eef868531da4
+Message-ID: <202508271132.nhmZourN-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CF4E1120003
+X-Stat-Signature: 1izqisejhgmc9hm4yywyqjb4yqkxkjgy
 X-Rspam-User: 
-X-HE-Tag: 1756265754-433395
-X-HE-Meta: U2FsdGVkX1+WglLQUNU/utftztxONJHZ8RKsfpX7YvJRgav7hhH2ysOBx2yr5YiW/j+1gJFTltg7B3oMj1IggVfQMBbPPw07UclF5e3hDUCSawqdh5zgyRIpkdMQtLWCDA2pzpNN/19lH99l+F4cOdTts7WVwBwVueJk9N2Ku4luMQMf/tCUwH+pKjw7ZYEH/wQftONvICWBI5Qwt2H3jvvj7i/Jf73HjZY7n05dyZWv0Y4FnHDzOTd9xmo3m14OqUhG+2HEBe1+Py4XvElPy1TCjtcfBt2EMkiha/E91Ku64luq5nppr6xenlLP/k30iL6ndVtQe4PT1+HKEfG8XYzPQmu0qsn/6ZCoVuMmDruXUvvs3tLWatKzGDSzZcPCWlpi6VQ5ZyMg5e+LDpZ8RZPKhS+hh+l838bBCe6G2gMYTiOHxguCV9bXe4WC7VXDBnatpYcKEhGFMPdDW3Py/bScaUAEyHuQTxwKjvh170IA+tB/p0exeZpu2TQpp6Btl+BCYB89kAvX02AZ+FVvDV2YqFHXCbC6ihUvVduneFmZ4WrgoYS+GMhN88i6PP4eQHPvxiOUcqoeW2P76Yod95trNOj8Ruhk8GobeM/4tkibfBV6ahO1PZquIJ94zNaDECAP+42/mTqgvWYJBRrV/58WqLRujERG4RIe0rAzb7T5+icLTists9Oj3nHogmIHGmoyD3T3efesGK7yLkJDPF4h/SVChDLoo+uPBTDZdp5WDQwzvlt9YD6MFG6D6BOQXqoVk6WKgjx8L+C6DCS63QDnLStosQFvYRttik/tbz+KrJTlEAcIPvKipOPg8MF7js9CzhnckHy4ZhhvujrNO+U+8NXrsRnF5XQillBHFNLIXB2mv1Fj2PTIckGfmTYf7QbEi4VGWKCitFzGj91lLubiXXd6fqGAoiXea3wIAztSPpbnLlvvZMihGvPfa1Y8ChNFaz8eXJMie6/2awU
- gO49mOjj
- rSy0ufqQrL0IG7bkeI55/Fscl7vXwBiiQEsJG92xsUnGtmQ3jqty4ShMDT6hd/iSpwQRxmyxFFEak1p8ntNigml0dql57jcfN7JV7BYjwbahqeQ9tU97Kj3cHv6j4aJN5Xpu2aaZYAAbM/9gQP11tSB9kopsEI8iw3KXfEqfsatkkEtKHwuBRggGi9xsPeGvUbuUmvChsdTzcVOchVFLtEy3sINGQTkZU5FcIrHHUuFXvISl0/f1qg9IiQWfXq540Qcfn4P9813YP5hg=
+X-HE-Tag: 1756265816-799640
+X-HE-Meta: U2FsdGVkX1+OMxo34Vxgl4TkUOhw5tKZ5LDZDWjv9XziKxRXCX50RbzbBb/FO5rCY/aOZ3rUNTXY/Gm88fHLI2wMYPrA/oLixszvbpCJwXdyh7EE0EAIgGdV9vO7Ln7gJaKe1pge0i5/QUq2uB0KgeD0Rc5+rnVd1hb93f69M+4IXJ2MKi7halcr2ncfDvfNiqLmpogAwLtTM6K64ka2TFtkvfn1x5tohSbeg70T0RjqwzL7tV8qTKmTK5GZ3xctqeIcPefLRBLVWSpLYcpMGRs9hwoT+or5KjlnRxxanFLbJl2Hm6mCsQ2CSJCHAIhyRGyTVP3gDyrN4h8jHj3/cQmclGNvRkEzA33CH6Bh3QIqoATDkcTsUTqwk6g/Z7lC4rYodyttbnKcJ4JVtApstbKdWBnY37A+70ICCHELbB92NPYF9oq6OLzi4WollkwXgH523QSv7flQ8D2EllNXmuGyhzqU8RGs3DJzIxk00inwJAxUYhMghiY7VZRtF1XrFKFyixm9HweWHPcerMFDosgIprd9QhCBcGArjAIK6hmM0/g8ltIFwMAEhJMAqtX0V4CkW7hPF5/zfRNwX4h1z1z46mtgPtfDvd8nqEnqK9qhigjvrDU36zKvXFDdBRf+k+OHHYJ0BpVZAJb0k1thjj/CYaJkpiiGhlUwB9L7P2bCNzLYPETpHEJzW6oPKCBy3fdn8S5B1Y8istgWRv6yXyLZeOQiWdAcbRvB7VUBdVHzktra5vcUiXjMXU/Q6mUo10KSWLvgQ9XiBOetYHSS+HFAEIwpX4dHTZScssjEa+aKmrBwF9mOtYooiLH7+nej6inxWJAL5Nwgv1u/dGjcYrIJBVVUlbGfiqZg7znoLUFxKG+0sFBJ43JO75OPVL7Ik0M8DDj4vEUMhkOnoF5r5DhXAeCmRyS6AEKqCLswUO82DesGvcVMqKzhBexcK/4eBAcwxjrNAwCQYogFvvG
+ rv/E5Swr
+ Rxcto1gfGIAlVds/1C8nAPoXRS22GQfy4ZO3XL6eHruI/WejfZvcsJlxoswcyD3QoNoa2SGrEw5X6spf8p7hcNj6hTTdsOZGmG/nPNW/Zw0DhzsVQi9j8vPEv5dqAc5ax4Orvyhl7RSxwigMGoWg+e1xPtD+c2V1nYl//
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,21 +101,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 26 Aug 2025 11:09:55 +0800 Miaohe Lin <linmiaohe@huawei.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
+branch HEAD: b3dcc9d1d806fb1e175f85978713eef868531da4  memblock: fix kernel-doc for MEMBLOCK_RSRV_NOINIT
 
-> Commit f8142cf94d47 ("hugetlb: make hugetlb depends on SYSFS or SYSCTL")
-> added dependency on SYSFS or SYSCTL but hugetlb can be used without SYSFS
-> or SYSCTL. So this dependency is wrong and should be removed.
-> 
-> This reverts commit f8142cf94d4737ea0c3baffb3b9bad8addcb9b6b.
+elapsed time: 1154m
 
-f8142cf94d47 said:
+configs tested: 134
+configs skipped: 5
 
-    If CONFIG_SYSFS and CONFIG_SYSCTL are both undefined, hugetlb
-    doesn't work now as there's no way to set max huge pages.  Make
-    sure at least one of the above configs is defined to make hugetlb
-    works as expected.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-So there is now a way to set max huge pages?  A reference tot he
-commit which made f8142cf94d47 unneeded might be helpful?
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                          axs103_defconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20250826    gcc-11.5.0
+arc                   randconfig-002-20250826    gcc-8.5.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    gcc-15.1.0
+arm                                 defconfig    clang-22
+arm                           imxrt_defconfig    clang-22
+arm                   randconfig-001-20250826    gcc-12.5.0
+arm                   randconfig-002-20250826    gcc-13.4.0
+arm                   randconfig-003-20250826    gcc-8.5.0
+arm                   randconfig-004-20250826    gcc-10.5.0
+arm                           sunxi_defconfig    gcc-15.1.0
+arm                           tegra_defconfig    gcc-15.1.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20250826    clang-22
+arm64                 randconfig-002-20250826    gcc-8.5.0
+arm64                 randconfig-003-20250826    clang-22
+arm64                 randconfig-004-20250826    gcc-8.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20250826    gcc-15.1.0
+csky                  randconfig-002-20250826    gcc-11.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon                             defconfig    clang-22
+hexagon               randconfig-001-20250826    clang-19
+hexagon               randconfig-002-20250826    clang-22
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250826    gcc-12
+i386        buildonly-randconfig-002-20250826    gcc-12
+i386        buildonly-randconfig-003-20250826    clang-20
+i386        buildonly-randconfig-004-20250826    gcc-12
+i386        buildonly-randconfig-005-20250826    clang-20
+i386        buildonly-randconfig-006-20250826    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20250826    gcc-14.3.0
+loongarch             randconfig-002-20250826    gcc-14.3.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250826    gcc-8.5.0
+nios2                 randconfig-002-20250826    gcc-10.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250826    gcc-8.5.0
+parisc                randconfig-002-20250826    gcc-15.1.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc               randconfig-001-20250826    gcc-8.5.0
+powerpc               randconfig-002-20250826    clang-22
+powerpc               randconfig-003-20250826    gcc-13.4.0
+powerpc                     skiroot_defconfig    clang-22
+powerpc64             randconfig-001-20250826    gcc-10.5.0
+powerpc64             randconfig-002-20250826    gcc-11.5.0
+powerpc64             randconfig-003-20250826    gcc-14.3.0
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20250826    gcc-8.5.0
+riscv                 randconfig-002-20250826    gcc-11.5.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-22
+s390                  randconfig-001-20250826    clang-22
+s390                  randconfig-002-20250826    clang-18
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                          r7780mp_defconfig    gcc-15.1.0
+sh                    randconfig-001-20250826    gcc-11.5.0
+sh                    randconfig-002-20250826    gcc-9.5.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250826    gcc-13.4.0
+sparc                 randconfig-002-20250826    gcc-8.5.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20250826    gcc-8.5.0
+sparc64               randconfig-002-20250826    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250826    gcc-12
+um                    randconfig-002-20250826    clang-17
+um                           x86_64_defconfig    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250826    clang-20
+x86_64      buildonly-randconfig-002-20250826    clang-20
+x86_64      buildonly-randconfig-003-20250826    gcc-12
+x86_64      buildonly-randconfig-004-20250826    clang-20
+x86_64      buildonly-randconfig-005-20250826    gcc-12
+x86_64      buildonly-randconfig-006-20250826    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250826    gcc-11.5.0
+xtensa                randconfig-002-20250826    gcc-8.5.0
+xtensa                         virt_defconfig    gcc-15.1.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
