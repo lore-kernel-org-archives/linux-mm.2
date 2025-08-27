@@ -4,99 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE005CA0EFF
-	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 15:59:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4E52CA0FED
+	for <linux-mm@archiver.kernel.org>; Wed, 27 Aug 2025 16:09:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F409A8E0006; Wed, 27 Aug 2025 11:59:58 -0400 (EDT)
+	id 23DCF6B0029; Wed, 27 Aug 2025 12:09:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF2938E0002; Wed, 27 Aug 2025 11:59:58 -0400 (EDT)
+	id 1E7716B002A; Wed, 27 Aug 2025 12:09:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE0C28E0006; Wed, 27 Aug 2025 11:59:58 -0400 (EDT)
+	id 0D64B6B002B; Wed, 27 Aug 2025 12:09:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C86FB8E0002
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 11:59:58 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A8EE1A06D7
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:59:58 +0000 (UTC)
-X-FDA: 83822998476.12.ED66462
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 70AFD1C0003
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 15:59:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V/nKrlgt";
-	spf=pass (imf18.hostedemail.com: domain of lossin@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=lossin@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ED4B56B0029
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 12:09:14 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E30B59813
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:09:14 +0000 (UTC)
+X-FDA: 83823021828.16.EB6D942
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 362661C000F
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 16:09:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756310396;
+	s=arc-20220608; t=1756310952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wzdd3Cp0PH3DKyUoHz7xTKaylFp/fJX0UW6AKzG3Zd4=;
-	b=qhEfTscXNsR8f9p3HRp/XTywe+YJb94RDzEbuSaksmmsC000yxaE4mdp/lKjFme7la1K1o
-	7zjQQ0Mi7QxtLvDCUuATiTczJ5G8bbODoTbI967deOQrY3feTuq6vgMhjWf/ZtrKAzZzP0
-	oO4gBUm2OJ9oOKkUxXu6Y8yixS0by1A=
+	 in-reply-to:in-reply-to:references:references;
+	bh=2FIZ5aJCiTKj3kPm7g09Z5KJppD3cqCl82AjidiHnlo=;
+	b=7ISLa0Xnl5WHxc7riTrigknVPe5fwsoC9WyO0PPpdFIn8O2fs8IL2XaUh+KmUSxfHUoPAO
+	jbqRAYSrN/bpqM7nTf0x9vzWs81de5DCrkXrFfb4scBL7b/8JEqooFnit2teowgyfuGOjn
+	OVTJ8v9wAwDJjb8p8K29jPxF4e5J6oA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V/nKrlgt";
-	spf=pass (imf18.hostedemail.com: domain of lossin@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=lossin@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756310396; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756310952; a=rsa-sha256;
 	cv=none;
-	b=azp5LgKOzrrkR2z3MJBk3/bGryrxeAU1QfzQi6e2JEP1lA9adVuWrMrd5EWPi3jPlQknGN
-	2DORp63Bux4xxpxR917ujGrOvfcgTnwr+Yj5MfW+t1cHlTYhDMxvYagwS6+M0yrNoB0ymJ
-	UGHoDKQc/jW97OP9bqlBg41KYv7TNdg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 355D544B6F;
-	Wed, 27 Aug 2025 15:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74664C4CEF0;
-	Wed, 27 Aug 2025 15:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756310395;
-	bh=J5+h5UrziIldL/6ShiAr1mBz3pMe+bEDgeuau7q6E0s=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=V/nKrlgtdnqj1+XgGOuPsNiHcsH6n/RYGVSCh0CsufP7uQ5rxG7hZ3xRlonzuzx8v
-	 Jr/UF2Lckz6aO+anmWy5Mo6vEN5SyJf8xRF4FNLdFTKef/3ClapU8Q/n1DO/1E4jEC
-	 rO44R+cuU2A9o2Co9egJnAjUjrUNA8unH1v/ccjhvzvBGV57YewafNjg2juzwxodGj
-	 +HNMaUulAd6UPsOqvJh62js65XsTrLD/MQw4AFGdD6JjcpwCSF+eTmipNWaFyiUX6H
-	 LbX9FDQlyKiXNraafiWq4IWQIqJItXP4viGa99FIeCd8nNV0O6YScYKVnm3OLgIDuf
-	 xqvYjxL/ZyYAg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+	b=zKhOFD7v8UvISngsWH7j+bioaVZ8D7EhPjYObk09ZnDYjDfg16CXNRfn8V3f9Dw2tqcy5N
+	qFDpx4cHu6YAg6L6J/C1m4xbANxAhELXApYwBKEDJHLE8LjRH5WgMCw1YFzKLO8bIPwhZK
+	uzjkXbsI02MPGeg/ZnKE2bQMnvMVVuM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C752B2720;
+	Wed, 27 Aug 2025 09:09:02 -0700 (PDT)
+Received: from [172.31.18.237] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CF663F738;
+	Wed, 27 Aug 2025 09:09:05 -0700 (PDT)
+Message-ID: <b9212134-0efa-422d-8cbf-4761e39ce8d6@arm.com>
+Date: Wed, 27 Aug 2025 18:09:03 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v5 00/18] pkeys-based page table hardening
+To: Yang Shi <yang@os.amperecomputing.com>, linux-hardening@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, Ira Weiny <ira.weiny@intel.com>,
+ Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+ Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
+ <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
+References: <20250815085512.2182322-1-kevin.brodsky@arm.com>
+ <98c9689f-157b-4fbb-b1b4-15e5a68e2d32@os.amperecomputing.com>
+ <8e4e5648-9b70-4257-92c5-14c60928e240@arm.com>
+ <939ac25a-096f-46b3-90c1-d8cd6a9e445e@os.amperecomputing.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <939ac25a-096f-46b3-90c1-d8cd6a9e445e@os.amperecomputing.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 Aug 2025 17:59:49 +0200
-Message-Id: <DCDC2M7N28X2.3Q8XYNEDOGK6A@kernel.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-Cc: "rust-for-linux" <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed" <yosry.ahmed@linux.dev>, "Nhat
- Pham" <nphamcs@gmail.com>, <linux-mm@kvack.org>
-Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250823130522.867263-1-vitaly.wool@konsulko.se>
- <DCCIRTHGQFNX.1M8GXO4TYA7DF@kernel.org>
- <DFA3B588-3650-42DA-8875-7AB7D20A2BCA@konsulko.se>
-In-Reply-To: <DFA3B588-3650-42DA-8875-7AB7D20A2BCA@konsulko.se>
-X-Rspamd-Queue-Id: 70AFD1C0003
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: emsd1nsmk7rgcntjebb4ipqh9ptiiu87
 X-Rspam-User: 
-X-Stat-Signature: e47ba3y6ormqrerxi95iigweo787axrt
-X-HE-Tag: 1756310396-718440
-X-HE-Meta: U2FsdGVkX1+m98CT42fcx6AMeWNlrnANOzsy8t9NLRLv43isIlM9PbhyuHZnBV4yyaMwluiq1txVv2hrWs/H8vUcdG7JhuKTQk9Uo8lV3n2qBiKu8JGjXPMScvlnf6h1lDilFoaQgkk96Y6TT4zOSFacZjevPI5patWFdAgkchsBIAlLv1eiZKGWapHOgb6Fp7c7XiEwt3d+sZt5EUfLRWgnjknzUiZfE8oWU170PUZIGXa0jTtUUYUkiLa4wZfjlPfj9gG5B7ExlBlN1WMibuiXcxnISFvXSmqpX1YbCq6NJET/4/1TkPoEK2pCr079/lTqj1aPtrb8Iouous+7HPKDIWyhuDxeJqM44WKNrnklthekYvfidMHm+LfuJNPlnJcwDjFdPro0e1+HSTi1tQegJWhCd1/81XEiywX2uglZaRrMwSLin7aitJs2ynTlSH3yIDj0iIJitxVFHqsDCpMo+zXLl7ttyBX5/zwyafiBp25kqhpbrIofzITVOp93+JNDDR84Z4jp+OohhY0U57hSQsCvYZgneVUuwhH8IuLQe91Iygjl2PAUGkSFaY8kA8UP2pTVg5gR6B2sBG9hlLg+f82fhNy1GOl1SgDQ30DpGaquTFO5dwh7aCdQ24Cd94R5wEvslw9DtKAl2fZH16+erPIZ+HzBDRuZJFwp+nrb/1Cc956Fw468PHSP5lu69VCfkcJUdfu1IG6vot8ZFOS7k7mMu6YUOxU7dIL0MuCGFCp1djldqMwFKa7gI8MGTe76aWpdAo3jDkJG4V4lWL39dWruJKhGkZKW8eHOkrbxutu7XkugKAx94pyoTl32wTEeiRZ6DypwlABVaUPPq6a2WTn8G3oqTsFWVlCbKMg4eh36ZKqaP8IHnMC6OV8tyNz3iljetjQtZGO54obNS6MyBUBCo3IarU5OOHrUSD/vtKBGWntBWSzXT7u7oOjv8E9EX7+QPmqLhr19ur4
- 8inCOvjQ
- gvFWV243foho862ZGgBKkAyyYUDJ3L1hU/XME7GRqaEN8z2t9rZefCIGqqunPladQCl+T6wR1AiRLXWuX6IzbWtfo+RceXfLh6FBXELxmR60/3lqP3oVd0fWsj+7OIQliUizgPzTMrTrrMOcTcYa9jJYcblV9drDdYaxSJ59oi8R0f0azKnUAfqe72x6wpxRxGq2jUyphTkNTPQ4TWAfD5r4Zfcn1nm2zNw8CX8EiBqES1rrQHtAokuz4q3wb9P1IAsuaKYQnN3nRJ2Cw84HJXv5nX5GlmqWvgP9SYsBADL6qJyotznECu7FhYQip8TCtFsOGvVvIsYQoqY7FJW4x6f0BnQ==
+X-Rspamd-Queue-Id: 362661C000F
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756310952-498062
+X-HE-Meta: U2FsdGVkX1+JkPQfhZZXITHOY1GzKb6pqO2mEy/IeOrHDIRb7Y+Fv9MOX+XQ6QPgCKz6H5UPPYup1ohjnuHo5LCqX+YM9V+t81e3rdiW1iPLYCzkccls9vNw3UPOBLtKljnp1T7KzrA0CHcCFRR5m4LOjnIdPjVKc2/5O63+DGr6fSchVIX3kE04hKQjNdIn+M0dkjAMBV89UCMfyNWjGjvvNgv6qww3WWYXnfm637PkRQN0+8nmaxCQS97XkW0K8n/XXBdn4UqDInK4oStfTspzo4nAh01TiDp17l7UkeSXff+kuGTMEmX+lPkoeZ/xf5yWBHXZidZGqmoT0pjjMfTej9yFeUTTetRwr2isTSoyvmxj4L0Ir/XgEpnxSo2XOSxj9xI9WXpCu+YJSBhESfAw4hWC1kp756MNupsrC8TJTWKa1p1jWjB3PFwZstq/xO5dCRPfOPZORPWaWqLT4psfVmEyuZFEYNFuhwjG7Dn6dW1ovZIffH8CudKBNc65IJ/fmqMVamLZkLyqO8Gk9jxJTvXdRGF3+ODd7CAh1Koc5GETGNE7w+bI7MXfRaSEqUy31NX6X68vY1h5LrDstyarYOyX1olVEIdBApWITpTfyl3E8uSXF3rmrftHF7VojVSVBgWgL9Qp6YBX2yHYT5Unmvpg2t2IheoFHlrOYWU6LWA+O14GDEEKcJFuLLMN7nl5B9ckMQ8I6viOUcW7VYHrl+dKfn5lD5lgYv00EmNFr4cTvJwYnTG1z2WSQXUbpor7FdJQez8UqUsCWGDcexzGn2PGa3kQkUR9AMWCA0G6oLYmep847JedQtWXGfu9oxIny1boZ9pNnLjcTiDzJEjUBy+Fdl/1EYNaUAALf7/8kt9AFH6j5dxaLtLXkZL/cG5WDQXngAbKVRVck/WtgxREX2vzeKAUqSSbLQe/PMeaYdrTeIKnszbcJPgo6TD8vhf33LN3lbKQRIs/eic
+ dF+dGp1Y
+ gry+M973vNyIj7243H8tEAamv4DLT8flqpd1zPiSyRflfNI/p/ztzLPEWfLz5JXN3IBx8HLfrDX+Tf/1z51NJqyrKLSj1QgKNqvaDi14TrvwIkaFytMEf/OAEns3CEBH44yNnRVLYengUEYAnfrQMa1SUhQn3ezh5l+Cy03jJUDyzfXY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,140 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Aug 27, 2025 at 4:24 PM CEST, Vitaly Wool wrote:
+On 26/08/2025 21:18, Yang Shi wrote:
+>>
+>>>> from a contiguous cache of pages could help minimise the overhead, as
+>>>> proposed for x86 in [1].
+>>> I'm a little bit confused about how this can work. The contiguous
+>>> cache of pages should be some large page, for example, 2M. But the
+>>> page table pages allocated from the cache may have different
+>>> permissions if I understand correctly. The default permission is RO,
+>>> but some of them may become R/W at sometime, for example, when calling
+>>> set_pte_at(). You still need to split the linear mapping, right?
+>> When such a helper is called, *all* PTPs become writeable - there is no
+>> per-PTP permission switching.
 >
->
->> On Aug 26, 2025, at 7:02 PM, Benno Lossin <lossin@kernel.org> wrote:
->>=20
->> On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
->>> +pub trait ZpoolDriver {
->>> +    /// Opaque Rust representation of `struct zpool`.
->>> +    type Pool: ForeignOwnable;
->>=20
->> I think this is the same question that Danilo asked a few versions ago,
->> but why do we need this? Why can't we just use `Self` instead?
->
-> It=E2=80=99s convenient to use it in the backend implementation, like in =
-the toy example supplied in the documentation part:
->
-> +/// struct MyZpool {
-> +///     name: &'static CStr,
-> +///     bytes_used: AtomicU64,
-> +/// }
-> =E2=80=A6
-> +/// impl ZpoolDriver for MyZpoolDriver {
-> +///     type Pool =3D KBox<MyZpool>;
->
-> Does that make sense?
+> OK, so all PTPs in the same contiguous cache will become writeable
+> even though the helper (i.e. set_pte_at()) is just called on one of
+> the PTPs.  But doesn't it compromise the page table hardening somehow?
+> The PTPs from the same cache may belong to different processes. 
 
-No, why can't it just be like this:
+First just a note that this is true regardless of how the PTPs are
+allocated (i.e. this is already the case in this version of the series).
 
-    struct MyZpool {
-        name: &'static CStr,
-        bytes_used: AtomicU64,
-    }
-   =20
-    struct MyZpoolDriver;
-   =20
-    impl ZpoolDriver for MyZpoolDriver {
-        type Error =3D Infallible;
-   =20
-        fn create(name: &'static CStr) -> impl PinInit<Self, Self::Error> {
-            MyZpool { name, bytes_used: AtomicU64::new(0) }
-        }
-   =20
-        fn malloc(&mut self, size: usize, gfp: Flags, _nid: NumaNode) -> Re=
-sult<usize> {
-            let mut pow: usize =3D 0;
-            for n in 6..=3DPAGE_SHIFT {
-                if size <=3D 1 << n {
-                    pow =3D n;
-                    break;
-                }
-            }
-            match pow {
-                0 =3D> Err(EINVAL),
-                _ =3D> {
-                    let vec =3D KVec::<u64>::with_capacity(1 << (pow - 3), =
-gfp)?;
-                    let (ptr, _len, _cap) =3D vec.into_raw_parts();
-                    self.bytes_used.fetch_add(1 << pow, Ordering::Relaxed);
-                    Ok(ptr as usize | (pow - 6))
-                }
-            }
-        }
-   =20
-        unsafe fn free(&self, handle: usize) {
-            let n =3D (handle & 0x3F) + 3;
-            let uptr =3D handle & !0x3F;
-   =20
-            // SAFETY:
-            // - uptr comes from handle which points to the KVec allocation=
- from `alloc`.
-            // - size =3D=3D capacity and is coming from the first 6 bits o=
-f handle.
-            let vec =3D unsafe { KVec::<u64>::from_raw_parts(uptr as *mut u=
-64, 1 << n, 1 << n) };
-            drop(vec);
-            self.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
-        }
-   =20
-        unsafe fn read_begin(&self, handle: usize) -> NonNull<u8> {
-            let uptr =3D handle & !0x3F;
-            // SAFETY: uptr points to a memory area allocated by KVec
-            unsafe { NonNull::new_unchecked(uptr as *mut u8) }
-        }
-   =20
-        unsafe fn read_end(&self, _handle: usize, _handle_mem: NonNull<u8>)=
- {}
-   =20
-        unsafe fn write(&self, handle: usize, handle_mem: NonNull<u8>, mem_=
-len: usize) {
-            let uptr =3D handle & !0x3F;
-            // SAFETY: handle_mem is a valid non-null pointer provided by z=
-pool, uptr points to
-            // a KVec allocated in `malloc` and is therefore also valid.
-            unsafe {
-                copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as *mu=
-t c_void, mem_len)
-            };
-        }
-   =20
-        fn total_pages(&self) -> u64 {
-            self.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
-        }
-    }
+Either way, yes you are right, this approach does not introduce any
+isolation *between* page tables - pgtable helpers are able to write to
+all page tables. In principle it should be possible to use a different
+pkey for kernel and user page tables, but that would make the kpkeys
+level switching in helpers quite a bit more complicated. Isolating
+further is impractical as we have so few pkeys (just 8 on arm64).
 
-Also using a `usize` as a handle seems like a bad idea. Use a newtype
-wrapper of usize instead. You can also not implement `Copy` and thus get
-rid of one of the safety requirements of the `free` function. Not sure
-if we can remove the other one as well using more type system magic, but
-we could try.
+That said, what kpkeys really tries to protect against is the direct
+corruption of critical data by arbitrary (unprivileged) code. If the
+attacker is able to manipulate calls to set_pte() and the likes, kpkeys
+cannot provide much protection - even if we restricted the writes to a
+specific set of page tables, the attacker would still be able to insert
+a translation to any arbitrary physical page.
 
-
->>> +
->>> +    /// Create a pool.
->>> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
->>> +
->>> +    /// Destroy the pool.
->>> +    fn destroy(pool: Self::Pool);
->>=20
->> This should just be done via the normal `Drop` trait?
->
-> Let me check if I=E2=80=99m getting you right here. I take what you are s=
-uggesting is that we require that Pool implements Drop trait and then just =
-do something like:
->
->     extern "C" fn destroy_(pool: *mut c_void) {
->         // SAFETY: The pointer originates from an `into_foreign` call.
->         unsafe { drop(T::Pool::from_foreign(pool)) }
->     }
->
-> Is that understanding correct?
-
-Yes, but you don't need to require the type to implement drop.
-
----
-Cheers,
-Benno
+- Kevin
 
