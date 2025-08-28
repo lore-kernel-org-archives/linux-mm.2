@@ -4,94 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17960CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B6FFCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:12:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 574928E000A; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
+	id 839228E000B; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525558E0001; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
+	id 7E9A58E0001; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4628F8E000A; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
+	id 6D8378E000B; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3683A8E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB28B852EC
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:10:36 +0000 (UTC)
-X-FDA: 83825142072.18.1FCA4EB
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DDF5BC0015
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:10:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XY5IxvJq;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf28.hostedemail.com: domain of haiyuewa@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=haiyuewa@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756361435; a=rsa-sha256;
-	cv=none;
-	b=wuyPn/EwrG6ItDfYksdDLc2csDhrCyKI+Oi1SCdNtHAv8S3QhkNZDmL2TfMZs5CdFxkrH2
-	0cWjdGdAKHhcthtCYOlj/XsTkzSwwkArBJDNdk1WZtUIzI2njntJeHd591qJgP7RdCHjmS
-	1Xq9IR+vqIMCHeHho+S/KSLHacw0RZ4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=XY5IxvJq;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf28.hostedemail.com: domain of haiyuewa@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=haiyuewa@163.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 583368E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E21FD1A09B0
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:12:51 +0000 (UTC)
+X-FDA: 83825147742.13.D3AF7F6
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 386B5140003
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:12:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JgX0VfDF;
+	spf=pass (imf23.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756361435;
+	s=arc-20220608; t=1756361570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=A4M/POHWuLvUOmb8o4PVnu3p+ruDnZJl5Jdp4rRP8EA=;
-	b=rYbBRbPeTVSt7oKCumm+c3RubhCCbIsq1W7yYXnLKJZS16sCvu6G9OWRWwwC1Xj0ENnmtE
-	rBbBKaIRlDA1f26ge5OFbGFlI6/ARcZv7ltIMmYSI5S/uM5mEhujyyWHpRiEqigGjHnfp4
-	pZsWPTfMS+WYQ7j3xS4jal+3WFrnJUE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=A4
-	M/POHWuLvUOmb8o4PVnu3p+ruDnZJl5Jdp4rRP8EA=; b=XY5IxvJqiXf4+4BKz0
-	DPF9whEe6YZsu7u8wp7bsG2+kBaxq+kv3A9mQNzfKGdpM9P/bU61AUpyAl7YBDeh
-	GvfGkyef9wgkvCaL2s7t7UG4DvX5URxKfdv5F13nkB1FEY3u6QKRyzgNKDW7MCVM
-	fqBwC0BLZPoN26clTe4TFnwCg=
-Received: from haiyue-pc.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCnAafU8q9o4zdvEw--.31954S2;
-	Thu, 28 Aug 2025 14:10:29 +0800 (CST)
-From: Haiyue Wang <haiyuewa@163.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Haiyue Wang <haiyuewa@163.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	virtualization@lists.linux.dev (open list:VIRTIO FILE SYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v1] virtio_fs: fix page fault for DAX page address
-Date: Thu, 28 Aug 2025 14:10:13 +0800
-Message-ID: <20250828061023.877-1-haiyuewa@163.com>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cnbLMdPiCwmvYLji+zAdnqkI0zKaKd1dlWQ6sfyOcHc=;
+	b=fY9rnA6DfIxwxUUp9hm0NvJtJ00dOZTROGkS7r1F/5arYd7oH8G4Tn3yMq/ovo8Naqiplq
+	JK9vDyHbFldMrCt2IaUEF/A2hE2m8A1hJrls3PdTe/6z4Tq9naQC2t8ASGbqEmReeH5izX
+	eWSz2PK+J6fuW2g/h4SSrPYbj3i14FI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JgX0VfDF;
+	spf=pass (imf23.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756361570; a=rsa-sha256;
+	cv=none;
+	b=EL7z2r3KiOMaMqMPo6FDXLTOCd/kZ+cYTQUvridzhmt6O5Jz4UAUVzHOoRnc+XwyES5hwy
+	XuC2FoC8kuMzTBTsBw3Rw6pbx+qGZjCrItQezjTef2UA/Jp4L66kSGDWn2Su05tNh9zfsQ
+	uI15PVgFKnr+Bt3lG9Z155maQthcSmQ=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-70ddd2e61d9so7606536d6.1
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 23:12:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756361569; x=1756966369; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cnbLMdPiCwmvYLji+zAdnqkI0zKaKd1dlWQ6sfyOcHc=;
+        b=JgX0VfDF4Po+ZP+zL7QxPEigpxgiqg5RoUnF9ymv+BkByALUCuUv+lCA/aoVCdjd4s
+         zbDLcLSNJRg1x3HH1fidcR8ITT97YEWLDG1LO0/KyX5Fa/leMaZTnu5SM47wCU+3kZ4v
+         d6qxh9gti3Xvp1dkqhDTE4MKLDu9yBLKmuMoWgiaEtXHv0Q9DipSiAPngkxVsDw1Prll
+         MVgIicocGerjsAPNDHAsv3t8THkpLcv4We7K3Ihjrlc4ercF7KsCP8xIaXym94OlVxH5
+         45Y3E46xpk4tlnZ+CCDNLWs6Rv6XPVliyemQNFaYDApk4oOmXlDeF9Kg+MuJWw2Q+wlL
+         cRag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756361569; x=1756966369;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cnbLMdPiCwmvYLji+zAdnqkI0zKaKd1dlWQ6sfyOcHc=;
+        b=aba9Wuszxu55vYxEEgY0+8nMclZe+kWC0wdJzVCBTjmRK3neBF3g+s7pUzp53b2dum
+         J4GwtF1cfc0aTmaj0e/SYJ26ZOrs4ocmYJ3V2bthQtcw2qSrHRKZHYX/3qXqCe6jFV6N
+         qGjF1ghYh3WOWgqsVCOQbT4LfFuxHvjIz1GugUtOT5GZN2VBjGCAh7LLY+qgUSB+YBCO
+         B3LCcT6CTQTspYIpKedx/VxLc5zsNtbRpqDS/a5hnpt6NUzVUpxORV0TPqcdOLGusnXI
+         tXjClaldCv3woG8USodAX2vtSTzR0HKhTlx45eyBMiVE87Kq2PzTPW9NK6h/m8377e8M
+         64kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+bfLz6aAk3tFNeR2o6EOmLG1KxXL9FIMMjvbmRlcBxdXhvrGmZ4bktlV9nTOo6V2NJmpmHEyTDw==@kvack.org
+X-Gm-Message-State: AOJu0YwY33+Dh4Uv+KQC912+LGDqBGNDP8KV2x4tbVybi1qvlYfb5Q2N
+	ynYKZSeqM58AfMPfEDYUoCZ6CCj90fBOVSbhI9efCsmeANliKny/l7bHYUuOYRamda04Lb8FWlX
+	KSbukGgPQ545FN4eh5yEr3Mk1LKBp6mI=
+X-Gm-Gg: ASbGncsgihPZ0OHZWNeHllC3ystCaJCgsKWvDA/AC1Hn2K4w9hWK/uofgvDJvoGE8H9
+	fZI9sz1GabalPb1+zto3xzIdlW4vCpfuBIAPTVVtUO8ixc+YIGLmLp3h6GKn2Q1+Ng/AmkUHr1c
+	EhWx67Om40BNvonjaLd/wsLEpfUinOO6xB/H5vrp31RgdZPetQDKr/CnaenoOyRelgftABJJMMo
+	fjEFRxFBuD1mUZ6HJODdAeUlDWIhWlFU+xIjQ4=
+X-Google-Smtp-Source: AGHT+IHWEqZvffeKo8kRXTyycXIE2aUiikzOvRaEpoYzy2gliBcy83nY3larYygf49dGuEclkaz2O/Wg5aGu2qNho5M=
+X-Received: by 2002:a05:6214:3293:b0:70d:9f91:642a with SMTP id
+ 6a1803df08f44-70d9f916d1bmr193078726d6.56.1756361569344; Wed, 27 Aug 2025
+ 23:12:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCnAafU8q9o4zdvEw--.31954S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxArWUtw1Utw1kZF1kAFykAFb_yoW7Jw17pF
-	1Utr18Gr4kXr1UJF10vr1UXr13twsrAF18XrWxAr1kZF1UW3WDJr1kJrWUtr4UXryjqry7
-	trs8Gw1xtryDKaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEiiSDUUUUU=
-X-Originating-IP: [116.233.225.29]
-X-CM-SenderInfo: 5kdl53xhzdqiywtou0bp/1tbiYAO2a2ivSTleAQABsX
-X-Rspamd-Queue-Id: DDF5BC0015
-X-Stat-Signature: 8mhbrybf1fdqcpsct3zd98gqdqkdax9a
+References: <20250826071948.2618-1-laoar.shao@gmail.com> <20250826071948.2618-5-laoar.shao@gmail.com>
+ <bca7698c-7617-4584-afaa-4c3d2c971a79@lucifer.local>
+In-Reply-To: <bca7698c-7617-4584-afaa-4c3d2c971a79@lucifer.local>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Thu, 28 Aug 2025 14:12:12 +0800
+X-Gm-Features: Ac12FXwA8AE2T9DT0lZOOileufyZaAaDfXMTycJckIK5rbkI3PvbmFzzlT8sNXM
+Message-ID: <CALOAHbDxxN8CsGwAWQU4XRkG8NvU-chbiDv=oKW0mADSf1vaiQ@mail.gmail.com>
+Subject: Re: [PATCH v6 mm-new 04/10] bpf: mark vma->vm_mm as trusted
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
+	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
+	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 386B5140003
+X-Stat-Signature: b334swhz8jijptfbama1zzjkdedaukyi
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756361433-742864
-X-HE-Meta: U2FsdGVkX18tQhos84pAQEuh39t8+Ogum1lLr5LFq5BsDOOQPOxdnzQL7NnDWoh7GHSX0yDfJgSxaoKPNL9N0g8/GHSi2ygGKxmkgr/W2dBxkIasW2IvT1L7u+phYElPSlT0aexseMinmPWydwFwmDPoBj9wNCHa/MUzIweMojVQHTKvhz7Mbe/hFBYVdIlxxVVy52povBTHtVavI7gxmo3PQ4u/2hbeVQlEJh2O8nDtf+y75LnhFOpd0/qcK3mKtNqXjc1Yhko2jDoWsNSrPnmd5GyIy+d7H26ZR9sfxXOc782BvzVsMglN9ZqJUJiaGA+PCx6Mh5SGNWe1s0oZHDzYv2eq8T5nCpg2EhWntVgfkckcwvC4HsBY03l752+BNFRHOhhyY0+XczH+6b7wOayi+nXiLYsOegXeN18+cyUCQazmHXX/PtbcMzp8IcAxKKiic/K/81mncZZeubNTrYO6+71faGAf/3bMBkqyJSatFYlnR/fMytjayQyJrglnzR9e2iA2S4MrfNDacM8ibw1L5kivpBb7yUxPsxVTQX4iEkKdJR0tKywU0CJIp1kza8ferdimgVU11NM8Ptn/5CkJ5nfo+KjhZdS4oHkPJoE0hYGGPZi1jbJagoLIvTZ04tEx8GEo0xm8B5ZuuUTQj9Z4u5U2MGU18hYssFUEDs6SEs3w3BIVAs0tJwh/RiB8Y6DVOCAz5QgqD6Cgl6ET+mTAaoUhriMs5lgOHKYGYU0lSFjZHNFnwn5TfkT2XMSqoz3EuBvZYRxy0R4t+RfaADnuQHMrQOULQhNKdOwsf7/lwrMBv0XqVW/gNkjlas/EH+8WdFCTKj30sD0GSHqzfggJKnYGhXxXCZTmKbuUZ3sC0NrxHYpCUViQHOJlt60KDZq3Lj9qPcjpFYQiHq193goLlBYDMOCIsLGh85YiZrlsnJLE0I9QFdr4zKtcOn6dzGxdQqlLEOmCJZJ0CC3
- ihPwz5id
- oruzXcHqxiMBOZiJlU9Wd2QYzkNLTeupjswFuLi5nUQ2KO+rV93FpN6rkjIhSl0s/Exa8
+X-HE-Tag: 1756361570-119024
+X-HE-Meta: U2FsdGVkX1+vdHoX66lgYBVDbi4KeCSUTF9ofTWSIS2lZsX/U/zxaDK1F/uTo212pdOj1wvq7SI3mftknae+/3nM3RH4zvxgREkHNxA2r4QcqeG4d9GoC8ONA3kbLFW3i/e/XhFiQiymgUxJww/5VAuO839WPFCZEF/yCoo72W+4r3FP89x8BxaNTlDFB/qGeCXr6LmADfERCMS4ETidxgOnDoJU5dm3VRrEooB27z4iDt708Oc5R8gJtUmVnci8qF4AFTpWoAqbYI1mU2YzFS+pDrDqPEWNn30/q1h2XG3NMsR5AKYV8DkLjqB9uQP1U52x9UIfpq5RcgX1KjFEVg3MWWjiBHVmXtRDdoO7Wj4dvc0BH7xXIQugrZKsqZOAYa3b/UuFsGomzFxdxOQpmaWNOObhqBScotvY9Bg9QGZgKvKK0r31A55C+so1Ua03bvD/cRUnKIQB2yHDSTCtskpsAjgevg2YRJiPMasogjzJ00gPk1pypXiaAJ16/p33w2mf/3HZG/fN5gF/MgmaR7u6TrqgODS1O+BbyFuMFBkkGyI0HVKFJO2ajdXDWF2w0WBAIprFrgX38zriGVvZqkb4eF0WKWv9njWLZQgA19e3O5aEKNtVhrX9IzVFmL+ASg9LbTMpMyeZhUn6VWRGEYEL8sDKWe4Yy9SzPh7eVLDHD4rBN2CCWX/auCulB9LSEpkwEIuJMPR25ORIYTWXxMJgwgEiFvdtfOWfZUCUm0DSiu1w3+5j9TjfsDnKPefB5kZNd2smkHDb/9SASGWsDjPhGtlSXwgMGcjJjByirrcvzvbE+4YG90+ctrbO+hjoBk2OlZA1EdMbsCC5ifA6Jm2KW3rFApRY/BLNFm5ldzQmNA7uwBeztccUGGBGHIcJh+mJfQNvwCFNLK7laSK4XzGb836h1OTNEmFbbb4DtJft5frznekUULB/brKlaiefTXX7pP529he5DbsDeZ9
+ AhJmoY6I
+ lHM8JAF0yC4+BCFywlhX8fTR137bwdrYvf7vZbaz2YgCkgems8lKQDS+PuVbU54wywV62Tvn+oYlMiFll79gccxfvSN6IfUoV1bla
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,91 +122,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The commit ced17ee32a99 ("Revert "virtio: reject shm region if length is zero"")
-exposes the following DAX page fault bug:
+On Wed, Aug 27, 2025 at 11:46=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Tue, Aug 26, 2025 at 03:19:42PM +0800, Yafang Shao wrote:
+> > Every VMA must have an associated mm_struct, and it is safe to access
+>
+> Err this isn't true? Pretty sure special VMAs don't have that set.
 
-The commit 21aa65bf82a7 ("mm: remove callers of pfn_t functionality") handles
-the DAX physical page address incorrectly: the removed macro 'phys_to_pfn_t()'
-should be replaced with 'PHYS_PFN()'.
+I=E2=80=99m not aware of any VMA that doesn=E2=80=99t belong to an mm_struc=
+t. If there
+is such a case, it would be helpful if you could point it out. In any
+case, I=E2=80=99ll remove the VMA-related code in the next version since it=
+=E2=80=99s
+unnecessary.
 
-[    1.390321] BUG: unable to handle page fault for address: ffffd3fb40000008
-[    1.390875] #PF: supervisor read access in kernel mode
-[    1.391257] #PF: error_code(0x0000) - not-present page
-[    1.391509] PGD 0 P4D 0
-[    1.391626] Oops: Oops: 0000 [#1] SMP NOPTI
-[    1.391806] CPU: 6 UID: 1000 PID: 162 Comm: weston Not tainted 6.17.0-rc3-WSL2-STABLE #2 PREEMPT(none)
-[    1.392361] RIP: 0010:dax_to_folio+0x14/0x60
-[    1.392653] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
-[    1.393727] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
-[    1.394003] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
-[    1.394524] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
-[    1.394967] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
-[    1.395400] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
-[    1.395806] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
-[    1.396268] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
-[    1.396715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.397100] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
-[    1.397518] Call Trace:
-[    1.397663]  <TASK>
-[    1.397900]  dax_insert_entry+0x13b/0x390
-[    1.398179]  dax_fault_iter+0x2a5/0x6c0
-[    1.398443]  dax_iomap_pte_fault+0x193/0x3c0
-[    1.398750]  __fuse_dax_fault+0x8b/0x270
-[    1.398997]  ? vm_mmap_pgoff+0x161/0x210
-[    1.399175]  __do_fault+0x30/0x180
-[    1.399360]  do_fault+0xc4/0x550
-[    1.399547]  __handle_mm_fault+0x8e3/0xf50
-[    1.399731]  ? do_syscall_64+0x72/0x1e0
-[    1.399958]  handle_mm_fault+0x192/0x2f0
-[    1.400204]  do_user_addr_fault+0x20e/0x700
-[    1.400418]  exc_page_fault+0x66/0x150
-[    1.400602]  asm_exc_page_fault+0x26/0x30
-[    1.400831] RIP: 0033:0x72596d1bf703
-[    1.401076] Code: 31 f6 45 31 e4 48 8d 15 b3 73 00 00 e8 06 03 00 00 8b 83 68 01 00 00 e9 8e fa ff ff 0f 1f 00 48 8b 44 24 08 4c 89 ee 48 89 df <c7> 00 21 43 34 12 e8 72 09 00 00 e9 6a fa ff ff 0f 1f 44 00 00 e8
-[    1.402172] RSP: 002b:00007ffc350f6dc0 EFLAGS: 00010202
-[    1.402488] RAX: 0000725970e94000 RBX: 00005b7c642c2560 RCX: 0000725970d359a7
-[    1.402898] RDX: 0000000000000003 RSI: 00007ffc350f6dc0 RDI: 00005b7c642c2560
-[    1.403284] RBP: 00007ffc350f6e90 R08: 000000000000000d R09: 0000000000000000
-[    1.403634] R10: 00007ffc350f6dd8 R11: 0000000000000246 R12: 0000000000000001
-[    1.404078] R13: 00007ffc350f6dc0 R14: 0000725970e29ce0 R15: 0000000000000003
-[    1.404450]  </TASK>
-[    1.404570] Modules linked in:
-[    1.404821] CR2: ffffd3fb40000008
-[    1.405029] ---[ end trace 0000000000000000 ]---
-[    1.405323] RIP: 0010:dax_to_folio+0x14/0x60
-[    1.405556] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
-[    1.406639] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
-[    1.406910] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
-[    1.407379] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
-[    1.407800] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
-[    1.408246] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
-[    1.408666] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
-[    1.409170] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
-[    1.409608] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.409977] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
-[    1.410437] Kernel panic - not syncing: Fatal exception
-[    1.410857] Kernel Offset: 0xc000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+>
+> > outside of RCU. Thus, we can mark it as trusted. With this change, BPF
+> > helpers can safely access vma->vm_mm to retrieve the associated task
+> > from the VMA.
+>
+> On the basis of above don't think this is valid.
+>
 
-Fixes: 21aa65bf82a7 ("mm: remove callers of pfn_t functionality")
-Signed-off-by: Haiyue Wang <haiyuewa@163.com>
----
- fs/fuse/virtio_fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
-index c826e7ca49f5..76c8fd0bfc75 100644
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -1016,7 +1016,7 @@ static long virtio_fs_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
- 	if (kaddr)
- 		*kaddr = fs->window_kaddr + offset;
- 	if (pfn)
--		*pfn = fs->window_phys_addr + offset;
-+		*pfn = PHYS_PFN(fs->window_phys_addr + offset);
- 	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
- }
- 
--- 
-2.51.0
-
+--=20
+Regards
+Yafang
 
