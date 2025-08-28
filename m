@@ -4,116 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F0A7C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 275E4CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8CC68E0015; Thu, 28 Aug 2025 04:47:37 -0400 (EDT)
+	id 747D08E0017; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B64A16B0011; Thu, 28 Aug 2025 04:47:37 -0400 (EDT)
+	id 6F8308E0016; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A79DB8E0015; Thu, 28 Aug 2025 04:47:37 -0400 (EDT)
+	id 5E7108E0017; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 96D036B0010
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:47:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E5D2C0A48
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:47:37 +0000 (UTC)
-X-FDA: 83825537754.15.30E44D8
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 71332180010
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:47:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zb1vQ+Bv;
-	spf=pass (imf16.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4AD2F8E0016
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D898140A7B
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:47:53 +0000 (UTC)
+X-FDA: 83825538426.03.8941E6B
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2718C180009
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:47:50 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kEe3C261;
+	spf=pass (imf24.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756370855;
+	s=arc-20220608; t=1756370871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ajlxqHLh//7RM2WXYQGL6911X3IOgGsMf++Sc3IjJEo=;
-	b=RXa9huBQGMKwzt286P4SkiNqVbr1f9UjvZGrRsQdProtaJBky9FwEy1qmkalCkFctS4jQZ
-	VSi4DALQFlGoIcHfWBhp2c6ThImTyh6Kgls/0zgjxiiodPrFKPNqd4Upy0KfqtkI+ggaF7
-	K5gieF09QkHYkknBEN/KKtXxTcJdhuU=
+	bh=8Hsk9DOGTHIa16VTkxnpvVMx5QHHrFZueYddM6GSS74=;
+	b=c/M3Q6+Y0V1Lc9w+zHffthd85FnY3CtE3cEf54kQgnhLs3Msogrq7gwsTqqZW9Hg1v8FuE
+	nh/sx/lm8C1GXMqFYBrXVL3Gw2ToBR4Qlh+BKXkkK1Oar9YGcreqCWRQWkGrytA8P3P6rX
+	tDJnxUVKKnPWAvkZ90bKNvNOCDphIqI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zb1vQ+Bv;
-	spf=pass (imf16.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370855; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kEe3C261;
+	spf=pass (imf24.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370871; a=rsa-sha256;
 	cv=none;
-	b=QRsE664hgGVtKZ2txlr/Z+MiTOPkIWxyrPD0F/zuu/g/XymWZwMXfx/zzayLrJ7Ilvvy30
-	4gLik3yjbmqodi6DzdOQhMTr0TJ0sNKpsKjP4+2dU8kUiMr+0vUGpQoo9fH1T/wKl0SGpN
-	tqibaJTvo9smck/fkhXd64qAaGI7h64=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d603b62adso5561117b3.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:47:35 -0700 (PDT)
+	b=MQIO8FupgV203M4cjYVgzmQCphc/vZmXxV2j7MYTbZxUlUv51VacJYFtOqhWNlsFBtWVmd
+	Y4It/662RtEJWFqnpRc7ueO7QoDfNs+BsC6i9zy2Mxgsw5As/7Dd3rgJNhxDzA/53oOer3
+	7Oc3r1gnhfCY51lRr3VE4MbYwgVWn9c=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45a1b00f23eso4010695e9.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:47:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756370854; x=1756975654; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ajlxqHLh//7RM2WXYQGL6911X3IOgGsMf++Sc3IjJEo=;
-        b=zb1vQ+Bvdo6FvLNZnWprPKptN45fybztq/Kdp830IcJWIjqaZcW5uTszDGz2iWTrDb
-         K4Avb9Xi0I+7xlKeLMhvXg7fqWTQXOfTx/llpRNFC+Fe0DZavcvi2zMSXSer3HnZY7Vf
-         jpjdxDF0u3wzOqxivEuCzcKOXAIOwFNx6JX/ClvUjnvbQTb45Xb0fNqlGguCTruujF/0
-         uEwtPSreh6UNPlqvvgeqgeSWp+odEsT1C3uxnXRV8Fpj99OLOnJy9NKoYkZJEALRImbL
-         0ZzPrJ+4Mx98y1xfdfqf0QwrVK3YVSVnrhj7T9D9a0hBp1axzKnUIFDbHGhh2SN3bEEl
-         09jQ==
+        d=gmail.com; s=20230601; t=1756370870; x=1756975670; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Hsk9DOGTHIa16VTkxnpvVMx5QHHrFZueYddM6GSS74=;
+        b=kEe3C261vVULCxyJps/b5AOxV/+eu8PPnBZ+Fdxpqqg4roO5BCG/U0+oSf1sTjmlyw
+         gR6EX/vojc4HG9SFBLWMeew0eXJoHLFJzws3VRK1oSRmQF+7WIbKTTk1wc8fekUWZK+0
+         IDFxwEWSJ9KVzB7UmXSjcOcgvYSaLh0tMwgHzrwUVSv6iRMAQ5MzwJtGsN/iM65b7c3L
+         ecSbm3j74aZpr8++X4X4fjrIPv9bQAMjdvRcX/CUmbjcd574/x8mTz83SZfkt3w/EybP
+         7P3EaeSC4fqbsm7tDtaZZP0Z+Gz+VM0QIWFHlkCJ6Sf00GNEu2MiqrPPyFV2jhJU4Vc3
+         Nr1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756370854; x=1756975654;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ajlxqHLh//7RM2WXYQGL6911X3IOgGsMf++Sc3IjJEo=;
-        b=lssEtHAYpMZtkzV2PfJxHcMqqETp7aBW02eLVyGMPtU33eDey+vqD/TXSIuM774/ig
-         LVTERjFt+YRgrYzJcgCTXMbjxZQCVTv+pOOi0EZF+iqZV7IcE878ek3e1URzPNHXafN+
-         Ub+eMhcDoBaS5aqA0jXiCk3igfUpu7SrhcbbQd4euYSdOurKVOKTZvrPKXoGqmxaaltP
-         ApW+1whRVYsarbPDoNW9l45ntKgta8BW8kCdW11JK9hJNzjXp2zetshdHYUW3iNbv5/0
-         sToSpr2sb4DBFsAjBabzFb2gdObZ742w+hRmlEG9/NXtunpBFoJo0sf+xhBhtFBTVyzW
-         wBEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUvcjBhmewQtkHH7Aeq9+YhQw1xkBEJTsAP/iGk130ZKulXDpZXhYsjYLe1UaU6v9l9yAO208E7Qw==@kvack.org
-X-Gm-Message-State: AOJu0Ywk6+DPQoUUF/cvRPx2CB6AP3GSZabq94rfVjOcibVYjjNA3p7b
-	mmQj7V6uGiClseG08TizxX3rygq86Ogo+QujSVb2ajfQ7IOp+6tGttLdJpKyjpfhvw==
-X-Gm-Gg: ASbGncvhBrBvoVHYi/zKPzFyrBF+YUTmn9FfmwXy/kfxbH2/m5CZffN7EGEIVAd+IEC
-	VNTkxoAIur777kvACqnhmXClSCtQgQQTcCA/e41/sVqkn5lBy4ODAZ8Y64jCRIveNWYdmKxMeBG
-	vIeqLIqdgRK0y00q+9Sw+FsMx1P0UXjLfi43qhhZsiqKOZX3+vBtdihxH+En8/tH7rKsndvdzwb
-	R1d6c8XmlwDmN53MqJj6pJQwKa1Pp3Ex26SjKO3GiFX7r8CgOfhGcGpu+wBy6CEycoOT+ocVLDP
-	XmSUXTxgMRLti+mUzEvvc24wgQoZ+eonL4seKHT9kqT1yA8ByLyzVJev3KCrxyvd7tKMOUS2KzS
-	vi79ZJ9SnycZVjnsM4MkuXsZBCLiw5C/i5H8k909jgh5iR8mHcYNzZAuvga5KzADTaKBkwyb9VW
-	7umfwBjc9uD0PYHX1ZjDGXxdWzDl6bioerRCo=
-X-Google-Smtp-Source: AGHT+IFqHuGPvWN4REWcVqA2EWGwb+rpAlfl2t1wU26wD0l5m4zrGCyGbHObK8y6+sA/7eJ/Cq3dIg==
-X-Received: by 2002:a05:690c:374a:b0:71e:8309:ce81 with SMTP id 00721157ae682-71fdc4275b4mr250796477b3.39.1756370854218;
-        Thu, 28 Aug 2025 01:47:34 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71ff17339fdsm37375447b3.21.2025.08.28.01.47.31
+        d=1e100.net; s=20230601; t=1756370870; x=1756975670;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Hsk9DOGTHIa16VTkxnpvVMx5QHHrFZueYddM6GSS74=;
+        b=QZYmggm3C3Q1K7s/zo8o2YXaaMuBjURsmB6ocl1cVDGitNbRoZmxQISllOjBKGVJ4O
+         Kks9JjA80ugtISK8KCu+gd4Tl4vFeSyqwcVAS5krjpJX+0mKtE7UJURwGruGZ+XgL5Gl
+         5z+k9YQbs4YLBjB79sOo+nHq3UMBGZ6GE0xY27aOUsMiCb+SLE/lJffRi1r4Z8wyilxq
+         Rt5jFUkrnjIG86hwQHICI6goTRtVIoxM88nXMnwjKAo8MAAdBCvU5o/jKCU3DMRy24wL
+         w47vbeNv3onwLlCXkL68Btj8tOUCeMh6OK3XDINDR8HbjntKmhB3DZ0RzBg5G9k/+3sn
+         31VA==
+X-Forwarded-Encrypted: i=1; AJvYcCX84zT59zvtJD/D0umv4vUpEOuQJlHNTkzaNmNKmHoaWWRXtOoqVUnv9YkVAMMAxCS0JRxqZsfQrQ==@kvack.org
+X-Gm-Message-State: AOJu0YyKoQV9P+Ueoc7o0hNAPN5qohGHitCybbcfkL/RfnjFcNmI1jd0
+	auFBmGIK4L5Ha07Rs25vIwPbhiU3qQ683sLb+4XFTWFM0VvLF+7kRiq6
+X-Gm-Gg: ASbGncvw6B8qgwLXuslLAoUVOVG0T+3o7l3KWVTNWpw0X+3JbIYO+WT7Lm1XmEAR8S1
+	Ts7DzMGQIh3ciACDChrSiaikwHO4t2A2OZARNqavOO3s7w4DGNGNQ5un4Kp4gm5xZOOPaEQSx1P
+	hGIzCYPIgiP8ShIJlUyH+TbSM3z6n8iBFjckr922q2/l0vmGsO0Ck+S+GketYYuzFeRKSyc+iOx
+	qRS9Pz1SjKPJC4SHtKrNWrQH4JAb1zw3aPiV/aPe8a2FYRQvUUk5xhURcVKPNH76iDsft484Nj7
+	+Dz5yPr8oguq9+laG6SICS8bH8cZelohHQxu4WbJtE6Ww+tmZvqlYb2PhNndIJHIlFIUAAn20w0
+	UeeDDx6FeqOtfNzf/Ni8nDFWAXmpIrrY7XSHegls=
+X-Google-Smtp-Source: AGHT+IFO8pLgjWSH39ZyRRQGsELfg8fZ4fAArTXSmMVZY3KOq7DLC8ULZtj3zAJ1AzMGuiKNKnJXcw==
+X-Received: by 2002:a05:600c:5490:b0:45b:4a98:91cf with SMTP id 5b1f17b1804b1-45b5179cfe3mr193278165e9.15.1756370869196;
+        Thu, 28 Aug 2025 01:47:49 -0700 (PDT)
+Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:74::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cbc6a5da6dsm9463817f8f.63.2025.08.28.01.47.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 01:47:32 -0700 (PDT)
-Date: Thu, 28 Aug 2025 01:47:14 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Will Deacon <will@kernel.org>
-cc: Hugh Dickins <hughd@google.com>, David Hildenbrand <david@redhat.com>, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-    Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-    John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
-    Rik van Riel <riel@surriel.com>, Vlastimil Babka <vbabka@suse.cz>, 
-    Ge Yang <yangge1116@126.com>
-Subject: Re: [PATCH] mm/gup: Drain batched mlock folio processing before
- attempting migration
-In-Reply-To: <9e7d31b9-1eaf-4599-ce42-b80c0c4bb25d@google.com>
-Message-ID: <8376d8a3-cc36-ae70-0fa8-427e9ca17b9b@google.com>
-References: <20250815101858.24352-1-will@kernel.org> <c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com> <aKMrOHYbTtDhOP6O@willie-the-truck> <aKM5S4oQYmRIbT3j@willie-the-truck> <9e7d31b9-1eaf-4599-ce42-b80c0c4bb25d@google.com>
+        Thu, 28 Aug 2025 01:47:48 -0700 (PDT)
+Date: Thu, 28 Aug 2025 01:47:46 -0700
+From: Yueyang Pan <pyyjason@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
+	kernel-team@meta.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] mm/show_mem: Add trylock while printing alloc info
+Message-ID: <aLAXsptN4cw05IoZ@devbig569.cln6.facebook.com>
+References: <cover.1756318426.git.pyyjason@gmail.com>
+ <7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
+ <20250827150619.4e468e68988f224f9f9bea6f@linux-foundation.org>
+ <aLAUhXeRVWzLCNNd@devbig569.cln6.facebook.com>
+ <c8db3486-4f13-4922-a270-1fbf61e2d782@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 71332180010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c8db3486-4f13-4922-a270-1fbf61e2d782@suse.cz>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2718C180009
+X-Stat-Signature: md8yq3rig4g87qe899r15cqoj5yycr9m
 X-Rspam-User: 
-X-Stat-Signature: gxnmd3ie77u51rnjqawcgowcy9t5x5uc
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756370855-105739
-X-HE-Meta: U2FsdGVkX1+UQ8hC9G19C0nMBiztA4WdLDFooomGsAupuvIpypCOHwAqufrFp4AEJQYa9bVtQes6vYAIfspkuo5V3J9MoMrSNc4ZP5MKH4Pd3GjMbDVxIdt+UkqqFoqSwM14MTyrr9Z9I6Y9Dpm4TSf7d/fIXeruGLBhCb+WQkBLFDnV08LsIAisMCP0x3u8WlBq1DEkmuhqM8EaVeJxJf7tb/sOaAF4M4bMHa/ncvge4AJFDJ2S5CdrxP7EhldagvjafF+uet1n9x8XaKYb2JcdrwrC1EY+wsMCCZRt2eBLAD4Vvx3nEeS/BfT3SVCvtxZ3Hw9noz497kU8wAA4l+/A3fkUUaAYreNtYqII7DKQ5o2GO94Wg1W3wMMEYV3bD4oRo+xZqhb+M6SZ6TsHV9u8k4zvn/nVLiloJdCe9fd28EDL6z5nbG4KJJ4pNr1J5EHicyzpvUSXVn15rRWolS2pcy5+rzc+fSyLVXQ3Io94xMWLmcn4BiJ6ZCSpixVs/leCbBBFiI7rrpE4YrbWXhAil1EdF3xj4RX738q0BtfNVUDR3aKLv47Ijn232psO4JZbKbVE1n1CxqMOCP0QYMsPErhxj2oIE8/lfuMIwnvZ9kv0WzYWdXyQXbQaGMjze2pWlxrUs6dfcgFvDjngHHtp/8EXWsMImx0ocDf6R5SMriK8e7Rf37Kwjs+sVYee28qdMqfidl/OpEPTIuNeJbwmvEG1NDZ6DJrq1MjnSStjFjEhCn3ss7SmHfptLX4ZgPBHpYNKcPAjWCt2P4JWVmCYXg9MFfGQsiwV3AvPRU7H6TQ1KIndelX4x2eVpxVsRZpL1bmPvSbhBT/ueabPlDRIwjYlhZMgptwhdtSY9Z9+FzYXUR+phLLL1KNB4GJUsLa8KXz1+v+vTt+p5HXWl8ChFFGKYBV+rV3QmEWls3n48fZzF4EOVEHlprN5o1QsHjnS/ZlqrVT9ErO5Mkx
- 35wFcc4i
- pB2kkHrUYxArQzk5unifjwk2Hf+/qL3BFRhvzld1yrps/cxOzJMmc3QX1Gimah+rChlEYvRoXpZa3cPOri7OdXl1n/BerwMtCetA98Ts7iX//G1T7hkrV0ZEjueG5dfg+t/H4NngTIZjuYFni5Gq/oq2NslWLpuGHD9YCCU3IQ1sn89b6JsIKqrglUgRMTl474CTcVUyU1mfQMoc/F3rUNZjLXJGsR0IVC37wOHWL4WocdSWh+SlR/ZHETev0WKFsu0ZI5OpuhlxnxuhZvNnsNhsMFxz9d4W+zEySrvgMMPH8wBJyp9vH6rc9rRkQbc69iAcSeY2Jss2yAmXj1OX8B5ix0JVeKBgmQBKppoGvkedT7ko=
+X-HE-Tag: 1756370870-128884
+X-HE-Meta: U2FsdGVkX19cN2pVsHu7tKGhFn3e8SJ9HhL3BXkF3ytp4GqeucnSo/Xz4W2xN0RU6ipnyYDqGkqeQ40gf2j2b29+ZCm9DcWHsetkxoTvPXWrcvnI8meN1vCyVM/YK0+g3AjuE9MMbkrNgLgNVYVd1pKxPIOGHBJE0f3LAZcERi/tvF/VQ9uMvDgfLt0Zk8f71BMo4nrDcD0afhIfJzswMOO3B8CGC3cb2Qy2gdAEambjG7Uw3GYtxB4usMeWJNo9dAbNTGeBwBfgjHdjEBU7CteuG3L1QDPxIRPGyPiiRCd1CjxOdjM9DFy30lc/TXMoGoEDhVZxZ7aXH87Gv2AG1PgS2ucjheoeSuv9n8mIM5NvWk7FAzBMW+5QaNgG1yr9iE7aBnuawQLxJHTl+P8WOtmlNk52h1tIAevSXLPFJILbU4ERh30PuFZfr69Sh4RyvIIC8pcniyFRJOH3NWLs7Ae69M8lTXPY9X5HuVVwQm6QtYAbtRRcOAtXy5ukv2QV1Byb6sze3iT6Ygprz7pPwE8ZayYO2p1xoyvzDdBaMkfIRdNoTYXPDNZ4N/5jnAQ9lmohJ0ZDw9B92jB5li33qWZY6xvGp2ysul5FyqoWTv6DckNjv/IKhsfbM6j8M/7eu3fn/0cOfaD1vQbj0oDgHQiVBKRfidU5zQSq//N1gKU7jex2SMxsKi+mSgxooEfxBBleSJKFh6tGErhb5rEGz0XVbFinaHFhOJ4+hSn+6UmJJwOaSysBfch1Bswt4PJF6agmQphTYHDF8tfbFD6N7ioNkssIFTVuLeltSuD4u0COxwiyLbePEj7U86+NTIK5PkU9whqThwdogKbbok1nYEKUPT5fSr4qU2JCRhCHv4oKd/7znleGvbdpqX2BrtpJ6jOTPPyu1Fy30FiIXLBwnUu/dRCGuqLb8PLMa+oOA56kZsFNvmbZizLWlVKZQ9r3QZZsbZmwL4d/KvJi0oH
+ I/wXln5W
+ BIi5No/1g3mZ+YmKnVNaYghim+xgmtqQqmlMjQkcdSfzJ2iKzZkwZiPfLK2AOpcMBtJdLPEwgfPyXbY0flCjtsi15Z37TyJEAkGd26hjyGDpIVoASzTXyxB7OzShcHgCEDGCva0aWoyu8+8Rllhppah2fr+MVsY9VflLlKZGVQOC2EIaYHf2y/59bfQFtDaucqmxU2GSMFG3wee20fouQI03GULLherEze9QtbHMrJfEurW7xNIGIllEI12mCljW3dGthx+qqGZtYFn6ajGS1VDQEW26MlGuCRYXafnydsfjLydkU7Q/UyYcgiGyQFVvUzeR29BiOXB2i+UlP8DZBkAGFSUw5MhgQILlf13vNOXj/AAjqax08q/g1PBk0hgvWkxLE+dQrWz6LBldN8CaYGxbdpDGVwxwHvO+pzRJodoBNrC3zP5moE8XLRNQGfs48ymu2Bt5FQOOhG/RVsybdjKLEAsiWBvBgPZfn3LJD0X1RmSxZr5k4VARTbx09ezm8Hi6N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,283 +126,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 24 Aug 2025, Hugh Dickins wrote:
-> On Mon, 18 Aug 2025, Will Deacon wrote:
-> > On Mon, Aug 18, 2025 at 02:31:42PM +0100, Will Deacon wrote:
-> > > On Fri, Aug 15, 2025 at 09:14:48PM -0700, Hugh Dickins wrote:
-> > > > I think replace the folio_test_mlocked(folio) part of it by
-> > > > (folio_test_mlocked(folio) && !folio_test_unevictable(folio)).
-> > > > That should reduce the extra calls to a much more reasonable
-> > > > number, while still solving your issue.
-> > > 
-> > > Alas, I fear that the folio may be unevictable by this point (which
-> > > seems to coincide with the readahead fault adding it to the LRU above)
-> > > but I can try it out.
+On Thu, Aug 28, 2025 at 10:41:23AM +0200, Vlastimil Babka wrote:
+> On 8/28/25 10:34, Yueyang Pan wrote:
+> > On Wed, Aug 27, 2025 at 03:06:19PM -0700, Andrew Morton wrote:
+> >> On Wed, 27 Aug 2025 11:34:23 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
+> >> 
+> >> > In production, show_mem() can be called concurrently from two
+> >> > different entities, for example one from oom_kill_process()
+> >> > another from __alloc_pages_slowpath from another kthread. This
+> >> > patch adds a mutex and invokes trylock before printing out the
+> >> > kernel alloc info in show_mem(). This way two alloc info won't
+> >> > interleave with each other, which then makes parsing easier.
+> 
+> What about the rest of the information printed by show_mem() being interleaved?
+
+Thanks for your feedback, Vlastimil. We cannot use trylock for the rest 
+part as node filter can be different.
+Do you think we need a lock to prevent the whole show_mem() from being 
+interleaved and to acquire it at the very beginning? Will it be too 
+heavy?
+
+> 
+> >> > 
+> >> 
+> >> Fair enough, I guess.
+> >> 
+> >> > --- a/mm/show_mem.c
+> >> > +++ b/mm/show_mem.c
+> >> > @@ -23,6 +23,8 @@ EXPORT_SYMBOL(_totalram_pages);
+> >> >  unsigned long totalreserve_pages __read_mostly;
+> >> >  unsigned long totalcma_pages __read_mostly;
+> >> >  
+> >> > +static DEFINE_MUTEX(mem_alloc_profiling_mutex);
+> >> 
+> >> It would be a bit neater to make this local to __show_mem() - it didn't
+> >> need file scope.
 > > 
-> > I gave this a spin but I still see failures with this change.
+> > Thanks for your feedback, Andrew. I will move it the next version.
+> > 
+> >> 
+> >> Also, mutex_unlock() isn't to be used from interrupt context, so
+> >> problem.
+> >> 
+> >> Something like atomic cmpxchg or test_and_set_bit could be used and
+> >> wouldn't involve mutex_unlock()'s wakeup logic, which isn't needed
+> >> here.
+> > 
+> > I was not aware of interrupt context before. I will change to test-and-set 
+> > lock in the next version.
 > 
-> Many thanks, Will, for the precisely relevant traces (in which,
-> by the way, mapcount=0 really means _mapcount=0 hence mapcount=1).
+> Perhaps simply spinlock_t with spin_trylock()?
 > 
-> Yes, those do indeed illustrate a case which my suggested
-> (folio_test_mlocked(folio) && !folio_test_unevictable(folio))
-> failed to cover.  Very helpful to have an example of that.
-> 
-> And many thanks, David, for your reminder of commit 33dfe9204f29
-> ("mm/gup: clear the LRU flag of a page before adding to LRU batch").
-> 
-> Yes, I strongly agree with your suggestion that the mlock batch
-> be brought into line with its change to the ordinary LRU batches,
-> and agree that doing so will be likely to solve Will's issue
-> (and similar cases elsewhere, without needing to modify them).
-> 
-> Now I just have to cool my head and get back down into those
-> mlock batches.  I am fearful that making a change there to suit
-> this case will turn out later to break another case (and I just
-> won't have time to redevelop as thorough a grasp of the races as
-> I had back then).  But if we're lucky, applying that "one batch
-> at a time" rule will actually make it all more comprehensible.
-> 
-> (I so wish we had spare room in struct page to keep the address
-> of that one batch entry, or the CPU to which that one batch
-> belongs: then, although that wouldn't eliminate all uses of
-> lru_add_drain_all(), it would allow us to efficiently extract
-> a target page from its LRU batch without a remote drain.)
-> 
-> I have not yet begun to write such a patch, and I'm not yet sure
-> that it's even feasible: this mail sent to get the polite thank
-> yous out of my mind, to help clear it for getting down to work.
 
-It took several days in search of the least bad compromise, but
-in the end I concluded the opposite of what we'd intended above.
+Agreed.
 
-There is a fundamental incompatibility between my 5.18 2fbb0c10d1e8
-("mm/munlock: mlock_page() munlock_page() batch by pagevec")
-and Ge Yang's 6.11 33dfe9204f29
-("mm/gup: clear the LRU flag of a page before adding to LRU batch").
-
-It turns out that the mm/swap.c folio batches (apart from lru_add)
-are all for best-effort, doesn't matter if it's missed, operations;
-whereas mlock and munlock are more serious.  Probably mlock could
-be (not very satisfactorily) converted, but then munlock?  Because
-of failed folio_test_clear_lru()s, it would be far too likely to
-err on either side, munlocking too soon or too late.
-
-I've concluded that one or the other has to go.  If we're having
-a beauty contest, there's no doubt that 33dfe9204f29 is much nicer
-than 2fbb0c10d1e8 (which is itself far from perfect).  But functionally,
-I'm afraid that removing the mlock/munlock batching will show up as a
-perceptible regression in realistic workloadsg; and on consideration,
-I've found no real justification for the LRU flag clearing change.
-
-Unless I'm mistaken, collect_longterm_unpinnable_folios() should
-never have been relying on folio_test_lru(), and should simply be
-checking for expected ref_count instead.
-
-Will, please give the portmanteau patch (combination of four)
-below a try: reversion of 33dfe9204f29 and a later MGLRU fixup,
-corrected test in collect...(), preparatory lru_add_drain() there.
-
-I hope you won't be proving me wrong again, and I can move on to
-writing up those four patches (and adding probably three more that
-make sense in such a series, but should not affect your testing).
-
-I've tested enough to know that it's not harmful, but am hoping
-to take advantage of your superior testing, particularly in the
-GUP pin area.  But if you're uneasy with the combination, and would
-prefer to check just the minimum, then ignore the reversions and try
-just the mm/gup.c part of it - that will probably be good enough for
-you even without the reversions.
-
-Patch is against 6.17-rc3; but if you'd prefer the patch against 6.12
-(or an intervening release), I already did the backport so please just
-ask.
-
-Thanks!
-
- mm/gup.c    |    5 ++++-
- mm/swap.c   |   50 ++++++++++++++++++++++++++------------------------
- mm/vmscan.c |    2 +-
- 3 files changed, 31 insertions(+), 26 deletions(-)
-
-diff --git a/mm/gup.c b/mm/gup.c
-index adffe663594d..9f7c87f504a9 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2291,6 +2291,8 @@ static unsigned long collect_longterm_unpinnable_folios(
- 	struct folio *folio;
- 	long i = 0;
- 
-+	lru_add_drain();
-+
- 	for (folio = pofs_get_folio(pofs, i); folio;
- 	     folio = pofs_next_folio(folio, pofs, &i)) {
- 
-@@ -2307,7 +2309,8 @@ static unsigned long collect_longterm_unpinnable_folios(
- 			continue;
- 		}
- 
--		if (!folio_test_lru(folio) && drain_allow) {
-+		if (drain_allow && folio_ref_count(folio) !=
-+				   folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
- 			drain_allow = false;
- 		}
-diff --git a/mm/swap.c b/mm/swap.c
-index 3632dd061beb..8ef3dea20e39 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -164,6 +164,10 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- 	for (i = 0; i < folio_batch_count(fbatch); i++) {
- 		struct folio *folio = fbatch->folios[i];
- 
-+		/* block memcg migration while the folio moves between lru */
-+		if (move_fn != lru_add && !folio_test_clear_lru(folio))
-+			continue;
-+
- 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
- 		move_fn(lruvec, folio);
- 
-@@ -176,14 +180,10 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- }
- 
- static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
--		struct folio *folio, move_fn_t move_fn,
--		bool on_lru, bool disable_irq)
-+		struct folio *folio, move_fn_t move_fn, bool disable_irq)
- {
- 	unsigned long flags;
- 
--	if (on_lru && !folio_test_clear_lru(folio))
--		return;
--
- 	folio_get(folio);
- 
- 	if (disable_irq)
-@@ -191,8 +191,8 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
- 	else
- 		local_lock(&cpu_fbatches.lock);
- 
--	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) || folio_test_large(folio) ||
--	    lru_cache_disabled())
-+	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
-+			folio_test_large(folio) || lru_cache_disabled())
- 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
- 
- 	if (disable_irq)
-@@ -201,13 +201,13 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
- 		local_unlock(&cpu_fbatches.lock);
- }
- 
--#define folio_batch_add_and_move(folio, op, on_lru)						\
--	__folio_batch_add_and_move(								\
--		&cpu_fbatches.op,								\
--		folio,										\
--		op,										\
--		on_lru,										\
--		offsetof(struct cpu_fbatches, op) >= offsetof(struct cpu_fbatches, lock_irq)	\
-+#define folio_batch_add_and_move(folio, op)		\
-+	__folio_batch_add_and_move(			\
-+		&cpu_fbatches.op,			\
-+		folio,					\
-+		op,					\
-+		offsetof(struct cpu_fbatches, op) >=	\
-+		offsetof(struct cpu_fbatches, lock_irq)	\
- 	)
- 
- static void lru_move_tail(struct lruvec *lruvec, struct folio *folio)
-@@ -231,10 +231,10 @@ static void lru_move_tail(struct lruvec *lruvec, struct folio *folio)
- void folio_rotate_reclaimable(struct folio *folio)
- {
- 	if (folio_test_locked(folio) || folio_test_dirty(folio) ||
--	    folio_test_unevictable(folio))
-+	    folio_test_unevictable(folio) || !folio_test_lru(folio))
- 		return;
- 
--	folio_batch_add_and_move(folio, lru_move_tail, true);
-+	folio_batch_add_and_move(folio, lru_move_tail);
- }
- 
- void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
-@@ -328,10 +328,11 @@ static void folio_activate_drain(int cpu)
- 
- void folio_activate(struct folio *folio)
- {
--	if (folio_test_active(folio) || folio_test_unevictable(folio))
-+	if (folio_test_active(folio) || folio_test_unevictable(folio) ||
-+	    !folio_test_lru(folio))
- 		return;
- 
--	folio_batch_add_and_move(folio, lru_activate, true);
-+	folio_batch_add_and_move(folio, lru_activate);
- }
- 
- #else
-@@ -507,7 +508,7 @@ void folio_add_lru(struct folio *folio)
- 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
- 		folio_set_active(folio);
- 
--	folio_batch_add_and_move(folio, lru_add, false);
-+	folio_batch_add_and_move(folio, lru_add);
- }
- EXPORT_SYMBOL(folio_add_lru);
- 
-@@ -685,13 +686,13 @@ void lru_add_drain_cpu(int cpu)
- void deactivate_file_folio(struct folio *folio)
- {
- 	/* Deactivating an unevictable folio will not accelerate reclaim */
--	if (folio_test_unevictable(folio))
-+	if (folio_test_unevictable(folio) || !folio_test_lru(folio))
- 		return;
- 
- 	if (lru_gen_enabled() && lru_gen_clear_refs(folio))
- 		return;
- 
--	folio_batch_add_and_move(folio, lru_deactivate_file, true);
-+	folio_batch_add_and_move(folio, lru_deactivate_file);
- }
- 
- /*
-@@ -704,13 +705,13 @@ void deactivate_file_folio(struct folio *folio)
-  */
- void folio_deactivate(struct folio *folio)
- {
--	if (folio_test_unevictable(folio))
-+	if (folio_test_unevictable(folio) || !folio_test_lru(folio))
- 		return;
- 
- 	if (lru_gen_enabled() ? lru_gen_clear_refs(folio) : !folio_test_active(folio))
- 		return;
- 
--	folio_batch_add_and_move(folio, lru_deactivate, true);
-+	folio_batch_add_and_move(folio, lru_deactivate);
- }
- 
- /**
-@@ -723,10 +724,11 @@ void folio_deactivate(struct folio *folio)
- void folio_mark_lazyfree(struct folio *folio)
- {
- 	if (!folio_test_anon(folio) || !folio_test_swapbacked(folio) ||
-+	    !folio_test_lru(folio) ||
- 	    folio_test_swapcache(folio) || folio_test_unevictable(folio))
- 		return;
- 
--	folio_batch_add_and_move(folio, lru_lazyfree, true);
-+	folio_batch_add_and_move(folio, lru_lazyfree);
- }
- 
- void lru_add_drain(void)
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a48aec8bfd92..674999999cd0 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4507,7 +4507,7 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
- 	}
- 
- 	/* ineligible */
--	if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
-+	if (zone > sc->reclaim_idx) {
- 		gen = folio_inc_gen(lruvec, folio, false);
- 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
- 		return true;
+Thanks
+Pan
 
