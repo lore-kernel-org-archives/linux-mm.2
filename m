@@ -4,116 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 211F7CA0FF2
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17960CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:10:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C9988E0003; Thu, 28 Aug 2025 02:09:38 -0400 (EDT)
+	id 574928E000A; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A11A8E0001; Thu, 28 Aug 2025 02:09:38 -0400 (EDT)
+	id 525558E0001; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DDE18E0003; Thu, 28 Aug 2025 02:09:38 -0400 (EDT)
+	id 4628F8E000A; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F24FC8E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:09:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0D055C0B8
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:09:36 +0000 (UTC)
-X-FDA: 83825139552.26.8C51868
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2046F40016
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:09:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="l+/PgthA";
-	spf=pass (imf17.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3683A8E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:10:37 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB28B852EC
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:10:36 +0000 (UTC)
+X-FDA: 83825142072.18.1FCA4EB
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DDF5BC0015
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:10:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=XY5IxvJq;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf28.hostedemail.com: domain of haiyuewa@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=haiyuewa@163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756361435; a=rsa-sha256;
+	cv=none;
+	b=wuyPn/EwrG6ItDfYksdDLc2csDhrCyKI+Oi1SCdNtHAv8S3QhkNZDmL2TfMZs5CdFxkrH2
+	0cWjdGdAKHhcthtCYOlj/XsTkzSwwkArBJDNdk1WZtUIzI2njntJeHd591qJgP7RdCHjmS
+	1Xq9IR+vqIMCHeHho+S/KSLHacw0RZ4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=XY5IxvJq;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf28.hostedemail.com: domain of haiyuewa@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=haiyuewa@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756361375;
+	s=arc-20220608; t=1756361435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=irThEuCN+CJAqgmTRs026MQyU4oy4M2XOA9xvrhaZ+8=;
-	b=IL8HrGzfa+PBF0grM151CT/P9HCAvmWyURyAw4v7twHiPq8rSdIhIPGTk/SxHi4CrfRyzI
-	M436SJr7DPDrDSHq8dkZugLrLXNmHAw27ahcJIZoQbHukCra8P9xdQH2/xvUqEbgmsjjr5
-	Hm36biYJ6u4GtqvC0+CKrtFiupQE3Ac=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="l+/PgthA";
-	spf=pass (imf17.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756361375; a=rsa-sha256;
-	cv=none;
-	b=JVwafWeiFZQ7j+TSecTwTARCbLVa3DcmSKLxz0wDvpcgLc2Ml94eetS8P/BznLOA12C7V/
-	c18n/27TVrUv5z1VjWQpcjAYq+2X21L5hy+TqTejAObvyCN+7QGWGt6/bdRvAsXsJv2ecM
-	QG+eIxNN5rhA1clhK3FDjlBZavVIEKc=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-70ddadde292so6336826d6.0
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 23:09:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756361374; x=1756966174; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=irThEuCN+CJAqgmTRs026MQyU4oy4M2XOA9xvrhaZ+8=;
-        b=l+/PgthA6Zi0DPnjlWR+AKMtxMfXce2wYTMgSows+o3kqsnPVsHBMqWNGNjB/b4CwB
-         r6pnq7zo0OUwgYGiBliKjh3VTAv6Ui074yhAERJCuJOYBQjkzagKxwFBUJkbNuA9HxIT
-         7NxgNS8aPliufH/1iVrNQaplu3EiK4uLXEwkdXQH4nL/lSF0ynvmVXBPIyRUPMV/HVkt
-         5EBYP+htyBVuIRHFUtDt96BCdg5BA1sJ9TaPX/lkotOtJlc2zkHEcDmnkF0gbi94LWOG
-         HT0IZQX/RT9HVhOj6wdnPTx+QIppjxobAuevm8bv99MPid3+XZxzTH9j45oJ15LhkZ1L
-         /gTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756361374; x=1756966174;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=irThEuCN+CJAqgmTRs026MQyU4oy4M2XOA9xvrhaZ+8=;
-        b=vWV9LSQhm/9lzzMPlp+Jt49AAhR0csGZcd9OMdxA5qbWf4I9mQagCRMkMSyLmXjzGQ
-         PehYUkPqbOJXcyElYS2DDe+JOK+MAscN5J7I63xY8qQr0fTneJZi1klk3IxmPDQ7at/p
-         TJswseX32agg1BnX7IzqhyrJuRP8Q2kyv0Wkp9p6tfZGVjFnyDuKQev9x6hCNCM4PJhL
-         ysSsKwMbB/SbRSeNvjpmzCLhUWSkKHgqK/K379AQJ4ZPIzy77JP+PqOW75dD0LUmK9CD
-         7pl1SBhbqtPfkA+J7HA7DBM8fFG0jSIo7LriLc5mpkANbQwVH0+wm5mmkn6FphIykFTj
-         HgVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpEjACEjr8PYB8UGx8YQedQvkhVse/ci0aDSFp3Hz7j/RmRbWSItlHXwEnGhI5scp+SFnwzyCA4g==@kvack.org
-X-Gm-Message-State: AOJu0YxqOiFaRMkpjMa8n5evG1e7fkwbGWuZNwUl232+5qbrgbTUjd90
-	wuqZPd0eAwSNV8g+H3Rk5qNN4Ot6C4oWPTLc/r2HhBqt00xI0gyjdKFUTcml9O+4qwYqh73sZOs
-	qi1nTaF/RPqUxr3k1TzWSdZFEkZcKg8E=
-X-Gm-Gg: ASbGncvv0tbcjgxggbwfOQ6UKw67ogF0LWKzcwVr+c0b5d4zqi54VXs7qn7lWhX2tXf
-	km9FBtddtAeDCESvXCg8gg97r6Os11zH2s0040khSLMfy8RSbu5LkxdyXoYIKKG23TwlxEubB71
-	lXDiX4PETOYW+crdwE6HrnYBK/jHWkJLM9Y0XDArahh/+WWDASTufj9wv47uNpFtmx38iK8t19m
-	AcrV58hKUtGb4CyJT4/lDeiXUY1+5ET7nbkZZA=
-X-Google-Smtp-Source: AGHT+IEcc1wPCV34Pnn1u/ZsU4Rb1aY5zTIXLY6XmNlFFcithgRKC2hL9mmp5Due2o1Ite+lHeZgHeo0cfSWEsXPL9A=
-X-Received: by 2002:a05:6214:3005:b0:70d:cecb:17db with SMTP id
- 6a1803df08f44-70dcecb19c9mr100573286d6.63.1756361373826; Wed, 27 Aug 2025
- 23:09:33 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=A4M/POHWuLvUOmb8o4PVnu3p+ruDnZJl5Jdp4rRP8EA=;
+	b=rYbBRbPeTVSt7oKCumm+c3RubhCCbIsq1W7yYXnLKJZS16sCvu6G9OWRWwwC1Xj0ENnmtE
+	rBbBKaIRlDA1f26ge5OFbGFlI6/ARcZv7ltIMmYSI5S/uM5mEhujyyWHpRiEqigGjHnfp4
+	pZsWPTfMS+WYQ7j3xS4jal+3WFrnJUE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=A4
+	M/POHWuLvUOmb8o4PVnu3p+ruDnZJl5Jdp4rRP8EA=; b=XY5IxvJqiXf4+4BKz0
+	DPF9whEe6YZsu7u8wp7bsG2+kBaxq+kv3A9mQNzfKGdpM9P/bU61AUpyAl7YBDeh
+	GvfGkyef9wgkvCaL2s7t7UG4DvX5URxKfdv5F13nkB1FEY3u6QKRyzgNKDW7MCVM
+	fqBwC0BLZPoN26clTe4TFnwCg=
+Received: from haiyue-pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wCnAafU8q9o4zdvEw--.31954S2;
+	Thu, 28 Aug 2025 14:10:29 +0800 (CST)
+From: Haiyue Wang <haiyuewa@163.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Haiyue Wang <haiyuewa@163.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	virtualization@lists.linux.dev (open list:VIRTIO FILE SYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v1] virtio_fs: fix page fault for DAX page address
+Date: Thu, 28 Aug 2025 14:10:13 +0800
+Message-ID: <20250828061023.877-1-haiyuewa@163.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-References: <20250826071948.2618-1-laoar.shao@gmail.com> <20250826071948.2618-11-laoar.shao@gmail.com>
- <6934188d-12a5-4225-aaa9-828878d8dba2@lucifer.local>
-In-Reply-To: <6934188d-12a5-4225-aaa9-828878d8dba2@lucifer.local>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Thu, 28 Aug 2025 14:08:57 +0800
-X-Gm-Features: Ac12FXxzyoO7MGOQ-T37czdAMJrKQyvMPOFtYB1ymhcClovTUHLiAKI7h86q2_U
-Message-ID: <CALOAHbCys+iz_8fwsPPZjqp+Y4+KMRbizPsjApX+v1JVGTy3oA@mail.gmail.com>
-Subject: Re: [PATCH v6 mm-new 10/10] MAINTAINERS: add entry for BPF-based THP adjustment
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: h9kqrnwi73wg5srgkck83czx4bujswsu
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCnAafU8q9o4zdvEw--.31954S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxArWUtw1Utw1kZF1kAFykAFb_yoW7Jw17pF
+	1Utr18Gr4kXr1UJF10vr1UXr13twsrAF18XrWxAr1kZF1UW3WDJr1kJrWUtr4UXryjqry7
+	trs8Gw1xtryDKaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEiiSDUUUUU=
+X-Originating-IP: [116.233.225.29]
+X-CM-SenderInfo: 5kdl53xhzdqiywtou0bp/1tbiYAO2a2ivSTleAQABsX
+X-Rspamd-Queue-Id: DDF5BC0015
+X-Stat-Signature: 8mhbrybf1fdqcpsct3zd98gqdqkdax9a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2046F40016
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756361374-302902
-X-HE-Meta: U2FsdGVkX195qwoeB1xMzCoWyMOPI8z+gVkoXG6PimGCSo0R+DV+6bUv/p3hea2gX44N6cLDK4Rj6keq1rapCw6wtDfZiqzoI821UrHZBn/eNUkBDt49dblCBUv55clErNmcArhPfWEF6pQx/KaPwAy7x9atVPVjrdU8qjkUgjX/gyZv+0scojN2Pc5hX/n+8mz1HnmSaiPnoKO6734NdysATd8melCdGERl1prrDq7Q15hRTrbvr6z4Bu5BSvKhEw6Svrf/5YxWh13zcPjiY5ToZs53JG+kdnufpjvjbQifjd6bQXZtVUKBX+6FiRqCslXwn+4ITH+2ondvq2e2YXvFKh8vrzdx+WQyZIt8j+VK/9E/g0NhMPxeCv1qxSr8FFInBbZlREyI+2aJK0SN+KIWmiHkK57V3eFXnR4gcIGKFXPX3dXMZ1O0fAIemGTCKIwA5buIcO0IPYfKSiBzmef33GGEI7vIjUczH7JY2dUreACczUWXs0GJOw0Z3CXVNLtrj7tmpoMg2c1Z5gpRWpMzHu9mLXsRfnMHRGTiD/IYXzD6sqaiBeo57OKPd6rErFeRUcI+VZlZhDrqoD4CZPUWyovHhBncUS/45lXmkwt/oJEYoNzl2U4LylsuJeS4+EW+gHo4NeGGp0d2BNM25mPY1VeQMwaOEL5eEWUVWl6V9WEUH8ML12sH3hPrhUX9o7yO00cHB8B8tC4J6F5r/4XYEGnQpats8a+vylofOe1aVX2ZqbCOcYDgG0wLXNyoTR3SzDMksZKKrjY+bu7HUL5mp742Nr1Pzb9bBPhu2ByBOmP93WJ96fzCWr2L5EoO8++FQo1f8DFWJh5IEIyM/BI6kT64hl6vTMHZYbIlEOouM6bDbWhAGmbya4iFwdUWReLAwQpuog/Hq3lBDUkoZdq60F2kdYlyJIJ+b9qx6QzUPOMtbI5KkIB/FEGS1DN3LGZ29I9oMKqlFG9wPsw
- OO3afE+A
- m06Qu7HcIK72Aana/xQagtZvgAZMhbY24rY7H4O/F7hNVyEzOAp5tZsbLHR8nRnA9PZ2b3QzwsjRr2HymaiKkBilcnyRMwl84T2RVW1xPwf1eI94fjEUycRMd7nNK/odYFG3xNdxRk5R2XBIG3I6A4bDa5u6ZCX9qAjLeL+PJT05C6KEkcYSeHa9IZb6O2vC6FzVBSR2n4pXAamPLQt+8QhP4ctWi5zLYfycbFFJpFJ04cGBLCQi4D4WuXoIDs6Am2yVqmPU4ox4jgerJJT6Ku8z2xUsiUuGY/AzcIUt1HLdRIQEPcECwNtarl3SVI8hHI6d6bGrwmGyjf156yIYfWr9OolZePLAvmRZrHAF7rtp+UYsxpzi6h2rUXJWQxy3wcSCorwaXWn/fOzPkUR58wolTb17PFhuG0f+7Hkk5qFvH0SbUI5h4XO/VaDF9ZctZgBrKdyt//1RvdnwIJkE4RJB9HURrPV4TmWNb13O3o2R2imzCMtvKRh6poDu76ZX1tJwDTrTFOuWU63E=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756361433-742864
+X-HE-Meta: U2FsdGVkX18tQhos84pAQEuh39t8+Ogum1lLr5LFq5BsDOOQPOxdnzQL7NnDWoh7GHSX0yDfJgSxaoKPNL9N0g8/GHSi2ygGKxmkgr/W2dBxkIasW2IvT1L7u+phYElPSlT0aexseMinmPWydwFwmDPoBj9wNCHa/MUzIweMojVQHTKvhz7Mbe/hFBYVdIlxxVVy52povBTHtVavI7gxmo3PQ4u/2hbeVQlEJh2O8nDtf+y75LnhFOpd0/qcK3mKtNqXjc1Yhko2jDoWsNSrPnmd5GyIy+d7H26ZR9sfxXOc782BvzVsMglN9ZqJUJiaGA+PCx6Mh5SGNWe1s0oZHDzYv2eq8T5nCpg2EhWntVgfkckcwvC4HsBY03l752+BNFRHOhhyY0+XczH+6b7wOayi+nXiLYsOegXeN18+cyUCQazmHXX/PtbcMzp8IcAxKKiic/K/81mncZZeubNTrYO6+71faGAf/3bMBkqyJSatFYlnR/fMytjayQyJrglnzR9e2iA2S4MrfNDacM8ibw1L5kivpBb7yUxPsxVTQX4iEkKdJR0tKywU0CJIp1kza8ferdimgVU11NM8Ptn/5CkJ5nfo+KjhZdS4oHkPJoE0hYGGPZi1jbJagoLIvTZ04tEx8GEo0xm8B5ZuuUTQj9Z4u5U2MGU18hYssFUEDs6SEs3w3BIVAs0tJwh/RiB8Y6DVOCAz5QgqD6Cgl6ET+mTAaoUhriMs5lgOHKYGYU0lSFjZHNFnwn5TfkT2XMSqoz3EuBvZYRxy0R4t+RfaADnuQHMrQOULQhNKdOwsf7/lwrMBv0XqVW/gNkjlas/EH+8WdFCTKj30sD0GSHqzfggJKnYGhXxXCZTmKbuUZ3sC0NrxHYpCUViQHOJlt60KDZq3Lj9qPcjpFYQiHq193goLlBYDMOCIsLGh85YiZrlsnJLE0I9QFdr4zKtcOn6dzGxdQqlLEOmCJZJ0CC3
+ ihPwz5id
+ oruzXcHqxiMBOZiJlU9Wd2QYzkNLTeupjswFuLi5nUQ2KO+rV93FpN6rkjIhSl0s/Exa8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,62 +100,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 11:47=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Tue, Aug 26, 2025 at 03:19:48PM +0800, Yafang Shao wrote:
-> > Add maintainership entry for the experimental BPF-driven THP adjustment
-> > feature. This experimental component may be removed in future releases.
-> > I will help with maintenance tasks for this feature during its developm=
-ent
-> > lifecycle.
-> >
-> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> > ---
-> >  MAINTAINERS | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 390829ae9803..71d0f7c58ce8 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16239,6 +16239,7 @@ F:    Documentation/admin-guide/mm/transhuge.rs=
-t
-> >  F:   include/linux/huge_mm.h
-> >  F:   include/linux/khugepaged.h
-> >  F:   include/trace/events/huge_memory.h
-> > +F:   mm/bpf_thp.c
-> >  F:   mm/huge_memory.c
-> >  F:   mm/khugepaged.c
-> >  F:   mm/mm_slot.h
-> > @@ -16246,6 +16247,15 @@ F:   tools/testing/selftests/mm/khugepaged.c
-> >  F:   tools/testing/selftests/mm/split_huge_page_test.c
-> >  F:   tools/testing/selftests/mm/transhuge-stress.c
-> >
-> > +MEMORY MANAGEMENT - THP WITH BPF SUPPORT
-> > +M:   Yafang Shao <laoar.shao@gmail.com>
-> > +L:   bpf@vger.kernel.org
-> > +L:   linux-mm@kvack.org
-> > +S:   Maintained
-> > +F:   mm/bpf_thp.c
-> > +F:   tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-> > +F:   tools/testing/selftests/bpf/progs/test_thp_adjust*
-> > +
->
-> Sorry but I don't agree with a separate section for this.
->
-> This should form part of the THP section only, I don't think it's warrant=
-ed to
-> do elsewise.
+The commit ced17ee32a99 ("Revert "virtio: reject shm region if length is zero"")
+exposes the following DAX page fault bug:
 
-I initially added it as a separate entry to ensure that
-bpf@vger.kernel.org would be CCed. However, I discovered that any file
-containing =E2=80=9Cbpf=E2=80=9D will automatically CC that list. Therefore=
-, it=E2=80=99s fine
-to include this under the THP entry instead.
+The commit 21aa65bf82a7 ("mm: remove callers of pfn_t functionality") handles
+the DAX physical page address incorrectly: the removed macro 'phys_to_pfn_t()'
+should be replaced with 'PHYS_PFN()'.
 
+[    1.390321] BUG: unable to handle page fault for address: ffffd3fb40000008
+[    1.390875] #PF: supervisor read access in kernel mode
+[    1.391257] #PF: error_code(0x0000) - not-present page
+[    1.391509] PGD 0 P4D 0
+[    1.391626] Oops: Oops: 0000 [#1] SMP NOPTI
+[    1.391806] CPU: 6 UID: 1000 PID: 162 Comm: weston Not tainted 6.17.0-rc3-WSL2-STABLE #2 PREEMPT(none)
+[    1.392361] RIP: 0010:dax_to_folio+0x14/0x60
+[    1.392653] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
+[    1.393727] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
+[    1.394003] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
+[    1.394524] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
+[    1.394967] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
+[    1.395400] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
+[    1.395806] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
+[    1.396268] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
+[    1.396715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.397100] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
+[    1.397518] Call Trace:
+[    1.397663]  <TASK>
+[    1.397900]  dax_insert_entry+0x13b/0x390
+[    1.398179]  dax_fault_iter+0x2a5/0x6c0
+[    1.398443]  dax_iomap_pte_fault+0x193/0x3c0
+[    1.398750]  __fuse_dax_fault+0x8b/0x270
+[    1.398997]  ? vm_mmap_pgoff+0x161/0x210
+[    1.399175]  __do_fault+0x30/0x180
+[    1.399360]  do_fault+0xc4/0x550
+[    1.399547]  __handle_mm_fault+0x8e3/0xf50
+[    1.399731]  ? do_syscall_64+0x72/0x1e0
+[    1.399958]  handle_mm_fault+0x192/0x2f0
+[    1.400204]  do_user_addr_fault+0x20e/0x700
+[    1.400418]  exc_page_fault+0x66/0x150
+[    1.400602]  asm_exc_page_fault+0x26/0x30
+[    1.400831] RIP: 0033:0x72596d1bf703
+[    1.401076] Code: 31 f6 45 31 e4 48 8d 15 b3 73 00 00 e8 06 03 00 00 8b 83 68 01 00 00 e9 8e fa ff ff 0f 1f 00 48 8b 44 24 08 4c 89 ee 48 89 df <c7> 00 21 43 34 12 e8 72 09 00 00 e9 6a fa ff ff 0f 1f 44 00 00 e8
+[    1.402172] RSP: 002b:00007ffc350f6dc0 EFLAGS: 00010202
+[    1.402488] RAX: 0000725970e94000 RBX: 00005b7c642c2560 RCX: 0000725970d359a7
+[    1.402898] RDX: 0000000000000003 RSI: 00007ffc350f6dc0 RDI: 00005b7c642c2560
+[    1.403284] RBP: 00007ffc350f6e90 R08: 000000000000000d R09: 0000000000000000
+[    1.403634] R10: 00007ffc350f6dd8 R11: 0000000000000246 R12: 0000000000000001
+[    1.404078] R13: 00007ffc350f6dc0 R14: 0000725970e29ce0 R15: 0000000000000003
+[    1.404450]  </TASK>
+[    1.404570] Modules linked in:
+[    1.404821] CR2: ffffd3fb40000008
+[    1.405029] ---[ end trace 0000000000000000 ]---
+[    1.405323] RIP: 0010:dax_to_folio+0x14/0x60
+[    1.405556] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
+[    1.406639] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
+[    1.406910] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
+[    1.407379] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
+[    1.407800] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
+[    1.408246] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
+[    1.408666] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
+[    1.409170] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
+[    1.409608] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.409977] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
+[    1.410437] Kernel panic - not syncing: Fatal exception
+[    1.410857] Kernel Offset: 0xc000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
 
---=20
-Regards
-Yafang
+Fixes: 21aa65bf82a7 ("mm: remove callers of pfn_t functionality")
+Signed-off-by: Haiyue Wang <haiyuewa@163.com>
+---
+ fs/fuse/virtio_fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
+index c826e7ca49f5..76c8fd0bfc75 100644
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -1016,7 +1016,7 @@ static long virtio_fs_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
+ 	if (kaddr)
+ 		*kaddr = fs->window_kaddr + offset;
+ 	if (pfn)
+-		*pfn = fs->window_phys_addr + offset;
++		*pfn = PHYS_PFN(fs->window_phys_addr + offset);
+ 	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
+ }
+ 
+-- 
+2.51.0
+
 
