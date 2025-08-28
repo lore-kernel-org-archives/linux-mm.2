@@ -4,89 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC18CA0FFD
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 20:58:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 754FBCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 21:00:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32D098E0011; Thu, 28 Aug 2025 16:58:49 -0400 (EDT)
+	id AF88E8E0012; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 304E68E0003; Thu, 28 Aug 2025 16:58:49 -0400 (EDT)
+	id AD0558E0003; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 241308E0011; Thu, 28 Aug 2025 16:58:49 -0400 (EDT)
+	id 9BF248E0012; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F3478E0003
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 16:58:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 955D084C77
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:58:48 +0000 (UTC)
-X-FDA: 83827380336.18.6250604
-Received: from lankhorst.se (lankhorst.se [141.105.120.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 990351C0010
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:58:46 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
-	dmarc=pass (policy=none) header.from=lankhorst.se
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756414727; a=rsa-sha256;
-	cv=none;
-	b=ficl+s9LezIc0RnmrYAF60oL9MHHg3qBFcYZVTwYbM/2kmBe+JQEp7ZprDsgDKVps+yAK5
-	KhKuPAwXbU0P9XmZzt4y86qqSNdLyX+73cCcuNnhFwA3gQeoM0yaAVJfK0q0zi68hZCMFC
-	bFw8C8S2pVWbZopfqJmNUw7f3MxpvCg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
-	dmarc=pass (policy=none) header.from=lankhorst.se
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A07D8E0003
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3AB0118FA1
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:00:09 +0000 (UTC)
+X-FDA: 83827383738.21.4BEFB81
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4FB3D4000B
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:00:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ec6T5n9S;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756414727;
+	s=arc-20220608; t=1756414807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JFYJLkp97EF7qrqNX14/wB00q84mIg6ZB7hGvrplA88=;
-	b=zeQJKgLnfohHCX4MqHtFM0PvczcMZz/2vnU6adIZYKjLXWNq91A/hNlMaY4C62LeH0KWPE
-	5RAs0LXqRAuEwcms3ZTCrM95ouYqv3eCsuEX0EPawpC3g4TWHd+rqfkI/3qGD7yd8v/3Kk
-	1aNlXpWQOa+RL8KGfGnN7f1uzTQqXu0=
-Message-ID: <a85dd557-9dd8-472d-806c-3606b053cfdb@lankhorst.se>
-Date: Thu, 28 Aug 2025 22:58:41 +0200
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mkSDgbg7xWQW+ISMkJybRnH1oyxatG6U4F5HRgnHqwM=;
+	b=Xsetaafm9QC/jFuDrEsARdeBpXfihcqfsBJ4d69yv95KMj4Vx206DHmFQSTLXJf3Y/86iv
+	hocoDmaEzirc8f9iYqsOMzQufKkseLGJdY+GtIeYoIzXiTu9Cv6vuEyggO39jh7nXZ9hZZ
+	LZp5nyBAYsup4/D0PxTFfXu7GJKMS44=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756414807; a=rsa-sha256;
+	cv=none;
+	b=v4uV23E3JiM8CotBTPzBycqeUgI89p4edcAXIcNipQBRPX+gStOfq4JO0VeGEL+vWSHeyk
+	Sut8PjxU8pPNHACf22YqBK/os2lxGx5vVFZSyJxHNHHPaOoXMskBcMg5yGPdSBJqizj6Uh
+	NxPbaP1bQsUOXbvFbvOnlgeLkKxCQxw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ec6T5n9S;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756414806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mkSDgbg7xWQW+ISMkJybRnH1oyxatG6U4F5HRgnHqwM=;
+	b=ec6T5n9SeYPE9qNLZCvPuDh5cVUTMF4xOtuMNi+GIjRfUb8KxZWbUitj0GstcMuDMGZYFt
+	WvU1zzOm8MQPEECKw1I/YW8mcB68gLkiI3WpryLU66t1EmHg3U5jYqrk3xUuxnsMJs/Mok
+	4RIoFir0vQy1m2J5ZuCtIV43l8KQyfQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-317-lycxChl-PnGef6qGRs1seg-1; Thu, 28 Aug 2025 17:00:04 -0400
+X-MC-Unique: lycxChl-PnGef6qGRs1seg-1
+X-Mimecast-MFC-AGG-ID: lycxChl-PnGef6qGRs1seg_1756414803
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b9dc5c2ba0so659869f8f.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:00:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756414803; x=1757019603;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mkSDgbg7xWQW+ISMkJybRnH1oyxatG6U4F5HRgnHqwM=;
+        b=FXJ3GkYQixgrAszRTikZAIpSarvY98Sa255sI/Uw8yThhtoDy04ooVsp15axspQQPk
+         yL/KdYf3QGEtKOPPVcb2CF7UaiHF91fN2oVT/TKoJLwLjwYr+tV+1xeNcI4XXohsGFJQ
+         zGVEhEKq1/n/FJvy2YTWsNkkcADvnNyBFu6PgOVcllfVrlO5ZD3PPKwozBzs0nABN2ak
+         qU6OVEEPYu7jYSAscTTkDkM04OBotKzi6PrFxrg3/Q2T8dKKfzbR1PcDG6uJAKLWnarG
+         2R7vdDsvXCPsQvM47hCgSHYAmC5CL7a6qLLoglyDC+GvW2GSAoNoqlCFWXU/UhkKRVu3
+         Ps6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVfz3tdw8j0D/OcAb/XtX235PbBvYK7IpHSr27YIFGWnpe2/gu5h6s/oCfyfKe4lCJ2/qYqtkhsfg==@kvack.org
+X-Gm-Message-State: AOJu0YyGl57V2uUPqDxMyB1M0KHefYamiv3nHt0h10qhWW/4rxZXxUQL
+	+LN21p/GyCz42xC3jyYmiODyFWuUo2exRVHQXi/exH7IS22lokkJ7nET+Df2+x7AmrA+eWWmDls
+	pqKMnaWMCfvMSCwa7atnjE/5A5xIs9Pzvk5pvvFiQuBEz01W6bLX3
+X-Gm-Gg: ASbGncsXThmuhIjN0lwQChNx7M/0yu2XGDdoWwEZCxGYgmgRdxv7mmksbwkxMI+lf2M
+	8ic5NUTrd0JRBrmFJuPcPOXY9cnZze/UpdBFLgP26iobpn2fB/zOxFj+/1fYh+Vmn+kIO4amH3y
+	G/G/MKzAQRDUWL9kMq5Tc2eW5yh7WrDhUzETYXf6mRNGEfETLPp2KMyhHRlY8+EioF7ZUzMaJek
+	7AXXNxkaUKnTDRMLsqZ93v9dXuprwEQZ11R5LW3RaNWhl+uIZJDhUHENi3hrOThLs9+bwiwGxu7
+	fyzCcKFqg5/PkufBK7rUf0ZR64fD11H3JNI8tNJo4vcU3hcC5RfNmvssNopYhrL3TkqL5YfO0Lu
+	3jyPmmlBQL8fEPKfybKVmjvlbBCxGaC0XlZScmstAktUf04wafu9nDR59W528DwcJA6I=
+X-Received: by 2002:a05:6000:2512:b0:3c9:3f46:70eb with SMTP id ffacd0b85a97d-3c93f467c6amr12443228f8f.52.1756414803133;
+        Thu, 28 Aug 2025 14:00:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE6weiB8uQZLlY/pBc/wBfkqXIMndGWCy+/j+66w0gqGxnhnpdmegVfF1S2/N2OWbRnBL2yuQ==
+X-Received: by 2002:a05:6000:2512:b0:3c9:3f46:70eb with SMTP id ffacd0b85a97d-3c93f467c6amr12443198f8f.52.1756414802646;
+        Thu, 28 Aug 2025 14:00:02 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f28:c100:2225:10aa:f247:7b85? (p200300d82f28c100222510aaf2477b85.dip0.t-ipconnect.de. [2003:d8:2f28:c100:2225:10aa:f247:7b85])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fba9c4sm613412f8f.48.2025.08.28.14.00.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Aug 2025 14:00:02 -0700 (PDT)
+Message-ID: <7ef927d8-190d-4b22-8ec7-dcb9f5f75dba@redhat.com>
+Date: Thu, 28 Aug 2025 23:00:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- =?UTF-8?Q?=27Thomas_Hellstr=C3=B6m=27?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>,
- Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "'Liam R . Howlett'" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <20250819114932.597600-5-dev@lankhorst.se>
- <qd3ioegpvmrrrwdy2qntxznyrnwq3bhe74lmuxio7sy4sjggtt@tm6nqds3pyvj>
+Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+To: "Roy, Patrick" <roypat@amazon.co.uk>,
+ "seanjc@google.com" <seanjc@google.com>
+Cc: "tabba@google.com" <tabba@google.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "rppt@kernel.org"
+ <rppt@kernel.org>, "will@kernel.org" <will@kernel.org>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
+ "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ "Thomson, Jack" <jackabt@amazon.co.uk>, "Manwaring, Derek"
+ <derekmn@amazon.com>
+References: <20250828093902.2719-1-roypat@amazon.co.uk>
+ <20250828093902.2719-4-roypat@amazon.co.uk>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250828093902.2719-4-roypat@amazon.co.uk>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: I-bdCJoiViIelht5TXjnYSmvz1HUqGMLMw2oGA56uBo_1756414803
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <qd3ioegpvmrrrwdy2qntxznyrnwq3bhe74lmuxio7sy4sjggtt@tm6nqds3pyvj>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 990351C0010
-X-Stat-Signature: nrck66igxuchsio4e5mmg66by7itzrid
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4FB3D4000B
+X-Stat-Signature: uh6h7yoekfc4musay1dtnihyikw5yu1q
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756414726-2014
-X-HE-Meta: U2FsdGVkX1+Nvof/vT1ro6RpYJC67LzyOP6Yp4Pt7o7I1qFGnWkvE/Kr8FHBI5l773ML69LxlYnH14W0gJpkF9kdAULEhjgHJNZTAGXFB4+RVufIBcbEvQ+AgZe7PiDSHmWU5OtulP7P8n3cWYDwxh06v/5DWZdaJr8yPvpQgxSY6X32qqyNFuAN0JroBvHuIp407R01iYGzFk9dvgFdsUiFetNNYA6f/skI/UcQ9yNbtbssqbTqtMXr2GloYqpjvmwQ8LrP7wrSUeEgeg5XSa5CdOVe4LQAXMB/l4iNt1TWewZB7jbwc0JCTthnr0dyy8jW1eRXfcVpx0uouIjKwzkF8qPpcfX4ChkXUa6IA5oHfPgAF0tbPXBPGYQpJoFMj4WBOomRJjch9BloyQzWxB+rDRNagvKh3DOgmjTdipnxo9UxKC0wC9EctMfTZfkVvkJa6OLctp2l+0Qn4YLgE/2te3YYUvIMH+4fz339bSVEmHpX2RAR6Tk1flBeZevoh7kpmfY0e8duzSMrU0iPJb1LKNY2c8D6XBEvi68cBdiqEmo42IJ3dxGGXX4iQ2wdcT611hezPjAu5hb+2pGStZ5KMHezV/82Ke0M9FBxXYiw0ZmyRBU+DUtaf3iGrsMqVTICl5UBKHxuCh/oY2mHqFKeaz7VlVRz9rNzFGA9R4O89s1kEKmhsvII0tG1Uzvo9hneItmeXyd+uSkjmTBWxWSuTb6pnhevc3uR4F3ey1/f1ktllCzUbFw9dkL05an3qY6eLuSUfXkDObVoke8UMvZH/ro03SaULCmjoRqLJVqdmHuIeCWyzCk9baqOqIkQNsaQdtmgNEY/47UO0RLv3yml+WgkKyNCBVV5XZbLY78TCVOYT67yjrZQJEAg7RJkVfSBSp73r3kc0DxF3QUOjuK5ybnQs9hVpFk14HXbLPUYyyuI+YLn6t1zJdfnpFjJADHx7BqLpwNrVPK08jY
- u6CnEPEW
- gjwOKbhI45M8ccGTsJIu/mG43xA+nUF6obLF2MvrFsiK/oK01mGM1l7HY+G6Qzpdd6oWv+Stel3xxPCz+vot5rGL4oQ==
+X-HE-Tag: 1756414807-7958
+X-HE-Meta: U2FsdGVkX18S4ozjC8mPTwU0vg8lGVgP08/QNEI5aaVL1TqXDK1pv0nY21aTWE7yHPWB365F63lYl+IUPkQks5c89ijmlYGQyB+hLgSnTSfGYCIfHL/2tiGingqJSmwOlm9NG1wVGXCHXRjteN5BNvrZEHB+q1Sw+0dqDlrubZIdPPoSn3a38cexUJC/DQpevQsigXWTJomty9NX5fZwZxeXTuFsEMqFDV3fjVHvAsjyor2rp6jPYXAXfngDJO7oXtChe5t1gjDBF+/tcALirqgBAT9df0m9omUY1p9r+jxde00t+PVg+hOBih/OTVLdH3CSIdNZAGEMvQLbu285Jo9YqENQ7/imbUOH/tz1Jvw6OWdBUjtLkTsUIW1O8p9y3bVuB0kiWaeWqQA7vfdeowNXtVS7145wJ1G8nUvcK5xBQeX/Wd8WfsPpLUGgz6uTuWrdVja2s3rGL9BjbuOk8BgeLzIZEMzQFeH/C6ccn3fz9zy5RshSFPJlVDwx/cgU5gla3yonqEDAzFbfiqq1WrqWfxvT/DYj8ZnNp0fAKlO6fl15f93c+K7AkAdcfSG3ocNxYtNElSaJnlPkftE6yMrbpcT+JVHUKpBubYyYJGWQBE89D1V/lhOepxnKIZ0onDvy30bNHjobuCUInWPK+Spby3e6aGcP+LCIUMFyp5s5LEZYIMTNDsXZbqMTWOeWoqmsOB21dx9QKYHwSw6lHUA3oE5JQNvpciDt5kmCmoaAYoWuBwUpqBaeDo1G/bnvyr2co1cxOE/9sG8dGkZtwZREk1OKnIv5tQhDiSrPA+o5BbNMG+WIZhS8YHw64LxrWnger5azeu70FZA6ZGDG0OIBW7Cfv5ypQy9Wv5gMnaYF7GAUT7XL0vARqWphdAQSBARy1BO7KRxnqdyaxbpLSdiI33jtWuprH6p9xZ/PbZXM0lRE8ze5btW6iUpHg7JpeVVor9wTQhLfdUGB1SR
+ IzH2JbrK
+ K1MZo0EJe6dVFc80dVR12L+JJcTTqdp33KtJ6Fgr9+wl5Wx211iZWLrEiX63UNiMoGUq59hzPCAAdscTW9XrNPihWaBB3xy5eL6dC1+qK1L1vKkLMGVYrP7v8mnkcFLTrEw6qE70FgNnGz+rxGMNE+KiIyQ5ZLqPpgT5WdJlqrtVgj0aYfcykXiVky775hjLMg4PPjixI390YfpYOu/llcyCssWiqwPdxvKP+s31wb2oVMi+V8UcecQXIyQT2bG+2UYlKHxkugD8tCnMxmj2qEjHkknz0glYCB7aOGSUzFZHkJBvFH+mKy2qyOUZE1JSeMgqr9rJPhpq0p3kRFY3MfQRJJb6WAJV08bh2dWUjnauC07Fw+lvEfzYn5nQdPDwMviZLEYph/Cz/PfW/OcJekXrjWiKbVK+H1nlyFO5aJCXIqMOW7+xItMgEWB54GD3hJ7FWoeS5C7w64GtgnWr8O0GFdekcIiQbMaGzGPIFWb+c3NBbMwt0sC9adfAHDKldGnHJ/YcRSfhg11kBpDZ3TolxuCqESM+ERQMH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,67 +190,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey,
-
-Den 2025-08-26 kl. 16:20, skrev Michal Koutný:
-> Hello Maarten.
+On 28.08.25 11:39, Roy, Patrick wrote:
+> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
+> set to not present . Currently, mappings that match this description are
+> secretmem mappings (memfd_secret()). Later, some guest_memfd
+> configurations will also fall into this category.
 > 
-> On Tue, Aug 19, 2025 at 01:49:33PM +0200, Maarten Lankhorst <dev@lankhorst.se> wrote:
->> Implementation details:
->>
->> For each cgroup up until the root cgroup, the 'min' limit is checked
->> against currently effectively pinned value. If the value will go above
->> 'min', the pinning attempt is rejected.
+> Reject this new type of mappings in all locations that currently reject
+> secretmem mappings, on the assumption that if secretmem mappings are
+> rejected somewhere, it is precisely because of an inability to deal with
+> folios without direct map entries, and then make memfd_secret() use
+> AS_NO_DIRECT_MAP on its address_space to drop its special
+> vma_is_secretmem()/secretmem_mapping() checks.
 > 
-> How is pinning different from setting a 'min' limit (from a user
-> perspective)?
-It's related, in fact you have to set the 'min' limit first.
-
-The 'pinned' allows you to pick /which/ memory falls under the 'min' limit.
-
->>
->> Pinned memory is handled slightly different and affects calculating
->> effective min/low values. Pinned memory is subtracted from both,
->> and needs to be added afterwards when calculating.
->>
->> This is because increasing the amount of pinned memory, the amount of
->> free min/low memory decreases for all cgroups that are part of the
->> hierarchy.
+> This drops a optimization in gup_fast_folio_allowed() where
+> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
+> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
+> by default"), so the secretmem check did not actually end up elided in
+> most cases anymore anyway.
 > 
-> What is supposed to happen with pinned memory after cgroup removal?
-I think for accounting purposes pinned memory stays pinned,
-otherwise the idea of pinning is lost. However when you kill all
-processes in the cgroup, that should solve itself eventually.
+> Use a new flag instead of overloading AS_INACCESSIBLE (which is already
+> set by guest_memfd) because not all guest_memfd mappings will end up
+> being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
+> can be mapped to userspace should also be GUP-able, and generally not
+> have restrictions on who can access it).
+> 
+> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
+> ---
+[...]
 
-> I find the page_counter changes little bit complex without understanding
-> of the difference between min and pinned. Should this be conceptually
-> similar to memory.stat:unevictable? Or rather mlock(2)? So far neither
-> of those needed interaction with min/low values (in memcg).
-You could in theory implement mlockall using the 'min' values too.
+> +static inline bool vma_is_no_direct_map(const struct vm_area_struct *vma)
+> +{
+> +	return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapping);
+> +}
+> +
 
-The page counter changes implement the following:
+"vma_is_no_direct_map" reads a bit weird.
 
-Lets say you have this tree with 'min' values.
+"vma_has_no_direct_map" or "vma_no_direct_mapping" might be better.
 
-      / '5' A
-X'6' -- '5' B
-      \ '5' C
+With the comment Mike and Fuad raised, this LGTM.
 
-Effective min without pinned pages:
-      / '2' A
-X'6' -- '2' B
-      \ '2' C
 
-Now 'B' pins 3 pages:
+-- 
+Cheers
 
-Effective min:
-         / '1' A
-X'3+3p' -- '1' B (1 + 3 pinned pages makes effective min 4)
-         \ '1' C
-
-Same for applies to effective 'low' calculations.
-
-Kind regards,
-~Maarten
+David / dhildenb
 
 
