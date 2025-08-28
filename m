@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B07CA0FF2
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 04:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7C8BCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 04:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39E006B000E; Thu, 28 Aug 2025 00:07:08 -0400 (EDT)
+	id 135206B0010; Thu, 28 Aug 2025 00:10:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34DAD6B0010; Thu, 28 Aug 2025 00:07:08 -0400 (EDT)
+	id 0E5936B0011; Thu, 28 Aug 2025 00:10:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 216106B0011; Thu, 28 Aug 2025 00:07:08 -0400 (EDT)
+	id F176A6B0026; Thu, 28 Aug 2025 00:10:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B5436B000E
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:07:08 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6E41E1409A9
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:07:07 +0000 (UTC)
-X-FDA: 83824830894.02.11C1AFF
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 891E240003
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:07:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xk6bOb3x;
-	spf=pass (imf12.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id DBB706B0010
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:10:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A68441A0947
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:10:55 +0000 (UTC)
+X-FDA: 83824840470.15.496B849
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 05DD140007
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:10:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OXD82Ye5;
+	spf=pass (imf01.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756354025;
+	s=arc-20220608; t=1756354254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LKxx3AHJzssWTQS4qsQitsY+pTv4aEpgVk4Q3F8J/ZQ=;
-	b=n44bl/Z7PHTEfL0PGxX6mY186QjAQ9+Sxtv5yBGdwF7K+2XPzrODnhTAQmzgDg/2G1fNM3
-	lRO9vnAOFUyE4bYwu5KDOCj2Na01bcEPTTBjR0jzf3HJmNve5OOgkFbLoXqU9cRUoRb79J
-	Zv4Zw356R0iBLi4pkDTxIfZ1qtdDlNs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756354025; a=rsa-sha256;
-	cv=none;
-	b=fJecqx/u7xvpOmZvbC70HHLQOsUY45dUdueRElKsS3g9MXKb+VGHT9bbB4eehgkdWlUQRd
-	/TMwCBC9xSRLlt749J0QGnGBmMDSWbZDTSLwWzf0ftHBlcdC+Yr5pnfV/nVZF3Rq7LuLIz
-	D9KVTNWbsHZJdrmf7jBci6NbgBbsPe8=
+	bh=8f1ae0heZCsSyx41NqIpudnC/2sBcuVhQtIs5D6BbnA=;
+	b=ZExbpMRV6YIYusZEumedD9fKJaVaaSrWMd5t8YZby2Y6tv0l+zLhr01xwoeYC4GC/NugDK
+	1jI9iJ6seEUlObQXrvFMKOIWjDkM6Q0hTjpGGhiRGKyfOcVnJdYWbh8VFzE6tjX6jucE8r
+	84bAgm8WhmEplLbgQC7oaHCN46GJIXI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xk6bOb3x;
-	spf=pass (imf12.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-24611734e50so81995ad.1
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 21:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756354024; x=1756958824; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LKxx3AHJzssWTQS4qsQitsY+pTv4aEpgVk4Q3F8J/ZQ=;
-        b=xk6bOb3xpN7fC9VqW6e8B7DHMuWJyjkG4wE7H9uJ8U6h+OYLmiKJikNFef4QsyjqDc
-         dUJEhYJe8MfpjTKSuRv8TGcVt8wQhURpUZcBTxQ34FzqIVUFgl6i64czI6WakTk1XYZk
-         JnyxVdvLmpii7E9DOER//lwrD+OpbnVaSbOn4xUJtBV0bj5gFlUJov8vPa6sacyeUQJj
-         XEYhZLrRSALsnS6KAqmIJjRdneybiN+XT+ZcpuYBVMfmGOO+z6zYiy13CbWjVTTXeCAY
-         5BNt2BO4NYeDl8KkLhsjNScKS6dhAVNHB0n2WUrIFdvdrmf04MRKiB6+PaP0NpY/8/Ie
-         a3cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756354024; x=1756958824;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LKxx3AHJzssWTQS4qsQitsY+pTv4aEpgVk4Q3F8J/ZQ=;
-        b=M4FfCHXZCOiP16Da4C4SfcbEMhLUiEDHwZ7ukBqxKCtEvp9t+l/YDbSGCZ4wdcDR0C
-         WKWJJq5Iyq0/VZ82y6ZH8sHBzwm7wujlEPMNHKqJMyw9yAPjGrONQy7EhtI3d4QOIuG6
-         1AEl6Q2FA5oXzvuFVUHOfGQp4wSgU7FazfgQI7lpsaxbP5pXVvKf4Fg72B3okBZyrvIx
-         0TTbHVVEB7FVSG7Jt2+fluq5KQkhA6zW/g+AH2uJrrXLVxntT6g8JDXh+bHYHtY9V8BM
-         vZ2oeGOF8bDIHSRxFsW6Lyfg0GI8gMetSgksrw92DWFfsbCaxxSeOHJt+gEJeiyJMsVI
-         ceUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWW6w/lZEb2rrapIeaeOLjl35142gJTRROI0z+oieiy9yAbX5VunspH4hssSoZtstD3eG00leAI/g==@kvack.org
-X-Gm-Message-State: AOJu0YzeIQstbttf7ZpSwnctOp44FQe1RtrqOUPD9Qw/HosgP6/GF/Re
-	IIdEiNvvQqJA+lyqkPC/KMk2QsWaGHww8nVfeR1TpZB2RNQqzX6JowQhm0tmzz+kwQ==
-X-Gm-Gg: ASbGnctGhf8iLygd9AQ2tOyDlRhbnwUiBje2CXRdoR/f+r3XuWsod0DHwgH/q35UVJe
-	FX8y2V6QkX82+ZMpiavhAoVdR21Rr7Fu355IqXK4B0qprsSwfrso0qwhvPhHQGJZ0V+QHNCKsZL
-	oExdAYE2CuazauOZPMjfqjFkW67veun36aCaGYWBRs3qB+deUuFAlMgTN4b8VRUYAwsKooXEDZm
-	HC+vRnuQqhj1krDopkwTa8I2oMmrlok8Ehi2h7QI4bX5TytbracFfijGnAsS1rU+FXTNpRO8ynE
-	KgWSX6vypP4UBLh1i1EOajDqLeBFvZQojA2MnDEV5kt1bp8igHQFCxln7Yur6Hu/xe5HLEmdwhQ
-	rs4xkcHvVihESbsphWDHuFpuh2nGemK/uCKnnwRcDb6NaLKGg/SCFnSKXSDOzZ/GBmfvENRjP
-X-Google-Smtp-Source: AGHT+IEhJaXUpm/3jABKEO0/i+uPSd6jtOc8RtyaMS8Pll7cTZNJiHYF2mPDEp+IH3Qy4jST8wMAwA==
-X-Received: by 2002:a17:903:2348:b0:248:a039:b6e3 with SMTP id d9443c01a7336-248a039be4emr5139285ad.10.1756354024077;
-        Wed, 27 Aug 2025 21:07:04 -0700 (PDT)
-Received: from google.com (3.32.125.34.bc.googleusercontent.com. [34.125.32.3])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cb88f4e5sm12850589a12.1.2025.08.27.21.07.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 21:07:03 -0700 (PDT)
-Date: Thu, 28 Aug 2025 04:06:58 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, kernel-team@android.com,
-	linux-kernel@vger.kernel.org,
-	"open list:MEMORY MAPPING" <linux-mm@kvack.org>
-Subject: Re: [PATCH] mm/mremap: fix regression in vrm->new_addr check
-Message-ID: <aK_V4sOUOIpEhFC-@google.com>
-References: <20250828032653.521314-1-cmllamas@google.com>
- <xpxoxn25fzhahdyvjp2vgmcnek6oot2hhvb5niz3tw7au46eno@cixyid6ywf27>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xpxoxn25fzhahdyvjp2vgmcnek6oot2hhvb5niz3tw7au46eno@cixyid6ywf27>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OXD82Ye5;
+	spf=pass (imf01.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756354254; a=rsa-sha256;
+	cv=none;
+	b=MrYXSwXYqYKiQoXHy09saT4s5ixdCTtDRmgiTlWNPqZRXZ1kKzInPjlkWuBzYPFbGrxzTi
+	Uc7t5/M3v6w9R6UjxYXIOasQ62oTHxPKz59OBiKguca9ZKZqNgQJyN/3wxOcgxktTNfPQy
+	BeqhfZX1fetPgbQdW8FoTmjAnL/F+04=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B0D70409AF;
+	Thu, 28 Aug 2025 04:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2ECC4CEEB;
+	Thu, 28 Aug 2025 04:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756354252;
+	bh=Pni7gwm2Fih+x+CwuJerBVTL9CsbWshBAuOHEybmPig=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OXD82Ye5muAMyno8BiCwFQ3ri6cxsVNk2VA2yh9hPq3yM2ijQF6OEF8xb6IyNjwZ9
+	 tROktiyxgtiCUx25Jaardt22HPr7/L/wIfYZsBCdSEQLifY05vwsYpyqvToeJvscj4
+	 FQi2XHcmsuIpnl38zAyZKNks8nrPhf8LO3b4LNVX4QUcxwsj+O8mW10R1r8hELMWUT
+	 hhhQi9P70wRWAfiAQHjnQ72te/+iNdUakfN6V8eEOLYZaeziF7h+YdwcUBmnskU1yT
+	 qeQzYKVFz+BgqULyIzDZNnuiNjffI0n0FyhT/WVLZb0Bd5CraZ4qUPhhX5zamH9SIH
+	 uQ9tDKA9oE7vQ==
+Date: Thu, 28 Aug 2025 13:10:49 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar
+ <mingo@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH] init/main.c: fix boot time tracing crash
+Message-Id: <20250828131049.3feb168ab25f564b8e3b24e6@kernel.org>
+In-Reply-To: <20250824130759.1732736-1-rppt@kernel.org>
+References: <20250824130759.1732736-1-rppt@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 05DD140007
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 891E240003
-X-Stat-Signature: izjzeazzirp6gc7hsrjxbekxtyt9xyso
-X-HE-Tag: 1756354025-126191
-X-HE-Meta: U2FsdGVkX181a1wdqMBr/CtFnXFHcIkIqzx1pQ1RabvcGLSaDvbT+yb4jtRN793KzAuIu0L5wgFFqIgImgVMbbXD1hoNptdZkpRiX2Dt95FE/LiytkHoxY3R8mX3b0mAyacuxF40lew56k8I2kwMpFCrTJYndgAUo/GDrIwYbLTOoeFpEEobzSQIS9367kbVWwegA4n3XqoBNH/vEiPu/TNNOa2NHm2XhzaCxie2C6iz8C+NyhCefX9nu0hDCodt/YWfcyfSzCZ29OVCIJvBuXcxH3J/484vRQimrmspbsD5uKQfL/R0J8Yj9LnqoX7yl482kCq9N6PEN5cq1nUNxJT/pESeMQ/qqxqvbSgUAyQNLJH/YnOTu4QUW3SKZYfb+XZqtXwLp2GpzSMFsmxw6H7cztIYwJcW9HaMxTCmLKVXLCGZmCsl7Szjq1ZB2jJEEej0M1ww6opT6ZIjKuvSrFn4HlQ1YU6NWGvVw6iNUMiXOzqhGjLXBP5GsQQoAy11nLZxvy/rc3g13zju5iPv7PYknybu4o9Au2peTMixQ6esQjkwvedme05lUqyT4T/wTzzsFTOpQRwnz9NBO7aO9I8Q3vbHruheZ9QUpgZBN52Qm8Ix9Ke64Z26DZpVC1uAf7LKiTlxcgt7iMvGPufyo3J9KXSVsht0Zjvmm97eSKZyTyTpbU2ictlzHAlFGXF+vq5BuCwgsBeCQ/DczSi76V2RGdExfo3OIduDsyx8zKL8UOIzxA8fcTKKM2d52GyLb0pqa3baZD0xZaUWCIPpc7o/I2M3QfqD2+Nz/FazKaP6YHi+FrO+ou5swRyP0BaPKpSqwYpU5RaZiFxbmdkkbcEJi/cTTLVZaMCyGnzYmmhBM3pBaSbiUFbxIo9t1aQmFRF4FXeJeeGBo4hdlnV4UdC2RbUrd+pA3Q2QR3908Yfw+jhgbz8Mzyf0qX4J8PCK22X2rK3wzZkQ+aqaixJ
- 3zE7wJjj
- 3hf+rj1UElVqd12vpUx3yg1KwsWnwPTUWsDb8yC4GXv851dkkfwIg/2CO8nPgROp1qYGIBEG/opvm4GWPn6P18ConFtEt6BQLFYvg2CmjxRQLYlSCgkePln/+LyEVVrihO2XznGox+b4sfgIWEQrptTc6HQQnf6gd5StrmQC0xdjoNtMteDnAVWODULstUZ59CtCJGmAtI6wVO7lUDlmQLXtwO8D7sL7DfUfgfg1n+BvXljbEBkIZ2DCuPpS/H33AehH1og1sKUdOB9WOuH1VrAQN4mICq938/uIwySfCw673OKar7j6sMNpD0L+FySr/S2CDAOTsHVOKDE8FvyTGD5FnOfUZ5qQyrYrPGvDK4W1B0vwghzrkMdL2/I4flK1mYYQPn1JKwPWQMsrDp9R+jmddkwnKbKZU6XjaTMCaKAVI+71j8AmwT1GbsfhhTX3hEFiwnA1csLgzKUA=
+X-Stat-Signature: ksczqmxjqkbw7ktye3snxncnaabt6z54
+X-HE-Tag: 1756354253-232158
+X-HE-Meta: U2FsdGVkX18VyYeiOVN7ZivntyJgGGe+kutZ1VA3B1kFTEdP4hdbrg3F03FJitheZoiTlqwHdC+qpmYNc54kIYWimG//gpt3WCuZQ4XzFm5uj+5BBVAzGXNDHAHsQDneuSpUd8u+3cQ17WJfe7/l4l3G3oUb9HA1z2uE1VnUsjFjhkGvFD7tHcZrqz9BP8iyo7aXUYPOR32vyqYE2ro3UGceqvy18CjNxccSWHTTezyHHgywA/nOSkmerorOqv7iRn3PYe9363EXsr2abPAn3eHDcQZw1Bh6EmaE7ed7OJF+QX3YLqEb4vSw03ONiYpF0hiAB0Hrhbp71HiTTYEbFlsuefa43gdDWjhL1+9AX189TsaTa8p4Cs5Kgs1WEXGxNbnTSouPth4tnDhIMJGqMy6PF4q6txRsNrOL8nq3AL6DiXkkb1reuWXh8jfy3KGDOsfkPsjgjJDQID3FppuOJ9Vdmw5wSS6KiTcqHxv8h2Wox739323oZUgeyuoeIHQz2I6ouyLRZy2alURGQzZQ71Dj/LFyNySN8tLYdmBr28fYjB8m/jh+CfgxC5IQY3sHgeCadTbogLcOnudWKm5rwp6YUBjbUruL9TTTOialeKoByBGzWF6RlpeOni/VxcUKa5uAWRQau//rXJ70imdwtw8LcaCNubEXFCLAmfXcg2aP4qfCZQkGZ3G8YBHbl+h7OdC4Qtg0EnjgrA/kDZAo2ql2BPD4TVl2rcQA5iqm6bsuIrVM+g/B+jiN9SM17RXTiC/v3BXzgbMUNpWpogdmIIBPrgAXMKSs4WtC57utGw7bq36zlTjB6tiRQVj955z2UQYeDIQIXe5r6N9nDasyiuU2JVjwcRz2oycZK8pdeDZ46jIdfG3EF5YKQzZwxZ5qlqQJCCylZ5zeNl6LjzZHlIB1OuviEzPV7cwGeqPQjwY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,29 +96,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 11:43:39PM -0400, Liam R. Howlett wrote:
-> * Carlos Llamas <cmllamas@google.com> [250827 23:27]:
-> > Commit 3215eaceca87 ("mm/mremap: refactor initial parameter sanity
-> > checks") moved the sanity check for vrm->new_addr from mremap_to() to
-> > check_mremap_params().
-> > 
-> > However, this caused a regression as vrm->new_addr is now checked even
-> > when MREMAP_FIXED and MREMAP_DONTUNMAP flags are not specified. In this
-> > case, vrm->new_addr can be garbage and create unexpected failures.
-> > 
-> > Fix this by moving the new_addr check after the vrm_implies_new_addr()
-> > guard. This ensures that the new_addr is only checked when the user has
-> > specified one explicitly.
-> > 
-> > Fixes: 3215eaceca87 ("mm/mremap: refactor initial parameter sanity checks")
-> > Signed-off-by: Carlos Llamas <cmllamas@google.com>
+On Sun, 24 Aug 2025 16:07:59 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
+
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> I assume this showed up with clang?
+> Steven Rostedt reported a crash with "ftrace=function" kernel command
+> line:
+> 
+> [    0.159269] BUG: kernel NULL pointer dereference, address: 000000000000001c
+> [    0.160254] #PF: supervisor read access in kernel mode
+> [    0.160975] #PF: error_code(0x0000) - not-present page
+> [    0.161697] PGD 0 P4D 0
+> [    0.162055] Oops: Oops: 0000 [#1] SMP PTI
+> [    0.162619] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0-rc2-test-00006-g48d06e78b7cb-dirty #9 PREEMPT(undef)
+> [    0.164141] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> [    0.165439] RIP: 0010:kmem_cache_alloc_noprof (mm/slub.c:4237)
+> [ 0.166186] Code: 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 55 48 89 e5 41 57 41 56 41 55 41 54 49 89 fc 53 48 83 e4 f0 48 83 ec 20 8b 05 c9 b6 7e 01 <44> 8b 77 1c 65 4c 8b 2d b5 ea 20 02 4c 89 6c 24 18 41 89 f5 21 f0
+> [    0.168811] RSP: 0000:ffffffffb2e03b30 EFLAGS: 00010086
+> [    0.169545] RAX: 0000000001fff33f RBX: 0000000000000000 RCX: 0000000000000000
+> [    0.170544] RDX: 0000000000002800 RSI: 0000000000002800 RDI: 0000000000000000
+> [    0.171554] RBP: ffffffffb2e03b80 R08: 0000000000000004 R09: ffffffffb2e03c90
+> [    0.172549] R10: ffffffffb2e03c90 R11: 0000000000000000 R12: 0000000000000000
+> [    0.173544] R13: ffffffffb2e03c90 R14: ffffffffb2e03c90 R15: 0000000000000001
+> [    0.174542] FS:  0000000000000000(0000) GS:ffff9d2808114000(0000) knlGS:0000000000000000
+> [    0.175684] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    0.176486] CR2: 000000000000001c CR3: 000000007264c001 CR4: 00000000000200b0
+> [    0.177483] Call Trace:
+> [    0.177828]  <TASK>
+> [    0.178123] mas_alloc_nodes (lib/maple_tree.c:176 (discriminator 2) lib/maple_tree.c:1255 (discriminator 2))
+> [    0.178692] mas_store_gfp (lib/maple_tree.c:5468)
+> [    0.179223] execmem_cache_add_locked (mm/execmem.c:207)
+> [    0.179870] execmem_alloc (mm/execmem.c:213 mm/execmem.c:313 mm/execmem.c:335 mm/execmem.c:475)
+> [    0.180397] ? ftrace_caller (arch/x86/kernel/ftrace_64.S:169)
+> [    0.180922] ? __pfx_ftrace_caller (arch/x86/kernel/ftrace_64.S:158)
+> [    0.181517] execmem_alloc_rw (mm/execmem.c:487)
+> [    0.182052] arch_ftrace_update_trampoline (arch/x86/kernel/ftrace.c:266 arch/x86/kernel/ftrace.c:344 arch/x86/kernel/ftrace.c:474)
+> [    0.182778] ? ftrace_caller_op_ptr (arch/x86/kernel/ftrace_64.S:182)
+> [    0.183388] ftrace_update_trampoline (kernel/trace/ftrace.c:7947)
+> [    0.184024] __register_ftrace_function (kernel/trace/ftrace.c:368)
+> [    0.184682] ftrace_startup (kernel/trace/ftrace.c:3048)
+> [    0.185205] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210)
+> [    0.185877] register_ftrace_function_nolock (kernel/trace/ftrace.c:8717)
+> [    0.186595] register_ftrace_function (kernel/trace/ftrace.c:8745)
+> [    0.187254] ? __pfx_function_trace_call (kernel/trace/trace_functions.c:210)
+> [    0.187924] function_trace_init (kernel/trace/trace_functions.c:170)
+> [    0.188499] tracing_set_tracer (kernel/trace/trace.c:5916 kernel/trace/trace.c:6349)
+> [    0.189088] register_tracer (kernel/trace/trace.c:2391)
+> [    0.189642] early_trace_init (kernel/trace/trace.c:11075 kernel/trace/trace.c:11149)
+> [    0.190204] start_kernel (init/main.c:970)
+> [    0.190732] x86_64_start_reservations (arch/x86/kernel/head64.c:307)
+> [    0.191381] x86_64_start_kernel (??:?)
+> [    0.191955] common_startup_64 (arch/x86/kernel/head_64.S:419)
+> [    0.192534]  </TASK>
+> [    0.192839] Modules linked in:
+> [    0.193267] CR2: 000000000000001c
+> [    0.193730] ---[ end trace 0000000000000000 ]---
+> 
+> The crash happens because on x86 ftrace allocations from execmem require
+> maple tree to be initialized.
+> 
+> Move maple tree initialization that depends only on slab availability
+> earlier in boot so that it will happen right after mm_core_init().
+> 
 
-Right.
+Looks good to me.
 
-The specific test that broke on our end was this:
-https://android.googlesource.com/platform/bionic/+/HEAD/tests/__cxa_atexit_test.cpp
-Although I'm not exactly sure how __cxa_atexit() implementation uses
-mremap() underneath.
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+Thanks,
+
+> Fixes: 5d79c2be5081 ("x86/ftrace: enable EXECMEM_ROX_CACHE for ftrace allocations")
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  init/main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/init/main.c b/init/main.c
+> index 0ee0ee7b7c2c..5753e9539ae6 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -956,6 +956,7 @@ void start_kernel(void)
+>  	sort_main_extable();
+>  	trap_init();
+>  	mm_core_init();
+> +	maple_tree_init();
+>  	poking_init();
+>  	ftrace_init();
+>  
+> @@ -973,7 +974,6 @@ void start_kernel(void)
+>  		 "Interrupts were enabled *very* early, fixing it\n"))
+>  		local_irq_disable();
+>  	radix_tree_init();
+> -	maple_tree_init();
+>  
+>  	/*
+>  	 * Set up housekeeping before setting up workqueues to allow the unbound
+> 
+> base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
+> -- 
+> 2.50.1
+> 
+
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
