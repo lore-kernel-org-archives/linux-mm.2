@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45DA1CA0FF2
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 05:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04356CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 05:17:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E47C6B0028; Thu, 28 Aug 2025 01:06:27 -0400 (EDT)
+	id 01C498E0002; Thu, 28 Aug 2025 01:17:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BC336B002A; Thu, 28 Aug 2025 01:06:27 -0400 (EDT)
+	id F366E8E0001; Thu, 28 Aug 2025 01:17:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F95C6B002B; Thu, 28 Aug 2025 01:06:27 -0400 (EDT)
+	id E73678E0002; Thu, 28 Aug 2025 01:17:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E9896B0028
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:06:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 82CD1852D6
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:06:26 +0000 (UTC)
-X-FDA: 83824980372.09.D17D05B
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9823640004
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:06:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=GoCTdPfU;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D95B58E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:17:50 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A4ECC0827
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:17:50 +0000 (UTC)
+X-FDA: 83825009100.24.AC6DCAB
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3FFE0120002
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:17:48 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=B6YnN9yE;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf29.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756358268; a=rsa-sha256;
+	cv=none;
+	b=21wiSssjQCXJ+t1wDOueu/t2xeye127o30Dtg/4KOYdewqCka3N+89SL0r907bUNnxMlkk
+	BvUpVThb7FxgqmCjfsza6NiK2m/F4iYbhS+VQq5urhI6uzXefKkwjyiTi06Mhhrz2YRIku
+	+Q7dzhm3i72t8NghoS7DF2iVnPST7Bc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=B6YnN9yE;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf29.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756357584;
+	s=arc-20220608; t=1756358268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bj0F3xKSUaIs0J65GjGl570XOpaBhxurzoqhx6e2Cs0=;
-	b=PnulRLboIPy/eYkKu0zVF9S2kuOKjq2oTZi5tdIOrwiFLRNQlAn6d9jzUxz3dshqH7XUVj
-	u3JsNrYurClTNYIu2FfHmqO+sEAwbmoOEnM8e9ARAXrZj5ezjsO5kuMBbnnzbqIVnuxWXQ
-	kLRkUMp8yL7cKWWXCkaX1hbe2bUnUVM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=GoCTdPfU;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756357584; a=rsa-sha256;
-	cv=none;
-	b=F0N94fAJQst/j/nd8d1n+qvEd8uyaKr1CwflVDvAljgvL0y/6Hs22KHAb81taDssm5TF7l
-	ocCasyj06qXy6HgT1SmT/WqpKXUEcKdKzBSuvXG+MKURAXjLhOrvzQcYk2/0lOW42Cuyvw
-	WZMpUz4UVKsVClL99FJK/Sf7UdIKzCU=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b49d6f8f347so567140a12.0
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:06:24 -0700 (PDT)
+	bh=OG1WuC2hheSyViU3tcDLma/6gW2kIJ97ZTkGB1ykit0=;
+	b=lDb7IGfOH+veiTxEJr9wE91c8acp37DFwRER7rHPKXPBCavpw1iZ+SX6gG9gmj1Q2kJi8V
+	2gKvSt5bdly1ADa20Dzb1IEi+76uNxXwsIRCtHePw3WiFsjMY3SdwHFnGpId/JwoUvilU5
+	NjZpTfrhscOcAz6ZSqUwiKJ29TZFSRE=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afcb731caaaso71787766b.0
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:17:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1756357583; x=1756962383; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bj0F3xKSUaIs0J65GjGl570XOpaBhxurzoqhx6e2Cs0=;
-        b=GoCTdPfUKhB1ZEdnw0Nw2co4HE385KHtVLotTveF5N6cd7RvQHt2nJeO9UB39jxw8c
-         ugYOUQ5s9s9gBifTaVW+oysLs76Va/B+ueBPZtNDVJ2tCEPT3LiFjE+ZJDveBwVXd2+s
-         Eg95PvXrqfL0VIjBGW6SX0OldDYVJOCrwoZpQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756357583; x=1756962383;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=ionos.com; s=google; t=1756358266; x=1756963066; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Bj0F3xKSUaIs0J65GjGl570XOpaBhxurzoqhx6e2Cs0=;
-        b=Nc35OjVO1sl6fof0zLwkEtErxINZFPMcn5xfwR4MsQFfP18SA8hWWMJiHZoufiiZLj
-         HoSSmbAvdKeHJE9XzmSr6xiigk1+zDJZDRzZxEx1ttosyoMkeal+Gqrbv11l4vhkCN1v
-         q7idr9WlHFL6PPww+xleMSLpwFMSiUtPS6SutzzLpQrMxaa6Fq7silkewe4lQNJ6qyjP
-         p8ULtqwKLCmtq4rZtxf3hj6cfzqNZQ5Gkpco4FRApp9ROGU8YQDbcGBFULABkEs+W+6T
-         npxKngj6y0Zb384HBQ1G4AsqWetjrNbfZreRhGsoqMPK/p66XixDG5MqNELGaEhUkXF4
-         z38Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUMWaIryeGKvaohRY1tyHTUBJeXyy+8qZ9lcC/uO/4qDn5VDVruDXLnTqwWw9yIRaZtp0GYguTKqA==@kvack.org
-X-Gm-Message-State: AOJu0YxZkr9plC3HzyDPjy5UUmlIEFd4avR0+lSIdT5MY/WPY0rDgu4/
-	eKLHKdtu/eIPIU5bIBJBhnpBL7ITknR7Dme2aEU+BjwmvZSBWFB4u31hrJCX4X0l4Q==
-X-Gm-Gg: ASbGncu8XYjZlHG2C9ZFuGMKSc47uGlz6qCzb1vsyQExiMx44mWKcg7I+e7uX9SePyp
-	HjDv12xvNuSO2pZOKnMKqipGPb61QYtEhD0rivbhrNrhjEIPBWzVgzblCLv6JxB8EgAi6oDe1VS
-	RWfhR1p0U2maG+TfodjsRYxw8gLo2grYWL366axEsNO8k+TwiMzA6CiJYaoB971J7h2tUrewbTN
-	bM8Ny7BqUr6mpLDLTCFojtxtzVJNjOEsRAkq3b2vSGesQ/RQUe+xhkGCmeEXa93xXAko+rWU96l
-	4yAthtQi/UPY+MELHLefwnVBwWKM7xHcK4y892ezdBFu/at/A6HRT3TSFAOhNhfI1q4CLYgSaLc
-	pYYrQJvMuhr+kVJpqosvL/ZwqEbEai22NIYak
-X-Google-Smtp-Source: AGHT+IGFzXqVbx52FiYF4GbIQed6e1Rc69rllf8xeojp/PpiJVnMDg3NfKpiB0qKqfrDT5fxCIrDEQ==
-X-Received: by 2002:a17:903:283:b0:246:61c:a67e with SMTP id d9443c01a7336-2462efdd639mr263243935ad.61.1756357583296;
-        Wed, 27 Aug 2025 22:06:23 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:5da4:f999:f527:70c9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2466885ed21sm137543975ad.98.2025.08.27.22.06.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 22:06:22 -0700 (PDT)
-Date: Thu, 28 Aug 2025 14:06:17 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Vlastimil Babka <vbabka@suse.cz>, 
-	Mel Gorman <mgorman@techsingularity.net>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	kernel-dev@igalia.com, Helen Koike <koike@igalia.com>, 
-	Matthew Wilcox <willy@infradead.org>, NeilBrown <neilb@suse.de>, 
-	Thierry Reding <thierry.reding@gmail.com>, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: Re: [PATCH] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH
- allocations
-Message-ID: <xzjclrwdgtzeufjpposi4aqj37qe4cf5mla2mv4ss2fu7llrmp@r6yjikyew6ej>
-References: <20250814172245.1259625-1-cascardo@igalia.com>
+        bh=OG1WuC2hheSyViU3tcDLma/6gW2kIJ97ZTkGB1ykit0=;
+        b=B6YnN9yE2avJIrK3C7jymcMT44nZUlvVTZYbY0blYwM7meIn8QWXZeyVmdULOS4hft
+         NxYKnwPVeH9o94DBlsa0wtJ0AJnz3HV0Y9Mah7aVuya9zgSH26q96EHvMEXF0BFoAblF
+         +hKd5qlGhLf7pOhFfm+5+aXsQBKtuxpX/7BoX+thyLhC/jWSG4oXjfQoyP7WMsqkj4ET
+         stzByT4d9zsBrgtFBHNUmX+Qr+IG+Xjmxpdm8N7pQwy8ub5sFQpWtmnJWR0S6Rhyd7xP
+         VTQHcbKxik7CEpybb+9tbXinnPzkYOa97bLMpTjqR4P12/0Q9gRhiyLuulzfUSL1kKQB
+         nGSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756358266; x=1756963066;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OG1WuC2hheSyViU3tcDLma/6gW2kIJ97ZTkGB1ykit0=;
+        b=nyfxdxwtqa0Ij2TSXJIIa+6tfhkeby/OFpxuu42k1r1q18FpDEYxUA8XQuJPvVT9/t
+         2Kp/ye5snp8CSh0+KSRUpGBlBJQiWL5ZDKkzDMtj2vaI+Sc0sZVlc4rbn8qFyNVBtPOy
+         Uc5TKASDjKGMR9QJLeR9dZ0W1OOQckDzqCfVrKElWFZwVrOhNdBJRjS9G7minE3cIAxW
+         WNkZsXzgWp95X+O2RS0+IqB1pr1My57DWuC3WzfnUdoghn3aUCAgnJW3CUiRSCAzu6a6
+         36+zg5/dgzPyOqY7pwZBjnPClPwe2L5x6Y9BmHdN2EVtfVqLNTA2Mqoqazw04STrpR3P
+         2wcw==
+X-Forwarded-Encrypted: i=1; AJvYcCXkgiwmjV6z/EKNHl68CZc9JPDFAl9coeizwZes7/7mgg0fRJW077VUeLvhayptNSFOZdqcDioPrg==@kvack.org
+X-Gm-Message-State: AOJu0YyRmYaR7cudX3WAHQWZ9jDVC1AXNTeG22tbOf0JtVjGHZGRfYo3
+	sjhju3hAphdAPERPkXgq6CAXMNs1V/EdeHQvEdelMLOskuhjm8vpsev3Pjg70DghZ05cwNsF3xd
+	8sb1hCTK4eCWHd4vnz7O8EAUJVC7QvuKtFaLdh/zSIQ==
+X-Gm-Gg: ASbGncuvOgPrN3iaRufjKqMLk10TAS2xAxLSXnb1bGyUu8y2qi4pZw26pPI/LVZKUSX
+	+Ff8NKgsyO7/gdJpVtqTe7ao725SylLpa4tlZVW3KQCokqO4bcnZ6vII81fIHtaCU5l0gX2YCO5
+	DieZ/J1nvqjBZgog1thezwAkorlc0i2sqIDgnBNNsL6MF4qs8Kpi9rK6yTOlHQ0TtxhePANg0J5
+	SlOZaJe81TEny0dlcCGjwLvARHCmDiZGtM=
+X-Google-Smtp-Source: AGHT+IF8LgvafHMV8UZau80cAyTYYRm10wxMO3zhQW42jodfKJ3LU2Dgpe9FDWXWK2r4Ls++4xgpcdwiUyG7ZsKp2eE=
+X-Received: by 2002:a17:907:928a:b0:afe:eb48:2a3a with SMTP id
+ a640c23a62f3a-afeeb482f03mr57033966b.65.1756358266579; Wed, 27 Aug 2025
+ 22:17:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814172245.1259625-1-cascardo@igalia.com>
-X-Rspamd-Queue-Id: 9823640004
-X-Rspamd-Server: rspam04
+References: <2aa3f478-9c87-4102-b83e-bf235372d834@redhat.com>
+ <20250827150330.280399-1-max.kellermann@ionos.com> <20250827165309.44e465ff214e45f1a6665b24@linux-foundation.org>
+In-Reply-To: <20250827165309.44e465ff214e45f1a6665b24@linux-foundation.org>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Thu, 28 Aug 2025 07:17:35 +0200
+X-Gm-Features: Ac12FXz7j6ZCD1KpPsfv9iOBu4iKeV--Ltb4TvtOolpiU2Niwq5q2UQwxZ1pFaQ
+Message-ID: <CAKPOu+_EfTBxh7xpaRdypD-hnqAbgj-bSdMTZE4uafqMudxBRg@mail.gmail.com>
+Subject: Re: [PATCH v2] huge_mm.h: disallow is_huge_zero_folio(NULL)
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, chrisl@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3FFE0120002
+X-Stat-Signature: nraz6gzmqhbdt9of353ip8371mogqisn
 X-Rspam-User: 
-X-Stat-Signature: koe34tdjomkbz8oaibfscumemz4y4s4a
-X-HE-Tag: 1756357584-966491
-X-HE-Meta: U2FsdGVkX1++TExnTPCCsk6kt1c5uKQB+aCvm1gcWOC/ERNND+YQ8Y0Y+eMAGqRdRLOCIVUc7oWwrk6S8VwiNN2ETZm/18tk5L50kpQ47e58gnHbmCxYzzbj+8nFQBPxNJSMMYOOW2GFN3KCjpQXnnGK2/NDYYSq7/xHSR6r20XsPuF0sxf9HNfFlMdAmPqoLX0LAboTUFSvzwHCItENW6gMLr0NI0t9KaSFog4M0MvaK4tsl99joLFD5t3ojhaEgB5Yt/0+S/UvifUMAmOv8ZemUDUlYeu/ES+pyM+g/PoX80mxlSSUcNm3uCXiorqkXeCuxXJDgHa3aCu99VU8nQWuacVHWKZIWzL0KbPOaYb+yNcG07F6OCl4mjTBZwjOkm7HxcyeDabTRkpIRTYvrrpv6xNNEgbeYPERyq6gAYrU+vw1LvaGwH2Y46+jyaxm/Aja051++/bUwtGEeOiURe/pE84yJKX5DRb5Q8qHWIDf4k6RyvGyKnbJoBnwG1UDNlmmbMtCj9zkziu8/ZLhI2Q9BQdNNPxFv2zHq5R7ghN7BvF2sZ16RbqVM47B3YfVRZSOgQxQwj+KwebD9Bw8GphAo11/yz3HHlprl0Evrjuh+61lIlkhmOzx7k8BcsYmFPntWpQ2jdmlMPQ2Uo5Wr7zUqLF7gt6aHgBX/f6tPzFhLFa1CmQO5I1zaB5Q0Z4sea3IsWavtRAz0fClH35ja8CljsgaB/7diQsKLlYWIAtZqEFFp0jQzilp/HmeTQOojEuy0bK/fEYYeH4vLUHFa99+hJZiZbNFaQFT4mDL2l4Mcjda+EXVtIP3dQWCAdgQO3IdYr75FoQp0hvrCfqb/m4alf+Jm99IoHM1jJoRBf6VdNnzagy6CQ67DawXVUdZOIxiJ1ysHB7Lyp6SCE+b2q0oKQLup8VWhuX9Zb1em6d3Dv/CGPEicKXNtff9UXze2M5b/biCIFBCGqL1fEX
- EcMZcB51
- SA6EDn0rbZh2tmySdH3fP0cuW3/jhTyBHpBziHqEG+6PBuj9jrXpoaHGrAkjNK1P05beCw4N1dLBMQlZbKU/2QMkaiLAjJcn5lKy92Hpz7/WuJQv2O01SPbTnM84+7FTp59aRJxV9kPnVwiFI7HLAt6c5Y2FQsaM2QEgCC4UCZS/aUUQohfMmbRjJjI01LL+2mVU0LWIBNXPXYUPoa/CSTpX5AEYVilGnRsAr3ZLN21TvuV1eqhDmF4kNo83Z5z287NLWQtYi7FXabEzofx5/MQrFPEXd583eatO/qTUTXQINDUtKs+yAv/KvD6d8ErWxClZSplxzMq3bAhH2PgMSzXsmV/uZrl86CfXfok+h3i33vun1CuYyzhfMeCzKNMejhZ652Df8PyLW8kJjwctnncojWz/1bO4ztEYIVKCYhX0E1iEfbW3zSdj4k2TWG6lKjZiZ8EENvZu/pBddVJ0Hkkss3KnAjrjAlP+R
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756358268-528584
+X-HE-Meta: U2FsdGVkX1+Y+pOjjuxXEzw8bwvlz8SHLLSnDGeVuCHUVJYojAUWI3Mk0tTjaMnEVr9y9zSaODZqjHPBe5yn8AsaaKPHtDIlhxkLQLCHnZimGp3veZYyjz7p6UPM1r4sE1elulWDmLo3eG0dTFWCRRjznT207JPmXvAuEVOr84e/2NBny7sryUnjkxPbxg0eXPDvX/XyYpK/j0ZOomUQ0dXrLnE/LAJQ4sa9Itxn2gYhZJZsTwofLFCvgVVoD/bV0SLRfR2djeZPE5nke0cBZBMBfzcLdcJi+a0W6z7MtNUfJc5KKLp2sl7TvSgErTrD8yxE334cWOOzFjRfYWdLIAioZOUy4CwqDpcc3eCSjkjU+4wve42QG7DvW+7RIUp8Fcg6y+yuVOJnuaD+eg6yHb89QGBPsMnQQnPlc52gIS98k6eg8zwp1VDUDS8yVlSvs2WqWTcqtEdN8tkFi/XwfjsNUV5yh260vJtwb7nDlFxmb6MtOg58SisIMyWt+R5K6p8uQ94+79kuE/NJyllF4J1ZFHRHXH8AgGd3azJDLe5xEEi2shj7B0A6+QXu5Yxlnnhn4Dl1J1LkXFHi4TuXRV5t3HyYoORi4TmmsqWM/WG5+MBE5yDdwh/7pEX5Fd2k49RQCdPtZsBsbZ6KK/SN2wO30zMdQIfVsqmpOCQwikr4tmbNNdDR3YAJV9ZEFvEkuD99rRctLGVbPgwL60SDQqqkcKPVbZy+Oqb6lrB3z9jOpYG8PlOiHESnxmFafOEKHJ6+y7OoaydFav3gqx0mkAVjkWk1IuO7TRVnin4NPk6Uj3A93dLII3QHQxosqn9d8Zk2nGM+VFTLCZylYacAHbqwhxMO6ZU2REUJ/UBjFlTuNoKz9Nng4EUuAI2Cr6WgmYx4WUJfZ7kovzxbbl5xC0huTfS3XO0zd75ulU5Dv8qMFzZDnmhz/+aeSwbv3yeuwZC1RsUhohVpMHbVt/P
+ ypmdvoJ+
+ eh4tc9iifE4QFdyj8Yc77Xt60dq75K4Xj0n2xqFSHYfiAUpHgVHdNeaqjiXkcpJNuqwPcP8fWV505vZ2Mn7Uj9O2QIZqs0Lo4oC0ohJOEUCyPlJ+esEEfh2yIKan3KIG2RBV3OkdHW0X7/CE/Sq0bPtGrYCv98e52na850okWmEGGlHD1KOGSZJQQPj2SdkJ6icjIclRQd1trQgeKPquySbhdM1Be8zAalXklmKNYJjnphQh/eKHW4GEZvTayM61DsDbw2pc7NAVRNcwf3TfbyDp2claMPdXGF4QqX8fiyBPlhBpnN8OQRkAJ8bqjoZHe9N9L
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,53 +121,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/08/14 14:22), Thadeu Lima de Souza Cascardo wrote:
-> Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
-> ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
-> which implies ALLOC_MIN_RESERVE, is going to be used instead of
-> __GFP_ATOMIC for high atomic reserves.
-> 
-> Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
-> allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
-> allocations of order higher than 0. It still used __GFP_ATOMIC, though.
-> 
-> Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
-> non-blocking allocations accesses reserves") just turned that check for
-> !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were expected to
-> test for __GFP_HIGH.
-> 
-> This leads to high atomic reserves being added for high-order GFP_NOWAIT
-> allocations and others that clear __GFP_DIRECT_RECLAIM, which is
-> unexpected. Later, those reserves lead to 0-order allocations going to the
-> slow path and starting reclaim.
-> 
-> From /proc/pagetypeinfo, without the patch:
-> 
-> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
-> Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
-> 
-> With the patch:
-> 
-> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+On Thu, Aug 28, 2025 at 1:53=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+> OK, but it remains the case that we have seen code which calls
+> is_huge_zero_folio() prior to the initialization of huge_zero_folio.
+>
+> Is this a bug?  I think so.  Should we be checking for recurrences of
+> this bug?
 
-[..]
+Why do you believe it's a bug? To me, as a newbie here, such a call
+seems perfectly fine; please explain.
 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2ef3c07266b3..bf52e3bef626 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4219,7 +4219,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
->  		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
->  			alloc_flags |= ALLOC_NON_BLOCK;
->  
-> -			if (order > 0)
-> +			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
->  				alloc_flags |= ALLOC_HIGHATOMIC;
->  		}
+> Also, sigh.  I do dislike seeing VM_WARN_ON_ONCE() in an inline
+> function - heaven knows how much bloat that adds.  Defconfig
+> mm/huge_memory.o (which has three calls) grows by 80 bytes so I guess
+> that's livable with.
 
-From my limited understanding, it does look like this was the
-intention.  Vlastimil, Mel, got a minute to take a look?
+Oh, how is this possible? defconfig has CONFIG_DEBUG_VM=3Dn and that
+means VM_WARN_ON_ONCE() is just BUILD_BUG_ON_INVALID() which should
+generate no code at all.
+Here on my computer (aarch64 with GCC 14), the size (and the
+disassembly) is exactly the same. This confirms what David Hildenbrand
+predicted.
+Are you seeing some compiler weirdness, maybe?
 
