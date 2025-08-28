@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19518C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 17:12:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64660C8303F
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 17:12:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 076B78E001F; Thu, 28 Aug 2025 13:12:53 -0400 (EDT)
+	id CD49B8E0008; Thu, 28 Aug 2025 13:12:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 028318E0008; Thu, 28 Aug 2025 13:12:52 -0400 (EDT)
+	id C9ADC8E0023; Thu, 28 Aug 2025 13:12:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E593D8E001F; Thu, 28 Aug 2025 13:12:52 -0400 (EDT)
+	id B49458E0008; Thu, 28 Aug 2025 13:12:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C24908E0008
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:12:52 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8F6221602F8
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:12:52 +0000 (UTC)
-X-FDA: 83826810984.15.365B4A1
+	by kanga.kvack.org (Postfix) with ESMTP id 95E358E0008
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:12:53 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5FC0A1A02F7
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:12:53 +0000 (UTC)
+X-FDA: 83826811026.30.8D49652
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B56CC40019
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:12:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ShoWSbxe;
+	by imf23.hostedemail.com (Postfix) with ESMTP id A0CFE14000E
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:12:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E6ZWd3xP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756401171; a=rsa-sha256;
 	cv=none;
-	b=ona7GAH30z1amZkUHdKYTT2tccLAAnb3yzx0kFuOZVyQr9SnZQXrv9LgNblZV/E7SGRi+6
-	LtzanYvBUjC1iDZN0yMmdeDwKketME81848d3qs9y8Ujkdg3KrHIou9moHi1vZIOmdEN7O
-	VEYBjoAQjBmkB7zx6152Qe6wDG3DdPM=
+	b=v0nNX+Qnsv4yR/Qcqq6HXaW/7ZQOeCSwNsAw/IgZvaG7mUYY8S9eEYfGIlwzk5pjRwhVhj
+	pDDbyJDqmgmZVDfze+AtrsaasdufseAnkNEySsvLfdEquJ7iNmiryus86VrSlBIHIHJLyw
+	4notEDPBwMpDfXuKeQWFc+Dtta9T7kQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ShoWSbxe;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E6ZWd3xP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756401171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=72XHPJGrRzPivcfSn9J81HbMHRhHG4JO2mBFkOb32XE=;
-	b=iDGKL7Xy+3nIBKshZNcygOitYtUKPlzs4dxx1WIExB71zuKKcnO/kNk1tynwXxw4k14be3
-	hzRBdxTus8UB+Iics48wWVhNkc/dnhxVKYXw0zxsTeK81PzFyX8VSVuQ8DEYa8uoxr0XiE
-	5pvmRyxA5S4GaPf1OhDTm8MIFd4hAuE=
+	bh=pc7cPvH0OW192au+cjLt6bbwu4bH426JQHv6qfUYnsU=;
+	b=Vf4NzZT6BIE+4DjqaHOxhLHTVansrk3D/ByltAhFQwiutgnq2REZPvExsLyDCsUTdIZk8U
+	zh/pdpqSX9TXvom2Kdn+ynndHc/q0x/VrXn5agdL9WhW0DiAZK+/0H42grweK8UBDBIkH/
+	OaZ6AOefU9BSTal8kH5ViEjH8axiQak=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BAB4A451B1;
-	Thu, 28 Aug 2025 17:12:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DED1C4CEEB;
-	Thu, 28 Aug 2025 17:12:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B1537451BC;
+	Thu, 28 Aug 2025 17:12:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAC6C4CEF9;
+	Thu, 28 Aug 2025 17:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756401169;
-	bh=/viP4eNKlIp3xNvGENLPiu9ygdeBlYDEw/GbgmbYmHU=;
+	s=k20201202; t=1756401170;
+	bh=fYhqOdJk8g7Kx4IsyLnZ52pSMGRQylBDNBv4D4Pqc2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShoWSbxe/VvRANS1E4btJRQii4QhZd4/DyUYBSCTQIJf+/FMvp59isNQLoZyRyWt0
-	 /wRnFM9kYrcNo+SdHTDNCzwhIYfMoH/Opof0rlgrAxwNB7U4E+vdyPYfjgJ3R13Hwb
-	 /OVKiFSvOuap6k0V6h/XNSqen2Gt98MzZkp9J/7vJCtSWZFqSVQ1hDNcsvjWW92eN4
-	 1tk38a9xbnwiNQErYYyxtmHetcl99oox3epZiEWoElrPgQZbZf+lIN/l6xeis+GEZ+
-	 HikmhBENmXwOZk3CbzDeLf/UpEF8EJOtrDrmnls8ylJgkXQ5xH8c4wVMvTHHvCo6Ok
-	 wuljHjyCK4eRg==
+	b=E6ZWd3xPefENCDvxLUzYqof2Vqp7XK2zl+1MsWwPTYSiCWpjFxzhsxx3HgoYntLd3
+	 KKs80tvDNSYseHgdp4uYx96ZzbbpYJSlJecQaVqV63H0YsIJ1BDp0e6ryZvWuNXpW0
+	 zYxzih8BYLXwpN8Cw2Oa6yWhGH7R7CvoIbOqZFT19Ez0nbgRiBrMor49k9eR8TeYvL
+	 Cd/dlw2ZYG6FyuMmrNLl3SaPNnhqyt44NSiCM25b+Zj751sI6Qsp3/fg+r74+/t72u
+	 q1YDFa+BHVyU3VbzgDt0GI1Y0IfgyUda78LGuwojc6SkRehc1K9GsfIvddbIe0ztzR
+	 fqTUmMnayD8SA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -72,9 +72,9 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-mm@kvack.org,
 	wangkefeng.wang@huawei.com,
 	zuoze1@huawei.com
-Subject: [PATCH v3 02/11] mm/damon/paddr: support addr_unit for access monitoring
-Date: Thu, 28 Aug 2025 10:12:33 -0700
-Message-Id: <20250828171242.59810-3-sj@kernel.org>
+Subject: [PATCH v3 03/11] mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+Date: Thu, 28 Aug 2025 10:12:34 -0700
+Message-Id: <20250828171242.59810-4-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250828171242.59810-1-sj@kernel.org>
 References: <20250828171242.59810-1-sj@kernel.org>
@@ -82,12 +82,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B56CC40019
-X-Stat-Signature: andwe5dyu9sb3cxxrr81yjacpmaefj4q
-X-HE-Tag: 1756401170-954901
-X-HE-Meta: U2FsdGVkX19nIyRt8ThjrCBckvO+jRg0wOHijLIYCRWValWUJe5Jrg3286mmwvmckS1Qzs0AlKQ+r2kQqGdLROhehuHbnq8as7rQlj5XJyRW0/deAN5Cwf/AVimYFbUsRi4SrhpLmItF9zLumsTP5zThEDYJIs9JDQ3i+iF2gm+2x8EvbvJS+hFKVrx84WOk9H99IG8XGVILUcLNalmULo/F2NJl898zkCiKn1snjMx18P7529OCJgNEXaSNCo0zn5zavc7RMdifloIjY0C6RwZ4h8RNFH70zEQY43nGDEftSLYmH70j73AAp/locjRYAIbLaLICyf/JGEPHkNZniNT3McbhclNtn8bq+e1srLh75Taeo1nyqO0kBn/CHjq00YkLCZsvf2ZXKRhG9EKYb4NrkjaLDmeL8KAyaFXzRXACSmz1rIRj8xL1X1kVncvGszyZckWozpgEcJPx4tFszdjYvMqWfQE6B3pOTvqOxMGx/I61MU6UzkS0Z1xcbrK9rxJIZ6r1Vf5K8MXqCOJuIvZbG8NAIICUF9qPtC6aTEebJ29ogpsXQKq0+5O0u9WmR1ZLljN8D8Vr8FyPEYMlPaSE4ls7kPEXihDDRxOfv+8hwovkD/cfQKp5ZyUiByL+KNu9B49uGrGPqP2MAR4XOnXGouxxZtA14v8dv8x/9OwMlPIo+Vc+2TqQkoSseaASqZaPxXCfwWbjwQaRmkaL4l10/khq9PSqsC8EUfU/DcdiBh++VdstCIE5nqOPIMn2R0jNqNWbFZwDYmU3teHFti5g2Hcm72+WZPuOmykrxqYfEeISQe2lLWFD4MUcCnQBfYBAucJWNIgI2kUe5Xau67T8fgu5baQjR2jUBuShDkOjZ5OQTKTpqJcm7p+iDBtmeqbUuAIvIFcBamv3JXvzGXUOTZN8CXsuETIDxkiCqtNwFBip014A5DOzDnhWOa+6udXr0hTRTqkiGE0iHuu
- pFDVJxLB
- F6wdxwJOSCZMNGXuif6RcRY2Srp4sSXf7VdP5ZUUq9mYpMsnkUfJJr5e7vVAs+xn6MmlXKB+F0PXSCtqriHhw+HXoV63YqdfDujarm6sgnDlD4b7/YacSDnY8Y32gw54VtG55Y5fQA+Nb/VzA9XLe84ezEmfitai3buz+mgOOUsHHQcsQrV6iycwlAES7MhCGrSJbLEwqrWhLcTVCG4nfwigWsRyltkTscMUwa+pY9JVK62lXaj9AIXFobmGJt7MnzGaI05r3fBSLIf6UmXsZsLZATYH7Ec1DRY/nSnMMA49o8MokZSqzZWdenFjrIIqDgmHelKvBDOG+A88/0NeUQKoERg==
+X-Rspamd-Queue-Id: A0CFE14000E
+X-Stat-Signature: jf98wpr4d5mo1gad5fybqfmf16br5bn7
+X-HE-Tag: 1756401171-637189
+X-HE-Meta: U2FsdGVkX18JOCz5ME6tJpLNpq/qRXtQsLcalCCF7qIoqXDQyj9gSnS0Js70PIAqRoAdDEgEnCNnbpGTjoc/sqzTREXXfR7pZph1qlJvHDU3zxRBuqWRu0OGA2g+zKfPoUEBQwQiFldfLqfPrAFac2jG+S3xA4JAnvi4QPab4TPSTR9zxa4rveLm53g+i/hg3/UFahhw1ZYTcd7ZXXPJS5l2v9HwcqyXkwiJRuEHsct42P4ZTVhjKPF50xYvO5sG++jSaH0dqViWoEsbg5SbPSrwIJyquj4RWCd6k1N9irYrsdWSqAvMIDU6O+XXxwLcTo2HHRFUQHopKbZ/X9e6jRNf9Vo0p6GvH23NpPW9ojnW2mTc/WIebHlsbRmaPEzT0gDXexqQ8iIn6P+60cv92uCpr6Fhyl6SpO+obqjzGTG22RvwKoyDJorezegtLaoiy8vusvK/GvSXhgtkyLNTPvGe+01fbrS7m2hulUTuzDDc8rIN8I28NWG1t/CtnS9q4kGP+efVUr/pAd1cLOFyzuJkIp40cm0lkWG+mHMktRMtPcFtTcprtyC/Za08L7njsHX2BclK1mWbfimfuVN9TZ831xioTnPgduleBYgta6sa5FDhIqIS0mRiVLP49GUuOL4w+VguSmfwRze9C4X8SHdrmnU+kM3Yl50IK2eaF3utNsMLvHla4mE7llhpZMSwiZIDOhZJu+5t4c3CAb7AI2gnR877GtaHb/FfAJVWKm7+ZKo9wfse9RGapsy61agsfucpcsqDiEibQkOxtWcHeS3leOPX8TABxBV3nlrCjS9p3DM7popirD+Pyxnmh8ga53yvlwL2fDjvR/uRRhXWBiDE0xWYPH5zixyhYGTzUv5CCoBeUkinXLD5tvGA1jMc8ICeuBG/6Ce9TJgtJRw/EkJY+XQ/CeWu9+kZ47aZ6z41FkZC2hYNWtX7DuF3rf5uXd6WZhxGRcKRj8ecaho
+ yh2e6N9Q
+ 31gOyHE6mXlS42kd3gdQJPbueUSTdvD9YpDsSrOrK4J3Uwc1NHCOC36X96YnDvjO8l6XjVuLjtnLg6I3a5QzqsaFhH2vjVimkscpnj1ZiGgpdybr1H4phZRLdhoGiypsl4cEtwcBF7hDi+uUBS+igcSnCQdg/AUIxJOwMIP0m4txcQs2H4uIOredFT9YsKsMcn0MueWc78jx1CbmYw1y3IycomgCrD0rN09PYxS8GfGrjL3Cxt8nv2/FC1wHrrJM8W0bWZn79IN7bsQpNjy0usB5UVzl54cg9HzOjx3u1b9AevFHMCZotJpxHInjQNpbxCcGmejQ4M1SS98UeBpt0koKCzg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,105 +96,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add support of addr_unit paramer for access monitoing operations of
-paddr.
+Add support of addr_unit for DAMOS_PAGEOUT action handling from the
+DAMOS operation implementation for the physical address space.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/paddr.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ mm/damon/paddr.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
 diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 0b67d9321460..d497373c2bd2 100644
+index d497373c2bd2..696aeb0f6c8e 100644
 --- a/mm/damon/paddr.c
 +++ b/mm/damon/paddr.c
-@@ -18,7 +18,13 @@
- #include "../internal.h"
- #include "ops-common.h"
+@@ -24,6 +24,19 @@ static phys_addr_t damon_pa_phys_addr(
+ 	return (phys_addr_t)addr * addr_unit;
+ }
  
--static void damon_pa_mkold(unsigned long paddr)
-+static phys_addr_t damon_pa_phys_addr(
-+		unsigned long addr, unsigned long addr_unit)
++static unsigned long damon_pa_core_addr(
++		phys_addr_t pa, unsigned long addr_unit)
 +{
-+	return (phys_addr_t)addr * addr_unit;
++	/*
++	 * Use div_u64() for avoiding linking errors related with __udivdi3,
++	 * __aeabi_uldivmod, or similar problems.  This should also improve the
++	 * performance optimization (read div_u64() comment for the detail).
++	 */
++	if (sizeof(pa) == 8 && sizeof(addr_unit) == 4)
++		return div_u64(pa, addr_unit);
++	return pa / addr_unit;
 +}
 +
-+static void damon_pa_mkold(phys_addr_t paddr)
+ static void damon_pa_mkold(phys_addr_t paddr)
  {
  	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
- 
-@@ -29,11 +35,12 @@ static void damon_pa_mkold(unsigned long paddr)
- 	folio_put(folio);
+@@ -135,10 +148,11 @@ static bool damon_pa_invalid_damos_folio(struct folio *folio, struct damos *s)
+ 	return false;
  }
  
--static void __damon_pa_prepare_access_check(struct damon_region *r)
-+static void __damon_pa_prepare_access_check(struct damon_region *r,
-+		unsigned long addr_unit)
+-static unsigned long damon_pa_pageout(struct damon_region *r, struct damos *s,
++static unsigned long damon_pa_pageout(struct damon_region *r,
++		unsigned long addr_unit, struct damos *s,
+ 		unsigned long *sz_filter_passed)
  {
- 	r->sampling_addr = damon_rand(r->ar.start, r->ar.end);
- 
--	damon_pa_mkold(r->sampling_addr);
-+	damon_pa_mkold(damon_pa_phys_addr(r->sampling_addr, addr_unit));
- }
- 
- static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
-@@ -43,11 +50,11 @@ static void damon_pa_prepare_access_checks(struct damon_ctx *ctx)
- 
- 	damon_for_each_target(t, ctx) {
- 		damon_for_each_region(r, t)
--			__damon_pa_prepare_access_check(r);
-+			__damon_pa_prepare_access_check(r, ctx->addr_unit);
- 	}
- }
- 
--static bool damon_pa_young(unsigned long paddr, unsigned long *folio_sz)
-+static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
- {
- 	struct folio *folio = damon_get_folio(PHYS_PFN(paddr));
- 	bool accessed;
-@@ -62,23 +69,25 @@ static bool damon_pa_young(unsigned long paddr, unsigned long *folio_sz)
- }
- 
- static void __damon_pa_check_access(struct damon_region *r,
--		struct damon_attrs *attrs)
-+		struct damon_attrs *attrs, unsigned long addr_unit)
- {
--	static unsigned long last_addr;
-+	static phys_addr_t last_addr;
- 	static unsigned long last_folio_sz = PAGE_SIZE;
- 	static bool last_accessed;
-+	phys_addr_t sampling_addr = damon_pa_phys_addr(
-+			r->sampling_addr, addr_unit);
- 
- 	/* If the region is in the last checked page, reuse the result */
- 	if (ALIGN_DOWN(last_addr, last_folio_sz) ==
--				ALIGN_DOWN(r->sampling_addr, last_folio_sz)) {
-+				ALIGN_DOWN(sampling_addr, last_folio_sz)) {
- 		damon_update_region_access_rate(r, last_accessed, attrs);
- 		return;
+-	unsigned long addr, applied;
++	phys_addr_t addr, applied;
+ 	LIST_HEAD(folio_list);
+ 	bool install_young_filter = true;
+ 	struct damos_filter *filter;
+@@ -159,8 +173,8 @@ static unsigned long damon_pa_pageout(struct damon_region *r, struct damos *s,
+ 		damos_add_filter(s, filter);
  	}
  
--	last_accessed = damon_pa_young(r->sampling_addr, &last_folio_sz);
-+	last_accessed = damon_pa_young(sampling_addr, &last_folio_sz);
- 	damon_update_region_access_rate(r, last_accessed, attrs);
+-	addr = r->ar.start;
+-	while (addr < r->ar.end) {
++	addr = damon_pa_phys_addr(r->ar.start, addr_unit);
++	while (addr < damon_pa_phys_addr(r->ar.end, addr_unit)) {
+ 		folio = damon_get_folio(PHYS_PFN(addr));
+ 		if (damon_pa_invalid_damos_folio(folio, s)) {
+ 			addr += PAGE_SIZE;
+@@ -170,7 +184,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r, struct damos *s,
+ 		if (damos_pa_filter_out(s, folio))
+ 			goto put_folio;
+ 		else
+-			*sz_filter_passed += folio_size(folio);
++			*sz_filter_passed += folio_size(folio) / addr_unit;
  
--	last_addr = r->sampling_addr;
-+	last_addr = sampling_addr;
+ 		folio_clear_referenced(folio);
+ 		folio_test_clear_young(folio);
+@@ -189,7 +203,7 @@ static unsigned long damon_pa_pageout(struct damon_region *r, struct damos *s,
+ 	applied = reclaim_pages(&folio_list);
+ 	cond_resched();
+ 	s->last_applied = folio;
+-	return applied * PAGE_SIZE;
++	return damon_pa_core_addr(applied * PAGE_SIZE, addr_unit);
  }
  
- static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
-@@ -89,7 +98,8 @@ static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
- 
- 	damon_for_each_target(t, ctx) {
- 		damon_for_each_region(r, t) {
--			__damon_pa_check_access(r, &ctx->attrs);
-+			__damon_pa_check_access(
-+					r, &ctx->attrs, ctx->addr_unit);
- 			max_nr_accesses = max(r->nr_accesses, max_nr_accesses);
- 		}
- 	}
+ static inline unsigned long damon_pa_mark_accessed_or_deactivate(
+@@ -302,9 +316,11 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
+ 		struct damon_target *t, struct damon_region *r,
+ 		struct damos *scheme, unsigned long *sz_filter_passed)
+ {
++	unsigned long aunit = ctx->addr_unit;
++
+ 	switch (scheme->action) {
+ 	case DAMOS_PAGEOUT:
+-		return damon_pa_pageout(r, scheme, sz_filter_passed);
++		return damon_pa_pageout(r, aunit, scheme, sz_filter_passed);
+ 	case DAMOS_LRU_PRIO:
+ 		return damon_pa_mark_accessed(r, scheme, sz_filter_passed);
+ 	case DAMOS_LRU_DEPRIO:
 -- 
 2.39.5
 
