@@ -4,134 +4,252 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E52A3C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 17:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6098CCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 17:53:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D71F6B00A0; Thu, 28 Aug 2025 13:47:02 -0400 (EDT)
+	id 82E858E001A; Thu, 28 Aug 2025 13:53:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 188406B00A1; Thu, 28 Aug 2025 13:47:02 -0400 (EDT)
+	id 7FF3E8E000F; Thu, 28 Aug 2025 13:53:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04F6A6B00A3; Thu, 28 Aug 2025 13:47:01 -0400 (EDT)
+	id 6C6268E001A; Thu, 28 Aug 2025 13:53:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E19FF6B00A0
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:47:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0FF684545
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:47:01 +0000 (UTC)
-X-FDA: 83826897042.05.242238A
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 96B504000E
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:46:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="B/zJc+68";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of mr.bossman075@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mr.bossman075@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756403219; a=rsa-sha256;
-	cv=none;
-	b=8gFa3c6Ww+0rGtftsH/ofZBOLdHJGXTqgfisXtFBLriKNOlSMRnrHuzwbP/BMAghZnp0yd
-	DcLdyO3h2vfUkd5Em9k0hXJgagAxLRYxUClhZx7ca6hMNW0K/7OTHJSvqeLvBbzPVNfUuw
-	meSlHOlpoNeT857F39v2JXTIk7yuIs8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="B/zJc+68";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of mr.bossman075@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=mr.bossman075@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756403219;
+	by kanga.kvack.org (Postfix) with ESMTP id 59D158E000F
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:53:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0B882140321
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:53:50 +0000 (UTC)
+X-FDA: 83826914220.13.3026832
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9C75BC000D
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:53:46 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="h/fZokPa";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=xDs0i0IW;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756403626; a=rsa-sha256;
+	cv=pass;
+	b=SUyRSCwcp6E7YXq5SDuu9fRgDz72wB1CKNL3IRdtxiCV9Tv3IO+59CCpcIpKuFpJzsMeMt
+	dFi55L5K2ZzL+9BHMg3Z7E+ChWLnCzln5F20LEVg92LR+r6f/sOaQjhJxH9hQB5LpgroSg
+	S5+LXRUMHHsQYmeeZmygXr0RmBPP/ds=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="h/fZokPa";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=xDs0i0IW;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756403626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W5BQ+lgCm+hFgInYum/X7ZXkFamcbZPOD/z43fL4xMo=;
-	b=dvEe57JfeG31IQ/+cZle2GSNvHEokdaZGLfaZZtsrvUWgfTNdCsdVtRdCcVt27wfl9cf/t
-	SNBcS9zuFpSv7g3GCD9c5/kasPXciOGyOJlh8DwCfNW8RjhMKvQXztiNYeltYPRTFCI/SK
-	Zmz9RqPOdXq9S7bo3uxbo1/kLr1Rvr0=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3cdfb1ff7aeso610087f8f.2
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:46:59 -0700 (PDT)
+	bh=GOYJsD/YhtXAS1h+B7Rccx3sCX2ZwTksQ3izTJdLVWY=;
+	b=YRYRj/urvWaTESc5n/AdXBvHcG5Qi9Nm3430FYId0UYe/ugFomMScoEcfw0ZapOtbI8tsX
+	dkqY9++jQWGFBib4HuMK54/JptiEpRXBAZ/zVmReWtMQnDGNjxlxTf+8NmbgYE2olRkmFl
+	14dDiXmeploUoS2tzmm8OqjniHeMfbw=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SHMqsc023314;
+	Thu, 28 Aug 2025 17:53:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=GOYJsD/YhtXAS1h+B7
+	Rccx3sCX2ZwTksQ3izTJdLVWY=; b=h/fZokPaRtNZwJ7cWBWazorPnXUjUAiWQD
+	m6nn1l8/u9AyIw2loYINJuN/Egg45MaRH4KGLCi/imrajhvfiIjipyFNxEoI37P+
+	BvTBNxJpmLRh3dMi8hXnXCcPNT6nDmBbcGVRppNM5eSMF6Fd3K0X4XuIumTwrCdN
+	pBgllt3zOkDaIoBiC1Q/jy3GcVeIsS1jJgF4v2QTSTGsu+Y4OKTf7e1zZvfxByIs
+	o1GKnGsMezYdj6UVcq+9I6OrLihC3Rddeh9ybGNoiirvcet5RI+rxY9vBc+f5i8w
+	871oftXNz7Z//pLNMFBel3vjZztr3NTJ+jNJe4KI+yNq5f2Tbupg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q5pt9895-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Aug 2025 17:53:35 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57SHcdas014760;
+	Thu, 28 Aug 2025 17:53:34 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012066.outbound.protection.outlook.com [52.101.48.66])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48q43c6v9j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Aug 2025 17:53:34 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N3Ge+JLEutTd2MpRRhrS0tPCL6bdts+xffCnvLWKEIt4PZI/Wm5Jv/m//6iD4wIMpX+WeECpkGw0SvuDSBPwibT8b1Bs4bOsS8Fx0ZqBKwwC5TVgcdZ/JyLyFhrctW+EAOoYgs2ZUUZ0PT0pjHBSJWbH392BT6pRLRp5R4xHuNs0E9JW7DvNt4a1SvG7M3ALT0DeKsWNWpZfScnlh1CMexJewUXXkpzW8K93dILTfRK/tPfNUW3CH6HnR4HKgrcYlpl7ykvPyWpk3CpK6RZArk4BCmtfmz4rC6B/E9uctOhWUWvll5oygxVhgwj/6Y0l/a48mGOeNJ6GvTe0pCK9lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GOYJsD/YhtXAS1h+B7Rccx3sCX2ZwTksQ3izTJdLVWY=;
+ b=NI8uL13ItAcnCSBwYPuETdBFAzmlNdOCudFfYL4DN4rVLi5QmYgIez6G62RUPaM7G0ixStwbCVnciSyrLp5nZ/zklzUQa3UIInoanZUIcooCdUy5T7BihHTn4+PBWeIVOj0UOByy6i0OQ6wveGMiPbK5BJC1gYFHqyKdeTdaZdw1kVPSNI4fC9gYo4qxNme//dGkT7FxlbgUcrUX5aLYpS47SSCC2FN+1yrvTMH8U2lbUBpo0jDtz0pDGZoBFQNKDB9Joa+ccQdQMhc4q2k/TpT0HAZvC5jUoNt2vY/FVKaiaap3wc5Cn/xDj93KCEDlioPIS/1syRPIl4+4qzRyFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756403218; x=1757008018; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W5BQ+lgCm+hFgInYum/X7ZXkFamcbZPOD/z43fL4xMo=;
-        b=B/zJc+68h5SRR3kM8REbD1Io6SvMJR1u8GNxNrSwad6ASsuVogP7hG9T+zLlTzCe24
-         kMKIoYXjkhtSzCy4IhCnjJRK/ujsMeyvRSt9sMkoT6Oh+eQU3mU/bOqNyLW+Y0DzbX3N
-         Gz9jDC5IzRSwisOpioX346dvHxso3DbxyT491hRc14OKKVAzWt+hzhnfwBKhGnnjLYyz
-         bpxQrjRLzEvyhhgqJVutXMCHEoxF6FWln3hsw+++P7yH/op8ZBzTZtiyBgts1pjXzNXr
-         EVCvD3KvA3/vbx+zYtkofn5GdLWhX1844NR2jMU3B2MV2xeMwCWlKgOEPZCDuBHnA/wQ
-         LcpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756403218; x=1757008018;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W5BQ+lgCm+hFgInYum/X7ZXkFamcbZPOD/z43fL4xMo=;
-        b=WJzlrxOHpM/jSW1C1eUrcFSuhGll9K0fWnIxExn24AKQrLR2is9zPFu+r0n8VHbTVe
-         /VsBTTatkBiZu+poHEKM1Pf3rAwVy5vMx5bjYkCwsrJTbHjWkzlmwWhFAzhzcFwRNISt
-         2YWzTg6JQcadzM+ZIaM9N5B7/0B7MTWmw3pEUhfVu/AGaU8gGc5quGnZndGZkRwdGM/u
-         CjTYFajSnEzpvuHQuv+kG9MyRhqtZvrwR4P3I0kkm5/D+OgQI7QbiHZIFEJwVUXh420J
-         jyRJ9eUmAtf1+B/xeb2mNlsKoLgnCDPxHOOpOrGQTlMdHWQ0GLmApMmvdOJNgEoJjbXe
-         n1gw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvpDVzkMl+jBKTR/ulrnHBW+GsxTlDO7GoxF5/ETqtgqoTbLwbfLO3i7ehN10cXuj9jyJB4vCF2A==@kvack.org
-X-Gm-Message-State: AOJu0YyIf52vmNVl9lnW+oTy0s2GZvguoPCEQzwsD5pTscih7WSDxWAF
-	cYI1bbNZRNjWf2nzWeOhHPwmKiasFYBKWCypsNvIMSW9e6+FI9qduuSXChRrPkcEPXVhSR1JIkz
-	rbPH2Be8g7HV3elLDS60mFOVdaWS6sfs=
-X-Gm-Gg: ASbGncs68v3M9Eujr7QxjdUxypKw2GX9/9EZhX/v+QKe3mddD9g4FRoYqgcaY8X0yFU
-	u81Bv1/JFEwBBXOufjCMlq4EeWiHRinEQiY3p6qerzEcV1GGfmx3dnCwiI9O9dlxnAcX90x5jE7
-	rIal6sR5pL8d7rFHRyLha0lFWPZi8snu8q1dcvdqLRtU//kJ2Gbwihfa1yL93D5hn9tg7MSc1NE
-	KwE+dC8
-X-Google-Smtp-Source: AGHT+IHvqyc3pb900sJBUTlrQWedECpbYpMB5xKIU+44UTfcRa//ZihI5MLQ29+opQFj6apn6sL8VahQFE2wKNg2fAw=
-X-Received: by 2002:a5d:5d0a:0:b0:3b8:f358:e80d with SMTP id
- ffacd0b85a97d-3c5db8ab097mr20611204f8f.5.1756403217733; Thu, 28 Aug 2025
- 10:46:57 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GOYJsD/YhtXAS1h+B7Rccx3sCX2ZwTksQ3izTJdLVWY=;
+ b=xDs0i0IW8aZh4hwjBISYahzODvwUs2+rq/EC8EovZrzb1mks1iKuyHYjF1RDMpr4soC2yDaaOutM9vlBciB1wSPlN6aBAj2n9lPcU2zhV3pGqaQNHYgw5g/0ZZpGC5fgrcxR0BAxilGpc9KpBHaG2OumWJtODwNqd3oAawW3qwg=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CY8PR10MB6827.namprd10.prod.outlook.com (2603:10b6:930:9e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.15; Thu, 28 Aug
+ 2025 17:53:14 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9052.019; Thu, 28 Aug 2025
+ 17:53:14 +0000
+Date: Thu, 28 Aug 2025 18:53:06 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Brendan Jackman <jackmanb@google.com>,
+        Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+        Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
+        io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+        Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+        John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+        kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+        linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+        Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+        virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+        wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v1 23/36] scatterlist: disallow non-contigous page ranges
+ in a single SG entry
+Message-ID: <c8d63b04-b8d4-4fb3-b2d1-f48d1004ba9e@lucifer.local>
+References: <20250827220141.262669-1-david@redhat.com>
+ <20250827220141.262669-24-david@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827220141.262669-24-david@redhat.com>
+X-ClientProxiedBy: LO4P123CA0576.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:276::23) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-References: <CAPd4Wexw_DtndDqRZzXK0PEOAkb4yWB4x8rf5eRdJOLMS-+8SQ@mail.gmail.com>
- <aK68IJPqa4YOo1S_@ghost>
-In-Reply-To: <aK68IJPqa4YOo1S_@ghost>
-From: Jesse T <mr.bossman075@gmail.com>
-Date: Thu, 28 Aug 2025 13:46:21 -0400
-X-Gm-Features: Ac12FXy3BQPFYJAdE_d0UGKSqV1g-N92aO_29KxePtztahgp0gtMrPVagjhdXHs
-Message-ID: <CAJFTR8QKhMVVGa2BRpBcDvXggq5anX5wjTGH7V0_ex0JZfa7sw@mail.gmail.com>
-Subject: Re: [PATCH 5/8] riscv: hw_breakpoint: Use icount for single stepping
-To: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Himanshu Chauhan <hchauhan@ventanamicro.com>, linux-riscv@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Oleg Nesterov <oleg@redhat.com>, 
-	Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Liang Kan <kan.liang@linux.intel.com>, Shuah Khan <shuah@kernel.org>, 
-	Samuel Holland <samuel.holland@sifive.com>, Conor Dooley <conor.dooley@microchip.com>, 
-	Deepak Gupta <debug@rivosinc.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Atish Patra <atishp@rivosinc.com>, Anup Patel <apatel@ventanamicro.com>, 
-	Mayuresh Chitale <mchitale@ventanamicro.com>, WangYuli <wangyuli@uniontech.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Nam Cao <namcao@linutronix.de>, 
-	Yunhui Cui <cuiyunhui@bytedance.com>, Joel Granados <joel.granados@kernel.org>, 
-	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Celeste Liu <coelacanthushex@gmail.com>, 
-	Chunyan Zhang <zhangchunyan@iscas.ac.cn>, Nylon Chen <nylon.chen@sifive.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Ravi Bangoria <ravi.bangoria@amd.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Joel Stanley <joel@jms.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY8PR10MB6827:EE_
+X-MS-Office365-Filtering-Correlation-Id: 33cb7f35-ed9b-4dbc-535a-08dde65bc31a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?1H7/qWXzWMGq2GRRAFvmGi9lYxn0MOHA7c5qJLxA3Ro9vnY4cy+OQOAlbzR+?=
+ =?us-ascii?Q?pkRtYgzm0uWOuNnpnfUU2N13zY0REp0nXQxA8JHH+kGqwO3VVPM/tGCQjQM4?=
+ =?us-ascii?Q?H2IhGnaVNZ6ATkyfmPuUxYLUaogXI4vHwAHdJ6EE6SplP1uHNq6Ama8pUHH3?=
+ =?us-ascii?Q?mtRXk2GP5myA3KHx0VygQGiqQ+rkrgc7Yx9qwtM+RN58lgRTxtRKqHVTMtYV?=
+ =?us-ascii?Q?tAwBJaCZ5tqu2gxAlQ6Byf94zFn0+wHCaMuT8LaaQ0hRxDaIygn2d15W/qTx?=
+ =?us-ascii?Q?ig9nJiuP3j/W6ch5pCFsuyKdc0UXeMzVSDNV0EL52v4asguA7qwzZFvWvHi7?=
+ =?us-ascii?Q?Gns8v2AVNt5TskEjPm8LkCZy5lXCPSiEyN2CSX10dnSGmebhhW7L8CPLM0s/?=
+ =?us-ascii?Q?IWn3MmpbHvfkbNtLd+jM4khGeeOETlqRmq2ZBZabg5dW02LiWr6xHeJNGPWj?=
+ =?us-ascii?Q?1ExDoCTR40uB+LnkffYWtq5LWPSqmsjXlYMj1U1bgYHO2BTskdAB2EGgutm4?=
+ =?us-ascii?Q?efT1dFdDwqDsiAPdrhaF0o5cq+wQuQXOc2LJnJ+FTrWahdGbmiUBCMtypmHv?=
+ =?us-ascii?Q?JVnRTS4s/NTQM5mZrSqNkhldKWasQyEuUSubnl+PpV7HHK/LcD6/enbdiSzW?=
+ =?us-ascii?Q?t0CpVWKruPq4oGBnKsHQoIWLFh0mwUwKgyPaXH4++UgjPVwESnIus3XKkvj3?=
+ =?us-ascii?Q?CUKsjjfvCBOUoxfAjaVEICCW2eQO5nFoSZWxUvCnbvV4uQ4qmxMdp6mLPSQ8?=
+ =?us-ascii?Q?9w2k2cu2XzOsL9C73ZFUPTaOQqSDyGP2FTjkpVOlvdtZi6iYkTYOtu7rQ25r?=
+ =?us-ascii?Q?+KNj6szsiJkomKFzqrIHVrP7gTbjODYOk2A9eo9gC8qytp6K6HXrvizn90TX?=
+ =?us-ascii?Q?1ofjhPk5xBWj57EGyLlqDktnX5H1tkOaZiS1+8Oyr1r/7SVHtyMEZsp3S6KK?=
+ =?us-ascii?Q?XIM+Nb5vE2I+8o5YBzyPFbT8WSz5IT0nnAoxtdSWfaDpzUyhpp0QMgOpUdj2?=
+ =?us-ascii?Q?SBR8tnIFnBnjGb7kGdguHBmYN67IdHmAhm2zgB44EJL2xaIngtADh+Fmbmqs?=
+ =?us-ascii?Q?flUtRAk4aC3lrKQDOkk9ZJmIpRK1RlYx+IMqr2zpQ9SzfN6TdDb0bxozy0Cn?=
+ =?us-ascii?Q?XqPPvY6edFKtNumJAo6DBxp2wUH2plL+oSxlJVUR2z4a2e27VttT6Pipss5r?=
+ =?us-ascii?Q?JJGRzOxnIafkhrhQcV/wDR06qrkSdZkWqtnm/ZQK1JB9BbsEnQomnjBtW7Qu?=
+ =?us-ascii?Q?HjZdJcX1Fi8A89hzOUeYv3ZK1XwTrb120JUaM/pmrQT7QAzF43d0n5sHjnPV?=
+ =?us-ascii?Q?K1lijFir9i5E+rB8gxmF5IyLU9gD0wnTAUTyBWLc8KJiB3gsV6A7nPcKourV?=
+ =?us-ascii?Q?eL8cWOcDWMe2ARLkepfwTT12Hh9mZ1HzjtLg9t8v4cfGIGnUdETJWtUA7RQi?=
+ =?us-ascii?Q?c8XVIL91vLs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ew0AJBaahxXfASFKbT+UKpAML+TRgstpi5erDBh8G2Rl3kS16NjpBxA8tH4q?=
+ =?us-ascii?Q?4DjaFbaFPV1aDtNhw2lYw4kvdB7lediaBMgCYsXaVAvZbGItAZoh+Llqv8zm?=
+ =?us-ascii?Q?zkF39YUH2qG427v1MUW4lY52AI0NLwHBwU5EtV7TmfwRPH8TpJAysmPGj/uQ?=
+ =?us-ascii?Q?qx5i7rPrT5sJ24HP6bStVAIS12ErIMgWWKlT8sliQ4xb+oz+MVATNSmEIn0j?=
+ =?us-ascii?Q?dCEIxdQfLOzFCbDy7R+Xhf+mPf4wo68m2bHivLOOeerIAeoh92SGU6Yy3vfd?=
+ =?us-ascii?Q?KqU+DWy/iT7ZRej1VZOnQvT1LF+nGww8oIzYLtTbHoOo2Lm9Vcfhwdt496yH?=
+ =?us-ascii?Q?hFEL4feCnV2H3HYvv5jo8Lks4CK80sW4SFcm1nvpvLnxgKsCdYzz/P+Bicfe?=
+ =?us-ascii?Q?QZwo5G7rXQ0xsrMbAyjoI7Mdh4+Qwr3ZNaE7IhivISAo0vuY5bO4LNt9Ftua?=
+ =?us-ascii?Q?BbWGR2vq9KZu4bmBLXtxmnn0ZEiE2RU5cb4MdaXQ7NVBUMAuH4+DH1vhsZRp?=
+ =?us-ascii?Q?XAx4K0Ea/jqhgKkpfBWU8V+lhlnSR6aWkrB0Qfz3tjfJtOT49lI2Kb3LqF8m?=
+ =?us-ascii?Q?GRMVUKYZSNEqIP7L1wR6VwGE7t1lN0CKwNrWpp0SNnvWkdZoRfaBKm3NzvF5?=
+ =?us-ascii?Q?s6YqnePFZz84zz2TRYpg3p2CYgV5M1Y+Tyduj4p5pofvlz3wobCwVfaiBTnZ?=
+ =?us-ascii?Q?OVuqZP6wIC550V05/SdHfIVIaJjP+GtWfB1VzHDwPDlKSs8WUSnKaFQ10tQw?=
+ =?us-ascii?Q?1bLSL6KxziGfVnifYkcLAkyCMcfyDokXFPjPKgNDHVltdaJlyhydUFbD1XiG?=
+ =?us-ascii?Q?aQE99NajEfD0xjszCt+GzWz44awzkmlLlI1QyizQtVRwln7ejgOMo6D7hNZN?=
+ =?us-ascii?Q?RaFAX0Zsk5vQEG0ot1WAlTUiFAxsuIDiGdmC1OFNDt9BIsmzzytEaOwCI4Zt?=
+ =?us-ascii?Q?l54bfUtVYjiFMAXYzscDJ50sM+TJzNAg8gLAGDxwjTDGTakKRcdtceubMxP/?=
+ =?us-ascii?Q?K+9KYEARWpayOSqqwAowkrnfkOuA3y3OKDEp8u0EhtIpOizUCfr5lFlIkQ+t?=
+ =?us-ascii?Q?pZkbntZd38/7A1P1KZUwnTQbI9m0fIBFKdNmXo5MeX/fvnfgDTmx0DFIlcPY?=
+ =?us-ascii?Q?g6P5qS/2sftmv/ui66UkKZM20qxFsgP4CH4Hm3Q+YlShFln5dvr6sdRQaG4h?=
+ =?us-ascii?Q?OI8jnjqNMOXwypPcLDuJsABfj/HqQcSF71AcQX4VWmCXGV2ZTO/CEIOyEERY?=
+ =?us-ascii?Q?CeQzFamy8X5i6mpPXXL7vth6i8pN1xFJIL8l36SW09Ec0xL3Gu2v0kJbgnIM?=
+ =?us-ascii?Q?D69Brc/u0jYqk/kpBOd+DER2XLQekqUCHId6HH/ggYr5gq6G3YNi3NE67Nbn?=
+ =?us-ascii?Q?dlhaFu6M7RHWgdG8sIG5LcS2UPxk9LK8pzDYVdTgoGr9WFPwV83aO5cBUfp+?=
+ =?us-ascii?Q?88Tp1809GQFxIlAHcH02+BySdHTkXxy1VDJSzq87eVr1rJ2czN8ABELzhzj6?=
+ =?us-ascii?Q?oHLL6KgPKyF0oQ/ZvKhap5Rd2J9zRw6YN9bWgvEcTP/LpY8Y6NOzl5BPsgcd?=
+ =?us-ascii?Q?j6RfM5fEyOwIpLSDgJw8c7N719naqU1VpXC3CSbxJVuk6f0dYO6P+TCSjg9D?=
+ =?us-ascii?Q?0Q=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	B8A8/6OorYGOfqc/3ykWhPpNdRT6JTnlHZwCmyhNnErobwcO7uSHGOeWURDSxZstnlVVn+j3eGNhB53X+5zG+Xs4VOC1aU54WndaiYF+Vu77OV+M/hE4jcUeRbph6qwGOF9AnVYntr7lhQGu9BzA34AFNdtwRjrAud80DVaYbtuS1t2Eoyw0BbeCbk9cN3rk9FWeMfMIdFpuocfdcpkXlt5XXiXHlEHLOTbreE+bF74pQFD/OZBbtEiPgwEuDxrVWbCtEfRoc924Y80pmqZCTyoCxyBF8XhyJtzBPHXbpOr84Cp+jdGlJwXCTRjI4ZffDGfFAhtcUpO+zmqmcS/icNoHuuQ5+muqkCtZjgt+XZB4UXFV1W2riuNjCLNYU1ydnPlDwXH/oZKaHfAiXumoSfByyhnnhuTWKPR9P8bR6046cpf7O/Tap/An4okyPeBSzXLrbdg5jWSmNE3jLuzGvPoFlzuqhD9kTC61pnn7oB0O+BJxyPkYx5nQTJCZ6OJrZlZ8kO6hSa5712gjOBEh63Zwl36KinaRZNRd3L28vjr7/AP6Ew86WOXR/Lus3po5eIn3nd+kG3GyRWpBmJsD3gBmZtpuUi6XTeCYTmZYwlU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33cb7f35-ed9b-4dbc-535a-08dde65bc31a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 17:53:14.6878
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2UCuyntFxVRNOLXWk2FZn7BUuONtsxMgizgmgVyxjPamNI1keHdi2otdQ/DdRIYMVgU4cKfLsPEioNyb7adU1Sd25sOUKWD7+sDTg/u2bAc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6827
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ mlxscore=0 bulkscore=0 phishscore=0 adultscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2508280150
+X-Proofpoint-ORIG-GUID: 94ODpMm5JxgD2w1vOwGeZ-75oDVAIRmf
+X-Proofpoint-GUID: 94ODpMm5JxgD2w1vOwGeZ-75oDVAIRmf
+X-Authority-Analysis: v=2.4 cv=EcXIQOmC c=1 sm=1 tr=0 ts=68b0979f b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=hD80L64hAAAA:8 a=20KFwNOVAAAA:8
+ a=yPCof4ZbAAAA:8 a=mkOwHSSQoByemH1NnRoA:9 a=CjuIK1q_8ugA:10 cc=ntf
+ awl=host:13602
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMCBTYWx0ZWRfX6qRXz9WMLuce
+ aVbTbfBghCGnBuWgeKpDkzFE1ZdI0zypjs3nWONu2NHhNmCOxc7LMw3AhLxYylUG2H3m6O6uQ2m
+ qeM69DThYLFRSYGZfb2KoKrfpojTW/6/tdoF8is8J+OxuDjZtmKRIZqgHwLwvH7JV3y9Ym8r6dO
+ 2qiphhNDMh+F+vlS/RMEVibzgA+ku/kBlYLNZkzu6KC36yh2aS78p0zzRf/guJpYIveuruo2aOj
+ 1Rtr5i0sur6y5JWH2hXq9aV1rfwwe2qMzNj16if5rCMXq7oRxZTmOmh4wKE9B4jiWjOMvozX/nB
+ 1wzykXZett26lMcoHpjklfFwywUkV7Lyv5+uQRp/QIDoJma/w9P1XL+DzMqnu2oBx2sxyu8ARZ/
+ xfSx7GsjMwaL9KjAw36tI2j/G1IIJQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9C75BC000D
+X-Stat-Signature: 6dzq1kx1b9z9ru89wyf14orjfwrncyoi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96B504000E
-X-Stat-Signature: xmb3m13kgrbygxnehz5g8g3qbi19a9jq
-X-HE-Tag: 1756403219-449262
-X-HE-Meta: U2FsdGVkX1+OtJyewBbrUPSt+NhtE0OOF9GK9MUefM/+P84u4h3HBvXN17LqFlzBbZUfQnmVPa1zNS8fBoNGRx9m+xZWtRd06FOKSZqI2SOzKQspP/RFq95Oq57UBoANdqgHId9L9kkrcK71UDjeTvPtreaMA75aNQrbaFgDGhMlZRPFLaLaTbLSvPx+T8gj8WOfMrCWsLxp1iv2rltmtyZ3usgraYjd1SWMlURzOMn3VkGt8CVYpFg68xmCspIvFN96hV5Ia+jxrgCay8EuR306ewxdKN4TyxwIYFZMiLm3DmnhksLTNtVqtD6gq3ik0jGl8pgc/6ypf/fCG9XTVe4tkkx82PPWBzLFyZl7s9WjKO3zPH080a3eRG0CEtN+WuptpJ9xkzQRCcP4UUlCsmh/c3QWaophvvyGvvM32qupN+rzbxH37FVllWIK10FlYDbm+cVsK3y9lY2nnJu+fLBmFfgQVlSulF4xnGSGD4txxVgsxO9+yOvwAraXW6BFIcWz7uqYFi80pfWXjw6ikyXox+4Cu5479uEmBDq9PjQtM8nR2Vu+LknoxjW7aXlIInlEDDs1GmbW3KwqxOQn9nwY7L4PiK1Gjw0REo+Get56cdFZmjdnRHm4b4e9NufVdlVO8zMeCiZUWnbmMcF5ogpq7J9orRlSBracQWCN2/f68pxztmfmPCzdeCKeUHE/ue10dZjcjYYDjmOLAHdSADSgT3uGPFEskWVmCUG3U1jkn6bG/1tSXP69CISh5JVzPNhLV5YSFW5JXBRZ0RYrLAZ4U70Q8/P0tNKeudro4u4zKWbDpM31KFwMbT4eLkKGU+qNxlFYxeqNIp219jyxO8RJo3j8C+orPflvxuFtWuwSTCNndtLnhlvASYt3SiomGFnuMPrXomQ0GfrPi+0rqUabH16IX5TlTXqC7VJ3ktT6KxtqjHC8cAhQSion6TmLVdrkT7FQ09/MgIJPihP
- wOp4vBlK
- 8SXX623Inhclqza0egbSxBOORaYk2H2qQfGLfLcPMp2MgWtCW8fQW/q+CIAFYgbQKOkv4wB+fKA7ekETxMJ0V1XRqYYpAvUftAWlU9MiR5XhnnD7OYE8CHXzOsmPSN7mFaOkd71bJCFhmUjnnNX6RV+Nv5lZrvyWiO50YckXFK016VZfo/GMa8edIM3bJogc05iSHJAVGj0YvxaccC8+pu823ZC9xNfdMq03IRcLYtO2N3fUo4ZsDfvLmcokui6KGhLJTAtGFoVkcBGNPreiSkrSFO34x0VBvP0xA8nwZI7SSQJJLTTiq+R0IXpNUukvDlKyNkgVgWpMDwzi2Rx10CHb1R7ksnGb5BwJA9D4aR+TEahUfksXSqA5MQWNmypsP8RmqWn2C2Vq4NkeiUqotaJcYzgDeMuXo16gzcpENQrmzk8Qh+cpqRDJWr56S8JrHq4367KHq7kKAQycjGPDH0AsR/zANnfwAreeeK1iBoHFyP/E1sd88HGZZ2w4+LiMDYw5OIzr0bxDwXIzcHZGyixOQmJCpzWLTqRac1GWrxfyZjeQ=
+X-HE-Tag: 1756403626-897744
+X-HE-Meta: U2FsdGVkX1+okbVOx5kIJ+MZXawoR8XvuuNGwyKoaB7yKfDiV+d+PLLyExVwPyObIoh5FGkXL2vm6SXhmqHfimP0evJDCzakcsJ8/4M62UaR3cijkdn+lMoyfX33/nf37f7Nh92IFya9z7mL1k++vcSgh6Q5X+XRpdznYoxXU566wpqzhLdngvLG7jVtcU92RweVgsq/XYtXP6w+A6ok+6lEFxwtcjzDfAb/VhzdEaHEadKEXxVtb9jNUU4RlrkOmtB++qLgLKZUY8UYSGA8uI8mAQA2Nb/eCTXyFt1sQ9sIh+WPxdpb0meEGeQDvjj6thqiaJTFRbNRVREked7ENv8lpxMSlgXhpZjhqK4yVm029KUFHjH6LpV7CR1OQKMxkOgFUl7Ku33DO69TKAv9WhglbFoIIs/6vSFC7TjD0Eh/QczQVTmu+pjdcbQiAjUQsaqLrI4CCQySwZQK7tHbUNQYgtVW0/PDwA/d0NFvL0JzvOrJmlVa1gG+bAxaLpUQkfJsdi1q0JDQ/2q9EnAGE0LDkpi5BccDLvPfGcb/E2enKjbhJDeKbECjNA6ab3IfCRUbnJ09AcZziHujdIV0DMGPrUdwCfD1fMWrRx700ueaKTPDVb3msrO3bV16AD+RM8JPSyuvWoR1zmTasrasfvppwLv838UDuV7ht/iue37IipswSOYY+9X/xi4nvWTsJSERAA3RHSSaeJafSD54B4SW34pb8dqb4SRilGa2OjMMoMACWAa8ccobo9UeG36NCEFwL1h/9m/KNHHaBq+FsAyQG2QbcF2M7/ArVwSD8Uq8V5+0FICZxGee4MNhodvNOUizirKyFBl9diclckRVhP8pcCP2JkUCWNJjGnHkVJD6l7dsey3R6DFk1g3TTiZL9HgSPlq4J47/8dadg0NELF20sB/f4dPFUVugAUkSaUt0t/5YgWjuthwe2ior0FaeCs8b7vazH/c2EQFPr4C
+ 18fJ3ElZ
+ TaRCrDQOT6M7WTKtSEwAuRByw0/iqc9/cLPT6b++c1pxYlY+NH101n5F0n4Sv3jxYt8DEnvjHj2A45MataV4qPWRCd69gr+YtDgLZO6FghNNjpAiLkEwu64R2j/bS+e7GYJ3DneuZAtREqXl9OEyIvGY0qnmWS4acecMqaXRbl0oqZt+P4XllJ84CtI4yKyal+Qnj3p3uZx/kH/RRbXgEgw7NECl7fFhy1NjUjmI3OQphKVGpIUUs5+4A1nedEKVoy7MBBfBVKIC+OqLdLiaH6r8biqJF6R+Gw9erF0ymXY2sANiQvwjtnSLwG5Vw9w3emwRHrKfQPHx2pG2U6VewuYdoytAWA3uyOBm1Q1puuWmLkSxx6rTiiEt2iWXAAhaKUZHOn6Bbcrk8zrf83/bq3HSDnWKZujcbt4UzUpXH15LlG/qigKxGYcH11MheAr9kHGMbdO5Fi3hBEs33xVOwyODeaBEiHenCzCg3kTfIEStiD7Pr+txf+iMKwh7jfGgfqtXSFWbKSXLYie5HDAb6uILLLOSe9QHuTWswymo9FXCKHD576RIKAU9x4MPPXryBLC4B+s2TldSd4mL6Y5Urrc5tErSe6tpyV8Ka2NAtEno6CWBHOD5+WbN2YmR3gCpl35qXYEDsRl/5MwCXtGcmMS7YzLpiN37AknT1KLhJqZw/7f7NqVZ7SYJG1O84hbgs1Z6JdRywWL/zJoE9oLvS9jHEnQOxr8hN4zul0gKLOU20aWZvy5a6TA2abD5YFS/51lQL2VYoG/21azbB8I3XnAYtIDIklfBVZOKoi3PBekJmAX1meVGTQUrCpQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,399 +258,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 4:04=E2=80=AFAM Charlie Jenkins <charlie@rivosinc.c=
-om> wrote:
+On Thu, Aug 28, 2025 at 12:01:27AM +0200, David Hildenbrand wrote:
+> The expectation is that there is currently no user that would pass in
+> non-contigous page ranges: no allocator, not even VMA, will hand these
+> out.
 >
-> On Tue, Aug 26, 2025 at 10:08:04AM +0530, Himanshu Chauhan wrote:
-> > On Fri, Aug 22, 2025 at 11:17=E2=80=AFPM Jesse Taube <jesse@rivosinc.co=
-m> wrote:
-> > >
-> > > The Sdtrig RISC-V ISA extension does not have a resume flag for
-> > > returning to and executing the instruction at the breakpoint.
-> > > To avoid skipping the instruction or looping, it is necessary to remo=
-ve
-> > > the hardware breakpoint and single step. Use the icount feature of
-> > > Sdtrig to accomplish this. Use icount as default with an option to al=
-low
-> > > software-based single stepping when hardware or SBI does not have
-> > > icount functionality, as it may cause unwanted side effects when read=
-ing
-> > > the instruction from memory.
-> >
-> > Can you please elaborate on this? I remember noticing the absence of
-> > the resume flag which was causing loops.
-
-Yes, signal handler based hardware debugging doesn't work, only ptrace base=
-d.
-ARM64 and ARM also don't support signal handler based hardware
-debugging as seen in a later patch.
-
-> Thank you for your feedback. Jesse's internship came to an end last
-> Friday (August 22nd) so I will be picking up these patches, but I have
-> also added her personal email onto this thread.
-
-I forgot to CC my personal email sorry....
-
-> When a breakpoint is triggered and the kernel gains control, the last
-> instruction to execute was the instruction before the instruction where
-> the breakpoint is installed. If execution was to be resumed at this
-> stage, the same breakpoint would be triggered again. So single stepping
-> requires a careful dance of enabling and disabling breakpoints. However,
-> we can avoid this overhead and code complexity can be reduced by using
-> the icount trigger which allows a direct method for single stepping.
+> The only problematic part would be if someone would provide a range
+> obtained directly from memblock, or manually merge problematic ranges.
+> If we find such cases, we should fix them to create separate
+> SG entries.
 >
-> >
-> > >
-> > > Signed-off-by: Jesse Taube <jesse@rivosinc.com>
-> > > ---
-> > > OpenSBI implementation of sbi_debug_read_triggers does not return the
-> > > updated CSR values. There needs to be a check for working
-> > > sbi_debug_read_triggers before this works.
-> > >
-> > > https://lists.riscv.org/g/tech-prs/message/1476
-> > >
-> > > RFC -> V1:
-> > >  - Add dbtr_mode to rv_init_icount_trigger
-> > >  - Add icount_triggered to check which breakpoint was triggered
-> > >  - Fix typo: s/affects/effects
-> > >  - Move HW_BREAKPOINT_COMPUTE_STEP to Platform type
-> > > V1 -> V2:
-> > >  - Remove HW_BREAKPOINT_COMPUTE_STEP kconfig option
-> > > ---
-> > >  arch/riscv/kernel/hw_breakpoint.c | 173 ++++++++++++++++++++++++++--=
---
-> > >  1 file changed, 155 insertions(+), 18 deletions(-)
-> > >
-> > > diff --git a/arch/riscv/kernel/hw_breakpoint.c b/arch/riscv/kernel/hw=
-_breakpoint.c
-> > > index 3f96e744a711..f12306247436 100644
-> > > --- a/arch/riscv/kernel/hw_breakpoint.c
-> > > +++ b/arch/riscv/kernel/hw_breakpoint.c
-> > > @@ -20,6 +20,7 @@
-> > >  #define DBTR_TDATA1_DMODE              BIT_UL(__riscv_xlen - 5)
-> > >
-> > >  #define DBTR_TDATA1_TYPE_MCONTROL      (2UL << DBTR_TDATA1_TYPE_SHIF=
-T)
-> > > +#define DBTR_TDATA1_TYPE_ICOUNT                (3UL << DBTR_TDATA1_T=
-YPE_SHIFT)
-> > >  #define DBTR_TDATA1_TYPE_MCONTROL6     (6UL << DBTR_TDATA1_TYPE_SHIF=
-T)
-> > >
-> > >  #define DBTR_TDATA1_MCONTROL6_LOAD             BIT(0)
-> > > @@ -62,6 +63,14 @@
-> > >         (FIELD_PREP(DBTR_TDATA1_MCONTROL_SIZELO_FIELD, lo) | \
-> > >          FIELD_PREP(DBTR_TDATA1_MCONTROL_SIZEHI_FIELD, hi))
-> > >
-> > > +#define DBTR_TDATA1_ICOUNT_U                   BIT(6)
-> > > +#define DBTR_TDATA1_ICOUNT_S                   BIT(7)
-> > > +#define DBTR_TDATA1_ICOUNT_PENDING             BIT(8)
-> > > +#define DBTR_TDATA1_ICOUNT_M                   BIT(9)
-> > > +#define DBTR_TDATA1_ICOUNT_COUNT_FIELD         GENMASK(23, 10)
-> > > +#define DBTR_TDATA1_ICOUNT_VU                  BIT(25)
-> > > +#define DBTR_TDATA1_ICOUNT_VS                  BIT(26)
-> > > +
-> > >  enum dbtr_mode {
-> > >         DBTR_MODE_U =3D 0,
-> > >         DBTR_MODE_S,
-> > > @@ -79,6 +88,7 @@ static DEFINE_PER_CPU(union sbi_dbtr_shmem_entry, s=
-bi_dbtr_shmem);
-> > >
-> > >  /* number of debug triggers on this cpu . */
-> > >  static int dbtr_total_num __ro_after_init;
-> > > +static bool have_icount __ro_after_init;
-> > >  static unsigned long dbtr_type __ro_after_init;
-> > >  static unsigned long dbtr_init __ro_after_init;
-> > >
-> > > @@ -129,6 +139,7 @@ static int arch_smp_teardown_sbi_shmem(unsigned i=
-nt cpu)
-> > >  static void init_sbi_dbtr(void)
-> > >  {
-> > >         struct sbiret ret;
-> > > +       unsigned long dbtr_count =3D 0;
-> > >
-> > >         /*
-> > >          * Called by hw_breakpoint_slots and arch_hw_breakpoint_init.
-> > > @@ -143,6 +154,19 @@ static void init_sbi_dbtr(void)
-> > >                 return;
-> > >         }
-> > >
-> > > +       ret =3D sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_NUM_TRIGGERS,
-> > > +               DBTR_TDATA1_TYPE_ICOUNT, 0, 0, 0, 0, 0);
-> > > +       if (ret.error) {
-> > > +               pr_warn("%s: failed to detect icount triggers. error:=
- %ld.\n",
-> > > +                       __func__, ret.error);
-> > > +       } else if (!ret.value) {
-> > > +               pr_warn("%s: No icount triggers available. "
-> > > +                       "Falling-back to computing single step addres=
-s.\n", __func__);
-> > > +       } else {
-> > > +               dbtr_count =3D ret.value;
-> > > +               have_icount =3D true;
-> > > +       }
-> > > +
-> > >         ret =3D sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_NUM_TRIGGERS,
-> > >                         DBTR_TDATA1_TYPE_MCONTROL6, 0, 0, 0, 0, 0);
-> > >         if (ret.error) {
-> > > @@ -151,7 +175,7 @@ static void init_sbi_dbtr(void)
-> > >         } else if (!ret.value) {
-> > >                 pr_warn("%s: No mcontrol6 triggers available.\n", __f=
-unc__);
-> > >         } else {
-> > > -               dbtr_total_num =3D ret.value;
-> > > +               dbtr_total_num =3D min_not_zero((unsigned long)ret.va=
-lue, dbtr_count);
-> > >                 dbtr_type =3D DBTR_TDATA1_TYPE_MCONTROL6;
-> > >                 return;
-> > >         }
-> > > @@ -166,7 +190,7 @@ static void init_sbi_dbtr(void)
-> > >                 pr_err("%s: No mcontrol triggers available.\n", __fun=
-c__);
-> > >                 dbtr_total_num =3D 0;
-> > >         } else {
-> > > -               dbtr_total_num =3D ret.value;
-> > > +               dbtr_total_num =3D min_not_zero((unsigned long)ret.va=
-lue, dbtr_count);
-> > >                 dbtr_type =3D DBTR_TDATA1_TYPE_MCONTROL;
-> > >         }
-> > >  }
-> > > @@ -320,6 +344,36 @@ static int rv_init_mcontrol6_trigger(const struc=
-t perf_event_attr *attr,
-> > >         return 0;
-> > >  }
-> > >
-> > > +static int rv_init_icount_trigger(struct arch_hw_breakpoint *hw, enu=
-m dbtr_mode mode)
-> > > +{
-> > > +       unsigned long tdata1 =3D DBTR_TDATA1_TYPE_ICOUNT;
-> > > +
-> > > +       /* Step one instruction */
-> > > +       tdata1 |=3D FIELD_PREP(DBTR_TDATA1_ICOUNT_COUNT_FIELD, 1);
-> > > +
-> > > +       switch (mode) {
-> > > +       case DBTR_MODE_U:
-> > > +               tdata1 |=3D DBTR_TDATA1_ICOUNT_U;
-> > > +               break;
-> > > +       case DBTR_MODE_S:
-> > > +               tdata1 |=3D DBTR_TDATA1_ICOUNT_S;
-> > > +               break;
-> > > +       case DBTR_MODE_VS:
-> > > +               tdata1 |=3D DBTR_TDATA1_ICOUNT_VS;
-> > > +               break;
-> > > +       case DBTR_MODE_VU:
-> > > +               tdata1 |=3D DBTR_TDATA1_ICOUNT_VU;
-> > > +               break;
-> > > +       default:
-> > > +               return -EINVAL;
-> > > +       }
-> > > +
-> > > +       hw->tdata1 =3D tdata1;
-> > > +       hw->tdata2 =3D 0;
-> > > +
-> > > +       return 0;
-> > > +}
-> > > +
-> > >  int hw_breakpoint_arch_parse(struct perf_event *bp,
-> > >                              const struct perf_event_attr *attr,
-> > >                              struct arch_hw_breakpoint *hw)
-> > > @@ -372,24 +426,28 @@ static int setup_singlestep(struct perf_event *=
-event, struct pt_regs *regs)
-> > >         /* Remove breakpoint even if return error as not to loop */
-> > >         arch_uninstall_hw_breakpoint(event);
-> > >
-> > > -       ret =3D get_insn_nofault(regs, regs->epc, &insn);
-> > > -       if (ret < 0)
-> > > -               return ret;
-> > > +       if (have_icount) {
-> > > +               rv_init_icount_trigger(bp, DBTR_MODE_U);
-> > > +       } else {
-> > > +               ret =3D get_insn_nofault(regs, regs->epc, &insn);
-> > > +               if (ret < 0)
-> > > +                       return ret;
-> > >
-> > > -       next_addr =3D get_step_address(regs, insn);
-> > > +               next_addr =3D get_step_address(regs, insn);
-> > >
-> > > -       ret =3D get_insn_nofault(regs, next_addr, &insn);
-> > > -       if (ret < 0)
-> > > -               return ret;
-> > > +               ret =3D get_insn_nofault(regs, next_addr, &insn);
-> > > +               if (ret < 0)
-> > > +                       return ret;
-> > >
-> > > -       bp_insn.bp_type =3D HW_BREAKPOINT_X;
-> > > -       bp_insn.bp_addr =3D next_addr;
-> > > -       /* Get the size of the intruction */
-> > > -       bp_insn.bp_len =3D GET_INSN_LENGTH(insn);
-> > > +               bp_insn.bp_type =3D HW_BREAKPOINT_X;
-> > > +               bp_insn.bp_addr =3D next_addr;
-> > > +               /* Get the size of the intruction */
-> > > +               bp_insn.bp_len =3D GET_INSN_LENGTH(insn);
-> > >
-> > > -       ret =3D hw_breakpoint_arch_parse(NULL, &bp_insn, bp);
-> > > -       if (ret)
-> > > -               return ret;
-> > > +               ret =3D hw_breakpoint_arch_parse(NULL, &bp_insn, bp);
-> > > +               if (ret)
-> > > +                       return ret;
-> > > +       }
-> > >
-> > >         ret =3D arch_install_hw_breakpoint(event);
-> > >         if (ret)
-> > > @@ -400,6 +458,79 @@ static int setup_singlestep(struct perf_event *e=
-vent, struct pt_regs *regs)
-> > >         return 0;
-> > >  }
-> > >
-> > > +/**
-> > > + * icount_triggered - Check if event's icount was triggered.
-> > > + * @event: Perf event to check
-> > > + *
-> > > + * Check the given perf event's icount breakpoint was triggered.
-> > > + *
-> > > + * Returns:    1 if icount was triggered.
-> > > + *             0 if icount was not triggered.
-> > > + *             negative on failure.
-> > > + */
-> > > +static int icount_triggered(struct perf_event *event)
-> > > +{
-> > > +       union sbi_dbtr_shmem_entry *shmem =3D this_cpu_ptr(&sbi_dbtr_=
-shmem);
-> > > +       struct sbiret ret;
-> > > +       struct perf_event **slot;
-> > > +       unsigned long tdata1;
-> > > +       int i;
-> > > +
-> > > +       for (i =3D 0; i < dbtr_total_num; i++) {
-> > > +               slot =3D this_cpu_ptr(&pcpu_hw_bp_events[i]);
-> > > +
-> > > +               if (*slot =3D=3D event)
-> > > +                       break;
-> > > +       }
-> > > +
-> > > +       if (i =3D=3D dbtr_total_num) {
-> > > +               pr_warn("%s: Breakpoint not installed.\n", __func__);
-> > > +               return -ENOENT;
-> > > +       }
-> > > +
-> > > +       raw_spin_lock_irqsave(this_cpu_ptr(&ecall_lock),
-> > > +                             *this_cpu_ptr(&ecall_lock_flags));
-> > > +
-> > > +       ret =3D sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIG_READ,
-> > > +                       i, 1, 0, 0, 0, 0);
-> > > +       tdata1 =3D shmem->data.tdata1;
-> > > +
-> > > +       raw_spin_unlock_irqrestore(this_cpu_ptr(&ecall_lock),
-> > > +                                  *this_cpu_ptr(&ecall_lock_flags));
-> > > +       if (ret.error) {
-> > > +               pr_warn("%s: failed to read trigger. error: %ld\n", _=
-_func__, ret.error);
-> > > +               return sbi_err_map_linux_errno(ret.error);
-> >
-> > To avoid a flurry of events or messages, it would probably be good to
-> > disable the trigger.
+> Let's check in sg_set_page() that this is really the case. No need to
+> check in sg_set_folio(), as pages in a folio are guaranteed to be
+> contiguous. As sg_set_page() gets inlined into modules, we have to
+> export the page_range_contiguous() helper -- use EXPORT_SYMBOL, there is
+> nothing special about this helper such that we would want to enforce
+> GPL-only modules.
+
+Ah you mention this here (I wrote end of this first :)
+
 >
-> That is a good point.
-
-Agreed
-
-> >
-> > > +       }
-> > > +
-> > > +       /*
-> > > +        * The RISC-V Debug Specification
-> > > +        * Tim Newsome, Paul Donahue (Ventana Micro Systems)
-> > > +        * Version 1.0, Revised 2025-02-21: Ratified
-> > I think mentioning the version number and section would be enough.
+> We can now drop the nth_page() usage in sg_page_iter_page().
 >
-> Agreed.
+> Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-I wasn't sure the best way to cite this, Version number and section is
-ok with me.
+All LGTM, so:
 
-> > > +        * 5.7.13. Instruction Count (icount, at 0x7a1)
-> > > +        * When count is 1 and the trigger matches, then pending beco=
-mes set.
-> > > +        * In addition count will become 0 unless it is hard-wired to=
- 1.
-> > > +        * When pending is set, the trigger fires just before any fur=
-ther
-> > > +        * instructions are executed in a mode where the trigger is e=
-nabled.
-> > > +        * As the trigger fires, pending is cleared. In addition, if =
-count is
-> > > +        * hard-wired to 1 then m, s, u, vs, and vu are all cleared.
-> > > +        */
-> > > +       if (FIELD_GET(DBTR_TDATA1_ICOUNT_COUNT_FIELD, tdata1) =3D=3D =
-0)
-> > > +               return 1;
-> > > +
-> > > +       if (FIELD_GET(DBTR_TDATA1_ICOUNT_COUNT_FIELD, tdata1) !=3D 1)
-> > > +               return 0;
-> > > +
-> > > +       if (tdata1 & DBTR_TDATA1_ICOUNT_U)
-> > > +               return 0;
-> > > +       if (tdata1 & DBTR_TDATA1_ICOUNT_S)
-> > > +               return 0;
-> > > +       if (tdata1 & DBTR_TDATA1_ICOUNT_VU)
-> > > +               return 0;
-> > > +       if (tdata1 & DBTR_TDATA1_ICOUNT_VU)
-> > > +               return 0;
-> > > +       return 1;
-> > > +}
-> > > +
-> > >  /*
-> > >   * HW Breakpoint/watchpoint handler
-> > >   */
-> > > @@ -460,7 +591,10 @@ static int hw_breakpoint_handler(struct pt_regs =
-*regs)
-> > >
-> > >                 if (bp->in_callback) {
-> > >                         expecting_callback =3D true;
-> > > -                       if (regs->epc !=3D bp->next_addr) {
-> > > +                       if (have_icount) {
-> > > +                               if (icount_triggered(event) !=3D 1)
-> > > +                                       continue;
-> > > +                       } else if (regs->epc !=3D bp->next_addr) {
-> > >                                 continue;
-> > >                         }
-> > >
-> > > @@ -477,7 +611,10 @@ static int hw_breakpoint_handler(struct pt_regs =
-*regs)
-> > >
-> > >         }
-> > >
-> > > -       if (expecting_callback) {
-> > > +       if (expecting_callback && have_icount) {
-> > > +               pr_err("%s: in_callback was set, but icount was not t=
-riggered, epc (%lx).\n",
-> > > +                      __func__, regs->epc);
-> > > +       } else if (expecting_callback) {
-> > >                 pr_err("%s: in_callback was set, but epc (%lx) was no=
-t at next address(%lx).\n",
-> > >                        __func__, regs->epc, bp->next_addr);
-> > >         }
-> >
-> > Is this just for debugging or do you want to commit it?
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+
+> ---
+>  include/linux/scatterlist.h | 3 ++-
+>  mm/util.c                   | 1 +
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 >
-> I believe this was intentional, but perhaps it is not a useful print.
+> diff --git a/include/linux/scatterlist.h b/include/linux/scatterlist.h
+> index 6f8a4965f9b98..29f6ceb98d74b 100644
+> --- a/include/linux/scatterlist.h
+> +++ b/include/linux/scatterlist.h
+> @@ -158,6 +158,7 @@ static inline void sg_assign_page(struct scatterlist *sg, struct page *page)
+>  static inline void sg_set_page(struct scatterlist *sg, struct page *page,
+>  			       unsigned int len, unsigned int offset)
+>  {
+> +	VM_WARN_ON_ONCE(!page_range_contiguous(page, ALIGN(len + offset, PAGE_SIZE) / PAGE_SIZE));
 
-It is for someone to find out that a spurious debug trigger event
-happened as it is expecting either an icount event or
-a mcontrol event at next_addr if this did not happen it will send a
-SIG_DEBUG to the user process.
+This is pretty horrible as one statement, but I guess we can't really do better,
+I had a quick look around for some helper that could work but nothing is clearly
+suitable.
 
-Ignore my previous response as it was HTML.
+So this should be fine.
 
-Thanks,
-Jesse
 
-> - Charlie
+>  	sg_assign_page(sg, page);
+>  	sg->offset = offset;
+>  	sg->length = len;
+> @@ -600,7 +601,7 @@ void __sg_page_iter_start(struct sg_page_iter *piter,
+>   */
+>  static inline struct page *sg_page_iter_page(struct sg_page_iter *piter)
+>  {
+> -	return nth_page(sg_page(piter->sg), piter->sg_pgoffset);
+> +	return sg_page(piter->sg) + piter->sg_pgoffset;
+>  }
 >
-> >
-> > Regards
-> > Himanshu
-> > > --
-> > > 2.43.0
-> > >
+>  /**
+> diff --git a/mm/util.c b/mm/util.c
+> index 0bf349b19b652..e8b9da6b13230 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1312,5 +1312,6 @@ bool page_range_contiguous(const struct page *page, unsigned long nr_pages)
+>  			return false;
+>  	return true;
+>  }
+> +EXPORT_SYMBOL(page_range_contiguous);
+
+Kinda sad that we're doing this as EXPORT_SYMBOL() rather than
+EXPORT_SYMBOL_GPL() :( but I guess necessary to stay consistent...
+
+>  #endif
+>  #endif /* CONFIG_MMU */
+> --
+> 2.50.1
+>
 
