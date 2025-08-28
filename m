@@ -4,177 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A941C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96328CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:43:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6D9C8E0013; Thu, 28 Aug 2025 04:41:28 -0400 (EDT)
+	id C483F8E000B; Thu, 28 Aug 2025 04:43:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A456C8E000B; Thu, 28 Aug 2025 04:41:28 -0400 (EDT)
+	id C1FF96B002E; Thu, 28 Aug 2025 04:43:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90D2D8E0013; Thu, 28 Aug 2025 04:41:28 -0400 (EDT)
+	id B35958E000B; Thu, 28 Aug 2025 04:43:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FA678E000B
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:41:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 02C71853AB
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:41:27 +0000 (UTC)
-X-FDA: 83825522256.19.2381203
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B98E21C0007
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:41:25 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0zugYSPR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=livtRXkE;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0zugYSPR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=livtRXkE;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370486; a=rsa-sha256;
-	cv=none;
-	b=tlyTsqNCXyCj43kMvRUapo4PUl5i46xzUDebf763jf0Y4rUHG5Z3sS6Aah/CQdZRIibuib
-	7BeLsXujCmKf4FtkzO5iW6zyaVD3lfH50iEUwYj4pjNUl6GvCFfVTc4Q9PsR9vZDuPwP4C
-	IvarNm05cscyZDf2n0v/iXjRjx5a9YA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0zugYSPR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=livtRXkE;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0zugYSPR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=livtRXkE;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A34786B002D
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:43:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 41ABE853A6
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:43:56 +0000 (UTC)
+X-FDA: 83825528472.30.2AC8B94
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 615DF120002
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:43:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yQGwJWz0;
+	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756370486;
+	s=arc-20220608; t=1756370634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xoT3WpLXuS5g1YdpdWEcQMKSsUF2k8LBxp9VlBICog8=;
-	b=QhjcsnQ98Ej8p6O866DUE4mMfyZHQNh9x/7zuHPBNp+rwf70VOBvlZxaLE+CNm6fI5cZjC
-	cjfmRtvkJK2FsQays8XqespitSsWX25rsCEF29RhopiO+w2RedS/YGU7em5v4IczZDoo9P
-	Id+yxdywR5GbgEPwvEqVTNZ4GkNvzXI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 03F5820ADA;
-	Thu, 28 Aug 2025 08:41:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756370484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xoT3WpLXuS5g1YdpdWEcQMKSsUF2k8LBxp9VlBICog8=;
-	b=0zugYSPRaDN/zgfsqne/WIBUJnnRNvcwknLZS9R7BTqnI3lNm1eyv8hPg5oU6tlC2sU2ih
-	2Cst6vYKW5xiYW5NHJAYTGNqz7iUqkD8nJoxmrdoHu7+Kw65QC7ayD4K6qeNNhgaLtPJ0q
-	FZMWM+6Ik0UvU6662B0RiL814UCYZg0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756370484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xoT3WpLXuS5g1YdpdWEcQMKSsUF2k8LBxp9VlBICog8=;
-	b=livtRXkEUtDMGHtTSzI/ZxyJIz71e67buIPw5OyZfpU7Gq2DJ3hT/GWZTM/Y/Y4uIFV+dP
-	Z83H3Dpnp36H1cCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756370484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xoT3WpLXuS5g1YdpdWEcQMKSsUF2k8LBxp9VlBICog8=;
-	b=0zugYSPRaDN/zgfsqne/WIBUJnnRNvcwknLZS9R7BTqnI3lNm1eyv8hPg5oU6tlC2sU2ih
-	2Cst6vYKW5xiYW5NHJAYTGNqz7iUqkD8nJoxmrdoHu7+Kw65QC7ayD4K6qeNNhgaLtPJ0q
-	FZMWM+6Ik0UvU6662B0RiL814UCYZg0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756370484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xoT3WpLXuS5g1YdpdWEcQMKSsUF2k8LBxp9VlBICog8=;
-	b=livtRXkEUtDMGHtTSzI/ZxyJIz71e67buIPw5OyZfpU7Gq2DJ3hT/GWZTM/Y/Y4uIFV+dP
-	Z83H3Dpnp36H1cCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D30BB1368B;
-	Thu, 28 Aug 2025 08:41:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vqqAMjMWsGikLwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 28 Aug 2025 08:41:23 +0000
-Message-ID: <c8db3486-4f13-4922-a270-1fbf61e2d782@suse.cz>
-Date: Thu, 28 Aug 2025 10:41:23 +0200
+	bh=jLT2osl3N94HJBBJWKPAk2avCo16Lo88yw1WJjz/wsM=;
+	b=yFOAK3Tz7vz8ZS5Qi4nNLRABrFBnYzpsJimnTGKcapX2S5L9d6gLM1FZ173K89bdlzDCTl
+	uq5vVYc7oStNHEjaJjY10tFpWWzo/Psv3UVFY5mXhaLNWWH97TGsZmf030H6XwTxrwXxE6
+	sgfVo+JAYTMKrjxe5hjYSa9PhRmsBnM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370634; a=rsa-sha256;
+	cv=none;
+	b=SvPluRAg7b8og+oYPg1IBBb+Mteo8rd+skXWfEkTf4OLygNhVh/IP4ZPQo9ZilUjJs7bCT
+	RTWFAQYSra+voidPDH8rK9ByhkqpAreDCfhdgkjNTFNQKOV9nTDIQZINwV5vCMKXDTZvkc
+	zzMnkuOUwgPzUZE7/HCM+oHqb3PGkZc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=yQGwJWz0;
+	spf=pass (imf29.hostedemail.com: domain of elver@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-248d5074ff7so3596675ad.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:43:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756370633; x=1756975433; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jLT2osl3N94HJBBJWKPAk2avCo16Lo88yw1WJjz/wsM=;
+        b=yQGwJWz0j5q2UDFyzvAbskZurGOk5fag1bGIgUN04ielO620HoB4S62tk3ZywixmJO
+         PKJOkL7WbWCHU5Ucpg4S0b5XU34ivK5Jz3N+XAanbV1PwQXBdIRrgtJLG7/iGKhMKg3u
+         sL5flQIl3dMY8+qGI9+XLBHgSva3A+KY4aXWyzYhGp7eu83Q9oco9/R3rfjKhWC3GjvI
+         uI4LH0THgbShAtqjmhAbTwTQfNonn02Ip7tHMDrj9nlyfH498yXe6tgAyu5yzHdNe4te
+         zXyxc8lfs2TTASCC1XzqSW3ne39/sAcs/nWLtafFxfUK5iIrZ9tq9jM4PtBtUL58sah3
+         7bfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756370633; x=1756975433;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jLT2osl3N94HJBBJWKPAk2avCo16Lo88yw1WJjz/wsM=;
+        b=wIyT8+puRZdK4tnidb5qfla5fbRBs/dpvpt/S2Lb6x51OctA66ip9gXEOQu8iOgDNw
+         nhRnaz/sPFLUV+oSq6IGEW23c4HYBLW/Em5v7JUbno+KXkVYNZh6k8+HMhetGk6vxCDY
+         RQohYQw9gITqzpTB8Q9JuFpvC/34NnRM6AQfbtEcUVmd5J3pLdz/5Td+EuxIpPrj8Qxm
+         MWzBWdEAvpCUpGfKL7s4VijZCcqFlta/yyMXXqFp6a+JrP3IfGDAbhyNDjJzgIWsuo0u
+         wEljawHr0kx6LWfaiwKIjWZVRUTFDUn0WG+/8Wp6sWW9aajrDCQIu22K6ctF6Flkx14z
+         ESag==
+X-Forwarded-Encrypted: i=1; AJvYcCWXGXdVfPeNfmkTj5cA9HMEyCy2D/C4Ou8SbButRv2h4kR6ulWzs9UpTGtS8QAvZF5dRf5JTpURiw==@kvack.org
+X-Gm-Message-State: AOJu0Yyz9HgLmil1hiGzn7sjEJhwcPKw02r6KsmkcxXN0919vRGYcGBn
+	i1rxIeeIUkQOOZhovdIMBX8R0DvpeCcYtHCEVkfOJwita92foJ9dcZRAsAkIGlqVROzf/9YCDH+
+	3tUffUWSEKAN1BCuEvLMaXkiyaSoEP0I/xOSy2PzW
+X-Gm-Gg: ASbGncsDVVN1wem6L2rdjyaYW0WbLKtpIG24OktP0VmbQZLVpWm8AfV0PrcyuvX9lGU
+	kgfNRIPqv8zgFOGXPG+O+7KZtcmvqClgMkrK0eUy5SfvpA7zQeI3u9AXytbPCPjF8KquZpurSBg
+	N9tb83FO4W09WUJX8mo/f369qeOL7quFXXw19D0kFzEPLNIF3yJVKg6kNVlnazkapEWE9icox8q
+	dEjvCASIVISpuUaKan2F8XWkPg=
+X-Google-Smtp-Source: AGHT+IGJmjz+YHPyNxr90AMhiQNNDQu9deq8PWwNfyq+zFWi/YcgUyPYkmS3VX3aACMgtkUmoKeOvBcyBRDmMb3NDeE=
+X-Received: by 2002:a17:903:3d06:b0:248:8063:a8b4 with SMTP id
+ d9443c01a7336-2488063abcbmr89508125ad.22.1756370632768; Thu, 28 Aug 2025
+ 01:43:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] mm/show_mem: Add trylock while printing alloc info
-To: Yueyang Pan <pyyjason@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Usama Arif <usamaarif642@gmail.com>,
- linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org
-References: <cover.1756318426.git.pyyjason@gmail.com>
- <7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
- <20250827150619.4e468e68988f224f9f9bea6f@linux-foundation.org>
- <aLAUhXeRVWzLCNNd@devbig569.cln6.facebook.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aLAUhXeRVWzLCNNd@devbig569.cln6.facebook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: B98E21C0007
-X-Stat-Signature: jieqataj4jcbfy5a1bqgd7onu87r6rpw
+References: <20250827220141.262669-1-david@redhat.com> <20250827220141.262669-35-david@redhat.com>
+In-Reply-To: <20250827220141.262669-35-david@redhat.com>
+From: Marco Elver <elver@google.com>
+Date: Thu, 28 Aug 2025 10:43:16 +0200
+X-Gm-Features: Ac12FXwMzUnIHp_v7uH0kV3Hu6ram9vqgPmCMZ3TyuNNAlhDfe6K8rTgx1FpO8k
+Message-ID: <CANpmjNP8-dM-cizCfsVOUNDS2jBaY6d=0Wx8OGen5RbXgaqcfQ@mail.gmail.com>
+Subject: Re: [PATCH v1 34/36] kfence: drop nth_page() usage
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>, 
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	iommu@lists.linux.dev, io-uring@vger.kernel.org, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, 
+	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com, kvm@vger.kernel.org, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org, 
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org, 
+	Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, 
+	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, 
+	x86@kernel.org, Zi Yan <ziy@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756370485-550914
-X-HE-Meta: U2FsdGVkX1+wfZF3ovcS8ZFDgPo/JRMHFsZ+Q+OR1ZEfOhJH3JIvo3JWSpcRNyo73UkJlehNpwI4+9WnFpd08rGkW+2g7dMGUozUyrKWjKWtxbeyjeKqyp3QyUuiSDqSq151fMAl60iyni/f+oSUPoI9pc1nNK+akx4+9kHVPFckCJcpa94jKc1LnljRELOwnzWd+qLMg+Q3lch24etwA2o+YFF7QZYjgSKhBfskDMkIXmJ/QpiEFxEvpYRMfMD8S+gQAuO+elzNRufHeGyMYY+WiJ9PNk/2+pQPdFKD7WXbr1MzcHZVoOC3C1apB7AG6GuU73NdcLeYN/aJ6qll0ICFWDr2j0P0ucEaOcGIno0bGetL8aLjlRnvUuai0KGEY8FqYHnrp2Nc2alZHpGIsmV8ll39BkpWxjd9S557ZPsD8Pi83HjmAWSc5jZdyHHLrRr38eXWTLjSDoog4KcJNAHmaoxdlnHaRhmU6zLVJJvIHoMj2ncDUQXgtKWkBJmsraxJlKTT6bJFY3KhLp00erqkn1y3XscxSYj0Wd0xP2eU5ZL1S73fttMSG2FSbM5whQwg8pMoA97haHNK+rsK5VTXUyOc5okZATmOmDS09bTYhdKSwSfYimsWiBk+ZIsAJnEu2Cr6q0M7ctjQR8w9+ZPAcxDbxVAipfPswOeFqwcbqP+ju6ZXnpGjGwHdwARnKtkURGlvcXNIRbDJiJL5s9qxY+ErXGGPXijqM5sjmwOUiPdyh9/adXfZ9cvv7mulrcXepFoywqA5/vzQF7uQfYXIkITy3tdMjRrqMUYdHTsBZtg60cRd4hFjb+DxbueFKMQNTuHct0ecqqfbeO6rnW6udphbiyMYENM390FpM9dtkV06kKYh7dCB4SiQpetnBBOKQf5IvfsA6ukH6tOABDlBuY67CHOLDmR0XBGu1GAxIYFO3k6Ma+8MA/TFIftzWEJPVS6eFVpUnvQ0hTB
- BaPV6XfO
- fLCe6+rxxeEA6NfY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 615DF120002
+X-Stat-Signature: b8kykdzgtonyshe8izwq3ykqmn1ixd7z
+X-HE-Tag: 1756370634-34177
+X-HE-Meta: U2FsdGVkX18QERPg2Ru4MFMxunvrxVRnpSBraTS3WverJDvsVobkg6jpU1JdNEh/77KuOjEqkAimgx+ZdwB22plJ7RhH4sSHmkqe6sLklalT1lqom3cCkHB2J0PDbLJWgaYeRkjdXGO53RNozoMlcSUitQJyUVnfHYjBw1bkaBcesStCKiUALMzPyOobFZv2o88URgE22fAsPnp3/CzblwNQ4vPBt+1VLVF23aurvPNx5u/76HJGhHSSZmEtR4/YWFJo5JfxKYRJxAJH9Hno1cpargjqAZiVPJiA6dYHH3Llsdoo3oIUKfREYjdWqHaqAZ5e5/Nsie4NjgnxvZ9akEw67QJ2RTPptUIg9icHSbuinTkasazPPmOhiQ4SbA0a1I7d+3YGglQdUlykY5EZZhudVCtNiKhNuQGAGzQ/499ZG3EZgcmC/Y9HE0B/uZfpJfZPMRPXo2QKnhfX551ih6t8S+FAo/W+OE/W+x3PMP/Ozqh50tcLif4QLImHhfgsgIUPPY3kgWRCZg4NdyfTbf5Lnp6NtmzDVLUvcaHf6KpdZ24IYMOXOgqOLNPPLPwudx5C/McyZl8eUAe7xjacgBJqSwrLyP5GE5kdqKiy5O3/f4OHFPRXSynfimkk9/MzhzscsORsI/KqDcYq9oZt7jm8m1328A/uEmt3TGQT6h1jRbAWNb7zg86hAdaAL3Af8VkiBMYt4Wi6RTO3x2SWaKAMVaBAssbjUbHLYe2rsKS/Whx03fnxItrLehBQ9N6hw/qRhThRhDxvvlFIS+nD+/ryno7VQYug4dRQ21EMLU7DnSR3YY0eTnbQtZr5l7mBonPqXsw0yKAREv29GNiTOV/HNdAjM6q7PypCvIjoVjuAwMfLUhAAuE5lJyhkSYiQJ31jrvQCzVY6rLn2g8ozbr5F3zyAdu8j7k0Ore91dks4kQC9CZ7AQG6ETemlCf3O5bDnjNxXq/l8Fr5NmM5
+ xC5XhZ9w
+ AShkCY/yFiPVotB8q5AZrpA4Rtc+PZooj7AO6ji7dq/fw/hsyz9wYrNAmA/AYRVps3OFfc/NTh5WQpeaBHO7oLRyFw/gUS/DrTN9zprtQmn4yCNDU3TtHcCm98sqOUs0v0RxAzW3upYZyfbe6KqVZVS70xwZ5mfluOqMMOTzuA0CD8SizNgDF/eWrIyNA7Szs4n7cnNi7eo3qlQfoFwpBPJNwuHKuLEKZTW5xyl6czZ1DTL74FX9qPItH16t0wHWYnNi/JNqh/h8mDpCHGRVrDDdtXopVzNmP1Aqzp+q2xjltJ/r1fN/Z88EQFCevMHZ0n0Kmx0hlx88j/E4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,47 +131,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/28/25 10:34, Yueyang Pan wrote:
-> On Wed, Aug 27, 2025 at 03:06:19PM -0700, Andrew Morton wrote:
->> On Wed, 27 Aug 2025 11:34:23 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
->> 
->> > In production, show_mem() can be called concurrently from two
->> > different entities, for example one from oom_kill_process()
->> > another from __alloc_pages_slowpath from another kthread. This
->> > patch adds a mutex and invokes trylock before printing out the
->> > kernel alloc info in show_mem(). This way two alloc info won't
->> > interleave with each other, which then makes parsing easier.
+On Thu, 28 Aug 2025 at 00:11, 'David Hildenbrand' via kasan-dev
+<kasan-dev@googlegroups.com> wrote:
+>
+> We want to get rid of nth_page(), and kfence init code is the last user.
+>
+> Unfortunately, we might actually walk a PFN range where the pages are
+> not contiguous, because we might be allocating an area from memblock
+> that could span memory sections in problematic kernel configs (SPARSEMEM
+> without SPARSEMEM_VMEMMAP).
+>
+> We could check whether the page range is contiguous
+> using page_range_contiguous() and failing kfence init, or making kfence
+> incompatible these problemtic kernel configs.
+>
+> Let's keep it simple and simply use pfn_to_page() by iterating PFNs.
+>
+> Cc: Alexander Potapenko <glider@google.com>
+> Cc: Marco Elver <elver@google.com>
+> Cc: Dmitry Vyukov <dvyukov@google.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-What about the rest of the information printed by show_mem() being interleaved?
+Reviewed-by: Marco Elver <elver@google.com>
 
->> > 
->> 
->> Fair enough, I guess.
->> 
->> > --- a/mm/show_mem.c
->> > +++ b/mm/show_mem.c
->> > @@ -23,6 +23,8 @@ EXPORT_SYMBOL(_totalram_pages);
->> >  unsigned long totalreserve_pages __read_mostly;
->> >  unsigned long totalcma_pages __read_mostly;
->> >  
->> > +static DEFINE_MUTEX(mem_alloc_profiling_mutex);
->> 
->> It would be a bit neater to make this local to __show_mem() - it didn't
->> need file scope.
-> 
-> Thanks for your feedback, Andrew. I will move it the next version.
-> 
->> 
->> Also, mutex_unlock() isn't to be used from interrupt context, so
->> problem.
->> 
->> Something like atomic cmpxchg or test_and_set_bit could be used and
->> wouldn't involve mutex_unlock()'s wakeup logic, which isn't needed
->> here.
-> 
-> I was not aware of interrupt context before. I will change to test-and-set 
-> lock in the next version.
+Thanks.
 
-Perhaps simply spinlock_t with spin_trylock()?
-
+> ---
+>  mm/kfence/core.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+>
+> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+> index 0ed3be100963a..727c20c94ac59 100644
+> --- a/mm/kfence/core.c
+> +++ b/mm/kfence/core.c
+> @@ -594,15 +594,14 @@ static void rcu_guarded_free(struct rcu_head *h)
+>   */
+>  static unsigned long kfence_init_pool(void)
+>  {
+> -       unsigned long addr;
+> -       struct page *pages;
+> +       unsigned long addr, start_pfn;
+>         int i;
+>
+>         if (!arch_kfence_init_pool())
+>                 return (unsigned long)__kfence_pool;
+>
+>         addr = (unsigned long)__kfence_pool;
+> -       pages = virt_to_page(__kfence_pool);
+> +       start_pfn = PHYS_PFN(virt_to_phys(__kfence_pool));
+>
+>         /*
+>          * Set up object pages: they must have PGTY_slab set to avoid freeing
+> @@ -613,11 +612,12 @@ static unsigned long kfence_init_pool(void)
+>          * enters __slab_free() slow-path.
+>          */
+>         for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+> -               struct slab *slab = page_slab(nth_page(pages, i));
+> +               struct slab *slab;
+>
+>                 if (!i || (i % 2))
+>                         continue;
+>
+> +               slab = page_slab(pfn_to_page(start_pfn + i));
+>                 __folio_set_slab(slab_folio(slab));
+>  #ifdef CONFIG_MEMCG
+>                 slab->obj_exts = (unsigned long)&kfence_metadata_init[i / 2 - 1].obj_exts |
+> @@ -665,10 +665,12 @@ static unsigned long kfence_init_pool(void)
+>
+>  reset_slab:
+>         for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+> -               struct slab *slab = page_slab(nth_page(pages, i));
+> +               struct slab *slab;
+>
+>                 if (!i || (i % 2))
+>                         continue;
+> +
+> +               slab = page_slab(pfn_to_page(start_pfn + i));
+>  #ifdef CONFIG_MEMCG
+>                 slab->obj_exts = 0;
+>  #endif
+> --
+> 2.50.1
+>
+> --
+> You received this message because you are subscribed to the Google Groups "kasan-dev" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to kasan-dev+unsubscribe@googlegroups.com.
+> To view this discussion visit https://groups.google.com/d/msgid/kasan-dev/20250827220141.262669-35-david%40redhat.com.
 
