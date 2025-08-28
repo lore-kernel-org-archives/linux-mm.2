@@ -4,100 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E09A9CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 14:26:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F55CCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 14:27:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BA3D8E0022; Thu, 28 Aug 2025 10:26:52 -0400 (EDT)
+	id A23748E0023; Thu, 28 Aug 2025 10:27:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36B028E0006; Thu, 28 Aug 2025 10:26:52 -0400 (EDT)
+	id 9FB148E0006; Thu, 28 Aug 2025 10:27:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A8648E0022; Thu, 28 Aug 2025 10:26:52 -0400 (EDT)
+	id 938538E0023; Thu, 28 Aug 2025 10:27:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AD178E0006
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:26:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE1A2139175
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:26:51 +0000 (UTC)
-X-FDA: 83826392622.30.59D179D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EF490180011
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:26:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7kEKCt2;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 80DD98E0006
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:27:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B7445701F
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:27:03 +0000 (UTC)
+X-FDA: 83826393126.26.EBEE785
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 64B7B40016
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:27:01 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=rVDfIS+j;
+	spf=pass (imf11.hostedemail.com: domain of 3NGewaAgKCBEt322r3r9x55x2v.t532z4BE-331Crt1.58x@flex--cmllamas.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3NGewaAgKCBEt322r3r9x55x2v.t532z4BE-331Crt1.58x@flex--cmllamas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756391210;
+	s=arc-20220608; t=1756391221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q7JaIyagrf5JVviam1SOhX4lrDrgcjZOjGrswLCcS44=;
-	b=8b5gbv4q5ZHoXahYLMt5o2LMHo8vcZHRzopUa4mHmRQP04TPYh2eWbDKhpi5KzvR2R3ki6
-	Dv3k1mjXWINVvgHYWvUNifSvNiad9h8MDnEC8bHbAmLh71XCzeULJgh4SkX8N8iBUzGRMg
-	zSSWe3v4Swwv0EPd5wH/LdJlZvqCsVc=
+	bh=HjD5d97R1LAr1xBK44kBhUa1ACBsYphiOf/BSA+9IH0=;
+	b=Is5nTNU4bXePIyoDxU+VRP9pU/vhtJWhxpMnk0gHMdAf2QuAMatxDE83bdiK4G/eb0nj1t
+	JBKPx+ZKUnFZvTd+HHJ8CvbiQMJZAMkJQEUd8I9MX95RbUE2I4R6nMTpn+Xuo5ANQTopff
+	DbLGPBtzn3sXKl5Ch5OxBSPHHLhKb6I=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c7kEKCt2;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756391210; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=rVDfIS+j;
+	spf=pass (imf11.hostedemail.com: domain of 3NGewaAgKCBEt322r3r9x55x2v.t532z4BE-331Crt1.58x@flex--cmllamas.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3NGewaAgKCBEt322r3r9x55x2v.t532z4BE-331Crt1.58x@flex--cmllamas.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756391221; a=rsa-sha256;
 	cv=none;
-	b=cuJ+RY01aWm6uX1WJuFBYxEIEDzjoSScFVR90819wRH3WfAYe8vrBFGgm/uJoOKCpH1AnT
-	4K/qBSgsBf5BkdK+K5Ndh2ZrGzh78OhMs5UoSe44JUbsqx5p94vrY3GMqenxs0S9JQMYqn
-	evaPIwkKZWE7m4oQX8QomOkHhuoXiA4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB28A4085E;
-	Thu, 28 Aug 2025 14:26:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BB8C4CEF5;
-	Thu, 28 Aug 2025 14:26:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756391208;
-	bh=p5P8kAChBoN4WOlr76oijnY83blpFKG+JTaA6cgwwtY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c7kEKCt2emu8+T6n7qTfSORifJVoKQh2kg28pFXSWr0eYZyb/w6+Pb4ykjBXYLmm9
-	 97jHgUVhwZWTzkgi/woAxVcFRSqNt76KPpYDjEo/EUHeq+X7Or7nKTgZZb078U0ARQ
-	 no/xsYpiTG0WZghM96EE7TUKcqUIvqG8ZqxE6LONBXzI1oEaB9ZSsCRi7YWonu52OK
-	 mYiGeIi4SmfWeptkTfY28Z5aL5e89Ptp3Wk4NECmiBSY/evwNnIG9qPCfRMJj6YBEZ
-	 6xmANqqFEBrWPu+TgH7qlb/qozJe2OIv7rCaHx2IOvLG89vU7gWDeCHQGwDqPHiGPU
-	 Ijmj0CkpirSdg==
-Date: Thu, 28 Aug 2025 17:26:39 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Roy, Patrick" <roypat@amazon.co.uk>
-Cc: "david@redhat.com" <david@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"tabba@google.com" <tabba@google.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"will@kernel.org" <will@kernel.org>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"Cali, Marco" <xmarcalx@amazon.co.uk>,
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	"Thomson, Jack" <jackabt@amazon.co.uk>,
-	"Manwaring, Derek" <derekmn@amazon.com>
-Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-Message-ID: <aLBnHwUN74ErKVjX@kernel.org>
-References: <20250828093902.2719-1-roypat@amazon.co.uk>
- <20250828093902.2719-4-roypat@amazon.co.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828093902.2719-4-roypat@amazon.co.uk>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EF490180011
-X-Stat-Signature: 3xs8wz6dgux99osr7fxpotm8pw57p8xc
+	b=RylHfXesZDXOlb15E7g+WmyektR45hcZuZIwpDkiSkoNNq5BR2fWdMq5iB+Yyy63rO8fiS
+	icF+Zdd19M3h1s/p85Wa80xxjrTbsdW2NhJBQEyim1jHH4z8I6QzSDmCtVXowmNuGRXOPV
+	KpjEsbG5bS3qJQNLVTXQZM3ih3EVU9g=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32752f91beaso1295111a91.2
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756391220; x=1756996020; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HjD5d97R1LAr1xBK44kBhUa1ACBsYphiOf/BSA+9IH0=;
+        b=rVDfIS+jn9Zjuwtod8va0g6fexsJyAwfRNPU3WGuzgiF9YPIkQKYxSBJ4/QUe5NKLp
+         u3n3QEefN5Qb3UB2Mm1WDK9EZBMIQB8M8Wiu/FIAuoFB80M58XQchIU3ZXgHDCvDSPaf
+         eD/9Nwv0wTlCZRfMXemteI0jDuyVijg0eCYR9uJurFaEtj76QtJBKkKG82yHWiC6BO0u
+         5Vun1u1mv9cgtuHGEdnDBGSrEOJRIILl0UPyvh6fK5mrEkYhq9vd9klTIOKWJrRisdYt
+         pdquBls20xavvmzfAJkn8EOwd7X8bouUM+X4AAMZiy3xkGf5TVkfv8uNPju589s1J7Z6
+         NOrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756391220; x=1756996020;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HjD5d97R1LAr1xBK44kBhUa1ACBsYphiOf/BSA+9IH0=;
+        b=sglu0eAL4yIpo1K88VWF+iwdOlVjbiwWGpjuNzrBSqrduh0IHOFsmmk7ojHTLxf6ws
+         9Lw2JpTMAhRRSHmFkGwTFMZaMR9k1Ykh9n3EGqAbjbPZnFmrzuV+sp3iDzLgNilkTiA6
+         Yoyd2oJ4OMglyGOfjgHxlyKH20fYCO2srBKcFIwpv/fpd3dqKZGU6yHmjM4lX0Bs4MXH
+         uiV+dnQmoWpFcPZt7R3aq1wPthZg1XcJ+srTqJyK+zthVjlvFWSn22MUAVIA881sFsB/
+         l4idzhOPveOe0u5mi4dRA3iw8tsoPj/0PVgeKlWNYsVxFWtvydbP+zChv5innp/U4zQS
+         wbnA==
+X-Forwarded-Encrypted: i=1; AJvYcCXIPmkeegB8ZgozG5VppIDea5COwo9BzGE5+WwNVgemP17IZ4G6tQ98ONtli+T3GyJdhZbVxZbTfA==@kvack.org
+X-Gm-Message-State: AOJu0YxDxz0fYZLTWY0yB0sqClZXYFUgFUY5iJxSAqjA/OerQB7KnXQY
+	XOvLg/+qL3XuwnZ/VOvT2O5nAxgOxcKC6yBOsI9ITCGMq4BnpILsO6nfxoNLJDOgKXebXrsJ4ln
+	rTA7vmR27H5Xn5Q==
+X-Google-Smtp-Source: AGHT+IF9wJepfLkWp6Og7zLWkPVfPHbPoBbta1qRxO+u28C19vYypQNzFjuUung9UUyEScquLFDzTg6qQ/Fh1w==
+X-Received: from pjbnc12.prod.google.com ([2002:a17:90b:37cc:b0:321:c567:44cf])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:e190:b0:327:8c05:f89a with SMTP id 98e67ed59e1d1-3278c06016fmr6502149a91.4.1756391220243;
+ Thu, 28 Aug 2025 07:27:00 -0700 (PDT)
+Date: Thu, 28 Aug 2025 14:26:56 +0000
+In-Reply-To: <8a4dc910-5237-48aa-8abb-a6d5044bc290@lucifer.local>
+Mime-Version: 1.0
+References: <8a4dc910-5237-48aa-8abb-a6d5044bc290@lucifer.local>
+X-Mailer: git-send-email 2.51.0.268.g9569e192d0-goog
+Message-ID: <20250828142657.770502-1-cmllamas@google.com>
+Subject: [PATCH v2] mm/mremap: fix regression in vrm->new_addr check
+From: Carlos Llamas <cmllamas@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	Carlos Llamas <cmllamas@google.com>, stable@vger.kernel.org, 
+	"open list:MEMORY MAPPING" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: reqj7zaigjdtpsnxse5gfbmsk8uy3g1u
 X-Rspam-User: 
-X-HE-Tag: 1756391209-386366
-X-HE-Meta: U2FsdGVkX1+yfBM/1cAwCfCRLPKnE9QAM29dEI/s3VK8DeZspTSKDOUhngRD5soGdyN4IB9vBx8lT6dqB064IbZ34QKiGf+R7SYr07GPCRBfkEsY7kqcqFEQGUR1IFPW/EkSjgB0ohn4L04FAa2+nI0g/1HL/FSQjiv0y+QTgAma3uJNKdr7GXO4K9esvAMtcLf6/RuDLS+wHL2VxfxOOEju8AfXWAJVDfQe86zLfZqV1l3nsPPQhH4Dqx1Vvu+iiMzbb5I8k4u7ElDYI1eQfaa9/fHbtSOmw94jChJWz4mnSI5E4BqL80qRm4WLf0kpT0Y9VMLL9vHZUCrBrhd6C3EHr6yiihRC3ABPVM+Qv8gaTKRvUPxoCK0AwCBUDL/qhbCuguvhi/14+CK4Nu84pkHjSXPQiywffvIBGZUNpDaF3QpIxS0R/Kei26VqE1zQoYY7bqXDSUPZdKPDCbuPd6E8X/kr5jbKhI3cZ1DDjpwzxtTNOwaCNwQk6QIp77E3AbPj/BuORhtJaaCNt3bG7E9NunekaOxtJSQWGsIQbbrN15SRwa3hXTGwZ8c+xOAjxFgUK4KHggWtiGeOsm6/67ZugBJWecUACW4vr2jLnSDns+mO4YPV9I/SASUmb3bVx+nrCmOnRUfidFz2/D5ko9rilCK16BUT5m1O+CgAUjJUUhzU/mgiTA9KunrqBhFFk/a85EsDqx0Bly9Kfsqylyst2Ua9GzYefOMPkBFr2+UPe3YCm0Grgkc1qNOZ4UuYjIOOUv5Tfx7+id62zy6g9TPtExiRO0qCuU486svvnh05PJPx9DuciV7fJ7A0wLlJ1Mv1/61QgQjlR13cyTPisNomwCKdi7vEFn2PqJKt8BkLCrUjsywg/ZnRV27KpEuNM+s2oV4k7KPojfI2Lq+qVhmVnkq3Yg8pqZHNfzi8+sj5wGaheNe8PHBwfSxPqu7zqsCm1Oi6kiuoZ57c11/
- whmq9Eoo
- t6X5cX4/KAxF1XcRNX1wm08CrVzIT2E32paBHO9wdBpLg1elujitnttUnJcdVv84W1mKvL90AAILYWS7pOtGCqCV+jkWyY6Yrc0Kj36VL3m3kUxT/23joy2nucYEOYFvpHX2vsdHOtV4e9brgDEhLKmH2Bam39ME04MBQdIyZMDK7v7PEgGzZxYDnTlMIKYBLra7BLULCLdAbHqDkarSkaburMi+GRuJdEagU2uspYPOuQrZHRU+g4AEUXGNAkC4I1PNiOfABv7qVhJRL4oZ4ZkckoIgU7ZYCgux8iHjrZgFw8fU5FYYOc6BWuQ7ejB0BW0BRRfBoyTTR/LaEbqMOJMJtHV5qIvc173/5WvYgB1prTMMKCzp1OI3f+2lIaHplLm7UUmysOocE5PjJqQJ/BhcgDA==
+X-Rspamd-Queue-Id: 64B7B40016
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756391221-727442
+X-HE-Meta: U2FsdGVkX185vbgqvOzhM/F9Y7oH0s0XosDlLz1nHRXChrr80H48DNG0TyT2W7H6VFlI/Pvl0kQ4uOZvGdx3QWE2xedoSbRz1mafykSrS5t5RGrHEBQEfMRNuwnRSjLyjOcW78NaaqThspb1YapaLMLC82P9p+nq7F5FMfzEcUKVEYa5603N1wt365Al3JdVvSsEakKz6yaHje9ROaQ8K6rcI+76cG0Wn/GTnMa2kigKh/W4OrXFvnb+fo8ebLHuOJIj6Oz5drJAxa1Y05dhoCbZxzHiLsR2OvkxBBhtiUtqJE1+DTcuNN0siD5Tk3ogvGZTZ1pGktS6INLW1dRXTR/N/NYNQvlQW0JQqXt8qk82oIfUMTcd1QsY1dKwmigtcHSRJKrhHLsPKNKF5RUGgNokuPaKZoE7fAS3P6mi+z226Xut0HLCGybZPZfocOUYqPyLk+DdEV/Vsn5f97klQr8WejdA9DNGxdkpg2ujalL2lVwqvlNmQRjxYdIW2RV57VbFr/o7n2iNlIOifhwOv8Klf/Re5uZOAO4D9sjjCq2p/vpZDOd1nELXILFSnX5Dwg2TvsGI6i/+XUoMoGuDA4dsYJeODZ9lp4x3Nu89pNZbkAQj5YuwXbEQ7v2BwyGKGShrgx0ITb3j7wMfNP6BlXcgoAcPc3mzd6tnz2chA1Z05M2K9RbWMV4s7QwE/AMIpc/euciKWOg7egcWQIGEt7/TPZjgBMGn2hmoIsPshPJLhxVmPvVG76v1JINGrigbhHq3z5+IZQDOsFvC6sd3uCiEYb1fKgU/ZmNzQAQgXT6aLq5PrPyPRUenutW5raOuf7FU/R2jwlMzFGr1mUzfRFFXSMU4jCE/3vyc1U820WUzgst/b8M2ATgQS3+Vs1wzQR7aa8VOh059Rtj0dhZe82Prtx3CpWrUTBmGh4CprVDqPK5Eq8CyRF9HZ/Utr5ynioAiElwXub3fbWd+3Uz
+ oE2xaSBi
+ 6Nutw2eRBLcR4tOum9ueiY0BfsiJfzg3iQJblodsdYtIq2/kPJIE2eIcu3yDhlWzKkURmeHd2znLQ6NxybTDGgjfN+W8o7OCJSafhQjXjrgAwx0jLZJana4v3sMy+9NsCXZ5+rbYJXu/BuiKZ9k+I6pg4Dg3PqQkzc6AG5cR7ePwUeOJWL9InW/3yV2Y8MxX3JPpRkqLe5YnM0TD9RFoEU09sTQS9LI0qxL9UhoHcP/iDBhCWO4A3TZyPZ+AqKpJy/9Aak/fWzGk/vqzp//Maa8LXYmPH/PKTWALBzQQrEvExV8ZMOicGuBAgs9Cj4Qph8K/ynrfsSfv4cBFXLNYb6H0H5203EJ01Imd4dzV/VNMSjle4Xn2BmtZseWjvWE5swBO7kZTCnwey7eK76zwBp48SZ7+TUc6vU9Jal5HhGCoixTanSq9tYAaLKWizYP/PKeSu+EymTaCS16MUokThDp6AJr1r1YccbVNG7AfxWSmNHEmMmWo5btUox2D/zVR/DATwOCKDX6kG3f9obNcavZJ0AlkgfNs8LfdjJRFxr2SGQoPt/d5hCTET3y9UClFGX9Tab8skv/FBf22TwWMM13v0Kgml/6FcyunTyAjJrjGPpN+HeR4LUcUXCogGWyfaDpdDlJydEslxe7mT3W7aS8PBeg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,102 +112,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 09:39:19AM +0000, Roy, Patrick wrote:
-> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
-> set to not present . Currently, mappings that match this description are
-> secretmem mappings (memfd_secret()). Later, some guest_memfd
-> configurations will also fall into this category.
-> 
-> Reject this new type of mappings in all locations that currently reject
-> secretmem mappings, on the assumption that if secretmem mappings are
-> rejected somewhere, it is precisely because of an inability to deal with
-> folios without direct map entries, and then make memfd_secret() use
-> AS_NO_DIRECT_MAP on its address_space to drop its special
-> vma_is_secretmem()/secretmem_mapping() checks.
-> 
-> This drops a optimization in gup_fast_folio_allowed() where
-> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
-> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
-> by default"), so the secretmem check did not actually end up elided in
-> most cases anymore anyway.
-> 
-> Use a new flag instead of overloading AS_INACCESSIBLE (which is already
-> set by guest_memfd) because not all guest_memfd mappings will end up
-> being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
-> can be mapped to userspace should also be GUP-able, and generally not
-> have restrictions on who can access it).
-> 
-> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
-> ---
->  include/linux/pagemap.h   | 16 ++++++++++++++++
->  include/linux/secretmem.h | 18 ------------------
->  lib/buildid.c             |  4 ++--
->  mm/gup.c                  | 14 +++-----------
->  mm/mlock.c                |  2 +-
->  mm/secretmem.c            |  6 +-----
->  6 files changed, 23 insertions(+), 37 deletions(-)
-> 
-> diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h
-> index e918f96881f5..0ae1fb057b3d 100644
-> --- a/include/linux/secretmem.h
-> +++ b/include/linux/secretmem.h
-> @@ -4,28 +4,10 @@
->  
->  #ifdef CONFIG_SECRETMEM
->  
-> -extern const struct address_space_operations secretmem_aops;
+Commit 3215eaceca87 ("mm/mremap: refactor initial parameter sanity
+checks") moved the sanity check for vrm->new_addr from mremap_to() to
+check_mremap_params().
 
-Please also make secretmem_aops static in mm/secretmem.c
+However, this caused a regression as vrm->new_addr is now checked even
+when MREMAP_FIXED and MREMAP_DONTUNMAP flags are not specified. In this
+case, vrm->new_addr can be garbage and create unexpected failures.
 
-> -static inline bool secretmem_mapping(struct address_space *mapping)
-> -{
-> -	return mapping->a_ops == &secretmem_aops;
-> -}
-> -
+Fix this by moving the new_addr check after the vrm_implies_new_addr()
+guard. This ensures that the new_addr is only checked when the user has
+specified one explicitly.
 
-...
+Cc: stable@vger.kernel.org
+Fixes: 3215eaceca87 ("mm/mremap: refactor initial parameter sanity checks")
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+v2:
+ - split out vrm->new_len into individual checks
+ - cc stable, collect tags
 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index adffe663594d..8c988e076e5d 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1234,7 +1234,7 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
->  	if ((gup_flags & FOLL_SPLIT_PMD) && is_vm_hugetlb_page(vma))
->  		return -EOPNOTSUPP;
->  
-> -	if (vma_is_secretmem(vma))
-> +	if (vma_is_no_direct_map(vma))
->  		return -EFAULT;
->  
->  	if (write) {
-> @@ -2751,7 +2751,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->  {
->  	bool reject_file_backed = false;
->  	struct address_space *mapping;
-> -	bool check_secretmem = false;
->  	unsigned long mapping_flags;
->  
->  	/*
-> @@ -2763,14 +2762,6 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->  		reject_file_backed = true;
->  
->  	/* We hold a folio reference, so we can safely access folio fields. */
-> -
-> -	/* secretmem folios are always order-0 folios. */
-> -	if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))
-> -		check_secretmem = true;
-> -
-> -	if (!reject_file_backed && !check_secretmem)
-> -		return true;
-> -
->  	if (WARN_ON_ONCE(folio_test_slab(folio)))
->  		return false;
+v1:
+https://lore.kernel.org/all/20250828032653.521314-1-cmllamas@google.com/
 
-There's a check for hugetlb after this and a comment there mentions
-secretmem, please update that to "mapping with no direct map" or something
-like that.
+ mm/mremap.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/mm/mremap.c b/mm/mremap.c
+index e618a706aff5..35de0a7b910e 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1774,15 +1774,18 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+ 	if (!vrm->new_len)
+ 		return -EINVAL;
+ 
+-	/* Is the new length or address silly? */
+-	if (vrm->new_len > TASK_SIZE ||
+-	    vrm->new_addr > TASK_SIZE - vrm->new_len)
++	/* Is the new length silly? */
++	if (vrm->new_len > TASK_SIZE)
+ 		return -EINVAL;
+ 
+ 	/* Remainder of checks are for cases with specific new_addr. */
+ 	if (!vrm_implies_new_addr(vrm))
+ 		return 0;
+ 
++	/* Is the new address silly? */
++	if (vrm->new_addr > TASK_SIZE - vrm->new_len)
++		return -EINVAL;
++
+ 	/* The new address must be page-aligned. */
+ 	if (offset_in_page(vrm->new_addr))
+ 		return -EINVAL;
 -- 
-Sincerely yours,
-Mike.
+2.51.0.268.g9569e192d0-goog
+
 
