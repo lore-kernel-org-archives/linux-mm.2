@@ -4,120 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 275E4CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F83CCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 747D08E0017; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
+	id D158C6B0011; Thu, 28 Aug 2025 04:48:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F8308E0016; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
+	id CC59C6B0022; Thu, 28 Aug 2025 04:48:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E7108E0017; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
+	id BB4096B0023; Thu, 28 Aug 2025 04:48:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AD2F8E0016
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:47:53 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D898140A7B
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:47:53 +0000 (UTC)
-X-FDA: 83825538426.03.8941E6B
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2718C180009
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:47:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kEe3C261;
-	spf=pass (imf24.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A60AD6B0011
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:48:29 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5DC94138FD4
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:48:29 +0000 (UTC)
+X-FDA: 83825539938.05.1414655
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 26BDC40004
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:48:26 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=HY0bCSZA;
+	spf=pass (imf27.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756370871;
+	s=arc-20220608; t=1756370907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Hsk9DOGTHIa16VTkxnpvVMx5QHHrFZueYddM6GSS74=;
-	b=c/M3Q6+Y0V1Lc9w+zHffthd85FnY3CtE3cEf54kQgnhLs3Msogrq7gwsTqqZW9Hg1v8FuE
-	nh/sx/lm8C1GXMqFYBrXVL3Gw2ToBR4Qlh+BKXkkK1Oar9YGcreqCWRQWkGrytA8P3P6rX
-	tDJnxUVKKnPWAvkZ90bKNvNOCDphIqI=
+	bh=po5t56gupEUroA6hj2hKHRirq45/Eh6BqU6ENRqwXCo=;
+	b=Oty5+O1w9dhofy2OprOS3tkpbms9FyNcReYJBdPEiEQuWevD20QaiNf+q1ClRujjaogfZ4
+	mT0CURqGii4qA7/T4HcAO79cjdw3Jp/jhLDUbCxhAfPFFj+kvbNeKqkVwuAMzvK5tfO/Du
+	DHB/IYQj61s0HS1+CtPDK5oKrfnBEHw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kEe3C261;
-	spf=pass (imf24.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370871; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=HY0bCSZA;
+	spf=pass (imf27.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370907; a=rsa-sha256;
 	cv=none;
-	b=MQIO8FupgV203M4cjYVgzmQCphc/vZmXxV2j7MYTbZxUlUv51VacJYFtOqhWNlsFBtWVmd
-	Y4It/662RtEJWFqnpRc7ueO7QoDfNs+BsC6i9zy2Mxgsw5As/7Dd3rgJNhxDzA/53oOer3
-	7Oc3r1gnhfCY51lRr3VE4MbYwgVWn9c=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45a1b00f23eso4010695e9.0
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:47:50 -0700 (PDT)
+	b=oDrcd4OD+1WTEkss79mgJeSzlIEFttx5UhDUer8JTqa3H2EDFFSW02vCjN6uiCR17VILrY
+	d2APKSM8LRg2PtIOifDQKHrn9ceFBnfXriKOKJc3/nT4htnpo61PZCsDWpHZJuExCAbBx5
+	T1v2b9/JjRnFpK3dYcliKb5fcs8KRAQ=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-619487c8865so3476578a12.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:48:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756370870; x=1756975670; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Hsk9DOGTHIa16VTkxnpvVMx5QHHrFZueYddM6GSS74=;
-        b=kEe3C261vVULCxyJps/b5AOxV/+eu8PPnBZ+Fdxpqqg4roO5BCG/U0+oSf1sTjmlyw
-         gR6EX/vojc4HG9SFBLWMeew0eXJoHLFJzws3VRK1oSRmQF+7WIbKTTk1wc8fekUWZK+0
-         IDFxwEWSJ9KVzB7UmXSjcOcgvYSaLh0tMwgHzrwUVSv6iRMAQ5MzwJtGsN/iM65b7c3L
-         ecSbm3j74aZpr8++X4X4fjrIPv9bQAMjdvRcX/CUmbjcd574/x8mTz83SZfkt3w/EybP
-         7P3EaeSC4fqbsm7tDtaZZP0Z+Gz+VM0QIWFHlkCJ6Sf00GNEu2MiqrPPyFV2jhJU4Vc3
-         Nr1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756370870; x=1756975670;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=ionos.com; s=google; t=1756370906; x=1756975706; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8Hsk9DOGTHIa16VTkxnpvVMx5QHHrFZueYddM6GSS74=;
-        b=QZYmggm3C3Q1K7s/zo8o2YXaaMuBjURsmB6ocl1cVDGitNbRoZmxQISllOjBKGVJ4O
-         Kks9JjA80ugtISK8KCu+gd4Tl4vFeSyqwcVAS5krjpJX+0mKtE7UJURwGruGZ+XgL5Gl
-         5z+k9YQbs4YLBjB79sOo+nHq3UMBGZ6GE0xY27aOUsMiCb+SLE/lJffRi1r4Z8wyilxq
-         Rt5jFUkrnjIG86hwQHICI6goTRtVIoxM88nXMnwjKAo8MAAdBCvU5o/jKCU3DMRy24wL
-         w47vbeNv3onwLlCXkL68Btj8tOUCeMh6OK3XDINDR8HbjntKmhB3DZ0RzBg5G9k/+3sn
-         31VA==
-X-Forwarded-Encrypted: i=1; AJvYcCX84zT59zvtJD/D0umv4vUpEOuQJlHNTkzaNmNKmHoaWWRXtOoqVUnv9YkVAMMAxCS0JRxqZsfQrQ==@kvack.org
-X-Gm-Message-State: AOJu0YyKoQV9P+Ueoc7o0hNAPN5qohGHitCybbcfkL/RfnjFcNmI1jd0
-	auFBmGIK4L5Ha07Rs25vIwPbhiU3qQ683sLb+4XFTWFM0VvLF+7kRiq6
-X-Gm-Gg: ASbGncvw6B8qgwLXuslLAoUVOVG0T+3o7l3KWVTNWpw0X+3JbIYO+WT7Lm1XmEAR8S1
-	Ts7DzMGQIh3ciACDChrSiaikwHO4t2A2OZARNqavOO3s7w4DGNGNQ5un4Kp4gm5xZOOPaEQSx1P
-	hGIzCYPIgiP8ShIJlUyH+TbSM3z6n8iBFjckr922q2/l0vmGsO0Ck+S+GketYYuzFeRKSyc+iOx
-	qRS9Pz1SjKPJC4SHtKrNWrQH4JAb1zw3aPiV/aPe8a2FYRQvUUk5xhURcVKPNH76iDsft484Nj7
-	+Dz5yPr8oguq9+laG6SICS8bH8cZelohHQxu4WbJtE6Ww+tmZvqlYb2PhNndIJHIlFIUAAn20w0
-	UeeDDx6FeqOtfNzf/Ni8nDFWAXmpIrrY7XSHegls=
-X-Google-Smtp-Source: AGHT+IFO8pLgjWSH39ZyRRQGsELfg8fZ4fAArTXSmMVZY3KOq7DLC8ULZtj3zAJ1AzMGuiKNKnJXcw==
-X-Received: by 2002:a05:600c:5490:b0:45b:4a98:91cf with SMTP id 5b1f17b1804b1-45b5179cfe3mr193278165e9.15.1756370869196;
-        Thu, 28 Aug 2025 01:47:49 -0700 (PDT)
-Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:74::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cbc6a5da6dsm9463817f8f.63.2025.08.28.01.47.48
+        bh=po5t56gupEUroA6hj2hKHRirq45/Eh6BqU6ENRqwXCo=;
+        b=HY0bCSZAG7cfHg92cRsNOJSZgvxnB3lkyz5OerJGc2SMubLD4Tgerro4rXbcHGNKTp
+         UYbwIsO1vid9m7sv1RECqu9SQxs7qs1Li/ExjX3rlwOt4FEpgXfhGLe7nxXCLPn0yzWY
+         dpU8QN3unUKf0hvC1Hr5/UfQ1pZ6/5QsPM6BAf55uBGO9WgQyJm3p1WahDfFaL+1j94W
+         TAiKJHeJiLGT4LXdO/GKJrjjkgadPYUQKCUJUWpekmh35tX05LaClGbcO+YWaJ8QWq/k
+         EXQ4EMV7gBH9PNYojFKaBiX/aS8f5MqTria8UTJKrMfq2Tpt1QyIaPigT0kxa+BOxX6t
+         FhiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756370906; x=1756975706;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=po5t56gupEUroA6hj2hKHRirq45/Eh6BqU6ENRqwXCo=;
+        b=DYap/rjcgoH7VweUbEnamOswi1uUxLzywry0Id/cnwtbkYt8rRXGDT8cZQfPx7IeKQ
+         ohSWparV7k51Rwg2hFRb+vuwmvEKBFvdx4lOOx7fcqwE/QD+Ini3lbG8XszwaHUAPDOg
+         5/BJ2TWZfAQDqNJQYlVo00Q62Og9w4N7oNvUS2HAH9QPN3bnJRYxRrq984Q6fEBN2KaP
+         YVbl90AnR2ZtXby4Pud9IBlqpqUJ9y2xUQaKemUb0YnX8FlscleUsbWW7yLqJ38Jju4q
+         kHooYse7JIvrjVJUslX39vaLy33cdiBuQJrN/TGqvMBh0x3o+pujDZoMMhgx2tK1kP4G
+         +BDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWs3M7Tym7+zcr/CsJTjwOrw7wIg2NqjA3mlmvM0KIR2pyb2cJLeyjUWraYjibFwnFJVX10+a1Ovw==@kvack.org
+X-Gm-Message-State: AOJu0Yy8TFSPgjp9hIFVG5k8l+E+MAw3/WS6ikgd22rsLd7lramjyBoY
+	0A6I64tEjnsvRyrCjFqS1COvQZaZq7cjE5c0VYVn3jUdtoEz89OdsDOdXxFdNKeHmfw=
+X-Gm-Gg: ASbGncsamDFX/RGOn/sdE6ReLFuoQW/XzX8BEsX6FIwGd1IhtAAr4FXnrG3Uz3C/umF
+	TWaFAEc4CUSuABV59iFh1qnQmBv0VGUlkFd583y8iaSrS2V4iLeVUqxKp2FRFkT9LgzCVVuxums
+	rzyHENVNlxLuXm0sGVSVxDHp+v1odE46NZKoSUDnbdx8m3mp4kSJ/j/rs+rRfycnRo1ELttdt59
+	S6x7TLxHbfJje4SAwCYjpnuVTFgOF3k6tYO+zFw/XKw9lEoFHRSZd1PG6XeZk/pqkrdLRONqn5y
+	qmiQLcptxihT6cPf88OrS8dquzlfMaNr0a2q1GHx3dIrM6UQkFXOOvvwYL1iUT5uBbaL8g2GnQ/
+	Ah7mVkR6hvUQJKg/WCyRgb5hg6kHhsDd5EEiEVov9GIhNWmIDZTJjMU0fV1hTRyBbpwLwV71fCX
+	ARnlpGRzmu9zIs1Uc7ktljdeGz/NpkUWUd
+X-Google-Smtp-Source: AGHT+IEwSMufyxIazeK4EN6r3xqwf4pSdVAWUgiAPZLRoOf/5DVGbNYWNx+rE4X+wLoHpKnHe4pjbQ==
+X-Received: by 2002:a17:907:6e89:b0:af9:23b:9f9 with SMTP id a640c23a62f3a-afeafecbe4cmr668160966b.24.1756370905526;
+        Thu, 28 Aug 2025 01:48:25 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe90c8f85fsm697372366b.8.2025.08.28.01.48.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 01:47:48 -0700 (PDT)
-Date: Thu, 28 Aug 2025 01:47:46 -0700
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
-	kernel-team@meta.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] mm/show_mem: Add trylock while printing alloc info
-Message-ID: <aLAXsptN4cw05IoZ@devbig569.cln6.facebook.com>
-References: <cover.1756318426.git.pyyjason@gmail.com>
- <7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
- <20250827150619.4e468e68988f224f9f9bea6f@linux-foundation.org>
- <aLAUhXeRVWzLCNNd@devbig569.cln6.facebook.com>
- <c8db3486-4f13-4922-a270-1fbf61e2d782@suse.cz>
+        Thu, 28 Aug 2025 01:48:25 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shikemeng@huaweicloud.com,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	chrisl@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH v3] huge_mm.h: disallow is_huge_zero_folio(NULL)
+Date: Thu, 28 Aug 2025 10:48:20 +0200
+Message-ID: <20250828084820.570118-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <0de24b30-70ad-498f-9eac-01596c8713df@redhat.com>
+References: <0de24b30-70ad-498f-9eac-01596c8713df@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c8db3486-4f13-4922-a270-1fbf61e2d782@suse.cz>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2718C180009
-X-Stat-Signature: md8yq3rig4g87qe899r15cqoj5yycr9m
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d9k5czd5spq5f6ethtrpp4kuz7t89sg5
 X-Rspam-User: 
-X-HE-Tag: 1756370870-128884
-X-HE-Meta: U2FsdGVkX19cN2pVsHu7tKGhFn3e8SJ9HhL3BXkF3ytp4GqeucnSo/Xz4W2xN0RU6ipnyYDqGkqeQ40gf2j2b29+ZCm9DcWHsetkxoTvPXWrcvnI8meN1vCyVM/YK0+g3AjuE9MMbkrNgLgNVYVd1pKxPIOGHBJE0f3LAZcERi/tvF/VQ9uMvDgfLt0Zk8f71BMo4nrDcD0afhIfJzswMOO3B8CGC3cb2Qy2gdAEambjG7Uw3GYtxB4usMeWJNo9dAbNTGeBwBfgjHdjEBU7CteuG3L1QDPxIRPGyPiiRCd1CjxOdjM9DFy30lc/TXMoGoEDhVZxZ7aXH87Gv2AG1PgS2ucjheoeSuv9n8mIM5NvWk7FAzBMW+5QaNgG1yr9iE7aBnuawQLxJHTl+P8WOtmlNk52h1tIAevSXLPFJILbU4ERh30PuFZfr69Sh4RyvIIC8pcniyFRJOH3NWLs7Ae69M8lTXPY9X5HuVVwQm6QtYAbtRRcOAtXy5ukv2QV1Byb6sze3iT6Ygprz7pPwE8ZayYO2p1xoyvzDdBaMkfIRdNoTYXPDNZ4N/5jnAQ9lmohJ0ZDw9B92jB5li33qWZY6xvGp2ysul5FyqoWTv6DckNjv/IKhsfbM6j8M/7eu3fn/0cOfaD1vQbj0oDgHQiVBKRfidU5zQSq//N1gKU7jex2SMxsKi+mSgxooEfxBBleSJKFh6tGErhb5rEGz0XVbFinaHFhOJ4+hSn+6UmJJwOaSysBfch1Bswt4PJF6agmQphTYHDF8tfbFD6N7ioNkssIFTVuLeltSuD4u0COxwiyLbePEj7U86+NTIK5PkU9whqThwdogKbbok1nYEKUPT5fSr4qU2JCRhCHv4oKd/7znleGvbdpqX2BrtpJ6jOTPPyu1Fy30FiIXLBwnUu/dRCGuqLb8PLMa+oOA56kZsFNvmbZizLWlVKZQ9r3QZZsbZmwL4d/KvJi0oH
- I/wXln5W
- BIi5No/1g3mZ+YmKnVNaYghim+xgmtqQqmlMjQkcdSfzJ2iKzZkwZiPfLK2AOpcMBtJdLPEwgfPyXbY0flCjtsi15Z37TyJEAkGd26hjyGDpIVoASzTXyxB7OzShcHgCEDGCva0aWoyu8+8Rllhppah2fr+MVsY9VflLlKZGVQOC2EIaYHf2y/59bfQFtDaucqmxU2GSMFG3wee20fouQI03GULLherEze9QtbHMrJfEurW7xNIGIllEI12mCljW3dGthx+qqGZtYFn6ajGS1VDQEW26MlGuCRYXafnydsfjLydkU7Q/UyYcgiGyQFVvUzeR29BiOXB2i+UlP8DZBkAGFSUw5MhgQILlf13vNOXj/AAjqax08q/g1PBk0hgvWkxLE+dQrWz6LBldN8CaYGxbdpDGVwxwHvO+pzRJodoBNrC3zP5moE8XLRNQGfs48ymu2Bt5FQOOhG/RVsybdjKLEAsiWBvBgPZfn3LJD0X1RmSxZr5k4VARTbx09ezm8Hi6N
+X-Rspamd-Queue-Id: 26BDC40004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756370906-139553
+X-HE-Meta: U2FsdGVkX1/fHpsmYEBIb6CleW5X/1OeXlTwSFqGytORTrCQj2IaNb4QgAaFLs3G9xdBWxHVEGuLYMOHnd8DrvlOngitsMqI1j6qXr1xoHKhMGWQfq6pu3zaRDXpssn9qCWDpNEAhI6Yyx5HjnFkG+R8e7Cu6UCRFjwN0fKrSBA7BeFHYgDyZH7HcfDmTXB3FdQqGdeDlgXS+fF/HqsFj0TJ26sCCVx1TnQtPkdQxX5xIUNjm7wIx6B9WlY/SkUC/tFVppQaY9Ye306TGqyQpMtuUCxFXPd65pC09cfY3UMVG4dccVI65uX+MpqrdENAhi3iTi8uQFKcdmDHNaUrOhIikl3f+02ii2trwsHcaAlMlvD/wgt1qSktk7qEnGE8cgglYUQhwNs7zYTA/V5YNn0kVpZ//NfpkQeSAEaDjgIWnFmDsh3vEJ1VQAEWta5Y9ss1kg5+m96DpueswOcGjNCn1S5mBjorg8Vziy9WpKxlVhjDgQFsUNEjuyhiILOXQFhUQOuOCSR74tWYIYFrWxZVGCcSJx31Hq1O7FTQcu0r2oMTo27GZsfZ4aaHj/j5RsFzVUOzfY35Y7nODaIkqgEUGym8RFZ3+44mxGAsrZohHmC3atKCugLCU8R2ka9ieQm7whiuMxmDXGkLuZGh6igJWrUn+s8vaepfXxl7c95s7TctjTNC+NanxBt2yGmYeNjhSCQNSj3Qy0oC21VK1xJ/MuzG9x5AoTv8rxQ/SCRswONUHZ9UHGS2dlQ4onHWs9f8hgQFBvYeS94AYw3WUaADFEUozMRI3gVL3E0nf+1tZ0DL1oFAyMdv32VqOc0Lr2qOUoLSthxrSw4g1XjeiH/IR1Z0mD14lSDqs7V4lxmYbU/IyWP9mCIvxz0LydR7IioxzHyHw8ul2o7A5NKroBP7GHqrU5yf51pFz8QfKECRSd5Bpacx2EtxVpcyblAsDYV9bvYi9jLr4g06Tso
+ kUeq90Cm
+ B2BKfprBChsJnwJKie8HXJY3aHr0GFmCw96c+O1jO3+pWg3AzZHF9RZMqlljsECyqz0QYl9jST/ZVnxV/vXnHSY3koBciSo6GMG+meCWeCi8LWOuaP4pPhK8e2avz0BLYaj3fbKSLn721nKM9Si5QPVFFEAVHjx7mhisBfCDJ0y3aeVEYzS3au7hLjBq9ay+Z71o5Pqc2DDVZrLGwS5A+6oxK4lkhpOpcICIgRXoGhu0kc+mNgdJpXNvn9ar3LNUFf+RR9jxx7tOIKFBQMq+d1VbHBoLUl0NdDnDJ53kiSvB3QOMv1xEnE7b6f3vaONgHLRkqDET7FWVCjntLdb++sMg5bA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,60 +134,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 10:41:23AM +0200, Vlastimil Babka wrote:
-> On 8/28/25 10:34, Yueyang Pan wrote:
-> > On Wed, Aug 27, 2025 at 03:06:19PM -0700, Andrew Morton wrote:
-> >> On Wed, 27 Aug 2025 11:34:23 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
-> >> 
-> >> > In production, show_mem() can be called concurrently from two
-> >> > different entities, for example one from oom_kill_process()
-> >> > another from __alloc_pages_slowpath from another kthread. This
-> >> > patch adds a mutex and invokes trylock before printing out the
-> >> > kernel alloc info in show_mem(). This way two alloc info won't
-> >> > interleave with each other, which then makes parsing easier.
-> 
-> What about the rest of the information printed by show_mem() being interleaved?
+Calling is_huge_zero_folio(NULL) should not be legal - it makes no
+sense, and a different (theoretical) implementation may dereference
+the pointer.  But currently, lacking any explicit documentation, this
+call is possible.
 
-Thanks for your feedback, Vlastimil. We cannot use trylock for the rest 
-part as node filter can be different.
-Do you think we need a lock to prevent the whole show_mem() from being 
-interleaved and to acquire it at the very beginning? Will it be too 
-heavy?
+But if somebody really passes NULL, the function should not return
+true - this isn't the huge zero folio after all!  However, if the
+`huge_zero_folio` hasn't been allocated yet, it's NULL, and
+is_huge_zero_folio(NULL) just happens to return true, which is a lie.
 
-> 
-> >> > 
-> >> 
-> >> Fair enough, I guess.
-> >> 
-> >> > --- a/mm/show_mem.c
-> >> > +++ b/mm/show_mem.c
-> >> > @@ -23,6 +23,8 @@ EXPORT_SYMBOL(_totalram_pages);
-> >> >  unsigned long totalreserve_pages __read_mostly;
-> >> >  unsigned long totalcma_pages __read_mostly;
-> >> >  
-> >> > +static DEFINE_MUTEX(mem_alloc_profiling_mutex);
-> >> 
-> >> It would be a bit neater to make this local to __show_mem() - it didn't
-> >> need file scope.
-> > 
-> > Thanks for your feedback, Andrew. I will move it the next version.
-> > 
-> >> 
-> >> Also, mutex_unlock() isn't to be used from interrupt context, so
-> >> problem.
-> >> 
-> >> Something like atomic cmpxchg or test_and_set_bit could be used and
-> >> wouldn't involve mutex_unlock()'s wakeup logic, which isn't needed
-> >> here.
-> > 
-> > I was not aware of interrupt context before. I will change to test-and-set 
-> > lock in the next version.
-> 
-> Perhaps simply spinlock_t with spin_trylock()?
-> 
+This weird side effect prevented me from reproducing a kernel crash
+that occurred when the elements of a folio_batch were NULL - since
+folios_put_refs() skips huge zero folios, this sometimes causes a
+crash, but sometimes does not.  For debugging, it is better to reveal
+such bugs reliably and not hide them behind random preconditions like
+"has the huge zero folio already been created?"
 
-Agreed.
+To improve detection of such bugs, David Hildenbrand suggested adding
+a VM_WARN_ON_ONCE().
 
-Thanks
-Pan
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+v1->v2: using VM_WARN_ON_ONCE() instead of checking huge_zero_folio
+v2->v3: use "!" to check NULL; removed the #include
+---
+ include/linux/huge_mm.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 7748489fde1b..96ac47603d97 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -479,6 +479,8 @@ extern unsigned long huge_zero_pfn;
+ 
+ static inline bool is_huge_zero_folio(const struct folio *folio)
+ {
++	VM_WARN_ON_ONCE(!folio);
++
+ 	return READ_ONCE(huge_zero_folio) == folio;
+ }
+ 
+-- 
+2.47.2
+
 
