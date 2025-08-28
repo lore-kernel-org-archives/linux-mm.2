@@ -4,108 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B83C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 09:16:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45F2DCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 09:21:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58FC56B002D; Thu, 28 Aug 2025 05:16:47 -0400 (EDT)
+	id 76E556B0024; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 567626B002E; Thu, 28 Aug 2025 05:16:47 -0400 (EDT)
+	id 71EA58E0001; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A3F96B0030; Thu, 28 Aug 2025 05:16:47 -0400 (EDT)
+	id 5E65D6B0093; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BD6E6B002D
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:16:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE6B6BCC11
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:16:46 +0000 (UTC)
-X-FDA: 83825611212.16.A93EE93
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3953B100009
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:16:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mlKlnhqe;
-	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 46C1D6B0092
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8144F13A516
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:21:00 +0000 (UTC)
+X-FDA: 83825621880.03.1F8C7A6
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9C0B240009
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:20:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="h/HICCuZ";
+	spf=pass (imf17.hostedemail.com: domain of 3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756372605;
+	s=arc-20220608; t=1756372858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=AOQtyuZvIMzY2/2MSHSODxBniunfbBUj4nWDsUIHxjM=;
-	b=YHNgdDHnCHqhsKf92dGT8droXCm8YFk1yzD6jTz/bD01tZMpOg0gX9Z3RgxxIUzzViOecm
-	o8++A7qJD0A/uguUYtxA5lk6OyfMEDZUNtbbCi/V89gA3HF9UQOH5kJBZgcj7jvJBx3R3m
-	Uw8arHVxklJ2j0jFn6XEPE6hXbQ61Ck=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YM5qp7X76Rcedsuqy22c62bk9TbDWzDaDH8Yo5p7tbw=;
+	b=WLdMTG16WacneGkoZgTUbrTv+EJaSGq1kH+OHiXuloQGlJ8E/2PtJ8EL6l/jaQh0Nomkzf
+	SXKJQzaxhgqJ6h7sgZlNBTIISD8v5gGDS/DQ34l3pTQATfTkltrzDkvYub5rWuCfXlIfdu
+	b87V3NZU8m3gnQ3WJmUjBu1FvKNe8YQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mlKlnhqe;
-	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756372605; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="h/HICCuZ";
+	spf=pass (imf17.hostedemail.com: domain of 3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756372858; a=rsa-sha256;
 	cv=none;
-	b=f2xtBHI/Niq5R05TXl56y+uRtGNeilv3SK17ALig3Ty+Y3RUITxALhhci2sY7vVwZeCJxd
-	gP9OflPqhqRKoe4J9aPNSXU8sMNQHXh/KD3A2zns+7wSR4DBqlw2e0jYAqZ1zTTgCV5ch2
-	Zrnk4sLn9fOc6PTkRG5sE1bd8v6CxxQ=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afea7e61575so75618266b.2
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:16:44 -0700 (PDT)
+	b=pnfq8g+34fFYyYL9EOxg/Vz+yv0TPy9MkWr4uQPM1DiYDKSruUcG44+TwlgGe4EcNHXiW2
+	paUFFUfrpSOMfjIzu4KWvYB7V57syuexpSofCoGzvUfXq0y414pXJQ5qyf3yrcmOAhVHdR
+	J+3I3r7ixx6oOakSG+1wjjd1/F+0fJ8=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-61cd4c2c9b6so465469a12.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756372604; x=1756977404; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AOQtyuZvIMzY2/2MSHSODxBniunfbBUj4nWDsUIHxjM=;
-        b=mlKlnhqeP5q/FE/I1onI+q4Wg/Gp/pUNrJfj5hS77gA9wX7yOF8ZaZkfcvPB2lhidj
-         ggHisxO3Cy+gfyBDto25eGW/Q/48EE2VrbNSyonMXhniZYb2pW/BJnR8YOP8U8qfzqaW
-         1dSpGL1SX8E53uDp2IiBC2lnD7e46HBTJLoVc5BwfYQRyek0lXW43mXeP6x5JXZTdP1l
-         UULSbcWnC/ypOhqLv2o73AdT3ymRqgm6q+lMHmY+6vxvSNkqPw35Umnbg1Mgupy/6ilg
-         VrR0u4mBfnhoSQon1J60GK4RBAPSrbGvpYm9fwjnp4l8RvhJBKddhiyTcA+gUH9Z6B9f
-         tupw==
+        d=google.com; s=20230601; t=1756372857; x=1756977657; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YM5qp7X76Rcedsuqy22c62bk9TbDWzDaDH8Yo5p7tbw=;
+        b=h/HICCuZJFbxRjwXi3mSShGT4SdTGsHtSE2HIZKJTOAa1jOpZFXAQizW2p3kUSHVGn
+         oFL7mA5VxoEXd9lTeK6YLsX2IIXtIZjWeo0sF6LMRbJO/32ro5Hsjh/sT3am6F1tZY1w
+         Hb75qxWCPz6XGSMbbEX2T9el4nXW/UIfXArHNG21w6olMqnTO6TD73kIjJGtjaVRcZSx
+         FXrv5y9qxzEICqNmC0KzTSR2Eg9CXzLH/EYHf7AnqnpPI1HZGfBSQ1+buEhtDzEdz8T9
+         usj+Rsx4iXvwoLDE0g9iy13x9zl2geICG+RHNWOXVvKRvlzH/7vZfuqTyRhAVvOQa5ot
+         6yRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756372604; x=1756977404;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AOQtyuZvIMzY2/2MSHSODxBniunfbBUj4nWDsUIHxjM=;
-        b=eK1UKe+G6Z6RbCktnfPzS4QMtTuwviRG0j/wjV4PMovNCi3IJcVULcD+19k+qsq1Z9
-         aiSTgBq0bwrDQZ1T3a6tu9MfUD4mn/puy0nSdRP+/Gin0gcZeRTV1W15Lh2v0g4SJ0mf
-         aHkfXYQOVKWyAhzkZSxjFIylsYL11CfH02d2yrVRC8444WQ+CVyWAmgcKW1unMoFelmb
-         CHtf2LWJhD88BzlstH/7FTTIpkxbroFIgoS9Hl2PqI0mtoXilNSu4MX5jpEDgsC2cRZA
-         1JC0ImMpNS3K5JGFBqcUQm/TpoN4+VyA1pov7ezufvLSWbu6GTkmIBJtQcqnOZ4kIKd1
-         DEeQ==
-X-Gm-Message-State: AOJu0YwTMY1NhSTxMyZFrm1bkIT6GeA426lzLXsgB+5G1Ouxp2w7PI/z
-	zO31wT3lsYzDcy7OIxQHtPjpT+ziWBIUu3nrgDO1COtPyiag/nTGffXp
-X-Gm-Gg: ASbGnct0SwnjDifAV6lPz0Fg76haTWwObRlS4wQkzPqEVemarExwpn6S2qz4s2SQMgS
-	i8odR6NET2s1ab4ciGcMg5xa1zvpzDsyNSjxK+qhd4I3tXTZgqw5HwHz7Er7gYGuEBblYYbNOG9
-	OE2beGg6as0QkyyaFCoYYVlqWh4YE1UDCUrf9smgDGrzNn66MHmqzJJd2bJg63vc6t+FEkm69K1
-	hNQ4FGtxVsX/D6bAXURg92RdOlNWskJFot0XxVh/3z5w0lmqkhge9TersoH7FbFOXQGSz5T6YuY
-	J79FbclXjMYGBcrsQO1Sf4ENMKlB7xJiVZaiKo5jyVmGtI0C3tuFf1FZq/fhZVo/wuWC2NshD5l
-	s4bLDk2rTC3e6i1ijajJH/be+8GItE7PjjPt2
-X-Google-Smtp-Source: AGHT+IGp3AIMhaQdSet5edp7PRFPEJedEhdk75K4ynpmUS6ipjxADLemo9WemaEkZOD7O3F6DnwnKg==
-X-Received: by 2002:a17:907:7206:b0:afe:a2c7:78c with SMTP id a640c23a62f3a-afea2c70877mr720927766b.6.1756372603490;
-        Thu, 28 Aug 2025 02:16:43 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afedaa774d1sm151433566b.89.2025.08.28.02.16.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 28 Aug 2025 02:16:43 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH] mm/page_alloc: find_large_buddy() from start_pfn aligned order
-Date: Thu, 28 Aug 2025 09:16:18 +0000
-Message-Id: <20250828091618.7869-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Rspamd-Queue-Id: 3953B100009
+        d=1e100.net; s=20230601; t=1756372857; x=1756977657;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YM5qp7X76Rcedsuqy22c62bk9TbDWzDaDH8Yo5p7tbw=;
+        b=nK4GHXWTdr3jKp+EVW1tv98dz7yclZJ9RN3+w+nXFXCKgKMqMZ78K7ijMbiuiGwp4L
+         017jZ47Wgot2TgEs+j+vNjsrN2MJHfyuFeIip4T9E9ka05YcgddlcnJhruxbjBu7vqwR
+         qRZtPGZ8wPQHmZL6tXcE7R6L+D44tEq86veorxcmonwBeVNCJl1kPRltzi8ROq5do2DO
+         0pJGGXxGH4OB8+8rZkqspSDJG0Am44+eojJm0b5iSbinBbsOsQAWCaQ8CCKe8tAIBxk+
+         LUFPNFTFsWO7kbt8IsUcv6MUHDA62Gm9ChGheNcXUBc9NGp+h/Uj2e4huJ84yy4ILSwq
+         OWIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVXtIQkh3iwdWjrI7lHZUrBTxnWluCRfwug5Egfaspxeb9J3EwB5uT7azFW2cPQhKlVCTLk+dp3WA==@kvack.org
+X-Gm-Message-State: AOJu0YwzdD/x9cgrRSpFKuC3kzFijMo382grNhl4oQ9UfS2aYol/8HjG
+	RoFCpBReImP95fr4NSziwGFLAqULp8Et9EdFfZru+7EMS1D4r1OSsEG4CKSG/tn/Sntfc9CcwOj
+	FAb8QTpWqIJ0SRg==
+X-Google-Smtp-Source: AGHT+IFkVH92/Q0D0GIcS9KaxX1UP6vLGf0Qcpt1E1rUVYyfKDRramMD/6V/MybaQIecatsjMOq8RZHy36Ab2g==
+X-Received: from edn13.prod.google.com ([2002:a05:6402:a0cd:b0:615:6482:748c])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:358d:b0:61c:73cc:fb4b with SMTP id 4fb4d7f45d1cf-61c73ccfee1mr10144954a12.3.1756372856958;
+ Thu, 28 Aug 2025 02:20:56 -0700 (PDT)
+Date: Thu, 28 Aug 2025 09:20:56 +0000
+In-Reply-To: <iucjeilrzonjldwizwkeo67ouo6o6nbqbnmlsyoua33737ekj4@uf4iekswazec>
+Mime-Version: 1.0
+References: <20250827-b4-vma-no-atomic-h-v1-0-5d3a94ae670f@google.com>
+ <20250827-b4-vma-no-atomic-h-v1-2-5d3a94ae670f@google.com> <iucjeilrzonjldwizwkeo67ouo6o6nbqbnmlsyoua33737ekj4@uf4iekswazec>
+X-Mailer: aerc 0.20.1
+Message-ID: <DCDY7RAG4AN9.1192AMMUC2LMV@google.com>
+Subject: Re: [PATCH 2/3] tools: testing: Use existing atomic.h for
+ vma/radix-tree tests
+From: Brendan Jackman <jackmanb@google.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, <linux-kernel@vger.kernel.org>, 
+	<maple-tree@lists.infradead.org>, <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: ix46akya775dpb7k7u5e9mkeubwhq9nt
 X-Rspam-User: 
-X-Stat-Signature: s8wmte4q77uzyjcik5z1wckmpods1pt5
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756372605-613178
-X-HE-Meta: U2FsdGVkX18TmjuKlLHF/VGHHpb7MtzE01hihrjb8yFQZZVmtJeUbvq30f6gWS4BqHsDXAc2jr+ieOv63i80zk5AeQR3Mq1oP6ZXR2rWyJAXU86aDas+tdKaJcBSTUQCW1kYFDMcjdWkKSeHu9gHA8eMPyhUvqErPKwQmaP1BUkRmRGKAVpP85529idI42BKAd6Fq/8HytlN+PoDSdGrHr9L3tQvGwfYNKEHy6loNa/kWgwVJ/5h/tO+9JPA+EbjgtIYsB7EmAKXh6erGmrup7SqBln30Y0MPMjpKe5wecEn2rCm42wydJLav1KLoJAVoppBnNv/2CLetu2kKeaENDyeQtEZm87qSL2HmKoq7/WvkMfQlV/MPKirTPS5PBvzYrrLg6IdtnQavnuQ7QUXx1ts8XK5MSCj8AJgkBw/ppeZpAkK7tgzw8NXnVU7dBZXDToF3xXzosmuKpMzp22JSXQVPsLJhVlm/deJMCehV/JbEkp+VqsPkK8YdO7y9lgSYP4bWeRmxIzwimsg21WdPDGVoePi7jzUInDqsknqRqxgR90VLLsM3VrdJNzaOFYZMUNVp8hy+agJcXKl5kJQc1RNrk1jj6+7LfYMAO+o94kkTd8KD3aCvn7wUtqCj/mJkdoCjCn5j6OlcjSdWTns9AyHp9HMS+5EhrP5Nk00BkzUec1QVlXK8/Qkt+TwHWLUS6MtnJEZO4LxDMHtXE2dZi0bu5ZbUwFFcEwAl0BayIbBZ88danm1CloAnppDi/8aeZDiYc5k4wtsIHijjgKcCrou2G9BTzWwQ3ytEnjiEc0zAHpJ/qYQJ55X1FP3x6YetZVVP/OugvsRuW/Y+uyyO8vV/I0BlM0uZVxID2EbIjHSRoz7gKBaA2GiHjef9sN2wWt2QaYgu77M8dGoN2hB+w9fmSV4GbVYyXTP9ZdMfnJOCq1wS11BGCeDiaTqyEfYNkfa9KbergZhGmmWNS6
- QfZAsUVQ
- qxOuyLimkWwHK7Cg/mq+C9fTErYYFUBhCHvdu0b9TxREh6O4ZsUuRgeyW8/gzrgtAwDLxtZXaDy/9debLKRQ6qaa/TUYrUZ6BivVkiJcGvqfaBdx0ssnenCOyAV0zjrutCOP+zTOOuZe4TTuY0AHeIQuZszISpNtZuBJeJV4PGDFvIay7hoQSV576cQDm4V/JcSvkgCNK9OwOwBLphDBhkIY/2mhEx2kwCd7WSHqy0EDMXS3PIiyuJgFN7nhko9h1E/Tpa9TkOVyjuBSjrX+AwUaCnPuwk31WSZ1Qg72+uLYYn6dGBpceYyEIfE5D/sJXlz+uKB7pW7TgmtIabIr7OY5PI8tr9nm4LC1sc0blS25BSwVEy++MdUDYFdReU79ctibWEMOLPeKAmq+w9V1qub9KIAAJdHC0ykcB0L1WbLkuX97l2PJaXLKagBs8C2egMuq1sehpfngvAVswPJc3Xjot77RvG+Z2yVl0QQMErPwFf9zNtx+q5MP+MUimW2kVwODLFKDJCojb6LLaunHHSPKsoq4Ft4ovq3IaSxL0pF6c/vQH0Xth3lhUEZ+kaDG+w+jJ6uQSaVtx/Ip/OlW+P6D/YWZSVVRQe7v1ZjbRgYijWMXYXmvcxI3y4vZ73T1itG4krLFP5WPDSFavUbb1zDFxpYthA2rSo7CUNxi04HgO0bU=
+X-Rspamd-Queue-Id: 9C0B240009
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756372858-486733
+X-HE-Meta: U2FsdGVkX190XNR5iln2wwpezEFsCuK0qjV26g8qYLcvBRZ/iypy0XLCmymuOVCb0sI+EWM60IbdOxKh17cRR0Z4DJ7GXch3I59g4UzbmP/zs0TY47HP5Kf+vVisWadxYOKPza/OgrjeqlIO0aEVtbYOXLayXFrhbzTUHQ8X0UFei+dQtMqHCfDrNorNDmuMPJnhORtSqwamc5SYCc52GpEu9EhR6CEE61lpyoeth0dXVbkhEkTZd1r1AbDZ3cwtbmO2LRgJZ5I/zetEIW6tzqLIucAFGgn6Ok4/cJ7FZ7NQVDcJNjYzZ3r96LOtDxOMr92ze6gz0/YXRCVQlO/hzUzD5UojUPrJvP4C/3sEUyJbMHEOwVzBbOsJWLen09TAA+XD6b/xJ9o5HTJi07MvvXrth5lYGGeRyPVmBlx0oe+IuIoXCd0UhxnTYgrD4iuhlOrIu33SFyL5E1Ml8Lup1H6VhrUapGzC6b6JwfxWYOugOFMJObpewd4JSUao8elciUGavTwO+rQ7ir/5R2XRDl7FKqF29Q3l1FstZPYf2QHUPBZDCS8adeQtGiodAwo56mRbxjbNlWh18Ew67zWk7sXl3V6hOTFV/bVLgNIDu0U/vO505BX2vh1Dj/juOPx0WZYu137Ar3P3OsHfMC+gbF8L5uzHcxKMwgR8k6gUB0dXE/pFd+4rl6JsBoLbSuKyfOOP7dyyCcbQFA5vMI/gJS5ygWX0qA5qi97Jm+iqTV47IOfH5o9sv0ELLFjFn/+EDOvXhSYtU3xEyVFEPwZLTnm7zu1t14cfN6UM6aOsuPiSkSMPWDSNi12O/sVXLu5D/OEryUB6LFXtmXmdCuO07i7LLLezAIThexiQ6EIzACwWkbtyBxI01njqW5L+j5MnisEUs5u3vgQzzyTEgq0ZQ8rGtaRshemX8V2qk5hiUJ1OFh66qbbjgCN0qxTrHV6OO2y28e1zzcss96qPPgG
+ wSxSQg+9
+ 4L5h0fkzrhrpTryEg95ksEDu8RvoCEk7M4MQabAs/TI60hpfKbke0mw9QURNi65eV2KkHTRRY84ysLywVhK4vLXwEByUMGPOjqLiknk/kmVhsBrffS9i6Syn+W8a4nT4vSi9x63b3Su5xhC5jFSSaeeLn5sZC9dUFfUpQghDkZLGMkaGbY6bAQ+o+ngCxq2xvJppvMuYUsvdju5x49fI/fW4dvT8IP60pVsHF+UjrR0GnDeVP4OtUQLuHErYzzHHT3JnVkK+BzBiHcSqZI1GCzjkGTdm6K5XnCRQaXC8yXz2juc56+pa8lhaeYCHaGqAvtw8KU7EyKhrh0/3z0ewsYQADwg2Ge4i9q0j/9xs+Ee+N6zj8+28cv3B1uFAlQN3EAuXpzk+1bJIChF99H58ST058nZmdJszqW4QBSwENRP9ppCWXb8tcGPFL+NZr4fbYqfaNt71zS4fKH04ZJI7wkV3Lr0kJnmiPCKuheXAo6NcIBnDoSmR1o7/CMeD1XVwYZhEmDngWStwLiHdgLqz4y/Dxth/LcY+Li4D72BppyZ08M8vimRoIIU3YEQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,38 +113,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We iterate pfn from order 0 to MAX_PAGE_ORDER aligned to find large
-buddy. While if the order is less than start_pfn aligned order, we would
-get the same pfn and do the same check again.
+On Thu Aug 28, 2025 at 1:05 AM UTC, Liam R. Howlett wrote:
+> * Brendan Jackman <jackmanb@google.com> [250827 07:04]:
+>> The shared userspace logic used for unit-testing radix-tree and VMA code
+>> currently has its own replacements for atomics helpers. This is not
+>> needed as the necessary APIs already have userspace implementations in
+>> the tools tree. Switching over to that allows deleting a bit of code.
+>> 
+>> Note that the implementation is different; while the version being
+>> deleted here is implemented using liburcu, the existing version in tools
+>> uses either x86 asm or compiler builtins. It's assumed that both are
+>> equally likely to be correct.
+>> 
+>> The tools tree's version of atomic_t is a struct type while the version
+>> being deleted was just a typedef of an integer. This means it's no
+>> longer valid to call __sync_bool_compare_and_swap() directly on it. One
+>> option would be to just peek into the struct and call it on the field,
+>> but it seems a little cleaner to just use the corresponding atomic.h
+>> API. On non-x86 archs this is implemented using
+>> __sync_val_compare_and_swap(). It's not clear why the old version uses
+>> the bool variant instead of the generic "val" one, for now it's assumed
+>> that this was a mistake.
+>> 
+>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>> ---
+>>  tools/testing/shared/linux/maple_tree.h |  6 ++----
+>                               ^^^^^
+> Did you say radix-tree?
+>
+> I was going to accept this because I put my code in the same directory,
+> but since you'll be respinning..
 
-Iterate from start_pfn aligned order to reduce duplicated work.
-
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-
----
-I build this and run, but not sure how fully test this.
----
- mm/page_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 27ea4c7acd15..7f2dfd30106f 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2033,7 +2033,7 @@ static int move_freepages_block(struct zone *zone, struct page *page,
- /* Look for a buddy that straddles start_pfn */
- static unsigned long find_large_buddy(unsigned long start_pfn)
- {
--	int order = 0;
-+	int order = start_pfn ? __ffs(start_pfn) : MAX_PAGE_ORDER;
- 	struct page *page;
- 	unsigned long pfn = start_pfn;
- 
--- 
-2.34.1
-
+Yeah, it's only the maple tree tests specifically that are affected. Did
+I understand correctly that you're asking me to reword the commit
+messages to avoid confusion? If so, yep good idea will do.
 
