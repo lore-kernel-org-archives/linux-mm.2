@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EB9ECA0FF2
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0A8ECA0FF2
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:34:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7915B6B0005; Thu, 28 Aug 2025 03:34:12 -0400 (EDT)
+	id EBE788E0008; Thu, 28 Aug 2025 03:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741FA8E0001; Thu, 28 Aug 2025 03:34:12 -0400 (EDT)
+	id E47648E0001; Thu, 28 Aug 2025 03:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6306F6B0089; Thu, 28 Aug 2025 03:34:12 -0400 (EDT)
+	id D36078E0008; Thu, 28 Aug 2025 03:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BCA66B0005
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:34:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9BEE13A4FD
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:34:11 +0000 (UTC)
-X-FDA: 83825352702.16.E5082C1
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EF9C4180007
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:34:09 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C0A908E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:34:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B1E81DEC8E
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:34:15 +0000 (UTC)
+X-FDA: 83825352870.14.21D7300
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 862DE18000A
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:34:13 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aPsAFc7L;
-	spf=pass (imf06.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="X/LnzlzG";
+	spf=pass (imf06.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756366450;
+	s=arc-20220608; t=1756366453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=j+wvbIZSOArG9eklWNCAJ/EwS6c50oTh0cISY2nYyU4=;
-	b=KH4loShlbnHrr3xFv8vtazaFKB2vRc+tNxVa3Jvin61x/tGnglVUPd0R+evABY/GPyIJKA
-	bvS5JLdKnn1aUWaHrWS1xNI4Fdi5+XfanZp92MSxYxlQKSnNiunN6j9+cvExg4kZkcyXkz
-	sGHCEfXI3tbrjkV3zfq+n0aasmJ3588=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lhhrrRkb4F3PyX047v9pUxx2LHKmYVjN4mot0t9leaw=;
+	b=WQiwacShGFetuvWyS1ea4HwZ3RWbQ0/CumOzwCtbGLIUEh/0m6GBsN1twTUxuGt2crzmz1
+	PgAOzCjlZJPw50bwxEvC1EmQ4QLjNSWK0kgW5sH6cdEWjWpWawm0nnHrKusQ05d1GBD3Zu
+	1v149MRmH0MbxgoK68MP+T57BiBJysE=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aPsAFc7L;
-	spf=pass (imf06.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="X/LnzlzG";
+	spf=pass (imf06.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756366450; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756366453; a=rsa-sha256;
 	cv=none;
-	b=fXfYaYxdvyTG5XhMeQk57gvJBwbGbGFZsFBGSpdOhzgz6jtQkjeCFGunKj2+oKxP/JTD/3
-	siilgC/MmUZNPB0SVI9aHbet2est4oICKzyrKGL0mAW7FnpifbzKoAXtqp/KjnlT3ONyaK
-	g12Ea3gX4Uq2U3ZYFK35BZ/Qge8X/6A=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7720c7cbcabso486363b3a.3
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:34:09 -0700 (PDT)
+	b=xAiCEtnjXvXFBrJpCoc65wf7wCcLj8PuY8uwEtHIXyGCM53vxqnuJLTAV6FlrAr6LrvZuk
+	B5Z2Q4dz+ggTaYffvPPta8mwvkXO6YfKo0wZm9uljxAJdZ3OdKvkiPdqlJ+8SmvFvMwvaN
+	E3zVpkHPubb1pNqcC6nqjpK6bC1RaW0=
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7718408baf7so659360b3a.3
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:34:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756366449; x=1756971249; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j+wvbIZSOArG9eklWNCAJ/EwS6c50oTh0cISY2nYyU4=;
-        b=aPsAFc7Lt5EyXRsdXuxJL7uH/quGrB280U4ZNfo6OJgkZKDay+reGwNgGNCyE+rbAa
-         XWwKWQJB4lnkiWlDWyjLY0ekd0s20kMtPfmoxwXyaEw4PVFStsBZuxbVkGka9h9zOZdc
-         RfXad6FyQPW1zIM9VBnDT9bknpmoQGpQmn0c7VrwQAGi3/Ag97bCFRP2i5/xEsH2DORo
-         3RZdJKi6yMZKVPFfE0/+XuZL8XlDTZ6ZiTA2g2oWkFEHgAZyXMDFXCSK4kSUgTAObtcG
-         uhKEk1jpJwXQKXM5qHBwk1OuqguBetATrfO5cX80aXCPH0L3x6juJ39T2ehl0HjVbn6M
-         ZUZg==
+        d=gmail.com; s=20230601; t=1756366452; x=1756971252; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lhhrrRkb4F3PyX047v9pUxx2LHKmYVjN4mot0t9leaw=;
+        b=X/LnzlzGvCfILzw833R4NKFEq4rvF11wgNS1bU1cOtJRrXbIwS20CaqwrUzcg+mcmU
+         28VzXO0ROX1d344X6m+bFgmcFz5Fd2k6h0AthHApKqM4HIgT90cCi+v7NtDDK/r4/iUI
+         Z+c6+y10IjGRJwpGRO5qgsUS1hyJfz3sQ/29SdY7GveKi3nEzuy6019cIiyJsb5NDqhk
+         1GGKC78As3hW5C6FuEtUFEhk4RvY0GcScBltp9gjq1/bZxSFoWa7FNW87dPNc1b9Ur4b
+         T1qFWvFbqrSHGLCZAf9x8Yav+8PvkYwuhReAW2493itlixRG8yUNpPJqZDKVPWSfjZdk
+         22Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756366449; x=1756971249;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j+wvbIZSOArG9eklWNCAJ/EwS6c50oTh0cISY2nYyU4=;
-        b=FljhtNSafTC2KmZ36pXovXcSFUR2C7/An8OBgFFUqozNUTwgl4epmdgxXB60xiwZyk
-         hoOZuKKajTuiiG+toZCBUOlTC3t3PkRIwhW46rLouKfEwKSPYz1XKEY/81jO7GBVEOSa
-         JPfEOc7Bt9OLBSFEhHmqqV546spaFmd1PqtUT/2RJ9toha4CSMHTwFEqhU5EmzRPtgOr
-         Ke+5418MMeEOa9kmPTdWa8pAXduENWC5ir5QWYfBmAfodQ8nspeFoceiPUJwIh8OVzPA
-         1SyQBLU1k2FZD6bx9TZXRErNlDq0xnKhTBAQDGTCCP3PjJIh8b9aWxjZpkmniQmLtGPP
-         z5dg==
-X-Forwarded-Encrypted: i=1; AJvYcCWg313gbT+S5ENsdyQw2LzuTJvNPPWPcim0BIKVEnGIPPzUy3GvSnrly+knMJevm745Ex90Lh3ILA==@kvack.org
-X-Gm-Message-State: AOJu0YwTgIPDQZ7Wl8ILNN+k6aLkJ/p6GSMN0X5Mu4wjGepXIu6OBIGt
-	bimlUYz+E9VZDGJm6p74tXCiT03IGDLk2l0uAFQTkoxn9dG8IWfLqZUT
-X-Gm-Gg: ASbGncveEMAyMi60B2ANj5RzuDsvgNDeywWvckW4Pr8gMJCeSjl5g32kQ9G48e/ThXq
-	75RfvbghFlbm69+KnwtqZb7qlVew+JXoJn/8PQdqom7rTHG5JCeESl9s8vWuawMkyx5HiOn7NLA
-	GiL17A1jwvOJxNk4F2PzMKk7CufAVbX2A/pwwnxFUxzblUG0YFy0s01wajKup8y3gDJ0U8xElq4
-	dY+1nRpdcVX9ZP3noiUYhGyyDcf3zTdaCwAtvtFUAZqvXm/b6CKxBLhCFXzunTqT1iwGnBGYasE
-	1eVfNcPbyVHg3tZGgZJjj4jQLWieowrWYmtek6+ejBjOyc4V0m232L2gZIOH/Cp6/aTHjxgJSJx
-	3UYfNE6vw0Bqry1Ns9anREb2g7AJLp77/shu4XGL+KPpDWmIGQA==
-X-Google-Smtp-Source: AGHT+IE0Bj834whDXotueWX71WpNaH0hF1RPeXxQmdcXuHEqPvv59XyUYnfM+JaBPoGK6bm6cgZ0lA==
-X-Received: by 2002:a05:6a20:7d9a:b0:234:3932:2958 with SMTP id adf61e73a8af0-24340c47a88mr31770311637.20.1756366448736;
-        Thu, 28 Aug 2025 00:34:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756366452; x=1756971252;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lhhrrRkb4F3PyX047v9pUxx2LHKmYVjN4mot0t9leaw=;
+        b=s+BhOmtiBre3ZyKQFIymWw4epka9SnZM2bhrWdGBUq/j8oSLgyWZ9IEj3se/kMaNTv
+         eXsUrOSMjHyqavU+Yyeu6eglFzJckSLywYwLQekBbQIat+yrZtcgboqXdJfo3bltEtIh
+         ENYr4mRQiYGsKVmE0d+ZQNVUu2f8yx9+9Rdz//MZVEr8VNjUmeXS3+71yfc8wb0c7h1P
+         o6WivliFPKTLyTEToMLsh3SATbV3+/WwEZQzhAsFXuD5/upuQZxKncIuM0XMZnIjC39v
+         VnOLQxS4hct2fnKnU4pJx8Kefiv/POx/ccAHUK101iZdWf+rArirb9M186751RcDA4h1
+         pHQA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9fDQjKUcUan1EsZhrI2RovVfyPZfyykMG3RB7Xku8JCzLDlH1zjJsdRpeBfJ2CJT9NWMWdwr84Q==@kvack.org
+X-Gm-Message-State: AOJu0YzteOp+ZjtXgZkREnzsHXouqZBH0l0zyM9O2CRb+55jstNbked/
+	XsihgClN89GmPsSBo/rr7KGpRvcvhYHWd/E18FxhuPD7DuroE0YOIkaj
+X-Gm-Gg: ASbGncu6WvEfVlvRPh5dV1SRA55HGnVFKSkm0jG8bxPYPY4ByepYqTuTz6N44PR0wSH
+	ZUffxg1xQKHlXbzxn6Thva3lPYY776OU+6orU1XKF5TT9yCeLEeQLHdlRo8+YE8QhSlSBMM5nbu
+	s8inxQ1q2/HwE2gr+qfEVaXor10zGPX5vOqDPv1End3zl7+vAmzKYtT2ytP9EowHIO6CN0wMQmf
+	H5a9ZJe63jHY3LwzhcL4BwEatsQaq/JIHKaL8rDiX/T7UC6rpZERMNbcAqsAP1f2dZJnr+fyenE
+	LqwfSZW1M4gqFSP5DjO7SYjZ+xGrCD8gmR7k/TJ+c4U/nO5N1i0YBRJ1fKULzPWuGlvsmr732Dq
+	Exe1QIQPGCcz1SyM/pUfASql9nosrAw/+eL5MX1AouDrZYRIAKkZtpRTyKDAv
+X-Google-Smtp-Source: AGHT+IFW8MIhp5lAtNEt+uw+DAmzNYmf1p0SiEn72vtOqZ4l+f/YrYQksgLtRZc7uoqAe8mYBAPXtg==
+X-Received: by 2002:a05:6a20:914d:b0:243:a52d:7a70 with SMTP id adf61e73a8af0-243a52d7b0dmr6549481637.3.1756366452260;
+        Thu, 28 Aug 2025 00:34:12 -0700 (PDT)
 Received: from localhost.localdomain ([103.88.46.62])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cb8afb7bsm13182613a12.16.2025.08.28.00.34.05
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cb8afb7bsm13182613a12.16.2025.08.28.00.34.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 00:34:08 -0700 (PDT)
+        Thu, 28 Aug 2025 00:34:11 -0700 (PDT)
 From: Jinchao Wang <wangjinchao600@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
@@ -97,21 +98,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-trace-kernel@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
 	Jinchao Wang <wangjinchao600@gmail.com>
-Subject: [PATCH 00/17] mm/ksw: Introduce real-time Kernel Stack Watch debugging tool
-Date: Thu, 28 Aug 2025 15:32:33 +0800
-Message-ID: <20250828073311.1116593-1-wangjinchao600@gmail.com>
+Subject: [PATCH 01/17] mm/ksw: add build system support
+Date: Thu, 28 Aug 2025 15:32:34 +0800
+Message-ID: <20250828073311.1116593-2-wangjinchao600@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250828073311.1116593-1-wangjinchao600@gmail.com>
+References: <20250828073311.1116593-1-wangjinchao600@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EF9C4180007
+X-Stat-Signature: i1pdqzfx8ookiyynjyngk5sicu6tpaum
 X-Rspam-User: 
-X-Stat-Signature: pxrp3g1ds43d7he34hqos96kucosg3jt
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756366449-539271
-X-HE-Meta: U2FsdGVkX18X6T5w6wtwHSuN4wSr5EWVO8/bsd3mVmvm2jdH8Rmj5aIb9CO5fIZveLGFpP52dhLot/jWTnEpy5QsIE0XUs1jcbzszIs9YK8DUcTGS3nRrpZbYTOeDHa/2XL3Og1tluv933Fw7sV/VjzgGXTO3s7CMTgAjeKR1yiUiCI/+7yb1ljpUSo+a6UQW97ScPqeniZbU6ZYWspHOR6lF0feQmr2N1vlLhkX/ViHYwhEyAxSQUBT/D/kb6FBqBCzFFRzYACwVYpyNTzd+IY4/cLa1PzO6TWsjiyvCnV6t1FvYt9sJB0/YVsxX21nzzCyu8/5QT4pxkF7KphJ5GmoO/BCpLhHXuvGqMEq+Ob4j4GS39lJXuY5hh5GSXe7xQVudm1XB3aL9gtwgmEW8Zk/QtsgJHrGyC7kpWQMQSQcu+G12AV9zAK5a329Xo/D/p0jndjwi5wwPpB4A113vdP5hbY5ckaBr0SruFgSTChz4u+IvAl0POhOF7+Xsiv2dJCGVXFfVw+GzYp+YjmX6bQkF1iXjTDXa/8VDHn30klWm5YuVYC1zdWzVN9PaPAvhZ0mxbw1Glb0TXt9saMSlxNnBocSyBfcbkaZv+9WncgFf7lUUQB5qLvXptVbbfBNpczgXmw8w91UTv+RbaO4r7kiDCbNtSf2Sro2xRsbdIXyN66BcASPx6KViBuhL4oppZkL0fIX2M3pm0aFs6Z+QH1V5Jf6698tKuV2SAZnzMN1Cq6GzR/5e6Ymxgr52f5n0eKaYw//lYZsgxMrcasxj804q61BoNpztGl/iRym3jDSsdl8zSd7eropcUCbrULnkRxsgmkJnqUIFGf6QhEK2khKv7Bav4FBomtSkgDKE1vJciMGylxVMqVic+brE9PnEfFUFarU95M5vBoPGd0/E2fKMYtzw6020LA3qMP58E0FbmPA4DtMhrXdtg9FfsNPh09YUyoIcnId8LD0WCj
- t0fa7PtW
- 5Qf4C+Pb8AZcSq17Vz3fuXakn8KiJFnDng9z8486TMcgY4cFltnnkklw4/ttre0y2pDZHO/ctI8ilTyuNB8dKExbi8VqGdVsF2hYr9Qom/mMboaFLrFOhg3MhtOsN2UNHqJF4NEM1npYkc0FVm+OHMCJmBBtgQydb/RA7FCQcMJ3QvP98QGZBBTiIhCaoSB6iBns7bwciGwhNfyvXXhOApP39OEBHTovRCz0+c1sx3ixirMjwnGB8nkzHbt2I2uVQc9iRZQrK7iJJAJ5sYzy5Vu1g7m2iL5OQpwKocPZhPxCR1ZPd8KbpQH0CWixTbgL2sNj8tjSpZ/ax0LwhboiY7ifP0dGrD25fTKwBcpkcfCAEnR3k7qB91QPi9NGNnuIKSTtyEx45bVKqEc/1F0C+AHxyC+/7+ezp+3SXwO8fKOscgLSI1j7Vda5zhJuvu1nB+WywS4KCmJGCQWJKBoPYBh0lYg==
+X-Rspamd-Queue-Id: 862DE18000A
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756366453-58430
+X-HE-Meta: U2FsdGVkX1+cLmv8FwLzZ9u7X9eX2y7/yAmyKsniOK7gn4lBTRtt2HFmEelK9F6hP3mFQG7p9wbZDPakoxiwegnP27nCS2Q0MOg8L0aU4u4Y560gSWzlnsnejLM/qhbnqVERvftlKBUeZfS6HRgq9wZ4tLwiL63RzgE1ueiJRvEFp91HW0iT3egaJrz4crjfVIP5LQAeIv+ZnVkoy4PptcQ0aIYpZQsPlis508AvC+oRLvMJ56ux2EvlfF+ZDQTEkXYtLayY3ibOyKyn/f0iA6+oGwBpkhAfalVXypMW34dSgiE78GBE9yqU6MkqkDkJzVRnj6gKcUQ5PaJh8InXaWGff3tJBhOoR01cEux8A8j9iZF2BZM9GurZ0GGV7gXX/mH5cp0BkWW7ThEXOjglwV3XE4zfWz0vxxfwdKeQKTuM4OrL8qwn7zgRFEEWNAgmRPlMj557yusaTBOW5jB7iofkRY4L735eds5rdblMb6Xe6lLwO3YAY22h1jvH8LsrlrWucpHz+Fn8Gx4Xbcy4NBqIk3B3lrMLCpeI6YkUggLwRWEc7clHC6AOF08tBMaCbm+zWgKasJSIJwSCk4ouzROIjm08mDw15Fud2n174pv7I62PaVT5HKu7C0d9WKNKsZdy2jwkVx1AwailAsQ1CDnQ0LLmJxz33T1TZQ745A01ujB2N2oDbNA1c1F16FIJTSZ37pkIflHFAMJkd3NGFPPFjHQXLgEd2J7J8XeCswBV6lJbveeSwGoIriPj5upzAfN8P415W/5Ker9mE9APfMZn6AW/GfljpgpYGVslBQz076tdCsBF6minNQoLY4++dQ/vM6xySFCey7YJ9+00H9BO4Axea0kpU8Gqp3JYh6yJFL7h2Phbc0NFGCKzSvHhDZjFrOz25MaO7awQH8Lj6wKA9hN5jSMFboXBU2OuG9ynmWEjtjqDvB/k+pDfVLb/RwSeV7PNHL7YWX4BO3A
+ n2VPeygV
+ g2l0rCaFDOz2lNUUBm7U2aJG9NOwgoUCLsoGj3XIc1KbLid4tdQ8bqQGecHBVGV/EWWWHHL9JRnKPrbimOKxCvzirnM5hkYylKX5m+XZq0wGpUBqZKJ6wCGbH2fLXtVC0Gjs36npBKHLcXggK31iwA5vIC+Gk4Xxg3zIoB6CCBcC3axFvqiU8ZoBPrCyk0ixIQhSZCJKIhiFFgLJPH90hvM0xgFzvg1bNlhOlmpYv3TIGueGAXiPBFTP4coxgrpFfkgpJLmOYoucOAuCpOE6CHU7P7bpkj0NN1yYn/6rEgVmqUA9KAlV1TCq9tXmNM+Oh9A093SqVDIYCmtVe78MvRLoSgaMFHrlKJi2nnArEhPUB7k+Cl9s3mdCvb7Vpw9zaHzYTh3GuEU/EsxVi2a1wDq/1zcUgcrfTVFiLAZjTv7R0f+nNEU/njY7cr9m2ffT7Dcsv69xFfQ2XrEoyUQK1AYw2jg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,96 +122,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series introduces **KStackWatch**, a lightweight kernel debugging tool 
-for detecting kernel stack corruption in real time.
+Add Kconfig and Makefile infrastructure for KStackWatch, a real-time tool
+for debugging kernel stack corruption.
 
-The motivation comes from scenarios where corruption occurs silently in one function 
-but manifests later as a crash in another. Using KASAN may not reproduce the issue due
-to its heavy overhead. with no direct call trace linking the two. Such bugs are often
-extremely hard to debug with existing tools.
-I demonstrate this scenario in **test2 (silent corruption test)**.
+The implementation is located under `mm/kstackwatch/`.
 
-KStackWatch works by combining a hardware breakpoint with kprobe and fprobe.
-It can watch a stack canary or a selected local variable and detects the moment the 
-corruption actually occurs. This allows developers to pinpoint the real source rather 
-than only observing the final crash.
-
-Key features include:
-
-  - Lightweight overhead with minimal impact on bug reproducibility  
-  - Real-time detection of stack corruption  
-  - Simple configuration through `/proc/kstackwatch`  
-  - Support for recursive depth filter  
-
-To validate the approach, the patch includes a test module and a test script.
-
+Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 ---
-This series builds on the previously proposed RFC[1] and incorporates feedback. The
-changes are as follows:
-
-Core Implementation
-
-  *   Replaced kretprobe with fprobe for function exit hooking, as suggested
-      by Masami Hiramatsu.
-  *   Introduced per-task depth logic to track recursion across scheduling
-  *   Removed the use of workqueue for a more efficient corruption check
-  *   Reordered patches for better logical flow
-  *   Simplified and improved commit messages throughout the series
-  *   Removed initial archcheck which should be improved later
-
-
-Testing and Architecture
-
-  *   Replaced the multiple-thread test with silent corruption test
-  *   Split self-tests into a separate patch to improve clarity.
-
-Maintenance
-  *   Added a new entry for KStackWatch to the MAINTAINERS file.
-
-[1] https://lore.kernel.org/lkml/20250818122720.434981-1-wangjinchao600@gmail.com/
----
-
-The series is structured as follows:
-Jinchao Wang (17):
-  mm/ksw: add build system support
-  mm/ksw: add ksw_config struct and parser
-  mm/ksw: add /proc/kstackwatch interface
-  mm/ksw: add HWBP pre-allocation support
-  x86/HWBP: introduce arch_reinstall_hw_breakpoint() for atomic context
-  mm/ksw: add atomic watch on/off operations
-  mm/ksw: add stack probe support
-  mm/ksw: implement stack canary and local var resolution logic
-  mm/ksw: add per-task recursion depth tracking
-  mm/ksw: coordinate watch and stack for full functionality
-  mm/ksw: add self-debug functions for kstackwatch watch
-  mm/ksw: add test module
-  mm/ksw: add stack overflow test
-  mm/ksw: add simplified silent corruption test
-  mm/ksw: add recursive corruption test
-  tools/kstackwatch: add interactive test script for KStackWatch
-  MAINTAINERS: add entry for KStackWatch (Kernel Stack Watch)
-
- MAINTAINERS                           |   6 +
- arch/x86/include/asm/hw_breakpoint.h  |   1 +
- arch/x86/kernel/hw_breakpoint.c       |  50 +++++
- mm/Kconfig.debug                      |  20 ++
- mm/Makefile                           |   1 +
- mm/kstackwatch/Makefile               |   8 +
- mm/kstackwatch/kernel.c               | 260 +++++++++++++++++++++++
- mm/kstackwatch/kstackwatch.h          |  53 +++++
- mm/kstackwatch/kstackwatch_test.c     | 261 +++++++++++++++++++++++
- mm/kstackwatch/stack.c                | 289 ++++++++++++++++++++++++++
- mm/kstackwatch/watch.c                | 177 ++++++++++++++++
- tools/kstackwatch/kstackwatch_test.sh | 118 +++++++++++
- 12 files changed, 1244 insertions(+)
+ mm/Kconfig.debug             | 10 ++++++++++
+ mm/Makefile                  |  1 +
+ mm/kstackwatch/Makefile      |  2 ++
+ mm/kstackwatch/kernel.c      | 24 ++++++++++++++++++++++++
+ mm/kstackwatch/kstackwatch.h |  5 +++++
+ mm/kstackwatch/stack.c       |  1 +
+ mm/kstackwatch/watch.c       |  1 +
+ 7 files changed, 44 insertions(+)
  create mode 100644 mm/kstackwatch/Makefile
  create mode 100644 mm/kstackwatch/kernel.c
  create mode 100644 mm/kstackwatch/kstackwatch.h
- create mode 100644 mm/kstackwatch/kstackwatch_test.c
  create mode 100644 mm/kstackwatch/stack.c
  create mode 100644 mm/kstackwatch/watch.c
- create mode 100644 tools/kstackwatch/kstackwatch_test.sh
 
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index 32b65073d0cc..c2cc8c7b595f 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -309,3 +309,13 @@ config PER_VMA_LOCK_STATS
+ 	  overhead in the page fault path.
+ 
+ 	  If in doubt, say N.
++
++config KSTACK_WATCH
++	tristate "Kernel Stack Watch"
++	depends on STACKPROTECTOR && HAVE_HW_BREAKPOINT && KPROBES && FPROBE
++	help
++	  A lightweight real-time debugging tool to detect stack corruption.
++	  It can watch either the canary or local variable and tracks
++	  the recursive depth of the monitored function.
++
++	  If unsure, say N.
+diff --git a/mm/Makefile b/mm/Makefile
+index ef54aa615d9d..665c9f2bf987 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -92,6 +92,7 @@ obj-$(CONFIG_PAGE_POISONING) += page_poison.o
+ obj-$(CONFIG_KASAN)	+= kasan/
+ obj-$(CONFIG_KFENCE) += kfence/
+ obj-$(CONFIG_KMSAN)	+= kmsan/
++obj-$(CONFIG_KSTACK_WATCH)	+= kstackwatch/
+ obj-$(CONFIG_FAILSLAB) += failslab.o
+ obj-$(CONFIG_FAIL_PAGE_ALLOC) += fail_page_alloc.o
+ obj-$(CONFIG_MEMTEST)		+= memtest.o
+diff --git a/mm/kstackwatch/Makefile b/mm/kstackwatch/Makefile
+new file mode 100644
+index 000000000000..84a46cb9a766
+--- /dev/null
++++ b/mm/kstackwatch/Makefile
+@@ -0,0 +1,2 @@
++obj-$(CONFIG_KSTACK_WATCH)	+= kstackwatch.o
++kstackwatch-y := kernel.o stack.o watch.o
+diff --git a/mm/kstackwatch/kernel.c b/mm/kstackwatch/kernel.c
+new file mode 100644
+index 000000000000..93379a0a0f7e
+--- /dev/null
++++ b/mm/kstackwatch/kernel.c
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/module.h>
++
++MODULE_AUTHOR("Jinchao Wang");
++MODULE_DESCRIPTION("Kernel Stack Watch");
++MODULE_LICENSE("GPL");
++
++static int __init kstackwatch_init(void)
++{
++	pr_info("KSW: module loaded\n");
++	pr_info("KSW: usage:\n");
++	pr_info("KSW: echo 'function+ip_offset[+depth] [local_var_offset:local_var_len]' > /proc/kstackwatch\n");
++
++	return 0;
++}
++
++static void __exit kstackwatch_exit(void)
++{
++	pr_info("KSW: Module unloaded\n");
++}
++
++module_init(kstackwatch_init);
++module_exit(kstackwatch_exit);
+diff --git a/mm/kstackwatch/kstackwatch.h b/mm/kstackwatch/kstackwatch.h
+new file mode 100644
+index 000000000000..0273ef478a26
+--- /dev/null
++++ b/mm/kstackwatch/kstackwatch.h
+@@ -0,0 +1,5 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _KSTACKWATCH_H
++#define _KSTACKWATCH_H
++
++#endif /* _KSTACKWATCH_H */
+diff --git a/mm/kstackwatch/stack.c b/mm/kstackwatch/stack.c
+new file mode 100644
+index 000000000000..cec594032515
+--- /dev/null
++++ b/mm/kstackwatch/stack.c
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0
+diff --git a/mm/kstackwatch/watch.c b/mm/kstackwatch/watch.c
+new file mode 100644
+index 000000000000..cec594032515
+--- /dev/null
++++ b/mm/kstackwatch/watch.c
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0
 -- 
 2.43.0
 
