@@ -4,124 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545EFCA0FF2
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 09:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F086C8303F
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 09:40:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B99D8E0010; Thu, 28 Aug 2025 05:39:43 -0400 (EDT)
+	id BBAC58E0012; Thu, 28 Aug 2025 05:40:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21B098E0001; Thu, 28 Aug 2025 05:39:43 -0400 (EDT)
+	id B91EB8E0001; Thu, 28 Aug 2025 05:40:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10AAC8E0010; Thu, 28 Aug 2025 05:39:43 -0400 (EDT)
+	id AA8598E0012; Thu, 28 Aug 2025 05:40:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECD5D8E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:39:42 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE3781A0A54
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:39:42 +0000 (UTC)
-X-FDA: 83825669004.25.916168B
-Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8A7F8140005
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:39:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=aqr7VwiL;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=3288f7157=roypat@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=3288f7157=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CEEF8E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:40:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E57713A54E
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:40:15 +0000 (UTC)
+X-FDA: 83825670390.09.7143242
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5BA05C0006
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:40:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JsoyvWQU;
+	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756373980;
+	s=arc-20220608; t=1756374013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dhEedpfYEt1PcCJtARYDpqAPZgRl3DEDExfgwDPiBsk=;
-	b=zGAfFLpmCaYVxsyu5tZyp2+rmW1MSQn9m85vNw+QqTQm5Ke8G9EFYQS9wloJKNJg0zlunt
-	52Hhu4xleIuEVnhzkfW8xc8uIsHKRzea3UpK65mE8dPFzHIMPKxAxei27OB7OSAfJ53kwH
-	aBTfuy9VWJf9+QM/pAYeqThfRS6IMdc=
+	bh=H18ShQScvKRglRK2UXGYScgTs4Q/vE1IKwPk/BKJEEY=;
+	b=tOchf/lkc6k2g4RlraHjhgIZoe7Z12VVeZFEV+5Oce0O43aROuzyUtrBgqNXAHH+B7+tjs
+	1fMbfuS6/wWYKUZba1kYizvpczj5eIrjjmRyrPYRNobokA8BZu8CETagirCKU5DPAWWUMl
+	SJXYa2xR/uiL/+Nmhy6KeN8ajf+xcSo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=aqr7VwiL;
-	spf=pass (imf23.hostedemail.com: domain of "prvs=3288f7157=roypat@amazon.co.uk" designates 18.197.217.180 as permitted sender) smtp.mailfrom="prvs=3288f7157=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756373980; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JsoyvWQU;
+	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756374013; a=rsa-sha256;
 	cv=none;
-	b=ZGDRHZiqnONolM8RsaJaQkylyxEWmhvarhtZgzX+yzEAL0/xqKV3PzWnvaH0x8EpZh8tL2
-	ekXEF43T3LmINzTjoMvPe2RKmPOrka0Q+SXBHkItLjvjrfD/6XNytWbn9VbRidjJJE9pYP
-	OS7vYA+Zj3xDUnS49yBOvwRT0cTlhas=
+	b=vxrZ0ajqpbLr9mkgm1PAN443Sk6+RehwNlzEjNrlMd+Xy5NunvOUB/jVw1CrmTvjDkyuLL
+	oN7zYk3DoOcsZ8jSdCPcEcrL5IIQZubM3LWryd8PVjDOYDFj3zrsOLkuxp2fxXu3xkUREJ
+	s8c7bgHkXDdDH4Ya6kUFtNj9GVHbt/s=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3c7ba0f6983so501537f8f.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:40:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1756373980; x=1787909980;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dhEedpfYEt1PcCJtARYDpqAPZgRl3DEDExfgwDPiBsk=;
-  b=aqr7VwiLFuoK7JYE07GOy3SyLCd8NwnsrRcefcNT0mkGAr0uWT7KRYCg
-   xWTb0oTQummOQPNac7pclcytDw5TmoLalH4byEq3gNerEwTTxzLFlLyWA
-   lSe1sa3DpWcXQw2edcMG4Hjeos9f3zgOnKw4zuTZWqzygYUWZWznFSxui
-   l00l+TWulhULGltv47/QmSu3zP4n1IUMS8QEZOvzpyL0BmZOTbF8IL0Sy
-   cYuUcsx2lludkUJ/zpuq1/XanI/vNdmhdY9CudbmWgdc4QyTCjUPCZyIe
-   TX/401IYriaJXzqFxKjozYgrlaXYVXlqyYvy8opEjftjCJED1s6WQ9GLM
-   Q==;
-X-CSE-ConnectionGUID: 94cnJsPZSVCixxOlDSzfKw==
-X-CSE-MsgGUID: 1aQWO5cOQ+KHlvOc/xQGIg==
-X-IronPort-AV: E=Sophos;i="6.17,290,1747699200"; 
-   d="scan'208";a="1302930"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 09:39:30 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.224:20645]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.11.1:2525] with esmtp (Farcaster)
- id 2dd33327-f6b5-4325-83df-38702bedd8bd; Thu, 28 Aug 2025 09:39:29 +0000 (UTC)
-X-Farcaster-Flow-ID: 2dd33327-f6b5-4325-83df-38702bedd8bd
-Received: from EX19D015EUB003.ant.amazon.com (10.252.51.113) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Thu, 28 Aug 2025 09:39:25 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB003.ant.amazon.com (10.252.51.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Thu, 28 Aug 2025 09:39:25 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.017; Thu, 28 Aug 2025 09:39:25 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-To: "david@redhat.com" <david@redhat.com>, "seanjc@google.com"
-	<seanjc@google.com>
-CC: "Roy, Patrick" <roypat@amazon.co.uk>, "tabba@google.com"
-	<tabba@google.com>, "ackerleytng@google.com" <ackerleytng@google.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"rppt@kernel.org" <rppt@kernel.org>, "will@kernel.org" <will@kernel.org>,
-	"vbabka@suse.cz" <vbabka@suse.cz>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "Thomson, Jack"
-	<jackabt@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
-Subject: [PATCH v5 07/12] KVM: selftests: set KVM_MEM_GUEST_MEMFD in
- vm_mem_add() if guest_memfd != -1
-Thread-Topic: [PATCH v5 07/12] KVM: selftests: set KVM_MEM_GUEST_MEMFD in
- vm_mem_add() if guest_memfd != -1
-Thread-Index: AQHcF/+kFWmAB7yvMUW8ahTYWv+Nrg==
-Date: Thu, 28 Aug 2025 09:39:25 +0000
-Message-ID: <20250828093902.2719-8-roypat@amazon.co.uk>
-References: <20250828093902.2719-1-roypat@amazon.co.uk>
-In-Reply-To: <20250828093902.2719-1-roypat@amazon.co.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.88.180]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=suse.com; s=google; t=1756374012; x=1756978812; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=H18ShQScvKRglRK2UXGYScgTs4Q/vE1IKwPk/BKJEEY=;
+        b=JsoyvWQUx+cdHGiTMCU9NyYnDiQErvF4e2b6dKCkUG7j2Ij7clpnWQlb1ns/urKxku
+         cUVUk2R0plvjQg5eoIfb8evP/HuDj18ZlIS+0yq6+4OOFe89P4BOLx3ph3iwVnGQZ4PG
+         /PzWHRrxq3/yBit4yFeV1bCOojs1W9TUy8ZyeqjRApls6saSwI/XIGu8Ez0G+fUheW9d
+         hvJWKAippYskHQ9DQigMhGSJQvPVO+NcjdFz+Qg46EUBU1oNkRGiexbejzKtrAEsvK/+
+         yR/3V8gdT9BFDvo4Ygh3eamK+Te2Wc8U0mtnuifBkB0bhj2MX9kVd1LH3vqP8NXkd+nb
+         REAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756374012; x=1756978812;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H18ShQScvKRglRK2UXGYScgTs4Q/vE1IKwPk/BKJEEY=;
+        b=G+MsWoueguVKFdRS+SXOFDqvkZBvdBWXEHiocxUCTcoqDkuzpTWP1jnbIh6RFsOXxD
+         oZ5hzZlRc7+yizxNYbYiYaN2M+Kv4o2zwrXr5zH7GMQddyEweQ2lp3kg2bOBDWR/X8Ol
+         z1MzlbIyDUGglthXANylrxv3iakNE/wD542nZPcu8Z/I/vb51WtxA0rFpkuH1A83wB/j
+         l9pRxpYeXh1I45sYQNw08DaxV+HFP1KgaCWdIf0enh9Blw2UeV2aRj+2PXrwIWlbLsQo
+         wKH4u5NXKcBA+3L6tBE051ZrlLjv74gHMeu3YnmoFFlWlqdUD4pKPpvaSvO+qaKf3iqO
+         +FSg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+5sLgvnjcvJCowbqZ9ruxgLIRlGKQqREHjYYW4IabpaM8vqXLsP1taxNGFbJwP6AfgIMQ0HctBA==@kvack.org
+X-Gm-Message-State: AOJu0Ywt26RnsxS609fQFCpGv6X9CcXu0dp/oXxZq9XtoDZpbM8JgYLO
+	/0WUz+YeAx1Lcr65MkKPmzq6+jKFHRENy6nnV3CPhEdnwq2QCTLfa7fhSy1Phl8Zk3o=
+X-Gm-Gg: ASbGncuas1dF5VJ4+tIeNsPLfTxHBE4A3lu8SIL42vGv0V+hUSbIUiuf31XGS2GGCJ5
+	lbe0V32zlVzw84zoZ6kNARqQD9Vo8FTzffr8K/8C3y0ZfCZRPwAoAIgJcXcRmDxIheKggJgL1q8
+	sX7byW4/dKQELanX7vrL29XkWjIkPmy+LN4t+6YmPIvQly13dCw4yALLAcU1EoN1arSa/ddGjda
+	qFjI/8dziPK59hTvoT/Gle/4ZGHPQDj7wAq6U8LRu4n1XxyBzkhUc4P/4kpgzDhQcoJZHevusWv
+	Jo0KnL0TiUJ7edqMxqpy5XKnoqj25o2Nj6Lok/eg7Ey1X4G2iJ++/YtCk+MwdqCENE6oirVfp6e
+	O+W/cyET3UBHverJ9lnAPsTO0alx9BjJUgndtKQ2fIMaB1Q==
+X-Google-Smtp-Source: AGHT+IFERGYy0Bvc1+pJyr9ZQR1l+DS4FjEWsD509R+lmrVqd/10evLfD/XL9tsL/EgOd/szw8gFNA==
+X-Received: by 2002:a5d:64cc:0:b0:3b7:9d87:9808 with SMTP id ffacd0b85a97d-3cbb15ca448mr6762408f8f.15.1756374011627;
+        Thu, 28 Aug 2025 02:40:11 -0700 (PDT)
+Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cce1724939sm6098245f8f.26.2025.08.28.02.40.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 02:40:11 -0700 (PDT)
+Date: Thu, 28 Aug 2025 11:40:10 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Weilin Tong <tongweilin@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz,
+	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, linux-kernel@vger.kernel.org,
+	baolin.wang@linux.alibaba.com
+Subject: Re: [PATCH RFC] mm: Use pr_warn_once() for min_free_kbytes warning
+Message-ID: <aLAj-itGT9DD3SU3@tiehlicka>
+References: <20250828030602.204332-1-tongweilin@linux.alibaba.com>
+ <aK_7GKJ4BWjye4tZ@tiehlicka>
+ <35e0a580-ae78-4485-b285-7f71f91e046d@linux.alibaba.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <35e0a580-ae78-4485-b285-7f71f91e046d@linux.alibaba.com>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8A7F8140005
-X-Stat-Signature: trp6ctju5r44g9aux1t7biybnz6rjf7c
+X-Rspamd-Queue-Id: 5BA05C0006
+X-Stat-Signature: gu7m3ketusg3soso9r86u69t9jtejxqo
 X-Rspam-User: 
-X-HE-Tag: 1756373980-19592
-X-HE-Meta: U2FsdGVkX19rkQF23Zbrwkp/ps8BlfMe9YGhBjU/R41iKAJlIgwkV6T22moWxAa1NE2zmxmqbCZPKGikdCsIiZOB1z9wEZkXlgetjCL7TA0ZeLta0nMrMj4vFHfkOaEw7f3l0lHyp6rYLt3u8dwFgbqe6Rx2VfmRG0Uj1vUY4m4JA2EOuQBbxMp9CFh4Ri1TnZRPsRN4NUUJaySvZ2DT3/2xsD30noxduxLwUI/AENeh3KT4wPFh6a2IZcZIRx944xPAVsI9jUJ9B3291zaVZllAedHGQwJB6G1j7JI9bmYH4kkVYlkmKfjncPs5RqngMJ/3sloFryBVm54VLr7k/fqUvVkxro0h93oZOcDq1rXHhZHR9rDjJtxKooVyfd0ayIWXIS4LlXoghYQUiDSV3nOxKkcRNvxQ8ZSd4NEgWD4jJExQsOpFgUDWSC5TB213lS6/+BheydxPAzGVyG7sdMzyn2m4Mo+2kKgl0GaGLKsheJfw52/tSTCtz79eWas3QDqlWt3qnp3dLCGfBjTSJJcXX1yw2c6fAQI8FLm+Zesr2PyfIkaj5TX4lIFb5bQpHbcNABh8L+mUuppVjYhuJE7vnP2aJQhgR2MrXxxRYUwvvc5o1ZiSvMGErBXTvv5Cr9bglqz1D39cq+BwWvjYOUNT1gDJ8uee5XajaBtSM89fSMy7uAxnFwCrsEuz4dux5eNVTJTYFIBlBhX5a619k6MLKt/mKSk/TyjBmkHOtYBVzgnkvzoQZxHY1fOAdVCmbtJtP4GFrWGYwfQZIydtIjXdF1UrNsLWbziow7Wv2Ps4mlglELNIHiTAPh2jweIbSe0upMJa2FyNxvkDl5j5O0GVzIBUVTQy2bmdUXZp4toOnKfbmPdKgdpSrRNt1OZ7bbj+86yqvc6wL8F6JZQo6vJKDUtR4oq4q/UUUGoRRAoau0dBbyIopoyxB9GMomI6NnFuHXa5s2CGoRZwvJb
- mFoTj5R1
- 6ByaIM0zLUugz6mnepOGrVKzDLTQwDbe/YN6ypbI/dZTYLL+byQhyeB92u2qlcvZ32QBkwrujvd27lszFMK2R9ZmY4Oqrzk/LYiEuyNuQ5MjOKShRuocJA2zbp8dCFNdBxc4yGc4KMFMmgIAeQx9kmRjJl/LHUWUgbKNUwhj+rdSf+79aKc6LUy2r6WBK/ZVicdGvXxl46M+HunEJZvkpQpNmvCYhWDasQZPPxvRoP3MGK0eRc9Q3igv1SyMuwIjysYT+aPc2u4KWRxG0txgRMdATb1oRm2TEI+d2ORRZ+qb3TnjL5OLwq28TWIUNqIHPeVt9F3L3UelNYng2xwk+nvkYD2KKNJJfTgMzWwVTygRjkiHnV56dkBBmYQ==
+X-HE-Tag: 1756374013-868248
+X-HE-Meta: U2FsdGVkX1/Dtl4ks3773Fnej8lJXWS55krBsBvjI2BWbgw2xPt2K+ZSwzFdUP/M18JLG6i+QHPps9oBvUbMYIIitjFyfnEiCRLNS8h61SwJbMBUUOVp25qHxfQ8BISfy2sobNTkf+WEsHAPv1pjsCWfnAAzkLQ9BB/eCpmZDG/wmRcSIiSSeI+KYgkhuGDeqS/gZR9W8y3O58rfA2p2kqkeueLEypgvfOTYXie6eRU3Zfu1KUzBEPUw4+N7ZZPgbbao0sMLsDexqzm8iSa4Chh1cZ5fzHk5gUPBAi78WqNqACAiwPs7y4KqwxVhT4YFEYUNfaygZZsBczMWh4wmPaK9c3LaJa1JDNL0LCt7dHyYTvZE2qlyYfpDFHOr9uY1bWENHbT4oh+RUZbiNefaEmxIOgGDTxYnXTAHa1dwMUw2NaxIrrZ62bxAQDjT1kNxHAQ8JEtBLjfCmpveryXie1/elkjrVC9nZ+aRv+NfftGk6W9yILoDWtuCmgW5fEDPAe5D2j26dv264bb1y447kFgbh1E/JBuvTbXu9jQH7uJTOHhvhM6ecy+11cXnyOGfgPDZlG59ymUhkeA9WNfztJtDcUEHq/ZC2/ptPdNxUtoazkdYRllIM7gp41i4woYqhk5t0Zns4Zuxn8ADFDcC1Dk3yZEV/KCVwN8wLcJskH6xCy9eYOWSGADnrCM606lO+H/tdiP4ANKHBcDVpG0VIipoJorNALBEfCzz6+D62gknEDsJxD2FGUAW8njwXEFr/H7uW8z9Cu0OGzt7x+zCJ3K6b6o/ldfw9CLXl2Af8/AXjB3p5vBLcePGK4tlTHgaqjIYDQZ7Vi8nbA+O8wZo3+rzhvJ/9xJ/NJp5GLgkQSioyOH3j2xJHqlbDK1prrRyJs6RMcJekOvSUOPwo9s8BgXu6VPDbeVZPx9ZVMHZ2d4lotrrJ/iIyxPiLh/gFP590DRXMezTaMg3VQ/MmRw
+ eizOfoQl
+ jIDt3S1u6Cx7kzMqULiwrN6rl6glmzdoYlj4fcYIp7vEGnMfHxg/FfN3zpINWX0sWi8uoOhSYRdesWIVko+eEes5G2rFKDZ5s4EJQj5qPH6+0qRgWQjh71w7UP4mkGa//xkW9SyVwFdPBZ2Hw6OCzdE4hVOUgmuSLfrLhv5xeemkLRk9cC92ebOnO8gNIPjEb4L2BzFbNM1c0eebk+yqrcg+HsqjFrerytmd8swEmh3CtKPhtfEn2rLVF3ApI6DD7cUpcJVXDFZovzmzVqyC38nZQMcTbjm7VqYWe1BLg3RDscgABsmcJtZrq8Ujq8pWGhp/+kodVqsnq7hrYJ3whPUCoIQNVH14/YXLgUmTaFGmVvRuOn1gijrMLtYmU7BB1LRcH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,74 +124,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Have vm_mem_add() always set KVM_MEM_GUEST_MEMFD in the memslot flags if=0A=
-a guest_memfd is passed in as an argument. This eliminates the=0A=
-possibility where a guest_memfd instance is passed to vm_mem_add(), but=0A=
-it ends up being ignored because the flags argument does not specify=0A=
-KVM_MEM_GUEST_MEMFD at the same time.=0A=
-=0A=
-This makes it easy to support more scenarios in which no vm_mem_add() is=0A=
-not passed a guest_memfd instance, but is expected to allocate one.=0A=
-Currently, this only happens if guest_memfd =3D=3D -1 but flags &=0A=
-KVM_MEM_GUEST_MEMFD !=3D 0, but later vm_mem_add() will gain support for=0A=
-loading the test code itself into guest_memfd (via=0A=
-GUEST_MEMFD_FLAG_MMAP) if requested via a special=0A=
-vm_mem_backing_src_type, at which point having to make sure the src_type=0A=
-and flags are in-sync becomes cumbersome.=0A=
-=0A=
-Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
----=0A=
- tools/testing/selftests/kvm/lib/kvm_util.c | 26 +++++++++++++---------=0A=
- 1 file changed, 15 insertions(+), 11 deletions(-)=0A=
-=0A=
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/sel=
-ftests/kvm/lib/kvm_util.c=0A=
-index c3f5142b0a54..cc67dfecbf65 100644=0A=
---- a/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c=0A=
-@@ -1107,22 +1107,26 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_back=
-ing_src_type src_type,=0A=
- =0A=
- 	region->backing_src_type =3D src_type;=0A=
- =0A=
--	if (flags & KVM_MEM_GUEST_MEMFD) {=0A=
--		if (guest_memfd < 0) {=0A=
-+	if (guest_memfd < 0) {=0A=
-+		if (flags & KVM_MEM_GUEST_MEMFD) {=0A=
- 			uint32_t guest_memfd_flags =3D 0;=0A=
- 			TEST_ASSERT(!guest_memfd_offset,=0A=
- 				    "Offset must be zero when creating new guest_memfd");=0A=
- 			guest_memfd =3D vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);=
-=0A=
--		} else {=0A=
--			/*=0A=
--			 * Install a unique fd for each memslot so that the fd=0A=
--			 * can be closed when the region is deleted without=0A=
--			 * needing to track if the fd is owned by the framework=0A=
--			 * or by the caller.=0A=
--			 */=0A=
--			guest_memfd =3D dup(guest_memfd);=0A=
--			TEST_ASSERT(guest_memfd >=3D 0, __KVM_SYSCALL_ERROR("dup()", guest_memf=
-d));=0A=
- 		}=0A=
-+	} else {=0A=
-+		/*=0A=
-+		 * Install a unique fd for each memslot so that the fd=0A=
-+		 * can be closed when the region is deleted without=0A=
-+		 * needing to track if the fd is owned by the framework=0A=
-+		 * or by the caller.=0A=
-+		 */=0A=
-+		guest_memfd =3D dup(guest_memfd);=0A=
-+		TEST_ASSERT(guest_memfd >=3D 0, __KVM_SYSCALL_ERROR("dup()", guest_memfd=
-));=0A=
-+	}=0A=
-+=0A=
-+	if (guest_memfd > 0) {=0A=
-+		flags |=3D KVM_MEM_GUEST_MEMFD;=0A=
- =0A=
- 		region->region.guest_memfd =3D guest_memfd;=0A=
- 		region->region.guest_memfd_offset =3D guest_memfd_offset;=0A=
--- =0A=
-2.50.1=0A=
-=0A=
+On Thu 28-08-25 17:23:40, Weilin Tong wrote:
+> 在 2025/8/28 14:45, Michal Hocko 写道:
+> 
+> > On Thu 28-08-25 11:06:02, Weilin Tong wrote:
+> > > When min_free_kbytes is user-configured, increasing system memory via memory
+> > > hotplug may trigger multiple recalculations of min_free_kbytes. This results
+> > > in excessive warning messages flooding the kernel log if several memory blocks
+> > > are added in a short period.
+> > > 
+> > > Sample dmesg output before optimization:
+> > > ...
+> > > [ 1303.897214] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1303.960498] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1303.970116] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1303.979709] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1303.989254] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1303.999122] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1304.008644] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1304.018537] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1304.028054] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > [ 1304.037615] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> > > ...
+> > > 
+> > > Replace pr_warn() with pr_warn_once() to ensure only one warning is printed,
+> > > preventing large volumes of repeated log entries and improving log readability.
+> > pr_warn_once seems too aggressive as we could miss useful events. On the
+> > other hand I agree that repeating the same message for each memory block
+> > onlining is not really helpful. Would it make sense to only pr_warn when
+> > new_min_free_kbytes differs from the previous one we have warned for?
+> Thanks for your feedback!
+> 
+> The dmesg output above comes from hotplugging a large amount of memory into
+> ZONE_MOVABLE, where new_min_free_kbytes does not actually change, resulting
+> in repeated warnings with identical messages.
+
+Yes, this is clear from the changelog
+
+> However, if memory is hotplugged into ZONE_NORMAL (such as pmem-type
+> memory), new_min_free_kbytes changes on each operation, so we still get a
+> large number of warnings—even though the value is different each time.
+
+We can check whether the value has changed considerably.
+
+> If the concern is missing useful warnings, pr_warn_ratelimited() would be an
+> acceptable alternative, as it can reduce log spam without completely
+> suppressing potentially important messages. However I still think that
+> printing the warning once is sufficient to alert the user about the
+> overridden configuration, especially since this is not a particularly
+> critical warning.
+
+The thing is that kernel log buffer can easily overflow and you can lose
+those messages over time, especially for system with a large uptime -
+which is far from uncommon.
+
+I am not entirely enthusiastic about rate limiting because that is time
+rather than even driven. Anyway, if you can make ratelimiting work for
+your usecase, then no objection from me but I would rather make the
+reporting more useful than hack around it.
+
+-- 
+Michal Hocko
+SUSE Labs
 
