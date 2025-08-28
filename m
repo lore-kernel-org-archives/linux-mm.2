@@ -4,115 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04356CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 05:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1995BCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 05:35:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01C498E0002; Thu, 28 Aug 2025 01:17:51 -0400 (EDT)
+	id 3EE8C6B0025; Thu, 28 Aug 2025 01:35:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F366E8E0001; Thu, 28 Aug 2025 01:17:50 -0400 (EDT)
+	id 3C5E76B0026; Thu, 28 Aug 2025 01:35:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E73678E0002; Thu, 28 Aug 2025 01:17:50 -0400 (EDT)
+	id 302D56B002A; Thu, 28 Aug 2025 01:35:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D95B58E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:17:50 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A4ECC0827
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:17:50 +0000 (UTC)
-X-FDA: 83825009100.24.AC6DCAB
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3FFE0120002
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:17:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=B6YnN9yE;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf29.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756358268; a=rsa-sha256;
-	cv=none;
-	b=21wiSssjQCXJ+t1wDOueu/t2xeye127o30Dtg/4KOYdewqCka3N+89SL0r907bUNnxMlkk
-	BvUpVThb7FxgqmCjfsza6NiK2m/F4iYbhS+VQq5urhI6uzXefKkwjyiTi06Mhhrz2YRIku
-	+Q7dzhm3i72t8NghoS7DF2iVnPST7Bc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=B6YnN9yE;
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf29.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E93D6B0025
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:35:32 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B73EC098B
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:35:31 +0000 (UTC)
+X-FDA: 83825053662.27.890F2B5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0286440013
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:35:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6CY2779;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756358268;
+	s=arc-20220608; t=1756359330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OG1WuC2hheSyViU3tcDLma/6gW2kIJ97ZTkGB1ykit0=;
-	b=lDb7IGfOH+veiTxEJr9wE91c8acp37DFwRER7rHPKXPBCavpw1iZ+SX6gG9gmj1Q2kJi8V
-	2gKvSt5bdly1ADa20Dzb1IEi+76uNxXwsIRCtHePw3WiFsjMY3SdwHFnGpId/JwoUvilU5
-	NjZpTfrhscOcAz6ZSqUwiKJ29TZFSRE=
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afcb731caaaso71787766b.0
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756358266; x=1756963066; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OG1WuC2hheSyViU3tcDLma/6gW2kIJ97ZTkGB1ykit0=;
-        b=B6YnN9yE2avJIrK3C7jymcMT44nZUlvVTZYbY0blYwM7meIn8QWXZeyVmdULOS4hft
-         NxYKnwPVeH9o94DBlsa0wtJ0AJnz3HV0Y9Mah7aVuya9zgSH26q96EHvMEXF0BFoAblF
-         +hKd5qlGhLf7pOhFfm+5+aXsQBKtuxpX/7BoX+thyLhC/jWSG4oXjfQoyP7WMsqkj4ET
-         stzByT4d9zsBrgtFBHNUmX+Qr+IG+Xjmxpdm8N7pQwy8ub5sFQpWtmnJWR0S6Rhyd7xP
-         VTQHcbKxik7CEpybb+9tbXinnPzkYOa97bLMpTjqR4P12/0Q9gRhiyLuulzfUSL1kKQB
-         nGSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756358266; x=1756963066;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OG1WuC2hheSyViU3tcDLma/6gW2kIJ97ZTkGB1ykit0=;
-        b=nyfxdxwtqa0Ij2TSXJIIa+6tfhkeby/OFpxuu42k1r1q18FpDEYxUA8XQuJPvVT9/t
-         2Kp/ye5snp8CSh0+KSRUpGBlBJQiWL5ZDKkzDMtj2vaI+Sc0sZVlc4rbn8qFyNVBtPOy
-         Uc5TKASDjKGMR9QJLeR9dZ0W1OOQckDzqCfVrKElWFZwVrOhNdBJRjS9G7minE3cIAxW
-         WNkZsXzgWp95X+O2RS0+IqB1pr1My57DWuC3WzfnUdoghn3aUCAgnJW3CUiRSCAzu6a6
-         36+zg5/dgzPyOqY7pwZBjnPClPwe2L5x6Y9BmHdN2EVtfVqLNTA2Mqoqazw04STrpR3P
-         2wcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXkgiwmjV6z/EKNHl68CZc9JPDFAl9coeizwZes7/7mgg0fRJW077VUeLvhayptNSFOZdqcDioPrg==@kvack.org
-X-Gm-Message-State: AOJu0YyRmYaR7cudX3WAHQWZ9jDVC1AXNTeG22tbOf0JtVjGHZGRfYo3
-	sjhju3hAphdAPERPkXgq6CAXMNs1V/EdeHQvEdelMLOskuhjm8vpsev3Pjg70DghZ05cwNsF3xd
-	8sb1hCTK4eCWHd4vnz7O8EAUJVC7QvuKtFaLdh/zSIQ==
-X-Gm-Gg: ASbGncuvOgPrN3iaRufjKqMLk10TAS2xAxLSXnb1bGyUu8y2qi4pZw26pPI/LVZKUSX
-	+Ff8NKgsyO7/gdJpVtqTe7ao725SylLpa4tlZVW3KQCokqO4bcnZ6vII81fIHtaCU5l0gX2YCO5
-	DieZ/J1nvqjBZgog1thezwAkorlc0i2sqIDgnBNNsL6MF4qs8Kpi9rK6yTOlHQ0TtxhePANg0J5
-	SlOZaJe81TEny0dlcCGjwLvARHCmDiZGtM=
-X-Google-Smtp-Source: AGHT+IF8LgvafHMV8UZau80cAyTYYRm10wxMO3zhQW42jodfKJ3LU2Dgpe9FDWXWK2r4Ls++4xgpcdwiUyG7ZsKp2eE=
-X-Received: by 2002:a17:907:928a:b0:afe:eb48:2a3a with SMTP id
- a640c23a62f3a-afeeb482f03mr57033966b.65.1756358266579; Wed, 27 Aug 2025
- 22:17:46 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=oWnMkkuW1ndEbebyz/FNo4/PBsbi90IXJnhR3BgbPrE=;
+	b=j6l+ETnCcbx/X1dI6UQdo/BXA4cqF1BCx4Y9Ox/8/Dey28z1a7wfoHmO7ZckqAK53W81xD
+	FUGsW5xqAiuaSxo5y2bH73mCx55dCqL5g/2deyfDifTb4qr2HGRafLWp+FGb3K82m6Fl9u
+	9o9GjvVuyiUW7mjfbXx65cyVQgu3iUA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J6CY2779;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756359330; a=rsa-sha256;
+	cv=none;
+	b=EAIMws0F4LYMfRyTS9pedhCSbst5MDnWO2P9fKwW2qeGhsUiq387YhcQcde4FxD1lhISYq
+	3l/6LF/cGziBvplHyWahmg8y6sljtSeFqAfiRLN7v37B2IFpZBhdWZXCQcVaijDaK96SFF
+	kI1Yq2IaZNZsMB+8rmxs8/U7WR2I8KQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C092D404EA;
+	Thu, 28 Aug 2025 05:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC96C4CEEB;
+	Thu, 28 Aug 2025 05:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756359328;
+	bh=hNT7UD8Ou4zIB3Wx+NzE0njI2PpVlD1H94gqBstvBrY=;
+	h=Date:From:To:Cc:Subject:From;
+	b=J6CY2779PfUGq8bvFRiTykWWVQ62E9iaBbWI224v1pNdfpfZtBwTJTFn/QQVm0SuO
+	 0hJHz+R6dLxe4WBO5q1Yg/Q8ROrfX1pCt/HepU1PQqyJPeyc+tfBce/5OLjtyT2SDh
+	 JPCGqSoMzb7EgYdcbCJYBiUuCDrRatDWQyPALUSjwC/qhGPar0bCxt2VpaQ3FJX7xX
+	 EN+d9+n/zpRrfQyTKXwxh6DXiULyTVHF4+AGSLkaewML6zX3wbGpCQFd2J5tuteVuQ
+	 DFM7UxMnOIeVoYNkEVgCWJN9gcbkpsjk6R/LTW09T2sh2y7DP4wT+wfwEQdUPHImkP
+	 SQHHq6WWdVb4Q==
+Date: Thu, 28 Aug 2025 08:35:23 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] memblock fixes for v6.17-rc4
+Message-ID: <aK_qmw51CJz_Tz36@kernel.org>
 MIME-Version: 1.0
-References: <2aa3f478-9c87-4102-b83e-bf235372d834@redhat.com>
- <20250827150330.280399-1-max.kellermann@ionos.com> <20250827165309.44e465ff214e45f1a6665b24@linux-foundation.org>
-In-Reply-To: <20250827165309.44e465ff214e45f1a6665b24@linux-foundation.org>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Thu, 28 Aug 2025 07:17:35 +0200
-X-Gm-Features: Ac12FXz7j6ZCD1KpPsfv9iOBu4iKeV--Ltb4TvtOolpiU2Niwq5q2UQwxZ1pFaQ
-Message-ID: <CAKPOu+_EfTBxh7xpaRdypD-hnqAbgj-bSdMTZE4uafqMudxBRg@mail.gmail.com>
-Subject: Re: [PATCH v2] huge_mm.h: disallow is_huge_zero_folio(NULL)
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
-	bhe@redhat.com, chrisl@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3FFE0120002
-X-Stat-Signature: nraz6gzmqhbdt9of353ip8371mogqisn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: 6f8c8aqpzx35kwgkxyekdy4e5gwc7fgj
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756358268-528584
-X-HE-Meta: U2FsdGVkX1+Y+pOjjuxXEzw8bwvlz8SHLLSnDGeVuCHUVJYojAUWI3Mk0tTjaMnEVr9y9zSaODZqjHPBe5yn8AsaaKPHtDIlhxkLQLCHnZimGp3veZYyjz7p6UPM1r4sE1elulWDmLo3eG0dTFWCRRjznT207JPmXvAuEVOr84e/2NBny7sryUnjkxPbxg0eXPDvX/XyYpK/j0ZOomUQ0dXrLnE/LAJQ4sa9Itxn2gYhZJZsTwofLFCvgVVoD/bV0SLRfR2djeZPE5nke0cBZBMBfzcLdcJi+a0W6z7MtNUfJc5KKLp2sl7TvSgErTrD8yxE334cWOOzFjRfYWdLIAioZOUy4CwqDpcc3eCSjkjU+4wve42QG7DvW+7RIUp8Fcg6y+yuVOJnuaD+eg6yHb89QGBPsMnQQnPlc52gIS98k6eg8zwp1VDUDS8yVlSvs2WqWTcqtEdN8tkFi/XwfjsNUV5yh260vJtwb7nDlFxmb6MtOg58SisIMyWt+R5K6p8uQ94+79kuE/NJyllF4J1ZFHRHXH8AgGd3azJDLe5xEEi2shj7B0A6+QXu5Yxlnnhn4Dl1J1LkXFHi4TuXRV5t3HyYoORi4TmmsqWM/WG5+MBE5yDdwh/7pEX5Fd2k49RQCdPtZsBsbZ6KK/SN2wO30zMdQIfVsqmpOCQwikr4tmbNNdDR3YAJV9ZEFvEkuD99rRctLGVbPgwL60SDQqqkcKPVbZy+Oqb6lrB3z9jOpYG8PlOiHESnxmFafOEKHJ6+y7OoaydFav3gqx0mkAVjkWk1IuO7TRVnin4NPk6Uj3A93dLII3QHQxosqn9d8Zk2nGM+VFTLCZylYacAHbqwhxMO6ZU2REUJ/UBjFlTuNoKz9Nng4EUuAI2Cr6WgmYx4WUJfZ7kovzxbbl5xC0huTfS3XO0zd75ulU5Dv8qMFzZDnmhz/+aeSwbv3yeuwZC1RsUhohVpMHbVt/P
- ypmdvoJ+
- eh4tc9iifE4QFdyj8Yc77Xt60dq75K4Xj0n2xqFSHYfiAUpHgVHdNeaqjiXkcpJNuqwPcP8fWV505vZ2Mn7Uj9O2QIZqs0Lo4oC0ohJOEUCyPlJ+esEEfh2yIKan3KIG2RBV3OkdHW0X7/CE/Sq0bPtGrYCv98e52na850okWmEGGlHD1KOGSZJQQPj2SdkJ6icjIclRQd1trQgeKPquySbhdM1Be8zAalXklmKNYJjnphQh/eKHW4GEZvTayM61DsDbw2pc7NAVRNcwf3TfbyDp2claMPdXGF4QqX8fiyBPlhBpnN8OQRkAJ8bqjoZHe9N9L
+X-Rspamd-Queue-Id: 0286440013
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756359329-647759
+X-HE-Meta: U2FsdGVkX19OMKwg/zvcyDRmAFEZdW4MhEfvYRO/JYqi/tDwvrhFcpYCF0NubhfaXollreZ5asYHcQZmp335pYlkyVVAEqjj3Enbfajo7a9mugdjUqFwmZ5v7VzHIZ47+282bTQFwilDAGuAMN35VXx1AgENS2jhyi6cbN4IYb+3nbsuyY64KGXBqhyLKifRmQqdUepuiivmNyEbJgaefiG5+SukczH7tY7gq1mWoZHLQaRweR+1OglzEU/oq41x2ClPYklCd9kR9LABMevuIQVfomxg9GMPe9JlB7KRaakRqsUSp1ul5cQCak2EJ9ozpoCoeLykizRueInMWvw6BQ1hsTVNzbfSkZZzjUgZyhzevq2CGcVaMixoegZnylCbvlbZpoYdBGKHPZDkbWO1Ikfucxc94UhUh0+KUDRTogcp0iLGYepOnMswYoeXF1zmfRJb2mRN4eF9XxtOSsd4GP9A/AISQlU9bW99MEK2TKhkC5HKj0SCHWkf+DkH/COe+kTrAvLxZJa37PxavrJ5COxXwhIWYRfitOsu/OQmiSNF9D8OkxjLluK6KUmD0D5VQ7ooQjwWHjVu+yoL3yESI6iGZGC/CjzwrIBmTR2Y9E2x6MGYd+588ycvaClu8ztUhAswo2aoYWek255ONiqWHTHbCF65hsHXxE1KH2QktSP2TWmaaBJ6CpQ5twhPtyuABOlDawbT5NSVosK7jUdNYHJXQChbfknvnhlPHLIjls7d0i0qyJJLQHWUp2wIDJM5Xf24JUI5owoAqCKtt890xIwUejXZEaEyHqxt2vkg+DivErUHs9HF65AZS6hbUhUsartV0OoIliFKP+0JdlBWa2aROPp/0A7D65CFd4brvIxeH7+rwOIVlldv84S8rI8OEZAmdLMuo/zCanCrsVQRjZFYTbvnNbpQvugZs+/zauSxgMP5SoEgahTwk2TLjbXLX47e+vXZg3wn8CLFvN7
+ xQUeTlf+
+ jYj9aUmrBWmPIWDrn8neQAMDSYc8jAVFdzPkVB0VI/Kg46tLMx6XTkfJkF+hJaZ6GoS2dYDz2UB4H6Es94R56xg2TfTFIqVq1tD8AXSFR8q29Nm6FCGXQFXk3gePP9eUK7dcnZd5CWfRjGrgSWlh1dwFaZnHwyML1HOXX44r9830hVmfEdH/4TSJ0FaiY2MwIl9Zf728K0VLwlbWFYu7W5SePNySnlBMpRf7rSjcrgIPmle0+j0yW9yQkUVw4I89eEHChf0hAyi7D1UJ6NsW1lBc0xQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,27 +90,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 1:53=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
-> OK, but it remains the case that we have seen code which calls
-> is_huge_zero_folio() prior to the initialization of huge_zero_folio.
->
-> Is this a bug?  I think so.  Should we be checking for recurrences of
-> this bug?
+Hi Linus,
 
-Why do you believe it's a bug? To me, as a newbie here, such a call
-seems perfectly fine; please explain.
+The following changes since commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585:
 
-> Also, sigh.  I do dislike seeing VM_WARN_ON_ONCE() in an inline
-> function - heaven knows how much bloat that adds.  Defconfig
-> mm/huge_memory.o (which has three calls) grows by 80 bytes so I guess
-> that's livable with.
+  Linux 6.17-rc1 (2025-08-10 19:41:16 +0300)
 
-Oh, how is this possible? defconfig has CONFIG_DEBUG_VM=3Dn and that
-means VM_WARN_ON_ONCE() is just BUILD_BUG_ON_INVALID() which should
-generate no code at all.
-Here on my computer (aarch64 with GCC 14), the size (and the
-disassembly) is exactly the same. This confirms what David Hildenbrand
-predicted.
-Are you seeing some compiler weirdness, maybe?
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock tags/fixes-2025-08-28
+
+for you to fetch changes up to b3dcc9d1d806fb1e175f85978713eef868531da4:
+
+  memblock: fix kernel-doc for MEMBLOCK_RSRV_NOINIT (2025-08-26 10:47:03 +0300)
+
+----------------------------------------------------------------
+memblock fixes for v6.17-rc4
+
+* printk cleanups in memblock and numa_memblks
+* update kernel-doc for MEMBLOCK_RSRV_NOINIT to be more accurate and
+  detailed
+
+----------------------------------------------------------------
+Mike Rapoport (Microsoft) (1):
+      memblock: fix kernel-doc for MEMBLOCK_RSRV_NOINIT
+
+Pratyush Brahma (2):
+      mm/numa_memblks: Use pr_debug instead of printk(KERN_DEBUG)
+      mm: numa,memblock: Use SZ_1M macro to denote bytes to MB conversion
+
+ include/linux/memblock.h |  5 +++--
+ mm/memblock.c            | 19 +++++++++++++------
+ mm/numa_emulation.c      |  4 ++--
+ mm/numa_memblks.c        |  6 +++---
+ 4 files changed, 21 insertions(+), 13 deletions(-)
+
+-- 
+Sincerely yours,
+Mike.
 
