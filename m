@@ -4,184 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 754FBCA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 21:00:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D19DECA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 21:39:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF88E8E0012; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
+	id ADF7B8E0003; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD0558E0003; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
+	id A8FDC8E0001; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BF248E0012; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
+	id 97EC08E0003; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A07D8E0003
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:00:10 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3AB0118FA1
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:00:09 +0000 (UTC)
-X-FDA: 83827383738.21.4BEFB81
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4FB3D4000B
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:00:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ec6T5n9S;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 817208E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 025B3119093
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:39:44 +0000 (UTC)
+X-FDA: 83827483530.28.8C46937
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 27F3940006
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:39:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PVoqlxFM;
+	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756414807;
+	s=arc-20220608; t=1756417183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mkSDgbg7xWQW+ISMkJybRnH1oyxatG6U4F5HRgnHqwM=;
-	b=Xsetaafm9QC/jFuDrEsARdeBpXfihcqfsBJ4d69yv95KMj4Vx206DHmFQSTLXJf3Y/86iv
-	hocoDmaEzirc8f9iYqsOMzQufKkseLGJdY+GtIeYoIzXiTu9Cv6vuEyggO39jh7nXZ9hZZ
-	LZp5nyBAYsup4/D0PxTFfXu7GJKMS44=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756414807; a=rsa-sha256;
-	cv=none;
-	b=v4uV23E3JiM8CotBTPzBycqeUgI89p4edcAXIcNipQBRPX+gStOfq4JO0VeGEL+vWSHeyk
-	Sut8PjxU8pPNHACf22YqBK/os2lxGx5vVFZSyJxHNHHPaOoXMskBcMg5yGPdSBJqizj6Uh
-	NxPbaP1bQsUOXbvFbvOnlgeLkKxCQxw=
+	bh=egeVb4jL6h5nFyN9xRw5wQS4OVht2YfrG8JsM55WIk4=;
+	b=lV+Hcq28aX+0fLLbPvxaThTKWWwAaTvptf7nsxig3exHshzWYD5wEhihvjFLzl8ozdkwlB
+	cyhxkGLFi6lwvi9isXUSw/moKpNFJmnYcP/a2jhmyAnub/836i88I80zi2RwOyxWQcOdwA
+	6bnh5fD2di4WkugeJ06hpwV6uzg+mKY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ec6T5n9S;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756414806;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mkSDgbg7xWQW+ISMkJybRnH1oyxatG6U4F5HRgnHqwM=;
-	b=ec6T5n9SeYPE9qNLZCvPuDh5cVUTMF4xOtuMNi+GIjRfUb8KxZWbUitj0GstcMuDMGZYFt
-	WvU1zzOm8MQPEECKw1I/YW8mcB68gLkiI3WpryLU66t1EmHg3U5jYqrk3xUuxnsMJs/Mok
-	4RIoFir0vQy1m2J5ZuCtIV43l8KQyfQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-lycxChl-PnGef6qGRs1seg-1; Thu, 28 Aug 2025 17:00:04 -0400
-X-MC-Unique: lycxChl-PnGef6qGRs1seg-1
-X-Mimecast-MFC-AGG-ID: lycxChl-PnGef6qGRs1seg_1756414803
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b9dc5c2ba0so659869f8f.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:00:04 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PVoqlxFM;
+	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756417183; a=rsa-sha256;
+	cv=none;
+	b=buvk2amiuyDAH9iSc9JsrtO8UkHW1XQ4y7aFnb2LUro6qAnDdEa35rymRiCNZvi9S90foG
+	tVE78E/MwwXoLds/oTeaVOsWScugc2ErShb5pHvwO7SjziMRsac5/yQDRjjO6YtIcaORP/
+	ouvE6HniGlaQ0LjTcDdvR2Qqd0O788g=
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5206927215dso495635137.3
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:39:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756417182; x=1757021982; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=egeVb4jL6h5nFyN9xRw5wQS4OVht2YfrG8JsM55WIk4=;
+        b=PVoqlxFM8tz4sEFrvolY7pOQdSolF102ytxuoP7hmJ/dBOl52bYdxbN4wg9c4igYsI
+         4WWqsPD+FuZqvHdZ5meWXI0p0BfNfuHPrUaG5uSa6TIamakbGPjRra1hFasPAptcnaGN
+         OAyiv5GGyzAe+csLpHRaFNGoTrSlmZHbwv3bqtZctLL6U7V2oLDeAJ46dWWLXuSz7m3p
+         3yj3XUAQkBsctVMc3Jed7zW9Uq7FtuJ5bgjXA+KHP3xj3ecEkKXNqp3vc/YtuwiUSyRU
+         /r8orFcJfwV6f7+UztrXMXtEcEMnaJ3X9XGVrLyHbmaf0jaAJStSqrifTWdSHRxxtbhE
+         3wug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756414803; x=1757019603;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mkSDgbg7xWQW+ISMkJybRnH1oyxatG6U4F5HRgnHqwM=;
-        b=FXJ3GkYQixgrAszRTikZAIpSarvY98Sa255sI/Uw8yThhtoDy04ooVsp15axspQQPk
-         yL/KdYf3QGEtKOPPVcb2CF7UaiHF91fN2oVT/TKoJLwLjwYr+tV+1xeNcI4XXohsGFJQ
-         zGVEhEKq1/n/FJvy2YTWsNkkcADvnNyBFu6PgOVcllfVrlO5ZD3PPKwozBzs0nABN2ak
-         qU6OVEEPYu7jYSAscTTkDkM04OBotKzi6PrFxrg3/Q2T8dKKfzbR1PcDG6uJAKLWnarG
-         2R7vdDsvXCPsQvM47hCgSHYAmC5CL7a6qLLoglyDC+GvW2GSAoNoqlCFWXU/UhkKRVu3
-         Ps6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVfz3tdw8j0D/OcAb/XtX235PbBvYK7IpHSr27YIFGWnpe2/gu5h6s/oCfyfKe4lCJ2/qYqtkhsfg==@kvack.org
-X-Gm-Message-State: AOJu0YyGl57V2uUPqDxMyB1M0KHefYamiv3nHt0h10qhWW/4rxZXxUQL
-	+LN21p/GyCz42xC3jyYmiODyFWuUo2exRVHQXi/exH7IS22lokkJ7nET+Df2+x7AmrA+eWWmDls
-	pqKMnaWMCfvMSCwa7atnjE/5A5xIs9Pzvk5pvvFiQuBEz01W6bLX3
-X-Gm-Gg: ASbGncsXThmuhIjN0lwQChNx7M/0yu2XGDdoWwEZCxGYgmgRdxv7mmksbwkxMI+lf2M
-	8ic5NUTrd0JRBrmFJuPcPOXY9cnZze/UpdBFLgP26iobpn2fB/zOxFj+/1fYh+Vmn+kIO4amH3y
-	G/G/MKzAQRDUWL9kMq5Tc2eW5yh7WrDhUzETYXf6mRNGEfETLPp2KMyhHRlY8+EioF7ZUzMaJek
-	7AXXNxkaUKnTDRMLsqZ93v9dXuprwEQZ11R5LW3RaNWhl+uIZJDhUHENi3hrOThLs9+bwiwGxu7
-	fyzCcKFqg5/PkufBK7rUf0ZR64fD11H3JNI8tNJo4vcU3hcC5RfNmvssNopYhrL3TkqL5YfO0Lu
-	3jyPmmlBQL8fEPKfybKVmjvlbBCxGaC0XlZScmstAktUf04wafu9nDR59W528DwcJA6I=
-X-Received: by 2002:a05:6000:2512:b0:3c9:3f46:70eb with SMTP id ffacd0b85a97d-3c93f467c6amr12443228f8f.52.1756414803133;
-        Thu, 28 Aug 2025 14:00:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6weiB8uQZLlY/pBc/wBfkqXIMndGWCy+/j+66w0gqGxnhnpdmegVfF1S2/N2OWbRnBL2yuQ==
-X-Received: by 2002:a05:6000:2512:b0:3c9:3f46:70eb with SMTP id ffacd0b85a97d-3c93f467c6amr12443198f8f.52.1756414802646;
-        Thu, 28 Aug 2025 14:00:02 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f28:c100:2225:10aa:f247:7b85? (p200300d82f28c100222510aaf2477b85.dip0.t-ipconnect.de. [2003:d8:2f28:c100:2225:10aa:f247:7b85])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fba9c4sm613412f8f.48.2025.08.28.14.00.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Aug 2025 14:00:02 -0700 (PDT)
-Message-ID: <7ef927d8-190d-4b22-8ec7-dcb9f5f75dba@redhat.com>
-Date: Thu, 28 Aug 2025 23:00:00 +0200
+        d=1e100.net; s=20230601; t=1756417182; x=1757021982;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=egeVb4jL6h5nFyN9xRw5wQS4OVht2YfrG8JsM55WIk4=;
+        b=UH6/FvGVng22FQNKTlejtDI5mS5Ig6ODa7g5WrCOy0SHH4dqEG4ObOi0DYfEvV854J
+         PkpsczECnMIpjz5i9g65vOHiPhRYuZIUWjNA1qrdAIEGEIrHAIOqqRcbtWOIfnifYarV
+         Bq16M0BjkDGBjxCMVwy/I4mi0+tjUa/9s2tTN38Gr5IBSg2A+mMdgwT1kzkLYSNafUBS
+         wkaFwTZlOqZSAUN0pcdrFwEVkTYCC4eVlZawj2oo4B/lxKkQLXLOS9faSZ4NJWRkyLNQ
+         xylATWfPJtih7Olu3WA8O5QMmY/RxCzU09xGcTmlhrrDkulc/NtUsGQV2luJevmbp2eH
+         8ABw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwy+53ILxNan3ElRshOi3vASOoMBRRsU4roczZi1w2Uw1VA/+l7zInhDAwmCIs6blipcdeM6EWxQ==@kvack.org
+X-Gm-Message-State: AOJu0YxJwd/JtuipQ4aqLlN1BtOHo8EbcAJxlgA0GKzEqM+rZGLIsU/o
+	+Up+Mupfuau04JptyGvAwpnrGKGfuGRNpKx4r4jDGWNVqp5PjmE9RfvCdHTaBI2VhYLibXWQRsH
+	P/t4qAHBFF9GPeUDvAXO0Ydb0XpmWAl4=
+X-Gm-Gg: ASbGncvd3gGg3yoVkU3hO1ITHAGGxbTEJwZCSxMXfGcnYyFidyfgky3DXz7gUHhY5zQ
+	AGUz+FpHukOcMlsKYLxy0Gs/NqM0xWiYvPSCEX7Yb9UgyIKB6DMhuEmxNcwAIpnggIqstKZd5LG
+	duQNrcnl2TjUoZEshCI5o6emUYMoOe1Gn76LcMl7dMUCfvh0aK/ORoctJ/V3fG40ZNUQByL8ijQ
+	UwALhXpqoVKY4lE4aiN6/4dIZhC
+X-Google-Smtp-Source: AGHT+IHie7MOkNsj8efrQCm04ILQxwbVuLefNNdiQWU7MzTGW0l35HwAhXQIlJpyb1p2xzNAzusa/ZuPiM79Z7UDlew=
+X-Received: by 2002:a05:6102:5e86:b0:523:b5c8:2b0b with SMTP id
+ ada2fe7eead31-523b5d7ac6dmr4910509137.12.1756417182085; Thu, 28 Aug 2025
+ 14:39:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-To: "Roy, Patrick" <roypat@amazon.co.uk>,
- "seanjc@google.com" <seanjc@google.com>
-Cc: "tabba@google.com" <tabba@google.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "will@kernel.org" <will@kernel.org>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "Cali, Marco" <xmarcalx@amazon.co.uk>,
- "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "Thomson, Jack" <jackabt@amazon.co.uk>, "Manwaring, Derek"
- <derekmn@amazon.com>
-References: <20250828093902.2719-1-roypat@amazon.co.uk>
- <20250828093902.2719-4-roypat@amazon.co.uk>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250828093902.2719-4-roypat@amazon.co.uk>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: I-bdCJoiViIelht5TXjnYSmvz1HUqGMLMw2oGA56uBo_1756414803
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4FB3D4000B
-X-Stat-Signature: uh6h7yoekfc4musay1dtnihyikw5yu1q
+References: <20250801043642.8103-1-kanchana.p.sridhar@intel.com>
+ <20250801043642.8103-23-kanchana.p.sridhar@intel.com> <CAGsJ_4xRij-Vz_-dmL44YLvaQrYLKKnw7O_Skedrxj_YxuaT5Q@mail.gmail.com>
+ <PH7PR11MB8121532CE4368DF5BAA6D46DC939A@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <CAGsJ_4xMuLPy3+mAxzOj6SfnFZaDf+B=WkmbrCNqv8gvK080Fw@mail.gmail.com>
+ <PH7PR11MB8121B86E65349F5CF854CA57C939A@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <CAGsJ_4zt9zQFh1mz6gpQOCWBOjz1osN9jTd62uKGf865vRwuLA@mail.gmail.com> <PH7PR11MB8121C1B5965584AA8E59C0B7C938A@PH7PR11MB8121.namprd11.prod.outlook.com>
+In-Reply-To: <PH7PR11MB8121C1B5965584AA8E59C0B7C938A@PH7PR11MB8121.namprd11.prod.outlook.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 29 Aug 2025 09:39:30 +1200
+X-Gm-Features: Ac12FXwKgcdDELJZzuofq3TYBazdJbuunzZRTQMwHeFHqBjqIkT5JByIMca79Ik
+Message-ID: <CAGsJ_4zjPxSjrSomm3E3gOuW+AqiTKwUHJ34q9m9aJb3y3vEKw@mail.gmail.com>
+Subject: Re: [PATCH v11 22/24] mm: zswap: Allocate pool batching resources if
+ the compressor supports batching.
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>, 
+	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>, 
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com" <surenb@google.com>, 
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>, 
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 3ptuf7yuhu91m6ff5ungro7yqrwtkgep
 X-Rspam-User: 
-X-HE-Tag: 1756414807-7958
-X-HE-Meta: U2FsdGVkX18S4ozjC8mPTwU0vg8lGVgP08/QNEI5aaVL1TqXDK1pv0nY21aTWE7yHPWB365F63lYl+IUPkQks5c89ijmlYGQyB+hLgSnTSfGYCIfHL/2tiGingqJSmwOlm9NG1wVGXCHXRjteN5BNvrZEHB+q1Sw+0dqDlrubZIdPPoSn3a38cexUJC/DQpevQsigXWTJomty9NX5fZwZxeXTuFsEMqFDV3fjVHvAsjyor2rp6jPYXAXfngDJO7oXtChe5t1gjDBF+/tcALirqgBAT9df0m9omUY1p9r+jxde00t+PVg+hOBih/OTVLdH3CSIdNZAGEMvQLbu285Jo9YqENQ7/imbUOH/tz1Jvw6OWdBUjtLkTsUIW1O8p9y3bVuB0kiWaeWqQA7vfdeowNXtVS7145wJ1G8nUvcK5xBQeX/Wd8WfsPpLUGgz6uTuWrdVja2s3rGL9BjbuOk8BgeLzIZEMzQFeH/C6ccn3fz9zy5RshSFPJlVDwx/cgU5gla3yonqEDAzFbfiqq1WrqWfxvT/DYj8ZnNp0fAKlO6fl15f93c+K7AkAdcfSG3ocNxYtNElSaJnlPkftE6yMrbpcT+JVHUKpBubYyYJGWQBE89D1V/lhOepxnKIZ0onDvy30bNHjobuCUInWPK+Spby3e6aGcP+LCIUMFyp5s5LEZYIMTNDsXZbqMTWOeWoqmsOB21dx9QKYHwSw6lHUA3oE5JQNvpciDt5kmCmoaAYoWuBwUpqBaeDo1G/bnvyr2co1cxOE/9sG8dGkZtwZREk1OKnIv5tQhDiSrPA+o5BbNMG+WIZhS8YHw64LxrWnger5azeu70FZA6ZGDG0OIBW7Cfv5ypQy9Wv5gMnaYF7GAUT7XL0vARqWphdAQSBARy1BO7KRxnqdyaxbpLSdiI33jtWuprH6p9xZ/PbZXM0lRE8ze5btW6iUpHg7JpeVVor9wTQhLfdUGB1SR
- IzH2JbrK
- K1MZo0EJe6dVFc80dVR12L+JJcTTqdp33KtJ6Fgr9+wl5Wx211iZWLrEiX63UNiMoGUq59hzPCAAdscTW9XrNPihWaBB3xy5eL6dC1+qK1L1vKkLMGVYrP7v8mnkcFLTrEw6qE70FgNnGz+rxGMNE+KiIyQ5ZLqPpgT5WdJlqrtVgj0aYfcykXiVky775hjLMg4PPjixI390YfpYOu/llcyCssWiqwPdxvKP+s31wb2oVMi+V8UcecQXIyQT2bG+2UYlKHxkugD8tCnMxmj2qEjHkknz0glYCB7aOGSUzFZHkJBvFH+mKy2qyOUZE1JSeMgqr9rJPhpq0p3kRFY3MfQRJJb6WAJV08bh2dWUjnauC07Fw+lvEfzYn5nQdPDwMviZLEYph/Cz/PfW/OcJekXrjWiKbVK+H1nlyFO5aJCXIqMOW7+xItMgEWB54GD3hJ7FWoeS5C7w64GtgnWr8O0GFdekcIiQbMaGzGPIFWb+c3NBbMwt0sC9adfAHDKldGnHJ/YcRSfhg11kBpDZ3TolxuCqESM+ERQMH
+X-Rspamd-Queue-Id: 27F3940006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756417183-296965
+X-HE-Meta: U2FsdGVkX18t0IlHhGDJmbRGaB2VfWDlm031LdYkwgGXpc0WrgPYqyLa147DcOdtNKpjQwB/SX6XdRSENPMDjrP2fnI6/bgNGDPxyzP4HZ4ALSmKn1Irjw7MsSAY6anQBi+5ZnfkS7o/qDKKbB3AMarhl9+99LKC4Ip2Pb9y6v9IzWwEoMwETyvNsKj6E8ajHRCGIqMPLjuvFj+7BXj0ajbtOA/QcHCpmL6/eQ3mlspZftlHB/B3xoOsclr9bHjr7rwvvcrN10V0pCTdwnV+/vXVQJrTHWhRQjLKlUjykW6WpdKUhCr/GD+DUHOhL4T+1vyOp3osmmua1zt596Ke/6rYZ+eR8qVfF6D1ED8ZE9rqpkRx//LmUglhk9vh9hLMkE1rWzDTIyvMZomfRJdE2bYtjXcxHVESq/D0sPc41zJ5jSybAIRjmtCu9zmJTKL4NuDSsqlOoV4Wid/BpFaLjsPjf6gpqccXga3A5LRuOToWtHR+wH+U4kMNQPFWudtTenBBpjbw/4k2TmoEqspbPKSZyNSW1PXY94yCIeIeksbkqpcP5FeIZLoa9EX3F0Kn1HaFPIbgSEOhEToeI1vmcupDo6ykq0C1hHyU5vT/UAgOckWpSUBq57qB6kr9JFPOCk8nP+CWIaxT9rZtvZWnnoVwnzSyrha9Uj/Z4Yaj0WOCcF4pIfwhFQQh19k2FNkeLUn/xNCDKBjgHH5uOOThhOVacVSjyl4UFZGEqrnlVqn6x+Gu1YVJhwRnRu7RtmPyWf6PfSPbJYrstjxRebRowrR0ZpzYhaf220SHGemcCA0vMg6u12tz3CZkJTyNjLStGL7jthLg/829NrD/XFqFH7OWQvjxIYErs3KwFYvcqCMN1YiA9aYBLovji4ZUxHQSzoyeRkm0+oagn01veVmC4SrO4Ri17iFgA8GFQKQbM8nZ3LObHjvltlHw3CXtdH3Dk2LS6JyMe5IUIWf+CvT
+ l8ofmmlF
+ PQOp8JU9JBvrNuBQCJvbw7rWfkaizxCtTgwDhKusOGmQxa1sOlIQomHfg2QU/M6BpzO3t0QXWO/AzSLYQFYxWfTv7wMH4VWKRlfU4UE9CtB2EXWXGgAiQ9XL94rh5GhqbEXLiR83L1eTuZ/L1WpcXAHmEDDlEic4gE92G0xwdRZE8Q3LBH9yzYfCgWUbNZQ8/wg7Hb2uz3o25lEr9F5WtIQAKkqcwImeyaW3pcxcdxI6IGW4ZI8TukoDWnfhTXAfOPJ22MvHFgJVU5IPerNJr/ojheFeRmMBesOw2qYcvKJOGtzsfey3jekmrkflcMrBZm98AbuVaK0bIIFI/9G3oe3QUJADwGPxBtmfGTlTfLYYjrftIBDYyrgb7yAUpSvzfLau/RFCaHblsTHAF1KTZEVpWOFjuOkjacg4aIR1sE3fODIufrIKK3+OL9+3guwjZW4dWCm08Qw9nKfV++8hg757s5gvPvt9IQxONcTo4FNYBkTpaXUBa+RumhNeN3zQ49gM0qEtMOg4RXUI0SVmxLs7hucg+CRVhhmr2KrmrIACVF8BMvBRyf+WwUgqCGGhi7qakfHpeQyGnuJvWkNaDrlh2bKMJeSqH/Xwh8gGrderpz++lMvwnUeSeceTHLY99Mm7z9HQnbyO056xoYdIyt7t04gs6+9jo+SDxpv1cLBBP65tR1tWY7dHBklvbf6GCZot6hSA61551+FKavfiqYN+mNzP0tS+j2wgC/IRbOOvya07IjOVy+EMgkgfSOQ85fwD9Rxapnba27phFBNibTmTS3he/qVXTqya2ssoy3rJBk6kzzVJXCETvVgnvNh+dm4OMxWymtjBA57ILMGgVfKfB7Ar2r76udu5AuoDsAkDk9f2jfrfzNJ3G3k7vFQ+DGSNcAz491tTkVHU6A2quSCiDo8GXkdGWaMkcnNyMHUno7gd56DHXp6H/Pg7lnhePrlpt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,51 +133,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.08.25 11:39, Roy, Patrick wrote:
-> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are
-> set to not present . Currently, mappings that match this description are
-> secretmem mappings (memfd_secret()). Later, some guest_memfd
-> configurations will also fall into this category.
-> 
-> Reject this new type of mappings in all locations that currently reject
-> secretmem mappings, on the assumption that if secretmem mappings are
-> rejected somewhere, it is precisely because of an inability to deal with
-> folios without direct map entries, and then make memfd_secret() use
-> AS_NO_DIRECT_MAP on its address_space to drop its special
-> vma_is_secretmem()/secretmem_mapping() checks.
-> 
-> This drops a optimization in gup_fast_folio_allowed() where
-> secretmem_mapping() was only called if CONFIG_SECRETMEM=y. secretmem is
-> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on
-> by default"), so the secretmem check did not actually end up elided in
-> most cases anymore anyway.
-> 
-> Use a new flag instead of overloading AS_INACCESSIBLE (which is already
-> set by guest_memfd) because not all guest_memfd mappings will end up
-> being direct map removed (e.g. in pKVM setups, parts of guest_memfd that
-> can be mapped to userspace should also be GUP-able, and generally not
-> have restrictions on who can access it).
-> 
-> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>
-> ---
-[...]
+On Wed, Aug 27, 2025 at 12:06=E2=80=AFPM Sridhar, Kanchana P
+<kanchana.p.sridhar@intel.com> wrote:
+>
+>
+> > -----Original Message-----
+> > From: Barry Song <21cnbao@gmail.com>
+> > Sent: Monday, August 25, 2025 10:17 PM
+> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
+> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
+> > hannes@cmpxchg.org; yosry.ahmed@linux.dev; nphamcs@gmail.com;
+> > chengming.zhou@linux.dev; usamaarif642@gmail.com;
+> > ryan.roberts@arm.com; ying.huang@linux.alibaba.com; akpm@linux-
+> > foundation.org; senozhatsky@chromium.org; linux-crypto@vger.kernel.org;
+> > herbert@gondor.apana.org.au; davem@davemloft.net;
+> > clabbe@baylibre.com; ardb@kernel.org; ebiggers@google.com;
+> > surenb@google.com; Accardi, Kristen C <kristen.c.accardi@intel.com>;
+> > Gomes, Vinicius <vinicius.gomes@intel.com>; Feghali, Wajdi K
+> > <wajdi.k.feghali@intel.com>; Gopal, Vinodh <vinodh.gopal@intel.com>
+> > Subject: Re: [PATCH v11 22/24] mm: zswap: Allocate pool batching resour=
+ces
+> > if the compressor supports batching.
+> >
+> > > > > > [...]
+> > > > > > >
+> > > > > > > +       /*
+> > > > > > > +        * Set the unit of compress batching for large folios=
+, for quick
+> > > > > > > +        * retrieval in the zswap_compress() fast path:
+> > > > > > > +        * If the compressor is sequential (@pool->compr_batc=
+h_size is
+> > 1),
+> > > > > > > +        * large folios will be compressed in batches of
+> > > > > > ZSWAP_MAX_BATCH_SIZE
+> > > > > > > +        * pages, where each page in the batch is compressed
+> > sequentially.
+> > > > > > > +        * We see better performance by processing the folio =
+in batches
+> > of
+> > > > > > > +        * ZSWAP_MAX_BATCH_SIZE, due to cache locality of wor=
+king
+> > set
+> > > > > > > +        * structures.
+> > > > > > > +        */
+> > > > > > > +       pool->batch_size =3D (pool->compr_batch_size > 1) ?
+> > > > > > > +                               pool->compr_batch_size :
+> > ZSWAP_MAX_BATCH_SIZE;
+> > > > > > > +
+> > > > > > >         zswap_pool_debug("created", pool);
+> > > > > > >
+> > > > > > >         return pool;
+> > > > > > >
+> > > > > >
+> > > > > > It=E2=80=99s hard to follow =E2=80=94 you add batch_size and co=
+mpr_batch_size in this
+> > > > > > patch, but only use them in another. Could we merge the related
+> > changes
+> > > > > > into one patch instead of splitting them into several that don=
+=E2=80=99t work
+> > > > > > independently?
+> > > > >
+> > > > > Hi Barry,
+> > > > >
+> > > > > Thanks for reviewing the code and for your comments! Sure, I can =
+merge
+> > > > > this patch with the next one. I was trying to keep the changes
+> > modularized
+> > > > > to a) zswap_cpu_comp_prepare(), b) zswap_store() and c)
+> > > > zswap_compress()
+> > > > > so the changes are broken into smaller parts, but I can see how t=
+his can
+> > > > > make the changes appear disjointed.
+> > > > >
+> > > > > One thing though: the commit logs for each of the patches will
+> > > > > also probably need to be merged, since I have tried to explain th=
+e
+> > > > > changes in detail.
+> > > >
+> > > > It=E2=80=99s fine to merge the changelog and present the story as a=
+ whole. Do we
+> > >
+> > > Sure.
+> > >
+> > > > really need both pool->batch_size and pool->compr_batch_size? I ass=
+ume
+> > > > pool->batch_size =3D pool->compr_batch_size if HW supports batch;
+> > otherwise
+> > > > pool->compr_batch_size =3D 1.
+> > >
+> > > Actually not exactly. We have found value in compressing in batches o=
+f
+> > > ZSWAP_MAX_BATCH_SIZE even for software compressors. Latency benefits
+> > > from cache locality of working-set data. Hence the approach that we h=
+ave
+> > > settled on is pool->batch_size =3D ZSWAP_MAX_BATCH_SIZE if
+> > > the compressor does not support batching (i.e., if pool->compr_batch_=
+size is
+> > 1).
+> > > If it does, then pool->batch_size =3D pool->compr_batch_size.
+> >
+> > I understand that even without a hardware batch, you can still
+> > have some software batching that excludes compression.
+> >
+> > However, based on the code below, it looks like
+> > pool->compr_batch_size is almost always either equal to
+> > pool->batch_size or 1:
+> >
+> > +       pool->compr_batch_size =3D min(ZSWAP_MAX_BATCH_SIZE,
+> > +                                    crypto_acomp_batch_size(acomp_ctx-=
+>acomp));
+>
+> I would like to explain some of the considerations in coming up with this
+> approach:
+>
+> 1) The compression algorithm gets to decide an optimal batch-size.
+>     For a hardware accelerator such as IAA, this value could be different
+>     than ZSWAP_MAX_BATCH_SIZE.
+>
+> 2) ZSWAP_MAX_BATCH_SIZE acts as a limiting factor to the # of acomp_ctx
+>     per-CPU resources that will be allocated in zswap_cpu_comp_prepare();
+>     as per Yosry's suggestion. This helps limit the memory overhead for
+>     batching algorithms.
+>
+> 3) If a batching algorithm works with a batch size "X" , where
+>      1 < X < ZSWAP_MAX_BATCH_SIZE, two things need to happen:
+>      a) We want to only allocate "X" per-CPU resources.
+>      b) We want to process the folio in batches of "X", not ZSWAP_MAX_BAT=
+CH_SIZE
+>           to avail of the benefits of hardware parallelism. This is the c=
+ompression
+>           step size you also mention.
+>           In particular, we cannot treat batch_size as ZSWAP_MAX_BATCH_SI=
+ZE,
+>           and send a batch of ZSWAP_MAX_BATCH_SIZE pages to zswap_compres=
+s()
+>           in this case. For e.g., what if the compress step-size is 6, bu=
+t the new
+>           zswap_store_pages() introduced in patch 23 sends 8 pages to
+>           zswap_compress() because ZSWAP_MAX_BATCH_SIZE is set to 8?
+>           The code in zswap_compress() could get quite messy, which will =
+impact
+>           latency.
 
-> +static inline bool vma_is_no_direct_map(const struct vm_area_struct *vma)
-> +{
-> +	return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapping);
-> +}
-> +
+If ZSWAP_MAX_BATCH_SIZE is set to 8 and there is no hardware batching,
+compression is done with a step size of 1. If the hardware step size is 4,
+compression occurs in two steps. If the hardware step size is 6, the first
+compression uses a step size of 6, and the second uses a step size of 2.
+Do you think this will work?
 
-"vma_is_no_direct_map" reads a bit weird.
+I don=E2=80=99t quite understand why you want to save
+ZSWAP_MAX_BATCH_SIZE - X resources, since even without hardware batching
+you are still allocating all ZSWAP_MAX_BATCH_SIZE resources. This is the
+case for all platforms except yours.
 
-"vma_has_no_direct_map" or "vma_no_direct_mapping" might be better.
-
-With the comment Mike and Fuad raised, this LGTM.
-
-
--- 
-Cheers
-
-David / dhildenb
-
+Thanks
+Barry
 
