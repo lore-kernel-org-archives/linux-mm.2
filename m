@@ -4,106 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 925A1C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 12:37:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5D30C8303F
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 12:40:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7CC36B002C; Thu, 28 Aug 2025 08:37:55 -0400 (EDT)
+	id E8F408E0008; Thu, 28 Aug 2025 08:40:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D25E46B002F; Thu, 28 Aug 2025 08:37:55 -0400 (EDT)
+	id E3EAC8E0006; Thu, 28 Aug 2025 08:40:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C14EB6B00A7; Thu, 28 Aug 2025 08:37:55 -0400 (EDT)
+	id D2EB68E0008; Thu, 28 Aug 2025 08:40:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ABC226B002C
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:37:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 54D02117593
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:37:55 +0000 (UTC)
-X-FDA: 83826118110.25.4B47A8B
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8F49B40010
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:37:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mIrsfYNZ;
-	spf=pass (imf01.hostedemail.com: domain of 3oE2waAgKCEkulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3oE2waAgKCEkulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756384673; a=rsa-sha256;
-	cv=none;
-	b=1HWB2B0e+7Kl7PAnJJitvZbQ3UhTNh5HVdjZAlAWs2VE7YXaHXrTeB12x53LHBOXx4eq90
-	oYdNp4LHuYO8DiQrTeWo+XK9TpAtVqE9Mlc8W0RdOzK8AEnaBr0xHc7ODtkGHIxsSzXZOd
-	v86nilikQZNWvLDr2ERoqDw3bfLFml0=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=mIrsfYNZ;
-	spf=pass (imf01.hostedemail.com: domain of 3oE2waAgKCEkulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3oE2waAgKCEkulnvxlymrzzrwp.nzxwty58-xxv6lnv.z2r@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C1C968E0006
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:40:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 69EC31A017B
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:40:44 +0000 (UTC)
+X-FDA: 83826125208.11.C80F5B9
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2ACAE1C000D
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:40:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=LIDhJeXP;
+	spf=pass (imf18.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756384673;
+	s=arc-20220608; t=1756384842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vAjHNwDkKH0Xrf7J9hqnDKcdzoQblJhdBv+PKUv1vNI=;
-	b=PTp9lef4joM//cbLeW4E86BRYYMeawMsCpRgiPzW2Uez9WfRVm/DjZa2oSaU+sXyrYRPtG
-	4Q3jMStRBed7Im5C7AxgpXRUzIlZwg9OehgccXJSjGlbx+E/F3Lg6c35cg5V4QYcvT/j5u
-	2CcIHmlCGrklNlzE3O7oSmp9uIDXH9w=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45b7a0d1a71so4970175e9.2
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:37:53 -0700 (PDT)
+	bh=trSlbet/QuueBs9xQCBBEcGeeBLPyPlp1BPEQPaV1q0=;
+	b=6VzOq9WJhdgC8cW2F+Fl1kb+3RvGR6/ZBeq5DrNuw5Q13mQGNgNWE0Cou2hsUXvAmr+zxK
+	yBCggcbRnMbGEN9WHtF88dvhJJnDZsifJjuFkkKLoGTMMjMMQFP5rsV4/fDewTwFffs1kJ
+	+kPTOjpjToQaTJNLCFNcWC/JANHvTLE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756384842; a=rsa-sha256;
+	cv=none;
+	b=GJwd8tKdMVKsAGuhQ27o/GuOp/lUk9GGywkgwZVQiTOdsFYvTjut9+taqS4xzLE7EBo8pF
+	DT/EPDHc86UcR10dsY50sXVafAXGME3N6n6bQoO0db+/+VCnMbjwYeY9wjFvClgqfVgQ7b
+	B1hscLUgW/nym3IHEBC+vPVr96xJn9A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=LIDhJeXP;
+	spf=pass (imf18.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb7322da8so160049666b.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:40:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756384672; x=1756989472; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vAjHNwDkKH0Xrf7J9hqnDKcdzoQblJhdBv+PKUv1vNI=;
-        b=mIrsfYNZqMLEEXYFdVZBdOk4v2ZmWQUsCoDZ5JqDRn0XKwQxO0dv0teqLC+wV6bZXC
-         8kQt1ICA6/vRiVPb+er71CV+j/U9prlO3UZJ6Ih+fX/xxIHeyMOgkQ5wxQvdlb35tBzM
-         yDCANMws6KDROMa+Q/pMAec7MSJ3EhvU8oQUC7nHd/wzBdZ6kFeFe2RdDQ/5q9iXPxCf
-         pXj8FjZ9h5kehMbEyy/uBqtT/EMQlewHsHonV45h1wUoW1bNxUamWgDrB6BEqkBY0BNO
-         pA33nRJRMLRDAK4Y6Vbx7MLt+4rpCCXpc0R8kT1+ZWTF2BJfsIELSdZi3NaAFrZVmgns
-         T5oA==
+        d=ionos.com; s=google; t=1756384840; x=1756989640; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=trSlbet/QuueBs9xQCBBEcGeeBLPyPlp1BPEQPaV1q0=;
+        b=LIDhJeXPyWCt5ObVsi9yyuKr7oJjUIC7tRqbBAkEMxHSUkWIyGcjIngXIfNd1qpvI7
+         FzD//7MXrENcO6JcODuSdcRorwbl+oW/tjypS9R6mHNuhwCYAYGT37inrlbLJ4GF9LzF
+         5PrZWGR5exW/yp1IvLM8V1D0quiFOO2C82U1zbmLp56jnSXQ7P+AO/HMwMRiuqRK47iy
+         NTNbKRuvkMWWDhJ3DFOGUIomcHswFlSjeXWDGERwj8T+OQC00PfqZJcgEAO+8ST9JLt/
+         P/bVKFA/cRdyoAxBIvSQoINWxgPPMHjXIUnOI15cj/3K0vIg0I0hulf3GsjC0vlJ9x22
+         EDMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756384672; x=1756989472;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vAjHNwDkKH0Xrf7J9hqnDKcdzoQblJhdBv+PKUv1vNI=;
-        b=FwkjXOYeyJXLf3x4yjU73JCyo5aRCXMK7YBr6DWEAj/JHPVjB5hJCkHSk7ml/RV4hn
-         euAC2sGNr/meV1z9SoyKE+HrxGWWWAD/XBu+4zqfc8WP+X+89yoTKciSjjh62ShkfkVX
-         KkhpIjzgBposBMPV98gQU4YfSbtnsaL/AHQQuukP/ihMzxxE6jc/XP62W3aZniBpi6JK
-         xsuHjozvtf4EJMDCnIxBREXPV8CYvfsnzv6zEiRyWILcYKP9JvFf7OQBwxAQotya2wlZ
-         CSZK9+hdpsJno8am0k9Z1P2XYJWvswma1lex1qXTdOOA1+k3I1qBeS3z4athMgBTODBU
-         wybA==
-X-Gm-Message-State: AOJu0YwBJFF7XkIuIpmzWHXLjkhsb0kBDNyYyAjAXjA3WRKDXc3dOdik
-	hvil0trk9jV0qIepNa+Tpxbjpf6ZxTL+t8w8/pYHD6GuDCCwa4lDjohmizOaRSQbUhz8E73854c
-	uG2g+Orv0/eaWfg==
-X-Google-Smtp-Source: AGHT+IFBXeYhNMzdHXm52lCcgS2aFNIXmiYG3CWqQS4CZNJo74TXJc+LGj4lyuYSHltaoqSjZezmpZSGDKJR4Q==
-X-Received: from wmben4.prod.google.com ([2002:a05:600c:8284:b0:458:bed1:8923])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:314a:b0:45b:7aae:7a92 with SMTP id 5b1f17b1804b1-45b7aae7dcemr16281425e9.21.1756384672158;
- Thu, 28 Aug 2025 05:37:52 -0700 (PDT)
-Date: Thu, 28 Aug 2025 12:37:51 +0000
-In-Reply-To: <20250817065211.855-1-ujwal.kundur@gmail.com>
-Mime-Version: 1.0
-References: <20250817065211.855-1-ujwal.kundur@gmail.com>
-X-Mailer: aerc 0.20.1
-Message-ID: <DCE2EJ3KWX3K.1Y198FHBV8UG7@google.com>
-Subject: Re: [PATCH v7 1/1] selftests/mm/uffd: Refactor non-composite global
- vars into struct
-From: Brendan Jackman <jackmanb@google.com>
-To: Ujwal Kundur <ujwal.kundur@gmail.com>, <akpm@linux-foundation.org>, 
-	<peterx@redhat.com>, <david@redhat.com>, <lorenzo.stoakes@oracle.com>, 
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>, 
-	<surenb@google.com>, <mhocko@suse.com>, <shuah@kernel.org>
-Cc: <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>
+        d=1e100.net; s=20230601; t=1756384840; x=1756989640;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=trSlbet/QuueBs9xQCBBEcGeeBLPyPlp1BPEQPaV1q0=;
+        b=Iw6hYbKkS76sxY0ixr8Z9+uqaeBMH+f5fJOg3/pORsrRU4iJpSS6HFLODACtFVjmpq
+         AKRGRMA5rNOFSXc7aZ0HaaZZrarssNNZQaAQX5+g5NoH91+jLaOh69zY08GWOvuWlSdE
+         e6MsDC4MqH2cKjyilxZetqk1E3erHvYwc9H4H8EXFToThBaPTaZBHUAaxXR/LuTxzgt4
+         Fa85x1PyYD5fTtnjsZA5R0/64+KZspCEuiuISwh0ateAUiH+lxnpZWcXsjXaFq3A9n0r
+         tIL5bGt7RqDRaRGEWmVtXAkHkbDyqqh+qKDdWZNiP8a2bFCD4182CSdZGDLkGbTDPZqQ
+         aoZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFzIs5FYwiWELBPFE0hN/BP59Gtjf2PPuyOtO1cxN74UJuqywFmJ5YlYcz6k8kal+bYcCj5h8bjg==@kvack.org
+X-Gm-Message-State: AOJu0YyixTT/FtsOwQlGBDptd0VyK43amBoc12D9vhlv3/m4UHZxUkQT
+	x7nlWRPSG2U9YiSKle9z0Zyf06znULQw20y34y3Vp2QzQjn4hLGiB8Ub/5HvNiLWuvHr8RbCzB7
+	ifBZixrwclxtk1mSSFCStLvm/PJHZGM+CFDk2Ox4P0A==
+X-Gm-Gg: ASbGnctnlyhbXNysEYlBmarY/LCERwob9KFcwvhOYRyHKgRh12JASHbq89u42QGk/yX
+	MFlrp0DeCc3PGSMskRjaeDe7X0jlDHQe2UqygbfSelAhto8CQq9tzSo2Lz9L494/nPqdpmexIHz
+	9iUhTr+muzsvJ0Yu+D3n0/So/2o3Hh5b+XMs1P+kHv3wyMu/t24+qXHxEhL3OJASh/makR83n8q
+	Tmpeikbdh5Aks2sULyrIQ8t5S9RJWmMv74=
+X-Google-Smtp-Source: AGHT+IG8bYx4wIXfIdcPfZhiB4fk8x1jfzQ79t0ZECOBclW3p4Or6CJiYYn5dcoy89VV/Q824U7zbSHINWxTvm92/XY=
+X-Received: by 2002:a17:907:dac:b0:ae3:f524:b51 with SMTP id
+ a640c23a62f3a-afe28ffcee8mr2305659766b.10.1756384840560; Thu, 28 Aug 2025
+ 05:40:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250827192233.447920-1-max.kellermann@ionos.com>
+ <c688a2f6-375e-4a00-8d44-6a833e3d30ef@lucifer.local> <27a21510-e9e8-4eb2-9e26-618c103d49c6@redhat.com>
+In-Reply-To: <27a21510-e9e8-4eb2-9e26-618c103d49c6@redhat.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Thu, 28 Aug 2025 14:40:29 +0200
+X-Gm-Features: Ac12FXyF-XXXzaswyonUogGJ99vkSxahZWLwoczFyKONaWpaCVV1M_vCYlT-A6M
+Message-ID: <CAKPOu+8DbXY6wT_8gcqLDpyZEg0=En6wOYtHX_VkUvZ_oOLHSg@mail.gmail.com>
+Subject: Re: [PATCH] mm: add `const` to lots of pointer parameters
+To: David Hildenbrand <david@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8F49B40010
-X-Stat-Signature: nsziocchk4eccaxrno96iyyu1c3uh6k6
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1756384673-95943
-X-HE-Meta: U2FsdGVkX19r3Ze3yUAExxmOq6x8+zdm6+oaapzn/YMdRNLJyV99D46qiWKPxAAI6CwNbY3ENHktjibvkUNq0tg1m1ZX6/QgcwdUlunRq1kl3KlYGa+s7FEL27gTsARxUUsGeyz6P3qkOiYUxIYfgqr52haumPaSVIlHO4iJgVY5Ji0pLDNPvpAvRhxxAWlHpYGFP9bR4w6/0vjKXKNga1POY2ejSK+Sf+GAwVRHIsY803mOTDaiQonOHL/HrISF4vbMBQqy9rO8deiirR5FszJ5sybqssOqJ6zHHtdfFqNNsPAw3BZ8Hf2WyuoKZwl8yfP1zr9kOfFq5XzqmrXuvtjy95nx9PDjMTDRp9eQBy0nhRTg5n+x4ZAcvFtViJhbWCc3eHrfEvKbMC65w/oTZooNfvW7T62Hsj3XNhod5kMNL1rKv5OB2LCoQoif/BAqMOvjO25a/WWJePK2gD3dRzY9rs7EbRX0do5FibWI6oT6fZUL2jqNqLXIvd0QfOXXnP4xyHVP1Nkaa04U1aGeMoA5LVoQTzxGv0N9PsqEhAjTsJHNa8yUwUQFvawVHLOJir8JCDh7jq8Cch8A9+Xh2quWgpv3XtJREtYxhhLcEA46cJaFoJJkP5sgrH3lkSDlUIxSgY3k4RwAQ344IcomVncPeofduddLxyIuWwvyGs25/IEskUNdLDzsWCFbwSJaHW4hnfZrvAW5mnrmSOO1pJ7ABRdgKNKorpqlYXXmagQZv8bTsXRYEskUJfX22LDrj4DXSfrpNKn/fRugNE3i1RePpdFVU9iNCrdqtbtxQL7PEiZZqWaDlLZ9Ft1ltZEYx628Ruou4YBClbPPKeOyGTWVnJwN1AdE4OM1XQlaoZsFUMQv4uOwsjCFhSDfqhWvHPB0dE/xHZzDsx+xRkOiPoty6LX6ipu/y4YiTRxlF/6jwUgfR8OE4sqayWpyjRBJlhNoSoY8j+5tyLfMwdG
- pJm4yxvl
- GUXXbC5ajjRNF2VScesZEyzBAhoIhLmmM5Bfya6fyUglf8jZCLZ7c1h16XxaNTU+QSxr2PzHwXr/gJ83iS3alp2gpnZFQ52hrboITfZiGlNtiMpovrHfKPtZGQwwRjNElzkl0CRnh85y4ZwZ6XLkbjKrDOHoMOBVMeVPCp47RT8+wxylGAB9aD0fKEw1AcODS7CCIvDVhqwDMBFl7kD9WRA7Mi2jZwY/iKTWBh6M1K+PSxFuqcfAFbbRZkFqhrpAZ+N+YyIQ6ciWV1RDpTgH8tOIlxjlUATJW75rOityzZ6+5brNw/KNGWfph0qSPb708DpAHFqI25+auEEOB0Mhanvm4NcM8YxU+1Um0PxQGpelZUFyFqCZUhEDd6RWlQpCDyrLJAs/+O/3oKBIXX0RANt3jUtef9uw3vSxkTMBINlFuFo4RydEFziZUKsO9yMcsKgE5+KY8yOMprGwUnv2OQwdWufNyIwk0RRoAouXVVNyHUeSXe6cCVmontdoZoH2qBaIvwaoUX2Jgjmd59t4c9k5buYvHQ+RImJnsgOSwg+tbmxFPqTIsIp/N2rBA4CIKax7adAC7l5CUQWo5n9SgM8l0oVCxKvR8mcVrcMovv1JoR8ZAPluc54ZnlBRfJfAZYScoHkNhCglX1xqDaHxaCXFyT5sR5A1xdV5X5lEAZgRXG8bSavQesd1QL/nHP/OBXmnkPEsBeSFQQrJRX6htRUBIR+iSLhj9fLg0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2ACAE1C000D
+X-Stat-Signature: 6s1akowm4imhhypxzc9xhm31unq9qj1r
+X-HE-Tag: 1756384841-50374
+X-HE-Meta: U2FsdGVkX1/3ji65fcpEDaGuMCMkRPRXCqVr6+ADBvJ0L4mxv+3aUjIps9RfsPLLSGWucgbisV0BlXl0gU1E4MO5mR/xecM0BTFJqKqDfLIp3nLDFeu3OiVHz/xn4oG/dqpEc5yPQI/vDv+FPUf0UlZ3IXidusGJfcNCRNha6yuikw7dIoYQaVhrbTXTMnT/Q1wLHhkkS3yaCz05h6ExOvddhishP6316kRRQthVxo/qScBPJmmIpaWmUjg2zdgM4pxsjROXpf0YEoj5A+8UMB1GCz8R+hsm+6skcoJsKnibr2UhfYEoXOxJBNzFAvFOLkhaVlV/Kb5e4+xozNPzgk2KTGXnUdAuyit85Hu9Qwmc0jR34jKeFvW+K8HXcEh027gCzEJrKlJR0vtawFnDBEl9wdRbmP8NQtOuyjAFunCO5hj9td7ZrNWGO7zNxz6kpNxgomKyFQZYEk01FNHOFBmPwwZ3+j7NmnSq9+iL2ScnJsNIf4K+5LSCsQlUOwVYlBZPg95c/6LyT+rlnLLFW8OnjNEaBLB341GB2eR5ueR2J33+4+9NcaopwdY6WWN51JG+Wmp8MMqToCj105VpeJsq9cwkrnjcXjbPSlp6jpbmuNKPduNuOp3rfw8b7t484FB8Zi4pQNNemIVW3vXpA1MLEC/zpUed0ItVzuuM6w/3K1VHIAd2FT2Y+0O7g6zKN7dpNALkBGTdJ7/WZ+5IQzThPTaMo4BpsOxYR/fqteD3VvdihbDZrughDHDl+QLVY9bGptZ25QiQslFZlQhVrClqJx7upoRq0cwW6s7YN+aHnzua8KRlqKOazjE2jIwZ2+03QWlH3VnMhx9Ro1525iGdvSkKYkhiNQwopls5GPBmgdfuMRjNJP/HktNujMVqFk2EWX2lC4gITdrBs8WJ11exDGPlSBRxXezHMPo3NtcAGmcns440XXizfNlBmloqXAb+cfQpQwM96fdGMU0
+ wFBQSXrv
+ x7mKE9fz6+mz75tzNlSHc6kDYNW5nFcXsmdILCwfQAOIOmZMEx1jLpSdiJtUDcKd0BBv/8I1M+7VIoOSziazncCFjNAWBGXb33nEfjh3Lsv45uUifcv7Hhbj6srpuTwpMWio+HQvm+nBrGLPbPHXKkqVERNsUPDwDDXj9ESPR7xMt7fahEnz/v9JCLLjlqnQu82dgszV/V4dAjQlOw0oaZxpaHw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,17 +118,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun Aug 17, 2025 at 6:52 AM UTC, Ujwal Kundur wrote:
-> -static void noop_alias_mapping(__u64 __unused *start, size_t __unused len,
-> -			       unsigned long __unused offset)
-> +static void noop_alias_mapping(uffd_global_test_opts_t *gopts, __u64 __unused *start,
-> +			       size_t __unused len, unsigned long __unused offset)
+> On 28.08.25 14:24, Lorenzo Stoakes wrote:
+> > On Wed, Aug 27, 2025 at 09:22:33PM +0200, Max Kellermann wrote:
+> >> For improved const-correctness.
+> >
+> > 'const-correctness' in C is extremely weak.
 
-After a rebase this is now falling afoul of the -Wunused-parameter added
-here:
+"const correctness" is a commonly used term for this concept, and I
+find your arguments against const-correctness "extremely weak". I
+don't think discussing the benefits of const-correctness is worth the
+time; the concept is trivial enough, and if you don't already agree,
+there is no way I can convince you. Let's agree to disagree.
 
-https://lore.kernel.org/all/20250731160132.1795351-5-usama.anjum@collabora.com/T/#m0449dc0d6a5ac3b1f71f7182c13b6829e1b444cf
+On Thu, Aug 28, 2025 at 2:29=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+> I recall that Willy did some more targeted conversions of that kind in th=
+e past regarding folios.
 
-I really don't think we want that flag, I'll comment on that thread, but
-just as an FYI here too.
+And I found many more commits adding "const" to pointer parameters.
+That shows this kind of patch is acceptable in the Linux kernel.
+
+> I would appreciate similarly doing it in logical chunks.
+
+So you suggest splitting the patch into many? I can do that, but will
+it be merged then, or will Lorenzo be able block it? Will further
+const-correctness changes from others (e.g. Willy) be rejected, too?
 
