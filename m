@@ -4,127 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D19DECA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 21:39:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 615C7CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 22:07:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADF7B8E0003; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
+	id 7765C6B0026; Thu, 28 Aug 2025 18:07:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8FDC8E0001; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
+	id 7003A6B0027; Thu, 28 Aug 2025 18:07:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97EC08E0003; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
+	id 5C7976B0028; Thu, 28 Aug 2025 18:07:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 817208E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:39:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 025B3119093
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:39:44 +0000 (UTC)
-X-FDA: 83827483530.28.8C46937
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 27F3940006
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:39:43 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PVoqlxFM;
-	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 47D426B0026
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:07:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 84916138FF0
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 22:07:13 +0000 (UTC)
+X-FDA: 83827552746.07.D9A5DA2
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 95FFA1C0011
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 22:07:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zj0V0tEV;
+	spf=pass (imf21.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756418830; a=rsa-sha256;
+	cv=none;
+	b=bfsE1JWVURp0Up4RWdTZPBHz3YGma426cbKzfMYvvTCWyYR0I+ghZr3z49fWdTSqwXxxJn
+	DaaCfsZptBQC/N0rYXJXcFNUv3vNXMWryMupZgDM4yc3TgDvkwMtUZUcru3tqrYqA59pRs
+	riIi2zRa5NgBPVcG+4xftzde2vcpMYo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zj0V0tEV;
+	spf=pass (imf21.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756417183;
+	s=arc-20220608; t=1756418830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=egeVb4jL6h5nFyN9xRw5wQS4OVht2YfrG8JsM55WIk4=;
-	b=lV+Hcq28aX+0fLLbPvxaThTKWWwAaTvptf7nsxig3exHshzWYD5wEhihvjFLzl8ozdkwlB
-	cyhxkGLFi6lwvi9isXUSw/moKpNFJmnYcP/a2jhmyAnub/836i88I80zi2RwOyxWQcOdwA
-	6bnh5fD2di4WkugeJ06hpwV6uzg+mKY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PVoqlxFM;
-	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.217.52 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756417183; a=rsa-sha256;
-	cv=none;
-	b=buvk2amiuyDAH9iSc9JsrtO8UkHW1XQ4y7aFnb2LUro6qAnDdEa35rymRiCNZvi9S90foG
-	tVE78E/MwwXoLds/oTeaVOsWScugc2ErShb5pHvwO7SjziMRsac5/yQDRjjO6YtIcaORP/
-	ouvE6HniGlaQ0LjTcDdvR2Qqd0O788g=
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-5206927215dso495635137.3
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:39:42 -0700 (PDT)
+	bh=1/AnHM5Ys5MspHOXR+HJG2nQahjdzPCxrStRtIapffc=;
+	b=tnBwudYQCcbxjkGOlB+QWiTWreOijpl2zEm+KApHz+OeY65+rfzzgO3yZE89BgH6ayO87H
+	5UxHp7pkoPs27ftO6hCm1YDi53B2uRveBWB8KlpUMl7vHBUYow0ivJiD5ycGXoQXTdohmV
+	0Y6CJYVKQPU5sKryLQhc0BbqvORwEhk=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45b7c56a987so3882085e9.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 15:07:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756417182; x=1757021982; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=egeVb4jL6h5nFyN9xRw5wQS4OVht2YfrG8JsM55WIk4=;
-        b=PVoqlxFM8tz4sEFrvolY7pOQdSolF102ytxuoP7hmJ/dBOl52bYdxbN4wg9c4igYsI
-         4WWqsPD+FuZqvHdZ5meWXI0p0BfNfuHPrUaG5uSa6TIamakbGPjRra1hFasPAptcnaGN
-         OAyiv5GGyzAe+csLpHRaFNGoTrSlmZHbwv3bqtZctLL6U7V2oLDeAJ46dWWLXuSz7m3p
-         3yj3XUAQkBsctVMc3Jed7zW9Uq7FtuJ5bgjXA+KHP3xj3ecEkKXNqp3vc/YtuwiUSyRU
-         /r8orFcJfwV6f7+UztrXMXtEcEMnaJ3X9XGVrLyHbmaf0jaAJStSqrifTWdSHRxxtbhE
-         3wug==
+        d=gmail.com; s=20230601; t=1756418829; x=1757023629; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1/AnHM5Ys5MspHOXR+HJG2nQahjdzPCxrStRtIapffc=;
+        b=Zj0V0tEV7/f5LE6JV9/BLBeQQSjbozgONZbIj6bqjytw/ErLAqfpltMuS5D1MlgID7
+         g/UBrREZDYmkxNFJsOv/723ymtxbI9Mfclb0/IRP0+T3i3zlJGSVb1RI2zuLhq5sR7E5
+         ZunRn3WKuYvez5/rj1BDM8ELlqYV6eK3x93HrNJ30UkTP3IXpbAx2PeVbQZ0KZoZlOG0
+         AZTDSyP1OX1tt1k7FvyJYGOI7KSk/SOuQkCC5DkDFim5+TfRBPg0rBDzA2Tpk7icHQ7Z
+         n1ozPaLactH4RT/HqfNhOyeb8Y0F9Xg+RvlrsGu/lagPWa1yunNJXff4GvS302lQ+LpS
+         kxZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756417182; x=1757021982;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=egeVb4jL6h5nFyN9xRw5wQS4OVht2YfrG8JsM55WIk4=;
-        b=UH6/FvGVng22FQNKTlejtDI5mS5Ig6ODa7g5WrCOy0SHH4dqEG4ObOi0DYfEvV854J
-         PkpsczECnMIpjz5i9g65vOHiPhRYuZIUWjNA1qrdAIEGEIrHAIOqqRcbtWOIfnifYarV
-         Bq16M0BjkDGBjxCMVwy/I4mi0+tjUa/9s2tTN38Gr5IBSg2A+mMdgwT1kzkLYSNafUBS
-         wkaFwTZlOqZSAUN0pcdrFwEVkTYCC4eVlZawj2oo4B/lxKkQLXLOS9faSZ4NJWRkyLNQ
-         xylATWfPJtih7Olu3WA8O5QMmY/RxCzU09xGcTmlhrrDkulc/NtUsGQV2luJevmbp2eH
-         8ABw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwy+53ILxNan3ElRshOi3vASOoMBRRsU4roczZi1w2Uw1VA/+l7zInhDAwmCIs6blipcdeM6EWxQ==@kvack.org
-X-Gm-Message-State: AOJu0YxJwd/JtuipQ4aqLlN1BtOHo8EbcAJxlgA0GKzEqM+rZGLIsU/o
-	+Up+Mupfuau04JptyGvAwpnrGKGfuGRNpKx4r4jDGWNVqp5PjmE9RfvCdHTaBI2VhYLibXWQRsH
-	P/t4qAHBFF9GPeUDvAXO0Ydb0XpmWAl4=
-X-Gm-Gg: ASbGncvd3gGg3yoVkU3hO1ITHAGGxbTEJwZCSxMXfGcnYyFidyfgky3DXz7gUHhY5zQ
-	AGUz+FpHukOcMlsKYLxy0Gs/NqM0xWiYvPSCEX7Yb9UgyIKB6DMhuEmxNcwAIpnggIqstKZd5LG
-	duQNrcnl2TjUoZEshCI5o6emUYMoOe1Gn76LcMl7dMUCfvh0aK/ORoctJ/V3fG40ZNUQByL8ijQ
-	UwALhXpqoVKY4lE4aiN6/4dIZhC
-X-Google-Smtp-Source: AGHT+IHie7MOkNsj8efrQCm04ILQxwbVuLefNNdiQWU7MzTGW0l35HwAhXQIlJpyb1p2xzNAzusa/ZuPiM79Z7UDlew=
-X-Received: by 2002:a05:6102:5e86:b0:523:b5c8:2b0b with SMTP id
- ada2fe7eead31-523b5d7ac6dmr4910509137.12.1756417182085; Thu, 28 Aug 2025
- 14:39:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756418829; x=1757023629;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1/AnHM5Ys5MspHOXR+HJG2nQahjdzPCxrStRtIapffc=;
+        b=CpZ8QGemHsRpbnQQ2TZOzxWlK9VaH6HZsSe334bC4kxpSjIuhjDIn/af9+R1qhEI5X
+         /i7icYC52TQX0z2q08JKBw//xSfs1gZ25q88w6CzZ0t4pMK45+5PX1IagrbT+gLSrys1
+         /82piKlxcb1episbUP8Q5K1SQ0Mn2sL/2Q4UQGrxFCzVAiYrMKmjDcYXUh3xyZ38omtd
+         yM4Stq7Vw1wpyB4t65ZArl/tRiwY6RFC1LN7ulNdFht9/EBlBwH+WFQeyyVPoj+ezDMO
+         GrYCc66ztdt9e7+LNs11+fwwrt4G2RIq6KwCDWz06Z8AU66/+5WLM9rP8qoqOzWoLfpq
+         Sw3A==
+X-Forwarded-Encrypted: i=1; AJvYcCWa7r7vjJCBFdiQISHfcDvUxIdKMFZ6LhnKip6bmAydw3SkJScclOZhleqrhm1RkAOfuNyNLaUfCA==@kvack.org
+X-Gm-Message-State: AOJu0YzTCvXOyEZMwmNH/MZ93WOfQl2A7hrHu4Hvad7kKNg5kkMNonRX
+	Lk+9QwHkwmUH10eYQ7kCfvg3EYtGLTdyvtqBPs7p/zlTvp32mgo7PY7J
+X-Gm-Gg: ASbGncsff+VfbgzXTZoqkTmPE9h8sBBRXkja3shvAGtmSHmNpKo8EAQWoXNOIrklLf8
+	DxGos7AaZKgHxe5kaYO1Mt5RaJeFVwdpBbOGGGK2GltGflmxuOz3zQzdmGoicKc9SFQx+Wxtg5p
+	CX6GtwxH2jrZMXUWPa7ln/0kYyVpNLadOjjsmhcOd8EEWq0gEn4w5P7uS6otuTK9ZEUYVEsrlaG
+	Y7hReRFnxlWaGF2cglzLhYWiWEDtJKnqjs9Jr4JGqKc36IzQh0+7fh38sZCHEP9LZ6++kKVFMr9
+	JWR/ReHb45DAXIgdKcVf8FO12aG/g2oGNp+Pf31PUHzt01QxRKmyk6ZbqwyHjfV6syNyyElKujG
+	Tu7veSjoAGIczLq+MrFi8BZEBSy74CuIQkTTAga0=
+X-Google-Smtp-Source: AGHT+IG1+AIr99KFjMYVoVuiy5WkytM9+XOL5QNqyv4VEiPFHZ/q2dKTsnCr0aimIS6RwmgQIysRjw==
+X-Received: by 2002:a05:600c:1f88:b0:45b:67e9:121f with SMTP id 5b1f17b1804b1-45b67e91509mr135069255e9.16.1756418828609;
+        Thu, 28 Aug 2025 15:07:08 -0700 (PDT)
+Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:72::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e7d141esm12130995e9.2.2025.08.28.15.07.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 15:07:07 -0700 (PDT)
+Date: Thu, 28 Aug 2025 15:07:01 -0700
+From: Yueyang Pan <pyyjason@gmail.com>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
+	kernel-team@meta.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] mm/show_mem: Bug fix for print mem alloc info
+Message-ID: <aLDTBSuM3xVbUok2@devbig569.cln6.facebook.com>
+References: <cover.1756318426.git.pyyjason@gmail.com>
+ <aK9htWRehfJDLFJD@fedora>
+ <aLATVGnVx4Z+aHAh@devbig569.cln6.facebook.com>
+ <aLCMTu-Ci2yV40zn@fedora>
 MIME-Version: 1.0
-References: <20250801043642.8103-1-kanchana.p.sridhar@intel.com>
- <20250801043642.8103-23-kanchana.p.sridhar@intel.com> <CAGsJ_4xRij-Vz_-dmL44YLvaQrYLKKnw7O_Skedrxj_YxuaT5Q@mail.gmail.com>
- <PH7PR11MB8121532CE4368DF5BAA6D46DC939A@PH7PR11MB8121.namprd11.prod.outlook.com>
- <CAGsJ_4xMuLPy3+mAxzOj6SfnFZaDf+B=WkmbrCNqv8gvK080Fw@mail.gmail.com>
- <PH7PR11MB8121B86E65349F5CF854CA57C939A@PH7PR11MB8121.namprd11.prod.outlook.com>
- <CAGsJ_4zt9zQFh1mz6gpQOCWBOjz1osN9jTd62uKGf865vRwuLA@mail.gmail.com> <PH7PR11MB8121C1B5965584AA8E59C0B7C938A@PH7PR11MB8121.namprd11.prod.outlook.com>
-In-Reply-To: <PH7PR11MB8121C1B5965584AA8E59C0B7C938A@PH7PR11MB8121.namprd11.prod.outlook.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 29 Aug 2025 09:39:30 +1200
-X-Gm-Features: Ac12FXwKgcdDELJZzuofq3TYBazdJbuunzZRTQMwHeFHqBjqIkT5JByIMca79Ik
-Message-ID: <CAGsJ_4zjPxSjrSomm3E3gOuW+AqiTKwUHJ34q9m9aJb3y3vEKw@mail.gmail.com>
-Subject: Re: [PATCH v11 22/24] mm: zswap: Allocate pool batching resources if
- the compressor supports batching.
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>, 
-	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
-	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>, 
-	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com" <surenb@google.com>, 
-	"Accardi, Kristen C" <kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>, 
-	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3ptuf7yuhu91m6ff5ungro7yqrwtkgep
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLCMTu-Ci2yV40zn@fedora>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 95FFA1C0011
+X-Stat-Signature: bdozi3gw9y8px8ksxkszkttsdz1yxefg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 27F3940006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756417183-296965
-X-HE-Meta: U2FsdGVkX18t0IlHhGDJmbRGaB2VfWDlm031LdYkwgGXpc0WrgPYqyLa147DcOdtNKpjQwB/SX6XdRSENPMDjrP2fnI6/bgNGDPxyzP4HZ4ALSmKn1Irjw7MsSAY6anQBi+5ZnfkS7o/qDKKbB3AMarhl9+99LKC4Ip2Pb9y6v9IzWwEoMwETyvNsKj6E8ajHRCGIqMPLjuvFj+7BXj0ajbtOA/QcHCpmL6/eQ3mlspZftlHB/B3xoOsclr9bHjr7rwvvcrN10V0pCTdwnV+/vXVQJrTHWhRQjLKlUjykW6WpdKUhCr/GD+DUHOhL4T+1vyOp3osmmua1zt596Ke/6rYZ+eR8qVfF6D1ED8ZE9rqpkRx//LmUglhk9vh9hLMkE1rWzDTIyvMZomfRJdE2bYtjXcxHVESq/D0sPc41zJ5jSybAIRjmtCu9zmJTKL4NuDSsqlOoV4Wid/BpFaLjsPjf6gpqccXga3A5LRuOToWtHR+wH+U4kMNQPFWudtTenBBpjbw/4k2TmoEqspbPKSZyNSW1PXY94yCIeIeksbkqpcP5FeIZLoa9EX3F0Kn1HaFPIbgSEOhEToeI1vmcupDo6ykq0C1hHyU5vT/UAgOckWpSUBq57qB6kr9JFPOCk8nP+CWIaxT9rZtvZWnnoVwnzSyrha9Uj/Z4Yaj0WOCcF4pIfwhFQQh19k2FNkeLUn/xNCDKBjgHH5uOOThhOVacVSjyl4UFZGEqrnlVqn6x+Gu1YVJhwRnRu7RtmPyWf6PfSPbJYrstjxRebRowrR0ZpzYhaf220SHGemcCA0vMg6u12tz3CZkJTyNjLStGL7jthLg/829NrD/XFqFH7OWQvjxIYErs3KwFYvcqCMN1YiA9aYBLovji4ZUxHQSzoyeRkm0+oagn01veVmC4SrO4Ri17iFgA8GFQKQbM8nZ3LObHjvltlHw3CXtdH3Dk2LS6JyMe5IUIWf+CvT
- l8ofmmlF
- PQOp8JU9JBvrNuBQCJvbw7rWfkaizxCtTgwDhKusOGmQxa1sOlIQomHfg2QU/M6BpzO3t0QXWO/AzSLYQFYxWfTv7wMH4VWKRlfU4UE9CtB2EXWXGgAiQ9XL94rh5GhqbEXLiR83L1eTuZ/L1WpcXAHmEDDlEic4gE92G0xwdRZE8Q3LBH9yzYfCgWUbNZQ8/wg7Hb2uz3o25lEr9F5WtIQAKkqcwImeyaW3pcxcdxI6IGW4ZI8TukoDWnfhTXAfOPJ22MvHFgJVU5IPerNJr/ojheFeRmMBesOw2qYcvKJOGtzsfey3jekmrkflcMrBZm98AbuVaK0bIIFI/9G3oe3QUJADwGPxBtmfGTlTfLYYjrftIBDYyrgb7yAUpSvzfLau/RFCaHblsTHAF1KTZEVpWOFjuOkjacg4aIR1sE3fODIufrIKK3+OL9+3guwjZW4dWCm08Qw9nKfV++8hg757s5gvPvt9IQxONcTo4FNYBkTpaXUBa+RumhNeN3zQ49gM0qEtMOg4RXUI0SVmxLs7hucg+CRVhhmr2KrmrIACVF8BMvBRyf+WwUgqCGGhi7qakfHpeQyGnuJvWkNaDrlh2bKMJeSqH/Xwh8gGrderpz++lMvwnUeSeceTHLY99Mm7z9HQnbyO056xoYdIyt7t04gs6+9jo+SDxpv1cLBBP65tR1tWY7dHBklvbf6GCZot6hSA61551+FKavfiqYN+mNzP0tS+j2wgC/IRbOOvya07IjOVy+EMgkgfSOQ85fwD9Rxapnba27phFBNibTmTS3he/qVXTqya2ssoy3rJBk6kzzVJXCETvVgnvNh+dm4OMxWymtjBA57ILMGgVfKfB7Ar2r76udu5AuoDsAkDk9f2jfrfzNJ3G3k7vFQ+DGSNcAz491tTkVHU6A2quSCiDo8GXkdGWaMkcnNyMHUno7gd56DHXp6H/Pg7lnhePrlpt
+X-HE-Tag: 1756418830-732309
+X-HE-Meta: U2FsdGVkX1/jW27q4WJ78EasAEt0aZO/bZSjoDm0CnJu7iLXZJjVJA8IMjjbeZtxjP+9G+CeCBYjZzJQgxiMiXKVZ8dNMc84kKo4LAQ3AFrB7TQcTM3kUSjDdBoynVlqkYz0Ow8XlTyN1vlomSkSdYqneHSw0XYXUdt9Tzmb5uiYWo5dUeTm1r4AhAmQoh9aX4qOa39Np/fHf59yELzDJ92yBLuDHEAZXyfjHkUb6CKQL6QRu2lkLvqawSfb88WPyvy3Y0JR6auLOQ9hfpQ1H0D7aOGQM4y8kBWbYuvSM5nn4iQpsDvZP/GQrxYp08lCoDUCRfl2Azj7Rld1Etg3AWvh76wiBR3/PTJccly4uO6wJ5CwIcOLngeD6ZvR8rwa3sQ+uEkvlAYaTNX4QZnmajxTff70cjryQLgZ0WKOuSQn6VdO2cfqTfI2m39EvuDPX0H37pHHeWir8WlGEE2LhSNySUs7LATHW1bNBVxd7zi0ggwW+BKezSlBGGLe2mWeAKALs9Gbx/QX9kOhFh8kamRVH0PGjMua7hBZ3Wcq/0TTP/0WN3Uv4nNAj07Y5/4nlxXv5AWxzPFlGPBqRA8vZSwxHuhbNT97/iN1NyOL/PXlcwONtmpC/1RZqPVbD0IvfgAUFRSXGsePSEy1Qrz5y/9T9CfXuvdR1byPxfaEnXwY2/6lrWoqYwMa6Ug2laH/7HQM96hrJVdRbQYbmThQ5sdo7NcRtuZR9VY94a5ZxAmIiZdPvg3aYUb7VYAfzgA8jDdJ3kZw2ADZwuyyVGUwo7HFjHE9trgWPru5s+AGQ8K0Re7dbkNoXH5I9z6K8IWetWaLfJGjsyua8vsTak9YnQWEwHXWbti4/BuWSri+o+6E6YDMF3v30LWbXGTIyHBW6nRjW4jzq1GXmBUQlY5KqL7GUKek+LER3KskNFh2u7Dwqpzp6cXreUmIPdKxEsAg5Gf2FyhZL4dkPhEDjWu
+ V3AWNjGS
+ FFZzAn8yXDpxFoXD72eTrgDs+1p0M1cM/IjOxso+AJd4hAsUcgBG+hxWDDmnxJMa+QZPNjHCBr2v1LrWdcRI2mkTWN4UMK75d8Ss7S5UOZB86aXDC469piXMha+Cj4U9kWWoiWBmZPf5sokEYils5P9HQ9qMCCQ4lezjYg88U+gYedFSzDcOqc7p+85C7Z+xn+1r8OpJVY/bOYFI+OXUyCZLEhfOUR3xxIKjgjWQSZ0e9zarxq80nAJVXQDeO4c3iaJ6bxXY61kONstchtNodOUwCWCBEVUcKGHAhlVk4SFMOmSTI2izm3hypxuFSgZZVChuuWJxJyuhcgqQw5OnWRp/cslprpJVee877fvsusCPElxGgTFMdnnUDA4EPg2bQBk3p7O6yMXKo9qLwPduFQ2BR+qrFcIM/19GoAQpJ+Rt80B0n1MdO4vsoiLwVGW7HVflkJrhqVAnhslKnzL2hNBHN3bmqR9T+dzSbkjVG5db9IzyCthfuCFE2JEXCwlLuf0yx6PWu6FVq3tpVtdk5w3XOn3nnB6e5VZRk1CVE2YvFEYLkYQAhZc68hy/K/PYAfxK6BeqoXNHv1LDeiqGBM8qCRQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,159 +125,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 12:06=E2=80=AFPM Sridhar, Kanchana P
-<kanchana.p.sridhar@intel.com> wrote:
->
->
-> > -----Original Message-----
-> > From: Barry Song <21cnbao@gmail.com>
-> > Sent: Monday, August 25, 2025 10:17 PM
-> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > hannes@cmpxchg.org; yosry.ahmed@linux.dev; nphamcs@gmail.com;
-> > chengming.zhou@linux.dev; usamaarif642@gmail.com;
-> > ryan.roberts@arm.com; ying.huang@linux.alibaba.com; akpm@linux-
-> > foundation.org; senozhatsky@chromium.org; linux-crypto@vger.kernel.org;
-> > herbert@gondor.apana.org.au; davem@davemloft.net;
-> > clabbe@baylibre.com; ardb@kernel.org; ebiggers@google.com;
-> > surenb@google.com; Accardi, Kristen C <kristen.c.accardi@intel.com>;
-> > Gomes, Vinicius <vinicius.gomes@intel.com>; Feghali, Wajdi K
-> > <wajdi.k.feghali@intel.com>; Gopal, Vinodh <vinodh.gopal@intel.com>
-> > Subject: Re: [PATCH v11 22/24] mm: zswap: Allocate pool batching resour=
-ces
-> > if the compressor supports batching.
-> >
-> > > > > > [...]
-> > > > > > >
-> > > > > > > +       /*
-> > > > > > > +        * Set the unit of compress batching for large folios=
-, for quick
-> > > > > > > +        * retrieval in the zswap_compress() fast path:
-> > > > > > > +        * If the compressor is sequential (@pool->compr_batc=
-h_size is
-> > 1),
-> > > > > > > +        * large folios will be compressed in batches of
-> > > > > > ZSWAP_MAX_BATCH_SIZE
-> > > > > > > +        * pages, where each page in the batch is compressed
-> > sequentially.
-> > > > > > > +        * We see better performance by processing the folio =
-in batches
-> > of
-> > > > > > > +        * ZSWAP_MAX_BATCH_SIZE, due to cache locality of wor=
-king
-> > set
-> > > > > > > +        * structures.
-> > > > > > > +        */
-> > > > > > > +       pool->batch_size =3D (pool->compr_batch_size > 1) ?
-> > > > > > > +                               pool->compr_batch_size :
-> > ZSWAP_MAX_BATCH_SIZE;
-> > > > > > > +
-> > > > > > >         zswap_pool_debug("created", pool);
-> > > > > > >
-> > > > > > >         return pool;
-> > > > > > >
-> > > > > >
-> > > > > > It=E2=80=99s hard to follow =E2=80=94 you add batch_size and co=
-mpr_batch_size in this
-> > > > > > patch, but only use them in another. Could we merge the related
-> > changes
-> > > > > > into one patch instead of splitting them into several that don=
-=E2=80=99t work
-> > > > > > independently?
-> > > > >
-> > > > > Hi Barry,
-> > > > >
-> > > > > Thanks for reviewing the code and for your comments! Sure, I can =
-merge
-> > > > > this patch with the next one. I was trying to keep the changes
-> > modularized
-> > > > > to a) zswap_cpu_comp_prepare(), b) zswap_store() and c)
-> > > > zswap_compress()
-> > > > > so the changes are broken into smaller parts, but I can see how t=
-his can
-> > > > > make the changes appear disjointed.
-> > > > >
-> > > > > One thing though: the commit logs for each of the patches will
-> > > > > also probably need to be merged, since I have tried to explain th=
-e
-> > > > > changes in detail.
-> > > >
-> > > > It=E2=80=99s fine to merge the changelog and present the story as a=
- whole. Do we
-> > >
-> > > Sure.
-> > >
-> > > > really need both pool->batch_size and pool->compr_batch_size? I ass=
-ume
-> > > > pool->batch_size =3D pool->compr_batch_size if HW supports batch;
-> > otherwise
-> > > > pool->compr_batch_size =3D 1.
-> > >
-> > > Actually not exactly. We have found value in compressing in batches o=
-f
-> > > ZSWAP_MAX_BATCH_SIZE even for software compressors. Latency benefits
-> > > from cache locality of working-set data. Hence the approach that we h=
-ave
-> > > settled on is pool->batch_size =3D ZSWAP_MAX_BATCH_SIZE if
-> > > the compressor does not support batching (i.e., if pool->compr_batch_=
-size is
-> > 1).
-> > > If it does, then pool->batch_size =3D pool->compr_batch_size.
-> >
-> > I understand that even without a hardware batch, you can still
-> > have some software batching that excludes compression.
-> >
-> > However, based on the code below, it looks like
-> > pool->compr_batch_size is almost always either equal to
-> > pool->batch_size or 1:
-> >
-> > +       pool->compr_batch_size =3D min(ZSWAP_MAX_BATCH_SIZE,
-> > +                                    crypto_acomp_batch_size(acomp_ctx-=
->acomp));
->
-> I would like to explain some of the considerations in coming up with this
-> approach:
->
-> 1) The compression algorithm gets to decide an optimal batch-size.
->     For a hardware accelerator such as IAA, this value could be different
->     than ZSWAP_MAX_BATCH_SIZE.
->
-> 2) ZSWAP_MAX_BATCH_SIZE acts as a limiting factor to the # of acomp_ctx
->     per-CPU resources that will be allocated in zswap_cpu_comp_prepare();
->     as per Yosry's suggestion. This helps limit the memory overhead for
->     batching algorithms.
->
-> 3) If a batching algorithm works with a batch size "X" , where
->      1 < X < ZSWAP_MAX_BATCH_SIZE, two things need to happen:
->      a) We want to only allocate "X" per-CPU resources.
->      b) We want to process the folio in batches of "X", not ZSWAP_MAX_BAT=
-CH_SIZE
->           to avail of the benefits of hardware parallelism. This is the c=
-ompression
->           step size you also mention.
->           In particular, we cannot treat batch_size as ZSWAP_MAX_BATCH_SI=
-ZE,
->           and send a batch of ZSWAP_MAX_BATCH_SIZE pages to zswap_compres=
-s()
->           in this case. For e.g., what if the compress step-size is 6, bu=
-t the new
->           zswap_store_pages() introduced in patch 23 sends 8 pages to
->           zswap_compress() because ZSWAP_MAX_BATCH_SIZE is set to 8?
->           The code in zswap_compress() could get quite messy, which will =
-impact
->           latency.
+On Thu, Aug 28, 2025 at 10:05:18AM -0700, Vishal Moola (Oracle) wrote:
+> On Thu, Aug 28, 2025 at 01:29:08AM -0700, Yueyang Pan wrote:
+> > On Wed, Aug 27, 2025 at 12:51:17PM -0700, Vishal Moola (Oracle) wrote:
+> > > On Wed, Aug 27, 2025 at 11:34:21AM -0700, Yueyang Pan wrote:
+> > > > This patch set fixes two issues we saw in production rollout. 
+> > > > 
+> > > > The first issue is that we saw all zero output of memory allocation 
+> > > > profiling information from show_mem() if CONFIG_MEM_ALLOC_PROFILING 
+> > > > is set and sysctl.vm.mem_profiling=0. In this case, the behaviour 
+> > > > should be the same as when CONFIG_MEM_ALLOC_PROFILING is unset, 
+> > > 
+> > > Did you mean to say when sysctl.vm.mem_profiling=never?
+> > > 
+> > > My understanding is that setting the sysctl=0 Pauses memory allocation
+> > > profiling, while 1 Resumes it. When the sysctl=never should be the same
+> > > as when the config is unset, but I suspect we might still want the info
+> > > when set to 0.
+> > 
+> > Thanks for your feedback Vishal. Here I mean for both =0 and =never. 
+> > In both cases, now __show_mem() will print all 0s, which both is redundant 
+> > and also makes differentiate hard. IMO when __show_mem() prints something 
+> > the output should be useful at least. 
+> 
+> If differentiating between 0 allocations vs disabled is the primary
+> concern, I think prefacing the dump with the status of the tool is
+> better than treating =0 and =never as the same.
+> 
+> The way I see it, the {0,1,never} tristate offers a level of versatility
+> that I'm not sure we need to eliminate.
+> 
+> I'm thinking about cases where we may temporarily set =1 to track some
+> allocations, then back to =0 'pause' on that exact period of time. Memory
+> allocation profiling still has those allocations tracked while set to =0
+> (we can still see them in /proc/allocinfo at least). If a user decided to
+> do that just before an oom, could they see something useful from
+> show_mem() even when =0?
 
-If ZSWAP_MAX_BATCH_SIZE is set to 8 and there is no hardware batching,
-compression is done with a step size of 1. If the hardware step size is 4,
-compression occurs in two steps. If the hardware step size is 6, the first
-compression uses a step size of 6, and the second uses a step size of 2.
-Do you think this will work?
+This is a good point. I agree with your suggestion about adding the state 
+to print. I am still unsure about if we want to print it when =0. The first 
+reason is that memory allocation profiler does not support runtime enabling 
+now. We have to set it via boot cmdline. It will make more sense if we 
+have this feature. Second is because memory allocation profiling is quite 
+light-weighted, I would assume user really don't need this feature when 
+they set =0.
 
-I don=E2=80=99t quite understand why you want to save
-ZSWAP_MAX_BATCH_SIZE - X resources, since even without hardware batching
-you are still allocating all ZSWAP_MAX_BATCH_SIZE resources. This is the
-case for all platforms except yours.
+The original reason why I tried to disable this is because in our production 
+table we see a lot of 0Bs coming from the machines where the changes in boot 
+cmdline have not been pushed to. If we have state info, we could possibly 
+filter this info out before sending it to the table. So I agree upon adding 
+the state to print.
 
-Thanks
-Barry
+Maybe others also have thoughts about this?
+
+> 
+> > > 
+> > > > where show_mem prints nothing about the information. This will make 
+> > > > further parse easier as we don't have to differentiate what a all 
+> > > > zero line actually means (Does it mean  0 bytes are allocated 
+> > > > or simply memory allocation profiling is disabled).
+> > > > 
+> > > > The second issue is that multiple entities can call show_mem() 
+> > > > which messed up the allocation info in dmesg. We saw outputs like this:  
+> > > > ```
+> > > >     327 MiB    83635 mm/compaction.c:1880 func:compaction_alloc
+> > > >    48.4 GiB 12684937 mm/memory.c:1061 func:folio_prealloc
+> > > >    7.48 GiB    10899 mm/huge_memory.c:1159 func:vma_alloc_anon_folio_pmd
+> > > >     298 MiB    95216 kernel/fork.c:318 func:alloc_thread_stack_node
+> > > >     250 MiB    63901 mm/zsmalloc.c:987 func:alloc_zspage
+> > > >     1.42 GiB   372527 mm/memory.c:1063 func:folio_prealloc
+> > > >     1.17 GiB    95693 mm/slub.c:2424 func:alloc_slab_page
+> > > >      651 MiB   166732 mm/readahead.c:270 func:page_cache_ra_unbounded
+> > > >      419 MiB   107261 net/core/page_pool.c:572 func:__page_pool_alloc_pages_slow
+> > > >      404 MiB   103425 arch/x86/mm/pgtable.c:25 func:pte_alloc_one
+> > > > ```
+> > > > The above example is because one kthread invokes show_mem() 
+> > > > from __alloc_pages_slowpath while kernel itself calls 
+> > > > oom_kill_process()
+> > > 
+> > > I'm not familiar with show_mem(). Could you spell out what's wrong with
+> > > the output above?
+> > 
+> > So here in the normal case, the output should be sorted by size. Here 
+> > two print happen at the same time so they interleave with each other, 
+> > making further parse harder (need to sort again and dedup).
+> 
+> Gotcha.
+> 
+> > > 
+> > > > Yueyang Pan (2):
+> > > >   mm/show_mem: No print when not mem_alloc_profiling_enabled()
+> > > >   mm/show_mem: Add trylock while printing alloc info
+> > > > 
+> > > >  mm/show_mem.c | 5 ++++-
+> > > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > > 
+> > > > -- 
+> > > > 2.47.3
+> > > > 
+> > 
+> > Thanks,
+> > Pan
 
