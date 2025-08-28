@@ -4,177 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B6A5CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:57:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3902DCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:01:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68B716B000C; Thu, 28 Aug 2025 03:57:34 -0400 (EDT)
+	id 7F2C36B0007; Thu, 28 Aug 2025 04:01:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 661F46B008A; Thu, 28 Aug 2025 03:57:34 -0400 (EDT)
+	id 7A3DF6B0008; Thu, 28 Aug 2025 04:01:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57E1F6B008C; Thu, 28 Aug 2025 03:57:34 -0400 (EDT)
+	id 66BAD8E0001; Thu, 28 Aug 2025 04:01:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 474856B000C
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:57:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DBA50140A43
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:57:33 +0000 (UTC)
-X-FDA: 83825411586.03.B002FF4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 483EA18000A
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:57:31 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 51A556B0007
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:01:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04F855BD95
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:01:46 +0000 (UTC)
+X-FDA: 83825422254.01.1102309
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7BF3D18000A
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:01:43 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bv9KJvgL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756367851; a=rsa-sha256;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XNe5x4ex;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=z9iUOAsJ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tgbWUcm8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J7PBkZLx;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756368104; a=rsa-sha256;
 	cv=none;
-	b=6RH9h+ybs1TSnRkNkHsXUtGEmmo2dkIJIuXkj5IL7iy4VMMYj/0kV4ix2IueF7FAvPSFeg
-	ubIdYzMAqEdUkU7+7IrWL58DLZCpf6quipUl3GxUDN0jAv7xGTuY/EocgDhro57UC5Vtew
-	icbMXV59g2t8jwHxzo6fWWfuyc6A9Ho=
+	b=Oe0BIBcmcOGUM81eQvtjhuvTyxIvVkdEX/ZR43cNejKoN40OURFWhdCUxeZkjvPdSNKi1D
+	PU3gG08vjgC/VqaXEI8+8vFRDPCuwE/cLIl5uwyh3tiidzUda7Hdpmt5zALKmmqdIOWd9w
+	axC40p/ntcG4sNaXRSbInMlj4txAeWo=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bv9KJvgL;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XNe5x4ex;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=z9iUOAsJ;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tgbWUcm8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=J7PBkZLx;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756367851;
+	s=arc-20220608; t=1756368104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UbZY19kla5JanDLGwXleiL+Lbzg8wDPMzsYjknbeE08=;
-	b=KGkWL+Hfga9K4id2TPb9dTo/nioIZ4IsEQPSsjfhKPlsxhA7IcheLK8EC1ZZZ+ikI5y9YN
-	Rfe/u83s8vgR+hcGUzN4AYpy8IMBA/nD10aQLczs9fF6m+NmMYQes398y5Y+rjhxxEr9qu
-	yd5K41ILjx/bGYNfcLSWdHqqcmphg/w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756367850;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=G6ItBYEouCLq/APyaYGz19HWEDks/RPcsNJulNZZBW8=;
+	b=B2WwhjE5XwQ+Qhjuoc94EWW6XH7BKXQBTjrobdMC71OQif5fEiYYjRxaTRQ1AmiPGJ3Px4
+	fQvc8FTSO7x3BFyJGEVAvIzMOcO3ZEf1epdFC0TTporrTHNKdsFmXcjhC8eiO4hlO2YmyE
+	4Z+7znq2ECdoDsQ91l330ZHkPQPmmpk=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 092E320A99;
+	Thu, 28 Aug 2025 08:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756368101; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UbZY19kla5JanDLGwXleiL+Lbzg8wDPMzsYjknbeE08=;
-	b=bv9KJvgLYHEXRQN9Rn9P1fbYdMgelYJev2QuiBo1lUYjyxwoLQgYXKZ4yz/i9p29EMJCmc
-	u6b+urrobkURrkoeNRdtDroyJ0jiQy9PL3SiOarQT5S3NLKYwjVscZLH2zs/IL1/cFENfY
-	a22iloi3LZoxLzSpNN+12/ZsJqdxaU8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-111-TB0RisL4OWyrIFsW8VQ1JA-1; Thu, 28 Aug 2025 03:57:28 -0400
-X-MC-Unique: TB0RisL4OWyrIFsW8VQ1JA-1
-X-Mimecast-MFC-AGG-ID: TB0RisL4OWyrIFsW8VQ1JA_1756367848
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ce65accfc7so161893f8f.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:57:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756367848; x=1756972648;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UbZY19kla5JanDLGwXleiL+Lbzg8wDPMzsYjknbeE08=;
-        b=LfPQAv6U1zkF5IUj/k7mI8XgR96AT7jG/C2JGWB601A3ybQJhMXj8/m9xmUmp/m9fK
-         9oAPrQGDZr8Gct2Z83ZtITL0ByHo3ESHjortDiRqoLbFGHF1GCbIzIwKmuc9sNniEwru
-         BiSLUMOHhcXxVsXlX5j/s4G+LfubTRF6ZEuonTkgIKYkZwQJoiu4r3G4I/lBBjy+UBrF
-         ZYWIq7bmGAsc//tXcjpchYYe9UN8Hpxkn82IC7eTMd8QkbYAcDvHJrvrngsiYDf/pJdH
-         LrBM/u5TriIQch+NXRkWwu/nOo7zOz+89/whR7Qaan+3v1HoyDzNwUGhrPw2RJNZW4i3
-         1/RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJP+WToDPjLMtwBiIoLQNqChHdPi/pK83bHhuYOr6o5l0NTP9H5EwW8+oVdADrP+nEICeyOizsjA==@kvack.org
-X-Gm-Message-State: AOJu0YxRy+xt28Jhkfb61nwP6jfGeEINa6M21jKBipLJPIB1z6KCJhzk
-	0djUaDCaBjtp1+tlnmT7Aer/ovoCCdq+1AyzVIBKdq7MKbTeQ1gwk3Cr9T9py2ho0K9/LffYqrV
-	pFL0TvO3oDO+t/4l4NLbDggbu2COwFxzpZH6nN1yg6P2gpsbYfis5
-X-Gm-Gg: ASbGncunyVUPRuxmJxtCjdkr94LcQF+mpEWQK0cwtlSJ8MSnZvIwWsdm5SXXCCb0pRI
-	xPQzfMMJ+4s/ko5KbLQtMZxXVAaD6s6sQpHoDArujTEV6EiV7FiMoBLSMBV9M3D2HbXa7s8UwaM
-	x/BNm8ARTHWLvbggk1pOfdOtDhLAkVYwFR36LOZyxvsH22Qx2PHSRFl6Pg5AVe/pG641CAmNNRb
-	flD8KXQuDTp13OVZyDiO2VgQ65/5qegpRV0N19jFPQfKKhkWFihlo4aiAed7kaMDSaBP+Pj2+K8
-	WAUJ68b8nIg0Kd7P3PKkKjO5bw2QXy36JCrFcpQZjvtYYD0EMQ9JaA8FMgVAfZK3Uh7Mx2mLC/I
-	Zr28cEXErUJDWm9i2IB+WoleVSgYHT+thvjvyZCYW/qAPim3ufpy6YiFvdBxVFBsPjmI=
-X-Received: by 2002:a05:6000:3105:b0:3ca:43ce:8a68 with SMTP id ffacd0b85a97d-3ca43ce8e89mr8320275f8f.47.1756367847620;
-        Thu, 28 Aug 2025 00:57:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIHY+n/N124O87jCHNAlrsZyduC64z8czEg/qHAbsVW1ouYN3MmeY/U08JPQi5BlvdXgr69Q==
-X-Received: by 2002:a05:6000:3105:b0:3ca:43ce:8a68 with SMTP id ffacd0b85a97d-3ca43ce8e89mr8320243f8f.47.1756367847112;
-        Thu, 28 Aug 2025 00:57:27 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f28:c100:2225:10aa:f247:7b85? (p200300d82f28c100222510aaf2477b85.dip0.t-ipconnect.de. [2003:d8:2f28:c100:2225:10aa:f247:7b85])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c9c9324dc9sm14969370f8f.3.2025.08.28.00.57.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Aug 2025 00:57:26 -0700 (PDT)
-Message-ID: <d048aac6-7b70-44b7-9e92-7277bd49b182@redhat.com>
-Date: Thu, 28 Aug 2025 09:57:25 +0200
+	bh=G6ItBYEouCLq/APyaYGz19HWEDks/RPcsNJulNZZBW8=;
+	b=XNe5x4ex2WUGvQtkfsbIYtJQ3IH2zM6qHyqHThn0UYC8T8coXxexpjEFSEwY/dISzW64Ux
+	F7u7yMzxH844gbXNtShA9cB8MjRoTtlUU6MRZ+py/PE27jY8BaitaAHjD9qTmFvUeWZJBX
+	rM6FzKEooofps4ui7WGO1D/lknC4KRg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756368101;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=G6ItBYEouCLq/APyaYGz19HWEDks/RPcsNJulNZZBW8=;
+	b=z9iUOAsJdTzWYhANDkwS2QMmzhAijjYCquLMvoCRp2bovKTzEhwNC2/y441NTxNUiGAYGR
+	n6CspIhXnZAa4jCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756368100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=G6ItBYEouCLq/APyaYGz19HWEDks/RPcsNJulNZZBW8=;
+	b=tgbWUcm8aXE6IbO44BqEo/dyWOa0pZGE6wmTeINWA4fqk+EFvE28gGjRhhv/bh/kB/1JMC
+	OCd4WLF2C43AVNWLqX6tUUkAOlgwpvijZJ2cJGs3TaG/wUV3KFB9xqag2Ox+XA6uwmMF/K
+	PXtgtXvle+Rdn5pR4Qzd0XzKC42jyic=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756368100;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=G6ItBYEouCLq/APyaYGz19HWEDks/RPcsNJulNZZBW8=;
+	b=J7PBkZLxBRYzfT+UZHT2ZgTZvS5r2T5yVK+B7QrMTVGk7JMHcP/klQWzb5Z3pslTvPB4Qh
+	yRRH8JAOr4WEQRCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B803F13326;
+	Thu, 28 Aug 2025 08:01:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qiDJK+MMsGg9IgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 28 Aug 2025 08:01:39 +0000
+Message-ID: <e58c8482-bd11-4111-b912-daf8b43ebb15@suse.cz>
+Date: Thu, 28 Aug 2025 10:01:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] huge_mm.h: disallow is_huge_zero_folio(NULL)
-To: Andrew Morton <akpm@linux-foundation.org>,
- Max Kellermann <max.kellermann@ionos.com>
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
- bhe@redhat.com, chrisl@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <2aa3f478-9c87-4102-b83e-bf235372d834@redhat.com>
- <20250827150330.280399-1-max.kellermann@ionos.com>
- <20250827165309.44e465ff214e45f1a6665b24@linux-foundation.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250827165309.44e465ff214e45f1a6665b24@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6Q858cgxCj7JbVdYICfuQCz4aQZS7ukqS9Cz_5hIEeo_1756367848
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v6 02/10] slab: add opt-in caching layer of percpu sheaves
+To: Thorsten Leemhuis <linux@leemhuis.info>,
+ Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20250827-slub-percpu-caches-v6-0-f0f775a3f73f@suse.cz>
+ <20250827-slub-percpu-caches-v6-2-f0f775a3f73f@suse.cz>
+ <9f61c814-0d39-46f2-a540-cc9c0e716cf6@leemhuis.info>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 483EA18000A
-X-Stat-Signature: mksztb8bu85sd3s3wdgbr3uuq94n4ozj
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <9f61c814-0d39-46f2-a540-cc9c0e716cf6@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 7BF3D18000A
+X-Stat-Signature: txixjb5nnfnexdch3zjxomnthqaxujie
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1756367851-476079
-X-HE-Meta: U2FsdGVkX1+l7F3Ng7d6hmgjmoKD4PgyM03S3nauuTlnwdo+Nxyf1kE8gLpV23YxMrp+YUFwbOESmLNEPGYnwRifXPMvynu0Hdi4GD+3HR/ej6XsZcrJedv1NFixDDL1Sl62IjG19vd4UkY6sV/LVTGb/eDcGr3lB6y/duMv6NW0gMg7+vj+MbyFoQ7wfS+pMcGyfQJPRnxGoOTvPKR3vT4S4EbxWeOwJPUr7oRmEHIULW/BKPoTV6LslsaK8HM3u++e62OUDpYUx4q0ut30MveZWLy8dsrz5ozUZWZtzJmpTsRji3J5W4QC26l1nxKiG6P1QuEHXbtSdRjoq+o53V8wCrFKmyiZtDCaaxFgfIh0ZmqP4ZZK2/v25hPN8N7vQ743SLSVl574xwVoPBugb95+Q0KE0zcL0Wj/87nPSNrdlUCJunBA9RobDGR0ExKMhWejt7diJy9mgq+bgQXUjV1e/f7zkBOrBst6LBgOjHcuoMjK+ibnwGC/iNx/ZJ200NEpWdHpI3zDvw2eGxxVdD9lVc5sI/FPGJCrsF+D2VpJEAnFAutLQSNDsoUPvGaEZtD9yiCegLMtIKUJnZqf36U4smgx06GETbAMX29mIJt6Cjgt64BncYUUUHXzX7cPEpljbgnhAw1jKWYTGr7P86v9+rerdU3TD+aqOr67YlEfDzJVD8GmksTMUO8aw8xc3BQ2npoOycGpjK6W9s+GxAuY7EJ9eXIqIpwwYdvz6VUTbiK3mDa6snZAKSdPwerXKBFuE3+9IHxn/yTpJ6n0Q+bN0N55XFE3J2nhoJbx0yRElRtBA0ILIIeKSCx0jaLAsp0IUILeqWCQEZ18RNxqTRhSDNLpBRY/S6EmtsSyfEbiHt4xlUtIGpFAtgTp9saiYJ2gRq49Eo2sEVvn8UwNdNAWUegbXGeT/GwEUWyhubGR4enAgSJtZKt4OdubPOGsh8UfLggbAMR5Cu8c0Ir
- F5+/fa8D
- xi7keMyDcfk5QD0G6XfeWN4BU7Rmb6FAUF5Wcpm9uetvMtLcCPgEkdaJlFw2mt3zmmMabWhXkPd3IiLTSSI47zQ1Sp7zBkaKXGQHY875BzyPuVsTno4LdEKi3O77Th0GXm7ThdHr1UKnyz5c2+61mnogfYAyG2L1MGe7EDX7Dl7LQCDYjWuE1FWlpQcrNkqx4W/JXFy6ZAAVzw2oJUFKodRhdusI5xEp0ea+mn4qF8BUWUV5l5sDB25WbPMB8lPiW+i7Mt5fFP93+lJVQn+puaLagAb4kedOSjiuziaYKkzIhhNCe+7/iUCZCoFqiDCayV0E22MNpvLCzj2VPA+szzl8+6wubJpnJvG4w5zdANK53f85o85xpSfoHjYNH3+YiIdVLA4lcTZS2syS+5iDx4Y+YqUCH/DBxbv+8SEICbYjKCsbFHvxv5OnaZ5pXympzJYCrzgVw8fiVLlDfeTU0s4JlNaBH6+hsE8A4ZmUEzOtSs6RV8ZLSap1jm+Gs2MWViPkgBWZdvmG4qP+o2miACh13h0eaaaCk3y6oPSnCe59mWXQf2Mq/GB3Mh9RDkN3u+urM
+X-HE-Tag: 1756368103-885683
+X-HE-Meta: U2FsdGVkX18mw+pSjxRArmpkFs2+XGh3aPk96WQIMO4/QTcdXzAALg6b5Q/EIXdqeX7RhbrsfazCcYMhkndkuYQrkOR7UgwhswryFl5ALQkbgQT6phT9qgeabr97QrRSE+fL+nPM/AVPYCY3OkJgZpMPF3nvUoLBbw8JfGDGeBu/gkfh0rihQJMunJ1x2MVB7GyWxMf7inf/cZxCSpCC9NHO9pXvKdHTTqFSINvyms+4uDvFNi9cb3lRYh2dRsbtLuG32XzFroVzYvH1R8B7DP8Sw95hpq10Mv4e77jPsVUrjeryHbkqwYIPG66m/WLbWzZVyVy0uKn0VzO+Eqvx77K0uaoMum2H/8yHu02aqcuBEJyPaZiH8ULQdVPMuZ12Cvym/q4tG1KuBvU4xZvSN/FmgQX1kKac4qzrPKNFDNjEGigvqP0gd6YuMFz4a0iApC3qgsvfXbP1wXHPldEVO2sPoxSpBAcUjFotXFVh4lE2dn14cOfTKOIlZOjnxMslr2xJOy5Dy1HWArxmQQYzBYsP6EzeUL41J2tbmfzbs0Rte2re/eS3s29JI6BFHdysFpiH133W3CsziHuVSo+OdyVoTeuxUUghvW3YVj0as8FOhO/iEskRRVJHkK7Eq2wrb7Zs2XVEyClPx6P7NgUdAHGQVSpXBkuzU3ie0hgI7ocCS4yGzGzX8jHJemcWP6Upf3V00I+M6k2BVLkBEnPXy/XQ2vhO3eGbhf/MPnGY550naMjpaio/Z3GpQKccD/shTek4NQl/hpGoPRDkATK2Jpkn8wPLBnR9n4U1q6BSYhqy7+/DXxpCrptNoerQwydL5hlZX2Sy5x4IJxAYb9SaIFNxIbv92sYWnXO3EieXQpCR/S1X3jP16YWXAcxJ/YxGpBiQUh3hXoeRh8Qs4XU3MLsjT4mENpg5zD1s1pgOiO1xBcKfLjfZWLfwA5cPBgXiHSqDD3kCAYyKyy0HrLU
+ PLuJtkUF
+ w9B9HWg8bEDcZeG7MNJBlViOvgSmBea61wy1quLiGE0bmCFn5f+xT4Fog7BneJpS3OmYJpXofjDKAd7tY3ZsMHRfE5zq8df2fMV85LG0bJi9DfqcXvt9ZcS8iEQatid+Cs37AbB2JF3HdyPyRKT8+XMPoXnfdkj+bBPQhlH2SC/QkFS7AvsUMLXm1mO6QtMKgKVE+/RQUY58THv2HReMohZriY7zD5GKnsF+eJozhjibTMlf4t2F9H/NU0WsOoTRvpabtNGS9HdTMcYSOLDgNaJN5k/cy8BdCsA9NCl4ilC/ygglanKnxW5ICQDWlXqD+SF16GKW7FbqZiWtYNi+5P9kqy/pdI9HgHOK/vjuFjOoTpDTN9EoHjSIIuA5SZPjhWXp+6SdVb/upZa9kQBbtHKaXljl7praqPrINjqVhli1H8LmgaPDyNOE0xfpDRhGZmVH3TB1KMaK9rCDzfRt5lDYJ8aB14SvFvo+u0Xwypfl0cR0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,75 +188,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.08.25 01:53, Andrew Morton wrote:
-> On Wed, 27 Aug 2025 17:03:30 +0200 Max Kellermann <max.kellermann@ionos.com> wrote:
+On 8/28/25 09:43, Thorsten Leemhuis wrote:
+> On 27.08.25 10:26, Vlastimil Babka wrote:
+>> Specifying a non-zero value for a new struct kmem_cache_args field
+>> sheaf_capacity will setup a caching layer of percpu arrays called
+>> sheaves of given capacity for the created cache.
+>> 
+>> Allocations from the cache will allocate via the percpu sheaves (main or
+>> spare) as long as they have no NUMA node preference. Frees will also
+>> put the object back into one of the sheaves.
+>> [...]
 > 
->> Calling is_huge_zero_folio(NULL) should not be legal - it makes no
->> sense, and a different (theoretical) implementation may dereference
->> the pointer.  But currently, lacking any explicit documentation, this
->> call is possible.
->>
->> But if somebody really passes NULL, the function should not return
->> true - this isn't the huge zero folio after all!  However, if the
->> `huge_zero_folio` hasn't been allocated yet, it's NULL, and
->> is_huge_zero_folio(NULL) just happens to return true, which is a lie.
->>
->> This weird side effect prevented me from reproducing a kernel crash
->> that occurred when the elements of a folio_batch were NULL - since
->> folios_put_refs() skips huge zero folios, this sometimes causes a
->> crash, but sometimes does not.  For debugging, it is better to reveal
->> such bugs reliably and not hide them behind random preconditions like
->> "has the huge zero folio already been created?"
->>
->> To improve detection of such bugs, David Hildenbrand suggested adding
->> a VM_WARN_ON_ONCE().
->>
->> ...
->>
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -2,6 +2,7 @@
->>   #ifndef _LINUX_HUGE_MM_H
->>   #define _LINUX_HUGE_MM_H
->>   
->> +#include <linux/mmdebug.h> // for VM_WARN_ON_ONCE()
->>   #include <linux/mm_types.h>
->>   
->>   #include <linux/fs.h> /* only for vma_is_dax() */
->> @@ -479,6 +480,8 @@ extern unsigned long huge_zero_pfn;
->>   
->>   static inline bool is_huge_zero_folio(const struct folio *folio)
->>   {
->> +	VM_WARN_ON_ONCE(folio == NULL);
->> +
->>   	return READ_ONCE(huge_zero_folio) == folio;
->>   }
+> This patch showed up in linux-next today and from a *quick* glance at
+> things I suspect it might be the reason why my daily next rpm builds for
+> Fedora failed today like this:
+
+Hi, thanks for the report.
+> ""
+> In file included from ./include/linux/spinlock.h:63,
+>                  from ./include/linux/mmzone.h:8,
+>                  from ./include/linux/gfp.h:7,
+>                  from ./include/linux/mm.h:7,
+>                  from mm/slub.c:13:
+> mm/slub.c: In function ‘__pcs_replace_empty_main’:
+> mm/slub.c:4727:64: error: ‘local_trylock_t’ {aka ‘__seg_gs struct spinlock’} has no member named ‘llock’; did you mean ‘lock’?
+>  4727 |         lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock.llock));
+>       |                                                                ^~~~~
+> ./include/linux/lockdep.h:392:61: note: in definition of macro ‘lockdep_assert_held’
+>   392 | #define lockdep_assert_held(l)                  do { (void)(l); } while (0)
+>       |                                                             ^
+> [...]
+> mm/slub.c:5653:29: note: in expansion of macro ‘this_cpu_ptr’
+>  5653 |         lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock.llock));
+>       |                             ^~~~~~~~~~~~
+> make[3]: *** [scripts/Makefile.build:287: mm/slub.o] Error 1
+> make[2]: *** [scripts/Makefile.build:556: mm] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [/builddir/build/BUILD/kernel-6.17.0-build/kernel-next-20250828/linux-6.17.0-0.0.next.20250828.432.vanilla.fc44.x86_64/Makefile:2017: .] Error 2
+> make: *** [Makefile:256: __sub-make] Error 2
+> ""
 > 
-> OK, but it remains the case that we have seen code which calls
-> is_huge_zero_folio() prior to the initialization of huge_zero_folio.
-> 
-> Is this a bug?  I think so.  Should we be checking for recurrences of
-> this bug?
+> Full log: https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-x86_64/09498568-next-next-all/builder-live.log.gz
 
-As answered elsewhere, this is perfectly fine as the huge zero folio is 
-allocated on demand only (and only once enabled).
+Oh so I assume the .config here has both LOCKDEP and PREEMPT_RT?
+I tried to make lockdep_assert_held() with trylock but forgot about the RT
+difference. The solution is Alexei's patch
 
-> 
-> 
-> Also, sigh.  I do dislike seeing VM_WARN_ON_ONCE() in an inline
-> function - heaven knows how much bloat that adds.  Defconfig
-> mm/huge_memory.o (which has three calls) grows by 80 bytes so I guess
-> that's livable with.
+https://lore.kernel.org/all/20250718021646.73353-2-
+alexei.starovoitov@gmail.com/
 
-Common practice to use VM_WARN_ON_ONCE() and friend in inline functions. 
-Just look at page-flags.h.
+Wonder if I can just fast-track it to here from that series?
 
-If someone complains about kernel image size with CONFIG_DEBUG_VM, they 
-shopuld reevaluate life choices. :)
-
--- 
-Cheers
-
-David / dhildenb
 
 
