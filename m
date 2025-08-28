@@ -4,109 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC8B5CA0FF2
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:22:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6FA4CA0FF2
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:31:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BEA88E0007; Thu, 28 Aug 2025 03:22:09 -0400 (EDT)
+	id 011DE6B0006; Thu, 28 Aug 2025 03:31:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2928A8E0001; Thu, 28 Aug 2025 03:22:09 -0400 (EDT)
+	id F2BF26B0007; Thu, 28 Aug 2025 03:31:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8C28E0007; Thu, 28 Aug 2025 03:22:09 -0400 (EDT)
+	id E41806B007B; Thu, 28 Aug 2025 03:31:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0855F8E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:22:09 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 865CA13A4EA
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:22:08 +0000 (UTC)
-X-FDA: 83825322336.09.58E67FC
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 02A4C1C0005
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:22:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="TcbUNeG/";
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=lPJ11e5h
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756365726; a=rsa-sha256;
-	cv=none;
-	b=r9YBO7X+wukEKw8LrzqrdIaguxmNjQqyUU9vY+4dQajqh2+Fpqgw/O9sFUHkii5tIqWpVj
-	BLGM5ZYAC7KQSE6K194wV+ClSr5KzKsiiftRxXqGWzH6u6d3ZhApZp3tev2+5d2igTsU9S
-	/+Ft0TcdCpE5lXMVuY8PZQ0MxvOmJLw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="TcbUNeG/";
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=lPJ11e5h;
-	spf=none (imf20.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D6F596B0006
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:31:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 537C71DECDE
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:31:55 +0000 (UTC)
+X-FDA: 83825346990.19.223A360
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4520A40008
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:31:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CY5ZiitF;
+	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756365726;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756366313;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2YfXwIt8uRuB24ocvEdwemGPCWUZNGhB6pqOxsa3SJ0=;
-	b=M1f8+kzSOSHmPOIIAd7zL/njDOvwt2mrAJ+NfNrw9V5GzLGomEGlrBYQpREWxrW/z59EZt
-	PcOrA3YZ1nLncv8LaR5YqhXyInSyHAQYceSQn374dRUrDQMAjvm4BSfhr+UEBxqDX9I8KE
-	7ieOKugQpS2ZulWTHHqCUUyk6lJJCQk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756365723; x=1756970523;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=2YfXwIt8uRuB24ocvEdwemGPCWUZNGhB6pqOxsa3SJ0=;
-	b=TcbUNeG/Qd6OqSN287cQTmdl55p7z84ZIkeCBkDU3GIILprGfzuQ7Ik4bXeFOv5u5dMucEA1leH/j
-	 u6cMu3yYFuMD3hFGcoBfWcAhlbyuEhYQ0cqzPQaCFNjQ63UC8RCPmIE50Ghz1kJL8CkHrCpeSGyKaQ
-	 rEhzod0zsmBxDSfysQl6qGN4xyjljeiYJ95M4UBdX2D3Wg7h3hjGXEOpFY+jqbMhS/2V5KtflkrWL+
-	 G3UQY0+4SJzUMooFb5K18Gfkbwiov48Zm4WP8mCtvkWcqHKKcmEYAn2pnLDNLdu+EVz4ZJh7ZQ30mk
-	 lAmWsyPAVc0z5D1GXMGnPyczzYxeZSQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756365723; x=1756970523;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=2YfXwIt8uRuB24ocvEdwemGPCWUZNGhB6pqOxsa3SJ0=;
-	b=lPJ11e5hy9upngoLEXivO2ahV4GaS+cyXshxFqcORIa094aD9pjodBkqBSAZmjvmhhngAHoeXGbfK
-	 FEge1gOAg==
-X-HalOne-ID: b09ec1ec-83df-11f0-80cc-f3c0f7fef5ee
-Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay4.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id b09ec1ec-83df-11f0-80cc-f3c0f7fef5ee;
-	Thu, 28 Aug 2025 07:22:02 +0000 (UTC)
-Message-ID: <9c63dda1-0a4b-4131-a5e7-12ad2e88c6d6@konsulko.se>
-Date: Thu, 28 Aug 2025 09:22:02 +0200
+	bh=EuV0vIwmYzbGp0NvCAEdvEWsqc4i4ounAUIZgXtsn78=;
+	b=HsQUfG7DIOG7tHGgcTdWYTkfzaivo2gOtbphwGjTm+bLRH6MeI6ywcgYIAKUYDiFKMPa8q
+	xuzjSNZjCIYQ12D39CCOQM1qCGwLPc8JDE/L+e8BOFYGzMaPN73Pv6ANBgSMzKNzbV7Yso
+	Z5EaabCm7V+nMX/OCbToM8fhQOKwJoE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CY5ZiitF;
+	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756366313; a=rsa-sha256;
+	cv=none;
+	b=ONx5ky6T0Q4VWB0WB9pySBaYDP6GFESMezdb7yhhFyjYgAcpqVkJYD0XtSciJMclorGlLT
+	tT7vdBBSB2PtHMcU0ohSHUwgXn6g6z7cqrd5Yq3Sn80IjZKhoKp5PTUH/Zh2zpNO//7uRG
+	boFRGayOKXiuq+4NYYVMrMVPSPrgSsw=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3cb9268511bso371678f8f.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:31:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756366311; x=1756971111; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EuV0vIwmYzbGp0NvCAEdvEWsqc4i4ounAUIZgXtsn78=;
+        b=CY5ZiitFcpLeZBUTRJy43+fRpSZ5RuF4XHB8jfU5QPbEwtN9Gy94UNMD3dO8k9ZcAx
+         o9T+SN0XUxZ+bd812G0oBRg6ep94vr1dtAznMsr3gC3rQ3KJ3MR3PoBfR8+c/jKKLkNt
+         IfxsNHU5+2TO4R6xdPBj45S0I5/f/9FdxAShmsxa6CdhylqY4d+W87pQKS6O81IpB+Ya
+         zxNUA+aAs1UWsYLzcKkIdxXEVn8c2xSftW/5ka/lNb2r1/Iq/iTAtA08mYFwWDENIvq9
+         Kz3BM3MkdDDgJINE40FdXVGtCtcKiiodTkh27cIDld19/GbXQd3dz00kX3eFOIb0jtpE
+         B45Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756366311; x=1756971111;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EuV0vIwmYzbGp0NvCAEdvEWsqc4i4ounAUIZgXtsn78=;
+        b=D3Tk41yCZn4Qjj6THnxHvA5/0gfkNxJXOtAMfWrS6d//NS2YMUINK/MVXpOKFPKU8K
+         HjPAGQHmpGS+7/MZCKGeJN+aCPFs+1L2UmURrgowRdZGAx8rxAOVJIgjwlQT+ve6C3gl
+         /G22pI0s7snP/NZnbXmnElU34DlAWfThhtSZnq37gtIuVS0gQZRtSc8/XPYNN5ky+/F7
+         WS6MYPf7NVWfqAVV3IfAcJbD692lS7JG3zU+Alvp04oSYfw0/aDxI/dGm6FK5ka8ZpK0
+         toPYQupi6NnqiC1S/i5SKforC0utKfKtRqok2Qi8Wvtj7UgpjyCUoVfPIanABFeZhG26
+         iAgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOE9fOb7yI/QpLhqADjnreYBs4m6bW0LriiqDSYHAF/BAGH2fteCOMFo/bJyYX3ydsaxoxaGl57A==@kvack.org
+X-Gm-Message-State: AOJu0YzEfBxkbnSG6j3qMICC6DYgj+HlyGQnNAXPUTQAIEd9FX4Rv7M5
+	UTaWHFwYVLneAg6cVWRRPXasuLrHur8ZJKb1ZaOoZVUFsGgVJ77Y8k45
+X-Gm-Gg: ASbGncuST8S92cK94c6y5YQKDi3XQgqC3NGy9JQFcNEIjWaQjVO+7skRhDi+1ZsfYJ5
+	unXa4ZmQqi5zUSdMHQNENXTalPY+WpBaqFhJwyz2OzaQbAlGx5nlPxX6Ito0VOIvPxiVKupWhkB
+	9jhq/KrEXhmoSDzcGRmZf5scywkfvIR5jHoRGh4v2WEfVrPx6eKXfJYrJyb/I2E8qcYzna0drgq
+	hU1D6jKphamGDdkQhX3XEkAgjz2aSCScZKYcHtlHVde6vaLvvqemB2E29hscq11jbQm8Zb/C0/N
+	0HKfOJ6fDA29BuMCMecPQ4Z8dAUtL5IsfzN1EAmTMpWnsHaO3FkOn0ogCLX9rZDQbzpp7aYsVHm
+	0O77z9aJk6VCfMl/hAjJ0TkIsbM379UMTg84m
+X-Google-Smtp-Source: AGHT+IGYsCTFAB2u+mO+a+/7YQm7WCRYBnf/bqNrDbgJHuGpC+AeSLNYygCiHCIag3yJJPklKDadWQ==
+X-Received: by 2002:a05:6000:2891:b0:3cd:96bb:b948 with SMTP id ffacd0b85a97d-3cd96bbc28fmr1837267f8f.47.1756366311260;
+        Thu, 28 Aug 2025 00:31:51 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c9c9324dc9sm14883755f8f.3.2025.08.28.00.31.50
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 28 Aug 2025 00:31:50 -0700 (PDT)
+Date: Thu, 28 Aug 2025 07:31:50 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Zi Yan <ziy@nvidia.com>,
+	SeongJae Park <sj@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
+	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+	Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com, x86@kernel.org
+Subject: Re: [PATCH v1 06/36] mm/page_alloc: reject unreasonable
+ folio/compound page sizes in alloc_contig_range_noprof()
+Message-ID: <20250828073150.jyafkufvkjfqwp3f@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250827220141.262669-1-david@redhat.com>
+ <20250827220141.262669-7-david@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
-To: Benno Lossin <lossin@kernel.org>
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250823130522.867263-1-vitaly.wool@konsulko.se>
- <DCCIRTHGQFNX.1M8GXO4TYA7DF@kernel.org>
- <DFA3B588-3650-42DA-8875-7AB7D20A2BCA@konsulko.se>
- <DCDC2M7N28X2.3Q8XYNEDOGK6A@kernel.org>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <DCDC2M7N28X2.3Q8XYNEDOGK6A@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 02A4C1C0005
-X-Stat-Signature: 96a9dw4nn94j3u4n8fws6kmx6cammy9y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827220141.262669-7-david@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Queue-Id: 4520A40008
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756365725-990512
-X-HE-Meta: U2FsdGVkX19OOxdCC+pkTn8KXgXkRfgR36VuIzMuM0OswqDuTII0yWUuURBWZSvQaiwCb9P9+6eETSrdGRmb1lhRHWS47yYWfX6McrPdKMJYTwgCMPTnU7CCOZkR/d7nzHZOV6U3lZyYUYkicVVwdCQjJi3bQ2rspCQ66bgKH/uh5t/Cqq74txXkbgF1+sMiDJrt2jW/ncwRkV4SAOeabwIH8JAqu7Z8D4FnoCvx3l9pF6ME7JvapCFRjwPHh+x4oXJpFb4kGc5s3AQcRU0WEGR3OwKUkupC5fqf3UZPASyC3SIS1DxVjJ/EuU2kTwbGn05iq8p6cATGmWHGKR4KFgeRbUKeCK6nzz0Jkfr53wrGhJwuHbdmyET+fC0R3yuMNEs3HEEqlr/mBMtNoaojozux6mXYeWnluoG4bXDdF1Y6/cNcyv7pFeYKWIIzXvIW8iP+hBWtU2L0d770a9gPr6QYNVygBhxQtBF/tQhYHCMhlkORPESul9UrUPd/A7qF8WHi93FN17nSZlUc3U1NrkzG6pJDhjHAbbxHtJmSxf1uUMmROCTAuaynuxKZiKYikRfUwGrC68z4/0WHj1fFUys0aWHS+5LIZYjoeg20o/ImbMTKdIMb2p+ql+E0lyc3G0Rnzz/HDZAD7s7vDnx4MRKcFeY/fHNGXB4fAnmHwtrg4GXaNPzgRDUrqz+FONI8XNI16KtFZpqCa5czj+1xx/+5tWersqFuB8h6l5v7jqDCteSPY+AuL5wpGLNzM7u/ShXfxLaPusQVV/xOuztojXIhgk7nMLValhEAu2xQwDkobBjaWogU1FZG9oeJi0vdGsDKvpQLMbbLBePIEn19yTSo5+Hu5Ilrw0bhRPhj8EabqiyxqS08yAZgNKfjk6uUIeXHK5iZBuIEogq1KuiRzOZ8Mt4jn4W9nPohKmi9BvuAcW3XfVjkvhUT5c+Em7kt37eL1I672yeauoVlHwX
- Zgw/zDyz
- j7jh1LUtXnqBx4T6xylnHjboCDiT3eTd1lobmHI9WxJzhZQDywVmLcqHuHxikG8w3dfQ6myokNCaG+aLwXVaHsl1e06zBoFqPNE+Acez47Rcdu+O+uKHwJ5EP2gsQ/mlcyAXzKRZBYYv0B5f2OEmzXv1adgFBHD1ud2l7Si0S1x7a5EdsFYo9iORVvRmhFQsdhBSRR+zC/svy5lgxqdRm4oBKob1rE2xOyVLhduxDujgN2nsZ4IDIT1fDWJp4vmFRj2paYjG1GG+1ErqAckS24TdQ+5m81RIMb8/fpnDC9bjCdteHVv5Bm2JnmA==
+X-Stat-Signature: frhyqdfcd99y91etmzccqebmxjczw14q
+X-HE-Tag: 1756366313-116608
+X-HE-Meta: U2FsdGVkX1+YLQGyIQMhwAyEGH9zU+N+dGsQ48nWcUvyy4H+THu+VgEYzKcqxH6nTcCjIvNm/CJsOlssCMjR5/h0ovWazt7aFRuLEtHdoEs1LzY0RVgnVrunB2r1bYN/5YTP2Csotynw7bU6o/8DBVQof0JTiGyrUaoOHOEPZPmWBHg0mwcEDmzmTH6tJxTCpZrx0uxYaU1nSo+rikf1200P4Tj9FGkj8ebPxR++bZ640K4k7w8eMjRuBnKR0Ll9cMlb84Dc2wMN9pU6Tjs7apMHvoP+q6qKcBWmENHT0rNqlEl0lcDgVssTY/xJ7+IMw5+39vKXJYYuuCwvHogHAETPKNc0ODiTnezuwhCQigd+rIk3TimQWuN/sfb2LWp9NPnqx9qgfYW239+hbBEK28e4+IVZ0yG6GT3hmqJLkSCTHIgPPjmfUNJE2IPAd2qMy2TRcLlJYYPsLDhzw75MtJJjqWflv7e/BsUOEDanJ9r+VIdj1tJTnc7PpMsgM5OlF0cBY1NodJYSmN84+JnJixqKwsIWL5BrwIEJRo3ZzqQZvy5v0H7Vk0CYvTzxYOemmJZPwzrxcgleT052MiKKQLCK5/6Jb4UaTjQ3g2Skijia8/YWJMcD/zmMKOn3aA769qhOX6w5ExUaA6tm2L2ybmnCrZ/hPVODbE6dv+K2Lf/cKa75qR9VJjYk2nzjaSLt8LIDo8GOQWew7EWnFCTRlR3TiDDjsa2fbNOWGu69zIuvaqKsinpdMNHLQjhosTNJwYhhWXobfjANS6unLXOkWTQ7HqleURjo7uMM4rHvX5H09TTKCKL44cSRTdpLswRR04+dq+xYgkhA1RUdjT+C9N1w/HlXAtr3ccPR9N6G7ofZgxFlkXf8M4W1wVdiRJKvMjmNdN6NQV0u35pp08cdHGgFV9/qnlI546oW5hIoVc+M+bMlQcmlLak/quwad4HKl74m6kb0U01D9RpS++L
+ 3ik3yvvz
+ VW1wTzr7w3d1w1yIj+lPDKrQulL3zoe+4lfer0Mk2ylezzxNOd+4Iuj+HNjpMt0O/06RC0gIWPZ7ADQEObwU2X46EWtBZZ1FEj3UmW0BrQWmjchv217QFtJtnT/FVRdBmQAaOCaV81Lsd4/7OOyAvz95g7QZRSTx8oQfU1mFJRyeemlXCXYkls5dYZ3d43nD8quyZffI4ZJAAD0gEi1W21KQrM4dzhhmFZxUU+ZoQnE/bGxk7S2M/IPgwDu7myt8pEsPaiRu0+/MFgHrfOoTVf5DCYu85sEieI1//UYjA1SBZ1dokB8jr0RmUHqMrZ+FjQz5LEvSzjqVlGWPyX9t77Vfo+TOrSsuKI6ebhguPAxbpLjQDVSHdrWSy6ERGbAOmAe+2pVHphQ4idYwxLejWlIUaSnyt71YA7atnW8Meytgi/TQoJy/E6lohvXjSAmQyGKa7hANxZJ6o8aFToBG0fI7I43dfkSl22AR3H92NSiri6ydICWZ0IcZkMV9McT6OrFrdq2p7Wdx/azsZ6VCpiJz58NthHyORtrBZIQ3u+n3Z9c+crDcE87s3VKofiE+0mB1Xb0huvBGykJWVnFrbG1MK5bfSx+pSlEqd/5qvOw/n+XrdyBD3kHWLAjpH+3/DowGj2QIsVN+0ug5FkBIqilRa1gcjCLGnvmgxIW2OTknADnYyO7MO1ittbBwUzuzMpX3BoBvjNPiN6+hUVHrYOm/IGl20SXlR0440adZU5nIX8wBofLNl9flEaICNv3PM1Dh3BwZR3+QwzFHUdWNYBYOZ+bGh3aUQpll4wwB0Qy3uzWs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,150 +149,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Aug 28, 2025 at 12:01:10AM +0200, David Hildenbrand wrote:
+>Let's reject them early, which in turn makes folio_alloc_gigantic() reject
+>them properly.
+>
+>To avoid converting from order to nr_pages, let's just add MAX_FOLIO_ORDER
+>and calculate MAX_FOLIO_NR_PAGES based on that.
+>
+>Reviewed-by: Zi Yan <ziy@nvidia.com>
+>Acked-by: SeongJae Park <sj@kernel.org>
+>Signed-off-by: David Hildenbrand <david@redhat.com>
 
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-On 8/27/25 17:59, Benno Lossin wrote:
-> On Wed Aug 27, 2025 at 4:24 PM CEST, Vitaly Wool wrote:
->>
->>
->>> On Aug 26, 2025, at 7:02 PM, Benno Lossin <lossin@kernel.org> wrote:
->>>
->>> On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
->>>> +pub trait ZpoolDriver {
->>>> +    /// Opaque Rust representation of `struct zpool`.
->>>> +    type Pool: ForeignOwnable;
->>>
->>> I think this is the same question that Danilo asked a few versions ago,
->>> but why do we need this? Why can't we just use `Self` instead?
->>
->> It’s convenient to use it in the backend implementation, like in the toy example supplied in the documentation part:
->>
->> +/// struct MyZpool {
->> +///     name: &'static CStr,
->> +///     bytes_used: AtomicU64,
->> +/// }
->> …
->> +/// impl ZpoolDriver for MyZpoolDriver {
->> +///     type Pool = KBox<MyZpool>;
->>
->> Does that make sense?
-> 
-> No, why can't it just be like this:
-> 
->      struct MyZpool {
->          name: &'static CStr,
->          bytes_used: AtomicU64,
->      }
->      
->      struct MyZpoolDriver;
->      
->      impl ZpoolDriver for MyZpoolDriver {
->          type Error = Infallible;
->      
->          fn create(name: &'static CStr) -> impl PinInit<Self, Self::Error> {
->              MyZpool { name, bytes_used: AtomicU64::new(0) }
->          }
->      
->          fn malloc(&mut self, size: usize, gfp: Flags, _nid: NumaNode) -> Result<usize> {
->              let mut pow: usize = 0;
->              for n in 6..=PAGE_SHIFT {
->                  if size <= 1 << n {
->                      pow = n;
->                      break;
->                  }
->              }
->              match pow {
->                  0 => Err(EINVAL),
->                  _ => {
->                      let vec = KVec::<u64>::with_capacity(1 << (pow - 3), gfp)?;
->                      let (ptr, _len, _cap) = vec.into_raw_parts();
->                      self.bytes_used.fetch_add(1 << pow, Ordering::Relaxed);
->                      Ok(ptr as usize | (pow - 6))
->                  }
->              }
->          }
->      
->          unsafe fn free(&self, handle: usize) {
->              let n = (handle & 0x3F) + 3;
->              let uptr = handle & !0x3F;
->      
->              // SAFETY:
->              // - uptr comes from handle which points to the KVec allocation from `alloc`.
->              // - size == capacity and is coming from the first 6 bits of handle.
->              let vec = unsafe { KVec::<u64>::from_raw_parts(uptr as *mut u64, 1 << n, 1 << n) };
->              drop(vec);
->              self.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
->          }
->      
->          unsafe fn read_begin(&self, handle: usize) -> NonNull<u8> {
->              let uptr = handle & !0x3F;
->              // SAFETY: uptr points to a memory area allocated by KVec
->              unsafe { NonNull::new_unchecked(uptr as *mut u8) }
->          }
->      
->          unsafe fn read_end(&self, _handle: usize, _handle_mem: NonNull<u8>) {}
->      
->          unsafe fn write(&self, handle: usize, handle_mem: NonNull<u8>, mem_len: usize) {
->              let uptr = handle & !0x3F;
->              // SAFETY: handle_mem is a valid non-null pointer provided by zpool, uptr points to
->              // a KVec allocated in `malloc` and is therefore also valid.
->              unsafe {
->                  copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as *mut c_void, mem_len)
->              };
->          }
->      
->          fn total_pages(&self) -> u64 {
->              self.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
->          }
->      }
-
-It can indeed but then the ZpoolDriver trait will have to be extended 
-with functions like into_raw() and from_raw(), because zpool expects 
-*mut c_void, so on the Adapter side it will look like
-
-     extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void {
-         // SAFETY: the memory pointed to by name is guaranteed by zpool 
-to be a valid string
-         let pool = unsafe { T::create(CStr::from_char_ptr(name), 
-Flags::from_raw(gfp)) };
-         match pool {
-             Err(_) => null_mut(),
-             Ok(p) => T::into_raw(p).cast(),
-         }
-     }
-
-The question is, why does this make it better?
-
-> Also using a `usize` as a handle seems like a bad idea. Use a newtype
-> wrapper of usize instead. You can also not implement `Copy` and thus get
-> rid of one of the safety requirements of the `free` function. Not sure
-> if we can remove the other one as well using more type system magic, but
-> we could try.
-
-Thanks, I'll surely look into this.
-
->>>> +
->>>> +    /// Create a pool.
->>>> +    fn create(name: &'static CStr, gfp: Flags) -> Result<Self::Pool>;
->>>> +
->>>> +    /// Destroy the pool.
->>>> +    fn destroy(pool: Self::Pool);
->>>
->>> This should just be done via the normal `Drop` trait?
->>
->> Let me check if I’m getting you right here. I take what you are suggesting is that we require that Pool implements Drop trait and then just do something like:
->>
->>      extern "C" fn destroy_(pool: *mut c_void) {
->>          // SAFETY: The pointer originates from an `into_foreign` call.
->>          unsafe { drop(T::Pool::from_foreign(pool)) }
->>      }
->>
->> Is that understanding correct?
-> 
-> Yes, but you don't need to require the type to implement drop.
-> 
-> ---
-> Cheers,
-> Benno
-
+-- 
+Wei Yang
+Help you, Help me
 
