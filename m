@@ -4,118 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2180CC8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 17:05:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AEFDCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 17:12:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6807E8E0014; Thu, 28 Aug 2025 13:05:26 -0400 (EDT)
+	id 028B88E0011; Thu, 28 Aug 2025 13:12:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 657C58E0008; Thu, 28 Aug 2025 13:05:26 -0400 (EDT)
+	id F1AD28E0008; Thu, 28 Aug 2025 13:12:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59C998E0014; Thu, 28 Aug 2025 13:05:26 -0400 (EDT)
+	id E0A408E0011; Thu, 28 Aug 2025 13:12:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 476358E0008
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:05:26 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1AF36B7FC8
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:05:26 +0000 (UTC)
-X-FDA: 83826792252.09.00B1E6B
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 340A2120006
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:05:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aO3nzL6G;
-	spf=pass (imf29.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C87DA8E0008
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:12:50 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BF1EB7D3E
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:12:50 +0000 (UTC)
+X-FDA: 83826810900.17.E453058
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AC722180006
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 17:12:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YjBJ+byh;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756401168; a=rsa-sha256;
+	cv=none;
+	b=iAK55QkWTlM2maOmVleyYWT27Zex0i+xmPDUJOdh7cIYcfTPABPHdn0LbdPf56ekRtNlPr
+	nqKmuO+2LM6gP52ZilRhL1+3g2QBSZoG8WlUNAx6+uK9AmvWehKJ/9xZepPHKQluQS2uAn
+	v2v66pkkqWMEWzQGlTsXsoWhGqtGwmM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YjBJ+byh;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756400724;
+	s=arc-20220608; t=1756401168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oaKngwQqagIZTuDtH8xBI75d9Ygzs4ncLlpZaeJH/So=;
-	b=ZKisc3/pnPATHyX1/hAbY6fkjyOR0G5RZIEWR2X4cu0pfoMf4bFRHFDnwjgSVPPUskVNer
-	oVHcTTQtcHGh2C5RpSNSNSw38LPlI064kDNHZWHInFlnVtH+M6fGTHJK02BbMn4Cb78k9O
-	HJqjkcttTcmsn6bKVofjmxrLXdEo+vQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aO3nzL6G;
-	spf=pass (imf29.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756400724; a=rsa-sha256;
-	cv=none;
-	b=R2P2deBb6e6SYLvojDDIS94cjFj+WUNVE/aYuhxRHMabIUyr5vs11gwwtPGKSmuq9U/Ji/
-	GKB60TGEYYJjA8JkqfJ06Xd/5oq72a+e+YTooA1LCOZvxrVL3JP4RIaGkKTRciu+FTmnVF
-	mZ7A+J+h0lF9AkIzXCVY1xfBuSHhIFw=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b4c738ee2fbso410311a12.3
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:05:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756400723; x=1757005523; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oaKngwQqagIZTuDtH8xBI75d9Ygzs4ncLlpZaeJH/So=;
-        b=aO3nzL6GoHGU7unLELKdxkTxciZEKjZ4LGV+cbvuWs3bNJ6QpugAYCplS3gsQcMNMA
-         b8MSrWlAYJV14XkhpP6iXz7WpqcxEbgfiZBRkn6MqW6eoMLY5mS1rkjtSHIUg8R36yVB
-         4if8ArYQqTzbaEtLObhQns/qbtlfY7XOoyKWm9h+K/SCkjRHeGTS6yy1TH1jstyLkKEb
-         uI0HQWBAv+qvmtLryg217wNgIMy/Vc6S7qAn52uJexMICfa+4R0s/+64C7Y/mO5mTEoC
-         hxdySq1i8O4pS/XHOlEgi8zigzHMG4CBqnmYkKt976cbvsx2IpPF58WZyNGyFkPhTHZm
-         NnAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756400723; x=1757005523;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oaKngwQqagIZTuDtH8xBI75d9Ygzs4ncLlpZaeJH/So=;
-        b=GnAsvbjWN/2+4B4Nl+GDcc9YhZYIKy7q2lF+0xIVuXb/Kmw1c7nEkPHliB85+O3WFV
-         TDQlNZ1sAmg0YzRMHJmI9LU9/++71pREn9C6MII9B1ZJvnAbXmlWAtuzRKcAjoDmLs3G
-         ttXYJ0sVbUzUrzp6duD4tE6YlaZtz3m+0SQR4TdTW80w3IlmeLYivtZb4L10umpoKE+f
-         6Dtm+IAcrlHEojYh5ecGIS7PMuNKbl4pkj4bMjJ2Lj/TNCfGmA8z/5bueBbqq3Ri3SJA
-         cZa1ciDG5Cf/fgjM2Ff6kWDAR17hLk509HUBM6l9URjLykcFciyEGwI5cmdSVRyAquJR
-         dLHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ+0Yos++eSh4Jusl7gGCxfbnwnkJuSPCr5TmhvYJP1A6IjYeZon6jHv5pM7dJJvyBk0M8MbNVXw==@kvack.org
-X-Gm-Message-State: AOJu0Yy0LegUNz4YRfoJ6ai6Fqg+MID7UnUHASfgodPXbrwOZYGIgeIS
-	oj56Ph5Cx49rgyr8rwyG48WP9C8UP2748KvEUPUrW+6HIo9m/6ZZcW5WRW0bJg==
-X-Gm-Gg: ASbGncttK6fnsi4uyUZuRWdbcoJS8jU2nDMYhM42uZKlPhUrboOUC3IknhhCwv2Wlzq
-	85Qmm+lH50Ns94cGX0HIF4H/cqFQ9D2fGV/HdE/dHBbSZppKRi1aaA8wZmPlzsncmggFkg4Aj5a
-	NMcMSsC1pH/noqSZOm1JdpoOptfyHJDrkvH9Zp7Epy0ziB51tRBOiJAWvvVaSaYMsmUdFTo0ziP
-	SLI1RMT+WaCEKCi8XQaIyKrubRJ5Lsou3sE8Hq+JqH+lqNRfiEhI01eLBJPE4ohFLHp88UydGRf
-	TMWqYHS9grCkT+NX3t/4tgr8zMCTkftwF28a81tQ7Zn9muo30/y/XEyHr4AlgO7a5jZxF9H+Dqh
-	SWiXX1iBAcxY5e4W9UmTKXoHvCvMR+CZQ5eQCsH9MkGamIXE0jFdoOg==
-X-Google-Smtp-Source: AGHT+IEDGdjnSAyHBeE9MTUce7G4V5CtnVHQ5MuvcLxNqHjArd56/Drml7Qh+LbolqzPL9NaeoaQHg==
-X-Received: by 2002:a17:902:da89:b0:248:cd4d:a72b with SMTP id d9443c01a7336-248cd4da80cmr60475305ad.20.1756400722854;
-        Thu, 28 Aug 2025 10:05:22 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-249066e042asm441305ad.146.2025.08.28.10.05.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 10:05:22 -0700 (PDT)
-Date: Thu, 28 Aug 2025 10:05:18 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
-	kernel-team@meta.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] mm/show_mem: Bug fix for print mem alloc info
-Message-ID: <aLCMTu-Ci2yV40zn@fedora>
-References: <cover.1756318426.git.pyyjason@gmail.com>
- <aK9htWRehfJDLFJD@fedora>
- <aLATVGnVx4Z+aHAh@devbig569.cln6.facebook.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZwpT3dMG99pJu1dlK6KWJBnNEvDQMM8VQ7K+odivI+E=;
+	b=o8pH7C+K/AXy2+Bpngad0smH5GVmMWypT+qYr3hiczo5A0X1L1WaF+vUBxwMnlBI01OhMc
+	sKV2D8VVncuTtYXVbi8Hd/3vcvA304/lmf9TafJ22UwoL4deFppUOUfqK7ufkV1J2ubDmM
+	mQfPWyD7yn0LskbalYIDXvpWunG3Or8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A87E344C98;
+	Thu, 28 Aug 2025 17:12:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6573FC4CEEB;
+	Thu, 28 Aug 2025 17:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756401167;
+	bh=XMisQHBbtJ+sybKmhuOJ1thay4xxeICp3JVlocPQ0yY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YjBJ+byhXwpLP4Nhb/QINTUZnWulaCZqKoSScXOQYIiSWNc7HmO7cgWUK9DCbhhER
+	 9ZlhUogSBYJC80pUmFoEBloHTU+emuuYJmcxdwdYcqfRm72ypvzteOE4VqPUn1y3q3
+	 YDUZkC/IB904rebcUDG/PVHxhT67w5yky0HneQLa/utuX+TLFEApV2vf3ZRUrndLaD
+	 OUy26STkYDEnMQxAE6lku0/ArwqiTnmECyMMuCTqphOWeiJvLdh9uO0i5gROgT05Rv
+	 P2gdISyoD9FiwQwtnP8wrMa8k00SgYlUgxbqp5g7iGz+L+DaS3VCyUnlnBvBmtMLEF
+	 uNCS3R8Zm2Dqg==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com,
+	zuoze1@huawei.com
+Subject: [PATCH v3 00/11] mm/damon: support ARM32 with LPAE
+Date: Thu, 28 Aug 2025 10:12:31 -0700
+Message-Id: <20250828171242.59810-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLATVGnVx4Z+aHAh@devbig569.cln6.facebook.com>
-X-Stat-Signature: coswdf87dmycydgayf13xmqqg1148xok
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: AC722180006
+X-Stat-Signature: x6qwset3rjhpxyecy6tpij5mp4qsd9th
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 340A2120006
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756400724-774902
-X-HE-Meta: U2FsdGVkX1+26hbJjm282kFTVQ/zYbjg9Q/FrwSaEz3VZ5v9O7pI+vz2EwVb1Pcstxk9E5TP16I+HEv4kqSubu93RWrrVqFuyucvrOA2/lstRUTq5tgfrFAIyKyhbnNY4yijBwMKd+x8mf5EgRIcOCZQ7Ti607yv0m2tydjwO7lrFPGivMY7kww/g7TcIcrPyxR0/F/3XRRZJPzUkprm+XgcUiL2+sExpbDPLyflSQOKkYnWaIt0/7VWwVZCIgFj5Tu2qwBCB+Wmwcf2AtkPx9etfXz4+qt5JM3vXNVvSp50GXYFWQ8IjdJQqNBUIJqalUVQO2C+8UOPsSTX1kM1dVT+PgnkldXpykYZmM0K4C8V4cVKdwEx2nQL158j+3IldReI0wcGSax28FvVlvrODZ55lWlka8JcncBqvgIWTkc81SLjWj/7l1aG8Pefa/vBmO4Lq+9nJciSavqmkkYSib7gEc69Jn9Od1vqldtjxGfTTVREfWhrEX3T8Vczz18KDsfNgHh9nXHoGjwju49nvRdhm3bHGxcuL71CC4iJ3SaQdhHjSdAN0DHTdZ3PVUs0iFnwiQRaADhCq3EleYz9pFhK+fAWTS21GYhpFh+vwBd2Y64cZNCB9dLdgbPtvcWTVdXHyX0yUt8J54AHR1E9Ci/IVMZnReVyprEPOcutK7nDuaqsNiiWqYmxpQV/3BPe+rSNnpD7k8wQ54DJrYimSUBUPFkndr/9y0oFVmCXYWVVmL9j8EVb7jCdxnrSboi3EFRa6fRICAJtjTNkrMkk+I9P4uLRrhWe9vnHij9AhdCz9c7AhoWZgHkJoQ5SECS2shHwkifch+H77lOoHFeg9WG+NDzCQPe7EUztIrbuE2/dfyWA41jagTs97hHpzzqLOMPE6UhQ5bpOq1I9qnsMw/d8T8NIkd/ueuusC+zorE0RbbxihM4F78dmR8b0KH2VV4elEEp3WFZVF3eOePw
- cUin2zt+
- 1o2E9+fjWp6p55gAgWPXGo+RUPKppQkelclbyPsooH23XDxGhgvl8La2eJ1j46PuBk1cVHQfeLtEui8MQGMNcdFwDT0LaWyzc2ubXHkHq3JdbUGDdDpCAwd4qvsnAOyP8HxggZIm+qYVgESEyr12F7ONT5WLhseZX+zy1wPRjnBT9kaEwYnU7926KaAvJuHSHUybXYwtPOO81yEPT97Z+po9qLBlk6CZeT5x5K8p8WZIGg8jFM9L43Z+YEYv7YDf0GX4/S2ybpnHeNjTwYLMK+xH+sbPDm+TRLyN7W81e/BXMk6zw1mP1hbBmL7NegWIKVKVqTLyZ+kPOioGL6LJnVXyIBabbqDvJ3Gb+YSCnPZ296E0K8oGerm9nQ32AJtV5t9+BKbhE5Phq5ldOhR+Mfw+jqsNuXaaiTPowsyMQSdNh78CqxKboyOo0SF/AFapfH3CPe8tPAVx9NYMzEF0P4SEotRfV4s38GygOf+hyGVTib1wQkcD1GB/ezyxwyzmuQNxH
+X-HE-Tag: 1756401168-227999
+X-HE-Meta: U2FsdGVkX1+lcWsBgnwkI9ZbZwG4jVQRzFpxCsHDlIYls9+0ogSDM7OKzsILm+R/NjPEMpodnPKSr3eX9ZOqLy18kNmDpp19NlwcywS35VKuYVe8VWIH6vezLZusIIRToIByljGW/BVXfkW6++m8tLvOIdCG5BtGed0sK7UvwFlHoKJsPaWSywt8oVZRyMR3Akt29HEpEI7Mijmpb+wVwKBDGVV6GzpSlWSieFWOR6ApjXonlz1uHchJ5W4YgaWhXw83B0XzfcogFOUIYS0ViGLnLM3IDuORt6WajMQhXiMGjJYVhBKGfYVBjB0fSjIkVUGtFtt8CTysQb4kZHad8cyu1xoh5EsXQ/2vyTaTpf2R5NdITu5W8Ulht0tEmuv5pIFPtFSkWkEmND6oTWfdgpbdXrRbYsy9i2zMhaf9zzRplREe0ViB+MYj5xZ4AVqGHRV5pzwA8MhcKhoJuoDkvo/npl53O8bOfetcrFW3sI2VVT1aE7Qg31xhB8huOnWIcJbPi3wa9CMcXJ/bK6OLuf9N95kzInkPwrT53ZaFmtDH9O9KtN02Y3ukjiSoC3C/yVroWK3jcIbr9L8T/KH7N1yLCjOExcxjKRF/0rJ3nhQNcOfgqwxnQNQn1KhLnjtLcPjEKMDgiPWghPOpIZy8CeKkxlfHsUEjQ3M+/opqMOEWqx+eQBRCETlMx0qknWg6k0PsObvCtDopvrS/IwoMuVoG/8jx4+oYP8QQ9+7XONH2mJ5TyJhiwr9q9SIegsoGgfcINEdEFLLYDB1MwCHzHsZWecefmt6yFNJMuiGYlo1PH7Q5MZj03sb8MsoTHxuzNsA4Q5pzBx5VoWFv4FG9xhwihvOME1Gn6Ek6O+rCRskkciIWBu5utIShjT5VetnRKizD0XK4hO24BBPv3RWJ1T3FHo0/O+BWuIO9gJoFeYrr0HcQzuRkRk1mc2zjewDGphJfhUSF7Zkd6JVOnGI
+ mvNSJ82+
+ vq4gY6UzoOryJpFxRDLCd1LjRrstRoTmjD6Qupz5VlhwVUadf0W5njV10BjVuFjOQGJ9SYdyGfkSp1vVbMh0xR+zoB3tpakAhquxXQKe3MOxRpAxyqgPwNSukqb9GBwoJtSfVlhsFohzeSiQiPdk4qgwMCttJf1AS+Kam4ZCoNg6Hz1THMpFMfOT6ESWtH4aLDJeJPl+p4WofzjVcTp/sQLNWNrFemfaGYUNZYlv6MXXZsLElAaVlJa4lI4LYUL760+Fj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,87 +103,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 01:29:08AM -0700, Yueyang Pan wrote:
-> On Wed, Aug 27, 2025 at 12:51:17PM -0700, Vishal Moola (Oracle) wrote:
-> > On Wed, Aug 27, 2025 at 11:34:21AM -0700, Yueyang Pan wrote:
-> > > This patch set fixes two issues we saw in production rollout. 
-> > > 
-> > > The first issue is that we saw all zero output of memory allocation 
-> > > profiling information from show_mem() if CONFIG_MEM_ALLOC_PROFILING 
-> > > is set and sysctl.vm.mem_profiling=0. In this case, the behaviour 
-> > > should be the same as when CONFIG_MEM_ALLOC_PROFILING is unset, 
-> > 
-> > Did you mean to say when sysctl.vm.mem_profiling=never?
-> > 
-> > My understanding is that setting the sysctl=0 Pauses memory allocation
-> > profiling, while 1 Resumes it. When the sysctl=never should be the same
-> > as when the config is unset, but I suspect we might still want the info
-> > when set to 0.
-> 
-> Thanks for your feedback Vishal. Here I mean for both =0 and =never. 
-> In both cases, now __show_mem() will print all 0s, which both is redundant 
-> and also makes differentiate hard. IMO when __show_mem() prints something 
-> the output should be useful at least. 
+Previously, DAMON's physical address space monitoring only supported
+memory ranges below 4GB on LPAE-enabled systems. This was due to
+the use of 'unsigned long' in 'struct damon_addr_range', which is
+32-bit on ARM32 even with LPAE enabled[1].
 
-If differentiating between 0 allocations vs disabled is the primary
-concern, I think prefacing the dump with the status of the tool is
-better than treating =0 and =never as the same.
+To add DAMON support for ARM32 with LPAE enabled, a new core layer
+parameter called 'addr_unit' was introduced[2]. Operations set layer
+can translate a core layer address to the real address by multiplying
+the parameter value to the core layer address. Support of the parameter
+is up to each operations layer implementation, though. For example,
+operations set implementations for virtual address space can simply
+ignore the parameter. Add the support on paddr, which is the DAMON
+operations set implementation for the physical address space, as we have
+a clear use case for that.
 
-The way I see it, the {0,1,never} tristate offers a level of versatility
-that I'm not sure we need to eliminate.
+[1]https://lore.kernel.org/all/20250408075553.959388-1-zuoze1@huawei.com/
+[2]https://lore.kernel.org/all/20250416042551.158131-1-sj@kernel.org/
 
-I'm thinking about cases where we may temporarily set =1 to track some
-allocations, then back to =0 'pause' on that exact period of time. Memory
-allocation profiling still has those allocations tracked while set to =0
-(we can still see them in /proc/allocinfo at least). If a user decided to
-do that just before an oom, could they see something useful from
-show_mem() even when =0?
+Changes from v2
+(https://lore.kernel.org/20250822093420.2103803-1-yanquanmin1@huawei.com)
+- Fix 64bit division linking errors on certain 32bit arch configs.
+- Re-posted by SJ.
 
-> > 
-> > > where show_mem prints nothing about the information. This will make 
-> > > further parse easier as we don't have to differentiate what a all 
-> > > zero line actually means (Does it mean  0 bytes are allocated 
-> > > or simply memory allocation profiling is disabled).
-> > > 
-> > > The second issue is that multiple entities can call show_mem() 
-> > > which messed up the allocation info in dmesg. We saw outputs like this:  
-> > > ```
-> > >     327 MiB    83635 mm/compaction.c:1880 func:compaction_alloc
-> > >    48.4 GiB 12684937 mm/memory.c:1061 func:folio_prealloc
-> > >    7.48 GiB    10899 mm/huge_memory.c:1159 func:vma_alloc_anon_folio_pmd
-> > >     298 MiB    95216 kernel/fork.c:318 func:alloc_thread_stack_node
-> > >     250 MiB    63901 mm/zsmalloc.c:987 func:alloc_zspage
-> > >     1.42 GiB   372527 mm/memory.c:1063 func:folio_prealloc
-> > >     1.17 GiB    95693 mm/slub.c:2424 func:alloc_slab_page
-> > >      651 MiB   166732 mm/readahead.c:270 func:page_cache_ra_unbounded
-> > >      419 MiB   107261 net/core/page_pool.c:572 func:__page_pool_alloc_pages_slow
-> > >      404 MiB   103425 arch/x86/mm/pgtable.c:25 func:pte_alloc_one
-> > > ```
-> > > The above example is because one kthread invokes show_mem() 
-> > > from __alloc_pages_slowpath while kernel itself calls 
-> > > oom_kill_process()
-> > 
-> > I'm not familiar with show_mem(). Could you spell out what's wrong with
-> > the output above?
-> 
-> So here in the normal case, the output should be sorted by size. Here 
-> two print happen at the same time so they interleave with each other, 
-> making further parse harder (need to sort again and dedup).
+Changes from v1
+(https://lore.kernel.org/all/20250821105159.2503894-1-yanquanmin1@huawei.com/)
+- Set dst->min_sz_region as src->min_sz_region in damon_commit_ctx().
+- Fixed the incorrect 'min_region' in the commit message.
 
-Gotcha.
+Changes from RFC v2
+(https://lore.kernel.org/all/20250820080623.3799131-1-yanquanmin1@huawei.com/)
+- Rename 'min_region' to 'min_sz_region'.
+- Separate the overflow prevention in damos_set_effective_quota() from
+  this series.
+- Drop RFC tag.
 
-> > 
-> > > Yueyang Pan (2):
-> > >   mm/show_mem: No print when not mem_alloc_profiling_enabled()
-> > >   mm/show_mem: Add trylock while printing alloc info
-> > > 
-> > >  mm/show_mem.c | 5 ++++-
-> > >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > > 
-> > > -- 
-> > > 2.47.3
-> > > 
-> 
-> Thanks,
-> Pan
+Changes from RFC v1
+(https://lore.kernel.org/all/20250813050706.1564229-1-yanquanmin1@huawei.com/)
+- Set DAMOS_PAGEOUT, DAMOS_LRU_[DE]PRIO, DAMOS_MIGRATE_{HOT,COLD} and
+  DAMOS_STAT stat in core address unit.
+- Pass ctx->min_region value to replace the original synchronization.
+- Drop the DAMOS stats type changes, keep them as 'unsigned long' type.
+- Separate add addr_unit support for DAMON_RECLAIM and LRU_SORT from
+  this patch series.
+
+Quanmin Yan (1):
+  mm/damon: add damon_ctx->min_sz_region
+
+SeongJae Park (10):
+  mm/damon/core: add damon_ctx->addr_unit
+  mm/damon/paddr: support addr_unit for access monitoring
+  mm/damon/paddr: support addr_unit for DAMOS_PAGEOUT
+  mm/damon/paddr: support addr_unit for DAMOS_LRU_[DE]PRIO
+  mm/damon/paddr: support addr_unit for MIGRATE_{HOT,COLD}
+  mm/damon/paddr: support addr_unit for DAMOS_STAT
+  mm/damon/sysfs: implement addr_unit file under context dir
+  Docs/mm/damon/design: document 'address unit' parameter
+  Docs/admin-guide/mm/damon/usage: document addr_unit file
+  Docs/ABI/damon: document addr_unit file
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |   7 ++
+ Documentation/admin-guide/mm/damon/usage.rst  |  11 +-
+ Documentation/mm/damon/design.rst             |  16 ++-
+ include/linux/damon.h                         |   7 +-
+ mm/damon/core.c                               |  70 ++++++-----
+ mm/damon/paddr.c                              | 119 +++++++++++-------
+ mm/damon/sysfs.c                              |  41 +++++-
+ mm/damon/tests/core-kunit.h                   |  21 ++--
+ mm/damon/tests/vaddr-kunit.h                  |   2 +-
+ mm/damon/vaddr.c                              |   2 +-
+ 10 files changed, 204 insertions(+), 92 deletions(-)
+
+
+base-commit: 398a6e2cbd43b92d9a5fa6b4020be72c2441babd
+-- 
+2.39.5
 
