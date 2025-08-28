@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09508C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 12:28:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90EDECA0FF2
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 12:28:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E8A78E000C; Thu, 28 Aug 2025 08:28:08 -0400 (EDT)
+	id C4CE08E0017; Thu, 28 Aug 2025 08:28:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C07B8E0001; Thu, 28 Aug 2025 08:28:08 -0400 (EDT)
+	id BD6758E0001; Thu, 28 Aug 2025 08:28:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D6A48E000C; Thu, 28 Aug 2025 08:28:08 -0400 (EDT)
+	id A2A138E0017; Thu, 28 Aug 2025 08:28:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 19FC68E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:28:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC9EE55CBC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E70D8E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:28:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B9421D9C96
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:28:09 +0000 (UTC)
+X-FDA: 83826093498.20.9AC6D2C
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 59E5920013
 	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:28:07 +0000 (UTC)
-X-FDA: 83826093414.27.EEC6ED7
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0E53E80004
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:28:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EV60mlW8;
-	spf=pass (imf30.hostedemail.com: domain of 3VEuwaAgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3VEuwaAgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="RIk/zYVV";
+	spf=pass (imf13.hostedemail.com: domain of 3VkuwaAgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3VkuwaAgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756384086;
+	s=arc-20220608; t=1756384087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=FqQKwAIz2LU1OWm7bXmF144o14s2i386mLuf3AdVSG8=;
-	b=xbibW0691l0s2vLwQja/mSzwxokIp17ryJS2lAtlJBpUW+c86EaVy/bhcgtP2B0pehhNj6
-	/PTVNww7GLchDs6zXZ0+e/V+0KikS4g7HWkFtpg399aEflCwH9FyR60B92+zTZxCkotBTu
-	zKlRZxyUMVFxT5smZuWBThMxzTdEPuA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NT5ndZiyJJqWCgiYx08dUhX4e7n0TWvqf6AS15EwVrA=;
+	b=7HOe7XPSnhl1mnP05ylwLAIf8RCySOXNHlEEKxAgFLAN/89AnqRHG2auDWG+QDdlWCqiG7
+	ewi9cGVA8udF4Z7Lx9JBeJPY5YQ1kglX1vsCrPSTJO5rbLkX9BKa4HwPF/N9e8PxUwzvaV
+	2ErktgVU5ZiO7qCf9K2uLxWNlTCGkR8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=EV60mlW8;
-	spf=pass (imf30.hostedemail.com: domain of 3VEuwaAgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3VEuwaAgKCPciZbjlZmafnnfkd.bnlkhmtw-lljuZbj.nqf@flex--jackmanb.bounces.google.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="RIk/zYVV";
+	spf=pass (imf13.hostedemail.com: domain of 3VkuwaAgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3VkuwaAgKCPkkbdlnbochpphmf.dpnmjovy-nnlwbdl.psh@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756384086; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756384087; a=rsa-sha256;
 	cv=none;
-	b=p9aQCM/OpVCYopMoMNiUrQVuo1pHPk7UTS/Y1aISyG3/CnUYSKIdNluNCZcQ/tzcE5IoXU
-	doMmov/M7duXZOM+gwFvhisJdSzPudgkkTPfYoPDvbHdbRrZUasAogo7OYosx+BTTt3I/J
-	h5DsC4JitXY7ch5lSwi91TjXXDvHgVI=
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3ce65accfc7so336435f8f.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:28:05 -0700 (PDT)
+	b=MmcOdavppBbI0+Ip5vyVSKV5GQLbwqEOgo4hZB+kq+3ItfHB6K/je9kjHEsqCLiKXPjV23
+	h5ZkgQL+eu+hkPPdggV7xNgZGwfKVQQU3dU+Zft/0rCUbLFJcYMx+GSePO6RrDvPawDp2M
+	LCADlsdD1qXAZCGCAy35+fulxKW8l2w=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45a1b0cc989so7007645e9.3
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:28:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756384084; x=1756988884; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FqQKwAIz2LU1OWm7bXmF144o14s2i386mLuf3AdVSG8=;
-        b=EV60mlW823vSP/h6hY6eZBSHA17wXFwk7hZDojQ6b9rBtlhK4qVzvpRAtjb5XlW9Qh
-         SZxAoJ3qS7F4QT/QzyL9Z/oArK7TOXTdDfPIIjIRGdmQQMyzWjcrCCl+JxQfL5LkHwFB
-         IlUVsjhQVGk5F7LZY6IReNkSVOAiFfGyJDmBwRDSvz9aTGrwxuZZRzsVdAVeOMSyS3w4
-         KQvRM9x+PcQmgPU3s3OvVttg+oZaXLPRpCmIe+6uChV7vBkBygz9u4EoHzVzMVgF9jKM
-         TAEp0Cx4KQVKK8ifPqvv0bw5EF7FfDrSvBay8b+uEIS8CYF7P8QX57D5x1eF4g0m+jUN
-         XM4A==
+        d=google.com; s=20230601; t=1756384086; x=1756988886; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NT5ndZiyJJqWCgiYx08dUhX4e7n0TWvqf6AS15EwVrA=;
+        b=RIk/zYVVxZTDnApBR4GqZPsj+u3xh88gpXoQ7286H5Esp4KKMMDPu7wHLD39PV7RlE
+         eqAZ9w1TYHL/mOGTEBFtRnP1RHDYkwl1eutkSrVtCjvDagJWPgkA3hCFeK2TRDWtQITE
+         p292YvQ9H8sBLYAXh4SkAY/TDTI0BZ/E1fRt915uhF1FvvzYZQL3u/hV/U91/TBTclEL
+         0LXu9cO6RCRO8CYXa0O9WtyySFVBhtxOHee5dX9b9+E4Qf4ZO401L0SO06rk5hd3LOAt
+         SGzo114Ldg/dytcxp61mA6/vvg3lTdnLBGi6/dwDiiPr+aUjB41fuk7LniHvvXUx1t7d
+         rdyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756384084; x=1756988884;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FqQKwAIz2LU1OWm7bXmF144o14s2i386mLuf3AdVSG8=;
-        b=n4kyiVih8wBdJwd/OApKWZjGyqkOGSi3uSxsMtiGVzJqkCqd7F6ri+G9JuYaYd4qrU
-         8DAYEjO7lglF3HbZOmtAPgAYhN+XQPa6BKi1A6R6J9MEQ9yLV1tXJGdTuwh9qZCN+ste
-         n6hs9gDapDXQDwyytO2vExXje6EvH+Nf6F3o7gufAhyDc2FxAFKIDQMhzGOrNUuwAMpV
-         CIBZkfaoWjRpatAGaGtn/pCktaXTUtffHjxwa8zk1jUOeC+WzM34B5RGU7RM4so9kElo
-         7f9xPSAYFj8+aU5pc+eD8B3Geim2qqd1r4FyZqaoWAVgHFCa4Gn3KCMmoN14anMmEmU1
-         hAiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4fz/NdKkXijnWU7Sv4t8h6yd+LXFQevOTi9RRGnwSEW7TvhvbLiyMQr+JBBKqxB3jMWHxFDooxw==@kvack.org
-X-Gm-Message-State: AOJu0Yw8GQglFw38I+vfSH43CSotgKDmVC3Ljl6IXEBkw4an/yVO+6QH
-	OCcOhaWimeJPb5kHBSsmr80whyrpLzCHRhUAspAKl4eilJ+eCego+Rh/VZVO2f8ylBAWqJsXo19
-	aGY5l8otFAx7bcQ==
-X-Google-Smtp-Source: AGHT+IHZCHmwCefpydsRTcY/KLOL+C0u2I1bBuHeaqD36WPuC2sTn7PhhQE1Zs20gugP/+7/d3IKRiWaT7ybNw==
-X-Received: from wmth22.prod.google.com ([2002:a05:600c:8b76:b0:458:715c:51a1])
+        d=1e100.net; s=20230601; t=1756384086; x=1756988886;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NT5ndZiyJJqWCgiYx08dUhX4e7n0TWvqf6AS15EwVrA=;
+        b=GARf6WusS3WUn/B26LSObkbI4CzfwG4bzfy2gV8INgnRvPvRTra+vweRjIOGwNpZpC
+         NnBUTY5lH2dmBriVFx21z2QjfOyCOM9NfTzFciSDPnY/POlPsURLThaqlV/s6cNLMyY+
+         L6oRoJJbF3r2tUG9D8nrwZgk/0iI5kCSVdwPyJv9S+3LzEGT2HAlsPp+lc60WWTZPRZH
+         QGzhJoEfYNo/Wp2qNacIwcujU4J84UZgSk2Z19sLKzsSplXxSP9PYhk19qhBpPSnxog+
+         7TWJDv9R/MMvzUL3bADRWI2sgrHfJapTnvIQGh/Bq87KxG74RQVxkphDCmVP78u6DVzO
+         e0MA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDdAlxfNunFx2EQGKT4cWS3Om7T1CBOgLaxHy94IsrReL/aIMk2O/OEYXfAhmthG+N24ooIkCxng==@kvack.org
+X-Gm-Message-State: AOJu0Yx269am2PSWJkcimxYsHLhhKJQ0as/WG30ngGT+dxfttH4YO9oW
+	jdJJ6YNRArgIB/6dGCXne/ML2l93f/n6yKII4P65S1GKJARhklcxrB4VHwR8A+G8TuO4YBcRW4c
+	sDiY9Ow5ys28Ang==
+X-Google-Smtp-Source: AGHT+IGJWI0ZFUz+7Oag9wdtFaUSV6+VfGrApOEbus6AYfztggP4vFm0mvCRRgVub8dgHHObAbgpSPShD8KaaQ==
+X-Received: from wmbel18.prod.google.com ([2002:a05:600c:3e12:b0:45b:732e:5a16])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2f85:b0:3cc:b206:bca2 with SMTP id ffacd0b85a97d-3ccb206bdf3mr4803717f8f.33.1756384084504;
- Thu, 28 Aug 2025 05:28:04 -0700 (PDT)
-Date: Thu, 28 Aug 2025 12:27:57 +0000
+ 2002:a05:6000:1881:b0:3c9:24f5:470c with SMTP id ffacd0b85a97d-3c924f54bfemr12451964f8f.42.1756384086018;
+ Thu, 28 Aug 2025 05:28:06 -0700 (PDT)
+Date: Thu, 28 Aug 2025 12:27:58 +0000
+In-Reply-To: <20250828-b4-vma-no-atomic-h-v2-0-02d146a58ed2@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAE5LsGgC/32NQQ6CMBBFr0Jm7ZhSQcCV9zAsSpnCJMKYljQa0
- rtbOYDL95L//g6BPFOAW7GDp8iBZc2gTwXY2awTIY+ZQStdq1Y3OFQYF4OroNlkYYszKtfSYLW
- jynWQhy9Pjt9H9NFnnjls4j/HRyx/9m8ulqiwHi+mqwxdG+Xuk8j0pLOVBfqU0heA8kz5tQAAA A==
-X-Change-Id: 20250827-b4-vma-no-atomic-h-0f8ebc2fe4f9
+References: <20250828-b4-vma-no-atomic-h-v2-0-02d146a58ed2@google.com>
 X-Mailer: b4 0.14.2
-Message-ID: <20250828-b4-vma-no-atomic-h-v2-0-02d146a58ed2@google.com>
-Subject: [PATCH v2 0/4] tools: testing: Use existing atomic.h for vma/maple tests
+Message-ID: <20250828-b4-vma-no-atomic-h-v2-1-02d146a58ed2@google.com>
+Subject: [PATCH v2 1/4] tools/include: Implement a couple of atomic_t ops
 From: Brendan Jackman <jackmanb@google.com>
 To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
@@ -96,14 +95,14 @@ To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-found
 Cc: linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, 
 	linux-mm@kvack.org, Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: fqgiyc9epd3scb74uh66f1y36djr13qc
+X-Rspamd-Queue-Id: 59E5920013
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E53E80004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756384085-451794
-X-HE-Meta: U2FsdGVkX18zHDKVSi0kuRm9xoJxf98tVeKzbe5E6AF4J3uo+IFjXaFUEgtQ2StURdOSqLeTGJ4RuH9782lwmwHPrFmdmUrtc6MBR0JfxRz/41Zq7c4G91IE0YHzY+OOaLVUuDtlHAi7NSZiLL91wTzLezBMiGAxDKWmpnwtfYBRcaRbRWarn5Pgd1S4reWYvGGM4NoxE5JoxN5LmcWohT0f7LnRmyWPllkfa01yzAGC2yebuYunk8fiVncHsVW1ua6FO29lFVqS2gMXOek7i7QA2qtbw0FP8rW5oBhnsbAI4CFbVLelKYJJ2jOsGxPKJBfhpKZJrnVX+3bUomBYSj/JgJRoRGaON8PPS3Cg4zq39NmS5Nc0IUfWfWTl2AqGmF3VMSFDlKbi5WAqVbVmjarqupnqsFV/x/iadnXysS3ekAsBdDDu2WcgqsRVbx8rasEixfzhPUXUr1FVWZRAPbXIj73Yv1F7OCRrPOpYzsvxayk86Jte6VWPKf6HYZ7/9M/x6diEtOBPg70xAnM0tSOMJqp00Z5C7KfV2ey1q/Zf7FJhXCMJdUUURw1Hzesmg0fpmJic4f5veXZfsn0kTOXKxkUSpN8IZ6bMtnYxeKWbBXJXatRVZ1xgfjBuIHba/eAmilS3x4dLQxSFyI2oBeuJIh3UgY4IgPsxNEu+EdS4RqsgHq6AU0gvIjtnu+bflB5KLaLvb10XW+cXQ00g5FpCIBcGa2QvW6c4ytffX+nvLIzMqIAl6uK6HI3SGbj0P31pzVmIhclLMtXN8tOuqZKCKSAJlvonfCZYfRdcX1/o/jPJSbISOSkFjPI1hMqaJkApeJSzeBPMFpCYHWEnnW1Bw986oHvbeBctgbZJuA5TNc+H03Vjw2ajaFry7RMfXO0VDR5vvkWj9/IxnpInrVy7ARS6CUYV2oMImJP6lXFPm1STg3YYL1TjR8uRzp2KDvdjJ/M43H65PkeiEkq
- s1uwhBCK
- JXp2XQ8qiZPpapzYcI09oZg3gW9iOmd/Rga7dF6BZ8sHbv1VrHEKBbCfe0wWlT/qeoj7axwaFBzaike16szq+9hSUtYFSKqYqEvUsmHMEx6AWVGqYCIUJQ/s32W/UyXiyqNfG/iLHS3G1RqJyN1s3nGlAlC7mgm7j+DHqfRVewBMrsQvyAp/ztzLAsJxfVOO4LMmLgC2Rxlsp+00ehZqo5NN9MDCiKFBOksYVfKGvGy/OXbxd60hFg/RVs/Qm0nHEetcMhHuH7b4iGANAgtxYm9PixmzLxksV+6wv8C+r3tBdyBaNqCChHmrJeNa3XoovVmikPEjOj/9EausON5vxFEOa7rgSHcqG2ps7YZPG1PYdXGFm5TG9RUoVt7grazl+U1pFN4kPEvUuMEvEwiZqyaAEBKPVCRV4hxYGX9+TXAzZNaOvP3YqleY02BwZyt2GnVakZdxtTRXBhLTaJLfyHfNB5fPM5xfA6XGNa2VKfsBJEkrM8lON09LePkA5fwpbxHXuexKUtk/w9+vr5Tp1Qm2f40Tjb4n8z6OOV50zCqerOfD7s1RfCQWpYYJ+uvUl4YF0Z18beXPbf0E=
+X-Stat-Signature: jb9538zxjrjnr4obx8ydzx5e5mfq3kpm
+X-HE-Tag: 1756384087-868699
+X-HE-Meta: U2FsdGVkX19G71zXgz4/N6jhkU0+e3TVhSU6hFgKBF8OC5T7nGXnzCFnn9PV36Wy1IBIsZOlcKHJZkWBGpUr4cFYmT3R+Q3VdkdmeW7PJgXbo30gAEKpfm5gAjCNPtyaahH4pCS+wJjfDmrbcXC6NJpsWFhZgU5i+HF5lelCQFLtkAS5hNUmruAgZOOPFvmCVAq3Rpij3H3lB9RYrlIe7WVLZLL7ZX+4hwjm9YK/tTelIAmC8thMmF72Dq1guFUGhJZRKjUsUh13Hmllshr1+U+rUjvTRpg6Qb8nIoO0JtUsYOf0qNiOqL4L3glx+/76CGCO/wZxCrkPPqdnK48Ivp67KWaKHE1UikxAnSFtOWms5xZiYu+4IfoxcXJHOU0NLdoQ2x67T29a0efEd9dC/ioq0eNJTt2t2sxjColwyh2Db5Fst58rgX+CUPyLuE4pypbXx5TvajRB4HXQsQDkXnpF62b9JJYfwmYhPG3emG9rEQOatamd6xd5lK+DQFQI+44dxy73Iw2xBDuV9v6vGe8tdekOCcruXuh2awmgPG1paVjNIsoM48Xt4ZlrCjFtmrOzWwU/9jfCg3Q/BWyxyjnct30G5AFCrJVdzmNlG3lxaJhrc+vmBheaZYtpXUyMc/1kfOsCa6DFKZ5QriRlY/8NVqsqHqy9TKFr1reZzMz2xxa43KvD5UnzVnnSi1cvDycnBf0tdfwbm5b0uQs2h9oDwPyscZ5gKU/DJFWiw7W7gcnyEGa++4RqGEbwzka/a0f8gypabRIGA9eonrjxRuUk03wMnuCk6aqp1xTTY+e1FMyhQKkJtyO3R9iYBpD0oAJW4uRaXe46XIxJmNQS3KrH4TF7cCAtf0KEi/XL5y7+TfBlxyNX3GF0sgG7E0TE3annBSb292J1g3FljOg0HCidCQdVLh/KKh6bC8Piq4pNqkey3/JHKo/abD+02k/ByoGd2rLJHoNLp2X+sVn
+ NIsxq/nQ
+ L/hkvM04lNNCnxgqn9qLtDL4uLM353+lqMm4ahljqftzLaB2Vz6RljbFskHkppcdZD5rBa1pz4JQPeKBqd+QIEim0rGd/O0c6HuGsOJqvSIUIL88RkMRxO1uqWR2bxQx5cEXdlFD8siTXwfUDBt4zM1JHFkoyFqklAZMXLQ1bDnmcwl1flcKk4FneB2WyQST7K8pk1Xs3pPd2SuXED3LpRv2SnoQvU/B42Ai2Q9bp+12tr73mVF6M6SK9AsmLiWGz2TYZLsnIlNjNb7f6GUd++p58eiwqjbopqBCJqLUZfHoBjXN5T4jv2hYfdnc9ee8W5djFqELbWbIuj+yYw6tSFHiu9AbkTJDxxdVM/EheeXAPF+Fc9jiM5yl/w+FTGBHShJcN7f9MxQxKnKUrTfDj7/QEr8cWDwAIlQnO4WidE9xEJMPAg0kfua0OS/Elk+vjg0YXAN+j8Eagy0QcoAJq+h7GjHEkaqqkq+kuNNaFt3qP1Yzi6S2v8qSlLBzqjUUA7pnmxnjV2EZZYkRqK/s8x3qbt+bJbvO/FrMf1bKwiheBgbSiSWl/XUg7Nc2ouKra5v/4TXeixULViG2dxVs+KqT4EiN++DnKTSNRV8S3D2mSjeAXiBozHKPsawE5ZcnCZUEFB6ZFCZleDCE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,53 +111,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-De-duplicating this lets us delete a bit of code. 
+The VMA tests need an operation equivalent to
+atomic_inc_unless_negative() to implement a fake mapping_map_writable().
+Adding it will enable them to switch to the shared atomic headers and
+simplify that fake implementation.
 
-Ulterior motive: I'm working on a new set of the userspace-based unit
-tests, which will need the atomics API too. That would involve even more
-duplication, so while the win in this patchset alone is very minimal, it
-looks a lot more significant with my other WIP patchset.
+In order to add that, also add atomic_try_cmpxchg() which can be used to
+implement it. This is copied from Documentation/atomic_t.txt. Then,
+implement atomic_inc_unless_negative() itself based on the
+raw_atomic_dec_unless_positive() in
+include/linux/atomic/atomic-arch-fallback.h.
 
-I've tested these commands:
-
-make -C tools/testing/vma -j 
-tools/testing/vma/vma
-
-make -C tools/testing/radix-tree -j
-tools/testing/radix-tree/maple
-
-Note the EXTRA_CFLAGS patch is actually orthogonal, let me know if you'd
-prefer I send it separately.
+There's no present need for a highly-optimised version of this (nor any
+reason to think this implementation is sub-optimal on x86) so just
+implement this with generic C, no x86-specifics.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
-Changes in v2:
-- Added some new operations to atomic.h (in support of the point below).
-- Fixed garbage synchronization in mapping_map_writable(), thanks Pedro.
-- Clarified commit messages:
-  - Mention where $(SRCARCH) comes from 
-  - Don't talk about radix-tree for maple tree specifics stuff
-- Link to v1: https://lore.kernel.org/r/20250827-b4-vma-no-atomic-h-v1-0-5d3a94ae670f@google.com
+ tools/include/linux/atomic.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
----
-Brendan Jackman (4):
-      tools/include: Implement a couple of atomic_t ops
-      tools: testing: Allow importing arch headers in shared.mk
-      tools: testing: Support EXTRA_CFLAGS in shared.mk
-      tools: testing: Use existing atomic.h for vma/maple tests
+diff --git a/tools/include/linux/atomic.h b/tools/include/linux/atomic.h
+index 01907b33537e04c5e860dd2cd61a61dfab6ea8f1..50c66ba9ada58cf05125e2e2472734bf3b0f8595 100644
+--- a/tools/include/linux/atomic.h
++++ b/tools/include/linux/atomic.h
+@@ -12,4 +12,26 @@ void atomic_long_set(atomic_long_t *v, long i);
+ #define  atomic_cmpxchg_release         atomic_cmpxchg
+ #endif /* atomic_cmpxchg_relaxed */
+ 
++static inline bool atomic_try_cmpxchg(atomic_t *ptr, int *oldp, int new)
++{
++	int ret, old = *oldp;
++
++	ret = atomic_cmpxchg(ptr, old, new);
++	if (ret != old)
++		*oldp = ret;
++	return ret == old;
++}
++
++static inline bool atomic_inc_unless_negative(atomic_t *v)
++{
++	int c = atomic_read(v);
++
++	do {
++		if (unlikely(c < 0))
++			return false;
++	} while (!atomic_try_cmpxchg(v, &c, c + 1));
++
++	return true;
++}
++
+ #endif /* __TOOLS_LINUX_ATOMIC_H */
 
- tools/include/linux/atomic.h            | 22 ++++++++++++++++++++++
- tools/testing/shared/linux/maple_tree.h |  6 ++----
- tools/testing/shared/shared.mk          |  6 +++++-
- tools/testing/vma/linux/atomic.h        | 17 -----------------
- tools/testing/vma/vma_internal.h        | 12 +++---------
- 5 files changed, 32 insertions(+), 31 deletions(-)
----
-base-commit: efa7612003b44c220551fd02466bfbad5180fc83
-change-id: 20250827-b4-vma-no-atomic-h-0f8ebc2fe4f9
-
-Best regards,
 -- 
-Brendan Jackman <jackmanb@google.com>
+2.50.1
 
 
