@@ -4,272 +4,255 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35511C8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 10:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D61CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 10:51:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C2A96B008A; Thu, 28 Aug 2025 06:49:43 -0400 (EDT)
+	id AFA076B00A3; Thu, 28 Aug 2025 06:51:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79A276B008C; Thu, 28 Aug 2025 06:49:43 -0400 (EDT)
+	id AAA896B00A4; Thu, 28 Aug 2025 06:51:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63AE16B0092; Thu, 28 Aug 2025 06:49:43 -0400 (EDT)
+	id 8FDEB6B00A5; Thu, 28 Aug 2025 06:51:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E1A26B008A
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:49:43 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C76DA8548D
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:49:42 +0000 (UTC)
-X-FDA: 83825845404.20.A4FF30D
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013014.outbound.protection.outlook.com [52.101.83.14])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BB26BA0012
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:49:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=RaHprtTI;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=RaHprtTI;
-	spf=pass (imf15.hostedemail.com: domain of Dev.Jain@arm.com designates 52.101.83.14 as permitted sender) smtp.mailfrom=Dev.Jain@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756378179;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 76BEB6B00A3
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:51:02 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 21C2F85492
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:51:02 +0000 (UTC)
+X-FDA: 83825848764.17.524A52C
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9813C100009
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:50:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cG6kqENa;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=yqKIEV51;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756378258; a=rsa-sha256;
+	cv=pass;
+	b=II+eohSpi8oR03E/jonAhVGZqTle0E8pYzG8Pdc751Ovzyy50PoxcRJSOVLXKU0+xeOdDQ
+	KvJ3ytRAWrxyV2b0AbFD6FAUDzOONi5P4k+QrpfPBgcaMsxPcEZ/VGC3tQK/abx7V+TqlJ
+	yYWbeWAHhsQYiaDf7D7qq9wi13s0rBk=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cG6kqENa;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=yqKIEV51;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf14.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756378258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ql9/9cIuopnWRN0Ew7GmlRm5CWjD5Nr0GFyrsoPTDFs=;
-	b=3ub0LU+WdDfn3RehCFU80uw21FXGiQb/IcM6FSCVgXBUeQUrWa+y6tnZRKNFSOUDihiUJd
-	Q52hnCSgbDTm0X/wX0Dfrwnox+4mNYpyYZ35TEsKl7MFpmveQ/y7KIhi8qNYJbIzCdTFfD
-	1InRwkriJd7eOU03WuXEzd1UOW4N+98=
-ARC-Authentication-Results: i=3;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=RaHprtTI;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=RaHprtTI;
-	spf=pass (imf15.hostedemail.com: domain of Dev.Jain@arm.com designates 52.101.83.14 as permitted sender) smtp.mailfrom=Dev.Jain@arm.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1756378179; a=rsa-sha256;
-	cv=pass;
-	b=KINfLscI+3GsSCasvbbACxv11Vrc7us9O/epdq8YqLVVSEpl5azbfzlYjeLS/ssdz6tuNg
-	oBMrPST2sqHqx/DxFQGvqTNvY+v79CsA87ob1nNqVhzNA2MImTgMCO5FVeq5hz1gquyauD
-	5+6jU/0frPAH6blddsRqQWUisiFDlKc=
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=W6cdJizYg/Qo8q09ynkhbIP2AWsbyWb8kLTsFQyY9DaVTuai+oxcEEiqQ6uyp/njLv8v9o2MGAFqWQb/j1DGFPWrVVvm06x5bBCUABrZjeIHbTArcwWRbyOAwXfHvcf5XHQEKfbLvmoUkHSf2CtjegVfSMwO7vpbiG/mnjGZKj3m97dGoMbAXPhBovlLiCABTXTDWWy2vZNIE3ZjkJeYw5c2WcWy/rhv+UzkZaoAsGVm8yLTVUJLAs+NMmGWMICPJ8lEsCe4OxF8QKWTe6++CC8J88zOT8ud1Vk+CRc1N5rdzbotXY6y3VqB4DHbK17m6KIsz8HGXXuYwYj689wiDA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ql9/9cIuopnWRN0Ew7GmlRm5CWjD5Nr0GFyrsoPTDFs=;
- b=kdWtplf0lsHPwIsnvi6Y1g+c4TNalT40+SF2PXnRrtthFeFsLtGlW0wUWY2/Tiia8gQD68rLDRXl/+uuPzf3BhGhS5hs6GkyssJYcO6yEzSerpGopLHK6uTOxGnjBhLalYBgsNJsCppiS8hY2m6mCV5009nsIeRA7IchLGMK6s0wS3y1oFlUpAS/gzW4WP4fo+TzKTf7iFA7XkteTSES/Qjk/TJpDrJRvG8y86nAvmaNzQPZyd59nKTH2iGBQemFtAm3k74s4antkUY1MFuMYDsv0FA++8Mo1rBSMLZjt6GRd/Po009GRoHwNi5TduhiioufmPgziNmvTXNcdnCnAA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=linux.alibaba.com smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ql9/9cIuopnWRN0Ew7GmlRm5CWjD5Nr0GFyrsoPTDFs=;
- b=RaHprtTIUZCxBjwh+yW4LPfeBkEziflNSg7AjnzkQJErKl4AIGRWilTw41QpLZgJ/2wkjuuzcmnYrDY31B7umjNmRzNgcMRYdzKGRq/fb8f6+cQBfJoQqxPY9p37wFho4YqE8R5i1bexuwNXs3caNgjBSRbMsZCmaBPYQ/IC2Ls=
-Received: from DB9PR06CA0002.eurprd06.prod.outlook.com (2603:10a6:10:1db::7)
- by PAVPR08MB8800.eurprd08.prod.outlook.com (2603:10a6:102:2fc::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Thu, 28 Aug
- 2025 10:49:35 +0000
-Received: from DB1PEPF000509E9.eurprd03.prod.outlook.com
- (2603:10a6:10:1db:cafe::e9) by DB9PR06CA0002.outlook.office365.com
- (2603:10a6:10:1db::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.16 via Frontend Transport; Thu,
- 28 Aug 2025 10:49:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF000509E9.mail.protection.outlook.com (10.167.242.59) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.11
- via Frontend Transport; Thu, 28 Aug 2025 10:49:34 +0000
+	bh=X9QYOPadtEcK/RZ0qJyl+YgGbHqy64H6Xe8LJ3LSb8M=;
+	b=TSHK3xpd/RH+i18FZ6MQcA6lZhggDlJ0fQgmCSRHuxKnr0BjC/qprLARDUFkiOlBFWRhf4
+	Ok0aD6zbw/6NInr8Mdv9Z8QjbtD73IXutYSXcMWEHrcXtnddI8aG3vuv4+jhktnsSBlMPf
+	UznbSbsx6bFD6SLk5/qNlN6ymoyijg4=
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57S8tmHP029314;
+	Thu, 28 Aug 2025 10:50:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=X9QYOPadtEcK/RZ0qJyl+YgGbHqy64H6Xe8LJ3LSb8M=; b=
+	cG6kqENaeTifFEkssNakVYgdlNxLslUmLdw9cHq6zSpSTGfI1gNCtnfMIXLhRM0r
+	zytNFJlrkNdovoEUg8/1n02gmQt/pzFyBLcgTgukvwOUcOrVjplPO8hglNRHe6Vp
+	c4Enhd0EBEROvFW2ZhM5vlz++nRLb7AP18HmfDBwhyHcy4bRqRCiaixN+AxPG2+M
+	xWsSOtrc9dmBRVn104OLFAuV9OkvyqO5VNqEZYdjnxkRVJowZAtUNiZWK6+fAOTi
+	IFb7bdQUW0luxlv1P2JZuXhZ5LY+bpqTRD0PsR1sPvlJS1tCdNkkulwrMdYgonBf
+	fuA7xbfeFlrzZIpRQB5ajg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q58s87q2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Aug 2025 10:50:27 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57S9o1jM027083;
+	Thu, 28 Aug 2025 10:50:26 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011014.outbound.protection.outlook.com [40.107.208.14])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48q43bm0ph-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Aug 2025 10:50:26 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jmM9LOgE1zCPyiDcxlddWiE/fzC+yC5AGNXqHkv+EGnKNi98qcv64OLG8ZblwEe3zQf5UgyKYoS/lc70WVpVXI70XRsjQMrbxGqsl8+0qksLEuWNc0UOcbh76sFTjQj+BP7WFUUFBTgViNhp2OmRRvzCJaWIohOpbw5l4KN+1df66r2CQ967WP9Zh9AC+cqUstg83Ledt2JE8KJptEd73HNGo4vue+ttc9tnaadzy+MJQDhcctNU6wbXoXcDE8CaWIDBXUKA9XnhH46mTQ/zXrTH58hDrtYzwkiwdlLEu+XGzVmnxKUVY9hObbNVsw42KgRBl3xv8lG8fAOfTKHRGg==
+ b=CAr1ydTW299GZz05HxXBrLOddklIgyqtRW7bJsU6nzDVg7knvE01y8brRyR3modDZTFK1qaS2ZWI1EW+Oh4l4bs9sZBUH35KhMe3qSgxJomHVlspy8eeVeqBBWqaiJ4SDE3s4AGiTGsakHEuHqgGClJBROvx1610R4O6luuJjsdqRTIvwSkXxlrtHqRFI6RfMl0zx32361w5su2ygplmErj642LHoO8PunUS75rZeNwSbZR7mzlcsLwTh+iAj2lfxgr7ZPUIsRHXgRKH3eyiZ8I7H7xJcWhUzgS9++WT+sydzgWBIVgGcpmk32ajUd6LEAr7CqPX/CPXxQA8JrUKbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ql9/9cIuopnWRN0Ew7GmlRm5CWjD5Nr0GFyrsoPTDFs=;
- b=L2hEr2GMUo4c7UGUxnxu4h8KU8GaDEMM+0+76qKSinwqdr84AyGmW2KZMANcAK9rzOL5lcGsDxgceUSTw85a9IxXP7QmiwYuJDHHeZd17ksV3INg6T6ISE/FEAyd5G8XfuqFVlWr6/+OaDAyhpKWVjz/RcJo+ZFiVqTTghLBpCMHdw3r1ec5lnofZy1B21wrFA/5aaqI8ezq+qCZozjpGPzhge15EtgEjZJPMtSFMzgrcaDYXOj+uoSK1ah9O8u0cPOR0pxQn0IrGlroCXbTbkoD/90YBbCIHo9hwIUQ6gFqlLoMl+FAotDI5YQHGOf7hcwgyO2mCeS/9FHC7sB1DQ==
+ bh=X9QYOPadtEcK/RZ0qJyl+YgGbHqy64H6Xe8LJ3LSb8M=;
+ b=TK1LVXdhdg/ALWR2aQWxRUXCMXap2WWksS/0Nt+ifAdyVAAHxWDzbXewVqHq6SgOTXOxlq3+Rv9wLKSgUnIS8x2rcd45QaqDn9vnPEyWrEGry53DlMKYIqDxnZyHxScgsmwsjceOjEJoiJcNpeTsh2eknfjII3KtDCed4xZkzKu6jqaEyHAso6h1QotJW2ZyZVgiGE+xcGGmVvEwoSlGUa7jm+x2qyNfHaWHew7h5rMlqixUfn9iwNYJP9xNuTTMTRJxHyDKKClsSxccy3441Geelr9AOBMlkiajWAm5t5l7TJzURpDmnd25n5rqTrVG9HOfeMoUHN6ypidqAAYwug==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ql9/9cIuopnWRN0Ew7GmlRm5CWjD5Nr0GFyrsoPTDFs=;
- b=RaHprtTIUZCxBjwh+yW4LPfeBkEziflNSg7AjnzkQJErKl4AIGRWilTw41QpLZgJ/2wkjuuzcmnYrDY31B7umjNmRzNgcMRYdzKGRq/fb8f6+cQBfJoQqxPY9p37wFho4YqE8R5i1bexuwNXs3caNgjBSRbMsZCmaBPYQ/IC2Ls=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from AM9PR08MB7120.eurprd08.prod.outlook.com (2603:10a6:20b:3dc::22)
- by PAVPR08MB9435.eurprd08.prod.outlook.com (2603:10a6:102:317::6) with
+ bh=X9QYOPadtEcK/RZ0qJyl+YgGbHqy64H6Xe8LJ3LSb8M=;
+ b=yqKIEV51tjdRsQBLU76KI0O/kLfeKA+hqjufYNzjQcxOwD4fsAaWOS4TEddGwHSrAvJ2QN4XgooLXD+LQfJP0M2B3SEDfwr7ih2nEsJGtDXANIExiG5ch1K7amuwaLV7j9d+CJoL15pD5w93MJvnzo7Up77glekPLHgv1EJrw6M=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by IA0PR10MB7136.namprd10.prod.outlook.com (2603:10b6:208:409::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Thu, 28 Aug
- 2025 10:49:01 +0000
-Received: from AM9PR08MB7120.eurprd08.prod.outlook.com
- ([fe80::2933:29aa:2693:d12e]) by AM9PR08MB7120.eurprd08.prod.outlook.com
- ([fe80::2933:29aa:2693:d12e%5]) with mapi id 15.20.9073.016; Thu, 28 Aug 2025
- 10:49:01 +0000
-Message-ID: <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
-Date: Thu, 28 Aug 2025 16:18:48 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
- peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
- sunnanyong@huawei.com, vishal.moola@gmail.com,
- thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
- kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com,
- anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
- will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
- jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com
-References: <20250819134205.622806-1-npache@redhat.com>
- <e971c7e0-70f0-4ce0-b288-4b581e8c15d3@lucifer.local>
- <38b37195-28c8-4471-bd06-951083118efd@arm.com>
- <0d9c6088-536b-4d7a-8f75-9be5f0faa86f@lucifer.local>
- <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
- <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
- <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local>
- <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
- <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local>
- <95012dfc-d82d-4ae2-b4cd-1e8dcf15e44b@redhat.com>
- <bdbb5168-7657-4f11-a42d-b75cce7e0bca@lucifer.local>
- <e34e1ffe-c377-4c9a-b28b-ca873f3620ac@redhat.com>
- <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Thu, 28 Aug
+ 2025 10:50:19 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9052.019; Thu, 28 Aug 2025
+ 10:50:19 +0000
+Date: Thu, 28 Aug 2025 11:50:16 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
+        baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+        npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+        hannes@cmpxchg.org, usamaarif642@gmail.com,
+        gutierrez.asier@huawei-partners.com, willy@infradead.org,
+        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net,
+        bpf@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 mm-new 01/10] mm: thp: add support for BPF based THP
+ order selection
+Message-ID: <80db932c-6d0d-43ef-9c80-386300cbeb64@lucifer.local>
+References: <20250826071948.2618-1-laoar.shao@gmail.com>
+ <20250826071948.2618-2-laoar.shao@gmail.com>
+ <f1bc20e0-9d39-4294-8f70-f51315a534d8@lucifer.local>
+ <CALOAHbCd4vuZoot-Bt4y=4EMLB0UvX=5u8PjsW2Nz883sevT1g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0054.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::6) To AM9PR08MB7120.eurprd08.prod.outlook.com
- (2603:10a6:20b:3dc::22)
+In-Reply-To: <CALOAHbCd4vuZoot-Bt4y=4EMLB0UvX=5u8PjsW2Nz883sevT1g@mail.gmail.com>
+X-ClientProxiedBy: CWLP123CA0006.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:401:56::18) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	AM9PR08MB7120:EE_|PAVPR08MB9435:EE_|DB1PEPF000509E9:EE_|PAVPR08MB8800:EE_
-X-MS-Office365-Filtering-Correlation-Id: edb5cf43-3ce7-4da9-d577-08dde6209371
-x-checkrecipientrouted: true
-NoDisclaimer: true
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|IA0PR10MB7136:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2272602a-303a-4cdb-0f80-08dde620adff
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info-Original:
- =?utf-8?B?c1FINW13d1pSTDRLcjFIR3NhYUpUZ09Pa0ZJb3cvaC9BejlPd1Uvbnp6SDJz?=
- =?utf-8?B?TW5DaFplQ3EwR2luWmlRRkdmWVlUeGhQL2J0elpNT2o0WjRQb1BXcjAxVm9a?=
- =?utf-8?B?cWRubGJQYm8vaklUbEFJRHZCWEJaWjhQdmgzWjg0QTlvaHF2amZrUVJEYkRh?=
- =?utf-8?B?WVpoVXRZZzdFSFBFSXc2THBCaytzY3JVcmNtOUNkbi9DYThwNlRmeE4xYnZY?=
- =?utf-8?B?THhzejhsZzhjR1d4VTBGVC8vbysrazFMNFR6WHk4cjlMdjRYckFBdGRHUnlh?=
- =?utf-8?B?eEJzYWFCYVVuUE1XMjlxek9zR0VvL3NVQUJXNWVhQkJydTl5RGZvcDZLR0hG?=
- =?utf-8?B?S0tiQlJHdndEOVBDNmpnQTdMdVFJYU90MDR0bWRCMFdUd0UvNUpZZWZ2Q1ZL?=
- =?utf-8?B?cG5NMXBuZFllWDhjN0lVVGNDeDJnM2tleDBmZ01zeXRObENHdkdlZjR3VjFv?=
- =?utf-8?B?WFk1N01QeVJuY2Z0dmJDcUJNNDQ1MzVpK1h5R3Z2YUg1L3Q5cjFkMUN4a0cz?=
- =?utf-8?B?aTRxVFBRNVA1clRzVE9nQ0NrcHg0THRoSGNPQVF5dXRwMndrQ1pGVVRjbWRm?=
- =?utf-8?B?NndMYzJYM0s4S1VlcUY0OHBqNlFjYkd0dGR5SnhtMnR3dDY4UWtURTRiQ1gv?=
- =?utf-8?B?K3ZVcWlxQ0lESFpCSXRQQzJRQ3pXZzBlTG5Fa1BvUmxoZmdISGFud1llNXE0?=
- =?utf-8?B?eWRTcTRRNzUrMUw4K2ZVVTYxdFowdURoT3Y4OTZIK21oYUZ1cm5LalQxZ1Vu?=
- =?utf-8?B?UzFVSVpYeFB1ZGNISHhBNGp3NlZ2eXp2ZjBIcGl5eEpQeFIyU04xUzhsWnpx?=
- =?utf-8?B?VVNRNU9lbTlUTjVLY3lBMGRsOFlvWGVnNjNhQlczZGtVbDBkSm9lcW0vOEw0?=
- =?utf-8?B?K0J5Q3E1anVReEkvYnU1K0RWNERnbFNKUkVtN2t3SGhlcGlMdWVRTENZNlBH?=
- =?utf-8?B?eDQvbHhWY05MbWxCbDA4bTUxK3dnb01NV1dCMW1VYmlFY3lpb3ROa09jWkgx?=
- =?utf-8?B?RmlHQUpFM1lWdDRwKzVVWGFNNS9EVkJ1OWhSMFd2K2RQazBpS3crd1dkdmlN?=
- =?utf-8?B?OW9aSDVmN24ydEJ0TmFMWCtsRmFGYmVySG4wckQ0VWQ3bjRJMWpuRXN0ZTEr?=
- =?utf-8?B?S2p3ZUZGUU9DOHFXUWZLRVRLNGh4SjhleHVNN3JadDFLd1poM3hZUW1rdUt6?=
- =?utf-8?B?Y2dPQzkyRXg3aDZNQldobWNHNTU4SGJsbCtBV3JlbzFYSWx2eUU5eDZpRUpi?=
- =?utf-8?B?eDdvdjVmSXJ4M3hUc1dDYzdpcUkwSDE1Q0QxK05uWTI3ZlRHZnhlRkIyMFFr?=
- =?utf-8?B?Qlo3ZkZ3Q0o0cDVPcGpoY2JCdTFuSWpwOG1pK3p3KzF0a0pudlorakxFclRo?=
- =?utf-8?B?QmFMQVlqZjY4eGhGMzhkRU51WVNpampkbHVrSTZlQStVTVNrYzQxWDVnZno1?=
- =?utf-8?B?OWZZWHhLNkN5NmJZdUE5UjFyZ3N0UG5EZ3AyQTNOdjhsSEw1STk2eE9OeFJp?=
- =?utf-8?B?MmpvVkxjalBJWklFTHpjYUFZenBqT1hRbFZ3alVVNkhpdjJCLzJma3JqM1Uw?=
- =?utf-8?B?VHlpYytKWlk4bllJV3VKTkk2TjB3Zkx6YTV4SHpuOSsrVm5HRmRSUzdxZ1ZS?=
- =?utf-8?B?TXliYWZPNndqa3NkcDBSenBNa1JLcUY4TGQ2V3Fybk5meWc4SDFoaEMrcHpC?=
- =?utf-8?B?dlU4Smp5KzczeUd4a29IR05neDNpenltb2s1cC9OcjlNMytQTDBCSFdSNG54?=
- =?utf-8?B?eXFBOXMwdnFqME5Ob25Ta0ZZa0FzV21kUXpybklMMjB5aWdNMm9QdWlVam9C?=
- =?utf-8?B?OEdmUWRXU1VXMCt0c1BEaEFYbE1BTWhxaGs3T05LeDBUbTF2ME9Fejg2YUdE?=
- =?utf-8?B?cXhERnp5T2lWTUhJd1BmWjJBdVd0UTVObUlTL3RMalJmZHJCdWxjaVRjRWVh?=
- =?utf-8?Q?HInBuVxgxP4=3D?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR08MB7120.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB9435
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF000509E9.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	86b1e054-879a-404e-b4eb-08dde6207fac
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|36860700013|1800799024|7416014|376014|14060799003|82310400026;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OHBaWndPWUV1SzFkL25rWDFJemVtNDhkdm1MY2JuUlVxbUUxMnBQY1FOQkd2?=
- =?utf-8?B?MXJtZWduL2xwODZvMHFSN2w4dnhERUM0UnBOM01FTXFZdEhzTVIweWt3VWUr?=
- =?utf-8?B?cjVXVWhUWHpzZDBRSFc5YnNZdnJrV1NrTG1tbHpUdEcrR1VyUnRad21sMEoy?=
- =?utf-8?B?MnBleitkVXFhTWtNTCs1dTFRSFJHbElpRExFdElvdUlNTUhQbEMyYWxLdGVC?=
- =?utf-8?B?UnYzSTE5aitFbHB1ZkFlL3VicW5nS0ZsaUV3ZWZlRjJuRGhURmpSUWwweWY5?=
- =?utf-8?B?SEl1NVVmMjBqaWtueGFQUXJLeGo0Tzl6Z3FvRUdYanVsZ3lOOHN2d2VDWm5D?=
- =?utf-8?B?bjEwNmwwWVZXVk1jVW5FTWZlRGcrc2RqZHYyTG9waitJT05QYzBaL1BvdEJ0?=
- =?utf-8?B?MmZCcTRGMkNtRTBjeWIyaG5wbGNaU25IQ0FlbWNuQjhhOGRRejR6MHFUTmcr?=
- =?utf-8?B?aDczK3JaRVBqRS81YlI2YkM5TWNjVXlZSWFNZjU5ZmFvZHlVdVg2emRRZnA1?=
- =?utf-8?B?c3Nkd0ZuQk1hVGovbkdyL0NzM0xwbkxQTVJQS0ZURXFWMFc0TTZoMlhFN0x5?=
- =?utf-8?B?ck5Bdm0rdHB4YVBJcWFadFpqU2JOV1FGZTNkY09zS056bloxV1VCcU4yN2dB?=
- =?utf-8?B?QnFWejZiQlZlRGtVU0hhUzIyV2hUU2JXUlFRZHRnYklSVVRuazQ1aWlwQzdM?=
- =?utf-8?B?NUdaQnlWZG5INlIycGh3ckdQazZSeFdJNk5ZUzFMNVZySnFqdmlNMWdaZjZC?=
- =?utf-8?B?YzZjaU12a1hUWmc1TWN5NFVrY0RxSDFEMTBrTlZhWGFCSFVpWUZMOUJhLzFY?=
- =?utf-8?B?QTRMVEc5WEJnRGdZVXBKUXpuTXg4QkV2SjJ2KzBXazJ3NVFGdVJCdWdMbXpF?=
- =?utf-8?B?NUxOWWV6QmxkNk56TnFvbVhKZXhyKytiNnd1MVVxYkhrelBkNm4vMFB3c3dX?=
- =?utf-8?B?US9hSzJjTXZUaHZIOGw2Z0k5STB2SEkxa2ZVUXdGRkhjZ2ZXQyt0aG9qaGVO?=
- =?utf-8?B?dUhOenNWVmtsNi9JWm8vcjlITWhqU3BVK3o1MFdMd2VLNG50UnFDemw5UzdB?=
- =?utf-8?B?cW5DWkdLVk9hL05xT0thNEgwMUxrdFN4bGNIZmcxaXR6RFljT3hGZlJkZmZv?=
- =?utf-8?B?bS9pRGtOUThJeDcvUlpwVUNjQ216SUgrZmJxWkNtZFFoL1BicVpvZkJheUNT?=
- =?utf-8?B?U0ZvZ1htenB6VTlieW91RE5VaG9nZXlNeVpVcXNEUmdHa1VPeHFiNGhYQWxz?=
- =?utf-8?B?VFpPYktUWDhxVTB1NUVOc3FiMUN3RDBNak5rSkJiblBKaVhPdnVLTmg1cVZx?=
- =?utf-8?B?aUMvNTZtZGJiVUNlT3MzTWx5dzdYd0FiMDNmL3Z1a2kwK3VJTU5WV3d0NTQz?=
- =?utf-8?B?aHFtQTRIVkpOMHErUVlmd2ROdEFlcUtKQVpnOHAyMDBBcERXRXk4bXZSdmNZ?=
- =?utf-8?B?MW5PYlNxSitKU0UyUUJXYUhmR3VjR3gwTzhnS0psOG5XbFhIRk5rbDBaazZI?=
- =?utf-8?B?Y0xkMG5KdEJRSnRxdWI2OTNMcGRFMWxBbTcyblhva0puU21sQ1oxUVpNV3BV?=
- =?utf-8?B?WTMzL21zU3Y0RXA4aCtJc2hWZkpTR0hTWDlIM204SjRVaXJPa0FhczVsTWtI?=
- =?utf-8?B?NWMwVktReGpPMkZFMytFazE0QmZxYzNlUEhyUEd3bjZUZXN3TGwraEpLU3FH?=
- =?utf-8?B?QTJRRGV5VWErWnl3Wms2K2I3RmRTbzBOZlBGRVZvZm9scldzLzk1WmpjSXZD?=
- =?utf-8?B?TjVidm5GaTlRSFlRVitIa2xnRDlEenIrd2lzUmFiR1NSaHBuelVoOGlQVUZa?=
- =?utf-8?B?bituYWNWODZac0dqMjdOVE52Qkh4RUg3bSt2UHlETXlSNmFqc1pNbVVnSy8w?=
- =?utf-8?B?MFVJZlROeWxXNVJxZFJIc0F4TFZBUjBWSUFMcmlkeVdFcnNiNDBSaUdIRVVp?=
- =?utf-8?B?WFFFdTN1VWE5WUJnQmxyMkQ0UFpueGFpOHJqZ1hHdnR4UXlHVlVmaHdTUWJr?=
- =?utf-8?B?Z0VoaUNjekVNV2tlS0YyNHFDNDBsQm9WT3ZXYitxQS9iTlZ1Z2FYanBWaGlt?=
- =?utf-8?Q?fb12am?=
+	=?utf-8?B?TkZhb051bXBYclFLQUkrRjlFMVUzenVBUTljZG5lMzZ3R0dnVi9zTmp3LzJ6?=
+ =?utf-8?B?OVVuSDFzVENLYVJWNGRteUxkM2RmWVhkS0FMVXRvUVlaREdObFlqQmJxcGZl?=
+ =?utf-8?B?eGt4ZFNUckxmL285aEYzODJXRXRKSm94M0R1b2ZoVklQWVdpdXV2MXg2Vkh5?=
+ =?utf-8?B?dld2M1h0bzNkVDRLOGExODdHbUtSbFJJMUdueVhjSWVlUlNmTnpjN1VFd1U2?=
+ =?utf-8?B?NStYZ1dhTWFSQ0lscVdKdHA3ZnZZcGx3cklNUEEybEs0eG5waDVqOG1lTStK?=
+ =?utf-8?B?T2ZzUmtKZlZnV1dBNktQQmQycjFCbDZBNGtpc0xybmNWRVR3OWZSb3c0QW1w?=
+ =?utf-8?B?cjJDL1JLalIyUjR2cnJFcmFqVEFzQXRRRmorTFVhWTZRRTFIdDBiQm01MnJ2?=
+ =?utf-8?B?YjhHa25uUGIxbTlzY1dEa2s1UTJXNjZUeGVZbURBeXF0WWkrMFVpemRlZVVQ?=
+ =?utf-8?B?NXhVejk2cFJVdUI5bGw0OVRuNFNBdW45WEZBSjRsb1RsRzc5ODdNWnpVOUdZ?=
+ =?utf-8?B?RkFtc3REd3VOd2t4cXlhQWJYeTFVV3YwcDhuYVRnaVRzR2tjTTcwSjFLUjNT?=
+ =?utf-8?B?bElJYTVUc1lqclR1YitVZnBFcVpRcDJ3Q2dBUUdVTVBWaWt2aXRuOE84Zmsw?=
+ =?utf-8?B?N1QwcEViUUF5QWVMUUQzTGdUUEM1OE5QaitaelpFZWQrRkRnMU1kLzVIZnpz?=
+ =?utf-8?B?OUwzZ1NhM2Y1SWlLOG81dUo4K0dmd3ZzS2VsdGhhYmlOaXI3ejU5K0hUak5t?=
+ =?utf-8?B?VnNscVZGZzd4dlJmeGJxMTZKMEl4VEdNWXFGMVF1ZGhWeU1qQXFieks2MjRN?=
+ =?utf-8?B?cThncHVsaG1LS0ZJaStBbmIyUmxRWkRpZlpxR2ZhNGF6WDZkdTJCeUsvamUw?=
+ =?utf-8?B?dC93ekV6L0dBeXA3OVQ1M3RlQmY1d29vWWU3ZUtReWUxNm90ajFsVmNjbmkx?=
+ =?utf-8?B?alg3Qmk1RnBkNU14ZEFaVGdZOW9oYmhHZ0o2RVdlcWhvNzBnTXIrR0NPMjU5?=
+ =?utf-8?B?MkZPRit3Y0dNM1I3aDlqZ04wK0YwMzBVTWhqU2tkbFgwelpCMEYrL2I4c05v?=
+ =?utf-8?B?T1RlalFaeVMxaU5FU0tBbGlDb1lsODI3ZDRNRkd5YnQvMnF4dzc4aldncDdK?=
+ =?utf-8?B?bE1aSUtQbVdtdFB0UUNZR0dSbGpwaGtsVTkyM1VUMXRZamdNQmRsUzAzYzdm?=
+ =?utf-8?B?Yzk2UWNudDBINHBTdjQ4V290SGhXMThsSVBLMWlDeWw1Qm02a2g5eFJQdnND?=
+ =?utf-8?B?VVhyN2MrWGFlSUdhcFNOU0c2Titjb0cxV1VWUFc4SUttNWpWSlNySlVZL2tY?=
+ =?utf-8?B?VDFXWXdFd3pueGJhS1ZVMTFPeHhVU3VJQnZYQ1JlMlF3V0NlemgwbVU5ejNy?=
+ =?utf-8?B?UCtVMm44WHlMNmpJMmtXYURBMlhyUWFteUZuZEtURHM4NG9zcDhCQ0duK1Vk?=
+ =?utf-8?B?b3dZeXNYOHpvSmluRXBKWGZIZG5udnJNM000VWhxYm9hWU0yNUFSL0l3MS9s?=
+ =?utf-8?B?RXFiWGZHN1hyOTFaWWh2QVhDL2JrR1FrQmllOXg3MHM2bUp2QU9ZRk5CTWVm?=
+ =?utf-8?B?aGJva1FteTd4MVJJNDd5aXFUT0lCeFNhcnQyaHZYekJ3cVRyMUJnZFF5ZWE3?=
+ =?utf-8?B?NmNPcFA4Mng3Z25VWjdOM3lSN01ncDZtNzdoeGJpVXRpdnhEcW1ObTBlcDVW?=
+ =?utf-8?B?bjFNelpYalJiNlZ6c3Q3a3lCRmtsdGVXOUpqV1ZKWnZFcmpYejFkdnFzK1R0?=
+ =?utf-8?B?TEJ6TG8yMEtqc1h0aTBJYys4di9XekZWZjAzRFU2Ym5GcTlZUFRIQmNxTjlk?=
+ =?utf-8?Q?hCbRYIZgpaaifWb3VjSHwAOeApkAQZya6gaRE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(36860700013)(1800799024)(7416014)(376014)(14060799003)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 10:49:34.2669
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjdZSStLRFprM0dJQjBWOXo1YVdoUExGN2pJbGxma0VVdHhJaTV3Y2o3azVW?=
+ =?utf-8?B?YnpDb3N4aU55bHdYTVBMaE9xN1IwVm5vS0ExZGhGQ0p6Yk4vMDgvVnd2MlR3?=
+ =?utf-8?B?WHlyVTVhQkdFbTZDZHZudG9Ud1E1R3Nmb3kwZkdUL25mY085T3dwRUVabXFD?=
+ =?utf-8?B?NWdyakx3RXFra09PL1I5MWJVbTNGTkVoYnoyOHJzVDVraTMvNU5nV2MvWnVV?=
+ =?utf-8?B?TGxIV1JOOXRCUmpRNExhVmNTOElxSllQdTJUeHRpNWkyUG9taSttVlhYd1Jo?=
+ =?utf-8?B?QnFCRjRNa0o5QlVaRXZ6STF6SlFrNlFJL0lsMkZXWEtLaEMwNENOS0FHOHBs?=
+ =?utf-8?B?UFVmMW1raHRwZ1hYdUhGOXdMeldVZGpqZE1ha2doR0hVM240UVl1dGZ4OHlw?=
+ =?utf-8?B?NWNVRHFOWlUwNmgyVHVhd0p1RjhFMXZ6Yi9Fc3pmWmcwTjFLa3Y0YnNaSTdy?=
+ =?utf-8?B?K3NTSHhxeTRoeEpYZEYySUQ2K081NFFqV1lHVE1WVyt3T0hVbzN6MHBtR1Qz?=
+ =?utf-8?B?OFNJSHlicEFpbXhZUXJhNnJrWC9sTk56VnBYTE1tbUM4SWpJUnVHa3hzSndo?=
+ =?utf-8?B?eVU0M1BLYWFaTXN3WjdtQWRPMktFaGRVVHNHZmNGcklHWTZGZHFpYlhjRUFN?=
+ =?utf-8?B?U2U1RjFoZ2VtZTFpaTZ6VUdBcFgvZzFmdFZxNzEwTlIwanM4VXk5WW1iaXNY?=
+ =?utf-8?B?cDBaZVhjYzY1U3hlK0JUdWY0cE5nNjVwdlVFcU10NHhWUVFkWGRnek1RbTlE?=
+ =?utf-8?B?NTgzN2hBeFowcEpWdWxidUVZWExyZlJ1SUdyWXVjQVc0WHJVMUFvQ3hyTE5y?=
+ =?utf-8?B?UkxrbkVLQ2t2bnYwWkNPeDZxRlpZNUhHbVZmaVBXa3NPblFYdFRGWDRPazBy?=
+ =?utf-8?B?cnltOE5md01XY2VwcHBidGFFVklQQzVpVHZQUG1HbVh0a0N3MXozbmRyYzRv?=
+ =?utf-8?B?eWNmSWNvNlFqbG05Z3dhbDNHWkRFTlk4dGRmVnpzZit3cXBlcnVmajN5dERO?=
+ =?utf-8?B?am1xTi9VenA2VmlPNndtVS9sUXZuTkhveFlVVE9remRidHFHdmUvU1pLbHRs?=
+ =?utf-8?B?cXAvY0dUck9TWGpyeThNclBpVmJUUFhqUkVDWTZleGRWVjF1SVdCaUUrVXdy?=
+ =?utf-8?B?blVGY2N6ZHF6T2s0YU1MdkxpbEJseWp5UUc5OWVHMzRUM1MyVm5laGRqMkZU?=
+ =?utf-8?B?cWtYYWFNUDk0N3REVzcwdmFjcjJVWC85ZnMwczdpNE91a0xvMHpEaDVjZFBW?=
+ =?utf-8?B?dDNPUDJ4TzJIVFlKSWMyMWZpekdsWGtLL0w5NTRkdVdVakZ4SnNFRWFNVTlh?=
+ =?utf-8?B?K3kxUUoyakIvMjQ2MWw5Tk5ISzQ4blNkM1FoWGZZZkUzVmFRcG84UFd3V2I5?=
+ =?utf-8?B?L29LVVZia3llR0xFOHBkRDlBblZsNkdXdjUxbUtIOHdMTmI5RXB1SVR6dVpW?=
+ =?utf-8?B?b0tQU1BxQmc4SnNvWmJUMUsvbXRiSmdlaUtsM0E1R1Qvc3B2TktvaCt5MWll?=
+ =?utf-8?B?RU84WlBQbUduQzNVa1FodGUwRHU5ckkwR29FTExMQ0JFZFlKOVdKL3FRZkRR?=
+ =?utf-8?B?YVBjZU1hZ2Z6QkZ5aWs2L3RNQUJ2M0E4bWw3S0w3NFhLcDlYN1FVOUFyTTVp?=
+ =?utf-8?B?WGtQdWxUTXBBTXIyd2NkUHNrb0VtZTU5WlNuRHJzNXJ3Y0pubVZWZElqSExm?=
+ =?utf-8?B?dkVONUZnQ3BwYmlkZWx6OW1PMVFQS08xbWNOR1hqakdja3g1R21hTEcwSStE?=
+ =?utf-8?B?TDFZeEExT1Qvb0taQmt1SzRmdERkRzRudU1aT0g3TUROT0c5a3JBaWVPZkVq?=
+ =?utf-8?B?WCtZczNvM0ZLQU1kWlRxZW1xaiszNTkzckU5SG1nZ3R6dDV2aVJIRDdvbS9n?=
+ =?utf-8?B?MFVuYXVSaldlbzRGZHBYOGJPWTZCT0kyd2VTTTdqeTA1aXoweUxRR09DdCs4?=
+ =?utf-8?B?ZndsVEtJTzFueVIxcGZxK0d6aWE3RHYrZUd1clNqME5MTTlCWDVjRWpuZXpC?=
+ =?utf-8?B?WjBMVjdCT0doN2NvY0hTWGV4MHRvZDcrOVN3SjVxTWF0NjZOaGYyd1ZlbUVI?=
+ =?utf-8?B?OEdkZ2RxeHI1ZGczUlVYNmIrazJNU2pzb0lkbnMvY2lsZlkvbFFlWnhHeERO?=
+ =?utf-8?B?WEJzRmtzUzRxVE9lRThHcWpIV2FJNHg1Q2pndUkxeWNvR0NCQjFXRXRBSXNk?=
+ =?utf-8?B?eGc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	F2B6KayVZhjKGt5j7QKFm1XJ7V15aFiE/qxSFmRmCncsUyGhyUgAnlG8Kf81wq8wr7nJVBlch/PBrGNlsptGxE/88CZbDR5c0GbCg/dF+zNsm76+ZfssmqMiu9wJUEDf1VvkFcEMZGKncE4NuAhX2gQt07ZL9tH+ddGz5ZI7zbknBepURthZ7A0e7u6LQQZ5Yz2YeIxRtiPJpJECtoRCq+Jz0yRXYdrRPF77WXQjx6evN9cAcOzGODZLIKFk51I1joBDHdCJpwhAJj2tSN1qIyIsRTDnxNEpLvw0wTZ/j2yuhnrPkz3zSHMgsg5+aAV9VMWpm7G4VFAXAp3OCNrxeFByaWThqhHICavJfwAfVuvxO3b+m49TMq2zTUkBc+iVyWFtiqWisFFO0OUnPjM1GBFOQEUCgRvJh3Kr4D6RPWfKkBUBl4DHy4toavt1L2xwV9WPdrwCE8eGJ8g5xAiE3g2cpwIDDbScnDb3rdO8zAk+rM2mk2d/49tm0nanmb2vbDrPBcU7J+GLwMVWNfq0CeUaXuLZR3v4j7AOJ47aHvQIy2mNLAWidT837u0uPCZxcImPkQNS3Bxxz5Puaa4nLVs2Idqec9SWxfvl147R63Y=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2272602a-303a-4cdb-0f80-08dde620adff
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 10:50:19.1148
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: edb5cf43-3ce7-4da9-d577-08dde6209371
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509E9.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB8800
-X-Stat-Signature: 46bio59oc8oaybskane9htrn1ac5zpn9
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U4CVEqjg6GMHpsIFnj/yqUHiuh/EdoaXvS/+qanWWj3miEmVf+sNQgt+IjWff+ViZyFK7J/XIziRk+7IbKBoUzJ+bN1S6xH5XMlEvcrfcwA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7136
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-28_03,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 malwarescore=0
+ adultscore=0 phishscore=0 suspectscore=0 mlxlogscore=999 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2508280090
+X-Authority-Analysis: v=2.4 cv=J6mq7BnS c=1 sm=1 tr=0 ts=68b03474 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=07d9gI8wAAAA:8 a=20KFwNOVAAAA:8
+ a=yPCof4ZbAAAA:8 a=pGLkceISAAAA:8 a=EUKqZ3xtgp5BXCl0uf8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=e2CUPOnPG4QKp8I52DXD:22
+X-Proofpoint-GUID: 2grRuPNC379gAs3s3UWVD8I1ExjhsYn8
+X-Proofpoint-ORIG-GUID: 2grRuPNC379gAs3s3UWVD8I1ExjhsYn8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyNyBTYWx0ZWRfXwXttoAEAn3MV
+ Xc6f3zSafgMOal4jTuxXCr8asoG/okPnhpV8FTz5cfMVAcXMt9VcW/ATUJn3AcqAaNuUuekMro6
+ AB8KInJbWGRytpd8n/MKEi+f8nYUJ+YMurgNlFreU/kAUbLsrTHpiCk83yesAq95EJUpNmbzJLG
+ uBIF1oWpu7AqXJmGfXxYZIJDdO5tYJjZCNiTYT635GRRGUhkXtjtD82imR0/RjxrHtb6R9BpsBU
+ R/2Z28KXrTMQIIpiiHwWYwzWZfFVUCsFBy69gLAN5nZyYyptoZiZe9V/nMsMIbdUr8P26LjcYxO
+ ORm3Mau7KnXvLkJTmsacBXe3T/YUmyIKnr9g/O8R0QwPKM0xiF7UvQzSI4WHdM4so8vFnlHOyB3
+ Lvs51krP
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BB26BA0012
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756378178-517720
-X-HE-Meta: U2FsdGVkX18nA9UPsGlzAaGOSTArelKg4q5ntdbmN6euzt1Yb7qHSaPVzJf4LmmtO+JWYbTx4igR6U9q+SKb5xkvPkY0JKC75hpxfEcjSdxl+Qef7lZ5I8QumkstHyODJs7FeGiGUeCfidxtelKqOV4cId0uhENJ7IPfk4GIJcXpFgPTWwXLLub6UKBCSKc4+Rv+AHTewJTabSzF/AhFqfvOVvEBDe89efRKa3VEtsPi3d5rwwCv5aQ7QnjnYu0t3LQCvWDERat3tzNCmc/u1mJH6mQsQ6qgceFObp7KMGC64HMfVRcIT98HOaMQ1qFmByegXHchjWvlbbbqsqlDMruJvC4IMd0bcveveqQyWGqnAKb/+BKXfarPFj4DdNqRG3lFBy2KLMrin3nNx/nGwQtDQyXa1tVxpbz8wWMJ/uflKJjJQM3v/2NZgW/A63TOQANPBTpuWa4IXvqZf1+BcqVfh33vhQ8lELMGgdViDM6eLyZuYpNNFJQfz61B5iC2FMQwDD4yx8pTdnT0sT8N1BDJKdbu6G+KOPmw6IYX/PvFNzNH9rekYWPcUc6BXx1LyrS/W5Q2pPcu19qlduKm5TAcDhe9rAytfn8Qu43mFKC9EHqvYY7OjhI2beSXUmJmNM+n+HGfNvi11REv1OUMhqblaXJ1ArLVlPWI3IqaYgEwEwXZM/1fH5+0rJw9aK1Ewokzd4cfF/ZSuSd9aeSq/GhIEJEbiuWbme1JljUgKqk/JAR/XEhH8W0YpzD5kqV4i02KECWz6dArioZkwSEDNlN7n+u6cCzlHsf8DR5AEyyAHgh+QG2PcT/CvVVztoS3L5rrFrg9n5TPAP4qZNndeoPzOO/1fCQEdYSwnnD9mvVCe1UIFf+a/aW+cKyycXm8TyWY3avVA72KQDCoexKCn+bWcJyWnpLo4boW2f6P/INoh+bKN4+PSoXR+NJxvOGDfKvshwBBvKp5i2257O9
- K23vK8Db
- nIy3HZcjccgPTnVpSMITyNAkhnkVcqQK8zdMngOHda9J5OYon50aCoV9v10eU3zgQeIBFx4yWPM6DguPpboSAsluuzyLmDKvQPhAcDejJDg+RiLxvOHsyz4Gi9iVfih5Y/f+k1a2zWDeqiP7xUCIvMHPtYWBFB+3etiDBBbjBxhEP9SOM6BkC6JePN+5sPUindheoVKuUSN0E5chnwU93VMyqqkeg7e9SgFGzVRgKJzTmmzgp3L904C32Se6zqp81ft6ASV0Xt6EB4LsNVHlIPFNF4g8MRfBOfWoD57rW626iC4x5dqIDlJ8NjHymZ/301Kx1a3Bk6FBTXCwi+chMzuuEHYowPckYx7vg3qvrCC7dB+zWdSlbm6UwiX+ekSLybnldajPqYQKEHtH1omIKust40+n7FUJ+KfjMoUCnd4djFX00aR2JQmNJqRm8/rJ8ZTTvVs78jmR6DsluvnWMQLIkmNujVDLXkwC22vX+T19VR0kYk/GFLiz7CGurzBcU9kqmgyjTJowx+hIggn0Mv5iYpGxq306+wzhSDHnovAXlyEwJX25f5HiFC0dorpemdLdLvEA6PLS8oQyXPJOx3HQPKTGO9uNJ4RX+pNbN+0DTvYJ/WoqFbCpEoNKOSPRAPtUv1r8Sd8BcadBIkrCoDrBMGjwl9GVu5/v6GQpX9ichHio/w6v+AcAEPYOk34pQmXiuSwZknTHOeg3mS+lXjVBfd7W4JQubDFrv
+X-Rspamd-Queue-Id: 9813C100009
+X-Stat-Signature: a5p3mhpgbowsiqbynrxdifx1mwojgptx
+X-HE-Tag: 1756378258-977774
+X-HE-Meta: U2FsdGVkX1/QovnMboNetmDIAiWX6KyBsSZjHpBHA+ZUqrIkgZUz5h8553ifKsnxKXersupZ2E97jejxPv73ndevNSMTLrd6jUikbfjAZ26vE30JW7gA4fCA4drs7F9anm5/V0SWidMyy3TkxZAVM/TWxzCGkHicjGzCyO6Wnnvf7CI35RmSAMczPQ20UgAhHh/L1/uogHZpJHPTF2C8ra5ybZuPT1gmSAbP9qX7cGmvVzqXlw0vwZ2vZhnTd48UfLL0uPLQnEWcifhGoYHZtHaf6tboftHl/2a/IAxEOF3vcdQoEjtcDsMet306zfInRMhyWnh2V/SVZ4S3ynG+pYYimvF3TRz4iZ1tVUKrqu4KZbjYrxcOTaFy2OwefvDF6pFI3WHba/+UykBef7Vo9nBSJKzdhLxOgSBFLm5fRkoGGLFU1F47rhOFnlPCy9pAqZHt54ImkhfJR1B0hfvonJCTYUfzwbvNfh/e2BAiKOhA7DURGntkQ60jlcCmRjsWbHeYkp7mGX14Ou1o8OMR7+d4YR5qd5Ph6Sc0qVmRkDb0a57E7wJgG81J/eexDR3cSWLFzfzy829+xP7J2R6V3+22kObXLm6DZO963smIgcau851mvLJi3WLCbysljusIhryuRuNHJTHKeq2J5eiqqR+q5XgilMjXGry1Uq2j9TrRt4UIieP8SjXBPSDvh9YU0VkQKZ01tTDk9Xgxq2wgbjVzQCsuCJQtZXPJseNkDbZoLSFOtVze5qPj3IPkXuxYL9shHopMeUsZ38dZlCWT4Tnu2Na+asY24JjZuntReXBHo3tUwoNKzj+5mqjnYNoBOF1foqYJbyLTRIybMPKxrADwM+fqCB+TxtKT7gVpsXu5DgAv+QqktOoi1x6BpukzOP7onU70DUa7XRI66cKlxExWwq/r4ilABwsg+ymq1oyNuaK1BbzCkmhag1S6TuZdqrfMs8xKvOnKDRiXllb
+ 8p381QAb
+ /jIorfe19F4Yh6WRHnYfntiftRhN+Rzj8yh9/tJIZjDRPL37Ws3E/50wQkkQttMIK2kaMxJvtPaYF+6DCrgDe5We+GOhRqVnVOm0GsY7HwQsyk97q+tVN0bH4rhQNrj7opN4hO25KBunZPPabxq593kepqIdAR8ozo0JIVWvBcXzxipSD/hW4CxnLg9Uur/jBWANHZto3VQW4G5ZTCAJI5mh8i6rtV/Zj0lT+vOpcpZ3uki1/5/h/hwTN6Ldcw3+/ioXc1h+ER0yunWbFMr+MzXHP1M4yD8EwJ1N2VX/0L6W3v29w2ZcaHL3YQ4EGntlH/N7WgqjZWpwpSYCJeDumzvhIEGvTbuKf6QN/CUU0Kd3JAgpcd9a3qEWo3ivOZccPa2G40gojC3frkPdmmgRi6Qdq2/AP1gcMw8wBhXcPl/wzDo06PBPGoIQPuO5iychV6nBC9RSN6bt1oRBicne74mpFdf3EPPKXTMAioyK2Dr7MAVin5RE14A7zJQWypkK4dIRzVhMDiAqrU2X8+q+/ec7CmMqApOWXljBbUW436CprgjM2EyHuO9b1oHgFxF6EPp0PwEocK8hDKqpohedIjBxhmq0kKEB3v6QxCFrydgZDtZgLdZILM8c7FogPiYK65/wLoUAlbaxAWwP1+2qPw/HywSBMW2wok8vOEULi/+zSsH7/YRWWH3UWx/0I011UmMD7bIXckmhYgi/TfLXmywijBkz/jkQLwEj64mOo9Z8YWUr2P3JGHZFyod8sxOlG89cwDQEDuZjER/xSjMVICnCIwsVs+moctnKbjYH8Dkh/OfcG5O7patyrNZrUVQhMK0qLtXvsjwDMrm77dL2RP7QobfK1ZxAZhOcDP6VKlVc6YfNsqoOB+akGp02pChZU/4pPAlOhkVFvlTpmQhLSjyn60SZ6Dd+f9rCQKahNRAIySFGU5xesC2/hKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -278,99 +261,914 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Aug 28, 2025 at 01:54:39PM +0800, Yafang Shao wrote:
+> On Wed, Aug 27, 2025 at 11:03 PM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
+> >
+> > On Tue, Aug 26, 2025 at 03:19:39PM +0800, Yafang Shao wrote:
+> > > This patch introduces a new BPF struct_ops called bpf_thp_ops for dynamic
+> > > THP tuning. It includes a hook get_suggested_order() [0], allowing BPF
+> > > programs to influence THP order selection based on factors such as:
+> > > - Workload identity
+> > >   For example, workloads running in specific containers or cgroups.
+> > > - Allocation context
+> > >   Whether the allocation occurs during a page fault, khugepaged, or other
+> > >   paths.
+> > > - System memory pressure
+> > >   (May require new BPF helpers to accurately assess memory pressure.)
+> > >
+> > > Key Details:
+> > > - Only one BPF program can be attached at a time, but it can be updated
+> > >   dynamically to adjust the policy.
+> > > - Supports automatic mTHP order selection and per-workload THP policies.
+> > > - Only functional when THP is set to madise or always.
+> > >
+> > > It requires CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION to enable. [1]
+> > > This feature is unstable and may evolve in future kernel versions.
+> > >
+> > > Link: https://lwn.net/ml/all/9bc57721-5287-416c-aa30-46932d605f63@redhat.com/ [0]
+> > > Link: https://lwn.net/ml/all/dda67ea5-2943-497c-a8e5-d81f0733047d@lucifer.local/ [1]
+> > >
+> > > Suggested-by: David Hildenbrand <david@redhat.com>
+> > > Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > > ---
+> > >  include/linux/huge_mm.h    |  15 +++
+> > >  include/linux/khugepaged.h |  12 ++-
+> > >  mm/Kconfig                 |  12 +++
+> > >  mm/Makefile                |   1 +
+> > >  mm/bpf_thp.c               | 186 +++++++++++++++++++++++++++++++++++++
+> >
+> > Please add new files to MAINTAINERS as you add them.
+>
+> will do it.
+>
+> >
+> > >  mm/huge_memory.c           |  10 ++
+> > >  mm/khugepaged.c            |  26 +++++-
+> > >  mm/memory.c                |  18 +++-
+> > >  8 files changed, 273 insertions(+), 7 deletions(-)
+> > >  create mode 100644 mm/bpf_thp.c
+> > >
+> > > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> > > index 1ac0d06fb3c1..f0c91d7bd267 100644
+> > > --- a/include/linux/huge_mm.h
+> > > +++ b/include/linux/huge_mm.h
+> > > @@ -6,6 +6,8 @@
+> > >
+> > >  #include <linux/fs.h> /* only for vma_is_dax() */
+> > >  #include <linux/kobject.h>
+> > > +#include <linux/pgtable.h>
+> > > +#include <linux/mm.h>
+> >
+> > Hm this is a bit weird as mm.h includes huge_mm... I guess it will be handled by
+> > header defines but still.
+>
+> Some refactoring is needed for these two header files, but we can
+> handle it separately later.
+>
+> >
+> > >
+> > >  vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf);
+> > >  int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+> > > @@ -56,6 +58,7 @@ enum transparent_hugepage_flag {
+> > >       TRANSPARENT_HUGEPAGE_DEFRAG_REQ_MADV_FLAG,
+> > >       TRANSPARENT_HUGEPAGE_DEFRAG_KHUGEPAGED_FLAG,
+> > >       TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG,
+> > > +     TRANSPARENT_HUGEPAGE_BPF_ATTACHED,      /* BPF prog is attached */
+> > >  };
+> > >
+> > >  struct kobject;
+> > > @@ -195,6 +198,18 @@ static inline bool hugepage_global_always(void)
+> > >                       (1<<TRANSPARENT_HUGEPAGE_FLAG);
+> > >  }
+> > >
+> > > +#ifdef CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION
+> > > +int get_suggested_order(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
+> > > +                     u64 vma_flags, enum tva_type tva_flags, int orders);
+> >
+> > Not a massive fan of this naming to be honest. I think it should explicitly
+> > reference bpf, e.g. bpf_hook_thp_get_order() or something.
+>
+> will change it to bpf_hook_thp_get_orders().
 
-On 28/08/25 3:16 pm, Baolin Wang wrote:
-> (Sorry for chiming in late)
+Thanks!
+
 >
-> On 2025/8/22 22:10, David Hildenbrand wrote:
->>>> Once could also easily support the value 255 (HPAGE_PMD_NR / 2- 1), 
->>>> but not sure
->>>> if we have to add that for now.
->>>
->>> Yeah not so sure about this, this is a 'just have to know' too, and 
->>> yes you
->>> might add it to the docs, but people are going to be mightily 
->>> confused, esp if
->>> it's a calculated value.
->>>
->>> I don't see any other way around having a separate tunable if we 
->>> don't just have
->>> something VERY simple like on/off.
->>
->> Yeah, not advocating that we add support for other values than 0/511, 
->> really.
->>
->>>
->>> Also the mentioned issue sounds like something that needs to be 
->>> fixed elsewhere
->>> honestly in the algorithm used to figure out mTHP ranges (I may be 
->>> wrong - and
->>> happy to stand corrected if this is somehow inherent, but reallly 
->>> feels that
->>> way).
->>
->> I think the creep is unavoidable for certain values.
->>
->> If you have the first two pages of a PMD area populated, and you 
->> allow for at least half of the #PTEs to be non/zero, you'd collapse 
->> first a
->> order-2 folio, then and order-3 ... until you reached PMD order.
->>
->> So for now we really should just support 0 / 511 to say "don't 
->> collapse if there are holes" vs. "always collapse if there is at 
->> least one pte used".
+> >
+> > Right now this is super unclear as to what it's for.
+> >
+> > Also wrt vma_flags - this type is wrong :) it's vm_flags_t and going to change
+> > to a bitmap of unlimiiteeed size soon. So probs best not to pass around as value
+> > type either.
 >
-> If we only allow setting 0 or 511, as Nico mentioned before, "At 511, 
-> no mTHP collapses would ever occur anyway, unless you have 2MB 
-> disabled and other mTHP sizes enabled. Technically, at 511, only the 
-> highest enabled order would ever be collapsed."
-I didn't understand this statement. At 511, mTHP collapses will occur if 
-khugepaged cannot get a PMD folio. Our goal is to collapse to the 
-highest order folio.
+> As replied in another thread. I will change it.
+
+Thanks. Will check the other thread.
+
 >
-> In other words, for the scenario you described, although there are 
-> only 2 PTEs present in a PMD, it would still get collapsed into a 
-> PMD-sized THP. In reality, what we probably need is just an order-2 
-> mTHP collapse.
+> >
+> > But unclear us to purpose as mentioned elsewhere.
+> >
+> > And also get_suggested_order() should be get_suggested_orderS() no? As you
+> > seem later in the code to be referencing a bitfield?
 >
-> If 'khugepaged_max_ptes_none' is set to 255, I think this would 
-> achieve the desired result: when there are only 2 PTEs present in a 
-> PMD, an order-2 mTHP collapse would be successed, but it wouldn’t 
-> creep up to an order-3 mTHP collapse. That’s because:
-> When attempting an order-3 mTHP collapse, 'threshold_bits' = 1, while 
-> 'bits_set' = 1 (means only 1 chunk is present), so 'bits_set > 
-> threshold_bits' is false, then an order-3 mTHP collapse wouldn’t be 
-> attempted. No?
+> Right, it should be bpf_hook_thp_get_orderS().
+
+Thanks!
+
 >
-> So I have some concerns that if we only allow setting 0 or 511, it may 
-> not meet the goal we have for mTHP collapsing.
+> >
+> > Also will mm ever != vma->vm_mm?
 >
->>>> Because, as raised in the past, I'm afraid nobody on this earth has 
->>>> a clue how
->>>> to set this parameter to values different to 0 (don't waste memory 
->>>> with khugepaged)
->>>> and 511 (page fault behavior).
->>>
->>> Yup
->>>
->>>>
->>>>
->>>> If any other value is set, essentially
->>>>     pr_warn("Unsupported 'max_ptes_none' value for mTHP collapse");
->>>>
->>>> for now and just disable it.
->>>
->>> Hmm but under what circumstances? I would just say unsupported value 
->>> not mention
->>> mTHP or people who don't use mTHP might find that confusing.
->>
->> Well, we can check whether any mTHP size is enabled while the value 
->> is set to something unexpected. We can then even print the 
->> problematic sizes if we have to.
->>
->> We could also just just say that if the value is set to something 
->> else than 511 (which is the default), it will be treated as being "0" 
->> when collapsing mthp, instead of doing any scaling.
->>
+> No it can't. It can be guaranteed by the caller.
+
+In this case we don't need to pass mm separately then right?
+
 >
+> >
+> > Are we hacking this for the sake of overloading what this does?
+>
+> The @vma is actually unneeded. I will remove it.
+
+Ah OK.
+
+I am still a little concerned about passing around a value reference to the VMA
+flags though, esp as this type can + will change in future (not sure what that
+means for BPF).
+
+We may go to e.g. a 128 bit bitmap there etc.
+
+
+>
+> >
+> > Also if we're returning a bitmask of orders which you seem to be (not sure I
+> > like that tbh - I feel like we shoudl simply provide one order but open for
+> > disucssion) - shouldn't it return an unsigned long?
+>
+> We are indifferent to whether a single order or a bitmask is returned,
+> as we only use order-0 and order-9. We have no use cases for
+> middle-order pages, though this feature might be useful for other
+> architectures or for some special use cases.
+
+Well surely we want to potentially specify a mTHP under certain circumstances
+no?
+
+In any case I feel it's worth making any bitfield a system word size.
+
+>
+> >
+> > > +#else
+> > > +static inline int
+> > > +get_suggested_order(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
+> > > +                 u64 vma_flags, enum tva_type tva_flags, int orders)
+> > > +{
+> > > +     return orders;
+> > > +}
+> > > +#endif
+> > > +
+> > >  static inline int highest_order(unsigned long orders)
+> > >  {
+> > >       return fls_long(orders) - 1;
+> > > diff --git a/include/linux/khugepaged.h b/include/linux/khugepaged.h
+> > > index eb1946a70cff..d81c1228a21f 100644
+> > > --- a/include/linux/khugepaged.h
+> > > +++ b/include/linux/khugepaged.h
+> > > @@ -4,6 +4,8 @@
+> > >
+> > >  #include <linux/mm.h>
+> > >
+> > > +#include <linux/huge_mm.h>
+> > > +
+> >
+> > Hm this is iffy too, There's probably a reason we didn't include this before,
+> > the headers can be so so fragile. Let's be cautious...
+>
+> I will check.
+
+Thanks!
+
+>
+> >
+> > >  extern unsigned int khugepaged_max_ptes_none __read_mostly;
+> > >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > >  extern struct attribute_group khugepaged_attr_group;
+> > > @@ -22,7 +24,15 @@ extern int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+> > >
+> > >  static inline void khugepaged_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+> > >  {
+> > > -     if (mm_flags_test(MMF_VM_HUGEPAGE, oldmm))
+> > > +     /*
+> > > +      * THP allocation policy can be dynamically modified via BPF. Even if a
+> > > +      * task was allowed to allocate THPs, BPF can decide whether its forked
+> > > +      * child can allocate THPs.
+> > > +      *
+> > > +      * The MMF_VM_HUGEPAGE flag will be cleared by khugepaged.
+> > > +      */
+> > > +     if (mm_flags_test(MMF_VM_HUGEPAGE, oldmm) &&
+> > > +             get_suggested_order(mm, NULL, 0, -1, BIT(PMD_ORDER)))
+> >
+> > Hmmm so there seems to be some kind of additional functionality you're providing
+> > here kinda quietly, which is to allow the exact same interface to determine
+> > whether we kick off khugepaged or not.
+> >
+> > Don't love that, I think we should be hugely specific about that.
+> >
+> > This bpf interface should literally be 'ok we're deciding what order we
+> > want'. It feels like a bit of a gross overloading?
+>
+> This makes sense. I have no objection to reverting to returning a single order.
+
+OK but key point here is - we're now determining if a forked child can _not_
+allocate THPs using this function.
+
+To me this should be a separate function rather than some _weird_ usage of this
+same function.
+
+And generally at this point I think we should just drop this bit of code
+honestly.
+
+>
+> >
+> > >               __khugepaged_enter(mm);
+> > >  }
+> > >
+> > > diff --git a/mm/Kconfig b/mm/Kconfig
+> > > index 4108bcd96784..d10089e3f181 100644
+> > > --- a/mm/Kconfig
+> > > +++ b/mm/Kconfig
+> > > @@ -924,6 +924,18 @@ config NO_PAGE_MAPCOUNT
+> > >
+> > >         EXPERIMENTAL because the impact of some changes is still unclear.
+> > >
+> > > +config EXPERIMENTAL_BPF_ORDER_SELECTION
+> > > +     bool "BPF-based THP order selection (EXPERIMENTAL)"
+> > > +     depends on TRANSPARENT_HUGEPAGE && BPF_SYSCALL
+> > > +
+> > > +     help
+> > > +       Enable dynamic THP order selection using BPF programs. This
+> > > +       experimental feature allows custom BPF logic to determine optimal
+> > > +       transparent hugepage allocation sizes at runtime.
+> > > +
+> > > +       Warning: This feature is unstable and may change in future kernel
+> > > +       versions.
+> >
+> > Thanks! This is important to document. Absolute nitty nit: can you capitalise
+> > 'WARNING'? Thanks!
+>
+> will do it.
+
+Thanks!
+
+>
+> >
+> > > +
+> > >  endif # TRANSPARENT_HUGEPAGE
+> > >
+> > >  # simple helper to make the code a bit easier to read
+> > > diff --git a/mm/Makefile b/mm/Makefile
+> > > index ef54aa615d9d..cb55d1509be1 100644
+> > > --- a/mm/Makefile
+> > > +++ b/mm/Makefile
+> > > @@ -99,6 +99,7 @@ obj-$(CONFIG_MIGRATION) += migrate.o
+> > >  obj-$(CONFIG_NUMA) += memory-tiers.o
+> > >  obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+> > >  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+> > > +obj-$(CONFIG_EXPERIMENTAL_BPF_ORDER_SELECTION) += bpf_thp.o
+> > >  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+> > >  obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
+> > >  obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
+> > > diff --git a/mm/bpf_thp.c b/mm/bpf_thp.c
+> > > new file mode 100644
+> > > index 000000000000..fbff3b1bb988
+> > > --- /dev/null
+> > > +++ b/mm/bpf_thp.c
+> >
+> > As mentioned before, please update MAINTAINERS for new files. I went to great +
+> > painful lengths to get everything listed there so let's keep it that way please
+> > :P
+>
+> will do it.
+
+Thanks!
+
+>
+> >
+> > > @@ -0,0 +1,186 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +
+> > > +#include <linux/bpf.h>
+> > > +#include <linux/btf.h>
+> > > +#include <linux/huge_mm.h>
+> > > +#include <linux/khugepaged.h>
+> > > +
+> > > +struct bpf_thp_ops {
+> > > +     /**
+> > > +      * @get_suggested_order: Get the suggested THP orders for allocation
+> > > +      * @mm: mm_struct associated with the THP allocation
+> > > +      * @vma__nullable: vm_area_struct associated with the THP allocation (may be NULL)
+> > > +      *                 When NULL, the decision should be based on @mm (i.e., when
+> > > +      *                 triggered from an mm-scope hook rather than a VMA-specific
+> > > +      *                 context).
+> > > +      *                 Must belong to @mm (guaranteed by the caller).
+> > > +      * @vma_flags: use these vm_flags instead of @vma->vm_flags (0 if @vma is NULL)
+> > > +      * @tva_flags: TVA flags for current @vma (-1 if @vma is NULL)
+> > > +      * @orders: Bitmask of requested THP orders for this allocation
+> > > +      *          - PMD-mapped allocation if PMD_ORDER is set
+> > > +      *          - mTHP allocation otherwise
+> > > +      *
+> > > +      * Rerurn: Bitmask of suggested THP orders for allocation. The highest
+> > > +      *         suggested order will not exceed the highest requested order
+> > > +      *         in @orders.
+> > > +      */
+> > > +     int (*get_suggested_order)(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
+> > > +                                u64 vma_flags, enum tva_type tva_flags, int orders) __rcu;
+> >
+> > I feel like we should be declaring this function pointer type somewhere else as
+> > we're now duplicating this in two places.
+>
+> agreed, I have already done it to fix the spare warning.
+
+Thanks!
+
+>
+> >
+> > > +};
+> > > +
+> > > +static struct bpf_thp_ops bpf_thp;
+> > > +static DEFINE_SPINLOCK(thp_ops_lock);
+> > > +
+> > > +int get_suggested_order(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
+> > > +                     u64 vma_flags, enum tva_type tva_flags, int orders)
+> >
+> > surely tva_flag? As this is an enum value?
+>
+> will change it to tva_type instead.
+
+Thanks!
+
+>
+> >
+> > > +{
+> > > +     int (*bpf_suggested_order)(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
+> > > +                                u64 vma_flags, enum tva_type tva_flags, int orders);
+> >
+> > This type for vma flags is totally incorrect. vm_flags_t. And that's going to
+> > change soon to an opaque type.
+> >
+> > Also right now it's actually an unsigned long.
+> >
+> > I really really do not like that we're providing extra, unexplained VMA flags
+> > for some reason. I may be missing something :) so happy to hear why this is
+> > necessary.
+> >
+> > However in future we really shouldn't be passing something like this.
+>
+> will change it as replied in another thread.
+
+Thanks!
+
+>
+> >
+> > Also - now a third duplication of the same function pointer :) can we do better
+> > than this? At least typedef it.
+> >
+> > > +     int suggested_orders = orders;
+> > > +
+> > > +     /* No BPF program is attached */
+> > > +     if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> > > +                   &transparent_hugepage_flags))
+> > > +             return suggested_orders;
+> >
+> > This is atomic ofc, but are we concerned about races, or I guess you expect only
+> > the first attached bpf program to work with it I suppose.
+>
+> It is against the race to unreg or update.
+
+OK cool, it does make sense overall.
+
+>
+> >
+> > > +
+> > > +     rcu_read_lock();
+> >
+> > Is this sufficient? Anything stopping the mm or VMA going away here?
+>
+> This RCU lock is not for protecting the mm or VMA structures
+> themselves, but for protecting the update of the function pointer.
+> Arbitrary access to pointers within the mm_struct or vm_area_struct is
+> prohibited, as they are guarded by the BPF verifier.
+>
+> >
+> > > +     bpf_suggested_order = rcu_dereference(bpf_thp.get_suggested_order);
+> > > +     if (!bpf_suggested_order)
+> > > +             goto out;
+> > > +
+> > > +     suggested_orders = bpf_suggested_order(mm, vma__nullable, vma_flags, tva_flags, orders);
+> >
+> > OK so now it's suggested order_S but we're invoking suggested order :) whaaatt?
+> > :)
+>
+> will change it.
+
+Thanks!
+
+>
+> >
+> > > +     if (highest_order(suggested_orders) > highest_order(orders))
+> > > +             suggested_orders = orders;
+> >
+> > Hmmm so the semantics are - whichever is the highest order wins?
+>
+> The maximum requested order is determined by the callsite. For example:
+> - PMD-mapped THP uses PMD_ORDER
+> - mTHP uses (PMD_ORDER - 1)
+>
+> We must respect this upper bound to avoid undefined behavior. So the
+> highest suggested order can't exceed the highest requested order.
+
+OK, please document this in a comment here.
+
+>
+> >
+> > I thought the idea was we'd hand control over to bpf if provided in effect?
+> >
+> > Definitely worth going over these semantics in the cover letter (and do forgive
+> > me if you have and I've missed! :)
+>
+> It has already in the cover letter:
+>
+>  * Return: Bitmask of suggested THP orders for allocation. The highest
+>  *         suggested order will not exceed the highest requested order
+>  *         in @orders.
+
+OK cool thanks, a comment here would be useful also.
+
+>
+>
+> >
+> > > +
+> > > +out:
+> > > +     rcu_read_unlock();
+> > > +     return suggested_orders;
+> > > +}
+> > > +
+> > > +static bool bpf_thp_ops_is_valid_access(int off, int size,
+> > > +                                     enum bpf_access_type type,
+> > > +                                     const struct bpf_prog *prog,
+> > > +                                     struct bpf_insn_access_aux *info)
+> > > +{
+> > > +     return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
+> > > +}
+> > > +
+> > > +static const struct bpf_func_proto *
+> > > +bpf_thp_get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
+> > > +{
+> > > +     return bpf_base_func_proto(func_id, prog);
+> > > +}
+> > > +
+> > > +static const struct bpf_verifier_ops thp_bpf_verifier_ops = {
+> > > +     .get_func_proto = bpf_thp_get_func_proto,
+> > > +     .is_valid_access = bpf_thp_ops_is_valid_access,
+> > > +};
+> > > +
+> > > +static int bpf_thp_init(struct btf *btf)
+> > > +{
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int bpf_thp_init_member(const struct btf_type *t,
+> > > +                            const struct btf_member *member,
+> > > +                            void *kdata, const void *udata)
+> > > +{
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int bpf_thp_reg(void *kdata, struct bpf_link *link)
+> > > +{
+> > > +     struct bpf_thp_ops *ops = kdata;
+> > > +
+> > > +     spin_lock(&thp_ops_lock);
+> > > +     if (test_and_set_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED,
+> > > +                          &transparent_hugepage_flags)) {
+> > > +             spin_unlock(&thp_ops_lock);
+> > > +             return -EBUSY;
+> > > +     }
+> > > +     WARN_ON_ONCE(rcu_access_pointer(bpf_thp.get_suggested_order));
+> > > +     rcu_assign_pointer(bpf_thp.get_suggested_order, ops->get_suggested_order);
+> > > +     spin_unlock(&thp_ops_lock);
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static void bpf_thp_unreg(void *kdata, struct bpf_link *link)
+> > > +{
+> > > +     spin_lock(&thp_ops_lock);
+> > > +     clear_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED, &transparent_hugepage_flags);
+> > > +     WARN_ON_ONCE(!rcu_access_pointer(bpf_thp.get_suggested_order));
+> > > +     rcu_replace_pointer(bpf_thp.get_suggested_order, NULL, lockdep_is_held(&thp_ops_lock));
+> > > +     spin_unlock(&thp_ops_lock);
+> > > +
+> > > +     synchronize_rcu();
+> > > +}
+> >
+> > I am a total beginner with BPF implementations so don't feel like I can say much
+> > intelligent about the above. But presumably fairly standard fare BPF-wise?
+>
+> This implementation is necessary to support BPF program updates.
+
+Ack.
+
+>
+> >
+> > Will perhaps try to dig deeper on another iteration :) as intersting to me.
+> >
+> > > +
+> > > +static int bpf_thp_update(void *kdata, void *old_kdata, struct bpf_link *link)
+> > > +{
+> > > +     struct bpf_thp_ops *ops = kdata;
+> > > +     struct bpf_thp_ops *old = old_kdata;
+> > > +     int ret = 0;
+> > > +
+> > > +     if (!ops || !old)
+> > > +             return -EINVAL;
+> > > +
+> > > +     spin_lock(&thp_ops_lock);
+> > > +     /* The prog has aleady been removed. */
+> > > +     if (!test_bit(TRANSPARENT_HUGEPAGE_BPF_ATTACHED, &transparent_hugepage_flags)) {
+> > > +             ret = -ENOENT;
+> > > +             goto out;
+> > > +     }
+> >
+> > OK so we gate things on this flag and it's global, got it.
+> >
+> > I see this is a hook, and I guess RCU-all-the-things is what BPF does which
+> > makes tonnes of sense.
+> >
+> > > +     WARN_ON_ONCE(!rcu_access_pointer(bpf_thp.get_suggested_order));
+> > > +     rcu_replace_pointer(bpf_thp.get_suggested_order, ops->get_suggested_order,
+> > > +                         lockdep_is_held(&thp_ops_lock));
+> > > +
+> > > +out:
+> > > +     spin_unlock(&thp_ops_lock);
+> > > +     if (!ret)
+> > > +             synchronize_rcu();
+> > > +     return ret;
+> > > +}
+> > > +
+> > > +static int bpf_thp_validate(void *kdata)
+> > > +{
+> > > +     struct bpf_thp_ops *ops = kdata;
+> > > +
+> > > +     if (!ops->get_suggested_order) {
+> > > +             pr_err("bpf_thp: required ops isn't implemented\n");
+> > > +             return -EINVAL;
+> > > +     }
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int suggested_order(struct mm_struct *mm, struct vm_area_struct *vma__nullable,
+> > > +                        u64 vma_flags, enum tva_type vm_flags, int orders)
+> > > +{
+> > > +     return orders;
+> > > +}
+> > > +
+> > > +static struct bpf_thp_ops __bpf_thp_ops = {
+> > > +     .get_suggested_order = suggested_order,
+> > > +};
+> >
+> > Can you explain to me what this stub stuff is for? This is more 'BPF impl 101'
+> > stuff sorry :)
+>
+> It is a CFI stub. cfi_stubs in BPF struct_ops are secure intermediary
+> functions that prevent the kernel from making direct, unsafe jumps to
+> BPF code. A new attached BPF program will run via this stub.
+
+Ack.
+
+>
+> >
+> > > +
+> > > +static struct bpf_struct_ops bpf_bpf_thp_ops = {
+> > > +     .verifier_ops = &thp_bpf_verifier_ops,
+> > > +     .init = bpf_thp_init,
+> > > +     .init_member = bpf_thp_init_member,
+> > > +     .reg = bpf_thp_reg,
+> > > +     .unreg = bpf_thp_unreg,
+> > > +     .update = bpf_thp_update,
+> > > +     .validate = bpf_thp_validate,
+> > > +     .cfi_stubs = &__bpf_thp_ops,
+> > > +     .owner = THIS_MODULE,
+> > > +     .name = "bpf_thp_ops",
+> > > +};
+> > > +
+> > > +static int __init bpf_thp_ops_init(void)
+> > > +{
+> > > +     int err = register_bpf_struct_ops(&bpf_bpf_thp_ops, bpf_thp_ops);
+> > > +
+> > > +     if (err)
+> > > +             pr_err("bpf_thp: Failed to register struct_ops (%d)\n", err);
+> > > +     return err;
+> > > +}
+> > > +late_initcall(bpf_thp_ops_init);
+> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > > index d89992b65acc..bd8f8f34ab3c 100644
+> > > --- a/mm/huge_memory.c
+> > > +++ b/mm/huge_memory.c
+> > > @@ -1349,6 +1349,16 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+> > >               return ret;
+> > >       khugepaged_enter_vma(vma, vma->vm_flags);
+> > >
+> > > +     /*
+> > > +      * This check must occur after khugepaged_enter_vma() because:
+> > > +      * 1. We may permit THP allocation via khugepaged
+> > > +      * 2. While simultaneously disallowing THP allocation
+> > > +      *    during page fault handling
+> > > +      */
+> > > +     if (get_suggested_order(vma->vm_mm, vma, vma->vm_flags, TVA_PAGEFAULT, BIT(PMD_ORDER)) !=
+> > > +                             BIT(PMD_ORDER))
+> >
+> > Hmmm so you return a bitmask of orders, but then you only allow this fault if
+> > the only order provided is PMD order? That seems strange. Can you explain?
+>
+> This is in the do_huge_pmd_anonymous_page() that can only accept a PMD
+> order, otherwise it might result in unexpected behavior.
+
+OK please document this in the comment.
+
+>
+> >
+> > > +             return VM_FAULT_FALLBACK;
+> >
+> > It'd be good to have a helper function for this like:
+> >
+> >         if (!bpf_hook_allow_pmd_order(vma, tva_flag))
+> >                 return VM_FAULT_FALLBACK;
+> >
+> > And implemented like maybe:
+> >
+> > static bool bpf_hook_allow_pmd_order(struct vm_area_struct *vma, enum tva_type tva_flag)
+> > {
+> >         int orders = get_suggested_order(vma->vm_mm, vma, vma->vm_flags, tva_flag,
+> >                         BIT(PMD_ORDER));
+> >
+> >         return orders & BIT(PMD_ORDER);
+> > }
+> >
+> > It's good the tva flag gives context though.
+>
+> Thanks for the suggestion.
+> will change it.
+
+
+Thanks!
+
+>
+> >
+> > > +
+> > >       if (!(vmf->flags & FAULT_FLAG_WRITE) &&
+> > >                       !mm_forbids_zeropage(vma->vm_mm) &&
+> > >                       transparent_hugepage_use_zero_page()) {
+> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>
+> > > index d3d4f116e14b..935583626db6 100644
+> > > --- a/mm/khugepaged.c
+> > > +++ b/mm/khugepaged.c
+> > > @@ -474,7 +474,9 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+> > >  {
+> > >       if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
+> > >           hugepage_pmd_enabled()) {
+> > > -             if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER))
+> > > +             if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED, PMD_ORDER) &&
+> > > +                 get_suggested_order(vma->vm_mm, vma, vm_flags, TVA_KHUGEPAGED,
+> > > +                                     BIT(PMD_ORDER)))
+> >
+> > I don't know why we aren't working the bpf hook into thp_vma_allowable_order()?
+>
+> Actually it can be added into thp_vma_allowable_order().  I will change it.
+
+Thanks!
+
+>
+> >
+> > Also a helper would work here.
+> >
+> > >                       __khugepaged_enter(vma->vm_mm);
+> > >       }
+> > >  }
+> > > @@ -934,6 +936,8 @@ static int hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
+> > >               return SCAN_ADDRESS_RANGE;
+> > >       if (!thp_vma_allowable_order(vma, vma->vm_flags, type, PMD_ORDER))
+> > >               return SCAN_VMA_CHECK;
+> > > +     if (!get_suggested_order(vma->vm_mm, vma, vma->vm_flags, type, BIT(PMD_ORDER)))
+> > > +             return SCAN_VMA_CHECK;
+> >
+> >
+> >
+> > >       /*
+> > >        * Anon VMA expected, the address may be unmapped then
+> > >        * remapped to file after khugepaged reaquired the mmap_lock.
+> > > @@ -1465,6 +1469,11 @@ static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
+> > >               /* khugepaged_mm_lock actually not necessary for the below */
+> > >               mm_slot_free(mm_slot_cache, mm_slot);
+> > >               mmdrop(mm);
+> > > +     } else if (!get_suggested_order(mm, NULL, 0, -1, BIT(PMD_ORDER))) {
+> > > +             hash_del(&slot->hash);
+> > > +             list_del(&slot->mm_node);
+> > > +             mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+> > > +             mm_slot_free(mm_slot_cache, mm_slot);
+> > >       }
+> > >  }
+> > >
+> > > @@ -1538,6 +1547,9 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+> > >       if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
+> > >               return SCAN_VMA_CHECK;
+> > >
+> > > +     if (!get_suggested_order(vma->vm_mm, vma, vma->vm_flags, TVA_FORCED_COLLAPSE,
+> > > +                              BIT(PMD_ORDER)))
+> >
+> > Again, can we please not duplicate thp_vma_allowable_order() logic?
+> >
+> > The THP code is horrible enough, but now we have to remember to also do the bpf
+> > check?
+>
+> makes sense.
+>
+> >
+> > > +             return SCAN_VMA_CHECK;
+> > >       /* Keep pmd pgtable for uffd-wp; see comment in retract_page_tables() */
+> > >       if (userfaultfd_wp(vma))
+> > >               return SCAN_PTE_UFFD_WP;
+> > > @@ -2416,6 +2428,10 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+> > >        * the next mm on the list.
+> > >        */
+> > >       vma = NULL;
+> > > +
+> > > +     /* If this mm is not suitable for the scan list, we should remove it. */
+> > > +     if (!get_suggested_order(mm, NULL, 0, -1, BIT(PMD_ORDER)))
+> > > +             goto breakouterloop_mmap_lock;
+> >
+> > OK again I'm really not loving this NULL, 0, -1 stuff. What is this supposed to
+> > mean? The idea here is we have a hook for 'trying to determine THP order' and
+> > now it's overloaded it seems in multiple ways?
+> >
+> > I may be missing context here.
+> >
+> > I'm also a bit perplexed by the comment as to what is intended here.
+>
+> Using a BPF-based approach for THP adjustment allows us to dynamically
+> enable or disable THP for running applications without causing any
+> disruption. This capability is particularly valuable in production
+> environments. The logic here is designed to achieve exactly that.
+>
+>
+> >
+> > >       if (unlikely(!mmap_read_trylock(mm)))
+> > >               goto breakouterloop_mmap_lock;
+> > >
+> > > @@ -2432,7 +2448,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, int *result,
+> > >                       progress++;
+> > >                       break;
+> > >               }
+> > > -             if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER)) {
+> > > +             if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUGEPAGED, PMD_ORDER) ||
+> > > +                 !get_suggested_order(vma->vm_mm, vma, vma->vm_flags, TVA_KHUGEPAGED,
+> > > +                                      BIT(PMD_ORDER))) {
+> >
+> > Same various comments from above.
+>
+> will change it.
+>
+> >
+> > >  skip:
+> > >                       progress++;
+> > >                       continue;
+> > > @@ -2769,6 +2787,10 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+> > >       if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLAPSE, PMD_ORDER))
+> > >               return -EINVAL;
+> > >
+> > > +     if (!get_suggested_order(vma->vm_mm, vma, vma->vm_flags, TVA_FORCED_COLLAPSE,
+> > > +                              BIT(PMD_ORDER)))
+> > > +             return -EINVAL;
+> > > +
+> >
+> > Same various comments from above.
+>
+> will change it.
+>
+> >
+> > >       cc = kmalloc(sizeof(*cc), GFP_KERNEL);
+> > >       if (!cc)
+> > >               return -ENOMEM;
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index d9de6c056179..0178857aa058 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -4486,6 +4486,7 @@ static inline unsigned long thp_swap_suitable_orders(pgoff_t swp_offset,
+> > >  static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+> > >  {
+> > >       struct vm_area_struct *vma = vmf->vma;
+> > > +     int order, suggested_orders;
+> > >       unsigned long orders;
+> > >       struct folio *folio;
+> > >       unsigned long addr;
+> > > @@ -4493,7 +4494,6 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+> > >       spinlock_t *ptl;
+> > >       pte_t *pte;
+> > >       gfp_t gfp;
+> > > -     int order;
+> > >
+> > >       /*
+> > >        * If uffd is active for the vma we need per-page fault fidelity to
+> > > @@ -4510,13 +4510,18 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
+> > >       if (!zswap_never_enabled())
+> > >               goto fallback;
+> > >
+> > > +     suggested_orders = get_suggested_order(vma->vm_mm, vma, vma->vm_flags,
+> > > +                                            TVA_PAGEFAULT,
+> > > +                                            BIT(PMD_ORDER) - 1);
+> > > +     if (!suggested_orders)
+> > > +             goto fallback;
+> >
+
+(Thanks for all above! :)
+
+> > Wait, but below we have a bunch of fallbacks, now BPF overrides everything?
+>
+> When allocating high-order pages is not feasible, such as during
+> periods of high memory pressure, the system should immediately fall
+> back to using 4 KB pages.
+
+OK makes sense.
+
+>
+> >
+> > I know I'm repaeting myself :P but can we just please put this into
+> > thp_vma_allowable_orders(), it's massively gross to just duplicate this check
+> > _everywhere_ with subtle differences.
+>
+> will change it.
+
+Thanks
+
+>
+> >
+> > >       entry = pte_to_swp_entry(vmf->orig_pte);
+> > >       /*
+> > >        * Get a list of all the (large) orders below PMD_ORDER that are enabled
+> > >        * and suitable for swapping THP.
+> > >        */
+> > >       orders = thp_vma_allowable_orders(vma, vma->vm_flags, TVA_PAGEFAULT,
+> > > -                                       BIT(PMD_ORDER) - 1);
+> > > +                                       suggested_orders);
+> > >       orders = thp_vma_suitable_orders(vma, vmf->address, orders);
+> > >       orders = thp_swap_suitable_orders(swp_offset(entry),
+> > >                                         vmf->address, orders);
+> > > @@ -5044,12 +5049,12 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+> > >  {
+> > >       struct vm_area_struct *vma = vmf->vma;
+> > >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > > +     int order, suggested_orders;
+> > >       unsigned long orders;
+> > >       struct folio *folio;
+> > >       unsigned long addr;
+> > >       pte_t *pte;
+> > >       gfp_t gfp;
+> > > -     int order;
+> > >
+> > >       /*
+> > >        * If uffd is active for the vma we need per-page fault fidelity to
+> > > @@ -5058,13 +5063,18 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
+> > >       if (unlikely(userfaultfd_armed(vma)))
+> > >               goto fallback;
+> > >
+> > > +     suggested_orders = get_suggested_order(vma->vm_mm, vma, vma->vm_flags,
+> > > +                                            TVA_PAGEFAULT,
+> > > +                                            BIT(PMD_ORDER) - 1);
+> > > +     if (!suggested_orders)
+> > > +             goto fallback;
+> >
+> > Same comment as above.
+>
+> will change it.
+
+Thanks!
+
+>
+>
+> Thanks a lot for your comments.
+
+No problem, thanks for the series!
+
+I am generally excited about exploring this, so once we figure out details be
+good to see where this can go!
+
+>
+>
+> --
+> Regards
+>
+> Yafang
+
+
+Cheers, Lorenzo
 
