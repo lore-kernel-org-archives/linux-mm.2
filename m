@@ -4,84 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 686ABC8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 14:51:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56851CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 14:54:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6CD78E0018; Thu, 28 Aug 2025 10:51:02 -0400 (EDT)
+	id A15686B0008; Thu, 28 Aug 2025 10:54:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B44308E0006; Thu, 28 Aug 2025 10:51:02 -0400 (EDT)
+	id 9EBBE8E0029; Thu, 28 Aug 2025 10:54:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A80CB8E0018; Thu, 28 Aug 2025 10:51:02 -0400 (EDT)
+	id 8DA068E0006; Thu, 28 Aug 2025 10:54:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 966048E0006
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:51:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5029FAC875
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:51:02 +0000 (UTC)
-X-FDA: 83826453564.14.850F3F0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2F9DA40009
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:51:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D05B6B0008
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 10:54:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 29F28579B2
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:54:01 +0000 (UTC)
+X-FDA: 83826461082.01.9E5845D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 481E8140002
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:53:59 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=NGzwkZWd
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756392660;
+	s=arc-20220608; t=1756392839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4TsqXsFjyHvqX/18/wQyF9FUdKDomX/ph28jF4Cpyro=;
-	b=GbNxO8IeRaLvNZoWZsLhdaFtHem+YviGATOPqq4Dut2Pmme0ejSF6opfkKCViWntsfyjLe
-	ApxAt6c283N5CMnSwqLoHw6D/cWZFUjnjbt0EFcoXKvcfVzmqPrBjT8I2dWzZVjjP3fN8k
-	Ej/V1M9QgU58ZCydRiGBC2e9JrqIVxQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756392660; a=rsa-sha256;
-	cv=none;
-	b=8ox8gAWuklxgqDHlRmUa75uowAQunn8KYs276QlwOVtibjKVF4rvJkUtckpZMXy0H6elZ2
-	jXOUAEoV9znNezdDLu4ehSXS1d8tpz6/crtiynxMrNmhlWSWuGPoG48mhsLfiNBc1Zgc5Z
-	W/9C5QWmnX6MnyoF40gdz94jQ+lLu3E=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=63fVgPj0dBu19FzzCkTktPqPtLpDcCZYhJHlKuiK014=;
+	b=XrdQgKeXWy+pOYuKC5JWGXSTCg+rBSDZ3TQPX21KlNMjPIqclf4lw0PRWU+8sRHnFaCN76
+	BUjlVAo3QRIz7Wo6XgsXrkNo/wGFgIee6MgbzXz0+BLxQtO0S2zLI6aWXKzVYHqirxzrxa
+	tnxL7Z7q1/IQ7B0N7pgx9SysgxZMTJA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BB081688;
-	Thu, 28 Aug 2025 07:50:50 -0700 (PDT)
-Received: from [10.1.30.134] (XHFQ2J9959.cambridge.arm.com [10.1.30.134])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E605F3F694;
-	Thu, 28 Aug 2025 07:50:56 -0700 (PDT)
-Message-ID: <261fceba-8485-4015-af72-582c4507cadc@arm.com>
-Date: Thu, 28 Aug 2025 15:50:55 +0100
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=NGzwkZWd;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756392839; a=rsa-sha256;
+	cv=none;
+	b=q76W5NUCBX9VGMxA8KqRgJINVa8VD+F5a7yfXXq8QsdVsEI6z3lJUxxD39KdBZNc3mTvhM
+	QT1qkAPVGVDDERhS8w1vuk+A84CkOLAwZ2pk8TOvwyZ67chjeGRj6bDOcwAhWRE4P6Mova
+	7qkc2hwNlJ/kbt1xr0nbX89jxeSFeVk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=63fVgPj0dBu19FzzCkTktPqPtLpDcCZYhJHlKuiK014=; b=NGzwkZWd3jUW+MVaoOX2lFIM5Y
+	jmBb/Ikm2qiKcf2l5ll36mpL87G1rh1GhTRXX6mxM9T0NwBFvGFse5LMniR+4P3Izaj51rm3ry1Li
+	KqNwMJ5gY6PdfVqquMKO7UYJ5fj4h+G1f7d9myCc1DV3I+RLJjaTvQ2lUJaRRXCHSwTvmDxs5bhjY
+	6BgJlM/k1Cf1kL+ytgAfWZLHFrTBGuQdJ8CD2UQjNeAZcsbjH38uSTdOs6JwYs7obwFG0cHOR1xub
+	+hWOFWFCMct8D2+Bei4ytIaa6qLfmdPVWmgJWnvOnRC/63IjhI2MtLOpzaqcaE5SAV17KsmOhT6cQ
+	ZffuRfqQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ure0i-0000000BRXD-3HRg;
+	Thu, 28 Aug 2025 14:53:56 +0000
+Date: Thu, 28 Aug 2025 15:53:56 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
+Subject: Re: [PATCH v2 7/7] virtio_balloon: Stop calling page_address() in
+ free_pages()
+Message-ID: <aLBthEcK1rDPQLrE@casper.infradead.org>
+References: <20250826205617.1032945-1-vishal.moola@gmail.com>
+ <20250826205617.1032945-8-vishal.moola@gmail.com>
+ <5ee2b684-94d9-40be-b01c-b0538ced33bc@redhat.com>
+ <aK9Ogjn71JoOM3w3@fedora>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] selftests/mm/uffd-stress: Make test operate on less
- hugetlb memory
-Content-Language: en-GB
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, david@redhat.com,
- shuah@kernel.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, npache@redhat.com,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250826070705.53841-1-dev.jain@arm.com>
- <20250826070705.53841-2-dev.jain@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20250826070705.53841-2-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aK9Ogjn71JoOM3w3@fedora>
+X-Rspamd-Queue-Id: 481E8140002
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2F9DA40009
-X-Stat-Signature: 6m3px1iceqp4stmxy63j648nnc8n3e57
-X-HE-Tag: 1756392660-540271
-X-HE-Meta: U2FsdGVkX1+Bk+P6pKAOkmP95BG5pH6wyig+sXEF22ptlvOuza4hECJQBPIa+NZoO973LETUcpC1KtxP5kREX/fztIM+ZsJW2oPQSgbZIwcMS+mKu9g2ks4Iokot7HyyZlYRN7scEgCZL8m7H1MzScWqCqrcm0vvxyR2VXSRyEamTNrUYEus0MKGWQN+q5VLXWnE4k8jPqXYGP6pLt8bQkV5yG/HjpkJK0YHDwSWDWvDWnjqJ/oskA/VEuqFEklqChsjhOLMF3llX5/qTmSN6oiKjspsq81fOqgb0/AuRRAyZlVsP0dfdXpDdpoG5VKtWn54zLX3Echgx5Y7W3+l1aE/m5iuYk7JFd1NxVnVkcRuNaGcgVann5Ifg5aeBQeLOX3LADwMXsLE3v0uP0f7djJTThpAnv9myDVasQUmk+ytDOfWkrfuZnXT3jPbnlK6wr2b1EdtQ1Kv4OT8tOO386UIozTlPbOSOMizEaf1CcEW5+MaFx87gIIrEC4vhFSD3vtBCtlXJb9iKXn82MU5iIzr2zsn8J3XfPgko9pv2Hz9dUxD+n8quqFqr+dheASMwfL36jw3GHBUl1HK5zceJ/zs80ypZUdthe3VzzY/doR6/pKlZeK4fAoeupMA4ekklFBBUwh8E7Gg2RvIr3B8vTcdw1KwiQgIRnz72JzCI8nfWN7DrAljPIqeBXKWqvXSBBIIImxrRGaItiLU/1ZbQkeEb/gZcQIpKha8NRW3zLsVJywYSlGHzNQTLVYEtSm5KHk1K4fN4t+T+CLYktCJvZSUYLOp9vrHiq03WME9Yfux8DpLtnLC50JdLjt1pnmENVZVj9UxaXlxgWoggq/t4K3LFvxzLhSqA58n8wduR3V129mgdUIY5f26WC9pPb3iy7ggNup+tVVhaAAP/atTCGQMTJ/9dY/Z3rKNmpDgtXYevXZlfyusr2YCg/CsKfKEfQpW6UxECg1KIcCJg3E
- XxWC7X4i
- H3CJ+TsmwB1y8fBjBT1+phX1Kw+5/af5/kcGM+O+cRE7Jin+QWd9yYwKgWXxhMwpFvJy0f2b5VT12DTaiVr8xQDxEUuUFYUJbdO+K4XbGFarQM3E8WEQh5rGL7YESBlXc60Dfh0FA9bkEY/30aFmmKPmuo2BkAmYshmB4QFdSO9mxBRMgBiCXtAuQJpxXE1IplcvTg9D+OGLGA0A=
+X-Stat-Signature: yu5ckr6j3mefbkfq6jpm3arhmopk51p1
+X-HE-Tag: 1756392839-998216
+X-HE-Meta: U2FsdGVkX18+4Ct5PTjIRN+bc0F6gOFgvP+SKxge5w8Zp9HR873kOyycXQrwThSSZWzzRiHHgqU6yNzbD0ej+ACYFkzIkDaft86p/yzgx8HR8+3TwwWPOvsF39egq+zksgpwF+OrZlY7itMUemYNQaD2TPLdQfL+ZZprJFU0j5oPtjsgJSxibXxmrGBW1BOWft5s9D1TiKAVRqFpvAuVPMh+pvtuNGejeA780jJjMCOSb0ymQjCkALOx27Q7wvcM8qIJBUFJqcY9EmMNPr1wOlv0KXFK8pwk68OAZy+Kq1E2UKpOYKVjeDK/QMODLRtUQ8A9t9HLk25bsL3Pck2Ih9CMyD8FlCD45wm9bMd+SXGI1sNCFcx3sl6LEKwLfLpLcs6jzn4Trk5fUPwCcndrLpP0aQsMj+agCbqNmdK48hg9x2LsWmp15ScjMcL+oShD0nGo5OEKuww4n2cvyEevHiPlc/N09E9FwK1H1weTNjvywMYevg9LLgsKDzvEdDId6DcH36WurV6UqLhN+XFeAGs7DGYgbKdgnJQiu++rne7UHFgPE6s7E81hIlt4DIxd5b3n6zp/+Ee5crzB6uTmrHI1LzlNusVZk+pfObwFx/Zigmap+pTr0fQ8K5QCNTxzPjSgeZh7XDNQLllScMdmU4piiWIbn4aSBojMWgU9IJJiWWVpi2dqB54qqVmNvzCd+g0CMfCbtzRSmz2ZMNxa5GPfrgw6FsZHgVrZFQl9k9bk1cT2n1UZJwJRJFXBokSeUVirZGu25+I2XNYKEsngiutHKDtPBRpmIqrp95wiY7/13S6iwkkA8v+m9H08O/80Pjvp0ISpKMPeP10l8ih/x7RxeVpU2ks0yJuKe/D7oNSX4Uhw4rgGCbTrldEcBJBbPq/RK+pp2QSKee4ykpD4h/89Ktmcm55bGAc2+65BDfzKiWc4te/6Z9n0N90UpyOWSHY5PDqcNwG7ntiHhRI
+ YrVWAcIc
+ tnhHUGxhtgNIzP3D4oEpi7pajF1atI3gHAZr8wmO3rOa5wUomn6RsFxeYLYEJ3zQTKnUOWN2QNG3t6IPJMjiWzYEZviSY47BdfhldbWgVHoMRIFfuuPsG8euGxSN07nStVkf6lYVbLFDz+COEbk8SZFG/UCCeITF4kbMPJlv2bxFQp0iahTL3TjTem6DEGJ+Aa06Ah9Qv5IPRSIYtefqtG5QRjxXun7cgSuSlEarhznXFBuBvp+9EoEewh8CyRjuH1E11iTsU3K8bFGsIaid7tubsX/asaISD9JpdBqBKb1K7udEslN5OBggoXOjVFIjJgzB4AfUoBe0+ABI1kAd4Tiqc2GI7flEiYLNz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,80 +96,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/08/2025 08:07, Dev Jain wrote:
-> We observed uffd-stress selftest failure on arm64 and intermittent failures
-> on x86 too:
-> running ./uffd-stress hugetlb-private 128 32
-> 
-> bounces: 17, mode: rnd read, ERROR: UFFDIO_COPY error: -12 (errno=12, @uffd-common.c:617) [FAIL]
-> not ok 18 uffd-stress hugetlb-private 128 32 # exit=1
-> 
-> For this particular case, the number of free hugepages from run_vmtests.sh
-> will be 128, and the test will allocate 64 hugepages in the source
-> location. The stress() function will start spawning threads which will
-> operate on the destination location, triggering uffd-operations like
-> UFFDIO_COPY from src to dst, which means that we will require 64 more
-> hugepages for the dst location.
-> 
-> Let us observe the locking_thread() function. It will lock the mutex kept
-> at dst, triggering uffd-copy. Suppose that 127 (64 for src and 63 for dst)
-> hugepages have been reserved. In case of BOUNCE_RANDOM, it may happen that
-> two threads trying to lock the mutex at dst, try to do so at the same
-> hugepage number. If one thread succeeds in reserving the last hugepage,
-> then the other thread may fail in alloc_hugetlb_folio(), returning -ENOMEM.
-> I can confirm that this is indeed the case by this hacky patch:
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 753f99b4c718..39eb21d8a91b 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6929,6 +6929,11 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
->  
->  		folio = alloc_hugetlb_folio(dst_vma, dst_addr, false);
->  		if (IS_ERR(folio)) {
-> +			pte_t *actual_pte = hugetlb_walk(dst_vma, dst_addr, PMD_SIZE);
-> +			if (actual_pte) {
-> +				ret = -EEXIST;
-> +				goto out;
-> +			}
->  			ret = -ENOMEM;
->  			goto out;
->  		}
-> 
-> This code path gets triggered indicating that the PMD at which one thread
-> is trying to map a hugepage, gets filled by a racing thread.
-> 
-> Therefore, instead of using freepgs to compute the amount of memory,
-> use freepgs - 10, so that the test still has some extra hugepages to use.
-> Note that, in case this value underflows, there is a check for the number
-> of free hugepages in the test itself, which will fail, so we are safe.
-> 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  tools/testing/selftests/mm/run_vmtests.sh | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index 471e539d82b8..6a9f435be7a1 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -326,7 +326,7 @@ CATEGORY="userfaultfd" run_test ${uffd_stress_bin} anon 20 16
->  # the size of the free pages we have, which is used for *each*.
->  # uffd-stress expects a region expressed in MiB, so we adjust
->  # half_ufd_size_MB accordingly.
-> -half_ufd_size_MB=$(((freepgs * hpgsize_KB) / 1024 / 2))
-> +half_ufd_size_MB=$((((freepgs - 10) * hpgsize_KB) / 1024 / 2))
+On Wed, Aug 27, 2025 at 11:29:22AM -0700, Vishal Moola (Oracle) wrote:
+> I imagine theres more of these lingering in the kernel, but theres so
+> many callers and I only looked for the ones that were calling
+> page_address() inline :(.
 
-Why 10? I don't know much about uffd-stress but the comment at the top says it
-runs 3 threads per CPU, so does the number of potential races increase with the
-number of CPUs? Perhaps this number needs to be a function of nrcpu?
+There's only 841 callers of free_page() and free_pages()!
 
-I tested it and it works though so:
+It's a bit of a disease we have, to be honest,  Almost all of
+them should be using kmalloc() instead.  To pick on one at random,
+sel_read_bool() in security/selinux/selinuxfs.c is the implementation
+of read() for some file in selinux.  All it's trying to do is output two
+numbers, so it allocates an entire page of memory, prints two numbers
+to it (while being VERY CAREFUL not to overflow the buffer!) and copies
+the buffer to userspace.
 
-Tested-by: Ryan Roberts <ryan.roberts@arm.com>
-
->  CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb "$half_ufd_size_MB" 32
->  CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb-private "$half_ufd_size_MB" 32
->  CATEGORY="userfaultfd" run_test ${uffd_stress_bin} shmem 20 16
+It should just use kmalloc.  Oh, and it should avoid leaking the buffer
+if security_get_bool_value() returns an error.
 
 
