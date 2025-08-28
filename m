@@ -4,116 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B6FFCA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A240CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:45:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 839228E000B; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
+	id 723EA6B000C; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E9A58E0001; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
+	id 6D3A96B000E; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D8378E000B; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
+	id 5E9CB6B0010; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 583368E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:12:52 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E21FD1A09B0
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:12:51 +0000 (UTC)
-X-FDA: 83825147742.13.D3AF7F6
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 386B5140003
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:12:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JgX0VfDF;
-	spf=pass (imf23.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4ABCD6B000C
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF0ED8530D
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:45:49 +0000 (UTC)
+X-FDA: 83825230818.20.F466F92
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C2E1A40004
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:45:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=MTYG4UT9;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756361570;
+	s=arc-20220608; t=1756363548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cnbLMdPiCwmvYLji+zAdnqkI0zKaKd1dlWQ6sfyOcHc=;
-	b=fY9rnA6DfIxwxUUp9hm0NvJtJ00dOZTROGkS7r1F/5arYd7oH8G4Tn3yMq/ovo8Naqiplq
-	JK9vDyHbFldMrCt2IaUEF/A2hE2m8A1hJrls3PdTe/6z4Tq9naQC2t8ASGbqEmReeH5izX
-	eWSz2PK+J6fuW2g/h4SSrPYbj3i14FI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JgX0VfDF;
-	spf=pass (imf23.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756361570; a=rsa-sha256;
+	bh=knemHQZ23pxIDABlkjX6mLqLtGGVNS33kJ89XWuOpd0=;
+	b=EwambfCb67GuSpQGDaKtbR8+GXpFb/T/UaDDPba6pxanHeetxUBvZcBAPrGWEvYrTMTOTX
+	WhPBq7EG9lI+EeH+ASbVxeCNu9h8JpRjSiF0scCD4pu4JcVFmnO+t+5ok2ezfMhrpDpBi+
+	M4cGrPTf5LLUSmesVXKLOLk9xTh1tTQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756363548; a=rsa-sha256;
 	cv=none;
-	b=EL7z2r3KiOMaMqMPo6FDXLTOCd/kZ+cYTQUvridzhmt6O5Jz4UAUVzHOoRnc+XwyES5hwy
-	XuC2FoC8kuMzTBTsBw3Rw6pbx+qGZjCrItQezjTef2UA/Jp4L66kSGDWn2Su05tNh9zfsQ
-	uI15PVgFKnr+Bt3lG9Z155maQthcSmQ=
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-70ddd2e61d9so7606536d6.1
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 23:12:50 -0700 (PDT)
+	b=RfCl/Iy4EAHjA20657HVvUEjUK1upMxxuB5aDlBGGdyf/5w8db4AASfMAC1a0gV+4lTqqH
+	zaL5txU3it63hrzn+6ey/6qyi/hzhI26rkCmVIO3uABz8/ex3ZAtZKbzsc1plVOnlG/UdE
+	58Mz6Lgh2JhYfKnZqJC4zJvCilQEkm0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=MTYG4UT9;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b49f7aaf5so2869305e9.2
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 23:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756361569; x=1756966369; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cnbLMdPiCwmvYLji+zAdnqkI0zKaKd1dlWQ6sfyOcHc=;
-        b=JgX0VfDF4Po+ZP+zL7QxPEigpxgiqg5RoUnF9ymv+BkByALUCuUv+lCA/aoVCdjd4s
-         zbDLcLSNJRg1x3HH1fidcR8ITT97YEWLDG1LO0/KyX5Fa/leMaZTnu5SM47wCU+3kZ4v
-         d6qxh9gti3Xvp1dkqhDTE4MKLDu9yBLKmuMoWgiaEtXHv0Q9DipSiAPngkxVsDw1Prll
-         MVgIicocGerjsAPNDHAsv3t8THkpLcv4We7K3Ihjrlc4ercF7KsCP8xIaXym94OlVxH5
-         45Y3E46xpk4tlnZ+CCDNLWs6Rv6XPVliyemQNFaYDApk4oOmXlDeF9Kg+MuJWw2Q+wlL
-         cRag==
+        d=suse.com; s=google; t=1756363546; x=1756968346; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=knemHQZ23pxIDABlkjX6mLqLtGGVNS33kJ89XWuOpd0=;
+        b=MTYG4UT9OEwXGwZNT+CS6GxjJhYBKHtZAoE46kA4KVzfzTsnmGxwgTUEUNh4eRBSSr
+         Kf8bCSFLBsCqjXQNtKs8xSrtHsv8phoxh3RMA1TRlhrzo9WgtrfKuMSH10GIhGYAB4NA
+         AIl3YY/DT/EVb2JgIxhy6sV08yzdgvWaWb7fwEm3Ky58Pf7Ap635Gg94NmMEbg6z0K4O
+         cpLer7lD6uoaDsXWlJkvGlFxl6vsjUSBcvwoHQx2tTh2QilwbauUcTdk04WdKHQgXCbF
+         TxXFj4/V0DzWuNztdTkdtz6m6E3fTU8MiDAbvkv47oDCBJC+z0T9uNoJVg6xMJOZ8xVw
+         iq6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756361569; x=1756966369;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cnbLMdPiCwmvYLji+zAdnqkI0zKaKd1dlWQ6sfyOcHc=;
-        b=aba9Wuszxu55vYxEEgY0+8nMclZe+kWC0wdJzVCBTjmRK3neBF3g+s7pUzp53b2dum
-         J4GwtF1cfc0aTmaj0e/SYJ26ZOrs4ocmYJ3V2bthQtcw2qSrHRKZHYX/3qXqCe6jFV6N
-         qGjF1ghYh3WOWgqsVCOQbT4LfFuxHvjIz1GugUtOT5GZN2VBjGCAh7LLY+qgUSB+YBCO
-         B3LCcT6CTQTspYIpKedx/VxLc5zsNtbRpqDS/a5hnpt6NUzVUpxORV0TPqcdOLGusnXI
-         tXjClaldCv3woG8USodAX2vtSTzR0HKhTlx45eyBMiVE87Kq2PzTPW9NK6h/m8377e8M
-         64kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+bfLz6aAk3tFNeR2o6EOmLG1KxXL9FIMMjvbmRlcBxdXhvrGmZ4bktlV9nTOo6V2NJmpmHEyTDw==@kvack.org
-X-Gm-Message-State: AOJu0YwY33+Dh4Uv+KQC912+LGDqBGNDP8KV2x4tbVybi1qvlYfb5Q2N
-	ynYKZSeqM58AfMPfEDYUoCZ6CCj90fBOVSbhI9efCsmeANliKny/l7bHYUuOYRamda04Lb8FWlX
-	KSbukGgPQ545FN4eh5yEr3Mk1LKBp6mI=
-X-Gm-Gg: ASbGncsgihPZ0OHZWNeHllC3ystCaJCgsKWvDA/AC1Hn2K4w9hWK/uofgvDJvoGE8H9
-	fZI9sz1GabalPb1+zto3xzIdlW4vCpfuBIAPTVVtUO8ixc+YIGLmLp3h6GKn2Q1+Ng/AmkUHr1c
-	EhWx67Om40BNvonjaLd/wsLEpfUinOO6xB/H5vrp31RgdZPetQDKr/CnaenoOyRelgftABJJMMo
-	fjEFRxFBuD1mUZ6HJODdAeUlDWIhWlFU+xIjQ4=
-X-Google-Smtp-Source: AGHT+IHWEqZvffeKo8kRXTyycXIE2aUiikzOvRaEpoYzy2gliBcy83nY3larYygf49dGuEclkaz2O/Wg5aGu2qNho5M=
-X-Received: by 2002:a05:6214:3293:b0:70d:9f91:642a with SMTP id
- 6a1803df08f44-70d9f916d1bmr193078726d6.56.1756361569344; Wed, 27 Aug 2025
- 23:12:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756363546; x=1756968346;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=knemHQZ23pxIDABlkjX6mLqLtGGVNS33kJ89XWuOpd0=;
+        b=pPxk1ozKjfT5h4osiIk5eWRC6hvvN5UeRhlqt4kYWgLsckXCcKkW7U6gnnU54wsROl
+         IDYZPrn0MrPAcU5kuad5wGenZkfPfTKHtibtrQUI9WVDAiAOdsY4b9O2XBY8/drtQc7P
+         F+vcL8U4ZfQP6e9hvlwxLUUhHrNNzdGpmjeg38mofqe6HqhNKNxQvU47z7STIzBrjiue
+         fT+zr2aMgQ/jUH09ec7UVOQ6ZOQcK2EyBO2P2FfcspB2BfwlBKs/uaxDf+7Wm3lOL9jP
+         KerYXgS8hlsD+weO+0skOtDJl4zNsAgcH15bjYsBf7tOSLm5+L+MGQocSdI/sBIEhP/B
+         Utrg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBxGcGzYDV3ICI18NH8IiveHdt/M5RDZQ5Hk1Rh0MBSKnKOriijdTmDexlb/HL9og7/RBN66tX5A==@kvack.org
+X-Gm-Message-State: AOJu0Yx0ap5dwgu7AH2xxIjRdteawkd8P+ykG9uEWuJ+V1fO9gL/gVkF
+	3Lvhat5jRvOTTOBipzj4LUqNT8BtyLlIeQZqhof9rQeu9oPYZAO/3mioKR/30jv0dDU=
+X-Gm-Gg: ASbGnctjLtuzRaDClUM6KHd0q6YDg+faovyGRBnpAUNeztkstoRxU9uw6t51TT6toS4
+	jCVRzXCa91Ge6GuGz3ev+0XcFZBlWIGLG7DGXrsmQtPAea57PaCylgjp4VUTFE8zEfANLNiCrJv
+	272z0NcfyhNJzy2CLZGAK2lvBFJQvnhgh/sgIqQSbu9/RCV4rvRsnGtLhBC+FjhKMcDgWNlubno
+	81GdPcFTsdMiesijWEQ/3VrwPaxZddn2+JTYCvKs/iKlHNZ5vpjS5TOC31YFjzvefK3fhocwpN+
+	OCeAx8LfwSZJw8bm7qNftYFduj6aOfUeaceStth4EKEqQjh4pauR5Qt+CiXihbCBGhZDUP1GmUL
+	MCxSV4pFC794HGRRWSdx9jdFGX2uHxZ9HRV3EsOtkDE6jvA==
+X-Google-Smtp-Source: AGHT+IEzVCb/sPwnrBnjP7P0WHlUWm3cB4aF8du8T7+csVrDJeE5Tu9GjnX3DSLGMIT4YnlpckMapw==
+X-Received: by 2002:a05:600c:3b8b:b0:45b:7951:92a2 with SMTP id 5b1f17b1804b1-45b795195c9mr9624715e9.18.1756363546098;
+        Wed, 27 Aug 2025 23:45:46 -0700 (PDT)
+Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b66c39f72sm49159435e9.2.2025.08.27.23.45.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 23:45:45 -0700 (PDT)
+Date: Thu, 28 Aug 2025 08:45:44 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Weilin Tong <tongweilin@linux.alibaba.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz,
+	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, linux-kernel@vger.kernel.org,
+	baolin.wang@linux.alibaba.com
+Subject: Re: [PATCH RFC] mm: Use pr_warn_once() for min_free_kbytes warning
+Message-ID: <aK_7GKJ4BWjye4tZ@tiehlicka>
+References: <20250828030602.204332-1-tongweilin@linux.alibaba.com>
 MIME-Version: 1.0
-References: <20250826071948.2618-1-laoar.shao@gmail.com> <20250826071948.2618-5-laoar.shao@gmail.com>
- <bca7698c-7617-4584-afaa-4c3d2c971a79@lucifer.local>
-In-Reply-To: <bca7698c-7617-4584-afaa-4c3d2c971a79@lucifer.local>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Thu, 28 Aug 2025 14:12:12 +0800
-X-Gm-Features: Ac12FXwA8AE2T9DT0lZOOileufyZaAaDfXMTycJckIK5rbkI3PvbmFzzlT8sNXM
-Message-ID: <CALOAHbDxxN8CsGwAWQU4XRkG8NvU-chbiDv=oKW0mADSf1vaiQ@mail.gmail.com>
-Subject: Re: [PATCH v6 mm-new 04/10] bpf: mark vma->vm_mm as trusted
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 386B5140003
-X-Stat-Signature: b334swhz8jijptfbama1zzjkdedaukyi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828030602.204332-1-tongweilin@linux.alibaba.com>
 X-Rspam-User: 
-X-HE-Tag: 1756361570-119024
-X-HE-Meta: U2FsdGVkX1+vdHoX66lgYBVDbi4KeCSUTF9ofTWSIS2lZsX/U/zxaDK1F/uTo212pdOj1wvq7SI3mftknae+/3nM3RH4zvxgREkHNxA2r4QcqeG4d9GoC8ONA3kbLFW3i/e/XhFiQiymgUxJww/5VAuO839WPFCZEF/yCoo72W+4r3FP89x8BxaNTlDFB/qGeCXr6LmADfERCMS4ETidxgOnDoJU5dm3VRrEooB27z4iDt708Oc5R8gJtUmVnci8qF4AFTpWoAqbYI1mU2YzFS+pDrDqPEWNn30/q1h2XG3NMsR5AKYV8DkLjqB9uQP1U52x9UIfpq5RcgX1KjFEVg3MWWjiBHVmXtRDdoO7Wj4dvc0BH7xXIQugrZKsqZOAYa3b/UuFsGomzFxdxOQpmaWNOObhqBScotvY9Bg9QGZgKvKK0r31A55C+so1Ua03bvD/cRUnKIQB2yHDSTCtskpsAjgevg2YRJiPMasogjzJ00gPk1pypXiaAJ16/p33w2mf/3HZG/fN5gF/MgmaR7u6TrqgODS1O+BbyFuMFBkkGyI0HVKFJO2ajdXDWF2w0WBAIprFrgX38zriGVvZqkb4eF0WKWv9njWLZQgA19e3O5aEKNtVhrX9IzVFmL+ASg9LbTMpMyeZhUn6VWRGEYEL8sDKWe4Yy9SzPh7eVLDHD4rBN2CCWX/auCulB9LSEpkwEIuJMPR25ORIYTWXxMJgwgEiFvdtfOWfZUCUm0DSiu1w3+5j9TjfsDnKPefB5kZNd2smkHDb/9SASGWsDjPhGtlSXwgMGcjJjByirrcvzvbE+4YG90+ctrbO+hjoBk2OlZA1EdMbsCC5ifA6Jm2KW3rFApRY/BLNFm5ldzQmNA7uwBeztccUGGBGHIcJh+mJfQNvwCFNLK7laSK4XzGb836h1OTNEmFbbb4DtJft5frznekUULB/brKlaiefTXX7pP529he5DbsDeZ9
- AhJmoY6I
- lHM8JAF0yC4+BCFywlhX8fTR137bwdrYvf7vZbaz2YgCkgems8lKQDS+PuVbU54wywV62Tvn+oYlMiFll79gccxfvSN6IfUoV1bla
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C2E1A40004
+X-Stat-Signature: 9edd3a9dwcho6rz474us7qatn91ursmr
+X-HE-Tag: 1756363547-326995
+X-HE-Meta: U2FsdGVkX18ayoiuafaK3JDDhZKvwc9WCg/ORpYT8cWjf8qK1EGrSM+a7kgEU8+DI3LAQLcfQ+5jYW+M8XSIUz4Dgqh4ZoxcMJk0xZcBCjDu7tigzVW4vrhKra16/+OVoyC0uJRyWwBiqZLpamiCtvmlqJKtSAd98zxUaDDRfHCN1GgX3+ctsTPYnzb8+sAmGWdLQloNk/IRiOAHDLZd9BG/Q3u0YQ65cErv7UZsNmypxFVNiZmuYhICefJKWXfXSQLu/gnalsufKJPdFEAXHyoDqAIGHFV9nFK0d762B8effhrSfJvroDRAjuZ1vLwuJROrVOZXrZk6yEs2qkoBTVCdYXHLmv1XdODg2j6geOU4V0toqVl4/n11d2r/P/xONNw4w6WCUUbPZBizGGZKAsfAzyucMQlIHdt8o+dMndnmThpCp4yyEBsI63BUzvuJjTcuPKy3QuyV54ZnHKtCcka7ucCYQgWKFV2a8ykNhS//fs7TJJJjeUmgn7mKA5x5cmHNJQsFkIKwkhmV4T8NbdZ/ZxVq5G47q+ryGkXJSo/IBCdjRSfi2fus3KO9J4xtAewfHORh6+g1CKCq+8vTKqu9eeKxxvDqRhPndOyrFpK31Z6VX4Nn3fEBrzs9PviFlgf+yaS7RZHnZ/wcErVEU7MNp5jtJN/Nqfc1rD25UdMjHuYImV34Z3mx+49KHaZn6LkojAgXA3Y4LEECqNwxidmpNf44skASPOaWWLify6kauW2pfBG1csoA2kiSxsri77y1HZS+SOkUjapgKfKHTXNwIUmvBt2PXhjecIFzfeMF8ch8F4JBB+iGP5LpKp5Rv8x7OxhnzRagGM2CltlDwO8YXwFJq9ioIRWfUL6zg9lc/vUcgoMQHPixkw+snadU9pYRDc/I2zxpcpiLM1jBh3D3qFbi5oXpwnqC/wWlW2wBiNDDKI0uBKv9Fkh8TlNw5nZS12R3ulLLkpmP1p0
+ u6VW8FXE
+ /sJ//YCbANbEXpOIYK4nQNX6fPROKKAHg+vIVZKrxl4txuW79ZEecmPUgmN9qk/vV0UMqqoriIenWUGCJZXURFSNEeiUlgfuLrZ4dIbjMtGdlpdROxBLhPUmyo1GHDy39N6uoCAGTJUKrNMQCTNgXKTRiyT9oOLaLosFvr58YVVaujU7fSLmogswHL0j3oBgArUX/uuMkUaiJ6Pf3bsNnbyj+Z1mRwMteGOI3JAKcCck1HgvcdFImN/D/zdAZRKmPuC0XEquy/A+RURzbcVqJu1CBOPOrQCW6jgzoUk/vQ8kNoMpKEzV49K+InILbRlm+B6lD0dvlGx32TZzfk2CF1www2pkXdyy8aeac6gazTXn8lKdJNhLN2Y5lNRgNh950XkBk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,30 +119,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 11:46=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Tue, Aug 26, 2025 at 03:19:42PM +0800, Yafang Shao wrote:
-> > Every VMA must have an associated mm_struct, and it is safe to access
->
-> Err this isn't true? Pretty sure special VMAs don't have that set.
+On Thu 28-08-25 11:06:02, Weilin Tong wrote:
+> When min_free_kbytes is user-configured, increasing system memory via memory
+> hotplug may trigger multiple recalculations of min_free_kbytes. This results
+> in excessive warning messages flooding the kernel log if several memory blocks
+> are added in a short period.
+> 
+> Sample dmesg output before optimization:
+> ...
+> [ 1303.897214] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1303.960498] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1303.970116] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1303.979709] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1303.989254] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1303.999122] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1304.008644] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1304.018537] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1304.028054] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> [ 1304.037615] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+> ...
+> 
+> Replace pr_warn() with pr_warn_once() to ensure only one warning is printed,
+> preventing large volumes of repeated log entries and improving log readability.
 
-I=E2=80=99m not aware of any VMA that doesn=E2=80=99t belong to an mm_struc=
-t. If there
-is such a case, it would be helpful if you could point it out. In any
-case, I=E2=80=99ll remove the VMA-related code in the next version since it=
-=E2=80=99s
-unnecessary.
+pr_warn_once seems too aggressive as we could miss useful events. On the
+other hand I agree that repeating the same message for each memory block
+onlining is not really helpful. Would it make sense to only pr_warn when
+new_min_free_kbytes differs from the previous one we have warned for?
 
->
-> > outside of RCU. Thus, we can mark it as trusted. With this change, BPF
-> > helpers can safely access vma->vm_mm to retrieve the associated task
-> > from the VMA.
->
-> On the basis of above don't think this is valid.
->
+> 
+> Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
+> ---
+>  mm/page_alloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index baead29b3e67..774723150e5b 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -6412,7 +6412,7 @@ void calculate_min_free_kbytes(void)
+>  	if (new_min_free_kbytes > user_min_free_kbytes)
+>  		min_free_kbytes = clamp(new_min_free_kbytes, 128, 262144);
+>  	else
+> -		pr_warn("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
+> +		pr_warn_once("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
+>  				new_min_free_kbytes, user_min_free_kbytes);
+>  
+>  }
+> -- 
+> 2.43.7
 
---=20
-Regards
-Yafang
+-- 
+Michal Hocko
+SUSE Labs
 
