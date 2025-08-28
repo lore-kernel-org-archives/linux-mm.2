@@ -4,123 +4,200 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9396FC8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 18:39:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F33CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 18:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5A998E000A; Thu, 28 Aug 2025 14:39:23 -0400 (EDT)
+	id A8B298E000F; Thu, 28 Aug 2025 14:41:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C327B8E0001; Thu, 28 Aug 2025 14:39:23 -0400 (EDT)
+	id A40CF8E0001; Thu, 28 Aug 2025 14:41:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B47AB8E000A; Thu, 28 Aug 2025 14:39:23 -0400 (EDT)
+	id 929BC8E000F; Thu, 28 Aug 2025 14:41:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A07068E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:39:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4B83F118BDD
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:39:23 +0000 (UTC)
-X-FDA: 83827029006.10.483E351
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DD506140003
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:39:19 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b="UUbp N/Y";
-	spf=pass (imf23.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756406360;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E2D58E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:41:29 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B493139C4D
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:41:29 +0000 (UTC)
+X-FDA: 83827034298.13.2CED6F7
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2072.outbound.protection.outlook.com [40.107.243.72])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 60DCB140005
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:41:26 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=siB2nADh;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of jgg@nvidia.com designates 40.107.243.72 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756406486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7tDlIM0TyZMcvSoK1xxHIEjCDRhecC3cjshhiua9X5k=;
-	b=d5HkT2ActrexQIFSrQ7PkomrbRLLqHYt92sOGnatuyJ6OqXNnNAMw+lbEO1puyjEdjV8xd
-	cFtZnQfcEl6gK+icwom434bQi6568o90ZgeBWwGRPNw6YWvuyAS0FYn8TWC4uw4gr+qXI7
-	9h34H0cVrFXw+45cMsNHyjAdNstAsAM=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b="UUbp N/Y";
-	spf=pass (imf23.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756406360; a=rsa-sha256;
-	cv=none;
-	b=3g1vY1Qk2gt7xOA0vxnlcDE8CRC0q7ssN4tM8D2lRQnkXYu3Jf04wXG/cLuFc9XQqEVr3j
-	LMY2Kua4A4hG6erj0IjulJG82l17V0u2w8LoZ805X3RuhT2xjtoer9d/dcBrsKWo/f8jLm
-	oDTr4TY0gLjSzbvkipFgKpGyGKPZJ9Y=
-Received: from pps.filterd (m0150245.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SEmjL4000988;
-	Thu, 28 Aug 2025 18:38:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
-	:content-type:date:from:message-id:mime-version:subject:to; s=
-	pps0720; bh=7tDlIM0TyZMcvSoK1xxHIEjCDRhecC3cjshhiua9X5k=; b=UUbp
-	N/YEKbBZQA3HEvX3FD5d1MirTV0FjnU1H8aAlBICM677obaXSec1f8Mem5oATus7
-	CjRSN3rOEdXKGuTJP5BzI09o8zDs3FCJX7D6fp/6+StpXvMyueFyVV7xmm04Kz/o
-	tmM0by0ZdVVGbGwpTVgwzDqyEKvCWxJqpKK5/nuMMjn12qYK5OxybdNAtP1Hbvsj
-	/aXm0wNWG8z5fQQe1w3d/uasOeZKYdhAC7AhOqRy+1jriXfWTCbsbn2tgthgyTlF
-	NZru6L5KzL/3G73LNfTIAmYv+DS2aRFpmDCtjePiwFRA8xC6vsxXuCqKhMKWZ60H
-	q3x3u0F5Qb2QoQVJRA==
-Received: from p1lg14879.it.hpe.com ([16.230.97.200])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 48ts71svb3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 18:38:32 +0000 (GMT)
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id A65F5132C5;
-	Thu, 28 Aug 2025 18:38:26 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 1263D800EB5;
-	Thu, 28 Aug 2025 18:38:22 +0000 (UTC)
-Date: Thu, 28 Aug 2025 13:38:20 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: akpm@linux-foundation.org, linmiaohe@huawei.com, jane.chu@oracle.com,
-        jiaqiyan@google.com
-Cc: bp@alien8.de, david@redhat.com, kyle.meyer@hpe.com,
-        Liam.Howlett@oracle.com, linux-edac@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        lorenzo.stoakes@oracle.com, mhocko@suse.com, nao.horiguchi@gmail.com,
-        osalvador@suse.de, rppt@kernel.org, russ.anderson@hpe.com,
-        surenb@google.com, tony.luck@intel.com, vbabka@suse.cz
-Subject: [PATCH v2] mm/memory-failure: Fix redundant updates for already
- poisoned pages
-Message-ID: <aLCiHMy12Ck3ouwC@hpe.com>
-MIME-Version: 1.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IH4p1Ynk9S0qsGZQOi2m3kXmB/gc/sOBxCVzanZxDJg=;
+	b=q1MhVFcmxx/DcSo0vocfOedpGSuXVS6T7p0K75JV0iEOfd0x4G8sMc3CeInlBaL0FzdbFK
+	ojwbmlkvjlimOQZhQoFKCn8bcF4QgjKvlpS6ipUg/8p8TA3X6flB6N6fTZ+Ryfn/nIvAg7
+	JVwr/9V/QMxOq1W2sqJkLfbRQQZdXzs=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=siB2nADh;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf26.hostedemail.com: domain of jgg@nvidia.com designates 40.107.243.72 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756406486; a=rsa-sha256;
+	cv=pass;
+	b=52HP0AJkDV/pF6/bL3qHV074MWiPXfcnGAT2B4ireHwIy+UE5AYH5KnK3ShP+QSrl21+O4
+	N6qmUeX9NUfcuvcc8mjaqZFLon60id0mx0ZtP1IFl0cM/Hq85PnQ5GcE1LL5xIHpfQgDF3
+	5gSub7jiDpXaaDLhcyp3FgP3Le2zHO8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bR+CIVlRgwV9tDETEuGzlP8ip4aFPHzJBGzDvHbjKfYz/rc2zF3tORBCBM/DoT1VJ3kbD4t4G+PGxVI4K+Hv3xXztY6kMjJyXifQ+gKYlp63yZ1+dPBrxwaadi/B4V/N5dgFEZQiQNAyHSQygRIl8C/i4Ky9g4kyBBUNPkLJ4FDNwXrHBkmgTrtl230i641/7HjsAixjeqHS1dT2v4GaPIzWzGMfqZJNAl4HTT6oc+J2l9XVujdJhdi2sLyJksV5iQMMCKfkQvcR7F6xKF+/i4GTbH5hrATvfBpI0iZqsAeCuvSZ/MRCl6EmMZQYxeoAqnwmkwEgT7rOtKKEVDJjlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IH4p1Ynk9S0qsGZQOi2m3kXmB/gc/sOBxCVzanZxDJg=;
+ b=KeH+UnNB4zg15YJvU7ADMo84nKVAI71Q6ibHzwd9vdo2H1LN7XQdt0ZPdKdaqZq3LGyiI32QGbJixU2ERNMizdR3mq7W5UJy8QnZhUO55FM3UQzEhm+kUN2J6hWwg5qax6JEYdn5ZOr0s71DKfO7wES7I247L1KyvjtV9dGWW1MnxWceNx1PExB+eKfP8eZClx2+jyoyYs0mQ/lfXtd6YUmuyy8QYF/wLWVWfdaVCGS26CnxjAW9X+DxKv8Zl2cLlb+/IWr4zWRuOXVfu6dU7Kl20kiRxfBkV6wMoyZ6vvI2fzSQlEy6dVbffA51/SgK/mBSlZ0MAPRur/6iEJ3kbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IH4p1Ynk9S0qsGZQOi2m3kXmB/gc/sOBxCVzanZxDJg=;
+ b=siB2nADhfviyBOx84psFQ+Z/YOuywTPbRlhEA1IqYGfDHOOqxMRKuslkZkkf8BjsTrNo0rhFHlUui1W8RPnSzhYhaaiSNMw7dqSd7hFbz3zmYeV5ceWegYyzclb0QO+j6Jwj1QIpZ1z9vH7ihXCpTmwkvsoyEwYSUK8/XlW5LEo1oWSS2Tcy+RANq6Sp3Zgui2wLG5HAQCcU0A+qNG2ktRDOAcknQ68so63qYCyZ7yF+PMYfrKej2R0p7xilIZi2YXahia/CoyDIqECstfej6HkchwMNCLKOkr3e5/W6nmu57qK8zUZxcBZgJP5O8wQKfL9d4OsErhqM6ArWft5ufg==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by CH3PR12MB8306.namprd12.prod.outlook.com (2603:10b6:610:12c::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Thu, 28 Aug
+ 2025 18:41:18 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
+ 18:41:17 +0000
+Date: Thu, 28 Aug 2025 15:41:15 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Keith Busch <kbusch@kernel.org>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
+Message-ID: <20250828184115.GE7333@nvidia.com>
+References: <cover.1755624249.git.leon@kernel.org>
+ <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
+ <aLBzeMNT3WOrjprC@kbusch-mbp>
+ <20250828165427.GB10073@unreal>
+ <aLCOqIaoaKUEOdeh@kbusch-mbp>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Authority-Analysis: v=2.4 cv=I5llRMgg c=1 sm=1 tr=0 ts=68b0a228 cx=c_pps
- a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
- a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=MvuuwTCpAAAA:8
- a=_9263MXg1XWMioqDkNYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: mEN2_SVhX1feWP9FMfdMAfO80NtjnQtM
-X-Proofpoint-GUID: mEN2_SVhX1feWP9FMfdMAfO80NtjnQtM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI4MDEyNCBTYWx0ZWRfX8D7QSBPnFi+3
- 6fhGaiBbJ/Jz8Ny806+A+AhBU3IsHMWCWG/DYuWOVzwDSZM2TruWwvTX4k/yLVr7fChTslnSkvD
- YRFluNpFiUa8jj/DClEREh0I4XicCoq3nKwVLnZKIn4o+W7BGyAB+2Tlfd41zfqKWeq6cyDH7kR
- EdenwIf4aIT1pr6g/llqxD8GjrOOt1DBndGBtVh0tgQc0dbz3aFwFFP0q7YaZY31Gkhy9oHYslF
- qc1oDarTx+46ZOVri4kTCTi9yd41ir+KKpijdlDq4Buxkvn4qcOtwd0vWlMy9GTlZlHb/LAP3y4
- AWOp2klQPiNWUZooas0BOFUJW9XgduAdYNxOWGJcZ8eF00CD1bav1aFWfuPXSngKybKGxclKNTA
- ytMwq0Mq
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 adultscore=0 impostorscore=0 malwarescore=0
- clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508280124
-X-Rspamd-Queue-Id: DD506140003
+In-Reply-To: <aLCOqIaoaKUEOdeh@kbusch-mbp>
+X-ClientProxiedBy: YT1PR01CA0137.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2f::16) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CH3PR12MB8306:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e3a885c-158c-45b2-6f52-08dde6627977
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nV1kIOb9VP48Ge+qYZehwA9eGeoxeOZdlL6tbqFCaZF7sX7c4XZQ+EeTEXV1?=
+ =?us-ascii?Q?jeOHpXDpN9jTsr0aNY6rvxAEZT563BNdWHjY39m6D+rbkoJCxDyVhpMAKzT4?=
+ =?us-ascii?Q?ZiDMILlnK4rP2lqQl4aAw8OQMeKljsP6XMW5lTTWivG2xK3dEy6PZXJSCovR?=
+ =?us-ascii?Q?BIANh2Q1CfCf5pFWKroPAu96gx3gMN5vwEGdtNRAoKx8xtulXV3TFsmTS2xJ?=
+ =?us-ascii?Q?nwU/Ja5/QcJxHQVAICa5K5arovbYb6RJ56hG5XnmQmqRnORnaDBGTzumViRg?=
+ =?us-ascii?Q?DkMxQtBopzV2/gFJShioAb//97O4/pd0ohUYfqUBK75vpTzqiANsRQRk/ouP?=
+ =?us-ascii?Q?Fv6CwYSYIuOhJmzdhhMxA2fCTtjH/j8sneQs/z26EmdguwM7eCODjWsqyxXb?=
+ =?us-ascii?Q?krd1yEy7/9eXMuHFA+8/BQLpYwNCSdZnDKnf2GHOr/r+sIORslv0r6llJ/W5?=
+ =?us-ascii?Q?lYuGM6Jl0iL0lTz1xPBKnEQLL0PNl1q3EoXkp1zkdVHWTqa7YjQAM3LY4xnq?=
+ =?us-ascii?Q?+xyXr5leJisKW4ybbGmqcLY4dFG9memB49yY0V2DqdyiwLRQTofGh+srQ7j6?=
+ =?us-ascii?Q?SLzI9ufkZixUXU32tsskxXeMjyixZ7Jv9y9mzfLg2gLveR89VBCORXPfbZ4I?=
+ =?us-ascii?Q?Rz3RK65W2EFd1bY/g6b7/BJ1lRFVs0gKzpkjgAPeLQQZ4w2i+yquliXEg5cW?=
+ =?us-ascii?Q?UpnplUqsnF2sJhmOW69n1N3suCJj7k1RtNz6Fc9v3x+vy+D0AjDK2NeXZfYY?=
+ =?us-ascii?Q?ggNou7iwS3eUP3mmT/UbZbJr/c80mQn9aRBz90zkq1YJDX6B4AUMg/V/mBWE?=
+ =?us-ascii?Q?dLhhDvkJ6qJVwo6PgMuMIAVd209YsjIh3LBoHhKFIBqoykFmePWfa8wShv+E?=
+ =?us-ascii?Q?woIROJMSoD4mqx8s82XZTfSfaBQQDM4rI1DHz7EWZ6aJss4VpQy3hjZ3DXnL?=
+ =?us-ascii?Q?yunNIYOHlbwaao8eE8/8Q0enL72WtWHCREdigrSCso/t0Ymxj658JJetd6am?=
+ =?us-ascii?Q?r4eWmL98TVTrU3oE1js1kLGYugu8BtiG5c/LhyWENYYwGg4L38kePJ1hQsQb?=
+ =?us-ascii?Q?ga63IImaDX1Ke8gVjOdBzhF5Mdk3jECr5JTReym6u2vnytQTGD1Aw5K2FcxE?=
+ =?us-ascii?Q?HYtNc6zV429goAnwbIgzIr9oAlHAQyoxWi9ij3k0yJnxyCpmDprAMycojbAk?=
+ =?us-ascii?Q?EzwY9beQEtM6o7DjAGgBbH2YAIZfDijNcOgmC/kbeI7ihRarV5UV0eqZkU3I?=
+ =?us-ascii?Q?ENsaIqLh/Xo3CLt7Ol6vEm9ZzGFxM2epqD02bjJJftP3gVu6nchYBPmU6pRo?=
+ =?us-ascii?Q?IxKRYL76ez6f9Lzhx5rNGhXWpHnx6dn+V1v2qE1skWJ/GY9tOIOZHLxIvdrU?=
+ =?us-ascii?Q?BoyC9ifHd9gN/BQpHESbI1RbRWrS4N5nGYzhVWQItOCmuQrpFt+xS7I69mrx?=
+ =?us-ascii?Q?josnzQcDqpM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?612nRiCny2xtHW95HDZvqIOsNAcX7knc6GaUA1ENwQSUEyWYRrxQ6LgHZM9V?=
+ =?us-ascii?Q?gxIbVEIlCpkc5dpljNzBkZka3iIL1//txK42jVrfAO5Mxfz6nm05pHR9RU74?=
+ =?us-ascii?Q?sViC+p9O0c+HVw9saEBM8mb1QG0kiimXnK3LSHrb8aFfVfgc2Iq5QjfL/uht?=
+ =?us-ascii?Q?Lf+lkIg1ZOhhihb2SlUFSulu8mpGU3jOgcDvl3HM2XP7nfTVOKBThqogue+W?=
+ =?us-ascii?Q?1CJhUPa4eY1szS76IWXTgIIhXYHrBCbuTjs7sCxbDLihH8wqXAtDa/Rg/g71?=
+ =?us-ascii?Q?ljua2SF7XuiXfvtQ1CY7cw4MFCoteno4FC79mVzvNFpEvK7R78LNuMMHUwVA?=
+ =?us-ascii?Q?VzwzEx0KDGcJ3Rv1a3vKSH827Z3cN938T+JI07+/ngE+rJUeyI6So7kts8QB?=
+ =?us-ascii?Q?fvuLgamOpucTIP9glxRVgHF7gtRr255/n2zDW9qUI2H0Cmgb9w3KxTApeXU3?=
+ =?us-ascii?Q?OeRGzdCkiVzHYuuOMyytk3IPu3txt7oLyoPYLaGMJPkNz44EwgDtVYjPhEkm?=
+ =?us-ascii?Q?GmlE526wdzwFHyqNV+QnfquwtCZ5mo03XalIrWWNqwQC17yUsL/h438i4O71?=
+ =?us-ascii?Q?VwO8L+Lg/Chss9IRqQJTn1FuJxTD2YwoEsgICmYx6lXkT5Aosba6lTJaRim7?=
+ =?us-ascii?Q?p0Zml7Ro9ze8oOuftM60T72mE0P7GFFajmaTP4qNiv1s4J/9AUyZqZh7PRpJ?=
+ =?us-ascii?Q?Y0GAAIAFHYaWvPSjqTXlZMEXOjQv6tHu0j0/eTcjURhe3Tnb2CVH/gk4TH18?=
+ =?us-ascii?Q?QDOjQ3lXkELM0HB1w/fllOjPldc1Hu1NRLasvOJeQDkWHfAgYdhxQk9lgtV0?=
+ =?us-ascii?Q?AyoS7yExGHLto2dq4Zn4tdoi6ZzgbXkCWE9wvFVi3Tpks693wdZ9eU/Ytrm+?=
+ =?us-ascii?Q?89V7owK29lgAAaY4FispQ9SCR1zjVzVxEP/mawel7Lngn5evc/516bQOh3uo?=
+ =?us-ascii?Q?yNefhsv1nYoIiiqGFvJd46fgazIZmU8k2I3NU/aeew5e4w5UOmCfT0yFfzUh?=
+ =?us-ascii?Q?zhQHGytPL1/5XlM65i58JQWBt2sVBd3V7sXbx/7QBWmMWZ4JnanEQznV1xEJ?=
+ =?us-ascii?Q?/MRtt7aKWupeCMt939zVdJ47rTdTQMF3P/kpyLZj8RKd6yrEf9HBiedJJJj5?=
+ =?us-ascii?Q?b/Es6Dcd9GqF58vO/AL225W6jecBZYHyOjUQVTslycoqPKmk+nBKaIiPD6bz?=
+ =?us-ascii?Q?OzjLSXXmyt2z2pmr08AyKLDljujpBwKFcArblI+6yefY5/Zdzgpv/RVKIvwm?=
+ =?us-ascii?Q?xXrKKWUGFnz6l2UBXl7oMms4tGvgbabzhDyP83M21Ku9t/34OEp5sfoDFLDO?=
+ =?us-ascii?Q?pg9sDLqwgjuxlf1NJ1JeVlZE8S8lZUluNK3wtdYVHq5vdfSBZ6UKLJgUPbZX?=
+ =?us-ascii?Q?t4Rn4C3mi4obUpy77vBnFcDjUzSoiY39nc6esrK6NLhI3nmAiULLgvdZbusK?=
+ =?us-ascii?Q?WkpOM8JbpDrGzaCuR8ogZpOLnjMis6ZKv2WE4KguqS+kU5EmVp3Rqbz540to?=
+ =?us-ascii?Q?6dX741hkL2oiFucdvhQXK1tK3/5CIz7Z9lq/W3yBJcYxMAGwVK+poT+JPUTS?=
+ =?us-ascii?Q?dFmRbRG5orn6BsJ5VfU=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e3a885c-158c-45b2-6f52-08dde6627977
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 18:41:17.7869
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CDSLv6OFkm+aZOnW74Ehofn0ul6m7JzKm/hB2lXjK1SkGQPpQAYH91pJpVyw9xjg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8306
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 60DCB140005
+X-Stat-Signature: pcm8yp84j6u157zufa1qu9sfqajmtxbe
 X-Rspam-User: 
-X-Stat-Signature: pyuttu7ff6fetxzc96jta8mna5gi6pqp
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756406359-586530
-X-HE-Meta: U2FsdGVkX19vLsV/lhmmuZvY1D88eQtD9jrEjLKDiV08a1jJewnF+uAEHw3NKMq2Hir94iqrrVW3WnuxDZJF3up9mOwrzLOgVtQ1VZis1/ZPGkjBRg7JZ5aTfrQpYsd9b2rQ4YUcnI1BIXMrQyHCbGbzZ1JvZ21W7m72zgYtp5gNRh6solOoWezxMRWAaNxB0mAmF86HdN7FGs8J5JoEPHiuc1nqpcFroOAq3Y5QVQJG1xPfO70mpFI33JB8Z9/O0M3OqESVApbElI+T7u6dWlwYNMx2be+AzMdHsFVmJOLquh0xIlHulmHVspWZMmYa8gC0hvs80nSKJc7VHJtg3wou5fzKAuGxL62V6WyqGmCmuRpANc9pS/U6m+t0w6gRcRek7VISztnNP4PVgXBPfekP3YKTxGeFtflAo2BNgAqYsmBTiLR6F8q4J5QHIRKbOqt6AdtaVJREjjq9BjEvHnsCUCwCfW93b881Xl9Txm9EjNd9vaPBEuU4GvMiTPXcRLCF8bF7pQ6OZ49bEmmFzQ2XykT+MbZRZLztRl7f+gkkWM8g0kbDE4+N5+0JhAYFf29wUwZNK2AycVJUQgOdREWvetNAl5NcD/y2PMImZgygP+MxS0op3URajgLZIOrN8HSbjUGBICtgWYvUsesG9CdO6ywD0jnuS3NB//v5m7uCFJ2HqQoJOTrShPhjFN5Y5A6YFsiyKFqTOopatCLUwuEDUY+tLin97x47F7E2KnoKWmEzpOnq4bhV5zjvowApUyDxy2ckBjmJM+yk3ooP6b/Ij8ZMtAjYhr6fRyICy7qMUb08pHbHsGkm/13AM/ZWr+jkLVKewbXrnqtH6ULC51WM0AhxJTsOXB07VeE8X7y2UNM3/C2OIIY5hw8yPZZJnXU2qWXZ/9oL5xtEjjDj5icVkUFUAE7KhqFXsEi3N0O8Mz8CredZvOXFRTU4am76KJp1FvVM/pIoL8rsXaG
- JLWasPkl
- RzQcWHz71AeI/sORGCYbxnM19//u5+VUH5M0k3JelAyQcSwIifG1uBCDcxXxmSmSuCF79CbUnivxWUfqXyBU5Xc8LRDhTZZk96k3Sg/Ajv8+XbJYRbPhAXfHfBwXYgAAAfy+RAwwfE91heIGG4gfUpBtfagxg6fO8rN27Qf3vQ7MB0X+5rtpv2Px0MWVMa6oAt1F/ZCoW16PTwISH5o3o4z4KuX1Mb9orVsefddMLlKTZ2OSSFeNrM2ykKcFDSyLpkvVOCSn6k61xh572moBURmGQO6e6icQjWjoBhqTZTghQN8a8aykDAIaswliR/2KB9/fymmh8zoM9M9ySvSFu5ixu+QHadz6u/7St
+X-HE-Tag: 1756406486-435088
+X-HE-Meta: U2FsdGVkX19nt5dIuBvhAiJRyqQ4BCnkCgZNlLxin99gKHbZk1yokwuAJhhdvS/8imuLTDKz+m9TrXfSo+QlcdjJRMJVKY6cb+jPpCq4Ug4RSk2WbEQeXncIkQlCrR44+sOYUu+xQfEMu5kqGM76ayQAZRF/wHfZhC66qa0qU84rXRqwUeRRVbaYL8++pTqirjfR9TKRdEuoT4Rty6iuFEeZo2PTIKJzEiIGgq8/D0NnVW5aCaoMZBz5QeconsH77PxKcny1dZFNUtEeSaTE58XH0QBd/uCAfeAP4YOa2An6qZej95EqvccZkqrptgZjd2tgc8Mis7s6MXQfLNq1QZW48lI2tLYnmt5ry/dtLnC7BVVHlFDeP74ug9pqQ0AoDWUpWvxq37bTa001JxvttGFlHvEop9+QGCpUnR1MabuYnLzzZcEt25vtg3Cg2bELM9Y5FU2a4UuUl4I6cLIMSsn4Vio9hl1pTukI6aAroet4Q63Fp4HSPUaR3h6q9HJ4hmfdsGE959dUHriDyVO59UnWA4956SA2dayTfUiOSzZXcrvpTg2yv9aWCr1U6HYar2RxIu/yYsqBJ0rUg3VivBe7lMM+FG8imbzVLcurKkUIB9dETbhe7MaPsidn9NxpVL5pYArvCmHvLbBGlgLy601w1+N0L8uFDjgtaO0MJc34PVie49hVgKzSgzBQ5nU+3Uj8Lnid9h1ea1fZB92OcdgzYxDdViKIIr1YasEpxLgglyehaZs9tYAjPhNasDdsbkJFF5iuJQ2aryJ9w5rUTqyua0681oBAL8V2p+1d2UF/1Ma1Ph7YEfHZ0etoaXW0qh0AIlMBUyIiwbBGTeh+Wdt7LZ/roDnL8L21ykEYl9ha3iA110VE4ZixPdgtEbBhCmkp4SDlTsjALI5n/AlucG4uTvalbBKm98XpDGVVJiGsSp0VW2VMtpRoZzCF0qkbJ434ZOA9WnOi4hxHE3S
+ 1rooxC6G
+ E5FjyPPbZrGL+jrfWb/6A/RCPg5Vcg3/bHRdali2mqwZyupO8w9K/B8X+Mna1QaTpG9bAfy6zdsVJtc+jdXgxMBDxzg3QoxUXF3fxbLwJnf6RUNNyjscO0DOe5s/W6qKAPWwUReRmicASiASXzaS3AYVpsFx2fZxonno8vXeHBdqff4qu8hV9v6uKs8EUo3tqcKSf1dWtxcN5ynFwQUkVty0eW3Tqsno5exlKnPu4MozmvCDK5HPUj34j6Zo9J6Fk5T8DsXqBwT5W2E6PQ4+E/g4VyGRifssYSKOfgBQoKAdw7uZA5Fxr3eyGlC1Z88PUCb5YFWiq7wm1qUU/HrT04791EvREtOFOuUi08/xAsj0ZkLZlWAqbPTUTu0770tGFsb6LHhm6a1fHZwgJAsJE1usLkU8LJKqXfTtC4NBtso9YM26vZJSsSaSTjRWRQZlETy54VCVmc+USlZXqzHxw3oz3Ksd/BKuvaFgwTErpjqPedPNWZZ/5xUIrTyWFYSdgpHcHSeTfZPvy9CSIIATc0kTSm+jl5EcvlGXFD63O1GbTcZsWEdbIwpNH0Fvb6V+VOceZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,87 +206,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Duplicate memory errors can be reported by multiple sources.
+On Thu, Aug 28, 2025 at 11:15:20AM -0600, Keith Busch wrote:
+> On Thu, Aug 28, 2025 at 07:54:27PM +0300, Leon Romanovsky wrote:
+> > On Thu, Aug 28, 2025 at 09:19:20AM -0600, Keith Busch wrote:
+> > > On Tue, Aug 19, 2025 at 08:36:59PM +0300, Leon Romanovsky wrote:
+> > > > diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+> > > > index 09b99d52fd36..283058bcb5b1 100644
+> > > > --- a/include/linux/blk_types.h
+> > > > +++ b/include/linux/blk_types.h
+> > > > @@ -387,6 +387,7 @@ enum req_flag_bits {
+> > > >  	__REQ_FS_PRIVATE,	/* for file system (submitter) use */
+> > > >  	__REQ_ATOMIC,		/* for atomic write operations */
+> > > >  	__REQ_P2PDMA,		/* contains P2P DMA pages */
+> > > > +	__REQ_MMIO,		/* contains MMIO memory */
+> > > >  	/*
+> > > >  	 * Command specific flags, keep last:
+> > > >  	 */
+> > > > @@ -420,6 +421,7 @@ enum req_flag_bits {
+> > > >  #define REQ_FS_PRIVATE	(__force blk_opf_t)(1ULL << __REQ_FS_PRIVATE)
+> > > >  #define REQ_ATOMIC	(__force blk_opf_t)(1ULL << __REQ_ATOMIC)
+> > > >  #define REQ_P2PDMA	(__force blk_opf_t)(1ULL << __REQ_P2PDMA)
+> > > > +#define REQ_MMIO	(__force blk_opf_t)(1ULL << __REQ_MMIO)
+> > > 
+> > > Now that my integrity metadata DMA series is staged, I don't think we
+> > > can use REQ flags like this because data and metadata may have different
+> > > mapping types. I think we should add a flags field to the dma_iova_state
+> > > instead.
+> > 
+> > Before integrity metadata code was merged, the assumption was that request is
+> > only one type or p2p or host. Is it still holding now?
+> 
+> I don't think that was ever the case. Metadata is allocated
+> independently of the data payload, usually by the kernel in
+> bio_integrity_prep() just before dispatching the request. The bio may
+> have a p2p data payload, but the integrity metadata is just a kmalloc
+> buf in that path.
 
-Passing an already poisoned page to action_result() causes issues:
+Then you should do two dma mapping operations today, that is how the
+API was built. You shouldn't mix P2P and non P2P within a single
+operation right now..
 
-* The amount of hardware corrupted memory is incorrectly updated.
-* Per NUMA node MF stats are incorrectly updated.
-* Redundant "already poisoned" messages are printed.
-
-Avoid those issues by:
-
-* Skipping hardware corrupted memory updates for already poisoned pages.
-* Skipping per NUMA node MF stats updates for already poisoned pages.
-* Dropping redundant "already poisoned" messages.
-
-Make MF_MSG_ALREADY_POISONED consistent with other action_page_types and
-make calls to action_result() consistent for already poisoned
-normal pages and huge pages.
-
-Fixes: b8b9488d50b7 ("mm/memory-failure: improve memory failure action_result messages")
-Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
----
-
-v1 -> v2:
- * Continue passing poisoned pages to action_result() with MF_FAILED but don't
-update anything.
- * https://lore.kernel.org/all/20250821164445.14467-1-kyle.meyer@hpe.com
-
----
- mm/memory-failure.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index fc30ca4804bf..10b3c281c2ae 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -956,7 +956,7 @@ static const char * const action_page_types[] = {
- 	[MF_MSG_BUDDY]			= "free buddy page",
- 	[MF_MSG_DAX]			= "dax page",
- 	[MF_MSG_UNSPLIT_THP]		= "unsplit thp",
--	[MF_MSG_ALREADY_POISONED]	= "already poisoned",
-+	[MF_MSG_ALREADY_POISONED]	= "already poisoned page",
- 	[MF_MSG_UNKNOWN]		= "unknown page",
- };
- 
-@@ -1349,9 +1349,10 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
- {
- 	trace_memory_failure_event(pfn, type, result);
- 
--	num_poisoned_pages_inc(pfn);
--
--	update_per_node_mf_stats(pfn, result);
-+	if (type != MF_MSG_ALREADY_POISONED) {
-+		num_poisoned_pages_inc(pfn);
-+		update_per_node_mf_stats(pfn, result);
-+	}
- 
- 	pr_err("%#lx: recovery action for %s: %s\n",
- 		pfn, action_page_types[type], action_name[result]);
-@@ -2094,12 +2095,11 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 		*hugetlb = 0;
- 		return 0;
- 	} else if (res == -EHWPOISON) {
--		pr_err("%#lx: already hardware poisoned\n", pfn);
- 		if (flags & MF_ACTION_REQUIRED) {
- 			folio = page_folio(p);
- 			res = kill_accessing_process(current, folio_pfn(folio), flags);
--			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		}
-+		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		return res;
- 	} else if (res == -EBUSY) {
- 		if (!(flags & MF_NO_RETRY)) {
-@@ -2285,7 +2285,6 @@ int memory_failure(unsigned long pfn, int flags)
- 		goto unlock_mutex;
- 
- 	if (TestSetPageHWPoison(p)) {
--		pr_err("%#lx: already hardware poisoned\n", pfn);
- 		res = -EHWPOISON;
- 		if (flags & MF_ACTION_REQUIRED)
- 			res = kill_accessing_process(current, pfn, flags);
--- 
-2.50.1
-
+Jason
 
