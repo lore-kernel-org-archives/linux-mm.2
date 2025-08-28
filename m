@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E667BC8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 19:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BEF6CA0FF7
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 19:01:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 365458E0001; Thu, 28 Aug 2025 15:01:00 -0400 (EDT)
+	id 909F08E0030; Thu, 28 Aug 2025 15:01:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31C698E0024; Thu, 28 Aug 2025 15:01:00 -0400 (EDT)
+	id 893BF8E0024; Thu, 28 Aug 2025 15:01:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F52F8E0001; Thu, 28 Aug 2025 15:01:00 -0400 (EDT)
+	id 70D4E8E0030; Thu, 28 Aug 2025 15:01:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D58ED8E0024
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 15:00:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 999CF1DD64D
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 19:00:59 +0000 (UTC)
-X-FDA: 83827083438.27.EE8354E
+	by kanga.kvack.org (Postfix) with ESMTP id 502828E0024
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 15:01:01 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20CE7C0391
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 19:01:01 +0000 (UTC)
+X-FDA: 83827083522.30.F967BB0
 Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 958DB120015
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 19:00:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K4Q1LuU+;
-	spf=pass (imf29.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 27DE71C0010
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 19:00:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=na1+kJlL;
+	spf=pass (imf21.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756407657;
+	s=arc-20220608; t=1756407659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ZhDUhaFQNfQlBtAcofKP9r1jz8p+0mi3JI78z3ft6A=;
-	b=CR2OBA549ICjsBYH3WASVV6troQeEXiF0C65aqn9Mj/KxUg5SyTLLuF/vAva/9u6SY7dqr
-	NeipERvTJd/1x8PUXjNBq+jARvxAFiNYgw4yG4v+DK0ZwhPyb1jFpj+Is10v6sqApM30CJ
-	cbdc8iPt8/P5GacisSflQ1DV3I1TtZ0=
+	bh=kuV95K9JyY8TZOXbZAHoweF1aWF6QJFXwWOQdj7kvnY=;
+	b=LR3twE2HMPzG4CD+WTj+jg1c4H6uNiJ0pj+7Kdw+nPMS7CS5Xjy2u0u7nhTLyjSq/DKFM7
+	dqlmuN9r+jhMuiTiPY2PZMuUqyjXxJIb4/pxndUjwDdvn+ytrzK4GmdPDgG5JFb5TmpjFp
+	jP4nB2u2g9UScapjnYh2+xoXcNVw39E=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K4Q1LuU+;
-	spf=pass (imf29.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=na1+kJlL;
+	spf=pass (imf21.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756407657; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756407659; a=rsa-sha256;
 	cv=none;
-	b=cKQlojVM5+qyJnrU+vUOWTbx4VUliG/MKAVLYRwI+VXLu1+lR+ZMOderW0GefPEDM37gv4
-	IlgcSBjSmhWmw5uIioIESOu8e51wAgybc9M7gK3K8clUpYJn9PDGHjtIaku5dXNlOrfQhs
-	5kkV01HbFrhvlna0NDeepNuAKVlN4+0=
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-32326e202e0so1219472a91.2
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:00:57 -0700 (PDT)
+	b=YiRQuopeOj+FZHsJ6ka8IstWpS9x1DLr7sIVhrqD61BsTPV76sk++c2hxGAfo7i70YxzRw
+	pXKcawW61PMQy6PBmk+GDyx9jwPO6jUCX8uXuyGqJ/FYbytIRA087id2/TO420KZeNmrx3
+	x/XZhN/f55dekyZzeNOy87ChQmKgeQ0=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-327b657924dso794153a91.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:00:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756407656; x=1757012456; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756407658; x=1757012458; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1ZhDUhaFQNfQlBtAcofKP9r1jz8p+0mi3JI78z3ft6A=;
-        b=K4Q1LuU+ClENrOlhkkbecs2ZNxuXaY8Ojk4x3VLlkGpLdKVnvLD2YMsf+ZRkmiJtlB
-         3nk20vOXl/+6YGeRenfdbhGIPxCp3NNwjikN2fx9m/AA2X7n28NCvVK3jypSilFvXmwn
-         XeLu5RSNH5/2z0tK8ftTPUKf3rDslFRz+BY1iKK8JSppPxWytrcXYsyKiDVuAcc44qng
-         jXVanea+ckKQ6Ccvep5EzqUvKAGawPm6DHJxA/fB0wgpYxKtdDxF/1OTGmG9hOZphdBS
-         ITjppTfvczLiU0lEGoAs+HTw+XtJTwxdFCrmJkDCiB8/eI08bKp7guoADckEi6g1FP0Y
-         b/TA==
+        bh=kuV95K9JyY8TZOXbZAHoweF1aWF6QJFXwWOQdj7kvnY=;
+        b=na1+kJlLqiGM2lAZL2ai5WQWKVae6Jb8QNqCNhvobuTWt1HovB0Tk76Uz9QUyH0MnO
+         CFjyemS7LzQxi62PO38DmKVBs1L+lVuS1PkcauW+h2tBwunrUJ61ysN4NRu72z5Tg79k
+         tS08Aw3G+QZ/TpQyeKqI8zQNfGlZXU7uuk8GpelwbwFQfVfF7+IjAbjZfr2fPwNbZiJn
+         4/JGUK9rUowJPFpbDi/UGKT3hESqtF0d9K4Q8pTQ4uZ7lCGyUCAt/8GPN6k4vq25Sg2F
+         ggImmULsEWXJsIezWFlhcRfwM8DNznqwi85bFU7dKuz8ctyJW1/OwpBMZdb65WBG6QZL
+         0nJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756407656; x=1757012456;
+        d=1e100.net; s=20230601; t=1756407658; x=1757012458;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1ZhDUhaFQNfQlBtAcofKP9r1jz8p+0mi3JI78z3ft6A=;
-        b=GZdv60DEpnbJ+70M/JJ7iktiH+mPQgf+e267SoFzbO5S1jDsu4A6w/4eqGDW/vGzoj
-         wTL/ZkSmEPXjFDAgVHre9fwDJDFQWfz9MLo6KA0jzfIGDROH6i/QVNSfz4rsDpr0pP5s
-         U55gGTO8xK5r12C0NKh2tr7LWbRy2Ota7fCVJ4S2op1O8nUZVyCagRv35mTRVW2ASDpF
-         q675qKJCoaaX8kvAyH3zoVsZSMr5B/JP9uyBdZNVBhgis98SV+py04vTivbGoNsTh4K6
-         +YFB2YEMzY/tgHC+knhiQZnY42H2drgd3GuCcqXiihngoX4KGojCPQ2CugmyxIp5K783
-         +iTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWvW2A+YS8tzF5bE3Mf9imL2zyPteqHazC7rBcOjeNSnkHxodSym9P72EGFKdxM7s8cvtVS3Y4oHg==@kvack.org
-X-Gm-Message-State: AOJu0Yz23Di6ZjRm+PsC8repRUGkyj1Z5LVzvjTMshHjOcmSKO//UcsL
-	ZFR8A6zHCb/H6kcRAMDCg4m7Qlj6KJ6WJEhNvJ4gbg2g/eyGcU4Vw1e/
-X-Gm-Gg: ASbGnctjCBtWTPsDxVEoUK3R7ESmrA45qcmqizTWkd6T0okia2WcA3xO+R6kHmo+B/H
-	Q3sZiuS3vTbaiEX/f0G1oc/wKMAlRMvGFxaeGGBbz9mUbT9wqM6bQB/6yKQC/yZKxMrjeUumqKg
-	5X2zZb1tveH82gHZ7OrcWnLjAnmfLKostBNGxTzWWbKzxsXhT7op9/aQkeS45tsoHdIYUaK/nOr
-	KCup/VB2JlzpvoB2Y//wBh8qQ04gGHCbgvOa5BufutYhIQKzPbLHLBPuixM4E6aR46SKI72KdQo
-	2F5dv8gyEOn73B3f9gUMqWPrE3Dqsyo8Yak7R9LoEfpj4PBROlo+14iiP2T3ktzHbEi0cKiiA6o
-	hEftg7JBQxv0NUP5Qocbvy1SLZ1kRP+cKeThwdsRb4FiNCsSqbbRqMxw/+T4Hl94N/wY=
-X-Google-Smtp-Source: AGHT+IHo7oikH+vFaY9+hLdTEQynZ5bmtJTwKQPd/bkYuk10/5MoVZOnXrdbi27adYGqQTrDB9+UAg==
-X-Received: by 2002:a17:90b:5101:b0:313:2206:adf1 with SMTP id 98e67ed59e1d1-32515ec3611mr32905500a91.4.1756407656141;
-        Thu, 28 Aug 2025 12:00:56 -0700 (PDT)
+        bh=kuV95K9JyY8TZOXbZAHoweF1aWF6QJFXwWOQdj7kvnY=;
+        b=cZseTXz2p2AjnEtmJ+nUB4kzELGNsEws7oERjh/wXRRy+uSGpVFEW6U+LywBHVzI9l
+         Es2FsdDwbASQlK8FuAv/u8R//Qu2770kQf3fhR1IGv5z7pxKnyAq9gyjjUuRM/kPm7TC
+         DYIKSA4HNbfFvRm8AL5kGkmk31mG09qqFdUjGE8z+ugw60qxvoATBE9IJ4aA67E/DrbK
+         yzoPJx62IQESqtXhFL0coL6A8QzKYrxKkHnVmQK1w2R2dPdx4Nzaku9PbFQ7wjoXsD2x
+         wd2Dvplj5fYGZbPYrx/5Bs2lv2yXpYHx9+wctvSi4qvw70TwnZ2B+5RZgu4iQmsofMAZ
+         Wprg==
+X-Forwarded-Encrypted: i=1; AJvYcCVYY6v/rTuolxpw442lTLC5/e10RqI1GJ7DYuQrzlG3uKxkVd9CHMigOWiz3MViLKjR/frDOFvXrA==@kvack.org
+X-Gm-Message-State: AOJu0YzSBNjQE+Rv+3IVWbmxYCj/mC8RKDJzuLD3TqqRSjLAx/LpbRng
+	pJl9JXAr9lBLgwvR3XggKcb3MA9vpxiBSu1G13ZBHztdrdXta0CLGFuF
+X-Gm-Gg: ASbGnctmSDPCrxupJEMkpfpBZb/OSXtSHlgXRQ1uLP5OBWpSGyrZmiUGr8aPtJWBGnl
+	rwW0NT7sgZsGdF2kKXqknDK7UL5MjcIHPm0VlS2UmJBnjA0sdfr/C0RUW763m/XWXE5cO3rcvQ7
+	NvQ9p245YU4jD0/i2RfVrHN4mCwRJeZ8Z/K154VzoZ/XbEeW4pyw3BC/wx2f+V2oU1fIwG53hUY
+	XpRWZ+QoWpt8fNdMtfeLPauJZ6UkuyHV5zLn5vhGKTiDayK/bhE9U1Ro3mYA6XFrWnRrd3Lfpd+
+	0+FLAaguvLGOpvkL7D+oqx3bj02IufYQpp5mt47X1qIPeRWRSt+H8gTthzCPZQP+mfZ173+5Tka
+	zsMocSmjk/qXk1WRqDQisiRABFVkVpp6ZryLDl3Pvnv1eyg==
+X-Google-Smtp-Source: AGHT+IHmhZQt+LgvfoXPy01Ao1mL5xCYpm5wePCqKk17/kEIhhYnOE66ySAPA1ychd2bemd1EStE9g==
+X-Received: by 2002:a17:90b:2648:b0:327:83e1:5bf with SMTP id 98e67ed59e1d1-32783e10b79mr7615856a91.28.1756407657841;
+        Thu, 28 Aug 2025 12:00:57 -0700 (PDT)
 Received: from mitchelllevy.localdomain ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da8e5ad5sm405729a91.18.2025.08.28.12.00.55
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da8e5ad5sm405729a91.18.2025.08.28.12.00.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 12:00:55 -0700 (PDT)
+        Thu, 28 Aug 2025 12:00:56 -0700 (PDT)
 From: Mitchell Levy <levymitchell0@gmail.com>
-Date: Thu, 28 Aug 2025 12:00:09 -0700
-Subject: [PATCH v3 2/7] rust: percpu: add a rust per-CPU variable sample
+Date: Thu, 28 Aug 2025 12:00:10 -0700
+Subject: [PATCH v3 3/7] rust: cpumask: Add a `Cpumask` iterator
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250828-rust-percpu-v3-2-4dd92e1e7904@gmail.com>
+Message-Id: <20250828-rust-percpu-v3-3-4dd92e1e7904@gmail.com>
 References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
 In-Reply-To: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -113,21 +113,21 @@ Cc: Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
  Mitchell Levy <levymitchell0@gmail.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756407651; l=8590;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756407651; l=2580;
  i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
- bh=pd7OPcbrPdAWI/7kgDpMFHa6ITv6ppIv2SVJeXLx/4I=;
- b=4mAs3HCOL9pJ49x1leBl0+kcOiuQILdFXWsH7vNLoFF1Wq1q/MBWhoCiT2WAwz0Md1dx4ui2m
- v3yZReoHe2iAs8mOLddeXU1f7l6uG4C5ye4DJW8gUYzwd2VbteBC/J8
+ bh=OtpCqlB9e1zWex8jQODuqGl1cz5sc9yZWh45+Mzno2g=;
+ b=Q2FpQBwE86VcGQRhHVGrqBBJHXeoNsMFqG0rXzfh0HY7/r2ixF2OqX8DlbwQU04IWLevtgaFs
+ K718VADFXt1CjEvHDLa8XOH/wgma/rXuoAzd1eGF+iseEpYpZNWDfXJ
 X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
  pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
-X-Rspamd-Queue-Id: 958DB120015
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 27DE71C0010
+X-Stat-Signature: rskoeh6tfbp87rnhg4nkdejjouujc77a
 X-Rspam-User: 
-X-Stat-Signature: wuogm6uqtfat499cfe8faq6expbpyhz3
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756407657-386796
-X-HE-Meta: U2FsdGVkX1/j8iqx5eW6r68qGwyLAqEoFf35L8wPxpyag+39ZrWqWP/r7Or26jcwBUdbsYQ1+i0QxGvUFQQZMYsHe549OX65aN6xLTcfqQk+UxRidiK2YZ1mW3dwic0BJO2ade3rKTPZ+fx0jALjGuKcBxn6ZtfxFqNFz2VY8QANqko3/YikZ8L5l4S/oNGgYfLeip1zPGrSCrheUF4Lv8vh3cXaQD+3b4V0YBnxucYhy7md4Y106IBKnotwY9ECkJ8fBSkz37ZnRUxMxN1FLOqaV5UaaoonY39jzeukX5zBeBD+7/ayof5plnDCiexCNGzjJtSaytRZkaimwtyZGKeDn6ISYOVMTxlYNfOnMm3iQ2M3eLHNvAF5rcvO9Rwz0fS0NNKC4epD9k/GlgDPk4vR3Xj1ZFcwnwnJC2tOaGsxjFXAuguE9R6RMRErA45KfCGs1eWJpFMSywEAenB2uNoqvizHMaw+yUGtlaZcht1LKdWwCZ8EcQikTLKTBZuQp6w3H0fUVUHykW+trQhj00i0Z2hNezVTXZvhQJfOfyOcxuNSAX/221ivg1x65peltu7nDPau0XBQWYe6rLjUi8zVUhX1Tl9BHzRc4v7SSgo1QFA7dYtqnfr/ZBn8wRZ75KVQ/U4/QFtb1qLCK2aN87noe76/6BFiLtV65elILg32/Rpk3DRy+uOVdxtBDS73qrH5V8rpbwIATslVl79npcCiDpAJjPXyfFM02kcBrO+qK/AtKFO7DRb0/2/bnYzpC/5gjxDxqbzp8h9UAZP9h/uAoEjdokf/H/aZweku9kTcevkZUsXWnRJA74VSnRH++hqjhXmPksUfeh3OqwRlhE494POtZ9WW+WGd6LsRhPyPKd8rl3/wKJN+jr3DYf1sIDJqzZQWRI8cUM5QnkwMIcMQPEngsNa3Nq/y1K3S1OKSHVBWfr7mP6QtQLF/dI1wKec0Z8hapyOStdaK0Y3
- CoRHCodU
- V7L8O8wZD0XnJnH0hXO/nIam8x23b7XExzrhIWYzaEcXQyl5Moi5Clr5BCnt1aJVpJ2PsZQWNX9cWLxYHSMgtdVmtrDVRI5Trgnj5ECCSxUDs9jdXGhjEVgx7EDjlpCn1uWXZTMxoGqcBiLfA0B5FdmeFoHjTWkjjZaFnwYX0NLZm+2fbM1BUV16fpL2SNYwtSlvE1AH/fW89wH8zcYNFOPHqfGiUi089WBsokvb0X9kDARi9RDieEBNutW0wLFviJurmIRyCxOFUOVumyrDKRGt01qaQCyZKJYYq1Hwg+L2F24aXn/WJVie3ykPLVWPIYtYXf6OV7lybfWcT2ez0RWZK3I4HO2FZkM14gnRmDseW1JPdew8GOg+xCcgJVZPo681T95fq3eUyIsJIzyBuPRgF6F2WhvUkVcGRFny982HCBfW3fKsvCzHSqrEys5BkIrfenOIaTwTgtsytO66HvACEd3nnMgl1UD4Knh34K9lGQtRTX7zhYcrRHw==
+X-HE-Tag: 1756407658-725258
+X-HE-Meta: U2FsdGVkX1+vCi7ydwZ1ObRlZ0IUerdFOGSiML1qKKVogWsp/lIK1WGiKQc6g0ZrYB3+TXuXWASb4hGynIe0S6INIvxBesumQ1W95HZDCcqTNhF6T0JxWbsrOsxKZNASzHG815hNmgqF3r8XsxyEO72ZWXc/xOohOoTDtXe3qYnYK7z0rFzjKRvz/tk7Mz2dc+Xp1OpoOR8HLe0SFiriRTWboXSWFEOCKO/m1ABzB1C47jGZY0drGd+lAW7olnYXh+g7J0LDkDtpXD4s0csz3aT3/OvmJn0Bu6YedUJX9CnQGPsuikX4oosDSjzfD9erD7IwDVxGDP0hcakdpphjHPOJvtzc4KC470nEoAJRI+RQtnPyOt4XY0ZtcOeYnj5L3L2uetaO1EQjTqkMmYvhuLclyPV4GMslAolfDGclKtbFd+iMAXN3CURVfVEP4kDmWByqMcxasHPFAUL4Qq51nHgi94GPvF6aJD/HdBhtZuBkHAQTp1RKtYUVQYNZY+vWgudhnhADv0iMzc7N5vgLY3iD8VdWfQChhcB7szBTxXCfrTSjCJWjDAVCX9oejIKtyAOF+HT26qATI/0G9YbsanMZjyVHo4tUzGvAezaZov6ptdvD2kojDU+EAMdRrsCUym3xXXOR+boO1TVKKghz5zJiUdmYzloZAMKcJlwa8Fpbzt2e5pKzBIpyjcVxqsCwSrNioQlVilq4ZVYyclXpYLTxb3lpxI+BnVS1C3EsZ3WM+4y5e4mc7lioTJ8Kjyx8rft3jesqvSPNy54F0yZ18oT066Q4jY+Zp1MDLlkXBfVGGKpQSVtt1jOWF75aW0MmumPYamRJcPe3s0weHaUhwDFBGZKQrR5Zi/3qUne1FbaxHSwKn+Q9v4eXJxLyHW9dmX+gd7vhXRtysy9QZEZcXR2WV4rPMaUiadkAZEYVJ6e+skghgaDYMyYpRjKPQirsErNrMmAVrS18HGvv6Iz
+ sHy7+k8a
+ 8LpY6DShE4M3yesWMsvhlwPecOjUgF/a/pNMnJzuIFuzY+xQWNC8rg97bsA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,238 +136,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a short exercise for Rust's per-CPU variable API, modelled after
-lib/percpu_test.c
+Add an iterator for `Cpumask` making use of C's `cpumask_next`.
 
 Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
 ---
- rust/helpers/percpu.c       |   6 ++
- samples/rust/Kconfig        |   9 +++
- samples/rust/Makefile       |   1 +
- samples/rust/rust_percpu.rs | 163 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 179 insertions(+)
+ rust/helpers/cpumask.c |  5 +++++
+ rust/kernel/cpumask.rs | 48 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/rust/helpers/percpu.c b/rust/helpers/percpu.c
-index a091389f730f..8cc01d094752 100644
---- a/rust/helpers/percpu.c
-+++ b/rust/helpers/percpu.c
-@@ -1,9 +1,15 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/percpu.h>
-+#include <linux/smp.h>
- 
- void __percpu *rust_helper_alloc_percpu(size_t sz, size_t align)
- {
- 	return __alloc_percpu(sz, align);
+diff --git a/rust/helpers/cpumask.c b/rust/helpers/cpumask.c
+index eb10598a0242..d95bfa111191 100644
+--- a/rust/helpers/cpumask.c
++++ b/rust/helpers/cpumask.c
+@@ -42,6 +42,11 @@ bool rust_helper_cpumask_full(struct cpumask *srcp)
+ 	return cpumask_full(srcp);
  }
  
-+void rust_helper_on_each_cpu(smp_call_func_t func, void *info, int wait)
++unsigned int rust_helper_cpumask_next(int n, struct cpumask *srcp)
 +{
-+	on_each_cpu(func, info, wait);
++	return cpumask_next(n, srcp);
 +}
 +
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 7f7371a004ee..23e35d64ac78 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -105,6 +105,15 @@ config SAMPLE_RUST_DRIVER_AUXILIARY
+ unsigned int rust_helper_cpumask_weight(struct cpumask *srcp)
+ {
+ 	return cpumask_weight(srcp);
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index 3fcbff438670..b7401848f59e 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -6,7 +6,7 @@
  
- 	  If unsure, say N.
+ use crate::{
+     alloc::{AllocError, Flags},
+-    cpu::CpuId,
++    cpu::{self, CpuId},
+     prelude::*,
+     types::Opaque,
+ };
+@@ -161,6 +161,52 @@ pub fn copy(&self, dstp: &mut Self) {
+     }
+ }
  
-+config SAMPLE_RUST_PERCPU
-+	tristate "Per-CPU support"
-+	depends on m
-+	help
-+	  Enable this option to build a module which demonstrates Rust per-CPU
-+	  operations.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index bd2faad63b4f..8a34d9d74754 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
- obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
-+obj-$(CONFIG_SAMPLE_RUST_PERCPU)		+= rust_percpu.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_percpu.rs b/samples/rust/rust_percpu.rs
-new file mode 100644
-index 000000000000..98ca1c781b6b
---- /dev/null
-+++ b/samples/rust/rust_percpu.rs
-@@ -0,0 +1,163 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//! A simple demonstration of the rust per-CPU API.
-+
-+use core::cell::RefCell;
-+use core::ffi::c_void;
-+
-+use kernel::{
-+    bindings::on_each_cpu,
-+    cpu::CpuId,
-+    define_per_cpu, get_static_per_cpu,
-+    percpu::{cpu_guard::*, *},
-+    pr_info,
-+    prelude::*,
-+};
-+
-+module! {
-+    type: PerCpuMod,
-+    name: "rust_percpu",
-+    authors: ["Mitchell Levy"],
-+    description: "Sample to demonstrate the Rust per-CPU API",
-+    license: "GPL v2",
++/// Iterator for a `Cpumask`.
++pub struct CpumaskIter<'a> {
++    mask: &'a Cpumask,
++    last: Option<u32>,
 +}
 +
-+struct PerCpuMod;
-+
-+define_per_cpu!(PERCPU: i64 = 0);
-+define_per_cpu!(UPERCPU: u64 = 0);
-+define_per_cpu!(CHECKED: RefCell<u64> = RefCell::new(0));
-+
-+impl kernel::Module for PerCpuMod {
-+    fn init(_module: &'static ThisModule) -> Result<Self, Error> {
-+        pr_info!("rust percpu test start\n");
-+
-+        let mut native: i64 = 0;
-+        let mut pcpu: StaticPerCpu<i64> = get_static_per_cpu!(PERCPU);
-+
-+        // SAFETY: We only have one PerCpu that points at PERCPU
-+        unsafe { pcpu.get_mut(CpuGuard::new()) }.with(|val: &mut i64| {
-+            pr_info!("The contents of pcpu are {}\n", val);
-+
-+            native += -1;
-+            *val += -1;
-+            pr_info!("Native: {}, *pcpu: {}\n", native, val);
-+            assert!(native == *val && native == -1);
-+
-+            native += 1;
-+            *val += 1;
-+            pr_info!("Native: {}, *pcpu: {}\n", native, val);
-+            assert!(native == *val && native == 0);
-+        });
-+
-+        let mut unative: u64 = 0;
-+        let mut upcpu: StaticPerCpu<u64> = get_static_per_cpu!(UPERCPU);
-+
-+        // SAFETY: We only have one PerCpu pointing at UPERCPU
-+        unsafe { upcpu.get_mut(CpuGuard::new()) }.with(|val: &mut u64| {
-+            unative += 1;
-+            *val += 1;
-+            pr_info!("Unative: {}, *upcpu: {}\n", unative, val);
-+            assert!(unative == *val && unative == 1);
-+
-+            unative = unative.wrapping_add((-1i64) as u64);
-+            *val = val.wrapping_add((-1i64) as u64);
-+            pr_info!("Unative: {}, *upcpu: {}\n", unative, val);
-+            assert!(unative == *val && unative == 0);
-+
-+            unative = unative.wrapping_add((-1i64) as u64);
-+            *val = val.wrapping_add((-1i64) as u64);
-+            pr_info!("Unative: {}, *upcpu: {}\n", unative, val);
-+            assert!(unative == *val && unative == (-1i64) as u64);
-+
-+            unative = 0;
-+            *val = 0;
-+
-+            unative = unative.wrapping_sub(1);
-+            *val = val.wrapping_sub(1);
-+            pr_info!("Unative: {}, *upcpu: {}\n", unative, val);
-+            assert!(unative == *val && unative == (-1i64) as u64);
-+            assert!(unative == *val && unative == u64::MAX);
-+        });
-+
-+        let mut checked_native: u64 = 0;
-+        let mut checked: StaticPerCpu<RefCell<u64>> = get_static_per_cpu!(CHECKED);
-+        checked.get(CpuGuard::new()).with(|val: &RefCell<u64>| {
-+            checked_native += 1;
-+            *val.borrow_mut() += 1;
-+            pr_info!(
-+                "Checked native: {}, *checked: {}\n",
-+                checked_native,
-+                val.borrow()
-+            );
-+            assert!(checked_native == *val.borrow() && checked_native == 1);
-+
-+            checked_native = checked_native.wrapping_add((-1i64) as u64);
-+            val.replace_with(|old: &mut u64| old.wrapping_add((-1i64) as u64));
-+            pr_info!(
-+                "Checked native: {}, *checked: {}\n",
-+                checked_native,
-+                val.borrow()
-+            );
-+            assert!(checked_native == *val.borrow() && checked_native == 0);
-+
-+            checked_native = checked_native.wrapping_add((-1i64) as u64);
-+            val.replace_with(|old: &mut u64| old.wrapping_add((-1i64) as u64));
-+            pr_info!(
-+                "Checked native: {}, *checked: {}\n",
-+                checked_native,
-+                val.borrow()
-+            );
-+            assert!(checked_native == *val.borrow() && checked_native == (-1i64) as u64);
-+
-+            checked_native = 0;
-+            *val.borrow_mut() = 0;
-+
-+            checked_native = checked_native.wrapping_sub(1);
-+            val.replace_with(|old: &mut u64| old.wrapping_sub(1));
-+            pr_info!(
-+                "Checked native: {}, *checked: {}\n",
-+                checked_native,
-+                val.borrow()
-+            );
-+            assert!(checked_native == *val.borrow() && checked_native == (-1i64) as u64);
-+            assert!(checked_native == *val.borrow() && checked_native == u64::MAX);
-+        });
-+
-+        pr_info!("rust static percpu test done\n");
-+
-+        pr_info!("rust dynamic percpu test start\n");
-+        let mut test: DynamicPerCpu<u64> = DynamicPerCpu::new_zero(GFP_KERNEL).unwrap();
-+
-+        // SAFETY: No prerequisites for on_each_cpu.
-+        unsafe {
-+            on_each_cpu(Some(inc_percpu), (&raw mut test).cast(), 0);
-+            on_each_cpu(Some(inc_percpu), (&raw mut test).cast(), 0);
-+            on_each_cpu(Some(inc_percpu), (&raw mut test).cast(), 0);
-+            on_each_cpu(Some(inc_percpu), (&raw mut test).cast(), 1);
-+            on_each_cpu(Some(check_percpu), (&raw mut test).cast(), 1);
-+        }
-+
-+        pr_info!("rust dynamic percpu test done\n");
-+
-+        // Return Err to unload the module
-+        Result::Err(EINVAL)
++impl<'a> CpumaskIter<'a> {
++    /// Creates a new `CpumaskIter` for the given `Cpumask`.
++    fn new(mask: &'a Cpumask) -> CpumaskIter<'a> {
++        Self { mask, last: None }
 +    }
 +}
 +
-+extern "C" fn inc_percpu(info: *mut c_void) {
-+    // SAFETY: We know that info is a void *const DynamicPerCpu<u64> and DynamicPerCpu<u64> is Send.
-+    let mut pcpu = unsafe { (*(info as *const DynamicPerCpu<u64>)).clone() };
-+    pr_info!("Incrementing on {}\n", CpuId::current().as_u32());
++impl<'a> Iterator for CpumaskIter<'a> {
++    type Item = CpuId;
 +
-+    // SAFETY: We don't have multiple clones of pcpu in scope
-+    unsafe { pcpu.get_mut(CpuGuard::new()) }.with(|val: &mut u64| *val += 1);
++    fn next(&mut self) -> Option<Self::Item> {
++        // SAFETY: By the type invariant, `self.mask.as_raw` is a `struct cpumask *`.
++        let next = unsafe {
++            bindings::cpumask_next(
++                if let Some(last) = self.last {
++                    last.try_into().unwrap()
++                } else {
++                    -1
++                },
++                self.mask.as_raw(),
++            )
++        };
++
++        if next == cpu::nr_cpu_ids() {
++            None
++        } else {
++            self.last = Some(next);
++            // SAFETY: `cpumask_next` returns either `nr_cpu_ids` or a valid CPU ID.
++            unsafe { Some(CpuId::from_u32_unchecked(next)) }
++        }
++    }
 +}
 +
-+extern "C" fn check_percpu(info: *mut c_void) {
-+    // SAFETY: We know that info is a void *const DynamicPerCpu<u64> and DynamicPerCpu<u64> is Send.
-+    let mut pcpu = unsafe { (*(info as *const DynamicPerCpu<u64>)).clone() };
-+    pr_info!("Asserting on {}\n", CpuId::current().as_u32());
-+
-+    // SAFETY: We don't have multiple clones of pcpu in scope
-+    unsafe { pcpu.get_mut(CpuGuard::new()) }.with(|val: &mut u64| assert!(*val == 4));
++impl Cpumask {
++    /// Returns an iterator over the set bits in the cpumask.
++    pub fn iter(&self) -> CpumaskIter<'_> {
++        CpumaskIter::new(self)
++    }
 +}
++
+ /// A CPU Mask pointer.
+ ///
+ /// Rust abstraction for the C `struct cpumask_var_t`.
 
 -- 
 2.34.1
