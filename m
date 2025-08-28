@@ -4,134 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 639EBCA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:46:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED7DCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:51:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ACE88E000C; Thu, 28 Aug 2025 03:46:37 -0400 (EDT)
+	id 9DA366B0088; Thu, 28 Aug 2025 03:51:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78B9E8E0001; Thu, 28 Aug 2025 03:46:37 -0400 (EDT)
+	id 98AA46B0089; Thu, 28 Aug 2025 03:51:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6736C8E000C; Thu, 28 Aug 2025 03:46:37 -0400 (EDT)
+	id 878DC6B008A; Thu, 28 Aug 2025 03:51:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 564278E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:46:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 21A76160A4E
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:46:37 +0000 (UTC)
-X-FDA: 83825384034.27.B402577
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7789D6B0088
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:51:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 22438160A53
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:51:52 +0000 (UTC)
+X-FDA: 83825397264.24.5ED8E0E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A580F14000D
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:46:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=g6Pj9NgB;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 970DC160008
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:51:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P3rowve5;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756367194;
+	s=arc-20220608; t=1756367509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QIPVhNdDqwyEUU2mMSzlYSdtbuVp92JbzlpYQuyYJ0w=;
-	b=vbrdkRI7M8ad1qiHmQnwWuzNY1jRSrbsCoxJxXxOuZENPGt1sssee6TXwP8qeU23sIs8DB
-	DfEkSL514DPvcOFXg10S40AjZ4rTZ9Pp+2IDxYzaoWZ298E6ttfQiYG5IEZXGKW6xvYJXv
-	aV0EmbeSHENi3XYwbA9gqqCu25TY5Fk=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=g6Pj9NgB;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756367194; a=rsa-sha256;
+	bh=W9hxzTxTQo/SdIPcCftN1rfm4EWEI2PYLX2i1EjssCk=;
+	b=d7zyGucJ8mk5Mz7tJ4OVrvvO8OfvfRBf0+0nbx4xxCrnY8o8yJWWSd26uaCf9FMeNzrjpO
+	xWQwBHTk5x6p32zBpE/+wuphcq+G748vmnxv5lKIBDVEkMEl6Ny3Kit/zz6M0COtLAPAwg
+	G4ntvEJq6dkonJj6lpnSKAEtJ4qAQFo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756367509; a=rsa-sha256;
 	cv=none;
-	b=7WMBmPL7RKCLePqwhx862fc9fvPwhSr2ahEEQ63fCdJREqbOx8fT2ZEZZ3cWooyMZ6F+Ct
-	ZC7Wb1A93/FVhS4gHI2WpLdAONzKCyHkxV9z67gSnSlBJC2c5th65y1ZkZOV9+ZR3YeeQR
-	ZM1oU5deKFj30Xh9rL9XRH69oeTRiRs=
+	b=nRSNx8j5C74UYYqDUjuFfxprMzguKbJigIfqN2fdYfFZ3+0Kp37xxj9WIiuGHldRo7vTVQ
+	qtu0LOfiL2lkycgms9h91pjROSabxuk1J0DoRdiEl+pQJ2U4llYS0m3cf0r3X9lSIjM4Ac
+	sIr6MFuRGlY733rkRIQGO0sVEnqUjRg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P3rowve5;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756367194;
+	s=mimecast20190719; t=1756367509;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QIPVhNdDqwyEUU2mMSzlYSdtbuVp92JbzlpYQuyYJ0w=;
-	b=g6Pj9NgBWHu7LdxQZWkSjPb5F41x9eynGsqtTIV054VoDN8Vv4vSB+I9EBRjmBj0SnVv+m
-	QqQKMw7l9+LSQfIQakxylX7sETMsFNj56qik7jyZeci8TWOGc6XAaIbPAlR0JekKfUnJkI
-	ENM6/Pz6x1E4tz8rZWq89GVWHKzBRNA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=W9hxzTxTQo/SdIPcCftN1rfm4EWEI2PYLX2i1EjssCk=;
+	b=P3rowve5xrgFCSkFnyq2adQk11nlr+WC045TrjPKTJY0bnCIbJpBPOw00TjU3n7rwkqyxV
+	A06iu02/2UPqR4tjp8Eha9fk7YL2zGQcGEXYVkIs1A2ij9tXjZvpTQYI0B4R4GOUHRCx+X
+	3w7ZcI3w2g2yrvk6W+WGSU3Oj+gMlPY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-yVLpikOCPX22dnte4GBurA-1; Thu, 28 Aug 2025 03:46:30 -0400
-X-MC-Unique: yVLpikOCPX22dnte4GBurA-1
-X-Mimecast-MFC-AGG-ID: yVLpikOCPX22dnte4GBurA_1756367190
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3c79f0a5bf3so377645f8f.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:46:30 -0700 (PDT)
+ us-mta-223-o7hbC-ThN1uThmX267TJxA-1; Thu, 28 Aug 2025 03:51:47 -0400
+X-MC-Unique: o7hbC-ThN1uThmX267TJxA-1
+X-Mimecast-MFC-AGG-ID: o7hbC-ThN1uThmX267TJxA_1756367506
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1b0511b3so4011165e9.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:51:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756367189; x=1756971989;
+        d=1e100.net; s=20230601; t=1756367506; x=1756972306;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QIPVhNdDqwyEUU2mMSzlYSdtbuVp92JbzlpYQuyYJ0w=;
-        b=mKDmncIaH8SmbJu5q5g+ZJVwu1uy5ss/YvJR/t+QGB32TMwf2aFq8yAHxZfojqBzwv
-         aEiz2kDErUhuo6/ymYoaJjrw0ke8baeR5MWtUbR1/8NGJPAb69SOfnwDA3NbNJSOLmGZ
-         9PTFbjER7TCeLcs+DeM0Q6Pqo2Mt3AGGMcTKu8FkZvKtQIWdTOrpcI5wYNII9tI71Ceh
-         dswVSjlV7IOT0ct5oWvHUOEc67CmHz8ZSzitYFkzj1+6UeqIZw0FFuWEzKwHs2Xp6vnM
-         OmLIa/yBeddTgO9e0js7tygjw1Od44EBvz39Ni5U8kvFSe04/UvsnAeHD90T2vTcVNqn
-         S+LA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgeS2E7fbRPqu3vE7BE9mjS1WRdUzk/PjOjH2O3NiDVcQEu31w1SohYqoozP21DX6N4sO2S2eC2w==@kvack.org
-X-Gm-Message-State: AOJu0Ywg3bwX5/0m9cYN3/E1h0mjKgMknuJ5Ioo+XbNkF6edhOYsCq81
-	Jkpq2BwpJRDGDjxrxasJkX7vHVbI3fPCgiLLyNUBjkpgFoUyum+SlPHG5YWESG2dq+E9IF/jlhZ
-	i5oP9ml+1cQuzgp+LcKbS7IqC9c3TvZkmrXrHqUcBkHfgn2t194Ci
-X-Gm-Gg: ASbGncuD4NuhYK2/yJptr+Bmtn4bM1zVmMPMnaMKbqfvI4RmnN+8Ut5pZU6derfTvXK
-	dWeIjjcTV3udSwC80LPbYhlWPbu/5ttH9UD8ZE63VMi7n5A2G+RLzJ/SPiJyEds3X2KHbW15pSd
-	ov8ULJqq5FRamICTIkBTuERVwxhs65BOvywQZce4/qxlLpfS8wEsp/HPwRG2P/XRi1dWu72Ixp4
-	9Q3UNPhtMJnYJIiIeaW5Lp4ZK/gZaO3eeDVYSQkx8j9/bcIsyfhgFbmgnoF/scNTgT+MIuj7a1G
-	WIyer8GLcF5FNNV+w+5avKaKwpxmnLT73XbzN6OQV4uSjRliicb6ftCv0OW/BlQ5wl+zfx0Nx3N
-	nlZuyRsHPGzgrWFcEl6nWXZpSkFVuoOdydfsAWdeAZXyG310pmfl7L2242lh3juqb8Ts=
-X-Received: by 2002:a05:6000:18ad:b0:3b7:948a:1361 with SMTP id ffacd0b85a97d-3c5da741330mr15989045f8f.6.1756367189574;
-        Thu, 28 Aug 2025 00:46:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHbZS9TwQor8utX8Cftd7hubod4ESO9oJ14F94do36paGGmjXBbrC+y7X5MmcQWQ6JKGQD26w==
-X-Received: by 2002:a05:6000:18ad:b0:3b7:948a:1361 with SMTP id ffacd0b85a97d-3c5da741330mr15989008f8f.6.1756367189132;
-        Thu, 28 Aug 2025 00:46:29 -0700 (PDT)
+        bh=W9hxzTxTQo/SdIPcCftN1rfm4EWEI2PYLX2i1EjssCk=;
+        b=eG16H5leWCFRBrp0nXnOmJMSn9gcvBMlL+59ovfTNDZwADyD/fx303hAGnI+eL1r6K
+         vtGo2BOvT24R3+yAnRxvYRkNKTW8W1Coju39jVypgzVsOgz/1Lq68KRsjTPEL7cgpXul
+         z1QkmsdCa3pMGBa/GLd+qGk7FKNg1vL3CRSjPM5gUlxanYWSMNXMJXSjkxb3Uux9PszW
+         tl+El5grCf+hFEV4P/OgvJGNC2qqLWs3QCOakYPXBP2nVmfToLIhGKZEYnB7zwZ62Ndq
+         7t4dJ6hmGErf/y+8IGTpd9XlUziQBdNl1oVgPVzy0RUMux7x8x7lqmeFqKywuGImjhE6
+         bNSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUw2DsiVyaNJh+IjFJoK5UloZnaEbnr1ZqA813NolfTi86FzIRsLvm/hJ5h3s067eCnFHgdq0mP5w==@kvack.org
+X-Gm-Message-State: AOJu0YxlpOY6K2Ms1o99WozGGxjtz3FtFOqgu7Wvkyt4ljnTkjjnI1hZ
+	/F7YlVHUoP7+5XoibSMuZqZcgpg8uAl86ucvXqSWmwb9yopIDet5mHLFgniDM1LEjEeewS87cE+
+	aPHusmBuvFHoSKxGFwI6Xx/7E0M7C+LpvUr0iEdeWEc/OdIJp5Z1t
+X-Gm-Gg: ASbGnctX9OH+3421EHAAXU9rYVWn8bc9pvgAZ1kyLClQoxiuDujVf7/O71FPSmvXek+
+	o5Yx2YIMioP8cvv0uk5NOnwLyFH+JOmwNcx3vfugkuZGn5kdR8KqdS1LFxXNQM+amyDa0SDRQQ6
+	9lbxPrqJu8VVk2nEl7IM2p0GRcudpccvxtPnxaDt+4er2BbO3RkxXxw+RI4ses4mhKrPE1gN36Z
+	mmOkCTPF0o3Zosj3Zv8dr43UQOzDNb46SCFqhgo6MC2FNSuj1OaLU3wW88LuKtX1mtzdztd3xaY
+	tc1NhN2huSJzicpm5aQ7jdz36EgnFRW3MKX0MQJ9GfJ3l7Ijv8zW4gVOqtvseE1gYUILNdzJiKb
+	yuTX/4lUW22njhEoodmu8cXcV9pghWIxDoMKGmF5PVgFRHh15DmtAOZICPm+06aFEFpY=
+X-Received: by 2002:a05:6000:40c8:b0:3ca:5f27:46cb with SMTP id ffacd0b85a97d-3ca5f274a40mr9865732f8f.26.1756367505838;
+        Thu, 28 Aug 2025 00:51:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8zgD/30H+XPzw6VmAOLABSxECVvdZkm8lTkssC7aflGskcW313GKDbwONtO4FwEoVzKVXnA==
+X-Received: by 2002:a05:6000:40c8:b0:3ca:5f27:46cb with SMTP id ffacd0b85a97d-3ca5f274a40mr9865704f8f.26.1756367505361;
+        Thu, 28 Aug 2025 00:51:45 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f28:c100:2225:10aa:f247:7b85? (p200300d82f28c100222510aaf2477b85.dip0.t-ipconnect.de. [2003:d8:2f28:c100:2225:10aa:f247:7b85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6b1cdf05sm35411485e9.1.2025.08.28.00.46.26
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ce24ba1817sm1346778f8f.36.2025.08.28.00.51.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Aug 2025 00:46:28 -0700 (PDT)
-Message-ID: <0e1c0fe1-4dd1-46dc-8ce8-a6bf6e4c3e80@redhat.com>
-Date: Thu, 28 Aug 2025 09:46:25 +0200
+        Thu, 28 Aug 2025 00:51:44 -0700 (PDT)
+Message-ID: <dfeec4c7-b4de-486e-bcb6-8d27384b83bf@redhat.com>
+Date: Thu, 28 Aug 2025 09:51:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 12/36] mm: simplify folio_page() and folio_page_idx()
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Zi Yan <ziy@nvidia.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
- Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
- Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org
-References: <20250827220141.262669-1-david@redhat.com>
- <20250827220141.262669-13-david@redhat.com>
- <20250828074356.3xiuqugokg36yuxw@master>
+Subject: Re: [PATCH v1] virtio_fs: fix page fault for DAX page address
+To: Haiyue Wang <haiyuewa@163.com>, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Vivek Goyal <vgoyal@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ "open list:VIRTIO FILE SYSTEM" <virtualization@lists.linux.dev>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20250828061023.877-1-haiyuewa@163.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -177,21 +158,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250828074356.3xiuqugokg36yuxw@master>
+In-Reply-To: <20250828061023.877-1-haiyuewa@163.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zmbEV9RL7uQXG7WQxZ8gCIbL7WpmHEnP9rZ95rXJJB8_1756367190
+X-Mimecast-MFC-PROC-ID: _YchS9l2hFZEr7jaLwSs1dUiaSmL2040IlAwhw1fb6c_1756367506
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A580F14000D
-X-Stat-Signature: gq8bkec9f1grbs4xtope511scckw8uu9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 970DC160008
+X-Stat-Signature: kgs9pepocd6fsycn9pbgr1e38nqodohr
 X-Rspam-User: 
-X-HE-Tag: 1756367194-140227
-X-HE-Meta: U2FsdGVkX18CVsVO2AbUU/EGjCe7bKWJGyhRbUnULCz9TZXmnPVKmZGhxjTAZNznk+DYHCyutWleZMAVhfCVN/DyVkULPetGjH81L9jXjkkVoRb3FWJtXkbdovqvlQ0lyHF17hvue8ynyaKU6t/UV1X0O4tFyahZ5n7a2zfpK7R6Tio6bX62ArsUTz12w/VxEeNn2H34o5hocAb9BjBtVFyzA+v5pfPX1l5vdAqJFad4JmDbarHv3V5hq7b63E9ayYsN8vUAy2OoxLboWaCrC4YeMfdbWpJVHO5UsoFQYvrUljuVhfZ2QBqkCj7cDesJRbbdpglJ2O6nOgxB0PK6SoJPJbkwoPp1q0dr/1j6bCojRMb0V59qotFOcqDmtFEWWmBRwaF1bUQLU9IgWtUcv2Ul3DBP78kvJtFrYGPUKx8G1hAg01diBsGwCBIvWBFVHRwdqrPSrQ7ZRGiz/XctRjeGKeT+McqUv6MLJOTI2qluI3Ob6WLCSZbjVSxBwzOJIfK5XgVDczRCh9LqJLqN8mB/btNdDS+NLzSSVvGkTscdqX9jM5j55ZUP5LHJl0VAge95XJFAoj+qSnf3TFAxsAY9r9+eEl/7sEilgcEoBvYCzSBkolzSQuyVQKn2Ghu59zzlKcvUwjf3uq+BiKm1q/sbVBnwcV+5ItNHoSshASMNrFFMdkAmW/bapQlFYL0UBKkd9KWkyIh14DkRRd4CBEnWqVqkvCBK3bEn6+Jys9/lv7lcN0Kt5HN3tDN8imN0UL5ss2zXPvIkF+RoYeU01TG4ZyGlMU60mHuqSIT1+hJkQoN7ymUYhk69oF6dx6X4RAXEuXLrGNy8crcC0fhIMAQ7OMijCr8NlovqnX8wrXp4Y83oNU7U0VqZdbxXKMTtPChqPoe5M8XQnouLT6o8BUyHhBuFMxa/ZHt9h+oTUG3G6msv9DLKyxwnGUZ1lghvzuWFRdkCN5K5KLjXUOX
- h7xjK60x
- Qz04lFvOvoze7baIwDFTyeYjp1PpM8GOi2E2HAPsKYvhhrm2YzkkV7y5eODeGLhewc7jeo78jCM8neyh8NmFPToML3QfbOiHrTYMVIzj7/OdgclecbGLVgNgMVw/WMm4d4rUNsndCbf55Aoz+nlqanBaHMr8Mmp9n7Lg54erpwkH8+5UaBJgO8rn1HyZp8NPpNcYDY+5k4wYYIRVC+lxctm9+6DedW+0qLhrgrt6ZyK3/sLecDIBI7tZd+qt72MXSTQxKTO1I8JM2xcE6RpRxQY5VYj9TlQZUM0b128Um/2063W66jadqANNd0vIYfQUithKbRLAnwLu0W6ZFcqIfjBLGRirlQ11El1q1je//1n+Kc0ytHzSmkdw360AkBFs9wmpyl9OS/IlPyU6yeVY/MZxjoRHlW4nt2aq8TSjbK1iBjvRh8xR1BksoQK0CiXMwo06ntiDKmxXauwRXVMOPzu31Rm60gqjwVNMxVXg1PmbAEsxhRzx+29BT/8ccLKAEwgRvB0vISqw/Vm/dtdrAffuBxUrvblXT3KOLqtM5BDsr++E=
+X-HE-Tag: 1756367509-211608
+X-HE-Meta: U2FsdGVkX1+oQfDPebvbjX/vpUJP79VnUWNlHX18taUYG1cKXhkkky5l8uhBIYD8+TdU8bBQ8wzGkgtNmkiuN8fYU1gKMX5THxPatGmUTE6/QltKqsK2uy8Y1fJyWKB/ZPqzvZ8A+ILY+qhlKn2sKjYXyBnVfkJpf4Nz+Cu+cz5tbECmiHQ6FBsClz77COmcZDEjVjh+OCd2pvmPQfUjVseveKf2hh+AaWRTt8ouTDlYK9QJmDzXU/XCSbRlvBR2q+k9CCMOqBE3rDnb5lc14x9iddPT0HvnVi6+SQn4b+LU0oVTSbFlnw/UGcI0ouDBmeu5O4KtkWem1UiCzh6EJILfPaHwAFlvuawcJzB9X+ldWjed6nEF7kSk0lXB5/2Rb3XqlcyIyQx9Q0Yqcd1Q58xylR8b9EOaiygcneMw9B33q6v2D2yHDyQ1VpSs5sPoel3fDKOCi7AlI0wp2uH+USZ8CJQYt7ColgNx6Vqux+5f5pHD+Mb4G9qfWeqIPTav+rkNwhj4BLqNrFNrS6si7WjGpStXMJg6Bd10HFbnbfmz/A7yPPA32fbxnG+COwv3NPQWtMAWEZg1JIkpQb8FWHqHncSHYVtu1hEyN4/TWLXRKHVVLMDHejIF8xFWvFn8kAlZxuQsRcyLK/ruinOXKJmTc4UWH6Ctt3DlTsUfBs20LvQsxt9NmIeyW4DHNjXMblEl9j/tM3I6X4eFBNe+lWOtcBYghaS2rDwYKKsTXjBOxWjyuKFR52lSKR/meFzAzjQP1iEk43AYoTN8BONnqpX9hrhtrRoUSGDOd5WiL0f8d+WxlROouuWP5yiz5If/F2t8D3y0iB0tKxnAufFlDfxjonCO62qDWKMdAyL2hUOunby3/XloHmO8JRSqPbozeLyZ+IN1TLOyNeJcZglw/gqT6vN2WFQkRvkkZi6v8q1EwtMqctuoeBYwbZom98FGYgRdnZW3DMpalWsfGa/
+ l3RTZs/g
+ YKzMJhRBeIJ65ZR00pTOvaYF+Yx3dGkpX1OtJfRvRU2RI4uHZJhL86YbbXkLlMAeovbwz1WzA+7Y1FkwZfEPzhOUulB1P72fqSLfvd3L5CCEvrX3qPb2ISCCR9P17ss2UPTc9DMqWLyJE3VlRbBOHJvnBOJC6/xMeDQtEAVd3KAYE/OTG/2TJ0BIfLJ608kPCg9jpGiIgtgfkaKXnuG4x7f8ED/dghU64z+/+p491fYZYNubW30KySejdVOas06o0focUqE7ew+E/fFdC6TO/e7wAKy9muJ8tsAktzV3NcN4P0ZpVccRZeAv/z06LR6DL9EVstVFmU1qdHET2ad9a3ywuoF7MlX998BmQuQzqeH+7TVhKpIe2jsfXeixLQY7G6QtRypMF9zx3dTxxJtBFToTtirCiOdtf/kPdjDcy+2xA8cq8Rtvsu3YB6yzW8sxMJDmNaM770Mgh36gGigE+APRGRh+JDWSdwtSUEiYsFsMSs9E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -200,10 +181,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 28.08.25 08:10, Haiyue Wang wrote:
+> The commit ced17ee32a99 ("Revert "virtio: reject shm region if length is zero"")
+> exposes the following DAX page fault bug:
 > 
-> Curious about why it is in page-flags.h. It seems not related to page-flags.
+> The commit 21aa65bf82a7 ("mm: remove callers of pfn_t functionality") handles
+> the DAX physical page address incorrectly: the removed macro 'phys_to_pfn_t()'
+> should be replaced with 'PHYS_PFN()'.
+> 
+> [    1.390321] BUG: unable to handle page fault for address: ffffd3fb40000008
+> [    1.390875] #PF: supervisor read access in kernel mode
+> [    1.391257] #PF: error_code(0x0000) - not-present page
+> [    1.391509] PGD 0 P4D 0
+> [    1.391626] Oops: Oops: 0000 [#1] SMP NOPTI
+> [    1.391806] CPU: 6 UID: 1000 PID: 162 Comm: weston Not tainted 6.17.0-rc3-WSL2-STABLE #2 PREEMPT(none)
+> [    1.392361] RIP: 0010:dax_to_folio+0x14/0x60
+> [    1.392653] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
+> [    1.393727] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
+> [    1.394003] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
+> [    1.394524] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
+> [    1.394967] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
+> [    1.395400] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
+> [    1.395806] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
+> [    1.396268] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
+> [    1.396715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    1.397100] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
+> [    1.397518] Call Trace:
+> [    1.397663]  <TASK>
+> [    1.397900]  dax_insert_entry+0x13b/0x390
+> [    1.398179]  dax_fault_iter+0x2a5/0x6c0
+> [    1.398443]  dax_iomap_pte_fault+0x193/0x3c0
+> [    1.398750]  __fuse_dax_fault+0x8b/0x270
+> [    1.398997]  ? vm_mmap_pgoff+0x161/0x210
+> [    1.399175]  __do_fault+0x30/0x180
+> [    1.399360]  do_fault+0xc4/0x550
+> [    1.399547]  __handle_mm_fault+0x8e3/0xf50
+> [    1.399731]  ? do_syscall_64+0x72/0x1e0
+> [    1.399958]  handle_mm_fault+0x192/0x2f0
+> [    1.400204]  do_user_addr_fault+0x20e/0x700
+> [    1.400418]  exc_page_fault+0x66/0x150
+> [    1.400602]  asm_exc_page_fault+0x26/0x30
+> [    1.400831] RIP: 0033:0x72596d1bf703
+> [    1.401076] Code: 31 f6 45 31 e4 48 8d 15 b3 73 00 00 e8 06 03 00 00 8b 83 68 01 00 00 e9 8e fa ff ff 0f 1f 00 48 8b 44 24 08 4c 89 ee 48 89 df <c7> 00 21 43 34 12 e8 72 09 00 00 e9 6a fa ff ff 0f 1f 44 00 00 e8
+> [    1.402172] RSP: 002b:00007ffc350f6dc0 EFLAGS: 00010202
+> [    1.402488] RAX: 0000725970e94000 RBX: 00005b7c642c2560 RCX: 0000725970d359a7
+> [    1.402898] RDX: 0000000000000003 RSI: 00007ffc350f6dc0 RDI: 00005b7c642c2560
+> [    1.403284] RBP: 00007ffc350f6e90 R08: 000000000000000d R09: 0000000000000000
+> [    1.403634] R10: 00007ffc350f6dd8 R11: 0000000000000246 R12: 0000000000000001
+> [    1.404078] R13: 00007ffc350f6dc0 R14: 0000725970e29ce0 R15: 0000000000000003
+> [    1.404450]  </TASK>
+> [    1.404570] Modules linked in:
+> [    1.404821] CR2: ffffd3fb40000008
+> [    1.405029] ---[ end trace 0000000000000000 ]---
+> [    1.405323] RIP: 0010:dax_to_folio+0x14/0x60
+> [    1.405556] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
+> [    1.406639] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
+> [    1.406910] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
+> [    1.407379] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
+> [    1.407800] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
+> [    1.408246] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
+> [    1.408666] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
+> [    1.409170] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
+> [    1.409608] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    1.409977] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
+> [    1.410437] Kernel panic - not syncing: Fatal exception
+> [    1.410857] Kernel Offset: 0xc000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+> 
+> Fixes: 21aa65bf82a7 ("mm: remove callers of pfn_t functionality")
+> Signed-off-by: Haiyue Wang <haiyuewa@163.com>
+> ---
+>   fs/fuse/virtio_fs.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
+> index c826e7ca49f5..76c8fd0bfc75 100644
+> --- a/fs/fuse/virtio_fs.c
+> +++ b/fs/fuse/virtio_fs.c
+> @@ -1016,7 +1016,7 @@ static long virtio_fs_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
+>   	if (kaddr)
+>   		*kaddr = fs->window_kaddr + offset;
+>   	if (pfn)
+> -		*pfn = fs->window_phys_addr + offset;
+> +		*pfn = PHYS_PFN(fs->window_phys_addr + offset);
+>   	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
+>   }
+>   
 
-Likely because we have the page_folio() in there as well.
+Yeah, looks like that's the only instance we got wrong in that commit.
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
