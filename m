@@ -4,111 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFFA2CA0EFF
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 00:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E793CA0EFF
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 00:29:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3C928E000D; Wed, 27 Aug 2025 20:08:14 -0400 (EDT)
+	id 6937A6B000D; Wed, 27 Aug 2025 20:29:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EED118E0001; Wed, 27 Aug 2025 20:08:14 -0400 (EDT)
+	id 643196B000E; Wed, 27 Aug 2025 20:29:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDCBD8E000D; Wed, 27 Aug 2025 20:08:14 -0400 (EDT)
+	id 531B26B0010; Wed, 27 Aug 2025 20:29:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C831C8E0001
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 20:08:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 577F01195B6
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:08:14 +0000 (UTC)
-X-FDA: 83824228908.02.A429020
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 77AF216000D
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:08:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XSIPYEX3;
-	spf=pass (imf08.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D8456B000D
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 20:29:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B020C1A08DD
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:29:07 +0000 (UTC)
+X-FDA: 83824281534.13.9F9B77A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 23313180007
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:29:05 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=offt3uIB;
+	spf=pass (imf06.hostedemail.com: domain of jpoimboe@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jpoimboe@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756339692;
+	s=arc-20220608; t=1756340946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b36Nwls2M2gX56Ll9j62ZCf9y1Sd4pC4ay7N7C461Vo=;
-	b=eFYZQA8uSaoTFfe4VpJBH8sbj0D2mVVsuKPg2g4MO0Mfe7ZubgE1mPoVdQBaYICbsO7MFH
-	wj5XUTS+Jxr8QJPWDFlDATmiVVEaG6eSBleapB45wARapbrHOxKcMyDGbVsd5HfsjTLI0g
-	0hTL+idgTvbSmdlfBTDzCwpD+8XXX5M=
+	bh=KIGYa1IoLvzoz6LBFkkAzKJUvMXHJZXOKeuSf2AY+z0=;
+	b=EcbktwwGikiKMoXe5ktJaTWVa0NyulAZhBxuWY2J2aFqfweUaeVhOibTGcKHh7EpyhwJZ7
+	YI8BMVOkxg6iqp6h8GHPz7dDP6h83cCGT9jh+mYk4dM2U1FBf0/AloIZH4Hi0q68P7jTLU
+	ad0tY1JNcv8UHH+Zm8Gw3Qi4+Tqol+w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XSIPYEX3;
-	spf=pass (imf08.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756339692; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=offt3uIB;
+	spf=pass (imf06.hostedemail.com: domain of jpoimboe@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jpoimboe@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756340946; a=rsa-sha256;
 	cv=none;
-	b=QfcRK2P4p/+7f8Hie9u9591QyhhEeCXCIBHv2qqPCtAjiHzU6VxndArxRFNkbnL49I3wdc
-	Dt7oeUYVh+2eKpMuun8JTxMZMQiH9tj3x4UjAGRf2ZsvEaqhxXgw4JdNLB4Cal8kz169X5
-	oLox5Iivp4/K/Z6QC7yB19ujsWQsr7g=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b109914034so5596341cf.0
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 17:08:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756339691; x=1756944491; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b36Nwls2M2gX56Ll9j62ZCf9y1Sd4pC4ay7N7C461Vo=;
-        b=XSIPYEX3AcRF8YD1UX7Jz9Ctmfe9ds6mMmwHO9WLERI/vmm58lbuTPr3nPPM5EvVVQ
-         y6KNITRTT9dvu/SsA5YEzTQSMHjkT9OgkOPQRrIrOtzawX/gR/uD4qSdijRn76ec8xwk
-         3Sau9Ns3ld03lhaLAZl8aXliMC1grjIMG1/seGQ/gB0pTIUyT4nToikgs8AZOWxBxtp7
-         jdS5Hoa7DYFVNnvqCB312+W99H1WQzpBWbpalpK8wYSzChzUYXj5D85C7ZhsX39p5pkP
-         m6sMF5KsE+45KMeAm3ImIKjmWuCCyUFug+0m6IzFtIrBw2/a215GukfsdqU1PNSlIu60
-         3lfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756339691; x=1756944491;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b36Nwls2M2gX56Ll9j62ZCf9y1Sd4pC4ay7N7C461Vo=;
-        b=HgpFfqWEteyybV3Kvk7iFliCNME0cPyhC4nP7Jvmtb5ySavOwtwDKs9FjHkNDENT/y
-         Fk6sQvWBxn30OAOFh98tsIXyNhj6PO3PUwIRBV+n/wMJsimJhIs4iXwEEzRNlKEGNbEi
-         q6fHG4yfzcuKyOFBKAFConQVxIfuLGuPWd8mtIr9wyppZQxBXLZijsSAU01iL7i7e5rY
-         R1XlKCao5nnuoDtkCGc0h1mB1D/S4Xk53yrHkpN4jt3Vk8ZWGcjS6NPb24JcnH3H7F5/
-         nD2P9BL2pIvNPaZcAlDYYz/LLMzV4oUt4eQUljVtcC7C5w0kjQzzxUpVPkiUwrYx8z8N
-         s7VA==
-X-Gm-Message-State: AOJu0YxvhqfqldKQiNQ943pHBicY5p4EF7oofvF5lkkLdsgS/2LF3xvo
-	UAqU+5YenOw9Ih790/R2S+t9llnZ+n0Ev3QKg6QoCLkkKEXzXlNVgcwRCQSD8/5PX3Dj2Ogtfm4
-	SDsyz4AMP71kSA3c7E5hdvkXehwg6Ym/Y5IYjY4w=
-X-Gm-Gg: ASbGncvfyptKHhZXi5haTrXv5OEs9I//y9cREqTZ893LPnWHyQVtDPy33C3sDnt2GG/
-	ZCvcbE7XzfrH/OJba6bXY1uWzUfVNcJESNIkC2ymR+x1V42ESWf23+4KgsPfjfiDp58wK+bcPFE
-	/oRIeO1pVDQaheOj8NpNp7ZI+SUA4dyA/KqRQ40E2Cuejos/9y5Z7NjJwEK6GNVqgNE/ymUbpPx
-	MrXdiyqJMy7JQIJceH48Dss0rRvgA==
-X-Google-Smtp-Source: AGHT+IEvEDydXznkcUnU+0JSU6x7dByI77Dd5uuLyP5MMNLK9cpd3c7pj4huvx9fk7DQobDzCWDAzLMQaz7dXW5dIfY=
-X-Received: by 2002:a05:622a:1c15:b0:4b2:8ac5:259d with SMTP id
- d75a77b69052e-4b2aab57b30mr269660621cf.70.1756339691549; Wed, 27 Aug 2025
- 17:08:11 -0700 (PDT)
+	b=ltx8F9d/0xOnoioQmh1QPhUhhoAWYc91ycUAhvYz2mAIO91Xi5OlmEgAvVmOF5g2nDPjNb
+	AgrvMOKdHJQAH9+bPf4DTtgjz+C3iU+ETY8RZ+fagvSQQxYKiOYeUqQ7eik1UAPeMWm9iZ
+	rKigpKrCQ7nohIs9sRtnzlMziOoR4bg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5DE3160204;
+	Thu, 28 Aug 2025 00:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B13C4CEEB;
+	Thu, 28 Aug 2025 00:29:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756340945;
+	bh=dxd8QSAVzwmbR+1mbcfn8utb4yYnDh1tvifJBiMUI5Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=offt3uIBmutis+Mh5PpSxuw/lPMS2QQhM7fru9wFzq/WpNzVEokV7W1k4VMc87LRh
+	 C8KMGbJQfErrMNWwOxLqLigoRY1cEUbKn/SHNz+c91OH/qPVv/6hR8AWyk1HrL6qY/
+	 xuN6bAtyBJexMiKq7Q/ZZo3Ma8QFR2Gwva9GSb9NddFX2GRzVfaglLDcgQbP0VnGS7
+	 Cz2q52gPykgswUZQQOOZ/JwO+W8cIvglf/Y68QFOK8KqeNot3rviPnsyYb7iaDbyTT
+	 kDqTlZpu5rDnPEpLSokJ5mLImBcmyQbXerfATuLiIjoxR5sK6dcb/TcADcTO6a5yzI
+	 shtJiodRalGvA==
+Date: Wed, 27 Aug 2025 17:29:02 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	syzbot <syzbot+8785aaf121cfb2141e0d@syzkaller.appspotmail.com>, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	jannh@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, peterz@infradead.org
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_munmap (2)
+Message-ID: <ourgzm4wai237cpcef3ypdn67hspjgw4u7fee4hyouj2hn3gwx@c322noqn4kzq>
+References: <68a7eee9.a00a0220.33401d.0168.GAE@google.com>
+ <2d1297ef-5df3-4679-8e38-05be188f18d8@lucifer.local>
+ <aKh2vr9HtFRKcnR6@harry>
 MIME-Version: 1.0
-References: <20250801002131.255068-1-joannelkoong@gmail.com>
- <20250801002131.255068-11-joannelkoong@gmail.com> <20250814163759.GN7942@frogsfrogsfrogs>
- <CAJnrk1a0vBqcbwDGnhr2A-H26Jr=0WauX7A2VLU9wvtV3UtpDQ@mail.gmail.com>
-In-Reply-To: <CAJnrk1a0vBqcbwDGnhr2A-H26Jr=0WauX7A2VLU9wvtV3UtpDQ@mail.gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Wed, 27 Aug 2025 17:08:00 -0700
-X-Gm-Features: Ac12FXwqLRXibxfrwhj_AuaJ3v6eBASHt1jSpfowrUPGFUx1R4A9sYyAIQxMccI
-Message-ID: <CAJnrk1bqZzKvxxCrok2zqWoy8tXtY+hZF9kXa8PTWmZnihOMTw@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 10/10] iomap: add granular dirty and writeback accounting
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org, jack@suse.cz, 
-	hch@infradead.org, linux-fsdevel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 31wrom9uhmgxb9cj8nqq8d3ttyfhxqw3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aKh2vr9HtFRKcnR6@harry>
+X-Stat-Signature: hhxxjzcp3wedb9wi87ury8c3ntxci5j4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 77AF216000D
+X-Rspamd-Queue-Id: 23313180007
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1756339692-427362
-X-HE-Meta: U2FsdGVkX18z5nZn9C2inlPh+CnzCSgjLxwiIAGjud41jqo3d3SgbX65jx3Gxj8VRmTCAcGgnFtTAybeHaI0mykrQ8UgyM/Ft1Vk/0f6agkZVZfGkZfgKx8p8KhlmyZZ8Bq4Y3oClc/R0N4hMTEPfx6Uyk9ku9lXlq0fSRrCpl4kXzzDvkxwlYWH0ehOOIBI82PC+naVX/YcCEDSUI/PqO780+CJPQCamDH72w25xOzW8SkAxYSiJ8WBaZEnhRcPbhwf8cfxVKHwFkJ5RFtGaJPucf3R24JKlxKMEyM/r545yf7SUYLuvg9dUmYsAZCcu0HwRyrx3MrrI2niL95eCD8ltoyZEh+WjwsYHDCSqJTzOJagzLJfDLMqrJqa7CNRdqD6ERFmLSc0FPg1zIUBlEXGxaBLD/0gC1R1CLhJIliUHFfNjVxxhY5NA0TSh82OfbSzQe5OMSPc3Td1PDkMyhHLUNFqmPIv+HWtAewHGnd5Umhn2Wl3oT32dVV4Cu2cYzjWroln67tVI0TgHrWy6Up92X3Lz3tNec1Vujkwjk4K9/OEP43IVXQD8bLO5UYbj1/hSuFwxzLTI4YnnvWK0HV2wyQRKzUbfWw/pqoANfZRa/qOFRL3gyGZgG+Wdzcd0HLjAQp8PmtjVIO0PL3V/8Mw3Wu8rLzReRirxWa8LgMHHvEsmoR9DCiJX0W2Uq6WFSIJT/4eA7wW6ldhbJe4bkMmenuuDvKlyIgQGOpxaxJqza2eMxxKzxGCG4pk/UpEqhN/vcPdEk7bwH5zOvJm2Xt5S8QwQCRaugZ5plx+rceIDttbLFOY8toktAM9vMJbopLUoFQZzvokWpWYmXMsvDZWJ2ZNsTVpEF/K43gaGzxhJNp5IkkXM60rSCEDv9JgrMQz1b2rGy4a23oIx4ODecniPjJ6NhRG6fmQJKj13GKAzM4aqee46ySDL9BYE5MOntsYu4gnb/erPQWNUte
- mK6JEeMh
- 4tWgz8VJYFlQ5vqcHlUI5d+67IEQxSeqVGkw2YklQxTutKtrYYaqNLODroXUUFaK44YPcOeVovIsjJb2ccCM1EtFw02vbZ9YLlgAHfmTaPK8Dtcyv5SW62UddUCvB7Yd7rWAyZkioZWeo0//ml9tqntA+rASq/cHUNhjSUx71yAKH6gUH75HQvWgMkDGO+foTm3P4Yvh4YPoHaPutfDgYbuw3Xxix25Q7T4iTG4af+3uou0V8UGJFShDItGD5+BUiYBJTUL5T6Edjzq0HKqdlmS7kGngW8FbvoFjsSilPNpPODPFKJsWkqTAq5E5IOw4OfVcK6WmaHvulpOYgAWkId1xp4r9hcUGZwgLE55wQmNPm3u5M7Exa4x254Q2O/LQx+tnyOUCfNw1oCjbVj3KTytjEPQ==
+X-HE-Tag: 1756340945-853141
+X-HE-Meta: U2FsdGVkX1/h8behpj+4NqQZcUToI2d+92XHIpud9bkkNvYqkU9orYaVe6wdA5vx2Zu6ga+rxr2hoC4NqbWm9AguPZbzxLrbqpEao1cFNbLsLkCpI45hd+Ap/aqt8tx7VLKLoJxyYrXJiluk+8dNu+3srGIeAIOLIbXMHYjZKuFSGVEID4B4Qg+JObHH70c3NBj1lHFI/tzyF1IWYimlbadREBz0OcQwJ/kC/PU9KKs1gDmwnwCxftp9hKDdjSAVW+r0tTzWY0LIStyTzh35rHaYX30PV4aI04Q50VqoWkxCyDKvWC5zccNgs9DtIvR2iPtg/HxcRKankjeMPbDiXvGTEUNkMwBH9nr6oBys94fQxJdspBlApcsFPj0u6kXkIbtl5GTxOhYcF1pShxOEyMoRdVr91+339fj0Tp9j25j80NMI6/w1SAZfFIplEQ8eC2JfyjednVAtDQekoIxAc4pxlMj4nMRt5VQ4E0EHHH3e1HM/lPemmcu22LQKWT7LGM2E8yZmhI2CU7XSIXb0/LaRLURFO3Kw6YkuNxdxtLnJrjW41IqrM/Qxlro76ZAG4K4IhRQ+KnC7YFAR1v4iRQF08seNm1Bj77RIZGCxk+Z5A/7+X4aD3JHmPOsPM3tjRoH6V97p2VBfYDfnlTUnJRDRdn+fYzzBBZYv3yxvOj95G6piT9jJcQb9i/RqMaDHOZTVOLwF85R2W6+Wx+G5bJIZNYm8Mb2akvMvjo7H0wM7soRl5m/LkV+RAEIQBOhXdkH3z7T+4U1ReWfVTsbB4fRNetEixovGNQ6KTcz7bDCVj3UJvgnccZgBVniAEnLmX/l0By8zNmfAfv7HXrdju338iVrfH7tUwXyHVgiZD72oTXgiv6gbGeq5WKJJSBGrhGKK+KY2wePBUwx+ftM5YOg0gywW9K1dkNcqRQJ9cQ6efzX31dRQ/H6tSg3R/+e+A1f4qyWrt5IW+VvGCug
+ +WzEU52S
+ EtyhS25H8+kGptUZhrI6yndK++uWl0PbeICpY/6uNCYMKgTuNuwbqzJdrw66amE3pYuoa77t4u2AxAqYRWmm3ZtP1PaBBywd08d3MtRlYg7wWJ901DhH6Nv7825UwVM8zefB0D6Q3LTWSo8iWZ+y8CsZBm3laJOKhrINlx6GdiEVGA6iEfCD9hERbxEVr1sGzzz2PjQ6bsvSPjtZWBTaVFREQhzBha1gpbcYEz5jAg5PkwFMCrKv/4SKnvxQWF6aYCfTdRilUgCtw1ZagFSYLCgeYX7IQmZHyMHVKGL/dVKfqhyy3+TueYDQwZ4r04UjQkyaa56UCFdrU0Qf3AWnOPDakc8Wya81b1kOVjSH5eaKo0cfYqeFk89DbUqL3uHc/CkYR5CV9PCdx7xJNfKLOYUOfWv/+PEP2o0wDk4rmIoCwAcv843vNESYz6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,108 +96,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 15, 2025 at 11:38=E2=80=AFAM Joanne Koong <joannelkoong@gmail.c=
-om> wrote:
->
-> On Thu, Aug 14, 2025 at 9:38=E2=80=AFAM Darrick J. Wong <djwong@kernel.or=
-g> wrote:
-> >
-> > On Thu, Jul 31, 2025 at 05:21:31PM -0700, Joanne Koong wrote:
-> > > Add granular dirty and writeback accounting for large folios. These
-> > > stats are used by the mm layer for dirty balancing and throttling.
-> > > Having granular dirty and writeback accounting helps prevent
-> > > over-aggressive balancing and throttling.
-> > >
-> > > There are 4 places in iomap this commit affects:
-> > > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
-> > > b) writeback_iter with setting the wbc->no_stats_accounting bit and
-> > > calling clear_dirty_for_io_stats()
-> > > c) starting writeback, which now calls __folio_start_writeback()
-> > > d) ending writeback, which now calls folio_end_writeback_pages()
-> > >
-> > > This relies on using the ifs->state dirty bitmap to track dirty pages=
- in
-> > > the folio. As such, this can only be utilized on filesystems where th=
-e
-> > > block size >=3D PAGE_SIZE.
-> >
-> > Apologies for my slow responses this month. :)
->
-> No worries at all, thanks for looking at this.
-> >
-> > I wonder, does this cause an observable change in the writeback
-> > accounting and throttling behavior for non-fuse filesystems like XFS
-> > that use large folios?  I *think* this does actually reduce throttling
-> > for XFS, but it might not be so noticeable because the limits are much
-> > more generous outside of fuse?
->
-> I haven't run any benchmarks on non-fuse filesystems yet but that's
-> what I would expect too. Will run some benchmarks to see!
+On Fri, Aug 22, 2025 at 10:55:10PM +0900, Harry Yoo wrote:
+> On Fri, Aug 22, 2025 at 01:08:02PM +0100, Lorenzo Stoakes wrote:
+> > +cc Sebastian for RCU ORC change...
+> > 
+> > +cc Harry for slab side.
+> 
+> +cc Josh and Peter for stack unwinding stuff.
+> 
+> > Pinging Jann for the CONFIG_SLUB_RCU_DEBUG element.
+> > 
+> > Jann - could this possibly be related to CONFIG_SLUB_RCU_DEBUG? As it seems to
+> > the stack is within KASAN, but no KASAN report so maybe it's KASAN itself that's
+> > having an issue?
+> > 
+> > Though I'm thinking maybe it's the orc unwinder itself that could be problematic
+> > here (yet invoked by CONFIG_SLUB_RCU_DEBUG though)... and yeah kinda suspcious
+> > because:
+> > 
+> > - We have two threads freeing VMAs using SLAB_TYPESAFE_BY_RCU
+> > - CONFIG_SLUB_RCU_DEBUG means that we use KASAN to save an aux stack, which
+> >   makes us do an unwind via ORC, which then takes an RCU read lock on
+> >   unwind_next_frame(), and both are doing this unwinding at the time of report.
+> > - ???
+> > - Somehow things get locked up?
+> > 
+> > I'm not an RCU expert (clearly :) so I'm not sure exactly how this could result
+> > in a stall, but it's suspicious.
+> 
+> Can this be because of misleading ORC data or logical error in ORC unwinder
+> that makes it fall into an infinite loop (unwind_done() never returning
+> true in arch_stack_walk())?
+> 
+> ...because the reported line number reported doesn't really make sense
+> as a cause of stalls.
 
-I ran some benchmarks on xfs for the contrived test case I used for
-fuse (eg writing 2 GB in 128 MB chunks and then doing 50k 50-byte
-random writes) and I don't see any noticeable performance difference.
+There shouldn't be any way for ORC to hit an infinite loop.  Worst case
+it would stop after the caller's buffer fills up.  ORC has always been
+solid, and the RCU usage looks fine to me.  I tend to doubt ORC is at
+fault here.
 
-I re-tested it on fuse but this time with strictlimiting disabled and
-didn't notice any difference on that either, probably because with
-strictlimiting off we don't run into the upper limit in that test so
-there's no extra throttling that needs to be mitigated.
+Maybe some interaction higher up the stack is causing things to run in a
+tight loop.
 
-It's unclear to me how often (if at all?) real workloads run up
-against their dirty/writeback limits.
+All those debugging options (e.g., DEBUG_VM_MAPLE_TREE, LOCKDEP, KASAN,
+SLUB_RCU_DEBUG...) could be a factor in slowing things down to a crawl.
 
->
-> >
-> > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > > ---
-> > >  fs/iomap/buffered-io.c | 136 ++++++++++++++++++++++++++++++++++++++-=
---
-> > >  1 file changed, 128 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> > > index bcc6e0e5334e..626c3c8399cc 100644
-> > > --- a/fs/iomap/buffered-io.c
-> > > +++ b/fs/iomap/buffered-io.c
-> > > @@ -20,6 +20,8 @@ struct iomap_folio_state {
-> > >       spinlock_t              state_lock;
-> > >       unsigned int            read_bytes_pending;
-> > >       atomic_t                write_bytes_pending;
-> > > +     /* number of pages being currently written back */
-> > > +     unsigned                nr_pages_writeback;
-> > >
-> > >       /*
-> > >        * Each block has two bits in this bitmap:
-> > > @@ -81,6 +83,25 @@ static inline bool ifs_block_is_dirty(struct folio=
- *folio,
-> > >       return test_bit(block + blks_per_folio, ifs->state);
-> > >  }
-> > >
-> > > +static unsigned ifs_count_dirty_pages(struct folio *folio)
-> > > +{
-> > > +     struct iomap_folio_state *ifs =3D folio->private;
-> > > +     struct inode *inode =3D folio->mapping->host;
-> > > +     unsigned block_size =3D 1 << inode->i_blkbits;
-> > > +     unsigned start_blk =3D 0;
-> > > +     unsigned end_blk =3D min((unsigned)(i_size_read(inode) >> inode=
-->i_blkbits),
-> > > +                             i_blocks_per_folio(inode, folio));
-> > > +     unsigned nblks =3D 0;
-> > > +
-> > > +     while (start_blk < end_blk) {
-> > > +             if (ifs_block_is_dirty(folio, ifs, start_blk))
-> > > +                     nblks++;
-> > > +             start_blk++;
-> > > +     }
-> >
-> > Hmm, isn't this bitmap_weight(ifs->state, blks_per_folio) ?
-> >
-> > Ohh wait no, the dirty bitmap doesn't start on a byte boundary because
-> > the format of the bitmap is [uptodate bits][dirty bits].
-> >
-> > Maybe those two should be reversed, because I bet the dirty state gets
-> > changed a lot more over the lifetime of a folio than the uptodate bits.
->
-> I think there's the find_next_bit() helper (which Christoph also
-> pointed out) that could probably be used here instead. Or at least
-> that's how I see a lot of the driver code doing it for their bitmaps.
+-- 
+Josh
 
