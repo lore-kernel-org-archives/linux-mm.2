@@ -4,116 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60402CA0FF2
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0352ACA0FF2
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 07:35:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA05F8E001A; Thu, 28 Aug 2025 03:35:11 -0400 (EDT)
+	id 4D5BD8E001B; Thu, 28 Aug 2025 03:35:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A50F08E0001; Thu, 28 Aug 2025 03:35:11 -0400 (EDT)
+	id 485BE8E0001; Thu, 28 Aug 2025 03:35:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 940A68E001A; Thu, 28 Aug 2025 03:35:11 -0400 (EDT)
+	id 34D198E001B; Thu, 28 Aug 2025 03:35:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CC798E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:35:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 455CE160A3F
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:35:11 +0000 (UTC)
-X-FDA: 83825355222.03.18213C2
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6C2A616000F
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:35:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DLUpLUx8;
-	spf=pass (imf08.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 20B758E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 03:35:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D669CC0A06
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:35:32 +0000 (UTC)
+X-FDA: 83825356104.06.3C72CC4
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D0E2840017
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 07:35:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MS43MPmF;
+	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756366509;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756366530;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eP+OdhpAXeM3MeCoK1wrQ3GVDNoiOJzpSPwPKz/ThLg=;
-	b=vYcg15LLEha05TcSoCL8IEYCSK/HqmDfBKK+dkTgZIKEfDdi5hM/BVV08DJzCn9pRWy6l7
-	Nob9CZXNYpiTfQ9TxGvjwpcaWr4mu6QSUo4a+Qj6dhxePyefDqdSJCFmlhTb7OSunkYeMU
-	4h72w6QKn+UcrP35xr86JRnGTRpNyhM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756366509; a=rsa-sha256;
-	cv=none;
-	b=e+0u1T7julVpK1xzzU3q5hv6vUKe+0iD1ow9gA1LZtkyNwY6b3h1ZJWoJW2yTR6Ja4uHQ4
-	3Y9Bjm+ja3EVZs4dnw/0NwJdfRGrhpNbM9NHS31Z+/AHtDPMQrxewqodfYO9XrwyGbKF9O
-	knpW0TqM7aLxShB40M/Dn5lE7h8NdSE=
+	bh=7wdLKdu3gRydbgkaOExgCyxr/LuNr8ANanTK9VurXYA=;
+	b=Nvchs1Z2HccuVBPHo3sAs3VhPffiGcSp01cNOpCpO3nuVbPFsIceCVpDkUcmnsoQU8rbJ9
+	RZHXympB3gyUlTFE+6L/iJZi5eCYvpXITrDHAkCwK6I6m5gm1/UnrNgdr/1t1uyavJIAM6
+	z0lmOAhl93pPkap0hSbwXzUlRW8PjN4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DLUpLUx8;
-	spf=pass (imf08.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MS43MPmF;
+	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7704f3c4708so785819b3a.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:35:09 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756366530; a=rsa-sha256;
+	cv=none;
+	b=n7BpryLWd/4NHh2Yvjrnt8p/xCBSduqc13kBZVHJ93MXiS5YID7jEuGkhP+qtahy0Ef6h+
+	bjDbqvcNy87HdUy+bUWqsvQfLdfChW4sBiOHlYywncouq7DLn+GPB34vLLyKMImjdoXJ9V
+	zXFXqPQPo7dOf5eAPX2wHT3tLB/zJY4=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-61cb9e039d9so1215483a12.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 00:35:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756366508; x=1756971308; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756366529; x=1756971329; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eP+OdhpAXeM3MeCoK1wrQ3GVDNoiOJzpSPwPKz/ThLg=;
-        b=DLUpLUx809pUa3gsCnEBp8Lp8vlt/9UF24uPpUbkQ0oAsYgnFhp7/wQGG7uu2BVjf+
-         Q+PaAhnsEdXwtKgwYCadoqhB9votBnFlxtH3YLm9I+ojIZfmdzGvxhArcaBSoN3jRuqz
-         zD6ycswskilTiS7k0kDwse3ipQcJOpGxSP4I3Mr1/Uu2J0ZQ4JwxkRkZyCnyP49fqgCY
-         CVdr/UrnzxKBptKwriqiSE/Imp7aEPVhKOrAkDn/V/K5HYpDhhOqCK74mLC2UsLIk2TE
-         zIaYcsFFhzHiQ+4A3QwGqeaXTj1gnwzu9NbEiKFG8nMd6HWPH0F+htTnUbgLUkkvXPdK
-         eqFQ==
+        bh=7wdLKdu3gRydbgkaOExgCyxr/LuNr8ANanTK9VurXYA=;
+        b=MS43MPmFGNEjC397hp/iDyNlUGKpzWp1M2FuNac7KujtYVSGapcOhx8DHvE8MYdYTJ
+         DdXsn9fa9+Vq2LuEGW8WolX/E8UBcx9TOxWvasLv2CT7C0FLZ5WpvlQhpIF/hsQbfqdt
+         W7vIT++lLWzAPPhTbriZou9feDPr/bngyjADc4tgn0d/ZQsPOWdD/laaQ6Fqg+5e3sOf
+         2Ai5sWpRVqocZPoo4ReSU2wx4ETRcwUyXmBgwBL1eqvdUKqBtp7gY6py3Y34yR4anzHj
+         Yx69nKHlYJEtiMHxdy/ZQZDJ5Ay+lYrRHrtOOYedkhOFnvtSJsSKrUoCZmiP2fOj8xda
+         PeLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756366508; x=1756971308;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eP+OdhpAXeM3MeCoK1wrQ3GVDNoiOJzpSPwPKz/ThLg=;
-        b=Y2NCAwOi6ogsQjeTocthpq5dWIPcleNEja8KI/XoAf1F0OUrcluz1hEkCoTmYvrs3c
-         dMzi+URnoAhIB8V+vX2xdvUXuu6MBu6XlD81hQCWMzR6QIqaWcdPP7F4TRfhz4Tixf1p
-         d647t+KBqTNhW85zcfiuulE7Z9LcXHeuySdxCB0JfNnMq0bR4RcMpvSEqXR1lPhtGna1
-         qgE4XZxz8TAA1dvIIVME2gl/127myWAJuyqvz9mg6yUhOxTd7EjGflLjrB/lhUPp7khX
-         vg9kAUIutICGsqrc/hws4PYJWgQPbDwpLaHL6pLuYthj9CQUupcwQUbeDJ4+wXHO0hhJ
-         YUKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhsmNKLFCVA7FNILEjJc2GWKQTqmsJb+ab6/oYtLZVUnD79Dv3bC7fxLYYQUtrAXAYl1R88JSlng==@kvack.org
-X-Gm-Message-State: AOJu0YzSZK1onqOs2hal5IWHDasUcVU74CctgwKfOxacv52QsdRDaIIR
-	ESvbyHNyyohZQqcLZx5Q4sYcA0gaHt45EwxNPcPwWuauOSwKG1AZHYbL
-X-Gm-Gg: ASbGncuyjRR3lyIvluwYayWH80lmQM4+frDbTKw1vxq2NpkEAEDK0biztF6XSFPDwT2
-	HhPWQIBK9DPXjHzbiSwu7F7i6jn8ZeYzvz0+YZZIwNsybDVOWKYNKPYE8DtqdGP8zoRJcMVIpYE
-	9D9P8nyY3EKyQv4dUwnAHvb/Py3PHIy1L1ONYh9SaXGAx1CS0bN8P2Vqfl3ugvrKOz7/q6YbqKh
-	ZUZhiieoGGtjoXu0PBlpy9JX2I+m+lxhUSQjZ90wHk/sNDHUOj77jNeLnxAdIc0pq1kNi+H2Dhk
-	FyUZDnSD76XEQg+vNsd+MzgrJa75x2PnL+eJd+V0JDQa47d2FMUqWPXu9zPm8QUyxlZYWhmmnf6
-	YrfrewvA2rH+ZcNGwMlPm1FQOL019+yGnTiE4MWI8l6D6Fx/ZAopmaFLXglxa
-X-Google-Smtp-Source: AGHT+IG3E7HsLBsyZBtUPuuN6RttHjWI+4mOI8ICICciNWM3PhjKuCGhtkvM8/9T1iyfrPsEw+5ApQ==
-X-Received: by 2002:a05:6a20:7291:b0:243:b144:adaa with SMTP id adf61e73a8af0-243b144b09emr1456023637.54.1756366508342;
-        Thu, 28 Aug 2025 00:35:08 -0700 (PDT)
-Received: from localhost.localdomain ([103.88.46.62])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cb8afb7bsm13182613a12.16.2025.08.28.00.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 00:35:07 -0700 (PDT)
-From: Jinchao Wang <wangjinchao600@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"Naveen N . Rao" <naveen@kernel.org>,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
+        d=1e100.net; s=20230601; t=1756366529; x=1756971329;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7wdLKdu3gRydbgkaOExgCyxr/LuNr8ANanTK9VurXYA=;
+        b=glMgs52MPUjXOgYBBYVvak+Ynairc4sxJkRi7R/qY5enz/TWJkv4Aze130CSR9es7X
+         fgTCp16+sICisEhwsXCw48BymC5/6Ofi+Dp002ltMm3tF3SeyxamRNinpDVNYj55lhNU
+         hGqxk/TQgLJjhCKf6iUFa1xGBiOEVCfrgz4g/CoWrexsbLQAOzbGHjI1aLz0ZvDwxgbI
+         vJWHW+isLzmvWy5iG9wzC1LCIgD0VUrvcf+x3z8IMKOdWeP6PbeS59qMNudBddtq365x
+         WshW1ozr77q/Nm7TJ0QDGNDC2xm29731MMHs+Ov0Wtv64xEKtr5Q6+kDkvdC/2dqGraE
+         fSiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeB0gKgOrwlzkx/mRYKT0l2ivCSZyNa3Hz0sBaZ3eLv2OQkMretyrAuBPi8zN5z39dgXDQt6RnKQ==@kvack.org
+X-Gm-Message-State: AOJu0YwyEainOtdrB82ZkFWy1bEpXAlAtl2JihFXRn0pxUakciMe130e
+	3QDwivMt7yd+YjiNC5MDm/jSk30N6/muarH5Io8bdlaFO3Mxf/16e45S
+X-Gm-Gg: ASbGnctddJLCeHD11g8olU34jyWHHGMfQaf/tLetlf/qkrZqzXD4PTtSYzGH5BZkTzl
+	EKXSgKqD9qnvfeuGHX2US/aPEJlA5UHTr4uUiiz5OW+LO0EKDnS4qgY7AFajk6zV6hYp/tmk+9f
+	ddUWic5J0c35CcDSwT89DBJ/5g6QQDup45bRyxS/HK8QDa2PQ7fB0FjnUuW+zc8j/tE1QoD2lrR
+	rFXms+XDZGAh6eckAU5ng7Nf/cjer8X+4gQjTlXbiKJrFXOG/kIxo/oLXmoecLusQ70l34O08bp
+	dLfM2xF/Im/XyDV1de0Y4L/X9cWzzLqYVdaTEZreiUAnBDoBxqcs9VNSbQu3YGh0/VogPAy1JXX
+	g2d1u9L+8dDW9KUedJcXnY/9g3g==
+X-Google-Smtp-Source: AGHT+IH+/HdQFSXw/W0bPc1NEIz4PAWk+piUx/7dt/vdSor64JcoeKILsFtoJ4Brv3+pRvjO+XdeaA==
+X-Received: by 2002:a17:907:3f0a:b0:afe:d590:b6af with SMTP id a640c23a62f3a-afed590c109mr310258266b.20.1756366529084;
+        Thu, 28 Aug 2025 00:35:29 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe77c2b758sm886311466b.84.2025.08.28.00.35.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 28 Aug 2025 00:35:28 -0700 (PDT)
+Date: Thu, 28 Aug 2025 07:35:27 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: David Hildenbrand <david@redhat.com>
 Cc: linux-kernel@vger.kernel.org,
-	Jinchao Wang <wangjinchao600@gmail.com>
-Subject: [PATCH 17/17] MAINTAINERS: add entry for KStackWatch (Kernel Stack Watch)
-Date: Thu, 28 Aug 2025 15:32:50 +0800
-Message-ID: <20250828073311.1116593-18-wangjinchao600@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250828073311.1116593-1-wangjinchao600@gmail.com>
-References: <20250828073311.1116593-1-wangjinchao600@gmail.com>
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
+	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v1 09/36] mm/mm_init: make memmap_init_compound() look
+ more like prep_compound_page()
+Message-ID: <20250828073527.u4k47fohaquzf3pg@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250827220141.262669-1-david@redhat.com>
+ <20250827220141.262669-10-david@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6C2A616000F
-X-Stat-Signature: kfskffm5yciqfhwfyrqiyhs1kxbrh5ai
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827220141.262669-10-david@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: 5n6qydaatok5z11ifh4ytueeee8nwf31
 X-Rspam-User: 
-X-HE-Tag: 1756366509-78831
-X-HE-Meta: U2FsdGVkX1/lBMSTWrnGghmPcnrgdGfbmmAzITtioWhNiiU6ZRQgTvPogizL0zgw5rhgXqd2RyBy+Pa1Rw4jqT2OGdnZm/0qZV7uVix4fYLKwQaY8Q5cHdpU7gfNEhHCT/+YHblTH1k1UIC76i65prTHUJzmlEV0hV3ENtQWFWiWg5CmsBLdysXy1ouo2mtj/zOlfjMC3+3TdAHLzDdKLiRAKJrTuElPBzCi6v7C+IGc0lyemWG+F5iNBGQfgDWEzqRjILXWc9N8nx8BEyJgn+KRHw/hXDEwAhy7CjBNbRlwijjYp9xAGGkIoB6h7NM3CaOK6LBrrqR9qEC7oPl/loaf5PceWAAzCmgI7G2P+s1kISk9RHONGCpCJ5rh0CZr85QqoigXHqD+FnMZ/0HHePB54H+kPVcSr65VeSfq8fwXkDUzB8yLtp1pr6ZpOKllJ7HQ138yIvh1VmsK/nkByCkcnzLxQ/ghxYwlyLKdwSgXa/07c5JfKnQDpj10VttgVqGIgAfwNNaoxAdNOeQQ0no5g6dE6wMOfXU37MEcYSByECNI+JJMGr9Xl8lmD/PIqPeCi8X9PD/pw4dc5uyVE6F1eZntrNXhwyESnmKHJQsyXS5RIagotYA3cJYEo8dkEGz9M7uz8Ps6s1bbb2VWtcqwSBkXPukYTcegpphhf4ayDi7MCvJ/uYV/lsRgUsYpghvutw9n9XbfWFtNE60Pt4DsJ3jcttJvBmsMIYIjxzG0D1mhEhW34xGEjj/vWd03+ZYUeY0mNUG81Rd2uP+r7DOzudkDK5xDsQSrAlfipmQ+sAcdGq1+7HRzDWK5YT/EO4eURE5WFrMoJq4YrHvghd3vF+tdRlav3aEP2RWQfFM8/t1+LFBDpN1POxGHcHP3PliQIQbUvGfkzOQTExpXkAnPtQ3DWgugNf3gUCymnPhZnKwne2Ezg7v5cuRzdVD9FCrYGu7ndid086mmYhw
- CLRQVcBU
- 2PFSxYTJrgpXLhZkYKNTJO4moydC1UCTsVhN0uDe9FX4yciagnOUOcksW4d0BCwcUSNp3yXZNuBtRqigdsn74bKfvoFkj4eOZHNUkCr7QMkIJwE0ZWlXWTeCw/nrEEVffkxBKV0IwcleDGXc02bH7a2RMdXshSE1f+2u7eYSQHxOr84r+OyzcfwcPbPjdTkSqj/gOq4eYpVb56M+9k6zdK2J/guQbIGV6lzSRR5q31UOgJSIC7f+NjRgdkV5o2ZBPF6gdrKZF7OcNCtgZH0/Jt4rn5xUNIHxKreL1jo81PtL2rNZh0BuNnZHBgkjRukN6rTg4y2DAVv85iWpfpmZ0XkjMUtCTTI35IYHS4jaK5DuhTjYevNAEHT5x5HHtoWVt6pQgCrPP4rLnx1e0XmZt3OVAxOICWv8vr8uQuWlrW9rb6CfwBDb7EwMoO4Wdv1uTaWf5QBYdRDokcvKNA++Xi1btxcN4tBrvTBLN0UYButMPo5PaRLIzSLGgxvfwR3NaULZi6ypXtUNTQ18=
+X-Rspamd-Queue-Id: D0E2840017
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756366530-165964
+X-HE-Meta: U2FsdGVkX1/u3OSy5tgz0HnguBkbtPrapu6GWLsNa8CXcQvEEzmat46+W0uhSvf+tQ3soKnp2nlCKy51H615VyQ0X3vi82gYl3BhBHzpLpkCFnTJoLYA/pGexbSHDfC1g+nmCLkmnbrYunUDN9JSevTwfixVDj0dsYwIiVNGoKpQmuFLO2lHm+BSZBruflKDxfPnxd/X6UWHUE3+a6ng0/4sIcHjdzrq9KTs9sjQlvm5rUibYXZDwKaUXmWU977sogP24H4I+BlVpUjekg0sSIQRaUNU6tNcEEiLdPwfV4tqTHA7Y+BxrBd+7f9GvXyCETOd+2gHjo0rVnewYTXzUNAXpxQld0qz0g53tGkhwMXtPDkhPkTZ6cVZ3WfyzLMaobLy7GOmhvTWvwlo4zShIH65aP8ELMatafmZEKTYitnIAgleiXsl0P+zr2lz/TaRLdRG9Ij+VHhglRM+JcfGgnM5UwaMq83gFGuKmUi6aH46CM7hgVmh+SwjqPGO/CJNWtl4doEc+RqTfD+nvcZWkD4QMOAkNZpCor50zCgGurStgDMW92z4rGo+iGC2MjHWYIOmUPQMThJNw0a4qs4iXoRv6flL9aaUcJ8C9hbAPZmyddPrKcfaQs0mn+8OcrL7sqTwqxGUxZtBuf9HbiV+arzCnvsCRN9JtnMEmtEm/s4sOkzsUcLWyExUFGfHVWEwX4N32JEVp1whTzCtSKnTdsDzn7vNIS67RBYCRRgYlke6pgFbZNYqDccKeeahP2kfDYtkHUwwVABZNHZJqmS34dAzm8DO9v+6jJg+wMErKQL9EtcYhvjeBZmU3xSL2sWPa+ekLDa+LQDoGsHfT31djGtznG1GW2gt8AchQ6ctglSloIMy3Pt8hDb+V+Aao6EBq/ZrxAxKA6uk4NP0r/GFV1t4Ne+mtWjmTFa7oBTObLTHrnG5rLkB/K4X8Eb8kxXTztU/rC1WIF/sDOSAVJS
+ q7sdgoZU
+ CS2g6uWrLo7MqbFiBfGkvY+KwT1L7YW32n2zLEVTEdVjxj0Lnex7kbq8Cej/bDsy0bSjirZgFNPfMSZTpjCsCv+AkZhbMeGZtv6wPP+4wSNRxiC9FnozNLRM0mxBqu37+nlsrDs0vXYr5dsl9RYQ4HD7jTD0adbGMhSD7srEPVy1FU+ql40Ns2joDK+u8D3H2yA56F0RI96ths0pWr1k3/T1i9hxe8TGEQYUGY7xagCXWrEqhtnY6fkRqktb9x0HIUcj78sUa8gij6gk1TCE6HzLrQvd7LuaTEmuiwcrMzloBCRvZEOhBChg3LI4v2tV3LuDhnBYIlmpX2UQ9TW2niht46/WStvcC3ePFeumpryjgz4kZXljqLvMIRcjyJWxWfq23Ypnv7kddCOohfW+8TV6vAjSytQvE0AJZNz5OV7Q7OH20Ek0a6esAmBMCuGgzi5ZHk4ua8DoVj+WLlsgQqK6nVdg6CfSxze4s71yceBUe+fqPrRaYDj+lS/7d7viF8HEiMaQgKEi6U5E4baD8ZaqNFdIvmXfItDYPOb5P7/4qHFF3OTJqgC0WgpcVRpAcYbhmsHFezSbYOzLtC+pjYp4jSQ2/ut9jNQh9fRj+4cWSemEdim2k+la3h4Jbx7EXwm/45e9alD1vz1ul2aTBUySdBoP1/UKYPAlTsVHfyClBVIapYREQWCttUlLR+xDXNGO4/ZX50v9NaQPeJfo0KDn1LZVg8UUM/d+C87Q1wy25D29syE7kjvNyHg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,32 +148,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add Jinchao Wang as the maintainer for KStackWatch, including its kernel
-module and test script.
+On Thu, Aug 28, 2025 at 12:01:13AM +0200, David Hildenbrand wrote:
+>Grepping for "prep_compound_page" leaves on clueless how devdax gets its
+>compound pages initialized.
+>
+>Let's add a comment that might help finding this open-coded
+>prep_compound_page() initialization more easily.
+>
+>Further, let's be less smart about the ordering of initialization and just
+>perform the prep_compound_head() call after all tail pages were
+>initialized: just like prep_compound_page() does.
+>
+>No need for a comment to describe the initialization order: again,
+>just like prep_compound_page().
+>
+>Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fed6cd812d79..097a0462e604 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13354,6 +13354,12 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git
- F:	Documentation/dev-tools/kselftest*
- F:	tools/testing/selftests/
- 
-+KERNEL STACK WATCH
-+M:	Jinchao Wang <wangjinchao600@gmail.com>
-+S:	Maintained
-+F:	mm/kstackwatch/
-+F:	tools/kstackwatch/
-+
- KERNEL SMB3 SERVER (KSMBD)
- M:	Namjae Jeon <linkinjeon@kernel.org>
- M:	Namjae Jeon <linkinjeon@samba.org>
 -- 
-2.43.0
-
+Wei Yang
+Help you, Help me
 
