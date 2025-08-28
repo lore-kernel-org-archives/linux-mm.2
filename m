@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3156CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 02:32:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23EEDCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 02:47:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29E636B002C; Wed, 27 Aug 2025 22:32:00 -0400 (EDT)
+	id 3AC1D8E0005; Wed, 27 Aug 2025 22:47:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 275E66B002D; Wed, 27 Aug 2025 22:32:00 -0400 (EDT)
+	id 3840B8E0001; Wed, 27 Aug 2025 22:47:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B31A6B0030; Wed, 27 Aug 2025 22:32:00 -0400 (EDT)
+	id 2C0968E0005; Wed, 27 Aug 2025 22:47:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B76B6B002C
-	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:32:00 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9801D1609A9
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:31:59 +0000 (UTC)
-X-FDA: 83824591158.08.F96D1F9
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 19A761C000A
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:31:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756348317; a=rsa-sha256;
-	cv=none;
-	b=rzcRLiFEJ0MLPaihChU9VyKRCjhMIQelVrxHqP2S/mWjH/tVKZvmWIfqgFJ+/nSS9igv4B
-	kyek67FzbIOQptekwfhXnU4eZm5zxOiXG78oMZ9ITnRD9dFYgYnVZMLT1dmLkNlTqEh+L1
-	s7/krm9U18Lv+zbqalIgZ3uNmnAyT4g=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 14ACA8E0001
+	for <linux-mm@kvack.org>; Wed, 27 Aug 2025 22:47:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B021013A3C6
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:47:12 +0000 (UTC)
+X-FDA: 83824629504.14.823EE3B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1B5A6A0004
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:47:10 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=cOfC1CjP;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756348317;
+	s=arc-20220608; t=1756349231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P/DBQMB2r+h6G0tu6v2l4tefO4iFanNusKV4yWYFRq8=;
-	b=pVAoAjaBXJ2VygHCfCE5upknrbfEYbwOoVqPB+ceEasf3sVTass/38kQxnLce0AaZoTHlA
-	EWmFKSBwxl1j7eEj2R9/aJi9fqATuKQREfoDsUuuGToyUXAZfRFrmcaXnw84d9zenqDW1t
-	4YnkiiFKDiv9Lf03/KOXD65kAiXHS8A=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cC56M3ZxMz27j3Z;
-	Thu, 28 Aug 2025 10:32:59 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id C04BB14025A;
-	Thu, 28 Aug 2025 10:31:52 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 28 Aug 2025 10:31:52 +0800
-Received: from [10.173.125.236] (10.173.125.236) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 28 Aug 2025 10:31:51 +0800
-Subject: Re: [PATCH] Revert "hugetlb: make hugetlb depends on SYSFS or SYSCTL"
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@redhat.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-References: <20250826030955.2898709-1-linmiaohe@huawei.com>
- <20250826203552.b4340b12b16a374396f49343@linux-foundation.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <0138514f-c580-c066-c16d-2a0b207e0604@huawei.com>
-Date: Thu, 28 Aug 2025 10:31:51 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20250826203552.b4340b12b16a374396f49343@linux-foundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KO4nXDSpysiBIIpgDqsNG00pGKq5i+L2iTJbgRczwwA=;
+	b=GA1I2xiThylMnYU6VcFZTJ/f5MT0SDeeSRCs/U+sTFz7b65uGS0TZfosw/BR/DRReXnWnu
+	4DRXNHHoZ/blkTR9t+uMAUO3Z4ZJkSkmWAV9HX62SjghwvILGsTdhTFnMuIRepWvNY0R/A
+	S7FGTmVPxDpsy7fIejkFGkCH/3stJQo=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=cOfC1CjP;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756349231; a=rsa-sha256;
+	cv=none;
+	b=pTlTALSPBMmn4aALEAWUSkHI8Hexpup/sNuy+YfAQV/Eq1+UX61mDmTsFAa2LV5XE6Z4VX
+	zYcjFU5Iw5HFUoK1AWxnmc0MAX5xe/E0IUqkh//JQaIExzHqvVIw1SqQx1LMl/LewFsAVJ
+	qx4Q+8GEH2MWqYASyytQ3Z9bOkfrN48=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A8BF1448F6;
+	Thu, 28 Aug 2025 02:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDC0C4CEF0;
+	Thu, 28 Aug 2025 02:47:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756349229;
+	bh=HVAspzzIyXQO7ejlpQfZ3LLojc9WoAMq6Oq10fW25tg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cOfC1CjPY1XGtl5QD0Ms8YHq3PrbKJ8MQ1aKaktqjL+o6lBig9vVsm/9DATHWYbJW
+	 4qq4dLnxEwou4MXf9z76CFL8q3pzhn9Za8s51czlHSMP/zBhAw/AObUXPYHrPQlLDY
+	 /3CovCY2ev42W0eJDr1smcb0YOoIuippJ13c1C90=
+Date: Wed, 27 Aug 2025 19:47:08 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Max Kellermann <max.kellermann@ionos.com>, david@redhat.com,
+ lorenzo.stoakes@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: add `const` to lots of pointer parameters
+Message-Id: <20250827194708.a6a87ecae6a992b4c92b6451@linux-foundation.org>
+In-Reply-To: <wmxlcvxqx5qmkzpk6x5fducmmv7giget2nwsvspw3uouufngvs@kxoyppwsyxrv>
+References: <20250827192233.447920-1-max.kellermann@ionos.com>
+	<20250827144832.87d2f1692fe61325628710f4@linux-foundation.org>
+	<wmxlcvxqx5qmkzpk6x5fducmmv7giget2nwsvspw3uouufngvs@kxoyppwsyxrv>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.125.236]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 19A761C000A
-X-Stat-Signature: 8c97pa8a7qu1kpbe9omr8eapinfrahy5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 1B5A6A0004
+X-Stat-Signature: iew68y65bei3jp3abfu9myzpurtbcfst
 X-Rspam-User: 
-X-HE-Tag: 1756348316-714853
-X-HE-Meta: U2FsdGVkX18o9qutwEDhmYa76mdK3tFqQr8JWN2YaA9UD9ScOwMFGdUAkSzIZP9cZhSjeLeNbKpd9pMb2vsJPUTUTNJwmr2q8AO3RKvFjWaecjM1++RyU86qpd+EGVDrnp3EUG0iQhmdsVQNMrgEVUxiWsUdV25SFARckoUj5Uv666iHrjZfa3bKCA0oz2HEXvse1EtNuDHf0lsQTvLeNcXswP/LraBG6jRuh8lJpRLGg/bEcLTKb6/GbrX/P9eBmiBuAPUcVPErCPrOi8NUDh8eXGeTU6c+Q3StjIAkTst5w9XVfN/NFNMjpD8cQ19QTe4+T+6kCyktuGOpjHHdkUOKLUbCvndNZwSesdiPcz2rbDIIBchIPWVo6Po5e/gPb6Tx6zgWBLHiXUTHkRnjoheAL5dVafg1aRXdBENnfe1ENXAWQqkeOZM/MN1DyUH40GseRywXg9pdxMuCtXXzBdYNvnDJurnROnSCtQXutUYlwnI5eZLv0Xk2Ns38/etIqybxW0P1ahTjSI+qG21ewZnQFuYy14D5YwOJkPL39zMGc4UsNQ9KJv9whcFUKD09jJ4sE5oaxvJW4mAC3JnNG5GOtMeF7c6wHpYhKqC8J5mHtZoHodf1L/H5r1WJpzdvxHxfZn+6Ao8H5s/6nbFwC9HnW8JP2oFupm294IAIxdFtrDmpxUcimj2RaUPX+d8C9fMxSQ/Iu4OaCG4rq9dB5jOdJvjN2uzFpuZkq8F28Qp7zcUWUP4o/5x8DVTsrOmqmXou6qyLT26T3umq+ykNDCGucvxKu77FxtEZdpcHw4trKJFqEjxwqcGS2sQpTwhq2Eejgp6snIJEuaONVDhZKGy8q08XbyZvvOla+eWQvEzhuwHpDI76cJLFt3lggVkotAk3OvK6Qx/uwLBKhzwCJvaFfy2XMJiZCKVUxQMXdTupDZIqjgwL/W6aEqXcYrVApoRHA0GweBOU89n6Tmt
- mNxnM6Ts
- SJpVX0/IglPPBYz0382X6tgR34IOAEyc3UsfbjE3BEsAkryR1xBaijJm/8dnT8ASSgJfCd2at31qWGZnt5b0rdlXzlTaJmmyWf6uVPaqY9tBczBQUtyECuweWYDpnybUKUoGSToS0P7oj8yWc1ac32LfLehCSVDVTnQZydyExDqnE2B6T2clVIhaDL7rP5FO5x2dZ
+X-HE-Tag: 1756349230-786636
+X-HE-Meta: U2FsdGVkX19mWs8LzQtLQu2YUj8CSHGLzxShH9UBhjWiHZPCETfWmyZBgMgQnNolwt67ciU6FMoXa2OSjJMFFigeP12F4Xc7WiQIvxBt2vQRnTq27RLvbHLWAlTSELBM9G0b246xL1cud8mHhfHjx/u88aSZabiUibcWknLsTnBYADWSArzk3T6pJp10ayPdQKga17Igb/dfJA71y7dpcQG7yXlqnHP0uECc8W9Ccb5qNWHS/NE85mmk/zO4pb5Q+hs0Kedik03i3pROMPKEFBXCknsVx2+7jPm0q/CobKiFS4LGvPKs9BFhtBHip/bT0kU4HvDQOY/w54FPwv5dkGKRR+fn7CqlGdKHl6hZsziUmhnUIcLT3WPa7EWtoPPT2Hc3AtvMvXDLiDvw8Iio8cxwqjUN0IZwckj2W550NGE9zJto3VtovHUXWS49nrK+APFOeQbTnaWWIG5q87wlfm5nriUfNQCC0YQGgxP+nmxVYbZZoNa2Gk8b2MqNwVfG7GK70Lodxoj0IJsG1LVF0q3G3SeBUoz9X8bqHgbofPBaMASVEfUYPqv7A5lPDVZyNwncAM6hE22FALQ8u1ceUryFp+NT2qooWUQxy03zvWoItWYcyLUR7yQBTHCsb0J3YWTMyZlXmsnPWqiEFxM9zp5Q0ZSQLWv4r3mrl7rFT+UzcBxR2hw9dFOrH9V46u/ZHPBkcweRg+TUcJLUwCQHcxR6hhy5GYLtu3SDWiYo7nPUacnWU38eem7gUdkJ/Djx2r53wk4L34rdLuOh9OkfBYs1XEPHKq1oE2b+Yal/TQwDHmk+oGXNYIcQ3UzkwNgmunJ+wU2iSZSQp29awHP1+4RTs2An7PU3Py9oy6BhYtvqT68645JezD5Nd2Eqor4r+hDyTgRWlBUuXWD/Z4Un0wD6gUtK0D6mlu7xR8kStyg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,28 +92,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/8/27 11:35, Andrew Morton wrote:
-> On Tue, 26 Aug 2025 11:09:55 +0800 Miaohe Lin <linmiaohe@huawei.com> wrote:
-> 
->> Commit f8142cf94d47 ("hugetlb: make hugetlb depends on SYSFS or SYSCTL")
->> added dependency on SYSFS or SYSCTL but hugetlb can be used without SYSFS
->> or SYSCTL. So this dependency is wrong and should be removed.
->>
->> This reverts commit f8142cf94d4737ea0c3baffb3b9bad8addcb9b6b.
-> 
-> f8142cf94d47 said:
-> 
->     If CONFIG_SYSFS and CONFIG_SYSCTL are both undefined, hugetlb
->     doesn't work now as there's no way to set max huge pages.  Make
->     sure at least one of the above configs is defined to make hugetlb
->     works as expected.
-> 
-> So there is now a way to set max huge pages?  A reference tot he
-> commit which made f8142cf94d47 unneeded might be helpful?
+On Wed, 27 Aug 2025 21:48:21 -0400 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
 
-The commit is just wrong. It overlooked the scenario of using hugetlb through boot parameters
-when it was submitted.
+> > I'd actually be in favor of making all incoming args const (C should
+> > have made this the default).
+> > 
+> > Because modifying an incoming arg is just obnoxious.  That value should
+> > be viewed as part of the calling environment and should not be altered.
+> > 
+> > Try modifying a lengthy function and wanting to get at an incoming arg
+> > only to find that something in the preceding 100 lines has gone and
+> > messed with it.  Or forget to check fr this and get a nasty surprise when
+> > testing.
+> > 
+> > Not that I'm suggesting that someone go in and make this change.
+> > 
+> > On the other hand, it would be neat if gcc had an option to warn when
+> > someone does this.  I bet it would be simple to add.
+> 
+> But what of the lazy programmer that just uses the variable at hand
+> instead of declaring another one?
 
-Thanks.
-.
+Sure, I'd say that's OK for a small function (home-made strcpy) but for
+a larger function, expecting other developers to read back through
+everything to make sure that Nobody Did That is way unacceptable.  It's
+laying a trap.
+
+> I also wonder how this would affect inlining choices?
+
+I'd be surprised if the compiler didn't trivially optimize through such
+things.
 
