@@ -4,186 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79F20CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 20:13:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E30CCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 20:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 981738E000B; Thu, 28 Aug 2025 16:13:11 -0400 (EDT)
+	id 714B06B0025; Thu, 28 Aug 2025 16:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 959078E0001; Thu, 28 Aug 2025 16:13:11 -0400 (EDT)
+	id 6EB696B0029; Thu, 28 Aug 2025 16:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 847CC8E000B; Thu, 28 Aug 2025 16:13:11 -0400 (EDT)
+	id 601FA6B002B; Thu, 28 Aug 2025 16:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FE478E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 16:13:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D46F184B8F
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:13:10 +0000 (UTC)
-X-FDA: 83827265340.30.4D9AC5C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 550DA16000F
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:13:08 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Iw5IIXey;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C8056B0025
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 16:14:45 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0295D1A0391
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:14:44 +0000 (UTC)
+X-FDA: 83827269330.13.4DC957D
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 12BE680010
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:14:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=N4IDl0HH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756411988;
+	s=arc-20220608; t=1756412083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6CKebG25zZ7Qh5eUzDGh3RpuZ+KtDVV8aoTCmVYURho=;
-	b=5MBKnXBTGuLLnmgmS4NZjdVhuZFpNDX+IBOk30tFuKx2Gm814X8SdwHY5pm7+gnSJTF8QV
-	IJxGW1e7Qq0KG7L++EHFNwW7v4k9oauwYHQOhvguCtB3ANSDE7vz7Ui6A9XItwPr+WO8iM
-	IoH8ZTLVonSZCNmYSKFHiYpydx7YLZA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756411988; a=rsa-sha256;
-	cv=none;
-	b=WNGLv+M60f9/OqXsFEikYTmwyYA5iYqMOwpGOzmCK9EfcaCOQwtbt9BK6y4O/nXbl/1v9y
-	Kff/cu3d6otYiclcsryGshc+0hXmjGJYfwTu5RBJa4/gnI9VeTKEVskApsK/M5IweaM8R8
-	0vyjlkPBzKF7xnQr/tU5DyBdh/zCqzw=
+	bh=1gnvrp+Bx3ZYJFKBzNh94mqis3ow5fvVnk0m91vI1jw=;
+	b=MQsuQvNzLCr3bUct5EcuKd6j86iWB8kX4zI2rXruX9xyKGIOD2CXoXBMMjXMnsN9Rb4CSr
+	FJ5LjCBh9AluyBvz9kJ8JFdmKkoz7CEJC928gxXsMkAcZQjz1AZq/JHIGiLog20Oq3tYTa
+	k+PyIq36rVIRfenI+7cx1/OFmQH69Cc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Iw5IIXey;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756411987;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6CKebG25zZ7Qh5eUzDGh3RpuZ+KtDVV8aoTCmVYURho=;
-	b=Iw5IIXeyvLi7OS1NA5S9aVWCcu2NZUFUX4LsJnGs8R1LXmycsCPfoYwfurHCQoFW7++zMQ
-	970OtlRptHx9hHPxUVNG1RCe28crdoIc1VkPqQGSzfXckHg8vO3/rhDHyBGzCX68OpcPZS
-	n+7yUAF+ddbJv9F0t5QLOXxvFHijI0k=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-360-fhckn6dVNR-CP-Hdz7ecqQ-1; Thu, 28 Aug 2025 16:13:04 -0400
-X-MC-Unique: fhckn6dVNR-CP-Hdz7ecqQ-1
-X-Mimecast-MFC-AGG-ID: fhckn6dVNR-CP-Hdz7ecqQ_1756411983
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a1b05d8d0so9440275e9.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:13:03 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=N4IDl0HH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756412083; a=rsa-sha256;
+	cv=none;
+	b=i129CMHIOmVmdZkguqpIti6XZ69xvPedtAY2mgjwg1fbMq9KuEbgD4KswwVZ/gm7j98KVR
+	3LKgyXQgbf81T3ZCGQHzp6zbkOY44+GjQ0sYYRWKqy7D0x/GQESsvm4Jk8FpriHSA+w8F8
+	eGhIDHdLdO0zsucrORVrHn4F2wnTc9E=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45b55ed86b9so7906425e9.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 13:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756412081; x=1757016881; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1gnvrp+Bx3ZYJFKBzNh94mqis3ow5fvVnk0m91vI1jw=;
+        b=N4IDl0HH2munZ/O6ngPWhi8lBcdW2ZaYa7ZzVEQzflM2O+OC85Ck13YPTMc6NWncO5
+         34T/sYoiHnuSV9uQIKzaD65JjdrUKMeG5Qxul8yYXaD1qxpAzTu04/OwkjpblRGQiFxz
+         avrFTZ7XLnHJhUiazDphjsHCnywBEnKdJkxj5k2CDcV9n3vNTfEF8V+adaoxW6qb9l34
+         6zaQ559xJw3OMxJuHgI9T1UurMA4v7MfvQNknx4sR75gtTkbrPc3lgJpt3jGdZtS1vVt
+         XjSrbytPQ8WJSoLnEBmWfdBAi/jPFtF5jxOnX5B2DRVaGEr3DkI+jj6euuYUG3e0++/5
+         Aj7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756411983; x=1757016783;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6CKebG25zZ7Qh5eUzDGh3RpuZ+KtDVV8aoTCmVYURho=;
-        b=uYNCo5k4LGY0D4tuv+lXrQ7A3m8s4Ov5D4eHw+75relOh4HIIt2zWVM1EZNF5CxK0D
-         CtEUl3O2IlsxieFiuetyXXqAIKoHTX3xJdSUGPLg+4yYMdK+0bEp0HOAi+1yoCaaR7Vq
-         YxwhWlxHWvhczMNvT7WIiLGOw62m/XdRpYZuJjPOfRFqkYQqr9BJhUtKcDIirtXBdjNL
-         SKVN5bk0IGc2CGioQJkRoDIjNkzaiC6eiDgBgaDyQlmwtsCozCtHxRVitvbb6N/PnuoF
-         iNAaYIhaR/EWWBheqqhQu50jLfoQYCmmrE0ybY+o5ASWyRDfXW2bMIaUddBMbwFchpDM
-         rmOw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2hhVSCHBkrsbvIwePCdMxOR2J2xvt5QNsuiorgC9lXdwyBCEUCRYIem0tJfOjU/fUr7iCmCqtgA==@kvack.org
-X-Gm-Message-State: AOJu0YwSqb/KqM8obrh+uDWYN7yg7IxFj+h8x5MzJveLYxW2kiXeTNOh
-	z0tDNEYFcle8rc2SseEz7Pp4cacXXzJqNafoC9CQoXnIHZilMOzuE/mFIyyOG9wFuOHNBzSMXbT
-	tpoB/2EtMliibc+pQdQ/T+MOrbJ8hOywe7VxvhqNB5VfqDNUoygvs
-X-Gm-Gg: ASbGnctsqSF/sGniaZ0RRgEhfwtGOLzg57+JErpI6Jr0LfBPGb+gOHVGqAI7kRYNVOe
-	SCwVcuAGcOhlntKpeARh1Wt3Zead7chcS2p4Kc2h0ZmcDrKUjbN91Gl8LAYCQvMP8aipHzEXpNe
-	GJiBxj+Ep/4/DwB4NMK5O0rm9YQVS4Df5nyqAksC7IhpJXYHdXJruzipJ/9cAgyX1Zw5z3uutBx
-	DSRCb0KgbrKJQT1Og+BpuNG9K0cSCaXdjz0Zv4Vo1z2iM5P4WfVGAmEJMNfjmy0Ri5dKRmbG+2i
-	v/mciaz4dAstAIgDmMotliYxBf876qefhQ9/5ArOs1xD6i2ClT5byrYMg9vgS3g2g9D31p8KhD9
-	dVHHcC4WHkuuYsirb+GNxXLGwSeizA1Qf7kWlhzGCX4Kk66YRGXMa2DcSW7/zQV5hGPM=
-X-Received: by 2002:a05:600c:45d4:b0:458:f70d:ebdd with SMTP id 5b1f17b1804b1-45b5179eb97mr298530965e9.16.1756411982748;
-        Thu, 28 Aug 2025 13:13:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYlg6U6YWP3KKWPLKnc1b8KsAr3EP3vAhz8qoffX84clo1bvTszS2+UY9ViAz8ohcbnuHyZQ==
-X-Received: by 2002:a05:600c:45d4:b0:458:f70d:ebdd with SMTP id 5b1f17b1804b1-45b5179eb97mr298530685e9.16.1756411982211;
-        Thu, 28 Aug 2025 13:13:02 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f28:c100:2225:10aa:f247:7b85? (p200300d82f28c100222510aaf2477b85.dip0.t-ipconnect.de. [2003:d8:2f28:c100:2225:10aa:f247:7b85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6ee66bddsm88856345e9.0.2025.08.28.13.12.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Aug 2025 13:12:58 -0700 (PDT)
-Message-ID: <00d58bba-7695-4f72-8ebd-d2db23fccec3@redhat.com>
-Date: Thu, 28 Aug 2025 22:12:53 +0200
+        d=1e100.net; s=20230601; t=1756412081; x=1757016881;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1gnvrp+Bx3ZYJFKBzNh94mqis3ow5fvVnk0m91vI1jw=;
+        b=dS/PkabaIQQHL7KEj3bp6vcvEqOCL0CfsCwX5X6owiZz9JqSwWTlGgwkwcxcPX4OLj
+         YNjE6+xRX9/tJ8Pmpwn0sexawhybe0cFl0PH6VryZZNU2RKYBgBCHAwKKV8r7xE0NdEY
+         o/H1OOpH2eUuNi1fCriWsWO8z2wKPisGM/BPUkmK55CBmC7nazj2GseIPEqZDL39JGIO
+         OdMpD3AqT1xP1L/KNrCnS32822kuoWS08uWcNgsqDZBFPI2QHo4A69iWsTjppDvxT2qP
+         voVZJ3OehdM34CpucNVB/TNhmOXSGL3rFLde/jAciJkuwTCioVyNWso8GxBlPN+OkEac
+         yvCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWdQlix8DnY6thQOuhiABMrIVq5Jz5BNAuidQkan0c31MPXPWeT1SNK7pvrltsXgT07m88cD9NUwg==@kvack.org
+X-Gm-Message-State: AOJu0YxwTyFJ+U1X1AynqV2d/8qRLiGQfhWbq2HGeU4H0c5O2jTRR415
+	gD5717v0jco2wn1q2zdrVi7KUibAf4BffGerlmJN0c95nH8k31vWtEdKqR1wYDgu0mKcBkA4XD+
+	c7mVOX6AsEQGgsmkXVZU6WIptFf3W51c=
+X-Gm-Gg: ASbGnctE8a8ROSZaltHI94EC75+mXtK8683M3/xspriBaw5ojK0Whb3/nz7N02Nnbqi
+	cjU+GcaTPG1hQLS+LTHddMpX8kkFPXrDQ40xwBq6idrXRVB5AR8GbMFQ0QCq/mKwKaNc+R9otd8
+	nPaKDpyR6MSRjD58pj2wqWvqECd8VuTzefc4nXce882ohAlkslbMnbANMOp9oD8f98oqtL4txRZ
+	Zy+0zkiwFYh9f+Ml+WOVGt1yBybxZo=
+X-Google-Smtp-Source: AGHT+IGkMoq8h0tkXujVtGDFS8K8ZzpaXHvOixuVaujtWP0Wkn9zIKEQpxZ+6u9akm/7cu9i2UZVR/zTm0+xUXb1N/o=
+X-Received: by 2002:a05:600c:4683:b0:458:bfb1:1fc7 with SMTP id
+ 5b1f17b1804b1-45b5179cc59mr217845785e9.6.1756412081217; Thu, 28 Aug 2025
+ 13:14:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v3 02/11] mm/thp: zone_device awareness in THP handling code
-To: Matthew Brost <matthew.brost@intel.com>, Balbir Singh <balbirs@nvidia.com>
-Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250812024036.690064-1-balbirs@nvidia.com>
- <20250812024036.690064-3-balbirs@nvidia.com>
- <aLC2bfpIQo/a22gr@lstrano-desk.jf.intel.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aLC2bfpIQo/a22gr@lstrano-desk.jf.intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Tr9Vm5F8k5Rhw8SNAIEPF7ofOlPFOO-syEnn4cZCqpc_1756411983
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250820071243.1567338-1-yeoreum.yun@arm.com> <20250820071243.1567338-2-yeoreum.yun@arm.com>
+In-Reply-To: <20250820071243.1567338-2-yeoreum.yun@arm.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Thu, 28 Aug 2025 22:14:29 +0200
+X-Gm-Features: Ac12FXyhL3jNKGMqxsJ0nOjlFtUtP70OOH_yRbqkrkgUfzCeogdUcj5xo329MPY
+Message-ID: <CA+fCnZfv6G19P=bWqEUpbA36E9zaHBqDBZyDYV5YnMuAX1zGug@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] kasan/hw-tags: introduce kasan.write_only option
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
+	vincenzo.frascino@arm.com, corbet@lwn.net, catalin.marinas@arm.com, 
+	will@kernel.org, akpm@linux-foundation.org, scott@os.amperecomputing.com, 
+	jhubbard@nvidia.com, pankaj.gupta@amd.com, leitao@debian.org, 
+	kaleshsingh@google.com, maz@kernel.org, broonie@kernel.org, 
+	oliver.upton@linux.dev, james.morse@arm.com, ardb@kernel.org, 
+	hardevsinh.palaniya@siliconsignals.io, david@redhat.com, 
+	yang@os.amperecomputing.com, kasan-dev@googlegroups.com, 
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 12BE680010
+X-Stat-Signature: tim1iqqfs96hneezwxsgn5rkk9hs7whk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 550DA16000F
-X-Stat-Signature: peqdbpo8p96m36c4ugaw9mcxa7o7btqp
-X-HE-Tag: 1756411988-140948
-X-HE-Meta: U2FsdGVkX1/k8dn3rn4sKspqKJN2xzWY7M0+7VOGUTDMdeUOYbH5gaGfDbqqlI5MUEaSdGFo6tJP+C3PBPysXCJgZgoFFKJ1ZGce+ZT4k3mMIrjlri2Lu9lJ1QZts3SmQ/OkPHL6fhEDLpXW3ZMhiXzeRQDa9YmRCzPtu3So26a9IC3w37TvsmI08HBL3VXUNo4GCcm0ACU70Hyf54pthsSaygI+1NsUXoFRH3f68w42HiLoLryHtvxc5YcGgumK19H1fGcuzT0w8S2d4Pshr01To5vr0U13Ao03GPlfXXamO/LN+dNXJ6M7GDcH9yFA8YyVWEsNonoDeDsMfPKw/MslX+62RuXqijS5Ds/cDTnjujlO1B1xlP+OvrbjWeTWJCtAaGlgAG0xOGv8whpvtWTWwSU6wiiumJeUm+zRxTayLvCXnw2KBVmX9lhNN9kcc/Pdc7XGd9ItOWy/lUQ75k2JUumcU76qsZkmfV/JmmJLb0vjZkGngiVpsYGA0KcX2/KRK9O55cc3LDsn0YcQyEIRjbGaLH48RLXRA7Rqkodn+mHERAxZDkm3SSkpcHpy6hp3DZE4QcAtDooZcK1dKiSsb0wEn4HnmVcOmI6JwPkvDrKAXdriUvlXyybqVGoJbvAY3ct0ERMtJW6XRriUmEbvMkFnyDZBu/eElP1pd7LWMSMckTbkOuei+SHuzc3HPiPjJvSye2YbuubpfenKke2lnQE87yGPV9tv2hs9xJIUE0ZvjdUJr13FT+/JkFXp0UZWY5yFO7TH3DXnSUXqhcQwiCKIZFSDb2PGmAfnfG09c+V1bMdowc8fAUd89u4+AdZcPgl4Oew3YGfjpSMbjgeiCE++ynW0ONCahU3tLoADAwwMU7TLOFfc/x0MF9/xCsuT/DaHbMVB3AQEm8BeExd+UnApPzt2tTlIteepNFgL0cFJiUQWIILLatBA6Kmvlmf5CSvRJ1ofGKdTMG+
- 8wjjs9z7
- WdJQgurJ0j2IpbadbVUtx5hGOKpUsQDYAuPbkPcU3UTiJpZSMhorAm72FUCX/zFz4vL8PW3K2amL874G76Xapa7BaC4WoWsCALHfIxoyHQuH8ydo3ebtFvm85nHg/EjzzqjmW+PEk33A2zGKHOBdtA4DsjzRFn3v3CjNfXwXG4krdjR3KXCUX88ToD/w/rkKLigO3DupY901btjiqoIvPdwWcR/TY31R0SmRf1bd/IfjdJyyJRpELAbPUAUMQMs5ZMphIrDGW0Ihct89gGU4AYv106CmHkErYWcQVxXTnpUACBXrxzuKgpY3VDSW00VFXPLQShW2gYpVgEgClifMa/i4+hiM5JuIHDo0pGRnp4EbUlRJ/2Dy6zWUR1QKktFqW60L/REYO3vR+wLLjAraBsEuqOiLLE2AeTTBNnRmNT1ea+IklPnGwr4HePI25wALfObaKN7NtwSAuHB5O+837uJoTlDtf3oJHI18JF8gd8o4iQRCHMUSdZVjGBle7E500iegxoLTM2KTlowRHiuo2YuR8ncSwWsanZKGHpnKo/cbH81wPZLsdMD64SFbEYmR6T47oWuD6oyOv4wetJI45wyg9UXBb2P4HaBS1tD1dkyi9Ri0PlEoRMlbe4ChGIkCAI6/UzFWuN4bFBHhsVBGZdjlo58wdzBAN9NPNaVYsgSiNa1OFUNcDbHAkUhQHGmEBlhQt9nGDms9lC8vmo8a5Vt2pbYflS6Ys9aQsxdHGJkjLq8ExfdCDyB3kVwKMXc8CjNmcauyDFNTD1+5Xka7/GrJoMgwkjdTTfvpK/+yVe4MqqdnqzcE062Zd2Xf2Zi3wytXbp60fcRkmwjvwtq9GbH1cxc5p9UI3Kh0jpvnlAlgx5BVqcK5jfwLJ0KaXwozcO0XHOfNibDypYc5YNYEh7pTiJVAzvYOH2HgikSA5+73WZQFiQJ9jIxGN8WA+V0EdOCjGRHlUelDaNXutC3RNY3d9ow==
+X-HE-Tag: 1756412082-480235
+X-HE-Meta: U2FsdGVkX181PkCM1vGDXDwOKehYL1ivrfy/W2ZwG1m1tlNiY0ZEpeyZRiffAyU3ZlOLl0JlvbTqW5W4aQjwp/J9rnDxdYpuiGamYkK4tSXXg6JBskpmIx3LJ1WIOFNjLUghCS9phSrmnx46dI/Y4PR6zzSSIsUW2wcGVZAFsthtWgDLXrZv6+pOlBauvtSajm124uxWkyAz3rVU3LqMN4RAjB/qEp7A/ZEC3xCz2a00eiKLRhiogNk+mziDrCH4WE4eFRC2mpgZegsFcof8LC9mEHcj0111u0eSBsi0/qcmay7LmdU770OSyezgQsePamAzOpMaTzk5Mg8spyu7i615np6LVp5fqVldRXLEEB5/aZgbsWCYcWqbNZKXc2/XNYEM2pWmVSX3cBdhYz8dN+/JOd1Voyi5luVdHVktc5oOOBRPDSjCCEkTWSYitL/WQKIix/cyDVT9NMBUz1soepuOiCwjdMXCIOPZyMN+RXFo8SI1zPUGeF4VmAZgEOnP397LMHOs8kgemL26NKWm0kbjPua1IXW4fZg04d9riP0pSKd8tQv/3/futbaSttsQ0T3VYSv8YXYf5/efLeo9y4AIT4RLckAy6Ake35vmUn55+42wgYPnBIUTOqEx3uhX+bPErlktKvd7rAjJ62lIWMQvRtsgQa4Pjrw/FHeFNctTrX4EyUwS/HHyjRaQCxHgMOR3/lG65LJhb4vVir5tViRLQjGERcb7ju8Xb1Y19aJ21LkReQZlLGo7/Kit8pokIRKiyJ0UClI/T85dlcRtVdquB5jTCN/lLHDO6lquMpTGlLPnUy10oYrEDk7hhCFkQcpqN6A03g8Epg+qXK8MrwRRUDRl3k3bxQxhS+PdpHkV0D3Cae6bO8hW6LfiOXo8POzplwpYI4pwDjtbCu9/wNm+Q2scCXEDrUJgSF0fj7Y39F3ow24K9oCh6Q+Ngh/qQJZSzAIsD2AtH4g58KB
+ Oa9Dqcdo
+ bFFtWwI2QYa+/43/kZCYGbyZVeqdkdpDYErbB8B0D27hWzrr71hNV1AQn+4Dgs2LGqzDSewcQh01udRbio/Q/FspGHq6WKAphlTEWnm+A3Oew35Bq/158gP+HRQQGiAzjGOFKRvlt2GyiaWnhHSFsD+muIimljq/49cSA9n7IUyqr1LBty9yzABOAB9S/nkW64DbcbmB7qO+9uFCf389bib2p5QbNEdmbtnv+Dx4XVFQ3xdgSoML7p0ATfE55vWg8NXnTIOUI1dlpzknjyblMMSpWvFX8HmBPAT3lnTe/rPh1/juE6vM73eXVnbYthGw+u0+C0Es3Sq3fMAOvPFgcy7Ty7ENFr29lO3EgYQhzQrfP0xlTh0ALDi+DRkxzxZf8DXszSAqVVJlVLPtsyKgViz6IXZXAfdEmJrco+1v2GebZ0MEgpIpGS/52ByO7IOinKyxoHIwcsoFCm81QzKU4NiFsO0wHLBPkMMr3z1NdJXwVHTI8UYTfGoFyc+eeaneeMAhazmfZauL19SJ86Y5UF2Jt3LDSGgt00PGb+R65K5No/pIHP3LqEwv+nw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,195 +125,321 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.08.25 22:05, Matthew Brost wrote:
-> On Tue, Aug 12, 2025 at 12:40:27PM +1000, Balbir Singh wrote:
->> Make THP handling code in the mm subsystem for THP pages aware of zone
->> device pages. Although the code is designed to be generic when it comes
->> to handling splitting of pages, the code is designed to work for THP
->> page sizes corresponding to HPAGE_PMD_NR.
->>
->> Modify page_vma_mapped_walk() to return true when a zone device huge
->> entry is present, enabling try_to_migrate() and other code migration
->> paths to appropriately process the entry. page_vma_mapped_walk() will
->> return true for zone device private large folios only when
->> PVMW_THP_DEVICE_PRIVATE is passed. This is to prevent locations that are
->> not zone device private pages from having to add awareness. The key
->> callback that needs this flag is try_to_migrate_one(). The other
->> callbacks page idle, damon use it for setting young/dirty bits, which is
->> not significant when it comes to pmd level bit harvesting.
->>
->> pmd_pfn() does not work well with zone device entries, use
->> pfn_pmd_entry_to_swap() for checking and comparison as for zone device
->> entries.
->>
->> Support partial unmapping of zone device private entries, which happens
->> via munmap(). munmap() causes the device private entry pmd to be split,
->> but the corresponding folio is not split. Deferred split does not work for
->> zone device private folios due to the need to split during fault
->> handling. Get migrate_vma_collect_pmd() to handle this case by splitting
->> partially unmapped device private folios.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
->> Cc: Rakie Kim <rakie.kim@sk.com>
->> Cc: Byungchul Park <byungchul@sk.com>
->> Cc: Gregory Price <gourry@gourry.net>
->> Cc: Ying Huang <ying.huang@linux.alibaba.com>
->> Cc: Alistair Popple <apopple@nvidia.com>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
->> Cc: Nico Pache <npache@redhat.com>
->> Cc: Ryan Roberts <ryan.roberts@arm.com>
->> Cc: Dev Jain <dev.jain@arm.com>
->> Cc: Barry Song <baohua@kernel.org>
->> Cc: Lyude Paul <lyude@redhat.com>
->> Cc: Danilo Krummrich <dakr@kernel.org>
->> Cc: David Airlie <airlied@gmail.com>
->> Cc: Simona Vetter <simona@ffwll.ch>
->> Cc: Ralph Campbell <rcampbell@nvidia.com>
->> Cc: Mika Penttilä <mpenttil@redhat.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: Francois Dugast <francois.dugast@intel.com>
->>
->> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
->> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
->> ---
->>   include/linux/rmap.h    |   2 +
->>   include/linux/swapops.h |  17 ++++
->>   lib/test_hmm.c          |   2 +-
->>   mm/huge_memory.c        | 214 +++++++++++++++++++++++++++++++---------
->>   mm/migrate_device.c     |  47 +++++++++
->>   mm/page_vma_mapped.c    |  13 ++-
->>   mm/pgtable-generic.c    |   6 ++
->>   mm/rmap.c               |  24 ++++-
->>   8 files changed, 272 insertions(+), 53 deletions(-)
->>
->> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
->> index 6cd020eea37a..dfb7aae3d77b 100644
->> --- a/include/linux/rmap.h
->> +++ b/include/linux/rmap.h
->> @@ -927,6 +927,8 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
->>   #define PVMW_SYNC		(1 << 0)
->>   /* Look for migration entries rather than present PTEs */
->>   #define PVMW_MIGRATION		(1 << 1)
->> +/* Look for device private THP entries */
->> +#define PVMW_THP_DEVICE_PRIVATE	(1 << 2)
->>   
->>   struct page_vma_mapped_walk {
->>   	unsigned long pfn;
->> diff --git a/include/linux/swapops.h b/include/linux/swapops.h
->> index 64ea151a7ae3..2641c01bd5d2 100644
->> --- a/include/linux/swapops.h
->> +++ b/include/linux/swapops.h
->> @@ -563,6 +563,7 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
->>   {
->>   	return is_swap_pmd(pmd) && is_migration_entry(pmd_to_swp_entry(pmd));
->>   }
->> +
->>   #else  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
->>   static inline int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
->>   		struct page *page)
->> @@ -594,6 +595,22 @@ static inline int is_pmd_migration_entry(pmd_t pmd)
->>   }
->>   #endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
->>   
->> +#if defined(CONFIG_ZONE_DEVICE) && defined(CONFIG_ARCH_ENABLE_THP_MIGRATION)
->> +
->> +static inline int is_pmd_device_private_entry(pmd_t pmd)
->> +{
->> +	return is_swap_pmd(pmd) && is_device_private_entry(pmd_to_swp_entry(pmd));
->> +}
->> +
->> +#else /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
->> +
->> +static inline int is_pmd_device_private_entry(pmd_t pmd)
->> +{
->> +	return 0;
->> +}
->> +
->> +#endif /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_ENABLE_THP_MIGRATION */
->> +
->>   static inline int non_swap_entry(swp_entry_t entry)
->>   {
->>   	return swp_type(entry) >= MAX_SWAPFILES;
->> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
->> index 761725bc713c..297f1e034045 100644
->> --- a/lib/test_hmm.c
->> +++ b/lib/test_hmm.c
->> @@ -1408,7 +1408,7 @@ static vm_fault_t dmirror_devmem_fault(struct vm_fault *vmf)
->>   	 * the mirror but here we use it to hold the page for the simulated
->>   	 * device memory and that page holds the pointer to the mirror.
->>   	 */
->> -	rpage = vmf->page->zone_device_data;
->> +	rpage = folio_page(page_folio(vmf->page), 0)->zone_device_data;
->>   	dmirror = rpage->zone_device_data;
->>   
->>   	/* FIXME demonstrate how we can adjust migrate range */
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 9c38a95e9f09..2495e3fdbfae 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1711,8 +1711,11 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>   	if (unlikely(is_swap_pmd(pmd))) {
->>   		swp_entry_t entry = pmd_to_swp_entry(pmd);
->>   
->> -		VM_BUG_ON(!is_pmd_migration_entry(pmd));
->> -		if (!is_readable_migration_entry(entry)) {
->> +		VM_WARN_ON(!is_pmd_migration_entry(pmd) &&
->> +				!is_pmd_device_private_entry(pmd));
->> +
->> +		if (is_migration_entry(entry) &&
->> +			is_writable_migration_entry(entry)) {
->>   			entry = make_readable_migration_entry(
->>   							swp_offset(entry));
->>   			pmd = swp_entry_to_pmd(entry);
->> @@ -1722,6 +1725,32 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>   				pmd = pmd_swp_mkuffd_wp(pmd);
->>   			set_pmd_at(src_mm, addr, src_pmd, pmd);
->>   		}
->> +
->> +		if (is_device_private_entry(entry)) {
->> +			if (is_writable_device_private_entry(entry)) {
->> +				entry = make_readable_device_private_entry(
->> +					swp_offset(entry));
->> +				pmd = swp_entry_to_pmd(entry);
->> +
->> +				if (pmd_swp_soft_dirty(*src_pmd))
->> +					pmd = pmd_swp_mksoft_dirty(pmd);
->> +				if (pmd_swp_uffd_wp(*src_pmd))
->> +					pmd = pmd_swp_mkuffd_wp(pmd);
->> +				set_pmd_at(src_mm, addr, src_pmd, pmd);
->> +			}
->> +
->> +			src_folio = pfn_swap_entry_folio(entry);
->> +			VM_WARN_ON(!folio_test_large(src_folio));
->> +
->> +			folio_get(src_folio);
->> +			/*
->> +			 * folio_try_dup_anon_rmap_pmd does not fail for
->> +			 * device private entries.
->> +			 */
->> +			VM_WARN_ON(folio_try_dup_anon_rmap_pmd(src_folio,
->> +					  &src_folio->page, dst_vma, src_vma));
-> 
-> VM_WARN_ON compiles out in non-debug builds. I hit this running the
-> fork self I shared with a non-debug build.
+On Wed, Aug 20, 2025 at 9:12=E2=80=AFAM Yeoreum Yun <yeoreum.yun@arm.com> w=
+rote:
+>
+> Since Armv8.9, FEATURE_MTE_STORE_ONLY feature is introduced to restrict
+> raise of tag check fault on store operation only.
+> Introcude KASAN write only mode based on this feature.
+>
+> KASAN write only mode restricts KASAN checks operation for write only and
+> omits the checks for fetch/read operations when accessing memory.
+> So it might be used not only debugging enviroment but also normal
+> enviroment to check memory safty.
+>
+> This features can be controlled with "kasan.write_only" arguments.
+> When "kasan.write_only=3Don", KASAN checks write operation only otherwise
+> KASAN checks all operations.
+>
+> This changes the MTE_STORE_ONLY feature as BOOT_CPU_FEATURE like
+> ARM64_MTE_ASYMM so that makes it initialise in kasan_init_hw_tags()
+> with other function together.
+>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  Documentation/dev-tools/kasan.rst  |  3 ++
+>  arch/arm64/include/asm/memory.h    |  1 +
+>  arch/arm64/include/asm/mte-kasan.h |  6 +++
+>  arch/arm64/kernel/cpufeature.c     |  2 +-
+>  arch/arm64/kernel/mte.c            | 18 ++++++++
+>  mm/kasan/hw_tags.c                 | 70 +++++++++++++++++++++++++++++-
+>  mm/kasan/kasan.h                   |  7 +++
+>  7 files changed, 104 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/dev-tools/kasan.rst b/Documentation/dev-tools/=
+kasan.rst
+> index 0a1418ab72fd..fe1a1e152275 100644
+> --- a/Documentation/dev-tools/kasan.rst
+> +++ b/Documentation/dev-tools/kasan.rst
+> @@ -143,6 +143,9 @@ disabling KASAN altogether or controlling its feature=
+s:
+>    Asymmetric mode: a bad access is detected synchronously on reads and
+>    asynchronously on writes.
+>
+> +- ``kasan.write_only=3Doff`` or ``kasan.write_only=3Don`` controls wheth=
+er KASAN
+> +  checks the write (store) accesses only or all accesses (default: ``off=
+``)
 
+Nit: a dot missing at the end of the sentence.
 
-folio_try_dup_anon_rmap_pmd() will never fail for 
-folio_is_device_private(folio) -- unless something is deeply messed up 
-that we wouldn't identify this folio as being device-private.
+> +
+>  - ``kasan.vmalloc=3Doff`` or ``=3Don`` disables or enables tagging of vm=
+alloc
+>    allocations (default: ``on``).
+>
+> diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/mem=
+ory.h
+> index 5213248e081b..f1505c4acb38 100644
+> --- a/arch/arm64/include/asm/memory.h
+> +++ b/arch/arm64/include/asm/memory.h
+> @@ -308,6 +308,7 @@ static inline const void *__tag_set(const void *addr,=
+ u8 tag)
+>  #define arch_enable_tag_checks_sync()          mte_enable_kernel_sync()
+>  #define arch_enable_tag_checks_async()         mte_enable_kernel_async()
+>  #define arch_enable_tag_checks_asymm()         mte_enable_kernel_asymm()
+> +#define arch_enable_tag_checks_write_only()    mte_enable_kernel_store_o=
+nly()
+>  #define arch_suppress_tag_checks_start()       mte_enable_tco()
+>  #define arch_suppress_tag_checks_stop()                mte_disable_tco()
+>  #define arch_force_async_tag_fault()           mte_check_tfsr_exit()
+> diff --git a/arch/arm64/include/asm/mte-kasan.h b/arch/arm64/include/asm/=
+mte-kasan.h
+> index 2e98028c1965..0f9b08e8fb8d 100644
+> --- a/arch/arm64/include/asm/mte-kasan.h
+> +++ b/arch/arm64/include/asm/mte-kasan.h
+> @@ -200,6 +200,7 @@ static inline void mte_set_mem_tag_range(void *addr, =
+size_t size, u8 tag,
+>  void mte_enable_kernel_sync(void);
+>  void mte_enable_kernel_async(void);
+>  void mte_enable_kernel_asymm(void);
+> +int mte_enable_kernel_store_only(void);
+>
+>  #else /* CONFIG_ARM64_MTE */
+>
+> @@ -251,6 +252,11 @@ static inline void mte_enable_kernel_asymm(void)
+>  {
+>  }
+>
+> +static inline int mte_enable_kernel_store_only(void)
+> +{
+> +       return -EINVAL;
+> +}
+> +
+>  #endif /* CONFIG_ARM64_MTE */
+>
+>  #endif /* __ASSEMBLY__ */
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeatur=
+e.c
+> index 9ad065f15f1d..505bd56e21a2 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -2920,7 +2920,7 @@ static const struct arm64_cpu_capabilities arm64_fe=
+atures[] =3D {
+>         {
+>                 .desc =3D "Store Only MTE Tag Check",
+>                 .capability =3D ARM64_MTE_STORE_ONLY,
+> -               .type =3D ARM64_CPUCAP_SYSTEM_FEATURE,
+> +               .type =3D ARM64_CPUCAP_BOOT_CPU_FEATURE,
+>                 .matches =3D has_cpuid_feature,
+>                 ARM64_CPUID_FIELDS(ID_AA64PFR2_EL1, MTESTOREONLY, IMP)
+>         },
+> diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+> index e5e773844889..54a52dc5c1ae 100644
+> --- a/arch/arm64/kernel/mte.c
+> +++ b/arch/arm64/kernel/mte.c
+> @@ -157,6 +157,24 @@ void mte_enable_kernel_asymm(void)
+>                 mte_enable_kernel_sync();
+>         }
+>  }
+> +
+> +int mte_enable_kernel_store_only(void)
+> +{
+> +       /*
+> +        * If the CPU does not support MTE store only,
+> +        * the kernel checks all operations.
+> +        */
+> +       if (!cpus_have_cap(ARM64_MTE_STORE_ONLY))
+> +               return -EINVAL;
+> +
+> +       sysreg_clear_set(sctlr_el1, SCTLR_EL1_TCSO_MASK,
+> +                        SYS_FIELD_PREP(SCTLR_EL1, TCSO, 1));
+> +       isb();
+> +
+> +       pr_info_once("MTE: enabled store only mode at EL1\n");
+> +
+> +       return 0;
+> +}
+>  #endif
+>
+>  #ifdef CONFIG_KASAN_HW_TAGS
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index 9a6927394b54..334e9e84983e 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -41,9 +41,16 @@ enum kasan_arg_vmalloc {
+>         KASAN_ARG_VMALLOC_ON,
+>  };
+>
+> +enum kasan_arg_write_only {
+> +       KASAN_ARG_WRITE_ONLY_DEFAULT,
+> +       KASAN_ARG_WRITE_ONLY_OFF,
+> +       KASAN_ARG_WRITE_ONLY_ON,
+> +};
+> +
+>  static enum kasan_arg kasan_arg __ro_after_init;
+>  static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
+>  static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
+> +static enum kasan_arg_write_only kasan_arg_write_only __ro_after_init;
+>
+>  /*
+>   * Whether KASAN is enabled at all.
+> @@ -67,6 +74,9 @@ DEFINE_STATIC_KEY_FALSE(kasan_flag_vmalloc);
+>  #endif
+>  EXPORT_SYMBOL_GPL(kasan_flag_vmalloc);
+>
+> +/* Whether to check write access only. */
 
-Can you elaborate, what were you able to trigger, and in what kind of 
-environment?
+Nit: access =3D> accesses
 
--- 
-Cheers
+> +static bool kasan_flag_write_only =3D false;
+> +
+>  #define PAGE_ALLOC_SAMPLE_DEFAULT      1
+>  #define PAGE_ALLOC_SAMPLE_ORDER_DEFAULT        3
+>
+> @@ -141,6 +151,23 @@ static int __init early_kasan_flag_vmalloc(char *arg=
+)
+>  }
+>  early_param("kasan.vmalloc", early_kasan_flag_vmalloc);
+>
+> +/* kasan.write_only=3Doff/on */
+> +static int __init early_kasan_flag_write_only(char *arg)
+> +{
+> +       if (!arg)
+> +               return -EINVAL;
+> +
+> +       if (!strcmp(arg, "off"))
+> +               kasan_arg_write_only =3D KASAN_ARG_WRITE_ONLY_OFF;
+> +       else if (!strcmp(arg, "on"))
+> +               kasan_arg_write_only =3D KASAN_ARG_WRITE_ONLY_ON;
+> +       else
+> +               return -EINVAL;
+> +
+> +       return 0;
+> +}
+> +early_param("kasan.write_only", early_kasan_flag_write_only);
+> +
+>  static inline const char *kasan_mode_info(void)
+>  {
+>         if (kasan_mode =3D=3D KASAN_MODE_ASYNC)
+> @@ -257,15 +284,28 @@ void __init kasan_init_hw_tags(void)
+>                 break;
+>         }
+>
+> +       switch (kasan_arg_write_only) {
+> +       case KASAN_ARG_WRITE_ONLY_DEFAULT:
+> +               /* Default is specified by kasan_flag_write_only definiti=
+on. */
+> +               break;
+> +       case KASAN_ARG_WRITE_ONLY_OFF:
+> +               kasan_flag_write_only =3D false;
+> +               break;
+> +       case KASAN_ARG_WRITE_ONLY_ON:
+> +               kasan_flag_write_only =3D true;
+> +               break;
+> +       }
+> +
+>         kasan_init_tags();
+>
+>         /* KASAN is now initialized, enable it. */
+>         static_branch_enable(&kasan_flag_enabled);
+>
+> -       pr_info("KernelAddressSanitizer initialized (hw-tags, mode=3D%s, =
+vmalloc=3D%s, stacktrace=3D%s)\n",
+> +       pr_info("KernelAddressSanitizer initialized (hw-tags, mode=3D%s, =
+vmalloc=3D%s, stacktrace=3D%s, write_only=3D%s\n",
+>                 kasan_mode_info(),
+>                 str_on_off(kasan_vmalloc_enabled()),
+> -               str_on_off(kasan_stack_collection_enabled()));
+> +               str_on_off(kasan_stack_collection_enabled()),
+> +               str_on_off(kasan_arg_write_only));
+>  }
+>
+>  #ifdef CONFIG_KASAN_VMALLOC
+> @@ -392,6 +432,26 @@ void kasan_enable_hw_tags(void)
+>                 hw_enable_tag_checks_asymm();
+>         else
+>                 hw_enable_tag_checks_sync();
+> +
+> +       /*
+> +        * CPUs can only be in one of two states:
+> +        *   - All CPUs support the write_only feature
+> +        *   - No CPUs support the write_only feature
+> +        *
+> +        * If the first CPU attempts hw_enable_tag_checks_write_only() an=
+d
+> +        * finds the feature unsupported, kasan_arg_write_only is set to =
+OFF
+> +        * to avoid further unnecessary calls on other CPUs.
+> +        *
+> +        * Although this could be tracked with a single variable, both
+> +        * kasan_arg_write_only (boot argument) and kasan_flag_write_only
+> +        * (hardware state) are kept separate, consistent with other opti=
+ons.
+> +        */
+> +       if (kasan_arg_write_only =3D=3D KASAN_ARG_WRITE_ONLY_ON &&
+> +           hw_enable_tag_checks_write_only()) {
+> +               kasan_arg_write_only =3D KASAN_ARG_WRITE_ONLY_OFF;
+> +               kasan_flag_write_only =3D false;
+> +               pr_err_once("write-only mode is not supported and thus no=
+t enabled\n");
+> +       }
+>  }
+>
+>  #if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+> @@ -404,4 +464,10 @@ VISIBLE_IF_KUNIT void kasan_force_async_fault(void)
+>  }
+>  EXPORT_SYMBOL_IF_KUNIT(kasan_force_async_fault);
+>
+> +VISIBLE_IF_KUNIT bool kasan_write_only_enabled(void)
+> +{
+> +       return kasan_flag_write_only;
+> +}
+> +EXPORT_SYMBOL_IF_KUNIT(kasan_write_only_enabled);
+> +
+>  #endif
+> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+> index 129178be5e64..844eedf2ef9c 100644
+> --- a/mm/kasan/kasan.h
+> +++ b/mm/kasan/kasan.h
+> @@ -431,6 +431,7 @@ static inline const void *arch_kasan_set_tag(const vo=
+id *addr, u8 tag)
+>  #define hw_suppress_tag_checks_start()         arch_suppress_tag_checks_=
+start()
+>  #define hw_suppress_tag_checks_stop()          arch_suppress_tag_checks_=
+stop()
+>  #define hw_force_async_tag_fault()             arch_force_async_tag_faul=
+t()
+> +#define hw_enable_tag_checks_write_only()      arch_enable_tag_checks_wr=
+ite_only()
+>  #define hw_get_random_tag()                    arch_get_random_tag()
+>  #define hw_get_mem_tag(addr)                   arch_get_mem_tag(addr)
+>  #define hw_set_mem_tag_range(addr, size, tag, init) \
+> @@ -451,11 +452,17 @@ void __init kasan_init_tags(void);
+>  #if defined(CONFIG_KASAN_HW_TAGS) && IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+>
+>  void kasan_force_async_fault(void);
+> +bool kasan_write_only_enabled(void);
+>
+>  #else /* CONFIG_KASAN_HW_TAGS && CONFIG_KASAN_KUNIT_TEST */
+>
+>  static inline void kasan_force_async_fault(void) { }
+>
+> +static inline bool kasan_write_only_enabled(void)
+> +{
+> +       return false;
+> +}
+> +
+>  #endif /* CONFIG_KASAN_HW_TAGS && CONFIG_KASAN_KUNIT_TEST */
+>
+>  #ifdef CONFIG_KASAN_SW_TAGS
+> --
+> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+>
 
-David / dhildenb
+For the KASAN parts:
 
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+
+Thank you!
 
