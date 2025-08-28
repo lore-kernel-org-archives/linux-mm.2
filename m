@@ -4,105 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8DACC8303F
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 12:28:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E8ADC8303F
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 12:29:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E87D8E001C; Thu, 28 Aug 2025 08:28:13 -0400 (EDT)
+	id 9B7A76B0023; Thu, 28 Aug 2025 08:29:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C0EC8E001A; Thu, 28 Aug 2025 08:28:13 -0400 (EDT)
+	id 968396B0024; Thu, 28 Aug 2025 08:29:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 262D18E001C; Thu, 28 Aug 2025 08:28:13 -0400 (EDT)
+	id 856546B0025; Thu, 28 Aug 2025 08:29:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 12DF18E001A
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:28:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DC3B5B659E
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:28:12 +0000 (UTC)
-X-FDA: 83826093624.21.A0006E6
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	by imf11.hostedemail.com (Postfix) with ESMTP id ECD3E40015
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:28:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZStxEUCu;
-	spf=pass (imf11.hostedemail.com: domain of 3WUuwaAgKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3WUuwaAgKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756384091; a=rsa-sha256;
-	cv=none;
-	b=tNnYEVqwk7RIzgR3su3z0ePVgQwH8fNXP46VZ/ojysIugBnDcRp3+VytXYVIVz8zTFrZaP
-	pj1Exrt36qvZt4prjpH7+rlO36wjP52JTS3RnRGsAc9/bKKcASfsq7cQOuEz8lJ3TbYsws
-	6UawD8IwnBgA6VKGyX3oBa8FnqWY05c=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ZStxEUCu;
-	spf=pass (imf11.hostedemail.com: domain of 3WUuwaAgKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3WUuwaAgKCPwnegoqerfksskpi.gsqpmry1-qqozego.svk@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 721F56B0023
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:29:07 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DDF414015B
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:29:07 +0000 (UTC)
+X-FDA: 83826095934.09.D0823B3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7A7FA120006
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:29:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jE8rIba6;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756384091;
+	s=arc-20220608; t=1756384144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l7cTx8YnEK6PXjAxYIM2TxKBSe00LYvnBB3H2O1o/mY=;
-	b=duuMpajhIwNPRlEU0yky2xxsHisPlrXqSp8xKvkwOkeJ9EJW9aVh4vlRB74/fyLFa5HZ60
-	I6G0giQnNfge9z17IRJcCARVCv2ZfRgoKYfUp1miQ4IhMkcYgmSrG5MCUhw5s4d28HNx/s
-	5Wrf6YbcK8FhQq49Dpj2aosoA0RAK3U=
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-afcb72a8816so74948166b.0
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:28:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756384089; x=1756988889; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7cTx8YnEK6PXjAxYIM2TxKBSe00LYvnBB3H2O1o/mY=;
-        b=ZStxEUCuQL44cncfJbwa7yPOEMHerUcQ8GjCSugTZVKKyJ0Sg1awoQ3z9rj42ODf3c
-         S3D/2rBvyuvfhNpUZhbhP2IQ67vm940NC92/q/XYzdiWFzaOase/JQz+jLgQ4Pd/4a0i
-         i9X4ZzBGlab9K5MzeybCWYnciZw8fWURmcJAe4yCCPt0rdiDOyoKk9UmUH0LKL0FeNBu
-         PsAnmxdbBjYss+EFwjCzD/0l8OOowFXvE6zu/RYVMyhCIR5bB3p/PTQfTGY/kzDNWl5a
-         hqkfa2EEerGSaDibz49Ym2kLsbjPcbt3JyO8+NbyXDfz6qV+UQ/a1yS1ZXIe3GQQXPlo
-         CQsw==
+	bh=A4aU0uEHOZFRgEo14ahRrdffnM9KY2ffZbdFZGoZwIU=;
+	b=I7eH04q0xUGWgaZr3zm8SNCAuUKeIN58gS+q+XnuAElfuhykGkUtYz1vrBNj3VWDIEIYFH
+	HlPIpkLbhYmhHhfRB3e9iwKFx3CwUYdUZm0hm5nXN3PMGmp/Zy4n46yfnZUNCiVffVPA6t
+	JBGfhhQuk5idD7PsImYsHMDcjFQ3xMg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jE8rIba6;
+	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756384144; a=rsa-sha256;
+	cv=none;
+	b=0IU9PZo3vkeBMtlSd2DIjaUNFQPi28LBIw52TMiIa/UnU78Cb3f3Ght0YSzpmkMP2pYfc+
+	3855Vt+fM0IwUUev5QBhRgTIwmrLDyydEuyWvhCZhD1azFDlky/9NZbakJfrseGA5t1FVC
+	G5tTasQNkt+iYNrYHaeo+LZunxUP0UI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756384143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=A4aU0uEHOZFRgEo14ahRrdffnM9KY2ffZbdFZGoZwIU=;
+	b=jE8rIba6KPjW/23HodOCu3H4CEVUtm7Qvhf9PlaoGESi0oaq/+CKfiJXZx231k+RcQAqnf
+	ZMgTZASvszsmCu02VuqkR3eI6kHnnR61sZVp268SzQjZJKOXyKx4BQm9sc1vpe/t2qC3rh
+	6FbeU4c1uNBLrkUsu2zho0kJEo2kjNo=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-359-iT_F6lfTNOqzjiv7AxLGZA-1; Thu, 28 Aug 2025 08:29:02 -0400
+X-MC-Unique: iT_F6lfTNOqzjiv7AxLGZA-1
+X-Mimecast-MFC-AGG-ID: iT_F6lfTNOqzjiv7AxLGZA_1756384141
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b645707f1so3963545e9.0
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:29:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756384089; x=1756988889;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l7cTx8YnEK6PXjAxYIM2TxKBSe00LYvnBB3H2O1o/mY=;
-        b=CM3ASWkmX0kZE7ZYZLiBEWtw3CWulyVzgM1kdztc4xjMwzuRqtrhZr9squaqD6V8y2
-         n7boBX/HEdHjaV0mA6HkFGLFNDtEryQXyst778Y2VQ+qvqkN/pQgNhj6yfs7GHNUy1a4
-         gIxgw1GmMI3zd6q8ts0cRadWp4ybugZYsF8qQWdS2nwBN5o1eHvjnUikKrQfKVohZWc2
-         jEs7EAlqTGPS38XMAbQtoh5UVoIsDF+5gJWBX5BQgy0RhPC1frrCjbXxSauFeigJNIYa
-         b7siiMNyZ/I3AYWUapAiqvaMk5XCtBKsw1q1+bgLtY8koY59O6ahPXh1BsnGy1nyrdox
-         o66A==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ2cZELh8px/w1MEwIuzpoRIWtdsvs2WjqydADDlX5I7bnfur+VFnajOAEH1lLdHzBq7WZT7Q4oQ==@kvack.org
-X-Gm-Message-State: AOJu0YxlQ2yJb+okGrMeTyvpIeAgpHPNoUvzUf7/RD4ly2uZ2D9+bp5P
-	egFIr9VCZwLccC/t8ceYmxpmOKXNuPO4CwEpbswtiKHrPzsyrezELelY6Gu5NpVNr+xr8e0hwhl
-	HRTcffuAVrdbJHA==
-X-Google-Smtp-Source: AGHT+IEjpL3mL9YVYzvlFjpNuB2q7yGo5muV6qRmjgMsPd3KcbfmlJV+kvknHo72hH9YYv52hL3iJ2LhDTES2w==
-X-Received: from ejcvj16.prod.google.com ([2002:a17:907:d490:b0:afe:af3c:d8b])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:7e9c:b0:af9:8c1f:b290 with SMTP id a640c23a62f3a-afe28f6a866mr1820910266b.29.1756384089249;
- Thu, 28 Aug 2025 05:28:09 -0700 (PDT)
-Date: Thu, 28 Aug 2025 12:28:01 +0000
-In-Reply-To: <20250828-b4-vma-no-atomic-h-v2-0-02d146a58ed2@google.com>
-Mime-Version: 1.0
-References: <20250828-b4-vma-no-atomic-h-v2-0-02d146a58ed2@google.com>
-X-Mailer: b4 0.14.2
-Message-ID: <20250828-b4-vma-no-atomic-h-v2-4-02d146a58ed2@google.com>
-Subject: [PATCH v2 4/4] tools: testing: Use existing atomic.h for vma/maple tests
-From: Brendan Jackman <jackmanb@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-Cc: linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ECD3E40015
-X-Stat-Signature: 6stcbhrx3nmyo4extmweyxqkhtb5ur6g
+        d=1e100.net; s=20230601; t=1756384141; x=1756988941;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A4aU0uEHOZFRgEo14ahRrdffnM9KY2ffZbdFZGoZwIU=;
+        b=sBS4fG71ouWEoxdTOqhxTQrRYqHfdkipB+J29+GTXBwyrzO41YRJnkaSXbmGNPq0+6
+         K04vK6OABaHox5VYveiC2zwJ0FeSX+OzqmdidSEX9fc0zzVoA6EHYuD6s9Wu3fXVgGsi
+         U+mw8xj4qJkBFbnndn38vEDSs+PyoBRCwY9DXtpsx2825c8emUxIt3ZcAq/wgk8pOxn0
+         6j1/OJihf/V2N8RIrdyicur+57gzfF8OCz3ohX3BiQq3GTZzXRZWbVqBbus/bgjIIdxc
+         T0bAWMsNSMJs5ENswctcjST5rUlg38RXO6GTsXTEz96qNSy9gjWA8cSNgffv4g5tWy09
+         L7BA==
+X-Forwarded-Encrypted: i=1; AJvYcCXGW3Zl0s9+yGzyE1jyrAvyr9zYJvBTnQ8ka4KuBOz0l2wjczgjB3gSk+bHI3uKccY9G2dHm1LTGA==@kvack.org
+X-Gm-Message-State: AOJu0Yw0PjNV4Qx791rVz99jVpo/tFSzsV2zG14lpz8EsLhNgRbidWrX
+	3ui0N1QR0V9fnTWE/zne21Bk4u3LM4O33zzqjDm9Bwgg2I5VkUZu3T0urPkujpnVZLJyw9T6y1u
+	kRncMthAol87AvS3XQJEQ5fCabZkfZiWlFSTokz8k6ZSii4tHTYiR
+X-Gm-Gg: ASbGnctnxo63tcCAzUuM3ooWsYK8pc2NciODFOzHg7M0afMTSTewZhc/Z9g+k54VFjD
+	qyzc1C779i5CIYlhP7UMldgJbAeh3IHZUkG/CNo9ojLoX8N7W0isUISgzt91Y/sAJZtIFepgVXs
+	WyxfjORsOS6FP3x/G/Okc9OReC2I1ilGlW0YJG3D28Th0N4myiXwBc82hTq3NG1+aH+uoiqLFGl
+	I/qhPl32hPHgRtZibI/CkrK/8p2SjSdoX4tnbkQnnzAUlsP5BiW2iOlSKf4xtAXxjWGVl59B0RQ
+	Y7Mb8fgIbROAZgjXTV8dZiO+IgVZ7QRU+vmBjEV9zckdUq3UX0y3diRynffJxfCerfUvp1shzJg
+	yus0GKAEmA2ebr8y1YUcciN+4QX7uiD04M+//0s6vv8Vgj4c677pn7sPITGn1lZoDPVQ=
+X-Received: by 2002:a05:600c:1f95:b0:453:78f:fa9f with SMTP id 5b1f17b1804b1-45b5179cfa5mr199732005e9.11.1756384141035;
+        Thu, 28 Aug 2025 05:29:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGK3MX5lHCe0T4jC6Xgyog17ATNhq4neX8rCMwBOuVu2rIRWQg/r6Yth5zxxMIPiF4hGTLSlg==
+X-Received: by 2002:a05:600c:1f95:b0:453:78f:fa9f with SMTP id 5b1f17b1804b1-45b5179cfa5mr199731685e9.11.1756384140573;
+        Thu, 28 Aug 2025 05:29:00 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f28:c100:2225:10aa:f247:7b85? (p200300d82f28c100222510aaf2477b85.dip0.t-ipconnect.de. [2003:d8:2f28:c100:2225:10aa:f247:7b85])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f30fe02sm71235425e9.18.2025.08.28.05.28.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Aug 2025 05:28:59 -0700 (PDT)
+Message-ID: <27a21510-e9e8-4eb2-9e26-618c103d49c6@redhat.com>
+Date: Thu, 28 Aug 2025 14:28:58 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: add `const` to lots of pointer parameters
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20250827192233.447920-1-max.kellermann@ionos.com>
+ <c688a2f6-375e-4a00-8d44-6a833e3d30ef@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <c688a2f6-375e-4a00-8d44-6a833e3d30ef@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ivgJoaTouR3lHleTlE0mT78QNjm8KbuonKzPRJVwvLQ_1756384141
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gto3sxz6fpxeqsoz9aabao53g9sjua8r
 X-Rspam-User: 
-X-HE-Tag: 1756384090-659631
-X-HE-Meta: U2FsdGVkX18yUtA4BSOa/AYzkao6/rvQGAtLJyCxM7Vjd3hVNVpbQvt+39WX+lq4E1oWdcoaIda51OcY8KWMc3xCFMFt6KQQdSiYJmCp3HgLFtlsWzQtp4mmMvDrdktWwj/6yB3l+YBaAT5jtOWgffaVEy8rQilMtMIIMVFuxusWrOYCiNpXq4yaBmTIBSpEXr60l2jv5swG2nFjgdlCmUrMdFJowH8MwFe7fLhr/fM2lrEO8M/jC1hOS6UW+TiT/NeZfi9oz/ejWwoT4CKd/FPgngGzKU8yPF38Fz6SVautOaKcysCGEwtvRIk/Tub+iZg5xBsufI8k3XvRu1qDqatlOq7WrxR45RF6+hXICPREBiMsEVTpH+tlXTyAG3ds70meW/5Qhshiai0iwLzpZEbD02i3i1APYqnHBLAETzoVbIVAI2twKoc6bAVMMk/39eSVKalbaIQBcuXfdc8gQXZZNMUo0AvWJ2lHIHMIRteqKwmktcqgxRhXyyUbxiVJINRFtLk7yh86e+7oN56y2lybsWy+b3yYzrIKf0HFhSA1X1RVD3nwBpV27vdnwYkYZUyVL38HZ6X0qG3n0mbvxT3Nd4j8VWIAMRlh9bV42cA+x73qWR6MH68F6swhEwvXbJRRYyXxGlW88NTkJMMsivvCcfjLtKgijNhCLkeRoGQVlZQBioayYHrUI34KJvDyleCGqx33naesXc942NCbnmHgQwCebGTs0yMHOaAlB8PuPlUr2EmaBKy/K+P9ZMBMVlPtZq65LTGykCHH0eCq3FSt3eoFtvyKtyFXD/HQDKAJDVsPz85GG3zbcsA1c9jXywVfspmXNkkKc40fsKSFIryWpV7l4UHGT43dV/Hb4l2zRkmmxQUpZXzJm8G+VXjNi/9fCiwxeOn6PJPAWjO8jyDFk0FfUhtQW3i+0XsWaJxIaBzFjAxrRe9QHqvxBU2PmSQI2h4CygwnTxutWVN
- XXCM2JKA
- gjvS6+Gsw7Wgxo+UrzhYIm8BnQJZ9hpD6XA/Gnm+UtAWBaaDEdoLylAGCu3VvGY/jJj/PDDGr/xYnvuHiYFxYG1T0T/K5inDYcesdbEICa8e1MaZ7T2nTazHYtc+uUs8DMp3jGd/OvtDbzMz3WIHCPQS4tg5Ke5FgpQfShjEwJ04pSO+YPI96W5P+ZOWASUoaefde8nXpZ5OfBfzFZeRgQ9Zseut4PJvIsVDVX3wQrWDqc9vMUzJxPmb4fBCflJifCvnkivM8jlEorjVuK1uB0g4QIzrdxfm5Q+iYy1WRSVnF6/ctjRS6i67JNx7mOSfcrYHmQtBmBGQiAwsyPWwMGceJrtECWicHW2Ak2JqkCLQ3Kf6055H1Zbg9nBhV0SWIgQ8JKPMooXDRre0aIEIKz/h5N40w8/hhEtoHCIL7dcv1nkb0/yqqMHgHDqOQcWMs8lgnEipfXxF9ENYxCbmcECRo5AkvR1QBJyIQjCaao37DZGcXfryePApJHK+VsQYWkO4sLXpf18iuX4PJe6eIiWQp4nyqn11Nx9n1BQE9OgZm59atMym7vkKLF3ZGPnL1vUn+UIZdb0DUKiw=
+X-Rspamd-Queue-Id: 7A7FA120006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756384144-523580
+X-HE-Meta: U2FsdGVkX1/oM8qA/CDTnWtrnQTXnRBXMtF2YiDmCUwOV4fGABGMIQv8UYRL/3ZC5ahJ3YBIZRi04XwxM0wpG767lG3mPQ1sLlyFb55FhejTNR/wcGY4JGVu9a6NHGI5aDDVHvLLpM35KcA3yKd8CVwofj1k0qqW2IYb/RO5E98onYxQJgnAtG9utkznrDs9vDlQNHEDqFZk96JZoRXD487fPXaXIRqUQmGNhMU1Spf2owqZc7TBy+akIsJBAlbJvPeo5siEUDtXDnFB9fXIb5nUN9m7k/gkAtpcuIgx6Zs4sHHIkh29c329YDX7XRYsOAVbtHoZIBZr29LAju7OrhzgYxQCU4TF4hOdfLkMwl9sxw2mD/SEGfTXDa6FmoWTZtylMfhvTE6ZfzB3eSqHhDP9H6tEz6AD5KHa1b2y5ag02VTbuVxV/j7a9r+MpJYUOBiWoayuzCft/MM9liLjMYQgd8qjvaaEx6FzgPGFzTjoUskClvvKItZtaQLfMO5u69ZNpkCIS9L01Ot/sPnWYrpQyNju5WfRxSkReb9iQ/BCw+26zTriin2H1BkAS4RM1kiCyyhCL62lMULA9YZJbfCNA2RC2oDepvoU+KQ2kRkkhFN5apH5Zds7dBAkF7ONqE8ueH0Wz6jMV+onreW8t+ue9vfckKglqTnB8/94dRiMMuhmYSMivBZQs4DFVkYLNE6JJ01WCRkwk/Rz6NqAIpvwtRWjyE4mVxhvW1BonxoftQfL7aPUPhPoHmx0JJS9ze7sN6DUTepApX9TU7BSt3YC0cApRNLv0FAH7cqcKYDEp/JToqP1OgqbxjeVJC2/Qcbj5D0wVerJa2LOVlJ7h7I/cNsIqKN3ossNHE7LXLypydrpOYyRmSaGLcvwCYptflkkP5ccXXQGru7eMjN/QqwH2c+gVRL27AIGg6nUnEa11y45LnE85JW5wR6uyyd/F5So2I7WqmhpCgyIeAy
+ Y14UpQqW
+ Mf0t17z+LSK8hd6jR6GCTnK0r21YNdYyeKxnY5cBZZAkTkN0kHcbVRGrWlHv3LTLQEpRVewBLsyIXtU7o2wnOSmhMaTZm0Kf3IGzYvfGd8wd8sLWlzrlKOR+6xJbvJx4hFDrdWY4GfJQDEtjWdmXZIOXJE6d11xbt1P+BcdLjGYnvAefCpF96vesH14RViEVdlyyTO9Sbsq76f+MMiOvvyifnfFK0YaTDgJVn+JvW3It8+puetQf3yFfmlYCzgXMQJMqFbOUHjsRy3EqKiWgvZFzWJ6HLlpJ9RjppUTMiiEYIz13ynGTTuK4b7j3uK0Rp1DygRWoS4XxHiSFRMjcRBWnuXMJkXwtB3Ew5PRzJ2fa6mqNdnPOqZlExdAmc7EJrbDT0h9POGKwLlZcPrAD+wKjWIx/nbrwtpBon9bZ5cE9UnkjTz7JP6fB0vYC9LMrtYpri6KJ+ZEk/6Lhq50BmV81+bY34F4DrlizkmJAhEd8to+11QW+He3wwQau7ffutGewNhq4onkNax7iSnuMoCAmt8eU1qfVmpatMinwUKJ09D10nZYKf19mRlMZVOjBX5MdsQST/4maSLgoo14F2Zy/2J35wV/a7yxdRKTDb6kixb2Z4Olb5iY3oNq6uXVTGM6XxXFFcovbRuNDU1i20SdbaQboC2PYJXAYvDi63mE7FuUBAnIQunblCLL4TujF50XaeVCFbg1JaWK/jWwxUN73ExZgNWz2HbbaFx5aI97jCnruHq3sbATPVJ6sFDEMLypXTVn01BCFtttIZIjA2xaSIIJKlhNHSTxfi/k7EW4QV236Qhfpz8+Rrp8rC0HxmDRyJ6/l1jEs5eVMKPFKjY/9vegr5ap55Rw6loNt0Mm3sZlc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,101 +179,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The shared userspace logic used for unit-testing maple tree and VMA code
-currently has its own replacements for atomics helpers. This is not
-needed as the necessary APIs already have userspace implementations in
-the tools tree. Switching over to that allows deleting a bit of code.
+On 28.08.25 14:24, Lorenzo Stoakes wrote:
+> You've not cc'd the right people here.
+> 
+> Please run scripts/get_maintainers.pl on your patch series and cc all
+> maintainers and reviewers on every series please, as well as all of the mailing
+> lists referenced.
+> 
+> For this change you needed to CC:
+> 
+> Alexander Viro <viro@zeniv.linux.org.uk> (maintainer:FILESYSTEMS (VFS and infrastructure))
+> Christian Brauner <brauner@kernel.org> (maintainer:FILESYSTEMS (VFS and infrastructure))
+> Jan Kara <jack@suse.cz> (reviewer:FILESYSTEMS (VFS and infrastructure))
+> Andrew Morton <akpm@linux-foundation.org> (maintainer:MEMORY MANAGEMENT - CORE,commit_signer:1/1=100%)
+> David Hildenbrand <david@redhat.com> (maintainer:MEMORY MANAGEMENT - CORE)
+> Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (reviewer:MEMORY MANAGEMENT - CORE)
+> "Liam R. Howlett" <Liam.Howlett@oracle.com> (reviewer:MEMORY MANAGEMENT - CORE)
+> Vlastimil Babka <vbabka@suse.cz> (reviewer:MEMORY MANAGEMENT - CORE)
+> Mike Rapoport <rppt@kernel.org> (reviewer:MEMORY MANAGEMENT - CORE)
+> Suren Baghdasaryan <surenb@google.com> (reviewer:MEMORY MANAGEMENT - CORE)
+> Michal Hocko <mhocko@suse.com> (reviewer:MEMORY MANAGEMENT - CORE)
+> Axel Rasmussen <axelrasmussen@google.com> (maintainer:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU))
+> Yuanchu Xie <yuanchu@google.com> (maintainer:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU))
+> Wei Xu <weixugc@google.com> (reviewer:MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU))
+> "Matthew Wilcox (Oracle)" <willy@infradead.org> (maintainer:PAGE CACHE)
+> Hugh Dickins <hughd@google.com> (maintainer:TMPFS (SHMEM FILESYSTEM))
+> Baolin Wang <baolin.wang@linux.alibaba.com> (reviewer:TMPFS (SHMEM FILESYSTEM))
+> David Rientjes <rientjes@google.com> (reviewer:MEMORY MANAGEMENT - OOM KILLER)
+> Shakeel Butt <shakeel.butt@linux.dev> (reviewer:MEMORY MANAGEMENT - OOM KILLER)
+> linux-fsdevel@vger.kernel.org (open list:FILESYSTEMS (VFS and infrastructure))
+> linux-kernel@vger.kernel.org (open list)
+> linux-mm@kvack.org (open list:MEMORY MANAGEMENT - CORE)
+> 
+> Usually I'd cc for you here but that's too many :)
+> 
+> On Wed, Aug 27, 2025 at 09:22:33PM +0200, Max Kellermann wrote:
+>> For improved const-correctness.
+> 
+> 'const-correctness' in C is extremely weak.
+> 
+>>
+>> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> 
+> It feels like this is a bit of an arbitrary subset and this churn is going
+> to make merge conflicts much more likely.
+> 
+> I mean, if it's just that all this functions accept non-const VMA and for
+> all callers _from_ these functions most accept const - it's not really
+> accomplishing much other than adding a bunch of noise.
+> 
+> Any meaningful change would require pretty huge amounts of change that
+> would be horrendous git blame, merge conflict, etc. wise for really not a
+> huge amount of benefit.
+> 
+> I feel like the ship has sailed for this and I really question the value of
+> doing this in this way.
 
-Note that the implementation is different; while the version being
-deleted here is implemented using liburcu, the existing version in tools
-uses either x86 asm or compiler builtins. It's assumed that both are
-equally likely to be correct.
+I recall that Willy did some more targeted conversions of that kind in the past regarding folios.
 
-The tools tree's version of atomic_t is a struct type while the version
-being deleted was just a typedef of an integer. This means it's no
-longer valid to call __sync_bool_compare_and_swap() directly on it. One
-option would be to just peek into the struct and call it on the field,
-but it seems a little cleaner to just use the corresponding atomic.h
-API whic has been added recently. Now the fake mapping_map_writable() is
-copied from the real one.
+E.g.,
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- tools/testing/shared/linux/maple_tree.h |  6 ++----
- tools/testing/vma/linux/atomic.h        | 17 -----------------
- tools/testing/vma/vma_internal.h        | 12 +++---------
- 3 files changed, 5 insertions(+), 30 deletions(-)
+commit 68158bfa3dbd4af8461ef75a91ffc03be942c8fe
+Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+Date:   Sat Oct 5 21:01:15 2024 +0100
 
-diff --git a/tools/testing/shared/linux/maple_tree.h b/tools/testing/shared/linux/maple_tree.h
-index f67d47d32857cee296c2784da57825c9a31cd340..7d0fadef0f11624dbb110ad351aabdc79a19dcd2 100644
---- a/tools/testing/shared/linux/maple_tree.h
-+++ b/tools/testing/shared/linux/maple_tree.h
-@@ -1,7 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0+ */
--#define atomic_t int32_t
--#define atomic_inc(x) uatomic_inc(x)
--#define atomic_read(x) uatomic_read(x)
--#define atomic_set(x, y) uatomic_set(x, y)
-+#include <linux/atomic.h>
-+
- #define U8_MAX UCHAR_MAX
- #include "../../../../include/linux/maple_tree.h"
-diff --git a/tools/testing/vma/linux/atomic.h b/tools/testing/vma/linux/atomic.h
-deleted file mode 100644
-index 788c597c4fdea7392307de93ff4459453b96179b..0000000000000000000000000000000000000000
---- a/tools/testing/vma/linux/atomic.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--
--#ifndef _LINUX_ATOMIC_H
--#define _LINUX_ATOMIC_H
--
--#define atomic_t int32_t
--#define atomic_inc(x) uatomic_inc(x)
--#define atomic_read(x) uatomic_read(x)
--#define atomic_set(x, y) uatomic_set(x, y)
--#define U8_MAX UCHAR_MAX
--
--#ifndef atomic_cmpxchg_relaxed
--#define  atomic_cmpxchg_relaxed		uatomic_cmpxchg
--#define  atomic_cmpxchg_release         uatomic_cmpxchg
--#endif /* atomic_cmpxchg_relaxed */
--
--#endif	/* _LINUX_ATOMIC_H */
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index f13354bf0a1e3839327da7927c4a7da1530a1693..437d2a1013be418c6d3e77534fa19b0ee1518c9b 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -21,6 +21,7 @@
- 
- #include <stdlib.h>
- 
-+#include <linux/atomic.h>
- #include <linux/list.h>
- #include <linux/maple_tree.h>
- #include <linux/mm.h>
-@@ -1398,15 +1399,8 @@ static inline bool map_deny_write_exec(unsigned long old, unsigned long new)
- 
- static inline int mapping_map_writable(struct address_space *mapping)
- {
--	int c = atomic_read(&mapping->i_mmap_writable);
--
--	/* Derived from the raw_atomic_inc_unless_negative() implementation. */
--	do {
--		if (c < 0)
--			return -EPERM;
--	} while (!__sync_bool_compare_and_swap(&mapping->i_mmap_writable, c, c+1));
--
--	return 0;
-+	return atomic_inc_unless_negative(&mapping->i_mmap_writable) ?
-+		0 : -EPERM;
- }
- 
- static inline unsigned long move_page_tables(struct pagetable_move_control *pmc)
+     mm: mass constification of folio/page pointers
+     
+     Now that page_pgoff() takes const pointers, we can constify the pointers
+     to a lot of functions.
+
+I would appreciate similarly doing it in logical chunks.
 
 -- 
-2.50.1
+Cheers
+
+David / dhildenb
 
 
