@@ -4,149 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FEDECA0FF7
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 18:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59876C8303F
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 19:00:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1094A6B00AB; Thu, 28 Aug 2025 14:53:05 -0400 (EDT)
+	id 895158E000B; Thu, 28 Aug 2025 15:00:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B9AE6B00AC; Thu, 28 Aug 2025 14:53:05 -0400 (EDT)
+	id 8455E8E0001; Thu, 28 Aug 2025 15:00:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC2F86B00AE; Thu, 28 Aug 2025 14:53:04 -0400 (EDT)
+	id 7344E8E000B; Thu, 28 Aug 2025 15:00:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D746F6B00AB
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 14:53:04 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9027C1A0364
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:53:04 +0000 (UTC)
-X-FDA: 83827063488.21.24C1D7F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 130B310000C
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:53:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U+89NkbQ;
-	spf=pass (imf05.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756407182; a=rsa-sha256;
-	cv=none;
-	b=UsLvc6fJ3RP0CNcBIgTszSPoViLU4FsqeYds5f2aQ/f5NNSDMbt8REM3QvUSsiTJITAIXt
-	55kkO9x+tIYIMXXsxkbv+yFInHQ0GBc8Xh10zNlK8L0x+QWziZaIZpZn/0urz4wCtT3NpI
-	LXSln3kPGqiLW3xGhUuLtEnbdQ0vxVo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U+89NkbQ;
-	spf=pass (imf05.hostedemail.com: domain of alex.williamson@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=alex.williamson@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A12E8E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 15:00:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1DE3B890E
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 19:00:56 +0000 (UTC)
+X-FDA: 83827083312.16.07D00A3
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BC0654001C
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 19:00:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jPlwWlFk;
+	spf=pass (imf01.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756407182;
+	s=arc-20220608; t=1756407654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ox+fdqHLvqvHkCQcV7jSITHMPKa6EWT2tpRcTnamaBA=;
-	b=FNn60VbPMzxqBi8zV+8YLqaWMHO0nUdRyWGXNsn8mxeldwHo+rnbmZSbGNB5O3Lok2yQaN
-	6XDsu7hvI/PvFL1jOyPKzpmT10NTRzT6g62ADLDB1gFRRFiBlzHL9qikuHgOva+ApWTmB1
-	cSL6OrrginaIcsUbmwOqwC5uFfH6yhE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756407181;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ox+fdqHLvqvHkCQcV7jSITHMPKa6EWT2tpRcTnamaBA=;
-	b=U+89NkbQyNI1+3Ir0lz7vt0x/cDlYrHLPPcYKX2OPv8Q1Eqe6PHr2ZkX3iGiZ1DDDgR1Yy
-	FjzKu86J4Hfhmoq+rk8G83VOujQjPE90Gg2JopH3pmSqc1MWxd7HiPQqbHNr4zgWZ63K7T
-	vQvyUuCtdBBMxw2eQlA/54U1EaYEtyk=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-225-_pKUF0y2OuK3m18QYvmvyw-1; Thu, 28 Aug 2025 14:52:57 -0400
-X-MC-Unique: _pKUF0y2OuK3m18QYvmvyw-1
-X-Mimecast-MFC-AGG-ID: _pKUF0y2OuK3m18QYvmvyw_1756407176
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3e67d83ee31so2007285ab.2
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 11:52:57 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uLB2ySJxURxeJ2Prp4OMsSE1Drdas7+Ru1DscCOUHP4=;
+	b=McpMqOnQGdVpODR5oB0HOECQEQ5O3fJYr9vWh5JOfyDJBmn20cGzdAwOpxheOEtrkLfIy/
+	k6/N8OxMN4J7E59OMLp7mbSExGUx/8yOfrOYAfre9z2BMzIPIoXuWdQ2U41aGUDPwQAlGd
+	edtkIylzjRgb8X4s6n8IQbuqLKZy34w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756407654; a=rsa-sha256;
+	cv=none;
+	b=ZaSjsulXbMSTng+Y1lZ2f43kScZocvqzkRabEK4YmiVm1MfnGRAHkky8/9tKDo7jB5DDYC
+	nuExa0MZUsedk959dTIBqqT8Phc4sfKh2T5+OByZMhv5OrjUfAu2slaz9gTMCFqdpHqx6v
+	da2Hh5ioJPQAVxALpaGCb/gfPMYSfCs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jPlwWlFk;
+	spf=pass (imf01.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-24622df0d95so10248675ad.2
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 12:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756407653; x=1757012453; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uLB2ySJxURxeJ2Prp4OMsSE1Drdas7+Ru1DscCOUHP4=;
+        b=jPlwWlFkGfz6kVF2f5Xn0yxQrxoM/daSWgetHXzfry427QQPOzlgmnEI13oVYNIdRM
+         P/dze8c3U0XSgxkAFdG5szbcQ4FoJ8iHAtVQJCUv3ZwWQnrhZikwMqbR5lXAbZH1q+cc
+         Zr9lpBiyKDTxZfXBODKZqZkOqoGUyMzb24uVH70lMqx3FCk9fXlEWVQCMFIS1xvrAxlv
+         A+z3CEYS823qoe9LNOG9zDhJW6MGv/uQc3EKYTovgdAamNcfYjnMDmz699rfZC05B41k
+         b/9Z6GBY/2zzNH3dbWNHS4VcSXthI2gIEQZMmLtVpUgwF+MOG3NwU0ZJvrUoLJrh9fES
+         4ZKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756407176; x=1757011976;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ox+fdqHLvqvHkCQcV7jSITHMPKa6EWT2tpRcTnamaBA=;
-        b=TWAEhMhN/AEhY8NQ+g5fLtNJ1N1bXv9oCeYgGBS3zkEaZyZGxbDUcOYk89/uKpFVSd
-         7ULEB0OpaSt4+sKc8VmCUrYIyKMhCVv9fBzWrb+LAlfXY+ynUAOfIQGTU9h8lKF3L2LK
-         JWXtosC1IYIwAg6m0EfZc/Aa+/VcPfX6CxDOsWESToCMKAJjjnXS6OYwa/Xbe0KnHXKD
-         rq0l5WYIHmGFqQ6WsaiVtKMM7p3peJc0ChhwgGAnRqfyP5sSquMbJ8LtxOQPyVzSq8OX
-         xMichwbj8iElxLqPhssq8kcXeafJJtqboECGxRj8m6NslDiypEjBo/hqCgoIlDgBt9RK
-         ZyAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWK8H3szkJz35//gHtR1qqLED1bO1trb0XeWlDzXD7vc4cE7iurbXnkgXhNu21f9Efw8Si/9XzY5A==@kvack.org
-X-Gm-Message-State: AOJu0YzEIhQq37zgOCBeYtAMlZlvy4HJP9YfE6aIvkCPITDqILFJ0nh0
-	2WAiKAHLQnyswiJvZr5CJwD6Mnrp37y0hBV8Y2jtaJP7cWn38qE9oMy/aaU3GECDLHwuXiLtZn2
-	J372ODyzlwdUFRpf9rFiaARoW9kOByot1rUIoNeykWVYwCVXi3dG5
-X-Gm-Gg: ASbGncuTQmtbmb4dR5IHggq1fMdtzlgm41cXLM3Y0gog7DENwPnvzCy6D4siTEUkdgR
-	TKR628gRlCynDqc8fNBsNsYI+vJssUGQF048RS2SZvFN0dhBdsLJHujB8hRYTnnLbAecSV9Jbu3
-	xUl2goQLkVJ2EvcS3xqUsquNdLsiesZJKwSxpD9zRXpbdwyJNevYRuj7HqZTVMOtkBvkPdUU6bS
-	/WcMP7rl/d97cwzcbJlSONxp120fIDnPe3rD5pPVQFAF5WHv4H2m5jYQe+KWmQgHi4von76afvo
-	BnyMzQAyd2dAlKb9O07Sjg6/PfLUIF+lOOxDa6cEx9k=
-X-Received: by 2002:a05:6e02:1a86:b0:3ee:cb14:e90f with SMTP id e9e14a558f8ab-3eecb14ea03mr61888945ab.7.1756407176428;
-        Thu, 28 Aug 2025 11:52:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEP6X5C8fKyFwSWmjzqPdfkbd7PprjZnYQm1xQXLb3Ss2KjE+y/MhfTqxlaUhO3jzRNfBiTrg==
-X-Received: by 2002:a05:6e02:1a86:b0:3ee:cb14:e90f with SMTP id e9e14a558f8ab-3eecb14ea03mr61888495ab.7.1756407175934;
-        Thu, 28 Aug 2025 11:52:55 -0700 (PDT)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50d78c67b4dsm47783173.7.2025.08.28.11.52.52
+        d=1e100.net; s=20230601; t=1756407653; x=1757012453;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uLB2ySJxURxeJ2Prp4OMsSE1Drdas7+Ru1DscCOUHP4=;
+        b=nP1mcoXhiyXZIz4BGo7wFMH6uf9lBIhdr1FUi3Acuv6ATt3mudGEeFkluJ66PofuZj
+         ittZAWnG3jgame+o9hb8USWkLY7x48A5oWuJBa7iHXqI6vV5XgtMvf6h0RyY5gnd1jH1
+         73a8jNCB4qD0JPACj1hM7xRTLaS+N0M2hmfNjIgy7lFod/YqlSrqhyJ9xW5u7Q+4Tv2i
+         v65vV/rIIHay94cFEpFblNIj6d7Cs5YAwVf56O0yHC1RP90dkjxNgOnXRIk5lGp4IbsR
+         HCxQiJg3fAZ2Pu0pwucNNxo6iP4PO2Y6xTYIkuZfiNh481liGPYi2PUBsp6WanmeLKEW
+         vfpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIvJcnDk/jh0BzohRao2tycf3fNihrIIhQmlj6h9UR8uOJfNQnYTk8rr6m79V/sQsgXaXvQbgDqA==@kvack.org
+X-Gm-Message-State: AOJu0Yx3q9cCVxMSd7InYAHWgHdrT8MWrIoSgcNXKr6+aZKbTd57P8Ie
+	aMXTYzRvffdp4i6EvoEBXXtQJiueGut51TrovrwN8BfjBHYjYcJkTd/MYmF1x9EQ
+X-Gm-Gg: ASbGncuNc6dbgDUMoXeXBPtGrZImtyBUHkwtV0XTVwjHCGHhzKOsrP1BDRXZ7lkdUoz
+	IdqyLzag6vqHpbWWjWKK52sHKu42pAT2daBxRRJSGNcrA7q3/JKVamXXc8gY/1n1ZmKqjBY8AXd
+	DtAekLcFHo+IELqqsyVn2Scb0LBFedZPpz5unk8HrgkszX0NljGTARqVba/Olkok891WCYpUwDT
+	ouZLs9JphEGEfRMvNWrhaRpQ/NmA7or6b3VrKmTJ0V0Sa3ITKaTgodIXDISP8swmmyQeITucD12
+	xrVQp9k0BQS39+AxCVd4C+mhxxGmSOdeo7NTX59OH3dZCGB9cJ3OkASrx+WSFcU/AHYpedJKXZO
+	GkZNfbMf2TvnQGfyORQZ3VwDa1etFYaVEdBqLwMftb1utfJBVqoA5y8ZGTgGcG3QBGTY=
+X-Google-Smtp-Source: AGHT+IHW/KVZ59F/LWisNOWscaunifwOLuUYn75v+mJnJQp4Mv7Sd2maSFNmnAHJcLWsDxVxAIVdRQ==
+X-Received: by 2002:a17:902:f78e:b0:248:d917:a57c with SMTP id d9443c01a7336-248d917aa6dmr44946385ad.40.1756407652864;
+        Thu, 28 Aug 2025 12:00:52 -0700 (PDT)
+Received: from mitchelllevy.localdomain ([174.127.224.194])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da8e5ad5sm405729a91.18.2025.08.28.12.00.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 11:52:54 -0700 (PDT)
-Date: Thu, 28 Aug 2025 12:52:51 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Brett Creeley <brett.creeley@amd.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, Shameer
- Kolothum <shameerali.kolothum.thodi@huawei.com>, Kevin Tian
- <kevin.tian@intel.com>, Alexander Potapenko <glider@google.com>, Andrew
- Morton <akpm@linux-foundation.org>, Brendan Jackman <jackmanb@google.com>,
- Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>, Dmitry
- Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
- io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe
- <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, John Hubbard
- <jhubbard@nvidia.com>, kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Linus Torvalds
- <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Marco Elver <elver@google.com>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport
- <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>, Peter Xu
- <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>, Suren
- Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v1 31/36] vfio/pci: drop nth_page() usage within SG
- entry
-Message-ID: <20250828125251.08e4a429.alex.williamson@redhat.com>
-In-Reply-To: <20250827220141.262669-32-david@redhat.com>
-References: <20250827220141.262669-1-david@redhat.com>
-	<20250827220141.262669-32-david@redhat.com>
-Organization: Red Hat
+        Thu, 28 Aug 2025 12:00:52 -0700 (PDT)
+From: Mitchell Levy <levymitchell0@gmail.com>
+Subject: [PATCH v3 0/7] rust: Add Per-CPU Variable API
+Date: Thu, 28 Aug 2025 12:00:07 -0700
+Message-Id: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 53U6F7DVDrLhFhfujjtNnwePjsHUa4pKc0zgr8kvNcE_1756407176
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 130B310000C
-X-Stat-Signature: gyfxbnpekj564bhckeqpgf7j5whhz8ho
+X-B4-Tracking: v=1; b=H4sIADensGgC/22QQW7CMBBFr4K8rtHMOE5iVr1H1YVjT8BSIamdR
+ CCUu+MEKtHS5R/pva/5V5E4Bk5it7mKyFNIoTvloN42wh3sac8y+JwFARVQo5JxTIPsObp+lGy
+ p1UWjvVVKZKKP3Ibzavv4zPkQ0tDFyyqfcLmuHiQ0vzwTSpAEBrHimqjB9/3Rhq+t646LNjMaS
+ ipeGeO0aaDyZI17YpbuiX76NBT4h6XMarbgwTMqq//pq5BemZrKlnRZacLmuW++Px/5e8wLDo8
+ F5vkG/0Mdr18BAAA=
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+ Christoph Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
+ Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org, 
+ Mitchell Levy <levymitchell0@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756407651; l=3695;
+ i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
+ bh=yzEqjwShKdy3e5mR1Q+9kCEEyTAmDJsObfl1FvhOcqQ=;
+ b=szSZ6PnGo1rOv2lpQujKqFXCXBiX7rWi8n06tjC0VQVqwcm+sm8wUQv0Q3w2KlYaoSTSlxz2F
+ 5CveT0mdIMoAkxde7vCtqtupVWOEbUbtFz9UY0lasC+pM3SlbBXFrDH
+X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
+ pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BC0654001C
+X-Stat-Signature: qpiwgk3ysnjf4krwj6coxn78yypdj6o5
 X-Rspam-User: 
-X-HE-Tag: 1756407181-222509
-X-HE-Meta: U2FsdGVkX18QMtxvBixQ9CleD+G+FvREdXuXaahlUwra93Hx7X/k9ysalWnA5eHegMhbszJ33Q0UkHVuVQK+aU4CGSs01Fovm6aaJq0Tk3rlF6MHDm6/nAeUhmcZiKRGC3HtX03lUOHvJlcQ3irbDfLv0o7X6CvznmShKJfZLxdr2IrkPXiy/jsX+2ynlkdrg+By54WJwTt9PvSupD9usyuj/EAfABYge6zVW0TjMR8Z5+5A7Mqq/7gUUL5ynMzpJwhE9b5rwcB+Amyqbwwb/cbZA/UM2Vj5TF4A6PkbR9Hstz5Aoan5NmRw0oS/I4B6ALQVzytaVDr4h91WemNbn0GqrekbRnc8NfbS0kJZ0H1luYD20z+l3aXDM04/gNFCmMk+x4tv9rNm8A1+gRnneawcEVoTiZFxryALOSHfO/IRF6W/ydOlXTGXd+fecdF1ZoUrJrbmmESZc3M+qbcUxQpLHgPl8lJalt7dsPqcmv+0sVuGE6roE0Pd/mX0Epa5TxdiO0LkTqXLLFyA8LAzk/2PxZbg2T9Kapq+NV9P3gKe/40kX42e+pYTOKmIHoP5trIDYUs9reAkYGm9HvebcLjbgNR9kHGGrqr5xQntr1Gz1zMoKoBcwqq2oahB6dqcOcK6B4vEZKvUrqfoxDXVDw2tM3nOEkb0yGXjYNuHiBQUO7c22CibvD7LtDpH2GXV3Uo+eIgXeoki0Ok7b7RI2hN/zvd9a0lr4pmif9dvj/S+YK8roDZ/PXcTdBRda3VqBebz1O6GJH76aG8XexegThgSo2gnPyYnkj5ATQFsJfuWUBHOtkYNKFU0zBkZAh2As7MpwhI5BKuOMZ9gbxID881W6ixP63d3Fi2r9YXpvWGzZtr32Rl/XinRn6RIFvucqKKYwW8CHUmmMbU21Pn9A/A8Tqu3SavhLCOe/TBLhvenHeGmHj5DyQvyUcQhDlHLcBkCGs2cXJhzKihaJjW
- byorDYNQ
- y3jqDcHbpqYX9ihsDH/KnnSrhim/0Q3oo6jDIc9fPofkYbqDYe9iGUQ0aH4vpmVbKtpEtRTbnl65xl3Lg7XAziO75xMbIY8+LBfB0JMavI1Ser8bTYMS+wt+zkikflwsIe8nA+c2BIpdcTurf1nHh4iNWag+KSnojzbkZZJjClRHTPfnOew/mQYL3zwmTneDW52JeHIx7+ZxSMpFcyZUS9sqAePdjIJ7g53GeGdbbzRVugj6yu8/7JemGseoh/judy65m8F+wRkvaJWtDu/XcWyf0Vhko75hP/a4Gv4bY7cksiaHuRzJC6TTjjl5qGXY4HbZc24Vh3ZUZ66Wa0/oy81xhwTLIi1MgUuAzp++P2Q/saxyRzIwqCOUq+r81L8XxtI6wa54IGoxvvAyS00G75fGaUqOdBJ5eF4TpJ2FVnrK0oZuMPSKVo+JykwnWk5al8D31FXKWxR8Bs8wyLPG0i4vdh8Omxp1t8xy9NA6gz1tqswiYQO9Q/NVIkXMu8K14T0K1q3PTnjjrO0gl09j2RK0mPfQ5lhRXaoZpCuqxrzZZHKbFxZYrLHdMDiVppGBUmDaoNXKb08DbbHe5EXld4JdRiRfX/wdUA0dUYt3L4sfLPVCy7Pqe/H1WQ2mA+vleO38a
+X-HE-Tag: 1756407654-353450
+X-HE-Meta: U2FsdGVkX1+shCkwAs1EFfyDmuyqsspBHckoRmEIuAKIXe5BWEV8BQx/fzkyZMaC6QDlttTeC0q7hJ0A4R8/6ReOdNAGlA6M1qwsxMgFeegpAqGd9fdyOFCq4l2aiHGTx13UVGmoVu/drZ4fK8j1wqq+G2G3e9p7xfHxI4d0VtrNZ6IXsMRfYBk3Kf1+CpsALniqtmWaCuuIleor6gfX37+xdHxEh//uy3UsinJdtOd58uArB3qzDI8vRiFm2vb+DBkUkWZq1VCufOv1mLXcyFYAwOxfOTdCD/yQj/1Kt2SxDouhn8Yx2McUBbWVsX7NMQw5dMy1tYbKllx1Nppj4kyUpN51yQplCL5FeOT7TSPnBh0nYyBm0CwhUCPaSt7DAJuxc+//my+p9xNbCX2c+KorFvfwNe5WQWHiOLV9ebB5bGPkb3U7zCNkjULUPxjqt2VdDGaiD8nGOBs4YGhWdmNZk6c/P7lK4tEKUQfyhSYGSP+IBd1DMTsdiFnmvG56QSmnxc6uNQLVtW4VxnMc/JutQ6B9stkPeDsubizxJfgGnyJURME9uGmfIo79HEFJ6+yFNwqYFtLcScgnV/RPHx0ZoU4FmQYhfWhQqJzF/V+2OM/szYnMHdUEQExbi9JFTOSk6sSRTytIso2xbIbsolqTRxwNGQg8M9Fb7j3PbDXe2neYKz6AXTRtOtnbKmnsojSsE9KDDvjDW2VQ/5arHzvuwhJpY1X0PwTWPej5//tgPywQ/Am1ZBo5HGfmcbfqd4X8N+95NFNY6z8FEyzFUuax1F2HXxIVc7yyF3MP/quhMlig/IAHwYnFao8xR3uAxXZQr4oS8MUpRXALZoak1E89eo3WmwvWvmDQ/hoXdkcaj7hgYUdtI5DEaTSEh3UxJeNoKh+B+/mhPLjlYjFM8fQoLT2DDpg1Iby6fs7jhQlRgWDn0mRf2MJPb18hf8fy+yk3btgKCnUvJRFL/bG
+ xjsoJ+3/
+ OMFJCTy2F4Uxh3oGqzQZZ7od/PjiwEYwBLwkJNRe1M8DBglMXFk6emV63HAcrze8dIaO8WyjYEyXA7RgcJuyFB9shbjfQaM56myTP0/k+XQgFRtj4vqTo6UO0TEn5QzvqeUc+iZm82601I/JofKby281u8k6j5GPJC6pw45bKcLNIYQqdEQasPriXHYHAElWTI1ORmy4uD6rdUas7hOTwpRHJ9ytattFlz0kXl3AsyjiXA5E0gcc/GypqtxFRgo+bnzwNf9a8wrEZhdPtEIBfd/Z1M6k3kUDMLfn1hBG670Yymv/qDsKSo16LAQZ0zaVAcWsx2LpVGuprHjVolAxpFSs5SwE1ZUCL9OTLJiElg2J2v/Ssc2O+vM6DfQ0o5ST7DvQAiOXp2ufGz+6MUV4usv0NjUYPd/vZwGryzefDfvKSOYzVMe7/ZBAAhxIhV+2nmFj49OzesA/2jPxron9I6133rFeNfAgeLXyA6DL+g39SzvoY750PZQpnfOiP3B1WkLQ4gjdGe8OOrFE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,53 +137,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 28 Aug 2025 00:01:35 +0200
-David Hildenbrand <david@redhat.com> wrote:
+This series adds an API for declaring an using per-CPU variables from
+Rust, and it also adds support for Rust access to C per-CPU variables
+(subject to some soundness requirements). It also adds a small sample
+module, samples/rust/rust_percpu.rs, in the vein of lib/percpu_test.c.
 
-> It's no longer required to use nth_page() when iterating pages within a
-> single SG entry, so let's drop the nth_page() usage.
-> 
-> Cc: Brett Creeley <brett.creeley@amd.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Yishai Hadas <yishaih@nvidia.com>
-> Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> Cc: Kevin Tian <kevin.tian@intel.com>
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/vfio/pci/pds/lm.c         | 3 +--
->  drivers/vfio/pci/virtio/migrate.c | 3 +--
->  2 files changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/pds/lm.c b/drivers/vfio/pci/pds/lm.c
-> index f2673d395236a..4d70c833fa32e 100644
-> --- a/drivers/vfio/pci/pds/lm.c
-> +++ b/drivers/vfio/pci/pds/lm.c
-> @@ -151,8 +151,7 @@ static struct page *pds_vfio_get_file_page(struct pds_vfio_lm_file *lm_file,
->  			lm_file->last_offset_sg = sg;
->  			lm_file->sg_last_entry += i;
->  			lm_file->last_offset = cur_offset;
-> -			return nth_page(sg_page(sg),
-> -					(offset - cur_offset) / PAGE_SIZE);
-> +			return sg_page(sg) + (offset - cur_offset) / PAGE_SIZE;
->  		}
->  		cur_offset += sg->length;
->  	}
-> diff --git a/drivers/vfio/pci/virtio/migrate.c b/drivers/vfio/pci/virtio/migrate.c
-> index ba92bb4e9af94..7dd0ac866461d 100644
-> --- a/drivers/vfio/pci/virtio/migrate.c
-> +++ b/drivers/vfio/pci/virtio/migrate.c
-> @@ -53,8 +53,7 @@ virtiovf_get_migration_page(struct virtiovf_data_buffer *buf,
->  			buf->last_offset_sg = sg;
->  			buf->sg_last_entry += i;
->  			buf->last_offset = cur_offset;
-> -			return nth_page(sg_page(sg),
-> -					(offset - cur_offset) / PAGE_SIZE);
-> +			return sg_page(sg) + (offset - cur_offset) / PAGE_SIZE;
->  		}
->  		cur_offset += sg->length;
->  	}
+---
+Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
 
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+---
+Changes in v3:
+- Add a `CheckedPerCpuToken` that enables usage of per-CPU variables via
+  a `&T`, allowing for a wholly safe interface when `T` allows for
+  interior mutability (Thanks Benno Lossin)
+- Add support for non-zeroable types to be used in a `DynamicPerCpu`.
+- Remove necessity for `unsafe` to get a `StaticPerCpu` from its
+  declaration (Thanks Benno Lossin)
+- Allow the declaration of static per-CPU variables of types that are
+  `!Sync`.
+- Implement `PerCpuPtr` in terms of `MaybeUninit<T>` rather than `T` so
+  as to keep all invariants in the `DynamicPerCpu` and `StaticPerCpu`
+  types --- this would also enable `PerCpuPtr` to be used in a per-CPU
+  type that does lazy initialization.
+- Link to v2: https://lore.kernel.org/r/20250712-rust-percpu-v2-0-826f2567521b@gmail.com
+
+Changes in v2:
+- Fix kernel test robot issues
+- Fix documentation error
+- Require `T: Zeroable` in the dynamic case
+- Link to v1: https://lore.kernel.org/r/20250624-rust-percpu-v1-0-9c59b07d2a9c@gmail.com
+
+Changes in v1:
+- Use wrapping_add in `PerCpuPtr::get_ref` since overflow is expected.
+- Separate the dynamic and static cases, with shared logic in a
+  `PerCpuPtr` type.
+- Implement pin-hole optimizations for numeric types
+- Don't assume `GFP_KERNEL` when allocating the `Arc` in the dynamic
+  case.
+- Link to RFC v2: https://lore.kernel.org/r/20250414-rust-percpu-v2-0-5ea0d0de13a5@gmail.com
+
+Changes in RFC v2:
+- Renamed PerCpuVariable to StaticPerCpuSymbol to be more descriptive
+- Support dynamically allocated per-CPU variables via the
+  PerCpuAllocation type. Rework statically allocated variables to use
+  this new type.
+- Make use of a token/closure-based API via the PerCpu and PerCpuToken
+  types, rather than an API based on PerCpuRef that automatically
+  Deref(Mut)'s into a &(mut) T.
+- Rebased
+- Link to RFC: https://lore.kernel.org/r/20241219-rust-percpu-v1-0-209117e822b1@gmail.com
+
+---
+Mitchell Levy (7):
+      rust: percpu: introduce a rust API for per-CPU variables
+      rust: percpu: add a rust per-CPU variable sample
+      rust: cpumask: Add a `Cpumask` iterator
+      rust: cpumask: Add getters for globally defined cpumasks
+      rust: percpu: Support non-zeroable types for DynamicPerCpu
+      rust: percpu: Add pin-hole optimizations for numerics
+      rust: percpu: cache per-CPU pointers in the dynamic case
+
+ rust/helpers/cpumask.c          |   5 +
+ rust/helpers/helpers.c          |   2 +
+ rust/helpers/percpu.c           |  20 +++
+ rust/helpers/preempt.c          |  14 ++
+ rust/kernel/cpumask.rs          |  94 ++++++++++++-
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/percpu.rs           | 239 +++++++++++++++++++++++++++++++++
+ rust/kernel/percpu/cpu_guard.rs |  35 +++++
+ rust/kernel/percpu/dynamic.rs   | 127 ++++++++++++++++++
+ rust/kernel/percpu/numeric.rs   | 128 ++++++++++++++++++
+ rust/kernel/percpu/static_.rs   | 132 +++++++++++++++++++
+ samples/rust/Kconfig            |   9 ++
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_percpu.rs     | 284 ++++++++++++++++++++++++++++++++++++++++
+ 14 files changed, 1092 insertions(+), 1 deletion(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20240813-rust-percpu-ea2f54b5da33
+
+Best regards,
+-- 
+Mitchell Levy <levymitchell0@gmail.com>
 
 
