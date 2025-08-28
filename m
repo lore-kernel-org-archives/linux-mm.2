@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A240CA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:45:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF9F3CA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 06:48:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 723EA6B000C; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
+	id DB94E6B002C; Thu, 28 Aug 2025 02:48:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D3A96B000E; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
+	id D68B46B002D; Thu, 28 Aug 2025 02:48:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E9CB6B0010; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
+	id C30746B002E; Thu, 28 Aug 2025 02:48:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ABCD6B000C
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:45:50 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DF0ED8530D
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:45:49 +0000 (UTC)
-X-FDA: 83825230818.20.F466F92
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C2E1A40004
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:45:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MTYG4UT9;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AD6E66B002C
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:48:13 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 199A4140975
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:48:13 +0000 (UTC)
+X-FDA: 83825236866.29.4D55A44
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3F6008000E
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 06:48:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="LR2El/Qd";
+	spf=pass (imf30.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756363548;
+	s=arc-20220608; t=1756363691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=knemHQZ23pxIDABlkjX6mLqLtGGVNS33kJ89XWuOpd0=;
-	b=EwambfCb67GuSpQGDaKtbR8+GXpFb/T/UaDDPba6pxanHeetxUBvZcBAPrGWEvYrTMTOTX
-	WhPBq7EG9lI+EeH+ASbVxeCNu9h8JpRjSiF0scCD4pu4JcVFmnO+t+5ok2ezfMhrpDpBi+
-	M4cGrPTf5LLUSmesVXKLOLk9xTh1tTQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756363548; a=rsa-sha256;
-	cv=none;
-	b=RfCl/Iy4EAHjA20657HVvUEjUK1upMxxuB5aDlBGGdyf/5w8db4AASfMAC1a0gV+4lTqqH
-	zaL5txU3it63hrzn+6ey/6qyi/hzhI26rkCmVIO3uABz8/ex3ZAtZKbzsc1plVOnlG/UdE
-	58Mz6Lgh2JhYfKnZqJC4zJvCilQEkm0=
+	bh=VhKDCD8/DGV5fH6nxnOqiP7dbAwWbENHECBTrAvc42o=;
+	b=OpWdH+pQB/ljgaCP7XvNjPIKvFBK5qk6DosQ4pQQPXbPIyIP7Gf8mgWUVXyzJ7kcQ8LFFU
+	ROwqURYtAhFSDxJIxToeNfNmeaRHmiJImB1y0KcIUBcqNJIVkoSBOPdfvf43zVqijBkuqr
+	hq8fU8PWVKjD0ARJjeE9WE1YoB/8dBE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=MTYG4UT9;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b49f7aaf5so2869305e9.2
-        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 23:45:47 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="LR2El/Qd";
+	spf=pass (imf30.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756363691; a=rsa-sha256;
+	cv=none;
+	b=3Ptl6MlGNSXjzxJhn5wuXJckx2PwodaJhCREcxCNdvknE4+Xcm5GJZhMVUXxlGngN8OnHz
+	PjV1+njT0vP4KJT1nN7/w8K9O4S7/ZO18zJEZf1QhX7JJjTnbK1iUUa8IxXJn5IVC0rUud
+	JW6l6RolsUVa3gmggdyF26jb1WS04r4=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-70df1b76a95so3210316d6.0
+        for <linux-mm@kvack.org>; Wed, 27 Aug 2025 23:48:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756363546; x=1756968346; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=knemHQZ23pxIDABlkjX6mLqLtGGVNS33kJ89XWuOpd0=;
-        b=MTYG4UT9OEwXGwZNT+CS6GxjJhYBKHtZAoE46kA4KVzfzTsnmGxwgTUEUNh4eRBSSr
-         Kf8bCSFLBsCqjXQNtKs8xSrtHsv8phoxh3RMA1TRlhrzo9WgtrfKuMSH10GIhGYAB4NA
-         AIl3YY/DT/EVb2JgIxhy6sV08yzdgvWaWb7fwEm3Ky58Pf7Ap635Gg94NmMEbg6z0K4O
-         cpLer7lD6uoaDsXWlJkvGlFxl6vsjUSBcvwoHQx2tTh2QilwbauUcTdk04WdKHQgXCbF
-         TxXFj4/V0DzWuNztdTkdtz6m6E3fTU8MiDAbvkv47oDCBJC+z0T9uNoJVg6xMJOZ8xVw
-         iq6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756363546; x=1756968346;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756363690; x=1756968490; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=knemHQZ23pxIDABlkjX6mLqLtGGVNS33kJ89XWuOpd0=;
-        b=pPxk1ozKjfT5h4osiIk5eWRC6hvvN5UeRhlqt4kYWgLsckXCcKkW7U6gnnU54wsROl
-         IDYZPrn0MrPAcU5kuad5wGenZkfPfTKHtibtrQUI9WVDAiAOdsY4b9O2XBY8/drtQc7P
-         F+vcL8U4ZfQP6e9hvlwxLUUhHrNNzdGpmjeg38mofqe6HqhNKNxQvU47z7STIzBrjiue
-         fT+zr2aMgQ/jUH09ec7UVOQ6ZOQcK2EyBO2P2FfcspB2BfwlBKs/uaxDf+7Wm3lOL9jP
-         KerYXgS8hlsD+weO+0skOtDJl4zNsAgcH15bjYsBf7tOSLm5+L+MGQocSdI/sBIEhP/B
-         Utrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBxGcGzYDV3ICI18NH8IiveHdt/M5RDZQ5Hk1Rh0MBSKnKOriijdTmDexlb/HL9og7/RBN66tX5A==@kvack.org
-X-Gm-Message-State: AOJu0Yx0ap5dwgu7AH2xxIjRdteawkd8P+ykG9uEWuJ+V1fO9gL/gVkF
-	3Lvhat5jRvOTTOBipzj4LUqNT8BtyLlIeQZqhof9rQeu9oPYZAO/3mioKR/30jv0dDU=
-X-Gm-Gg: ASbGnctjLtuzRaDClUM6KHd0q6YDg+faovyGRBnpAUNeztkstoRxU9uw6t51TT6toS4
-	jCVRzXCa91Ge6GuGz3ev+0XcFZBlWIGLG7DGXrsmQtPAea57PaCylgjp4VUTFE8zEfANLNiCrJv
-	272z0NcfyhNJzy2CLZGAK2lvBFJQvnhgh/sgIqQSbu9/RCV4rvRsnGtLhBC+FjhKMcDgWNlubno
-	81GdPcFTsdMiesijWEQ/3VrwPaxZddn2+JTYCvKs/iKlHNZ5vpjS5TOC31YFjzvefK3fhocwpN+
-	OCeAx8LfwSZJw8bm7qNftYFduj6aOfUeaceStth4EKEqQjh4pauR5Qt+CiXihbCBGhZDUP1GmUL
-	MCxSV4pFC794HGRRWSdx9jdFGX2uHxZ9HRV3EsOtkDE6jvA==
-X-Google-Smtp-Source: AGHT+IEzVCb/sPwnrBnjP7P0WHlUWm3cB4aF8du8T7+csVrDJeE5Tu9GjnX3DSLGMIT4YnlpckMapw==
-X-Received: by 2002:a05:600c:3b8b:b0:45b:7951:92a2 with SMTP id 5b1f17b1804b1-45b795195c9mr9624715e9.18.1756363546098;
-        Wed, 27 Aug 2025 23:45:46 -0700 (PDT)
-Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b66c39f72sm49159435e9.2.2025.08.27.23.45.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 23:45:45 -0700 (PDT)
-Date: Thu, 28 Aug 2025 08:45:44 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Weilin Tong <tongweilin@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz,
-	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, linux-kernel@vger.kernel.org,
-	baolin.wang@linux.alibaba.com
-Subject: Re: [PATCH RFC] mm: Use pr_warn_once() for min_free_kbytes warning
-Message-ID: <aK_7GKJ4BWjye4tZ@tiehlicka>
-References: <20250828030602.204332-1-tongweilin@linux.alibaba.com>
+        bh=VhKDCD8/DGV5fH6nxnOqiP7dbAwWbENHECBTrAvc42o=;
+        b=LR2El/QdfQ8nHYnwT7Fpi0stphg9nuzz+JPrgYwa4Q1R5PLXbBJYjf39+GsuZRyw6D
+         Tijo8l2LOB9cmdXD43h2Xdr75P47W4zoXFuDFn8AyX1XiTmTo3AYVR+Ow10bZCEW/Xrm
+         2O7mTXMiMbp78yv6lq2PQXbK8n2SD1bun7zZrfGLNWNunOGEFVOULnM37m0nZZSprd38
+         2e0OyHabEVhMYQS0YD2GL5OFhpu3s9V1/Y+68JTdrJS+MG/nUdpPPnaPhNF6Ccl7FLpo
+         v8AMWLqzfctFtX+xSBkJxdPvx37v9+LBmnlwiVJEc4T+eKfrZWooWYvjszG/41SVlhQB
+         hNjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756363690; x=1756968490;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VhKDCD8/DGV5fH6nxnOqiP7dbAwWbENHECBTrAvc42o=;
+        b=I5K0dnRCJk7HSG41jKTg+WldcORyuOHxtAc/6YURJ7/TmcsqzwdLRjGtHVSobJ9evB
+         29KDzyrRJCnufisq3D6kbMoBJ/gn+68Hy3M/zNOfcZOwQBvfV3mJnDoi/wXvITrNOQWk
+         dZcRXicqR7pFKJ2tm42DFmjD0jAtLzA6TTdsgv+DxKXPh6NA6WpLm9HkfASPeYuf2MjZ
+         YBRgZRXClCqS+KWuA+OZEPWK1fYxrp7BZ1Dh1dEBOvrklqdk27FcwlhSXTYwwX66phsm
+         akNfAQ24YYmcqyMeDFJV85pDuEBomgtPcjbMYFop9GDIWpb1Mcu0R89lMN9+toH3Lv9e
+         g69A==
+X-Forwarded-Encrypted: i=1; AJvYcCVzLzlNrz+bw0FOcPSFJsQrKYA6qPKD1EqvAc0rHObzeraeU4nDcQuS5e5/XwedMhHSjKN8bRbaKw==@kvack.org
+X-Gm-Message-State: AOJu0YwLhlf410V4v31+4ccApsiReLde7l9zeJVG1BnKh88h06Eynhde
+	xC/9d/ndygLzvi1uML926Y4lrsN+0tKyKLp4/Pk1PlT/O6yQbr7m2kbGp/w0Y9005/pTvuMVmBt
+	tXYhovCqs70oow8+KfstjoRzeza1vouw=
+X-Gm-Gg: ASbGncvX8uNl5CGcYvJbjNt3k+BGTP03ydQG/cC9s3GVLrdhl1TdzUlOnzYuu+VLGnj
+	Uyo5EUJSExxYniXexEMOPKXueE/nMB3yO5QrrEp90/ANp7kXgNOR6CKqPoEjtyzc/ySp9P0uqM5
+	/V0ZUPNnPzBKwv6XNeYEpWXBrNEUdkAp+XCMrvBTPhPQHU2nD7iqVTQanIxj51zxp/c2MrSft85
+	ad6Hwxx+crPMmZB03br5F67Nxfn6qFrg8NL1+w=
+X-Google-Smtp-Source: AGHT+IEHoD0Uiusmd/UOKL+6+ngiZoVhE1NGASgu/DqDEWY+8Tk5z5aKAhPh99n6YIUVa7EigBjgFPT+dBliZZToc6M=
+X-Received: by 2002:a05:6214:19e7:b0:70d:b1ea:25ed with SMTP id
+ 6a1803df08f44-70db1ea286fmr214292226d6.23.1756363690237; Wed, 27 Aug 2025
+ 23:48:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828030602.204332-1-tongweilin@linux.alibaba.com>
+References: <20250826071948.2618-1-laoar.shao@gmail.com> <20250826071948.2618-4-laoar.shao@gmail.com>
+ <5fb8bd8d-cdd9-42e0-b62d-eb5a517a35c2@lucifer.local>
+In-Reply-To: <5fb8bd8d-cdd9-42e0-b62d-eb5a517a35c2@lucifer.local>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Thu, 28 Aug 2025 14:47:34 +0800
+X-Gm-Features: Ac12FXxFTwzSzvJhj5UIbCdO1z68biL2fU9bhU24okrE4ErExRxkOpwYSA6y-j0
+Message-ID: <CALOAHbBHLLo+Xcd=zJeQp9gvLBnyYWAdeBiqKYKgj424m1Sn6A@mail.gmail.com>
+Subject: Re: [PATCH v6 mm-new 03/10] mm: thp: add a new kfunc bpf_mm_get_task()
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
+	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
+	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3F6008000E
+X-Stat-Signature: 9n6a6us1mg99gbcgqsrqrc7oerd9cz3w
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C2E1A40004
-X-Stat-Signature: 9edd3a9dwcho6rz474us7qatn91ursmr
-X-HE-Tag: 1756363547-326995
-X-HE-Meta: U2FsdGVkX18ayoiuafaK3JDDhZKvwc9WCg/ORpYT8cWjf8qK1EGrSM+a7kgEU8+DI3LAQLcfQ+5jYW+M8XSIUz4Dgqh4ZoxcMJk0xZcBCjDu7tigzVW4vrhKra16/+OVoyC0uJRyWwBiqZLpamiCtvmlqJKtSAd98zxUaDDRfHCN1GgX3+ctsTPYnzb8+sAmGWdLQloNk/IRiOAHDLZd9BG/Q3u0YQ65cErv7UZsNmypxFVNiZmuYhICefJKWXfXSQLu/gnalsufKJPdFEAXHyoDqAIGHFV9nFK0d762B8effhrSfJvroDRAjuZ1vLwuJROrVOZXrZk6yEs2qkoBTVCdYXHLmv1XdODg2j6geOU4V0toqVl4/n11d2r/P/xONNw4w6WCUUbPZBizGGZKAsfAzyucMQlIHdt8o+dMndnmThpCp4yyEBsI63BUzvuJjTcuPKy3QuyV54ZnHKtCcka7ucCYQgWKFV2a8ykNhS//fs7TJJJjeUmgn7mKA5x5cmHNJQsFkIKwkhmV4T8NbdZ/ZxVq5G47q+ryGkXJSo/IBCdjRSfi2fus3KO9J4xtAewfHORh6+g1CKCq+8vTKqu9eeKxxvDqRhPndOyrFpK31Z6VX4Nn3fEBrzs9PviFlgf+yaS7RZHnZ/wcErVEU7MNp5jtJN/Nqfc1rD25UdMjHuYImV34Z3mx+49KHaZn6LkojAgXA3Y4LEECqNwxidmpNf44skASPOaWWLify6kauW2pfBG1csoA2kiSxsri77y1HZS+SOkUjapgKfKHTXNwIUmvBt2PXhjecIFzfeMF8ch8F4JBB+iGP5LpKp5Rv8x7OxhnzRagGM2CltlDwO8YXwFJq9ioIRWfUL6zg9lc/vUcgoMQHPixkw+snadU9pYRDc/I2zxpcpiLM1jBh3D3qFbi5oXpwnqC/wWlW2wBiNDDKI0uBKv9Fkh8TlNw5nZS12R3ulLLkpmP1p0
- u6VW8FXE
- /sJ//YCbANbEXpOIYK4nQNX6fPROKKAHg+vIVZKrxl4txuW79ZEecmPUgmN9qk/vV0UMqqoriIenWUGCJZXURFSNEeiUlgfuLrZ4dIbjMtGdlpdROxBLhPUmyo1GHDy39N6uoCAGTJUKrNMQCTNgXKTRiyT9oOLaLosFvr58YVVaujU7fSLmogswHL0j3oBgArUX/uuMkUaiJ6Pf3bsNnbyj+Z1mRwMteGOI3JAKcCck1HgvcdFImN/D/zdAZRKmPuC0XEquy/A+RURzbcVqJu1CBOPOrQCW6jgzoUk/vQ8kNoMpKEzV49K+InILbRlm+B6lD0dvlGx32TZzfk2CF1www2pkXdyy8aeac6gazTXn8lKdJNhLN2Y5lNRgNh950XkBk
+X-HE-Tag: 1756363691-570147
+X-HE-Meta: U2FsdGVkX1+aaG5/rqXomBZ2BCnr/7uBlUVqy3EWF7Fdtb7Q7qbdKa5Pgu1LHrEjP2PdTpNKLt+HgeKd4A3SzKTQDgRBGiApREBmHGkLa7AdZbZgR2QCVPP2MBK9lnOvdyYy83hjNeF4AJfk/m52BNHqp8J7m4zaWrPjFm5MdjIdn7n8gJBOvx/UOV1qTjJBTqLTShOFhWm5tBYJ4fM20RUZ4E2JXL2uG1UeBbe2Hea0Wht+PUzHyNL0QdU5PcQoBaqJqh2e10rdxvfJ9QaUx9anUIGX2T/Yjo/JCPiuSOTUNC3kwa5MTmPGunXHSPPhJXw7V0CZFTS11ojY2e/nV2q1qZey1QGV12myHMU++pNiCMFEPpAI5l3PcxhgoOBEyAzvk0uOVngRIY61TXfVh0RFHB8SwcWvYBFDyFgg/1fENEi5jxxVRfaGH++BahwrSeyXbxPt5lRtrYVhn9dcOY4RzhAB569KsIE6Srl1B27siOwaoTttnFW68SJNZhgHpTCrTwftTIr9O12sF00bntHMepMlfGBfVqnkKTWE84P8tth9bX4rSjDMYTKrABzJRCZbdffeeFRrBWJS7i2RxHYoZsXn61Kw8N3/Je1QkOwZ1lMrOmEfpGT7H844bLO0PtvMIP+DR82qoqpQy3X38xkyx4LH22t34RT42AyNFB0rMb811/++O/SNYvGlAaK0Du7UPKD3DpwDdg4JQBzGyWGMkQD8ewEP36ECk1G9muf1bvcf3fw16HkBN1RXjNQC6nov69eImM7PUAGDyQ+/taDvPg0yyC29jhEemFAH62RH6/hyLHR8o3zKcyatDLX+Qvo9HL+vvfnUz1R6YiXFPI7qqu1eRR25Q+epquZZigAbo2qGtCvQYKVakKT56AVMvlnzWOv4kv1lEz2U2Ywtvb4ORNArVgNDWvekFInk4KR2dpMrXYRKRXz3A/8vS5o3joU7VCbo1NzYch2SUQm
+ tOHBDXTC
+ POKAaeIxfP4FwyjOWhQ+0go4b6lyleaTgge9TftkMym8xQcEih54YCOHzvKXsBp1EeBg/ok9o26VUiBeUfp46DoieHbv+Gr2ODCD3CvFLK/tUKgLJvGgD5QdifeAzVcyvmm/4AJy7LnGpJKtiCZRNHBeSZC2dRWfrlx+Pp2TC1dNM/HFD4/GdHdmPtrCXeEl91Rn7zRy4nmfSl/Guh6XFQ4xqR0MMF6VWZ02Zo6y/N7oa9nyDUgLjKP0n/ccUyPhTvI6vQ/rGkWKlHlaIQvAKt6jwZlMUwdQ7Wl429FDJYV5IouEvAAcLMqMXpTdxx9yGsvHyrZF+zehnS0rpxSIkQrqQx0/UUzHBrX3fgjLwGQvVSUl/1p3tjt6JlXq97uiOOQE0AApG699xt9xyskZKCoeeQx/1pRMwDIIrhWPn+HyEwowoITRuIAP1CNqIohOJRZ2C
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,57 +122,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 28-08-25 11:06:02, Weilin Tong wrote:
-> When min_free_kbytes is user-configured, increasing system memory via memory
-> hotplug may trigger multiple recalculations of min_free_kbytes. This results
-> in excessive warning messages flooding the kernel log if several memory blocks
-> are added in a short period.
-> 
-> Sample dmesg output before optimization:
-> ...
-> [ 1303.897214] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1303.960498] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1303.970116] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1303.979709] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1303.989254] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1303.999122] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1304.008644] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1304.018537] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1304.028054] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> [ 1304.037615] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
-> ...
-> 
-> Replace pr_warn() with pr_warn_once() to ensure only one warning is printed,
-> preventing large volumes of repeated log entries and improving log readability.
+On Wed, Aug 27, 2025 at 11:42=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Tue, Aug 26, 2025 at 03:19:41PM +0800, Yafang Shao wrote:
+> > We will utilize this new kfunc bpf_mm_get_task() to retrieve the
+> > associated task_struct from the given @mm. The obtained task_struct mus=
+t
+> > be released by calling bpf_task_release() as a paired operation.
+>
+> You're basically describing the patch you're not saying why - yeah you're
+> getting a task struct from an mm (only if CONFIG_MEMCG which you don't
+> mention here), but not for what purpose you intend to use this?
 
-pr_warn_once seems too aggressive as we could miss useful events. On the
-other hand I agree that repeating the same message for each memory block
-onlining is not really helpful. Would it make sense to only pr_warn when
-new_min_free_kbytes differs from the previous one we have warned for?
+For example, we could retrieve task->comm or other attributes and make
+decisions based on that information. I=E2=80=99ll provide a clearer
+description in the next revision.
 
-> 
-> Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
-> ---
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index baead29b3e67..774723150e5b 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6412,7 +6412,7 @@ void calculate_min_free_kbytes(void)
->  	if (new_min_free_kbytes > user_min_free_kbytes)
->  		min_free_kbytes = clamp(new_min_free_kbytes, 128, 262144);
->  	else
-> -		pr_warn("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
-> +		pr_warn_once("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
->  				new_min_free_kbytes, user_min_free_kbytes);
->  
->  }
-> -- 
-> 2.43.7
+>
+> >
+> > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> > ---
+> >  mm/bpf_thp.c | 34 ++++++++++++++++++++++++++++++++++
+> >  1 file changed, 34 insertions(+)
+> >
+> > diff --git a/mm/bpf_thp.c b/mm/bpf_thp.c
+> > index b757e8f425fd..46b3bc96359e 100644
+> > --- a/mm/bpf_thp.c
+> > +++ b/mm/bpf_thp.c
+> > @@ -205,11 +205,45 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cg=
+roup *memcg)
+> >  #endif
+> >  }
+> >
+> > +/**
+> > + * bpf_mm_get_task - Get the task struct associated with a mm_struct.
+> > + * @mm: The mm_struct to query
+> > + *
+> > + * The obtained task_struct must be released by calling bpf_task_relea=
+se().
+>
+> Hmmm so now bpf programs can cause kernel bugs by keeping a reference aro=
+und?
+>
+> This feels extremely dodgy, I don't like this at all.
+>
+> I thought the whole point of BPF was that this kind of thing couldn't pos=
+sibly
+> happen?
+>
+> Or would this be a kernel bug?
+>
+> If a bpf program can lead to a refcount not being put, this is not
+> upstreamable surely?
 
--- 
-Michal Hocko
-SUSE Labs
+As explained by Andrii, the BPF verifier can protect it.
+
+>
+> > + *
+> > + * Return: The associated task_struct on success, or NULL on failure. =
+Note that
+> > + * this function depends on CONFIG_MEMCG being enabled - it will alway=
+s return
+> > + * NULL if CONFIG_MEMCG is not configured.
+> > + */
+> > +__bpf_kfunc struct task_struct *bpf_mm_get_task(struct mm_struct *mm)
+> > +{
+> > +#ifdef CONFIG_MEMCG
+> > +     struct task_struct *task;
+> > +
+> > +     if (!mm)
+> > +             return NULL;
+> > +     rcu_read_lock();
+> > +     task =3D rcu_dereference(mm->owner);
+>
+> > +     if (!task)
+> > +             goto out;
+> > +     if (!refcount_inc_not_zero(&task->rcu_users))
+> > +             goto out;
+> > +
+> > +     rcu_read_unlock();
+> > +     return task;
+> > +
+> > +out:
+> > +     rcu_read_unlock();
+> > +#endif
+>
+> This #ifdeffery is horrid, can we please just have separate functions ins=
+tead of
+> inside the one? Thanks.
+>
+> > +     return NULL;
+>
+> So we can't tell the difference between this failling due to CONFIG_MEMCG
+> not being set (in which case it will _always_ fail) or we couldn't get a
+> task or we couldn't get a refcount on the task.
+>
+> Maybe this doesn't matter since perhaps we are only using this if
+> CONFIG_MEMCG but in that case why even expose this if !CONFIG_MEMCG?
+>
+
+As suggested by Andrii, I will remove this kfunc and mark mm->owner as
+BTF_TYPE_SAFE_TRUSTED_OR_NULL.
+
+Thanks for your comments.
+
+--=20
+Regards
+Yafang
 
