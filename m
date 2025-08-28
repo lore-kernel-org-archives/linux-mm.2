@@ -4,107 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45F2DCA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 09:21:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1919DCA0EED
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 09:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76E556B0024; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
+	id 614A18E0003; Thu, 28 Aug 2025 05:23:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71EA58E0001; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
+	id 5ECBE8E0001; Thu, 28 Aug 2025 05:23:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E65D6B0093; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
+	id 529788E0003; Thu, 28 Aug 2025 05:23:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46C1D6B0092
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:21:01 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8144F13A516
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:21:00 +0000 (UTC)
-X-FDA: 83825621880.03.1F8C7A6
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9C0B240009
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:20:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="h/HICCuZ";
-	spf=pass (imf17.hostedemail.com: domain of 3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D6F18E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 05:23:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D445085085
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:23:50 +0000 (UTC)
+X-FDA: 83825629020.06.74A3F78
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 23F2740009
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 09:23:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=J2CgbZbP;
+	spf=pass (imf07.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756373029; a=rsa-sha256;
+	cv=none;
+	b=e4Ocd5SEE18oxEIn/JOzyW/ljcy23OyFCDK6yh57TSNj8GFbuGbjryV+2Q6HuY2jUMsseP
+	AT3FC8aNWtjsUe0xgvAQWFUC+dGDn+t6IZrlGtO6uUcsrIAg9bqi9tsYlHFEfWXpOKqSN5
+	Rm6D5ZziKO31QM/W2pfV52dEl/JWZ1A=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=J2CgbZbP;
+	spf=pass (imf07.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756372858;
+	s=arc-20220608; t=1756373029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YM5qp7X76Rcedsuqy22c62bk9TbDWzDaDH8Yo5p7tbw=;
-	b=WLdMTG16WacneGkoZgTUbrTv+EJaSGq1kH+OHiXuloQGlJ8E/2PtJ8EL6l/jaQh0Nomkzf
-	SXKJQzaxhgqJ6h7sgZlNBTIISD8v5gGDS/DQ34l3pTQATfTkltrzDkvYub5rWuCfXlIfdu
-	b87V3NZU8m3gnQ3WJmUjBu1FvKNe8YQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="h/HICCuZ";
-	spf=pass (imf17.hostedemail.com: domain of 3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3eB-waAgKCMMsjltvjwkpxxpun.lxvurw36-vvt4jlt.x0p@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756372858; a=rsa-sha256;
-	cv=none;
-	b=pnfq8g+34fFYyYL9EOxg/Vz+yv0TPy9MkWr4uQPM1DiYDKSruUcG44+TwlgGe4EcNHXiW2
-	paUFFUfrpSOMfjIzu4KWvYB7V57syuexpSofCoGzvUfXq0y414pXJQ5qyf3yrcmOAhVHdR
-	J+3I3r7ixx6oOakSG+1wjjd1/F+0fJ8=
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-61cd4c2c9b6so465469a12.0
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 02:20:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756372857; x=1756977657; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YM5qp7X76Rcedsuqy22c62bk9TbDWzDaDH8Yo5p7tbw=;
-        b=h/HICCuZJFbxRjwXi3mSShGT4SdTGsHtSE2HIZKJTOAa1jOpZFXAQizW2p3kUSHVGn
-         oFL7mA5VxoEXd9lTeK6YLsX2IIXtIZjWeo0sF6LMRbJO/32ro5Hsjh/sT3am6F1tZY1w
-         Hb75qxWCPz6XGSMbbEX2T9el4nXW/UIfXArHNG21w6olMqnTO6TD73kIjJGtjaVRcZSx
-         FXrv5y9qxzEICqNmC0KzTSR2Eg9CXzLH/EYHf7AnqnpPI1HZGfBSQ1+buEhtDzEdz8T9
-         usj+Rsx4iXvwoLDE0g9iy13x9zl2geICG+RHNWOXVvKRvlzH/7vZfuqTyRhAVvOQa5ot
-         6yRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756372857; x=1756977657;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YM5qp7X76Rcedsuqy22c62bk9TbDWzDaDH8Yo5p7tbw=;
-        b=nK4GHXWTdr3jKp+EVW1tv98dz7yclZJ9RN3+w+nXFXCKgKMqMZ78K7ijMbiuiGwp4L
-         017jZ47Wgot2TgEs+j+vNjsrN2MJHfyuFeIip4T9E9ka05YcgddlcnJhruxbjBu7vqwR
-         qRZtPGZ8wPQHmZL6tXcE7R6L+D44tEq86veorxcmonwBeVNCJl1kPRltzi8ROq5do2DO
-         0pJGGXxGH4OB8+8rZkqspSDJG0Am44+eojJm0b5iSbinBbsOsQAWCaQ8CCKe8tAIBxk+
-         LUFPNFTFsWO7kbt8IsUcv6MUHDA62Gm9ChGheNcXUBc9NGp+h/Uj2e4huJ84yy4ILSwq
-         OWIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVXtIQkh3iwdWjrI7lHZUrBTxnWluCRfwug5Egfaspxeb9J3EwB5uT7azFW2cPQhKlVCTLk+dp3WA==@kvack.org
-X-Gm-Message-State: AOJu0YwzdD/x9cgrRSpFKuC3kzFijMo382grNhl4oQ9UfS2aYol/8HjG
-	RoFCpBReImP95fr4NSziwGFLAqULp8Et9EdFfZru+7EMS1D4r1OSsEG4CKSG/tn/Sntfc9CcwOj
-	FAb8QTpWqIJ0SRg==
-X-Google-Smtp-Source: AGHT+IFkVH92/Q0D0GIcS9KaxX1UP6vLGf0Qcpt1E1rUVYyfKDRramMD/6V/MybaQIecatsjMOq8RZHy36Ab2g==
-X-Received: from edn13.prod.google.com ([2002:a05:6402:a0cd:b0:615:6482:748c])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:358d:b0:61c:73cc:fb4b with SMTP id 4fb4d7f45d1cf-61c73ccfee1mr10144954a12.3.1756372856958;
- Thu, 28 Aug 2025 02:20:56 -0700 (PDT)
-Date: Thu, 28 Aug 2025 09:20:56 +0000
-In-Reply-To: <iucjeilrzonjldwizwkeo67ouo6o6nbqbnmlsyoua33737ekj4@uf4iekswazec>
-Mime-Version: 1.0
-References: <20250827-b4-vma-no-atomic-h-v1-0-5d3a94ae670f@google.com>
- <20250827-b4-vma-no-atomic-h-v1-2-5d3a94ae670f@google.com> <iucjeilrzonjldwizwkeo67ouo6o6nbqbnmlsyoua33737ekj4@uf4iekswazec>
-X-Mailer: aerc 0.20.1
-Message-ID: <DCDY7RAG4AN9.1192AMMUC2LMV@google.com>
-Subject: Re: [PATCH 2/3] tools: testing: Use existing atomic.h for
- vma/radix-tree tests
-From: Brendan Jackman <jackmanb@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, <linux-kernel@vger.kernel.org>, 
-	<maple-tree@lists.infradead.org>, <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ix46akya775dpb7k7u5e9mkeubwhq9nt
+	bh=1KiEI/MNllscjBydiuZhBDQoXCblw/sdc1toMUg90I4=;
+	b=A7LOylWMCWmCDeNkl9kLYhdvwFWp68/0Zu2P6V3jg0kpKFnbffFtX9xK8Cq0FHeTInUqUj
+	+GyTSACCTdvp1sINLrmLfYkFr0LAecQNCRsPurfsMwB7tRAyyF8eV3gfuBmz2YgIDgYBqF
+	dIMYAlEEyAMF4aTKknk43q9ZXGcl57Y=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1756373023; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=1KiEI/MNllscjBydiuZhBDQoXCblw/sdc1toMUg90I4=;
+	b=J2CgbZbPrh2IEYV0W6yBjX9bkUXGQAP29+02M4yGr1upSspNXb//JfeSKPccFc51KthqwDdCDGcCoLUguaVi1Gx/Ux1e7vhRWYROnvxKlmwVXgdUGyi+pKLcbNYjbtDugQz4zTQ6mxK7S0HcMZa9d+/YmhYAESImv8ty7W99vFQ=
+Received: from 30.74.128.191(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0WmmiZOF_1756373021 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 28 Aug 2025 17:23:41 +0800
+Message-ID: <35e0a580-ae78-4485-b285-7f71f91e046d@linux.alibaba.com>
+Date: Thu, 28 Aug 2025 17:23:40 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] mm: Use pr_warn_once() for min_free_kbytes warning
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz,
+ surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-kernel@vger.kernel.org, baolin.wang@linux.alibaba.com
+References: <20250828030602.204332-1-tongweilin@linux.alibaba.com>
+ <aK_7GKJ4BWjye4tZ@tiehlicka>
+Content-Language: en-US
+From: Weilin Tong <tongweilin@linux.alibaba.com>
+In-Reply-To: <aK_7GKJ4BWjye4tZ@tiehlicka>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 23F2740009
+X-Stat-Signature: ihb54pzfwzbbufgidp68yy6iepp4tko3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9C0B240009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756372858-486733
-X-HE-Meta: U2FsdGVkX190XNR5iln2wwpezEFsCuK0qjV26g8qYLcvBRZ/iypy0XLCmymuOVCb0sI+EWM60IbdOxKh17cRR0Z4DJ7GXch3I59g4UzbmP/zs0TY47HP5Kf+vVisWadxYOKPza/OgrjeqlIO0aEVtbYOXLayXFrhbzTUHQ8X0UFei+dQtMqHCfDrNorNDmuMPJnhORtSqwamc5SYCc52GpEu9EhR6CEE61lpyoeth0dXVbkhEkTZd1r1AbDZ3cwtbmO2LRgJZ5I/zetEIW6tzqLIucAFGgn6Ok4/cJ7FZ7NQVDcJNjYzZ3r96LOtDxOMr92ze6gz0/YXRCVQlO/hzUzD5UojUPrJvP4C/3sEUyJbMHEOwVzBbOsJWLen09TAA+XD6b/xJ9o5HTJi07MvvXrth5lYGGeRyPVmBlx0oe+IuIoXCd0UhxnTYgrD4iuhlOrIu33SFyL5E1Ml8Lup1H6VhrUapGzC6b6JwfxWYOugOFMJObpewd4JSUao8elciUGavTwO+rQ7ir/5R2XRDl7FKqF29Q3l1FstZPYf2QHUPBZDCS8adeQtGiodAwo56mRbxjbNlWh18Ew67zWk7sXl3V6hOTFV/bVLgNIDu0U/vO505BX2vh1Dj/juOPx0WZYu137Ar3P3OsHfMC+gbF8L5uzHcxKMwgR8k6gUB0dXE/pFd+4rl6JsBoLbSuKyfOOP7dyyCcbQFA5vMI/gJS5ygWX0qA5qi97Jm+iqTV47IOfH5o9sv0ELLFjFn/+EDOvXhSYtU3xEyVFEPwZLTnm7zu1t14cfN6UM6aOsuPiSkSMPWDSNi12O/sVXLu5D/OEryUB6LFXtmXmdCuO07i7LLLezAIThexiQ6EIzACwWkbtyBxI01njqW5L+j5MnisEUs5u3vgQzzyTEgq0ZQ8rGtaRshemX8V2qk5hiUJ1OFh66qbbjgCN0qxTrHV6OO2y28e1zzcss96qPPgG
- wSxSQg+9
- 4L5h0fkzrhrpTryEg95ksEDu8RvoCEk7M4MQabAs/TI60hpfKbke0mw9QURNi65eV2KkHTRRY84ysLywVhK4vLXwEByUMGPOjqLiknk/kmVhsBrffS9i6Syn+W8a4nT4vSi9x63b3Su5xhC5jFSSaeeLn5sZC9dUFfUpQghDkZLGMkaGbY6bAQ+o+ngCxq2xvJppvMuYUsvdju5x49fI/fW4dvT8IP60pVsHF+UjrR0GnDeVP4OtUQLuHErYzzHHT3JnVkK+BzBiHcSqZI1GCzjkGTdm6K5XnCRQaXC8yXz2juc56+pa8lhaeYCHaGqAvtw8KU7EyKhrh0/3z0ewsYQADwg2Ge4i9q0j/9xs+Ee+N6zj8+28cv3B1uFAlQN3EAuXpzk+1bJIChF99H58ST058nZmdJszqW4QBSwENRP9ppCWXb8tcGPFL+NZr4fbYqfaNt71zS4fKH04ZJI7wkV3Lr0kJnmiPCKuheXAo6NcIBnDoSmR1o7/CMeD1XVwYZhEmDngWStwLiHdgLqz4y/Dxth/LcY+Li4D72BppyZ08M8vimRoIIU3YEQ==
+X-HE-Tag: 1756373027-329962
+X-HE-Meta: U2FsdGVkX1+Y66JjXAhWwM3DQTNc8xQC2miHDcLOkTGz8d8rSHN4OvSjmCeLMNCQ+LUwZVOmCe+/JfQcTUuK8NDw1/9S5GDfoewxZ5yY+WIY8/hK11ZWwim55xIgxhooN6g9XV+f6wkz+2HX+NmxxrZqA6pyV/GSoCLaVWgSFiP9DT9K97JGVcDo319mGf3N52E9ktQC05oYpcpH6NJ7qbPCynHGtuvluUliGbQkoqA0IyZstDi1RelQWOtwj3xGq9lnmSWgk5h3feYUjnUvlKgSJxj9aKmpbmY2lI/ajQqhF2LJkqFsPmjM4XUL7obqc8BDFVeqM72Fx1lAIaa0OVbAVQVQEiiAi2GuIJONNZjz9pu0k3cZDyaFbUPu8iOj3hgp/qgHiI8Yp0dxV44dp+niW1SsyTrspPbRWBe6O8aS2oUVb1RXQ2RyFzW/2XyTBg6zYXNsBeHfJKQvgVugdmTw/1rTkeRE8djuvO4L11JC3CIFqnI8yIfaicG0XvY7RbxEXCgEQW3elxydwChpGhydty1CpQDxmVTQsagzYisJDMP9Cfw8BbnHl9DY9lwxsa/PEXhMFurircGcmw6Qlbeu3IfCWv7FMyQapVSpCTk6BjZ9fAPDgoCSv+9uIWXuTL3yQtT34O5Elpoq7iS6MLadODHxwhkI6LwLB7i71o2pVJSTj1o8aJpKDBXHkSuhEQ29rtbeaSst7mCB4toKyxlH0lQsRuTy27qcm/XAogW6JE/1LI/0ffsgEoXWw2NOWjhrcuZ07LahYGFHqrb4ysG8H7ZL2NRLBm1eay1YdEa4NCK/WAxSInKp+KYY/AEMPQHHqlzEmpXHcrYZEgdPDxtg7aHNlvGDTswLO51wFzEaT3ygxj9vUJxRpSTRAkWCs3K9FXlQvuWHDvgH0ogn2eXSikvBTF/IlPBLBreu7gDdeA+EJXIORcVKEzT1Ayse7u2wWljSAEWKFjvPODv
+ +R3H5y2v
+ K4VxStPXT+ei7OB3e7cHDSCVqn0x9+0YOcpdg1ZU/PgfFe+TREXwhc1xEOH19rv7e/UU02Ar0yIq0fQaCk+VoE6KUlpiBEFKfp9FQZdRqv0NdBAMYOg2zqLXNbAoiS0DyMtI4yeHCdeUSrfK/6492G0GhlRSM1GSikKUxBmSt7iDcO2vx6rh9Qc5B+EAFiHAuNl296mL3mU0cAeRmPNMEAMH3i8H8TRwiQ1dRaStl9ZrFadIx97IvFc4wC6Xej2VdyiXBiitrCFuCFHAit63xqhYAi2Jc2dyzIoawed+DJ6lxgfJ0c8LKDm9WNzIoIrdffAHNdreIJrXg+fKh7+fG7fAMV9SLg7zfJBJzc6qCGS45XmfvoZDqBa3GJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,38 +89,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 28, 2025 at 1:05 AM UTC, Liam R. Howlett wrote:
-> * Brendan Jackman <jackmanb@google.com> [250827 07:04]:
->> The shared userspace logic used for unit-testing radix-tree and VMA code
->> currently has its own replacements for atomics helpers. This is not
->> needed as the necessary APIs already have userspace implementations in
->> the tools tree. Switching over to that allows deleting a bit of code.
->> 
->> Note that the implementation is different; while the version being
->> deleted here is implemented using liburcu, the existing version in tools
->> uses either x86 asm or compiler builtins. It's assumed that both are
->> equally likely to be correct.
->> 
->> The tools tree's version of atomic_t is a struct type while the version
->> being deleted was just a typedef of an integer. This means it's no
->> longer valid to call __sync_bool_compare_and_swap() directly on it. One
->> option would be to just peek into the struct and call it on the field,
->> but it seems a little cleaner to just use the corresponding atomic.h
->> API. On non-x86 archs this is implemented using
->> __sync_val_compare_and_swap(). It's not clear why the old version uses
->> the bool variant instead of the generic "val" one, for now it's assumed
->> that this was a mistake.
->> 
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->> ---
->>  tools/testing/shared/linux/maple_tree.h |  6 ++----
->                               ^^^^^
-> Did you say radix-tree?
->
-> I was going to accept this because I put my code in the same directory,
-> but since you'll be respinning..
+在 2025/8/28 14:45, Michal Hocko 写道:
 
-Yeah, it's only the maple tree tests specifically that are affected. Did
-I understand correctly that you're asking me to reword the commit
-messages to avoid confusion? If so, yep good idea will do.
+> On Thu 28-08-25 11:06:02, Weilin Tong wrote:
+>> When min_free_kbytes is user-configured, increasing system memory via memory
+>> hotplug may trigger multiple recalculations of min_free_kbytes. This results
+>> in excessive warning messages flooding the kernel log if several memory blocks
+>> are added in a short period.
+>>
+>> Sample dmesg output before optimization:
+>> ...
+>> [ 1303.897214] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1303.960498] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1303.970116] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1303.979709] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1303.989254] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1303.999122] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1304.008644] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1304.018537] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1304.028054] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> [ 1304.037615] min_free_kbytes is not updated to 126529 because user defined value 1048576 is preferred
+>> ...
+>>
+>> Replace pr_warn() with pr_warn_once() to ensure only one warning is printed,
+>> preventing large volumes of repeated log entries and improving log readability.
+> pr_warn_once seems too aggressive as we could miss useful events. On the
+> other hand I agree that repeating the same message for each memory block
+> onlining is not really helpful. Would it make sense to only pr_warn when
+> new_min_free_kbytes differs from the previous one we have warned for?
+Thanks for your feedback!
+
+The dmesg output above comes from hotplugging a large amount of memory 
+into ZONE_MOVABLE, where new_min_free_kbytes does not actually change, 
+resulting in repeated warnings with identical messages.
+
+However, if memory is hotplugged into ZONE_NORMAL (such as pmem-type 
+memory), new_min_free_kbytes changes on each operation, so we still get 
+a large number of warnings—even though the value is different each time.
+
+If the concern is missing useful warnings, pr_warn_ratelimited() would 
+be an acceptable alternative, as it can reduce log spam without 
+completely suppressing potentially important messages. However I still 
+think that printing the warning once is sufficient to alert the user 
+about the overridden configuration, especially since this is not a 
+particularly critical warning.
+>> Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
+>> ---
+>>   mm/page_alloc.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index baead29b3e67..774723150e5b 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -6412,7 +6412,7 @@ void calculate_min_free_kbytes(void)
+>>   	if (new_min_free_kbytes > user_min_free_kbytes)
+>>   		min_free_kbytes = clamp(new_min_free_kbytes, 128, 262144);
+>>   	else
+>> -		pr_warn("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
+>> +		pr_warn_once("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
+>>   				new_min_free_kbytes, user_min_free_kbytes);
+>>   
+>>   }
+>> -- 
+>> 2.43.7
 
