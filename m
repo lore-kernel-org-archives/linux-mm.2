@@ -4,119 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04A0DCA0EED
-	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344B7C8303F
+	for <linux-mm@archiver.kernel.org>; Thu, 28 Aug 2025 08:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B0038E0010; Thu, 28 Aug 2025 04:36:25 -0400 (EDT)
+	id 7A4348E0006; Thu, 28 Aug 2025 04:36:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 160AC8E0006; Thu, 28 Aug 2025 04:36:25 -0400 (EDT)
+	id 77BD26B0008; Thu, 28 Aug 2025 04:36:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027D98E0010; Thu, 28 Aug 2025 04:36:24 -0400 (EDT)
+	id 6921A8E0006; Thu, 28 Aug 2025 04:36:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E10188E0006
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:36:24 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CC9D13A567
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:36:24 +0000 (UTC)
-X-FDA: 83825509488.14.5F9641C
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1502B180007
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:36:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fYQTQdra;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370182; a=rsa-sha256;
-	cv=none;
-	b=ZlUEXTUMxskjkNZsnaP48xfyDM0l+bzL6rOx7wxNpf5KPL7jZNA7pVhKj8LLYTrBvK/6VA
-	xDq6l+FdE+KLm0IG3EVzq0MP8aphFgD8ZYq82Q/I2PXIj1G/JMQvoBWNywYcH2uijKtp/f
-	PuqEjOJe3/cwVQCompf9devXhLhHVZs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fYQTQdra;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 540476B0005
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 04:36:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CC7FC1DE8D4
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:36:56 +0000 (UTC)
+X-FDA: 83825510832.07.3348DDC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 695C8120003
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 08:36:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ga/XY1uH";
+	spf=pass (imf29.hostedemail.com: domain of gmonaco@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gmonaco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756370182;
+	s=arc-20220608; t=1756370214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0JaUseZ6CWu1EJ1U3qBAV9Lj7Z4bwfj9ev3APaGuRbI=;
-	b=WvMNT9F12HE8zn0ABVz71kdFaPCRZCA5K3AM1Mq72RY5i9v1pH/fsfw0aIpYGtyadZP/E+
-	U57RpHpj9e/5Tuje5228IAKtup8f3iPV2Xjike4JkEHLEjOASZ/wATIbLUbFUmamGBp3sD
-	mQNACxWNsnQKitWXVtIa5aunEG6p1EA=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3ce4ed7a73fso161497f8f.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:36:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756370180; x=1756974980; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0JaUseZ6CWu1EJ1U3qBAV9Lj7Z4bwfj9ev3APaGuRbI=;
-        b=fYQTQdratLT9hA+EjIlAqg+VjUZmQsgPlqbKNLU0dawXDrKg2N6auP3JQ9/SlgPajJ
-         Oip8GHajYjTsdtPKn5fDm/+oMyMjeZu32V78GfVqnHZ3kCMv4f0Xm3UI293LX1ZFq31L
-         U2yie7vALIaKAMyGr4GWiARK+A8vgIhsE5XW6LZeJg0rnXZ7rTqMD74438PcvHvhGGT7
-         TSYUryr9WZhT5Ii+k67TvtN1AuABFmF0UgxA1eQOO49VxXqhPjaMJYG0PbnY09n+wvcd
-         oPvPUTNssrqLMik26QbluNKS7Lk9G2N6WlR4d6HUC+O1cX8TiuRc/ZH5r9+PsCQx+3rR
-         WH9w==
+	bh=i7lHy2+AALGufH3OMpwunrxRhiVfYkaGy+pWu4FZmlc=;
+	b=ISLlXY6lT82Xh8Xtj3MgouJe+yIqzyw4WGMgw5KPSwWSklcUE88/RAm/zqSdt7sym0P5Wx
+	QRF0QnbYh8kdy9octXPry1YhlblDBP3AB3d22wKQ1XS4mxIWUaqTek8VQbLX+8JL6V1KkE
+	as03DEjctXfmAhK9zl1B7kPujmOLF2c=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ga/XY1uH";
+	spf=pass (imf29.hostedemail.com: domain of gmonaco@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gmonaco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756370214; a=rsa-sha256;
+	cv=none;
+	b=LkZPma94izw6jMLMNFBbXOJjFeclXk/BTQa+A8TlONN4WS6F5Ky2dR6kiu9bHByMFotuQv
+	1FM/vZKBLCWgB6eI+blbpAsQPOHN8hygLqvde+VSyBZHYp/7H+m4Mmr9+wHd6rx/U805Ne
+	INEF+SVAn+3LHtYSa+FkUOBeW/v0HS8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756370213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=i7lHy2+AALGufH3OMpwunrxRhiVfYkaGy+pWu4FZmlc=;
+	b=ga/XY1uHH1MAiTt7VlsOU0suna9T98yJRqJtSK84SN27xTBr2JFh9gDj7kOKY+RO0z8LnD
+	63IZ68X9FOXEZOK6clebdncqrkxp4iHshDFgvkD2xU5fmatwsEJCscfDs3PwBIHbYxkg04
+	yNrvtW2Ss18LnWAY8OESZeYTJ0v0pIc=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-pTZShz3_NTK4_eH3o_ZIkg-1; Thu, 28 Aug 2025 04:36:50 -0400
+X-MC-Unique: pTZShz3_NTK4_eH3o_ZIkg-1
+X-Mimecast-MFC-AGG-ID: pTZShz3_NTK4_eH3o_ZIkg_1756370210
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7e8704e0264so182364385a.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 01:36:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756370180; x=1756974980;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0JaUseZ6CWu1EJ1U3qBAV9Lj7Z4bwfj9ev3APaGuRbI=;
-        b=GQdmddkxSr4h08LlKxWN63cbiE6JbTpIoau06xx4hUp2bLCpNi86ErZfHKENHxqXOb
-         e4+HwZ2CqY/rJZ0aPWLsDqLply94qwmt4jvx8UVA5DkbqPcSV7DG0gRI/pR4DEBsu72O
-         Nrs7wlbYqgZQTmAkEtA5ryeouTgdQrJF7UgxX1nLloUNc3wGpeinC37xCs0WCvDzp+PC
-         mH4PZsq8yUF7BzhmDyND6dCgiVu9zds5+T26Whr7PE1rRV4uow2m7MGpSU5Mlrpo1Nok
-         8Dm9HfpPwpFkvMWFAXlSYyTJnPMIOe9+TrHFyBMY7Oy2dTqnZAXfnzMTbIpAXbwekitc
-         LCgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZJdlnszOzPa53ePf/wHhNvZzZZOgUvFhFRnEgpMoY9UAmceFmuRfiNunW7gH9edLRj8t+bofZlw==@kvack.org
-X-Gm-Message-State: AOJu0Yxja5kVkFhlbq717h/LNweoBU62mULIk+Cc8XrGV5EElpub2tKj
-	iK+FQRos2Aa60GeNXgq8RlzQucmE/HnFg6ntSnZZXBOgarUZTABXq9Kb
-X-Gm-Gg: ASbGncs/LSQ30llTlpXXWP6hjW5ZIT+tAmOp+U8e2giNEfyykx3ss8uqGjEKXSEYF8Z
-	nEd1OKH8Bi11+3TshzeYub3bchh0D8O7bDcqlelD47JmpfvYFCfKnTgC150x2bXVBQhblOf79VA
-	6YDFk49qwlgC5MXhR/04YCgxBpBiEiX076+bwSYE3TCK79hOhWPh2VMiC9hDMDuoNbC9+uFYPaY
-	lsrhhk0+dwgkpbNPXw+BPia5XzL7qNT6umkvxs+ZWyWaTZ+jmTTb85Rdq1QC9Bfi62fJCA3TovF
-	IcTCUF74ixDmB62DMKj+/UbXXsaTeA1NOpVnoUDYTJLpCls10LvHknSrlPgZySKHzSRBfjOPfkS
-	wLUfB6KRBEwE12YhnHaAAvdCLr05a1QruSYGRoGHJeqK5qaCkBA==
-X-Google-Smtp-Source: AGHT+IEnj8J0hKFzOYm2Zneg64WLFXqCWW8vLEJTC0ZvD0mC2gMD3pC9v85qzqJuH1pUr23Byo29aw==
-X-Received: by 2002:a5d:5f55:0:b0:3c8:2667:4e3c with SMTP id ffacd0b85a97d-3c8266757d8mr13284619f8f.44.1756370180366;
-        Thu, 28 Aug 2025 01:36:20 -0700 (PDT)
-Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:58::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c70e4ba44fsm23655189f8f.5.2025.08.28.01.36.19
+        d=1e100.net; s=20230601; t=1756370210; x=1756975010;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PSjUmvSnzhT5n7A6inv7FM9jaAvFvhockhlgWAqu+vQ=;
+        b=DNH/oyCqzD/HHEWi9uvhoyKGQ3risirfyBt4L6uGhY6JbtCitICWb17YV/A7nE7dWt
+         3FDhOSglvWawy3wTrWlr2aSzGLUs9Qiw/RIQr1sEa7AJ8AVFRPUOeLrIRYVQgaMk/PtU
+         z7HWUVTFkUyQa9sIBsNWZ4zYlnu33634KTTGxg45UPVqBTFL2DH4gVIm1zI3SEJqcAXr
+         mnTC5XgkKCJz0ObArT1xtulEKlj6Yzz31gnBKYvmMxnSt8nE7TXiWz43d+fdZGcTLHlT
+         7mLvrQIp0Bn6SPxI+9H/hwF0ucIsKUUpXL32xZnNUepLqcokgvN18OvItZ2XeKPKkmle
+         NLzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmMmP7Oljt/OUSt1HDLS7QdedovrCH0kIj0Q4weqUAa5Sq8SxT0ifbZ5Ufh4CXjka7Vn1XLYw6AQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw8SyA/g8gmUyLJ6viq/8UXFdSRNCWzkE3ylLvaA3ef15wtIhJ3
+	lnE6BUgnNd/ZltHUmdeI2DoGiWzGXPqcC384/lt27rIv+4bdbqDFDuc2ugo2qtgUwfmTylSy6Yj
+	MFPLEuAKJTPe4DtMC2yrFEHmsGiLXdODjsZolNKAv5MJ4mJ2QuesP
+X-Gm-Gg: ASbGncvq02BiQh8m12Mm8JSgvfYQKh4/+IEe0sDoiUuUJcgvrjMuf0AohUuAiaP3ldU
+	yJkC8tgs2IVIUmRBQe3jA81AIpkyoV4kw3Fu876BZvBCfwJzOnWCZAQlKNK8YcAaqdxt2IhO/Yh
+	QozOCQwqTWUDpjkV7u8Jils7lRrN5ewc6gnQcDjOyCa20H6j3L0fnCS49WzJhs6GdxAnDNc0DCj
+	z1epjrPSVALHsCh5NiSgypDKAEmXa4U7OGY0dqGlrdorv+An+G0UIGwXrBJ1hV+Pva8PVT0FcwR
+	hstb7ikC6yTeC7y2u80Bl7XNqayl6P1dDAU/JnGpUhWVHlovhjFUdxzqFPrAb+37ZQ==
+X-Received: by 2002:a05:620a:c44:b0:7e8:3f25:d8e2 with SMTP id af79cd13be357-7ea11045e0amr2099481185a.62.1756370210036;
+        Thu, 28 Aug 2025 01:36:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFsijQwZwhAabiy8jbQFP9pXJIeKs7UWvptIDHD0qC3IcBIpz6vw7YVR9JLPOiDAioox8BZlQ==
+X-Received: by 2002:a05:620a:c44:b0:7e8:3f25:d8e2 with SMTP id af79cd13be357-7ea11045e0amr2099479685a.62.1756370209648;
+        Thu, 28 Aug 2025 01:36:49 -0700 (PDT)
+Received: from gmonaco-thinkpadt14gen3.rmtit.csb ([185.107.56.42])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ebed8911aesm1050432385a.19.2025.08.28.01.36.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 01:36:19 -0700 (PDT)
-Date: Thu, 28 Aug 2025 01:36:17 -0700
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
-	kernel-team@meta.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] mm/show_mem: Add trylock while printing alloc info
-Message-ID: <aLAVAZMKwYueL+5I@devbig569.cln6.facebook.com>
-References: <cover.1756318426.git.pyyjason@gmail.com>
- <7e2bc96faab1a338829e549246189ad96e6c866b.1756318426.git.pyyjason@gmail.com>
- <20250827150619.4e468e68988f224f9f9bea6f@linux-foundation.org>
- <aouiudhvbuwegvkdqwtkp7bk6gvrsxkqe7us5uj6ylg3pivjin@nl4ri6fbh2zd>
+        Thu, 28 Aug 2025 01:36:49 -0700 (PDT)
+Message-ID: <10f2d5094a6c2dae1bcbf7d7f8198c11c6fce4c1.camel@redhat.com>
+Subject: Re: [PATCH v2 3/4] sched: Compact RSEQ concurrency IDs in batches
+From: Gabriele Monaco <gmonaco@redhat.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ingo Molnar <mingo@redhat.org>, linux-kernel@vger.kernel.org, Andrew
+ Morton	 <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>,
+ Ingo Molnar	 <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ linux-mm@kvack.org,  Thomas Gleixner <tglx@linutronix.de>
+Date: Thu, 28 Aug 2025 10:36:45 +0200
+In-Reply-To: <7fddf82f-e85e-42c5-90f3-9cfca4d8756a@efficios.com>
+References: <20250716160603.138385-6-gmonaco@redhat.com>
+	 <20250716160603.138385-9-gmonaco@redhat.com>
+	 <7fddf82f-e85e-42c5-90f3-9cfca4d8756a@efficios.com>
+Autocrypt: addr=gmonaco@redhat.com; prefer-encrypt=mutual;
+ keydata=mDMEZuK5YxYJKwYBBAHaRw8BAQdAmJ3dM9Sz6/Hodu33Qrf8QH2bNeNbOikqYtxWFLVm0
+ 1a0JEdhYnJpZWxlIE1vbmFjbyA8Z21vbmFjb0ByZWRoYXQuY29tPoiZBBMWCgBBFiEEysoR+AuB3R
+ Zwp6j270psSVh4TfIFAmbiuWMCGwMFCQWjmoAFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgk
+ Q70psSVh4TfJzZgD/TXjnqCyqaZH/Y2w+YVbvm93WX2eqBqiVZ6VEjTuGNs8A/iPrKbzdWC7AicnK
+ xyhmqeUWOzFx5P43S1E1dhsrLWgP
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aouiudhvbuwegvkdqwtkp7bk6gvrsxkqe7us5uj6ylg3pivjin@nl4ri6fbh2zd>
-X-Rspamd-Queue-Id: 1502B180007
-X-Stat-Signature: gn1fd4wdhuyxnmr3sdf5edizk8hzr4rb
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: T5lKzQ5VEixyOWl4TkCMuM9Pf9qnp6M6hOW2B2yW1tQ_1756370210
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 9nixqc4m6pn5u1rxu8i1eco6mxs7brq1
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756370181-879230
-X-HE-Meta: U2FsdGVkX19rTVf1cbf80Ghv/DP52ZkWjDE675EeEbk15mNH8722gKJD+ZGRWSWVbZPDivOwnR3aj0F7YZZB7xm93b2Fq+Dd1K2tl46r2TW+WShrGLloTBjpUFUiC1EbQ0TcmZ7aAENqpUTPVufJJ5lQCM7lYd9gFZU3rkhq5rMvl9pChHiwC+GTXUyLY3GNSp7pckvOX4em0kBnFh0NJIr7NbrQMlI6rAZPoIrtIs9LV1QzJmtvpGunSHgtUzygs4G40sIBB1vhSjXiZ8Meo6SXhejF4uRNsl1RcjMAKeweaClC9QtL/KQXNJty/zO87sz7w4gvOm6uSduV0zgB1f9BCk1omO4zSBdBEaGQBIOPjZSN4eH/3hr2/4i8KTk+QnpkbNqZyfna3XmycGKBG3oPq3wz5uJeDBZ6ZrPNAE95xYf/G0vrdMYtIeJI0OeC0yxhKcdivJw3tqIugW8UQtStMBN++wrzQcBB5w4ApHrpx+E4E9NVIlVZaCg2ngntMl2j1l/hhv8wG+420USGBcIuoqj9JR5uYOv6gmHHPArWQnFRLzgKRMy/CpZgmL48FeADzXjP3V4w7pqmW0nqkursYuaF97M8f3LLz3Otj/RpDiWEe0RoR7I+gGy2gdiGu+p55OjYBayNKivwAx1y3p8cSSd/5veofYHYGcBoi0/AtHCJCTcbs0pInw/h/f53zgv4gccJIs7nl8SScpJHYyfo+hwBI1+ypoKvgeahL4TfxoNcCzl9vjzyYxV/g2Gkxlk98iC+KCeKZv9x1hECFNOKNH0NiWdFOOQaEyTsfftswuabLINUMyH2wAKpaghWG6MyC4JIsgxQLLG86XVzUkRArdMJhcafQ66XyDmH2oNKbnJDmfEeTqsZA81/N7lu+wS0ByrCHDD9vsRRnX2evht2FNkCIgXXqtXtCs2usuZ8fOF52wXdLKZH6KHCZKOwjwJLSP1dxOCZ+1k1d3t
- ubCYM8Qi
- yhqlDtEvwlHDqpxNHCHFJi+UYeHzZsMv2nOEmwNse4j4Lc7hWeO8Egghw52fZn1p8N0MDyrR+9XGzDlg43+VIA1nuix7HKGS+hT0eDPrCevhWfUr+QTCBlFi1Ohg7wOJcd7qjBR3FSPpJ+k4BO8AEBwNNnoN34q+E1d8Q/x2K8RM/uugXOxU6UhEYewKzrugcu4MDmgq4lnzaO61d9NvXqnoiGnKt6tJYWpTn7z/8KHrSMZwMMN4B5b/MHJwlNat1pEq8f1reZX6mRDeKXLrCBsG1Dgf4/WOXEMduZuvG0Gfkpg0/nDAuGVMijQz60LqeFATCkoRT/ctCYjmGK1d9vQsI/AaBdVpOV98N0D+zm+GZuvn2PP9Bng2ypDm/JAfTPU5/9ZaTPuKQgNsNyhhZgumH1D5lDAEjjsaeMWJDxzL3MVTvzR+cZNNv4ekQOSxaHagCOtZZV3xYWurf5fCYidBERiQLlLsUnE6xqRlK2/Oo6ijS62GyWhnlgA3QBusnDrEe
+X-Rspamd-Queue-Id: 695C8120003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756370214-630086
+X-HE-Meta: U2FsdGVkX183NLncphSP+yKtGg6z/UDmpDNkYzORWFvGOCrhY8WNHVZ1VHufTZ1upZUeUdvayhKM6iFmBCxrOey962T0eWLzUhHRzXl/qqqiYPYBJ0bwVP6goqhO5edJlw/Zycg3C+ENv685TrbF+cgZPy+2Chjj2++lgIR1EufFSq809ZsB+aIcYNBm8dDg6gwhaaYXIpc4yvzQhs3hBJ7jtCl5LiqSKB8QchGxAGdGULZmA8+Y876Q1EwUsFra8btWtH/WXueGBKPe1Xf1HmbVxrMcvdk8IlzFP+wPSPDaU2EKW9fu6BMoGXj7RlFVd4IFppV/0oaTksoqnJI2E37gwTPGc3XmZ4v//SPu6BhTGikeRfRmr4ap+36eg5iZQX8+ZwewP8Lk25R/xGGYGkeg/RnZJukM5lFLNPDyFDx+Mg3SUh1xRrKToUmopYnfut17rt5WlZ59yZI4z8hlnpEqLugfTA/5u/I88k9PhHvKosIckIZw5wnj3LG0AHu7rHpYCU8HMuc/TkXhYOqFzXyXU/6spq7XEGNPhFr8myXhwaOhy4zd6R8jQepYonDHUq8CwbRRv6MT3N9qO034of3JwioK6VMPcTVHdv3lbU9ERq+HpxZv7gre8ZU811RROvlklE3mB+8HlwikqU+HQ/Pu8ld5wRltVvaDHpjUXI/Kt0crvQnBizvjX1y2Wki7sljv5UyTzxi7wYKDYsO7R3+P4jCfik4R9aY/b8l4pqD998U1+PDbMy77N9EDzzTCsvX35wOALA7SGcyW9G1rFf8Gt3AHTstAuB5yZNlHej/lTjpKP8q1UqwlegWcMLd6LfkRxN3teZ3ihPQGkXhMvDtVJpZVb6dKZsrG+q8s8irc2AEV2NljGG6/W01pw/PIbhLSNwG3VwK+WRIlLQnk0c2YZTKNZ4qy90X54cS5OcgMY7vPGTtC8CSVbTZ1PL3cmPGUSd3vSDZ5T9tc1FV
+ AqydsknK
+ PxJeT3g1Rds5ecu9NjLtF6xjM8b1B9mgX7FZgJHNZFPgb66EUYrrFNOnQ3vseMYaby74BUiGNOElPtAh/k7MCkGCaDW7lLwkU0MLgoRlPLCWFB9dJOe6hhLvsnTNjYttH8XDZPko6umt1qmCc+HENNnNILhScFzNPXoMo+NLqOkknKQk+dsImjf9cDa5f24Xxsbx02UY4kEnJMW47g5gKCrZ9bsVRRT0M73VTbE6FHzTOOb0cRSvrZshCr1+f0NXGsNhH1vXmblZbZp1xPqeW1Q+3NMAgH6L0+FamYWCQWAPNiCZ2wSg+kD23wzhrHIA0+3NIV+rKUAqAmAFgf9lgRklLOMFLpG0r5T+UzxwRDh2/vaZrAMaTP9vMMgUlNwcN5SOU2qXHTulv55CjkkSI9S7utVzFHjQBVTrr7TEvhoZjKKjcnKrNoYd/zQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,83 +139,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 03:28:41PM -0700, Shakeel Butt wrote:
-> On Wed, Aug 27, 2025 at 03:06:19PM -0700, Andrew Morton wrote:
-> > On Wed, 27 Aug 2025 11:34:23 -0700 Yueyang Pan <pyyjason@gmail.com> wrote:
-> > 
-> > > In production, show_mem() can be called concurrently from two
-> > > different entities, for example one from oom_kill_process()
-> > > another from __alloc_pages_slowpath from another kthread. This
-> > > patch adds a mutex and invokes trylock before printing out the
-> > > kernel alloc info in show_mem(). This way two alloc info won't
-> > > interleave with each other, which then makes parsing easier.
-> > > 
-> > 
-> > Fair enough, I guess.
-> > 
-> > > --- a/mm/show_mem.c
-> > > +++ b/mm/show_mem.c
-> > > @@ -23,6 +23,8 @@ EXPORT_SYMBOL(_totalram_pages);
-> > >  unsigned long totalreserve_pages __read_mostly;
-> > >  unsigned long totalcma_pages __read_mostly;
-> > >  
-> > > +static DEFINE_MUTEX(mem_alloc_profiling_mutex);
-> > 
-> > It would be a bit neater to make this local to __show_mem() - it didn't
-> > need file scope.
-> 
-> +1, something static to __show_mem().
+On Tue, 2025-08-26 at 14:10 -0400, Mathieu Desnoyers wrote:
+> On 2025-07-16 12:06, Gabriele Monaco wrote:
+> > Currently, task_mm_cid_work() is called from
+> > resume_user_mode_work().
+> > This can delay the execution of the corresponding thread for the
+> > entire duration of the function, negatively affecting the response
+> > in case of real time tasks.
+> > In practice, we observe task_mm_cid_work increasing the latency of
+> > 30-35us on a 128 cores system, this order of magnitude is
+> > meaningful under PREEMPT_RT.
+> >=20
+> > Run the task_mm_cid_work in batches of up to
+> > CONFIG_RSEQ_CID_SCAN_BATCH CPUs, this reduces the duration of the
+> > delay for each scan.
+> >=20
+> > The task_mm_cid_work contains a mechanism to avoid running more
+> > frequently than every 100ms. Keep this pseudo-periodicity only on
+> > complete scans.
+> > This means each call to task_mm_cid_work returns prematurely if the
+> > period did not elapse and a scan is not ongoing (i.e. the next
+> > batch to scan is not the first).
+> > This way full scans are not excessively delayed while still keeping
+> > each run, and introduced latency, short.
+>=20
+> With your test hardware/workload as reference, do you have an idea of
+> how many CPUs would be needed to require more than 100ms to iterate
+> on all CPUs with the default scan batch size (8) ?
 
-Thanks for your feedback, Shakeel. See my reply to Andrew for this.
+As you guessed, this is strongly dependent on the workload, where
+workloads with less threads are more likely to take longer.
+I used cyclictest (threads with 100us period) and hackbench (processes)
+on a 128 CPUs machine and measured the time to complete the scan (16
+iterations) as well as the time between non-complete scans (not delayed
+by 100ms):
 
-> 
-> > 
-> > Also, mutex_unlock() isn't to be used from interrupt context, so
-> > problem.
-> > 
-> > Something like atomic cmpxchg or test_and_set_bit could be used and
-> > wouldn't involve mutex_unlock()'s wakeup logic, which isn't needed
-> > here.
-> 
-> +1
+cyclictest: delay 0-400 us , complete scan 1.5-2 ms
+hackbench: delay 5us - 3ms , complete scan 1.5-15 ms
 
-Again, see my reply to Andrew.
+So to answer your question, in the observed worst case for hackbench,
+it would take more than 800 CPUs to reach the 100ms limit.
 
-> 
-> > 
-> > >  static inline void show_node(struct zone *zone)
-> > >  {
-> > >  	if (IS_ENABLED(CONFIG_NUMA))
-> > > @@ -419,7 +421,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
-> > >  	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
-> > >  #endif
-> > >  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> > > -	if (mem_alloc_profiling_enabled()) {
-> > > +	if (mem_alloc_profiling_enabled() && mutex_trylock(&mem_alloc_profiling_mutex)) {
-> > >  		struct codetag_bytes tags[10];
-> > >  		size_t i, nr;
-> > >  
-> > > @@ -445,6 +447,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
-> > >  						  ct->lineno, ct->function);
-> > >  			}
-> > >  		}
-> > > +		mutex_unlock(&mem_alloc_profiling_mutex);
-> > >  	}
-> > 
-> > If we're going to suppress the usual output then how about we let
-> > people know this happened, rather than silently dropping it?
-> > 
-> > pr_notice("memory allocation output suppressed due to show_mem() contention\n")
-> > 
-> > or something like that?
-> 
-> Personally I think this is not needed as this patch is suppressing only
-> the memory allocation profiling output which is global, will be same
-> for all the consumers and context does not matter. All consumers will
-> get the memory allocation profiling data eventually.
+That said, the problematic latency was observed on a full scan (128
+CPUs), so perhaps the default of 8 is a bit too conservative and could
+easily be doubled.
 
-For this point, I sort of agree with you. Wait for others' opinions?
+Measurements showed these durations for each call to task_mm_cid_scan:
 
-Thanks
-Pan
+batch size  8:  1-11 us (majority below 10)
+batch size 16:  3-16 us (majority below 10)
+batch size 32: 10-21 us (majority above 15)
+
+20 us is considered a relevant latency on this machine, so 16 seems a
+good tradeoff for a batch size to me.
+
+
+I'm going to include those numbers in the next iteration of the series.
+
+...
+> > +cid_compact:
+> > +=09if (!try_cmpxchg(&mm->mm_cid_scan_batch, &this_batch,
+> > next_batch))
+> > +=09=09return;
+> > =C2=A0=C2=A0=09cidmask =3D mm_cidmask(mm);
+> > =C2=A0=C2=A0=09/* Clear cids that were not recently used. */
+> > -=09for_each_possible_cpu(cpu)
+> > +=09idx =3D 0;
+> > +=09cpu =3D from_cpu;
+> > +=09for_each_cpu_from(cpu, cpu_possible_mask) {
+> > +=09=09if (idx =3D=3D CONFIG_RSEQ_CID_SCAN_BATCH)
+>=20
+> could do "if (idx++ =3D=3D CONFIG_RSEQ_CID_SCAN_BATCH)"
+>=20
+> > +=09=09=09break;
+> > =C2=A0=C2=A0=09=09sched_mm_cid_remote_clear_old(mm, cpu);
+> > +=09=09++idx;
+>=20
+> and remove this ^
+>=20
+> > +=09}
+> > =C2=A0=C2=A0=09weight =3D cpumask_weight(cidmask);
+> > =C2=A0=C2=A0=09/*
+> > =C2=A0=C2=A0=09 * Clear cids that are greater or equal to the cidmask
+> > weight to
+> > =C2=A0=C2=A0=09 * recompact it.
+> > =C2=A0=C2=A0=09 */
+> > -=09for_each_possible_cpu(cpu)
+> > +=09idx =3D 0;
+> > +=09cpu =3D from_cpu;
+> > +=09for_each_cpu_from(cpu, cpu_possible_mask) {
+> > +=09=09if (idx =3D=3D CONFIG_RSEQ_CID_SCAN_BATCH)
+>=20
+> Likewise.
+>=20
+> > +=09=09=09break;
+> > =C2=A0=C2=A0=09=09sched_mm_cid_remote_clear_weight(mm, cpu, weight);
+> > +=09=09++idx;
+>=20
+> Likewise.
+
+Sure, will do.
+
+Thanks,
+Gabriele
+
 
