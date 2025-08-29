@@ -4,213 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D94C8303F
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04210CA0FF7
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:36:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A1198E0009; Fri, 29 Aug 2025 04:30:11 -0400 (EDT)
+	id 2E2A28E0003; Fri, 29 Aug 2025 04:36:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 878958E0001; Fri, 29 Aug 2025 04:30:11 -0400 (EDT)
+	id 2935A8E0001; Fri, 29 Aug 2025 04:36:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7683A8E0009; Fri, 29 Aug 2025 04:30:11 -0400 (EDT)
+	id 1A8E38E0003; Fri, 29 Aug 2025 04:36:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 64C2C8E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:30:11 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1107A13A43C
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:30:11 +0000 (UTC)
-X-FDA: 83829122622.28.6E401BE
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1643E40014
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:30:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KSO30War;
-	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 021738E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:36:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B05491A05DA
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:36:23 +0000 (UTC)
+X-FDA: 83829138246.13.246A47F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 05F52120006
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:36:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756456209;
+	s=arc-20220608; t=1756456581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ji3KkW3qUsiM430Q8CaZBzXxSVywrfxa2oAywWyFSjA=;
-	b=6ic+DhcVGpewVTFM377Od5ugTw5bM9gdiSceYobnrUL0v8FBWu/lg91CZj4vwckWDshzpY
-	LX3Z6ceCV9LaIEvjTsAnqo2ozCZMqjudTyq+yt0RqgKP1l63ysZb0V8gv3j5c1qQjOVs+1
-	SuW+HuGl52IDmP/jFES4jE4Xbs3pe74=
+	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
+	b=4uCVbuGIBLCqdqEbfyFrQoTTYcsg6NQvcibI78JuLYLhKUQJst3uLRIVwE6/D7tBCIWPfb
+	N5C9MaqF1uj7cd20WyVeaWZVNwd9eRo2SjLNod48ESFcwITC1emtUOrHip37+IoOeP4KnG
+	/84Mv5I89gOGHsB9IZxZpn2BGWjd6AI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KSO30War;
-	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.217.48 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756456209; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756456581; a=rsa-sha256;
 	cv=none;
-	b=IEL13vzL10x0qdHIeJGsGf+PApLkzpf/a3qCBF+73uuAw14KyQRHB6xLUXRccivMUishW0
-	00Q5dOE7z/3qDxge4S/xlQKFpM4q4cmnlXW2yWbH+H+xjJVShelhWP0Bar2+ZooGI+lWVX
-	0YNY8UaERz7WbUkvxiIhVIVAASovxY0=
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-52177c7ec94so550292137.2
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:30:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756456208; x=1757061008; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ji3KkW3qUsiM430Q8CaZBzXxSVywrfxa2oAywWyFSjA=;
-        b=KSO30WarFU6mDnP5IvV2QJoEob7f9h89OiSp5nOoBWt3odM0cWGAH9MdQv/Y2up3AB
-         RjTMfp252QtDOIyaH+azlMG70J2rBX27xrUzuZfltTdoaVz35De1LOxZbVZ5n83Xs9uv
-         nDxbnpYxWWIaIKjYCWUJ1r2yfH+3YJ7SfkNpZoq3CTb+sN0NB1SWPvnLddCh/SSCbFDI
-         aERZ+qIXQAl8+J/bNczP7O9Q9a84QBE+JK5UOTF16EYdjV10hQpo3cn7C3WiJx3MCKL0
-         jQHMdo4AVhpWoujqTCFBhc4G3DEAVTKBsD47UQe6MeC1Nt+RzSQa6Zz+OZcu1pFYM5/W
-         EdHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756456208; x=1757061008;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ji3KkW3qUsiM430Q8CaZBzXxSVywrfxa2oAywWyFSjA=;
-        b=d0W0B1Z/Op9/1KmQqNDAXh4lOMC6C0RYoYfw3J0oGUdqOkv12mXxCV33UENadT45Vt
-         al7iprdP12uvCcObL2+xWudGIzE/xL53muZRDXSt5zjkFgbSDLUpw0Ld9ThZiH1XXeTK
-         anxh10+9zl6ADVowD7H7q/DAM9SiY6w0IikE//FWkR7GK4zAXjRrXv303rdwaZpag/rZ
-         0yemhlr6uqS6bpNCnE51KQ69DeB0KIH9UTVYHrlu2Pk+JSQ2u67myzBzqLOlFU2NSr1s
-         fyQKZaEs8FUKdsc87cGpFSKb4H0vkwGEXz29RL2+Ut99Ppxr05RA+kdVH1wnVZtL8f6A
-         l/MA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqLz4oiulO5LmuDQbLBYcUxrxMhIEuI9xBSiJK+cfXgAXydP8QCK6xkABKWofJjorllKlrXaaA7w==@kvack.org
-X-Gm-Message-State: AOJu0YxlH15hdPArTJKFWGHiyFJ617NFx95Bv77ZPlQ4fMGfsMiLdlz9
-	E3tXxCXmSsTDQcM15wg5lGezQxR2vjVIE0ErdN8dkW8eq+chKl4Kua7IwlygBBH5cV4=
-X-Gm-Gg: ASbGncuVyFJM5ktpOwPES6SR9Uc/U2EWIfjSj1y1if67lBGvYS8Z3PBin/yu/rHkUW9
-	DDgL+1qs3l2AfGCAUynIfqJ9bU9Ec4WjhTHeh8Jkf9k8u9+62qbES1JpZp7vsKlJKG2AAAl4i+O
-	Qud7PrsjWA6EN6LlU/N85pnJv0Ai7mYEUj6R5YcnUXEpn9O+X33lWc3L4lqkiO7ab8pU/AGwfAo
-	/mOEsl7eLj1KUzUBhj/BuoxTfe/OjvMK/3Cj+J4mngqdiehHmCdqg+z3WURTq0q29V62f9rKsiI
-	VDrhpZRD2jBJV77qSAK5EgkzxLVILQ7pOZZdxhWJJZT/VDdafRgbU/Mh7o94zK6ij5+3aDWwFW3
-	duNmQBnJCIVm9/0JsuIQz7TadiV5SDv7E3JH4
-X-Google-Smtp-Source: AGHT+IG4XzsUhVmrn4fJ8v1PNDsbGNCghgUfxDPbkeqpUjvEg9N6RxHWj66Wbdw1AdmD0ATs4dsvZw==
-X-Received: by 2002:a05:6a20:3ca8:b0:240:750:58f with SMTP id adf61e73a8af0-24340d91edcmr35447322637.30.1756454578938;
-        Fri, 29 Aug 2025 01:02:58 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd0e1c0besm1461992a12.24.2025.08.29.01.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 01:02:58 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 1E9654489F51; Fri, 29 Aug 2025 14:55:28 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux DAMON <damon@lists.linux.dev>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Power Management <linux-pm@vger.kernel.org>,
-	Linux Block Devices <linux-block@vger.kernel.org>,
-	Linux BPF <bpf@vger.kernel.org>,
-	Linux Kernel Workflows <workflows@vger.kernel.org>,
-	Linux KASAN <kasan-dev@googlegroups.com>,
-	Linux Devicetree <devicetree@vger.kernel.org>,
-	Linux fsverity <fsverity@lists.linux.dev>,
-	Linux MTD <linux-mtd@lists.infradead.org>,
-	Linux DRI Development <dri-devel@lists.freedesktop.org>,
-	Linux Kernel Build System <linux-lbuild@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Linux Sound <linux-sound@vger.kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Huang Rui <ray.huang@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Joe Perches <joe@perches.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	tytso@mit.edu,
-	Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shay Agroskin <shayagr@amazon.com>,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Saeed Bishara <saeedb@amazon.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Alexandru Ciobotaru <alcioa@amazon.com>,
-	The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Steve French <stfrench@microsoft.com>,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 12/14] ASoC: doc: Internally link to Writing an ALSA Driver docs
-Date: Fri, 29 Aug 2025 14:55:22 +0700
-Message-ID: <20250829075524.45635-13-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250829075524.45635-1-bagasdotme@gmail.com>
-References: <20250829075524.45635-1-bagasdotme@gmail.com>
+	b=yyknnkhPjBlTNNYtMI4rKacpkGMoX44Acy/c/nHseFqxOEkDISSLrvyEAsobvCWAD4arC4
+	ttplm66IIKvq6BDvVhBtm/cBbu5Ovo1bMBXjOcsdlIthcZIvOv/1dtOuRzq/TF2VLOkBzb
+	OlwLqjZQ/4kn1lpmbPBZDKa2rQczUvE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 101F133C82;
+	Fri, 29 Aug 2025 08:36:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756456579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
+	b=xcvIEpzfTaWnC6XWrZi1GMFk+ELmbRkz8Ta6BXn0VVj7F9iYelEjtQttfBNTqWzDIo17eT
+	FTEG6izbQMne3GOpYyBp9teHG7I/GIMuQK+ohL8PiP9/8NjiN4eMZx/R8FfOiN/A6xNlRu
+	zXzyCIrZCGZP9/nMVYclQYHmh1XjB5k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756456579;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
+	b=gzcoVx2PpPDSUTwULzYQIRHvOmi3+ariCFO/EmdsWGExWztog3V+v+XF9kB+IMteQQCvuG
+	jHULxr6vgLKM3EAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756456579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
+	b=xcvIEpzfTaWnC6XWrZi1GMFk+ELmbRkz8Ta6BXn0VVj7F9iYelEjtQttfBNTqWzDIo17eT
+	FTEG6izbQMne3GOpYyBp9teHG7I/GIMuQK+ohL8PiP9/8NjiN4eMZx/R8FfOiN/A6xNlRu
+	zXzyCIrZCGZP9/nMVYclQYHmh1XjB5k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756456579;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
+	b=gzcoVx2PpPDSUTwULzYQIRHvOmi3+ariCFO/EmdsWGExWztog3V+v+XF9kB+IMteQQCvuG
+	jHULxr6vgLKM3EAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D87DA13A54;
+	Fri, 29 Aug 2025 08:36:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 4RKNNIJmsWhRIAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 29 Aug 2025 08:36:18 +0000
+Message-ID: <10cdada2-f28f-4868-b821-4a13ed627e76@suse.cz>
+Date: Fri, 29 Aug 2025 10:36:18 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1684; i=bagasdotme@gmail.com; h=from:subject; bh=QIAPxg2EoM7XBiBH/OfCd9SfIrsCdhbBl57WJdF7gOo=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkbY14FftK8Ic/EqPdDdzlDXfSrtOCCiCo1tq0af6f2T rxS2nS/o5SFQYyLQVZMkWVSIl/T6V1GIhfa1zrCzGFlAhnCwMUpABP5M42RYQe/RHjLfYX8tv8L 9vQt6eKUm/OnRm/3gUlFq/44pi2Xf8HI0BjxjsH0R+yFD+urVrRxaVu1SiT8M9vxwkWu7L/ecZP DfAA=
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1643E40014
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH
+ allocations
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Mel Gorman <mgorman@techsingularity.net>,
+ kernel-dev@igalia.com, Helen Koike <koike@igalia.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, neil@brown.name
+References: <20250814172245.1259625-1-cascardo@igalia.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250814172245.1259625-1-cascardo@igalia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: xetqmd9jxk77bzh1izxrwwsn8ep8fwtx
 X-Rspam-User: 
-X-Stat-Signature: u3nhg7fyg7hu7n6gpm5upc1xbxxnx5hb
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756456208-64749
-X-HE-Meta: U2FsdGVkX19z4J3utmR159IN4E0lkX8kAtA+Ej4oNJiGxCthU/d0aNHk+Wdz+zVr2/1bXT4P3yx3qUmLLqt4CU1BMLWFgC0AvMDN4GHLseQaBhT2cMyrxclvy3kTw14+bUJKgja9Q4FDQA4vrmG0grDRkysWYfh9PyGn76a6wofi9maiIvf1RKNNWoMc6YK2JrePdKQ08yDIrpYO1jfK6P0ZyewWrinGZHlIgpYKlJ4wcJ47ASNKiQS052ccglTKIvNal7pKsXaSPCN4MPuewUZU9fKrMuBdQNxfjs/PkYxoZE3NBbMmWYyOhGn5LRmkOYNTu04PYU8p8P5zLZz36OMOweAR6t7o1v58ESNOerV6lc0FuPkOrZoC4uZawzPJJUmv1ZffQfq9ADOiY0sO4e8o8pkTXKhaxywh4VGcva1H07W76VYlEjFIAaf99OMtkNbe3XK0gsMH9+3Dban00wSGO6W8k4n/vQoutbYUyaMhtSgHzZ5/Dqt96l172Md23nrSK8Hvfixs2eEL4i7r9tm1RgkRnUylRREVX120Kzl5pUP1xSEJN/sll27hykdk3q30VgRmdwmR3dPyPQG56YJJsj2sFS3ifOmLkwVSHZpuZRluws5Y1aclrbn9LpmQsDtLC7ImJXyS6XQgMXtY/cj23kGaXVvek3Eh9FfGFomySB79qKRQ+H3ILJVpn83X0/G7ST3Oo7z0a6qXr1RXoggFg2j9aJFZmPnkSoZTJet3X0K/vUv19YlsWElHrlpxIRsLPCfeuF0hvJ87pXB939IvvnVYGBd/jlFbOacAUv9vPLxh8tr6FsRTts8VjVUA2bRN86JPXkHIYQQhgTvpZQyjMLvMqpXvSBp+9RHhsFKaojeVGqsT0nY7HTrShCTVLG0MMKs+qcaKJKRTEuIYWT+8AT1kPYbW0HjCUBS/JNcZIgemjiBhsjue5axHsl1V0s3MukGmqsjMxcrrq2W
- H7SHqg26
- pux7UukOwLEOlyzVHFpwp3GDMgFEBh6Na89S04a4h+IshiR3FohpeXBGLOYctXrW+pNAlMBE4yRRyctOex95hppiU3/NqOfm7Y8LDp8/h6/W2u8/MAI0EUsfn2DDbPs0RxtDk7TLOmkY1EG2COgDrdfSsiXhk4K09qBUm3YSnX1r1Xje4V8tXxmy8gln76+12VozuDOzmFGlpMCqCV46H6Ts9YTt5k0DLC0T3EZZU8PUNCo9FxNjklTh7kYVCiLAD3rukSPsrM0l5jgKKxfql+jWFAbaqv5k57CnQM2LZqITBXsBubCwy48rIPiB6rVR/wqjCrg3ebMTHrNcjxumoQMaT7Oeqgd5yc8BHxjsHMlOfHSGUZJGSiIKp+PpmAvgELd7PPOS3ieUzbm9cTn3mGobc4bItqYtz9m1yYg9X/XhKhtH4HkvfFt5oG3tlX+FwKZYVz2HISsw2LfmtZA2Sqv40stgo0GEWMmJcFE2+RFxujSC9dUz8QUWfph+pbKNzBdxiM0qn0JR+ILb7ya1kaQoLjWbRQVoT94nC40jeDsczvlaUJxhcI5RSFg==
+X-Rspamd-Queue-Id: 05F52120006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756456580-140690
+X-HE-Meta: U2FsdGVkX193aX0+vEOH7Y9z6n+cfcKCEPeKtmhvsb5KZnOqfjXaOHe3EY8+OjS6nllllta9zFU2lfo0K5c07SHrgiuH1U9F9Dxy1/e3SaDWjbZFJmgQOWNbcn7M6Gz+TpNGZDV6qzgCNBE71koFaNRfSReOPNeq83OIS/1ooCSvBHfZPQSzUoRYDDwBuHPWjMdhJCV3vpoLABNpt/tPFuiuBN4uQyAUOHOI6R1+Iu7sWvHp1Y8n/TtX/GdGNBWwdjTvGN8Z5cjouSDbJCBRU8ZhLMx90AXz9Nxi2VUSJeYrZusIaBbrDC3zxEeGx4LggBoAJ3jOkvlIKoD0D983N48lXit7nNe5pGZSq6hpnSKTfTgSmYwe5+w3raIA372fQ1QYchSkIkqKYcK0uyXIH738r6JP/4GxHOXeAexHqkElC9dyw1tQA/K1ZPw3vW24ZR+fAxcwHMiZNo1vvoegtncd2UiGumYASdWt/frGsWiYoBxXv+LDLN2F1pksRD2p+v5OaNhtZQoI2wW29xRNxdvQJxbKT7ytEczt5dJVG3gu8vU4ifzhOKaYJOYIseOzyd4FyGguA6PqekC+NExT6McqpUgM4OUQFithWI5tjZPqh32ITbPEHtgx9GbwYl11nzdUGBI2yNLXSlAw7elZOfETVfzsmSHylcfyjU84d5iUd7t1kBq/KVu1CcUAdCsz+kmV49QkdMWpWIe2iQUOdqwFv9nK0BMG+l71S3hy6pJgG6+wzm43hQ6gSYJbjJ+8msnI/xCopvm0lweHN+bZo/qZkp8k98iIQK6f4IROgWjejRlXBRjQ1rFAQxHddiKQBF+vxhRxYCt5anyW3NWwyGTJnnokc8ECavyIOdA9/sFU1ARNmfykWeRXR+BtF3oFvQj+LNZmVyg+2erX9mWGhxtmkZkXgpD3ABSGbDFob3MlApDQyhYg7olL/e0Du49rkUtpDWO1CIBQDiULTRj
+ rgAzutvO
+ ss4Kf9L/VyHIl3NlQQN9ZKFrorelgcum2TC55vwFtWBqVe11AuuuUtFIhL/JWN2hS4Fda0CpG9CooMSd0cp35qczVZPAX9fU7zrRkQK22jX4VlSvXFZAhydl0PADpFd45Tz6SbygQ2JgSBYT7+94+hsFS+UY6YUkjy4Ee78qQAdc8TgJn9h4bcddgsFM+voOHL48fhHvkA0eJqTizzOF0Gb7+Z68vOsOj66a8Db2cI0WFJK2agcMm27WRx9wFasKYPUj0nUp35lH0t/p5IDTg+LwBc57NvuFU9EgOW4b+gONEcrD5kLgQMJ0z9zv1JkOl+JERPvkug6YsNWXPwpQ4qX12S9/nIneCoXDTtNYmA9hVh0pFPRxx7DjBFd/lzLpzZjMAEb1+Y281cCqzBxYggsWKNvYkXe/bAD04S6JmHRN9XbKaLORWWd0x2GM2Ash8mwQ+YgT84A6xVr8W0ZWYCigq43ZMamVEWAGq11ey41EHV7SxLETUB/y84R/7x6qY4ISouZikETf47VvpWe6rE47tzDOnrPrF0UFSuW6/zStPmz/6YJuphsUqxnEiq/iokm9MOH0jzjSP8+MhBUNpsuQWPrWlBdAQN5HY9lClSGaJctU5R0NGYqI//SS5ScOZDH13wrDvQOU7lKd93s4CHQ36ircWIuv1pUeI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,47 +185,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ASoC codec and platform driver docs contain reference to writing ALSA
-driver docs, as an external link. Use :doc: directive for the job
-instead.
+On 8/14/25 19:22, Thadeu Lima de Souza Cascardo wrote:
+> Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
+> ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
+> which implies ALLOC_MIN_RESERVE, is going to be used instead of
+> __GFP_ATOMIC for high atomic reserves.
+> 
+> Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
+> allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
+> allocations of order higher than 0. It still used __GFP_ATOMIC, though.
+> 
+> Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+> non-blocking allocations accesses reserves") just turned that check for
+> !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were expected to
+> test for __GFP_HIGH.
+> 
+> This leads to high atomic reserves being added for high-order GFP_NOWAIT
+> allocations and others that clear __GFP_DIRECT_RECLAIM, which is
+> unexpected. Later, those reserves lead to 0-order allocations going to the
+> slow path and starting reclaim.
+> 
+> From /proc/pagetypeinfo, without the patch:
+> 
+> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+> Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
+> Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
+> 
+> With the patch:
+> 
+> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+> Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+> Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+> 
+> Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> Tested-by: Helen Koike <koike@igalia.com>
+> Cc: Mel Gorman <mgorman@techsingularity.net>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: NeilBrown <neilb@suse.de>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
 
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- Documentation/sound/soc/codec.rst    | 4 ++--
- Documentation/sound/soc/platform.rst | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Agreed with others that this change matches the original intention and it
+must have been an oversight. Also found nothing to the contrary in the
+original threads.
 
-diff --git a/Documentation/sound/soc/codec.rst b/Documentation/sound/soc/codec.rst
-index af973c4cac9309..b9d87a4f929b5d 100644
---- a/Documentation/sound/soc/codec.rst
-+++ b/Documentation/sound/soc/codec.rst
-@@ -131,8 +131,8 @@ The codec driver also supports the following ALSA PCM operations:-
- 	int (*prepare)(struct snd_pcm_substream *);
-   };
- 
--Please refer to the ALSA driver PCM documentation for details.
--https://www.kernel.org/doc/html/latest/sound/kernel-api/writing-an-alsa-driver.html
-+Please refer to the :doc:`ALSA driver PCM documentation
-+<../kernel-api/writing-an-alsa-driver>` for details.
- 
- 
- DAPM description
-diff --git a/Documentation/sound/soc/platform.rst b/Documentation/sound/soc/platform.rst
-index 7036630eaf016c..bd21d0a4dd9b0b 100644
---- a/Documentation/sound/soc/platform.rst
-+++ b/Documentation/sound/soc/platform.rst
-@@ -45,8 +45,8 @@ snd_soc_component_driver:-
- 	...
-   };
- 
--Please refer to the ALSA driver documentation for details of audio DMA.
--https://www.kernel.org/doc/html/latest/sound/kernel-api/writing-an-alsa-driver.html
-+Please refer to the :doc:`ALSA driver documentation
-+<../kernel-api/writing-an-alsa-driver>` for details of audio DMA.
- 
- An example DMA driver is soc/pxa/pxa2xx-pcm.c
- 
--- 
-An old man doll... just what I always wanted! - Clara
+> ---
+>  mm/page_alloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 2ef3c07266b3..bf52e3bef626 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4219,7 +4219,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+>  		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
+>  			alloc_flags |= ALLOC_NON_BLOCK;
+>  
+> -			if (order > 0)
+> +			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
+>  				alloc_flags |= ALLOC_HIGHATOMIC;
+>  		}
+>  
 
 
