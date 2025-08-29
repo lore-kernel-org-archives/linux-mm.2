@@ -4,131 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E974FCA0FF6
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 01:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F93CA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 01:55:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 106BA8E0007; Thu, 28 Aug 2025 21:52:54 -0400 (EDT)
+	id A5B4F8E0008; Thu, 28 Aug 2025 21:55:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B71D8E0001; Thu, 28 Aug 2025 21:52:54 -0400 (EDT)
+	id A32ED8E0001; Thu, 28 Aug 2025 21:55:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE8A78E0007; Thu, 28 Aug 2025 21:52:53 -0400 (EDT)
+	id 96F528E0008; Thu, 28 Aug 2025 21:55:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA64C8E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:52:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 58CC11604F1
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:52:53 +0000 (UTC)
-X-FDA: 83828121426.04.F184E81
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F204C1C0002
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:52:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yvM2fhup;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BCXIM4gw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yvM2fhup;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BCXIM4gw;
-	spf=pass (imf21.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=dsterba@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 858D88E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:55:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 63FEFC04CF
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:55:51 +0000 (UTC)
+X-FDA: 83828128902.11.BB1FE56
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BFCFBC0006
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:55:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=B92fYg2u;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756432371;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756432549;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m5PjV1QuRgaFx0hIiX2Widzl5+PIyq+xRHTpwMuiIVg=;
-	b=qhUpBYombAFue6MjVnnJC3D1sk7xQYJxRsVqkpG6YENWCZfCgaxpvZPUzCIlVDVNU3xI5q
-	XrBvbLQt7zVa3y3NUoBByld56ioXVgqtotX8EP9qBaFd1jUBo7e7jm5M7gT2Fpqt4yqn3j
-	jgakbH4qCT0KuT1Jh773WOw0mjh19L4=
+	bh=lJhaXXSDqG4GAemXi4WtUd9dZ0qacHvLnl2G4eecVXc=;
+	b=dNBdRgF32toPJPr03oGSW7livrzkp8i+yFqKrQhzReCtTAfc6bl8MHxTeXuLj31ue2FWxY
+	HczAaY+Soi+Gz9zJLMjXM/GfmBLuKN0g10siYnvI5W1neeVoEhQD0TUbrJqPPaX+B32tOM
+	TPeopboXx5il8grWiH6sUpJz34x1J9I=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yvM2fhup;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BCXIM4gw;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yvM2fhup;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BCXIM4gw;
-	spf=pass (imf21.hostedemail.com: domain of dsterba@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=dsterba@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756432371; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=B92fYg2u;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756432549; a=rsa-sha256;
 	cv=none;
-	b=EGYSBK8nl4ADx1KbBoJzw1hQNaEl2uVyyV6O1Uk25zBMpuqigI/7q3Yx4yFj2VgisBjbMY
-	Cge9dDv7gJRbEigB5Zq/u6k7t9FpIlFZmiy2lJ1sZF/21Wv9ifyeyXG/D6E8sTEe+xGa0U
-	vh5f5lHx0HA2CSFlt42FaoaWOtAA4z4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 15DC933A80;
-	Fri, 29 Aug 2025 01:52:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756432369;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m5PjV1QuRgaFx0hIiX2Widzl5+PIyq+xRHTpwMuiIVg=;
-	b=yvM2fhup4rBkZcITx5B+l6Aj3FXyJw4oxIsu3au2HfR1WSnCAswugdHO1SoviztjZYfx/6
-	HbclGBBd25M/K80U0f3GAMZ2fh3U6iwCKVjosqLjQMoiPT9GUJgIqJNvXOmdjnAjLCPgoV
-	YpVCaEq93eb+H+UhOGw0sPFelO1SuRE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756432369;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m5PjV1QuRgaFx0hIiX2Widzl5+PIyq+xRHTpwMuiIVg=;
-	b=BCXIM4gwGM9NlgtoMDV+uaSe5/qq1Ysi47ADNXsSJHjYTRQUdzN2FTx10XPimgLzEbFKRq
-	oFQccs21R/F7QvAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756432369;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m5PjV1QuRgaFx0hIiX2Widzl5+PIyq+xRHTpwMuiIVg=;
-	b=yvM2fhup4rBkZcITx5B+l6Aj3FXyJw4oxIsu3au2HfR1WSnCAswugdHO1SoviztjZYfx/6
-	HbclGBBd25M/K80U0f3GAMZ2fh3U6iwCKVjosqLjQMoiPT9GUJgIqJNvXOmdjnAjLCPgoV
-	YpVCaEq93eb+H+UhOGw0sPFelO1SuRE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756432369;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m5PjV1QuRgaFx0hIiX2Widzl5+PIyq+xRHTpwMuiIVg=;
-	b=BCXIM4gwGM9NlgtoMDV+uaSe5/qq1Ysi47ADNXsSJHjYTRQUdzN2FTx10XPimgLzEbFKRq
-	oFQccs21R/F7QvAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E9B9613310;
-	Fri, 29 Aug 2025 01:52:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hpziOPAHsWg0EQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Fri, 29 Aug 2025 01:52:48 +0000
-Date: Fri, 29 Aug 2025 03:52:47 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Boris Burkov <boris@bur.io>
-Cc: akpm@linux-foundation.org, linux-btrfs@vger.kernel.org,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	kernel-team@fb.com, shakeel.butt@linux.dev, wqu@suse.com,
-	willy@infradead.org, mhocko@kernel.org, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH v4 0/3] introduce kernel file mapped folios
-Message-ID: <20250829015247.GJ29826@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <cover.1755812945.git.boris@bur.io>
+	b=Z/31lNyBpcJ2e0/SED6APeznuoVPK8xIfLsEgKbb3p7zHLaVKsjR5hLjv1kXnocifPOu27
+	rXNGUVT4zBgRxON0xYGKjnJEZANOGnDpAjR8xo7MD+2ljL59w9yds0Dmf7vjU5ukFap1Ff
+	PSwC4sTsAzycidIQfUFOchwull4CDEE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1756432545; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=lJhaXXSDqG4GAemXi4WtUd9dZ0qacHvLnl2G4eecVXc=;
+	b=B92fYg2ulY2PUvS20VsurrbPF0SFKGMwsaCm5aPgGBjpElHcatpZb8KC+OXHWdd3wTeepWNBB/JUKjfj+abe91r5bBdtXSO6KT6w0eeelWyzXQ9j1OmhjFv41VE40USsyyxgZ5tOG95UYMJkjPqA3wFM0oypGEwVeD5rob3UehM=
+Received: from 30.74.144.113(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wmpa1nb_1756432541 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 29 Aug 2025 09:55:42 +0800
+Message-ID: <2a141eef-46e2-46e1-9b0f-066ec537600d@linux.alibaba.com>
+Date: Fri, 29 Aug 2025 09:55:37 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1755812945.git.boris@bur.io>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F204C1C0002
-X-Stat-Signature: 5w3d8meordcce55ad9uzce1uyocmx63f
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
+To: Dev Jain <dev.jain@arm.com>, David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com
+References: <20250819134205.622806-1-npache@redhat.com>
+ <e971c7e0-70f0-4ce0-b288-4b581e8c15d3@lucifer.local>
+ <38b37195-28c8-4471-bd06-951083118efd@arm.com>
+ <0d9c6088-536b-4d7a-8f75-9be5f0faa86f@lucifer.local>
+ <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
+ <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
+ <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local>
+ <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
+ <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local>
+ <95012dfc-d82d-4ae2-b4cd-1e8dcf15e44b@redhat.com>
+ <bdbb5168-7657-4f11-a42d-b75cce7e0bca@lucifer.local>
+ <e34e1ffe-c377-4c9a-b28b-ca873f3620ac@redhat.com>
+ <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com>
+ <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BFCFBC0006
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756432370-803634
-X-HE-Meta: U2FsdGVkX1+4wDazva7xbHw5AqgfTzogtpDIW86f/ERqxhNEkssbOkWw0uHYGm9tOuKXzZNUfMr0/Ae9tQq5AtfTwDRQQCv5FsMAYqORXl/UzTHGtRMtnbVEvN2pzg60JI0ombiq7OHGCbwoIyyiBULV9HMOW+eefikz4J31asyLvvZz4AjMEnIdg4Cj2S3p0Y13gWXCIvpYxih34s51d+jNAMzGWdKtqET49nEYPVLJy+MUsFdcgu69vWQdRtnRTeDjma/xsX5dXGNhp/sClsqHzxJ91SeSow++xarOMkjHcUKhxXyCdZSx6xqkJHm8oOvcaEebyHVdlJSRkcggaNYUof1dj2onMrixQTwfr1Rznw7clK0lUGCdafrSKAeeQhOejl2+8IN06U8cqiU+gbz3pPnIta8E9yUnS0TvllZSC2BM4tYtBdrPdbTxLKwE5OIAVPF8yc1+okqyC8ULRKh0u89+I4+ZwivOBSO7gOx9VwP//Yq387d/MdCaniiRbePrkmrYGSnOeZWinFSuWreNqYK8Tx6oyZ3R+/5izJQrNlGfjuusAoctDVRhcDBxvMO+ICpvRgeJ3DIW0G73Flnsc9wH06Zal7OqSosXM7MPhjPE6UMRE+rcV1Dxss4TphWfw2Cb+zmqjXvx++PgsbtriTh+xsg3pt021ixmbqM2beCDhbPLLViicIAOiWq3djhTG3Ox5XVA7MgW8u0KKoYhjqdI/6CSpbQTQedGCwOUtRssTIENVbKjoXnym4xLPrOWgHxnbzdZQg0OXHwzQIM80gZpehsDHNh30iL2h6wGqitZkYH2zayRkRwrjYDjeWNqjW3ItPjnGdhl1vtRvXjVHCos2aL1blgrW/jY8fpB2SkyDaJaL0YeRHS2QQZcLSTmkEp8DzsSwR6RaU+20RAiAbRtQDF/m/gVkTNIqL0AIE+VeZCGGrVIG7CVVngnmFLzkjcuh+6H1Drbhxs
- 0re5kujU
- 98/s/8Yda8keift5bcoh6DbKWPTMqSRaOSkjYNh9R4bXN4qY2W/HOysnK8gJCfLkEe+0rAnRU28iIJ2aD8E+7fFZtnwmCP/NtI2h3stf5PM7ifiW7qSBPHLXl4eO62hKP6Jf007e6dc7PT/sn6vPX9UILI84dJga7kvSHG/qaxP53nIMRbhnCQmJ3cfv6qhZFUawpZkzhzzph0tP/ul5no0WSVBXNZ5T1l+TM6KBgAuDZpMN5hAbnUsQjTjG+3cwg3iM8YiH99CKaYoVJrSghF+YK6INGbNYqnFEz4+vcBxNiCvtkzEkWYhshxM7hpAmwDJHWzwknTXdcQdVighIoBE2mrH0HmEIZ2mIcsYimISnX/hto97QWJlnOfBFxfSVHLq5osMPQxQhSk32pMOW6TxiDEj15pLrzYA0ogaRm2XDa2qD7cla+W3PzEA==
+X-Stat-Signature: dic9e6xazhpfprftye8p9orfb4ajrr31
+X-HE-Tag: 1756432548-525317
+X-HE-Meta: U2FsdGVkX187WFP2bFKmnrdisQgRTKnCBxxjau/UU+0zSv9T4THzPWNUsrSt6PreqaZ5myNubzS/zUrNcGWAlILSmTFwGc2hlkvjzmJ1BhpZK4sTX/w810ux7I20uJUiQPVJ+dyy/OQswewiHXQDA0dZFAghA2TJ6TEVv5P2TV4F9lLSHyoZeDHZO6OqYLhQdykcKLKxmvVKFXwNifzpOFigjFi5rMvcw1PwiF1SCxFaZw/lSjTtjWZHMO/wshLeXBRhQUCG+LocsJb68nfN0kbiyoz1BejQJRYyy5/+iFGQb7DnMwJY7D8Gv8jStEJmy1xhzddu8zV8L/D1a9SUyUOOqGO5PXw9lsjYFx1fpsOe1nl+sNGe5rXP0JFJkGhXWcbL4HYlCchk+1qH1S2qptumNexEcFlChVGNf3Q4LCPj5RBolmNZ/um3Mhet9cVinTapnixSbbBkeWNujRVLNDs2x2ELwH9SGUmat+FsiqN7t2avx/lq/7QXCCU/O2hveBxzxE4IM5nTZAA0ce69BmpUwEHwS8WhT7ocI26NwdxmZE1u7dOZsnwyl/S3xUSWIlTi1KdUv29c/TLQhz1XM/71lG0Oynb3XqihnVMZXc0j6KKT+1aT+8IYaM8tiwh569eewngZ2Plb534f/vdIKHjbbHmVeq4KXr76P4gkX+wtccL+iyFDutuc4yb7Xlh2/z+566EDK//j3+srm6f/p9Qz8liPQo1FW7xLQdJNrxwbFSlJUFVFD+y23oY4pvUaX7fhhczfkBdM4H4yzLQrXJHObX5o+lqBv0C6q7dbv/9+p60Dj94l2A0Z4RawwtMc8nRL5mtuM3tbzlsqu6P5TLAPqZaFnfSSiP4PavTSnOIzBhNz2f5eRHtVG81S73MTpVcs3pjKqMnP2J7GUodbB2caNGUJQTDKcjVLSUEtBZ7ijTYN186xH5iJPLaK6vn999zdkof4Idi3sXbN0XQ
+ hvFKumXc
+ pv0Da7b6A7xq+dY6auq5lYq0VfmqHllYW4SvLfNWiHNJg+iBarHDjqaQDWEohDX1z4KDe8ZZoRKBZA/E47RWesFwYDsp+Ez3yNOvWrjshgRnV3r6pQN6j6I2yMyH7EYvJ8Z78ucQ+jZB/YWKIT/5wDVtaWVPHfJKxDazlz5OIMkQo027f9VgItYHgKdkM/2mIbrxGjnxNakcegQTwC8d8LJyIl+VC1z1gzK8AohcsZI/MQkfC09IOWy3rHgrwAaglOFD1N3hev3CcPm3mOioPnSwkwLSpruWUvWF+POa4acB1N9iT6lDkk5XYqaCWp7+fYV4o9pArbzWr5IGfuXnW3GbqtC7e4o3FxnyPddkNphHA96KYiFjbtmoMLet0qXv0SXgjpzRd1kK3AoPQNEMlHjFmp5UGim5nv6Vn
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,46 +113,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 21, 2025 at 02:55:34PM -0700, Boris Burkov wrote:
-> I would like to revisit Qu's proposal to not charge btrfs extent_buffer
-> allocations to the user's cgroup.
-> 
-> https://lore.kernel.org/linux-mm/b5fef5372ae454a7b6da4f2f75c427aeab6a07d6.1727498749.git.wqu@suse.com/
-> 
-> I believe it is detrimental to account these global pages to the cgroup
-> using them, basically at random. A bit more justification and explanation
-> in the patches themselves.
-> 
-> ---
-> Changelog:
-> v4:
-> - change the concept from "uncharged" to "kernel_file"
-> - no longer violates the invariant that each mapped folio has a memcg
->   when CONFIG_MEMCG=y
-> - no longer really tied to memcg conceptually, so simplify build/helpers
-> v3:
-> - use mod_node_page_state since we will never count cgroup stats
-> - include Shakeel's patch that removes a WARNING triggered by this series
-> v2:
-> - switch from filemap_add_folio_nocharge() to AS_UNCHARGED on the
->   address_space.
-> - fix an interrupt safety bug in the vmstat patch.
-> - fix some foolish build errors for CONFIG_MEMCG=n
-> 
-> 
-> 
-> Boris Burkov (3):
->   mm/filemap: add AS_KERNEL_FILE
->   mm: add vmstat for kernel_file pages
->   btrfs: set AS_KERNEL_FILE on the btree_inode
-> 
->  fs/btrfs/disk-io.c      |  1 +
->  include/linux/mmzone.h  |  1 +
->  include/linux/pagemap.h |  2 ++
->  mm/filemap.c            | 13 +++++++++++++
->  mm/vmstat.c             |  1 +
 
-For the btrfs parts,
 
-Acked-by: David Sterba <dsterba@suse.com>
+On 2025/8/28 18:48, Dev Jain wrote:
+> 
+> On 28/08/25 3:16 pm, Baolin Wang wrote:
+>> (Sorry for chiming in late)
+>>
+>> On 2025/8/22 22:10, David Hildenbrand wrote:
+>>>>> Once could also easily support the value 255 (HPAGE_PMD_NR / 2- 1), 
+>>>>> but not sure
+>>>>> if we have to add that for now.
+>>>>
+>>>> Yeah not so sure about this, this is a 'just have to know' too, and 
+>>>> yes you
+>>>> might add it to the docs, but people are going to be mightily 
+>>>> confused, esp if
+>>>> it's a calculated value.
+>>>>
+>>>> I don't see any other way around having a separate tunable if we 
+>>>> don't just have
+>>>> something VERY simple like on/off.
+>>>
+>>> Yeah, not advocating that we add support for other values than 0/511, 
+>>> really.
+>>>
+>>>>
+>>>> Also the mentioned issue sounds like something that needs to be 
+>>>> fixed elsewhere
+>>>> honestly in the algorithm used to figure out mTHP ranges (I may be 
+>>>> wrong - and
+>>>> happy to stand corrected if this is somehow inherent, but reallly 
+>>>> feels that
+>>>> way).
+>>>
+>>> I think the creep is unavoidable for certain values.
+>>>
+>>> If you have the first two pages of a PMD area populated, and you 
+>>> allow for at least half of the #PTEs to be non/zero, you'd collapse 
+>>> first a
+>>> order-2 folio, then and order-3 ... until you reached PMD order.
+>>>
+>>> So for now we really should just support 0 / 511 to say "don't 
+>>> collapse if there are holes" vs. "always collapse if there is at 
+>>> least one pte used".
+>>
+>> If we only allow setting 0 or 511, as Nico mentioned before, "At 511, 
+>> no mTHP collapses would ever occur anyway, unless you have 2MB 
+>> disabled and other mTHP sizes enabled. Technically, at 511, only the 
+>> highest enabled order would ever be collapsed."
+> I didn't understand this statement. At 511, mTHP collapses will occur if 
+> khugepaged cannot get a PMD folio. Our goal is to collapse to the 
+> highest order folio.
+
+Yes, I’m not saying that it’s incorrect behavior when set to 511. What I 
+mean is, as in the example I gave below, users may only want to allow a 
+large order collapse when the number of present PTEs reaches half of the 
+large folio, in order to avoid RSS bloat.
+
+So we might also need to consider whether 255 is a reasonable 
+configuration for mTHP collapse.
+
+>> In other words, for the scenario you described, although there are 
+>> only 2 PTEs present in a PMD, it would still get collapsed into a PMD- 
+>> sized THP. In reality, what we probably need is just an order-2 mTHP 
+>> collapse.
+>>
+>> If 'khugepaged_max_ptes_none' is set to 255, I think this would 
+>> achieve the desired result: when there are only 2 PTEs present in a 
+>> PMD, an order-2 mTHP collapse would be successed, but it wouldn’t 
+>> creep up to an order-3 mTHP collapse. That’s because:
+>> When attempting an order-3 mTHP collapse, 'threshold_bits' = 1, while 
+>> 'bits_set' = 1 (means only 1 chunk is present), so 'bits_set > 
+>> threshold_bits' is false, then an order-3 mTHP collapse wouldn’t be 
+>> attempted. No?
+>>
+>> So I have some concerns that if we only allow setting 0 or 511, it may 
+>> not meet the goal we have for mTHP collapsing.
+>>
+>>>>> Because, as raised in the past, I'm afraid nobody on this earth has 
+>>>>> a clue how
+>>>>> to set this parameter to values different to 0 (don't waste memory 
+>>>>> with khugepaged)
+>>>>> and 511 (page fault behavior).
+>>>>
+>>>> Yup
+>>>>
+>>>>>
+>>>>>
+>>>>> If any other value is set, essentially
+>>>>>     pr_warn("Unsupported 'max_ptes_none' value for mTHP collapse");
+>>>>>
+>>>>> for now and just disable it.
+>>>>
+>>>> Hmm but under what circumstances? I would just say unsupported value 
+>>>> not mention
+>>>> mTHP or people who don't use mTHP might find that confusing.
+>>>
+>>> Well, we can check whether any mTHP size is enabled while the value 
+>>> is set to something unexpected. We can then even print the 
+>>> problematic sizes if we have to.
+>>>
+>>> We could also just just say that if the value is set to something 
+>>> else than 511 (which is the default), it will be treated as being "0" 
+>>> when collapsing mthp, instead of doing any scaling.
+>>>
+>>
+
 
