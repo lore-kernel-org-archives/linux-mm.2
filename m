@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72EDACA0FFE
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 23:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B77A7CA0FF0
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 23:39:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6738A8E000A; Fri, 29 Aug 2025 19:39:56 -0400 (EDT)
+	id E61B58E000B; Fri, 29 Aug 2025 19:39:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FBA28E0001; Fri, 29 Aug 2025 19:39:56 -0400 (EDT)
+	id D4FB68E0001; Fri, 29 Aug 2025 19:39:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49C6C8E000A; Fri, 29 Aug 2025 19:39:56 -0400 (EDT)
+	id B109D8E000B; Fri, 29 Aug 2025 19:39:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 33A938E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:39:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B05721A09BF
+	by kanga.kvack.org (Postfix) with ESMTP id 846808E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:39:57 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 521E31409C4
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:39:57 +0000 (UTC)
+X-FDA: 83831415234.28.C527A6D
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 70E4C120002
 	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:39:55 +0000 (UTC)
-X-FDA: 83831415150.21.3548A6B
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E1B5E4000A
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:39:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=b1zLFHvC;
-	spf=pass (imf27.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h1ZY8xAc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756510795; a=rsa-sha256;
+	cv=none;
+	b=uSgeV6F/Hwmkk8kidoDy+LyzhLtCIbxx3VdeFC1cVI1bwyL5/vcqkSoQBVEjVouXxpQHE9
+	yAdDuqCMNVHAbixdRSHcBYuWT1UULKKjW9jQEoIORj2ReBFbHJvP7ZMsSzqoh5OSbKmb23
+	mwHm8BXhLuO+xG6pIMJV6ix7siYMBJg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h1ZY8xAc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756510793;
+	s=arc-20220608; t=1756510795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z9yE6iUWv1HmTcycn2Kgovi0OD86opQK3HCN8NH31Dw=;
-	b=cxzVbW9EPyO1ZRgEyxyjcq0snZI/HNakbD5B05z/XE3UxZC+3kv1dgslgAe7omGlIprvMA
-	k+yCKwdnf2MEin24VO403Ox3DLY7ypUjOH/hBDV7DTu1QBxJYE5HCvHCHC6YNZD/1IVsPH
-	fKKLm/KrCAfRD9LCnUz0vRwinMRzBps=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=b1zLFHvC;
-	spf=pass (imf27.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756510794; a=rsa-sha256;
-	cv=none;
-	b=SIBZLSRwrmhxYpe5Jzx931EVZTOUIe1Cckw9UOa9FPeOM0B0O5/WpuaFBZqS1YbIEC+ztP
-	7M6Sm5HKo1lortKR343Y9pXOKxAKDEd53xMFvewD3i9f6G8vic3o8wPpVVWkQxaKm1bS88
-	NaIwVZ7enEHsYHypmCRvEryxarEgUFk=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-327771edfbbso2712666a91.0
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 16:39:53 -0700 (PDT)
+	bh=FJA038u/hVaTfJzlpSdIW82J/HgeOkdB6HYf+GuBfk8=;
+	b=5nNdOvwQV9G8KzrsVZhD+2fmmhBrzfPpUut1Kp2mGltBmcLt1d6qSdXa3FegEfMmsDxhCF
+	bN/apvi4hV59W1eqJxvqgiAdt3+e347rOEZWzN1qx9KUZ7u/Tem96P9WyKslsOBeD6jqGI
+	x3uGopfO07KIK5J9i2oL+pygnFgLNFU=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7720b23a49fso2967619b3a.0
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 16:39:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756510793; x=1757115593; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756510794; x=1757115594; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z9yE6iUWv1HmTcycn2Kgovi0OD86opQK3HCN8NH31Dw=;
-        b=b1zLFHvCsLTw25nSbq1QChM1aWEo5Na7UXEZYaaSV0VWV/Z1O6Th4zN/V90I5I9XR1
-         ZruNYd8TasA2rIO1BGoLMmpPvV0GtFFOhp58+KSoNGWSTn/vjOlvHL3LHfrI/rBIRona
-         BGI4xBDx7/jFShT+Xm6tA5b8ixvVuewsE6kA3cg9t/mIGV6IVEIUM8t9//PwHpiqWekL
-         C0k9NVTYH/fHspvaWOjWrNjafvKGNyYEN9Hh+YLWUTVO24wMqotml6sodnPpEThcf65j
-         FEi7XTfF338USclJZy/itsRpEXzjKLyTdiryMyLJkBHb/e8EE95lVhnPlHYTgMJE8hcP
-         cL/g==
+        bh=FJA038u/hVaTfJzlpSdIW82J/HgeOkdB6HYf+GuBfk8=;
+        b=h1ZY8xAcia1YWKvytmoENzC8k8pQ+9nFYwvIvACCsYb1w6X1QWZSnPIs5dshVTyY1d
+         S+v/EH9UgPvb7vor51h40xyxncjdjr5Oxaf3bImZpE+vRMojmGpzPgUCPXieCz7DqOVL
+         lZUvClNoE3auaXsmiSyLMEmamdgk8lCkAMhv8DhW5xtd2hZihCMai8V3hFAsVlrdhL2b
+         uFzzaSSLetjx8I0ehAXYkwiQyFFgvH6CXpX4L+Gh5x6XdN0rxqYy8dpO9ArGIOdUDPLm
+         ivv0lmyxz7xmu8MV11NecAvpY+8zAu2hJFt3My9EOpobWg/FIEqj/Xh65tStzE0YYhQn
+         jPjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756510793; x=1757115593;
+        d=1e100.net; s=20230601; t=1756510794; x=1757115594;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z9yE6iUWv1HmTcycn2Kgovi0OD86opQK3HCN8NH31Dw=;
-        b=bOibSzrWzdtjb50IywIPjxxgs9SUpOXUWTrWHPv+xCF65HexTSAapvVGqK3wT1MfD9
-         bKu3USuusFizOi8w98m9xTG8CrXi3KOboWTSN2TBspTtwjofaayMPcumulavbHHMFzEr
-         NzIdEJqdqLeOinIQ9ZBv0SjX5aqQHthKvO9EaZIb0bcpFFAhvHswyCnNNhz9muBum2Ac
-         /Wu0NeVz9XlA+bIVONHlcOthNZIEObQ+9zu3ws2Eby2MMTSSV/x9Q11StaRPuBciefEI
-         7u0nYjavdguPv6aGBips0MieQsrrYeech72VL4AYkLGOoGw/faspwwIoH1tb3WsKz0nq
-         jqZQ==
-X-Gm-Message-State: AOJu0YwGXijcT9S1NUaprtm70LOoCRHfhhs7b+rgZqHyaCkq7DpPmY4D
-	0IzdyvvyglwWI2gyY+pwQI5S3qMTvEQiqp3CW3aAd6jZpq+DWaWLBVoyn/cwYA==
-X-Gm-Gg: ASbGncsWZup01PKJB4RMvXjvR5i4JJgqpGzqshC34HqHbQSgFDkOaOid/1iHVIRHgRV
-	9t95r7czPl2T1TCYn4OJ6ClO2FHf8G4xT6pJju0PGw1b7zYOSU8UwDV/jmWjnS6JcfHFkovOkrn
-	Ut2vwHvgNR2h86PNK4Wk8RfAgBSkd9oykFVmMA8YEG7F3ey19gzHQO+YbLWfPi0BL9b8kNsHmLB
-	gS2q8RAn7QTTu5VVhl+buhyZUojpA4zI4B6xCkZrrIIP5LZ7yZvI26jUTJjcKV3m1alV8ox//MT
-	U8c+wqmmJappurFGpNoIAX12eo6wX5KVPwcwp8/qkGx9+kFQtoZzcpxNHE/TVZG+bY4WI44CUY5
-	oZupEKllCXVYLL5kM3x/Ac/IPqHvn
-X-Google-Smtp-Source: AGHT+IEakBzSU3WTPQcPaNKIo9o/oNQ5zQ/nTiRT9vUZAKzQVW1JTdcqtGnmIj7pMlDYZQjvOwwypw==
-X-Received: by 2002:a17:90b:57cc:b0:31e:c8fc:e630 with SMTP id 98e67ed59e1d1-328156cc985mr554327a91.26.1756510792618;
-        Fri, 29 Aug 2025 16:39:52 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:58::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327d8f66f16sm3893578a91.0.2025.08.29.16.39.52
+        bh=FJA038u/hVaTfJzlpSdIW82J/HgeOkdB6HYf+GuBfk8=;
+        b=j71q8XK3yLGlijNbFht/89t/9qmP2rBgQhkbZpUGG48GBPIin9ZZjJZdUwoCUmNVdp
+         GS9kmL4O4OeY9JWzACWfpZtjg9NKbMc2uLcJdxxWHExKmDuTJW8b5MLoFK0RSGq+r+wu
+         vHKt+E558M1NrtuO434T8nnT+xqGhviSPrzvB9NcVeD58y1o006wBLnwcCgVK0n96b31
+         /uHW8lWyJ6xmflMaP/66E2LlXkKhb7M1bDc7K+qEmfS/9sWy/RLkXWeQhpqEutEBF13f
+         b8jL1q68ljh7YhE2ORbOijHVirOAhb9GY4M1UFzjiea4+eah1l1nZ8KrZi2VH7AQ7DnF
+         nrqw==
+X-Gm-Message-State: AOJu0Yz2Drd4Kycv5AvZ1YWwO8DuLKgVjiHNdpZE0i8l8xEOvDvU8J2r
+	VWKwzbrtLmNuAo+aoCQTTGyP41f66v+QyX6C0HfUf0LP9RP6fKS3IIKxZ9Vunw==
+X-Gm-Gg: ASbGncvyyybAbVFKE7/D7xVSw04XD0quObLfCsXbMxXCbpnKjFwZ/E7sL/K+j0/VjaE
+	LxafVXLGMtBwKa4WL1WMH8JzeRQMMer1fmUbpOapMmh4oCkXGAHUR05om41gXPvVESpGqnRi5Ye
+	rY8E/IAs3Irf8UVVOfK+V8WmFBBvA8XMmPJxos2+dw/cBnwqzdRHgYDgIA0wtqa0fIwBHC+WMG9
+	OFDwAdpSGTry9Fct0QuztYLuh52UusmH36mYuuLOLkngGo7yYD7NIXd3vOFAV5ljHl3eiELpafd
+	hDRsUjUI9pPk+EaDVdag5Qm7ultR5LYUnBcGnuRcM+mRTN7NrfLjogMDa1ekyv2zVwC603MexrN
+	ALkfQOjQi08bH1FsqjQ==
+X-Google-Smtp-Source: AGHT+IEBPziX3AMkqRWppj89LkOFryUfRsFbxlcudKr1XhSz9+T7ZzWbMWnph4rPkKvGAQaf5UikVw==
+X-Received: by 2002:a05:6a20:244d:b0:238:3f64:41a4 with SMTP id adf61e73a8af0-243d6f37d92mr537160637.44.1756510794143;
+        Fri, 29 Aug 2025 16:39:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:4e::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd006e546sm3226572a12.4.2025.08.29.16.39.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 16:39:52 -0700 (PDT)
+        Fri, 29 Aug 2025 16:39:53 -0700 (PDT)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: linux-mm@kvack.org,
 	brauner@kernel.org
@@ -99,22 +99,22 @@ Cc: willy@infradead.org,
 	jlayton@kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v2 02/12] mm: pass number of pages to __folio_end_writeback()
-Date: Fri, 29 Aug 2025 16:39:32 -0700
-Message-ID: <20250829233942.3607248-3-joannelkoong@gmail.com>
+Subject: [PATCH v2 03/12] mm: add folio_end_writeback_pages() helper
+Date: Fri, 29 Aug 2025 16:39:33 -0700
+Message-ID: <20250829233942.3607248-4-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250829233942.3607248-1-joannelkoong@gmail.com>
 References: <20250829233942.3607248-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: smeawqa34gsgotmftndf14faxhp94o5q
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1B5E4000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756510793-953690
-X-HE-Meta: U2FsdGVkX19K7jisMxxW+ZuHwq26JO8sALhprs5UKNQn9CICEyvCDlmX0lIsGWZMUVbe9S5Y6fV4mO5WNL3NK/wh6sbsLFhndR5rD88eRwFjj36PiA0lGYQN+8kHu/2r+AQjep8AQsy0gm2tQPwA86yhb62gT+tp+bVnzdUFhWRUeozjMYSpGu7fN+Om+i3r43PCqiav9hbKZlmWnqH2yNiQGRfNbcVw66ZDpusSXzgn99c47O+0W5krQF2xHyOLTl/h5aCxXWa5ZsFqoc8mfEByebxJbMvlLnEl60Vrv28SrGKk2gTJcQH01eb55lV2BDkQ8Tc4mQvPdLNPdKuEXiA/JpbXXI5T3oZYIH2xrMMqu0ks/u6lqe7T2iXOIEU1NQV/wOWgNG0EOS1D6+FpJ7PvxsotcpmiyYgQY0P6aN4KMB/J5C1i0vCyJ3crQikMZUqDXr40ie0Q0TKuXXzSRTUBghXdhGLOhTFW3DnEHNz8O5cwXxWjIOHEkSP5ZPW7mkG18mgFG6UbmIk1UlqvNGhQHQYx72UVEKtRcZ14q6+Xc6na4zO5xOmEOCHM8B2H14xlWc8W2TCMzhht4H7XGiZpgGzjo+BeFmVp4g+AUrZ11kXxraAAVhSQx2vmFrphpUWQc8TdXVebhuS98Fx7tX9BL+byxJi808zn2F9uNafYG0yKKQ5+we91Rbcs7CP2T7VCIKwDVgWvOq3VymF7Hx5EokEU/1mwWOIjJSzcSL2eKSIfZh8pQGjtnvK5L9AtekUhHyzMgULshV3E6VFJ6gvuMBC0LdZNUWsHmDgodv0/rEARgN/Qp2s8sjbmv8+qnw8P4jL8v1Spe+8wtSSfC+T8y0ZKQgbRsAjz/ZUsdkEGvuNwPxUN30bt5DKZiNqCpfjw/sqBkVCzzwGX4AX+pjfyWrh7IQfWP4mrZn7s+CNcgLK6rwEMkofS9W0NidEdwOIPelRLVp9S/jpVim+
- jeGM6A5P
- 7SQ02o2WWQAPiK/Yqxxw9HzIomNYuJ1cB4m+DRsD54KhHFvZy8AKL6Q4UVpUMzBTHiRAF8qeDYuiZcT8UHFH7hgABDkkeVBPtO+6AMG8YWE1uMiI1W/z1sQqByhyfWRIyrGYrT3FcDxbZZaQwXGWkt1B9fJ8iStcDOWnVQloaAaxQ4RlhrOTojLgDm7AU1r0HajLNcnk8/84j0JpfDsfg9eWK53Sn1MVVJYMtQtezgv1j162aySEa7IudxTIIWmHAsdy9HQwPE8omhIuFzhoBHjoOzKqk9dCKUSgNHHYbk6KuL35WsLAf1qVsfkuaEoBie8gGW8PcaHHmAEXzR9SkV+a1OsGzoIvPBa3JGwRXSYNnm5AAUEAtJurXreCYezkANHaRvh4jVUCdm9nbq6eoPAmp44IX8pIreTvgMhimrREN4m33lb8D/0NUOoY3MKH0QTULXaKP8Inn+NkO3hwef14f0g9QRGo6XmerPZQv4uK7XKXksE5EBtVfixnl3QOIXs3nD0X5jFd6WQSMq+N9nHMMxT3+sgL14qITnnaGbFx2hwA=
+X-Rspamd-Queue-Id: 70E4C120002
+X-Stat-Signature: bpwi3iaq1afuhmzmcyoq1n8h1rmsqy3f
+X-HE-Tag: 1756510795-881785
+X-HE-Meta: U2FsdGVkX19yEX4VkbVlfBCR13M+dsw6EY2rsVjtCkHa30N8Dg1pRtDMqJwcWMX54w6lu/zEPhy5GKfEdCxZWXdSqyUqc3Sf+qEsYE2xKVa2oWvlfuhax9DpZxz65+3DZiOztc1iV2tkS6lCxoGZbnRAUeAMKjpNY1sViejpEZgEwfCH6jSaskUgbv7Ji3YAapbHPDATwuYsA/ZQEdxm5BjcyT1duLApg+qGFgbxVjWum3FD2pSLOs3fgzjThYCIKJepe2oJi8RiBmihSqASB0ipSGIvXJQQ8UqUmC5WjFJPb1wtnJnn2HhtuTMuYXeedRTOdHWOogYbQWH1UsHhzkadHZGfTBLnABed9XhTgagIsordj6OqCxf1kxghLViugcE04fjvvezPQjJ8QC+sGxNJx20/VsajMvaqMYNoIk3K5XtHEhn77Ks/owwH77NNjO1lzkn9uUj2uBZO5hpJvslRL/7y7J5MfJrfOJT7jfhZB4zsCuQlX0JYJWgJgIT11BEvdk3dJslIYGi4Rr1zO5eBIw8g8GRmvjGlxJkSAj7tg9tzmxUcLbVbtYm880JhE0XLfp3acfTTCzObIUM4QnHbi1Cw0QlovBEI8vj2Rpe7nNgihvLf8DN6zwlfsVXsgtTC7IKMfljJiJF/qNhRoTkbfCwxD7IybykTxriBSmnOeiqhwqqj+TnafmtoaRkh+4iOE/OSqB2VZsjUJ89qJn1dKgv0+kCwQp8BeaNxxvki9kHYnzjA825DoB8zVIBxrNJN5kfPrAyOVUgF1dFQovW5k28hPrrqTpMkqe28V/heqohLbbbvOyDqzaC7/9Y+HmuULvPsHZlrnYuUvDE+Cz7rHvZQ7iyyf7ycCbz3umZ8w8Y7UuVxFkAIIqZPwyQdcEZUC+l1ah/Lit1zrlAlRQ/VyS8y81BvnMc/Xwgafhw/ttgmPXS7uNnZdx5xXwIvL2BjgmOeFUMR2AGPkGZ
+ L2Dn5NwL
+ mVwzqY9+/P6elWSAAcJoRj+IhsH43n3nuC8OKyYBhx0wlKNb0amQL6DioSVYFwyJQTbjEISi0UQ2FC/RWg5ci3bf5hwrVAaQecIw7goxUdpIVb41Vv3u9K2v+isRNr5kfdfMda3PmThtYea22D1qSpDemx23IYYbAVXBlriyDVWsseTFg2SP9R431RoQFXkfoh/AKsdIFcipX8HVdJnirwyu/zwkqmK6nyxztXnD92KxUR2gFVd7+QP/+NXiIvM4RYoJNkt13UdXiycuiI0SA9Ec5GKL5e74MRLRjV9PJTkFG7+yUz6cXmdpkdrubvXxZkPDPOCvpABe/xVsQasncmppkzJQSxD8tFUTq3mcHboKHqYqn5PMKK64Pe1LC5wRpufbvwpgAoyglEZoEZ2qmIS+2Ar7nR3mzxBJ9j9NmBSmEOGhDus79a716REyhYVY3DWXk2px7cavUv8I6vqRe1mO09npCCT1ZZW4fF4+tNVwdOtSHRS3hkL9rcJQo5wdHs7qTJzBec6vJvWklrR+Px5EhPsQqpB9pqXbfTSD3tYSqPMI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,81 +123,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add an additional arg to __folio_end_writeback() that takes in the
-number of pages that were written back.
+Add folio_end_writeback_pages() which takes in the number of pages
+written back.
 
 Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 ---
- mm/filemap.c        |  2 +-
- mm/internal.h       |  2 +-
- mm/page-writeback.c | 13 ++++++-------
- 3 files changed, 8 insertions(+), 9 deletions(-)
+ include/linux/pagemap.h |  1 +
+ mm/filemap.c            | 12 +++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 12a12dae727d..362900730247 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1221,6 +1221,7 @@ void folio_wait_writeback(struct folio *folio);
+ int folio_wait_writeback_killable(struct folio *folio);
+ void end_page_writeback(struct page *page);
+ void folio_end_writeback(struct folio *folio);
++void folio_end_writeback_pages(struct folio *folio, long nr_pages);
+ void folio_wait_stable(struct folio *folio);
+ void __folio_mark_dirty(struct folio *folio, struct address_space *, int warn);
+ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb);
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 751838ef05e5..cbfb0f085eb6 100644
+index cbfb0f085eb6..6d50afaff930 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -1657,7 +1657,7 @@ void folio_end_writeback(struct folio *folio)
+@@ -1627,14 +1627,15 @@ static void filemap_end_dropbehind_write(struct folio *folio)
+ }
+ 
+ /**
+- * folio_end_writeback - End writeback against a folio.
++ * folio_end_writeback_pages - End writeback against a folio.
+  * @folio: The folio.
++ * @nr_pages: The number of pages written back.
+  *
+  * The folio must actually be under writeback.
+  *
+  * Context: May be called from process or interrupt context.
+  */
+-void folio_end_writeback(struct folio *folio)
++void folio_end_writeback_pages(struct folio *folio, long nr_pages)
+ {
+ 	VM_BUG_ON_FOLIO(!folio_test_writeback(folio), folio);
+ 
+@@ -1657,13 +1658,18 @@ void folio_end_writeback(struct folio *folio)
  	 * reused before the folio_wake_bit().
  	 */
  	folio_get(folio);
--	if (__folio_end_writeback(folio))
-+	if (__folio_end_writeback(folio, folio_nr_pages(folio)))
+-	if (__folio_end_writeback(folio, folio_nr_pages(folio)))
++	if (__folio_end_writeback(folio, nr_pages))
  		folio_wake_bit(folio, PG_writeback);
  
  	filemap_end_dropbehind_write(folio);
-diff --git a/mm/internal.h b/mm/internal.h
-index 45b725c3dc03..2eb156823d45 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -438,7 +438,7 @@ static inline vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
- 
- vm_fault_t do_swap_page(struct vm_fault *vmf);
- void folio_rotate_reclaimable(struct folio *folio);
--bool __folio_end_writeback(struct folio *folio);
-+bool __folio_end_writeback(struct folio *folio, long nr_pages);
- void deactivate_file_folio(struct folio *folio);
- void folio_activate(struct folio *folio);
- 
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index d1b2c91f0619..65002552458a 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -3006,9 +3006,8 @@ static void wb_inode_writeback_end(struct bdi_writeback *wb)
- 	spin_unlock_irqrestore(&wb->work_lock, flags);
+ 	acct_reclaim_writeback(folio);
+ 	folio_put(folio);
  }
++
++void folio_end_writeback(struct folio *folio)
++{
++	folio_end_writeback_pages(folio, folio_nr_pages(folio));
++}
+ EXPORT_SYMBOL(folio_end_writeback);
  
--bool __folio_end_writeback(struct folio *folio)
-+bool __folio_end_writeback(struct folio *folio, long nr_pages)
- {
--	long nr = folio_nr_pages(folio);
- 	struct address_space *mapping = folio_mapping(folio);
- 	bool ret;
- 
-@@ -3022,8 +3021,8 @@ bool __folio_end_writeback(struct folio *folio)
- 		__xa_clear_mark(&mapping->i_pages, folio_index(folio),
- 					PAGECACHE_TAG_WRITEBACK);
- 
--		wb_stat_mod(wb, WB_WRITEBACK, -nr);
--		__wb_writeout_add(wb, nr);
-+		wb_stat_mod(wb, WB_WRITEBACK, -nr_pages);
-+		__wb_writeout_add(wb, nr_pages);
- 		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
- 			wb_inode_writeback_end(wb);
- 			if (mapping->host)
-@@ -3035,9 +3034,9 @@ bool __folio_end_writeback(struct folio *folio)
- 		ret = folio_xor_flags_has_waiters(folio, 1 << PG_writeback);
- 	}
- 
--	lruvec_stat_mod_folio(folio, NR_WRITEBACK, -nr);
--	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
--	node_stat_mod_folio(folio, NR_WRITTEN, nr);
-+	lruvec_stat_mod_folio(folio, NR_WRITEBACK, -nr_pages);
-+	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr_pages);
-+	node_stat_mod_folio(folio, NR_WRITTEN, nr_pages);
- 
- 	return ret;
- }
+ /**
 -- 
 2.47.3
 
