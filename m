@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD202CA0FF0
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 11:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D498CA0FF9
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 11:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DC338E0007; Fri, 29 Aug 2025 07:44:47 -0400 (EDT)
+	id 4467C8E0009; Fri, 29 Aug 2025 07:44:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F41108E0001; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
+	id 3F7008E0001; Fri, 29 Aug 2025 07:44:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2FCC8E0007; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
+	id 249948E0009; Fri, 29 Aug 2025 07:44:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC3A78E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B0EBBAAC1
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:46 +0000 (UTC)
-X-FDA: 83829612972.18.D994869
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 977301C000E
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:44 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=Hecwbn0i;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf21.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.44 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756467884; a=rsa-sha256;
-	cv=none;
-	b=dem9iNdfp0I1jP7I7/rE4pONzLG6UORCHnQ7JmV2HKJxt57yrK/+iuFSzJ33AOYJekpTg3
-	ycbtaKh9cKkbab9wOGnntqOb+ugJePfYNE2qzW33X53W2spTfBzPP3cB1amA6ihsWXKOm7
-	v5GFN+KXkC2PX7VPivN16nMTt14fPgY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=Hecwbn0i;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf21.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.44 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0B8A28E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:44:48 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9624D1198B2
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:47 +0000 (UTC)
+X-FDA: 83829613014.20.FF74920
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 94B51A0007
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=IBcrhA3H;
+	spf=pass (imf25.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.41 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756467884;
+	s=arc-20220608; t=1756467885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jgtia+LpfMpm3WYDNDpUT/QXDK2dR0NCJT/wLTvQl3g=;
-	b=49anzTXLdKhhqCSJl6kI0F9O126YJdg19jPsySBhYlhNJfqKGN6205ekR2pM8NeXdDocr8
-	rk5VRv8IvEotLaiph9luhrDvlOXLgin0uFFBtz1RUvvOrlo0tRVKMtjf4bfG1U5VQnX80k
-	xbUQMVdm5vPitRDXe6/PgndQ6y0z3zI=
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f4345cfd3so2090509e87.1
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:44:44 -0700 (PDT)
+	bh=WFe1CktsVDIUFXMUlAWVFSXINqaL27dLXjci6lesYis=;
+	b=RownBaGyZ98Yx5fR9Ge3OGV3wm4ibGIbHGYkIi2JMD1VYpinhGGtVoVIp0JqVHMKt32X4A
+	Kmjps1M7ZBZIpFtHVkYIlDtPP4NM75Wm+gcJC6iaWsJQq8IHVht5jESqj/gX8WVi6BVZRi
+	Mm7aYUhCeh/YPy7HLCzL8HRiNpLyiDs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756467885; a=rsa-sha256;
+	cv=none;
+	b=2jOSVATMLhS/vuo8ouT4IEtSFnhEYaE7klNPPtiH0/TMWAqz0p4ob3XPiZI3l8+4LxmnCH
+	fPsZc/H0bbrvnlBjN1Uqtq9nfWUvZMdjiMVhhs5LDCd8JImeFT0OxrTh/gbExcs3Vrl5rW
+	ihRAGCkuR6Uhd9XyS0ZOnts2fZdNNnc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=IBcrhA3H;
+	spf=pass (imf25.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.41 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f4cf36c00so2183132e87.1
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756467883; x=1757072683; darn=kvack.org;
+        d=linaro.org; s=google; t=1756467884; x=1757072684; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jgtia+LpfMpm3WYDNDpUT/QXDK2dR0NCJT/wLTvQl3g=;
-        b=Hecwbn0ioje6fS3+RQ7zC477UV6u45byJarmWEdDgaPI2JZzKku1fi+Cyk6F+uukHU
-         XvpGKJz6jGjup8LlQ4QsINVcWHjZvRkUYLx2OKXPHVjVnTRVTdFvPtbAeS7aY3WNoDCj
-         nKNF+pra81+X2SulfOiCcFchamRfQb3lJgZGisH6wLSXMxesop4BLIL98ZtW1A1qmvtu
-         kQ9u6hZdLZGJY36Tynqh+2ZwnWzDqN0sUcL8KuJEHuSLgML7Y66k2guIP/Cfuk+fzN31
-         Ku6LA2LAS5ui/U2zVNvDBxsYhGchn5onlieD77wb4SfGnkubgzcGMOTD8ndsvAGbRgYv
-         ZOpg==
+        bh=WFe1CktsVDIUFXMUlAWVFSXINqaL27dLXjci6lesYis=;
+        b=IBcrhA3Hx3s9dFfLTijzzbMKuUZpzyujRgUAe5YRbYHFTAjQm+Rwxn03xSjYIBIonH
+         ZjpJCA+ob6/uU/Mv66wKPNGAGmBxqhFMIkM4pamumFvFhFeHOmTZgwobnFHJRWOgCXve
+         S2gNe3LZpTXwEuqcbm9BMIuoY7BA4ZXzxNBPjr49lri5oDrCFksBoTCvX1rrR41WFKrt
+         eyCq1NlzPdR9nRIi0kktlZDH8bNyg4pyPO5zr//5r9eljRBFn4M0WHenNwrKpqARkSzu
+         t+yhCfcRpU52fXqbUx7HhuLRhNs8X5Mj62m/g3ZUhtd0MbvvMvRSnojW5Odx+pLf3MrS
+         SoRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756467883; x=1757072683;
+        d=1e100.net; s=20230601; t=1756467884; x=1757072684;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jgtia+LpfMpm3WYDNDpUT/QXDK2dR0NCJT/wLTvQl3g=;
-        b=NGBXCbk4qL8ZsBCRUgSOMf0YTZKCyNiLXmvpw43EGFRs61iX/rV9aXPh5R4tbttzmR
-         3Jfi83QW8EGhCqTsvqP7h9MRDC917KUfcrSPwtYMBXVErG8tSeoEbRSnm5xQC62qk6vK
-         MaVY39YL3CzK+c+7xDRqkrpqHOYrTaGKz8XuJSMlZ7YLhtP4kyicS7hD9Au3rLBs+OMm
-         XtXkSsnoUX6EqiGC5pIQP70uLSqSq+H3ksJYmYhAhC71jaH4iz/7ZvCcapLtN5TyPers
-         8gmLY3v5vxbdQsRFMom1qy4RDGklkG1TQNzRGWiP69Iy2pkEm4vb34JHJ6Emrp/6upNH
-         ok/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXWC+9sXS2NMh/cEsKq28clgwvu8U0Hpdkqepw66e9s7BgOcSXY43q6hE4iEJKmd2zsueP0g8s6nA==@kvack.org
-X-Gm-Message-State: AOJu0YwJdwtGGzxs//iEzfXSMHVdEwXOuXr/z4qfP2Z3zJeJGsuHNNAR
-	2FUSCygxdCMFeQ5q/Qi0uuKL841vz9n91WnFLQ1lkamafb/N3Cagaf+TAfE9nB/+8A8=
-X-Gm-Gg: ASbGncvjRR63DF7q4J6aLEvT1wh91G8FhEUZUIAIqGTxtZpkBPDd7sv8uhUEGEB/BGo
-	oq8syIiOyRoRHkqG2Y65ym6UFvURNTpn2GR9C1chPYRe4W+i3M5dRj9SUu6yza58PrTI3JU9qPI
-	o5OEFerGGdeI35jx38hO2Vmc38Ts8Ai1uDfRdg7oIju6RwBVe0SJTzSbNjALAqiFpzAjNH15rdT
-	9oI4E8U2UZlfRvrxQRixueqwiGjuRrf2zGXYLyFrqgy38M6kOiK25YEdoc4X4ZvxT1gc1UeBvvD
-	iCIcuIxdvARTwZ1YvDlsnKdvaKTYK0S3/NLaILIjZ9nukYTV2SSmonJaPOzYEZomkPb0Ldequw3
-	hduNDi5jOzTx6qIeQRMX/EhvpvgoSAdQX
-X-Google-Smtp-Source: AGHT+IHAqQsoVsR6L7a6rcLo6fKDNuhsLtvlWrPRnW+IIIX2gb7KKe3MHpJzSG95OBA3WhmSJVm61g==
-X-Received: by 2002:a05:6512:12c4:b0:55b:84d3:12b9 with SMTP id 2adb3069b0e04-55f4f4c6a38mr4346175e87.18.1756467882843;
-        Fri, 29 Aug 2025 04:44:42 -0700 (PDT)
+        bh=WFe1CktsVDIUFXMUlAWVFSXINqaL27dLXjci6lesYis=;
+        b=iTp4ZfO8sgtvTOZnbBRHSoBTsoZvFD2rLEqI0NGx4NjAz80pw/mnab8OnhK6vzTquF
+         Mo6St0HXXFIuZOR53/yQuZIEtbsw/TGGfK7fBmIzZg4VubjiA/iR9wPLncPy7G1vE0be
+         5p+6kpSsxSJVkbu0puTLxc3bcifghElSRiQqtRtC3FM+yPlcqkViVgs3848F4Gfai5e5
+         hkGTRGn06Lwaa1n2zAhHgYeQm0YW3Ut5XMnj5p0kqiMHl0eoDGvtBlThURQMYnjacx+M
+         ZdHvbkUNNUjqGjpvPE83APMMqVMo3p0cdrj+ZkIZsYslIYFM+8BCaKWMgIJLDLt05OJi
+         vhow==
+X-Forwarded-Encrypted: i=1; AJvYcCUgM028O9ka6gdlMAMMh58yDry90VZQXnEt4/3cu7xqMfIoCWlzMnCIFKQT1WdtFokRJm/WWyo72w==@kvack.org
+X-Gm-Message-State: AOJu0YzMFctdABZSr1t/I4hz4DA0ZMrpyie4qqzWIgzgDvYLyOYhKlmb
+	r00MVhqgK8VYzNOSm8Az75IwBGfhFDSGqVBBjbCsaubN5nxcEcpesWdy1Sf1pAWwIgg=
+X-Gm-Gg: ASbGncu0q+hL0ZI32zhRhepAhP1dcJWKfIHhp2xm6lBKN4k/3GPPGsMaYpBeye/g2w4
+	olwwgsMAXp4hdp82I+yepAEKNkScD5Qtd3+NOTR2LEc5e7tiQU5rbwn4Pr3SYaBaIOZeWptf8Q/
+	23+KCiNpEWLxwmhmXuZG8UciYjDU6Gp5c7jBXEXSBXC32M7jUKwSZy6WGivBq3iJGxF8ysIN5A4
+	3hRBpFKQFhqDPsXZ76Mgjhf4yFV/qZyYeLkL+iOHKOhk+OCdfEX3EwdBnAM9J8j2AzFoHys81lq
+	Mg9lktFOXR2JpOcn3D/Xc2qnGlx8vMWp7SR9QFfSlrgh9DV5OgoxppDOlBlyukwYaScyCFHnqCU
+	kpjg6xqPCi0fiQN41e81DvleyIEF4xUkROtRdcUT2aio=
+X-Google-Smtp-Source: AGHT+IEkHsybnNaIxaBFEfVj1kIY3d3G3hiLCzbN2/ndqe/LdNG+/k5r6X74sVsHOJsMfoa47sH13w==
+X-Received: by 2002:a05:6512:6703:b0:55f:449c:19e7 with SMTP id 2adb3069b0e04-55f449c217emr4969600e87.55.1756467883912;
+        Fri, 29 Aug 2025 04:44:43 -0700 (PDT)
 Received: from [192.168.1.140] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f67a4c612sm581162e87.146.2025.08.29.04.44.41
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f67a4c612sm581162e87.146.2025.08.29.04.44.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 04:44:42 -0700 (PDT)
+        Fri, 29 Aug 2025 04:44:43 -0700 (PDT)
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 29 Aug 2025 13:44:40 +0200
-Subject: [PATCH 1/2] fork: check charging success before zeroing stack
+Date: Fri, 29 Aug 2025 13:44:41 +0200
+Subject: [PATCH 2/2] task_stack.h: Clean-up stack_not_used() implementation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250829-fork-cleanups-for-dynstack-v1-1-3bbaadce1f00@linaro.org>
+Message-Id: <20250829-fork-cleanups-for-dynstack-v1-2-3bbaadce1f00@linaro.org>
 References: <20250829-fork-cleanups-for-dynstack-v1-0-3bbaadce1f00@linaro.org>
 In-Reply-To: <20250829-fork-cleanups-for-dynstack-v1-0-3bbaadce1f00@linaro.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -116,14 +116,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Linus Walleij <linus.walleij@linaro.org>
 X-Mailer: b4 0.14.2
-X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 977301C000E
-X-Stat-Signature: fmfy8zmes7w5moxmubwrbtimbehyfoca
-X-HE-Tag: 1756467884-754216
-X-HE-Meta: U2FsdGVkX1/a/ttu34P77oO4OkCt8THVqSg6Fz9QocL3xvObILYylb2CWFHavXKWForBoFgMYb9+cfz4mxo/crIlxx8ODGFAYLXo+lfc0ZyYsL0rrm21OvOnsMGIsE52u7TXhygi5gsbqbGXYsNsO9ugdwdsVk8h+UFyC7vIYFTXVoxLULTSgJCCsMgSVohLX+ECIGXiG6L0MmCXz6PR/jKZ9/00LQPPiUYKxLk0OqRj3bsE79nBi83cHqhKoNn4BR0dLtkYtC8CFqvTw1IeHruA5CkNlKYRfN9HfFT+bns22aG2xo/nVRDpMY2E5uDeOLpMSEMhUc18/TwlgW+iRQwurmWZ1iPYy7K8B5OvNzO5WCWXsnGLgb6cu8Ag2IvtQtY/btOul9aRc+z+7kKCq2CWHGG8WX5Ysgrt5oqEbbaI9TX9RmrFfrloN30MccDp0m2UhqvM2NDrr9jSG3QmohXUmrDoaugRf4lZ4Hky+v2E9TMbmoG7uDa+edZzIxFSUiKaUrYu975p5uC1jVRy+VXABiIddCFjtmBzb+CrYZTUwWAe4Rc8JOq1RTyxxl5KpF2LXyS4sLYpzZSH1IWtwL5MxwKvGeI3gAXZz7RdBAXqoYb7cmvHMMueGznrIBG2YqBlE0LZySr+AAEhf6mkU2D+1VVCqcahoLC/ANJYjvaO3nivtUdEnr2VpoIJSe4TNQuYvwV4+MoU7ewH9rgFeOGRepRmX35f3BtgQEwEbAI3fmKYlBUZyGyqFoNIkSJ8EqpNoMDocoWN8fW12iQJgf2WGNilyZh2wcPg57O2pkIVZHLqJQj93qKuM8giD7MrSalovwq3JSkYShpn+mSHi6d/ktyNiLXPHxtzUYtD+BNqPLzMxRoXugreOMSYJcimNjcAhohJoheembU71KgsJPNcPNopqncfvxo0H9qY9uZgcT4NbggRdBjk4LyRQLX9cgfNSI26mVdTBzayww4
- F3LP3Oeb
- s73x9kGxruhCQJInwmryXYfFmUKd5E4j+OUkmKn5awCVRQtq6I6eXBFhEyGM6WiTTGFrzMW6MIaxVn2z4o7LdwTHVxbAEYoSLuKLyT3Xb5/aP300icY9V0Zu9HDo7Yg8vinBHgrc6EPajTe5R0c4jKlaIczQEFYvSQA3RxsvSjpeKxryftRK58+wzvvKlGOvZ+YgnRh6yb+ITzvoXBuDIuemdDhLkKmJKbVstjPV/kn/boPv3sJWCAWWghLscedADIrSTS2Zmz1luNdbjZD3c41OZ2zzu0H9zrgqANn1T/VhpRQUdFJMtE7y80YYgB+GqJegvvt8fEwHwwp+TZ5k8VSYGZmoomW0imvJdWFRfy9ELWxNclLpudsDQNW1rn5N2MDbdl9vc6Qqt2nr6qL9QjwBOSCOVE7s+nLrIAOPpbEIHs/vu+E7XAtzSoLvFMsvA8T/Vj+lGPulsPIE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 94B51A0007
+X-Stat-Signature: nj8e1noc8hyu8ar74wp8sgj91d7u46mz
+X-HE-Tag: 1756467885-333357
+X-HE-Meta: U2FsdGVkX18IvEZtEdNzVOSVi8jeYUuF2ktrCkuQDP0/NlepO4Z7s70WWI+/3qsbYbJVjQgI2/cKbmn/OSQExMIvdYBK6CtWwNWwL2bTrPVNywX4CyQ+116IoA1iVSdAJeLu9DbBNhH9Vl1WGoz4dszPwSZNj3j0JGIrAGQnRD6VBIf8axihj8mIBRjvBHtpU6f7HYKl5zwHyyI1F60X7Kh9X2SdRUYp6SpNCyJ0oJJ9FY8+6rv3OPXj0uIjWT0z4dDui94a92pJt05Q1Q6+YatpQwZqYknaVGMWMrwokJyaFO69hdC9wYu+udlX8f/AdXG7Gq5A8zth/9u3fUsCCXBkMmxS+DR702reM3OPEwm+ncauoq48P6orM2OwJBBYPyncmpES5mc60KDVHkLdbTRkICQi2A2IbkeoLlx5SCgxWbuOxJLqmXGnAcjZSU8Lui1e5Z+81V8OptSD4oXA9fMeMqL7QZKDeABNx7anedhns1FgoW93LPXlOKsuRgNzrEEsB3v/uWBZqT+0Cij4WjxbE6BWu8CaFyRbWsIebhVxO6+n/VyMSW2IWCRyMHxd1j2O6EIY+zc0K3aUqOSmGMVmc+C3p/n9xkyfUjzJ9JbSNnOP+s9jyVRUqJ1+PwuMdmSHfaVUwwYz+SKW/MmmjwR5Bv7lcvfKA3JK5eOXsInamh0jKpYKtBsLJ9dPB1gr+wGbNAqDyv3tC2aOc1OU7mOzveEt9ubV95utY3DsVdrOUb8E9887GwEBkAfSgeRYgw6yGLY/VjZ/P9GdUP6TgUALkxNZmSh7CXtJyOnLZzP2K25sksUb4+PJK3nlhZB1HHqNcRZXlQrZEDXVgXY/QgGxRkI+pprGX9cgnuzvAerCLV2pIAEfwKwWSYEGPp7v7vyl9rulg5fYoPY1Sgt8fuNhSbFOX1t/MO16dfZhn1yhQDiWsJ4wTvJhq++WkmflSN686hihCwjW+1JEVdd
+ cBwQgrxP
+ HSW4j71xLv9ZbGmW/+hCF8KqNQEIVTLgArQFm8QzBoprlTaqEPgpGozalfBRvffC/wvBZAFh4648i4Y/NwSdczRXtEEZ39jexEjgQJnMvk3v3dLJYmsZfkMp8YTKWJ8xT3J5tM83d/1GBJpLrBTPcOUO2YQCMYwGdG/qsnYHJjYxezWaFLwtYmVLLUEx5VKjs3eRbxVopCvCSgnCMZhzH4Wp/FfayUmlQUiib5rNvt57QA1rFDQBzhs/ukECLHMHDUKJrvaChbZw7noihdQ490e9bQ4e+/UJNHsOx1qloHOLOVRVWevWYJJnzxcgfMpbMDVf3f3gtXm6lcS2m0aUMzfZL5NWKkJ/U3liuWdCaVqdQSIqBv+Xke+tvRxxWwOkc6xoWlvGtCXDRuOaMWEc2Yq5NWY7STBTbkIa/CzDC/sD3Q6NdRLzaVQK4fMczdOHpfdmL/C5mbfu0V/zotoWD7DH6fKSPKfkKzrKEZDAAEerdEtnZQMLjycOLog==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,44 +134,74 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-No need to do zero cached stack if memcg charge fails, so move the
-charging attempt before the memset operation.
+Inside the small stack_not_used() function there are several ifdefs for
+stack growing-up vs. regular versions. Instead just implement this
+function two times, one for growing-up and another regular.
 
+Add comments like /* !CONFIG_DEBUG_STACK_USAGE */ to clarify what the
+ifdefs are doing.
+
+[linus.walleij@linaro.org: Rebased, function moved elsewhere in the kernel]
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Link: https://lore.kernel.org/20240311164638.2015063-6-pasha.tatashin@soleen.com
+Link: https://lore.kernel.org/20240311164638.2015063-13-pasha.tatashin@soleen.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- kernel/fork.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/exit.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index af673856499dcaa35e135a9e8042ef28d5c5370d..2a5b7a5fa09b1f3a42473cf44a1316ec8b3b31d0 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -290,6 +290,11 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
- 		if (!vm_area)
- 			continue;
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 343eb97543d568baeb23142edcc9050a8b8be8bf..9f74e8f1c431b6aa6e391ff71aadf9895a3857ae 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -780,24 +780,29 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
+ }
  
-+		if (memcg_charge_kernel_stack(vm_area)) {
-+			vfree(vm_area->addr);
-+			return -ENOMEM;
-+		}
+ #ifdef CONFIG_DEBUG_STACK_USAGE
++#ifdef CONFIG_STACK_GROWSUP
+ unsigned long stack_not_used(struct task_struct *p)
+ {
+ 	unsigned long *n = end_of_stack(p);
+ 
+ 	do {	/* Skip over canary */
+-# ifdef CONFIG_STACK_GROWSUP
+ 		n--;
+-# else
+-		n++;
+-# endif
+ 	} while (!*n);
+ 
+-# ifdef CONFIG_STACK_GROWSUP
+ 	return (unsigned long)end_of_stack(p) - (unsigned long)n;
+-# else
++}
++#else /* !CONFIG_STACK_GROWSUP */
++unsigned long stack_not_used(struct task_struct *p)
++{
++	unsigned long *n = end_of_stack(p);
 +
- 		/* Reset stack metadata. */
- 		kasan_unpoison_range(vm_area->addr, THREAD_SIZE);
++	do {	/* Skip over canary */
++		n++;
++	} while (!*n);
++
+ 	return (unsigned long)n - (unsigned long)end_of_stack(p);
+-# endif
+ }
++#endif /* CONFIG_STACK_GROWSUP */
  
-@@ -298,11 +303,6 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
- 		/* Clear stale pointers from reused stack. */
- 		memset(stack, 0, THREAD_SIZE);
+ /* Count the maximum pages reached in kernel stacks */
+ static inline void kstack_histogram(unsigned long used_stack)
+@@ -856,9 +861,9 @@ static void check_stack_usage(void)
+ 	}
+ 	spin_unlock(&low_water_lock);
+ }
+-#else
++#else /* !CONFIG_DEBUG_STACK_USAGE */
+ static inline void check_stack_usage(void) {}
+-#endif
++#endif /* CONFIG_DEBUG_STACK_USAGE */
  
--		if (memcg_charge_kernel_stack(vm_area)) {
--			vfree(vm_area->addr);
--			return -ENOMEM;
--		}
--
- 		tsk->stack_vm_area = vm_area;
- 		tsk->stack = stack;
- 		return 0;
+ static void synchronize_group_exit(struct task_struct *tsk, long code)
+ {
 
 -- 
 2.50.1
