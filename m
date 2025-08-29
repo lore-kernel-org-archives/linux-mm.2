@@ -4,120 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91CDAC8303F
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 06:41:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B2FCA0FFD
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 06:56:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F9D06B0008; Fri, 29 Aug 2025 02:41:21 -0400 (EDT)
+	id 5AD8C6B0012; Fri, 29 Aug 2025 02:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D1A96B000D; Fri, 29 Aug 2025 02:41:21 -0400 (EDT)
+	id 55D896B0022; Fri, 29 Aug 2025 02:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E7356B0012; Fri, 29 Aug 2025 02:41:21 -0400 (EDT)
+	id 473A06B0025; Fri, 29 Aug 2025 02:56:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D6A56B0008
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 02:41:21 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2D3BBA1E2
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 06:41:20 +0000 (UTC)
-X-FDA: 83828848320.24.43028DE
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DAF3E1C000F
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 06:41:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NHY8HHYU;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 324D06B0012
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 02:56:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C56C5597BB
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 06:56:02 +0000 (UTC)
+X-FDA: 83828885364.09.06084BA
+Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 695BE80003
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 06:56:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756449679;
+	s=arc-20220608; t=1756450561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XtxEKMLsj3BJjqsAEZBWzNWvadtCwMY5ynf5Rrf8/UU=;
-	b=sJ4mTWt38cQVoELdJtYBGJFxFZusdeXazF0RwdAinaQJrFoKyQBEGQKByXC67iDGb40Ljo
-	bPWtBFNIY+pnCdITBuvgXe0R+DeSvXxyCDYQ/ZKr/GXV4drHBKtYfmEdOPGgor4tMn5qKd
-	geahVsfOvq6a8bUAfwKb28Gnp0mhYO0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=EwRvO1KhEakTOiWURiGIwfH7ZUlxXsWyOGm3XKd05TQ=;
+	b=L/NXfXzvsX69nvNAUYg0BRZe4IiX0h6a2g+pAVsmgaPYbTPMTQ9EG6SJDMVpQVtWwgeRas
+	eSpgRIKoZWfh7MMY87Yr9AM1MwgX2n4H+MWu0csS1lFR9WmpzUMhZonsi25yldVimhaokL
+	tKpPcZFsdUANYHLYVAj3AmmhilXcUAE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=NHY8HHYU;
-	spf=pass (imf20.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756449679; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756450561; a=rsa-sha256;
 	cv=none;
-	b=v2vB9+2cpS3jljvPxvmziLfDA4EwXGO7Xx2P6fEJJbDO6gJq6qlTraFMq69Z571y/bLfWo
-	G9CWv3J80Fx5f0a9MWit+xtkuRnUKR7vPbk54qehGR1g+vyOV1lsZMyfKKEKGfl4WMBMiM
-	511ITJBHGSt1T1cBd1PwCGnCyFmImeY=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45b7d485204so9642155e9.0
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 23:41:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756449677; x=1757054477; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XtxEKMLsj3BJjqsAEZBWzNWvadtCwMY5ynf5Rrf8/UU=;
-        b=NHY8HHYUSe9D3kr1s2kv5KNJiO2K95m9V3xfAZE5yVmXu8+oAaRVzarJEmRV0EhYj1
-         qpBxpLxeej6e3mJdrdeLkGNGRVet7MhnT93myunb+njNwZ7wpXI0AOjlvv6FuIuNk314
-         BfpJX0kwzA5B00/FOyVdAy87dl65VxLT/hBk8ZtCWO3X8XPqTD8QJeFI116CtWuoPFHG
-         RNNZtWdUNmiAeCHEDN3g5gEzpI3+QRYOPNAN5GeOygBty0+3ixXKU3LfZ06aUe4T/32d
-         qjDi+1k34hnGDGOOihoo+680RmF2IJjnMRPFBQ3n44tBFSuk1qnZa4Q5VqQU4+MxAQkh
-         LMZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756449677; x=1757054477;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XtxEKMLsj3BJjqsAEZBWzNWvadtCwMY5ynf5Rrf8/UU=;
-        b=cqXSrDxytWmFZ4xEteW3iGuU56peQUYPCLriQoDgMiLdZrkgBt+kwL+VE9u8wb+SQs
-         LSim5+CZaPTL/hDC54sA/TVGQKlc/TMcXAMRIURs3iEn6n7zqtcF1dcAfOuYEnlEo8uA
-         krxy89BwcmUE+FKG7MAi+nXjESbCLWw0SNv9ckLWH7cYWNe05CxplGHIzxh3tREWRbjM
-         jk1+IdkHWAEfA6ukm47t/GNw1VrpN0RnYbq8lIeq/bmyee+fdfdtM9fPjBuQYE1yzGtx
-         pIUuWL96gAPC7Ppb9tUnmm9rJUmSmCooDaus1+h7MU/HjzMC5lYVlFlFsKkw++q0Yu9w
-         qxVw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3xP9zZdjlEjQ7c9WsRneXy2GWDf1Lai/GN58HoaVpi7RGi0RRysnubpM2yw/+nQtAp2lEleBgNg==@kvack.org
-X-Gm-Message-State: AOJu0YwTAz8z0TaxrU7L01s3pma5U30D9xE/z0Qsg3+lYzKVNntMb0C/
-	ludcwgP03gKFDcc+0XzcZZO+IRqpIn/HKlWt8AcOZDAO/5MN6Abj4K3t5DgFV8nSL7Y=
-X-Gm-Gg: ASbGncvo7BL978dlBHjdmf6ugydPaUCqfCkKJ2XZVMGbwuGmIYkLT2Kt9NDgNLQ4mYq
-	vIZ1cBxrHXZJHqO0DkywK4qj9N4kFlk86voIEosSWMdAIgExyAMPIirScydkX3+MRboViP/vDQb
-	31ro01Ed4YSPCdrQwKHNVbP0Bb9Nes5lhQBtL/ldw30kO9Dp5IwPp6SMALiK0v6lGdgHbIuLi23
-	vYMuG1cMFTLcn6yNSI4jrGABo0vfxtLjKP4wuFPH99Qljzh9RrCCyeB5hWdlIMwiPlFYsHj/Mah
-	aBi793+H4ByNrroMRF64W9EifQ4csXx1r4voB5PZkesUqN1/JG2V9GkpsDLoAB9y6wcGrtu1jOb
-	ElBqlhZbfzPsXiTyBzzE22/YdN0EsIQ3Ed3M=
-X-Google-Smtp-Source: AGHT+IE0hHze9wkthqzJK2uktPvYHUKC/p/KFjdPRhXF7UeVVigicm5+RRf0+8vpXcyjUnGU8Of9lA==
-X-Received: by 2002:a05:600c:4fc8:b0:45b:7be1:be1f with SMTP id 5b1f17b1804b1-45b7be1bfcemr30585535e9.32.1756449677281;
-        Thu, 28 Aug 2025 23:41:17 -0700 (PDT)
-Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b7e8966acsm25768415e9.17.2025.08.28.23.41.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 23:41:16 -0700 (PDT)
-Date: Fri, 29 Aug 2025 08:41:15 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Mel Gorman <mgorman@techsingularity.net>, kernel-dev@igalia.com,
-	Helen Koike <koike@igalia.com>,
-	Matthew Wilcox <willy@infradead.org>, NeilBrown <neilb@suse.de>,
-	Thierry Reding <thierry.reding@gmail.com>
-Subject: Re: [PATCH] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH
- allocations
-Message-ID: <aLFLi4B5smIMY4u8@tiehlicka>
-References: <20250814172245.1259625-1-cascardo@igalia.com>
+	b=QfR9mOe+hCmiPhyk5eAiDRJ6OIpinq9ZednMdjxdyKnPCzAImp+jeBW5PIf2hDNjEXk9Iw
+	Lj2M3Mcx7la/bYK7BppwpqTqCWrpYsrntS1zCvodFsc2mIO+vepNp9RKKosDJgBO/OFSPI
+	KydDMapa6Zlsg/RXVoin/U/nK7hVQQY=
+Received: from w013.hihonor.com (unknown [10.68.26.19])
+	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4cCptx6T7YzYnQcn;
+	Fri, 29 Aug 2025 14:55:37 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w013.hihonor.com
+ (10.68.26.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 29 Aug
+ 2025 14:55:56 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 29 Aug
+ 2025 14:55:55 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <mhocko@suse.com>
+CC: <rientjes@google.com>, <shakeel.butt@linux.dev>,
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>,
+	<liam.howlett@oracle.com>, <lorenzo.stoakes@oracle.com>, <surenb@google.com>,
+	<liulu.liu@honor.com>, <feng.han@honor.com>, <tianxiaobin@honor.com>,
+	<fengbaopeng@honor.com>, <zhongjinji@honor.com>
+Subject: [PATCH v6 2/2] mm/oom_kill: The OOM reaper traverses the VMA maple tree in reverse order
+Date: Fri, 29 Aug 2025 14:55:50 +0800
+Message-ID: <20250829065550.29571-3-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250829065550.29571-1-zhongjinji@honor.com>
+References: <20250829065550.29571-1-zhongjinji@honor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814172245.1259625-1-cascardo@igalia.com>
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To a018.hihonor.com
+ (10.68.17.250)
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DAF3E1C000F
-X-Stat-Signature: 6pzterecak53w3dyzifr9eumyqcixo5i
+X-Rspamd-Queue-Id: 695BE80003
+X-Stat-Signature: kmt99kt3ijngkuj7j4xhucryko5r99wn
 X-Rspam-User: 
-X-HE-Tag: 1756449678-784046
-X-HE-Meta: U2FsdGVkX19DOMnx9zhntPQEHsSmZVKBiGp+gHhu+w0+d+JEWIqVI9HmywEIUsxiql/BescRJbWltJn5CZfkCaRZqzT8wGHruQ77qyr2ROQt1MvbkkWMX+IR7UbvPR5zL5f1Mt6CX/yesSuxY6mHvEFdQhTfxvkTrui118yCSY6WIkrntc5qhGl2q83QIckvI8IZjA/C4nb7YIZhWttrTck16xkqJZVI/Yhl8HwEDizFuyYV96S9l9kcIE46TYWpHGyom0Y5oHSCn7/iej2GyWokTaa1K5f9AuOsXBOlWtzLKQh+v4upOzkxg8p6A+2dtOuFwT64obrLBdpnPYiynbQJ65T6bTtyrE2pZD2WVbHbg04Vmx59EY5X0aoTzJMkXtUlNT6RkC/BnywWeGDn+uPJflUdkgXMbtC7vaFfp9SukTjweN1BJ+PADBwSLhkLEhBtdYcuOZk+SfYowy5jvUA7/juPHXIcIsfK5oQl4ga1pcwq5gZNFSOXpjnXvIkmcY/2yXlmXkSTQfG4BwOanaqLbni2wlrSsVypLD3pAYgS52d3b/gvvt7XgKtOldq0rwqCWRfGJabzX72109qLz9ftgQY6DRRZYgPONZV2lsTzxnqgaQzCMmN2hD2sCp1T67k3j1ono6bEdk5+p33GTZipje2Zxa9Pajad/wm3MQ1GUdzhh+DbCA4v7VAzI0HUlISAglkX1vhSV/eY+j7fJ4iSrAgBaI9qoeVTsLeCHp32jbF6YrUCE6tr5xbOTmlO3Zu1u2HPHqjzJk68g2RpJvC7ayzPHDRjWtDvvAvQnV75rNO8Z9kZthXoxBiIB4CXC6Tpf6nd6hbP1G45VCdQNvQRdrH3VuALKW/NqRA9lSbv+jbR6ZDT/nuymCgZ1TUE0Z5UttZK2WePSUZwFGMMr7NTt3JfbO1MREaVIpDl2cSoNyGPDFpwzLxtM4rmFgflMXYQLtFSbtsjmE+n0Za
- Qnf8NanF
- 9dNB34ncls+eRU6Si9bI7zeal5ZW4y0Cqlkc25n516Vy8PqRPF7fWrBJFsZ6Yl9CA2cqNM4/iZ7hbcHSWZbW3J3ZZ/ymx/4tFQLs9YHhWkNk/vL5QEbEwZDfH8dZtGSyGzhG4lQo3kdWNcLFOhnXHI4Um3Uoa4JXosQVcWobd5c6Ci+CtKIpxp/8N6Rdw8oUOgf3okmhYVFfrNCcD/b3pdw58gLCBs0zqweCrXhwn2XAQFZNNN52mzyCPEg3dQs0IIzzUml3NVv1m/uKHyRj4D79J2GOdjIO2/Q8yGU0hap7QjXsH+AywSnfieM0+cpWEy0yRmSMSDtucduAGi1aKM9KJYyFN3roU8g/nZSXTr9fT2cMpYeImb8/aFmYRwINfhUK7m8jJwKibmQqA3lehPfg/8j71z0/18LO3TDZxGfXwB+0Y2kVQOKC4izAEPH9lCS2nq6bL8EZnWK083Kl+0oYyoLGZqXgLmKJLR7q4OsLcorB12yfh3zrAtYvs4sxuxdybbhBBb31Lr5znuTqg890448Ch1tfrMIcqrqaUsLMAyFbk7hXCYTRdHd1zrKYVn1NyYoj8AcXXtigB1JMYnM56QN7iplC4hdunad6aK1H6LAnAaegDi1ZlXMR8+XVZr8biQPotuyYyVMVLsn9zKoNW1q8iEdbuDTsPMvKq4959jNF92U1Joipb2q7PCJuTmxYz
+X-HE-Tag: 1756450560-214785
+X-HE-Meta: U2FsdGVkX1+NSLHR+3s3oEC67ENb15qwWSlVgMMERI/gVofsY+L8qxuDJ+oqPdVoYR4pss8TxbxmDJBM/kpRiyS0scWZp+AE7+Pud9ThJEgNS15HT3HMpqajOOh3z56WOTjRY/b++IHr8hreMV+01xteyvEA4X7a6oLGwX7THbAuhKi+kN3SUu1p1ie8+GR/5RAyardiD9hTber2YwDGXasx0GdVe/mE8ILxM5plYGSkxCJoIKL/oYbAnQFrfIsqKWXf68ooa4bgQQBVs2hIn9+3k2i3phTDDl1p7F3YaGNo5/V1mN+8PhA0GhQf4pBX/CjrTSgdWYG6uD+AIOi2zdxmiqaCszMENqz4g0BrfemUPgE6Hb+UZlQok5nVPAfAvcLOsJgKhvS2VdpItox5MPg28XfA4lTu86uQkm50mkyKu15HiXle2iN+q7SG2swccYCkOm5cwXEquLePwclh/FQGzXYXJg8aQpfJop5V9C27VMCRi5QZRFuBijzFrAIrt5yABT00MSWlI4Mt1byLKvo+IKipNLM3pFNbp/f4abUZZrfa3kCpL8AWv+bomRS0vU3etJorJcJQ38OFtA6Um+p8w1lsOpMzhM3HtA1vcW4J7sdA6b4ds0pY6HZngLEoqVni8PpcUNq9CysnuJLloFj2jmq25gIi/Anyy/65+TdtJtQNoj/65M43ZMehnDUWvM/3bkstHluDyAPY1kOydjsB3hhiVs0BO4JpIShc+zsmdYopQB1L1RZwQN5YK22y3/Z0r+1BZFNMI5/L94YTvJd0yPXx7OL8zKnk8FMEUWv9jVSRyPGvPy0/g65aEBnPUYj7WaHM0OlkTt5iC5hRH8n0Gj27JanI8oNxj/nHbxKBFHQWFItxZAo0XrGej6B0bE567yQjMqgGb7EofyR22/QXlb9yQ9SNZeAsEb3/AuBPv1Y+abTm7EEUFlzZDCYDM3GXSJ/ZdKug5r3Uuzo
+ YMyu3Lfw
+ QjRhUTN3yXIdkMdgsPvPJnyHV3IUTgPpzH2SZeEJcjBxGTIyhBNQy21RwMK+5BiXpmCRutiLs17c/awmeGJYTH+ToTRo9TCe1vWNBgyL0mdskA15KLP+vkjNzkQHaBiY5Vded3b+M05Z/LvKQdI3gdDnWND4BIO8k9V7EmDY5cz0XjTctgkLpK2pNBtcrt54qfbtR0SNEfhXJaM0DVOuIjVzLM9Qt6OKoZl8FmN8RwoziX0X7mmCP8AaXQWeyBpp2KYpp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,74 +94,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 14-08-25 14:22:45, Thadeu Lima de Souza Cascardo wrote:
-> Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
-> ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
-> which implies ALLOC_MIN_RESERVE, is going to be used instead of
-> __GFP_ATOMIC for high atomic reserves.
-> 
-> Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
-> allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
-> allocations of order higher than 0. It still used __GFP_ATOMIC, though.
-> 
-> Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
-> non-blocking allocations accesses reserves") just turned that check for
-> !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were expected to
-> test for __GFP_HIGH.
-> 
-> This leads to high atomic reserves being added for high-order GFP_NOWAIT
-> allocations and others that clear __GFP_DIRECT_RECLAIM, which is
-> unexpected. Later, those reserves lead to 0-order allocations going to the
-> slow path and starting reclaim.
-> 
-> >From /proc/pagetypeinfo, without the patch:
-> 
-> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
-> Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
-> 
-> With the patch:
-> 
-> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> 
-> Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> Tested-by: Helen Koike <koike@igalia.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: NeilBrown <neilb@suse.de>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
+When a process is OOM killed without reaper delay, the oom reaper and the
+exit_mmap() thread likely run simultaneously. They traverse the vma's maple
+tree along the same path and may easily unmap the same vma, causing them to
+compete for the pte spinlock.
 
-Yes, this makes a lot of sense to me. GFP_NOWAIT allocations should be
-opportunistic and quick to fail rather than dipping into memory
-reserves. We must have overlooked that during the review.
-Acked-by: Michal Hocko <mhocko@suse.com>
+When a process exits, exit_mmap() traverses the vma's maple tree from low
+to high addresses. To reduce the chance of unmapping the same vma
+simultaneously, the OOM reaper should traverse the vma's tree from high to
+low address.
 
-> ---
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2ef3c07266b3..bf52e3bef626 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4219,7 +4219,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
->  		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
->  			alloc_flags |= ALLOC_NON_BLOCK;
->  
-> -			if (order > 0)
-> +			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
->  				alloc_flags |= ALLOC_HIGHATOMIC;
->  		}
->  
-> -- 
-> 2.47.2
+Reported-by: tianxiaobin <tianxiaobin@honor.com>
+Reported-by: fengbaopeng <fengbaopeng@honor.com>
 
+Signed-off-by: zhongjinji <zhongjinji@honor.com>
+---
+ mm/oom_kill.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index a5e9074896a1..01665a666bf1 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -516,7 +516,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+ {
+ 	struct vm_area_struct *vma;
+ 	bool ret = true;
+-	VMA_ITERATOR(vmi, mm, 0);
++	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
+ 
+ 	/*
+ 	 * Tell all users of get_user/copy_from_user etc... that the content
+@@ -526,7 +526,12 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+ 	 */
+ 	set_bit(MMF_UNSTABLE, &mm->flags);
+ 
+-	for_each_vma(vmi, vma) {
++	/*
++	 * When two tasks unmap the same vma at the same time, they may contend
++	 * for the pte spinlock. To reduce the probability of unmapping the same vma
++	 * as exit_mmap, the OOM reaper traverses the vma maple tree in reverse order.
++	 */
++	mas_for_each_rev(&mas, vma, 0) {
+ 		if (vma->vm_flags & (VM_HUGETLB|VM_PFNMAP))
+ 			continue;
+ 
 -- 
-Michal Hocko
-SUSE Labs
+2.17.1
+
 
