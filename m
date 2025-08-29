@@ -4,121 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C85FCCA0FF0
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 19:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9220DCA0FF0
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 19:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193CE8E0002; Fri, 29 Aug 2025 15:19:02 -0400 (EDT)
+	id C45B58E0003; Fri, 29 Aug 2025 15:20:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 144578E0001; Fri, 29 Aug 2025 15:19:02 -0400 (EDT)
+	id BF4AE8E0001; Fri, 29 Aug 2025 15:20:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00B5C8E0002; Fri, 29 Aug 2025 15:19:01 -0400 (EDT)
+	id ABCE38E0003; Fri, 29 Aug 2025 15:20:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DD7548E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:19:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 706CB1DECEA
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:19:01 +0000 (UTC)
-X-FDA: 83830757682.12.09030E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 62DADC0002
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:18:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qa4Kyefw;
-	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 962468E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:20:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1680813AABF
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:20:22 +0000 (UTC)
+X-FDA: 83830761084.07.97222EC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9A2651C0003
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:20:19 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QVJTNUqc;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756495139;
+	s=arc-20220608; t=1756495219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESsrZ5iyKLaLrRSVWCPt9e4j6U4QDLfrUwAH/qOglFI=;
-	b=isjYckdvk76A/JOigcsDD4C6ekO4ytc13QKJoZBAraIbw0+xlrC77I97nFjblNQrNIGiLQ
-	s3qJj6NKqkRU1aemEnIneuenwYDwAtpZP5RmueOzjJuEwVjlOM26gfEzY5FqlUb+wwzF+C
-	+ucOy6UoU6218iUzI0kf8PIB16qSw2g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756495139; a=rsa-sha256;
-	cv=none;
-	b=4EyLLqjHDvlPuQZUercJmVvR/rXFJvN5E+seSUrnTphYeYjoCbE+kKETWQYDT8THmndxsU
-	KIS3VCepPlCClzD7OP41ppMkACLgcUHdif82DdJN4fFDpHPzBex8OeBvFTmxsHGoPm808z
-	Itdkbf+/aRI8VVyxz6CsvCQslFln7FU=
+	bh=NAjWIEF3OHDdqJteBDySUrwv+3jmvYWnfV9qt+QTII8=;
+	b=V1Pf0XjAwOlhgpLRgmSuJ02SgejobNKreCduRHmlAeMHDs9EU1Ryf3P4M2BtRGL57E8lTS
+	F13wMBqL5zOut+kwWJlKiuj+iuHfrqYCO6IwRU7lv65me0RkVGB43m1f0bXyTiH5Y2B6lh
+	c0zuY+udxqBtHhsYSLKUGIiDxucWonM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qa4Kyefw;
-	spf=pass (imf22.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6811456F8
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:18:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD961C4CEFD
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:18:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756495137;
-	bh=SfwuYXV0KU6eJVhKE0IPfVFe3B6ROS9QbY1dk+JP8m4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qa4KyefwEM+eignqWU370eptpCu7x6iSqxGWzbU+gdoLfpIG5dR8luhNBvK11Qvpe
-	 WupEHPuUELuYVVjLhgDuu2qKuXFb5hlCUMLB9SIPV6Ktjg3pg9eUUoKuUBZ4E2NNk6
-	 6KsSu2aIQcm5sFMEUGaDlEupO/t6Wf2Fs5Bhjq8a4FuRO/gmbh/IF1xshxmXPScdZc
-	 p6hV/6jBHai1mC7xep/QL08bKqM6nqC767rO5llT1/S9DtkC0P/THYx+86WkPMY7DP
-	 cdEwNQsMtrN8kWrXDdrMrvYZAC/4JBNdd7f906drihUiUx9FPO1ooqChThHroFv+M1
-	 9s8+nydfAAHtg==
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45b72f7f606so5535e9.1
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 12:18:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUI/NEr0CxQsEghm7LegM8rocPos3jnareicvCDM4eAAqcS9PLeA69q1i8mqbBsVedYF+eiGPD5iQ==@kvack.org
-X-Gm-Message-State: AOJu0YytucrlxK0q2aqFY6bG5MbDgQjwvDwTmaUk0qQ9BTbqYPa/Hs8E
-	RJ6GM1ZTctgOSJCJV6bopeUmYIvCx/0Qm1lL8dssJfV2QarMRutGDGdxJR+IVu7psTifGf2pHSk
-	uQAoJthj+DBnlwcWlHA7H3vp3vSb2dhZ8xtpI6LAD
-X-Google-Smtp-Source: AGHT+IGwYizH5N431wsmMZe4RCeN+XM22BnJRX3a9bmzFsCySK9GHB8zxV4r/939VLJDfuuUh2SvN3//dXotftQ5t5k=
-X-Received: by 2002:a05:600c:a101:b0:45b:74f7:9d30 with SMTP id
- 5b1f17b1804b1-45b84ae2495mr141155e9.1.1756495135682; Fri, 29 Aug 2025
- 12:18:55 -0700 (PDT)
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QVJTNUqc;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756495219; a=rsa-sha256;
+	cv=none;
+	b=Wq8EAsTb6JqUDW45PpgsKwHMAwodA+pkrIvSCTbqu5hlorIbs4q3jMRkoK2YuScjDhwysc
+	Xv24CsFZ3TANd0L8kD6ihVZNw0nXtXo5orEOqdJE6eQKXR5n4YDCte1Alg4QaaWAUQ5U22
+	8FBiKCU1vKVfjTVJo2JFI/nFsV/JFG0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756495219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=NAjWIEF3OHDdqJteBDySUrwv+3jmvYWnfV9qt+QTII8=;
+	b=QVJTNUqcERL2pTZQEWiypTQgzDeWdclFO1/CZv0V2HmWFNC/nTZ0CHskzNFLi5gpTx6GKQ
+	FmfsopOVkp8H90nTHkZbPkHXF1ebUgctrj6BRLHxAQAwelza4/jahStwfvHtOhFpfW4Ijj
+	8FhOCv4290X34iC6J6kKgfaXovsr+SE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-235-fPQyDE3zNkC7b9g24xfObg-1; Fri, 29 Aug 2025 15:20:17 -0400
+X-MC-Unique: fPQyDE3zNkC7b9g24xfObg-1
+X-Mimecast-MFC-AGG-ID: fPQyDE3zNkC7b9g24xfObg_1756495216
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3ccfd9063a0so831720f8f.0
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 12:20:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756495216; x=1757100016;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NAjWIEF3OHDdqJteBDySUrwv+3jmvYWnfV9qt+QTII8=;
+        b=rB3qgNExTd8VUwQhOW+p0znuduBDLgiQUPcjTfqUrcJjvTS6/4ZSgNoW/WKSY5awkJ
+         DwT4EFYUBZIm74Jxm8CCDwCnrHbMYEci26EdznOHwr1c0cHjVwyJ16MsPcySM+jIzq7v
+         V+yf9eH62En0wWRxx5xsh0bFsoQLLG/BVDEKPGwYXu9lcI4fucPilWp1xlUNypS6pJ6M
+         ugTY6TiZeTN4hqMfnRBlz74HJ3MIWlMfC7WvSz0MfluAETbttUtjlxe60/96daY+kvgT
+         KWQPb/y8ymxZAvz+brzs7yeAmWR1UsQOnyVIvfWXt9FQE9M1TvEPz6c+18OT7FRC8tHG
+         t73A==
+X-Forwarded-Encrypted: i=1; AJvYcCV9yCDwLqeHtPDsPVz2OBaMESJ09vMxnbKakF+qO2IacMrwOzuiwDij3hfpMBRq3FkMRBMwkRg+Mg==@kvack.org
+X-Gm-Message-State: AOJu0YyM8J0QntUXFih9rv/ECpZuDkCc9ZvYcd40X82XwF3MtndzWEzO
+	XWHmjo+jgjqWyRkjwO0XejSlg2ySR2SpOhxmfjn934ZXfNCFahrCMXjhXS1qtUHdGaqp7QQKlkt
+	XWybiK1QPBU+9vOiRNyJ9W5hvTbakIsvniIZctvUdAivQhAurc6sW3S/mxwFz
+X-Gm-Gg: ASbGncunrlfD1jbWWjG/pNrNHzdcFNHF7zL58vSfjoML8kmOqWHSkgEJl3m0HmviRb4
+	dmuUGIZHxw52xcFg5xDhihRsKazIiC+1ap2qUbpKT6a5HBlZedZ35Y6th3JaIM/zSVtw6V6W47F
+	P2ADtF46pulUcjoRHg+CiV51FdE2BsKTMid22DHvgZIVQNpvI8DTPkKmxqD96rRde96rXQTKt58
+	rSDnb7iXDvrFR1rA7zH66nIdPx3GbMyvkyRQLtVyebn+TSlqHLXsKWCSYOPM4Ut9p4CSC1EAwNn
+	bCTkDYEP2qg8dhP/58IL4YKGhOzVrNe529xVc9PZD7rLc1OQv+RLd7CPTky6ovPbYEIxIdOeM3n
+	5dHEQ/dYip0gcMqb3nolt/fmKtPT+tjc2ZVYYfnbiSE2He6OMwy/hSx4CkYUfDHEX
+X-Received: by 2002:a05:6000:228a:b0:3cf:fcb6:ca0b with SMTP id ffacd0b85a97d-3cffcb6cf29mr2544897f8f.15.1756495216307;
+        Fri, 29 Aug 2025 12:20:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHs0Uh+6VEcy1VTnuVxufD7ppXirHFfXgEbrAQ/o7ENL67ut/WpXEaakTh/mWWd5dNxuNogpg==
+X-Received: by 2002:a05:6000:228a:b0:3cf:fcb6:ca0b with SMTP id ffacd0b85a97d-3cffcb6cf29mr2544885f8f.15.1756495215849;
+        Fri, 29 Aug 2025 12:20:15 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f1d:100:4f8e:bb13:c3c7:f854? (p200300d82f1d01004f8ebb13c3c7f854.dip0.t-ipconnect.de. [2003:d8:2f1d:100:4f8e:bb13:c3c7:f854])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d1052db1f0sm2828033f8f.23.2025.08.29.12.20.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Aug 2025 12:20:15 -0700 (PDT)
+Message-ID: <bcf7e932-0a14-4cd9-b994-50114013d96b@redhat.com>
+Date: Fri, 29 Aug 2025 21:20:14 +0200
 MIME-Version: 1.0
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-30-pasha.tatashin@soleen.com> <20250826162019.GD2130239@nvidia.com>
-In-Reply-To: <20250826162019.GD2130239@nvidia.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 29 Aug 2025 12:18:43 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuPaSQN04M-pvpFTjjpzk3pfHNhpx+mCkvWpZOs=0TF3gg@mail.gmail.com>
-X-Gm-Features: Ac12FXwg_LGboIxDPBDuUZE0PAjtgg9g5mIDqFcbL5uMlL902h2DZN1Mi-6Fu0Y
-Message-ID: <CAF8kJuPaSQN04M-pvpFTjjpzk3pfHNhpx+mCkvWpZOs=0TF3gg@mail.gmail.com>
-Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org, jasonmiu@google.com, 
-	graf@amazon.com, changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 62DADC0002
-X-Stat-Signature: g9diipoqitoix5f6qxn85umuq7csehxr
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][v3] mm/hugetlb: Retry to allocate for early boot hugepage
+ allocation
+To: "Li,Rongqing" <lirongqing@baidu.com>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "osalvador@suse.de" <osalvador@suse.de>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "giorgitchankvetadze1997@gmail.com" <giorgitchankvetadze1997@gmail.com>
+References: <8c6e91ecb80c4707a52c253481cba51c@baidu.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <8c6e91ecb80c4707a52c253481cba51c@baidu.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QdH5KVTxYxrf70x-PBbmjj8Z0pB47aJ7IQCHAhitmYY_1756495216
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9A2651C0003
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756495139-38541
-X-HE-Meta: U2FsdGVkX1/wRd7JcQgaAIiwlnLnNaILadEql+sfJ1M0u3YVRDSTfE6IK2XMcimzbg7EamrlTiXZx/ShBaXh75AIngKMth3djh84AVLvCBMyHuPTOLwfUxGZCUSpHPWbli1ieZEwP2SdYmvSUHp0v2uVjbZols0h+Sc6ae1Boc6gWt0zJZaEjvra9FMaoNWPu6pzCk3r2Ft8Zc8AbuJWgr41qhQj870lS21l8d4mv4EzEXYaJCgMBs6cS0UpsaF4dLVriEWF7iaes+2yiTctI2KcD6A6ydcnIlWn28+l4/dAAOY6kcd8kS5TzrXpeamLbfSrl60IkMJQkkF7Utyks9lCfRPePDUfWzmTpvN5kaOhciQT+rnAsYkC3a9yChQ3kcNsaHoh1dKp4y6F9MO62amYTdNk8D44U4+Ynn/9X7XCfR0MMEQLkdnHvo/u/88I6VEvLOz1cDthHWqqaEI6UzhGv8HCT0hXtc8ys/ubpTx0BSGo9dfm+Sk9nU2SUOOlHgCgWYhLi6XSOx4VfepB96eipVDfB5aJvY2evXCnZ5qPLVUq5IVTQz5fcyTR5IhNZOYL6jvvfZ30XG35fNihA12LRoKp7b8eC8t9qLV6Jx2nefJkPwu8dsQ7F933sp1JjtXL+m1imnEBZViaQBAmNt+PjbBuPgWUzTXybLbbJwuMceFkJHIKxU54NmXrrjzHXjOHAsiyqv9H8hP90f8oBW2kgNcJ6ul51z9JlzxdsSZTUG59zqA899pQleFPAOl/UsEKO1+6UA1GyvhRMzlgt1o3L/qwv1vSZ9L7QFZY4FOH3ahxGG8wWttejoW0Hy8ipdXbp7+Nf2z99GcFDOcxxGW8ZV9KeG6Kf5kyczzzlBBcRapr9j6EhkHOMr1opojsDcDYnGYaszO8BFc6Wo07IpKH9R4VKKfY8dvDeUBwNeH6iREJXALrugIMmd7DgkB++EZUTJwfXUToKOGQ304
- NP75H9yi
- RxDxMIIE8+sFMREkLAvsHPa2cGSRU1L8dniD77XQteKoYJbUwn9d5/fsl7oCNGchbO1/NZPz7UhH/XldTrAtoynq1IvGJ9926zKJnGapRn6E7yQ2dDI0LuTtY3eyU2elfECZU84gjU0Ffu4PWyM171EENywhBcczk3bwrdg25mJTNmT6qkeSeJteN9Zg/drfpxzTUrBTbMoy/27INPjtlMCPW3qyh1Ixm1gLN3p56j3VKlPkdL2oXt4wOdt7+mI+jD9utiZ+YpA4t145ho68LswqIejiuX0J9218wpKR4R3GjfooYISdpp0EymkfpgHH+mXXQUKAA1q+4+pn223/iO7SPtOzr6WsVV5bJ0XA6mnhC2NK3aPmZ1jFDTQ==
+X-Stat-Signature: dzhfk5scxs3r4wmy5zyw8xi4xno76m9t
+X-HE-Tag: 1756495219-380556
+X-HE-Meta: U2FsdGVkX19NNUdCa1GPEZjQD3yWX8DpzdthRMrzHTeAzHCVbhyac/oGfxP+rEONf8QGB4tFOMYJ+UWf4GrefXbOdbhvy1AfSYTssOBLkg7EfcbD9A0jURHuJ5wDEvNnkHVpJ7NbdjC/lqwTCqG1Zaj6ebr7iKuq49USZcsfeoKai0h+Y8tMShQCADg7UDS0QR/A40o9v8BKCyTU302pIo5uZpMFwhH1NazfuSOhWkNJtluHNEc0zjSo2sx46ptpUkRfW/Yu5X+7ojh+tTEpb2sKzCDiein+lwR9iu6oMpgKXmrg35K+d0DJWXEe9oWhaM4wU0rA6zsJp2RzHKs4RAvsMVTcTIDxLMSDWUu+gR7/jn47IMlhYRGlPHJztUAHTxhbcj2da5nyMONeHW0dWTsHJk584dwPFdw/gBgjPtlPMStZfU+u5ZXX2vbSwiBZOXYGUWU7Y3cARrpslUQgMiOrmIZFneans8ENvqag2XcTkU6KZgy03TLYwrFlp72QQaXlXnxpHhez2YydzvPxGKSDoQ/xU9tJyeqBE7J4RnQw0YY54uJNyVdbCeiqPswrG1VCMG7OOtDD51wyEF9OcZFjozyJ53M+zmpZZ9n6dV8q5sefV3ZwVkm2YgaSVe969SFjKMO1LM1ETZxIfbZxnIxbs7oD3vETbQM0sIo87RXLY83TMRW/NGPPccX2eYWgbs/O9JN8W6w9zbnnUkRAP8Mn9j+a7pAPkAdoYGGylBLZqi2rdS9KyOWUHL2KuJ0OJM4SgeACwkaMOBn8b9EckYSHZwb689x6szt4OfnN6tCdtikxrmZxHWgsFIVOXU5itpfCLhbe2n7B7aOsaoJ2tddVHs9C81Sl3wtCdhy3QDGEbUQJEdwQ3m/9aAbfrrnak571mzGhaTkr+op3lUPboq2q3F/kSM1QkHt6eK6SMiPhpSIZhKoiQm4vf9HJ3l8l3bgehG54t6jzImkW5oy
+ lmrksg62
+ wcFLOqp6XdV5W35seTHdIIG3HKL3PX12/fNZ7CvcZHu3WWD470TE9YOX/KQh4eOzj3um27oXzxO2H+v8L5/NaL2Gpy6JKmv+vwFLyZzSVPKwp7TLWGqpz9waiyxMhqxnY+fs+1dKuVOinmLi7RPblLh9MyyhNVVv+7et2GS1E7NtFC2jhDC9YsxKJRcN0CueO0Nr6yBR1DuNp9olc4hhEf5a+xaPBa0Q8r2UDZcFPZga8rL9Qeh2RW/ykCiASCgBmaJ6GU5P8L8Yef1r7als1V4Ldx66/VEpa/Ekjnnm8zGS966T4jTkZ46Onmxhhp9K6DMfyuMWuDEQwDUl/RqSQVHwz+QKV40zWaqrRtn5CY16V2xAe2juDPtUUT6Na9aidcO8hzM01u8W4g0m/3YVqy/i3mS2aqykUF4LDq2b5EihMzXW5PCFQA2U8F6L43woAIx/lSX1C3wU6IqZ51JR1t2qjSGRnnrEuxJVH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,209 +180,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Aug 26, 2025 at 9:20=E2=80=AFAM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Thu, Aug 07, 2025 at 01:44:35AM +0000, Pasha Tatashin wrote:
->
-> > +     /*
-> > +      * Most of the space should be taken by preserved folios. So take=
- its
-> > +      * size, plus a page for other properties.
-> > +      */
-> > +     fdt =3D memfd_luo_create_fdt(PAGE_ALIGN(preserved_size) + PAGE_SI=
-ZE);
-> > +     if (!fdt) {
-> > +             err =3D -ENOMEM;
-> > +             goto err_unpin;
-> > +     }
->
-> This doesn't seem to have any versioning scheme, it really should..
->
-> > +     err =3D fdt_property_placeholder(fdt, "folios", preserved_size,
-> > +                                    (void **)&preserved_folios);
-> > +     if (err) {
-> > +             pr_err("Failed to reserve folios property in FDT: %s\n",
-> > +                    fdt_strerror(err));
-> > +             err =3D -ENOMEM;
-> > +             goto err_free_fdt;
-> > +     }
->
-> Yuk.
->
-> This really wants some luo helper
->
-> 'luo alloc array'
-> 'luo restore array'
-> 'luo free array'
+On 29.08.25 17:20, Li,Rongqing wrote:
+> 
+> 
+>> On 29.08.25 11:52, lirongqing wrote:
+>>> From: Li RongQing <lirongqing@baidu.com>
+>>>
+>>> In cloud environments with massive hugepage reservations (95%+ of
+>>> system RAM), single-attempt allocation during early boot often fails
+>>> due to memory pressure.
+>>>
+>>> Commit 91f386bf0772 ("hugetlb: batch freeing of vmemmap pages")
+>>> intensified this by deferring page frees, increase peak memory usage during
+>> allocation.
+>>>
+>>> Introduce a retry mechanism that leverages vmemmap optimization
+>>> reclaim (~1.6% memory) when available. Upon initial allocation
+>>> failure, the system retries until successful or no further progress is
+>>> made, ensuring reliable hugepage allocation while preserving batched
+>> vmemmap freeing benefits.
+>>>
+>>> Testing on a 256G machine allocating 252G of hugepages:
+>>> Before: 128056/129024 hugepages allocated
+>>> After:  Successfully allocated all 129024 hugepages
+>>>
+>>> Suggested-by: David Hildenbrand <david@redhat.com>
+>>> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+>>> ---
+>>> Diff with v2: auto retry mechanism
+>>> Diff with v1: add log if two-phase hugepage allocation is triggered
+>>> 		add the knod to control split ratio
+>>>
+>>>    mm/hugetlb.c | 27 +++++++++++++++++++++++----
+>>>    1 file changed, 23 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c index 753f99b..18e54ea 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -3589,10 +3589,9 @@ static unsigned long __init
+>>> hugetlb_pages_alloc_boot(struct hstate *h)
+>>>
+>>>    	unsigned long jiffies_start;
+>>>    	unsigned long jiffies_end;
+>>> +	unsigned long remaining;
+>>>
+>>>    	job.thread_fn	= hugetlb_pages_alloc_boot_node;
+>>> -	job.start	= 0;
+>>> -	job.size	= h->max_huge_pages;
+>>>
+>>>    	/*
+>>>    	 * job.max_threads is 25% of the available cpu threads by default.
+>>> @@ -3616,10 +3615,30 @@ static unsigned long __init
+>> hugetlb_pages_alloc_boot(struct hstate *h)
+>>>    	}
+>>>
+>>>    	job.max_threads	= hugepage_allocation_threads;
+>>> -	job.min_chunk	= h->max_huge_pages /
+>> hugepage_allocation_threads;
+>>>
+>>>    	jiffies_start = jiffies;
+>>> -	padata_do_multithreaded(&job);
+>>> +	do {
+>>> +		remaining = h->max_huge_pages - h->nr_huge_pages;
+>>> +
+>>> +		job.start     = h->nr_huge_pages;
+>>> +		job.size      = remaining;
+>>> +		job.min_chunk = remaining / hugepage_allocation_threads;
+>>> +		padata_do_multithreaded(&job);
+>>> +
+>>> +		if (h->nr_huge_pages == h->max_huge_pages)
+>>> +			break;
+> 
+> If all pages are allocated, it will break out from here. Since in most cases the first allocation is successful, I have moved this check to the very beginning.
 
-Yes, that will be one step forward.
+Missed that, thanks!
 
-Another idea is that having a middle layer manages the life cycle of
-the reserved memory for you. Kind of like a slab allocator for the
-preserved memory. It allows bulk free if there is an error on the live
-update prepare(), you need to free all previously allocated memory
-anyway. If there is some preserved memory that needs to stay after a
-long term after the live update kernel boot up, use some special flags
-to indicate so don't mix the free_all pool.
->
-> Which would get a linearized list of pages in the vmap to hold the
-> array and then allocate some structure to record the page list and
-> return back the u64 of the phys_addr of the top of the structure to
-> store in whatever.
->
-> Getting fdt to allocate the array inside the fds is just not going to
-> work for anything of size.
->
-> > +     for (; i < nr_pfolios; i++) {
-> > +             const struct memfd_luo_preserved_folio *pfolio =3D &pfoli=
-os[i];
-> > +             phys_addr_t phys;
-> > +             u64 index;
-> > +             int flags;
-> > +
-> > +             if (!pfolio->foliodesc)
-> > +                     continue;
-> > +
-> > +             phys =3D PFN_PHYS(PRESERVED_FOLIO_PFN(pfolio->foliodesc))=
-;
-> > +             folio =3D kho_restore_folio(phys);
-> > +             if (!folio) {
-> > +                     pr_err("Unable to restore folio at physical addre=
-ss: %llx\n",
-> > +                            phys);
-> > +                     goto put_file;
-> > +             }
-> > +             index =3D pfolio->index;
-> > +             flags =3D PRESERVED_FOLIO_FLAGS(pfolio->foliodesc);
-> > +
-> > +             /* Set up the folio for insertion. */
-> > +             /*
-> > +              * TODO: Should find a way to unify this and
-> > +              * shmem_alloc_and_add_folio().
-> > +              */
-> > +             __folio_set_locked(folio);
-> > +             __folio_set_swapbacked(folio);
-> >
-> > +             ret =3D mem_cgroup_charge(folio, NULL, mapping_gfp_mask(m=
-apping));
-> > +             if (ret) {
-> > +                     pr_err("shmem: failed to charge folio index %d: %=
-d\n",
-> > +                            i, ret);
-> > +                     goto unlock_folio;
-> > +             }
->
-> [..]
->
-> > +             folio_add_lru(folio);
-> > +             folio_unlock(folio);
-> > +             folio_put(folio);
-> > +     }
->
-> Probably some consolidation will be needed to make this less
-> duplicated..
->
-> But overall I think just using the memfd_luo_preserved_folio as the
-> serialization is entirely file, I don't think this needs anything more
-> complicated.
->
-> What it does need is an alternative to the FDT with versioning.
->
-> Which seems to me to be entirely fine as:
->
->  struct memfd_luo_v0 {
->     __aligned_u64 size;
->     __aligned_u64 pos;
->     __aligned_u64 folios;
->  };
->
->  struct memfd_luo_v0 memfd_luo_v0 =3D {.size =3D size, pos =3D file->f_po=
-s, folios =3D folios};
->  luo_store_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. identifier for=
- this fd..>, /*version=3D*/0);
->
-> Which also shows the actual data needing to be serialized comes from
-> more than one struct and has to be marshaled in code, somehow, to a
-> single struct.
->
-> Then I imagine a fairly simple forwards/backwards story. If something
-> new is needed that is non-optional, lets say you compress the folios
-> list to optimize holes:
->
->  struct memfd_luo_v1 {
->     __aligned_u64 size;
->     __aligned_u64 pos;
->     __aligned_u64 folios_list_with_holes;
->  };
->
-> Obviously a v0 kernel cannot parse this, but in this case a v1 aware
-> kernel could optionally duplicate and write out the v0 format as well:
->
->  luo_store_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. identifier for=
- this fd..>, /*version=3D*/0);
->  luo_store_object(&memfd_luo_v1, sizeof(memfd_luo_v1), <.. identifier for=
- this fd..>, /*version=3D*/1);
+> 
+>>> +
+>>> +		/*
+>>> +		 * Retry allocation if vmemmap optimization is available, the
+>>> +		 * optimization frees ~1.6% of memory of hugepages, this reclaimed
+>>> +		 * memory enables additional hugepage allocations
+>>
+>> As I said, please remove any calculation details about the vmemmap.
+>> That's not the place to have such calculations easily become stale.
+>>
+>> Something like the following:
+>>
+>> /*
+>>    * Retry only if the vmemmap optimization might have been able to free
+>>    * some memory back to the system.
+>>    */
+>>
+> 
+> Thanks, I will fix it
+> 
+>>> +		 */
+>>> +		if (!hugetlb_vmemmap_optimizable(h))
+>>> +			break;
+>>> +
+>>> +	/* Continue if progress was made in last iteration */
+>>
+>> Comment wrongly indented.
+>>
 
-Question: Do we have a matching FDT node to match the memfd C
-structure hierarchy? Otherwise all the C struct will lump into one FDT
-node. Maybe one FDT node for all C struct is fine. Then there is a
-risk of overflowing the 4K buffer limit on the FDT node.
+Maybe just comment above the loop that we retry as long as we are making 
+progress instead. It's unusual to see these tail comments in loops.
 
-I would like to get independent of FDT for the versioning.
+-- 
+Cheers
 
-FDT on the top level sounds OK. Not ideal but workable. We are getting
-deeper and deeper into complex internal data structures. Do we still
-want every data structure referenced by a FDT identifier?
+David / dhildenb
 
-> Then the rule is fairly simple, when the sucessor kernel goes to
-> deserialize it asks luo for the versions it supports:
->
->  if (luo_restore_object(&memfd_luo_v1, sizeof(memfd_luo_v1), <.. identifi=
-er for this fd..>, /*version=3D*/1))
->     restore_v1(&memfd_luo_v1)
->  else if (luo_restore_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. ide=
-ntifier for this fd..>, /*version=3D*/0))
->     restore_v0(&memfd_luo_v0)
->  else
->     luo_failure("Do not understand this");
->
-> luo core just manages this list of versioned data per serialized
-> object. There is only one version per object.
-
-Obviously, this can be done.
-
-Is that approach you want to expand to every other C struct as well?
-See the above FDT node complexity.
-
-I am getting the feeling that we are hand crafting screws to build an
-airplane. Can it be done? Of course. Does it scale well? I am not
-sure. There are many developers who are currently hand-crafting this
-kind of screws to be used on the different components of the airplane.
-
-We need a machine that can stamp out screws with our specifications,
-faster. I want such a machine. Other developers might want one as
-well.
-
-The initial discussion of the idea of such a machine is pretty
-discouraged. There are huge communication barriers because of the
-fixation on hand crafted screws. I understand exploring such machine
-ideas alone might distract the engineer from hand crafting more
-screws, one of them might realize that, oh, I want such a machine as
-well.
-
-At this stage, do you see that exploring such a machine idea can be
-beneficial or harmful to the project? If such an idea is considered
-harmful, we should stop discussing such an idea at all. Go back to
-building more batches of hand crafted screws, which are waiting by the
-next critical component.
-
-Also if such a machine can produce screws up to your specification,
-but it has a different look and feel than the hand crafted screws. We
-can stamp out the screw faster.  Would you consider putting such a
-machined screw on your most critical component of the engine?
-
-Best Regards,
-
-Chris
 
