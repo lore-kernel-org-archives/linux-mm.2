@@ -4,103 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69716CA0FF9
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 11:44:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD202CA0FF0
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 11:44:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88B378E0006; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
+	id 1DC338E0007; Fri, 29 Aug 2025 07:44:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83C118E0001; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
+	id F41108E0001; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72ABC8E0006; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
+	id E2FCC8E0007; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E4368E0001
+	by kanga.kvack.org (Postfix) with ESMTP id CC3A78E0001
 	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:44:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE6B6119890
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:45 +0000 (UTC)
-X-FDA: 83829612930.06.D4DC8B5
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CA12240004
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=v96AQjMM;
-	spf=pass (imf27.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.47 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B0EBBAAC1
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:46 +0000 (UTC)
+X-FDA: 83829612972.18.D994869
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 977301C000E
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:44:44 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=Hecwbn0i;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf21.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.44 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756467884; a=rsa-sha256;
+	cv=none;
+	b=dem9iNdfp0I1jP7I7/rE4pONzLG6UORCHnQ7JmV2HKJxt57yrK/+iuFSzJ33AOYJekpTg3
+	ycbtaKh9cKkbab9wOGnntqOb+ugJePfYNE2qzW33X53W2spTfBzPP3cB1amA6ihsWXKOm7
+	v5GFN+KXkC2PX7VPivN16nMTt14fPgY=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=Hecwbn0i;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf21.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.44 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756467884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=NYFEjS97w6k9aJ9qSpZ2i0GrDJhEZpwYJ/gSKtJjiaY=;
-	b=sAXKkQRPRELU9nXjQ8FL/c7GlI3xGB2YghYHHIAbEa0OnPPcFSfLFVkqWtexGYaZZhMBMr
-	2NIcNLcaYZ2nCMU/bUhcrM2AMK38bJRvVT1WA1E/XTUx8xi0DEpkNXuMo2XsRrP9/tciWD
-	/YTNLYFRaPFCENBqbtI1CXG16Z3oK0I=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=v96AQjMM;
-	spf=pass (imf27.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.47 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756467884; a=rsa-sha256;
-	cv=none;
-	b=UtOrqbyUxnT9NCCQYLtxJ6t4kszzUiRFGwl0W21S/K0IIUfp0IxOBKSYUTfNKoVuXJZn8k
-	6SlvS/Q22QLUbzNTH4BTl2lAXZzPsemqCXtckkpfWW/OnK0IEvRs4euAQR5ao3WEJYvb1F
-	c3kKkalKX/ASAhvk1ZHhAaQhiy4bX0w=
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55f3e4dfc5eso1691378e87.2
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:44:43 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jgtia+LpfMpm3WYDNDpUT/QXDK2dR0NCJT/wLTvQl3g=;
+	b=49anzTXLdKhhqCSJl6kI0F9O126YJdg19jPsySBhYlhNJfqKGN6205ekR2pM8NeXdDocr8
+	rk5VRv8IvEotLaiph9luhrDvlOXLgin0uFFBtz1RUvvOrlo0tRVKMtjf4bfG1U5VQnX80k
+	xbUQMVdm5vPitRDXe6/PgndQ6y0z3zI=
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f4345cfd3so2090509e87.1
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:44:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756467882; x=1757072682; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NYFEjS97w6k9aJ9qSpZ2i0GrDJhEZpwYJ/gSKtJjiaY=;
-        b=v96AQjMM5uvkpEsKgdxwZfp1pE/psDHRDu/iMbstfp7pWCHnDq408BnrScFIYqSpvX
-         c5vU4WduYUQUjfmggyE1DQvbJfG0W8onv/47PQfDApWFW1uy9tDJLgSEYgAucT2BaOQz
-         55E57cJD0z1ZnhQ+bZaikQr9CWAPVeNuFm3WtNULkQyH7YHL6sKS4ai+Fm4HOS+OfGbe
-         rsYjIGAbYojdaY1B5R/4LT4ID9oUC1PNeINkc51dRhkKpszdw8rD/z0He/ZvZ5VgvlsR
-         t3c5gB6R5V67rwUAqJFaAdZp2DXhryA8x8YRJiv31z/0tXrGGfV5PzHpCtwOEhZQKzkV
-         6DEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756467882; x=1757072682;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1756467883; x=1757072683; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NYFEjS97w6k9aJ9qSpZ2i0GrDJhEZpwYJ/gSKtJjiaY=;
-        b=fH6zJENwiAjUAjbPeqkAca6GZDjxb2ZqyThQRGtZ4pmaFD+n41qDteAICZMhpz8U7Y
-         TuoNzmcGIugOhL6RKxm9pyIK5/IWiE6oStUw6uWQiCM8gftKKUq+66JnAFTxeV0nuUPj
-         Lu/uqOSBMx+M8kg5Sb8FZj0HMTsdre3zqUHEEiHnIIfKXyti2FwEAJC+GKIhu5EvAOCH
-         ZpRg7jPkk3BgbKbkCEXDT9X/aYbIUlTzwzH8C9san9taH/qebUU0i7PdJRwSydqJH1G0
-         CThY/nMC0pQBvFEEDDCHFat3dwD/l7Hdu1gNQryK6x9SBho/ekVjF60d2s3NUSskdaMr
-         2SoA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/NpKC61BOjCP1Yo+3qu+QHkKeLzPmKVuvOrTJMudKhfqAgX4AluQCsgyrVkqiVDVYkVy5T3AyGw==@kvack.org
-X-Gm-Message-State: AOJu0Ywre25ZZ999zBiaV8oo3xcpzMlKR/eUb7uL1VGt7fOqzjHPFD5G
-	muGlzmKJQnHhNjYyGVG7DeO5kuuDkD5p4t5XKgUYfgSzkmsNMivxALGHvffzAyvU1XDND/DOAUM
-	UQMPG
-X-Gm-Gg: ASbGncs93m+xkrRQI+yuukUuG4Rt8/4oXPD83girPBEi7JBmj/FcpqXl3tVCThumLaZ
-	OarCg4uWtQlp+zfQEUvQTGcPb1kATpkWs0up9ZHASvEP3cp+ywQ/ogs/NFw/2wiMpC4cIz4N7wS
-	DQ1tHjGR2L/DF0WisXhXTNpeCANuTsH9SkFqaluEulePs/9FW++tOObXOyxNlOjB3DHdoJZOmsy
-	T1SrI8IvcFvAUlWekU2OicnpnZNtUhW+qjGh7GnOj6EK3G1jZ/LE2H7+Q3PMd+dM0pW62ZIE4DB
-	N+95o4lvo0nyfLd0qEq1gZeMIyfEp5DGpoCQjKpgl6BVrF4EJc0bgG7e+OvUV92eiZ6+HKaku1M
-	qmqoGZdn6aS13oDQp0QhP5MOEAf1AcUtX
-X-Google-Smtp-Source: AGHT+IGnEbXMN1WVX/jWRB0dcBZuNXIC1IpWZ0S8MP6TGxiRzhzgPMsPfwiQzUYaRA6WU0ZV/K1KvA==
-X-Received: by 2002:a05:6512:31c6:b0:55f:65ef:eb12 with SMTP id 2adb3069b0e04-55f65eff890mr1401957e87.46.1756467881765;
-        Fri, 29 Aug 2025 04:44:41 -0700 (PDT)
+        bh=jgtia+LpfMpm3WYDNDpUT/QXDK2dR0NCJT/wLTvQl3g=;
+        b=Hecwbn0ioje6fS3+RQ7zC477UV6u45byJarmWEdDgaPI2JZzKku1fi+Cyk6F+uukHU
+         XvpGKJz6jGjup8LlQ4QsINVcWHjZvRkUYLx2OKXPHVjVnTRVTdFvPtbAeS7aY3WNoDCj
+         nKNF+pra81+X2SulfOiCcFchamRfQb3lJgZGisH6wLSXMxesop4BLIL98ZtW1A1qmvtu
+         kQ9u6hZdLZGJY36Tynqh+2ZwnWzDqN0sUcL8KuJEHuSLgML7Y66k2guIP/Cfuk+fzN31
+         Ku6LA2LAS5ui/U2zVNvDBxsYhGchn5onlieD77wb4SfGnkubgzcGMOTD8ndsvAGbRgYv
+         ZOpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756467883; x=1757072683;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jgtia+LpfMpm3WYDNDpUT/QXDK2dR0NCJT/wLTvQl3g=;
+        b=NGBXCbk4qL8ZsBCRUgSOMf0YTZKCyNiLXmvpw43EGFRs61iX/rV9aXPh5R4tbttzmR
+         3Jfi83QW8EGhCqTsvqP7h9MRDC917KUfcrSPwtYMBXVErG8tSeoEbRSnm5xQC62qk6vK
+         MaVY39YL3CzK+c+7xDRqkrpqHOYrTaGKz8XuJSMlZ7YLhtP4kyicS7hD9Au3rLBs+OMm
+         XtXkSsnoUX6EqiGC5pIQP70uLSqSq+H3ksJYmYhAhC71jaH4iz/7ZvCcapLtN5TyPers
+         8gmLY3v5vxbdQsRFMom1qy4RDGklkG1TQNzRGWiP69Iy2pkEm4vb34JHJ6Emrp/6upNH
+         ok/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXWC+9sXS2NMh/cEsKq28clgwvu8U0Hpdkqepw66e9s7BgOcSXY43q6hE4iEJKmd2zsueP0g8s6nA==@kvack.org
+X-Gm-Message-State: AOJu0YwJdwtGGzxs//iEzfXSMHVdEwXOuXr/z4qfP2Z3zJeJGsuHNNAR
+	2FUSCygxdCMFeQ5q/Qi0uuKL841vz9n91WnFLQ1lkamafb/N3Cagaf+TAfE9nB/+8A8=
+X-Gm-Gg: ASbGncvjRR63DF7q4J6aLEvT1wh91G8FhEUZUIAIqGTxtZpkBPDd7sv8uhUEGEB/BGo
+	oq8syIiOyRoRHkqG2Y65ym6UFvURNTpn2GR9C1chPYRe4W+i3M5dRj9SUu6yza58PrTI3JU9qPI
+	o5OEFerGGdeI35jx38hO2Vmc38Ts8Ai1uDfRdg7oIju6RwBVe0SJTzSbNjALAqiFpzAjNH15rdT
+	9oI4E8U2UZlfRvrxQRixueqwiGjuRrf2zGXYLyFrqgy38M6kOiK25YEdoc4X4ZvxT1gc1UeBvvD
+	iCIcuIxdvARTwZ1YvDlsnKdvaKTYK0S3/NLaILIjZ9nukYTV2SSmonJaPOzYEZomkPb0Ldequw3
+	hduNDi5jOzTx6qIeQRMX/EhvpvgoSAdQX
+X-Google-Smtp-Source: AGHT+IHAqQsoVsR6L7a6rcLo6fKDNuhsLtvlWrPRnW+IIIX2gb7KKe3MHpJzSG95OBA3WhmSJVm61g==
+X-Received: by 2002:a05:6512:12c4:b0:55b:84d3:12b9 with SMTP id 2adb3069b0e04-55f4f4c6a38mr4346175e87.18.1756467882843;
+        Fri, 29 Aug 2025 04:44:42 -0700 (PDT)
 Received: from [192.168.1.140] ([85.235.12.238])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f67a4c612sm581162e87.146.2025.08.29.04.44.40
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f67a4c612sm581162e87.146.2025.08.29.04.44.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 04:44:41 -0700 (PDT)
+        Fri, 29 Aug 2025 04:44:42 -0700 (PDT)
 From: Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 0/2] mm: task_stack: Stack handling cleanups
-Date: Fri, 29 Aug 2025 13:44:39 +0200
-Message-Id: <20250829-fork-cleanups-for-dynstack-v1-0-3bbaadce1f00@linaro.org>
+Date: Fri, 29 Aug 2025 13:44:40 +0200
+Subject: [PATCH 1/2] fork: check charging success before zeroing stack
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKeSsWgC/x3MwQqDMAwA0F+RnBeoAcHtV8YOsU01OKo0UxTx3
- 607vss7wCSrGLyqA7KsajqlgvpRgR849YIaioEcNa6lJ8Ypj+i/wmmZ7RaGPdmP/YjkmroLkZi
- EoQRzlqjbP39/zvMCOJzJfGwAAAA=
-X-Change-ID: 20250829-fork-cleanups-for-dynstack-2051bdf2a2ea
+Message-Id: <20250829-fork-cleanups-for-dynstack-v1-1-3bbaadce1f00@linaro.org>
+References: <20250829-fork-cleanups-for-dynstack-v1-0-3bbaadce1f00@linaro.org>
+In-Reply-To: <20250829-fork-cleanups-for-dynstack-v1-0-3bbaadce1f00@linaro.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
  Juri Lelli <juri.lelli@redhat.com>, 
@@ -117,14 +116,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Linus Walleij <linus.walleij@linaro.org>
 X-Mailer: b4 0.14.2
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CA12240004
-X-Stat-Signature: ygs9ehwesqi8dys3xpn1npdb7mcjhdrt
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756467883-406689
-X-HE-Meta: U2FsdGVkX1/W87bphhf2Sk117gYg3hl6uzQx7DzCNRN7SAM9T8fHgNwO4viTg98oVRMxddRpfmxgGBv9E0qALtO46gVqnY4YqlNGKJGrDgTVOBORDmvgClfeVkIFExRTivhAfLQn0LEn4EzwZOLKsljWcXA4CW49OvUWpE59B404AxaD+s1PO0jMhZt4levCyzvSOKaDfySuxYu1BCJhMNvH55hqEMpd1VDlnC3Y4t/YSHHAzaOROtCkVQWedTP06aKG3Ek8ITfqMKHv/VaLpK5aekFbQgyk4Rk8Td2flvwkjcVr/uz2wzkNCreIcFRfTk1OOSxsOi7rb/uayOWIUk09PMZCxG8eHmJHlqkQhRe5pMdYgxjOpR1ZsndRW7kx5ajITn6o5DPMdJhYI7f1P7718Uk2oyLT87zGv0D2G45f/1XTMOPMITaOQu/pctaWUI7rgcWNg+N0/CZ5U8nXfoYY2r5Mwv77T+qB8LWD/NCajp8nNBvZ4gsVFjgaH/WmIAKzZOFiJw2vvMHpJgPMEV3nOJsUrxkzRqz4T25MdsLJOZSTHaPHqm1SnJic1DaonWzthwZhlB0ieNQB1vAbtrd20hkScABUWtxLGK2gV1759zst+g1XkXDa7HW9HRsgXtq0eZrtBpZzYzX0zRzWMp+kCXk9F72CjKEJTE4SeBQw9ANsEx8gWL67nhyxELUDFIcxmfkhyOW/Dztp8Oh4fZAzU+8e/bW99mer8oCnTP/5UgWn38u5ZUg5IMTaNan9tQdVGWVzmp75xR49uRoiltK03917313yFo73C8yumligFNT8GFaRTu4HAVdC5p58xGtNFh15M5U3anWyVmOkp/0nHWg8HLcsKPfOFIGwMoPPG1MlbJUt73CL+kJr6JCRAz3mxVQngdrsp6kzjBMbjGeaGwTVv0XtkKVMylSYmGcYVDg+cHbgrKbpORUQGEmp92CX0XLi7IoTX/+IJyc
- fI0ZZhLD
- BMarsYPWenVQOytw99ZPE1LkeDIbcK/M039jQCKLObYq8xI+jSBHwWm1wCDjORcQPzrGV6p00mpmGYwth7SDHzycFfBDDllCTqXA0leIZPsbl0F1fHA+eSZVgUPK+ksNh6YFfIRVRukIQZPpXgEKOiaoSdyLmJVtmKTP+fRud1ViByVbg7WctF6h3NGjyGZe3aZmBczk4t6NpYWmMQq4BGMLHFgyL0IrD+DomJ8GRnr/cZPW+TCkdwU0cFTASIO47cEuwuXs4YHHjBjgsR/RF0P+2MQfslqdfncqLGe6KHxb535pGF2W3LTwl+Z2gY4/HtKtbRpA67n6KYJoMhUnDTFFtf9a1o9bXGK31TY9RBkNnAEGZ2670/y25iYscAhSXpvmO0EPCqU8ZMmhjPlHfR73y72gF46ojTiCX
+X-Rspamd-Queue-Id: 977301C000E
+X-Stat-Signature: fmfy8zmes7w5moxmubwrbtimbehyfoca
+X-HE-Tag: 1756467884-754216
+X-HE-Meta: U2FsdGVkX1/a/ttu34P77oO4OkCt8THVqSg6Fz9QocL3xvObILYylb2CWFHavXKWForBoFgMYb9+cfz4mxo/crIlxx8ODGFAYLXo+lfc0ZyYsL0rrm21OvOnsMGIsE52u7TXhygi5gsbqbGXYsNsO9ugdwdsVk8h+UFyC7vIYFTXVoxLULTSgJCCsMgSVohLX+ECIGXiG6L0MmCXz6PR/jKZ9/00LQPPiUYKxLk0OqRj3bsE79nBi83cHqhKoNn4BR0dLtkYtC8CFqvTw1IeHruA5CkNlKYRfN9HfFT+bns22aG2xo/nVRDpMY2E5uDeOLpMSEMhUc18/TwlgW+iRQwurmWZ1iPYy7K8B5OvNzO5WCWXsnGLgb6cu8Ag2IvtQtY/btOul9aRc+z+7kKCq2CWHGG8WX5Ysgrt5oqEbbaI9TX9RmrFfrloN30MccDp0m2UhqvM2NDrr9jSG3QmohXUmrDoaugRf4lZ4Hky+v2E9TMbmoG7uDa+edZzIxFSUiKaUrYu975p5uC1jVRy+VXABiIddCFjtmBzb+CrYZTUwWAe4Rc8JOq1RTyxxl5KpF2LXyS4sLYpzZSH1IWtwL5MxwKvGeI3gAXZz7RdBAXqoYb7cmvHMMueGznrIBG2YqBlE0LZySr+AAEhf6mkU2D+1VVCqcahoLC/ANJYjvaO3nivtUdEnr2VpoIJSe4TNQuYvwV4+MoU7ewH9rgFeOGRepRmX35f3BtgQEwEbAI3fmKYlBUZyGyqFoNIkSJ8EqpNoMDocoWN8fW12iQJgf2WGNilyZh2wcPg57O2pkIVZHLqJQj93qKuM8giD7MrSalovwq3JSkYShpn+mSHi6d/ktyNiLXPHxtzUYtD+BNqPLzMxRoXugreOMSYJcimNjcAhohJoheembU71KgsJPNcPNopqncfvxo0H9qY9uZgcT4NbggRdBjk4LyRQLX9cgfNSI26mVdTBzayww4
+ F3LP3Oeb
+ s73x9kGxruhCQJInwmryXYfFmUKd5E4j+OUkmKn5awCVRQtq6I6eXBFhEyGM6WiTTGFrzMW6MIaxVn2z4o7LdwTHVxbAEYoSLuKLyT3Xb5/aP300icY9V0Zu9HDo7Yg8vinBHgrc6EPajTe5R0c4jKlaIczQEFYvSQA3RxsvSjpeKxryftRK58+wzvvKlGOvZ+YgnRh6yb+ITzvoXBuDIuemdDhLkKmJKbVstjPV/kn/boPv3sJWCAWWghLscedADIrSTS2Zmz1luNdbjZD3c41OZ2zzu0H9zrgqANn1T/VhpRQUdFJMtE7y80YYgB+GqJegvvt8fEwHwwp+TZ5k8VSYGZmoomW0imvJdWFRfy9ELWxNclLpudsDQNW1rn5N2MDbdl9vc6Qqt2nr6qL9QjwBOSCOVE7s+nLrIAOPpbEIHs/vu+E7XAtzSoLvFMsvA8T/Vj+lGPulsPIE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,28 +132,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These are some small cleanups for the fork code that was
-split off from Pasha:s dynamic stack patch series, they
-are generally nice on their own so let's propose them for
-merging.
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-This will go through Andrews tree I suppose.
+No need to do zero cached stack if memcg charge fails, so move the
+charging attempt before the memset operation.
 
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Link: https://lore.kernel.org/20240311164638.2015063-6-pasha.tatashin@soleen.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
-Pasha Tatashin (2):
-      fork: check charging success before zeroing stack
-      task_stack.h: Clean-up stack_not_used() implementation
-
- kernel/exit.c | 23 ++++++++++++++---------
  kernel/fork.c | 10 +++++-----
- 2 files changed, 19 insertions(+), 14 deletions(-)
----
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-change-id: 20250829-fork-cleanups-for-dynstack-2051bdf2a2ea
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Best regards,
+diff --git a/kernel/fork.c b/kernel/fork.c
+index af673856499dcaa35e135a9e8042ef28d5c5370d..2a5b7a5fa09b1f3a42473cf44a1316ec8b3b31d0 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -290,6 +290,11 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 		if (!vm_area)
+ 			continue;
+ 
++		if (memcg_charge_kernel_stack(vm_area)) {
++			vfree(vm_area->addr);
++			return -ENOMEM;
++		}
++
+ 		/* Reset stack metadata. */
+ 		kasan_unpoison_range(vm_area->addr, THREAD_SIZE);
+ 
+@@ -298,11 +303,6 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
+ 		/* Clear stale pointers from reused stack. */
+ 		memset(stack, 0, THREAD_SIZE);
+ 
+-		if (memcg_charge_kernel_stack(vm_area)) {
+-			vfree(vm_area->addr);
+-			return -ENOMEM;
+-		}
+-
+ 		tsk->stack_vm_area = vm_area;
+ 		tsk->stack = stack;
+ 		return 0;
+
 -- 
-Linus Walleij <linus.walleij@linaro.org>
+2.50.1
 
 
