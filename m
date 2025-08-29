@@ -4,86 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E29BECA0FF0
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 15:47:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA94CCA0FF9
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 15:48:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BCE58E0018; Fri, 29 Aug 2025 11:47:49 -0400 (EDT)
+	id 30C8F8E0019; Fri, 29 Aug 2025 11:48:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 246388E0017; Fri, 29 Aug 2025 11:47:49 -0400 (EDT)
+	id 2E4438E0017; Fri, 29 Aug 2025 11:48:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10DDE8E0018; Fri, 29 Aug 2025 11:47:49 -0400 (EDT)
+	id 1FB448E0019; Fri, 29 Aug 2025 11:48:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6CB8E0017
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:47:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 795151607F3
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:47:48 +0000 (UTC)
-X-FDA: 83830225416.06.2042D71
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EA7D51C0006
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:47:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sinOi2tk
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B0BE8E0017
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:48:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9127B8572D
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:48:36 +0000 (UTC)
+X-FDA: 83830227432.15.F5CAE4F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 32B93100011
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:48:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JBCCVwqS;
+	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756482467;
+	s=arc-20220608; t=1756482515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a9KeXVIBXNcPaIHlEBE4YbD12UTBzJClDDJxD+2yXSM=;
-	b=XzTIYq0ncFNNYcejxib/Jgy5PnvpSJFDTXlPxXHDSmFliWb1QwXQA3DzvXBVBnYJljCEjV
-	0V2/k/wT1YISztudcY3H3yb0WJJpBvMOptrf6KihhQf+YmL1ZlxLlWVU1LxwYWWDNWTkIV
-	T/wOBT7P9ntWNIMQ2qJgn7l3UrgDZDA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756482467; a=rsa-sha256;
-	cv=none;
-	b=3QudA67+5ih/vFLMHxPCiBdPZYieaaSq1s1SMqHlKZ8kjGy02ihvScspHxD76Uw1heM0DJ
-	RGSiGvEb1VMRGfWXijBv+bQfC2vz4qWPPE7eVK3nkmL2x2vZONOqG8s5TIf0eg7ekT49SZ
-	ZBdc4p2cWt3EM/DKYweLy+sT0ck05Rc=
+	bh=TMN4+YgtYYVEuLl1JGo81YdTgJd4kIckWhP67T9mJRo=;
+	b=FISHSLm1oB8rvJZD7uJY4LIyNzNPdI5JFMffbe0F+vW5BUNWJIGWmE5xvG0ffUsyV+O+Qn
+	77BMLb1FmZi4Rc/UEIkRFon9ZjyoMJm1p3ocZGApYg+51WnUMEmFxBnT6VVGWCNnKBFs5U
+	lSEQx1u9dFQqDXiHXF4iNyDHJf6MkKc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=sinOi2tk;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=a9KeXVIBXNcPaIHlEBE4YbD12UTBzJClDDJxD+2yXSM=; b=sinOi2tk6YYAG4KSBqv8imrmqV
-	FWeVuOuP21xIKy7R7ZX3Mx81Lz4eFETOrQ5sAQQ5pM1Wss6k8vLAvu4nHtEC7ROc5NwX8ra/WGPRa
-	Homuhvr9ujvsjhBDCVrJL78ADSUUc34t7tE7dA02ghas8AW2jlyoCoK2qEIR3MSQ15PucGdAbxg5M
-	zIgLPd7umE6YFPrXdnWVlXd6cAK4Rp2AUapFN6nkKynr84SUA6lqeosuG5VanpHiCyNbKlroWcfZx
-	4rVAtDg6RaT8KSsFNYVjY1JXiMW+eLeKAg6e1nNXMgetHg+WiaY35f+7XL2llF/dph3VUCQ71gUHI
-	iuzidwQA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1us1K7-0000000EFwb-2YeZ;
-	Fri, 29 Aug 2025 15:47:31 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JBCCVwqS;
+	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756482515; a=rsa-sha256;
+	cv=none;
+	b=05c5FtCbaX2hpD+4XeDxUSjwd9YZPTG5w9yXUQlyKnr1ZoGx0EyP2RepR7L8cq+w9AcalX
+	kgTaaP196CHFQpje+RKyAiJQ02Toz7BXwSwSjDcrn8J2Frys0QRaran2DrG14XSUYS5AaT
+	aj17X0WtsnSgZHGYnbrmVVwtwpc884w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 65FC9601D6;
+	Fri, 29 Aug 2025 15:48:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C938AC4CEF5;
+	Fri, 29 Aug 2025 15:48:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756482514;
+	bh=tKKwBK9xX0xg3Dm/NJEdQ7r5p4nUDr3fqs7FMV7Y/xo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JBCCVwqSjumn7XT4pVDMZEQLI5ogqSOLLqGspHQDWXhvD0P1ULdzN5pTeo2YYyls9
+	 R1X0QNhPHFsw7zRULaD26WedF9faUpfaOdmDue3V+AlLjmpiuVjqW6ACLSQh0SNmbr
+	 dsb63Wt0czGmui5C6jv6RImZDkq7MhoITNU7+llg+qFQy+uOOTL0n6jNdOXsVzugv5
+	 onzVLJ0B+qvls4RBWOQ5FmzyvIUvBjo6pcO4XanBU+cvUhEGyDwWroQcN/+opq93XB
+	 hNCXxaTRCVJ94BZun8eg+Rl+qFXPj1mkU88P5VcLTsoRIioeEpdrZpQDgXZhpkmvMe
+	 vvWARYaBRDQGQ==
+From: Frederic Weisbecker <frederic@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Waiman Long <longman@redhat.com>,
 	linux-mm@kvack.org
-Subject: [PATCH 09/22] slab: Remove folio references in slab alloc/free
-Date: Fri, 29 Aug 2025 16:47:13 +0100
-Message-ID: <20250829154728.3397606-10-willy@infradead.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250829154728.3397606-1-willy@infradead.org>
-References: <20250829154728.3397606-1-willy@infradead.org>
+Subject: [PATCH 05/33] mm: vmstat: Prepare to protect against concurrent isolated cpuset change
+Date: Fri, 29 Aug 2025 17:47:46 +0200
+Message-ID: <20250829154814.47015-6-frederic@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250829154814.47015-1-frederic@kernel.org>
+References: <20250829154814.47015-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 32B93100011
+X-Stat-Signature: w3ifu1fhh9nbhbkgp5gyuxo5daj9rjtk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EA7D51C0006
-X-Stat-Signature: ihcg8jwarrmrzqxw9akkj16555ypa3f5
-X-HE-Tag: 1756482466-161466
-X-HE-Meta: U2FsdGVkX1/MGfNECY4S9VbND3ACIaNKomVYVr81s1gzhnC+2pwh26ohQjvdu05F+/u1Op2OR2CPzPI+GCmPPQ3sxD0ya5zPpSdPd1c7FATqCNw4P4uuqrlAA6G64qkOEd3u1o7AvK408DTxOc+YThAa3AqYfdw9Srhp+7rfppAK0dOE+BNwGmbSvYP6pvh9zsYZUk+v7OOVyCu54CwjGEM/nmDkYihjynlDey7o5y9D2QBnh29b7EPM5dKv3glWwN5mNzd+/Ef/hNBIErf692ps7FUOPkk/Aojpsj47dHNbBe7MmptM7N8xCHig0tKNhGsQr1Oq9J6LiOY9ZPIoVE/0RWO6ems+El7Xrq2w9bWdkMmOFEH3XWyQhyqJQvlod+CiG0BY0DJAgd9jJuE7gmvMqs7EWGwMZz72oSZSCEyxseFnVZ59DY5r66rZbvYkaD4QL8HDlZiEn/h82cbIjyzYGlrZ08x+nLLOjCN5IaOcjoSP35KhElnVvQ+v9WsysNKPHBJ7vTejqvVBwwMdkdGwV6DMZi9Xdppypw3s5qRV2hBC5urPdIqCZKkDBo4yld2XC9TxskRbRrHwy06ngmuWg/Y4icpp1zfnDXiWo1UBOL9VVNN4nu4G2FHZim8FJaIXYCqM/b3hY6pVU4gmZRAIp/xCcW1k7Qun0rfvVVrKPvozqqsq55ev8beUF5QPsdgfERlKZJMd5iOMBTsZlGrX4GXgbsgoA97SGO5GcaLK9WM/LFQDj4S3IN0l2OZ23EKNR1fQ/XwgzgvHR9qmN2BGFtHRAcANVN6ji83UYB6XGxM1I5VFJltH+N8Jm/8Nrj+R46+ArSALpaRGDuxAGYSC+avCLO31dr1rjgL/Ih7ScCzQccjipfDZVVnByyhCmpwhI6hU+Hh+G9dgZNc+CGZBhchROq7lCyeIUXu/0D7MMwJlErxkps5JyCgbla0uISkTbrTWU5dSg9zCxBv
- S+Umt8Qj
- fca2uhVWSA9S1oNXk40GFmpMSpKqMT6Q3C5igVgCKNR3eDRg1DthjLDMZwIp264VGIk2LeudHHcJeyIe+sBHO9xUXCXjw2Uqu4oQASi/bqpUS/wDuSgOLsPXcmBBrSKlbqekBCtho6/ngfLBTo1IfUQxIO4Cp5R3SlrMtTHfDGb2QavlF34gTukiYHhVRLsVP4ZJWu0Z/AnRY3/ZA7XVucc0s6KmQtvGrMIgu
+X-HE-Tag: 1756482515-4988
+X-HE-Meta: U2FsdGVkX1/e0uD3pX8ot6aDrry1eOc7tiEN6RBQSw3XNZVpF5R/XiObeSoJGlBh4572pRjbh7cr90F+SfIKlziPmI2QG+P5nQu9OXlMluN7A/Cpn7mNj70u8nqQ3hW3Q+7wkopoDMIblbsmljYhee+guH17I0k0TQ8j3mrV9NnEB8vQISq1/p4vfyzsjMMhzE64jZkUVZea8XlQf/BvgKyQXhDmUKkcHZARPemhEH3GifNrRqiphxA8CfKANs7XANOVJ45z1K/J/j8XAFwignbVxU1RpUvHOmCYe7LqrcAgcvxxDq1+kTHRul1lTKPa+kHCG3rTd6A/+oxTsIVq3LR+wJmZwjBY7J9/eN0h8YW0mKZnUkG1Y44JOuCkCsAnPYbtwFdLYIGvz/fMjeWVbdAUwEd4YmAekT0+p7TQ7htInbZaTFle1i3h7yPiBGP46m1pJ6uNVQpUbHhrXpJNe79w2Y8SlT2LAAltQzciGF/7H6WzDimAzyeokWuBiwAXFWyCUCWKPJ5XtZ/GAV58kL6VOmLwnOMYeTSJoq/kNsg/Mzu719ivlp9sPG7CaHL3+774v3QeAIALFy604Rw6rTlgE5AdTGCdVLN1j2RtlICEx/IOQWJxDKke/XeSB15hLM3iPIcLkhnZ8KJRdHLrTaYEYDV6N5mI9K3iN8ErZT2tsPcfd2JAP7GYe7b/GFZPTL8IqzdWbFXpT/MQb4YIbjReatsD8zEu/egc0lyu+MwdMveKxFcCk3frIA9LqsT/DhaLGlAy+3DKMp7oa0X7ImJ64H81tr4bWJUe69CGJj5HxDdi2DAijCzYmYjaUrwBwttTgvlymrXP3XwXeujAywYGySdnNz/5sjq6N3bFJB6QI9+775SFGGNmkcCU6r1x58Inm4VAk+pLoCRuqYCjk7t9le8Isd6KQ2ln+EB03WtRmxaMz+nb8g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,69 +97,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use pages directly to further the split between slab and folio.
+The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifyable at
+runtime. In order to synchronize against vmstat workqueue to make sure
+that no asynchronous vmstat work is pending or executing on a newly made
+isolated CPU, target and queue a vmstat work under the same RCU read
+side critical section.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a vmstat
+workqueue flush will also be issued in a further change to make sure
+that no work remains pending after a CPU has been made isolated.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- mm/slub.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ mm/vmstat.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 8d984fb5208c..883a351255bf 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2974,21 +2974,21 @@ static void barn_shrink(struct kmem_cache *s, struct node_barn *barn)
- static inline struct slab *alloc_slab_page(gfp_t flags, int node,
- 		struct kmem_cache_order_objects oo)
- {
--	struct folio *folio;
-+	struct page *page;
- 	struct slab *slab;
- 	unsigned int order = oo_order(oo);
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 71cd1ceba191..b90325ee49d3 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -2133,11 +2133,13 @@ static void vmstat_shepherd(struct work_struct *w)
+ 		 * infrastructure ever noticing. Skip regular flushing from vmstat_shepherd
+ 		 * for all isolated CPUs to avoid interference with the isolated workload.
+ 		 */
+-		if (cpu_is_isolated(cpu))
+-			continue;
++		scoped_guard(rcu) {
++			if (cpu_is_isolated(cpu))
++				continue;
  
- 	if (node == NUMA_NO_NODE)
--		folio = (struct folio *)alloc_frozen_pages(flags, order);
-+		page = alloc_frozen_pages(flags, order);
- 	else
--		folio = (struct folio *)__alloc_frozen_pages(flags, order, node, NULL);
-+		page = __alloc_frozen_pages(flags, order, node, NULL);
+-		if (!delayed_work_pending(dw) && need_update(cpu))
+-			queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
++			if (!delayed_work_pending(dw) && need_update(cpu))
++				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
++		}
  
--	if (!folio)
-+	if (!page)
- 		return NULL;
- 
--	slab = folio_slab(folio);
--	__folio_set_slab(folio);
--	if (folio_is_pfmemalloc(folio))
-+	__SetPageSlab(page);
-+	slab = page_slab(page);
-+	if (page_is_pfmemalloc(page))
- 		slab_set_pfmemalloc(slab);
- 
- 	return slab;
-@@ -3207,16 +3207,16 @@ static struct slab *new_slab(struct kmem_cache *s, gfp_t flags, int node)
- 
- static void __free_slab(struct kmem_cache *s, struct slab *slab)
- {
--	struct folio *folio = slab_folio(slab);
--	int order = folio_order(folio);
-+	struct page *page = slab_page(slab);
-+	int order = compound_order(page);
- 	int pages = 1 << order;
- 
- 	__slab_clear_pfmemalloc(slab);
--	folio->mapping = NULL;
--	__folio_clear_slab(folio);
-+	page->mapping = NULL;
-+	__ClearPageSlab(page);
- 	mm_account_reclaimed_pages(pages);
- 	unaccount_slab(slab, order, s);
--	free_frozen_pages(&folio->page, order);
-+	free_frozen_pages(page, order);
- }
- 
- static void rcu_free_slab(struct rcu_head *h)
+ 		cond_resched();
+ 	}
 -- 
-2.47.2
+2.51.0
 
 
