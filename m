@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3559CA0FF0
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 15:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F373ACA0FFD
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 15:47:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22F678E0001; Fri, 29 Aug 2025 11:47:38 -0400 (EDT)
+	id 6DB5C8E0012; Fri, 29 Aug 2025 11:47:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D0F88E0011; Fri, 29 Aug 2025 11:47:38 -0400 (EDT)
+	id 66B8D8E0011; Fri, 29 Aug 2025 11:47:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C5078E0001; Fri, 29 Aug 2025 11:47:38 -0400 (EDT)
+	id 505EE8E0012; Fri, 29 Aug 2025 11:47:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E40318E0011
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:47:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 709EC1199D9
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:47:37 +0000 (UTC)
-X-FDA: 83830224954.21.4803450
+	by kanga.kvack.org (Postfix) with ESMTP id 3A0A28E0011
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 11:47:40 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0539E1A07AB
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:47:40 +0000 (UTC)
+X-FDA: 83830225080.18.7F6BA78
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AEA5D180006
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:47:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=G0VgO4Rw
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756482455; a=rsa-sha256;
-	cv=none;
-	b=5ZZZm9S1cMSNQd5A75oM1zU3s8zVd8IeL6Fs+pJpCgWYU5ljMk6ZDx68x6+aKGb1WN+k4f
-	lQPo++zFAtMjCyzJ3Ba0JP7UlKGnGa8JV+JHuZXR4Jnknv7PfoxslkTJBGt5RRRGQE6R9s
-	xGndcv30HlK/oKC2FzT/dAPQT6Q87II=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=G0VgO4Rw;
-	dmarc=none;
-	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6E305C000E
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:47:38 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Zd3g0YOy
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756482455;
+	s=arc-20220608; t=1756482458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pq2/SgGk+EbHPn3gALmfCwV1yFZjJ0WkQzRebatMWeM=;
-	b=yA3u4MRKVPiEQNcxNnKvovamaopO42W6U9/KuIfldtp4esngWaosuovrRSO/KO8n3HY+TC
-	SWGu/rPIUdVg0cQWJdwlQ9XvV/as8m0NcMYhyVq75gT+MZcddXOZEZ8B8v/cv0pdTc5lox
-	c3/bwZrsWdOw6vE0g4Lm+hTtx+PRzDk=
+	bh=YiGgeSZ27iTAdmYuvcCkI0FxYSr0WHdLAdy+gfyUYSU=;
+	b=NAi9NLJ5jgsLuckmU8CCbGvgTmuT55snKomEoE5akMdl1izyxRXLFuUGFGZkZJFXkCuMrP
+	Qw6YqNs9yzXclmkCtuEPW01vnGKQAC+noIRn5qIlKASF6hOky2LzHikXjwZ+1r4PPDDXmi
+	HaWqyCX6lx1AWiHYaVcrGhCEb36Hhi8=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Zd3g0YOy;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756482458; a=rsa-sha256;
+	cv=none;
+	b=tcHqDi8WEbM/w0Gkks3HGyY6qY/YoE6E/0Gzpw79h1x0FUnnwps8EpF1rWDy/3JZKMkadF
+	7ECnQZnqgNFX5dH3zQhN262qZJLsP5MYM7Zx3w+6tsT0M29poJb4zoiwL3Pfa0qAhi7ea8
+	1yTqZX1QaOl6sKPhOuimjnoDaEZM/sA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=Pq2/SgGk+EbHPn3gALmfCwV1yFZjJ0WkQzRebatMWeM=; b=G0VgO4RwbV7KJp1gxZW7tnn++O
-	Zx17q0LhWns1kzleHWDX3WqOmEcvmYi5T9P7U176aNBYW9dzVhm1gNg1HQhsGZ+48ghv462qX/Fhb
-	+v7YBE/2/zKonwM3BzwxnRFqeoXaz2zSiL4f14i9205K9Sg8OAP2RgVkOvgzEf/PAr7cyTaZt35v0
-	YBS5G3Jzml+YPlDWFSvUssU3ROOQ1Wv6MN0Zy8qCeED9qmXmIbYKmh7xweaij0MCIdicuBVIqTfqk
-	ymhbyiZ+vmzzAtKkCXW1fcQEyI2gOv89oen9bT6tHNlpzkHoX4mmLHwJ8SB+IyAqFSJ6Udt6qAF2U
-	oBSAarhQ==;
+	bh=YiGgeSZ27iTAdmYuvcCkI0FxYSr0WHdLAdy+gfyUYSU=; b=Zd3g0YOyAAx2X3D1AQaLv0SFBX
+	jwDeLzZC0/qxXSwuyrEWh/aS9UAWQWMIbMx7+X6F4HuiIqDNgvyQFt8YHZrxD7ZbkBOEJc6fucWwP
+	PzxA8zSHRlwHpSKntVrgDk632cBgRiWt8VWcJF1xJY6wctGN0SvVBxM/DcXoBxiifD3y2fseiePVP
+	w71euTg9R92P/264rUlAjPA/0rmZ/IR73bV2xJhE6sFaaViBGml6qnkmoSq62ne9bII+bko4R6yQE
+	6WmpolqAtz2PUMxSzAlWIhhE5AI7twrdgLfLMHtqHlOlVNqRnPI/6kXGI7G8eUVt/pT1NfQ8vcKKA
+	lw4G6fJA==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1us1K7-0000000EFwD-0J1N;
+	id 1us1K7-0000000EFwF-0cq8;
 	Fri, 29 Aug 2025 15:47:31 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Vlastimil Babka <vbabka@suse.cz>,
@@ -68,22 +68,22 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Harry Yoo <harry.yoo@oracle.com>,
 	linux-mm@kvack.org
-Subject: [PATCH 04/22] slab: Remove dead code in free_consistency_checks()
-Date: Fri, 29 Aug 2025 16:47:08 +0100
-Message-ID: <20250829154728.3397606-5-willy@infradead.org>
+Subject: [PATCH 05/22] mm: Constify compound_order() and page_size()
+Date: Fri, 29 Aug 2025 16:47:09 +0100
+Message-ID: <20250829154728.3397606-6-willy@infradead.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250829154728.3397606-1-willy@infradead.org>
 References: <20250829154728.3397606-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Stat-Signature: noxyhxxo7prqq1xc6mm6jzai8t94q1r3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AEA5D180006
-X-Stat-Signature: bkjogxnbr3sxaowuoi5dq3sc6t17e11d
-X-HE-Tag: 1756482455-541780
-X-HE-Meta: U2FsdGVkX19NRO4r55ESVSu/AwHab8CcQDq9rUc9rgZRBmUsqRVNSy1r6My6PJA3impW/uTB9ilsfTYUHdlDz1ZXGyvSioIG7ozOB2t8VknIcp9fQl0IQoroRKZGKBkHYaIvnmedzBocJ87YkYRsDuPMuhZ2GCv8ysc/WwKzWL246Ko7g0h/F2fBwSUWDqjz5hNub9JlcdlXYypJ8IyKq6XH6Pmjo0VR7QRpuPc4HIW342nO+lc8B53JkjeJ7Z9Y9n2TfWGmKwYBKiny2eKphqjajq0SHil+Y43M3q4yEa7QHjfJ5Ujk+p0IvLfZ58MxctAmf/4VqsTJiS1naJrdXkqZgHEDuuOmbfs6YCsAgNGFCuq/u/26/XbBER/aZattkzT0Lm6cGDEn5D1WnlcQwmLOmVI+ZAcKRgw/9SNN9iDEmeZPW2sEczFVBVN6IAGIIPW0FabCqH1m2t1ErGhOpJWfrEsIJAsYeUasvDpX//jI8XPLOg31k1ajNXfLEaqqNXwlB3Au7QBIiu/NCWbEYbugV7YtlAp2waoF/KKLy4UpfTD00+d8/CbyDnQBWp9sAj4lDWfBrqOCBWyYn+DiSTdL4QDxVgLbG/4ySROpSSxYWAexagBG2kY989hJPHTer+m9zLULbfAmxOpzswH2TtGmLobs7wFnLSMB7LgM4BxZcg6wOctUQPGNNVrbn8Wnowm7yukdA35dUge5FCOcILSLqgh/bBNcOHnApya+pkL0fTLBcWwFPOF6q8M1ffM+CP0rsFdyP0TmPaOk6getzYFC2wLMglIylorGNWTde6yXM8fhkhCqEA/i53pJcoTLx1kH9iLWhetRvDsp5TyW0XMlTXl+TjmpFrXnPKJy4IEaKhj+2H010J/+MWj71faweujz029BppPV1eDmFCJGaK5pOHYukSr4uIrKqAyW2lbgM4SmiONSfH/hK7B90N3bWTsG0IWV8NgYKjlFo+J
- qtn/IdyW
- 79poJTl/9Tb5aNepbPlEbo0XUSHZcBYIxW1oocoNq2xCOP0fl7UpeeNqyyEm0/Qfe9j2g9I5C5NBuoIvqBIvX1OAXT5zJQZZqoxVXu3DVUNQcR8dejGOyy055UtNUmnuvpgY8FYbiJvq8Wedmn/9YMm16qlwFRsdBTMNnzB59rOREbzFGSqB6k1nR6YOWFkTEcierv9IQ4bIsdKnhFiQWsfNT+Ngy1qzneyBgDaw2T98spOa4ZZwe7f5QL5+g7H7L8RZq5H3RTUsn0Evhx2F7LrTM6m7pVolOZ1S3t+rHpHHVaQDTDqp/gp4lxC2nyzaeb017
+X-Rspamd-Queue-Id: 6E305C000E
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756482458-34846
+X-HE-Meta: U2FsdGVkX193NC0qMcLUmYAMu3CMRQyYRQJc0RK1mLGaFmItrUc0L1yA+s0B0KskvgNvK416WRFbpNSZOYvf/1Y3ZZJvdJUE14ws3BTPZVAAWPJQrtM3NLTFWs2sl02P7sPBQnmbVrtDVKtai7E7vB9fLHGr4GzlXbAcuIj8t+ErfsB3lRpPt3mPG9GqJa0vhR4oasrUseMlmporTzMr5rQcx33Rf0hNEGRKZ3NDDg1y8l2IdUVbL/GThp7VfMpKRb2GYJQDLQvA7grrY+DZwWQbwQ66NBzS3Nv2HCXIxAsgCZxSn07Aic2PkV/88Pf6yRP04Lhqh+UXjlxE0Do/ykFvm4tf7WDvIBXdS2IjiwFDnBcZOLeF9R4gGwfcNBeGPlKPivG6Dlkc9fjo+HOxVv3yxZD4fZkSIMk8yi7jlGOqmOMF2dH2gi2Cs1nPUXLjjUEqWp0jZydP2XGcboHnRFD2OLuYBkEUtpQGzG3yS/w1fMQqXkh2UcVujrmeHyepSn/bFWBCVezbWgrJPe0ozfzag3xfIFovBe8dgzKHPfLRdItYQrTiZubDS+NMQFDFUuv0PfLJksznguKGmaka83QJVg+vdyewL0HFr3eSPuaMv5qgyRubnt6uOBoHsAh074XX3xUlbmWvdDwSscj2A8lmfW0RViDpxqJO/SHi9gHI85aPX9/OOBOXY7aIJRDXOwI2lvx6MBcMT+TI24qejPbZVNjaY1e2FTeVPqsR1rBVIANOfMy+XRk1oW8JSzEbhDGZf4rTxX4+fpU1SQxpZVNi/m0+OHNPxf0MwtDvf7jdAraFUgkl7vc8IMwivGD3NbsIARsa3T++OLfNE2CYq1cYBX2moVkUebu1x7vbrbs//n5Sv9vCk9RqY57uqa93CCPiL4MW5vRk2e6oAwIN53F44xEfSBL9mJV1kzBXUUs9u33aLHYwryOn2VupJ7s6Qnkktl7B4guLRG+xGjH
+ 91X5ibgI
+ tVSQlbpzVZLho5xYCXCSCx3HhdcByhP2SHOzWzr8N0agf07rZEMThg7NcLgLO64RqQ9lOuDnY7VFrb8ct4M48RdjJ4HNZfGqx2wtAwCRLBaDiCdwMajwe/g4seNYI4HzT9KzfN61YD0Z2fE2foYAg+YwM4gwE1kuiHDGxf1GBGtNvpPKrWkhzqFH9bYIHSawVp8hPs1khzX+OF6difvmjageLoJJUxUv5XAjBczx8NqTbEOgBeme3fvkY5AuvyyfaVhEu/o+t+Ni61IE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,31 +92,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We already know that slab is a valid slab as that's checked by the
-caller.  In the future, we won't be able to get to a slab pointer
-from a non-slab page.
+These functions do not modify their arguments.  Telling the compiler
+this may improve code generation, and allows us to pass const arguments
+from other functions.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- mm/slub.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ include/linux/mm.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 6b0ce2677d32..7b9fb7a88fdd 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1734,10 +1734,7 @@ static inline int free_consistency_checks(struct kmem_cache *s,
- 		return 0;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 00c8a54127d3..02fddbc38647 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1020,9 +1020,9 @@ static inline long folio_large_nr_pages(const struct folio *folio)
+  * set before the order is initialised, or this may be a tail page.
+  * See compaction.c for some good examples.
+  */
+-static inline unsigned int compound_order(struct page *page)
++static inline unsigned int compound_order(const struct page *page)
+ {
+-	struct folio *folio = (struct folio *)page;
++	const struct folio *folio = (struct folio *)page;
  
- 	if (unlikely(s != slab->slab_cache)) {
--		if (!folio_test_slab(slab_folio(slab))) {
--			slab_err(s, slab, "Attempt to free object(0x%p) outside of slab",
--				 object);
--		} else if (!slab->slab_cache) {
-+		if (!slab->slab_cache) {
- 			slab_err(NULL, slab, "No slab cache for object 0x%p",
- 				 object);
- 		} else {
+ 	if (!test_bit(PG_head, &folio->flags.f))
+ 		return 0;
+@@ -1240,7 +1240,7 @@ int folio_mc_copy(struct folio *dst, struct folio *src);
+ unsigned long nr_free_buffer_pages(void);
+ 
+ /* Returns the number of bytes in this potentially compound page. */
+-static inline unsigned long page_size(struct page *page)
++static inline unsigned long page_size(const struct page *page)
+ {
+ 	return PAGE_SIZE << compound_order(page);
+ }
 -- 
 2.47.2
 
