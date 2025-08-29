@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E209C8303F
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 07:55:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72A7ECA0FFD
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 07:55:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8097D8E0009; Fri, 29 Aug 2025 03:55:46 -0400 (EDT)
+	id CEAAE8E000A; Fri, 29 Aug 2025 03:55:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7920F8E0007; Fri, 29 Aug 2025 03:55:46 -0400 (EDT)
+	id C9C3E8E0007; Fri, 29 Aug 2025 03:55:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E5518E0009; Fri, 29 Aug 2025 03:55:46 -0400 (EDT)
+	id AC6C68E000A; Fri, 29 Aug 2025 03:55:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 427908E0007
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:55:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DCCCA85103
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:55:45 +0000 (UTC)
-X-FDA: 83829035850.19.7B6414E
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D39E51C0005
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:55:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Do+PF+Qe;
-	spf=pass (imf18.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 95A688E0007
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:55:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41A25BA38D
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:55:49 +0000 (UTC)
+X-FDA: 83829036018.05.A02AFDF
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3677A4000C
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:55:47 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T31/th1l";
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756454143;
+	s=arc-20220608; t=1756454147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rNDvUkQSM5YXWXIzm38SWG/hRRo/bsx6SYKE7k7lSmY=;
-	b=5fRuEs4HB/cMksT9OghC9dpE+7zt+Fen32Ays6mUSqZaf4CenhtZsFXtiuaIqGqdNSD91U
-	MnWZr+b+q4Us7iJ8MBH5IB+zqis/cNyeZKxIDY6q1id1RVt08ztkxCjjRhxUZuQTOaUKii
-	I85cxayf6MzoMeXLjWgkoYEdLC6K8Ro=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Do+PF+Qe;
-	spf=pass (imf18.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756454143; a=rsa-sha256;
+	bh=fK0hEDM5Yyao3a7xqBzpr49p9H5HB+om5vfXDIKLdeg=;
+	b=mEj9QddX/sxnkNn7z47wX4L1GxeIJFmUkXgclBtufRnsI2oZHdzdFYPxtJv/2sLwk9UoCg
+	Ym0bKQaAZYTEfxoQ4RLaiSFlQ8C8T+kswqS9VchvHfK3jEmuL8RyFglLXQ6ab7o0XDrv7p
+	tVuRaUstRltBDfHMg8vkERPy/wu5B/o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756454147; a=rsa-sha256;
 	cv=none;
-	b=ZLnqwbuYdHLJdiED6/CdL3y2qyOEgr3il+HNVZa/bmgAPw8riH/G2iRI2mOv4I/II8AqUT
-	L6eLzOAc6j8knusHzlyBfiI374/GT9WpjI0uRGR4+l0Yv5JzBRlNfHcwpTPbYpctTQcNjL
-	/uTucPekNr8stgnZErNa6SS9RMtvnJc=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-32326e2f0b3so1482216a91.2
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 00:55:43 -0700 (PDT)
+	b=VVA0pk0oYcpoh6UrrGY2mGMFRazQTJ2H1v9mmH3KtPz6cy6scocjm7Nr4Kw7KSI70Cz8nD
+	S2KV/kq2Ev3XYrxuiH5+auzw37iT+rCPvRhUp5dwgfJtGSvFv+oOMiSp2gdP+ottTH/e3p
+	gUDaXfhzlKf72Ph2bDZFEzK+Xkq0kzU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="T31/th1l";
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-248cb0b37dfso17378725ad.3
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 00:55:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756454143; x=1757058943; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756454146; x=1757058946; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rNDvUkQSM5YXWXIzm38SWG/hRRo/bsx6SYKE7k7lSmY=;
-        b=Do+PF+QeZR/veNPJp1b6yTuYJ0CVkMXdcnwbQdEx3rw7j7Ik1ap4StovUMI9coHWgp
-         zghJxoJHOWog3sAOvqEqCbRytyQx+vcHMh1DtqQmEInim6qKg/esO4uiycGXQCWCtwDg
-         NmJDdf1h7IJoBfTaxwJAiU9MEf5xGmYKDo8pL4PhYrxRHaAKKfFaRVYIJe0HyYxNMHZe
-         cuQ4kCsV6zomYECqttZjwNKa0xYwn17c6wKegXXvMQ+3ud+iQThz2pTD5zpwBFfloeHN
-         VejfsCe4ybpoUsCB83+XIyQNBTc5xzfk2bx4uADYj3IcWKuw6ohNVvgBZja574Gmea2U
-         XB+Q==
+        bh=fK0hEDM5Yyao3a7xqBzpr49p9H5HB+om5vfXDIKLdeg=;
+        b=T31/th1lb4heJQpGxuxU5apq+YnMKXYi55l30MAMLORGcqcvpsbiuamOmI7nNmZ38+
+         o3L1HP7MLywLcS2rMM1SCGDi6pzk1Ca07/r160XSaMaWDD8uxuDpArW7ogwUg3nXkSKF
+         BgR/Al/K+wR5SkIZiFsJnWP9qLYRGng2gLGF/Q5ni8WstX9aE0OvQwyDPLh32k4GfjRS
+         rg088g5BjAX5q5h4jLHmvefkdSEHlrYWCeTI/7Vy5M/f/jZRoytajBXvC2dSRuEn+pCf
+         UT9tTLvKK0RRWSN9TiXdGqg/oMZ/kdc3yhbQsg2PY5G/n1R4EgPAuv3O/ArWSvS24or0
+         Q3JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756454143; x=1757058943;
+        d=1e100.net; s=20230601; t=1756454146; x=1757058946;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rNDvUkQSM5YXWXIzm38SWG/hRRo/bsx6SYKE7k7lSmY=;
-        b=LHBJFsr0x++7VVpe5JUBMsMs1H1HFdKfgh9InBu11nJCBTAn8RHgn6sqgq9NIKFH/B
-         WX6mfjZbkTeaZ5YFcJMoVpztHEjWrdz2tIT06RbNp+VVLuAhlfD/WWkwwPAxguw9g9qG
-         juqjbnRry/LaLURCLkRa5JQ+u0s9Zw2hwpbkCoxNnQHQWCGdEdJxmcjPtFW2WiS4fSv4
-         ooVtIkrCIBIEWaWMUXr6v43mE45fs+hDdFIFBL2qDYBea5WHYUEUI6Pr2W8pd7nXukzS
-         GJCrNwtFy2qX/eWV3GSjAknH+tCbeR6F0An1yrq38FK32fashSTc8MyYb2ZAoomIIDVq
-         jU/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXhMqSrnfrVQeRbu/Q0BPN2ZgL1GxpsHOHANW032H/gERUSV1I9LvAiEyIzuOij4X1DxTq52+1lbQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy9rL/J4ZzKQ9EN2fSaRIjnl0sbb6tMM/gTsoCEl8FtBRi2lpkx
-	4H/VcHTlTBPo0ZDiZxbg9y9WRd0UdMEeV6uJS6zSrjgQCzQ6pO3jl/un
-X-Gm-Gg: ASbGncs7oT/fTSoeNjnMA3/rXn8SbVhNJjKy8j+BidLh0ijXhtD1FG+AJSuBthzuE5h
-	dKMh+UafhFoen20GzKgJip5dLsreFCUUFAiyQazXU2keGKyEcs7gq78LYtMth7OvFRmV3edcucj
-	Wvswd2LPiLODjA0isFnCWAcUaAVXq2o0YeJ2lK8ZDlodcCywBDRgXaNCodVVqi56+OZRY6SoON2
-	6svfoZN+dWAs7jDSlhUBN5HauEonx1YJwN+VcWixzJoB2Jnc8bMQzDyyhNLBGA5kqeXyzYhy+XM
-	wUWdQB/B/ZHk8yN5sCgQar3e6jf0uLmQ15msc082ydYQVmKqSnW9aol98/cH+MWqD4KCfKiH0qs
-	wUhLL6H1q5KlPxOLWXO4p4MwHWCSDZ0iyw5TE
-X-Google-Smtp-Source: AGHT+IG3+4PiXre8myZJXbMXtIyGoT2Zo+1v7SoTFErR1CQFe7OBynTDKWH1/q0UIz7vCvtEP71Wtg==
-X-Received: by 2002:a17:90b:4c02:b0:324:ece9:6afb with SMTP id 98e67ed59e1d1-32515eadfb6mr30884939a91.3.1756454142399;
-        Fri, 29 Aug 2025 00:55:42 -0700 (PDT)
+        bh=fK0hEDM5Yyao3a7xqBzpr49p9H5HB+om5vfXDIKLdeg=;
+        b=fZ8SSdvosibplt8rkri5OPPIBtALJrBPg1ZHSuAQz3lIhWL4UD43rrWdbODJYUHI3w
+         SFnPyTx2C+AUxvD7r/yVZaPSEPRhlDpwdVs2+fGZW2vbWkKPo3QyanDaUVOvxkKXsj+0
+         viMv0ugfqHPNk+GugcvqUPR8cvXwALyCUMWo6ZF7DpYUmZmJkYcE/hgN7vGetGmqRdTB
+         mnDTyB8z/jwN1Oy1sgq8LV9eGE+Uqow6GqfszEgKCgrR7buNsAvR8G2U9W24ZeNYznpB
+         xVdbKh3QmXd43jdGai7h5cpkc8/Sztp4L40kJNbD1EHbj/MzqIQZZrV37HFgac0mGOu5
+         oRow==
+X-Forwarded-Encrypted: i=1; AJvYcCVv1gBiGTMmZdpDXpvadHka66acWiyPueFRuX8lr+JZ17xqT31xA4jhlnGArhnLNoTcDdQj+bgq1A==@kvack.org
+X-Gm-Message-State: AOJu0YxvRo4gUiVryR3VCWWVgs/bIzpbAj0bPzDt8aBHSYRwtQq4yvEZ
+	HXLPFhoa/5qIlS7SkNbs0u7eRibrqaZBnCtI0milW4nQnn6xjyk2+KPY
+X-Gm-Gg: ASbGnctZ+zlFMnZv50xh/T7VZz89w2S7iHE2OJxKWKU37KaPYtw6GGo9PKDjLHxeoW7
+	1GirRfdgcXz0u8O6Uy+n+AhJ6kA/ztEzVJKfn7Q8gU+sOI3cL8PwdtsAKvZdvVZ7q6wPwckgIyD
+	Egpgeh0m9hGWm2CyJOjCKJM2Vl6FkzoxJTaEy1F8PfdEc7QXyxVLATfbpy89mNGXVqXKUOhXBC3
+	3ZYlPmqae56xuO7l7PrVVig7IaaDtRVhJ5GXiaT56s99xjHoqM3S3LRQ8oOkiuAU5Uxf4lgDJd8
+	4gqyqHpluQhMROlQcPhZJAeFmb+iQTCbRpZ5J42UzoNXZcIBr6QQds29Ge8krWtwjJobrGEkeaa
+	qtVWQLlUFOm/IirkWmKxeqBvz4ITIdJcvfVeY
+X-Google-Smtp-Source: AGHT+IHJbtOvLK7smFZ5Taldvs91dQKYlT3bJQAsV4fZ4iEcDvRKpIMHMCPIqq2aQ2G3ehFn7aA64Q==
+X-Received: by 2002:a17:902:cf08:b0:248:a4e2:e6d6 with SMTP id d9443c01a7336-248a4f2333bmr133286365ad.39.1756454145980;
+        Fri, 29 Aug 2025 00:55:45 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276fcd48cesm7365898a91.19.2025.08.29.00.55.35
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24905da4784sm16792615ad.90.2025.08.29.00.55.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 00:55:37 -0700 (PDT)
+        Fri, 29 Aug 2025 00:55:43 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 8D99044808FE; Fri, 29 Aug 2025 14:55:28 +0700 (WIB)
+	id C98394480991; Fri, 29 Aug 2025 14:55:28 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -193,24 +193,24 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Bart Van Assche <bvanassche@acm.org>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 06/14] Documentation: bpf: Convert external kernel docs link
-Date: Fri, 29 Aug 2025 14:55:16 +0700
-Message-ID: <20250829075524.45635-7-bagasdotme@gmail.com>
+Subject: [PATCH 09/14] Documentation: filesystems: Fix stale reference to device-mapper docs
+Date: Fri, 29 Aug 2025 14:55:19 +0700
+Message-ID: <20250829075524.45635-10-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829075524.45635-1-bagasdotme@gmail.com>
 References: <20250829075524.45635-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2744; i=bagasdotme@gmail.com; h=from:subject; bh=IiAjp2UiG4E4i0m+2wynqH3PCAcCcaK0of1KdBtx1KU=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkbY162Whs7TnrT1LggM0BOd5LEqfAiXtc37zS3e5gl8 vnwGP7sKGVhEONikBVTZJmUyNd0epeRyIX2tY4wc1iZQIYwcHEKwES+TGNkWCZ94c28TXy5tQ2r bD/4zPoTU9D/g2m/U+vihV++Li1Y5MvI8PjMzk3qf6eEm+VfELaazHDuklKIXI/3z+ub9I0rLF5 X8QIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2828; i=bagasdotme@gmail.com; h=from:subject; bh=Ip9RCWVx3N2eFboDnh1dVntKjUKs5RT6sbpEBdmz23c=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkbY16ybj++M2M+e9AK28XZP75VaZfxL/rvM//ttckLa 3oE7/o/6yhlYRDjYpAVU2SZlMjXdHqXkciF9rWOMHNYmUCGMHBxCsBEPq1l+Ke0Kqr32Tmn3/wy 503l2Fb8+Tb1i0vpkb/b//3YUvkmUo6bkeGv6MSGx38SK429ymz0txt6/t/hdS/prR+npRZPk6W qGg8A
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D39E51C0005
-X-Stat-Signature: 7h4w7kmh7rb389q7dzoewdwjumcz5c9u
 X-Rspam-User: 
-X-HE-Tag: 1756454143-772645
-X-HE-Meta: U2FsdGVkX19tigDFWSOaWhOf5B0OkyjggTkut9YfRV4fMTjVxzj+kV4y1j2To2ep/fKIiqkIUg17AWspPgn/PgZDPpouemdarirziZvXpXAAAbFa4iw+SSQoA1pxHv4/gVqazspg4eSl372iOo7UXw4CoaoXMo6VaPWFg3xQK8RW+MdCBixeJwQly3rwOqaCr8e+MTTxTxCl3Xzy/iBTtPCTpU1cQM7Oxk1ZBQtTLYfCaSASmDgbAk0fPWqTRQvAgDeQ6y/QrMn2OJ1ftm9DiACYfE2r8bencN7kckLkO2LDevCfqfWBeIOiG8VN/5VQZUx6qe5vye8MISpgKnWKJXrohV5aix3hDnC/s66iCuu3bje+NwnK1Wv34UqzNA+q3e4DkgVYqAdq+hbZzeOboSSH1CySrMb6CjB8y/TWP4rdplQF3HX51UEgrqSpAUeUez317w8I8Z1aABJ0ShJ1ne0dG4BJbk0qzm/kGmkzo+9lS+CemFqrGkcw4+4O3Rts2N3wFo2/NQNtrFIMYAvlkc2bPjt7zY3+e9MT5OxmulF92atJ0by5BZIxmMLLBY0pt4lLfor5n9Fk4OKcNuRCHHrNG7ivZEoix83xXe/MI4n7iptGVl950vNVaiKZdTsfP3vMuyZkypOiKP/dEWWV53i/p8O3ES9ebRfMS9vMKCDLDgwxfDYBJ1jaXc1yVXXAcWBlDAKDpDiD24cZtOxwLsrqO6irh5E5uJxuWxR0K2nAV6Bsm38VlKTcoaPNjQ+84sp4hw7ir936HBHHz+hXw14mJ7jxreD2o8dP/NfxQ6KWY1ev9zK4lKuHO5f+gurTFEt6xLi1hemHkh6Bi8hrLfej9qsPyn5j5Wtlc2Co8wqknJ1esvNCVMNuK14/aJ0AP6oHNOKqFknJWyGWrl4/auZxNB0uWJd5N6e9PUHpLzUJposrRsTWAnkdUtORsMADZh2D8cvT+cNXiZxs4jV
- beWbYKYg
- Reqf3mR5hWEhZmqSxOLHKi9FahvbU/qglbK1u15n4KJXzIgfqWcbBu18u4s+Yqi7ckaVQ3GsEpz4e8XxqATJA1j5Gia/AFeF7Zi3YQ7v7T1b1Xu6IoYqXu7nwTSxwCmEqkhVzUGDVnjn11XSKmDHHtxZOgnvpapbGZn1AEFtslQ0yLPSj5OXnj7JtQOhsGZHphxo1wlXYoPznhoLuOqJylm3pULJieqV6LFSCchbPU1rHsGt3HtnU/bTkzE8i0Oh4h9J73UAAdQ4WFaInw7YOHq1aCTAV744NSXJM6sDzbzrOyvIVuMARfmG143XOkziVfVdX2UNtgr1LytesTlAeu+oIPx8ZGqzHsQsFhBdvFUWEv/lM8m51GQ5VKJkrd4gxdn9nnHXZCeJX0vbdDercUDGkTbusmaaFBJPv0PNav/6fmXcD7caxgM0UpgsO76quPFKj0zVdZvd14z/wMfmfpq4NP41cgBipyDKqpS6L0N4OrS2Zjg/FZIoJv0FTrqsb4zvjpook6laY4QmxDN6jbCyI6fXjOqVGzlAnMvXeRfX4b1d3KHSmDnOrE4UZylS5kqP3x1p2Xj+bWjM12RRMnpHoj5lUQyM+Zn8Qf3cLd73poBMbzBEFMGzJuJCXVQbeZg07Qj5R0RYsWcwHYLTwfXH3Uoziv1oVxVj11ZmwB2VfIeeHj99FD2ArC+DUibZdl3zrmDHhAAnhcUobohHbdaKefQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3677A4000C
+X-Stat-Signature: jma3z1nqai7pedcwutm6sxhsp11zzj3u
+X-HE-Tag: 1756454147-799828
+X-HE-Meta: U2FsdGVkX185I+bqq8O/ZS8j/Ix1OqjYYo46xJajj+GdzDdUjd55lQmuq9s5Uupevr2/aqdUxvDnDLUVDDCUOU57jMTkJISk7g3H8PUrUxD7UKYUaS3zH+FA+SeXiTXvsmBodbtTsejGxGXKExRnB7zbQ2CiBS/a2JrA2ShoDjLvk1dGg1De66Eqxcai5qoUVYGY+zBod2kflOF6mxQJp6FL89IPyKMFzbfrg/MawTU5w1kM3w6p57QVratB6IawEMd3aNh8Z2DPr7sYZNmWMCAQMi1ZTO5oOZngrJ+qhrcT9vYoaqL+P7qVZFUMgwiSbqbd5DTV9o7wXyfM8dg3MqZCfarx4y1061vmHxYv+8HwrLwrKEPbQTUyamElK+pDEN30pIczfKaWliBqiEdLe/nO55/72BS5RM7eBO9R/Eb9MWDMwhJFpsL4WEgMTemlVrz+Tka4f0c5m5nSpP573gf2/rdE+dKiIXT3rZrITyfQzQCn/WnvWOHUCQF9+sDfODrRWJBl8FwuX5qiFPSvVnksr2b2q5oHFoGD+9k/b8FI9K8dYwpwLrv4e9ovfVJnlGjstJmRIwrq1tDfqsngT5nmuzTwvY2d8eTVXcpLrgaMf48zJVpuhHEMsRB+syuqa1JRpqW0UYSF2PNcelRXK67i5wcip/hWm3WQ9nosbuATesA42smB4jsquJiDVRBvBJBQ/ggLiJxWMMcEJMbPab8X7R05i9H8u7OWWnkznmwUDcGvrrzhPMkBhZ4AvAbc+TAP+zQlzIzbOSyn0a6Tw3+cG7obwTfnetlofF774WaVDmRW3OTT6eneFk/VRGQs67zvV+qheoURJbnX/IRt0q68D7OwHpiW/02jSXySYYGQ6HMCQ9nFNoPx+fhjB7EJv5ZckOGSpXu3BHpTEaVwZeCSnjD2R9ZptsBkAmqp22YzOOoWD579vH4r4l2bqzmzP1AH0dAKkhc6oa1x9qq
+ f92hKdKz
+ XpRtK85SsS7BbKgpXTTnjaWXqDHlx7Sw8wYljLrKBgviQaGi8+/y2QWBfds/WYK6EYsGRf1Vb4/V9nlJiPBa0plLxKYAXb+h+osjinJH9eButNq+EV0rUDmZo/BBUOKU6PytvpP1ScfITFiBpLuMiomSoy1eXPJePDCUMDeP4mdUnHqb6qI73/RqJIwO150VFQtOIm8mk7l4spjKk9todPQcr33k0rg16hUn8HpC2Gs4g+fsKCn/4YDlRGIuyDnGOOpYCwq13TFHwxbxkQ5L/YOLrKm7gZHsOdYV6XGcy6S7COba5iYONVlCg/xq2rCwLCgox+9Ps6bjlG+d2EY5Vg6Oaks7op94SiPefwhAetThN7cZ2NyydG+vkswGWex8LG4lWSkX5YnhyQMFnqeF4VS+6UO0B5tW8+TeTmJfBtCXNGzrDePy9F6ceE8Yl5aAKybGY9pkpfVSbSDYVKj+MJ1XqOqJU4hWkv61b7LtJAX+FYZ0toMx/TJKXAWTWuZBbNunCO61sPpGHCFCkzMv73bZlJ69J4/OPlAN49IoNTa53BGzGiqD5Iw5iZQaCSeoflk/i
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,56 +219,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert links to other docs pages that use external links into
-internal cross-references.
+Commit 6cf2a73cb2bc42 ("docs: device-mapper: move it to the admin-guide")
+moves device mapper docs to Documentation/admin-guide, but left
+references (which happen to be external ones) behind, hence 404 when
+clicking them.
+
+Fix the references while also converting them to internal ones.
 
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- Documentation/bpf/bpf_iterators.rst | 3 +--
- Documentation/bpf/map_xskmap.rst    | 5 ++---
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ Documentation/filesystems/fsverity.rst             | 11 +++++------
+ Documentation/filesystems/ubifs-authentication.rst |  4 ++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/bpf/bpf_iterators.rst b/Documentation/bpf/bpf_iterators.rst
-index 189e3ec1c6c8e0..c8e68268fb3e76 100644
---- a/Documentation/bpf/bpf_iterators.rst
-+++ b/Documentation/bpf/bpf_iterators.rst
-@@ -123,8 +123,7 @@ which often takes time to publish upstream and release. The same is true for pop
- tools like `ss <https://man7.org/linux/man-pages/man8/ss.8.html>`_ where any
- additional information needs a kernel patch.
+diff --git a/Documentation/filesystems/fsverity.rst b/Documentation/filesystems/fsverity.rst
+index 412cf11e329852..54378a3926de7b 100644
+--- a/Documentation/filesystems/fsverity.rst
++++ b/Documentation/filesystems/fsverity.rst
+@@ -15,12 +15,11 @@ of read-only files.  Currently, it is supported by the ext4, f2fs, and
+ btrfs filesystems.  Like fscrypt, not too much filesystem-specific
+ code is needed to support fs-verity.
  
--To solve this problem, the `drgn
--<https://www.kernel.org/doc/html/latest/bpf/drgn.html>`_ tool is often used to
-+To solve this problem, the :doc:`drgn <drgn>` tool is often used to
- dig out the kernel data with no kernel change. However, the main drawback for
- drgn is performance, as it cannot do pointer tracing inside the kernel. In
- addition, drgn cannot validate a pointer value and may read invalid data if the
-diff --git a/Documentation/bpf/map_xskmap.rst b/Documentation/bpf/map_xskmap.rst
-index dc143edd923393..58562e37c16a01 100644
---- a/Documentation/bpf/map_xskmap.rst
-+++ b/Documentation/bpf/map_xskmap.rst
-@@ -10,7 +10,7 @@ BPF_MAP_TYPE_XSKMAP
+-fs-verity is similar to `dm-verity
+-<https://www.kernel.org/doc/Documentation/admin-guide/device-mapper/verity.rst>`_
+-but works on files rather than block devices.  On regular files on
+-filesystems supporting fs-verity, userspace can execute an ioctl that
+-causes the filesystem to build a Merkle tree for the file and persist
+-it to a filesystem-specific location associated with the file.
++fs-verity is similar to :doc:`dm-verity
++</admin-guide/device-mapper/verity>` but works on files rather than block
++devices.  On regular files on filesystems supporting fs-verity, userspace can
++execute an ioctl that causes the filesystem to build a Merkle tree for the file
++and persist it to a filesystem-specific location associated with the file.
  
- The ``BPF_MAP_TYPE_XSKMAP`` is used as a backend map for XDP BPF helper
- call ``bpf_redirect_map()`` and ``XDP_REDIRECT`` action, like 'devmap' and 'cpumap'.
--This map type redirects raw XDP frames to `AF_XDP`_ sockets (XSKs), a new type of
-+This map type redirects raw XDP frames to AF_XDP sockets (XSKs), a new type of
- address family in the kernel that allows redirection of frames from a driver to
- user space without having to traverse the full network stack. An AF_XDP socket
- binds to a single netdev queue. A mapping of XSKs to queues is shown below:
-@@ -181,12 +181,11 @@ AF_XDP-forwarding programs in the `bpf-examples`_ directory in the `libxdp`_ rep
- For a detailed explanation of the AF_XDP interface please see:
+ After this, the file is made readonly, and all reads from the file are
+ automatically verified against the file's Merkle tree.  Reads of any
+diff --git a/Documentation/filesystems/ubifs-authentication.rst b/Documentation/filesystems/ubifs-authentication.rst
+index 106bb9c056f611..9fcad59820915d 100644
+--- a/Documentation/filesystems/ubifs-authentication.rst
++++ b/Documentation/filesystems/ubifs-authentication.rst
+@@ -439,9 +439,9 @@ References
  
- - `libxdp-readme`_.
--- `AF_XDP`_ kernel documentation.
-+- Documentation/networking/af_xdp.rst.
+ [DMC-CBC-ATTACK]     https://www.jakoblell.com/blog/2013/12/22/practical-malleability-attack-against-cbc-encrypted-luks-partitions/
  
- .. note::
-     The most comprehensive resource for using XSKMAPs and AF_XDP is `libxdp`_.
+-[DM-INTEGRITY]       https://www.kernel.org/doc/Documentation/device-mapper/dm-integrity.rst
++[DM-INTEGRITY]       Documentation/admin-guide/device-mapper/dm-integrity.rst
  
- .. _libxdp: https://github.com/xdp-project/xdp-tools/tree/master/lib/libxdp
--.. _AF_XDP: https://www.kernel.org/doc/html/latest/networking/af_xdp.html
- .. _bpf-examples: https://github.com/xdp-project/bpf-examples
- .. _libxdp-readme: https://github.com/xdp-project/xdp-tools/tree/master/lib/libxdp#using-af_xdp-sockets
+-[DM-VERITY]          https://www.kernel.org/doc/Documentation/device-mapper/verity.rst
++[DM-VERITY]          Documentation/admin-guide/device-mapper/verity.rst
+ 
+ [FSCRYPT-POLICY2]    https://lore.kernel.org/r/20171023214058.128121-1-ebiggers3@gmail.com/
+ 
 -- 
 An old man doll... just what I always wanted! - Clara
 
