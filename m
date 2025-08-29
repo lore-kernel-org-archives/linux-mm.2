@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41F1EC8303F
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:27:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E22EDCA0FF9
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:29:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 431156B0012; Fri, 29 Aug 2025 04:27:47 -0400 (EDT)
+	id 370788E0007; Fri, 29 Aug 2025 04:29:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E2656B0022; Fri, 29 Aug 2025 04:27:47 -0400 (EDT)
+	id 347D68E0001; Fri, 29 Aug 2025 04:29:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2817D6B0023; Fri, 29 Aug 2025 04:27:47 -0400 (EDT)
+	id 20FB08E0007; Fri, 29 Aug 2025 04:29:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BBB46B0012
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:27:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 87C981DE155
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:27:46 +0000 (UTC)
-X-FDA: 83829116532.21.388A3FE
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7A5C4180003
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:27:44 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KDRTomSQ;
-	spf=pass (imf24.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E1298E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:29:31 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92EB11DD7F1
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:29:30 +0000 (UTC)
+X-FDA: 83829120900.03.FD1767E
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A0E104000C
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:29:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JzpPMuQd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756456064;
+	s=arc-20220608; t=1756456168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0AfZlK+2PpvnkbeUUWLESRnsPEd9fz1tduXIyE8HjWg=;
-	b=VgwrmE6UcGuSxNV73rLfT2XPcsfIMfTUTwTIsFjYurpO+bZIl6A+nM0j29Rby8aE2KBfFr
-	LBWmlzt6TYN1muc++vzcYD7nUdNsjiWcX+nchISukeph+UKWqyVdjr5utGN36e/pf18Vuf
-	b2KSopKQv9yIJrUrdQ6OHN6+XYcJrT8=
+	bh=jdhbTSK6p9ht0YngyCDiyyRtcLCfpgxS9tGDrcGiJGs=;
+	b=wjMZTOtvlwBzLk4dwE/8RHiM5ormE38mn3KFnBjH6zdfsStc/u8bPDDWZxIkcvfJgYIdoj
+	F1Ep2iMNI3hngPye98ogA0Qryr4xvJM5js8VxDruLNx9LURl4hnUDXOc8Fdi5kX2sXtC0t
+	9z69tx0yeoZDHzmJpCK65SouGWIYpNY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KDRTomSQ;
-	spf=pass (imf24.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756456064; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JzpPMuQd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.219.45 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756456168; a=rsa-sha256;
 	cv=none;
-	b=L4+5KDJd6qvDiI2cJ8QOg9udsR9qs7ohrbkCz+Nsk2UHYdZAOQ25leJ1eYDXdlYVKKlUOm
-	jUR1SlrbLBOrnhyOzxCH36H/C27kyHnWWA6ILy5LHj0xZH09fpD6/7G8WebCmEfcFlqYKk
-	1tQOhTJ8zjgsmmYUOzbpIlcjSE3YKbs=
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-53b174ca9bdso1313004e0c.2
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:27:44 -0700 (PDT)
+	b=JPyuLC2EvQ9nWtXVDf67N/GeL8ZwZrxWlePVQs83y/h3AcxNuGyzgy4xJ8NiJm9k2ao7SO
+	WzuyNvQy9jj2sa6d6777xqptuDx4H8N+RML1oYfZoIi8KflqPYYweOZ9ei0G0jeu2h8Dnw
+	0IIwDozavG0skSn/kLRGeHZDeZM2FAs=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-70dfd18a27fso10011066d6.0
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756456063; x=1757060863; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756456168; x=1757060968; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0AfZlK+2PpvnkbeUUWLESRnsPEd9fz1tduXIyE8HjWg=;
-        b=KDRTomSQAK9lMO04YuLsJHFx8TPInSNL3StzB9bKxHBU7PntcCT2x6DWJiCrfxWEbB
-         JQPDPATp74cE6PKcWMmNdAxHchC0ccDJ+FXW5xIaX0yIj2sMx5Akh7jF2y7qNYhEGkac
-         Bb6E13mUb5fV71NIxkpFG8bewh6MFfBUXTfBHNklx+4tzdrATvI562NGQlZQ1RMNNQ4i
-         3djCaQRtST4lGkmSQ+glOuukVReivITajoxDIBDf7yXT6JXsqiz2v/IsPvNCRvh/AxwC
-         J6SbnpUWiIGlxL/wreVSzYfTAWvHapV0wPiwqeTOVHHFpF22bqVTRrkqxx8ckIhRHgyt
-         hzAA==
+        bh=jdhbTSK6p9ht0YngyCDiyyRtcLCfpgxS9tGDrcGiJGs=;
+        b=JzpPMuQdFgkOG3R5QPfXBjGsgyO0gRkrUjihNpdDXCtTmSpsuzDPbLWbrnOJf4Opsc
+         6EKLiJBDvZLeysBBUZHsOOTm/2a5rF8mV6PpU06pHVFyLxkKoLHWUFhypmTbwa7rDWcv
+         eG2FTRNB3Xkwnf0O/GBuHG0hRiRwd9tr5psjen1tfhVsxpv2PoxQtYmUQb5nh1ar2/CK
+         7pvLr/WLfIPn5m3bMuknSDP7uGYaCJgzGdfe8+HQeI+PjfJRugWm7I2G3HmRG2ZG+iUV
+         Xcxn/1s4YCuvahUvy+Vqd5SdYGWQEdztvkAmygEllbKmAb8AQ963xU2hc9zGDpSx9j/O
+         rb8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756456063; x=1757060863;
+        d=1e100.net; s=20230601; t=1756456168; x=1757060968;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0AfZlK+2PpvnkbeUUWLESRnsPEd9fz1tduXIyE8HjWg=;
-        b=Xs7A5OIA75kMDxJw8uk9sgGhvPFADb643yzgR4bPJiDrS4eIXIWwxOUc5jxKFVseJH
-         eNA3QLsWLjyyVkrNte2ZKpi9GdBOkkohHSaRACUq3hPfOryedhxeL4Y9YKh/Ka66IQ7x
-         9H3JWv8hVj2O7JvMgVr+kcCE4Uwx/o1F0k1Ox9mBiDKl4OqysMQkn8gFjNHltLEYkgf/
-         EIeYSSVVk5YP8wwfBTfkilz9BJucBMNf5LER+3pIOqRNyN1kEAZ+kdTPYwruIJuvVair
-         PUX4O/jKX7lxEzm4QcgY51wId+52ho+F55q51trdKGgH1my3ZzMxMf3ToH+Qug1fxUqG
-         Phpw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3pdcb0Dkvvs2AJ82+ftPZrtsqGH9H6U/ksY73tbzvS5CbTauW1G4b896Kp9tsWlj/P0dA/zxhGA==@kvack.org
-X-Gm-Message-State: AOJu0YzayKi/BiAFMJlQUuXgJBcxj/zj0zZEIvphaUNUbjtXyfvJV6/f
-	E1uS/E781rL750PEiMlpq8KPnJn61i+7/OXW5J3n2NZxsXUFrdWjY7+TMrdwEd//Ln4=
-X-Gm-Gg: ASbGncug4V6xbKdmXUZL925cfXq4qv971u6x3g0FHh0RXdnA5j3i1FoJrNZSKQOzyoC
-	QVg1EBGcHcBRm8aJB44MwZ42Kz2thDYQXbpPrgHlA1P361a2nTAuVKd2KwAhjinDpxdV1bSlVUn
-	GmeWJ4XqE49pDIM6MW/02FRzG29VFaVj/sLl2eZ3Q4OsGj0cpn/1MM4C2nrKI1DEXAc7KfBwNgm
-	eBANMsARsoRyDfb1VLy9VjpeDHOlQrm7m1nIHHUFwcdN+037BUpQj92l2uVmLMCP4w9vLvc/XCd
-	MA96P7c0ES2+rWnGLtGL9PpxBO/VfW9De8C/6Ur1NeW7a9mvc+Tv/D/zWKvE8X1MGg97dEHgUNl
-	DAjTVyngrSohN0R4ZliwG3H0iGBLU5+YGzAsK
-X-Google-Smtp-Source: AGHT+IEwoXGIzV8akza9wuHnzpdMDJjRSJFuE8pmXkEOlv9nwKY6YvijMOuiPPSYq1k0su7e61Abrw==
-X-Received: by 2002:a17:903:acd:b0:248:cd0b:344d with SMTP id d9443c01a7336-248cd0b381emr78909285ad.9.1756454579374;
-        Fri, 29 Aug 2025 01:02:59 -0700 (PDT)
+        bh=jdhbTSK6p9ht0YngyCDiyyRtcLCfpgxS9tGDrcGiJGs=;
+        b=jfi5vksqBOMCI1dYFxYp0EYZDTvULwx6wcVGmzsc1oUIjED6PjWeGw1h3yFz20+rnN
+         b9Lh+OKmb3NfnXKzTWAPoulxqpDrLtqsGyTxxA6+CrxylOEp4zTIcf6xogIYPTj+O293
+         jKGbd7rtm/bhl/bryOyJuSBBqmsiCjhoLxLgJc2bWskaKED9d2f7y7ATvrSPIk/2gKa6
+         KCb/M0mNBYXbf2+dMLKdRLxhTVjdnFIRGCiqtHnour8aCykqA7TzR58ks/HGGQRwhsFj
+         qnoEBqFPHguVKuCFTdULvxKVHhQn59VsQbE9pKd+yxpUKipo1Wngdh96wBVOs4BIMFj6
+         k/1g==
+X-Forwarded-Encrypted: i=1; AJvYcCV/N7j8/Jqn+QQKMDo0rhJL56o0MwpzksE9uXyuJ3Mn88QBDO79TjtOGC48Nl9yB/DBnZjIxD2POA==@kvack.org
+X-Gm-Message-State: AOJu0Yw4ApMJea6hnpqVANIlDFOCSYZaP1VHRTpYYGWbCNQGVd4dlCAl
+	CUPSzpKHP7Qur/j2tf6ivaXJNpMd4eY1tB7q1iwCsClOU3wPIByllwaQLEB6U6Ar5NU=
+X-Gm-Gg: ASbGnct/koNNjTNVrA1WTg9WQnTQTlp060AiUnoSc4RnKL+UCXxxuDW9m3Tr5pfnKYy
+	MLK/XEUaWcYH5OYnBnkAfYEoZFw+MnCQe4SRRFvxbfYMIpl/E7Oawnlve63Rmrq2KlwFubpdsJA
+	C2Zi8i4Ji/w8De2b5NIjU9yeD7+GxOEUHnjL0PPCNO6h/Pb8eYqXtQB6sS1Da5XwVUaq5PTRT8v
+	W+Jgp+/S+FPlzCZZoid53klDAGztG7Mxc//bvOk+I8qqUYYdAWjjn+jGK93Humo/muYmBj9c9vU
+	DF7Qp5Q3LI7n1qNq5nNS4gIHdoV2mPfc9SqCerasT6i80BxMx0Lup4sGtkesK9TtAQaS0CYZ1Yo
+	nd8CBu6kPCLOYxcZBTN9D16tQFQ==
+X-Google-Smtp-Source: AGHT+IE+D5SeDqchp/24MDHXx5CQWTZci+ASgYtlboM+vs82gW00FOC1mk2B4v9sodvZwpxdBzPuFw==
+X-Received: by 2002:a17:90b:3a87:b0:327:c9c1:4f2a with SMTP id 98e67ed59e1d1-327c9c1642bmr4975594a91.27.1756454576161;
+        Fri, 29 Aug 2025 01:02:56 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24903702999sm17213525ad.3.2025.08.29.01.02.58
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327b01e90e5sm2191228a91.1.2025.08.29.01.02.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 01:02:59 -0700 (PDT)
+        Fri, 29 Aug 2025 01:02:55 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 08D794489F50; Fri, 29 Aug 2025 14:55:28 +0700 (WIB)
+	id E8F6644809A5; Fri, 29 Aug 2025 14:55:28 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -193,24 +193,24 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Bart Van Assche <bvanassche@acm.org>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 11/14] Documentation: net: Convert external kernel networking docs
-Date: Fri, 29 Aug 2025 14:55:21 +0700
-Message-ID: <20250829075524.45635-12-bagasdotme@gmail.com>
+Subject: [PATCH 10/14] Documentation: smb: smbdirect: Convert KSMBD docs link
+Date: Fri, 29 Aug 2025 14:55:20 +0700
+Message-ID: <20250829075524.45635-11-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829075524.45635-1-bagasdotme@gmail.com>
 References: <20250829075524.45635-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4099; i=bagasdotme@gmail.com; h=from:subject; bh=eMX/Qh24hdl/D8upWlphNzasCNRD/YCgXxsSIbz5MxY=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkbY16d1mKOz99m1qX25ldgn5beybqta3f6vFwaVK3P9 qU9Ts6io5SFQYyLQVZMkWVSIl/T6V1GIhfa1zrCzGFlAhnCwMUpABP5Y8vIsLj5nquL3YaGH+H5 K1M/GSvVfagoWJf+Wf//FmmeVbsWnGJk2HnZqfzd057r3t1TvvSsKTBp/5q8NJD5d+PrUJ8N/JZ PmQE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1002; i=bagasdotme@gmail.com; h=from:subject; bh=tVZea1ikNA4Sssls4g09ZchJ08JhUaFOY8Mmt8T2Tzg=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkbY15VZXUEfpV/XXVSre/C87lNIRyCV5IjnItu7ShZU PiphvtYRykLgxgXg6yYIsukRL6m07uMRC60r3WEmcPKBDKEgYtTACbSt4OR4WixGWdF367Ci0f0 5/VHVx3YxHrvMF/c3LtfDf1enBJSvMrwV9hALHj9kQNbWF8l9WcGsahNXW7scuzOjYlmr0LWbpu 3gQUA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 14mgk9d7kuhwkj6jwffiieyox9sdb6rc
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A0E104000C
+X-Stat-Signature: a3i6ymt11rtbaomsr149pqafxi66m3p1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7A5C4180003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756456064-185692
-X-HE-Meta: U2FsdGVkX1/kga7f1uZLVMPco7IQxfrXVXukwxr8lxa626zEYArWLJjqf7iXeINFOhFC2sW3T+bgW/h4XRiV6juCMlyWN4OycK1schJiado/g6DUcbQA0KR6Q0oJnMFyrFg0UW6KTPP6x5az4EyHUzpqVyBYUk9sXolREkzQO9meiq/DLtwraawrXloSe/o/Nxs9hkiK7VDpsJSolMud0viWu0Sx+9y3dY+2oV/1ASLTZuV0dgPyua2jARgY8Osg/1fGhQCV39Mnlc0RqodLJu+YCUDkUZH3CI+aYhUTgrYDztIuL8CxPhZH+kyguGbkj2Rt7Q9/ZcXK3DNYkmnMZZEC+qMyXAmuz7deLmAJTL7lPPX0Zbzh5ITbVEfOfPgWWqrum0/3bU1qvcFUpGiph7WtX4lSnszMl+0tyT1ZQ0PtkZtLBVQV+vXhHOinNjRpnusfh/9DZ3Xlj38jBs3h5JKdh8Um6TTAwa2wWEYdALpYqSuUEQ8GIM7Wqy62ybi7wsfkkv2mHi3F3U7GUfl2UP3rzZOmt62NnXWFO7X+s4F5cyO8H9/ZQ9VD8ncZfoPfho9m//E0v9GSes97KVti4dYnZ49FZi9bHZRk4E//qU4HVxINE1t6Bb6C4cQMHs1BSv/CbGOs2QuvECljQU0AbruJxFDo1IrLe9JoDnK5pbKI81gV8kFmTj7ewEZX6ZzLhrOCoMfvuUYPW3zYWnYLVwEpQ2g32lp5PWyGD1+5CNfaKTUatJjAgNzrEz+fQ1+k9A3/GPGJGkEEqzmcdq82MJU9GrVk/n0GTEJ5gloGG4Vl/QpcFYriA/JG77ClW8Z8RTPuNBli+ji80o2gm5iicjmKhI5pJ6obc92jNCJ7K0NqT1E8fyizQ/owMJiT12qxXRCanlxG0BtZXHWuBKjUA4uvctXIvwJXUErPSdpVo2/tkxQ6hbSis6zv9Cuc98SlrCB7l1+Q3o+uhsakSDD
- jC6CwT+F
- s3Tpnqk7V7yDBdUGIeE9NUCoemdf9e7CIgoCh9NPSPMOoiMBfcOk+HwUlNBfXd5MdKJhdbId5k35udP3c36ggKZrksFb4+c4qjwp/7ddEy3/HbjdLsWo5IKbfAyOK63n05ACR++TS5KERTCrOBP4O1BvTxfXmjMGvK5YgJ4JYiFHz5TNHK7M18U2PJKHP45BPqlJzKhGwnAI+kRolhRgcpAsG4VvMlUKxjgXwio+w/qfwTazFOueVlW1ola0NyzM0Hc2SCPYu9w1lUPtt2Rm7blVd8dx1OXsJ3LfJYinS3zvMoFTW1tCGtOvljBEGBPirMSiPRsU+63a0hidYjn+JY7fQ+dHepzG9tO4g1xr/7EhXJWwGKHbz9btki43M40Knd3DlS0k1mKBt4o4URd2jA4DZB3dRFtCPUu/bfp2rznNGhs798BHNjVV6DkUOvGAF3eVbZwx7NvIoo0MZa5q+55uZbZ1cjAmvrmz5CPCKNPrTpkgDjGQuFmewRtjXsGSuj9QrFFJrIxz7gv1oXLSp9PpKNI9beWoAjYBXUM2gN5vhaFK0Hq80ZeI6ug==
+X-HE-Tag: 1756456168-742547
+X-HE-Meta: U2FsdGVkX19jxtqFL+xGrCsaEo3qLnRAx+7JJCRaMgECQhprSwoYS4U7cR3wvZ/I/6yDKB1HbZhKyFMZWtlFZhhk1Yk/+sdIUcI6thaHJ6n89zBI4wF6JgvJphdM4EDZGROzj6sUkFZp2VenQ2zI4oubha9Tixn97CwsImMYqxE1+4chiotX485SZ1Y5ZO8hx1cNNIOAgm4VsLcKzfaD7z492kWBYAs0S24JTFTbA93LJepNwYB1BsLrOhHzHAcULnuH3mdtd74Tcalq9sL+l1dp0qxGpnwiEuzKo7QJ6IXyh3r1i2Cc+8FQ95/ReStAYZa2KYw4vTqv2Gw17BLLJt2hm3EATQfUM1TSeJEVUEiEpPPi1y/SKoOLIMYN+ZbgmJW4hY4Pd7+mOlKYDatTkdeDlJc3RJa+GK1DZ44SGoEdAF4jXRby+8QNHVkaSlB545lSkLrpWHXm6a5prYlhG0bRgu7kCpu74u6kMCOEN6kjxEOxswPQ5mX2jCzL1gR8KkFkrDkVChgEvB3pXQGbNwv1IHEFgYKsWDh8dseMJogqJCjRczaunlXRtV8oMgHkNL8BL+cnFTjWioBMPacCRItL2M/aKPDZMQXN05N9YDG0R7aWKjtHB3znlc8uV+HurriVJ4mC4fxFTQK4V6Ix76J2lYI+4vyB44fX9CHlts9YUbGZwjC45AxVLyuPzVIMPYD69owTHDgUJgQf+4ZlB51UogGlaEafKraD34wNMPDG0HpszbdG92G9K3NtwHzq4owG6tDgz2FjO/CPW4rVW+sElOY/cP6Sz8KUvivfX+O5FTIvytfqaOxdTbHuAItzGx1jO7WyK+P9oRga+A+bNzs9yEC8/qHYLTBMqqobl3ndPTxNPzT/2W20OyEurLsF5rYS4ImoIZIWjAUOMw2+HwRjM40SxdjiJuSU8fc5FGcKvxFGr120j2PGUthZncz8dPBJGT11sdKxax6N4P0
+ q4561EK1
+ Rnok+sq1joIDjBlyNQzACu00TaYH3HiLQGNj0pypiGt4l+0tdaeglqEllQsbhAKH7YmD1PkvRyOo3RtvZSV0Y+do16vYh+kdh4WSP9mGWQDjBvyLO0ffs2fFP/SU9/V5vkg64/fejv78NuMWueFsyFj5BRBWmgZhoZH85uVJwS4FvV4ZO6tHiL2GxZv9AA/NJu8OSJLVDlHGwg2W0naovJVdEzfN/YXhVHjkO9TgWYEJGDrqYaxQ7le9HmcGKlptBX7vsrDYW5TnOKtBaY17PhYOo6qfLvVdPomtlPe0je0dKzUy+n4sxLl5pxqwhdlAtLghYGxQvAwxYvpo9I1IvnVBAYGVNngnDVSXNnIvglcqcaCc/FfXlpekoyLhoMgU310d5dLF13XtK75ip35k3XssYDvx9m2z/efDe5DSUvywWqPhLhCMQaxRRbh/uIUnuaM19N5tQSpozG2zgkBHSJLMqAyV+DQfZHyS4MBpIF8KOUJZUYeJSDiTsE2xsvF6pFKIrHU9yjez3m2g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,84 +219,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert cross-references to kernel networking docs that use external
-links into internal ones.
+Convert KSMBD docs link to internal link.
 
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- .../device_drivers/can/ctu/ctucanfd-driver.rst       |  3 +--
- .../device_drivers/ethernet/amazon/ena.rst           |  4 ++--
- Documentation/networking/ethtool-netlink.rst         |  3 +--
- Documentation/networking/snmp_counter.rst            | 12 +++++-------
- 4 files changed, 9 insertions(+), 13 deletions(-)
+ Documentation/filesystems/smb/smbdirect.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst b/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst
-index 1661d13174d5b8..4f9f36414333fd 100644
---- a/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst
-+++ b/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst
-@@ -40,8 +40,7 @@ About SocketCAN
- SocketCAN is a standard common interface for CAN devices in the Linux
- kernel. As the name suggests, the bus is accessed via sockets, similarly
- to common network devices. The reasoning behind this is in depth
--described in `Linux SocketCAN <https://www.kernel.org/doc/html/latest/networking/can.html>`_.
--In short, it offers a
-+described in Documentation/networking/can.rst. In short, it offers a
- natural way to implement and work with higher layer protocols over CAN,
- in the same way as, e.g., UDP/IP over Ethernet.
+diff --git a/Documentation/filesystems/smb/smbdirect.rst b/Documentation/filesystems/smb/smbdirect.rst
+index ca6927c0b2c084..6258de919511fa 100644
+--- a/Documentation/filesystems/smb/smbdirect.rst
++++ b/Documentation/filesystems/smb/smbdirect.rst
+@@ -76,8 +76,8 @@ Installation
+ Setup and Usage
+ ================
  
-diff --git a/Documentation/networking/device_drivers/ethernet/amazon/ena.rst b/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-index 14784a0a6a8a10..b7b314de857b01 100644
---- a/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-+++ b/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-@@ -366,9 +366,9 @@ RSS
+-- Set up and start a KSMBD server as described in the `KSMBD documentation
+-  <https://www.kernel.org/doc/Documentation/filesystems/smb/ksmbd.rst>`_.
++- Set up and start a KSMBD server as described in the :doc:`KSMBD documentation
++  <ksmbd>`.
+   Also add the "server multi channel support = yes" parameter to ksmbd.conf.
  
- DEVLINK SUPPORT
- ===============
--.. _`devlink`: https://www.kernel.org/doc/html/latest/networking/devlink/index.html
- 
--`devlink`_ supports reloading the driver and initiating re-negotiation with the ENA device
-+:doc:`devlink </networking/devlink/index>` supports reloading the driver and
-+initiating re-negotiation with the ENA device
- 
- .. code-block:: shell
- 
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index ab20c644af2485..3445b575cb5d39 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -1100,8 +1100,7 @@ This feature is mainly of interest for specific USB devices which does not cope
- well with frequent small-sized URBs transmissions.
- 
- ``ETHTOOL_A_COALESCE_RX_PROFILE`` and ``ETHTOOL_A_COALESCE_TX_PROFILE`` refer
--to DIM parameters, see `Generic Network Dynamic Interrupt Moderation (Net DIM)
--<https://www.kernel.org/doc/Documentation/networking/net_dim.rst>`_.
-+to DIM parameters, see Documentation/networking/net_dim.rst.
- 
- COALESCE_SET
- ============
-diff --git a/Documentation/networking/snmp_counter.rst b/Documentation/networking/snmp_counter.rst
-index ff1e6a8ffe2164..c51d6ca9eff2c7 100644
---- a/Documentation/networking/snmp_counter.rst
-+++ b/Documentation/networking/snmp_counter.rst
-@@ -782,13 +782,11 @@ TCP ACK skip
- ============
- In some scenarios, kernel would avoid sending duplicate ACKs too
- frequently. Please find more details in the tcp_invalid_ratelimit
--section of the `sysctl document`_. When kernel decides to skip an ACK
--due to tcp_invalid_ratelimit, kernel would update one of below
--counters to indicate the ACK is skipped in which scenario. The ACK
--would only be skipped if the received packet is either a SYN packet or
--it has no data.
--
--.. _sysctl document: https://www.kernel.org/doc/Documentation/networking/ip-sysctl.rst
-+section of the Documentation/networking/ip-sysctl.rst. When kernel
-+decides to skip an ACK due to tcp_invalid_ratelimit, kernel would
-+update one of below counters to indicate the ACK is skipped in
-+which scenario. The ACK would only be skipped if the received
-+packet is either a SYN packet or it has no data.
- 
- * TcpExtTCPACKSkippedSynRecv
- 
+ - On the client, mount the share with `rdma` mount option to use SMB Direct
 -- 
 An old man doll... just what I always wanted! - Clara
 
