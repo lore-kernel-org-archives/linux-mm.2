@@ -4,116 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F8C8CA0FF9
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 22:56:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86FC7CA0FF0
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 23:03:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B67998E0002; Fri, 29 Aug 2025 18:56:38 -0400 (EDT)
+	id B756C6B0032; Fri, 29 Aug 2025 19:03:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3E468E0001; Fri, 29 Aug 2025 18:56:38 -0400 (EDT)
+	id B4D486B0062; Fri, 29 Aug 2025 19:03:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2DF78E0002; Fri, 29 Aug 2025 18:56:38 -0400 (EDT)
+	id A62FF6B007B; Fri, 29 Aug 2025 19:03:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ECE98E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 18:56:38 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 55A2A5BC77
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:56:38 +0000 (UTC)
-X-FDA: 83831306076.10.3C26D38
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7E7BF180006
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:56:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cyBkuDzg;
-	spf=pass (imf16.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 931B86B0032
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:03:10 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B3751409C5
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:03:10 +0000 (UTC)
+X-FDA: 83831322540.03.76D4660
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6A40C180005
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:03:08 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eoGqhC9Q;
+	spf=pass (imf24.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756508196;
+	s=arc-20220608; t=1756508588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=moy+v062wTa6PMGyjHux9KlOsyFyasxsckZuNnnWIm0=;
-	b=dSw5KHdvIPLJPpbwJJpZ6I65PUrAjysgTTwAK4Eg2u2ahWp2QAvWo8Lnd4fP6uSP5uXtOz
-	bFdLiagSHXdq8ZdOvhKsIkxUDJXbquvlXRiZH//KAYzYebNX4Wy+1FUiUsv5YZ4fHSXhqb
-	U5/EY4NejvKK+Ms1KyuCAzU86Q8nglI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756508196; a=rsa-sha256;
-	cv=none;
-	b=MdDPm0AMXkBgUK7LjtKLqXzatiAiBsV/i9uBMvBtaOu7h2PZA1HIlMDkmgEB0tJ/2fTqKw
-	4JzDKvL7tHo2FQ+0drncO7l5F7uAGzuSpxSyRReX9F67gsvrieHrcZhzxTp4ayNSI24y4O
-	Myh3+GWznLjFhOs1UIbOpu1tOZ4ebbw=
+	bh=EHahEkW90E3K8vme96BrNc+kv0QVOb2ty07V9mAlLKc=;
+	b=S5sEqTIKOna/qKmGtl+GyYF8bB5VD5N4bzVLuygg8KNP36I8TuohBVKnsG3fy9pLbxSI6V
+	yR6f2IMzvozvwK2XJhMgfr+/34EDa8uUCvyWWMLPETo8MMhulG+Qh7NF3dEFszzXcJtBpR
+	IsJuqAt74B7yjmHLAmMCI/fr5wp+haw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cyBkuDzg;
-	spf=pass (imf16.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eoGqhC9Q;
+	spf=pass (imf24.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7722d6cc437so1113036b3a.0
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 15:56:36 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756508588; a=rsa-sha256;
+	cv=none;
+	b=g9REBfuLO/oAtNZ59x7WjQC5OrlktbPg3wkXxKFXPJPvI/kf2knxyJC13r35FREZqFIyoS
+	q6JcPxGd5LaSNZ7sFL1SFNITQs2HJRBG3f/FAqeYX1m03npGNHcacgQcj1zUiXJZlHCPsQ
+	UxOj+Jvl4l8Sxaum2IuKnUEgjbO42zw=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4b308ace753so20612781cf.2
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 16:03:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756508195; x=1757112995; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=moy+v062wTa6PMGyjHux9KlOsyFyasxsckZuNnnWIm0=;
-        b=cyBkuDzgayGtUylSFGMf6IxrQtD5afaKrOznNTDI7K+K6tybVrFW4aUX8qAfLVeHKJ
-         Veise0YTJJ6lPqsm4Pkp6G71phBf9QYDZv04ppWkmjo4sIXu3c5cd5WNtQkGz6/zntUP
-         GEFkF/6s8t1zPJ5j6+Y9tZzL7Eb0Sl/XQx2rqaQg8xcIkIC+c4Cc2jMM8PB1sSZsfaHN
-         1fG/lu/nA5nGm8R5gwj8d+PZgzyyYaGK+Ne6MdY/g5/fF4e3CjJSi7H7RFgs4TSJzbnP
-         1O+9McxXecakfVmbIAslDK2iL01bghPuR9DDTUJ4PSpMpWZSdE3xNYzWWbfzl8tfM89y
-         TdLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756508195; x=1757112995;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756508587; x=1757113387; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=moy+v062wTa6PMGyjHux9KlOsyFyasxsckZuNnnWIm0=;
-        b=MnGenXqGUfUtA33g4ro0HhmQgJ7lt20od3VIBYfoKALN2dffrCh/KE5iHHgsG7NJ4w
-         ygEBq8KGvVklA4XW6QHKG1qDfmcxUttY46ZX0F1Pfz3NXc8Lw7fO7Fs9zASWz5GDr3YE
-         R7IDy6hKoZLNW8tp/9t3yxMq3hjyzB72aD+w7txLhFpCP401iBhrxbNAricJfHNYuJwT
-         R7m1kBhn0ylKYVygpE0DuTPWYDD2WNMxAqlskClIADxIKbOYnH38/ZBbF/HTnpZ2LvV9
-         ySHvTgVdZf6lGdmjVKuOSnlO+jn487xoBLsxcmeQkuJ3TqHZ//hWiqwbGK4yIZbHqo13
-         MMyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWLv7Omv+kNOQIfBkBDEPUSZEk3Rt0R5YiPccmWtlR9UsVkGgn8HbVYZ0LIyUxN25nLBkOe372wcA==@kvack.org
-X-Gm-Message-State: AOJu0YxZ8YPSsFbhY8STP/rNgltcJolkbnSWw2bzRNRyzigxSzU/UM+g
-	L7mFLIt6ghY7H7w2UvqD5SlRGGQO+clRAseM3kXW0y3mVLmHB6K9pVRD
-X-Gm-Gg: ASbGncsY5NvpYYk5dCDRdex37t5Lb5ugHDrvABaA4FqmxU0yh5nbf9IaKr81hsMNDyV
-	Dc+OJsiKvPlr18mWksFo0Ngc7WAcqMW8AgkboIhPmRVlMtd9w+TwZ1KpSf3GANPLAxIMciopLNj
-	u4OANDYUk7KUVCMdicgQSJgt1ksGFBglUk2gARtcLfoUe1Qg62xCtMgX7cV8Hmp79pYRqZ47BsJ
-	yBvCck8RRq8z1GvYJMvJW6E+wATVbswhzfQ9XQNkRiOMr3BHChnzg7WEu33yJi7gGkqyefl/x+O
-	XQNhOE5Sv5gTsSYo61bzIbKz1ZXjOBJYCaYxgQRxFlI6YfNzNa1wERZgpaPxahR/grRCy7jV9i+
-	OiCgwMdA4e/a7O7ywSpEzgOiJULSsPFTgB2N6uHT2QZ+QqpR2mDhZjRp0+8PdR/dK
-X-Google-Smtp-Source: AGHT+IHX87XDPNTiE0CXbUrwygn+u5VjX14aKgc0q9EfZb/nWd1682f2jDIgn80m50UlWboVrtal9g==
-X-Received: by 2002:a05:6a00:85a4:b0:770:580d:87fe with SMTP id d2e1a72fcca58-7723c445dbbmr914071b3a.7.1756508195163;
-        Fri, 29 Aug 2025 15:56:35 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a2aaeb9sm3312343b3a.29.2025.08.29.15.56.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 15:56:34 -0700 (PDT)
-Date: Fri, 29 Aug 2025 15:56:31 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
-	yuanchu@google.com, willy@infradead.org, hughd@google.com,
-	mhocko@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com
-Subject: Re: [PATCH 03/12] include/mmzone.h: add `const` to lots of pointer
- parameters
-Message-ID: <aLIwH38S7A9h78iY@fedora>
-References: <20250829183159.2223948-1-max.kellermann@ionos.com>
- <20250829183159.2223948-4-max.kellermann@ionos.com>
+        bh=EHahEkW90E3K8vme96BrNc+kv0QVOb2ty07V9mAlLKc=;
+        b=eoGqhC9QsdyB+U569zFTE6FJcGV5I/Mg6hhS2o8lAeaFSTZnvnIKUTZXAgrEu2PSH5
+         JZfb66YOnhOmF/QZhZ/iwPSLsMWpLvO6LkYoBj+YT4PWKZZv3m6tN8xv7URNUWpXjzFL
+         tLYbppl3d6CkgGK9ZQkw9Tyqz1JV+HxtvwIFASYNhMVWkTFEWkhU/1SxHb0YrwLRkpL8
+         pu9j3f+eDgzltcWkPi4XgMkaEle+4aGWHFgfoZ4Oqi3IjZA+tK/8674can5nkYFbsCdX
+         /9DhTL/8a0XlyILy/f5/rM9fim2l0Z1NwIwj5F1h7ABEtc4zw0zsTexKDarfYxbL1g5V
+         nr8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756508587; x=1757113387;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EHahEkW90E3K8vme96BrNc+kv0QVOb2ty07V9mAlLKc=;
+        b=m3oGy60e8tuXb9PN7LVJ8mLhFZeSHlG8ILkscJOtwS7/pMSOnGgD4mzUe8CTSWc3yt
+         XbA8l6VvrizyvaG58BKJdydhyK1aiYvg2dsPBM5zGIymL/JV/WExquJIwl3kyg6JlPUE
+         jS/lPc/5W+LhAC/WD5HFJcroWaE9Zalmq9SKutgqidL8Bk8KLjLcvvDsWcmKTSwSi+n4
+         JY6B3KnORKCNCUfHVe/3Bc9FmRjYuGJbUSz03ULekPs5qcOY7UJbiqqzke+NCWr7LDbg
+         DL7EcpMMS762C73dc3uRlTM3YLQIJrQBNlwo39pYExTrGOQFTAEtWfY5rhf5ifqxgWXk
+         j0xw==
+X-Gm-Message-State: AOJu0YySZ9kQfyH3/JLgFrBvMJBGMHWFW2klkbIC2HFIPM0XYuAzorS9
+	Z+Jfz5RFh3/CczlX8TSzoC+JKLc02impAmI6Ne9+sCxXJ29YgK5FuPuL4jsDWlYLCVtZHisePhh
+	j+ETbNSsapq855yabD9ihRvq8AqonuwQ=
+X-Gm-Gg: ASbGncuL5Y5TOo3c7nYFm8W7EHBkx7T/EQFezK6tkayzxHtXH7KkRAbTSipzt7RqHnm
+	bVdCgRZobuPkELpoT/tAK0/zgs6kHA7frkm+IooH+M7leT4kH7QNDl2X7BdZDid1HfyDiZJxPFJ
+	XHgHjNdhii2WtIdUs9p6iTkz5WOLzMjo8ETiigGH7rSTYVz05JDpRVnKVtsEBrSBDQIaR43zRf5
+	i7NnBxZIiFBcvwOGS89R/HtLHxHBg==
+X-Google-Smtp-Source: AGHT+IEIYCRuciJtYQI04fSLLqlCBDLF0lt7nU8NQFo+iWPHSQ6IDWvFYIydMBOVUlxgvhfaag1SSff7sZA2WpX/muk=
+X-Received: by 2002:ac8:5914:0:b0:4b2:8e4c:71ca with SMTP id
+ d75a77b69052e-4b31d89e531mr4292841cf.12.1756508587329; Fri, 29 Aug 2025
+ 16:03:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250829183159.2223948-4-max.kellermann@ionos.com>
+References: <20250801002131.255068-1-joannelkoong@gmail.com>
+ <20250801002131.255068-11-joannelkoong@gmail.com> <20250814163759.GN7942@frogsfrogsfrogs>
+ <CAJnrk1a0vBqcbwDGnhr2A-H26Jr=0WauX7A2VLU9wvtV3UtpDQ@mail.gmail.com> <CAJnrk1bqZzKvxxCrok2zqWoy8tXtY+hZF9kXa8PTWmZnihOMTw@mail.gmail.com>
+In-Reply-To: <CAJnrk1bqZzKvxxCrok2zqWoy8tXtY+hZF9kXa8PTWmZnihOMTw@mail.gmail.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Fri, 29 Aug 2025 16:02:54 -0700
+X-Gm-Features: Ac12FXw5jDz9qTpnLWvZYMoaFe9FRA8t701a9u-9bJuhJPsiRtiPt18hnfxL7Y8
+Message-ID: <CAJnrk1YP2dkmvvMjMg8w3AgVNzQVzq+CDUY3c1+8JRCBcaP2sg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 10/10] iomap: add granular dirty and writeback accounting
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org, jack@suse.cz, 
+	hch@infradead.org, linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6A40C180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7E7BF180006
-X-Stat-Signature: edm6tquno8zwnk5ydumqu1bkt16kk9sp
-X-HE-Tag: 1756508196-387953
-X-HE-Meta: U2FsdGVkX1/4shqCkzxIv6UC9CUoCZTwkfOmALY5DthBdlRCmiv+3Uc87xhMtxZOuIR9hdaXNhj1A91SZm+Qd9adyazKefTnh7lSGTeJhQniVwXL3N7Om0kevivYycAKTacu2VgjzAltdfhZJhUC4MA/Ztk2pyI6hFCp3AdwgGqiFvxnNQFGMUv+xZN2KWykZrU5QmmECbGHT0sja+CQOhyO0CenLkuiToR0sSL5N5Svi6Ezwa3ZokySxn6WLFKno+hcK4V7xxoe5jc9xcHKx5P2VTXXlGKb7HehmGcZkbKqPm0qtPIK0Kx/heq6c+gS0vFWTKYcDIEouoUPz7xDj2DtZ5uDz486gZHMh5CkAEY+P4OE0lIeCfRL6Cm0MzU9QX/4bueJEUjkHnqzzG1A/Nb2mIyUGaL/qXQ3+ngcDpKc2TgVVvDS0bdxwrMdHYBceGnh83wyARVIRBGPT/dhAVZiY9Kp6p1fq17cItAobKvDy8RgS0bDqgQm/X+0/eYGJT5L+XlUxxvX/AnIEJ7iA42RjvKO81E/tTe+ikMtyZCOkAj2i5AuIwzqhdTP191wq4MOIDXL1QpeEwvBgHWzyq/n0Uwjt+ITQalHal/KMmgHwHk6ioMC1Lfktb3wjbhUzTFMJ6sd5XR+TAT+TBxftYRnGy/mwLuOzzwxroeRNoe/LuPZZPNTin8D+7XWzpTeMKDwxI3F/qC/5NfUJI+OjFJL+lF02XlemsNKSVGUpsiV7gIvUT4KAzF4Rdlg3UcZ9mU0wxDNoe84Xw40srAfkbX7sdfazdDmUPk1WnN85Wd0AVbVlCm24bxbTVOGPtwPybmfHAgDXnZfIvwIeRkjFjGUGeD40OkE+6c5Nsgr1zRshla3T0mZy3brh1GNJ/s6oIyHsvYIbiTuk07bdx63eyx9Q0XN/XuYaaMMXRLuzSh40msdScJeiW8o7XXzAN3KKKXMEuIv69LIQjXXnU/
- e1CaQjCH
- WSl8BN9gGWNFPunPG8UAbYsinnck5HdtmBIhnZpx3JU7wUT2aYPkij+lc2xmToIxrFT/UZbhHw505IurrWbMnPlW78nHla6QM1nCQzU4Jy/eoXCUKyW2c8fz1m7/JKEQS4ix5wvYOieGRxKzPnTfxcv+ojF19fJkIbqzJHMiAU5kUTdAAJXZxWZvpoeWFfM16CkZbS5USpnczOhxuIVVRd4sgxPhozLdMgOMDpIGb2t6AyRhMYR+AXHovbQGYIJEaYVTJ8UB+bS3CpLwX6fcV8699N1c4EJREYFJmIpqTpZEnwkZNweNak5xPJTJscQnNyZwMsONw1WRJKeXAmVwXZKzCQCwVPDhKNbwPCBr5sv1Z6T8SjorRAF0LTuh4rq/wPMQoS2ZPSu+qx2Ouu0MFsBGx+xaDb8t9q9mYKT+Gtz/CaH1+5yt12FtsuwhpoGZWyKeCOahXN2Dm7R6IP0YWPgAOfmWlpsc9yQR1IPWpR/YcxJpCSh5UMAk9BVyZok0Xjwbqmwetr36EsfQ46A5hbk2kNa5CSGlXNu8a7QUt213sH1+4k/RpmOxBEDMBRrHM6RJ7
+X-Stat-Signature: npequm7y9rh3urbqm3g31ygxs41dou1g
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756508588-661130
+X-HE-Meta: U2FsdGVkX1//yz99tXGKXKPg1Aq5rWWKuE9NVvNOu2TgVIaasmC2zjk2ymIpm3lvqGSeKb+lu64GD3cubLcPNI6mgMaCaYtSV3X3zgHksBPpj5xeuyPHMP20kZt3ZmfoQRhq/kgQd3d+U5oQctDec5+LH6qDgTWDRf7paf0dUc4YyCfmBZ5Rr/zkys8sP28kOYvTHfLNuJLPjRpWkHt71ONihUKn1eR/D3Dx3cZPDMuXAUMYmn+tcDoacPH0ls2rFlw4MaYKQIZNBDZPG0NHLt80uHvhbMxgs3twYoLNSFCTzxQkrPUzcG9db+2E7cu9vnT/VT+OwGDfXchtbMGeyYup0wKTQ7AdJbDDTZdLAOJlwsWvGC1yEXb/jGRam6PuZA+OH+khacKaJRjlj4JG3iIH+Wi8efu5mp1X8UptcGegKV5IA0ux1ZjmTVrP6HKNwduDdZne0MZowBow5VoFpEPNL1XDmn1AmpLrR3jyVa14Pen4edAzUgPmafEX4MrUtb4VqhJgx2UKxGoGZcc8tH1hl3U0DDDBXK43V/+MaCZkuanHx4Q0kmox6Fsq9QlURQJKQ2MCXLzGEfzdreww2b2DeZBDyeHx8/Sty24h8Ql7w/p2fgehGf8J2FiQceDZQ6HovNpoF1ywEXiIuneAh5mFHxNy4aB+0NMn1Q74tTdq/fHhrjp0EKjNOSlKDXyb96lfFeGMO9yZ0PZ+Eo9bPCR0Xazo3A+e5gQtNtYWd0jIxJtOL8aBQZqkFoYiB8UjG/DQIRP5pJdQk5m0NLOU/1TL3uzRhBNPHXDcSe6U5D2tzX9rQQlOMfaLCqQi2J6/Uza1c43VQQDSQkIEC4IXcr24gdD2Lk23NrkVHIKCwpdYM3e8eMHfpqRp0w7ObZ4U5LxduraZ0c1E/JeP0NmbKERedyWkq6HXNt+5ZDQwheGiVGL4cCVk/5MqMvocWXmYSPAWhy2AY/EFT2fG1Fj
+ nPXVh4DZ
+ GIaJ5Nkt+3k2Xa4e4BQElIOc4U1ONpDenTXJRnsOrB7hDciGDcEifqgpZSuys6ECGZ3SXa3WpaWA+Rwsz3AYcSon4x7Q0j50XGzgcvkpFEPPlhvxw1V6MJoQUXIFyifGMwavBH1QXINXdy/DyK+lQNuBnjNPaAZoHtXFnf97YuImUiQtI5FyjNoBpbNpyzDqx8fTclbvnvy4mSEa1j7LL6dDse3u0J93aLfbI1IA0Z3TfYZJjB3pvZotMzf87dF41Z5xYag+y60iADrMpwuixE8QSeRV915ykOMhTSHqTDkJ6a1UvB3DOYqbfzpaHhVHRB+daMdncfMy8Nmm/NjFPeiYW+YKDQwhMS67wzScfDNN3AAjiN96DCEoP2WJRn/Cc9ny9E+bjeAYK2fUsGtxAl/jEYv0Aa3Sya2itzOGYRx4swZc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,10 +117,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 08:31:50PM +0200, Max Kellermann wrote:
-> For improved const-correctness.
-> 
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+On Wed, Aug 27, 2025 at 5:08=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
+m> wrote:
+>
+> On Fri, Aug 15, 2025 at 11:38=E2=80=AFAM Joanne Koong <joannelkoong@gmail=
+.com> wrote:
+> >
+> > On Thu, Aug 14, 2025 at 9:38=E2=80=AFAM Darrick J. Wong <djwong@kernel.=
+org> wrote:
+> > >
+> > > On Thu, Jul 31, 2025 at 05:21:31PM -0700, Joanne Koong wrote:
+> > > > Add granular dirty and writeback accounting for large folios. These
+> > > > stats are used by the mm layer for dirty balancing and throttling.
+> > > > Having granular dirty and writeback accounting helps prevent
+> > > > over-aggressive balancing and throttling.
+> > > >
+> > > > There are 4 places in iomap this commit affects:
+> > > > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
+> > > > b) writeback_iter with setting the wbc->no_stats_accounting bit and
+> > > > calling clear_dirty_for_io_stats()
+> > > > c) starting writeback, which now calls __folio_start_writeback()
+> > > > d) ending writeback, which now calls folio_end_writeback_pages()
+> > > >
+> > > > This relies on using the ifs->state dirty bitmap to track dirty pag=
+es in
+> > > > the folio. As such, this can only be utilized on filesystems where =
+the
+> > > > block size >=3D PAGE_SIZE.
+> > >
+> > > Apologies for my slow responses this month. :)
+> >
+> > No worries at all, thanks for looking at this.
+> > >
+> > > I wonder, does this cause an observable change in the writeback
+> > > accounting and throttling behavior for non-fuse filesystems like XFS
+> > > that use large folios?  I *think* this does actually reduce throttlin=
+g
+> > > for XFS, but it might not be so noticeable because the limits are muc=
+h
+> > > more generous outside of fuse?
+> >
+> > I haven't run any benchmarks on non-fuse filesystems yet but that's
+> > what I would expect too. Will run some benchmarks to see!
+>
+> I ran some benchmarks on xfs for the contrived test case I used for
+> fuse (eg writing 2 GB in 128 MB chunks and then doing 50k 50-byte
+> random writes) and I don't see any noticeable performance difference.
+>
+> I re-tested it on fuse but this time with strictlimiting disabled and
+> didn't notice any difference on that either, probably because with
+> strictlimiting off we don't run into the upper limit in that test so
+> there's no extra throttling that needs to be mitigated.
+>
+> It's unclear to me how often (if at all?) real workloads run up
+> against their dirty/writeback limits.
+>
 
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+I benchmarked it again today but this time with manually setting
+/proc/sys/vm/dirty_bytes to 20% of 16 GiB and
+/proc/sys/vm/dirty_background_bytes to 10% of 16 GB and testing it on
+a more intense workload (the original test scenario but on 10+
+threads) and and I see results now on xfs, around 3 seconds (with some
+variability of taking 0.3 seconds to 5 seconds sometimes) for writes
+prior to this patchset vs. a pretty consistent 0.14 seconds with this
+patchset. I ran the test scenario setup a few times but it'd be great
+if someone else could also run it to verify it shows up on their
+system too.
+
+I set up xfs by following the instructions in the xfstests readme:
+    # xfs_io -f -c "falloc 0 10g" test.img
+    # xfs_io -f -c "falloc 0 10g" scratch.img
+    # mkfs.xfs test.img
+    # losetup /dev/loop0 ./test.img
+    # losetup /dev/loop1 ./scratch.img
+    # mkdir -p /mnt/test && mount /dev/loop0 /mnt/test
+
+and then ran:
+sudo sysctl -w vm.dirty_bytes=3D$((3276 * 1024 * 1024)) # roughly 20% of 16=
+GB
+sudo sysctl -w vm.dirty_background_bytes=3D$((1638*1024*1024)) # roughly
+10% of 16 GB
+
+and then ran this test program (ai-generated) https://pastebin.com/CbcwTXjq
+
+I'll send out an updated v2 of this series.
+
+
+Thanks,
+Joanne
 
