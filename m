@@ -4,146 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACCFCA0FFD
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 07:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A90DCA0FFD
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 07:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 906976B0012; Fri, 29 Aug 2025 03:12:35 -0400 (EDT)
+	id 69C1D6B002B; Fri, 29 Aug 2025 03:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DE9D6B0022; Fri, 29 Aug 2025 03:12:35 -0400 (EDT)
+	id 673806B002C; Fri, 29 Aug 2025 03:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F45F6B0023; Fri, 29 Aug 2025 03:12:35 -0400 (EDT)
+	id 5B08C6B002D; Fri, 29 Aug 2025 03:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD196B0012
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:12:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEFA41605A7
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:12:34 +0000 (UTC)
-X-FDA: 83828927028.15.5F26871
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BB03812000A
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:12:32 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=leemhuis.info header.s=he214686 header.b=TGKBDjgs;
-	spf=pass (imf29.hostedemail.com: domain of linux@leemhuis.info designates 80.237.130.52 as permitted sender) smtp.mailfrom=linux@leemhuis.info;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756451553; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CD546B002B
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:14:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1ED7184E70
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:14:45 +0000 (UTC)
+X-FDA: 83828932530.16.E56F702
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 34030140002
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:14:42 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SZrhyFHA;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756451683; a=rsa-sha256;
 	cv=none;
-	b=ZPtB4CCavDv8NPnXPcvX7cbr6Mxh8/9TdXsbL0uLMkDRAHNqIaVneIXNaPZSir0Kh9g4eC
-	ZacaTiX+nY94x6LDLgiTpiRBgw4k6qzGjeTj4EratChvDMjZElQrc530kJQEZ25KsorFSi
-	8NvZy1ijpoR0xrVGsIlVveeng7O9mXE=
+	b=Trysnz2aENGokDooZMZ0ErVlhpn9rdNyodyAQ5xAIs3CfLRE67cb8JPlYStC5egN7b7MTo
+	w4WoX2Uo4RZa8XfJt7jQnTZXGnNQ/bEb/jkcH31ge0e6I1LlzGhodRP+w7sUzKwCohkct+
+	P2e2gcjUkYLsEv5ZJFOPlNGIo/h7eHQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=leemhuis.info header.s=he214686 header.b=TGKBDjgs;
-	spf=pass (imf29.hostedemail.com: domain of linux@leemhuis.info designates 80.237.130.52 as permitted sender) smtp.mailfrom=linux@leemhuis.info;
-	dmarc=none
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SZrhyFHA;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756451553;
+	s=arc-20220608; t=1756451683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zdH9NIb3jzwErV0CVrE+UYxgQyTjohr+oYD/uFKLX6I=;
-	b=bvrNodSoemnm0e3S5q83Vv8Xr3CfOwKuLb18E9a9Q2Kt4BQSKixi4S2k+tP+tv9d94trww
-	lWkQhyI2wveIUp1LkRPwUfb/GUmQ2L+pZuu7uosI2uEN/+WCEOhgD5hBjwbtwLLHpiVZdp
-	Zp5xrxJsOvGRtQU6fLw05ArAvne8laY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=zdH9NIb3jzwErV0CVrE+UYxgQyTjohr+oYD/uFKLX6I=; t=1756451552;
-	x=1756883552; b=TGKBDjgsaDgnnVi1eV9D40rFjQncY5WhH8bnq3XQ61tkf49RpwrrkBMcIbsUn
-	HGiZ/peMr3XdlCQROXvLfi/QSZ1j9CGp7ZxVwMSJufF2KaZ/cf1CsHAYUI/CvCfi+dvMLOuj/WAPZ
-	hndi7aeTAWW9w+FuHsr9EhHWR0UrYE6a+L18KMLxbF3X/GvPZDz+suso9lVSUaT8DEnsngsKpLIqi
-	NH4YIrb3tfCI8EiXxUWXraqB8qc/9WU3qlYYE3kMOcwiV4gQ7F07CGhJmGDaJr2ME9BVECiCF024/
-	P9fwKq6HGBXbXYPc36iUatgfFgwXOtAaHiOuoSECmcpyB2cANg==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1urtHZ-008qQR-0w;
-	Fri, 29 Aug 2025 09:12:21 +0200
-Message-ID: <3aef893d-1218-4d98-b340-7300b74e9a60@leemhuis.info>
-Date: Fri, 29 Aug 2025 09:12:19 +0200
+	bh=xnAIYKYIPy93nPHNmWiB7bO5LeKcaSAfNJLovkkHCL4=;
+	b=nD71S67Hqu5LakZzc+5BkRJQwZcdiYwNgeTMa8r4ZQ8rqmIEKZt0CuGbUqhmNMly8zpwtC
+	zFnBcxPdsikgqR31kGiZxyvkDO9imwmAynyKQ8ASiSFtM4IoHt0vrBJ9cuibGJPzb9Ap6E
+	BGfU+VIXuT86gK3ZxFB1RRipdgqn/yk=
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3ce4ed7a73fso733506f8f.1
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 00:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1756451682; x=1757056482; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xnAIYKYIPy93nPHNmWiB7bO5LeKcaSAfNJLovkkHCL4=;
+        b=SZrhyFHAJe67aPfbBhQFx08Kphuen6v/dfgaOuqlNVHmgpxVVj+tW8cDVNISpDlen5
+         H9CxLHNPKAcq1D4kkKxQl4TWky/Z74UAMF+FSxSqQ+82gIY7Wum8gF4FwOvkuPugzPx4
+         urz8zKtDwF504+/9Qs0qGtgeHPoM9SSlochdpUtym4A7j5LGjVvFrUQbdbglK6Uk1qOa
+         IqPbwjGgnA6nbwIzOGvcPnC4Ni9b2FBpHs3/EtnUu2smGDXrk5/mRdoQFvToOBP9TgSO
+         FZ3rCfzHwkV0Hnp42qGw9oqG+o0fKah1AbyhKpB2I+E5mkn670JQriyaZ7w9k7hdH8ro
+         ysTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756451682; x=1757056482;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xnAIYKYIPy93nPHNmWiB7bO5LeKcaSAfNJLovkkHCL4=;
+        b=nD5WV16s/jFmD2jn6a+tBVoriad9EbdQUhWe/oyp90CaAPpaYEXb40pIe00T8BFHCl
+         VX3jm6jctLx5vBu6Df3PKBET3DrQJIrlm20K/RGw23YTrqju62CQwQlorQ+5hHDvv59U
+         hLzmU2wBHMy43U/pioEqbqMWio5TI/EgaJ8UD6aW3VAminOoc70X/HI6kMWzEv0RU13C
+         srULj5iO2G45wYKhc4LZI8bNlBUb0fwKPeda1NeYaMGIn/5ZIlxXSC5O6wEtij+lx1DX
+         aollxJoTCn6pwMcHyCe2dN7At0Po2mWmAKbp1hnbkSEyS7SrLft3eyUibGvfzz9qRnsb
+         bsiw==
+X-Forwarded-Encrypted: i=1; AJvYcCXrrPocdHpdT/Maxn9ukjFT/QJ/NMNC9iUJYQHXDeJzZIIvVHwSPUMVGe37WpAF4C5iHHmomWSuKQ==@kvack.org
+X-Gm-Message-State: AOJu0YxJpH+CGtkORMUr6ow8e/7mBabSX5lpDYwpGqWWT3jPrhhUPhdG
+	jmJFrd67jcw0UGrM4q6OyIRhtrmYx3nRr6HjDYD4WKQMFrvuXaFQTIcAjgapXWDaruw=
+X-Gm-Gg: ASbGnctF57m0jq2NFKYiYhk/QK8OOYpyoEWCIYRsG08n+EW7+3w0UZNbhdQ67Ho5xWt
+	BRbn3E0eOj3IkSxZP3itYmZKk1QBSYP4WXVdEC6yK7b9WVvM/syuVb4fV23Xd2Mz6ZftLmore3S
+	Wyo+6Wc89cm41XmBconT425oe27ri6/pB+wBQIRoE1VfkJy0aAVbqVpNoBMFDKKTQiPwJqEGxE7
+	8cbHp9/rdkt1lYmcqRCWATrJpxwFJJq5Sc5svhp+namZ7+fZwmba2u0yTpavnysbtDr/fLzRwmx
+	WBQhf0p1s+CepKkQZtGfqH9XPfUKKAwzMci4L+rkpF6KJ2pFlV9Hz8rMiOI3slrV0eUbZIjhsSL
+	xtoexh5D0+UBhT57mv7sE4E8mKWc+3q4J5WM=
+X-Google-Smtp-Source: AGHT+IET92ZW4pB+PBFF6uzPVIkMqG7CO0rfrkoigRQ4KbVW1FPAcvtd1uJYjG2e8Me+yGBpksIpVQ==
+X-Received: by 2002:a05:6000:1182:b0:3cd:1cc2:f411 with SMTP id ffacd0b85a97d-3cd1cc2ff1amr4896530f8f.61.1756451681755;
+        Fri, 29 Aug 2025 00:14:41 -0700 (PDT)
+Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b7e7d23b7sm25531145e9.1.2025.08.29.00.14.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Aug 2025 00:14:41 -0700 (PDT)
+Date: Fri, 29 Aug 2025 09:14:40 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: zhongjinji <zhongjinji@honor.com>, rientjes@google.com,
+	shakeel.butt@linux.dev, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	tglx@linutronix.de, liam.howlett@oracle.com, liulu.liu@honor.com,
+	feng.han@honor.com
+Subject: Re: [PATCH v5 2/2] mm/oom_kill: Have the OOM reaper and exit_mmap()
+ traverse the maple tree in opposite order
+Message-ID: <aLFTYG9ciypqjTwT@tiehlicka>
+References: <20250825133855.30229-1-zhongjinji@honor.com>
+ <20250825133855.30229-3-zhongjinji@honor.com>
+ <002da86b-4be7-41a1-bb14-0853297c2828@lucifer.local>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 02/10] slab: add opt-in caching layer of percpu sheaves
-To: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
- Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
- maple-tree@lists.infradead.org,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Bert Karwatzki <spasswolf@web.de>
-References: <20250827-slub-percpu-caches-v6-0-f0f775a3f73f@suse.cz>
- <20250827-slub-percpu-caches-v6-2-f0f775a3f73f@suse.cz>
- <9f61c814-0d39-46f2-a540-cc9c0e716cf6@leemhuis.info>
- <e58c8482-bd11-4111-b912-daf8b43ebb15@suse.cz>
- <9705a0d1-0108-4f63-9a5c-9ca6c20eeb32@suse.cz>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <9705a0d1-0108-4f63-9a5c-9ca6c20eeb32@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1756451552;595909b7;
-X-HE-SMSGID: 1urtHZ-008qQR-0w
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BB03812000A
-X-Stat-Signature: ujr76abtawzkp3sr8raz3msgapwxrfgw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <002da86b-4be7-41a1-bb14-0853297c2828@lucifer.local>
+X-Rspamd-Queue-Id: 34030140002
+X-Stat-Signature: 78ieryihfuw3wqh3ws4j6xzxghuumqkb
 X-Rspam-User: 
-X-HE-Tag: 1756451552-331855
-X-HE-Meta: U2FsdGVkX1+8FSSCepAJMMnCF92aYpC0wakPxOtcxGdasePNh+xZHbM9ciXf5ZG1qdgFbsANF1o9laWiXLBLc+YEEij/cGbB6OMiEaQkIEuzigy8xdbtQmUdoHIfR1d+ekEAYd++gZFYqTG7fLnQvX6o6VGishv7g6FSxvWN0fKReUtECQaMWXYQlbJe1rYxmkHmltg2eaz8+RXJRwPzj0XZQAF25ZHcXv0SACG8GS1+yBqxLSnK3hcTEnk0P/lUTAG/uolZqs+b5VN2SmlWeFVb/4uB7Sa0tw4BuxyowtlECBFFzIpBv/5eHWzFxNdDL9kAqbPboq7aLVLbbmq3IyLcHVLIQ3Z7ScliW1+MljRgjgDzc1r5HqHY/N2QVfOJkso1Df2mQLbHWzvQ27NKETMGoaOI9tmgUWoQg5RwxqiuVcg+lp1LTotHplWW6KtxbL3+z6cG8BBc+YnpbvOUQgbcec4BlBxq+sbUuWYtpjZHN9ZOoH2iCblnOu54aCyE2vR79EgwY1V/kCnhjUZ6BBThXNKtk5bif75IW/otCV/nlSbcelR/ggZKCBb/QEOJwaDDwZ7SEBYmzQ91VayfiglorNY/RXwcobc/NFsYqq5srYDlAb0PMUpK/sir/Wa6m3gdPe9JkGZW22Q3TYWHaL0bOMwl/aCUDTR/8s/eaikfEgrJBFiB9RD8cJ1/zAsJwjCD4srjja+hNT9KBoqYelvjoDlgJLgT2WFt8xIFrO5Bwd5gcqtOXjL5bTKbm57wkxqdq/lIROxl6BIRZtl/qmRsJax3JxDURkCruHWo7VMmXY04j421JCBK7oimrTA+wkFXRYh8YtdgT1KpXawFqZ2X2Azf7hO6Lfl2bgfVzKIIMkYOzf9Rd2ernaT0uhN+5Z2LMA5m9C+hOAQo2OshRoOtNcUMlTXip6bdNvQRRbEr9a49JdP6f4CN5fe97iM0Z1w98vBi/YKMdOHrMe5
- MPe1zu3P
- gTRNiiLiCtJQckPOlr0b+AbnmfDZGRTfUCuyH5SO7Wduumr2ZUJTcQL07O7KwbSna8IzFFAtlJRyz289aOtOH/6Hk9PFthIXOn54o6ibqHRi6knL8mhsdeI8/Kdyikus+k23Fe04bfxYz5fvYGEzrklRTshZTZqXqbxgCDtP3jWrd/FwTVDLmmlnEe/VT2QLNiSOefmJyyRYxkvrkPIsnsk0HJCEQA5aijySPFocvpNnOvl7ZWSwWheHb3uqv7gcvX/lwv8j1emRjGDek65rahe/Vmz0sn55svO7pzy6f6blTsGT3AOZWN9cnTx9gGSy/6UbDXzI50XrVenbeZFG23QdvWlZOtm6uCbHkKWhQ1FL1H2qG0zLkDnYLkldKISfFY811b7GWxfDwsZYtOAws+2tNyi7iKuStVYOxrWppB/0VR9Y1cMNN/oTOxmxpcwe/xKhkRiw8tzX08hSilBlk3TAcIvkG7Nf8Gp0BlQfsMrJ62is29+eN0PUaIV4N8aa+TwVRVkrcOboQUj0=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756451682-833656
+X-HE-Meta: U2FsdGVkX1+Re5D0Mu7y4CZ61mK5EeS6xLGRb23pwd4dcRWFRLBwBc70TAL1ZGiQaIndcfxGrBUZS24t6zckNcZAHN8BMOqcbuJdbrwydvBnxR5YHEQ8AGKtFyEZq9Wm122qgEQ2eSYLa3JpHTW09zqn8yMivsUcnp9r1E9P3AgabooTCF0aD/CukHpTQ8QhzipuEozEt5v3W5xwukVEh4wPLADy5vQqAJm9ZtEwVcSv6fJs92YOQguuTUchBdGDfMSDeXGov8k1vbxuSdnCunl9R6XQkGwk4R+OKQnEEUx+b/mHadbPHG2no+eu6Gy4nNivOvmihuydY0gvV51ndmIr8fzWeoKdGb51gmw6NpsBDmq5V9imfIyAPUSu1NYAE3FHpWnq1eyGH7hKt4HTZ+n4XBW99rNxNSXFlVtzYu7i3qv6JKUp7k47RnTaUjQY+NRa2B8L/XwUfWu123Spo3+ukssJ6RuX1QaX/+ls/XhAxlRH4RAX5wWBWizCMKEuEowcth/GPdXtEgp60JHrOLRL7gzLdOKtqMfRuvfcwV8oL447pKAAWdMhiL7ssPEzvtIKkk3KryXZ0CsrzR3ewCXfylbJep8a2mK7uO80zdjPpJGmG/gSBD9b9KOgzPZNZgzeGCMsqScep5Rn7C28lacMjhvN6jF0S4cn8Tw3zGvXPGFaPrg092Ztgrah5IrS05mLwi9DHAh/RWialhxAjfI6R1riTaKwqqvZOo4ace9LuLncnU8aUUOooJan6JtjsAcDAnxfMS0epOlAvvclykhQ6T8us4i2I9/xKOiD5jl+xDabknHIhlZUogEaBn87/9UTr3rQeQ9TfzD0s6gxTHaz1zKodaWlGC1qFO7wzRUrAqloOdgtCnNAcqNFVA9uCxuegTn/d/ofFSaJSomjPycRs3QT9kDoJlkwH2zh5wLgH2NwwOJR/LoPr6toUzNrnXvR411huoMQ0rldKPt
+ 91+Mcms6
+ MkIlU8mYzKiQNjQv31R96LaUvQE0mLoidk5WYhJX0Lxm4sIl861Ysu2dmVehyeoOv0Twp+Yru1VGfBR+LDmEZGw9b9XIl7DqgTXhmcallZ9r21xdHjxyjZiJIjfklQruNJb+yx+cdVB/ZrU9yCE2kt8vXG8XGTRzOfroqogOOqRW/CEvEqfiPFGO5kfolQoSzmwmMcn9WdRqmJ93zjsgMbQTY5SVrskZ6kHi/qaPVlH12O9hwAwu+pWlB66zYD2ony/FNn6+81bZogtuHkVDH9JZK+GTmGo5XpKRnfPmsktPX8+Nd/CDqIyjqGAAWrIiL6yWlfLgL4o1DmkYZ70sWTl6wdIhBP4USLLsBlFhKmrz6d0ENWPKY26ZxeJB54MMH+SUjZF+Fl0qrid9zER5hTduSzSRL8oja9wUZGgpKkjtEZ0w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,35 +123,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.08.25 17:00, Vlastimil Babka wrote:
-> On 8/28/25 10:01, Vlastimil Babka wrote:
->> On 8/28/25 09:43, Thorsten Leemhuis wrote:
->>> On 27.08.25 10:26, Vlastimil Babka wrote:
->>>> Specifying a non-zero value for a new struct kmem_cache_args field
->>>> sheaf_capacity will setup a caching layer of percpu arrays called
->>>> sheaves of given capacity for the created cache.
->>>> [...]
->>>
->>> This patch showed up in linux-next today and from a *quick* glance at
->>> things I suspect it might be the reason why my daily next rpm builds for
->>> Fedora failed today like this:
->>
->> Hi, thanks for the report.
-> [...]
->>> Full log: https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-x86_64/09498568-next-next-all/builder-live.log.gz
->>
->> Oh so I assume the .config here has both LOCKDEP and PREEMPT_RT?
->> I tried to make lockdep_assert_held() with trylock but forgot about the RT
->> difference. The solution is Alexei's patch
->>
->> https://lore.kernel.org/all/20250718021646.73353-2-
->> alexei.starovoitov@gmail.com/
->>
->> Wonder if I can just fast-track it to here from that series?
+On Tue 26-08-25 13:53:43, Lorenzo Stoakes wrote:
+> On Mon, Aug 25, 2025 at 09:38:55PM +0800, zhongjinji wrote:
+> > When a process is OOM killed without reaper delay, the oom reaper and the
+> > exit_mmap() thread likely run simultaneously. They traverse the vma's maple
+> > tree along the same path and may easily unmap the same vma, causing them to
+> > compete for the pte spinlock.
+> >
+> > When a process exits, exit_mmap() traverses the vma's maple tree from low
+> > to high addresses. To reduce the chance of unmapping the same vma
+> > simultaneously, the OOM reaper should traverse the vma's tree from high to
+> > low address.
+> >
+> > Signed-off-by: zhongjinji <zhongjinji@honor.com>
 > 
-> Did that for tomorrow's -next
+> I will leave it to Liam to confirm the maple tree bit is ok, but I guess
+> I'm softening to the idea of doing this - because it should have no impact
+> on most users, so even if it's some rare edge case that triggers the
+> situation, then it's worth doing it in reverse just to help you guys out :)
 
-Thx, today's -next build worked smoothly! Ciao, Thorsten
+I tend to agree on this. I would expect that oom_reaper would race with
+exit_mmap only for seriously stalled processes or huge memory consumers
+where exit_mmap takes a while. oom_reaper would be quick to catch the
+exit_mmap as it wouldn't have fewer work to do on already released
+memory.
+Going from the other end of the address space might reduces this chance
+while not really introducing any actual issues.
 
-
+-- 
+Michal Hocko
+SUSE Labs
 
