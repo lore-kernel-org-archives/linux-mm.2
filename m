@@ -4,116 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D61DCA0FF0
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E0BFC8303F
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 09:00:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F7376B0023; Fri, 29 Aug 2025 04:56:47 -0400 (EDT)
+	id 51BD26B0005; Fri, 29 Aug 2025 05:00:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D2F16B0024; Fri, 29 Aug 2025 04:56:47 -0400 (EDT)
+	id 4F2D06B000C; Fri, 29 Aug 2025 05:00:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90A1D6B0025; Fri, 29 Aug 2025 04:56:47 -0400 (EDT)
+	id 42FEA6B000D; Fri, 29 Aug 2025 05:00:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 811196B0023
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:56:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E377BA45F
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:56:47 +0000 (UTC)
-X-FDA: 83829189654.22.DE3879A
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2D3531C0002
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:56:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cpTsAsCa;
-	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F7C26B0005
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 05:00:12 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B83AD1A0608
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 09:00:11 +0000 (UTC)
+X-FDA: 83829198222.15.645A466
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 613894000E
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 09:00:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=egCHoD49;
+	spf=pass (imf12.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756457805;
+	s=arc-20220608; t=1756458009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T3oJFsmmS2ZGu6eiSOuhkdlqFpqNjNFn9XhNWqVm6U0=;
-	b=DQ2GqTBii0tMBTqdwPCOhI0J0ddE6Zlad2jQpMy5AKt45ZFx2tvUFkIMyXkB6SZXehU26L
-	900e5ZAKvhXOmwGaH/nUEM9c3+gPXUgv8o4f0M8zbgg8rcNoz8l0VU4g8Ygb/0tZPXF4E0
-	z0ibeiHFgGchhiGwVYevK8MPVv57bnY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756457805; a=rsa-sha256;
+	bh=uRfid9eNRN1IiYiLsnEKYQu88MjmvxZl3zgdA6RmIhE=;
+	b=FfM7k5F0tfOGM5Yzhau+qj1osYUOaqTQhYVhsOKfXffsg3szeaN5+roKo1vUiX4Q13OeSN
+	DbNGCJFJHDEJ7I9eVNZJWU5vBzsUG6RenBeXK7Z4yLLvlENi2Ien2ctqda6LWdDqhuJIaj
+	ehpOUmMlIzNqGuLODgl7TvVTbj5Bzyg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756458009; a=rsa-sha256;
 	cv=none;
-	b=fCV66xHEGL3V6BUAomnBlBqBzZ7KDkziiV0QdfIin9f1lBxu2kQG/6IIs8G5l6BTdhiGL1
-	pQVOXU+jW6u+HN8EsC4HM6NIkHYahBfK/3D+FiAVgs2bFiAJJvxteBUkNnSg1rcIdsZh2v
-	v0gZhf4gi+OVfcAsJ7t1KjIwEltQog8=
+	b=UaJ9FSJ0kiqjIYL5l6qi5NGnTVtoMr6CGcgWeTgJrXIONUv5kPZP9oKfkYOOeuXJuRYOOL
+	HxLGjChm+CFXw/4uzRnqIJS3Vf7gne/WreS5l7mRPXYotft1ke78I+M5ujdHR2pf5Bn1Nu
+	A8wKwogky2vrmdhyJpCRp/Odu4Rg0pA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cpTsAsCa;
-	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-771fa65b0e1so1007935b3a.0
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:56:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1756457804; x=1757062604; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T3oJFsmmS2ZGu6eiSOuhkdlqFpqNjNFn9XhNWqVm6U0=;
-        b=cpTsAsCaa3F+sZLSEpTq5rT8y/rXaS5fSD6H5uNKHSO4Eaan8jSaodbEpOyaiCiy49
-         XkmV6AUVmxDXyXnVfOs9acvL1IeUNwL0sksz8MtTKFicwlxHDhPNVmVk9zVtysUj0yPK
-         Ehyrd+9lgKtWS0RNSA9c04AAKiXbxGbDSjbR4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756457804; x=1757062604;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T3oJFsmmS2ZGu6eiSOuhkdlqFpqNjNFn9XhNWqVm6U0=;
-        b=q9eNLaDm0v1QqMK/GC7gTegB6CwkTAC6H2EXm9Cv5g4H+Y9jPLDAgzKuoVZB+3AgTZ
-         PUmqB8KwfyMQIVKPwXRPdx9Jg/OcW2x1oORe1u+9U4s7f6vE6Mo2aUuHlguPWQOdPmJH
-         A8z5TdmQr6sw+7VNBLmlY5YrDXxU6r9QmUYvuVhftJ9y/JkvUJBrAHkGvBLmq1tt6qij
-         h+4AJs5KClQiEUUbWorZbz5Haf+UAN+6HO9XLEoZc+3kmwuRFoq19WO9MAWt+9asGH//
-         JooVgJJekIe7JkC9/PDxcRVytFvr3aqVkpPOrrzid5AV5y2qmsIbbPyHWI61EAG3pimU
-         ecuw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+Q77ZncQ4HE2XtOODwJB+gI2Uy41WTJ6ycgw4lIOjXnUX5WicPZWrhYmaR3T9k+MW88RYUizRuA==@kvack.org
-X-Gm-Message-State: AOJu0Yz4A2Z9fHs/IC7cUtYGY2PuEuOeSdsRTguWkLnMMcJvz+e+A3+l
-	sm2KHiw7Sfu2/V43gcxtbCgjbFmah40kQNfuonBAZ0KbifHTS1dYJm+UWsTv7XqBig==
-X-Gm-Gg: ASbGnctV7KwCVJZNSyfJWhSsxKjcC/TEqtOU7feOYGIkdJImayzprWDgaBQAHWiPoH9
-	9j3phBEHikXwydMfNM3fEG8+4FfyrR2KnKj1DgAUgeZAiZ9AjT+v1PbPGaVEF3wpHvrDup71P1s
-	/HXhsW1M5kvie9U74Ak2cwNERHget3Kdzy0vrRCZQTcTmzHOmlTdTaxKfHumT1bDt6QLPjD9m6Y
-	Kva7TwJAsvMK3cGZrvShhuIqlnKJAdPJT66NjjhmNjp2rA0mqZdnK6MgBxwGsMnbL8BKAD5c2Nx
-	eyspO+KjRXnYcN15J9k78jLTVHIxOvcm9yq4hr6IqF03DVgteC0ng5097ayeW3bWj78rfBLsmoA
-	XHIoGHn9STFeIG/ZruSqaSH/Ql1MtpNLlysWK
-X-Google-Smtp-Source: AGHT+IE77behwFNSbRmH3pk8zfkxHLh0n20scBchwb33vR4SG2CIgdoHEVISGNZBOKMJtizOBeKA1w==
-X-Received: by 2002:a05:6a00:4098:b0:771:f34c:2d36 with SMTP id d2e1a72fcca58-771f34c350dmr22224461b3a.32.1756457803984;
-        Fri, 29 Aug 2025 01:56:43 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:b838:d833:3d57:68da])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4e1d4fsm1692519b3a.73.2025.08.29.01.56.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 01:56:43 -0700 (PDT)
-Date: Fri, 29 Aug 2025 17:56:37 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Mel Gorman <mgorman@techsingularity.net>, kernel-dev@igalia.com, Helen Koike <koike@igalia.com>, 
-	Matthew Wilcox <willy@infradead.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, neil@brown.name
-Subject: Re: [PATCH] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH
- allocations
-Message-ID: <filznxw2rq5ylpawl3auho7luiyaqxkmitf76bbpxyihkbkw43@pos7qfwb3i56>
-References: <20250814172245.1259625-1-cascardo@igalia.com>
- <10cdada2-f28f-4868-b821-4a13ed627e76@suse.cz>
- <77058118-b481-4c45-8f86-d9a67ea6a187@suse.cz>
+	imf12.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=egCHoD49;
+	spf=pass (imf12.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250829090004epoutp0437234d1212d4b6bf3ddfff4152f1da9e~gMT_6h5KD0981909819epoutp044
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 09:00:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250829090004epoutp0437234d1212d4b6bf3ddfff4152f1da9e~gMT_6h5KD0981909819epoutp044
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756458004;
+	bh=uRfid9eNRN1IiYiLsnEKYQu88MjmvxZl3zgdA6RmIhE=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=egCHoD49xR6PtICey0GDtw4Sx59Y7VZ4nxmF9kVPG855KI8bIk1gqEXodlTOF9RRf
+	 u+i31C5oz8l1xOSb1cDjYRZqZUyUd8EyVDSJhUD7BAEzON/nxdGDj+7xhU9FTVYYlU
+	 3Pt3ARQk2w2GfCKDhMpfbEvlhydzmq3zfweJMdOQ=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20250829090003epcas5p36bada7713dea2fb6f6cc6883fb86363e~gMT_Hgm1i2928729287epcas5p3p;
+	Fri, 29 Aug 2025 09:00:03 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.93]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4cCsfV5rzjz6B9m5; Fri, 29 Aug
+	2025 09:00:02 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250829090001epcas5p1624018975802eceeb655e76bf63d152a~gMT8VfSQU1933919339epcas5p17;
+	Fri, 29 Aug 2025 09:00:01 +0000 (GMT)
+Received: from [107.111.86.57] (unknown [107.111.86.57]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250829085958epsmtip2c5f994338290c8c07053baa5737e55fe~gMT5u6ee93040930409epsmtip2G;
+	Fri, 29 Aug 2025 08:59:58 +0000 (GMT)
+Message-ID: <77291508-cd85-4889-8502-73eb834e543c@samsung.com>
+Date: Fri, 29 Aug 2025 14:29:57 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <77058118-b481-4c45-8f86-d9a67ea6a187@suse.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/1] writeback: add sysfs to config the number of
+ writeback contexts
+Content-Language: en-US
+To: wangyufei <wangyufei@vivo.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Lorenzo
+	Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Stephen
+	Rothwell <sfr@canb.auug.org.au>, open list <linux-kernel@vger.kernel.org>,
+	"open list:MEMORY MANAGEMENT - MISC" <linux-mm@kvack.org>, "open list:PAGE
+ CACHE" <linux-fsdevel@vger.kernel.org>
+Cc: anuj20.g@samsung.com, hch@lst.de, bernd@bsbernd.com, djwong@kernel.org,
+	jack@suse.cz, opensource.kernel@vivo.com
+From: Kundan Kumar <kundan.kumar@samsung.com>
+In-Reply-To: <20250825122931.13037-1-wangyufei@vivo.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250829090001epcas5p1624018975802eceeb655e76bf63d152a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250825123009epcas5p1573496e2cad2f58d22036493e5af03be
+References: <CGME20250825123009epcas5p1573496e2cad2f58d22036493e5af03be@epcas5p1.samsung.com>
+	<20250825122931.13037-1-wangyufei@vivo.com>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2D3531C0002
-X-Stat-Signature: 1nmc7sd3xqxfg6pfash5d55f65rartug
+X-Rspamd-Queue-Id: 613894000E
+X-Stat-Signature: qijtqgw7n6qjooip87sfqatyoa7bohuz
 X-Rspam-User: 
-X-HE-Tag: 1756457804-595618
-X-HE-Meta: U2FsdGVkX18io/jTm9Ae0MXTl9U8pYpkZVh9zkpq22/LuoMSHNVzuBR0J3p3uCNHnRrdS05TEt+t9rsxgNU0g3HpzQLjjkARpCuCQft9dknwOf0Ar23q2uHhu2FOD6YiyVWolwz8u9gWzQ7xFl+PokQ46+bGiNgJoYk/Qe+YCJqdEQ26b7nwYgoHr5xPeqpUVRXZNxsbOmtaT6lKOl47/e4QR7BRPrS8Ekk3qdpTlinap0OrV54yXlVQWG4ZbXslB7dyFSp8p4cKmlcV8918VMaeBx8fVajY5o6baKr5HsPW9JCP/YowEBzCh7k54zbXZ19lgYwWpr/JGpq5neCChEPL9wgAJy9dimiRig7DN5THZj2GLmy8riIUwquysASLBGWFO9ohmiW60Tc0SbIV4ViyqJUxdXCwbsfvKijMWQaP1iqpu4OdRCmanueTY6KRXEjoNSbKLZs2hDZgJGe2WrvnlVqpYaOO5AHbjotcZ8lH2rwvJkafEAD40ZWy57zbYee5pvHawdIy01xOXUXa9/5OAtYdBf3xZkjMbM7YmwznNJsYKO4OTt1N8rRuZ6fTIoM21ic+Nvk+twpAiVJAEjLc/9LSEqKxrFzNbePAwtscHcgW2UC/63/uZcxutOgjkXn6Al/ImSuPWXZuEoRAMkXzG3oHtmzR4jT4AXyCOQfeUyF6N6YgL+6sjV9CN9UHVitDGpeqeJsPqYoT7BHuAtSLjZMAiXTQJ0WWG4g7x4RFdpX6I2Ue/OmEYgh7FyFEzEhcL70Bc7hLTmf24HEs+ulw8+Yi21T3bYmW9I8aD85WK8ydGWCMTaCSG90IHji1dXEqSjKeNspLRAKOlr6x6u8XzSTfPQL4bPP/lY0J3Rjwk5PlSmJEKshYE0vk/ut/OtvqwSdSdnaLWsyo0aEYrrVNeY5ckD7GYIZNTW2Fb+arl0tOl3yIe+t57X/drF+WFIfVKHGnyFM9AcdC3PL
- bd13Acgi
- 7K9bWMwegSNY+DF3zX+sqEMpyDIVTbqJ1BIA1lEkk5Esb6jM3yUZj2dqYf7rXH/iZffOphZXh4r6LN0ISBqF9G9ziLFy4e6rpPodZM8whEdygyOWGSyU6obOtnIzrehvFLxT9U7KdIEwVJA90vGYbFEfrnUNdk0qXDdf8kgefAKcSs4BzHdwKknycQSFmGmFQtAKxa98NWpurLmbEP3AaJ+PHaMe4uJhRUFsm7TW2od9hDWFXvHHdFzssA9P9IZg0g95BjoldSwqI+2p8/jKO31dQft3lWAJsuxX7U1JFkcfy/KBiaBkQr37Is92p6Y49Q5FmagFL0Z1qbGJS9yPoVQCJqOex4PO/3aYxDRE75uq/Ab/jOzX2pdHyQNOjFZQvqE8FJxgbmmDBUql+LRg9qWYBIfwL6B6KwH7wJ3bA1AnInLmPPnT3cpwG/7viOSd1kh7udqdvn+RZMKtL3p/v+MnS8jgjhSi/jza9Yq3iCHpTFjE=
+X-HE-Tag: 1756458007-323080
+X-HE-Meta: U2FsdGVkX1+9DDu+Z5fTkcEIGdlIR0420b33fv/OuO1IVrYUmx//+vIuU48qa2oJ/7Czv/PHIhQq8V37ZYiKW72UeS5+wmJOT9PJVnY+bzfJOGMNKXMM7iB3Vdz3KbEMnnNEHA6uQtGDpF5drxaIsdOzRWEFKEWf98HtdkvpuX31CNi2w2WjCdVZ9AVwVMtkdaDGKBPN+Nt6HH4bO5bQVbhKwmyf6BSvBnoOc43nvx/QUOtGTUx0+HKmkRNb0uRG4y66BFxVmISu2zwhdfulLMm6vumLuA57N+X7BfsrKmyDxevQMTY7fPz/jHYoZV2zqmgTtmlHMOoHIPX4xgEXlLS4bxQvIknlLDlVp1O7npTOCZDG03QI/OuASNbplkoY1n54OOeXZXe7kp0RzUGiaxLdQOJp+iWwjLj0rh6dpMtzdi1PLD+3L7T3h45dJLMJ2rYvrju34BHP8g87fF/y1CTp9dxK8kdLARK3mWe6pgCI4kLlXVsUK3cLBIL/RyO6jjvQppA5vAkx1Um4vifPGSFUfUsSuRVfi7snhVXGQDDHthfeYYeCQjYixY9P5cg+O3UfbTwve5UpwWdYVaPu6BkMziAo2/+gELGD1xJUunHAqAPiddwDD+FvBrsQiGZusAIQkLWDqN0AMB3/kiwzY1jVBv4sTXGW3+4QnrhB0TElAXRVUx5bJRALLAEsoyQ2SgcCDxK0lPdxxOKgBYkLjKrLH3iiG2A5DUyprJW6haA8CctQb/1q1DzMuzuWp2A1neAme0djQYrPBqac6vhTkgdvhpMNMDWUG1uNhqZxq6REQ/ShPbSkIQYOYVGSGVqYhItkw4vEPj5lxf6PQWS2+saNIRCADRHw3+P2rwnSeR2elX3wBCESjbZkRacG4StHLxVJ3ZyHXdsUWjj3i0uwsoxPqwF2NDt7gci/KObs0qtBOvY5SC4/aP5wTs8HvkGXX7mTVWyH/plevu4fN/d
+ 3DvBwQmy
+ pt51/X/QhHytJ0x12Va5xgQdkeS3T8E8SzBKV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,23 +121,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/08/29 10:38), Vlastimil Babka wrote:
-> On 8/29/25 10:36, Vlastimil Babka wrote:
-> > On 8/14/25 19:22, Thadeu Lima de Souza Cascardo wrote:
-[..]
-> > Agreed with others that this change matches the original intention and it
-> > must have been an oversight. Also found nothing to the contrary in the
-> > original threads.
+On 8/25/2025 5:59 PM, wangyufei wrote:
+> Hi everyone,
 > 
-> Oops, forgot to add
+> We've been interested in this patch about parallelizing writeback [1]
+> and have been following its discussion and development. Our testing in
+> several application scenarios on mobile devices has shown significant
+> performance improvements.
 > 
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-Thank you!
+Hi,
 
-FWIW
-Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Thanks for sharing this work.
 
-This needs Cc: stable@vger.kernel.org  all the way down to 5.15,
-as far as I can tell.
+Could you clarify a few details about your test setup?
+
+- Which filesystem did you run these experiments on?
+- What were the specifics of the workload (number of threads, block size,
+   I/O size)?
+- If you are using fio, can you please share the fio command.
+- How much RAM was available on the test system?
+- Can you share the performance improvement numbers you observed?
+
+That would help in understanding the impact of parallel writeback?
+
+I made similar modifications to dynamically configure the number of
+writeback threads in this experimental patch. Refer to patches 14 and 15:
+https://lore.kernel.org/all/20250807045706.2848-1-kundan.kumar@samsung.com/
+The key difference is that this change also enables a reduction in the
+number of writeback threads.
+
+Thanks,
+Kundan
+
+> 
+
 
