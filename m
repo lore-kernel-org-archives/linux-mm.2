@@ -4,117 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F3D3C8303F
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 03:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97B7CC8303F
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 03:18:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C245F8E0008; Thu, 28 Aug 2025 23:15:57 -0400 (EDT)
+	id BD6978E0009; Thu, 28 Aug 2025 23:18:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD0078E0001; Thu, 28 Aug 2025 23:15:57 -0400 (EDT)
+	id B86FB8E0001; Thu, 28 Aug 2025 23:18:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC2528E0008; Thu, 28 Aug 2025 23:15:57 -0400 (EDT)
+	id A75E78E0009; Thu, 28 Aug 2025 23:18:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A02A8E0001
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 23:15:57 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F2D51A01DA
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:15:57 +0000 (UTC)
-X-FDA: 83828330754.26.DBBE49F
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4C72F20004
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:15:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZOgU3Sb+;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 93E848E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 23:18:11 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46ED513A23E
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:18:11 +0000 (UTC)
+X-FDA: 83828336382.04.1FFB0BF
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 81F8EC0007
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:18:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=HiQu7fEp;
+	spf=pass (imf28.hostedemail.com: domain of tweek@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=tweek@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756437355;
+	s=arc-20220608; t=1756437489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yFS0xCiAMj/Aabl302HWl4K8lW2JEHc6RtxJGL4xl4c=;
-	b=fvzlUvWeLgt0yUl3ViL/hwhwaqavNLjaKeJyRIjoafffMlsBU0FOnj8cQoJdxySA1sC+Ub
-	4YDSYc2SGlpl2UfMJJU7YCOT0K3Cw+fMleKPhCoiHX0mNlMxCUCzQkejovCk/c11RfBxWu
-	unqPuTxtlymUxMNjGLAtlHisR4aHkMw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756437355; a=rsa-sha256;
+	bh=h4RSp9eYISPp3ul5CQrLdXinmL5Bsh3QxnfVtRH1dpQ=;
+	b=B9vP5DXxmp5p4/olqkA/q56UF7hkxVyMKYspiysX9qULUs0AabTYfK+LdumejpmjtkYK02
+	L3CBUZpFqg7j4Nx2oz6E0ewNM7+GHwDuXTnLNKgjpA6eNqDRzhYfYt1Kjc1mJL0ZlkuWkQ
+	Ai/WRnwKicPnf7vOyJuh0S+y/Y0QrGg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756437489; a=rsa-sha256;
 	cv=none;
-	b=73H+XJQG/v8tePMH0EIMt4wjbmoY7Hwq0waCbk/rWSPSe7oGV0Ckv/99XeLuIrnY0nrbF2
-	0wkIx5oAfnXErLkzZNa1SJN25A6aGvOA63NQbFRfclt93Lhl2xdpi4OarP35tgKaTNSCx/
-	aNeSrvZ7a3B+p/lRuZiuWAYVl7KUhCU=
+	b=uedDYGzmfVUVwNFeIgPGYkqu9S0GwUnOzgQsO4u4bbA3GEaXE05BU+Wo+EFMeZFXe0a36j
+	5w2dCLDRkXtDCYfyzIudscJE2Gac9TmueYMniTTNf5SduV0GakwJcf1kwDQPNIhpYDmwMZ
+	rBzbRJgpq/N8+7WLJ17AK2q5XHhVGRU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZOgU3Sb+;
-	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-70dfe0ff970so9422426d6.1
-        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:15:55 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=HiQu7fEp;
+	spf=pass (imf28.hostedemail.com: domain of tweek@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=tweek@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-55f3f68d4bcso2638e87.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 20:18:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756437354; x=1757042154; darn=kvack.org;
+        d=google.com; s=20230601; t=1756437488; x=1757042288; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yFS0xCiAMj/Aabl302HWl4K8lW2JEHc6RtxJGL4xl4c=;
-        b=ZOgU3Sb+YR+tMeEAXJqQN9hOVAbyNliNXdddxZUXRc+G1TbA+YFFvxDKNenPdbkyMy
-         Rv+ZO2v/D8nulCiCljATgMX9RWgC/tlF6vjIwlNY+4BeEdN9r3lCsYbELNH9ieEVpF+S
-         O8VQbxdfINnA94i6BdmZje+nvRqeD8Ww1E3FYo7xplgui5/+BF4LeLuLQ1sMdqZ8qVBc
-         Fompe+j8AwgiVFEKajYpUgHoOtr4naJcheTf0leTaWPJ/0EdimmITM95SUN/Yq0XstcN
-         MdDyNW/i123d46eYD2BB2aGi7crWeFx4WzusUA8pjYfQD8cg+NbolC6Hf23iax73XdD+
-         e+Mw==
+        bh=h4RSp9eYISPp3ul5CQrLdXinmL5Bsh3QxnfVtRH1dpQ=;
+        b=HiQu7fEpCWMzNfuPNUKVX5QQpLO8CDoMYVrCmiPrNBKnUrbrj8Rn5k2EG41fpxDlBS
+         So3S/ka29RmTTjOOK6cOKE4z1O9pLgDJ8ck9CclHBVBaLOYpkRa4Xk1XiQn5owhocQIJ
+         UpB9fC6OVg6Y5BY5TNy+snym1EOr1uutD9tR1IRB+r/XEadzX7d0gQ12J67BNmSAyCuP
+         5UT9SUcoG0gwQfiLN2UCcbJhg9RPtW51GfzgTaA8eNORvxFGx8pNaFIZ6atqv1MNZy2q
+         u/klaJPG6uPc9tznEK+MS7oGyzz8eYLBo+xiveByiOn1kzglj169dWRrdX5GS4c3AKo3
+         EEwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756437354; x=1757042154;
+        d=1e100.net; s=20230601; t=1756437488; x=1757042288;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yFS0xCiAMj/Aabl302HWl4K8lW2JEHc6RtxJGL4xl4c=;
-        b=uCk2ABrzEqIJ8Ky5UalSxQE8Uwu8pjdQDmqTtvMDbNZNAN+hi6DBHpPvft/H8KPMHD
-         khcEc7mHsWz/K9jgCKBLoBJW2uI5LtslKvbk/lHzUOwHEhKHGZoG7WaRAqwKPS8IlTcU
-         0KxrpWnKA0rvmfNDFYMee8snmUk7jLPI1CV8+iSgN4R+22p2Mtjah5q8Hveh+Ud3qiZ+
-         nDySSVHgeclxfvuC489Za2RYMI6kxgtX+L42qsn+uA6AQEWr7PbA3q7Ft2mQFu7Hld1x
-         kUbrILN6KzTZEiM15woHKSipV26KrUOmWCk//Yev1AzOmm8SfBRn79u109G3+K2Nm9bz
-         oplw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtVpLAYDrzf6EHJtr/z1zMhqpeGSk1CRENuJ6G+/vhyAxrbF/6JuSB8EHl0aEhFre94N4kPGki7A==@kvack.org
-X-Gm-Message-State: AOJu0Yw2qdijfHkY9U7hrQgwkD6Jnc/PASMN6RD1v/xbztJsgOQAruQW
-	s1oI8V2wEmWYTjxwIRXKwSLVBpNimpKvNZYCXWpTWBPfah+6DIl4sD+XcD1Pm4Aq43CmMbAitb0
-	kJWqW6s2UrA8sE0ayaiXrrmjfO9IlEvE=
-X-Gm-Gg: ASbGncujaavnf9vdBsnGg36H7vtTuqZF5dfzgKUawZFuknZ5vpIPhqn1yhgkGmKdZMI
-	iqYYBPbShELF/5MVBvUnvjrMgZA5q7Tth3udIYDDaZ+ZcKRDPtIh1lPqoYtNqN/e0P6mZGsQ0vR
-	Kp9b+3o7lMuu7/EvLLLFUM4uh/f5//UDUmP3U+fHjVZ5gm+FNoaPJT55rrd87tLIL4WxUAgXRDJ
-	puZzrplC4V/u//cG5ATVfZPyTh063sXEjPqC0/CxpvSdW/09gU=
-X-Google-Smtp-Source: AGHT+IFFAjUELcmzEUUIYc8SHA/xvC9uJFbqt/nPTvZ1yb5BBrEZja9lEGaS63h6U3LHxjGEGcjgnnXdq8S/DdNl+yo=
-X-Received: by 2002:ad4:4e13:0:b0:70d:fd26:f22e with SMTP id
- 6a1803df08f44-70dfd26fbd6mr27305636d6.15.1756437354406; Thu, 28 Aug 2025
- 20:15:54 -0700 (PDT)
+        bh=h4RSp9eYISPp3ul5CQrLdXinmL5Bsh3QxnfVtRH1dpQ=;
+        b=UfW9+cfG3gW81g5NdQ4F0H60A3J6Z31UBZPWYeCnwOCob48WQnCHoKp+9+ppxU3OjA
+         wNSPrCUebpd0tUSAwxdhWdOs1Hqqam9YZiIFzLn0ubVjSy2uu7h049fXfSSndbpN3yxP
+         qmU6OyAC070L84vgCac+pzJ50ThI9+mbxRdS0JTnFcpKn2OCtxgmuMqaMASk270pexwF
+         txDI0YySsl8YWXgwpjSRaO0xMjq2FDkbrzq0ukyxkDs7LlXw1gk6aj/rzFGSg5B7wcCp
+         23rxulmnGavQ6TROy/irvt4I7dgWOypDnv17mamkUNHGtj6eSYFeeZukXwRraGJW9P85
+         AFFw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3UL75y3X9kV97H6+6yy7ziVZEtw2K3rvPeM9gpOhn7lIS6XU2f+PFwy1UEnnY97uY5RCVKOjD1Q==@kvack.org
+X-Gm-Message-State: AOJu0YzFFFtNxnlst1MHX87EuLAVgH7VIXhMbReWNcnq1lwfkhyrNOUP
+	bFKOxolmaCBu+/NI7SHhFtCV+paVpQjzuVkPUY00oru2WfAQfoWArtEts0+jJS63vurzczuUg5k
+	d1Snc51CL1JMK/3UGxSqz3DC+GVp7YbWHKtViEeCo
+X-Gm-Gg: ASbGnctfiXkcuzFg0BcQCEuHu2qVOa3I1gfTIohdkeCHZkZupFACgisVdun3l4Ow2/w
+	cO9aUDATrrnroFCVFBn4GgxBeijxhlRhJqJnQJCLguVYu+m72aj4jIL5CR0/qbF3nNxBLpgHMe/
+	NXq24lOFO2hC4lepvYsBCpURvxP1ZZk29rI7jaQD4Z4ryuqNo60p1e4EzeViKSpyTvlnYDJYm4E
+	5/8eE8/VUGGq98nATGK1V/3aGKFo5JPlGi6fJbI6MOY1pPp9cvblAuBSLn/Zjo=
+X-Google-Smtp-Source: AGHT+IFI50gmtXeeaXXxJIVAnDAGK1/ITIbRhwTJOQBFj8x+oy0c1K4cSlqQEeGfc9SE/eP+mLPN+XG+5Gr3gbEHnq8=
+X-Received: by 2002:a05:6512:6081:b0:55b:9f89:928b with SMTP id
+ 2adb3069b0e04-55f4dec0603mr835582e87.1.1756437487364; Thu, 28 Aug 2025
+ 20:18:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250826071948.2618-1-laoar.shao@gmail.com> <20250826071948.2618-4-laoar.shao@gmail.com>
- <5fb8bd8d-cdd9-42e0-b62d-eb5a517a35c2@lucifer.local> <CAEf4BzaOA-3NtwTmrPgveqbW16m3KZAAA1E_xn_qjtiJBGsE4g@mail.gmail.com>
- <4ee47412-2a33-431e-b667-2daf25bf0b38@lucifer.local>
-In-Reply-To: <4ee47412-2a33-431e-b667-2daf25bf0b38@lucifer.local>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Fri, 29 Aug 2025 11:15:17 +0800
-X-Gm-Features: Ac12FXw78zOh0YCbOC1DZdJk9pXKNjEimCM6h54y2oGXNzxpBZAFFy6hpw6Sz_U
-Message-ID: <CALOAHbBUCKTO+LX=5r_hW3+uBHO-J_gcQXyJEkasM7Em+37b+Q@mail.gmail.com>
-Subject: Re: [PATCH v6 mm-new 03/10] mm: thp: add a new kfunc bpf_mm_get_task()
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>, akpm@linux-foundation.org, david@redhat.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org
+References: <20250826031824.1227551-1-tweek@google.com> <CAEjxPJ6G2iK9Yp8eCwbwHQfF1J3WBEVU42kAMQHNuuC_H5QHNw@mail.gmail.com>
+ <CAEjxPJ70O5SY=XYJKrQDLkHOO3spD4VSjYCv0LkhYKCvK=GP7Q@mail.gmail.com>
+In-Reply-To: <CAEjxPJ70O5SY=XYJKrQDLkHOO3spD4VSjYCv0LkhYKCvK=GP7Q@mail.gmail.com>
+From: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
+Date: Fri, 29 Aug 2025 13:17:50 +1000
+X-Gm-Features: Ac12FXycBYGD4I4aX2hDf4xZlIcdu2KtzzqfNLXCw0JqAv8OIzGQjgujUyOsrpM
+Message-ID: <CA+zpnLeFwyCSRrQW_6hb5r3QZ3LMb1dNTKqGZ3b7gNqZQ3+OYw@mail.gmail.com>
+Subject: Re: [PATCH] memfd,selinux: call security_inode_init_security_anon
+To: Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	Hugh Dickins <hughd@google.com>, Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, 
+	Jeff Xu <jeffxu@google.com>, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 81F8EC0007
+X-Stat-Signature: 9xu7t8rfwg7enz53w74ghwfo9abey5ay
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4C72F20004
-X-Stat-Signature: o1xmmet3tgbq7m48cdnwjqg7qrktneu1
-X-HE-Tag: 1756437355-32800
-X-HE-Meta: U2FsdGVkX18PNPqxFo4OxC+uS6iF7mz3lgPbD+pZYUN1LUYvNfHUjpXCG3c4X1OkSffphI5v8lD4zS9lSDcAZhEtPS3RAjWDfE4urccwo7OJp4OudDFD6/peVd8Oc66jlPkRkw+w8qmuMU0MiLg/vIoN7jB/Il1fEkEaBiWroMZdfDHzcz+f5xIbttBWJ7MNzv1CZ8LNk2vdpV3FueqUrhYpmDqSsoEiEnDC4MQupr6bG61Rk1fJa+T6rinr4ZZr6D2+LIGdJdP8mpUe+T6zjh7fQ2wAIZJPa0GwSaiQzkU2lMIgQcrKB+LfqGSzLwZa5oJ8VtciOJU/I0gUjYyBqWrOyuth96W3LbPmLMRG+jaC6cG8rc0vqGMbS7fVHSiWDmaryjrvoK5vJFjNhJzo2f78lZy4lip/Xx1giz+i3mT3i5TxMNJufq8cCNWumNy5LG9kLTbr4iE4DqiFEMyS07cj0vBTWy5cy3CbwYpb/kJMylsZe1xltuq9INNiBUoR2ffJs0Git5tvl1MMg18UTDIWdbUX23pU/rjXJ0jxw2G/0MIpiusxrzrr9xnBPhp010RHaTco1jCgYmR6ECQp1ZfQnbseocCoNwPgGQYUXFne39rKj0L4KDCpJUJiN83vPio8N/U4LkhltqL4l57bJtLqhN25HE2ReuZ/dwhWi7YIgCq0PfAJ6ovIlvjtzIrbR64ZEbES5hDd1arfYhtvSW9IyimdvMjrqDfMCrKleUSNhk3b/sdOMd2uw+6N0nWnxCtrAeH68k3znwcnV1tzVXXAS8KuHnAy0IazSn9hHGAcw+KnMk99pZ5CdSN2KX4lB25QoevALVxNLDTfH7IRmLxK4O7dDY3qJ2VuTKkg6uV+HU/3JK3BAJf+tW2gxPHgBMY64GbzPLcwxue+AI7gwYDfkT/ewOjFp4mUck0cEVW21i0xPIhWfb9PCh8721sooY/e58NcU1zdI79UEVc
- StKOKmE6
- qihFTdber2Rbmi/KP/4kNZrjXb79bWTHvJn8NjO417DBVOxhYCVN2JR4HRLzTfD73sKiu8CMG8FiGo0g/fGjj6KfkvpWC2aPqMG2bZrH0DlT08ItAQZJzxYZq6ZAJKAxoo5k/uzCYLCaBRagrXjKeao5jfWEOV1G5IQp/MhWcjQ5G885JY4dtaAwmUjyMIK50ISuf9nOCL3AF2MP6OVbq1Odh9xPyl+LaCAqNdOAaFG21oIm16khRY3ZdPtGTJ39uA61DhyNGQO4zKgJIpZ+e411h36nEzK31oJ8ng6zKpJaEb7/2hD3awVr/JukMHFsVywqt+UaVUQgFoZ4YAOuJVxZqpkMsWHzfXwByNTtxRWjRjeyRN5nTeegx+VT6os7CwshaEQ4j8ywMSLb/kYSMko9KaJqaAT+Al42Re+jDVheh3Io43UJhlreViBkKXIKkfbtIxr0SNRRIodnDTthiZR2XjJmtOUFCQxhvp4y+Q+ITlQJyopUkdUeaiIDqFPv/DUE8m8GYlBJa+Om2q2xfM1ciRKvtvW9saoeEia+H9SSv+MMyBGMQ5EvWtyzHCM/msj2TObwvOif/Czg=
+X-HE-Tag: 1756437489-967570
+X-HE-Meta: U2FsdGVkX19zOr4EQN9H726muPPyfrRpnHJ9YEStqH4j8nF5+o0IwnFKWJYzTbY1Qbx55ZenDAkInOkQ0Xh10m/axrxvp8uanA5dY65XpWgMxGwy6SEOdWGcGpPwVKGBZJb/cuTHD21+J7nQd81WJxNRyIX8/S+3qFevGkKmjuzEzO9Hmw79p8/WepoOLoCD5XYfLqM3WoQnQaQNnG4i5TFFEob3pY9uJ3smVzMSzunA3BWWtPtn6WUpCgJR3d045DQ3DQSwoYVtdVts0ww9vXz9+kZIthScNwtuF6WP59nxyHFg9vqYTcCJkJOYPOJDbtOA0zOcn3LzM6aKdp9fCODwyITl0qHl/0RpihSNwW9ya0XwYUqvJhnI1ixw9y7FIleNDq+TSrPoNzUWTq46lDpIyPsdP+4B3dtPMtRTLNZDfZtFGVQD72Yii5YWlEA5yzIAP806zcmo99c67ULHjfiaR5+x4L5F+LHX+KzZFn32um2DAnxnTSJsznYdpeFPQWmvOqiGOmtmPoR90btCQGlo2wSG2p00uizRU4n2xyUbna0IQwmCiOcEY5W6yQtsnv+k/45kcouORzK/LHFtIrU82lbchB8VDWwoo8CgFdFEjlYNgYc+l9zIZfhDc5ScfGvy97cogSsOyAIqnOa2+c7C2z07hCIa/qE2R2nRt5ui2Zlz2fjqtQ44kdvbsub+GFoiRQ/mkcDADNl/J9ZMG2VQ0XWMcR0BggFjGWJaQc73XcYEd9rJR6d/2Rj3F31EmLqU/dEi9IYXUrLqdzyGvX4WBmVcyje6BfYkTgUjZgFhE7duStzrO2TeSGww2i00U8VsNj1z74LEZJM4HRhGwH+o9lgIpydVnWXGKJCY9tXSfxC7I/JNBZ+79rZ8ZJ5kVzZ699JN71uKJeRitW15mQqpDNV+nqjik8VrXPI20rgB21iqGcWhslw0NkTABdJToFX19M+Vqgn1RDNhWK0
+ 6tbRaGB5
+ 5xm07D92RdFPGxMjT7iIEP0SGW6LPMQO5KlPvhDzPIp0QULQsVrqoNP8GmOBiNTXvpHYw6JTPkdAtVM+fE+a/k/q20gPEqyMNkUbY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,68 +120,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 6:51=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Thu, Aug 28, 2025 at 11:30=E2=80=AFPM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
 >
-> On Wed, Aug 27, 2025 at 02:50:36PM -0700, Andrii Nakryiko wrote:
-> > On Wed, Aug 27, 2025 at 8:48=E2=80=AFAM Lorenzo Stoakes
-> > <lorenzo.stoakes@oracle.com> wrote:
-> > >
-> > > On Tue, Aug 26, 2025 at 03:19:41PM +0800, Yafang Shao wrote:
-> > > > We will utilize this new kfunc bpf_mm_get_task() to retrieve the
-> > > > associated task_struct from the given @mm. The obtained task_struct=
- must
-> > > > be released by calling bpf_task_release() as a paired operation.
-> > >
-> > > You're basically describing the patch you're not saying why - yeah yo=
-u're
-> > > getting a task struct from an mm (only if CONFIG_MEMCG which you don'=
-t
-> > > mention here), but not for what purpose you intend to use this?
-> > >
-> > > >
-> > > > Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> > > > ---
-> > > >  mm/bpf_thp.c | 34 ++++++++++++++++++++++++++++++++++
-> > > >  1 file changed, 34 insertions(+)
-> > > >
-> > > > diff --git a/mm/bpf_thp.c b/mm/bpf_thp.c
-> > > > index b757e8f425fd..46b3bc96359e 100644
-> > > > --- a/mm/bpf_thp.c
-> > > > +++ b/mm/bpf_thp.c
-> > > > @@ -205,11 +205,45 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct me=
-m_cgroup *memcg)
-> > > >  #endif
-> > > >  }
-> > > >
-> > > > +/**
-> > > > + * bpf_mm_get_task - Get the task struct associated with a mm_stru=
-ct.
-> > > > + * @mm: The mm_struct to query
-> > > > + *
-> > > > + * The obtained task_struct must be released by calling bpf_task_r=
-elease().
-> > >
-> > > Hmmm so now bpf programs can cause kernel bugs by keeping a reference=
- around?
+> On Wed, Aug 27, 2025 at 9:23=E2=80=AFAM Stephen Smalley
+> <stephen.smalley.work@gmail.com> wrote:
 > >
-> > BPF verifier will reject any program that cannot guarantee that
-> > bpf_task_release() will always be called. So there shouldn't be any
-> > problem here.
->
-> Ah that's nice!
->
-> What specifically here is enforcing that? Apologies again - BPF is new to=
- me.
+> > On Mon, Aug 25, 2025 at 11:18=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@=
+google.com> wrote:
+> > >
+> > > Prior to this change, no security hooks were called at the creation o=
+f a
+> > > memfd file. It means that, for SELinux as an example, it will receive
+> > > the default type of the filesystem that backs the in-memory inode. In
+> > > most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it wil=
+l
+> > > be hugetlbfs. Both can be considered implementation details of memfd.
+> > >
+> > > It also means that it is not possible to differentiate between a file
+> > > coming from memfd_create and a file coming from a standard tmpfs moun=
+t
+> > > point.
+> > >
+> > > Additionally, no permission is validated at creation, which differs f=
+rom
+> > > the similar memfd_secret syscall.
+> > >
+> > > Call security_inode_init_security_anon during creation. This ensures
+> > > that the file is setup similarly to other anonymous inodes. On SELinu=
+x,
+> > > it means that the file will receive the security context of its task.
+> > >
+> > > The ability to limit fexecve on memfd has been of interest to avoid
+> > > potential pitfalls where /proc/self/exe or similar would be executed
+> > > [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
+> > > similarly to the file class. These access vectors may not make sense =
+for
+> > > the existing "anon_inode" class. Therefore, define and assign a new
+> > > class "memfd_file" to support such access vectors.
+> > >
+> > > Guard these changes behind a new policy capability named "memfd_class=
+".
+> > >
+> > > [1] https://crbug.com/1305267
+> > > [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google=
+.com/
+> > >
+> > > Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
+> >
+> > This looks good to me, but do you have a test for it, preferably via
+> > patch for the selinux-testsuite?
+> > See https://github.com/SELinuxProject/selinux-testsuite/commit/023b79b8=
+319e5fe222fb5af892c579593e1cbc50
+> > for an example.
 
-The KF_ACQUIRE and KF_RELEASE flags enforce resource management. If a
-BPF helper function (e.g., bpf_mm_get_task()) is marked with
-KF_ACQUIRE, the pointer it returns must be released by a corresponding
-helper marked with KF_RELEASE (e.g., bpf_task_release()). The BPF
-verifier will reject any program that fails to pair these calls
-correctly.
+Not yet, I only tested internally on Android. Let me get a change
+ready for selinux-testsuite.
 
---=20
-Regards
-Yafang
+> >
+> > Otherwise, you can add my:
+> > Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+
+Thanks for the review!
+
+>
+> Also, we'll need a corresponding patch to define the new policy
+> capability in libsepol, and will need to de-conflict with the other
+> pending patches that are also trying to claim the next available
+> policy capability bit (so you may end up with a different one
+> upstream).
+
+Ack. Thanks for the heads-up. Happy to rebase the commit if that helps.
 
