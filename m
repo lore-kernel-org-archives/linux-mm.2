@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA5E8CA0FF0
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 23:03:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CA67CA0FF9
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 23:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 227136B000C; Fri, 29 Aug 2025 19:03:22 -0400 (EDT)
+	id 9FF3F8E0003; Fri, 29 Aug 2025 19:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FF206B000D; Fri, 29 Aug 2025 19:03:22 -0400 (EDT)
+	id 9D6948E0001; Fri, 29 Aug 2025 19:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13C776B0062; Fri, 29 Aug 2025 19:03:22 -0400 (EDT)
+	id 913CC8E0003; Fri, 29 Aug 2025 19:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 051836B000C
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:03:22 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 80A7F8E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:10:25 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ACAB01409C1
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:03:21 +0000 (UTC)
-X-FDA: 83831323002.21.E09A5A9
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C62AE1A000D
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:03:19 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XnwdlmwI;
-	spf=pass (imf19.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D8E185A55
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:10:24 +0000 (UTC)
+X-FDA: 83831340768.21.C317AEC
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 831CF1C0006
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:10:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JOXnySR2;
+	spf=pass (imf20.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756508599;
+	s=arc-20220608; t=1756509022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0oj4QW0mRB1TfcC0bp9PnIUqJfZzQDzEwkawvrwwWBg=;
-	b=b2AXMXPLk+edR/fdKGzcdFTfoI3tL1Q+L5sqQQ/0MQ2wGP7nqEa6zT2Q1PKmVi0Kpmvvl0
-	AuDRLcpXv1iur9Cr+Y6FlfuhYKea5Ifl74O3W3UN8gbQ9uHb/HK4oV8vYwfd10p8AMdN8g
-	uYefRhHwdmombzdPieApteS1mZGEje0=
+	bh=MLGuuVLvC0FYe6vAnZmrTVaRCP6gublbfzak+XpRncI=;
+	b=VLpLkzMcsd/LLy6DgZ/tBsowBGmR4bnV+up9IYTReMzTsqDJp9oAetpEhhp90FzubiR6Rh
+	RCGVRO9Z+2jgPZlXQjg9AnxmapBrG8Gh30xJDHp3EL5FtXTNHFJSvkzwNYPT/OvG8xFmT9
+	NLAt91S2YGwkf9JDr7UFbDbeYkMedSE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XnwdlmwI;
-	spf=pass (imf19.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JOXnySR2;
+	spf=pass (imf20.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756508599; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756509022; a=rsa-sha256;
 	cv=none;
-	b=bSlkwfkYwyOmJB2JEmRlxTF7gEu6llA1Xjaggb7R7p42WM3sk291+mSVMhRxY/rmjCqPUH
-	H5qV8UoRK3BhDiXJlbRCq7Xd2wQi5OEDsoBlSGpz0BqIOQsZ8WYt/tywr5s7yAOcjcHl9f
-	vm81yG5Mm1Lz2zr6eCpVnHGAWJggy10=
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-24457fe9704so27772625ad.0
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 16:03:19 -0700 (PDT)
+	b=DaE47qMS0e67fcDrQ5rziOTnxM2op2OCk5/h6b7dhrfCTmNLewaYzZESVuHFHl/E+3i4Op
+	nJkx0OARh6/wuLSTmQvDSTccl12qVc69zkeFHIeYVXdKSxccq/zFAnNlPy5A32T2QW2rXW
+	HOIXEDo/GaQwFaf56mww60kPpNDLHuw=
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b4c72e4f1b6so1230146a12.1
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 16:10:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756508599; x=1757113399; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756509021; x=1757113821; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0oj4QW0mRB1TfcC0bp9PnIUqJfZzQDzEwkawvrwwWBg=;
-        b=XnwdlmwIgS3hvXlrZOGfOpwp5VFx+nsSJWKlzOLO9WkOEOuuPHTH+VxJgCT5kbDNZy
-         xX/XeK/EP2NLNYUlWJYkMOzdj+WIi3/J+4a5WdkoWEq7IO6qkLIOwt4C+2N0bgkd93g7
-         WCulxyZ0ZtKEN4xNmqewnc8BBhHJrq/wRXmaSwCbFOlq8i4C3bvWvwh7xu+GlFHwFABk
-         RtG7aCGNfLqKL3WvoiQspLIslCGAfnyA3NExz6G6WaM+GBWcN4zWTv904DHdgXEAo6sH
-         TdDH7nFE16RcXF4XoxeT5IeSjRYz9uiZAjAy/mjNAjn5Nk+rGUGKvd7FyjxDPtLONmQw
-         PPGA==
+        bh=MLGuuVLvC0FYe6vAnZmrTVaRCP6gublbfzak+XpRncI=;
+        b=JOXnySR2Ikm6sWGNwQ077WCnSovVKRs8tewg2hsgHn2Q0LyoN/MGDYih8+uZ2mcGFp
+         eqr9IWENBLsyxtsdAUL/6ugWD/X2lAszuyTadZyYBMQusgI6m4jfU825LD7iEIwwHAah
+         UnIFMkH56Z/p0OdvYt5dlJeapbO/L3S1lLcoltNMjUzcm7zrSiiMHjSpOI9frM9njosW
+         CLGKb22GS50+RMVk7nGYhrM1IBaetQ0SV33bheHD5fT4lNZsSvRJl5nwXdBF0npNIadA
+         NmaBdcMrYJNCcPqBl8YwnqKCkjsQfRG0Q7ns6oc1FsRS35DtSAuYglQy1oAxLAAu3qoj
+         Amlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756508599; x=1757113399;
+        d=1e100.net; s=20230601; t=1756509021; x=1757113821;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0oj4QW0mRB1TfcC0bp9PnIUqJfZzQDzEwkawvrwwWBg=;
-        b=Q/E57BN6hv4UPz9tK+xDUKM1xdbwCKlAsZURq7O5IRGWOzn6/w5Y23+4CqPXjiUjLl
-         6XZ/LLtS0HKVXnv5mFlUGLNHtcmxbUvgFF5MrgpyrMF2nzxWB46A6EKy3QyKM/jXUpdz
-         bpxiW8V+ZaT5Aee5zfWbEh1Henap1BXRdGlpvjJ/Flk485MaT037LL7SyGFhORc9Y+WI
-         dGVpV7EQgh/jVZJp0Bu4Jlx6LBWdj0mgVYGKmk5BYscktttwAdAERhvcyAs3qbB0T/54
-         Q72lchbSxErBEF9O2dwwz3jMGpjfOmWPFOXQMoRMmo+gYiJfuBzwP6AbnP4syjFzgrky
-         ohXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUw/XNRNNUjtgDJWoRxU9RDTKISl1d/td6KeSm2Z/fURHnkq07Iw1GhaUxmndxNS3Xlc1/mvtMAtg==@kvack.org
-X-Gm-Message-State: AOJu0YxYkpVi7wWHnaqyNmCFnlGHzub+RLjcU8uYMJdeK5AfJY2cAcIC
-	hRLLrLbanVRmSjYEJgghhrnK7pRrpLT4aJP+RGUXUk2Hl8NAG08hvQvL
-X-Gm-Gg: ASbGncsEn4f/kYxLLZ+eGR2fdac87sV7T/dbYIZxnzpvMFcwCCyzMTSJXpumfQkPPw/
-	HOfrP0NxtDD22vIx4k7KU8T/oRMbQ8eMRWJo6APC75jr78KCbtiBpO9MjEQRf25YWl+xJdr+xtg
-	zVcNhvgilapRXcbc1SGWCltdAEmmtU695R1Qps/ZC/3tXcyxg4+6sKpwxVrmfdwAp9pHEQisA9i
-	R1NByKr87fFyaRTaANY6VN9YgWH3hGY+1rLFNzvVBp8KuK147K99MAXF/e5uZ5Cz3u5pVTPlnjp
-	OTqgkuLZ+PCCc0cvD8E6Dt6trWleYsRpuKPmsIScuHy378oKEEH97zazvMq0kFAewOuyANNkGP1
-	9e4jR6h5YSeU++5bHyqGwiA81nUn2lxOFRs+/qPeqgFmMGh8shESH2Q==
-X-Google-Smtp-Source: AGHT+IFs2LIpMANw8QwM+tdtUSR872Tm5FcSSZAgM+am1WMsvCTQZpL9VlI80fpyk9T7Zoxr4m7TPQ==
-X-Received: by 2002:a17:902:e751:b0:246:b467:eea9 with SMTP id d9443c01a7336-249448f7469mr4169525ad.21.1756508598596;
-        Fri, 29 Aug 2025 16:03:18 -0700 (PDT)
+        bh=MLGuuVLvC0FYe6vAnZmrTVaRCP6gublbfzak+XpRncI=;
+        b=Kcrjht1Mra1pCtV5pHoIpzXTgoSJddIzFSua2I/MrEhWYJDdsunyVHzu7Iv0YNzkI3
+         OvWEAbfhxpppuAoZH6cryHLwDZrnrrv84W0aY7yyhSWJluixqqNxWercUD+b3XhY6QPV
+         SLCjO0F1SQJubm5jW6g3BY/4hIKV0aE+uLDDBkJx0sEnCa+sk/WjT09qXeK8BMVx5Qpz
+         Ne/29PXmWgbuUwtj3lbYiBptMrv2lBvu/RqqrgNc8chkO4ZroJmhRaXuhArL3VUPnYLN
+         xORKpbtEoaX+PTVLi5Po8/DFZaNEO69An/2mZVGSZJbd30OLrvf7UKLKb1AdOI+Nxo4t
+         cKjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUwZUDaLeiZZxSQ5TszFiYX2WWnkZkKaJr/wBvUS6iZxn0STWSsL/dV/g3mVOhEvPO9iYWGaFhHMg==@kvack.org
+X-Gm-Message-State: AOJu0YzZZL0n7P14AxjrhSaNJo+Mtkf2MGqtvO0momaRPVOc9nqFg3yE
+	wXfhQNHTL867O6vghXOYP6QSRLANz+2N4vwwAQeZAEa4jdAvKDOOrf2T
+X-Gm-Gg: ASbGncv+M+sH5qZ63TmwLia8oHGTZswyAMsL0KFFfyzvRpRnzu39mnE4iRFmBNWradR
+	ztoQ4Uj2Naqw+FNzKwgaBw/KpaNWrobwhNTXqp6bc/RQWgkw4M3b3Uu1GuK0xleytbIupMYCL1f
+	KjdCcDE0UJoI/nUturPRdZBoWpXSPkhK12dUomeMW3l6wB1N/+tFAItSWpJcLG9Mo+guwIsRT3j
+	i2Rvz6FjyJgJkUvUietkEDpGw++hXiIqf+Iymk3iquW6rx/6qc4fxV+a/E4IzeBem3Ht6pc69i0
+	MK1nAmIxcjphZNXGH4rMASGVDEf34PeWpeJVunDmlmp/mE+HJWgzXhbFAfJuOOQQn6GvOJL5vLb
+	DdihiGgE7v9MaLCZsGBCqYsalpfuSQwuGTCbrO6GYSd2Xa5zkkOsHNQ==
+X-Google-Smtp-Source: AGHT+IHQ7aGyKXT9USKBNqZpOtpxttgC5amNcPf5s75dLoJAaPCgE8cRDcRM97Ojq2iQCa0/7J2Tlg==
+X-Received: by 2002:a17:902:ce89:b0:246:80ef:8808 with SMTP id d9443c01a7336-2493ee07085mr12422855ad.3.1756509021264;
+        Fri, 29 Aug 2025 16:10:21 -0700 (PDT)
 Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24906589986sm34697255ad.111.2025.08.29.16.03.16
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-249065b73f1sm34684345ad.133.2025.08.29.16.10.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 16:03:18 -0700 (PDT)
-Date: Fri, 29 Aug 2025 16:03:15 -0700
+        Fri, 29 Aug 2025 16:10:20 -0700 (PDT)
+Date: Fri, 29 Aug 2025 16:10:17 -0700
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: Max Kellermann <max.kellermann@ionos.com>
 Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
@@ -97,22 +97,22 @@ Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
 	mhocko@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
 	rppt@kernel.org, surenb@google.com
-Subject: Re: [PATCH 05/12] mm/oom_kill: add `const` to pointer parameter
-Message-ID: <aLIxs1cFhneGU5D9@fedora>
+Subject: Re: [PATCH 06/12] mm/util: add `const` to several pointer parameters
+Message-ID: <aLIzWR5IQr7D3wBa@fedora>
 References: <20250829183159.2223948-1-max.kellermann@ionos.com>
- <20250829183159.2223948-6-max.kellermann@ionos.com>
+ <20250829183159.2223948-7-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250829183159.2223948-6-max.kellermann@ionos.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C62AE1A000D
-X-Stat-Signature: 9b5tw8enh6xurohtuh6oepxyf6zwp81e
+In-Reply-To: <20250829183159.2223948-7-max.kellermann@ionos.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 831CF1C0006
+X-Stat-Signature: 438uqnj8bcdpsnskmx8fa3djhhj9amk7
 X-Rspam-User: 
-X-HE-Tag: 1756508599-119452
-X-HE-Meta: U2FsdGVkX1/bB4C/Nnzy2fmB9r4OlzYe4T9hevP6P0TJsAUZg3iuKvBTktasnTU7QrV9jlEuVxpORxGqV3hrRqfX1eq9UOIIw7Dmd3MhW2lAVQtZY629xQeBaCgCFTLeNYINa8UDcK7PeYW5RA5Y1p28SKo9XRFGc5Gc9x1Ss1DOzxIcGNVMhNDNWA03EhA3c6YBskf/VNvb9XfZb0cKbgd9FOtBa8tc0bLGXa6zSZ3It/CjlFeXSfcsfz8F91m0tfBw5pR2i35Jkifeq1VB3ESRtxGPwJptYJpSSMfOUPtOGlQLt7W46Nq7JpO8qvvACIdqfTm0T+h2JifO7SYGW3zuvFhYxpZy06LQuW+Vcf3sE2Z6G0rX98gOUTgQk7VAmjW7W4cqOc1KJFSi+zLpPVAUlwRWzKRmHLKQ4uYGu3grHiequi2tvW73TQBX8RSjzprmAtINxGoZ7cA2CQ7E1DMXpa7/eWUiTFfn+ZO27dAh0hTOrTl0H2gssfjZIO1Li4SesHfMvHcWAI4lc6UuUGzOkG+9jkln2ENQPwGbQAsPn4mm2PiRvCI2fA66SyeiY0+uPxzIUWuub8z79chsYTDWOwtQlrZmff4h1va2dQTo3ci3HQXUJ6BO/TM8dEwOTRjfdEz/saL5Nux9dTfR0Mqqd4oynber5UxlYF0r8IE982m6N4wh2N3GzeREJ8x5+407MBLZPtsw97FWugDCB95oIEIZSG+rZuA7urX841WMMklb7SwMDCTqCLp9CjVBgGXhS+gdwQrcS80VgDc09l9S9SOQhtM4MO7En7wrCj8TYyzyWydWLZurIP0moM1ks+eYXylm7Fq12W/FF2vF9id7YjlItXI4p0gjDeIINqrogLo05n2cSBVLf+4cX6sGzpWW7Y7C2WVBxfQyqC6zP81I32YawNf+3lfG8EX377ODHswIutsA9uGzl7UNF3gHr/WIknMW4VjdQLUBR2m
- sljaukvv
- iKRnFY2SVQEhpA3apJo6+zDwMYL/FJb6AcsV1wsUyMWXAUhgIgSD3c86SaeQbUWux8oLHJso/OeD1TnbD0JHWtktwJ0vTVIs5ESyh1xtzCmMqubFk8hGhMme2iT34mSxMdTP/aPJJdbZCKCB+XpdU+P1HrIz4KPlGn4ZNAPHWEQWsDS+rvIU6JTy4SpFE7XG2WQkTI6mxSJ2Qu1gwlIHxeapm31gvpeorTYfGa6OxgY4dNyE9PsXwiflkBqbEjOljlWtcnKURlve2mvQFicujw+Dn5XQ96+a9gMOn2iuYEwobyPktMl9sDZwsct0M0xHSmdSECwKgCDOpL+on44zBJUqUTQHe/UCsKXEgBOtGJMMZT3P0SaHEQ907EagxVqMp/T+JK+udhEOLQc1+J2PwKMfqwseNTkPAVhYWkDmRvVR8sMSw70BkP3TO+bPw2oyTyAeKSY2XPxrEitJDJ++vb/f/mehZoMv2Wgcq6wnG3CzlTATKy92j0YgDjaj47VNimsfJZAL7hVjn+spV0fuPTvI8oUAm7i/U3eJ8Om07ropZqN7l3NKDixq4jxuRmr9USutHqOh+hnfhwA9bk/lEAsiBfw3LuW+UriUE
+X-HE-Tag: 1756509022-100875
+X-HE-Meta: U2FsdGVkX1+ygD2tx3EqPuuCopyDzgOXNUr+RI+kbpOUuq5qtOl16nHbQUdfnBh+9oG/JVWxM9zKxfQi1vFUy82CD3TC32w5kRg0ESAoaKih+fQRgBlGcpJcK3saJBhUsTAGknuppU+83vX+a7Ssio5cxDNniwuKcHLbOfItYhxH7VH5jq4Jvl2VlZmhQD+mG9ENIbQQTL181UE+IEk/ZLticzIbD2tUjtrBZVX4yS2FGBfnEak6y+Fa3O0WVWQHmYUVDeUhlCRuq0C52K+An1BAJN3jOogTTB87c4c/ouFYNsHqdZaWbK/eDQYaMkYW63aysrEssHuVS2UjwtDQU8k2taLceNk9XyiERskGB8GyTIPvZ0azKcLkD8+qIk1Clc1xhfD0ahFGFSnFHhA7nJ/yhrS2hSlj1QJnkvfsbAOd9LM8GWeK30+MtuJzeTyYK4f7m2sfhSi6pq5Zb+vja7ysth/VwgGo7mVWit1oYJOt1JCwiFxPnyNBuCI1xPeKwacdo1EISOGP/CVp1kSpDMAXtKuwv/uRMIA9tvDC39KlOeIFoPHPFiiftAzAufFjrzekl7yMBip+v3TOx6IMnEQpwFyE14vTded5mij4rs14C8ZsaOrRoJgCaNXqetBam06EhWwE0OOBluIC4ImHHEeYhwp3wSRp+EeNlE8ACaMMbRG/Y2eUKBb4Mf395T/3h40GTMmLYfCanAKc/MfalnStfjrdflJpYHqwM0XULk8Kj55P4UnE2m0dlxMbmX71gcnEHPWj5rtzthYF8mIYqOeBiiqrD8KiiqXWE98lslBfjWpkbt7F9wKwKaESktfR7V3J9yRHUXjcMSJ9SSFGf33pZIlkN+4DdrHFD6Z4zVR6HwBRlWGBdpXTxMjICJ7eH75c5ipAuecejpOGBZNNF79prjW85/tcwuiUE/CurlxjN8WBJeCB7MMmS0hNORnSvf1Yy9AnA8SVNKLvGlV
+ pRdQF5ht
+ s0H6EJ66Fg1A/zQOSBZcykkDTFtN+NUbI2W1R4wCndEontOlsC2nG9wGkidipXj4Z8Rc3Q+leeAXG2cd7QeVD35I7y94ENaWuR3JLgzzZIRXluyo1CSQ6HGLKZi032KQWgPjkJWMBEG/RL/Q9OHYIBFfqxlx1L65ceWn4xj8Gl4uaqbbsfcoRvIq/1ce2ET+Ezf6pBrDWMLhHgTCEOBm97W70I5xyhDqBsdsqHu9zaPU91hR+ohBYBTKFwjVi5jQ7EffIKjCuwEgOBcZtpMK9WyNw+XtWwMmcvGg3mXZzp2UWqs/4SdTqtUf6uV/dZC6YVeBCC0/r6UdBzzhCw4NH60jAAvbaW3+4nasQBI1q7Fw5EUP4GlkN53lrk23IkRj53qA3RNGe7L+/wMNxf29CgsCCJ3a+TuvEcVZgq5i1t/iFWjLatRd2rhCLrf7lIQ7x25fd3p7FnqX/rzwtRwjP39J4H0R+gc5EQFg4VVJQNZV7JXOFsNPHObR8BVkveSo+9cRfv2jYFx+0siBhGN6A0ot5NkEK7hy0jQnUz3Km6lZYwGw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,27 +121,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 08:31:52PM +0200, Max Kellermann wrote:
+On Fri, Aug 29, 2025 at 08:31:53PM +0200, Max Kellermann wrote:
 > For improved const-correctness.
 > 
 > Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> ---
->  include/linux/mm.h | 2 +-
->  mm/oom_kill.c      | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index a40a3c42c904..a795deef93eb 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3840,7 +3840,7 @@ static inline int in_gate_area(struct mm_struct *mm, unsigned long addr)
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -549,7 +549,7 @@ static inline void filemap_nr_thps_dec(struct address_space *mapping)
+>  #endif
 >  }
->  #endif	/* __HAVE_ARCH_GATE_AREA */
 >  
-> -extern bool process_shares_mm(struct task_struct *p, struct mm_struct *mm);
-> +extern bool process_shares_mm(struct task_struct *p, const struct mm_struct *mm);
+> -struct address_space *folio_mapping(struct folio *);
+> +struct address_space *folio_mapping(const struct folio *);
 
-Nowadays we're dropping the extern keyword.
+Can we make this (const struct folio *folio) like below. Its more
+readable imo.
 
-Also, Is there any reason you didn't also make the task_struct pointer const?
+With or without that change, feel free to add:
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+
+> +struct address_space *folio_mapping(const struct folio *folio)
+>  {
+>  	struct address_space *mapping;
+>  
 
