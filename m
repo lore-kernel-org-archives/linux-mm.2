@@ -4,115 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04210CA0FF7
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:36:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35214C8303F
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:38:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E2A28E0003; Fri, 29 Aug 2025 04:36:24 -0400 (EDT)
+	id 7F1468E0008; Fri, 29 Aug 2025 04:38:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2935A8E0001; Fri, 29 Aug 2025 04:36:24 -0400 (EDT)
+	id 7C9088E0001; Fri, 29 Aug 2025 04:38:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8E38E0003; Fri, 29 Aug 2025 04:36:24 -0400 (EDT)
+	id 6DEEA8E0008; Fri, 29 Aug 2025 04:38:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 021738E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:36:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B05491A05DA
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:36:23 +0000 (UTC)
-X-FDA: 83829138246.13.246A47F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 05F52120006
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:36:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E1FA8E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:38:29 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 08C935857C
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:38:29 +0000 (UTC)
+X-FDA: 83829143538.17.3E471D7
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9FE6A180014
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:38:26 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LD1Nrqu5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ReWrNDcr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ec5Fgr2o;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g93LYDPC;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756456581;
+	s=arc-20220608; t=1756456707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
-	b=4uCVbuGIBLCqdqEbfyFrQoTTYcsg6NQvcibI78JuLYLhKUQJst3uLRIVwE6/D7tBCIWPfb
-	N5C9MaqF1uj7cd20WyVeaWZVNwd9eRo2SjLNod48ESFcwITC1emtUOrHip37+IoOeP4KnG
-	/84Mv5I89gOGHsB9IZxZpn2BGWjd6AI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xcvIEpzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gzcoVx2P;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756456581; a=rsa-sha256;
+	bh=z7GKbEJp2q0NJZLK9xT8xoBwCMAwop0nDLxGQi+CYvs=;
+	b=C7E7vlOqcrc1EjFYhX3nYIGWRwC/dPIaSZeQwjUqwD3FriSo+nfVe5U6oUlkRcVmLmcv6m
+	FQExCnEu5mHmi4A+VVtkm4NDbvH/aaOzwEutke6NIdnHfUXNKIUw7KVHLjK42cgNpK5io9
+	lZcpg2Vn+NU0HCeTmT08dtRJHhbbrSI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756456707; a=rsa-sha256;
 	cv=none;
-	b=yyknnkhPjBlTNNYtMI4rKacpkGMoX44Acy/c/nHseFqxOEkDISSLrvyEAsobvCWAD4arC4
-	ttplm66IIKvq6BDvVhBtm/cBbu5Ovo1bMBXjOcsdlIthcZIvOv/1dtOuRzq/TF2VLOkBzb
-	OlwLqjZQ/4kn1lpmbPBZDKa2rQczUvE=
+	b=YB9ucE+qAmcf9wTAhlseOUdg4ZV7ELy/OtTcwnoOgdbtsNuZJuDo2d1fJhcr/VSmKpA6vA
+	qzFHXBGjyz8aStnRRl/TDev+VAlK4zK90spTUB/FUxspNtmcCOS0KCPFqhzll9r1WnlYKg
+	Uj1SZ9qcA54VH0urHepLHVuUyDvTi+4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LD1Nrqu5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ReWrNDcr;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ec5Fgr2o;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g93LYDPC;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 101F133C82;
-	Fri, 29 Aug 2025 08:36:19 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C7BF420544;
+	Fri, 29 Aug 2025 08:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756456579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1756456705; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
-	b=xcvIEpzfTaWnC6XWrZi1GMFk+ELmbRkz8Ta6BXn0VVj7F9iYelEjtQttfBNTqWzDIo17eT
-	FTEG6izbQMne3GOpYyBp9teHG7I/GIMuQK+ohL8PiP9/8NjiN4eMZx/R8FfOiN/A6xNlRu
-	zXzyCIrZCGZP9/nMVYclQYHmh1XjB5k=
+	bh=z7GKbEJp2q0NJZLK9xT8xoBwCMAwop0nDLxGQi+CYvs=;
+	b=LD1Nrqu5miXvXeMlejIPLJhx71Lsqnj9/g2MzaQ7HrJlIokC4kuBpHBniyDm53tCC8y4E5
+	Y+QiIYZtBbZ5X4g2EvSL8iM15lcvCkj8uwMYtSkheMedX8apLxk+nNnjQU1uyc30aGotIJ
+	sVl+M8NofbzOPeowzKHtrQNmzOIa1v8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756456579;
+	s=susede2_ed25519; t=1756456705;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
-	b=gzcoVx2PpPDSUTwULzYQIRHvOmi3+ariCFO/EmdsWGExWztog3V+v+XF9kB+IMteQQCvuG
-	jHULxr6vgLKM3EAw==
+	bh=z7GKbEJp2q0NJZLK9xT8xoBwCMAwop0nDLxGQi+CYvs=;
+	b=ReWrNDcrmlc0zUcS457iKwyc82Ll1+7PbSJdv08rE6pjRWVM0lzw52PiT0cUZb1J5pXB9R
+	+KAxWEDg8RfcYvCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756456579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1756456704; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
-	b=xcvIEpzfTaWnC6XWrZi1GMFk+ELmbRkz8Ta6BXn0VVj7F9iYelEjtQttfBNTqWzDIo17eT
-	FTEG6izbQMne3GOpYyBp9teHG7I/GIMuQK+ohL8PiP9/8NjiN4eMZx/R8FfOiN/A6xNlRu
-	zXzyCIrZCGZP9/nMVYclQYHmh1XjB5k=
+	bh=z7GKbEJp2q0NJZLK9xT8xoBwCMAwop0nDLxGQi+CYvs=;
+	b=ec5Fgr2ofFtsnDAcNSeGjZ5qqdTkSUh/GQR9RfBHOCWF267zjJnLulZUIxXSA69OhPCxtY
+	Ca59y8MOEuY4HCIldpV5lIKYj6HSzJjhVeGyvUAZS3/BIkHpEfCfWRB3H/Fawqf3LLgVV4
+	A3fMBepXvJrCQTOY1ArR1zOc3xWi7po=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756456579;
+	s=susede2_ed25519; t=1756456704;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eAfAVEKSSJFCwExMyG8hLq1/L5FkKKjfragktAvZw+s=;
-	b=gzcoVx2PpPDSUTwULzYQIRHvOmi3+ariCFO/EmdsWGExWztog3V+v+XF9kB+IMteQQCvuG
-	jHULxr6vgLKM3EAw==
+	bh=z7GKbEJp2q0NJZLK9xT8xoBwCMAwop0nDLxGQi+CYvs=;
+	b=g93LYDPCILhrhfTopoUnYlnAwa/Q9q8sGWT4FL40wUX2bePTUmpfwhInx3/CFIbGU2WYIH
+	ktD7hMrSFz5h32Dg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D87DA13A54;
-	Fri, 29 Aug 2025 08:36:18 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9F27C13A3E;
+	Fri, 29 Aug 2025 08:38:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4RKNNIJmsWhRIAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 29 Aug 2025 08:36:18 +0000
-Message-ID: <10cdada2-f28f-4868-b821-4a13ed627e76@suse.cz>
-Date: Fri, 29 Aug 2025 10:36:18 +0200
+	id NdA6JQBnsWjmIAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 29 Aug 2025 08:38:24 +0000
+Message-ID: <77058118-b481-4c45-8f86-d9a67ea6a187@suse.cz>
+Date: Fri, 29 Aug 2025 10:38:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/page_alloc: only set ALLOC_HIGHATOMIC for __GPF_HIGH
  allocations
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
 To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
  linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
@@ -124,8 +126,7 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Thierry Reding <thierry.reding@gmail.com>,
  Sergey Senozhatsky <senozhatsky@chromium.org>, neil@brown.name
 References: <20250814172245.1259625-1-cascardo@igalia.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
+ <10cdada2-f28f-4868-b821-4a13ed627e76@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -165,18 +166,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20250814172245.1259625-1-cascardo@igalia.com>
+In-Reply-To: <10cdada2-f28f-4868-b821-4a13ed627e76@suse.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Stat-Signature: xetqmd9jxk77bzh1izxrwwsn8ep8fwtx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 05F52120006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756456580-140690
-X-HE-Meta: U2FsdGVkX193aX0+vEOH7Y9z6n+cfcKCEPeKtmhvsb5KZnOqfjXaOHe3EY8+OjS6nllllta9zFU2lfo0K5c07SHrgiuH1U9F9Dxy1/e3SaDWjbZFJmgQOWNbcn7M6Gz+TpNGZDV6qzgCNBE71koFaNRfSReOPNeq83OIS/1ooCSvBHfZPQSzUoRYDDwBuHPWjMdhJCV3vpoLABNpt/tPFuiuBN4uQyAUOHOI6R1+Iu7sWvHp1Y8n/TtX/GdGNBWwdjTvGN8Z5cjouSDbJCBRU8ZhLMx90AXz9Nxi2VUSJeYrZusIaBbrDC3zxEeGx4LggBoAJ3jOkvlIKoD0D983N48lXit7nNe5pGZSq6hpnSKTfTgSmYwe5+w3raIA372fQ1QYchSkIkqKYcK0uyXIH738r6JP/4GxHOXeAexHqkElC9dyw1tQA/K1ZPw3vW24ZR+fAxcwHMiZNo1vvoegtncd2UiGumYASdWt/frGsWiYoBxXv+LDLN2F1pksRD2p+v5OaNhtZQoI2wW29xRNxdvQJxbKT7ytEczt5dJVG3gu8vU4ifzhOKaYJOYIseOzyd4FyGguA6PqekC+NExT6McqpUgM4OUQFithWI5tjZPqh32ITbPEHtgx9GbwYl11nzdUGBI2yNLXSlAw7elZOfETVfzsmSHylcfyjU84d5iUd7t1kBq/KVu1CcUAdCsz+kmV49QkdMWpWIe2iQUOdqwFv9nK0BMG+l71S3hy6pJgG6+wzm43hQ6gSYJbjJ+8msnI/xCopvm0lweHN+bZo/qZkp8k98iIQK6f4IROgWjejRlXBRjQ1rFAQxHddiKQBF+vxhRxYCt5anyW3NWwyGTJnnokc8ECavyIOdA9/sFU1ARNmfykWeRXR+BtF3oFvQj+LNZmVyg+2erX9mWGhxtmkZkXgpD3ABSGbDFob3MlApDQyhYg7olL/e0Du49rkUtpDWO1CIBQDiULTRj
- rgAzutvO
- ss4Kf9L/VyHIl3NlQQN9ZKFrorelgcum2TC55vwFtWBqVe11AuuuUtFIhL/JWN2hS4Fda0CpG9CooMSd0cp35qczVZPAX9fU7zrRkQK22jX4VlSvXFZAhydl0PADpFd45Tz6SbygQ2JgSBYT7+94+hsFS+UY6YUkjy4Ee78qQAdc8TgJn9h4bcddgsFM+voOHL48fhHvkA0eJqTizzOF0Gb7+Z68vOsOj66a8Db2cI0WFJK2agcMm27WRx9wFasKYPUj0nUp35lH0t/p5IDTg+LwBc57NvuFU9EgOW4b+gONEcrD5kLgQMJ0z9zv1JkOl+JERPvkug6YsNWXPwpQ4qX12S9/nIneCoXDTtNYmA9hVh0pFPRxx7DjBFd/lzLpzZjMAEb1+Y281cCqzBxYggsWKNvYkXe/bAD04S6JmHRN9XbKaLORWWd0x2GM2Ash8mwQ+YgT84A6xVr8W0ZWYCigq43ZMamVEWAGq11ey41EHV7SxLETUB/y84R/7x6qY4ISouZikETf47VvpWe6rE47tzDOnrPrF0UFSuW6/zStPmz/6YJuphsUqxnEiq/iokm9MOH0jzjSP8+MhBUNpsuQWPrWlBdAQN5HY9lClSGaJctU5R0NGYqI//SS5ScOZDH13wrDvQOU7lKd93s4CHQ36ircWIuv1pUeI
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9FE6A180014
+X-Stat-Signature: zf7jotgjkyoi9wogbqxxhfejr3d8fhsu
+X-HE-Tag: 1756456706-143746
+X-HE-Meta: U2FsdGVkX18BvpRr26iqveb6XWRkP6WSb79HDnSvlVxHpA5N2T5LYdt8ooHwuxfmcyMUyheW9m5qajYy6HRXrv/1/iTax0jdBz7r5qavf3Q066NBGLi630WLi63lOGYYVjTNK8m2IhdI2ahl0EK57gxeYcpUVgcmJCzveZIWNx/JJFsQnfAB2Q9Y1qxjIxchRl50nBP9BdNqoqdQ4OcFHSkTVkKrV5Ey+94VM9XK7YRdUIFJrhpEPtWKUFsjU1DYLGovXPaokBiMNmKCXlgAptSzIOx0LfBYqFMipK1/Ff8Yjq5/Cp4nIiBv4nRrsI4j2DO5ldZswZvodBSA5lSckjLYyQLfvU5HbvE3B937UNvoe8J1UFz8bIGGnpc0AwmAt8vLgSqKMifEhY11azcqkb+V5Nb0hdqg9dihKikk/MabchWDIwErkJ/elpVcnmN2Fg5aiErYHU+1K/36JPPhtFbyzndO9f9vVGX8sLmMVRMy+zSqNjErJUqNNZPxFy/FlMpJHUCOSCejS/UqNkzkUzLHgKPHdmpuSGQaCg3B/Mug2TkYTsfSlFDZXRI6N+UIAJmArGiqmHU01LDpOdlPpQhQqXDGZonJ3Ls7lKwabSzGKZdi6XgvY3tMuByYDuYgaaGMYxYkqG5XDt7NJZ7PUvNncxP5MOQ3y5bteca42XxrZuq2iYbQxvOfHahQ4pJyyyFuA0GveCy1U6Rc7gS9QCi4s6vkawmM4J/5rKkYuy1WgE29zB1ank7CyqXtCYCHUlAcqo3j+mrjTUJArT21o6N7quTqPwIuBnjNZpB0wbxH5+ylIMW4+Yp2b8qLPiSTc0voaTQ4Un666IS91uYN684vzCv4teULwGcv1QRkPWuXWZeQGKdQJZZR3RKFLig8AQ9rUBCPdFUIN1whpItdyLtdIz7B8ptP9U8l5R2tDCTQJ/juZtsCaZa2s0KX7DHasdzWn7uRiuvjOcXNYeW
+ pQYf1YDO
+ pt0ykKFUxqia+HIVuDbJXpqfhRZic5P+/0lnP7oTqOBHXhtfK6qpOqgbV1K1u4hp+x0JkAHgpaNnluWS1unGwWUw8jr3XulKq8BKuMSokItPR8j73Ly+6jxs2Z01fSllPNMlXiS+QHIV5TygrVcps3Jky67xPuNRWofqFIvFpYyd5O/N7C//X+tg6/Mhn1bvK93VZQS/ZkG5VZDYvlrqWiHTdVqyP7OziOBlmP+P8RErFS4eHDDipUgiFJZGg9TOUT52znvK6NWOLPKJNWTxt5NEqeiT7N59PTworjqu+NxOWDLD3glXIWadVX4y2B12NGvUeT/lr9Bq07SRWT1W/M6Ka/jWSGlrRAR2R33Tv4WOUVp2hYpNuQOE3ZXyI0xgiENB9S/Tg14oP6fKrXUaqK95y8NVxS0nbi549AYaLEZDz+G8/N1hZmmuIBngyGdKqX+jQJcwOYakg+nj4y72HlUSAPbXj/MuxkBYqvKPFDl+wpsJmR20V+0GhBQF9Aw7Yd+V6eXc7TowpTcSOzJ2UAwZS4gtZrbgjmFHvwGxoncF2rUEdIXlqvtEm3NarHL9vbJeKKVw4mz3sjbeJnFaeVfzn+p6gGSKM3QgwF5mgE1HetDyazkjDcwmnaQk2Gv42kCeaeIaICW9dBpke4/TI2DjsDFoFC2Sm/VtN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,68 +186,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/14/25 19:22, Thadeu Lima de Souza Cascardo wrote:
-> Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
-> ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
-> which implies ALLOC_MIN_RESERVE, is going to be used instead of
-> __GFP_ATOMIC for high atomic reserves.
+On 8/29/25 10:36, Vlastimil Babka wrote:
+> On 8/14/25 19:22, Thadeu Lima de Souza Cascardo wrote:
+>> Commit 524c48072e56 ("mm/page_alloc: rename ALLOC_HIGH to
+>> ALLOC_MIN_RESERVE") is the start of a series that explains how __GFP_HIGH,
+>> which implies ALLOC_MIN_RESERVE, is going to be used instead of
+>> __GFP_ATOMIC for high atomic reserves.
+>> 
+>> Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
+>> allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
+>> allocations of order higher than 0. It still used __GFP_ATOMIC, though.
+>> 
+>> Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
+>> non-blocking allocations accesses reserves") just turned that check for
+>> !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were expected to
+>> test for __GFP_HIGH.
+>> 
+>> This leads to high atomic reserves being added for high-order GFP_NOWAIT
+>> allocations and others that clear __GFP_DIRECT_RECLAIM, which is
+>> unexpected. Later, those reserves lead to 0-order allocations going to the
+>> slow path and starting reclaim.
+>> 
+>> From /proc/pagetypeinfo, without the patch:
+>> 
+>> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+>> Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
+>> Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
+>> 
+>> With the patch:
+>> 
+>> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+>> Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+>> Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
+>> 
+>> Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
+>> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+>> Tested-by: Helen Koike <koike@igalia.com>
+>> Cc: Mel Gorman <mgorman@techsingularity.net>
+>> Cc: Michal Hocko <mhocko@suse.com>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: NeilBrown <neilb@suse.de>
+>> Cc: Thierry Reding <thierry.reding@gmail.com>
+>> Cc: Vlastimil Babka <vbabka@suse.cz>
 > 
-> Commit eb2e2b425c69 ("mm/page_alloc: explicitly record high-order atomic
-> allocations in alloc_flags") introduced ALLOC_HIGHATOMIC for such
-> allocations of order higher than 0. It still used __GFP_ATOMIC, though.
-> 
-> Then, commit 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
-> non-blocking allocations accesses reserves") just turned that check for
-> !__GFP_DIRECT_RECLAIM, ignoring that high atomic reserves were expected to
-> test for __GFP_HIGH.
-> 
-> This leads to high atomic reserves being added for high-order GFP_NOWAIT
-> allocations and others that clear __GFP_DIRECT_RECLAIM, which is
-> unexpected. Later, those reserves lead to 0-order allocations going to the
-> slow path and starting reclaim.
-> 
-> From /proc/pagetypeinfo, without the patch:
-> 
-> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone    DMA32, type   HighAtomic      1      8     10      9      7      3      0      0      0      0      0
-> Node    0, zone   Normal, type   HighAtomic     64     20     12      5      0      0      0      0      0      0      0
-> 
-> With the patch:
-> 
-> Node    0, zone      DMA, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone    DMA32, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> Node    0, zone   Normal, type   HighAtomic      0      0      0      0      0      0      0      0      0      0      0
-> 
-> Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> Tested-by: Helen Koike <koike@igalia.com>
-> Cc: Mel Gorman <mgorman@techsingularity.net>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: NeilBrown <neilb@suse.de>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Agreed with others that this change matches the original intention and it
+> must have been an oversight. Also found nothing to the contrary in the
+> original threads.
 
-Agreed with others that this change matches the original intention and it
-must have been an oversight. Also found nothing to the contrary in the
-original threads.
+Oops, forgot to add
 
-> ---
->  mm/page_alloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+
+>> ---
+>>  mm/page_alloc.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 2ef3c07266b3..bf52e3bef626 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -4219,7 +4219,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+>>  		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
+>>  			alloc_flags |= ALLOC_NON_BLOCK;
+>>  
+>> -			if (order > 0)
+>> +			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
+>>  				alloc_flags |= ALLOC_HIGHATOMIC;
+>>  		}
+>>  
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2ef3c07266b3..bf52e3bef626 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4219,7 +4219,7 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
->  		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
->  			alloc_flags |= ALLOC_NON_BLOCK;
->  
-> -			if (order > 0)
-> +			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
->  				alloc_flags |= ALLOC_HIGHATOMIC;
->  		}
->  
 
 
