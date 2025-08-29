@@ -4,109 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25966CA0FF7
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A26C8303F
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 08:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 574E06B002A; Fri, 29 Aug 2025 04:15:33 -0400 (EDT)
+	id 8D55C8E0005; Fri, 29 Aug 2025 04:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FE816B002D; Fri, 29 Aug 2025 04:15:33 -0400 (EDT)
+	id 885B48E0001; Fri, 29 Aug 2025 04:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ED2A6B002E; Fri, 29 Aug 2025 04:15:33 -0400 (EDT)
+	id 774AF8E0005; Fri, 29 Aug 2025 04:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 22FFE6B002A
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:15:33 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DED4B13A19E
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:15:32 +0000 (UTC)
-X-FDA: 83829085704.10.6A4B3D5
-Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 31F5B1A0009
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:15:30 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="1AO/If/Q";
-	spf=pass (imf19.hostedemail.com: domain of 30l-xaAgKCKMMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com designates 209.85.167.73 as permitted sender) smtp.mailfrom=30l-xaAgKCKMMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5B2458E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 04:18:01 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 149D913900E
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:18:01 +0000 (UTC)
+X-FDA: 83829091962.29.4927BD0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 42397180006
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 08:17:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HJVJZuhd;
+	spf=pass (imf16.hostedemail.com: domain of francois.dugast@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756455331;
+	s=arc-20220608; t=1756455479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mfOnoSdMFEY12A5kAdJIINWz+0z/4T/piULOnnacnTU=;
-	b=18OUkFKRoSuuW/XBh9CW/nM8RwawZTQRoHcFWg4Vj8Ot/UTkbnWoVLlOtPkg3p1QVxUD5z
-	MbkkldWP+vWT/b87sVwOB+fK9HVZ0fPWRLU3lVKBGMiOspKJIcq8A0ERuLnZoySmeDNGCY
-	o4ktdESmNm6ly7rAtkLLh0XOhF53go4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ihP4ogkVn1nCCWeIOK/pBqv5urALOSo9sfwODfkNKsU=;
+	b=QMHcT46VosLLUgC7Ts2/GcoeqtU/jKoaby48V10bV1s25omPEHuRdTEYAVL9+MKvmnEY6O
+	qjH7+3YmLixxjqkO3jvQJLwOIfwM0QkaTeFLw2wQxfvJMwwLpHGzhclBv2vhBEW8eiKrOS
+	ZJATW/A2651+vj7107wWpKxUmyoW/J4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="1AO/If/Q";
-	spf=pass (imf19.hostedemail.com: domain of 30l-xaAgKCKMMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com designates 209.85.167.73 as permitted sender) smtp.mailfrom=30l-xaAgKCKMMDFNPDQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756455331; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HJVJZuhd;
+	spf=pass (imf16.hostedemail.com: domain of francois.dugast@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=francois.dugast@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756455479; a=rsa-sha256;
 	cv=none;
-	b=Uz/gzvMeQj48gGb39Ij3+hwXctKGbPW6zHhRLIubk+tsF1l7VEv/6eaohOzAmHB657th39
-	W3G9a3YQg2Oem496qHGDkAQ8G5F9qjADL9UfbhqekjZkIkX9VLWUJj2X+lccJvUzp3yUqK
-	FOP3f0cUeMXjddai3dHO1XUlwKNyHDo=
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-55f6bdc1771so62455e87.3
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:15:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756455329; x=1757060129; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mfOnoSdMFEY12A5kAdJIINWz+0z/4T/piULOnnacnTU=;
-        b=1AO/If/Q1FDfrEuX3OBPb+/rQNX66gxUYVNHKluj7EskM40TxklVvdmCVzeV2N8EoL
-         nirah3XaQ8ZQ8TrOFoo29eoL4Di/BH+Td9RnRDqUS2pVjgPOr8iryyM7OjSwd2AcIY1J
-         ACZefRWzm6lgfh1G2t8nWcrfomKzihaHUTZXBP3uj8Rnih3SsO1w+pUU616WBTyOt0Aj
-         j6+k9IRKnsjwaWZwkJeEdPMSoHswlYAQFUdZVXP/k38ToYfseuxTTjyOPfgKPMFYIT9m
-         xO0VxYPyF/4CDGj+Q4RgvENTzeDpSl503L8n47q5FJixI9iYlOhIBa3PV00F9HAxiUsK
-         7W6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756455329; x=1757060129;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mfOnoSdMFEY12A5kAdJIINWz+0z/4T/piULOnnacnTU=;
-        b=vxpSubPe/GCEvZAb4b5EjbbBs/uhxEJQDD9EJ4A1ZpxeFGNEYmGlAJa6L+TFjKxJyy
-         tjCKTNaCl2PBIQ9o+JtGdRKPssnEjYQTXYXzTlmmtRMNiZsryAUaxXo4P0Vwfi0Jo1Dp
-         zHyGHa1jguyU0Fc1otd//2IkAmOYG4/Nt0SGTTWXt5myVFyidYMVhlKxiogRniFUphHZ
-         UQkjF9sYE5Fj8vvhbFnm/Q0X1Qsrw4Dx0OiOcRgaRJizxDwxEqQz2oIiErMKigG0ktXJ
-         P6i2nc6xLf1VbEd6B56jH+77dVfJ92WmOLReWkUC0VCoWnPyspiIeR2M85OrC0d9zHCE
-         Z6Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCVmBO4xothzM6w7SAvwJYrNxVc3FbXYfmNaj9yhwuCUdWDBb3aCGTKlOCO7RIrafx0nop7tttja4w==@kvack.org
-X-Gm-Message-State: AOJu0Yys5sjjUejwnNQXs6XKdfsgCuUXwO1vTb7koqUzytUJcnKaPu8O
-	iyVNhnj4fYTathjmHUKgqXKPc7aIJ9laRd5v+GDbtuDkY21udZBEP/Jbd5BoNozpZ1BWMJdIayA
-	dzEwbLd7RDsu9sg==
-X-Google-Smtp-Source: AGHT+IFJ+ze82M8nDeFw85CqWHL6EDCvm/pvyvGMy6Ixf0Ev+KdhEZ+X2YsmGSD4LRNTVXGN7ctJ/yclVGX+Ag==
-X-Received: from wrs1.prod.google.com ([2002:a05:6000:641:b0:3cb:ea8b:ea9f])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2c01:b0:3b3:9c75:acc6 with SMTP id ffacd0b85a97d-3c5de34badbmr20447829f8f.59.1756454866646;
- Fri, 29 Aug 2025 01:07:46 -0700 (PDT)
-Date: Fri, 29 Aug 2025 08:07:46 +0000
-In-Reply-To: <20250828155412.2b1b2095125428af24896af5@linux-foundation.org>
-Mime-Version: 1.0
-References: <20250817065211.855-1-ujwal.kundur@gmail.com> <DCE2EJ3KWX3K.1Y198FHBV8UG7@google.com>
- <kd6uteyd4vzlnbdwzjydwd7hoqyxewc5fx24z5sq7svmtoa3oo@n57xyeu3vtyy> <20250828155412.2b1b2095125428af24896af5@linux-foundation.org>
-X-Mailer: aerc 0.20.1
-Message-ID: <DCERAA0PTPE2.1Y0KLQS6IO5O9@google.com>
-Subject: Re: [PATCH v7 1/1] selftests/mm/uffd: Refactor non-composite global
- vars into struct
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Ujwal Kundur <ujwal.kundur@gmail.com>, <peterx@redhat.com>, <david@redhat.com>, 
-	<lorenzo.stoakes@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>, 
-	<surenb@google.com>, <mhocko@suse.com>, <shuah@kernel.org>, 
-	<linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, 
-	Muhammad Usama Anjum <usama.anjum@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 31F5B1A0009
-X-Stat-Signature: jjaefuo4jpihyytguqmxmb7u91rtoesg
+	b=KctiReb9FJEYlYtQ8xaJATFGCF/QxaZEl0ETW9VvZUFvPiWpXWPABPELdjzXUvmt0TWatT
+	hghEMbwY70qCUNK5J+QWRza6Q9OR/WiQs0PCNlxtqPcV5rKkDiN5HRmmeiCMabQBWZ6EQn
+	oAbAJldmfCTlvOxNwHk4Sjpw4+vNjtk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756455478; x=1787991478;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+rI6DshNVuVHxvxAMJf9lv0sngtwLI+fOufDE1KeYMk=;
+  b=HJVJZuhdwOFwlWiae/yOYyjXR5kY8cDwMWYHKx5Uu5CjGjWikb1abZh3
+   9P7b9z8z2R0NcB+/v0hHuTojPPMli4J1IJQlJml80AOmzccrG5ZiFpmew
+   MAC1OKZdZmmbWDjl0YX8i9uqNeQXm61kx69nIDTIKErPJdZKui6//22tD
+   oHBjHMis0SoB/k3UPAnNsrOHcaOK2fKJBsN+fTZMTU4sZjoIBzE4jqe1R
+   U+H6dKZpKH2Nab53arv7FRnomLNonPCAy77izdV69EAjjdtIW5TIeBcYp
+   zIziPOddrwUTS5aWTU92k14W75O/7Hz9iS5cdMCdeTf8YA6E22+7aCJk3
+   g==;
+X-CSE-ConnectionGUID: Qli8fPebQjecdUNktaP9KQ==
+X-CSE-MsgGUID: 0o/GBuOuRFi3FUBn1/6oTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="84142109"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
+   d="scan'208";a="84142109"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 01:05:20 -0700
+X-CSE-ConnectionGUID: cFH5exCaQZGX7tzbhQPrfw==
+X-CSE-MsgGUID: WUSs0ov1SmmtgspQZSiyTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
+   d="scan'208";a="169893626"
+Received: from lfiedoro-mobl.ger.corp.intel.com (HELO fdugast-desk.home) ([10.245.246.57])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 01:05:16 -0700
+From: Francois Dugast <francois.dugast@intel.com>
+To: linux-mm@kvack.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: Francois Dugast <francois.dugast@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH] mm/hmm: Populate PFNs from PMD swap entry
+Date: Fri, 29 Aug 2025 10:05:05 +0200
+Message-ID: <20250829080505.1020155-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: j4o8s8t1zws6deom41md74gz3ywf1w3y
 X-Rspam-User: 
-X-HE-Tag: 1756455330-401469
-X-HE-Meta: U2FsdGVkX18+tQhkH256wecn9751xFmOiVDWzrn8CDZo5lTHV6NtE7M4zi3yh5xQxeBU4T7JcNmQkmrUZL3VJXVfdVVyqy1ZbniVZxjseocQJiwZ8XysUQW4Z5PGWJHnRxunywOqde1PeXOq+2FV5v0DRFygPX2RpFf5ICrkfIEzaT/Mjlf+Z8NlmGUOGJMbDE3r38E2V6KvoJ7FxD2J3FeM9wLjFH66mtolJMfv4KOoHPpr2XOS8MmjB+j/cGUFQtKKLbhRGxr1oZgA6I5gzCIepVlhclZ9W9T9Idc5DBZaWFN2SlX46BBTIboSVV/9zpQqnIOStJ4MoUPbg0wU1Ubm7ye7pe6b0G0EjJEF5GoT88uLNUUSwACT1/fyRqjTpiU4j/m00dK4Vvl4GIeFIVWagJaKSr+PhGW0MfCPR9nIQ5orPlQsVDJUGbWWea9ZQTvone/CciU2dlRHeQAahHEbU24rHhj6QF60IT0OyiYrZI0V6nVvbSE/Fvk1QmIVggUJFG+j0JGS63hyBZ4hSRch7W1HZFF4kHToxV9vhHxhdiGdN6jkgLoA9z9lfLhF9usCZ8oarDab6crMgTkk9MtX0EsqllFvb4kvY9lJdiBycx1tlB9cp+GyZMCCgOYVlw9+qttqRl7v6TJGZqlpowUZkQnqOt5uRCkIS5/0lvgqDP5lM90dNuTr0zBLkFdRzrdZkoLkmhMpVsZUnLxx61b8UnB+TUp3HRt5Q4lYRKbL7DLgBns6CEC12sN1finGQ+1A2QXj3anZpiIakXe1Djqb5dNuEct0jTJsJ20iFz5A34t5HeGetqmixwD1htqWGY8reGvRTxpeBdAEYh0xZeCbY0Uyk0zTRh6uFbLkarpEGUy15cU3s6lUkbdc+WOJjLtBTbVcY1J+WlSvhA1LjNj5v3ZyJlUvNoK7xRnFzFiN65ZgaDQpCEPfV7qw9jr00xIC8c5GkcxE/WfqCdB
- Nc3j3XCz
- qv2R/Qs6V6t0p79O/NU/Te6+k+Sv4vt3FG9xR4K2GxXxbpFKNeNaGrLkxoF7sUzm6czUAmIW1NUyBm0zMWiwvApSJp8RkzD0Im84m0VLLqDsSJJpZqyLOQZZnoyj1+2EN0SeOOB2wsF2qTi+j7BGUI4E40d/q7dquEAsNkOtvK7RFoHImWook/wKc6knJdBHHnZfL1hxZ7nb/8Fu0SMu5FfS7joUJuhSHDjCR/QLDXzkOC1x6PZear1bzy4MChgJz7pvwrsAvwlsMkU7eZlzNhqZ7faDwNQixH1zOOQTai1eymo4qnyBj51QKippzneGecNUm6ksrlyJQ2uk6XzRxikT3g90zlMPgYUVNK/cwKWNXyqLO5eT9kHVmYHHJvftKdXYCVE7vTSTahbuX5BnF11Oc5GNRvF7xFQhaQ+DhiA0wb/cinjcwPJzsVw==
+X-Rspamd-Queue-Id: 42397180006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756455478-490890
+X-HE-Meta: U2FsdGVkX192ozlwTc1H69QTcoIpDUwsiUyKd6eYlzUzYoLFKIlvWGzgbpCeJAkTEmFtSMyXj0R65FhuQtHTo59C2il7P5Qk7AnPZnBayp5X6EvwBDqBEumB4ko8D1Vi3hQWAnFPFvn5SH+keSOPTz4slprcGp+E8kr85nM41H9maD7BI11CqW4pltTHno6KfAiZyKB4ACprgLNBu/+LP/tvKSDwu1Twa+VF+Q3Kd/Yu7dNkiaGK/9sihc1G3+XH6oZyN1/A15DercIkv12Egz/uhNWDsKJV3/9XId/K3yTU5rP8W63JTjr+iqP/B5lGl83MvGgbdJ+Jv/Izhe32qm1lHurJH6PppI7TXzTC3ebvbOR9nCgMjF1bps6kQ9v2ore5Q/vmOH4g1yL/BJEEq7YPYI336DPgeeNGSCpPjlOlazv43RVOzd49vya5owjzgTmuRNQEl4rRUMROcYGYLgPjCaXiPOn0AB5EQ6GPQWzITArUrd4UCtkSPPKfLufRDmLgvBCfzMsD1u45g+dI8kiRe5OjdVhhWgnKIsWpdCsMdF7mH6HnEFsJ6LK5wME9aJ7uUHDkg3XOGdgDBjXteYI8J7mrxIxstVphySEAMv8Qtth7MYqiU98qubVICt0XzSgR3inXKs8pW9ABmHTPcwnEmBvBKyFuUejIhqt/Yl1EdN/8ZotHxwQbMaZihOEwNSSNaB344POB7LkZ5wU7nrFPDdMxqpGS7IZbJsnKOQdUI4FwNS7Dxw2NPLNT6ECFQJtmoH1lADwRX0P51JFbstYnMzWbwmTapEUcmaV3GLKC5wCF72iwv1GgfCUxjUSGRAZQB3MOfv2ZQl/RlRn2ckucAP+LHNyP93eTjQNgBCFbNjG9LLWVJdSzZeou42C68lK2srmeT6m9ag9TKJoJOjjHh6vaqjQno2iEY9j6+/yuB3UCOJTaVERFQOTKEXxNy/TgUv2QDZCmi4teGj5
+ eqoXIkA9
+ SJjzFOZ8AJl9xtxoaIrvW0E3uHXKjfhFeB8iuYKyMVgwxj8Mczs4ZI5KsAdewe2BMzwPA1NytGV5L8gP8nuyCeguRCirFrPizkMRgGgiBx02bRdADyPH5MuEYzOolH2caB5spkDQTYTRbOC7eH2TnCfMll6423/tGaO1ySP3lBl3YQF7oFex0b6yBOc3L8nePmZddwZUHG6uZvGkq2VO4bLhvTH95k1AS8ryyhrnVqUMm0i3dqNoeW9edKq/kkOI4uIngMUhx64++nqpVvVyeE87lEP5576Z3j/rg8sWNYaf9Ik6X8vQVyAISouXqIHRV78lfN7lfqTCKJxYNEeIRRw2C4nkmTcVejvyi94PULrx5Vrl01VCqjULmg8OXxMSICP+3U35a5emraP4oVFAYEi7yB7Ujeqh5zplDM2OhNGxbKOM74wH1LeXaTRNan1+PjeO7Mlg8Vyk8eks=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,35 +114,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 28, 2025 at 10:54 PM UTC, Andrew Morton wrote:
-> On Thu, 28 Aug 2025 14:49:37 -0400 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
->
->> * Brendan Jackman <jackmanb@google.com> [250828 08:37]:
->> > On Sun Aug 17, 2025 at 6:52 AM UTC, Ujwal Kundur wrote:
->> > > -static void noop_alias_mapping(__u64 __unused *start, size_t __unused len,
->> > > -			       unsigned long __unused offset)
->> > > +static void noop_alias_mapping(uffd_global_test_opts_t *gopts, __u64 __unused *start,
->> > > +			       size_t __unused len, unsigned long __unused offset)
->> > 
->> > After a rebase this is now falling afoul of the -Wunused-parameter added
->> > here:
->> > 
->> > https://lore.kernel.org/all/20250731160132.1795351-5-usama.anjum@collabora.com/T/#m0449dc0d6a5ac3b1f71f7182c13b6829e1b444cf
->> > 
->> > I really don't think we want that flag, I'll comment on that thread, but
->> > just as an FYI here too.
->> 
->> I was under the impression that it was decided to drop that flag,
->> otherwise I would have also spoken up about it.
->
-> err, yes, I thought I'd dropped that.
->
-> No -Wunused-parameter, please.
->
-> The v2 series needs work and a v3 series is expected so I'll drop the
-> v2 series "selftests/mm: Add compiler flags and fix found warnings".
+Once support for THP migration of zone device pages is enabled, device
+private swap entries will be found during the walk not only for PTEs
+but also for PMDs.
 
-Ah yep I said I'd reply to the other thread but upon re-reading it I
-realised you were already against -Wunused-parameter, thanks for
-dropping it.
+Therefore, it is necessary to extend to PMDs the special handling which
+is already in place for PTEs when device private pages are owned by the
+caller: instead of faulting or skipping the range, the correct behavior
+is to use the swap entry to populate HMM PFNs.
+
+Even though subsequent PFNs can be inferred when handling large order
+PFNs, the PFN list is still fully populated because this is currently
+expected by HMM users.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leonro@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Mika Penttilä <mpenttil@redhat.com>
+Cc: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+---
+ mm/hmm.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/mm/hmm.c b/mm/hmm.c
+index d545e2494994..d449fc4647d7 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -355,6 +355,29 @@ static int hmm_vma_walk_pmd(pmd_t *pmdp,
+ 	}
+ 
+ 	if (!pmd_present(pmd)) {
++#ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
++		swp_entry_t entry = pmd_to_swp_entry(pmd);
++
++		if (is_device_private_entry(entry) &&
++		    pfn_swap_entry_folio(entry)->pgmap->owner ==
++		    range->dev_private_owner) {
++			unsigned long cpu_flags = HMM_PFN_VALID |
++				hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
++			unsigned long pfn = swp_offset_pfn(entry);
++			unsigned long i;
++
++			if (is_writable_device_private_entry(entry))
++				cpu_flags |= HMM_PFN_WRITE;
++
++			for (i = 0; addr < end; addr += PAGE_SIZE, i++, pfn++) {
++				hmm_pfns[i] &= HMM_PFN_INOUT_FLAGS;
++				hmm_pfns[i] |= pfn | cpu_flags;
++			}
++
++			return 0;
++		}
++#endif  /* CONFIG_ARCH_ENABLE_THP_MIGRATION */
++
+ 		if (hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, 0))
+ 			return -EFAULT;
+ 		return hmm_pfns_fill(start, end, range, HMM_PFN_ERROR);
+-- 
+2.43.0
+
 
