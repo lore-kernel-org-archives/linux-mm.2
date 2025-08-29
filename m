@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC8B4CA0FFE
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 23:40:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DA3CA0FF9
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 23:40:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E4A48E0013; Fri, 29 Aug 2025 19:40:08 -0400 (EDT)
+	id 190EE8E0014; Fri, 29 Aug 2025 19:40:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E718E0001; Fri, 29 Aug 2025 19:40:08 -0400 (EDT)
+	id 1199B8E0001; Fri, 29 Aug 2025 19:40:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64B0C8E0013; Fri, 29 Aug 2025 19:40:08 -0400 (EDT)
+	id ED7208E0014; Fri, 29 Aug 2025 19:40:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 367F18E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:40:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EE2EAC0A25
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CB92C8E0001
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:40:09 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8B9C413AB82
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:40:09 +0000 (UTC)
+X-FDA: 83831415738.11.B3F49DF
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B1E491C0013
 	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:40:07 +0000 (UTC)
-X-FDA: 83831415654.23.626994B
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1F0D7120002
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 23:40:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RXRVSQ5A;
-	spf=pass (imf29.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lYJrXF1X;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756510807; a=rsa-sha256;
+	cv=none;
+	b=hN8btSUJLI/VN4gSQf98tvO7hL8l9+nSspJJ/VMO1If6UGM9CyZNKQuNHJDdOnOE7bzNHw
+	8/HolWVbbLulEA8TWeMBVgb5dCoEiy8niRCaN9vQAL8lcbHJhNBLLLzeZJ0UocbG5SXFbs
+	a/cfUVUFglPmQJli+lLPkKmnZaXonYk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lYJrXF1X;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756510806;
+	s=arc-20220608; t=1756510807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cfQECAMLyifBaWnZBOh3XwN8oA8V3Gk1yo9qRqEQKOs=;
-	b=cRy+9uiLr8bFBmufbk1j4aGpvhpWgPFkeYa6fjXkKWbYVWnV5BdeghXcsZyHMg0jnBW/yE
-	Z8QkWZckylQ/c96GQbCrc+i+tf3wHAP0AGGKpyLww1tcOPjw3drw75SjZDm17NU8Rjd61Z
-	Gtd16BwS22Du5yFvPij0oZObVfo8wyE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756510806; a=rsa-sha256;
-	cv=none;
-	b=TVLoyg/eaknk5oe9lZK15GUGpVaSU9sqlVFt9OBpQO4D6C3ndI07eGpWIk3SiozFGjtK67
-	5DSQnWOQub5jefc6FM3T+qz8tCnvLcbDgMqJvab5pt/CfISI7LZ6j94khT5LXv0j7Y3SaD
-	Xh0hIzdR4ccs7FaqAMhwR/txv2/rKak=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RXRVSQ5A;
-	spf=pass (imf29.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b4cb3367d87so1090549a12.3
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 16:40:05 -0700 (PDT)
+	bh=E+vnHoXREVrw0SidVRfvTvkEdr9pD8iMwbSpz5zwCXo=;
+	b=MVN1TvDrF44OLHjwfTuKhR00THVKN7HHZd/teY6KzZKsawMj2hEuJJqGcet3l6J00MX9Io
+	fLJr6tkvrG5YsMLcveDlXeH0VgZUqODQFTeB7gGokfjAsgNRAJAsqsEoX5IgFrVVyZhDsa
+	eqdWhMLgDqkr434iYbtorIC7OzhFS5E=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-771fa8e4190so1847899b3a.1
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 16:40:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756510805; x=1757115605; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756510806; x=1757115606; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cfQECAMLyifBaWnZBOh3XwN8oA8V3Gk1yo9qRqEQKOs=;
-        b=RXRVSQ5As/+M667vvV0BNZ78rP++c87zDKj+jWBXLjeUlByeddCXSwZDBR6BKuLJeC
-         1ulw0cpMcuh0firu1JEZiUfTBr8paFhVb5sRIrh+XdlxlPBMukvZTqiEvvB3HSZGlHvM
-         bl+vdVxk4CRxn1xKSuZCbBmX9d6leBI0/cifmEOdaxrFwVncM6AbbfWW/BoAvyRbwGjJ
-         7rJQ86JAYghCarxYW/8YbLLJbkKcUifCnRS3fhvQE81ArP6yD4R7U6ey9172ofQxJUKp
-         lF+8E9Dnec2Js7Zr0uQLozT/x1mamdyr6vhVtb4BSsUdZSV+0AaJONXQP8aeieUrImrY
-         wGXw==
+        bh=E+vnHoXREVrw0SidVRfvTvkEdr9pD8iMwbSpz5zwCXo=;
+        b=lYJrXF1XHdxmYk2MObP0tV2nMNfZZEfZsDa0dVIvqfJSB9vlPCrdVkrC2LxxQMvsSF
+         KzZSpWc+/9l9FgXeriJ9rdSlWm6UIU8V1U+F/HcQ343AWnLwzo5/JlGGA6YGLQiktQ+u
+         3Yzi5anUglTwz7dPPh96IL/knDCwtIkrST6ZVw3IOOebYp8pfR3ol3egEziQC86Uq0vM
+         CnhYUz7u3xEe8EoipGnwbk6ijbqXxvMAotJO8kklHl4Es1BrPyN/WfZWAg8QQtvo8NBK
+         yPTPYKL1Z9Tb5VirheQqSXpskIxN7/HhPuMAw4XAewKa8EUlyGBn4w/wZszMu2jSpGvs
+         SjYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756510805; x=1757115605;
+        d=1e100.net; s=20230601; t=1756510806; x=1757115606;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cfQECAMLyifBaWnZBOh3XwN8oA8V3Gk1yo9qRqEQKOs=;
-        b=bqDmdqz5/xAahvjmpDna6xttbQXbwxWaE6IqG1wxGR1GBGSk9t50AkAtdOzGprN4n5
-         u1aGO1lg3LG8R3yDE5HIsqyDX/ZzCEteunxkXYiwJYAvFOczDDjT46AigFUUYuIsMAkK
-         6f25Cd8+j1QeW82+aU6/HPLDks43p0MKUn+nxz6BZ9X01YbE4Q8OIlJ5ijQ9ZGd8NmSY
-         WSzbDfSMasP8gP+REldaT/TzFKQOyeGzxAC9WbkyH1nwOO2EKMop7HwQF5Lf6dEU22oG
-         uJ3iixOJ4CSbbdDXJO/sB35L9r+LepVRhhxmRlSk3msOMy4zw/Jt/KoYbzcwA+jwFiHf
-         KIaA==
-X-Gm-Message-State: AOJu0Yz/krvoqfDX0YZQyTpGzLiXrqKxPA6Zj13N4Fxtvht9hXLhvsiK
-	AKhGka7U9VP366S/nkdBgrZdlbNLDepO+VLp1HZ/je5hIzAGeddIolTN+HdhmQ==
-X-Gm-Gg: ASbGncubFBI/WI7hvg6F76pr8aqVCHVHl3LiUwDyC4BCNDrtV084KjGAOdmmzLke2ky
-	Nex1U64Nvwn/2SGL5/TEbyMz9xekEfkQQbNLAH7iSIQ+NLi0fIVuQJ/Cc55HCnUyFrviy5JfJnf
-	wjKiTgDLRicR6jBZxdRy5HGDabrQqICCffwxxoOX2/ChsKj7HEtsNK3IXmxwAeSetyUYs0+lnc2
-	Ex+dVvB4edohSF8rG61iXKpVX0Dk9rRHJGT7u27IQ95GykqSYQgMFw977nVm6qPs/Fywobd1Iwv
-	yTOPetLsa4BLR1hv2MOpMXWAnLXwC27QNd1BKFRtJUCnqPyDIp9qMmHpbuMuFHRnFsjr3Cuudsa
-	8/p8zbdW/7B5tpPJi
-X-Google-Smtp-Source: AGHT+IEc9ZHU+gnzs268+QcgurHyfBD8OsMkb5igTSS/wc4rJ1iP9uFrL7dvxIfpXo4L4ntKoVG79w==
-X-Received: by 2002:a17:903:1d2:b0:234:a139:11fb with SMTP id d9443c01a7336-24944a0e8f3mr5573865ad.27.1756510804856;
-        Fri, 29 Aug 2025 16:40:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:d::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2490658999fsm34959625ad.112.2025.08.29.16.40.04
+        bh=E+vnHoXREVrw0SidVRfvTvkEdr9pD8iMwbSpz5zwCXo=;
+        b=YyjVZGVfViVtT3zF+qasSfihsZW3OhmLP9h1CL2haPaDrpKUitzYVOy3iJ7qe/R8ty
+         TvPwMwIRe+ENeAtWkoCSUzmwkiv1xtwRHcxfeYaAtYnWwhdKOFyE89moq6JuhsNdKQnk
+         3DdAGSwf9OLbkTIhGW4+fp9H0Ev9Zj7VWKM7iiNe6IfPSJ+KjATnkgtdWK3Dxi+qf2Ca
+         eyxN9s+ZnMCAi5smhJnZzD8r5LE9nyNClWo4hQ1jxHwYDqcu/XjtrNvO8rokv7IdbeZf
+         8ax9/lHrC5aebgCaP4tL1ZD/SdEVM6r1Gm4JpKoOaxeieDpqErt3FuTH7FR4r/XaqyUI
+         BMzA==
+X-Gm-Message-State: AOJu0Yy/jSLAc5huMMfHaO5jodacNBg9ZDNVtaPQ7bp6/4A+miPg8//W
+	gfT/Q5Kk8AtOqsnzNFXj4IrB3BZRBmhp0eywmmDmodPFQ2GblX5eCEF+yyGEfg==
+X-Gm-Gg: ASbGncsDhdfT2B/Ayv86aDkT75mx75iGZlyEnsK/PrztzsLHGRwadRkP8K9ZRWunt97
+	C14ZSyDrhEY1DQakBTdo3n/Zxkry4E19MmDBKOwAQ3aQuzd/sRLrdqG/uESTB7J5sdLiR1nMdwQ
+	llvhdkYAz4m5wu8/WpQWsvtKvGL2K3qni9dhZEa+UZJrs8C2jfhC0uTlF5a/HbWDeK5vXGFHFct
+	INT+t1VT93tdCBSfMawjyFd82VsyA4ZEZwkZRI9xm0maZqfo1LxhBeNYUMRXVCKTDSw/2HIdXhB
+	160MbdRoLR3PIixD0jVfu0m0LfikXeOdekRV1e2FmNi6SQtXUqBiPnL1KiYIt0G9kzvFB1fuZlu
+	o3TTkhEBbM997qd2LR8f7k4mK/7Y8
+X-Google-Smtp-Source: AGHT+IGUC8tYoEWl9cRnzhp1CoqWk60f7qfxgsYVEWKJABEj1hf6h+rHiKHA4Ucd3Clfcw8GiV+kfQ==
+X-Received: by 2002:a05:6a20:2589:b0:243:a96a:2c83 with SMTP id adf61e73a8af0-243d6f8a2e3mr466476637.53.1756510806401;
+        Fri, 29 Aug 2025 16:40:06 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:43::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276fcd48cesm9361902a91.19.2025.08.29.16.40.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 16:40:04 -0700 (PDT)
+        Fri, 29 Aug 2025 16:40:06 -0700 (PDT)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: linux-mm@kvack.org,
 	brauner@kernel.org
@@ -99,22 +99,22 @@ Cc: willy@infradead.org,
 	jlayton@kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v2 10/12] iomap: refactor dirty bitmap iteration
-Date: Fri, 29 Aug 2025 16:39:40 -0700
-Message-ID: <20250829233942.3607248-11-joannelkoong@gmail.com>
+Subject: [PATCH v2 11/12] iomap: refactor uptodate bitmap iteration
+Date: Fri, 29 Aug 2025 16:39:41 -0700
+Message-ID: <20250829233942.3607248-12-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250829233942.3607248-1-joannelkoong@gmail.com>
 References: <20250829233942.3607248-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B1E491C0013
+X-Stat-Signature: owrzesc8i4cyhzbw4wd1aoz7cej3yemi
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1F0D7120002
-X-Stat-Signature: smfchiqzmpc3ohe1795dw3cqpcfebsux
-X-HE-Tag: 1756510805-297475
-X-HE-Meta: U2FsdGVkX18bSYpJSXwVg5UwMF3bfkjNc1O1uVh7vLwd/sqoMYJYTGqrmiAf+9zwAPYvG0gYT1vS2UpRoa3tCM43dwauCIox+p3Vj1NGeQEI5yHopFFN4SwXe+yzUgLpH2RuFoWyJ/h8TTX/P/atQhhc9y9sDankyzyiNp0w+wCYzJNvoHlBxclApOV3mGdT07SSOu6zn59LpqyFGCHW+naghi21NVH1HrSb5aBBfU1tkmb1IL6tnLp5v/QnVzrGnXZlpo23AYtK0m18H2e/yjeVbu8Gzd70I+xxgY0CrmT/nq7tRKp0FsC+o2zJ5V43XiU6V6amRPiMmdM5NdukdfKzk6x/lquhgzgnRBus7YIXPSf8HO8CtCPdNrhw8SP70uKJ76n6s3+Uvqmglx1jdXd2nfYyz4u2e0G1vM9UTfTZTWM+fXrXCFHK5VidDO6a2HbP1JKHGDcs0j5xyfcfd7MXg97aR595MNlmep/tp/DAD0ns8m7eqeBU6w2Gc4Tfij7DpXMz2fhA/K9yWyFX2/w/w7vU22Ew/v8Lp3+AKyX6s6Q3sVEgUbzwGskbazRTh9pMuKMaelat6yiKDLkj+XPzqSP51ubEOsaIc5JNMrNBKvSDRnOAiIbY0y7quwFBqdR9zK71fYaBexiFVQMXv0BD3sJjC5BL9VXUyDRPxLEZJMlqzDdhBo/wMuV8AU8Ze9uHESx/GPU2XcLM3TYXVLh2bQkxvNnjDuOxSUI373FyQ6lmu4pU1hGChKaoKfVAav87cky6PE/SDGcYBfG3Vga6GkDjiS4Tqb/rcl9FMc8cYcgwc7/4trNY3jMRqFX9Ajizh80Y7YPFyjPkkFDwE+ZqbTsEGdtJT4XGJHlhfyCTZ+zDSmZCPTchlY3cd3sd3uqMIwaGc7qZSx5Llr1M9OJ4BjvMPOf5SmGeMZLY78an0SUIVwjxv1QI4nvYZR1RRuh3mn3RM8f0oJXrDx/
- H4EDWVHu
- PFyon5c0jhs6S3c9v3CVJMkdz5AasfPal6t/T/02Jl9mGLUgw5gPKPpa/sPzqKbDGSz3wPj3K+yD9QEsbdTdL1CwQIM2x+gQy/5smYxN+pFGzrQp0A+W1LrNhNwE2QXK87BNTNnqcz2GoyzUJ1EOaVUJBwdOVjv9ixdYWJXC1/TsNfLdFt+qNcEdwaxWso2GpmqpgG2FAF6TAsOdUquobASNiDl1X10jJtcFLddB0fA7Tlc8YtA60D1XU9drmpiLM7py1swj4ZXXRZfh/lnL7xsYs6rsZaSVtZV26tUnS3qpyjasdDubhcD30BPe0Gnzz925J+HSbnAdN3ZapNHZ9nLf5KshEi/DQctkOOSW2i74KCV3D/WrY79WQnLCMXe6qMMzxtDaQMqbYvgW9va1LIRzSGdCllgg6Z3lVsO4reHPSraRo4LH/2yZX+G71IGTBHwIKd+LOnB4Sqp808g6nHc80+W0POPcPYbfVkUQrpTQAYe/szCy9lFzSwnba3+WlgIvOeb6GUAvDqNvqfyfwWoSLHg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756510807-979324
+X-HE-Meta: U2FsdGVkX18tW4BPu7zTDDXWQEXt4EM6PBFaB2ZfwCy8GF77Np5oWxDFqDGqto2Uh2XNG2evJ/d3FOUjUSzz6qRp8+h/u7N084BAxJyavroFXjtskIf+NcCETjAlWbMVu9Hz2kIgchemfOMubl34GvmHM0/ANh1C5qNlIUasNezdTHlXjiHD3sq0X8Rl7VaD760vISISAfzu8lt3nwPkpq+Uct3yeOUqyZCfBRtelIB5TOSyLJTANh6rcCF8IOUPFSJVr8dzzIRq+BiJvcqY+slem1lljcPCFZIrOKRucC5qlorLCAw+fDoDfD5BJH16DYY9nz6Eex1EtFoNZiyAvhMNA3uHL8bAW4c4DAXsW5XvehyYOiGHyY2Sqr1fWe2Uzih0OeZvUc8/dyMy994YPJ0fg7Vf2roBl6zHMtdM5/7ir1u8QOvLT7TIoDzCINk+AFmvNPeplLyGxgqeW2OEDpd6gCP6Pp80epTjyYUN9k9u3UsPtF2UeDgc7jIP0ERvzaYZ0XKH9M8IaxBGKm/dDl/7Nrjs57LLHjEebimTwC/1Ov/VmnG1my6MFZuL4WAtWoS3jMn9YNoOMlJlLURNj+sykvYS+AjH5aRSvtRVcehPZGvIN9x9CEUfa4XvNISxHqVMmf/FJXabgGv3BX/C1Xl5qSK5ta4DNIYFLxnV+4atWJ32WxlfYEMChTj5G3voF+ViO+uLhd0u1xc7yuIdJnTD3jLfPUjW2zO/PZ4nDyRM52w+uBtqP78VF2pBn/Tbf7bb+9TBDoZTaxgTmVxO8ky6LwQUvRAC36gJKlBSvdMp8peitxZkYSLL5sJUm9ODdDlHc9FnnkjicICC4EEVRDkR4Z0UE5jgalEU/zD7T7hCyKC1vw5FyvsMOvC7nz70dcvEj+R7g/1PErVUdUoM1XpU81dj08h+FVMYO2CPo8IkvrF0LGuu+mkhxSHPvl3cEhCJZFOrUKjbeCKFERu
+ qE/umwGu
+ FrDHHRk/doQOl0yO59nGFQVchhZsPqixMv4RMwtRGR7tYWOEk5WGNQHA0zhOeG8O3CDffJQO+KaYavp2PZeudTJr4/PVIvBmSwmG2eSDxo7EXpy3MeJCgRwYulEamUB45pV5lmCqPzbZu+CMWO2a5Is335b7Ix/MU6WQWCpUV+6f2L5cQ5QXiTbHbbcy1Ka+nT+1A/7fVMEKBMQlDhR2YFFoXROjFdgGDBEmaQNiLdrZdNe5vWxAEMIZtXC7ZJ6Mfper4JRKMWxfaws5L6RsrgktJmEEaXzBnMdoa3BQ7PHy+jbY25K072K0xWwPkDz1RJLCX0HyTZdEAPBvhiq1tJq84VXXzMg4s14tMyEd5n1YecZna0lSIfEXmg/aK1tYt9A0swUHcL3G6eb6Skt8+vn2Q5IvVpvQOoM35J4jRc908tsC7AT61SGBP2E0Z/i8Lzq5gqzlGNrLUreqW8BJioJDjd/PLQ6mt06bckuu2bhLSm8WZXQ6Xx0LETdFzVnTcCFNAuApmXsnxDBDznlm5328Z7cG/YOQh46VKI5FS/i67s3L4BJcD+khFQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,120 +123,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use find_next_bit()/find_next_zero_bit() for iomap dirty bitmap
+Use find_next_bit()/find_next_zero_bit() for iomap uptodate bitmap
 iteration. This uses __ffs() internally and is more efficient for
-finding the next dirty or clean bit than manually iterating through the
-bitmap range testing every bit.
+finding the next uptodate or non-uptodate bit than manually iterating
+through the bitmap range testing every bit.
 
 Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 Suggested-by: Christoph Hellwig <hch@infradead.org>
 ---
- fs/iomap/buffered-io.c | 67 ++++++++++++++++++++++++++++++------------
- 1 file changed, 48 insertions(+), 19 deletions(-)
+ fs/iomap/buffered-io.c | 74 +++++++++++++++++++++++++++---------------
+ 1 file changed, 48 insertions(+), 26 deletions(-)
 
 diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index fd827398afd2..dc1a1f371412 100644
+index dc1a1f371412..4f021dcaaffe 100644
 --- a/fs/iomap/buffered-io.c
 +++ b/fs/iomap/buffered-io.c
-@@ -75,13 +75,42 @@ static void iomap_set_range_uptodate(struct folio *folio, size_t off,
- 		folio_mark_uptodate(folio);
+@@ -37,10 +37,36 @@ static inline bool ifs_is_fully_uptodate(struct folio *folio,
+ 	return bitmap_full(ifs->state, i_blocks_per_folio(inode, folio));
  }
  
--static inline bool ifs_block_is_dirty(struct folio *folio,
--		struct iomap_folio_state *ifs, int block)
+-static inline bool ifs_block_is_uptodate(struct iomap_folio_state *ifs,
+-		unsigned int block)
 +/**
-+ * ifs_next_dirty_block - find the next dirty block in the folio
++ * ifs_next_uptodate_block - find the next uptodate block in the folio
 + * @folio: The folio
 + * @start_blk: Block number to begin searching at
 + * @end_blk: Last block number (inclusive) to search
 + *
-+ * If no dirty block is found, this will return end_blk + 1.
++ * If no uptodate block is found, this will return end_blk + 1.
 + */
-+static unsigned ifs_next_dirty_block(struct folio *folio,
++static unsigned ifs_next_uptodate_block(struct folio *folio,
 +		unsigned start_blk, unsigned end_blk)
  {
+-	return test_bit(block, ifs->state);
 +	struct iomap_folio_state *ifs = folio->private;
- 	struct inode *inode = folio->mapping->host;
--	unsigned int blks_per_folio = i_blocks_per_folio(inode, folio);
-+	unsigned int blks = i_blocks_per_folio(inode, folio);
 +
-+	return find_next_bit(ifs->state, blks + end_blk + 1,
-+		blks + start_blk) - blks;
++	return find_next_bit(ifs->state, end_blk + 1, start_blk);
 +}
 +
 +/**
-+ * ifs_next_clean_block - find the next clean block in the folio
++ * ifs_next_nonuptodate_block - find the next non-uptodate block in the folio
 + * @folio: The folio
 + * @start_blk: Block number to begin searching at
 + * @end_blk: Last block number (inclusive) to search
 + *
-+ * If no clean block is found, this will return end_blk + 1.
++ * If no non-uptodate block is found, this will return end_blk + 1.
 + */
-+static unsigned ifs_next_clean_block(struct folio *folio,
++static unsigned ifs_next_nonuptodate_block(struct folio *folio,
 +		unsigned start_blk, unsigned end_blk)
 +{
 +	struct iomap_folio_state *ifs = folio->private;
-+	struct inode *inode = folio->mapping->host;
-+	unsigned int blks = i_blocks_per_folio(inode, folio);
- 
--	return test_bit(block + blks_per_folio, ifs->state);
-+	return find_next_zero_bit(ifs->state, blks + end_blk + 1,
-+		blks + start_blk) - blks;
++
++	return find_next_zero_bit(ifs->state, end_blk + 1, start_blk);
  }
  
- static unsigned ifs_find_dirty_range(struct folio *folio,
-@@ -92,18 +121,15 @@ static unsigned ifs_find_dirty_range(struct folio *folio,
- 		offset_in_folio(folio, *range_start) >> inode->i_blkbits;
- 	unsigned end_blk = min_not_zero(
- 		offset_in_folio(folio, range_end) >> inode->i_blkbits,
--		i_blocks_per_folio(inode, folio));
--	unsigned nblks = 1;
-+		i_blocks_per_folio(inode, folio)) - 1;
-+	unsigned nblks;
- 
--	while (!ifs_block_is_dirty(folio, ifs, start_blk))
--		if (++start_blk == end_blk)
--			return 0;
-+	start_blk = ifs_next_dirty_block(folio, start_blk, end_blk);
-+	if (start_blk > end_blk)
-+		return 0;
- 
--	while (start_blk + nblks < end_blk) {
--		if (!ifs_block_is_dirty(folio, ifs, start_blk + nblks))
--			break;
--		nblks++;
--	}
-+	nblks = ifs_next_clean_block(folio, start_blk + 1, end_blk)
-+		- start_blk;
- 
- 	*range_start = folio_pos(folio) + (start_blk << inode->i_blkbits);
- 	return nblks << inode->i_blkbits;
-@@ -1077,7 +1103,7 @@ static void iomap_write_delalloc_ifs_punch(struct inode *inode,
- 		struct folio *folio, loff_t start_byte, loff_t end_byte,
- 		struct iomap *iomap, iomap_punch_t punch)
- {
--	unsigned int first_blk, last_blk, i;
-+	unsigned int first_blk, last_blk;
- 	loff_t last_byte;
- 	u8 blkbits = inode->i_blkbits;
- 	struct iomap_folio_state *ifs;
-@@ -1096,10 +1122,13 @@ static void iomap_write_delalloc_ifs_punch(struct inode *inode,
- 			folio_pos(folio) + folio_size(folio) - 1);
- 	first_blk = offset_in_folio(folio, start_byte) >> blkbits;
- 	last_blk = offset_in_folio(folio, last_byte) >> blkbits;
--	for (i = first_blk; i <= last_blk; i++) {
--		if (!ifs_block_is_dirty(folio, ifs, i))
--			punch(inode, folio_pos(folio) + (i << blkbits),
--				    1 << blkbits, iomap);
-+	while (first_blk <= last_blk) {
-+		first_blk = ifs_next_clean_block(folio, first_blk, last_blk);
-+		if (first_blk > last_blk)
-+			break;
-+		punch(inode, folio_pos(folio) + (first_blk << blkbits),
-+			1 << blkbits, iomap);
-+		first_blk++;
+ static bool ifs_set_range_uptodate(struct folio *folio,
+@@ -266,24 +292,23 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	 * to avoid reading in already uptodate ranges.
+ 	 */
+ 	if (ifs) {
+-		unsigned int i;
+-
+-		/* move forward for each leading block marked uptodate */
+-		for (i = first; i <= last; i++) {
+-			if (!ifs_block_is_uptodate(ifs, i))
+-				break;
+-			*pos += block_size;
+-			poff += block_size;
+-			plen -= block_size;
+-			first++;
+-		}
+-
+-		/* truncate len if we find any trailing uptodate block(s) */
+-		while (++i <= last) {
+-			if (ifs_block_is_uptodate(ifs, i)) {
+-				plen -= (last - i + 1) * block_size;
+-				last = i - 1;
+-				break;
++		unsigned next, bytes;
++
++		/* find the next non-uptodate block */
++		next = ifs_next_nonuptodate_block(folio, first, last);
++		bytes = (next - first) << block_bits;
++		*pos += bytes;
++		poff += bytes;
++		WARN_ON_ONCE(bytes > plen);
++		plen -= bytes;
++		first = next;
++
++		if (++next <= last) {
++			/* truncate len if we find any trailing uptodate block(s) */
++			next = ifs_next_uptodate_block(folio, next, last);
++			if (next <= last) {
++				plen -= (last - next + 1) << block_bits;
++				last = next - 1;
+ 			}
+ 		}
  	}
+@@ -607,7 +632,7 @@ bool iomap_is_partially_uptodate(struct folio *folio, size_t from, size_t count)
+ {
+ 	struct iomap_folio_state *ifs = folio->private;
+ 	struct inode *inode = folio->mapping->host;
+-	unsigned first, last, i;
++	unsigned first, last;
+ 
+ 	if (!ifs)
+ 		return false;
+@@ -619,10 +644,7 @@ bool iomap_is_partially_uptodate(struct folio *folio, size_t from, size_t count)
+ 	first = from >> inode->i_blkbits;
+ 	last = (from + count - 1) >> inode->i_blkbits;
+ 
+-	for (i = first; i <= last; i++)
+-		if (!ifs_block_is_uptodate(ifs, i))
+-			return false;
+-	return true;
++	return ifs_next_nonuptodate_block(folio, first, last) > last;
  }
+ EXPORT_SYMBOL_GPL(iomap_is_partially_uptodate);
  
 -- 
 2.47.3
