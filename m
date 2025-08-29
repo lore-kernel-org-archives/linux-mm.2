@@ -4,39 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E57EDCA0FF9
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 07:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52CEFCA0FF9
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 07:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEE4F8E000B; Fri, 29 Aug 2025 03:55:52 -0400 (EDT)
+	id 4D5FC8E000C; Fri, 29 Aug 2025 03:55:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9F6B8E0007; Fri, 29 Aug 2025 03:55:52 -0400 (EDT)
+	id 3C2A98E0007; Fri, 29 Aug 2025 03:55:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 919838E000B; Fri, 29 Aug 2025 03:55:52 -0400 (EDT)
+	id 2633D8E000C; Fri, 29 Aug 2025 03:55:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 729B28E0007
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:55:52 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22F311405C8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 09DAB8E0007
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 03:55:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D119613A44A
 	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:55:52 +0000 (UTC)
-X-FDA: 83829036144.27.59C1AB4
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1F6221A0003
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:55:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=g+5Dr9rZ;
-	spf=pass (imf19.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756454150; a=rsa-sha256;
-	cv=none;
-	b=eP/OndenvNj/9XQIT3GuND/JUGVTlH+zullVQ9yqfP5iG5kHGr+6+JDppmXzPJWcjHfwKZ
-	USEY4LBtXsMZ2P7LJPrKQtI1Cvlx5SuYUKzgOsxx7R3O28ejurvjVYR/uN1o46tzKl7Tbb
-	4+wrfyW4+aUfQQ2K86xqvy4zHVYQ/T4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=g+5Dr9rZ;
-	spf=pass (imf19.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+X-FDA: 83829036144.26.4269908
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A8158C000B
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 07:55:50 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jGAEyZhl;
+	spf=pass (imf28.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756454150;
@@ -44,54 +34,64 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mQcUO3MMNiHKjyp0GXG4A4uvsTQgAsYSLBA8ucpISkE=;
-	b=ZOkQ+z+LG0rMP9E8tk4L1ni6Mcmlycs8r7m6cDV+rwj7is6F4b8PTMOBtdP9iTxXMuY3lz
-	WzwFCk7u09I3CgDzb004gy3oFZ49OHjoarkTfCZJnDaYgQNBJEet7tpHLN7sbbQJhOFQB9
-	BoQsJc3MFSUNCXrjFLuZAFMiaNzDFGQ=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-327ceef65afso1263198a91.0
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 00:55:49 -0700 (PDT)
+	bh=bIHnWA5aW4eHzLRZzSV0KZURxmNr5HDYBenIylAU+uQ=;
+	b=rAL0rJT6VrrPS2oOHWX65NFFQFGM0aq4LsxMAmhGM8I1XyaN+QBQbUPjm4cMrU5b6x4bZA
+	yoRt+MIQ4io6jLX3LYe+Pu0l+447evS7rMN/1Xb0RLEdP47taJXrdsYrXkT+UgAVmbz++e
+	B50KdvK1U30+Gc08PzwXmuzwgm2hIhA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jGAEyZhl;
+	spf=pass (imf28.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756454150; a=rsa-sha256;
+	cv=none;
+	b=438zK1uDE2UYmXVViFr4VDmbTOWT2FQvMTHR1t4Ic9sftlmI0lgn3DwJlKJpcJR7aFpAde
+	r75K2Zhg8hE//S9Ld5xYh118AZy8ob/KtVHigd0NQ+uQPZU6FPLxI8q3aMX9Xmz0bqvGDR
+	6V24YnMEAc1gPbQA9KgYZV7nU6hD9U0=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-248d5074ff7so11458335ad.0
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 00:55:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1756454149; x=1757058949; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mQcUO3MMNiHKjyp0GXG4A4uvsTQgAsYSLBA8ucpISkE=;
-        b=g+5Dr9rZlEml/D9KojxN38x+1yMzKGBMxoCcP8vOfNfR4MPcKlbVh2euuc64AdobJ4
-         og8RoE9BaCR7aEhrsRN7j5ElD1cQLFR0lw1z7bR7ksfdP+Nc7ADSXxNy+R/kbGT8qa1z
-         z+K3S/Bi7oh0bPIAEAwZ1mncyBYWvmRrUvb9mj6B/oAgDL2VXAFuXHtT2K05O+KbIxUS
-         hDZs7sKT7KTCXb0VJemur36X7n7GS4fIsiGO7US90iD3brrVDmbbhgJs6qKVwoPERI9x
-         jMF+7+r2Yy+cRk4sa6dP3qcGH5NPnJbonxAjg7rK+eXAPqthGmaENDDDa7iIUiVqu6hf
-         41oA==
+        bh=bIHnWA5aW4eHzLRZzSV0KZURxmNr5HDYBenIylAU+uQ=;
+        b=jGAEyZhlSYE2q+U0Pf38ccpmxUkEvY4kWir2+LRzQJw8s/3UJz+uJ5by8vLnff+bxM
+         3miKa3pi69HCDpWS+FohUgeC0CGsngD52huVpUp87nJgSzWksn6UUc6rVHXFOy858FaH
+         +tvVKeg6WuaY3igegMQOCOQdEsv+a+bBhUT7BoL3qkiy0vgYMS2vbrVD2eTC9t3ZtgEI
+         BS3tFWpsiO/pIB1Xd1RLxeF27siGOyajeeeiLFFnlolfMahCa2z/mqBnCw3Gj7Lql08K
+         DdV7OP/pPDAtA+5JOqJUu83cpbHCtgFEoT4yb2ess851H8ufw+NvdVDOPF1BbgndXhLl
+         s5iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1756454149; x=1757058949;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mQcUO3MMNiHKjyp0GXG4A4uvsTQgAsYSLBA8ucpISkE=;
-        b=jenurkNstayelvceqG5yB9glBxhSgKrlfpZ3twkN9aV5Q5Y8xohdEFktuLKZdCG242
-         Lr/BjRGbUmgL+bhCo8qDq1ctVK0SvkjNzpCaTkfJOoELSbXZ1HNwnobD9dVrWU7WG5nZ
-         RpEVsKHU7McJEehH66eh/BFrNBUV98xcvrotNqnwLnHDaupXTchOfIRwPdoDwcHtwfvy
-         w3e2NRqRd0dloesZU0yf/+yg0oLOWHvZYgMt/uQkYm9lo/4/mxP9dFHmIZVWesAZgkHB
-         Gjn8viogvltVyJfVHBX+x7LlKYTZL5JhE11Sug707xYc/Zcsw3SmiF5LVly0KeK3LZcT
-         q4lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWProJg0SZe5X6jW37GDMlV238Xn/WYuDCTk1630LfRjZ5isbJHSTfNbCyi9AnLBZOFPd7MEIeTGQ==@kvack.org
-X-Gm-Message-State: AOJu0YwcmBNCS7IWVCjbUAfiSl+UjHqmczfW7JLikpCp3mMOkWQ/x2H2
-	+GYxxBC391CCJsGyAkppT3BP2pB6AssLsvyv9U5/c0i0Z0DHdXkhDkpg
-X-Gm-Gg: ASbGncuEH1Yp86kZYsSDSLwA8+yJi9dtZEfhRIxTx9BNVr0u6LXtiVYy/32Je7l9Oum
-	6FHv/j1hErCicKD9EX5pFbNPEP4EW5/Xg3p4W+BK0OhvJQ/lUkz06IXDLpUZbWSrs9l7kLJoJ58
-	PivAbPpcx04VH/z0JN47f1/Qkc7RHUQ02RC59k1fFI8NpRA6SKekWE/+fV3rvX5UTNtbB8d9Aoo
-	7/mQ+H9gcUCUBSFfhwDB8/6r5lj3QwMvbC2QlCXqXsUQ3x5/i3O1TRAcuVWRRkC/cB27aFBpZ04
-	dh40M+oAg0plxEDPC1oHKK9VDUZVYRYwSHVY51EetCF2U8HVx1kjrokoSB1z8QqLL4mK+CRI3qP
-	/Q8dfYsI99Rkbm1LdRG3//BhmZptt6PfFl2qH
-X-Google-Smtp-Source: AGHT+IHLqM32trOVVzh172ftn7E15FM6Ea2Jk4ybBnzNmcbOCkm5faJ3oUsml9NRpuaa5OiBwPVbig==
-X-Received: by 2002:a17:90b:4ccc:b0:327:7c5a:fe77 with SMTP id 98e67ed59e1d1-3277c5aff68mr10961209a91.30.1756454148623;
-        Fri, 29 Aug 2025 00:55:48 -0700 (PDT)
+        bh=bIHnWA5aW4eHzLRZzSV0KZURxmNr5HDYBenIylAU+uQ=;
+        b=g5lXjjmnt35EQRdVIw04dSCsCfnjj3npSI7JlBSlOdMBGSAqdr66WdIK8S+aVwbDNh
+         QUYfWsqNPFqOHPPIF9jJROqL4fyLHIS72x3jtVc/aQ+ozMU/JK6FKeMYpyTENVQFm0NM
+         kJi5Q4fFe6/zsik0z0uA4/vCm2Fns3/p5uGMoyWWIlPdIxJ/1E4Uamm0JcdqTded9JjZ
+         6/o2QAnpvedn/Wk/bvPCQT0qgL0IyJbLNRA1lrT/uQo2951IGv8lhj9chQ/Q1Y76pPLg
+         rUBHAr7W44CmNVchg8wyp17TSZgSB13ny7a0FJrcVN2tb1ev2DQsgivKv6czpymaJuN0
+         mo9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWFEAFZKoxiQ3MMEJM4QtSA734MS/fOtHGkBl3iyVyICNGn1N4pw+ByjJCpmqV/k4MEzaK8RNym1g==@kvack.org
+X-Gm-Message-State: AOJu0Yy/KGxF0m+0ZAZ9RtpDu1SBVrFLQZ78ViuQiwfTLIvvOWYTs215
+	sRh7ubHe4DDN86nLOE4NlsymrOoNKoz9j92Xrq1FcuSFiTOoqfphoPNM
+X-Gm-Gg: ASbGncshPEzZl+UYLQWD1Tarmiv4bXjkbd0q4KLXA008qRBjDhs7XZgVmUWdYRjpaTd
+	4jKPzRYT7i92iuV/GiiQPHej7Y2uOzDOViiVPchb5MyhkiMx88eqzHGfVDJg1I/DZdvv4/hvbv/
+	TMcoke68NObpQRvk8g/7hKnu0ojy+DLqB+ihATAnr+eO3I06Pj5JZ+YNSanHxyDPpuq2c9k+Wgr
+	11XORrNFaoZ4aJlai4zLRTRXgSsuEzSk6A5aef3AWQaUISUF8eLlMoOnjhKLjqUy0q4tmDkYUd7
+	IcyG7wj0GGd9oHpqXGXibtgujzf+Tx/F+gdQQaA1EAVPuO+9jtkKLGxnSWy5I8z/XynDeJMWeVG
+	7+3yBGBlcbPw4dUtgk9sAJ9Sq2v3KiXM6FK87
+X-Google-Smtp-Source: AGHT+IHRvna9njFmO3uwshAEffSoxmC7Hn2fu2lTjaQOpRwX+jw6mguEhMXL3nwf19KvKoiRBQoxHQ==
+X-Received: by 2002:a17:902:e88e:b0:234:8a4a:ad89 with SMTP id d9443c01a7336-248753a2359mr153379725ad.1.1756454149142;
+        Fri, 29 Aug 2025 00:55:49 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327a22ec24dsm2591905a91.3.2025.08.29.00.55.41
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24903727e23sm16983345ad.45.2025.08.29.00.55.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 29 Aug 2025 00:55:43 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 3924545A3F85; Fri, 29 Aug 2025 14:55:29 +0700 (WIB)
+	id 4CCAD45A3F91; Fri, 29 Aug 2025 14:55:29 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -193,24 +193,26 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Bart Van Assche <bvanassche@acm.org>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 13/14] nitro_enclaves: Use internal cross-reference for kernel docs links
-Date: Fri, 29 Aug 2025 14:55:23 +0700
-Message-ID: <20250829075524.45635-14-bagasdotme@gmail.com>
+Subject: [PATCH 14/14] Documentation: checkpatch: Convert kernel docs references
+Date: Fri, 29 Aug 2025 14:55:24 +0700
+Message-ID: <20250829075524.45635-15-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250829075524.45635-1-bagasdotme@gmail.com>
 References: <20250829075524.45635-1-bagasdotme@gmail.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1391; i=bagasdotme@gmail.com; h=from:subject; bh=evrdLEAoXKuQzTljW81Kh3KyWLApG8gUObVzJ2YlNgE=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkbY16J9usWFB1WvT+NSavLIanh+698vZJvp5Iqyn5cF Oeb1Xiho5SFQYyLQVZMkWVSIl/T6V1GIhfa1zrCzGFlAhnCwMUpABPJ/8zI8C+tSSfleGvDlW33 Ss5v/Xrog5zFrjCmKzem/Vr2Ka6JL4WRod0y2uaV0GJBfuHrJzY9vTqdTVAvLqhtcdO5S89liyP teAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=24675; i=bagasdotme@gmail.com; h=from:subject; bh=AEEIcDozNZ2ViJOgQ7eYtkvhWGKn1Ui1HTx+2X5l8VU=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkbY171rt4ccP7Tje9zeU81XAvOsTe7ezTsb+JinaJHp 5+9eflMt6OUhUGMi0FWTJFlUiJf0+ldRiIX2tc6wsxhZQIZwsDFKQATyUhg+Kf4e/fZ6wLs3l4M LzYaa6U+LzrGluT0eNu0DWGXQ64tOy/DyPDctHCptcLMhPUK/Q7L82ewC/HE1fEmCs05/a/U6F+ JNRcA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1F6221A0003
-X-Stat-Signature: htdos4bpfb1pbqy3zzjpesody3gok581
+X-Stat-Signature: ka8gsqwqymb8rs7ff1wt3zcmqokdpqbe
 X-Rspam-User: 
-X-HE-Tag: 1756454149-750386
-X-HE-Meta: U2FsdGVkX1+fFvnCP1RLvvQHRPVdQw8crbRZ8pNCIIOISarYcApanhWJXTVlo3o2V3xTvmLZtqNMJYpmMz0JVvmdbSfS5jksvl2nUjzo2qLgTWShBve8vbbRmsblepzWkdYLJG4CcoRqKQpWfouZenVlAbENp+ozlZLVGA/763g2RVoGHIfD8FuJsucXyj3Ml/GKiYc7aujmfD7JveDHMAn98xQ+zGSxnxIh99bYk73gBJRhkC5Emkc4AH7YFjyBhdUUlQupNHbUywJVp5/9gj1uFuzwe1vk5dgkFJjC4lF8Nc/Ehl99SE705oYYTp8NtADai5rLYkCuPhYpVaE2nqCZ/OYZJvP5KkYvYWDBTuwuli2n9e6SpykjS45nSwPmVlRooQrreB6Kz6lmFu+ecPZdevAbnWvh1nCd5rDLuecS/G3T6ph5qreI386/nPTJ3kUiFPMdLaMWKgUnA5SFBORj6k9C1RQk09nc8JQo+HFPZAuV7Sq17r1DR0guIy/gseYlOvRlLRNJG1lVQ4Dxt12NJNnvqbZ0e+jHb6MtkSIjHJZ0mzFRzx0RgHJQy9kM2IHdm8x9Yh5T5h77iATWkxaOwp+Z3M5Ms1gM6mlgfgoeGSob34aVMtMeROYC+yqKKzuWrZvmyiC+uXEvthVUi3I8MoPcFfk03vs47UhHuBKqMOwfJ+aDO1hMGlzssIPyUGd9gnY7ZdweYN81cPE1ZJYQ43NVrqIgH+dOYV+1x+ZH8Fxkc2qrDVZo3ZvhFDSbDEyUjt6oHNBANAo5Soa5DH+hnuPJEU+lG34we2yXFTyAhHI6weq6FeBeP1l/P4LEWdAZRtgumCAURyVBHH4sFcO97PhAbzpoZZXysOncr/Merb7l3htjW82aOeUDMrZSEOiGikAaVGI4z2cwFCNqdmX4dg/u2HSuodXR5EaXgDQubUn9SqRE17UrvRLu/+uLZZau2BCsEdaPbZR4jh/
- X8Zrwy2t
- BQtYglwfAq9dFlpnCO6EhGOnqDkKcXuhH4oskbwky7OvR68u8VT04bcWEsnoParHaGOxUY0WjACRSXw88Au2m6Chile/8OvZGLpFNBZaGr7kO/oL//roZVt+Lf93FwTNN0WyVeNXQzgfOMT1LNecQiDjRR1/StJ48jxy5g+RhNmJQ2uzrE3CqAi2ZecfIMKsyD08hxuL5P0QW7auarHYtgMqN9Vlpv2rPcTrrhfauYArcD2Aj7kwjg3wU/HZJFbGgDRGioorSdSp5MsKg+AZ8mCtIKnciygTxz0sfDtdHL4xHJkO3R8oLHr+0a2SeMle9xf3IUSJI612VG/LNj6VTrBu61CTJ4e0uEuL+j6MJ+znvFHyWmknneBUgnA3BYkm021uaf3sJSML/l96DNY7dEkZCbcheRtVeBmXVp/E85qZkHdgCvqu9OH37gmBhW2GyUc+SQLAY1ombBnmLmDX24itwAYAcMHiZQW8cXa/6joPP+YCDbgH/NWvSEoR2JeON3zTDtgD3Qukjc+iOPngwfpIykVGTFk3g4/ub5hJ5Nm4bQ8bUo3T1t1LKCjtc+33ATXMrIlbugHPdiux//z5dE2VGrQXM6W8f9ZUIc6OvkCdze/QWKA2OFXvJPaG5auOHgYQ3cOWy/vrgJ1UeLYNWHVha08HrkpYMn/cyPymPORdVjdFbhZfjzbMzBDX7YtXxjI6LrQKRnDZ5Z58tZ2wezvkhKLQjCfAJ1UUJPSLUeBgNqiMQDf1pq6T3WX7LiSRBDmlEGWONhgtEmPMKsw0tN+mmIjUx296nwZEbI7qjc+U/yG32rWJPDtpBzgySgdEwgquauRLNTpdQ77ktPPDRHbxkBaSB8kbPySXvN3ZAKN94L+sGHYZjqwaVNQpBOsNCyHkOgpXY1W/flCN8HzJAk+xDBMeahkPwlwsfjDdDBsLO/lbW1fq3Rn+Jj+yAU7yqfY9bBrw50OExvPnCVnx9r9CXmA==
+X-Rspamd-Queue-Id: A8158C000B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756454150-15205
+X-HE-Meta: U2FsdGVkX19pJIZn7sNB6T3czCd92I3HWRADLkPUFkgzaP0D4rHUhwmBsTDx7tMl5TxbHS2w5EprVDDvqo0Tr1m5qd8rC8BDfe/XT99YzlTAHLbejvSIjMG/4O5pGJQik0Exf5r0P11ewEtycesqrinIv6Lrfwbd0mA3TtxEWEqvuQw5LDTDnT7GOUYolWvPPqTSHwJJ42yG9fdmRrc80bqqpozCoHo/Rqp0XTOo4x/2AN45NrDPGGb1fEeAsRRtYwc4fJ8XHTFBf4aiqH8kHakVNodrG1HhKiq2eI4B9hO0iHcjS6TqAm7/2SeUPe4VnrJ4a/eT+hQxBJcT8JkmXnbD4aaQRw3KSMs2MswuLZuWyGghC0fzmXug4+p4Tze8dzhRBR2km4lZLP9cbF0zaxderBYEA7ZL1Ri8aeyYkaqDQTUF6XBGkIWA7Wc5QzpbIRsfWhJ9zg95e50iv3a2J2MZweo340dat7By8OH/QuRWxqtYeOfyyRPJhyOZCsYHgecQwMGubd7n2Hw3Zlby1ChMO4fcK6t53N0LWBKN1jm8ABRjZEKY54OoYnEp27vfIoklOzRRS19Xes+ccANvBrpTpLK2gLhXfgZEAyr6cokSm08T3uunDE4MsYS67saqXSZdbSDJ/7DYpe67gHrbFNoTMEiYNk0T/B8Lb1NNBoUDy6Ux6E8rsBuN/QUFyn8AzLcPb5o4yBOAywkrIfqA1pMH19l5+6ic1gcsWBvtPsTks1wd0mecPQzbrYfEScXi1Hoc+XE7m5RHgE4DbxGewGn3AqdR6VS2tsF9kAYRbD1lIBjVlC9pw6kE1pnNBPHWbPJHQJ0sLd7TvUc9Go+8FM72aaaBmN+B4Ho1RujslvrSV7tCpl5V/fS+C+LrcLyTsQe6ru8kBQCsIQOWz3zkyqYfPszN3/B6e/5Vq7tXiQ23J4F8KJ57XDGAq7ShykAkjcQIksPBTFAAMp8wrCD
+ N7ARgCDT
+ PSNZGUdJtj/g6iEgPE7VR72TTMscH7uMYJBMaYitoeUoFdS1aGjceGtogz1Nm4JmNkkSwJ1xpITsubj5S27PBN6FVY9If8ECxFxxoA6xTu34sNuDHZrp4UlkQu/woCgTi6vRmDLEsPxKrexQyB6Ac9WllqQ92UHTpPFBlB6C8KWU8OafjIBnj3XPQuvXO8vgp9KZhFVoh4SpdAP8BJuK1xwTyBtuqPSHzX195o3/1z3kwEwc+wkbeEMCpecL/BzfqGDcAOLr66klGLwnvnGSW1uu7OqcAdTP0uyz5tyZv6mSGp0oyubGqS2ElhiGB3bw1mzd9/1SmtZBckiS3sQoBsMjh93Ab8tYUKzI6+iYJxKmnjLOwRcgDuNQtXojfL5ShtwD9oB8T7srOL5KC8P3177hvr+J1itDAR7Gk6yXinOIjFR4zNBBCPHwJzRtbvpm+FCgYSWaR6EC1FqnPQ/LrnmTI0Puxfu1lKcppi8Fgx9L44o3kAg/QOOeiUZ9owOgdNbV/5T0Rw6zuMwCNB93f9Gb/NBZ4gDriL8Zp9BM0JhwV16CDIRHEoT0/V0+INcRQHjPwf6smX3nx3j+ZvdiSJUy/Xt8sQgJSUlb+6xCve79mM0E/KFbkxWFoVFkEHK9hLgddHH3GjusanW2Us4nQa9YZJZ8sJTOlYonL31F6FLaKueUQyLnMbEpdjks81QKX76ujygK0vAxA4+Mwu+cq74KdXki4oRy0zgS9t3Uy9jYpj+h4cu7CfFyAb3WIyRVe0KK/V+TDbF0dfrWDZCdjWbM7VRuSXUoUDqMlyDDeHItLr0l+IRFbKzsdMsJmVx42tiFrowWXReaiOBDd9UDFWsqS0Z4udmy8/HmguzCIubVA8K5/92ZjDIZ4XmM5WuTNwuGi14WKI7s5qMSqfwYYY1LuLCGxzl/T4oaXWRc6Mpmp9s8fUqwYeeAxExFJi2+psdk0FE9BCJklgFK6i8HQNxRx9i3V
+ xDtURxib
+ aVgbw+tuTn4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,34 +221,606 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert links to kernel docs pages from external link to internal
-cross-references.
+checkpatch documentation has pointer references to various style-related
+docs. Convert them from external link to internal cross-references.
+
+For reference to docs sections, use section names and reference
+docs path as anchor text.
 
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- Documentation/virt/ne_overview.rst | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ Documentation/dev-tools/checkpatch.rst        | 121 ++++++++++++------
+ .../bindings/submitting-patches.rst           |   2 +
+ .../driver-api/driver-model/device.rst        |   2 +
+ Documentation/filesystems/sysfs.rst           |   2 +
+ Documentation/kbuild/reproducible-builds.rst  |   2 +
+ Documentation/locking/lockdep-design.rst      |   2 +
+ Documentation/process/coding-style.rst        |  15 +++
+ Documentation/process/deprecated.rst          |   4 +
+ Documentation/process/submitting-patches.rst  |   4 +
+ 9 files changed, 113 insertions(+), 41 deletions(-)
 
-diff --git a/Documentation/virt/ne_overview.rst b/Documentation/virt/ne_overview.rst
-index 74c2f5919c886e..572105eab452b2 100644
---- a/Documentation/virt/ne_overview.rst
-+++ b/Documentation/virt/ne_overview.rst
-@@ -91,10 +91,10 @@ running in the primary VM via a poll notification mechanism. Then the user space
- enclave process can exit.
+diff --git a/Documentation/dev-tools/checkpatch.rst b/Documentation/dev-tools/checkpatch.rst
+index d5c47e560324fb..2ec288d845b81d 100644
+--- a/Documentation/dev-tools/checkpatch.rst
++++ b/Documentation/dev-tools/checkpatch.rst
+@@ -247,7 +247,7 @@ Allocation style
+     number of elements.  sizeof() as the first argument is generally
+     wrong.
  
- [1] https://aws.amazon.com/ec2/nitro/nitro-enclaves/
--[2] https://www.kernel.org/doc/html/latest/admin-guide/mm/hugetlbpage.html
-+[2] Documentation/admin-guide/mm/hugetlbpage.rst
- [3] https://lwn.net/Articles/807108/
--[4] https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html
-+[4] Documentation/admin-guide/kernel-parameters.rst
- [5] https://man7.org/linux/man-pages/man7/vsock.7.html
--[6] https://www.kernel.org/doc/html/latest/x86/boot.html
--[7] https://www.kernel.org/doc/html/latest/arm64/hugetlbpage.html
--[8] https://www.kernel.org/doc/html/latest/arm64/booting.html
-+[6] Documentation/arch/x86/boot.rst
-+[7] Documentation/arch/arm64/hugetlbpage.rst
-+[8] Documentation/arch/arm64/booting.rst
+-    See: https://www.kernel.org/doc/html/latest/core-api/memory-allocation.html
++    See: Documentation/core-api/memory-allocation.rst
+ 
+   **ALLOC_SIZEOF_STRUCT**
+     The allocation style is bad.  In general for family of
+@@ -260,13 +260,14 @@ Allocation style
+ 
+       p = alloc(sizeof(*p), ...)
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#allocating-memory
++    See: :ref:`"Allocating memory" section on Documentation/process/coding-style.rst
++    <memory-allocation-style>`.
+ 
+   **ALLOC_WITH_MULTIPLY**
+     Prefer kmalloc_array/kcalloc over kmalloc/kzalloc with a
+     sizeof multiply.
+ 
+-    See: https://www.kernel.org/doc/html/latest/core-api/memory-allocation.html
++    See: Documentation/core-api/memory-allocation.rst
+ 
+ 
+ API usage
+@@ -287,7 +288,8 @@ API usage
+     Use WARN() and WARN_ON() instead, and handle the "impossible"
+     error condition as gracefully as possible.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/deprecated.html#bug-and-bug-on
++    See: :ref:`"BUG() and BUG_ON()" section on
++    Documentation/process/deprecated.rst <bug-macros-deprecated>`
+ 
+   **CONSIDER_KSTRTO**
+     The simple_strtol(), simple_strtoll(), simple_strtoul(), and
+@@ -296,7 +298,9 @@ API usage
+     kstrtoll(), kstrtoul(), and kstrtoull() functions tend to be the
+     correct replacements.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/deprecated.html#simple-strtol-simple-strtoll-simple-strtoul-simple-strtoull
++    See: :ref:`"simple_strtol(), simple_strtoll(), simple_strtoul(),
++    simple_strtoull() section" on Documentation/process/deprecated.rst
++    <simple-strtol-family-deprecated>`
+ 
+   **CONSTANT_CONVERSION**
+     Use of __constant_<foo> form is discouraged for the following functions::
+@@ -340,7 +344,8 @@ API usage
+ 
+     The full list of available RCU APIs can be viewed from the kernel docs.
+ 
+-    See: https://www.kernel.org/doc/html/latest/RCU/whatisRCU.html#full-list-of-rcu-apis
++    See: :ref:`"Full list of RCU APIs" section on
++    Documentation/RCU/whatisRCU.rst <8_whatisRCU>`
+ 
+   **DEVICE_ATTR_FUNCTIONS**
+     The function names used in DEVICE_ATTR is unusual.
+@@ -354,7 +359,8 @@ API usage
+ 
+     The function names should preferably follow the above pattern.
+ 
+-    See: https://www.kernel.org/doc/html/latest/driver-api/driver-model/device.html#attributes
++    See: :ref:`"Attributes" section on
++    Documentation/driver-api/driver-model/device.rst <device-attributes>`
+ 
+   **DEVICE_ATTR_RO**
+     The DEVICE_ATTR_RO(name) helper macro can be used instead of
+@@ -363,7 +369,8 @@ API usage
+     Note that the macro automatically appends _show to the named
+     attribute variable of the device for the show method.
+ 
+-    See: https://www.kernel.org/doc/html/latest/driver-api/driver-model/device.html#attributes
++    See: :ref:`"Attributes" section on
++    Documentation/driver-api/driver-model/device.rst <device-attributes>`
+ 
+   **DEVICE_ATTR_RW**
+     The DEVICE_ATTR_RW(name) helper macro can be used instead of
+@@ -372,7 +379,8 @@ API usage
+     Note that the macro automatically appends _show and _store to the
+     named attribute variable of the device for the show and store methods.
+ 
+-    See: https://www.kernel.org/doc/html/latest/driver-api/driver-model/device.html#attributes
++    See: :ref:`"Attributes" section on
++    Documentation/driver-api/driver-model/device.rst <device-attributes>`
+ 
+   **DEVICE_ATTR_WO**
+     The DEVICE_AATR_WO(name) helper macro can be used instead of
+@@ -381,7 +389,8 @@ API usage
+     Note that the macro automatically appends _store to the
+     named attribute variable of the device for the store method.
+ 
+-    See: https://www.kernel.org/doc/html/latest/driver-api/driver-model/device.html#attributes
++    See: :ref:`"Attributes" section on
++    Documentation/driver-api/driver-model/device.rst <device-attributes>`
+ 
+   **DUPLICATED_SYSCTL_CONST**
+     Commit d91bff3011cf ("proc/sysctl: add shared variables for range
+@@ -443,7 +452,8 @@ API usage
+     lockdep_assert_held() annotations should be preferred over
+     assertions based on spin_is_locked()
+ 
+-    See: https://www.kernel.org/doc/html/latest/locking/lockdep-design.html#annotations
++    See: :ref:`"Annotations" section on
++    Documentation/locking/lockdep-design.rst <lockdep-annotations>`
+ 
+   **UAPI_INCLUDE**
+     No #include statements in include/uapi should use a uapi/ path.
+@@ -472,13 +482,15 @@ Comments
+       * for files in net/ and drivers/net/
+       */
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#commenting
++    See: :ref:`Commenting section on Documentation/process/coding-style.rst
++    <comments-style>`
+ 
+   **C99_COMMENTS**
+     C99 style single line comments (//) should not be used.
+     Prefer the block comment style instead.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#commenting
++    See: :ref:`Commenting section on Documentation/process/coding-style.rst
++    <comments-style>`
+ 
+   **DATA_RACE**
+     Applications of data_race() should have a comment so as to document the
+@@ -512,7 +524,8 @@ Commit message
+     The signed-off-by line does not fall in line with the standards
+     specified by the community.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
++    See: :ref:`Developer's Certificate of Origin 1.1 text on
++    Documentation/process/submitting-patches.rst <dco-text>`
+ 
+   **BAD_STABLE_ADDRESS_STYLE**
+     The email format for stable is incorrect.
+@@ -534,14 +547,16 @@ Commit message
+     The patch is missing a commit description.  A brief
+     description of the changes made by the patch should be added.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
++    See: :ref:`"Describe your changes" section on
++    Documentation/process/submitting-patches.rst <describe_changes>`
+ 
+   **EMAIL_SUBJECT**
+     Naming the tool that found the issue is not very useful in the
+     subject line.  A good subject line summarizes the change that
+     the patch brings.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
++    See: :ref:`"Describe your changes" section on
++    Documentation/process/submitting-patches.rst <describe_changes>`
+ 
+   **FROM_SIGN_OFF_MISMATCH**
+     The author's email does not match with that in the Signed-off-by:
+@@ -560,7 +575,8 @@ Commit message
+     line should be added according to Developer's certificate of
+     Origin.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
++    See: :ref:`"Sign your work - the Developer's Certificate of Origin"
++    section on Documentation/process/submitting-patches.rst <dco-signoff>`
+ 
+   **NO_AUTHOR_SIGN_OFF**
+     The author of the patch has not signed off the patch.  It is
+@@ -569,7 +585,8 @@ Commit message
+     written it or otherwise has the rights to pass it on as an open
+     source patch.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
++    See: :ref:`"Sign your work - the Developer's Certificate of Origin"
++    section on Documentation/process/submitting-patches.rst <dco-signoff>`
+ 
+   **DIFF_IN_COMMIT_MSG**
+     Avoid having diff content in commit message.
+@@ -599,14 +616,16 @@ Commit message
+       platform_set_drvdata(), but left the variable "dev" unused,
+       delete it.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
++    See: :ref:`"Describe your changes" section on
++    Documentation/process/submitting-patches.rst <describe_changes>`
+ 
+   **BAD_FIXES_TAG**
+     The Fixes: tag is malformed or does not follow the community conventions.
+     This can occur if the tag have been split into multiple lines (e.g., when
+     pasted in an email program with word wrapping enabled).
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
++    See: :ref:`"Describe your changes" section on
++    Documentation/process/submitting-patches.rst <describe_changes>`
+ 
+ 
+ Comparison style
+@@ -646,7 +665,8 @@ Indentation and Line Breaks
+     Outside of comments, documentation and Kconfig,
+     spaces are never used for indentation.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#indentation
++    See: :ref:`"Indentation" section on Documentation/process/coding-style.rst
++    <indentation-style>`
+ 
+   **DEEP_INDENTATION**
+     Indentation with 6 or more tabs usually indicate overly indented
+@@ -678,7 +698,8 @@ Indentation and Line Breaks
+               break;
+       }
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#indentation
++    See: :ref:`"Indentation" section on Documentation/process/coding-style.rst
++    <indentation-style>`
+ 
+   **LONG_LINE**
+     The line has exceeded the specified maximum length.
+@@ -690,21 +711,24 @@ Indentation and Line Breaks
+     limit to 100 columns.  This is not a hard limit either and it's
+     preferable to stay within 80 columns whenever possible.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#breaking-long-lines-and-strings
++    See: :ref:`"Breaking long lines and strings" section on
++    Documentation/process/coding-style.rst <long-line-break>`
+ 
+   **LONG_LINE_STRING**
+     A string starts before but extends beyond the maximum line length.
+     To use a different maximum line length, the --max-line-length=n option
+     may be added while invoking checkpatch.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#breaking-long-lines-and-strings
++    See: :ref:`"Breaking long lines and strings" section on
++    Documentation/process/coding-style.rst <long-line-break>`
+ 
+   **LONG_LINE_COMMENT**
+     A comment starts before but extends beyond the maximum line length.
+     To use a different maximum line length, the --max-line-length=n option
+     may be added while invoking checkpatch.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#breaking-long-lines-and-strings
++    See: :ref:`"Breaking long lines and strings" section on
++    Documentation/process/coding-style.rst <long-line-break>`
+ 
+   **SPLIT_STRING**
+     Quoted strings that appear as messages in userspace and can be
+@@ -803,7 +827,8 @@ Macros, Attributes and Symbols
+     and enables warnings if they are used as they can lead to
+     non-deterministic builds.
+ 
+-    See: https://www.kernel.org/doc/html/latest/kbuild/reproducible-builds.html#timestamps
++    See: :ref:`"Timestamps" section on
++    Documentation/kbuild/reproducible-builds.rst <kernel-timestamps>`
+ 
+   **DEFINE_ARCH_HAS**
+     The ARCH_HAS_xyz and ARCH_HAVE_xyz patterns are wrong.
+@@ -868,7 +893,8 @@ Macros, Attributes and Symbols
+                         do_this(b, c);          \
+         } while (0)
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#macros-enums-and-rtl
++    See: :ref:`"Macros, Enums and RTL" section on
++    Documentation/process/coding-style.rst <macros-style>`
+ 
+   **PREFER_FALLTHROUGH**
+     Use the `fallthrough;` pseudo keyword instead of
+@@ -907,7 +933,8 @@ Macros, Attributes and Symbols
+ 
+       WARNING: Argument 'a' is not used in function-like macro.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#macros-enums-and-rtl
++    See: :ref:`"Macros, Enums and RTL" section on
++    Documentation/process/coding-style.rst <macros-style>`
+ 
+   **SINGLE_STATEMENT_DO_WHILE_MACRO**
+     For the multi-statement macros, it is necessary to use the do-while
+@@ -931,7 +958,8 @@ Functions and Variables
+   **CAMELCASE**
+     Avoid CamelCase Identifiers.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#naming
++    See: :ref:`"Naming" section on Documentation/process/coding-style.rst
++    <naming-convention>`
+ 
+   **CONST_CONST**
+     Using `const <type> const *` is generally meant to be
+@@ -1018,7 +1046,8 @@ Permissions
+     Typically only three permissions are used - 0644 (RW), 0444 (RO)
+     and 0200 (WO).
+ 
+-    See: https://www.kernel.org/doc/html/latest/filesystems/sysfs.html#attributes
++    See: :ref:`"Attributes" section on Documentation/filesystems/sysfs.rst
++    <sysfs-attributes>`
+ 
+   **EXECUTE_PERMISSIONS**
+     There is no reason for source files to be executable.  The executable
+@@ -1074,7 +1103,8 @@ Spacing and Brackets
+               body of function
+       }
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#placing-braces-and-spaces
++    See: :ref:`"Placing Braces and Spaces" section on
++    Documentation/process/coding-style.rst <braces-placement>`
+ 
+   **BRACKET_SPACE**
+     Whitespace before opening bracket '[' is prohibited.
+@@ -1105,20 +1135,23 @@ Spacing and Brackets
+   **ELSE_AFTER_BRACE**
+     `else {` should follow the closing block `}` on the same line.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#placing-braces-and-spaces
++    See: :ref:`"Placing Braces and Spaces" section on
++    Documentation/process/coding-style.rst <braces-placement>`
+ 
+   **LINE_SPACING**
+     Vertical space is wasted given the limited number of lines an
+     editor window can display when multiple blank lines are used.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#spaces
++    See: :ref:`"Spaces" subsection on Documentation/process/coding-style.rst
++    <spaces-usage>`
+ 
+   **OPEN_BRACE**
+     The opening brace should be following the function definitions on the
+     next line.  For any non-functional block it should be on the same line
+     as the last construct.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#placing-braces-and-spaces
++    See: :ref:`"Placing Braces and Spaces" section on
++    Documentation/process/coding-style.rst <braces-placement>`
+ 
+   **POINTER_LOCATION**
+     When using pointer data or a function that returns a pointer type,
+@@ -1130,19 +1163,22 @@ Spacing and Brackets
+       unsigned long long memparse(char *ptr, char **retptr);
+       char *match_strdup(substring_t *s);
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#spaces
++    See: :ref:`"Spaces" subsection on Documentation/process/coding-style.rst
++    <spaces-usage>`
+ 
+   **SPACING**
+     Whitespace style used in the kernel sources is described in kernel docs.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#spaces
++    See: :ref:`"Spaces" subsection on Documentation/process/coding-style.rst
++    <spaces-usage>`
+ 
+   **TRAILING_WHITESPACE**
+     Trailing whitespace should always be removed.
+     Some editors highlight the trailing whitespace and cause visual
+     distractions when editing files.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#spaces
++    See: :ref:`"Spaces" subsection on Documentation/process/coding-style.rst
++    <spaces-usage>`
+ 
+   **UNNECESSARY_PARENTHESES**
+     Parentheses are not required in the following cases:
+@@ -1182,7 +1218,8 @@ Spacing and Brackets
+               ...
+       } while(something);
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/coding-style.html#placing-braces-and-spaces
++    See: :ref:`"Placing Braces and Spaces" section on
++    Documentation/process/coding-style.rst <braces-placement>`
+ 
+ 
+ Others
+@@ -1216,7 +1253,7 @@ Others
+     DT bindings moved to a json-schema based format instead of
+     freeform text.
+ 
+-    See: https://www.kernel.org/doc/html/latest/devicetree/bindings/writing-schema.html
++    See: Documentation/devicetree/bindings/writing-schema.rst
+ 
+   **DT_SPLIT_BINDING_PATCH**
+     Devicetree bindings should be their own patch.  This is because
+@@ -1225,7 +1262,9 @@ Others
+     are applied via the same tree), and it makes for a cleaner history in the
+     DT only tree created with git-filter-branch.
+ 
+-    See: https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
++    See: :ref:`"For patch submitters" section on
++    Documentation/devicetree/bindings/submitting-patches.rst
++    <submitting-dt-patches>`
+ 
+   **EMBEDDED_FILENAME**
+     Embedding the complete filename path inside the file isn't particularly
+@@ -1253,7 +1292,7 @@ Others
+     The Linux kernel requires the precise SPDX identifier in all source files,
+     and it is thoroughly documented in the kernel docs.
+ 
+-    See: https://www.kernel.org/doc/html/latest/process/license-rules.html
++    See: Documentation/process/license-rules.rst
+ 
+   **TYPO_SPELLING**
+     Some words may have been misspelled.  Consider reviewing them.
+diff --git a/Documentation/devicetree/bindings/submitting-patches.rst b/Documentation/devicetree/bindings/submitting-patches.rst
+index 46d0b036c97eb5..c90b5e6d8be4ef 100644
+--- a/Documentation/devicetree/bindings/submitting-patches.rst
++++ b/Documentation/devicetree/bindings/submitting-patches.rst
+@@ -4,6 +4,8 @@
+ Submitting Devicetree (DT) binding patches
+ ==========================================
+ 
++.. _submitting-dt-patches:
++
+ I. For patch submitters
+ =======================
+ 
+diff --git a/Documentation/driver-api/driver-model/device.rst b/Documentation/driver-api/driver-model/device.rst
+index 0833be568b06ca..7762d11411c5a9 100644
+--- a/Documentation/driver-api/driver-model/device.rst
++++ b/Documentation/driver-api/driver-model/device.rst
+@@ -35,6 +35,8 @@ A driver can access the lock in the device structure using::
+   void unlock_device(struct device * dev);
+ 
+ 
++.. _device-attributes:
++
+ Attributes
+ ~~~~~~~~~~
+ 
+diff --git a/Documentation/filesystems/sysfs.rst b/Documentation/filesystems/sysfs.rst
+index 624e4f51212e63..a893e67f7fb2bb 100644
+--- a/Documentation/filesystems/sysfs.rst
++++ b/Documentation/filesystems/sysfs.rst
+@@ -51,6 +51,8 @@ With the current sysfs implementation the kobject reference count is
+ only modified directly by the function sysfs_schedule_callback().
+ 
+ 
++.. _sysfs-attributes:
++
+ Attributes
+ ~~~~~~~~~~
+ 
+diff --git a/Documentation/kbuild/reproducible-builds.rst b/Documentation/kbuild/reproducible-builds.rst
+index f2dcc39044e66d..b0d273f871772a 100644
+--- a/Documentation/kbuild/reproducible-builds.rst
++++ b/Documentation/kbuild/reproducible-builds.rst
+@@ -13,6 +13,8 @@ The `Reproducible Builds project`_ has more information about this
+ general topic.  This document covers the various reasons why building
+ the kernel may be unreproducible, and how to avoid them.
+ 
++.. _kernel-timestamps:
++
+ Timestamps
+ ----------
+ 
+diff --git a/Documentation/locking/lockdep-design.rst b/Documentation/locking/lockdep-design.rst
+index 56b90eea27312e..c924dd4216c564 100644
+--- a/Documentation/locking/lockdep-design.rst
++++ b/Documentation/locking/lockdep-design.rst
+@@ -231,6 +231,8 @@ Note: When changing code to use the _nested() primitives, be careful and
+ check really thoroughly that the hierarchy is correctly mapped; otherwise
+ you can get false positives or false negatives.
+ 
++.. _lockdep-annotations:
++
+ Annotations
+ -----------
+ 
+diff --git a/Documentation/process/coding-style.rst b/Documentation/process/coding-style.rst
+index d1a8e5465ed956..4a17c60a9240c0 100644
+--- a/Documentation/process/coding-style.rst
++++ b/Documentation/process/coding-style.rst
+@@ -15,6 +15,8 @@ and NOT read it.  Burn them, it's a great symbolic gesture.
+ Anyway, here goes:
+ 
+ 
++.. _indentation-style:
++
+ 1) Indentation
+ --------------
+ 
+@@ -95,6 +97,8 @@ used for indentation, and the above example is deliberately broken.
+ Get a decent editor and don't leave whitespace at the end of lines.
+ 
+ 
++.. _long-line-break:
++
+ 2) Breaking long lines and strings
+ ----------------------------------
+ 
+@@ -117,6 +121,8 @@ However, never break user-visible strings such as printk messages because
+ that breaks the ability to grep for them.
+ 
+ 
++.. _braces-placement:
++
+ 3) Placing Braces and Spaces
+ ----------------------------
+ 
+@@ -231,6 +237,8 @@ Also, use braces when a loop contains more than a single simple statement:
+ 			do_something();
+ 	}
+ 
++.. _spaces-usage:
++
+ 3.1) Spaces
+ ***********
+ 
+@@ -303,6 +311,8 @@ of patches, this may make later patches in the series fail by changing their
+ context lines.
+ 
+ 
++.. _naming-convention:
++
+ 4) Naming
+ ---------
+ 
+@@ -594,6 +604,7 @@ fix for this is to split it up into two error labels ``err_free_bar:`` and
+ 
+ Ideally you should simulate errors to test all exit paths.
+ 
++.. _comments-style:
+ 
+ 8) Commenting
+ -------------
+@@ -792,6 +803,8 @@ Remember: if another thread can find your data structure, and you don't
+ have a reference count on it, you almost certainly have a bug.
+ 
+ 
++.. _macros-style:
++
+ 12) Macros, Enums and RTL
+ -------------------------
+ 
+@@ -932,6 +945,8 @@ already inside a debug-related #ifdef section, printk(KERN_DEBUG ...) can be
+ used.
+ 
+ 
++.. _memory-allocation-style:
++
+ 14) Allocating memory
+ ---------------------
+ 
+diff --git a/Documentation/process/deprecated.rst b/Documentation/process/deprecated.rst
+index 1f7f3e6c9cda9f..8ab538034a29b9 100644
+--- a/Documentation/process/deprecated.rst
++++ b/Documentation/process/deprecated.rst
+@@ -29,6 +29,8 @@ a header file, it isn't the full solution. Such interfaces must either
+ be fully removed from the kernel, or added to this file to discourage
+ others from using them in the future.
+ 
++.. _bug-macros-deprecated:
++
+ BUG() and BUG_ON()
+ ------------------
+ Use WARN() and WARN_ON() instead, and handle the "impossible"
+@@ -109,6 +111,8 @@ For more details, also see array3_size() and flex_array_size(),
+ as well as the related check_mul_overflow(), check_add_overflow(),
+ check_sub_overflow(), and check_shl_overflow() family of functions.
+ 
++.. _simple-strtol-family-deprecated:
++
+ simple_strtol(), simple_strtoll(), simple_strtoul(), simple_strtoull()
+ ----------------------------------------------------------------------
+ The simple_strtol(), simple_strtoll(),
+diff --git a/Documentation/process/submitting-patches.rst b/Documentation/process/submitting-patches.rst
+index cede4e7b29af46..34a6a7c8e6f49e 100644
+--- a/Documentation/process/submitting-patches.rst
++++ b/Documentation/process/submitting-patches.rst
+@@ -393,6 +393,8 @@ e-mail discussions.
+ ``git send-email`` will do this for you automatically.
+ 
+ 
++.. _dco-signoff:
++
+ Sign your work - the Developer's Certificate of Origin
+ ------------------------------------------------------
+ 
+@@ -406,6 +408,8 @@ patch, which certifies that you wrote it or otherwise have the right to
+ pass it on as an open-source patch.  The rules are pretty simple: if you
+ can certify the below:
+ 
++.. _dco-text:
++
+ Developer's Certificate of Origin 1.1
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
 -- 
 An old man doll... just what I always wanted! - Clara
 
