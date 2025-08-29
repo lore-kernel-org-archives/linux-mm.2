@@ -4,178 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D79CA0EED
-	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 01:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84ACECA0EED
+	for <linux-mm@archiver.kernel.org>; Fri, 29 Aug 2025 01:44:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8BB06B000D; Thu, 28 Aug 2025 21:25:40 -0400 (EDT)
+	id 64C3A8E0003; Thu, 28 Aug 2025 21:44:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3CD76B0030; Thu, 28 Aug 2025 21:25:40 -0400 (EDT)
+	id 624108E0001; Thu, 28 Aug 2025 21:44:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D03DD6B0031; Thu, 28 Aug 2025 21:25:40 -0400 (EDT)
+	id 539EE8E0003; Thu, 28 Aug 2025 21:44:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C09526B000D
-	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:25:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5814B1604EC
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:25:40 +0000 (UTC)
-X-FDA: 83828052840.24.440147F
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2046.outbound.protection.outlook.com [40.107.102.46])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 91CC0160004
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:25:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TZb8Axst;
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.102.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756430737;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4042E8E0001
+	for <linux-mm@kvack.org>; Thu, 28 Aug 2025 21:44:04 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96DE4B9BAB
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:44:03 +0000 (UTC)
+X-FDA: 83828099166.02.9F2B69A
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9320CC0005
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 01:44:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=abYz6FDu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756431841;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OslBuWv2zm2Qr+rvueV/AaZVT6lNbrvVinLtk9b40n4=;
-	b=cvNoW/XrKNiGDkq3ilHKbbtobGUAYa8PPA8XqvW/wlzqZ8rAqjWYX5eF/VVzacI5wGszds
-	U3SH+XlT3Y2oP+zOboCAZiEBFPz+IPhZmWuSr6/5Nb8zg2En6YGJhD7fae0M/1oYbksVSt
-	RGhfln2lQ6JIbENOC+pMa1Wsaiybbso=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756430737; a=rsa-sha256;
-	cv=pass;
-	b=0JZZdnPcWL9d04pthNfKRH7/B7nDZYdoIRFhzdXkCSBi2ghj5tbwTl5acMIasK3OAgDnqE
-	fa66L2GspqzD2Y1g8jHu+2zQcZEmZf+NHacTY9cxZtS10Bk2M6/BqwQtj/jQov3OrV2EiN
-	p9k3VQhNLjEbQxKCU9Dcx8d682NwsjA=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TZb8Axst;
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.102.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=erdeS77ntPMI5i0/gXeaNTx6WaWa4Ax9r7IZk1CUC5JFWo1pqN/r8sT3WKNTyDeleC9Lc/+zGhWe4Y29n7CwSrAXraxM42E7RbE3sxWQDxo2znFz3isKKtDflnvCOhKlXXI0rSDBBbxpw8yiv107i/uxp1Et41bvjY8K4KCc+q2ENb3Zs1l5ipr1nwBy23i2m0h2fX3VlIVmeKlK5+KMbWQ3f4mdTmYfYte/P2Lr3Tk0yiHz5J5HqUaRO1wFDN0IEs7iUdSa36p5Wtr0RS/TiaubMuKezoFYoX5AbV4BRDZCH8kruIJqSAqwn4vtdyPQh1okGPFdkRwBzk14/VosbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OslBuWv2zm2Qr+rvueV/AaZVT6lNbrvVinLtk9b40n4=;
- b=QUwiwoylqeWMNnTUcz58GgNz07i1O+FeAek3nk5JJHkOYiqp7q9xzCjr4fG7DHO4DS6ztcruakTJMBs4UO0EwdODcVZzaUml7SGiOllEcYNk/dM8WLFm7nKfFqXpDQopR6bQRC2dBKpqFuSiiglSNEGLSRAKFrOyFweohzDT8mO5BNnhDAZA6WLady4AgX/2H97i5daZ4LkBLGFkHKtUtywvu3SLKChPySdZ+lEOnUTTjsUMYeZANkXVrasUjdtnq/EyFuBWu3Il7TbjVYAaCq/WHpTbR5fqsNCubS7H5sC9gRZh30IWOt+9PZzQ2Bc5DL1II0JtTl6HR3gVQnPKPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OslBuWv2zm2Qr+rvueV/AaZVT6lNbrvVinLtk9b40n4=;
- b=TZb8AxstlYArSOuHOwbTg2RAKxrqaPq8fer/rhDCwiyCqlp0s29pU55yrp11i7KPZ2TqbfrMVYh6SNKXxTZvP4xj3+iAiHT19ZqPb4O+tZBS8+cZ65egu/kUolGOkzXlmqLBA/slylqIs4p3enV8TX/v7ph5/n4PzzbevhZmNe3Ac7RR90y9eqsIzmhcJh42tpkjt9WODUWivyZ9YzMGC+9s+V7i7yMku+pNQLJpHz83Xe1gJBtNRzLHWdAEH671rkHXDkuk/e5/1uuwJrEWdyE48uZ7fBgvvA5xpGMI6HyNfJTnAvcsNDAxHUja56iFCG/g+IFDJ0tsieiMBHKgNg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS0PR12MB8502.namprd12.prod.outlook.com (2603:10b6:8:15b::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.25; Fri, 29 Aug 2025 01:25:31 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9052.019; Fri, 29 Aug 2025
- 01:25:30 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
- bhe@redhat.com, chrisl@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] huge_mm.h: disallow is_huge_zero_folio(NULL)
-Date: Thu, 28 Aug 2025 21:25:26 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <81B36E34-BDD0-4A66-925C-CCC809248992@nvidia.com>
-In-Reply-To: <20250828084820.570118-1-max.kellermann@ionos.com>
-References: <0de24b30-70ad-498f-9eac-01596c8713df@redhat.com>
- <20250828084820.570118-1-max.kellermann@ionos.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BN9PR03CA0228.namprd03.prod.outlook.com
- (2603:10b6:408:f8::23) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=CHBd+IlZFh0zNXe4qwll2lktsGmbBJatMBbb3xWhGl4=;
+	b=TKLRBv/8I/KRsXYxWhmhXix1fFBJO0FZVQlyBOKu2K/Gpkwngt/6cWf2lEflKbFDHNWZyW
+	gcl6u69sRxCOZQ5h7FkO8hpy9EzvicF9miaBtKqLbtj4ZbXHeoq0MmvCPcI+GQ3u0ANOks
+	gvx1NkQRtJdC0eQmUgp1YIyGXNOgVlo=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=abYz6FDu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756431841; a=rsa-sha256;
+	cv=none;
+	b=FmVZkAS2d0sR00IE7siRn2+6RdN8G74pwjSukz4hAYdaGT3WoLcbo5S1DOj/U5Urdy2Ajd
+	Ou7L81xaVqJfyjywA0LDLo3JhhNny291w4hFQt7jlJfqwADj9x0uo+PwXzaLNKAlv4hmTG
+	pl7q15+MkLxfKXj+Eh6ATUtPwR5wkNU=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-61c26f3cf0dso2554317a12.1
+        for <linux-mm@kvack.org>; Thu, 28 Aug 2025 18:44:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756431840; x=1757036640; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CHBd+IlZFh0zNXe4qwll2lktsGmbBJatMBbb3xWhGl4=;
+        b=abYz6FDuPdu9SGFTHN9i3bB3tkyGyLo6sR39h1d9jY6jgeknp0Hd780pXl8WYhecDu
+         La53aF7dt8Qt3XJ50Yn2TdhJl15fSpUhE7OdJk93D8LFuqLu5gg7Ni51SwpasDJr3Jn9
+         FUMZSiAiGyzFNbeaZIWIgmHPvuhp+7bWOLK3Bo78lsqCz15xaBQ6eegs6pb5WTWgHyDS
+         5uESIrUrijK/dPQoctaQqpvvnlyXG7FXSQ5uSkRsfaYy/JtsocHW9unCDalcT0/iNpTw
+         GIGAJD/hcwRNi9pIZqo8m0TjsEcZ27FsU7ZTWAE+L2amz0E5ExtRm9FyM10j3yV4a7Bv
+         Qa0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756431840; x=1757036640;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CHBd+IlZFh0zNXe4qwll2lktsGmbBJatMBbb3xWhGl4=;
+        b=gAyN7ADmr7LYOJLJXRbRFoLpav68XHnSg5s4HwXY1737nfGk1ZyY1Hui/69BFyDPPr
+         kkRfkEEHoH/j583tZQkHcl3HTRYepycNXlSE0rrg7+8MKucfDMYJ5cVEthJj31Ef17Vd
+         SvLR3nLRfSgBXLBt+8AbLmKWrd/QQlpaDE+1G4n4RjG/TYLP/wHWpV2+COnJ1V5NaDAn
+         F6lyLJrSHXyxKO2Y0sMCW0apVGwbnAvI3qZNMWE/BTuXWM7rg4UY5NFhZX3YXTP4esVQ
+         4gHWIkNi5H0GXAHKFqrn38gT/Fz2vEOhks5T8Vo6pDdywx3Wf/RWP78Ily1ZMJ9LbxOp
+         j5QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXY3SYH2AufHa2jdtuGtuw26Wqc2OzK8zpW5+xvIfVZMh+5rjTgwNzWx/9bFquJOz/fFW+KNFOK9A==@kvack.org
+X-Gm-Message-State: AOJu0YyBEuLbSwDsLCMkT4u72M+tJryqKyv4YP+g99par9sGUy4eDdJt
+	4oJ1CLaQjh2DquTzYRD2kDU+exXdhmEIsiMrT8WIkqlPz1CwkTcFP03M
+X-Gm-Gg: ASbGncsGswAK2ZywotGgNTYEiTeSRIyH45uIfPOjmwNQIJmiIFrhUbq6aNliJVKW+Z2
+	FsiVQ6OqYbbW43bgomY8D7DniF1cY8eoDKBRrxouQkqyNEKa24vjs22lKLN6VB+HuUAliR1a+Pj
+	v2fMHxpKrzA4WPzdSE6JH3LNNIrHL/kz+i0+BAKEuGoHYAWfZfSbNMWviIh6rGC9Sp9OVs6KJ4H
+	SkB62Q+rVw7eB95Mm1xUAmQ58dmhkP2GonfQiG+3rbw/own6gWAVqESNx20Wh7odtsggZ4kFvhe
+	NPGWGUSwgKwgQzOo3xlX1B2l4zx4VmMtVka8QS7yKMi/Z6mI6k966zEDdCsIZDdSq78DQmkrqyv
+	Z9xKIbWFfS0e8QM6T6u8o4pw61+QdBIv7pO3V
+X-Google-Smtp-Source: AGHT+IGXzVFtf0umylBRxC6/BmYbJC8jpiFexix+nG4HrfEucqpX1yTWR5nqIgNiEJl4btVGLDUxpw==
+X-Received: by 2002:a05:6402:2708:b0:61c:58de:85f5 with SMTP id 4fb4d7f45d1cf-61c58de8a22mr13525524a12.31.1756431839732;
+        Thu, 28 Aug 2025 18:43:59 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc1c77f9sm781288a12.8.2025.08.28.18.43.58
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 28 Aug 2025 18:43:59 -0700 (PDT)
+Date: Fri, 29 Aug 2025 01:43:58 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+Cc: richard.weiyang@gmail.com, Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org, davem@davemloft.net, david@redhat.com,
+	edumazet@google.com, gnoack@google.com, horms@kernel.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	mhocko@suse.com, mic@digikod.net, ming.lei@redhat.com,
+	pabeni@redhat.com, rppt@kernel.org, shuah@kernel.org,
+	skhan@linuxfoundation.org, surenb@google.com, vbabka@suse.cz
+Subject: Re: [PATCH 2/2] selftests: Replace relative includes with
+ non-relative for kselftest.h and kselftest_harness.h
+Message-ID: <20250829014358.qk3zme4qlaojun53@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250828081026.yx6vgphtsf4pmr3y@master>
+ <20250828094016.18063-1-reddybalavignesh9979@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB8502:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6caa6ba-b7ae-4b12-6085-08dde69af167
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WFGJ9r9ZFLQ2i8uv69BkwVj0c68LHKRm3/ZE59zQR8dfUXXyQSSxId+wrfY2?=
- =?us-ascii?Q?IJ4H88onloXT/Fjub617O/XuDEiH+hNl2EO02FsRNlkUe1wUZJjsgXAbfs6X?=
- =?us-ascii?Q?R7xaroWIQzXJJ9CzcZxL/dE8h9QGJTlkUdIOL2LHPKrlDSlC2B55wirdtO09?=
- =?us-ascii?Q?CnSFspvQgNJW3V551KbIR11eiIRiD3A7/FqxAkGoh4o8xnHjjBPVcQ/VuwX8?=
- =?us-ascii?Q?Htzh3yolXClRDvVXMFXBb/HP9eDk5q6rgvNllZFbhwQP5jf/UomRzu7mEWmy?=
- =?us-ascii?Q?nbWZL9C1GnamUqqbGUDFPIpHa03FPySs20q584MMBY7QOExhPfVsRJWWkJz4?=
- =?us-ascii?Q?6vasksohy0qbQk5/G02fxsBI10nwtTdDUIUmp+7W4LVtatp9bBgQNWrwMmOC?=
- =?us-ascii?Q?CM5GXEGHSHXe0g9Y3BJndi4nely+me+e/Xtj3L2cwT1SriMNHcIsvavtbIll?=
- =?us-ascii?Q?bn/vK/Jml6qoW3rSQwZaH1pknODf4TLpzqqPgoyR595Ov4I74qFpWEJBm/2k?=
- =?us-ascii?Q?TiVivsKS86CWBe7Yu+kBHLGgwOw2I6Wz+1oNKY+TJEdIKwUH5qN+Rf3WWFpv?=
- =?us-ascii?Q?b+3byubtU68DqeKgT3vSF0YRol2W0jgITuhSRMAfbAo1flogeNuVUNP5axiZ?=
- =?us-ascii?Q?coZMyBnWvRkJKzkGSloMU2HHInyFiSJUQ6L5MOHl+GQEUpmPHHCiD/idFYJw?=
- =?us-ascii?Q?0MGy01eaBsPFHLw51BauI2tiJ97jJPZYYfTzrVftxplTNgXBRImgHCTIQiaD?=
- =?us-ascii?Q?PNnGBblM6QyyW5Pac9fvGaaJlCuhQ41EXmEZ2r9fn5lx4UgF6lpyYJzwpedW?=
- =?us-ascii?Q?s2yhjVSbz3huv9S3OXIJywhVYjHOQJNyzjXiOO3clMGhaDbUEQISobzv7wht?=
- =?us-ascii?Q?mpfYlUoRG4QgCjUE4prb7Twa3SIhcFCrdQcccheIkXxDBCsHWLq2kk4kFYae?=
- =?us-ascii?Q?FOdVFCaafN9VVb+8h6UWyXNM+nE63w1cUzlunoeaeAeFkl5+x23Lg6O525OK?=
- =?us-ascii?Q?btMre0lo416upRE88GbidnUa7vRK9rTWWlgOITtUmt56fWauUtrQDod0eXWT?=
- =?us-ascii?Q?+oT7E3OqegZsSKdWIeBFDI+01Kgudl+kKEVnkP+e5PA7yfrCcJn7ZHn7l+GH?=
- =?us-ascii?Q?xIr+4wgvCysL5t7ivoazyWGBoPoQeieqpg0qneqUXkUoPg77AxnJrFaI3xos?=
- =?us-ascii?Q?BIdRuWExlg4agC1B52ilIUsQtqIB/tMyYxynwUJtbngjsj5pmEJbu4rNLzjI?=
- =?us-ascii?Q?5dqge5fZ77hXOLGLgAOudPSQZ2VYBOwFoL4D77Y3vDx2oKHwxMDT0W0SHDAc?=
- =?us-ascii?Q?poaOzycMk4/gz8ZxJi25DUgVB1RNPn/QQLNHZGCNvLnGVx5GcoQMSNeiJy3k?=
- =?us-ascii?Q?WWPFPV1Ip9UjSETogwig75bHAwiwmwLifKaORqiVu6KjS8cFjH86qXh/UMXG?=
- =?us-ascii?Q?IE2bnGVcS4U=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OGxxjMsxyHNiS02MHc9qCx8ktfOx1/9L0RDLwmY24+niggdEbVfFEaRWFmNi?=
- =?us-ascii?Q?2EAofXH0QYZAsXUIRqxzGDBK63AvNAJ2UOLcWy+lAOGCJz1vfdcLay6M4gPA?=
- =?us-ascii?Q?uUw40C0iShhTFm+hsU1Y1x1dyAzLQ+Flj9EvixRImuCBGdjoUpKye9ILa8P2?=
- =?us-ascii?Q?+xOvxtPpDdJVowQHqTcZuoken1KjvU7ciEWjXwUPxljmSylFo/dbZfeGoK9g?=
- =?us-ascii?Q?zpkdEgMKkFZGgMc+AGdvyL8GSk+3lVaxCvjCoiEAXERWMkCpVPs2/Xm5yLHn?=
- =?us-ascii?Q?Pmm06kDRdzeMs6bY7X8G9AD93GandaHWcz8HfDp6Vh7AmwOSE5P4VIN37Dyq?=
- =?us-ascii?Q?t1hidPJu4UtfqvXMhUEUPjfLpTU40LrBSJyPuqHj4dI1hCjC0jmK41mYeGOa?=
- =?us-ascii?Q?7xBw7aGzDYCgfadc1Gnwp+2vFtJGTjjYYMRBXPHgnrLxiipYgkLlPJ7cyIjp?=
- =?us-ascii?Q?vWd4OmvgLxlMXuxTDEJJNR6jB31/1GC+nB52w66LnSl93LAwccuVPRUT7l/1?=
- =?us-ascii?Q?hSgT32g3vnC4Qw8k9LkYrIoCVevNfjKS67zOa5Tis9DB4vTyaAjbrRysDrd1?=
- =?us-ascii?Q?Ycv1HabW8BzysA5okdlbOw/m+CO89WiJPw3mqhO64YKPiIVITtAElP7eWBe+?=
- =?us-ascii?Q?JHmyTOypSckphyJ83VGNNrhsYreKLbQgyA1ssaB4M+QZLZ55SNdsGLfA0Uc6?=
- =?us-ascii?Q?B1wlpBW5o6LiGuKzVHScC0eUvt3KfoOBA0M6IH2udgx2nP6VvFcAam7FPc9y?=
- =?us-ascii?Q?zvFCPphdEM0ung0t0zSukRC5u6azZfNXbRKGpLxGgkpJ/rR4X3P/999LOCg1?=
- =?us-ascii?Q?s9DC7COH4DSeOoR/CaTw8TrBCZ3DG65vfqh51Y8c5Khgu/CuNG3ERlOnz3Kf?=
- =?us-ascii?Q?2Yl7lR4lE2NQNjUDsUGjBVzdf+DdM8px+Uu0mi8jWT3WB/diE6JPWwgG0SI+?=
- =?us-ascii?Q?wmphNgtNEE0hl3Xdmnt1S6zExdimyybVlEaUuI5zH94HClGn5J4ktHKkLQMn?=
- =?us-ascii?Q?jOOeC2c9GfVGGdEwOhSgnYtddvB8zTDyafnpa5W7sTDVW4gtf7102XQ1/vC6?=
- =?us-ascii?Q?DceBLCeCP+wW8Po/rATLsSqJyJb6F2FOj7q7NaQWlWxdYyBxBXh3wW8+veKj?=
- =?us-ascii?Q?rFAHdIvuL4DWWA0kip6H7oAMeNf19QF0gF9Dy6dX2tVkoFimrvZMBJ3+wwVE?=
- =?us-ascii?Q?L0qQogbSEABArsat5YvDkPEAL3qvjkHEY/WijXx5Y748MwZPag9d94FPZ3o3?=
- =?us-ascii?Q?nM4p0/wnFAwxYu+uMsynFy6T4PgAxgIHnuV6ikr/y+dpbzlz9Tff7VSJh+0s?=
- =?us-ascii?Q?B1KvGML2wh+s8Z6BvENmWyDq4jj6y67G1I8040t20Z+ukiUOZqBMOlKbhBmd?=
- =?us-ascii?Q?ruc5RioOXvDAC6KEesf2kTeIWfgtju/WkCMeV/mZX3nCON42ZiaA8Cnd5NAo?=
- =?us-ascii?Q?TuvnGzhe6ToyplK/bQI5POf7CwCIy0asS42MGtBJw8VpaKfDuA2HPazMM8Wx?=
- =?us-ascii?Q?Y2ibZR2PJ1bEgeLNduOH/D35lrpp0hMdy4RFkBjzUPlSyToW6POnQbxYQRfk?=
- =?us-ascii?Q?cWuYYOyCG8kBD23kloqek4jYm6McAPF+pM5LYDzh?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6caa6ba-b7ae-4b12-6085-08dde69af167
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 01:25:30.7563
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TEp+w88ujVdvPmNFe0T1TzYPF+DRhjSZkErVMB/NkPUBXmcyUKNEw0rTMPo1WL9S
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8502
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828094016.18063-1-reddybalavignesh9979@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9320CC0005
+X-Stat-Signature: i8hnbtf3im4pu5rcod41p5q6qupdq4au
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 91CC0160004
-X-Stat-Signature: c6qhwb88ojpztgmfqri3aoqk4t1pi1uz
-X-HE-Tag: 1756430737-156463
-X-HE-Meta: U2FsdGVkX1/TPo7RC1f7rcFnDzE6vnE5NyGpEnEBbs9W1Kc6n7QZHLJ6+TqOolrg7w8eYpzl2dO/gig4JGagMXkWxvwJDgRirwTOsG2eAViGi54KO57ZF/6KFTXNI1xHq9WbU7vyu3hEzfKXUZkSZeZJ0pfCrsSR/gmVaNnGP5rG15wwWjVQ+d3lV/iW4fXkGyckSjiIh6CJSckEeMcO9lWw2ss2sLbj84WQp+3uo1eccaddcqV5LPqANDRt795nwxWstRS2SzGLi/3PyvfqrpvLY1LZagD9UdjPVNAId/YTg92OMsJMBQT4SI75oHxQoFOR4j2N5BD4+EhEF2ThXrjx2FUF/Y+7Kg7y6TVxTSswKhr5YsrhyMEdghHs3B0y0mufQdy8VGAS2XFz8xOvbxf/oAgsbtJCSYmf58k4vTPeQaRyS3J2eNoyO1alHgrmvzec/CuLqXQsPqgtNcGeKhGBTPLf8BzCCbhDmQsgbhLdRaL5Vn32BuoZ3Tr6SEpHpHsG06bi7NgL1dsh4qm7SVg1dvOG5/clYORfd+PVoA3Lzjf39gqjLvxk9c2J6uhjjyuoUFA/iXoPNrnaE+wCQDUFtV8ajlsZCLY8r+sizOHJn+kmdXdo8csYSARPbjzKCcPLeJXxqDuUwddF9z2qUPdzMz2HRnN6RAkx2WZSwtTsoz7YNhCRx7i1mLpOyrZR8aPbBG40DTcM8GdxQZP3QFUeeNyUEfQXLW6/ciWuRcPvIHTOWMOzjI2lTc+T7UpuqRuZH9D2GsZeRzkV1WWOYZ2r8CVDkAFWP/vnjmp4K+QEmobZ97aOPTTFF+LmwQavB1wyx/7FJUoAF0+24a0XH68goyz2EjLBJdCrIj1m0kFsbcvHS3o0ug9Evfp5T7Z2KEHIQsd81TBGeQSCLhsLzttavjyHFFLfZ28ZewLGDcIlOXIdhhJWaKeij/egX0BabdulSG8jSKhoM6ZQ1Qh
- 5U5wlZZM
- F55Q5HjYdvRyXqsm88qw7nuYORcjycbHB0dkvPrvHUH82zeHs0xwBHu4DyWwaFh4sufvBxWyhjaRpkK/Ihl7i+ZKwF/nut1i4sm1EhmHaPcl9x336SKRArWwZvmRtf7bU3IvAKK6bvbYI8HevOrjbTBA6NFVJGcyLJQ7db2m05Xywx/+D3hZxymqsXl1kiJ9wVR6hKZHp3hOKTQhHkXdfSSK6eBdz/sq6qhGERtcdgrTvDXZMDlfVq6X8pIABe4YT1p3m+Hkv0uPgiC+zSga7FMxR0iuPHtOmtvO1Ye06xwegp03Xocufo3+d5O38rCrEHG1uBeblWE7PZ01f6triFuS2NcEe75AZdgyZktJUfh9G/SBuuS9724aOWnDEe3T+ZdgO01S8sCF5I2d2a4UbuLLQ/r+kYuuSIuDt1+GwgBp0Rj3WfxOYw+rS67L00vcsgNhtiGCLVqbhNNf97HWijDu+HfD3sRRAmtxTPLn0XVQL0beq4Plv9pbQ3XlaZLPWx/t6tK4F3UOfCtVrKlVNt0wOl2vSw9v8C19O+QJCjatOcXU=
+X-HE-Tag: 1756431841-533687
+X-HE-Meta: U2FsdGVkX19Tz7i2e65rkmuNmeJuh/9U333HfGg8QNBgBmj+ZQb9V4WmqV8gbbfJz9cEkFlKAxSR4MUd/AO4CNMca1LZek9oAyl/xOoV+PqmwZN+/Od4T4HOGrU0poYl7cZlwoIeV4h4U2yqayRSRJ51wNgHiDIgSdpyiKkDYCD6ddf+IbPdRHIYfKRGZMdnRehk65nd96Eafl28m6/jyQekdbumC6GfCj4Qn5ep+ovyh11tv5hhUlqIXTu7fqh0fCGekAcLhoQvc0wGtp2I1NGqOCeMB01B2fsiUCwW1fsCus0KHX5LzyYL8jsejI9eOibunNti8ECNe6pNl99ubLCkghjFT6LCrRAqGrwP0xubt4LpOXGwtuC96UuWXFiP368vO4rmw6LcInwBsD2Kq8o2/BlESL4xUbrvz4eJmXcX3WFHqPt1c7FXRJ0pVG2ppjt1NGezZynbUCf8sdESvydGfq38Dvlf6y9qXQHo2zUMAnJdVCw247xgvABQAJoTd05vTrppw1vRKy+uCv+SPUsCoAr0Z6IYDsUWws3Y0vo2QY1QOAkoXJHrQH5ersfOc8GUodSFnnuXrYdxEC7yDEz2q7TYfsB0gH4V5/Uuw/oHKxCSk0SusMwq/7YkHr5QvplYXsS5fCOkMA490LD47I1FTZjSsLjE4dDjwNAAx9Y8y7y9CVF9X3XknGHZaEnETJKRdZVD32cePYOP455yzJ4vBsdoSARlA4RZ52d6Laiau4HDx6gl7swJs2N+nl+8NZF0ddca+l6eYfVJQ2uhBKr5e3+ZIHr7+wMOaBM17VieVcNzH6oVzUTNnBXuU9j9UMA43nWCoD6MESB6KQD6YMB/QP+8vps8jkMC5IF5rKoVR+1QAvk/YXM1d7/XRLnjoRiPjK/PMCHxmyaiaJWTEvDLReaBRRFtx5E3QvBkq0c0rgWKm5g5DZc+22WEgqs0NeG96oYB0sPxzt7+/V1
+ q42e4Pzx
+ BuM+kQrwFUU8Ck/0ohWBrANrOac6wR/i0nKNFBOhiL4lrNjGfv0nyAnHGSgPhXjBejQrzbSznOXjGmm5Tw/ASbt5JrMU2Lpzp17tCsx8rgpDkoPCxRGw7SGW8mfDXSLgOkJ/SoOvCPfUyWH3WOJuZ5XEczqHKk5nXPhAvOOCiS/NbHLMFcDpVn5UNX6iQ8SYHdObw5myqftbRp3x/z6qsuc2KFTQQ7epPI9AbWdpkaLd2SuaT+DQbr0W8bNyQ+Fd7+mNHDpTnA2kPIUKbYYs8B1xTZN98o9WU0P7wqZoordX9MCQh+f0MnjyFgSOnaesh65H56cz6LrYACO5ImwHjEKvWLTRl0mH6VYNok+/d8Gvy04N5V9RtMWpzuEyHfIaPBR87BRAgnKklgwtdjWSItJ35UbUYtljaKMg02BBKCh8/uTSvEQuGkEB9687lQREFw+iL3T1itDxLnGM1290eB7ILpt8rFpX4IXl65LCPiNyWjY6T1jDD8g3k/iC6krhy/a6elGimGGiefo8EKBl6fG9T7gZ5juUPqdx40b3jkITyHvcQEieLXqN+EzvYMr+MDfLCCrWzBMWzDug3z/UQyvhbjsiDpVxdNfzlF2L2bB9srpf12aP/MIZzPYfOr7SAPhPXT9Afh5Nc9N8tuPfLsQ3cQWg4EwbCr/J0V43Xqa8WBLZ4Jd7KYbmEEQEpJdx89Y0NNL4mgexKky/gvHcJId65kvjEoTa52M8BEvE+bW2c++pfDxQmnZ85+odSKmRoDlaU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,40 +129,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28 Aug 2025, at 4:48, Max Kellermann wrote:
-
-> Calling is_huge_zero_folio(NULL) should not be legal - it makes no
-> sense, and a different (theoretical) implementation may dereference
-> the pointer.  But currently, lacking any explicit documentation, this
-> call is possible.
+On Thu, Aug 28, 2025 at 03:10:16PM +0530, Bala-Vignesh-Reddy wrote:
+>Hi Wei,
 >
-> But if somebody really passes NULL, the function should not return
-> true - this isn't the huge zero folio after all!  However, if the
-> `huge_zero_folio` hasn't been allocated yet, it's NULL, and
-> is_huge_zero_folio(NULL) just happens to return true, which is a lie.
+>Thanks for testing and for your feedback.
 >
-> This weird side effect prevented me from reproducing a kernel crash
-> that occurred when the elements of a folio_batch were NULL - since
-> folios_put_refs() skips huge zero folios, this sometimes causes a
-> crash, but sometimes does not.  For debugging, it is better to reveal
-> such bugs reliably and not hide them behind random preconditions like
-> "has the huge zero folio already been created?"
+>Yeah, if you try to build inside a subdirectory, the top level
+>export may not apply, so CFLAGS don't get updated, and even if
+>they did, the path could be pointing to wrong location.
 >
-> To improve detection of such bugs, David Hildenbrand suggested adding
-> a VM_WARN_ON_ONCE().
->
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> ---
-> v1->v2: using VM_WARN_ON_ONCE() instead of checking huge_zero_folio
-> v2->v3: use "!" to check NULL; removed the #include
-> ---
->  include/linux/huge_mm.h | 2 ++
->  1 file changed, 2 insertions(+)
+>As the docs recommend, building selftest using TARGETS,
+>either from kernel source or "tools/testing/selftests/"
+>works fine and doesn't fail.
 >
 
-LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
+But this breaks current behavior. There might be users for this form.
 
---
-Best Regards,
-Yan, Zi
+>If you really want to build from selftests/mm/ directory then
+>defining KSFT_INCLUDES with a fallback in the Makefile will
+>resolve it, but there is no need of it if we stick with "TARGETS=mm".
+>
+
+How about add this in local Makefile ?
+
+For example:
+
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 810bd615b8c3..52f023071619 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -158,6 +158,10 @@ TEST_FILES += test_page_frag.sh
+ # required by charge_reserved_hugetlb.sh
+ TEST_FILES += write_hugetlb_memory.sh
+ 
++ifeq ($(KSFT_INCLUDES),)
++KSFT_INCLUDES := -I../
++endif
++
+ include ../lib.mk
+ 
+ $(TEST_GEN_PROGS): vm_util.c thp_settings.c
+>Thanks
+>Bala Vignesh
+
+-- 
+Wei Yang
+Help you, Help me
 
