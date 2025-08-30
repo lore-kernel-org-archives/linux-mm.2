@@ -4,100 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E558CCA0FFF
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 19:10:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F8EDCA0FFD
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 20:46:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A07E56B0006; Sat, 30 Aug 2025 15:10:54 -0400 (EDT)
+	id 561BE6B0005; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B8E46B0008; Sat, 30 Aug 2025 15:10:54 -0400 (EDT)
+	id 511846B0006; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A7AF6B000C; Sat, 30 Aug 2025 15:10:54 -0400 (EDT)
+	id 3FF706B0008; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 76B0D6B0006
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 15:10:54 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DF24BC024E
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 19:10:53 +0000 (UTC)
-X-FDA: 83834365986.21.AE021C9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1665714000A
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 19:10:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=I1c3qkw7;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FCD56B0005
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 99A0481F28
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 20:46:47 +0000 (UTC)
+X-FDA: 83834607654.19.8B30989
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CF50E40009
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 20:46:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i7heKHiF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of mchehab+huawei@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mchehab+huawei@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756581052;
+	s=arc-20220608; t=1756586806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=cxqyLkPY25fDgE4laNbglweu6ayzoOFZdX1zkijbmL4=;
-	b=d8/Wxt9D/vQZzMTpNqzQlnRAv+eGdJ3diUB+JQUrTzg1dci7FPQsZQYEnNx509209LFh5N
-	GxKxXzciD+Amsjcrl0v95vxLTdXHrk47uYZxJLzGW4N1/wXpm96haAbHRytPeLK4yOmzZd
-	5nEpz+6gXF4xtYK7RjwJ92k0yJLxLvE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756581052; a=rsa-sha256;
-	cv=none;
-	b=r5Osss208GlXhMQsu7d0wyFtF24co2/fB1cetPrsFa/ANVZitpEnvLMIcgJoHwe6mo8iPc
-	DcIt8E/KGxMwlrt8hoifYgvTRFIdLzhLlDkVmx8x+Ds1rJ5jdLXc+JVNPpLhNJmkBH21V7
-	n7A7qz/QDghSs/TxkKIsz4zikidZUSU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sERoEhOT3TgQGeAbgiCm8VB8EH4ve3pj8WEJe0BUAXc=;
+	b=3XgwvnCYoImN5k8kyA/gNtd3BNvNxDFuqi5x/8pc6tfmBRQtYd5xuktkcy8vddAr+3gI48
+	wNSVWemWBmTgj24OFnlQWSAJGLe/J+39ZlQKrFpN52DhMuC5fN1nM8lpiFUxW/skBHebSY
+	JsljbKwbHYoRLEnksas+iZj0GZkc3Qs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=I1c3qkw7;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756581051; x=1788117051;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=HSxwq/sv5bGv5zvi1+pAo8mM20+0b8sh/zp9ljjKZgA=;
-  b=I1c3qkw7gPjb0zZO6BpX3zKeSwFQb7xgbyq+Y/5753WCFsQ4717cXkSh
-   gDZJdTKi2Z+Ysb+18+NsdkW382dXWQgK62P4+dQ0W1UzDat8VlaagG+6B
-   6KLgPRNIL4t8w1N71U0aw2CUW3wr764dpMItn6mENdKl7ze3ooVa+xk+5
-   C0lgZlnAAaDkHxDQBWaAWv+t94olb+37neaI/SPquLp9B4rVOPSQccXIp
-   vQ3+9ILqC6hKKj+r8ot4ywJ4+Dm+IupqR63N0mFSE1mfjyGPfYHTs10f/
-   M4pxMr/eEB0BYImef/CKzo6dQCTlWyyboiR7o4p0nBDA9hhR1aAx7eFEY
-   w==;
-X-CSE-ConnectionGUID: bbMC+fOKS2uOMeg4ks8JQg==
-X-CSE-MsgGUID: 2owaprrgToyEBNxr3hD1qA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11537"; a="69938559"
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="69938559"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2025 12:10:50 -0700
-X-CSE-ConnectionGUID: gY+YP60GTgeA7lRfyz234A==
-X-CSE-MsgGUID: OeY8ZE0BSHS9GzRB/M6wwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="207784669"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 30 Aug 2025 12:10:48 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1usQyL-000VdZ-1Y;
-	Sat, 30 Aug 2025 19:10:45 +0000
-Date: Sun, 31 Aug 2025 03:09:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [akpm-mm:mm-unstable 140/221] arch/um/include/asm/kasan.h:29:2:
- error: UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-Message-ID: <202508310221.jSUso3QB-lkp@intel.com>
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i7heKHiF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of mchehab+huawei@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mchehab+huawei@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756586806; a=rsa-sha256;
+	cv=none;
+	b=CYEpAZyDdnL/h8VRYxpqEFpsj/ONnP2BmiIt/q2qKChNXCXnwcgUb6plFEHcr4i+WJiV0b
+	ybSPex1VvATOh7r3AcFahB76cHykM+qB3dXoWKW9A6JCPfTwahXpaf8DyDFeobSYrbSk9f
+	QuINRiloKYBiK6+QOteRO37LamKSm+Q=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8645643FD7;
+	Sat, 30 Aug 2025 20:46:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF130C4CEEB;
+	Sat, 30 Aug 2025 20:46:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756586804;
+	bh=N1RyWuUPncwemkQz+wtBxmmLRK1pbPwPhqaSXQEgACo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=i7heKHiF1WEcWegbUMD1XKbmetMnNnCnljRU/sfGxpB5c3sZchsdHRdnTVLky717F
+	 dDeCNXpev8o9LRk1S9eXnS8o8kWvMacaFziEO6OdWtswKvTxZQ5pU4eCd2WUx5BQCO
+	 14bLFP5QVji02AMa5CJyqW/en6PTbHSnZ78vGj75ZZT/RVMFCiYHRoYXRol8qlqKgn
+	 3lrkJ1IYbZBkwoMZse44FP62uqEzr0WjQEZOzoSJLrIrlje9NRgPYVERWMHuVkMn2k
+	 2QurVWFt7IIr5AR3ahUSN1uV7FUBrHkmiXJe15aj9LzSrsbpHevBdir8lYlUv2SDdP
+	 83zxdoGwMwcyQ==
+Date: Sat, 30 Aug 2025 22:46:22 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux
+ Documentation <linux-doc@vger.kernel.org>, Linux DAMON
+ <damon@lists.linux.dev>, Linux Memory Management List <linux-mm@kvack.org>,
+ Linux Power Management <linux-pm@vger.kernel.org>, Linux Block Devices
+ <linux-block@vger.kernel.org>, Linux BPF <bpf@vger.kernel.org>, Linux
+ Kernel Workflows <workflows@vger.kernel.org>, Linux KASAN
+ <kasan-dev@googlegroups.com>, Linux Devicetree
+ <devicetree@vger.kernel.org>, Linux fsverity <fsverity@lists.linux.dev>,
+ Linux MTD <linux-mtd@lists.infradead.org>, Linux DRI Development
+ <dri-devel@lists.freedesktop.org>, Linux Kernel Build System
+ <linux-lbuild@vger.kernel.org>, Linux Networking <netdev@vger.kernel.org>,
+ Linux Sound <linux-sound@vger.kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra
+ <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
+ SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Huang Rui
+ <ray.huang@amd.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Mario
+ Limonciello <mario.limonciello@amd.com>, Perry Yuan <perry.yuan@amd.com>,
+ Jens Axboe <axboe@kernel.dk>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
+ <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, KP
+ Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo
+ <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Dwaipayan Ray
+ <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Joe
+ Perches <joe@perches.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Alexander Potapenko <glider@google.com>, Andrey Konovalov
+ <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo
+ Frascino <vincenzo.frascino@arm.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Biggers <ebiggers@kernel.org>, tytso@mit.edu,
+ Richard Weinberger <richard@nod.at>, Zhihao Cheng
+ <chengzhihao1@huawei.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Nathan Chancellor <nathan@kernel.org>, Nicolas
+ Schier <nicolas.schier@linux.dev>, Ingo Molnar <mingo@redhat.com>, Will
+ Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Waiman Long
+ <longman@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shay Agroskin
+ <shayagr@amazon.com>, Arthur Kiyanovski <akiyano@amazon.com>, David Arinzon
+ <darinzon@amazon.com>, Saeed Bishara <saeedb@amazon.com>, Andrew Lunn
+ <andrew@lunn.ch>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
+ <tiwai@suse.com>, Alexandru Ciobotaru <alcioa@amazon.com>, The AWS Nitro
+ Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Steve French <stfrench@microsoft.com>, Meetakshi Setiya
+ <msetiya@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, Bart Van Assche
+ <bvanassche@acm.org>, Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?=
+ <linux@weissschuh.net>, Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH 12/14] ASoC: doc: Internally link to Writing an ALSA
+ Driver docs
+Message-ID: <20250830224614.6a124f82@foz.lan>
+In-Reply-To: <20250829075524.45635-13-bagasdotme@gmail.com>
+References: <20250829075524.45635-1-bagasdotme@gmail.com>
+	<20250829075524.45635-13-bagasdotme@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1665714000A
-X-Stat-Signature: 9tbm66wdmskk68p8drzoh4ix3fps614h
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CF50E40009
+X-Stat-Signature: st9nn4p4y9yppz6gwprc984s3mzftdfp
 X-Rspam-User: 
-X-HE-Tag: 1756581050-219991
-X-HE-Meta: U2FsdGVkX18EQ5Wh9ZoR9TUyyhYCL6X0dVRm9OGYo4o0kj2rnJc55wXhJdNgeoWvVaRpIQ69TjPFlyFA7U7gMY/NQ3T+HrPoutoG2vdYVadYFYr/k20Z0LX6nlLrY36hZIswJqcNLZUaTwqI3ynJaUVoD3THFh5FJMB7SNRDVBWAQLS3R/Ad5Az4ILui4vZIcuzgtrk8aEH5W7gQeszPbvQTC4gMQPEyc+LyJrFtMQKMLYE0x8KKX1vxTv9exflY59t0Ao7hvxgjt2YywZ1sbIN3+2RbpJyA4zpQgKw1HqbJCT7dCdkfguxlRkQZMY0K1WSb0F/YxwOEdE0JEp+tZCrF1uXhY9a6OjkvOTuM692yGQ3R8mczLKYzgrKdjXYADWtnah2GzP6LqMFNg3yv6ym3o8EDQAlpDfsCHhma6O5C4AebTj9OdKiAGQjZzB417NQ9tuBXc/TXlejEwQljA+3Br5NCPYk4k88uhag/4rUeGvw2DYaGKTuF0JtZTqUaGCL7tcJqOCJE06DwCHICR/pY0r+cgf/K7E8kiGF1isEEbJ5D2bA2mjEiJNsnkbd4hbNKfJviOAx76ilHtxNeBYgFhImZWsMUnRfWIVeFx6/KkY7wOonAnMZv+zytZOcNJdVyWQ6MaHrEuRvuzNn2CUPC43wMAnd7pBrFhwRaYSIvazm9fCWSp0mIyAp/v+jd8zSzUSd5rNRxcAiUf6/kw5Nq5WxJTZS+xra2rT3ZKPywWL1nuV6uD1zPDizTM2VrHG6rY/Sco8HiN34bcBhe1dimYIqGcInhqAovHdnC/5pZeJqc2Fl81H/rK8k3P5Hg2Qea/GIQ3dquGKtWmQKpux7Fp+n8UI3d7OzZ/bpOs73orlWXjfAGa2+5FF6+/GskTpjEFojc0zg4I71gseLMLFFRDCKtemXFNqkvT+V+3qQH+PJyOHaxTi8t7aw5SaIjW2MzzVitX6XFGbfFGv8
- ViKD/05g
- ZDMi5hR42QJ1V8jmtwGhB9caDbQ==
+X-HE-Tag: 1756586805-683788
+X-HE-Meta: U2FsdGVkX186Hz2CV5e3h/YF85NcCFc4U32jtFF4C/gd/p6d05bYEzwrBMBdgNAg0JS6eVarJ5CYdLhEDiyoQJVDpoV13mwP8iSzSZpYdWvqJdA7lpw6oQ8ZVSsyEy8g9bqtjNgG0jSqU5JZGvMFcJkUGBMwNQ2zCN/HYv4Iz4U2lnLgkTcBXqsev8MrS/Tf/nyIKYJqcahaUEQLb4hMpMyd77D1lT6OCH4rl97V4LC8eBrYbDjSqk3ikoZs7HQ0sC4BM5jzOmPnSVYilbz79OQNNpU/78Ewp4Z/wdae1iEL79sc2bBMdKmo3A/WZtsRgSucDUS3ThLrwQWNI6PuM0XZVo0gDN7Lk7oDuyI2naOntcj+3/jAiOL9VGojo2EsncGzqS6tSc4d7Hoxly6QRNQYXJdVPM0PBHu2+yZPwvUtnLqCEPWMiuTEvYNmfa3q9XjrS2Mo0hJlX5kFYi3ylfDYfDfAewumbULROTwi4vqRRULJa7yLYIgzRkkALJBD4OgWjsxb1cW7jL8YF4NQC3beKx+OUiTdb3wHMqkCYQrcO/di0m58d5AYTr0uG1ljMxlI/JWDoheop8gOQUmXVxjklZ1yc/aEsN7f3K3gnyjolvMiPj3Sev8tT17fo9En7RwJyaQQ8lkS4JQM4ppjNf4jaN7/DCsnzW9/sflPKYR45//9OAhVuf6/S0xo8d+aL4rGISKoehKYR0gAvwVtxmsi14OUvyXGDFF/eS+b6jmgka2GwKyYXpxn3EMQrPO4M9o9F1ovmWj8dKmGPGsis89b4u4nEKXjpnR2TBSrzkKZ8XsYDQwK29fgRUYzvdXVDrbTiKVInVL2J7FaVtULZaQnsps9GWaSmxT+i9L2dluiwDG06giwORCWQrB7KIaAedMPD9hRBB7ZHajAn3jD3IktF89OuIvC95TNIgYx+sTaJ2ik9/BAisoTeSie4ag76AvllmBODdYoNH5yfOr
+ FUeRfP2z
+ Lz/CvePk6v9GDrknp+ElTTgm/NMmrRt4ZIIW1hA714IqHpHNp8u8V1I+m4BsulW4XSYZVxuRF1rFHH9BvOdTE9z2J6tACbKcuZ6AjQy5InEzvA4ahHJRw/QyGhxiRrKJwKG0Z+PGMX1T9lPieH1/FIKRWmrn6MgzOwEYRfHuACyLFaPcbvSVaYe2mMtn9gzq7DHguJz41/f14dGm4F67O0yUSLd2xvQfqxtf5PnqbCAO3HOUe7G6CQ5D1lK6X4AXslejsGnHOjk5C8nqmWjzLq19wP+Obz/7ujIoUnbeipoquBVEDE3hDDhNT0o5BDVPtJdzz4gySK2C7K5nGn4Tc/tFlA+yZOFInEtUcEWZN82dOYInpcO21HmBcaEmaUQBISxB5cE0jjyUBHNg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,140 +151,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   6531c300923e1b222e7cac7b74975ddf686aba96
-commit: cf803b1aeda8859efc50696db9bd11577571e5c1 [140/221] kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
-config: um-randconfig-001-20250831 (https://download.01.org/0day-ci/archive/20250831/202508310221.jSUso3QB-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250831/202508310221.jSUso3QB-lkp@intel.com/reproduce)
+Em Fri, 29 Aug 2025 14:55:22 +0700
+Bagas Sanjaya <bagasdotme@gmail.com> escreveu:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508310221.jSUso3QB-lkp@intel.com/
+> ASoC codec and platform driver docs contain reference to writing ALSA
+> driver docs, as an external link. Use :doc: directive for the job
+> instead.
+> 
+> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> ---
+>  Documentation/sound/soc/codec.rst    | 4 ++--
+>  Documentation/sound/soc/platform.rst | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/sound/soc/codec.rst b/Documentation/sound/soc/codec.rst
+> index af973c4cac9309..b9d87a4f929b5d 100644
+> --- a/Documentation/sound/soc/codec.rst
+> +++ b/Documentation/sound/soc/codec.rst
+> @@ -131,8 +131,8 @@ The codec driver also supports the following ALSA PCM operations:-
+>  	int (*prepare)(struct snd_pcm_substream *);
+>    };
+>  
+> -Please refer to the ALSA driver PCM documentation for details.
+> -https://www.kernel.org/doc/html/latest/sound/kernel-api/writing-an-alsa-driver.html
+> +Please refer to the :doc:`ALSA driver PCM documentation
+> +<../kernel-api/writing-an-alsa-driver>` for details.
+>  
+>  
+>  DAPM description
+> diff --git a/Documentation/sound/soc/platform.rst b/Documentation/sound/soc/platform.rst
+> index 7036630eaf016c..bd21d0a4dd9b0b 100644
+> --- a/Documentation/sound/soc/platform.rst
+> +++ b/Documentation/sound/soc/platform.rst
+> @@ -45,8 +45,8 @@ snd_soc_component_driver:-
+>  	...
+>    };
+>  
+> -Please refer to the ALSA driver documentation for details of audio DMA.
+> -https://www.kernel.org/doc/html/latest/sound/kernel-api/writing-an-alsa-driver.html
+> +Please refer to the :doc:`ALSA driver documentation
+> +<../kernel-api/writing-an-alsa-driver>` for details of audio DMA.
 
-All errors (new ones prefixed by >>):
+Don't use relative paths for :doc:. They don't work well, specially
+when one uses SPHINXDIRS.
 
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:5:
-   In file included from include/linux/crypto.h:18:
-   In file included from include/linux/slab.h:260:
-   In file included from include/linux/kasan.h:21:
->> arch/um/include/asm/kasan.h:29:2: error: UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-      29 | #error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-         |  ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      99 |                         set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     101 |                 return (set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     116 |                         (set1->sig[1] == set2->sig[1]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
+The best is o use Documentation/kernel-api/writing-an-alsa-driver.rst
+and let automarkup figure it out. As we have a checker, broken
+references generate warnings at build time.
 
-
-vim +29 arch/um/include/asm/kasan.h
-
-    27	
-    28	#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
-  > 29	#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-    30	#endif
-    31	#else
-    32	static inline void kasan_init(void) { }
-    33	#endif /* CONFIG_KASAN */
-    34	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+Mauro
 
