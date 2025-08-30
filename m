@@ -4,107 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E89FCA0EFF
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 17:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF51CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 17:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E60A6B000D; Sat, 30 Aug 2025 13:17:36 -0400 (EDT)
+	id DF4CE8E0003; Sat, 30 Aug 2025 13:21:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BE256B0010; Sat, 30 Aug 2025 13:17:36 -0400 (EDT)
+	id DCAC18E0001; Sat, 30 Aug 2025 13:21:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FB366B0011; Sat, 30 Aug 2025 13:17:36 -0400 (EDT)
+	id CE0738E0003; Sat, 30 Aug 2025 13:21:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 524C06B000D
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 13:17:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C930E1A020D
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 17:17:35 +0000 (UTC)
-X-FDA: 83834080470.01.72044A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BF4AFA000A
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 17:17:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W9bHNT9d;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BA4318E0001
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 13:21:55 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 65B12140178
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 17:21:55 +0000 (UTC)
+X-FDA: 83834091390.19.6638A61
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D6C50160014
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 17:21:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LRxkmCly;
+	spf=pass (imf08.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756574254;
+	s=arc-20220608; t=1756574513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s7hQw7nHFqj3xRUndBpg3KtR0VRxjI61BBFA/dqPbxI=;
-	b=Zks8eTbSsomfP0fWjQqqUXQNDQwOsQj5qXNzN3m3k3iqXS31hZ2LI5Yv51ZDcLlUr2I0d6
-	KCA/C2XgcsN9huzsifg6W34UO9MawsBvaDGStEUV5aWju2khRc4/jaKuw4fjuEMTs2U+QW
-	UJeHx9FVIXbtBuUZX/z7hr1jsOq+mfg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W9bHNT9d;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756574254; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6k3+B02e3odMmhUwmh0jFXp9oc5stRoyg/+si6Tj6Qo=;
+	b=wAIL+a3HrIdPNLmsNOJyzlHdnjZLAjxbqe8QquHEfw+G86hBk69OjR1V17ynPcpk3SjgMn
+	oMTs099d+J8+ZgFLIlnBi7NnwX+rfE9SH6UT1Otj6uTqobtj7RTfaEFgPeLnI/uHJ6k8gy
+	ikqBtkLyMzbAPxRtZje3f8Uc/41SWDY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756574513; a=rsa-sha256;
 	cv=none;
-	b=CwXM0Y2+UJU413xjNzfot17NBTZkg1sbYmBuHgpTxlN0O9xH//5Jw/nI4QWpGJfkXNGBN/
-	S9Yo9OD1/h0hsWk7ns9DNzxWsAAzXF+QUu1Jr8pr9++rXz0YZIIaNNaZn6DtRllIUcScg2
-	KJm7dzQNPyaTbLFZ2i6vo6upc4mmOWY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DE3F448CD
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 17:17:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53386C4AF09
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 17:17:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756574252;
-	bh=zYGWS+/CkrUPWyjkFxvoPxHf5pqXrVxA/dhPwOro6RM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=W9bHNT9d1L31wYLYzZKyDzSvpdtEZe2wbduQgjHmFvGQlMW9zlcEH4t38Rbv+JHfJ
-	 zNhwPQD2hyC/0sck6lXxbY69riXR07vWk0yJChbSypXGmERrAY4Y/G3sTnLOPbbG/m
-	 eZ02LP2rK73QBoBfBVilvxvTDnQe/ZZzcpEBSUpQ1+S5bAXZA9omFbbaVLbztTjF6B
-	 hqlNoVeXcdlKG/iMX5bpRKNLinE2Ijt/HRDvlnYLaTd4AQlv42EF6/zfBpIOti+YsQ
-	 NQlPKEaS9uWx8TFIMVdWaiIUu3RYWot6sZi71BnLUcQzclyBLt8RvBjdlbwUP+rfx0
-	 WpgFQsuU8WRjw==
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e96ff518c08so2513681276.1
-        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 10:17:32 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwvY0V9bPiAfeHni+nVG4VctUr/RnPXkFMCunVa9SSnZUFRp609
-	RTh3PHZdLBj5jx62cmMu75NQQe/Kc9srJWfnsy3I1VwxMl8kyIJnvxHd+Bjf9+bRtUQNSomSL1x
-	3nb5x5LHXxTfmVV4S/RVWbTewIJCRFIkTNMWIpBMTuA==
-X-Google-Smtp-Source: AGHT+IEdAhZDP+hdNmVRZ+bpKP98LzQNJPQlctmdKbNNJ6Tvh/8OZfNSaP9u+dd1GC3FYlNNBFbdEQO21IDezBANZBw=
-X-Received: by 2002:a05:690c:7105:b0:721:318f:85ba with SMTP id
- 00721157ae682-72276361f59mr24403037b3.17.1756574251353; Sat, 30 Aug 2025
- 10:17:31 -0700 (PDT)
+	b=Mf2Rk1y9kMcOq7dTKSsOeBI1Wo/XomHBfVkrm+MykNVu+/LNiyXbYxBIY10lvzKa/p+PN3
+	bY46C0rzt7Zs+vOGZfOq8ZVZiT7MjdnaOo2G1hd3tUT2FuuxuheCjxVOa7/hKu063WLP/x
+	FOAhTiUkAVv+Z6PmSN3nGKc7255rSkw=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LRxkmCly;
+	spf=pass (imf08.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756574513; x=1788110513;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SjSHcjvCde3zJDQywKyM3uK1xuv3N4Cpc+Gnd/ago6s=;
+  b=LRxkmClyPvgYeBCbTV+5NaafMDgPsOnYhTN5+LidUjZru5G7FP5YKRAU
+   6e/KFRs0m03HM83FFRWrDioz6EtPUXqKn6uj2yFKNWiFQXH7HothuYCmZ
+   EYCKqcVEf10g1wDGnkxM32a/XKttk/jDfaZ5r5okOW/ZXO4Oono+pNsym
+   SRm9zPVoDNyMq86r5CX/I6GIj0qVsXpdLbdvnlNTBwr7by3S6EQuDplay
+   ALDqH2vMgliGK8wKG11+s7/bTkcQlN/xMX40ULTZRxYsg/Dj6jlIvh2T4
+   g2XTNjVHjW66lF4qLOBr2K/AbUdafgWr5kUERWikcJ48+w0P3/4s2S8Vg
+   w==;
+X-CSE-ConnectionGUID: 5NcFcmAwSh+bG6qW5lb2GQ==
+X-CSE-MsgGUID: pd8DuHJFS+aleHQX5/LW2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62667497"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62667497"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2025 10:21:52 -0700
+X-CSE-ConnectionGUID: Jfuuo0EHR4Wm5UB3Y/DJpA==
+X-CSE-MsgGUID: DmgXPHlHSZ6zLrCKKM2ztA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="201524084"
+Received: from baandr0id001.iind.intel.com ([10.66.253.151])
+  by fmviesa001.fm.intel.com with ESMTP; 30 Aug 2025 10:21:50 -0700
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Subject: [PATCH v2] tools/mm/slabinfo: fix access to null terminator in string boundary
+Date: Sat, 30 Aug 2025 22:50:22 +0530
+Message-Id: <20250830172022.1927448-1-kaushlendra.kumar@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-3-ryncsn@gmail.com>
- <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com>
- <CAMgjq7AkUc7hKrEL8cQ7jJTeXYBq7WqM55uQ_SZNNY8vJ7+ODQ@mail.gmail.com>
- <CACePvbWnsrGxUv15R4kMpc10wsBE2Bc-rapGyBYjekrqFJgJbw@mail.gmail.com> <CAMgjq7B-Uvs7CcCdVaFjgzK6DEr47v7ULg6EbzE72OouPRFcSw@mail.gmail.com>
-In-Reply-To: <CAMgjq7B-Uvs7CcCdVaFjgzK6DEr47v7ULg6EbzE72OouPRFcSw@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Sat, 30 Aug 2025 10:17:20 -0700
-X-Gmail-Original-Message-ID: <CACePvbUrxe1ynqKpuaaU3DfEO8UHwiFgOdVv2OWvxs2Eiz6_Wg@mail.gmail.com>
-X-Gm-Features: Ac12FXzKH3DzMhXsO6Feyl6tISayrNok-qAv8F-WPT4_dkWAxnxoVPLD6zGRraw
-Message-ID: <CACePvbUrxe1ynqKpuaaU3DfEO8UHwiFgOdVv2OWvxs2Eiz6_Wg@mail.gmail.com>
-Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
- before use
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BF4AFA000A
-X-Stat-Signature: 3buxz7uua4oik9e64kqzea4bp6ybmb5a
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1756574253-742480
-X-HE-Meta: U2FsdGVkX19irumjsqQN6+RgJM0zpAzyWXoW5cGrOUZHuwnAi7dJ5Bfz0imCMrhXPPggXyPnwC2BvyssFFW93Ql9eD+Yv3nkqxX3pbnKGGjgBbRCYDMdenRn4Ul+dzkORVU6tm2VsBYJrJ5zq74hr5HZbMurAg+Gg8aJQgj3+s9Rc8ZzWF+zGiy29ZtUUqJuTQXayAClG9OEDnWsMsvdUGxhkjWCiAurJd8b83GK6gKoozpecphK4Lhj4nrWbrt9LyIZNEsfNDTDWSUmeFbWsdf2unAlYHLru8NP9f/kN4+tFJGxBq9uEq8GEnJ14a+PwWiTpu9+XKyFRlz9Y1WqJhh8H0zaQVOlXTDd9dnk5FUGUdQI0MTXy4YDYO1v/bze9KskKGhasVyQbYHl2xUAUXdIdrNThoRFmB5QAihFSkrmvxz7x1pEDqBdhk12fWjLgUOXzor+yAU4sIQy8FtpZtwf1Q9/b8FIHDLKkTSDVGbQhLziGAIgNNQP9Ew9kn0Wm60fQ6anYi7ZsaWxnTjQmu27M9dwmcNJUMxcvhZTQwJ623Zf0Ryc/vOzCOozlmVJg54o6n6kZqf1gWK9i6laTQhCRrLjlo6LXiF/pUYHbcidVZN4/jKobbsvu1YZeRS6sVwcm8nUqDgUxzgKtJlGJgbIke+ctQMH5xXoTIb8oTw6OIRBhqGZmRzASC1wKj88n13jJbGpIT0GZj/+1RNeu7QfaYRD+lWx7+An9GcyentY+POpxomhz8cSbYPgCO5QrVBW2OxshSlr5Telgy+4cHtb7lzr2eycu+NL1f9DstKk4oJmiNO0cXD8jvowveIPXh0xCnA6EGb6KmlbfehJPVSDeyfeb1+bLOnCs32wMY3Y4/zc+C90wGCq6ogOBBRe/Q48ns0TA7KmlP16SuhFlki5Ds8zFDslLuhwBRgGKgrgkV2agEacSlQdQLyk8GUF5LIwxSpaYOmbsVvGKnJ
- iBE8W5On
- RmIf9JxgxmaRuY4cHYPAKZKtnJmR73Ak69CIXfqYT5TW6TRdo30DIEl1WfGa1fbYYlyKMzWI2pxQl2qjQOWnEZSaVOI9TnFYlZrn7bK8AMaaEZK7W5LRXLo7tjudtWwd7unTsf//hCZPgqpdKLWrIvlJcxA6Sw9LGx4yiq8Hsxjxlo4lqRzdGHxy5boLK1Iy9MIKcwcZIT+as9YjNFlP0MLrb2GFpk3shCc/SrO5Mjw/0Vqp8VHj/+5+09ijdjNk4BRURbZhe8UsaGNVffRDus1RIqr2JvauX6yvp83evkgqJ5zojZReRL6fJKg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D6C50160014
+X-Stat-Signature: 359hqbc137h5ggqk7857pog4j16j8ix4
+X-HE-Tag: 1756574512-565388
+X-HE-Meta: U2FsdGVkX18s+fW2h77Q02223x2U8+opJzjstrOgGzhRqEFewEs7CASQm/qeL9ryXOWjc5+cuqiCzHecHzPw0/3rcOUMYzOzyMlBa3NXHW+5Mlyf1eWdvjcjkDRfEbGMrBWitvoLhU49YDsirEXNR0YX0eUc1HnuyepnzmaHJURuI+dgz0vtoE5cIk4rJun8VTYkOCer2W47zvRHioZQ/e5A35wTUX/ZeSXZ9H8VCl9qb2vMuT+7vpXzVFOM2jPX0oACQoZODA3K8WwprL9Fk5pPVTZWMsejdC4XiAxeG7uQAFY91ZuC92iNHPOzeEn1NujeyiafRWSCoeIl5Cp1D41OKixKazYLg0abeRstt2wQNthTp9hf5sVeKwFgRU5kvayNS+XYJ9EmiLZR2X3r25lWV6cTxcOTQbyFNvKKYiN5CH89AGsgTaW0qTlKwxbrtkwPNuHJngNM/L8Ifp4pv8y4DtWtHJ13Ka+WzNbiKyXtJINti1AvQpXkxEO+2IW/iv5uIuFqVhpdAIUHArGThWeBZUzwf15KfkXUDR4Lcle930qJ1jGY3sAj3To6WfaIT9fd3ACiRbxumMHW05ILTeTO/hI3kqAoZhJAEv2xZww50eO/ZsOQaK/77DRQzK/0m23QSnUKrJrLuRUAx6fiTvAWinMfitTGGvmG+ENtfYUvS3LhK3mytl7NWIouDuJkeNKTdtbsDw4/rH0Nz5INVjJU7r+dsWj+BVaBnD0FrpR/9/KHcbMitwQknjDbK3eYfAzLw2GP10bVv4sqwqqD3MGAB4Pd5V/D67YrGql8ijrCTm4AjQUA93SJwog8K/mT9smAniEeYNjmKmsNU+s7k7WfRM91Ln1Z3V2YZlOruvUpj2L92CI5tKIvHAj7V3UqEEazpOB3MvRGOzIQmfcHpq5COSNs90VnTzUuXjXGGajNCf1P9FzL6WR8YInW+qmapL1++psR3cGRazpFFYy
+ 9cohOLNO
+ C1ZT6c154ls9g5Hj1ZNGs9pQwEG/WP92uIPs2/sfvGWW3AUR3tkLn7+4OH5u18UHiet7UDbZeiDHNS6pgZaQ3EY7NYdqMPt1JaycqfitBq6pCMRA59opoQEIVGJ4JYzlpWmMZopCvyqHCsRWlOKn0BULrrcKz/elgyoiMEDoIJq9MCGQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,141 +101,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 30, 2025 at 8:16=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
-> > So the missing readahead stats update behavior is the correct and
-> > better behavior. I suggest you spit that out as a separate patch with
-> > appropriate comments about it too. It is also easier to bisect the
-> > commit if that kind of the subtle change which is considered safe
-> > turns out causing a problem. Causing problem not happen very often but
-> > it does happen before.
->
-> Yes, I'm planning to split one patch out for the readahead change.
+The current code incorrectly accesses buffer[strlen(buffer)], which
+points to the null terminator ('\0') at the end of the string. This is
+technically out-of-bounds access since valid string content ends at
+index strlen(buffer)-1.
 
-Ack.
->
-> > > > >  /*
-> > > > > - * Lookup a swap entry in the swap cache. A found folio will be =
-returned
-> > > > > - * unlocked and with its refcount incremented.
-> > > > > + * swap_cache_get_folio - Lookup a swap entry in the swap cache.
-> > > > >   *
-> > > > > - * Caller must lock the swap device or hold a reference to keep =
-it valid.
-> > > > > + * A found folio will be returned unlocked and with its refcount=
- increased.
-> > > > > + *
-> > > > > + * Context: Caller must ensure @entry is valid and pin the swap =
-device, also
-> > > > Is the "pin" the same as  "lock the swap device or hold a reference=
-"?
-> > > > Not sure why you changed that comment to "pin".
-> > >
-> > > Yes it's the same thing. We don't lock the device though, the device
-> > > can be pinned by the refcounf (get_swap_device) or locking anything
-> > > that is referencing the device (locking PTL the a PTE that contains a=
-n
-> > > swap entry pointing to the device, or locking a swap cache folio of a
-> > > swap entry that points to the device). So I juse used the word "pin".
-> > > I added some comments in mm/swap.h in later commits about what the
-> > > "pin" means.
-> >
-> > In that case why not reuse the previous comment keeping "lock the swap
-> > device or hold a reference" instead of "pin"?
->
-> I'm worried that the sentence "lock the swap device" is kind of fuzzy,
-> people may misunderstand that they need to hold si->lock. Actually
-> they only need to hold si->user or lock anything. It's not wrong but
-> kind of overkill.
+Fix by:
+1. Declaring strlen() result variable at function scope
+2. Adding bounds check (len > 0) to handle empty strings
+3. Using buffer[len-1] to correctly access the last character before
+   the null terminator
 
-What you just told me is a lot more useful than what was previously there.
-Try to incorporate that into the comments. e.g. instead of "lock the
-swap device", do "lock si->user or any other lock" or something like
-that.
+v2: Move variable declaration to function scope to avoid mixing
+    declarations with statements (feedback from reviewer)
 
-> > > > It seems to me that you want to add the comment for the return valu=
-e check.
-> > > > Is that it?
-> > >
-> > > Right, the caller has to check the folio before use, so I'm trying to
-> > > document this convention.
-> >
-> > Again, I recommend reducing the unnecessary impact to the code, make
-> > it more obvious what you did actually change. I spend quite some time
-> > there trying to figure out what you are trying to accomplish with the
-> > comments.
-> >
-> > > > > + * check the returned folio after locking it (e.g. folio_swap_co=
-ntains).
-> > > > >   */
-> > > > >  struct folio *swap_cache_get_folio(swp_entry_t entry)
-> > > > >  {
-> > > > > @@ -338,7 +340,10 @@ struct folio *__read_swap_cache_async(swp_en=
-try_t entry, gfp_t gfp_mask,
-> > > > >         for (;;) {
-> > > > >                 int err;
-> > > > >
-> > > > > -               /* Check the swap cache in case the folio is alre=
-ady there */
-> > > > > +               /*
-> > > > > +                * Check the swap cache first, if a cached folio =
-is found,
-> > > > > +                * return it unlocked. The caller will lock and c=
-heck it.
-> > > > > +                */
-> > > > >                 folio =3D swap_cache_get_folio(entry);
-> > > > >                 if (folio)
-> > > > >                         goto got_folio;
-> > > > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > > > index 4b8ab2cb49ca..12f2580ebe8d 100644
-> > > > > --- a/mm/swapfile.c
-> > > > > +++ b/mm/swapfile.c
-> > > > > @@ -240,12 +240,12 @@ static int __try_to_reclaim_swap(struct swa=
-p_info_struct *si,
-> > > > >          * Offset could point to the middle of a large folio, or =
-folio
-> > > > >          * may no longer point to the expected offset before it's=
- locked.
-> > > > >          */
-> > > > > -       entry =3D folio->swap;
-> > > > > -       if (offset < swp_offset(entry) || offset >=3D swp_offset(=
-entry) + nr_pages) {
-> > > > > +       if (!folio_contains_swap(folio, entry)) {
-> > > > >                 folio_unlock(folio);
-> > > > >                 folio_put(folio);
-> > > > >                 goto again;
-> > > > >         }
-> > > > > +       entry =3D folio->swap;
-> > > >
-> > > > Can you also check this as well? The "goto again" will have entries
-> > > > not assigned compared to previously.
-> > > > Too late for me to think straight now if that will cause a problem.
-> > >
-> > > Oh, thanks for pointing this part out. This patch is correct, it's th=
-e
-> > > original behaviour that is not correct. If the folio is no longer
-> > > valid (the if check here failed), changing the `entry` value before
-> > > could lead to a wrong look in the next attempt with `goto again`. Tha=
-t
-> > > could lead to reclaim of an unrelated folio. It's a trivial issue
-> > > though, only might marginally slow down the performance. Maybe I
-> > > should make a seperate patch to fix this issue first in case anyone
-> > > wants to backport it.
-> >
-> > Thanks for the explanation, please do split this subtle behavior
-> > change out with appropriate commit messages documenting your change,
-> > why it is safe and the better behavior.
-> >
-> > Thanks
->
-> Thanks for the review, I think separating 2 patches (one for
-> __try_to_reclaim_swap and one for readahead) out of this one should be
-> good enough and make everyone happy, overall the code is still the
-> same.
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+---
+ tools/mm/slabinfo.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-It is your call. I am happy to review them the same. It might take me
-more time to reason about it and slightly delay your series merge to
-mm-unstable, that is all.
+diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+index 1433eff99feb..d2e5b4e232b1 100644
+--- a/tools/mm/slabinfo.c
++++ b/tools/mm/slabinfo.c
+@@ -155,6 +155,8 @@ static void usage(void)
+ 
+ static unsigned long read_obj(const char *name)
+ {
++	size_t len;
++
+ 	FILE *f = fopen(name, "r");
+ 
+ 	if (!f) {
+@@ -165,8 +167,10 @@ static unsigned long read_obj(const char *name)
+ 		if (!fgets(buffer, sizeof(buffer), f))
+ 			buffer[0] = 0;
+ 		fclose(f);
+-		if (buffer[strlen(buffer)] == '\n')
+-			buffer[strlen(buffer)] = 0;
++		len = strlen(buffer);
++
++		if (len > 0 && buffer[len - 1] == '\n')
++			buffer[len - 1] = 0;
+ 	}
+ 	return strlen(buffer);
+ }
+-- 
+2.34.1
 
-Chris
 
