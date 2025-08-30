@@ -4,105 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2565CA0FF0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 01:42:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D8C4CA0FF9
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 01:54:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D03B38E0005; Fri, 29 Aug 2025 21:42:36 -0400 (EDT)
+	id A0E9B6B0025; Fri, 29 Aug 2025 21:54:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDAF28E0001; Fri, 29 Aug 2025 21:42:36 -0400 (EDT)
+	id 9BE036B0026; Fri, 29 Aug 2025 21:54:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C17A58E0005; Fri, 29 Aug 2025 21:42:36 -0400 (EDT)
+	id 887B46B0028; Fri, 29 Aug 2025 21:54:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B0BA98E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 21:42:36 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 21BBDC0A95
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:42:36 +0000 (UTC)
-X-FDA: 83831724312.07.00AEAB2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4F27D140004
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:42:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dLSQk+gh;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 711746B0025
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 21:54:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DCE971DEDE3
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:54:08 +0000 (UTC)
+X-FDA: 83831753376.05.75B4A21
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1162440008
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:54:06 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QdHGQGoo;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756518154;
+	s=arc-20220608; t=1756518847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vRxu4hhAzlJxktpfSsEWZDIQPkOFEvUFiEGylTRBpfc=;
-	b=t9tE6V5dxcg8dxwH3dW1H1gfUzq8AcoFqkrh99zmZlbgRhS5+iEdSTEzvFs6/eBTQLsktJ
-	leVf0bbUdP93WSBB3nrEuDuE8FLjKOgyfpBSzqJONVl0wPsGswH6NubuZD/OzYumPaEJh5
-	1CxHd2XWCcdaGGAw7JiMywgfeNuT0Do=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dLSQk+gh;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756518154; a=rsa-sha256;
+	bh=2W4dyk8J8cW1pwRTTdWwzYSoSq8kL8Ozw3jUcEu+SuU=;
+	b=UaCzDAayi3r+RsbbhwtRwH21ed/RZK0cND7YLmRQVmZsiA+LhCreQLExz7OXjLU/aG9yYc
+	hqqXIGSNDGolS8caDJ5+z+yS4peDkL4SayE2jTe6rU/UJW1uQqwoQUrxxlzymU/WIFDiDc
+	tuszGsdp0xFV3cEBx1cO32xwlC/9usU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756518847; a=rsa-sha256;
 	cv=none;
-	b=X3bKqZtqDYlCGI7uRPedxuZBv421waEjdVPIhAa3Y4ml60YOZ1A9f6ZgKyY2fUyWL4r76o
-	nuZDo16rTMqNr+xaWVCc2JrfH/pgJA7YWgTUbWv35CaT9A+VS+vZRnfII7RAcH/D6aeq15
-	Lok1K8HlnUS6HR0Q1zCV3lTNLRtVHm4=
+	b=ouCSBUQTqVcBxrBy6JQ/LNnMhLkD3em2XHSnrHOWptPOPeZNe7XULf+hpmOqzcRE8hbNIm
+	ZWvJNHhxHL0gXgTnkmcfWSOzFexjRkIaZuSZtStr0TZsLKXkEQVJR9ANwXpyQPbvUXcaXU
+	NIi38BQcCQWePtyZNapgMoWIDEbeq+A=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QdHGQGoo;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75BEF60191
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B429C4CEF7
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:42:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B0A75455CB
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:54:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E089C4CEF9
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756518153;
-	bh=1BdOkDsxUViW8TkDK+QZwdvtemhOptK1QYTppmdS15w=;
+	s=k20201202; t=1756518845;
+	bh=ege+hdo/NEDl5bVu2HF6qh6wJNLzx4jRvmLsvzMn2x0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dLSQk+ghgYBTuTx/kf1oHly3EU51ydMwzoisWx3mOhtis2b6l2H3YwcubVAwunJY1
-	 Pmxy7bpUBUOpwGWKbNewYVfZYaP+c+AOEn6yLv91JN6k2l9ObFS6HcV/bHxkT6GS/C
-	 b8facSsn8bePGIXZe3UazGbvPcKOGWz8+H4VJk4QMCwXjP6kDH7OpBzV1tntcXa+v9
-	 9xji8RgQldK7wGhxIagfIcnctXvM36oriOY3hJOhCgV0Cy4PofQl5Tabw4fO9nL/8D
-	 ZX1yHVRqoEYG/ywHJJO3EeKkDIbLvqCG1FhtFeNnl3tanZIXlQvcYOHK22GFNZfwMD
-	 QU3ZZSr/3/2Mg==
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-71d71bcab6fso22551547b3.0
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 18:42:33 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzmdKXbNL6Rr/cEQvQOnY0usriW38YKuEk6s8c3i8QifJGKY8Wm
-	lNmyat6o8R0v35YqD8/pZncm3K3h9hhCvk/SeVPzfZPtVZpgBy21/bjq/n0pqdzfCgNMDJdlBAI
-	mNCKx62L3eNo6NzL/OIL230bodTcYRE/oeruLjL8hDg==
-X-Google-Smtp-Source: AGHT+IHF6KxVOHS3kToYOuE6Kd/lPQ/gBnZx1Kg68zofo0+ra/ynZ0uZP+ZHCp18rV6vFNpvM39l7s2nZtXQUnYJhMg=
-X-Received: by 2002:a05:690c:4803:b0:71f:b944:ffc with SMTP id
- 00721157ae682-7227657ee6cmr6792617b3.47.1756518152404; Fri, 29 Aug 2025
- 18:42:32 -0700 (PDT)
+	b=QdHGQGoo83RrwtkK94aa+YmoalGy22EoLSWJRK2acQzpAKmHAPSkEETJyvnBO7rW6
+	 poVhTZ8Wr4W6FhBD7A5pKPnatWLHSnbUdr4T9TGRc4iSIiM2dizpFdtH0UFF1U2EbB
+	 DRNOk8yaVKZZ4geziUQVLEwUutsBCdmUElGZq6F0mGAWGf1OexB8cemIDG+ZcaL/iq
+	 rDi3oHRXgqMkz1ROzE1zvcug5LGADDgDauSpssu35NvczW7H6LhxISBp/F1U8E3IU1
+	 HzSpZj2LHVraPOJ6vlyXz3Pqyhy/oREdnbP+Ddo10DB9TumzuNc/wBMmB5Lnn7ELk9
+	 R7VXO9VHAwPEg==
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-71d603b674aso18358137b3.1
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 18:54:05 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yx8ZwYkojfyZVpkYSVk0/B/H6e6TOzFcUHCH7lO1j7sxSWMOkaz
+	i56VHQCrhxfzpIwJbxPt8R4a9BiASLStNeJ9DXpY/z0qjw8tnsHxN916j/z+XE1YFmhitivmUyr
+	5gwz8enpKKQCBo7O2lFxT5RUgX4U639RbK1JO17crgw==
+X-Google-Smtp-Source: AGHT+IGBZ1xL6FdwTO9yXaxuU6Nt58z3MWQ9+wnEUCEIX9zmetn0MTjllloph7ia1dbpPu0gIUEf8L0hQ0/Kiuu3Lrs=
+X-Received: by 2002:a05:690c:358a:b0:71f:9a36:d33c with SMTP id
+ 00721157ae682-7227656413cmr6269987b3.46.1756518844763; Fri, 29 Aug 2025
+ 18:54:04 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-3-ryncsn@gmail.com>
- <CAF8kJuMX_WTg7vyACBxskNmDHB4C-ZkowuKYP71gQ8qyKuwAaA@mail.gmail.com> <CAMgjq7D3EiLOyEQiR+Uq6mTdXajMCg4+A+KRZajE91kbTw=tHg@mail.gmail.com>
-In-Reply-To: <CAMgjq7D3EiLOyEQiR+Uq6mTdXajMCg4+A+KRZajE91kbTw=tHg@mail.gmail.com>
+ <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com> <CAMgjq7AkUc7hKrEL8cQ7jJTeXYBq7WqM55uQ_SZNNY8vJ7+ODQ@mail.gmail.com>
+In-Reply-To: <CAMgjq7AkUc7hKrEL8cQ7jJTeXYBq7WqM55uQ_SZNNY8vJ7+ODQ@mail.gmail.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Fri, 29 Aug 2025 18:42:20 -0700
-X-Gmail-Original-Message-ID: <CACePvbUYDfne6mZ32c3YzxcwH16u-G3YXoYoGaXL5EtxjDH8mw@mail.gmail.com>
-X-Gm-Features: Ac12FXzMEbrDM4n3UP1sqECYx8QlPnei49nlNt0dz5bDLhFiqVQ13GZT36zH2fw
-Message-ID: <CACePvbUYDfne6mZ32c3YzxcwH16u-G3YXoYoGaXL5EtxjDH8mw@mail.gmail.com>
+Date: Fri, 29 Aug 2025 18:53:53 -0700
+X-Gmail-Original-Message-ID: <CACePvbWnsrGxUv15R4kMpc10wsBE2Bc-rapGyBYjekrqFJgJbw@mail.gmail.com>
+X-Gm-Features: Ac12FXzjoYWbR33a8qw8WcX8eQ87VF6jdqd98ld297qjjjUhlL6PIubCngMCzzs
+Message-ID: <CACePvbWnsrGxUv15R4kMpc10wsBE2Bc-rapGyBYjekrqFJgJbw@mail.gmail.com>
 Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
  before use
 To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
 	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
 	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	LKML <linux-kernel@vger.kernel.org>
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4F27D140004
-X-Stat-Signature: adx1z6a7nyd6btsafjuuhsusnuz39sw6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1162440008
+X-Stat-Signature: ps473s1r4pwytoe797i9wzdnh1y3etrq
 X-Rspam-User: 
-X-HE-Tag: 1756518154-995346
-X-HE-Meta: U2FsdGVkX18IJx0UVN19CT2OC682JRmcIlbLuDAJGDTeb+Bk7kMWsZh031fjYtM9PuB0E58As40HJEQz/XQ9iJ6yq+gUZsxRuTGxB//03lUfsJWgPJqzzdJ9UsurawLh4c+O18zTny9lz/dUvf+TAAKaB0GY4MRkbYcPaJRfuppqFi7t7zC6OX2T/lzlPYDa1xG3THQC8eafTNaiy2YeNSJglxC2hlYOMQHmS+Eeo+zTYmRBjhBIHu014H7zQ2zvqyL04fltcXlwW+jxx4/Erk9E1A7GIf7eIQvOymc6hmF0UvglZUGi0CEZ5BaAavbw8r2irXAu9M2dDOCZyAQxulH99QwUqXfB/Z6/wsPDqY8/UWjHE0H7mW2l0aC8osOtTxzA1cBLtZW+gu4blZj/5llXdoalHhN+upqtg/wwoOa6Z+5cTARRQhezHm9xGSb2UfU+FyuVd/xnunFM3aYKjLksK2dn9Y9FF97sptoeK5EyDupyJvupLxdF7/Oi1iZ6d4aUp8F2x1ldTUYexpTp0KEaKiul9j9UEMe9Kyi/ZDrDERaqOrJK4GxxZZmeKJ80tOLc6nj1JwqG5Z6O/JU0wvScEZ7bZn3PD2g+EvXqV7AVcHgURuwr/X/5B0si1JL0uctI87A8Y+JldeOVChRJXbRLTKLKlzaV8wwEBfffTo2v96bhKt0XbBnOfatTQhyp4TlDV6345qD3feMLsZJzcFP2buqS8hQ/Mc70vykxjtuyezvzHlVtALczm4u1Uv1J/Lh/TWG/JWshjI8Ifyr1jqEE3vpYA23VXD5f7UtIvZWzJc4rGnTpenT9mCQHrEQ+LrboZITaPwm5neYIZpZq+oFWFB9nBBKb2mjNcO/bFa6dS9HkMmd+ALE1YW21BLgOf0lTKmfWTLGWjIzH7YQ+q2Qsy9z3p93rcDDpqLQ8uh7t+DtBnM0tQpQXBI3Bv8b+l4dawJXGtNa9qeqCVOX
- 7wYdkFmV
- Vfs7EkZg4OhS8NVhA1cFwSIPmfpNxVrqOVXYgPvvYCkDb1UKe13WOqcNVVrPnMWMOXF1OZxiP83vMyt5LL+LiOhQINjSswIF51Fgc+63afb9Ess6DGBNTUdCAll4xaANfc9Zkdjvek0VDAI6aWCHtCQINDbYValouWGai5iiZrKQr4q11wOOnGhHLIb3xVIvyoVGAevx+/reSr88OD7Ak2xdpaR6hMNX2fTsbOlww+ahoNgULZ8nPDMgEe+ugOf9XBhvPUDCs0n8Zwrpp0XRIfudSQpl92FfSF3N7GdvYxV8qvDGlG4iQQLtyxd2bNM38hw++UGQ1iYCxvCA=
+X-HE-Tag: 1756518846-811562
+X-HE-Meta: U2FsdGVkX19dMb60RISK864/7LBw5f17lyAoxj+GXdBVcrSR8c3RlZHPPH9CWWfdF9yu/Xy8u4Ltrhi4VMlJxo3Y7JhiLd+Ae60TYxkC5hiFM6LRSspl9EDYwqvBzPDhfuq9U9VZ/AtbIa+Fz32mU54yq+Jq+53tJRnCmsK/cM5byRrSnyskB+W1pNSDzLVDuT7BAM7NQzaMBKux6GlLHORI+TuffswUDxmBP6A++2s6uXJ4XnsYRhoVaFtp8D2WCiEBGJAt14yQoVno5iCEOZyaDgByX9DJz7Y7/L1GaWgKLzeEsSsv8zWOhTuZVA/uNoey32RTicpmZPHDJybsLFl7Hibicpmh8pmeSsRXieaYkor7YiCgYw28DpW3TDMQB3UZPQiPeZsINcnrqf5+g2tL80ugRfGcsB9Ujr3aUiBOBiCTxW2G1yr2YV03gKKkyadSAxmUc6Y/xdFOpi9p6D76zrB4w/UQv/fbrmIOU2QKfcMs7VCJ1Zs3BLUx4WBgfPIz4RJCfwAGLH+qHDUyShesBq2jiq5MfiAx+HQ8ZUn2lY0LagXKzObzFXpqu5YoDuUeZClrP0ocXztYKp9rUwzeUMWZpxXfLiVAMT3LurIofKP6DYG+CxcUYikS1HyuHt3qSKGc8HFDFcyV8m81wrsxxj6pEuycNw5YNVQ1C8ABx4Aks17AuIbcxD6Iw4LWBzeOT2X4SccQ7Ri36w6kWVlrxxoU8vHPxLlvhKyBPUGi0Hf2T5UAoNJhNrGpxwn73VqWCrEiaaoDNRuaTM182GReej8uBQ5QDMB+biJz51tVw8b9MSCK3PsDZixW/c5Txys/Es22Hkeq7H7l66yqv874h5eKEJbY8+ZXPd0DrAQeMsybDN+4+rDcWbv2EKG6G42oi10yQk69GjsvZSexYLfFUm9HklX920l/Jks9le+eeY8qw5K56qYAG6CaySa02CBQnFpVrixtEthUS4y
+ /+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,134 +110,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kairui,
-
-Sorry for the late reply. I have been super busy this week.
-
-On Wed, Aug 27, 2025 at 6:44=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+On Wed, Aug 27, 2025 at 7:36=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
 e:
 >
-> On Wed, Aug 27, 2025 at 4:06=E2=80=AFPM Chris Li <chrisl@kernel.org> wrot=
+> On Wed, Aug 27, 2025 at 4:21=E2=80=AFPM Chris Li <chrisl@kernel.org> wrot=
 e:
 > >
 > > On Fri, Aug 22, 2025 at 12:21=E2=80=AFPM Kairui Song <ryncsn@gmail.com>=
  wrote:
-> > >
-> > > diff --git a/mm/memory.c b/mm/memory.c
-> > > index 10ef528a5f44..9ca8e1873c6e 100644
-> > > --- a/mm/memory.c
-> > > +++ b/mm/memory.c
-> > > @@ -4661,12 +4661,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >                 goto out;
-> > >
-> > >         folio =3D swap_cache_get_folio(entry);
-> > > -       if (folio) {
-> > > -               swap_update_readahead(folio, vma, vmf->address);
-> > > -               page =3D folio_file_page(folio, swp_offset(entry));
-> > > -       }
-> > >         swapcache =3D folio;
-> > > -
 > >
-> > Can simplify as:
-> >            folio =3D swapcache =3D swap_cache_get_folio(entry);
+> > > diff --git a/mm/shmem.c b/mm/shmem.c
+> > > index e9d0d2784cd5..b4d39f2a1e0a 100644
+> > > --- a/mm/shmem.c
+> > > +++ b/mm/shmem.c
+> > > @@ -2379,8 +2379,6 @@ static int shmem_swapin_folio(struct inode *ino=
+de, pgoff_t index,
+> > >                         count_vm_event(PGMAJFAULT);
+> > >                         count_memcg_event_mm(fault_mm, PGMAJFAULT);
+> > >                 }
+> > > -       } else {
+> > > -               swap_update_readahead(folio, NULL, 0);
+> >
+> > Also this update readahead move to later might have a similar problem.
+> > All the bail out in the move will lose the readahead status update.
+> >
+> > The readahead deed is already done. Missing the status update seems
+> > incorrect.
 >
-> checkpatch.pl is unhappy about it:
+> Thanks for the detailed review.
 >
-> checkpatch: multiple assignments should be avoided
+> The only change I wanted here is that swap readahead update should be
+> done after checking the folio still corresponds to the swap entry
+> triggering the swapin. That should have slight to none effect compared
+> to before considering the extremely tiny time window. We are only
+> following the convention more strictly.
+>
+> In theory it might even help to reduce false updates: if the folio no
+> longer corresponds to the swap entry, we are hitting an unrelated
+> folio, doing a readahead update will either mislead vma readahead's
+> address hint, or could clean up the readahead flag of an unrelated
+> folio without actually using it. If the folio does get hit in the
+> future, due to the missing readahead flag, the statistic will go
+> wrong.
 
-Ah, never mind then. I actually like multiple assignments but I can
-see checkpatch wants to ban it.
+So the missing readahead stats update behavior is the correct and
+better behavior. I suggest you spit that out as a separate patch with
+appropriate comments about it too. It is also easier to bisect the
+commit if that kind of the subtle change which is considered safe
+turns out causing a problem. Causing problem not happen very often but
+it does happen before.
 
+> > >  /*
+> > > - * Lookup a swap entry in the swap cache. A found folio will be retu=
+rned
+> > > - * unlocked and with its refcount incremented.
+> > > + * swap_cache_get_folio - Lookup a swap entry in the swap cache.
+> > >   *
+> > > - * Caller must lock the swap device or hold a reference to keep it v=
+alid.
+> > > + * A found folio will be returned unlocked and with its refcount inc=
+reased.
+> > > + *
+> > > + * Context: Caller must ensure @entry is valid and pin the swap devi=
+ce, also
+> > Is the "pin" the same as  "lock the swap device or hold a reference"?
+> > Not sure why you changed that comment to "pin".
 >
-> >
-> > >         if (!folio) {
-> > >                 if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
-> > >                     __swap_count(entry) =3D=3D 1) {
-> > > @@ -4735,20 +4730,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >                 ret =3D VM_FAULT_MAJOR;
-> > >                 count_vm_event(PGMAJFAULT);
-> > >                 count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
-> > > -               page =3D folio_file_page(folio, swp_offset(entry));
-> > > -       } else if (PageHWPoison(page)) {
-> > > -               /*
-> > > -                * hwpoisoned dirty swapcache pages are kept for kill=
-ing
-> > > -                * owner processes (which may be unknown at hwpoison =
-time)
-> > > -                */
-> > > -               ret =3D VM_FAULT_HWPOISON;
-> > > -               goto out_release;
-> >
-> > Here you move the HWPosion(page) bail out from before taking the page
-> > lock to after the page lock. The HWPosion page should be able to bail
-> > out without taking the lock.
-> >
-> >
+> Yes it's the same thing. We don't lock the device though, the device
+> can be pinned by the refcounf (get_swap_device) or locking anything
+> that is referencing the device (locking PTL the a PTE that contains an
+> swap entry pointing to the device, or locking a swap cache folio of a
+> swap entry that points to the device). So I juse used the word "pin".
+> I added some comments in mm/swap.h in later commits about what the
+> "pin" means.
+
+In that case why not reuse the previous comment keeping "lock the swap
+device or hold a reference" instead of "pin"?
+
+> > It seems to me that you want to add the comment for the return value ch=
+eck.
+> > Is that it?
+>
+> Right, the caller has to check the folio before use, so I'm trying to
+> document this convention.
+
+Again, I recommend reducing the unnecessary impact to the code, make
+it more obvious what you did actually change. I spend quite some time
+there trying to figure out what you are trying to accomplish with the
+comments.
+
+> > > + * check the returned folio after locking it (e.g. folio_swap_contai=
+ns).
+> > >   */
+> > >  struct folio *swap_cache_get_folio(swp_entry_t entry)
+> > >  {
+> > > @@ -338,7 +340,10 @@ struct folio *__read_swap_cache_async(swp_entry_=
+t entry, gfp_t gfp_mask,
+> > >         for (;;) {
+> > >                 int err;
+> > >
+> > > -               /* Check the swap cache in case the folio is already =
+there */
+> > > +               /*
+> > > +                * Check the swap cache first, if a cached folio is f=
+ound,
+> > > +                * return it unlocked. The caller will lock and check=
+ it.
+> > > +                */
+> > >                 folio =3D swap_cache_get_folio(entry);
+> > >                 if (folio)
+> > >                         goto got_folio;
+> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > > index 4b8ab2cb49ca..12f2580ebe8d 100644
+> > > --- a/mm/swapfile.c
+> > > +++ b/mm/swapfile.c
+> > > @@ -240,12 +240,12 @@ static int __try_to_reclaim_swap(struct swap_in=
+fo_struct *si,
+> > >          * Offset could point to the middle of a large folio, or foli=
+o
+> > >          * may no longer point to the expected offset before it's loc=
+ked.
+> > >          */
+> > > -       entry =3D folio->swap;
+> > > -       if (offset < swp_offset(entry) || offset >=3D swp_offset(entr=
+y) + nr_pages) {
+> > > +       if (!folio_contains_swap(folio, entry)) {
+> > >                 folio_unlock(folio);
+> > >                 folio_put(folio);
+> > >                 goto again;
 > > >         }
-> > >
-> > >         ret |=3D folio_lock_or_retry(folio, vmf);
-> > >         if (ret & VM_FAULT_RETRY)
-> > >                 goto out_release;
-> > >
-> > > +       page =3D folio_file_page(folio, swp_offset(entry));
-> > >         if (swapcache) {
-> > >                 /*
-> > >                  * Make sure folio_free_swap() or swapoff did not rel=
-ease the
-> > > @@ -4757,10 +4745,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> > >                  * swapcache, we need to check that the page's swap h=
-as not
-> > >                  * changed.
-> > >                  */
-> > > -               if (unlikely(!folio_test_swapcache(folio) ||
-> > > -                            page_swap_entry(page).val !=3D entry.val=
-))
-> > > +               if (!folio_contains_swap(folio, entry))
-> > >                         goto out_page;
-> > >
-> > > +               if (PageHWPoison(page)) {
-> > > +                       /*
-> > > +                        * hwpoisoned dirty swapcache pages are kept =
-for killing
-> > > +                        * owner processes (which may be unknown at h=
-wpoison time)
-> > > +                        */
-> > > +                       ret =3D VM_FAULT_HWPOISON;
-> > > +                       goto out_page;
+> > > +       entry =3D folio->swap;
 > >
-> > It seems you bail out with the page still locked, that seems like a bug=
- to me.
+> > Can you also check this as well? The "goto again" will have entries
+> > not assigned compared to previously.
+> > Too late for me to think straight now if that will cause a problem.
 >
-> I think it's the original behaviour that is kind of fragile. The
-> returned folio of swap_cache_get_folio is unstable unless locked, so
-> the folio could have been removed from swap cache or marked by some
-> other threads as Poisoned. So the PageHWPoison here could be tested
-> against an unrelated page, which leads to false positive PageHWPoison
-> results. We have encountered several similar bugs due to using folios
-> returned by swap cache lookup without lock & checking first.
->
-> So checking HWPoison after locking is actually safer.
+> Oh, thanks for pointing this part out. This patch is correct, it's the
+> original behaviour that is not correct. If the folio is no longer
+> valid (the if check here failed), changing the `entry` value before
+> could lead to a wrong look in the next attempt with `goto again`. That
+> could lead to reclaim of an unrelated folio. It's a trivial issue
+> though, only might marginally slow down the performance. Maybe I
+> should make a seperate patch to fix this issue first in case anyone
+> wants to backport it.
 
-How do I verify the code can handle HWPoison from unlock to lock page?
-I haven't followed the HWPoison path very much. I am still wondering
-how does the HWPoison code handle the page previously unlocked, now
-become locked and without any additional code change?
+Thanks for the explanation, please do split this subtle behavior
+change out with appropriate commit messages documenting your change,
+why it is safe and the better behavior.
 
-If you want this behavior, I strongly suggest you split this portion
-of the change out, ideally outside this 9 series if you can afford to
-do so.
-
-This patch description has nothing mentioning this kind of subtle
-behavior change, as a reviewer I am caught off guard by this. At the
-very least the commit should mention this. Talk explains why this
-change is needed and why it is safe to do so.
-
-Having very subtle behavior changes buried in a large code restructure
-change is the worst. Splitting it out will reduce the reviewer's
-workload to reason this behavior change, and makes your series easier
-to review.
-
-Does it make sense?
+Thanks
 
 Chris
 
