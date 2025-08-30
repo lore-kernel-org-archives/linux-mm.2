@@ -4,110 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E80FCA0FFF
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 07:13:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85CEBCA0FFE
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 07:46:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27CDF8E0002; Sat, 30 Aug 2025 03:13:30 -0400 (EDT)
+	id 4C2C16B002C; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22D508E0001; Sat, 30 Aug 2025 03:13:30 -0400 (EDT)
+	id 49A556B002D; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11C1E8E0002; Sat, 30 Aug 2025 03:13:30 -0400 (EDT)
+	id 3B0186B002E; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ED4268E0001
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 03:13:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3A8FDC0B19
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:13:29 +0000 (UTC)
-X-FDA: 83832558138.10.265FC7A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2E44B8000B
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:13:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PCssmDBy;
-	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A5166B002C
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9DDC1A0A57
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:46:32 +0000 (UTC)
+X-FDA: 83832641424.16.AC5F785
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	by imf23.hostedemail.com (Postfix) with ESMTP id AE345140002
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:46:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=adeoXofh;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756538007;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756539990;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bRAXwpMF7ThHS3khWlEvYlZ1AgmOXNx370Uon8WsVCk=;
-	b=IZc9f3Tr0fNrbVNMRwxlohAFxeCZU1n9JZAeSpq9IkNpLo8f3hT3wYGmzjehpnv1KhqGr7
-	D0VWHqxwS8O+d6S5klTTVYPaPBKt9zZD/A4K+JQ/OQkUg+uCSKHXxvlLscTODEw8rzKgPv
-	lJkG7T6iW52N6h98F8/4cQr9Gbn5UA0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756538007; a=rsa-sha256;
-	cv=none;
-	b=4EZx5ztiSgLnlGvBSxu2hV5kSMh+55y6awP6hDcDIulXP190i9KhkQrYtazjvWuoiV+eDq
-	ccslvRcsUcVNdDTBS38G+QmQsPzFluHz3oLlrs1Qqp9bkwZ/5XNxloyJ7hsvWdyAgokNyR
-	hYAtoUlSClAcJhzPxCOfvhZLCCr2VVc=
+	bh=dXtX9Frtab9UqXTSJxGjWOLKxBJrHqjflBYkitY6e9s=;
+	b=LbvBu9h3unY2R++ZAKC7hTP6xyQ03dg/Te6g7/lTlibLsUsxaxOW1M4XeDNb3KrdCqslRJ
+	MKDZnLD5cObngloZHvIEzU4JqxI/Ub/F09dCo9pNwCNeknh3PAhOQb7BV3jfCNUEEJyIWy
+	L1kAt1dFNuvbGROkWklPN+TSVKdzSPM=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PCssmDBy;
-	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ACDAD442F2
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:13:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5C6C4CEFC
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:13:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756538005;
-	bh=Rto1SfeQEwgVt2SXLt12f5WUHdKs23dkql68LsRgmQc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PCssmDByNzziFHYhKRiiCjNGOyrBPXf9exjjb9nOpw7sEM1XxsPYqe2ELIoa/ycdC
-	 uzoQ+3Pqe2l3K8/U0kX99qRVlc8Wwc3jzTBfGjCbYvwP48fTFujep1mdWW4XqJVMoS
-	 L2+rYXCVEm/whDl8+YS2FHo0U+KI/5DYypEQnLgMNqNvTSwtjxzTu2tC0oxYIYuDTn
-	 hFqFKeO+w6dXjU+aqMW8xHTUO65MeoZXQokb1NzkQsyuHTzxMta8AvIA8ZiQZgF7q+
-	 +l9Hdi5tlo1XGj3/4kjKo2w2DfZ/1S/CaO57ffbhf/rBOhL2UFMOVkq4K9dXSbduLr
-	 zGgp7CP5biGPg==
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e97021a3695so2011184276.3
-        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 00:13:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWHlcdJAhY9AkGuZtWk8AC91eD9YAKVlIKsfIQsOg6rBpqZvVQ2vZzk/OOakYrH0MPLThF+osZ/xw==@kvack.org
-X-Gm-Message-State: AOJu0YyhKfzxhnYgTKkk6/uVGCwgqdH0MRnosSDBW1vpnwJ9BrOLayg/
-	aC53loRzudNrKkaeGJDvcuTICh+SvNsPT1jby85OCttkBSDg04W+iDt+R5VoFEZqT9RGNdUPE/T
-	iBBxv0yRgHoKj3oooeqmH/zswNBnS3TZSXYvX8ilAQg==
-X-Google-Smtp-Source: AGHT+IEG4klphVqOjGx2D2qSDQ8Jl+i3TnCO4eJoe/IuFDAp9yWinCMp/GZHxiz+Cs0fFle255dbNjX8FpV9wu091ss=
-X-Received: by 2002:a05:690c:6d8c:b0:722:6a6c:c010 with SMTP id
- 00721157ae682-7227633350bmr10948847b3.8.1756538004516; Sat, 30 Aug 2025
- 00:13:24 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=adeoXofh;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756539990; a=rsa-sha256;
+	cv=none;
+	b=3oXoQdqbixo/A4s+nSjrhlnOruR4RGO1Ha4mzLPsjnFsDDTsW9HGhJX27rPr9G8HckDYmL
+	km5R9CpLPifk5kweBvbGoZNBn1oG/C7rMFfJi0aPiRrwuIrcHvOjzsKJCu9i3nKhbYtH/J
+	gvWY5VfMFeiYCa0bsJrLgRB7Xiu7FFk=
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61ca9a5b41bso3790314a12.1
+        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 00:46:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756539989; x=1757144789; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dXtX9Frtab9UqXTSJxGjWOLKxBJrHqjflBYkitY6e9s=;
+        b=adeoXofhurYp6UNAS1pXWm3IExQmMPDcGBqIx/5hHob7tvOd3XrpPJPqGERgCXMQbu
+         7hp6Ub+xlx2WCMfxBBZm2I9YM+jMqU3lqMDU2p+xTTiGZzkw+OJI6hpN/8Km6Pts19JD
+         7pS7TiR2Ghx3As65Uf1LSt0UXhEBbppwW01w+EPD1Kn7CrresgSuivDUAcsJaJJJ28GU
+         8WJ3QN8qD8YNtSJYD3ksOyFH/0/yyiVihPO0eqO4usZ4ooCokWzCmr7SWZSL4NXxz8+c
+         sMgDe4/KZNQLc2MFpbdNAPZg3nI+fd2bN4S8JqgumIHrMr2CPN0K7QCJPFkk3aX7iG8u
+         a0Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756539989; x=1757144789;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dXtX9Frtab9UqXTSJxGjWOLKxBJrHqjflBYkitY6e9s=;
+        b=gHi4+r7YAX+U++kyo6NUFzekz4sdrbd0uDfOPk/bzehzHxFIvS804qLQJVGPYdgeBP
+         E9765jQxBVrnHYgrAuDKVW8qrgV2k7A3hkZl21tKbNQTnB5Cv4YrxlCCJVw2lZNBtF6I
+         76alILntfd6vb3eL/b9ntTraeCihYad7kXwWLXO5uR579WX0++w6gyNT5g/2VqIQ+k+I
+         Iv1ISJTV/ywj9T6OqoiDvfHiT5XXUAznsxuugXkgpkCUP/eZVncaS1H2DAKS0ZoCdSPJ
+         tIlpTGH4lrcatUnn3XHxu0zTwNGFoNxGqAeIbP7/r1u1zrKXBX3184DfWfPM3wufbd+q
+         VA0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXhiPK/C2dOwVXqj8Rfv9e+Hwxiix+nP/3oLV2PpqedcDCd6WNN7C4pEtZF09f5hsYYSpOl7aKLPg==@kvack.org
+X-Gm-Message-State: AOJu0Yxxjtr9HltEQUHB7DvMDCgrTsI56PQlX2mv84Noaisvc/Nn2y1M
+	GJewEVtSVbCaPlxwngT8ogLXk+FUiKwkZXahxCCW1RG2HKde7EMwh5rU
+X-Gm-Gg: ASbGnctChtfSaz19YoBlVIBA0isLoVZWLc3KVzkszwirCNJEU4jWgQPjoHF9NgfvqP+
+	r0GIkThsqqewuoM7JLon/AUlbdMcwwItHPyJmxWp0Kqr8AqpaKytiRyxefnVAHSaxuiQTyVxev3
+	6OhNquIG0QjLSpPKy0GquoygpzKKrGCH3Dm1CV6rkios+ZrIufkPkxudzmPAdRneTOPp9YjEjPs
+	edsjjBmQTlQj7UwENcW0HZT/Rc31WyIAmLd3ILAWRT9s2fhvhlKOx8DNHsSES+E8zn06ELRfgg/
+	xRJunqrpVCfdJcEs4sCF+OiO+3bc1xA/HVhQqUiC0LTqeP+wx4gIXNlmv8K2yXNCBlTkDauMi3x
+	JFJ1EdWFrLeFCvVzbwjjrm8nQrw==
+X-Google-Smtp-Source: AGHT+IF+y93hNDhCFHUAbkTqB7bJ7rRk1NYfczRqTKcmtM/XlUDeBnRrXCkQu4Z3SKAA1EblyKm2yQ==
+X-Received: by 2002:a05:6402:3589:b0:61c:6fb9:c83d with SMTP id 4fb4d7f45d1cf-61d269881c8mr1010269a12.7.1756539988770;
+        Sat, 30 Aug 2025 00:46:28 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc1c7edcsm3185195a12.6.2025.08.30.00.46.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 30 Aug 2025 00:46:28 -0700 (PDT)
+Date: Sat, 30 Aug 2025 07:46:27 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, david@redhat.com,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: directly add pagesize instead of increase
+ until page size
+Message-ID: <20250830074627.pitdp64svss6slyk@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250830023102.14981-1-richard.weiyang@gmail.com>
+ <20250829200953.1757e85542b1126c4881d600@linux-foundation.org>
 MIME-Version: 1.0
-References: <aKROKZ9+z2oGUJ7K@yjaykim-PowerEdge-T330> <CAF8kJuPUouN4c6V-CaG7_WQUAvRxBg02WRxsMtL56_YTdTh1Jg@mail.gmail.com>
- <aKXeLCr9DgQ2YfCq@yjaykim-PowerEdge-T330> <CAF8kJuM4f2W6w29VcHY5mgXVMYmTF4yORKaFky6bCjS1xRek9Q@mail.gmail.com>
- <aKgD7nZy7U+rHt9X@yjaykim-PowerEdge-T330> <CAF8kJuMb5i6GuD_-XWtHPYnu-8dQ0W51_KqUk60DccqbKjNq6w@mail.gmail.com>
- <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330> <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
- <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330> <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
- <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
-In-Reply-To: <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
-From: Chris Li <chrisl@kernel.org>
-Date: Sat, 30 Aug 2025 00:13:13 -0700
-X-Gmail-Original-Message-ID: <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
-X-Gm-Features: Ac12FXxYEdJMuFqqZYUQ2uhThBTcF8N9Rr1U8aKLwfnioxQ3gBLtkH906rYqcwI
-Message-ID: <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
-	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2E44B8000B
-X-Stat-Signature: s9a8t63qfnbgn4z8o8u595dudkthz58f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250829200953.1757e85542b1126c4881d600@linux-foundation.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AE345140002
+X-Stat-Signature: ekrchfyah1tnfdbbx4s4pfkfcob81s6s
 X-Rspam-User: 
-X-HE-Tag: 1756538006-438932
-X-HE-Meta: U2FsdGVkX19NUupN7HxiMovJkF/eo0VLDmJDOtk5oXQIB7bZWkrW/InxnpaaGPbei9SKQkYbYnyVRpHCP2Nh3I+7U71GfsV/hl8jhEsd6VF7MceybC+Tuc8nkB9QYaEHG6pe5/0nN/143um/09Ae1Vc1P75VdQF8P4KAOsvpDPMtUIQ7OiU78lh9UhOOXun4ObOwd+0aZfqlNi9vFQaDoVE/xSMYtULD+VaiZueV4QDZTs14RDsU7wBEORMZJU5heFHytfyv+xaVB+Dm1kMH+8N5mAssX/Sqz/JzvZOAGgteGFrWa1KYl9i2Y6uaxC2huyHxgtM6OaQXLbxfWyvNrjb3yUidxnU/GiLE2Mk/7PdbzDUgy2cwmrFnE9rb2KtKXbuSP0JSYj8RxJm04Xng0RnLwTcwjCoKhzkjj9p2z3C7LgdSy3xkOyKu2WUneUlFS97yKVWGjndcqVQRPTGb/0A8p+mPD1sByxVXkNVPVRyH0xkYHgEuIG36vH4btqd273bBzibXdK9K0HgBcuvds2kWnsYi59T3dlpTWI+LcBhJ/a8yqVHHO4kQmv0jJSZoeuPq7nFSjDOuWMCqGnX3w7mO30sJ62CjLEo/Jm5QMsCZ/+ZCIx32GDcf7I2GCvGp4bQntbcFBxCtApzH/Cif9TX0jYzvTnC4/XQugSFeOweCe7+hN3rL01JtmQRyXwPp4LQqkS8CYBvjWVUaXysfqlJA1PqvjQtmt0S7fCD330evS5GvSvdfPk9XJ4W2hGCLGqkza8u34CLen58ENCzrTABEkawPXOJMVKvApt1LTfIRqlMwhe59g73sXzbxM2fGGAtB1j0I/TT0hA1brgL1/0kKN7yjqyvLl8eYcnQPI2eeHPJlVVQPn0agNhBv6cohv8tdwfFtstyQWVS7v6DovGNVJadqv5aNJWdZW0trFXgdDrtabpvDz65I/3rZhqlh9qH84QxM0JzRO6j18Q/
- iPcUblyE
- rtAJerBzMq74lpWqP4c8xpsFsF82wyrdbl9LpqDC96Iu+p3Qi56vSP2i3VK/Cm7i1STwRk5XG1goPGENmoFDIPKsm/C6vxOCjpbLPfR1/ZxxtuSJ7yh5cYYvOOXVBOU1tA6Cv9XwzvJomE1Nc1VGRmMVNXI2PZuiL17SVipaLX6EA8pShHbTLoTInNbtPnDdAoGA0n82+u5Wn78MdYs0G8PJx7ufBJc18VvGX6zIeiZp4yD3JBY42CIpnTFtG5njDZPhizva5ue2a0sq5w3TabvkX2EBThRVPny9mkA2KDe1i6uMMxzsuO6jkpQ==
+X-HE-Tag: 1756539990-793745
+X-HE-Meta: U2FsdGVkX18Bj6AUAaV/8pB5NawJyQ7pHjzWU+IsUkXlOfA2R1rsPWOtR3slATxjrUg44IYQvRGR4nzO7aXUkHSaTCAx/imGlN2cLV0nXgRrNkb2sDNkR/bREXLgWUP10mmIDqGUv9sw1rZYOV3QeVMQXowjeL+b2kWdjWK/uzVfq/aZvwyM9l9fApP5cUybVawj1cQttcngvowdzYCJtClccztQb7ZOy8FSt02dHGUFFLqwq870Aqmz0zf+G8/Tf+f3duEKp/aNFbVyRqWe8BRGII8Q1u3G4X9UcMbqEv2906bvqkXO9WcQusujD7mgqIf9ZHEkdxdNMuNxUgZLpWo+roUPpjsttvJLLvuUbx648d7ZCkwkpMfe5L7ZdjAyXLvOfyx9W0rzkZ/H3dM5l1oF6ew7hQaP9tYxsnHZtPmnLHZD53W7xm0ZaK9o5dYV6UalxnUUtSbNKDXJBPNIH7fAR1WXF+E+VUwuzzuAIF699SjR4dW4klaxSI3QMzTDEYqo2HPDvfGSj+q4yzVr0RvBM2TbnAtZTFF16xno97VdD8MM4fLA1SSPNa6OHlMukYJDyCAzO8AEaqZtuB4NWk5vJ6eTAFBPjhqwd0pBvnvTEUZp745oCUXUs4pkc6rKY+OcZvXwQ3TLRrqSkLVaTtCFgGMg/FDqO/Mg92OrNu5qhfi0PSa+24IEYi9GcyvesNAaTTkj4dRJT4ZWfijmPJoOwX9v/dI4XSqRU8HM0rv7BpyE4v35eVnuFY0CyCYu824aFPevDD8UpenqISc1Yaur+LU+8kdo33W7LTK6o0R8JH6PBMAhHzNxhrfLtxBTiE8+hdD/qtNs7o6FFay8Wt663FKVAL0ZE+lA7xgCQWrVgpOHdiowS521J+JKt7rwZHHKtGgbr3Sm5WmY3xgu59HrIYjwaqPOKH7xskd9iOxuLx53e1v+Pe/2P7ZO1YW7ecGBLriJSwkKV/lZkFo
+ OBoXLs4g
+ caZPxvi8DKZa8IL116NG5HKNH4WBnq+tgx8IkBJ3jJL2M/EaEzQ/3iU+60ce3ESdpIJkysdU053yKFW/UruldicuFe3kX1PympLDDZQCFjv0quyRDpG8GTACkuFysu1IvT1OU9D83Z3oiK5ZYxRXF2zx/JaW2QLkciCBHMV9zxYH09YZHZQnByYIc7w853JEoouNzJ/5aP30QRCMRKIdBhOS7A+HqU9VBwxWZwyFvI/gXbgfZXNJL0wOwBMA71+o4eJSHRI+pnnzScTtV4ptJm7i4INkJaUHdu4A1tGlw8DcMWvHsRsxnx7NNw8SmFxn2NirAgeHv0QPWabgbXfVLWLkrq6pa4dLO4WUT8CiJovrajhFZHkdu3ozHm056OlRuA6WdRUX5bBoUkXPvT3vtEnw5ns2PE/hp0RMmAJJDO0udU1en7qpbDfQw6bd+gGFmoRpo46WuR6R6w5B1SGxbo4z+uuCNDXdtHSeVzlcBY0FCzzHavjyEaHMcz+GIIs1KllUJmMLfD8iSpgM+2hlvNvUL50nHpa+0KDXcfLy8J2lJdoYIuLH9LFkpSkv3KfCaEfHfXOTLAZsR6Xz92oZCiHKAw+VFTSh2mCbZ91px8Cub9BQMG2OKxE9DzZSTG6+q2Aawpjd3Aw/aqZnV9dbv9Wz997MhhUjvgubhMZheiZ1ZonE0wIlh1hGvSborJsfVCAKPxCHw6chMAsxAeJ8P9dkEQJceQuel12dr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,205 +124,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 9:05=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
+On Fri, Aug 29, 2025 at 08:09:53PM -0700, Andrew Morton wrote:
+>On Sat, 30 Aug 2025 02:31:02 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 >
-> Hi Chris,
+>> The check of is_backed_by_folio() is done on each page.
+>> 
+>> Directly move pointer to next page instead of increase one and check if
+>> it is page size aligned.
 >
-> Thanks for the detailed feedback, and sorry for the late reply.
-
-Not a problem at all. I have been pretty busy this week and don't have
-much time for it either.
-
-> > I think you touch on a very important question that might trigger a
-> > big design change. Do we want to have a per tier swap.max? It will
-> > specify not only whether this cgroup will enroll into this tier or
-> > not. It also controls how much swap it allows to do in this cgroup.
-> > The swap.max will follow the straight contain relationship. I would
-> > need to think more about the relationship between swap.max and
-> > swap.tiers. Initial intuition is that, we might end up with both per
-> > tier swap.max, which control resource limit, it has subset contain
-> > relationship. At the same time the swap.tiers which control QoS, it
-> > does not follow the subset contained.
-> >
-> > Need more sleep on that.
+>Why?
 >
-> When I first ideated on this, I also considered per-device max values,
-> with 0 meaning exclusion, to implement cases like a cgroup using only
-> network swap. At that time the idea was to give each device its own
-> counter, so setting it to 0 would imply exclusion. But this approach
-> would effectively require maintaining per-device page counters similar
-> to the existing swap.max implementation, and the relationship between
-> these per-device counters and the global swap.max would need to be
-> carefully defined. That made the design significantly heavier than the
-> functionality I was aiming for, so I decided to drop it. I read your
-> point more as a QoS extension, and I see it as complementary rather
-> than a counter argument.
-
-Yes, I slept on it for a few days. I reached a similar conclusion.
-I am happy to share my thoughts:
-1) FACT: We don't have any support to move data from swap device to
-another swap device nowadays. It will not happen overnight. Talking
-about those percentage allocation and maintaining those percentages is
-super complicated. I question myself getting ahead of myself on this
-feature.
-2) FACT: I don't know if any real customers want this kind of
-sub-cgroup swap per tier max adjustment. We should write imaginary
-code for imaginary customers and reserve the real coding for the real
-world customers. Most of the customers I know, including our company,
-care most about the top level CGroup swap assignment. There are cases
-that enable/disable per sub CGroup swap device, in the QoS sense not
-the swap max usage sense.
-I think this will be one good question to ask feedback in the LPC MC
-discussion. Does anyone care about per tier max adjustment in the
-cgroup? We should only consider that when we have real customers.
-
-So I would shelf this per tier max adjustment and not spend any more time o=
-n it.
-
-> > First of all, sorry about the pedantic, it should be "swap.tiers" just
-> > to be consistent with the rest of the discussion.
-> > Secondly, I just view names as an alias of the number. 1-3 is hard to
-> > read what you want.
-> > If we allow name as the alias, we can also do:
-> > echo zram-hdd > memory.swap.tieres
-> >
-> > It is exactly the same thing but much more readable.
-> >
-> > >    cg1/cg2: 2-4,6  > memory.swap.tie (ssd,hdd,network device, somedev=
-ice 2, assuming non-subset is allowed)
-> >
-> > echo ssd-network_device,some_device2 > memory.swap.tiers
-> >
-> > See, same thing but much more readable what is your intention.
-> >
-> > BTW, we should disallow space in tier names.
+>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+>> @@ -423,9 +423,8 @@ static void split_pte_mapped_thp(void)
+>>  
+>>  	/* smap does not show THPs after mremap, use kpageflags instead */
+>>  	thp_size = 0;
+>> -	for (i = 0; i < pagesize * 4; i++)
+>> -		if (i % pagesize == 0 &&
+>> -		    is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
+>> +	for (i = 0; i < pagesize * 4; i += pagesize)
+>> +		if (is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
+>>  			thp_size++;
 >
-> Ack=E2=80=94those spaces were only in my example; the implementation will=
- reject
-> spaces in tier names.
->
-> I like the interface format you proposed, and I=E2=80=99ll move forward w=
-ith an
-> initial implementation using the name-based tier approach, dropping
-> the numeric format.
+>Looks like we're doing more work.  Is there something wrong with the
+>existing code?
 
-I am glad you like it.
+Excuse me if I misunderstand the code.
 
-> > We do want to think about swap.tiers vs per tier swap.max. One idea
-> > just brainstorming is that we can have an array of
-> > "swap.<tiername>.max".
-> > It is likely we need to have both kinds of interface. Because
-> > "swap.<tiername>.max" specifies the inclusive child limit.
-> > "swap.tiers" specifies this C group swap usage QoS. I might not use
-> > hdd in this cgroup A, but the child cgroup B does. So A's hdd max
-> > can't be zero.
-> >
-> > The other idea is to specify a percentage for each tier of the
-> > swap.max in "swap.tiers.max": zram:30  sdd:70
-> > That means zram max is "swap.max * 30%"   and ssd max is "swap.max *
-> > 70%". The number does not need to add up to 100, but can't be bigger
-> > than 100.
-> > The sum can be bigger than 100.
-> >
-> > Need more sleep on it.
->
-> I don=E2=80=99t have additional ideas beyond what you suggested at now. S=
-ince swap.max
-> is defined in terms of quantity, my intuition is that tier.max should
-> probably also be quantity-based, not percentage. As I mentioned earlier,
-> I had also considered per-device max in the early RFC stage. The design
-> was to introduce per-device counters, but that added substantial overhead
-> and complexity, especially in reconciling them with the global swap.max
-> semantics. For that reason I abandoned the idea, though I agree your
-> suggestion makes sense in the context of QoS extension.
+Originally, i iterate from 0 to pagesize * 4 one by one and call
+is_backed_by_folio() when i is 0, 4096, 8192, 12288.
 
-We are in agreement here. We should not touch it until we have a real
-customer ask for it.
+The change makes i just iterate on 0, 4096, 8192, 12288 and call
+is_backed_by_folio() respectively.
 
-> At this point I feel the main directions are aligned, so I=E2=80=99ll pro=
-ceed
-> with an initial patch version. My current summary is:
->
-> 1. Global interface to group swap priority ranges into tiers by name
->    (/sys/kernel/mm/swap/swaptier).
-I suggest "/sys/kernel/mm/swap/tiers" just to make the file name look
-different from the "swap.tiers" in the cgroup interface.
-This former defines all tiers, giving tiers a name and range. The
-latter enroll a subset of the tiers.
- I think the tier bit location does not have to follow the priority
-order. If we allow adding a new tier, the new tier will get the next
-higher bit. But the priority it split can insert into the middle thus
-splitting an existing tier range. We do need to expose the tier bits
-into the user space. Because for madvise()  to set tiers for VMA, it
-will use bitmasks. It needs to know the name of the bitmask mapping,
-I was thinking the mm/swap/tiers read back as one tier a line. show:
-name, bitmask bit, range low, range high
+Current code is not wrong, but not necessary to iterate one by one.
 
-
-> 2. Slow path allocation uses bitmask skipping; fast path uses per-cpu
->    tier cluster caches.
-If the fast path fails, it will go through the slow path. So the slow
-patch is actually a catch all.
-> 3. Cgroup interface format modeled after cpuset.
-I am not very familiar with the cpuset part of the interface. Maybe
-you should explain that to the reader without using cpuset cgroup as a
-reference.
-> 4. No inheritance between parent and child cgroup as a perspective of QoS
-In my original proposal of "swap.tiers", if the default is not set on
-this tier, it will look up the parent until the root memcg. There are
-two different tiers bitmask.
-One is the local tier bitmask. The other is the effective bitmask.
-If local tier bitmask sets the default, the effective tier bitmask =3D=3D
-local tier bitmask
-if local tier bitmask does not set default, The effective tier is
-concatenation from parent to this memcg.
-
-For example
-a/swap.tiers: - +ssd # ssd only
-a/b/swap.tiers: ""  # effective "- +ssh", also ssd only.
-a/b/c : + -hdd # effective "- +ssd + -hdd", simplify as "+ -hdd"  The
-'+' overwrite the default, anything before that can be ignored.
-
-That way, if you are not setting anything in "swap.tiers" in the child
-cgroup, that is the default behavior when you create a new cgroup.
-Changing the parent can change all the child cgroup at the same time.
-
-> 5. Runtime modification of tier settings allowed.
-Need to clarify which tier setting? "swap.tiers" or /sys/kernel/mm/swap/tie=
-rs?
-
-> 6. Keep extensibility and broader use cases in mind.
->
-> And some open points for further thought:
->
-> 1. NUMA autobind
->    - Forbid tier if NUMA priorities exist, and vice versa?
->    - Should we create a dedicated NUMA tier?
->    - Other options?
-
-I want to verify and remove the NUMA autobind from swap later. That
-will make things simpler for swap. I think the reason the NUMA swap
-was introduced does not exist any more.
-
-> 2. swap.tier.max
->    - percentage vs quantity, and clear use cases.
->   -  sketch concrete real-world scenarios to clarify usage
-
-Just don't do that. Ignore until there is a real usage case request.
-
-> 3. Possible future extensions to VMA-based tier usage.
-
-Madvise(). That can be introduced earlier. I know a usage case for
-that is the android. Android does not set every app as a cgroup. I
-haven't checked for a while if that is still true.
-
-> 4. Arbitrary ordering
->    - Do we really need it?
->    - If so, maybe provide a separate cgroup interface to reorder tiers.
-
-No for now. Need to answer how to deal with swap entry LRU order
-inversion issue.
-
-Chris
+-- 
+Wei Yang
+Help you, Help me
 
