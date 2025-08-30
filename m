@@ -4,99 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03639CA0FF0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:04:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 467D8CA0FF9
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:10:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 125A18E0006; Fri, 29 Aug 2025 22:04:23 -0400 (EDT)
+	id 2B8176B0028; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FC658E0001; Fri, 29 Aug 2025 22:04:23 -0400 (EDT)
+	id 2674D6B0029; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0389A8E0006; Fri, 29 Aug 2025 22:04:22 -0400 (EDT)
+	id 1A45A6B002A; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E74E18E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:04:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A99D5BC5F8
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:04:22 +0000 (UTC)
-X-FDA: 83831779164.18.3C6EC26
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf15.hostedemail.com (Postfix) with ESMTP id CA3E9A000D
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:04:19 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="E LQ9q3m";
-	spf=pass (imf15.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 09C9D6B0028
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE251BC5FD
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:10:03 +0000 (UTC)
+X-FDA: 83831793486.09.3EB396A
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0FFF280004
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:10:00 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=APFiyrNV;
+	spf=pass (imf30.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756519802; a=rsa-sha256;
+	cv=none;
+	b=LE8r2QlN7UveB9JWEg8pIeLrYHpq3dwODJtaq+24sQIpa2hqE5vN6U0pRSXIaqSOdCcAE7
+	hMmk9BfKpBEPqQxu9fpxvBfzLy6nw8CGGmU/PJNjgEAEF3UswZebJNJBA9Jm2yrK+SBBjd
+	gBEQYxR4tgXjnHb6olVJrcNwX/vkPNE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=APFiyrNV;
+	spf=pass (imf30.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756519460;
+	s=arc-20220608; t=1756519802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Hd+IKkI7LueDUZIZaO72mgRAKubR2asw9SWh4jRMY0=;
-	b=CRSCEjS7qPz1YNcCEkiPmxHD07SWmQDrOccS4k3udUY+IS2TZNe6+tJOw9wwl1HTLs3OQ3
-	WFflik2Ozuq1+8Qu+3lgUkhtZGx0drpm5eTjbDreusKgJNSaaYt35IgI8r7q85522l5C09
-	vn4xEa6vY+xFwttHUeixrAjWJdJ5G/4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="E LQ9q3m";
-	spf=pass (imf15.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756519460; a=rsa-sha256;
-	cv=none;
-	b=C8Cstpc12qzcFGhlHDYsmhlCdPUuY59n4+n/NFR5CvWaPdk0CDO2Lk+JMkSe6/Vk5a2LFg
-	OMkWJoaiMd3MflCj4zlXkp/dIPPjT/HFddHQmuL0Eg5+/r1mRlxXrXb7n9+ERs+q5epcv8
-	wQ00f48aUIXgrTZutGTZs/b4I1iAm+0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ASv08vHQn45ozfOFbV1Do6M+K0ucRdNAA7jLQeJT/8U=;
+	b=lqSS9mzzxZI1jF8/QS6m+WxWoMx4/la9jlwExzDZmSiQrUkWBQu6+L4dss+5iCJkNxhJ8g
+	cXbq/7+9bxH7vPOEO206LxjfYopWLsMbiWD1+P04C86FViuLmBWgVyyKhBa9vUkY1EXh9V
+	yvYQyWuZOVBzY0Aa1/b1ZFd6JMa1WzQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=yDf6R8OVR4Mv+z5f263aPwRbugqrNKlI+W4Ql3f8lGI=; b=E
-	LQ9q3msednwRY90iZzFYZRu1iM0djK52o1KsWiUXD7EPDeAJ/8c94MjKcajEUiTw
-	PrdsVzuFEKr/itCRlU9m4sixRMrOjIuinh0I5VaWPwcQ5vILp8iJZ1+zoMJS/wUk
-	d7ANyRrX1ZOndMmcHKTi3GW24DYx2FJcxZUgJN7500=
-Received: from yangshiguang1011$163.com ( [1.202.162.48] ) by
- ajax-webmail-wmsvr-40-149 (Coremail) ; Sat, 30 Aug 2025 09:48:26 +0800
- (CST)
-X-Originating-IP: [1.202.162.48]
-Date: Sat, 30 Aug 2025 09:48:26 +0800 (CST)
-From: yangshiguang  <yangshiguang1011@163.com>
-To: "Vlastimil Babka" <vbabka@suse.cz>
-Cc: "Harry Yoo" <harry.yoo@oracle.com>,
-	"Matthew Wilcox" <willy@infradead.org>, akpm@linux-foundation.org,
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
-	glittao@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
-Subject: Re:Re: [PATCH v3] mm: slub: avoid wake up kswapd in
- set_track_prepare
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20250723(a044bf12) Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <9dbd300c-240b-477f-ba03-8a17c7c2b84b@suse.cz>
-References: <20250825121737.2535732-1-yangshiguang1011@163.com>
- <aKxZp_GgYVzp8Uvt@casper.infradead.org>
- <54d9e5ac-5a51-4901-9b13-4c248aada2d7@suse.cz> <aK6U61xNpJS0qs15@hyeyoo>
- <6e1ab9d8.6595.198ea7d7a78.Coremail.yangshiguang1011@163.com>
- <fc6f7372-efb4-48e3-b217-c8bec0065b97@suse.cz>
- <4d271e7e.6bea.198f596bd15.Coremail.yangshiguang1011@163.com>
- <9dbd300c-240b-477f-ba03-8a17c7c2b84b@suse.cz>
-X-NTES-SC: AL_Qu2eBPmat00r4CSYbOkfmUgRj+k6WsK3s/sn3oNfP5B+jCLr9QwKYn5CAn3N8/OKBxCuvii7ST1E+uBAfIh4eIsl8V52gcVznlkkp5TdwoVTRA==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=AS
+	v08vHQn45ozfOFbV1Do6M+K0ucRdNAA7jLQeJT/8U=; b=APFiyrNVb4c7aV6a8k
+	JG6DpZhswdBvQZFZWTblA72C4RtACC2H6auLg3hjhN24bUppzpeZk+prPigeAez+
+	2ev9W769XFd+KsWGLphG1sjIb1HQfYobxKScnwAV+c2vBRBfKyKgqJPt1G01mOCt
+	6xZ0SHel2OFkyKc1C/0EVsk+U=
+Received: from mi-work.mioffice.cn (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3tz1sXbJoSlsQFA--.37283S4;
+	Sat, 30 Aug 2025 10:09:49 +0800 (CST)
+From: yangshiguang1011@163.com
+To: harry.yoo@oracle.com
+Cc: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	glittao@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	yangshiguang <yangshiguang@xiaomi.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] mm: slub: avoid wake up kswapd in set_track_prepare
+Date: Sat, 30 Aug 2025 10:09:46 +0800
+Message-ID: <20250830020946.1767573-1-yangshiguang1011@163.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Message-ID: <15cc44af.7a6.198f8a95fb5.Coremail.yangshiguang1011@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:lSgvCgDnf7xqWLJoc58kAA--.142W
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiEAa45Wixi0ReDAADsM
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CA3E9A000D
-X-Stat-Signature: x9ai97zm6zuk3p5893kpkzpkk747ziuy
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3tz1sXbJoSlsQFA--.37283S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7tF4rpF
+	W7WFy3tF48AF1jvFWUCa1Uur1SvrZ3CrW8CF43Wa4rua4Yvr48WFW7tFyjqFW5Arykua1q
+	k3W09Fn3Ww4jqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ju0PDUUUUU=
+X-Originating-IP: [1.202.162.48]
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiSB655WiyUD3O3wAAss
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0FFF280004
+X-Stat-Signature: xk19axnx4izmzjej3j86y1miq9r9gy6c
 X-Rspam-User: 
-X-HE-Tag: 1756519459-999418
-X-HE-Meta: U2FsdGVkX1/A96T5dKqr5qWWDMYjs2pDRaSNGD9P4elvMgdtsI3lrcp5uts3oc6f+D9KDH/ZOnaa1ESaGa69/KQ6zRyxDSFLMm0xaVeIpnSYv6jesTAq+pNu4kheYTKdbGZSa5axqZxLj/noeNnprOnwDBcWqIP+dV0G+oeysVjnZZDlAOeQh4WiD774t4nnhXVhYh+IG4JeUYJ+B6fFiPE1hxZmJDm+uCPwe0KwqLaEs6ZQw5o84pK8UBV570jKEBK57naENyWbdoKYTXBizILdish+zzrQ2PUcMC3llDbAG4gng/VSzo5F6KCPv75GJFnNuTeyYlpndRnmKaZdYelslfHUpffNAL3ZPAiYY7rVd81EVZDydeB7IeZxUhnMI+0eI/ZdQmkb9iOCQ+TO/1JXjZhjgQtdVxPMEXUzVvMgVToVjZ5KS8P6ToY++xgN5iSO/oraGW16YnPdKPms8FWqEbMQ7TcGuNSbXUIyV1cTb3K4N/rCu4oaf42BqnR3o9xGGfL0bk8h0aFihWP5fIVz9nWoeEH6NHu3OLQU4JQGuwxxeMf8oytkYc9ZSmn9NQe8aToFX/Rgc9U37nuBF6AitCJRuA3dTeVaYcVUIe1Pi0Y62Ixm/Wk2RHsPulQDfhd3SBNLAZGMsx2u3JVwtuscetlKwC0V/nU4jmT7Yh/l/57NxYYK7015L7TkBM+U8H+TWYlU38CnTM1LwB4ZfUs9VS/PHuesdLd8v93rUvD3sjCxFNjyhWH/MgF1wys76LTD7pRJVoVZ8R/DKQ6WZymp6zDPfFHmcR0wDG/I3SFlZhgK2xc6gB3OHSzaiXU+iTaPIgUp7Y7WzEpfDWQhVBn0jp4iyhw5DmrEUvFZxQnrknY5wgDFYjZFJhoqnZPeMjDcyelbHT6sorFoJy7uzXZmSD7HxrGtGxcmx5grsbYFY0jQYH4GgxCSlPz0I5zQSPpo43vx6hicGn1nx4Y
- n0sIYkKm
- oeLW29tQmA/jvTc5Jgyc/eqcLuDdlqM6QducDsBEmgNO1RzJBVauo084i2hUPCcYKH3lEtCYcKbZ1McwriLpnPOZSoKrwrNA0lfYhA0PHhybbi+N47yOYTmcgoA5RckcnlMUYHkpeJzs960XyRWANU9Es7uDxwl5mxWKBMY3sUplF9rt2M4TdMJu/eQrI52ZTf1PVJXIY4oIW0EBRNCr099Z9iWP4/+gLydTSXUN+O3X0pD3lfWpbNc4G4OaHxaAaNXiM/o9HgPqQOEPg3grzh9e3P2qF33o03s7iPPt+fgLQHDUdIYKI0bBQ/He/pONTPcuS5JVxv6n8aady0GA/VtbfJ1JBPJ/8SUFrkUpmSYkvAc/gr9CiUxDtTftFJcszjLfAYRQ3h8JsY9kZlHt3ZvUGsRPyhuXjpYMhIlLro+y1ei98LQpBHgCL5rUmTmL4/juvnUpSkbHShMrOyCikwBTUS6nxoD/rukp3CuTNAM/19YANjBmfAFtyKab/UvK47qngmo4+2A7iIWRSk305/M0IzRqIF0qDesKcqLZXbaAEudUJcGAO7Np6oXU8Hjn8BoYUAetmvy8Yz5NJ2ycpn2fjLiDOBcOyAhvSor8lQ0diBwPB7fNH9Axv5A==
+X-HE-Tag: 1756519800-535687
+X-HE-Meta: U2FsdGVkX1+xDbffW9/qhl6CyyE4JClljujsFSAL2LgHZEZmaobnVwQmURl55+yEVcKWabvqtIg4rnoiW1X6TMGVVWcuteBLwFV52KfLiedbubGwOxQPleYuvV6edVV93yYD+lHLn6yOWVtaZk73qRIVS5i3QvghoBdd+p1SJ7LoNFRn+Mn6shv7CsPFUv+MTz5X2feh0k4E8lJlOi1pMjStpf+fYVNygIZfpKtEuJVJNNVGR+HWQVW1Tstya1aoOX6lN4cXcqo91g+gcXDadKyWHCOC4AY4IeNAz0oHF3S4Xhm4Ql/xvmIwcKFj+UjvBKZP8ccNTU9b1+AVydYwl1+lvu3UwI8XVw2X1AQWAYZH9Sd2wUyckeKJEP8lRuF3GhXWmuXs/X6r78/wndPKGlyEd+5znPfE/UBCBq3sDmRzLUmNw/mGlLCl8ozzmenLnTCBgjItGlqVbYCtxhvR+pbPEmmO6+UbgvjLVEFG9X9qDPBQHsISTVK8wUDOwsNCSwchhXE5LvNrOv7AkY+NTWSarZqVQJBUYmncDtZ0O6lRqGzcg1sXjBr5bKD1KehtSo9tepPhA5p5W6kp88oFIBK/X/yar1zP+AjAwv2wK55EPAlfrGaefgct6p/V+DpCfduSQSS65fAVU10kiowpVTYSKxogNbNl3jL+bc41hEomkMAiQR/cYt/Wehte13iJYAKgT1SnW7A/DF/JSqbizJdGQ4vLVfkjt7R9JEmQnbqRKQrRuJCwQQd9Iev1/my77z2KcDUmB90eOveolzNptDTvTe7GIiXVqVSMvkBbVsFnKqrNrFnduJFQlbdN2gyu0QLRNxR4jW7wUwi11YCkCe7WUDUcVe6qhSTrVmgupjM4IPWVNJqWNr9uCeukPN3u9qQTlz4Qajnu20DczDstRBo8zCxWJ8l2zu+CQYfH/bf0ydbgzjZhbkWC2VtL/P5lvDVaDAW3wjTilbgtTps
+ P2lPD7wt
+ IyScBzFxaAZwHp2Surn2vAjdmEAbNC0FDxEETQ9YA4Yl171XN+318TFxZtpyv1YfI5wyo1hcAlhZ9KQV80pbmsx8e9R8uaDwDgDsvG3dmz6O3wGH6JY8cO9bM1+Kuf+PHjgTUM6h+vcZV+fs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,24 +98,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CgoKCkF0IDIwMjUtMDgtMjkgMjE6MDg6NTgsICJWbGFzdGltaWwgQmFia2EiIDx2YmFia2FAc3Vz
-ZS5jej4gd3JvdGU6Cj5PbiA4LzI5LzI1IDEzOjI5LCB5YW5nc2hpZ3Vhbmcgd3JvdGU6Cj4+IEF0
-IDIwMjUtMDgtMjcgMTY6NDA6MjEsICJWbGFzdGltaWwgQmFia2EiIDx2YmFia2FAc3VzZS5jej4g
-d3JvdGU6Cj4+IAo+Pj4+IAo+Pj4+Pgo+Pj4+IAo+Pj4+IEhvdyBhYm91dCB0aGlzPyAKPj4+PiAK
-Pj4+PiAgICAgICAgIC8qIFByZWVtcHRpb24gaXMgZGlzYWJsZWQgaW4gX19fc2xhYl9hbGxvYygp
-ICovCj4+Pj4gLSAgICAgICBnZnBfZmxhZ3MgJj0gfihfX0dGUF9ESVJFQ1RfUkVDTEFJTSk7Cj4+
-Pj4gKyAgICAgICBnZnBfZmxhZ3MgPSAoZ2ZwX2ZsYWdzICYgfihfX0dGUF9ESVJFQ1RfUkVDTEFJ
-TSB8IF9fR0ZQX05PRkFJTCkpIHwKPj4+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgX19HRlBfTk9XQVJOOwo+Pj4KPj4+SSdkIHN1Z2dlc3QgdXNpbmcgZ2ZwX25lc3Rl
-ZF9mbGFncygpIGFuZCAmIH4oX19HRlBfRElSRUNUX1JFQ0xBSU0pOwo+Pj4KPj4gCj4+IEhvd2V2
-ZXIsIGdmcCBoYXMgYmVlbiBwcm9jZXNzZWQgYnkgZ2ZwX25lc3RlZF9tYXNrKCkgaW4KPj4gc3Rh
-Y2tfZGVwb3Rfc2F2ZV9mbGFncygpLgo+Cj5BaGEsIGRpZG4ndCBub3RpY2UuIEdvb2QgdG8ga25v
-dyEKPgo+PiBTdGlsbCBuZWVkIHRvIGNhbGwgaGVyZT8KPgo+Tm8gdGhlbiB3ZSBjYW4gaW5kZWVk
-IGp1c3QgbWFzayBvdXQgX19HRlBfRElSRUNUX1JFQ0xBSU0uCj4KPk1heWJlIHRoZSBjb21tZW50
-IGNvdWxkIHNheSBzb21ldGhpbmcgbGlrZToKCj4KCnN1cmUuIEV4cHJlc3MgY2xlYXJseS4KCgo+
-LyoKPiAqIFByZWVtcHRpb24gaXMgZGlzYWJsZWQgaW4gX19fc2xhYl9hbGxvYygpIHNvIHdlIG5l
-ZWQgdG8gZGlzYWxsb3cKPiAqIGJsb2NraW5nLiBUaGUgZmxhZ3MgYXJlIGZ1cnRoZXIgYWRqdXN0
-ZWQgYnkgZ2ZwX25lc3RlZF9tYXNrKCkgaW4KPiAqIHN0YWNrX2RlcG90IGl0c2VsZi4KPiAqLwo+
-PiBzZXRfdHJhY2tfcHJlcGFyZSgpCj4+IC0+c3RhY2tfZGVwb3Rfc2F2ZV9mbGFncygpCj4+IAo+
-Pj4+ICA+LS0gCj4+Pj4+Q2hlZXJzLAo+Pj4+PkhhcnJ5IC8gSHllb25nZ29uCg==
+From: yangshiguang <yangshiguang@xiaomi.com>
+
+From: yangshiguang <yangshiguang@xiaomi.com>
+
+set_track_prepare() can incur lock recursion.
+The issue is that it is called from hrtimer_start_range_ns
+holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
+CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
+and try to hold the per_cpu(hrtimer_bases)[n].lock.
+
+Avoid deadlock caused by implicitly waking up kswapd by
+passing in allocation flags. And the slab caller context has
+preemption disabled, so __GFP_KSWAPD_RECLAIM must not appear in gfp_flags.
+
+The oops looks something like:
+
+BUG: spinlock recursion on CPU#3, swapper/3/0
+ lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
+Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
+Call trace:
+spin_bug+0x0
+_raw_spin_lock_irqsave+0x80
+hrtimer_try_to_cancel+0x94
+task_contending+0x10c
+enqueue_dl_entity+0x2a4
+dl_server_start+0x74
+enqueue_task_fair+0x568
+enqueue_task+0xac
+do_activate_task+0x14c
+ttwu_do_activate+0xcc
+try_to_wake_up+0x6c8
+default_wake_function+0x20
+autoremove_wake_function+0x1c
+__wake_up+0xac
+wakeup_kswapd+0x19c
+wake_all_kswapds+0x78
+__alloc_pages_slowpath+0x1ac
+__alloc_pages_noprof+0x298
+stack_depot_save_flags+0x6b0
+stack_depot_save+0x14
+set_track_prepare+0x5c
+___slab_alloc+0xccc
+__kmalloc_cache_noprof+0x470
+__set_page_owner+0x2bc
+post_alloc_hook[jt]+0x1b8
+prep_new_page+0x28
+get_page_from_freelist+0x1edc
+__alloc_pages_noprof+0x13c
+alloc_slab_page+0x244
+allocate_slab+0x7c
+___slab_alloc+0x8e8
+kmem_cache_alloc_noprof+0x450
+debug_objects_fill_pool+0x22c
+debug_object_activate+0x40
+enqueue_hrtimer[jt]+0xdc
+hrtimer_start_range_ns+0x5f8
+...
+
+Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
+Cc: stable@vger.kernel.org
+---
+
+v1 -> v2:
+    propagate gfp flags to set_track_prepare()
+v2 -> v3:
+    Remove the gfp restriction in set_track_prepare()
+v3 -> v4:
+    Re-describe the comments in set_track_prepare.
+
+[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
+[2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
+[3]https://lore.kernel.org/all/20250825121737.2535732-1-yangshiguang1011@163.com/
+---
+ mm/slub.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 30003763d224..b0af51a5321b 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -962,19 +962,25 @@ static struct track *get_track(struct kmem_cache *s, void *object,
+ }
+ 
+ #ifdef CONFIG_STACKDEPOT
+-static noinline depot_stack_handle_t set_track_prepare(void)
++static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	depot_stack_handle_t handle;
+ 	unsigned long entries[TRACK_ADDRS_COUNT];
+ 	unsigned int nr_entries;
++	/*
++	 * Preemption is disabled in ___slab_alloc() so we need to disallow
++	 * blocking. The flags are further adjusted by gfp_nested_mask() in
++	 * stack_depot itself.
++	 */
++	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
+ 
+ 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
+-	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
++	handle = stack_depot_save(entries, nr_entries, gfp_flags);
+ 
+ 	return handle;
+ }
+ #else
+-static inline depot_stack_handle_t set_track_prepare(void)
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	return 0;
+ }
+@@ -996,9 +1002,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
+ }
+ 
+ static __always_inline void set_track(struct kmem_cache *s, void *object,
+-				      enum track_item alloc, unsigned long addr)
++				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
+ {
+-	depot_stack_handle_t handle = set_track_prepare();
++	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
+ 
+ 	set_track_update(s, object, alloc, addr, handle);
+ }
+@@ -1921,9 +1927,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
+ static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
+ static inline int check_object(struct kmem_cache *s, struct slab *slab,
+ 			void *object, u8 val) { return 1; }
+-static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
+ static inline void set_track(struct kmem_cache *s, void *object,
+-			     enum track_item alloc, unsigned long addr) {}
++			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
+ static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
+ 					struct slab *slab) {}
+ static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+@@ -3878,7 +3884,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			 * tracking info and return the object.
+ 			 */
+ 			if (s->flags & SLAB_STORE_USER)
+-				set_track(s, freelist, TRACK_ALLOC, addr);
++				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 			return freelist;
+ 		}
+@@ -3910,7 +3916,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			goto new_objects;
+ 
+ 		if (s->flags & SLAB_STORE_USER)
+-			set_track(s, freelist, TRACK_ALLOC, addr);
++			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 		return freelist;
+ 	}
+@@ -4422,7 +4428,7 @@ static noinline void free_to_partial_list(
+ 	depot_stack_handle_t handle = 0;
+ 
+ 	if (s->flags & SLAB_STORE_USER)
+-		handle = set_track_prepare();
++		handle = set_track_prepare(__GFP_NOWARN);
+ 
+ 	spin_lock_irqsave(&n->list_lock, flags);
+ 
+-- 
+2.43.0
+
 
