@@ -4,112 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8338CA0EFF
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 08:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33E56CA0FFD
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 08:41:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 384078E0002; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
+	id 257C66B0026; Sat, 30 Aug 2025 04:41:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3344A8E0001; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
+	id 20A026B0029; Sat, 30 Aug 2025 04:41:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2245D8E0002; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
+	id 0F77A6B002A; Sat, 30 Aug 2025 04:41:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C5BA8E0001
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81142140AB3
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:35:30 +0000 (UTC)
-X-FDA: 83832764820.12.FE7DCCD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BB54D40009
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:35:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QJ2Gq9Q4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756542929; a=rsa-sha256;
-	cv=none;
-	b=dbC6DoUQyqCjxoLHM3WJWVjHSpEtELZFhEu5epsQQS3Dah6jGbc2vgDwvQo5Khw/Q9sgOf
-	bkIsW0C+vSfbFuT+e6r2t1MGd+fJIDYLxGDyLqgYQJA0vuAaXBcwfm3Ox5sz5bE/IQCLsx
-	xKkI2zReUXikugwncKPCC0y9hj3M3v0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QJ2Gq9Q4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED2CB6B0026
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 04:41:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E29313AE12
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:41:11 +0000 (UTC)
+X-FDA: 83832779142.26.BE0048F
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BB95D40003
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:41:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=doB5EkEh;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756542929;
+	s=arc-20220608; t=1756543269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bJzYHt2ZArNdlTsg/DAqjD5db7Vf+z01tY/frqkBGLQ=;
-	b=cEqDvx39ujXEUJwJssIHTKGm6T9fGkh/u76syRVC/Wx0nuVnyAON7uhL5Fa7COM23MHo/d
-	hx6HgWWHEAHgUdji60hdyP3F+1N8Q8dVxRvIHf5hDeTpGiLsCzz61FzCRIOyjSjUnpVwUR
-	+M0VTAeABNMuYgGCzrk/xWgUHvq68XU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D7AB642B66;
-	Sat, 30 Aug 2025 08:35:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DCBC4CEEB;
-	Sat, 30 Aug 2025 08:35:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756542926;
-	bh=oKvjDljPLSRg2x/aOWCyZgodbMjJIdmSCcxy/Ed/RYQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QJ2Gq9Q41CFdV6Q+M16uVYmCXPBnCX6Mtf7wOUYVVkWOIgfiBBx0jlaPa180Cf10s
-	 WYotg2neDOLYCEklciQmDeMW3qUzX0UkTa6QROBFiA93CP1SFlmZBKYFWkLmubtmF8
-	 6IjAbqmqeDZeZGMSSgPx6Y/SnyNOHjZmt+g7kXUXwVENrl/uCuBffvAtsL/jMM2lEc
-	 0lQ2G1Jorwlhp+I8wSJzRGlMX7OxHmQgPe3ubKgbY3jw3rfN6RBNzm/jw+2U86JKgV
-	 hRdhGKSEIEL5Sdf+8dpRe+3XW9gqx3VoLY6G1z5UzYe5mU1jAx5nzCn+phxkVTEV28
-	 TMP4NOKcmoVjw==
-Date: Sat, 30 Aug 2025 11:35:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
-	changyuanl@google.com, dmatlack@google.com, rientjes@google.com,
-	corbet@lwn.net, rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
-	vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
-	leonro@nvidia.com, witu@nvidia.com
-Subject: Re: [PATCH v3 09/30] liveupdate: kho: move to kernel/liveupdate
-Message-ID: <aLK3trXYYYIUaV4Q@kernel.org>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-10-pasha.tatashin@soleen.com>
+	bh=jkUVdbpOU+SkveJ4KHnqt1C/hB2g9VfaofOPCWLWzE0=;
+	b=TiowPUBhbzZR6xj2XC94oV/CFBVGMOAkCUraB64h037Fb/iTEdpQLJhC+BRkTp+tIFqV7M
+	M8Ti3Kd3GhRe0d9O9TT4VCeDKNuxpzQwu47bq4nF/su810YmgNojk583qMQhgvwjZq98qK
+	75DlvqWSBS7DI7bdp2yrSWaE1EWrosA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=doB5EkEh;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756543269; a=rsa-sha256;
+	cv=none;
+	b=dn7D8jX5BaEEpKansZgJWK5EOSSOcCcgw1uxpO2DQsde8ammSWtnCehosyw6h1/zFhp0+5
+	sl/FsLB8mxdOPlZpUxEaWgrWEzjDRiRyWV6BaZ+56y6UO+2jP/ELba9MBPJYkHaNsy00gn
+	zLRB5/P/L4xpD0xDBfaCi8BKnHXKSQA=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7e8704da966so180564985a.1
+        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:41:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756543269; x=1757148069; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jkUVdbpOU+SkveJ4KHnqt1C/hB2g9VfaofOPCWLWzE0=;
+        b=doB5EkEhu2BkWfHMPjvLzNxngw4WQHt9ESzczA8TMZomzC1DYLusahk312AZoQ/v5F
+         XvsMbE2pohGWTkKE5H9nE//W5cEKvBSOuPiJvN4jy0CLJ7QmheFj277sFIx0Ip0JoPQS
+         HVjBhH2cT7WMdY8Ki+nalveHhejwPOntfOYijrdC6wG/OCnXxuowLmILqYwZ+4UdBxFm
+         dPCUKsvLcMmTtx/8qQYFSej0yAaDnfybhuLqoss+qUzYQaNpFPf7LQ17E4gywRGZTKHd
+         BWS5/KrV54XczhENvHhMfnUMNsXNbvDjiUfIZ1K9KeL6o1p6fMK5XhSb63Olv9qVWD/2
+         glIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756543269; x=1757148069;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jkUVdbpOU+SkveJ4KHnqt1C/hB2g9VfaofOPCWLWzE0=;
+        b=cRJ2XvGaV8umblvmRosjrJ4xymoPN61WhU9gU7hZdtM1GFgQvXhLJxzzoYC1Fzj13K
+         cpdkDrjbSCNWFjvdCs+6w6e4tOLQ0q7Txe0RyhV9j6yBKRMXnonV6CNDMdjM2Bp8qRXI
+         P5o2m73MICKPSXYyIc/XHRhT9m0bTXaoS+CSYyigoQJwkfVNiWkJiIQEdWZ7vyU5POa9
+         qXZIDd0tO7CbSmwjBkf5c3D8WoQvUprXK0XV2kV377r8aa66C7m9r9x/CkdEeXJdEKVw
+         AOBkYNjP3h6RC/EqyWwKDm0Ot4ZJ0UP3Z3CKIIwcf+p7UdYxiu6QFfhrSVi6vjzK8WLa
+         /k2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXamDb/+pC5ZplqbpEGEJOTY8wwRbq/m7TXIVI+Df0hdbuvUn8v0q7Vyjlv0eS4AoLIh6AyGhW1tg==@kvack.org
+X-Gm-Message-State: AOJu0YxxzkB9CctYt+gSztxitJ+1psBt8a6m+j4aoV9sRtzXoQIO3mQe
+	VqOO/r13OURTGP612bhe0VmvSyi+PrfplUfuzFUrWxIR9vmvbiNfLJFYHqwmVoid938asEXJkL4
+	GqQ0X7vsocYnm9wf11GnO6SkUVJ94lxM=
+X-Gm-Gg: ASbGncu3LjVwy+zBp7Kv8ArOj4r7UHuYHcnT0O6zjUZ6k4MSqmZYDYEp7BeZKvYjNv2
+	CuLUnTy1002qKnZqajNBEuTKn90hP0c/CS1oNVPcC90fhEsLy63n6ZclhXi/rzos+Xrkv+aVv0u
+	4JWy93jQz03oqkvMkC0CCLFqeTw0J9TzOPzzkHZgUAwDEcFKV7iRHOQFJDIWimsjMUUQGW4cy6+
+	B7oYASQ6NBWVuSYZ65Ofa8swDEf
+X-Google-Smtp-Source: AGHT+IHiBcp+DLTL1DFIy/5DJtQgKHM1E9fLaKA4e6Epk8HBp8ZNiEmwjJXBcfdTsOI2gw7V8C886efkoeZ+tKvM1YY=
+X-Received: by 2002:a05:620a:4256:b0:7f6:74fc:2a94 with SMTP id
+ af79cd13be357-7ff27094456mr136276085a.2.1756543268719; Sat, 30 Aug 2025
+ 01:41:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250807014442.3829950-10-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam03
+References: <20250801043642.8103-1-kanchana.p.sridhar@intel.com>
+ <20250801043642.8103-23-kanchana.p.sridhar@intel.com> <CAGsJ_4xRij-Vz_-dmL44YLvaQrYLKKnw7O_Skedrxj_YxuaT5Q@mail.gmail.com>
+ <PH7PR11MB8121532CE4368DF5BAA6D46DC939A@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <CAGsJ_4xMuLPy3+mAxzOj6SfnFZaDf+B=WkmbrCNqv8gvK080Fw@mail.gmail.com>
+ <PH7PR11MB8121B86E65349F5CF854CA57C939A@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <CAGsJ_4zt9zQFh1mz6gpQOCWBOjz1osN9jTd62uKGf865vRwuLA@mail.gmail.com>
+ <PH7PR11MB8121C1B5965584AA8E59C0B7C938A@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <CAGsJ_4zjPxSjrSomm3E3gOuW+AqiTKwUHJ34q9m9aJb3y3vEKw@mail.gmail.com>
+ <PH7PR11MB81211DD54822167C6BA238D5C93BA@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <CAGsJ_4xy3mksbwj61qnNrSpcFgkanEK0tCzJcjQgVF-oAyXe8A@mail.gmail.com>
+ <PH7PR11MB81216DFB4CA6F22E0ED76026C93AA@PH7PR11MB8121.namprd11.prod.outlook.com>
+ <CAGsJ_4zMHtYG3rS61PyGfJYd8KwGEw=Gy=g5s5wT_vrEL9fhbA@mail.gmail.com> <SA3PR11MB81201972CB6D308FB4659E7DC93AA@SA3PR11MB8120.namprd11.prod.outlook.com>
+In-Reply-To: <SA3PR11MB81201972CB6D308FB4659E7DC93AA@SA3PR11MB8120.namprd11.prod.outlook.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sat, 30 Aug 2025 16:40:57 +0800
+X-Gm-Features: Ac12FXxQQzVz3ZwE12kpQKBS_WIg20ZLii0Hl9TF9Df55yGu3hbeQmQN-gJ_jbQ
+Message-ID: <CAGsJ_4x38iz1XmRp_j3jX-8fY8o_3RNXLx78wc3s_4-o+N0URQ@mail.gmail.com>
+Subject: Re: [PATCH v11 22/24] mm: zswap: Allocate pool batching resources if
+ the compressor supports batching.
+To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>, 
+	"nphamcs@gmail.com" <nphamcs@gmail.com>, "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
+	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>, 
+	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com" <surenb@google.com>, 
+	"Accardi, Kristen C" <kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>, 
+	"Feghali, Wajdi K" <wajdi.k.feghali@intel.com>, "Gopal, Vinodh" <vinodh.gopal@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BB95D40003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BB54D40009
-X-Stat-Signature: mprus15yqe76egk9j98nwn66yht81u6s
-X-HE-Tag: 1756542928-138725
-X-HE-Meta: U2FsdGVkX1/TxXUoJv+gjYqIcDZaQY3he/53OmU9Vy/KOnQpgOqK8r5dEhgWsn4WBUYyEDT1QL0rpCrWn9zowkWyWmc43DN1D+8nICJoJZ1vgIpoCBPq467LwpJgLAPa0I1agdObPz1iP3ni2WoO0Q9s+SLP2M7pYSF/gsy/JWfB/UxIcWu7gr47aoqtSETcbNxi9dmfHLRssuT/ZmLq7nHBrb6vMwMFu1KCYgF9Uod09lfbOAQ8UdJ9QhHIuJZ1mLXH6QuTFPD8wfS0pt6t/mRSgA8xfmUBgm5blSQ53THAPvZTBH7jc2ZWCpvclOXPD8P1M7K42nAuSHLCiGUD3yFOhXZNaRSq6MYwgU7BPJmPhyS8ysdzqnYtrgJmac3yA9dJDruI8gCL7P92XmoTQWMnt7zdnOLzuvIgybCSnxHjpDYhu39WprbH+H5sMVA4qx3/SsaXpse8gScx5d5IRCqXQSyc4vZqcSs9VsYc9VeHd5NSxQaiJbZxPIGC5yjhoi8pb2nzkiHSVbbj7Yyhdsx/Ed07pOB4zLew18BPhk2n3jnsYogq7xi7h3DHJg2Rih0uaWqOvP/CDKMVTJyF7nB6kdiKfKkwUw+Qs/Ad66TqefI9SoWv5zKlJSP169RMt5V1TE+H8WO2NgfbBhlLkLSVifvbc3Pz8aDzbZbVS92kV+OmkJ5/TGCA4cS5CC9/eR4eyjWYFRJM79P2aYHgAO4sHT4AvDPumbdJnGavCsvBDlaTSvHDERIklkyMuPFdhvtAxrklxGPC7xfvBjBS+PkUvXoMYm6fF3RIrJyQKcXo6k/VYWDEuXhzbdXyMIT9XwfO/py3P1hqOnM8ccbvusp/5BCLiLTSeTsr49ZbxU0hNpmf+GQ4Cc790FOPEWq0WSxs/yLeQ/r72pRjUZmC+SRwIGDp125PkphnHW1jNEtd0CbpNcvmrPN7UUe4vLPJu2aoi7kzRL57RkbnKEz
- FScyhUwp
- ITQTMmjr/xEQ9TXkqxKzf7o8evKY/LL7NOwsC2QhrnVz2rvtF2fkq+bEVhburnxblkkR72mBRiFDqvQyNvWuaHNIzTbseP7xvCLooTuQrrXQ2S0QzQ3ur2PDn/Gk3O2a8aoCTi0GQoO1gcqrmdaQ7MU4YGgVE0YsQ0fxkcMLH7SJAj04oSoJCG6WOHKa+7Fi92XS1vlsyV5WAmXuBQbYJLrUAptMBDFiuzkaZGPyBPwMfQkgk/3biGVBDVO00Et8+j0MmCTv+VIVFbAOuRgAE1NVCU3nYxXi8vrfg+tY1fWefRv0yfKxDVxnxUk/DhisiOre1JfV0ta9xeTq/rWF9wH2EsAPQ7ybRk+13wBgUQGFbR8ud192mTBD3eLBW8LU0kci+1tUUoxr32ZkiWbvAbvrRVnxZsVeknq79nV/zemcM9XNz0gN3wxUqLq29/vVXo+iI
+X-Stat-Signature: x8crt4drfms8cnzm1o7ywcpw6doyywr3
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756543269-909597
+X-HE-Meta: U2FsdGVkX1/G6DBx1Bb8ZNUD+tklvUSubke8+tp2wMUFN0g1jrsc10DpZaATNMv92ukYITpwaL4CZGabUETg60ztyq8ZBVGa99XB0mv22dDlUiX9zOnXkTqE1+Zp9jUpo58cYEjTAj+zmtl7jRKFDmkibeoJxVkMkI8U+XvfLHy/lSazmU5tNPBAJits+iLW+J0acFO9c1TwsQZ3vIGbVQ2mAEGHDq1Xufq5t88ZZS42V3AXu6qKdnWu97pMf6bGKhX5iGDiu5fm3S3Xgw4JPkN2c9jH7Q1C45A+dRqi90ASL6excWVp0oq9toeASu8p1lnStUbppMkYyfJfTz2gl09q5ffFYkAzHHB4op3ZheKqe0p/8n1QN5ZFPb/PlHQnDGJXSOk3P9T0ITztKuB8rcSzHhybYd/pKjOqvdySQV2tiuUVpt4C7WoYVHz9JojepPpvltFDn5GEZArxGE7tzONV494An7aTBo8KWAKSd/ikWs3VpdWtzRj/djmrSXb1fvdYlJQn3mvKEyryOfDQKYhZzCHkGtGVIGptlwMEyLy3S17xLicb0x6SMqoOb7dfrzh8ElgxJ5XoDKRvk5r3drboY+YNbq1eaQW2WEojwOH32oGGGho71EzrxdBitQpsIIUpfKJFBlu4Lz0gDSW1nZtxSpHNisCH+eEI5oXzBr8c+/LVNmDxFOzkjdE6oGayPmhtQ+jfmWrc2atnL1fKKowlndV54OANENCwAVh9m2v+WBd6WPKxr89lf0gO9UGzffyH8/ctPBJ4v4sFYrGdFZYDRC/j+tJrVVRFcywhwTXGPFB6iAm/mE2GscrDyDprB28kzCD29Ndxet/rvjOjAtHPrBjFhSnAHpCi7VXHV1yp5vbuyuN5ZdSYuvFJWrU7m9JkYnVvii0Ahg8XCel6WVtwdtSAHZJvbYtYoKzq8Ow09h+YiRLcHh5agqtScAfK87NUqSlJvXwMDMU2fg2
+ Yi76FeGj
+ jFxjlV1r6oaOJH7CgeTi0myaBh3aZL4qO7YFW3dev73zhI2j2jcLNAoo+E0sljB9NiYw75oDWH4kVreP5JCASW7zmXOlxrym5GFlWTCgfZMWd/LXiK2G/KSQZclm9arRIyBXaezBbSbytjdxP4g65DNaySPV4X7QrXFeKGymKilYQl3H35tlqVdcXpd3eUyk83gltHVomDRSD7bNjopphOYbDXWuvvfIJnsWKamt47EEWCzLoLnI9v4hZ6VOC5gX3SkidygXbGuPp5YQgWQefAv02/6S90Ht4CZm8Gqo0vSRL5AAgqjCehQkEDr7EQtNoU64kOP79WjOLAec/rYGKN5wGF3t7RDkNYIgzi+zc8oJYucUs/BWSpX6BeCD5jZmwLx2lAVBko+k9em0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,69 +139,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 07, 2025 at 01:44:15AM +0000, Pasha Tatashin wrote:
-> Move KHO to kernel/liveupdate/ in preparation of placing all Live Update
-> core kernel related files to the same place.
-> 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> > >
+> > > I am not sure I understand this rationale, but I do want to reiterate
+> > > that the patch-set implements a simple set of rules/design choices
+> > > to provide a batching framework for software and hardware compressors=
+,
+> > > that has shown good performance improvements with both, while
+> > > unifying zswap_store()/zswap_compress() code paths for both.
+> >
+> > I=E2=80=99m really curious: if ZSWAP_MAX_BATCH_SIZE =3D 8 and
+> > compr_batch_size =3D 4, why wouldn=E2=80=99t batch_size =3D 8 and
+> > compr_batch_size =3D 4 perform better than batch_size =3D 4 and
+> > compr_batch_size =3D 4?
+> >
+> > In short, I=E2=80=99d like the case of compr_batch_size =3D=3D 1 to be =
+treated the same
+> > as compr_batch_size =3D=3D 2, 4, etc., since you can still see performa=
+nce
+> > improvements when ZSWAP_MAX_BATCH_SIZE =3D 8 and compr_batch_size =3D=
+=3D
+> > 1,
+> > as batching occurs even outside compression.
+> >
+> > Therefore, I would expect batch_size =3D=3D 8 and compr_batch_size =3D=
+=3D 2 to
+> > perform better than when both are 2.
+> >
+> > The only thing preventing this from happening is that compr_batch_size
+> > might be 5, 6, or 7, which are not powers of two?
 >
-> ---
-> diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-> new file mode 100644
-> index 000000000000..72cf7a8e6739
-> --- /dev/null
-> +++ b/kernel/liveupdate/Makefile
-> @@ -0,0 +1,7 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Makefile for the linux kernel.
+> It would be interesting to see if a generalization of pool->compr_batch_s=
+ize
+> being a factor "N" (where N > 1) of ZSWAP_MAX_BATCH_SIZE yields better
+> performance than the current set of rules. However, we would still need t=
+o
+> handle the case where it is not, as you mention, which might still necess=
+itate
+> the use of a distinct pool->batch_size to avoid re-calculating this dynam=
+ically,
+> when this information doesn't change after pool creation.
+>
+> The current implementation gives preference to the algorithm to determine
+> not just the batch compression step-size, but also the working-set size f=
+or
+> other zswap processing for the batch, i.e., bulk allocation of entries,
+> zpool writes, etc. The algorithm's batch-size is what zswap uses for the =
+latter
+> (the zswap_store_pages() in my patch-set). This has been shown to work
+> well.
+>
+> To change this design to be driven instead by ZSWAP_MAX_BATCH_SIZE
+> always (while handling non-factor pool->compr_batch_size) requires more
+> data gathering. I am inclined to keep the existing implementation and
+> we can continue to improve upon this if its Ok with you.
 
-Nit: this line does not provide much, let's drop it
+Right, I have no objection at this stage. I=E2=80=99m just curious=E2=80=94=
+since some hardware
+now supports HW compression with only one queue, and in the future may
+increase to two or four queues but not many overall=E2=80=94whether batch_s=
+ize =3D=3D
+compr_batch_size is always the best rule.
 
-> +
-> +obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
-> +obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
-> diff --git a/kernel/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> similarity index 99%
-> rename from kernel/kexec_handover.c
-> rename to kernel/liveupdate/kexec_handover.c
-> index 07755184f44b..05f5694ea057 100644
-> --- a/kernel/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -23,8 +23,8 @@
->   * KHO is tightly coupled with mm init and needs access to some of mm
->   * internal APIs.
->   */
-> -#include "../mm/internal.h"
-> -#include "kexec_internal.h"
-> +#include "../../mm/internal.h"
-> +#include "../kexec_internal.h"
->  #include "kexec_handover_internal.h"
->  
->  #define KHO_FDT_COMPATIBLE "kho-v1"
-> @@ -824,7 +824,7 @@ static int __kho_finalize(void)
->  	err |= fdt_finish_reservemap(root);
->  	err |= fdt_begin_node(root, "");
->  	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
-> -	/**
-> +	/*
->  	 * Reserve the preserved-memory-map property in the root FDT, so
->  	 * that all property definitions will precede subnodes created by
->  	 * KHO callers.
-> diff --git a/kernel/kexec_handover_debug.c b/kernel/liveupdate/kexec_handover_debug.c
-> similarity index 100%
-> rename from kernel/kexec_handover_debug.c
-> rename to kernel/liveupdate/kexec_handover_debug.c
-> diff --git a/kernel/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-> similarity index 100%
-> rename from kernel/kexec_handover_internal.h
-> rename to kernel/liveupdate/kexec_handover_internal.h
-> -- 
-> 2.50.1.565.gc32cd1483b-goog
-> 
+BTW, is HW compression always better than software? For example, when
+kswapd, proactive reclamation, and direct reclamation all run simultaneousl=
+y,
+the CPU-based approach can leverage multiple CPUs to perform compression
+in parallel. But if the hardware only provides a limited number of queues,
+software might actually perform better. An extreme case is when multiple
+threads are running MADV_PAGEOUT at the same time.
 
--- 
-Sincerely yours,
-Mike.
+I=E2=80=99m not opposing your current patchset, just sharing some side thou=
+ghts :-)
+
+Thanks
+Barry
 
