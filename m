@@ -4,118 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85CEBCA0FFE
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 07:46:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A6C6CA0FFE
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 07:48:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C2C16B002C; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
+	id 404956B002E; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49A556B002D; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
+	id 3B5516B002F; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B0186B002E; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
+	id 2A40F6B0031; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A5166B002C
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 03:46:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B9DDC1A0A57
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:46:32 +0000 (UTC)
-X-FDA: 83832641424.16.AC5F785
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AE345140002
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:46:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 189C16B002E
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9FF4E1A0A95
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:48:53 +0000 (UTC)
+X-FDA: 83832647346.27.B10A02D
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 84B5B140002
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:48:51 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=adeoXofh;
-	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k5UCCC4u;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756539990;
+	s=arc-20220608; t=1756540131;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dXtX9Frtab9UqXTSJxGjWOLKxBJrHqjflBYkitY6e9s=;
-	b=LbvBu9h3unY2R++ZAKC7hTP6xyQ03dg/Te6g7/lTlibLsUsxaxOW1M4XeDNb3KrdCqslRJ
-	MKDZnLD5cObngloZHvIEzU4JqxI/Ub/F09dCo9pNwCNeknh3PAhOQb7BV3jfCNUEEJyIWy
-	L1kAt1dFNuvbGROkWklPN+TSVKdzSPM=
+	bh=C9ikxbGqFGezwBfgbw/sJ+KYqXnrmuu7/VUhqL/4vCE=;
+	b=hAA2zQ67Cv/VNQ0LEULgI9wAjCQt39fAx2giYzalffdVjZ5Bm3NFuOxl+mhqDv1Djc/ziG
+	DD8t56zzoCX1VPrV0IO/7M3I3O2azFgsyXs9JKM6v0p8ivHxlALOuRtOZd0hasQDp6K3N+
+	5zTE/X6OQ+AnIggSejy96QsOYaEMRoQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756540131; a=rsa-sha256;
+	cv=none;
+	b=y/tZj3fK8RC2O+mmKUVmc6kz749/0E3VnoB0mQFBUcO5FUAnQrCdOm7xRS47GQg2KKibna
+	xRbfcY5iKyrKk59ihNgLG/fltZJsk+jFNArxF73Aa9JL/w6OVh4E2pJrq4PKxsuZYozZTI
+	v9K4zbg4ZsU5ivVmHJYho/RKkKitqwo=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=adeoXofh;
-	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k5UCCC4u;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756539990; a=rsa-sha256;
-	cv=none;
-	b=3oXoQdqbixo/A4s+nSjrhlnOruR4RGO1Ha4mzLPsjnFsDDTsW9HGhJX27rPr9G8HckDYmL
-	km5R9CpLPifk5kweBvbGoZNBn1oG/C7rMFfJi0aPiRrwuIrcHvOjzsKJCu9i3nKhbYtH/J
-	gvWY5VfMFeiYCa0bsJrLgRB7Xiu7FFk=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61ca9a5b41bso3790314a12.1
-        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 00:46:30 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-61cd3748c6dso5664770a12.3
+        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 00:48:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756539989; x=1757144789; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756540130; x=1757144930; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dXtX9Frtab9UqXTSJxGjWOLKxBJrHqjflBYkitY6e9s=;
-        b=adeoXofhurYp6UNAS1pXWm3IExQmMPDcGBqIx/5hHob7tvOd3XrpPJPqGERgCXMQbu
-         7hp6Ub+xlx2WCMfxBBZm2I9YM+jMqU3lqMDU2p+xTTiGZzkw+OJI6hpN/8Km6Pts19JD
-         7pS7TiR2Ghx3As65Uf1LSt0UXhEBbppwW01w+EPD1Kn7CrresgSuivDUAcsJaJJJ28GU
-         8WJ3QN8qD8YNtSJYD3ksOyFH/0/yyiVihPO0eqO4usZ4ooCokWzCmr7SWZSL4NXxz8+c
-         sMgDe4/KZNQLc2MFpbdNAPZg3nI+fd2bN4S8JqgumIHrMr2CPN0K7QCJPFkk3aX7iG8u
-         a0Hw==
+        bh=C9ikxbGqFGezwBfgbw/sJ+KYqXnrmuu7/VUhqL/4vCE=;
+        b=k5UCCC4unmc/yDqHftkGjWpFdIj5woEbco4cr0qgeOd408WmfWHoyroUQlTCqVN0Zr
+         9tG+/bTPJbOnAjtdDnjXkIOgk78iaGquWC97PUQA3ElZbB8WYDZmINopJoOP0LEhd3p4
+         cn514WNP7b1waUVDTqzDI0Ee6QdS/FJu0wEKqehyFih3NZgo3Lhw6SLG8ONMvdUKj0E3
+         50u/g6FfhdfK4fySmN++Me6lwlEbmTNrGgJviXaRII1DUsIRXWPr5YwyXsU1cT3iTHIj
+         PjkjBaufZqzsXw7rtm8VJ9ge6g56/jCQu9T1iua2YaU0q9WmSyJk87Ckvm5EXYTOK4uG
+         DmfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756539989; x=1757144789;
+        d=1e100.net; s=20230601; t=1756540130; x=1757144930;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dXtX9Frtab9UqXTSJxGjWOLKxBJrHqjflBYkitY6e9s=;
-        b=gHi4+r7YAX+U++kyo6NUFzekz4sdrbd0uDfOPk/bzehzHxFIvS804qLQJVGPYdgeBP
-         E9765jQxBVrnHYgrAuDKVW8qrgV2k7A3hkZl21tKbNQTnB5Cv4YrxlCCJVw2lZNBtF6I
-         76alILntfd6vb3eL/b9ntTraeCihYad7kXwWLXO5uR579WX0++w6gyNT5g/2VqIQ+k+I
-         Iv1ISJTV/ywj9T6OqoiDvfHiT5XXUAznsxuugXkgpkCUP/eZVncaS1H2DAKS0ZoCdSPJ
-         tIlpTGH4lrcatUnn3XHxu0zTwNGFoNxGqAeIbP7/r1u1zrKXBX3184DfWfPM3wufbd+q
-         VA0A==
-X-Forwarded-Encrypted: i=1; AJvYcCXhiPK/C2dOwVXqj8Rfv9e+Hwxiix+nP/3oLV2PpqedcDCd6WNN7C4pEtZF09f5hsYYSpOl7aKLPg==@kvack.org
-X-Gm-Message-State: AOJu0Yxxjtr9HltEQUHB7DvMDCgrTsI56PQlX2mv84Noaisvc/Nn2y1M
-	GJewEVtSVbCaPlxwngT8ogLXk+FUiKwkZXahxCCW1RG2HKde7EMwh5rU
-X-Gm-Gg: ASbGnctChtfSaz19YoBlVIBA0isLoVZWLc3KVzkszwirCNJEU4jWgQPjoHF9NgfvqP+
-	r0GIkThsqqewuoM7JLon/AUlbdMcwwItHPyJmxWp0Kqr8AqpaKytiRyxefnVAHSaxuiQTyVxev3
-	6OhNquIG0QjLSpPKy0GquoygpzKKrGCH3Dm1CV6rkios+ZrIufkPkxudzmPAdRneTOPp9YjEjPs
-	edsjjBmQTlQj7UwENcW0HZT/Rc31WyIAmLd3ILAWRT9s2fhvhlKOx8DNHsSES+E8zn06ELRfgg/
-	xRJunqrpVCfdJcEs4sCF+OiO+3bc1xA/HVhQqUiC0LTqeP+wx4gIXNlmv8K2yXNCBlTkDauMi3x
-	JFJ1EdWFrLeFCvVzbwjjrm8nQrw==
-X-Google-Smtp-Source: AGHT+IF+y93hNDhCFHUAbkTqB7bJ7rRk1NYfczRqTKcmtM/XlUDeBnRrXCkQu4Z3SKAA1EblyKm2yQ==
-X-Received: by 2002:a05:6402:3589:b0:61c:6fb9:c83d with SMTP id 4fb4d7f45d1cf-61d269881c8mr1010269a12.7.1756539988770;
-        Sat, 30 Aug 2025 00:46:28 -0700 (PDT)
+        bh=C9ikxbGqFGezwBfgbw/sJ+KYqXnrmuu7/VUhqL/4vCE=;
+        b=j9rhhqd2y7q43BLLYYf0q5dGe8EUo3vyNoJUzZC/z5RdHdorpDDkd02MztLa4DC7v0
+         IlvTtRtlrYW3jdrCwU0iMDBLvSFEuks+aqcoAXk6vPoAHQg1B1WcsJP0kXPjFiL8vvDK
+         klQlQO7QU5YhOvLrEJoWevf9gyYHPa0jcCcDB9maDgBQFgmUE68+N+GfSqZM6dv6wSY+
+         Kjv1BEGBXWz/eYHmp08vmZ30bVHex+8FU80nUM9pjKQIz8aTpEt6Xbiz/Cd4OxP9t6q5
+         nBJS68zfc4kKJHs1zHitjaJPbtwZQvUg9tuYKVeUkOPgy6XCiiCzzMCouZsgGzVBwWsu
+         5K8A==
+X-Forwarded-Encrypted: i=1; AJvYcCW0V1rNHUbKXm4v62eIPl0srWdGWAh9WGpv2kZ9IpthIvD8rIAf744iZ+MltSO3AIjq+RMldjQqqA==@kvack.org
+X-Gm-Message-State: AOJu0YxC+FNGq/ANapHcyfSQJne7JD8YvHAwxICxOVqqKpyswHBxZSuR
+	E4CeQE1YY4WXYHokTAKE1vwSEZKtxOleJik10RZU4u8/Eej+jverSAVa8JdXwg==
+X-Gm-Gg: ASbGncstju3VhbA6UfjpbLQErqyWUGOBMECrY4L+vGNkCLWSgJSCIz7lNXHLYsRw/A9
+	7/qO090RDfujWXS/7TCqEylzLUl5LWogUBqmQfxawgEb/Vmgd/G9jEkcePvaLQ9H2x6bfLwZtnm
+	Pzk0FDjVhIhXwXl3vatwBGavJLcTpjsJPzSYtJK/cTcAqTxexilvfcf0yErP3Kzyhe0LJ90ryRK
+	fXK9d+QiKUWyQaHXE+lVkWNo3Bq3ehSA53VmqMPhFbaY4DA9AgVTs5QNXb5lkj+jDty9j+NSJ6Q
+	xVoYB0xJi2jqFTdGVsF1z/SLvdf4JxEcgA4n+CaRnOBXOLz+kUehK/HNuHrFRE3g3+dzRwkVWc1
+	26DhDEEr5nJWr49l1TA8H8nYrXg==
+X-Google-Smtp-Source: AGHT+IFdQuV70XfnKzIrxGnDeVxHCfE7ZtMBah41MZey2KkKoK+JJknh/5bTES6bSwyzQm89m1HZ1A==
+X-Received: by 2002:a05:6402:90c:b0:61c:61bb:e836 with SMTP id 4fb4d7f45d1cf-61d26988ecdmr939370a12.11.1756540129783;
+        Sat, 30 Aug 2025 00:48:49 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc1c7edcsm3185195a12.6.2025.08.30.00.46.28
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61d322b3854sm4669a12.0.2025.08.30.00.48.49
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 30 Aug 2025 00:46:28 -0700 (PDT)
-Date: Sat, 30 Aug 2025 07:46:27 +0000
+        Sat, 30 Aug 2025 00:48:49 -0700 (PDT)
+Date: Sat, 30 Aug 2025 07:48:48 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, david@redhat.com,
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: directly add pagesize instead of increase
- until page size
-Message-ID: <20250830074627.pitdp64svss6slyk@master>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, Zi Yan <ziy@nvidia.com>,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH] mm/page_alloc: find_large_buddy() from start_pfn aligned
+ order
+Message-ID: <20250830074848.spy2rgvwc5s27tmn@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250830023102.14981-1-richard.weiyang@gmail.com>
- <20250829200953.1757e85542b1126c4881d600@linux-foundation.org>
+References: <20250828091618.7869-1-richard.weiyang@gmail.com>
+ <489045AD-70D6-4167-843D-50A8DD19870B@nvidia.com>
+ <20250830012505.v4qoihdqi22na3v2@master>
+ <aLJt5GtJLGM3wc0X@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250829200953.1757e85542b1126c4881d600@linux-foundation.org>
+In-Reply-To: <aLJt5GtJLGM3wc0X@fedora>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AE345140002
-X-Stat-Signature: ekrchfyah1tnfdbbx4s4pfkfcob81s6s
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 84B5B140002
+X-Stat-Signature: tse4o5d1kg3mbzxihnf6p6bbyiikc8ro
 X-Rspam-User: 
-X-HE-Tag: 1756539990-793745
-X-HE-Meta: U2FsdGVkX18Bj6AUAaV/8pB5NawJyQ7pHjzWU+IsUkXlOfA2R1rsPWOtR3slATxjrUg44IYQvRGR4nzO7aXUkHSaTCAx/imGlN2cLV0nXgRrNkb2sDNkR/bREXLgWUP10mmIDqGUv9sw1rZYOV3QeVMQXowjeL+b2kWdjWK/uzVfq/aZvwyM9l9fApP5cUybVawj1cQttcngvowdzYCJtClccztQb7ZOy8FSt02dHGUFFLqwq870Aqmz0zf+G8/Tf+f3duEKp/aNFbVyRqWe8BRGII8Q1u3G4X9UcMbqEv2906bvqkXO9WcQusujD7mgqIf9ZHEkdxdNMuNxUgZLpWo+roUPpjsttvJLLvuUbx648d7ZCkwkpMfe5L7ZdjAyXLvOfyx9W0rzkZ/H3dM5l1oF6ew7hQaP9tYxsnHZtPmnLHZD53W7xm0ZaK9o5dYV6UalxnUUtSbNKDXJBPNIH7fAR1WXF+E+VUwuzzuAIF699SjR4dW4klaxSI3QMzTDEYqo2HPDvfGSj+q4yzVr0RvBM2TbnAtZTFF16xno97VdD8MM4fLA1SSPNa6OHlMukYJDyCAzO8AEaqZtuB4NWk5vJ6eTAFBPjhqwd0pBvnvTEUZp745oCUXUs4pkc6rKY+OcZvXwQ3TLRrqSkLVaTtCFgGMg/FDqO/Mg92OrNu5qhfi0PSa+24IEYi9GcyvesNAaTTkj4dRJT4ZWfijmPJoOwX9v/dI4XSqRU8HM0rv7BpyE4v35eVnuFY0CyCYu824aFPevDD8UpenqISc1Yaur+LU+8kdo33W7LTK6o0R8JH6PBMAhHzNxhrfLtxBTiE8+hdD/qtNs7o6FFay8Wt663FKVAL0ZE+lA7xgCQWrVgpOHdiowS521J+JKt7rwZHHKtGgbr3Sm5WmY3xgu59HrIYjwaqPOKH7xskd9iOxuLx53e1v+Pe/2P7ZO1YW7ecGBLriJSwkKV/lZkFo
- OBoXLs4g
- caZPxvi8DKZa8IL116NG5HKNH4WBnq+tgx8IkBJ3jJL2M/EaEzQ/3iU+60ce3ESdpIJkysdU053yKFW/UruldicuFe3kX1PympLDDZQCFjv0quyRDpG8GTACkuFysu1IvT1OU9D83Z3oiK5ZYxRXF2zx/JaW2QLkciCBHMV9zxYH09YZHZQnByYIc7w853JEoouNzJ/5aP30QRCMRKIdBhOS7A+HqU9VBwxWZwyFvI/gXbgfZXNJL0wOwBMA71+o4eJSHRI+pnnzScTtV4ptJm7i4INkJaUHdu4A1tGlw8DcMWvHsRsxnx7NNw8SmFxn2NirAgeHv0QPWabgbXfVLWLkrq6pa4dLO4WUT8CiJovrajhFZHkdu3ozHm056OlRuA6WdRUX5bBoUkXPvT3vtEnw5ns2PE/hp0RMmAJJDO0udU1en7qpbDfQw6bd+gGFmoRpo46WuR6R6w5B1SGxbo4z+uuCNDXdtHSeVzlcBY0FCzzHavjyEaHMcz+GIIs1KllUJmMLfD8iSpgM+2hlvNvUL50nHpa+0KDXcfLy8J2lJdoYIuLH9LFkpSkv3KfCaEfHfXOTLAZsR6Xz92oZCiHKAw+VFTSh2mCbZ91px8Cub9BQMG2OKxE9DzZSTG6+q2Aawpjd3Aw/aqZnV9dbv9Wz997MhhUjvgubhMZheiZ1ZonE0wIlh1hGvSborJsfVCAKPxCHw6chMAsxAeJ8P9dkEQJceQuel12dr
+X-HE-Tag: 1756540131-577281
+X-HE-Meta: U2FsdGVkX1+YcKMx6S/w/z/x1VTdvojh7N7RzLnKTFQzxt6pm3Dctl4Nikd9v0Wzl2dmpHqJts5oXXRM+gqEm8ux8Tr4Krt86sgHtw1H8LL3lMjyHTwmOCTNZu8VKY6Vf+Ud9CZE+/AeC6AbiOq4X7XTBIQFCUwoQL08uDilCzbV3Tov3g9u7dyO/olCFd2X3mXIJUaFsV1vMbx+Qc3REyeu2HaRNpvIcSsFV3TcywO1263dFPxdfGvJrGw9CR/D0YFUtQebWTIqpwvqun61qpz6vy+inxXBtyyBmemrQMp8fMVpgCI/hz2tfJ5mEfTKnV7wsB2yLeEc1eN27MvAmFA+cOECCXOoTxdbeVAilonFE9sHKhXQSfc3ZqVi6e+oLY4IOTOpyyCWkcLir1hw4HxB87KTgN/6hBIppPRxHtZzS9cvrPfVWZJNjkChaCXA/qCTJn7WS0SelrPMjIbVKCLzunyVvyKLKL3A22ZbIh8PxWir2oBltTF4KV7j39OqRI0qGsr+Zf/vYf5NKJrwRuQLFz0qWbSAdPd0VhiFOAB4slbzZk4QcLQw3QBI0k0a+W67UZkTkol839x/EO292ZpmkpXmYzrAX0xMiCDTyLxoWVqjtjluRcR/kItY5F+dwA7Ejpb4OEp7ayk5N4QiTd++eQLWcM1UvGF7EAJnmaDpnQLMMTCU1MEkIWqQd+Tq9I8/RZPHOeUZEH++yLA2mH1/micf61JvputxlcBJouYDmohhyqWSCKq02m6dLjuhx/Lt7pDdHIG5LcGAO9EY39vOXWzc7oiz+FifJ720LPQhr1n06LS2LLBW0ocjStuQbNAQIAmsai61B9RPRzcpIAI71dMktdHglsEVKP0SrP8nwwzGvgun/w/QcPphsosXY10wRQ5jtXc01tbiJjW2phrykelRRuyWhwgGLiUo8v/Y31CWmZTH78wnSQ8hGWNhnY7QJt5pRtzmkho0ezE
+ lOu9jLEE
+ JL28zHS78I4HD2GjrOV3LeKbohmkiVLikd9+se1LIueCJy+Nn+zj/yGa87ziw0Qkao5DLZTim4zqhnuLMbiMhSdLIUXWGvkY18k3rm6aRqL+5vI301vHJ/KKmkwgJ67j6BLQ/QQDBT0QTsGZTmoc7zN97m4U2c9fCcW/1mM5OIxrKMrnBRG+fV5fDfix3jZIeaxCsxMPGTLlII2qy4ywn8MqXNpyMECAqBlrj7rQFLriu0VvUYJoVJh67yJXEarUnXlL6etf+FQwGfdPXi5HcB+0w12BSq5qkDqzPlfjzdoyBUGzT+q3xovRuUfwpdIgnab8YcX40C5+JTVhqxmd7npfy/4C96Zh6yujcqQrOMKKs7IblSXvphTIIUzRBcXDPX8tQ0EIvmOYmPKWYbacOEZQPuhdTOpusIjDrPUaiTZtPHCJjSdpvAmSH67EB4PodIwgGdx+VXIId48VitQGe7SKai3GQJvp4sx278iPHhRGiBeUczsEA+uBQV925xRvZan+LG/ipSy3qZ6n+CdzSnIr0EHqvgjRk3wT4HNVPYZ0xZvSU9Zye8h0qGjgrvv5BfNvtQLilsQVwevYdhhZaQLmW5NHPODZi0wY138eabyEhXRsIpWItGI3IYw83YmRS2FIfAlLfQSjf+MwqBrHG9UV1xyLDDqaxe8K4qbxBmS/4LSO439PJY6q4C6sHQSTZQEKkKIbvELARKxMb442HGoirM97gAwUiNN8/nwVbu9vI1dstrrUhekr+LWWssZweHjxP0rDS2K2iciPkXOqRFgRlav+yMeAUTxAlEe/pWO3ReUKOmwfVpA26SVU7yaaXyApgv2e7S6E7qaXQPGqxJ4JS6RTbfCDG0rnvwNUht0R2aZxjQYmNjCwYBa+whEazK7SP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,41 +127,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 08:09:53PM -0700, Andrew Morton wrote:
->On Sat, 30 Aug 2025 02:31:02 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
->
->> The check of is_backed_by_folio() is done on each page.
+On Fri, Aug 29, 2025 at 08:20:04PM -0700, Vishal Moola (Oracle) wrote:
+>On Sat, Aug 30, 2025 at 01:25:05AM +0000, Wei Yang wrote:
+>> On Thu, Aug 28, 2025 at 11:02:33PM -0400, Zi Yan wrote:
+>> >On 28 Aug 2025, at 5:16, Wei Yang wrote:
+>> >
+>> >> We iterate pfn from order 0 to MAX_PAGE_ORDER aligned to find large
+>> >> buddy. While if the order is less than start_pfn aligned order, we would
+>> >> get the same pfn and do the same check again.
+>> >>
+>> >> Iterate from start_pfn aligned order to reduce duplicated work.
+>> >>
+>> >> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> >> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>> >> Cc: Zi Yan <ziy@nvidia.com>
+>> >> Cc: Vlastimil Babka <vbabka@suse.cz>
+>> >> Cc: David Hildenbrand <david@redhat.com>
+>> >>
+>> >> ---
+>> >I think it is right, but the code is very subtle and hard to understand
+>> >after the change. It is better to add comment to explain it.
 >> 
->> Directly move pointer to next page instead of increase one and check if
->> it is page size aligned.
+>> One thing I want to point out is in __move_freepages_block_isolate(),
+>> find_large_buddy() is always given a pageblock aligned start_pfn. This means
+>> if start_pfn is not a free page, it would always try 10 times until give up.
+>> 
+>> >
+>> >Paste the code below for more context:
+>> >
+>> >        while (!PageBuddy(page = pfn_to_page(pfn))) {
+>> >                /* Nothing found */
+>> >                if (++order > MAX_PAGE_ORDER)
+>> >                        return start_pfn;
+>> >                pfn &= ~0UL << order;
+>> >        }
+>> >
+>> >
+>> >
+>> >The code tries to find a PageBuddy starting from start_pfn starting from
+>> >order=0. When entering the while loop, it means PageBuddy cannot be order-0
+>> >and ++order increases the order by 1. Your change fast forwards the process
+>> >based on start_pfn. If start_pfn is not an order-0 page, based on first
+>> >set bit in start_pfn and how buddy page is chosen, the next possible PageBuddy
+>> >order can only be __ffs(start_pfn) + 1. Your code starts order at __ffs(start_pfn)
+>> >and it works because "if (++order > MAX_PAGE_ORDER)" increases order
+>> >to __ffs(start_pfn) + 1.
+>> >
+>> >Can you add a comment on your "int order = ..."? Something like:
+>> >
+>> >If start_pfn is not an order-0 PageBuddy, next PageBuddy containing start_pfn
+>> >has minimal order of __ffs(start_pfn) + 1. Fastforward order to __ffs(start_pfn)
+>> >to remove unnecessary work in the while below.
+>> 
+>> Sure, I would add a comment above the assignment.
+>> 
+>> But in my mind, we are not farst forward order, but start check from order of
+>> __ffs(start_pfn).
+>> 
+>> 
+>> How about: (not good at commento)
+>> 
+>> 	/*
+>> 	 * We start find large buddy from start_pfn order, since a
+>> 	 * !PageBuddy() means all lower order page is !PageBuddy().
+>> 	 */
 >
->Why?
->
->> --- a/tools/testing/selftests/mm/split_huge_page_test.c
->> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
->> @@ -423,9 +423,8 @@ static void split_pte_mapped_thp(void)
->>  
->>  	/* smap does not show THPs after mremap, use kpageflags instead */
->>  	thp_size = 0;
->> -	for (i = 0; i < pagesize * 4; i++)
->> -		if (i % pagesize == 0 &&
->> -		    is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
->> +	for (i = 0; i < pagesize * 4; i += pagesize)
->> +		if (is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
->>  			thp_size++;
->
->Looks like we're doing more work.  Is there something wrong with the
->existing code?
+>Personally, the way Zi worded it makes more sense to me. Maybe replacing
+>the second sentence with your comment is fine, but I think Zi's first
+>sentence provides important context in a clear way.
 
-Excuse me if I misunderstand the code.
+Hi, Vishal 
 
-Originally, i iterate from 0 to pagesize * 4 one by one and call
-is_backed_by_folio() when i is 0, 4096, 8192, 12288.
-
-The change makes i just iterate on 0, 4096, 8192, 12288 and call
-is_backed_by_folio() respectively.
-
-Current code is not wrong, but not necessary to iterate one by one.
+Thanks for your comment. I am ok with it. Let's see Zi's opnion. And I will
+send a new version. :-)
 
 -- 
 Wei Yang
