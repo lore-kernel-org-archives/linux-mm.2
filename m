@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCFBECA0FF0
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EA76CA0FF0
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:41:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 281448E0002; Fri, 29 Aug 2025 22:38:46 -0400 (EDT)
+	id 5203D6B002A; Fri, 29 Aug 2025 22:41:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 259008E0001; Fri, 29 Aug 2025 22:38:46 -0400 (EDT)
+	id 4D0006B002D; Fri, 29 Aug 2025 22:41:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1960E8E0002; Fri, 29 Aug 2025 22:38:46 -0400 (EDT)
+	id 397A46B002F; Fri, 29 Aug 2025 22:41:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 069EB8E0001
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:38:46 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EF331A096C
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:38:45 +0000 (UTC)
-X-FDA: 83831865810.16.E3372F1
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2659B6B002A
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:41:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B060385AD1
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:41:35 +0000 (UTC)
+X-FDA: 83831872950.05.8016EB3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6B0B718000D
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:38:43 +0000 (UTC)
+	by imf24.hostedemail.com (Postfix) with ESMTP id A37E1180003
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:41:33 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EwITjDox;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lmj1+lj1;
+	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756521523;
+	s=arc-20220608; t=1756521693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q5z13N84mNtXbB052nFNkQiE1/2lg68HKsEcCvAsNyo=;
-	b=P2eALTjIU0TMpvKlF5PV4AOvcIiXBhx8Cf+A9V7cU+YBuie0SGPi04RjEKw2nHnAcQPC3M
-	Wt2wOKOcBDqZIDbW65f3Mg2ElQKnQ4cZq8BSNQoVX3yHYVlBd2P5nqWYQ38HQazwARBe9F
-	gSSveowQeoNn/O8YVWD/MCM62i1fFTw=
+	bh=3hZNaP5JIdF8J3UuqbOdm2dFiWxzlS3/JNJCD54zftQ=;
+	b=eJ2vfLVe7rz0gxgGEaD4BAPpj42ZjlhuUAMht2nTl/YFID6RwpigdM/YANCqVrqSAMNahT
+	wUsw929Wre0Am6u/Yn4pWCrsJ1jDXbQlsDanD1sFJIfZXw312Hvc8kMgUS/mQpTD0BKkla
+	UX16x/SZ8hWL4yhrsCoyZvuprjUXii0=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EwITjDox;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756521523; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lmj1+lj1;
+	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756521693; a=rsa-sha256;
 	cv=none;
-	b=hGjFTnc0/dQeZx6v5RuQofwfnitmMdVx7W7m3PzLDx3xXDqf2ARQEUBP9CoT3SrS0kLhE8
-	KIlcxLQ9Ml4q7NlDq7txOWgNXyLXmkqpcbPd3dEMPcvEPcyzSj0U7+zVjwOLd14ZZPWf06
-	kzb7B7lNRBmrGNfKRgJKkmytbZFFc8Y=
+	b=kc6B+2XXR+0284xh+eVQByacrt0glRub+AlipGYH24f6tyAc3E89ElTooTz0QaZuz32ZYO
+	6cvBIZn6MOsEEKkQ409dy7rcGdtDlfGbTjkNoiC88ABfSoQjzUn3HGp9YSQfqHQDyHDtle
+	MuWRrQOQSN4UniBsEhHYB/fuyECejFY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5BCE3407F3
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:38:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C47C4CEF4
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:38:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A2DC44491C
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797C6C4CEFF
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756521522;
-	bh=+p2n4tlZXGaHynIlVJt3ZHWklmLb2NN8iFLRK8WKrfE=;
+	s=k20201202; t=1756521692;
+	bh=5G9qiu/3oCfZ8wkaAtF7wRf2rZ6I1+X24VOlhJZYYtQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EwITjDoxrM3rp7no35oPvdgmrP1ln2hZRFOawv6iBrhmW0++wNPgbxSuietZjXCrk
-	 t9i/I3uWcJf0JdWaF0B9ATrRX4JHIEFC6RlQYS8frnmQaDGdlXS8MY4G+bT3e7nPwY
-	 EodzG7n8aHnfhqTxsoYLjvXrN0DIxvJoTNe6rvwPXP+6n736JJa8o3uYZb2VV6+GGE
-	 fmAZg49g9m4IUBJzqestbiM+A65GHmqDH/PIjsIkx2KWnQWS49GjScTKXHpcU8C1Qw
-	 YPXx5Yt/SOwzG90CFsxk5EbmZ8oxLMuN+KSDUi85LXXlGgXzyL8iJSTmkcWlkykslv
-	 Lj9mgBAmukF5w==
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-72019872530so24982987b3.1
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:38:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWMI4l6WC6c/lPCcmyM9kQu2RKx+aAIsd7FTulPmgvTSDEFrLAGtf+BIcM3ZCKtTn7A6FR1jHVQYQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy/8gftuwPXyZsDiMf/fcfoH3Hn0dhCDfAtCHLSLJ011TB72+gu
-	uigFsmyl053fM2lLSGouwE625m8FgOXvwwBrb7QAqpTk7yNoZA6aDEvG/py/6PvJQfi9AS9xmfo
-	YVzq9j1uEU9Oe9pRZH83ryMuUFB51g2WqQxPjhdi9Kg==
-X-Google-Smtp-Source: AGHT+IGuBuSwsjhHFtUTKA74QyYXEtkfLGe4VoSYAhkXUSo9fI0UtL8SW/S4muEUQSA+uavvttIEfu1Uod6PEcZakOM=
-X-Received: by 2002:a05:690c:6812:b0:721:69f6:d403 with SMTP id
- 00721157ae682-7227635732dmr9024847b3.11.1756521521562; Fri, 29 Aug 2025
- 19:38:41 -0700 (PDT)
+	b=Lmj1+lj1X0oKH8Bz7zcE+7CjtnLbobOZgOsOS0OZ11HW12V1HTsUZHm3kAnA9IUFh
+	 HR0VApKVkD1yXmO03fFQ2ibG25ZU6TB9fgN3MLUlx9LhX7JON14IvSdascHebI+znw
+	 kgovQrd+UZtN9YmyJ6AJZ1ebbvcOsKSC8YsUp1j2oQyDf4zXnERo4cblWLMkNM0BmV
+	 wcBbL1QVwHVGB4GEbYAHWyjUGo9BbOIFs9ZgcRmenQS42eA80pymonFjjDWmrL0VhA
+	 qdeawbBU9LLyelfVuk2Kf/BN4To2TGgCbsIyX3PV0/tC1Qj7VltSWbEJpzNW4iLDc4
+	 nNJUMiZ5AigBw==
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e970f3c06b5so1618833276.1
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:41:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVRnyG+zoai3eniUtXbk9/k5LBqZ90YROYoIYgNeE76SmLd80fkXgnOaZnIwZICzqCNpGUxDoXtdA==@kvack.org
+X-Gm-Message-State: AOJu0YzdHHegmaQy8nQgXN5wRhv6DkAgmAXwVj13OL11JveNPBClVly1
+	U891Q6mDjcX2BIUfsn5ntKcTb420SQOUVJW/I9j6lcI/XJbM7w9ns43iJQ6ZMuV693CcWqCtfzo
+	hn1clM62oif9z3wvbPQ0gQAvdhTX/yLrhNbhXbYYdGg==
+X-Google-Smtp-Source: AGHT+IGQ/k6INOYWvFdwTiuHTFlhFF5y46EnkbBNJMpXn3ZucQkUXRKv0aX51LSFkQRpwfIt0tzcNZNittrjRchbbbM=
+X-Received: by 2002:a05:690c:490b:b0:721:6adc:4364 with SMTP id
+ 00721157ae682-722764cb124mr8314527b3.33.1756521691714; Fri, 29 Aug 2025
+ 19:41:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-5-ryncsn@gmail.com>
- <aK5/1so7a0i80+dz@MiWiFi-R3L-srv> <CACePvbU8pnjWCiWcSXRr4UdpuD_wdtrouLMz_fNB_=KRrdHLmQ@mail.gmail.com>
- <aK+YzeWToVUX3WOY@MiWiFi-R3L-srv>
-In-Reply-To: <aK+YzeWToVUX3WOY@MiWiFi-R3L-srv>
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-6-ryncsn@gmail.com>
+ <0fc6e083-b7be-4144-a50c-d1a7a2e1c3a5@linux.alibaba.com> <CAMgjq7A7_ZbSWJQj8wjhPb6vt=iLhHc5r=cJdzMeNpog-PcstQ@mail.gmail.com>
+In-Reply-To: <CAMgjq7A7_ZbSWJQj8wjhPb6vt=iLhHc5r=cJdzMeNpog-PcstQ@mail.gmail.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Fri, 29 Aug 2025 19:38:30 -0700
-X-Gmail-Original-Message-ID: <CACePvbWX+snaDv9rJKfVe69QDo11ZwHQwuzd8Y8dJ8bS3ZJVEA@mail.gmail.com>
-X-Gm-Features: Ac12FXzygJ_nskFfLZf5V2ThWdnbwEO8i2QJvMzIYPH7zqT-9-D6M15Imx23neQ
-Message-ID: <CACePvbWX+snaDv9rJKfVe69QDo11ZwHQwuzd8Y8dJ8bS3ZJVEA@mail.gmail.com>
-Subject: Re: [PATCH 4/9] mm, swap: tidy up swap device and cluster info helpers
-To: Baoquan He <bhe@redhat.com>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
+Date: Fri, 29 Aug 2025 19:41:20 -0700
+X-Gmail-Original-Message-ID: <CACePvbV=HkuP8w=LvifvAv1O8VD0V0XPOfckVtLiEfHS3NnhZA@mail.gmail.com>
+X-Gm-Features: Ac12FXxQ_kp6T58GjnYmxVVATJWYvm8TfahAQG6V-Cc0HTgxhU7fBqlqLgbOncI
+Message-ID: <CACePvbV=HkuP8w=LvifvAv1O8VD0V0XPOfckVtLiEfHS3NnhZA@mail.gmail.com>
+Subject: Re: [PATCH 5/9] mm/shmem, swap: remove redundant error handling for
+ replacing folio
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
 	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
 	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6B0B718000D
-X-Stat-Signature: cq33x177zz4pwnwjzhfcnhoitpf7t5wb
+X-Rspamd-Queue-Id: A37E1180003
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756521523-157469
-X-HE-Meta: U2FsdGVkX1/FgQhJJtxpJzYPZ7KYSaGGHFUhm7Zsj8N/rJAz/6teFS5PIvmSAEndS0NAcQ3K/t6ip8QZK53AzG8SRgbcBQh2m/SXGvP4YFKuIKMpx71AAF5q8CV9zEC0LWXhbEqCp32GDQoUy5gb92YH8cGKWLk/dk68eb1LTpoWbRfVusH8iezsO5/+LpDqQYNZVPnvbo/pTFfxyONTSMXxpd5x5ltGimXr6Wm0WYkAv86rh0GnsbEq6HxxhApVKn3yUSkmDJlI3vVoupNycb+gf8AsmVQ/wkdh69kTxIVrlPnY/jlqF26xWXbltKtI6Oj7+IJG7GbQ1OUcv60Fccvtyzt3jOLCtUqR8k2KDsqw9sVMzcvzczBrWW8FiFxsL83J7WPT+bhKbfE3bHSvRuslnKd+rcUk9sAALWhofz/jtAwW4vuHlBdAhYOpL8nFYYsxkoVxAEMGQakJeVhpgpCngsVRKcXyKXKzhud9URMl/iQP9szIV79VmEr5rVecrR7BxerDQ+mMy9ZZoRN0IgWd8pPZHqJnbPx2xWy/Z3eG/qVpwsA2F6HyI3ixtEt3fSfDEekM/3OOIR9iidfxCBJbo7j3IOis2RXIskiRyuZj9IGddrCJqDvM4iM9w1IuEV22I1pxbXvKOsBMKq1IkHYqMYrI1JlPMJRi2ln0vzLWUDuwu4Uay1lfidz0LoSKr35wLPJFIXffnzS/nVwtJikpYB749tfaNN4siI5DjHtQg7t6ke+qGsNDECUHTQAQatTya+5s+nIOuWn8D9sWAYKgoucYSz4ODRB13NlpMFyoV3XSj0EDwu1R9ugEbqgQhaEpkUzAwnEl00s9fLxoLY7ZIBafcXJiYQzv6gbOPoE0UqUSQfNVUTQESLQ1oA9Cbdbc/S7Sn/qydfuwWxjlah1WeikpLl7yuQQizy8NDtdVE+MldUOu+IjxNkBVmqJJTiG2sH/nRH2u0N1et/p
- wyEV0Ar2
- /xjb65kr/Mi4WvY2cI1hsSkLlkeoFk8ObuMQKuc11TsZt9KIkyha/iz2OkPJ/Jx/V9sjLMUszHrQhcGZJeUEsgWaYPgayjSKnuEnMOXa5UZ0D99XWroL54N2X/EeO0gXJB/C14SwqHV7ThYjD1ngjNBTSjdjSgEFiw1ytrZgpI4GNfCn/2bAwakX6f7QjTaWORKvTXmPPZeijo9cmuTxSeuuvSJUmJ9Yl+9y3qDss6dowsA4bEdNVE+9P+Pza898a87CrZPDSqS/cYL8eVUrbXXaDGBAZtrRlH/Gzt2+Wk4KquqdyIK70JfZKgRXgMynREFKzucpioFb2Il8=
+X-Stat-Signature: j6xjtm4hx7z8ouc4qagyijs1goanptgm
+X-HE-Tag: 1756521693-261987
+X-HE-Meta: U2FsdGVkX18e1vlUINptFrfbQZqBpiRivcd056n9n2lN9Lr8i34jPx/eFqKKlZ+AB5H4lQt7fhGejFvJBdhgWHvz1RnlrpzEVdccZ5V0CK9paqAdiF9N3B0lLuNOwBq/8xgq5sfXpNeYoxws+fl3jV2J6hXaFlyrU2bfvapo+2tiNc13C1NXfsaTmY14oNuvE4xrNDalwFSSZ2qVg0BvnmmXluEexKxe1UMaSDuO6FwLmyrdQ3uzOBIQbmgo3BSKRmlAnpPtw2buvIpLU/iWoBb9fMM2VaZ2BgvCQlILs6jtgZb5eFQ+hw+KYmEWzkYqP6sdpclxK3SlbmjVrmWq5MLdLFTXSDN+EED8g4Mcr01fNRLtl8HQu1KsZjk70pzPuVouUj9utnTi6YKuCyvVvYq69Bdba0OiEHjjTGTqrYlBggYMR4yvWSURwnwNd0bbcCMS9HBo0Nh9jh8SaZ26ooEAiBKezP/z72ZrZH4fapLUuLYdYYydRwwqRi0AhHGIcWdRMlpm2ZX+yy9RrDmwBgak/33SDwQ+QaEVlHuEFoTveoPCSl81t5AWtLGSwmV3pzwmzAy6L/WDN7wcXd8Wa9lzasPA2JLtD8sxjn154JaMdeLcZjzP5fe+GNblui9S/9irlZx44azNG7i7OPEN1jzGYRL1n0JJWKd7pcu74iLz7oJy1qJ6g7QmZDcioQNroM6MP5veacQMqz/jdHSediAwQoi3rzU8WFiTX65y/2SnwPZVANKFDdBSb7Rz+wqQ9ViaDVOviwwORu61VWli4kGf+kY+v1f92e8gRTazDXCtMBpOVdEKS1I+A9EVrCZTZ/X2QaVHIheOYz5E6uE6IM3A+YeM1z7G8BQdTozFgsNZDtvOi2KTXreRSpBjtigbVCm0ne0xMRtJTfqWclE9/pXayQrOEkCIrBGVvbYeVY6/0vXnKQFimC9nW5bQRrOlosWGfYG1o1WNvTGFajF
+ IObJBWL+
+ Cc4XqTmemH6mBbovO101xM+07K7N1KrnN2wcGQWnSZhASlkABAsCace8oQWT87ts9RxEL1OqivpCNy8pxZLc8KNI4m+YSE/TBbKU/pzh62bXxRKQ+7FnZIPePJdOH541i92wcCh2NRxFhAWIpR9htZMhnOm2mn18E1KHVDFYbP4OkPhbTVaQD+7OiXM9HydOOQhLYnzBkbBBSv2NAPfeCzURV8nAMsAVdNgWzYi47uB03jp2XGbBD+qSHr01Aa82fNXbIdqtJ8JDsStdg4XCw8BZahNxdAlp22QAC6QXY1G2Mvv27VMa/5nkMrx+LbP9bYmuMnHACZYuEqNIwFdli2Lw91dMOSPrIIyMXrzFDFio+AZY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,78 +112,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 27, 2025 at 4:46=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
+On Mon, Aug 25, 2025 at 2:46=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 >
-> On 08/27/25 at 10:44am, Chris Li wrote:
-> > On Tue, Aug 26, 2025 at 8:47=E2=80=AFPM Baoquan He <bhe@redhat.com> wro=
-te:
-> > >
-> > > On 08/23/25 at 03:20am, Kairui Song wrote:
-> > > ......
-> > > > diff --git a/mm/swap.h b/mm/swap.h
-> > > > index 223b40f2d37e..7b3efaa51624 100644
-> > > > --- a/mm/swap.h
-> > > > +++ b/mm/swap.h
-> > > > @@ -15,6 +15,8 @@ extern int page_cluster;
-> > > >  #define swap_entry_order(order)      0
-> > > >  #endif
-> > > >
-> > > > +extern struct swap_info_struct *swap_info[];
-> > > > +
-> > > >  /*
-> > > >   * We use this to track usage of a cluster. A cluster is a block o=
-f swap disk
-> > > >   * space with SWAPFILE_CLUSTER pages long and naturally aligns in =
-disk. All
-> > > > @@ -53,9 +55,28 @@ enum swap_cluster_flags {
-> > > >  #include <linux/swapops.h> /* for swp_offset */
-> > > >  #include <linux/blk_types.h> /* for bio_end_io_t */
-> > > >
-> > > > +/*
-> > > > + * Callers of all swp_* helpers here must ensure the entry is vali=
-d, and
-> > > > + * pin the swap device by reference or in other ways.
-> > > > + */
-> > > > +static inline struct swap_info_struct *swp_type_info(int type)
-> > > > +{
-> > > > +     struct swap_info_struct *si;
-> > > > +
-> > > > +     si =3D READ_ONCE(swap_info[type]); /* rcu_dereference() */
-> > > > +     VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with=
- swapoff */
-> > > > +     return si;
-> > > > +}
-> > > > +
-> > > > +static inline struct swap_info_struct *swp_info(swp_entry_t entry)
-> > > > +{
-> > > > +     return swp_type_info(swp_type(entry));
-> > > > +}
-> > >
-> > > swp_type_info() is only used by swp_info() in the whole series, can w=
-e
-> > > open code it in swp_info()?
+> On Mon, Aug 25, 2025 at 11:09=E2=80=AFAM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
 > >
-> > BTW, off topic here. I really don't like the "_info" suffix. Anything
-> > you can put into a C struct by definition is some kind of information.
-> > Same to the _struct. Anything defined by a struct is a struct. Don't
-> > need to say that.
-> > The "struct swap_info_struct" gets two of the unnecessary words. It
-> > should be something like  "struct swap_file" or "struct swap_device".
-> > Renaming it is too invasive to the code base and it will mess up the
-> > git annotation history.
+> >
+> >
+> > On 2025/8/23 03:20, Kairui Song wrote:
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > Shmem may replace a folio in the swap cache if the cached one doesn't
+> > > fit the swapin's GFP zone. When doing so, shmem has already double
+> > > checked that the swap cache folio is locked, still has the swap cache
+> > > flag set, and contains the wanted swap entry. So it is impossible to
+> > > fail due to an Xarray mismatch. There is even a comment for that.
+> > >
+> > > Delete the defensive error handling path, and add a WARN_ON instead:
+> > > if that happened, something has broken the basic principle of how the
+> > > swap cache works, we should catch and fix that.
+> > >
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > > ---
+> > >   mm/shmem.c | 28 +++-------------------------
+> > >   1 file changed, 3 insertions(+), 25 deletions(-)
+> > >
+> > > diff --git a/mm/shmem.c b/mm/shmem.c
+> > > index b4d39f2a1e0a..e03793cc5169 100644
+> > > --- a/mm/shmem.c
+> > > +++ b/mm/shmem.c
+> > > @@ -2158,35 +2158,13 @@ static int shmem_replace_folio(struct folio *=
+*foliop, gfp_t gfp,
+> > >       /* Swap cache still stores N entries instead of a high-order en=
+try */
+> > >       xa_lock_irq(&swap_mapping->i_pages);
+> > >       for (i =3D 0; i < nr_pages; i++) {
+> > > -             void *item =3D xas_load(&xas);
+> > > -
+> > > -             if (item !=3D old) {
+> > > -                     error =3D -ENOENT;
+> > > -                     break;
+> > > -             }
+> > > -
+> > > -             xas_store(&xas, new);
+> > > +             WARN_ON_ONCE(xas_store(&xas, new));
+> > >               xas_next(&xas);
+> > >       }
+> > > -     if (!error) {
+> > > -             mem_cgroup_replace_folio(old, new);
+> > > -             shmem_update_stats(new, nr_pages);
+> > > -             shmem_update_stats(old, -nr_pages);
+> > > -     }
+> >
+> > It looks like the shmem statistics update was mistakenly deleted?
 >
-> I agree. I searched for _info_struct in the current code, only found
-> swap_info_struct, ax25_info_struct, vm86plus_info_struct. The latter two
-> are seen in very few LOC. Maybe we can rename it later when things are al=
-l
-> done. And 'struct swap_cluster_info' too.
+> Ah, you are right, I'll need to add it back. I somehow misread this as
+> the error handling path. Need to add it back just drop the !error
+> check.
 
-Agree but might impact Kairui's later part of the patch series. Let's
-wait until things stabilize a bit.
-
-Again, no functional change patches are easier to review.
-
-Acked-by: Chris Li <chrisl@kernel.org>
++1, I will wait for your next version then. Otherwise the patch looks
+fine to me.
 
 Chris
 
