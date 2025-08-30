@@ -4,134 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71A41CA0FFE
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 08:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8338CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 08:35:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 781566B0005; Sat, 30 Aug 2025 04:19:59 -0400 (EDT)
+	id 384078E0002; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7578A6B002D; Sat, 30 Aug 2025 04:19:59 -0400 (EDT)
+	id 3344A8E0001; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66D906B002F; Sat, 30 Aug 2025 04:19:59 -0400 (EDT)
+	id 2245D8E0002; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 541FE6B0005
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 04:19:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 82814BCA72
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:19:58 +0000 (UTC)
-X-FDA: 83832725676.16.BC6304F
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9F6E640009
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:19:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kj19wKuo;
-	spf=pass (imf11.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C5BA8E0001
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 04:35:31 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81142140AB3
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:35:30 +0000 (UTC)
+X-FDA: 83832764820.12.FE7DCCD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BB54D40009
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:35:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QJ2Gq9Q4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756542929; a=rsa-sha256;
+	cv=none;
+	b=dbC6DoUQyqCjxoLHM3WJWVjHSpEtELZFhEu5epsQQS3Dah6jGbc2vgDwvQo5Khw/Q9sgOf
+	bkIsW0C+vSfbFuT+e6r2t1MGd+fJIDYLxGDyLqgYQJA0vuAaXBcwfm3Ox5sz5bE/IQCLsx
+	xKkI2zReUXikugwncKPCC0y9hj3M3v0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QJ2Gq9Q4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756541996;
+	s=arc-20220608; t=1756542929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4yz+gNr9wnP1FuUv8NASxp4fC8wPUaxLjhsHiXAOzrk=;
-	b=2cHSfVyrtgFOm2iZ0en7OwWlUrMvI+pK1LQurZ7ngFeqMnS0+FpIFb+/kC0zCKRkl2wQPV
-	jbpBycTPjcBW0meMhgE+swns9kFzvpMySNPJdPnDLuR4MI78M9WmsPtSKv4/x7bMyUzDYP
-	fbN2kRAsigER0lfKfOqlnQZUybND5Dg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756541996; a=rsa-sha256;
-	cv=none;
-	b=3T645vft6ZKP8fqnWOK/qBQ7wVY2oYjgUx3kg4FGsWnJwuA6CPF5tMgEoxW8+Z+BGBlEIr
-	7pywN9tjGBK7gPWu4D5R68xA75/ek4kp3fVCU7ncM/fkcn4rKycyfB5LJplFVXvnofyP/a
-	VSFe1sxKtBjigB+fy3KKq61blRn040k=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Kj19wKuo;
-	spf=pass (imf11.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb732eee6so477203466b.0
-        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:19:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756541995; x=1757146795; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4yz+gNr9wnP1FuUv8NASxp4fC8wPUaxLjhsHiXAOzrk=;
-        b=Kj19wKuoj0aFqG5mO9z/DCQccf5IHXzKp6MNIfK099fArviS/bp0fLnvWtSkmNXZr6
-         WGmYrUhiVH5q0kWi9KVvbu5ZG4gN1gQfZEfT1M5INPbCOiwpn9elmmN/UiZU9ifyj2p6
-         FeQhZo+JpVAQAaRmHRYNDqrB42snfAxznmu10bqz0bsJ7XwrGR9wfaYv5zRteHPffNnc
-         CdT/nPSnlE4LHyLOmOv6zDr9Egcs3iFwNNzJaoxT+lDx0/IIf15P9fv1ndr79g8zVMnz
-         YWbhSm8rPT9u4aQcS5qPwoRHR7rTmOxUTVzVpEzeKsIzIsEcd7xcuGXWRkvlAV52XoZQ
-         iEvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756541995; x=1757146795;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4yz+gNr9wnP1FuUv8NASxp4fC8wPUaxLjhsHiXAOzrk=;
-        b=gc1N9x1M2J17Btm78lAazviiLTM6kWzqXqoIKGHdVhl9cTbaMQmTW6R5iiEIgaXp4z
-         wOrAUrCPfVfZNljZNyFdjNRTcEeGuwJPq6jRSMyEPpFN8xdHWyeNMNwOEv95BJBZsD1R
-         lD2xvAzpihJWwbQsc1ix0pG/ZXf2AMILcrbDRKfjI0JYqnIJN8S1u+es4n2dgKAKkVyr
-         +RQouHSvmafYLkdx9Zfzr+5TrswaVPIOmM+cP4yEYFcMyFmAllYiTdKQfsdvAn5Jn7GO
-         E1pra5DNHeGszETpd6s/2x0qCt01QTn1yE+eLYogPXo3w945gzZRAZld+5vPP3mIGfPd
-         K0nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVIoS2EKWrwWk496/CQ01a3+L3qNe/VIMw4YL3Ux469VG2LC80LoXp7dH7YG1sgIg7Va1hg71EvVw==@kvack.org
-X-Gm-Message-State: AOJu0Yx0Gtk6RpuFFeRQBz7V3lND5YnB8tQv/eDrjgmQ6J53KIlzDIl+
-	MWvCp5tVpQUUAipvZ1n5GBPm6M/1sI62n/vkjX9c6sjy9GbOfNNEQ+YhyxyBs5Fajisc6EUbber
-	6/ykoll+In7LPjJKas9CeDK8NH98JjXg=
-X-Gm-Gg: ASbGncuCdZyL0BC7V2ScstZYEWSIRPkc6EjWSdYTeng1Kd6wawpQASyNXkMlrJDCbHv
-	NxW8p2Ew6OaiZhtMxG2gwDxIY9xZz71vjRn+3S3IAnQFGKHYd0HWonhCEuBR9vK5bvfRSzzRGrk
-	rYLJDkU4vedrwwOWrS8YhrbdhiU2ZaiXB7Ya/X+UzaThbyM0CfL7U+HB6paxVAKEvNBp6/KUX4f
-	dFGYeIb86iDzt3BuQ==
-X-Google-Smtp-Source: AGHT+IFZ0wex4nlRzxOc5BG8ARrUjGz7n83ilxsIj2vkPtuKrq3/+IPw3T+K7YRUGhLq8JMm7BCY/eJH8jBRTGRUUSA=
-X-Received: by 2002:a17:907:d88:b0:afe:764d:6b24 with SMTP id
- a640c23a62f3a-b01d8a6a72cmr138313266b.14.1756541994858; Sat, 30 Aug 2025
- 01:19:54 -0700 (PDT)
+	bh=bJzYHt2ZArNdlTsg/DAqjD5db7Vf+z01tY/frqkBGLQ=;
+	b=cEqDvx39ujXEUJwJssIHTKGm6T9fGkh/u76syRVC/Wx0nuVnyAON7uhL5Fa7COM23MHo/d
+	hx6HgWWHEAHgUdji60hdyP3F+1N8Q8dVxRvIHf5hDeTpGiLsCzz61FzCRIOyjSjUnpVwUR
+	+M0VTAeABNMuYgGCzrk/xWgUHvq68XU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D7AB642B66;
+	Sat, 30 Aug 2025 08:35:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DCBC4CEEB;
+	Sat, 30 Aug 2025 08:35:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756542926;
+	bh=oKvjDljPLSRg2x/aOWCyZgodbMjJIdmSCcxy/Ed/RYQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QJ2Gq9Q41CFdV6Q+M16uVYmCXPBnCX6Mtf7wOUYVVkWOIgfiBBx0jlaPa180Cf10s
+	 WYotg2neDOLYCEklciQmDeMW3qUzX0UkTa6QROBFiA93CP1SFlmZBKYFWkLmubtmF8
+	 6IjAbqmqeDZeZGMSSgPx6Y/SnyNOHjZmt+g7kXUXwVENrl/uCuBffvAtsL/jMM2lEc
+	 0lQ2G1Jorwlhp+I8wSJzRGlMX7OxHmQgPe3ubKgbY3jw3rfN6RBNzm/jw+2U86JKgV
+	 hRdhGKSEIEL5Sdf+8dpRe+3XW9gqx3VoLY6G1z5UzYe5mU1jAx5nzCn+phxkVTEV28
+	 TMP4NOKcmoVjw==
+Date: Sat, 30 Aug 2025 11:35:02 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
+	changyuanl@google.com, dmatlack@google.com, rientjes@google.com,
+	corbet@lwn.net, rdunlap@infradead.org,
+	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
+	vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com,
+	leonro@nvidia.com, witu@nvidia.com
+Subject: Re: [PATCH v3 09/30] liveupdate: kho: move to kernel/liveupdate
+Message-ID: <aLK3trXYYYIUaV4Q@kernel.org>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-10-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
-In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 30 Aug 2025 11:19:18 +0300
-X-Gm-Features: Ac12FXwW6CW7deBsm3Aef2wv7I2Olg4IsebLLUGVz2bUvR7gVeqwu6XUXgRk6VE
-Message-ID: <CAHp75Vd+q5NZ=4YSouU-EdbR4TZf7S8PGqR0B0HJG8DkVKKtAg@mail.gmail.com>
-Subject: Re: [PATCH v6 00/15] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250807014442.3829950-10-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9F6E640009
-X-Stat-Signature: rabnp5kkxmudtrr4d7ha1rwb56ycuibf
-X-HE-Tag: 1756541996-254530
-X-HE-Meta: U2FsdGVkX19/nPTm1kOlZwR/Sj7GdBemUqkdHlSTCfgDl/f87LTIZWaVmKfSf+yLiMwL5Nu2cmUO2kfG4E3ps++vju+jnInGCevH+A08kWL1BpazEaiFJd2BfxGxOQz75oVSjX4OlpHX74fWEJJIEdXfFqAbzI0cHORIo5+/xYNG2BM3Z3W0qWTYLNr+txLaSRHtaRc9r0kM+u0syhCv0L6N0L48jweKrl5j1DUYg3NknN6FYf/HtlDdHbbIXsD/A6p98lXsqZecVLOyG+nGmAUU1gjA0CJi/AjbNEJ0lKBV4+EA1MIOUwzUL4nxyC6qtvOfbh1WSLhSWfRPlaIBFidX3xbYT3UJ7w6EHlRoCyYcXIi7W/u7rtq+te1smr/M3fR3XZgmNypQ7wwmlOBetu8t9gXgEgf72C3VzEnRKptpPnDEe3m0D5BgYJCy9WAL9/3yq+5c5v/+vG9GyEWAORbTg5+Wre581KStdyi2gyTfme++UNcsU6b5H3umutYGail0ejgvYNgJ8AtkOkcVoyLHAIRRzkxbV9EF1JsJV0mcwBPOyINMv7rDBJRaNGFuu98n3PK7E7CEdpAs8pSgnG3z8VWziv6IqQyoAQ4wN+oLXlJJoaXaXoVU1Mi1JLNZ+5BvWscKPXF1icV/vc4yNvRafFLEbhnJeSpn3siBX0td5ncQwoWxfJxFKxI6MYF7/ilYPmlFBb63k8jgcowCWR9hG9Ty+BYEqSKL24s+GuaY99LuGkJ/wWXh9w5vHLZ3TxEWaytfSBYWJj6/SIuF1EZYoSxTLNFqXw+YaexQyU+B7NthKietcib8LpxMoQNFSRdTOLWVzPG2Zgger6h65T1nOMzq/vpsEvklnIBL/vtlVkTX3pdjxJVYuO4oahN4Qc7i3ylN7FFkPX79fAwibsrEC03g9BpCmi/4pBGm79psJT6sAxZgGwVtoROSjpR+Ymn4SZDJRWrVz+6oPkv
- nXowyxqb
- tZEP1DueTRGJ1yQH+N3W2hNIlRm8s3737zYbcSiwgjV9Z02cCiJQX18updss0wLYKk5eijgMGE+hryPIYrDXEjlVM3QaAF3u+tFoHHrk8Lq79EbVDtynJ2blW9r17lX4RbVPGgTQln0LWK+QIVwBIjIgN6iwgjIldRIaB6ZJWXHC3ufEqpsG2jaANi9dDKPPwQYExGZ8Xix33NRgRqJoLHui5NtDap+3fb5pfeLkZpKA+Y/8+1VIGq0JJxZ1Hc8ICdC42ypxxuR3NT2KdPiQmmIcpeDMnbMDaxesMUozy9nOo46aurVovEWWV+Pd+XxD+fKYmxiBcDDUhznGz/hi1/RPEkcb0CJ3v6egjXXYTr9tTm4gDVm9fIvL9BcXEoIaPQsBwuuga2ObJa956f2JshF9BTRZ4XmAuQlqWiNqwNxp+Sfhllp8GbeWTkwpjAWPE+6tOdoNX3KJLSIvsU09yf7Zkog==
+X-Rspamd-Queue-Id: BB54D40009
+X-Stat-Signature: mprus15yqe76egk9j98nwn66yht81u6s
+X-HE-Tag: 1756542928-138725
+X-HE-Meta: U2FsdGVkX1/TxXUoJv+gjYqIcDZaQY3he/53OmU9Vy/KOnQpgOqK8r5dEhgWsn4WBUYyEDT1QL0rpCrWn9zowkWyWmc43DN1D+8nICJoJZ1vgIpoCBPq467LwpJgLAPa0I1agdObPz1iP3ni2WoO0Q9s+SLP2M7pYSF/gsy/JWfB/UxIcWu7gr47aoqtSETcbNxi9dmfHLRssuT/ZmLq7nHBrb6vMwMFu1KCYgF9Uod09lfbOAQ8UdJ9QhHIuJZ1mLXH6QuTFPD8wfS0pt6t/mRSgA8xfmUBgm5blSQ53THAPvZTBH7jc2ZWCpvclOXPD8P1M7K42nAuSHLCiGUD3yFOhXZNaRSq6MYwgU7BPJmPhyS8ysdzqnYtrgJmac3yA9dJDruI8gCL7P92XmoTQWMnt7zdnOLzuvIgybCSnxHjpDYhu39WprbH+H5sMVA4qx3/SsaXpse8gScx5d5IRCqXQSyc4vZqcSs9VsYc9VeHd5NSxQaiJbZxPIGC5yjhoi8pb2nzkiHSVbbj7Yyhdsx/Ed07pOB4zLew18BPhk2n3jnsYogq7xi7h3DHJg2Rih0uaWqOvP/CDKMVTJyF7nB6kdiKfKkwUw+Qs/Ad66TqefI9SoWv5zKlJSP169RMt5V1TE+H8WO2NgfbBhlLkLSVifvbc3Pz8aDzbZbVS92kV+OmkJ5/TGCA4cS5CC9/eR4eyjWYFRJM79P2aYHgAO4sHT4AvDPumbdJnGavCsvBDlaTSvHDERIklkyMuPFdhvtAxrklxGPC7xfvBjBS+PkUvXoMYm6fF3RIrJyQKcXo6k/VYWDEuXhzbdXyMIT9XwfO/py3P1hqOnM8ccbvusp/5BCLiLTSeTsr49ZbxU0hNpmf+GQ4Cc790FOPEWq0WSxs/yLeQ/r72pRjUZmC+SRwIGDp125PkphnHW1jNEtd0CbpNcvmrPN7UUe4vLPJu2aoi7kzRL57RkbnKEz
+ FScyhUwp
+ ITQTMmjr/xEQ9TXkqxKzf7o8evKY/LL7NOwsC2QhrnVz2rvtF2fkq+bEVhburnxblkkR72mBRiFDqvQyNvWuaHNIzTbseP7xvCLooTuQrrXQ2S0QzQ3ur2PDn/Gk3O2a8aoCTi0GQoO1gcqrmdaQ7MU4YGgVE0YsQ0fxkcMLH7SJAj04oSoJCG6WOHKa+7Fi92XS1vlsyV5WAmXuBQbYJLrUAptMBDFiuzkaZGPyBPwMfQkgk/3biGVBDVO00Et8+j0MmCTv+VIVFbAOuRgAE1NVCU3nYxXi8vrfg+tY1fWefRv0yfKxDVxnxUk/DhisiOre1JfV0ta9xeTq/rWF9wH2EsAPQ7ybRk+13wBgUQGFbR8ud192mTBD3eLBW8LU0kci+1tUUoxr32ZkiWbvAbvrRVnxZsVeknq79nV/zemcM9XNz0gN3wxUqLq29/vVXo+iI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,56 +118,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 7:00=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
+On Thu, Aug 07, 2025 at 01:44:15AM +0000, Pasha Tatashin wrote:
+> Move KHO to kernel/liveupdate/ in preparation of placing all Live Update
+> core kernel related files to the same place.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 >
-> Problem: when pinctrl core binds pins to a consumer device and the
-> pinmux ops of the underlying driver are marked as strict, the pin in
-> question can no longer be requested as a GPIO using the GPIO descriptor
-> API. It will result in the following error:
->
-> [    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already request=
-ed by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
-> [    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100=
-000.pinctrl:570)
->
-> This typically makes sense except when the pins are muxed to a function
-> that actually says "GPIO". Of course, the function name is just a string
-> so it has no meaning to the pinctrl subsystem.
->
-> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
-> other platforms as well) where we mux a pin to "gpio" function using the
-> `pinctrl-X` property in order to configure bias or drive-strength and
-> then access it using the gpiod API. This makes it impossible to mark the
-> pin controller module as "strict".
->
-> This series proposes to introduce a concept of a sub-category of
-> pinfunctions: GPIO functions where the above is not true and the pin
-> muxed as a GPIO can still be accessed via the GPIO consumer API even for
-> strict pinmuxers.
->
-> To that end: we first clean up the drivers that use struct function_desc
-> and make them use the smaller struct pinfunction instead - which is the
-> correct structure for drivers to describe their pin functions with. We
-> also rework pinmux core to not duplicate memory used to store the
-> pinfunctions unless they're allocated dynamically.
->
-> First: provide the kmemdup_const() helper which only duplicates memory
-> if it's not in the .rodata section. Then rework all pinctrl drivers that
-> instantiate objects of type struct function_desc as they should only be
-> created by pinmux core. Next constify the return value of the accessor
-> used to expose these structures to users and finally convert the
-> pinfunction object within struct function_desc to a pointer and use
-> kmemdup_const() to assign it. With this done proceed to add
-> infrastructure for the GPIO pin function category and use it in Qualcomm
-> drivers. At the very end: make the Qualcomm pinmuxer strict.
+> ---
+> diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
+> new file mode 100644
+> index 000000000000..72cf7a8e6739
+> --- /dev/null
+> +++ b/kernel/liveupdate/Makefile
+> @@ -0,0 +1,7 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Makefile for the linux kernel.
 
-Note mainly for Linus and Bart:
-I agree with the patches 1..11, but starting from 12 needs more
-discussion. That said, I hope Linus can apply the first 11 ones to
-make it easier to continue with the rest.
+Nit: this line does not provide much, let's drop it
 
---=20
-With Best Regards,
-Andy Shevchenko
+> +
+> +obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
+> +obj-$(CONFIG_KEXEC_HANDOVER_DEBUG)	+= kexec_handover_debug.o
+> diff --git a/kernel/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> similarity index 99%
+> rename from kernel/kexec_handover.c
+> rename to kernel/liveupdate/kexec_handover.c
+> index 07755184f44b..05f5694ea057 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -23,8 +23,8 @@
+>   * KHO is tightly coupled with mm init and needs access to some of mm
+>   * internal APIs.
+>   */
+> -#include "../mm/internal.h"
+> -#include "kexec_internal.h"
+> +#include "../../mm/internal.h"
+> +#include "../kexec_internal.h"
+>  #include "kexec_handover_internal.h"
+>  
+>  #define KHO_FDT_COMPATIBLE "kho-v1"
+> @@ -824,7 +824,7 @@ static int __kho_finalize(void)
+>  	err |= fdt_finish_reservemap(root);
+>  	err |= fdt_begin_node(root, "");
+>  	err |= fdt_property_string(root, "compatible", KHO_FDT_COMPATIBLE);
+> -	/**
+> +	/*
+>  	 * Reserve the preserved-memory-map property in the root FDT, so
+>  	 * that all property definitions will precede subnodes created by
+>  	 * KHO callers.
+> diff --git a/kernel/kexec_handover_debug.c b/kernel/liveupdate/kexec_handover_debug.c
+> similarity index 100%
+> rename from kernel/kexec_handover_debug.c
+> rename to kernel/liveupdate/kexec_handover_debug.c
+> diff --git a/kernel/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
+> similarity index 100%
+> rename from kernel/kexec_handover_internal.h
+> rename to kernel/liveupdate/kexec_handover_internal.h
+> -- 
+> 2.50.1.565.gc32cd1483b-goog
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
