@@ -4,92 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 467D8CA0FF9
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:10:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6017ECA0FF9
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:15:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B8176B0028; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
+	id 8DD626B0022; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2674D6B0029; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
+	id 8B4A96B0023; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A45A6B002A; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
+	id 7F19B6B0026; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09C9D6B0028
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:10:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE251BC5FD
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:10:03 +0000 (UTC)
-X-FDA: 83831793486.09.3EB396A
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0FFF280004
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:10:00 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=APFiyrNV;
-	spf=pass (imf30.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756519802; a=rsa-sha256;
-	cv=none;
-	b=LE8r2QlN7UveB9JWEg8pIeLrYHpq3dwODJtaq+24sQIpa2hqE5vN6U0pRSXIaqSOdCcAE7
-	hMmk9BfKpBEPqQxu9fpxvBfzLy6nw8CGGmU/PJNjgEAEF3UswZebJNJBA9Jm2yrK+SBBjd
-	gBEQYxR4tgXjnHb6olVJrcNwX/vkPNE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=APFiyrNV;
-	spf=pass (imf30.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D9F36B0022
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E785D85A03
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:15:11 +0000 (UTC)
+X-FDA: 83831806422.01.7428D34
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EA72D40002
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:15:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QUW3s+Uf;
+	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756519802;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756520110;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ASv08vHQn45ozfOFbV1Do6M+K0ucRdNAA7jLQeJT/8U=;
-	b=lqSS9mzzxZI1jF8/QS6m+WxWoMx4/la9jlwExzDZmSiQrUkWBQu6+L4dss+5iCJkNxhJ8g
-	cXbq/7+9bxH7vPOEO206LxjfYopWLsMbiWD1+P04C86FViuLmBWgVyyKhBa9vUkY1EXh9V
-	yvYQyWuZOVBzY0Aa1/b1ZFd6JMa1WzQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=AS
-	v08vHQn45ozfOFbV1Do6M+K0ucRdNAA7jLQeJT/8U=; b=APFiyrNVb4c7aV6a8k
-	JG6DpZhswdBvQZFZWTblA72C4RtACC2H6auLg3hjhN24bUppzpeZk+prPigeAez+
-	2ev9W769XFd+KsWGLphG1sjIb1HQfYobxKScnwAV+c2vBRBfKyKgqJPt1G01mOCt
-	6xZ0SHel2OFkyKc1C/0EVsk+U=
-Received: from mi-work.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wD3tz1sXbJoSlsQFA--.37283S4;
-	Sat, 30 Aug 2025 10:09:49 +0800 (CST)
-From: yangshiguang1011@163.com
-To: harry.yoo@oracle.com
-Cc: vbabka@suse.cz,
-	akpm@linux-foundation.org,
-	cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	glittao@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	yangshiguang <yangshiguang@xiaomi.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] mm: slub: avoid wake up kswapd in set_track_prepare
-Date: Sat, 30 Aug 2025 10:09:46 +0800
-Message-ID: <20250830020946.1767573-1-yangshiguang1011@163.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IbW8yA03bKLcMTZU8xuLw+CaeqZfBLjJOer3Kg/k+e0=;
+	b=VYVNABvNMHpPC54FjvpgkGEK4giiiniamxQrwo2Mhs47wfH4xVSY0nD7N3eCPRqwEQKjIw
+	IS3fVKJSR502PgOtLflibrfF+fwoD6ph6EuP0zcGGWGhPk1V1O0mQdYPiCHQ4TQBjqls4f
+	wrBdRtdSuppAyiLDkyasPpNtBnJPnBo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QUW3s+Uf;
+	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756520110; a=rsa-sha256;
+	cv=none;
+	b=26MS9wimiWLQzEdRzVgqhzJD3XJyP3MtMhJ1TbVvAZoLjVqNstvY1v4Vd2b3XMFp16Lh9t
+	/xzWddtTC78vxqCPPthLt1cfmakqdGtsTOPa0apx/bjvpN49tjB+eekmW2ynbTKl6A/dQn
+	YCnE7z73yTsQuTEj5gXi5GFljl9LCQM=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45b77f59bd8so13650115e9.0
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:15:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756520108; x=1757124908; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IbW8yA03bKLcMTZU8xuLw+CaeqZfBLjJOer3Kg/k+e0=;
+        b=QUW3s+Uf8VO0VWjy+kA5jTD7maze27nSltYCarQZNxGfeUn8Lm7GPoRqlXW2ij3Hr6
+         v5nWpU4kLZ+RSyxZQHVt93vf8ZfTJLvhDPlBT8s9guOllQCcpAHOFvhrKGZI47V0Vm1X
+         RMjXzUHWDzX0SaJp5VAE4IIbf8OlEuXT+32VKk+PZ2xv2ZSiELgclm8JLLsOYfK+G3mQ
+         /tEhTDGg57bENXwi+coyoHkGT6BBB1G1Viezix9lr1TsNtL5SEGhlnFy/YFJWocMsd8+
+         tSgIS1SQJx/vFotfaAXiXntgJUfNhyWYfb2+ndMvll/1QuT20nh8iZB8C+cpdJebMVeX
+         exkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756520108; x=1757124908;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IbW8yA03bKLcMTZU8xuLw+CaeqZfBLjJOer3Kg/k+e0=;
+        b=CzNEVmqvad6N5mhGZWIFQ5LoEvEnq/7M7IHItxczZD81x0f4c4NVhDlKN3lZZEkn+m
+         y6D+fEFksQD5+7AVrWgWHBgJI2OpCuO+qAah2TIMDffYCXxrC4Wo9DJRU0ZWwr9pLbI2
+         UP0obSbAkCnyLZo760OUkQ/QwXOed/8gNZB2hhxj2kNoXb/i0LokTzLXqlCgsJCaaEnD
+         qqKIMYK0f0aupsi4c8jP210go6WnMrfwd1Ar4bcPGIBzA6544dEOyz/dQClGmsd6l62O
+         wGXHXhC/VDPPCl2cc7TlCh/PqPTcu3fdztuk5gh/Cy63h4HjIAvtweORcvIidL+jkZP5
+         e2HA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3vG+gYqq/ueCrdiaaLsHKQJpGwm0ShdYryT+xG1Fs1dOi8p+7Y4hXvJNV6DsIwvEAqSjNXQo2dA==@kvack.org
+X-Gm-Message-State: AOJu0YzQRvRx8rYvg6kkWbCt/hLNmq0DPSzNhg1hw4qMy/XxSziW+Sek
+	TaPqspn0BoG1Ay41NMplDTnkELzbbp2zKBTNP+LcAib2ykvPhn5gPOiQ
+X-Gm-Gg: ASbGnctbr+3e7DMPbuxSzvpJzHfkuETyZh9MV76pvvMXOJotuLMwHJDrGOjqAtHZjaQ
+	UirqKn0n75hsMh7BpNSqKUYrG2sZqk69WjiYje2WsnAZnI8hKCfzF5PWmNE8pkRrXiCUON/DZwL
+	4mP4GK+1GOAQTT0TiN/I8BC7K8SG0RrtkkBQ4BUf+865A+JluwskxKkaTa6PS+8HV6u+LjdnihZ
+	I5vF85P/27h/yCXVDNcDloYDbA9MCCJs/btSyfSO/guejgk2DWxTw8E/SkJ6/ykdCGxZz2cW+sm
+	5yF0hYi0S1F3TKkSUeXXIstITWUkw2azARhugTxr3hsqVdrHdam1t24lFMNRPmY268AiJpwv1VY
+	rg2D5Kz1dBnO8qwzfOKGQBKLRiw==
+X-Google-Smtp-Source: AGHT+IEZ2xFlU2ogeDVnDCaG1GcpwFQhH4uXS3OA3m8V+IApCgexhyPxGxyko+OJwospCM8rYhx31w==
+X-Received: by 2002:a5d:64ee:0:b0:3d1:abf7:e1d3 with SMTP id ffacd0b85a97d-3d1b1aef463mr566337f8f.20.1756520108168;
+        Fri, 29 Aug 2025 19:15:08 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fb9cebsm5308064f8f.46.2025.08.29.19.15.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 29 Aug 2025 19:15:07 -0700 (PDT)
+Date: Sat, 30 Aug 2025 02:15:06 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH] mm/page_alloc: find_large_buddy() from start_pfn aligned
+ order
+Message-ID: <20250830021506.q34jktg64h74hux7@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250828091618.7869-1-richard.weiyang@gmail.com>
+ <489045AD-70D6-4167-843D-50A8DD19870B@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3tz1sXbJoSlsQFA--.37283S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7tF4rpF
-	W7WFy3tF48AF1jvFWUCa1Uur1SvrZ3CrW8CF43Wa4rua4Yvr48WFW7tFyjqFW5Arykua1q
-	k3W09Fn3Ww4jqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ju0PDUUUUU=
-X-Originating-IP: [1.202.162.48]
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiSB655WiyUD3O3wAAss
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0FFF280004
-X-Stat-Signature: xk19axnx4izmzjej3j86y1miq9r9gy6c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <489045AD-70D6-4167-843D-50A8DD19870B@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: qo8yj5mqh1e8jqybfix3mcmfwu1pyoq8
 X-Rspam-User: 
-X-HE-Tag: 1756519800-535687
-X-HE-Meta: U2FsdGVkX1+xDbffW9/qhl6CyyE4JClljujsFSAL2LgHZEZmaobnVwQmURl55+yEVcKWabvqtIg4rnoiW1X6TMGVVWcuteBLwFV52KfLiedbubGwOxQPleYuvV6edVV93yYD+lHLn6yOWVtaZk73qRIVS5i3QvghoBdd+p1SJ7LoNFRn+Mn6shv7CsPFUv+MTz5X2feh0k4E8lJlOi1pMjStpf+fYVNygIZfpKtEuJVJNNVGR+HWQVW1Tstya1aoOX6lN4cXcqo91g+gcXDadKyWHCOC4AY4IeNAz0oHF3S4Xhm4Ql/xvmIwcKFj+UjvBKZP8ccNTU9b1+AVydYwl1+lvu3UwI8XVw2X1AQWAYZH9Sd2wUyckeKJEP8lRuF3GhXWmuXs/X6r78/wndPKGlyEd+5znPfE/UBCBq3sDmRzLUmNw/mGlLCl8ozzmenLnTCBgjItGlqVbYCtxhvR+pbPEmmO6+UbgvjLVEFG9X9qDPBQHsISTVK8wUDOwsNCSwchhXE5LvNrOv7AkY+NTWSarZqVQJBUYmncDtZ0O6lRqGzcg1sXjBr5bKD1KehtSo9tepPhA5p5W6kp88oFIBK/X/yar1zP+AjAwv2wK55EPAlfrGaefgct6p/V+DpCfduSQSS65fAVU10kiowpVTYSKxogNbNl3jL+bc41hEomkMAiQR/cYt/Wehte13iJYAKgT1SnW7A/DF/JSqbizJdGQ4vLVfkjt7R9JEmQnbqRKQrRuJCwQQd9Iev1/my77z2KcDUmB90eOveolzNptDTvTe7GIiXVqVSMvkBbVsFnKqrNrFnduJFQlbdN2gyu0QLRNxR4jW7wUwi11YCkCe7WUDUcVe6qhSTrVmgupjM4IPWVNJqWNr9uCeukPN3u9qQTlz4Qajnu20DczDstRBo8zCxWJ8l2zu+CQYfH/bf0ydbgzjZhbkWC2VtL/P5lvDVaDAW3wjTilbgtTps
- P2lPD7wt
- IyScBzFxaAZwHp2Surn2vAjdmEAbNC0FDxEETQ9YA4Yl171XN+318TFxZtpyv1YfI5wyo1hcAlhZ9KQV80pbmsx8e9R8uaDwDgDsvG3dmz6O3wGH6JY8cO9bM1+Kuf+PHjgTUM6h+vcZV+fs=
+X-Rspamd-Queue-Id: EA72D40002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756520109-783741
+X-HE-Meta: U2FsdGVkX1+2/RBQ78E0g0MV28Ft8bNt2AR3/1RUGG60v9XuQQ2HlzNXGQGuSB5K/sK+Fl6ge+g6g5JgfHbTeshG5Kwwv3JeziPxjwAchFgC/kODYPkjRa5qfq3XmRunawMY4DxHEjjqWox48aAZwzYm92LLM6OtcMfWJ5l1kf2eIne3EzuMQwIQir9lzBhXl5ClT2i+rTrbW/XpdUbRV3d/QjWPymjTLnWPOAJ0U6pPrFIStE7y3ID5RrWTSuH8RcRC09hJbnGNmT0+z09oLFOMnBgYOMf8HPV4wyheIgH3URsWH+eHGHn7gQ49fJIubYNzGWmof+MI5dxW1nFzsSfizqLtsavvNR9ysRpYVUbnVcKWEJNW88dppAtHASE9NgOmW94OxJfLP0nlMXo+t0hmRop+XKhNFZamEzRkaU2/isvP346//e1Ija5Z13cHV1GdkS/Tp9H4qeQfbqP4fllhUJZZ3U93Z/OQdE9pXmYvko4j82tGqGSWNpEzhzqF0iAUUiIQS8p7msHLdXegn10LBObEhDVQ3vhBad3C8/Yq28VMDCGP3qnPOkYKIUSaLHY9pnkF4NIgV38pVZGb5tjlXKKcPdiAEYWrkX0DYLOfRpsh+BTUWP40jPpmYXe1WEPh+TlVt0LquH8SIh0k+G2u43QLhaTKF2U+4j6N9ckHVR1U1/35vd/8eKTqhL/kdr6ijYW9YSNrORT3ktNcoyxUBWDMQqohUcdtN8yP6w88WPqmDHrIQwnfhthGF3ugnJT/V67CmIwWgy9QNb5iXAReAMwH+CXfn2TFg11XzXrUlKRvLF2nXPvxSz0r39TvhqqB2Ozr4OrDRjKsyOHgYecyoum5GYOHveV1zYOOzli8kxRfSSnTTeD8u5ZzfI+x2iBS99DiUsYxqSv4Dl6Y/Vo1shUEpfWnlE2AtZ6DtWeTBAlwzbcadIQsiE1oInpLNHKkZdxx8YOXo0rvhTY
+ jEINSwHC
+ ljz86KMWCcnnIyFjX+M5okQnWyhwZ4TcFFq4/5HpAXFTtX8tsdg3aqUG1e9Qj8aMdzGVA34de8MODTgPU+3P2PClNUpqFp5lRKhWaI3e/r18XzF8ej7rsoJrX5f1/SETt3S3fQEX+5EP8BTft2QjiIzXbUfkmen2Kb4O4uduew+hP5AVwSnjtV2G/7rjd4xkQkXNYIot6CqNtccYv3b3+N8zCWmZ+YsKnjbs4wGoEknDieGcQvXvgMCE7db/KjqS7pA2/2XBz7HqlimAq6iv4t/a6C4ipXh5YWGdme7mSL0aTzVygAs83BPKC4ZkN9IgCrg7scpTbhzeXwD0LBWLYQKHuz7vWSn28F/gYmGrlVMpkmYKqaSlTv60FECQzuM3vDU0xiWlziVCYDcrYsycB4WFKUmx63JH1C2Co303RSjcg+4r/QD7x1ObTu+HQrUGmkm/auJXnBXFErMQ1JcLr4tTjTkinORqAC31i3KZA8gOxsXy7n+aHoPcdwRFgFQIMUJyTI1/v34oxWKdKjF2rJHynEn9a8thWx0XqfpdRKJtZwZznjcRVgY5f+9+X6V05TWi+8ALZH2N/vN18DXXQxpgFhUFZaPYvXChMybfjLRTKqpoP7qQNttg74X35uoD5wEHHFF58ys2TzOhUn23gkSYvlTs4T685D3N61il8yCYCgKMENsXGNDlKPNZ5wa+YOekr7Q9DbDiKiQjG7YKzuLBDdUcy1sjFBepTci2CxOGuDwWWc7faHzw70w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,168 +124,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+On Thu, Aug 28, 2025 at 11:02:33PM -0400, Zi Yan wrote:
+[...]
+>
+>BTW, I also notice that when start_pfn is an order-0 PageBuddy, the
+>"if (pfn + (1 << buddy_order(page)) > start_pfn)" check below would be true
+>even if there is no buddy straddles start_pfn, although "return pfn"
+>gives the same results as "return start_pfn" (no straddle). The original
+>code before the addition of find_large_buddy() (commit fd919a85cd55 ("mm:
+>page_isolation: prepare for hygienic freelists")) checks start_pfn == pfn
+>before the straddle check, so the correct code should check start_pfn == pfn
+>and return early. But since current code is functionally equivalent.
+>Maybe adding a comment about it would be sufficient. Something like:
+>
+>When the found buddy order is 0, the check would give false positive,
+>but the returned result is still correct, since pfn is the same as start_pfn.
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+Hm... found another thing.
 
-set_track_prepare() can incur lock recursion.
-The issue is that it is called from hrtimer_start_range_ns
-holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-and try to hold the per_cpu(hrtimer_bases)[n].lock.
+In __move_freepages_block_isolate(), when checking "We're the starting block
+of a large buddy", variable "page" may not be the large buddy page we found
+from find_large_buddy(). Since prep_move_freepages_block() set start_pfn to
+pageblock_start_pfn(page_to_pfn(page)), which may be different. 
 
-Avoid deadlock caused by implicitly waking up kswapd by
-passing in allocation flags. And the slab caller context has
-preemption disabled, so __GFP_KSWAPD_RECLAIM must not appear in gfp_flags.
-
-The oops looks something like:
-
-BUG: spinlock recursion on CPU#3, swapper/3/0
- lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-Call trace:
-spin_bug+0x0
-_raw_spin_lock_irqsave+0x80
-hrtimer_try_to_cancel+0x94
-task_contending+0x10c
-enqueue_dl_entity+0x2a4
-dl_server_start+0x74
-enqueue_task_fair+0x568
-enqueue_task+0xac
-do_activate_task+0x14c
-ttwu_do_activate+0xcc
-try_to_wake_up+0x6c8
-default_wake_function+0x20
-autoremove_wake_function+0x1c
-__wake_up+0xac
-wakeup_kswapd+0x19c
-wake_all_kswapds+0x78
-__alloc_pages_slowpath+0x1ac
-__alloc_pages_noprof+0x298
-stack_depot_save_flags+0x6b0
-stack_depot_save+0x14
-set_track_prepare+0x5c
-___slab_alloc+0xccc
-__kmalloc_cache_noprof+0x470
-__set_page_owner+0x2bc
-post_alloc_hook[jt]+0x1b8
-prep_new_page+0x28
-get_page_from_freelist+0x1edc
-__alloc_pages_noprof+0x13c
-alloc_slab_page+0x244
-allocate_slab+0x7c
-___slab_alloc+0x8e8
-kmem_cache_alloc_noprof+0x450
-debug_objects_fill_pool+0x22c
-debug_object_activate+0x40
-enqueue_hrtimer[jt]+0xdc
-hrtimer_start_range_ns+0x5f8
-...
-
-Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
-Cc: stable@vger.kernel.org
----
-
-v1 -> v2:
-    propagate gfp flags to set_track_prepare()
-v2 -> v3:
-    Remove the gfp restriction in set_track_prepare()
-v3 -> v4:
-    Re-describe the comments in set_track_prepare.
-
-[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
-[2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
-[3]https://lore.kernel.org/all/20250825121737.2535732-1-yangshiguang1011@163.com/
----
- mm/slub.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 30003763d224..b0af51a5321b 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -962,19 +962,25 @@ static struct track *get_track(struct kmem_cache *s, void *object,
- }
- 
- #ifdef CONFIG_STACKDEPOT
--static noinline depot_stack_handle_t set_track_prepare(void)
-+static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	depot_stack_handle_t handle;
- 	unsigned long entries[TRACK_ADDRS_COUNT];
- 	unsigned int nr_entries;
-+	/*
-+	 * Preemption is disabled in ___slab_alloc() so we need to disallow
-+	 * blocking. The flags are further adjusted by gfp_nested_mask() in
-+	 * stack_depot itself.
-+	 */
-+	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
- 
- 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
--	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-+	handle = stack_depot_save(entries, nr_entries, gfp_flags);
- 
- 	return handle;
- }
- #else
--static inline depot_stack_handle_t set_track_prepare(void)
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	return 0;
- }
-@@ -996,9 +1002,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
- }
- 
- static __always_inline void set_track(struct kmem_cache *s, void *object,
--				      enum track_item alloc, unsigned long addr)
-+				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
- {
--	depot_stack_handle_t handle = set_track_prepare();
-+	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
- 
- 	set_track_update(s, object, alloc, addr, handle);
- }
-@@ -1921,9 +1927,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
- static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
- static inline int check_object(struct kmem_cache *s, struct slab *slab,
- 			void *object, u8 val) { return 1; }
--static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
- static inline void set_track(struct kmem_cache *s, void *object,
--			     enum track_item alloc, unsigned long addr) {}
-+			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
- static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
- 					struct slab *slab) {}
- static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-@@ -3878,7 +3884,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			 * tracking info and return the object.
- 			 */
- 			if (s->flags & SLAB_STORE_USER)
--				set_track(s, freelist, TRACK_ALLOC, addr);
-+				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 			return freelist;
- 		}
-@@ -3910,7 +3916,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			goto new_objects;
- 
- 		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
-+			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 		return freelist;
- 	}
-@@ -4422,7 +4428,7 @@ static noinline void free_to_partial_list(
- 	depot_stack_handle_t handle = 0;
- 
- 	if (s->flags & SLAB_STORE_USER)
--		handle = set_track_prepare();
-+		handle = set_track_prepare(__GFP_NOWARN);
- 
- 	spin_lock_irqsave(&n->list_lock, flags);
- 
 -- 
-2.43.0
-
+Wei Yang
+Help you, Help me
 
