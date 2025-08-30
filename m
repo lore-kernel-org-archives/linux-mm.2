@@ -4,137 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69626CA0FFE
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 07:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D86E3CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 08:05:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD2D46B0027; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
+	id 0F8328E0002; Sat, 30 Aug 2025 04:05:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAA206B002C; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
+	id 0AAC18E0001; Sat, 30 Aug 2025 04:05:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C00D6B0031; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
+	id EB1778E0002; Sat, 30 Aug 2025 04:05:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B96A6B0027
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3766B119F89
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:59:08 +0000 (UTC)
-X-FDA: 83832673176.14.A849B1A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D1849140003
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:59:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=07nse3Gv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KAWMnW1a;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WL63TICa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R907s8od;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2B6C8E0001
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 04:05:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8EA7D11A034
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:05:17 +0000 (UTC)
+X-FDA: 83832688674.08.CE0C245
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A67ED140008
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 08:05:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AUpvQcp6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756540746;
+	s=arc-20220608; t=1756541115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
-	b=JOE/t/uKYNCV1bLMjYRiFNTtnGRlcdgTGSWcgKEdpzDWpmb6UZmKuEbCQm3BNkBR77gRnb
-	BpGQiGvNqAh1CCSOLNUU1400nckqtycDrPW9853OguLa0BY1fNqey8Cssgqa84hgDp+kjj
-	kLUi86iThcXgNfWaxi21hKO37PW2d/4=
+	bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
+	b=Zrnqxwpcx2wU6iBOCyxWpR9UwK/uvFz0720qP2SicUxKoVomofHTeqT1hsQUIVFII3Ik6f
+	YKmtkJO4sGh/GqgVe1YVBjGcHfr1kBd8Qr85TTWZVXrL25wlrt2TqOHPBlQv2V94wmm1Qa
+	aYSgwhNvov9d8iua33cAwzmudil0g4g=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=07nse3Gv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KAWMnW1a;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WL63TICa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R907s8od;
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756540746; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AUpvQcp6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756541115; a=rsa-sha256;
 	cv=none;
-	b=OCkjTrlYVhk5dJVfmgPsv5AgLCv7sx7BGlhgv9qzAOLdQuUXH892Vz/vU4U/gzRzgCwadE
-	zpYsQKWwj47yi2R44hxdwJStf2AweT45KJzgnipuzRWgLnTEShqnrowrhqElX/i1NiAQ6t
-	okaV+57LjRp5L9a0QFNJl12JyVzoDiY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EA9D21F44F;
-	Sat, 30 Aug 2025 07:59:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756540744; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
-	b=07nse3GvCFE6CoI/WHIWKQ4N7n3LynZbFoQwSLiEiIMu0MZEslcALuaK4P/3BRZRagNmnH
-	yHrHjej065py4MRUB2LTYg49CzTBd4Uc7dtqPnHeaLhuLJF3Wn3vqLCC7I2A0tAJaMp4WP
-	4Chc+eOIrbSDl3T/DK8VO20umwN7dUo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756540744;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
-	b=KAWMnW1agj0GhUHmhtie8hBnXThp7IaJHnMICNTHPGOAbUGZ7BvNzO28yMboD80NNvkQnu
-	8KoauSTYWFBegLCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756540743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
-	b=WL63TICa8pQYgOJkaqazgjW9EGrttQoeEIzI2z/Q7dXw1dO16JCegsqUbYZ+0Y6pk0z8zz
-	/h3+28NPvPquIjNFQJH+dpB4yRsnv3QR5QTEqLcaFYKHlxqHod5ucpRl+KI+z4OI+1PR/N
-	qhoskY0Khg43MyjGw2wcpeyWnvvKJbE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756540743;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
-	b=R907s8odvCsU9KujHAwcEqihVuKM8xaPcWRapFVPHQUcVjWHFuhhTZXCLDONOtnim32hfm
-	VP5VpC0ucG//wTAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B47B0139B1;
-	Sat, 30 Aug 2025 07:59:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QpTjKUavsmh/IQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Sat, 30 Aug 2025 07:59:02 +0000
-Message-ID: <f4f92543-98c7-45f6-9f53-ab340d980a49@suse.cz>
-Date: Sat, 30 Aug 2025 09:59:02 +0200
+	b=scyF3YmrMK+VDb1jz66qzBk+VgJCs/sL6k/H415Qfq+yoQ3HA7WAja3zkhFLVMY9zmaf/j
+	8711oNqMryJw2ulmNn/AhQEhklNFWNcq+HnKqxPmX2TSib/43dVAIaHfxv0jZFtFQO8v5p
+	KszWfcx9TDZWK19w8JyOJaLm4+BBinc=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afee6037847so426611266b.1
+        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 01:05:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756541114; x=1757145914; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
+        b=AUpvQcp6aXzwnudy+YPOgu9xQHZhG2AGa/09Vqy8fxUjm3QA+fBhB08oFk3ZxjohBi
+         oGHntMFlX7ZzlJgjzLF+SslRfDcsdZaGuNba//ZFseVc5jussj/Mz4vrUoYGyik3cs+t
+         D7wU1bd7IJvAzBoxt6qgyaYHk152NKQ8eEhuls+tWBAL7Th0O7I3nB5+BoSqdihSQ5hI
+         eitKMj+vHnlsFQOlTHMlwiHvuJBGI2tD5SNMiFEJsjmTtviznOIPVonMv7ITKfPNma+C
+         7sPLOOIC2lOS3LKD4YYu5LPNBJTXjW7AjwMBhiFbSLEIaDtOAAZHi0OsbYZC6WckHGop
+         gTWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756541114; x=1757145914;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E+3FytFWpN13QNaZlIP9PT23YkoDdof1b13hg+sNa10=;
+        b=mPn6RUeBjTDOleUmOBEM4mZ8wjjd2cXhe0up1Tonx7Kxm6g0vUoS8YE8FRR9WUexqk
+         TFN3OHvAbqpDklKGW0bRAknTNfI3OxUavqviIpMs3eRThG3OQjb8oyCus+V13EQLgbak
+         h0vj1zVZNEt79g20KvvmCkvRlUmVa4P2Jstwaa2mOj1P4L1+9vNaIZTV4BIkkxloBdg+
+         Qu0lbNTlY9I+uQ+f1G+pXyDlla1fC5J/ukvTA4DVXNEr1zOajKbt/mqqhLYqTTLaV3J4
+         fSdVpQiKCfirrFEoEhA0hV0zIMz/i2zLhijVv+OaXZWk3SNIpQX0ogt9Fqxqy4pUclJX
+         IGHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXCUg6p2XyUyLyuThXEjcIFl/IK+8w2wBMTUGYNnkWcvH0Hwb7MFsrIjFbbmfIY4TcQKB2JH4dGEg==@kvack.org
+X-Gm-Message-State: AOJu0YzbhE2jP5GZUwCHmsF2TwWFPiyVMWu2ZLu4rZGfo87qBq4M/RK1
+	QZMnRODP/T8WzJg2MMzy1ld4bV/xNhTU5pSlEbBkEvZDSy2tNHfZlCjeS9Dl5OmcKMI1uKrjPfh
+	cv7pthh3tOlsGyizdOXtgdEEqpSvujEo=
+X-Gm-Gg: ASbGncsJd1LjaCxPdEknjT1gsbzBlHag8fBIknF7utwXvaQQOJPYhuSbhWfF0qmtC7a
+	T5MpibYpZSYG/PAtKSeOxBdNusT8rROllqBynUZxwIUhiDztfsZAmf7dSFlyoyCZBvPJjXQpa+B
+	c9pi6XPIYQFv+zFdhOuVKVd51T7EkRyVR0V09XtWOPl57b4ZaKU6beJ5SJjZI7EF3ULGlvRcJ6d
+	BLKoS0=
+X-Google-Smtp-Source: AGHT+IGzflFMFHhQCk11BPmcxfewbn8R9ACv8Yo0SSn9TtnTW1JgawjqxVwsmdBQr0ZCbodUJMXZIPy39a0Dt37TD0k=
+X-Received: by 2002:a17:907:7244:b0:af9:6e2b:f30c with SMTP id
+ a640c23a62f3a-b01d972f530mr112838566b.34.1756541113922; Sat, 30 Aug 2025
+ 01:05:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: memory-tiering: Fix PGPROMOTE_CANDIDATE counting
-To: Ruan Shiyang <ruansy.fnst@fujitsu.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org, lkp@intel.com,
- ying.huang@linux.alibaba.com, y-goto@fujitsu.com, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
- vschneid@redhat.com, Ben Segall <bsegall@google.com>,
- Li Zhijian <lizhijian@fujitsu.com>
-References: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D1849140003
-X-Stat-Signature: gnu35j3c3y5iw3ityopfxjty5ypmwwrm
+References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org> <20250828-pinctrl-gpio-pinfuncs-v6-4-c9abb6bdb689@linaro.org>
+In-Reply-To: <20250828-pinctrl-gpio-pinfuncs-v6-4-c9abb6bdb689@linaro.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 30 Aug 2025 11:04:37 +0300
+X-Gm-Features: Ac12FXzW7SA_uUOkcPEFLfZfGLYsYzzZVOKlWfYhU6akvDLYnA0W6YgK2rZDIDs
+Message-ID: <CAHp75Vci1uAcA9ahofn95hxufa+Yi1Fjt4w74HSObQq-Rz5zMQ@mail.gmail.com>
+Subject: Re: [PATCH v6 04/15] pinctrl: mediatek: mt7988: use PINCTRL_PIN_FUNCTION()
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Chen-Yu Tsai <wenst@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A67ED140008
+X-Stat-Signature: e9ec88xs137jsyhbjo7toktb4t4p1t6q
 X-Rspam-User: 
-X-HE-Tag: 1756540745-186346
-X-HE-Meta: U2FsdGVkX19Wf0cvqW49AJVWUeTVGYU/IQW0+gZHzRF/nb7WrEAN/t8rlQrEu2ODoi4dk71a27t/RlVmVWw9s+NMkmKYfbD2LPYYEASRVIzHOCfkg948mzMNjcj4SF4TGst6Q9RbO+eYqGhACJq6i4aVPc6YZSxipiML73gpnRoC4oRGy0PMhDDySK74Hs56tAMvt+SpQQPH8gbTjxzet+H2uUouhAoDRnDclxsGeiRlM0+zpOev7QbPj8qZz4Ywi1ok9GN9v8XhPW8qZJ8HixWiGFoYNunzTxBwF6POnWxDDZy1tedQ0nAlqhyCHrOEGSyONe0OcHSnzWRAGaDJAX5oGsV41AIZnOzwu5tS0ipLYER0mUOyzKmx0/oC5x32OH2041TQoBAsaVMzGmBDv8cJglrzCdU7KTyj1jUIkJ7/B5vROyd7GxLDRN9QewRou3DarPxXOGJM/3BWKSuMAZ5oUkTLo8AW3bMYqFT9TCyL5+ZgKe62G8gm8vRL88SvlWDnKCFvVYGa8Um+H3LOkc5AhnJ+xuGxo5mlS0zIMD6UH5vI/adSWqAzT8dO1lrFjkgCgZsBnJihFDk0UTS3kCZt8LPwJLkMHgTr1jJY7hLdBYBjkb0mN1Ng/Rc/FCTNmTl832oT4ZyxNGc33OCOzTKxR/fWFR0QmrDd+omHRHb5ex2tbHbuZwz8T4lIqBv1nPYy4OSMvp9HX9G8ibmfgbUwPbj9/cryJYzroWryZ6CDu80dZwkoezragayYERUHQXZ2E3HunVBZ8SbLH7mGtDBw+qRSE7xZsoOh0TxPG+DrW1SygdkYHKIyAjlvBZ+I9e4mP7CNLp87JQCxr7UVCkwzjZ4EiKk5yxzwGRZr26M3n0JmMu25o5HuEb/pwmX1dZokHqcENfz929a6HFmDDq3g8+INpkzr3Xm2N/1a8sUxrHLr9VCZZeN49CLnPq0+gn8d3n1mjA1PLdbg4JE
- RJb0VBzG
- 0X5B054afbnw4RhV1ckRN2c4o5xEfXiQ74Nrjtuh6augGqBA1czhZCEK7YuDq9XJOJYknL9LT7E3tmqQvmf8IxED+6jt+HfW+HRWtJGEvBWwmGc7DzRFk3VfGCEsj2IFHnuTBf2aq4MxeLQnS/tpdvGEn16+FUXRkEH5OMY6l+rvVT4dlCP0v1u/o/ox9oqQg1FQj7TnozicFkJgFEvFpZXmv1gK0nxWfFxAmr0FDw/UnSk5Bz3MvRgddIoRrZU3OXWDFf0sep7zhoFF6xdf+nLZSSE4WgZVW6ZW0Z6PeB4+TVK7Dp01i+A7yNJHouAFcHJOpjIbxxEcGJSBW2aZhZBue4dtecN6iM0Qvsdga8mzk1cXE1htOWmQ7Ibhge+1yUtk6Jup5LPvnvY7x6NFrBTbOZzMJqmJb6ThHqxnKudSdqcn16e8qV0HJmnetP4rQVB30IwStDpnWBO7Rv90VVqCQGr7Q1zz+Dtu6qyd9wO1sEjXH2kLqAlf2vN6dkVzYkJ6Y9W+BPYAqqkD3r29/cyGHJpLZdovAZj27W9QJ8ASVnos+sO4Z5/yk+/GUND9V9lvMB0uIZl1Mew+CfpeatlScQURj6Tnj6BTMhMOxTXrJ5l+0zakRFZiyWfPejtOd6HX/v3UrqvV9H5au1exVtJKslUItwBoEATmZ
+X-HE-Tag: 1756541115-859187
+X-HE-Meta: U2FsdGVkX1/Krdel6Ga9l7QeMlGBsM8vST0yGRIHzxtq22VPS13ld6l4LQMirlq4QBQp2cxs6CUWEmgSEFG3xvAg+xnezBbjVqiuzswS6DgPbQawRC7MqGxmX2UTYBCJ8A7cJS4rS4wE72lkrrqksDl61rq1ODEuAXp8ZIlS01nY4CN/Vt2K1/CvGok+EuhVeBNtFN8wwIE3zeaj1qD0yn8fZaaLi9etHhtJKPVfrqi6OLgNYQnO63rPzBXEu3L+TAwAiUV0Wonpsgu59l0mQ9BfXDe9OqA5OX7DWnPZm2cGTEpiFiS3Oo7pQBY+LfVYJrTicoHn7CzK+UWzNdP2FEyrMktwOW4WR9nKhvTrsyuH+2oFuY5VzuRamgyoYUFX8wZYAqTsS9FE0hXa+oV2FMM4BxkHOjJ3ZX1mBmiR6cKa+e6W5W7QdoNVntFnvwJkpJeRrHNGyxtQFjEaJa7G439dw8S6qLuXmE5jXlYx6TOrHtCvX/VXoF6Sum43yEnspl3ml1aMJSb6Ei+Gp2ZrKuJlw0gcF+7uzENeAnSANf8/5gaCruKrOubiAQpRdY8zwrxOpp8McCfVJXAUAjDJ+k4pK3Fbn9edcZdqrIIOI1/X7gTT1vDf9IuhXnxf2iT4klPLDiALjRVV3SfIFvpz3HXhSAVGsqvK1MgPtQd4+yxH6ioIY0ZqBHFfRCdpPwT+ZvW/5TfuCN8/oIKZJkohIMlo8Dq+lDr7HUT7tv7nZANu6ybSrNabMyt0ndbIBbBHRoTnbh1QtglKu2FSkq3YelPtsvwer5352YIwVHtuhTuHTeACxtpBdkzbETgfguyveWazXmu/A6ltqCSVrQFRmy9mlhkUQhb58abfKYYNGLWmxxWr01D3CfkqluyXAVsQ49u4OwXhFyw4MXz+HQoBU9JKF57aTa2q74PlpudY8wASi6+ZcZVcTO7jqb5jNYPA8HnkZL8KukJeBZSBrqI
+ nyPP6abM
+ r1OG83MTJ5H3po9Mabcak8bAkR0h1Cl+f1meNr8IPfHuTcNStt7JcQ3+Sob4n961n3af0FfQNHabdhc6QGZyXcvlYC0OKC93q9awItfU1EDMFnr8Pj+9AMG34sYk0ju8TWWEqiijOdVGuut2xPODm7wz6raOmg7D9IWU4A8eS50t3hrroqsZ+qIPR98THXXpXVlwRvg6j/o00LJ0rCPhdFFzWeVU+PCelBx7//2V2HWF3K4ME8gJzI83nz0tqymB2ic0ASGhx+POzKRnImRQEULixZALfMTX5HSCT77gsF/pSXWejElg6Td9O7xXimBcpHN4DUjRmqv8BVQ1PeQJS30LKfHV8lL1LvsrmixduQ9tOltGqG7yKNGN+lCz3u/NWse5SRtgapqU2l71D5yX+5o9zvYA431wmiLmRGoftw89kZW1aCvauwhgwElor8eQM2Dq8VCwCKC0jHZXXpfJjUVrM7AU+ic2g4DYObQYd63WOlOmdMCC2RB4Fp2pE1ki2SuLKfOD9veANlrtP9+vckSMaY3n04/zHxSFTH11VPkzfSMFt2g1DiKoVY1FW93kki77PbeX315HBR5LXaXy9YFbDEHpvb/xF+a4sb0BOsWMDWzNQs18P5TNbvZ2asMAA7cSw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,131 +138,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/29/25 05:51, Ruan Shiyang wrote:
-> Goto-san reported confusing pgpromote statistics where the
-> pgpromote_success count significantly exceeded pgpromote_candidate.
-> 
-> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
->  # Enable demotion only
->  echo 1 > /sys/kernel/mm/numa/demotion_enabled
->  numactl -m 0-1 memhog -r200 3500M >/dev/null &
->  pid=$!
->  sleep 2
->  numactl memhog -r100 2500M >/dev/null &
->  sleep 10
->  kill -9 $pid # terminate the 1st memhog
->  # Enable promotion
->  echo 2 > /proc/sys/kernel/numa_balancing
-> 
-> After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
-> $ grep -e pgpromote /proc/vmstat
-> pgpromote_success 2579
-> pgpromote_candidate 0
-> 
-> In this scenario, after terminating the first memhog, the conditions for
-> pgdat_free_space_enough() are quickly met, and triggers promotion.
-> However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
-> not in PGPROMOTE_CANDIDATE.
-> 
-> To solve this confusing statistics, introduce this PGPROMOTE_CANDIDATE_NRL
-> to count the missed promotion pages.  And also, not counting these pages
-> into PGPROMOTE_CANDIDATE is to avoid changing the existing algorithm or
-> performance of the promotion rate limit.
-> 
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Juri Lelli <juri.lelli@redhat.com>
-> Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Ben Segall <bsegall@google.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Valentin Schneider <vschneid@redhat.com>
-> Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
-> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
-> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-> Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
+On Thu, Aug 28, 2025 at 7:00=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
+>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> We have a dedicated initializer macro for defining pin functions for
+> mediatek drivers so use it here.
 
-Besides my nit, LGTM.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
-> Changes since RFC v3:
->   1. change the naming of new added stat to PGPROMOTE_CANDIDATE_NRL.
->   2. improve the description of the two stats.
-> ---
->  include/linux/mmzone.h | 16 +++++++++++++++-
->  kernel/sched/fair.c    |  5 +++--
->  mm/vmstat.c            |  1 +
->  3 files changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 283913d42d7b..4345996a7d5a 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -230,7 +230,21 @@ enum node_stat_item {
->  #endif
->  #ifdef CONFIG_NUMA_BALANCING
->  	PGPROMOTE_SUCCESS,	/* promote successfully */
-> -	PGPROMOTE_CANDIDATE,	/* candidate pages to promote */
-> +	/**
-> +	 * Candidate pages for promotion based on hint fault latency.  This
-> +	 * counter is used to control the promotion rate and adjust the hot
-> +	 * threshold.
-> +	 */
-> +	PGPROMOTE_CANDIDATE,
-> +	/**
-> +	 * Not rate-limited (NRL) candidate pages for those can be promoted
-> +	 * without considering hot threshold because of enough free pages in
-> +	 * fast-tier node.  These promotions bypass the regular hotness checks
-> +	 * and do NOT influence the promotion rate-limiter or
-> +	 * threshold-adjustment logic.
-> +	 * This is for statistics/monitoring purposes.
-> +	 */
-> +	PGPROMOTE_CANDIDATE_NRL,
->  #endif
->  	/* PGDEMOTE_*: pages demoted */
->  	PGDEMOTE_KSWAPD,
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 7a14da5396fb..4022c9c1f346 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -1940,11 +1940,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->  		struct pglist_data *pgdat;
->  		unsigned long rate_limit;
->  		unsigned int latency, th, def_th;
-> +		long nr = folio_nr_pages(folio);
->  
->  		pgdat = NODE_DATA(dst_nid);
->  		if (pgdat_free_space_enough(pgdat)) {
->  			/* workload changed, reset hot threshold */
->  			pgdat->nbp_threshold = 0;
-> +			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr);
->  			return true;
->  		}
->  
-> @@ -1958,8 +1960,7 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
->  		if (latency >= th)
->  			return false;
->  
-> -		return !numa_promotion_rate_limit(pgdat, rate_limit,
-> -						  folio_nr_pages(folio));
-> +		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
->  	}
->  
->  	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index a78d70ddeacd..bb0d2b330dd5 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1272,6 +1272,7 @@ const char * const vmstat_text[] = {
->  #ifdef CONFIG_NUMA_BALANCING
->  	"pgpromote_success",
->  	"pgpromote_candidate",
-> +	"pgpromote_candidate_nrl",
->  #endif
->  	"pgdemote_kswapd",
->  	"pgdemote_direct",
-
+--=20
+With Best Regards,
+Andy Shevchenko
 
