@@ -4,121 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A6C6CA0FFE
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 07:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69626CA0FFE
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 07:59:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 404956B002E; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
+	id AD2D46B0027; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B5516B002F; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
+	id AAA206B002C; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A40F6B0031; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
+	id 9C00D6B0031; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 189C16B002E
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 03:48:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9FF4E1A0A95
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:48:53 +0000 (UTC)
-X-FDA: 83832647346.27.B10A02D
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 84B5B140002
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:48:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k5UCCC4u;
-	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8B96A6B0027
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 03:59:08 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3766B119F89
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:59:08 +0000 (UTC)
+X-FDA: 83832673176.14.A849B1A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D1849140003
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 07:59:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=07nse3Gv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KAWMnW1a;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WL63TICa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R907s8od;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756540131;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756540746;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C9ikxbGqFGezwBfgbw/sJ+KYqXnrmuu7/VUhqL/4vCE=;
-	b=hAA2zQ67Cv/VNQ0LEULgI9wAjCQt39fAx2giYzalffdVjZ5Bm3NFuOxl+mhqDv1Djc/ziG
-	DD8t56zzoCX1VPrV0IO/7M3I3O2azFgsyXs9JKM6v0p8ivHxlALOuRtOZd0hasQDp6K3N+
-	5zTE/X6OQ+AnIggSejy96QsOYaEMRoQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756540131; a=rsa-sha256;
-	cv=none;
-	b=y/tZj3fK8RC2O+mmKUVmc6kz749/0E3VnoB0mQFBUcO5FUAnQrCdOm7xRS47GQg2KKibna
-	xRbfcY5iKyrKk59ihNgLG/fltZJsk+jFNArxF73Aa9JL/w6OVh4E2pJrq4PKxsuZYozZTI
-	v9K4zbg4ZsU5ivVmHJYho/RKkKitqwo=
+	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
+	b=JOE/t/uKYNCV1bLMjYRiFNTtnGRlcdgTGSWcgKEdpzDWpmb6UZmKuEbCQm3BNkBR77gRnb
+	BpGQiGvNqAh1CCSOLNUU1400nckqtycDrPW9853OguLa0BY1fNqey8Cssgqa84hgDp+kjj
+	kLUi86iThcXgNfWaxi21hKO37PW2d/4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k5UCCC4u;
-	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-61cd3748c6dso5664770a12.3
-        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 00:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756540130; x=1757144930; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C9ikxbGqFGezwBfgbw/sJ+KYqXnrmuu7/VUhqL/4vCE=;
-        b=k5UCCC4unmc/yDqHftkGjWpFdIj5woEbco4cr0qgeOd408WmfWHoyroUQlTCqVN0Zr
-         9tG+/bTPJbOnAjtdDnjXkIOgk78iaGquWC97PUQA3ElZbB8WYDZmINopJoOP0LEhd3p4
-         cn514WNP7b1waUVDTqzDI0Ee6QdS/FJu0wEKqehyFih3NZgo3Lhw6SLG8ONMvdUKj0E3
-         50u/g6FfhdfK4fySmN++Me6lwlEbmTNrGgJviXaRII1DUsIRXWPr5YwyXsU1cT3iTHIj
-         PjkjBaufZqzsXw7rtm8VJ9ge6g56/jCQu9T1iua2YaU0q9WmSyJk87Ckvm5EXYTOK4uG
-         DmfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756540130; x=1757144930;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=C9ikxbGqFGezwBfgbw/sJ+KYqXnrmuu7/VUhqL/4vCE=;
-        b=j9rhhqd2y7q43BLLYYf0q5dGe8EUo3vyNoJUzZC/z5RdHdorpDDkd02MztLa4DC7v0
-         IlvTtRtlrYW3jdrCwU0iMDBLvSFEuks+aqcoAXk6vPoAHQg1B1WcsJP0kXPjFiL8vvDK
-         klQlQO7QU5YhOvLrEJoWevf9gyYHPa0jcCcDB9maDgBQFgmUE68+N+GfSqZM6dv6wSY+
-         Kjv1BEGBXWz/eYHmp08vmZ30bVHex+8FU80nUM9pjKQIz8aTpEt6Xbiz/Cd4OxP9t6q5
-         nBJS68zfc4kKJHs1zHitjaJPbtwZQvUg9tuYKVeUkOPgy6XCiiCzzMCouZsgGzVBwWsu
-         5K8A==
-X-Forwarded-Encrypted: i=1; AJvYcCW0V1rNHUbKXm4v62eIPl0srWdGWAh9WGpv2kZ9IpthIvD8rIAf744iZ+MltSO3AIjq+RMldjQqqA==@kvack.org
-X-Gm-Message-State: AOJu0YxC+FNGq/ANapHcyfSQJne7JD8YvHAwxICxOVqqKpyswHBxZSuR
-	E4CeQE1YY4WXYHokTAKE1vwSEZKtxOleJik10RZU4u8/Eej+jverSAVa8JdXwg==
-X-Gm-Gg: ASbGncstju3VhbA6UfjpbLQErqyWUGOBMECrY4L+vGNkCLWSgJSCIz7lNXHLYsRw/A9
-	7/qO090RDfujWXS/7TCqEylzLUl5LWogUBqmQfxawgEb/Vmgd/G9jEkcePvaLQ9H2x6bfLwZtnm
-	Pzk0FDjVhIhXwXl3vatwBGavJLcTpjsJPzSYtJK/cTcAqTxexilvfcf0yErP3Kzyhe0LJ90ryRK
-	fXK9d+QiKUWyQaHXE+lVkWNo3Bq3ehSA53VmqMPhFbaY4DA9AgVTs5QNXb5lkj+jDty9j+NSJ6Q
-	xVoYB0xJi2jqFTdGVsF1z/SLvdf4JxEcgA4n+CaRnOBXOLz+kUehK/HNuHrFRE3g3+dzRwkVWc1
-	26DhDEEr5nJWr49l1TA8H8nYrXg==
-X-Google-Smtp-Source: AGHT+IFdQuV70XfnKzIrxGnDeVxHCfE7ZtMBah41MZey2KkKoK+JJknh/5bTES6bSwyzQm89m1HZ1A==
-X-Received: by 2002:a05:6402:90c:b0:61c:61bb:e836 with SMTP id 4fb4d7f45d1cf-61d26988ecdmr939370a12.11.1756540129783;
-        Sat, 30 Aug 2025 00:48:49 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61d322b3854sm4669a12.0.2025.08.30.00.48.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 30 Aug 2025 00:48:49 -0700 (PDT)
-Date: Sat, 30 Aug 2025 07:48:48 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Zi Yan <ziy@nvidia.com>,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH] mm/page_alloc: find_large_buddy() from start_pfn aligned
- order
-Message-ID: <20250830074848.spy2rgvwc5s27tmn@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250828091618.7869-1-richard.weiyang@gmail.com>
- <489045AD-70D6-4167-843D-50A8DD19870B@nvidia.com>
- <20250830012505.v4qoihdqi22na3v2@master>
- <aLJt5GtJLGM3wc0X@fedora>
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=07nse3Gv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KAWMnW1a;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WL63TICa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=R907s8od;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756540746; a=rsa-sha256;
+	cv=none;
+	b=OCkjTrlYVhk5dJVfmgPsv5AgLCv7sx7BGlhgv9qzAOLdQuUXH892Vz/vU4U/gzRzgCwadE
+	zpYsQKWwj47yi2R44hxdwJStf2AweT45KJzgnipuzRWgLnTEShqnrowrhqElX/i1NiAQ6t
+	okaV+57LjRp5L9a0QFNJl12JyVzoDiY=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EA9D21F44F;
+	Sat, 30 Aug 2025 07:59:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756540744; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
+	b=07nse3GvCFE6CoI/WHIWKQ4N7n3LynZbFoQwSLiEiIMu0MZEslcALuaK4P/3BRZRagNmnH
+	yHrHjej065py4MRUB2LTYg49CzTBd4Uc7dtqPnHeaLhuLJF3Wn3vqLCC7I2A0tAJaMp4WP
+	4Chc+eOIrbSDl3T/DK8VO20umwN7dUo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756540744;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
+	b=KAWMnW1agj0GhUHmhtie8hBnXThp7IaJHnMICNTHPGOAbUGZ7BvNzO28yMboD80NNvkQnu
+	8KoauSTYWFBegLCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756540743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
+	b=WL63TICa8pQYgOJkaqazgjW9EGrttQoeEIzI2z/Q7dXw1dO16JCegsqUbYZ+0Y6pk0z8zz
+	/h3+28NPvPquIjNFQJH+dpB4yRsnv3QR5QTEqLcaFYKHlxqHod5ucpRl+KI+z4OI+1PR/N
+	qhoskY0Khg43MyjGw2wcpeyWnvvKJbE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756540743;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X8G5u7p+krPqozve1gIrj1loYM9L0j9YkyF6aK4YOtQ=;
+	b=R907s8odvCsU9KujHAwcEqihVuKM8xaPcWRapFVPHQUcVjWHFuhhTZXCLDONOtnim32hfm
+	VP5VpC0ucG//wTAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B47B0139B1;
+	Sat, 30 Aug 2025 07:59:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QpTjKUavsmh/IQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Sat, 30 Aug 2025 07:59:02 +0000
+Message-ID: <f4f92543-98c7-45f6-9f53-ab340d980a49@suse.cz>
+Date: Sat, 30 Aug 2025 09:59:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLJt5GtJLGM3wc0X@fedora>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 84B5B140002
-X-Stat-Signature: tse4o5d1kg3mbzxihnf6p6bbyiikc8ro
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm: memory-tiering: Fix PGPROMOTE_CANDIDATE counting
+To: Ruan Shiyang <ruansy.fnst@fujitsu.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org, lkp@intel.com,
+ ying.huang@linux.alibaba.com, y-goto@fujitsu.com, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
+ vschneid@redhat.com, Ben Segall <bsegall@google.com>,
+ Li Zhijian <lizhijian@fujitsu.com>
+References: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D1849140003
+X-Stat-Signature: gnu35j3c3y5iw3ityopfxjty5ypmwwrm
 X-Rspam-User: 
-X-HE-Tag: 1756540131-577281
-X-HE-Meta: U2FsdGVkX1+YcKMx6S/w/z/x1VTdvojh7N7RzLnKTFQzxt6pm3Dctl4Nikd9v0Wzl2dmpHqJts5oXXRM+gqEm8ux8Tr4Krt86sgHtw1H8LL3lMjyHTwmOCTNZu8VKY6Vf+Ud9CZE+/AeC6AbiOq4X7XTBIQFCUwoQL08uDilCzbV3Tov3g9u7dyO/olCFd2X3mXIJUaFsV1vMbx+Qc3REyeu2HaRNpvIcSsFV3TcywO1263dFPxdfGvJrGw9CR/D0YFUtQebWTIqpwvqun61qpz6vy+inxXBtyyBmemrQMp8fMVpgCI/hz2tfJ5mEfTKnV7wsB2yLeEc1eN27MvAmFA+cOECCXOoTxdbeVAilonFE9sHKhXQSfc3ZqVi6e+oLY4IOTOpyyCWkcLir1hw4HxB87KTgN/6hBIppPRxHtZzS9cvrPfVWZJNjkChaCXA/qCTJn7WS0SelrPMjIbVKCLzunyVvyKLKL3A22ZbIh8PxWir2oBltTF4KV7j39OqRI0qGsr+Zf/vYf5NKJrwRuQLFz0qWbSAdPd0VhiFOAB4slbzZk4QcLQw3QBI0k0a+W67UZkTkol839x/EO292ZpmkpXmYzrAX0xMiCDTyLxoWVqjtjluRcR/kItY5F+dwA7Ejpb4OEp7ayk5N4QiTd++eQLWcM1UvGF7EAJnmaDpnQLMMTCU1MEkIWqQd+Tq9I8/RZPHOeUZEH++yLA2mH1/micf61JvputxlcBJouYDmohhyqWSCKq02m6dLjuhx/Lt7pDdHIG5LcGAO9EY39vOXWzc7oiz+FifJ720LPQhr1n06LS2LLBW0ocjStuQbNAQIAmsai61B9RPRzcpIAI71dMktdHglsEVKP0SrP8nwwzGvgun/w/QcPphsosXY10wRQ5jtXc01tbiJjW2phrykelRRuyWhwgGLiUo8v/Y31CWmZTH78wnSQ8hGWNhnY7QJt5pRtzmkho0ezE
- lOu9jLEE
- JL28zHS78I4HD2GjrOV3LeKbohmkiVLikd9+se1LIueCJy+Nn+zj/yGa87ziw0Qkao5DLZTim4zqhnuLMbiMhSdLIUXWGvkY18k3rm6aRqL+5vI301vHJ/KKmkwgJ67j6BLQ/QQDBT0QTsGZTmoc7zN97m4U2c9fCcW/1mM5OIxrKMrnBRG+fV5fDfix3jZIeaxCsxMPGTLlII2qy4ywn8MqXNpyMECAqBlrj7rQFLriu0VvUYJoVJh67yJXEarUnXlL6etf+FQwGfdPXi5HcB+0w12BSq5qkDqzPlfjzdoyBUGzT+q3xovRuUfwpdIgnab8YcX40C5+JTVhqxmd7npfy/4C96Zh6yujcqQrOMKKs7IblSXvphTIIUzRBcXDPX8tQ0EIvmOYmPKWYbacOEZQPuhdTOpusIjDrPUaiTZtPHCJjSdpvAmSH67EB4PodIwgGdx+VXIId48VitQGe7SKai3GQJvp4sx278iPHhRGiBeUczsEA+uBQV925xRvZan+LG/ipSy3qZ6n+CdzSnIr0EHqvgjRk3wT4HNVPYZ0xZvSU9Zye8h0qGjgrvv5BfNvtQLilsQVwevYdhhZaQLmW5NHPODZi0wY138eabyEhXRsIpWItGI3IYw83YmRS2FIfAlLfQSjf+MwqBrHG9UV1xyLDDqaxe8K4qbxBmS/4LSO439PJY6q4C6sHQSTZQEKkKIbvELARKxMb442HGoirM97gAwUiNN8/nwVbu9vI1dstrrUhekr+LWWssZweHjxP0rDS2K2iciPkXOqRFgRlav+yMeAUTxAlEe/pWO3ReUKOmwfVpA26SVU7yaaXyApgv2e7S6E7qaXQPGqxJ4JS6RTbfCDG0rnvwNUht0R2aZxjQYmNjCwYBa+whEazK7SP
+X-HE-Tag: 1756540745-186346
+X-HE-Meta: U2FsdGVkX19Wf0cvqW49AJVWUeTVGYU/IQW0+gZHzRF/nb7WrEAN/t8rlQrEu2ODoi4dk71a27t/RlVmVWw9s+NMkmKYfbD2LPYYEASRVIzHOCfkg948mzMNjcj4SF4TGst6Q9RbO+eYqGhACJq6i4aVPc6YZSxipiML73gpnRoC4oRGy0PMhDDySK74Hs56tAMvt+SpQQPH8gbTjxzet+H2uUouhAoDRnDclxsGeiRlM0+zpOev7QbPj8qZz4Ywi1ok9GN9v8XhPW8qZJ8HixWiGFoYNunzTxBwF6POnWxDDZy1tedQ0nAlqhyCHrOEGSyONe0OcHSnzWRAGaDJAX5oGsV41AIZnOzwu5tS0ipLYER0mUOyzKmx0/oC5x32OH2041TQoBAsaVMzGmBDv8cJglrzCdU7KTyj1jUIkJ7/B5vROyd7GxLDRN9QewRou3DarPxXOGJM/3BWKSuMAZ5oUkTLo8AW3bMYqFT9TCyL5+ZgKe62G8gm8vRL88SvlWDnKCFvVYGa8Um+H3LOkc5AhnJ+xuGxo5mlS0zIMD6UH5vI/adSWqAzT8dO1lrFjkgCgZsBnJihFDk0UTS3kCZt8LPwJLkMHgTr1jJY7hLdBYBjkb0mN1Ng/Rc/FCTNmTl832oT4ZyxNGc33OCOzTKxR/fWFR0QmrDd+omHRHb5ex2tbHbuZwz8T4lIqBv1nPYy4OSMvp9HX9G8ibmfgbUwPbj9/cryJYzroWryZ6CDu80dZwkoezragayYERUHQXZ2E3HunVBZ8SbLH7mGtDBw+qRSE7xZsoOh0TxPG+DrW1SygdkYHKIyAjlvBZ+I9e4mP7CNLp87JQCxr7UVCkwzjZ4EiKk5yxzwGRZr26M3n0JmMu25o5HuEb/pwmX1dZokHqcENfz929a6HFmDDq3g8+INpkzr3Xm2N/1a8sUxrHLr9VCZZeN49CLnPq0+gn8d3n1mjA1PLdbg4JE
+ RJb0VBzG
+ 0X5B054afbnw4RhV1ckRN2c4o5xEfXiQ74Nrjtuh6augGqBA1czhZCEK7YuDq9XJOJYknL9LT7E3tmqQvmf8IxED+6jt+HfW+HRWtJGEvBWwmGc7DzRFk3VfGCEsj2IFHnuTBf2aq4MxeLQnS/tpdvGEn16+FUXRkEH5OMY6l+rvVT4dlCP0v1u/o/ox9oqQg1FQj7TnozicFkJgFEvFpZXmv1gK0nxWfFxAmr0FDw/UnSk5Bz3MvRgddIoRrZU3OXWDFf0sep7zhoFF6xdf+nLZSSE4WgZVW6ZW0Z6PeB4+TVK7Dp01i+A7yNJHouAFcHJOpjIbxxEcGJSBW2aZhZBue4dtecN6iM0Qvsdga8mzk1cXE1htOWmQ7Ibhge+1yUtk6Jup5LPvnvY7x6NFrBTbOZzMJqmJb6ThHqxnKudSdqcn16e8qV0HJmnetP4rQVB30IwStDpnWBO7Rv90VVqCQGr7Q1zz+Dtu6qyd9wO1sEjXH2kLqAlf2vN6dkVzYkJ6Y9W+BPYAqqkD3r29/cyGHJpLZdovAZj27W9QJ8ASVnos+sO4Z5/yk+/GUND9V9lvMB0uIZl1Mew+CfpeatlScQURj6Tnj6BTMhMOxTXrJ5l+0zakRFZiyWfPejtOd6HX/v3UrqvV9H5au1exVtJKslUItwBoEATmZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,81 +143,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 08:20:04PM -0700, Vishal Moola (Oracle) wrote:
->On Sat, Aug 30, 2025 at 01:25:05AM +0000, Wei Yang wrote:
->> On Thu, Aug 28, 2025 at 11:02:33PM -0400, Zi Yan wrote:
->> >On 28 Aug 2025, at 5:16, Wei Yang wrote:
->> >
->> >> We iterate pfn from order 0 to MAX_PAGE_ORDER aligned to find large
->> >> buddy. While if the order is less than start_pfn aligned order, we would
->> >> get the same pfn and do the same check again.
->> >>
->> >> Iterate from start_pfn aligned order to reduce duplicated work.
->> >>
->> >> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> >> Cc: Johannes Weiner <hannes@cmpxchg.org>
->> >> Cc: Zi Yan <ziy@nvidia.com>
->> >> Cc: Vlastimil Babka <vbabka@suse.cz>
->> >> Cc: David Hildenbrand <david@redhat.com>
->> >>
->> >> ---
->> >I think it is right, but the code is very subtle and hard to understand
->> >after the change. It is better to add comment to explain it.
->> 
->> One thing I want to point out is in __move_freepages_block_isolate(),
->> find_large_buddy() is always given a pageblock aligned start_pfn. This means
->> if start_pfn is not a free page, it would always try 10 times until give up.
->> 
->> >
->> >Paste the code below for more context:
->> >
->> >        while (!PageBuddy(page = pfn_to_page(pfn))) {
->> >                /* Nothing found */
->> >                if (++order > MAX_PAGE_ORDER)
->> >                        return start_pfn;
->> >                pfn &= ~0UL << order;
->> >        }
->> >
->> >
->> >
->> >The code tries to find a PageBuddy starting from start_pfn starting from
->> >order=0. When entering the while loop, it means PageBuddy cannot be order-0
->> >and ++order increases the order by 1. Your change fast forwards the process
->> >based on start_pfn. If start_pfn is not an order-0 page, based on first
->> >set bit in start_pfn and how buddy page is chosen, the next possible PageBuddy
->> >order can only be __ffs(start_pfn) + 1. Your code starts order at __ffs(start_pfn)
->> >and it works because "if (++order > MAX_PAGE_ORDER)" increases order
->> >to __ffs(start_pfn) + 1.
->> >
->> >Can you add a comment on your "int order = ..."? Something like:
->> >
->> >If start_pfn is not an order-0 PageBuddy, next PageBuddy containing start_pfn
->> >has minimal order of __ffs(start_pfn) + 1. Fastforward order to __ffs(start_pfn)
->> >to remove unnecessary work in the while below.
->> 
->> Sure, I would add a comment above the assignment.
->> 
->> But in my mind, we are not farst forward order, but start check from order of
->> __ffs(start_pfn).
->> 
->> 
->> How about: (not good at commento)
->> 
->> 	/*
->> 	 * We start find large buddy from start_pfn order, since a
->> 	 * !PageBuddy() means all lower order page is !PageBuddy().
->> 	 */
->
->Personally, the way Zi worded it makes more sense to me. Maybe replacing
->the second sentence with your comment is fine, but I think Zi's first
->sentence provides important context in a clear way.
+On 7/29/25 05:51, Ruan Shiyang wrote:
+> Goto-san reported confusing pgpromote statistics where the
+> pgpromote_success count significantly exceeded pgpromote_candidate.
+> 
+> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
+>  # Enable demotion only
+>  echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>  numactl -m 0-1 memhog -r200 3500M >/dev/null &
+>  pid=$!
+>  sleep 2
+>  numactl memhog -r100 2500M >/dev/null &
+>  sleep 10
+>  kill -9 $pid # terminate the 1st memhog
+>  # Enable promotion
+>  echo 2 > /proc/sys/kernel/numa_balancing
+> 
+> After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
+> $ grep -e pgpromote /proc/vmstat
+> pgpromote_success 2579
+> pgpromote_candidate 0
+> 
+> In this scenario, after terminating the first memhog, the conditions for
+> pgdat_free_space_enough() are quickly met, and triggers promotion.
+> However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
+> not in PGPROMOTE_CANDIDATE.
+> 
+> To solve this confusing statistics, introduce this PGPROMOTE_CANDIDATE_NRL
+> to count the missed promotion pages.  And also, not counting these pages
+> into PGPROMOTE_CANDIDATE is to avoid changing the existing algorithm or
+> performance of the promotion rate limit.
+> 
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Juri Lelli <juri.lelli@redhat.com>
+> Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ben Segall <bsegall@google.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Valentin Schneider <vschneid@redhat.com>
+> Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
+> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
 
-Hi, Vishal 
+Besides my nit, LGTM.
 
-Thanks for your comment. I am ok with it. Let's see Zi's opnion. And I will
-send a new version. :-)
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
--- 
-Wei Yang
-Help you, Help me
+> ---
+> Changes since RFC v3:
+>   1. change the naming of new added stat to PGPROMOTE_CANDIDATE_NRL.
+>   2. improve the description of the two stats.
+> ---
+>  include/linux/mmzone.h | 16 +++++++++++++++-
+>  kernel/sched/fair.c    |  5 +++--
+>  mm/vmstat.c            |  1 +
+>  3 files changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 283913d42d7b..4345996a7d5a 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -230,7 +230,21 @@ enum node_stat_item {
+>  #endif
+>  #ifdef CONFIG_NUMA_BALANCING
+>  	PGPROMOTE_SUCCESS,	/* promote successfully */
+> -	PGPROMOTE_CANDIDATE,	/* candidate pages to promote */
+> +	/**
+> +	 * Candidate pages for promotion based on hint fault latency.  This
+> +	 * counter is used to control the promotion rate and adjust the hot
+> +	 * threshold.
+> +	 */
+> +	PGPROMOTE_CANDIDATE,
+> +	/**
+> +	 * Not rate-limited (NRL) candidate pages for those can be promoted
+> +	 * without considering hot threshold because of enough free pages in
+> +	 * fast-tier node.  These promotions bypass the regular hotness checks
+> +	 * and do NOT influence the promotion rate-limiter or
+> +	 * threshold-adjustment logic.
+> +	 * This is for statistics/monitoring purposes.
+> +	 */
+> +	PGPROMOTE_CANDIDATE_NRL,
+>  #endif
+>  	/* PGDEMOTE_*: pages demoted */
+>  	PGDEMOTE_KSWAPD,
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 7a14da5396fb..4022c9c1f346 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -1940,11 +1940,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>  		struct pglist_data *pgdat;
+>  		unsigned long rate_limit;
+>  		unsigned int latency, th, def_th;
+> +		long nr = folio_nr_pages(folio);
+>  
+>  		pgdat = NODE_DATA(dst_nid);
+>  		if (pgdat_free_space_enough(pgdat)) {
+>  			/* workload changed, reset hot threshold */
+>  			pgdat->nbp_threshold = 0;
+> +			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr);
+>  			return true;
+>  		}
+>  
+> @@ -1958,8 +1960,7 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
+>  		if (latency >= th)
+>  			return false;
+>  
+> -		return !numa_promotion_rate_limit(pgdat, rate_limit,
+> -						  folio_nr_pages(folio));
+> +		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
+>  	}
+>  
+>  	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index a78d70ddeacd..bb0d2b330dd5 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -1272,6 +1272,7 @@ const char * const vmstat_text[] = {
+>  #ifdef CONFIG_NUMA_BALANCING
+>  	"pgpromote_success",
+>  	"pgpromote_candidate",
+> +	"pgpromote_candidate_nrl",
+>  #endif
+>  	"pgdemote_kswapd",
+>  	"pgdemote_direct",
+
 
