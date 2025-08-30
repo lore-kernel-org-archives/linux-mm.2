@@ -4,145 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F8EDCA0FFD
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 20:46:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DE8ACA0FFD
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 22:30:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 561BE6B0005; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
+	id 2C9CF6B0005; Sat, 30 Aug 2025 18:30:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511846B0006; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
+	id 27A206B0006; Sat, 30 Aug 2025 18:30:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FF706B0008; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
+	id 18FFB6B0008; Sat, 30 Aug 2025 18:30:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FCD56B0005
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 16:46:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 99A0481F28
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 20:46:47 +0000 (UTC)
-X-FDA: 83834607654.19.8B30989
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CF50E40009
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 20:46:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i7heKHiF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of mchehab+huawei@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mchehab+huawei@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 086A16B0005
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 18:30:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0D451DCB88
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 22:30:30 +0000 (UTC)
+X-FDA: 83834869020.08.2E396E4
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9B8EA1C0009
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 22:30:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="cn/esNA5";
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756586806;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756593028;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sERoEhOT3TgQGeAbgiCm8VB8EH4ve3pj8WEJe0BUAXc=;
-	b=3XgwvnCYoImN5k8kyA/gNtd3BNvNxDFuqi5x/8pc6tfmBRQtYd5xuktkcy8vddAr+3gI48
-	wNSVWemWBmTgj24OFnlQWSAJGLe/J+39ZlQKrFpN52DhMuC5fN1nM8lpiFUxW/skBHebSY
-	JsljbKwbHYoRLEnksas+iZj0GZkc3Qs=
+	bh=y8MnctxU6ATOf/IhsFdPXoMq8IG2wmGfWPzQafTwHWU=;
+	b=vVfiqOkShOMmP/qFzPeFjjbx0TMnPYtB6l6jvD19gKixo2Ixuan8LkwWdBnWCrv6c08QuN
+	yXaEE7qbr+nVKFh0PibIslX5PAHAFWc8fu1ln6HAyMLIEoSEV5aqiYyh6W7zVBEsbGNio3
+	exRwOyQBTaW6AkcmL/wzaJaCLoM2Sdc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i7heKHiF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of mchehab+huawei@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mchehab+huawei@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756586806; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="cn/esNA5";
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756593028; a=rsa-sha256;
 	cv=none;
-	b=CYEpAZyDdnL/h8VRYxpqEFpsj/ONnP2BmiIt/q2qKChNXCXnwcgUb6plFEHcr4i+WJiV0b
-	ybSPex1VvATOh7r3AcFahB76cHykM+qB3dXoWKW9A6JCPfTwahXpaf8DyDFeobSYrbSk9f
-	QuINRiloKYBiK6+QOteRO37LamKSm+Q=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8645643FD7;
-	Sat, 30 Aug 2025 20:46:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF130C4CEEB;
-	Sat, 30 Aug 2025 20:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756586804;
-	bh=N1RyWuUPncwemkQz+wtBxmmLRK1pbPwPhqaSXQEgACo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i7heKHiF1WEcWegbUMD1XKbmetMnNnCnljRU/sfGxpB5c3sZchsdHRdnTVLky717F
-	 dDeCNXpev8o9LRk1S9eXnS8o8kWvMacaFziEO6OdWtswKvTxZQ5pU4eCd2WUx5BQCO
-	 14bLFP5QVji02AMa5CJyqW/en6PTbHSnZ78vGj75ZZT/RVMFCiYHRoYXRol8qlqKgn
-	 3lrkJ1IYbZBkwoMZse44FP62uqEzr0WjQEZOzoSJLrIrlje9NRgPYVERWMHuVkMn2k
-	 2QurVWFt7IIr5AR3ahUSN1uV7FUBrHkmiXJe15aj9LzSrsbpHevBdir8lYlUv2SDdP
-	 83zxdoGwMwcyQ==
-Date: Sat, 30 Aug 2025 22:46:22 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux
- Documentation <linux-doc@vger.kernel.org>, Linux DAMON
- <damon@lists.linux.dev>, Linux Memory Management List <linux-mm@kvack.org>,
- Linux Power Management <linux-pm@vger.kernel.org>, Linux Block Devices
- <linux-block@vger.kernel.org>, Linux BPF <bpf@vger.kernel.org>, Linux
- Kernel Workflows <workflows@vger.kernel.org>, Linux KASAN
- <kasan-dev@googlegroups.com>, Linux Devicetree
- <devicetree@vger.kernel.org>, Linux fsverity <fsverity@lists.linux.dev>,
- Linux MTD <linux-mtd@lists.infradead.org>, Linux DRI Development
- <dri-devel@lists.freedesktop.org>, Linux Kernel Build System
- <linux-lbuild@vger.kernel.org>, Linux Networking <netdev@vger.kernel.org>,
- Linux Sound <linux-sound@vger.kernel.org>, Thomas Gleixner
- <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra
- <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Pawan Gupta
- <pawan.kumar.gupta@linux.intel.com>, Jonathan Corbet <corbet@lwn.net>,
- SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Huang Rui
- <ray.huang@amd.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Mario
- Limonciello <mario.limonciello@amd.com>, Perry Yuan <perry.yuan@amd.com>,
- Jens Axboe <axboe@kernel.dk>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, KP
- Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo
- <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Dwaipayan Ray
- <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Joe
- Perches <joe@perches.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Alexander Potapenko <glider@google.com>, Andrey Konovalov
- <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo
- Frascino <vincenzo.frascino@arm.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Eric Biggers <ebiggers@kernel.org>, tytso@mit.edu,
- Richard Weinberger <richard@nod.at>, Zhihao Cheng
- <chengzhihao1@huawei.com>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann
- <tzimmermann@suse.de>, Nathan Chancellor <nathan@kernel.org>, Nicolas
- Schier <nicolas.schier@linux.dev>, Ingo Molnar <mingo@redhat.com>, Will
- Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Waiman Long
- <longman@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shay Agroskin
- <shayagr@amazon.com>, Arthur Kiyanovski <akiyano@amazon.com>, David Arinzon
- <darinzon@amazon.com>, Saeed Bishara <saeedb@amazon.com>, Andrew Lunn
- <andrew@lunn.ch>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>, Alexandru Ciobotaru <alcioa@amazon.com>, The AWS Nitro
- Enclaves Team <aws-nitro-enclaves-devel@amazon.com>, Jesper Dangaard Brouer
- <hawk@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Steve French <stfrench@microsoft.com>, Meetakshi Setiya
- <msetiya@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>, Bart Van Assche
- <bvanassche@acm.org>, Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?=
- <linux@weissschuh.net>, Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH 12/14] ASoC: doc: Internally link to Writing an ALSA
- Driver docs
-Message-ID: <20250830224614.6a124f82@foz.lan>
-In-Reply-To: <20250829075524.45635-13-bagasdotme@gmail.com>
-References: <20250829075524.45635-1-bagasdotme@gmail.com>
-	<20250829075524.45635-13-bagasdotme@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	b=EcAPi1EWydPZ+K9h8cwyCaeXXsJyu4Jl2Z6kO8bDf1ufY/21CQS9yNBxjGEYIBnflUtfdN
+	bYEqOB3+7wCGKLTABgEEIXyckWzlFnKupp28g8927Sxm0jqCvS6nwnGmYIw99xb3M87N4y
+	WbLlC8a23V9daTLEvBodj8Z9GIj4hsY=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-61ded2712f4so58108a12.1
+        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 15:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756593027; x=1757197827; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y8MnctxU6ATOf/IhsFdPXoMq8IG2wmGfWPzQafTwHWU=;
+        b=cn/esNA5R3X0MvQR9M3lLqa+icKb6Rw8A77IwWG46VsoIS3ItIcmFYzU/N+d1QAN91
+         t1MVRiox5hcTB41UKCgaAlVZP29FyUpPVoXNKNtW0UmsZpcs/wGGvLubfUMBucmIqmNh
+         uDziqsHpe67XE+5hxVsgBWw0Qtyktat7KH2QF10u4IoDszTKNUcD6TiSjv73kNy1gVep
+         nVeBEBVF5Heu6OG84EZKt+KvAOYOIL7IB8L5ENwzyIBxtVxyxYXueZJWsaK5bSwBb8aI
+         DNd33ykxwsYmuA+nu00c84+Hi6VHZrTt5Q0PI/qz27xE2Tf8t7Svcw1XdUBzWFiyeeBH
+         6qjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756593027; x=1757197827;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y8MnctxU6ATOf/IhsFdPXoMq8IG2wmGfWPzQafTwHWU=;
+        b=U5YasnKDuhDcGey3t3FGTh/+Y+KxflzSIPC2vsO6SOLGlpXQC4b2yWK0njOSvyMAVj
+         ZSXKcki0EtWZ0hVt28L/9vi8ifSPS76i/djxwR4OOubd7x3Tapwq1TcE6WzylJuC/fsb
+         u+NT5DMxiqEyxebugTQL2sZdi0Fr1zGudRUdWAIhTicGWkTLZOrOXLTCOZ65BIYOsNJP
+         uwAES0YHOO6tEDuHP28ApCFGkexk+GrZMaUkSl40ppudQB59dMokzuWj+MLvJOEc8BBB
+         /Q/zbRgT1wrwemA+z3ChyrUWiAtjA8X77+uI/PP3i8Hi1kc5Vp4VVdJI1y/vjRbJZuwK
+         Hr+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWcHtZ8fV22UioQfoSpRti6FF1McZYuKGE/fD1TnbY8WsIWHeoNXQsoULEHpDBFiibte4XfTwcoug==@kvack.org
+X-Gm-Message-State: AOJu0YxOAmK16hq2WapGo4F0Qr6XdeGPFrOSrl4rLpK/Cu+Gz29DIT/6
+	oLIFDXvzRyhwvXHODgY5HiYtCHXV1jold4nQPjj9sYPWcL9BL4vtzAUU
+X-Gm-Gg: ASbGncvzlrA+VZ9uiWEt0H0UxwvNt0bGq+DZ0AqQR4AmCdAhxxPYJYzY91xQyZPA2bN
+	MlHNPe36/S7HhZRCoaQTfQPuOZLyZHnxNsHQZERd9YM4o0BrtcCFCn6+JP0FEzXd18E3DFRvuiL
+	yB7yaj4MJDKLOljBJ7WTfpRAs16i0dbI/Tsn52ie+uFRtYW0rLbY+Tevi4jLud2POaQToqm7L1R
+	Q+r/cyUlemRmohvUzc1VyW3PpXMa4h04GYMJP3m6kbWOZNjXkw1nMpcrdXltDlHV4PhmwAhIK9J
+	SFFUEm1n7WQODn115XN/3nA1kAMyAeEGAblJvxZXLDYXjls1GHp1bRFLf8SZj0uYhZ3DdiNt2SI
+	XZ5mKxpuXX5V3USOfd4ro+BLcq50B0J2A1tvU
+X-Google-Smtp-Source: AGHT+IHgIevwvPJgQjugv5dspNkhBDjgRpzWgftt1Ak0uBVHjapJ8gJPgLVgUmwdqoDwaFYpCFFxpQ==
+X-Received: by 2002:a05:6402:4307:b0:615:77cf:782e with SMTP id 4fb4d7f45d1cf-61d26d80521mr2521515a12.25.1756593026831;
+        Sat, 30 Aug 2025 15:30:26 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc214bacsm4314351a12.16.2025.08.30.15.30.25
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 30 Aug 2025 15:30:25 -0700 (PDT)
+Date: Sat, 30 Aug 2025 22:30:24 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+Cc: akpm@linux-foundation.org, richard.weiyang@gmail.com,
+	Liam.Howlett@oracle.com, davem@davemloft.net, david@redhat.com,
+	edumazet@google.com, gnoack@google.com, horms@kernel.org,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org, lorenzo.stoakes@oracle.com,
+	mhocko@suse.com, mic@digikod.net, ming.lei@redhat.com,
+	pabeni@redhat.com, rppt@kernel.org, shuah@kernel.org,
+	skhan@linuxfoundation.org, surenb@google.com, vbabka@suse.cz
+Subject: Re: [PATCH v2 1/2] selftests: Centralize include path for
+ kselftest.h and kselftest_harness.h
+Message-ID: <20250830223024.sgkgnupykrif2v6f@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250827144733.82277-1-reddybalavignesh9979@gmail.com>
+ <20250830163949.20952-1-reddybalavignesh9979@gmail.com>
+ <20250830163949.20952-2-reddybalavignesh9979@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CF50E40009
-X-Stat-Signature: st9nn4p4y9yppz6gwprc984s3mzftdfp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250830163949.20952-2-reddybalavignesh9979@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: 3865sey7gaptck11cg8fpzbsce4kyadg
 X-Rspam-User: 
-X-HE-Tag: 1756586805-683788
-X-HE-Meta: U2FsdGVkX186Hz2CV5e3h/YF85NcCFc4U32jtFF4C/gd/p6d05bYEzwrBMBdgNAg0JS6eVarJ5CYdLhEDiyoQJVDpoV13mwP8iSzSZpYdWvqJdA7lpw6oQ8ZVSsyEy8g9bqtjNgG0jSqU5JZGvMFcJkUGBMwNQ2zCN/HYv4Iz4U2lnLgkTcBXqsev8MrS/Tf/nyIKYJqcahaUEQLb4hMpMyd77D1lT6OCH4rl97V4LC8eBrYbDjSqk3ikoZs7HQ0sC4BM5jzOmPnSVYilbz79OQNNpU/78Ewp4Z/wdae1iEL79sc2bBMdKmo3A/WZtsRgSucDUS3ThLrwQWNI6PuM0XZVo0gDN7Lk7oDuyI2naOntcj+3/jAiOL9VGojo2EsncGzqS6tSc4d7Hoxly6QRNQYXJdVPM0PBHu2+yZPwvUtnLqCEPWMiuTEvYNmfa3q9XjrS2Mo0hJlX5kFYi3ylfDYfDfAewumbULROTwi4vqRRULJa7yLYIgzRkkALJBD4OgWjsxb1cW7jL8YF4NQC3beKx+OUiTdb3wHMqkCYQrcO/di0m58d5AYTr0uG1ljMxlI/JWDoheop8gOQUmXVxjklZ1yc/aEsN7f3K3gnyjolvMiPj3Sev8tT17fo9En7RwJyaQQ8lkS4JQM4ppjNf4jaN7/DCsnzW9/sflPKYR45//9OAhVuf6/S0xo8d+aL4rGISKoehKYR0gAvwVtxmsi14OUvyXGDFF/eS+b6jmgka2GwKyYXpxn3EMQrPO4M9o9F1ovmWj8dKmGPGsis89b4u4nEKXjpnR2TBSrzkKZ8XsYDQwK29fgRUYzvdXVDrbTiKVInVL2J7FaVtULZaQnsps9GWaSmxT+i9L2dluiwDG06giwORCWQrB7KIaAedMPD9hRBB7ZHajAn3jD3IktF89OuIvC95TNIgYx+sTaJ2ik9/BAisoTeSie4ag76AvllmBODdYoNH5yfOr
- FUeRfP2z
- Lz/CvePk6v9GDrknp+ElTTgm/NMmrRt4ZIIW1hA714IqHpHNp8u8V1I+m4BsulW4XSYZVxuRF1rFHH9BvOdTE9z2J6tACbKcuZ6AjQy5InEzvA4ahHJRw/QyGhxiRrKJwKG0Z+PGMX1T9lPieH1/FIKRWmrn6MgzOwEYRfHuACyLFaPcbvSVaYe2mMtn9gzq7DHguJz41/f14dGm4F67O0yUSLd2xvQfqxtf5PnqbCAO3HOUe7G6CQ5D1lK6X4AXslejsGnHOjk5C8nqmWjzLq19wP+Obz/7ujIoUnbeipoquBVEDE3hDDhNT0o5BDVPtJdzz4gySK2C7K5nGn4Tc/tFlA+yZOFInEtUcEWZN82dOYInpcO21HmBcaEmaUQBISxB5cE0jjyUBHNg=
+X-Rspamd-Queue-Id: 9B8EA1C0009
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756593028-95593
+X-HE-Meta: U2FsdGVkX1+egaRxM8NadGYLBp09UbvZTrjYwSJp+/ff10h8V/7+6lmwhq/HcusTAsdEEGZzzbvZn8YiVWwkzqiDnbtRcFDieMFVmH3qyvhi2u8XTO5LYE5OzTFP4l6hGpw/GKX8o0/rVV/mI73tY4hZczS80jkPl1JupY/0cWcx4mXae11gFal7SMp0ocidXOgBhNX5L8Gcrzm/gR+SmiN1W4Z3JU15f+8cDSy8LYdmkLuIRIjPwaTr8nfoOpRzC0Hpg4GeXjPf93KChtTWvBvRfQNuOrfTNs3+IpXVUQ04I0AU8UwBvMICzjZp4k8ZWD8Wv3IkkxCwumrycYejDo3PaTK+TejGA0jvCu3x3mbDnaQj22U3JBFV1VxEchY9Ztj1vrsmQDs3arWKcF2ew8ZmPK9AjpANv5YO3r3xQAmXP4W7eU6VLEkfeSs+l3/jn1wsOrWsb7v83oVDBCOEHOWz7zThnfQcS91S1dGNV8lsWwoWxp4sT72RJMeC8yxxaaXhjiC8HXs2sz9xAANW8vrzDrZMPIieMlBMASHMTL6pZH4cb6VPZnAqQLjr4EkJcS3h9t5Y5j/5mQXwJ+mnfeeXaFIM1uFoTGxXSFMSNN+68upfZLujId04SokaoEQtNHmBn+xgJunICVC3wFJTrWB9yXee9mrCUqNgBHb5PjcQNnba/yDNcw0HpOH4TXnmHVU6n5P+DB0L1ezMtCy/WLMGWXHNGj75QzsyGxgGGmo3WHrjFNzCHldf4wFmAx3odYoCCul+1wqyHPVLxG8g8zBrazR16VE5tP9FsObCAN/69Gt68c1l/eedwzI/Y9ivAsQi27SOZJ7kEpggxyY/HOw6lI9llw1/1VGpW1kfLyb7M3Sfw7Lisy9ZYrGXwmOnfPNzX5wZyt05b0eHb1khaWkeo/v9fLfCkd7LliFCpLhhJpxQuNpDEotXPNldgl2RkqePkZRNcegzaOHzTFx
+ YwUSEJyJ
+ 10/EhaD0lLJbh81YPaNqAgR8aeZhMZYJgqQWy/PCsklcvt8Cg/NexsO5g0NmtC2cI1F0iiW37s1H8EquE71X/eN79qt7KfujObKRbB1322HNNyJ+Tqyr6vAGIoYb2lFfbvK3aaxK2PWlPBO3VusfoRjIcHnbnRIMXe3RNtE9G8AIwAGJxA0/ODNBP8Vmbh4tzyAcQO2l93u5C5yhJ13/MKKuPfIlzU3FGKuZMhdUFAGOlrPxoNhK2e8FzHvxxuTdP+1WVnNpyQcn3qZuvl70S5J/zyGk+F9pC3ySuXM6/xRXQCiDAfa7DlzeOhfO2M82/FZAgfYZbnZyIqAUJrah9RGY64I2Fm0z5+qmDrCF3cBn/XeZF+dIC77JOIrZ8xjZnF0fJBP9WXFViI/B+CSxK5OsbQp+VXokna8/Gdk1jccXvaXbNsvtcopdr18LB5cG/i7zioAv9lxsczOvwQ4m1t2TIZ0U9s+AZPPsZPdPpK/bcpTpMc8CjMeLLU8SU51+27+MRd13BPG5+4891h/VSduDEN0AM6/zj4TFIkArVXd5wVDlEErLvRL7Dz31ebOrh87+II53EDDexzSn6fqv4+GMb0uxcJL+DViQqeFoD2xPbaJogP2Lx9izqletjXirQKO5oE9OaS+m02W44RrLFKwEtdXIZl/ZerNlcpWdSX9l/4prwFEJLjkWVdL5TslYlnt1vEVUPzQu3U87Zs2UdBqSulg/BgnfPfjxkGjyUBblXI1x5ekdc7DDwc3FIrLeM8BbNzXXio6Vz+dN9yxJSNaXm6VjZV2cIYYsOGjFon2mpjk93vOnB60IfJp16chHBxKaS9AuH5IddRWmVtw+SUpOuoCoMnq7pJ+w7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,54 +130,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Em Fri, 29 Aug 2025 14:55:22 +0700
-Bagas Sanjaya <bagasdotme@gmail.com> escreveu:
+On Sat, Aug 30, 2025 at 10:09:48PM +0530, Bala-Vignesh-Reddy wrote:
+>Add compile flag in lib.mk, to include the selftest/
+>directory while building.
+>
+>Suggested-by: Wei Yang <richard.weiyang@gmail.com>
+>
+>Signed-off-by: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
 
-> ASoC codec and platform driver docs contain reference to writing ALSA
-> driver docs, as an external link. Use :doc: directive for the job
-> instead.
-> 
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
->  Documentation/sound/soc/codec.rst    | 4 ++--
->  Documentation/sound/soc/platform.rst | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/sound/soc/codec.rst b/Documentation/sound/soc/codec.rst
-> index af973c4cac9309..b9d87a4f929b5d 100644
-> --- a/Documentation/sound/soc/codec.rst
-> +++ b/Documentation/sound/soc/codec.rst
-> @@ -131,8 +131,8 @@ The codec driver also supports the following ALSA PCM operations:-
->  	int (*prepare)(struct snd_pcm_substream *);
->    };
->  
-> -Please refer to the ALSA driver PCM documentation for details.
-> -https://www.kernel.org/doc/html/latest/sound/kernel-api/writing-an-alsa-driver.html
-> +Please refer to the :doc:`ALSA driver PCM documentation
-> +<../kernel-api/writing-an-alsa-driver>` for details.
->  
->  
->  DAPM description
-> diff --git a/Documentation/sound/soc/platform.rst b/Documentation/sound/soc/platform.rst
-> index 7036630eaf016c..bd21d0a4dd9b0b 100644
-> --- a/Documentation/sound/soc/platform.rst
-> +++ b/Documentation/sound/soc/platform.rst
-> @@ -45,8 +45,8 @@ snd_soc_component_driver:-
->  	...
->    };
->  
-> -Please refer to the ALSA driver documentation for details of audio DMA.
-> -https://www.kernel.org/doc/html/latest/sound/kernel-api/writing-an-alsa-driver.html
-> +Please refer to the :doc:`ALSA driver documentation
-> +<../kernel-api/writing-an-alsa-driver>` for details of audio DMA.
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-Don't use relative paths for :doc:. They don't work well, specially
-when one uses SPHINXDIRS.
-
-The best is o use Documentation/kernel-api/writing-an-alsa-driver.rst
-and let automarkup figure it out. As we have a checker, broken
-references generate warnings at build time.
-
-Regards,
-Mauro
+-- 
+Wei Yang
+Help you, Help me
 
