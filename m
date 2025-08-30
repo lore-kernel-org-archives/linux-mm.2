@@ -4,118 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6017ECA0FF9
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E99CA0FF9
+	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 02:31:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8DD626B0022; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
+	id 4BB196B0026; Fri, 29 Aug 2025 22:31:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B4A96B0023; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
+	id 46BFE6B0029; Fri, 29 Aug 2025 22:31:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F19B6B0026; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
+	id 3A8E56B002A; Fri, 29 Aug 2025 22:31:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D9F36B0022
-	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:15:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E785D85A03
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:15:11 +0000 (UTC)
-X-FDA: 83831806422.01.7428D34
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EA72D40002
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:15:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QUW3s+Uf;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 276656B0026
+	for <linux-mm@kvack.org>; Fri, 29 Aug 2025 22:31:42 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B6816119C7B
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:31:41 +0000 (UTC)
+X-FDA: 83831848002.09.EBC3250
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0DF8740002
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 02:31:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=i8FUGNnZ;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756520110;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IbW8yA03bKLcMTZU8xuLw+CaeqZfBLjJOer3Kg/k+e0=;
-	b=VYVNABvNMHpPC54FjvpgkGEK4giiiniamxQrwo2Mhs47wfH4xVSY0nD7N3eCPRqwEQKjIw
-	IS3fVKJSR502PgOtLflibrfF+fwoD6ph6EuP0zcGGWGhPk1V1O0mQdYPiCHQ4TQBjqls4f
-	wrBdRtdSuppAyiLDkyasPpNtBnJPnBo=
+	s=arc-20220608; t=1756521100;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=8aGXXFM8I2ro06weOG3Bjb7Vl3YlyKeRZk613DsglMg=;
+	b=53RB3imLBynoq3GhcycVSQ1Q9UJM/1lt6p1aH9oD3x4INiwQo2XAQcjMSa6Gs7BbfZntau
+	eSJBT0tQHa55Mvh4H+g1b9JlGYzAaM4jhRnQL39Xl8ubqB8m2GcO1EsU/xL23O8QSWAzPJ
+	8qTdCYbpVYUrz3j20JuMuj2NgdlPGh0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QUW3s+Uf;
-	spf=pass (imf12.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=i8FUGNnZ;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756520110; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756521100; a=rsa-sha256;
 	cv=none;
-	b=26MS9wimiWLQzEdRzVgqhzJD3XJyP3MtMhJ1TbVvAZoLjVqNstvY1v4Vd2b3XMFp16Lh9t
-	/xzWddtTC78vxqCPPthLt1cfmakqdGtsTOPa0apx/bjvpN49tjB+eekmW2ynbTKl6A/dQn
-	YCnE7z73yTsQuTEj5gXi5GFljl9LCQM=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45b77f59bd8so13650115e9.0
-        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:15:09 -0700 (PDT)
+	b=qy8PW+wZ0zGnhdzhkHcCzI7p0j9bdffwS/z0XqXBz8fTuVuKhEOhWaz1kuU/uLELnnJcRP
+	WXzQOxtrnmcFcYUw9gv6Ry7B7R+PiCxDRGg1b8zUd+r2fyEY+GD+RdbRdV2FVU0EDq/R4D
+	1vtkjQF8Y9EiCLhOqdi2t0kkvaNtl+E=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afcb72d51dcso398596666b.0
+        for <linux-mm@kvack.org>; Fri, 29 Aug 2025 19:31:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756520108; x=1757124908; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756521098; x=1757125898; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IbW8yA03bKLcMTZU8xuLw+CaeqZfBLjJOer3Kg/k+e0=;
-        b=QUW3s+Uf8VO0VWjy+kA5jTD7maze27nSltYCarQZNxGfeUn8Lm7GPoRqlXW2ij3Hr6
-         v5nWpU4kLZ+RSyxZQHVt93vf8ZfTJLvhDPlBT8s9guOllQCcpAHOFvhrKGZI47V0Vm1X
-         RMjXzUHWDzX0SaJp5VAE4IIbf8OlEuXT+32VKk+PZ2xv2ZSiELgclm8JLLsOYfK+G3mQ
-         /tEhTDGg57bENXwi+coyoHkGT6BBB1G1Viezix9lr1TsNtL5SEGhlnFy/YFJWocMsd8+
-         tSgIS1SQJx/vFotfaAXiXntgJUfNhyWYfb2+ndMvll/1QuT20nh8iZB8C+cpdJebMVeX
-         exkQ==
+        bh=8aGXXFM8I2ro06weOG3Bjb7Vl3YlyKeRZk613DsglMg=;
+        b=i8FUGNnZbG5BhLRuWKkP0n6i2LIh493fRadNVzJr3DLVH7SRYhRJdYTD5zow/o+vT2
+         OwyKEQjzOctxikmc6aRmBFZy/35O2ZjQfU1Za3q9E+ONlXNGpzePcttPsQoQmLrVOCPC
+         fKFtuYC14rO4QsgQiA6JK89C6iM5Hquw5HLf23MrEDWuk+Nj6Ct0+fE174IqJtODKD0c
+         xJB+8bTb98siV3yhRjZKMrbF+XElp+q2vfR8Dt0O4cPiBflN9lZLXEev3+eCKnJ80yvb
+         JWczD+ymNAB4v5/IGElYFMrZHUE6MHevWqNKQVRwRsW6rFsC8Y+LR/1RkvV2uRMX/QyD
+         i2Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756520108; x=1757124908;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IbW8yA03bKLcMTZU8xuLw+CaeqZfBLjJOer3Kg/k+e0=;
-        b=CzNEVmqvad6N5mhGZWIFQ5LoEvEnq/7M7IHItxczZD81x0f4c4NVhDlKN3lZZEkn+m
-         y6D+fEFksQD5+7AVrWgWHBgJI2OpCuO+qAah2TIMDffYCXxrC4Wo9DJRU0ZWwr9pLbI2
-         UP0obSbAkCnyLZo760OUkQ/QwXOed/8gNZB2hhxj2kNoXb/i0LokTzLXqlCgsJCaaEnD
-         qqKIMYK0f0aupsi4c8jP210go6WnMrfwd1Ar4bcPGIBzA6544dEOyz/dQClGmsd6l62O
-         wGXHXhC/VDPPCl2cc7TlCh/PqPTcu3fdztuk5gh/Cy63h4HjIAvtweORcvIidL+jkZP5
-         e2HA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3vG+gYqq/ueCrdiaaLsHKQJpGwm0ShdYryT+xG1Fs1dOi8p+7Y4hXvJNV6DsIwvEAqSjNXQo2dA==@kvack.org
-X-Gm-Message-State: AOJu0YzQRvRx8rYvg6kkWbCt/hLNmq0DPSzNhg1hw4qMy/XxSziW+Sek
-	TaPqspn0BoG1Ay41NMplDTnkELzbbp2zKBTNP+LcAib2ykvPhn5gPOiQ
-X-Gm-Gg: ASbGnctbr+3e7DMPbuxSzvpJzHfkuETyZh9MV76pvvMXOJotuLMwHJDrGOjqAtHZjaQ
-	UirqKn0n75hsMh7BpNSqKUYrG2sZqk69WjiYje2WsnAZnI8hKCfzF5PWmNE8pkRrXiCUON/DZwL
-	4mP4GK+1GOAQTT0TiN/I8BC7K8SG0RrtkkBQ4BUf+865A+JluwskxKkaTa6PS+8HV6u+LjdnihZ
-	I5vF85P/27h/yCXVDNcDloYDbA9MCCJs/btSyfSO/guejgk2DWxTw8E/SkJ6/ykdCGxZz2cW+sm
-	5yF0hYi0S1F3TKkSUeXXIstITWUkw2azARhugTxr3hsqVdrHdam1t24lFMNRPmY268AiJpwv1VY
-	rg2D5Kz1dBnO8qwzfOKGQBKLRiw==
-X-Google-Smtp-Source: AGHT+IEZ2xFlU2ogeDVnDCaG1GcpwFQhH4uXS3OA3m8V+IApCgexhyPxGxyko+OJwospCM8rYhx31w==
-X-Received: by 2002:a5d:64ee:0:b0:3d1:abf7:e1d3 with SMTP id ffacd0b85a97d-3d1b1aef463mr566337f8f.20.1756520108168;
-        Fri, 29 Aug 2025 19:15:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756521098; x=1757125898;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8aGXXFM8I2ro06weOG3Bjb7Vl3YlyKeRZk613DsglMg=;
+        b=AqXAyZKd90BSD4zlciynjgHyxE0E/ZDnEphvTcEFUbx/Wu+r8Wdvf/mli3HC6C6iGw
+         /cxYQQNtGTcQcDkhIo6lwfVjdGtANrtuNg8PdsS2iUThYVVDIbc0lHeB7Up6Tfho5GuJ
+         bhTe32OgX2uVVQ+EkzKs0s2ho4Us8M3lWt04OjFxKRRK9AFFyXVwUld0xos/LGatgtP9
+         Xr/7C5lwYMWu/FT07NQMfEyGE13QIAbPnDuUnr5pKlSt7lE5n3jD9k+dB8AKHHVrmvRi
+         AkNPnyTsI9pHEL4nZ7YP55XWiMHhsIsT+JBD483kgUYGRI/c7cTL/K5n49lmmPYS6qS7
+         vJXQ==
+X-Gm-Message-State: AOJu0YxePnqTWtxgZ9wos84ghOA5NCTc7sQtdVrcOvUlVQOssyWxvbxb
+	GcLPvA46mCQb2DMjqKp3DNQM/ROwIhhNRQ3m/PjmfhUVQF7a7dL9TzYf
+X-Gm-Gg: ASbGncsw0QbaqS4u9r5qMjcrljeAwAFWF2gN91IMiInYeCgDhy/ZraPfXFD/R/Nngeu
+	cTvSp8LdIo9GlNwFbdHqIxAYHxxhgrq9Kz2fCZVpHXlJu1QQ1xWBVPhTywbCsI+o1ODP8cUWwHe
+	pd3d4peecHuEft0W82TkyS91RprqER/HcTGeSmi4P1yYZhtN2uEKkMJWacpYGj0Gm8r8QTY2ViL
+	FM8jmKtk3VpjBHfl8yw8wI1zYPXkWX1ErOwdznigMgLt335o7n0Le/bGmW/XWKfxdWjTb//TY8c
+	OXo0gQi6HC+sP7wxkLynlBCyeCbwZfpi2InT9WnYWa4FqdDGr5UOg7rWSbehftcqJxxjV5e2gEI
+	CH5ix3e7+OPUaKStCnwiAplfYIw==
+X-Google-Smtp-Source: AGHT+IEcG/Nz2DmWzxZFbED+CA68DsmCKn2JGjG4o8z1waVfBDDUrhiW98uMhJp3Uel99HOsAPYJwQ==
+X-Received: by 2002:a17:907:1c01:b0:adb:45eb:7d0b with SMTP id a640c23a62f3a-b01d8a73360mr67095866b.15.1756521098386;
+        Fri, 29 Aug 2025 19:31:38 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fb9cebsm5308064f8f.46.2025.08.29.19.15.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcc2bd8esm321428466b.85.2025.08.29.19.31.37
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 29 Aug 2025 19:15:07 -0700 (PDT)
-Date: Sat, 30 Aug 2025 02:15:06 +0000
+        Fri, 29 Aug 2025 19:31:38 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH] mm/page_alloc: find_large_buddy() from start_pfn aligned
- order
-Message-ID: <20250830021506.q34jktg64h74hux7@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250828091618.7869-1-richard.weiyang@gmail.com>
- <489045AD-70D6-4167-843D-50A8DD19870B@nvidia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <489045AD-70D6-4167-843D-50A8DD19870B@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: qo8yj5mqh1e8jqybfix3mcmfwu1pyoq8
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [PATCH] selftests/mm: directly add pagesize instead of increase until page size
+Date: Sat, 30 Aug 2025 02:31:02 +0000
+Message-Id: <20250830023102.14981-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0DF8740002
+X-Stat-Signature: rn4ksqq3t7jten1ix4m5mjrf1bus1xkc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EA72D40002
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756520109-783741
-X-HE-Meta: U2FsdGVkX1+2/RBQ78E0g0MV28Ft8bNt2AR3/1RUGG60v9XuQQ2HlzNXGQGuSB5K/sK+Fl6ge+g6g5JgfHbTeshG5Kwwv3JeziPxjwAchFgC/kODYPkjRa5qfq3XmRunawMY4DxHEjjqWox48aAZwzYm92LLM6OtcMfWJ5l1kf2eIne3EzuMQwIQir9lzBhXl5ClT2i+rTrbW/XpdUbRV3d/QjWPymjTLnWPOAJ0U6pPrFIStE7y3ID5RrWTSuH8RcRC09hJbnGNmT0+z09oLFOMnBgYOMf8HPV4wyheIgH3URsWH+eHGHn7gQ49fJIubYNzGWmof+MI5dxW1nFzsSfizqLtsavvNR9ysRpYVUbnVcKWEJNW88dppAtHASE9NgOmW94OxJfLP0nlMXo+t0hmRop+XKhNFZamEzRkaU2/isvP346//e1Ija5Z13cHV1GdkS/Tp9H4qeQfbqP4fllhUJZZ3U93Z/OQdE9pXmYvko4j82tGqGSWNpEzhzqF0iAUUiIQS8p7msHLdXegn10LBObEhDVQ3vhBad3C8/Yq28VMDCGP3qnPOkYKIUSaLHY9pnkF4NIgV38pVZGb5tjlXKKcPdiAEYWrkX0DYLOfRpsh+BTUWP40jPpmYXe1WEPh+TlVt0LquH8SIh0k+G2u43QLhaTKF2U+4j6N9ckHVR1U1/35vd/8eKTqhL/kdr6ijYW9YSNrORT3ktNcoyxUBWDMQqohUcdtN8yP6w88WPqmDHrIQwnfhthGF3ugnJT/V67CmIwWgy9QNb5iXAReAMwH+CXfn2TFg11XzXrUlKRvLF2nXPvxSz0r39TvhqqB2Ozr4OrDRjKsyOHgYecyoum5GYOHveV1zYOOzli8kxRfSSnTTeD8u5ZzfI+x2iBS99DiUsYxqSv4Dl6Y/Vo1shUEpfWnlE2AtZ6DtWeTBAlwzbcadIQsiE1oInpLNHKkZdxx8YOXo0rvhTY
- jEINSwHC
- ljz86KMWCcnnIyFjX+M5okQnWyhwZ4TcFFq4/5HpAXFTtX8tsdg3aqUG1e9Qj8aMdzGVA34de8MODTgPU+3P2PClNUpqFp5lRKhWaI3e/r18XzF8ej7rsoJrX5f1/SETt3S3fQEX+5EP8BTft2QjiIzXbUfkmen2Kb4O4uduew+hP5AVwSnjtV2G/7rjd4xkQkXNYIot6CqNtccYv3b3+N8zCWmZ+YsKnjbs4wGoEknDieGcQvXvgMCE7db/KjqS7pA2/2XBz7HqlimAq6iv4t/a6C4ipXh5YWGdme7mSL0aTzVygAs83BPKC4ZkN9IgCrg7scpTbhzeXwD0LBWLYQKHuz7vWSn28F/gYmGrlVMpkmYKqaSlTv60FECQzuM3vDU0xiWlziVCYDcrYsycB4WFKUmx63JH1C2Co303RSjcg+4r/QD7x1ObTu+HQrUGmkm/auJXnBXFErMQ1JcLr4tTjTkinORqAC31i3KZA8gOxsXy7n+aHoPcdwRFgFQIMUJyTI1/v34oxWKdKjF2rJHynEn9a8thWx0XqfpdRKJtZwZznjcRVgY5f+9+X6V05TWi+8ALZH2N/vN18DXXQxpgFhUFZaPYvXChMybfjLRTKqpoP7qQNttg74X35uoD5wEHHFF58ys2TzOhUn23gkSYvlTs4T685D3N61il8yCYCgKMENsXGNDlKPNZ5wa+YOekr7Q9DbDiKiQjG7YKzuLBDdUcy1sjFBepTci2CxOGuDwWWc7faHzw70w==
+X-HE-Tag: 1756521099-522766
+X-HE-Meta: U2FsdGVkX1/S+O1fvipWspFKPTILjerGh/aG+IaW3F3kTpwtsqfbNRIuLaHIRcof4Uc5YoePYbghv5MeIX/ixwrH0Q+wjXz0W7f9/E4NKJUth+u3dqMIOMMpXXHbYezPvBWpANjPCcwL7bmgWUln7BfwjL4hLmcn/leBksAEvZUYysTEbEE8FjPk807FatGM+Q7hWsl82wvZTLX0DYUen4khLxlD3xxFyL/GNjzJcnaRg99nNTC++IFBixHJ1WdHd/nSR/k64a5MTqbX/s0CwwHzo2cJDDuMvtW7B6Z4LqWoClqDJy7E/KjlMX4tzL48YecdZksXEaaW7ikFLGFYkjDAjoopzV2ZBGZKKwzRHU2cJlL3DaLsaxrS8/kcHryzgsQxHQFYBWtDKfpizP7JmUt/ua8D+TD6dDvTsfsRvYApIwX791HRTM1aK2hr8rgpyEg4eSBskrinEHNjRQwy6wQmZb+9eA9D8/T0FqoWDUBSsU1e2n7OmwtyHpaY7T80/9+hOAsIjIo3e5AHN+Yul2IeHrDXo9KymFxb9wq9vrgPGkY+BVc/k5KtqsmkWpENVbHL2faI6GSCs425Q5No1wQmJ2/C5mzbGoWgbJEzkSsJdClfbAJOtYbl6l7/Z8zGkjrP56nX3EE1JscLOuDnEKxZgs8F7XkyYApBC6+SjdwUdfMmu5ZnHvVN9TEyI/vy/H+Y8u/Fku8G1wee+by/YL3kHlVntIpygpBiXDeKdo5zHHedOJ050E4+q5oVdJMDkz5CsJMFNJTsKANZrL9tzI6BtMzm9dU0juvDKNhyHyizCbEXefjuiW+RFXUq2AjQWdMPTGEdRZkDTIA0MO4WqMe4Mf1+1juWDmFeazJSx7WWQMGVpSyiu6t8T9ax5hMdHGNrg+XbIGETCe/UKTTyRJXR4V9AsWf5D3AO7QUsnoaY7BN/6o5uiBqNK/IN8/N9w9oZAJx+YVwutoLpqqN
+ z/oL4Oun
+ +6RTjeuTJEg6fC/8rR7jJTV0v8xmoJkCrfIo3Rn2Ao06GdpbY2JqrwkbfzAJH11+ObTFWTVZu/++LrwTgE9HSXmvn2DsHe/yRhGyzZ06goLejcWZ1j9ZUEExzQu4IQYpFTOOckhKo7LJoPGrjRuy8hYvKIE+m74lCSkll67m3Wy+w2dPypqCmzD5UTMCEjXJBb9CvZWK7kZMvk95KSDEI9G7506QQGtDxiibXGN0QFSLYbEH147Ltb0qtMGbXghZf69/Hk1qXbt+ER9fZqOnZvubI9b4QbO+KQSZv7uDxpeWfHR175fpvb9kBqQd04qIEPYNjcRZQVmRT1WOEMI2hyOLfUT1WGhMavYW765VQ9FyXin3EzX7QWeC4J8lm43vQgwn3FcahGd9yl+FrThw9phDU0Mcp6izl6HSF3A7ZpWEepS9NUzQt5UYNqiaL92mfsZ1RRdpcbbhhUDsfVPEKd5RwyLuqaT1tnvN+jYlalFx4vvbNGE8bdE10ykEMqL/vwDRgAcEqsxRTIeY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,30 +115,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 11:02:33PM -0400, Zi Yan wrote:
-[...]
->
->BTW, I also notice that when start_pfn is an order-0 PageBuddy, the
->"if (pfn + (1 << buddy_order(page)) > start_pfn)" check below would be true
->even if there is no buddy straddles start_pfn, although "return pfn"
->gives the same results as "return start_pfn" (no straddle). The original
->code before the addition of find_large_buddy() (commit fd919a85cd55 ("mm:
->page_isolation: prepare for hygienic freelists")) checks start_pfn == pfn
->before the straddle check, so the correct code should check start_pfn == pfn
->and return early. But since current code is functionally equivalent.
->Maybe adding a comment about it would be sufficient. Something like:
->
->When the found buddy order is 0, the check would give false positive,
->but the returned result is still correct, since pfn is the same as start_pfn.
+The check of is_backed_by_folio() is done on each page.
 
-Hm... found another thing.
+Directly move pointer to next page instead of increase one and check if
+it is page size aligned.
 
-In __move_freepages_block_isolate(), when checking "We're the starting block
-of a large buddy", variable "page" may not be the large buddy page we found
-from find_large_buddy(). Since prep_move_freepages_block() set start_pfn to
-pageblock_start_pfn(page_to_pfn(page)), which may be different. 
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+---
+ tools/testing/selftests/mm/split_huge_page_test.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 10ae65ea032f..7f7016ba4054 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -423,9 +423,8 @@ static void split_pte_mapped_thp(void)
+ 
+ 	/* smap does not show THPs after mremap, use kpageflags instead */
+ 	thp_size = 0;
+-	for (i = 0; i < pagesize * 4; i++)
+-		if (i % pagesize == 0 &&
+-		    is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
++	for (i = 0; i < pagesize * 4; i += pagesize)
++		if (is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
+ 			thp_size++;
+ 
+ 	if (thp_size != 4)
 -- 
-Wei Yang
-Help you, Help me
+2.34.1
+
 
