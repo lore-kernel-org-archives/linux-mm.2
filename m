@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E118CA0FF2
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:40:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FDC3CA0FF2
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:40:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 216958E000E; Sun, 31 Aug 2025 05:39:48 -0400 (EDT)
+	id 041A48E000F; Sun, 31 Aug 2025 05:39:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12BDA8E0001; Sun, 31 Aug 2025 05:39:48 -0400 (EDT)
+	id F3A2B8E0001; Sun, 31 Aug 2025 05:39:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E97B78E000E; Sun, 31 Aug 2025 05:39:47 -0400 (EDT)
+	id E1CB38E000F; Sun, 31 Aug 2025 05:39:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB8098E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:39:47 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 91DE81A03CF
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:47 +0000 (UTC)
-X-FDA: 83836555614.14.DA8A6B1
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A7A25160004
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:45 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b="U1/FzMZ4";
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf08.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756633185; a=rsa-sha256;
-	cv=none;
-	b=6xycimmIq8PNNwrflOqO9DtyzBGpCRB29hZTH2lYZruCS5WklPy4APhzsGj8Tkbp1DmQRh
-	tBEbyq31PxWwOzXaTnKvrRA5z4VzDqzGvWrnrT9zK+EbIRM7tzUnBhfFfmnOIrM4TMqNcN
-	7JeBAPCZgVO6Xe0R+pP4O84skEDg5hA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b="U1/FzMZ4";
-	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf08.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C564F8E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:39:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8779EC03EB
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:48 +0000 (UTC)
+X-FDA: 83836555656.24.C17490E
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A3FB11C0005
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b="Jwy/SIel";
+	spf=pass (imf20.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756633185;
+	s=arc-20220608; t=1756633186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EbQrHBJ8z81uwew1vi+7yRgIBMEBSVZY4WcnSS+Eg3g=;
-	b=FLe1NDf94QoiovSALdYxWrLtBVeCoXfEzmZBnmnU8xZuh7ntZo9dUDAxWk2s8vSLpd+ZVI
-	8ETkyqNawuYy51EuRjGgC4SmLq6y5pHNlLfUiauwYk+yVyv90d1aJFiGM3f0h/GDuGo6Ms
-	heXoSoKjiJQL/xIIt7GA4RkJivz154k=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b040df389easo124548866b.3
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:39:45 -0700 (PDT)
+	bh=rG8qInwJ7HC+M9uFXGeO7jifDwFcNxLl5I1yIPskFEM=;
+	b=KxSg61ncKKpvsmesuSAcmGojB3Anpgw/jjRFdVWLrpLM9tX23mqoLlMQGWoTFsjY+mkEIo
+	SoF7H7Ng5+MlbWs3RH9U15an95W2cHyVvnJFwt3xDs7PoCZQwsfjIZHfaDvioF2Z99whA/
+	qef0vLyf28/iCYmgShn0mdmuzC4z1qM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b="Jwy/SIel";
+	spf=pass (imf20.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756633186; a=rsa-sha256;
+	cv=none;
+	b=623zemylUJMZo4ertrNJs5bwrJ8Ur+13UW0mEVX/CagD4Pw6fotJgIqGGkiqzdgs6PPlaL
+	ufVwyXxOxeE6lqNednVcyYrBU2BCauLpw6j1F0EV4G45tJSZq0Z88Mb0nKmkQG2WwGk9Xd
+	SjMqeOti/wRAF3fVxexTteukG1AiaAA=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb78fb04cso574156666b.1
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:39:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756633184; x=1757237984; darn=kvack.org;
+        d=ionos.com; s=google; t=1756633185; x=1757237985; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EbQrHBJ8z81uwew1vi+7yRgIBMEBSVZY4WcnSS+Eg3g=;
-        b=U1/FzMZ4/3E4HAMZhkTtdXtDwjnYbBirvKFJ2jAd3VE+9v6O1N9uzD4Q7WjOc4VQBT
-         4jexS2MH+nDJ2h9yzifCAy56Bv78q4nbiQiepJWokLdCDj3XI8eHqHzJe4kLWua6l9RV
-         FrTzd3ZZEVplMZSCwzi2hpe572MAl8WaUnY2/1bJbUgQBgt1cHGlCsIN8MRthd8bwZLv
-         b+zi50Benhos78DdgWAvVctOrqOGr+BHtDSQQ71EnYUYWOeGEvZiOw4KbN1RTqCy/xrR
-         HQj6SXQIGFIx0DVR3s7KsC6osvfgmrQvTrKv3cOYJEopxdx/rvLNVEC1P8tS2MoAgN9n
-         p4qw==
+        bh=rG8qInwJ7HC+M9uFXGeO7jifDwFcNxLl5I1yIPskFEM=;
+        b=Jwy/SIelQkmSNXuKJ0FGHEoKgNbPOQ0cWLYrtf+l1UKG8Ih3LANRp6te5Ysd3UodIn
+         6U1t+JCBLEb4kk+NDuGccBkxxjvckjHblkNcOau1KH9HxDqFa2yIhmqX7efQ6Xb5sPIA
+         4Z1CFB0r7MnE2xCA2mg41B0QcYL4gzvYPDmsIXQm6wUIJHRFAKQDKz7ycHO4H+Bb6l8A
+         ShRPEQE6oUJlarV98acumhnn6EBd3hJZLnhgVMliGANr4WASgscCBVUM6fxTwnqTmhVK
+         n/I/SS+OsW/IiQabi6h9TEqrKbyhwn80GWzwK9d9YQ/vkRvrGN+hCmydXd6r4xJR81wk
+         PEXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756633184; x=1757237984;
+        d=1e100.net; s=20230601; t=1756633185; x=1757237985;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EbQrHBJ8z81uwew1vi+7yRgIBMEBSVZY4WcnSS+Eg3g=;
-        b=uben4tLj15jyIm8UbQwCAMlwehxdwYW8T1EukM8DjOe89JIh263KJB+SQbqn5lx8Ko
-         s4WuWbsJOJh7rfmhLE3j0CRmHiEUQRBHZp1OstazFSryi+wmtNbdlZOy8s2HxarlXQF6
-         SYTa9wOwzIZtqjhAFKaBJZcFHYGhhPkaoPu9oW3d20+WdINOchOKLSJwKBBnwFlrVT8I
-         9jpO3ro8T5IcNOl1RTAsGPhUb5yAC5Jb7aylXIjunUEz4bvKlSnTawhWrjF9Aai9my1t
-         E1DjeO/wbrlQfDIpGuCm6P58oVuQXXyKuxWw5zerVoqn4TpWsQuXETcbdM4y/ul81dMC
-         yV2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX8ltEecbVGPOr9rnHlQoyetL3n0beVpDZguaBdSkyIwly28lzgFPZLDi9t8ojPfdNHGWERCqGiBw==@kvack.org
-X-Gm-Message-State: AOJu0YxLS4WAAyPiBBmudBEvvLbwM39mFouKfuijvevc2V3nLiVdACl9
-	heMD9Ryn8B/qkytjqmX/TvaD2WYg7eFzgPiUJs0Yts/0Uzu7mnBGDXJXZd88TDa1SxM=
-X-Gm-Gg: ASbGncu/wPTRFEwmLTx57tNUl66atm7cOAI9kdHbZ8l54dw8+7FDT+gLgVaBW+WEfvM
-	27ky307BHbuetnA4KcrIEjgxm8dq/fxG638Xrzn/XJ7OPmcWzZKZCZBUnvBoWdM5j+PLbY1pkXn
-	/rNwLjg7a6Uj7OuwyRwyaANtOQzQesCSa0SfF2lNsc1e7nPBycUzfnPtW7QWCP3UndZ15bzg/Aw
-	e/8bRBkMAvhoSy0muDnaLmVOUJxc5CwDzfRCF+LUCrd9ot1DsBQu/v8/7lLxxgpMsav/alw01pu
-	DSTNKNxH3/JrjTvhD7nZKsXYKEqegwX/P0pRQ0mWw5wL1JNO3AniAJABElSJcYokdEe+tqG5C6+
-	y7kFTkxwHON9MJa4qySW3gKDDjpq5Wl00jryJOnYWfzi2CGEmWQXH+T5/yeNwPf5P2YWKtKi2h2
-	IrFsAYy825zGi0cLJOdO6P/rTWlBNxhBMj
-X-Google-Smtp-Source: AGHT+IFxQDWLhxFg2jVKkWwDC8C9a2hu8u5iRtfwJyK9WMd0nF5snRkYBzKz4RD+jCsXIVYHRgz3VA==
-X-Received: by 2002:a17:907:ec16:b0:afe:c2e7:3705 with SMTP id a640c23a62f3a-b01d8c74961mr360813566b.22.1756633184278;
-        Sun, 31 Aug 2025 02:39:44 -0700 (PDT)
+        bh=rG8qInwJ7HC+M9uFXGeO7jifDwFcNxLl5I1yIPskFEM=;
+        b=DWzR86LUHkJ1457+8+gABFtcjRCguR1iMxmkMJrh5YtRLZ1EqN9dHz6y9kdVWOkCb9
+         TmL8z5F8hRBArXy9vaU9Q0Kaledl1o9lLD/WlWTYd2F1GgiYCjb0gYfB6zTYnhpCyCgv
+         DAtamJkiJJgo5oN9mX0p46Ld8LmTE2uOghJzGnLSEWGdEPYB0Fqgjt4iNBSlvpMZas0e
+         /+qg+09PqHLgPTB1cjYzqhDr6YMRO4FfRSi/WE64SFyafnq1GOxuXnSrTML836KMKoYg
+         o44MfN+uzYf3HcI43hQ2FOQKLYu/3Oftn4e0+JZhhv3xlbIrPTOQs2cfpABkcILBkywl
+         3mgg==
+X-Forwarded-Encrypted: i=1; AJvYcCUKUQtMYm9NYL9isoUinRdJVWdZd+8pyd/vIiLp81U4TiImXN/mTey7Xt20whsr31NDM0JZeZUr3g==@kvack.org
+X-Gm-Message-State: AOJu0YyzkucbKiNfKBzv5+CrrVLMJ5G4iFvgMAWeAZDT53pJqB/C6iuN
+	zRvqalex3yOhc9EHIs0MIao0MClEeJ7Kt6WfVg6PJQljFNY7YBPn3gCj2KZI/iWdOMg=
+X-Gm-Gg: ASbGncsWBvNCxBTIxKY6UQ7ecUVzPhBeWg2DtifA+y78uGws+4/HepgxbI9QCdokX1w
+	oZWQy0bau3ks+wB/d4w97rhmngFoMP6bbB742ltawDyXFDZQlEAPc1yZT/gQNu+FxhoWBYKY5ds
+	uSGuR++TwUznKaAyl1+MFmb96GxxuGGO5A5g1fJP4OXuRD79svN8ybYu+/1teJGqE60Bo7AUSE+
+	HOitDcofSxICZcHAMbEUG3NVoglV5C9hI7rD0T+8ZMAbBxSyIDR4d+GdGkRcFT88tKhwn7GZ1h9
+	9DHrLt09RhRvCTzoW8j9YVhsbL3mTuzCieTTEMFWu/mAg84C6IuFov3UYCdIsI64fFypiMNngdX
+	SvNNRO8s+LtNLr5yBgTpEIF49Ey+INnd0ZrstdEd52f1EHyHCg6ASF/vpf29lklTdsywNjKUrqI
+	THx8fwdgDBCMarMAsGbHHFZg==
+X-Google-Smtp-Source: AGHT+IEItZu5qd/uBWt3kniekyRuMwuRZURgEX22zC0t6tG3oVHjRNN/jljliIFQxqA84wsrfCrfkA==
+X-Received: by 2002:a17:906:f586:b0:afe:e744:3058 with SMTP id a640c23a62f3a-b01d976d94dmr412983566b.50.1756633185141;
+        Sun, 31 Aug 2025 02:39:45 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd8656sm597512566b.56.2025.08.31.02.39.43
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd8656sm597512566b.56.2025.08.31.02.39.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 02:39:43 -0700 (PDT)
+        Sun, 31 Aug 2025 02:39:44 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -108,22 +108,22 @@ To: akpm@linux-foundation.org,
 	surenb@google.com,
 	vishal.moola@gmail.com
 Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH v2 09/12] include/mm_types.h: add `const` to several pointer parameters
-Date: Sun, 31 Aug 2025 11:39:15 +0200
-Message-ID: <20250831093918.2815332-10-max.kellermann@ionos.com>
+Subject: [PATCH v2 10/12] include/mm_inline.h: add `const` to lots of pointer parameters
+Date: Sun, 31 Aug 2025 11:39:16 +0200
+Message-ID: <20250831093918.2815332-11-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250831093918.2815332-1-max.kellermann@ionos.com>
 References: <20250831093918.2815332-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A7A25160004
-X-Stat-Signature: 9nmtchk9d53szcpeekyqojedufeb94pf
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A3FB11C0005
+X-Stat-Signature: jeqcarax9smmrjob7qdqfcx6nenoyx5g
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756633185-890382
-X-HE-Meta: U2FsdGVkX1+Iwd8QLZsCGx4+RNuv69l/FXcnYjTAD+7Tc/TbGYMnPuUMLdzO7F3ZU5kG8dZzg2dESta9oU1ZMYH5jF6eUdc3worE91wCqFqHzTPV0e0LyWjtawcOeTXhhbZ2bF6bcJ6912VdDMrYVSuYzqJ8Al/KsmPbde67eVrkjiOEtZ0jlmfVmPQ6BbrrnXgWAdyurNHx/Nj+hzYIRvfdLb3Q9WtLsJJQuhXO71X2F8RgIlVCgDHbC31OCzmRmyiuWd+D07iiU4TiDYGD91Afyr796kjSftrX+yswVsgUSz7ouxbH6xb1Sgl6WzBdGrbeEEpXzxRHlrYn1vLUA3eEpYSK/RiYNoODcVaIrNkGRTE4RqzoAXU7Tzk45BK7hvQMlYPK7HBuJ8v/gcGJ6lStF7lRDJqoXlCdqHNU5moEas2atqZ4A2p8W3bZ/D3J4NCqZievcd4bRo4EPtHrN/qpuoMo91KZb8N3fVixb3UTxJurEQrdaxNONIe1qzXM9598GJp36/a6d4X6o4BoWfQJfOgReYg4yZZXwnWLf8V/eraKqqaR5rnO6lRWyiFtm61nDNGBnlxtKhwopYTQgEOOKXjweDQm9+7DBQA4o6LvwE0MwhmXUMga3lVYX8kv9eXpMciszl+ir9+W8swazlFxFV4fcUOubkaH0iP6CiShURs6mZBMB8NDI/m43Wsf2A0J4lX40h2MZ//TAoEi8FrnIRnrDmCK4R3CNIuGKb03Rux3XAQ8wEwzsA/b3/GpJTO8lNj1RemgiT5o9jJJxh5MnWArmOZoqtzkRjskYt6RpGCdEVtmIgG+PGZ3RQcDr9VcDh3KzDSi3RKvftX31cfSJHJtMswsPcy38hdOFLF8cpwRA1NC2a34Vk6maFAfo31pjoq7a7n4HEssSDcTEYOMoKcEm7r2WdEnoBUuYseoMSksiIyH1I356WXPCnPlY4zTxPWvFYZwLUtjOYE
- CEJ3I7dE
- dZok7n89r8/TBDIYY9JlBQ0idfYhpVmUqqfHog19/pxZ7w0Qk5bMOBF03oFpFhrKVJcs4mx0YorvRBfZyXucNBEeAOb8DaEkp/hynztqwQ+mLqifn4PHEWYOFyYgR8Q+VTkPFC1Fm0ojuoPE2usB1vjSdFFW2AiIhcdTt+SrLLb1SuQcCTMZo8WFqcmzr9emRp5OkWLBbDDiUExIiYy+2uXqmVYEZSe+14P0loUhmAmeJx/D9FY68I1jcj/KD8zZ4iS7ToG3EBtz3z37rv4Gs9pSv2wPgIc5oilvrdqldBtmLw6ybjFuSXvPf3NVVD7YKZMpUt9XwalH26z/CzHzpZMw5L09wvKdgGBB6oidDaS1nQdpnTwALoDSoqVOIk6acj4dJfNT6Srfbpt2b7wOoqXz+frxfGHvma71LXvZ7zretMoqZMAkKsD6kg9VoP1U362SvkiMG/FRXQ9fVnXUU/yK0P0c7ssudqqdwQq0q6vhNKWcdx6OZ4BjUNk152OHcKRg3
+X-HE-Tag: 1756633186-484330
+X-HE-Meta: U2FsdGVkX19O4YWSqmByZvJhhhKGuKGJdxxp3EiS1T3SaWe4KLIwuKOAkxpW6BiDEHZDX2OzZeQKuHwzAK6shMboDrbyQ2UQo2R4XEc5aHp995hfrbFdzTUhEmC8Vpp02XrX1nxM47EHCXkC1rLpG6lOmrWtPSA8ai9CGKZkZtr7fAxPAjOGofX2UFcJRvO4JncvO1N5vDpFY81KKgD2nMa3wiE0N8PYAHL3BrfT+ZzQLCP0l1+FbD6Y1JsjPZumy0CZNNzakx6LA2OKzqtDE7QqrId/XLQQ58xHQKVybUoaD8LIChyadLGj4kQYGJze8N9v8VsI572D/z8TpVJmJrU+Z25oK4N6bLGKqD+RVO85nBGURo7116GLbZ+Tmss3xmp25cnqlqCrllrcxZQNlrt0GoEjO+v2UU8zhMyEI+ScWQ2KBcPe21oSs8mPQJcVk8NwidRglsPRpzd9CoXMlu6ofhgCG4j7QEzZrPsziXHfoz7ItZALqPE0bp205u9L9tBz4qgDJ2J+e3diVjKU9ZHIyqUi2p9G42Zy4l9bilSgRKEI2+LDTMzzqXaz0ubct0fKcKclFWKBh29iIpVSNGwdduurOiZPhaZxijyCKE0AYl69rDaZ5Qgvd0PhFLM1bS7+RkDEVrO8uzslhCbitfmM8SGVbcMcFGYOYkLi9LOrgRtO35aqx9nwreN79FGQejkwDWadG81cYMl/DrLu5l1BONa1frGJmcHPKdK9e3Zh3e+nJVrFTTnu7DCRGRgyQNUydeD/gFMPlDU93We06y3hEGfoN53+Pdbiit5Y/CkbsbmYc0aeZO5/pEyHKj1IEPvFe/QMOtyP1UElZRMiUjI/pN5ness+uW/wKpagxXjwJcdGJKjRk4L4Qf3ZNJoODsZUhy1ojORIDP0rjMZmJba5wkatSXrM/jFDPYrPX4/cf3SPQRzWWui2HUIMkscOwziYanqAs/DZoQWbBOq
+ AqzEdc2z
+ qNDeXSFld6echsbjPvff74oZzmuDbENQ5T1gTkcbJwXfhPkccrY8KOIa4ujwJ+h0zPBc4kyYX1LNQq+5BypPPztqQCevRqUGxUWFw9Wx1JCz2rHd8UHqHoAV4uAPrBfRNGrCyzcs2D3eXCvoRsM2aLNpFzbv/3y17OemIr5nmoEIYsf69gTqftwWhlOCfay/REiGlOqOcil26aGB3/po9TLcoWxDj083EEGRdXkNnS6jQKrpkcMaEgGIjLZJqt3wQgQ5qa25Sh/hh4h3L8ltOQ4OVP9RPeFln/f1uPSDbgEbJ/Uyj8hG2DRH0RtIxe/tp7HJXCAwweU88c9jmtLyBztvkLxgWA25M5a4vYEsXq3/AFgnj/GqAXwhpJDcwxIonIVsqe2HSYn3ZdYXgmjspS4sCLet+GC4q29U+xdl9bdeyHBljunHkVO/s09Z/o11QmHpo4ol/fyLCDKLlkch5zLRtkVDhWi7LXnApeO+Fk7nRKhQ2M3XMIFzRllqUgjG0BgcE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,31 +137,119 @@ For improved const-correctness.
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- include/linux/mm_types.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/mm_inline.h | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index d934a3a5b443..46e27ee14bcf 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -632,7 +632,7 @@ static inline void ptdesc_pmd_pts_dec(struct ptdesc *ptdesc)
- 	atomic_dec(&ptdesc->pt_share_count);
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index 150302b4a905..8c4f6f95ba9f 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -25,7 +25,7 @@
+  * 0 if @folio is a normal anonymous folio, a tmpfs folio or otherwise
+  * ram or swap backed folio.
+  */
+-static inline int folio_is_file_lru(struct folio *folio)
++static inline int folio_is_file_lru(const struct folio *const folio)
+ {
+ 	return !folio_test_swapbacked(folio);
+ }
+@@ -84,7 +84,7 @@ static __always_inline void __folio_clear_lru_flags(struct folio *folio)
+  * Return: The LRU list a folio should be on, as an index
+  * into the array of LRU lists.
+  */
+-static __always_inline enum lru_list folio_lru_list(struct folio *folio)
++static __always_inline enum lru_list folio_lru_list(const struct folio *const folio)
+ {
+ 	enum lru_list lru;
+ 
+@@ -141,7 +141,7 @@ static inline int lru_tier_from_refs(int refs, bool workingset)
+ 	return workingset ? MAX_NR_TIERS - 1 : order_base_2(refs);
  }
  
--static inline int ptdesc_pmd_pts_count(struct ptdesc *ptdesc)
-+static inline int ptdesc_pmd_pts_count(const struct ptdesc *const ptdesc)
+-static inline int folio_lru_refs(struct folio *folio)
++static inline int folio_lru_refs(const struct folio *const folio)
  {
- 	return atomic_read(&ptdesc->pt_share_count);
- }
-@@ -660,7 +660,7 @@ static inline void set_page_private(struct page *page, unsigned long private)
- 	page->private = private;
+ 	unsigned long flags = READ_ONCE(folio->flags.f);
+ 
+@@ -154,14 +154,14 @@ static inline int folio_lru_refs(struct folio *folio)
+ 	return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
  }
  
--static inline void *folio_get_private(struct folio *folio)
-+static inline void *folio_get_private(const struct folio *const folio)
+-static inline int folio_lru_gen(struct folio *folio)
++static inline int folio_lru_gen(const struct folio *folio)
  {
- 	return folio->private;
+ 	unsigned long flags = READ_ONCE(folio->flags.f);
+ 
+ 	return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
  }
+ 
+-static inline bool lru_gen_is_active(struct lruvec *lruvec, int gen)
++static inline bool lru_gen_is_active(const struct lruvec *const lruvec, const int gen)
+ {
+ 	unsigned long max_seq = lruvec->lrugen.max_seq;
+ 
+@@ -217,12 +217,13 @@ static inline void lru_gen_update_size(struct lruvec *lruvec, struct folio *foli
+ 	VM_WARN_ON_ONCE(lru_gen_is_active(lruvec, old_gen) && !lru_gen_is_active(lruvec, new_gen));
+ }
+ 
+-static inline unsigned long lru_gen_folio_seq(struct lruvec *lruvec, struct folio *folio,
++static inline unsigned long lru_gen_folio_seq(const struct lruvec *const lruvec,
++					      const struct folio *const folio,
+ 					      bool reclaiming)
+ {
+ 	int gen;
+ 	int type = folio_is_file_lru(folio);
+-	struct lru_gen_folio *lrugen = &lruvec->lrugen;
++	const struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 
+ 	/*
+ 	 * +-----------------------------------+-----------------------------------+
+@@ -302,7 +303,8 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+ 	return true;
+ }
+ 
+-static inline void folio_migrate_refs(struct folio *new, struct folio *old)
++static inline void folio_migrate_refs(struct folio *const new,
++				      const struct folio *const old)
+ {
+ 	unsigned long refs = READ_ONCE(old->flags.f) & LRU_REFS_MASK;
+ 
+@@ -330,7 +332,7 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+ 	return false;
+ }
+ 
+-static inline void folio_migrate_refs(struct folio *new, struct folio *old)
++static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
+ {
+ 
+ }
+@@ -508,7 +510,7 @@ static inline void dec_tlb_flush_pending(struct mm_struct *mm)
+ 	atomic_dec(&mm->tlb_flush_pending);
+ }
+ 
+-static inline bool mm_tlb_flush_pending(struct mm_struct *mm)
++static inline bool mm_tlb_flush_pending(const struct mm_struct *const mm)
+ {
+ 	/*
+ 	 * Must be called after having acquired the PTL; orders against that
+@@ -521,7 +523,7 @@ static inline bool mm_tlb_flush_pending(struct mm_struct *mm)
+ 	return atomic_read(&mm->tlb_flush_pending);
+ }
+ 
+-static inline bool mm_tlb_flush_nested(struct mm_struct *mm)
++static inline bool mm_tlb_flush_nested(const struct mm_struct *const mm)
+ {
+ 	/*
+ 	 * Similar to mm_tlb_flush_pending(), we must have acquired the PTL
+@@ -605,7 +607,7 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
+ 	return false;
+ }
+ 
+-static inline bool vma_has_recency(struct vm_area_struct *vma)
++static inline bool vma_has_recency(const struct vm_area_struct *const vma)
+ {
+ 	if (vma->vm_flags & (VM_SEQ_READ | VM_RAND_READ))
+ 		return false;
 -- 
 2.47.2
 
