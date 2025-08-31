@@ -4,113 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34D36CA0FF2
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:07:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADB1ACA0EFF
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63B146B0010; Sun, 31 Aug 2025 05:07:45 -0400 (EDT)
+	id 0493A6B0005; Sun, 31 Aug 2025 05:08:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 612646B0011; Sun, 31 Aug 2025 05:07:45 -0400 (EDT)
+	id 021DF6B0006; Sun, 31 Aug 2025 05:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54FBA6B0012; Sun, 31 Aug 2025 05:07:45 -0400 (EDT)
+	id E9F916B0012; Sun, 31 Aug 2025 05:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FE606B0010
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:07:45 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B645B1A03AB
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:07:44 +0000 (UTC)
-X-FDA: 83836474848.21.1A118C4
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BFF72120002
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:07:42 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=ej85xWb0;
-	spf=pass (imf29.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DAA0C6B0005
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:08:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 650BA58D45
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:08:33 +0000 (UTC)
+X-FDA: 83836476906.25.55F519D
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9331540009
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:08:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PODlHi2Q;
+	spf=pass (imf04.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756631263;
+	s=arc-20220608; t=1756631311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGZwzPbeJSH40yHH/9NENXW8DuVrJPeqrN0UawxoQbU=;
-	b=3fbaMWhcTp34es2TvITgnpuSn0T08JQ4cIvzyT9IuWjPs0gyL4O9XCwzDTVDJ00XakdC3/
-	K7RC7leMEiLhZ2aRX+UobFoZdeZi4YohQv4rNRX8s3844NEZPww4T/E05rmfuu7TtCpS2p
-	ukMeTRWIXAAzfgE6bZaDf2gNUAj12pE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756631263; a=rsa-sha256;
-	cv=none;
-	b=fHj1G2mMMeEvQ+3GS7yS21YJ+nMSZ46CUEFrkX7O2rAEr9XbY5EJe8mdoJE1GTIGPKEfUt
-	lkOECp0gLEW0tNYCebbv0lK2lNW+KUV8nGQzmZw1aEaUa3ibhIeUTpisf09iNo6FWJnSa4
-	GLfgKFdqP2NmcjWF81fB+fHc1SsVQ6Y=
+	bh=u88nEX4VhKEhfqfy6sgABj7KaLHVYd51Cg9xPrUQsPg=;
+	b=w7z5WoIbRbfhvuI45JB9pCz2FWUwLBgaZ5hgAFpiIayqm62t1RIIu03Gtb94pZNev/eF2p
+	OQMh4STclezAQMGjdWeVsTTYfn5gnJ8yV2IiN12OlDixYXux3dcbtmnknJbhX9vl5sLJHI
+	2dpD53x76k40FAg1oENUHMhwXPYOAZk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=ej85xWb0;
-	spf=pass (imf29.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7322da8so649829466b.0
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:07:42 -0700 (PDT)
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=PODlHi2Q;
+	spf=pass (imf04.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756631311; a=rsa-sha256;
+	cv=none;
+	b=ERwrRrYe7Ty9e/kXuEnwBYi65abXXDesMtez3L/kdX0kXatEa7VB1GbIzYtpVRi7zvBMTl
+	yPQ+1e3y4ZD9iWLpnBx2vTfmo6sLFxwOi3fxRTZsKW9JsDVEXPhMhiG+dazjuamewaCiOE
+	bY9pmg5b5PykPXckSkePpl2AdSxkoKQ=
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d6083cc69so29393527b3.2
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:08:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756631261; x=1757236061; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nGZwzPbeJSH40yHH/9NENXW8DuVrJPeqrN0UawxoQbU=;
-        b=ej85xWb0WHEemK6kFiD7SzRGdsRVmhJBKLbco6XZ+OckuEPY7Yq+d+fLAa/9oftzcl
-         SdpyAc0OooPBIdohuUVnI9JxMXsphrSEmS8Oyf0gIP6qzmm5ER+w6a1yvUIZoif7g+j1
-         gIoOb4YtLor5fmdA5ml4xYWF5b/qKlsksILbiMDXyrLR7P5cVY8KqAxDhwE3Cc3BTMc2
-         nOL32P7NeC3MkSub0I9OSdSIYfQAlvydlROib+9EHZWQkN555P8smGc8FdxfNP7ajw61
-         Bc/uNqh3jh5DwzpsrZpQWgeAZv1Fh6faveKQLdcfoP8qdoxOAjeO+CZHxPSpKuhS7EcX
-         EYdw==
+        d=google.com; s=20230601; t=1756631311; x=1757236111; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u88nEX4VhKEhfqfy6sgABj7KaLHVYd51Cg9xPrUQsPg=;
+        b=PODlHi2Q+g2adXquh24JkknQ6cSDbsUkRYaCJ60lIXksBsvYpxzUDcEJFK7kZhDyXK
+         rfoqyPnNarOZKf+0BqKUgPqC/n4+ejo+iii1YbhmOqBDlit6b+n9ImaXM5ZioURpJq+T
+         DObjr27dun+q9iVlu2unmU8zZ1EXtfC4m3Y3BDu86VaRnOeQdDnhrvhd3P5xFiY8OJyF
+         1COZKoakLdJAvZQElhQEBoeZGA+WaLh0lR20joHnayf38TQCp41lxAcqqe4sySMbfPIe
+         jwObddRILlsHFiq4lH1vqj48hmyuUTFNJGydONwjdZ0ut0myy+1Zy2vHVih2+9Lq97zp
+         cIaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756631261; x=1757236061;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nGZwzPbeJSH40yHH/9NENXW8DuVrJPeqrN0UawxoQbU=;
-        b=bZlGZxdgsEAiUCV3GysAtPNJbvgbG1jx1+tfKliVl8ZIxBcKkGc7iTON3+UfrWYplO
-         GQSmxBAQqa7jRYvmTPFjUsGMGeS3jafbmc/1zgXioMkMjAlbQfV4pEjRU+RxeevCfh+i
-         Esnv+gMPCj+8Y7ebeM35KB3OpLwAXywOc+cCo1fABoXM7FrDhbeVoLkSb2fvJAHksmhi
-         YfZQj8932rPp6rasn3ui4KCYdqf2Ph4qzno9uQFDqatLwp6pAlPFOa6N3VlNQRTWm8fG
-         p9T+C+kKseNhKmS+iXzO+yt6E+4aFdDFwNw82/MDwlpxeTQ2hpzbOOR7uWAxuB1Jr5Sl
-         F7Og==
-X-Forwarded-Encrypted: i=1; AJvYcCWo6mnGIMAZCzLW9XQqHt1oep7GVVTeFa3YOZGDXCHk81BY8AKCRw5pCGpPl+y4R3sGKUgFaF2f9g==@kvack.org
-X-Gm-Message-State: AOJu0YwIG2gZmQ0FIu6mo6SQnrkyi+3tK1MXxK7stKsamCpXRNkYsGcT
-	BFWJTiX1CHAXNcpT/Weq/5P0GJnJ9uoAQj8ylJM8iFaCFICtuNL8KOPiwr5DO8F6+IBHFWK0+vp
-	2A7frdmIKuPSZzq2TD6x5liP6QhJ0a1meqb1k6hA6XA==
-X-Gm-Gg: ASbGncuaKtf5WMRetTcVDtbra/LSSQA8qUq0VLD73iXNIz895Ui+vfVZ050NZhe8wLp
-	2Q2ID6wutfOAT018Wi5t5GUGu86KFawmWNNupAJ6hn1TCKIAaI8W+oG7P/4rLTdfg8JPKeEqnXQ
-	GVDtlBw6Gp39QXjBkfQxI0i422Eu4e0lQfFAI8qFZYxsUiyhDVpPiA/NnkVC5be8cQF9FjwQXa1
-	gLm/TZf3xZlhqx6x7X5Byl/ZxUw0hUYscZmrl8WIQEkSQ==
-X-Google-Smtp-Source: AGHT+IEES7g66ko6SWQsN8+WIUxdk07+Eqy+DmB6hNaUA83IoCSXr1Pf68kunVGZ4gGRru9fXEUF2A7+RGCoF9PyX+E=
-X-Received: by 2002:a17:906:9f85:b0:afc:cbf4:ca7d with SMTP id
- a640c23a62f3a-b01d979fe6emr455913566b.54.1756631261091; Sun, 31 Aug 2025
- 02:07:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756631311; x=1757236111;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u88nEX4VhKEhfqfy6sgABj7KaLHVYd51Cg9xPrUQsPg=;
+        b=kttEylHK5oxv9VNRtfGu6O84ycZmz/yKBLX0PYiRS/BTIvEN2uoh2H6VEIb+ZcNFH4
+         6liOd+jylRWu76vv0YgMMYvMQ+CLxbhV9noEqlLqyZ+3Zq/X6fPOFZ9cuE0Y0V5h2gL7
+         JiGpoxFRrr9Hpk33yIGKsoygo5FQc7TGRTfj47YlnIyndNrlr3vGKf9mKC9PRMEBnJMc
+         NsoHEzVtYml4BRv6pCeSwuZxBau5lmzDgLqgyW2pJRAeENovUU7N6Mx62OZWOPaPNEfx
+         jPHV0w87rH1D44/9Aji693kwxjw3x5tOvDbfEfoib+1gB78Ek9L6w2Ahepn7UJFIZHKw
+         /g/A==
+X-Forwarded-Encrypted: i=1; AJvYcCW/QPDlGusOqN0MEGfg+n6zDrF5uJCCVsVCZu+nTnIbgQ1Z6Yd7nT/nkrBicWeu95YY7XtRlubpMw==@kvack.org
+X-Gm-Message-State: AOJu0Yw2jbwLKfu1Rm2Ni/J7iVHgI4wK24uAKVeQmXruINfftWJe8CQw
+	SvWK/a6w0qCie4l8VrhzuBTdYVVD9hiwsYp5M0z4D4B/Hk5viUmhuAFzOwdrIlabng==
+X-Gm-Gg: ASbGnctj+YgUCF9rIAOvrOZwcTAgi99M8L5y+7b5QN8jSlcFwX8hF3hahYhS8iph6im
+	9rAgGrbDKBTMy7gfxzpjHSUdQNdId8kufHh3i/PHJfT+lZn4LuEaOVJluusNjxtqFQmn9qssnfy
+	Jn9lvVDoEX8Sdl9fUGWCn+CtxQ0XgGKOim7x77bWJlIsxfd+wg1qETaw21zOpMG1Rjdg5YpK5tk
+	B2Bmtgpt7GB34FLvRir5/961tlSOjwIPKhPHUWpczOgUICq0E6jYZuroI3M7yp7l1p1+MpaZAR6
+	hQbMkfR2dz9sejSMNHqQvrmD3jbQWird5WD5zoTijeWPaBiG35LnlZuPIaouR4rXj5iH7S6mIL1
+	i51ehJhPD2oBIfdgCaVKpoi0zdgynSg32WF8GEtBq0J/BfGPxV5NsWAQBGU9XogJCH/Oq/KUJLl
+	ZrU3vSwmhm+cT8xA==
+X-Google-Smtp-Source: AGHT+IF4uqF7l2E0FZ9hMKOQYbXmnG/oF/j3dZTuq2FVbemX/WEQ1z/BcNuLmVYRYcxAG32KEwnQnA==
+X-Received: by 2002:a05:690c:490b:b0:721:6adc:4364 with SMTP id 00721157ae682-722764cb124mr44113587b3.33.1756631310488;
+        Sun, 31 Aug 2025 02:08:30 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7227d8ccb38sm7148137b3.35.2025.08.31.02.08.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Aug 2025 02:08:29 -0700 (PDT)
+Date: Sun, 31 Aug 2025 02:08:26 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>, 
+    Shivank Garg <shivankg@amd.com>, Matthew Wilcox <willy@infradead.org>, 
+    Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+    Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>, 
+    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
+    Alexander Krabler <Alexander.Krabler@kuka.com>, 
+    Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>, 
+    Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+    Axel Rasmussen <axelrasmussen@google.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+    Konstantin Khlebnikov <koct9i@gmail.com>, linux-kernel@vger.kernel.org, 
+    linux-mm@kvack.org
+Subject: [PATCH 3/7] mm/gup: local lru_add_drain() to avoid
+ lru_add_drain_all()
+In-Reply-To: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+Message-ID: <165ccfdb-16b5-ac11-0d66-2984293590c8@google.com>
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
 MIME-Version: 1.0
-References: <20250829183159.2223948-1-max.kellermann@ionos.com>
- <20250829183159.2223948-9-max.kellermann@ionos.com> <aLI5dKVl_7bPqB57@fedora>
-In-Reply-To: <aLI5dKVl_7bPqB57@fedora>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Sun, 31 Aug 2025 11:07:30 +0200
-X-Gm-Features: Ac12FXyUUe1BE_1yIAq-T4Ag3V3wYcj4eFQvKTMVnq1a21mdj5Etofq7OAHlhWg
-Message-ID: <CAKPOu+_VUMz5LxXEOVC9qQCQxjpHtm0dorJRxr34U1ff4jP7xQ@mail.gmail.com>
-Subject: Re: [PATCH 08/12] arch, mm/util: add const to arch_pick_mmap_layout() parameter
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com, 
-	yuanchu@google.com, willy@infradead.org, hughd@google.com, mhocko@suse.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BFF72120002
-X-Stat-Signature: sr3r9whtafgak6rbn1nkkhgf5xuz35uq
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9331540009
+X-Stat-Signature: s1i94hc8gz4qbjxwzit11uttfwbiiw1y
 X-Rspam-User: 
-X-HE-Tag: 1756631262-901767
-X-HE-Meta: U2FsdGVkX1+vxj9eRHta380PptAz9Tpld1+U9AhqY9WfDMFzbFI04rofI0NT0OasDq7eTNKFniN/CHr0wExEV2wbr7PQnGnDY0i+OOZwkMHyaOtQMdseye8eqfwjanycDrSeJfbcCosB5Xns0ftuzNXz45XNDD91h8CLUWqiuhx3DELqRhL/rqvmXHVyW+fXp+iHencDw+GCIy5buyitFfFtZwcnPxq/AaSH0Ht5LWcDErKUYdYWPu6TPZF7Gcl1otmURIp0+RP362kJhO0oJ4C4soY7HJTLxjxH7VULCimfaSKjCSvX54Ef8407sANXXfXu/I7/+WITMKgrlSBbmaLGTPTozG4HMqC0wnLAzZJfZjN5rYkrYRqBqQ+ZMiCYeLP05K5qse+huLN6WitunSsEO7gXjz57jhW2oWQpAOq4fZdorZ+y0sAWxLvU2TUm+KgwOuTZiMH+thYBo8i0JyiNmJdw7pQHgMr8U2VVbIKHOwZf2Lr/lpMVig3ZEP80874fYd8XXjn5qsNKLji6xImOfZGAAz3CLJVdrmu67mVSuYIK1gZQI263km8K5oe4TzEF/xBWwE+gwqhbYWCRfrULbQWijNvkjbVJiiM1zzQb52tnv4qAPfzF9nFqtSYsItHhFtZrXBkLBLXbqtmDPvZkM51AjVdGVprF89klIiXUzs+M+xGcycpURZYNw0UOe2Ot/i2znAcYN9xWV9jtnWk0mJCnnguLg6s8jx8hhxgTj/oCsxzslVeOkCwAUlpCXM5RzXMjIVypJemtqhHZ19WcjbTLSada4PgxTUwqYo7XKHajdlbTJWXDbnootW3cQNOyqHORauWr0JevWUSNtCDSz35oxbAh1Ty/px7IKxW4sITlqBhysR7WLN1KLZAJIswSAvszpt9RzKt2zjD4J0/pm5r79/BmxcDCFN+bpC5ijcpGLxmVyKqU6AkWVg45QjKnzfANgdDpBhv1cno
- 3PChWYd/
- hZnS9liCEfcD9hhzJWdM/o2nxcMY4KNiV/QZQbgj5VXBbSqF/TOJGdhKESA==
+X-HE-Tag: 1756631311-846011
+X-HE-Meta: U2FsdGVkX18FtWL776KNIkmlY/eDI/TWGJ8Zc94ovglfcqwOmZQkCsYbaknJq2IpjMX55wOxPrWHR4hDtXq14g3thnuhsTqPXoYZH4tvEhekxdegO4E+ruZMl7M0qvtOUuTF1K7a+R/nlHj8E7nfv0DkQpPFWi6Wp1Ue6SeXdiAV8Xo8xZ6lrtQTcZ2Xe2s8VhmcXtAXcDBqaYbVbCtHjUi6BPCbEDv1nqs67YGozOwQTjLRt6UMhIirNKd+2n0eUkNZEbE4WmaBOoCfi80/0FGgYYQiUnbekydVHb0qFqSMHRVvkqR/b7tXj8orsEadE3Wv0499bFHwPbcYsSQpV1SXt0sr+YYK8Q8UUg3rmKubO761yLD7i9BqYopDAwoHU6SVMTkfxQDcvQcL2c6rY9eTN3ULwEuVYn16v/GPnFSkmyJcOZfT3MQT2HBHv4UxH1yvDTM6tQll9boBN3r/YFeG6qCm7Xw6qxCXrhFCJl6ZsDWaeucTR6lEUMjvwKgvAB19R5m4SklgVnB/BqhZ3h+YXis7pHRrn/ETwf0fhiJqmpX/M28WgM2/l0loquatFURBCpG3+ECKisvUMwEELCimJTnvRJ7p1acXYzChvWh7iZOYL84i/ZI/xqsyBVkGnLRNoP691VaE09/GVcnA9GNt4fbb3TPK4F3CeHH3L9QiAYlJ1SpuFOSx/UQuDpNQLGdggMEKnvuXJt5qxT8xx1awylQO6m6h6haK8RxvtgucqiMGzD2nZUGgGpMG7a9A81z6EEqoxd7R7TTjLDpzGQNM7Lx+B1mxVbmtbKA8COz0cZO1cyU2gMMaxydX9EsN68/U5xs16ONpM09Qa09cOUFRfgFi45/5cPbwL4QHc/nzH62yFLUU73Kden4dBFPivuagPVqXlNhINh3Xz/CXCU+AfWnPjM7IoeLsjSSe0mKOP9k+YZEFE8Ld3SSGvFjt3ZOEaPwGpRn0ZVLLrxP
+ iBxRtAYc
+ /ZOjGFq1FzEeE0W5Q5+KDlEQSi9/HQ8XzeU+fFsEClljbpuIJmq1KMGnFNED9r0NK6Sh7sLC5skpQNRZkdTBp358bK/Yk6oYBz7VOKuoTpJQXqDmrWJ1STWAWDBACPvVhRIZGwOKf1WhfZKtOh0s811GPZP1bW4EMVIPlL8crvG8VRWvRLMs1YPJLV/UvMOnljU2KxrCZCszkEappkpikaYVe6kuKlj0OY491kJNPgiuD7si8SadUNtT1ndj8721Krj61o9BTlpUVe6KP8UTrx/p1SEfzDHwtC6e5qr47rWul4qEBqjkM2yJgp1MBZn7bFN2Doztnyd3MQUb5CHESMf7sbPIcYxFDVRjlCqUfrectb8/YUR950u2vF2PQYGrRkzI3W18i11ym4zH17Vr7fkC2YUijTtiO+oEXYp5D40jULZroX/W7scXVZf79gLNlZ7k4UQI0a28ooe8XzSj07N23IQFnVYVExN7pBnd61e7BLRTh1Na/t74H4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,23 +129,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 30, 2025 at 1:36=E2=80=AFAM Vishal Moola (Oracle)
-<vishal.moola@gmail.com> wrote:
-> > -static inline int mmap_is_legacy(struct rlimit *rlim_stack)
-> > +static inline int mmap_is_legacy(const struct rlimit *rlim_stack)
->
-> Thanks for splitting the patch into all these smaller snippets, it makes
-> review a lot easier. But this function should be part of the 6th patch
-> since we'd want function signatures to change together :).
+In many cases, if collect_longterm_unpinnable_folios() does need to
+drain the LRU cache to release a reference, the cache in question is
+on this same CPU, and much more efficiently drained by a preliminary
+local lru_add_drain(), than the later cross-CPU lru_add_drain_all().
 
-Will do.
+Marked for stable, to counter the increase in lru_add_drain_all()s
+from "mm/gup: check ref_count instead of lru before migration".
+Note for clean backports: can take 6.16 commit a03db236aebf ("gup:
+optimize longterm pin_user_pages() for large folio") first.
 
-There are 3 copies of this function which are slightly different:
-- arch/s390/mm/mmap.c (checks rlim_stack)
-- arch/x86/mm/mmap.c (does not check rlim_stack)
-- mm/util.c (checks rlim_stack if CONFIG_STACK_GROWSUP)
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+---
+ mm/gup.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I wonder if it would be best to merge all 3 into one? The one in
-mm/util.c seems to be generic enough. Export it and have its prototype
-in linux/mm.h?
+diff --git a/mm/gup.c b/mm/gup.c
+index 82aec6443c0a..9f7c87f504a9 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2291,6 +2291,8 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 	struct folio *folio;
+ 	long i = 0;
+ 
++	lru_add_drain();
++
+ 	for (folio = pofs_get_folio(pofs, i); folio;
+ 	     folio = pofs_next_folio(folio, pofs, &i)) {
+ 
+-- 
+2.51.0
+
 
