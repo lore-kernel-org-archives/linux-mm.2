@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 430ACCA1001
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CD4CCA0EFF
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:40:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE5968E0010; Sun, 31 Aug 2025 05:39:49 -0400 (EDT)
+	id 0B6A68E0011; Sun, 31 Aug 2025 05:39:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E22458E0001; Sun, 31 Aug 2025 05:39:49 -0400 (EDT)
+	id 040488E0001; Sun, 31 Aug 2025 05:39:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC3C08E0010; Sun, 31 Aug 2025 05:39:49 -0400 (EDT)
+	id DFBFB8E0011; Sun, 31 Aug 2025 05:39:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B877B8E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:39:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8346F1403D5
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:49 +0000 (UTC)
-X-FDA: 83836555698.07.C201690
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CC1048E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:39:50 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A38DCB9573
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:50 +0000 (UTC)
+X-FDA: 83836555740.27.DF04A93
 Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8B69440009
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b="i9/XIrPO";
-	spf=pass (imf17.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	by imf12.hostedemail.com (Postfix) with ESMTP id B0CED40002
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=QwtNt4at;
+	spf=pass (imf12.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
 	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756633187;
+	s=arc-20220608; t=1756633188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rzEgZJLUIP42C+8Yle96H0gi+Ol4omF0icbAf6DUhQg=;
-	b=h6/8m0MXGT96jNCALMgvURFxrsKy7de0Xp6X/3eaLSVPybC030Exrz0+e/Xb84KgIXX2+K
-	clwcTiuaFtso0u7cHFpPS6WAc2seOTBI5OwmxN/uGQoKv6UbtB6qDb71nLdExYU3gYuL6A
-	uILP43coL49pPrN0BPvNJ4JF8AaNTcA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756633187; a=rsa-sha256;
-	cv=none;
-	b=aQzlVoBcFiAEnxZZi714A66ZmW3uywd68KFvI9iPYkzPPtr2SUwi/lo33rjci01IGzmMYr
-	DNhMepM9lUAdgiwk8ft03XxTy2glwwFt5/1WpOI7z/n8ss/B3Zh1V0N32bOKoCNxaeNOLx
-	cYlndq7LkCs2oVRJACzKghjjX4AquYU=
+	bh=DmXy5ybFdCA4kdt6JbWaWujSYRHDeDjbcsjL0sLonTs=;
+	b=KBIeD5Z4YqCe8XslmMjze8MSBsiF87xEUZziusBMPBwT0QRGJjKbQ3jBfRJNL5Ag01yR40
+	rkTeWtZCSkt6BCKxXO6cEZbBqKn3kDJ/Si5DBhgEwUeckXywDPIlcE84NbGGOQMLUiVCXh
+	OVFtKh/KMzJvurdN3YHCPgIDFsd4VvY=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b="i9/XIrPO";
-	spf=pass (imf17.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=QwtNt4at;
+	spf=pass (imf12.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
 	dmarc=pass (policy=reject) header.from=ionos.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb78f5df4so589610466b.1
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:39:47 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756633188; a=rsa-sha256;
+	cv=none;
+	b=inAtKf35ss35a+On9bbEU6iWaianX/DZpRCyNut3BmT1Pdg1BkJBDFjUL9wXkeKg6lzq83
+	ml/MjmksxRatF83HsVVMOo0qctbR0DT3vsNn+OeCFCXmC8epwfTYwU5ZgViRBfvHfh5J9e
+	CoaTs0f3N3f3+SvgAwY9IYInMuNgr1I=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb7a8dd3dso480777766b.3
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:39:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756633186; x=1757237986; darn=kvack.org;
+        d=ionos.com; s=google; t=1756633187; x=1757237987; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rzEgZJLUIP42C+8Yle96H0gi+Ol4omF0icbAf6DUhQg=;
-        b=i9/XIrPO24K7hY32kytPMSGV8SggmlGF8RUIjPZVxGgITiAbOTGGskn39vjlt/5BkL
-         LxubkBINdzEKsNQlHITemJXIlw7vZ5DLAUTGge31zjhiB6FjbqUay009cBgWuHsYi4w7
-         9seB2hixI+QI6CAU/GCA1YvIOMLPEDUuzSXVRT0grDxxKaUtcns2RBOQoV40hfqg/Igm
-         jpn4+N4UFiLekIVMLGDeUizlkAhzxQnJ/ZisqTh0jMOiGCvfR3Alrz2TSAe+RPXG8pH8
-         28pFOsg1RAVsbrpCspX3ntn8yZVpSKZwfqa4RUffPoN91LLUK9rAuZtnfzw6L9m7EHWH
-         V4NA==
+        bh=DmXy5ybFdCA4kdt6JbWaWujSYRHDeDjbcsjL0sLonTs=;
+        b=QwtNt4at5ExhEesH+sYBv4eZqzIUh1W39zzS8pZnpNUg6qaTHrEGct5OHx/BZvoIWr
+         4ULM4IhZRDDwCIxJEtckyUO8duUoGAD1otQkSRp/4+JEo4R5K+Zhl54R+fgsJBRVik3k
+         YbWc//YD6ailDV0l48TUyCTC70QAmibQof0UpBqvlmbuLAyKTjpLqRdd9m/NezJerEiz
+         bE4mDwNOy0140b8EZtDyEiXWiWTqn6crDQO/RhVwevfuwrkmZ7QUD1Zca4OnIJ6MQyMO
+         BOv+3FWLVypa9JAlBfefxoJqi0cHKZccoWIhX4zsUSO9j30lnmGrXNiP5DEnKytB3iHo
+         HiVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756633186; x=1757237986;
+        d=1e100.net; s=20230601; t=1756633187; x=1757237987;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rzEgZJLUIP42C+8Yle96H0gi+Ol4omF0icbAf6DUhQg=;
-        b=wmmIutu006P+c19CVlC2cWXbhCuuYykitP6moH5w6/vrKdey9YEagn33FFtWO5Ltbb
-         VU81FF1CA4GcJMseziiCr9fwmiGgcN2mwj3YCTMLFuHiNZQW+b1XpjT8mGARksN8Urrs
-         xEoMqx1J7ASluzS1rJSpVMa61lUZOYxeiYt8wQ2+TDipMIe/yq/GqOA9OTqAMA4K8O2+
-         cSRo+BF4Vuadd7Koc+YLwxUzuM9kbmbUp+L0fXQe7qzsISY3W4/aaGOX4UMGmBjnRYsE
-         VRqmgESyYe7ejb7C+z1KmVMHOxgCd6F57q/fyh/RNTjb4SvnTeGyTVSIFtyzbIPW2kNq
-         yDSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeCGb0hkgcIzOjLOkpUExKBlJH6xbmgFjklNEQ3wC/4vBLy9phQlqzhC+MUxS6AK6STVmF+dzIfA==@kvack.org
-X-Gm-Message-State: AOJu0YzBmHj83yqWzg2O8VCsSIXPGfMjmQdry1F3cs4MDx/q598Cjgu/
-	eaw+GXFvChNYw1QI8mYcwlD9R+M0Gg6g1umA1qVunilpLvC3OoB2HCup8LzICZ0lJ4I=
-X-Gm-Gg: ASbGncuoQESMxA7IQQ3YRG9TZP2e0G1f3zaXVHW3n/RLKQVwbKLs0rTqOFevv1P2MGz
-	oxKikIqzQneVuM7dpjU2KKHyb2cPC/NjldzRmLA/7j6YYiAGgAXOZ/3MhiE0SngmOPLGpUm9bGE
-	lLnMj0eBxlxhwcu0rHGL+fsyDX8sly90WpD7h54SeuggDqnu2pTZFGvUDh7kJIprdOIwTTRC932
-	L8xpsrh/TaHm+vwKkMo5K7qijOffRBPc1WFk5Y3gpQT+pq2qRzdkur05FKKyh5h2/Tt1bLUnk4q
-	GMoKdmxbvL5gi6pEE5TqSX8eDHclmqRmjHsZW4Ud5Qd11FQhq5QWxy6xz8rRDfW0DmoStXAs5u1
-	jizN8FvUi/lzHkX2i+NpjQZ07x3GekWlSLnUcJK56xDFj2iwiF6sCyBN+vDHn2SGlN9S1FUrb8h
-	a2evYy6/1ywurQwzxAUnHVpA==
-X-Google-Smtp-Source: AGHT+IEuD6oVNFdoCcKagugA75LHNebXvR8cOgEl3UMPjRhdvNPJVp574cFB+Bbnvq6T7+AbQgvIlg==
-X-Received: by 2002:a17:907:970a:b0:afe:d3b2:8b1e with SMTP id a640c23a62f3a-b01d9743cffmr421146366b.38.1756633186146;
-        Sun, 31 Aug 2025 02:39:46 -0700 (PDT)
+        bh=DmXy5ybFdCA4kdt6JbWaWujSYRHDeDjbcsjL0sLonTs=;
+        b=cMdeCjJNGM9B3UiYgURHjgWVc0y4FUAcZpR+gfybTIqpxKLfHWXy5EXE7kVY8THjZc
+         iH9oNQl+lCFurWmoqk/WL3KhDiBKXy2TKnB0Ln+WcrMJNTUKym1fXfDaNiWfkq4Upx+k
+         EbItbtcBjb467Wp4VhQHUyOc8qn4F5hdsTgjxEJuLyUVpgwUck+bVutpEXKQBV5+gr8J
+         KmHBNgMO3mWqW61s143ENROE1g7idDja/LnaCkRsF0kPb+r/Wa3EqDbmKXnuoCDtewoS
+         qObo8PgoeC0lQyM2sUMiXZhqreq7ZNYoD+7whViwJelYGGvsXM2NEaspsZ7gfakQT0VI
+         ihyg==
+X-Forwarded-Encrypted: i=1; AJvYcCVuXntSJFL3ltAkm+q5NpdyvUSkjYIJC0ntDkZxEBcultFEyWEJiVhLhSw9eSarxOEv2LPAWnL1vA==@kvack.org
+X-Gm-Message-State: AOJu0Yzr0GxKENfN+YP0UxjgNAxUMXnB8gvg5bj1gfoeAxPaHLTJma/C
+	9TWVxVIM29HDSFyClav1ADTvU8YNnGUboUkKJIZDKSNEGMGN8cWEwRVItxgxC9Qacnw=
+X-Gm-Gg: ASbGnctzJ51Heq5U7hoEN5iNlvC6qbau6GoM27069o1XvCvohSCxTQbLTwQZrhOxQJ0
+	X2SJL6q5ImERglEIdh1QNZcdGrS34nBxgUT1fVLwT1N7g6pfPP6UQGmHR4HalxvJ6bJqY0hYSyU
+	F95bndoVWseN0nmCkeFun+rc89NbbKz8Gm+ayhnRu2D1au8DqJjOja6I0gcvkNRVDB+pyf2dDei
+	GKeVqzmcmb9F70Vo8ec2mhMm45d9qOUXokprTakCTAWqjAZsQhO15/7lLSdF51L9ybPxH2vkMzc
+	yyjDknTItiq5FeN3UYd6p+MQe9fTMe0bgmlq3E+ZHDuIu35dXy8kxl+i5vxtk/TZiaH8KwZVw8t
+	z448NofjGnce2ZwvHUuEi+Y+2T+niTmfTk7G+ZJxm1HQecxbzCJWqF8P2a3+0eWD4HtUcom+bx9
+	Un+GlOnmg9kFgOznPenBsEjarZoyFmdtZo
+X-Google-Smtp-Source: AGHT+IERIAMXcuEhmV/TwmDymKQpTMyBeNphJ2qsS8K+XRC4iMgWIUN47HEu4qF13cHkWJRM5Gm9Lw==
+X-Received: by 2002:a17:906:d155:b0:b04:b2d:cabf with SMTP id a640c23a62f3a-b040b2dcd9fmr282124466b.39.1756633187141;
+        Sun, 31 Aug 2025 02:39:47 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd8656sm597512566b.56.2025.08.31.02.39.45
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd8656sm597512566b.56.2025.08.31.02.39.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 02:39:45 -0700 (PDT)
+        Sun, 31 Aug 2025 02:39:46 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -108,22 +108,22 @@ To: akpm@linux-foundation.org,
 	surenb@google.com,
 	vishal.moola@gmail.com
 Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH v2 11/12] include/mm.h: add `const` to lots of pointer parameters
-Date: Sun, 31 Aug 2025 11:39:17 +0200
-Message-ID: <20250831093918.2815332-12-max.kellermann@ionos.com>
+Subject: [PATCH v2 12/12] mm/highmem: add `const` to lots of pointer parameters
+Date: Sun, 31 Aug 2025 11:39:18 +0200
+Message-ID: <20250831093918.2815332-13-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250831093918.2815332-1-max.kellermann@ionos.com>
 References: <20250831093918.2815332-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8B69440009
-X-Stat-Signature: io75c7cctr33z5t7xhf9wzcxz5auf9zn
+X-Rspamd-Queue-Id: B0CED40002
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756633187-768539
-X-HE-Meta: U2FsdGVkX1/41wtNpzz2JXwzakowUlRQcueapoqVH0FqfC4WJ7BxnSiDwRbxLXOg5yeh9rvgamfvazcGp0QQ1he9bZ49teEIVHDYnwuwFj8lWb3tycRUxTz00ta3lJImZQv+nxKvaG+mGmHzP/43a2+xlDjXcb6xRgeeXYl+DBHzB+3qpdLpmXCoCweKR8wBAY4n8Dv5KwAUZvH2eghJUBshLeVw4VYOK86wFKTCN6CTaAISq9idkcT7fSL6Jepg3gillHazhdNMeZ2+r0kgtAMGYNUygtkWoQkDoIKxOXIYXGUTsy0QG7unGvt4F9o18Bd5nLQXPS25jj0zSf1Y9HKAeMld9FXJ0fT7LOY4yRRO2PiQLAZEK5k/eEeZnLmlB6flxKYuZsVC3h+zABXje3YTd9Bj5hFw7UF2Gb8XGrabIsG5B236CpLgdC/vHFe0M+MEC++RDDPIOuNfknbuyBhCp8gVMAY0G7KWUuQMcRdFqjgTBXWQ79LX7a4ugtlnTEBiujDeVFtCuFeXgPYiBPL4yDrkakJQSoJtqWQ09F47Keo4JC7yUDbhOAW9pDOr2wpwjeuSOEpjoBDm9fOas2LuK29uNQpl5cZ7mBVZOu++4aFfcs775HR0a+kbGb+3DN6xOwGSlze5ku0peCJvpl/cHsqS76YzelS6XOmnmTzX1To0793rh3EXoLdJjN3a2w2D9jPWp80UkYwwuwWRAW778TsPKMdZV3JmuRDH6inmrGScMZYO1sTMo/LQ6calhmBdQRi54sX2bDFpJhIdj7Awfsep2TKIW1qqC+rCSnQZIy/vlEEkjZEryYex5rMVhs18/fgWilb/TuxrOt0HZvvBoCZT1J7u12rShmgK9JK9+oWoV7kANK0OP4GftyEhn6ABOcM+xLqfa2r8YlUQrGiGmrLLK7ZIk3HwIMl+mmO4ztQqtYnlEWJAu0El4nAJRqgKjUgOvDwYAe3cyrE
- T9i6qCzF
- wRcpMfjrPk02aWes4GaDfgWMJO+kgFGqBYViRSs4DV4PI6mp4+zzysSvi/oUO46ZGcnJ9gfRVAIUCpn4D2tdeMuhXuYceLEnoGyeDJYeYIULKXrNemXltlluAQqgPy2iL9Y4yye/SSnKmK0kDEKcZaC263xSMvALTOOmRMOg2F/Z/CElfT5z3xl3ipw8pStBQcDKD7SfqaiweIooTtxMWVSUdqvK8UhvY0x5MHOjb2frA2UaRK5lT8v+VQJy+5JYVxmXJOW7aVm1vh6oMQ4v9q9DgdY+KG5st8c7InswVF3OZXIQNnbJsm6k3ziFtwknXcCW9d/aunlOC/kDjB75xVYpWAHtq0kFmtCPfk7OflRT3lzBKyuS954/Yuav4w5MDtrj2Ys7i8CpW2vSlNEFJni9d57F0Qv38X0ofjmm77vldFM4z03f3vkmgovlQlzHDZqLU
+X-Stat-Signature: 7dpxrmak7izaoe6pbb6mfu4toksr5pjq
+X-HE-Tag: 1756633188-27243
+X-HE-Meta: U2FsdGVkX18G/O6pAuPDTs5qL12IahjS2Hjohlsk3KzkW5MpZzFgWvPT9Wv471N0X6fwihdzzLqLNFw59JIbi0cvYc71Ga9A9V8een1HWG6eJXRlMaAaV3ccItRPymYI6pkJtUxSvkR5orKJ8xOOExmJLmZt8HcECuYgdWvtnpZ+htToxFI8xssQPLDTfEtK8aaHbx1o+36b/3F+SapNfCp4PXFJryv3daRdRHqCNVYdjYJu1uffDa2tpA2K4kBzmMdU9SFKHkf5lX1BzATlPZ/A1SqtzHbHN23tWGDkOxL+H1Twz9WSwRFsHq361J0HdqWa9xyI3FvhKclg8D5HQS/EHrXqwn20e/VcUoVCrbn/+9uRYNbfyNd0wOIe49tuCecfB/nI7E34UtljgOgylrqUJKylY2vmibKIg9bgksMhMW1FjRA3zUwnn9dHPH1d5vkEPDar4OL1LtCqOvXdUz7xjIHLEU5IOX6bB33vdzYqzvcanMt2Iy7U9v6eFqRtOZMQUfkQGZNnQY+OSwLvC3NxmVlCAv8+M+cEc66qB0er+4lzzhzjoJZ+Nc6pXGIA5aBsgtxJfB/FYoKTaDLSLexEz5p4p9pTa6lGe2yBR8R306AyPCjHxWtU01phhsi1tKCp9M9wpVAL4PhPRHok7rtVgnHe+aiGTp7hFenjq0RlheXB74nV4iendryJQeJcmTEAF4HTQZNIQWcpcttdhCgImi3kpgcFXlRul6VwCiRfvG9s2o8ExcpTMarUHlnjTuokEIk3+Svkg2CM/jjQBd7b2Ne+Jd2iSO4qGw4fveE5AIreIVQy9h1uCzwNjCT32Taa59rUwoQkm/3rX65gY5EhE0dJgu6mpxvm8mr2pGKaQfNZumHnAydvFqu1vIdoFfOf9r50zOaMiZFpKupom6w6gS4MBxzyNkHAjm413OdiyzvodJ0Ezj0j6hp95F2I8lwIVNKBOulJtw16/bR
+ T+Q/fEju
+ fU0PDWFF5ZiJKxK9kIGzFZX9yU1x+rVyG5cHJDu7B12CQOEcf0+qogqSFxBMR7FmAkNicBh0VsysOrtgVvwdSXSv3YaRjZp1Fu01gbEIT9A5tN1gyXpzhm1gG84mctf6Y9rtDvwqlBy21NEW1ZRBLPwf3YHMWMIGM4Y4cjQOa+jfaDWzQWgCw3BesyQKK32yrONqibMyRbJSYLH9siaatro8jZKHVyk0Q53vZAXnFD3kMHOQfbBTeZdqic4CHAvUFU7gKljL3Qivff7jNsBHX45Y9Q8Ajqu7gPX3I3XKb8/j3TTVlCTrmxSpPHKRSBdfOkOi+fzEx7VQvRag4z4bkdcrQhi1w6DCo1Qz3qlRNcICjJPegWpIWNzZXFKglkK7dI5r9IXatYdrmRPusAlPm/TnqJnVHc5bsLuOT0o8yIMmNYk9wPSyB8v7N5owMIWHiLc1o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,157 +136,279 @@ For improved const-correctness.
 
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- include/linux/mm.h | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ arch/arm/include/asm/highmem.h    |  6 ++---
+ arch/xtensa/include/asm/highmem.h |  2 +-
+ include/linux/highmem-internal.h  | 38 +++++++++++++++++--------------
+ include/linux/highmem.h           |  8 +++----
+ mm/highmem.c                      | 10 ++++----
+ 5 files changed, 34 insertions(+), 30 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d12550ae9814..7c8b7f6a14fb 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -703,7 +703,7 @@ static inline void release_fault_lock(struct vm_fault *vmf)
- 		mmap_read_unlock(vmf->vma->vm_mm);
- }
- 
--static inline void assert_fault_locked(struct vm_fault *vmf)
-+static inline void assert_fault_locked(struct vm_fault *const vmf)
- {
- 	if (vmf->flags & FAULT_FLAG_VMA_LOCK)
- 		vma_assert_locked(vmf->vma);
-@@ -716,7 +716,7 @@ static inline void release_fault_lock(struct vm_fault *vmf)
- 	mmap_read_unlock(vmf->vma->vm_mm);
- }
- 
--static inline void assert_fault_locked(struct vm_fault *vmf)
-+static inline void assert_fault_locked(const struct vm_fault *vmf)
- {
- 	mmap_assert_locked(vmf->vma->vm_mm);
- }
-@@ -859,7 +859,7 @@ static inline bool vma_is_initial_stack(const struct vm_area_struct *vma)
- 		vma->vm_end >= vma->vm_mm->start_stack;
- }
- 
--static inline bool vma_is_temporary_stack(struct vm_area_struct *vma)
-+static inline bool vma_is_temporary_stack(const struct vm_area_struct *const vma)
- {
- 	int maybe_stack = vma->vm_flags & (VM_GROWSDOWN | VM_GROWSUP);
- 
-@@ -873,7 +873,7 @@ static inline bool vma_is_temporary_stack(struct vm_area_struct *vma)
- 	return false;
- }
- 
--static inline bool vma_is_foreign(struct vm_area_struct *vma)
-+static inline bool vma_is_foreign(const struct vm_area_struct *const vma)
- {
- 	if (!current->mm)
- 		return true;
-@@ -884,7 +884,7 @@ static inline bool vma_is_foreign(struct vm_area_struct *vma)
- 	return false;
- }
- 
--static inline bool vma_is_accessible(struct vm_area_struct *vma)
-+static inline bool vma_is_accessible(const struct vm_area_struct *const vma)
- {
- 	return vma->vm_flags & VM_ACCESS_FLAGS;
- }
-@@ -895,7 +895,7 @@ static inline bool is_shared_maywrite(vm_flags_t vm_flags)
- 		(VM_SHARED | VM_MAYWRITE);
- }
- 
--static inline bool vma_is_shared_maywrite(struct vm_area_struct *vma)
-+static inline bool vma_is_shared_maywrite(const struct vm_area_struct *const vma)
- {
- 	return is_shared_maywrite(vma->vm_flags);
- }
-@@ -3488,7 +3488,7 @@ struct vm_area_struct *vma_lookup(struct mm_struct *mm, unsigned long addr)
- 	return mtree_load(&mm->mm_mt, addr);
- }
- 
--static inline unsigned long stack_guard_start_gap(struct vm_area_struct *vma)
-+static inline unsigned long stack_guard_start_gap(const struct vm_area_struct *const vma)
- {
- 	if (vma->vm_flags & VM_GROWSDOWN)
- 		return stack_guard_gap;
-@@ -3500,7 +3500,7 @@ static inline unsigned long stack_guard_start_gap(struct vm_area_struct *vma)
- 	return 0;
- }
- 
--static inline unsigned long vm_start_gap(struct vm_area_struct *vma)
-+static inline unsigned long vm_start_gap(const struct vm_area_struct *const vma)
- {
- 	unsigned long gap = stack_guard_start_gap(vma);
- 	unsigned long vm_start = vma->vm_start;
-@@ -3511,7 +3511,7 @@ static inline unsigned long vm_start_gap(struct vm_area_struct *vma)
- 	return vm_start;
- }
- 
--static inline unsigned long vm_end_gap(struct vm_area_struct *vma)
-+static inline unsigned long vm_end_gap(const struct vm_area_struct *const vma)
- {
- 	unsigned long vm_end = vma->vm_end;
- 
-@@ -3523,7 +3523,7 @@ static inline unsigned long vm_end_gap(struct vm_area_struct *vma)
- 	return vm_end;
- }
- 
--static inline unsigned long vma_pages(struct vm_area_struct *vma)
-+static inline unsigned long vma_pages(const struct vm_area_struct *const vma)
- {
- 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
- }
-@@ -3540,7 +3540,7 @@ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
- 	return vma;
- }
- 
--static inline bool range_in_vma(struct vm_area_struct *vma,
-+static inline bool range_in_vma(const struct vm_area_struct *const vma,
- 				unsigned long start, unsigned long end)
- {
- 	return (vma && vma->vm_start <= start && end <= vma->vm_end);
-@@ -3656,7 +3656,7 @@ static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
-  * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-  * a (NUMA hinting) fault is required.
-  */
--static inline bool gup_can_follow_protnone(struct vm_area_struct *vma,
-+static inline bool gup_can_follow_protnone(const struct vm_area_struct *const vma,
- 					   unsigned int flags)
- {
- 	/*
-@@ -3786,7 +3786,7 @@ static inline bool debug_guardpage_enabled(void)
- 	return static_branch_unlikely(&_debug_guardpage_enabled);
- }
- 
--static inline bool page_is_guard(struct page *page)
-+static inline bool page_is_guard(const struct page *const page)
- {
- 	if (!debug_guardpage_enabled())
- 		return false;
-@@ -3817,7 +3817,7 @@ static inline void debug_pagealloc_map_pages(struct page *page, int numpages) {}
- static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages) {}
- static inline unsigned int debug_guardpage_minorder(void) { return 0; }
- static inline bool debug_guardpage_enabled(void) { return false; }
--static inline bool page_is_guard(struct page *page) { return false; }
-+static inline bool page_is_guard(const struct page *const page) { return false; }
- static inline bool set_page_guard(struct zone *zone, struct page *page,
- 			unsigned int order) { return false; }
- static inline void clear_page_guard(struct zone *zone, struct page *page,
-@@ -3899,7 +3899,7 @@ void vmemmap_free(unsigned long start, unsigned long end,
+diff --git a/arch/arm/include/asm/highmem.h b/arch/arm/include/asm/highmem.h
+index b4b66220952d..023be74298f3 100644
+--- a/arch/arm/include/asm/highmem.h
++++ b/arch/arm/include/asm/highmem.h
+@@ -46,9 +46,9 @@ extern pte_t *pkmap_page_table;
  #endif
  
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
--static inline unsigned long vmem_altmap_offset(struct vmem_altmap *altmap)
-+static inline unsigned long vmem_altmap_offset(const struct vmem_altmap *altmap)
+ #ifdef ARCH_NEEDS_KMAP_HIGH_GET
+-extern void *kmap_high_get(struct page *page);
++extern void *kmap_high_get(const struct page *page);
+ 
+-static inline void *arch_kmap_local_high_get(struct page *page)
++static inline void *arch_kmap_local_high_get(const struct page *page)
  {
- 	/* number of pfns from base where pfn_to_page() is valid */
- 	if (altmap)
-@@ -3913,7 +3913,7 @@ static inline void vmem_altmap_free(struct vmem_altmap *altmap,
- 	altmap->alloc -= nr_pfns;
+ 	if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM) && !cache_is_vivt())
+ 		return NULL;
+@@ -57,7 +57,7 @@ static inline void *arch_kmap_local_high_get(struct page *page)
+ #define arch_kmap_local_high_get arch_kmap_local_high_get
+ 
+ #else /* ARCH_NEEDS_KMAP_HIGH_GET */
+-static inline void *kmap_high_get(struct page *page)
++static inline void *kmap_high_get(const struct page *const page)
+ {
+ 	return NULL;
  }
- #else
--static inline unsigned long vmem_altmap_offset(struct vmem_altmap *altmap)
-+static inline unsigned long vmem_altmap_offset(const struct vmem_altmap *altmap)
+diff --git a/arch/xtensa/include/asm/highmem.h b/arch/xtensa/include/asm/highmem.h
+index 34b8b620e7f1..473b622b863b 100644
+--- a/arch/xtensa/include/asm/highmem.h
++++ b/arch/xtensa/include/asm/highmem.h
+@@ -29,7 +29,7 @@
+ 
+ #if DCACHE_WAY_SIZE > PAGE_SIZE
+ #define get_pkmap_color get_pkmap_color
+-static inline int get_pkmap_color(struct page *page)
++static inline int get_pkmap_color(const struct page *const page)
+ {
+ 	return DCACHE_ALIAS(page_to_phys(page));
+ }
+diff --git a/include/linux/highmem-internal.h b/include/linux/highmem-internal.h
+index 36053c3d6d64..ca2ba47c14e0 100644
+--- a/include/linux/highmem-internal.h
++++ b/include/linux/highmem-internal.h
+@@ -7,7 +7,7 @@
+  */
+ #ifdef CONFIG_KMAP_LOCAL
+ void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot);
+-void *__kmap_local_page_prot(struct page *page, pgprot_t prot);
++void *__kmap_local_page_prot(const struct page *page, pgprot_t prot);
+ void kunmap_local_indexed(const void *vaddr);
+ void kmap_local_fork(struct task_struct *tsk);
+ void __kmap_local_sched_out(void);
+@@ -33,7 +33,7 @@ static inline void kmap_flush_tlb(unsigned long addr) { }
+ #endif
+ 
+ void *kmap_high(struct page *page);
+-void kunmap_high(struct page *page);
++void kunmap_high(const struct page *page);
+ void __kmap_flush_unused(void);
+ struct page *__kmap_to_page(void *addr);
+ 
+@@ -50,7 +50,7 @@ static inline void *kmap(struct page *page)
+ 	return addr;
+ }
+ 
+-static inline void kunmap(struct page *page)
++static inline void kunmap(const struct page *const page)
+ {
+ 	might_sleep();
+ 	if (!PageHighMem(page))
+@@ -68,12 +68,12 @@ static inline void kmap_flush_unused(void)
+ 	__kmap_flush_unused();
+ }
+ 
+-static inline void *kmap_local_page(struct page *page)
++static inline void *kmap_local_page(const struct page *const page)
+ {
+ 	return __kmap_local_page_prot(page, kmap_prot);
+ }
+ 
+-static inline void *kmap_local_page_try_from_panic(struct page *page)
++static inline void *kmap_local_page_try_from_panic(const struct page *const page)
+ {
+ 	if (!PageHighMem(page))
+ 		return page_address(page);
+@@ -81,13 +81,15 @@ static inline void *kmap_local_page_try_from_panic(struct page *page)
+ 	return NULL;
+ }
+ 
+-static inline void *kmap_local_folio(struct folio *folio, size_t offset)
++static inline void *kmap_local_folio(const struct folio *const folio,
++				     const size_t offset)
+ {
+-	struct page *page = folio_page(folio, offset / PAGE_SIZE);
++	const struct page *page = folio_page(folio, offset / PAGE_SIZE);
+ 	return __kmap_local_page_prot(page, kmap_prot) + offset % PAGE_SIZE;
+ }
+ 
+-static inline void *kmap_local_page_prot(struct page *page, pgprot_t prot)
++static inline void *kmap_local_page_prot(const struct page *const page,
++					 const pgprot_t prot)
+ {
+ 	return __kmap_local_page_prot(page, prot);
+ }
+@@ -102,7 +104,7 @@ static inline void __kunmap_local(const void *vaddr)
+ 	kunmap_local_indexed(vaddr);
+ }
+ 
+-static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
++static inline void *kmap_atomic_prot(const struct page *const page, const pgprot_t prot)
+ {
+ 	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+ 		migrate_disable();
+@@ -113,7 +115,7 @@ static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
+ 	return __kmap_local_page_prot(page, prot);
+ }
+ 
+-static inline void *kmap_atomic(struct page *page)
++static inline void *kmap_atomic(const struct page *const page)
+ {
+ 	return kmap_atomic_prot(page, kmap_prot);
+ }
+@@ -173,17 +175,17 @@ static inline void *kmap(struct page *page)
+ 	return page_address(page);
+ }
+ 
+-static inline void kunmap_high(struct page *page) { }
++static inline void kunmap_high(const struct page *const page) { }
+ static inline void kmap_flush_unused(void) { }
+ 
+-static inline void kunmap(struct page *page)
++static inline void kunmap(const struct page *const page)
+ {
+ #ifdef ARCH_HAS_FLUSH_ON_KUNMAP
+ 	kunmap_flush_on_unmap(page_address(page));
+ #endif
+ }
+ 
+-static inline void *kmap_local_page(struct page *page)
++static inline void *kmap_local_page(const struct page *const page)
+ {
+ 	return page_address(page);
+ }
+@@ -193,12 +195,14 @@ static inline void *kmap_local_page_try_from_panic(struct page *page)
+ 	return page_address(page);
+ }
+ 
+-static inline void *kmap_local_folio(struct folio *folio, size_t offset)
++static inline void *kmap_local_folio(const struct folio *const folio,
++				     const size_t offset)
+ {
+ 	return folio_address(folio) + offset;
+ }
+ 
+-static inline void *kmap_local_page_prot(struct page *page, pgprot_t prot)
++static inline void *kmap_local_page_prot(const struct page *const page,
++					 const pgprot_t prot)
+ {
+ 	return kmap_local_page(page);
+ }
+@@ -215,7 +219,7 @@ static inline void __kunmap_local(const void *addr)
+ #endif
+ }
+ 
+-static inline void *kmap_atomic(struct page *page)
++static inline void *kmap_atomic(const struct page *const page)
+ {
+ 	if (IS_ENABLED(CONFIG_PREEMPT_RT))
+ 		migrate_disable();
+@@ -225,7 +229,7 @@ static inline void *kmap_atomic(struct page *page)
+ 	return page_address(page);
+ }
+ 
+-static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
++static inline void *kmap_atomic_prot(const struct page *const page, const pgprot_t prot)
+ {
+ 	return kmap_atomic(page);
+ }
+diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+index 6234f316468c..105cc4c00cc3 100644
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -43,7 +43,7 @@ static inline void *kmap(struct page *page);
+  * Counterpart to kmap(). A NOOP for CONFIG_HIGHMEM=n and for mappings of
+  * pages in the low memory area.
+  */
+-static inline void kunmap(struct page *page);
++static inline void kunmap(const struct page *page);
+ 
+ /**
+  * kmap_to_page - Get the page for a kmap'ed address
+@@ -93,7 +93,7 @@ static inline void kmap_flush_unused(void);
+  * disabling migration in order to keep the virtual address stable across
+  * preemption. No caller of kmap_local_page() can rely on this side effect.
+  */
+-static inline void *kmap_local_page(struct page *page);
++static inline void *kmap_local_page(const struct page *page);
+ 
+ /**
+  * kmap_local_folio - Map a page in this folio for temporary usage
+@@ -129,7 +129,7 @@ static inline void *kmap_local_page(struct page *page);
+  * Context: Can be invoked from any context.
+  * Return: The virtual address of @offset.
+  */
+-static inline void *kmap_local_folio(struct folio *folio, size_t offset);
++static inline void *kmap_local_folio(const struct folio *folio, size_t offset);
+ 
+ /**
+  * kmap_atomic - Atomically map a page for temporary usage - Deprecated!
+@@ -176,7 +176,7 @@ static inline void *kmap_local_folio(struct folio *folio, size_t offset);
+  * kunmap_atomic(vaddr2);
+  * kunmap_atomic(vaddr1);
+  */
+-static inline void *kmap_atomic(struct page *page);
++static inline void *kmap_atomic(const struct page *page);
+ 
+ /* Highmem related interfaces for management code */
+ static inline unsigned long nr_free_highpages(void);
+diff --git a/mm/highmem.c b/mm/highmem.c
+index ef3189b36cad..93fa505fcb98 100644
+--- a/mm/highmem.c
++++ b/mm/highmem.c
+@@ -61,7 +61,7 @@ static inline int kmap_local_calc_idx(int idx)
+ /*
+  * Determine color of virtual address where the page should be mapped.
+  */
+-static inline unsigned int get_pkmap_color(struct page *page)
++static inline unsigned int get_pkmap_color(const struct page *const page)
  {
  	return 0;
  }
+@@ -334,7 +334,7 @@ EXPORT_SYMBOL(kmap_high);
+  *
+  * This can be called from any context.
+  */
+-void *kmap_high_get(struct page *page)
++void *kmap_high_get(const struct page *const page)
+ {
+ 	unsigned long vaddr, flags;
+ 
+@@ -356,7 +356,7 @@ void *kmap_high_get(struct page *page)
+  * If ARCH_NEEDS_KMAP_HIGH_GET is not defined then this may be called
+  * only from user context.
+  */
+-void kunmap_high(struct page *page)
++void kunmap_high(const struct page *const page)
+ {
+ 	unsigned long vaddr;
+ 	unsigned long nr;
+@@ -508,7 +508,7 @@ static inline void kmap_local_idx_pop(void)
+ #endif
+ 
+ #ifndef arch_kmap_local_high_get
+-static inline void *arch_kmap_local_high_get(struct page *page)
++static inline void *arch_kmap_local_high_get(const struct page *const page)
+ {
+ 	return NULL;
+ }
+@@ -572,7 +572,7 @@ void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot)
+ }
+ EXPORT_SYMBOL_GPL(__kmap_local_pfn_prot);
+ 
+-void *__kmap_local_page_prot(struct page *page, pgprot_t prot)
++void *__kmap_local_page_prot(const struct page *const page, const pgprot_t prot)
+ {
+ 	void *kmap;
+ 
 -- 
 2.47.2
 
