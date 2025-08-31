@@ -4,111 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC01CA1002
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 13:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E98BCA0FF2
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 13:53:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04CE08E0002; Sun, 31 Aug 2025 09:13:00 -0400 (EDT)
+	id 6EB0D8E0003; Sun, 31 Aug 2025 09:53:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3F558E0001; Sun, 31 Aug 2025 09:12:59 -0400 (EDT)
+	id 6C2738E0001; Sun, 31 Aug 2025 09:53:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2E008E0002; Sun, 31 Aug 2025 09:12:59 -0400 (EDT)
+	id 5FF7F8E0003; Sun, 31 Aug 2025 09:53:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C947F8E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:12:59 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5A1791199D8
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 13:12:59 +0000 (UTC)
-X-FDA: 83837092878.29.4712BCA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E272F1A0002
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 13:12:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WMN3gtSJ;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756645978; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 46FC38E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:53:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4B6C16048F
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 13:53:20 +0000 (UTC)
+X-FDA: 83837194560.11.707E0B3
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 787D640008
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 13:53:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756648399; a=rsa-sha256;
 	cv=none;
-	b=xawKsVdqt5fcYR80H5FkgHD6u1RsRf2/+5Lh80snpr9PrH/o0dujsBV3CMaWREKmWs44dC
-	DyYns3TnFYQOkCSJ4adq1swjTYhtddfDCgNLCC5ht8vKMGVvTqPvpY2Tzvj9bO4I/W3qJz
-	2Mpz8nU5rgPIijio+aGoCpupqp/iB0Q=
+	b=nTqLUVhfqFq5ODH2G/w2f5Tsp0GHto99v9PHHPGRokbXp4Bw/q94U4r7suvStCGYBuYZPq
+	aQLr3b/WIh0hGBvT8IaohqjaLiBFQAaDs08xhIu+YmRD8IqI0pl1ITz5X/1KoJlLlJTAHi
+	gKdf52sJ/oTAVe/x8bcNjxsLgL5XIao=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WMN3gtSJ;
-	spf=pass (imf19.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756645978;
+	s=arc-20220608; t=1756648399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ac+Ch9BPhurz6Qm+wFXw5b045ua0/xnlchZZPlAlRmQ=;
-	b=uT2JuBj5S6GbNgsi2A4ZlXff2CNoFS9xpz7qLnWcmaI1gCRHma6hjlgBGirEj4flkGS5m+
-	7fy5o9WBruKCUF8jAaWh8z//XnNXObyOpdH80IU/Iu8xn8zXm1iBi1Sw6e9KvF7jIKrEKn
-	iyA1+DbXz3/2+l5nr0vqVO22uwiHHcc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D1202601AF;
-	Sun, 31 Aug 2025 13:12:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2B1C4CEED;
-	Sun, 31 Aug 2025 13:12:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756645976;
-	bh=SVfffytdJ7l+FJFH+NQ2fAYz/jln+XvhXnCAv4vVciA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WMN3gtSJVf7yZJvH25PHoup176xzR4iH45PFd5WTaZl3P3yIlcpIRkfu5U3ulpn36
-	 IKubxjRKitiVH7tEFGk0EvSWGehRo+3Ze6ErmIyU4uPo4HQlYX4MxtypCD8fFWeHBM
-	 x5lx5bK4qJ+D+MLZSAMBnr8/dS6PtN2tAd1/pTiMLV/guQAHue805z1yqYSMaGWuq1
-	 Airln6Bzle28Ohk7U9LgDEafLkaTwO2O0iuzeLmhUWu5F6SgZbC5gh8KCCHy3wqp2C
-	 Hcv7g6EwqE5WnoDtEeiWuc9ndJyrHz9MWyHpBWe4DPcTvzNQTROEZWINBtgECoxCxA
-	 rqMaDKHjRKGlQ==
-Date: Sun, 31 Aug 2025 16:12:50 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 09/16] dma-mapping: handle MMIO flow in
- dma_map|unmap_page
-Message-ID: <20250831131250.GC10073@unreal>
-References: <cover.1755624249.git.leon@kernel.org>
- <ba5b6525bb8d49ca356a299aa63b0a495d3c74ca.1755624249.git.leon@kernel.org>
- <20250828151730.GH9469@nvidia.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Ke+1ET5v5WZ47m/nzGDzWOM1cN84Qjc4fpASO4QGRM=;
+	b=31bLm3tABsQnwP3qgkV5OfxhxNvH7EX+MTLzHJdfjso6h3KkxYgdctuY799IPsT3kQip/W
+	69QPCaMWKCckQ4hXx32XUbYBJ4L271RHfcIifWKS4YlRrTjy3aKNSQeRNUgpBkxBoGI+uT
+	HhDGG0M55jAvVfMwLpM5knXC1xMoB7k=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 31 Aug 2025 22:53:13 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sun, 31 Aug 2025 22:53:13 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+Message-ID: <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
+References: <aKXeLCr9DgQ2YfCq@yjaykim-PowerEdge-T330>
+ <CAF8kJuM4f2W6w29VcHY5mgXVMYmTF4yORKaFky6bCjS1xRek9Q@mail.gmail.com>
+ <aKgD7nZy7U+rHt9X@yjaykim-PowerEdge-T330>
+ <CAF8kJuMb5i6GuD_-XWtHPYnu-8dQ0W51_KqUk60DccqbKjNq6w@mail.gmail.com>
+ <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330>
+ <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
+ <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330>
+ <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
+ <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
+ <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250828151730.GH9469@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E272F1A0002
-X-Stat-Signature: kimztmjz6c5zbiuhjhh3z5k1jrjwt8fj
+X-Rspamd-Queue-Id: 787D640008
+X-Stat-Signature: bndfyzsd4zmmokbb9abaqxxfs7hdicqx
 X-Rspam-User: 
-X-HE-Tag: 1756645977-739178
-X-HE-Meta: U2FsdGVkX18HZGZfhvrWlp/CYoyWrqi2gDU3O+L5mH3olR/cMeAgmrHmOcH64yrps94EprSgr7L60eVd0rruqKPla4M0X5EOfEMxxY/dc9sIGAnoQzjuVk1wl+IBwO0Wbn9AfV38rVKQU78sZJ5Fc2RMXKxffD2aKkzDHCilWjrtxyKT7NQwiaDSq0o9+/UV3OKxtPfoVu2HDhcFUccrBd19Rtqpq4qZrr9PsxfB+CWuwXFI69PObgj2fwqEqVbnWFGFlWChyLJmU0Qv9efSITmZzvRh5TPonJs7iq5XWt825pH0nTNQeN3cO0xMd5u9zKo0YEJ1YxUnY4t59zZEe4LDV76UV6CzWLu0zMwOzrZDAhML/961xiTYp/K6j3bRWz+J9IG2t2f6FMB3YxxgRdOjCsRpKZdTrN0Ox0eIKgau/K1iaBvxpN2UQlU1cuVYgStzY1/LK2TYVFSSGrbSZKvLbkL9/Mz/p4GCtoIkD651yOAGACgn63X4f0YTgkSnPxeMfa+YKVk+hf/TjHSsBmAqymQZDdk/XHnbRsaT35jBSnZ0jg9VemY0xC0LCvCpBsL8j5Awoe8wkCWaKwqaIjAAidtcp+vnD2xYQpwtzsCOfqKbcsmW8LhEBqFuqJjjAQuAN5vGVfyPy7mqGdk8UvCWKt5g3B4q/cl+3e8W83JN8mnFVxCR7VJSqSZSIVBGT3RJWntrtITJ8PiJHmN2TnEMGaW5PS882IgobwkFRTyZ3KPP4Now5pAKem0ZNGaW3QbnDVSVOD1LZhwlpOaonJFMzVvp3V38R9NnbfnnbAXES2y2hUCGrKygC46DIRFcLPWKg7cB1auDvw/u+dIkDKeArM0I6CCjwSyybZmajK8Qi1Y4go2FqjsSwZZPPxG0Pvb5ayf3vQ68L8z40HOAnHowezSRkXMz9QFYiF6cSebfV3gSzfcuA3iOyMeQDGtIaYgds0TkyobuTh+jpw/
- phC438Ug
- RcL3BE4nZdxAlH40XbLLcR30fAY91sVUAjCFJJb033R6q1pVxR0C/qDR75X3hwCrdW7cQHIGwPLCfW2M=
+X-HE-Tag: 1756648397-754825
+X-HE-Meta: U2FsdGVkX1/D5LNiVjtYJyjbezXeDcUpHfYdN1TxF42KFek+1ynMWJvn+gfZhlJTI0JM7h8ibBfgAvyiQ5YiGMm545a4CKhUcpAAq+RCdlxGMc2bY+zMRy5DJSWpJpISIJXfC6p6M7jVSqN2RQSF6vyMzCOOE+tp0+I2zCXR8XiPrehi+TXdIOxB5DHhJDOX7Mh5y5A1d05YVO5qLv2xiH7cRV5KB6JuVHPrko9XGYjeBGcVcdoj/KeuCHqpcHyQdHPi8JlW7gKWsWVqGfkjkDyV4qRF1QC0n3g8y4IOj8JzF5Cdu/U9NXNfP/v5Ibn/egywT9DBA/B6xkX0jHMMnTjE1rFv4IEgNbB7f64dl0lNItKeG9S34NNGfjdoOpjCiU+xjgqBfrx5BXf6FVM0WT+doJWISds4G25QCT6xBimgDslx6qUck9uMxdmO61h3nKGrpeLtVEA/w4M45BSO5X0P8n0bM9LbVUugu5a5hFbKy1PrjDas6LU3tlotFU3eLF7PN3311qTKdK9qfyXLcGEGi8CtFJZoY5XslIcgY68f1NJtaVoQi1djFX+o2JM6HWpUkdU6GJwjvEZeynSnjJdyLg1F6pcuyFbQ75mj2TB+CFe7mADhEcaJImfGr1HsFi3SQ0Kp16dqd5icRif0xAkulOzXvAq0bzA5KdYyJfrcw7ZPjznNLe2MT+T3BpImAhrSB8DzDeFGyTGYMVBPUEs++wUrsmkIM+Dh+arLY3TUlcpeBubkNXH/SkHzzVGx7FllnDCf4wMXJ1sqOdETnQloI8z/TNJ566BrPXLnrc8+d4GGl4IYjX0Dn7xpOYAbM9+p+9sfDnib/Yt3K7MBmobq50D51ex8JWTsPaHIWCwLXBzjfcuHGG6O7aWzjDl9k+LYXkWBXSHjDIK5JEsSwvAykpr/mTPgDoEBar0TqZF9LfGaDhFoG2e+9MdlJL1Ys89y7cAAPBp9vJLDxpp
+ nheiAi8S
+ Ozy7D1s31nbH7oJOSeO16W5zdPMsVzZEjR/57JCgA8XAztwqDLUSJRvTAS9JHOPpRnVVyKFuCCZiWecQ+fOdHG45NxlmZ6r2wG+W12QdQQh9ccdyqjSyyBncixUDzjV87HeEgpeDJO/HAvSQkYkAabEQzDzETCRRguh3VQuBBnGGD5/aXKGjkUF+cJkR0vT2ZqhYrcwPLqOEZOTj/K6QmCmcJHS50zf9jW/mKhk14WewrWUnDCkgDpxnX3bWfr2hGOopGusMKHAb60exUhyx4z16wb+BGC0ob2jY6WS1P9jF0ZT0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,71 +101,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 12:17:30PM -0300, Jason Gunthorpe wrote:
-> On Tue, Aug 19, 2025 at 08:36:53PM +0300, Leon Romanovsky wrote:
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Extend base DMA page API to handle MMIO flow and follow
-> > existing dma_map_resource() implementation to rely on dma_map_direct()
-> > only to take DMA direct path.
-> 
-> I would reword this a little bit too
-> 
-> dma-mapping: implement DMA_ATTR_MMIO for dma_(un)map_page_attrs()
-> 
-> Make dma_map_page_attrs() and dma_map_page_attrs() respect
-> DMA_ATTR_MMIO.
-> 
-> DMA_ATR_MMIO makes the functions behave the same as dma_(un)map_resource():
->  - No swiotlb is possible
->  - Legacy dma_ops arches use ops->map_resource()
->  - No kmsan
->  - No arch_dma_map_phys_direct()
-> 
-> The prior patches have made the internl funtions called here support
-> DMA_ATTR_MMIO.
-> 
-> This is also preparation for turning dma_map_resource() into an inline
-> calling dma_map_phys(DMA_ATTR_MMIO) to consolidate the flows.
-> 
-> > @@ -166,14 +167,25 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
-> >  		return DMA_MAPPING_ERROR;
-> >  
-> >  	if (dma_map_direct(dev, ops) ||
-> > -	    arch_dma_map_phys_direct(dev, phys + size))
-> > +	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
-> >  		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
-> 
-> PPC is the only user of arch_dma_map_phys_direct() and it looks like
-> it should be called on MMIO memory. Seems like another inconsistency
-> with map_resource. I'd leave it like the above though for this series.
-> 
-> >  	else if (use_dma_iommu(dev))
-> >  		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
-> > -	else
-> > +	else if (is_mmio) {
-> > +		if (!ops->map_resource)
-> > +			return DMA_MAPPING_ERROR;
-> 
-> Probably written like:
-> 
-> 		if (ops->map_resource)
-> 			addr = ops->map_resource(dev, phys, size, dir, attrs);
-> 		else
-> 			addr = DMA_MAPPING_ERROR;
+> Yes, I slept on it for a few days. I reached a similar conclusion.
+> I am happy to share my thoughts:
+> 1) FACT: We don't have any support to move data from swap device to
+> another swap device nowadays. It will not happen overnight. Talking
+> about those percentage allocation and maintaining those percentages is
+> super complicated. I question myself getting ahead of myself on this
+> feature.
+> 2) FACT: I don't know if any real customers want this kind of
+> sub-cgroup swap per tier max adjustment. We should write imaginary
+> code for imaginary customers and reserve the real coding for the real
+> world customers. Most of the customers I know, including our company,
+> care most about the top level CGroup swap assignment. There are cases
+> that enable/disable per sub CGroup swap device, in the QoS sense not
+> the swap max usage sense.
+> I think this will be one good question to ask feedback in the LPC MC
+> discussion.
 
-I'm big fan of "if (!ops->map_resource)" coding style and prefer to keep it.
+Great—looking forward to it at the LPC MC.
 
-> 
-> As I think some of the design here is to run the trace even on the
-> failure path?
+> > At this point I feel the main directions are aligned, so I’ll proceed
+> > with an initial patch version. My current summary is:
+> >
+> > 1. Global interface to group swap priority ranges into tiers by name
+> >    (/sys/kernel/mm/swap/swaptier).
+> I suggest "/sys/kernel/mm/swap/tiers" just to make the file name look
 
-Yes, this is how it worked before.
+Yes, I also think "/sys/kernel/mm/swap/tiers" is a better fit.
 
-> 
-> Otherwise looks OK
-> 
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
-> Jason
+> different from the "swap.tiers" in the cgroup interface.
+> This former defines all tiers, giving tiers a name and range. The
+> latter enroll a subset of the tiers.
+>  I think the tier bit location does not have to follow the priority
+> order. If we allow adding a new tier, the new tier will get the next
+> higher bit. But the priority it split can insert into the middle thus
+> splitting an existing tier range. We do need to expose the tier bits
+> into the user space. Because for madvise()  to set tiers for VMA, it
+> will use bitmasks. It needs to know the name of the bitmask mapping,
+> I was thinking the mm/swap/tiers read back as one tier a line. show:
+> name, bitmask bit, range low, range high
+
+This part relates to my earlier point on runtime modification. My
+intention was to only allow setting the tiers globally, and to align
+bitmask with priority ranges. For example, an input like:
+
+  ssd:100, hdd:50, network_swap
+
+would translate into ranges as 100+ (bit0), 50–99 (bit1), and 0–49
+(bit2).
+
+From your description, I understand you are considering allowing
+additive updates, insertions and letting bitmask differ from the range priority. Is
+that correct? In that case we probably need a way to distinguish
+between “add” and “reset”. Personally, I feel supporting only reset
+semantics would make the interface simpler, while still allowing add
+semantics when the full set is provided again.
+
+> > 2. Slow path allocation uses bitmask skipping; fast path uses per-cpu
+> >    tier cluster caches.
+> If the fast path fails, it will go through the slow path. So the slow
+> patch is actually a catch all.
+
+Do you mean that if the cluster does not belong to the desired tier in
+the fast path, it will skip and then fall back to the slow path? If so,
+the slow path would need to avoid inserting the cluster back into the
+cache, otherwise processes with a global swap view may end up using the
+wrong tier device(which must be referenced firstly assumed)
+Also cgroup which is tier set experience performance degradation 
+because, there is possibility to try to alloc swap on slowpath most of the time.
+Wouldn’t this have performance implications?  
+
+I was thinking that maintaining per-tier per-cpu cluster caches would be
+simpler. Then each tier manages its own cluster cache, and we only need
+an array of per-cpu caches of size “max tiers”.
+
+> > 3. Cgroup interface format modeled after cpuset.
+> I am not very familiar with the cpuset part of the interface. Maybe
+> you should explain that to the reader without using cpuset cgroup as a
+> reference.
+
+The similarity with cpuset is only in the text format. Like cpuset.cpus
+uses a comma-separated list and dash ranges (e.g. "0-4,6,8-10"), the
+swap tier interface would use the same style but with tier names. For
+example:
+  echo ssd-network_device,some_device2 > swap.tiers
+This makes it easy for users to read and modify at runtime, and keeps
+the interface consistent with existing cgroup controls.
+(Reference: https://docs.kernel.org/admin-guide/cgroup-v2.html, Cpuset Interface Files)
+
+> > 4. No inheritance between parent and child cgroup as a perspective of QoS
+> In my original proposal of "swap.tiers", if the default is not set on
+> this tier, it will look up the parent until the root memcg. ...
+
+My current thought is that it might be simpler to avoid inheritance
+entirely. Since this is a QoS interface rather than a resource limit
+mechanism, inheritance semantics may not be the best fit. I would prefer
+to always override based on what is explicitly set, and otherwise fall
+back to global swap. For example, input like:
+
+  swap.tiers = ssd,network_device,some_device2
+
+would always override the setting directly, without any parent lookup.
+
+> > 5. Runtime modification of tier settings allowed.
+> Need to clarify which tier setting? "swap.tiers" or /sys/kernel/mm/swap/tiers?
+
+My earlier comment was about allowing runtime modifications
+to the global /sys/kernel/mm/swap/tiers.
+
+> > 6. Keep extensibility and broader use cases in mind.
+> >
+> > And some open points for further thought:
+> >
+> > 1. NUMA autobind
+> >    - Forbid tier if NUMA priorities exist, and vice versa?
+> >    - Should we create a dedicated NUMA tier?
+> >    - Other options?
+>
+> I want to verify and remove the NUMA autobind from swap later. That
+> will make things simpler for swap. I think the reason the NUMA swap
+> was introduced does not exist any more.
+
+Per your suggestion, the question of whether NUMA autobind 
+is needed can be addressed in a dedicated discussion later. 
+I look forward to it. :)
+
+The NUMA autobind removal work.. possible directions could be:
+  
+  - runtime toggle (default off),  
+  - keep default on but gradually flip to default off,  
+    eventually remove entirely.
+  - remove it. entirely.
+
+Not a proposal —just a thought 
+
+In my current patch,
+tier and NUMA priorities are made mutually exclusive so they cannot be set together. 
+
+> > 2. swap.tier.max
+> >    - percentage vs quantity, and clear use cases.
+> >   -  sketch concrete real-world scenarios to clarify usage
+>
+> Just don't do that. Ignore until there is a real usage case request.
+
+Agreed. It is better to defer until we see a concrete use case.
+
+> > 4. Arbitrary ordering
+> >    - Do we really need it?
+> >    - If so, maybe provide a separate cgroup interface to reorder tiers.
+>
+> No for now. Need to answer how to deal with swap entry LRU order
+> inversion issue.
+
+Right, if we want to support this usage, your point about LRU order must
+definitely be addressed first.
+
+Best Regards
+Youngjun Park
 
