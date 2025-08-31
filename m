@@ -4,122 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C0ECCA0FF2
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E7AECA0EFF
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:16:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A8D36B0023; Sun, 31 Aug 2025 05:14:03 -0400 (EDT)
+	id 192EA8E0002; Sun, 31 Aug 2025 05:16:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75A736B0024; Sun, 31 Aug 2025 05:14:03 -0400 (EDT)
+	id 16A4B8E0001; Sun, 31 Aug 2025 05:16:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 647796B0025; Sun, 31 Aug 2025 05:14:03 -0400 (EDT)
+	id 0A7868E0002; Sun, 31 Aug 2025 05:16:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D54C6B0023
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:14:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C69AD8511C
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:14:02 +0000 (UTC)
-X-FDA: 83836490724.23.BE2BDAB
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0E3B34000C
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:14:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oLwQRtny;
-	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E25ED8E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:16:13 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 883B01403B9
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:16:13 +0000 (UTC)
+X-FDA: 83836496226.16.D953330
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C3E2A40003
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:16:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhkISgE1;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756631641;
+	s=arc-20220608; t=1756631772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wBznXUHFnxO7JFFRA+cSHz8XvSsYLiyW87D5PciK1Do=;
-	b=HVtT4ku3lvIwhTnrECmbY1T9zf1oXXUslhOXOxD+WTV6aE3jDepuCmuLbH9X9iG+eSuRCc
-	EdLE19pAxerXu7u9mH7MZ5ZPWu6zQ+Jx9PiFSKOopN9NXnb6fSPM8632CvvVGSGQufVd4k
-	FWwkYIe8vyXneigvYbfZ1KxO7jCQtno=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756631641; a=rsa-sha256;
-	cv=none;
-	b=CJWfRZbMvitFurxcPucbPJLX37zbQ9oYezVPU5Y+HEOzRYOEwsIb+npDIc3pCtE8nzPZVI
-	t5JxGex3R6FyDFyBMxfZL6aQuTPURsE5+panivCN/lRueRYLJ3IW8yuXpmHJrBfZppOtMM
-	Y0STG0vlzVmoN/JlgrUSn3OOObgT8p4=
+	bh=oxcxPXSaR7GXouO7GiVgvJgyIAW9uNEd7VKT1zcNZkI=;
+	b=LP6k8TTYwYlaN8KHB6DkgZyN7upANTceWNxbvC2lJOJKpMPtE0kLCMTjO+ZxBt//r3pMlM
+	xh1t0pPMNksUsml3qAH+JHh0kdUWh/dhxOgdmO3pwI2pRLsV31YDn0TbH6Mh7lKTrsY+QB
+	fJoPtfGl4mF+eEW3GZCOe0Zx8lSQmOw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=oLwQRtny;
-	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-71d603acc23so26280537b3.1
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:14:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756631640; x=1757236440; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wBznXUHFnxO7JFFRA+cSHz8XvSsYLiyW87D5PciK1Do=;
-        b=oLwQRtnyVpSzaAy6ErfZV/ILudeSzp8krt+UCsAm489VqmqusKiaz8IgHw2N3Rkhz4
-         3wMC5KT3ddLOGmZlxnR/86GFGQVYxQFcJse0asa6GYC4TXbeipd7G8auwxWxo2Yylpx2
-         RyNRwvjGfpoYFnanBHQn9DVGvbylm31ymjHda5WcRn17NvxJTiOsOkrV1tG5WK1OtZgn
-         5K+i7eUwYKg/axz9nDVBy5N0ox0LexFS92TRxCAQHtJ4Snv4SUA0aZIemn2OyD9ckMNv
-         4/IqY+H0hGx2n+vKkXV6+iFmj3xxfTcjhMWaexKDGmymjkv69XqruGxNAdS1YINdhobK
-         +eyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756631640; x=1757236440;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wBznXUHFnxO7JFFRA+cSHz8XvSsYLiyW87D5PciK1Do=;
-        b=VnyW+P8VaJ4sMfzgxSzhRWz5Lbg+yZu3S0Lmf8Z6K0lMM9RSf1Et13Lopxz6GIQGSk
-         7AYzcPhMI0SI5zHlHbQjDa8gKyFOSRXE2Yg+fZsFmAKndOs8YgY3LCPIwWEH6BJT37cN
-         5QjQkqDA1wG3kq8S2rC8UHfr7t8nsAT7cSl4dVP9Qo7EYtezdH1SWXNHnEkJJ14Y8jii
-         CuXht2/r61NORfwEPqNFY8iMMyZpANbE2w7NLuw6o7HTxBf3lLtImRGvU++u0FXv4zZJ
-         k8LsOKcRmW+uLJRa8W+0piPZ7wncboWg7DHHdvPkQS5ezqC4+8nj4RF4oI5wKNiN497k
-         CCng==
-X-Forwarded-Encrypted: i=1; AJvYcCXyb4O5wnidWAJx/ZfFDLx5wX4yEGV/8L8cl7KbcD4nN88mKjjSPUJ7HNCrmLr6PRnqxEUNslRWiA==@kvack.org
-X-Gm-Message-State: AOJu0Yy+YBXS2dJlyTuD+YRd2URqdKkIidwZm2jSU5x5eAZvsYjyUGbU
-	cdCRte/jw0wRDGW8KYEMrGXatIWbPA9XRu/VHeNhqFFe1FeNatIeVwLwue7Ze5cSwQ==
-X-Gm-Gg: ASbGnctbRZQkKmbQyAsgSfY53cW1dKEn9h05r1jxpHG7/64thcAUhpftjZ2UpRFVARI
-	YuHVf5lzGzFFVJqmNbmqJ1ZlVrI8yDeRM1GmOZ7GwQaQ0XAlB62X/4dNcF3PDgFap9KF/bJ559Y
-	M2x9nQvdRQCd8V8GRn+JEziezsrDVi3aEvd2A8DHnwxWBpCDGD3IuIJpqIdC2p2DU1s/mLMsKqL
-	hr7kY7Mar2j1L/UVKngEqjVCv5Lz5BK1mE+r7c1DGLgf0Ei9Nyx5SoTyCeWs8fvrTxrxJnhH7aS
-	2ng7au17GRS+BjclZueYXvwPM9lfbSYIcUTDBquJoZgtngmG/0LtKBSSOegyN8y16ijvsdDY92u
-	ElhEWwmV4YTNhoL85IOb6eOWuapGwcsX4N90b/LUWhMtF1IgyUzGc2nbKHz4hQFgl63TvYUqRJW
-	z7Xp8wT3zvWjfFN2xHjQBzCDpKVd7kbU9as4U=
-X-Google-Smtp-Source: AGHT+IF4yPQEPLuQmGbE0pb+TIdmkIJQyKnxChThhXPpgreHU7hHADg7CNY3Cer/6aWfeZDp+UC4KA==
-X-Received: by 2002:a05:690c:6908:b0:721:369e:44d8 with SMTP id 00721157ae682-7227657dc4emr49185577b3.51.1756631639950;
-        Sun, 31 Aug 2025 02:13:59 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7227d67377esm7100867b3.33.2025.08.31.02.13.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 02:13:58 -0700 (PDT)
-Date: Sun, 31 Aug 2025 02:13:55 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>, 
-    Shivank Garg <shivankg@amd.com>, Matthew Wilcox <willy@infradead.org>, 
-    Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>, 
-    Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-    Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>, 
-    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-    Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
-    Alexander Krabler <Alexander.Krabler@kuka.com>, 
-    Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>, 
-    Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-    Axel Rasmussen <axelrasmussen@google.com>, 
-    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-    Konstantin Khlebnikov <koct9i@gmail.com>, linux-kernel@vger.kernel.org, 
-    linux-mm@kvack.org
-Subject: [PATCH 5/7] mm: Revert "mm: vmscan.c: fix OOM on swap stress test"
-In-Reply-To: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
-Message-ID: <bd440614-3d2c-31d6-1b8f-9635c69cef7c@google.com>
-References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhkISgE1;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756631772; a=rsa-sha256;
+	cv=none;
+	b=hf/hdiV/ZZw6L4yyNWGD17nJoqYgftfRSa2i98RSSpIEiy8fxwnQEY+yq4FfBUjbcAWgl8
+	x0vDZZ2SO7/HlK5MMWtqqkmXUypMBkjiL1YZSI5Bh8LEfFMN00cdC+Nuoym4slCuP4wi42
+	POH5oW97UWdC9VvS2MHhvmdM53RLM+8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5FFD244244;
+	Sun, 31 Aug 2025 09:16:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD0EC4CEED;
+	Sun, 31 Aug 2025 09:16:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756631770;
+	bh=OH6tNMeQRJO/TBFcwED8ihXqbFs+64VR+2qjljjKpp8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mhkISgE10TC6vkLlgPmdARGiEGm4DucEnVsn9cwfDa5FZq6FDxyOmHJ1DoY759JN/
+	 B95rBjwrcEBelWiruplqCLXAlwUbsKOfgRn+Nyf4GzYnlDazV9ryjvGbCXQrRhDGCy
+	 qyel8HNZsy+4GAPAGJwTWUbGCXeG0a3Blp1vhAQEAltyMGwJgmEbllzG4sVtUX8Bzc
+	 mS2t6TMsHIhY8oV2wX/4qmKc0P8QsANxP9QehkHQqhMeBxOg8o3LRhzwObJ6GYR7Xo
+	 bd7zP14o+gkazOBiUqnNtTv5lN3NPmDGZFLjS4i7TaDA3oDC48BMton0TxjEo3Xh96
+	 HtDP/5jeOKaHw==
+Date: Sun, 31 Aug 2025 12:16:04 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: mawupeng <mawupeng1@huawei.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: ignore nomap memory during mirror init
+Message-ID: <aLQS1ABjAaZZwwoW@kernel.org>
+References: <aHj8mfecDhJJZW1Y@kernel.org>
+ <8d604308-36d3-4b55-8ddb-b33f8b586c1a@huawei.com>
+ <aHzjOxg_oPp06blC@kernel.org>
+ <CAMj1kXGKGXeKGKWT3VzkBtACtjFyz8ntiyoTU26DA4aR6mi88g@mail.gmail.com>
+ <aH9JMT93itrztZ+m@kernel.org>
+ <113b914f-1597-41ca-b714-7ea048c3c6df@huawei.com>
+ <aJM1RFjpQxQzfASv@kernel.org>
+ <CAMj1kXHg-xB8KxkgL1FYu8PpBVqXUsR7wMxUXwfUXm=BfuUHGg@mail.gmail.com>
+ <aJhU_a6NeUKeu4rY@kernel.org>
+ <CAMj1kXGXYTdrJMdUVB1Mc-uF3Vk5r+P-Sq+GGoBA3S5H3NkeUQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGXYTdrJMdUVB1Mc-uF3Vk5r+P-Sq+GGoBA3S5H3NkeUQ@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C3E2A40003
+X-Stat-Signature: n5azbh8qdk6qpstpmgqzgd1e6cag1hhp
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0E3B34000C
-X-Stat-Signature: 6myhdcdbkff9w5km96zsmc73x9xhizxw
-X-HE-Tag: 1756631640-764241
-X-HE-Meta: U2FsdGVkX18wUNb2LBio/GKEt4oujnvhqzHOmxjG2zEdbLYne4+TweryQVPv8fe56q3B1b61circA/0iRaIgDgKEgc9FOwhwCRBvcWTiwXLLcvzKndNdiIcPT2Lei8pJKeuYzDfNCYBNenUZJ5sarJRaymaAvHOyJuc6TNGBCsdiOTMO5P92+7I36eYkjIaVBfiweeHIaixctz9L6SkRGO1qKwrSOoejh2/7EAWqr42dP7N+kuFwnr8A7lGGEVgHO4wVEkqaQrggZqvoZLTgHgpYydhxX0Wf0wnhS6yNO8A2vtpTQi2VNxMpwyppNZG5rjbq5jyxIplf3CZ+dTr6p8U3GxQ58qobmJ+RkFpwv2OM6ILA/U7g/TTLy71NDPERDmH02MgnxhZ6tX2AxAP79CzL2kJ4orjW8uUU/c0QKAuJd4HZ2ZkmYiCTxADjBzo5j2L+0/FtMDo9TqW35VXsptUuaMS8t1GJdn0eW9DTqggkdC5gSn7+lpXi3sjobqp8ZO8vIYeMDS4CVIjNfo6hjCD2UBT8fDD++d9Gp+2FORmrc13+9JkNzC3jNZtpninoh15JQ4dGgEWRYaEV0DkVK5h5QrisPTtT2g3cRvEHpDbCzBP/8dVnYsMTz5yiDn7Xc0JGsZE/2OdJuofJlzWds+JeVd5CJA4MFPHl12ISjl8YPaa3daIk0CHvFxqu/gdAYunKwHI3E239EJEnQrdu3uXEIUpvJHUWS9W2OcOkmEXObHZJp9mukUnXFbljD3KALZ1okPGoSmqY1WfVW+RmyxTLAuYUlktfQwL2/ChcT1d8bzWkn6CCEuGV/gEnZ7zuDapRzDJh+4Rl8YdF977Tjuu3HGRqzfMqwCH4zEt/Hi8Vco8rnYvzyyNqBQ/JSI4rAxoBgvOYYu8aNHa4y4TJ0bOZZv+PHe9GAMz6tekcRnrIDDJeyDvNDbecdnlIeS8qLnHy78wU4LiH7M0ePdX
- 2+Ywml3y
- azGh8Mc5UVR/Gwo6npoLKEkJxwuf2bhQ0u5M/xuwu+iAwqncQJmFYNO1qOgAP/oz2WiuNFMw8Ff4oJVCivORvHcxPwdpDQb4qSqGY+Beo3jRHiKhIuG1YPPIKuWTCrmFjCYP/1W5Lsnab/65OXtpckN1qe1QDAoCoOGbISo9QxCzpcEV8j3ryvbKuw1ak6JhVzPp4BLwCFTRtZTVzSRYlq8sl87wjv0a3y41sMMJ9g5f/SwfHuyzEwEAU/rrIdtyCncVakftLcuJbKT0Blke32N3mBxg6mrB3EUTTS58iT+2qawizsABJY0HHhxjqw++ZkXcv1KsutejR4gI=
+X-HE-Tag: 1756631771-520710
+X-HE-Meta: U2FsdGVkX19eB+K2M7cC+DGcvCcWBwF7noYEOdLefPz8I/YovvkvtYmV3kKgW1oQEtmaQPmPBn/ucjodCQgMSUXnSJjyF8eywbEB9YR/3OLg6Dm7MZbFHazq7gqlExXC5BRE2cFvIy+Y5j34SSey2uyqTqlrGt7Fp2jpCMI0OnJ/0LWiSiW8wbZHwp/4LfzPF0Smke8NEm712JVn0MLIAHuDryX03RYO7lclEiYzYcmCLpHKvkeSVs6njN+DfPydLKaX84CZNwIaqX7hNGqiOSBFM7BsWJyyYc14k0aUXLVwJ5ZhqUdCKxc329ZJbu/g6S6JLz+PiOMfduy07IW3IS+Q9+tgzENWnnphpjfLXdGoFFpoQvqEAAXNdyw54wDUsHNmH0eQVHxZSya52LKTx93oVFfNGf5ykmD4gPnwo0VIc3DQE5L7osQnE/vpX83hgf0veMikaduL66msn+hWSgQ0nGyA9FmeAYBER0w2YInzCHquluUmmGzrIYPB3DjYVJaPoCRuO8l1tdQbFaCj/sBxJVOuYK968W+s3uoP5DbQnvnRN+OEm2JyY1USaEkHSveZYKAhYgNcJ/Luivfrw4tg7yR/R767VEwZ/Ud5xdFVpEJd9y8xKaFx5P4lL11fn8Mmw1hknGiK0zGXzzAiqPKmQouBqVb2Lkq05/TnjdYTyfwLErxSvZ7665bcYemC2hRco6WZKHrGq8xJpUTFbJbDbuoObxz0FKtXWvNYcU+2GPXRJ4H7C8ozqrfHfarK0aV4ee1WIlVjCIhu5ayZ7g+lrUfeOpgYly6WLQ2iiKhXTV15OKCxLoNr2BpZoiGA4Zhw3PNzDdJMK9yZrV98CnV2rmzEY3Fkh0g3wdfN/bEROP1el5rgo57wvtIbcY+DMBRW3ZIJO7TJzL3WZAZnUjYgGDGonOP75wIYdhXlHCAd4ZxAIVrvEoZCHRa73+p8eNAJqHl/78mLGOUKCnQ
+ ubXaSLA5
+ CExDiMNUQb0+yr+bn0JtPPsriYVyC7ODW0km3aVV6riTflJGwWCmNLmbspEdHFoNjJzLyKDbd9NYvYrwcu45Xe7ZO0bx09ExBqwEpyWSOybjxy0bYcF0xDR1yMYRTmbIKDeR+478cCiTGtOeiVX+dC7+NTjP2zc7TFpOOPCkGUF1IJWMwUvcBUG8x8U+jhZG+m2hSBILlzakSAHlXx4z8JDR7fgiBWNLaBW0zASR+PbqLwjZfqWQfMj66WaOGAZfexxAffJghNwRAD0YKYb7+uqJJ7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,29 +100,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This reverts commit 0885ef4705607936fc36a38fd74356e1c465b023: that
-was a fix to the reverted 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9.
+On Fri, Aug 29, 2025 at 06:47:32PM +0200, Ard Biesheuvel wrote:
+> On Sun, 10 Aug 2025 at 10:15, Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > On Sun, Aug 10, 2025 at 03:14:03PM +1000, Ard Biesheuvel wrote:
+> > > On Wed, 6 Aug 2025 at 20:58, Mike Rapoport <rppt@kernel.org> wrote:
+> > > >
+> > > > On Tue, Aug 05, 2025 at 04:47:31PM +0800, mawupeng wrote:
+> > > > >
+> > > > > On 2025/7/22 16:17, Mike Rapoport wrote:
+> > > > > > Hi Ard,
+> > > > > >
+> > > > > > On Mon, Jul 21, 2025 at 03:08:48PM +1000, Ard Biesheuvel wrote:
+> > > > > >> On Sun, 20 Jul 2025 at 22:38, Mike Rapoport <rppt@kernel.org> wrote:
+> > > > > >>>
+> > > > > >> ...
+> > > > > >>>
+> > > > > >>>> w/o this patch
+> > > > > >>>> [root@localhost ~]# lsmem --output-all
+> > > > > >>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
+> > > > > >>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   67584-67839    0 Movable
+> > > > > >>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   68096-68607    0 Movable
+> > > > > >>>>
+> > > > > >>>> w/ this patch
+> > > > > >>>> [root@localhost ~]# lsmem --output-all
+> > > > > >>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
+> > > > > >>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   8448-8479    0  Normal
+> > > > > >>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   8512-8575    0 Movable
+> > > > > >>>
+> > > > > >>> As I see the problem, you have a problematic firmware that fails to report
+> > > > > >>> memory as mirrored because it reserved for firmware own use. This causes
+> > > > > >>> for non-mirrored memory to appear before mirrored memory. And this breaks
+> > > > > >>> an assumption in find_zone_movable_pfns_for_nodes() that mirrored memory
+> > > > > >>> always has lower addresses than non-mirrored memory and you end up wiht
+> > > > > >>> having all the memory in movable zone.
+> > > > > >>>
+> > > > > >>
+> > > > > >> That assumption seems highly problematic to me on non-x86
+> > > > > >> architectures: why should mirrored (or 'more reliable' in EFI speak)
+> > > > > >> memory always appear before ordinary memory in the physical memory
+> > > > > >> map?
+> > > > > >
+> > > > > > It's not really x86, although historically it probably comes from there.
+> > > > > > ZONE_NORMAL is always before ZONE_MOVABLE, so in order to have ZONE_NORMAL
+> > > > > > with mirrored (more reliable) memory, the mirrored memory should be before
+> > > > > > non-mirrored.
+> > > > > >
+> > > > > >>> So to workaround this firmware issue you propose a hack that would skip
+> > > > > >>> NOMAP regions while calculating zone_movable_pfn because your particular
+> > > > > >>> firmware reports the reserved mirrored memory as NOMAP.
+> > > > > >>>
+> > > > > >>
+> > > > > >> NOMAP is a Linux construct - the particular firmware reports a
+> > > > > >> 'reserved' memory region, but other more widely used memory types such
+> > > > > >> as EfiRuntimeServicesCode or *Data would result in an omitted region
+> > > > > >> as well, and can appear anywhere in the physical memory map. There is
+> > > > > >> no requirement for the firmware to do anything here wrt the
+> > > > > >> MORE_RELIABLE attribute even though such regions may be carved out of
+> > > > > >> a block of memory that is reported as such to the OS.
+> > > > > >>
+> > > > > >> So I agree with Wupeng Ma that there is an issue here: reporting it as
+> > > > > >> mirrored even though it is reserved should not be needed to prevent
+> > > > > >> the kernel from mishandling it.
+> > > > > >
+> > > > > > But a check for NOMAP won't actually fix it in the general case, especially
+> > > > > > if it can appear anywhere in the physical memory map. E.g. if there's an MR
+> > > > > > region followed by two reserved regions and one of these regions is not
+> > > > > > NOMAP and then MR region again, ZONE_NORMAL will only include the first MR
+> > > > > > region.
+> > > > >
+> > > > > What kind of memory is reserved and is not nomap.
+> > > >
+> > > > EFI_ACPI_RECLAIM_MEMORY is surely reserved and it won't be nomap if it can
+> > > > be mapped WB. I believe other types may be treated the same, I don't
+> > > > familiar with efi code enough to tell.
+> > > >
+> > > > > > We may want to consider scanning the entire memblock.memory to find all
+> > > > > > mirrored regions in a and than make a decision where to cut ZONE_NORMAL
+> > > > > > based on that.
+> > > > >
+> > > > > AFICT, mirrored memory should always locate at the top of numa memory
+> > > > > region due the linux's zone management. there maybe no good decision
+> > > > > based on memblock.memory rather that use the the first non-mirror
+> > > > > usable memory pfn to cut.
+> > > >
+> > > > Thinking out loud, if nomap is not usable to Linux why would efi add it to
+> > > > memblock.memory at all?
+> > > >
+> > >
+> > > Because the region has RAM semantics and not MMIO semantics. This is
+> > > important on architectures such as arm64, where mapping RAM with
+> > > device attributes breaks cache coherency.
+> >
+> > Right, such regions should not be mapped. But this can be achieved with not
+> > memblock_add'ing them at the first place, like e820 does for example.
+> 
+> How do we distinguish RAM from MMIO in that case, if neither can be
+> found in the memblock list?
 
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
----
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Maybe we need a list for MMIO regions then?
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a48aec8bfd92..674999999cd0 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4507,7 +4507,7 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
- 	}
- 
- 	/* ineligible */
--	if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
-+	if (zone > sc->reclaim_idx) {
- 		gen = folio_inc_gen(lruvec, folio, false);
- 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
- 		return true;
 -- 
-2.51.0
-
+Sincerely yours,
+Mike.
 
