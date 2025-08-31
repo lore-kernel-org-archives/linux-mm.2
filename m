@@ -4,105 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69BE1CA0FF2
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 20:07:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41766CA0FE8
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 23:37:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A57988E0007; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
+	id 099418E0002; Sun, 31 Aug 2025 19:37:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2EFA8E0001; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
+	id 071448E0001; Sun, 31 Aug 2025 19:37:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96BCB8E0007; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
+	id EEFF98E0002; Sun, 31 Aug 2025 19:37:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 850938E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F9A213AA5F
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:09 +0000 (UTC)
-X-FDA: 83838136578.28.D0519EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4ED1B14000A
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MS8LM6Br;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756670827; a=rsa-sha256;
-	cv=none;
-	b=H0idVcOTQaNLVhPZH7EtdpEyHL8ASGK13W31ysj+8q8JVpsZwf/2yL565vawi+lmwyvvGP
-	X+ZYulTgI1Ois39Jwkr5yxdRqoP8GaphzILUTC8uTpYr6sRvdA8xHdXfw9Kq766KKWQNdg
-	Hjl4/nvrP2PJwztwk2vQcoHyUgTgGQE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MS8LM6Br;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBAAA8E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 19:37:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5E05A1DDF8E
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:37:33 +0000 (UTC)
+X-FDA: 83838666786.19.1F5CE25
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 226401C000E
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:37:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KhiP7pYP
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756670827;
+	s=arc-20220608; t=1756683451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wsnQHQtOjEsrk5LwzayKHsCA53X5jYtCABISMzMGcpY=;
-	b=MjhxdLOhDVTmL7wk+eww1zJRfmyRJq2UpVxfzBeYR6Eg7NkFFE60Z4Ws1qexf2ePH0MwTC
-	w6wlfEKWkBKOePAc8ygnD2qalMN9V3byE88yazV07BjJYLlipGJ/QnByAEvase1xrbZzKt
-	TPSNlyh7hSaboiHgiBNq7MuH8qeHuK4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6726F601B5
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3680FC4CEF9
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756670826;
-	bh=wsnQHQtOjEsrk5LwzayKHsCA53X5jYtCABISMzMGcpY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MS8LM6Brjp3YWCX6+0c7otTaxb9ewRKJ3502T+vaFkPzThUGd3n23tlgj8iFbtQeI
-	 oQcBBlO4sbGq9ksfwWjUJWV9BNLJ7TFkNVp6+G81ThOSz7oj4IC9b6y6YvlGVY0lpn
-	 4fJNgOUtr2lamLh08xY3SusSDz+OJoUCBt12to59Qie7g9Qf9XllySPSxP9JY6nESi
-	 5x7uQKuLeZRmFO71B+4RzB2DDKt/KpsEl5DTQj50eTrtrMbBN7Fhrzb57yggDKKNxr
-	 tC/WJEWT3rS+uNG3kGNYRdHx3qh8Wyi5NBI5E7fhCbgG1IWZk6WJrFVGG6loD5UUmG
-	 gGXwjn1gnWagQ==
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-71d60157747so28091667b3.0
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 13:07:06 -0700 (PDT)
-X-Gm-Message-State: AOJu0YylG1/vdyV9WCejpMGPxJp6gFQ8CTHdxO2L2ZXJox6RvJUifr4T
-	49O7//j72kv8PNeaJGnSypfKreNmFDZgw6GPyKOffYvau1EA1CIEjSL3z0dKC1JcnsAhRxp1gOw
-	cbOUFAsdDSLynpKXAdnJOSD/6FBXiU0Pa0BSa+tmMyw==
-X-Google-Smtp-Source: AGHT+IG3GaqCHReEFS8Kk0O0HYcyQ3az2zl3VkJpMwaXeWGUAfnqR1acr2/2mqUAcOK53WHBMmNZ7sBWNWn2cZcW6zA=
-X-Received: by 2002:a05:690c:6704:b0:720:378:bed6 with SMTP id
- 00721157ae682-7227655f628mr72942507b3.41.1756670825451; Sun, 31 Aug 2025
- 13:07:05 -0700 (PDT)
+	bh=5/X6IMPWa31K/zfx8lt7hgWlCVhbr2OzJf3fLghYiYA=;
+	b=jYR6A6eFjW5Qoh9yqGm1vc5qqXrYtjz7TdR0ZuhlkW4KhtJNHPlyuakSUEDhYh/6wNotq0
+	NaUWLRtOoX8eCxeuz0VfwltL0vaS+9KObvmZJ1zBZegfy52k1x8PkyRrjQCOntDGonClmc
+	H796drSsjYW7M/BYWRtKQRN6znr2u3I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756683451; a=rsa-sha256;
+	cv=none;
+	b=c03e4D/FInAZV4Lq5ykJtCF6H066tCkP45XzBA8Qjtfyv6bq4Xatu8gT5f2f4YjNhWX8m8
+	HmSEUrqn3lBPDUTygNHcfj91A+f0/fCX8952yC8XIQbVsY+DvZWaQ0fXTadyNMThrGeNe1
+	6r96PxbGELwbVkHcmDzP7YdA7AhgWzU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KhiP7pYP;
+	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5/X6IMPWa31K/zfx8lt7hgWlCVhbr2OzJf3fLghYiYA=; b=KhiP7pYPLLNma/iEZ0/e2s/a+D
+	CYvRTBGFdpIballmC6yGqJ45tRlQU5XV7nPT0Jxt3J6XyDX7QkhlwDDgcHOZ+ASfjOpjy4wicG8li
+	p8Hx3mozisdRvwWVZIRaEln/oA0dC9LLsOLnW6AqqbFTTdAAcRdjsG2SIfQnJFw7Woj92s2GYXFI8
+	fmoXWNWwydZl5iJgBxDNHQiX+hL+kKfc9lK917e9vtCdMScd05eaRrU23kDIEPsOCpPRqS8fxcBWB
+	HWBQgs4FsAT2MfTquTpvhyXreYXTERavKkyalH0axsHnlTDNtqC1L5b62O9qCo8OcIUipKR6SKwo6
+	VGvMVuyg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1usrbs-0000000GxvR-1wBS;
+	Sun, 31 Aug 2025 23:37:20 +0000
+Date: Mon, 1 Sep 2025 00:37:20 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alexander Krabler <Alexander.Krabler@kuka.com>,
+	Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
+	Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/7] mm: fix folio_expected_ref_count() when PG_private_2
+Message-ID: <aLTcsPd4SUAAy5Xb@casper.infradead.org>
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+ <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-8-ryncsn@gmail.com>
- <CACePvbXB-G5vhoEt87BZcjDZ8kZWo3mZtAZ60YbR_gcjnPz29w@mail.gmail.com>
- <CAMgjq7Aznd7=m6JTNGM4EyFj+6pqHTRBCo2hsQL-cKi0LZggOg@mail.gmail.com> <CAMgjq7AdauQ8=X0zeih2r21QoV=-WWj1hyBxLWRzq74n-C=-Ng@mail.gmail.com>
-In-Reply-To: <CAMgjq7AdauQ8=X0zeih2r21QoV=-WWj1hyBxLWRzq74n-C=-Ng@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 31 Aug 2025 13:06:54 -0700
-X-Gmail-Original-Message-ID: <CACePvbVJY9x05nW_jWd4PWox972OqMxi=YFP_wGbjHzXFyvY5Q@mail.gmail.com>
-X-Gm-Features: Ac12FXzteZ0lmimyc9FHu-eqbCwqH9k6tlWXgsNJCJjhM-DO2tVOgzinsSJIxmQ
-Message-ID: <CACePvbVJY9x05nW_jWd4PWox972OqMxi=YFP_wGbjHzXFyvY5Q@mail.gmail.com>
-Subject: Re: [PATCH 7/9] mm, swap: remove contention workaround for swap cache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4ED1B14000A
-X-Stat-Signature: ngndb1a8kw8uq8cqzsyhsrqbdifaninn
-X-HE-Tag: 1756670827-355381
-X-HE-Meta: U2FsdGVkX1//W/gNnJGkpjOTxulDjePe38G6IioIKdY4SpYRv+Ni2ATLydigIPRfTKv0DH7oyIl1SqrkXSckjZQHosEcMHUmR24O6EgYe6403QJ7eztWsauMqbADk5X1PU85us2xFuixU5w00JhEuzPyTqYkizWqgN4g7OfWkUqWFnximrcI2qYP1tDpQ2hejTL6N67AVh+XMCiG/FMNO52XvmuvQx9tPlaQn5I8nhiEeZnynG8y4F9Hve3kafi4K2WlD+OV+McfaSyJVBX6OZnDzKrAS0vCzCpDIz8ilOndzRswv3yv5LZztJ6hlB3pmFlIWm2YvTKzQ+Xv9rgU0bq6yd2e+JF35JXp7Ohz4QEGqE4duCYJVcRf9O+h+91ckTwxYmJxer0DjvX6sWjCjqvr5yg14ZbpmlD4MYY1EQQACs2Y6EFjtSeEwM+kxuTe8FVaLvmr3/wyL2WpnVykW919uJn6k9ijJo6dPysILwaI3vXN3IYaRCcIXFRnxACZVm/z8Elsmo/p/WF+VlAHvXol4IBfxesIaK5TEHrVfXr0pkLXdfd/7aZ/4awsRnGHGz0nwIx5gb5d10K8gEj/v/iXOSRhw02BFG37Hczn1azhha4PZsmLL3y9otRANwuXAZ/oMN+DJXXbVc+a4XuWlH2yUg/2hcLQcFE5PtSAgwDeWfBKSzXKyUj55ochKYYowmwrYT2QAEEeLHeGlfSYbE1gm8IP15ElCRzA2rOFuoXGIylYWT1E+OA2ulspxKo6SLgWSxRfqtx9Gc6QHWfF8dEDEz4nrOl4znmKAiLNKbBj0tYVBYy57smMgJDpXbsVNCdZs3E/zhX3zhAu97Z+J4hJv1x49AgmUnez4/ndz3CLB2S8IW8xPXPbA8f4CXJyMYUFhlzXNB9D/YYzJAMvdL95iB4k0pZf+uQ1LnPpqnSjiqUJBT3iyzLpn8py2mU/Ezas8VABZ0lgI6TuiSs
- RpE0y/k7
- lSr0Obbt98uSjVn2j7CGZeqPSS8RuLzGzWiGV0lR0cyd5o/x9xPRG8OMjhafw890OTjh0M4FpgH7wUt7HqMAQOOsLB1NFmWVTfUbhhAjUJSi3Ng2jwJnJWk6GEn+RBXL3Le+JngSs/7ndiukxmE7re/0kGDFJRU5paJ1cLRUnuMZRjRmq4QYSepf/pDXysWQT4ObLTiyixPBJZhW8LfuQ3jGh4rY88X5huz0rfUzrQgtJLc0+W8QNTGva4s7U1qOSbtBlKYuIp9bEoTfRsMWH8geoZe9O/i6GNEqwjLzL3L6Q9AcSmc2iWesThfN5jJFrF/BkCBPEYokwOMA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 226401C000E
+X-Stat-Signature: 7yox8ejsotif1k8kjad7jy4uw819gkbe
+X-HE-Tag: 1756683449-133499
+X-HE-Meta: U2FsdGVkX1/hotb4gWPifXiLhaazpL52VTRR4c9J7jkWBoTgXuPMh75T0yKVX+Umh07L9N0/MBZbpUkjVg7otDaekRdehzFVnLmVNmDnIAFJbO930/VoOfjN95jbot1NtLOCJ+IyjlpZ159HTKh9KQIQCW7C7KrdWP6KruaYUCgprVd3AwyDrCaR04BkZgo8+0gpzGD/55rBVgazb96ZuzeUnqxRCVBF/enRYMM2Cc2uUBi6OGRlyRXwFkl5lHEdmPuuhe6m3KN5iHJ7TVJOirba0/ovmwYZuydN0rnhM15aY9z1jpPDE+E9UGwosLjWN9xsiGoUF3TSNUPxtkTv5Hr8GTR/kB9YharSp9Y1bzEB8ih/1KMUS+NpM4chTbVoQgg95RDA6fsQcxfIqqVv8SBTuO3n+fxz2kcme69fVO8PFqibie7yqzJi5KyFnjz3c+Vciz7ksCoPDrrVQ44jp5RkEhjeR9Us2RiY1FMscnDVB8maNm/o0GPZuWrtQ/bzw7dvAq/PoyqoHrXIafmirdBzaI4Ev2bxa1mFwT8zNcFjCt8PlOzTqUkeyzUlp2kVBQubb0n56nVQCjrDayAOqVs5UCeNSPJxV/m6TFv8+I5RyCjAUYi/rwzEh1tzpwNFTOcmZaTxyVAFpPcMRsViF5yqQcb/Q9FudA4r8zuLxf3GGVySGqZAhsLdNJyoUkO7drLY8LjL5BC0A7ykw06VykI/DamCqPq99d5Hxghd+9uN9hvR2rojz6sPts/jvL5e3V17shP/bQ6r3KXOv+pPDY7SSR3cLTISQh3ZXXH5cVenra8e5GAp+MdmQKmp2wn/UmJsojxJXhYTDFPCJjQgPGiTCOjGpuzP1WGnEprYEv1LzpSgUuv62K1DADu25RL77BhzzoghrtXKofltgRANLkHJU073opSYQXGgpUXEBhz3yPSf0nEEK5FWjOUDVEJ9pXkAY7X6WnN0a4Fc+G9
+ G4D11KHy
+ TxZMA/G6LsGFInZIv5soJWsUtdhyujqpY57HM3+F+syhlJgllQyS8xBPS2F9KdX/KmLcCQvLCa+y37dwEfqCf2JhodRbVMbaIFzBQ/nnSRy0yQ/+BDh1aSzh6eetqCQjxW7WtMVx5G3i+nh5S1DEEjghS/nGQO+maVKDJOxJq8Ssfb7GW0nU04VJ7yer1k0pvHG22TKrmCkchylnaBA9A0o2v9ZMV5PxNE005
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,147 +103,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 31, 2025 at 8:55=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> So I tried to run some HDD test for many rounds, basically doing the
-> test in the URL below manually. Test is done using nr_task =3D 8. The
-> HDD swap partition size is 8G.
->
-> Do the preparation following:
-> https://github.com/intel/lkp-tests/blob/master/setup/swapin_setup
-> (Make usemem hold 8G memory and push them to swap)
->
-> And do the test with:
-> https://github.com/intel/lkp-tests/blob/master/programs/swapin/run
-> (Use SIGUSR1 to make usemem to read its memory and swapin)
->
-> Before this patch:
-> Test run 1:
-> 1073741824 bytes / 878662493 usecs =3D 1193 KB/s
-> 33019 usecs to free memory
-> 1073741824 bytes / 891315681 usecs =3D 1176 KB/s
-> 35144 usecs to free memory
-> 1073741824 bytes / 898801090 usecs =3D 1166 KB/s
-> 36305 usecs to free memory
-> 1073741824 bytes / 925899753 usecs =3D 1132 KB/s
-> 20498 usecs to free memory
-> 1073741824 bytes / 927522592 usecs =3D 1130 KB/s
-> 34397 usecs to free memory
-> 1073741824 bytes / 928164994 usecs =3D 1129 KB/s
-> 35908 usecs to free memory
-> 1073741824 bytes / 929890294 usecs =3D 1127 KB/s
-> 35014 usecs to free memory
-> 1073741824 bytes / 929997808 usecs =3D 1127 KB/s
-> 30491 usecs to free memory
-> test done
->
-> Test run 2:
-> 1073741824 bytes / 771932432 usecs =3D 1358 KB/s
-> 31194 usecs to free memory
-> 1073741824 bytes / 788739551 usecs =3D 1329 KB/s
-> 25714 usecs to free memory
-> 1073741824 bytes / 795853979 usecs =3D 1317 KB/s
-> 33809 usecs to free memory
-> 1073741824 bytes / 798019211 usecs =3D 1313 KB/s
-> 32019 usecs to free memory
-> 1073741824 bytes / 798771141 usecs =3D 1312 KB/s
-> 31689 usecs to free memory
-> 1073741824 bytes / 800384757 usecs =3D 1310 KB/s
-> 32622 usecs to free memory
-> 1073741824 bytes / 800822764 usecs =3D 1309 KB/s
-> 1073741824 bytes / 800882227 usecs =3D 1309 KB/s
-> 32789 usecs to free memory
-> 30577 usecs to free memory
-> test done
->
-> Test run 3:
-> 1073741824 bytes / 775202370 usecs =3D 1352 KB/s
-> 31832 usecs to free memory
-> 1073741824 bytes / 777618372 usecs =3D 1348 KB/s
-> 30172 usecs to free memory
-> 1073741824 bytes / 778180006 usecs =3D 1347 KB/s
-> 32482 usecs to free memory
-> 1073741824 bytes / 778521023 usecs =3D 1346 KB/s
-> 30188 usecs to free memory
-> 1073741824 bytes / 779207791 usecs =3D 1345 KB/s
-> 29364 usecs to free memory
-> 1073741824 bytes / 780753200 usecs =3D 1343 KB/s
-> 29860 usecs to free memory
-> 1073741824 bytes / 781078362 usecs =3D 1342 KB/s
-> 30449 usecs to free memory
-> 1073741824 bytes / 781224993 usecs =3D 1342 KB/s
-> 19557 usecs to free memory
-> test done
->
->
-> After this patch:
-> Test run 1:
-> 1073741824 bytes / 569803736 usecs =3D 1840 KB/s
-> 29032 usecs to free memory
-> 1073741824 bytes / 573718349 usecs =3D 1827 KB/s
-> 30399 usecs to free memory
-> 1073741824 bytes / 592070142 usecs =3D 1771 KB/s
-> 31896 usecs to free memory
-> 1073741824 bytes / 593484694 usecs =3D 1766 KB/s
-> 30650 usecs to free memory
-> 1073741824 bytes / 596693866 usecs =3D 1757 KB/s
-> 31582 usecs to free memory
-> 1073741824 bytes / 597359263 usecs =3D 1755 KB/s
-> 26436 usecs to free memory
-> 1073741824 bytes / 598339187 usecs =3D 1752 KB/s
-> 30697 usecs to free memory
-> 1073741824 bytes / 598674138 usecs =3D 1751 KB/s
-> 29791 usecs to free memory
-> test done
->
-> Test run 2:
-> 1073741824 bytes / 578821803 usecs =3D 1811 KB/s
-> 28433 usecs to free memory
-> 1073741824 bytes / 584262760 usecs =3D 1794 KB/s
-> 28565 usecs to free memory
-> 1073741824 bytes / 586118970 usecs =3D 1789 KB/s
-> 27365 usecs to free memory
-> 1073741824 bytes / 589159154 usecs =3D 1779 KB/s
-> 42645 usecs to free memory
-> 1073741824 bytes / 593487980 usecs =3D 1766 KB/s
-> 28684 usecs to free memory
-> 1073741824 bytes / 606025290 usecs =3D 1730 KB/s
-> 28974 usecs to free memory
-> 1073741824 bytes / 607547362 usecs =3D 1725 KB/s
-> 33221 usecs to free memory
-> 1073741824 bytes / 607882511 usecs =3D 1724 KB/s
-> 31393 usecs to free memory
-> test done
->
-> Test run 3:
-> 1073741824 bytes / 487637856 usecs =3D 2150 KB/s
-> 28022 usecs to free memory
-> 1073741824 bytes / 491211037 usecs =3D 2134 KB/s
-> 28229 usecs to free memory
-> 1073741824 bytes / 527698561 usecs =3D 1987 KB/s
-> 30265 usecs to free memory
-> 1073741824 bytes / 531719920 usecs =3D 1972 KB/s
-> 30373 usecs to free memory
-> 1073741824 bytes / 532555758 usecs =3D 1968 KB/s
-> 30019 usecs to free memory
-> 1073741824 bytes / 532942789 usecs =3D 1967 KB/s
-> 29354 usecs to free memory
-> 1073741824 bytes / 540793872 usecs =3D 1938 KB/s
-> 32703 usecs to free memory
-> 1073741824 bytes / 541343777 usecs =3D 1936 KB/s
-> 33428 usecs to free memory
-> test done
->
-> It seems to match the ~33% swapin.throughput regression reported by
-> the bot, it's about ~40% faster with this patch applied. I'll add this
-> test result to V2.
+On Sun, Aug 31, 2025 at 02:01:16AM -0700, Hugh Dickins wrote:
+> 6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
+> which (like PG_private, but not in addition to PG_private) counts for
+> 1 more reference: it needs to be using folio_has_private() in place of
+> folio_test_private().
 
-Oh, wow you do have the HDD number, congrates. Now we can make the
-claim with numbers.
-I hope you did not cripple a HDD to get that number.
+No, it doesn't.  I know it used to, but no filesystem was actually doing
+that.  So I changed mm to match how filesystems actually worked.
+I'm not sure if there's still documentation lying around that gets
+this wrong or if you're remembering how things used to be documented,
+but it's never how any filesystem has ever worked.
 
-Thanks.
+We're achingly close to getting rid of PG_private_2.  I think it's just
+ceph and nfs that still use it.
 
-Chris
 
