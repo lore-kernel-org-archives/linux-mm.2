@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 062BDCA1001
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FF16CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:39:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4888C8E000C; Sun, 31 Aug 2025 05:39:46 -0400 (EDT)
+	id 263E68E000D; Sun, 31 Aug 2025 05:39:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 410188E0001; Sun, 31 Aug 2025 05:39:46 -0400 (EDT)
+	id 2152E8E0001; Sun, 31 Aug 2025 05:39:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FFA78E000C; Sun, 31 Aug 2025 05:39:46 -0400 (EDT)
+	id 1040A8E000D; Sun, 31 Aug 2025 05:39:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 167478E0001
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DB4A58E0001
 	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:39:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD9948525F
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:45 +0000 (UTC)
-X-FDA: 83836555530.18.27A54BE
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BFB0D140008
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=dwWFV61c;
-	spf=pass (imf26.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D0281DDB16
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:46 +0000 (UTC)
+X-FDA: 83836555572.27.FC59667
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B235B100005
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:39:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=NdP9Y+x8;
+	spf=pass (imf14.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756633184; a=rsa-sha256;
+	cv=none;
+	b=XOKQElqr4M+NGqC1JLd6axelVFoi9K9kVyZXZDTzI1lw8SCaVrIxEV/UsLbiANuqdl3VMI
+	nfgY2/vsovRxTLEsKzLnZpHkPJxO3vznAJdeJs8V6qzQG9tUJzQ6W1xKgtJyQM9HbZP6Kz
+	bjctoxXIE+PSuvwEvYSqqPqsHguCe1I=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=NdP9Y+x8;
+	spf=pass (imf14.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
 	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756633183;
+	s=arc-20220608; t=1756633184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z+6TrnZpXfWUfs5R5hmEGqosfCHRnwv9JCMokN8V3u0=;
-	b=awTlZJ673OI9y9cDLcsMj05X7nt6nkAxPPilSlLcemRF6w+6Wyza/YQ+pJ1AUkxTXp1N7W
-	wxhcW8ebP5fYTbYs9LDWg/h6R5qNqPDc37EGrQcPBDRRk7T6KLJhpbtVXBXpFBYWxIdvP6
-	XQKw84w8wPbDcrhnr1WGey2Pj8g3fac=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=dwWFV61c;
-	spf=pass (imf26.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756633183; a=rsa-sha256;
-	cv=none;
-	b=OBV0ZtdE/xY7k8RNmeQqjXvbA2t2U7Ef/SwXrPPqgc+ZWCFFBvpuIRL+0aO3q5hZZlm7qt
-	3gKAClp0rpf79irXYf+cGc1bDYyUFfjABHsdxCzXrIIIvI7ltm7EQOC4pHVEXpDRYZIo6G
-	Xo1ejQUrTelZOT6oNOavsFyXJQXdgvg=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb7a16441so518909866b.2
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:39:43 -0700 (PDT)
+	bh=dwlx2EVOW3/w81+M3sGLOhoJXHsbq6RkIxTDAR9OjUU=;
+	b=pQMhGxi5kUxj2qHLV5cG/BSJjE/xTc/pvpCta1UNsc+RoCp8Qd/ub2pheiexa4cm+a8CJU
+	xeYBImHyAP12VhMcDGTcuUjRXEbSM/Wy3O7sWC2ufzYLR1qpM7mxpSXdxkZE7q/n+MRQxa
+	Ndut+pyTj5Zn8qktDRKgb4o5M+pr8GY=
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afee6037847so520756166b.1
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756633182; x=1757237982; darn=kvack.org;
+        d=ionos.com; s=google; t=1756633183; x=1757237983; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z+6TrnZpXfWUfs5R5hmEGqosfCHRnwv9JCMokN8V3u0=;
-        b=dwWFV61cfBkxyeEqJf0qa6JXg0+oilAbM1HrX7erwNpUi1hDRpHx+jlCJbmVE3tsSY
-         cuziNi/8bn71QgaBd8T5yuKtVOyN8BdgZ0d0detVGJFT4+M/l8jJbN87uNCs+zWRMVFC
-         m2JajKn5gIePmBWEEdh2pYg+iWVjnSq+dKU0x4tAQcSE0Qn9akx4K+Ah/2JrhuhKL+TQ
-         QWTxusWdrTPh5G5s3ZmccZXolshQg4uNEjqaZnsc4I8AlsbXngXjnak+pQvqaSkqmngo
-         OGOjAaiDASaflAlC+9/dj9MtJj42y6O++t1aTeRvdX0ezJpwnlKsr2qVMRwNF1yOrEpz
-         oT/Q==
+        bh=dwlx2EVOW3/w81+M3sGLOhoJXHsbq6RkIxTDAR9OjUU=;
+        b=NdP9Y+x8pIgfjRpVGu6WBrjZqebiQ0CVEoJA9Dkl3zDCQy4voedpOUr5zbbLp0+rB2
+         Mdy7RsU/Z2hfxVXhQfM9FdjEEfj2hkfsjmwjVEPkaTuUKd9jF8ZJ2ukd9Nl/XWRkacz2
+         9qnlQQGzVhv8pswjKl533Rbw7i/c4cExYBOWwjJNOMOO31JxEwLtHGsQZjxxiOAsKnqG
+         yUAiL0K9lJpegzsnktzdfX1GKHnS1SejcsPSIaKVjWIpPVILISajd4qhGQJHE5xypznM
+         41YAd9ubGn3ddg6hDMygnxHuJDwvi6c8wG87IIime7f55U8Y0jLGAr45Blhm9mLnV2qd
+         t82A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756633182; x=1757237982;
+        d=1e100.net; s=20230601; t=1756633183; x=1757237983;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z+6TrnZpXfWUfs5R5hmEGqosfCHRnwv9JCMokN8V3u0=;
-        b=cfJHqrNgZxkBhVWQrzD4GNIcCrJsr+U4j41SwICzmqvMLOH7HAcBhDLmOj2DSxaIM9
-         Q4ubf7n/J5tSktplhpjXVEsjSZtVu2pZeXhXoNCR7NKZ314tvKPbV8mwweoHltP+Y4Xc
-         So9XEY06CJElA3AvlSHKvb3AXcfNDp5jOU570Oc7J5MbJGrDvndc6YslDTZu8AsWZUeT
-         nm0Dqc6RLiyQT8feHcjH9DYM03G7qAIsW+dsWja9tsCzUtOLayIJgK0/1MlvEpwMdx7R
-         iJ6ctCGJc7gU+2+1/mbXKR7gbtz9LqGKsX3pv9eA5iRESWvQNd8tN3dvpDtTYtkbWw1G
-         +9zg==
-X-Forwarded-Encrypted: i=1; AJvYcCXvznUevVmBTW4FRMeYpIK07I8gge+I6bYNo553w4Xq+Y7VYeA8m4OF/NqfZTAEG9TOp2rKU09LSg==@kvack.org
-X-Gm-Message-State: AOJu0Yy9CfSUizMcOEsYCJJ9qx0zJ2ShHt+YT0JapNSVu193B2nSoSJ1
-	SDuMXcvC6iut9rvSmzUX7ZafNmHH9zNh7vv8cs4pDlBlSCwwCqRRHyiy7uO7+45SwME=
-X-Gm-Gg: ASbGncsjIKwyObLJqPYiQ+P83NB92i1ICJW2mq57DmoA7zoYVCs1mRrVMoYtjjNecSI
-	h7Wd/dImuoiZ7Zn7SddbcMbczM2bA11liV5f0mGTa4QAIWN44WxBhzlewmTQlRh8/VOBlSS0b5h
-	FqdoePKqvVOJOiy9Qj2g9zaGlO7SQW09omca1ABNwd70NGJi/ehecZmTqeF9IcG7UXuS+h6FGNd
-	loQg4e5+JzriB/1SNWwE6P90Evafw5QC9Tov1UPwCsBjn5Z6xo2JhFDMlFBO95Br7VIM/78J8kQ
-	Zqc1Jt54cbCzcg/LWSn9rO8O7ATJp0063Ikhc5iL5gZT1qoBvO6iFWhwTsE4KAPgbZNe+fAidrj
-	UdzaVvvV/PBSiwJfsKrBVWxxkEK3SaSXGtCEk+K8CXWM7E490D7FbX9jaVEZmgXY6pK6PlqhSyp
-	+eE0LPSg4HNoYa4+uPH+DRumxw+GQOozAiHr9xEyvcFKw=
-X-Google-Smtp-Source: AGHT+IGKkYjGFHect88v3nBapIIglEjinBdFDzqUzlkxH0/8a2RUDjlFw52sTmajInsUVkVgdBglUA==
-X-Received: by 2002:a17:906:2692:b0:b04:1896:1236 with SMTP id a640c23a62f3a-b0418961257mr125476166b.22.1756633182252;
-        Sun, 31 Aug 2025 02:39:42 -0700 (PDT)
+        bh=dwlx2EVOW3/w81+M3sGLOhoJXHsbq6RkIxTDAR9OjUU=;
+        b=RihfGvtovvNWgI94hFm64JJCIhZwz9eY3NAPLfBQviyqIw9t0fCEEEsyrFZNEl/Psl
+         +kzpCkZsjba4qFP/2a28sWMNQewaSKhSppBlXOr2MJ/CSnlPJNs0+dSA45BzUuIrwJO9
+         qo3Ax504R9/VoiX9BdYQ6C2ICw7CJqXlKWW2L51Nlpf4M2BCp/jskZHVKVzpGOErduJq
+         oA9HggzCaYe8PgWU3gaASRtuttf1lSdjl6Xkec5Szkt/0hcU0vwh6H2Uv8nB58ce14JD
+         CJgKKocXOtVzSrWRwZ4+ibir3arc/H/5HIzA3Jc+s7Y1NSraeqAKa1jOyklKzKFhbXuh
+         oD5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVTP5aTFPZW8Dd3otqD9ZbbED1pmqyILaWcQ2u0DL1g8nPZSLKSGQ/WidMCT3GJS+uDx5ci691QNg==@kvack.org
+X-Gm-Message-State: AOJu0Yz1Ml0Sb+Z6k4Ei2g6eGvgarNg5lTNEPh7T5o5gfxlbfi6hINje
+	lLcJlXER9NjXV4jWrT41b83c1fhvjsXrO4lmaRNU7GzJ+DHofm5agb79M5Gd3X1OLXU=
+X-Gm-Gg: ASbGncvevUpQSPxqTccWxG8ErOc+dlWXv9DEzTtgz24Y1QtGnL2/0ZS5mcuYZD9jLpT
+	d0/CqBtwIERih6guke3z/yp4egL0W/gaXEtkxW03SgWk9udJgrwF4YBFUuABWsacSfBirssnqUd
+	9vsn0Kj49Zd0ExzsgStK62vUJ6K2Dtp7Kc56dBJAmtlhl0BPuoW8MdnmobuRdupjcnfvog4xGxj
+	/nEqtJK4GsDej2dPr7T4NWUDLRbuOfa50kztmNXwrjs9QDTqTLxUz4mngqiyLjyRPiFr0AJAp/d
+	eV+04POpfwqLCfBxG8aNaWSRF83cVZNct8TtINYtxrRewe+TtbC1OVTUZK+/WUZ/Xglh6/GFMbB
+	5E8KTXLcTMw0uOLE9/3K0q7GgwbZ5Yfl0KUrS9IX6596aSuygByi/RXR76L4Xlgwlvw2vh2gSQW
+	wKRKJ9lBRsW2LQnRMOzBjxvw==
+X-Google-Smtp-Source: AGHT+IHHEsy3VYapgP6t68znKr4JYYpwjepZ2OnahYHw25+r/10lb4UhzW3CEgWSDi98yrsXnMghDg==
+X-Received: by 2002:a17:906:eec3:b0:afd:c31c:2488 with SMTP id a640c23a62f3a-b01d97307b1mr425157266b.39.1756633183190;
+        Sun, 31 Aug 2025 02:39:43 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd8656sm597512566b.56.2025.08.31.02.39.41
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd8656sm597512566b.56.2025.08.31.02.39.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 02:39:41 -0700 (PDT)
+        Sun, 31 Aug 2025 02:39:42 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -108,22 +108,22 @@ To: akpm@linux-foundation.org,
 	surenb@google.com,
 	vishal.moola@gmail.com
 Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH v2 07/12] parisc/sys_parisc.c: add `const` to mmap_upper_limit() parameter
-Date: Sun, 31 Aug 2025 11:39:13 +0200
-Message-ID: <20250831093918.2815332-8-max.kellermann@ionos.com>
+Subject: [PATCH v2 08/12] arch, mm/util: add const to arch_pick_mmap_layout() parameter
+Date: Sun, 31 Aug 2025 11:39:14 +0200
+Message-ID: <20250831093918.2815332-9-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250831093918.2815332-1-max.kellermann@ionos.com>
 References: <20250831093918.2815332-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BFB0D140008
-X-Stat-Signature: e5iz4hm9s56styekjng4rb6ynu6yzs63
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B235B100005
+X-Stat-Signature: fyc6qtkzz9daahuii6bisxzxj6g6giua
 X-Rspam-User: 
-X-HE-Tag: 1756633183-703027
-X-HE-Meta: U2FsdGVkX19HQ8v/WcCSklP3P4QspbJALueaLgDTHfdgIs3T4pfb+XOQ3ivAjyoqOZxu5sJaVrMAkCReHIJfJEOivdvsmVEKsQ1nURNf3mtdDq96YltAUqm4W2Jm8MYk9HC8R+a50v6Mra57PQ8TdeKqsaA7JbUmjTDPml5mP9jdi30F0xcM6lnJCivncUMyuLAMJucLCpBAGZD6R/PoSp74LjZgJdEdKKhOXBkleUXHbmdQ9U7Ez3MKnFXC7iK2P2992KiOQjHVwNx4ywHPzRCjS3rAgDS+901t4GGh9KqVHgLo8SeN7+N1CxdD8/nNvOBJjM9/egXMLXu50KH5N6ZedG0JZT/1Ar9aA1ksBBfeWhfErSGuUDPkyovpvEzcT1N3MFtCfXXR0S9U5vLrc9/bmBsBeUGbh02BM+vVJkoVGEqgj3JavwALaMn/Ha05qLAJRPdEQZQgiie34XElKZLbYTQy6nDcmiuZbBCWLFGVTjt0aZ/hYPkeEoYN4PPLAA2wLE5F+UvwVdTNxI81xa43Pjxrs3Z88ZG/tLm+0z6O8izDbjTmI30lx0PDbjb10mESHuY0n6tS7ge1Hjidz9b25Eo7v6jIsDgcAG4IaJjdWQ9mR+++apCTL5ECv4UoMfM2HuJOVD6KcGyYBIIl+KXHY0odeeoeK5P9Z8K7RF9Cqx6E5PC496RA9khl4qt83iIpg9LNo+8msD4vFhMRnO6IFNAcQfOxBvQrl4Y6NqoSeOtK5CUEZa/57XaK+YLOOiF5CZ8bCG9+WWBEWOdjp6rVLe3M53Czwp8+P6JzglnvI7mtrwbJaE0pnmtTXp8wCdzYw/hRRHq5Sidg68G7L2/fomOTLzhBdmbNF1N3ZGZHgf6/C3S4stkQQISfeByzaL6CF/VKA5jaQePpKiw4tGNy1o9EieRx1S+hmpnBWmZcmGHtaf4RlZ/boySxoGB1URPdDYQV8SGU2XRnkxZ
- LFouMsth
- BZJxsJ0cEDmupO3VCe6YslqTvN3CgO4D246pQYU9r5xUELDKG3i0bSFv9vCT4OXBDEX7OLKoZ519K6YQkIQtAVHuaLFywBpawm0O6GNCN/Gj0y25JjDYZ9gC8sD9SugdpQ3OA4G2O2asoneWYRtt3YMtDipFyCoQQwM7zzpbwd1YJ5AXYCUnzbj/QAKRnTJFI80O1ViJi93NSiB9unW1g5BPH1du3MO/DIyZzFUTBuuuZJksm0zKww/uO7gH2BJQdYdeWFBfI/Ni7+PreoBuRL+5NwNVDUadquPS79hS4RjHp2EZApG6bijGnLv/ptdbHigkZOcbmD9oCtUKcGo9cOk/D0OzQt5O4+gKFDI/K/9OJEAKlGHeVswaZTCMocSgCTT0sBcEK3/fIDoW3StAvKeaNQshPvgLUDK8wgb27Dk8wAyls4UFhic+ATKycZ08tARznSytaAM6zqWhVKXremLrmY6pBbj3g1MTk
+X-HE-Tag: 1756633184-204141
+X-HE-Meta: U2FsdGVkX1/Td8R7voyA9Kg50kRwJ5yMQE6njuDHjb7CWZio8rYJ3gPA4fkIpyP5C5evVpCoS+s85PdL2fXxQ3JwGu0HuGMd4lfvlstF2DBV1V9mjyyrtAejDJEA3B2lTgBT5/4A5LLgTFh4UciqvowINKYL5+cErwzYPwYpRNGKHJvFmBKtLvp60y5Ehzye4KDwzyF9Nr79RABVcKx/t7uCurjLp+wBCSmMHAledTk7sCOcVQD9KHxS8xndfeumvp/kmDZAmSqMxGStxaG+Q2y1nCMvxuMlgOqYpKAPlbNyMzDZ1DWgG47fLGNpHrJ5xkmxe7ZDPkpccRm+MZQzJ3KcSUKQNdD7SgTi6XE9oj7EvR3FtK2h1YTHSVneVY72Hqc1XdWOHjas4ZU3SvgyF3HznAmbLfCJpFrH0FHOtQ/4CxukM0BkC8caw8rk8G889SBtWs4X6b43mQr3g7OxkhUN0R11BoJqEbsb1DlmJoMEM8oAMxjapGy9o/CexLfQ0dcBkUQP/pry6ZEwOkEMC+bsxbxqX3cMM3mnLAd1DbLs8jols/eaUe+FfMFMwn3w+br7JTQY1WNpTm4BJXEL9XHsf6imSxkZz7XgnHzafVNkVGueJDFpz0VVyRVk3x7HQHBo+yJDjHcMazb0sjZV80Y33uxN7YQVE+expdG5Xtu1muESgamONrLDUM9yak/fLRpyUTyyd1clvVGK3/FHD8r7n/dy37uacyGKohXk8Vni8mZnrDq10pUx7ISav3sf9Cvl6TCTmQLwJlsD7oeQMw75LLvjjTuhhcUXP4Mfn6/oE/K3aSEhPgVYg5woZgBeYmM4esNHkniv6ouRn17fskeZi48iQ96pUzOv3kEnPSIWHWLoV3DZ3NEpRGIpqr5CeESXGo7YFVUh1v+8D1zSYHND931kV0pH4klFVWBOa5V+am6yGbZr/eqqvL+qSrDj6J2q2jqfTYYDDr4zwOn
+ HITdcVcU
+ H8cMANmurigLIC6mVuue3gerLLdGYevagamDjBJRRhklEczm4+j7etcpP3WePd9OeZt/4lOrI0hZ/YpJW1bUFVlmr+1OEhCdTXdm0IGhQ1pppIDPcGksB3FJ9zNecllAetQAxdcjX1/WioeF2QXiFkOYlentlL2B2jmNJYz8jE57TsBgH2buimczcvxjOI4JXqme6nVhcH7jPKy30kn50m+3ko1kyfao5/xvgGUM6hkfuwTl1VSUCgeQfexnfSPSwGaSP2C6vdme0RhlfxO4RTlLOeJ5HCR9CkW53MONOyErUIpO/R6Ii3Y9y27t2WpOckEHHER8aPCBjkdAWpnAvvXfeQjBledFxdn1UNNiWHN4DADt2ZIxR94XmZWbfHb4ZEEgypqUS9m6X/ucjhE9x0KBvIFqSKmDE/g/s0zqcssVy2KQYldslulbEJAaPQwSYzmUEURgyXm+O5bAeAHvD/6wUIoy71k1VxlBi1ytfS9NfUIPzfzjw/Y+KOBtl4Qq+DcQR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,42 +132,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For improved const-correctness.  This piece is necessary to make the
-`rlim_stack` parameter to mmap_base() const.
+For improved const-correctness.
 
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- arch/parisc/include/asm/processor.h | 2 +-
- arch/parisc/kernel/sys_parisc.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/mm/mmap.c              | 5 +++--
+ arch/sparc/kernel/sys_sparc_64.c | 5 +++--
+ arch/x86/mm/mmap.c               | 7 ++++---
+ include/linux/sched/mm.h         | 4 ++--
+ mm/util.c                        | 9 ++++++---
+ 5 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
-index 4c14bde39aac..dd0b5e199559 100644
---- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -48,7 +48,7 @@
- #ifndef __ASSEMBLER__
+diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
+index c0f619fb9ab3..a47c7133d82a 100644
+--- a/arch/s390/mm/mmap.c
++++ b/arch/s390/mm/mmap.c
+@@ -47,7 +47,7 @@ static unsigned long mmap_base_legacy(unsigned long rnd)
+ }
  
- struct rlimit;
--unsigned long mmap_upper_limit(struct rlimit *rlim_stack);
-+unsigned long mmap_upper_limit(const struct rlimit *rlim_stack);
- unsigned long calc_max_stack_size(unsigned long stack_max);
- 
- /*
-diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
-index f852fe274abe..c2bbaef7e6b7 100644
---- a/arch/parisc/kernel/sys_parisc.c
-+++ b/arch/parisc/kernel/sys_parisc.c
-@@ -77,7 +77,7 @@ unsigned long calc_max_stack_size(unsigned long stack_max)
-  * indicating that "current" should be used instead of a passed-in
-  * value from the exec bprm as done with arch_pick_mmap_layout().
-  */
--unsigned long mmap_upper_limit(struct rlimit *rlim_stack)
-+unsigned long mmap_upper_limit(const struct rlimit *const rlim_stack)
+ static inline unsigned long mmap_base(unsigned long rnd,
+-				      struct rlimit *rlim_stack)
++				      const struct rlimit *const rlim_stack)
  {
- 	unsigned long stack_base;
+ 	unsigned long gap = rlim_stack->rlim_cur;
+ 	unsigned long pad = stack_maxrandom_size() + stack_guard_gap;
+@@ -169,7 +169,8 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long ad
+  * This function, called very early during the creation of a new
+  * process VM image, sets up which VM layout function to use:
+  */
+-void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
++void arch_pick_mmap_layout(struct mm_struct *const mm,
++			   const struct rlimit *const rlim_stack)
+ {
+ 	unsigned long random_factor = 0UL;
  
+diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
+index 785e9909340f..e3f0d9b74b00 100644
+--- a/arch/sparc/kernel/sys_sparc_64.c
++++ b/arch/sparc/kernel/sys_sparc_64.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0
++ickj// SPDX-License-Identifier: GPL-2.0
+ /* linux/arch/sparc64/kernel/sys_sparc.c
+  *
+  * This file contains various random system calls that
+@@ -294,7 +294,8 @@ static unsigned long mmap_rnd(void)
+ 	return rnd << PAGE_SHIFT;
+ }
+ 
+-void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
++void arch_pick_mmap_layout(struct mm_struct *const mm,
++			   const struct rlimit *const rlim_stack)
+ {
+ 	unsigned long random_factor = mmap_rnd();
+ 	unsigned long gap;
+diff --git a/arch/x86/mm/mmap.c b/arch/x86/mm/mmap.c
+index 708f85dc9380..13bde4ba2f24 100644
+--- a/arch/x86/mm/mmap.c
++++ b/arch/x86/mm/mmap.c
+@@ -80,7 +80,7 @@ unsigned long arch_mmap_rnd(void)
+ }
+ 
+ static unsigned long mmap_base(unsigned long rnd, unsigned long task_size,
+-			       struct rlimit *rlim_stack)
++			       const struct rlimit *const rlim_stack)
+ {
+ 	unsigned long gap = rlim_stack->rlim_cur;
+ 	unsigned long pad = stack_maxrandom_size(task_size) + stack_guard_gap;
+@@ -110,7 +110,7 @@ static unsigned long mmap_legacy_base(unsigned long rnd,
+  */
+ static void arch_pick_mmap_base(unsigned long *base, unsigned long *legacy_base,
+ 		unsigned long random_factor, unsigned long task_size,
+-		struct rlimit *rlim_stack)
++		const struct rlimit *const rlim_stack)
+ {
+ 	*legacy_base = mmap_legacy_base(random_factor, task_size);
+ 	if (mmap_is_legacy())
+@@ -119,7 +119,8 @@ static void arch_pick_mmap_base(unsigned long *base, unsigned long *legacy_base,
+ 		*base = mmap_base(random_factor, task_size, rlim_stack);
+ }
+ 
+-void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
++void arch_pick_mmap_layout(struct mm_struct *const mm,
++			   const struct rlimit *const rlim_stack)
+ {
+ 	if (mmap_is_legacy())
+ 		mm_flags_clear(MMF_TOPDOWN, mm);
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index 2201da0afecc..0232d983b715 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -178,7 +178,7 @@ static inline void mm_update_next_owner(struct mm_struct *mm)
+ #endif
+ 
+ extern void arch_pick_mmap_layout(struct mm_struct *mm,
+-				  struct rlimit *rlim_stack);
++				  const struct rlimit *rlim_stack);
+ 
+ unsigned long
+ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+@@ -211,7 +211,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 				  unsigned long flags, vm_flags_t vm_flags);
+ #else
+ static inline void arch_pick_mmap_layout(struct mm_struct *mm,
+-					 struct rlimit *rlim_stack) {}
++					 const struct rlimit *rlim_stack) {}
+ #endif
+ 
+ static inline bool in_vfork(struct task_struct *tsk)
+diff --git a/mm/util.c b/mm/util.c
+index f5a35efba7bf..24f08217cd95 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -431,7 +431,8 @@ static int mmap_is_legacy(const struct rlimit *const rlim_stack)
+ #define MIN_GAP		(SZ_128M)
+ #define MAX_GAP		(STACK_TOP / 6 * 5)
+ 
+-static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
++static unsigned long mmap_base(const unsigned long rnd,
++			       const struct rlimit *const rlim_stack)
+ {
+ #ifdef CONFIG_STACK_GROWSUP
+ 	/*
+@@ -462,7 +463,8 @@ static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
+ #endif
+ }
+ 
+-void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
++void arch_pick_mmap_layout(struct mm_struct *const mm,
++			   const struct rlimit *const rlim_stack)
+ {
+ 	unsigned long random_factor = 0UL;
+ 
+@@ -478,7 +480,8 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+ 	}
+ }
+ #elif defined(CONFIG_MMU) && !defined(HAVE_ARCH_PICK_MMAP_LAYOUT)
+-void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
++void arch_pick_mmap_layout(struct mm_struct *const mm,
++			   const struct rlimit *const rlim_stack)
+ {
+ 	mm->mmap_base = TASK_UNMAPPED_BASE;
+ 	mm_flags_clear(MMF_TOPDOWN, mm);
 -- 
 2.47.2
 
