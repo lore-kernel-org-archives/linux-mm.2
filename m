@@ -4,96 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4D5BCA0EFF
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 10:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B3E3CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 10:27:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5C2B6B000C; Sun, 31 Aug 2025 06:15:47 -0400 (EDT)
+	id 952CA8E0003; Sun, 31 Aug 2025 06:27:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B33766B000E; Sun, 31 Aug 2025 06:15:47 -0400 (EDT)
+	id 929CE8E0001; Sun, 31 Aug 2025 06:27:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6FD76B0010; Sun, 31 Aug 2025 06:15:47 -0400 (EDT)
+	id 866688E0003; Sun, 31 Aug 2025 06:27:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 910846B000C
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 06:15:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 431BB1DD754
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 10:15:47 +0000 (UTC)
-X-FDA: 83836646334.16.0C8738E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8FD3A1C000B
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 10:15:44 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="B/buqw60";
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 740F08E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 06:27:50 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1482C1195E0
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 10:27:50 +0000 (UTC)
+X-FDA: 83836676700.05.D30CF26
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C27E5C0002
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 10:27:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LLIo70Qm;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756635345;
+	s=arc-20220608; t=1756636068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LEs88vBnHYdZkCP7DNljXknVsfJHlUyaZ1vENeVNW34=;
-	b=JWy8GaogaU2ADOo6qJ+G7w07wHnQlvCUYnXpb+iupec8qQopc8aClfmtmvAB3f1+32Sken
-	TJivErmEf13YvzRzhw0FuLvfjPq035vpbtJs2Y7Jza6hrDcayj5roaKO/QSSIIjPbgpTvm
-	m2P1boUGs/ptqCifBck5vfG0nmiH0c8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="B/buqw60";
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756635345; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wlTrT8N/8QrvwfonXm3IyAKAHRQ9/e6rOitYE9NgwIo=;
+	b=oVVxfo+YS2s8GhXQ48sQ01Vr+6/DOg3E9QxMSMQ0sf/CYflfcwdLZNdx9l+ZwycoaLOW7O
+	ltpXt+TiwMHvT8nHeQVVRtKbAlz+J4iM8UDQDzD9S6zw2bO5ZdemaLNOX/bJvPttSjZ4nZ
+	GKcpn0z04gE2mmSOcyWLIauiGz8QYKE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756636068; a=rsa-sha256;
 	cv=none;
-	b=jc1G0RGi/d24g5BNjO73tpuDnoVncSQg7nntuTt+KJiJJSEgLMqk7nOLFyCw04b1aq1oH6
-	1PimVepxrDjse8f1lP6kKplXFWn403QDgsKwspxTCVMu4pWy9JAX3EaYSVp0qovB7hi0EY
-	Zzu8ylzhxCPyJ4Hf0WG7rCv7etWMZ5E=
+	b=DsyLBlV+voJd3SXF5RAgeo/s/mpmknyzwsu5+vFeRHTVEVFkf9OkHvB55m2GYwjwY5Ifki
+	O6Da4P9VniRJsjDyY0onOmScB7y1uXvjFlB1w3BKz510mbE9/J+RMAuBC5HLwYVpRXRTB7
+	coe+eObZms+aL2yby/ejc2Mzcl3vIvA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LLIo70Qm;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756635345; x=1788171345;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=p3WI4FCDeL4So+P3eBVdNKKy1LNMbXqDY5+OtJLZkQc=;
-  b=B/buqw60exGgGPSPTSPJi5h971YazxD7ehoM6vyBdK4KXOMgWPIkwisK
-   C9A0gV6J/7K5KHa6or8WQCo+uWz10Khjy3mP363+KEoi/8QTBvDfP1IXh
-   RBs76n7C+btg3hf0GytxYfSc8YoIs7Rb/7iXGx/WI1K5uokC5PqDDS+t8
-   KEkDa9+NDn4f7xpm4EVoB0hG8hIkd5luv0nXLnei6W1Qor0G/zDdab4zT
-   /WhadjICjppiLB5qkCOgjrEZvujy/RDJwyDZQGuemtJ9CmozjbhdPY4VX
-   gjKrjQ9Z/oYvRxI7iZ3VifxECzOL8UDonfuUMXTPLSxYOq1JqX/THA8kr
-   g==;
-X-CSE-ConnectionGUID: qFknlk2jS3KVRViCJNhVAA==
-X-CSE-MsgGUID: b7yXvwwnQ/iN8Drw/wNzDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11537"; a="61492374"
+  t=1756636068; x=1788172068;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=G3VUUUy+Z0eEDLbmnC2uWZmW+NftXH+FJS/0FINvCZo=;
+  b=LLIo70QmXegSzRhkUpCfBRZQ04QowtoWVpFmNR4pj2nldILLumtzijB+
+   H1vQECuxBSLnRgoaPXCHXuJNowxpZk28qvJzmQEHwCJck5h17pbLPU3sw
+   WjnWdtyLNcSnifoP1KvKHKCWMkAXvsGv9ZN2TrE6zGtzGiEhsO1xMXaMO
+   fd41TaRLIJpmZaGGikhgA3NcHQIs6J40n/OLPtjGioh19599cn6Qqnz/r
+   HOGq7sVusGrlQEwzw531+M38Wg4Gij6BZqR+gtI/XiNJsHAZI5LEPMbc5
+   r+dEjRLyyiX0lB9V1QP9X7sk6+Jm8Lp+Myg06nr5WZ/+0stYZ1R4n+JDf
+   w==;
+X-CSE-ConnectionGUID: YSXab1uuTzmisHgSwdeBmA==
+X-CSE-MsgGUID: TTT9XSOKQVylt8LdiANEZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11537"; a="46429010"
 X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="61492374"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2025 03:15:42 -0700
-X-CSE-ConnectionGUID: Yd7pGHJCS8a9JmBAGnJB0g==
-X-CSE-MsgGUID: FjUQrYhLTKmLfPBtkw2XBg==
+   d="scan'208";a="46429010"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2025 03:27:46 -0700
+X-CSE-ConnectionGUID: XAOUGNalRseEqI7XAhA2rA==
+X-CSE-MsgGUID: t8fpDd0QR+6w+3bfnX9N/Q==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="169989735"
 Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 31 Aug 2025 03:15:41 -0700
+  by orviesa006.jf.intel.com with ESMTP; 31 Aug 2025 03:27:42 -0700
 Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1usf5x-000W4h-1a;
-	Sun, 31 Aug 2025 10:15:35 +0000
-Date: Sun, 31 Aug 2025 18:15:31 +0800
+	id 1usfH3-000W4p-1J;
+	Sun, 31 Aug 2025 10:27:07 +0000
+Date: Sun, 31 Aug 2025 18:26:08 +0800
 From: kernel test robot <lkp@intel.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: mm/mprotect.c:450:23: sparse: sparse: cast to non-scalar
-Message-ID: <202508311724.Mp4RhDNi-lkp@intel.com>
+To: "Roy, Patrick" <roypat@amazon.co.uk>,
+	"david@redhat.com" <david@redhat.com>,
+	"seanjc@google.com" <seanjc@google.com>
+Cc: oe-kbuild-all@lists.linux.dev, "Roy, Patrick" <roypat@amazon.co.uk>,
+	"tabba@google.com" <tabba@google.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"will@kernel.org" <will@kernel.org>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>,
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>,
+	"Manwaring, Derek" <derekmn@amazon.com>
+Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+Message-ID: <202508311805.yfcdeaFC-lkp@intel.com>
+References: <20250828093902.2719-4-roypat@amazon.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 8FD3A1C000B
+In-Reply-To: <20250828093902.2719-4-roypat@amazon.co.uk>
 X-Rspam-User: 
-X-Stat-Signature: mxkpogn88c1t3f3awkimm8bisj878qk7
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756635344-265197
-X-HE-Meta: U2FsdGVkX1/T+KByr5eCjsbTrnbUno5QQoqVVYoGPJlR9ER9uFOs2a20z/okI+9zXR/mltVdnvqZUFwgMvZ3t6CNYs5SfGt1ZYiMC1MJQ4+buXANwN6bGrHRTdl5bmvOT5kA10cGVFmZmv1+jEqqoBhQVZAVHL0ziwvo49lm9xa3cxT816qUG3X1mmzYf3enywZQkieGjxwVuVJMeCQUfmOgtlkT4Am9tormjt2oLv2GLQlV/G783etwJnrUNbHI2cscr5YO3eY+ehv2log5Ykg7FkV1Stf0iWUcM3Hd//Xxc+oJ9/wcvQ3qFsKqSvlmuLD+1BOjEZE8nBpGc0txFX1hF76CM+2iQN+k1YVjBwfEtAhDIRGwcVQiUtQxWP49G4260svEAS7hpB+kLeo5gM9b0lLMWfHtagml123f8HM0ZDFzUTE187ilysP0FOT3mdoJTbDn8E6VdeFIbB/hJ5O0SEDunNHLtZR32pCIA5DIyHI2oJE7AnIHuqIcBSHYzZ+2Zmg2k3QwoYmTWn3Q6uAA19rRzNJKUUCP7kY3YreuK27mz9gj9z52l8UFY23qkojm41VYT13DyqgtkOjjKePbfK5wKVtjDx5DHHqsHU+Sb12+Npp1ox6z5jGcOqQDDCB4LX5cvgdis9kBK3aSwI90D6vevgSbKCJrINyYBEjsDHzZbeBBK46wG74ShCtIT6p6QgR1OdBtSvsbhN81o2bJ3mYAwsrfh00O0Qlw48B9bjugdx27hJJCpLijx4h8JzhFFSwfffAup3WG7enD0B5PRtFjD52WolNe/ZX86OPirmNIyvwxMbGpWgCAfyHYdeUeFydvPqo3XjOmCiAmHv75JcFyFtyHdj6KRc+eNuUdScM+tvVL6Pi1Mm0iyCT8EeOhBb5ztyxdznUv7jUCqPk25qlS5Q1b5FPb2Ghucp9JrkUqYn5y2Q8PK024vSkkX+9Y7DD8qx/jSAaTQXi
- KIAXOgyl
- MvpQnE4rbFeSlIh8LjyuDxu1oZvZiBAFvI/GRMEYt+fKXk1LFVaAzhqSJvpGfYmH39p9+IMaT3t6/1b6gLazLDx7dZarb2azrJG6j0Orla1Epa+OgRKRwip1dNAJrPx5dVW2Ofm7TY3z256x5yYfQA436V4rG4vYrmf96BAGNCKEEkvMD4ADS1XjpS6D8VMBBr4XZMLmlfENaDBa6XjyGhTXEV43A/kjYz/ugRBCRsWO3359KyMKDLiNFN/cyt25xeNq9axAOxXUSxXYE70nkECZpQnshG8IvOBBS/wSPvSQ1Bwhdv+P0LSS9kyQZUyLzim96leTe3aiTStrPU9L6+6AgKm9ZLIbgGKIZ/a4qW3uf2cg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C27E5C0002
+X-Stat-Signature: z8w3m378zrnko8uoqt6urhfs76uwgzfb
+X-HE-Tag: 1756636067-168812
+X-HE-Meta: U2FsdGVkX1/oxT/D4xD2ycbIdQsSBFu14kj2SfXjTTuIPTUUIgrZDCFKE5kM+DRF9wCLGKpcLW9fjCnH7Ke1+FiJ7hqOSUpI0EsputUnmqFEbZ98u4ITKByRKoZpNKaUG2BbuXVnZNRI60iCOz3WJVx418FgR813mUQZ5yo0W9iJm33K4V67tLIkCOr/x2NoSMC73Hx9a6WzfHKfape2VKeplxvTtDMCgazdAOlQQkr8NPMwxVoPbGWGMlHeGk/cTKLXqXqbjW90H5HFHKJw+oNZzMP67zhK1vjk5w2x3Vf4FUHcyERXe3Ws2y7nPGAkHwjiEq4D6yTxF56uVAGdfqnIMc1QhCXxnupMaDKzn3SKZJvZMvy0SI5BZXZCBSmPLYQJjzmUptoPneWiwa04yYo487NH78ZzJ5rOt560Rf1+W9dlalxzdkK6gb+n0NcE1Z1ilKpaD1xDzds7KIa6hl+AXCd18WLqb2yFyG8Wts8xBb6EGihRXgWPL2e1DQk/yma16EyfnFobwOzygyipOYl7ZWP8xAxxg84R1lf0VNA2tIwHY0k8n16JwLCnDpq3np238yrcKgmNAiTDAgwepvtOf/shKpxSWvs8EM0qQ9y62jHtFMp/E8EV9Uyksj7JFD3up2zN9HvSXugU2VL0TSu8am5hwEZujM31OhU8Io+Pponc5Iez8I54o75gE3pDyn9FlE0Adr2QAoPrbafWn+7AIZSn108f2TpaUiLL0tRXG5gc3WzJawLnBTnGkIaK+W4beh3m709Z7KKVU6InRzrVcpNdMldOI7ejlYqu26ZmwgR75IaEfd9M4xO78ZHtRm6UsxxeJh8TvyYfCJHQ9HV0zTuqJzAbJ+dcP+kddvUuIQU6caMvAT5TVPlE1Tw5+wGo1KETQNmhZIydqq2cAAwtz/ihFJD72NNvtOruE4A6HOmyNqlsB4sCm+Qg5TddUzlUQ2KnWSRQC6WGrl5
+ Lildwnlh
+ O79f3OENOJF0KU/0A5QgXOEj3HMCzI6zW7abHJ4m24/ewx2IpIRI89MW0gipIqX8y+yYbxIIjykRal7aME+OpE7p6zK5qCfN9T0ANBcZ6ToYnXmRg9OgUPqUE/jpqblBmAF+dJYqHlN/BB/BraBhDHFlSSYs7FOrxgL8VvivREkBLvLEubY0sIvQwPV078iI/vbsaOIRdadCM/M9jleFegp0//UKMdvszlVSptlxMnDNtU4zazH+VhXvjP8dCM4hNbkUSlpgcVCWHcxF/C23qp0rfnVh/QPrxv4NG3cKL+boyPE6NKNYxcJp2xMtdjoLEyLaPyPUqf2QCY+mBphS0awQcmeZGByMg4rd2cIxKdsUdFEgCyzuVGb5/a8GFgV1BZq1i/zVDxH6kzqiHMeH2/axv/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,102 +123,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   c8bc81a52d5a2ac2e4b257ae123677cf94112755
-commit: cb0f01beb16669e91510fcdb2cea213931aee017 mm/mprotect: fix dax pud handlings
-date:   12 months ago
-config: arm64-randconfig-r121-20250831 (https://download.01.org/0day-ci/archive/20250831/202508311724.Mp4RhDNi-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project ac23f7465eedd0dd565ffb201f573e7a69695fa3)
-reproduce: (https://download.01.org/0day-ci/archive/20250831/202508311724.Mp4RhDNi-lkp@intel.com/reproduce)
+Hi Patrick,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on a6ad54137af92535cfe32e19e5f3bc1bb7dbd383]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Roy-Patrick/filemap-Pass-address_space-mapping-to-free_folio/20250828-174202
+base:   a6ad54137af92535cfe32e19e5f3bc1bb7dbd383
+patch link:    https://lore.kernel.org/r/20250828093902.2719-4-roypat%40amazon.co.uk
+patch subject: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+config: loongarch-randconfig-r133-20250831 (https://download.01.org/0day-ci/archive/20250831/202508311805.yfcdeaFC-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 14.3.0
+reproduce: (https://download.01.org/0day-ci/archive/20250831/202508311805.yfcdeaFC-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508311724.Mp4RhDNi-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508311805.yfcdeaFC-lkp@intel.com/
 
 sparse warnings: (new ones prefixed by >>)
-   mm/mprotect.c: note: in included file (through include/linux/pgtable.h, include/linux/mm.h, include/linux/pagewalk.h):
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast to non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast from non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast to non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast from non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast to non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast from non-scalar
-   mm/mprotect.c: note: in included file (through include/linux/rbtree.h, include/linux/mm_types.h, include/linux/mmzone.h, ...):
-   include/linux/rcupdate.h:869:25: sparse: sparse: context imbalance in 'change_pte_range' - unexpected unlock
->> mm/mprotect.c:450:23: sparse: sparse: cast to non-scalar
->> mm/mprotect.c:450:23: sparse: sparse: cast from non-scalar
-   mm/mprotect.c: note: in included file (through include/linux/mm.h, include/linux/pagewalk.h):
-   include/linux/pgtable.h:324:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:324:16: sparse: sparse: cast from non-scalar
-   mm/mprotect.c: note: in included file (through include/linux/pgtable.h, include/linux/mm.h, include/linux/pagewalk.h):
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast to non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast from non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast to non-scalar
-   arch/arm64/include/asm/pgtable.h:315:16: sparse: sparse: cast from non-scalar
+>> mm/secretmem.c:155:39: sparse: sparse: symbol 'secretmem_aops' was not declared. Should it be static?
 
-vim +450 mm/mprotect.c
+vim +/secretmem_aops +155 mm/secretmem.c
 
-   428	
-   429	static inline long change_pud_range(struct mmu_gather *tlb,
-   430			struct vm_area_struct *vma, p4d_t *p4d, unsigned long addr,
-   431			unsigned long end, pgprot_t newprot, unsigned long cp_flags)
-   432	{
-   433		struct mmu_notifier_range range;
-   434		pud_t *pudp, pud;
-   435		unsigned long next;
-   436		long pages = 0, ret;
-   437	
-   438		range.start = 0;
-   439	
-   440		pudp = pud_offset(p4d, addr);
-   441		do {
-   442	again:
-   443			next = pud_addr_end(addr, end);
-   444			ret = change_prepare(vma, pudp, pmd, addr, cp_flags);
-   445			if (ret) {
-   446				pages = ret;
-   447				break;
-   448			}
-   449	
- > 450			pud = READ_ONCE(*pudp);
-   451			if (pud_none(pud))
-   452				continue;
-   453	
-   454			if (!range.start) {
-   455				mmu_notifier_range_init(&range,
-   456							MMU_NOTIFY_PROTECTION_VMA, 0,
-   457							vma->vm_mm, addr, end);
-   458				mmu_notifier_invalidate_range_start(&range);
-   459			}
-   460	
-   461			if (pud_leaf(pud)) {
-   462				if ((next - addr != PUD_SIZE) ||
-   463				    pgtable_split_needed(vma, cp_flags)) {
-   464					__split_huge_pud(vma, pudp, addr);
-   465					goto again;
-   466				} else {
-   467					ret = change_huge_pud(tlb, vma, pudp,
-   468							      addr, newprot, cp_flags);
-   469					if (ret == 0)
-   470						goto again;
-   471					/* huge pud was handled */
-   472					if (ret == HPAGE_PUD_NR)
-   473						pages += HPAGE_PUD_NR;
-   474					continue;
-   475				}
-   476			}
-   477	
-   478			pages += change_pmd_range(tlb, vma, pudp, addr, next, newprot,
-   479						  cp_flags);
-   480		} while (pudp++, addr = next, addr != end);
-   481	
-   482		if (range.start)
-   483			mmu_notifier_invalidate_range_end(&range);
-   484	
-   485		return pages;
-   486	}
-   487	
+1507f51255c9ff Mike Rapoport           2021-07-07  154  
+1507f51255c9ff Mike Rapoport           2021-07-07 @155  const struct address_space_operations secretmem_aops = {
+46de8b979492e1 Matthew Wilcox (Oracle  2022-02-09  156) 	.dirty_folio	= noop_dirty_folio,
+6612ed24a24273 Matthew Wilcox (Oracle  2022-05-02  157) 	.free_folio	= secretmem_free_folio,
+5409548df3876a Matthew Wilcox (Oracle  2022-06-06  158) 	.migrate_folio	= secretmem_migrate_folio,
+1507f51255c9ff Mike Rapoport           2021-07-07  159  };
+1507f51255c9ff Mike Rapoport           2021-07-07  160  
 
 -- 
 0-DAY CI Kernel Test Service
