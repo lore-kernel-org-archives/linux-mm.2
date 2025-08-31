@@ -4,84 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDDBDCA0FF2
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 19:34:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81B39CA0FE8
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 20:03:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A6038E0002; Sun, 31 Aug 2025 15:34:31 -0400 (EDT)
+	id A292E8E0003; Sun, 31 Aug 2025 16:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 357738E0001; Sun, 31 Aug 2025 15:34:31 -0400 (EDT)
+	id 9D9C28E0001; Sun, 31 Aug 2025 16:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26CA98E0002; Sun, 31 Aug 2025 15:34:31 -0400 (EDT)
+	id 8EF1E8E0003; Sun, 31 Aug 2025 16:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1218B8E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 15:34:31 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9603DB9573
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 19:34:30 +0000 (UTC)
-X-FDA: 83838054300.21.9A3F456
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D4CD8E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 16:03:45 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 094D3160564
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:03:45 +0000 (UTC)
+X-FDA: 83838128010.11.86182AD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CDA18160010
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 19:34:28 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T4R8Q8dG;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756668869; a=rsa-sha256;
-	cv=none;
-	b=ZVjnEV4wEDwEqkA2LJ7PMbDlsnMnCeLojPFpY6ptFVZ+2ykXogluZipyAesP0VO51/EhOy
-	NVv+lyxi3AT+rx3f5urSYBo4A0+W/cmjB8wuD7VzF5x7FUDzwXjZMUnPTJIJIEi5FqLNwn
-	WUGfx1GwuDcCqaNZ+NpcYc3EoQ2q9Nw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T4R8Q8dG;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 447D9140002
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:03:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I9cY79ni;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756668869;
+	s=arc-20220608; t=1756670623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOvyE1q4vnGQzDP+EK/jTsSw+P41vsnueObvXPP/zrY=;
-	b=PQ4sxhDrNFaigZiyG/fqfFhtZaiDqmt5FKZ1kqPJm2OJgnv5OfcULJHS9jNv1uRwVyfffa
-	f6e5SzzlUMY0x9Fk5yoDbO/6OWXdUmKH3viGFXrUPqrfgL7SadVkOgj7h5IMqhirx7jkMb
-	5NrbG9vJsp8i/49Z4fmBYGB7crLzr0s=
+	bh=US0oW+Ut2SDHZ1JMHn38QBTm/yueAPRYljZcVZPlsPo=;
+	b=h7b8en5lUqcty92wBfPtoOWflSphg9K7sexiFWoYrULwzxnfRMVnL93SGrwAzEQUlDREP7
+	ZjQosIlogwmNV7+bdSQSLQ480MAQP4kJrPw96viGX4QMuHW31ffxSw/ZLIsBErTuW74rGf
+	Bzf1THEHXXO/FlQITk7Mlm1VTwOlFLY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=I9cY79ni;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756670623; a=rsa-sha256;
+	cv=none;
+	b=8AD8LWSeEhkUHBDYaFza4uxzCNs0rcuSzDyzeDD40XKU9o1f5coD4r5furqmQbtR52zvd1
+	KUGnf82vpULX3dtYI/xJp93mVH3jRYS7/6UiS/suyNOP5rG7u/uIWvBStBqQ0QqjbHGAcq
+	Fr38o+p/bYBPvosX0hmaJEtSZZjk6LE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3C4440A98;
-	Sun, 31 Aug 2025 19:34:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1BBC4CEED;
-	Sun, 31 Aug 2025 19:34:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 341AF43461;
+	Sun, 31 Aug 2025 20:03:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B50C4CEED;
+	Sun, 31 Aug 2025 20:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756668867;
-	bh=sJmdTCCbtiT1DW26qBy6SEwGQBpDJbkjKYDcCD3ZiuE=;
+	s=korg; t=1756670622;
+	bh=DPPkcb21slAFTG9P0dPfTMqmPZQZs0zA6URZPmIF4aQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=T4R8Q8dGwblsf+2ThAPyIuYBcyGkPZLoISXWArHmyzYuGcW0kJj8JM/BgXYGtmRCX
-	 TWlenIN1eDcQEwvUfb8sWbjiLHbwDWMk+0eDNpwnHXKyUjlmJYop94iCA1FceDj5g6
-	 1ZUWwK8S+WiFwCf5XlxG6OREwRfpv7XaeXeedwps=
-Date: Sun, 31 Aug 2025 12:34:26 -0700
+	b=I9cY79niBHMOtwU5hsj7SCJxtuY2+gGtapyoxfF8v+481gGJZRLlj15P+mbhewE9U
+	 6WCA4kEeFGXjQw0z86jDb80fzDEAPnyf7wgNxXkEZ4JTzB9l4VP200eSkqXEZfZJhx
+	 Cw+qht02yc54pcjkoNk+/jH6Jws2xsl6DOYUNCbQ=
+Date: Sun, 31 Aug 2025 13:03:40 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Joey Pabalinas <joeypabalinas@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH] mm/memfd: remove redundant casts
-Message-Id: <20250831123426.3ce56a2448b520aba75f8edc@linux-foundation.org>
-In-Reply-To: <efbbe6093b64a5b19f974871d5262d6e75dff2c0.1756639225.git.joeypabalinas@gmail.com>
-References: <efbbe6093b64a5b19f974871d5262d6e75dff2c0.1756639225.git.joeypabalinas@gmail.com>
+To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
+Cc: richard.weiyang@gmail.com, Liam.Howlett@oracle.com, davem@davemloft.net,
+ david@redhat.com, edumazet@google.com, gnoack@google.com, horms@kernel.org,
+ kuba@kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ mhocko@suse.com, mic@digikod.net, ming.lei@redhat.com, pabeni@redhat.com,
+ rppt@kernel.org, shuah@kernel.org, skhan@linuxfoundation.org,
+ surenb@google.com, vbabka@suse.cz
+Subject: Re: [PATCH v2 2/2] selftests: Replace relative includes with
+ non-relative for kselftest.h and kselftest_harness.h
+Message-Id: <20250831130340.c096ab001dd38bcdb11146b8@linux-foundation.org>
+In-Reply-To: <20250830163949.20952-3-reddybalavignesh9979@gmail.com>
+References: <20250827144733.82277-1-reddybalavignesh9979@gmail.com>
+	<20250830163949.20952-1-reddybalavignesh9979@gmail.com>
+	<20250830163949.20952-3-reddybalavignesh9979@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 447D9140002
+X-Stat-Signature: xmrknr75pq3yxwi3ujmssyeba3h1cotx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CDA18160010
-X-Stat-Signature: gg8dopjws1hcxj8nfpatawu5w6az7as1
-X-HE-Tag: 1756668868-830101
-X-HE-Meta: U2FsdGVkX1+fwvJJEM9K6V1e6MWBndUEdOB3ONIwru1c9kUTSBFoW2ugdnS31f2J87MtAhpfQktHAvM7kOvM9/l8gkPWGCQCiiGFepFF1UpYplbqNrswLQFz8TLQf8+Je//wdzc16MK7TkfomEytU3s6mJbSBWHbY/w1Uecf/atC9ZzIuc6HaoMwuXhmbGHsgb6lbYe/RVK+FRtY8eYf07l8RB7LF3csOhGjFLm0luxCyly6+o3ZcmqCNqxutiFA7cQ6ptnQjo/loBkzTgr2X8jwgG1VMEWrLg4qre2/PY/qcSFEcpsLI8HPhEsnavkfOrYKs+ozdywzRDU2qLNPccvAPoiE61DyeuSAx7GMigcspXvmUJ82zbhidzL1ln2rH04OluZAH3A09zShemoVIlI2zFCm9if7dWK8QqvNA11+SnPLOTSIJ6WHCXS5EfMJU/ZBj+Ya5t7QMXKXXLyFTQ1B++o76guvKoxF0Y+PY4smfEeK1GbGJ96bkH7CnZjixXjKBw7icyKrqxWNua24tlr91wenXgg660y2kiXnYCQmpgLqemxPiTnC+RrW/EpcxhCXn+jVJtiug9zM67SEsHM45VCoCsghQe6GlT7zYBFQT1RxX1a7LMCUaNeU1d18yQQU314Rb1bqZKE7QEiy4ONMyruEANehvONQaR+jK7jm0DXOU6PExk/I2grALnfLdDgoH3ZBCrfvH96nj+UQy8s/QCgIWMx5F09Wk6M8SkXonCwRyXcoO+u8fCDS0/U+aNSg5sChXgWlH7ckdHaAQoK9uTrUH0bb+053hu/S2E0q4BWDHkNrfDi45itGx+X0rAyH/GmxCb3PFrVOgrbLdPBBHsugRkDqbnj0mNsI84Xm/u3ALWx9f09hhIeuc4h06bYeg1Uqv5so03xxZgBUN4D5CXocTIvxd3m38iYL8DbmZoQAOqCOjKo23lN3Hy5bYlkeuVfq6U5t/mAd+qS
- k//x87Gz
- Ac+b8rCGsgd7PdODauQyv1WMkPNL1FSCcpmRoLF5FaIzZdsG99dCHGMS7QLlRHjKHrFgj2Cwt+3g1GNS8gGXmo1k0bxT2xMHUOUDivjU03jzNlN2bFkNeRXWPFIFrIkT1gRaEe52Gog5ts2giTLxzaufI4bQQngT5nwJCqhiIRHGj9Lg8WnEhVke+A9tu4aDxN0YRzsdg/B/4evuEBNcskmGrn9TVQ0E7xlCK7Q10Y025yhWBMaD5KcBuM1I9dor8ObqlVNt5wh+HnGRlt7sNyLpD93jtCis7D18FIkMUEgZUHBYWdp8xU+hEzoLUVoV3924uA7EwMb2294Q=
+X-HE-Tag: 1756670623-220511
+X-HE-Meta: U2FsdGVkX1/8xAuGsyONqLvbYnhGrwEfgTuEilGiK6CO7GS7YIxtYzkB7I8wm0/qNULI0g1ff9zDbZlstbY9zsSMz2r7nxipSoJFRyMsy5yG6HQalR8voK5MJPCjvZmQ69eH4iWOBqz3AlBVPBeVGHULze+3jeHaLTC1Csm/NU7ClYoxXlR//hEJBSerfbHMZZT6Dqr6FvvD7jTx09h8M3fk/CqmM3oMF0aNARnwVgEgX0aVdPftGAOtp3TmyCqCC+xLEfi3FxouYiS13to55Fur9b73Lu8PIAiQZyH8O36zH792bxEwaulrQVzXlgH6TYm0YKuwm0LY7NeOz7glF+FaxMvKpGoqnSsFBhugXe3hOFtL5PcqhFyVKxPd7e3VZPFiyUr9oAIxIbwzYtyGpCjskzbvWXsWnw09ul5AnHCuHu7r2mAT0WiOKR+K1ht4pvd0q+2ZXK4ygbcI4hirgPrCLRPhsJPkA9z1UIkq/1RHjsGxWvnba8LOX0HZLqiIsoXukp4AqjSnp8RYFBjUeh/GbFRYLivRYA5XLE7YBuhgwfzqB8fgv+aUf03rR7UdF2G+QEAffTwsXJ4YYovzUDu0PpKwAzJJadhml1+e3kt5jZprDwC+pFhbFjW1jT2uM0656ZZEn6pnX1fC+BVNSTvMS8j4FkmTiZLUiNq9ETH6EiYKClM/HZ4GDsHsYK4UOb7Je9s8tdZ9a3IfCu7POWd8tOeRj3tS1fxGP0hzMoxSVxWHJTj6A6yrRFGZIz5KTnUHd/0/723u3KrzD/iirE/tNeE3AXUwImkiKfd92juiRt2LHA8cpTsdF7OVtwi1UHt3zmcq8YD4NVWANshvFU3hzkXf/ZY8mW1WMpO5L/vQB+ajrASY7CGTXZQJLI5nNaf2B2n3RxQd16tUyj+u4Z2vrBVzUSmSkPrqmAI1peuu0LHSWHqgoTVOfEjKqagLzOgsMG8eyicxc96+yZc
+ MhEd9VWQ
+ cCR490AxHqhVEUGuODTyhkDHlnCZGB7lZVJgdHXKzWz/e3V8QS7rv6f5S0Z/qGDxqVm58TDxQ2d6LGFmgfzs9zR6pBkbkPVBpAUPjH6DaHr7usXaw6E9MwWN3rj4FS+j85G4uwpRcAjPfGdDRx/Eg/xf3XKmSAz0a/c07S8+3aYMyi3/WwVhdxlxUtuWDXiJybn/JGE4JQwa9++0WY98xRCF+LlD/3DUbgnBvftW1tznPcEp2WcGkk7zWEGC37W7AeIq3fpz0CIwzaZNoSHodFG1sEL5GB21EX9h+WRGQfIQ87kY8CENMJ/hV9v7JlwecTv5MnjcJh0lqNvYT4pUSfrukowzJQIEpjVb0i7ZoX+YTUBtVsrzZpt4BybJJMFSnpZleKt2lC/F8/lg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,53 +99,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 31 Aug 2025 01:47:48 -1000 Joey Pabalinas <joeypabalinas@gmail.com> wrote:
+On Sat, 30 Aug 2025 22:09:49 +0530 Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com> wrote:
 
-> MFD_ALL_FLAGS is already an unsigned int. Remove redundant casts to
-> unsigned int.
+> Replaced relative path of kselftest.h and kselftest_harness.h
+> to a non-relative path
 
-lgtm.
+This patch causes me some trouble.  It alters things which are also
+altered in both mm.git's `mm' and `non-mm' branches.  I try to keep
+those branches independent and this patch won't apply to either branch.
+And I'd rather not mess around doing git tricks to address this just
+for one patch.
 
-It's rather annoying that the MFD_ALL_FLAGS definition is so far away
-from the other MFD_* definitions.  What do peope think of this little
-cleanup?
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: memfd: move MFD_ALL_FLAGS definition to memfd.h
-Date: Sun Aug 31 12:29:57 PM PDT 2025
-
-It's not part of the UAPI, but putting it here is better from a
-maintainability POV.
-
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/uapi/linux/memfd.h |    2 ++
- mm/memfd.c                 |    2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
---- a/mm/memfd.c~memfd-move-mfd_all_flags-definition-to-memfdh
-+++ a/mm/memfd.c
-@@ -313,8 +313,6 @@ long memfd_fcntl(struct file *file, unsi
- #define MFD_NAME_PREFIX_LEN (sizeof(MFD_NAME_PREFIX) - 1)
- #define MFD_NAME_MAX_LEN (NAME_MAX - MFD_NAME_PREFIX_LEN)
- 
--#define MFD_ALL_FLAGS (MFD_CLOEXEC | MFD_ALLOW_SEALING | MFD_HUGETLB | MFD_NOEXEC_SEAL | MFD_EXEC)
--
- static int check_sysctl_memfd_noexec(unsigned int *flags)
- {
- #ifdef CONFIG_SYSCTL
---- a/include/uapi/linux/memfd.h~memfd-move-mfd_all_flags-definition-to-memfdh
-+++ a/include/uapi/linux/memfd.h
-@@ -12,6 +12,8 @@
- #define MFD_NOEXEC_SEAL		0x0008U
- /* executable */
- #define MFD_EXEC		0x0010U
-+#define MFD_ALL_FLAGS		(MFD_CLOEXEC | MFD_ALLOW_SEALING | \
-+				 MFD_HUGETLB | MFD_NOEXEC_SEAL | MFD_EXEC)
- 
- /*
-  * Huge page size encoding when MFD_HUGETLB is specified, and a huge page
-_
+So what I plan to do is to simply drop the problematic hunks from this
+patch.  So what will be queued in mm.git's mm-nonmm will have a few
+missed conversion sites.  Everything should still work OK and I'll ask
+that after 6.17 is released, you send along a followup patch which fixes
+those missed sites, OK?
 
 
