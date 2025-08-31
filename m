@@ -4,199 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E60CA0EFF
-	for <linux-mm@archiver.kernel.org>; Sat, 30 Aug 2025 23:11:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C46CECA0FFE
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 01:00:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDB786B0005; Sat, 30 Aug 2025 19:11:36 -0400 (EDT)
+	id 99CFE6B0005; Sat, 30 Aug 2025 21:00:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D858E6B0006; Sat, 30 Aug 2025 19:11:36 -0400 (EDT)
+	id 946B46B0006; Sat, 30 Aug 2025 21:00:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4C6B6B0008; Sat, 30 Aug 2025 19:11:36 -0400 (EDT)
+	id 835556B0008; Sat, 30 Aug 2025 21:00:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B3F066B0005
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 19:11:36 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3A4C3B7E92
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 23:11:36 +0000 (UTC)
-X-FDA: 83834972592.26.1EC642A
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4989F180010
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 23:11:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="PFud7j/G";
-	spf=pass (imf06.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F7286B0005
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 21:00:42 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D4F85585B6
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 01:00:41 +0000 (UTC)
+X-FDA: 83835247482.07.6825628
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B475520004
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 01:00:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gvGY0DPJ;
+	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756595494;
+	s=arc-20220608; t=1756602039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pKJR3d1y6/pE646jp/qQ2LVHmuXD7qWjBS7Rpy0QVAg=;
-	b=yGcnRdjhomr5TfO+bMWU5zSmTjttGxRpAEFq6/3zwebs62XBGyHSrtPUOg9/B/tCNNdSQ5
-	shTj0yE10T2e5MPCjrzsLobWwiVbztkw69EUtF9WX3tTpRJ2XmFcfku3qN8ud+vrlDJXaI
-	2dTOxgSKxDlhy8klBJpDUCKrDGJP5zA=
+	bh=0RByE1oD+mmLZZ5ufBLY2/arTs7VDjviISGVYnrZAm4=;
+	b=Jr7omG1xx4qDqD00F7q8KnGeGXMadjlxoOa2jMeKCBgUIJLh7COyBP8jfK35+gagJ0Rr8m
+	VVmFWJQ90yaEvYo+hgZemyXfE79Seit0QOVLMW7MlzE8KOLt+vdtrG9qvd0LDVQsss5OBJ
+	Ufqy/UOJAM20jIk6VNDcfW7SHxAwOmU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="PFud7j/G";
-	spf=pass (imf06.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756595494; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gvGY0DPJ;
+	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756602039; a=rsa-sha256;
 	cv=none;
-	b=LYKWYFNRp8UFm+yvv2VKSl1ONaR7weHfer+YUPc0JyBbLtmuypo7AdE9rHVvzu+iS1Fmzw
-	RCEln0xfdbl5+Miuw+ZGQ+O7akfHK0B0LoRKVRxZkILmzkLkZxfqDDf4LzrXHjw2+1fpER
-	5WRCDjuT0H/4ddbtt0BnfTmAPOB78C8=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b4f1ee2e250so218253a12.2
-        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 16:11:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756595493; x=1757200293; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pKJR3d1y6/pE646jp/qQ2LVHmuXD7qWjBS7Rpy0QVAg=;
-        b=PFud7j/GYSsGR3DwtjkLY9hB+frhS/ip5nZKhYmA+w0dQV9J8xJolglowbLNR6WS5L
-         MYygNOrg/Dw6+gY6F487wolidVa6ynhiq1Xl6HpbeWtpk+LYrWdiaNugOdVhzyrqmVP+
-         q0lzvRC+UCEm9DykQDQ5H7UXcSN5Mq6TywKz7aoGfKeQyQxUKegKeMSgD3r1MpXut8+x
-         KmKdJMzVYPeIpBsyvwwabxGn6QfRCTL2RjKcHBQzqNimCLJPDgQCKei930+TX1szhUSA
-         iMWtRX/p2NqJ+7UR6Dc0wKwhvvmaV/uSHw5EWCyk/4IdQ3xishexGvwwkQ93aMDThTkF
-         78qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756595493; x=1757200293;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pKJR3d1y6/pE646jp/qQ2LVHmuXD7qWjBS7Rpy0QVAg=;
-        b=ShBvVy+iG+4Vsac9w7rNQ61Y6bu7kw0N/XQw+ol89zZP959fmg9cEs/UbYYvijQSDC
-         TuQ/Y3JKsnTXQ9QarE8CAEnE/SouolvvsBP/Xc9OPsfAszzp8tamHCZZEemdmV3ZVYCg
-         2oLWcXZ7wjnNZAPK9zi715hHvOnt3aJeCoa2UfNOAgxZpd9o7dG3iyAOCtjVdvshIzTz
-         BeEA9rz+y2VfmvBevMMVaNAHOfjtGu8/OAcTZthVGgDwMPZHBQANDSq0/SoZjfi4h/PK
-         ceQ3+GfUuGe83EATjlEQyBVndDM9ZPXoCQq7OOEgWOK52sr/FdEo29PWpQCeKh1ESYu1
-         2RkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQof5Ak15jhUNOQxvS78pHkagljTrav7TWLbdSQlg+ezhgvVJW0I6jZ6qLwjhVT0BYMArJGy/Ffg==@kvack.org
-X-Gm-Message-State: AOJu0Yx8+j/60ZQtEx72c2C5m0v/DdY3+zvUNzC3jed6TE9LjqC1XYJ+
-	Agd6xRxlPAOmKYAItixoJHT7Ai6XgzCM2ZDxjSm/j8+0W/3dnWVZWmCC
-X-Gm-Gg: ASbGncuX/+EckUltbvdmhYK8NknbSzzJV7dayrAlj+ocqyKPFcfew3vS5ukdpNSp9zZ
-	7Ex+XRFkdiJoCCtZ127MbZcx4oHXh2Wy5eUmUha0Nc1JFllrVuMfMl0vkASvK+qw6fqbmKPVuRM
-	Ox9be5YWOsjTEVuy3cgK4XetQU+0/q89GCgnEBbuLPnngkC5oY/HyBRyDRakwKxgv9rG64BZzOX
-	5XBgcujxT7sGVSp55sZyKWCQcVsu3BJm2plkzWVNArf/hkMwfrvrRkl9ZHTSMjN+jljMXUaortJ
-	W7sE6dDeSbgphTm7oY0y74n4VY/TWjV1wXBnnW6BLTbMVva8dbbArDRMLkG1nCR6uWOAAV0sZCF
-	iyV2YHTr0txht5cVA11NDNQIHF1CtajOkoQjR
-X-Google-Smtp-Source: AGHT+IH09TdLkBTBS46a9KkDQcsPHCKV5BjcOl3BN1JIlX/axUWBHc8jxps5fYfmQWtY+6vT/lzr2w==
-X-Received: by 2002:a17:902:c952:b0:248:cd4c:d6e with SMTP id d9443c01a7336-2494488a679mr39782015ad.9.1756595492940;
-        Sat, 30 Aug 2025 16:11:32 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24906395aa0sm61840295ad.100.2025.08.30.16.11.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Aug 2025 16:11:31 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 3F63E4222987; Sun, 31 Aug 2025 06:11:28 +0700 (WIB)
-Date: Sun, 31 Aug 2025 06:11:28 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux DAMON <damon@lists.linux.dev>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Power Management <linux-pm@vger.kernel.org>,
-	Linux Block Devices <linux-block@vger.kernel.org>,
-	Linux BPF <bpf@vger.kernel.org>,
-	Linux Kernel Workflows <workflows@vger.kernel.org>,
-	Linux KASAN <kasan-dev@googlegroups.com>,
-	Linux Devicetree <devicetree@vger.kernel.org>,
-	Linux fsverity <fsverity@lists.linux.dev>,
-	Linux MTD <linux-mtd@lists.infradead.org>,
-	Linux DRI Development <dri-devel@lists.freedesktop.org>,
-	Linux Kernel Build System <linux-lbuild@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Linux Sound <linux-sound@vger.kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>, SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Huang Rui <ray.huang@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>, Jens Axboe <axboe@kernel.dk>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Joe Perches <joe@perches.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>, tytso@mit.edu,
-	Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shay Agroskin <shayagr@amazon.com>,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Saeed Bishara <saeedb@amazon.com>, Andrew Lunn <andrew@lunn.ch>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Alexandru Ciobotaru <alcioa@amazon.com>,
-	The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Steve French <stfrench@microsoft.com>,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH 12/14] ASoC: doc: Internally link to Writing an ALSA
- Driver docs
-Message-ID: <aLOFIEknbxQZ6FM2@archie.me>
-References: <20250829075524.45635-1-bagasdotme@gmail.com>
- <20250829075524.45635-13-bagasdotme@gmail.com>
- <20250830224614.6a124f82@foz.lan>
+	b=JypsKwxK5hkBQHJEM3f/oRF0EdxLqN9lBKQ06rdj21S4bOBLVnvNSSHMVMsRyJTkXYyHMO
+	hfz6g73h7ZaSC+8sRS5unvQvKYLx6gxcTC6GzQRoORBnoM9kloY6N185ZD3VYtO8WdViDX
+	4i/7kHywtBg6Q26pm+8eP9/x/JkIPnw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D5D644CC0
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 01:00:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06413C4CEFE
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 01:00:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756602038;
+	bh=6Dq0bT7P37D+tqa1bZiIjyxkQVukfOzrScOUvR18WiA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gvGY0DPJ9YDmLrKjGlcm+lTssHu/zicjqTZg/XEAsq+OICnLGfPTb0HvdFyhVKYAN
+	 cdDiK9MYqe5jLzrGpqSw/PnE1NnfEpopAepFJoZOifxNuNHdQHQGV6XJJDcsyEcy4r
+	 5a2RkNnMxLuA+5TryUZhvFPifTOaNCmjSWDqqP7BieT9vo8VK4BPaFlGOv13OKERQD
+	 kib1PjdGUHW/zyo7QlH1g3MgiJrx4lU2dJo1nu2w3G+ubUP5aT+6Zgk66695yoIFQG
+	 AkoW1KR6IfLBX3FJXor/bVT6i01ekcGyje2PExWoRutMfw36NIgKzWst6XRlewlyP5
+	 mNqHbYpuAwoyA==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f72452a8eso680088e87.3
+        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 18:00:37 -0700 (PDT)
+X-Gm-Message-State: AOJu0YySGL3FiXMkbmjWdatc4DQLpTcbiDPsy7g2w3OcC9vEPqY05f7+
+	7lyju6emoNEWImYAXOPu3mhdbH+vXd102oF3mGBgvw/Jq7UuoLSIXR4+hXFtDVKOa2853zEeoBt
+	lhRNSpaq6pVtQOBPD6RICba+n+y/pjA==
+X-Google-Smtp-Source: AGHT+IHfVsk/cqMz+InJlu9TsCkYb6uQZFU3v5twViynKiT9JHx+rS9+O2dvLbGy6pNvzXqGhJoarHXMfA3b+lX6PX8=
+X-Received: by 2002:a05:651c:1118:10b0:32a:7856:7412 with SMTP id
+ 38308e7fff4ca-336caf7bde4mr6565661fa.27.1756602036540; Sat, 30 Aug 2025
+ 18:00:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="q50L9+H94gXo88jD"
-Content-Disposition: inline
-In-Reply-To: <20250830224614.6a124f82@foz.lan>
-X-Stat-Signature: whycfp8ahu1yw3stjcc83mwh5w5fgg7z
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-7-ryncsn@gmail.com>
+ <CACePvbVVz5G9mC=Od3Uhw9Dkkgz-_jMg9R5EzNxUwx0adKKPQw@mail.gmail.com> <CAMgjq7BjsuooaHr=6cYTzGsj1nm+xG7jzCVdEsFgxyBHwq4GXw@mail.gmail.com>
+In-Reply-To: <CAMgjq7BjsuooaHr=6cYTzGsj1nm+xG7jzCVdEsFgxyBHwq4GXw@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 30 Aug 2025 18:00:24 -0700
+X-Gmail-Original-Message-ID: <CANeU7Q=_TveYGa2OK93YCRyJRYBc7QVi1pTTfQM7vm4Qh9tNbA@mail.gmail.com>
+X-Gm-Features: Ac12FXxbPyEUFw3YkMkI78ZCn3kR4M-xdMMaAiaM1jBCzIl-tOsvwNN6_Nt7wt8
+Message-ID: <CANeU7Q=_TveYGa2OK93YCRyJRYBc7QVi1pTTfQM7vm4Qh9tNbA@mail.gmail.com>
+Subject: Re: [PATCH 6/9] mm, swap: use the swap table for the swap cache and
+ switch API
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B475520004
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4989F180010
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756595494-276114
-X-HE-Meta: U2FsdGVkX19knuZCNPR714drAFK1P9En8jURckFlOUL8QfxIlKc8GzKneSGDYmkPRSbJTKw0xgNNOOoemAwU7WxqSym0g5CBOfkOTGhaJs6mr0yknBAe8Kc9JQx31UxuodzhF4Rcov/Wr9TyD4CCIysO7JD+Ip441IkS9VlGKlIYcW4Le9RqPWjhSZnxNMSR9DYhHBqdEIUQaoxrPYP1LIrYUtU972fEdDAuWKZtvBebSTNDfmYGrYoDRNwGGKV7tZJv79AHMXw3WfPfg8cOJawXl8dTAiFsCagr8Nuj2oMgn760naMWPp6x+CvxJbxhFuDTBUA3ze22mYpAtoBVeVeBS0jKfre3YMNk4s/tsnoHlkSNyhx17Fjidigv3glo0Mib1/lt247CbbgsQZXDs0JUotLlThrTcxR0f/WBzFmS2FlXIO06eFcV40bC/Bm2MaPHr2cMlDJygxhOVI4fKcJtyWcqVdo2EXBHSj8MiTQ4fRToAOmq6gZ694/QQFgeUAtiufeFtGNhiUiI/poxK25KgslmpdZgkg7LQ0Jih9tJTlcgq1VJ7ZkW/YJWWCmX9JzuoXn/lunfcsnj3fMCqYSDP4L5Ntc2aYrWmj/nsFgEDJgaNmva7ziUmDgmn2dDeW6/gkc9F/urNZDsSJHnRypxyK2zJZbEV9GS1DzGtWOk4+1JbdCkh/bYDGixlqnMwUi/D9NkzICWhuzLeQApwNRhNkYsVo/wZvQ0dX/G28+U7VEFYo1rIwyAk/c7qf4KjyF4Gy6JbjuscFMjCDyv7Sm0kGrRYNY7XFy8MbS7Rb68DvAgaGzV+7CtZxSr4p5bHqt6kYKOunq8/SzDPr8F4eEv9ofdHtjXhuRtlre3w2QMKsZm929WWhfLQGxWI4H+vOSYiuNRnU0Qyu00Tl+K+35/lNEtBrQc802FeMu1TTtd2yNJKeY0Dn568BuU+PWHGYBHMUo4dqNNzN51W24
- eP3SdAz2
- XrJwhoeP2p0oi0UX3TreqmBKRI1HGMoH3qac9BpFW31IpGS2D+GO+/azrRbtHEUAio4f+a9oQk/QEcuq1crVYeCT2tQ9yG8ek2melgDX/nKnFiWMZGI2egXesBZvpoIFYv/olSQ4XfHE4uGCYxmFh+wax1LaD12Ydkw1xRKglYAABjGC2JLRlf+TwVGenLLSV0vKub6isGg86y5fBHGTYHTdAu0mrL+jvcoTz7ks2tBjS92QOeiWFZJKpYtvZNUdhah19erBZLdZ7TEbWOBNv+2ZnsGtGpD1DmcpxBxTA1MHGoWyt1WQlVEnvNJllwXnUFsduynh9ctbDZHUActm/YSWvfI5wJJf1GrRmdpm/s7vsdIICnRDTt5VEjIHpO4ckpjpjvUAbJKZaUF5fPRHIF9ZqvdLnx6kpw2REICN7vD3Ld9i/ghMEpGZtei1y4qg6X5A4/V4e2gAB7DmBs9k58E0qEoBDA1byT4XTm2JODArm7iwp4k1quR9O1Q9QqWeT9NwK5Z7fC13WIx7iUrGPO0IYRBuKBnlmsPDjv7+pqYk0PabQGGWJgoFr0iVrNjkXKw1EVuhRJOIUrFRKCROFI/gRBmbCYRpIOKxhS+szpL4uTBOalXxgRQSHN0kltlCxRzCbfOJ5VP3PN7L8AL7Pwl+0fI98O4pvM06XUMMEPCDFVIY=
+X-Stat-Signature: fw3mzc5uehmwnnqxwr4c4rdpeyfogdm1
+X-HE-Tag: 1756602039-336919
+X-HE-Meta: U2FsdGVkX188L3geSs6xKQX8QHgOAGuIvn7UnTP8TVIr86AXSljkvaXfCydmXcfiOai3KSB/UHkhWeufDxc2rLLFu6Y5wPsDAswHrksRolxbjnu/VOuGF3pTtCSlQSOKgGirmMfg+es6kqRinCcMCRiHOfBF8FULIt0ua9JXROw3ksqQJgk5uJOmyfySJQCGChS0WOZw4tmEv6EschPFtKXLpaR6E9wozM200AZZQbxoaaWIRbLBQD77+37+UTZ37abAddD+FpnLe9BTYjd3cx4Plv9TgXm+ITtpJZb0AxFAWDnN9KvPi73Sxd9/dlyW/5JwbS4dc870tC1qH6RsfxuPGzvkIgnPkg1aa5tRVuKm9j8ZRSxnV0dleiTYV7CJxGRbYf2fwZqxnQcmD84xf2xtywz/rwY7ZHLpvKNsl9c50F7PVuWrJOERNZkEpFf/emR/ClFX96N7Fr8RcCz8sxsoMctUAvG1JLnnBkxzO0gM+jpe8MAQsy5vV98lpyKeq6Mi71comcr6wHxs72lrfOE3rmEmbhL/YVXyDLAhddGtpSJhTFFj2advwF+0hjw8i+IKejsTKoqkSEcobI/2+m6YU7FZgRk+peCbtPxSKWKWxRRDX7vG1b6WmUkWMUFHZ2D5lEt8zM7BW4J+s5M1+CN9DzP7/PKYsXE8KPSLDgXHTU9C8trlny1OBbnDGO0RuN6PxBAV3vSYgaPOUIDk789E/vYWpR9MKnw1a+ejEl3dmg6UGpMaFkyOyYCRHv8jtVqH77e8M7roM27pEIy0DZKe78E3RB0Iob5Yj6HLX7NJ1cLotVMbhndmYLo/oxYXaj6aufbO3LxH1MPoxEYa2rZKn+Aiw6K96YTDxQvvPPuxLxmyoQAiV7iMCfhLl/5P1bz38o0YfCAqQNCRD2ThLE0XbgXtHW5pptnQCZXL2+XHiz93N87NMgd1MIc9PWJQXqDvzKhqq+SyBCTIf5I
+ NOmFhMhm
+ qQ+oivKZPp2n7EgkwOWXN4XYe+xpiJfrFcs/82PVtw8WUavBrWVoVicvuS1T+erLQwvcXSOWSm0F36kraJpCqKKsJqukIHSAqWQ+oY/AIcaTeDFZrZ50WbBwSPyCMr/03Zygek8CdrqplRwbqK9x9GTvW/bXEsTsl82xp+Kyg0GmdCkpyksO+k11mYV+1twZwS+uQHjooeGR8nJ+JOwfsgJzBsDyzapNGxHplzmdga1msiofsbdF1ao9vYlfzDLHD585iVNwReze7nSSlpBcAgwOyyBK+krLB2wjEDJPUlgw2pURQA+qK4WltCjhAb5pCAOqWjXRth+AYL+CQH+PM9ogCS81JrkqxUpHhDuBgNpnve1gW9MxYFR11V04Zfv456QfT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -205,43 +111,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Aug 30, 2025 at 9:53=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Sat, Aug 30, 2025 at 11:43=E2=80=AFAM Chris Li <chrisl@kernel.org> wro=
+te:
+> >
+> > On Fri, Aug 22, 2025 at 12:21=E2=80=AFPM Kairui Song <ryncsn@gmail.com>=
+ wrote:
+> > >
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > Introduce basic swap table infrastructures, which are now just a
+> > > fixed-sized flat array inside each swap cluster, with access wrappers=
+.
+> > >
+> > > Each cluster contains a swap table of 512 entries. Each table entry i=
+s
+> > > an opaque atomic long. It could be in 3 types: a shadow type (XA_VALU=
+E),
+> > > a folio type (pointer), or NULL.
+> > >
+> > > In this first step, it only supports storing a folio or shadow, and i=
+t
+> > > is a drop-in replacement for the current swap cache. Convert all swap
+> > > cache users to use the new sets of APIs. Chris Li has been suggesting
+> > > using a new infrastructure for swap cache for better performance, and
+> > > that idea combined well with the swap table as the new backing
+> > > structure. Now the lock contention range is reduced to 2M clusters,
+> > > which is much smaller than the 64M address_space. And we can also dro=
+p
+> > > the multiple address_space design.
+> > >
+> > > All the internal works are done with swap_cache_get_* helpers. Swap
+> > > cache lookup is still lock-less like before, and the helper's context=
+s
+> > > are same with original swap cache helpers. They still require a pin
+> > > on the swap device to prevent the backing data from being freed.
+> > >
+> > > Swap cache updates are now protected by the swap cluster lock
+> > > instead of the Xarray lock. This is mostly handled internally, but ne=
+w
+> > > __swap_cache_* helpers require the caller to lock the cluster. So, a
+> > > few new cluster access and locking helpers are also introduced.
+> > >
+> > > A fully cluster-based unified swap table can be implemented on top
+> > > of this to take care of all count tracking and synchronization work,
+> > > with dynamic allocation. It should reduce the memory usage while
+> > > making the performance even better.
+> > >
+> > > Co-developed-by: Chris Li <chrisl@kernel.org>
+> > > Signed-off-by: Chris Li <chrisl@kernel.org>
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > > ---
+> > >  /*
+> > > - * This must be called only on folios that have
+> > > - * been verified to be in the swap cache and locked.
+> > > - * It will never put the folio into the free list,
+> > > - * the caller has a reference on the folio.
+> > > + * Replace an old folio in the swap cache with a new one. The caller=
+ must
+> > > + * hold the cluster lock and set the new folio's entry and flags.
+> > >   */
+> > > -void delete_from_swap_cache(struct folio *folio)
+> > > +void __swap_cache_replace_folio(struct swap_cluster_info *ci, swp_en=
+try_t entry,
+> > > +                               struct folio *old, struct folio *new)
+> > > +{
+> > > +       unsigned int ci_off =3D swp_cluster_offset(entry);
+> > > +       unsigned long nr_pages =3D folio_nr_pages(new);
+> > > +       unsigned int ci_end =3D ci_off + nr_pages;
+> > > +
+> > > +       VM_WARN_ON_ONCE(entry.val !=3D new->swap.val);
+> > > +       VM_WARN_ON_ONCE(!folio_test_locked(old) || !folio_test_locked=
+(new));
+> > > +       VM_WARN_ON_ONCE(!folio_test_swapcache(old) || !folio_test_swa=
+pcache(new));
+> > > +       do {
+> > > +               WARN_ON_ONCE(swp_tb_to_folio(__swap_table_get(ci, ci_=
+off)) !=3D old);
+> > > +               __swap_table_set_folio(ci, ci_off, new);
+> >
+> > I recall in my original experiment swap cache replacement patch I used
+> > atomic compare exchange somewhere. It has been a while. Is there a
+> > reason to not use atomic cmpexchg() or that is in the later part of
+> > the series?
+>
+> For now all swap table modifications are protected by ci lock, extra
+> atomic / cmpxchg is not needed.
+>
+> We might be able to make use of cmpxchg in later phases. e.g. when
+> locking a folio is enough to ensure the final consistency of swap
+> count, cmpxchg can be used as a fast path to increase the swap count.
 
---q50L9+H94gXo88jD
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+You did not get what I am asking. Let me clarify.
 
-On Sat, Aug 30, 2025 at 10:46:22PM +0200, Mauro Carvalho Chehab wrote:
-> Em Fri, 29 Aug 2025 14:55:22 +0700
-> Bagas Sanjaya <bagasdotme@gmail.com> escreveu:
-> > -Please refer to the ALSA driver documentation for details of audio DMA.
-> > -https://www.kernel.org/doc/html/latest/sound/kernel-api/writing-an-als=
-a-driver.html
-> > +Please refer to the :doc:`ALSA driver documentation
-> > +<../kernel-api/writing-an-alsa-driver>` for details of audio DMA.
->=20
-> Don't use relative paths for :doc:. They don't work well, specially
-> when one uses SPHINXDIRS.
->=20
-> The best is o use Documentation/kernel-api/writing-an-alsa-driver.rst
-> and let automarkup figure it out. As we have a checker, broken
-> references generate warnings at build time.
+I mean even if we keep the ci lock, not change that locking
+requirement part. In the above code. Why can't we use cmpexchge to
+make sure that we only overwrite the form "old" -> "new".
+I am not saying we need to do the lockless part here.
 
-Thanks for the tip!
+I mean in the possible sequence
+WARN_ON_ONCE(swp_tb_to_folio(__swap_table_get(ci, ci_off)) !=3D old); //
+still "old" here, not warning issued
+/// another CPU race writes "old" to "old2" because of a bug.
+__swap_table_set_folio(ci, ci_off, new); // now "new" overwrites
+"old2" without warning.
 
---=20
-An old man doll... just what I always wanted! - Clara
+Has the typical race that you check the value old, then you overwrite
+value new. But what if the old changes to "old2" before you overwrite
+it with "new"?
+You overwrite "old2" silently.
 
---q50L9+H94gXo88jD
-Content-Type: application/pgp-signature; name=signature.asc
+I mean to catch that.
 
------BEGIN PGP SIGNATURE-----
+Using cmpxchg will make sure we only change "old" -> "new". We can
+catch the buggy situation above by overwriting "old2" -> "new".
+Also when we find out the entry is "old2" not "old" there, is WARN_ONCE eno=
+ugh?
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaLOFGwAKCRD2uYlJVVFO
-o9MMAPwIm+r4BZdTF0jZV4Naj+z2WrUBji4gRFJQ4f97vYNhfgEAwX/UGgC71a9U
-lMJHF+utPAWnldcv9PoyPOBgO71EEAA=
-=C7rV
------END PGP SIGNATURE-----
+I also want to discuss what we should do if we did catch the "old2"
+there in the swap cache instead of "old".
+I feel that continuing with WARN_ONCE might not be good enough. It
+will make data corruption popergate.
 
---q50L9+H94gXo88jD--
+Should we roll back the new value and fail the swap cache folio set
+function to avoid the possible data corruption?
+if we found "old2", The new guy can't set the folio to the new value.
+Deal with that error. Will that avoid data corruption? Not being able
+to make forward progress is still much better than forward progress
+with data corruption.
+
+I just don't want silent overwritten values we aren't expecting.
+
+> We can't do that now as the swap count is still managed by swap_map,
+> not swap table. And swap allocation / dup does not have a clear
+> definition about how they interact with folios, and range operations
+> all need the ci lock...  We might be able to figure out a stable way
+> to handle range operations too once we sort out how folios interact
+> with SWAP in a later phase, I tried that in the previous long series
+> and this part seems doable.
+
+See above I don't mean to change the locking logic here. Only assert
+the previous value is old when overwritten to new.
+
+>
+> I'm not sure if that will benefit a lot, or will it make it more
+> complex for the high order swap table to be implemented. The cluster
+> lock is already very fine grained. We can do some experiments in the
+> future to verify it.
+
+Not asking to change lock logic. See above.
+
+I feel that we should always use cmpxchg to assign value to the swap
+table just to be paranoid. It is data corruption we are risking here.
+
+> But the good thing is in either case, this is on the right path :)
+>
+> > > +       } while (++ci_off < ci_end);
+> > > +
+> > > +       /*
+> > > +        * If the old folio is partially replaced (e.g., splitting a =
+large
+> > > +        * folio, the old folio is shrunk in place, and new split sub=
+ folios
+> > > +        * are added to cache), ensure the new folio doesn't overlap =
+it.
+> > > +        */
+> > > +       if (IS_ENABLED(CONFIG_DEBUG_VM) &&
+> > > +           folio_order(old) !=3D folio_order(new)) {
+> > > +               ci_off =3D swp_cluster_offset(old->swap);
+> > > +               ci_end =3D ci_off + folio_nr_pages(old);
+> > > +               while (ci_off++ < ci_end)
+> > > +                       WARN_ON_ONCE(swp_tb_to_folio(__swap_table_get=
+(ci, ci_off)) !=3D old);
+> >
+> > Will this cause the swap cache to replace less than full folio range
+> > of the swap entry in range?
+> > The swap cache set folio should atomically set the full range of swap
+> > entries. If there is some one race to set some partial range. I
+> > suspect it should fail and undo the particle set. I recall there are
+> > some bugs on xarray accidentally fixed by one of your patches related
+> > to that kind of atomic behavior.
+> >
+> > I want to make sure a similar bug does not happen here.
+> >
+> > It is worthwhile to double check if the atomic folio set behavior.
+>
+> Right, some callers that hold the ci lock by themselves (migration /
+> huge_mm split) have to ensure they do the folio replacement in a
+> correct way by themselves.
+>
+> This is the same story for Xarray. These callers just used to hold the
+> xa lock and manipulate the xarray directly: e.g. split generates new
+> folios, new sub folios have to be added to swap cache in the right
+> place to override the old folio. The behavior is the same before /
+> after this commit, I just added a sanity check here to ensure nothing
+> went wrong, only to make it more reliable by adding checks in the
+> debug build.
+>
+> I checked the logic here multiple times and tested it on multiple
+> kernel versions that have slightly different code for huge_mm split,
+> all went well.
+
+Thanks for the double checking.
+
+Chris
 
