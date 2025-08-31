@@ -4,94 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E7AECA0EFF
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:16:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1AD2CA0FF2
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:16:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 192EA8E0002; Sun, 31 Aug 2025 05:16:14 -0400 (EDT)
+	id 4A0988E0003; Sun, 31 Aug 2025 05:16:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16A4B8E0001; Sun, 31 Aug 2025 05:16:14 -0400 (EDT)
+	id 42AA38E0001; Sun, 31 Aug 2025 05:16:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A7868E0002; Sun, 31 Aug 2025 05:16:14 -0400 (EDT)
+	id 340248E0003; Sun, 31 Aug 2025 05:16:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E25ED8E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:16:13 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 883B01403B9
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:16:13 +0000 (UTC)
-X-FDA: 83836496226.16.D953330
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C3E2A40003
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:16:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhkISgE1;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CD5C8E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:16:33 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C1F5458D97
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:16:32 +0000 (UTC)
+X-FDA: 83836497024.21.E579580
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 005D680008
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:16:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="R0HWzd/0";
+	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756631772;
+	s=arc-20220608; t=1756631791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oxcxPXSaR7GXouO7GiVgvJgyIAW9uNEd7VKT1zcNZkI=;
-	b=LP6k8TTYwYlaN8KHB6DkgZyN7upANTceWNxbvC2lJOJKpMPtE0kLCMTjO+ZxBt//r3pMlM
-	xh1t0pPMNksUsml3qAH+JHh0kdUWh/dhxOgdmO3pwI2pRLsV31YDn0TbH6Mh7lKTrsY+QB
-	fJoPtfGl4mF+eEW3GZCOe0Zx8lSQmOw=
+	bh=fVj1TJZLZFaRr3ag7GRilGcLLKtSMUW0HsbTS6/7Wj4=;
+	b=PeS4e7LQ0kCINMO6DVlY8tYWqCSrglmqldvrJrkvPyR3w3PU69Tt5LJxRdibcS07besXZ7
+	k0oxNeWA0sfRv8noSd0WSidCh8wnX8gKQZz14rK6aoTEL6Lz5z8vk1RvijiBkKrn67UoZq
+	GFKNOmZ6zClBXTpgS6vpz+LTG7TEWKw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhkISgE1;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756631772; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="R0HWzd/0";
+	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756631791; a=rsa-sha256;
 	cv=none;
-	b=hf/hdiV/ZZw6L4yyNWGD17nJoqYgftfRSa2i98RSSpIEiy8fxwnQEY+yq4FfBUjbcAWgl8
-	x0vDZZ2SO7/HlK5MMWtqqkmXUypMBkjiL1YZSI5Bh8LEfFMN00cdC+Nuoym4slCuP4wi42
-	POH5oW97UWdC9VvS2MHhvmdM53RLM+8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5FFD244244;
-	Sun, 31 Aug 2025 09:16:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD0EC4CEED;
-	Sun, 31 Aug 2025 09:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756631770;
-	bh=OH6tNMeQRJO/TBFcwED8ihXqbFs+64VR+2qjljjKpp8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mhkISgE10TC6vkLlgPmdARGiEGm4DucEnVsn9cwfDa5FZq6FDxyOmHJ1DoY759JN/
-	 B95rBjwrcEBelWiruplqCLXAlwUbsKOfgRn+Nyf4GzYnlDazV9ryjvGbCXQrRhDGCy
-	 qyel8HNZsy+4GAPAGJwTWUbGCXeG0a3Blp1vhAQEAltyMGwJgmEbllzG4sVtUX8Bzc
-	 mS2t6TMsHIhY8oV2wX/4qmKc0P8QsANxP9QehkHQqhMeBxOg8o3LRhzwObJ6GYR7Xo
-	 bd7zP14o+gkazOBiUqnNtTv5lN3NPmDGZFLjS4i7TaDA3oDC48BMton0TxjEo3Xh96
-	 HtDP/5jeOKaHw==
-Date: Sun, 31 Aug 2025 12:16:04 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: mawupeng <mawupeng1@huawei.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: ignore nomap memory during mirror init
-Message-ID: <aLQS1ABjAaZZwwoW@kernel.org>
-References: <aHj8mfecDhJJZW1Y@kernel.org>
- <8d604308-36d3-4b55-8ddb-b33f8b586c1a@huawei.com>
- <aHzjOxg_oPp06blC@kernel.org>
- <CAMj1kXGKGXeKGKWT3VzkBtACtjFyz8ntiyoTU26DA4aR6mi88g@mail.gmail.com>
- <aH9JMT93itrztZ+m@kernel.org>
- <113b914f-1597-41ca-b714-7ea048c3c6df@huawei.com>
- <aJM1RFjpQxQzfASv@kernel.org>
- <CAMj1kXHg-xB8KxkgL1FYu8PpBVqXUsR7wMxUXwfUXm=BfuUHGg@mail.gmail.com>
- <aJhU_a6NeUKeu4rY@kernel.org>
- <CAMj1kXGXYTdrJMdUVB1Mc-uF3Vk5r+P-Sq+GGoBA3S5H3NkeUQ@mail.gmail.com>
+	b=YR5dPGrHkAoUCO0Mh8ftOS6rV/XM2K+WCbI6MI2BqBpZem+ePbBQUPZspJp5wNZy3tfdwK
+	bWQAXdlsK/cqmQUWkI1iT5yOGLpb07YqM5CTqCgB4fSMlEW9QTCe4IlmvsN+rB8SGDVMYT
+	qn1/i8eQbp6jcp/3w2fRu+peb59xkqI=
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71d6059f490so32660087b3.3
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:16:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756631790; x=1757236590; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fVj1TJZLZFaRr3ag7GRilGcLLKtSMUW0HsbTS6/7Wj4=;
+        b=R0HWzd/03K6pMdR801SUdOiOHjBFKa/pnjohrTNA2U7buTvIXH+t3YnzYV2ToGEMvm
+         cJDzIgP5BEwZ8ivtc7aLcoeDoynuJuEZoTS0BqVopY/rqzTepq0+bPxb+bpRS9uyeVfp
+         Sk2gxwrqcIbaA4wKHrsu4i8H1LFhEE51hAzoLYuUNmy5gcJyOyXNJuQvgss3G7OpufnA
+         mfm5IOowMk+fV0EG9iX6sQKTx+MWCGXYutpq0UI1FAjsYGoQ/5hqZd48b/GkTWNp7bTC
+         JB7+JCG5K24kHdhyTH5uvDsPvhp/kaayiDRcFF1hx04V5kQO5dqolW/1aRcOi9fRFiYw
+         jSHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756631790; x=1757236590;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fVj1TJZLZFaRr3ag7GRilGcLLKtSMUW0HsbTS6/7Wj4=;
+        b=O63qoB92bb7edA85adFc+sZMR/TKM9d/gO1+ToPaLLpIoeqGT3QKwFqjioc8zP6OeB
+         Q04cnvZSptnJyL7nsPfpUJF8lsGsGLDa60TYvWHs4uY4kBEAzlCoDmexf/mn5Km+GT59
+         +Q5JIIUK+GyJEOxt8ycZyLR3f/zZQkLu7AHRj05YNSSMiqBvNUYeN6H+0VgcvqFYQBnT
+         Xg/6mOe6hrLs3mHBdNa6ZAUasitZxZz8Eej+qkaFQlUbCYZ/bl/BNuxiByyT7BLqsK6w
+         bLceO0nyQo8cia09TReo9ArMlZu2n5OnZO4pcUyoSV/gTnRw+vCGznionjO6d0pfLHNA
+         8Ffw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKZSCn9l5GO3aK3acIn+uLv3oUljyYrStZX4Lzw/09jtrliztfw7EGGVSbeMbF+Q2IouO5Y/8SXQ==@kvack.org
+X-Gm-Message-State: AOJu0YwZ5kM5/4/tgPclJIqBrJCmoO+HrJvSGK2xW2deJV58yfWjwoq6
+	oWfZb1bf1I9n3erEjrLRhsS2mm2DP7Z6RrlKz1feUKybx4lX1uhqL5nZVm09x4DQig==
+X-Gm-Gg: ASbGnct+MgSKMwa4JFZFm+ujv6eu3yyH5isfkrSBA1FdvGbrWDUQKbkz/aUiMIOchfA
+	U+O2Io63FnSYJ/uWKnKppaStgp71sIVksr1bS/yaLIU/RZKGvSnpjZ665dQ9nS74WAsmrB/XfjY
+	KDyIxlD5t4gCuB2xTfaQ8Lut40OdpthjMaGH+heeX+ri7JkEWkTdcpt0YebzjFqS5gdBAuaPc+K
+	V64DFdOZAw2Zp2ipXIQC0CjvbOp11s4lKQtDn8v35yg8Oirvf/yrxPxFbVHIaUSz9AfePo5BWx7
+	gRerpL8hMYF3KT4AgnZz0cFmMI0kNuEkd8lQQPkJCpz9ykPupvUCFPy+KBKOVv7/k6SAzCvkkTb
+	lZGe+c3M2V3LSKFSLgZqnvjxHRsmuyXKC4+vU7YtHfPTtCYAXOyzWwvaztK3gI7fuAVfB0MA9X7
+	+7aEFPqYrzXq24RZcPlipQNTYT
+X-Google-Smtp-Source: AGHT+IEvYKErI6ke0DEYK4ijjvJ+cTpg/4z2kMEoxFGpg8eCQJg+xtsOc8H11hahONN9PzGte6TGbg==
+X-Received: by 2002:a05:690c:e08:b0:71f:b944:1019 with SMTP id 00721157ae682-7227658e0a3mr47176947b3.52.1756631789908;
+        Sun, 31 Aug 2025 02:16:29 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7227d634d22sm7255777b3.26.2025.08.31.02.16.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Aug 2025 02:16:28 -0700 (PDT)
+Date: Sun, 31 Aug 2025 02:16:25 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>, 
+    Shivank Garg <shivankg@amd.com>, Matthew Wilcox <willy@infradead.org>, 
+    Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+    Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>, 
+    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
+    Alexander Krabler <Alexander.Krabler@kuka.com>, 
+    Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>, 
+    Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+    Axel Rasmussen <axelrasmussen@google.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+    Konstantin Khlebnikov <koct9i@gmail.com>, linux-kernel@vger.kernel.org, 
+    linux-mm@kvack.org
+Subject: [PATCH 6/7] mm: folio_may_be_cached() unless folio_test_large()
+In-Reply-To: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+Message-ID: <861c061c-51cd-b940-49df-9f55e1fee2c8@google.com>
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGXYTdrJMdUVB1Mc-uF3Vk5r+P-Sq+GGoBA3S5H3NkeUQ@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C3E2A40003
-X-Stat-Signature: n5azbh8qdk6qpstpmgqzgd1e6cag1hhp
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 005D680008
 X-Rspam-User: 
-X-HE-Tag: 1756631771-520710
-X-HE-Meta: U2FsdGVkX19eB+K2M7cC+DGcvCcWBwF7noYEOdLefPz8I/YovvkvtYmV3kKgW1oQEtmaQPmPBn/ucjodCQgMSUXnSJjyF8eywbEB9YR/3OLg6Dm7MZbFHazq7gqlExXC5BRE2cFvIy+Y5j34SSey2uyqTqlrGt7Fp2jpCMI0OnJ/0LWiSiW8wbZHwp/4LfzPF0Smke8NEm712JVn0MLIAHuDryX03RYO7lclEiYzYcmCLpHKvkeSVs6njN+DfPydLKaX84CZNwIaqX7hNGqiOSBFM7BsWJyyYc14k0aUXLVwJ5ZhqUdCKxc329ZJbu/g6S6JLz+PiOMfduy07IW3IS+Q9+tgzENWnnphpjfLXdGoFFpoQvqEAAXNdyw54wDUsHNmH0eQVHxZSya52LKTx93oVFfNGf5ykmD4gPnwo0VIc3DQE5L7osQnE/vpX83hgf0veMikaduL66msn+hWSgQ0nGyA9FmeAYBER0w2YInzCHquluUmmGzrIYPB3DjYVJaPoCRuO8l1tdQbFaCj/sBxJVOuYK968W+s3uoP5DbQnvnRN+OEm2JyY1USaEkHSveZYKAhYgNcJ/Luivfrw4tg7yR/R767VEwZ/Ud5xdFVpEJd9y8xKaFx5P4lL11fn8Mmw1hknGiK0zGXzzAiqPKmQouBqVb2Lkq05/TnjdYTyfwLErxSvZ7665bcYemC2hRco6WZKHrGq8xJpUTFbJbDbuoObxz0FKtXWvNYcU+2GPXRJ4H7C8ozqrfHfarK0aV4ee1WIlVjCIhu5ayZ7g+lrUfeOpgYly6WLQ2iiKhXTV15OKCxLoNr2BpZoiGA4Zhw3PNzDdJMK9yZrV98CnV2rmzEY3Fkh0g3wdfN/bEROP1el5rgo57wvtIbcY+DMBRW3ZIJO7TJzL3WZAZnUjYgGDGonOP75wIYdhXlHCAd4ZxAIVrvEoZCHRa73+p8eNAJqHl/78mLGOUKCnQ
- ubXaSLA5
- CExDiMNUQb0+yr+bn0JtPPsriYVyC7ODW0km3aVV6riTflJGwWCmNLmbspEdHFoNjJzLyKDbd9NYvYrwcu45Xe7ZO0bx09ExBqwEpyWSOybjxy0bYcF0xDR1yMYRTmbIKDeR+478cCiTGtOeiVX+dC7+NTjP2zc7TFpOOPCkGUF1IJWMwUvcBUG8x8U+jhZG+m2hSBILlzakSAHlXx4z8JDR7fgiBWNLaBW0zASR+PbqLwjZfqWQfMj66WaOGAZfexxAffJghNwRAD0YKYb7+uqJJ7Q==
+X-Stat-Signature: 61q5bex8s3g9z5zetm8q4ir5gqs9bf9d
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756631790-167977
+X-HE-Meta: U2FsdGVkX1/MuWrxhQzjin87Kl1jUhmtuVTKpF2Hb/fpIyBkykaGEWZkTZSfjqER7UwG8Oufn1f7QPIXbC9eLkCMdSj3QP9jYHpX5SlyPZqqj53vY4xgSx4sHb3MLZqtgovP25UmL1qNnYxEmwgzIlF4FD0Jek5ZbLBceSKksyhnRjNTWf5i7/mv20HbhtCDv+7btgbcg2z/aclQ2X2IVJf8wd/YLrpWn+5fIvJkQnXGGORZggcaYNL1R3dxEL5ggGhL3YkBj2H4LwL6PQTSegJ4zRGt07O4yYxTwiMmf0JboNjTIm5TygvPUmhVTFv0wiV99yajZDTz8bt/TX3CDIpgXcfEbbhbiaZhStSbf8hCInGvkA53xehgNyzIqUlySDiS44IkVH6h2YimWRJ1s9I79ZIZn3x0W6EHsLxaS2qB1c0n+x4FPsUJmsdEXs6PY3/geOTTGLsqMj3RJw+Iodv05UykKusS6i3026rs7qF5jH96PXYo0E6pv6Of4xHDyxwn+4pNzi+k2AkfmUM4aVCn0/l/dd4efvnGCLIzM/xkS84pEA+V6HYFFCFmqp42La2VhFmFhVxs+/MVje1Z6oOP6GeYVCEEGdBw/w26WKpXd0W124hYyKCpmuR/WyM4zJCjI0vc0h4M2vgo2fypJzMA9XnVgfS7Oqx22EbkLXKYirvRU53qsXVUYpkAMBh8IWQqUwQukDA1I0w2XRDbU1rREu+bUzyzh8MTBiTTONZriZjZ8lk9bpKav2ccdnpH2Z+laHpIgCx32fA8rnp9Wj1V494xbEW3XZ0rT6O4XuSE8YgJCnkoQCJYamcxTTocIrv1zpY34HsErlTvpsbdkbkcbXlQYa/cFJKCPHqSqA1184kSKP6VmUmIL1jT18clxPQm1H78xMPtQHcIQ8OWwOTTxPMwjwO9Q+RjtxUZwVelCVV8yaESTy9jpL6RHGMmrpFjmXcm7+K4Auh2xoU
+ d1GRMfYO
+ cSD9l7IgJHEDoZ+ckBppHWKaqgfED0blNFF73KHCyl+cJiAoNJAqBeBfGEM89dEZnEmleDGAkImbAyABjHlX2TDhgV+DjskXHXNFbgXDnKF4xRCtysFA1vWmMfY1ikNVYwzE7LhQsupyQlHrWbOuRd0JPlAsL4wLVtvFdKGhFuzQljqNoqeXB8XBKnT7m4KyVxWDNcVWrB9U8oxPGG04oxrguLO2n2/bw68w8Y5Pl6MS6J0T6z1ZJiYlT9Z862ibydaz2L4SPAfBZhWZWwveIi3j0LdqoNTJIYQ3YRKZhX2jkQDeoppaNdmT9evUofo20eZtkWyYwJwf7a1d1rmW5BJOub58LIDw49TVVdWO5M15K/JBHBfdQ8gwXwnG6EYNYmRH13U98i2RyA/sj66CDNqNdjCU84DE+0j20VfW8eI9185Cx9FsoyRLIgJC4rj0M3t1jPUjpcu3bJpmaqmncMmqyF3a69vZBWsJR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,107 +128,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 06:47:32PM +0200, Ard Biesheuvel wrote:
-> On Sun, 10 Aug 2025 at 10:15, Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > On Sun, Aug 10, 2025 at 03:14:03PM +1000, Ard Biesheuvel wrote:
-> > > On Wed, 6 Aug 2025 at 20:58, Mike Rapoport <rppt@kernel.org> wrote:
-> > > >
-> > > > On Tue, Aug 05, 2025 at 04:47:31PM +0800, mawupeng wrote:
-> > > > >
-> > > > > On 2025/7/22 16:17, Mike Rapoport wrote:
-> > > > > > Hi Ard,
-> > > > > >
-> > > > > > On Mon, Jul 21, 2025 at 03:08:48PM +1000, Ard Biesheuvel wrote:
-> > > > > >> On Sun, 20 Jul 2025 at 22:38, Mike Rapoport <rppt@kernel.org> wrote:
-> > > > > >>>
-> > > > > >> ...
-> > > > > >>>
-> > > > > >>>> w/o this patch
-> > > > > >>>> [root@localhost ~]# lsmem --output-all
-> > > > > >>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
-> > > > > >>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   67584-67839    0 Movable
-> > > > > >>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   68096-68607    0 Movable
-> > > > > >>>>
-> > > > > >>>> w/ this patch
-> > > > > >>>> [root@localhost ~]# lsmem --output-all
-> > > > > >>>> RANGE                                  SIZE  STATE REMOVABLE         BLOCK NODE   ZONES
-> > > > > >>>> 0x0000084000000000-0x00000847ffffffff   32G online       yes   8448-8479    0  Normal
-> > > > > >>>> 0x0000085000000000-0x0000085fffffffff   64G online       yes   8512-8575    0 Movable
-> > > > > >>>
-> > > > > >>> As I see the problem, you have a problematic firmware that fails to report
-> > > > > >>> memory as mirrored because it reserved for firmware own use. This causes
-> > > > > >>> for non-mirrored memory to appear before mirrored memory. And this breaks
-> > > > > >>> an assumption in find_zone_movable_pfns_for_nodes() that mirrored memory
-> > > > > >>> always has lower addresses than non-mirrored memory and you end up wiht
-> > > > > >>> having all the memory in movable zone.
-> > > > > >>>
-> > > > > >>
-> > > > > >> That assumption seems highly problematic to me on non-x86
-> > > > > >> architectures: why should mirrored (or 'more reliable' in EFI speak)
-> > > > > >> memory always appear before ordinary memory in the physical memory
-> > > > > >> map?
-> > > > > >
-> > > > > > It's not really x86, although historically it probably comes from there.
-> > > > > > ZONE_NORMAL is always before ZONE_MOVABLE, so in order to have ZONE_NORMAL
-> > > > > > with mirrored (more reliable) memory, the mirrored memory should be before
-> > > > > > non-mirrored.
-> > > > > >
-> > > > > >>> So to workaround this firmware issue you propose a hack that would skip
-> > > > > >>> NOMAP regions while calculating zone_movable_pfn because your particular
-> > > > > >>> firmware reports the reserved mirrored memory as NOMAP.
-> > > > > >>>
-> > > > > >>
-> > > > > >> NOMAP is a Linux construct - the particular firmware reports a
-> > > > > >> 'reserved' memory region, but other more widely used memory types such
-> > > > > >> as EfiRuntimeServicesCode or *Data would result in an omitted region
-> > > > > >> as well, and can appear anywhere in the physical memory map. There is
-> > > > > >> no requirement for the firmware to do anything here wrt the
-> > > > > >> MORE_RELIABLE attribute even though such regions may be carved out of
-> > > > > >> a block of memory that is reported as such to the OS.
-> > > > > >>
-> > > > > >> So I agree with Wupeng Ma that there is an issue here: reporting it as
-> > > > > >> mirrored even though it is reserved should not be needed to prevent
-> > > > > >> the kernel from mishandling it.
-> > > > > >
-> > > > > > But a check for NOMAP won't actually fix it in the general case, especially
-> > > > > > if it can appear anywhere in the physical memory map. E.g. if there's an MR
-> > > > > > region followed by two reserved regions and one of these regions is not
-> > > > > > NOMAP and then MR region again, ZONE_NORMAL will only include the first MR
-> > > > > > region.
-> > > > >
-> > > > > What kind of memory is reserved and is not nomap.
-> > > >
-> > > > EFI_ACPI_RECLAIM_MEMORY is surely reserved and it won't be nomap if it can
-> > > > be mapped WB. I believe other types may be treated the same, I don't
-> > > > familiar with efi code enough to tell.
-> > > >
-> > > > > > We may want to consider scanning the entire memblock.memory to find all
-> > > > > > mirrored regions in a and than make a decision where to cut ZONE_NORMAL
-> > > > > > based on that.
-> > > > >
-> > > > > AFICT, mirrored memory should always locate at the top of numa memory
-> > > > > region due the linux's zone management. there maybe no good decision
-> > > > > based on memblock.memory rather that use the the first non-mirror
-> > > > > usable memory pfn to cut.
-> > > >
-> > > > Thinking out loud, if nomap is not usable to Linux why would efi add it to
-> > > > memblock.memory at all?
-> > > >
-> > >
-> > > Because the region has RAM semantics and not MMIO semantics. This is
-> > > important on architectures such as arm64, where mapping RAM with
-> > > device attributes breaks cache coherency.
-> >
-> > Right, such regions should not be mapped. But this can be achieved with not
-> > memblock_add'ing them at the first place, like e820 does for example.
-> 
-> How do we distinguish RAM from MMIO in that case, if neither can be
-> found in the memblock list?
+mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as
+a large folio is added: so collect_longterm_unpinnable_folios() just
+wastes effort when calling lru_add_drain_all() on a large folio.
 
-Maybe we need a list for MMIO regions then?
+But although there is good reason not to batch up PMD-sized folios,
+we might well benefit from batching a small number of low-order mTHPs
+(though unclear how that "small number" limitation will be implemented).
 
+So ask if folio_may_be_cached() rather than !folio_test_large(), to
+insulate those particular checks from future change.  Name preferred
+to "folio_is_batchable" because large folios can well be put on a batch:
+it's just the per-CPU LRU caches, drained much later, which need care.
+
+Marked for stable, to counter the increase in lru_add_drain_all()s
+from "mm/gup: check ref_count instead of lru before migration".
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+---
+ include/linux/swap.h | 10 ++++++++++
+ mm/gup.c             |  5 +++--
+ mm/mlock.c           |  6 +++---
+ mm/swap.c            |  2 +-
+ 4 files changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 2fe6ed2cc3fd..b49a61c32238 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -385,6 +385,16 @@ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
+ void mark_page_accessed(struct page *);
+ void folio_mark_accessed(struct folio *);
+ 
++static inline bool folio_may_be_cached(struct folio *folio)
++{
++	/*
++	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
++	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
++	 * will be sensible, but nobody has implemented and tested that yet.
++	 */
++	return !folio_test_large(folio);
++}
++
+ extern atomic_t lru_disable_count;
+ 
+ static inline bool lru_cache_disabled(void)
+diff --git a/mm/gup.c b/mm/gup.c
+index 9f7c87f504a9..e70544c0f958 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2309,8 +2309,9 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 			continue;
+ 		}
+ 
+-		if (drain_allow && folio_ref_count(folio) !=
+-				   folio_expected_ref_count(folio) + 1) {
++		if (drain_allow && folio_may_be_cached(folio) &&
++				folio_ref_count(folio) !=
++				folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+ 			drain_allow = false;
+ 		}
+diff --git a/mm/mlock.c b/mm/mlock.c
+index a1d93ad33c6d..427339dea380 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio)
+ 
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
+ 	 */
+ 	folio_get(folio);
+ 	if (!folio_batch_add(fbatch, folio) ||
+-	    folio_test_large(folio) || lru_cache_disabled())
++	    !folio_may_be_cached(folio) || lru_cache_disabled())
+ 		mlock_folio_batch(fbatch);
+ 	local_unlock(&mlock_fbatch.lock);
+ }
+diff --git a/mm/swap.c b/mm/swap.c
+index 6ae2d5680574..17438fd1f51a 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -192,7 +192,7 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
+ 		local_lock(&cpu_fbatches.lock);
+ 
+ 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
+-			folio_test_large(folio) || lru_cache_disabled())
++			!folio_may_be_cached(folio) || lru_cache_disabled())
+ 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 
+ 	if (disable_irq)
 -- 
-Sincerely yours,
-Mike.
+2.51.0
+
 
