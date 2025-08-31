@@ -4,84 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 785DECA0FE8
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 20:05:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69BE1CA0FF2
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 20:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8B9D8E0005; Sun, 31 Aug 2025 16:05:07 -0400 (EDT)
+	id A57988E0007; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B62C48E0001; Sun, 31 Aug 2025 16:05:07 -0400 (EDT)
+	id A2EFA8E0001; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA0138E0005; Sun, 31 Aug 2025 16:05:07 -0400 (EDT)
+	id 96BCB8E0007; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A91C8E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 16:05:07 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E174BA4FE
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:05:07 +0000 (UTC)
-X-FDA: 83838131454.22.B6244A0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4ADA5180012
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:05:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K5wgrxi4;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 850938E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 16:07:09 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F9A213AA5F
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:09 +0000 (UTC)
+X-FDA: 83838136578.28.D0519EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4ED1B14000A
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MS8LM6Br;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756670827; a=rsa-sha256;
+	cv=none;
+	b=H0idVcOTQaNLVhPZH7EtdpEyHL8ASGK13W31ysj+8q8JVpsZwf/2yL565vawi+lmwyvvGP
+	X+ZYulTgI1Ois39Jwkr5yxdRqoP8GaphzILUTC8uTpYr6sRvdA8xHdXfw9Kq766KKWQNdg
+	Hjl4/nvrP2PJwztwk2vQcoHyUgTgGQE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MS8LM6Br;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756670705;
+	s=arc-20220608; t=1756670827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LWRpUSL/GnmdcvyMwvmcVlZ7Yq9l1dg62LV4rSyXoX0=;
-	b=37gzPYCvIFnZGbUZpoAB0tM9NokRlrjc4zIaNOY0v5LxITBBho8AVjQhXrRNJ2ZNEaG60k
-	MVRS3jocqZZEHvJE/v3y8IOtq8N//wAUZrY4oFhaMGfZwCK3V3Et5RtJkozV3dUJzhuuax
-	6ctQIWn+PA2CJ06b3bAMPMgOMC2Up1Q=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K5wgrxi4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756670705; a=rsa-sha256;
-	cv=none;
-	b=LKw2V8CbNQHPrLc9t+irJz7vtvQ29dfQaPt5KpM9qoMMjNF7rHcRlW3FBUZulDgluNMtnT
-	+KmSzS3Be2belSfdy5ioycP5N2zExgYcNFjsIGy5M3ZAXSBEiDItqIBl+L76E1zPnFkvLo
-	5K/jGQiNJ5/pq43R6R0Ol96lei2tC6o=
+	bh=wsnQHQtOjEsrk5LwzayKHsCA53X5jYtCABISMzMGcpY=;
+	b=MjhxdLOhDVTmL7wk+eww1zJRfmyRJq2UpVxfzBeYR6Eg7NkFFE60Z4Ws1qexf2ePH0MwTC
+	w6wlfEKWkBKOePAc8ygnD2qalMN9V3byE88yazV07BjJYLlipGJ/QnByAEvase1xrbZzKt
+	TPSNlyh7hSaboiHgiBNq7MuH8qeHuK4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3D0AC44DCA
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:05:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202BFC4CEFC
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:05:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6726F601B5
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3680FC4CEF9
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 20:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756670704;
-	bh=LWRpUSL/GnmdcvyMwvmcVlZ7Yq9l1dg62LV4rSyXoX0=;
+	s=k20201202; t=1756670826;
+	bh=wsnQHQtOjEsrk5LwzayKHsCA53X5jYtCABISMzMGcpY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=K5wgrxi4a68oR1olGOtkvYpIi9jQ406zgLUafhAovo24R0AVEctGr4ILQPtQzeVA3
-	 PMcfEX/a+yOTgdbALNwjWL6qLlhun3N6W/gOFbaHOR9/6bp3WDSNxae3oNsuvMbWvF
-	 lkLKGjpRgB2A/SOPSWE+ZmfgN/c4K0JgDb0Z4M80sBqcdUw3N5064VxM0olTs1N/5V
-	 MM458JySQ1ylBWcSS1ekw+MzveUqlflLybVzOPB8/HYuEB2Ao7R1PqOHmZsnE3Mi/i
-	 g5DYcEXkNifFkkxwdfjkgeo6LsmE7fp/qQ6g8N9CpftF/wSOkpGHFrV1fDmGYr3dLu
-	 Mr5rt1Js9ytOA==
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e96e5535fcdso4304680276.1
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 13:05:04 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyAMKvHHJLwkktRwEKcRNa98L86Xr/1/h/aUYdrCUf92ipvH2Eo
-	UErbFp+iA8Nn4xdYM64R51dWgeXceE8RytGuuyeFrPYPY0D9o4MfVpMZQ5+J6Zivt/BCZ6xl82n
-	N6YqINydf6VKMz5X30+wVUMREeJx1ayJGTI8wxJC7gg==
-X-Google-Smtp-Source: AGHT+IEvrMUALCHiCTbTOeCcpOCPaO1Fu8A9uaO8xl5ArGIFN5AJnhsZL8URqDZn4jBZvXcL+BqUUAZilA4DBK//Zzs=
-X-Received: by 2002:a05:690c:b06:b0:71b:f46e:691 with SMTP id
- 00721157ae682-72276370c8cmr63246317b3.11.1756670703140; Sun, 31 Aug 2025
- 13:05:03 -0700 (PDT)
+	b=MS8LM6Brjp3YWCX6+0c7otTaxb9ewRKJ3502T+vaFkPzThUGd3n23tlgj8iFbtQeI
+	 oQcBBlO4sbGq9ksfwWjUJWV9BNLJ7TFkNVp6+G81ThOSz7oj4IC9b6y6YvlGVY0lpn
+	 4fJNgOUtr2lamLh08xY3SusSDz+OJoUCBt12to59Qie7g9Qf9XllySPSxP9JY6nESi
+	 5x7uQKuLeZRmFO71B+4RzB2DDKt/KpsEl5DTQj50eTrtrMbBN7Fhrzb57yggDKKNxr
+	 tC/WJEWT3rS+uNG3kGNYRdHx3qh8Wyi5NBI5E7fhCbgG1IWZk6WJrFVGG6loD5UUmG
+	 gGXwjn1gnWagQ==
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-71d60157747so28091667b3.0
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 13:07:06 -0700 (PDT)
+X-Gm-Message-State: AOJu0YylG1/vdyV9WCejpMGPxJp6gFQ8CTHdxO2L2ZXJox6RvJUifr4T
+	49O7//j72kv8PNeaJGnSypfKreNmFDZgw6GPyKOffYvau1EA1CIEjSL3z0dKC1JcnsAhRxp1gOw
+	cbOUFAsdDSLynpKXAdnJOSD/6FBXiU0Pa0BSa+tmMyw==
+X-Google-Smtp-Source: AGHT+IG3GaqCHReEFS8Kk0O0HYcyQ3az2zl3VkJpMwaXeWGUAfnqR1acr2/2mqUAcOK53WHBMmNZ7sBWNWn2cZcW6zA=
+X-Received: by 2002:a05:690c:6704:b0:720:378:bed6 with SMTP id
+ 00721157ae682-7227655f628mr72942507b3.41.1756670825451; Sun, 31 Aug 2025
+ 13:07:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-8-ryncsn@gmail.com>
- <CACePvbXB-G5vhoEt87BZcjDZ8kZWo3mZtAZ60YbR_gcjnPz29w@mail.gmail.com> <CAMgjq7Aznd7=m6JTNGM4EyFj+6pqHTRBCo2hsQL-cKi0LZggOg@mail.gmail.com>
-In-Reply-To: <CAMgjq7Aznd7=m6JTNGM4EyFj+6pqHTRBCo2hsQL-cKi0LZggOg@mail.gmail.com>
+ <CACePvbXB-G5vhoEt87BZcjDZ8kZWo3mZtAZ60YbR_gcjnPz29w@mail.gmail.com>
+ <CAMgjq7Aznd7=m6JTNGM4EyFj+6pqHTRBCo2hsQL-cKi0LZggOg@mail.gmail.com> <CAMgjq7AdauQ8=X0zeih2r21QoV=-WWj1hyBxLWRzq74n-C=-Ng@mail.gmail.com>
+In-Reply-To: <CAMgjq7AdauQ8=X0zeih2r21QoV=-WWj1hyBxLWRzq74n-C=-Ng@mail.gmail.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Sun, 31 Aug 2025 13:04:50 -0700
-X-Gmail-Original-Message-ID: <CACePvbUt+=+5mZ2E6L_EhUYLTWst_STab=LjPiBfvZuX8jenMA@mail.gmail.com>
-X-Gm-Features: Ac12FXz-89GEcBe6LbFCY4BPOk3iEpBAci6KuW0YkObl510MGiMrV1R0KFjr83Q
-Message-ID: <CACePvbUt+=+5mZ2E6L_EhUYLTWst_STab=LjPiBfvZuX8jenMA@mail.gmail.com>
+Date: Sun, 31 Aug 2025 13:06:54 -0700
+X-Gmail-Original-Message-ID: <CACePvbVJY9x05nW_jWd4PWox972OqMxi=YFP_wGbjHzXFyvY5Q@mail.gmail.com>
+X-Gm-Features: Ac12FXzteZ0lmimyc9FHu-eqbCwqH9k6tlWXgsNJCJjhM-DO2tVOgzinsSJIxmQ
+Message-ID: <CACePvbVJY9x05nW_jWd4PWox972OqMxi=YFP_wGbjHzXFyvY5Q@mail.gmail.com>
 Subject: Re: [PATCH 7/9] mm, swap: remove contention workaround for swap cache
 To: Kairui Song <ryncsn@gmail.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
@@ -94,14 +95,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4ADA5180012
-X-Stat-Signature: w55ojsdfrz48d76zcy4mc1mmeeok4c77
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756670705-881163
-X-HE-Meta: U2FsdGVkX18asKe/Lk39xJ0T0GyiyrJonAj3zscjqu2UnbSvnX2+o4juIYMv0PxarRYo+3/ob+P5ZaiO9k0jI5LxdeniFbveVX5o1JsNlLJE4DKMckkMNnF7Zrz2sGoz1flOUc84XdrXaEqY+/LmTzW2uPBMGC/GC/24Lng5tKTRTpV+EPMuB2tsvw4WsJxYn35Ng5uLGuDOx2sDmlNUIU617k+ENMgwBaUTUtBrD3Xp6KrFq/5vWAMkqvwa562wokqqelYiYlhPHMxEGboaNkf+LDXx5CezcdGTsw9jFHtwSQM74yfJdUVfRG2wz/KVUoHEXwWiQFocSKbg2/HZ/XBt0sj1Z4Fw+k2rbREGQ0upRYibLRhaAXMal8ZUs7w7Ort2xi+XzORUL3fr/uJQ9TPmC4QQ2KdiS234aYuxPwTYQQvvz6VWWxtuOmShhcPuFXZSz3pRORCQVVKDmfH30y+eeOKPp6HP0x+7FPt58Hamg7BpRicvz6B7q4b1edcolJDK3Jaaltp+SKJ5X+KUGRjYhazy2aD3jtZ3DI4qR2+fUQA6qgGf4Bpfarp0Cazk8iAiD6nJ8/LOC3zGE7o/zmoiBcD57ykH/NwEoCBkivvS+hg5lsLFR14fh0ncDnAhvhTY0pdLoeRGAG28BYa9jL3As/t9pDO3l+V5QICiLGpScJ0LGDSGFkqjwojEncUpsvBoEg2zHxjAREanCBVwyQXgh1KSIwKqmEou1Ah5V4pPg/sPwE4NnBNaxH+HQJTqTnC5h2HOnoMB3i3GDrtO5uKpb7wKUbXjFdX+10FU20yBVtbKzdad97/cFsx6uFfUglgKAH8dFVRq9dQ2VZbQbixwSjnSlCMKu0oJ5BN/MkqDaP8/0Jl9k9MQPKVtugqW36U/E3Xx8/9Uy+wByeC7FD/xrLSmH4xv9lnFpE8zqgYUOs0ugvi7K3KsfzqHNKqrtwcTMysdoio+Qdu/81+
- RlPvZMeR
- WFaUiWh4flxHr5ziVzcYpAvJwU+nKPQJKj5VVmhPPf95x/s1K/8LsM2nEVgPOUKc/XBBA79NGAwghstq7pk8Ob55Cpa3J6LBc0IvVpA0saZZJBxE3Tc606zf6Yrky/gMAMsTfejHekihWeneCdQT1Oarexh149B1zRXixgkWcBz25wV8wf9I0/yDTjbaORNM6eSdg1VIhyZn0QCPrEfxR0Bv20yE1sbJ4LO6GfewClflK86Uip+qETDrfmeGrgvMFy1YLsplaL9QgCDHKx3DszeRf4faaukCImIYKfpyFHctyCiTys6Q54ZWCAhgGW0nKrpjy
+X-Rspamd-Queue-Id: 4ED1B14000A
+X-Stat-Signature: ngndb1a8kw8uq8cqzsyhsrqbdifaninn
+X-HE-Tag: 1756670827-355381
+X-HE-Meta: U2FsdGVkX1//W/gNnJGkpjOTxulDjePe38G6IioIKdY4SpYRv+Ni2ATLydigIPRfTKv0DH7oyIl1SqrkXSckjZQHosEcMHUmR24O6EgYe6403QJ7eztWsauMqbADk5X1PU85us2xFuixU5w00JhEuzPyTqYkizWqgN4g7OfWkUqWFnximrcI2qYP1tDpQ2hejTL6N67AVh+XMCiG/FMNO52XvmuvQx9tPlaQn5I8nhiEeZnynG8y4F9Hve3kafi4K2WlD+OV+McfaSyJVBX6OZnDzKrAS0vCzCpDIz8ilOndzRswv3yv5LZztJ6hlB3pmFlIWm2YvTKzQ+Xv9rgU0bq6yd2e+JF35JXp7Ohz4QEGqE4duCYJVcRf9O+h+91ckTwxYmJxer0DjvX6sWjCjqvr5yg14ZbpmlD4MYY1EQQACs2Y6EFjtSeEwM+kxuTe8FVaLvmr3/wyL2WpnVykW919uJn6k9ijJo6dPysILwaI3vXN3IYaRCcIXFRnxACZVm/z8Elsmo/p/WF+VlAHvXol4IBfxesIaK5TEHrVfXr0pkLXdfd/7aZ/4awsRnGHGz0nwIx5gb5d10K8gEj/v/iXOSRhw02BFG37Hczn1azhha4PZsmLL3y9otRANwuXAZ/oMN+DJXXbVc+a4XuWlH2yUg/2hcLQcFE5PtSAgwDeWfBKSzXKyUj55ochKYYowmwrYT2QAEEeLHeGlfSYbE1gm8IP15ElCRzA2rOFuoXGIylYWT1E+OA2ulspxKo6SLgWSxRfqtx9Gc6QHWfF8dEDEz4nrOl4znmKAiLNKbBj0tYVBYy57smMgJDpXbsVNCdZs3E/zhX3zhAu97Z+J4hJv1x49AgmUnez4/ndz3CLB2S8IW8xPXPbA8f4CXJyMYUFhlzXNB9D/YYzJAMvdL95iB4k0pZf+uQ1LnPpqnSjiqUJBT3iyzLpn8py2mU/Ezas8VABZ0lgI6TuiSs
+ RpE0y/k7
+ lSr0Obbt98uSjVn2j7CGZeqPSS8RuLzGzWiGV0lR0cyd5o/x9xPRG8OMjhafw890OTjh0M4FpgH7wUt7HqMAQOOsLB1NFmWVTfUbhhAjUJSi3Ng2jwJnJWk6GEn+RBXL3Le+JngSs/7ndiukxmE7re/0kGDFJRU5paJ1cLRUnuMZRjRmq4QYSepf/pDXysWQT4ObLTiyixPBJZhW8LfuQ3jGh4rY88X5huz0rfUzrQgtJLc0+W8QNTGva4s7U1qOSbtBlKYuIp9bEoTfRsMWH8geoZe9O/i6GNEqwjLzL3L6Q9AcSmc2iWesThfN5jJFrF/BkCBPEYokwOMA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,85 +111,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 30, 2025 at 8:25=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+On Sun, Aug 31, 2025 at 8:55=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
 e:
 >
-> On Sat, Aug 30, 2025 at 1:03=E2=80=AFPM Chris Li <chrisl@kernel.org> wrot=
-e:
-> >
-> > Hi Kairui,
-> >
-> > It feels so good to remove that 64M swap cache space. Thank you for
-> > making it happen.
-> >
-> > Some nitpick follows. I am fine as is as well.
-> >
-> > Acked-by: Chris Li <chrisl@kernel.org>
+> So I tried to run some HDD test for many rounds, basically doing the
+> test in the URL below manually. Test is done using nr_task =3D 8. The
+> HDD swap partition size is 8G.
 >
-> Thanks.
+> Do the preparation following:
+> https://github.com/intel/lkp-tests/blob/master/setup/swapin_setup
+> (Make usemem hold 8G memory and push them to swap)
 >
-> >
-> > Chris
-> >
-> > On Fri, Aug 22, 2025 at 12:21=E2=80=AFPM Kairui Song <ryncsn@gmail.com>=
- wrote:
-> > >
-> > > From: Kairui Song <kasong@tencent.com>
-> > >
-> > > Swap cluster setup will try to shuffle the clusters on initialization=
-.
-> > > It was helpful to avoid contention for the swap cache space. The clus=
-ter
-> > > size (2M) was much smaller than each swap cache space (64M), so shuff=
-ling
-> > > the cluster means the allocator will try to allocate swap slots that =
-are
-> > > in different swap cache spaces for each CPU, reducing the chance of t=
-wo
-> > > CPUs using the same swap cache space, and hence reducing the contenti=
-on.
-> > >
-> > > Now, swap cache is managed by swap clusters, this shuffle is pointles=
-s.
-> > > Just remove it, and clean up related macros.
-> > >
-> > > This should also improve the HDD swap performance as shuffling IO is =
-a
-> > > bad idea for HDD, and now the shuffling is gone.
-> >
-> > Did you have any numbers to prove that :-). Last time the swap
-> > allocator stress testing has already destroyed two of my SAS drives
-> > dedicated for testing. So I am not very keen on running the HDD swap
-> > stress test. The HDD swap stress test are super slow to run, it takes
-> > ages.
+> And do the test with:
+> https://github.com/intel/lkp-tests/blob/master/programs/swapin/run
+> (Use SIGUSR1 to make usemem to read its memory and swapin)
 >
-> I did some test months before, removing the cluster shuffle did help.
-> I didn't test it again this time, only did some stress test. Doing
-> performance test on HDD is really not a good experience as my HDD
-> drives are too old so a long running test kills them easily.
+> Before this patch:
+> Test run 1:
+> 1073741824 bytes / 878662493 usecs =3D 1193 KB/s
+> 33019 usecs to free memory
+> 1073741824 bytes / 891315681 usecs =3D 1176 KB/s
+> 35144 usecs to free memory
+> 1073741824 bytes / 898801090 usecs =3D 1166 KB/s
+> 36305 usecs to free memory
+> 1073741824 bytes / 925899753 usecs =3D 1132 KB/s
+> 20498 usecs to free memory
+> 1073741824 bytes / 927522592 usecs =3D 1130 KB/s
+> 34397 usecs to free memory
+> 1073741824 bytes / 928164994 usecs =3D 1129 KB/s
+> 35908 usecs to free memory
+> 1073741824 bytes / 929890294 usecs =3D 1127 KB/s
+> 35014 usecs to free memory
+> 1073741824 bytes / 929997808 usecs =3D 1127 KB/s
+> 30491 usecs to free memory
+> test done
 >
-> And I couldn't find any other factor that is causing a serial HDD IO
-> regression, maybe the bot can help verify. If this doesn't help, we'll
-> think of something else. But I don't think HDD based SWAP will ever
-> have a practical good performance as they are terrible at rand read...
+> Test run 2:
+> 1073741824 bytes / 771932432 usecs =3D 1358 KB/s
+> 31194 usecs to free memory
+> 1073741824 bytes / 788739551 usecs =3D 1329 KB/s
+> 25714 usecs to free memory
+> 1073741824 bytes / 795853979 usecs =3D 1317 KB/s
+> 33809 usecs to free memory
+> 1073741824 bytes / 798019211 usecs =3D 1313 KB/s
+> 32019 usecs to free memory
+> 1073741824 bytes / 798771141 usecs =3D 1312 KB/s
+> 31689 usecs to free memory
+> 1073741824 bytes / 800384757 usecs =3D 1310 KB/s
+> 32622 usecs to free memory
+> 1073741824 bytes / 800822764 usecs =3D 1309 KB/s
+> 1073741824 bytes / 800882227 usecs =3D 1309 KB/s
+> 32789 usecs to free memory
+> 30577 usecs to free memory
+> test done
 >
-> Anyway, let me try again with HDD today, maybe I'll get some useful data.
+> Test run 3:
+> 1073741824 bytes / 775202370 usecs =3D 1352 KB/s
+> 31832 usecs to free memory
+> 1073741824 bytes / 777618372 usecs =3D 1348 KB/s
+> 30172 usecs to free memory
+> 1073741824 bytes / 778180006 usecs =3D 1347 KB/s
+> 32482 usecs to free memory
+> 1073741824 bytes / 778521023 usecs =3D 1346 KB/s
+> 30188 usecs to free memory
+> 1073741824 bytes / 779207791 usecs =3D 1345 KB/s
+> 29364 usecs to free memory
+> 1073741824 bytes / 780753200 usecs =3D 1343 KB/s
+> 29860 usecs to free memory
+> 1073741824 bytes / 781078362 usecs =3D 1342 KB/s
+> 30449 usecs to free memory
+> 1073741824 bytes / 781224993 usecs =3D 1342 KB/s
+> 19557 usecs to free memory
+> test done
+>
+>
+> After this patch:
+> Test run 1:
+> 1073741824 bytes / 569803736 usecs =3D 1840 KB/s
+> 29032 usecs to free memory
+> 1073741824 bytes / 573718349 usecs =3D 1827 KB/s
+> 30399 usecs to free memory
+> 1073741824 bytes / 592070142 usecs =3D 1771 KB/s
+> 31896 usecs to free memory
+> 1073741824 bytes / 593484694 usecs =3D 1766 KB/s
+> 30650 usecs to free memory
+> 1073741824 bytes / 596693866 usecs =3D 1757 KB/s
+> 31582 usecs to free memory
+> 1073741824 bytes / 597359263 usecs =3D 1755 KB/s
+> 26436 usecs to free memory
+> 1073741824 bytes / 598339187 usecs =3D 1752 KB/s
+> 30697 usecs to free memory
+> 1073741824 bytes / 598674138 usecs =3D 1751 KB/s
+> 29791 usecs to free memory
+> test done
+>
+> Test run 2:
+> 1073741824 bytes / 578821803 usecs =3D 1811 KB/s
+> 28433 usecs to free memory
+> 1073741824 bytes / 584262760 usecs =3D 1794 KB/s
+> 28565 usecs to free memory
+> 1073741824 bytes / 586118970 usecs =3D 1789 KB/s
+> 27365 usecs to free memory
+> 1073741824 bytes / 589159154 usecs =3D 1779 KB/s
+> 42645 usecs to free memory
+> 1073741824 bytes / 593487980 usecs =3D 1766 KB/s
+> 28684 usecs to free memory
+> 1073741824 bytes / 606025290 usecs =3D 1730 KB/s
+> 28974 usecs to free memory
+> 1073741824 bytes / 607547362 usecs =3D 1725 KB/s
+> 33221 usecs to free memory
+> 1073741824 bytes / 607882511 usecs =3D 1724 KB/s
+> 31393 usecs to free memory
+> test done
+>
+> Test run 3:
+> 1073741824 bytes / 487637856 usecs =3D 2150 KB/s
+> 28022 usecs to free memory
+> 1073741824 bytes / 491211037 usecs =3D 2134 KB/s
+> 28229 usecs to free memory
+> 1073741824 bytes / 527698561 usecs =3D 1987 KB/s
+> 30265 usecs to free memory
+> 1073741824 bytes / 531719920 usecs =3D 1972 KB/s
+> 30373 usecs to free memory
+> 1073741824 bytes / 532555758 usecs =3D 1968 KB/s
+> 30019 usecs to free memory
+> 1073741824 bytes / 532942789 usecs =3D 1967 KB/s
+> 29354 usecs to free memory
+> 1073741824 bytes / 540793872 usecs =3D 1938 KB/s
+> 32703 usecs to free memory
+> 1073741824 bytes / 541343777 usecs =3D 1936 KB/s
+> 33428 usecs to free memory
+> test done
+>
+> It seems to match the ~33% swapin.throughput regression reported by
+> the bot, it's about ~40% faster with this patch applied. I'll add this
+> test result to V2.
 
-I am pulling your leg about the HDD number :-) I know that thing is
-hard to get and I'm counting on you having a dead HDD on the way to
-get it. Evil Chris that is.
+Oh, wow you do have the HDD number, congrates. Now we can make the
+claim with numbers.
+I hope you did not cripple a HDD to get that number.
 
-I think we don't have to make claims like that HDD is faster. Just say
-HDD might or might not swap faster, because we haven't really test it.
-People who are about HDD swap can test themself and report back to the
-mailing list.
-I think we should use SSD to simulate HDD, testing the HDD code works
-in the simulated mode, no crash, no data corruption that is good
-enough.
-
-HDD swap is so slow that most people don't really care. I asked in the
-LPC a while back, nobody there is using HDD swap seriously. At most,
-just in case my SSD swap overflows, allow it to overflow to HDD.
+Thanks.
 
 Chris
 
