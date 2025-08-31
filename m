@@ -4,102 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE687CA0FF2
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 15:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A89F3CA0FE8
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 15:55:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A757B6B0006; Sun, 31 Aug 2025 11:40:24 -0400 (EDT)
+	id BF6648E0003; Sun, 31 Aug 2025 11:55:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A25D46B0007; Sun, 31 Aug 2025 11:40:24 -0400 (EDT)
+	id BA7088E0001; Sun, 31 Aug 2025 11:55:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 914BB6B000C; Sun, 31 Aug 2025 11:40:24 -0400 (EDT)
+	id ABE588E0003; Sun, 31 Aug 2025 11:55:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 79DE66B0006
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 11:40:24 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22846B9F54
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 15:40:24 +0000 (UTC)
-X-FDA: 83837464368.29.A045DA4
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B8C72100007
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 15:40:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=gwaIVq4d;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf05.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756654822; a=rsa-sha256;
-	cv=none;
-	b=ZRORb0TT3ZB7Ep1gQyMqqUxRPR9oWqImZZHhPmMUQLzMZ+ihi7yAeJZ1s7ajTWTwNm/SZe
-	QYq5HvJ810gtoi2K6EdpQuRXXADdiYfb42emjXiNTxGMXrK78qp+S+wAbwJDPtqY0NP4+0
-	OOn6hmIiID5x09vrcQDJvEOX2NIRCZ8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=gwaIVq4d;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf05.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+	by kanga.kvack.org (Postfix) with ESMTP id 92CDC8E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 11:55:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 35F3F1A04FB
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 15:55:13 +0000 (UTC)
+X-FDA: 83837501706.27.240EF99
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4FFE940008
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 15:55:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="cHSx/Y0y";
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756654822;
+	s=arc-20220608; t=1756655711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UevTnzICdteIzOhn6dJqcmMyhQOKhAKvJOp7WGbG2U4=;
-	b=l7bIhbb97vBXF4LTed75y6arkqwV5HOhDlDUUrONfbayaVq55wrb+jo0nJpgrIZEaIRZ1p
-	ZvMxgnFDBVbzycul0FTiqy+0CF1NDT6L9W53rBr57ljgSKdXh50qX3nL3q0CmpZezECJIx
-	xcxmZUIMj8lXcuh8wtIOn18UbnF9wlM=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EAD3940E0192;
-	Sun, 31 Aug 2025 15:40:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id bzt1d1lsJFp1; Sun, 31 Aug 2025 15:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756654814; bh=UevTnzICdteIzOhn6dJqcmMyhQOKhAKvJOp7WGbG2U4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gwaIVq4dv6B7A01+RclqqyndJe0kXjEldcveKKQe9JTqcLjjPN3+xLox+zK75ThUI
-	 C+qXuq8eHSghaezPramxtQe2MhrM/4LFQN6k/VGq2rFOy8Q1M9CrtOoJ13L5/uE5QZ
-	 zvAgskkXK7vW4gOcSH9wDiM+CkUN3ts76rnulUHy8BP3TujgALc5RSJLUY4QWlUhIq
-	 E94hEtN85FohOyQDMmgox9HXMgvODpagd2Jvi1z6EambcDZ4WNF5uVFQW54+vu6WqO
-	 9LC77l9Rfo9ed/6zTVrdWGExvzCuGESOfvr/wD5zlkcwQAs0MlMjU1ZAKwgET6JK2b
-	 PEvD9mEFFEWsjkBK0QghH5sXxhyIg5DBzHM/kYOAFKXnCm/SYqoQ0X8BTZBDr47DUC
-	 qCIU5IrBC3xyenLoS9ELA7SbWdGlIJImXZdUfrYXPuWldtENzpga8WFCK3zAmwmz+o
-	 GhVFSvpJkyfmJC9NHW7ku70wLDV7QiRr4qZwNuhHzhrVu4XgVYmpfJSK6pDawDCsGS
-	 aSI8Z/bK9Sd4YHf89b12tUWbcKkgvqPBh/PymVaHm/q+6FwFVq862jeck/rbpQWpTH
-	 idZWYMSGlPHkoMNS/4hsynyGOhLSnLOo8nkFsWKAOj6N9RWfI3u6vgt4BiKwDrE2t1
-	 QgjLZb5EvEgdFs6e2ZE9c3sI=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 7C2A840E0174;
-	Sun, 31 Aug 2025 15:40:01 +0000 (UTC)
-Date: Sun, 31 Aug 2025 17:39:41 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Bert Karwatzki <spasswolf@web.de>
-Cc: seanjc@google.com, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	torvalds@linux-foundation.org, x86@kernel.org, tglx@linutronix.de
-Subject: Re: (Re)boot hangs and refcount errors on next-20250829
-Message-ID: <20250831153941.GCaLRsvf1V_ST2GPAd@fat_crate.local>
-References: <20250831141426.2786-1-spasswolf@web.de>
+	bh=vu7OB5WCFRiIsU5hPqmzDabAlwcJjVGYZr9cnnXb0ls=;
+	b=McaK6RQ0QWP0ywZuaPZTBY0DzvvRfktry6jeMSsdV1iiLBym8yaBk3jOd9UCTUP1KfirMd
+	kZQnxMr0S3AUCBlqazBgKvXsYhv0OsH+Z9edGBZ8rzlnOwn5GibpFjo+6x7jwLOt6JzZoK
+	FtI+/HxdnLSnFevFkJCfNPSZ9K418cY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="cHSx/Y0y";
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756655711; a=rsa-sha256;
+	cv=none;
+	b=yUrMmYzjYwdSVmsZpm8YbBq/yJKDfmwzoFsnB7NSxXBI6GZf0OzkLlrIJ8PPSVxmSTqNd8
+	yJtbBymx5Ktt+8TNuFAQKDGqnmoUUcJ1d+wg2YM8MSvvyGn7JDnST2uryAZbLToVcgKfXK
+	TE1MDL3hBGzK+XJttaTEhprlnvm4b+8=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aff0775410eso290695966b.0
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 08:55:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756655710; x=1757260510; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vu7OB5WCFRiIsU5hPqmzDabAlwcJjVGYZr9cnnXb0ls=;
+        b=cHSx/Y0yilE/Gc5UOKAvslRgy9kHPGmWEDCwWdHfL0GTjLtqHmucoS5vzvUIOGrZ6i
+         WppeixhTUC1m5MDDJPVOyJSYpuT05MpWQqwh9alV0OaDbyZNsQtS5LL0onj2kOoktqe8
+         /NolDHmNGmYw1yBpzDhxe9oyRu1lmZRhcJNXPu+Q3EJBOcWfDvQqK+n6NsfLay+J1QHZ
+         SrrpU1aronfLu0Eob6s1f5rTmM55U3GtGPS9cjMNuDdda47GTPQcDPL2tPpdzmvLkPia
+         t/esY3g9sPRpCMtNT9ULDcNUgS6iW7QrMH4ZX/euWALK3dh5bqnwn/LTf1+HsT9ciXVn
+         70kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756655710; x=1757260510;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vu7OB5WCFRiIsU5hPqmzDabAlwcJjVGYZr9cnnXb0ls=;
+        b=LIDp5/JL0B0VpgkouruvzOS9+Im6dvHJ7BTEndHLi2ZZfLN+c2U1vKWHVkpyRnfAY/
+         OJNPhMIdyK7oVygPfjXLZJiIx8RUJrfsWHfnBzVXS8M+sCFI32yiRKOrQoyJwdKJ05sA
+         1P5bCNmh3r4hhEVC0cwl76grYCpnfxp/MiKQ7NeI7+EqlCRkoTmYzgxYh1F4RDLgpQRV
+         XmaNIgcpRJZqVCzDAZv9mN6KwS4xQB0XmaI/ODWuTNbkQpIXXemRKrKNV4/LLxs15KMi
+         QT08avNg++qKm/YajWybpVeDof3h1EwMvewgQSd/0/K8JprXM4qNAoni2268CD5PFhhd
+         6XiQ==
+X-Gm-Message-State: AOJu0YxIcraS2rIlfnA0boUHmkPXJ/9ucX9K/OBY0oDWhsjdm1M3XCuc
+	GCqkUDLsRI/vYSWaxb6uBLD9jA7Dr09gvxMxlvKArZvPnXTER/2SYhOr5s9uRWoLigQgwFaG7Nd
+	3u+9hOF8WYJCuJT0tvITt74V/RqRC8vE=
+X-Gm-Gg: ASbGncsc4F6kNydKZep4ARmag4K0mYi7goS+3g79OJUpLMieGv5hcBYahsfn64L147F
+	wnBHnOKx95yGulYkSXOa6MKVtAiMfdbKUqJvEWzgzREG537tulJpiUCyGdlbCLbPP99QVOpH8oG
+	CpOmvquP5fi52P2Fg9FrfOiJozYFP9Uww3EJ+c+2rdMJbWwV8A3x2+GKcAh79il5ebL4kpRMWoP
+	PdjFFA=
+X-Google-Smtp-Source: AGHT+IGWU/wsTdjnZJPNKAQvWWzNnWEbPVDY8n7oO8LLEmzwufwLGHZVPqASiHpxwHCaSZENKL1K5d3MELtSENT5sCA=
+X-Received: by 2002:a17:906:4fca:b0:afe:ac57:f0be with SMTP id
+ a640c23a62f3a-b010832f5famr574635066b.31.1756655709313; Sun, 31 Aug 2025
+ 08:55:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250831141426.2786-1-spasswolf@web.de>
-X-Rspamd-Queue-Id: B8C72100007
-X-Stat-Signature: j6nc8ithueg86qsy7xfdcw6wjeuwi5zc
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-8-ryncsn@gmail.com>
+ <CACePvbXB-G5vhoEt87BZcjDZ8kZWo3mZtAZ60YbR_gcjnPz29w@mail.gmail.com> <CAMgjq7Aznd7=m6JTNGM4EyFj+6pqHTRBCo2hsQL-cKi0LZggOg@mail.gmail.com>
+In-Reply-To: <CAMgjq7Aznd7=m6JTNGM4EyFj+6pqHTRBCo2hsQL-cKi0LZggOg@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 31 Aug 2025 23:54:32 +0800
+X-Gm-Features: Ac12FXxioZkcEglVFpgNmclPXqeabDsMMCPYtygfFc3dkhi9MFV7CelcKDtuJqM
+Message-ID: <CAMgjq7AdauQ8=X0zeih2r21QoV=-WWj1hyBxLWRzq74n-C=-Ng@mail.gmail.com>
+Subject: Re: [PATCH 7/9] mm, swap: remove contention workaround for swap cache
+To: Chris Li <chrisl@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: a75z8mugtte1gi3doxcasac9mxzsbyow
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756654821-935311
-X-HE-Meta: U2FsdGVkX1+7VbOCbzTajnpgjtzdeZ0jlCOGHV4BYipmvGJmUTwd1K7qJ/CIYqVSOZG5AEcdHJalo1X40MHFyG3vDtk+pyV/xYkp6zL+Bojiu1An7Xp4KzkEnWqBr86QqKVNOY9g54Nq0mOtNehgy3GnukwJk806ulpON/Sy2XVHAjBH9oDWUgo/e00EgIvJ0P3+hhijTqs9YQQmIN0HSF+sJ2rsb6Ww2bZfBgcDsXuIlNdSnfLWxNN5PLL3T1jhiDyY3EnovqaX5FcYq1DkvDgXwdF6FICqhHFsdL56xufzEARFx7N/0Ag+AUHvET7DdDDs4nnv+qOlD7mURAQy8BCbJx+upx3b6eLBgcmUT10dpFVkxI16ZfYKsQw+IbnKJbKqXW7xBKY3VuHQe6aWEZTQWSjKqFFtkBrUUSzQExk7t/+oPauUk3Qt7zcZnEwKdOiLKquTUE8dW2Ke8HOxu1AOlZGX5BDYv7/Oaet1dQWzzyGrKQ0fXEbn08Gf1mMFoq5W/NFeA7mph9HkPTxSYNmWNSeeIC6FSksOIB6K6NXcKOl/bFi6WIha+UGoJgskFLEzXJCNiRk6JromMamINdea5nPOdGU01fbcwOnF0nCqzp6B4CV09BhZHFDsvzprfzVVifOPESW0RFW1Ruc2fjMqfE4TE7bojOd4aW2bjjyDQT7SQvWKAU7ocML0tLLz/be89LjaSMAbta+nE0lN09UFhPO8Dq67mDptAFkS9UyUG9Ot6JYxYUB3Jzmbl4120PGAn7X0AWS2R36++eIW8Z2UHkCV/+oZa9o19EhRu3we0rf8SY/1a7fbeQMrvSZJAuAIyHOMIema2qnHHnhRfACw1MUjUnWjFX6M/CNprWTfmIv29RHiuAX2isnCNlZMPbBAG4W5IEWasRynqY55+eK9KT+kd+wy8qBrN2C3hZ87qQZDkLRGcsljj3KPrlOWwQoyoeNx3ZxdCOLI29w
- Ffce31Ga
- wEu5EnKhQX0pjSBhL1cpRFRQPRezRsevDeS546WlHZE4Srp8M4jDcbkeQ/Hhd3pKAT/KwpUvJGTw0HPQpyQ09VvG/kizn6q6SVQalVTy/givdqYLOiUC9F8E1ZtN8uR+7moRFMNnUZRX7RRW3afU4KwpSNucGR2uWirpe1B/PFNOwMr823iIW4+aV3f81LrIvvVJXiGRBYk2sjfIYqBHFR5dODKtePgdSsYdkiRvgqG+cmLI=
+X-Rspamd-Queue-Id: 4FFE940008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756655711-504187
+X-HE-Meta: U2FsdGVkX183FQ5eTGh8K5vegESOxLsySMSKuvSfBf/BQXAGWiBBOBS5rgCL6cd/B6h5VtlL4dgr5ABI9PRdSJpQ/ddGq7wD4F5U9vmz4/9ZsADTPSbMXKX2JYBhp6iGi4Ca1x90EsGhQvvXxfWCEb25s1sfTaXU/7HY/4qFKUfAZJCW9C9MBNZnHcxQw5XTZmmjJs3jlhGpKnMhLqPph0HA8j5/l0IegYswBJdSVXzRtpohOlZVSMld4ZLn793FG0bBvQdyC00l0uZ2LlGfbdcNOrpWnL2zvUyZjknu/ylVbT45hOBydS7v0dAiFtdSBgIfXGAMK2a9MNPVazg04UVaAlrfSdcHAhWtMyaaIwuyLo5UXJVGmKT5pwt1y21F2zKIZ732PwkTrfllc4uusb9X+ymYdrKvkp5y0fr8+ilwfeH4foIeDNf/S4SaNtsGXAVqGdIDJKQfqewPWQEWl6poIAcXsG2LRhDy6qkGgDeMsHrl2XHUUbTdHZ+J2JMFVJwsMSnrsArWGslngmKN0cVbVSsyqSkwsiAsh6xbS75ditZ125zIbQzwlToS5QfMLOCaZE1Rn1Oxz+PGTB2UgcAbVnGaCxP6/a3SwF4uuJ3SXM1hxukg3x6Yq3Fb1TkQpT+HG7FXfUPIMNRLl6A/nSCY+IB7Ck9v7mnciS4DwGU2/FDWQbBSGwTlMXo4dMUdv4mOc4BaglpR2I/K0RQGX/tLxGqNmB8jZ/mu1aw5XOJs45A0Bs250fwDPFowtFxgdD3151JqQh0cB+MZnPl2JHB2K7ASqa9+a3lIW1IKUgoyYeYrX82JNCuMas2LH/6TS5UGuhui8m7n3tEyP+EtY508aoE7X1BA3JGWGsrsitdQ4RyA7Yb4ksl59gM+CzqntNTausgstV63VYWsJ/q3u2ZHXZCDmCUW6TznyDlufWM2+1jQxjpiRH5Sda9IZXpufC0KRYW564soNkgeWtW
+ bKk83zku
+ wjl6BttViramzRCSM04hWmxKQJ1PdiGsMh/I44N6dT5R2qDIyuMF6ga4Dwt+4evKn0pQ3CGNzU+vNQuOBexTHx/xGfHgcy6TnBjEnJMiwnlipetpGXGP4moKWhGsCQlUjYjuJLj79jrmV8EnXnBweCGpAAL9McizJ7kTpe7F3iFZyPvyeI5f3aMLlf71iMHmOwZXV3UDtMLpQWOeXMo2/FiErhafkGwIqGo2CMKeIrazFvGfGgbBr53pIHf12mHwoUB/dY2h/OANyh1TayLp0FqmI6p1TuH6shbYee/+5H/19L/7A90kXyGdN3ey5pi1BtUjX3VrZJcppaYV+LjeNgyj+hEI9cpq338vkLM9U0Cglq3A/ljfj1uEJPN/FLBcQJLs1AcfNrE17mZmNhTb1E5eWHhYzzA2vloG+Y5n2kW3UvR5KYHsRbR9IN+DkNCCEvz5ZhXGfJ/gQ+tQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,26 +122,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 31, 2025 at 04:14:24PM +0200, Bert Karwatzki wrote:
-> I think I hit the the same error (and some more ...) when booting next-20250829
-> on my amd64 laptop (no VMs and no kexec were used here):
-> 
-> When I try booting next-20250829 on my debian stable(trixie) amd64 system the boot
-> process hangs every few attempts (without any log messages recorded). When the
-> boot process succeeds the following error message appears in dmesg:
-> 
-> [    8.337248] [     T44] ------------[ cut here ]------------
-> [    8.337250] [     T44] WARNING: kernel/futex/core.c:1604 at futex_ref_rcu+0xe8/0x100, CPU#6: rcuc/6/44
+On Sat, Aug 30, 2025 at 11:24=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> On Sat, Aug 30, 2025 at 1:03=E2=80=AFPM Chris Li <chrisl@kernel.org> wrot=
+e:
+> >
+> > Hi Kairui,
+> >
+> > It feels so good to remove that 64M swap cache space. Thank you for
+> > making it happen.
+> >
+> > Some nitpick follows. I am fine as is as well.
+> >
+> > Acked-by: Chris Li <chrisl@kernel.org>
+>
+> Thanks.
+>
+> >
+> > Chris
+> >
+> > On Fri, Aug 22, 2025 at 12:21=E2=80=AFPM Kairui Song <ryncsn@gmail.com>=
+ wrote:
+> > >
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > Swap cluster setup will try to shuffle the clusters on initialization=
+.
+> > > It was helpful to avoid contention for the swap cache space. The clus=
+ter
+> > > size (2M) was much smaller than each swap cache space (64M), so shuff=
+ling
+> > > the cluster means the allocator will try to allocate swap slots that =
+are
+> > > in different swap cache spaces for each CPU, reducing the chance of t=
+wo
+> > > CPUs using the same swap cache space, and hence reducing the contenti=
+on.
+> > >
+> > > Now, swap cache is managed by swap clusters, this shuffle is pointles=
+s.
+> > > Just remove it, and clean up related macros.
+> > >
+> > > This should also improve the HDD swap performance as shuffling IO is =
+a
+> > > bad idea for HDD, and now the shuffling is gone.
+> >
+> > Did you have any numbers to prove that :-). Last time the swap
+> > allocator stress testing has already destroyed two of my SAS drives
+> > dedicated for testing. So I am not very keen on running the HDD swap
+> > stress test. The HDD swap stress test are super slow to run, it takes
+> > ages.
+>
+> I did some test months before, removing the cluster shuffle did help.
+> I didn't test it again this time, only did some stress test. Doing
+> performance test on HDD is really not a good experience as my HDD
+> drives are too old so a long running test kills them easily.
+>
+> And I couldn't find any other factor that is causing a serial HDD IO
+> regression, maybe the bot can help verify. If this doesn't help, we'll
+> think of something else. But I don't think HDD based SWAP will ever
+> have a practical good performance as they are terrible at rand read...
+>
+> Anyway, let me try again with HDD today, maybe I'll get some useful data.
 
-I believe that got fixed, pls try:
+So I tried to run some HDD test for many rounds, basically doing the
+test in the URL below manually. Test is done using nr_task =3D 8. The
+HDD swap partition size is 8G.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=locking/urgent
+Do the preparation following:
+https://github.com/intel/lkp-tests/blob/master/setup/swapin_setup
+(Make usemem hold 8G memory and push them to swap)
 
-which got updated to contain the fix for the warning above.
+And do the test with:
+https://github.com/intel/lkp-tests/blob/master/programs/swapin/run
+(Use SIGUSR1 to make usemem to read its memory and swapin)
 
--- 
-Regards/Gruss,
-    Boris.
+Before this patch:
+Test run 1:
+1073741824 bytes / 878662493 usecs =3D 1193 KB/s
+33019 usecs to free memory
+1073741824 bytes / 891315681 usecs =3D 1176 KB/s
+35144 usecs to free memory
+1073741824 bytes / 898801090 usecs =3D 1166 KB/s
+36305 usecs to free memory
+1073741824 bytes / 925899753 usecs =3D 1132 KB/s
+20498 usecs to free memory
+1073741824 bytes / 927522592 usecs =3D 1130 KB/s
+34397 usecs to free memory
+1073741824 bytes / 928164994 usecs =3D 1129 KB/s
+35908 usecs to free memory
+1073741824 bytes / 929890294 usecs =3D 1127 KB/s
+35014 usecs to free memory
+1073741824 bytes / 929997808 usecs =3D 1127 KB/s
+30491 usecs to free memory
+test done
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Test run 2:
+1073741824 bytes / 771932432 usecs =3D 1358 KB/s
+31194 usecs to free memory
+1073741824 bytes / 788739551 usecs =3D 1329 KB/s
+25714 usecs to free memory
+1073741824 bytes / 795853979 usecs =3D 1317 KB/s
+33809 usecs to free memory
+1073741824 bytes / 798019211 usecs =3D 1313 KB/s
+32019 usecs to free memory
+1073741824 bytes / 798771141 usecs =3D 1312 KB/s
+31689 usecs to free memory
+1073741824 bytes / 800384757 usecs =3D 1310 KB/s
+32622 usecs to free memory
+1073741824 bytes / 800822764 usecs =3D 1309 KB/s
+1073741824 bytes / 800882227 usecs =3D 1309 KB/s
+32789 usecs to free memory
+30577 usecs to free memory
+test done
+
+Test run 3:
+1073741824 bytes / 775202370 usecs =3D 1352 KB/s
+31832 usecs to free memory
+1073741824 bytes / 777618372 usecs =3D 1348 KB/s
+30172 usecs to free memory
+1073741824 bytes / 778180006 usecs =3D 1347 KB/s
+32482 usecs to free memory
+1073741824 bytes / 778521023 usecs =3D 1346 KB/s
+30188 usecs to free memory
+1073741824 bytes / 779207791 usecs =3D 1345 KB/s
+29364 usecs to free memory
+1073741824 bytes / 780753200 usecs =3D 1343 KB/s
+29860 usecs to free memory
+1073741824 bytes / 781078362 usecs =3D 1342 KB/s
+30449 usecs to free memory
+1073741824 bytes / 781224993 usecs =3D 1342 KB/s
+19557 usecs to free memory
+test done
+
+
+After this patch:
+Test run 1:
+1073741824 bytes / 569803736 usecs =3D 1840 KB/s
+29032 usecs to free memory
+1073741824 bytes / 573718349 usecs =3D 1827 KB/s
+30399 usecs to free memory
+1073741824 bytes / 592070142 usecs =3D 1771 KB/s
+31896 usecs to free memory
+1073741824 bytes / 593484694 usecs =3D 1766 KB/s
+30650 usecs to free memory
+1073741824 bytes / 596693866 usecs =3D 1757 KB/s
+31582 usecs to free memory
+1073741824 bytes / 597359263 usecs =3D 1755 KB/s
+26436 usecs to free memory
+1073741824 bytes / 598339187 usecs =3D 1752 KB/s
+30697 usecs to free memory
+1073741824 bytes / 598674138 usecs =3D 1751 KB/s
+29791 usecs to free memory
+test done
+
+Test run 2:
+1073741824 bytes / 578821803 usecs =3D 1811 KB/s
+28433 usecs to free memory
+1073741824 bytes / 584262760 usecs =3D 1794 KB/s
+28565 usecs to free memory
+1073741824 bytes / 586118970 usecs =3D 1789 KB/s
+27365 usecs to free memory
+1073741824 bytes / 589159154 usecs =3D 1779 KB/s
+42645 usecs to free memory
+1073741824 bytes / 593487980 usecs =3D 1766 KB/s
+28684 usecs to free memory
+1073741824 bytes / 606025290 usecs =3D 1730 KB/s
+28974 usecs to free memory
+1073741824 bytes / 607547362 usecs =3D 1725 KB/s
+33221 usecs to free memory
+1073741824 bytes / 607882511 usecs =3D 1724 KB/s
+31393 usecs to free memory
+test done
+
+Test run 3:
+1073741824 bytes / 487637856 usecs =3D 2150 KB/s
+28022 usecs to free memory
+1073741824 bytes / 491211037 usecs =3D 2134 KB/s
+28229 usecs to free memory
+1073741824 bytes / 527698561 usecs =3D 1987 KB/s
+30265 usecs to free memory
+1073741824 bytes / 531719920 usecs =3D 1972 KB/s
+30373 usecs to free memory
+1073741824 bytes / 532555758 usecs =3D 1968 KB/s
+30019 usecs to free memory
+1073741824 bytes / 532942789 usecs =3D 1967 KB/s
+29354 usecs to free memory
+1073741824 bytes / 540793872 usecs =3D 1938 KB/s
+32703 usecs to free memory
+1073741824 bytes / 541343777 usecs =3D 1936 KB/s
+33428 usecs to free memory
+test done
+
+It seems to match the ~33% swapin.throughput regression reported by
+the bot, it's about ~40% faster with this patch applied. I'll add this
+test result to V2.
 
