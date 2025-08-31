@@ -4,97 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41766CA0FE8
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 23:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F3B0CA0FE8
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 23:44:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 099418E0002; Sun, 31 Aug 2025 19:37:34 -0400 (EDT)
+	id 90E698E0005; Sun, 31 Aug 2025 19:44:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 071448E0001; Sun, 31 Aug 2025 19:37:34 -0400 (EDT)
+	id 8980B8E0001; Sun, 31 Aug 2025 19:44:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEFF98E0002; Sun, 31 Aug 2025 19:37:33 -0400 (EDT)
+	id 786428E0005; Sun, 31 Aug 2025 19:44:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBAAA8E0001
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 19:37:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5E05A1DDF8E
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:37:33 +0000 (UTC)
-X-FDA: 83838666786.19.1F5CE25
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 226401C000E
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:37:29 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KhiP7pYP
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 61FBA8E0001
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 19:44:55 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 018861605B6
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:44:54 +0000 (UTC)
+X-FDA: 83838685350.05.483CA1C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2548740004
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:44:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=COonwkza;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756683451;
+	s=arc-20220608; t=1756683893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5/X6IMPWa31K/zfx8lt7hgWlCVhbr2OzJf3fLghYiYA=;
-	b=jYR6A6eFjW5Qoh9yqGm1vc5qqXrYtjz7TdR0ZuhlkW4KhtJNHPlyuakSUEDhYh/6wNotq0
-	NaUWLRtOoX8eCxeuz0VfwltL0vaS+9KObvmZJ1zBZegfy52k1x8PkyRrjQCOntDGonClmc
-	H796drSsjYW7M/BYWRtKQRN6znr2u3I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756683451; a=rsa-sha256;
+	bh=QOBIU1No0yNOCSJomcTNhrecA0zx1b/PEgtm9N0Hj4g=;
+	b=dL9Rhx225Gk2rM2gs4BLtVXtFfIz7bUHVN4pNzejnEyYLjb1wVALIy15CkeSWPW4AsY7Hs
+	l7fxOIxdtcGq/xYmpwlk39eYbAF4P3oBbV4Zk8ErUsJH/m7ERb0+tsCbDJfUS7NG19lkcp
+	y/eRNcFXgdyIX3abNdUquIbZUvWcqwM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756683893; a=rsa-sha256;
 	cv=none;
-	b=c03e4D/FInAZV4Lq5ykJtCF6H066tCkP45XzBA8Qjtfyv6bq4Xatu8gT5f2f4YjNhWX8m8
-	HmSEUrqn3lBPDUTygNHcfj91A+f0/fCX8952yC8XIQbVsY+DvZWaQ0fXTadyNMThrGeNe1
-	6r96PxbGELwbVkHcmDzP7YdA7AhgWzU=
+	b=nAOE9h1pLRNKji/8eyIWfDDRqJx9/VEEPukeLPrA5uOOzI0BquMpJ1kU3ycKzNiOxjK6WI
+	+ycAZp/htrSvi2suLv73TgQ/eO+3SJX3fcVI6zjwCyFCquHtugahIfc4jYqqzqa71lmwi+
+	1yK2JWivzoOcyE172N1VR2kHET7v9QU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KhiP7pYP;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=5/X6IMPWa31K/zfx8lt7hgWlCVhbr2OzJf3fLghYiYA=; b=KhiP7pYPLLNma/iEZ0/e2s/a+D
-	CYvRTBGFdpIballmC6yGqJ45tRlQU5XV7nPT0Jxt3J6XyDX7QkhlwDDgcHOZ+ASfjOpjy4wicG8li
-	p8Hx3mozisdRvwWVZIRaEln/oA0dC9LLsOLnW6AqqbFTTdAAcRdjsG2SIfQnJFw7Woj92s2GYXFI8
-	fmoXWNWwydZl5iJgBxDNHQiX+hL+kKfc9lK917e9vtCdMScd05eaRrU23kDIEPsOCpPRqS8fxcBWB
-	HWBQgs4FsAT2MfTquTpvhyXreYXTERavKkyalH0axsHnlTDNtqC1L5b62O9qCo8OcIUipKR6SKwo6
-	VGvMVuyg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1usrbs-0000000GxvR-1wBS;
-	Sun, 31 Aug 2025 23:37:20 +0000
-Date: Mon, 1 Sep 2025 00:37:20 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Alexander Krabler <Alexander.Krabler@kuka.com>,
-	Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
-	Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Konstantin Khlebnikov <koct9i@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/7] mm: fix folio_expected_ref_count() when PG_private_2
-Message-ID: <aLTcsPd4SUAAy5Xb@casper.infradead.org>
-References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
- <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=COonwkza;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756683892; x=1788219892;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UXLiDHkaT0meCoGiGceT0OK9ByY2vye2ZhvRRbo1ZMY=;
+  b=COonwkzapPtiyJrGhrb2HQdv1et83wg/poa4D+tQ3qqt9izjwD3gWInb
+   84VZ0ZtvnaXrZ5/muRB8kKO9LyzcixEpY38cxa6d+fFKshSv2N/bRwlLH
+   J63Aju4/A95P0C3G/JECKNKB2RdH+rwAxJ8QT/Hzrdr5gx3l/cPzcwZSS
+   xtWV0sMvr3mHqPwtnvcizo/fIgxoVwwzeHqyEJ9DfLuz/0U3mW3KxKi2a
+   w2DJDXJWrY0ZhZBQzklloauv6Jgjizcgw4F5Ns3W5/PobEqbaujhgdVER
+   NbrX+ium3pfQbdACj8NxQES9PC+NC35PUTlddo9kYspIJycnZkfpt57Ae
+   w==;
+X-CSE-ConnectionGUID: VsdfF+0KTAKYoTfXqwJnXg==
+X-CSE-MsgGUID: bdy6iW4zQrax0k6/Sz/XDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="69153877"
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="69153877"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2025 16:44:51 -0700
+X-CSE-ConnectionGUID: ceyKbt2UQfCozYp4uC63sg==
+X-CSE-MsgGUID: 7657w8KNSuajTQaTsSvuvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="171620355"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 31 Aug 2025 16:44:46 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1usriW-000WPr-1b;
+	Sun, 31 Aug 2025 23:44:30 +0000
+Date: Mon, 1 Sep 2025 07:43:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
+	david@redhat.com, axelrasmussen@google.com, yuanchu@google.com,
+	willy@infradead.org, hughd@google.com, mhocko@suse.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, vishal.moola@gmail.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Max Kellermann <max.kellermann@ionos.com>
+Subject: Re: [PATCH v2 08/12] arch, mm/util: add const to
+ arch_pick_mmap_layout() parameter
+Message-ID: <202509010724.bSPPSD1X-lkp@intel.com>
+References: <20250831093918.2815332-9-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
+In-Reply-To: <20250831093918.2815332-9-max.kellermann@ionos.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 226401C000E
-X-Stat-Signature: 7yox8ejsotif1k8kjad7jy4uw819gkbe
-X-HE-Tag: 1756683449-133499
-X-HE-Meta: U2FsdGVkX1/hotb4gWPifXiLhaazpL52VTRR4c9J7jkWBoTgXuPMh75T0yKVX+Umh07L9N0/MBZbpUkjVg7otDaekRdehzFVnLmVNmDnIAFJbO930/VoOfjN95jbot1NtLOCJ+IyjlpZ159HTKh9KQIQCW7C7KrdWP6KruaYUCgprVd3AwyDrCaR04BkZgo8+0gpzGD/55rBVgazb96ZuzeUnqxRCVBF/enRYMM2Cc2uUBi6OGRlyRXwFkl5lHEdmPuuhe6m3KN5iHJ7TVJOirba0/ovmwYZuydN0rnhM15aY9z1jpPDE+E9UGwosLjWN9xsiGoUF3TSNUPxtkTv5Hr8GTR/kB9YharSp9Y1bzEB8ih/1KMUS+NpM4chTbVoQgg95RDA6fsQcxfIqqVv8SBTuO3n+fxz2kcme69fVO8PFqibie7yqzJi5KyFnjz3c+Vciz7ksCoPDrrVQ44jp5RkEhjeR9Us2RiY1FMscnDVB8maNm/o0GPZuWrtQ/bzw7dvAq/PoyqoHrXIafmirdBzaI4Ev2bxa1mFwT8zNcFjCt8PlOzTqUkeyzUlp2kVBQubb0n56nVQCjrDayAOqVs5UCeNSPJxV/m6TFv8+I5RyCjAUYi/rwzEh1tzpwNFTOcmZaTxyVAFpPcMRsViF5yqQcb/Q9FudA4r8zuLxf3GGVySGqZAhsLdNJyoUkO7drLY8LjL5BC0A7ykw06VykI/DamCqPq99d5Hxghd+9uN9hvR2rojz6sPts/jvL5e3V17shP/bQ6r3KXOv+pPDY7SSR3cLTISQh3ZXXH5cVenra8e5GAp+MdmQKmp2wn/UmJsojxJXhYTDFPCJjQgPGiTCOjGpuzP1WGnEprYEv1LzpSgUuv62K1DADu25RL77BhzzoghrtXKofltgRANLkHJU073opSYQXGgpUXEBhz3yPSf0nEEK5FWjOUDVEJ9pXkAY7X6WnN0a4Fc+G9
- G4D11KHy
- TxZMA/G6LsGFInZIv5soJWsUtdhyujqpY57HM3+F+syhlJgllQyS8xBPS2F9KdX/KmLcCQvLCa+y37dwEfqCf2JhodRbVMbaIFzBQ/nnSRy0yQ/+BDh1aSzh6eetqCQjxW7WtMVx5G3i+nh5S1DEEjghS/nGQO+maVKDJOxJq8Ssfb7GW0nU04VJ7yer1k0pvHG22TKrmCkchylnaBA9A0o2v9ZMV5PxNE005
+X-Rspamd-Queue-Id: 2548740004
+X-Stat-Signature: xmp9srqhba64opfgkagfzyxwjiz1f4ti
+X-HE-Tag: 1756683891-462675
+X-HE-Meta: U2FsdGVkX1+Ps7uUXRjWcLHrxNY6Mt3beGRnEJGGDeDID+2BBHRj1xxr622sNk/nxLK7IVxkBDgeP0GrAoyRW32k9b3Z5ZBtG9VpqmGxSjYwJlD+A+YXSm7qxqyZJ/9dCTsgTSnmw9a2w02uGZrZBQrpVeMuHuicrp4YCYF6iv7mVKEFQP6mnB+9YZnmFRNsNn8EDxdbGArr6l/BjeK1ccizvtzwxclnd+fTSufkM8MMRU39H7Rbp2IkdwbMkUVzHsMQG/pyG5ddebLGi4S2SjCoYh9UqW6GOC8xyH4OmdIVis/nyBVqcgPYvWAr0JLZlp7HExzb95r+wMo2HyZHKcAuU5/OGvgibgFXoEx0ikeXocLZ9Gns9syEVEWrC9ymKj4M7CitBJCNenz3XpXTl8gG5QJcPNBzAkSCEai5AK6AsezXva30M8Rqr405+wXt9RWA1sZfHb/PvmaqDBAGLwHQzUUgiN98mWw37agm/g27tuWSCMPBx99Z3kXPwrUlD3pLixfw2r8R7wkLcMB7Ad56Xa1iMva6R2FBSt+b8a0cin0kBxirK3/sUcW9azTFC8HFaNOsdnZNTTsPYPlpBDgCfzy03FDhBCFxckrsNvE64g2kYqAkd6XQ7F1nH7/pmazHy2lA5J8AdcxKcei+Sc+CU9FN4M5iFBy5M+HV5TiWPz1gVJofoqjCY2QKEQp7ZNto4sAJoyryIYLy3R/AqpGsvR6yLTL1mFoy45+PEHcZiHvZ+EL3riDG3iABateUyJzCIgpS0PjdCh9UZ7lxj9tDun7NRygVw0cOKR8jAYIRfEammT2Xm4gHdbJfZnrtP1pCaoW70PlH7bQiNlZvGjmUNU6AdMzK6DvsbR/zNGOXdwlcBO6jyXiE2hXnNdVYWZlejerEhJj5mA2UMwDFnhqCVrECUb4w4nw69eQwR5VdDviNvgUi7nSRCQxNQY4fc0GZkKymBYYvua1wCA8
+ dzfR4gPV
+ L7hoS2kMqPu45jfG1AvNsYUbwaVJUb/xScq8uMdGWCF2nJ+X6IkbrEUxLbb1eMykg1dOKdl5GChx15lqjc5KjTURTGi8rXre3aHOfBlOuCyo84/rBsZ7A1gvjOOlaGexbwnb/q7pmpZASIhnAy0BGKdD/Lx+XFz2+Tv4T4u8j41x0ysu4yKScJmR5Df8IaurisXas23U1g3+pYt1oS+UJVy2zZtwDqfD8AvL/wM+Uf2s0p0iGTkU43uDsiKgtFSHC495aMtR/kOnVuqDjAKG2n3T37GDw9PBgYB9IhgvihD0Kw4zpIdMx6uVFtZKgRdTFfvUd08SQmPrv61MN+FzY10Q1arQzQ+rT46Al2Vcv5mgKM/lPuepd2gqPx7WSEQUojeFgJFHXeIyQD09zapHIngrr+5Jrccnc6nnawB9BMIm7DM3nfPVPG5mJlFztX09lhkrKKaAqhSfGa8hVHVJakchtiODc7pmIhAaLqVYv8VrqZlElh/iyfKliTUemZ06C9mFggLvLLKJ6wEHIQqJYkufbhkCiD2mr5yle
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,19 +113,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Aug 31, 2025 at 02:01:16AM -0700, Hugh Dickins wrote:
-> 6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
-> which (like PG_private, but not in addition to PG_private) counts for
-> 1 more reference: it needs to be using folio_has_private() in place of
-> folio_test_private().
+Hi Max,
 
-No, it doesn't.  I know it used to, but no filesystem was actually doing
-that.  So I changed mm to match how filesystems actually worked.
-I'm not sure if there's still documentation lying around that gets
-this wrong or if you're remembering how things used to be documented,
-but it's never how any filesystem has ever worked.
+kernel test robot noticed the following build errors:
 
-We're achingly close to getting rid of PG_private_2.  I think it's just
-ceph and nfs that still use it.
+[auto build test ERROR on akpm-mm/mm-everything]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Max-Kellermann/mm-shmem-add-const-to-lots-of-pointer-parameters/20250831-174136
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250831093918.2815332-9-max.kellermann%40ionos.com
+patch subject: [PATCH v2 08/12] arch, mm/util: add const to arch_pick_mmap_layout() parameter
+config: sparc64-randconfig-001-20250901 (https://download.01.org/0day-ci/archive/20250901/202509010724.bSPPSD1X-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250901/202509010724.bSPPSD1X-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509010724.bSPPSD1X-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/sparc/kernel/sys_sparc_64.c:1:1: error: unknown type name 'ickj'
+       1 | ickj// SPDX-License-Identifier: GPL-2.0
+         | ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                         ^        ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                                       ^        ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+      99 |                         set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
+     101 |                 return (set->sig[1] | set->sig[0]) == 0;
+         |                         ^        ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     115 |                         (set1->sig[2] == set2->sig[2]) &&
+         |                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     115 |                         (set1->sig[2] == set2->sig[2]) &&
+         |                                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     116 |                         (set1->sig[1] == set2->sig[1]) &&
+         |                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:116:21: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     116 |                         (set1->sig[1] == set2->sig[1]) &&
+         |                                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:119:11: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     119 |                 return  (set1->sig[1] == set2->sig[1]) &&
+         |                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:119:27: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
+     119 |                 return  (set1->sig[1] == set2->sig[1]) &&
+         |                                          ^         ~
+   arch/sparc/include/uapi/asm/signal.h:113:8: note: array 'sig' declared here
+     113 |        unsigned long sig[_NSIG_WORDS];
+         |        ^
+   In file included from arch/sparc/kernel/sys_sparc_64.c:11:
+   In file included from include/linux/sched/signal.h:6:
+
+
+vim +/ickj +1 arch/sparc/kernel/sys_sparc_64.c
+
+   > 1	ickj// SPDX-License-Identifier: GPL-2.0
+     2	/* linux/arch/sparc64/kernel/sys_sparc.c
+     3	 *
+     4	 * This file contains various random system calls that
+     5	 * have a non-standard calling sequence on the Linux/sparc
+     6	 * platform.
+     7	 */
+     8	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
