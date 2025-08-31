@@ -4,118 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80BA3CA0EFF
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 03:17:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71918CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 03:35:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4FBD6B000C; Sat, 30 Aug 2025 23:17:06 -0400 (EDT)
+	id 71EAA6B0006; Sat, 30 Aug 2025 23:35:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A011D6B000D; Sat, 30 Aug 2025 23:17:06 -0400 (EDT)
+	id 6F6656B0007; Sat, 30 Aug 2025 23:35:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9170B6B000E; Sat, 30 Aug 2025 23:17:06 -0400 (EDT)
+	id 5E4AB6B000D; Sat, 30 Aug 2025 23:35:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 803B96B000C
-	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 23:17:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E653B1A0310
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 03:17:05 +0000 (UTC)
-X-FDA: 83835591210.02.5FA398A
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 44899140003
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 03:17:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k9RLzxDY;
-	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 499F96B0006
+	for <linux-mm@kvack.org>; Sat, 30 Aug 2025 23:35:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3E381A031E
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 03:35:25 +0000 (UTC)
+X-FDA: 83835637410.19.EDFE388
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id F2542100007
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 03:35:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EZ+DieN0;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756610224;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756611324;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5N7BdKrpgIpY9aSYUioHU5026fLiwEEjedpqQJ1T/KU=;
-	b=JhqbYYf1pdcASSGxdLVfqN/rJUNPO+ZqeA+DWcViacdx4kf/bECLUrC9qUVvDO0MVSiFOa
-	BpcZrqPMgmggEfaMpDlb/DatRJqDl4iHyjmuS81AdQK/UXwLm62JzjBemgEVAjF/MMihTa
-	nVqBbtzCAZx9dN82Fs0dsQ9LqvlX2QE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k9RLzxDY;
-	spf=pass (imf26.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756610224; a=rsa-sha256;
+	bh=aq3m3ApNhL8UCamTDtsMpXEPSvDyCOk2PZ+5CsWWYas=;
+	b=w4igetmomS4QaPGoO7hG7UEqwDR+rQot/1epc5L0kyRM9TslZxxEpgE6cjohSl+68gTrBW
+	EbqmKy7a4C3s2neP+IS96djnB2OdoF0M4lH73r5DE0GjRasjXVBmjtNt/SkEXzHtmtyZQO
+	Y7RyW+0Rd48x64C67/rZiivXzOE3kP8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756611324; a=rsa-sha256;
 	cv=none;
-	b=7KzsEOr0Z/FYrAfslBCLUoS+ZvkHZMie5gwwR2qtp8fxc7IMPSFiuw+BxfQyenzLXXix4k
-	qmytN0ZCdnKP8n49b+iNoEqaq1bdRUeuIXy8hLeqkUybEnpgPtQZ071oZY+rxZSKqN1WkY
-	sjCd0mpl8528cVmtSJdYHjDrhhZYuz0=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b2f4ac4786so26375941cf.1
-        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 20:17:04 -0700 (PDT)
+	b=xHPNqjKvZnl7ztf0lTAPdKwqVKy67aVYVZV7jumE0G4z/cpReiB6ZMhFHtQpsgbLBV9YD0
+	jNNAV2WA84uBq/IUi3H454LHn62J7e9wmUILsMoZi9ZHRkVlys4cGODjKD0vqVnwLQZApl
+	dJvvYvnhMxd8PmBL/oqMir5Zd1jY5Xs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=EZ+DieN0;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3cf991e8c82so1487042f8f.3
+        for <linux-mm@kvack.org>; Sat, 30 Aug 2025 20:35:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756610223; x=1757215023; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756611322; x=1757216122; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5N7BdKrpgIpY9aSYUioHU5026fLiwEEjedpqQJ1T/KU=;
-        b=k9RLzxDYOx32ElLBDSvQbGjMim0pMI54NgF1qrclGnX5XVvsmBm4cIsCwHav3wlYB2
-         feot5Kxs8HO5jGaJIAIPt/456KV+sr1N+RyybuZonrf9HV/JRArKmqJMdt4zWI1hsb/e
-         9/0sQgS2POmrtMJgB8/iT/NXJOomnxPXU9jEagzYzWTWGheFReo5ptAOmyjWnV67jfzf
-         z07ObFM8cwXaX78InHibOSV0N603DDsU8yyBjGny/B3yNvGJqzSEVmQYsOOG1Jv3Tvs0
-         bEXj/N7Sa0GsXe5IG8jiHGzcwSFw/vS1DgkVJ7nM/6SoNQX4vORkujzWfEt2eu+/GatR
-         GuDA==
+        bh=aq3m3ApNhL8UCamTDtsMpXEPSvDyCOk2PZ+5CsWWYas=;
+        b=EZ+DieN0rWgIgEZ1FPDxGgRd6fAGFHvFkauW4Ch612rS8cWF8wJ5fCIvU45Zc3s3JL
+         jVCUnBkQKTD2jN3M4ttPQZl93bBAlweuIguZ9HA7YUu6wSEwvNM66aYTWWoNySEmGxlZ
+         S5sX9R47aRv4NJ1qKYgi2Ws5gqUGRLB8Ddh2acA0RZxFso2KSEVRYLtTzsGOQ6F9BGyA
+         kbg3Uk4EWxhtLgxXeHG+znEqrowEWZN8I8F4hXoaRsL6pVQ1f6dVjpT7BUkMxh65/vZT
+         cyjwn3vxri9MknW5xVEN2yh9+zNKsV9x3S0WLtiIzauBnprQbhOVNkrYWmDmtoJo0Kuk
+         jpWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756610223; x=1757215023;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5N7BdKrpgIpY9aSYUioHU5026fLiwEEjedpqQJ1T/KU=;
-        b=ACsDftcm2PLmuu94or0nkjbC0ROzLDWelUEaRiqJGmUdXU08DHbQAxVU8NGngxDC+S
-         glqX8nTKbOv76bFuF8WS4+Ko7nvBps3S77oH9zHzYorEZWkHKGYr1jKVlRwyD915ouDL
-         IH0yrywJN0dUt+A5ezFY0H5+huQ06nKQaJI3RI9tQ45Mh7hBBr7ljojor1pTEhSW1//F
-         HMQ4y6KDGxxXlsn7hDr+H4qfKGDV2vC7NmGUQGUrC2LNXmer8Hj+3lDh2e4waNk6TPfH
-         V4Bc4bmdNSzEGHlrsF+Ehp8hYHKh0+GSlmrAUWHnp71/PzH3QsWRbLLaHe/Nit+8G846
-         kaIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVtpVZBJz8hmwGNPa0U9BrU4/a90HGtt2E5si6irgagj+9WqYT35/i0MXFtlUvQb9Xo4MjUKzkQ4w==@kvack.org
-X-Gm-Message-State: AOJu0YxNnvDgRL2/epEIXdaDlzqwGmvnpPKTl1ogyxGRN/aHB1jn2w1G
-	P1FcVtG4SikuFdxwBcf3MLv/LihaOE5C1kb8tHxfDIDKWhrEN8qzk++irMswrCmH1bFAuLrYVd6
-	j5A/UhtRpA2MzoYnnNx7UQPHn25u/vzk=
-X-Gm-Gg: ASbGncuYcAEnd1V2880VNKOVKM3tLUi84a/WTin1fIQhsMEi+h68Swya51OxUcGNn7l
-	iBoitB1JJ9Zje8IuGAvBBWIfuQA722c3JXD77Q0qtB/gJvZcTUJjeTCvak9vQnRFsrPNen9R2W7
-	VYiu9q1LEgPksF2g+I6Fp18Bg8bCeQYmtO26FIutF+b+Sf431Q1pQnWLBr+Zs3awQX+8xTN/g3J
-	ih0coElTh0sgiG5bo6kmwcaoAS0gC1ouSdrFo0D
-X-Google-Smtp-Source: AGHT+IHe94eMIWMY4dbrxy1YiHjHy0HuBEp+5ADPw2mSy4ygzqofX4QZ6gFssRpbt5INRd/s9w0eUBJOOA9RRs/hVCY=
-X-Received: by 2002:a05:622a:592:b0:4b2:9830:197 with SMTP id
- d75a77b69052e-4b31da3cdadmr39861351cf.48.1756610223300; Sat, 30 Aug 2025
- 20:17:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756611322; x=1757216122;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aq3m3ApNhL8UCamTDtsMpXEPSvDyCOk2PZ+5CsWWYas=;
+        b=huk3qcOmYp23jDwlX5Noq7w1t0xGZBa1VKIhqubukw7gyis77+34bbJANqLy0N5QEb
+         j4nssxvrsOGf3KtDbK9/gQNtkj+XcnKpN/gBue9rx5MJYzUF+96+tjoLksCiuHlYM1hM
+         /GEb/ih1wJVa4IxV50YhyA714anvGvMNfqbpUdorpj4r95oJCg6GqqA9TRDdi0P/3LGd
+         NEVQlEqsw6FycAPYe1UUz1P+lRq1LaAlcYC4BU9i0fRBODaIu4tgPg/DgDZMzA++QEVJ
+         +7SpxYnmW3afJX07dEnGlMgU2Z+GUhfuzNn0EmJfZmZeyjVTtcz6crEYa0l9eFVtAuVt
+         x4Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqyvfGEaeiAPS/hzfSjHSemss1s2C0Io9vlt4PuPzYAUCa4k8D8R3wORwaihU4/ntqYb3tDQvOfw==@kvack.org
+X-Gm-Message-State: AOJu0YynOEN7uD+bvYaxCWY+MnmJm2E1WLthj9jOdVHaRhE0Z8bPtli2
+	PyvJKenJfji2UGpjFrSATHGpxoRJ3apkCi4avyMJjOHQfNEOMStyCW8q
+X-Gm-Gg: ASbGncuHA4UHzQ5YwdMuLBqrHlIF0XLxzDqlzpDGqbigHjTXZKg4u6EzpjKxVtkUdMC
+	wMo7kHnTr4SfYNQtVr+wur7NJPKGSqfn7KsHUMEhJuptOuZhlbxmvEIb/FH6fO6DX8N3GWGiyWb
+	glOrNzKDgaBzSR61FLBqu/hyatPgMZVw+SRGuBVLh+VJwqfveTmMLji7iKfmcWyEqjZv7t1WMac
+	72tZQkVZj9QIvGj/2urtpM9+wAx7bISW0ifGbzzB4oSwppwY2aCJ7IqaUgHqhvJArHga0NdreDA
+	0dXyw1lSPuzi9TrPTWgWfT0GnqyoGh7sXH6GSrPHsoGnNydxFLXKcJekm1SMskl70wzOuo3GaQK
+	bx3VpLTZ0aNIpExSKATVY1WRy5HsRSUJtmDVB
+X-Google-Smtp-Source: AGHT+IHLW/8pH624orcQ/yUuYgXtNcMmSkv4r9KWd2LeGemAhYnOyVvRLnY+STJPeS4L/M3bTkV2qQ==
+X-Received: by 2002:a5d:64e9:0:b0:3cb:46fc:8ea8 with SMTP id ffacd0b85a97d-3d1dc5a23a7mr2077352f8f.3.1756611322239;
+        Sat, 30 Aug 2025 20:35:22 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b87b38fcfsm19382745e9.0.2025.08.30.20.35.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 30 Aug 2025 20:35:21 -0700 (PDT)
+Date: Sun, 31 Aug 2025 03:35:21 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH] mm/page_alloc: find_large_buddy() from start_pfn aligned
+ order
+Message-ID: <20250831033521.7khxjqsbtiwzi2ws@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250828091618.7869-1-richard.weiyang@gmail.com>
+ <489045AD-70D6-4167-843D-50A8DD19870B@nvidia.com>
+ <20250830012505.v4qoihdqi22na3v2@master>
+ <837DD3CD-DEB8-4255-9E38-6006D652B02E@nvidia.com>
 MIME-Version: 1.0
-References: <20250826071948.2618-1-laoar.shao@gmail.com> <20250826071948.2618-5-laoar.shao@gmail.com>
- <bca7698c-7617-4584-afaa-4c3d2c971a79@lucifer.local> <CALOAHbDxxN8CsGwAWQU4XRkG8NvU-chbiDv=oKW0mADSf1vaiQ@mail.gmail.com>
- <b335afe9-be7a-46bb-bf92-37abf806d164@lucifer.local> <CALOAHbApv0Sj25La7EQZg7UBxfvkfMXpGPtNrYKABSYpNV6ORA@mail.gmail.com>
- <a4d0857f-1520-49a2-a717-3e74325f2d6f@lucifer.local>
-In-Reply-To: <a4d0857f-1520-49a2-a717-3e74325f2d6f@lucifer.local>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Sun, 31 Aug 2025 11:16:27 +0800
-X-Gm-Features: Ac12FXzUXlC_rm_aYklaAinmwNAfHTa64DZQJN2Q1d5F2Z14aWeMQl-5B-4ZRZM
-Message-ID: <CALOAHbBaC2sd578CCT_15R64P75MAtYopm+pDrRqmOJpaOB-Dg@mail.gmail.com>
-Subject: Re: [PATCH v6 mm-new 04/10] bpf: mark vma->vm_mm as trusted
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, hannes@cmpxchg.org, 
-	usamaarif642@gmail.com, gutierrez.asier@huawei-partners.com, 
-	willy@infradead.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	ameryhung@gmail.com, rientjes@google.com, corbet@lwn.net, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 44899140003
-X-Stat-Signature: isuz6ca8o5xs9yy8mty7rba1693fw53g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <837DD3CD-DEB8-4255-9E38-6006D652B02E@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-HE-Tag: 1756610224-247184
-X-HE-Meta: U2FsdGVkX1/dPBqjirYb70yBXU5h5ZglVMVJMKk7h0YGco31hJAGkieJJQ6ZGtgeJ8yGV4t3Iim7y+muCloXwM1LLu16fBeoTK4x0YifTk/1TY2CHWL+Cm+V2etw3okMiOZ5TawrPf63ZzuCH8QY5G51yCc+8XkgkM26O8j2JUUE5muTfs9qZhOD5flStm5FdSt6NfnBdrIU0vmV5IcusHv/N93KvKi2KtyIjW2vs4TFkJu/Uk2qND2V8HAxLAb0td9lZkPCGc/hEg9r2gS0teDNr0jT3MkHyFD7LGpHDm+5daCSxVFbAicEAjZg1yb9YL1Nngn1cgPEfwXJXp/u7Qw5FH4YwomDg7BvtihprY0CjsfCtEJA5rv5CjkY/e9Enuw7ZVzVuLQakLd5c0kzWLXf+yKk0ijVShOn65H68Ux6ONr5G0+0+HWBnZDCnM90//BYIbGAcCCr4p6cOXLS9TUZioAS6ov9LfA0m4sTXUiGeZhuIt6s1euRX+4h7xZkXUKE+S7z4XQKOsXq6s2uezJWYZ7e1AL14NqDQRWB549RHfIB2RDL6WTfULbpPIhaCYI9e+pMwNFvP0lO6x39qSk3QbrLX6G3c1GNz7cq5kNFraw88S7eFqXr43/vQrzvSDzWZm6c2Kcn0eEdePn5bpX4buRmQjdO7cJ6iH63XrCrZBUvdzfNMmg3ErwMFwxz307OZyU0kOUqfw5b0rG8hrtURF/u6h2Q6epKGgnSS1gXYqHKs4bxCSxU8K9ey1QRKWEGjXqiYqeSoXIuRyygfNga9OWi8khwH2scfIAP+AEW/rRsoMoXLmtPG+oBo/FL9TAygeEZqZjQyn52SY0lXOSCYhLjMkbk/+6MveWCxpASd7hHBfM0na6DYlSPRqUCnUv005HE/TpYhHLHMDbTZOPRzwS7zXykbJOGGjFX6f1drpaMIjzhDmol8HAeF2aKETYmomXXrNCLQnH7FSi
- ToJp7V4/
- Bv/7muKX8YRn4FKJQUF38LHKfQuyNUCYHrlZ+6Zyg4whx26I0IcMAIsnbfnxfXQNfKSJjesz0XjDuT6d+aV4cWMFVvwPaIYqNK1FB
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F2542100007
+X-Stat-Signature: aaus3hp8z4u97ua7axgznx7hfnug119k
+X-HE-Tag: 1756611323-340853
+X-HE-Meta: U2FsdGVkX188k446IUzoKmPC5d/HsSAOeeyPqzzPnRH2jfyzxy1Z+xS3GyjVanoCQA0qsEhGO6onS627RVWx8Yg82A5wNPE73QOXJ0jnDpkjzSs0+qzh2wkBHwDzkYcc4EPtEsbaJom6lnYnzqmRoIB7ILewh3gt4oBPjPkapvTddL07foCb6J5zuC7qIZI/K8ugC9aZ7XPiKQHMU4a0qCOiWnqR/7Ei93Cibf5dX8DKcLsYnASLA7i+rrapnhlYghletRQSapfsSNfxUrJArHN7is6mAdSJRltvi74ydWMxYvNr016+aB1HIiz+wKdGzBrV1siNcJnDrL2FwUOMAGhZefsx6lle8S3HE5xcFrbCEXcU4vpZtAvaQT/46xd7xNN5khUHfdTRoDPXgbO3XCFKkIUbdV93ex3OcRfINdCWSFaD9u3liYcwOmUAiZK85zB/qlYrP6grH9DFf5OgOpHJT1KOx12zYBraFpWr92LcpUf5NS6lXCs5+q6p2uutjqySqo5dYvb62HzT4cQpFv2CLo1ry9wrOXH/s3B/dOTdDzl3K2geuyAnzidm8i1+WFQq/mApiPyAyhabYWW77N8vLmyJTLd4LEBvJMnLCPCDmvK+QUJ4DMohWQYN/RBVEZ62foynBprmzocCf4vv7rmS7dUDM8Obg502SA4VSm3IVdw0l45w+0vQ0PrnccfjQqEZQKnXUs3tOl6qBhva+KOH41sf95Te/23ge+6yXCPGnD/PfRaOJKLyhMOMgipGCdmscWFof0NUIZDDBElN9+zvAJ8DAyVJQ25vNH1+GevWMnloxd13P08qvxOzvNjgiYAvqP5BmQ5Z9KAoYPpt5zCne4zGzhCyqBlht7snpVkLvyhnHisQBrnRTiPkhuqK2mFESI9rUFgtQ4jVnKEPMc4rqUw0+Uq4wrlXpyNERE//wLhjLeszx5TgQzKTLsKHfh2kTjXR4HIgf7qFYDC
+ ML40VNhJ
+ cBAJoZqi30x0m49FeCrzsdWw3MEBENkRIY+4i6L6uDIz/GwqMEC2vDNX+5Q4ngz/m74oVCB05RyzWmqJL2RkZPWKCaSK2odhjo+uhcZUvktj4QjGg/iAqEWhpgM4VNR7+YigM56KSmHLZcS91jKDre6UeAGJCWwHzgGVodenFOAd4ctvKOHaV4FhwKLtqL3F9wqiJIF32O3LPIeSKfpSkmQR4HEUm7dDGHIDFyEYZ1YAp+yG3S62P3qFmkkExjxo8hYoYIMuvhjVIzV/XsHCyy7kTyN1bXIQNTEQgn+YeoIxlqyMicjxAtdQU5mLYWkhZEqwKWKJN2ruUHpX6WzDjo2eCsVd5W9a+S5htC8Z++iLbcJAMGZ59JEXBWNSpWyZmOFQUwwjxTDMSen4V770tcLDturmmCuAejZZkU6hnudDcoFu781RfMfVysj0Rz9N6hbZ84zG8il+5hlOcUtwYlG2449Jxfes99Q8foNT8WfRBHWFhuOY26qpn1COB4Z+0czF5gIfZXNZRvFSSUPKHPHxmq7B7t9VqInIxLxgQd02PSAmK5GmdqoShM60twAAmn6SZV5de4nWvSd9wt7ZekKxSKOCsmIT5qrjW8dMvh50isMQ/CYAQaAdZwpjPlqvd492O61E1pjmVw8XvRNO3AT3hTMDb88PDj8Pm9G7FsEUVcNFxzWTQlmJoYZpqfxhTGm8J8u5+rXFtwwlspXAeglBB1ugJ2hv3T31Ww/FOwn8P/fQpHSzXIzkRZJ49+j4I4HDeruJhF82QysLWja5FtncPVjZEhypIhb3ab8xjyBJtfywJu6wv4hm8/kJTWpqUmiOWp1/NVRHo/SE8nzbyfzyivgIt3UYWJNpbUkF+ECgzRFxQSghmzsV4wP6j/JgU5wwa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,65 +126,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 6:49=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Sat, Aug 30, 2025 at 09:28:24PM -0400, Zi Yan wrote:
+>On 29 Aug 2025, at 21:25, Wei Yang wrote:
 >
-> On Fri, Aug 29, 2025 at 11:05:01AM +0800, Yafang Shao wrote:
-> > On Thu, Aug 28, 2025 at 7:11=E2=80=AFPM Lorenzo Stoakes
-> > <lorenzo.stoakes@oracle.com> wrote:
-> > >
-> > > On Thu, Aug 28, 2025 at 02:12:12PM +0800, Yafang Shao wrote:
-> > > > On Wed, Aug 27, 2025 at 11:46=E2=80=AFPM Lorenzo Stoakes
-> > > > <lorenzo.stoakes@oracle.com> wrote:
-> > > > >
-> > > > > On Tue, Aug 26, 2025 at 03:19:42PM +0800, Yafang Shao wrote:
-> > > > > > Every VMA must have an associated mm_struct, and it is safe to =
-access
-> > > > >
-> > > > > Err this isn't true? Pretty sure special VMAs don't have that set=
-.
-> > > >
-> > > > I=E2=80=99m not aware of any VMA that doesn=E2=80=99t belong to an =
-mm_struct. If there
-> > > > is such a case, it would be helpful if you could point it out. In a=
-ny
-> > > > case, I=E2=80=99ll remove the VMA-related code in the next version =
-since it=E2=80=99s
-> > > > unnecessary.
-> > >
-> > > If you lok at get_vma_name() in fs/proc/task_mmu.c you'll see:
-> > >
-> > >         if (!vma->vm_mm) {
-> > >                 *name =3D "[vdso]";
-> > >                 return;
-> > >         }
-> > >
-> > > So a VDSO will have this condition.
-> > >
-> > > I did a quick drgn()/printk() test and didn't see any, but maybe my s=
-ystem - but
-> > > in any case this appears to be a valid situation that can arise, pres=
-umably
-> > > because it's a VMA somehow shared with multiple mm's or something tru=
-ly god
-> > > awful like that :)
-> >
-> > Thanks for clarifying that.
+>> On Thu, Aug 28, 2025 at 11:02:33PM -0400, Zi Yan wrote:
+>>> On 28 Aug 2025, at 5:16, Wei Yang wrote:
+>>>
+>>>> We iterate pfn from order 0 to MAX_PAGE_ORDER aligned to find large
+>>>> buddy. While if the order is less than start_pfn aligned order, we would
+>>>> get the same pfn and do the same check again.
+>>>>
+>>>> Iterate from start_pfn aligned order to reduce duplicated work.
+>>>>
+>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>
+>>>> ---
+>>>> I build this and run, but not sure how fully test this.
+>>>> ---
+>>>>  mm/page_alloc.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>>>> index 27ea4c7acd15..7f2dfd30106f 100644
+>>>> --- a/mm/page_alloc.c
+>>>> +++ b/mm/page_alloc.c
+>>>> @@ -2033,7 +2033,7 @@ static int move_freepages_block(struct zone *zone, struct page *page,
+>>>>  /* Look for a buddy that straddles start_pfn */
+>>>>  static unsigned long find_large_buddy(unsigned long start_pfn)
+>>>>  {
+>>>> -	int order = 0;
+>>>> +	int order = start_pfn ? __ffs(start_pfn) : MAX_PAGE_ORDER;
+>>>>  	struct page *page;
+>>>>  	unsigned long pfn = start_pfn;
+>>>
+>>
+>> Hi, Zi Yan
+>>
+>> Thanks for the review.
+>>
+>>> I think it is right, but the code is very subtle and hard to understand
+>>> after the change. It is better to add comment to explain it.
+>>
+>> One thing I want to point out is in __move_freepages_block_isolate(),
+>> find_large_buddy() is always given a pageblock aligned start_pfn. This means
+>> if start_pfn is not a free page, it would always try 10 times until give up.
 >
-> No problem! These weird edge cases are... weird and hugely confusing. I s=
-hould
-> document some of this somewhere, as it's at the moment more 'oh yeah I
-> remember...' then having to dig through to figure it out.
+>find_large_buddy() is used to deal with free pages, so start_pfn is likely
+>to be a free page.
 >
-> The "/dev/zero file-backed but actually anon if MAP_PRIVATE'd" is another=
- fun
-> unique case.
 
-It would be immensely helpful if you could document these cases. We
-truly appreciate your contribution and the time you've invested in
-this.
+I am not that familiar with the background, my question here.
 
---=20
-Regards
-Yafang
+I see the call flow is:
+
+alloc_contig_pages_noprof()
+    __alloc_contig_pages(pfn, )          <-- start_pfn
+        start_isolate_page_range()
+            isolate_single_pageblock()
+	        set_migratetype_isolate()
+		    pageblock_isolate_and_move_free_pages()
+		        find_large_buddy()
+
+If my understanding is correct, the start_pfn comes from
+__alloc_contig_pages(), which is get from zone's pfn iteration.
+
+I don't see it filter non-free page. So the possibility of free/non-free is
+equal to me.
+
+Maybe I missed something?
+
+[...]
+
+>> How about: (not good at commento)
+>>
+>> 	/*
+>> 	 * We start find large buddy from start_pfn order, since a
+>
+>It is unclear what start_pfn order means.
+>
+>> 	 * !PageBuddy() means all lower order page is !PageBuddy().
+>> 	 */
+>
+>Here you assume start_pfn is not PageBuddy() already, but it
+>can be an order-0 PageBuddy(). That is why my comment explicitly
+>excluded the case to begin with.
+>
+>How about?
+>
+>If start_pfn is not an order-0 PageBuddy, next PageBuddy containing start_pfn
+>has minimal order of __ffs(start_pfn) + 1. Start checking the order with
+>__ffs(start_pfn). If start_pfn is order-0, the starting order does not matter.
+>
+
+Thanks, will use this one.
+
+>>
+>>>
+>>> Feel free to reword the above.
+>>>
+>>> With the added comment, feel free to add Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>>
+>>>
+>>> BTW, I also notice that when start_pfn is an order-0 PageBuddy, the
+>>> "if (pfn + (1 << buddy_order(page)) > start_pfn)" check below would be true
+>>> even if there is no buddy straddles start_pfn, although "return pfn"
+>>> gives the same results as "return start_pfn" (no straddle). The original
+>>> code before the addition of find_large_buddy() (commit fd919a85cd55 ("mm:
+>>> page_isolation: prepare for hygienic freelists")) checks start_pfn == pfn
+>>> before the straddle check, so the correct code should check start_pfn == pfn
+>>> and return early. But since current code is functionally equivalent.
+>>> Maybe adding a comment about it would be sufficient. Something like:
+>>
+>> The comment above this function says "a buddy that straddles start_pfn", this
+>> looks good to me. An order-0 page that start from start_pfn also means
+>> straddle start_pfn.
+>>
+>> This may differ from original logic, but seems not wrong.
+>
+>Straddle means a buddy page has start_pfn in the middle and the caller
+
+Ok, maybe the word "straddle" literally means it. If so, it really confuse.
+
+>in __move_freepages_block_isolate() needs to split the buddy page.
+
+Do you mean if start_pfn is the head of a large buddy page, we don't split it
+in __move_freepages_block_isolate()?
+
+Per my understanding, if this pageblock is a part of a large buddy, no matter
+it is at the beginning or end, we should split it.
+
+Just want to confirm the behavior with you in case I misunderstand.
+
+-- 
+Wei Yang
+Help you, Help me
 
