@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9426CA0EFF
-	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:01:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3037CA0EFF
+	for <linux-mm@archiver.kernel.org>; Sun, 31 Aug 2025 09:06:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D57C46B0007; Sun, 31 Aug 2025 05:01:24 -0400 (EDT)
+	id CC5F06B000D; Sun, 31 Aug 2025 05:06:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D094F6B000C; Sun, 31 Aug 2025 05:01:24 -0400 (EDT)
+	id C9E806B000E; Sun, 31 Aug 2025 05:06:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF73D6B000D; Sun, 31 Aug 2025 05:01:24 -0400 (EDT)
+	id BDB206B0010; Sun, 31 Aug 2025 05:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A96906B0007
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:01:24 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4DC21194E5
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:01:23 +0000 (UTC)
-X-FDA: 83836458846.06.D399CC4
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 21CD8C0004
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:01:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gjxiGuro;
-	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A52496B000D
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 05:06:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2CD1D1194F1
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:06:03 +0000 (UTC)
+X-FDA: 83836470606.13.0C104CE
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 57E0E80006
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 09:06:01 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r7kcLSU0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 209.85.219.179 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756630882;
+	s=arc-20220608; t=1756631161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xzarj1jXPwwihpFc52AKHrUnyJlvNlaBP1cTsUIn51w=;
-	b=h0zKnjChIVl3MUi9PheHFP5aSp++dCSwhgaKnw9NBWEyVTgE1Tr6/uZeQz4QWWnPZUrFgU
-	l/KT9V7qo87vKXvJFo3LUFjOEtQGaGZH+nap5aT5wHbcp6quswMDHpAuDFd3GF0Nhu7QZ/
-	aJ8dr7dUSbxd5g8LIK335JyWHfrnTFQ=
+	bh=cewv29th9nlXePhk/EOfBMtGSb2YntDYMH/m1gOAqlw=;
+	b=RJAR5vqMm/ZY1jHs1p/WgXQdNUvMxJ1uuJeXNWID5s/6yaye/ctpS6aH1B+8GP4BJjfgG9
+	9HuDyA9C/89TBnaxbWeb+quh7iQj5BZZtWN3LdpwRvLM20TCxTN80CmcVZZ3Z4pl+RIKtq
+	KA6jziW7TuNUbu0XyL/tG0FJeLv2Deg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gjxiGuro;
-	spf=pass (imf10.hostedemail.com: domain of hughd@google.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756630882; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r7kcLSU0;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 209.85.219.179 as permitted sender) smtp.mailfrom=hughd@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756631161; a=rsa-sha256;
 	cv=none;
-	b=NDCWisRT/47hj3oOZprpjRn33C6CBfZZR3+b8vyxhQXaAP9vyJstG1vovZDqi/QEtQ6CYl
-	7b7SQvlXilAMqUTBpXnksnr+xI2IEM32LPxi9yo8iLC3Ywn1U8mjHFhex04Q66Q/Hk0is5
-	sjE4PhMnNJqJxiuamkqmDR5H/dnhy7c=
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e970acf352fso2726688276.2
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:01:21 -0700 (PDT)
+	b=jbt7lurETrYwEjKVBlBJWFvcwItgA6tG4HiFUbuua5XPcSIsKQ0w3Uy2D4VDhZ+6+s8IFv
+	94lBB4iQ5FMh2S32QSV7iN9qekDEYi6woAWp5h4kKQ8O08zAVZs+I1L/M2gkQQckX0gObQ
+	DMZLKQtUhr/nXleOz3IXhRONvDoUpUg=
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e96dc26dfa2so2851790276.1
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 02:06:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756630881; x=1757235681; darn=kvack.org;
+        d=google.com; s=20230601; t=1756631160; x=1757235960; darn=kvack.org;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xzarj1jXPwwihpFc52AKHrUnyJlvNlaBP1cTsUIn51w=;
-        b=gjxiGuroZ9cSgysOKv4dkiphSh/mAumoExELwiTn7qhCHC4ykDP15kbkem3bSjRvt9
-         ie9xnDBS8ZIDkLWlvobjd4w/7XuGfRYyhb9mCcKl4RedwjxfVntqYnqjX5IgJ2UZsXTQ
-         NXn+vBRGlIrjF0QGkD+NbUtkLS/jnoW0QzRIpM4cSeF38iTTs0Z3WdZ2AVLj+m5lrkz+
-         zlK2Ag1Jz1dZHmZGzxdKRRP8sIh3nJbQ6iYe3MOE+TB4BYwoX1v/NqKV2MGLJZjFOh2/
-         ZjqAh4MMoQYgQ6dCIdf+myd5smY4C1Fu3XFFTnJfc4AaqW/xrLjEm0QUsLz2Fp0IyLbT
-         XPSw==
+        bh=cewv29th9nlXePhk/EOfBMtGSb2YntDYMH/m1gOAqlw=;
+        b=r7kcLSU0vobzWK9Ku3ejoFl/a0ne8BdxYtIBzZp1LQDTq1SHxd9j2NVE3f+ILEgmQK
+         ifmuPm/KOHNfr8tY3gr35RzA1ALI4DpPIcJY6+dTlwTxJ/6vbkASZ1Fgdkw2+jfTJIqc
+         prlRuyet0D4X6UHVcOQIfU0OrUGWpzi3DvEaonGBYTw/hatZXg+WPldmbBm4rF6JPPwq
+         02YUP8D7eQ+Lfwo8tzIgiuLUSSMgrox91DYH14MacQhff8wsp7f7XSVT9Cn4c0W7ACbc
+         2vR+GLKhBj8EnWo3HGc0ezOqkcZxKrcFh+6BL33eJIAEVHthqV3Tj3Q4Lqb/8kFdz+9w
+         4W5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756630881; x=1757235681;
+        d=1e100.net; s=20230601; t=1756631160; x=1757235960;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xzarj1jXPwwihpFc52AKHrUnyJlvNlaBP1cTsUIn51w=;
-        b=tIxDWMu1L2XrTCNXpA+t967ZVbmJ9cRvwjyOaBxGScRmVkiOuOzpKKGEH6c3s8RKsH
-         Br9LXvvqf/tzz+la/Dqsz5G4sdx6CnOyMp386VOMrmWy5ibxHlTOi3pjgKN+ALq9iIGP
-         Bic81pfgzOlk9gvZQOR3kEfXKBrvHxurOXdE8WsB/M6mvlaGiDhEML2F0l9LkN0xpEtU
-         hysk3gQSxk05gP1lEvNqv2Lf3fM/PTFPH0ILCN9EhKA6i7QqPgePS/WpxEWlY/t+CAsO
-         ZaVjzC0igJwe7/ZyKKXACPRN/YocRTsHmhj3/0tJfw4XaMzixc4DpRu+dTkbCJXq1xk/
-         jmaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOrFolfwcOccfyRMc5E7UPCkVBlL0dgRCPvjqZIVgkKuVbBjh/jJKViCA3/qIyDHqJbFJ3iRbFwg==@kvack.org
-X-Gm-Message-State: AOJu0Yyl7w2QOdW+X0A5HFK6IefobineC20YrpdulnWUsLCiuT2CcM9P
-	MSHw0BNGcYYGhUtEdPD4uB31bPDy3Xy9xp/h0B22qh8feHFYaeMvFEaTzxIOIe9aXw==
-X-Gm-Gg: ASbGncs2l4WUQmxry3NOY0ul6hb9CeIfDDDnsdg/Nsg1CivMUo12sEjRznrlDp4KLHJ
-	7wQmbGiv95NnJhoupeTn5HYzAKEPn2goa/uzLlffoPZr4nOELgUlg8/OBId8/2/MN/+tQQyEvTV
-	KpF2egPHHXodoQzawWzAylOP9JW3WvxHUAITsEkrSrV6JFdXiRDop1lJy9fUM4HZqkN18rrBYKq
-	anMLCILDyPurHP9Z1UvhRwWW+P+wyPopLS6c/cLnIzf/L2C8tNt/RGK/qa+2wxjTVucGZMIaR9S
-	M9uGaNZnrlaG59nWzrMNXHlRXhY0V44b5Ccocj+5/PBm4koE/RxCgbxVX6Ji4NgInmvzmaIEjkX
-	xGTMX5DVwQVgmXvyh2jZRFHCa0rDvkyu73b0eto/KtGxQXh7bZ8iUXA0ZwQxa9tOrukiOZ4pjRn
-	7QKW/vZ+sTmNa2Cw==
-X-Google-Smtp-Source: AGHT+IGpRZTOsrv6OWnEdL6eZ2XWJIrkP0gSOahOzxZcUPGdu6xAkpdJXXS2GNMzOEVXcPVlQWvbAQ==
-X-Received: by 2002:a05:6902:158f:b0:e97:276:400d with SMTP id 3f1490d57ef6-e98a583baf1mr5704848276.36.1756630880977;
-        Sun, 31 Aug 2025 02:01:20 -0700 (PDT)
+        bh=cewv29th9nlXePhk/EOfBMtGSb2YntDYMH/m1gOAqlw=;
+        b=JQJ1jA9g/uF10vp8mzCzVqJ3icE7gZu/Msc0sXTgWW+0O+NY/vU6/L+TRv0aLW2faO
+         LFmXXYwgGaCuHlvOVKIzAnMWTRyRB6NXr++l8p1qoaOOE89xW47+DjUa9b0p7gx6x4Td
+         yEWNYKf8++Q9bvNwd//Pno2inwlSJl+Tzc4FewUwPs+BCftRlbx6TgnK4hGZmSjyGl7Q
+         qIG1Ect+Uz7IVJWmYK3O1luFlOsML+NFsXdYlq/pD3HHxgJuw/VBzRyPJaFL9nbpnef6
+         gCqyjENYXPXFJYefI6tcTnhtmg674hXytf6SE5q8wgzVySweqJxKYl5Yam/uuELGJTzW
+         FizA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0C4+O//oYfZo9ZdMfnU19aXkEC0ByAXXh3ZkwCMJQi8Zc8c5Cd9byoA+MVPmzMxlaK1JIYNKvhQ==@kvack.org
+X-Gm-Message-State: AOJu0YwdTxuD4fKF0wG7BFb2IrFiDMgBsxHbwo6mwTS2Z/w2eyayuz9O
+	kH/XUBMhQJfszKqDHxYx5V4ajJCqsPnl9xvQsmvEVnhAe7aJGj44XnuBHWLkBR7Mtg==
+X-Gm-Gg: ASbGncsjKqjxO0bicYCXdoWArxx9lJcNwObQ8pglSGBz0OTGUKOb+Sco00d6ynWfO9b
+	vvz+SDJp+q0EA7/afnB048K8+SmFqdnkB1PXkpFGTJNL13D/dG+jn3GQVFWnhr4KFlTpyBiXL+s
+	BY8Nzq4Tc5Ls3UvW4Nu7i5G17xODPeUeupK6NlfKobjCfqxoy0pI74oY5Zk82mCWHuXQu2ZjzF/
+	q7ZbQLlUDy1xgewok5FormizrTc4Lxb8DGzM5f2Mk4fcpl6VtEUW/Msqvlt8MxqO2oGz4sqm3XB
+	8YeMTOoNaUSSNhCI9pg30ZRD3rbL3i5fOCbeaNfqmm2B/uNoK5Ciz/d1C3VrfQ2LbKldeTd6xKF
+	vKsQrWenRymqPg+OwJYgP4yIEVZ59o6SFIGcqwObIxhxYpAe8soxYoNecScvROi05TQQiGwSs9Y
+	0ejtO+5ueL8D/c8yHmwoBpVNQU
+X-Google-Smtp-Source: AGHT+IHZuc+H+mCEQgTcTD59v7WFBtA0Muo5YsHOfJFQ+r6CmvOZ6yRPYLQ9LbxJpAeGrP/U6wGvXQ==
+X-Received: by 2002:a05:6902:2490:b0:e96:efc6:8392 with SMTP id 3f1490d57ef6-e98a5851c2amr4633775276.43.1756631160112;
+        Sun, 31 Aug 2025 02:06:00 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e98ac4458c7sm985933276.8.2025.08.31.02.01.17
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e98ac41ffa1sm982501276.3.2025.08.31.02.05.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 02:01:19 -0700 (PDT)
-Date: Sun, 31 Aug 2025 02:01:16 -0700 (PDT)
+        Sun, 31 Aug 2025 02:05:59 -0700 (PDT)
+Date: Sun, 31 Aug 2025 02:05:56 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-cc: David Hildenbrand <david@redhat.com>, Shivank Garg <shivankg@amd.com>, 
-    Matthew Wilcox <willy@infradead.org>, 
+cc: Will Deacon <will@kernel.org>, David Hildenbrand <david@redhat.com>, 
+    Shivank Garg <shivankg@amd.com>, Matthew Wilcox <willy@infradead.org>, 
     Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>, 
     Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
     Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>, 
@@ -106,20 +106,21 @@ cc: David Hildenbrand <david@redhat.com>, Shivank Garg <shivankg@amd.com>,
     Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
     Konstantin Khlebnikov <koct9i@gmail.com>, linux-kernel@vger.kernel.org, 
     linux-mm@kvack.org
-Subject: [PATCH 1/7] mm: fix folio_expected_ref_count() when PG_private_2
+Subject: [PATCH 2/7] mm/gup: check ref_count instead of lru before
+ migration
 In-Reply-To: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
-Message-ID: <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
+Message-ID: <47c51c9a-140f-1ea1-b692-c4bae5d1fa58@google.com>
 References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 21CD8C0004
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 57E0E80006
+X-Stat-Signature: 5emhu6xrbthnhq5pr93p1drqnx8jihqx
 X-Rspam-User: 
-X-Stat-Signature: 3dn9ahm6i9dr9qp37884ixjwqnz5kt5x
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756630881-774881
-X-HE-Meta: U2FsdGVkX1/qw/VwccdjNMBOkLJIfH+IJE+Z0PO4aDqVApVA46GQR8PPoUD4h7xJXfOFd8uyb5eLAUQKmKW5wUMis5nmyNy8yHdA4NHc5WIajFeM4owOeBlN8FuqDUc9dpAQpBP42XhPU5AJkJyTai7KIw1Lph/K3a29/tgApViZpxl0WNON67T8rmjwJ+LUf7duuchb0log3DDKAtdBFSBMq0ENGgaS4sW6yZK+Lf/4KpJRQRBVDgPmA4p9bpZZEiBKyDwGMewimmV41UJP8FIAw0Icio5YV0yC4CvI6YDqqG3W9O/dxFILNBwDler32H8mroocakP2jSut8sJYWvzRjFCNDrbjN1R+jAJuuKziX+ppEUWNs+w0Co3Rpv2QRNT0mHuGAsdg/EimPcDZBryRJEe+tmPeTfuMZ4WkXW5pFXji/s37nnv03gNhPH5gtBdGpQb6QpHkVaHH6ayubPLrN8ZLksSx6H0I5K3ljxkCnAE2mf3p9cU4z4PRPDdniE5JO0+6hTzOBhcq1OSx3DSzj0Dwo4H8bzKICXKhmuyf9XXkTMJ8XirWRNxNB8AMDhNo8Ai1/cqVubkDSFnZ8Cs4rqujW1n+vPjzBkfYsf4eznImMgxkBxxibt3mLUFSlAYvcMTLi9fI1bF+mgVGfXbxBDctm8+uZaqgjNGNV1ykjK4GYfqR6RE+ilhmxepyKKsVqxkyMgbIqhYvvibrbHJngXfLvT8L2n+v3+UWm42MPRsuOJnzjSIntHt2z2gD1MXoeTbnwjcOJriKoolFJEjcnfKvjUm23g6AT0dvB5LUD/M3IKH5e8wXK13eayhfAytLm9Fu1kMY0RVSMCxmwolCkXw1t9I2kIn/z3ozav4MdwEz6bIthpVGZgsIg+tvoSyvdU/S8AFWRNy5BRi8CFKiz/G4u4HzKgyGZP4ySbnS/WnHuFsXKc9WxvmUQijduRQYoZBKe72+Dx0SrRs
- qCQcNgFS
- 4F+cxBsV9cGPH40mzx08OyuWCOXjwSnVK5rx1m7Ltn8T9IWeIUn2PrARoaR2yVJSU35xQzVeGJhSAjcW0FMJRWjZD+rkc3Kv+dqTnz+s+mHb5tjjEN7BRK+WAXPc+UsSH6g0oVC3naZbIRcgcJokadAPseu/5ZfwcrF4Ocw5w5HmmvV6iBooV+KgVrPWPL2RK8Vv8nNRVgnbehE6DgFOqT47Qiz347PG+NXr05RTOkW+ar20qo3z0jK5Wsg1DTiXgtOqmCl6OXbAzecw4XUp/2Ux4K2f6clIKUY/HW6sObU9nZWi5s0xQrvpZBjqpaA6aos8dfwJZZ66NISG8HRnusM+43dYTQkj6X8VyIDijQeyM4TP7ltIIYy2oYTLLhp6kM/tiQuXhmQHtRNn2GhGwmU+yIxZJzoh3V/4LP0JIUUnPv2BVIIsqpTsZ3Y1PH9YKj825/X1tNghpblU=
+X-HE-Tag: 1756631161-413017
+X-HE-Meta: U2FsdGVkX19fdXio2ngGigRhfGMOtqMPf3XPEqaCBch0QNFunS7AYix+3qP2EZcmTog/h+DwzeQ8xwj1jF0XisRkIxKBSYwaWL0bWPPcB/kdlDYKvl7OUAhbvi17Su4yzKrPcz2X+qCL8pztgvsJGpFxGPpXFNhTZE0rDICs/7/h/10cETUpXnk+rfT8pujzpXG7Nn+MTqxLNhn4QQlKj+HP/8HH8MsQUFQj4o2jlUwVs57DEhPPeGVf98R/vlFu//wk0s5lXUQLBK92NEye365YE6VZ6HSkdYuX3KI69pY3YnCD8My+yVbhFy+ClBVo6vEq9IvZXX7WWAVlNCfuiVK7npVyKb3BXsILyOZq66zh2p4H4YXUZ1p7SY3naeWEAMLtBZ7rhxIufpX1gYUcwE9KNyIV/uUQSpbPbPbHiJOwfiAwGL0ReXu0mEcuZ7gA9ALkJkayI5c/FSceDIZyEvh8rkB6hAu1EGW6BvJoMrhVxje1IOtReoS9ncjRNmsui4Y6voHVHEPeWDlsLuCgzKe3pKGjdKMzs4qzlz3EdNnrOWwmmoHpYtnux2nCdrnoV6AGI4l+VXC4gZowbJMWy9cyqZlzqVejaW83HiVbzM/ChFKs6DbI8Wt2HiuOh+4x+832CYY8GvYvxko1PfR9BIXEHpUvJ9XndUgkaGSsyDe53vXaN0Fcij18/v9zPx91owX6tUfzrCstmf54uKE0WB+frOHw735/IS6e9mmMflsYkDquEyzM17wIkIPIJwyzf6Gre4/3L3VBGGKTcYSyBx5uFFAB0vzkIlfCfVBWxrH0vPce5HpcSYkjW6BBw1oZcDJhYMz65pY1RbsrylVgnYrqm5pKFHv+zaGFGMwbB7MEZmF83+gLZ+56N1iUMOE99EB+QZtu2F6FSintosNBz91HdAVlZsyTYRClkKE52qBuN5srI76mDCd26LJAFlD3+qhczZoUGqIZHhZWXHY
+ 6IB1YBkP
+ IsfatfooLXQiZdlPCvh+5irTFG7M8LqViXK7XpvJHJLdZ9UC7nAB2wyUpMf+LZ5J+585II0oREtGGMmKI99MgyyvEggxkJ8JB+XyGZ2RC5hBm6FJBRjtYUNode/rPmybw8pqJIKGHwR6RSgs1EhUHnka41HAq1HcjPKihYYG3h7D1dJwbKN99iuTV4yGS5qoz+pV3hBC3U5D8GoXn01LoWUpdSAghF6MrQqmtM5IYj7NyHYOl46svmwj2JDgwbv4W8o97N9geXDg5cMrTKu9yjT/2JOuSX3qO5Z5TDDN6WA22OyzFvLmJ4eF0kS5SHwXSBFyWsWk7P8j3GRrRYMBl20pUl0gFiEfU4XGlGZ9D14ouRN9ln/za1/hERm8bcUIqDsGNF2TM3y8H9t1DbLmwN9flA9rrG6AfWMCK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,44 +129,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
-which (like PG_private, but not in addition to PG_private) counts for
-1 more reference: it needs to be using folio_has_private() in place of
-folio_test_private().
+Will Deacon reports:-
 
-But this went wrong earlier: folio_expected_ref_count() was based on
-(and replaced) mm/migrate.c's folio_expected_refs(), which has been
-using folio_test_private() since 6.0 converted to folios(): before
-that, expected_page_refs() was correctly using page_has_private().
+When taking a longterm GUP pin via pin_user_pages(),
+__gup_longterm_locked() tries to migrate target folios that should not
+be longterm pinned, for example because they reside in a CMA region or
+movable zone. This is done by first pinning all of the target folios
+anyway, collecting all of the longterm-unpinnable target folios into a
+list, dropping the pins that were just taken and finally handing the
+list off to migrate_pages() for the actual migration.
 
-Just a few filesystems are still using PG_private_2 a.k.a. PG_fscache.
-Potentially, this fix re-enables page migration on their folios; but
-it would not be surprising to learn that in practice those folios are
-not migratable for other reasons.
+It is critically important that no unexpected references are held on the
+folios being migrated, otherwise the migration will fail and
+pin_user_pages() will return -ENOMEM to its caller. Unfortunately, it is
+relatively easy to observe migration failures when running pKVM (which
+uses pin_user_pages() on crosvm's virtual address space to resolve
+stage-2 page faults from the guest) on a 6.15-based Pixel 6 device and
+this results in the VM terminating prematurely.
 
-Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
-Fixes: 108ca8358139 ("mm/migrate: Convert expected_page_refs() to folio_expected_refs()")
+In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
+mapping of guest memory prior to the pinning. Subsequently, when
+pin_user_pages() walks the page-table, the relevant 'pte' is not
+present and so the faulting logic allocates a new folio, mlocks it
+with mlock_folio() and maps it in the page-table.
+
+Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page()
+batch by pagevec"), mlock/munlock operations on a folio (formerly page),
+are deferred. For example, mlock_folio() takes an additional reference
+on the target folio before placing it into a per-cpu 'folio_batch' for
+later processing by mlock_folio_batch(), which drops the refcount once
+the operation is complete. Processing of the batches is coupled with
+the LRU batch logic and can be forcefully drained with
+lru_add_drain_all() but as long as a folio remains unprocessed on the
+batch, its refcount will be elevated.
+
+This deferred batching therefore interacts poorly with the pKVM pinning
+scenario as we can find ourselves in a situation where the migration
+code fails to migrate a folio due to the elevated refcount from the
+pending mlock operation.
+
+Hugh Dickins adds:-
+
+!folio_test_lru() has never been a very reliable way to tell if an
+lru_add_drain_all() is worth calling, to remove LRU cache references
+to make the folio migratable: the LRU flag may be set even while the
+folio is held with an extra reference in a per-CPU LRU cache.
+
+5.18 commit 2fbb0c10d1e8 may have made it more unreliable.  Then 6.11
+commit 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding
+to LRU batch") tried to make it reliable, by moving LRU flag clearing;
+but missed the mlock/munlock batches, so still unreliable as reported.
+
+And it turns out to be difficult to extend 33dfe9204f29's LRU flag
+clearing to the mlock/munlock batches: if they do benefit from batching,
+mlock/munlock cannot be so effective when easily suppressed while !LRU.
+
+Instead, switch to an expected ref_count check, which was more reliable
+all along: some more false positives (unhelpful drains) than before, and
+never a guarantee that the folio will prove migratable, but better.
+
+Note for stable backports: requires 6.16 commit 86ebd50224c0 ("mm:
+add folio_expected_ref_count() for reference count calculation") and
+6.17 commit ("mm: fix folio_expected_ref_count() when PG_private_2").
+
+Reported-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/linux-mm/20250815101858.24352-1-will@kernel.org/
+Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
 Signed-off-by: Hugh Dickins <hughd@google.com>
 Cc: <stable@vger.kernel.org>
 ---
- include/linux/mm.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/gup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1ae97a0b8ec7..ee8e535eadac 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2180,8 +2180,8 @@ static inline int folio_expected_ref_count(const struct folio *folio)
- 	} else {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
--		/* One reference from PG_private. */
--		ref_count += folio_test_private(folio);
-+		/* One reference from PG_private or PG_private_2. */
-+		ref_count += folio_has_private(folio);
- 	}
+diff --git a/mm/gup.c b/mm/gup.c
+index adffe663594d..82aec6443c0a 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2307,7 +2307,8 @@ static unsigned long collect_longterm_unpinnable_folios(
+ 			continue;
+ 		}
  
- 	/* One reference per page table mapping. */
+-		if (!folio_test_lru(folio) && drain_allow) {
++		if (drain_allow && folio_ref_count(folio) !=
++				   folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+ 			drain_allow = false;
+ 		}
 -- 
 2.51.0
 
