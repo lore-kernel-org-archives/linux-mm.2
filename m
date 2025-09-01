@@ -4,82 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E40F4CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85696CA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:19:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C07178E0082; Mon,  1 Sep 2025 11:09:54 -0400 (EDT)
+	id B92AD8E0083; Mon,  1 Sep 2025 11:10:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB6F38E0024; Mon,  1 Sep 2025 11:09:54 -0400 (EDT)
+	id B42858E0024; Mon,  1 Sep 2025 11:10:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7F838E0082; Mon,  1 Sep 2025 11:09:54 -0400 (EDT)
+	id 9E3938E0083; Mon,  1 Sep 2025 11:10:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 91B0C8E0024
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:09:54 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5AA3C13A8E7
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:09:54 +0000 (UTC)
-X-FDA: 83841016308.29.F937D8D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 73B8FA0011
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:09:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PRx8rG0j;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 86C808E0024
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:10:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 47A5E1A0891
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:10:09 +0000 (UTC)
+X-FDA: 83841016938.16.0CC4A4F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8AC3CC000F
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:10:07 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="abk12R/m";
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756739392;
+	s=arc-20220608; t=1756739407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0kDSZHtV88oad9zCDDBj5yf1ZyH7AU8+3y2ZSBVzpUw=;
-	b=bJsqFa9PZHnR2YcYe4KaLlCp9RadYj+fbJeALp04N20l8BMKYbev5Ug3V+vdxwNnhqg+h9
-	rITTIefiEmex4OO3NAun+3BXqouEljfYcpuXW2ZM9Z5nBSOVNPA1lYhrhmR2QrMv1RY2NV
-	n22Uy5WfLgDczcjeoPGWuhhj6pUli/k=
+	bh=uU2NKjv7pCAnTWqWuT9I20VPbssYf2aSlCzQiIN12S0=;
+	b=QoKnRgBuq1nZ6PobljeEs1c2+LfUtuMJKAW5fHn53EN9Vtz6ho2R/rs+4kn7rKkjiX7cGi
+	ekA2NEGhb3vNBCxWTvPNHuyAbLoDFoPNMHA7M6qiORqZnS+ti1TiasTlpL0AbCbgnVamNm
+	xN3h+dKf7maBS92G+uDHAxP6SyZ7C44=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PRx8rG0j;
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="abk12R/m";
+	spf=pass (imf10.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739392; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739407; a=rsa-sha256;
 	cv=none;
-	b=DMhPKeSCkBtGDlqMPXUTO3f6N100/NQGMTtSASbUpEF2FJpKmLppsaAMozrmN5nrzMf+jX
-	oUBaTAdGU7EFhcyaMMYBOQB5uxuwZLwkrKJzTvLJRZgWMn9QhHm9hySKyjSmfw1IGzkZ8n
-	Wnh7qP1f4nGIUyU7m4e/vDkvKU9IDD8=
+	b=R20T+LgPFDGhEHeiZcY+tS/1HtW95K7IEcaOw+EtiCSjpphk6vxrO6s6d+akFEbYxkPClq
+	BUlADQLJ1e7J/VOdXEETKeJlXoc71SsMxUuJ/JzwkHH45WiMDZnt+FNgBqwVuu7oHfr3sM
+	aeIO8WWu9PadbF738Yw6+ya7Ubt300U=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756739391;
+	s=mimecast20190719; t=1756739406;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0kDSZHtV88oad9zCDDBj5yf1ZyH7AU8+3y2ZSBVzpUw=;
-	b=PRx8rG0jPA4iBK0wSW702bguC+cLLo5mWLyWqJy18JLdHQYvut4zGW3rUXA4YL/50s2ZCe
-	mp+Pu1+Y6Pm6k419aqck4moFyKW4PNoMz4wXo5k5ScUThqv8nDhKizWKT2BDlZvzI4vfHt
-	v6SMz+dLE/Wo8WCryHipK72jfPvUuEQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=uU2NKjv7pCAnTWqWuT9I20VPbssYf2aSlCzQiIN12S0=;
+	b=abk12R/ma+kKQ0EYyXa7AWpnOwlc9cjEm6ce9o0GskDsaTgeBw2rtIoDuuGRc7kjylrzoy
+	brlvztVhbyrHx3lSu2fyQpgaPqp+WcsOoL6XGrOhNhTL7kQaObcqhgERn3G6MhjuaGqyJS
+	u8xw8gzH01xDpfNOij20qnAPIcUfBIs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-35-RS9bIdDPOQKXbvnr4BPRbg-1; Mon,
- 01 Sep 2025 11:09:48 -0400
-X-MC-Unique: RS9bIdDPOQKXbvnr4BPRbg-1
-X-Mimecast-MFC-AGG-ID: RS9bIdDPOQKXbvnr4BPRbg_1756739383
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-292-1HVSq5buOB-VfBHfHyNaeA-1; Mon,
+ 01 Sep 2025 11:10:03 -0400
+X-MC-Unique: 1HVSq5buOB-VfBHfHyNaeA-1
+X-Mimecast-MFC-AGG-ID: 1HVSq5buOB-VfBHfHyNaeA_1756739398
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3EB7719560B2;
-	Mon,  1 Sep 2025 15:09:43 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7363A180034F;
+	Mon,  1 Sep 2025 15:09:58 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.22.88.45])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 54B441800447;
-	Mon,  1 Sep 2025 15:09:28 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B1B6A180029B;
+	Mon,  1 Sep 2025 15:09:43 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -91,6 +89,7 @@ Cc: David Hildenbrand <david@redhat.com>,
 	iommu@lists.linux.dev,
 	io-uring@vger.kernel.org,
 	Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	John Hubbard <jhubbard@nvidia.com>,
 	kasan-dev@googlegroups.com,
@@ -108,6 +107,7 @@ Cc: David Hildenbrand <david@redhat.com>,
 	linux-riscv@lists.infradead.org,
 	linux-s390@vger.kernel.org,
 	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Marco Elver <elver@google.com>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Michal Hocko <mhocko@suse.com>,
@@ -124,22 +124,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 20/37] io_uring/zcrx: remove nth_page() usage within folio
-Date: Mon,  1 Sep 2025 17:03:41 +0200
-Message-ID: <20250901150359.867252-21-david@redhat.com>
+Subject: [PATCH v2 21/37] mips: mm: convert __flush_dcache_pages() to __flush_dcache_folio_pages()
+Date: Mon,  1 Sep 2025 17:03:42 +0200
+Message-ID: <20250901150359.867252-22-david@redhat.com>
 In-Reply-To: <20250901150359.867252-1-david@redhat.com>
 References: <20250901150359.867252-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Stat-Signature: cpd1w64f3mi9e1hgazq9fx73tinr6rmd
+X-Rspamd-Queue-Id: 8AC3CC000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73B8FA0011
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756739392-264876
-X-HE-Meta: U2FsdGVkX1+aKa4bXI1GGFpd69rdBhvkru8RMSjkYaUZATdnLd3keV+f1fJU6TwGoE46Vij3cXsZRSa5XxPpexLui6mJ+JMnx4x856TvGTLUJZ3xMaZFb9Fybc/kAEjdkJWCeaTqUIQez7nefPNXnhPJ7O0NCqAe08hmyaAZN0dHd7PzyfAWGGVjpGU5vl4o0L2P/tNcf5ig0le16fDZ9KjSoS+zARawvZl82I2/wx3JJfCLbbRCpdla52tjPT8LNolCYb2Q99t4itY6Hqg4gwYy+PHoYR1sZ/VXm+dKO7svqoknVYJ0ucsGneo5Y5n9FWWb+D1xXgkg3kPw0gNQZqR8SaxCSlDnC/PCjrjA4TPLSzIUVz+btnfgUutcNf9QJcX9zlz+ChfMia3ddzcFGBOw3ZLVms3WsyyvPl6jWHLM37P+KafTW02HaMNbEcdrVm3NaoCGCfEX5jRq5DxrsJ/aXzuO1WwDI7MfQCqxg5x/958kidtLmnbdK9yrtKrHewFoUSnVRQIEMFTVYI1XhglDLQGwra67Z2rAWuZAX3xrJbtS2TS9JuULggC7QotCF3jhA0mlTqJdrwQ0b7rXR+RXC3wOya2E9keOUVDAjDk6+8K0rQnh0JHO05jXsZCFe+xJwA0Z5qA6BELbU/kN4ltX4MQfOC1AnqaiU3UKvcEpfPK7jvZyy8uRnQ79LVP9IBxJ1uJq/ZToxQxzeFkofWVrCw8KoxIcCMfBRHbnLaybchObALj5p9WgZe8sg4BiWsD+e/Iv1jYXOdEXrHl24jRrWDgoktdX2Vwi4sLvlrXGfsr3usdQiyTDcHMxbVPOrLARRIMfUkr8y1/CkmFxSbRwT7OAZP6n03Q38BLEQjRU/NIOApEzLrusE+Ux3LgajYBRsKYvUnegWJObR9ebcUQ7diYTJLJ1DVuQz7EdlsQD2XQpxFU+DI7L6S7ev3IScZkWYVoargDBQ7bNgRD
- dXT9FxyJ
- WmpNC4KyLUjGmsd+bBKAbHKzdPhf8wdsDcp2uozASchvd7933p9Ub9YxRcMZRTOMRZlwXKv2FUmotHGvy/0aG2psmweXLWzR2KzDVTbzJ5vrVtHG3CRMzgRrT7Tl+OCMWThx/lQQrR5UlMXsb6DXKDfFwzgKnLamOi1/rp3t0XekuxbgrAnsT5OJ9dBbU6mIDP2/bJ2cd0y2gwEqWzC3GthfecRU+LvPF5ox4RQHsDFGAZKT4DhH5/YiZVS1n8XmpyhWPUUCgRA9h1hKJxycZxCKCbYJd0aCT2uoTNLpqRc5S7iyYH7IPBxj8UWT5sGsaHVcE7w9wBmuOYzKRNnNP52ffXBd/VqB+QBm6e3tYU7o2z88ASr+WcPRlR7wTF+NNkYl0RmIu3/MGc+Jn4onS1xsSwi8gMutDg7gt4/vl3ZfRfjfMkTjHhfDdZJIM2J9R5VWhY9i5EgljHbq53fHzORG/eK7Etup0EHrUoYluZ6lI7XCH5+Dl7bpK/A==
+X-Stat-Signature: 1xpqf4jd73875q6tidhp11a3fmgxj8mr
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756739407-764314
+X-HE-Meta: U2FsdGVkX1/1SBEtfsIxxlVi3x46qKTyC/IMQvxd3ovCRRw4WKxiLUkDgvfaj+RvUm783ZSxKDvzFud6krfSj4dcBj8SvwrKS9nG+NX+p3wZ56Li6Iio1kyiyl1Cy6YlrJiSEn9G2lIkwk9a/LF0WSeGUH8u40TF2BYX9RWOtls9RT2A+7fdA8MR4D3fL0R9/9ZPIjfPH0u4UxFaQnHUJUCITmTrvWy4dxggenCf16wCsUZev8YIZ2L8AIpMJRIQoDh0rFmAMRwvdbYo+AHXbIr6d6wzHIpwLyQn7RBP6Dv7LTNEYkXximeS0hB+H5b6mVSKUPD/K3iLRSL6pFOfmwbHJvXVWRbPwR3JAWvML9MnBY+29Vkdw5eQvNU0jlbv2B6ugT1L2gVquvOPNWgRJyaaMrJynbACgGkW30X4Xv+dWhoJFberOzbgOjECiGd0HTKzNqbxuWezDQaN0tbj+KXTfiQ1UliQUS/yUodk3cy/7qOfxMOMBza4tnxaWwTEIWCR5yhGdaAbyaBc4kf3BVvT+U3pWb0LpaYsHHOcUxyCFNMNx/zq31p1Ig3q/FVQsAooHhfuUIboaMfMt4eJHvDYL85r/Wfubf6yVMV8e5iP6EUfVg0dtZB3BP6rk5okmQQFOA0eJJblN27TMJQZL2BaMwrS+XrbCstE5AkIdRKHRYjfOH+HlDlKTlGnQgJXl5m+1VpE8aF6XOg1P/GMZe3PqQMniavda1bRFnmV12G8BIkc2u9rYXcmBCjDxHe4LKsROHzt41VTTAZ/tC+ds78iV3cdmpY6sRHKbLFVC+XGV68W9PqWcm/hZIgJoCcPDF4s306U0IiOoADvgI5FePF1X1BG9GPZPe/DkN8FSRUdOSt1KTEcYAJxRmOdZfV102yo6ktWnVan+Uj6OcPY1/PxJQNdnrgWw0YA8k5FOjTOD2pnWNYaaXB1c29FQViCwC1d6kTDLL1UmyZqub2
+ ThaMzUyK
+ yaEVTvelLi/0rmiZSBevQJEtr/LfciWp+4yu0OI3cC8URVD1JCUFcbzJxA2Iank11huT6hANiAxDQhCKvmqN9QKbBsZnaoBevNMA5OdHLIq5NPkaj/zThJYtUM7Y/TzK2FZW3yT46deok3S77rA2lJ5JZWfKzNtdFqm5O53eFd8kERTp76eVQBhJp9lfhqu2DI4jY2bP5hrTr+7p35nUSlSYHpba7B+MJhaHLcuchR5NU5tIig175biNGnHhPsHbKUrb4+49j1EKoDOTHYLE8/LjE7b5+tCZQLvcrCCLUq7gnxmf7O5Tx6HEwtfNmGLRxot0kXZfRHi8aZxEVIcy+JNIrZkvv5WFaUcoXNDVVtcx3RYYvc/WROQBnQtDtPP49222L
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,40 +148,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Within a folio/compound page, nth_page() is no longer required.
-Given that we call folio_test_partial_kmap()+kmap_local_page(), the code
-would already be problematic if the pages would span multiple folios.
+Let's make it clearer that we are operating within a single folio by
+providing both the folio and the page.
 
-So let's just assume that all src pages belong to a single
-folio/compound page and can be iterated ordinarily. The dst page is
-currently always a single page, so we're not actually iterating
-anything.
+This implies that for flush_dcache_folio() we'll now avoid one more
+page->folio lookup, and that we can safely drop the "nth_page" usage.
 
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
+While at it, drop the "extern" from the function declaration.
+
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- io_uring/zcrx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/cacheflush.h | 11 +++++++----
+ arch/mips/mm/cache.c               |  8 ++++----
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index e5ff49f3425e0..18c12f4b56b6c 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -975,9 +975,9 @@ static ssize_t io_copy_page(struct io_copy_cache *cc, struct page *src_page,
+diff --git a/arch/mips/include/asm/cacheflush.h b/arch/mips/include/asm/cacheflush.h
+index 5d283ef89d90d..5099c1b65a584 100644
+--- a/arch/mips/include/asm/cacheflush.h
++++ b/arch/mips/include/asm/cacheflush.h
+@@ -50,13 +50,14 @@ extern void (*flush_cache_mm)(struct mm_struct *mm);
+ extern void (*flush_cache_range)(struct vm_area_struct *vma,
+ 	unsigned long start, unsigned long end);
+ extern void (*flush_cache_page)(struct vm_area_struct *vma, unsigned long page, unsigned long pfn);
+-extern void __flush_dcache_pages(struct page *page, unsigned int nr);
++void __flush_dcache_folio_pages(struct folio *folio, struct page *page, unsigned int nr);
  
- 		if (folio_test_partial_kmap(page_folio(dst_page)) ||
- 		    folio_test_partial_kmap(page_folio(src_page))) {
--			dst_page = nth_page(dst_page, dst_offset / PAGE_SIZE);
-+			dst_page += dst_offset / PAGE_SIZE;
- 			dst_offset = offset_in_page(dst_offset);
--			src_page = nth_page(src_page, src_offset / PAGE_SIZE);
-+			src_page += src_offset / PAGE_SIZE;
- 			src_offset = offset_in_page(src_offset);
- 			n = min(PAGE_SIZE - src_offset, PAGE_SIZE - dst_offset);
- 			n = min(n, len);
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+ static inline void flush_dcache_folio(struct folio *folio)
+ {
+ 	if (cpu_has_dc_aliases)
+-		__flush_dcache_pages(&folio->page, folio_nr_pages(folio));
++		__flush_dcache_folio_pages(folio, folio_page(folio, 0),
++					   folio_nr_pages(folio));
+ 	else if (!cpu_has_ic_fills_f_dc)
+ 		folio_set_dcache_dirty(folio);
+ }
+@@ -64,10 +65,12 @@ static inline void flush_dcache_folio(struct folio *folio)
+ 
+ static inline void flush_dcache_page(struct page *page)
+ {
++	struct folio *folio = page_folio(page);
++
+ 	if (cpu_has_dc_aliases)
+-		__flush_dcache_pages(page, 1);
++		__flush_dcache_folio_pages(folio, page, 1);
+ 	else if (!cpu_has_ic_fills_f_dc)
+-		folio_set_dcache_dirty(page_folio(page));
++		folio_set_dcache_dirty(folio);
+ }
+ 
+ #define flush_dcache_mmap_lock(mapping)		do { } while (0)
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index bf9a37c60e9f0..e3b4224c9a406 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -99,9 +99,9 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
+ 	return 0;
+ }
+ 
+-void __flush_dcache_pages(struct page *page, unsigned int nr)
++void __flush_dcache_folio_pages(struct folio *folio, struct page *page,
++		unsigned int nr)
+ {
+-	struct folio *folio = page_folio(page);
+ 	struct address_space *mapping = folio_flush_mapping(folio);
+ 	unsigned long addr;
+ 	unsigned int i;
+@@ -117,12 +117,12 @@ void __flush_dcache_pages(struct page *page, unsigned int nr)
+ 	 * get faulted into the tlb (and thus flushed) anyways.
+ 	 */
+ 	for (i = 0; i < nr; i++) {
+-		addr = (unsigned long)kmap_local_page(nth_page(page, i));
++		addr = (unsigned long)kmap_local_page(page + i);
+ 		flush_data_cache_page(addr);
+ 		kunmap_local((void *)addr);
+ 	}
+ }
+-EXPORT_SYMBOL(__flush_dcache_pages);
++EXPORT_SYMBOL(__flush_dcache_folio_pages);
+ 
+ void __flush_anon_page(struct page *page, unsigned long vmaddr)
+ {
 -- 
 2.50.1
 
