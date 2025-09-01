@@ -4,92 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80FE6CA1002
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 21:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 193AECA1005
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 21:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB2CD8E0009; Mon,  1 Sep 2025 17:00:47 -0400 (EDT)
+	id 6021A8E0008; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8A5C8E0008; Mon,  1 Sep 2025 17:00:47 -0400 (EDT)
+	id 5D9216B0008; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC6C18E0009; Mon,  1 Sep 2025 17:00:47 -0400 (EDT)
+	id 516188E0008; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B83698E0008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:00:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5630C1A0A03
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:00:47 +0000 (UTC)
-X-FDA: 83841900534.01.47A5A69
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AA7E180011
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:00:45 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hfLf2hOE;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756760445; a=rsa-sha256;
-	cv=none;
-	b=cvmE8dOABzThBsDbNkbl6DSguLr54pbZ3pRc2v3PyvqVERtPBldKPiN/64HHTwvBpKuWZ/
-	GF6kX12BoC3pMWgZqnlE+JgNQAzdOdal66FJ0ahl4ni4sV5zEgcO0ZiK6xSdhFYB7748Md
-	xJfQVHVopMKd9sS9VV4Q9t+k3HB+1mQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hfLf2hOE;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 418B86B0005
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD9B21DF20E
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:43 +0000 (UTC)
+X-FDA: 83841925566.12.964DAFB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E985F40009
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBWQ9QCP;
+	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756760445;
+	s=arc-20220608; t=1756761042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OQ8am+EMIDoHEW89D1JZq6uW4xaBBQPett8Pa0sCPUI=;
-	b=pa2o7/puP6Q6ekrFES9Y3t8BQPuPfI2wg7lT64CkpPluy3R/GBHcp3OlvL7aQ5AyGitK4S
-	OrFC8izCS1NDwMG4nLjW9IK98E4T6swMoxIYfNsOtpTyl/rV3vpGONcC2h4st6iTQh1RKr
-	2wqm/1XnOceRoQaNCeM+dMjBl3nQZrI=
+	bh=Aj7jk6/4oeEo9ZStPm7WvMlGJlnzqQdxI6UIN11IhYs=;
+	b=eZYA//C6BbcjgmFSW4/lh6i8wtcx6K+qU+80CS9tDz9F+Z0J6GiSIF2H5M93POo7kQwIST
+	oe1T+tkh1i8Tufe/vUTPepBypgAg9omUWPV4apHVjnZdVzE1Ql9VArvuU1jpRe0UXbWQnu
+	TZbyusVLo8sr/rlznIW42/0K4Brwrj8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBWQ9QCP;
+	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756761042; a=rsa-sha256;
+	cv=none;
+	b=MOIMDb4mj8vPcRiS80ZAPY7y+KKRk1s5nuLf663nL7G6mQW/zBHGffapR36hqq8QDk0tJo
+	O9/lVnGVcJfZanyGsU1xwPngvhw1FpvX1C5VOd0tp0FqTH9BCk4m9Qcxh4yjRavhOoq1jr
+	I+nWprDpApTd960YB4c1qF1/L6eQZWc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA3D8600BB;
-	Mon,  1 Sep 2025 21:00:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A17C4CEF0;
-	Mon,  1 Sep 2025 21:00:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756760444;
-	bh=17SJeLM5fHdTDc3zgAfNajvnMi6wWr6jMtsEc6PBlXk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hfLf2hOEF0oj+jHfP3yfD01ar9MdRtJdsr/q8XxmC3MbUE7+D/XOlBVPBXKGHguKM
-	 YIX9iAp2M0a2DQHNHIN8w6vLU6gJprz8pEwHh3Thl4nqsuVP6DaFd50OC575yrAtzu
-	 VqZTY/oypQqsUizoupg9miKFK2wruEWwiO/z96Rc=
-Date: Mon, 1 Sep 2025 14:00:43 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ruan Shiyang <ruansy.fnst@fujitsu.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, lkp@intel.com, ying.huang@linux.alibaba.com,
- y-goto@fujitsu.com, mingo@redhat.com, peterz@infradead.org,
- juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
- vschneid@redhat.com, Li Zhijian <lizhijian@fujitsu.com>, Ben Segall
- <bsegall@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] mm: memory-tiering: fix PGPROMOTE_CANDIDATE counting
-Message-Id: <20250901140043.b522b4f16cb4fe52566fe516@linux-foundation.org>
-In-Reply-To: <63a6962f-6ffb-47cd-806d-ec568f0b2df7@suse.cz>
-References: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
-	<20250901090122.124262-1-ruansy.fnst@fujitsu.com>
-	<20250901125917.e9792e5d0df12ba1c552c537@linux-foundation.org>
-	<63a6962f-6ffb-47cd-806d-ec568f0b2df7@suse.cz>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+	by sea.source.kernel.org (Postfix) with ESMTP id 7BCCD451BB
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52707C113CF
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756761040;
+	bh=Aj7jk6/4oeEo9ZStPm7WvMlGJlnzqQdxI6UIN11IhYs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TBWQ9QCPZ+maZ2b5FHh2AWFgWmCrlbelbWiunk2PfRO6R7ZKuvyfRr94BGLJCnbH+
+	 XEM4yNlDiwp6iwdVCmrQKzvgQYv4CXzDNuJjT/kVKDkNyxOmIAFlAHWMOQ3vS6FwEI
+	 JoAqrcwAg229pTOKiHhkxP5aFYpqYlYY9WIgXyFztmZoexHR2Y9S1Yud62dcwW090g
+	 jTAZUJvoTc/htvaFc8FE9WZ4gnZ8Kp75s3ehTKPdlsHd3WMCIcfHvZWz/lYpVYCRZx
+	 WP+Ftk6hmwdURoLRTmGf1TYNyU1IxoRl4lkqvFy4VmVMVdz2Z3bAGTzIS9hELQl78n
+	 wXLrRxKgtqWcA==
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e96fbf400c0so5174247276.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 14:10:40 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yyl90JsyLpBbauA0LIkN195VXDq2V7tt5m2CMEM+pO+A+y1wr5L
+	ey2OkiEOh/2dHjtXbQRZ7U59E4rfv7BRIys3A4lCveKhoFKiblfbc9ZqF//ABI0CoXEJvR9Awb7
+	ek5SixIw68ba/QM0nQUbaH2D5OMQK68952k7n/xcLKA==
+X-Google-Smtp-Source: AGHT+IHa5GjFdHauSGeoAUuVa/rafYkP1Narry2RQd4f2CEtiAiD/CBeD5rg3Uep+9glwYbmx/jESTP93gIEzOR5Vrk=
+X-Received: by 2002:a05:690c:f90:b0:720:130:eb0b with SMTP id
+ 00721157ae682-72273be179dmr125183747b3.10.1756761039556; Mon, 01 Sep 2025
+ 14:10:39 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-3-ryncsn@gmail.com>
+ <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com>
+ <CAMgjq7AkUc7hKrEL8cQ7jJTeXYBq7WqM55uQ_SZNNY8vJ7+ODQ@mail.gmail.com>
+ <CACePvbWnsrGxUv15R4kMpc10wsBE2Bc-rapGyBYjekrqFJgJbw@mail.gmail.com> <CAMgjq7AT79NfcKtsfgOi6LQJViXOz-Xs5LOUmOiJYJS-DwQg=A@mail.gmail.com>
+In-Reply-To: <CAMgjq7AT79NfcKtsfgOi6LQJViXOz-Xs5LOUmOiJYJS-DwQg=A@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 1 Sep 2025 14:10:28 -0700
+X-Gmail-Original-Message-ID: <CACePvbW9J5_8uLi46r+wm8cHfZPdp6oui3oP7u2hLOEgJXRrTQ@mail.gmail.com>
+X-Gm-Features: Ac12FXwitpUktG-d3BA20Y76Po2OE-S4dB_W14mBspRG9ZlRPf99xqxJUTjxkJ0
+Message-ID: <CACePvbW9J5_8uLi46r+wm8cHfZPdp6oui3oP7u2hLOEgJXRrTQ@mail.gmail.com>
+Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
+ before use
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E985F40009
+X-Stat-Signature: bdhyc4u9je6rx6edaoa3frnnmqk591io
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AA7E180011
-X-Stat-Signature: 7nwpgecf7y6cs78eymuyh8p6ed54p1nh
-X-HE-Tag: 1756760445-654249
-X-HE-Meta: U2FsdGVkX1+/JtuMTN3lPcssmdphKGU3LgsWOi7qDXMQIXt6ywqHkbz/iodcy2Di4jtt2Rpa2bzXm1lr6JzYXzUIlDIPrD2frNt24bfPbf69muWownvSnypOTLfof6sIqEVeqhZty7IycZ+BXzHcRjGiUvGxpSWvgmTLrpxtLIPVwfEcWX1rb453yQFgrUri5rDN/6Md0pQA5YbosFj4A/nIuz9qdzDErgc5ByvYT8QSmihuocr7toSFGbpotGBl9XJ+V0TZLLEq6yAhpQvZrMmzlZvU2nUrBPkiqZf6YXN9PYAM8OuYmeO8L9x7SBr59zXUHklwogp+J7CeMK5K83KPodizTbMBDVuX8KFskIT/pgfoPbEkTl8+sfT+IN3BkLjffWY32jEULUubndGFkfjKSxLk69rPBrPLceG2f6/xsnhX3ypIC2Ny1BwIUFGvvLO1RmdOE/ntau2siDExjun8QPeCpSh/EDBvBmF6N4SmG3vEtRYOILFMoPwJu+LoKPG2R/+fJQNolTijofyrLGqJH+lcJLMLXRztdSy0bphX+xjbuKMOdA9ZTrvQhj7aPwBmti5sGTGSIkyWmu82/o6Be2bgBSq3ey0tufsHpMMeufW7jLVif1+FlKBhU8h1Du4TmKE8MApWrb6lf7/h1gd580PnIjXh9XQpz5zofQF9IGIBYRTKBj10WrVTpn4VeLnNtzJL56ClgMu/FWSiGMwptZxyUiDpah002f9ZKUlx0xX89PxldbG2VCBNRCc23KLuRfxiOJtfSyHflU6R6T9j6HIlkKqkTAsCl3PltkpE9A8g/s/K0gUswzE9yI3/FkEsejwgk8qFTxvbzTV1R1iZXsYZdipqGTz6AcV8a05EhJh0k5XyQqCkesM6+lCrdpgP+k6Q3YnD+ATE1CfKor3Te/qmzhZXzhpBBfRDNgD67RHB56AiJ5iLeJuBavQt6Fn0ot6D9ptGXG8bUmQ
- YU3qgHwn
- vCCE6Q1F2qL2U48n84m2yHbm3NZr8dwMuZRXTLlOd20g5aipsTnKwfKXlugMoCYZIyATaFWAo2RB8KCHKlSvmHhP43Qpylmu2jOlyuMxJTu79/7MH8ap0hJPHISTfdu79nlq8eQMhwPtNpxlxemA7T025jaK0ODK9xzAofRwvdch3EXoRq0MUA7ADCyX/AJeWODpNGb3vhnkVvGytMtqiPgA36htW1AtLHLHZ47ggKnJKlwFhGnnKOXgWD4pXnvmXGT6vjscNiLkZqzgvekMyElbrOQnQySUZreyHNgr/8kk9rOQObBlXcvABvJhVXoEvGxocviF2BLKKheM=
+X-HE-Tag: 1756761041-239597
+X-HE-Meta: U2FsdGVkX19a7wWSY9nmoxeoxMkZP/7OGKsYkm+OJiWevhSjXfAU0RmhwYdY/FUiJp6m28dT1eVn1rWDqlEf0+FsQKCPU6hMvq+QPYZMX6BjA8Q9FUT5mL2cKf7iguFBxy3TjmSTlVN6BaraSSCVzH4un0avNaCOsTr0JLaG3nPVHAAgnp6DRFcgi30NTXP+cT5oSjT66hCUMYZUJqHmIHWb+H+n2efLY9kKnOEsMKONvIKyKxS93RH/bi3Y+pGTPj+IP3Oc4CAtUsmH6nCAQLDLYgbWJF03kwS7Qcre7IQ/YTvRCP9d8WJaeb430kel0lj3pYgquQkpiHuJGWOdY44veYzOUejC4iZSz7rFMcc1t83myOvglUpMuhuSXzWgVaMFnAsSEnMcZLQuCwD89BUFBMN89NXnXCaQpK26uXU54qxUsq6Od1xxxyM3iMsSUfU0RKuREl0t0FJbfsm6P64F+7eEq8pjDRF6gFlskhd8jSyQOz83wMTqL503mm1xZ6xLiIuWgTNg4PLpTtvtJ+R5hy03+gEowQWIUH3UGLVUhNlB2pE/K+j38X1iVyn5r9LlrXMIrN98Q7vDa93gMguCWmcGpMmB3TVs6qKDufeyr6VVYff42LJ18TYNzu1YFLDQL8NhvJQp+KqbNW3QYsw4gWs6sUgJ647+vfWfBnqS/dGOJkZTNfoeNtzmSrLN8lNOK1fMdt+Jk/NZAXzsli0NqmJdGpZYNfMi93ac4H4BOogK3r2k3MqDToIrVTZd6sn1CAswieDtKwjNaSALeIhPKs/djuKoZKH7HbTr53EpfgKcaxCm80C88oTx43zkQqw+UP4NUGb7FFO4GbCwkU5iBDITB/jk01pLYYwiEiThTUAF1ljm11yu6Uifbgqny9bDD6eKa9yVlspNMo22olbli0i3Vy9CU9/qK/dkue3Fh4cboqmOEmOVIqWIK5Q+Y3/cCrLh44ES3aflzVm
+ Uo8skRl/
+ FMtahUD2jQ+7dmaYZy+KmwkFteVQd/RNJsxFgiTP5QzxS3O8n7dFfg9IZOxK957agSRPD+ABxtxohkq7FSa823JxjwcehYHX6Ra1SNIRTgiHobj+9/Vlrp7MQhXuckAZGZm+J0l6c8F1zYhSFtC2zdb/eW3JNU1AFT6O49pCUlBUHhCibg8QS1x2M/tJKWxjvg7SjCAoSrAyO9ZsTzhNwSLF9oCj+avDG3gYWakYMAyDBtZVqn30KgIAS+X7q4LF7ZVLmLGtaqBGMRfshKWihgEseXFolQ9bVdXdGUo6Flz6R3X57aPD0M7Ei7A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,14 +113,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 1 Sep 2025 22:34:32 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
+On Mon, Sep 1, 2025 at 11:18=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+> > So the missing readahead stats update behavior is the correct and
+> > better behavior. I suggest you spit that out as a separate patch with
+> > appropriate comments about it too. It is also easier to bisect the
+> > commit if that kind of the subtle change which is considered safe
+> > turns out causing a problem. Causing problem not happen very often but
+> > it does happen before.
+> >
+>
+> Hmm, after a second thought, maybe we should keep it as it is for now.
+>
+> I just realized moving the swap_update_readahead after folio_lock is
+> more than just ensuring the folio is still valid. It will also cause
+> every swapin to do a readahead update. Previously, only cache hit
+> swapin will do a swap readahead update.
+>
+> I did some tests, and didn't see any measurable performance difference
+> between putting it before / after the folio_lock. But changing it for
+> no good reason seems not a good idea after all.
+>
+> So I think I'll keep it before the folio_lock. There is no evidence of
+> which strategy is better, just keep the current behaviour.
+>
+> Calling swap_update_readahead even if the swap cache folio
+> is already invalidated is not really harmful, the only thing it does
+> that may effect the folio is the folio_test_clear_readahead call in
+> it, and we have been doing for years with no problem. Calling
+> swap_update_readahead for every folio might not be a good idea.
 
-> > Could be either c6833e10008f or c959924b0dc5 afaict.  I'll go with
-> > c6833e10008f, OK?
-> 
-> LGTM as a helpful pointer, but I don't think Cc: stable is necessary for
-> "admin might be confused" kind of thing if that's there since 6.1 and only
-> came up now.
+Thanks for the update. That is what I originally felt as well. It
+caught me by surprise by this detour code path. I need to spend extra
+time for the detour. I don't see it necessary to contribute to the
+phase I goal of merging the swap table.
 
-OK, thanks.
+We can still add it later as a separate patch if we want.
+
+Chris
 
