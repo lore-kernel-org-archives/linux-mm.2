@@ -4,245 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 753F6CA1000
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 14:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD94CCA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:02:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B91708E0071; Mon,  1 Sep 2025 10:52:30 -0400 (EDT)
+	id 35D758E0048; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B687B8E0062; Mon,  1 Sep 2025 10:52:30 -0400 (EDT)
+	id 30E068E0062; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91F658E0071; Mon,  1 Sep 2025 10:52:30 -0400 (EDT)
+	id 2295D8E0048; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7744B8E0062
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:52:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F0F01408F3
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:52:30 +0000 (UTC)
-X-FDA: 83840972460.30.9EAA9FD
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BA3AE1C000E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:52:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=H225W1Uq;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="rgXNI/38";
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756738346;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 101088E0048
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B06E8118BAA
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:56:46 +0000 (UTC)
+X-FDA: 83840983212.16.B97D490
+Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 33C8EA0008
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:56:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="Zz/3rOz0";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756738604; a=rsa-sha256;
+	cv=none;
+	b=f9fy9yPn1l2BaXYfJF5/OBqDYnkuHk+Tmhs80WyUxk6piVPrBVITcayNPVXrH6KPwhoPKj
+	ptWLnte/HF3KQmbItRRmonKVyMKlFGuTq7xGK0ixx7ZCxHre73Drv3jFfK8DWQ1tmE05Ay
+	I9/roD/JelL3A8VbeTZdveK0E9NKJi0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="Zz/3rOz0";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756738604;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9BVQ4pmtYPtnZXvIGfiRUo6YPHXlj6zkR76Uqx8/8XU=;
-	b=Oli7p6kHZ5dZJDa4M0F/prCyarytgDXpfNEt2rharCNRBvv0bMM8yw1nOaEslbXLC4gTcD
-	zrSs0skerUwZoDXjVRnF7yvGev+rMPF/p7yv316vV3yhU+4szYvW2CFwPDky3JZJ8iXsmX
-	0rqCqHdXGpT3Jmc14VwLfpNRfgSqUPo=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=H225W1Uq;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="rgXNI/38";
-	spf=pass (imf21.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756738346; a=rsa-sha256;
-	cv=pass;
-	b=vOUL+0VSjxiIeWbog8QgkkeSdfnD7TnUCmbgixMmXU2M3oXyZRqw6wnNchG6PCU3uul7Pe
-	WtXxrmRSaMS92Yn0ZgpKPuchl3W0fgCl7zfr/3FpEgAQlNbz0CPRfSCgiGcp736wyZxbGj
-	EQ24HkeIyRuNJ/wPDXadekIVTWDmtnw=
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5815fm2r031868;
-	Mon, 1 Sep 2025 14:51:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=9BVQ4pmtYPtnZXvIGf
-	iRUo6YPHXlj6zkR76Uqx8/8XU=; b=H225W1Uq6s12DSh+nVISN+VDqRBxraPyXx
-	H6qA7TtXvpJ8qem6qDVVUv8GpkQfaLMsansribTO0/Hp1wR2yA7RI2fwxf18ARGy
-	TmgDQBfJa70cKrq6O0Yp+F+TB73SaTuBXHtWhkN5rxGymvwLlii0XrocEob7N2DR
-	FxdMGbt9Iq4l5t13AVW1CWDfzlSTmdCv8Mf+wBoS6o091Jr2jXXZbJLwFn4jDDd7
-	WYw7tbcLEFvH+XzNOvxzx5A7JESkagdL+pTzW+i3H3v+X5R/tAJy9/nfu8LK8aJb
-	VGSvRomn2phN0C2GbRywdR+HDWTTMCEr05dQIa6BkxTPu0pIlyDg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48usmbajky-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 14:51:54 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 581Dt3TO011651;
-	Mon, 1 Sep 2025 14:51:53 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12on2066.outbound.protection.outlook.com [40.107.243.66])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48uqre8261-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 14:51:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kpMtfVbp48qfJyoLIYzsw8W2E1C+sKADlkl5SQ1uczm9nRCC7VmvfDPvZBVbZqKwFAyYYn8P3+pGYDM+YrQMKFohQ5gsmVabNLHXZqV+G4pB3tw0WCDtel2P/i8LWxAUoiOxEfTdYeCvMASnvGGytPChssZIEFcoo3/8acJyRESXiXEggDEIZ21taVO8Akn/xEnTVy7YhG7Gbvwsoq188ChBWn87fvagTfEtvuW/62t36/OyZQHD/tBbyH54p/drSOMg4s9FCDe5HwECzTVeUxPhJpCMUadXNjBPj2eYxYASxB6shC4QaXc9V04vAOBm/OzvaEVXWkBp5fk3LYx/bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9BVQ4pmtYPtnZXvIGfiRUo6YPHXlj6zkR76Uqx8/8XU=;
- b=a/tFTvTBnz+0sDFPNgu7prAvYsNh6ar9aoU7Px8szCRvLisrqEtNz4j4MvVk9e6w+gh+6OTISCVA4XElRxpXs7D4iACoBVm92mnNl1YixppxKzQ0chstSuEb3Ld7K5VwvLnvK0NGk+PSAgaKfnEbMLdyHKW50Hh3JBF6yvVHl0pWVXCnPPohhnDMfXlNRMz1MWDrAJ0YGA3Oe959MpLSxee+7QcqdNR23tTGyl7pi6L9U9dUEWDyu/fN8afyM/KIQiFDYh54hYjV4vnhswRpj2oR9HpFQe50kRizzvnXfTnTyQg9jP8ms1j37j0iWBo1r0d54lOcca+aK6KeTOXGRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=DzdixQuy30cIOdtGPtZhymwxAjNsuo6l8KhPTQzil28=;
+	b=IjxLdxmsl+L/jQ01keSy8hUR9ZWHiTYzl31upDdxXtORNxx2XYVaKEE4j4v9IxhZ+CcLK8
+	V5lsVRu/71J/VrBJFWhD+O4uDH+2Ehi1hNW+OKeWvWg2+fb1rVu8IbrgdchKIxTaQv+PBK
+	qqbh9l7tTciS38j+laHxO214wtzdO20=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9BVQ4pmtYPtnZXvIGfiRUo6YPHXlj6zkR76Uqx8/8XU=;
- b=rgXNI/387nDHLUPr9s+1MnEFIsM4aoSZlFGy+rVt1izAtUqK9S07KRt5b4FD3BMd058r64gezhsnVkQ98U7TZ72HnpS7A6PUFCE42x8ZAp1dpQ95YlFtM6mCW+NpQRxFFjj5hHHwrk6l7INRodQxs0fP09i+MIrd8u561YSC0EI=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by SJ0PR10MB5584.namprd10.prod.outlook.com (2603:10b6:a03:3d3::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Mon, 1 Sep
- 2025 14:51:50 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%3]) with mapi id 15.20.9073.026; Mon, 1 Sep 2025
- 14:51:50 +0000
-Date: Mon, 1 Sep 2025 15:51:46 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
-        yuanchu@google.com, willy@infradead.org, hughd@google.com,
-        mhocko@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-        surenb@google.com, vishal.moola@gmail.com, linux@armlinux.org.uk,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, davem@davemloft.net, andreas@gaisler.com,
-        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-        weixugc@google.com, baolin.wang@linux.alibaba.com, rientjes@google.com,
-        shakeel.butt@linux.dev, thuth@redhat.com, broonie@kernel.org,
-        osalvador@suse.de, jfalempe@redhat.com, mpe@ellerman.id.au,
-        nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v5 12/12] mm: constify highmem related functions for
- improved const-correctness
-Message-ID: <a6cd422d-7c44-4a4a-bb27-ca0e2a93aa68@lucifer.local>
-References: <20250901123028.3383461-1-max.kellermann@ionos.com>
- <20250901123028.3383461-13-max.kellermann@ionos.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250901123028.3383461-13-max.kellermann@ionos.com>
-X-ClientProxiedBy: GV3PEPF00007A7E.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::609) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1756738604; x=1788274604;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=DzdixQuy30cIOdtGPtZhymwxAjNsuo6l8KhPTQzil28=;
+  b=Zz/3rOz02k0CZijphqp9ZkI2uI+MNzRHVUtqSaZj0zco6n+GKXQecmxT
+   v0winJS3clIBs3DoevV7i21tnrZHvkBYMIzZc488ErWNdDvdPuLXFlic3
+   NuB7uWF4peU+w6IYuB5aimAFu4wNfAFqvXa/fFYQIGJnFRMcutOZpWs9f
+   oqYoFpzHYBbU3aJ4Z+RCn5ucKCSQzhGWMN10ISnPXJMlsJ+uYjPy45Lsu
+   ghCjiS03i/pxxXd1WGydNCWFW2Jf3/yYQg5NHwJNGCbTfwbYRonT8wMzR
+   T34wslWVo3fHlrDg31uws6b6a2gxBCVEp6Bz6wBNIukxyJOYNZmEjo2B4
+   A==;
+X-CSE-ConnectionGUID: TP9bWQ1xROib+ix+/ngIXQ==
+X-CSE-MsgGUID: YwAZ6XeoRvujHV/6Dg0jJQ==
+X-IronPort-AV: E=Sophos;i="6.17,290,1747699200"; 
+   d="scan'208";a="1364214"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 14:56:34 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:28303]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.36.37:2525] with esmtp (Farcaster)
+ id 90fd1a2a-3fc2-46c8-b14d-04ef65bb514a; Mon, 1 Sep 2025 14:56:34 +0000 (UTC)
+X-Farcaster-Flow-ID: 90fd1a2a-3fc2-46c8-b14d-04ef65bb514a
+Received: from EX19D015EUB002.ant.amazon.com (10.252.51.123) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Mon, 1 Sep 2025 14:56:33 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB002.ant.amazon.com (10.252.51.123) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 1 Sep 2025 14:56:33 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.2562.020; Mon, 1 Sep 2025 14:56:33 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "Roy, Patrick" <roypat@amazon.co.uk>
+CC: "ackerleytng@google.com" <ackerleytng@google.com>, "david@redhat.com"
+	<david@redhat.com>, "Manwaring, Derek" <derekmn@amazon.com>, "Thomson, Jack"
+	<jackabt@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "rppt@kernel.org"
+	<rppt@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tabba@google.com" <tabba@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"will@kernel.org" <will@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>
+Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+Thread-Topic: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+Thread-Index: AQHcG0fkqK4jccjXtUKv/NLtaS3P1rR+aqUA
+Date: Mon, 1 Sep 2025 14:56:33 +0000
+Message-ID: <20250901145632.28172-1-roypat@amazon.co.uk>
+References: <20250901135408.5965-1-roypat@amazon.co.uk>
+In-Reply-To: <20250901135408.5965-1-roypat@amazon.co.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.88.180]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|SJ0PR10MB5584:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52f8deb1-ed73-4b1c-2bb7-08dde9671504
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?mA7IWwTT8UaYxUCeqk57Zkuy8ttnlRxOnSTMqTfda7UibyAm8LGv/A6RdHk/?=
- =?us-ascii?Q?f4WvGwoqgeKktg/HpLEeVfQQTtyzCgiLCPfCI1q7FXCm1QOp3KcTYZT+825X?=
- =?us-ascii?Q?vv7GV9PvFiTMkHhqnuA5mNn8mBj6h0gxUf/sPGap9Z0D98+hIm8fbNRl0eSp?=
- =?us-ascii?Q?C/uWVIDcv28w/fkdO6dQ9IJnsP40yqWkoAjtVsbFpt79o9/1TQbJrk+QgqnZ?=
- =?us-ascii?Q?SAp2X31IRk6NrHVwKfju91++3+J7HPCEjxwBkJA2zxsZ9eKc9ae88A+heTCi?=
- =?us-ascii?Q?/4kV/O2Z191Dw5FUTfbvhlJfzrqVW7SzS/xsIdNSDN6wZJOSMgLsbcre8N/Z?=
- =?us-ascii?Q?Y7RPSN7oHeo9oKbR7pRYFVgHpZK+ZOQ0zGiEVQNNQsZKMtvIIJiEeEklq489?=
- =?us-ascii?Q?Eu9Jjqt3lLp320KRSdzazjRP+yBVwOq50DWiMqls0XuBwEAK4MRQbTxOZzyg?=
- =?us-ascii?Q?dItdym3+5j/oh6zazafaXhihc1f8bsJzUNo6oOccbkVHzCY0EpdeTBNZHB2B?=
- =?us-ascii?Q?pR79oj/AAsEOLQIdD68/gdnrFF4lis0x4LZN+kd+GO79dh6+Nrydv6NB0oae?=
- =?us-ascii?Q?2gjCs+eBaSnO5E2HO0wLM8FGebjHm/lxUJZ+e9BqybMtY+X50MfdX78Ns1cb?=
- =?us-ascii?Q?vJX1YSjTiejjOvgDWUIf/EAxZKyFqTml9AW10osjowDwc9OEVl98ThxR4wxR?=
- =?us-ascii?Q?8dcYdK8fsL0w0EufFUyY1Qjm4fJEv+uaSYUbBHEQrlNkrmyUdkWt+S+qEm8R?=
- =?us-ascii?Q?8lSfVYOxd8BgpiROtZENuSVi2L+VeZOlCU6/ewCCwVOpKTifYbOlJCg+YtAF?=
- =?us-ascii?Q?tsicj/9Ni6p7o3WvhGO2eSvCKThDe+ccX5Zrfq4sfVCwux6S5TwOlzFSRXk2?=
- =?us-ascii?Q?DT8VtYtu7DmAemErJi1aOlgwfTzu59A5HF0KnwLJ0VEIy2mvQ1v+MgUvdnBS?=
- =?us-ascii?Q?AG0GiXh13ucIg21zlcwbtQEKoqN9muickgwjpNIGmEsslk3e8/nNapH9z9+d?=
- =?us-ascii?Q?a3r/Q7FIUwWqrgybdt2QlDJxIm/z4MlnXOtXWidw9moKWzfN7WEj9B0BOgpB?=
- =?us-ascii?Q?Kx1Zta76GSmOW96e4WGC3YX414GSziuiYwifsNjNmfdEox8OIkicLIrjrJkw?=
- =?us-ascii?Q?Pn7RkCAK7MIg17q2qr45x7uszWlbz1XdncGhkTfw+xekd2dFFeYAC9z7q05Z?=
- =?us-ascii?Q?gRu25zaDK1Dmy+aQD2io1AcpfBTGr4YRPqvVRxJZ7abhILy9M5Cf0d487nGH?=
- =?us-ascii?Q?cgfbddUujtOkvpjAw02fL7r0Pwc1v61ChTV5sywd/tiRHTjo10wQegCIKm7Y?=
- =?us-ascii?Q?4SOB80SFZX+B9cbGdJCrLpudGEMYmAPAUPc0zY/BwlHjmQ22gV2TWH6+Tf+R?=
- =?us-ascii?Q?Yi8CzWj4Kl+SMhYeyVZQ9nFdWo40kNNA6brj/Nl3KLZc9vViAguQZpyL5zrl?=
- =?us-ascii?Q?X6EuoxjlaUk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?50T7Kll14XPIvU41C72Qm31Vf/Cby40urXBH0GKNKafJcG7/b9Cn+avSO+HD?=
- =?us-ascii?Q?B+56cfQs9dO4iPCPp7hEzDTrOzdH7xynfRYZ3opeRhzCunHjts55n40bbWrk?=
- =?us-ascii?Q?+Ivsufk0RVp0WYSghxS9gA2Ire6Ggqx/suivEi1fz74PAFzLQKvfch/Pyk+6?=
- =?us-ascii?Q?hMLxMQFkXVaeHJDXOYwtcWS12XJWJJ1kfpHiULkAd6mvEKX5WnncvBNpKjlG?=
- =?us-ascii?Q?0I2zsR9/8LahioFBANGKd/Xejkrf+m4go0bcVVwEemm0tEyNePKuWz3qpNG8?=
- =?us-ascii?Q?gWJcTBmy0f4QxmHj8bQLI1wOObrUbnelLfSZ3gc04T30J5Xw7M6UdTT/24Mp?=
- =?us-ascii?Q?GmWm9dlzhqg09hWtyIilImHfSBZkPu6ZT2JNoqicIZdeqT6Rl+nRAV7dSdZu?=
- =?us-ascii?Q?n0avmT9IdcRoXpYfBbDKIUxcr4Kkeo4VGoi6ZUM6j39143oUsRWy/rPuWRwb?=
- =?us-ascii?Q?JdVAKQEZW56tdK+sLk7O5FRWs7ilGkGiw7Ulz23L6RBaC9l0ECEo6b9Gvmgm?=
- =?us-ascii?Q?/6pddtWtt96ikx79Vhy6rwFqe6aklJ9OlAenjByrpQXbNGKu+98bL/nmmkUT?=
- =?us-ascii?Q?61jU3Tx4i9l4J2Gsn2IEQMbDVY+GsPuKOTigYCIuqyoXc11yMlsVeowl2fdJ?=
- =?us-ascii?Q?Ocqdna/0s/r3P64hfELrXNflWFlN0XDiyn1xgfPtj7FhpBKiIkdqjnS0WHFn?=
- =?us-ascii?Q?m/Pvmcbq9BjNdj1sjm21vAX14wQBcLV8QMfdTFmy+Y5KWd6THEOxmcMQERJz?=
- =?us-ascii?Q?OuvScFBhf2DtIm8odBQfSLkZCdqFYlMBX3Qth492r9iKlQ4SCQVijtNMP0G2?=
- =?us-ascii?Q?5Zo84HkV7q/d6D/3W4GrTK0X3HI5UJ0VIM7l04SjFrkt7Exlly9UP8Q4LOQf?=
- =?us-ascii?Q?Xl/t+USgj855KhIo2YkIcJ/cqWbHFXlDLPehNHdQcdaFtEh56aLf1mK6Tuk7?=
- =?us-ascii?Q?n2hkYV5TVPOoJHwB6nM1M04pGmAFSZtBXjABL36rmWF1Az40RqYgd3O9Nji1?=
- =?us-ascii?Q?ogIzwygtwlYmXoe4KKfcRxUzqENChkbxiDKPr+zQeBgK5kb1qckrJlKFd1SW?=
- =?us-ascii?Q?tAfsqHMFkEeBghnEuAjp9KjbOLf2VLSzX7QsOoOwwt6w9seLKNoj7Do6ykrp?=
- =?us-ascii?Q?t0C8Ahl0m5/g4aUN722xzAfvf6FiD6MtmdOSnsCgebwoFOABhiNQGtQibRt9?=
- =?us-ascii?Q?LRjih4UKqoA/MqC1yo6rTgMwHRdBLgmicLX78mXyrg1nc20FwpU/2FE861os?=
- =?us-ascii?Q?Eo6BY6bwCXxmVHHZhMVWRLfsCDklKPNfdo0/alLH1jeTz9R9Nwfk/7quZBtb?=
- =?us-ascii?Q?Wz3eEOZDSqHxx+JiCeuBIqDXtdsBCUukqwBi6YlqNEISOqS9FuWvTO0IbFt+?=
- =?us-ascii?Q?oOlJORON0cUYuUTk8G66/0+IbbUEfIrEQD9BNBKLxbYjYVRPPNpSeFVB3M3F?=
- =?us-ascii?Q?SxNZtF9O3N18Fdx0sEYxqbjZQ6C8mGB5Ozi6RrVTRUYoPCN8Tv4OO/p52Z8V?=
- =?us-ascii?Q?nHnRrUlXjaPBPTF+fQYLYWYKzllKvdU6Dar9odVT7wr+lUF03yQN9FR71M3t?=
- =?us-ascii?Q?HaOTNdjlP1aA+eGiTzI3ugVBdgirR66NGdZkbvnpZe5RFNFEYszrvmaO7mZm?=
- =?us-ascii?Q?Vw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	O2AjTFhnP9hZsXSzPol7BNyYdEAYyZLn/5/4yw2aBs+sVD4jJJyYJrgw8SAGtlRRKA+zJux1BcfCrhADjG3EkyAiAagFhWbExhjZCaVJmlMWDaehBPW1suzRv71WN46sH5AXjcXMqz3aTWr3QC/JwuVRlkLPpkTK8BhjvBMzb1AmxVR4x8Rv6I4viS8ZcYjJqrdIrbn/xmTBZ+BSRnpQFXe8KI2Fr4PAafLbmxKwz8RJfCBMIU7uN31hQisKPGJ6X6BQuvN/zfLkZyhiy2uHesClPqDLTUR+CFpikq+y/aA81MQYIO4xobPwNFLbiTATywPOhxwFKpEIMBvm7binnsf/YPlG3Uxr3uqWzZhfmP5gTnmKLDCsczVvGxGE3L28qqy41UD+SxDqDHPV+fghucMIgVwflFTXCJGqZ2yVD+SwWw2/RhFZrrFVZX0x/oeFR+7P1Jah1i2smUt1uFHl1VkhQcLnHiapZGyYHEJi5EoYRmDB8fR/Q5p+OXWTkncbCmffcKVB0idQmlKIkNWcacKvb7RgSCnxK7VwSHEL+2rynwgupUkAHhhthFfOrOUoizGFcoNvbQ6qRLTAYbVW7Bx8ForiT0YVI1IT9JkndgM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52f8deb1-ed73-4b1c-2bb7-08dde9671504
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 14:51:50.6358
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gHZkMkvgUxFG/Z3fvLC3alm8TRrJ+CcYExpqly21W7AyT7poCbTw/9lVFTekmoEenSKF1qZyfOu3xvwP1Y7mw+tBM5+7PsbGl7gRMgQGikY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5584
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-01_06,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 bulkscore=0
- adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509010157
-X-Proofpoint-ORIG-GUID: J566jO6pNMXlh6f0ros_DA21W-qwlw80
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfX2+9tODmh4sG1
- tty+ZqtLu3gJ3K8swOUsRzPClGU17S2hgi4nNNPdaa1qLnD66WM21Oo/punmrA7ginFAamyn4ag
- Va0CFEdKf1EEd1vH8aaP54ALlTihkOf6tGwbWNf1Nd1AvDQN+YVe5IG2PK0mJ4DXtqj1Z2ds413
- DmT5ElkYE3QpmZLR5WdzB2x+sG9jGQI4ey682ri+H67ottpsBcLwvEsoSptI4rlaGUSMTNz3Elr
- R8f5YOnFMRRnz5xnjTWQEFm4p19H9/tKI5R0tYAEnzSlRshzcrvCrlxE5xpyrOXT6lymle0POTs
- RKW518t2rhexCYBuaKsBZGv7PlqgyYASj36uVpK4zpRlNOL/yElignblhXxZO21RK/mZnYUVv7C
- ss+AaPdNXft+2Tl50GjUYnfZQYle/g==
-X-Authority-Analysis: v=2.4 cv=KORaDEFo c=1 sm=1 tr=0 ts=68b5b30a b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=UgJECxHJAAAA:8 a=bY8S992UxOBSR411kFcA:9
- a=CjuIK1q_8ugA:10 a=-El7cUbtino8hM1DCn8D:22 cc=ntf awl=host:12068
-X-Proofpoint-GUID: J566jO6pNMXlh6f0ros_DA21W-qwlw80
-X-Stat-Signature: 5xcf1nacktpkxm83j35q647off6wa88n
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BA3AE1C000E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756738346-326094
-X-HE-Meta: U2FsdGVkX1/lmAvKkrTcTAkrr5wqZhZr/+ukIW5wO2ENJ5Gd9QehybWaR+Qj3Ftuz0DNQgAWXeaCD+BlJRbvcuNmTkmyVxTBowXgSVbFGvmUcp4V2LtT1rCxpHasP6/+SUb216XVKahFeXw2+Lb1R9gxRqZyF8FVEL/5bI+vuFzOjs03SskTw/3dnfX2wwuD3th27pm6hl00q7tx0mvKjsIypT3ULCDePgMgeevz45GxVDf4izUtdFEdCrX92d+tzjJfYFvbP8xtOes4auFncHWyZJalW67kOiMQeGS3iqb81eC6jkx1NplKYDhA1ZBncJhGEA2YHDFYrIqNIcz25u3PWsDuiNeVLdvDCTJuZTD8WzwsrE+nX2q0h4Bb152t9BphuaBHDEMdHUK1T64rua+DVVZvsyVTHl04NHIPxcC2f06oX6E+ZSzjGfdiofe+Oj3AiP94/48DuVA0Cs7kEX821spQI6NRU1O1jQXWFxlbT7ZKrPfC/mqKngYuD/yYWLNlwmKOYE9z+oHfBcmCYGdpK5UHIWtSXWbzQM+ld3ZrIU11OlfM52kc2/RPYti/+y8NPwC+/r7OKUr7CFjOjp8QDJ67/nqgfKzJykhDQO/0+uoa+iPw3xR08/EihzRAWfvXuEiwe0uR8C1CGE/vI7FpkeIDGyogtEwbS+nC40QRruGp3cfR3n2V/ciahDJaQ7gqOJwCc5ZpCLQYVbTE0NqvGXhfcYChpTQhGx5OIG+qIN6gJ1KNlWUTOIQ14SpdEo6+HbyHPlmDCh0EcaeX6OL9Go9bDMFIRr/4cTPeQH1j4OnOLJQOLzEdxu2iHuHealtROCmMl9jYp++JxipwcORo11+OWnhDzhYtweT/BOUZ7u9ZcYHpRJULUHJCp2MF6Cs34Z0vsmiArmCbz+1Nj5v9qKdj8nWqk+tKJUrUODlu0WV9fHA+dyXGJ2p/vdr7Ssc19DuV2mHyqPRcWFO
- BsYesQiU
- KEG/ItBhE1MRQdjtO0z2iVDNfax2Z4jeIafeh9zvT7RJOxYeNPilqsSraQDg5+W6GEFB1RpCCXf4UbGDm2emR6Swv2+h1U/ZOuP8W2gabkrmzpqgE6+L3enHp7bCVSLbMjcQy40DiGZu2SeKuN8vkB/E3wHVdRFtCOvU7k7MX7FysOzt+ApKeOLc8JkEit1DSyD+EG01R25M6Mapdu1udeJ508wtdJ2tRy1Qk0wlq1XQ7HDjvzmPj+DDa1c7R6DPztR55ZzXid5AFz+SdbOLKrhJEWVAzQpHci6VbdbHKXb02DRyiks3Wl1AmNgeKpzRamozl3nE0qb/fUALU5ZkVjyRdPuDI8dYj3OlwUX5sTWp8EEoEjfRiHrbEVlG0kclBAjmynOHOcvDU++QJ+Jp7TlV/Lk2QFDbX3F+IHpnW5PkYrAd8oGm9UDzmtPJXavwSOZ+N3UI21XlUZ7sPRjGFDos2htkJvABlg0WoYPgQnga7hSEQiwAuaaLaOci64OiZydkDkMZk3UndOVxOd9ZpewDZsUyFg0lkkpENGRALTJpwHN1u0NEDAOkZWZ+OdgQ5Dywf0qPt9ULNHuHCrKctc2Y0XPm92t67jTFN+wPVXiM+yWqYXA+DlEy/HYVe7MCuJt9O/Zh2h7lQ64tagO8TRSli+WqTiu8LaaY5YB7l7bmblrstKf1IKJnj1P8DnXSEaU+GJ3MVvXafX7H8vxKuXZ7iN9hmS8zhj74OcCSQ86ykgU7rAmmRppiuxBceke8DI8/nnMRDyW+Z4nNOpTSfCW89LW9QvJ+GYiKWw0IX8CwSC3kGdsZ36bY+FE9uQDdS8dZau8REY7XhIv+kaOpf2kLz3YY34a0tKhoEgQUzPVmZ0LlT2/H28BuRE2vivacXN7V2
+X-Rspamd-Queue-Id: 33C8EA0008
+X-Stat-Signature: f8jfajujcdq1gudjp9fp6a8u4amn1zu5
+X-HE-Tag: 1756738603-902745
+X-HE-Meta: U2FsdGVkX18aJd8UJk1couVDIk2HYy/upH5JylbbYy3Tu96eq705Plpa08yLFjh2M3/vXgUQH3HYvdXdZbAKEbNmnMJv+InvBLaY2/z+8v2nPIqqboIXF4bVFwd41xTBsod28SN7eYFZZCxLrAd5zV/G4ASczCbwzJQoet0aPdZCuQ4ExIVdJo9UN2O03LENM6Llzy0d1kf1EAZwBZco16q+Ft2SlHmBLkDmoHvzn5ygNgukDz5tTHmGTd7BJUSvcZFLDUDoYEkBNkCtOy16WwWeUOxJygpzgGMx9gE4DfKNquIjHI5nfSbzKRxes08g/O0hQ3pJXhBXxUEEWSI3YR+n9nJ0hSYFOVyZ5aeVkOP/UZ6JjK+w6fVj70WlYRXJ3OKonvlkzDGeKtFEVIaBNYEMADQ8G4GGDgOcRPcDlIWwxyXy8fhEJk2rg7nBFts9IIAhW5VnzoYlU8/IDqawYvuohYAmnV0IMzEEbOTe1jO+YBzI+0zqHqjNgJFYt8aoL+6dYptCFu79KuMmIg6uB5iHO8MHDv0Js933bQm1mSSrc9YwX+VCYXCuMmclCPW/Ecf0pbzCRG5EUzXQu081QwUGoMGL7qgjg8qdF1gIkQC8jc6wCW/xYRtLOmdoEGc66TnoP+AtfmRRRDGEoFrRmF3bw+uatIcS5LD1oZT2kDjmLti/BEZ7GKzp0I0SHyYI2R/oUOiY2aUiXHO6G6/B3QswGN0ZT3K/epOpN0FLinMy0BxVPJhFoExKox5Pz+Yd23iKWGSfHq68rc3BNclZ3F+5dD9STldkJImJ4jQ8uhWt6Quybax1QpXoEws/hr51FzyCImiwjWYXfp2NShBF9UaZqQjC/vEbprtKJmIgkxxNswhjY5qSKyEbIfzUZWbEcff14PGymmzmndv3wPEw8yj3ePbhvjTDcWUFfLIFUgvm5xVcQt5xctH+/9osZZLPxMrVK4g09lmJJ4P6yDz
+ HnUBjj5e
+ vwSGjSbyJ+8uvJU7rylVk2hPBcS8IZvhGe/1ZGsAlNJlqlAbiaJCdAvhGr1hSdXDWelafTggllS5aZUA061UBhQ9Vq7LsFdJFaMR2fo/TOX18wd6GzWg7j5lbtH5OO24ViGo/NJoarGdH1JYi0MpogWph2WcBgtxNULMC0muPjUnmmKoWB55aWA12EdRR9VTOMqia6/wMA/lbGT1wliGILpG/Q76XXDYuATRjgxfnlFtE8bmbguHMjq7wAL/XaSSIBmSr+lMltAlpfDpKJugm8oJQGNTDMWGYolAYsh/wcldXxpEsr1vEGhbVREIahVMHfFA1osjfptnzaET+NsOOQeDQcVr/MkEg8eHw25DntvKlluQpeHPDBH6g9WTtIwg+301wtoZd2/sAYgxG6/8aoCBJWmLH8alHF30mZnPrPdNHLeOZszsPcBpxPB96+BZumCXRKdLGPFSizr1AE83Bzv5E7OsEX9Yh/o0khCuJQ7GKhni9YNCFng8l4F2E6XoDaimPfyxb3NmjYyxx7ZpSyL78qUl0tj4X9F+NZDv0Hw22ju4zQNBs3apNPsAW+g96Lc1gIMxW8RhUll0ZYa6CsGysMfEzLgbxLtVG4Ad97EwAXV17yZEhY0aFiCk8iP+hhSJofRfN5w9MMRpNe6u9OIM+XnpAAKNPa4wVYPSoU2YozvTUURKiXTIGb9aU1n9iGPxWUCYhiNdzcY6uO3urOjYbEZSQMYBVHVCpjwEzaDOtYz6kmDIg7weeOGqVWDmY2sUXPggRtAWLLSGwnvkWcbmSdCfG+LYzTMHr/a4pb9Vt5NjvSO2xN/2bwg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -251,320 +127,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 01, 2025 at 02:30:28PM +0200, Max Kellermann wrote:
-> Lots of functions in mm/highmem.c do not write to the given pointers
-> and do not call functions that take non-const pointers and can
-> therefore be constified.
->
-> This includes functions like kunmap() which might be implemented in a
-> way that writes to the pointer (e.g. to update reference counters or
-> mapping fields), but currently are not.
->
-> kmap() on the other hand cannot be made const because it calls
-> set_page_address() which is non-const in some
-> architectures/configurations.
->
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-
-Some inconsitencies on const vs. double-const here.
-
-We need to figure this out :)
-
-Since const <type> *val will pretty well work in all circumstances, I again
-think we ought to just do that instead of double-const.
-
-Thanks
-
-> ---
->  arch/arm/include/asm/highmem.h    |  6 ++---
->  arch/xtensa/include/asm/highmem.h |  2 +-
->  include/linux/highmem-internal.h  | 44 +++++++++++++++++--------------
->  include/linux/highmem.h           |  8 +++---
->  mm/highmem.c                      | 10 +++----
->  5 files changed, 37 insertions(+), 33 deletions(-)
->
-> diff --git a/arch/arm/include/asm/highmem.h b/arch/arm/include/asm/highmem.h
-> index b4b66220952d..023be74298f3 100644
-> --- a/arch/arm/include/asm/highmem.h
-> +++ b/arch/arm/include/asm/highmem.h
-> @@ -46,9 +46,9 @@ extern pte_t *pkmap_page_table;
->  #endif
->
->  #ifdef ARCH_NEEDS_KMAP_HIGH_GET
-> -extern void *kmap_high_get(struct page *page);
-> +extern void *kmap_high_get(const struct page *page);
->
-> -static inline void *arch_kmap_local_high_get(struct page *page)
-> +static inline void *arch_kmap_local_high_get(const struct page *page)
->  {
->  	if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM) && !cache_is_vivt())
->  		return NULL;
-> @@ -57,7 +57,7 @@ static inline void *arch_kmap_local_high_get(struct page *page)
->  #define arch_kmap_local_high_get arch_kmap_local_high_get
->
->  #else /* ARCH_NEEDS_KMAP_HIGH_GET */
-> -static inline void *kmap_high_get(struct page *page)
-> +static inline void *kmap_high_get(const struct page *const page)
->  {
->  	return NULL;
->  }
-> diff --git a/arch/xtensa/include/asm/highmem.h b/arch/xtensa/include/asm/highmem.h
-> index 34b8b620e7f1..473b622b863b 100644
-> --- a/arch/xtensa/include/asm/highmem.h
-> +++ b/arch/xtensa/include/asm/highmem.h
-> @@ -29,7 +29,7 @@
->
->  #if DCACHE_WAY_SIZE > PAGE_SIZE
->  #define get_pkmap_color get_pkmap_color
-> -static inline int get_pkmap_color(struct page *page)
-> +static inline int get_pkmap_color(const struct page *const page)
->  {
->  	return DCACHE_ALIAS(page_to_phys(page));
->  }
-> diff --git a/include/linux/highmem-internal.h b/include/linux/highmem-internal.h
-> index 36053c3d6d64..442d0efea5c7 100644
-> --- a/include/linux/highmem-internal.h
-> +++ b/include/linux/highmem-internal.h
-> @@ -7,7 +7,7 @@
->   */
->  #ifdef CONFIG_KMAP_LOCAL
->  void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot);
-> -void *__kmap_local_page_prot(struct page *page, pgprot_t prot);
-> +void *__kmap_local_page_prot(const struct page *page, pgprot_t prot);
->  void kunmap_local_indexed(const void *vaddr);
->  void kmap_local_fork(struct task_struct *tsk);
->  void __kmap_local_sched_out(void);
-> @@ -33,11 +33,11 @@ static inline void kmap_flush_tlb(unsigned long addr) { }
->  #endif
->
->  void *kmap_high(struct page *page);
-> -void kunmap_high(struct page *page);
-> +void kunmap_high(const struct page *page);
->  void __kmap_flush_unused(void);
->  struct page *__kmap_to_page(void *addr);
->
-> -static inline void *kmap(struct page *page)
-> +static inline void *kmap(struct page *const page)
->  {
->  	void *addr;
->
-> @@ -50,7 +50,7 @@ static inline void *kmap(struct page *page)
->  	return addr;
->  }
->
-> -static inline void kunmap(struct page *page)
-> +static inline void kunmap(const struct page *const page)
->  {
->  	might_sleep();
->  	if (!PageHighMem(page))
-> @@ -68,12 +68,12 @@ static inline void kmap_flush_unused(void)
->  	__kmap_flush_unused();
->  }
->
-> -static inline void *kmap_local_page(struct page *page)
-> +static inline void *kmap_local_page(const struct page *const page)
->  {
->  	return __kmap_local_page_prot(page, kmap_prot);
->  }
->
-> -static inline void *kmap_local_page_try_from_panic(struct page *page)
-> +static inline void *kmap_local_page_try_from_panic(const struct page *const page)
->  {
->  	if (!PageHighMem(page))
->  		return page_address(page);
-> @@ -81,13 +81,15 @@ static inline void *kmap_local_page_try_from_panic(struct page *page)
->  	return NULL;
->  }
->
-> -static inline void *kmap_local_folio(struct folio *folio, size_t offset)
-> +static inline void *kmap_local_folio(const struct folio *const folio,
-> +				     const size_t offset)
->  {
-> -	struct page *page = folio_page(folio, offset / PAGE_SIZE);
-> +	const struct page *page = folio_page(folio, offset / PAGE_SIZE);
->  	return __kmap_local_page_prot(page, kmap_prot) + offset % PAGE_SIZE;
->  }
->
-> -static inline void *kmap_local_page_prot(struct page *page, pgprot_t prot)
-> +static inline void *kmap_local_page_prot(const struct page *const page,
-> +					 const pgprot_t prot)
->  {
->  	return __kmap_local_page_prot(page, prot);
->  }
-> @@ -102,7 +104,7 @@ static inline void __kunmap_local(const void *vaddr)
->  	kunmap_local_indexed(vaddr);
->  }
->
-> -static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
-> +static inline void *kmap_atomic_prot(const struct page *const page, const pgprot_t prot)
->  {
->  	if (IS_ENABLED(CONFIG_PREEMPT_RT))
->  		migrate_disable();
-> @@ -113,7 +115,7 @@ static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
->  	return __kmap_local_page_prot(page, prot);
->  }
->
-> -static inline void *kmap_atomic(struct page *page)
-> +static inline void *kmap_atomic(const struct page *const page)
->  {
->  	return kmap_atomic_prot(page, kmap_prot);
->  }
-> @@ -167,38 +169,40 @@ static inline struct page *kmap_to_page(void *addr)
->  	return virt_to_page(addr);
->  }
->
-> -static inline void *kmap(struct page *page)
-> +static inline void *kmap(struct page *const page)
->  {
->  	might_sleep();
->  	return page_address(page);
->  }
->
-> -static inline void kunmap_high(struct page *page) { }
-> +static inline void kunmap_high(const struct page *const page) { }
->  static inline void kmap_flush_unused(void) { }
->
-> -static inline void kunmap(struct page *page)
-> +static inline void kunmap(const struct page *const page)
->  {
->  #ifdef ARCH_HAS_FLUSH_ON_KUNMAP
->  	kunmap_flush_on_unmap(page_address(page));
->  #endif
->  }
->
-> -static inline void *kmap_local_page(struct page *page)
-> +static inline void *kmap_local_page(const struct page *const page)
->  {
->  	return page_address(page);
->  }
->
-> -static inline void *kmap_local_page_try_from_panic(struct page *page)
-> +static inline void *kmap_local_page_try_from_panic(const struct page *const page)
->  {
->  	return page_address(page);
->  }
->
-> -static inline void *kmap_local_folio(struct folio *folio, size_t offset)
-> +static inline void *kmap_local_folio(const struct folio *const folio,
-> +				     const size_t offset)
->  {
->  	return folio_address(folio) + offset;
->  }
->
-> -static inline void *kmap_local_page_prot(struct page *page, pgprot_t prot)
-> +static inline void *kmap_local_page_prot(const struct page *const page,
-> +					 const pgprot_t prot)
->  {
->  	return kmap_local_page(page);
->  }
-> @@ -215,7 +219,7 @@ static inline void __kunmap_local(const void *addr)
->  #endif
->  }
->
-> -static inline void *kmap_atomic(struct page *page)
-> +static inline void *kmap_atomic(const struct page *const page)
->  {
->  	if (IS_ENABLED(CONFIG_PREEMPT_RT))
->  		migrate_disable();
-> @@ -225,7 +229,7 @@ static inline void *kmap_atomic(struct page *page)
->  	return page_address(page);
->  }
->
-> -static inline void *kmap_atomic_prot(struct page *page, pgprot_t prot)
-> +static inline void *kmap_atomic_prot(const struct page *const page, const pgprot_t prot)
->  {
->  	return kmap_atomic(page);
->  }
-> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-> index 6234f316468c..105cc4c00cc3 100644
-> --- a/include/linux/highmem.h
-> +++ b/include/linux/highmem.h
-> @@ -43,7 +43,7 @@ static inline void *kmap(struct page *page);
->   * Counterpart to kmap(). A NOOP for CONFIG_HIGHMEM=n and for mappings of
->   * pages in the low memory area.
->   */
-> -static inline void kunmap(struct page *page);
-> +static inline void kunmap(const struct page *page);
->
->  /**
->   * kmap_to_page - Get the page for a kmap'ed address
-> @@ -93,7 +93,7 @@ static inline void kmap_flush_unused(void);
->   * disabling migration in order to keep the virtual address stable across
->   * preemption. No caller of kmap_local_page() can rely on this side effect.
->   */
-> -static inline void *kmap_local_page(struct page *page);
-> +static inline void *kmap_local_page(const struct page *page);
->
->  /**
->   * kmap_local_folio - Map a page in this folio for temporary usage
-> @@ -129,7 +129,7 @@ static inline void *kmap_local_page(struct page *page);
->   * Context: Can be invoked from any context.
->   * Return: The virtual address of @offset.
->   */
-> -static inline void *kmap_local_folio(struct folio *folio, size_t offset);
-> +static inline void *kmap_local_folio(const struct folio *folio, size_t offset);
->
->  /**
->   * kmap_atomic - Atomically map a page for temporary usage - Deprecated!
-> @@ -176,7 +176,7 @@ static inline void *kmap_local_folio(struct folio *folio, size_t offset);
->   * kunmap_atomic(vaddr2);
->   * kunmap_atomic(vaddr1);
->   */
-> -static inline void *kmap_atomic(struct page *page);
-> +static inline void *kmap_atomic(const struct page *page);
->
->  /* Highmem related interfaces for management code */
->  static inline unsigned long nr_free_highpages(void);
-> diff --git a/mm/highmem.c b/mm/highmem.c
-> index ef3189b36cad..93fa505fcb98 100644
-> --- a/mm/highmem.c
-> +++ b/mm/highmem.c
-> @@ -61,7 +61,7 @@ static inline int kmap_local_calc_idx(int idx)
->  /*
->   * Determine color of virtual address where the page should be mapped.
->   */
-> -static inline unsigned int get_pkmap_color(struct page *page)
-> +static inline unsigned int get_pkmap_color(const struct page *const page)
->  {
->  	return 0;
->  }
-> @@ -334,7 +334,7 @@ EXPORT_SYMBOL(kmap_high);
->   *
->   * This can be called from any context.
->   */
-> -void *kmap_high_get(struct page *page)
-> +void *kmap_high_get(const struct page *const page)
->  {
->  	unsigned long vaddr, flags;
->
-> @@ -356,7 +356,7 @@ void *kmap_high_get(struct page *page)
->   * If ARCH_NEEDS_KMAP_HIGH_GET is not defined then this may be called
->   * only from user context.
->   */
-> -void kunmap_high(struct page *page)
-> +void kunmap_high(const struct page *const page)
->  {
->  	unsigned long vaddr;
->  	unsigned long nr;
-> @@ -508,7 +508,7 @@ static inline void kmap_local_idx_pop(void)
->  #endif
->
->  #ifndef arch_kmap_local_high_get
-> -static inline void *arch_kmap_local_high_get(struct page *page)
-> +static inline void *arch_kmap_local_high_get(const struct page *const page)
->  {
->  	return NULL;
->  }
-> @@ -572,7 +572,7 @@ void *__kmap_local_pfn_prot(unsigned long pfn, pgprot_t prot)
->  }
->  EXPORT_SYMBOL_GPL(__kmap_local_pfn_prot);
->
-> -void *__kmap_local_page_prot(struct page *page, pgprot_t prot)
-> +void *__kmap_local_page_prot(const struct page *const page, const pgprot_t prot)
->  {
->  	void *kmap;
->
-> --
-> 2.47.2
->
+On Mon, 2025-09-01 at 14:54 +0100, "Roy, Patrick" wrote:=0A=
+> =0A=
+> Hi Fuad!=0A=
+> =0A=
+> On Thu, 2025-08-28 at 11:21 +0100, Fuad Tabba wrote:=0A=
+>> Hi Patrick,=0A=
+>>=0A=
+>> On Thu, 28 Aug 2025 at 10:39, Roy, Patrick <roypat@amazon.co.uk> wrote:=
+=0A=
+>>> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h=0A=
+>>> index 12a12dae727d..b52b28ae4636 100644=0A=
+>>> --- a/include/linux/pagemap.h=0A=
+>>> +++ b/include/linux/pagemap.h=0A=
+>>> @@ -211,6 +211,7 @@ enum mapping_flags {=0A=
+>>>                                    folio contents */=0A=
+>>>         AS_INACCESSIBLE =3D 8,    /* Do not attempt direct R/W access t=
+o the mapping */=0A=
+>>>         AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,=0A=
+>>> +       AS_NO_DIRECT_MAP =3D 10,  /* Folios in the mapping are not in t=
+he direct map */=0A=
+>>>         /* Bits 16-25 are used for FOLIO_ORDER */=0A=
+>>>         AS_FOLIO_ORDER_BITS =3D 5,=0A=
+>>>         AS_FOLIO_ORDER_MIN =3D 16,=0A=
+>>> @@ -346,6 +347,21 @@ static inline bool mapping_writeback_may_deadlock_=
+on_reclaim(struct address_spac=0A=
+>>>         return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping-=
+>flags);=0A=
+>>>  }=0A=
+>>>=0A=
+>>> +static inline void mapping_set_no_direct_map(struct address_space *map=
+ping)=0A=
+>>> +{=0A=
+>>> +       set_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
+>>> +}=0A=
+>>> +=0A=
+>>> +static inline bool mapping_no_direct_map(struct address_space *mapping=
+)=0A=
+>>> +{=0A=
+>>> +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
+>>> +}=0A=
+>>> +=0A=
+>>> +static inline bool vma_is_no_direct_map(const struct vm_area_struct *v=
+ma)=0A=
+>>> +{=0A=
+>>> +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_ma=
+pping);=0A=
+>>> +}=0A=
+>>> +=0A=
+>> Any reason vma is const whereas mapping in the function that it calls=0A=
+>> (defined above it) isn't?=0A=
+> =0A=
+> Ah, I cannot say that that was a conscious decision, but rather an artifa=
+ct of=0A=
+> the code that I looked at for reference when writing these two simply did=
+ it=0A=
+> this way.  Are you saying both should be const, or neither (in my mind, b=
+oth=0A=
+> could be const, but the mapping_*() family of functions further up in thi=
+s file=0A=
+> dont take const arguments, so I'm a bit unsure now)?=0A=
+=0A=
+Hah, just saw=0A=
+https://lore.kernel.org/linux-mm/20250901123028.3383461-3-max.kellermann@io=
+nos.com/.=0A=
+Guess that means "both should be const" then :D=0A=
+=0A=
+>> Cheers,=0A=
+>> /fuad=0A=
+> =0A=
+> Best,=0A=
+> Patrick=0A=
+=0A=
 
