@@ -4,135 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46F3ACA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 12:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B1ACA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 12:25:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80C4D8E0020; Mon,  1 Sep 2025 08:17:27 -0400 (EDT)
+	id 55ECA8E002A; Mon,  1 Sep 2025 08:25:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BC648E0013; Mon,  1 Sep 2025 08:17:27 -0400 (EDT)
+	id 536BF8E0013; Mon,  1 Sep 2025 08:25:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65CD98E0020; Mon,  1 Sep 2025 08:17:27 -0400 (EDT)
+	id 424E58E002A; Mon,  1 Sep 2025 08:25:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5000D8E0013
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:17:27 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4BD413B182
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:17:26 +0000 (UTC)
-X-FDA: 83840581692.24.6C52B67
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3119F8E0013
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:25:25 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6B0E160823
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:25:24 +0000 (UTC)
+X-FDA: 83840601768.29.DDEAA8C
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 91331160004
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:17:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GKL3fhdY;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5A58C1C0004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:25:22 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Xkb/L480";
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756729044;
+	s=arc-20220608; t=1756729522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E7wsDKVeU07tqfba5mhUpd3DLLKgZKYNe/5Ehj98m6A=;
-	b=CCz/B3sUPlPvEnZDm4T0e0RuP5MD0mT368J6YD3tn54QYX9n5B/cbfB3xU1VWFRi4/vzdy
-	fJnOtMVvOhcxtMQ40Ix9IxKEQxKHXV8/NMgipy0WIhOtD0qwHEs6eIb5lvX87CVaCZdrGG
-	sXZeB1BzkgxJ/oE22PW6vavf2xzBuak=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GKL3fhdY;
-	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756729044; a=rsa-sha256;
+	bh=Ry3HTsvjDYn6ZhWkEuXZ7HIdFuNl7/b7zLeVSRNzby4=;
+	b=4h7i2IrI0TGVJ6mtFX4/acbN9VeEti5i6PInLxIsvxg5zSufQympnAPgdzJl2MxLZwXAgI
+	S9fU11fsxnc2U89u5j68Ph4+SmspPjRQ4MTJOFy3l5QmUtscTJzo8xfP0WARQCt/Fp4bzD
+	0eXsttfcYckP4pIwnIyoz1xvFbEul0s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756729522; a=rsa-sha256;
 	cv=none;
-	b=EoHP132NfrisHzFL/uct0iDf6vd+Cxr06YZEM/62fkYi4X5IelV+H+uo51rF94wquliTij
-	Hd+FeyHgnUw9/TU8rKS0ChYgETmxYnEX9pa5rhptn/oLLm5iFNo5g+2TOnSi/xCeFMc58W
-	HPM57LZIEFLTFZVqB1xvtcS7ngYujYw=
+	b=hYJEt1Z19GDhriv1sTvHWuZW8oz6ggH+wr8m0iu/qRJidRvClxUKa65lEukvRo9A0IigWb
+	+Ww6SdO88Ea02klxrEa2I3eXQukrf/ujhNjnYc/Db41YgJWBZxvJiHGXCC78FiHwv1CUJY
+	2OoVe+blabhqWKC6WtEWuv90tglc/kc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Xkb/L480";
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756729044;
+	s=mimecast20190719; t=1756729521;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=E7wsDKVeU07tqfba5mhUpd3DLLKgZKYNe/5Ehj98m6A=;
-	b=GKL3fhdYoLdPaW9YLfWTX9pdyCmeuuAmXx4IPFamkJWD9goCpVwu6KkTDQY5XcxvaAvtlI
-	X12XHEXU3uSWar6weRmd822HTl1xrSqca1C2lfqRTsqXl0acUyB/FJWvIF0Jck9tr9G+1r
-	mhWsiHr4ETbXLoxmXmYJR0UdAcULoSI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Ry3HTsvjDYn6ZhWkEuXZ7HIdFuNl7/b7zLeVSRNzby4=;
+	b=Xkb/L480w/F0gcNyYwSFxayB5yRR/0q67Vi+fqEe/ob85rBgCZsGO1X5XsGCetpPsCDoma
+	7m01I1cmeCyee1RFkC0qejO+K8yB1wVbKd3mR+hZWqjDhN5J4aa17VkDiAEGrGTDTeoskw
+	jQMspH/SDTCuxU87+5tLDkrQftddPxs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-226-3HuzNUO_NserFaO_i67sjA-1; Mon, 01 Sep 2025 08:17:22 -0400
-X-MC-Unique: 3HuzNUO_NserFaO_i67sjA-1
-X-Mimecast-MFC-AGG-ID: 3HuzNUO_NserFaO_i67sjA_1756729042
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ccd58af2bbso1863829f8f.0
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 05:17:22 -0700 (PDT)
+ us-mta-444-nzDPECsrPiK3yzYOvKPwGg-1; Mon, 01 Sep 2025 08:25:18 -0400
+X-MC-Unique: nzDPECsrPiK3yzYOvKPwGg-1
+X-Mimecast-MFC-AGG-ID: nzDPECsrPiK3yzYOvKPwGg_1756729517
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b83ae1717so21033655e9.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 05:25:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756729041; x=1757333841;
+        d=1e100.net; s=20230601; t=1756729517; x=1757334317;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=E7wsDKVeU07tqfba5mhUpd3DLLKgZKYNe/5Ehj98m6A=;
-        b=XTjLHGEyjelNXo5r0evHQNA4qZg5/ZdapWpQSAX3L55JkB/H/amBFhCGujI2T/v+Ke
-         Xbme4IeTkJXLbudTfBWbjcIknKR1dzPnl9tawpEkR+uPv5eWcvPB8OOhAOtHwn8krNC1
-         bReo41IeQpsUh3fhjUjtyX8eOtn1qcAbuuSRiXHiMhKEGNRd+7kzE1qG0XCTamNlPQdd
-         76N4H64DBdqmm91T9Eq12oKgHwqn3ybrGxRU9+CH61cwpkbH8KRZOVYZt8jZQxotI/9e
-         qOLXqS5zV0OUvDvT8EKrD2DizFaD4d+Z6Sogg2PYLyDaNsHFMY0BMZ9P1Iqz59gELZCZ
-         JkOA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4WZrIsEi5c+/l0Gg0dGjEA1polbFyl8CgHkR/qy2XfGvtC7uwItdmqCUg/keIFGe9lso4I0SQAA==@kvack.org
-X-Gm-Message-State: AOJu0YxvtOp26IurzKtX7w8rCFj2AkxSaK4Vm3BNnox1pGcJzcRx43Pu
-	Isfoo9uBQVjryEkgJK88oyhWdxnK15A7EkhahQ9oHz+fmn113z6wK7wyxCvzImndqakBiXYdKit
-	2ypj5kAseDRo9UUVccad9ShosSsrkq8bSYrFTuo3D1J4J/AQk5lwJ
-X-Gm-Gg: ASbGncuXVL4opAqX88/NkixICEG7q/nH6h7mWFNIQHmKkdEyGFli1mz0R3mgTXGj5Zt
-	Y+DTMnhANFXPjUg1l3nJxAEn15y0ccNgTjGJjUv8qOMbl4UkBi3QnPXInU9bhwr/XoJZnawS0U+
-	ZMMp+afOnInLmNuoNVzVB2pyk6QqSrTVE4Hm90/yj8Nc9TXDH1P02TKuj87JV+vgtFtPbJ/EjRM
-	7k+oA5A7lgq2jX+IH/WMPxJ0bCYTXdigVsMkZQ5q969vW8T7VFzuR0KYa/O5AzHEDWK3FJnfHgD
-	Ccj6DOHAoi0upZyZSrmr2NiWumVqMgeY4UnPiyAWe8O435wKM68Tw6wK1zS+Y16lojPeb3oYQKO
-	vkA6JwD2O81vz5IvOv4hCIB3r8yHMhnG3S0nMuyrmmtDYP2CAOBagIYuZSmzqnZEYUew=
-X-Received: by 2002:a05:6000:290e:b0:3c7:e6d0:b1b6 with SMTP id ffacd0b85a97d-3d1dcb77f57mr6172963f8f.9.1756729041581;
-        Mon, 01 Sep 2025 05:17:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4HyO3MsW/7JB2c6b+uWwxyC9MpHi848L8uRbEPhjkFkXwnypkP58uX2s27AjDoWG3KsJ0dw==
-X-Received: by 2002:a05:6000:290e:b0:3c7:e6d0:b1b6 with SMTP id ffacd0b85a97d-3d1dcb77f57mr6172942f8f.9.1756729041066;
-        Mon, 01 Sep 2025 05:17:21 -0700 (PDT)
+        bh=Ry3HTsvjDYn6ZhWkEuXZ7HIdFuNl7/b7zLeVSRNzby4=;
+        b=YC0toz/dEjMyzjbuFFopGGPkLKJQLVZjyfCPSs1sawhiO16k6e3Hg93IjyWuJMJ4rq
+         56IGxZvlL8085f9+hizhksdvy8MVns7sm/jaSEpjis4CappX+J75kDKmE64MxnJ3lwyz
+         7Z717+wUdmJrnlofB1yGI+logj/rXRij1/nq/bMaLtXpZhVqnGYWACfaZZ2VEl2enIFv
+         qc9saKMNzwqu4k3wpTTIVoU6BL8+ZzyDzn1pa3w5Um5A2lkGxxtgHq1pH7QOgQk8xU2t
+         kbbUfYtc8SEBRzKyPnxB/nRYaP7moGMI8bw19Rc76XjLz8xWOYHwIG2j9muyo8i8PXDR
+         LvcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmF4Dew6mrrlPh3AwLc0XmLFw2z9TTmEFZs1WObJCeSTBLdECjFUDBO+kRNnq55OrkCY7Rkze4mw==@kvack.org
+X-Gm-Message-State: AOJu0YyMW3/uQR1q2IVBBUGvI7bXCMMkgeEicYkrKGxWMPxIt2xiNYb/
+	AsNSg1/0oubTzlmdmce3LitwBcDn3NRuQKUrH1zTHAvSkDDRtbpObSC6fs49oOCTBe2zScOS/sL
+	oK8zboOkg9nHPZfCWarV64e791jzCGMH4xsXM+o61FIHprvaF2hqw
+X-Gm-Gg: ASbGnct6MbzMFcL/WhJclEEsh893OKEnjn5Rup4e/KO5DZwaBbyY7EZSOZknYyoQXZD
+	BtdQWhNl30noi7dLL7IW/BxXNxpjUdP4ftPbDDqXfjgKuphskV9l1qDVr596uZFTjbuHAv4YaRk
+	5ePAqSjSHYm6+81OnYzy8PV7tQmJ2+/k9499dVn1VMEuMLAD+f7UY0WkFJoCHO0YPrFeRVRZQCU
+	X8XQk8T8g6tjCmy2OnlNBG/s/zsmfyrhkZAesPo8Bm2SCedZLAFdZknv7gExSZGVsKvpSkAcqRl
+	gRu3PqI/bsH6TV45ECHkncanjUcvV7BRYT4SL56QcTGZJtk1ujJSa3e+/UDaRuRCPw57v97AZvf
+	qV3lCARtVnOCEFBECGFlrsDAlClyiODQ3ZrMmjTVH7ZUfjfm0GehluIrBw55rFyFvVe8=
+X-Received: by 2002:a05:600c:1e89:b0:45b:88ed:9558 with SMTP id 5b1f17b1804b1-45b88ed9bc3mr51982145e9.30.1756729517125;
+        Mon, 01 Sep 2025 05:25:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMGDtOgsZk0c5UDFaUJZJgP3BXCuLTMzz4/00ieMVST2ui2ccALyIM8NlgAkQyyG7Klnzysg==
+X-Received: by 2002:a05:600c:1e89:b0:45b:88ed:9558 with SMTP id 5b1f17b1804b1-45b88ed9bc3mr51981875e9.30.1756729516581;
+        Mon, 01 Sep 2025 05:25:16 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d48760d1c9sm7371553f8f.17.2025.09.01.05.17.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6dc1sm237238175e9.1.2025.09.01.05.25.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 05:17:20 -0700 (PDT)
-Message-ID: <cab1db60-e7bc-4f31-b781-c52ad1b24da6@redhat.com>
-Date: Mon, 1 Sep 2025 14:17:18 +0200
+        Mon, 01 Sep 2025 05:25:15 -0700 (PDT)
+Message-ID: <dc21e54c-d7ae-4d7e-9acb-6a3fa573b20f@redhat.com>
+Date: Mon, 1 Sep 2025 14:25:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC][PATCH v2 22/29] mm/numa: Register information into Kmemdump
-To: Eugen Hristev <eugen.hristev@linaro.org>, Michal Hocko <mhocko@suse.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- corbet@lwn.net, mojha@qti.qualcomm.com, rostedt@goodmis.org,
- jonechou@google.com, tudor.ambarus@linaro.org,
- Christoph Hellwig <hch@infradead.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>
-References: <20250724135512.518487-1-eugen.hristev@linaro.org>
- <751514db-9e03-4cf3-bd3e-124b201bdb94@redhat.com>
- <aJCRgXYIjbJ01RsK@tiehlicka>
- <e2c031e8-43bd-41e5-9074-c8b1f89e04e6@linaro.org>
- <23e7ec80-622e-4d33-a766-312c1213e56b@redhat.com>
- <f43a61b4-d302-4009-96ff-88eea6651e16@linaro.org>
- <77d17dbf-1609-41b1-9244-488d2ce75b33@redhat.com>
- <ecd33fa3-8362-48f0-b3c2-d1a11d8b02e3@linaro.org>
- <9f13df6f-3b76-4d02-aa74-40b913f37a8a@redhat.com>
- <64a93c4a-5619-4208-9e9f-83848206d42b@linaro.org>
- <f1f290fc-b2f0-483b-96d5-5995362e5a8b@redhat.com>
- <01c67173-818c-48cf-8515-060751074c37@linaro.org>
- <aab5e2af-04d6-485f-bf81-557583f2ae4b@redhat.com>
- <1b52419c-101b-487e-a961-97bd405c5c33@linaro.org>
- <99d2cc96-03ea-4026-883e-1ee083a96c39@redhat.com>
- <98afe1bd-99d2-4b5d-866a-e9541390fab4@linaro.org>
- <c59f2528-31b0-4b9d-8d20-f204a0600ff6@redhat.com>
- <40e802eb-3764-47af-8b4f-9f7c8b5b60c1@linaro.org>
- <7e1f4f64-dfc4-4366-8e01-0891b2d4d2b4@redhat.com>
- <94f537ae-c2b1-4928-a3f3-6449c30cb624@linaro.org>
+Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
+To: Maarten Lankhorst <dev@lankhorst.se>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?=27Thomas_Hellstr=C3=B6m=27?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>,
+ Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?=27Michal_Koutn=C3=BD=27?=
+ <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "'Liam R . Howlett'" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <20250819114932.597600-5-dev@lankhorst.se>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -178,21 +169,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <94f537ae-c2b1-4928-a3f3-6449c30cb624@linaro.org>
+In-Reply-To: <20250819114932.597600-5-dev@lankhorst.se>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LO6BdTvHrUsFrOlQojtWMz4Etf4IyMQU1ZxtfHJiT30_1756729042
+X-Mimecast-MFC-PROC-ID: RreSc00HlX7VWPS1ENEk4zi1qe0KZlUVVHlYnxjm88w_1756729517
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 91331160004
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5A58C1C0004
+X-Stat-Signature: ujxk9bsxu6mkzcggtuyo6uw8ons1mizo
 X-Rspam-User: 
-X-Stat-Signature: nr91ykneenx3aeedwoa8jndcpcu5htqo
-X-HE-Tag: 1756729044-666471
-X-HE-Meta: U2FsdGVkX1/wAsm7Pdsr6ZoKE8RRMQRQ6y2cnZ+MkCPqDQPbCT4TqldI1Br6KJpUSPh877vSAfiu0tPvoa/m7pBv2HBeDoHwfg24DqloT26+BevwzMhRXgu4nVzSXadRDXNEdBL4qLoAMHsfJPtFiQzka2b7HVcBFjs7w7sEHAGjyfHEPvRkUxdL6IzmvAWwulyLTbh1nOc+gAbXH20zvkNQCzF+JvtAdVscu/CyW/ry8gl239KnFQl512tbaeDBkbzvCcxEkAcnv4wdlvW3+F7fMdBqgpgZNdItC1rLELBa1Yr8FFGL0ybFUAFC4oq1oOqO+kNIiTrctmaMOx5DE319/AwK/hAxlTTDTvffLabL5gsaF3k4wyUSIld9BbaKdV+sc8BpMXmXPmtJOea+sMQWZM3dshjxEStAjqdHaBTbLmCSelVSYGhm6HQoY8rrz+VfIHcI9EPImwUR9VASfT72qXjMuBX7PvtEvP5/phCH6AVe/PFEqMLqE232GTYc6AoUniQgoAVALTHWBRX4wLAg6oKqDS00MICFdQq17koul661fmE6D3tOxhapq1YwTAtAQDab2jhfb3IA3Y6LReoplvD0clcy0NpLATu5H2upgf+6Fl+vwDKT3oeLqVJ4p/2QDBRbMpdJ4+rYFLCkjvRWG/2nCkQ2aG90bcTL9CyFPbSmc/g+FhJqJq/cp9c1/rZP1a6jRse+U9LAXylKH48+1cltoazprBdcl3TvVrGweNq7b5UjZzPrznRxsbBTi0rJqWyslO7MBcgknfeunX16YAu1FkwwlFZvZ5bix/B5EeTFKSZ7rp+NgOcUz2mLGAzjryBEBng9It+me8VIl7fT6Ysm3+fAVTZGKwDvjEAt9hD3zQKGkIgzWVs+nnryMYlFUxa9AfcsIDuyQNUGkF1J3F6nb5YNLDmmrV4zkmieG1dzdLH0hnCFX3JZOx8Xdkv601r+/gAb4pJmNqy
- nElTsINb
- gCxmW8BkHB6YQxWcPxcuqRwLSUDR4eG0rGWmMewohqsSfLvcB+O0GC5mSPoABnVxLoeGx1d+cqEC//Zd8rEgcQWT9nCB+Y/LD1hLgXRUYCaeLy10DO0INfIxUnHZJzU/EneEDqfVlCdhMxiX73oso0G+tbtJju9LBkdWY/xo8MIH7z3qEq0DQJ5VpOuv75aN3coEr5an5cTX+/qi6272bck7Y3BmkwUmmH5jcUWEQhxobc1wRXTWohJ44aMtkqOGmm1tZbzdddhWBGPB70BlmJBxOMMqCHoYM+DQRPnzVtcxCyDzPOv3cNiM+C2FwNmzdTzz1NOYIzqzWIuqYSQoZHCvGx7h5KFKSQWqnQ4M3dWZ3fYw4QZFkbGMPP0tl7HqIuD9/FEAWtA3rDrRn2ooQEG9RR1KVXBCJKn54qc7EXPOOPACvXeMX2ncVng==
+X-HE-Tag: 1756729522-165587
+X-HE-Meta: U2FsdGVkX1/agpI0YAVUbjI6RSIQcRBwaBFssHWVQHwj7R9XlZtNKPA6AdYiWDIo4w7h6WI8W8S+Z0I0YDmgST1D4LQN/0kpFqZK81yOOwqlZb8lv3kCThKF2w+01H8dAADDF3ymePZjirID45SwdztjJVuBWl5QaRUcg6bfOkngMAvf3pA7SEFbr9APyvPm0wg8fbrX7dD9nJeSH0t5jyImzEGW7d41VDZWk6Yo7tYkePCIGSOjqn2fWPkH3AsI5a+hnKInWNld+0sFq/j4f8RqgdPu2Re9l5sn6t0ZSxowUseaY9q0Nrmk/5QOu7pTmZ2QbUbxXVBB14iw4eTt66IY9HHZ47qXw/tUkCBBGx4IZWHxz2252ilHRGELGNTFgklF4bViAbr4f8DuNpQruwgdNipOte8TGd6xv9m6AiaL8BfwUflB50zMax3UxH3+9w0HCV6G3DujugVcdVuYnH7TwOCuzCj1jBcUxu5Ecf1C1SGT6KEyuGwCtL/WPRexmS2WBKqnD1irDZ85g1cWanVsTQEYFgsjQKGHNycGn9x8p0ZvM4kDBaKcuKFjK9Rtz9bOvuoBA+BBru5GF/3FFBfhKRTMJx1k4XzR/2MAzl2iBz+QqtjLI8Ysg0qjp6G9/k6FYoR9rIXVeBOWk/UThx8jPHpFokxrwNKz6XoqgxL9Xquf+j6cYpLgpYzRVrvIEBOoEoorEXCMiHOeCgCCvXjg7tqug9UDpEiPxuz1ga8eFABmUAG0tVlT5/P6LEXkYBEPZIzqeMLaDQYvI5rkB/XD7BmMbNRncGXvSgPBdeOlgRgvPXqWhAAMcfWJdyVW2g6HVTxitVJm/4noy27ldM8LH8hv7mbkZWDKGH9VZxG0c4gI1v/PFM+LbLxB6w3pEwMq6oY8qYgtZ9CrI/O30ySeWTyeebxbRoKRxOfm1TjJRT5oNYo+0OyQMdCmuX0ETwgSXsR3zpSb7rjyi3m
+ EmEZfzVY
+ WKV65y8phIU7cgkYCdH9yRccKY+DifqS93AIeKogLKygH5kTwiXnusNa8lR4B9oOPdQTYsy8m8obBy/jD53n15DsdOwZE74FyEURRldciXLBA8h4fvALjsKSVkwxhS8BovidJM7KRKqizykpSkGVgLr28BesnHS+a1PeTNr2x10n47JgaCDyijgBTV4BZ5sttRnu4gf2VfPqaDUl0Gv3hGHOTVEiaf9WC29iJoAH5z+N2rpqxKtoGVvU3ckl2TOLQo/MlkDgs5dEUcase89Pxh22eSoVMC4vBD//jS1rph2qQ+AZ1WKGxHH4cCM9I41uon+ZIuYvQMzUKH96PiE4C2C2CEQJ6oKo+Zb6uFmcE8OyMfeg2MQa28IeNJ7O1TxrMVYrFXAyhrmvvEv/WeMS33K1oadIYu4bkuOy7Z5ksrG8hTDOiq45HjifYCq4r2IxObD7VvXSadyZseGTplt//sjINaTqzjrBDWP4I8E+ibJ0xWiatREs6IQLH5CaLnNKLwmVn8G7fmrXi4DM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -201,75 +192,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 14:02, Eugen Hristev wrote:
+On 19.08.25 13:49, Maarten Lankhorst wrote:
+> When exporting dma-bufs to other devices, even when it is allowed to use
+> move_notify in some drivers, performance will degrade severely when
+> eviction happens.
 > 
+> A perticular example where this can happen is in a multi-card setup,
+> where PCI-E peer-to-peer is used to prevent using access to system memory.
 > 
-> On 9/1/25 13:01, David Hildenbrand wrote:
->>>>> What do you think ?
->>>>
->>>> Looks a bit over-engineered, and will require us to import a header
->>>> (likely kmemdump.h) in these files, which I don't really enjoy.
->>>>
->>>> I would start simple, without any such macro-magic. It's a very simple
->>>> function after all, and likely you won't end up having many of these?
->>>>
->>>
->>> Thanks David, I will do it as you suggested and see what comes out of it.
->>>
->>> I have one side question you might know much better to answer:
->>> As we have a start and a size for each region, this start is a virtual
->>> address. The firmware/coprocessor that reads the memory and dumps it,
->>> requires physical addresses.
->>
->> Right. I was asking myself the same question while reviewing: should we
->> directly export physical ranges here instead of virtual ones. I guess
->> virtual ones is ok.
+> If the buffer is evicted to system memory, not only the evicting GPU wher
+> the buffer resided is affected, but it will also stall the GPU that is
+> waiting on the buffer.
 > 
-> In patch 22/29, some areas are registered using
-> memblock_phys_alloc_try_nid() which allocates physical.
-> In this case , phys_to_virt() didn't work for me, it was returning a
-> wrong address. I used __va() and this worked. So there is a difference
-> between them.
-
-memblock_alloc_internal() calls memblock_alloc_range_nid() to then 
-perform a phys_to_virt().
-
-memblock_phys_alloc_try_nid() calls memblock_alloc_range_nid() without 
-the phys_to_virt().
-
-So it's rather surprising the a phys_to_virt() would not work in that case.
-
-Maybe for these cases where you export the area through a new helper, 
-you can just export the physical addr + length instead.
-
-Then, it's also clear that this area is actually physically contiguous.
-
+> It also makes sense for long running jobs not to be preempted by having
+> its buffers evicted, so it will make sense to have the ability to pin
+> from system memory too.
 > 
->>
->> What do you suggest to use to retrieve that
->>> address ? virt_to_phys might be problematic, __pa or __pa_symbol? or
->>> better lm_alias ?
->>
->> All areas should either come from memblock or be global variables, right?
+> This is dependant on patches by Dave Airlie, so it's not part of this
+> series yet. But I'm planning on extending pinning to the memory cgroup
+> controller in the future to handle this case.
 > 
-> I would like to be able to register from anywhere. For example someone
-> debugging their driver, to just register kmalloc'ed struct.
-> Other use case is to register dma coherent CMA areas.
-
-Then probably better to export physical addresses (that you need either 
-way) directly from the helpers you have to add.
-
+> Implementation details:
 > 
->>
->> IIRC, virt_to_phys() should work for these. Did you run into any
->> problems with them or why do you think virt_to_phys could be problematic?
->>
+> For each cgroup up until the root cgroup, the 'min' limit is checked
+> against currently effectively pinned value. If the value will go above
+> 'min', the pinning attempt is rejected.
 > 
-> I am pondering about whether it would work in all cases, considering
-> it's source code comments that it shall not be used because it does not
-> work for any address.
+> Pinned memory is handled slightly different and affects calculating
+> effective min/low values. Pinned memory is subtracted from both,
+> and needs to be added afterwards when calculating.
 
-Yeah, it does for example not work for kernel stacks IIRC.
+The term "pinning" is overloaded, and frequently we refer to 
+pin_user_pages() and friends.
+
+So I'm wondering if there is an alternative term to describe what you 
+want to achieve.
+
+Is it something like "unevictable" ?
 
 -- 
 Cheers
