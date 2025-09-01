@@ -4,187 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA68CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:40:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46432CA1002
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:41:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3952F8E0045; Mon,  1 Sep 2025 09:39:53 -0400 (EDT)
+	id CBFC28E0052; Mon,  1 Sep 2025 09:40:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 345418E0008; Mon,  1 Sep 2025 09:39:53 -0400 (EDT)
+	id C97938E0008; Mon,  1 Sep 2025 09:40:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 213F38E0045; Mon,  1 Sep 2025 09:39:53 -0400 (EDT)
+	id B887C8E0052; Mon,  1 Sep 2025 09:40:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 05B7E8E0008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:39:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D33913B021
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:39:52 +0000 (UTC)
-X-FDA: 83840789424.11.EC07848
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 66073100011
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:39:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C7F58E0008
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:40:56 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 47B0E160864
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:40:56 +0000 (UTC)
+X-FDA: 83840792112.09.0B56D6B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9BE0D100005
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:40:54 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OhIIMhDh;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756733990; a=rsa-sha256;
-	cv=none;
-	b=VTIyXe+2W33I4r13p2A9DIvNMTBth+Wwvh/QgX8uBEMwqUevWH3Y4jGF/JkvRTy/gQQnwa
-	vB4pK1IYCF621cviFz3g0hWBUiwQc46XqKCzu+50HEXPwEXnJ5T4S7HixBEHkEvL/d3pFQ
-	q1zwW2S2w09iOjDHgkMSO9DZYKA3kuc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OhIIMhDh;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XWheIfvn;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756733990;
+	s=arc-20220608; t=1756734054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H3id/gOofLyuF/iZzklWJhNUkAhzxEH18RZFHORTa7Q=;
-	b=uxkynj0g5FWJ445QYuSwratXixEJjlGEl4vh4A4aI63KLw29za+k0GCW76/MjDeRm0/g0s
-	ritCepdr7n1B4v2X5KC2xyT2FeCafym+R/X92FYGGAU3xoakc+e81pzqlz8ocfTP43TQm4
-	UmZzbTROXNOSy8SvvkIbttEOp+oMQ/Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756733989;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=H3id/gOofLyuF/iZzklWJhNUkAhzxEH18RZFHORTa7Q=;
-	b=OhIIMhDhN0R9e+Qpi4e5rhyVhRYRQcc0i7MzxZ/PzPpDCXrV7EI5Z5wzzXSVR1a9nxXWYI
-	lW28PCavEN3yDNWWrdQP/UTU9w/PhTXyBCXOrWLH4r2KlgMvNUSyTEfmbAPZI6A0fBESuY
-	s/lWoMCFvoP13WdsDtmRy64Dg72jUWU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-48-EX9OjilxO56m0Y9fBDW1Mg-1; Mon, 01 Sep 2025 09:39:48 -0400
-X-MC-Unique: EX9OjilxO56m0Y9fBDW1Mg-1
-X-Mimecast-MFC-AGG-ID: EX9OjilxO56m0Y9fBDW1Mg_1756733987
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3d48b45fad0so944613f8f.0
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:39:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756733987; x=1757338787;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H3id/gOofLyuF/iZzklWJhNUkAhzxEH18RZFHORTa7Q=;
-        b=XRMaAV90DoydECRoyKh7O/+tk37PBjNONddnQuU1UNJVmRRV2JRp7FbzCyfw8CRpIQ
-         Yj+OzNrZZ9l/MdD/faxcmJgzhaQCMMFyga5Gln4VXIw7SxAtoUhrwex7/aSs/ASr/6Dl
-         QeSxlTocPk/tU/B1Ru1E8cnj+w8NtNtwhh9FfWamT51H96kF1CIusUe2HUu5oYMsYQis
-         AXOYlLiPmvSA9bcEYXDhk6bTZV4FM86tlsVVhsJjQAVzfdPAE54MGRHHTLYtmeEahGtA
-         sGPePKDL0RZiWb6MLJipTiQqQKjncwOJDpir3oyJJ/zNzRGO3t5XtKLHsyOSf/08KCBf
-         0g6g==
-X-Gm-Message-State: AOJu0Yx2iyG5yPF+8LchVJpoppIHofZLaA8qNKDpoop7xr8+6vKGL9eY
-	3owqgQIT5WfvZw4cm6nCM+9c5nxkK4iXtkTB02I2YgNbwZzO92dkNivCTfV73zsQ6S/ivZ/S1Kx
-	pHXCzpL655K79QUApBiFGEqbitg6nrApcYlQJl8vgvs0ZXImSmcMp
-X-Gm-Gg: ASbGncvXzGlKyzrfAW+B1SQoyKICLhhsZ7Qn+RJ2zTcBozfLyoHEvZ1AcCcRaNmLu/G
-	mchIp3J0K5iCFxPBcLk8K5id/BgYPmTI3ba6DXfKUHn/hu66nMZk4TDmNvngxPf6yPL1YZH9UBL
-	xKXHvj4JeahI/YjI4eOHAQrG5WdDdtLktWEzimdgf63eEEQQE/atPvNGtBry3xN+On49jSTEJbq
-	9JJrZcUbCwIh6HBZ+UJQ/nazTpn6yfHBCfsgnTWr8WzNzrIm44IN4Ce4LAckv7t815/NToCaGP6
-	cRQLT3sXqoEbo70KULsR1/4dF5hTMGLE5aVRmvrdBh0132Ty/V4B9/zqn+GfeFUnMCILlolx3AH
-	aK9ylPDou5uozj7RcoprdHNUUQlLV35/tQaQBtp59DQYhKBfJns8IblDev0yw4Avr6po=
-X-Received: by 2002:a05:6000:659:10b0:3d2:633f:d02e with SMTP id ffacd0b85a97d-3d2634f1711mr4945718f8f.2.1756733987323;
-        Mon, 01 Sep 2025 06:39:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF16bYB/CPbtI8bBu7Fukc9/QEkuztuZV5dc0Mxq3hfWjQ0mUxmJtka4Y09bvawf1aVKd4/5g==
-X-Received: by 2002:a05:6000:659:10b0:3d2:633f:d02e with SMTP id ffacd0b85a97d-3d2634f1711mr4945678f8f.2.1756733986750;
-        Mon, 01 Sep 2025 06:39:46 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6fe5sm238421945e9.5.2025.09.01.06.39.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 06:39:46 -0700 (PDT)
-Message-ID: <72558e21-2ebf-448a-a93a-3d1a3181a592@redhat.com>
-Date: Mon, 1 Sep 2025 15:39:44 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
-To: schuster.simon@siemens-energy.com, Dinh Nguyen <dinguyen@kernel.org>,
- Christian Brauner <brauner@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com,
- selinux@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org
+	bh=5TIV1/bWJm+Qdj5NhVna0mevEXItOlds/WeSsTqphfE=;
+	b=XC92biSPlPQfgIOpAeQWx9MOiVk4zpN2xemc6xj2iwYiGRp2M0aohnsARqCUtB1N2I5MqR
+	x7afbbrTYPd2lpVVib9IOlcSgCZtrz4xFrGwIozp3J+6b4gqWIw1zB44+8MMVjkMbzEPJp
+	l2JYrnIhRGA1SUpCUhjvRCKack+ASu8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756734054; a=rsa-sha256;
+	cv=none;
+	b=q9ESV1MRaF5LlvouISnfAVM3km170XScFduMpIIq36nzVv50ZD8HJfp++XqGT40kAmnPF8
+	FOcwmrveBznKn5k2Bp19Ys04M2PvK78rwB2wpqytbWisczazYQGjpw4oYcQCkjjxkcvDC1
+	nYQBq6PB/CwiXUbNA/m6X6zfD6xZN2A=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XWheIfvn;
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3AE78433F7;
+	Mon,  1 Sep 2025 13:40:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C596BC4CEF0;
+	Mon,  1 Sep 2025 13:40:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756734053;
+	bh=Vu1T9oeflFwwseH4UwYLoCDw2rg5tyF7d+uoYsIwX14=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XWheIfvndLQvsXjP9U9awyBD8J03c71fo0eZYwRkAVaSegGnB6M8yAG84hKFTZ6pZ
+	 WXUaILTjS2ome/lQZpmjWti4uXFiuyVUrpb9MBiadk9IDgWiqsTu18BgRH0di+kN+h
+	 LhDkQjUzZNb6xENCZSOEF3wUqwM8kDc47n+sPCWgnRb4uQtSbYTCcKsSPLQDxajL6l
+	 8PCIX1xJqXAxtHfu/yVArx49jdplr7KtB0xl0XPUm7rKpZaxJekitWoIygF9KUi4LH
+	 2uqg/WgQVetTvdXYGzfVDRG1BiHpS1CgspIql52DpnP1dj2X6wrwoCXbq5RLo6BYf+
+	 T+aIQ2gltLbOg==
+Date: Mon, 1 Sep 2025 15:40:26 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: schuster.simon@siemens-energy.com
+Cc: Dinh Nguyen <dinguyen@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Guo Ren <guoren@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, John Johansen <john.johansen@canonical.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Kentaro Takeda <takedakn@nttdata.co.jp>, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian Cain <bcain@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Jonas Bonn <jonas@southpole.se>, 
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, cgroups@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, selinux@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] nios2: Add architecture support for clone3
+Message-ID: <20250901-lammfell-kaninchen-c160a69e6b36@brauner>
 References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
- <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iIVzSuT96xemyV9rOjeUTHNZD0zxW3LVey6XYRBM3H4_1756733987
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9BE0D100005
+X-Stat-Signature: ptcjcc9tpmbqtufu3jodqid4npd4a1ju
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 66073100011
-X-Stat-Signature: ugbc61yzripepui9ze5xw5asah9ejctf
-X-HE-Tag: 1756733990-905676
-X-HE-Meta: U2FsdGVkX1/UiWOZmRwWbuKKIvyJMooK7Ln+T0OqKEnXXXsUPW0tWnHarlCKsOc1OrCZdseueRKTjVLLnlxWdTwA4gLpYVa4awm6p1jNMHOEyRbZqckawETep3Q0ynWq/gaQNYBddCs5UIE8JVHd87s5VvcPGKYHob8Z20RQKJtFn51gmfWse/Se5sAH1LwvNzqhqwTc8EZ1k2xROD7JB3YRCkensIr/7X06ekdsOUHjOcZJn48EOp/izDryxKptMbmI1mp9rSi8pGF1KlXPg61ZQenTGUBKcI3aZ6VcNfsFAlG0cNzcH5XTKHMDT++pQRH04Jy7zOLNJNjr5PkRAv5vkRdyIOwUhj5bKYRsp+iQskGEtGeSqRfm/eUleTuMQ2+tWLvOkwCbXp25YJe6kZxwpVmNf1OtPtA4wXh9gF6iDNH45n1YEYvtgnftPzOT0aJHnVMoP5t0I7N1o/L1jg/9uG1b+CAEdDabwgYrhFhildL7HpGtO8aos4MCZIcSCeWwOq/aKB+UMaCBhlzMDmfgl8OWh9yOWM9qOaaclS1JboPrYgraiN13zt4iksGRdTGTPAPNt+HLMNYBjPLhII0aJg/G5MnDjLkqRZ5lacrlD9A0FDt9bR2Mi0VZtowNIUDRo2U/Z7e/D6q5uTVcimg81Q252iGm97dkWj9+n2pamt73qKytu4+GlpG4Qvqtg64AgFVerRRtdrItpb3jqjjbpLaOT9id+OhJCZtCjAOCTFKPLxC1aQm9AzuzAgAwTcd55egS4BekE+jVL3r59ANlfSOhm9ZhfYjjC/10V4kGbW2qCw+G8LCDSmSX8btoe9/InPnRmNRzDtgQBphE4yBZM+I9gneQYalmSKit6+aFH33oCpvdsikZ/C2QIqlODVX+Za3jPz/+HQ8QCYqGWX6Iw5YumdH8N8SQ3i618BOYqmsqqoqsl3LLt1tsE/ecZ0ryuwernMOUhkUYLLG
- GbsxjZwk
- s5EWrqq39VaMkPDgaiYLSMRcXXyGV1SVPsQuKODP0axqIp1KkpgnYOLntyLNyrtDzit4IH96n6toCD9YYWIDWavsWNwlL94YFF7VAONJF/l++cRifrSt+KX+aB9GBX2zxiX/LZCmdJKdlmVcXlgp9IfL7GyLbANr/Y7hYH8lA0417fdv22w0DlK+EQbL/WJiBmLSsQNJ2UIFmVAs5iYfR2uoJTmA+JssjVIUoZO+cp6T7fsYfhErRIdoi7BjIpF2BpiOTBikWzZsV18kcAkWlI4b+kLgjJEFt444wlq/PpVHeZd+0pYX5qKMjVzbfBkrZLRQkO3FXpQ7bSF3Cx/V38GqeOJr3Z9PzMD/G7hbk7I21O3pCE3/Gzk3uA3pyXYu8BniCs1KZTCNRbEOLwZT8EL75ud+Ng5v+F3z4E0mZWjhqSa5T1YXkze69KtkoyXCNW0XBjavo73w7IgrWlgk6XVtApB4az+s531NwyelRab2Tpz9tHxR0db+gajmXn+34EuE+gh7kz6txLmm6RvNGWKEMBjsHB1z+jmgf6ZcFsCwwNtuG72QP7fs9bRUkWUBxfm8AM5QaONBmeZzGaZxIEz8GHrZMaLRrlwpp
+X-HE-Tag: 1756734054-448456
+X-HE-Meta: U2FsdGVkX19ScgnoZGPk3ztDxBNisczpfxEZhzaJDgADlzkgLAWrKjEyXDzpfFacKgp/xYSb8JjlUeYc14VAVcQS9t59u3i3CBMJFIUHgZvlm529I1MBIVadsCsyIjX+nHjZpPvDWv70oHYsOheQ0YyaULfDcWZrPP6jLksDMVr+Pp49EK93yHlmTCqdEmiS3RXw9mLkEpXHJTq0b8lu+2Xfhv/GEu3vcK1/8tdtofuIIb7q8Jhpb/CPR3LQrFoXxGfofxT5DEEmeVrVD/jmnnhhY+U5F7d0bW7DXDCupmDbNdQ5I3sx7lgqMaY2fQYjVk/M+pmLEyC+msluw0vrOJQRGFZrNhATRJLgyycpiv11ETq833fCjE8U2+rcREu+9CYZWZNpOSlcglHxJzyfMo2MUzAF9GtYiIE3oxBv56jo8e6sdh7/gJwmU7dknANjSBy5n9t8XjQcibFCxPLQdAn3s5gCXYcJx1vFOmynRTYW6WoR+14CcGXz4h8Ox5cFnr4sb8beCPrevDLmCSl79RjbsBqIQbLlQu+/WG/XFxrrDLplvksXFR+5ytkd63UE+ZiVnIDZh6mdk3kk9WVW2tja/WKjLjN1oiVh0pAjhx8GjJSdCg8fR02J/nDavIXaSw0fOVTLG0Oxck7e2ARPVZQmbpagakJddI8SjvieCgAFJ87ZAVmQpYfrDt2yYvIMGHXPWcjtEvHwTirnHSOUmwCGF6KO0K+GG1b/G60rEYFlDG5ZI8w6NMILgtjFdIHAtCf1gh0cml7jx1WcWj9ZQ9c98EaWexSn0MaIVTjhuILiB90KFmt6hMOtamGUqJzgNT2fC5MSDqy5GIrW6vRpCNkcwLr/PHHDO7956AbuXn8C/Xm0MqsaO0KG1xA4Sy+H4BzRn23UiNOIwiorsf8gYkQ4H6NyYNE4Tg2wsYzDVqmqG6amcw6XjVT7PQ34q/mJNrO2xJb8s3QEc1OJDYQ
+ 1USf4+S2
+ TPwNs88/Xxl6WvgcW0wyi/UH7vxYwU/m15Eep7QiwpU8RulHdKvUi2CFp5BjK0yptxjs8TW/7WX+F1gRTsAFhqKxIIXYCedlzVt611y+MNUgJXlg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,64 +143,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 15:09, Simon Schuster via B4 Relay wrote:
-> From: Simon Schuster <schuster.simon@siemens-energy.com>
+On Mon, Sep 01, 2025 at 03:09:49PM +0200, Simon Schuster via B4 Relay wrote:
+> This series adds support for the clone3 system call to the nios2
+> architecture. This addresses the build-time warning "warning: clone3()
+
+I did not expect that to happen or matter but fine.
+
+> entry point is missing, please fix" introduced in 505d66d1abfb9
+> ("clone3: drop __ARCH_WANT_SYS_CLONE3 macro"). The implementation passes
+> the relevant clone3 tests of kselftest when applied on top of
+> next-20250815:
 > 
-> With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
-> clone3") the effective bit width of clone_flags on all architectures was
-> increased from 32-bit to 64-bit, with a new type of u64 for the flags.
-> However, for most consumers of clone_flags the interface was not
-> changed from the previous type of unsigned long.
+> 	./run_kselftest.sh
+> 	TAP version 13
+> 	1..4
+> 	# selftests: clone3: clone3
+> 	ok 1 selftests: clone3: clone3
+> 	# selftests: clone3: clone3_clear_sighand
+> 	ok 2 selftests: clone3: clone3_clear_sighand
+> 	# selftests: clone3: clone3_set_tid
+> 	ok 3 selftests: clone3: clone3_set_tid
+> 	# selftests: clone3: clone3_cap_checkpoint_restore
+> 	ok 4 selftests: clone3: clone3_cap_checkpoint_restore
 > 
-> While this works fine as long as none of the new 64-bit flag bits
-> (CLONE_CLEAR_SIGHAND and CLONE_INTO_CGROUP) are evaluated, this is still
-> undesirable in terms of the principle of least surprise.
+> The series also includes a small patch to kernel/fork.c that ensures
+> that clone_flags are passed correctly on architectures where unsigned
+> long is insufficient to store the u64 clone_flags. It is marked as a fix
+> for stable backporting.
 > 
-> Thus, this commit fixes all relevant interfaces of the copy_thread
-> function that is called from copy_process to consistently pass
-> clone_flags as u64, so that no truncation to 32-bit integers occurs on
-> 32-bit architectures.
+> As requested, in v2, this series now further tries to correct this type
+> error throughout the whole code base. Thus, it now touches a larger
+> number of subsystems and all architectures.
+
+I've reworked copy_thread()/copy_thread_tls() a few years ago but I
+don't remember why I didn't switch to a u64 for them. Probably because
+only CLONE_VM and CLONE_SETTLS mattered. Thanks for doing that.
+
+> Therefore, another test was performed for ARCH=x86_64 (as a
+> representative for 64-bit architectures). Here, the series builds cleanly
+> without warnings on defconfig with CONFIG_SECURITY_APPARMOR=y and
+> CONFIG_SECURITY_TOMOYO=y (to compile-check the LSM-related changes).
+> The build further successfully passes testing/selftests/clone3 (with the
+> patch from 20241105062948.1037011-1-zhouyuhang1010@163.com to prepare
+> clone3_cap_checkpoint_restore for compatibility with the newer libcap
+> version on my system).
+> 
+> Is there any option to further preflight check this patch series via
+> lkp/KernelCI/etc. for a broader test across architectures, or is this
+> degree of testing sufficient to eventually get the series merged?
+> 
+> N.B.: The series is not checkpatch clean right now:
+>  - include/linux/cred.h, include/linux/mnt_namespace.h:
+>    function definition arguments without identifier name
+>  - include/trace/events/task.h:
+>    space prohibited after that open parenthesis
+> 
+> I did not fix these warnings to keep my changes minimal and reviewable,
+> as the issues persist throughout the files and they were not introduced
+> by me; I only followed the existing code style and just replaced the
+> types. If desired, I'd be happy to make the changes in a potential v3,
+> though.
 > 
 > Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
 > ---
->   arch/alpha/kernel/process.c      | 2 +-
->   arch/arc/kernel/process.c        | 2 +-
->   arch/arm/kernel/process.c        | 2 +-
->   arch/arm64/kernel/process.c      | 2 +-
->   arch/csky/kernel/process.c       | 2 +-
->   arch/hexagon/kernel/process.c    | 2 +-
->   arch/loongarch/kernel/process.c  | 2 +-
->   arch/m68k/kernel/process.c       | 2 +-
->   arch/microblaze/kernel/process.c | 2 +-
->   arch/mips/kernel/process.c       | 2 +-
->   arch/nios2/kernel/process.c      | 2 +-
->   arch/openrisc/kernel/process.c   | 2 +-
->   arch/parisc/kernel/process.c     | 2 +-
->   arch/powerpc/kernel/process.c    | 2 +-
->   arch/riscv/kernel/process.c      | 2 +-
->   arch/s390/kernel/process.c       | 2 +-
->   arch/sh/kernel/process_32.c      | 2 +-
->   arch/sparc/kernel/process_32.c   | 2 +-
->   arch/sparc/kernel/process_64.c   | 2 +-
->   arch/um/kernel/process.c         | 2 +-
->   arch/x86/include/asm/fpu/sched.h | 2 +-
->   arch/x86/include/asm/shstk.h     | 4 ++--
->   arch/x86/kernel/fpu/core.c       | 2 +-
->   arch/x86/kernel/process.c        | 2 +-
->   arch/x86/kernel/shstk.c          | 2 +-
->   arch/xtensa/kernel/process.c     | 2 +-
->   26 files changed, 27 insertions(+), 27 deletions(-)
+> Changes in v2:
+> - Introduce "Fixes:" and "Cc: stable@vger.kernel.org" where necessary
+> - Factor out "Fixes:" when adapting the datatype of clone_flags for
+>   easier backports
+> - Fix additional instances where `unsigned long` clone_flags is used
+> - Reword commit message to make it clearer that any 32-bit arch is
+>   affected by this bug
+> - Link to v1: https://lore.kernel.org/r/20250821-nios2-implement-clone3-v1-0-1bb24017376a@siemens-energy.com
 > 
-
-(Adjust To: list)
-
-Thanks!
-
-Acked-by: David Hildenbrand <david@redhat.com>
-
--- 
-Cheers
-
-David / dhildenb
-
+> ---
+> Simon Schuster (4):
+>       copy_sighand: Handle architectures where sizeof(unsigned long) < sizeof(u64)
+>       copy_process: pass clone_flags as u64 across calltree
+>       arch: copy_thread: pass clone_flags as u64
+>       nios2: implement architecture-specific portion of sys_clone3
+> 
+>  arch/alpha/kernel/process.c       |  2 +-
+>  arch/arc/kernel/process.c         |  2 +-
+>  arch/arm/kernel/process.c         |  2 +-
+>  arch/arm64/kernel/process.c       |  2 +-
+>  arch/csky/kernel/process.c        |  2 +-
+>  arch/hexagon/kernel/process.c     |  2 +-
+>  arch/loongarch/kernel/process.c   |  2 +-
+>  arch/m68k/kernel/process.c        |  2 +-
+>  arch/microblaze/kernel/process.c  |  2 +-
+>  arch/mips/kernel/process.c        |  2 +-
+>  arch/nios2/include/asm/syscalls.h |  1 +
+>  arch/nios2/include/asm/unistd.h   |  2 --
+>  arch/nios2/kernel/entry.S         |  6 ++++++
+>  arch/nios2/kernel/process.c       |  2 +-
+>  arch/nios2/kernel/syscall_table.c |  1 +
+>  arch/openrisc/kernel/process.c    |  2 +-
+>  arch/parisc/kernel/process.c      |  2 +-
+>  arch/powerpc/kernel/process.c     |  2 +-
+>  arch/riscv/kernel/process.c       |  2 +-
+>  arch/s390/kernel/process.c        |  2 +-
+>  arch/sh/kernel/process_32.c       |  2 +-
+>  arch/sparc/kernel/process_32.c    |  2 +-
+>  arch/sparc/kernel/process_64.c    |  2 +-
+>  arch/um/kernel/process.c          |  2 +-
+>  arch/x86/include/asm/fpu/sched.h  |  2 +-
+>  arch/x86/include/asm/shstk.h      |  4 ++--
+>  arch/x86/kernel/fpu/core.c        |  2 +-
+>  arch/x86/kernel/process.c         |  2 +-
+>  arch/x86/kernel/shstk.c           |  2 +-
+>  arch/xtensa/kernel/process.c      |  2 +-
+>  block/blk-ioc.c                   |  2 +-
+>  fs/namespace.c                    |  2 +-
+>  include/linux/cgroup.h            |  4 ++--
+>  include/linux/cred.h              |  2 +-
+>  include/linux/iocontext.h         |  6 +++---
+>  include/linux/ipc_namespace.h     |  4 ++--
+>  include/linux/lsm_hook_defs.h     |  2 +-
+>  include/linux/mnt_namespace.h     |  2 +-
+>  include/linux/nsproxy.h           |  2 +-
+>  include/linux/pid_namespace.h     |  4 ++--
+>  include/linux/rseq.h              |  4 ++--
+>  include/linux/sched/task.h        |  2 +-
+>  include/linux/security.h          |  4 ++--
+>  include/linux/sem.h               |  4 ++--
+>  include/linux/time_namespace.h    |  4 ++--
+>  include/linux/uprobes.h           |  4 ++--
+>  include/linux/user_events.h       |  4 ++--
+>  include/linux/utsname.h           |  4 ++--
+>  include/net/net_namespace.h       |  4 ++--
+>  include/trace/events/task.h       |  6 +++---
+>  ipc/namespace.c                   |  2 +-
+>  ipc/sem.c                         |  2 +-
+>  kernel/cgroup/namespace.c         |  2 +-
+>  kernel/cred.c                     |  2 +-
+>  kernel/events/uprobes.c           |  2 +-
+>  kernel/fork.c                     | 10 +++++-----
+>  kernel/nsproxy.c                  |  4 ++--
+>  kernel/pid_namespace.c            |  2 +-
+>  kernel/sched/core.c               |  4 ++--
+>  kernel/sched/fair.c               |  2 +-
+>  kernel/sched/sched.h              |  4 ++--
+>  kernel/time/namespace.c           |  2 +-
+>  kernel/utsname.c                  |  2 +-
+>  net/core/net_namespace.c          |  2 +-
+>  security/apparmor/lsm.c           |  2 +-
+>  security/security.c               |  2 +-
+>  security/selinux/hooks.c          |  2 +-
+>  security/tomoyo/tomoyo.c          |  2 +-
+>  68 files changed, 95 insertions(+), 89 deletions(-)
+> ---
+> base-commit: 1357b2649c026b51353c84ddd32bc963e8999603
+> change-id: 20250818-nios2-implement-clone3-7f252c20860b
+> 
+> Best regards,
+> -- 
+> Simon Schuster <schuster.simon@siemens-energy.com>
+> 
+> 
 
