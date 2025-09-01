@@ -4,86 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B42CCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 08:04:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA572CA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 08:04:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E11D58E0013; Mon,  1 Sep 2025 04:04:01 -0400 (EDT)
+	id 38B128E0010; Mon,  1 Sep 2025 04:04:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC0B38E0002; Mon,  1 Sep 2025 04:04:01 -0400 (EDT)
+	id 33A8E8E0002; Mon,  1 Sep 2025 04:04:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C61C88E0013; Mon,  1 Sep 2025 04:04:01 -0400 (EDT)
+	id 1DC6A8E0010; Mon,  1 Sep 2025 04:04:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 92BA38E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:03:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4324F85D5F
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:03:52 +0000 (UTC)
-X-FDA: 83839942704.07.6F79135
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7527D180017
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:03:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756713830; a=rsa-sha256;
-	cv=none;
-	b=e7K0G6+cP4vat0qOaB5eTd4ranKmeue70aZKMgUJeWkDvjXUOFzVFTkvnHDYwqDSZleNhm
-	er9i60ePeHhC9tJqHm/ocB+3jssPQPWLNlV6F0Q0I1zA5c8WnHU+IFG17eXJOXnhFtnM2Y
-	Rx2VWwmCoOwWDtFg0DjFD+KWNFxIBFM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F33D78E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:04:47 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A9C8D11A157
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:04:47 +0000 (UTC)
+X-FDA: 83839945014.09.D4D8388
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 58BC080008
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:04:45 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eg4wN66H;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756713830;
+	s=arc-20220608; t=1756713885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vudjbGjiy1hJU/K3fzzlHHbpdoQXTBqyD6F+qv1tj/o=;
-	b=ZoYESpsxBZVtuYYjBP8pbxSlYpBIWX5ZBsigyXPyFfzW7Wn+A46vaoPSThkedbhi19JusD
-	vVL9mwmcJxDZr518SfL722AG2p7T57Fe9MPiSXCyyEAWp0+BDUHmwseosNmZuOx9WYnUP4
-	OfHIbnyzMSJE4LNARBWbmIPo8g0BlXo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 301431A25;
-	Mon,  1 Sep 2025 01:03:41 -0700 (PDT)
-Received: from [10.57.92.127] (unknown [10.57.92.127])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D2293F694;
-	Mon,  1 Sep 2025 01:03:47 -0700 (PDT)
-Message-ID: <dd242f5b-8bbe-48e8-8d5f-be6a835a8841@arm.com>
-Date: Mon, 1 Sep 2025 09:03:46 +0100
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LKbHko7dkYLZpt3fqHnEeSREWycVvJ+8hz3NIy768aE=;
+	b=2b2sP9LPDF7gJg6q79oCKqhb2FLdSeko2Koea4NqlciOC8zT4YqmpiznI9FINZ5ugR8Zo5
+	rYs+k6Jl4Uhu6G/UnuNaY7dFmomm7iQrOnIX8FXKsHQaEWujtl/16hDhFifxpbcjEPCTUT
+	eWok/GPXN9mbE/ymywTkapowsHhAQ/M=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eg4wN66H;
+	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756713885; a=rsa-sha256;
+	cv=none;
+	b=LhnFzuwr1w0OlfETHslrPMIePNRUPYS7az8g0IUPxx8DbmbMEK2UD2UiOCwK7FWQ3cSkzE
+	VhPDmX3MGmyrt2wkRvp+OOLDy0psdb7tz20stbZQjWc2/1gbxaoPQvXjLC0QoE2Ys0Ij3G
+	LTIkXo4Mwn5GEBKRz9mpPN7T7ZWpIgQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756713884;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LKbHko7dkYLZpt3fqHnEeSREWycVvJ+8hz3NIy768aE=;
+	b=eg4wN66H7SMzjlFQHZveiNRvWzyXzsgd+/28g8qcYRr2vqOCsK0qo1cn1bK5K7exYRkmyz
+	6yfOw3sunUxSlUmIBRXkszIvcFZapRkmJ+2d14XJEPfZfY+h9dKUb3puztUE550FofdAem
+	ZJ7Jgi/TkfUIJvYpNyukWNbuSg4ftb8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-H53mCuLMOcGkTm0JeTYUjQ-1; Mon, 01 Sep 2025 04:04:42 -0400
+X-MC-Unique: H53mCuLMOcGkTm0JeTYUjQ-1
+X-Mimecast-MFC-AGG-ID: H53mCuLMOcGkTm0JeTYUjQ_1756713881
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b8dde54c1so2650675e9.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 01:04:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756713881; x=1757318681;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LKbHko7dkYLZpt3fqHnEeSREWycVvJ+8hz3NIy768aE=;
+        b=SndZWmhji0w9BMeu947BblzyMK1Uc+CLD5JRelT7vPPX0A0/dyEMc7hQwY37nx5Gkt
+         UHUQsT51ENg8xXJYuLwkm6OPwYmawza/GVBOMI4Rp5lnez9eaL4dA4KNvZqrvQMF/JE2
+         TR+DkkW3H6iwIGo6YR2q/MQaQODEOvuUcvB/tUo77iK5Un0e3drihw1WjFg0/QuCnmFH
+         deulskEnzewjGJXpLiWuefB9ZYKc59bFy0VoyBLWOaF8fQsRJE/hD7UieRQTeFotsypp
+         YtHqWzD6ThIRI6N6+v3XlQYrcqQjVaDGSpeKmL4lPJlz5sXhvrQjhr+YCYMPL+qWOqsp
+         6k2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ9TyHYQ4lLvihNTWY40S4wUJJRb4eOrFL4nq6VaXeR60GAmZZDGwhvoz+VhhZzWs57pkmgSYOwg==@kvack.org
+X-Gm-Message-State: AOJu0Yw68GpKRDVbisDWpxiWKi+cDLxSpRD2m/OtAtlq3X0MldDfdMY5
+	CrlJrcuE4L1snAcmk8V6s8TrWzPoU/JWcfrKS18yuDosl5wkwaBCDnn5k5sBwxIN+9MrIYJP1JL
+	VWNKMMUxssiJ+q7xfsm6I/hkHWNi31r4Wc9ffEGKXdgH4cnO0RvG9
+X-Gm-Gg: ASbGncuiKkkeyMinhIB/xxEtCEqI8fQ+OMHtJsR07OwG9VcyP/FgO0d2jZXGZdk1mE9
+	/32f+GEJtISd0Q7RCtob4u6ou0yKUV7wSZRNGEPp/ir4nD2bgpbay3esiVT+rxgsU9XaJZACrqT
+	ds34u3lYYNBZ7G9T4SUMUmmEImIWtBeuWHhPVKjjhp38NvoTJI6dV3ijzKyxqk+1DX7ThrzYNZl
+	K3HMwrLN7J5TfjgDj7h0IjHklNF2aFaYXj/Zvmc3V87vp/wWzUSUyWFDsiSTGkgTw1o+Hqzj5V4
+	uTJKYoMUkQjN+sb41fIpGUDPQERLk+lSAcXDY4VQdgOXkK25PesHSfWLHvyyu0vlPjCtzCor4RJ
+	6qE84eLyJCVwq8ugf9olrAzk2Bij5ycLUo2YKC1qpFUb+IlAvApPNeR/Wk59kDSJucTQ=
+X-Received: by 2002:a05:600c:5487:b0:45b:8d2a:ccfe with SMTP id 5b1f17b1804b1-45b8d2acf6dmr16136815e9.13.1756713881029;
+        Mon, 01 Sep 2025 01:04:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoENLh5S7BOGTqAZNCFkAcOhEK6ENrXTKLMJFKV+IIJ/9xxjJOD54Hf2giRasmZR3ZIqHkCw==
+X-Received: by 2002:a05:600c:5487:b0:45b:8d2a:ccfe with SMTP id 5b1f17b1804b1-45b8d2acf6dmr16136395e9.13.1756713880534;
+        Mon, 01 Sep 2025 01:04:40 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b73cf86f4sm203834345e9.6.2025.09.01.01.04.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 01:04:40 -0700 (PDT)
+Message-ID: <2e069441-0bc6-4799-9176-c7a76c51158f@redhat.com>
+Date: Mon, 1 Sep 2025 10:04:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/6] arm64: support FEAT_BBM level 2 and large block
- mapping when rodata=full
-To: Dev Jain <dev.jain@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Yang Shi <yang@os.amperecomputing.com>, Ard Biesheuvel <ardb@kernel.org>,
- scott@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <e722e49a-d982-4b58-98f7-6fef3d0a4468@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-Content-Language: en-GB
-In-Reply-To: <e722e49a-d982-4b58-98f7-6fef3d0a4468@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7527D180017
-X-Stat-Signature: k6h8eew7qjsy3uirp451pkrhau58yrek
+Subject: Re: [PATCH 1/7] mm: fix folio_expected_ref_count() when PG_private_2
+From: David Hildenbrand <david@redhat.com>
+To: Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
+ Shivank Garg <shivankg@amd.com>, Christoph Hellwig <hch@infradead.org>,
+ Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>,
+ Peter Xu <peterx@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Alexander Krabler <Alexander.Krabler@kuka.com>, Ge Yang
+ <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
+ Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+ <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
+ <aLTcsPd4SUAAy5Xb@casper.infradead.org>
+ <52da6c6a-e568-38bd-775b-eff74f87215b@google.com>
+ <92def216-ca9c-402d-8643-226592ca1a85@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <92def216-ca9c-402d-8643-226592ca1a85@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: rtdvSvzgPppfiD-hbTIc7jrsoP5d9dlaKRc3Cv3Jesc_1756713881
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: keazxo4onku9j997gq7cb6k8rridtey1
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756713830-353572
-X-HE-Meta: U2FsdGVkX18ieczONy1jjU4OAEqZMS/5CxWFrDW8lovj04tqWBEBak4AWpMDF7+De83ECX87I8bkBnavzskj6vtsEnm5AG3hx1UL3LqXn9UCykZZxtc+pYOiVC2/3t3OignIZJDltqckbbGMZICZ8eDWNvzBVx/s/XxjoDuZmaI//9VknsF5MPtVrZCrTNE4yW8O/xhTpFAK6vmdMfIv0bFqCtT0AerDN/dwQRAHV5wNKjBZqboV5mPxj6pKa+p+VaK4PY7hJwiv7H552NsJyRj74+3e1rCLMIQYCxfmBZUOOCi374tPTsdBZGbY6aTAlIwunaM5DYBZplZC5QwS1RhdiFmySoRPPwBUjRj6gTgW7OxegNXaYlhZLHMnlO80sorbXgLK+Y7BKWhYcQpjiGbfNhf46jdj3yrGbhYrBSPGuCHPYBiuVs4ZdHM5gegxivydDicYuqNTDcx8EhoHgc7qBs+LJ9BLZLqoH9l4wKZj+BoAsJPWiEvyHLsFzpOHkLN0Axa4Ii+qa1rKXMJQ9uUsDnatNafwfcMywyro3Lm6AJPl7S2TOQRtDkAmMSmBMnMxHF6r6MZ/PK+e57RGc3O1PksUbE5Hm/FX2yNftCQhlBVppt9NvWfEe0PA0LaVNilYfkAOGIjGZFPkYng2JiIZKG++pMuOQXYc6KQzB8I71eWq8FkWSyxVe3kljYUH6g/a3UL3dXqnch5o/WbhhB4o73Cxbqxm2tEx6Q7ettCAODj5hEsWXVLDxBS4Ugiqz4SlsDXbxxf4SeqL51EgMt8CUGfrXjBWSwXydGfqkGqfvK4BLl2hSORUF2zRmK7HqCF4IV+Q1Qv3FFu9lYxckWFIFp6SifegTcP64bxF8nXtxLk9SAWKg1MDQyzUq2Hrb2ShbSXrn2As486q91pnPRz5LWQcQc7+JhlUO1pxHgj+roELcMN4J7L3vPzWpVQ/EPhfRRwkLzRfweKLGoT
- Av1aOPFn
- OW/8jcYomT4cOt3BY1ez8Bp57xasgGbdcXBuf470NSXKd6ldKB1q6vMg30EGQOPxE5EPqK5u9WU32KDfpZJwYoRQDx4fhviJSGD+XAaHtB/o8uV8s+f5sNGLmjgUNtIhFwqnokXKMSYLW0EH0hNucs7roleaStphYhN0lJlBClkVqCsmyCxUd3BJxvPO0E13CMLfXdyB65pMzYEaPyK5o4sGxGobJL2GnTOotpYl6atrATcQ3z2wxY26UMTzYgYavEtVPa/b7H2FzlGaDluFTVIKOGPT2I4K24T3J5otirFvrNHc=
+X-Rspamd-Queue-Id: 58BC080008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756713885-830029
+X-HE-Meta: U2FsdGVkX18lCWjfA8Wjyji6kXwigL6DxKi2xyWvMZ+ivZnE6ID/AUM4PwtbJaRQehY2Uwc+tG0o2mhTdq3bdhuKGcshJTsKvavOkJnPELo23vLAGwinA5UC28WVtQwYaGXHAKKxh32I92zLqGEPl/Oll/vSvTvOyAk3UfW95SE2RsoYQGil2dD8BPbfAjvgWZbxTLlCxePaBFugtuCFZrQvNTcVMbnAaVRtM4zZSc0seSs4vaB8f7GXZc3Ctq4Gcua7SFyi/uYWU5EDFFz/IjvJC7u1zba04b6vZPshepQn88Jv1n4IMuhuwLqC7n2WREKeJwlEjVzAKi7dWgUHf5/I/RNxbQt+3hjrvN977ercgoN9bvjM58y9N5flrItiW8BILIItwajOrWYqTXDfk6QkB1PH4cmT95pKevcKZDrMUmb/O90amErBBftrd4rREE2BOkAOBuY1m8VEdPAm5iNVHFkvmWauAn/KHIXm8C7Z6FsraYurIBsDnhsNfOLooo6Oila645pDoYSVUcqAvYElFoEDHlydP8ZsHGY9uar+za5yqh0LSFZg8vgI1BrRLYKT4rr7jFeLpajEMmhS9TDf3qA7sAttbk44UmI6tSPr6QlLCCnKO4Q45h7XOnlwEZCaM0DKbe3FrjAA34lbr6t6tpzTgZob3NEDHZ8yNO5S6YPcm0yiUTNKn86BKbVqyAba1UnDCCtaE2R3ImCo/5xMbf2IaHcBvo57vOR7TxUAn8az1Ra7exHwFr/zxKBQOmg7sBvyC6WefaV5T6gvD9XS0TwmX0Yxpw/3hD0sk0Oit0hE7uWH6gleYCLjuy8PQeGFSDVXWlb2CRPQxwDeR/fxEfNf/dYet2O3a9T1QdDe1unKZSn0Kc5EdZTieMRh4qbL9YzzrsESFmHOdRGlXhfrwFwxTwsznf0tMWspX0gz5P83GCWUN1jCGoYgxpRnVMY04DKkjTtbOlW8WDx
+ m1IiYCN3
+ Nl34zGMaB3a5FoGgpI5QhcdahTQj7dHt5Ye57Mk13NzJvwwE86ynsb2XPWhZ307bw5IYbkZt0xgcEw/fQQiwz4CWp1+logyXooKm5frLWVn9ffojFyEQQXUl4NbA6Z8hYfsKJJFb7iYzQghxg0QcunwMxvK+RYzFi68F9i4Tp7rT/k/CI5gL5j1cLMAGheD26jZyaCiH+2s79M2MrJc2xpdi3oyK+4v+fP62r858of0+1b/fORygKJsJgLZhdkKmUw2abmilzzB/fcpWngd6qA9ZoUx+/elmLCUHMiC059aRoaHPy7bdjLipDFgug1oa8lGhXyN3T8Ts7zT2R6CJNYLqzI8y3fkzL//l+jB3k2QqaMkOb2fWycdr7gBdlP0RhU8Lgmv11BfAvlufjROItCive+S2DRqMPnchzdq5syAEbsH1GnK69EVpYL2JzP0gs4aMENsmEytmYPFVu6kkuzfrnylttRmDtQ4FNJNQMkDsiTw6VELeBtm+2ReaKYns/mkpsgCS49qZSJtlVkkMpdAinz2qftgyzJLcJ79w7pN6lSa8j2RFU9SI1GQ7qSu39UGnpvKZrpGyV7rvm9pFjo7BYODUGdRwgUKk6z+ZuLYiduRLlqRI6KXAvgQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,328 +190,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01/09/2025 06:04, Dev Jain wrote:
+On 01.09.25 09:52, David Hildenbrand wrote:
+> On 01.09.25 03:17, Hugh Dickins wrote:
+>> On Mon, 1 Sep 2025, Matthew Wilcox wrote:
+>>> On Sun, Aug 31, 2025 at 02:01:16AM -0700, Hugh Dickins wrote:
+>>>> 6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
+>>>> which (like PG_private, but not in addition to PG_private) counts for
+>>>> 1 more reference: it needs to be using folio_has_private() in place of
+>>>> folio_test_private().
+>>>
+>>> No, it doesn't.  I know it used to, but no filesystem was actually doing
+>>> that.  So I changed mm to match how filesystems actually worked.
+>>> I'm not sure if there's still documentation lying around that gets
+>>> this wrong or if you're remembering how things used to be documented,
+>>> but it's never how any filesystem has ever worked.
+>>>
+>>> We're achingly close to getting rid of PG_private_2.  I think it's just
+>>> ceph and nfs that still use it.
+>>
+>> I knew you were trying to get rid of it (hurrah! thank you), so when I
+>> tried porting my lru_add_drainage to 6.12 I was careful to check whether
+>> folio_expected_ref_count() would need to add it to the accounting there:
+>> apparently yes; but then I was surprised to find that it's still present
+>> in 6.17-rc, I'd assumed it gone long ago.
+>>
+>> I didn't try to read the filesystems (which could easily have been
+>> inconsistent about it) to understand: what convinced me amidst all
+>> the confusion was this comment and code in mm/filemap.c:
+>>
+>> /**
+>>    * folio_end_private_2 - Clear PG_private_2 and wake any waiters.
+>>    * @folio: The folio.
+>>    *
+>>    * Clear the PG_private_2 bit on a folio and wake up any sleepers waiting for
+>>    * it.  The folio reference held for PG_private_2 being set is released.
+>>    *
+>>    * This is, for example, used when a netfs folio is being written to a local
+>>    * disk cache, thereby allowing writes to the cache for the same folio to be
+>>    * serialised.
+>>    */
+>> void folio_end_private_2(struct folio *folio)
+>> {
+>> 	VM_BUG_ON_FOLIO(!folio_test_private_2(folio), folio);
+>> 	clear_bit_unlock(PG_private_2, folio_flags(folio, 0));
+>> 	folio_wake_bit(folio, PG_private_2);
+>> 	folio_put(folio);
+>> }
+>> EXPORT_SYMBOL(folio_end_private_2);
+>>
+>> That seems to be clear that PG_private_2 is matched by a folio reference,
+>> but perhaps you can explain it away - worth changing the comment if so.
+>>
+>> I was also anxious to work out whether PG_private with PG_private_2
+>> would mean +1 or +2: I don't think I found any decisive statement,
+>> but traditional use of page_has_private() implied +1; and I expect
+>> there's no filesystem which actually could have both on the same folio.
 > 
-> On 29/08/25 5:22 pm, Ryan Roberts wrote:
->> Hi All,
->>
->> This is a new version following on from the v6 RFC at [1] which itself is based
->> on Yang Shi's work. On systems with BBML2_NOABORT support, it causes the linear
->> map to be mapped with large blocks, even when rodata=full, and leads to some
->> nice performance improvements.
->>
->> I've tested this on an AmpereOne system (a VM with 12G RAM) in all 3 possible
->> modes by hacking the BBML2 feature detection code:
->>
->>    - mode 1: All CPUs support BBML2 so the linear map uses large mappings
->>    - mode 2: Boot CPU does not support BBML2 so linear map uses pte mappings
->>    - mode 3: Boot CPU supports BBML2 but secondaries do not so linear map
->>      initially uses large mappings but is then repainted to use pte mappings
->>
->> In all cases, mm selftests run and no regressions are observed. In all cases,
->> ptdump of linear map is as expected:
->>
->> Mode 1:
->> =======
->> ---[ Linear Mapping start ]---
->> 0xffff000000000000-0xffff000000200000           2M PMD       RW NX SHD
->> AF        BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000000200000-0xffff000000210000          64K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000000210000-0xffff000000400000        1984K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL
->> 0xffff000000400000-0xffff000002400000          32M PMD       ro NX SHD
->> AF        BLK UXN    MEM/NORMAL
->> 0xffff000002400000-0xffff000002550000        1344K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL
->> 0xffff000002550000-0xffff000002600000         704K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000002600000-0xffff000004000000          26M PMD       RW NX SHD
->> AF        BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000004000000-0xffff000040000000         960M PMD       RW NX SHD AF   
->> CON BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000040000000-0xffff000140000000           4G PUD       RW NX SHD
->> AF        BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000140000000-0xffff000142000000          32M PMD       RW NX SHD AF   
->> CON BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000142000000-0xffff000142120000        1152K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000142120000-0xffff000142128000          32K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142128000-0xffff000142159000         196K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142159000-0xffff000142160000          28K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142160000-0xffff000142240000         896K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000142240000-0xffff00014224e000          56K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff00014224e000-0xffff000142250000           8K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142250000-0xffff000142260000          64K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142260000-0xffff000142280000         128K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000142280000-0xffff000142288000          32K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142288000-0xffff000142290000          32K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142290000-0xffff0001422a0000          64K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff0001422a0000-0xffff000142465000        1812K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142465000-0xffff000142470000          44K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000142470000-0xffff000142600000        1600K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000142600000-0xffff000144000000          26M PMD       RW NX SHD
->> AF        BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000144000000-0xffff000180000000         960M PMD       RW NX SHD AF   
->> CON BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000180000000-0xffff000181a00000          26M PMD       RW NX SHD
->> AF        BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000181a00000-0xffff000181b90000        1600K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000181b90000-0xffff000181b9d000          52K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000181b9d000-0xffff000181c80000         908K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000181c80000-0xffff000181c90000          64K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000181c90000-0xffff000181ca0000          64K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000181ca0000-0xffff000181dbd000        1140K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000181dbd000-0xffff000181dc0000          12K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000181dc0000-0xffff000181e00000         256K PTE       RW NX SHD AF   
->> CON     UXN    MEM/NORMAL-TAGGED
->> 0xffff000181e00000-0xffff000182000000           2M PMD       RW NX SHD
->> AF        BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000182000000-0xffff0001c0000000         992M PMD       RW NX SHD AF   
->> CON BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff0001c0000000-0xffff000300000000           5G PUD       RW NX SHD
->> AF        BLK UXN    MEM/NORMAL-TAGGED
->> 0xffff000300000000-0xffff008000000000         500G PUD
->> 0xffff008000000000-0xffff800000000000      130560G PGD
->> ---[ Linear Mapping end ]---
->>
->> Mode 3:
->> =======
->> ---[ Linear Mapping start ]---
->> 0xffff000000000000-0xffff000000210000        2112K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000000210000-0xffff000000400000        1984K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL
->> 0xffff000000400000-0xffff000002400000          32M PMD       ro NX SHD
->> AF        BLK UXN    MEM/NORMAL
->> 0xffff000002400000-0xffff000002550000        1344K PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL
->> 0xffff000002550000-0xffff000143a61000     5264452K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000143a61000-0xffff000143c61000           2M PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000143c61000-0xffff000181b9a000     1015012K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000181b9a000-0xffff000181d9a000           2M PTE       ro NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000181d9a000-0xffff000300000000     6261144K PTE       RW NX SHD
->> AF            UXN    MEM/NORMAL-TAGGED
->> 0xffff000300000000-0xffff008000000000         500G PUD
->> 0xffff008000000000-0xffff800000000000      130560G PGD
->> ---[ Linear Mapping end ]---
->>
->>
->> Performance Testing
->> ===================
->>
->> Yang Shi has gathered some compelling results which are detailed in the commit
->> log for patch #3. Additionally I have run this through a random selection of
->> benchmarks on AmpereOne. None show any regressions, and various benchmarks show
->> statistically significant improvement. I'm just showing those improvements here:
->>
->> +----------------------
->> +----------------------------------------------------------
->> +-------------------------+
->> | Benchmark            | Result
->> Class                                             | Improvement vs 6.17-rc1 |
->> +======================+==========================================================+=========================+
->> | micromm/vmalloc      | full_fit_alloc_test: p:1, h:0, l:500000
->> (usec)           |              (I) -9.00% |
->> |                      | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000
->> (usec) |              (I) -6.93% |
->> |                      | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000
->> (usec) |              (I) -6.77% |
->> |                      | pcpu_alloc_test: p:1, h:0, l:500000
->> (usec)               |              (I) -4.63% |
->> +----------------------
->> +----------------------------------------------------------
->> +-------------------------+
->> | mmtests/hackbench    | process-sockets-30
->> (seconds)                             |              (I) -2.96% |
->> +----------------------
->> +----------------------------------------------------------
->> +-------------------------+
->> | mmtests/kernbench    | syst-192
->> (seconds)                                       |             (I) -12.77% |
->> +----------------------
->> +----------------------------------------------------------
->> +-------------------------+
->> | pts/perl-benchmark   | Test: Interpreter
->> (Seconds)                              |              (I) -4.86% |
->> +----------------------
->> +----------------------------------------------------------
->> +-------------------------+
->> | pts/pgbench          | Scale: 1 Clients: 1 Read Write
->> (TPS)                     |               (I) 5.07% |
->> |                      | Scale: 1 Clients: 1 Read Write - Latency
->> (ms)            |              (I) -4.72% |
->> |                      | Scale: 100 Clients: 1000 Read Write
->> (TPS)                |               (I) 2.58% |
->> |                      | Scale: 100 Clients: 1000 Read Write - Latency
->> (ms)       |              (I) -2.52% |
->> +----------------------
->> +----------------------------------------------------------
->> +-------------------------+
->> | pts/sqlite-speedtest | Timed Time - Size 1,000
->> (Seconds)                        |              (I) -2.68% |
->> +----------------------
->> +----------------------------------------------------------
->> +-------------------------+
->>
->>
->> Changes since v6 [1]
->> ====================
->>
->> - Patch 1: Minor refactor to implement walk_kernel_page_table_range() in terms
->>    of walk_kernel_page_table_range_lockless(). Also lead to adding *pmd argument
->>    to the lockless variant for consistency (per Catalin).
->> - Misc function/variable renames to improve clarity and consistency.
->> - Share same syncrhonization flag between idmap_kpti_install_ng_mappings and
->>    wait_linear_map_split_to_ptes, which allows removal of bbml2_ptes[] to save
->>    ~20K from kernel image.
->> - Only take pgtable_split_lock and enter lazy mmu mode once for both splits.
->> - Only walk the pgtable once for the common "split single page" case.
->> - Bypass split to contpmd and contpte when spllitting linear map to ptes.
->>
->>
->> Applies on v6.17-rc3.
->>
->>
->> [1] https://lore.kernel.org/linux-arm-kernel/20250805081350.3854670-1-
->> ryan.roberts@arm.com/
->>
->> Thanks,
->> Ryan
->>
->> Dev Jain (1):
->>    arm64: Enable permission change on arm64 kernel block mappings
->>
->> Ryan Roberts (3):
->>    arm64: mm: Optimize split_kernel_leaf_mapping()
->>    arm64: mm: split linear mapping if BBML2 unsupported on secondary CPUs
->>    arm64: mm: Optimize linear_map_split_to_ptes()
->>
->> Yang Shi (2):
->>    arm64: cpufeature: add AmpereOne to BBML2 allow list
->>    arm64: mm: support large block mapping when rodata=full
->>
->>   arch/arm64/include/asm/cpufeature.h |   2 +
->>   arch/arm64/include/asm/mmu.h        |   3 +
->>   arch/arm64/include/asm/pgtable.h    |   5 +
->>   arch/arm64/kernel/cpufeature.c      |  12 +-
->>   arch/arm64/mm/mmu.c                 | 418 +++++++++++++++++++++++++++-
->>   arch/arm64/mm/pageattr.c            | 157 ++++++++---
->>   arch/arm64/mm/proc.S                |  27 +-
->>   include/linux/pagewalk.h            |   3 +
->>   mm/pagewalk.c                       |  36 ++-
->>   9 files changed, 599 insertions(+), 64 deletions(-)
->>
->> -- 
->> 2.43.0
->>
+> I think it's "+1", like we used to have.
 > 
-> Hi Yang and Ryan,
+> I was seriously confused when discovering (iow, concerned about false
+> positives):
 > 
-> I observe there are various callsites which will ultimately use
-> update_range_prot() (from patch 1),
-> that they do not check the return value. I am listing the ones I could find:
-
-So your concern is that prior to patch #3 in this series, any error returned by
-__change_memory_common() would be due to programming error only. But patch #3
-introduces the possibility of dynamic error (-ENOMEM) due to the need to
-allocate pgtable memory to split a mapping?
-
-There is a WARN_ON_ONCE(ret) for the return code of split_kernel_leaf_mapping()
-which will at least make the error visible, but I agree it's not a great solution.
-
+> 	PG_fscache = PG_private_2,
 > 
-> set_memory_ro() in bpf_jit_comp.c
-
-There is a set_memory_rw() for the same region of memory directly above this,
-which will return -EFAULT on failure. If that one succeeded, then the pgtable
-must already be appropriately split for set_memory_ro() so that should never
-fail in practice. I agree with improving the robustness of the code by returning
--EFAULT (or just propagate the error?) as you suggest though.
-
-> set_memory_valid() in kernel_map_pages() in pageattr.c
-
-This is used by CONFIG_DEBUG_PAGEALLOC to make pages in the linear map invalid
-while they are not in use to catch programming errors. So if making a page
-invalid during freeing fails would not technically lead to a huge issue, it just
-reduces our capability of catching an errant access to that free memory.
-
-In principle, if we were able to make the memory invalid, we should therefore be
-able to make it valid again, because the mappings should be sufficiently split
-already. But that doesn't actually work, because we might be allocating a
-smaller order than was freed so we might not have split at free-time to the
-granularity is required at allocation-time.
-
-But as you say, for CONFIG_DEBUG_PAGEALLOC we disable this whole path anyway, so
-no issue here.
-
-> set_direct_map_invalid_noflush() in vm_reset_perms() in vmalloc.c
-> set_direct_map_default_noflush() in vm_reset_perms() in vmalloc.c, and in
-> secretmem.c
-> (the secretmem.c ones should be safe as explained in the commments therein)
-
-Agreed for secretmem. vmalloc looks like a problem though...
-
-If vmalloc was only setting the linear map back to default permissions, I guess
-this wouldn't be an issue because we must have split the linear map sucessfully
-when changing away from default permissions in the first place. But the fact
-that it is unconditionally setting the linear map pages to invalid then back to
-default causes issues; I guess even without the risk of -ENOMEM, this will cause
-the linear map to be split to PTEs over time as vmalloc allocs and frees?
-
-We probably need to think through how we can solve this. It's not clear to me
-why vm_reset_perms wants to unconditionally transiently set to invalid?
-
+> But in the end PG_fscache is only used in comments and e.g.,
+> __fscache_clear_page_bits() calls folio_end_private_2(). So both are
+> really just aliases.
 > 
-> The first one I think can be handled easily by returning -EFAULT.
+> [Either PG_fscache should be dropped and referred to as PG_private_2, or
+> PG_private_2 should be dropped and PG_fscache used instead. It's even
+> inconsistently used in that fscache. file.
 > 
-> For the second, we are already returning in case of !can_set_direct_map, which
-> renders DEBUG_PAGEALLOC useless. So maybe it is
-> safe to ignore the ret from set_memory_valid?
+> Or both should be dropped, of course, once we can actually get rid of it
+> ...]
 > 
-> For the third, the call chain is a sequence of must-succeed void functions.
-> Notably, when using vfree(), we may have to allocate a single
-> pagetable page for splitting.
+> So PG_private_2 should not be used for any other purpose.
 > 
-> I am wondering whether we can just have a warn_on_once or something for the case
-> when we fail to allocate a pagetable page. Or, Ryan had
-> suggested in an off-the-list conversation that we can maintain a cache of PTE
-> tables for every PMD block mapping, which will give us
-> the same memory consumption as we do today, but not sure if this is worth it.
-> x86 can already handle splitting but due to the callchains
-> I have described above, it has the same problem, and the code has been working
-> for years :)
+> folio_start_private_2() / folio_end_private_2() indeed pair the flag
+> with a reference. There are no other callers that would set/clear the
+> flag without involving a reference.
+> 
+> The usage of private_2 is declared deprecated all over the place. So the
+> question is if we really still care.
+> 
+> The ceph usage is guarded by CONFIG_CEPH_FSCACHE, the NFS one by
+> NFS_FSCACHE, nothing really seems to prevent it from getting configured
+> in easily.
+> 
+> Now, one problem would be if migration / splitting / ... code where we
+> use folio_expected_ref_count() cannot deal with that additional
+> reference properly, in which case this patch would indeed cause harm.
+> 
+> If all folio_expected_ref_count() callers can deal with updating that
+> reference, all good.
+> 
+> nfs_migrate_folio(), for example, has folio_test_private_2() handling in
+> there (just wait until it is gone). ceph handles it during
+> ceph_writepages_start(), but uses ordinary filemap_migrate_folio.
+> 
+> Long story short: this patch is problematic if one
+> folio_expected_ref_count() users is not aware of how to handle that
+> additional reference.
+> 
 
-I think it's preferable to avoid having to keep a cache of pgtable memory if we
-can...
+Case in point, I just stumbled over
 
-Thanks,
-Ryan
+commit 682a71a1b6b363bff71440f4eca6498f827a839d
+Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+Date:   Fri Sep 2 20:46:46 2022 +0100
 
+     migrate: convert __unmap_and_move() to use folios
+
+and
+
+commit 8faa8ef5dd11abe119ad0c8ccd39f2064ca7ed0e
+Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+Date:   Mon Jun 6 09:34:36 2022 -0400
+
+     mm/migrate: Convert fallback_migrate_page() to fallback_migrate_folio()
+     
+     Use a folio throughout.  migrate_page() will be converted to
+     migrate_folio() later.
+
+
+where we converted from page_has_private() to folio_test_private(). Maybe
+that's all sane, but it raises the question if migration (and maybe splitting)
+as a whole is no incompatible with PG_private_2
+
+-- 
+Cheers
+
+David / dhildenb
 
 
