@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E26CACA1007
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 18:22:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0840CA1000
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 18:37:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 488218E0003; Mon,  1 Sep 2025 14:22:15 -0400 (EDT)
+	id 239A28E0003; Mon,  1 Sep 2025 14:37:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 439278E0001; Mon,  1 Sep 2025 14:22:15 -0400 (EDT)
+	id 211018E0001; Mon,  1 Sep 2025 14:37:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3275B8E0003; Mon,  1 Sep 2025 14:22:15 -0400 (EDT)
+	id 153418E0003; Mon,  1 Sep 2025 14:37:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 214368E0001
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:22:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F36CBBC8E0
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 18:22:14 +0000 (UTC)
-X-FDA: 83841500988.09.3AEE390
-Received: from lankhorst.se (lankhorst.se [141.105.120.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 77F7F18000A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 18:22:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
-	dmarc=pass (policy=none) header.from=lankhorst.se
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 03EFA8E0001
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:37:57 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B1E2313B495
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 18:37:56 +0000 (UTC)
+X-FDA: 83841540552.27.9591A91
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C81CB1C0006
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 18:37:54 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=IFgZvYXk;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf18.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756750933;
+	s=arc-20220608; t=1756751875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XpbvmIDUJOs50T4vE1pbVtzJQkix95RSUb22ostwp+w=;
-	b=f981PPinGtjVAIBupn4v8mlgIzcOaopIXm8E/qbRgJBETXJKXk7YnML2VWvHVhUCWvpqC+
-	YoKK/c7l3jXKJM1e0GCfKsyAaXym0UsGjs7vPz9vfM23/UTnNdcAf8wptX18FF7Tlr2DtB
-	2NXT8ec6bNA4OMGqvXfCxBURIG1W0wk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oBLVwqjZ9ozuQvAMG2IXEqSvWHfxO3m3fGuPczFQRQg=;
+	b=H5hmgXbfJHVrMkRgm734mdAO+HbHGhe63a3udfbRg7ybkYTN0+N3umSXSAKQlHgvca4asI
+	JOAZQ535bxQyvwA4bUD0mdCnWsAKLbNFTM71TP6MQDaOYi4O0tKwCHcr9++Ifzcr1EkGVC
+	m2JWVuN7fMO2oQq4iiFNKNW6QunQXcU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
-	dmarc=pass (policy=none) header.from=lankhorst.se
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756750933; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=IFgZvYXk;
+	dmarc=pass (policy=none) header.from=igalia.com;
+	spf=pass (imf18.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756751875; a=rsa-sha256;
 	cv=none;
-	b=ZQlxzn1aqovkxZEl1UlWf3Kxppa+/q1nWoIiR/0lOlzPxtqeDV8BbMpxT/JhJkfN4WG/fC
-	N87kFDdi6KKfSPR+SUoNCez2hU7AwIG56jbMYONkNZxx8V4ocLVuZrmqnIPAGiPjaytaXP
-	icv21UqgS3ZMDiPSsViXNgYfITmRcFA=
-Message-ID: <0d8199c3-8c3f-4838-81dd-ad191cb7afc1@lankhorst.se>
-Date: Mon, 1 Sep 2025 20:22:08 +0200
+	b=XjuxL66Ddkig2kuemOL1/Pkgn8H8rsm59CwdKMz1XbeMLdxk9zuU/xX2RMTYlUcLwgzmKe
+	GW8kSmkzLXe3fWjK5N7G6XZXfzjtHInBDn0/Rp/aK3VJq77YQDHZunc04A1sA2AC02HWbP
+	Qq7zQ8rrbeuBnW3TJ32rD6yPtCaW3EM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=oBLVwqjZ9ozuQvAMG2IXEqSvWHfxO3m3fGuPczFQRQg=; b=IFgZvYXkggEb1ow5yxf/KGJbZ/
+	x5Wg7L4Ye33R00WYkqPItOz3yetWNs0A2liQxWzjh8MfBm13wWL1ZMgJ1JrfbZgGaeLqychhWXpGV
+	upmItKwf5+/oUVYn8OQKMrZ+EV3uArtsxP7bErpBz4CxX9xAk4qWJefJ6oChQvPw2t9KZ/vEjPfi9
+	A6lDy3U177zvNRBTOugg7VLaobc3Ct3uZ55HNU3zeIJt/Qr258QMikECG0HGCXFBHRHPBXAd3Xw+f
+	uy95H/xMV077c6ZSDMNM+FsVv7hChs8bXD1Dm4KMM8h0EFuSbjz7yVFVOi2x7eRlUDwjRtjl6UoIA
+	UA/wa3UQ==;
+Received: from 179-125-64-234-dinamico.pombonet.net.br ([179.125.64.234] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1ut9PX-005Oj2-F0; Mon, 01 Sep 2025 20:37:47 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	kernel-dev@igalia.com,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH] mm: show_mem: show number of zspages in show_free_areas
+Date: Mon,  1 Sep 2025 15:37:28 -0300
+Message-ID: <20250901183729.3900578-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
-To: Natalie Vock <natalie.vock@gmx.de>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?UTF-8?Q?=27Thomas_Hellstr=C3=B6m=27?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>,
- Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- =?UTF-8?Q?=27Michal_Koutn=C3=BD=27?= <mkoutny@suse.com>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "'Liam R . Howlett'" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <20250819114932.597600-5-dev@lankhorst.se>
- <25b42c8e-7233-4121-b253-e044e022b327@gmx.de>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <25b42c8e-7233-4121-b253-e044e022b327@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 77F7F18000A
-X-Stat-Signature: inbpsbryrdxdoxior86xp35shh83msh7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C81CB1C0006
+X-Stat-Signature: 9pfzfgxhedoztf8j7q9ky64tiig3n6zg
 X-Rspam-User: 
-X-HE-Tag: 1756750933-727288
-X-HE-Meta: U2FsdGVkX192uUpX1TsqX4RhWOCD0YBa9NMvXIfrNcNHXKQnAHIBlYt1OIyXJyqw1fP7ogejyeT619vIUQxOjBeLjVe1qB7mDtegaRc7vnqqH3FjpT8/8dnNwqkNh5Ao6dm77kMvpyFfITdBLhVqwU5XpnD8DVknc0NuP4eWLKvRk7/28KGRIrINXu8+kXI2scEs1InjatWSLIIjjVCGh3DTw09bCwTYJx/nWNi7kI6vMqe6ooMwN6CrPjC4cuIzzTA6C4JgyLpe7OBrRH/XDDsnism3QkgKVhtFRRxDjpGREu6Z4EJIEsU4gMwWqVYvtS7+UtgG0V+g4ngK2F4YQ+FM0UykJI6VYVdQm9jCaANsYpZCOIkbvr7ELz0vWeYb766Q1rMpM+Gozhz+78K53EEbFsS0O5HgUq0T0H7Ngd9dRC5FbQW4gwU0ckmZ0urbahzghK/OJLI6LZJ0GHXTEvovk1nRKXhXrRTDZ62h6cYmZjHnugpLExXjMautMctnbVphWm7ARK4EoL7Tsy3KmSMkx2boP69kygmErVH6lF/xzqLdMtD3bNy/aRQI+yjOiyAYRSRdmSCQw2JFjfiSzl3DXHJz5cRh9pRTzCud0ylm2C3dBCjCKic3L0qyQTb/9/eOsOv51woGVmqa/7KcpgSFbRuQ3JkdSEBUBzomnJ3YesBspCCYDSJk36gJ+8Ioj47hYOL2PnZ/Ap0kBFjm9x6OkEA1p650eA/+Xpiu+TPKy4nz/H8FJfSGutLgS9mFJ0mu3vl332Hu5HH9Ja8tJ4yoaTz08Lzd
+X-HE-Tag: 1756751874-962374
+X-HE-Meta: U2FsdGVkX1+A2Ll+m292ZRyIgKlpslOjsPDIcrZ5+TOtiqQFoVdbC2I42O/SP1LnkK8ShjxL32rEPdgGYvnfykeVGsIvxIMcNAtPKlqivtOkvSblWhBAdq7w6i/+6YbmAj4VAFOduiLs/V4cYzrfPwLCyChYUgu9gve2Y3F/DYngcZwqAoJulJho92P0PWp+uIuN59K/YBvwhBEenq54sG8FKc0QuUZgCJyxcMZL+r1UEsq5iY/KFvJq2NxqZ6pGhhMjVtMrVXFWtXTFFVlGq3ack6rLqjDIOiW9+3aA8+m6aJzuPP1zhVqxKUn/RgM1nj1JOzC3hH/XhuTRNGolNGV+8IaUooIr99ZsT9jdcfZxhlQ0XHoxJpx9cAVnLG1GCoek/TrnoqyIFmGeHrZr8/d2mcwUDaw4+ym0cJd79WJeis1VEOjjwBjDO/ebiyUBSKAbkI2RROg9LfWQBH3BBCmBuNGcTd+EvAEHNldpPesue5ZjhOUZh0EV3MLPN0lgfsCAy05SuUQo2xCTWTArFEPQ48ENGt68nvAB44ZuF4josuBccbonGYpYZUO83VXBuXo9b9fNcFcaBwabC2PeZkz/CpYNK2w2hBgX/8AyUAAJt1tplVCAYO4vPLdIVxveaF8TEiGw/NM1M30lhQZr1Q9i4qdUy2H/bN8R+uIbtKVJ+JYrqV3JS3vzzWNkGHBRJqo5IROEzBukilrkEXnecSNSvh5usjkbJ+klcsLgPrAicj9VTnh8i8vJZTxdm4M3YJbY+VaV3L88B2GGqijYBFGMFGNw+Da8LSygFNECFxyxZEXepghpCRd7woNIXhwBEoIjbBZcIv2r97BGvdA2VbTuFnYHNhv5baRwAYuow4cTw3uVxmzqTA4c2nd2iui/hxQUYHw7HI/zPR+dt/EFAuRCreDNC8/uAnEz2CUY7f9Da5bvkZITSch7J5BrIkdyM8LN2j/sJY66x2RpwgX
+ tSMHlhs5
+ EQjJBIEnbgUni/XZcrpj8et/J+NaP9wQmJVANTHN6zShdza75PuVcYjahJKEMF2ebge7jdfXoTEwXh7t/6nW4m/n/Q9oMsV06J36Q7oMQszxKSrFRedlvfGAzTX/6vh8cQCV5N0y8x+feyFmG/qUivsuJCS3M9Yb5y83rWRgylG5dXWQ+mi3ADuLPuYuyiUUkmnXF0WN83iiyRc4BQUiNMKjZKVnC36F9mcDXSQ0qaFzsDRuD6mH2jsHDA7rpe1jHAN/bzz1szNkXaRk8rlZ0E/Op626KUbTIJaYXlfsqYgi0PZkjCBD4y1qXPItaJckKWo+U8Pe5OyK2MOLhNX5cNmbgj1R8a5zmcFz/nuCDqxBYbjX3bI0soXvglRey7uja4lcbawsLonth+8YGZfeum3EY2m/aKKSXpNcbm3g5WXRGVx8C0kmVuvRw3bGrKSv9RCnh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,42 +98,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Nathalie,
+When OOM is triggered, it will show where the pages might be for each zone.
+When using zram, it might look like lots of pages are missing. After this
+patch, zspages are shown as below.
 
-Den 2025-09-01 kl. 14:45, skrev Natalie Vock:
-> Hi,
-> 
-> On 8/19/25 13:49, Maarten Lankhorst wrote:
->> When exporting dma-bufs to other devices, even when it is allowed to use
->> move_notify in some drivers, performance will degrade severely when
->> eviction happens.
->>
->> A perticular example where this can happen is in a multi-card setup,
->> where PCI-E peer-to-peer is used to prevent using access to system memory.
->>
->> If the buffer is evicted to system memory, not only the evicting GPU wher
->> the buffer resided is affected, but it will also stall the GPU that is
->> waiting on the buffer.
->>
->> It also makes sense for long running jobs not to be preempted by having
->> its buffers evicted, so it will make sense to have the ability to pin
->> from system memory too.
->>
->> This is dependant on patches by Dave Airlie, so it's not part of this
->> series yet. But I'm planning on extending pinning to the memory cgroup
->> controller in the future to handle this case.
->>
->> Implementation details:
->>
->> For each cgroup up until the root cgroup, the 'min' limit is checked
->> against currently effectively pinned value. If the value will go above
->> 'min', the pinning attempt is rejected.
-> 
-> Why do you want to reject pins in this case? What happens in desktop usecases (e.g. PRIME buffer sharing)? AFAIU, you kind of need to be able to pin buffers and export them to other devices for that whole thing to work, right? If the user doesn't explicitly set a min value, wouldn't the value being zero mean any pins will be rejected (and thus PRIME would break)?
-> 
-> If your objective is to prevent pinned buffers from being evicted, perhaps you could instead make TTM try to avoid evicting pinned buffers and prefer unpinned buffers as long as there are unpinned buffers to evict? As long as the total amount of pinned memory stays below min, no pinned buffers should get evicted with that either.
-That would be setting an eviction priority, that can be done but that gives no guarantee memory will not be evicted.
+[   48.792859] Node 0 DMA free:2812kB boost:0kB min:60kB low:72kB high:84kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB zspages:11160kB present:15992kB managed:15360kB mlocked:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
+[   48.792962] lowmem_reserve[]: 0 956 956 956 956
+[   48.792988] Node 0 DMA32 free:3512kB boost:0kB min:3912kB low:4888kB high:5864kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:28kB active_file:8kB inactive_file:16kB unevictable:0kB writepending:0kB zspages:916780kB present:1032064kB managed:978944kB mlocked:0kB bounce:0kB free_pcp:500kB local_pcp:248kB free_cma:0kB
+[   48.793118] lowmem_reserve[]: 0 0 0 0 0
 
-Kind regards,
-~Maarten
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+---
+ mm/show_mem.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 41999e94a56d..ecf20a93ea54 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -310,6 +310,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+ 			" inactive_file:%lukB"
+ 			" unevictable:%lukB"
+ 			" writepending:%lukB"
++			" zspages:%lukB"
+ 			" present:%lukB"
+ 			" managed:%lukB"
+ 			" mlocked:%lukB"
+@@ -332,6 +333,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+ 			K(zone_page_state(zone, NR_ZONE_INACTIVE_FILE)),
+ 			K(zone_page_state(zone, NR_ZONE_UNEVICTABLE)),
+ 			K(zone_page_state(zone, NR_ZONE_WRITE_PENDING)),
++			K(zone_page_state(zone, NR_ZSPAGES)),
+ 			K(zone->present_pages),
+ 			K(zone_managed_pages(zone)),
+ 			K(zone_page_state(zone, NR_MLOCK)),
+-- 
+2.47.2
+
 
