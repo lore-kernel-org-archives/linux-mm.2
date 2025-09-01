@@ -4,94 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24EBFCA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 08:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A5BECA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 08:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C3A38E001D; Mon,  1 Sep 2025 04:34:33 -0400 (EDT)
+	id A83648E001F; Mon,  1 Sep 2025 04:34:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7745D8E0002; Mon,  1 Sep 2025 04:34:33 -0400 (EDT)
+	id A0CCA8E001E; Mon,  1 Sep 2025 04:34:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 663008E001D; Mon,  1 Sep 2025 04:34:33 -0400 (EDT)
+	id 8D5CB8E001F; Mon,  1 Sep 2025 04:34:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DBA08E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:34:33 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01177139C58
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:34:32 +0000 (UTC)
-X-FDA: 83840020026.05.7CC5711
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8BFA71A0008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:34:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fSayuxF+;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AD838E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:34:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17BA51A0732
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:34:37 +0000 (UTC)
+X-FDA: 83840020194.26.476BA0F
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 18B5840004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:34:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FV5kJ3rE;
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756715671;
+	s=arc-20220608; t=1756715675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3toB/RDWBVVDFeRbPy4lA3l9ZoYBbJoHVU9tYxeAHRU=;
-	b=EYR8ZsuMzgDHNVI3opr01/l87CktjWs18Yrvcd32MLrVWN8m3JFkcZ3biFEfNk3q3knZgE
-	7aofzgg/O6bZZZMx52bOZzaYFEiWr9izM4g804yUVrKkEEIMQDykNkZLgMvWpyPr1UioP5
-	0LICsxb/S980b7ng3F8Ds5DVzLeZmdE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lbrHRTPmVoKlWV8ebWI6m112D0ytwDz7+ZvqI/2/bKM=;
+	b=waLo5sIh6FBNTKJsMiEpGjFRq//9iwDdvsxIF8KtwpxAiV2SdnuaOC98VDUtMOXsK9EYLy
+	mfHvTS+kvjDzYFE65XkEs4kwLPa2U37u3NMsbLestQZJ1RoX2iOyD56SyzCjZsW2UfkRjm
+	Lh83MqDgvB/a8Fujvgy/TN8jjn3HiiI=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fSayuxF+;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756715671; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FV5kJ3rE;
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756715675; a=rsa-sha256;
 	cv=none;
-	b=ye6LcffqIA+tV5WnpK9sAqbUSpmA6WUQwaHrZC7z49l2/Fa5UjsgDcJ7yWovMO5sGgxp8w
-	ciKSpyvvoARuQaVUVurbpaI/FVttuR8FGG+X4HiSro4VgZHslsV5qYUH6IhyOgCq+Z3eOK
-	4Gfx4MZeVQQhkPsKU2SDnc62uts/wyk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D708E601DF;
-	Mon,  1 Sep 2025 08:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34389C4CEF4;
-	Mon,  1 Sep 2025 08:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756715670;
-	bh=YniABXTMehUmrQNyxrnxV6TCLO8GP4oi7+6p/ouGAZ4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fSayuxF+wbFCiWZEBOUbqBm+UQcn47oEm7NsLj08ek+p9jMmQvyzqYzjypmRmiK15
-	 r7F/+n5PoNJbRo2vag6G4CjffX0MWC6AacU1Zj8wOXfmeK7uLCerqcqHD7BJl8nnUZ
-	 bSUZh8CJItd8xbAbt069DRXV3+ET6D/dNEDf/y+bJFvXv+IN4LBOglsgIht7e1/MqK
-	 El2Mt85kX1XTMz1cUS6M3kngnw7N3fvyVf7SKcxYpuDRLtaUDvk+m7crTBb5j4QsHI
-	 mV/LCqvIJxksn0Ohexg/0LNLGYqkJH8bmyIm0dVnytqm0w3SsiKuF47zBnMNk1k0aQ
-	 I5TjNUc//phrA==
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Bill Wendling <morbo@google.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v2 0/4] mm/mm_init: simplify deferred init of struct pages
-Date: Mon,  1 Sep 2025 11:34:19 +0300
-Message-ID: <20250901083423.3061349-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.50.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 98mbgqmr31bwu9oh9nc44kaks4cugnbf
+	b=iYKKSzz7CrX6pyOolvgOc++h4pm9qMVgeW+3sPiIqkvKQsbhE81PEuD8KepMrI6av7gkPA
+	J6mMT7BpkP9dt/CcGFOX7LET6vyujO57yRW0984uOZUWVHG0YGgiFMVjG0GiH25HLq2UUQ
+	D783nM4ou2//ZKQ90hZZooMVutraQmQ=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2487a60d649so50491485ad.2
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 01:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756715674; x=1757320474; darn=kvack.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lbrHRTPmVoKlWV8ebWI6m112D0ytwDz7+ZvqI/2/bKM=;
+        b=FV5kJ3rEsRZoir9djRioW/lOV995FbgqjHrAoRsMzUI3lnFN3GrRiHtQqA+d2w9Ao6
+         SnVJRsr5UVseMePxOQWJludj4rEfJcN7DYp4uw6yInSitOiIcXeQkZjA1liOU3UuviwD
+         rERGGlRIiRMS9Mywwnnwa0DVlUdU/GW+r2sspwA4E7/hR0Xg3rFjXFqEVwDqJYU2zpb0
+         4CuahEP3gI81nGuQXbsUq4NBuiyyMfTic8ambtdl6eMB5k2b4J4MinCu5QuSYBP9pDfP
+         fIPjVbnBJ3v+nD6zd7q3Hu24mTfpZXkWHlK/3p8Hm+gR/ZFa/w0SgFW47YAyuM6Qil+f
+         tfcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756715674; x=1757320474;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lbrHRTPmVoKlWV8ebWI6m112D0ytwDz7+ZvqI/2/bKM=;
+        b=PxNdv4GBh73zKNo1zQ+KMbvmEPPkvH0jQ05J9paUk1WfaDtWguTmAe53JbmQTLjONG
+         PhDAmy65gxha+xNjKxk4/1mWO9WU63pdoS1JL4Yu6sjf/2wZrhCD/C0qw4ljiu4ezo+9
+         0K8/3eoz2ReBHWMamP5s1T8j7ciRjL12uym3NU5fDE6dkZP52ODHet4p5/uzBw7q6zaf
+         kg1Ijui5YH+xjhCkoDvUddu7gmrL3fXL35CvaArUgv58cMPkbIjYlCsUDEtGKjhC3vmo
+         DjRm4EdDLxlOHSgAqWXhYWgr3rTRAx/PNPfI3vFFAbH/gbxSpE7jwg9GbjIzVBnOCziO
+         ec7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXWo+qhdP2/rf6ELnPVbN4trZTWRDivkpPSj2mXnFwOzkz1SjIp291N5qU/4J+lqBDtu13gjkiMbg==@kvack.org
+X-Gm-Message-State: AOJu0Yw89/vI54oQNhocJoHIn4Ihgf/gojSarq7yd4bJ42r9JQC9wiqm
+	B3dCI14Q0bucHFuywTeI/J9hFNhX0uxQFrUPW3eoGbH5kkB83Ygggqev
+X-Gm-Gg: ASbGnctrHpnrX4bWsYQy3p3WG7q9lY6ZS/fzdEDKPF9sDAhP+i47U4KaPPZZGBMxfJB
+	EwpMNIcr+9ePcwm8Fda3YYQgBH2WnbA8E2fZtV3CVU09w4cU++NwKaL8OyvQJXYVMZs2s6J7ktC
+	yFOR0Tj+cYx1fCt19u5qDOuuetZZCo2fmK8b8c/2mHDxt4AUcNoKEDRNKPTcWqn9Ckj6VW+mszd
+	m2tEW5feARhoyTvtUMw5/X8oXhgpr3YarPv5PN1Xt1K5GNbgTky50cWleo0ytgauTHRz8uOGOr5
+	1ImDDljraXWlHhSliFr2r62vcrOXwC8S89TrGL/iybGhUdpIDpPUx7O6EeDrX6irdXuRWg7MoJG
+	WTc/rN6AJbQ==
+X-Google-Smtp-Source: AGHT+IEZfowSjilBRafTP9QexzPy8Z2u9xh/wUFr+pZVwMnJoB0ioWxzEc4yKBd0BShD54d8i51GmA==
+X-Received: by 2002:a17:903:1211:b0:246:464d:118a with SMTP id d9443c01a7336-24944ae8610mr105522365ad.46.1756715673865;
+        Mon, 01 Sep 2025 01:34:33 -0700 (PDT)
+Received: from smtpclient.apple ([2400:d320:2231:7720::1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24903724c62sm95960595ad.34.2025.09.01.01.34.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 01 Sep 2025 01:34:33 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [Patch v2] selftests/mm: check content to see whether mremap
+ corrupt data
+From: wang lian <lianux.mm@gmail.com>
+In-Reply-To: <df27d5cc-bac8-47ee-a03d-eb1eff6dbe39@redhat.com>
+Date: Mon, 1 Sep 2025 16:34:14 +0800
+Cc: akpm@linux-foundation.org,
+ baolin.wang@linux.alibaba.com,
+ linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com,
+ richard.weiyang@gmail.com,
+ ziy@nvidia.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <604B12DD-4BF7-481D-8E09-0D97C8843639@gmail.com>
+References: <f8e942de-1a50-412e-9020-1bc901b4243b@redhat.com>
+ <20250901081109.52460-1-lianux.mm@gmail.com>
+ <df27d5cc-bac8-47ee-a03d-eb1eff6dbe39@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Rspamd-Queue-Id: 18B5840004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8BFA71A0008
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756715671-732870
-X-HE-Meta: U2FsdGVkX18k2l4jzgIWzclc4ICuM2S+oEJlqnMMrV6+ovCA2DXZcnwVWdtdN+xFZ6Dq/l+f25/+vyXGcqAvrVAooTedvIFYZzUYjKi8KhP4KgzHZJTaMQQNjmxsXc7wQt+7wo0RWI/4z8mym4yENud20SNuw7cANF5ffaMUf8NQy/Pm7cENVIqwGHQJqwgk19YdAtYLktPk52akr4hV7iWM5vPsWCZz2sP1wpr5e/GCMj4KEQdTe0vLMhmQokPHxYuctu25t6leVBM6kD1MkC+rFtA44Xnyq93zIcTBnIGI0Nrgse/u+bRvgdutyjpqIGD1vb4y75m70hjubfeQ/9zp25sDMb4Fhlj9+R0qB8wbrTDnfo+QJ5q5+TQJHH2LHpLZ/f33PTnENMayQaUsMj630gvSnNO5yoJqHKwUAgduDaV205djMbSzgWOcP04QGvwEbb5Nek/5rCLyJHAiMo6R/zSWldL0byr3AVDckxJtJcPf2da2u8mFJQIeb34QXnB5UtHSPLiTEr3JK2SHsjGrmGB6p9/siOnbtCcVBksSvBpcq5LLlPqNcv2lq9yu+f86Glvjty1UZubPCWzhiEtgbGbpQAbOCkei0llxsUN4Kk8Lm7Q4CxAak0L6J9nWvNfR/E5EwjS+ujjjeLn8NUK1c9hfhvRWxi5sKFMBCc9fqWe0K2K8ZHn5Hjrk+1PxoTUVecae/ft8a2KbTvyIsO7Mj0HK7wPT6Y09pbpsxazNH+2uFinbVKv1Lm74JTKTT1kf/XRncJyAB8iCn2HoC6LzP0AMGg9WUzdTUVGBLLvw0S0hj7mcCVDG20dMNS9Iv1miI9aBMKCq1hJRDUowCxS5PNooc3JBKetuS+8PMoOJVQZ8YZ6s1JJ5FbFbrmZn/HZBXx8gVlyBxGhj7BbLUrS9bG0PLEVmnn5w7sW2qs16Si6ZK+C+stK78rYS8KaQh0FEOCm+o7pu8GJEi/B
- 6/nCS2WB
- fGJj3HHHDnoF+/NnEyOKjv8U6ehac3AgcE61kORyhrA3tB+LFeyuZQfyRtihjz0wxU+3uPI9KcYw6ksUNzhVgknQteqGzgiftefy9CqYAGq7vxQsYflF9eaoTSa+M/wEDVdjL8VgIHYTOCCVu7MwWizS8rvPTS/yCdLojc6lUv66rX8oR8ABWjjIU5rrfqPkgNf8xeiYF+4TZ9dUVQtA3ZUXxKxvwUNBujnWoWYE4QozRr8/jwRKaEe63kIq7r+vseZzWxLoqj2NnxfXw546DlwROIYySYuvanNSDVpVPbWkvaZ0gehRAur9XDk+9InUmaCD+GlXDKFewXgISzE7IHgjSgLr8sUWuy3Yk9l8N41+gOtsr30FkUcdBoGcBvDnQSsrn
+X-Stat-Signature: dz9tdu7r7kskqzf6r9n7ucbzqn3uazgh
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756715674-980014
+X-HE-Meta: U2FsdGVkX19r4urnoG6gISt4jq38tN0VzqJlC/2bVTuBjYLIYJTO1/PgorcXWsL/0/+FnlsItzM4+CmirrgzmoUsh+sX5UGtCl6vkhT64CzMHs2a7xGMgl9fEHvzNphfvy8m8aoDbKD4zVET4m3+z2iGLEQ5qlPTz/DpNnEhbDQp5gJ+zGk/LUJlZ+7U3zjP+2Iy29OsfHgGJvG8wTvsz+KLmIA+6BLKNooTazmlfN4Cj3nA409T6zjanL3nwRMMNqP/RcsNQyyfduTVcVoRq9IbCQO/cLp+qyaX1tW1aSb/srrwrsLn+m7DhAQv5Rh6H5MY/OhLo/5ZsS9OtB3BKXoGb03kz46Gc6fAZghwkspcW8sA4H3RLHhTnR54IuGUx/D+nN5sqQCwpqnmm/qRMOh88GBkEku4OYzPti1VZNLfLjN/cYtg+DyGyI8uh5Yv5nHka1+WGAem5jNPmxxwPARZQKtVO+A6JI4CiSQMzj9r1+sse7Czwk9bnEu6IBbTPSDbXr4CrwmN43KtBw1/QxN7Z3qQC9w7TxXLNlj8Fe0eGuPcQr74LMm9RueMhqP19neU+mwav8TJy2IjXkWWdSNzM2elTqe4LANlJfdkhKDZdvAfbi6h3LkilI2LAqcoLC6YZJyTajiCZWI5hClW2jSt4rHijvTW0q75uOl5fL103LtvAjrCeZ8/b3GDsLZlI+juOkzC2BhTVUy0Nkz+/m4i32rnwCoMkfgghgee/0UP0pwXIzSaMzpohp37o2eEepN35ni3pGoHsnlzrinLh7rH1X1FxECrkS497YGE6T4ZKhzxK7S5O5moT7bGhko86EGp18a0LWsdFcTXbKv30yUQUM9Qs01l5hsjFbBZ6yqe0Ey2yU7aU+C7wQFGgtX5jyxJ0igXLi4xtQpPGXmkNhZYfJNXnVhgW4o7OVBNIuTu0ssxbZX+t/mviCgxBDLe/Vcw1sEjptNEDBq959/
+ Qs3Qlst4
+ mNY+Tm2uijTPf+r/4dKDuetTcu7jZW7aeOz0bqwGc3RDBN3T5wp9jSZTtC4AhYvr19bEuEUC3yDqfpj44Pk8JBPd4B8odD+GGh4YAj0A+FFdp92JLeRuqMfRdcIjjXhQKghCNCqsDKIzqDz9j4/XQQ1MPCxwns82m23oXzaUEwRpxOMVAD0xkF1GgcPmndmy8BhR4Xjbuc2N2IQPC86KvUtYiyBRjGMveG+j70QnrlTeZuV+RabB41tYO/wTjWDwkLzeMOfYZBwQjO5eR21tPtf2p1cRTd59pLd1AQhlYBBOQf6tmySKRwtTC853Vf4jyVTiyY1kr9qHNbxHTbZ8MfVWns8lZWK8QpymyTO19q2x+AjJ3HphjjIZEPppnzPWcdUMkQegsnaj0e3oeyZlR3hhN9EX4dOOLFi+0qEj1cvP8iz3WbL9N5KxIAknF5oFL3bdmQvP6whuB1+VYMYMUU32nb/yOx4ttzHLCj/L+aqvkkjE+2um1RcKe8wOB0dtKKEa3WTSfFa1WSy9T2VAllntlg68lKW6BjG7Gha1r3hJWIBMVXRjTWjaBnMBITdi6beuP1S+1hers3hbNui0x7tIhjoEdQUk4+OWpw/pAN+TYby5qft+w/oV9Rkd8zgccfVRU3NwAKzUEo/e+4mfDlcbeww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,44 +129,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-
-Hi,
-
-These patches simplify deferred initialization of the memory map.
-
-Beside nice negative diffstat I measured 3ms (55ms vs 58ms) reduction in
-the initialization of deferred pages on single node system with 64GiB of
-RAM.
-
-I don't have access to large memory machines, so I'd really appreciate
-testing of these patches on them to make sure there's no regression there.
-
-v2 changes: 
-* fix "sleeping function called from invalid context" bug reported by
-kbuild:
-https://lore.kernel.org/all/202508251443.f2d9f77f-lkp@intel.com
-
-v1: https://lore.kernel.org/all/20250818064615.505641-1-rppt@kernel.org
-
-I pushed the patches to memblock tree for wider testing.
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git/log/?h=for-next
-
-Mike Rapoport (Microsoft) (4):
-  mm/mm_init: use deferred_init_memmap_chunk() in deferred_grow_zone()
-  mm/mm_init: deferred_init_memmap: use a job per zone
-  mm/mm_init: drop deferred_init_maxorder()
-  memblock: drop for_each_free_mem_pfn_range_in_zone_from()
-
- .clang-format            |   1 -
- include/linux/memblock.h |  22 -----
- mm/memblock.c            |  64 -------------
- mm/mm_init.c             | 197 +++++++++++++--------------------------
- 4 files changed, 65 insertions(+), 219 deletions(-)
 
 
-base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
--- 
-2.50.1
+> On Sep 1, 2025, at 16:16, David Hildenbrand <david@redhat.com> wrote:
+>=20
+> On 01.09.25 10:11, wang lian wrote:
+>>> I'm confused, don't we have that exact check later in the function?
+>>> Your v1 might have been better, unless I am missing something.
+>> Hi David,
+>> Perhaps you missed this in the v1 feedback:
+>> =
+https://lore.kernel.org/linux-mm/E0C570E7-C4CD-4E41-9590-DDB64757CA2C@nvid=
+ia.com/ ?
+>=20
+> We have:
+>=20
+> 	/* smap does not show THPs after mremap, use kpageflags instead =
+*/
+> 	thp_size =3D 0;
+> 	for (i =3D 0; i < pagesize * 4; i++) {
+> 		if (pte_mapped[i] !=3D (char)i)
+> 			ksft_exit_fail_msg("%ld byte corrupted\n", i);
+>=20
+> 		if (i % pagesize =3D=3D 0 &&
+> 		    !is_backed_by_folio(&pte_mapped[i], 0, pagemap_fd, =
+kpageflags_fd))
+> 			thp_size++;
+> 	}
+>=20
+> Sure, it's after the split, but if mremap would have corrupted the =
+pages, surely
+> it would still be corrupt after the mremap+split.
+
+Yes, so I think it is correct to add this check in mremap.
+The check after splitting already exists
+>=20
+> --=20
+> Cheers
+>=20
+> David / dhildenb
+>=20
+
+Best regards,
+wang lian
 
 
