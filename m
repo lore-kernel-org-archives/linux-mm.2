@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD894CA1009
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:43:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AEB5CA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:43:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ABB58E0002; Mon,  1 Sep 2025 12:43:15 -0400 (EDT)
+	id A64898E0030; Mon,  1 Sep 2025 12:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EE468E0030; Mon,  1 Sep 2025 12:43:14 -0400 (EDT)
+	id A15B28E0016; Mon,  1 Sep 2025 12:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E82A28E0002; Mon,  1 Sep 2025 12:43:14 -0400 (EDT)
+	id 88EEC8E0030; Mon,  1 Sep 2025 12:43:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD1028E0016
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:43:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DD75BC4DD
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:43:14 +0000 (UTC)
-X-FDA: 83841251508.07.D423F0A
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8C5F1C0006
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:43:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lSvhuRR9;
-	spf=pass (imf22.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 63B508E0016
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:43:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A89914097A
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:43:16 +0000 (UTC)
+X-FDA: 83841251592.21.BFF9F07
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D778D80003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:43:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hvhWN5Zn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756744992;
+	s=arc-20220608; t=1756744994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JMtkoie1PzFbZ/9GVFEn9qZYkcpNtvbFVewJfLAvroI=;
-	b=CL89sf7iKGYBH8a/y/TNXem7hU2hX19FnBT+u/1K+x177ityMyJKikKinMoK1jnbzQgxeN
-	nubi+9ViCcsi42Vt8zUodgfbQ9AP4OZL1aw5uKdR1f0F/+yZiWyE4bVQFikCiGf6nldVmU
-	Fl1sNfn0x6BBQRkoZc/FrTqPdXqsAds=
+	bh=A8/Bc+EJuXaIVuuL4/eLKggLF3t+Hgxg98LF9wr4aQ0=;
+	b=v7aSUOOCxGsoI6A7ofcK3STX6mpmKdq1DJXGcxf8K3Ih7k3SW90kOjO93OJBXBm9NaBMfV
+	w8Q+nNKN2TRnhKtBJJZbTp611xrAtmTyyAgbYNMTy+dSX+T/eEXDARKTGnaGtPsvGLpfTX
+	kv2ko+as/rCLKRMXlPXIaoh8KidzPhA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lSvhuRR9;
-	spf=pass (imf22.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756744992; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hvhWN5Zn;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of ethan.w.s.graham@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=ethan.w.s.graham@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756744994; a=rsa-sha256;
 	cv=none;
-	b=1c35d6WUlaJ3APnzJeFRcpSKbKvM5LDYPv4TiECbA/aby06tYGLZ0rsJ8OLIVYq26kDoQV
-	e7/vvV+56vHM1Z4cbM3iMtClNF60E72dzHYa1ESEUKY7QXlD+aykVsG9In1x2/m64wcRUd
-	ZqnRkgolcP9gVABc9wySgMiViHYPjLM=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45b79ec2fbeso30644865e9.3
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 09:43:12 -0700 (PDT)
+	b=QYfjStNWlA4HJcyBjrfWhyTBpHy5FRSb5ja/2ZW12NoRgbIZFD9aegQb7b5E3VLWudHsKu
+	OrzOp5xfCrNCNSXuMM5UXeawYKbCZAoTm68r6j6P3CvQn4DY+QPjjAG+eHofWvsnH+2Ijc
+	TiLfQPXxRBAR5WWGRa/ZT5lD/YppsLU=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3cf48bde952so2982894f8f.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 09:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756744991; x=1757349791; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756744992; x=1757349792; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JMtkoie1PzFbZ/9GVFEn9qZYkcpNtvbFVewJfLAvroI=;
-        b=lSvhuRR9xtIpt/IppOdRqDO7AX24IuQi7mIHWtVcFGHqQ8xffKsuE1+2WwAP5jbRTp
-         kfZfWlk9/3+6Xas2vprP67Vo7uB/bhPzPdn5tUFJd2Dq/DmLyuBLqifgD2CmEUA5Cfml
-         5vk6KeEwfP+xuIa5MXOG9sLWU7dtBGEEkV0ZNFKSU2sGWyNgc1y15Xz1ilnQuXgSF4xA
-         XPPL61Qe+CLOSA7bpv5D5k7JLz6NNsYUTrwNla/4uVLY1AFdxwHi9pH9+YLQiD2eWE2E
-         Zjy2KGPZAquAAneX2cDxncT6Q/0pJL871nggH70NPwsiYEKCo3t+xBRs6vUBONTJMTYV
-         YpGQ==
+        bh=A8/Bc+EJuXaIVuuL4/eLKggLF3t+Hgxg98LF9wr4aQ0=;
+        b=hvhWN5ZnyP5r7Lu5IKDdwufeX6a6lndR4gt82uYsZnR9FRxmBpPgkBSYb3voTKjZTw
+         Q1CDraLFuChRl3SeSIEVIw1QqR1qag/ItWrgQCf2tnqdl152bv1iLfK+qz2Tpdz27/Z5
+         g90ZE3vhPYYGatHpRiuJZ1K1GwWMLoZ1xEkqixjuE1ClNkVpkqt7SmH684JgWjIMgJto
+         Vyq5jq1DzMjWNLYy8Sj1Vndj0S1PLyzms5ftAmfzinWnRTRQ3HwjcXCt4Rmk65MDZhfn
+         cZ3Ym+Uv6PgpHIQAfFwewzC8L8K2m6KYz92e4hGn4ihBSzGP4opCiryzXlK3jWBBctvQ
+         rJSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756744991; x=1757349791;
+        d=1e100.net; s=20230601; t=1756744992; x=1757349792;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JMtkoie1PzFbZ/9GVFEn9qZYkcpNtvbFVewJfLAvroI=;
-        b=FZCpcPKSlvbyhn8WzFHuSGqKwYJ8ROj+kkLWzdvQVfyfdNVhC9Ln8k5/mBd5PuZ6Uj
-         5y5SntadvRO8ZUmZJ+a15hBX8TdiIPf+L8R2HBBFoUPJWOSLZW1sDOyR35tP7NGCwjBI
-         Ty0SW115wSIZ/nbl+ESRdxT3QWA3jqRc0wctvRadiCZMPpG+TLHHKHvi4iiIqtC+1BeW
-         b7YHoddiPeJo+6BAOBkU5DoOq/toPSjKHZcIhrhE4zXlXR4MVY8bVvpZmaBOboyg/waF
-         efMbl+UG77RGQwtIZa7pKCQirru3kOfFTK7Y1FtvRBClACPLy2x7jKDrj91h5fk8qXfq
-         m9EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWDs0StPjoT4XT9V+/XqsOEngWPTqZPa2O+mBuwDgGEWFtQ/9wjqDlirgiHDU4f1sU+AvqaARD8vw==@kvack.org
-X-Gm-Message-State: AOJu0Yzw4sfbv1GaexSP7NHwceOA9L/ajFd1faUYQb0uWqhDTjhlMJ2Y
-	xADKpdwJkj4vQMdks8/oC9mNVvp02E3tvFEe+jFqY3yK+cw4uJkdufWP
-X-Gm-Gg: ASbGncsqnb4bV5SjuZaiH2vEQUQKdVHI41C9d09hVOY/AO33PNoOMSgUT+Kd7QgQsot
-	PKitOn33avcFXODXGeQVWEL4J/Su/DIfyjlIAUaGQTJADlCBcg4KmGiq7r7dPKhtnxn0k6n0Nhn
-	CX9iMw/C55Qz7wLoWhh+ySUG9DoAnQn2lEjbiKmMw+yEsuoSrh/SOB1ebs9ZftI477INiDE+B6S
-	LcZkMcnrS8xbdsWvQA2nj9aKDe5qDvBVgOcRJanvN4ulyCRbjm3ssRbEjVU/ppupo0/puJvz9yM
-	vdlj1XehFIkcVWkVe0QTVDJQDc8ePs91sXYJqZktWh72kfQ75wR5NxsAKp2fWtZUaeYRng0Gg5O
-	hBb9G3buKBoE7x+5EcA+enyGSHybi4CaCGEAlYcLEqM4M5jz1vcq01n2dwOqQjyoxStKaaoX0Yu
-	WHr3wg5iTrCj7BcFpGeA==
-X-Google-Smtp-Source: AGHT+IGpM9bd6W7FkfsOwYPD+t+MlaqBnshvtZm283Cr6UHrucbgXHfgvmEeeRzAnIY+IYjLZ+c+6A==
-X-Received: by 2002:a05:600c:3b8a:b0:45b:8935:16bc with SMTP id 5b1f17b1804b1-45b8ee1788emr25495035e9.37.1756744990976;
-        Mon, 01 Sep 2025 09:43:10 -0700 (PDT)
+        bh=A8/Bc+EJuXaIVuuL4/eLKggLF3t+Hgxg98LF9wr4aQ0=;
+        b=iuzPS3jQdLCQvZt+l25Lv7AviiariA6IaJMwI5qjNBkZatW0y9h56gjHgO7ciQI35b
+         etcdjbeeQ67F4qHbGpMihfeqIUTHchgtKZjouXbmHcK5Uz6injhMH3GnpMwiBpNKOdbv
+         aDpVwCN40vHzZTKCgU6Gpzc0hxM4ffCg1TXWjdRuiLrcIGEWbfBIv1949F4z72UX4aCH
+         YYCYTexi+M9fxBY3rnV0pANFUnBzGmplLOALOdHHXsXbV2DyaEwaveOUXbiqqO/JswJp
+         gdtc10Wj43loiwlySXjrMKgIj7b173aFF/VGE7KrV/g40Iq2GJVfs1wuJyB3Rd1VY1iu
+         dxRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqqSMVN6HxrX/xyleQnQm+CaO+IRPJ7B6x+gRtsGhJwxlWPEr8Fd+Ncllxqzqj7gsIt24tcc2WEA==@kvack.org
+X-Gm-Message-State: AOJu0Yy5GII4sEwRX37O+lzNwPLqL9spvBGmejRcqrgWEWtC0NAQtqlv
+	WkPE/lZAViJu9vnV4iMO1N+GEasgMn4KKTOne5hJNGyysc5AJDum1/st
+X-Gm-Gg: ASbGncs+woeoXzd9KQBog2Pa6zvI0np9lrW2G/88ORwITsYXBYLSmFI0oPt+thd0JHd
+	tiDXjM+YcGp2v158vR8rVXwtMlAnu16fMyFlejNGBQ+JGjWO0SdIAe4OptEryLGYbUulNkZddqw
+	ixmEfNgiJEJOmSag1DphxRYPYYGeA6Em4qLBZdhfuPPmYXV+BiYMjkGM/IWgd2mrpDzvoyWt6u1
+	wNXuwmuXorH/Og1AdDhwAIsWqEBn3UbhWqN1YapytyOVapMkjU4hdsnvRdx7TvpzWsomu3Tm311
+	dFj42/YD3+Jg4jxow/WGRrAhntcYI7CbM2OwBabqfQjuZgtcGlEfvG9MDdSzjaDBO9KFdvqYRXu
+	jEhCRCsYYW8boBeBACasKnNz48FGN9wItBDMbFu62u7Sp5UW/wH/HqlTlLgRvWVfWW+gQIMotyQ
+	QfiWM+mKt1rz7DiqHDeQ==
+X-Google-Smtp-Source: AGHT+IFP0X6tew9l9y1KzXfzTC2RfA9F/fpj4mTFdJRiKw7k/c49N6/IJD7XpNkjFtTO8zgpKc/IQg==
+X-Received: by 2002:a05:6000:4013:b0:3b7:94a2:87e8 with SMTP id ffacd0b85a97d-3d1dcb75006mr6697702f8f.18.1756744992033;
+        Mon, 01 Sep 2025 09:43:12 -0700 (PDT)
 Received: from xl-nested.c.googlers.com.com (140.225.77.34.bc.googleusercontent.com. [34.77.225.140])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf274dde69sm15955362f8f.14.2025.09.01.09.43.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf274dde69sm15955362f8f.14.2025.09.01.09.43.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 09:43:10 -0700 (PDT)
+        Mon, 01 Sep 2025 09:43:11 -0700 (PDT)
 From: Ethan Graham <ethan.w.s.graham@gmail.com>
 To: ethangraham@google.com,
 	glider@google.com
@@ -113,22 +113,22 @@ Cc: andreyknvl@gmail.com,
 	herbert@gondor.apana.org.au,
 	davem@davemloft.net,
 	linux-crypto@vger.kernel.org
-Subject: [PATCH v2 RFC 3/7] kfuzztest: implement core module and input processing
-Date: Mon,  1 Sep 2025 16:42:08 +0000
-Message-ID: <20250901164212.460229-4-ethan.w.s.graham@gmail.com>
+Subject: [PATCH v2 RFC 4/7] tools: add kfuzztest-bridge utility
+Date: Mon,  1 Sep 2025 16:42:09 +0000
+Message-ID: <20250901164212.460229-5-ethan.w.s.graham@gmail.com>
 X-Mailer: git-send-email 2.51.0.318.gd7df087d1a-goog
 In-Reply-To: <20250901164212.460229-1-ethan.w.s.graham@gmail.com>
 References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8C5F1C0006
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D778D80003
+X-Stat-Signature: te8aua77gn33oahe3fjuo3bbsh8ypn9s
 X-Rspam-User: 
-X-Stat-Signature: pyig4moar8dg1zqgje8t9ge7rjqbgexh
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756744992-271251
-X-HE-Meta: U2FsdGVkX18ExsLuwKqFeq29gItxczCk9sCtF2wI0nkLBsd4Kl/22UlwxjEgt4VPUyLl3hZUEb2A2WiTT+7c9zutFQofm6kT3ZXvaTaMLAuC6nLMKV4EuJO+A0VlWrMhuLx1cds6NiLBoPgWUoiQ+daHf+CQ0wX/xFV17umoNQpQoeBu98m8uWR1PMfLMiPlS4Uk7UKeVDB+w9u/UiW4VDpMMp6EgUGR61FPiusbbEi8P4V5wKra8YeZaHdnHzddSTZpO+5nN9gOloXqGBCbY5DWVml0CbY1YNV8Vf5DRLxS9SsciwDtqXz3kR0NMkIEx1pmQQI36Fwb8/I8TN/QT9IriveQiiMn5s15WZgSQotpcVvrEXl4tOm1Mb7NtcXaSzQlkOwsVSkqPCvz7o7WCyxrRMolGslI77eckUpu6uM5VzbgAJAfPQC1BItsYCC8RoktYVTd9duC8q+Zf6WtCQ/KbVedtMqQJgWYTpViq2NcMRbl9wkMmY+8ySJAlN6rwn/vVwUA/AYpTWyx8/c8ujvmv1w/hzpulS8kHe3HOcV3nCqUw/fCIhDyuPi+K9ZAdQhjnEggk+Fav6K18+0iQHhQC30/8zzUchzmPxK8EI1RkdZqjXMdXNfDUmQJ5lrfSVTK6e4W+mb8lTczSOqABFQktTwQeyr/graf0UAhKOwHkwAjeKDC+XNXj1QAANZxfhGo7NdYk045lp9ataAHxXUjQr5aQ/jP5D2XY8FhyEaRyNT38r/Q8Cs8+6yJX7WDJvnC3gU3yLWP82WmD7xeBzyfeHadOCcffZKgMWlnpIShaMEdS7pkbOEETJL4ReU6nfCKUQpr1R1bdFOq2uP9JiNGPUih/FXENCLMVlHV4DqlignamZnVVIknqeCTu+NVNinaP4x53D5P2bgMoCfA7u6A82xQSzK4XM5a0qKOoqLMjDHA0QwW+dxS4RXiBfkUq5/l9lwKylqBrGt+G+G
- hb4P4iWR
- nA9vYgVzL8lO9csjUNrw5eApcY6GLxC5kzaC+FNHiHjlcZ4g5SgRDFuAQqnk3LGTHAbp8xlyydLwhI6BgcRpQkJH4vea4KZhbCav8ckXNrlB4r1Tck44GEEWKo2E2SwioPB1A/DzV2t4QCqbySIXGYH5As1DasSOnIuH0Skd9etSYdY1hgPw+dfS8jNV6t9+RDkqPH82YVtepRSl+SHNCT4aJQKT2u8vNCoPdP6b8UaAkxkvOpjATfAi0AaVjhbfiYlK/a8qNdN7OTysPR3Ff4UIT/UfnMJIgQzRiPfX6zCRLKwSDT+soHJDJBTgYB4LUBi/1Q1lcEgCxL9107ow743xsZ4cOJ9SllCZ053qZNBOI+6DTIIdNviuykyuCyqRYAnrn35U4N4SN8oK5U9F82zXkx3S8PcvytXQgRfmCgQpGncQaRN3adDD/Gdj2/KZWr9YD
+X-HE-Tag: 1756744993-934575
+X-HE-Meta: U2FsdGVkX1+ybvXdkiG5cidzgHCeGNuA81nmBvo8O9ny1xJk9h8uJQ5f0LbzfpKuKlp8ALX6wD0XYuKGcNqel+XGXL/nN/C4vknVRDnAEQa5Q9mB3Lq9Q/k98NeK1SZJBxLir0SjGiJZGmmGHu9beLgEWVqxGNRKyEBUvLy2mEMpJK6ATOnlHEj/XNwk3z3DXD3Zw7juw8k1L+yxREBsHDiufKPUHz5lSxofPWeusJMfeW5Z6DMwbGmWhnA2u4jKdPHWlrwvctzy2lJF2DKUDdI7Q2wRQDYGFGMGUuD5bdQgxExV//K7SFELHrDTVg4/sN01VQx4RpOVQBPLzB3hzIYkyhZJG+gM5R6ywYyXicLRIliAFovLc6mgBySxSLIO2DWDkcjivr3RcGq9ITucueHyVhALuPJwrpfnU0WqF7aCof0rNMyM9D/Z/dh0jIbt4+mbGYWgkpSBvf7rO6OzOgKEtwypVOrt2Os7Twpox5muzjdcGCFfxWvJ1IHwtSuqFeqOV64fQh7GHvvmZFchl+13ETlJOOpiJzwEMS+SQMh14TFApr9vxI5Jy3MldVct+Z/xdFXvwIP/MNIdbGyGvt7vdHQWfJAEIleLtf5dMPCh3j1AjaqFE1eX4QXhNZjnvnbhMI3T/Z3+00uqpu6WVBdEzcRBMSLwQ1lsySFdAqzwZ0qne8vzlYh2BAR9BhboJo+rp4VCByCTjeY5vrudrq801ELF52DAxwNDbXSfizwDZz+hIBugs4OnhuHaDMsQELHHBChvqJlAZYGR+sQAS1aoW/tYT+9U6R8eAWGjjb1SuLjveZ8ckmmzceqCEOVQpa80qpoblOCV/AX60S7fjSeDv1hCkyJ1aTEhC35qXO1j5zcAvR7TNg3GpxRDj3lqpndrno7Yz91Vse39Ere26RSrQA9/dV/nr/dRG1BOMyvntEOFD/kFBbmXDRLQ9OzIM9EdrlEH6EDwmyu9ghX
+ gBTkYQBv
+ pFLBCxqr3Pna8dvEs4yYXe9lXE+wQJFi6Uft035kSibjwZOKcmst/SAwhTa+C77L1Ty1DTHT0yOMPO6ZkOF791SMGD5b4ZyltsSv8OGameG5/V5YKUVwiBG61yWE7PYwRusZOXZX7UNZuCbvfJ2vfYg1F27/5n3v2sX+yQ/wjZt3sMzpfDKpIMXglfnM8aHv8li5XlrBnyqkl1i2zkspp6n91TSWS6xPRyjjzt13F9LaOPcCmJPmWeN4/8E+/ptmUX1CFnB03f+ipIVc4/h3w1emfRmCT1o0Nzg1FxM3Pm3RwsvE2HnL4X0pkOClaRbpaMClVQqTW9N+YGNB/wgQCV5HsSq9lGQ0qhMRoTRHfCK/mYA1JUqrDzWYbrpNf8emeRHzQejUJ/wWX8HK1WQMPhuTevUqOLampsSn2HvrD5yJUDJhkhIAesU8NGMFHGloG0YT1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,444 +139,1702 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ethan Graham <ethangraham@google.com>
 
-Add the core runtime implementation for KFuzzTest. This includes the
-module initialization, and the logic for receiving and processing
-user-provided inputs through debugfs.
+Introduce the kfuzztest-bridge tool, a userspace utility for sending
+structured inputs to KFuzzTest harnesses via debugfs.
 
-On module load, the framework discovers all test targets by iterating
-over the .kfuzztest_target section, creating a corresponding debugfs
-directory with a write-only 'input' file for each of them.
+The bridge takes a textual description of the expected input format, a
+file containing random bytes, and the name of the target fuzz test. It
+parses the description, encodes the random data into the binary format
+expected by the kernel, and writes the result to the corresponding
+debugfs entry.
 
-Writing to an 'input' file triggers the main fuzzing sequence:
-1. The serialized input is copied from userspace into a kernel buffer.
-2. The buffer is parsed to validate the region array and relocation
-   table.
-3. Pointers are patched based on the relocation entries, and in KASAN
-   builds the inter-region padding is poisoned.
-4. The resulting struct is passed to the user-defined test logic.
+This allows for both simple manual testing and integration with
+userspace fuzzing engines. For example, it can be used for smoke testing
+by providing data from /dev/urandom, or act as a bridge for blob-based
+fuzzers (e.g., AFL) to target KFuzzTest harnesses.
 
 Signed-off-by: Ethan Graham <ethangraham@google.com>
+---
+ tools/Makefile                        |  15 +-
+ tools/kfuzztest-bridge/.gitignore     |   2 +
+ tools/kfuzztest-bridge/Build          |   6 +
+ tools/kfuzztest-bridge/Makefile       |  48 ++++
+ tools/kfuzztest-bridge/bridge.c       |  93 +++++++
+ tools/kfuzztest-bridge/byte_buffer.c  |  87 ++++++
+ tools/kfuzztest-bridge/byte_buffer.h  |  31 +++
+ tools/kfuzztest-bridge/encoder.c      | 356 ++++++++++++++++++++++++
+ tools/kfuzztest-bridge/encoder.h      |  16 ++
+ tools/kfuzztest-bridge/input_lexer.c  | 243 +++++++++++++++++
+ tools/kfuzztest-bridge/input_lexer.h  |  57 ++++
+ tools/kfuzztest-bridge/input_parser.c | 373 ++++++++++++++++++++++++++
+ tools/kfuzztest-bridge/input_parser.h |  79 ++++++
+ tools/kfuzztest-bridge/rand_stream.c  |  61 +++++
+ tools/kfuzztest-bridge/rand_stream.h  |  46 ++++
+ 15 files changed, 1507 insertions(+), 6 deletions(-)
+ create mode 100644 tools/kfuzztest-bridge/.gitignore
+ create mode 100644 tools/kfuzztest-bridge/Build
+ create mode 100644 tools/kfuzztest-bridge/Makefile
+ create mode 100644 tools/kfuzztest-bridge/bridge.c
+ create mode 100644 tools/kfuzztest-bridge/byte_buffer.c
+ create mode 100644 tools/kfuzztest-bridge/byte_buffer.h
+ create mode 100644 tools/kfuzztest-bridge/encoder.c
+ create mode 100644 tools/kfuzztest-bridge/encoder.h
+ create mode 100644 tools/kfuzztest-bridge/input_lexer.c
+ create mode 100644 tools/kfuzztest-bridge/input_lexer.h
+ create mode 100644 tools/kfuzztest-bridge/input_parser.c
+ create mode 100644 tools/kfuzztest-bridge/input_parser.h
+ create mode 100644 tools/kfuzztest-bridge/rand_stream.c
+ create mode 100644 tools/kfuzztest-bridge/rand_stream.h
 
----
-v2:
-- The module's init function now taints the kernel with TAINT_TEST.
----
----
- lib/Makefile           |   2 +
- lib/kfuzztest/Makefile |   4 +
- lib/kfuzztest/main.c   | 163 ++++++++++++++++++++++++++++++++
- lib/kfuzztest/parse.c  | 208 +++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 377 insertions(+)
- create mode 100644 lib/kfuzztest/Makefile
- create mode 100644 lib/kfuzztest/main.c
- create mode 100644 lib/kfuzztest/parse.c
-
-diff --git a/lib/Makefile b/lib/Makefile
-index c38582f187dd..511c44ef4b19 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -354,6 +354,8 @@ obj-$(CONFIG_GENERIC_LIB_CMPDI2) += cmpdi2.o
- obj-$(CONFIG_GENERIC_LIB_UCMPDI2) += ucmpdi2.o
- obj-$(CONFIG_OBJAGG) += objagg.o
+diff --git a/tools/Makefile b/tools/Makefile
+index c31cbbd12c45..7f1dfe022045 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -21,6 +21,7 @@ help:
+ 	@echo '  hv                     - tools used when in Hyper-V clients'
+ 	@echo '  iio                    - IIO tools'
+ 	@echo '  intel-speed-select     - Intel Speed Select tool'
++	@echo '  kfuzztest-bridge       - KFuzzTest userspace utility'
+ 	@echo '  kvm_stat               - top-like utility for displaying kvm statistics'
+ 	@echo '  leds                   - LEDs  tools'
+ 	@echo '  nolibc                 - nolibc headers testing and installation'
+@@ -69,7 +70,7 @@ acpi: FORCE
+ cpupower: FORCE
+ 	$(call descend,power/$@)
  
-+obj-$(CONFIG_KFUZZTEST) += kfuzztest/
-+
- # pldmfw library
- obj-$(CONFIG_PLDMFW) += pldmfw/
+-counter firewire hv guest bootconfig spi usb virtio mm bpf iio gpio objtool leds wmi firmware debugging tracing: FORCE
++counter firewire hv guest bootconfig spi usb virtio mm bpf iio gpio objtool leds wmi firmware debugging tracing kfuzztest-bridge: FORCE
+ 	$(call descend,$@)
  
-diff --git a/lib/kfuzztest/Makefile b/lib/kfuzztest/Makefile
+ bpf/%: FORCE
+@@ -126,7 +127,8 @@ all: acpi counter cpupower gpio hv firewire \
+ 		perf selftests bootconfig spi turbostat usb \
+ 		virtio mm bpf x86_energy_perf_policy \
+ 		tmon freefall iio objtool kvm_stat wmi \
+-		debugging tracing thermal thermometer thermal-engine ynl
++		debugging tracing thermal thermometer thermal-engine ynl \
++		kfuzztest-bridge
+ 
+ acpi_install:
+ 	$(call descend,power/$(@:_install=),install)
+@@ -134,7 +136,7 @@ acpi_install:
+ cpupower_install:
+ 	$(call descend,power/$(@:_install=),install)
+ 
+-counter_install firewire_install gpio_install hv_install iio_install perf_install bootconfig_install spi_install usb_install virtio_install mm_install bpf_install objtool_install wmi_install debugging_install tracing_install:
++counter_install firewire_install gpio_install hv_install iio_install perf_install bootconfig_install spi_install usb_install virtio_install mm_install bpf_install objtool_install wmi_install debugging_install tracing_install kfuzztest-bridge_install:
+ 	$(call descend,$(@:_install=),install)
+ 
+ selftests_install:
+@@ -170,7 +172,8 @@ install: acpi_install counter_install cpupower_install gpio_install \
+ 		virtio_install mm_install bpf_install x86_energy_perf_policy_install \
+ 		tmon_install freefall_install objtool_install kvm_stat_install \
+ 		wmi_install debugging_install intel-speed-select_install \
+-		tracing_install thermometer_install thermal-engine_install ynl_install
++		tracing_install thermometer_install thermal-engine_install ynl_install \
++		kfuzztest-bridge_install
+ 
+ acpi_clean:
+ 	$(call descend,power/acpi,clean)
+@@ -178,7 +181,7 @@ acpi_clean:
+ cpupower_clean:
+ 	$(call descend,power/cpupower,clean)
+ 
+-counter_clean hv_clean firewire_clean bootconfig_clean spi_clean usb_clean virtio_clean mm_clean wmi_clean bpf_clean iio_clean gpio_clean objtool_clean leds_clean firmware_clean debugging_clean tracing_clean:
++counter_clean hv_clean firewire_clean bootconfig_clean spi_clean usb_clean virtio_clean mm_clean wmi_clean bpf_clean iio_clean gpio_clean objtool_clean leds_clean firmware_clean debugging_clean tracing_clean kfuzztest-bridge_clean:
+ 	$(call descend,$(@:_clean=),clean)
+ 
+ libapi_clean:
+@@ -230,6 +233,6 @@ clean: acpi_clean counter_clean cpupower_clean hv_clean firewire_clean \
+ 		freefall_clean build_clean libbpf_clean libsubcmd_clean \
+ 		gpio_clean objtool_clean leds_clean wmi_clean firmware_clean debugging_clean \
+ 		intel-speed-select_clean tracing_clean thermal_clean thermometer_clean thermal-engine_clean \
+-		sched_ext_clean ynl_clean
++		sched_ext_clean ynl_clean kfuzztest-bridge_clean
+ 
+ .PHONY: FORCE
+diff --git a/tools/kfuzztest-bridge/.gitignore b/tools/kfuzztest-bridge/.gitignore
 new file mode 100644
-index 000000000000..142d16007eea
+index 000000000000..4aa9fb0d44e2
 --- /dev/null
-+++ b/lib/kfuzztest/Makefile
-@@ -0,0 +1,4 @@
++++ b/tools/kfuzztest-bridge/.gitignore
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++kfuzztest-bridge
+diff --git a/tools/kfuzztest-bridge/Build b/tools/kfuzztest-bridge/Build
+new file mode 100644
+index 000000000000..d07341a226d6
+--- /dev/null
++++ b/tools/kfuzztest-bridge/Build
+@@ -0,0 +1,6 @@
++kfuzztest-bridge-y += bridge.o
++kfuzztest-bridge-y += byte_buffer.o
++kfuzztest-bridge-y += encoder.o
++kfuzztest-bridge-y += input_lexer.o
++kfuzztest-bridge-y += input_parser.o
++kfuzztest-bridge-y += rand_stream.o
+diff --git a/tools/kfuzztest-bridge/Makefile b/tools/kfuzztest-bridge/Makefile
+new file mode 100644
+index 000000000000..3a4437fb0d3f
+--- /dev/null
++++ b/tools/kfuzztest-bridge/Makefile
+@@ -0,0 +1,48 @@
 +# SPDX-License-Identifier: GPL-2.0
++# Makefile for KFuzzTest-Bridge
++include ../scripts/Makefile.include
 +
-+obj-$(CONFIG_KFUZZTEST) += kfuzztest.o
-+kfuzztest-objs := main.o parse.o
-diff --git a/lib/kfuzztest/main.c b/lib/kfuzztest/main.c
++bindir ?= /usr/bin
++
++ifeq ($(srctree),)
++srctree := $(patsubst %/,%,$(dir $(CURDIR)))
++srctree := $(patsubst %/,%,$(dir $(srctree)))
++endif
++
++MAKEFLAGS += -r
++
++override CFLAGS += -O2 -g
++override CFLAGS += -Wall -Wextra
++override CFLAGS += -D_GNU_SOURCE
++override CFLAGS += -I$(OUTPUT)include -I$(srctree)/tools/include
++
++ALL_TARGETS := kfuzztest-bridge
++ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
++
++KFUZZTEST_BRIDGE_IN := $(OUTPUT)kfuzztest-bridge-in.o
++KFUZZTEST_BRIDGE    := $(OUTPUT)kfuzztest-bridge
++
++all: $(ALL_PROGRAMS)
++
++export srctree OUTPUT CC LD CFLAGS
++include $(srctree)/tools/build/Makefile.include
++
++$(KFUZZTEST_BRIDGE_IN): FORCE
++	$(Q)$(MAKE) $(build)=kfuzztest-bridge
++
++$(KFUZZTEST_BRIDGE): $(KFUZZTEST_BRIDGE_IN)
++	$(QUIET_LINK)$(CC) $(CFLAGS) $< -o $@ $(LDFLAGS)
++
++clean:
++	rm -f $(ALL_PROGRAMS)
++	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.o.cmd' -delete
++
++install: $(ALL_PROGRAMS)
++	install -d -m 755 $(DESTDIR)$(bindir);		\
++	for program in $(ALL_PROGRAMS); do		\
++		install $$program $(DESTDIR)$(bindir);	\
++	done
++
++FORCE:
++
++.PHONY: all install clean FORCE prepare
+diff --git a/tools/kfuzztest-bridge/bridge.c b/tools/kfuzztest-bridge/bridge.c
 new file mode 100644
-index 000000000000..c24350eb1fca
+index 000000000000..3815cb8fd6e7
 --- /dev/null
-+++ b/lib/kfuzztest/main.c
-@@ -0,0 +1,163 @@
++++ b/tools/kfuzztest-bridge/bridge.c
+@@ -0,0 +1,93 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * KFuzzTest core module initialization and debugfs interface.
++ * KFuzzTest tool for sending inputs into a KFuzzTest harness
 + *
 + * Copyright 2025 Google LLC
 + */
-+#include <linux/debugfs.h>
-+#include <linux/fs.h>
-+#include <linux/kfuzztest.h>
-+#include <linux/module.h>
-+#include <linux/printk.h>
 +
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Ethan Graham <ethangraham@google.com>");
-+MODULE_DESCRIPTION("Kernel Fuzz Testing Framework (KFuzzTest)");
++#include <asm-generic/errno-base.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <string.h>
++#include <unistd.h>
 +
-+extern const struct kfuzztest_target __kfuzztest_targets_start[];
-+extern const struct kfuzztest_target __kfuzztest_targets_end[];
++#include "byte_buffer.h"
++#include "encoder.h"
++#include "input_lexer.h"
++#include "input_parser.h"
++#include "rand_stream.h"
 +
-+/**
-+ * struct kfuzztest_dentry - A container for a debugfs dentry and its fops.
-+ * @dentry: Pointer to the created debugfs dentry.
-+ * @fops: The file_operations struct associated with this dentry.
-+ *
-+ * This simplifies state management by keeping a file's dentry and its
-+ * operations bundled together.
-+ */
-+struct kfuzztest_dentry {
-+	struct dentry *dentry;
-+	struct file_operations fops;
-+};
-+
-+/**
-+ * struct kfuzztest_debugfs_state - Per-test-case debugfs state.
-+ * @test_dir: The top-level debugfs directory for a single test case, e.g.,
-+ * /sys/kernel/debug/kfuzztest/<test-name>/.
-+ * @input_dentry: The state for the "input" file, which is write-only.
-+ *
-+ * Wraps all debugfs components created for a single test case.
-+ */
-+struct kfuzztest_debugfs_state {
-+	struct dentry *target_dir;
-+	struct kfuzztest_dentry input_dentry;
-+};
-+
-+/**
-+ * struct kfuzztest_simple_fuzzer_state - Global state for the KFTF module.
-+ * @kfuzztest_dir: The root debugfs directory, /sys/kernel/debug/kfuzztest/.
-+ * @debugfs_state: A statically sized array holding the state for each
-+ *	registered test case.
-+ */
-+struct kfuzztest_state {
-+	struct file_operations fops;
-+	struct dentry *kfuzztest_dir;
-+	struct kfuzztest_debugfs_state *debugfs_state;
-+};
-+
-+/* Global static variable to hold all state for the module. */
-+static struct kfuzztest_state state;
-+
-+const umode_t KFUZZTEST_INPUT_PERMS = 0222;
-+
-+/**
-+ * kfuzztest_init - Initializes the debug filesystem for KFuzzTest.
-+ *
-+ * Each registered test in the ".kfuzztest" section gets its own subdirectory
-+ * under "/sys/kernel/debug/kfuzztest/<test-name>" with one files:
-+ *	- input: write-only file to send input to the fuzz driver
-+ *
-+ * Returns:
-+ *	0 on success.
-+ *	-ENODEV or other error codes if debugfs creation fails.
-+ */
-+static int __init kfuzztest_init(void)
++static int invoke_kfuzztest_target(const char *target_name, const char *data, size_t data_size)
 +{
-+	const struct kfuzztest_target *targ;
-+	int ret = 0;
-+	int i = 0;
-+	size_t num_test_cases;
++	ssize_t bytes_written;
++	char buf[256];
++	int ret;
++	int fd;
 +
-+	num_test_cases = __kfuzztest_targets_end - __kfuzztest_targets_start;
++	ret = snprintf(buf, sizeof(buf), "/sys/kernel/debug/kfuzztest/%s/input", target_name);
++	if (ret < 0)
++		return ret;
 +
-+	state.debugfs_state =
-+		kzalloc(num_test_cases * sizeof(struct kfuzztest_debugfs_state),
-+			GFP_KERNEL);
-+	if (!state.debugfs_state)
-+		return -ENOMEM;
++	fd = openat(AT_FDCWD, buf, O_WRONLY, 0);
++	if (fd < 0)
++		return fd;
 +
-+	/* Create the main "kfuzztest" directory in /sys/kernel/debug. */
-+	state.kfuzztest_dir = debugfs_create_dir("kfuzztest", NULL);
-+	if (!state.kfuzztest_dir) {
-+		pr_warn("KFuzzTest: could not create debugfs");
-+		return -ENODEV;
++	bytes_written = write(fd, (void *)data, data_size);
++	if (bytes_written < 0) {
++		close(fd);
++		return bytes_written;
 +	}
 +
-+	if (IS_ERR(state.kfuzztest_dir)) {
-+		state.kfuzztest_dir = NULL;
-+		return PTR_ERR(state.kfuzztest_dir);
-+	}
-+
-+	for (targ = __kfuzztest_targets_start; targ < __kfuzztest_targets_end;
-+	     targ++, i++) {
-+		/* Create debugfs directory for the target. */
-+		state.debugfs_state[i].target_dir =
-+			debugfs_create_dir(targ->name, state.kfuzztest_dir);
-+
-+		if (!state.debugfs_state[i].target_dir) {
-+			ret = -ENOMEM;
-+			goto cleanup_failure;
-+		} else if (IS_ERR(state.debugfs_state[i].target_dir)) {
-+			ret = PTR_ERR(state.debugfs_state[i].target_dir);
-+			goto cleanup_failure;
-+		}
-+
-+		/* Create an input file under the target's directory. */
-+		state.debugfs_state[i].input_dentry.fops =
-+			(struct file_operations){
-+				.owner = THIS_MODULE,
-+				.write = targ->write_input_cb,
-+			};
-+		state.debugfs_state[i].input_dentry.dentry =
-+			debugfs_create_file(
-+				"input", KFUZZTEST_INPUT_PERMS,
-+				state.debugfs_state[i].target_dir, NULL,
-+				&state.debugfs_state[i].input_dentry.fops);
-+		if (!state.debugfs_state[i].input_dentry.dentry) {
-+			ret = -ENOMEM;
-+			goto cleanup_failure;
-+		} else if (IS_ERR(state.debugfs_state[i].input_dentry.dentry)) {
-+			ret = PTR_ERR(
-+				state.debugfs_state[i].input_dentry.dentry);
-+			goto cleanup_failure;
-+		}
-+
-+		pr_info("KFuzzTest: registered target %s", targ->name);
-+	}
-+
-+	/* Taint the kernel after successfully creating the debugfs entries. */
-+	add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
++	if (close(fd) != 0)
++		return 1;
 +	return 0;
++}
 +
-+cleanup_failure:
-+	debugfs_remove_recursive(state.kfuzztest_dir);
++static int invoke_one(const char *input_fmt, const char *fuzz_target, const char *input_filepath)
++{
++	struct ast_node *ast_prog;
++	struct byte_buffer *bb;
++	struct rand_stream *rs;
++	struct token **tokens;
++	size_t num_tokens;
++	size_t num_bytes;
++	int err;
++
++	err = tokenize(input_fmt, &tokens, &num_tokens);
++	if (err) {
++		printf("tokenization failed: %s\n", strerror(-err));
++		return err;
++	}
++
++	err = parse(tokens, num_tokens, &ast_prog);
++	if (err) {
++		printf("parsing failed: %s\n", strerror(-err));
++		return err;
++	}
++
++	rs = new_rand_stream(input_filepath, 1024);
++	err = encode(ast_prog, rs, &num_bytes, &bb);
++	if (err) {
++		printf("encoding failed: %s\n", strerror(-err));
++		return err;
++	}
++
++	err = invoke_kfuzztest_target(fuzz_target, bb->buffer, num_bytes);
++	if (err) {
++		printf("invocation failed: %s\n", strerror(-err));
++		return err;
++	}
++	destroy_byte_buffer(bb);
++	return err;
++}
++
++int main(int argc, char *argv[])
++{
++	if (argc != 4) {
++		printf("Usage: %s <input-description> <fuzz-target-name> <input-file>\n", argv[0]);
++		printf("For more detailed information see /Documentation/dev-tools/kfuzztest.rst\n");
++		return 1;
++	}
++
++	return invoke_one(argv[1], argv[2], argv[3]);
++}
+diff --git a/tools/kfuzztest-bridge/byte_buffer.c b/tools/kfuzztest-bridge/byte_buffer.c
+new file mode 100644
+index 000000000000..fafb036fbeb1
+--- /dev/null
++++ b/tools/kfuzztest-bridge/byte_buffer.c
+@@ -0,0 +1,87 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * A simple byte buffer implementation for encoding binary data
++ *
++ * Copyright 2025 Google LLC
++ */
++#include <asm-generic/errno-base.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "byte_buffer.h"
++
++struct byte_buffer *new_byte_buffer(size_t initial_size)
++{
++	struct byte_buffer *ret;
++	size_t alloc_size = initial_size >= 8 ? initial_size : 8;
++
++	ret = malloc(sizeof(*ret));
++	if (!ret)
++		return NULL;
++
++	ret->alloc_size = alloc_size;
++	ret->buffer = malloc(alloc_size);
++	if (!ret->buffer) {
++		free(ret);
++		return NULL;
++	}
++	ret->num_bytes = 0;
 +	return ret;
 +}
 +
-+static void __exit kfuzztest_exit(void)
++void destroy_byte_buffer(struct byte_buffer *buf)
 +{
-+	pr_info("KFuzzTest: exiting");
-+	if (!state.kfuzztest_dir)
-+		return;
-+
-+	debugfs_remove_recursive(state.kfuzztest_dir);
-+	state.kfuzztest_dir = NULL;
-+
-+	if (state.debugfs_state) {
-+		kfree(state.debugfs_state);
-+		state.debugfs_state = NULL;
-+	}
++	free(buf->buffer);
++	free(buf);
 +}
 +
-+module_init(kfuzztest_init);
-+module_exit(kfuzztest_exit);
-diff --git a/lib/kfuzztest/parse.c b/lib/kfuzztest/parse.c
++int append_bytes(struct byte_buffer *buf, const char *bytes, size_t num_bytes)
++{
++	size_t req_size;
++	size_t new_size;
++	char *new_ptr;
++
++	req_size = buf->num_bytes + num_bytes;
++	new_size = buf->alloc_size;
++
++	while (req_size > new_size)
++		new_size *= 2;
++	if (new_size != buf->alloc_size) {
++		new_ptr = realloc(buf->buffer, new_size);
++		if (!buf->buffer)
++			return -ENOMEM;
++		buf->buffer = new_ptr;
++		buf->alloc_size = new_size;
++	}
++	memcpy(buf->buffer + buf->num_bytes, bytes, num_bytes);
++	buf->num_bytes += num_bytes;
++	return 0;
++}
++
++int append_byte(struct byte_buffer *buf, char c)
++{
++	return append_bytes(buf, &c, 1);
++}
++
++int encode_le(struct byte_buffer *buf, uint64_t value, size_t byte_width)
++{
++	size_t i;
++	int ret;
++
++	for (i = 0; i < byte_width; ++i) {
++		if ((ret = append_byte(buf, (uint8_t)((value >> (i * 8)) & 0xFF)))) {
++			return ret;
++		}
++	}
++	return 0;
++}
++
++int pad(struct byte_buffer *buf, size_t num_padding)
++{
++	int ret;
++	size_t i;
++	for (i = 0; i < num_padding; i++)
++		if ((ret = append_byte(buf, 0)))
++			return ret;
++	return 0;
++}
+diff --git a/tools/kfuzztest-bridge/byte_buffer.h b/tools/kfuzztest-bridge/byte_buffer.h
 new file mode 100644
-index 000000000000..6010171190ad
+index 000000000000..6a31bfb5e78f
 --- /dev/null
-+++ b/lib/kfuzztest/parse.c
-@@ -0,0 +1,208 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++++ b/tools/kfuzztest-bridge/byte_buffer.h
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * KFuzzTest input parsing and validation.
++ * A simple byte buffer implementation for encoding binary data
 + *
 + * Copyright 2025 Google LLC
 + */
-+#include <linux/kfuzztest.h>
-+#include <linux/kasan.h>
++#ifndef KFUZZTEST_BRIDGE_BYTE_BUFFER_H
++#define KFUZZTEST_BRIDGE_BYTE_BUFFER_H
 +
++#include <stdint.h>
++#include <stdlib.h>
++
++struct byte_buffer {
++	char *buffer;
++	size_t num_bytes;
++	size_t alloc_size;
++};
++
++struct byte_buffer *new_byte_buffer(size_t initial_size);
++
++void destroy_byte_buffer(struct byte_buffer *buf);
++
++int append_bytes(struct byte_buffer *buf, const char *bytes, size_t num_bytes);
++
++int append_byte(struct byte_buffer *buf, char c);
++
++int encode_le(struct byte_buffer *buf, uint64_t value, size_t byte_width);
++
++int pad(struct byte_buffer *buf, size_t num_padding);
++
++#endif /* KFUZZTEST_BRIDGE_BYTE_BUFFER_H */
+diff --git a/tools/kfuzztest-bridge/encoder.c b/tools/kfuzztest-bridge/encoder.c
+new file mode 100644
+index 000000000000..ceddd78ddbb5
+--- /dev/null
++++ b/tools/kfuzztest-bridge/encoder.c
+@@ -0,0 +1,356 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Enforce a fixed struct size to ensure a consistent stride when iterating over
-+ * the array of these structs in the dedicated ELF section.
++ * Encoder for KFuzzTest binary input format
++ *
++ * Copyright 2025 Google LLC
 + */
-+static_assert(sizeof(struct kfuzztest_target) == 32, "struct kfuzztest_target should have size 32");
-+static_assert(sizeof(struct kfuzztest_constraint) == 64, "struct kfuzztest_constraint should have size 64");
-+static_assert(sizeof(struct kfuzztest_annotation) == 32, "struct kfuzztest_annotation should have size 32");
++#include <asm-generic/errno-base.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
 +
-+static int kfuzztest_relocate_v0(struct reloc_region_array *regions, struct reloc_table *rt, void *payload_start,
-+				 void *payload_end)
++#include "byte_buffer.h"
++#include "input_parser.h"
++#include "rand_stream.h"
++
++#define KFUZZTEST_MAGIC 0xBFACE
++#define KFUZZTEST_PROTO_VERSION 0
++/* 
++ * The KFuzzTest binary input format requires at least 8 bytes of padding
++ * at the head and tail of every region.
++ */
++#define KFUZZTEST_POISON_SIZE 8
++
++#define BUFSIZE_SMALL 32
++#define BUFSIZE_LARGE 128
++
++struct region_info {
++	const char *name;
++	uint32_t offset;
++	uint32_t size;
++};
++
++struct reloc_info {
++	uint32_t src_reg;
++	uint32_t offset;
++	uint32_t dst_reg;
++};
++
++struct encoder_ctx {
++	struct byte_buffer *payload;
++	struct rand_stream *rand;
++
++	struct region_info *regions;
++	size_t num_regions;
++
++	struct reloc_info *relocations;
++	size_t num_relocations;
++
++	size_t reg_offset;
++	int curr_reg;
++};
++
++static void cleanup_ctx(struct encoder_ctx *ctx)
 +{
-+	struct reloc_region reg, src, dst;
-+	void *poison_start, *poison_end;
-+	uintptr_t *ptr_location;
-+	struct reloc_entry re;
-+	size_t i;
++	if (ctx->regions)
++		free(ctx->regions);
++	if (ctx->relocations)
++		free(ctx->relocations);
++	if (ctx->payload)
++		destroy_byte_buffer(ctx->payload);
++}
 +
-+	/* Patch pointers. */
-+	for (i = 0; i < rt->num_entries; i++) {
-+		re = rt->entries[i];
-+		src = regions->regions[re.region_id];
-+		ptr_location = (uintptr_t *)((char *)payload_start + src.offset + re.region_offset);
-+		if (re.value == KFUZZTEST_REGIONID_NULL)
-+			*ptr_location = (uintptr_t)NULL;
-+		else if (re.value < regions->num_regions) {
-+			dst = regions->regions[re.value];
-+			*ptr_location = (uintptr_t)((char *)payload_start + dst.offset);
-+		} else
-+			return -EINVAL;
-+	}
++static int pad_payload(struct encoder_ctx *ctx, size_t amount)
++{
++	int ret;
 +
-+	/* Poison the padding between regions. */
-+	for (i = 0; i < regions->num_regions; i++) {
-+		reg = regions->regions[i];
-+
-+		/* Points to the beginning of the inter-region padding */
-+		poison_start = payload_start + reg.offset + reg.size;
-+		if (i < regions->num_regions - 1)
-+			poison_end = payload_start + regions->regions[i + 1].offset;
-+		else
-+			poison_end = payload_end;
-+
-+		if ((char *)poison_end > (char *)payload_end)
-+			return -EINVAL;
-+
-+		kasan_poison_range(poison_start, poison_end - poison_start);
-+	}
-+
-+	/* Poison the padded area preceding the payload. */
-+	kasan_poison_range((char *)payload_start - rt->padding_size, rt->padding_size);
++	if ((ret = pad(ctx->payload, amount)))
++		return ret;
++	ctx->reg_offset += amount;
 +	return 0;
 +}
 +
-+static bool kfuzztest_input_is_valid(struct reloc_region_array *regions, struct reloc_table *rt, void *payload_start,
-+				     void *payload_end)
++static int align_payload(struct encoder_ctx *ctx, size_t alignment)
 +{
-+	size_t payload_size = (char *)payload_end - (char *)payload_start;
-+	struct reloc_region reg, next_reg;
-+	size_t usable_payload_size;
-+	uint32_t region_end_offset;
-+	struct reloc_entry reloc;
-+	uint32_t i;
++	size_t pad_amount = ROUND_UP_TO_MULTIPLE(ctx->payload->num_bytes, alignment) - ctx->payload->num_bytes;
++	return pad_payload(ctx, pad_amount);
++}
 +
-+	if ((char *)payload_start > (char *)payload_end)
++static int lookup_reg(struct encoder_ctx *ctx, const char *name)
++{
++	size_t i;
++
++	for (i = 0; i < ctx->num_regions; i++) {
++		if (strcmp(ctx->regions[i].name, name) == 0)
++			return i;
++	}
++	return -ENOENT;
++}
++
++static int add_reloc(struct encoder_ctx *ctx, struct reloc_info reloc)
++{
++	void *new_ptr = realloc(ctx->relocations, (ctx->num_relocations + 1) * sizeof(struct reloc_info));
++	if (!new_ptr)
++		return -ENOMEM;
++
++	ctx->relocations = new_ptr;
++	ctx->relocations[ctx->num_relocations] = reloc;
++	ctx->num_relocations++;
++	return 0;
++}
++
++static int build_region_map(struct encoder_ctx *ctx, struct ast_node *top_level)
++{
++	struct ast_program *prog;
++	struct ast_node *reg;
++	size_t i;
++
++	if (top_level->type != NODE_PROGRAM)
++		return -EINVAL;
++
++	prog = &top_level->data.program;
++	ctx->regions = malloc(prog->num_members * sizeof(struct region_info));
++	if (!ctx->regions)
++		return -ENOMEM;
++
++	ctx->num_regions = prog->num_members;
++	for (i = 0; i < ctx->num_regions; i++) {
++		reg = prog->members[i];
++		/* Offset can only be determined after the second pass. */
++		ctx->regions[i] = (struct region_info){
++			.name = reg->data.region.name,
++			.size = node_size(reg),
++		};
++	}
++	return 0;
++}
++/**
++ * Encodes a value node as little-endian. A value node is one that has no
++ * children, and can therefore be directly written into the payload.
++ */
++static int encode_value_le(struct encoder_ctx *ctx, struct ast_node *node)
++{
++	size_t array_size;
++	char rand_char;
++	size_t length;
++	size_t i;
++	int reg;
++	int ret;
++
++	switch (node->type) {
++	case NODE_ARRAY:
++		array_size = node->data.array.num_elems * node->data.array.elem_size;
++		for (i = 0; i < array_size; i++) {
++			if ((ret = next_byte(ctx->rand, &rand_char)))
++				return ret;
++			if ((ret = append_byte(ctx->payload, rand_char)))
++				return ret;
++		}
++		ctx->reg_offset += array_size;
++		if (node->data.array.null_terminated) {
++			if ((ret = pad_payload(ctx, 1)))
++				return ret;
++			ctx->reg_offset++;
++		}
++		break;
++	case NODE_LENGTH:
++		reg = lookup_reg(ctx, node->data.length.length_of);
++		if (reg < 0)
++			return reg;
++		length = ctx->regions[reg].size;
++		if ((ret = encode_le(ctx->payload, length, node->data.length.byte_width)))
++			return ret;
++		ctx->reg_offset += node->data.length.byte_width;
++		break;
++	case NODE_PRIMITIVE:
++		for (i = 0; i < node->data.primitive.byte_width; i++) {
++			if ((ret = next_byte(ctx->rand, &rand_char)))
++				return ret;
++			if ((ret = append_byte(ctx->payload, rand_char)))
++				return ret;
++		}
++		ctx->reg_offset += node->data.primitive.byte_width;
++		break;
++	case NODE_POINTER:
++		reg = lookup_reg(ctx, node->data.pointer.points_to);
++		if (reg < 0)
++			return reg;
++		if ((ret = add_reloc(ctx, (struct reloc_info){ .src_reg = ctx->curr_reg,
++							       .offset = ctx->reg_offset,
++							       .dst_reg = reg })))
++			return ret;
++		/* Placeholder pointer value, as pointers are patched by KFuzzTest anyways. */
++		if ((ret = encode_le(ctx->payload, UINTPTR_MAX, sizeof(uintptr_t))))
++			return ret;
++		ctx->reg_offset += sizeof(uintptr_t);
++		break;
++	case NODE_PROGRAM:
++	case NODE_REGION:
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int encode_region(struct encoder_ctx *ctx, struct ast_region *reg)
++{
++	struct ast_node *child;
++	size_t i;
++	int ret;
++
++	ctx->reg_offset = 0;
++	for (i = 0; i < reg->num_members; i++) {
++		child = reg->members[i];
++		if ((ret = align_payload(ctx, node_alignment(child))))
++			return ret;
++		if ((ret = encode_value_le(ctx, child)))
++			return ret;
++	}
++	return 0;
++}
++
++static int encode_payload(struct encoder_ctx *ctx, struct ast_node *top_level)
++{
++	struct ast_node *reg;
++	size_t i;
++	int ret;
++
++	for (i = 0; i < ctx->num_regions; i++) {
++		reg = top_level->data.program.members[i];
++		if ((ret = align_payload(ctx, node_alignment(reg))))
++			return ret;
++
++		ctx->curr_reg = i;
++		ctx->regions[i].offset = ctx->payload->num_bytes;
++		if ((ret = encode_region(ctx, &reg->data.region)))
++			return ret;
++		if ((ret = pad_payload(ctx, KFUZZTEST_POISON_SIZE)))
++			return ret;
++	}
++	return 0;
++}
++
++static int encode_region_array(struct encoder_ctx *ctx, struct byte_buffer **ret)
++{
++	struct byte_buffer *reg_array;
++	struct region_info info;
++	int retcode;
++	size_t i;
++
++	reg_array = new_byte_buffer(BUFSIZE_SMALL);
++	if (!reg_array)
++		return -ENOMEM;
++
++	if ((retcode = encode_le(reg_array, ctx->num_regions, sizeof(uint32_t))))
++		goto fail;
++
++	for (i = 0; i < ctx->num_regions; i++) {
++		info = ctx->regions[i];
++		if ((retcode = encode_le(reg_array, info.offset, sizeof(uint32_t))))
++			goto fail;
++		if ((retcode = encode_le(reg_array, info.size, sizeof(uint32_t))))
++			goto fail;
++	}
++	*ret = reg_array;
++	return 0;
++
++fail:
++	destroy_byte_buffer(reg_array);
++	return retcode;
++}
++
++static int encode_reloc_table(struct encoder_ctx *ctx, size_t padding_amount, struct byte_buffer **ret)
++{
++	struct byte_buffer *reloc_table;
++	struct reloc_info info;
++	int retcode;
++	size_t i;
++
++	reloc_table = new_byte_buffer(BUFSIZE_SMALL);
++	if (!reloc_table)
++		return -ENOMEM;
++
++	if ((retcode = encode_le(reloc_table, ctx->num_relocations, sizeof(uint32_t))) ||
++	    (retcode = encode_le(reloc_table, padding_amount, sizeof(uint32_t))))
++		goto fail;
++
++	for (i = 0; i < ctx->num_relocations; i++) {
++		info = ctx->relocations[i];
++		if ((retcode = encode_le(reloc_table, info.src_reg, sizeof(uint32_t))) ||
++		    (retcode = encode_le(reloc_table, info.offset, sizeof(uint32_t))) ||
++		    (retcode = encode_le(reloc_table, info.dst_reg, sizeof(uint32_t))))
++			goto fail;
++	}
++	pad(reloc_table, padding_amount);
++	*ret = reloc_table;
++	return 0;
++
++fail:
++	destroy_byte_buffer(reloc_table);
++	return retcode;
++}
++
++static size_t reloc_table_size(struct encoder_ctx *ctx)
++{
++	return 2 * sizeof(uint32_t) + 3 * ctx->num_relocations * sizeof(uint32_t);
++}
++
++int encode(struct ast_node *top_level, struct rand_stream *r, size_t *num_bytes, struct byte_buffer **ret)
++{
++	struct byte_buffer *region_array = NULL;
++	struct byte_buffer *final_buffer = NULL;
++	struct byte_buffer *reloc_table = NULL;
++	size_t header_size;
++	int alignment;
++	int retcode;
++
++	struct encoder_ctx ctx = { 0 };
++	if ((retcode = build_region_map(&ctx, top_level)))
++		goto fail;
++
++	ctx.rand = r;
++	ctx.payload = new_byte_buffer(32);
++	if (!ctx.payload) {
++		retcode = -ENOMEM;
++		goto fail;
++	}
++	if ((retcode = encode_payload(&ctx, top_level)))
++		goto fail;
++
++	if ((retcode = encode_region_array(&ctx, &region_array)))
++		goto fail;
++
++	header_size = sizeof(uint64_t) + region_array->num_bytes + reloc_table_size(&ctx);
++	alignment = node_alignment(top_level);
++	if ((retcode = encode_reloc_table(
++		     &ctx, ROUND_UP_TO_MULTIPLE(header_size + KFUZZTEST_POISON_SIZE, alignment) - header_size,
++		     &reloc_table)))
++		goto fail;
++
++	final_buffer = new_byte_buffer(BUFSIZE_LARGE);
++	if (!final_buffer) {
++		retcode = -ENOMEM;
++		goto fail;
++	}
++
++	if ((retcode = encode_le(final_buffer, KFUZZTEST_MAGIC, sizeof(uint32_t))) ||
++	    (retcode = encode_le(final_buffer, KFUZZTEST_PROTO_VERSION, sizeof(uint32_t))) ||
++	    (retcode = append_bytes(final_buffer, region_array->buffer, region_array->num_bytes)) ||
++	    (retcode = append_bytes(final_buffer, reloc_table->buffer, reloc_table->num_bytes)) ||
++	    (retcode = append_bytes(final_buffer, ctx.payload->buffer, ctx.payload->num_bytes))) {
++		destroy_byte_buffer(final_buffer);
++		goto fail;
++	}
++
++	*num_bytes = final_buffer->num_bytes;
++	*ret = final_buffer;
++
++fail:
++	if (region_array)
++		destroy_byte_buffer(region_array);
++	if (reloc_table)
++		destroy_byte_buffer(reloc_table);
++	cleanup_ctx(&ctx);
++	return retcode;
++}
+diff --git a/tools/kfuzztest-bridge/encoder.h b/tools/kfuzztest-bridge/encoder.h
+new file mode 100644
+index 000000000000..73f8c4b7893c
+--- /dev/null
++++ b/tools/kfuzztest-bridge/encoder.h
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Encoder for KFuzzTest binary input format
++ *
++ * Copyright 2025 Google LLC
++ */
++#ifndef KFUZZTEST_BRIDGE_ENCODER_H
++#define KFUZZTEST_BRIDGE_ENCODER_H
++
++#include "input_parser.h"
++#include "rand_stream.h"
++#include "byte_buffer.h"
++
++int encode(struct ast_node *top_level, struct rand_stream *r, size_t *num_bytes, struct byte_buffer **ret);
++
++#endif /* KFUZZTEST_BRIDGE_ENCODER_H */
+diff --git a/tools/kfuzztest-bridge/input_lexer.c b/tools/kfuzztest-bridge/input_lexer.c
+new file mode 100644
+index 000000000000..19b6678b0a0e
+--- /dev/null
++++ b/tools/kfuzztest-bridge/input_lexer.c
+@@ -0,0 +1,243 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Parser for KFuzzTest textual input format
++ *
++ * Copyright 2025 Google LLC
++ */
++#include <asm-generic/errno-base.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "input_lexer.h"
++
++struct keyword_map {
++	const char *keyword;
++	enum token_type type;
++};
++
++static struct keyword_map keywords[] = {
++	{ "ptr", TOKEN_KEYWORD_PTR }, { "arr", TOKEN_KEYWORD_ARR }, { "len", TOKEN_KEYWORD_LEN },
++	{ "str", TOKEN_KEYWORD_STR }, { "u8", TOKEN_KEYWORD_U8 },   { "u16", TOKEN_KEYWORD_U16 },
++	{ "u32", TOKEN_KEYWORD_U32 }, { "u64", TOKEN_KEYWORD_U64 },
++};
++
++static struct token *make_token(enum token_type type)
++{
++	struct token *ret = calloc(1, sizeof(*ret));
++	ret->type = type;
++	return ret;
++}
++
++struct lexer {
++	const char *start;
++	const char *current;
++};
++
++static char advance(struct lexer *l)
++{
++	l->current++;
++	return l->current[-1];
++}
++
++static void retreat(struct lexer *l)
++{
++	l->current--;
++}
++
++static char peek(struct lexer *l)
++{
++	return *l->current;
++}
++
++static bool is_digit(char c)
++{
++	return c >= '0' && c <= '9';
++}
++
++static bool is_alpha(char c)
++{
++	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
++}
++
++static bool is_whitespace(char c)
++{
++	switch (c) {
++	case ' ':
++	case '\r':
++	case '\t':
++	case '\n':
++		return true;
++	default:
 +		return false;
-+	if (payload_size < KFUZZTEST_POISON_SIZE)
-+		return false;
-+	usable_payload_size = payload_size - KFUZZTEST_POISON_SIZE;
++	}
++}
 +
-+	for (i = 0; i < regions->num_regions; i++) {
-+		reg = regions->regions[i];
-+		if (check_add_overflow(reg.offset, reg.size, &region_end_offset))
-+			return false;
-+		if ((size_t)region_end_offset > usable_payload_size)
-+			return false;
++static void skip_whitespace(struct lexer *l)
++{
++	for (;;) {
++		if (is_whitespace(peek(l))) {
++			advance(l);
++		} else {
++			return;
++		}
++	}
++}
 +
-+		if (i < regions->num_regions - 1) {
-+			next_reg = regions->regions[i + 1];
-+			if (reg.offset > next_reg.offset)
-+				return false;
-+			/*
-+			 * Enforce the minimum poisonable gap between
-+			 * consecutive regions.
-+			 */
-+			if (reg.offset + reg.size + KFUZZTEST_POISON_SIZE > next_reg.offset)
-+				return false;
++static struct token *number(struct lexer *l)
++{
++	struct token *tok;
++	uint64_t value;
++	while (is_digit(peek(l)))
++		advance(l);
++	value = strtoull(l->start, NULL, 10);
++	tok = make_token(TOKEN_INTEGER);
++	tok->data.integer = value;
++	return tok;
++}
++
++static enum token_type check_keyword(struct lexer *l, const char *keyword, enum token_type type)
++{
++	size_t len = strlen(keyword);
++
++	if (((size_t)(l->current - l->start) == len) && strncmp(l->start, keyword, len) == 0)
++		return type;
++	return TOKEN_IDENTIFIER;
++}
++
++static struct token *identifier(struct lexer *l)
++{
++	enum token_type type = TOKEN_IDENTIFIER;
++	struct token *tok;
++	size_t i;
++
++	while (is_digit(peek(l)) || is_alpha(peek(l)) || peek(l) == '_')
++		advance(l);
++
++	for (i = 0; i < ARRAY_SIZE(keywords); i++) {
++		if (check_keyword(l, keywords[i].keyword, keywords[i].type) != TOKEN_IDENTIFIER) {
++			type = keywords[i].type;
++			break;
 +		}
 +	}
 +
-+	if (rt->padding_size < KFUZZTEST_POISON_SIZE) {
-+		pr_info("validation failed because rt->padding_size = %u", rt->padding_size);
-+		return false;
++	tok = make_token(type);
++	if (!tok)
++		return NULL;
++	if (type == TOKEN_IDENTIFIER) {
++		tok->data.identifier.start = l->start;
++		tok->data.identifier.length = l->current - l->start;
 +	}
-+
-+	for (i = 0; i < rt->num_entries; i++) {
-+		reloc = rt->entries[i];
-+		if (reloc.region_id >= regions->num_regions)
-+			return false;
-+		if (reloc.value != KFUZZTEST_REGIONID_NULL && reloc.value >= regions->num_regions)
-+			return false;
-+
-+		reg = regions->regions[reloc.region_id];
-+		if (reloc.region_offset % (sizeof(uintptr_t)) || reloc.region_offset + sizeof(uintptr_t) > reg.size)
-+			return false;
-+	}
-+
-+	return true;
++	return tok;
 +}
 +
-+static int kfuzztest_parse_input_v0(void *input, size_t input_size, struct reloc_region_array **ret_regions,
-+				    struct reloc_table **ret_reloc_table, void **ret_payload_start,
-+				    void **ret_payload_end)
++static struct token *scan_token(struct lexer *l)
 +{
-+	size_t reloc_entries_size, reloc_regions_size;
-+	size_t reloc_table_size, regions_size;
-+	struct reloc_region_array *regions;
-+	void *payload_end, *payload_start;
-+	struct reloc_table *rt;
-+	size_t curr_offset = 0;
++	char c;
++	skip_whitespace(l);
 +
-+	if (input_size < sizeof(struct reloc_region_array) + sizeof(struct reloc_table))
++	l->start = l->current;
++	c = peek(l);
++
++	if (c == '\0')
++		return make_token(TOKEN_EOF);
++
++	advance(l);
++	switch (c) {
++	case '{':
++		return make_token(TOKEN_LBRACE);
++	case '}':
++		return make_token(TOKEN_RBRACE);
++	case '[':
++		return make_token(TOKEN_LBRACKET);
++	case ']':
++		return make_token(TOKEN_RBRACKET);
++	case ',':
++		return make_token(TOKEN_COMMA);
++	case ';':
++		return make_token(TOKEN_SEMICOLON);
++	default:
++		retreat(l);
++		if (is_digit(c))
++			return number(l);
++		if (is_alpha(c) || c == '_')
++			return identifier(l);
++		return make_token(TOKEN_ERROR);
++	}
++}
++
++int primitive_byte_width(enum token_type type)
++{
++	switch (type) {
++	case TOKEN_KEYWORD_U8:
++		return 1;
++	case TOKEN_KEYWORD_U16:
++		return 2;
++	case TOKEN_KEYWORD_U32:
++		return 4;
++	case TOKEN_KEYWORD_U64:
++		return 8;
++	default:
++		return 0;
++	}
++}
++
++int tokenize(const char *input, struct token ***tokens, size_t *num_tokens)
++{
++	struct lexer l = { .start = input, .current = input };
++	struct token **ret_tokens;
++	size_t token_arr_size;
++	size_t token_count;
++	struct token *tok;
++	void *tmp;
++	size_t i;
++	int err;
++
++	token_arr_size = 128;
++	ret_tokens = calloc(token_arr_size, sizeof(struct token *));
++	if (!ret_tokens)
++		return -ENOMEM;
++
++	token_count = 0;
++	do {
++		tok = scan_token(&l);
++		if (!tok) {
++			err = -ENOMEM;
++			goto failure;
++		}
++
++		if (token_count == token_arr_size) {
++			token_arr_size *= 2;
++			tmp = realloc(ret_tokens, token_arr_size);
++			if (!tmp) {
++				err = -ENOMEM;
++				goto failure;
++			}
++			ret_tokens = tmp;
++		}
++
++		ret_tokens[token_count] = tok;
++		if (tok->type == TOKEN_ERROR) {
++			err = -EINVAL;
++			goto failure;
++		}
++		token_count++;
++	} while (tok->type != TOKEN_EOF);
++
++	*tokens = ret_tokens;
++	*num_tokens = token_count;
++	return 0;
++
++failure:
++	for (i = 0; i < token_count; i++)
++		free(ret_tokens[i]);
++	free(ret_tokens);
++	return err;
++}
++
++bool is_primitive(struct token *tok)
++{
++	return tok->type >= TOKEN_KEYWORD_U8 && tok->type <= TOKEN_KEYWORD_U64;
++}
+diff --git a/tools/kfuzztest-bridge/input_lexer.h b/tools/kfuzztest-bridge/input_lexer.h
+new file mode 100644
+index 000000000000..bdc55e08a3eb
+--- /dev/null
++++ b/tools/kfuzztest-bridge/input_lexer.h
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Lexer for KFuzzTest textual input format
++ *
++ * Copyright 2025 Google LLC
++ */
++#ifndef KFUZZTEST_BRIDGE_INPUT_LEXER_H
++#define KFUZZTEST_BRIDGE_INPUT_LEXER_H
++
++#include <stdint.h>
++#include <stdlib.h>
++#include <stdbool.h>
++
++#define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
++
++enum token_type {
++	TOKEN_LBRACE,
++	TOKEN_RBRACE,
++	TOKEN_LBRACKET,
++	TOKEN_RBRACKET,
++	TOKEN_COMMA,
++	TOKEN_SEMICOLON,
++
++	TOKEN_KEYWORD_PTR,
++	TOKEN_KEYWORD_ARR,
++	TOKEN_KEYWORD_LEN,
++	TOKEN_KEYWORD_STR,
++	TOKEN_KEYWORD_U8,
++	TOKEN_KEYWORD_U16,
++	TOKEN_KEYWORD_U32,
++	TOKEN_KEYWORD_U64,
++
++	TOKEN_IDENTIFIER,
++	TOKEN_INTEGER,
++
++	TOKEN_EOF,
++	TOKEN_ERROR,
++};
++
++struct token {
++	enum token_type type;
++	union {
++		uint64_t integer;
++		struct {
++			const char *start;
++			size_t length;
++		} identifier;
++	} data;
++	int position;
++};
++
++int tokenize(const char *input, struct token ***tokens, size_t *num_tokens);
++
++bool is_primitive(struct token *tok);
++int primitive_byte_width(enum token_type type);
++
++#endif /* KFUZZTEST_BRIDGE_INPUT_LEXER_H */
+diff --git a/tools/kfuzztest-bridge/input_parser.c b/tools/kfuzztest-bridge/input_parser.c
+new file mode 100644
+index 000000000000..7320dac8aa17
+--- /dev/null
++++ b/tools/kfuzztest-bridge/input_parser.c
+@@ -0,0 +1,373 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Parser for KFuzzTest textual input format
++ *
++ * Copyright 2025 Google LLC
++ */
++#include <asm-generic/errno-base.h>
++#include <stdio.h>
++#include <string.h>
++
++#include "input_lexer.h"
++#include "input_parser.h"
++
++#define MAX(a, b) ((a) > (b) ? (a) : (b))
++
++static struct token *peek(struct parser *p)
++{
++	return p->tokens[p->curr_token];
++}
++
++static struct token *advance(struct parser *p)
++{
++	struct token *tok = peek(p);
++	p->curr_token++;
++	return tok;
++}
++
++static struct token *consume(struct parser *p, enum token_type type, const char *err_msg)
++{
++	if (peek(p)->type != type) {
++		printf("parser failure: %s\n", err_msg);
++		return NULL;
++	}
++	return advance(p);
++}
++
++static bool match(struct parser *p, enum token_type t)
++{
++	struct token *tok = peek(p);
++	return tok->type == t;
++}
++
++static int parse_primitive(struct parser *p, struct ast_node **node_ret)
++{
++	struct ast_node *ret;
++	struct token *tok;
++	int byte_width;
++
++	tok = advance(p);
++	byte_width = primitive_byte_width(tok->type);
++	if (!byte_width)
 +		return -EINVAL;
 +
-+	regions = input;
-+	if (check_mul_overflow(regions->num_regions, sizeof(struct reloc_region), &reloc_regions_size))
-+		return -EINVAL;
-+	if (check_add_overflow(sizeof(*regions), reloc_regions_size, &regions_size))
-+		return -EINVAL;
++	ret = malloc(sizeof(*ret));
++	if (!ret)
++		return -ENOMEM;
 +
-+	curr_offset = regions_size;
-+	if (curr_offset > input_size)
-+		return -EINVAL;
-+	if (input_size - curr_offset < sizeof(struct reloc_table))
-+		return -EINVAL;
-+
-+	rt = (struct reloc_table *)((char *)input + curr_offset);
-+
-+	if (check_mul_overflow((size_t)rt->num_entries, sizeof(struct reloc_entry), &reloc_entries_size))
-+		return -EINVAL;
-+	if (check_add_overflow(sizeof(*rt), reloc_entries_size, &reloc_table_size))
-+		return -EINVAL;
-+	if (check_add_overflow(reloc_table_size, rt->padding_size, &reloc_table_size))
-+		return -EINVAL;
-+
-+	if (check_add_overflow(curr_offset, reloc_table_size, &curr_offset))
-+		return -EINVAL;
-+	if (curr_offset > input_size)
-+		return -EINVAL;
-+
-+	payload_start = (char *)input + curr_offset;
-+	payload_end = (char *)input + input_size;
-+
-+	if (!kfuzztest_input_is_valid(regions, rt, payload_start, payload_end))
-+		return -EINVAL;
-+
-+	*ret_regions = regions;
-+	*ret_reloc_table = rt;
-+	*ret_payload_start = payload_start;
-+	*ret_payload_end = payload_end;
++	ret->type = NODE_PRIMITIVE;
++	ret->data.primitive.byte_width = byte_width;
++	*node_ret = ret;
 +	return 0;
 +}
 +
-+static int kfuzztest_parse_and_relocate_v0(void *input, size_t input_size, void **arg_ret)
++static int parse_ptr(struct parser *p, struct ast_node **node_ret)
 +{
-+	struct reloc_region_array *regions;
-+	void *payload_start, *payload_end;
-+	struct reloc_table *reloc_table;
-+	int ret;
++	const char *points_to;
++	struct ast_node *ret;
++	struct token *tok;
++	if (!consume(p, TOKEN_KEYWORD_PTR, "expected 'ptr'"))
++		return -EINVAL;
++	if (!consume(p, TOKEN_LBRACKET, "expected '['"))
++		return -EINVAL;
 +
-+	ret = kfuzztest_parse_input_v0(input, input_size, &regions, &reloc_table, &payload_start, &payload_end);
-+	if (ret < 0)
-+		return ret;
++	tok = consume(p, TOKEN_IDENTIFIER, "expected identifier");
++	if (!tok)
++		return -EINVAL;
 +
-+	ret = kfuzztest_relocate_v0(regions, reloc_table, payload_start, payload_end);
-+	if (ret < 0)
-+		return ret;
-+	*arg_ret = payload_start;
++	if (!consume(p, TOKEN_RBRACKET, "expected ']'"))
++		return -EINVAL;
++
++	ret = malloc(sizeof(*ret));
++	ret->type = NODE_POINTER;
++
++	points_to = strndup(tok->data.identifier.start, tok->data.identifier.length);
++	if (!points_to) {
++		free(ret);
++		return -EINVAL;
++	}
++
++	ret->data.pointer.points_to = points_to;
++	*node_ret = ret;
 +	return 0;
 +}
 +
-+int kfuzztest_parse_and_relocate(void *input, size_t input_size, void **arg_ret)
++static int parse_arr(struct parser *p, struct ast_node **node_ret)
 +{
-+	u32 version, magic;
++	struct token *type, *num_elems;
++	struct ast_node *ret;
 +
-+	if (input_size < sizeof(u32) + sizeof(u32))
++	if (!consume(p, TOKEN_KEYWORD_ARR, "expected 'arr'") || !consume(p, TOKEN_LBRACKET, "expected '['"))
 +		return -EINVAL;
 +
-+	magic = *(u32 *)input;
-+	if (magic != KFUZZTEST_HEADER_MAGIC)
++	type = advance(p);
++	if (!is_primitive(type))
 +		return -EINVAL;
 +
-+	version = *(u32 *)((char *)input + sizeof(u32));
-+	switch (version) {
-+	case KFUZZTEST_V0:
-+		return kfuzztest_parse_and_relocate_v0(input + sizeof(u64), input_size - sizeof(u64), arg_ret);
-+	}
++	if (!consume(p, TOKEN_COMMA, "expected ','"))
++		return -EINVAL;
++
++	num_elems = consume(p, TOKEN_INTEGER, "expected integer");
++	if (!num_elems)
++		return -EINVAL;
++
++	if (!consume(p, TOKEN_RBRACKET, "expected ']'"))
++		return -EINVAL;
++
++	ret = malloc(sizeof(*ret));
++	if (!ret)
++		return -ENOMEM;
++
++	ret->type = NODE_ARRAY;
++	ret->data.array.num_elems = num_elems->data.integer;
++	ret->data.array.elem_size = primitive_byte_width(type->type);
++	ret->data.array.null_terminated = false;
++	*node_ret = ret;
++	return 0;
++}
++
++static int parse_str(struct parser *p, struct ast_node **node_ret)
++{
++	struct ast_node *ret;
++	struct token *len;
++
++	if (!consume(p, TOKEN_KEYWORD_STR, "expected 'str'") || !consume(p, TOKEN_LBRACKET, "expected '['"))
++		return -EINVAL;
++
++	len = consume(p, TOKEN_INTEGER, "expected integer");
++	if (!len)
++		return -EINVAL;
++
++	if (!consume(p, TOKEN_RBRACKET, "expected ']'"))
++		return -EINVAL;
++
++	ret = malloc(sizeof(*ret));
++	if (!ret)
++		return -ENOMEM;
++
++	/* A string is the susbet of byte arrays that are null-terminated. */
++	ret->type = NODE_ARRAY;
++	ret->data.array.num_elems = len->data.integer;
++	ret->data.array.elem_size = sizeof(char);
++	ret->data.array.null_terminated = true;
++	*node_ret = ret;
++	return 0;
++}
++
++static int parse_len(struct parser *p, struct ast_node **node_ret)
++{
++	struct token *type, *len;
++	struct ast_node *ret;
++
++	if (!consume(p, TOKEN_KEYWORD_LEN, "expected 'len'") || !consume(p, TOKEN_LBRACKET, "expected '['"))
++		return -EINVAL;
++
++	len = advance(p);
++	if (len->type != TOKEN_IDENTIFIER)
++		return -EINVAL;
++
++	if (!consume(p, TOKEN_COMMA, "expected ','"))
++		return -EINVAL;
++
++	type = advance(p);
++	if (!is_primitive(type))
++		return -EINVAL;
++
++	if (!consume(p, TOKEN_RBRACKET, "expected ']'"))
++		return -EINVAL;
++
++	ret = malloc(sizeof(*ret));
++	if (!ret)
++		return -ENOMEM;
++	ret->type = NODE_LENGTH;
++	ret->data.length.length_of = strndup(len->data.identifier.start, len->data.identifier.length);
++	ret->data.length.byte_width = primitive_byte_width(type->type);
++
++	*node_ret = ret;
++	return 0;
++}
++
++static int parse_type(struct parser *p, struct ast_node **node_ret)
++{
++	if (is_primitive(peek(p)))
++		return parse_primitive(p, node_ret);
++
++	if (peek(p)->type == TOKEN_KEYWORD_PTR)
++		return parse_ptr(p, node_ret);
++
++	if (peek(p)->type == TOKEN_KEYWORD_ARR)
++		return parse_arr(p, node_ret);
++
++	if (peek(p)->type == TOKEN_KEYWORD_STR)
++		return parse_str(p, node_ret);
++
++	if (peek(p)->type == TOKEN_KEYWORD_LEN)
++		return parse_len(p, node_ret);
 +
 +	return -EINVAL;
 +}
++
++static int parse_region(struct parser *p, struct ast_node **node_ret)
++{
++	struct token *tok, *identifier;
++	struct ast_region *region;
++	struct ast_node *node;
++	struct ast_node *ret;
++	size_t i;
++	int err;
++
++	identifier = consume(p, TOKEN_IDENTIFIER, "expected identifier");
++	if (!identifier)
++		return -EINVAL;
++
++	ret = malloc(sizeof(*ret));
++	if (!ret)
++		return -ENOMEM;
++
++	tok = consume(p, TOKEN_LBRACE, "expected '{'");
++	if (!tok) {
++		err = -EINVAL;
++		goto fail_early;
++	}
++
++	region = &ret->data.region;
++	region->name = strndup(identifier->data.identifier.start, identifier->data.identifier.length);
++	if (!region->name) {
++		err = -ENOMEM;
++		goto fail_early;
++	}
++
++	region->num_members = 0;
++	while (!match(p, TOKEN_RBRACE)) {
++		err = parse_type(p, &node);
++		if (err)
++			goto fail;
++		region->members = realloc(region->members, ++region->num_members * sizeof(struct ast_node *));
++		region->members[region->num_members - 1] = node;
++	}
++
++	if (!consume(p, TOKEN_RBRACE, "expected '}'") || !consume(p, TOKEN_SEMICOLON, "expected ';'")) {
++		err = -EINVAL;
++		goto fail;
++	}
++
++	ret->type = NODE_REGION;
++	*node_ret = ret;
++	return 0;
++
++fail:
++	for (i = 0; i < region->num_members; i++)
++		free(region->members[i]);
++	free((void *)region->name);
++	free(region->members);
++fail_early:
++	free(ret);
++	return err;
++}
++
++static int parse_program(struct parser *p, struct ast_node **node_ret)
++{
++	struct ast_program *prog;
++	struct ast_node *reg;
++	struct ast_node *ret;
++	void *new_ptr;
++	size_t i;
++	int err;
++
++	ret = malloc(sizeof(*ret));
++	if (!ret)
++		return -ENOMEM;
++	ret->type = NODE_PROGRAM;
++
++	prog = &ret->data.program;
++	prog->num_members = 0;
++	prog->members = NULL;
++	while (!match(p, TOKEN_EOF)) {
++		err = parse_region(p, &reg);
++		if (err)
++			goto fail;
++
++		new_ptr = realloc(prog->members, ++prog->num_members * sizeof(struct ast_node *));
++		if (!new_ptr) {
++			err = -ENOMEM;
++			goto fail;
++		}
++		prog->members = new_ptr;
++		prog->members[prog->num_members - 1] = reg;
++	}
++
++	*node_ret = ret;
++	return 0;
++
++fail:
++	for (i = 0; i < prog->num_members; i++)
++		free(prog->members[i]);
++	free(prog->members);
++	free(ret);
++	return err;
++}
++
++size_t node_alignment(struct ast_node *node)
++{
++	size_t max_alignment = 1;
++	size_t i;
++
++	switch (node->type) {
++	case NODE_PROGRAM:
++		for (i = 0; i < node->data.program.num_members; i++)
++			max_alignment = MAX(max_alignment, node_alignment(node->data.program.members[i]));
++		return max_alignment;
++	case NODE_REGION:
++		for (i = 0; i < node->data.region.num_members; i++)
++			max_alignment = MAX(max_alignment, node_alignment(node->data.region.members[i]));
++		return max_alignment;
++	case NODE_ARRAY:
++		return node->data.array.elem_size;
++	case NODE_LENGTH:
++		return node->data.length.byte_width;
++	case NODE_PRIMITIVE:
++		/* Primitives are aligned to their size. */
++		return node->data.primitive.byte_width;
++	case NODE_POINTER:
++		return sizeof(uintptr_t);
++	}
++
++	/* Anything should be at least 1-byte-aligned. */
++	return 1;
++}
++
++size_t node_size(struct ast_node *node)
++{
++	size_t total = 0;
++	size_t i;
++
++	switch (node->type) {
++	case NODE_PROGRAM:
++		for (i = 0; i < node->data.program.num_members; i++)
++			total += node_size(node->data.program.members[i]);
++		return total;
++	case NODE_REGION:
++		for (i = 0; i < node->data.region.num_members; i++) {
++			/* Account for padding within region. */
++			total = ROUND_UP_TO_MULTIPLE(total, node_alignment(node->data.region.members[i]));
++			total += node_size(node->data.region.members[i]);
++		}
++		return total;
++	case NODE_ARRAY:
++		return node->data.array.elem_size * node->data.array.num_elems +
++		       (node->data.array.null_terminated ? 1 : 0);
++	case NODE_LENGTH:
++		return node->data.length.byte_width;
++	case NODE_PRIMITIVE:
++		return node->data.primitive.byte_width;
++	case NODE_POINTER:
++		return sizeof(uintptr_t);
++	}
++	return 0;
++}
++
++int parse(struct token **tokens, size_t token_count, struct ast_node **node_ret)
++{
++	struct parser p = { .tokens = tokens, .token_count = token_count, .curr_token = 0 };
++	return parse_program(&p, node_ret);
++}
+diff --git a/tools/kfuzztest-bridge/input_parser.h b/tools/kfuzztest-bridge/input_parser.h
+new file mode 100644
+index 000000000000..c51241617389
+--- /dev/null
++++ b/tools/kfuzztest-bridge/input_parser.h
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Parser for KFuzzTest textual input format
++ *
++ * Copyright 2025 Google LLC
++ */
++#ifndef KFUZZTEST_BRIDGE_INPUT_PARSER_H
++#define KFUZZTEST_BRIDGE_INPUT_PARSER_H
++
++#include <stdlib.h>
++
++/* Rounds x up to the nearest multiple of n. */
++#define ROUND_UP_TO_MULTIPLE(x, n) (((n) == 0) ? (0) : (((x) + (n) - 1) / (n)) * (n))
++
++enum ast_node_type {
++	NODE_PROGRAM,
++	NODE_REGION,
++	NODE_ARRAY,
++	NODE_LENGTH,
++	NODE_PRIMITIVE,
++	NODE_POINTER,
++};
++
++struct ast_node; /* Forward declaration. */
++
++struct ast_program {
++	struct ast_node **members;
++	size_t num_members;
++};
++
++struct ast_region {
++	const char *name;
++	struct ast_node **members;
++	size_t num_members;
++};
++
++struct ast_array {
++	int elem_size;
++	int null_terminated; /* True iff the array should always end with 0. */
++	size_t num_elems;
++};
++
++struct ast_length {
++	size_t byte_width;
++	const char *length_of;
++};
++
++struct ast_primitive {
++	size_t byte_width;
++};
++
++struct ast_pointer {
++	const char *points_to;
++};
++
++struct ast_node {
++	enum ast_node_type type;
++	union {
++		struct ast_program program;
++		struct ast_region region;
++		struct ast_array array;
++		struct ast_length length;
++		struct ast_primitive primitive;
++		struct ast_pointer pointer;
++	} data;
++};
++
++struct parser {
++	struct token **tokens;
++	size_t token_count;
++	size_t curr_token;
++};
++
++int parse(struct token **tokens, size_t token_count, struct ast_node **node_ret);
++
++size_t node_size(struct ast_node *node);
++size_t node_alignment(struct ast_node *node);
++
++#endif /* KFUZZTEST_BRIDGE_INPUT_PARSER_H */
+diff --git a/tools/kfuzztest-bridge/rand_stream.c b/tools/kfuzztest-bridge/rand_stream.c
+new file mode 100644
+index 000000000000..0b2965fa2c73
+--- /dev/null
++++ b/tools/kfuzztest-bridge/rand_stream.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Implements a cached file-reader for iterating over a byte stream of
++ * pseudo-random data
++ *
++ * Copyright 2025 Google LLC
++ */
++#include "rand_stream.h"
++
++static int refill(struct rand_stream *rs)
++{
++	size_t ret = fread(rs->buffer, sizeof(char), rs->buffer_size, rs->source);
++	rs->buffer_pos = 0;
++	if (ret != rs->buffer_size)
++		return -1;
++	return 0;
++}
++
++struct rand_stream *new_rand_stream(const char *path_to_file, size_t cache_size)
++{
++	struct rand_stream *rs;
++
++	rs = malloc(sizeof(*rs));
++	if (!rs)
++		return NULL;
++
++	rs->source = fopen(path_to_file, "rb");
++	if (!rs->source) {
++		free(rs);
++		return NULL;
++	}
++
++	rs->buffer = malloc(cache_size);
++	if (!rs->buffer) {
++		fclose(rs->source);
++		free(rs);
++		return NULL;
++	}
++
++	rs->buffer_size = cache_size;
++	if (refill(rs)) {
++		free(rs->buffer);
++		fclose(rs->source);
++		free(rs);
++		return NULL;
++	}
++
++	return rs;
++}
++
++int next_byte(struct rand_stream *rs, char *ret)
++{
++	int res;
++	if (rs->buffer_pos == rs->buffer_size) {
++		res = refill(rs);
++		if (res)
++			return res;
++	}
++	*ret = rs->buffer[rs->buffer_pos++];
++	return 0;
++}
+diff --git a/tools/kfuzztest-bridge/rand_stream.h b/tools/kfuzztest-bridge/rand_stream.h
+new file mode 100644
+index 000000000000..3367376758a5
+--- /dev/null
++++ b/tools/kfuzztest-bridge/rand_stream.h
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Implements a cached file-reader for iterating over a byte stream of
++ * pseudo-random data
++ *
++ * Copyright 2025 Google LLC
++ */
++#ifndef KFUZZTEST_BRIDGE_RAND_STREAM_H
++#define KFUZZTEST_BRIDGE_RAND_STREAM_H
++
++#include <stdlib.h>
++#include <stdio.h>
++
++/**
++ * struct rand_stream - a cached bytestream reader
++ *
++ * Reads and returns bytes from a file, using cached pre-fetching to amortize
++ * the cost of reads.
++ */
++struct rand_stream {
++	FILE *source;
++	char *buffer;
++	size_t buffer_size;
++	size_t buffer_pos;
++};
++
++/**
++ * new_rand_stream - return a new struct rand_stream
++ *
++ * @path_to_file: source of the output byte stream.
++ * @cache_size: size of the read-ahead cache in bytes.
++ */
++struct rand_stream *new_rand_stream(const char *path_to_file, size_t cache_size);
++
++/**
++ * next_byte - return the next byte from a struct rand_stream
++ *
++ * @rs: an initialized struct rand_stream.
++ * @ret: return pointer.
++ *
++ * @return 0 on success or a negative value on failure.
++ *
++ */
++int next_byte(struct rand_stream *rs, char *ret);
++
++#endif /* KFUZZTEST_BRIDGE_RAND_STREAM_H */
 -- 
 2.51.0.318.gd7df087d1a-goog
 
