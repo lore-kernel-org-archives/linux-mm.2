@@ -4,194 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BF3BCA1002
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 11:06:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 405B4CA1002
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 11:08:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E2716B000C; Mon,  1 Sep 2025 07:06:53 -0400 (EDT)
+	id A08EE8E0036; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B9436B000E; Mon,  1 Sep 2025 07:06:53 -0400 (EDT)
+	id 9E0768E000B; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A8526B0010; Mon,  1 Sep 2025 07:06:53 -0400 (EDT)
+	id 8F6488E0036; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 598186B000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:06:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E92384D98
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:06:52 +0000 (UTC)
-X-FDA: 83840403864.13.03410AD
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C23874000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:06:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZPdIHbN+;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756724809; a=rsa-sha256;
-	cv=none;
-	b=MP4BDKbtKLd+i8ze45OT/7nBcMP5G1f2mvzgGqsYG3EzY68NXQ8oGZeC7x1BXjlGS30GSv
-	Scvt4OdZOEf7djRWxa+F8Qldw0gqyQWopl0TEHqbOEgvP777VpjwrwBpllsxcaVGH14eft
-	Vb02vTSL/yaKp4BoBzbMSjwn6CW6e2M=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZPdIHbN+;
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7E9F28E000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A1DC1DE953
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:08:57 +0000 (UTC)
+X-FDA: 83840409114.09.685A83A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1326A80011
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:08:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756724809;
+	s=arc-20220608; t=1756724935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QVr1dt3a4WUVmixiCg4dgFeOh7bWE/lfiJ8EO3O1Gpo=;
-	b=i5RAb+d/6C/mbkPwGeRoQ1hbf2eP9HH5FyLW89mEzyU8jh3hvLc2H4+u0Snuni9/7Nm5Lk
-	dcAtSMnLitgRqAbLZe/Rm1yrdnhUfMxKebBrpKAuKUTSTiWkBKPfnpkrVrivanBJ1MyszZ
-	OfCWmKEwXJRrADh2FE7nrzaC3W4npsg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756724809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QVr1dt3a4WUVmixiCg4dgFeOh7bWE/lfiJ8EO3O1Gpo=;
-	b=ZPdIHbN++ApZu5CtuDgqdm9dx6l7X5KuN5cuwHdpUPdgu1OM1m/snic2cEwk5THZgE3MOb
-	0KCaYn8vMD3quLRv5Ho/za+v0kw99s93lq8pI8+Ts303HsryM50HCFwUkQXo/NoAeNX18k
-	QM43RoHbtkHItiADf+LA2YxF/nxR0vc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-IhbWFqcJMzaTqX5h4IaA5w-1; Mon, 01 Sep 2025 07:06:43 -0400
-X-MC-Unique: IhbWFqcJMzaTqX5h4IaA5w-1
-X-Mimecast-MFC-AGG-ID: IhbWFqcJMzaTqX5h4IaA5w_1756724802
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3d17731ab27so1980039f8f.0
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 04:06:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756724802; x=1757329602;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QVr1dt3a4WUVmixiCg4dgFeOh7bWE/lfiJ8EO3O1Gpo=;
-        b=qEip3utm2Mx3wgx9eCO9zfbHip4LaunRqur1EvGNOc10AjpajSfrBqGvZMU4/iwwqg
-         LSTUybh7YgWwPx+4579VIfenSzCX7TNon8vJZtWRdnMtKwz3Wszll8uaHRUYgtrL7TEG
-         HJslXijKWbaSbVO/A951ZjDrr42vjAC0m+EOihE8fJFSzOsCxZWJitwiYkRWm+Samo0S
-         tz5ccCud9Yu2dnINCwny6Vl5KAhN7K4/tgprnMYo/T8mAsU+g6iRPZM0S6y2ad6+/91x
-         tKHVGRAF4c91t7OgEBfVKGvO7AWngjEDStaj2P60bP7u7dVSTZDTpkUP0ZT1G3UtFjN5
-         8qfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSeZ9wdOlIcXYtBaQDZxpucxDjH5nbRXorOa894aLZcfbBy3Ov+LXF9hgENyqoARn2ui97G418Mw==@kvack.org
-X-Gm-Message-State: AOJu0YxUhHaZAGqCAn1+Z6JbQQExlnh8ehIXrtNeffW2Fz9mBnJrcSjN
-	IVoVkBqeB7xTG8ABVRmL1nksPrr51YBJM8xaIlk3U6lOlIDXgBgNBG05+HhPbGLDTUXQ4v7iUkk
-	tcH/RY/4J/vxEtaDxjR6CznfTwS48DeMZfeP6mVtXEOs1JWP8Rm+B
-X-Gm-Gg: ASbGncv7oTkDVXpqZd0LWTuNXOOgIvbJZZJ97KleWQa+iMA+n9nlZ2N1RuE1GpKkcQN
-	Q3/gjSyIuQ/mEYbWa4LmQ/1+pPfMdH0ETrWWe9SMqMNNiqt8YmtLoCRcFS0k5Tue9/kkc+PfebK
-	j/pXUwCsS7E1x5L+IAL5yeTNdkUR9ahZe5MZv2lMhx/4TgGw4mVmJLkLoKPHNBYCSVpxfYwuQN2
-	RdYBaWmkjUbhCh++LuemXy2mZusFQt0awtPo2lR7AVuPXrySj2cuZ+wLrxGWTpTnzMWY4bKVnJs
-	9Gi3vZk0Y50miJYofYn7y8xc58xD1tj2JjHgpyIJxzSJIzbbpsc0VBrkkzQJKyWtwZdxaNXvg8y
-	fEGdT9lh4Mu+ahifw4QARQNJaUuLJCBfF2RUJcw0G5+ZEo4+OeMPCz2lwj0qhebLncKk=
-X-Received: by 2002:a05:6000:4282:b0:3cc:19d3:8d78 with SMTP id ffacd0b85a97d-3d1dc69a1c1mr6067938f8f.7.1756724801668;
-        Mon, 01 Sep 2025 04:06:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnFNLMPPscF9b/dFiH3ejH9LoyRSZRP6VErKQh6v400tD4mpYb60MjybBstgPmnFIevyHNdQ==
-X-Received: by 2002:a05:6000:4282:b0:3cc:19d3:8d78 with SMTP id ffacd0b85a97d-3d1dc69a1c1mr6067912f8f.7.1756724801209;
-        Mon, 01 Sep 2025 04:06:41 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d0f85c287fsm12972589f8f.52.2025.09.01.04.06.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 04:06:40 -0700 (PDT)
-Message-ID: <fe4bfa9d-2e1f-4f2c-92b4-7ac827ba471e@redhat.com>
-Date: Mon, 1 Sep 2025 13:06:37 +0200
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
+	b=40fVFbcwWL82zoUKqZx572qZDR/pwo7ceEwXDordCr4toLI1pxXiWqWxgNgtpYqeVbRCZa
+	zuQnfT+QvcpPN1oL3LWD1FB7s/BnPhQDi6TstdSlw+DPZfQ8iM12Rj5YgUkoqurXZKQMdg
+	PWkVkxIfzzlwlhfOsBYiFslTtyuJ038=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756724935; a=rsa-sha256;
+	cv=none;
+	b=BrCMgfrVTXTKECydXdrvQjZd+O8q2k7TQZ3KplQTrBglOm+LvMAoEKcsv8e/RiNq1Xi2VP
+	7ts9+7TMeWbaBGZ8Pbh634NLxpVAnk+RfzJT523efnuaQEsf9PzSJmPjQiyRang/LgQAi7
+	Rq9lsI4UsM0XxiMYjKLf6HTJCe3AcTo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1ED341F387;
+	Mon,  1 Sep 2025 11:08:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756724933; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
+	b=qVn5rTNknZMzGbK67J36RUzRhlsiDWA+viXwVqKrOfKtaTI4zicyHaMAxlgrUQ4uCaxWfa
+	Tbb4yNV54DUA4hzpJI/I08NC5DFLzTBnfewN581Pjw/CLKOP0PNyV53H+iez3RDr2jXZVR
+	ZRARQzWleXgkhobw/q4He+ndd76vesw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756724933;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
+	b=T9nykotcgPIf25AlYjhV9Kn46TVsFEW0RtEO+rGJtxgVIz4gsap6jaPtj9ioDJDULv40+z
+	Bp1pmk+uCsdhj2Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756724933; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
+	b=qVn5rTNknZMzGbK67J36RUzRhlsiDWA+viXwVqKrOfKtaTI4zicyHaMAxlgrUQ4uCaxWfa
+	Tbb4yNV54DUA4hzpJI/I08NC5DFLzTBnfewN581Pjw/CLKOP0PNyV53H+iez3RDr2jXZVR
+	ZRARQzWleXgkhobw/q4He+ndd76vesw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756724933;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
+	b=T9nykotcgPIf25AlYjhV9Kn46TVsFEW0RtEO+rGJtxgVIz4gsap6jaPtj9ioDJDULv40+z
+	Bp1pmk+uCsdhj2Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 04BC01378C;
+	Mon,  1 Sep 2025 11:08:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id l4bYAMV+tWjtDgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 01 Sep 2025 11:08:53 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 00/12] maple_tree: slub sheaves conversion
+Date: Mon, 01 Sep 2025 13:08:50 +0200
+Message-Id: <20250901-maple-sheaves-v1-0-d6a1166b53f2@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/12] mm: establish const-correctness for pointer
- parameters
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
- axelrasmussen@google.com, yuanchu@google.com, willy@infradead.org,
- hughd@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, vishal.moola@gmail.com,
- linux@armlinux.org.uk, James.Bottomley@hansenpartnership.com, deller@gmx.de,
- agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- davem@davemloft.net, andreas@gaisler.com, dave.hansen@linux.intel.com,
- luto@kernel.org, peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, x86@kernel.org, hpa@zytor.com, chris@zankel.net,
- jcmvbkbc@gmail.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
- jack@suse.cz, weixugc@google.com, baolin.wang@linux.alibaba.com,
- rientjes@google.com, shakeel.butt@linux.dev, thuth@redhat.com,
- broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com,
- mpe@ellerman.id.au, nysal@linux.ibm.com,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, conduct@kernel.org
-References: <20250901091916.3002082-1-max.kellermann@ionos.com>
- <f065d6ae-c7a7-4b43-9a7d-47b35adf944e@lucifer.local>
- <CAKPOu+9smVnEyiRo=gibtpq7opF80s5XiX=B8+fxEBV7v3-Gyw@mail.gmail.com>
- <76348dd5-3edf-46fc-a531-b577aad1c850@lucifer.local>
- <CAKPOu+-cWED5_KF0BecqxVGKJFWZciJFENxxBSOA+-Ki_4i9zQ@mail.gmail.com>
- <bfe1ae86-981a-4bd5-a96d-2879ef1b3af2@redhat.com>
- <593bf6fc-bb12-42bb-b763-383ca16e3adb@lucifer.local>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <593bf6fc-bb12-42bb-b763-383ca16e3adb@lucifer.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6h2ENuw2b9CEnM3JAuu1auRhLJ33MOfJmc2TxK0_Z0o_1756724802
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C23874000C
-X-Stat-Signature: csusbf79g54ezzxni13a9unrbt8gwtbh
+X-B4-Tracking: v=1; b=H4sIAMJ+tWgC/x3MQQqAIBBG4avErBO0KLCrRAut3xooCwcikO6et
+ PwW72USJIbQUGVKuFn4jAWmrmjeXFyheCmmRjedttqow107lGxwN0T1rbdY5t76EKg0V0Lg5/+
+ N0/t+V5n/sF8AAAA=
+X-Change-ID: 20250901-maple-sheaves-63b9edc69bff
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Matthew Wilcox <willy@infradead.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>, 
+ "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+X-Mailer: b4 0.14.2
+X-Rspamd-Action: no action
+X-Stat-Signature: 1o6mhzg3y436qxsc5byu64rbifnfyz1q
 X-Rspam-User: 
-X-HE-Tag: 1756724809-388520
-X-HE-Meta: U2FsdGVkX1+EzDPjNZq7lHrhiXIktRH2rMtWiGxiXlNS1uRn1/pnYfxdwZfaBPNqd1l0jrKEiZBvMdJN9u37MqUGYSY2PaovzYv8CxGKOowq4nNUSPr/mzjNgCpA8CyIv8IIfu+sXanXqS6jPGbhoEuy0qdTU6HEpXJ+KLwYRQ/xsP4QDZ+P6DwrNqlPJXfTQa4LiPDqOR2TOuJTco3mrd7xoiNQA6xKTzhrAPphM+/U3vsp8URtubyM5bmSnXl+m196XAV2t1from6Q6ljN7485giW0L0k5RqaQf9yVYEdyv9fNmF+wPcCcQIAaj27ZLW3tgOw3FCg5PsxQn+YgbmMRcFgmILFaFN2drWb4qWozQzeo2TocDS29kO1naO0VJQYuxKHBanAlZJ0yD8AyD8jutK/lWZUqW4aDnFl2vBat1o7b3LdfEJZMbkSLThhRqniwMI87uj8Uoj7Tuchs2/EPrGt2hiLfuWO8CPKpgS5AlnE9DgeGTyTfSqlNwo6ZmmZgOyFIzWNNiafdfC9cRzuvQ2EmpZFWQDUP/J0O6QgFYCOTABhpiFu+4DbrTOfkFKFHJgeo0TZ9ZTdjX1JYYkdn/C6kzmHMam2JcHO7CWMURzAmcMi7cCbRNlf6mrAV3W5S2hdNL3cIp/wPWObHR5Lzrc4fEUG97puongVBu7KE1M/g/4c/15X9NFlBS2gxsYaqRlXAiKCv4s6SGexwFINb/psN/Y88djvua46jPmJuhsb8oVMTWt3BDGYq3tj3fSXr8cTkyLS+7UaRt9kDjocfeLMovPza9KI30fcBkdCbb0TAaQxuMk5xVPNgbdZgaldGMv4RD85/xePfQR1ThT2UDAVuMPLT20CLYWUGD6XfcpPM5MEmI14pAtONDEzPRiZvoH90aoEKBx+K054tTFawNLC+lxB+K1sWhabH6zWAKc4XYxvh0wVs3TkK2Zs1ui/yvwe+lsa9jQsUikh
- GlV2sRMW
- H5FjT7DD6UrTZTW7b1zKIcdxpP931l5GymmAu09+ftw1uhx8b2jUqvpwle7sszRa2muvCkHw8VVMwXj/+TSqrpgERZHFGp/TI7d5GzQiBDoAMzZR2WBlCdt34lG6Uw/uOlYUhqXmNRZB9OMA2VDWTKfUYMlKnPiQ8u3fIYtzpTJ0O7vAExvkpbuheut7fleoun616tFep1y/sIUIojx5RQywjtfq14xtJZS3cnh+jvnrO4nXbwL9OI7nA/NMvG+7sTSmv1Hi+KZMXXfxZ26tdnzXLeRTVlFfysooBQoUdV5+IcNIbuE+aa9FGhlxfGOng4dDHY7y1M9IBZCb9G0o8cfwyXBArnBTzzfdP77MOUNeAVjRnRebpG1UVqJmRD+4a4eukNz/LQD+jfsOjwX2W/OJ5yNeDLIzbMVOQLGtEfxJcERBpNbdkniat1ldv8RAdUg90y7TWceyUXgOerTIpJBPrPav0R5atb71EVnrZKVCUiKscDCGoEuRzNtmQqch30hAqwejilas2H75i60kqm8PUtGibpKwXJKvEFHliKclIJdrXAITVHAho30Dy0uPiW738RwfD2JwVPtcnVgq9FWThNw==
+X-Rspamd-Queue-Id: 1326A80011
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756724934-851810
+X-HE-Meta: U2FsdGVkX1/Tqm2In1xmmcZqPw2G+b8cz/2Q1Pu4mjYltEyJBASBAEjg/uKHJT7mD9rC/T/k01dtY0Lm5yTPj0HX/gf3a7h07uALzXEOxyFvfJFWLGhcc+Ea0vZZ7ndS82cxkPjf/tLaICxYTpKdfMgnZ7tmVsP4nN8TROp6IddlOql0aEy1VxnycyW2W3P1gD/QGxLqtNtY15QlCJFvfwcnTuS2WRAEla4pIwSw5XuQnb1cASRS9m8l2zzNVjvFoXyT5Hya1AO80FCymcOO2Ect2mtKRC7xVVlG+BYFah90c59vDfqsVt/s6d/5YG0MkgkoD+Q0yZiYphTcMnfvj0eNNTnl+uY9XtUfvxpXLhKLmanMojeOJhqQibo32QNp/QsYNQS/5HlY2eQL4WzAWXZD/GvtbOvfQlXr8Yq5U4NGIvMkzH+x+ivccqgzlc8LDQ8m9sNN2FuEB+hJPMbm9u/eGHew2nRuVXk57BTYRgSUT3gDjtXONpEupPVBYjEPt2NdGdzzN8QZneeLeJ1oemEG5NAu59u5bq2ou+TuGambbzOLD1xJYaUq893mzgZIiLqBrDHHhcJnDFrNA1A19KBUn8iMogCm8ZRxjqhGyuNdeYm5XU7lY+/GyLIIUjCg4yWCJUGwAW8F8BQhnNyINEK8Y5DmxDCLdqXnOPh4BQ5PtXLg6kEOXFcNrK7yMz/YowyPFxMPsFP1CeN0tlLwYXkTTt45XeJ2BFsYLzaK8drWK7IzNDXStRgZJkp0S2PXmaqrNRBk7kPDkxkOy5E2SZ+9zHj1UhKm8n2wZSNcYWpBSvSNGuNXltYX1viv7qU4ULtnb+k/hzee6h9jZ8cxnC+cpBv3YzUT4TfDYCI6qnMJW66waKxJqPDJj/ZAWbSRXdEOp7iKwJaZXwcL18y6lY8mj/fZTyK2SF5TS6zNtYBN7+8Cbakc2NuYxKWNgxkLaLLSuizBQgEGlw5U+Hu
+ qOF2fmz5
+ 023ldtFLjuoc1KdK1Sgx/mfS98dd2oI/4jOiguIfLyuJ7ORFr7P9QBTCtF1eOZbCBtmeEeYjsINehzsl6AXNLbWgBHHmeLP6FuLXxTtoEQ5o4+lbgi66Zv9yAe63W+KhsN3QHNVswi2W6kyaqnmk9RcbH58JqYyPysdJjjmy0zMvvgwxlWIET5P0D9z33kmv4j1MKskeBpdwkxt70lzE9em5dT+xtrMKmfkO3yc3KFZ67R8+itGZSsuD+tZiRpjC8br7dS7yTFcKuI4tyJ9ddJPFQzqWLksokloB8O8O3y39ClTaM+WdHvKErtBFH9K6gfD0CbIdEHbWMe2xuFojjfa5sk1hryAvBpJ84sTqhC8AFlRW29oMnL7RLRdvNxRj8zhdq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -200,28 +140,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 12:56, Lorenzo Stoakes wrote:
-> On Mon, Sep 01, 2025 at 12:43:42PM +0200, David Hildenbrand wrote:
->> Let's all calm down a bit.
-> 
-> I am guessing you are not contradicting what I'm saying here but instead
-> trying to find a solution as to the _series_.
+The previous version of this work was part of the patchset that
+introduces slub sheaves, but for practical purposes was split out in v6
+[1] while Liam did some further fixups and cleanups to the maple tree
+and associated testing implementation, incorporating also patches from
+Pedro [2] and then provided to me his branch [3] to include it. It
+relies on [1] in the slab/for-next tree so the intent is to include this
+in slab/for-next as well. More precisely speaking, patches 2 and 3 will
+replace the last two patches of [1].
 
-Of course.
+[1] https://lore.kernel.org/all/20250827-slub-percpu-caches-v6-0-f0f775a3f73f@suse.cz/
+[2] https://lore.kernel.org/all/20250812162124.59417-1-pfalcato@suse.de/
+[2] https://git.infradead.org/?p=users/jedix/linux-maple.git;a=shortlog;h=refs/heads/sheaves-v6r2_fixes
 
-> 
-> However, and I'm sure you agree - I want to underline my view that treating
-> people with disrespect should not be tolerated in the kernel.
+git version:
+https://git.kernel.org/vbabka/l/maple-sheaves-v1
 
-Absolutely.
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+Liam R. Howlett (8):
+      maple_tree: Fix check_bulk_rebalance() test locks
+      tools: Add testing support for changes to slab for sheaves
+      tools/testing/vma: Implement vm_refcnt reset
+      testing/radix-tree/maple: Hack around kfree_rcu not existing
+      tools: Add sheaf to slab testing
+      maple_tree: Sheaf conversion and testing
+      maple_tree: Add single node allocation support to maple state
+      maple_tree: Convert forking to use the sheaf interface
 
-And just to add some of my personal thought: a good patch description 
-makes the life of reviewers easier. Not caring about that can be 
-interpreted by reviewers as a sign of not caring about review(ers).
+Pedro Falcato (2):
+      maple_tree: Use kfree_rcu in ma_free_rcu
+      maple_tree: Replace mt_free_one() with kfree()
 
+Vlastimil Babka (2):
+      maple_tree: use percpu sheaves for maple_node_cache
+      tools/testing: include maple-shared.h in maple.c
+
+ include/linux/maple_tree.h          |   6 +-
+ lib/maple_tree.c                    | 399 +++++++++--------------------
+ lib/test_maple_tree.c               |   8 +
+ tools/include/linux/slab.h          | 165 +++++++++++-
+ tools/testing/radix-tree/maple.c    | 483 +++---------------------------------
+ tools/testing/shared/linux.c        | 120 +++++++--
+ tools/testing/shared/maple-shared.h |  11 +
+ tools/testing/shared/maple-shim.c   |   7 +
+ tools/testing/vma/vma_internal.h    |  98 +-------
+ 9 files changed, 439 insertions(+), 858 deletions(-)
+---
+base-commit: 2a2cada7250179353220bea9548acd7e7ed96e48
+change-id: 20250901-maple-sheaves-63b9edc69bff
+
+Best regards,
 -- 
-Cheers
-
-David / dhildenb
+Vlastimil Babka <vbabka@suse.cz>
 
 
