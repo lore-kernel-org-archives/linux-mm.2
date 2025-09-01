@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A0F2CA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 09:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A29D3CA1002
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 09:19:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C22308E001C; Mon,  1 Sep 2025 05:19:31 -0400 (EDT)
+	id A4C1E8E0024; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD0548E0002; Mon,  1 Sep 2025 05:19:31 -0400 (EDT)
+	id 9FC9C8E0002; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A22EB8E001C; Mon,  1 Sep 2025 05:19:31 -0400 (EDT)
+	id 802B78E0024; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 873F08E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 05:19:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51D1BC073E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:31 +0000 (UTC)
-X-FDA: 83840133342.17.D5111B5
+	by kanga.kvack.org (Postfix) with ESMTP id 678188E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 22C521DEA99
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:33 +0000 (UTC)
+X-FDA: 83840133426.02.26A7B29
 Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 727FBC0004
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:29 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=GXxC3NI1;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3125B140004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=bySiTZE9;
 	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf28.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756718369; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756718371; a=rsa-sha256;
 	cv=none;
-	b=I2tAQxolCF+Q3rWhPArnI+RIUwQwL+/Kk0tDLIlri4D+fHOXEL5XmVvqEw8lKcq6aOohf/
-	RGhiidCYw3na7nFvZbH4dTOWDkmqCd626wucGFi/zIS2I1LgHtvmSgqIiUwBcz7aCTbh+W
-	NXoDoqf2SROpI7c/r6YPxAUbtebDgJU=
+	b=u6vprsdJqJKxuDi26zUvOD7ZwU/eco6XT95KmTAxZFYqeEpimKQ8BEsPSewAr8YmGFlrHK
+	K5jbas/Er6FqB+MiAqRTrXWmNEipXAtvhZSeF6H2A12zdFd3Lj9GzBNJC5gZ9JyubNlAKd
+	E+zTHQflLhX1oTnFSK9vmk5yiCcqZWk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=GXxC3NI1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=bySiTZE9;
 	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf28.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+	spf=pass (imf09.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756718369;
+	s=arc-20220608; t=1756718371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l7WepIwVsrDIqGjged5DTLMeHd34+rtR8uy9Koi3lTw=;
-	b=wRJ8qTYITxP73KN8mVCv6NJKsbk+tLA5InX/Gd4raMJBiRU2h1LYTirmefoCHtWnFTOCQy
-	AYGktf44GV9S5iCO74ughdzwA+HnloudxFcQLrcA6ThmQMfDAqN5PIajwugqH8jr1Q5spM
-	eSD8lklKjvCYaPmfLGZzBiS6Af5P2fw=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aff0365277aso408756466b.1
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 02:19:29 -0700 (PDT)
+	bh=BqkRolEiPUj7RJL2rUljUH40PaguAeYrnxbluGnyi6U=;
+	b=3L5bYeremg3A/7G/HnJ1xwj0j2CZMqSmU8WdyiyaHqwQh5q1dQq9Pd7LjzVHZireYJHMKr
+	jyFaDoVINaGbiceHjcrqSORadQJmxYFIIJMEwV8ZAvup/eIZI6nijVO5ZYqbhdTHBoYKBi
+	ex7/4wQTTzxtOlZZxcSnKLYgyC3imBc=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7322da8so802414366b.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 02:19:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756718368; x=1757323168; darn=kvack.org;
+        d=ionos.com; s=google; t=1756718370; x=1757323170; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l7WepIwVsrDIqGjged5DTLMeHd34+rtR8uy9Koi3lTw=;
-        b=GXxC3NI12MCOrMlZbS6iEIZ2LlH+A6kIQ0VTYRcSng1/0TwGtxgjFcZf/V3VUNme23
-         nEtn7RhguvJ0HCrvrKDGFci4wh3MMvbCIGrx8Vabh/8V/LhLNdvMGNbOfXqeE84f1QmQ
-         hgaiNQbVI6BKD4zwstgXeoF+X576bnTji/x0PZA1Dmo1UrA41ih3TbdM76sJ568mMt6v
-         beYUDjz5zU+k0+zR0WNF1Ree+cvROI0fg9pTxxRyjT7uWViK/A6DM/XcT5ILk1JCnFPn
-         ImMHBBwT1JCUEo6seAyMrqRiD7hDBRHKYLlny8RIjrLiw/CoR4WmhT33T0UY00T1Dw3U
-         0W5g==
+        bh=BqkRolEiPUj7RJL2rUljUH40PaguAeYrnxbluGnyi6U=;
+        b=bySiTZE9OWpEfQBlpkzLTwi+11ii/udzuRUNdvyaEDVbyH8POP+DoSAoLJ6YHqp9Xy
+         YP82kZs+IXEuoIoU0NVdGiSIH0BQZzuOKbEUj08awW1aNEERDt+yUjEDwWuqDHPCeGAE
+         fthxAgoxkG1FHpzPB0+CsOI4brq655Wk7MZy7CL0rlW03gVac4zPYOO7pJedyjUxijQw
+         bV1uX8abNndvkStkH5MhG3IYo65lNxLB71/8/sO4g9/5Mb6CL0AKqakTTZ3DG8wLkC4h
+         pkH1Q2ndv12079TG6p/ije1GnslwoIyYce+mxC1PgN4XW2pLx9Njj4r4GFnSJZxU1Q5V
+         n26A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756718368; x=1757323168;
+        d=1e100.net; s=20230601; t=1756718370; x=1757323170;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l7WepIwVsrDIqGjged5DTLMeHd34+rtR8uy9Koi3lTw=;
-        b=CuXGjDEI5tNHd0yssf9GIhoNjSFjLmm5tXv5YD1qQmC+h2nRORculC1PQ+jEdmb7oO
-         HH6+7xpBWP6S/rAD2REEJvhUo/nVMzhebELTp3KoYwx32U3Mp9g39SWjDZ173use+0OE
-         OlOi7OchE62BNbjfLsJl7sV7pYxMZF1ZzVT7WG0IWzOyF6pzs7d47+0a1URn2VCvBs3e
-         y28lwMOfsMqa1Am1HQ7810fKC26TCJkv1c6uBti0rucADLBzV7WJx25dyoKI8RmtqaMa
-         oA13SACFqPjPPhVbsqABQ8eVcfArgIGnhGmLX/w/u/z/vlbByfGUXaBoXVyKU1Q54Vlp
-         U09w==
-X-Forwarded-Encrypted: i=1; AJvYcCXlgQ71o0tKcEyYbBFcEBAbu4tvqcJeo69msgScvKMlfvlQbTzCNeSATf5KFV4lC3xVYXN9WLQlMg==@kvack.org
-X-Gm-Message-State: AOJu0YzzJ5LJll2QJkDz/HB3FFGvlaH5IvA37bRe0u6Ml4ZCop9IKW50
-	xVTxE1WqizpTKMwp5cVsL/D3pFwMlSC+7G9tdy3lm6EL5XcWUubTP86TpMbJbCfEGGk=
-X-Gm-Gg: ASbGncv63eC3H6kr/YQULq/wlTpQ+K3xJaadW3FEsrQvuCJPasZi9LXJFctPx5Vvnvm
-	GNZLcxTpkjqna8DZF/onvhvN+pD6/HIHBZTdA5Pnw4L1PiUCEu6OynTBF/K2mkt7yxAqP2FLwse
-	Z/DWcb5pN9nbjfpz/UPKwUWMeVnPMwc60EUaYez07K+QDRK8rxprRH676iS/pHSAjazh7ya0Zj1
-	NyqDuz2L75kGNotkgakESyyAycXNBOISdOQAy3M1TYuZXzDnRn6OinmUUklHXxHgnpFw1+9e93w
-	mN3OgcdSydPSxT4jwRFnwgBN8HVwoED/nErATiTDq9i67+1N2n3npODlOKMz3FrL6dPhHM89xMP
-	xOsBA5O5QNSO5Kk8db81kS+DulgqkTREf3TOPdPm2Pa0XZCB1igZeBIvhOw+shYLdapY7kKbPNi
-	tCAyv2ucLTsLUayu9oaVhaBgd+Bf1NHlgF
-X-Google-Smtp-Source: AGHT+IHN/TqbysKK0s5Zu0KlpyXlJ7CQoaS7LuJ5q1gjVHxfVF3yXVZtull4SVbEI/dReygUbTQsRw==
-X-Received: by 2002:a17:907:3d92:b0:afe:ee36:2eb8 with SMTP id a640c23a62f3a-b01081807a8mr707309966b.8.1756718367712;
-        Mon, 01 Sep 2025 02:19:27 -0700 (PDT)
+        bh=BqkRolEiPUj7RJL2rUljUH40PaguAeYrnxbluGnyi6U=;
+        b=XckCda6xfnH9bd7Xf4NkpUMz4f+oxlzI8vkEjKfgq/58HLVqEUqspIb8X1mbfcXEPC
+         nXGcZUpCbpWKCZNii8ir74iK73wJZHbTOflgAValyhwmR6ntd+7/1RzO0Ff9GhdbSh+l
+         zCBYQ0l2lz6AGAqdpWO8OLBBM/0Cn9p1nHx17P6rLze8bWjouCbYPtSNb5kI1OXmbNjD
+         6MxCELwN14kjjaUlxwf3t6BuJoGMgtSt2Yz3dveJNxqjITGAH95qG3SL3EV2ECGtxMUB
+         uYYn6dnZy1LFuZw9POhYp2wiOKYwTNXvYV7/nDWSI340iD2HoTkyQrcClawgMG2KA+4Q
+         JkeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXLaG4W/3AxWyooZXImKGJ+E4njUEOMX7bzChCaC6cAs8Z+6B5Ez5HAG3zzOBSAlQ5vw5pF48K1dA==@kvack.org
+X-Gm-Message-State: AOJu0YxfSLaKQkDYkaJn1fcW/N9TMry8MbKoxgObuyT4V84ykzJjJ7M7
+	zuj+AxODyGWvjLLkO3QnfeZc2nobNHwtIPaaFwEbUV57QotFD2CQ18gn6gPFGZTx7A8=
+X-Gm-Gg: ASbGnctEkS5SAJUFBbECGoNWkdWmaPiU8tWkgwT2+ldh2W/rsKazpeQ/Za9HqGjjJZJ
+	cfumV7XDm9I2GZis5P3eh/d3qzu6vclbJYYvTveSgLGubdRPMOWe/kJXQBH2Hayt7Xr5g2BajDo
+	oRm8tXYSxQEue6kIATZ2xgNuXu5R1RzTx1NF6Wm2AW2/yhoErPm+b2RrUZgW0qI74G5nr4tGy5Q
+	mgB5XpK5LlE6v2WMGwqIEDVgilUkV1yvHw6BehDmLe8pUGaP2DPcIj8KLsqFkHvHNEUahT1s145
+	j2wrOplwIXupOafIIn1PhtairZcmqFeXcqhQ1hPnZjPGLuL1kZIcPaFeDMtBjRsHp0u/YiWtofK
+	7jQFoLHls4ztfKhLTnrVlwEiY5an9izOEEXDUoZlUg1O551CMZeZIXfvLxqnoOK7baqgKG0Lh99
+	NeNK0i7/zcF03Q0FTrPp2k3/VIvC3NHkRZ
+X-Google-Smtp-Source: AGHT+IEsmw8mc9FR+7YcDO3uHr7qQk2IFaFGO9lGAZi9GzeSVQNoy7S8eVMSnXBGPw6W32MtA4kZ+g==
+X-Received: by 2002:a17:907:2684:b0:aff:13f5:1f0 with SMTP id a640c23a62f3a-b01d8a26e65mr628763966b.7.1756718369507;
+        Mon, 01 Sep 2025 02:19:29 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b01902d0e99sm541005766b.12.2025.09.01.02.19.26
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b01902d0e99sm541005766b.12.2025.09.01.02.19.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 02:19:27 -0700 (PDT)
+        Mon, 01 Sep 2025 02:19:29 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -147,22 +147,22 @@ To: akpm@linux-foundation.org,
 	linux-s390@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4 02/12] mm/pagemap: add `const` to pointer parameters for improved const-correctness
-Date: Mon,  1 Sep 2025 11:19:05 +0200
-Message-ID: <20250901091916.3002082-3-max.kellermann@ionos.com>
+Subject: [PATCH v4 03/12] mm/mmzone: add const to pointer parameters for improved const-correctness
+Date: Mon,  1 Sep 2025 11:19:06 +0200
+Message-ID: <20250901091916.3002082-4-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250901091916.3002082-1-max.kellermann@ionos.com>
 References: <20250901091916.3002082-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3125B140004
+X-Stat-Signature: m8tq8j489ohcxqpkmgxcgoax8uhg5i9q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 727FBC0004
-X-Stat-Signature: 7gjruu5e8sqnqgpsdaoop8yiacyqi3rp
-X-HE-Tag: 1756718369-384899
-X-HE-Meta: U2FsdGVkX1+AjlssfRp7idK9KEXmaGfYYkKX4V2IfStFeha3pnxeb20ON7/A0Piu1soTHLIogt12iguxcPGkNKJngDgkOp27HR9155YzW2rBZHgaP8o2sFH7tXT7vSs4Fb0Qdxum4WBUCp6cpb/CGOwnM6V7X/KJDzKXQxX32NPMHD5L9ZTXabQiIPwHFJZnkmLMwIPpP0k9mhGBlpq4fT3dX1VQKdnc9dy8VL0tO8azx7fjRX/fxgHlydrIdoyIpqPuhfA+NbWv1Ix7u8z2QwfPcUomaNHnUmplEV5M4ST+umeh294s1WhDn1usp88vOyqYVaQEksYw5FlOFBy/upQshZoZC4jowx6rOs17EHyzloAHHE/BVmw2Yc1X9OpZN+Yl28vdQBYewi7faOV5RNOzxtfRRAIYqWyHFudmCOk8rft0wWLtLf2mJpGyCGkkUcGQaqCjNsC9OpnZxo1hp3STj+N54T7fyKDEEndE0zlL53igxpo+BOMWASqxYMwxR4FMUDF8xuH+7WjByFlSKfcaFc48IvpgNMm79DvNwDd0+MKs5oXmh+mTx3C97d7Xfa1hExrzsv1WYUG9xh5+iE8QnufYYlQDJb3y1G5RPQtfSsNYnLNWeRP4GoW53pMOf8nBDXO49AEzdO92lk8uRNRgkjtQB8rRnDCdo/hGFI6Ri4TEmucdcxIAcwRNSy/ltMfPIDPqa539NM1nEVxFSP1/1zMjKupv96rRmAslC1DWD44N3lzx6A3gZN4mlPVK/MM+K47b+BPGgz+N4fv8b1fxHqC2p70cGZyeeW6fI2R7TG1T6VPYDlRF5GFopJZAsUQnroaOIRqo41k5o0Q9WBE/xNy8/cKm6aF/ekU8nRuhGO/whg3ohUNy7geHn+yApWuVGYC5pzn165jdM0z1SiwLVt8U5a3l6IRmd0nr6q0CXGhEitGYOG8za3QwYo1jJtzVVhXGMRyb2DSuNHo
- +KPkoGFm
- N6I/0WBOUqcxA1k08t4D9F0W5J59nV9xZGTmgmjJ20NiIrjZSpFifrw9ur0sGQoGU9Ep2qPcQyZqRLW3Z55gGacuvTAt5wwFHGm0b0b7HOTO2NPdFNglr7KVeWK27nuPX1b4TCWXqJJjobyAlSDiVn8r8KNGPewW85SsMiCFfTwDPYtJdU05g4NcLzLUcNj35YDIezmLRlFMlXb8qQGeE192NrXgbliO73OzKU1Yut9YTqnu/chdDbzDcM+comuOvHoM8esw/8iWUtrvK6XtKD3a6YUr5DmmM7lcPNEpQTIgWjXicDxbr2Ccw6NoA0GcET31KeqaZ/Ti1cbvNDrAVyjnhIetVAID9o1Do5sGEVjELQjvQzURHTZRR88LIwepgKoxnNLTogyc3xPizUjiZz8Gi5i8F/U+bAtFCaY/JZqhykg7kayHYwVF+zZwq7CntvrEdyOOOAjtz44Y=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756718370-175459
+X-HE-Meta: U2FsdGVkX19a4QQBNb49SLH7AxCI1V/Px5jH4t0bEp6vZPPxc+35JUHibfkRZmk748ngZX51Xi3/XxuCJzymbP/qZwX1EoL5YH6i6MDICyrY44XwRQXHVAey/wA3GxeahMeb7mnJpIihEYZ8t4Oq56O53SVchresIdOJeoKADhpL9dtHWNAVqZjA9Vs+m4BIQi/SkxpzUjPNCbHJht93O1p07JDvJxZCrjauMmY+oSQp38DtDj6+e0QXoI9TMwQHeVe+5SlM3wYVa/nLSzJSzx2VMHmBtE4VOk/TYbpsKsCfxevYHfQsB4bWnqmYJyWH0H90qtxGUgY6IfrUygawGoRSWd4domjZicnGQYCmMhGQTzYsk+N3kG3XDyufaDhArEjogny9Ydo5LA/7HrAMxJ1YvK+a3xXfMh1WLTTXCYfRF6d2wRwofMdNQAhibhbODsrse0E/9RLAwr8IPK/zlaW/dgHnNXRC/v8oFx23mXDKlBISzJJjCH3iFiqL8O25Sj6MBMOcDgmCuya/iK1QwIITWWLwgexwVLnXREBRjXDWz+TuqL0pez71Y0pS2MaDgmZR7YaicjV5SfIcxU6Ro6uv72lbxWuEy3JFOAa2cssc2pE6RaoYtrmsQNRyJT1q2dX10haZjlcGP9buAGp8FGCNu6BsaRaWuthkNbFC5GFrHjUrfYIUlNIzdCxUy89GUz/NUTiODEZvus1HZC4BBlTnRCtXHTgrN8m0+VNVXJZMJzu8fjuS+kLYl3u4gRK+DbeewkmeJReVyXGDBw9az+GQdWCCU8gEqq6uu1p6Vl9+Fd3NlAWoAxEZX5LP272cDRT7Dwd6m7l6Lnj6tKpZ41kZcS3kQAbOYvk9JvLXxGGSduxyKqttm4G6nCOMMsH3LcqrsTqTI65i08DSFoGWBr7y9ZxEueReAgw3vcKKYghtLe9EDbYoqGNLYakxIWivTgnZOGNFhBai4AkGKR9
+ ZrAt3Nzh
+ ndYLH3cyUcBk+CNa5/bAAwunWgc0QYzTriXx1pl5IjpHufFpozpJbYv4CgchxiM5fge+imndj3MKMgnUqEle72oLOBS8ab9sUlEZiOd44Es4IjvUQOdo1hVA5iInUlvYPACvzRv7dyBB8Hr5dxCEWRyUCI6Mib56J4eqZegJh393wlwwgU+dpzsgTlbmxl9MX6m4stiHOFWdtDydkZsm/IF7cf9L6LvJUMTsW5plznOtTtUp+l7gS0YRxgJiulvV6RaFge2UgVQ42FDFKO+BbW5lHLO5XZEn9DtWhrJLDMCN3ex9zYXp8KZEUUzSHYp3OtZuHCVzzd9tsW75J8tT0DyeCZSvB4NEMpD6t+5WaEJcgmZo49/o9TyZ1haWmAThiPEsuSuxrIK6AoNJrYAbBXzMa6XvSBUVaWoMmUv+jfzoMjArxaI6TfW7tE8VKf3Qf1a/Lmw4TxgLAspU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,276 +178,207 @@ to also adopt const-correctness in their interfaces. This patch lays
 the groundwork for broader const-correctness throughout the kernel
 by starting with the core mm subsystem.
 
-This patch adds const qualifiers to address_space, folio, vm_area_struct,
-readahead_control, and inode pointer parameters in pagemap.h functions
-that do not modify the referenced memory, improving type safety and
-enabling compiler optimizations.
+This patch adds const qualifiers to zone, zoneref, and mem_section pointer
+parameters in mmzone.h functions that do not modify the referenced memory,
+improving type safety and enabling compiler optimizations.
 
 Functions improved:
-- mapping_empty()
-- mapping_shrinkable()
-- mapping_unevictable()
-- mapping_exiting()
-- mapping_use_writeback_tags()
-- mapping_inaccessible()
-- mapping_writeback_may_deadlock_on_reclaim()
-- mapping_gfp_mask()
-- mapping_gfp_constraint()
-- mapping_min_folio_nrpages()
-- mapping_min_folio_nrbytes()
-- mapping_align_index()
-- mapping_large_folio_support()
-- filemap_nr_thps()
-- folio_next_index()
-- folio_contains()
-- folio_pgoff()
-- linear_page_index()
-- readahead_pos()
-- readahead_length()
-- readahead_index()
-- readahead_count()
-- readahead_batch_length()
-- dir_pages()
-- folio_mkwrite_check_truncate()
-
-Constify pagemap related test functions for improved
-const-correctness.
+- zone_managed_pages()
+- zone_is_initialized()
+- zone_is_empty()
+- zone_intersects()
+- zone_is_zone_device()
+- managed_zone()
+- populated_zone()
+- zone_to_nid()
+- is_highmem()
+- zonelist_zone_idx()
+- zonelist_node_idx()
+- present_section()
+- valid_section()
+- early_section()
+- online_section()
+- online_device_section()
+- preinited_vmemmap_section()
 
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- include/linux/pagemap.h | 57 +++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 28 deletions(-)
+ include/linux/mmzone.h | 42 +++++++++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index a3e16d74792f..1d35f9e1416e 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -140,7 +140,7 @@ static inline int inode_drain_writes(struct inode *inode)
- 	return filemap_write_and_wait(inode->i_mapping);
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index f3272ef5131b..9a25fb1ade82 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1104,7 +1104,7 @@ static inline unsigned long promo_wmark_pages(const struct zone *z)
+ 	return wmark_pages(z, WMARK_PROMO);
  }
  
--static inline bool mapping_empty(struct address_space *mapping)
-+static inline bool mapping_empty(const struct address_space *const mapping)
+-static inline unsigned long zone_managed_pages(struct zone *zone)
++static inline unsigned long zone_managed_pages(const struct zone *const zone)
  {
- 	return xa_empty(&mapping->i_pages);
+ 	return (unsigned long)atomic_long_read(&zone->managed_pages);
  }
-@@ -166,7 +166,7 @@ static inline bool mapping_empty(struct address_space *mapping)
-  * refcount and the referenced bit, which will be elevated or set in
-  * the process of adding new cache pages to an inode.
+@@ -1128,12 +1128,12 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
+ 	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
+ }
+ 
+-static inline bool zone_is_initialized(struct zone *zone)
++static inline bool zone_is_initialized(const struct zone *const zone)
+ {
+ 	return zone->initialized;
+ }
+ 
+-static inline bool zone_is_empty(struct zone *zone)
++static inline bool zone_is_empty(const struct zone *const zone)
+ {
+ 	return zone->spanned_pages == 0;
+ }
+@@ -1273,7 +1273,7 @@ static inline bool folio_is_zone_movable(const struct folio *folio)
+  * Return true if [start_pfn, start_pfn + nr_pages) range has a non-empty
+  * intersection with the given zone
   */
--static inline bool mapping_shrinkable(struct address_space *mapping)
-+static inline bool mapping_shrinkable(const struct address_space *const mapping)
+-static inline bool zone_intersects(struct zone *zone,
++static inline bool zone_intersects(const struct zone *const zone,
+ 		unsigned long start_pfn, unsigned long nr_pages)
  {
- 	void *head;
+ 	if (zone_is_empty(zone))
+@@ -1581,12 +1581,12 @@ static inline int local_memory_node(int node_id) { return node_id; };
+ #define zone_idx(zone)		((zone) - (zone)->zone_pgdat->node_zones)
  
-@@ -267,7 +267,7 @@ static inline void mapping_clear_unevictable(struct address_space *mapping)
- 	clear_bit(AS_UNEVICTABLE, &mapping->flags);
- }
- 
--static inline bool mapping_unevictable(struct address_space *mapping)
-+static inline bool mapping_unevictable(const struct address_space *const mapping)
+ #ifdef CONFIG_ZONE_DEVICE
+-static inline bool zone_is_zone_device(struct zone *zone)
++static inline bool zone_is_zone_device(const struct zone *const zone)
  {
- 	return mapping && test_bit(AS_UNEVICTABLE, &mapping->flags);
+ 	return zone_idx(zone) == ZONE_DEVICE;
  }
-@@ -277,7 +277,7 @@ static inline void mapping_set_exiting(struct address_space *mapping)
- 	set_bit(AS_EXITING, &mapping->flags);
- }
- 
--static inline int mapping_exiting(struct address_space *mapping)
-+static inline int mapping_exiting(const struct address_space *const mapping)
+ #else
+-static inline bool zone_is_zone_device(struct zone *zone)
++static inline bool zone_is_zone_device(const struct zone *const zone)
  {
- 	return test_bit(AS_EXITING, &mapping->flags);
+ 	return false;
  }
-@@ -287,7 +287,7 @@ static inline void mapping_set_no_writeback_tags(struct address_space *mapping)
- 	set_bit(AS_NO_WRITEBACK_TAGS, &mapping->flags);
- }
- 
--static inline int mapping_use_writeback_tags(struct address_space *mapping)
-+static inline int mapping_use_writeback_tags(const struct address_space *const mapping)
- {
- 	return !test_bit(AS_NO_WRITEBACK_TAGS, &mapping->flags);
- }
-@@ -333,7 +333,7 @@ static inline void mapping_set_inaccessible(struct address_space *mapping)
- 	set_bit(AS_INACCESSIBLE, &mapping->flags);
- }
- 
--static inline bool mapping_inaccessible(struct address_space *mapping)
-+static inline bool mapping_inaccessible(const struct address_space *const mapping)
- {
- 	return test_bit(AS_INACCESSIBLE, &mapping->flags);
- }
-@@ -343,18 +343,18 @@ static inline void mapping_set_writeback_may_deadlock_on_reclaim(struct address_
- 	set_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
- 
--static inline bool mapping_writeback_may_deadlock_on_reclaim(struct address_space *mapping)
-+static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct address_space *const mapping)
- {
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
- 
--static inline gfp_t mapping_gfp_mask(struct address_space * mapping)
-+static inline gfp_t mapping_gfp_mask(const struct address_space *const mapping)
- {
- 	return mapping->gfp_mask;
- }
- 
- /* Restricts the given gfp_mask to what the mapping allows. */
--static inline gfp_t mapping_gfp_constraint(struct address_space *mapping,
-+static inline gfp_t mapping_gfp_constraint(const struct address_space *mapping,
- 		gfp_t gfp_mask)
- {
- 	return mapping_gfp_mask(mapping) & gfp_mask;
-@@ -477,13 +477,13 @@ mapping_min_folio_order(const struct address_space *mapping)
- }
- 
- static inline unsigned long
--mapping_min_folio_nrpages(struct address_space *mapping)
-+mapping_min_folio_nrpages(const struct address_space *const mapping)
- {
- 	return 1UL << mapping_min_folio_order(mapping);
- }
- 
- static inline unsigned long
--mapping_min_folio_nrbytes(struct address_space *mapping)
-+mapping_min_folio_nrbytes(const struct address_space *const mapping)
- {
- 	return mapping_min_folio_nrpages(mapping) << PAGE_SHIFT;
- }
-@@ -497,7 +497,7 @@ mapping_min_folio_nrbytes(struct address_space *mapping)
-  * new folio to the page cache and need to know what index to give it,
-  * call this function.
+@@ -1598,19 +1598,19 @@ static inline bool zone_is_zone_device(struct zone *zone)
+  * populated_zone(). If the whole zone is reserved then we can easily
+  * end up with populated_zone() && !managed_zone().
   */
--static inline pgoff_t mapping_align_index(struct address_space *mapping,
-+static inline pgoff_t mapping_align_index(const struct address_space *const mapping,
- 					  pgoff_t index)
+-static inline bool managed_zone(struct zone *zone)
++static inline bool managed_zone(const struct zone *const zone)
  {
- 	return round_down(index, mapping_min_folio_nrpages(mapping));
-@@ -507,7 +507,7 @@ static inline pgoff_t mapping_align_index(struct address_space *mapping,
-  * Large folio support currently depends on THP.  These dependencies are
-  * being worked on but are not yet fixed.
-  */
--static inline bool mapping_large_folio_support(struct address_space *mapping)
-+static inline bool mapping_large_folio_support(const struct address_space *mapping)
- {
- 	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
- 	VM_WARN_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON,
-@@ -522,7 +522,7 @@ static inline size_t mapping_max_folio_size(const struct address_space *mapping)
- 	return PAGE_SIZE << mapping_max_folio_order(mapping);
+ 	return zone_managed_pages(zone);
  }
  
--static inline int filemap_nr_thps(struct address_space *mapping)
-+static inline int filemap_nr_thps(const struct address_space *const mapping)
+ /* Returns true if a zone has memory */
+-static inline bool populated_zone(struct zone *zone)
++static inline bool populated_zone(const struct zone *const zone)
  {
- #ifdef CONFIG_READ_ONLY_THP_FOR_FS
- 	return atomic_read(&mapping->nr_thps);
-@@ -936,7 +936,7 @@ static inline struct page *grab_cache_page_nowait(struct address_space *mapping,
-  *
-  * Return: The index of the folio which follows this folio in the file.
-  */
--static inline pgoff_t folio_next_index(struct folio *folio)
-+static inline pgoff_t folio_next_index(const struct folio *const folio)
- {
- 	return folio->index + folio_nr_pages(folio);
- }
-@@ -965,7 +965,7 @@ static inline struct page *folio_file_page(struct folio *folio, pgoff_t index)
-  * e.g., shmem did not move this folio to the swap cache.
-  * Return: true or false.
-  */
--static inline bool folio_contains(struct folio *folio, pgoff_t index)
-+static inline bool folio_contains(const struct folio *const folio, pgoff_t index)
- {
- 	VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
- 	return index - folio->index < folio_nr_pages(folio);
-@@ -1042,13 +1042,13 @@ static inline loff_t page_offset(struct page *page)
- /*
-  * Get the offset in PAGE_SIZE (even for hugetlb folios).
-  */
--static inline pgoff_t folio_pgoff(struct folio *folio)
-+static inline pgoff_t folio_pgoff(const struct folio *const folio)
- {
- 	return folio->index;
+ 	return zone->present_pages;
  }
  
--static inline pgoff_t linear_page_index(struct vm_area_struct *vma,
--					unsigned long address)
-+static inline pgoff_t linear_page_index(const struct vm_area_struct *const vma,
-+					const unsigned long address)
+ #ifdef CONFIG_NUMA
+-static inline int zone_to_nid(struct zone *zone)
++static inline int zone_to_nid(const struct zone *const zone)
  {
- 	pgoff_t pgoff;
- 	pgoff = (address - vma->vm_start) >> PAGE_SHIFT;
-@@ -1468,7 +1468,7 @@ static inline unsigned int __readahead_batch(struct readahead_control *rac,
-  * readahead_pos - The byte offset into the file of this readahead request.
-  * @rac: The readahead request.
-  */
--static inline loff_t readahead_pos(struct readahead_control *rac)
-+static inline loff_t readahead_pos(const struct readahead_control *const rac)
- {
- 	return (loff_t)rac->_index * PAGE_SIZE;
+ 	return zone->node;
  }
-@@ -1477,7 +1477,7 @@ static inline loff_t readahead_pos(struct readahead_control *rac)
-  * readahead_length - The number of bytes in this readahead request.
-  * @rac: The readahead request.
-  */
--static inline size_t readahead_length(struct readahead_control *rac)
-+static inline size_t readahead_length(const struct readahead_control *const rac)
- {
- 	return rac->_nr_pages * PAGE_SIZE;
+@@ -1620,7 +1620,7 @@ static inline void zone_set_nid(struct zone *zone, int nid)
+ 	zone->node = nid;
  }
-@@ -1486,7 +1486,7 @@ static inline size_t readahead_length(struct readahead_control *rac)
-  * readahead_index - The index of the first page in this readahead request.
-  * @rac: The readahead request.
-  */
--static inline pgoff_t readahead_index(struct readahead_control *rac)
-+static inline pgoff_t readahead_index(const struct readahead_control *const rac)
+ #else
+-static inline int zone_to_nid(struct zone *zone)
++static inline int zone_to_nid(const struct zone *zone)
  {
- 	return rac->_index;
+ 	return 0;
  }
-@@ -1495,7 +1495,7 @@ static inline pgoff_t readahead_index(struct readahead_control *rac)
-  * readahead_count - The number of pages in this readahead request.
-  * @rac: The readahead request.
+@@ -1647,7 +1647,7 @@ static inline int is_highmem_idx(enum zone_type idx)
+  * @zone: pointer to struct zone variable
+  * Return: 1 for a highmem zone, 0 otherwise
   */
--static inline unsigned int readahead_count(struct readahead_control *rac)
-+static inline unsigned int readahead_count(const struct readahead_control *const rac)
+-static inline int is_highmem(struct zone *zone)
++static inline int is_highmem(const struct zone *const zone)
  {
- 	return rac->_nr_pages;
+ 	return is_highmem_idx(zone_idx(zone));
  }
-@@ -1504,12 +1504,12 @@ static inline unsigned int readahead_count(struct readahead_control *rac)
-  * readahead_batch_length - The number of bytes in the current batch.
-  * @rac: The readahead request.
-  */
--static inline size_t readahead_batch_length(struct readahead_control *rac)
-+static inline size_t readahead_batch_length(const struct readahead_control *const rac)
- {
- 	return rac->_batch_count * PAGE_SIZE;
+@@ -1713,12 +1713,12 @@ static inline struct zone *zonelist_zone(struct zoneref *zoneref)
+ 	return zoneref->zone;
  }
  
--static inline unsigned long dir_pages(struct inode *inode)
-+static inline unsigned long dir_pages(const struct inode *const inode)
+-static inline int zonelist_zone_idx(struct zoneref *zoneref)
++static inline int zonelist_zone_idx(const struct zoneref *const zoneref)
  {
- 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
- 			       PAGE_SHIFT;
-@@ -1523,8 +1523,8 @@ static inline unsigned long dir_pages(struct inode *inode)
-  * Return: the number of bytes in the folio up to EOF,
-  * or -EFAULT if the folio was truncated.
-  */
--static inline ssize_t folio_mkwrite_check_truncate(struct folio *folio,
--					      struct inode *inode)
-+static inline ssize_t folio_mkwrite_check_truncate(const struct folio *const folio,
-+						   const struct inode *const inode)
+ 	return zoneref->zone_idx;
+ }
+ 
+-static inline int zonelist_node_idx(struct zoneref *zoneref)
++static inline int zonelist_node_idx(const struct zoneref *const zoneref)
  {
- 	loff_t size = i_size_read(inode);
- 	pgoff_t index = size >> PAGE_SHIFT;
-@@ -1555,7 +1555,8 @@ static inline ssize_t folio_mkwrite_check_truncate(struct folio *folio,
-  * Return: The number of filesystem blocks covered by this folio.
-  */
- static inline
--unsigned int i_blocks_per_folio(struct inode *inode, struct folio *folio)
-+unsigned int i_blocks_per_folio(const struct inode *const inode,
-+				const struct folio *const folio)
+ 	return zone_to_nid(zoneref->zone);
+ }
+@@ -2021,7 +2021,7 @@ static inline struct page *__section_mem_map_addr(struct mem_section *section)
+ 	return (struct page *)map;
+ }
+ 
+-static inline int present_section(struct mem_section *section)
++static inline int present_section(const struct mem_section *const section)
  {
- 	return folio_size(folio) >> inode->i_blkbits;
+ 	return (section && (section->section_mem_map & SECTION_MARKED_PRESENT));
+ }
+@@ -2031,12 +2031,12 @@ static inline int present_section_nr(unsigned long nr)
+ 	return present_section(__nr_to_section(nr));
+ }
+ 
+-static inline int valid_section(struct mem_section *section)
++static inline int valid_section(const struct mem_section *const section)
+ {
+ 	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
+ }
+ 
+-static inline int early_section(struct mem_section *section)
++static inline int early_section(const struct mem_section *const section)
+ {
+ 	return (section && (section->section_mem_map & SECTION_IS_EARLY));
+ }
+@@ -2046,27 +2046,27 @@ static inline int valid_section_nr(unsigned long nr)
+ 	return valid_section(__nr_to_section(nr));
+ }
+ 
+-static inline int online_section(struct mem_section *section)
++static inline int online_section(const struct mem_section *const section)
+ {
+ 	return (section && (section->section_mem_map & SECTION_IS_ONLINE));
+ }
+ 
+ #ifdef CONFIG_ZONE_DEVICE
+-static inline int online_device_section(struct mem_section *section)
++static inline int online_device_section(const struct mem_section *const section)
+ {
+ 	unsigned long flags = SECTION_IS_ONLINE | SECTION_TAINT_ZONE_DEVICE;
+ 
+ 	return section && ((section->section_mem_map & flags) == flags);
+ }
+ #else
+-static inline int online_device_section(struct mem_section *section)
++static inline int online_device_section(const struct mem_section *const section)
+ {
+ 	return 0;
+ }
+ #endif
+ 
+ #ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
+-static inline int preinited_vmemmap_section(struct mem_section *section)
++static inline int preinited_vmemmap_section(const struct mem_section *const section)
+ {
+ 	return (section &&
+ 		(section->section_mem_map & SECTION_IS_VMEMMAP_PREINIT));
+@@ -2076,7 +2076,7 @@ void sparse_vmemmap_init_nid_early(int nid);
+ void sparse_vmemmap_init_nid_late(int nid);
+ 
+ #else
+-static inline int preinited_vmemmap_section(struct mem_section *section)
++static inline int preinited_vmemmap_section(const struct mem_section *const section)
+ {
+ 	return 0;
  }
 -- 
 2.47.2
