@@ -4,142 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F143CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:19:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64126CA1007
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:19:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 504038E0024; Mon,  1 Sep 2025 11:10:24 -0400 (EDT)
+	id 1DF1E8E0097; Mon,  1 Sep 2025 11:17:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48C1C8E0084; Mon,  1 Sep 2025 11:10:24 -0400 (EDT)
+	id 142228E0094; Mon,  1 Sep 2025 11:17:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334398E0024; Mon,  1 Sep 2025 11:10:24 -0400 (EDT)
+	id 030978E0097; Mon,  1 Sep 2025 11:17:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 17E2B8E0024
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:10:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D5F011608C8
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:10:23 +0000 (UTC)
-X-FDA: 83841017526.16.18C2793
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2304C14000E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:10:21 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CtAIwORK;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E386E8E0094
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:17:35 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9229185D53
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:17:35 +0000 (UTC)
+X-FDA: 83841035670.02.EEB1680
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6046C180003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:17:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=eQS23YSz;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf24.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739853; a=rsa-sha256;
+	cv=none;
+	b=K6Irfraa+HJJ/Ig4AzeJ3AiGZCy9G1lR7j0T3neT3LyBia4g70BcUwGutWrgSsVPa3EXPN
+	4MEuKwAEa4fmwN9SEOKf2UK5xUkRtPYIu6O+LooJY+xUpUG2uiHYPnmIXDtRH2tdm6sbHh
+	wTIq2nSyFq+9csM5ZeZ2GGI+NNuvJVo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=eQS23YSz;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf24.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756739422;
+	s=arc-20220608; t=1756739853;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qfiq0B+dTjY9T7uZZN1EGvA+QpBiXzU5iR+jbjMvbBM=;
-	b=tWnk+MrbPm3sxqhOC48eIyCjH1BuGY/jXiSLqeVV5cTJ2Dn1qbK2419l88ig06UII/xaxz
-	+H7dHQzs9eirC6UXlEENb11/34N1O5XmcgR5UPCRJKQ4JeA8ghyDt9Om/vCDG/wvJugcML
-	wD/zP3k2AXTeB/GUisBY8wK3XzYMh5g=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CtAIwORK;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739422; a=rsa-sha256;
-	cv=none;
-	b=n96eLK23rDwsG3QUf7hqTj95zJQTQCiHxo23l0BS5AvSyuPK9BqOgRCMj34yWuTgB1/dbV
-	+w+3vHs/MMUMvFyqGpgVD4DKyT6B37aDLaRH22VDFU2tmz3LhsVUrFxaHVVYHeJHmMOi7J
-	d6PYYIrRF+zWqvGLd/o+9z9j8XsiirQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756739421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qfiq0B+dTjY9T7uZZN1EGvA+QpBiXzU5iR+jbjMvbBM=;
-	b=CtAIwORKbrgLmdiJywtggQySMZOpTbhDZ47uVaFtZmO32scO089xPluQX3CZGIC7p0B3Uk
-	12bRw0RTVnWWJ1t6SAwev12P3D2pE3HWfNxTm6zbFi22DG3gvOQ5l4Ayf3oJxaFJEit2RJ
-	9dKcj+h5PxPHnP1dBC4mm5/Hb1Rv5no=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-576-C7HqVpXnPaeMVQh_fJcpwQ-1; Mon,
- 01 Sep 2025 11:10:19 -0400
-X-MC-Unique: C7HqVpXnPaeMVQh_fJcpwQ-1
-X-Mimecast-MFC-AGG-ID: C7HqVpXnPaeMVQh_fJcpwQ_1756739414
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AFFD4195608C;
-	Mon,  1 Sep 2025 15:10:13 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.22.88.45])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1094E18003FC;
-	Mon,  1 Sep 2025 15:09:58 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: David Hildenbrand <david@redhat.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	io-uring@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	kasan-dev@googlegroups.com,
-	kvm@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-arm-kernel@axis.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	netdev@vger.kernel.org,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	virtualization@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	wireguard@lists.zx2c4.com,
-	x86@kernel.org,
-	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 22/37] mm/cma: refuse handing out non-contiguous page ranges
-Date: Mon,  1 Sep 2025 17:03:43 +0200
-Message-ID: <20250901150359.867252-23-david@redhat.com>
-In-Reply-To: <20250901150359.867252-1-david@redhat.com>
-References: <20250901150359.867252-1-david@redhat.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PVsve/IFMKMWGwAEF879SRkVfMnyldOnTnxfs/L/xuQ=;
+	b=yO6EXxMfEa+QHT+ubdE7yZtN6SW1eqfMWkxZT1BM2RGvWe0XB3s7S2pPVX0b4Q48yMbrOr
+	6/hPyE2Ykn9VExqxIO28yGRk2pY+B3tVs63/sCPJgptzpxEHXSXC6BpwvJ0YIrpVPkxKKh
+	uArEF4B522wuhcoQRGC2wy5gdatFP9w=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b042cc397dcso134851966b.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 08:17:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1756739852; x=1757344652; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PVsve/IFMKMWGwAEF879SRkVfMnyldOnTnxfs/L/xuQ=;
+        b=eQS23YSzOkf/6E2z4WPPp5VFiKnKzBIHLzZH8O/+usrow3e+WvtsPH+AuJB9Uf1bP0
+         0Vt6G1V/dez2GteXipIxJzD/SnLhOvk/4XBQ9O1QJynmb/VPSnwe9wBnhmPHYJCyg75E
+         lgx4f8paByIwf1OxUa5HjFcSmKb9Y1X8IKMkXVV/EVF3YiO5uNnHT1WdhceCRlbdmRMz
+         x5eodtW4i17UYnWzJxWMumrkl3gG1Z0Wv5oMTRgDnCx1Y6+tZvDWagveuFEf7N/YUBAh
+         MAgD3X6mnJRjDC7z+kW8NZHHtz+eZiPVkkcRUrZhsTjDoDBC23vegp2vSiOwxwOEz6Js
+         hOjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756739852; x=1757344652;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PVsve/IFMKMWGwAEF879SRkVfMnyldOnTnxfs/L/xuQ=;
+        b=UgwEySDCsvPdc5XJfV1Zkg0nEMn2vRiCaOUdAxKwU850Lr2AwI7oDsWCiKwW2VobJs
+         Zd3VWKyivaAZsYWckikBISWgqNMSRYQf8aEQw7tl0LTAUkve4SvpA5YeGjJaqPojKmQz
+         +0bCQWEOeRmXr8qp2Q2adEOcv73CLxK/vKsVHfm9MaIhgTPWYb/rLlWnbMuueyGGsYDx
+         7bZijkdfDp0kLI6BZHJaXXbSmm7wabmMDxhKLZGODRC0qJoQTpORaooSWO0L7Die7EdT
+         +CGWX6owEUG914TGKimVmFccTlL+Bqcg+zhjE9UQzroaM//pHpRakLaSFZFzMBhMqmUL
+         Fwuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXdQKxzCa14siUWDL3MT0fxWQERE1E1w3L1Zx1dMx1K5qFawTBpqFXy/ix69Oct17fFtgK+VD3+fA==@kvack.org
+X-Gm-Message-State: AOJu0Yw1DyTgI9zJvZcxAoI87Cw12/4JBKC5NkULommW2BgmMGDL6G5g
+	YHgeU3wq1w0gasDMlSE6a8Z+o3aq1lsBdChljdVrYNIKT2bXm/dFZ1BraFayTX2yql6BmVwB2L5
+	j7NUn8BNfWU7sLcCBli9+X+fT8HiWeY+1rT08aqBPjw==
+X-Gm-Gg: ASbGncuD0v4wb2+GwTeVxrWtWhQdJm+vAW8ZHKOGfQ/Fj1XAqyAVD3JosPUOkfOWkZ7
+	eJKY413/B7l3XjZqc2XeZcZhuaTKPanFfTa+A9soR3oFHakzZOl0rHDfDhB9wbUYvV/L0KpvWYq
+	WnjGLN8ZyCaHm3U/XZkNS4D8xyfA+7E5cjjK2kIk6nmoZO9GeFD+NWzqyHqSZO3+/J48/tl1fiE
+	BNnmsBAsRtap7wB8OTSVlZxTz2rupoc9NM=
+X-Google-Smtp-Source: AGHT+IG/xTCJ9bj+alHxnm8uZcbqfurR+IyDtwLk2ZtZW9b4+JSGWCUUEu7vdYbFqHJ+Zaxrj6LPdykdWiyzaO+0sH8=
+X-Received: by 2002:a17:907:d8d:b0:afe:5c9d:c7f1 with SMTP id
+ a640c23a62f3a-b01d8a8b328mr935024266b.10.1756739851758; Mon, 01 Sep 2025
+ 08:17:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2304C14000E
-X-Stat-Signature: 36bxf4dqn7mb8j8pxm4oqameejpf1wfm
+References: <20250901123028.3383461-1-max.kellermann@ionos.com>
+ <20250901123028.3383461-12-max.kellermann@ionos.com> <081a7335-ec84-4e26-9ea2-251e3fc42277@redhat.com>
+In-Reply-To: <081a7335-ec84-4e26-9ea2-251e3fc42277@redhat.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Mon, 1 Sep 2025 17:17:20 +0200
+X-Gm-Features: Ac12FXzbdsR-8kES_4on1Dew__ksXVksfxEkYJjm0-lwqH8RlE2IsInEJr70z8I
+Message-ID: <CAKPOu+8xJJ91pOymWxJ0W3wum_mHPkn_nR7BegzmrjFwEMLrGg@mail.gmail.com>
+Subject: Re: [PATCH v5 11/12] mm: constify assert/test functions in mm.h
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com, 
+	willy@infradead.org, hughd@google.com, mhocko@suse.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	vishal.moola@gmail.com, linux@armlinux.org.uk, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, agordeev@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, davem@davemloft.net, 
+	andreas@gaisler.com, dave.hansen@linux.intel.com, luto@kernel.org, 
+	peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, weixugc@google.com, 
+	baolin.wang@linux.alibaba.com, rientjes@google.com, shakeel.butt@linux.dev, 
+	thuth@redhat.com, broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com, 
+	mpe@ellerman.id.au, nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org, 
+	linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756739421-196001
-X-HE-Meta: U2FsdGVkX1/bVZN3A9XHg/iuFXMTPgKS54HP46nCcRTeeCXlTkIvF6b8CKclhszvH3Ql3QIokx4ltSLvG+Uy617CBywqYmZ2dIkXt4uALBHAAs/0ZDM9on/TfyrP+A7twVvSK/y8syRFLLIa+d6kMpxLbi0ObU7VJL428wfhr2EHqJ4JxoGfhK6Wmdtp4LeDvO6GJDC0og6EBgb3uPDRuGxTCygwbeg3oDD3dioGoYonuZNL/N19ihqB6Hgoc2aNZyWvsWIHnfXvNzsqplPweI1aY9mjVPMOW5CyqLe400ub9VLXEI0hDae5GaJiLZJ0Qz5MBG87H16pigewlI07j2uF0bGbuM6pOR1TYKX3PE2gtMBzCaPXhtkHfwHJqFnQ0R4Ft3IOIFO5Jyhp8XQuFLdqeOkB7TQZf/c/lbX9oCYRDf33LXK08MGdlkctQooSiaaigudvBkVpgW/cu25OSbVacT5W4XnK7J+FjajBjgMlfau3Lj9SXdTVYhOnaQdCM7jg5kFCc2J05pr4yLMv3B65LxG6US3LhGFZVrDn8Hm2nqCVLlDU0rn64Ay7Ds8xNi05zlhQY9oFVCvwN/mSk6FXSt5wZt3I3NdMo1gAE56modBr7Mx7mLauYdDN5LpBFExzlWlkwFOgY4yNwKEfpv78BEgUBpj9x6mWZ4QZP4BWERiWeSRDD8BFjzInfVegN39mvlZgXlkU9wfrsoRUTHcxArZ3sBR43zfY9kggJUjBbuj1OpiKG7odd8UeQ1n04f0zfKfDwVsAnFyMFjQYcOxjuha9YGDF/awO3LagRpTdf/cSm+qKsOcWJ3lpadLbU4O7rqlJX/JlQ+9KGt2MOISNqgIDo5ZUfnjHxe9QBZ4SWoLsOaU0UrecajPx9AYtFpILzw29Hrg/ygfNBHfmSVXFmRN32rpOt6o8rP9oaYaCwWAwFpQ5D1lz6F/sH9vOP+pogZPeijeXgQ+4y/G
- 5EoDk+HU
- zL4D3CLktZhSnvej5LpsTnN//lNkUOUMRePFZYPbVMK9kXS4BJfl6FeXIby2VZN/zR3UIxYz35/pqxEz7NGJ940yI8qHEvbM0+sV/jLMhT+La8s0cFnKFRK3k/wZ4ymgyg7gpcQ4VzTXsG0UBUWx9egZqVhLap+/kiqFoZ1uKmkaLVAghDyTU/JojbC2bx5enQxnsp7acgKT/5loF6p8iWbNncflZSOehpqehnaGk3BlLT273oCvbYv2/hiwfgt/qXz4vKZ9LpOz+2mihtxOOb/tfBNYgK2Vka1nPFV55kdt3hw3dWNlsTbqI4R080DtdeztYUZOdZlzVI7nvtK7H5nW+zLXn0oFThA3zS5g2cRiGQ4prSd69a8Gy1Q==
+X-Rspamd-Queue-Id: 6046C180003
+X-Stat-Signature: zfcr6i7hfmxgmrqpsorzo6brp1j7jpdr
+X-HE-Tag: 1756739853-667765
+X-HE-Meta: U2FsdGVkX1+q3f/nAl5piB8HcJkXB3I5WP+YSVtXh4KXSxUheMNvpj6rE+CrGgMQXSoVZZ1yFECAbeffux3iP7D40Q9Rogji177BIAsKZ8Otfpnn7/jeYi7b6CLCdSpkQ15CFw0Mo6QofA8UcXuANC1k8Y6502pSPbPmRjBzioH3N/XMnzIs1MOdlht88vxqol7WBpBe9AyMk2eUxgSTlEbbdH44iDncbYflb9dF8IDQhxO6nb1y14aXkWcrralzZIZU5p4H4goHz/40RscRQFM8tk0CnwTqq1+3ecr2AfQw0rZHCv3TYeFsEL21rPLuzyuWq/s3NmLDKgfw9Z4Gc6SL0Nf1cy/eJ5CnvV613qZNGNF6TXIF9qgjDbpISCJp1NJldHcYQLeVK9LPvXs2P6vD0qnXneLkgNUvipRuA0+3MWL+KZcOx7WX1JkdQ1MLwaIus88kioUS+j4zihaqHkZ9Pi9yHAPEpfwyJRgevCsgsxHGZu+feUe4TE7YwHpKiI+ylYFp7Q8a8Fy4z1CFj3khE92yyxIAUbUoyCwQPhuMt6JqJukQnaVIumF9m+gDbvqKmg1DLJa0indsCvnHdDuWHJ0O7Ze05BRf0nCVUtgu71KwvtZ2ZM/F3zDU+f+WKKHgvy+4La8UZXIJE3BSUrxlYCEIEdbEojYOM7VzFyLHATgF105T5CnmUdS2dpTR/Tje27S2n1+sdv9lAYQ3C0lnK8z1XTME0puqFw5J2z5RFu2FAKPMmFJ/3K3t4CeLt/eonMO3r971LC+vtNifFgaE5r6iP1BrFjtWjbToVJ01sDaEG2xTEsC2DdPqGD0XEw5jvqMBcqnvkiqxsSNYhhrqb/zQHlr/znZ3IaXMaPVHSX19jyawbQh0BgN/R3vuwmFFaATrIuXqVfugiBKdMytM5JtaLrh7/TlS5WFJFSyYve0xgnWSKMGJfUwzYJ3R/3mUN+uYWEZsYf5lvyg
+ 1hugENZn
+ xqCROApAsEJ6vH2ss2kbj0EGc9MkLqvwTVgGN0I5YmHJURXGmp+4FgPkKxPyMRN7WbH1sJg9PWQXLxQqGHDZwjfgtIwH8A3HoMoAvEOjcjitNUld3Li3yWvtGRbzplnoIaoUbPVKRP99z2Z5h9QyeOVJufIHoU90M9qvIJGwSnSPH6kgaSZT30kix40NLlR5OwE0HoCdreygEn6V45OHd5pP+5UNd7fQ6FwJ5FdRHJcudG46fJgT4erLsrfwP9bwbMwh9J5qfmL66FZgm9JR7mcUKHHg0YrCD/kMqCdAXBhI6oYuoIYpGm8wNsfDv+NEj+39R
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,185 +132,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's disallow handing out PFN ranges with non-contiguous pages, so we
-can remove the nth-page usage in __cma_alloc(), and so any callers don't
-have to worry about that either when wanting to blindly iterate pages.
+On Mon, Sep 1, 2025 at 4:07=E2=80=AFPM David Hildenbrand <david@redhat.com>=
+ wrote:
+> > -static inline void assert_fault_locked(struct vm_fault *vmf)
+> > +static inline void assert_fault_locked(const struct vm_fault *vmf)
+> >   {
+>
+> This confused me a bit: in the upper variant it's "*const" and here it's
+> "const *".
 
-This is really only a problem in configs with SPARSEMEM but without
-SPARSEMEM_VMEMMAP, and only when we would cross memory sections in some
-cases.
+That was indeed a mistake. Both should be "const*const".
 
-Will this cause harm? Probably not, because it's mostly 32bit that does
-not support SPARSEMEM_VMEMMAP. If this ever becomes a problem we could
-look into allocating the memmap for the memory sections spanned by a
-single CMA region in one go from memblock.
+> There are multiple such cases here, which might imply that it is not
+> "relatively trivial to const-ify them". :)
 
-Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- include/linux/mm.h |  6 ++++++
- mm/cma.c           | 39 ++++++++++++++++++++++++---------------
- mm/util.c          | 35 +++++++++++++++++++++++++++++++++++
- 3 files changed, 65 insertions(+), 15 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index f6880e3225c5c..2ca1eb2db63ec 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -209,9 +209,15 @@ extern unsigned long sysctl_user_reserve_kbytes;
- extern unsigned long sysctl_admin_reserve_kbytes;
- 
- #if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-+bool page_range_contiguous(const struct page *page, unsigned long nr_pages);
- #define nth_page(page,n) pfn_to_page(page_to_pfn((page)) + (n))
- #else
- #define nth_page(page,n) ((page) + (n))
-+static inline bool page_range_contiguous(const struct page *page,
-+		unsigned long nr_pages)
-+{
-+	return true;
-+}
- #endif
- 
- /* to align the pointer to the (next) page boundary */
-diff --git a/mm/cma.c b/mm/cma.c
-index e56ec64d0567e..813e6dc7b0954 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -780,10 +780,8 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
- 				unsigned long count, unsigned int align,
- 				struct page **pagep, gfp_t gfp)
- {
--	unsigned long mask, offset;
--	unsigned long pfn = -1;
--	unsigned long start = 0;
- 	unsigned long bitmap_maxno, bitmap_no, bitmap_count;
-+	unsigned long start, pfn, mask, offset;
- 	int ret = -EBUSY;
- 	struct page *page = NULL;
- 
-@@ -795,7 +793,7 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
- 	if (bitmap_count > bitmap_maxno)
- 		goto out;
- 
--	for (;;) {
-+	for (start = 0; ; start = bitmap_no + mask + 1) {
- 		spin_lock_irq(&cma->lock);
- 		/*
- 		 * If the request is larger than the available number
-@@ -812,6 +810,22 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
- 			spin_unlock_irq(&cma->lock);
- 			break;
- 		}
-+
-+		pfn = cmr->base_pfn + (bitmap_no << cma->order_per_bit);
-+		page = pfn_to_page(pfn);
-+
-+		/*
-+		 * Do not hand out page ranges that are not contiguous, so
-+		 * callers can just iterate the pages without having to worry
-+		 * about these corner cases.
-+		 */
-+		if (!page_range_contiguous(page, count)) {
-+			spin_unlock_irq(&cma->lock);
-+			pr_warn_ratelimited("%s: %s: skipping incompatible area [0x%lx-0x%lx]",
-+					    __func__, cma->name, pfn, pfn + count - 1);
-+			continue;
-+		}
-+
- 		bitmap_set(cmr->bitmap, bitmap_no, bitmap_count);
- 		cma->available_count -= count;
- 		/*
-@@ -821,29 +835,24 @@ static int cma_range_alloc(struct cma *cma, struct cma_memrange *cmr,
- 		 */
- 		spin_unlock_irq(&cma->lock);
- 
--		pfn = cmr->base_pfn + (bitmap_no << cma->order_per_bit);
- 		mutex_lock(&cma->alloc_mutex);
- 		ret = alloc_contig_range(pfn, pfn + count, ACR_FLAGS_CMA, gfp);
- 		mutex_unlock(&cma->alloc_mutex);
--		if (ret == 0) {
--			page = pfn_to_page(pfn);
-+		if (!ret)
- 			break;
--		}
- 
- 		cma_clear_bitmap(cma, cmr, pfn, count);
- 		if (ret != -EBUSY)
- 			break;
- 
- 		pr_debug("%s(): memory range at pfn 0x%lx %p is busy, retrying\n",
--			 __func__, pfn, pfn_to_page(pfn));
-+			 __func__, pfn, page);
- 
--		trace_cma_alloc_busy_retry(cma->name, pfn, pfn_to_page(pfn),
--					   count, align);
--		/* try again with a bit different memory target */
--		start = bitmap_no + mask + 1;
-+		trace_cma_alloc_busy_retry(cma->name, pfn, page, count, align);
- 	}
- out:
--	*pagep = page;
-+	if (!ret)
-+		*pagep = page;
- 	return ret;
- }
- 
-@@ -882,7 +891,7 @@ static struct page *__cma_alloc(struct cma *cma, unsigned long count,
- 	 */
- 	if (page) {
- 		for (i = 0; i < count; i++)
--			page_kasan_tag_reset(nth_page(page, i));
-+			page_kasan_tag_reset(page + i);
- 	}
- 
- 	if (ret && !(gfp & __GFP_NOWARN)) {
-diff --git a/mm/util.c b/mm/util.c
-index d235b74f7aff7..fbdb73aaf35fe 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1280,4 +1280,39 @@ unsigned int folio_pte_batch(struct folio *folio, pte_t *ptep, pte_t pte,
- {
- 	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr, 0);
- }
-+
-+#if defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-+/**
-+ * page_range_contiguous - test whether the page range is contiguous
-+ * @page: the start of the page range.
-+ * @nr_pages: the number of pages in the range.
-+ *
-+ * Test whether the page range is contiguous, such that they can be iterated
-+ * naively, corresponding to iterating a contiguous PFN range.
-+ *
-+ * This function should primarily only be used for debug checks, or when
-+ * working with page ranges that are not naturally contiguous (e.g., pages
-+ * within a folio are).
-+ *
-+ * Returns true if contiguous, otherwise false.
-+ */
-+bool page_range_contiguous(const struct page *page, unsigned long nr_pages)
-+{
-+	const unsigned long start_pfn = page_to_pfn(page);
-+	const unsigned long end_pfn = start_pfn + nr_pages;
-+	unsigned long pfn;
-+
-+	/*
-+	 * The memmap is allocated per memory section, so no need to check
-+	 * within the first section. However, we need to check each other
-+	 * spanned memory section once, making sure the first page in a
-+	 * section could similarly be reached by just iterating pages.
-+	 */
-+	for (pfn = ALIGN(start_pfn, PAGES_PER_SECTION);
-+	     pfn < end_pfn; pfn += PAGES_PER_SECTION)
-+		if (unlikely(page + (pfn - start_pfn) != pfn_to_page(pfn)))
-+			return false;
-+	return true;
-+}
-+#endif
- #endif /* CONFIG_MMU */
--- 
-2.50.1
-
+I double-checked this patch and couldn't find any other such mistake.
+Or do you mean the function vs prototype thing on parameter values?
 
