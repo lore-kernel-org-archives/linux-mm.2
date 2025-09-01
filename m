@@ -4,112 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92BADCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:50:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A4CCA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:52:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDB5D8E0010; Mon,  1 Sep 2025 03:50:36 -0400 (EDT)
+	id F07488E000F; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8C538E0003; Mon,  1 Sep 2025 03:50:36 -0400 (EDT)
+	id EDE248E0003; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1AB8E0010; Mon,  1 Sep 2025 03:50:36 -0400 (EDT)
+	id DCD3C8E000F; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C51088E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:50:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5D56D1406F3
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:50:36 +0000 (UTC)
-X-FDA: 83839909272.02.59B1FF5
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 851D240009
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:50:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=I4SnWZTX;
-	spf=pass (imf27.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C9E558E0003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 73F7A5AF00
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:52:26 +0000 (UTC)
+X-FDA: 83839913892.17.7678574
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 165E22000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:52:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d2neTr1z;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756713034;
+	s=arc-20220608; t=1756713144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CkNip8h6TggKbPC4j1tIEtRIjWnEKoxCcwgwzmMlJgs=;
-	b=jqEMO8Es5EwWPh7yRZCK8v+jSZt5i5n/CTpTjyglTFrwI1oLyCHo34GoCLEdzo2Fcu/xFF
-	GoiF4dEtd+DNtbdZO5sJGvET5z0TqTctAoDt7+8t+Ir01t1//hlmzu1om0xAWFw+/8vIVm
-	HISLdLND2yQshDCdymxnNsvqpOSk0UE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756713034; a=rsa-sha256;
-	cv=none;
-	b=xJVOhXD/bkzlNcDvPvkz0dnP4GN3Q9CumEJXWJs2FmY1EUl6LMmcyKL6aZeyMcxSTvQLy7
-	UsEfasj341SfMpHdKYkhbyLwlW7QrJM0Ow/Zej6+lB3JLtRKpCPjlGX4r4kwRtd/edkwWO
-	1h7u1m8DAAOQtfZIyVNoLSDfT4znI1E=
+	bh=HllG5yxgEuvgobHZe1WNgsnnNNSMr0+x2czShD/v46g=;
+	b=4hPf89jb7MYap0/5dDulshfpasBiBXLQ1cwJ8Enyl1mY39LheZV8nkHIVMjj4lvuh0AlOu
+	lsedX+AQWx3fVPNZNaRrBtdCkvpjS34dZmedY/MGQq1kOu1CiVriDv+CEj9U4QektG8eqz
+	yRTFEU7Ns7A4tjFjTdJ2qTivVmIYlQ8=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=I4SnWZTX;
-	spf=pass (imf27.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24936b6f321so228335ad.1
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 00:50:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756713033; x=1757317833; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CkNip8h6TggKbPC4j1tIEtRIjWnEKoxCcwgwzmMlJgs=;
-        b=I4SnWZTX+SLHi2hysJ0K3duAGvU3sA69HougMEbQL1gwVhSzX+bLmJCg89qLsL6tan
-         doKzrR/lz/8LbFAudCw27Yw+7T8OGoh8f7dFcjqMBcV0s8fpNCjNPpoCmeR7v68Bv6g0
-         ytourEYbaDvjACCQ0xDryRQFr6Jab+zp3WEiq9jdYbh52MPi3NYXFZ/tcSIAMzGspnmd
-         pno772AYj/dYJ7gciN+Vz/eMJsCDW1hoPREhbzvpMTuEXnRqOFrOp24ILYYVVh1aa+5u
-         aL7blazeVPrczAdzHSh6NQcaR5yCJnH4de0cEI5XynLCbNEsljnhl6bajjPXx4NqRRNb
-         jMwg==
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d2neTr1z;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756713144; a=rsa-sha256;
+	cv=none;
+	b=CKRTyWmk/PEIJulN5FgMXAI+76vvpBWbIrtyzzZXymTEa/6Hs1xd0aqqzyAhMmKuqiZfVU
+	7T7fIGbb+USEtAYy4nsp/5lKqk9OHATB/UM2d0A6DjvG4jK71fDGK0V/VY8ZSVJ/zLenlL
+	7PYPsL88tc/GWEpppjAMmV8EB/lGsuA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756713143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HllG5yxgEuvgobHZe1WNgsnnNNSMr0+x2czShD/v46g=;
+	b=d2neTr1z+lW0Qw0mpjusjwmEJ9Xzkm0mPaGe+TaAhCkVtSnvohJ9Thi+rtbXYT0XRCV8Ej
+	NcL5R2llg+4LOkVEkO4HB1nbSgvPIxhC9Ge217sf9kMtLCu0YYkPa/eaLUzlAOAPETtLtq
+	XXm/3xXY61FkXRRwsWAJboi86022sck=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-usDMeNGjNqieiy-t66hD-Q-1; Mon, 01 Sep 2025 03:52:22 -0400
+X-MC-Unique: usDMeNGjNqieiy-t66hD-Q-1
+X-Mimecast-MFC-AGG-ID: usDMeNGjNqieiy-t66hD-Q_1756713141
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ce059e3d42so2358703f8f.2
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 00:52:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756713033; x=1757317833;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CkNip8h6TggKbPC4j1tIEtRIjWnEKoxCcwgwzmMlJgs=;
-        b=g13FATRSKJUj7j7Kvvl4GNeLGHmlax4v7TwRdNQIf7RuG0Dq5frxHK6rabOTcpclRG
-         NaQRr5l6+VZmp1i1NQesD/0n3NX3WI3ziq+CdBvt52jcap4p3ekqGr9GedpfYTYpdNlD
-         JWRWWCWjyWNQDGNCPFmnmADhkYrVkvRlyn6i1qniF3Jso2lWzK+rEJh70Bg2waVmMY22
-         eaWmD8a92Hxg6GeB+myhLTfXU9P02NIu7cK3tQBLv4re+ziT+2ainGMUllFVaJmFSDEQ
-         WJXe7Ja5owv1+HcJYgXtLNsHmlnl0jdpnM0cwwoW2MLwTPUsk5PClI9dScKI4hesi3oF
-         QoVA==
-X-Forwarded-Encrypted: i=1; AJvYcCUAS9acfibpDMlbP7+0fEyHKpUlcm4FmEuPOPR/WVrhkMVGZRBH7e3ShCGyVhDSH7SgOkQ95kmYhQ==@kvack.org
-X-Gm-Message-State: AOJu0YxitnIJIxXOqr/VoUrL4QR+NHqy6TL/fyFqzXQscOKPpM65KFNM
-	3ZP/DO+rqPWefap6ZpZvuD9Bx/4O890noBUFlEOaMvXEL381ys2RwQ4ARCgKPsOIKw==
-X-Gm-Gg: ASbGncugLrfmcwH+uF4nhkdsqlFJegV7jdXPGAlqUKZ2bafITIi08pfOWKYF2kDDeJz
-	H9HX/uTSxFNCEfDXXcZJTQEbMziNRBl5kxXst5K6FGQvVQGI7xhjJsWLSngVdE8aVz5ZtkDfHzP
-	veX/8vk97tfaPTjDf/3WDQtFdB7k2UKab8UJYjwcCgnOJd7A/L4YFegzyKMxc6m1pm2G+wh/A6l
-	Um+dCOjhpJ5rGenxcpd5f49IolLfxorr8k8zghZVWtwj5Q2nSr0c9e/JeYSZdpRerVJIzEAihn9
-	PiYMYCpYTO33PyM0+MdnbkHPr/OPAgYUU8zstZG3xAbjcUiYge8d6pZnQIM73qq6dAGsZcPbqc9
-	tqHhxQGXCf3+Ofh4T8uAK9eKPIvB5zqogoyLT54M/iyFL5KQaT0R59cTzLAf26xl4bjbavR4oRf
-	ZcWw1zfhAgqCmFd0tSK2+OcXgLF1OJSV/RlBz3BTE5Pv03kTxBAT3m
-X-Google-Smtp-Source: AGHT+IGn9QHXHHFTCaWm9H+w1dJZ0iGEeksBYBpp44VGJjpcufhxypiFwN2ftuqbOtcBBJEaj/QBwg==
-X-Received: by 2002:a17:902:ce84:b0:248:f76d:2c67 with SMTP id d9443c01a7336-2493e7b9d86mr4983845ad.4.1756713032826;
-        Mon, 01 Sep 2025 00:50:32 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:cfcf:e85f:553:d0bf] ([2a00:79e0:2eb0:8:cfcf:e85f:553:d0bf])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276fcf0567sm15934209a91.27.2025.09.01.00.50.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 00:50:31 -0700 (PDT)
-Date: Mon, 1 Sep 2025 00:50:29 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: yangshiguang1011@163.com
-cc: harry.yoo@oracle.com, vbabka@suse.cz, akpm@linux-foundation.org, 
-    cl@gentwo.org, roman.gushchin@linux.dev, glittao@gmail.com, 
-    linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-    yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v4] mm: slub: avoid wake up kswapd in set_track_prepare
-In-Reply-To: <20250830020946.1767573-1-yangshiguang1011@163.com>
-Message-ID: <c8f6933e-f733-4f86-c09d-8028ad862f33@google.com>
-References: <20250830020946.1767573-1-yangshiguang1011@163.com>
+        d=1e100.net; s=20230601; t=1756713141; x=1757317941;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HllG5yxgEuvgobHZe1WNgsnnNNSMr0+x2czShD/v46g=;
+        b=Qnd4hnqRvvJiRZhLwJwnzE50JbJAyiYB0MJkQvvccju3Of+cYQ9vTKOYPnOR1nIrXg
+         kXgNNYC4aeFGYvqa4wsfZ00Hx7rYy7HqRqJxzuW6sd3EAq8Ne7jp1cQdWYhlp6ZF2ZNm
+         H8gqNFhVfLTQ4dCieooFezYboEVL2j5gg0uC6W/jIe3bR6mOL8zyE1gWfcBRzy8ezkQ5
+         GR9vaLE4n87/+jVj0KMf3UKHhNr1hH1b2xy/zQwN1GB0b18qAII+wKIfo5NvwW93orol
+         CUm7vA95BvNS+Z4+jNQPBHNQYgPmnZZlVGxvzWB00WZS/177CPy8be2RmD9uYkSlOAht
+         bvHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmpGCGWWSDL33TXdgIl7ZZrFSuG9wEWGsFHZmcPVcZ1PdYSQesRoh31cgb+aXp8wKf1tYN1uYAYg==@kvack.org
+X-Gm-Message-State: AOJu0YwXyF37uE58qKcNbT/6ZL42f+Iawu8VVGB0+KOOVZ/e/RaU6eoC
+	xfCCSZZTDvkYhIPlLmZmyn7P+GYbb3Rk1xB0RXxc/7sNZnCNZsZptlCI+VhN6+0uVIQZZAtDdsp
+	IIRhBk2S1c3wCz/ZlAf0pYQvwISRusgvADUvTY9IZ2H+BUT7tQQXo
+X-Gm-Gg: ASbGncuKg8Xh0MiJ3rbnyfOeSlcDljGetx8r0599z0aKxiPZq/k1QJdKvctY5n8kTRj
+	R8x3awc+XmH+yRz4GhrGYXURHwME/1/1OYbXm1/sYWhhVN7Y3jVHWxb8M9EyH5kd0d/m5mACN4Z
+	wpgQAhDJptqUS/hQgrZ4uwaDxjQYt35pU0sD0XckVD4zdcCcYkrEJUW7zJUowh9gOkY8cWN4cyj
+	lsuN0vn/EB01fLJiHFOMsica87b8qErsKM4yvR1XDSQeJSlCDSnCPisMY3yGjN5PWav2gjHyZqX
+	ZrT99sv6Dc8yG4KTX+sVd8jcBTdaV1cTtyRZPWxOnp9fF9oxcdFO+dg2VWyMNsljjocFmcNnU+l
+	q7HQIBf5XH+5PDUEKFtNPBVHjgR/7EUbCs2TnY0qJ4RIY1/22wQcU9WP51yAhiePepE0=
+X-Received: by 2002:a05:6000:22c8:b0:3d4:d572:b8ea with SMTP id ffacd0b85a97d-3d4d582029dmr3197731f8f.34.1756713140936;
+        Mon, 01 Sep 2025 00:52:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkxrzk0lP+lzTzium88rZISj1JP6wQQDJHhaGn2DR4npJJgvliAA7HY6y8ULZXDuQ1rwzhPw==
+X-Received: by 2002:a05:6000:22c8:b0:3d4:d572:b8ea with SMTP id ffacd0b85a97d-3d4d582029dmr3197620f8f.34.1756713139105;
+        Mon, 01 Sep 2025 00:52:19 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d0a1f807f9sm13185017f8f.38.2025.09.01.00.52.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 00:52:18 -0700 (PDT)
+Message-ID: <92def216-ca9c-402d-8643-226592ca1a85@redhat.com>
+Date: Mon, 1 Sep 2025 09:52:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] mm: fix folio_expected_ref_count() when PG_private_2
+To: Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
+ Shivank Garg <shivankg@amd.com>, Christoph Hellwig <hch@infradead.org>,
+ Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>,
+ Peter Xu <peterx@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Alexander Krabler <Alexander.Krabler@kuka.com>, Ge Yang
+ <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
+ Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+ <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
+ <aLTcsPd4SUAAy5Xb@casper.infradead.org>
+ <52da6c6a-e568-38bd-775b-eff74f87215b@google.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <52da6c6a-e568-38bd-775b-eff74f87215b@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: FnrDPLYEag1fLSjmWlfwgAYCFxg3P0UZjfDO4EyOkOo_1756713141
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 165E22000B
+X-Stat-Signature: 6n9rusictwts5pdfijbr7r6mjj7qi3wq
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 851D240009
-X-Stat-Signature: gdp78nopneb7nzacz4xbjfdjdjd34eeb
-X-HE-Tag: 1756713034-865520
-X-HE-Meta: U2FsdGVkX1/5ZisXvLM26i2OvGOpZHgXs5O9PArp5T2uUZrLrcqLv6DAZ5rzckYibRvOeZxF5LX480wQ9MEmGVOnsfMT7c8WHiir3KinscrcRixyjteeiE1lXNx4g0pk4FhqF7XW5cYajEx284HxOx48huemr8lQPJNU3mP+onoTpBkQoEUIhTzK1Mjs/SyDTA040MCAHoyJwqxcXicYrig1i3eeWfBqz+BibpT4mRQol8ssURdgDW3Mn4iDcOjV6n8Iht8BSvwNLwPYySmGrqS2KcQXtEAR7FQdJS26pjXyh9xonepk7yZFBvm2ZOcoQKxF5qL0eNjvSSnbjqy8X9RWNyU1kSmzB/bbJs+1vtCaj65PIBur6+NoD04oUi0ZzCHFfFBkLxKrBWRPTedrf5aXxabZdJPHdQEy1tHUoORHv3dTvhHLMDqY30MGdc84wacg8JFDnErHLiRNg5Zifjo2be+QqKpnUYbTMA3p+ntoomzrVOdJLZ+8lEP7T/8EqTgO1kjF/fMn/tGHWY2Y4AuInvIosDmVatSjpIeH5KuOcGG4d39umy6IeQ1G+TeCTkO0y1A8IUFnS6C2YsRl0Rf7ZRRaXyBD0X0mPXT6UY+Q4Mrq1eqvRJXv/SypjW+Kq7YgHj56zoXBcybtG3wDItG2AjvEn/B8DUMCCK9ji0Go44zyDr/REOCOOgWk8EdyPD8jXSF+5mxYuk8SfdhXtbPjeJE+9WMkWl47xBwUUTCsPbyslqammNpQ9Wy/UwmVyZWIzDt32vsjLnMDDmsADMCFM3zIp1MuUyva8PBzQ5GuY4uoIzQjNX9rY07/xH6dr2dV8UbP/V5ZYvUgm2oPaxnzGpwri9ygM44P0eALBb5bWlRQgguQOJEvRImKMydLDG7IsqbipXWCoDxc+NxsAbILd7BWJo70k7VG8CQWn7OQkZLd2lJJX/ltWUKL16l+WJ1J/bXbO/mI3NWhS8w
- aLHGdIAo
- +CLQyevq1wadomXjX7mxfA0wzcFXqlFAbjsGg2mXxstodhCMBl5PTjtzbnZY1iEl+d32ZuKevZ+BYXyr/7oJXJ2Ud9meJnJ6G9EG7Qz2Pr29p52OH/4g0Z02p9pnJ8TnFd8ryZUxXXk6CU/Y4MJHBfXLuGP1CHI6u1J9UChb+Nyhr/UIJkvDDusokEKke/KBYpYVJ7pu9KWOC7M10xWz/zZPDIRwMlvW31e/mlBdH5W0s+JEdWAeIMd/ok0NTzviIyJS7+li8VntKXBb9UIs0NucdMH039iObqx20ePMKOBw1Ox4e5iZ+x1MmXsmXvy59smgO2PpyOKE4dqy3HhdaWd0HPZDaZvkSob8q2a+g8XpuZ7pD/zzqp2WIbtY5movYtcyB5QR5vnADOngf/eKRCqPd3d3XUtWkwHXU6Ov/J9nRNj7iPEBdRs6SwCUaTz8Q6CxatsrGgy1C9Nx40qEmUi3q/nkFOedYrw3wbfA2yaCnnGMWb14p0At5yJyoGnXSgewrRNUrBf+OmlY=
+X-HE-Tag: 1756713143-779828
+X-HE-Meta: U2FsdGVkX1+Hme0OR4umC5iVxgaveiI/4o8F4d0NTlHkrl2zPFMt5rzvYvggIS0PhFXWEQcp05LaRzVkUQU3x+ZWo+c33xvUc/dzvaLvLPbldeFOEwiEdSy5rvNIJ54BB3BEYyDGVSbqYRD/hXIuXAk5zlPni92yJw2hbXPR1w/7kxfuLPDLEJ5iiru/wygUrJx7KI75ca6srBgzAs4zslteawXSM2+W4Wwa88M26z4Yp2E1/iO6w2VNq02RcLKrPrzC66WpGX7Dzcup0z8rjy8KMscZCN4WjzzJHjR8cG/wsvJOHxQ2O7izAaNGjJQIAe0DHHVFa0WoEhGeIMIBTUn8iLsdfTuyPKw2p0VBvmUuqfvJ5bWOzra6KtYK7uRSgHiLXpYWi7ePuaUnrAwBTVJshDo7zr7DEurdnG4/ZhMP2bf738B5q0K+S7UtNUCPklDWqcdrGCuxrgnW3PwtjYUm6fxWXLgiPDaTRb+fStgsTV8Cut66Gszoh/N7YnYLjYVkc8+zhIudMuonCJUpsJ9kMW2YAhABk/omf+kiD+ZR+66NBdOeFXsYFf0Bxuyw4flWclJovcHsM9+WV02yCpMTWX1gZkEF44mcCD1HJ7usK3C7iJspql5etDof5OMjeXhE6Kn8bkSN7YcKqSCXndkC4CPnb/BuFzm9bhADpPP7pVgx17L0qGcZUCzZD+0JQnSEb33E/rbsfAdMwzAq7f7HOqsO/c7QGxU5Lmc7sNJOcERQ6is6zuKeduO1r9fzr2QgGGAjhHCBNyIv/Mu3BKqj5p0MqJ9z//NjfFZTwn3rnnPVTuNBYUu8JwEyBvn5IROBZlgCjbFDHZwmJPqltodewhpLj/0N91i2L5lZsSGjcPE6RCnjNx86ohcVoVWJ6kHgnPP+KUwE8nkvOnSSii5JFPrtUuTtJDkoozvD3Hq2Wc6fFOf82xoLcsWVNz9Y/LyZjqdxkuQZNCniz6w
+ ANlOlEId
+ c/ZUaI5kf5olwiRFJRARfLAI/SS9pU6OU+UaaIsNZYdYu2a9Jkoo7P6LAOE9dQoveNUcIz2tMjviKeZY8zzYjfl+XBNgYaZn7iWZFNNlMfCfYfEY8NwffYcFETh34NAq/kPk1Nf3BFGhaC9Zqpk6npyw+gEitHw0n2gr+3XH6q5EKMTf9Bf7CUXs+3DDWW+0xrVPv5PEwWSS/Tqrdmde7rXQDjZbyKyS38365v/9svZ6ImgTJRCLtAfZlAjFtBM65VT8dBRTWjjaNYd8JgG5xL64ygBrGcQXlME2Gx5zf7NDFgZ/WzcHn/S7H2tsAz0gZwhcEpSp7G6BRGKMeuNBQed/6mQgFZKvMDGmfwJecgD3LgXQldCd0yH251EQOvxdirQ6lRlYbAPPUI0qwXsoag7R2cIHlXzJAS1jYqwq+Cg9FWtbz3TLZQPAosMCTKcBSPZKQ5YQd9E6cVpGUu/9o9hMLWlYbmV5TtsHy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,182 +189,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 30 Aug 2025, yangshiguang1011@163.com wrote:
+On 01.09.25 03:17, Hugh Dickins wrote:
+> On Mon, 1 Sep 2025, Matthew Wilcox wrote:
+>> On Sun, Aug 31, 2025 at 02:01:16AM -0700, Hugh Dickins wrote:
+>>> 6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
+>>> which (like PG_private, but not in addition to PG_private) counts for
+>>> 1 more reference: it needs to be using folio_has_private() in place of
+>>> folio_test_private().
+>>
+>> No, it doesn't.  I know it used to, but no filesystem was actually doing
+>> that.  So I changed mm to match how filesystems actually worked.
+>> I'm not sure if there's still documentation lying around that gets
+>> this wrong or if you're remembering how things used to be documented,
+>> but it's never how any filesystem has ever worked.
+>>
+>> We're achingly close to getting rid of PG_private_2.  I think it's just
+>> ceph and nfs that still use it.
+> 
+> I knew you were trying to get rid of it (hurrah! thank you), so when I
+> tried porting my lru_add_drainage to 6.12 I was careful to check whether
+> folio_expected_ref_count() would need to add it to the accounting there:
+> apparently yes; but then I was surprised to find that it's still present
+> in 6.17-rc, I'd assumed it gone long ago.
+> 
+> I didn't try to read the filesystems (which could easily have been
+> inconsistent about it) to understand: what convinced me amidst all
+> the confusion was this comment and code in mm/filemap.c:
+> 
+> /**
+>   * folio_end_private_2 - Clear PG_private_2 and wake any waiters.
+>   * @folio: The folio.
+>   *
+>   * Clear the PG_private_2 bit on a folio and wake up any sleepers waiting for
+>   * it.  The folio reference held for PG_private_2 being set is released.
+>   *
+>   * This is, for example, used when a netfs folio is being written to a local
+>   * disk cache, thereby allowing writes to the cache for the same folio to be
+>   * serialised.
+>   */
+> void folio_end_private_2(struct folio *folio)
+> {
+> 	VM_BUG_ON_FOLIO(!folio_test_private_2(folio), folio);
+> 	clear_bit_unlock(PG_private_2, folio_flags(folio, 0));
+> 	folio_wake_bit(folio, PG_private_2);
+> 	folio_put(folio);
+> }
+> EXPORT_SYMBOL(folio_end_private_2);
+> 
+> That seems to be clear that PG_private_2 is matched by a folio reference,
+> but perhaps you can explain it away - worth changing the comment if so.
+> 
+> I was also anxious to work out whether PG_private with PG_private_2
+> would mean +1 or +2: I don't think I found any decisive statement,
+> but traditional use of page_has_private() implied +1; and I expect
+> there's no filesystem which actually could have both on the same folio.
 
-> From: yangshiguang <yangshiguang@xiaomi.com>
-> 
-> From: yangshiguang <yangshiguang@xiaomi.com>
-> 
+I think it's "+1", like we used to have.
 
-Duplicate lines.
+I was seriously confused when discovering (iow, concerned about false 
+positives):
 
-> set_track_prepare() can incur lock recursion.
-> The issue is that it is called from hrtimer_start_range_ns
-> holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-> CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-> and try to hold the per_cpu(hrtimer_bases)[n].lock.
-> 
-> Avoid deadlock caused by implicitly waking up kswapd by
-> passing in allocation flags. And the slab caller context has
-> preemption disabled, so __GFP_KSWAPD_RECLAIM must not appear in gfp_flags.
-> 
+	PG_fscache = PG_private_2,
 
-This mentions __GFP_KSWAPD_RECLAIM, but the patch actually masks off 
-__GFP_DIRECT_RECLAIM which would be a heavierweight operation.  Disabling 
-direct reclaim does not necessarily imply that kswapd will be disabled as 
-well.
+But in the end PG_fscache is only used in comments and e.g., 
+__fscache_clear_page_bits() calls folio_end_private_2(). So both are 
+really just aliases.
 
-Are you meaning to clear __GFP_RECLAIM in set_track_prepare()?
+[Either PG_fscache should be dropped and referred to as PG_private_2, or 
+PG_private_2 should be dropped and PG_fscache used instead. It's even 
+inconsistently used in that fscache. file.
 
-> The oops looks something like:
-> 
-> BUG: spinlock recursion on CPU#3, swapper/3/0
->  lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-> Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-> Call trace:
-> spin_bug+0x0
-> _raw_spin_lock_irqsave+0x80
-> hrtimer_try_to_cancel+0x94
-> task_contending+0x10c
-> enqueue_dl_entity+0x2a4
-> dl_server_start+0x74
-> enqueue_task_fair+0x568
-> enqueue_task+0xac
-> do_activate_task+0x14c
-> ttwu_do_activate+0xcc
-> try_to_wake_up+0x6c8
-> default_wake_function+0x20
-> autoremove_wake_function+0x1c
-> __wake_up+0xac
-> wakeup_kswapd+0x19c
-> wake_all_kswapds+0x78
-> __alloc_pages_slowpath+0x1ac
-> __alloc_pages_noprof+0x298
-> stack_depot_save_flags+0x6b0
-> stack_depot_save+0x14
-> set_track_prepare+0x5c
-> ___slab_alloc+0xccc
-> __kmalloc_cache_noprof+0x470
-> __set_page_owner+0x2bc
-> post_alloc_hook[jt]+0x1b8
-> prep_new_page+0x28
-> get_page_from_freelist+0x1edc
-> __alloc_pages_noprof+0x13c
-> alloc_slab_page+0x244
-> allocate_slab+0x7c
-> ___slab_alloc+0x8e8
-> kmem_cache_alloc_noprof+0x450
-> debug_objects_fill_pool+0x22c
-> debug_object_activate+0x40
-> enqueue_hrtimer[jt]+0xdc
-> hrtimer_start_range_ns+0x5f8
-> ...
-> 
-> Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-> Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
-> Cc: stable@vger.kernel.org
-> ---
-> 
-> v1 -> v2:
->     propagate gfp flags to set_track_prepare()
-> v2 -> v3:
->     Remove the gfp restriction in set_track_prepare()
-> v3 -> v4:
->     Re-describe the comments in set_track_prepare.
-> 
-> [1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
-> [2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
-> [3]https://lore.kernel.org/all/20250825121737.2535732-1-yangshiguang1011@163.com/
-> ---
->  mm/slub.c | 26 ++++++++++++++++----------
->  1 file changed, 16 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 30003763d224..b0af51a5321b 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -962,19 +962,25 @@ static struct track *get_track(struct kmem_cache *s, void *object,
->  }
->  
->  #ifdef CONFIG_STACKDEPOT
-> -static noinline depot_stack_handle_t set_track_prepare(void)
-> +static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
->  {
->  	depot_stack_handle_t handle;
->  	unsigned long entries[TRACK_ADDRS_COUNT];
->  	unsigned int nr_entries;
-> +	/*
-> +	 * Preemption is disabled in ___slab_alloc() so we need to disallow
-> +	 * blocking. The flags are further adjusted by gfp_nested_mask() in
-> +	 * stack_depot itself.
-> +	 */
-> +	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
->  
->  	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
-> -	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-> +	handle = stack_depot_save(entries, nr_entries, gfp_flags);
->  
->  	return handle;
->  }
->  #else
-> -static inline depot_stack_handle_t set_track_prepare(void)
-> +static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
->  {
->  	return 0;
->  }
-> @@ -996,9 +1002,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
->  }
->  
->  static __always_inline void set_track(struct kmem_cache *s, void *object,
-> -				      enum track_item alloc, unsigned long addr)
-> +				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
->  {
-> -	depot_stack_handle_t handle = set_track_prepare();
-> +	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
->  
->  	set_track_update(s, object, alloc, addr, handle);
->  }
-> @@ -1921,9 +1927,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
->  static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
->  static inline int check_object(struct kmem_cache *s, struct slab *slab,
->  			void *object, u8 val) { return 1; }
-> -static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-> +static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
->  static inline void set_track(struct kmem_cache *s, void *object,
-> -			     enum track_item alloc, unsigned long addr) {}
-> +			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
->  static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
->  					struct slab *slab) {}
->  static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-> @@ -3878,7 +3884,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
->  			 * tracking info and return the object.
->  			 */
->  			if (s->flags & SLAB_STORE_USER)
-> -				set_track(s, freelist, TRACK_ALLOC, addr);
-> +				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
->  
->  			return freelist;
->  		}
-> @@ -3910,7 +3916,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
->  			goto new_objects;
->  
->  		if (s->flags & SLAB_STORE_USER)
-> -			set_track(s, freelist, TRACK_ALLOC, addr);
-> +			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
->  
->  		return freelist;
->  	}
-> @@ -4422,7 +4428,7 @@ static noinline void free_to_partial_list(
->  	depot_stack_handle_t handle = 0;
->  
->  	if (s->flags & SLAB_STORE_USER)
-> -		handle = set_track_prepare();
-> +		handle = set_track_prepare(__GFP_NOWARN);
->  
->  	spin_lock_irqsave(&n->list_lock, flags);
->  
-> -- 
-> 2.43.0
-> 
-> 
+Or both should be dropped, of course, once we can actually get rid of it 
+...]
+
+So PG_private_2 should not be used for any other purpose.
+
+folio_start_private_2() / folio_end_private_2() indeed pair the flag 
+with a reference. There are no other callers that would set/clear the 
+flag without involving a reference.
+
+The usage of private_2 is declared deprecated all over the place. So the 
+question is if we really still care.
+
+The ceph usage is guarded by CONFIG_CEPH_FSCACHE, the NFS one by 
+NFS_FSCACHE, nothing really seems to prevent it from getting configured 
+in easily.
+
+Now, one problem would be if migration / splitting / ... code where we 
+use folio_expected_ref_count() cannot deal with that additional 
+reference properly, in which case this patch would indeed cause harm.
+
+If all folio_expected_ref_count() callers can deal with updating that 
+reference, all good.
+
+nfs_migrate_folio(), for example, has folio_test_private_2() handling in 
+there (just wait until it is gone). ceph handles it during 
+ceph_writepages_start(), but uses ordinary filemap_migrate_folio.
+
+Long story short: this patch is problematic if one 
+folio_expected_ref_count() users is not aware of how to handle that 
+additional reference.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
