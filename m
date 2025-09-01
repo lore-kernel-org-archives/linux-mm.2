@@ -4,128 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1035CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 10:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BC16CA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 10:29:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E41E18E002E; Mon,  1 Sep 2025 06:27:53 -0400 (EDT)
+	id 6F0FB8E0031; Mon,  1 Sep 2025 06:29:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E184F8E000B; Mon,  1 Sep 2025 06:27:53 -0400 (EDT)
+	id 6A0C68E000B; Mon,  1 Sep 2025 06:29:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D06FB8E002E; Mon,  1 Sep 2025 06:27:53 -0400 (EDT)
+	id 58F608E0031; Mon,  1 Sep 2025 06:29:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE6BD8E000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:27:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6BFF31A074E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:27:53 +0000 (UTC)
-X-FDA: 83840305626.04.64BAA8D
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4588F8E000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:29:11 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DDC57BB6D7
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:29:10 +0000 (UTC)
+X-FDA: 83840308860.23.07232B7
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3230D40003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:27:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="IpfU/kUv";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ARqhzOas;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="IpfU/kUv";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ARqhzOas;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756722471; a=rsa-sha256;
-	cv=none;
-	b=5Zka5JKBQ+BnN000nJzABoXcSfTRElXar1b1u3yNnVY7UlQPrdFvrZ4phByFJlqnWU+SRV
-	b6sGV6lAXCh5ATi5rchh44bE0oN+NPYQfwy1iz2vLia99DF5ur1KUjg2bVZ/5Kq+M0WQbm
-	0/Fjto0vOSVkoqU3Te++eQcJukAyEqo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="IpfU/kUv";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ARqhzOas;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="IpfU/kUv";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ARqhzOas;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	by imf26.hostedemail.com (Postfix) with ESMTP id D93FF140005
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:29:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=o5mX3sK+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ROkKFYzV;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=o5mX3sK+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ROkKFYzV;
+	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756722471;
+	s=arc-20220608; t=1756722549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOzfdji6Hay6gcG/mjTMJVGEun3YyTmzaRsVI4zhcss=;
-	b=FG6tk5WvgWVmyog/3VVXy3vw+fbQCjcPb0Mb8eRtIE2WpPzW2QoGVNN18MmwEQ4V50McIC
-	C5cA4nhYa6TkWJ7tlNIkJWwnTW06uLL0fhoA2gLPxHuKc0Uf5mLHylil0OcZFEx1QPLugp
-	e/rdI3vMduUgZzhbsMIy6LIO/CSA4Ug=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=IstnSSEM6WhAWS9C4yTrjF1j9Id2QMVd3M4qbSZkQLA=;
+	b=f4W8SvSpGVvrcFzSkZQ0hsKvJ3hhAZtaDqBBtxhaJLEP2wcueMUGBk36l2SV+4bQoMJNsA
+	qIm8xbHCLg+qdEa9UURfB1Ti85fXKRmy5VhTbNuRWoMJTlcPhXvgqvScNgD3BSt1I4rYcQ
+	7ymUveeztC5YHf9lCyKPYvs+9/RFsD8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=o5mX3sK+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ROkKFYzV;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=o5mX3sK+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ROkKFYzV;
+	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756722549; a=rsa-sha256;
+	cv=none;
+	b=sYnecuJMXZQcL62TVHcVPpVTzx2jc+MngM+MkNwNO1sbvrwoZCuuVueODo62g1APuH+ZCm
+	qiRjxKq6g44wK2EoWn/Q4BBKDE/FXJwITjBV5ZQsEAlHyArxJW3lw/nj40xsjVdfgaffpU
+	tljPJoWo2wR967No1N6rbwCyLAChOoY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A871721168;
-	Mon,  1 Sep 2025 10:27:49 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 536D621168;
+	Mon,  1 Sep 2025 10:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1756722469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1756722547; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hOzfdji6Hay6gcG/mjTMJVGEun3YyTmzaRsVI4zhcss=;
-	b=IpfU/kUvhSPRlgrPK7wwStdsey2nyseRdIkhwHa16Tmv3fom00OXPdVxCnewLNvbPY95Y9
-	EvNuHubIm5xwP934ENNJ+2IlHvyatUfPDQENlnqcxhQHxExx0/nNQ/LIRO3yoIqpM2cRzv
-	BouG253QFy+8D8Gff4vnke0pUU8Nxbs=
+	bh=IstnSSEM6WhAWS9C4yTrjF1j9Id2QMVd3M4qbSZkQLA=;
+	b=o5mX3sK++eSAy2qDUmuR5hEyWelNlWLOA73OACqLo0g96WPBsRKyn5ScPIqYiku3p1YNQH
+	oDMCXV+1JseOSAoINlTolNqbvmkEJiCxOGdfetKtBrf1pSjkbiqNeriR578kjvWcTjxrUZ
+	BusA0NBYQg2V6fISaLVfqXDTwWaKndY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1756722469;
+	s=susede2_ed25519; t=1756722547;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hOzfdji6Hay6gcG/mjTMJVGEun3YyTmzaRsVI4zhcss=;
-	b=ARqhzOasjwvPhDImt6/uQF5wr1ndTxc9HYDE0NWWwa7Kl05b6+th9BeUu/wECxyWToAudW
-	nbFweD/dcFQDZSAg==
+	bh=IstnSSEM6WhAWS9C4yTrjF1j9Id2QMVd3M4qbSZkQLA=;
+	b=ROkKFYzVgxAFxj65pnf9qtvf3LkhVlzeFDDpjqx2rRuNm4AL5/ZQ/dQMgo0tk763wCnufh
+	BzFd+LBbMfhBOLDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1756722469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1756722547; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hOzfdji6Hay6gcG/mjTMJVGEun3YyTmzaRsVI4zhcss=;
-	b=IpfU/kUvhSPRlgrPK7wwStdsey2nyseRdIkhwHa16Tmv3fom00OXPdVxCnewLNvbPY95Y9
-	EvNuHubIm5xwP934ENNJ+2IlHvyatUfPDQENlnqcxhQHxExx0/nNQ/LIRO3yoIqpM2cRzv
-	BouG253QFy+8D8Gff4vnke0pUU8Nxbs=
+	bh=IstnSSEM6WhAWS9C4yTrjF1j9Id2QMVd3M4qbSZkQLA=;
+	b=o5mX3sK++eSAy2qDUmuR5hEyWelNlWLOA73OACqLo0g96WPBsRKyn5ScPIqYiku3p1YNQH
+	oDMCXV+1JseOSAoINlTolNqbvmkEJiCxOGdfetKtBrf1pSjkbiqNeriR578kjvWcTjxrUZ
+	BusA0NBYQg2V6fISaLVfqXDTwWaKndY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1756722469;
+	s=susede2_ed25519; t=1756722547;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hOzfdji6Hay6gcG/mjTMJVGEun3YyTmzaRsVI4zhcss=;
-	b=ARqhzOasjwvPhDImt6/uQF5wr1ndTxc9HYDE0NWWwa7Kl05b6+th9BeUu/wECxyWToAudW
-	nbFweD/dcFQDZSAg==
+	bh=IstnSSEM6WhAWS9C4yTrjF1j9Id2QMVd3M4qbSZkQLA=;
+	b=ROkKFYzVgxAFxj65pnf9qtvf3LkhVlzeFDDpjqx2rRuNm4AL5/ZQ/dQMgo0tk763wCnufh
+	BzFd+LBbMfhBOLDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0B977136ED;
-	Mon,  1 Sep 2025 10:27:48 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ACD03136ED;
+	Mon,  1 Sep 2025 10:29:06 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id baiDOiR1tWjcAQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 01 Sep 2025 10:27:48 +0000
-Date: Mon, 1 Sep 2025 11:27:47 +0100
+	id qlHpJnJ1tWg0AgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 01 Sep 2025 10:29:06 +0000
+Date: Mon, 1 Sep 2025 11:29:05 +0100
 From: Pedro Falcato <pfalcato@suse.de>
 To: Brendan Jackman <jackmanb@google.com>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
 	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, 
 	maple-tree@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/4] tools/include: Implement a couple of atomic_t ops
-Message-ID: <tnbyxwmcwia3teewhqlpdjk7igsljfqcqbze2rbalzidccfndy@e3ybvfap4pbd>
+Subject: Re: [PATCH v2 4/4] tools: testing: Use existing atomic.h for
+ vma/maple tests
+Message-ID: <q5chl5fnmaj6wxlj3aclz7n3k4bz5sgjfliao37wdiefi32mgi@wxefcss6cmqp>
 References: <20250828-b4-vma-no-atomic-h-v2-0-02d146a58ed2@google.com>
- <20250828-b4-vma-no-atomic-h-v2-1-02d146a58ed2@google.com>
+ <20250828-b4-vma-no-atomic-h-v2-4-02d146a58ed2@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250828-b4-vma-no-atomic-h-v2-1-02d146a58ed2@google.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam03
+In-Reply-To: <20250828-b4-vma-no-atomic-h-v2-4-02d146a58ed2@google.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D93FF140005
+X-Stat-Signature: jwf7t19tkom76n7gm1mjs4ez8uq8uyyx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3230D40003
-X-Stat-Signature: wnxrpf6h9f6a8donuo78ce8pq513669f
-X-HE-Tag: 1756722470-169193
-X-HE-Meta: U2FsdGVkX18V0qXeWM0DWJzk/HdD38puAi0q1ug5KWXZFES64ueYpSc6fs+53On2172+d6FrYrfyOPZyuOZdBRn9Za3UX51BwXS5IM8kZ1YCpmybKEEXLttRrd4wP56flzdygK4i114UPIGtR7cJu9Uyj2inr2p5Ybb5PYUAPglByB3jrvKebvn6UaKFOjCNEswnaNb7mutVkK0DexWUC5eYPdU1GUR+GZgIwZa4jfwD6OzQGo1Z8ag1Omr0nNVuCttx9jrv9tUvOAtdDFjK2k3XmyCa5xE2+gGtLF3YoAqFHwJ+HVsT9U0alytNWdTGOKJS0bmhro2AMbAm6MTmatjnMAGSBNBk+GwFCX9AcHYxLbDW40UY6yOPH8PvbRNtxhQ4ORP/lzhwv6ZOo5hW0d3nqPdxHonCSXK3aQ+MhYY4QYASMkHYP+KHKr8tOSFJxwPNENa2ZGeXEUOdwJfcH5hbg/ICuYxZz9Mz6e+j5KIGGA0WUB8IRUxnI7mhS/d+g4VSuprc14EDAqCgV9auzDJNDlzh77cJgfs3ULcD2uMURQdCoIN/yxL4ze0s3wEVuEkTG1T31Wk/c/YZK9PX1TQq3UChNn5ftftK+JQ3zMCiCTH1SRfkiTgt6Havhbw0pU1z4KtbZJ9/W1IhFMV5kyUGIy/5y2CX08G8ZntxToSmYBtBG0UdykNY9DTlTdLUeQALw6oJ3XThS6swdq9p8UjWHStM/z9sncnjSjfr7S1HxAgW2Fo4jhdGk+Uszdlt1Anpmkr6hjYL1k/gMFDyt1EMsy/HoapseR1sxCF1rc1qWYZN7vB4Vk8FFzfX2rRPbps5WJcnDo5C3OXW0CK5+MgsAyHktHilorpl9Kf6Nh/gRypo9nwKIFHzvfpTThBWGULKlzrQvSweQECQGzl+blr1WYp6vlbOUQiPOJQODqpce2jdxDjB1B1QgBxAYVTOgU+mhe9xXTuRkgbRZmm
- PmX/v+1e
- o+gDeuUysEAvioBeTI+gL44fjLf+auLOW3JQoTwq3/G+5KLfls8IFG5kia+qHlGLAG+8AMV10lomZT94aYPcGj90i1F+yUAs+5SvfMy8w2CSXx9IYeSoATiZ02v5Rvo/HoDaC7vHjeCbgcEmNHrZaDViPE9AboeI1Zgf8Dp6f+3CjM/g7jLub/nWfwcUBv8Hj5aiH5cZmknnUmAOTtlG6JagV5UbjGk+jA5j419NrIKVXNacdyrr6aRBq8FNy/b8VUVpHeB3gxMzrg+/ohxD4AGX9Gnc0bbApwpMT4UplaJtoCeW74SdTx9n7jf/D70hzQkE4nYNhZ9qm8Orvo0pQObSu7QNtejC5HTTwwLuRBkT+Watri/AsnudpKw==
+X-HE-Tag: 1756722548-539312
+X-HE-Meta: U2FsdGVkX1+PwzQ9T12nF0dNh/Y8VEIbSRQlRMXMYpnGhu0/kRX92uzAGuy0Q6FQBsO+9XYHBKmBYQefsdh7K5E1AHBYGQf1EE9YWRjd/3RzFsCRPzzrHUY/GzAmgcW47kcHSHlqSKmq1SCYoZ3hTs71VYNGDVrIeIoLsOPUHj+xkvPVB+eTaLjsAFL4vIvlNlnDoClzLzc34MBN3180abmjef/AP0e7A9YQbAmygc5z/VjpI8+5dE6RYuHZFWfvqIOd2CfR41zNyIJoeuXwVdpMcQDOW6mfb0uqZ7qStwUjRvB2T23soIKLOzUQ8uBesbBRy8rdl2LEeAM7z/3WEByv4UQuApPY/eArO79RYO+rPhpSdBRGQJimscFMvfKuOOA4eywZZKaePnBK6axKmkYwqetS76A9FOvqC1TLAL63nmQh67yWkSnGK5VuXItBdv+kpbmjrNUwnZufk21pY9lx1zTEOVE7B7wymCQ+aO8g8fNvG4SHBy4Td9OmP9kVpCAaRZZ6nCLIEa8hzEY0K8KIPotQFzSiShiXg0NOfnccOCnQG6Btq0zcAJOjgBgCx/z9Un6YgDRqJR55byM50ZdAIHZk+4whZJ5p/yiT/GpDZt9C5YBHFTbfgX2zucZUpQBi0OTwTwHDCHKWr4tU9tj763O66C+D6msrZyOQYY7J+JwILFIEzPhAjOdUvkGULIOmZAN8qlfvNJYg8oxb+vdOmrezr8Fdha956YHiyCU2cn0PdzSqjQV3JS++VaZzuC278pjzaSm88Z5TqC1b+2T2fhpDA0EvKUy3o5CdBdZN08qBWf9AxbrKF7g709TMAzMdXt5PzV/nbt4LRqSZXE7B0BSu3lPEUe/QcvGCKe+gVu47DzR4rKKRd4DkJE+WWlkeuuVZPbpd8aoOT5Na/C0E8iwzhKJp0zH9NN83uRBAoOxqV6ZYh8XdprBGswWrPlMaBNFljTo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,27 +132,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 28, 2025 at 12:27:58PM +0000, Brendan Jackman wrote:
-> The VMA tests need an operation equivalent to
-> atomic_inc_unless_negative() to implement a fake mapping_map_writable().
-> Adding it will enable them to switch to the shared atomic headers and
-> simplify that fake implementation.
+On Thu, Aug 28, 2025 at 12:28:01PM +0000, Brendan Jackman wrote:
+> The shared userspace logic used for unit-testing maple tree and VMA code
+> currently has its own replacements for atomics helpers. This is not
+> needed as the necessary APIs already have userspace implementations in
+> the tools tree. Switching over to that allows deleting a bit of code.
 > 
-> In order to add that, also add atomic_try_cmpxchg() which can be used to
-> implement it. This is copied from Documentation/atomic_t.txt. Then,
-> implement atomic_inc_unless_negative() itself based on the
-> raw_atomic_dec_unless_positive() in
-> include/linux/atomic/atomic-arch-fallback.h.
+> Note that the implementation is different; while the version being
+> deleted here is implemented using liburcu, the existing version in tools
+> uses either x86 asm or compiler builtins. It's assumed that both are
+> equally likely to be correct.
 > 
-> There's no present need for a highly-optimised version of this (nor any
-> reason to think this implementation is sub-optimal on x86) so just
-> implement this with generic C, no x86-specifics.
+> The tools tree's version of atomic_t is a struct type while the version
+> being deleted was just a typedef of an integer. This means it's no
+> longer valid to call __sync_bool_compare_and_swap() directly on it. One
+> option would be to just peek into the struct and call it on the field,
+> but it seems a little cleaner to just use the corresponding atomic.h
+> API whic has been added recently. Now the fake mapping_map_writable() is
+> copied from the real one.
 > 
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-LGTM, thanks!
+> ---
+>  tools/testing/shared/linux/maple_tree.h |  6 ++----
+>  tools/testing/vma/linux/atomic.h        | 17 -----------------
+>  tools/testing/vma/vma_internal.h        | 12 +++---------
+>  3 files changed, 5 insertions(+), 30 deletions(-)
+
+Yay, less code! :)
 
 -- 
 Pedro
