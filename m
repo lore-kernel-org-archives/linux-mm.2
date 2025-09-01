@@ -4,112 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46066CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:59:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 896CACA1000
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C73AD8E0062; Mon,  1 Sep 2025 09:59:03 -0400 (EDT)
+	id DD4CA8E0063; Mon,  1 Sep 2025 09:59:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C24CF8E0006; Mon,  1 Sep 2025 09:59:03 -0400 (EDT)
+	id D371A8E0006; Mon,  1 Sep 2025 09:59:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B144A8E0062; Mon,  1 Sep 2025 09:59:03 -0400 (EDT)
+	id C02398E0063; Mon,  1 Sep 2025 09:59:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 984878E0006
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:59:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 627391605BF
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:59:03 +0000 (UTC)
-X-FDA: 83840837766.22.6FB95BF
-Received: from m.syntacore.com (m.syntacore.com [178.249.69.228])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D61724000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:59:00 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=syntacore.com header.s=m header.b=im375hOA;
-	dmarc=pass (policy=none) header.from=syntacore.com;
-	spf=pass (imf12.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A35178E0006
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:59:36 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 475D6C0878
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:59:36 +0000 (UTC)
+X-FDA: 83840839152.12.A351A9F
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 12264C0010
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:59:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.166.43 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756735141;
+	s=arc-20220608; t=1756735174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KFK1KsPaY9lVZCNqSiIscNbL7eAxdmZz/XyL68Jx/+g=;
-	b=FPj9s4Hc06550Ic5BzGqG2eNAtd0T2Ixb7cBN1S89nQalWVt94mh7OARuOQJcKgioVAv/N
-	l50izjPX4wtozYfIaTVhEUSaVYPFsujde7EGWZX0Kn0fowpyyN/YrVruV2EbySF3JDeFde
-	lpDUHxw0bUO7ZfQjrw0s7T3jOTLlGmA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=syntacore.com header.s=m header.b=im375hOA;
-	dmarc=pass (policy=none) header.from=syntacore.com;
-	spf=pass (imf12.hostedemail.com: domain of svetlana.parfenova@syntacore.com designates 178.249.69.228 as permitted sender) smtp.mailfrom=svetlana.parfenova@syntacore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756735141; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NmDip3pK7R1bCI3jhASK9yPIU2OeMFz+fVnQvMU5RZM=;
+	b=RdU/KVwtWF7aieyxJVxudBscekFF3Xh6p2I81uitqzCEirkkfRQ3PnBFfPxxzlF+1cDcaz
+	SrCRWbBkSWkLYXQUlGx3lKjTb9OuEWujQGVcZzsN3aP/fn7buFUt45PA+1WqqjU51tsK/H
+	fuu5TkTVSosWPICNOLpOA0hoX52oZhk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756735174; a=rsa-sha256;
 	cv=none;
-	b=gmx6E6qoRv5nBgL3+hr6ryOtbKu1GgjULLVtVbCbxFh4AyouixLYteDb4umGsb5rLdmJac
-	pLFk3eEEb9CBRXXgXR90/iRhD5HvzdmpM4MqFBoWDSwIt4DOEhhHhfHC3UD25s61WzIZnk
-	XX1We4r6PGKSNERCfX1nPrOD0TntLiY=
-Received: from MRN-SC-KSMG-01.corp.syntacore.com (localhost [127.0.0.1])
-	by m.syntacore.com (Postfix) with ESMTP id 535941A0005;
-	Mon,  1 Sep 2025 13:58:59 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 m.syntacore.com 535941A0005
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com; s=m;
-	t=1756735139; bh=KFK1KsPaY9lVZCNqSiIscNbL7eAxdmZz/XyL68Jx/+g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=im375hOAfoHr1jOpo6ZcppAjUC/QV2Bv0nkdC6qpYUk7R/j9aowFYySe4q9penFP8
-	 inmTDm/ogLsyZ30UjzX/vNMzumDgERDBR1FTuqeyv5/g1HXiMY29LLx6sbhPKIcttv
-	 YY7gPMpVEXHVR+15BR9i8PnlIrIQxsr/TWGFRHibIlhKtxFovTTomzHvmRWWf1Q0j/
-	 3pORsKs/vnx9iU2jeZP5mbgMLbjBUjNpwH/Pqf95c7kJOha9/RLovtGZUqBh4Z/k7U
-	 9G0+VsX0pd2W4K0+PpBj9PGIt9vIkmIQDuqw5s70wwhtGK/ieIdICXY3k0h7fXWLsB
-	 vw2XM7GdPrqgg==
-Received: from S-SC-EXCH-01.corp.syntacore.com (mail.syntacore.com [10.76.202.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by m.syntacore.com (Postfix) with ESMTPS;
-	Mon,  1 Sep 2025 13:58:58 +0000 (UTC)
-Received: from [10.30.18.228] (10.30.18.228) by
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 1 Sep 2025 16:58:51 +0300
-Message-ID: <308785c9-5579-4950-aea5-f19d02a2de37@syntacore.com>
-Date: Mon, 1 Sep 2025 20:58:56 +0700
+	b=LkbBPl87RS2IycvoLkm+M3C4PU0NRGiVJmmglVlxjHlBrB5t3cH5LDMW0ihLHMe+LuGE5Z
+	JANcsuoU3a95dhVaExcknzQ3+gMgTfRTY5qhbMEdW2V+ROPzUW6tvnYQN2RKli8JccKi7p
+	hSM1lLbcu8nXMdtMj9dPh8LZcC7LZnY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.166.43 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
+Received: by mail-io1-f43.google.com with SMTP id ca18e2360f4ac-8873044d611so46703739f.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:59:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756735173; x=1757339973;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NmDip3pK7R1bCI3jhASK9yPIU2OeMFz+fVnQvMU5RZM=;
+        b=bbJrXPFG19hTvdib/eFFfr0QRwihbVVzdEt5m8jqjpAU2L3pfbK1rVPd5bWHpA5Y6y
+         HA0S+DBixJhGZ5hmwounXyZxukhWYfxWgM//2UU1EHOV4Rji31gj8rdbM7sW99eQUUEq
+         Ui0VMIMGIf/xTqcy2OnINcaCh0mfeb+XJgpxM6j/z+9MinuxTE+tTNUkOLREPHwBJ1GP
+         PL8YdAKLW5225SydAw88yQ4dE838TqSCeGavdQUjJ7dX6U8t3ZL840B75D1GlPtoA6pD
+         SilBQCInZEyRJ+63rLS30WMTJ77QFcYgau2egHBCFBjH/CWvcYaS6dITIz7YH3tQHV5V
+         qw7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUumtXyOju4kFv+Tm4JGmZYr8sj4dkdogR2kz54kK+TV3yO5ThZ3iU+GmIrNbEq4fXUum6dv/kqiw==@kvack.org
+X-Gm-Message-State: AOJu0YyT0teVqI/OaSMS0qE+Zi5NDY62yS6XMzPz6/bFlZkmAHkns3oi
+	VTsfLZNcv+Vtr2x46xLI4BHkfVAjXtpUZ0tdC9OyDQwIHPiCsRh569LAdCjec/YU0S4=
+X-Gm-Gg: ASbGncskxS1eD9ZfQii+FD+ff8Z/ntgTYbbxIDbARJrXoUQnVSHWUIBjhW7XdF13BgM
+	ukSmxA6RzcJcMPrHxP1sI8q1fsf2qVQloLXTn3EzOZKwZv1rOrcHsEdVLZC2aWM0gExhTb7dXWX
+	yDtNKS6IuNr/TdvusoPrWEXsesG0oOVhuC/SwDcOFv+0J7H63iRKtH0A50CWj2pspmw4QbbZloJ
+	DtiMWjKhFvTezCJW0I7vJyG72OjybuQmNCfY2XRcdBygyaHE0neEF+vf1MhMZLsBdL0SIQgMAYw
+	GrMwWIoIenHT2m9/irnT2/pLJFEm8w8izCtOnOP9OYxo3uWaN4WTLk28Z7bjgI3+IlT7nR9LKsh
+	2QLUWiRgLYHivk5He3bSaByF/iANyNqFcRHAdh21PQuC8nnpV+sCtxudjCqU3P30V8hhTVPLYMn
+	w7EwBLlZPDHg==
+X-Google-Smtp-Source: AGHT+IFhO7LKi3RDm020OdVbYH+HQqJvdeWwKwt18VQLHiZCIZLs0YO/H5IhNqMeUrfO6krp5I0xdA==
+X-Received: by 2002:a05:6e02:3e05:b0:3f2:34c1:d51e with SMTP id e9e14a558f8ab-3f400475926mr169140315ab.13.1756735172831;
+        Mon, 01 Sep 2025 06:59:32 -0700 (PDT)
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com. [209.85.166.181])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50d8f31caa6sm2365633173.43.2025.09.01.06.59.32
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 06:59:32 -0700 (PDT)
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3f05a8fa19bso44594985ab.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:59:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV23lDZ7Bd+AbnbteRAS06P2eq36dqcvzJst3aWtoRwCkDSYbX+7y2XuP/eJUFMM6yU5obmMr+vsw==@kvack.org
+X-Received: by 2002:a05:6102:3053:b0:52a:c340:11db with SMTP id
+ ada2fe7eead31-52b1bb24afcmr2206016137.27.1756734711158; Mon, 01 Sep 2025
+ 06:51:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC RESEND v2] binfmt_elf: preserve original ELF e_flags for
- core dumps
-To: Kees Cook <kees@kernel.org>
-CC: <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <viro@zeniv.linux.org.uk>,
-	<brauner@kernel.org>, <jack@suse.cz>, <akpm@linux-foundation.org>,
-	<david@redhat.com>, <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
-	<vbabka@suse.cz>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>
-References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
- <20250811095328.256869-1-svetlana.parfenova@syntacore.com>
- <202508251009.CB5EB2E304@keescook>
-Content-Language: en-US
-From: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
-In-Reply-To: <202508251009.CB5EB2E304@keescook>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.30.18.228]
-X-ClientProxiedBy: S-SC-EXCH-01.corp.syntacore.com (10.76.202.20) To
- S-SC-EXCH-01.corp.syntacore.com (10.76.202.20)
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/09/01 12:41:00 #27718494
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D61724000B
-X-Stat-Signature: hgonhphp68zjfts8x1f78z5r4umn8rw4
+References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
+ <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
+In-Reply-To: <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 1 Sep 2025 15:51:38 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWyCbOgs6XyW=8PG2pVw1-zhWP_VtsXsGz1HeFrZ6kjdA@mail.gmail.com>
+X-Gm-Features: Ac12FXxyJUafI_d6iF6chcUi31LuXt_e8cojxsF4wFcxCNHCg2s17r6RQqbjdms
+Message-ID: <CAMuHMdWyCbOgs6XyW=8PG2pVw1-zhWP_VtsXsGz1HeFrZ6kjdA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
+To: schuster.simon@siemens-energy.com
+Cc: Dinh Nguyen <dinguyen@kernel.org>, Christian Brauner <brauner@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Guo Ren <guoren@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	John Johansen <john.johansen@canonical.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Kentaro Takeda <takedakn@nttdata.co.jp>, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian Cain <bcain@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Jonas Bonn <jonas@southpole.se>, 
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	selinux@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1756735140-457537
-X-HE-Meta: U2FsdGVkX1+Gxda9sCcGzf0m0VQAUTeKpOGNCkTx3zvRZfIo5kW18ASaZCPwqKICJ9gA1vAOezx9i4NbojodgNH04+099ftkIbfuamqcV6pXq3lH35jfMfZRvcGUVqxzwMOC0bQpUGI9LO6g57BqtjSk4+NMelyDa75tVDxyc8UHybKAWGBELGEdBWukzuFR6nMTHdnRP4k1fgYBAuQpjzH3PfZVhB9B7NVlLJCgRy2R93TUyEGdq8xZPRtQ0cfpaes31cwdK9eVakg2kBQWlsPs5kVANISW0v1ApHrXRWeLqGjBpHcbWuqgZbnGtmj93CcDag7Xs48oEUzMrwYFn1H8IHJToxLvIWawIwXKHop8X7vaYaaJvrYCKn5ESNegMfBKLZoFzcfpxwOIXYjU1cnsTP0Zxd0B10ecP00+jiNE0WrCe1Zv0UixwSMVKyPGF6Yd6ALeqvb5OS3s4xTh02TrEkQ2dcFzRXwAG50c8q2wQKlH1Me/8jWnrKhUx5uewMRTa/mHhdfw1+6HJeT3TxN7vCEeMJCIRpoR/or7oG+JY/ihMIR7ksGN+mhNsLCU1yIFkWWLRbkR/efkgekE36M+rcE194HX02icTXjYXsfjf8h3jw6fWMewOi9qijTm6eWgS0T/2TSQKGgv2qiC8djq4asHQdO66kxBNpkYCBURweug4aCCNH2eS+vQ9jzAD8AVHmoqp5dnSdQwQ18iA4OGZrG45STLYR30MTJRFW8llSyEPoClunLW5WuHNFKaY/+IgIqRso131PwDPKPodaLl6WlKj8jmq2RGkr2QA3nNvMcmuP64L9GG/cxdG96Uc2KOifYobfG69u+80R353ZP7cBCuIUG5noIxQBMSQpFzKS2JHbv/dnfTAuZsoXBCxq0pNtvpUk0Z1g+S5WUZbO4YGNK0/I1g3RKpZAff6VBXRGKjhqKCq1LS+dCJBTC7wSUuTPQWD/ekmUHQnwL
- nCFnQFjy
- A0JHCWp7q7umaRZHAnxBXJvFEu1GFp/bu5nS/9PW02RnTI19sVNML8+zyVq0dNboKMwalOgnqiBbUMU3zM7+6b7BWVtole4nplO1JxUXF2Bho8SAIhHD+qrrq4+AfYZAvXGB4Gz/e2i5Wxpqz/Xed4ovPdMUtYe5UOukChGxvkdAxVYfR3tnbB6tzwr6tDIOBNQ4QYivdDAlmreE+9f7ra2+Xj1WPnKk4ESmPNP923P9vXr3gpI50kzTSZgdA6bAXVko7ukKW/S7t2wqFfDH03OfvjTYmUDOv1e3DL2cyLIcEMNf6nb578m4Y9CrURKWix3y+sJ/phrKCWl3BjYkv8ollkvDekLclFwB8Q5PWbFUXUXj5IXdrZLHvSp1lYrTYwJuw5S7pZP8Qk6ErESEJXxIrd03WrVvBAsNc7mE9J8jWjbFx/GTIsUiTv1NE18H5jXqFLwPTn1diBJE3zVr2gmiwydXEskZu8lTmZ/MAck3TYjgQ5dksEXiZIXWh/H8LNQ2QsPH3oz04ozY=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 12264C0010
+X-Stat-Signature: eyabxixbwornmyx3qj8jm5t3yyy53k6x
+X-HE-Tag: 1756735173-722305
+X-HE-Meta: U2FsdGVkX18igkYJiDwA34TIyqhEE81YEMCct6seTR9LIAg8CUCZoOcz2JvXaFtm/ByKCCBPSQ/3by6rQ27ToQNRZvMXvFwMrj1d8Dodt2v3LBiIOyTiW5rFaZ4xXKtwSlEWI66Qn6ANKoZ44x1HNlHwfSMc1iuPhnxuCcmEcJniJfbHD09P3C3QT9dgNOhE1lj6E5J5SOaFSi2VJomYPoZXkFPrB95EO5xk7JCp8Lys4CRF2KBFasOjBewptV0yCVpRW+6hdON84xVVsl5ua/AfHvc8j6VdrGwPG2AHdkRd6o68c36yL1TxoYtXf6wZw2FcFPJLAzO+Xt7zLI/cERfVoaw+CKpnNPeAj9fU6YbsFn5l7afP4sB3jqAG4qVzvVanYP36NNzV3XzXw+cM8UeHA4UDPkaFVoaT5loTN1eNolztPs50byqIIo4FdlRQGAA9ebCSp2c6Dq7LSLdNL6A2scT7C+4Cp8Jzg/poMOL3T4WfRr5Hwulynw+B4b7gjl4oqAbdon8Pal2Y4XoUKBtG26e/8e2EEw5kRjs4DyHCwO9826Snyf+imOVEjBtT21nEVeX6iuNIc7iycSamA4VfCyLs6JewfZ8nqusWKIyFvQxNM4HyVBQ7T93KxP+Tlfwky6ovDCA5Hi2Gg8Bk3wef26oSmCbXsQwiD2/KzMTRutABbM2GmrOGazIteadqa3oKYXf/dC1+DkKikSt5RerlBLxwqUwFGWjKqnO7HP9RanLOfz1Uzc6mYqZt+P4cZXCGaz2UAmJvEVadvLx3Os2Fw/Ltj2Kj4khWGvvjr+1quSZT6j1H6g5JW8UBQamMNUyInTWlPksNLyPr/WqxxRAKD8qSm1tXcSvy/ypuZxPVO1Jt3aDJicBZgQaI+meZa58tHDqc6pQo7494RohshySyKA/uFzz3PO3SPynYYaxJncTxmCupXPdVdBzrE8ZIqJAN0L88NNqyFa4DoZT
+ fgWV/i/g
+ lMB2wbl2H9ah3RQBQy9I6ZheUlx4f1PfzuaYR27rvIPenPRr3TnAYCnr44/m7Mb68gU+WynhGSb6pd/HzPjK//D/YRHIoSn2zyoS0GoeDl2t9/UHXvRQwVdlocFXsxmnpmvvqfpk+ggD6khQbzJe7QlCsIRLKFvFiFxjheZOqZslrI9CPTeXZVHJWp/luebAe3OwCj5R3Acsol4lZjdtYmnBlaLZzHvVAkuiPD7tggQ71Qyk7s2KG4Ge3XHp7wstRVwPJEHZDFpVuUHxu0/rLDsKjqbFeZYYI0aNTLqAOKLUpB6K3uv0j28Gipu1UfV2IKbYnhau6eMMC86S4WwqqjbayPu/dN2PmmDdQnJN3cj9qCdxrguCT0zYQqDGBsK5crN60n5ryE9rY2bMlwkwbFmm/vxRiJN7Rax3wZsXZqVfLFmKRAUgMcG4EzefkQxXGBJvFz/briQ60f31dsb4uqsQfyC0wNcjL5FaKEzJI15Lyodb9xVf0NesHbmFpdsgBwoioIR885eb1r3HpU9HFFpi+4SLfGcxG/ZsXFYqNkykrz2q4Hh0OoWP+4bvEOMDpaguqeV9YkAsYycw9c1rzJxxdpN8AiXN6p4Df
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,187 +172,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/08/2025 00.17, Kees Cook wrote:
-> On Mon, Aug 11, 2025 at 03:53:28PM +0600, Svetlana Parfenova wrote:
->> Some architectures, such as RISC-V, use the ELF e_flags field to encode
->> ABI-specific information (e.g., ISA extensions, fpu support). Debuggers
->> like GDB rely on these flags in core dumps to correctly interpret
->> optional register sets. If the flags are missing or incorrect, GDB may
->> warn and ignore valid data, for example:
->>
->>      warning: Unexpected size of section '.reg2/213' in core file.
->>
->> This can prevent access to fpu or other architecture-specific registers
->> even when they were dumped.
->>
->> Save the e_flags field during ELF binary loading (in load_elf_binary())
->> into the mm_struct, and later retrieve it during core dump generation
->> (in fill_note_info()). A new macro ELF_CORE_USE_PROCESS_EFLAGS allows
->> architectures to enable this behavior - currently just RISC-V.
->>
->> Signed-off-by: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
->> ---
->> Changes in v2:
->>   - Remove usage of Kconfig option.
->>   - Add an architecture-optional macro to set process e_flags. Enabled
->>     by defining ELF_CORE_USE_PROCESS_EFLAGS. Defaults to no-op if not
->>     used.
->>
->>   arch/riscv/include/asm/elf.h |  1 +
->>   fs/binfmt_elf.c              | 34 ++++++++++++++++++++++++++++------
->>   include/linux/mm_types.h     |  3 +++
->>   3 files changed, 32 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/riscv/include/asm/elf.h b/arch/riscv/include/asm/elf.h
->> index c7aea7886d22..5d9f0ac851ee 100644
->> --- a/arch/riscv/include/asm/elf.h
->> +++ b/arch/riscv/include/asm/elf.h
->> @@ -20,6 +20,7 @@
->>    * These are used to set parameters in the core dumps.
->>    */
->>   #define ELF_ARCH	EM_RISCV
->> +#define ELF_CORE_USE_PROCESS_EFLAGS
-> 
-> Let's move this to the per-arch Kconfig instead, that way we can use it
-> in other places. Maybe call in CONFIG_ARCH_HAS_ELF_CORE_EFLAGS?
-> 
->>   
->>   #ifndef ELF_CLASS
->>   #ifdef CONFIG_64BIT
->> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
->> index caeddccaa1fe..e52b1e077218 100644
->> --- a/fs/binfmt_elf.c
->> +++ b/fs/binfmt_elf.c
->> @@ -66,6 +66,14 @@
->>   #define elf_check_fdpic(ex) false
->>   #endif
->>   
->> +#ifdef ELF_CORE_USE_PROCESS_EFLAGS
->> +#define elf_coredump_get_process_eflags(dump_task, e_flags) \
->> +	(*(e_flags) = (dump_task)->mm->saved_e_flags)
->> +#else
->> +#define elf_coredump_get_process_eflags(dump_task, e_flags) \
->> +	do { (void)(dump_task); (void)(e_flags); } while (0)
->> +#endif
-> 
-> Let's make specific set/get helpers here, instead.
-> 
-> static inline
-> u32 coredump_get_mm_eflags(struct mm_struct *mm, u32 flags)
-> {
-> #ifdef CONFIG_ARCH_HAS_ELF_CORE_EFLAGS
-> 	flags = mm->saved_e_flags;
-> #else
-> 	return flags;
-> }
-> 
-> static inline
-> void coredump_set_mm_eflags(struct mm_struct *mm, u32 flags)
-> {
-> #ifdef CONFIG_ARCH_HAS_ELF_CORE_EFLAGS
-> 	mm->saved_e_flags = flags;
-> #endif
-> }
-> 
-> 
->> +
->>   static int load_elf_binary(struct linux_binprm *bprm);
->>   
->>   /*
->> @@ -1290,6 +1298,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
->>   	mm->end_data = end_data;
->>   	mm->start_stack = bprm->p;
->>   
->> +	/* stash e_flags for use in core dumps */
->> +	mm->saved_e_flags = elf_ex->e_flags;
-> 
-> Then this is:
-> 
-> 	coredump_set_mm_eflags(mm, elf_ex->e_flags);
-> 
->> +
->>   	/**
->>   	 * DOC: "brk" handling
->>   	 *
->> @@ -1804,6 +1815,8 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
->>   	struct elf_thread_core_info *t;
->>   	struct elf_prpsinfo *psinfo;
->>   	struct core_thread *ct;
->> +	u16 machine;
->> +	u32 flags;
->>   
->>   	psinfo = kmalloc(sizeof(*psinfo), GFP_KERNEL);
->>   	if (!psinfo)
->> @@ -1831,17 +1844,26 @@ static int fill_note_info(struct elfhdr *elf, int phdrs,
->>   		return 0;
->>   	}
->>   
->> -	/*
->> -	 * Initialize the ELF file header.
->> -	 */
->> -	fill_elf_header(elf, phdrs,
->> -			view->e_machine, view->e_flags);
->> +	machine = view->e_machine;
->> +	flags = view->e_flags;
->>   #else
->>   	view = NULL;
->>   	info->thread_notes = 2;
->> -	fill_elf_header(elf, phdrs, ELF_ARCH, ELF_CORE_EFLAGS);
->> +	machine = ELF_ARCH;
->> +	flags = ELF_CORE_EFLAGS;
->>   #endif
->>   
->> +	/*
->> +	 * Override ELF e_flags with value taken from process,
->> +	 * if arch wants to.
->> +	 */
->> +	elf_coredump_get_process_eflags(dump_task, &flags);
-> 
-> And this is:
-> 
-> 	flags = coredump_get_mm_eflags(dump_task->mm, flags);
-> 
->> +
->> +	/*
->> +	 * Initialize the ELF file header.
->> +	 */
->> +	fill_elf_header(elf, phdrs, machine, flags);
->> +
->>   	/*
->>   	 * Allocate a structure for each thread.
->>   	 */
->> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
->> index d6b91e8a66d6..e46f554f8d91 100644
->> --- a/include/linux/mm_types.h
->> +++ b/include/linux/mm_types.h
->> @@ -1098,6 +1098,9 @@ struct mm_struct {
->>   
->>   		unsigned long saved_auxv[AT_VECTOR_SIZE]; /* for /proc/PID/auxv */
->>   
-> 
-> And then add:
-> 
-> #ifdef CONFIG_ARCH_HAS_ELF_CORE_EFLAGS
-> 
->> +		/* the ABI-related flags from the ELF header. Used for core dump */
->> +		unsigned long saved_e_flags;
-> 
-> #endif
-> 
-> around this part
-> 
->> +
->>   		struct percpu_counter rss_stat[NR_MM_COUNTERS];
->>   
->>   		struct linux_binfmt *binfmt;
->> -- 
->> 2.50.1
->>
-> 
+On Mon, 1 Sept 2025 at 15:10, Simon Schuster via B4 Relay
+<devnull+schuster.simon.siemens-energy.com@kernel.org> wrote:
+> From: Simon Schuster <schuster.simon@siemens-energy.com>
+>
+> With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
+> clone3") the effective bit width of clone_flags on all architectures was
+> increased from 32-bit to 64-bit, with a new type of u64 for the flags.
+> However, for most consumers of clone_flags the interface was not
+> changed from the previous type of unsigned long.
+>
+> While this works fine as long as none of the new 64-bit flag bits
+> (CLONE_CLEAR_SIGHAND and CLONE_INTO_CGROUP) are evaluated, this is still
+> undesirable in terms of the principle of least surprise.
+>
+> Thus, this commit fixes all relevant interfaces of the copy_thread
+> function that is called from copy_process to consistently pass
+> clone_flags as u64, so that no truncation to 32-bit integers occurs on
+> 32-bit architectures.
+>
+> Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
 
-Thank you for review! I have addressed your comments in v3 of the patch.
+Fixes: c5febea0956fd387 ("fork: Pass struct kernel_clone_args into copy_thread")
+
+>  arch/m68k/kernel/process.c       | 2 +-
+
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-Best regards,
-Svetlana Parfenova
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
