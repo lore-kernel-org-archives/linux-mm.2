@@ -4,107 +4,189 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 193AECA1005
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 21:10:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 617AECA1007
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 21:34:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6021A8E0008; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
+	id 91E438E000A; Mon,  1 Sep 2025 17:34:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D9216B0008; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
+	id 8F6278E0008; Mon,  1 Sep 2025 17:34:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 516188E0008; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
+	id 7E4F98E000A; Mon,  1 Sep 2025 17:34:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 418B86B0005
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:10:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD9B21DF20E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:43 +0000 (UTC)
-X-FDA: 83841925566.12.964DAFB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E985F40009
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBWQ9QCP;
-	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DCA68E0008
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:34:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A6FD1DEA8D
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:34:43 +0000 (UTC)
+X-FDA: 83841986046.10.6C49CAC
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id B524840006
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:34:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w5HOZZK5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=26ZgJpUX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w5HOZZK5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=26ZgJpUX;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756761042;
+	s=arc-20220608; t=1756762481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Aj7jk6/4oeEo9ZStPm7WvMlGJlnzqQdxI6UIN11IhYs=;
-	b=eZYA//C6BbcjgmFSW4/lh6i8wtcx6K+qU+80CS9tDz9F+Z0J6GiSIF2H5M93POo7kQwIST
-	oe1T+tkh1i8Tufe/vUTPepBypgAg9omUWPV4apHVjnZdVzE1Ql9VArvuU1jpRe0UXbWQnu
-	TZbyusVLo8sr/rlznIW42/0K4Brwrj8=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TBWQ9QCP;
-	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756761042; a=rsa-sha256;
+	bh=xPxUiaRg6soTQDF07lejlfC95q4iGKbnFlkTeOnIAvc=;
+	b=xyEttMlJaKB4rlIU3KJqCqT0FH+i2aCEJLCSrKElzF0gpNqK/pOpPDx+A/FFnOEVBQx9qK
+	5Mbc0WP5/VVJ7vIgGsrhM8nU3HruLbWIZl8xc7QwEUejgQPX0sVtu+mJ1AqBzJRTDpVdZT
+	WOhsx4y7uGOyXyZjv0hw+ltmtrvQWOQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756762481; a=rsa-sha256;
 	cv=none;
-	b=MOIMDb4mj8vPcRiS80ZAPY7y+KKRk1s5nuLf663nL7G6mQW/zBHGffapR36hqq8QDk0tJo
-	O9/lVnGVcJfZanyGsU1xwPngvhw1FpvX1C5VOd0tp0FqTH9BCk4m9Qcxh4yjRavhOoq1jr
-	I+nWprDpApTd960YB4c1qF1/L6eQZWc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BCCD451BB
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52707C113CF
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 21:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756761040;
-	bh=Aj7jk6/4oeEo9ZStPm7WvMlGJlnzqQdxI6UIN11IhYs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=TBWQ9QCPZ+maZ2b5FHh2AWFgWmCrlbelbWiunk2PfRO6R7ZKuvyfRr94BGLJCnbH+
-	 XEM4yNlDiwp6iwdVCmrQKzvgQYv4CXzDNuJjT/kVKDkNyxOmIAFlAHWMOQ3vS6FwEI
-	 JoAqrcwAg229pTOKiHhkxP5aFYpqYlYY9WIgXyFztmZoexHR2Y9S1Yud62dcwW090g
-	 jTAZUJvoTc/htvaFc8FE9WZ4gnZ8Kp75s3ehTKPdlsHd3WMCIcfHvZWz/lYpVYCRZx
-	 WP+Ftk6hmwdURoLRTmGf1TYNyU1IxoRl4lkqvFy4VmVMVdz2Z3bAGTzIS9hELQl78n
-	 wXLrRxKgtqWcA==
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e96fbf400c0so5174247276.0
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 14:10:40 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yyl90JsyLpBbauA0LIkN195VXDq2V7tt5m2CMEM+pO+A+y1wr5L
-	ey2OkiEOh/2dHjtXbQRZ7U59E4rfv7BRIys3A4lCveKhoFKiblfbc9ZqF//ABI0CoXEJvR9Awb7
-	ek5SixIw68ba/QM0nQUbaH2D5OMQK68952k7n/xcLKA==
-X-Google-Smtp-Source: AGHT+IHa5GjFdHauSGeoAUuVa/rafYkP1Narry2RQd4f2CEtiAiD/CBeD5rg3Uep+9glwYbmx/jESTP93gIEzOR5Vrk=
-X-Received: by 2002:a05:690c:f90:b0:720:130:eb0b with SMTP id
- 00721157ae682-72273be179dmr125183747b3.10.1756761039556; Mon, 01 Sep 2025
- 14:10:39 -0700 (PDT)
+	b=ZdO9ed7tueKHOEEiYKWODHaDQzZUItQdzo7Y0noThjKLiowJRBxA1vCTI8i4q8h51Br5au
+	AM6jelBIwEIhM+mSz80hy8CvIy7AJs0QMu8WPD2khEPiJ/5pYdQ+GIFELx/gxokHyJoCoG
+	6g8R7H+DkwlALCZF5LmsoUZuVc8WTrY=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w5HOZZK5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=26ZgJpUX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=w5HOZZK5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=26ZgJpUX;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B8CE71F395;
+	Mon,  1 Sep 2025 21:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756762478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xPxUiaRg6soTQDF07lejlfC95q4iGKbnFlkTeOnIAvc=;
+	b=w5HOZZK5qWU8an95Ym39uEkiPR2a9SnVPTgU8rmr1wVjbVLe6+Vl8np8QZthgnIqJpFGt+
+	RmdtcR3BqPc26hEkdat/ftO3B2APspXuyNcxaRSZWN/fbD1Z3RViGlxA0orSFIcG9iQNh0
+	gkyG7Ip/exp8e1UwfVwhbOo6DqnKMOQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756762478;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xPxUiaRg6soTQDF07lejlfC95q4iGKbnFlkTeOnIAvc=;
+	b=26ZgJpUX4bmCWjNPYMxLKg91TXhkiT7zJJvsWREhtieeMhAqt8th7qvTLioAvmm/9CL/kh
+	7Rlmd+90XJ2pqYDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756762478; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xPxUiaRg6soTQDF07lejlfC95q4iGKbnFlkTeOnIAvc=;
+	b=w5HOZZK5qWU8an95Ym39uEkiPR2a9SnVPTgU8rmr1wVjbVLe6+Vl8np8QZthgnIqJpFGt+
+	RmdtcR3BqPc26hEkdat/ftO3B2APspXuyNcxaRSZWN/fbD1Z3RViGlxA0orSFIcG9iQNh0
+	gkyG7Ip/exp8e1UwfVwhbOo6DqnKMOQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756762478;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xPxUiaRg6soTQDF07lejlfC95q4iGKbnFlkTeOnIAvc=;
+	b=26ZgJpUX4bmCWjNPYMxLKg91TXhkiT7zJJvsWREhtieeMhAqt8th7qvTLioAvmm/9CL/kh
+	7Rlmd+90XJ2pqYDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A6DA71378C;
+	Mon,  1 Sep 2025 21:34:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ReOlJ20RtmjvSAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 01 Sep 2025 21:34:37 +0000
+Message-ID: <024e3400-6529-43a6-9c11-3b80af79b5b1@suse.cz>
+Date: Mon, 1 Sep 2025 23:34:37 +0200
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-3-ryncsn@gmail.com>
- <CAF8kJuO0efOE-os=qi=i5jT1YWxspHYc=Ti1KN=uKgyFpWTRbA@mail.gmail.com>
- <CAMgjq7AkUc7hKrEL8cQ7jJTeXYBq7WqM55uQ_SZNNY8vJ7+ODQ@mail.gmail.com>
- <CACePvbWnsrGxUv15R4kMpc10wsBE2Bc-rapGyBYjekrqFJgJbw@mail.gmail.com> <CAMgjq7AT79NfcKtsfgOi6LQJViXOz-Xs5LOUmOiJYJS-DwQg=A@mail.gmail.com>
-In-Reply-To: <CAMgjq7AT79NfcKtsfgOi6LQJViXOz-Xs5LOUmOiJYJS-DwQg=A@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 1 Sep 2025 14:10:28 -0700
-X-Gmail-Original-Message-ID: <CACePvbW9J5_8uLi46r+wm8cHfZPdp6oui3oP7u2hLOEgJXRrTQ@mail.gmail.com>
-X-Gm-Features: Ac12FXwitpUktG-d3BA20Y76Po2OE-S4dB_W14mBspRG9ZlRPf99xqxJUTjxkJ0
-Message-ID: <CACePvbW9J5_8uLi46r+wm8cHfZPdp6oui3oP7u2hLOEgJXRrTQ@mail.gmail.com>
-Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
- before use
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E985F40009
-X-Stat-Signature: bdhyc4u9je6rx6edaoa3frnnmqk591io
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/12] mm: establish const-correctness for pointer
+ parameters
+Content-Language: en-US
+To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
+ david@redhat.com, axelrasmussen@google.com, yuanchu@google.com,
+ willy@infradead.org, hughd@google.com, mhocko@suse.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
+ surenb@google.com, vishal.moola@gmail.com, linux@armlinux.org.uk,
+ James.Bottomley@HansenPartnership.com, deller@gmx.de,
+ agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ davem@davemloft.net, andreas@gaisler.com, dave.hansen@linux.intel.com,
+ luto@kernel.org, peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, x86@kernel.org, hpa@zytor.com, chris@zankel.net,
+ jcmvbkbc@gmail.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ jack@suse.cz, weixugc@google.com, baolin.wang@linux.alibaba.com,
+ rientjes@google.com, shakeel.butt@linux.dev, thuth@redhat.com,
+ broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com,
+ mpe@ellerman.id.au, nysal@linux.ibm.com,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20250901205021.3573313-1-max.kellermann@ionos.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250901205021.3573313-1-max.kellermann@ionos.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B524840006
+X-Stat-Signature: nj9q43tx434k9japik95xsxete4xh8x7
 X-Rspam-User: 
-X-HE-Tag: 1756761041-239597
-X-HE-Meta: U2FsdGVkX19a7wWSY9nmoxeoxMkZP/7OGKsYkm+OJiWevhSjXfAU0RmhwYdY/FUiJp6m28dT1eVn1rWDqlEf0+FsQKCPU6hMvq+QPYZMX6BjA8Q9FUT5mL2cKf7iguFBxy3TjmSTlVN6BaraSSCVzH4un0avNaCOsTr0JLaG3nPVHAAgnp6DRFcgi30NTXP+cT5oSjT66hCUMYZUJqHmIHWb+H+n2efLY9kKnOEsMKONvIKyKxS93RH/bi3Y+pGTPj+IP3Oc4CAtUsmH6nCAQLDLYgbWJF03kwS7Qcre7IQ/YTvRCP9d8WJaeb430kel0lj3pYgquQkpiHuJGWOdY44veYzOUejC4iZSz7rFMcc1t83myOvglUpMuhuSXzWgVaMFnAsSEnMcZLQuCwD89BUFBMN89NXnXCaQpK26uXU54qxUsq6Od1xxxyM3iMsSUfU0RKuREl0t0FJbfsm6P64F+7eEq8pjDRF6gFlskhd8jSyQOz83wMTqL503mm1xZ6xLiIuWgTNg4PLpTtvtJ+R5hy03+gEowQWIUH3UGLVUhNlB2pE/K+j38X1iVyn5r9LlrXMIrN98Q7vDa93gMguCWmcGpMmB3TVs6qKDufeyr6VVYff42LJ18TYNzu1YFLDQL8NhvJQp+KqbNW3QYsw4gWs6sUgJ647+vfWfBnqS/dGOJkZTNfoeNtzmSrLN8lNOK1fMdt+Jk/NZAXzsli0NqmJdGpZYNfMi93ac4H4BOogK3r2k3MqDToIrVTZd6sn1CAswieDtKwjNaSALeIhPKs/djuKoZKH7HbTr53EpfgKcaxCm80C88oTx43zkQqw+UP4NUGb7FFO4GbCwkU5iBDITB/jk01pLYYwiEiThTUAF1ljm11yu6Uifbgqny9bDD6eKa9yVlspNMo22olbli0i3Vy9CU9/qK/dkue3Fh4cboqmOEmOVIqWIK5Q+Y3/cCrLh44ES3aflzVm
- Uo8skRl/
- FMtahUD2jQ+7dmaYZy+KmwkFteVQd/RNJsxFgiTP5QzxS3O8n7dFfg9IZOxK957agSRPD+ABxtxohkq7FSa823JxjwcehYHX6Ra1SNIRTgiHobj+9/Vlrp7MQhXuckAZGZm+J0l6c8F1zYhSFtC2zdb/eW3JNU1AFT6O49pCUlBUHhCibg8QS1x2M/tJKWxjvg7SjCAoSrAyO9ZsTzhNwSLF9oCj+avDG3gYWakYMAyDBtZVqn30KgIAS+X7q4LF7ZVLmLGtaqBGMRfshKWihgEseXFolQ9bVdXdGUo6Flz6R3X57aPD0M7Ei7A==
+X-HE-Tag: 1756762480-549684
+X-HE-Meta: U2FsdGVkX19bQ850Rj8AIWOGgB2ZWM4rV1l5VSv83aLgEqpTv9VmFxLj0x5J/9P/2dWOFb0kjYB4NYaKZgC31GMYR8qgpeYIoMmb7dUXYmVhMB8TuBP3gfdopZcIVYTPCU4sk3KL+PrxdPod7llUguWWMELMpLrWT/7CgVCY3we0iin/eGeyO7zXbfiiyadmiYqnD5+nZ5XK1P6Zx66ZSNwNOT5xIGGA9NSBkpQdeyvyIvZGliMdCb7MvPuNHN7igbiq7w+glkVofT1TxPIWQaP/q5KN+xArNpHRs11mPx4ENYPVPDw87q0pD10sacfcCEAS3wBikaWumHgAqQceDQUojuJ7pBCdVkOMs6EG3UmCSx4eiP0CZPKDQs3xYcNHEHX7H0nux4U28qc3GmKh9nFfMnM2ptvrua9tAQKxB1TD/WRK9J4BrZo+Vza2+2grwkL6siqPCjTajJgEPZokpCY6hp6HMNbVVsNDa3jzx4r4K8QCbjNvmY5J5dAmdzX0XI8REq2mhxoh/wMaPhZNPRQ9x46h/QktkjX5GD1pFClryl+ytmF9Ut2A/IxH2+Y7CmuO0HXbifj9VydlBCz+qyMREqDGeQkHxopA6wi7YpBYE15UZoHON/QZBs33JG2TsBdwyvmzICiTb8qaMFGlv7Fb8XTyGsf4LeOIZP3Fh3rnBo4sgIAvBHpuhWX8wRTta/3oCns2XfD1ELTDe94olW9tvHnRjw3XL2n17Qk4nDPvvgZIMvuqHPFE6pGuHZTKWJHq0PeM4sToq6k8+pa+hJU08sysTF6IOrv6sLGxiKA5Txs3EdUeBryMUt2PjjND4nP7Zlp8ME3C6EMbJ7Lfyk5EGgZBanL1loMUOxGGr5SP8CKFnA4hH+FvD3wkKp/jwd1dOdPHy6O3laYlecsYr3s3cBxiiu64R6n+GJ88Z+yNRqjldhGLugAjSBvZnIxYOiWz5AqjF/N9qgmLWxH
+ EkyI9TPU
+ 5sqkVDho+ozGo83aFceCHZZUYKpkg7/ciqe97VcoztMam2zOkO04BhflR1LryWCyg/H4g/quNqoU3Esr7KyhPzZWHyUWCBnGL7IpHyg25zAaiWPhsWsSIHaR7BxwMq5bFgR++XboqGLKROkKj9k8D3UqfoRr7I/GWbmrL1RUxRsjrPVtWdDuCOpHyi1VVyKSF3aHPLNnWT8IJShHYMUJ+esOvrGTgDLs8o1KyQikKLa77sRDttXuYnABHHW4yOTSJtojefzTcIn2mw7igdbuF0NQzjSpKgEXd/kANED2wdHGuu/SfYFadU0NqUUK3SnZB7usAxE2KdmwFKrFRCpY+BOWOXDrB+IjUm3QmKBtCBxuC/otIivZxPaY27njhw10DF/ChX9+VgfJAQYCF26tb777LVjZiuhPdib3RKiLHArFiZMnu7pxAYrTWM2pVDmhP9vVAD97dHjiihHddB2rF+vVAoQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,42 +195,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 1, 2025 at 11:18=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
-> > So the missing readahead stats update behavior is the correct and
-> > better behavior. I suggest you spit that out as a separate patch with
-> > appropriate comments about it too. It is also easier to bisect the
-> > commit if that kind of the subtle change which is considered safe
-> > turns out causing a problem. Causing problem not happen very often but
-> > it does happen before.
-> >
->
-> Hmm, after a second thought, maybe we should keep it as it is for now.
->
-> I just realized moving the swap_update_readahead after folio_lock is
-> more than just ensuring the folio is still valid. It will also cause
-> every swapin to do a readahead update. Previously, only cache hit
-> swapin will do a swap readahead update.
->
-> I did some tests, and didn't see any measurable performance difference
-> between putting it before / after the folio_lock. But changing it for
-> no good reason seems not a good idea after all.
->
-> So I think I'll keep it before the folio_lock. There is no evidence of
-> which strategy is better, just keep the current behaviour.
->
-> Calling swap_update_readahead even if the swap cache folio
-> is already invalidated is not really harmful, the only thing it does
-> that may effect the folio is the folio_test_clear_readahead call in
-> it, and we have been doing for years with no problem. Calling
-> swap_update_readahead for every folio might not be a good idea.
+On 9/1/25 22:50, Max Kellermann wrote:
+> For improved const-correctness in the low-level memory-management
+> subsystem, which provides a basis for further const-ification further
+> up the call stack (e.g. filesystems).
+> 
+> This patch series splitted into smaller patches was initially posted
+> as a single large patch:
+> 
+>  https://lore.kernel.org/lkml/20250827192233.447920-1-max.kellermann@ionos.com/
+> 
+> I started this work when I tried to constify the Ceph filesystem code,
+> but found that to be impossible because many "mm" functions accept
+> non-const pointer, even though they modify nothing.
 
-Thanks for the update. That is what I originally felt as well. It
-caught me by surprise by this detour code path. I need to spend extra
-time for the detour. I don't see it necessary to contribute to the
-phase I goal of merging the swap table.
+I think (and tried to verify with a lore search) it's the first time you
+mention this motivation and it's very useful to state that, thanks!
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 
-We can still add it later as a separate patch if we want.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Chris
+
 
