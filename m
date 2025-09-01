@@ -4,121 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AE7CCA1000
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C62DCCA1000
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:58:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BBA58E005F; Mon,  1 Sep 2025 09:56:32 -0400 (EDT)
+	id 1004E8E0008; Mon,  1 Sep 2025 09:58:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 392D98E0008; Mon,  1 Sep 2025 09:56:32 -0400 (EDT)
+	id 0B1238E0006; Mon,  1 Sep 2025 09:58:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27FCB8E005F; Mon,  1 Sep 2025 09:56:32 -0400 (EDT)
+	id EE1B48E0008; Mon,  1 Sep 2025 09:58:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 047128E0008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:56:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A047BBF2C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:56:31 +0000 (UTC)
-X-FDA: 83840831382.02.EA22C2A
-Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E7956A0006
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:56:28 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=nN55qao4;
-	spf=pass (imf15.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+	by kanga.kvack.org (Postfix) with ESMTP id D82BD8E0006
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:58:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 99FA91A087B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:58:28 +0000 (UTC)
+X-FDA: 83840836296.18.7FABAA8
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9DDAE140006
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:58:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=cCT885LL;
+	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756735106; a=rsa-sha256;
+	cv=none;
+	b=V+xL+NWc5Pj0kDyzVZYptT2iZ9AFr7gpMsPDP4pd+C7AL42sGQvpi0Ec4b9A3Df3qmfDZ9
+	gDcGNOl5uSjYVqgzhzQHwL5qqAHtGFan1ykB7LPP7PAQ7ppFGS7DPdnzcFfMZ2D3I5QW1R
+	P6535Ea6sYFGoQ2PNIjjipoV6q7Vk2Y=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=cCT885LL;
+	spf=pass (imf09.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756734989;
+	s=arc-20220608; t=1756735106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ShuxvqvDerzcNDGyxqNGPvo4DRrl5n6jGqzZ1svVTj0=;
-	b=sjNaKei8nQEL1O656g2nFfwNo6POJwdwlEvFQC46668g5SmARNXir67j8TkN1Ysbkwx7I0
-	4s+5eoiH+v57jFiLMjquBG7t7X8zyxO+yCBdsOgHxv1w1WiCEVc4x+o4UYOomFAiTx4UrD
-	n8H5UqLwLlMn1F/mJ8jiiqgtax9alfY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756734989; a=rsa-sha256;
-	cv=none;
-	b=HAZfdeDscuBhzsDZZ8ViGNXA82rVTzxNdAj5ebAapV/olUppGZQpWhA7lgvkfEXsx5qxYq
-	NaD/FsbVPmB+HEDvT2r+unVw4kZLL++vE7dm2mAsGZ2zifLRNmTPdWttjoaGiKJmfzk65y
-	Pm9GKUvVGUTP4HSIOnEU0zIjoUIdVgE=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=nN55qao4;
-	spf=pass (imf15.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+	bh=ueYdCbMLexoztimExa3457paCNKQkUYPulx+AE/Qd40=;
+	b=tb4E1hvDQdDd1Dy+aqodIVLbzqT7Y9aTxKlK+pepr0HzukF00MzA6Xq+/FquKNPmaLGqW/
+	2R18KgiakjuP0W/+xswRFqIBa5cqZM1uqhqYLtxYxGS0pWV46WN2G+Y7lrwQCNQ3OZGBtm
+	/Frx32v3WL8CUPjhDtPM08WqZgwEbYg=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3d4dcf3863dso913601f8f.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1756734989; x=1788270989;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ShuxvqvDerzcNDGyxqNGPvo4DRrl5n6jGqzZ1svVTj0=;
-  b=nN55qao4HgdRMWCFPd5/RcbXigDTarfAgoEZtOFu9ZGGivWzIfJ9NDT1
-   EFXXEXRwGMJU7njUFcpriXljfpdI+q0H1EJZZDMSTV+iO91yxqG+nJZYy
-   /6D+WitpUo5skByOd9zr7Wj9JWvfet3TAl+RTwL8CfBr1XzTVrJBBFJkZ
-   +cxx5aEQtX1i/+eoqBi46YxCfhfjI48Dq/0RMk1wBKNhWtODD0SjZThS+
-   l3XaW9IHZ8F6HkGnXSBA40dVuKtwE0k9oG42EXejLdNSf2MGc165WzTN3
-   1vnfAiLu4Vnvxz83NtJgL1fF52pg5ch2YmUlyAzOAY8J9VWHl0J9jD9T2
-   Q==;
-X-CSE-ConnectionGUID: W0SVbbBGRzWj4V7tZRsvSQ==
-X-CSE-MsgGUID: 1UgY4F0/TxuSRxd+6VB0Jg==
-X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
-   d="scan'208";a="1464002"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 13:56:18 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.226:27204]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.18.194:2525] with esmtp (Farcaster)
- id 3007a2af-4f0d-4c19-b4ab-3118cbde73e5; Mon, 1 Sep 2025 13:56:18 +0000 (UTC)
-X-Farcaster-Flow-ID: 3007a2af-4f0d-4c19-b4ab-3118cbde73e5
-Received: from EX19D015EUB003.ant.amazon.com (10.252.51.113) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Mon, 1 Sep 2025 13:56:17 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB003.ant.amazon.com (10.252.51.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Mon, 1 Sep 2025 13:56:17 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Mon, 1 Sep 2025 13:56:17 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-To: "rppt@kernel.org" <rppt@kernel.org>
-CC: "ackerleytng@google.com" <ackerleytng@google.com>, "david@redhat.com"
-	<david@redhat.com>, "Manwaring, Derek" <derekmn@amazon.com>, "Thomson, Jack"
-	<jackabt@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Roy, Patrick"
-	<roypat@amazon.co.uk>, "seanjc@google.com" <seanjc@google.com>,
-	"tabba@google.com" <tabba@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"will@kernel.org" <will@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>
-Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-Thread-Topic: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-Thread-Index: AQHcG0gw3raZWQR6+ESSIUK7nFklbw==
-Date: Mon, 1 Sep 2025 13:56:17 +0000
-Message-ID: <20250901135615.7601-1-roypat@amazon.co.uk>
-References: <aLBnHwUN74ErKVjX@kernel.org>
-In-Reply-To: <aLBnHwUN74ErKVjX@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.88.180]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=suse.com; s=google; t=1756735105; x=1757339905; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ueYdCbMLexoztimExa3457paCNKQkUYPulx+AE/Qd40=;
+        b=cCT885LLM9JqKyJRtIHZBMiPRLWRVJc3OVEHYIw3tUNu5Oxv7Jqd2GXeviAm8Uu1YI
+         62tzy3rWSZam46OVNvwOXuJ4+hjZuuRF98kY3cZSJSAk0Tae91jhA95A0jmhQwmZImDX
+         cuy3bicxCfOlMko/jk/rrN4OwP2v6QsbTs5jRl2UnJKhFL0jEVrxfeUB5DNVHDJFVAT3
+         QvDXPi9lT8XuQubjOz13wMwtGONU3S5OrWai2u9+5z8MQvz43T0bMGICM7EAtKeKinCx
+         v3ckQyEPk3vtCISXQ+R/mvCzh7hzICXSEzYvChB8fPTcu+mEMOLsUcmxY1Fi/9sZaVZA
+         P7WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756735105; x=1757339905;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ueYdCbMLexoztimExa3457paCNKQkUYPulx+AE/Qd40=;
+        b=pNKRtT0PlfkxC1fLT9/zZbCpVSqLcGqtg49eBaoT6rcPijMunuj4+NGtlb3o/+/wQo
+         vtnpZrBShKh+daUJtTaycoghmMjrFRBh5fgBkJJzA0XBSXqmxpoytsVDZrUaMqIEYQ5n
+         TgWYm3nbjApDz4snEwEkq1VfbACpMcfWM6b+yu06Otu//G+pI0JrFd56b8rpXaSfB3C6
+         orPtBGDVIiZi18iDcyFoobxELX80SdDCbWPD+BuEyYWt/MZefYmNQ7uqFc9tIvcjlimZ
+         B8at1KgiHM57PsJ5EK4hhPqU4gfO+yrHfepJ0OkrU+qmsKqT4+s1ZBLqdgsAPDAECx4T
+         FlcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVT0wyXqBUCYIeRIk9JEI1PF5NzOWZyiBfRQpsuuhdC8nO7g9BmStWvc34EmQg3n5Ayq+3Y9o/mMg==@kvack.org
+X-Gm-Message-State: AOJu0YyCrcCMNEQK15JB/MQoIgmUnUL14SSZ4qSZLZo49kAKZwpvMtNR
+	I0/ZRCTIBoXIo7ItReYfCsk7U5tk5YKmYf/n8WeTZxyuAl6PB80F/1Oe0Ko63QTFJew=
+X-Gm-Gg: ASbGncvXwvtcHIk+vJFUWeom3VoKOKFb6rVT41SFUk+7QSCZiN9oo/GJITj9CkxBXgS
+	9axEC5KsuYBeaFnNJ0vOYHRQwOuCeoIoHna9+Nz7LQhe5dg98/5YPopQexenB9T1U3q4yly4YfO
+	l17QGiQtUiQiIEUwX/T87pwikaXRkJwSN0I7aSqMf7V4rldfmdPfDEMARGH6IKILCHKdSrC6OOW
+	vphbEaJU851bsWkZL7kNO1AVAbTkanKnWiU6bBQ4zqvE38wTcb3m63B6oDozbFNZ1Dhjepx9Tfw
+	Avfu6x0HT70On6JTAudC3x+Ht1ho8TOMs6ZG8bDMq940a+KCze8/MULnoI+OjfQw871x8ntX9KK
+	X5H0Wkt15q1k5CC4PTBym/Wb18SyK/3+BGMc=
+X-Google-Smtp-Source: AGHT+IG2Yr2jjXAkZHUpidJxihTiVMsaYn3d05/QQCYWt2Zb9lpyUMvnPQCYNVDURtcLZR4iIeq9Rg==
+X-Received: by 2002:a05:6000:2c04:b0:3d1:61f0:d253 with SMTP id ffacd0b85a97d-3d1df828682mr7655133f8f.60.1756735104898;
+        Mon, 01 Sep 2025 06:58:24 -0700 (PDT)
+Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf274dde69sm15435253f8f.14.2025.09.01.06.58.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 06:58:24 -0700 (PDT)
+Date: Mon, 1 Sep 2025 15:58:23 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: zhongjinji <zhongjinji@honor.com>
+Cc: akpm@linux-foundation.org, feng.han@honor.com, fengbaopeng@honor.com,
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, liulu.liu@honor.com, lorenzo.stoakes@oracle.com,
+	rientjes@google.com, shakeel.butt@linux.dev, surenb@google.com,
+	tglx@linutronix.de, tianxiaobin@honor.com
+Subject: Re: [PATCH v6 1/2] mm/oom_kill: Do not delay oom reaper when the
+ victim is frozen
+Message-ID: <aLWmf6qZHTA0hMpU@tiehlicka>
+References: <aLVKYz6C5bXYG1v3@tiehlicka>
+ <20250901093057.27056-1-zhongjinji@honor.com>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E7956A0006
-X-Stat-Signature: 19obxoxk8tjkbqird4gte6rywwe767kc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250901093057.27056-1-zhongjinji@honor.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9DDAE140006
+X-Stat-Signature: n5wcdn1rdrahrmbsrusmxbpjgtoxi49e
 X-Rspam-User: 
-X-HE-Tag: 1756734988-100761
-X-HE-Meta: U2FsdGVkX19puVvHyIUJuUmMqwAfC4SRIXkq73hwRanE2w+0H13+2QJWMyTLxFfsyOzSwv5ZZp2bls8vSf0ztK3b9eIjC0VaCWaogzMiv7enpFzVerekmUDGijkRNFxQIg3bikI8b5hC/zWFEOfFT/Bek48rGdbUIfitc/bU5FPqDkIlbKxEfzn0h3TsJV8qxUKKb2ynJVvRhNGsAkK+u7bSUcrN5Um+2RYhIHM+yHQC8eOzwnq/xFsMVNo5GJhQxA/wH2Qe3QyEF6XdK0+ZfblRK5VH88KAMicqOc2xCnFSm3Pg23OF7c3yZ3rZ0VjYt+cgyRLdLEEwhXfjL/WbeEsSFwFztr1I7FacgTqzObf6ty56NDWLKSbolThAZBma3G88FU4HNzEC6RMEyUqnZCSv0z7An2GQAm9HvI0/KNgVhPaHEnIE8GiBjKJ8oFcSm+5bjhul2x0cRQBVOkX6tU6KQj/kwFXnLcjerkaNJ33ECH8Ys3UC9ltWLpvSlKxrVmZ01/pNGNI/X1OLjqYMVxcUkWwXlLqjT0pOWlhs/6TGJV5/Jr6j4Aw31o7/Gy2kzUAqBw6cJcChCe+ae0dQXarGTgaYjApL0+29Pl1XhLukttPrLKN4aHqfyRSMXION04l1GbalJE+ltoEIvV7sgRfS67HW1yJ17ERNrW0RqoawPp3oSmC/pbfRPopRTD93ewK4qsTJdEP102Lusy3jjxJ3a+lbIHr5c+iQ57BPc3UvFpN0gD2jNSRS+8OAj88HwhrUnc4Z0n1GCqb+AsKQ9R1m5ujzhepon392efIJ/lcA02r2gxAe8MzXchQ3n/GSRwRqaSc1cITNeYvNcwobvwRFwMRj4ATX5JDjN27XqwhcrdT8vnACmE7Su+pXN9DyiauKgRwIZAs1NaSLNBKxuiXoQTKezbi2a4TIy2JT2Eugil2GUnaci7VLyNVBL8obNjMJW7D/SXTci1nX1r6
- xZ5Lmkxu
- iVEpAg1p2LQgbpnp/NgKMZwcL0xdiYMMCeozAC3RyrHudSnzD74WcNLMe6sL04vDW1E2P/rdXUzsUz4CyxUR+8w/pojAQFmgxm1KVsa/ZhBT8spYCMgSjr1QJTLv6b+lRwq0CmYSBjQuiooLGkbvxm0vN4L95gm3JD0S6gvryDEbpBo7GTUPpjKgka0KJCIopnxJGvOiNklTaYoLf+pZk3GCP8Lj60Ihro88lqUCZCFglfkNVNQaIjvLL/1a8wbDW8tWsUFtrs08TmxbVSZ/T+2uZC8KzlzFOlXSiMDdg/ebuUzTf4Rz3w4e2GsX5hgwIeO4YrVrkWrbBGHUSX60Y2l9JUe8llih3N5geU5y13gfMwW6zGSerTiZetSIQRhBD56NSekA2f6lxzYEasM4nA8xgiddr7gZoKAC3m1/AYULS6mb0R4qPaNmdrcOl+u9mFighElYlwSPvFpia4Ka231hQCxUgRiUz+Oip5EEqiXDqsUYNLqa7TrsCTLguVlKhhvTdtsa0ElEz/I7Ide4rdkr9n68ZpoK8+6ZHI9o8DcnVuZvuLAlYypZb3m7QiSSCidn+mWnP03l1AuVBk/0YjuVsneFrku19tlZglb+oNcCmRGAHd6CVR80EoxTJRg4OXX9NPq4fbhjnH8UC2jGuuyp6EFavl8gasuAI4qJyG0B6l/uTt56wvWyw6JCskAYCZX6C8e58f1Xs0g6BXk5VwilJFJaT5lAOETg8eBGWb3SKYOo=
+X-HE-Tag: 1756735106-566340
+X-HE-Meta: U2FsdGVkX1/ZStb9FVdpMXSMPKbSnCH2kUZWirrwRwHP5GhjhY82OOZBa7uJI4mzyFQHUqSbnDIG8DqpVQOFVrLrbXF7cgLkUHy9YKK61ARHPvQEoH3drtPKCrwzp6Ll89ev0/2j/kvaj0jHqNbGdE0GP1WZk+cQkjhcEc5IR0E5qKrLpNZrBKgjYRHjEa9JAz2GpPOYV86hkNScHgDmB+0rdIHEIhsJfspbbIBWpMWgFw5vbKvD+Hl9PFI5C9tvOKtLGbqRGVAehddLlAAJPfkFJdovdODqXwK746un+SBW5LgzCvFaj4NtjnL/jdAPjmO8CvrVdVBdgEcWWTsWky6iocRKnXpH7hXo7U3qHMMKfJPYb7S1WRdqEvBbl1uE7Duh+e1lKg1P+ktOc0Jh/LxTvKd8yAX5UoIiWH8WZksUpadi54gEiE/PgCme5dn3kefjy1g1O8VEavrKgtP+VYOn/p9YKBrdPwyOa4ePgVJ9ddZDfrQLJZHu7p3j1QkX0VG6dHLZY/nTArD8K17fcXBDfARjFpgL702FlHM0i3mbAZFuitOeTa1qsR+lqLit435EjeYPrZPuaf+dmQeZ/NtEUgRYZ8ZHlyQvr90bOdcltVky89gDrumD1677XbOZmSTxbyQOqdQwTXUeF9nUptk9yd9WWjmi0vEzgonuYq7bbgMqm6k0d5aOk/E6tR8aETW+OQQHVKamNj+M4vjNwK3kIe739vt82L1ts/swJ64ofI0pCmru+6QZJeWb3DyHtaqFjktetMp+188Rz1H8D0fHnPPElLt4laYWojP0VNP3ydTAdxlhKVjVnnHxMa63LVtKHJGdCsXnT/eGb4FbwB+WppVbkJlX6I6mXGb+OFcpl8dUVFwEl7ocPiHNvCuv6MHlazmqouqGEwYLiIcN82ji5TwMuoc7GML2CH8oFnyhUhp4d0gomyqJBIsazA/Ca4jRGMwyB7Ar5Sqq9hW
+ u+9dhFVL
+ QLg+tFh/4baXlafSZ3VdNVkJ6AZUhSXTYs2CVWgvJO3bebPh0nsEd6IfGZDEGYiKzQg4ifY09rZiJwGVCVFgJmjhNSnudPcEHOnzggU15+NXnMsfzUlFpcnk5Ys7oUmHR7Gpfi3CApEROqKcmsGPJOneHCdQNCUnKv/n1/HbbPR0fDXRbNJuk1qFYKDVkvnefmmJJaunqioJg0q7kz7egNuWVuImcJtN/8Gl1stFfzr9QRxmhs5C9YP9iAAensQ2QYr/i3Z1J+ygN3h6SIQ6k7W/pqGawFS7bcFJMnGnTtQH0YSwQ4cOS/s2xPvzLMDZMl98gDgb0EaxtzFildjWQI1GbxLp6j1rG9rOOK9PwCwsLq9KerRxm5riqGMvQylGtNLFuSWs+wzvZk+XM6HZvKJIX0fY2AlgO0vUMb0wyLDAcyzRlw3ndpT2f4TKZKGEY7tKxfntErDJpXahW6qzrXTAEnp3CJMU95ZYJN7RKxFL+aptfvcppDZYceAP7KjtckdXwxcasVr47/Tr5DJ26SDGPaVj8jMVQ6ur4MghEzkUrjWaYYDLBa/qS/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,126 +122,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,=0A=
-=0A=
-On Thu, 2025-08-28 at 15:26 +0100, Mike Rapoport wrote:=0A=
-> On Thu, Aug 28, 2025 at 09:39:19AM +0000, Roy, Patrick wrote:=0A=
->> Add AS_NO_DIRECT_MAP for mappings where direct map entries of folios are=
-=0A=
->> set to not present . Currently, mappings that match this description are=
-=0A=
->> secretmem mappings (memfd_secret()). Later, some guest_memfd=0A=
->> configurations will also fall into this category.=0A=
->>=0A=
->> Reject this new type of mappings in all locations that currently reject=
-=0A=
->> secretmem mappings, on the assumption that if secretmem mappings are=0A=
->> rejected somewhere, it is precisely because of an inability to deal with=
-=0A=
->> folios without direct map entries, and then make memfd_secret() use=0A=
->> AS_NO_DIRECT_MAP on its address_space to drop its special=0A=
->> vma_is_secretmem()/secretmem_mapping() checks.=0A=
->>=0A=
->> This drops a optimization in gup_fast_folio_allowed() where=0A=
->> secretmem_mapping() was only called if CONFIG_SECRETMEM=3Dy. secretmem i=
-s=0A=
->> enabled by default since commit b758fe6df50d ("mm/secretmem: make it on=
-=0A=
->> by default"), so the secretmem check did not actually end up elided in=
-=0A=
->> most cases anymore anyway.=0A=
->>=0A=
->> Use a new flag instead of overloading AS_INACCESSIBLE (which is already=
-=0A=
->> set by guest_memfd) because not all guest_memfd mappings will end up=0A=
->> being direct map removed (e.g. in pKVM setups, parts of guest_memfd that=
-=0A=
->> can be mapped to userspace should also be GUP-able, and generally not=0A=
->> have restrictions on who can access it).=0A=
->>=0A=
->> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
->> ---=0A=
->>  include/linux/pagemap.h   | 16 ++++++++++++++++=0A=
->>  include/linux/secretmem.h | 18 ------------------=0A=
->>  lib/buildid.c             |  4 ++--=0A=
->>  mm/gup.c                  | 14 +++-----------=0A=
->>  mm/mlock.c                |  2 +-=0A=
->>  mm/secretmem.c            |  6 +-----=0A=
->>  6 files changed, 23 insertions(+), 37 deletions(-)=0A=
->>=0A=
->> diff --git a/include/linux/secretmem.h b/include/linux/secretmem.h=0A=
->> index e918f96881f5..0ae1fb057b3d 100644=0A=
->> --- a/include/linux/secretmem.h=0A=
->> +++ b/include/linux/secretmem.h=0A=
->> @@ -4,28 +4,10 @@=0A=
->>=0A=
->>  #ifdef CONFIG_SECRETMEM=0A=
->>=0A=
->> -extern const struct address_space_operations secretmem_aops;=0A=
-> =0A=
-> Please also make secretmem_aops static in mm/secretmem.c=0A=
-=0A=
-Ack.=0A=
-=0A=
->> -static inline bool secretmem_mapping(struct address_space *mapping)=0A=
->> -{=0A=
->> -     return mapping->a_ops =3D=3D &secretmem_aops;=0A=
->> -}=0A=
->> -=0A=
-> =0A=
-> ...=0A=
-> =0A=
->> diff --git a/mm/gup.c b/mm/gup.c=0A=
->> index adffe663594d..8c988e076e5d 100644=0A=
->> --- a/mm/gup.c=0A=
->> +++ b/mm/gup.c=0A=
->> @@ -1234,7 +1234,7 @@ static int check_vma_flags(struct vm_area_struct *=
-vma, unsigned long gup_flags)=0A=
->>       if ((gup_flags & FOLL_SPLIT_PMD) && is_vm_hugetlb_page(vma))=0A=
->>               return -EOPNOTSUPP;=0A=
->>=0A=
->> -     if (vma_is_secretmem(vma))=0A=
->> +     if (vma_is_no_direct_map(vma))=0A=
->>               return -EFAULT;=0A=
->>=0A=
->>       if (write) {=0A=
->> @@ -2751,7 +2751,6 @@ static bool gup_fast_folio_allowed(struct folio *f=
-olio, unsigned int flags)=0A=
->>  {=0A=
->>       bool reject_file_backed =3D false;=0A=
->>       struct address_space *mapping;=0A=
->> -     bool check_secretmem =3D false;=0A=
->>       unsigned long mapping_flags;=0A=
->>=0A=
->>       /*=0A=
->> @@ -2763,14 +2762,6 @@ static bool gup_fast_folio_allowed(struct folio *=
-folio, unsigned int flags)=0A=
->>               reject_file_backed =3D true;=0A=
->>=0A=
->>       /* We hold a folio reference, so we can safely access folio fields=
-. */=0A=
->> -=0A=
->> -     /* secretmem folios are always order-0 folios. */=0A=
->> -     if (IS_ENABLED(CONFIG_SECRETMEM) && !folio_test_large(folio))=0A=
->> -             check_secretmem =3D true;=0A=
->> -=0A=
->> -     if (!reject_file_backed && !check_secretmem)=0A=
->> -             return true;=0A=
->> -=0A=
->>       if (WARN_ON_ONCE(folio_test_slab(folio)))=0A=
->>               return false;=0A=
-> =0A=
-> There's a check for hugetlb after this and a comment there mentions=0A=
-> secretmem, please update that to "mapping with no direct map" or somethin=
-g=0A=
-> like that.=0A=
-=0A=
-Ack.=0A=
-=0A=
-> --=0A=
-> Sincerely yours,=0A=
-> Mike.=0A=
-=0A=
-Thanks,=0A=
-Patrick=0A=
+On Mon 01-09-25 17:30:57, zhongjinji wrote:
+> > On Fri 29-08-25 14:55:49, zhongjinji wrote:
+> > > The oom reaper is a mechanism to guarantee a forward process during OOM
+> > > situation when the oom victim cannot terminate on its own (e.g. being
+> > > blocked in uninterruptible state or frozen by cgroup freezer). In order
+> > > to give the victim some time to terminate properly the oom reaper is
+> > > delayed in its invocation. This is particularly beneficial when the oom
+> > > victim is holding robust futex resources as the anonymous memory tear
+> > > down can break those. [1]
+> > > 
+> > > On the other hand deliberately frozen tasks by the freezer cgroup will
+> > > not wake up until they are thawed in the userspace and delay is
+> > > effectively pointless. Therefore opt out from the delay for cgroup
+> > > frozen oom victims.
+> > > 
+> > > Reference:
+> > > [1] https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u
+> > > 
+> > > Signed-off-by: zhongjinji <zhongjinji@honor.com>
+> > 
+> > Acked-by: Michal Hocko <mhocko@suse.com>
+> > Thanks
+> 
+> Sorry, I found that it doesn't work now (because I previously tested it by
+> simulating OOM, which made testing easier but also caused the mistake. I will
+> re-run the new test). Calling __thaw_task in mark_oom_victim will change the
+> victim's state to running. However, other threads are still in the frozen state,
+> so the process still can't exit. We should update it again by moving __thaw_task
+> to after frozen (this way, executing __thaw_task and frozen in the same function
+> looks more reasonable). Since mark_oom_victim and queue_oom_reaper always appear
+> in pairs, this won't introduce any risky changes.
+
+Hmm, I must have completely forgot that we are actually thawing the
+frozen task! That means that the actual argument for not delaying the
+oom reaper doesn't hold.
+Now I do see why the existing implementation doesn't really work as you
+would expect though. Is there any reason why we are not thawing the
+whole process group? I guess I just didn't realize that __thaw_task is
+per thread rather than per process back then when I have introduced it.
+Because thread specific behavior makes very little sense to me TBH.
+So rather than plaing with __thaw_task placement which doesn't really
+make much sense wrt to delaying the reaper we should look into that
+part.
+
+Sorry, I should have realized earlier when proposing that.
+
+-- 
+Michal Hocko
+SUSE Labs
 
