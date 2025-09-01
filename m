@@ -4,117 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11C66CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:25:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF5FCCA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:33:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B3228E000F; Mon,  1 Sep 2025 03:25:28 -0400 (EDT)
+	id 2A7918E0006; Mon,  1 Sep 2025 03:33:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68AED8E0003; Mon,  1 Sep 2025 03:25:28 -0400 (EDT)
+	id 27F5D8E0003; Mon,  1 Sep 2025 03:33:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A09E8E000F; Mon,  1 Sep 2025 03:25:28 -0400 (EDT)
+	id 1BBB08E0006; Mon,  1 Sep 2025 03:33:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 455AB8E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:25:28 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF3F45AD14
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:25:27 +0000 (UTC)
-X-FDA: 83839845894.20.F8AAEC4
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E86E22000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:25:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XdeYGEbi;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 093578E0003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:33:47 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A715885A83
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:33:46 +0000 (UTC)
+X-FDA: 83839866852.04.672DC28
+Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A712410000A
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:33:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="t 5K/FdX";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=d9pH8I4e;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756711526;
+	s=arc-20220608; t=1756712024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NsD+lKisfCr+EvsMgdQlQ9bYE75VHiYAu6VA9km9Iao=;
-	b=iBF5SdkfWRzAFxmw3IBZnUgGeBAnKOXzjdM45Y4UC1Nzl6BlUpLsWTRLXz/aWPNcgdtTzw
-	bJieH7Vi73AEZJO2JPE6jxdHIJ6Fee6gG6i7H1Kt88kZMczVoRndMKBbaFVdV9EurKUAxX
-	jxZzMQWpvzHyNsVTvpJh7mYryQSKfoA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756711526; a=rsa-sha256;
-	cv=none;
-	b=4PWDqW1m3W44g6S/XDDgCwPNlL42HDR2mGTKVC/9LbJsDRpwALekMQvFv4c9ZBi0gK/AG2
-	Z3oVr21sQELOVqGZPArQGuox5h0i0MBOBEDPUGaebabpAnzI/OSBtwpf+HHEGf7eVG1stq
-	NPX4Kewl1mMQXRcH1fq0fKcDqgLozHo=
+	bh=kipqqFjvNo4Y7cKqBGTxkuUKZhPOTVfUMxxW+rU6c9A=;
+	b=kuazDuSYpk2AA8vFYxRnP28XC43U6SVAjhQV+JPmtbhWjEafq9ot4cabVxKxH5mE20tiBq
+	itvbW+dU0AIQqKT+YF7ZAvKakx6tpHbf8Cfouh9MyOT6gJC4KEsXd1Do45Vx0cwQo7uZgP
+	b6ug36MqyPKBIZ91S2krpJrw3Mg3QK0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XdeYGEbi;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3d19699240dso1243960f8f.1
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 00:25:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756711524; x=1757316324; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NsD+lKisfCr+EvsMgdQlQ9bYE75VHiYAu6VA9km9Iao=;
-        b=XdeYGEbiboCi6xzOdVMrvHHLRvt61gFsYse8DbWJ5+8q3QTm1gXy7gsMdmLrexGCGP
-         Um+wyTwfdgcAlPQK7szdIDwaG18vSaX2BJMp1RWMBj+WGbS3wAE/ikNQHsdoFdkIRnom
-         aevqopPKhLBwd6H4Iz8WmI33V1lj9ySuuZftkeJs2SMFxBceDe3cjLh+RyTteIujo+kh
-         65Mh62Qov5R2iaI2kPTO/VPyMjB7HZx7Sikf0pC0p50C3wRMKDK9I3u18W7d8xxCQxqN
-         CtP105S7V2yJOuymO9jKRNCMzo5xMGhP3b0sZNJQdUPdlMA0hjvyMn19D8suaVuDL1o+
-         hC5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756711524; x=1757316324;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NsD+lKisfCr+EvsMgdQlQ9bYE75VHiYAu6VA9km9Iao=;
-        b=hxV8VXwHVD2KQfLxyPBSBK8uxwC446gA0i4HGYc5iSjPgEPD1/BtJGKtsgrYgg+Og3
-         sgDUztSEZ+MDBBkNc/W/THvFRfHjB4yuvCK8N8v3DSH8DVwy/tGT6SzzLyxHbnyQQvze
-         nOPLLdWu2/XGHwRXGKgr4N+bSQYL6IgHCejkBe+hxgGcMmsrMn7mKl4x+lqFMcpjbcLm
-         2mSaHRiFIqcKRXWtmj4ibzRtYtLlnap3GJ0VqRSXKFYCU9y0X5qt6RTgJw/1jEUnnmAV
-         eIK+vdPLqcYQkIigFmJ8E8Ro70pHg1ZVqTLsS3UNpdBxGPEGqQJT03wKmmuIw/47FNKa
-         dD4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUl8kY5Ma9ROwvHsQHyv0GcQSxeIYZPSgZeVmlBE9IjKEkkkADHDMl4UEBqxLmzUWfil8V0ceSC7Q==@kvack.org
-X-Gm-Message-State: AOJu0YyG9CQMauFzntt3vCeq+xzBeZzApabvt1GTuBxIQPlaL7tPpzea
-	c04fZYV07sLPlXsDeDoeCzz1L+A/iqe7xGkMfGYm6GEc+hHr5opbr7UX4cQIaJeKe0d9PzrMe0Q
-	HRzTu
-X-Gm-Gg: ASbGncsOaPANtxZRMFfNB0xdLPkgAa9uiYKXpMeKbJ7hP2XQxeu5VGUmPnhvcdbMShu
-	ej5Jn2+jIdgEFRpr/1boVc2gLHImLJvnM8UamEOd7SitKdjZLdmVqdqLMrVlhYHv3CRjoUVZSEa
-	r1+CU1O5SK45hZ2tsRTv1pYULtGe02fBZtLBOQ0tbW9LvRb7aPpFFzk8oHPwA6YJFUTWfD4zWLt
-	Ip16FC91lAmsmdBcrbGNIYPQX00jxckdX6tYG4wa+BYO/WKL0lVsQRCZGr4KkKhk+KWd8O7oVvI
-	ArW/S6gMDAGUMGxCfMlnnoqrn5hpph27Kiiicd/cbFKZLeEnJBYW7TnmcTMYrHW1zhy35dyVtwy
-	N8wfurhk6aAmCePCn/os7q0E0xtpLF4mYBZwpvfW3dGBb7NrC4EXyRYNJ
-X-Google-Smtp-Source: AGHT+IEVKsTduRpps36EMANEZSQFs4JECFp/5VO74627zg25yzawH8D3jvfC4CEKLLIvyDxZ2JF5XQ==
-X-Received: by 2002:a05:6000:430b:b0:3c2:d7f0:9c4e with SMTP id ffacd0b85a97d-3d1afe48fa0mr5451319f8f.8.1756711524239;
-        Mon, 01 Sep 2025 00:25:24 -0700 (PDT)
-Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b7e7ef7cfsm144073115e9.6.2025.09.01.00.25.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 00:25:23 -0700 (PDT)
-Date: Mon, 1 Sep 2025 09:25:23 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, liam.howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, surenb@google.com, liulu.liu@honor.com,
-	feng.han@honor.com, tianxiaobin@honor.com, fengbaopeng@honor.com
-Subject: Re: [PATCH v6 1/2] mm/oom_kill: Do not delay oom reaper when the
- victim is frozen
-Message-ID: <aLVKYz6C5bXYG1v3@tiehlicka>
-References: <20250829065550.29571-1-zhongjinji@honor.com>
- <20250829065550.29571-2-zhongjinji@honor.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="t 5K/FdX";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=d9pH8I4e;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756712024; a=rsa-sha256;
+	cv=none;
+	b=LVZzRtX8gUovXNjS+QD26B/AeadNwEB3SoZ0LyEwxFJVjv+lPSHBFwdTuX0Oc4W1o5lKLc
+	mX7JeVOaCbgdtzda+3mbkdVIVDug4kL67hvAq0qp3L0SkTiNsWj5PFtU8NYbg75R/B3SsO
+	BweKyS02GIiWa6HzOOyry/z4oPZJDAc=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.phl.internal (Postfix) with ESMTP id DB6E41380899;
+	Mon,  1 Sep 2025 03:33:43 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 01 Sep 2025 03:33:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1756712023; x=
+	1756719223; bh=kipqqFjvNo4Y7cKqBGTxkuUKZhPOTVfUMxxW+rU6c9A=; b=t
+	5K/FdXewrZ/2RM0ILP5bn/BSgfkppqHgUi3igvqnqeGA5aDPWPJsC/LdoVYaofkA
+	sJ32mSKBRiJa8wEp8Pm6HwjCR7WJHIdCBFafpeUeZTDqwvs0XLoFm8Nx+WcTIR73
+	HWg1Ct9+WQLc9Xf2uN4BqQOzmfuZx7XjslJnxWo/znyIhanaxEaDyc1JyasghSJU
+	tOHiZjv30PsIGYfqjBDfObB0Xf686lH4t6T1jB89tlhNril0TX+vZBW950L/RIRJ
+	tViNZSvTBph5SioKh8trP+mT2glGwhsuWv+0lIJqNdQsdnxMgQJ7g/brwLNKXg2A
+	imc/wCaOCJtzOJNa9Dx3w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1756712023; x=1756719223; bh=kipqqFjvNo4Y7cKqBGTxkuUKZhPOTVfUMxx
+	W+rU6c9A=; b=d9pH8I4eJlpTVAKsPhcxy3QKdiHStJQ7QJdlktmIl4Kzsif8Inp
+	PIWU8XuJavqBtq1c+/CvuAUaIvfLjsdVguBAmOYirGLEyn1ueUWf7w99pi/b+WTN
+	54JMBGOmGUBB9NgsFYsEmlEK5QHz0JxsQOvVWkPFfIhtjks2OBa4cpF23fD3pRjy
+	eOgg41MipZwrC9fRhUsr2k//nypy+asK58+6tNYD6aTOHhSlUS+MwkBi+FtlBFRE
+	DpVFdqBdWqftW4ifDvUe9AjtFGAgr69HFNWQskc+iF5f8oqSkCu+gl1V/dmk8Rum
+	/O1oQLXSkDHaOYDssQ6j9e3nVAEVq3tTPDA==
+X-ME-Sender: <xms:V0y1aBr5HiwXCvRLQUdKYZUC84eaB_o-kdsUG2icLXzarDBxSvBTGg>
+    <xme:V0y1aKkmys6-VIv-rPjYo7HZNXEeXy5W-jnSzSW_8mjrOrCPoeMZkMXEXPKUDOdhE
+    fX4kt0KgHUqBNu8SaY>
+X-ME-Received: <xmr:V0y1aHKBDaeXz67Axu793x2bRGZSUbTJYEscAPZ-71awhVphpMEZ-xhJZg-0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleduheeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeef
+    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrgidrkhgvlhhlvghrmhgrnh
+    hnsehiohhnohhsrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgu
+    rghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopegrgigvlhhrrghsmhhushhsvghnsehgohhoghhlvgdrtghomhdprhgtphht
+    thhopeihuhgrnhgthhhusehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihse
+    hinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohephhhughhhugesghhoohhglhgvrdgt
+    ohhmpdhrtghpthhtohepmhhhohgtkhhosehsuhhsvgdrtghomhdprhgtphhtthhopehlih
+    hnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:V0y1aEuB8tB740d972UnXCn45IlKHzD42mDAtCYsahDqJ9tLrBW_fw>
+    <xmx:V0y1aLJRG_CNTVDYmXinLvFryldEDJCWT6y7yCMnquXYmM1Te1Z9-g>
+    <xmx:V0y1aPH1gHI2QNDi1NhCPg2FjwKx8asUSsXJ8pN60onRx4q0OOgobA>
+    <xmx:V0y1aPRbDGazDrF3jETq-sSMS-9GHWFnRkBwkSwLzvw2MQY1OVH1Ig>
+    <xmx:V0y1aMr7Kb1WDmz7LMq0yZ1qG7t19mc6H_PSdsnscLmn-4dWYOatGyWi>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Sep 2025 03:33:42 -0400 (EDT)
+Date: Mon, 1 Sep 2025 08:33:39 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com, 
+	yuanchu@google.com, willy@infradead.org, hughd@google.com, mhocko@suse.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	vishal.moola@gmail.com
+Subject: Re: [PATCH v2 01/12] mm/shmem: add `const` to lots of pointer
+ parameters
+Message-ID: <day257vhz3o7hepucfz5itjvdtp2k36hkqdg7hckqleb4jxyku@rs4rs3zhl4hn>
+References: <20250831093918.2815332-1-max.kellermann@ionos.com>
+ <20250831093918.2815332-2-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250829065550.29571-2-zhongjinji@honor.com>
+In-Reply-To: <20250831093918.2815332-2-max.kellermann@ionos.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A712410000A
+X-Stat-Signature: 4r3pfq69nqp4q41zx7fx33w8c6zrkkn6
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E86E22000B
-X-Stat-Signature: hxsdeaok57ksyyppurruhks839yjz89w
-X-HE-Tag: 1756711525-597880
-X-HE-Meta: U2FsdGVkX1/Bc+wbiJ6e1uIU1Kh8ZbwPDg6D8Yoa+ldWknMayRuTOhtq4aH0hAc+IuJUpaCkLxh+VF//tK9O9iFR+U7pkMRfKqXEASaNDcmHb41sK4aVhvXpocU/JU/QjIDwsDxrZugbfS0YR5i2NvTCR8Gysd7AWj1t6/2P6qkBihEs16XpQqryuKd4+Kjf3tKZeYVF3aV2M399MAIdOknDIL74ZVsOsP2ayJ3lZRdbUXxWfXmb3Z+1Sv5CyQkLeIGW2kwdP8UbJV9uqjaDxvudR03sd4iU1BqaH5rDvG1yV1JVePN15dC8T1/+0/0R6fz0KBClAhcUL6I04yU2ohF03hhkGQQazx8uuPelADbIALcCkBbI+LvSjjE2l/6UBujYlgPrOBKyp2KYEeviFoefhIXyvRjD7PHVE2NvXWWFCE4G69HJtMSS+HQPQXn7PwbmpK1h353cFXlQRmW1eBDCy250aHdrZLfwR/zeTR23/PLd1nceceaHxOA1Cr6lmSwfFeMzs9JNmoTbGLZca3V9Ab7IzPkZW4ygZIwfnuCLluPKS4ICDVj/LAiKD0b3pkb65ghWiOKDt701SWllOt5+IgC+6+kwmlHdst/DMJEdWjhL9ffgqhSwvhoHyleqHuAyQeXOJ/u9L5z4QdKp1darsKmrCsH7ccavqcUfkjaxxcjwxnYGGi7ff7jQum1tSoWtt/tkRU4sNgoH+HVFDVHMfQZkoulC618PEEXZXk+ERYapnNxiCIFY4NER0SDHJnkbUMzYqKsGvaOBZljoLdVW/Sgl+Nn5slFnSuLwbeWt2zhRi/cy0nVdzN8lX3D4wg4brOPrK/GW4J4Ux+9Hi6yL6TBKiHgU1+HdqL3X8G+OTohlEX9Z/Nw6wPTeDWFoFRajaz6wCVb0HWU0FRQLomB+Z+F15QnC20fLd/b66ynNwsphpfiQjeEIaWlipjwrHZheuXesrSCzhYAyKyc
- GdoT4gzW
- OHGgR6UP8eDjmTw2+dRYQCinBeJZirQbQ7UihL1p3Udo6IOn+Y/m/k1RXXVxx2AhNHS3SSvFF8XUWN8WHoc1Khr5Wj/xxkPP208sotMi29tRl02kqfYXnxcJSW01rPrRmPpabdSnvU3wIfoGN2oqJpu8wD1Qycy8Qp5n3AOIdWhvoU1lLb2ZseXoGvr+UA9766uICAOflzGaXdsBlbcRrQCNyXCg9XGI2GDkCxCTE+Sjjn1L7vaFH1xsh5X7sqWECEDgEDjNgfm2Xd/CLmntiBXtyH+ILAOSB/7yRCRcYizICD94YVxucr2BZHdzQNgjAPXeMfeUhXLkoalD+WsToXaXPzD8rkigFJeGro+pjD8iDpB2pjIT1dvIT9Ssk6Ha2bMDdMmL3SqS8FpU5qy9DnE85Zci/cEWaThtmq/8LEq2RWcyHr5FnxQAR19aE+eku345oGrr22Kv/g9qqm1JUJvp941hcMpFpCtELGl1w8124t7ggB5tN3t7j617JT+OBkP6hZxgFjx8kO3h6+6omyuMiWJa+770ZNkdmmoKf5+5LtHdsU38M9/YcCQ==
+X-HE-Tag: 1756712024-302704
+X-HE-Meta: U2FsdGVkX1/obEXFfhsxWdixQuR0IcL2vwZLQWw1NFYy8UtGiAt6xBnH4rF0pf513T8OffiDC3Sul/NqkQpX2o3truWZt3Cutut2bDlDFvhoKQ/H5cGTt07NSGtPD7bT319zd7hVn2ZuFK9/reLXdgJInSojHLoKpDnbsW9r20zgzG5iLyPdLG8mtq7EMFW30+BRjrfrW3FoqgzEMMUPcFWquaoZ9napC4lK5B/F54frPQcCrmKGNF5t+lqRB/j1FXf0K6BafSilNotLsOVxQ6ikeZMqZVAHrnvk3Abr0Kwb/pUrV/7uyNBkfNe0QMrGEqJGtUlUarfu5Xn0tliXt31XXRM8G4twOAVk0XtOgxsyEYVbT2eF8wmsLAkIwupISrlT6JJCJb+hrIbUQbQ98EIG837qbGdXvxAGY/ZFd5UAIae/w68ydaJL0oKe1xdJjvqWnrzO6IvFNw5D3T2qUJLHZ1EysbiTpMmoeaa394r69ziD6iuCTBGX9LbhieyjWC0dH7iZqBo9Can/WwmBezfTW9o1TWGUNq3hKLnywbSJMpXxKQkXlNuMLBvqSF/bNWARCDSLR6dG++V/hwg+7LY9fjOi20c1M0FleO852L67obZNKpDZmsfd51CYlPYawcQVJddT10QDpIZq9jE7DaKfKVwOxKPbcozKc+7afu2Hqje0Dc1vvpsZ1jYgkJZYRplCmgyymfdngSb2igPtnWOHR5Q6SUd3AwQsmzdsxR/kzWfqw39r37dVQ90L+VTPDLp+9l2epaSCOat/lF953DE4YR7V5pwnHsh8HlFrgq7ucGOhecKqrUvJ3GRQbytsD3wneJLVU2tw/ahWY8YfVRC9BH92LkNLhVOkz0efoJK/e8q9Yp+pgWuxtV/wyG6daDSvNTIatdUT6AfOZ8Bg9SHFVDhwDz+vIpjFW1FKmbEkcnEAl8aGhDFLafuImimXG1QKUFsgartMO2ORg6V
+ kwTKqHgQ
+ HW3jVUt4zGYE5Au1pPhtGzA+SKGBs6nT5GfeZh6hwvTXXiHdWuidHsV4V14wdWHv6My2VWqhaA1vonvzqw2neGyYdO/S50PzPDh/7qtTHhWq8lUh+lE//ohLZkZ/Y8AeMXet0PPuMTqiPwdisPTlSnzLoyNFd+NKInE/vnRsNpXXNtokrnFE8rU1mtGmaYYmP8Wwte64QT7f1F/HHLb9FwAalOxW+oThX2pM0NdeJpwEMYTDoGt4vNAScDwwQBQXJHMPVQgjkbBr3RF4VSL9usBglaVrg/AzgLlxOE1Rh9YZZAKiuUbFpLonB81K25DDFc9O0iVS5tJssJq0NstoNTnqsnpGG7Zn1hwiSvt8U2ONYziljgIuKziY3vFSdS3OPxjQ7Ey0ZfHqJqW5jWELbH7X9tV/QgHRIpfn3cX+1x1de60GqOl4/mQPyhA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,56 +139,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 29-08-25 14:55:49, zhongjinji wrote:
-> The oom reaper is a mechanism to guarantee a forward process during OOM
-> situation when the oom victim cannot terminate on its own (e.g. being
-> blocked in uninterruptible state or frozen by cgroup freezer). In order
-> to give the victim some time to terminate properly the oom reaper is
-> delayed in its invocation. This is particularly beneficial when the oom
-> victim is holding robust futex resources as the anonymous memory tear
-> down can break those. [1]
-> 
-> On the other hand deliberately frozen tasks by the freezer cgroup will
-> not wake up until they are thawed in the userspace and delay is
-> effectively pointless. Therefore opt out from the delay for cgroup
-> frozen oom victims.
-> 
-> Reference:
-> [1] https://lore.kernel.org/all/20220414144042.677008-1-npache@redhat.com/T/#u
-> 
-> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+On Sun, Aug 31, 2025 at 11:39:07AM +0200, Max Kellermann wrote:
+> For improved const-correctness.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks
-
-> ---
->  mm/oom_kill.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 25923cfec9c6..a5e9074896a1 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -700,7 +700,14 @@ static void queue_oom_reaper(struct task_struct *tsk)
->  
->  	get_task_struct(tsk);
->  	timer_setup(&tsk->oom_reaper_timer, wake_oom_reaper, 0);
-> -	tsk->oom_reaper_timer.expires = jiffies + OOM_REAPER_DELAY;
-> +	tsk->oom_reaper_timer.expires = jiffies;
-> +
-> +	/*
-> +	 * If the task is frozen by the cgroup freezer, the delay is unnecessary
-> +	 * because it cannot exit until thawed. Skip the delay for frozen victims.
-> +	 */
-> +	if (!frozen(tsk))
-> +		tsk->oom_reaper_timer.expires += OOM_REAPER_DELAY;
->  	add_timer(&tsk->oom_reaper_timer);
->  }
->  
-> -- 
-> 2.17.1
+It is not a proper commit message.
 
 -- 
-Michal Hocko
-SUSE Labs
+  Kiryl Shutsemau / Kirill A. Shutemov
 
