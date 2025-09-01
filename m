@@ -4,141 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6732BCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 08:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22649CA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 09:01:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3CDF8E0012; Mon,  1 Sep 2025 04:57:15 -0400 (EDT)
+	id 6A0F98E001A; Mon,  1 Sep 2025 05:01:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C14548E0010; Mon,  1 Sep 2025 04:57:15 -0400 (EDT)
+	id 6507C8E0010; Mon,  1 Sep 2025 05:01:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2A038E0012; Mon,  1 Sep 2025 04:57:15 -0400 (EDT)
+	id 53F088E001A; Mon,  1 Sep 2025 05:01:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DACF8E0010
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:57:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49BE6160728
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:57:15 +0000 (UTC)
-X-FDA: 83840077230.11.8ECFBDC
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3FA6C80003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:57:13 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=HOYRNmpy;
-	spf=pass (imf02.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.171 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3DDB88E0010
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 05:01:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 06E741DEA98
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:01:01 +0000 (UTC)
+X-FDA: 83840086722.10.ECA70CC
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CACCFA0014
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:00:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="S JENFRt";
+	spf=pass (imf25.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756717033;
+	s=arc-20220608; t=1756717259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qgvQHB1ThISY9uVHxKPAb9k4TCRL2UiR6ffxI/PWq3M=;
-	b=fOrw93nwS6iKnIRSjZ1Hz4S5Thjp+WOv8WitaYYD4+mpBNxcGJwUInbWi2BwUTBj2F7Dak
-	i3XdlokMB5eJYyopXbR22zDDugHM1WbissWkyPQmmX97xR1/WT8FeRahapDE2YZWI6d3PA
-	MLBUTtH5uzV7Y5T63VmEiZUiyFBBJeU=
+	bh=T8pmL3O7KUL/p3J9inxdqh2V6xKPwrfM1z5L7Tsn/lk=;
+	b=3Q4WIiLTjwoVcP/asdz5amiH9bLDY2k14iSnKCQyzNnqGhFhhoS8gchXARDL/a+HSmOJGl
+	aV+bkVNQm3MFjaLPxLer7Vyf1ZbUUWWDJqSoIoXHmLtJOdPVCmknOHCUFn17kZv4ORfRFA
+	4+JQe2vmOjjoJxs8UYXspVkkw6vVEuM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=HOYRNmpy;
-	spf=pass (imf02.hostedemail.com: domain of eugen.hristev@linaro.org designates 209.85.128.171 as permitted sender) smtp.mailfrom=eugen.hristev@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756717033; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=163.com header.s=s110527 header.b="S JENFRt";
+	spf=pass (imf25.hostedemail.com: domain of yangshiguang1011@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=yangshiguang1011@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756717259; a=rsa-sha256;
 	cv=none;
-	b=GcmTHF4Y7q0meLAD6aVxtbRSX1EnfH0ezAFMTv1bv+Vu1L7KL/ekl0ovX3Av4qXy0/D0HN
-	v0wusJF3iVQ1FjfgXiEiwJc1lj9jRxy+05AxnK/DOcigAfGbwUPYa3m8g5mBnnAwG4yhSY
-	VAl7ISzW9sN1YerGL1/R8CC+jrbbbtc=
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-71d71bcab69so32939957b3.0
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 01:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756717032; x=1757321832; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qgvQHB1ThISY9uVHxKPAb9k4TCRL2UiR6ffxI/PWq3M=;
-        b=HOYRNmpynOAjFwQF8pHkTSO/TmPShdfT7z2I/fHIks+8tb9hqkz4pfpbQbplEKvgfn
-         iH1mNaI1vuGyrgg/36tkGf+M4QUk4LUqRwKw+mFdJkl/zJO+2lRvZn3MgOYVRA7XzcPf
-         yTHIrKLVXpspyF/4mYMDpduVjaPa5JIn/0ZK35c+subqCjxW/dQ0wwQ52s94mB9js02I
-         oia5YSsPtXp10sUoEOSKwA3bZtdrDfhn9/ZcMolyq2i127ceh/jX2+ZJiK4Ar64HvKw4
-         5T9y5vMg/m03uFIut5aFUqi625GVAuS/svuUtCGnCCab36Kt5n26l7T9p/atO85MtkWU
-         I6Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756717032; x=1757321832;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qgvQHB1ThISY9uVHxKPAb9k4TCRL2UiR6ffxI/PWq3M=;
-        b=Uprd06eS8VWebO7nuCsOSZxFNQ9QaX9aC+80oNHvwKwcCWqfeMrMgMu+R5V6V9mu2l
-         Z6EQYX/FYpaNcx0IvouicUWKN2opb27Wm/+m4kGeDW0eIg9SdRBMGTO2vDdFKFIHQ5Mg
-         pEaerAnIXVufjrSOddh01C0JtsWljyCT3/5i9MbCGmRIZ2jHYGlPBj0NVBflH/N0vE71
-         jqx1Y0ZoUK0VEc52SJZXnpbGq5t3UaPQRzq64VGxQx25fJmXHUstOYwzHkafd/uO/nEI
-         dtvNc8i1C/q7WmA6eoTujPDRhpsesay7ieCz4Z5KX0bplM9KBUoQYXlHwB9j5psYSGpW
-         hZeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnIlQrI3jw4lXnyo7IYPnyFvL3rkZmN1wD0L9lY1D5ZXQl0zfP6eJxHImMEjD7XsCn5620dNce8w==@kvack.org
-X-Gm-Message-State: AOJu0Ywy0G87Oe1Lwj369LnrP/GD0brr9uxEK5+8a8uBn+CMoe75y4Wt
-	Esyu5n88dY5IaSAmBsjCntUH9fD16AjrYICMQOxwC54XBU4pvzjY9H1f1bx7ywYln+g=
-X-Gm-Gg: ASbGnctd1RZ2GnQA/R00qNwitCbmYUG5kSE0vF5jvOqy/tpehv2vk2qO6fsJyOR+dCU
-	XEtddBQE3iAJkGl9DDX+BCekhKs5PRKVtFRbSNPqnq+5AgWbI3oXbbDADqeJLm95SJF9Xoyyjm3
-	sQr+rdY0U896E623p7L1lFvgTzEfPcs6JAAWVRmIvbSYpC+UDTykKWKXihLpR4V3SUHgJm/SPZo
-	MGsp1FJftLNydb5VFCoKaQkGXp4V11U7OsF2wogNofz1EL2KqnTsprnZuqCLCaoDD7dh51L6M3R
-	6PsH6zZP4JUCF2xjhMYWd4UTDstthHphobk+pQ60sVdchIw3wgsJz5lGGraNNZ/o96zD/vJfjj1
-	E+ajxXtyC6kVbOtQ6Z/U7YGmKs2lofUe5LOdfVXZZiAyBBmaHnOX5Gh/trL0eH8OOPRfVKOpD1F
-	UWj8bvt3hK2YHO4g==
-X-Google-Smtp-Source: AGHT+IG38bjjyQjzt0c80VXnwoUSoXxUbipjOE1UiZhaYOXnFBnq4b3rik9mxtcs1scAlzx7pRovJg==
-X-Received: by 2002:a05:690c:a4c1:20b0:722:92c5:8e80 with SMTP id 00721157ae682-72292c59299mr23345777b3.40.1756717032133;
-        Mon, 01 Sep 2025 01:57:12 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:335e:2208:211c:f884:abe7:c955? ([2a0d:3344:335e:2208:211c:f884:abe7:c955])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7227d8cc1fbsm13391337b3.37.2025.09.01.01.57.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 01:57:11 -0700 (PDT)
-Message-ID: <40e802eb-3764-47af-8b4f-9f7c8b5b60c1@linaro.org>
-Date: Mon, 1 Sep 2025 11:57:06 +0300
+	b=s0/oMfD8NPD3wa3N36/JNMzuyf9l2ymKbp6nj6H1T43Ysdhz1RhXzgQ3WqaogmR+uvy1uO
+	uV8o4aqTt9tcUVhtT3I8XOFwRM6/TxUCF8xZpzvTsxoQcAsom2t8utrKHXvzlDTBhzC/YO
+	8DbjFE6Ycy9YKmzqtphFApYHLEVws+E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=yn0AK7B4sKTDjs0/uJAX8QXHcbHruHeC3+gk7lMUKRQ=; b=S
+	JENFRt+0lkmJN5HNDq9at1I1Nm+pPTSPy3kE5VgGF4dQpJMW54qAnkeiuro1+KBT
+	8LIDcvJvZY3mrdtP0PpDejA4L42usCptXCzS0tYZHk1JJzPl8JNwvi33pmK89Yqq
+	BlcM9jDbbdKac1bW73vskZDWTVJyKglSQ4qo/65C0M=
+Received: from yangshiguang1011$163.com ( [1.202.162.48] ) by
+ ajax-webmail-wmsvr-40-108 (Coremail) ; Mon, 1 Sep 2025 17:00:48 +0800 (CST)
+X-Originating-IP: [1.202.162.48]
+Date: Mon, 1 Sep 2025 17:00:48 +0800 (CST)
+From: yangshiguang  <yangshiguang1011@163.com>
+To: "Vlastimil Babka" <vbabka@suse.cz>
+Cc: "David Rientjes" <rientjes@google.com>, harry.yoo@oracle.com,
+	akpm@linux-foundation.org, cl@gentwo.org, roman.gushchin@linux.dev,
+	glittao@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
+Subject: Re:Re: [PATCH v4] mm: slub: avoid wake up kswapd in
+ set_track_prepare
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20250519(9504565a)
+ Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <c85034fe-d48e-4433-8c65-52bfb1d5d69b@suse.cz>
+References: <20250830020946.1767573-1-yangshiguang1011@163.com>
+ <c8f6933e-f733-4f86-c09d-8028ad862f33@google.com>
+ <7f30ddd1-c6f7-4b2b-a2b9-875844092e28@suse.cz>
+ <11922bd5.7fae.1990464d9c8.Coremail.yangshiguang1011@163.com>
+ <c85034fe-d48e-4433-8c65-52bfb1d5d69b@suse.cz>
+X-NTES-SC: AL_Qu2eBPuauEov7iaYYukfmUgRj+k6WsK3s/sn3oNfP5B+jCLp+zE7R3NTB2LO79CDEC6NnQiHawJv0ehAb5dHTZwLtbWXS9Cj5U2+GvMJvDyyuA==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC][PATCH v2 22/29] mm/numa: Register information into Kmemdump
-To: David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, tglx@linutronix.de,
- andersson@kernel.org, pmladek@suse.com,
- linux-arm-kernel@lists.infradead.org, linux-hardening@vger.kernel.org,
- corbet@lwn.net, mojha@qti.qualcomm.com, rostedt@goodmis.org,
- jonechou@google.com, tudor.ambarus@linaro.org,
- Christoph Hellwig <hch@infradead.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>
-References: <20250724135512.518487-1-eugen.hristev@linaro.org>
- <20250724135512.518487-23-eugen.hristev@linaro.org>
- <ffc43855-2263-408d-831c-33f518249f96@redhat.com>
- <e66f29c2-9f9f-4b04-b029-23383ed4aed4@linaro.org>
- <751514db-9e03-4cf3-bd3e-124b201bdb94@redhat.com>
- <aJCRgXYIjbJ01RsK@tiehlicka>
- <e2c031e8-43bd-41e5-9074-c8b1f89e04e6@linaro.org>
- <23e7ec80-622e-4d33-a766-312c1213e56b@redhat.com>
- <f43a61b4-d302-4009-96ff-88eea6651e16@linaro.org>
- <77d17dbf-1609-41b1-9244-488d2ce75b33@redhat.com>
- <ecd33fa3-8362-48f0-b3c2-d1a11d8b02e3@linaro.org>
- <9f13df6f-3b76-4d02-aa74-40b913f37a8a@redhat.com>
- <64a93c4a-5619-4208-9e9f-83848206d42b@linaro.org>
- <f1f290fc-b2f0-483b-96d5-5995362e5a8b@redhat.com>
- <01c67173-818c-48cf-8515-060751074c37@linaro.org>
- <aab5e2af-04d6-485f-bf81-557583f2ae4b@redhat.com>
- <1b52419c-101b-487e-a961-97bd405c5c33@linaro.org>
- <99d2cc96-03ea-4026-883e-1ee083a96c39@redhat.com>
- <98afe1bd-99d2-4b5d-866a-e9541390fab4@linaro.org>
- <c59f2528-31b0-4b9d-8d20-f204a0600ff6@redhat.com>
-From: Eugen Hristev <eugen.hristev@linaro.org>
-Content-Language: en-US
-In-Reply-To: <c59f2528-31b0-4b9d-8d20-f204a0600ff6@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5jbgzhbw5gnqkssfjizp65mbu34njprx
+Message-ID: <623a8fd2.8b7b.1990481f065.Coremail.yangshiguang1011@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:bCgvCgD3kKzAYLVojFEmAA--.2532W
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiEAG75Wi1VZrtiQAFs8
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Stat-Signature: 1mgxofqqda6asdspmbezwtfx5dabnw5j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3FA6C80003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756717033-661008
-X-HE-Meta: U2FsdGVkX18d5JblDqAWtGFIGACCN4SYjygZi0lI6SusM/NGFeb6IF5SJYT5Jke9w3M0c7l0QBsEMGJHKEACuLA3M5v8rc/Lf+LY9JVJyqlMXjuvmGcTefpLQuq8LlrOMnElVyz1JKLu3ho10MBHwGVzkCoPhEPCHjdFuIaJ0tuSGsQnWpbNmjOKA1umQdoQl/VEJIQDfSBH3JLpHNd1W7Y9YOIhyY2K+D1wie7bKw6mEeCQAI6TBnJQP+u6dSM/NwAdu62Pze/+Otj4L8pVsJAWi+KmbeXl0d8Ms38cmt3S8rGNIiHXbw/tPpLuxquYsci8iyWErP9o/yMb307WAmaHC5FE+M7SmCujuPe/Rj7GgfPO2pNPF5ih0J/8nwlf/ShqciP9cUqRf6BWlq0MhmmU3xzAZLCwqFtn5FzZlxQCvTO8KeAco6oe11OfJsaTCzak3D9PK7IVw20fWUwa4TgKR/VFpq2oYXOzyBXUzt1iUlN3qP7d0pZpuzwRmzUthUiKYeiAK4tElQGtJxKFGRpaHXoIg4zsN5LA//iCA0AMa0d8w1YkK5k/QJC3+zJbJxNyRJB8jVVcwDbQwlro/Enq+sZEv1wdQ2xtUn4oh0Csfj2FfmqR4SsfiK5TYXcGoCs7xSfZyoZhp0c02MlM+pKUKheHOPD0BMBcyWobPlFYMgiB1IPGnRuBM45N0QACEeo441rXhQIcmzGd7KIorUfLjSraliUCTjhSXRkQlTlMRdxpmcDoh9I/12frfjbexXRDFb+PGIfhWnXZpII8qGIgn6aMENdX1dzdHjL3EEHQEVpxazFNPE6Y0wh5g+BCf7vJwNJTMCBngAoW7HuUphhTlel88Qn4/Tq6Srs3HWvXj59kJ/DmustrzdDsY4/E6Skl/qVTQ0fUe8ZngHYWZ+xWoym9LG/9U5w05TTrgLfcdao/X5oRsHq0pI18PDF1h1PMdFzXy5mEGxfRr5a
- kqbMTvt1
- +2J6hBnjnhEnXG8+cvyst4lmpcomrzcOyLnX2g0iLsa5NoI5RnQYv2MuY+/l75Agn7JD0dvuGlH9zSoZSFfpNrWJC27QLx30h4cEajXG93nOwVeV5vS3wY1zLOYK0x2v9YMvA/Od/3h6D0urFhlIPYJ5dtrGe65+94xHoDwyRy3ucYmrMPEgsp8P4pW15052IOGYd04eE8IW8yIKMoXUoTBEKov2ki4ZHX7/U4I3hewjVUuinRp6GbAb9PWjaNGlgm4q92JDo8eqEXncOadMk4nKoM9ojNf59SPGy3bzyM4WojZdLgyJIwUPNoTAxbENrWrYt3DkYvdyJgtcdDVGAKoVBhGvReevvKmjRHQ8nXfb0AKYqa5YQIbhGG9JTY/odYAor
+X-Rspamd-Queue-Id: CACCFA0014
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756717257-193964
+X-HE-Meta: U2FsdGVkX19KaU0Lihdw34eH6eKGTFi4ZU3SHcV0jMd3E6qz1dBAwvpNIsGUsbWnOw0lP6j6ST+jCF/sBrerjLtJxQSCO+hlHtRD936q6Wk5C2WfKnLXSah/420+RzMVyWOmme1LfXhz8kjc9lWqmN8UN7ZMrr7ZvnkCh4oJ0n9zSa47tgtOtzCTF0yHiJW7apNzrNVqXYfypxem+Y2V3jAk6lenmel39m2QIPQfmZXI9ZeF1VFPLHU9/VeGTYv6YptD/K980IW0IYJT7ipU5wj16PsI/4Vls18120NhsejW/UN/5iIWoT/lcjMpxXmDhA9xW4nMSGuXunCaU9n6xEY/KT0E/jtcbd4nqLB9TGcLiSJLn/RlkqyfLWijp9fH3lPt1QSTvtcmS8r1n4xyQzhUfNu5Cpb33KoY3zz5KPoHXRlUvEKmg8v55XHgC4zOMHBqjctMp960tSvt+UTfSjc4bNR942/ZAE19DVwObImBY6tdTTHgrNZV6oquH/fRcOFR/lXLsKKnrN0jDuuFLCAH1rmwZRrwKtEcOivcnC6Biv5D7TZRrLR2m6qc6HXTws8b29EaI6ahvAlcMH0MCENGk562sv+z9os8UrBXIL9t6voiimz1WjvpoZ8kClqvVcO9ryW3H5feCxJvMUy1M8+geZAEhDbKHMxdQitoU1jHx3A+YSUT4aX9ObLxo7/449bVuHbi/+6C+OzRLa09ZevKRJ+f4Ww0WGkqiyMXACx+m4VzsKaAzh7MzGTpnpISCIm0k5uUnsYaW+h20asIxbKlYr8DsjusbjywKhPvu/ScKUP7beZJLsKrykV2dm6UNJENBbiovy5bKXD5/w3ByhGGkyowDE/cmvy5+6ct5FEmdsBGe3+/akh1HuHsCNNqE4sprYE9TW3PFTolsl28zyubu0Nhigy7eXLmzNOGj3YW9E83tdVQEFr0etMpxCgDaCnAAentqZzANOmmSIy
+ wqLDw9v4
+ lV7oDa38iOPxxpbfzCCcj+ZA08l5A361Xcx101AWRCxViI/iwtx5WeCD/vbmYLGGkH6b5gSBlkn/J++FhV1NgaNYGe8ODJzqXAbvLWRnjNGwX6M11akCDe2XwxGzuXOXrqxqZjiCBvlw1eOYXoK9SRGQaUW4F1zp6DQryKrbUGfbGL8Ix4mrt9vQ4UYMncj9UnrtvtLIiWplD6RiBnEfk2Fvzawak1MfZrqJho8uY05zRbxI8KtHWuCunU1ld74bxty6yyurCVKCBovGlG13BCvv5WnSMEX0dcAT2R2D5TYq1htX4E8h8HWkRUwOPDY6RXOzirw5gwAztZUPms2wYqSgjkLjsR+/lTf6910aPhh0ce9aAYDE3zuiThdQx+23VQuqipZKhV2ma9t+UV8TkU49gLvGijCIIvtH2um2ve88EuDe4D7PxN1QCgo7iWMrQC+A0kmHlAb4leDSWcAwsO2zQZZSH9Ir8s0NKBE7PrBlFWs8l/GxigT+XVOQ6iJpZ3w3mkVJr3SqSLnBYqo9F65o9oeo4ORmXPz5+r2o2k/tyHOHbI8Ws9XdRzjf0u1Das07GMBRhz4sJ3SM9F0JnOsdExOBTPAM5c5KMFuleziWN7z2+mP+uL3lpCskHetwr385g+C4biSS9W7Xxe+JNsGww7dkSqi9CgblcDF9yMCAg7KXgUhsFZxH+5w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,287 +101,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 8/27/25 23:06, David Hildenbrand wrote:
-> On 27.08.25 16:08, Eugen Hristev wrote:
->>
->>
->> On 8/27/25 15:18, David Hildenbrand wrote:
->>> On 27.08.25 13:59, Eugen Hristev wrote:
->>>>
->>>>
->>>> On 8/25/25 16:58, David Hildenbrand wrote:
->>>>> On 25.08.25 15:36, Eugen Hristev wrote:
->>>>>>
->>>>>>
->>>>>> On 8/25/25 16:20, David Hildenbrand wrote:
->>>>>>>
->>>>>>>>>
->>>>>>>>> IIRC, kernel/vmcore_info.c is never built as a module, as it also
->>>>>>>>> accesses non-exported symbols.
->>>>>>>>
->>>>>>>> Hello David,
->>>>>>>>
->>>>>>>> I am looking again into this, and there are some things which in my
->>>>>>>> opinion would be difficult to achieve.
->>>>>>>> For example I looked into my patch #11 , which adds the `runqueues` into
->>>>>>>> kmemdump.
->>>>>>>>
->>>>>>>> The runqueues is a variable of `struct rq` which is defined in
->>>>>>>> kernel/sched/sched.h , which is not supposed to be included outside of
->>>>>>>> sched.
->>>>>>>> Now moving all the struct definition outside of sched.h into another
->>>>>>>> public header would be rather painful and I don't think it's a really
->>>>>>>> good option (The struct would be needed to compute the sizeof inside
->>>>>>>> vmcoreinfo). Secondly, it would also imply moving all the nested struct
->>>>>>>> definitions outside as well. I doubt this is something that we want for
->>>>>>>> the sched subsys. How the subsys is designed, out of my understanding,
->>>>>>>> is to keep these internal structs opaque outside of it.
->>>>>>>
->>>>>>> All the kmemdump module needs is a start and a length, correct? So the
->>>>>>> only tricky part is getting the length.
->>>>>>
->>>>>> I also have in mind the kernel user case. How would a kernel programmer
->>>>>> want to add some kernel structs/info/buffers into kmemdump such that the
->>>>>> dump would contain their data ? Having "KMEMDUMP_VAR(...)" looks simple
->>>>>> enough.
->>>>>
->>>>> The other way around, why should anybody have a saying in adding their
->>>>> data to kmemdump? Why do we have that all over the kernel?
->>>>>
->>>>> Is your mechanism really so special?
->>>>>
->>>>> A single composer should take care of that, and it's really just start +
->>>>> len of physical memory areas.
->>>>>
->>>>>> Otherwise maybe the programmer has to write helpers to compute lengths
->>>>>> etc, and stitch them into kmemdump core.
->>>>>> I am not saying it's impossible, but just tiresome perhaps.
->>>>>
->>>>> In your patch set, how many of these instances did you encounter where
->>>>> that was a problem?
->>>>>
->>>>>>>
->>>>>>> One could just add a const variable that holds this information, or even
->>>>>>> better, a simple helper function to calculate that.
->>>>>>>
->>>>>>> Maybe someone else reading along has a better idea.
->>>>>>
->>>>>> This could work, but it requires again adding some code into the
->>>>>> specific subsystem. E.g. struct_rq_get_size()
->>>>>> I am open to ideas , and thank you very much for your thoughts.
->>>>>>
->>>>>>>
->>>>>>> Interestingly, runqueues is a percpu variable, which makes me wonder if
->>>>>>> what you had would work as intended (maybe it does, not sure).
->>>>>>
->>>>>> I would not really need to dump the runqueues. But the crash tool which
->>>>>> I am using for testing, requires it. Without the runqueues it will not
->>>>>> progress further to load the kernel dump.
->>>>>> So I am not really sure what it does with the runqueues, but it works.
->>>>>> Perhaps using crash/gdb more, to actually do something with this data,
->>>>>> would give more insight about its utility.
->>>>>> For me, it is a prerequisite to run crash, and then to be able to
->>>>>> extract the log buffer from the dump.
->>>>>
->>>>> I have the faint recollection that percpu vars might not be stored in a
->>>>> single contiguous physical memory area, but maybe my memory is just
->>>>> wrong, that's why I was raising it.
->>>>>
->>>>>>
->>>>>>>
->>>>>>>>
->>>>>>>>     From my perspective it's much simpler and cleaner to just add the
->>>>>>>> kmemdump annotation macro inside the sched/core.c as it's done in my
->>>>>>>> patch. This macro translates to a noop if kmemdump is not selected.
->>>>>>>
->>>>>>> I really don't like how we are spreading kmemdump all over the kernel,
->>>>>>> and adding complexity with __section when really, all we need is a place
->>>>>>> to obtain a start and a length.
->>>>>>>
->>>>>>
->>>>>> I understand. The section idea was suggested by Thomas. Initially I was
->>>>>> skeptic, but I like how it turned out.
->>>>>
->>>>> Yeah, I don't like it. Taste differs ;)
->>>>>
->>>>> I am in particular unhappy about custom memblock wrappers.
->>>>>
->>>>> [...]
->>>>>
->>>>>>>>
->>>>>>>> To have this working outside of printk, it would be required to walk
->>>>>>>> through all the printk structs/allocations and select the required info.
->>>>>>>> Is this something that we want to do outside of printk ?
->>>>>>>
->>>>>>> I don't follow, please elaborate.
->>>>>>>
->>>>>>> How is e.g., log_buf_len_get() + log_buf_addr_get() not sufficient,
->>>>>>> given that you run your initialization after setup_log_buf() ?
->>>>>>>
->>>>>>>
->>>>>>
->>>>>> My initial thought was the same. However I got some feedback from Petr
->>>>>> Mladek here :
->>>>>>
->>>>>> https://lore.kernel.org/lkml/aBm5QH2p6p9Wxe_M@localhost.localdomain/
->>>>>>
->>>>>> Where he explained how to register the structs correctly.
->>>>>> It can be that setup_log_buf is called again at a later time perhaps.
->>>>>>
->>>>>
->>>>> setup_log_buf() is a __init function, so there is only a certain time
->>>>> frame where it can be called.
->>>>>
->>>>> In particular, once the buddy is up, memblock allocations are impossible
->>>>> and it would be deeply flawed to call this function again.
->>>>>
->>>>> Let's not over-engineer this.
->>>>>
->>>>> Peter is on CC, so hopefully he can share his thoughts.
->>>>>
->>>>
->>>> Hello David,
->>>>
->>>> I tested out this snippet (on top of my series, so you can see what I
->>>> changed):
->>>>
->>>>
->>>> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
->>>> index 18ba6c1e174f..7ac4248a00e5 100644
->>>> --- a/kernel/sched/core.c
->>>> +++ b/kernel/sched/core.c
->>>> @@ -67,7 +67,6 @@
->>>>    #include <linux/wait_api.h>
->>>>    #include <linux/workqueue_api.h>
->>>>    #include <linux/livepatch_sched.h>
->>>> -#include <linux/kmemdump.h>
->>>>
->>>>    #ifdef CONFIG_PREEMPT_DYNAMIC
->>>>    # ifdef CONFIG_GENERIC_IRQ_ENTRY
->>>> @@ -120,7 +119,12 @@
->>>> EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
->>>>    EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
->>>>
->>>>    DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
->>>> -KMEMDUMP_VAR_CORE(runqueues, sizeof(runqueues));
->>>> +
->>>> +size_t runqueues_get_size(void);
->>>> +size_t runqueues_get_size(void)
->>>> +{
->>>> +       return sizeof(runqueues);
->>>> +}
->>>>
->>>>    #ifdef CONFIG_SCHED_PROXY_EXEC
->>>>    DEFINE_STATIC_KEY_TRUE(__sched_proxy_exec);
->>>> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
->>>> index d808c5e67f35..c6dd2d6e96dd 100644
->>>> --- a/kernel/vmcore_info.c
->>>> +++ b/kernel/vmcore_info.c
->>>> @@ -24,6 +24,12 @@
->>>>    #include "kallsyms_internal.h"
->>>>    #include "kexec_internal.h"
->>>>
->>>> +typedef void* kmemdump_opaque_t;
->>>> +
->>>> +size_t runqueues_get_size(void);
->>>> +
->>>> +extern kmemdump_opaque_t runqueues;
->>>
->>> I would have tried that through:
->>>
->>> struct rq;
->>> extern struct rq runqueues;
->>>
->>> But the whole PER_CPU_SHARED_ALIGNED makes this all weird, and likely
->>> not the way we would want to handle that.
->>>
->>>>    /* vmcoreinfo stuff */
->>>>    unsigned char *vmcoreinfo_data;
->>>>    size_t vmcoreinfo_size;
->>>> @@ -230,6 +236,9 @@ static int __init crash_save_vmcoreinfo_init(void)
->>>>
->>>>           kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_VMCOREINFO,
->>>>                                (void *)vmcoreinfo_data, vmcoreinfo_size);
->>>> +       kmemdump_register_id(KMEMDUMP_ID_COREIMAGE_runqueues,
->>>> +                            (void *)&runqueues, runqueues_get_size());
->>>> +
->>>>           return 0;
->>>>    }
->>>>
->>>> With this, no more .section, no kmemdump code into sched, however, there
->>>> are few things :
->>>
->>> I would really just do here something like the following:
->>>
->>> /**
->>>    * sched_get_runqueues_area - obtain the runqueues area for dumping
->>>    * @start: ...
->>>    * @size: ...
->>>    *
->>>    * The obtained area is only to be used for dumping purposes.
->>>    */
->>> void sched_get_runqueues_area(void *start, size_t size)
->>> {
->>> 	start = &runqueues;
->>> 	size = sizeof(runqueues);
->>> }
->>>
->>> might be cleaner.
->>>
->>
->> How about this in the header:
->>
->> #define DECLARE_DUMP_AREA_FUNC(subsys, symbol) \
->>
->> void subsys ## _get_ ## symbol ##_area(void **start, size_t *size);
->>
->>
->>
->> #define DEFINE_DUMP_AREA_FUNC(subsys, symbol) \
->>
->> void subsys ## _get_ ## symbol ##_area(void **start, size_t *size)\
->>
->> {\
->>
->>          *start = &symbol;\
->>
->>          *size = sizeof(symbol);\
->>
->> }
->>
->>
->> then, in sched just
->>
->> DECLARE_DUMP_AREA_FUNC(sched, runqueues);
->>
->> DEFINE_DUMP_AREA_FUNC(sched, runqueues);
->>
->> or a single macro that wraps both.
->>
->> would make it shorter and neater.
->>
->> What do you think ?
-> 
-> Looks a bit over-engineered, and will require us to import a header 
-> (likely kmemdump.h) in these files, which I don't really enjoy.
-> 
-> I would start simple, without any such macro-magic. It's a very simple 
-> function after all, and likely you won't end up having many of these?
-> 
-
-Thanks David, I will do it as you suggested and see what comes out of it.
-
-I have one side question you might know much better to answer:
-As we have a start and a size for each region, this start is a virtual
-address. The firmware/coprocessor that reads the memory and dumps it,
-requires physical addresses. What do you suggest to use to retrieve that
-address ? virt_to_phys might be problematic, __pa or __pa_symbol? or
-better lm_alias ?
-As kmemdump is agnostic of the region of the memory the `start` comes
-from, and it should be portable and platform independent.
-
-Thanks again,
-Eugen
+CgpBdCAyMDI1LTA5LTAxIDE2OjQ2OjEzLCAiVmxhc3RpbWlsIEJhYmthIiA8dmJhYmthQHN1c2Uu
+Y3o+IHdyb3RlOgo+T24gOS8xLzI1IDEwOjI5LCB5YW5nc2hpZ3Vhbmcgd3JvdGU6Cj4+IAo+PiAK
+Pj4gQXQgMjAyNS0wOS0wMSAxNjoxNTowNCwgIlZsYXN0aW1pbCBCYWJrYSIgPHZiYWJrYUBzdXNl
+LmN6PiB3cm90ZToKPj4+T24gOS8xLzI1IDA5OjUwLCBEYXZpZCBSaWVudGplcyB3cm90ZToKPj4+
+PiBPbiBTYXQsIDMwIEF1ZyAyMDI1LCB5YW5nc2hpZ3VhbmcxMDExQDE2My5jb20gd3JvdGU6Cj4+
+Pj4gCj4+Pj4+IEZyb206IHlhbmdzaGlndWFuZyA8eWFuZ3NoaWd1YW5nQHhpYW9taS5jb20+Cj4+
+Pj4+IAo+Pj4+PiBGcm9tOiB5YW5nc2hpZ3VhbmcgPHlhbmdzaGlndWFuZ0B4aWFvbWkuY29tPgo+
+Pj4+PiAKPj4+PiAKPj4+PiBEdXBsaWNhdGUgbGluZXMuCj4+Pj4gCj4+Pj4+IHNldF90cmFja19w
+cmVwYXJlKCkgY2FuIGluY3VyIGxvY2sgcmVjdXJzaW9uLgo+Pj4+PiBUaGUgaXNzdWUgaXMgdGhh
+dCBpdCBpcyBjYWxsZWQgZnJvbSBocnRpbWVyX3N0YXJ0X3JhbmdlX25zCj4+Pj4+IGhvbGRpbmcg
+dGhlIHBlcl9jcHUoaHJ0aW1lcl9iYXNlcylbbl0ubG9jaywgYnV0IHdoZW4gZW5hYmxlZAo+Pj4+
+PiBDT05GSUdfREVCVUdfT0JKRUNUU19USU1FUlMsIG1heSB3YWtlIHVwIGtzd2FwZCBpbiBzZXRf
+dHJhY2tfcHJlcGFyZSwKPj4+Pj4gYW5kIHRyeSB0byBob2xkIHRoZSBwZXJfY3B1KGhydGltZXJf
+YmFzZXMpW25dLmxvY2suCj4+Pj4+IAo+Pj4+PiBBdm9pZCBkZWFkbG9jayBjYXVzZWQgYnkgaW1w
+bGljaXRseSB3YWtpbmcgdXAga3N3YXBkIGJ5Cj4+Pj4+IHBhc3NpbmcgaW4gYWxsb2NhdGlvbiBm
+bGFncy4gQW5kIHRoZSBzbGFiIGNhbGxlciBjb250ZXh0IGhhcwo+Pj4+PiBwcmVlbXB0aW9uIGRp
+c2FibGVkLCBzbyBfX0dGUF9LU1dBUERfUkVDTEFJTSBtdXN0IG5vdCBhcHBlYXIgaW4gZ2ZwX2Zs
+YWdzLgo+Pj4+PiAKPj4+PiAKPj4+PiBUaGlzIG1lbnRpb25zIF9fR0ZQX0tTV0FQRF9SRUNMQUlN
+LCBidXQgdGhlIHBhdGNoIGFjdHVhbGx5IG1hc2tzIG9mZiAKPj4+PiBfX0dGUF9ESVJFQ1RfUkVD
+TEFJTSB3aGljaCB3b3VsZCBiZSBhIGhlYXZpZXJ3ZWlnaHQgb3BlcmF0aW9uLiAgRGlzYWJsaW5n
+IAo+Pj4+IGRpcmVjdCByZWNsYWltIGRvZXMgbm90IG5lY2Vzc2FyaWx5IGltcGx5IHRoYXQga3N3
+YXBkIHdpbGwgYmUgZGlzYWJsZWQgYXMgCj4+Pj4gd2VsbC4KPj4+Cj4+PlllYWggSSB0aGluayB0
+aGUgY2hhbmdlbG9nIHNob3VsZCBzYXkgX19HRlBfRElSRUNUX1JFQ0xBSU0uCj4+Pgo+Pj4+IEFy
+ZSB5b3UgbWVhbmluZyB0byBjbGVhciBfX0dGUF9SRUNMQUlNIGluIHNldF90cmFja19wcmVwYXJl
+KCk/Cj4+Pgo+Pj5ObyBiZWNhdXNlIGlmIHRoZSBjb250ZXh0IGNvbnRleHQgKGUuZy4gdGhlIGhy
+dGltZXJzKSBjYW4ndCBzdXBwb3J0Cj4+Pl9fR0ZQX0tTV0FQRF9SRUNMQUlNIGl0IHdvbid0IGhh
+dmUgaXQgaW4gZ2ZwX2ZsYWdzIGFuZCB3ZSBub3cgcGFzcyB0aGVtIHRvCj4+IAo+Pj5zZXRfdHJh
+Y2tfcHJlcGFyZSgpIHNvIGl0IGFscmVhZHkgd29uJ3QgYmUgdGhlcmUuCj4+IAo+PiAKPj4gU3J5
+LiBTaG91bGQgYmUgX19HRlBfRElSRUNUX1JFQ0xBSU0uIEkgd2lsbCByZXNlbmQgdGhlIHBhdGNo
+Lgo+Cj5JIGhhdmUgYWRqdXN0ZWQgaXQgbG9jYWxseSBhbHJlYWR5LiBBbHNvIG1vdmVkIHRoZSBt
+YXNraW5nIG9mCj5fX0dGUF9ESVJFQ1RfUkVDTEFJTSB0byBfX19zbGFiX2FsbG9jIGl0c2VsZiBh
+cyB0aGF0J3Mgd2hlcmUKPnRoZSBwcmVlbXB0aW9uIGlzIGRpc2FibGVkIHNvIGl0J3MgbW9yZSBv
+YnZpb3VzLgo+Cj5Eb2VzIHRoZSByZXN1bHQgbG9vayBnb29kIHRvIHlvdT8KClRoaXMgbG9va3Mg
+Z29vZC4KQ3VycmVudGx5IG9ubHkgX19fc2xhYl9hbGxvYyBkaXNhYmxlcyBwcmVlbXB0aW9uIGNv
+bnRleHQgY2FsbHMgdG8gc2V0X3RyYWNrLiAKSW4gdGhlIGZ1dHVyZSwgbm90IGFsbCBjYWxsZXJz
+IHdpbGwgZGlzYWJsZSBwcmVlbXB0aW9uLiAKCgo+Cj5jb21taXQgMWI3MDUyYmM1MzY2NTBmOGNh
+MjliNGY2Zjg2ODJkYzlmNTY5MmQxNgo+QXV0aG9yOiB5YW5nc2hpZ3VhbmcgPHlhbmdzaGlndWFu
+Z0B4aWFvbWkuY29tPgo+RGF0ZTogICBTYXQgQXVnIDMwIDEwOjA5OjQ2IDIwMjUgKzA4MDAKPgo+
+ICAgIG1tOiBzbHViOiBhdm9pZCB3YWtlIHVwIGtzd2FwZCBpbiBzZXRfdHJhY2tfcHJlcGFyZQo+
+ICAgIAo+ICAgIHNldF90cmFja19wcmVwYXJlKCkgY2FuIGluY3VyIGxvY2sgcmVjdXJzaW9uLgo+
+ICAgIFRoZSBpc3N1ZSBpcyB0aGF0IGl0IGlzIGNhbGxlZCBmcm9tIGhydGltZXJfc3RhcnRfcmFu
+Z2VfbnMKPiAgICBob2xkaW5nIHRoZSBwZXJfY3B1KGhydGltZXJfYmFzZXMpW25dLmxvY2ssIGJ1
+dCB3aGVuIGVuYWJsZWQKPiAgICBDT05GSUdfREVCVUdfT0JKRUNUU19USU1FUlMsIG1heSB3YWtl
+IHVwIGtzd2FwZCBpbiBzZXRfdHJhY2tfcHJlcGFyZSwKPiAgICBhbmQgdHJ5IHRvIGhvbGQgdGhl
+IHBlcl9jcHUoaHJ0aW1lcl9iYXNlcylbbl0ubG9jay4KPiAgICAKPiAgICBBdm9pZCBkZWFkbG9j
+ayBjYXVzZWQgYnkgaW1wbGljaXRseSB3YWtpbmcgdXAga3N3YXBkIGJ5IHBhc3NpbmcgaW4KPiAg
+ICBhbGxvY2F0aW9uIGZsYWdzLCB3aGljaCBkbyBub3QgY29udGFpbiBfX0dGUF9LU1dBUERfUkVD
+TEFJTSBpbiB0aGUKPiAgICBkZWJ1Z19vYmplY3RzX2ZpbGxfcG9vbCgpIGNhc2UuCj4gICAgU2lu
+Y2UgX19fc2xhYl9hbGxvYygpIGhhcyBwcmVlbXB0aW9uIGRpc2FibGVkIGFuZCB0aHVzIHdhcyB1
+c2luZwo+ICAgIEdGUF9OT1dBSVQsIHdlIGluc3RlYWQgbWFzayBvdXQgX19HRlBfRElSRUNUX1JF
+Q0xBSU0gZnJvbSB0aGUgZmxhZ3MuCj4gICAgCj4gICAgVGhlIG9vcHMgbG9va3Mgc29tZXRoaW5n
+IGxpa2U6Cj4gICAgCj4gICAgQlVHOiBzcGlubG9jayByZWN1cnNpb24gb24gQ1BVIzMsIHN3YXBw
+ZXIvMy8wCj4gICAgIGxvY2s6IDB4ZmZmZmZmOGE0YmYyOWM4MCwgLm1hZ2ljOiBkZWFkNGVhZCwg
+Lm93bmVyOiBzd2FwcGVyLzMvMCwgLm93bmVyX2NwdTogMwo+ICAgIEhhcmR3YXJlIG5hbWU6IFF1
+YWxjb21tIFRlY2hub2xvZ2llcywgSW5jLiBQb3BzaWNsZSBiYXNlZCBvbiBTTTg4NTAgKERUKQo+
+ICAgIENhbGwgdHJhY2U6Cj4gICAgc3Bpbl9idWcrMHgwCj4gICAgX3Jhd19zcGluX2xvY2tfaXJx
+c2F2ZSsweDgwCj4gICAgaHJ0aW1lcl90cnlfdG9fY2FuY2VsKzB4OTQKPiAgICB0YXNrX2NvbnRl
+bmRpbmcrMHgxMGMKPiAgICBlbnF1ZXVlX2RsX2VudGl0eSsweDJhNAo+ICAgIGRsX3NlcnZlcl9z
+dGFydCsweDc0Cj4gICAgZW5xdWV1ZV90YXNrX2ZhaXIrMHg1NjgKPiAgICBlbnF1ZXVlX3Rhc2sr
+MHhhYwo+ICAgIGRvX2FjdGl2YXRlX3Rhc2srMHgxNGMKPiAgICB0dHd1X2RvX2FjdGl2YXRlKzB4
+Y2MKPiAgICB0cnlfdG9fd2FrZV91cCsweDZjOAo+ICAgIGRlZmF1bHRfd2FrZV9mdW5jdGlvbisw
+eDIwCj4gICAgYXV0b3JlbW92ZV93YWtlX2Z1bmN0aW9uKzB4MWMKPiAgICBfX3dha2VfdXArMHhh
+Ywo+ICAgIHdha2V1cF9rc3dhcGQrMHgxOWMKPiAgICB3YWtlX2FsbF9rc3dhcGRzKzB4NzgKPiAg
+ICBfX2FsbG9jX3BhZ2VzX3Nsb3dwYXRoKzB4MWFjCj4gICAgX19hbGxvY19wYWdlc19ub3Byb2Yr
+MHgyOTgKPiAgICBzdGFja19kZXBvdF9zYXZlX2ZsYWdzKzB4NmIwCj4gICAgc3RhY2tfZGVwb3Rf
+c2F2ZSsweDE0Cj4gICAgc2V0X3RyYWNrX3ByZXBhcmUrMHg1Ywo+ICAgIF9fX3NsYWJfYWxsb2Mr
+MHhjY2MKPiAgICBfX2ttYWxsb2NfY2FjaGVfbm9wcm9mKzB4NDcwCj4gICAgX19zZXRfcGFnZV9v
+d25lcisweDJiYwo+ICAgIHBvc3RfYWxsb2NfaG9va1tqdF0rMHgxYjgKPiAgICBwcmVwX25ld19w
+YWdlKzB4MjgKPiAgICBnZXRfcGFnZV9mcm9tX2ZyZWVsaXN0KzB4MWVkYwo+ICAgIF9fYWxsb2Nf
+cGFnZXNfbm9wcm9mKzB4MTNjCj4gICAgYWxsb2Nfc2xhYl9wYWdlKzB4MjQ0Cj4gICAgYWxsb2Nh
+dGVfc2xhYisweDdjCj4gICAgX19fc2xhYl9hbGxvYysweDhlOAo+ICAgIGttZW1fY2FjaGVfYWxs
+b2Nfbm9wcm9mKzB4NDUwCj4gICAgZGVidWdfb2JqZWN0c19maWxsX3Bvb2wrMHgyMmMKPiAgICBk
+ZWJ1Z19vYmplY3RfYWN0aXZhdGUrMHg0MAo+ICAgIGVucXVldWVfaHJ0aW1lcltqdF0rMHhkYwo+
+ICAgIGhydGltZXJfc3RhcnRfcmFuZ2VfbnMrMHg1ZjgKPiAgICAuLi4KPiAgICAKPiAgICBTaWdu
+ZWQtb2ZmLWJ5OiB5YW5nc2hpZ3VhbmcgPHlhbmdzaGlndWFuZ0B4aWFvbWkuY29tPgo+ICAgIEZp
+eGVzOiA1Y2Y5MDljNTUzZTkgKCJtbS9zbHViOiB1c2Ugc3RhY2tkZXBvdCB0byBzYXZlIHN0YWNr
+IHRyYWNlIGluIG9iamVjdHMiKQo+ICAgIENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnCj4gICAg
+U2lnbmVkLW9mZi1ieTogVmxhc3RpbWlsIEJhYmthIDx2YmFia2FAc3VzZS5jej4KPgo+ZGlmZiAt
+LWdpdCBhL21tL3NsdWIuYyBiL21tL3NsdWIuYwo+aW5kZXggMTc4N2U0ZDUxZTQ4Li5kMjU3MTQx
+ODk2YzkgMTAwNjQ0Cj4tLS0gYS9tbS9zbHViLmMKPisrKyBiL21tL3NsdWIuYwo+QEAgLTk2Miwx
+OSArOTYyLDE5IEBAIHN0YXRpYyBzdHJ1Y3QgdHJhY2sgKmdldF90cmFjayhzdHJ1Y3Qga21lbV9j
+YWNoZSAqcywgdm9pZCAqb2JqZWN0LAo+IH0KPiAKPiAjaWZkZWYgQ09ORklHX1NUQUNLREVQT1QK
+Pi1zdGF0aWMgbm9pbmxpbmUgZGVwb3Rfc3RhY2tfaGFuZGxlX3Qgc2V0X3RyYWNrX3ByZXBhcmUo
+dm9pZCkKPitzdGF0aWMgbm9pbmxpbmUgZGVwb3Rfc3RhY2tfaGFuZGxlX3Qgc2V0X3RyYWNrX3By
+ZXBhcmUoZ2ZwX3QgZ2ZwX2ZsYWdzKQo+IHsKPiAJZGVwb3Rfc3RhY2tfaGFuZGxlX3QgaGFuZGxl
+Owo+IAl1bnNpZ25lZCBsb25nIGVudHJpZXNbVFJBQ0tfQUREUlNfQ09VTlRdOwo+IAl1bnNpZ25l
+ZCBpbnQgbnJfZW50cmllczsKPiAKPiAJbnJfZW50cmllcyA9IHN0YWNrX3RyYWNlX3NhdmUoZW50
+cmllcywgQVJSQVlfU0laRShlbnRyaWVzKSwgMyk7Cj4tCWhhbmRsZSA9IHN0YWNrX2RlcG90X3Nh
+dmUoZW50cmllcywgbnJfZW50cmllcywgR0ZQX05PV0FJVCk7Cj4rCWhhbmRsZSA9IHN0YWNrX2Rl
+cG90X3NhdmUoZW50cmllcywgbnJfZW50cmllcywgZ2ZwX2ZsYWdzKTsKPiAKPiAJcmV0dXJuIGhh
+bmRsZTsKPiB9Cj4gI2Vsc2UKPi1zdGF0aWMgaW5saW5lIGRlcG90X3N0YWNrX2hhbmRsZV90IHNl
+dF90cmFja19wcmVwYXJlKHZvaWQpCj4rc3RhdGljIGlubGluZSBkZXBvdF9zdGFja19oYW5kbGVf
+dCBzZXRfdHJhY2tfcHJlcGFyZShnZnBfdCBnZnBfZmxhZ3MpCj4gewo+IAlyZXR1cm4gMDsKPiB9
+Cj5AQCAtOTk2LDkgKzk5Niw5IEBAIHN0YXRpYyB2b2lkIHNldF90cmFja191cGRhdGUoc3RydWN0
+IGttZW1fY2FjaGUgKnMsIHZvaWQgKm9iamVjdCwKPiB9Cj4gCj4gc3RhdGljIF9fYWx3YXlzX2lu
+bGluZSB2b2lkIHNldF90cmFjayhzdHJ1Y3Qga21lbV9jYWNoZSAqcywgdm9pZCAqb2JqZWN0LAo+
+LQkJCQkgICAgICBlbnVtIHRyYWNrX2l0ZW0gYWxsb2MsIHVuc2lnbmVkIGxvbmcgYWRkcikKPisJ
+CQkJICAgICAgZW51bSB0cmFja19pdGVtIGFsbG9jLCB1bnNpZ25lZCBsb25nIGFkZHIsIGdmcF90
+IGdmcF9mbGFncykKPiB7Cj4tCWRlcG90X3N0YWNrX2hhbmRsZV90IGhhbmRsZSA9IHNldF90cmFj
+a19wcmVwYXJlKCk7Cj4rCWRlcG90X3N0YWNrX2hhbmRsZV90IGhhbmRsZSA9IHNldF90cmFja19w
+cmVwYXJlKGdmcF9mbGFncyk7Cj4gCj4gCXNldF90cmFja191cGRhdGUocywgb2JqZWN0LCBhbGxv
+YywgYWRkciwgaGFuZGxlKTsKPiB9Cj5AQCAtMTkyNiw5ICsxOTI2LDkgQEAgc3RhdGljIGlubGlu
+ZSBib29sIGZyZWVfZGVidWdfcHJvY2Vzc2luZyhzdHJ1Y3Qga21lbV9jYWNoZSAqcywKPiBzdGF0
+aWMgaW5saW5lIHZvaWQgc2xhYl9wYWRfY2hlY2soc3RydWN0IGttZW1fY2FjaGUgKnMsIHN0cnVj
+dCBzbGFiICpzbGFiKSB7fQo+IHN0YXRpYyBpbmxpbmUgaW50IGNoZWNrX29iamVjdChzdHJ1Y3Qg
+a21lbV9jYWNoZSAqcywgc3RydWN0IHNsYWIgKnNsYWIsCj4gCQkJdm9pZCAqb2JqZWN0LCB1OCB2
+YWwpIHsgcmV0dXJuIDE7IH0KPi1zdGF0aWMgaW5saW5lIGRlcG90X3N0YWNrX2hhbmRsZV90IHNl
+dF90cmFja19wcmVwYXJlKHZvaWQpIHsgcmV0dXJuIDA7IH0KPitzdGF0aWMgaW5saW5lIGRlcG90
+X3N0YWNrX2hhbmRsZV90IHNldF90cmFja19wcmVwYXJlKGdmcF90IGdmcF9mbGFncykgeyByZXR1
+cm4gMDsgfQo+IHN0YXRpYyBpbmxpbmUgdm9pZCBzZXRfdHJhY2soc3RydWN0IGttZW1fY2FjaGUg
+KnMsIHZvaWQgKm9iamVjdCwKPi0JCQkgICAgIGVudW0gdHJhY2tfaXRlbSBhbGxvYywgdW5zaWdu
+ZWQgbG9uZyBhZGRyKSB7fQo+KwkJCSAgICAgZW51bSB0cmFja19pdGVtIGFsbG9jLCB1bnNpZ25l
+ZCBsb25nIGFkZHIsIGdmcF90IGdmcF9mbGFncykge30KPiBzdGF0aWMgaW5saW5lIHZvaWQgYWRk
+X2Z1bGwoc3RydWN0IGttZW1fY2FjaGUgKnMsIHN0cnVjdCBrbWVtX2NhY2hlX25vZGUgKm4sCj4g
+CQkJCQlzdHJ1Y3Qgc2xhYiAqc2xhYikge30KPiBzdGF0aWMgaW5saW5lIHZvaWQgcmVtb3ZlX2Z1
+bGwoc3RydWN0IGttZW1fY2FjaGUgKnMsIHN0cnVjdCBrbWVtX2NhY2hlX25vZGUgKm4sCj5AQCAt
+Mzg4MSw5ICszODgxLDE0IEBAIHN0YXRpYyB2b2lkICpfX19zbGFiX2FsbG9jKHN0cnVjdCBrbWVt
+X2NhY2hlICpzLCBnZnBfdCBnZnBmbGFncywgaW50IG5vZGUsCj4gCQkJICogRm9yIGRlYnVnIGNh
+Y2hlcyBoZXJlIHdlIGhhZCB0byBnbyB0aHJvdWdoCj4gCQkJICogYWxsb2Nfc2luZ2xlX2Zyb21f
+cGFydGlhbCgpIHNvIGp1c3Qgc3RvcmUgdGhlCj4gCQkJICogdHJhY2tpbmcgaW5mbyBhbmQgcmV0
+dXJuIHRoZSBvYmplY3QuCj4rCQkJICoKPisJCQkgKiBEdWUgdG8gZGlzYWJsZWQgcHJlZW1wdGlv
+biB3ZSBuZWVkIHRvIGRpc2FsbG93Cj4rCQkJICogYmxvY2tpbmcuIFRoZSBmbGFncyBhcmUgZnVy
+dGhlciBhZGp1c3RlZCBieQo+KwkJCSAqIGdmcF9uZXN0ZWRfbWFzaygpIGluIHN0YWNrX2RlcG90
+IGl0c2VsZi4KPiAJCQkgKi8KPiAJCQlpZiAocy0+ZmxhZ3MgJiBTTEFCX1NUT1JFX1VTRVIpCj4t
+CQkJCXNldF90cmFjayhzLCBmcmVlbGlzdCwgVFJBQ0tfQUxMT0MsIGFkZHIpOwo+KwkJCQlzZXRf
+dHJhY2socywgZnJlZWxpc3QsIFRSQUNLX0FMTE9DLCBhZGRyLAo+KwkJCQkJICBnZnBmbGFncyAm
+IH4oX19HRlBfRElSRUNUX1JFQ0xBSU0pKTsKPiAKPiAJCQlyZXR1cm4gZnJlZWxpc3Q7Cj4gCQl9
+Cj5AQCAtMzkxNSw3ICszOTIwLDggQEAgc3RhdGljIHZvaWQgKl9fX3NsYWJfYWxsb2Moc3RydWN0
+IGttZW1fY2FjaGUgKnMsIGdmcF90IGdmcGZsYWdzLCBpbnQgbm9kZSwKPiAJCQlnb3RvIG5ld19v
+YmplY3RzOwo+IAo+IAkJaWYgKHMtPmZsYWdzICYgU0xBQl9TVE9SRV9VU0VSKQo+LQkJCXNldF90
+cmFjayhzLCBmcmVlbGlzdCwgVFJBQ0tfQUxMT0MsIGFkZHIpOwo+KwkJCXNldF90cmFjayhzLCBm
+cmVlbGlzdCwgVFJBQ0tfQUxMT0MsIGFkZHIsCj4rCQkJCSAgZ2ZwZmxhZ3MgJiB+KF9fR0ZQX0RJ
+UkVDVF9SRUNMQUlNKSk7Cj4gCj4gCQlyZXR1cm4gZnJlZWxpc3Q7Cj4gCX0KPkBAIC00NDI2LDgg
+KzQ0MzIsMTIgQEAgc3RhdGljIG5vaW5saW5lIHZvaWQgZnJlZV90b19wYXJ0aWFsX2xpc3QoCj4g
+CXVuc2lnbmVkIGxvbmcgZmxhZ3M7Cj4gCWRlcG90X3N0YWNrX2hhbmRsZV90IGhhbmRsZSA9IDA7
+Cj4gCj4rCS8qCj4rCSAqIFdlIGNhbm5vdCB1c2UgR0ZQX05PV0FJVCBhcyB0aGVyZSBhcmUgY2Fs
+bHNpdGVzIHdoZXJlIHdha2luZyB1cAo+KwkgKiBrc3dhcGQgY291bGQgZGVhZGxvY2sKPisJICov
+Cj4gCWlmIChzLT5mbGFncyAmIFNMQUJfU1RPUkVfVVNFUikKPi0JCWhhbmRsZSA9IHNldF90cmFj
+a19wcmVwYXJlKCk7Cj4rCQloYW5kbGUgPSBzZXRfdHJhY2tfcHJlcGFyZShfX0dGUF9OT1dBUk4p
+Owo+IAo+IAlzcGluX2xvY2tfaXJxc2F2ZSgmbi0+bGlzdF9sb2NrLCBmbGFncyk7Cj4gCg==
 
