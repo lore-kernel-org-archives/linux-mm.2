@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF64CA1002
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 10:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4443CA1005
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 10:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DCC88E001B; Mon,  1 Sep 2025 06:46:32 -0400 (EDT)
+	id 1C0EB8E0023; Mon,  1 Sep 2025 06:46:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 086D28E000B; Mon,  1 Sep 2025 06:46:32 -0400 (EDT)
+	id 1712F8E000B; Mon,  1 Sep 2025 06:46:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB76A8E001B; Mon,  1 Sep 2025 06:46:31 -0400 (EDT)
+	id 012678E0023; Mon,  1 Sep 2025 06:46:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D48568E000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:46:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 879301A0790
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:46:31 +0000 (UTC)
-X-FDA: 83840352582.28.10BD6A1
+	by kanga.kvack.org (Postfix) with ESMTP id DCD848E000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:46:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AEC75BB790
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:46:35 +0000 (UTC)
+X-FDA: 83840352750.14.D94ED5F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0C5A5C0007
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:46:29 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1CF822000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:46:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756723590; a=rsa-sha256;
-	cv=none;
-	b=JaszaIfGR6ZSzhEd0plhxSIHlLWuHdclbkWX+4idXVZKK81TTM1wZtoF03SwbvOIxW94oQ
-	S5a69rOvwKOCllM0tb1O3uztr8Li2sBwtyIkDHChvLhVyPXXRfh9vnVRACG4LCO9uD9esq
-	ReeJC13XCwBVDeQ87nwprv9Rb03uoXA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf10.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756723590;
+	s=arc-20220608; t=1756723594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=s9FSr+hyjyhHm1NCXUk75KE+XvaONfrQlCmBbK3JdxI=;
-	b=8MTztz6Fw1Lb9ZNGlw20A7RZct2Vvx7ifj0vvZlXPvcKW4BWCihUuXxEpNuTNxjm4HjhyL
-	GNk2FwjF+ht17s902VYJ7rodNFodW5GNBvV/QfQufHSsaG+GMz9GhG0xn6Ef7oP+nqwqCM
-	LVo7jbgs5F7xzp15WVJ4LfYdfAW/9dg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=NpM1/eWJJ2noDPeFMVPYJ9eJ6Ch1jmWcdsDAK0nI9f0=;
+	b=4VzBEjWCHXKIHikqLYLdkUM9v3/vRhHQDT3VnZdwGoHfzxMsyii2CqOZwTuwsqrgtaIduX
+	5XglR0V8g694V9eRAkgN8rxy8j+rQkdRn8dzc0qYawJAubj9kAXG9Yn5XVXzQ9Tcg/nPCc
+	tt4HdzWXSYYXx4xn9psp1OLCZsZEJUc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756723594; a=rsa-sha256;
+	cv=none;
+	b=Aww/RTXYEJ/UkFI3G81IOHLwLHYSDqAGlsXQMyS0JVlk9AGb/Wa+jNjXGRthaK8UOAwmYN
+	Hw/EQZrgUa9vxzjxKr/sZVVInxIgIYgxclbfQ70W5NNewowvrKLEmmS7jQ2x8tgr23GqsN
+	75jO2LDitGHgw9N36TxeyXAa/B8erJw=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7C99E16A3;
-	Mon,  1 Sep 2025 03:46:20 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E77023F6A8;
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A90C71A25;
 	Mon,  1 Sep 2025 03:46:24 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 224823F6A8;
+	Mon,  1 Sep 2025 03:46:29 -0700 (PDT)
 From: Yeoreum Yun <yeoreum.yun@arm.com>
 To: ryabinin.a.a@gmail.com,
 	glider@google.com,
@@ -83,19 +84,22 @@ Cc: kasan-dev@googlegroups.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: [PATCH v6 0/2] introduce kasan.write_only option in hw-tags
-Date: Mon,  1 Sep 2025 11:46:21 +0100
-Message-Id: <20250901104623.402172-1-yeoreum.yun@arm.com>
+Subject: [PATCH v6 1/2] kasan/hw-tags: introduce kasan.write_only option
+Date: Mon,  1 Sep 2025 11:46:22 +0100
+Message-Id: <20250901104623.402172-2-yeoreum.yun@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250901104623.402172-1-yeoreum.yun@arm.com>
+References: <20250901104623.402172-1-yeoreum.yun@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1CF822000B
+X-Stat-Signature: ksgrpxndjtuf74r8aro6mhfgyeq1fud8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C5A5C0007
-X-Stat-Signature: kggn767pdiiatq9fe6s3pob31bopmgpj
-X-HE-Tag: 1756723589-773008
-X-HE-Meta: U2FsdGVkX18CEE3bcsb8YFe5EQrapAxV0U8TBPpB/Wlx5+k09oWUb9lFXX0P/ijVkatKuLZaHjRnLfwBxuCC7iPCTLYV8iG4zSWFplr3L0kAyRlizHv5bV+IffH2rYz6cy+gD4Z/UZONpmsUkbfaO112M5OkYXHK5CMfAlVcrg+M59yaU1ypEPgE2wN8SNjYTWKWGgsR6lhqdDwTVsGrt6/PAC9TZ2zfMwFxwEb+QLGPMAqZDnjM9NzJqKUoUQzBkP4eQDQ75yUhmCuj4MZxaJXKCwnKmqxUCsD2UMUOivURzHSbOQ1I8U+J3OEdQD+cIqeAymyJWQ8o4nM8Qfz5VOxBYB1r9Qfj9LmN7V79UFnVhr6vQT1Due2SnLawPuNBT01R1N9xcp3EsTuKiWf4IDZ8+LBsCfLYly9wBZrZ6K1NuhEAmXK8HAUODMJwTu3lM5B/idnrLekitA91rW7MKHT1aInsIpbGhoHcIo8KDa/VQyEr3Y+puJcAr13Fpr6M534CgWI0TvlJtCtlGdvv1GnL7J5eOKm7zX56RYfJwf3WzIRtE2u5VAXimzadRH2y1fTf5bVxQWC8dIT0Vv2EYVf/hlIQafmgcIjlFxUDZszAaCVSgJPU4+I2KTxSifdDj+slkGvg1Gf9IfviE1oYgzzUG8F6JPUKCcxQ50/F0YoIP5pZ0GzOtncolVQq2gvs/lxk+Vs8Ks2D3+/F/jiKj9r4mIdC/MnVLszSJPnocQofPimx0Z10z6hgxekf8GfYqiCCSPslQjDcvKuGZe0bU8V5wNS3JsNdDVl6IYn+IAseXcgG4D2nNGWCW4Tg2mztxL2vRjuZ4+YspqP/LhiG1cciFKZRnbm3Cm1vs3LHXcZnpid4m6yKmWQmK3QkDzgQk4efqIzRV+uYBe5APqdI3EJkkAej7DBYP4V1zs4Wrd8TCiWtFFMpN4HZtJirSKU5PkaXxTP+HZprjcqR6zc
- S4g==
+X-HE-Tag: 1756723593-737623
+X-HE-Meta: U2FsdGVkX199EBwcaI/3OuKM/Xkfh6hRaB4VDQTUfFqF/t4cU/NqXMK9W8XE2DK0drY3Clq7p/iQNzMLFEVO3EfrqsWQayINgRe0FxLQNY5qTYf6IpJSBzDgp+O9s3FKIyFztyr68sWprZEQfLGX5QhLMGgHQIzep6mwYNtHPi92OQxMtzFAckmmt0sXRFPw/lHj0P673Y3ykJWpm/2hoWwQUJ+TvC0Ck23RqRwiixTHhUTt5E52YL9p9MvRfRPOf74hPu3ArwpyzTrdhHgCZt3TrEW+zg0J1ftqmih/U01Dz9H8Xethb1g0eoNVgBf02tQ3EAwdDI+91XISHFkO/p/fKKjTi/W+uMIsIm6hj+tBtxWM8NcAgNSZpimf+fq9WhT7iX5p3V1J3f4EElQyHQ4uHfDN1pfdwnZl3Th6UGo6V/80o5eU8v+ll7OlVsReOepoTNgOToNVRuP3hE0eGsnO3HZbmFzhyfkL5M9TWbBy2rwcv567Y9PuBwvLLMewNVW/FJFQ4DOGVJ+3ta5onb/jnd/Dn71R0Lwv3LQVZJnwjw2h98TVfINJv1+B8gRKHLe/r8zsk1Tf70XrsACNpEzWM9FnGlvrQ1gQ4xC0aTGL8tmO3BRYBS8dxZU/6/IIjbc4F+9xU+sYgKQOO+UUGZJ2zWjY/lRs32LYNW78FNOoCJUr3V9d9DtAC7biz0iTaCwl4JWZVOxyqaYb+S+7CcvRi2Tlp0oHc2mX0SMP2J7ilP4PWxFJC5QQPbEQJVlbsCtO4DF3THngleoc5TU2fg2zVFIkgeXv2gmPyEbgjbifhMAhpqwcGFRsr5273w8VhY/HByg+D1iruc/88UPzfzNdGJ39BciUZBEnTdHyzDb0dUJdaOGGB7LQndmEcZFCX1U0LFHvVqdpq/NsVZC/Y5YHdwI+AHBiThPsDLofHM3Czxo0nalCdcOaFchFtTMNyvQMjCWkHBKcuic64O6
+ 3MyKMsIH
+ eupcAMUfCTr/Z9CqrqjA8snacDs87fysSveF36IxZuFHDJOWaX865UyFzQtENk1ZQZOZ0daDlCQxXPcwwgjTPeHTM6cnNFjVByF7ZjfHkr7akr7AONlzJgK/KCTcHVFPzm83jfkci99W1SGpkqUIyjs5GFwGR0eisEdW+78bW5rdlpSkDDbuNeAcuzDr16ohDPBPQX2U+h6dQ331hlu5btTNzecz+a+T5gXv6UmzHjE12/8gRxzmUAQPJBWMjaglu85ziRSqXZTfNuJHiwLE2D3gTJpplvUVoAVzb0yT40WJGwiw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,258 +108,282 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hardware tag based KASAN is implemented using the Memory Tagging Extension
-(MTE) feature.
+Since Armv8.9, FEATURE_MTE_STORE_ONLY feature is introduced to restrict
+raise of tag check fault on store operation only.
+Introcude KASAN write only mode based on this feature.
 
-MTE is built on top of the ARMv8.0 virtual address tagging TBI
-(Top Byte Ignore) feature and allows software to access a 4-bit
-allocation tag for each 16-byte granule in the physical address space.
-A logical tag is derived from bits 59-56 of the virtual
-address used for the memory access. A CPU with MTE enabled will compare
-the logical tag against the allocation tag and potentially raise an
-tag check fault on mismatch, subject to system registers configuration.
+KASAN write only mode restricts KASAN checks operation for write only and
+omits the checks for fetch/read operations when accessing memory.
+So it might be used not only debugging enviroment but also normal
+enviroment to check memory safty.
 
-Since ARMv8.9, FEAT_MTE_STORE_ONLY can be used to restrict raise of tag
-check fault on store operation only.
+This features can be controlled with "kasan.write_only" arguments.
+When "kasan.write_only=on", KASAN checks write operation only otherwise
+KASAN checks all operations.
 
-Using this feature (FEAT_MTE_STORE_ONLY), introduce KASAN write-only mode
-which restricts KASAN check write (store) operation only.
-This mode omits KASAN check for read (fetch/load) operation.
-Therefore, it might be used not only debugging purpose but also in
-normal environment.
+This changes the MTE_STORE_ONLY feature as BOOT_CPU_FEATURE like
+ARM64_MTE_ASYMM so that makes it initialise in kasan_init_hw_tags()
+with other function together.
 
-This patch is based on v6.17-rc1.
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+---
+ Documentation/dev-tools/kasan.rst  |  3 ++
+ arch/arm64/include/asm/memory.h    |  1 +
+ arch/arm64/include/asm/mte-kasan.h |  6 +++
+ arch/arm64/kernel/cpufeature.c     |  2 +-
+ arch/arm64/kernel/mte.c            | 18 ++++++++
+ mm/kasan/hw_tags.c                 | 70 +++++++++++++++++++++++++++++-
+ mm/kasan/kasan.h                   |  7 +++
+ 7 files changed, 104 insertions(+), 3 deletions(-)
 
-Patch History
-=============
-from v5 to v6:
-  - change macro name for KASAN kunit test.
-  - remove and restore useless line adding/removal.
-  - modify some comments on KASAN kunit test.
-  - https://lore.kernel.org/all/20250820071243.1567338-1-yeoreum.yun@arm.com/
-
-from v4 to v5:
-  - fix wrong allocation
-  - add small comments
-  - https://lore.kernel.org/all/20250818075051.996764-1-yeoreum.yun@arm.com/
-
-from v3 to v4:
-  - fix wrong condition
-  - https://lore.kernel.org/all/20250816110018.4055617-1-yeoreum.yun@arm.com/
-
-from v2 to v3:
-  - change MET_STORE_ONLY feature as BOOT_CPU_FEATURE
-  - change store_only to write_only
-  - move write_only setup into the place other option's setup place
-  - change static key of kasan_flag_write_only to static boolean.
-  - change macro KUNIT_EXPECT_KASAN_SUCCESS to KUNIT_EXPECT_KASAN_FAIL_READ.
-  - https://lore.kernel.org/all/20250813175335.3980268-1-yeoreum.yun@arm.com/
-
-from v1 to v2:
-  - change cryptic name -- stonly to store_only
-  - remove some TCF check with store which can make memory courruption.
-  - https://lore.kernel.org/all/20250811173626.1878783-1-yeoreum.yun@arm.com/
-
-
-Yeoreum Yun (2):
-  kasan/hw-tags: introduce kasan.write_only option
-  kasan: apply write-only mode in kasan kunit testcases
-
- Documentation/dev-tools/kasan.rst  |   3 +
- arch/arm64/include/asm/memory.h    |   1 +
- arch/arm64/include/asm/mte-kasan.h |   6 +
- arch/arm64/kernel/cpufeature.c     |   2 +-
- arch/arm64/kernel/mte.c            |  18 +++
- mm/kasan/hw_tags.c                 |  70 +++++++++-
- mm/kasan/kasan.h                   |   7 +
- mm/kasan/kasan_test_c.c            | 204 +++++++++++++++++++----------
- 8 files changed, 239 insertions(+), 72 deletions(-)
-
-
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-prerequisite-patch-id: 136c6b02685560c44ec3344be9b716bdfbc5ffa2
-prerequisite-patch-id: 45bbbbf89a641d5daca648988d8e4d45de45db80
-prerequisite-patch-id: ea19c0e099daab02577ee2e86671417fc57d0b0d
-prerequisite-patch-id: 5adddd8cd6865b4d6a0b7d9e9085220e22723faa
-prerequisite-patch-id: d8471a1aaee960efa4fc41ca42068aef6730a8d9
-prerequisite-patch-id: 969950ee5ccabeb3df369142dfa97a4474788859
-prerequisite-patch-id: 21b91081876a36ecaa5547e1f251b2101ba97950
-prerequisite-patch-id: c04ce4ffe72ad15b8ab13e157d8b25d635f170a3
-prerequisite-patch-id: e8b79e0c052d28833e4f4c627d5365ef5299e617
-prerequisite-patch-id: 07b1a7e43f2c7f61c397ef4f6c5e12b0df3590e4
-prerequisite-patch-id: 2f420864ab40988d03c96c27ca5ba431efe2717f
-prerequisite-patch-id: eeac7cfc0249e5ac71f12e340277633cf4d7aabe
-prerequisite-patch-id: 6d190150e7f678ce654800a41800278dc2dd0bb3
-prerequisite-patch-id: cce369222a7cdd5f91d10c12cb3905107f6a7874
-prerequisite-patch-id: 290b18733f6fcbf5b0bcfc1a378d2cbf3d952669
-prerequisite-patch-id: c81d671f37e6465fe8ae0e5ce2e32aac8e3e5e10
-prerequisite-patch-id: 7f38f1b76708ea2b33e0bd7ebd334ae6d6f95b78
-prerequisite-patch-id: a730599474985e4e8f4e17a6f3521f7de687825e
-prerequisite-patch-id: 0af8e9b6d2985a1da4a220de34e1a37179fa1a2c
-prerequisite-patch-id: b4a83f3d74686eee187f25ca12ef75a0475fa2cf
-prerequisite-patch-id: d0e7e6d3485eed1b85fca8e12c6ef4118ccd8c2d
-prerequisite-patch-id: 8f1932d6d4892d06de0e6da0606fe94644d10b02
-prerequisite-patch-id: 8149f1ed55eda3d2f7ac70c71480c4694ce8c293
-prerequisite-patch-id: b244e6c6438bb637a9c2123d7875072a336dbf40
-prerequisite-patch-id: f3bb5cef44a4dbd16d314ac72674e87da9576031
-prerequisite-patch-id: e284957cded74a97be39563cc68771753f8ff560
-prerequisite-patch-id: 42fb46241a4969b46377fe372b107ecf84fdac65
-prerequisite-patch-id: 03ca449e3ef1e354bfca8dcfad1c1754992770f6
-prerequisite-patch-id: c784c79c432175b2b8f980b570604cb3839a1d0f
-prerequisite-patch-id: 6cf468fcd78d9f5566c848caa29c2e63279914c6
-prerequisite-patch-id: 9e4ccee8587702f2e0fe537c7072b9888a0c1aba
-prerequisite-patch-id: 1e44823aba4d29d8cf9c2d5c7659382cd4e9f578
-prerequisite-patch-id: 107f6ba7dd4b22e870d641670ed020cc3d783df2
-prerequisite-patch-id: 0bc6e19edcc18632ade69696a057a71f9169e90d
-prerequisite-patch-id: e776b9cf46afdc0c90293081a786144d21e4ec46
-prerequisite-patch-id: 18ff9ea0304a49a5e1bd200a723d8eb45c7c92f7
-prerequisite-patch-id: bd747f03cfe61caa1bda1caf594ef9f195d70a73
-prerequisite-patch-id: e5f37bb65433f4d290cde0a65c3cb46a5bd8f6b8
-prerequisite-patch-id: 230be9c059f823ea5c78d1b1da55fb18892a0f72
-prerequisite-patch-id: 150d0a767ab84dc9eb3c39bd7d63338e961b0233
-prerequisite-patch-id: 383116f4edc62f1ba03ffd10385aed7140b9971c
-prerequisite-patch-id: df971da9ff346719a80df1dbb0728ee35fa71ae4
-prerequisite-patch-id: e725511837cca1e7e5d04670885a52582aecdc39
-prerequisite-patch-id: 594e3fe39c37f00f20f48127ef02b4363ece1dcf
-prerequisite-patch-id: cba6439f7314aa62c188077a120ae56201660b16
-prerequisite-patch-id: 29df9f163c4dc8518a0b408b5972a8883b841dd1
-prerequisite-patch-id: 78667378d037d37076499b68e80393b0861512b3
-prerequisite-patch-id: c8af68f162f02af7d2090e3a20dfa95a68067fd7
-prerequisite-patch-id: ee1e3cef0df94dd93584110c9fa590baec1e951f
-prerequisite-patch-id: b75496be2f73ac73bd7e1f5de1ec25f395db9d1b
-prerequisite-patch-id: c1c008ad523d34fc5bcd3455a6b7b46a48a0372d
-prerequisite-patch-id: 13ac4ac649d2721cb1fa1a96c8680050b865de87
-prerequisite-patch-id: eb6c631b6f18d1d9666723b92e11e005009a5d92
-prerequisite-patch-id: 540bb74abf0680f0857eccb6d9507875923644a1
-prerequisite-patch-id: 27d953412b9416a0523eef0d45557db08edebad8
-prerequisite-patch-id: 28adf1a29676d8184b138f60a02e033435c44960
-prerequisite-patch-id: 7f67f3bf300491ea7852fbca10d7dcb0638c1771
-prerequisite-patch-id: 358ba438674c82a7998d68cca853f2828276a609
-prerequisite-patch-id: cadf6f28cef328a919572d8e0ab2ebc9ed2019e6
-prerequisite-patch-id: b1f40307c72f0a314c4184c2d45e0a8b4048f685
-prerequisite-patch-id: cf02be23717b54437918c80cfb663ddecb2d1483
-prerequisite-patch-id: c2153976ef7c54556abfc04cedf18eed300e4fd5
-prerequisite-patch-id: 7413f73a43098ff888f715c13747abb62f498770
-prerequisite-patch-id: 4285dc47a26a5152eaf515c2934cc0d1b7cc9d1d
-prerequisite-patch-id: 94032debade30f10dfb6a4021c1a41b49d4ea069
-prerequisite-patch-id: 1b0d245e4b8c568f4865a00e011d79d39adc1649
-prerequisite-patch-id: 33c3958dc29779f84a2858902043840169cc7de3
-prerequisite-patch-id: fbd86d03e31d738865d27b860bca951b283fdab5
-prerequisite-patch-id: c20b348d2820cdfe31d800efc950c22255bc22ad
-prerequisite-patch-id: 0a15397743a75a3a56017975501301d56963d771
-prerequisite-patch-id: 64dca2daa72ff52744f7e86623309e757e0f1c40
-prerequisite-patch-id: 34ae142eff624e64106ee0f594394e1600973e5d
-prerequisite-patch-id: 9b3c97d6537a7d6ebfee8e7a51057ae0bd6be479
-prerequisite-patch-id: 7ecc644ea8560552cf4cc12925de81b56fece04e
-prerequisite-patch-id: 800813b629a6e3d09d47076d898150cd73119c07
-prerequisite-patch-id: 745083490be7d6e249f24ff7574c2b8df9f37a1b
-prerequisite-patch-id: 878c0fbdc362b4fd5c943400b72f4f4ffe141a55
-prerequisite-patch-id: a8627b9e4e87a5fe2cb0d17125559d7be15910aa
-prerequisite-patch-id: caf32baaa38ad7ed80e4109fd853097b8bcc41c8
-prerequisite-patch-id: 48dbc4fefb04926762e09342b63eae52df44048f
-prerequisite-patch-id: e1fb352d09da8fa6ee3306d85af029a9a4be7ec8
-prerequisite-patch-id: e7a5b69d0283bfcb4e2901f64d8834ff5361f126
-prerequisite-patch-id: 04712cd6067166048944e741e8f93e018904ac56
-prerequisite-patch-id: f15d057c5ca21a05f7a205a6519d58ea1f592d7d
-prerequisite-patch-id: 7476f8cd099b5fab7a0f6c76a378e2d50066be0b
-prerequisite-patch-id: 38f0c6aa4dd53f308b4c211d7b6326de6622f045
-prerequisite-patch-id: b45a6f20519aea585527078495a2c9c63feb3778
-prerequisite-patch-id: 9344feb49232a49d171c5c2fee55a28873ef5710
-prerequisite-patch-id: 3ae3b35697646f814c74a62027a9555bb1c28ac8
-prerequisite-patch-id: cbe8aa31360444f9768764b0659e1d04cd77a5b2
-prerequisite-patch-id: 133cfbe76d691ed57dbeecdc355833b0ddd20208
-prerequisite-patch-id: b54ad7c10fc1a6cc0f93e603397510906ef22a68
-prerequisite-patch-id: 6d62f0ec7000fd26db84a7008e2cd92738e6bddb
-prerequisite-patch-id: 642b15a05d3613f503651ff795947df69c8c856a
-prerequisite-patch-id: 7fce745555f774f4ddc39044c41e013fd42a5b7f
-prerequisite-patch-id: 81aa7af170f321450fb7d29e788b9de90ef60261
-prerequisite-patch-id: 3307943829aea5595b3ec49f22204c55adfc9c37
-prerequisite-patch-id: c865672ddb7be662d9fade867201679bf5d62408
-prerequisite-patch-id: 2fa765c8477947130a6be91cccae9fb2de84e193
-prerequisite-patch-id: 08a9efdd6e4bc6de5baa2789f1d608ab98a327e0
-prerequisite-patch-id: 0d0b0b71375800974dbe7237927dded7261180bd
-prerequisite-patch-id: da00f3be5a9c30a68c3ad40eebc9e857664ba39b
-prerequisite-patch-id: 7ce6f4d8ed2cca29fab9d06b53d94eaf2d4a71ca
-prerequisite-patch-id: b353a98ba3563e9f19c3d869753c2a000bb0dd5c
-prerequisite-patch-id: 14fc49629b991d714c75068d1bd31cd4df00369f
-prerequisite-patch-id: abc5404e1ca9ebba2d256e5f19aafdc3da8433e9
-prerequisite-patch-id: 3fd33bd1054f7cfe8c3d08b7c53a77df6e89dc5a
-prerequisite-patch-id: 90eb019a38dbd0099a9aee921bde795dc77281c6
-prerequisite-patch-id: 69933246ea66c02b0291a946a510e63b28aa4a07
-prerequisite-patch-id: d4b2f02a1df02786239131b2af8626f19d7febfd
-prerequisite-patch-id: 54470e5d2206ef4dd8ba2168b29cc57579fac520
-prerequisite-patch-id: e0b3b83c0828ad746354d536270942259ad7d5a5
-prerequisite-patch-id: f7d545aa7a1c82938ce0437c251acd1a041a32b2
-prerequisite-patch-id: dfd0e53d9bf57c760fd284ce27c41ba91bf9ae5b
-prerequisite-patch-id: 76313f2c8af79cfd97a5f79da5fd5b3fc4a48bfe
-prerequisite-patch-id: 0779fa85eb9cac194a01a6351288508d6e80e90b
-prerequisite-patch-id: 41f7a748ce6619611991b479468334d1edd23022
-prerequisite-patch-id: dd030d0200d8ce2340bf7d9b71c6e9aa719eed8e
-prerequisite-patch-id: 5c32ccd9b5010c5b70633a54a2e0e9273ae4cd89
-prerequisite-patch-id: f9eb03ca1f597bb99366adb81a201cfdc5f46538
-prerequisite-patch-id: f08d8da3f1d4b72b27a1eb0f21e05839c0dfb2ef
-prerequisite-patch-id: b6d1fe4754a2f54a6eb1f881bceacecc9b8aef6e
-prerequisite-patch-id: e1164905fe6444b47d301aa73434e24395ee3692
-prerequisite-patch-id: b98524d164fb5270fc83200b0005dfab8ab085d0
-prerequisite-patch-id: 7de80453bca3ab7af13f2d5dd0af53b49ab775be
-prerequisite-patch-id: cab73f2d83bb9caba9a9140e871ed804ad93012d
-prerequisite-patch-id: 4ccc38815bc167042fd9480658ca977c5a018865
-prerequisite-patch-id: d7549e7c36b461ef9816b2580d31a3b322189f6b
-prerequisite-patch-id: f62a5eb77118b9f534e1829f9277f78159e0426a
-prerequisite-patch-id: ef6cf9280b7ad0d6df39e3c30ac70594683b3237
-prerequisite-patch-id: 097d27325d53feb894b26bb0c7e152fca314e7b9
-prerequisite-patch-id: ca3a3605a04c9d3dcd7f577bf11b827735ae9fb2
-prerequisite-patch-id: 1896423fac08929b2cbe94ab22f355e1a1674d91
-prerequisite-patch-id: 0ed94130a16282e44a3b586ea7b5a2fbcbfd8e38
-prerequisite-patch-id: 2246611dab54080318ec3b1359f07f5a6c37363c
-prerequisite-patch-id: 18b914f2dd8e71ec7d128bcdb4ec7f78ec7760ee
-prerequisite-patch-id: 1871f47d222aa5d1a85830e25be310e38288545c
-prerequisite-patch-id: 57a66df1e4e0d2ac3bc0c4eab5f622fe557f7955
-prerequisite-patch-id: 26647ddce2ad9cd5ea2b6e05b9b36b64e51d2b4e
-prerequisite-patch-id: 2b1aef1d3e43f6a7a9dab2e1d3eb30e9df131684
-prerequisite-patch-id: 7ef55b4a331871c3153e9043aadd0aa16d4aba5c
-prerequisite-patch-id: d18e41b2d1d5dbc4362ece6b4c5816a86b933638
-prerequisite-patch-id: b7a386f31313694e8d75fd7edeb10c62d9bf7650
-prerequisite-patch-id: 261051e73501abfbfa106f44e0e0e4c74603f131
-prerequisite-patch-id: 8498a2e4f746081e719d9a021b57bc80a5ac3817
-prerequisite-patch-id: 3b6a398d6d2d5f84011eb48401bb453d9e9bb1a2
-prerequisite-patch-id: 7e910758654df94dfbeeaee0429e0acdf5035edb
-prerequisite-patch-id: 23115277def65ee8db1c7a0b0f697211253eeef2
-prerequisite-patch-id: 6514c6f702538db3fe776443b03205e0e331d59b
-prerequisite-patch-id: 4eeb4b19bb876c449f377c2fce9e8d5d2e3384bb
-prerequisite-patch-id: f187aa49a1b20ca85d7556fee15f526c26650688
-prerequisite-patch-id: 997a8549300388c11027e465c6781acd2fa799b9
-prerequisite-patch-id: 9094fb34dcdb72d2d4d9cf7b9a71dbfbe85f47db
-prerequisite-patch-id: 32231f11fcc72302bf4e2bddbd362b2f27928b65
-prerequisite-patch-id: 2497ea23d9ebf51b71472136e1a74bfbd2594a3c
-prerequisite-patch-id: 0cf170373dfeaab97e724610375091972b91b3b3
-prerequisite-patch-id: 2a20ef3c132bd0259826e6d5b020df71ace360ec
-prerequisite-patch-id: 6d3d248f710c8afaa68ac2648ea0133d90bca19a
-prerequisite-patch-id: 8d13795b1a92c79ed5f1c3871e3a7b0ba17e34a1
-prerequisite-patch-id: 80dc4103e79eff0a7ebe12169c7b36d098382552
-prerequisite-patch-id: 17b2a915420e30817ee4b8b76fe69245c351adab
-prerequisite-patch-id: e3b1a35f82d7a87f54fb049bc08649663d93e889
-prerequisite-patch-id: 3192e8f3349ba989abfa1603d9df1ff8ddc72801
-prerequisite-patch-id: 1d258467dc0bb5418885e6cba6eefa012ad3da09
-prerequisite-patch-id: bc3a68e959b57b6dc814550f81d70369b3fdc5ab
-prerequisite-patch-id: 1b477cffeb8eb881f8ef21cab7d9d0fcf41bc65c
-prerequisite-patch-id: 21c5fd0bc10d681bb01c4e6b9c809efb46af0473
-prerequisite-patch-id: d8cfb68a6653d82fc55d9577ba45face4abdffeb
-prerequisite-patch-id: f95b2692beefcdb4c01e26a27ad61fc79e15130e
-prerequisite-patch-id: b4486a6d6d3a870d8604a5b95ff217a7a25b787e
-prerequisite-patch-id: 1fab4dfefa1608a5668c166bc0f83a5eb03f1f6d
-prerequisite-patch-id: 7c768335c56ef9f5adfd59827475bd66fceaa608
-prerequisite-patch-id: 226bf92946bc11d17c3fc46a5d63614e92a9ef9e
-prerequisite-patch-id: 1ee2b49c3c8ad17e9b50c5e005e9c7ed9f37a0de
-prerequisite-patch-id: 29cb1d6dd1a1815e72efe384b6779a0aecd30904
-prerequisite-patch-id: f75afa353717cc8eda63b392c1f195bde1daff5e
-prerequisite-patch-id: 0834d786bee7772b207590046df0c594bc39c9e3
-prerequisite-patch-id: eec4e0f5694ea87625ae8cb483601d7dcd1518b3
-prerequisite-patch-id: 6e467aa948af15cb7d5d848c6923c311fba01a19
-prerequisite-patch-id: fb2e1540330d24599ad4dd426cb78f4db631af1c
-prerequisite-patch-id: 76b11bb00d485a802efbef14aafd93387609470f
-prerequisite-patch-id: a565b77909e10221b99afe597443ff71de11e1ba
---
+diff --git a/Documentation/dev-tools/kasan.rst b/Documentation/dev-tools/kasan.rst
+index 0a1418ab72fd..a034700da7c4 100644
+--- a/Documentation/dev-tools/kasan.rst
++++ b/Documentation/dev-tools/kasan.rst
+@@ -143,6 +143,9 @@ disabling KASAN altogether or controlling its features:
+   Asymmetric mode: a bad access is detected synchronously on reads and
+   asynchronously on writes.
+ 
++- ``kasan.write_only=off`` or ``kasan.write_only=on`` controls whether KASAN
++  checks the write (store) accesses only or all accesses (default: ``off``).
++
+ - ``kasan.vmalloc=off`` or ``=on`` disables or enables tagging of vmalloc
+   allocations (default: ``on``).
+ 
+diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memory.h
+index 5213248e081b..f1505c4acb38 100644
+--- a/arch/arm64/include/asm/memory.h
++++ b/arch/arm64/include/asm/memory.h
+@@ -308,6 +308,7 @@ static inline const void *__tag_set(const void *addr, u8 tag)
+ #define arch_enable_tag_checks_sync()		mte_enable_kernel_sync()
+ #define arch_enable_tag_checks_async()		mte_enable_kernel_async()
+ #define arch_enable_tag_checks_asymm()		mte_enable_kernel_asymm()
++#define arch_enable_tag_checks_write_only()	mte_enable_kernel_store_only()
+ #define arch_suppress_tag_checks_start()	mte_enable_tco()
+ #define arch_suppress_tag_checks_stop()		mte_disable_tco()
+ #define arch_force_async_tag_fault()		mte_check_tfsr_exit()
+diff --git a/arch/arm64/include/asm/mte-kasan.h b/arch/arm64/include/asm/mte-kasan.h
+index 2e98028c1965..0f9b08e8fb8d 100644
+--- a/arch/arm64/include/asm/mte-kasan.h
++++ b/arch/arm64/include/asm/mte-kasan.h
+@@ -200,6 +200,7 @@ static inline void mte_set_mem_tag_range(void *addr, size_t size, u8 tag,
+ void mte_enable_kernel_sync(void);
+ void mte_enable_kernel_async(void);
+ void mte_enable_kernel_asymm(void);
++int mte_enable_kernel_store_only(void);
+ 
+ #else /* CONFIG_ARM64_MTE */
+ 
+@@ -251,6 +252,11 @@ static inline void mte_enable_kernel_asymm(void)
+ {
+ }
+ 
++static inline int mte_enable_kernel_store_only(void)
++{
++	return -EINVAL;
++}
++
+ #endif /* CONFIG_ARM64_MTE */
+ 
+ #endif /* __ASSEMBLY__ */
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 9ad065f15f1d..505bd56e21a2 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -2920,7 +2920,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ 	{
+ 		.desc = "Store Only MTE Tag Check",
+ 		.capability = ARM64_MTE_STORE_ONLY,
+-		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
++		.type = ARM64_CPUCAP_BOOT_CPU_FEATURE,
+ 		.matches = has_cpuid_feature,
+ 		ARM64_CPUID_FIELDS(ID_AA64PFR2_EL1, MTESTOREONLY, IMP)
+ 	},
+diff --git a/arch/arm64/kernel/mte.c b/arch/arm64/kernel/mte.c
+index e5e773844889..54a52dc5c1ae 100644
+--- a/arch/arm64/kernel/mte.c
++++ b/arch/arm64/kernel/mte.c
+@@ -157,6 +157,24 @@ void mte_enable_kernel_asymm(void)
+ 		mte_enable_kernel_sync();
+ 	}
+ }
++
++int mte_enable_kernel_store_only(void)
++{
++	/*
++	 * If the CPU does not support MTE store only,
++	 * the kernel checks all operations.
++	 */
++	if (!cpus_have_cap(ARM64_MTE_STORE_ONLY))
++		return -EINVAL;
++
++	sysreg_clear_set(sctlr_el1, SCTLR_EL1_TCSO_MASK,
++			 SYS_FIELD_PREP(SCTLR_EL1, TCSO, 1));
++	isb();
++
++	pr_info_once("MTE: enabled store only mode at EL1\n");
++
++	return 0;
++}
+ #endif
+ 
+ #ifdef CONFIG_KASAN_HW_TAGS
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index 9a6927394b54..ef2bec55ec14 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -41,9 +41,16 @@ enum kasan_arg_vmalloc {
+ 	KASAN_ARG_VMALLOC_ON,
+ };
+ 
++enum kasan_arg_write_only {
++	KASAN_ARG_WRITE_ONLY_DEFAULT,
++	KASAN_ARG_WRITE_ONLY_OFF,
++	KASAN_ARG_WRITE_ONLY_ON,
++};
++
+ static enum kasan_arg kasan_arg __ro_after_init;
+ static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
+ static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
++static enum kasan_arg_write_only kasan_arg_write_only __ro_after_init;
+ 
+ /*
+  * Whether KASAN is enabled at all.
+@@ -67,6 +74,9 @@ DEFINE_STATIC_KEY_FALSE(kasan_flag_vmalloc);
+ #endif
+ EXPORT_SYMBOL_GPL(kasan_flag_vmalloc);
+ 
++/* Whether to check write accesses only. */
++static bool kasan_flag_write_only = false;
++
+ #define PAGE_ALLOC_SAMPLE_DEFAULT	1
+ #define PAGE_ALLOC_SAMPLE_ORDER_DEFAULT	3
+ 
+@@ -141,6 +151,23 @@ static int __init early_kasan_flag_vmalloc(char *arg)
+ }
+ early_param("kasan.vmalloc", early_kasan_flag_vmalloc);
+ 
++/* kasan.write_only=off/on */
++static int __init early_kasan_flag_write_only(char *arg)
++{
++	if (!arg)
++		return -EINVAL;
++
++	if (!strcmp(arg, "off"))
++		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_OFF;
++	else if (!strcmp(arg, "on"))
++		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_ON;
++	else
++		return -EINVAL;
++
++	return 0;
++}
++early_param("kasan.write_only", early_kasan_flag_write_only);
++
+ static inline const char *kasan_mode_info(void)
+ {
+ 	if (kasan_mode == KASAN_MODE_ASYNC)
+@@ -257,15 +284,28 @@ void __init kasan_init_hw_tags(void)
+ 		break;
+ 	}
+ 
++	switch (kasan_arg_write_only) {
++	case KASAN_ARG_WRITE_ONLY_DEFAULT:
++		/* Default is specified by kasan_flag_write_only definition. */
++		break;
++	case KASAN_ARG_WRITE_ONLY_OFF:
++		kasan_flag_write_only = false;
++		break;
++	case KASAN_ARG_WRITE_ONLY_ON:
++		kasan_flag_write_only = true;
++		break;
++	}
++
+ 	kasan_init_tags();
+ 
+ 	/* KASAN is now initialized, enable it. */
+ 	static_branch_enable(&kasan_flag_enabled);
+ 
+-	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s)\n",
++	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s, write_only=%s\n",
+ 		kasan_mode_info(),
+ 		str_on_off(kasan_vmalloc_enabled()),
+-		str_on_off(kasan_stack_collection_enabled()));
++		str_on_off(kasan_stack_collection_enabled()),
++		str_on_off(kasan_arg_write_only));
+ }
+ 
+ #ifdef CONFIG_KASAN_VMALLOC
+@@ -392,6 +432,26 @@ void kasan_enable_hw_tags(void)
+ 		hw_enable_tag_checks_asymm();
+ 	else
+ 		hw_enable_tag_checks_sync();
++
++	/*
++	 * CPUs can only be in one of two states:
++	 *   - All CPUs support the write_only feature
++	 *   - No CPUs support the write_only feature
++	 *
++	 * If the first CPU attempts hw_enable_tag_checks_write_only() and
++	 * finds the feature unsupported, kasan_arg_write_only is set to OFF
++	 * to avoid further unnecessary calls on other CPUs.
++	 *
++	 * Although this could be tracked with a single variable, both
++	 * kasan_arg_write_only (boot argument) and kasan_flag_write_only
++	 * (hardware state) are kept separate, consistent with other options.
++	 */
++	if (kasan_arg_write_only == KASAN_ARG_WRITE_ONLY_ON &&
++	    hw_enable_tag_checks_write_only()) {
++		kasan_arg_write_only = KASAN_ARG_WRITE_ONLY_OFF;
++		kasan_flag_write_only = false;
++		pr_err_once("write-only mode is not supported and thus not enabled\n");
++	}
+ }
+ 
+ #if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+@@ -404,4 +464,10 @@ VISIBLE_IF_KUNIT void kasan_force_async_fault(void)
+ }
+ EXPORT_SYMBOL_IF_KUNIT(kasan_force_async_fault);
+ 
++VISIBLE_IF_KUNIT bool kasan_write_only_enabled(void)
++{
++	return kasan_flag_write_only;
++}
++EXPORT_SYMBOL_IF_KUNIT(kasan_write_only_enabled);
++
+ #endif
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index 129178be5e64..844eedf2ef9c 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -431,6 +431,7 @@ static inline const void *arch_kasan_set_tag(const void *addr, u8 tag)
+ #define hw_suppress_tag_checks_start()		arch_suppress_tag_checks_start()
+ #define hw_suppress_tag_checks_stop()		arch_suppress_tag_checks_stop()
+ #define hw_force_async_tag_fault()		arch_force_async_tag_fault()
++#define hw_enable_tag_checks_write_only()	arch_enable_tag_checks_write_only()
+ #define hw_get_random_tag()			arch_get_random_tag()
+ #define hw_get_mem_tag(addr)			arch_get_mem_tag(addr)
+ #define hw_set_mem_tag_range(addr, size, tag, init) \
+@@ -451,11 +452,17 @@ void __init kasan_init_tags(void);
+ #if defined(CONFIG_KASAN_HW_TAGS) && IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+ 
+ void kasan_force_async_fault(void);
++bool kasan_write_only_enabled(void);
+ 
+ #else /* CONFIG_KASAN_HW_TAGS && CONFIG_KASAN_KUNIT_TEST */
+ 
+ static inline void kasan_force_async_fault(void) { }
+ 
++static inline bool kasan_write_only_enabled(void)
++{
++	return false;
++}
++
+ #endif /* CONFIG_KASAN_HW_TAGS && CONFIG_KASAN_KUNIT_TEST */
+ 
+ #ifdef CONFIG_KASAN_SW_TAGS
+-- 
 LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
