@@ -4,198 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDB9ACA1000
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:05:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0127CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:05:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC2228E0032; Mon,  1 Sep 2025 11:04:48 -0400 (EDT)
+	id 804D78E0053; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9AA18E001F; Mon,  1 Sep 2025 11:04:48 -0400 (EDT)
+	id 7B50C8E001F; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 961E68E0032; Mon,  1 Sep 2025 11:04:48 -0400 (EDT)
+	id 67D178E0053; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F6128E001F
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:04:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2277D860D0
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:04:48 +0000 (UTC)
-X-FDA: 83841003456.15.B28CE6E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 16B844001A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:04:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a45UbVKo;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9698E001F
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F22DF13B280
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:05:06 +0000 (UTC)
+X-FDA: 83841004212.04.04C783C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1F0CB4000A
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:05:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JBtzxbio;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756739086;
+	s=arc-20220608; t=1756739105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SbnyxtTKWg5jwngdRmLUxKAOmyXBjry9r+xRsqsuR80=;
-	b=koWUEInKc9LKrx42uFJoYxLFIyYLaouUmBUvX2+GaWAePJdKj5Z8tkNI825UbaZwX+BGi8
-	OvWsYTqCSpaql3SH4eFb/P+QUudvWARtOCNbQ1dEBEZ3xgwkXkDTxZJNrb7PIOOnpeB7fY
-	Fbh5ZjUAFvCLm7orjmqvyGjdD9DDsLE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OLi4fM0QNdibiBA1k/MTnIMFu1+uGtd+Ar5TgdqnEIc=;
+	b=z3kQMFIXZFL/OUFRqmrIybnMc8UdMBx4+qM7ILPBHFLCKphSgy4TpduPAkCHIAskn1o8z/
+	xTqAaqpABWal9dqCHElf/68444+PKxdE1h3Vsg5RVMBHA2O3us5J40iBuHb5FUQbXtYoR3
+	0UbVamMgSC9jNHVZCsk7Xh1QoA/lrRQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a45UbVKo;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JBtzxbio;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739086; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739105; a=rsa-sha256;
 	cv=none;
-	b=V8ZahuZHPcB8YgZCpAV+7nmyZZLhuIkY/u2niMN0dgU/JbgEJD14mDdCKn8QW52LkP+Zmv
-	BFbQlVqvoVS2iDAzhHxeGnjm4FuGYdXyoUjqfYCqWwPQadDqng6Klw0Sg+HzM4YuHDiI1j
-	rH9GRPowPJj5W+oHQIH0sifJ8FMcxRo=
+	b=bvJFS8kc4DPvWRwbiWfQ/andONKOyj7aqhp8XbUeugmZj5bOOhZH0hL+bWINo4voAbhspa
+	XJ3uNu3nlcY5DI63XiAo9Nc1ogqpBNJWFcnGsp7Fu8pfr0nz1OZG6pTso2jJJyoZyia6K9
+	2Pxbhf/hroghiht7cn9sCzkE/H7jflQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756739085;
+	s=mimecast20190719; t=1756739104;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SbnyxtTKWg5jwngdRmLUxKAOmyXBjry9r+xRsqsuR80=;
-	b=a45UbVKoj6opWuae1DeDjkd1g99pWVvrtXfJVOaPB5IVUFCNpMkb7wV/9bEiCsR77UR1vf
-	wv0B2VPmNL9tFvtjUySbUu4m7Mc0jCdI0CmGnm3sEye/gj71sh3N12IdoPCK5GAPW3TK6J
-	5mz7s1B4BCNDd+bOqwHiSA1E9tuRSEo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OLi4fM0QNdibiBA1k/MTnIMFu1+uGtd+Ar5TgdqnEIc=;
+	b=JBtzxbioDzwDm5Uv/+yP44L1euP/Bb1Uhjr01L8EUDmm2BW4NvD8nFumfgcvnK2PP2XFut
+	KiN3OCs0lemQaQpqhWIoKJspq0Cq3afPDIeTH5FPYcU9INk5lzKiFLLQ72pWbZfxtK9hZ4
+	7g8xnamuBV2j7FOasZfSGDu8ANe21Ik=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-CtF_kTYGNmmX59oM8MuI7w-1; Mon,
- 01 Sep 2025 11:04:43 -0400
-X-MC-Unique: CtF_kTYGNmmX59oM8MuI7w-1
-X-Mimecast-MFC-AGG-ID: CtF_kTYGNmmX59oM8MuI7w_1756739078
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-SnJjvg_JMVyx55RP_RE7oQ-1; Mon,
+ 01 Sep 2025 11:05:02 -0400
+X-MC-Unique: SnJjvg_JMVyx55RP_RE7oQ-1
+X-Mimecast-MFC-AGG-ID: SnJjvg_JMVyx55RP_RE7oQ_1756739097
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 85A49180048E;
-	Mon,  1 Sep 2025 15:04:35 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BEDFD19560B1;
+	Mon,  1 Sep 2025 15:04:55 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.22.88.45])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C99171800447;
-	Mon,  1 Sep 2025 15:04:00 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1702E1800297;
+	Mon,  1 Sep 2025 15:04:35 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Zi Yan <ziy@nvidia.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-mmc@vger.kernel.org,
-	linux-arm-kernel@axis.com,
-	linux-scsi@vger.kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-mm@kvack.org,
-	io-uring@vger.kernel.org,
-	iommu@lists.linux.dev,
-	kasan-dev@googlegroups.com,
-	wireguard@lists.zx2c4.com,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Alex Dubov <oakad@yahoo.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Airlie <airlied@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Doug Gilbert <dgilbert@interlog.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
 	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lars Persson <lars.persson@axis.com>,
+	WANG Xuerui <kernel@xen0n.name>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Maxim Levitsky <maximlevitsky@gmail.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	SeongJae Park <sj@kernel.org>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Yishai Hadas <yishaih@nvidia.com>
-Subject: [PATCH v2 00/37] mm: remove nth_page()
-Date: Mon,  1 Sep 2025 17:03:21 +0200
-Message-ID: <20250901150359.867252-1-david@redhat.com>
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	io-uring@vger.kernel.org,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	netdev@vger.kernel.org,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev,
+	Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com,
+	x86@kernel.org
+Subject: [PATCH v2 01/37] mm: stop making SPARSEMEM_VMEMMAP user-selectable
+Date: Mon,  1 Sep 2025 17:03:22 +0200
+Message-ID: <20250901150359.867252-2-david@redhat.com>
+In-Reply-To: <20250901150359.867252-1-david@redhat.com>
+References: <20250901150359.867252-1-david@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4P8tn059HxckZ5lqQucjDTPNWIYFellGzP2VG8U7hPY_1756739078
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: 16B844001A
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Stat-Signature: hrunahfpok81tbzc5pe35nywdusoring
 X-Rspam-User: 
-X-Stat-Signature: 8oiqynncekfpauo44kp6hjtr9q994p6c
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756739085-143505
-X-HE-Meta: U2FsdGVkX1+jRIlPhxCfcDeWLznp+UzgArF53OvNt2u/nSlYau94wTZTuJaUQpgb7kshIQEkBqRtZvMjyf8KXtHWiArG/9UMatymqdHFoWuAyHm9Vq99KyV61UMxNBnHiYpmsCZC2TmlStkWEkZ9E52RT5lOkN7gAGRlSiTgIpjL1bYIXoMoAWLv2pLodUAdcW7SG5Mr89K/pMFHhStxdCMWDBTRu4epyu+fot0TKodduatk7Ojk+guR5E3wqBnDdd/FGpekbi0OSaqwzsSrjMOhVXci5th0/nnOI+BCVrYJO1iUGnuRBwW1I/Osn+HbRQaLjTkXqDB74pPBtsgz3svpNEiDI6Tg/egcDS4lkNj956tgCdi6AKPxkkl16Q1Oz+WPrVl01B+WMpJwIVycZDcvbGzEIJmCyZQux7pflsLIzPsyUMBz314q3kCRRU7FKDYU+4TS/qMLtJjPEctR4u4UEFwczA7ZaAgL2Nio2GlmQSIOqo4r6Mpp7L87vgO4Z7SpMrfjYHTP2RuoqykzGVo4W4UGPcDIwPvWHqQnQVeOM/f28YSXpF2Ot+UKFNf0bVoUcKTCb0bIQpp23BwuIxeKCit/dhEbdjpS8TjnIdrKPbVn/JVC2T/BDUQ75Iu9YK5ftZx4GZluG0IKaNtDKAmbX7zjy02E9vgVQuRUArcici8ix26qsgKjVvVf07/vTbXrXKeXu2kdmTZfh5D0aHGFyuvCW6BD7W2MUHqgKB3SmprHxvTqu4Fq5RL3z+rST3vPszYzTSwYy0FR4qqomU9Kb1I2Sv1i6p2yVIqoCDQLeZTLV2Lv3deJFO8LlVswFOgaS4iEccZ3Bkg0deI3yRkiHQl8MG7ku/Y2VxR4CbEzR7nhGofS16Y1UIwh92VY6nA/C7pBpe9eK5Ql+Ig++fC6M+EUoOTBJPMtaI/2H/33YFuYqCylWjq3iA8mTGHZUEzcwY5Lj5hI8VRYT8X
- FrlCH3Nd
- L4fmNjk4OR3dw0QK6MPfka6QxWlfbSWo3ywJ/jT/gUiIOjqyDqHakcGa6Ek5TBC0xF6gy0uC9True4QNeMDgazoziu5lhZdVGXl7Yv0nRUjQogD/tiBJJv4NTjIjOP8Qbmli+8wzJamkF/syaxkAhXIvwn37zVmVZu/UTyo3Smx8eRZ7wBFM29cc5DSYaaGHp/LqE4PGtnXCHPiMSIH8qkeFyExAkEjeSMFLHIlm8KBWkWY02/GiMRaqQLy0YyzR6TD/CZabH4tj6p8S3VIG0b0VHW+NRa0Qn7rjTlnEDs0u+Dc+40vQAPtZuCP2o5w2OG5PZpG7o38FgZfZZkWYaF5VOtPDsG4WC6t2YM4ee5Wxa/h6La8wuJpsqvvAobqzYuknkrOw7Z2ck3xnzRIeP8TPXMZ1snvDrWasNoSWFxVMTnDshtsVu0GYMGgw6f61nL7r2c8rtaElOffW2Q605CrE6a4/RT2J/e+A9HbYTHYZ26/ULmf9tEsNVurQD/AN8R5nY4I5juo7KWqoBb/Tai2BxbPKqQJeZmGbmnPOkj5Xzy+FiIeZGDowA/enVho9oPbF0RwbGYHVRM6EOeYoem9eh4eAQf2n9ufu5H/hjnxtNjStJ+GU9udUfkqlzX6d1RR8xMGA46zDq6dJAS4LnjDVa54jf0PjozfkM+IyIag4qy9PFrDv25f9CCFC6qjCVtg0MQFQlXXYyHJAyfBRcCgEPHTm7jHlO9CPJqP38oZc/GyrT4ojIqXT7NtLJmxGfMHMVD5MNsPrLF9AeQSVjCgwcmbehp3L6iAhtdf/s8Yjd9xz9mR6jDrNtwWBXXGoUkCGGbMUzVJThoq9eydavkfkbkwwy/OdYHoOvphXY2qq9alQSUgHmGc8woi4b3gRXziOdBrpD9csUcq+PTcSUThlI0PwuVUT//XcRDXSKTC39sssQH9q9Ioq0MFb+K0p3IsPEbroIubLIAGnpQX+HVuR7UoIT
- X3kp3yO3
- iwm11ar3IQ6TlTlv7TECJVDiV+4yPrDIaG3l/bpAYmtPZ1638K1pRfEUyQrxGjp+bXAjk3yk5/9u7dAiEHLKmReqzK3d5AouhLLGN0a+FMN0JHUT4jgCMn0ZhA2BSDoxPm42X15u5GpycPcqLVAKGJQyzKj8+2sAwqZmxGZKWcHZ6z3iYQNuwW/ux5MrComUK0LDAu0z8N4zFtyKPmkC7iuYPkK1qqCI
+X-Rspamd-Queue-Id: 1F0CB4000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756739104-992312
+X-HE-Meta: U2FsdGVkX1/P0jAcDcd9uOzKQYf0drcqAeAhePqWuxcIkRLOn/sbJ3Gf6/8GdW7B+Xd+BxUt/JMiKhakvJaWQCoVw0y6aOEEsGedjjmWzKqE34VLLGP96KRsItGT45qs6y4pW6W1dsnyld4HDVzURZ+P7nfsJMBOAnk8gcelmpVh+dGxnl8Z9YPuOjf3DZlegv+5wSAKqC115v6LKPQ9IR+JjjTK08ecA4FAKbSPCNwqm5lqQJemz08fdCmH+30mJv+kH60jxW0PTn2al3oIOEh4MknrjSndMJkHctR7ONxC1BNHRWqSQmq5qCHVr9m9QhC89fz9vuVPZ0v5BF9kvm8W2lCMcfN+YJDj+HHMwhTENIJ8ejFS7dlzSDV0DngdcJwwxEGUWEYHM33iUuSg3wyvt9PkIFSTbvPj3TGKxeD2o5nUsj0I0NCBZoURmqwfPnT+HHS50sJSGTjf0s4VZOuKjVxVC6vldB0WLl0NObCTKOe8gCo5ELbyRjEezDtPt52Bj8TVfYZAGoCIBHRU32Mo5U9L4AjWbtxBWMWRESwY1aChY8sFHUKXW3li/ki6ImbM0VTzgfxVr+mEPDaGrqWGWS/tY8LXe3JZztYiNqTIhN9pqTZm/TCT2F9pykpmFpJEXX1O4UuEGzu/sJ/wA6jRn9y8BLWVETPmucXwXyT6nCENs8lduw4Y9rO2RE6eaO6Xswqx1X63jJ/d9TivwTH0oJb2QJn+9jpZ2fmjnuGzkmmy0pUaXQsLBHXQnzutqtZ81f/U1b4+zYNpc3JE0DKMTnULleSxOhu/ZLjkHWrUXdOokMBYbY2QMQocc2PKhRH5nd0jsBZBcZeTeZ/34ZyU++O2KGVos+7vUUMW/brIncwf4GIo5vKv6vbLj06aNSdrQThMDZXA1s3vbOkUs/t1weg8AsBfEKKX7r72uSdRIGD+Und90lcMHLccd8Yipjaxbmp4EVyCogVcjHh
+ TDvH6Q9K
+ AbluBZ+gWpcalq7M9gu/q2fC2WbolHohuw2dOvRDiGGM28uzRgR2wlWKYCqf4aVjk/6Ehp0idRicLN03GCGKs2j1WTdu1JGdtrqzRykRAMk52Gt+Fsi60rYxLXn+3bnCd75v3gXC4p4yDmmi9xbuNU5EJnlFaKL4Q/MzdJ5iws481z8RNDBEAanv/+Qheycq6+wmeFr67QDTmc2RRMts3dySawG3sINaYwMB0uA6jBhOcDqJKHJPGHhplECrZMbLPIgjVuVd8OuCX3olaZyHc09yDfUWMvaO+3V+9Wv590MiNahut+bjR3pujLicQOurYSFFLllw+97eJWMQKMnmUKdqa5LiPOw2TT7vWYpZ2iAN5VBGz1mZGyNDjM2RCrfRGvpVArp8rf7iNT1Ra8kB17F4itagHqdOaesEs4u5diTjLAsJ4asl7qscXMzKLGA7xj9B98gKx7YOGpwRteHD5yuFy0QnWugFuqf6QpBjDxycO6crWwkLJlmbbvaETJ4gNYdmi3L5KbKcv7zrPq93UdPSnfrLbaxGUK9C79mAq3plvooA2O4n1x6pat9p8ASZEUAXV5c56e58+N2/REymiRSWDnZ6W0cnilUFWn/wRdlDFRG8h5yypqRRyN9LehgdqJMlW/zWr1szcESywhZX1fxOnp3yaeVtKz8f3tbQhq2ydk9wF4vRTIZUpT95ybF7hB795akjiFIaB6BON2NiGKHoR1JdrJPQciiy1lQcIHYaj6iswAsf5SOTyhnJ+U8scL9znKona2lcaopXN3qtTnK6CHla+JiGug78JEq0LVOSvaHwIbAvce6OLbfpj3EndNasdgSvNkeL+Cmrie6m6G3E8P1O5eMXLq3tZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -204,256 +161,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is based on mm-unstable.
+In an ideal world, we wouldn't have to deal with SPARSEMEM without
+SPARSEMEM_VMEMMAP, but in particular for 32bit SPARSEMEM_VMEMMAP is
+considered too costly and consequently not supported.
 
-I will only CC non-MM folks on the cover letter and the respective patch
-to not flood too many inboxes (the lists receive all patches).
+However, if an architecture does support SPARSEMEM with
+SPARSEMEM_VMEMMAP, let's forbid the user to disable VMEMMAP: just
+like we already do for arm64, s390 and x86.
 
---
+So if SPARSEMEM_VMEMMAP is supported, don't allow to use SPARSEMEM without
+SPARSEMEM_VMEMMAP.
 
-As discussed recently with Linus, nth_page() is just nasty and we would
-like to remove it.
+This implies that the option to not use SPARSEMEM_VMEMMAP will now be
+gone for loongarch, powerpc, riscv and sparc. All architectures only
+enable SPARSEMEM_VMEMMAP with 64bit support, so there should not really
+be a big downside to using the VMEMMAP (quite the contrary).
 
-To recap, the reason we currently need nth_page() within a folio is because
-on some kernel configs (SPARSEMEM without SPARSEMEM_VMEMMAP), the
-memmap is allocated per memory section.
+This is a preparation for not supporting
 
-While buddy allocations cannot cross memory section boundaries, hugetlb
-and dax folios can.
+(1) folio sizes that exceed a single memory section
+(2) CMA allocations of non-contiguous page ranges
 
-So crossing a memory section means that "page++" could do the wrong thing.
-Instead, nth_page() on these problematic configs always goes from
-page->pfn, to the go from (++pfn)->page, which is rather nasty.
+in SPARSEMEM without SPARSEMEM_VMEMMAP configs, whereby we
+want to limit possible impact as much as possible (e.g., gigantic hugetlb
+page allocations suddenly fails).
 
-Likely, many people have no idea when nth_page() is required and when
-it might be dropped.
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-We refer to such problematic PFN ranges and "non-contiguous pages".
-If we only deal with "contiguous pages", there is not need for nth_page().
-
-Besides that "obvious" folio case, we might end up using nth_page()
-within CMA allocations (again, could span memory sections), and in
-one corner case (kfence) when processing memblock allocations (again,
-could span memory sections).
-
-So let's handle all that, add sanity checks, and remove nth_page().
-
-Patch #1 -> #5   : stop making SPARSEMEM_VMEMMAP user-selectable + cleanups
-Patch #6 -> #13  : disallow folios to have non-contiguous pages
-Patch #14 -> #20 : remove nth_page() usage within folios
-Patch #22        : disallow CMA allocations of non-contiguous pages
-Patch #23 -> #33 : sanity+check + remove nth_page() usage within SG entry
-Patch #34        : sanity-check + remove nth_page() usage in
-                   unpin_user_page_range_dirty_lock()
-Patch #35        : remove nth_page() in kfence
-Patch #36        : adjust stale comment regarding nth_page
-Patch #37        : mm: remove nth_page()
-
-A lot of this is inspired from the discussion at [1] between Linus, Jason
-and me, so cudos to them.
-
-[1] https://lore.kernel.org/all/CAHk-=wiCYfNp4AJLBORU-c7ZyRBUp66W2-Et6cdQ4REx-GyQ_A@mail.gmail.com/T/#u
-
-v1 -> v2:
-* "fs: hugetlbfs: cleanup folio in adjust_range_hwpoison()"
- -> Add comment for loop and remove comment of function regarding
-    copy_page_to_iter().
-* Various smaller patch description tweaks I am not going to list for my
-  sanity
-* "mips: mm: convert __flush_dcache_pages() to
-  __flush_dcache_folio_pages()"
- -> Fix flush_dcache_page()
- -> Drop "extern"
-* "mm/gup: remove record_subpages()"
- -> Added
-* "mm/hugetlb: check for unreasonable folio sizes when registering hstate"
- -> Refine comment
-* "mm/cma: refuse handing out non-contiguous page ranges"
- -> Add comment above loop
-* "mm/page_alloc: reject unreasonable folio/compound page sizes in
-   alloc_contig_range_noprof()"
- -> Added comment above check
-* "mm/gup: drop nth_page() usage in unpin_user_page_range_dirty_lock()"
- -> Refined comment
-
-RFC -> v1:
-* "wireguard: selftests: remove CONFIG_SPARSEMEM_VMEMMAP=y from qemu kernel
-   config"
- -> Mention that it was never really relevant for the test
-* "mm/mm_init: make memmap_init_compound() look more like
-   prep_compound_page()"
- -> Mention the setup of page links
-* "mm: limit folio/compound page sizes in problematic kernel configs"
- -> Improve comment for PUD handling, mentioning hugetlb and dax
-* "mm: simplify folio_page() and folio_page_idx()"
- -> Call variable "n"
-* "mm/hugetlb: cleanup hugetlb_folio_init_tail_vmemmap()"
- -> Keep __init_single_page() and refer to the usage of
-    memblock_reserved_mark_noinit()
-* "fs: hugetlbfs: cleanup folio in adjust_range_hwpoison()"
-* "fs: hugetlbfs: remove nth_page() usage within folio in
-   adjust_range_hwpoison()"
- -> Separate nth_page() removal from cleanups
- -> Further improve cleanups
-* "io_uring/zcrx: remove nth_page() usage within folio"
- -> Keep the io_copy_cache for now and limit to nth_page() removal
-* "mm/gup: drop nth_page() usage within folio when recording subpages"
- -> Cleanup record_subpages as bit
-* "mm/cma: refuse handing out non-contiguous page ranges"
- -> Replace another instance of "pfn_to_page(pfn)" where we already have
-    the page
-* "scatterlist: disallow non-contigous page ranges in a single SG entry"
- -> We have to EXPORT the symbol. I thought about moving it to mm_inline.h,
-    but I really don't want to include that in include/linux/scatterlist.h
-* "ata: libata-eh: drop nth_page() usage within SG entry"
-* "mspro_block: drop nth_page() usage within SG entry"
-* "memstick: drop nth_page() usage within SG entry"
-* "mmc: drop nth_page() usage within SG entry"
- -> Keep PAGE_SHIFT
-* "scsi: scsi_lib: drop nth_page() usage within SG entry"
-* "scsi: sg: drop nth_page() usage within SG entry"
- -> Split patches, Keep PAGE_SHIFT
-* "crypto: remove nth_page() usage within SG entry"
- -> Keep PAGE_SHIFT
-* "kfence: drop nth_page() usage"
- -> Keep modifying i and use "start_pfn" only instead
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Christoph Lameter <cl@gentwo.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: x86@kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org
-Cc: linux-ide@vger.kernel.org
-Cc: intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-mmc@vger.kernel.org
-Cc: linux-arm-kernel@axis.com
-Cc: linux-scsi@vger.kernel.org
-Cc: kvm@vger.kernel.org
-Cc: virtualization@lists.linux.dev
-Cc: linux-mm@kvack.org
-Cc: io-uring@vger.kernel.org
-Cc: iommu@lists.linux.dev
-Cc: kasan-dev@googlegroups.com
-Cc: wireguard@lists.zx2c4.com
-Cc: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org
-
-David Hildenbrand (37):
-  mm: stop making SPARSEMEM_VMEMMAP user-selectable
-  arm64: Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
-  s390/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
-  x86/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
-  wireguard: selftests: remove CONFIG_SPARSEMEM_VMEMMAP=y from qemu
-    kernel config
-  mm/page_alloc: reject unreasonable folio/compound page sizes in
-    alloc_contig_range_noprof()
-  mm/memremap: reject unreasonable folio/compound page sizes in
-    memremap_pages()
-  mm/hugetlb: check for unreasonable folio sizes when registering hstate
-  mm/mm_init: make memmap_init_compound() look more like
-    prep_compound_page()
-  mm: sanity-check maximum folio size in folio_set_order()
-  mm: limit folio/compound page sizes in problematic kernel configs
-  mm: simplify folio_page() and folio_page_idx()
-  mm/hugetlb: cleanup hugetlb_folio_init_tail_vmemmap()
-  mm/mm/percpu-km: drop nth_page() usage within single allocation
-  fs: hugetlbfs: remove nth_page() usage within folio in
-    adjust_range_hwpoison()
-  fs: hugetlbfs: cleanup folio in adjust_range_hwpoison()
-  mm/pagewalk: drop nth_page() usage within folio in folio_walk_start()
-  mm/gup: drop nth_page() usage within folio when recording subpages
-  mm/gup: remove record_subpages()
-  io_uring/zcrx: remove nth_page() usage within folio
-  mips: mm: convert __flush_dcache_pages() to
-    __flush_dcache_folio_pages()
-  mm/cma: refuse handing out non-contiguous page ranges
-  dma-remap: drop nth_page() in dma_common_contiguous_remap()
-  scatterlist: disallow non-contigous page ranges in a single SG entry
-  ata: libata-sff: drop nth_page() usage within SG entry
-  drm/i915/gem: drop nth_page() usage within SG entry
-  mspro_block: drop nth_page() usage within SG entry
-  memstick: drop nth_page() usage within SG entry
-  mmc: drop nth_page() usage within SG entry
-  scsi: scsi_lib: drop nth_page() usage within SG entry
-  scsi: sg: drop nth_page() usage within SG entry
-  vfio/pci: drop nth_page() usage within SG entry
-  crypto: remove nth_page() usage within SG entry
-  mm/gup: drop nth_page() usage in unpin_user_page_range_dirty_lock()
-  kfence: drop nth_page() usage
-  block: update comment of "struct bio_vec" regarding nth_page()
-  mm: remove nth_page()
-
- arch/arm64/Kconfig                            |  1 -
- arch/mips/include/asm/cacheflush.h            | 11 +++--
- arch/mips/mm/cache.c                          |  8 ++--
- arch/s390/Kconfig                             |  1 -
- arch/x86/Kconfig                              |  1 -
- crypto/ahash.c                                |  4 +-
- crypto/scompress.c                            |  8 ++--
- drivers/ata/libata-sff.c                      |  6 +--
- drivers/gpu/drm/i915/gem/i915_gem_pages.c     |  2 +-
- drivers/memstick/core/mspro_block.c           |  3 +-
- drivers/memstick/host/jmb38x_ms.c             |  3 +-
- drivers/memstick/host/tifm_ms.c               |  3 +-
- drivers/mmc/host/tifm_sd.c                    |  4 +-
- drivers/mmc/host/usdhi6rol0.c                 |  4 +-
- drivers/scsi/scsi_lib.c                       |  3 +-
- drivers/scsi/sg.c                             |  3 +-
- drivers/vfio/pci/pds/lm.c                     |  3 +-
- drivers/vfio/pci/virtio/migrate.c             |  3 +-
- fs/hugetlbfs/inode.c                          | 36 +++++---------
- include/crypto/scatterwalk.h                  |  4 +-
- include/linux/bvec.h                          |  7 +--
- include/linux/mm.h                            | 48 +++++++++++++++----
- include/linux/page-flags.h                    |  5 +-
- include/linux/scatterlist.h                   |  3 +-
- io_uring/zcrx.c                               |  4 +-
- kernel/dma/remap.c                            |  2 +-
- mm/Kconfig                                    |  3 +-
- mm/cma.c                                      | 39 +++++++++------
- mm/gup.c                                      | 36 +++++++-------
- mm/hugetlb.c                                  | 22 +++++----
- mm/internal.h                                 |  1 +
- mm/kfence/core.c                              | 12 +++--
- mm/memremap.c                                 |  3 ++
- mm/mm_init.c                                  | 15 +++---
- mm/page_alloc.c                               | 10 +++-
- mm/pagewalk.c                                 |  2 +-
- mm/percpu-km.c                                |  2 +-
- mm/util.c                                     | 36 ++++++++++++++
- tools/testing/scatterlist/linux/mm.h          |  1 -
- .../selftests/wireguard/qemu/kernel.config    |  1 -
- 40 files changed, 217 insertions(+), 146 deletions(-)
-
-
-base-commit: b73c6f2b5712809f5f386780ac46d1d78c31b2e6
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 4108bcd967848..330d0e698ef96 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -439,9 +439,8 @@ config SPARSEMEM_VMEMMAP_ENABLE
+ 	bool
+ 
+ config SPARSEMEM_VMEMMAP
+-	bool "Sparse Memory virtual memmap"
++	def_bool y
+ 	depends on SPARSEMEM && SPARSEMEM_VMEMMAP_ENABLE
+-	default y
+ 	help
+ 	  SPARSEMEM_VMEMMAP uses a virtually mapped memmap to optimise
+ 	  pfn_to_page and page_to_pfn operations.  This is the most
 -- 
 2.50.1
 
