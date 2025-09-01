@@ -4,134 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A63F1CA0FF2
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 02:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36A78CA0FE8
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 03:23:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C266F6B000D; Sun, 31 Aug 2025 22:58:30 -0400 (EDT)
+	id 4E30B6B000E; Sun, 31 Aug 2025 23:23:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFCC86B000E; Sun, 31 Aug 2025 22:58:30 -0400 (EDT)
+	id 493A86B0010; Sun, 31 Aug 2025 23:23:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B12CA6B0010; Sun, 31 Aug 2025 22:58:30 -0400 (EDT)
+	id 3A9746B0011; Sun, 31 Aug 2025 23:23:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D31A6B000D
-	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 22:58:30 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C698140628
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 02:58:30 +0000 (UTC)
-X-FDA: 83839173180.15.556C8E7
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3D69E4000A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 02:58:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="LPP/82NR";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of reddybalavignesh9979@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=reddybalavignesh9979@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756695508; a=rsa-sha256;
-	cv=none;
-	b=fRRTyYU+BzXwObCQ2HVbFlD3MeZtBlUXsSFXh6E3SCfKkcEf8jD1oiA9zj3Ly7zity0lLB
-	7TeCh9HhzMZUFYuOZUba/TM+jnLegtcfkSUae57+3BeMRJEEfzVYHQOvLjWjUBpyN+GY7/
-	R2hWIIYGlbtDQxo4bW77OMQ0gE7pHzw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="LPP/82NR";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of reddybalavignesh9979@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=reddybalavignesh9979@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26F456B000E
+	for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:23:26 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D0D221605FB
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:23:25 +0000 (UTC)
+X-FDA: 83839235970.17.299A2BC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 32A771C0006
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:23:23 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I9GO/v7q";
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756695508;
+	s=arc-20220608; t=1756697004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8xc5xb7dUSiUl+N7EzdGMbpJHVkz/svcP008qWdxybM=;
-	b=lYZnMdVwzZFejjgoQpSW8t+rv0MxxymF+MmTlBtnUEz6QMAIQaTOyVbK/VT4QSR1Mq+Fx9
-	6yeo0Aij6rNFy6eosu4Tz+pMsCxVythkzx+YVjsuo7C+B9zIQkKW7r2GquxXzlTI6eP7lB
-	sVNsZkm1g2554IaxJiKuIK1WEGOEjAk=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-248de53d12dso22716655ad.2
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 19:58:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756695507; x=1757300307; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8xc5xb7dUSiUl+N7EzdGMbpJHVkz/svcP008qWdxybM=;
-        b=LPP/82NR+rMxVovtuWbkBJregp65u77uJG6ayNwzSHExy8ZG4oa8YuoTGuaaWlt1zI
-         x96eZ2GoazxxA7sfsa/sx/84H2BRwIItDRoz7FRhbMcSX1MoGLoU61bK5BoDfGk1vDqZ
-         5dhKnoQRH3mJqgyvycc7ZZT+ZMjB6nfKsSpFdPYFwBsGjCLLD/7FdPzC/t6BlZEY1g8F
-         zUWYvvQcgcftsMJnG5XikMLsStK9RshZZNePlENHxRTekClyzANxX0x6vcUxKMdvrWop
-         xd0tUg0PAJJZIESRatJNs6dsvsqY5AEddHhpw6fPesHa6Kfwd15CCHhBWrY8Y1UVi1G+
-         pQQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756695507; x=1757300307;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8xc5xb7dUSiUl+N7EzdGMbpJHVkz/svcP008qWdxybM=;
-        b=d+AcIqSiRd4XqK94izaQ3YwX8A/0tHodnUSehemEoKytegr2+xC/Jm0Zs/qWHKfQgG
-         +nNOIPrt8r3TD1n4e6pSdwMFYFr0Sfujsnd/pAPKFUnq44anBnNI0EoulDjD6AtNNSBw
-         Fay7IPXZtdC03zf2uTjlkC6pcQUpMfTGUr0AviCxdimiST3d2mxXgNHBlMpRS8V6zWBx
-         F5H8WXWePRWvBnPo2BEFQSfh0TikcjOoe2LmjcDke336tk7NQNoS99o1REYcKfTDN/2u
-         jSm+C+o8j8yIXcLQJEUm2j4fHe/0pjQL1AW7WhDSS8CS/DC6VO++yI+z+WRFfxqfWKE0
-         KhzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcTkudTeSLPShwZNkoU9WCDamaC8cAoJlWekmUrlruSLxRY115+Hj+n7enbnxEUl1m3sPRswEBbA==@kvack.org
-X-Gm-Message-State: AOJu0YwILRsGIq3t05ka4MGjMbG3L7ciqVnE0p1IcTyARVwiGl+xYYmy
-	BaF3y9PrAKP2HjerjqPCPCuHtmtHcyG+vlYztVzAXsx5p1q6K3Aqd4t6
-X-Gm-Gg: ASbGncuRWOIgaDx+EKB+4psrp9Uizr+YIQuhCw1eEmKx7uM3MhsP7KUj0xsSjN5s6yL
-	tsvXde1jqc4rjfUiQ9BY4SRkImQsjOiVe+yZ6DXHBzhQRolUX21Nr2LLMfNB8ZoUCbUWxCyFhsY
-	n35BOtXW0oukAv8G2r0keAchUXJtH2Wc289TPZF4z+Ke2ZuD4ZcSv34MfTG4RyXWxj/BueLthiG
-	TwTk1D84hxF15NHLPQuiQAa0p37Kfr8ELUCLOv9EjU132eR58xgPcJB+a/LgyyqS7Z96lEcwuF5
-	Y/sY6Npnkh6u1bk04ngPCM6fpfofuuFr4Dmf+aY+bPu+SiBDk8VzhRtJ5bWtG4ygITwK/9JFS0s
-	qiPnrdxL7EGNUJhn5S6gieA+c98QEywExrKlyYZv/2Mrl9ZHKxi6QSb9zdE+4lnPK6eMXsw/jYX
-	76nTPmk6TczdhkaolpEA==
-X-Google-Smtp-Source: AGHT+IFyHhiruqCGi2RbQrXtTVcp3oahgZsFHaTw5UBozGNvye3RIxU3ujQdE+d1aHrK4k6SNgCdrw==
-X-Received: by 2002:a17:903:2f8a:b0:24a:e25d:c704 with SMTP id d9443c01a7336-24ae25dc9a2mr7167595ad.47.1756695506906;
-        Sun, 31 Aug 2025 19:58:26 -0700 (PDT)
-Received: from server.. ([103.251.57.240])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-249065d1b19sm86681015ad.131.2025.08.31.19.58.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 19:58:26 -0700 (PDT)
-From: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
-To: akpm@linux-foundation.org
-Cc: Liam.Howlett@oracle.com,
-	davem@davemloft.net,
-	david@redhat.com,
-	edumazet@google.com,
-	gnoack@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	mic@digikod.net,
-	ming.lei@redhat.com,
-	pabeni@redhat.com,
-	reddybalavignesh9979@gmail.com,
-	richard.weiyang@gmail.com,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	skhan@linuxfoundation.org,
-	surenb@google.com,
-	vbabka@suse.cz
-Subject: Re: [PATCH v2 2/2] selftests: Replace relative includes with non-relative for kselftest.h and kselftest_harness.h
-Date: Mon,  1 Sep 2025 08:28:16 +0530
-Message-ID: <20250901025816.1729-1-reddybalavignesh9979@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250831130340.c096ab001dd38bcdb11146b8@linux-foundation.org>
-References: <20250831130340.c096ab001dd38bcdb11146b8@linux-foundation.org>
+	bh=ipdn/k5KKtIK2UsZRZqqTotFC+oE3Re4lnNlAiu8yjc=;
+	b=K9HmeCNxU9LEfEHAfJIFAxhSksB8Lyul2GTtIS+XY0rrP9pXNxcQh5b0g89+lNUSQkFmUK
+	IZRberMHFCor+DG3sqMbTYjdsrLUQgrAo1M1fOpDqUR1dwSxT/d3ZpDlh0R+j/jbMwE+Ps
+	PM86Tt4bbVDDrEseGZlA68bLImo5Iuo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756697004; a=rsa-sha256;
+	cv=none;
+	b=ojJrmeJ+OOj5diCg97ZV96sVOOtoE4QIP48suMyuGevD7lgi/Kd53iJobBFjXiKeZRE4cZ
+	cfeI6InBF3S/I9fwaMFDNd7W8TZUgqmv84eHxRhXPnBEK0CAG0O+0/LhIP5GyGLfahjKZq
+	fx8GE35OdH1bi5v4rbV9yPaqWqmduJs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I9GO/v7q";
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D202F4411E;
+	Mon,  1 Sep 2025 03:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB19C4CEF0;
+	Mon,  1 Sep 2025 03:23:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756697002;
+	bh=fngCTpBktvMlnOH/kmob1ywSjzcBkSH81GSBXM+3GzA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=I9GO/v7qN0lQQ9EIgVCZClneDNLVNQnGn3E2AK7AIkDbkzQjnnfbp2dKmXy+aHVfD
+	 DmYweSXNlTOmqQo504w/fWuoJho5wS38ojAv/J6xq4OgG9bsfnBD4WhV/bheM+3s39
+	 DBtZAPlj5J2Svvz8KjLq0FMOk2XwYfgT2j6aoLjoEIel9yajLQqRmC0K6wYdpXjmSG
+	 DZ5NzSkJuIAdQIjb2f8OSSi70YiH7tmRVJo9uQmSF7r0V+IL+4wEoeWjsLfcvc2PaO
+	 kFOgc2/CGJL/I1LvmfZ4M6ePdb0xOQxKrsIRTfkE43AwtWLPtCJ45FUjXx1OqtiAuF
+	 wCq/i0023SouA==
+From: SeongJae Park <sj@kernel.org>
+To: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2] tools/mm/slabinfo: fix access to null terminator in string boundary
+Date: Sun, 31 Aug 2025 20:23:20 -0700
+Message-Id: <20250901032320.59995-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250830172022.1927448-1-kaushlendra.kumar@intel.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3D69E4000A
-X-Stat-Signature: dwo5t3smbab5gfxqmfesmksyustrb57p
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756695507-3056
-X-HE-Meta: U2FsdGVkX19u1/tTVMniiVXgrd8B6YFmFmZsnLcJBVaQbC26hWGSqQCj1Lgf7hJKujCPdthwtXnpOaBWK5GeAL9H2eLVli5mkOetVDLvQU4wdCfJhkm78uEkLLAAlCrpO5Pop+nDUXYi6fJtqRJHijx6XKY0xM5rmnsYMH4+rsptpkhFzoJD1HwVmY/tPDYPEwhm+L+SsQ8S2nBj6FgsjbGUycoks6l0j310l+CXKMJq7gLO5DuZHtGV0Tv5Wi+QHioz9MYD1FPcIFA4PbJwZ0nFzUrHf43LMai3MYJjEsn9WdLaYD7HNOJuQ9B7HR8VFYr1186sL8Vq3IPk4nSKhc64BBn1J2eRiSEseHfd8DYctmEDXQGFtlFxY+9cr3DPJMGZ0Vd+wc21uVkMDvFTieJO1LXGzCpnLX4MCe6ZhRHlPxCa9WUXuesusSXH8TTVoDPqRorA1VYytPwThLzZGXXF1SiJx5asGHTJ1Umlj/fzvbOS0AmKOch5xvIDIFi8ZV+E9pgznWSmypvjG5XkJQ7VZuflIv7bBPcjuq3Hvijy+d5HUb1/689xYF1b9ZQT/TEG+x5jRQ+fehcOJFrGEkF0Xzl/SaQyfHZqMH2rRq/bht4mLBIm+LtLQQQO6Xl1ltp983Du/6b51VNw222WanX58RJJyWDx18MphuNHRgPN8lMp3GtA+DpcZPPv6gFF5iGwFOcMoPztNhec6jIUgL4aocJk9VX0eyPt15h3G83/7zei9ZTuZ2jhbu2Ad0DQpcxwOzuOUqvRcolXXXN1pxs9eSU/DAU7Sj8J3t2K7jsmoXX9XL/TIggEdlLsmxxzq8IeRTiYwg1XPhEvCLv1UKKo4V3XbzYZfseXKSx2EX+54qQL4BNrDbKi2m+OPIStMA2nnp1v42unPl3i6BMnW8B2UrbpMgcM5F+O8zdBsIY2+Ucr6Z/2Ttxgj/+scE1BYH0tgxJ4S2w4Kxlhn+b
- 8CNaxhNt
- ckWaqxgnfWQTVLH5IoeyzYqpQrAjMrl7Q2VwGQrlR8bMTlSMQhdvwt++qu3K666F2JiJjAw5497FOfwt9C5HLBSIxH+GvQPJMgG8fdQd/q0UQ0nwXOvTZ5IgCANoFiJ4ExkGsXFpyj/EJKVnXm1c6jw1+Fanj5KSM3wdAKN302bRHhocyPmMFDYIecxu3Swhfx7VvLjrKRE3r51WGPaf9y4Z/ockoqIlJmFJFU9sdtKEGSeGAElEAs/Cq3gfKDU4LCmG/kztmwAZTo3ERT74AvMCtxhyhwLOaNghHQwbyRei3mz1OdBrhDhAxMolEH0L8ii+DqI/hEvAKVLW5/zNznKtHCCyT6Shpf+MBHZNSHc1CsRxAZA0jcKqbDuen8Sj9XA+p7r8FOTlgc4N5e2o+kUPc3MvVhsrROwXGoUrHTyX07+cTe8C2gEoC3F5IJd4eJAF3q/qQL4+m0e5P74bJE2+M992Wec1kINH1OK+Kk9ktFRmkzLDvT9cxbOTrLHEp0pDEBVG/7KyvSHn59phvI3Ksbw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 32A771C0006
+X-Stat-Signature: d6gnbenoobpxt93ey91a7pm7pbfbcic5
+X-HE-Tag: 1756697003-504200
+X-HE-Meta: U2FsdGVkX19it8Hj1oiMIUQoGVNMwUBAeRyNcwHGfQqZ0A0aZ1lZhJtFC+6+ZsvpTHp+zHMtCJKgXCRmXQs7Lly9bWTD+lhyQCh9dUvBipe2CrPR6hNlyvM1iV/ukaOxw1wt65Lqvnkx6KQr35YMqAPBj8KMjcmbaOYo+8Ml364uq0LHCrJra6YZ2K1XRS8Kq3/BpnOMI0fEyHjDLRZfYvPGQck3YDKamWE0Xw5/gyrdIATu2pftZoAd0bMSc6F1Lel7qeM0l0xYAc6pFy3vdNXf3AL02y3Wmn+QjPQ00HL5eacnDJWWpT2TSxIIQz+As8qpMogC1OoHyUQWvbbfXsXFZG0yJoBj74tJnZlDEoHfNBqJa7CcvhiZIPZpL4aucPTe1pa8FBSn4RlUiQJqYgsCfE73l6KpdazuA3ixJcVBENNMNa2yaSW80OBfQZ/XUfh8o6fDISgCbqkJYnzxWfXQ4x9XwCEYAs67/XBC4wxch57Fc6aCmR3sNyoyIRkHQI8rvjlpxy9ctwhuVJzmCiaVJz0akaR1mdkulsVWWjeibmALD/VXWO2Zo+XUetF1vI0fKSeQ+/5cdPTNoc8j6PKH6VsQuJtJONmjlTjkHLXQoWPhGmx2DCcFwp7U9z9rydjHIuZ36fUSAim/31D5SW6jaC3j73kxhr2BAcL0yfSPBmyAk/9HrxKzZ7RR04cXPZj7SGM4BvPrv6V7BRHsSAtzxgME9ia0Bve73QQrtX1KVa7BFXDgKUadEIrgAygqGvUOIVw3Dbv2Cc5s2Qt4FxtqTAwZ9cthuJuU12ud+H1X++sdUMfGX8ktLil7G2EB9MIItiNlsaShYcJ9Rh5uBik9BXNALbbPVBBh0koJ0PG4e2/uLNkeddZgg1iGcUtvtOaZ9u2vmF3+j5DZRF2wzL/rymoZCC1y4w5nF4+5eAdfH7GSRgJvuunh1g7OgiFWXDds7MWFmLnJQjZ8d9O
+ OwZA7Ma+
+ rFE7Z0IQ6Cd8JD6qLJQ2vTNAoICvjgiysVba7+qyEVwQYO1wOVc7yVuQ/z/rI9syWm7mosxeTIaB2cf+/Bb8K/u9mXfz26M1qibX5RCU9xD4KcGcfsadDPwh4Ex1hhDo/NUBy1EcaxWF0cNliiCcsif5S/y9AK9Xd7NMzYeycS3He74vEofMRUH1Wapc35M8dpQOTVMgNoYDX/xz8AWlRu6Hz8WlXjL5Xt0SAZNCkroGBJIO6pbYPdnchxhQnPmtOslZpQNivKPUbjwKb/azkCJNJJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,15 +92,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Sat, 30 Aug 2025 22:50:22 +0530 Kaushlendra Kumar <kaushlendra.kumar@intel.com> wrote:
 
-Sorry for the trouble caused by this patch. No problem on
-dropping the conflicting hunks.
+> The current code incorrectly accesses buffer[strlen(buffer)], which
+> points to the null terminator ('\0') at the end of the string. This is
+> technically out-of-bounds access since valid string content ends at
+> index strlen(buffer)-1.
+> 
+> Fix by:
+> 1. Declaring strlen() result variable at function scope
+> 2. Adding bounds check (len > 0) to handle empty strings
+> 3. Using buffer[len-1] to correctly access the last character before
+>    the null terminator
+> 
+> v2: Move variable declaration to function scope to avoid mixing
+>     declarations with statements (feedback from reviewer)
 
-I'll send a follow up patch after 6.17 to cover the missed
-conversion sites.
+Thank you for making this change.  But, it is conventional to put the above
+changelog on the comment section (after '---' line).
 
-Thanks for your review.
+[1] https://docs.kernel.org/process/submitting-patches.html#the-canonical-patch-format
 
-Bala Vignesh
+> 
+> Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+> ---
+>  tools/mm/slabinfo.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+> index 1433eff99feb..d2e5b4e232b1 100644
+> --- a/tools/mm/slabinfo.c
+> +++ b/tools/mm/slabinfo.c
+> @@ -155,6 +155,8 @@ static void usage(void)
+>  
+>  static unsigned long read_obj(const char *name)
+>  {
+> +	size_t len;
+> +
+
+I think the above blank line is not really needed.
+
+>  	FILE *f = fopen(name, "r");
+>  
+>  	if (!f) {
+> @@ -165,8 +167,10 @@ static unsigned long read_obj(const char *name)
+>  		if (!fgets(buffer, sizeof(buffer), f))
+>  			buffer[0] = 0;
+>  		fclose(f);
+> -		if (buffer[strlen(buffer)] == '\n')
+> -			buffer[strlen(buffer)] = 0;
+> +		len = strlen(buffer);
+> +
+
+The above balnk line seems not needed to me.
+
+> +		if (len > 0 && buffer[len - 1] == '\n')
+> +			buffer[len - 1] = 0;
+>  	}
+>  	return strlen(buffer);
+>  }
+> -- 
+> 2.34.1
 
