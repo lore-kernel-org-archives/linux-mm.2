@@ -4,40 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A59D9CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A496CA1002
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:10:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33D08E000F; Mon,  1 Sep 2025 09:10:53 -0400 (EDT)
+	id 417266B0005; Mon,  1 Sep 2025 09:10:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB4808E004C; Mon,  1 Sep 2025 09:10:53 -0400 (EDT)
+	id 3A1BE6B0007; Mon,  1 Sep 2025 09:10:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2C9C8E0043; Mon,  1 Sep 2025 09:10:53 -0400 (EDT)
+	id E296D8E0043; Mon,  1 Sep 2025 09:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A7D398E000F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CEC1E8E000F
 	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:10:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4ACC98602A
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EDDD1A07E0
 	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:10:53 +0000 (UTC)
-X-FDA: 83840716386.23.728CD65
+X-FDA: 83840716386.14.874BEA6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 54A3E1C000B
+	by imf05.hostedemail.com (Postfix) with ESMTP id A762110000C
 	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:10:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lgbnUt9A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756732251; a=rsa-sha256;
-	cv=none;
-	b=hDTL7hVzRTrqBhS3UyRyiRYCQ9CHKxaNvof6d6ujBFMQV2e/HxVBSQF+Cd98Xh+U+B9GGo
-	7BOpS9uNfVW+Pc1sytX1FTCLYkC1RSO+jBpelt5DwLILpAtOiS0vIGh2B4ebLR7Ej8TIMq
-	d/eSz5J95bs5R/dGE3kqliBlcWsityI=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lgbnUt9A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaoRKEYs;
+	spf=pass (imf05.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756732251;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -45,36 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z5weujL9/Ue3jwfuWjtFvP6Hm5PY7CZ9X9PR/xm5zG4=;
-	b=emcSkOZvYNyI+maFpm+F6t3Lmv6CBezfo2tWZcHeS9PksvfFYT7lM2bRF4FW5hJjbE5/vS
-	RokkNy/rZirg2T55WGR2rb5vT0H7RtyJ8lNfmZA3yhWrEWKcw3AX/4TcuL4Ymlp+reLqML
-	GRghuIpbS/0ydLSjVBQVH+/fPGxjb60=
+	bh=R9h85W+fSSI+7uZFmaVzkxnCdkX5mPfS4n/17CJoupQ=;
+	b=HgXvVonMM/laWUJPvnidTBYKZztNLeAGxBoL3waoN/X0Omlm0CaV23mJ2d74nysAKpuYjq
+	PcR2qpuHwfUQuRwENh/CV/z7dE/AHG0+d4gc6ZresYvXkwjWFUqlgNzJxth7WTI5l+iqvs
+	wNdlsODrdr67ZmtIZ2gaWzhuTFYCKYg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iaoRKEYs;
+	spf=pass (imf05.hostedemail.com: domain of devnull+schuster.simon.siemens-energy.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+schuster.simon.siemens-energy.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756732251; a=rsa-sha256;
+	cv=none;
+	b=sMyc1TRgriBHZveNRzp5Mas41hPDQVLqcLcOwGfXK9V8BdnXz49dPKPu4JvSpakv5Qefw5
+	Kg3OZImpYFv7wSqJHHEpzRZ9g5Zeb5xaNLjyP6zeMUoIAgAU7UzWjvTUj5sGLx2YGqmSzb
+	ccn2sfeeJ9gxTSq9ksHumXRMpBaTZV0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D79D7601E4;
+	by tor.source.kernel.org (Postfix) with ESMTP id D227D601E3;
 	Mon,  1 Sep 2025 13:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 69182C16AAE;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 45B16C4CEF9;
 	Mon,  1 Sep 2025 13:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1756732249;
-	bh=WxAJb8y6KLvFMgj52QKhGM7dsrNASWlYkcze/8Ta6c0=;
+	bh=GpW3AHZfYEj2qBnLMRG4myPQbSyXtECqk6ttoxpv2os=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lgbnUt9AfooIbdKatQDek+v4zywf7AiBssU5Il4r67ywpXoUzRS5bvNYc13AMY83u
-	 axoQUW0E8dxryspWLVSScxpppgNrCxdyb/2ECqDIsOcf8AJxlzN/7IHJzJA2rK7ZC7
-	 InllPsekfzXnXiqBol7kDj5IKpKtGpxKyQKoeHDwlTSdYASkR4JcT6WevmJLZr/hTM
-	 rMNYJe27922bLFjH8NU/r1tN5t94YfUB7hXCtILfYw3R9N08pbC4lYKu05uP7ip20H
-	 fAfCF46em5LDK10CvpkMmMPa5ONQ6tK5kYlpf+rtZF7WEYH2ehY/ERDWW0NHV27JWN
-	 lwn8yWdDG63vg==
+	b=iaoRKEYseCqQuDc8g1DT9Ylgds2yXTGrRDMFrMWem9akxSs2kSuDZh8RQy7GyhVc0
+	 DgRW0DslNS/vaFDraU32r0MjYx+fOSj7uoPNFHlkuuXYvgF1l43svB/w5612yBF+xJ
+	 25fgVdHp0mlGc/VdDsfBP4qIyALFA7BKLsJbQ73ickI5yAaCdxOpDZAB0XQL8T8L5F
+	 dx5EwoZS2e25GQhGK0HQZUzgv2mCfV/qUx5aQ/SatgfyRijgLuYK357zFCmZazIp6+
+	 A+uvFfZ+PHpkq8v4BfU9r2WTm7F1rYTj29lF0zZTwKApQf/GIGwsNmiQOBYAXmaqwU
+	 H9oLgllzFmmaQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47F2DCA1002;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2517ACA1005;
 	Mon,  1 Sep 2025 13:10:49 +0000 (UTC)
 From: Simon Schuster via B4 Relay <devnull+schuster.simon.siemens-energy.com@kernel.org>
-Date: Mon, 01 Sep 2025 15:09:51 +0200
-Subject: [PATCH v2 2/4] copy_process: pass clone_flags as u64 across
- calltree
+Date: Mon, 01 Sep 2025 15:09:50 +0200
+Subject: [PATCH v2 1/4] copy_sighand: Handle architectures where
+ sizeof(unsigned long) < sizeof(u64)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-nios2-implement-clone3-v2-2-53fcf5577d57@siemens-energy.com>
+Message-Id: <20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com>
 References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
 In-Reply-To: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
 To: Dinh Nguyen <dinguyen@kernel.org>, 
@@ -159,28 +159,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
  linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
  linux-um@lists.infradead.org, 
- Simon Schuster <schuster.simon@siemens-energy.com>
+ Simon Schuster <schuster.simon@siemens-energy.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3-dev-2ce6c
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756732247; l=28948;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756732247; l=1758;
  i=schuster.simon@siemens-energy.com; s=20250818;
  h=from:subject:message-id;
- bh=njxJQVcDFJwG3DHpXL+bH/qXyZK3UEcNYTT5nHs1jB8=;
- b=eP7meY6J764lrrg6lIYhLk4Tfoy0+oVw7ztOVFuBZ4mmUH4nxITt6B4mzbfTT8/ZP41uw5o3U
- /ZWpQeFA/I0AzOiy/UCcxSlvQSHAZPeMgtjDBX0NlUIxO6VJFV/yls8
+ bh=jiicr5q6EjOw72QZuuzAVeCE1iVdBx6rJ537Y02m/X4=;
+ b=n8Guw0NV6Suno8Y591Jo1ssUzIYYJXAn95WjDsM26gTG4Diqo4wBaGcjduFDj4CyxOi+UP+1Q
+ bc9vUqGSvG9BfaNZEbUUprgB/BwuM16c7iW1ZlIRYBMLPMmyTCfDYFP
 X-Developer-Key: i=schuster.simon@siemens-energy.com; a=ed25519;
  pk=PUhOMiSp43aSeRE1H41KApxYOluamBFFiMfKlBjocvo=
 X-Endpoint-Received: by B4 Relay for
  schuster.simon@siemens-energy.com/20250818 with auth_id=495
 X-Original-From: Simon Schuster <schuster.simon@siemens-energy.com>
 Reply-To: schuster.simon@siemens-energy.com
-X-Rspamd-Queue-Id: 54A3E1C000B
-X-Stat-Signature: 5doy8qpf9tub5jfuhewxt4weutaspopc
+X-Rspamd-Queue-Id: A762110000C
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756732251-405415
-X-HE-Meta: U2FsdGVkX18wvtyDJutIhMWgLDUf2Q/RDqL/21FqnUqrsvNkD7nPnK7VFb5SVzQtQLnz/q/k2JAZ8m7LGxkALtbsG/SjIpoq7qxiFCwWIklJs2vKfWyGfIeHCfP9lFEEtniBAdlo0V6I5rRj/Sk8nhSY+H7IoaG3EIgKrq8axKOfntAiMm6qbeasjqvXs+0p+Cl0pr1u+sJeGEyYse+wRZvfmC7VWOPmu3R50uN7ZIyjA113TdB5yQ7oQ/RE1B6KViFngn9xr9cX87Uw9ou5HcUYR0Mgrf57/oA2LhxBVFtYm6VERcoZLMLGfnkVGSDqKkqaOluc1tCxr7WdaczrzeXKpjaE3KWMvegrrxi9apG7RWLb/W+boG59eihE3e64H0F1ZGntzLEhmceg5xkGWPxvw8FEdgr+1dvdN44ckpBxw7bMBBBCOG+V4tbw6XTmwY6utbZKG7/F8gQBxYSF1J4uxSco0MmjqjUPQyzNWqGnimliTlpPsQn9Au8R6a6I/hPcJCVLDpsJMxB1lYUN1rRlcUJedsOr84Fi4JCc9uAt1cyMAPK9WhZPNCvW882VAs7LA0E1cgG0rqryptuNln/fgoZo9uCIk1C66NoKm4eUvOb0WraEZZ7kFr4NlMYLThEUlLOaQBRYqnhP7JO06Y0YQHlDwNF69urkvnrKVk36RZY+RyZgQBEJstD3VUzdLUe4+oldUJKTR3CKhS8T9PAhQgiKA4wi2/2VX6oOeE82C4y4wQ4UIa0f7kMuxF1YDOqb4Nl6WsoF4di9mObQXh3Y4D4cmcB6J8cqftTX1vfbfvdEc9SrkJfhBcJyV7i4rMIlAG9xcAiJ5zZb/KboMbGxq9Xu53XXAKRq6mJfEga98MRgPyZmqPl4YYvTYRlflFUNLfQRxkoopPShADPC1DWeC/nx7myb3CZUUPXCY3X0GsleCK1jPYuuBgEd3og8H7+GY3QhH70SSH9/VsS
- 3h3XTBg4
- 9NQc/VdniCYWR6TY+PynolX4dYxXVV4sjyUGiBeUSGz3TT6a14qMmKP9g2sB5b29s9TsrkwdBhee3C9wcYkSlhrFwU3YkiU95zmYn184/rEIXuNGXCqmDaMrOqVTyj+8pzxROUA5zIQtEbGsWnVdiisNzBKzbgS13SxWnu7zALurkB+AzaJY/JOjGDfqY7Rue/PmFQ9TYXPGvL+VZCcwu885uW94VvKvvODlLPGLAkmVaZpC8KxEDb9hvHsgHiZeWmMGfVdjsvrwy8L3Nncc61JFALRpYIp9doWKC9dNZPJzw7GO3DilCYSRyINM/U6ArlAeFc7xy929J3DyYvStfjTbVFiXmsUwJcLgHcJJ1NXVre6i9jyPFS1n1zvKwI36WQ5NMCMrUCmamHD7g104rzUBWBJITFep3v45ZMHiLUzEW3rRl4vrFL5s5BfvnTaVzolWNwrzEUvHXn+Da7a6c9KS8P43PrTW/tF4PDVRN2mkdSUYjkmoPPMp+pzBFEylo8qGJUSA8bN1ko6AyPc8334aXep0+qmdrhh3DsaoEjvLGxbW08bssKOAv8pPpqaldyTqnlMu3QPlIiLYWvYYptv0D/loBkBBy6A+PKQEd2ecCd39ZBPwHzVVE4g==
+X-Stat-Signature: yef5pyfpris37u3rtz5qgfxdjj43n381
+X-HE-Tag: 1756732251-909326
+X-HE-Meta: U2FsdGVkX1/lae9WGghkp99WaZGRtAsi3EDgOrHnzjx0ZWU5g1ml2K+BI8WyZtSM9S+dhDrTZA/rYCoE1ULO3YVNFHxZqTgV+lKxDo0Ayt8NNEkjrqztPrcU4APfhysLs0jhSSwK0RnaJ/LzQXJIUo8hA6XqM9F/hEgt+n+Sk0mUU0x2Im5ybKmW2OT0rv5fAkuRxXYrt3SgotYGqz7fFbG00HUmpvoKgfw4Uy4EQeyy8WI+usy86VedbQAmKd4mCJ62wxweT9y//EceEQzy672XeeqjVupeRrQKfLefj8N0WvKNZD7Vg5kkPI5SdXQQgvmS8LZtzc7oP2OXrRFFERTZv8z1aCk+8NH8iGO6DJYH6pQ+JJ6ijLIScE66AkzjYQeM+HUYjFtx4r7NjxqdB2xfKE+EMJCtWtkTVIqubOp8ByKTr29My/YPTkjyhXHKUFJYyLOYDlKtvQqJr7BVOFDn3plXZqywULLvxf5GJc1mOkPXUbzlJAhHrlVrB+zF5YL5Mr27dFuuN/E71lTBy5Ou0TpPlaGhdXJQYykCJiAxCFkW2nyzHR+0Q7NVzMBoXiqU4xuMiX3mDlUS0qu9A6mcqOVNJlBJLikk3MPaIqCne7l9iTJ7RBlAn1ryQlp8hsB54gvizYW7FI9V/hbIR2cVjKgBQXfpKaJ93pe5yNSuvgMRCMLIeS52dNBwkFGffMnmuh1KdfnUfuaxpXRdVqpSQ4oQRDmRGRmGi0kuiBuwpaqqL6G7nGtqpQThEryzJmBqOnoy2wrC3MbjtSetHkgy2HsEAZP5p0USe4FUyHesdDnKZ+fFPnAUWTKBnoPr6i1ekUe6eitzpMj+XgNQajouBr7Q6CpprSc11hkNnuS6kfH8zmopAGa0UNJK7ydn4wGyGcw5TixoyutixjG/W/YSywfl92f7wc51TByHJSmr85BVk4xrDrfEsMNIlc9ruxzq45gNiY3qb41mHJi
+ 6pNtSnzA
+ FZBoiXq7R+EVEqgtwuPBtHJdD0nN6LD2w4wGdNWnzZdcommUaQBGkBs/rLEs8oFDBSAhenb028xM1lTTvtznTHoGRIQ+6C5Q/73pk9OscWhp8xLG/wJeAWFSxEB4ppqlfUalmvpagkSVPyumnWpPAp64c6VlOoVkkXlWKfsvmPtSvhTaypmkwqPU9CFLRVwiUstt6ssnwoL4fgiKVmLrKtFYkg67vqeUYSLrcbHZgQvr2i3FbVVND1Pdk5EHcRr0wRdO2smzTrNH/z3VZuV0EYORGFV47oSW1HPTQU1Yd3gsZQGFEMZaE498ijugLCiWi0c3lhZnNbkqAiqk9pm2wtSq1eTnWAqOR+sdEEpGZEttsu4snRMKrCvstbHqjHhka2Oy2LcFuIjPbhTfMclrTvabtXKmuE+OjMTr30XoSEUUVsQ9k36s6ea6UxbQyRGbTV3WgtnvA2V3YdESH9dnJss0ALQXZF4gUCNCAQNqCP4sE9zUEy6UcgsRIBN/GBVL8yiR8OVHhz91rjMpiSVfXelpZvNuAS+8kYOgNqAqWbUMist/cscN6Y6FqkEUeU1uIHATA3wOSroO6YAD/4k0q3fLGGNsywjSd2M9ELoNYKm2FXO9yWCKMBbXjwiD/PyyxRWnn9VrPklBM3J8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,731 +193,50 @@ From: Simon Schuster <schuster.simon@siemens-energy.com>
 
 With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
 clone3") the effective bit width of clone_flags on all architectures was
-increased from 32-bit to 64-bit, with a new type of u64 for the flags.
-However, for most consumers of clone_flags the interface was not
-changed from the previous type of unsigned long.
+increased from 32-bit to 64-bit. However, the signature of the copy_*
+helper functions (e.g., copy_sighand) used by copy_process was not
+adapted.
 
-While this works fine as long as none of the new 64-bit flag bits
-(CLONE_CLEAR_SIGHAND and CLONE_INTO_CGROUP) are evaluated, this is still
-undesirable in terms of the principle of least surprise.
+As such, they truncate the flags on any 32-bit architectures that
+supports clone3 (arc, arm, csky, m68k, microblaze, mips32, openrisc,
+parisc32, powerpc32, riscv32, x86-32 and xtensa).
 
-Thus, this commit fixes all relevant interfaces of callees to
-sys_clone3/copy_process (excluding the architecture-specific
-copy_thread) to consistently pass clone_flags as u64, so that
-no truncation to 32-bit integers occurs on 32-bit architectures.
+For copy_sighand with CLONE_CLEAR_SIGHAND being an actual u64
+constant, this triggers an observable bug in kernel selftest
+clone3_clear_sighand:
 
+        if (clone_flags & CLONE_CLEAR_SIGHAND)
+
+in function copy_sighand within fork.c will always fail given:
+
+        unsigned long /* == uint32_t */ clone_flags
+        #define CLONE_CLEAR_SIGHAND 0x100000000ULL
+
+This commit fixes the bug by always passing clone_flags to copy_sighand
+via their declared u64 type, invariant of architecture-dependent integer
+sizes.
+
+Fixes: b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
+Cc: stable@vger.kernel.org # linux-5.5+
 Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 ---
- block/blk-ioc.c                | 2 +-
- fs/namespace.c                 | 2 +-
- include/linux/cgroup.h         | 4 ++--
- include/linux/cred.h           | 2 +-
- include/linux/iocontext.h      | 6 +++---
- include/linux/ipc_namespace.h  | 4 ++--
- include/linux/lsm_hook_defs.h  | 2 +-
- include/linux/mnt_namespace.h  | 2 +-
- include/linux/nsproxy.h        | 2 +-
- include/linux/pid_namespace.h  | 4 ++--
- include/linux/rseq.h           | 4 ++--
- include/linux/sched/task.h     | 2 +-
- include/linux/security.h       | 4 ++--
- include/linux/sem.h            | 4 ++--
- include/linux/time_namespace.h | 4 ++--
- include/linux/uprobes.h        | 4 ++--
- include/linux/user_events.h    | 4 ++--
- include/linux/utsname.h        | 4 ++--
- include/net/net_namespace.h    | 4 ++--
- include/trace/events/task.h    | 6 +++---
- ipc/namespace.c                | 2 +-
- ipc/sem.c                      | 2 +-
- kernel/cgroup/namespace.c      | 2 +-
- kernel/cred.c                  | 2 +-
- kernel/events/uprobes.c        | 2 +-
- kernel/fork.c                  | 8 ++++----
- kernel/nsproxy.c               | 4 ++--
- kernel/pid_namespace.c         | 2 +-
- kernel/sched/core.c            | 4 ++--
- kernel/sched/fair.c            | 2 +-
- kernel/sched/sched.h           | 4 ++--
- kernel/time/namespace.c        | 2 +-
- kernel/utsname.c               | 2 +-
- net/core/net_namespace.c       | 2 +-
- security/apparmor/lsm.c        | 2 +-
- security/security.c            | 2 +-
- security/selinux/hooks.c       | 2 +-
- security/tomoyo/tomoyo.c       | 2 +-
- 38 files changed, 59 insertions(+), 59 deletions(-)
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-ioc.c b/block/blk-ioc.c
-index 9fda3906e5f5..d15918d7fabb 100644
---- a/block/blk-ioc.c
-+++ b/block/blk-ioc.c
-@@ -286,7 +286,7 @@ int set_task_ioprio(struct task_struct *task, int ioprio)
- }
- EXPORT_SYMBOL_GPL(set_task_ioprio);
- 
--int __copy_io(unsigned long clone_flags, struct task_struct *tsk)
-+int __copy_io(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct io_context *ioc = current->io_context;
- 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 4b352a44cb80..0cd875b38552 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -4202,7 +4202,7 @@ static struct mnt_namespace *alloc_mnt_ns(struct user_namespace *user_ns, bool a
- }
- 
- __latent_entropy
--struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
-+struct mnt_namespace *copy_mnt_ns(u64 flags, struct mnt_namespace *ns,
- 		struct user_namespace *user_ns, struct fs_struct *new_fs)
- {
- 	struct mnt_namespace *new_ns;
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index ae73dbb19165..15ed7a8f0abb 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -801,7 +801,7 @@ extern struct cgroup_namespace init_cgroup_ns;
- 
- void free_cgroup_ns(struct cgroup_namespace *ns);
- 
--struct cgroup_namespace *copy_cgroup_ns(unsigned long flags,
-+struct cgroup_namespace *copy_cgroup_ns(u64 flags,
- 					struct user_namespace *user_ns,
- 					struct cgroup_namespace *old_ns);
- 
-@@ -823,7 +823,7 @@ static inline void put_cgroup_ns(struct cgroup_namespace *ns)
- 
- static inline void free_cgroup_ns(struct cgroup_namespace *ns) { }
- static inline struct cgroup_namespace *
--copy_cgroup_ns(unsigned long flags, struct user_namespace *user_ns,
-+copy_cgroup_ns(u64 flags, struct user_namespace *user_ns,
- 	       struct cgroup_namespace *old_ns)
- {
- 	return old_ns;
-diff --git a/include/linux/cred.h b/include/linux/cred.h
-index a102a10f833f..89ae50ad2ace 100644
---- a/include/linux/cred.h
-+++ b/include/linux/cred.h
-@@ -148,7 +148,7 @@ struct cred {
- 
- extern void __put_cred(struct cred *);
- extern void exit_creds(struct task_struct *);
--extern int copy_creds(struct task_struct *, unsigned long);
-+extern int copy_creds(struct task_struct *, u64);
- extern const struct cred *get_task_cred(struct task_struct *);
- extern struct cred *cred_alloc_blank(void);
- extern struct cred *prepare_creds(void);
-diff --git a/include/linux/iocontext.h b/include/linux/iocontext.h
-index 14f7eaf1b443..079d8773790c 100644
---- a/include/linux/iocontext.h
-+++ b/include/linux/iocontext.h
-@@ -118,8 +118,8 @@ struct task_struct;
- #ifdef CONFIG_BLOCK
- void put_io_context(struct io_context *ioc);
- void exit_io_context(struct task_struct *task);
--int __copy_io(unsigned long clone_flags, struct task_struct *tsk);
--static inline int copy_io(unsigned long clone_flags, struct task_struct *tsk)
-+int __copy_io(u64 clone_flags, struct task_struct *tsk);
-+static inline int copy_io(u64 clone_flags, struct task_struct *tsk)
- {
- 	if (!current->io_context)
- 		return 0;
-@@ -129,7 +129,7 @@ static inline int copy_io(unsigned long clone_flags, struct task_struct *tsk)
- struct io_context;
- static inline void put_io_context(struct io_context *ioc) { }
- static inline void exit_io_context(struct task_struct *task) { }
--static inline int copy_io(unsigned long clone_flags, struct task_struct *tsk)
-+static inline int copy_io(u64 clone_flags, struct task_struct *tsk)
- {
- 	return 0;
- }
-diff --git a/include/linux/ipc_namespace.h b/include/linux/ipc_namespace.h
-index e8240cf2611a..4b399893e2b3 100644
---- a/include/linux/ipc_namespace.h
-+++ b/include/linux/ipc_namespace.h
-@@ -129,7 +129,7 @@ static inline int mq_init_ns(struct ipc_namespace *ns) { return 0; }
- #endif
- 
- #if defined(CONFIG_IPC_NS)
--extern struct ipc_namespace *copy_ipcs(unsigned long flags,
-+extern struct ipc_namespace *copy_ipcs(u64 flags,
- 	struct user_namespace *user_ns, struct ipc_namespace *ns);
- 
- static inline struct ipc_namespace *get_ipc_ns(struct ipc_namespace *ns)
-@@ -151,7 +151,7 @@ static inline struct ipc_namespace *get_ipc_ns_not_zero(struct ipc_namespace *ns
- 
- extern void put_ipc_ns(struct ipc_namespace *ns);
- #else
--static inline struct ipc_namespace *copy_ipcs(unsigned long flags,
-+static inline struct ipc_namespace *copy_ipcs(u64 flags,
- 	struct user_namespace *user_ns, struct ipc_namespace *ns)
- {
- 	if (flags & CLONE_NEWIPC)
-diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index fd11fffdd3c3..adbe234a6f6c 100644
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -211,7 +211,7 @@ LSM_HOOK(int, 0, file_open, struct file *file)
- LSM_HOOK(int, 0, file_post_open, struct file *file, int mask)
- LSM_HOOK(int, 0, file_truncate, struct file *file)
- LSM_HOOK(int, 0, task_alloc, struct task_struct *task,
--	 unsigned long clone_flags)
-+	 u64 clone_flags)
- LSM_HOOK(void, LSM_RET_VOID, task_free, struct task_struct *task)
- LSM_HOOK(int, 0, cred_alloc_blank, struct cred *cred, gfp_t gfp)
- LSM_HOOK(void, LSM_RET_VOID, cred_free, struct cred *cred)
-diff --git a/include/linux/mnt_namespace.h b/include/linux/mnt_namespace.h
-index 70b366b64816..ff290c87b2e7 100644
---- a/include/linux/mnt_namespace.h
-+++ b/include/linux/mnt_namespace.h
-@@ -11,7 +11,7 @@ struct fs_struct;
- struct user_namespace;
- struct ns_common;
- 
--extern struct mnt_namespace *copy_mnt_ns(unsigned long, struct mnt_namespace *,
-+extern struct mnt_namespace *copy_mnt_ns(u64, struct mnt_namespace *,
- 		struct user_namespace *, struct fs_struct *);
- extern void put_mnt_ns(struct mnt_namespace *ns);
- DEFINE_FREE(put_mnt_ns, struct mnt_namespace *, if (!IS_ERR_OR_NULL(_T)) put_mnt_ns(_T))
-diff --git a/include/linux/nsproxy.h b/include/linux/nsproxy.h
-index dab6a1734a22..82533e899ff4 100644
---- a/include/linux/nsproxy.h
-+++ b/include/linux/nsproxy.h
-@@ -103,7 +103,7 @@ static inline struct cred *nsset_cred(struct nsset *set)
-  *
-  */
- 
--int copy_namespaces(unsigned long flags, struct task_struct *tsk);
-+int copy_namespaces(u64 flags, struct task_struct *tsk);
- void exit_task_namespaces(struct task_struct *tsk);
- void switch_task_namespaces(struct task_struct *tsk, struct nsproxy *new);
- int exec_task_namespaces(void);
-diff --git a/include/linux/pid_namespace.h b/include/linux/pid_namespace.h
-index 7c67a5811199..0620a3e08e83 100644
---- a/include/linux/pid_namespace.h
-+++ b/include/linux/pid_namespace.h
-@@ -78,7 +78,7 @@ static inline int pidns_memfd_noexec_scope(struct pid_namespace *ns)
- }
- #endif
- 
--extern struct pid_namespace *copy_pid_ns(unsigned long flags,
-+extern struct pid_namespace *copy_pid_ns(u64 flags,
- 	struct user_namespace *user_ns, struct pid_namespace *ns);
- extern void zap_pid_ns_processes(struct pid_namespace *pid_ns);
- extern int reboot_pid_ns(struct pid_namespace *pid_ns, int cmd);
-@@ -97,7 +97,7 @@ static inline int pidns_memfd_noexec_scope(struct pid_namespace *ns)
- 	return 0;
- }
- 
--static inline struct pid_namespace *copy_pid_ns(unsigned long flags,
-+static inline struct pid_namespace *copy_pid_ns(u64 flags,
- 	struct user_namespace *user_ns, struct pid_namespace *ns)
- {
- 	if (flags & CLONE_NEWPID)
-diff --git a/include/linux/rseq.h b/include/linux/rseq.h
-index bc8af3eb5598..a96fd345aa38 100644
---- a/include/linux/rseq.h
-+++ b/include/linux/rseq.h
-@@ -65,7 +65,7 @@ static inline void rseq_migrate(struct task_struct *t)
-  * If parent process has a registered restartable sequences area, the
-  * child inherits. Unregister rseq for a clone with CLONE_VM set.
-  */
--static inline void rseq_fork(struct task_struct *t, unsigned long clone_flags)
-+static inline void rseq_fork(struct task_struct *t, u64 clone_flags)
- {
- 	if (clone_flags & CLONE_VM) {
- 		t->rseq = NULL;
-@@ -107,7 +107,7 @@ static inline void rseq_preempt(struct task_struct *t)
- static inline void rseq_migrate(struct task_struct *t)
- {
- }
--static inline void rseq_fork(struct task_struct *t, unsigned long clone_flags)
-+static inline void rseq_fork(struct task_struct *t, u64 clone_flags)
- {
- }
- static inline void rseq_execve(struct task_struct *t)
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index ea41795a352b..34d6a0e108c3 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -63,7 +63,7 @@ extern int lockdep_tasklist_lock_is_held(void);
- extern asmlinkage void schedule_tail(struct task_struct *prev);
- extern void init_idle(struct task_struct *idle, int cpu);
- 
--extern int sched_fork(unsigned long clone_flags, struct task_struct *p);
-+extern int sched_fork(u64 clone_flags, struct task_struct *p);
- extern int sched_cgroup_fork(struct task_struct *p, struct kernel_clone_args *kargs);
- extern void sched_cancel_fork(struct task_struct *p);
- extern void sched_post_fork(struct task_struct *p);
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 521bcb5b9717..9a1d4a6c8673 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -489,7 +489,7 @@ int security_file_receive(struct file *file);
- int security_file_open(struct file *file);
- int security_file_post_open(struct file *file, int mask);
- int security_file_truncate(struct file *file);
--int security_task_alloc(struct task_struct *task, unsigned long clone_flags);
-+int security_task_alloc(struct task_struct *task, u64 clone_flags);
- void security_task_free(struct task_struct *task);
- int security_cred_alloc_blank(struct cred *cred, gfp_t gfp);
- void security_cred_free(struct cred *cred);
-@@ -1215,7 +1215,7 @@ static inline int security_file_truncate(struct file *file)
- }
- 
- static inline int security_task_alloc(struct task_struct *task,
--				      unsigned long clone_flags)
-+				      u64 clone_flags)
- {
- 	return 0;
- }
-diff --git a/include/linux/sem.h b/include/linux/sem.h
-index c4deefe42aeb..275269ce2ec8 100644
---- a/include/linux/sem.h
-+++ b/include/linux/sem.h
-@@ -9,12 +9,12 @@ struct task_struct;
- 
- #ifdef CONFIG_SYSVIPC
- 
--extern int copy_semundo(unsigned long clone_flags, struct task_struct *tsk);
-+extern int copy_semundo(u64 clone_flags, struct task_struct *tsk);
- extern void exit_sem(struct task_struct *tsk);
- 
- #else
- 
--static inline int copy_semundo(unsigned long clone_flags, struct task_struct *tsk)
-+static inline int copy_semundo(u64 clone_flags, struct task_struct *tsk)
- {
- 	return 0;
- }
-diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
-index bb2c52f4fc94..b6e36525e0be 100644
---- a/include/linux/time_namespace.h
-+++ b/include/linux/time_namespace.h
-@@ -43,7 +43,7 @@ static inline struct time_namespace *get_time_ns(struct time_namespace *ns)
- 	return ns;
- }
- 
--struct time_namespace *copy_time_ns(unsigned long flags,
-+struct time_namespace *copy_time_ns(u64 flags,
- 				    struct user_namespace *user_ns,
- 				    struct time_namespace *old_ns);
- void free_time_ns(struct time_namespace *ns);
-@@ -129,7 +129,7 @@ static inline void put_time_ns(struct time_namespace *ns)
- }
- 
- static inline
--struct time_namespace *copy_time_ns(unsigned long flags,
-+struct time_namespace *copy_time_ns(u64 flags,
- 				    struct user_namespace *user_ns,
- 				    struct time_namespace *old_ns)
- {
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index 516217c39094..915303a82d84 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -205,7 +205,7 @@ extern void uprobe_start_dup_mmap(void);
- extern void uprobe_end_dup_mmap(void);
- extern void uprobe_dup_mmap(struct mm_struct *oldmm, struct mm_struct *newmm);
- extern void uprobe_free_utask(struct task_struct *t);
--extern void uprobe_copy_process(struct task_struct *t, unsigned long flags);
-+extern void uprobe_copy_process(struct task_struct *t, u64 flags);
- extern int uprobe_post_sstep_notifier(struct pt_regs *regs);
- extern int uprobe_pre_sstep_notifier(struct pt_regs *regs);
- extern void uprobe_notify_resume(struct pt_regs *regs);
-@@ -281,7 +281,7 @@ static inline bool uprobe_deny_signal(void)
- static inline void uprobe_free_utask(struct task_struct *t)
- {
- }
--static inline void uprobe_copy_process(struct task_struct *t, unsigned long flags)
-+static inline void uprobe_copy_process(struct task_struct *t, u64 flags)
- {
- }
- static inline void uprobe_clear_state(struct mm_struct *mm)
-diff --git a/include/linux/user_events.h b/include/linux/user_events.h
-index 8afa8c3a0973..57d1ff006090 100644
---- a/include/linux/user_events.h
-+++ b/include/linux/user_events.h
-@@ -33,7 +33,7 @@ extern void user_event_mm_dup(struct task_struct *t,
- extern void user_event_mm_remove(struct task_struct *t);
- 
- static inline void user_events_fork(struct task_struct *t,
--				    unsigned long clone_flags)
-+				    u64 clone_flags)
- {
- 	struct user_event_mm *old_mm;
- 
-@@ -68,7 +68,7 @@ static inline void user_events_exit(struct task_struct *t)
- }
- #else
- static inline void user_events_fork(struct task_struct *t,
--				    unsigned long clone_flags)
-+				    u64 clone_flags)
- {
- }
- 
-diff --git a/include/linux/utsname.h b/include/linux/utsname.h
-index bf7613ba412b..ba34ec0e2f95 100644
---- a/include/linux/utsname.h
-+++ b/include/linux/utsname.h
-@@ -35,7 +35,7 @@ static inline void get_uts_ns(struct uts_namespace *ns)
- 	refcount_inc(&ns->ns.count);
- }
- 
--extern struct uts_namespace *copy_utsname(unsigned long flags,
-+extern struct uts_namespace *copy_utsname(u64 flags,
- 	struct user_namespace *user_ns, struct uts_namespace *old_ns);
- extern void free_uts_ns(struct uts_namespace *ns);
- 
-@@ -55,7 +55,7 @@ static inline void put_uts_ns(struct uts_namespace *ns)
- {
- }
- 
--static inline struct uts_namespace *copy_utsname(unsigned long flags,
-+static inline struct uts_namespace *copy_utsname(u64 flags,
- 	struct user_namespace *user_ns, struct uts_namespace *old_ns)
- {
- 	if (flags & CLONE_NEWUTS)
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 025a7574b275..0e008cfe159d 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -204,7 +204,7 @@ struct net {
- extern struct net init_net;
- 
- #ifdef CONFIG_NET_NS
--struct net *copy_net_ns(unsigned long flags, struct user_namespace *user_ns,
-+struct net *copy_net_ns(u64 flags, struct user_namespace *user_ns,
- 			struct net *old_net);
- 
- void net_ns_get_ownership(const struct net *net, kuid_t *uid, kgid_t *gid);
-@@ -218,7 +218,7 @@ extern struct task_struct *cleanup_net_task;
- #else /* CONFIG_NET_NS */
- #include <linux/sched.h>
- #include <linux/nsproxy.h>
--static inline struct net *copy_net_ns(unsigned long flags,
-+static inline struct net *copy_net_ns(u64 flags,
- 	struct user_namespace *user_ns, struct net *old_net)
- {
- 	if (flags & CLONE_NEWNET)
-diff --git a/include/trace/events/task.h b/include/trace/events/task.h
-index af535b053033..4f0759634306 100644
---- a/include/trace/events/task.h
-+++ b/include/trace/events/task.h
-@@ -8,14 +8,14 @@
- 
- TRACE_EVENT(task_newtask,
- 
--	TP_PROTO(struct task_struct *task, unsigned long clone_flags),
-+	TP_PROTO(struct task_struct *task, u64 clone_flags),
- 
- 	TP_ARGS(task, clone_flags),
- 
- 	TP_STRUCT__entry(
- 		__field(	pid_t,	pid)
- 		__array(	char,	comm, TASK_COMM_LEN)
--		__field( unsigned long, clone_flags)
-+		__field(	u64,    clone_flags)
- 		__field(	short,	oom_score_adj)
- 	),
- 
-@@ -26,7 +26,7 @@ TRACE_EVENT(task_newtask,
- 		__entry->oom_score_adj = task->signal->oom_score_adj;
- 	),
- 
--	TP_printk("pid=%d comm=%s clone_flags=%lx oom_score_adj=%hd",
-+	TP_printk("pid=%d comm=%s clone_flags=%llx oom_score_adj=%hd",
- 		__entry->pid, __entry->comm,
- 		__entry->clone_flags, __entry->oom_score_adj)
- );
-diff --git a/ipc/namespace.c b/ipc/namespace.c
-index 4df91ceeeafe..a712ec27209c 100644
---- a/ipc/namespace.c
-+++ b/ipc/namespace.c
-@@ -106,7 +106,7 @@ static struct ipc_namespace *create_ipc_ns(struct user_namespace *user_ns,
- 	return ERR_PTR(err);
- }
- 
--struct ipc_namespace *copy_ipcs(unsigned long flags,
-+struct ipc_namespace *copy_ipcs(u64 flags,
- 	struct user_namespace *user_ns, struct ipc_namespace *ns)
- {
- 	if (!(flags & CLONE_NEWIPC))
-diff --git a/ipc/sem.c b/ipc/sem.c
-index a39cdc7bf88f..0f06e4bd4673 100644
---- a/ipc/sem.c
-+++ b/ipc/sem.c
-@@ -2303,7 +2303,7 @@ SYSCALL_DEFINE3(semop, int, semid, struct sembuf __user *, tsops,
-  * parent and child tasks.
-  */
- 
--int copy_semundo(unsigned long clone_flags, struct task_struct *tsk)
-+int copy_semundo(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct sem_undo_list *undo_list;
- 	int error;
-diff --git a/kernel/cgroup/namespace.c b/kernel/cgroup/namespace.c
-index 144a464e45c6..dedadb525880 100644
---- a/kernel/cgroup/namespace.c
-+++ b/kernel/cgroup/namespace.c
-@@ -47,7 +47,7 @@ void free_cgroup_ns(struct cgroup_namespace *ns)
- }
- EXPORT_SYMBOL(free_cgroup_ns);
- 
--struct cgroup_namespace *copy_cgroup_ns(unsigned long flags,
-+struct cgroup_namespace *copy_cgroup_ns(u64 flags,
- 					struct user_namespace *user_ns,
- 					struct cgroup_namespace *old_ns)
- {
-diff --git a/kernel/cred.c b/kernel/cred.c
-index 9676965c0981..dbf6b687dc5c 100644
---- a/kernel/cred.c
-+++ b/kernel/cred.c
-@@ -287,7 +287,7 @@ struct cred *prepare_exec_creds(void)
-  * The new process gets the current process's subjective credentials as its
-  * objective and subjective credentials
-  */
--int copy_creds(struct task_struct *p, unsigned long clone_flags)
-+int copy_creds(struct task_struct *p, u64 clone_flags)
- {
- 	struct cred *new;
- 	int ret;
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 31a12b60055f..aa479d24ccaf 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2160,7 +2160,7 @@ static void dup_xol_work(struct callback_head *work)
- /*
-  * Called in context of a new clone/fork from copy_process.
-  */
--void uprobe_copy_process(struct task_struct *t, unsigned long flags)
-+void uprobe_copy_process(struct task_struct *t, u64 flags)
- {
- 	struct uprobe_task *utask = current->utask;
- 	struct mm_struct *mm = current->mm;
 diff --git a/kernel/fork.c b/kernel/fork.c
-index 82f5d52fecf1..0e9b2dd6c365 100644
+index 5115be549234..82f5d52fecf1 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -1510,7 +1510,7 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
- 	return NULL;
- }
- 
--static int copy_mm(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_mm(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct mm_struct *mm, *oldmm;
- 
-@@ -1548,7 +1548,7 @@ static int copy_mm(unsigned long clone_flags, struct task_struct *tsk)
+@@ -1599,7 +1599,7 @@ static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
  	return 0;
  }
  
--static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_fs(u64 clone_flags, struct task_struct *tsk)
+-static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
++static int copy_sighand(u64 clone_flags, struct task_struct *tsk)
  {
- 	struct fs_struct *fs = current->fs;
- 	if (clone_flags & CLONE_FS) {
-@@ -1569,7 +1569,7 @@ static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
- 	return 0;
- }
+ 	struct sighand_struct *sig;
  
--static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
-+static int copy_files(u64 clone_flags, struct task_struct *tsk,
- 		      int no_files)
- {
- 	struct files_struct *oldf, *newf;
-@@ -1648,7 +1648,7 @@ static void posix_cpu_timers_init_group(struct signal_struct *sig)
- 	posix_cputimers_group_init(pct, cpu_limit);
- }
- 
--static int copy_signal(unsigned long clone_flags, struct task_struct *tsk)
-+static int copy_signal(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct signal_struct *sig;
- 
-diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
-index 5f31fdff8a38..8af3b9ec3aa8 100644
---- a/kernel/nsproxy.c
-+++ b/kernel/nsproxy.c
-@@ -64,7 +64,7 @@ static inline struct nsproxy *create_nsproxy(void)
-  * Return the newly created nsproxy.  Do not attach this to the task,
-  * leave it to the caller to do proper locking and attach it to task.
-  */
--static struct nsproxy *create_new_namespaces(unsigned long flags,
-+static struct nsproxy *create_new_namespaces(u64 flags,
- 	struct task_struct *tsk, struct user_namespace *user_ns,
- 	struct fs_struct *new_fs)
- {
-@@ -144,7 +144,7 @@ static struct nsproxy *create_new_namespaces(unsigned long flags,
-  * called from clone.  This now handles copy for nsproxy and all
-  * namespaces therein.
-  */
--int copy_namespaces(unsigned long flags, struct task_struct *tsk)
-+int copy_namespaces(u64 flags, struct task_struct *tsk)
- {
- 	struct nsproxy *old_ns = tsk->nsproxy;
- 	struct user_namespace *user_ns = task_cred_xxx(tsk, user_ns);
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 7098ed44e717..06bc7c7f78e0 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -171,7 +171,7 @@ static void destroy_pid_namespace_work(struct work_struct *work)
- 	} while (ns != &init_pid_ns && refcount_dec_and_test(&ns->ns.count));
- }
- 
--struct pid_namespace *copy_pid_ns(unsigned long flags,
-+struct pid_namespace *copy_pid_ns(u64 flags,
- 	struct user_namespace *user_ns, struct pid_namespace *old_ns)
- {
- 	if (!(flags & CLONE_NEWPID))
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index be00629f0ba4..6fa85d30d965 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4472,7 +4472,7 @@ int wake_up_state(struct task_struct *p, unsigned int state)
-  * __sched_fork() is basic setup which is also used by sched_init() to
-  * initialize the boot CPU's idle task.
-  */
--static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
-+static void __sched_fork(u64 clone_flags, struct task_struct *p)
- {
- 	p->on_rq			= 0;
- 
-@@ -4707,7 +4707,7 @@ late_initcall(sched_core_sysctl_init);
- /*
-  * fork()/clone()-time setup:
-  */
--int sched_fork(unsigned long clone_flags, struct task_struct *p)
-+int sched_fork(u64 clone_flags, struct task_struct *p)
- {
- 	__sched_fork(clone_flags, p);
- 	/*
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index e256793b9a08..06bcba61ca75 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3542,7 +3542,7 @@ static void task_numa_work(struct callback_head *work)
- 	}
- }
- 
--void init_numa_balancing(unsigned long clone_flags, struct task_struct *p)
-+void init_numa_balancing(u64 clone_flags, struct task_struct *p)
- {
- 	int mm_users = 0;
- 	struct mm_struct *mm = p->mm;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index be9745d104f7..f9adfc912ddc 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1935,12 +1935,12 @@ extern void sched_setnuma(struct task_struct *p, int node);
- extern int migrate_task_to(struct task_struct *p, int cpu);
- extern int migrate_swap(struct task_struct *p, struct task_struct *t,
- 			int cpu, int scpu);
--extern void init_numa_balancing(unsigned long clone_flags, struct task_struct *p);
-+extern void init_numa_balancing(u64 clone_flags, struct task_struct *p);
- 
- #else /* !CONFIG_NUMA_BALANCING: */
- 
- static inline void
--init_numa_balancing(unsigned long clone_flags, struct task_struct *p)
-+init_numa_balancing(u64 clone_flags, struct task_struct *p)
- {
- }
- 
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index 667452768ed3..888872bcc5bb 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -130,7 +130,7 @@ static struct time_namespace *clone_time_ns(struct user_namespace *user_ns,
-  *
-  * Return: timens_for_children namespace or ERR_PTR.
-  */
--struct time_namespace *copy_time_ns(unsigned long flags,
-+struct time_namespace *copy_time_ns(u64 flags,
- 	struct user_namespace *user_ns, struct time_namespace *old_ns)
- {
- 	if (!(flags & CLONE_NEWTIME))
-diff --git a/kernel/utsname.c b/kernel/utsname.c
-index b1ac3ca870f2..00d8d7922f86 100644
---- a/kernel/utsname.c
-+++ b/kernel/utsname.c
-@@ -86,7 +86,7 @@ static struct uts_namespace *clone_uts_ns(struct user_namespace *user_ns,
-  * utsname of this process won't be seen by parent, and vice
-  * versa.
-  */
--struct uts_namespace *copy_utsname(unsigned long flags,
-+struct uts_namespace *copy_utsname(u64 flags,
- 	struct user_namespace *user_ns, struct uts_namespace *old_ns)
- {
- 	struct uts_namespace *new_ns;
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 1b6f3826dd0e..8ec9d83475bf 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -539,7 +539,7 @@ void net_drop_ns(void *p)
- 		net_passive_dec(net);
- }
- 
--struct net *copy_net_ns(unsigned long flags,
-+struct net *copy_net_ns(u64 flags,
- 			struct user_namespace *user_ns, struct net *old_net)
- {
- 	struct ucounts *ucounts;
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 8e1cc229b41b..ba39cfe0cd08 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -112,7 +112,7 @@ static void apparmor_task_free(struct task_struct *task)
- }
- 
- static int apparmor_task_alloc(struct task_struct *task,
--			       unsigned long clone_flags)
-+			       u64 clone_flags)
- {
- 	struct aa_task_ctx *new = task_ctx(task);
- 
-diff --git a/security/security.c b/security/security.c
-index ca126b02d2fe..d5fea03a741a 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -3224,7 +3224,7 @@ int security_file_truncate(struct file *file)
-  *
-  * Return: Returns a zero on success, negative values on failure.
-  */
--int security_task_alloc(struct task_struct *task, unsigned long clone_flags)
-+int security_task_alloc(struct task_struct *task, u64 clone_flags)
- {
- 	int rc = lsm_task_alloc(task);
- 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index f94642ca34f2..9d3b5ebd7657 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -4144,7 +4144,7 @@ static int selinux_file_open(struct file *file)
- /* task security operations */
- 
- static int selinux_task_alloc(struct task_struct *task,
--			      unsigned long clone_flags)
-+			      u64 clone_flags)
- {
- 	u32 sid = current_sid();
- 
-diff --git a/security/tomoyo/tomoyo.c b/security/tomoyo/tomoyo.c
-index d6ebcd9db80a..48fc59d38ab2 100644
---- a/security/tomoyo/tomoyo.c
-+++ b/security/tomoyo/tomoyo.c
-@@ -514,7 +514,7 @@ struct lsm_blob_sizes tomoyo_blob_sizes __ro_after_init = {
-  * Returns 0.
-  */
- static int tomoyo_task_alloc(struct task_struct *task,
--			     unsigned long clone_flags)
-+			     u64 clone_flags)
- {
- 	struct tomoyo_task *old = tomoyo_task(current);
- 	struct tomoyo_task *new = tomoyo_task(task);
 
 -- 
 2.39.5
