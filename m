@@ -4,126 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005C7CA1007
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:16:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDAD9CA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:21:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E960A8E0019; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
+	id 15B778E000B; Mon,  1 Sep 2025 12:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E46BC8E0003; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
+	id 10C738E0003; Mon,  1 Sep 2025 12:21:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35918E0019; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
+	id F3CCC8E000B; Mon,  1 Sep 2025 12:21:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C2CED8E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CBB5160920
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:15:51 +0000 (UTC)
-X-FDA: 83841182502.24.F4B3202
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D85D840009
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:15:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=frBZwBEq;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E28758E0003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:21:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7475611A4F4
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:21:13 +0000 (UTC)
+X-FDA: 83841196026.26.93E5C56
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 13CBE140004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:21:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BOO8Wkpw;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756743349;
+	s=arc-20220608; t=1756743671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WzCHhi4hjG4XUTM3m5FXF23YIR33PFzU4tTzZn5EUNE=;
-	b=RrTVvRbfa72TkCqsKgO5VlT4F1v9aWAauuZXDNPkpO52dJkmNrEoLKbCP7pQIaS+jrrsSf
-	OMMhci08G5aQjUjpsBoVmHKSjskSVWjRPG7p6Td+E7Kyy95Q1W8KZ0qehR4vm675AL+VLY
-	sP0TqHYwk1xFl9wPh4WAilblLs7d+wE=
+	bh=xPcwA7DHP8CQMDqmjZ6zA+PMccXA/CBy019wh06lmcI=;
+	b=Gxpj4+mtI61IohuGH138ueCws+jtpwdGZofTQgPIJBJMOmbGBz2pxesrBUsy8W8waE3Nb+
+	mEo/h8z1RubNkl2CHqQ2aCSLU4zrCMFyJxhxBq1PTzjjGTk83LVd5mnu3SNJnNU/8vEaw5
+	j/+rzaRHxBpUirdrcE1GJlyGbxO3RG0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=frBZwBEq;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BOO8Wkpw;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756743349; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756743671; a=rsa-sha256;
 	cv=none;
-	b=nGN/UkEdGokuTYuYfewOBtoSUopZGYbzwvcvct9oYx/RGCw0iJv3x8ZEY2cN//jHuo/Ncb
-	BKVBFg0Yz1+9GpqigmnrTnFXS4rSgjLAJ+xldMuHYBM7M2URkcpXeER+muMQbKZ8WCV2iC
-	vnT4ldT7VSSHCdyuC8RfMFEpZsAWZvg=
+	b=fFCL8vyIoiwDHWlCBrj74ytN+9BeVMzKuxn1MpnguWI6iq8/Vz/9xWdC0Mw/hKUtoGnTk/
+	NfSqhwRhEuHp3wMUsExSKUJmasqCSqPs3BcXx/lnO+ymI146vcbWhkm6klPX4UOGheOWPT
+	LlxPsYPWQP7H/qOQyH1nVEPp5T81D6s=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756743348;
+	s=mimecast20190719; t=1756743670;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WzCHhi4hjG4XUTM3m5FXF23YIR33PFzU4tTzZn5EUNE=;
-	b=frBZwBEqPWiW2EhLInHqpH2K+XqZJWvgApPZbpRUimzAoodxihT8ifOVxntBqyVRc2IqQY
-	HxU5g00TARvAA7+XlTHHG4JX7oMQ6LoKP4sy29waYRf9sH41Ejrz2lt0LUyxwoZQTD2sPl
-	C39H39FDd6relMLe+GD/meMzb0cBNzk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=xPcwA7DHP8CQMDqmjZ6zA+PMccXA/CBy019wh06lmcI=;
+	b=BOO8Wkpw0Kg201snHqGMNZ1zRazJidHGgxKRQBEK4lbbu8WCLRHHnPqRgszxiiLPCBos4P
+	XED8ANJGsszLLDlT2LIK5fkQgZgG2HTiZ+QjrrqkMWrTVuFxYHoZHPNjT1Tmc1bHa55Bs2
+	9uiJfze/4XQUDEUjssdiP0If0qLyCVU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-315-ASKRfdCHO-WTPL5j0TCahg-1; Mon, 01 Sep 2025 12:15:45 -0400
-X-MC-Unique: ASKRfdCHO-WTPL5j0TCahg-1
-X-Mimecast-MFC-AGG-ID: ASKRfdCHO-WTPL5j0TCahg_1756743344
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b8f4c2f7cso7023005e9.1
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 09:15:44 -0700 (PDT)
+ us-mta-640-kMjVWUcXM9u6mEXMZQuM0A-1; Mon, 01 Sep 2025 12:21:08 -0400
+X-MC-Unique: kMjVWUcXM9u6mEXMZQuM0A-1
+X-Mimecast-MFC-AGG-ID: kMjVWUcXM9u6mEXMZQuM0A_1756743667
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b869d3572so6265795e9.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 09:21:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756743344; x=1757348144;
+        d=1e100.net; s=20230601; t=1756743667; x=1757348467;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WzCHhi4hjG4XUTM3m5FXF23YIR33PFzU4tTzZn5EUNE=;
-        b=niA1wmlCybj8YOt2QWwrxEtmOBLebmBNQ4LBhU7Ack9phrqQ45ZCiwJYdnzMilWRi4
-         LKL4qvRX5Xzk3y39woQtMHx9+0ziMpde1DZrqQUJaKAoWnksFrNKYx5YGj7pESo/r3iD
-         q6SnDPaK8EdF+znZRJvEumCj7V/iitUSj81A0cacJ2QSff/cnM4sWIQCyiEFokqq9miv
-         cDNbUCQXScA6fXUSY57pR5EvWPbXewCVp8sIPIoQcbRY8w3R+G0YCuZFtGbs3Fkndys7
-         xBKVy7NPvrGgQQ2YuS0g2GSAb4i358kuum03KcY4qic30NbTHDHOY+USUrCA2vTrvuvL
-         fKuQ==
-X-Gm-Message-State: AOJu0YyF2cvPB1h+P8+6Kxef5teGxYRMQD8YIcWWX0nrS42KJs6eLr4s
-	05Vu0anoLgmyNGu6ehimDdbWIyLXr+DaZylYSDcc1cHhxgeypUNoEhLZfu3+M5HBROgEfZUmXbQ
-	I/WM5StjhRKwFKa6qAfkWqWOLcN7wPoypWl5ufNpOGnd/nJvoBqfj
-X-Gm-Gg: ASbGncsHquvZ9MqQgx23Q8tgQ3d2zdLl8wEgloRRC1K64EKFB/R0xY3Pa/rDaM+4y9K
-	+PAp/78riWADL6H+s5IBwnw0Dk/wEqmoZGTc31A/NFuYjuDSI8HPPVKUQNBpJjKeNNWB3kGYsIp
-	afGhXHSUTtTZo+Vmwd1SgzxGTJyR5HqLcIK0oO06R9fHHjIoGaS7O70ekgaL8GNwBtPZmIEURJH
-	tFGYwwzEtV2PdW1fhHX4XJy3AMEkE7lbl3+VfHNePV7tn8M3Siow8pzyAeY63UGKgL5vb3AKr+N
-	GlBE7DCC4Ypp/P1kY8W/icRjcFfz5qV+qvgc6iBMOHpzVgMgGmCbDfD8pWzL3tUxafjYpCerWI+
-	4Sr/55s9eONmjflMzSk1x5ox5L/E5BbK9qzljFJMvOjRN2KK0t2piuXTf2hqR6o9XEq8=
-X-Received: by 2002:a05:600c:3ba8:b0:45b:6705:4fca with SMTP id 5b1f17b1804b1-45b8558b82amr80213575e9.31.1756743343871;
-        Mon, 01 Sep 2025 09:15:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBz1k7vAtdK4ipj+F4kTUm7DgeCfwB5I9v5S+ZFupzLSKLX3A+8B7qS4i4w56nZH+z+JGhtA==
-X-Received: by 2002:a05:600c:3ba8:b0:45b:6705:4fca with SMTP id 5b1f17b1804b1-45b8558b82amr80213195e9.31.1756743343343;
-        Mon, 01 Sep 2025 09:15:43 -0700 (PDT)
+        bh=xPcwA7DHP8CQMDqmjZ6zA+PMccXA/CBy019wh06lmcI=;
+        b=RQutizoeuH9/qB960mFgbTocaW6l45pI4qYmmb8fkf8ulvQ0KcQq3oS/zEoCsbLJGR
+         aN9UAemsULm4eayfBSdmHXAcWhOpnVmBUs8Ti3wI+uXR39ynHnu0OmYrqT0jZCBlD9rE
+         4khjs2N3XDmWW+ZcRAvDAycTaJDIWowWP5A2Bdq2ERG2+RuEWTnnHBu+OK34h5vrVjId
+         hkQzXaUBT4WmSKKgMOSmM3eFak/mFOCRCp3/8bE4LvcG5Olt0AGI2LZB1fnmR2Lm1JAV
+         5RwA79HOOmpq7YdwzN2gGFfWFsnQ8d6u54H3BB4LcWf0YEbH3OZxmCqk9d3HuHF0vMMj
+         98sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUk5SGt9YKu+hjOi6uMvr5d42S9gd1z7HumDy4EE/rmgUgd65cj4YzVbYxwHegG2fmK0swaTl1q7Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx9U97G02OIzId7PpK5ufWtsQyxOJbkWL2DaFuH7WUAWdn5Plrc
+	hrnyP5txpXXfa94hWxsByJJUg1oH9483BY5JoPeYzmuGLbdwVGs+sooH0RVq6YKSNwO7E2viNPY
+	7bCfV9S31xIiH2BSPd35LsU99WKXQInEru4x6jS/hp/CCDt+NtMDi4ye7phyU
+X-Gm-Gg: ASbGncvLq+iFH9zGIN86VzNCBqLOfYFNOsbfSGH83kUJ4QKSRpJ++Wcyc+GU7kLpaEN
+	31ATexY5xwX003Na53qSvbSX5y0D3Hcs9CbRYX1nPCY9sK2D/G2OJiTvcQ2Pd85tKxhvfZs2Kss
+	0sKGJTwqizU9eEPm1m4rwTyV6LoqF+18GMtOwiM0EXLbz7F38cc4jhHWF8R+46VpsEBWeyr7Row
+	2DTIo30GJd2if6Muz4EDtapQCrc8TJqrEuaS3FLcELPGdTxZSBildLeg46vlSdn1gqb1xi39dhG
+	rtzhU0JTXNJUnO2u/paYT3LyntuVvcJFhvShIAA38NpXZfe//i9GCdUzecR9DwwMNeaJpYkSuwD
+	4EiFRHcl9afOY/JkbnMrZOjvRcgGYDfYR1RQ2lHK5r2IDCeq244nb3F1vvvpwxjTok/k=
+X-Received: by 2002:a05:600c:c8f:b0:458:bc3f:6a77 with SMTP id 5b1f17b1804b1-45b855261cdmr64178335e9.2.1756743666687;
+        Mon, 01 Sep 2025 09:21:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE0X+8mvSEeRaJrsUrV5c2nUPwcb4BLt12X/j/210D44OdXtgUpfkmIvO5r1ObQQubR1FLV+g==
+X-Received: by 2002:a05:600c:c8f:b0:458:bc3f:6a77 with SMTP id 5b1f17b1804b1-45b855261cdmr64178025e9.2.1756743666189;
+        Mon, 01 Sep 2025 09:21:06 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d12c90a01bsm13377439f8f.31.2025.09.01.09.15.40
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b93fae643sm6961135e9.3.2025.09.01.09.21.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 09:15:42 -0700 (PDT)
-Message-ID: <07007d31-1601-4b95-b646-687295487cfe@redhat.com>
-Date: Mon, 1 Sep 2025 18:15:40 +0200
+        Mon, 01 Sep 2025 09:21:05 -0700 (PDT)
+Message-ID: <7d423d50-47e0-4c97-abaa-1fa865ec3e42@redhat.com>
+Date: Mon, 1 Sep 2025 18:21:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 05/13] khugepaged: generalize __collapse_huge_page_*
- for mTHP support
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Nico Pache <npache@redhat.com>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
- peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
- sunnanyong@huawei.com, vishal.moola@gmail.com,
- thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
- kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com,
- anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
- will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
+To: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+ baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+ wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
+ vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
+ yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com,
+ aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
+ catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
+ dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
  jglisse@google.com, surenb@google.com, zokeefe@google.com,
  hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
  rdunlap@infradead.org, hughd@google.com
 References: <20250819134205.622806-1-npache@redhat.com>
- <20250819134205.622806-6-npache@redhat.com>
- <2ddd1403-1bda-4875-91fb-7060804a50c6@lucifer.local>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -169,21 +167,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2ddd1403-1bda-4875-91fb-7060804a50c6@lucifer.local>
+In-Reply-To: <20250819134205.622806-1-npache@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tIE4l07WOD9Br9DQCACJGi6qZVlfJF8SsIogWdb-PIo_1756743344
+X-Mimecast-MFC-PROC-ID: ReAn5S5urur-ZieC4RkB0ybV6UwYXwxYI4oU0AQKTLc_1756743667
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D85D840009
-X-Stat-Signature: xq3x3e8ncu7f3d58c9p4opw3oyxcxb98
+X-Rspamd-Queue-Id: 13CBE140004
+X-Stat-Signature: 5e5qaxpfchh6zskjnbqdfcfj4iairsxk
 X-Rspam-User: 
-X-HE-Tag: 1756743348-107656
-X-HE-Meta: U2FsdGVkX1/lvSZxNvJ9RldgWbrgz/PW5pLwJ5QaZ3uhHbrcG3+tIZeZ6QUo+iE+eQuRMLXUpzh6LLm7Xs1EWj14f458gmQSA6EQyOIq/AjbH8tVXYFJL3LXX6xA09cOByDvsOH0McfltpYsXAE+HCDJWNhIjN5qMm4HaqJUQBguaNa3mXzxGZHJmHZxjeuHyz2kFcwNAAo4RQ3AV2ym+3MDxjdGmTR+1X2GxsMU2fgs/DBbl7lj0bVN5E3OMGKX1+2uMjWqYivR8O9+QpDHJcDfM2HzE1wJawzme8qwEDsW+NfTM6604KK/Oir0PI+oslOxpn9AIdGD6oHZ0c53CkuU1eZUMhNa0XfVVs9VgvZ3SPS1jeizJPu9O5knjiVuOzUEp+ggBVRAaknjxZec2Wyg2UJZyI+xaR2lOGQXVL/dsssxA1EjMFjw7F7f5Et0YBhjTq5Im4O6oqaCEdjbv2EBFO49hPlIELH748VsqKivcIp6MlLMe15KOD3yVYoS3dXRP72wpx3LpQR4kl9cJGreR3vStH5Gvv2OEmdHGqrsVxGM0h5X7zYOlYvyyqRZRByC6rMTg94dJQNABHk1LZcmWjlyBz6Y0AcNa+Ir65PqmSm0SU2ZqIcby9V/CIvlKR8y+c0t+DHQEnQ5Mq62dM0e74G9lo4U5WBQqdhZlfOXAgWEhs4kMPfzDTcDH0jruB7KVd9KyW+Sgd3NXfebfgfoap5XMPimLcVBAlkJ6mspgGfx473lCXrH3CI6ZdNUDtfRasGTyHaAQGdObRMkBP6RItPc7mmZBwEkrjmlQNBkuXeTamactxkp9dBBYAJ6xqqgH6YwjH319PCn0x85C54H4lif4U0gU47P7GGFJoO5idUDX3Kp5CYirZ1pQDuYmJQot929l0xG7ll16osmR7nopWf8bYINDY5RwCMDO9GNm0hsHLS3Im0IfWXuuwNexgfVJPt4jxEUlECafYK
- F6khOvr3
- j2lQi8xIHboA5DA39K9YE4pxUZhRxLHh2hCB4VqRdBgDuOh9RMEu2mulOfCXCt9Vm/gZudic0syVmphXUo6e+bCQxqYF5mDhQ+oBK1sAookeARJmOeDphKYpiK60BZIF+c1Fo4ytkMPl7GsHANMctb7/uRS8g2rKWvskOt6MvbzcVCFrKuZww1zqh9Tudq0KYk5zVt8SILc+HxyxfQCJNqPxgldYVg4t11pT5MrNsZNuERuvZU/pwBGegMNLiNqARZTCNwzc22COBIQ2Dj86rahQNejZ0Z8+xgubXIT52Q/tO5M9IW0tPsopSf6BU+Br6AIAiyZcztD1VxLo1Gy+ewy9bobbq7a77rHCnhqyHUwqkrcuoa9Ca1iCA00z+2y4tAY28gRKDR5O86ttQqOkYHrTDwuPJw482QCaZzhykm6vVZNSUtuNAvFKC1hdZgwBZt3VTeWaoaR1H9z0sd5WAuscVf/MK+e8yimlHpNB6+JfhffvylYIzItQpo269GXlSK5VMZit+YEA8uUF4pzh8K/aD/hj8sMIBl6Rx1/gqNAx9MT4VzSzpSU1m2fqf7+bFQtr9jar8a9GSybMyshHvT5aActACcw8JC7c5c2y7Vs/iAVI=
+X-HE-Tag: 1756743670-752539
+X-HE-Meta: U2FsdGVkX1/E0pdjbXStdt2Qx7jgSeTGcY0xGzE0lxwt5WCbq7QhiQz6OnDb+S4nUhkqBcGsO6vy7sA/F1t/NynhgjiXbhwqTK2dB59hY9CXRddwR4/UonmZLf/sCLgYs5iXf3uCKMctrLudlB8LthqPdPJoHpvsrfTzd6nVygFEjtXOVlqZgTXhSd9x0lNfVAHtw8ZgYBBA75f927At+dTmqflNNFEnq5D5aSpFn5ggabqflnF5kaRqTqOykBO864hAjev9kKRM7eFYgTLmzHpFh54r1jE9xV+hBahb2upSIf7Tnh2l7AML4Ve1NSkioGUJGuRF1Md0QjDPzGzFNb4y+jRk+Fhy8mGYw3fLypMcL4TQu6yQaZfu90LWwnhk20JQgBujxs/l/nGNRFWm21GHFdqVEmlrOEF3TK7Xh0UTCRhzABs95kktm9drQRkwkdycM6Em22tQ6ByzdsZJPeP+vUFCe/PqN7w4sZCFzg20pcwmIEar0VYZAHU5PEzCn76uJ+D311VPl35gYAM/cL2PmSR29a0wOF6mkPzdzvwBtcPpUw5TviKuhnoFhkPW+a1jGbUFa1kq0zkpcKa5/Zx/tLVL1I5ley5mn4FjUC2VY4VOrYV/r/C6LvqhQsBAAQ/5MrEY5dlDcQI2FOohXz2ontWkfzydaook1NlC3dpZdeRA6ASQlnTSps/zMMG2A9d/4RUxt/9pWJHueixeW6Ibai+5R9fksRAaXy8R/CP7Rz4rsKqUJKisz2EKTFmCRFY9vLFvJ9qHb7PalBpkUBW2iIiXnGXzhcmjdLteHuFdGHFgmSJ0OVW1Dh60V8qYb8V81VHmOGdfZR0/c6qZHls48kimzfMKIX2KR/LrRj2/DVZjmglafqa8VUMI5tlhEKp32Im3L4Ww54v1exrgV2WOO/EV6d85CTzmFf4SjW6DxUC8EcIGAf1S8wfmssoaHqtSVPHmwBaG+/N91Hn
+ 2dknroPi
+ 88DCWbe3zbIOW/4Ppey1+q/41OYgsYIvchbfJYoqWPPXLC1kaUJ/N+tcjqQS8GfHi6R3lz/pTUTqWecwQyYT25B3lvoTnNEOwZ3KeSmSGqavF7FGBgXdI9Eyf3MceAc2JNUDE2C2UKz/p+IHf719QFKvHuyf1IHskRDaTc70ieoxw4nGsj+79UZ9VKOz6Etj6KF2RpzDKzwEM9ASmnmLclDrt8pE/n3fAMPFT8r+3GFuSaGtI+aCKEekQx+kzFu6zhMc9Fr5uJKc8RIA9yIqANWBLodqWof9p73fqtm4YHLLmKWuoyAvTafpcA6P+2OLVfQW1aFJXyh3taTy8Ng+LKsvw/yyuoHfgKQWK+qq9V79JwjhVr2WWb9KRgJ5pnH+ZM2aQh8iE2CbH9SBjKCv/Ru8BmnhbmODt1fR+8ZtaG4wiqmmIQunqY7WXslcbG9ym6CjXAa7XKLcQQZMwI7LGl+KQduViGwOLSCuAG7cp+IRPNyddWamu0isqOw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,92 +190,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20.08.25 16:22, Lorenzo Stoakes wrote:
-> On Tue, Aug 19, 2025 at 07:41:57AM -0600, Nico Pache wrote:
->> generalize the order of the __collapse_huge_page_* functions
->> to support future mTHP collapse.
->>
->> mTHP collapse can suffer from incosistant behavior, and memory waste
->> "creep". disable swapin and shared support for mTHP collapse.
-
-I'd just note that mTHP collapse will initially not honor these two 
-parameters (spell them out), failing if anything is swapped out or shared.
-
->>
->> No functional changes in this patch.
->>
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Co-developed-by: Dev Jain <dev.jain@arm.com>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> Signed-off-by: Nico Pache <npache@redhat.com>
->> ---
->>   mm/khugepaged.c | 62 ++++++++++++++++++++++++++++++++++---------------
->>   1 file changed, 43 insertions(+), 19 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 77e0d8ee59a0..074101d03c9d 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -551,15 +551,17 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->>   					unsigned long address,
->>   					pte_t *pte,
->>   					struct collapse_control *cc,
->> -					struct list_head *compound_pagelist)
->> +					struct list_head *compound_pagelist,
->> +					unsigned int order)
+On 19.08.25 15:41, Nico Pache wrote:
+> The following series provides khugepaged with the capability to collapse
+> anonymous memory regions to mTHPs.
 > 
-> I think it's better if we keep the output var as the last in the order. It's a
-> bit weird to have the order specified here.
-
-Also, while at it, just double-tab indent.
-
+> To achieve this we generalize the khugepaged functions to no longer depend
+> on PMD_ORDER. Then during the PMD scan, we use a bitmap to track chunks of
+> pages (defined by KHUGEPAGED_MTHP_MIN_ORDER) that are utilized. After the
+> PMD scan is done, we do binary recursion on the bitmap to find the optimal
+> mTHP sizes for the PMD range. The restriction on max_ptes_none is removed
+> during the scan, to make sure we account for the whole PMD range. When no
+> mTHP size is enabled, the legacy behavior of khugepaged is maintained.
+> max_ptes_none will be scaled by the attempted collapse order to determine
+> how full a mTHP must be to be eligible for the collapse to occur. If a
+> mTHP collapse is attempted, but contains swapped out, or shared pages, we
+> don't perform the collapse. It is now also possible to collapse to mTHPs
+> without requiring the PMD THP size to be enabled.
 > 
->>   {
->>   	struct page *page = NULL;
->>   	struct folio *folio = NULL;
->>   	pte_t *_pte;
->>   	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
->>   	bool writable = false;
->> +	int scaled_max_ptes_none = khugepaged_max_ptes_none >> (HPAGE_PMD_ORDER - order);
+> With the default max_ptes_none=511, the code should keep its most of its
+> original behavior. When enabling multiple adjacent (m)THP sizes we need to
+> set max_ptes_none<=255. With max_ptes_none > HPAGE_PMD_NR/2 you will
+> experience collapse "creep" and constantly promote mTHPs to the next
+> available size. This is due the fact that a collapse will introduce at
+> least 2x the number of pages, and on a future scan will satisfy the
+> promotion condition once again.
 > 
-> This is a weird formulation, I guess we have to go with it to keep things
-> consistent-ish, but it's like we have a value for this that is reliant on the
-> order always being PMD and then sort of awkwardly adjusting for MTHP.
-> 
-> I guess we're stuck with it though since we have:
-> 
-> /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
-> 
-> I guess a more sane version of this would be a ratio or something...
+> Patch 1:     Refactor/rename hpage_collapse
+> Patch 2:     Some refactoring to combine madvise_collapse and khugepaged
+> Patch 3-5:   Generalize khugepaged functions for arbitrary orders
+> Patch 6-8:   The mTHP patches
+> Patch 9-10:  Allow khugepaged to operate without PMD enabled
+> Patch 11-12: Tracing/stats
+> Patch 13:    Documentation
 
-Yeah, ratios would have made much more sense ... but people didn't plan 
-for having something that is not a PMD size.
+Would it be feasible to start with simply not supporting the 
+max_pte_none parameter in the first version, just like we won't support 
+max_pte_swapped/max_pte_shared in the first version?
 
-> 
-> Anyway probably out of scope here.
-> 
->>
->> -	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
->> +	for (_pte = pte; _pte < pte + (1 << order);
-> 
-> Hmm is this correct? I think shifting an int is probably a bad idea even if we
-> can get away with it for even PUD order atm (though... 64KB ARM hm), wouldn't
-> _BITUL(order) be better?
+That gives us more time to think about how to use/modify the old interface.
 
-Just for completeness: we discussed that recently in other context. It 
-would better be BIT() instead of _BITUL().
+For example, I could envision a ratio-based interface, or as discussed 
+with Lorenzo a simple boolean. We could make the existing max_ptes* 
+interface backwards compatible then.
 
-But I am not a fan of using BIT() when not working with bitmaps etc.
+That also gives us the opportunity to think about the creep problem 
+separately.
 
-"1ul << order" etc is used throughout the code base.
+I'm sure initial mTHP collapse will be valuable even without support for 
+that weird set of parameters.
 
-What makes this easier to read is:
+Would there be implementation-wise a problem?
 
-	const unsigned long nr_pages = 1ul << order;
-
-Maybe in the future we want an ORDER_PAGES(), maybe not. Have not made 
-up my mind yet :)
+But let me think further about the creep problem ... :/
 
 -- 
 Cheers
