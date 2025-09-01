@@ -4,106 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D91BCA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 04:00:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C7A8CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 04:30:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 868A06B000C; Mon,  1 Sep 2025 00:00:06 -0400 (EDT)
+	id 5A0AE8E0002; Mon,  1 Sep 2025 00:30:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8195D6B000D; Mon,  1 Sep 2025 00:00:06 -0400 (EDT)
+	id 5781E8E0001; Mon,  1 Sep 2025 00:30:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72FE86B0010; Mon,  1 Sep 2025 00:00:06 -0400 (EDT)
+	id 4B4F18E0002; Mon,  1 Sep 2025 00:30:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 608346B000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 00:00:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C645D119EA8
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:00:05 +0000 (UTC)
-X-FDA: 83839328370.03.F0D37F1
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1BC6BC0006
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:00:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CvPSRBkW;
-	spf=pass (imf22.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39CC58E0001
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 00:30:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1A4C5A34C
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:30:39 +0000 (UTC)
+X-FDA: 83839405398.14.7B45106
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6B9D44000A
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:30:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=gDC00FCW;
+	spf=pass (imf07.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756699204;
+	s=arc-20220608; t=1756701037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=RNN05k0SkEGnYtipDErhvvyExHnexROka07GUDG5ZG8=;
-	b=Rn6lGTh82mU2XgqXHLyScbnrjWvsonPqre8XRIlWT004yi1onL2GhVHu6EraZ8S6yTF8I5
-	ckeDQRfMmlx7BZe21czhQP9TnovEpgikUzGTY71H46+Y0gQnz8N+uI9Ao5HkgxHbmf1Txr
-	7KmTJyxOsebY1WI9nVMcEoB0Vskqejw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756699204; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LDQIe0i3X76egFX6529AeV7wfu/j7t3pxfvYUfSQIbM=;
+	b=q1sjX4hEruVzO50Mx/BXGC79EFPkhwp8hdYW4IBIH+WG2I4AnNCmNV2Dof/+E7fmCm/qt0
+	NkZfkvQIw3EsnsScxQteAFXVeLWlT+K882sFAkKst/mZ392LmoiGD0U2fQI23CYXAEXWJ6
+	0v+5xKfLPDOlQF1ejseeol/pDEqC/wM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756701037; a=rsa-sha256;
 	cv=none;
-	b=K5vmciExjgFvqdD8qBN3ZFYNtzxYJ59O0VmJij4mORyTY39R9oxr4/7USxmQbvf/XzKfIw
-	1z9HkB6fFLzXyXzM2a0d2oCwby114arI5+ps68WUlIlGH8vnKjaisxUWIJw2t3XGjUuF0O
-	zEh07ilNx+jK/aSgMnZ/Aju08xVPOkk=
+	b=Nbpvux7Gh5WPlNuFPterChy/Pg9ant9bt5RwIHJIFXECM0UI+ee0rpGtk0U1qPSlAQSz8h
+	5mWJs9AvBQruZdRLMuhKxOhk0sTN44cOqI+P5JGEau/xS1E40DEm3bFO8+x4qCac206BgJ
+	DVhjxOfUr+mu9Jd1ySSDq1EvgIe2CLI=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CvPSRBkW;
-	spf=pass (imf22.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-24457f581aeso35000145ad.0
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 21:00:03 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=gDC00FCW;
+	spf=pass (imf07.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b0225483ca0so244690166b.2
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 21:30:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756699203; x=1757304003; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RNN05k0SkEGnYtipDErhvvyExHnexROka07GUDG5ZG8=;
-        b=CvPSRBkWRwqqlJOrgWO9j+NlGeQtgL+JJsGyUCVpacym+zzc1Cj7Kv2uZiXYlhtxeU
-         m1gT28pjk471bNNRl3qDaxXtXTB9b/OGwLek8NPEEjR0tG/itac/5EJmfvLtiS39jCiN
-         FZskpCgZPrGGpzyzdHISg75bGtiYwuFHKkIyNSAy+lJfI3JJ/Y6vtO/xTcK96SnBU1Ow
-         nl5Zzz7I/bIVkDMX6d6X7Z0TwwgAik+s/W4CbT2MEX8NaYpOGiodYxcudyONA0npb+ba
-         qQcSO63Tm9D3lxaOz4L8LRonYpm8HHvQ1K7tiZYBLZp57K4c75k883X6+qhToKZysCjj
-         r8qA==
+        d=ionos.com; s=google; t=1756701036; x=1757305836; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LDQIe0i3X76egFX6529AeV7wfu/j7t3pxfvYUfSQIbM=;
+        b=gDC00FCW3OF54BpMkWlP9PCfgTlUTL94UbLP26G4Vo+3GzhI/IKaAo988qCQW7s7kg
+         DeBae1xUK6WpABIazlodPG4aneUgD54JYPTIzOh9QlyeTBogThwG2Ab4DfzWT00Hp7Qe
+         O/w5j8XMelFH2HtAsbeXe+QiyyX2tqGOovw+YVttVt8uDoUHvV3OGzHjXyD9obkmcRWQ
+         b+q/iC+K0EfliEE4wU3Fs6RpIrFlHMqgfWmnpUZHdl7qLdpFigGaetVEczfSQEVij3Ck
+         rkuCYdldvA5qHoE+eoEXZ+MlHPUrd++L2oN0KGiumjwqqIPIS/a6zq6wpma88k7v4Tdz
+         v1xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756699203; x=1757304003;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RNN05k0SkEGnYtipDErhvvyExHnexROka07GUDG5ZG8=;
-        b=MIdiu/0TVdzo1pyioxi5nUh2IC+RSlNustRrJyUEFj6S/vQybioCIMuBLuMbaN4+9a
-         2jV39zLl6VXM6vhjMhHbTrLxQqqk9xEtZe1Dt48n1JcrJchRLeAkaY+tqVpS65gyxrIj
-         CFjezR3DLh6z61rLWYZd0HykckaxITdODnmBXpNtgQSjUH6tXWuS7RtHrXgGRxPwozod
-         E9Yssr3RX4+6yq5qfi7cXjPwxS4HQfBUaBVEeR3eK8NGiqBtriB9MSpgany5dDDbX54J
-         iB41D7fcCZzRwYCLtg02nSJCvm/OWV1kOZSIQyO0azZ5XBO6vFMDcohqkBeQ6iixDimh
-         3P6A==
-X-Forwarded-Encrypted: i=1; AJvYcCVgfMMoC6dPcTh1oB9liytfhueEoxc1cvWs+/8VWgk1xpoMbweIoFeoOBAi6PF76L5Qys/+ENuPDQ==@kvack.org
-X-Gm-Message-State: AOJu0YyTHvS6w1ThwWHSYMBBzN5droLhgkbfk6UztRjDF/kImqlUG8Hw
-	wYI+BPT6bt0LsChnh95CDcw6EdDOAnWJGDrX7MZnrJzgzp2s1U/I6vBq
-X-Gm-Gg: ASbGncv4jznMOUGjiYppPl8DqfmsXxtz50/2TGJM5K4eP1Yh8DKsiwQSoJVzp3a6lXW
-	H+1lFNRxzxOzkrORF/5Lffd2Ea0atvtVTSAvEkcZPQnYX4HqEs9Hqk+B53H3FwNKx2nRjX/CrUz
-	77SxfWMErdxRahqCplWne+RPVj5+GP8tKuWtQxX2svDvRVUQZA0KaCGUghRX/xqjJH7j4b9Spe4
-	Qt0rYwpKOfNOTOPtBneQUT6u9KXZFQ6Vmex/E7RRiIQX98rHkFDE+zYActR8Je/S411x614ho5Y
-	aeZWdD9yqS3PE8vaEo3yaBcLUJKatt+lquVWyW5ra42HCilyxkCMH5kDZ1VowI74vOxM4TGYAOp
-	ronZHAOJ6+tLWMU8ofCCjYV8=
-X-Google-Smtp-Source: AGHT+IHrROqEQWLo3tJoOV3keKTK3UQx10WUIKtupLxaoq9MHd/qKW3me+GT+z8VghgqjcA+jQjk9A==
-X-Received: by 2002:a17:902:e745:b0:246:e1f3:77b2 with SMTP id d9443c01a7336-24944b65071mr78080455ad.53.1756699202873;
-        Sun, 31 Aug 2025 21:00:02 -0700 (PDT)
-Received: from dw-tp ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-249037022d9sm90560065ad.23.2025.08.31.20.59.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 21:00:02 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 5/7] powerpc: Stop calling page_address() in free_pages()
-In-Reply-To: <20250826205617.1032945-6-vishal.moola@gmail.com>
-Date: Mon, 01 Sep 2025 09:17:44 +0530
-Message-ID: <87plcakf4v.fsf@gmail.com>
-References: <20250826205617.1032945-1-vishal.moola@gmail.com> <20250826205617.1032945-6-vishal.moola@gmail.com>
+        d=1e100.net; s=20230601; t=1756701036; x=1757305836;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LDQIe0i3X76egFX6529AeV7wfu/j7t3pxfvYUfSQIbM=;
+        b=dQbTNbF5hl47uDbBcyLAHFTvgNasRwJyg+EJh/4XH2Jr54CQXFZbkNLtrMbv24K6s5
+         wlfI9XSrdkXcWhngXQLF+mm99Qm37+y1e79mkCmPfXi+AuVGNaxIaYFf9uCMYpWHRL3P
+         KaZPYFiO/k6HfH+/w1N72eAZohITOZr7gy3uozkvonzQrQuAt3U91srjUcib7TtgNlYh
+         iC3XEQHpLHf7XQ3i31uKz1jn0f90qIxEkqtRtjBHw2ALRukICJtBzu10uLO2+E5BPwQ3
+         5NAXvoeGjDEtEZzmp4dU/LU82CyTiHepyp4dDqAVTXaclD6eYRhIW3PO1NL1ql6XG55w
+         dQCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZaQS+AFYDQQpaFq2QAX6neXVpEw/PGYgGNTTUyT4ZG2DE8+wEbTVdcsywAaQNevY9/HhHMQFLCw==@kvack.org
+X-Gm-Message-State: AOJu0YzXvc+L98TIhprm2PTlQcSX9SSIuk3ihk3LaImqIDSQd2rIWBrG
+	RpioWojynTyhSgYU05lq+4/VhNhxkUIn8pKTsJaOV6V1MkuCcqbYeEdh8KR6NGyJhUB6qFzWaQZ
+	ScVZuzUlhqu8boNn5RGDgSFzYrca4LTeykDTvm/RHJA==
+X-Gm-Gg: ASbGncvtkmpdT39YvhON/9ql5Rlf6ul1otZIUuVtLyiQApHkQSgFGYOc0KQr/JqkFmU
+	F4OXTpAC1MKiqi8MWHGUJj7OooFKiD3Bi/SLgsD4h7qX+hx03wVYvnYSF+82EvfJRhXobnIc4gg
+	AHRXz2umii6eQwstr9tpQIWnpJHTsV/wZdlI7jD77++r36OAZM1FgfqzLCPNT7brseQTdYl8GJ0
+	jWiqoemC8tHldoi7kVX3WBPrOp+pSsT/3EfSM90VoKcSg==
+X-Google-Smtp-Source: AGHT+IGfZ9IK7/pUtfeHc6DgLv6HZzhwz9kNk2kkDLAQy9Iwa65qh4E0Ue47kA3UHq9LU15ooN9UNEALddPaiQniOhA=
+X-Received: by 2002:a17:907:3f10:b0:af6:2f1d:a73f with SMTP id
+ a640c23a62f3a-b01d976e782mr648284266b.53.1756701035779; Sun, 31 Aug 2025
+ 21:30:35 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250831093918.2815332-9-max.kellermann@ionos.com> <202509010724.bSPPSD1X-lkp@intel.com>
+In-Reply-To: <202509010724.bSPPSD1X-lkp@intel.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Mon, 1 Sep 2025 06:30:24 +0200
+X-Gm-Features: Ac12FXx1zNxU809yDaeQgGpOMM6Li-1LYjsJkwZ1JPL5dRiRDC0y6VWcjO3jTXw
+Message-ID: <CAKPOu+_7w9kd7aOp2J2YtYMDbrV1pfrdUT-CnPmHfexGb7RScg@mail.gmail.com>
+Subject: Re: [PATCH v2 08/12] arch, mm/util: add const to arch_pick_mmap_layout()
+ parameter
+To: kernel test robot <lkp@intel.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com, 
+	yuanchu@google.com, willy@infradead.org, hughd@google.com, mhocko@suse.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	vishal.moola@gmail.com, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6B9D44000A
+X-Stat-Signature: 6knbgso4winhtgo4rwqzbbush5jxnkpz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1BC6BC0006
-X-Stat-Signature: g4onmx7714u7t79fk47xo7h81grx7nf9
-X-HE-Tag: 1756699203-920991
-X-HE-Meta: U2FsdGVkX18Hm2EvCnYtuoF32ry8rvny1D9HsEzW6bWZ/+D3iOnxA5XpOamUv4WlMF5bsuNSGy292HuwXUzMPh8Uj/dxaHpzw0c0CIfSM0iOa95YJLCheLM0xMvP29OQo36JL5L2qtLamnaaHgYcnszESa/sfiPkCz+ZpuQVzJ0D6F4hvdfebXJOnPWJ6EdwegShl0hj07aAvg9gSBVkiTr+Q1tAu9AX29S7gQHi9j5X+oBuKDtuRsrgh4yaSCsRFVnNrmloHi82clHkdLaRma5uZ/vjKiRARoxPnIIqg0jWlQ9W/q14fzqs+B7cwI9s6ygVK9t1KkHC9wScDFzX+/9tLLZIUCOf6HAtqThNJXIBWITorFSzXLYlDhxfzIcGpoodl6Enb4vHaCj6dr+rq2v6c7K2d31fzd9VMcDihC/CqzCfZT/HRBKIT29EnUMDHaqNElmFa4tPyBdqVzSF7LzahH69ZfNfIQzrR4TRPKvMvWBcfJWZTYoO4hU2okDys7nczzd9jBABg9cV2rGokpo/U3m8PN+vjJL++lcWw/nt8PyipUlwsI7Qv0eMF127h6Db0tfzkLkzP7fKsaYJOJyjf7MaA53WfCZcrO25qM9tQagt/tq9sS9pYQ85nybbYUkbYSJeC/VJaRMPukrHQxXCvrx47n+DVXt0wgbrqS3M4Dd4uA+YsyNlgs95HRGBTTF6fI58x8O2lnQa3m8/QP+b2t9UEUZRFSPutRqlp/4KmekyvuEO59Oq6h/KLVSyrTNR8kBvoGTuQAOzNKJTz36GZL23HSn44854zr6y3CLuYLEVTn7K3h04bqv73TWbkyx5vwHgrA0lqU7Wg6DqP4h3jUULtG30NhtyTn4gcZLX3UViXQN2bmhul1WmzP1IaNJjpFtrIcjzrwgYInOU1RAFhGAfmaDUrzs2uFaGP3SiE8R/jXz078jcjhxnxdkbfpzlqnBAgiciGeB/juo
- 7BGlGrik
- ONDw0/IKHJqioxNuJpTRCr/iXcOO2b3EIdUwgtKUtPHFxmAMiate/WHzUWhE8hGGao5N2dQxBKS+GvIPsVd8Je4GndiiYHLy6PrPHkj56KOq0MhslSlAysyHoR0fBp72XD9nnbtzTps7D2KfZNVY8nno+/xgki1Kvt/YmhdqusgHm1b8bTYwWqEXoRA21OREBuvonVjLlDuU3wnf69VuGwMozh6mU0k2A1IRjfCoec9/f5zI/qA5wrBEGEpdQMIEGxS+sy1PcW/Fb8lnguXbJBJJkCmXjqOX6kGDG/Ifv/mqzUQS2grBM/uoQTKSMKRPBvdGevafb1fQe9HSYcgslHu7RSHL+4LDR1YWN2GbStX0rTT3lPsiP6as4jSJg+P2URJH5vNxqzUFnQkUsdUlE960EPOpj4i/4qKuX+In0KOEpZ+3LTk2eXZaBgoVS5/9QBH4kaan4MgPVBfisGu1b32BeDuwWXc9lk5SIh3yu40n2+aErTJBT2Jz4+DmFkV0m42pwOkPH8bJAWuoLnVhweAU/VRwHO4wflarLY+hRA7XvY+R4GQhv3uggqcRupksUmfIZOr4UuoCkuk4=
+X-HE-Tag: 1756701037-61557
+X-HE-Meta: U2FsdGVkX18jGT6+/uIQzBgsL5KxlxiS5gKr2Fh9u1HHhiNm0RtddqHQONeGOaB3o0AXbLVY4lTuTzJa+Uh9KQO7QFPF4SDRRkiYEIaCM7b8EyZcIFGqbhhefROunbhOXaFUm9hCs0Ar5irFhjn3TnFGiAzsv8DSSA7gbpKDzAQOfHtJvFf6pWd6Zzkxhwe8tLKQ51mANmqyomS4HnYU8Y2IH6mDKR5A58PE+cQmJ09tkOjzRZ6aVENzuAEtub7ktkxLlyKpKr2++e9UsufYJueOxk9Pz4QNYucUTbVIZwt72JvglLpo04WDeFO8AVukFbFYWGWz4kBQguFvJqLBYA1GTmNfrcAc5Ffs/V9jnA/i7tvMSj6gXE4KvgmB+2smTJfKXPP0cHIaStwI7D1D582K9JKXwj9QxVBlYjB3Bv6v7DUmoIjmohDcOHbXkXVhwlocJv5+3dsFc5+1gFWF66TOkearnnjc0pyeLfsSSzGTAZ4sVNwwpaPwdjmoSnK3dhEkxdGDaMW1jJkhdys/00IosW3Z6StHocExJS4pqxHQbk1b0Cz+l8idJwKQNFCj7edLDelvGnboqc6+t+gP/K/+4p+VgvOMVkFPCMe3mde0u2pRlmgY5u7RZTg25SrWkDgLJloJFAEcNM1kV2+XvZ00JopXiC9MrEiDai3zK2lkHUrteMCGQdKoIKiptvMLkg0ffRSNMS8LCN/li/ktsx5N6qaXp59xKnywYpMCOZuhydXaHAtBBw/dflIoBiQbH5Did8KxHfRmVojTGY827gl5nIO8ueYWXCfpaDYAj7wfw617PvpUpOzdO8U3NhcpwoC9EAdNJJh1i1LlxOW1CoCVLWhVpiXTJICitMeH1xW/bIdFOHh6c131BANnUqbYPRxNOYtRb8r1vR2/FensNvdd/rHd2Kb7ohb1m1Xk4m09gUg3eSEurTNQYT/hxj9SUVr9kk7RteBCLL6vVdx
+ 8mrkQTRU
+ h7zHmsKIjL6XseN53W1OlbfMZ0ZMQ8E+Njt6dTj7oAnMBiRCjl7nT+KpQS6Fnhe42SujFkwEGVTl9f7gv63ihSm/WPPr0q3CjQl0WQYUB4WvwTvrYashhwjdMhnhtI7YfdLc2RHuZX708FyNA9YXkgOEGZYgGsgscdFX74d0v2UsZO911M6ub6fv4lpzOyCKcZ+tc/FicMBPQSsKIDbI1Rf+pkMtA1ZyymR2rzUJovkWAwlMSVPJpKDK4LUgSu/ALJ3Lr9nr6OJL0qcjMoUPAtih1PCD1iWRXTkzNCx0erL9hXrDA5qn0jVmcU/4ehVVngGC/gzZ8cFMiJdJEZ9/OX2i9GT5tePQDnApr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,45 +120,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-Hi Vishal,
-
-"Vishal Moola (Oracle)" <vishal.moola@gmail.com> writes:
-
-> free_pages() should be used when we only have a virtual address. We
-> should call __free_pages() directly on our page instead.
+On Mon, Sep 1, 2025 at 1:44=E2=80=AFAM kernel test robot <lkp@intel.com> wr=
+ote:
+> All errors (new ones prefixed by >>):
 >
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> ---
->  arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> >> arch/sparc/kernel/sys_sparc_64.c:1:1: error: unknown type name 'ickj'
+>        1 | ickj// SPDX-License-Identifier: GPL-2.0
+>          | ^
 
-Please also cc the respective subsystem mailing list if the changes span
-in their area. In this case that would be linuxppc-dev@lists.ozlabs.org
-( I did it this time )
-
-
-Thanks for doing the cleanup. Yes, it makes no sense to do page_address()
-here and then free_pages() doing virt_to_page() internally.. 
-
-The change looks good to me. Please feel free to add:
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-
->
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index be523e5fe9c5..73977dbabcf2 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -780,7 +780,7 @@ static void __meminit free_vmemmap_pages(struct page *page,
->  		while (nr_pages--)
->  			free_reserved_page(page++);
->  	} else
-> -		free_pages((unsigned long)page_address(page), order);
-> +		__free_pages(page, order);
->  }
->  
->  static void __meminit remove_pte_table(pte_t *pte_start, unsigned long addr,
-> -- 
-> 2.51.0
+Oops how did that slip in here...
 
