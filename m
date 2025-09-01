@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97713CA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 08:32:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F583CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 08:32:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F38DE8E000F; Mon,  1 Sep 2025 04:32:20 -0400 (EDT)
+	id 9E2908E001C; Mon,  1 Sep 2025 04:32:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F11058E0002; Mon,  1 Sep 2025 04:32:20 -0400 (EDT)
+	id 992F38E0002; Mon,  1 Sep 2025 04:32:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E26288E000F; Mon,  1 Sep 2025 04:32:20 -0400 (EDT)
+	id 85AB88E001C; Mon,  1 Sep 2025 04:32:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CFC1A8E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:32:20 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 70A61C0734
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:32:20 +0000 (UTC)
-X-FDA: 83840014440.01.EC757A9
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D1D58E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:32:42 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1220985972
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:32:42 +0000 (UTC)
+X-FDA: 83840015364.10.9C7E75E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 06CF040017
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:32:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q9Qsezr3;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id B3A412000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 08:32:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SLguJRX4;
+	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756715538;
+	s=arc-20220608; t=1756715559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b9B2xf90wwGP2Dk53DRRs4uSfHtCfs/QAaO9nORyKHA=;
-	b=UkGn+zIpZUUMjFCZsNtYPybznzaP5v6KV49DBOUZaL/IFyGbSRb0olxuDSyF0LYDNRJCZb
-	RMaYwI6WWRdHkiLXwxeXqZM4gVMDmUr/eYiV7sCkj7lLgrRFg7dtaIVsR/sKWAi6B1ZH0c
-	GZc3UogDXsq+yBZK73ph//pu5blaVEg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756715538; a=rsa-sha256;
+	bh=FO75zWx7qwUC6w5oKfEBr0b/vUP3SN++OhAvNFPRXVg=;
+	b=CU4alBP9ijLetv121C66LWJVtJG4KI/yaDNJKN8cX0844t8m0WYIPL5a3c7kxST3OXx9yF
+	jDOWTXll3Mm2DnTS/vSF0hiAO0OzRKMueDtEs2JymhE9Rik73NYjdfq0OfFoGkOoOx3v3V
+	p1iFdot/UTVtDRRwe9v4dYhrAX8suGA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756715559; a=rsa-sha256;
 	cv=none;
-	b=N0jdzpUV7cIgSkVliyjmhy2Qg0ynleN2qJ/Dx3DioRlddQ7BjRxcaPXY0Jm/otgX6kuNej
-	+0rPfEjneQdF6oyJGlf4ZliZ2d0yKpb1vOk8fqccwzUfEPciCIBJeXWEQxqbDGcLPFt/7Z
-	rRCXCVwDMxo6ub9SN9MsbsXDnaz/OuE=
+	b=SMvzLUAQERvgMzsFI3PJsWX00moeLgHD1h2+ImAShiScQ1GA4+wUNJj6sFkqZK9jU4oTmn
+	wZEf2LLUdnyDNLHia4XtGiCndw2ihA2iPFQQXObvtZ/G0LIU0uzN5fXE3j5w0ea4jVDiyq
+	0s34R1lkmiSIXInXZ1RxEgR5vxHlcTM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q9Qsezr3;
-	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SLguJRX4;
+	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756715537;
+	s=mimecast20190719; t=1756715559;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=b9B2xf90wwGP2Dk53DRRs4uSfHtCfs/QAaO9nORyKHA=;
-	b=Q9Qsezr32ysQofI4oxHAb5zPcVwNhrbnt5pU7lBiNDqEPYutpV4kpcAEulydkubl7qDVJB
-	AaSYfdP062U+MY8AWsXqNKukioWEnq9Sfah+jKvoR5snHS+B048TV0H0giKnDTtX1gTZe4
-	TtR8TgAU9gO02fCdzpnhtjNUGqZRVWw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=FO75zWx7qwUC6w5oKfEBr0b/vUP3SN++OhAvNFPRXVg=;
+	b=SLguJRX4OBYKq24BMhONTbsDRnIBPQxhz9bpj5WOjhDREXdqNQkZ7RtNvqPrlf/Qj89za/
+	Tfe+v4x5zWwknye2cTVqOzjmCHysdyeyMEuxGPLJt4QJAZGlL+IAclWofwWdbPQhvoUjo1
+	soou7w8YnLXzwNbe+a9Y0qaYiuTRtXQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-114-tcZuSWS7OECSEjp5kTzGlA-1; Mon, 01 Sep 2025 04:32:14 -0400
-X-MC-Unique: tcZuSWS7OECSEjp5kTzGlA-1
-X-Mimecast-MFC-AGG-ID: tcZuSWS7OECSEjp5kTzGlA_1756715533
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3d48b45fad0so791567f8f.0
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 01:32:14 -0700 (PDT)
+ us-mta-688-eAeMLHNaOemdalY_zD8Q_A-1; Mon, 01 Sep 2025 04:32:37 -0400
+X-MC-Unique: eAeMLHNaOemdalY_zD8Q_A-1
+X-Mimecast-MFC-AGG-ID: eAeMLHNaOemdalY_zD8Q_A_1756715556
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45a15f10f31so38894235e9.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 01:32:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756715533; x=1757320333;
+        d=1e100.net; s=20230601; t=1756715556; x=1757320356;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b9B2xf90wwGP2Dk53DRRs4uSfHtCfs/QAaO9nORyKHA=;
-        b=Uv/xZC7F3MxR/e8bMUpVeO2luXHSjLBkCkiZN+Z+57/j0yQLradvslYXAZ7UPbfD2i
-         HLpxlM9tWMKNBECohl7l8d7ALWKBQqAKyR4HMq0hRFF/GjMsxA+KkJFohUSF89fxahv2
-         Xt6P4V9/P+ddHGDRl/WRYd0IYxB3t1xoeCXJ70kbniNv1yWNYA8YofD7OwbOoqjR38rt
-         II8S09NrNo3CfbbYFcsP9mt6XE/e9haY4y6CfugiWhpfRyKbNK3Ag2E/4CQPNMzPoerZ
-         h4WhHToEZsooYhq9LmoXaCvNUSzYrF/UNGmdpQ+mwnljvKumyR4IOCiP1nhIWKwjhUx7
-         kvWw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbxmBGnqmbsNMyO53NFyIU1d4FpwePYcOLN4uYfOqr0xkM50sD3l6nSWPoZvtSQc58nrTZVahDVQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxxx56iLalBkYbtXZRB3sAG4NyNMD4Wf4jBNjs0jFtfx1F6kUn1
-	AvMfe+4kwFk8ALBbGaby3zw9tV3kSjIpyiMmMESyyCt0ypsnaA/W+FuBwq2d1Sa18E3g7HOxPHM
-	UKZ/qu72Ujk3vog6BrcdgIHnkPorUAgKDJOT2dDn0/BeMK4gAnalT
-X-Gm-Gg: ASbGncs0DRUDPg5ZyasKglEbyVapSnv+KdMMfkaEApWSIrXI53VM50xeWxuXtV5D6nP
-	C+Bqlo7weNeNkA1i3sycbPxTdpxnmURqV4+bCylL7td3K1ovEAyu2lHlWUQfUJVh8KYcnUXzRsG
-	8d0nh8fHJi/Lo9nLi/O87yh0GxMOjkuoiOz4LiIBAwGNagtMlnAMLP4dhFdaJKu3J/kUqAUDzlF
-	ZorMCeX6sH7Dry7IcR4lD0fNV+WyKvIsuvG+p+Mfeiz/3oOLEmjSkn7XfSFjofvgU5Ai44qwTTy
-	EHICn8cxquFQ16it9r2VQE0uq5VF2lawp7dFdZ8sBkJzMWNuHUdf875kFmCM9s/3UYOegwImG9Z
-	xQe5IGv+miYODNwWSswgoO8IMTLt9BYNq8cvcDl+nxeaAGmA3ThDgXXQGHkEYzmGDB/k=
-X-Received: by 2002:a05:6000:310b:b0:3c2:95c8:b71a with SMTP id ffacd0b85a97d-3d1af84bc3dmr6311129f8f.5.1756715532953;
-        Mon, 01 Sep 2025 01:32:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEdrBvNiH5PR6NpvOde6rWaUaJ2VLDdnRhL58x+5KKINZTciAqBs6qVfgGv6QLhWspy0QcSIA==
-X-Received: by 2002:a05:6000:310b:b0:3c2:95c8:b71a with SMTP id ffacd0b85a97d-3d1af84bc3dmr6311091f8f.5.1756715532440;
-        Mon, 01 Sep 2025 01:32:12 -0700 (PDT)
+        bh=FO75zWx7qwUC6w5oKfEBr0b/vUP3SN++OhAvNFPRXVg=;
+        b=DQIAotyQJxtMXDSSfRb4OaPZk8abTaa3lAPNn31Y8amejPzd1LbJk0fOtJ7E/tmUKY
+         qY+z/gmuhELzxgzR/4TaJ4XiPzmjoS2PRTkW5bLMdmg3SWMrpE2YfVEJjW2vqqsgpUjJ
+         JubrK+BhUycyZVBBm9XjvfQTN01E+zV49xqbxf6c1uH04zYHvQHl6ASfY7KtQbppBHw3
+         UxdtPlVdfpR0WbTQpY2z1XKws6qWUNglyRtzDGuK1n317A8r7EdSkKGRagPPpZ9jku+t
+         TGiLaDoO3zsDJq1Lujn5U2gAEvr9iA6dFhL3NNI6A2rDFKwW7D+Tauoi1u1SessSd0q4
+         BCQA==
+X-Forwarded-Encrypted: i=1; AJvYcCXCh0tY53jT2ReX/LiqhGFbwcOiBqORAx5O8ivW72IJuJx1EKB2gEVZ4zcqi1Gg6z7XFiztYMe4hw==@kvack.org
+X-Gm-Message-State: AOJu0YzIXuBRtvkv9gDa6Wg8Kuxdkgaa2FFgt8hzXhvxrmQoAY4frAjT
+	zCT++2JCTE/UpIdKZVYCn6joywlj2f/jLV9YC8j05jdWm5IGIb57CGpGc0viRceRfH7Du0HT4H/
+	EhTKAH26LprEVAS8vj2th0DLIV173LvffwMXw5fdBgIW9a6wiNvZQ
+X-Gm-Gg: ASbGncseI5sRe8+kOI+q13f62MhQVIglKJJuUG4DweLS8HIJPBXDk7AUVp8SIGBW+bZ
+	iGuKjRSwpFEiu8JLfs1nUchIQ/Bi+eqcVpMcSnClXmmmlq9CnkPhzUBw4JXrRbYrwxjsvfYGFog
+	sdDuorzWFH4GVu9dSDW1fcVF9Z5eQWZe3KlFnZVPFA2+Mcjo1Ye9IMmsR+lMkax4ULVBaNAW8iE
+	ZQZuOFEo48miPwn50XYG5pC7PsEJxYqw4dOpECO8BGIj9ksuZamYVX8taT3rMn3vNODzNHV8vV3
+	nKEjgB9c2hKKfi3o8TTT1m/mfhtAs4+elknxWVmiqnEGF5Mds6sVIURj4P9Tm05GYHGqG2gQd/V
+	9jaDsdhWDnqAQKlxrjGGUCvseKTDbUnbdSNqk7DAF9wKss7Ux9nlFXnBjNzP4XEC6G6M=
+X-Received: by 2002:a05:6000:2302:b0:3d0:820:6814 with SMTP id ffacd0b85a97d-3d1dfa15a98mr5911850f8f.30.1756715556209;
+        Mon, 01 Sep 2025 01:32:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFP9dL5XSvBxDQAkLE3hXF8+1bSABcszZ1QfxYOQApyHvl8SuiUtTgdOu/OQu7jJCKZ+Am8HQ==
+X-Received: by 2002:a05:6000:2302:b0:3d0:820:6814 with SMTP id ffacd0b85a97d-3d1dfa15a98mr5911809f8f.30.1756715555735;
+        Mon, 01 Sep 2025 01:32:35 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f30fe02sm222458785e9.18.2025.09.01.01.32.11
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d3a7492001sm8035831f8f.42.2025.09.01.01.32.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 01:32:11 -0700 (PDT)
-Message-ID: <620f01b4-8a6c-4dac-bcdd-7c48f5cd87f2@redhat.com>
-Date: Mon, 1 Sep 2025 10:32:10 +0200
+        Mon, 01 Sep 2025 01:32:35 -0700 (PDT)
+Message-ID: <9c3a2ecd-ceae-4e87-a6d7-6a7121ab7a15@redhat.com>
+Date: Mon, 1 Sep 2025 10:32:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH] mm: Enable khugepaged to operate on non-writable VMAs
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, kas@kernel.org,
- willy@infradead.org, hughd@google.com
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+To: Kiryl Shutsemau <kas@kernel.org>, Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, hughd@google.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20250901074817.73012-1-dev.jain@arm.com>
+ <7towtl2pjubgdil4csn5rg3usbai5xvzz73wqkwj5b5awh2iim@wfvahykzjrlo>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,21 +156,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250901074817.73012-1-dev.jain@arm.com>
+In-Reply-To: <7towtl2pjubgdil4csn5rg3usbai5xvzz73wqkwj5b5awh2iim@wfvahykzjrlo>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GAYGPheuxfTgvUz-WPasrFS9UyA7YmwcmfUVT-XuouE_1756715533
+X-Mimecast-MFC-PROC-ID: OISt6RPa5IQK9LvN3JAIjRRiZ_Pf0yBdZ9MvvJHQlns_1756715556
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 06CF040017
-X-Stat-Signature: dm4yntpca3qgb47ga5nqwu5y7jihjzya
-X-HE-Tag: 1756715537-319526
-X-HE-Meta: U2FsdGVkX1986iQ4dSHMN+1vEhmrcjQvY2nPm2UyCRUUVG4EYLLoFJz7Djh+6PHWjPNr/NdkopJf8BFXlesiRs0RQzoBXiCTF2drzHQA84DpKRVJnlTv8uv9FjNAs0Cz6NAvZ6bQnk0RHmjguCI+Ih/cVRY28Te77gHQAt19xhY+l0qRSniPG2jRxxkqNEY0FwgoGOXlTCmdsFgTomhrJzJWXG8twmMHoUNjYrPXdPDbXbReYyjcauaXhvHattaMyqPFORpYJ+c3zY/e02w/LeBuEPUhYiNPToOXMNhiokiNPU/NkVMiGHhC5UNCwgG4p+4mxkRo/QREcjFOVctWDE6Z7lNMPoG1IJRpjk80BfLHrBH/2pTYfrr6jQhO2Ksd5TpMP6geGfO+fYUwT8MMjl3gFnuwa4oPLclCP+YMPFzh+YopBiJhMm+ntHxpepXSaZZsL+ZAQSHV3qyO4N/gCTHN0YWnPMxJqo5K4/Y1dQKg/6Zu1mfDl8nPAI3F2zXX7eKQ1jrFa5Rf4f7ajigQQfY9h+LZDHEoJiH1jJSqn+vzlHTGErmw8COYZZy0EOdJ4lQm3uXeb5JWFGoJl/SUq3MAEN0n2ywJj82Q5OzlMQIk5xVPFHIR4FPvNM4pNwF2VQT9PIKotknCsrcda+5mqov8hi8nuA+nSb9qaZTaWNdyiWkSFS8cOfQNxkvGgxolyivctj8y3P6xuWwEVf6eOsWWeeggunVzOykH9cEmjSM5prUnweVzcAKZz+6qblVA7pRLVGgM+WRJ1SfgGZul8qolBwbSR7pS0q45o8KhWkRa10Siu+GMf8nQ7g76cyeOUcUnQrAsegiySrZjfXv2X+9+IpAGl/M93vlAN7z+Z8l4sOhNLNRfe2lRYrMYg9cnjv3BiP+vjHRDXzjRm2DLbHvAQRVztpJfr+8yscLM50L98jqoQCEw/MzPt/IS1Mt4hxZcYi+YJP5hAIMPR8F
- PEtgPu8B
- l4kzfprN7+3qcejzgO0idqh3evolmVJpNbpDBxpwz+3hBC+VjbloDnbpAjynANundGmD5DWd9p46Wyhn39HQpVNO46sNNuuGZTuoi/EJfMALwmpuHapHF7kNnbqZN64tlLQnrNsmyXq5K4H0SKSsPo2yd0DjN+sv0es/YVIAr3IWmfByyAfgdlImZ7+TjhbS+OzFgpSXrKAKcbzGZXrAzUkIfZ3mooQ16UwDfv/GVJKRnU6JQdqkQtzZrWB4vPo3jPIRKYymwkOPB8xy9f0W8ggb4o96hUo1dnwUaampe12l6amkNpCic9+rkreMTVzHEutVln5EU9CIfSBBFrmTwLYI/Db5XOBIqtPkYXilfGSmDSo4IXO4wY3nPwLZYKGxTK6bUxXKSCh9S2V+v6xgZuw1vHSfQ1DfH3SC6zmlcKxPhgbXk/l+Fes+5Yi/eKenVAMNmSlqX50Gcao6q7BWQ3rYh2oNJJ2gjz95SD243Bg6RS5mRMD/NxV3tyRwKLoykL2Dqp3qzxhqUZjzkm/eefi30xLr7iYpKsd4aAiis+5HzRV+5XyAvGeoYjw+7W6oZbgE8Fp3/A5B1KrWXbhvRMl/hdFXHfTjCiW1KfDocYdHaoRc=
+X-Rspamd-Queue-Id: B3A412000B
+X-Stat-Signature: qxcaksrwj9m1xbh8u7g9ncb1196r4sup
+X-HE-Tag: 1756715559-737070
+X-HE-Meta: U2FsdGVkX1/OlkC/lmdKpdkFH8yAorPl4PKC0VapXNdyZpI3W1VpRhobVlPsdllzqh1u27tFkUyz6+ihtmhCFrkJTQoLa2wq6Z/yTNwrS8yeeOOzwDkQhiTgZnYCNInJ9ksHb7nqljbLO6q3He5VZnb2B+PasBRKzAWRfuEKDoqcBvYQvuups7UYnxclc1MRWAxQKSgyrvaOOg5IvjJlE5qJwrHYvXql39abTY7wU8BrZmA966XRs0OSk3c856VWW8LkmLDy0sOv16vYibSG1CasgTtzh9PcoCsaKWWw3tcctC4hjyGu/L+TA0q0Y4gOZ+0dpaxZhoeSvnRqXg+GStbiSwkmE7Ktqr6Eb+NhehwkDEKiOKLaAyjjw6n3WGAQkLHoA9KYjx2ewEuBhd0PwnEFQ13ZHuGmREW3BqV8ZM/UbYVpAfMCpcFlnWVBcO+9xQiqM1eTK2zMj8xMGlPAD1pSA+Atjj2mJQJb2pFovb2gH6EkmYhmv1vw4o5RNVjp0cK4SJqLPBPxCGP/DvKVpG4EdttwgkFeIifb8Q2+B0GKUnlakp4imPE2FLob2X/zvYmYoDtYQJcAO8tFRD5iRRqa1J7aMFX22dznKKtHOPlkeh9Ac/qgonacQRnNTSTrsCE18JdisHBXlt5q0e2pp2k664qNhiahk8kAHTfmcfplz8qj1ohQS56q9Fm36JyAODiQUgNDYHFZm6qzRpMDHLR0rS6+HUmL9JDRHjwZEr8lIlVv5GiSYduiJtw974gh50Y1Rg0AnOniUGiHb1Mt64fPXEOZlYR2yCpX/RRS+M0AyJMIaRKTtn6h8F7qyXykHpBIHOjVUePtKIe37yUCVSDGda5cZWPzk0lebtUFtWvyeyXkmzODylxiOEo7UJXZAJl0zmyvbcEjRh+2kjm2H9OW6DsfjPrl/nS81C21mqbJgL7MnHtn8gHk8vqJ8WnsNiCdsfXJ4JhHLgQdjQV
+ uQnyTcaz
+ bubGy2G1k8oHCJj+3P+evWSKEKltkN7x1WGe1KwRfYmY6j8cIb6UEz49q1B5Y4KW+1bHs3N6xZFGoRWeipI+o/GedfMaNcJD0fUAHpbyNQbXIaOf9g19O58htUGBUdJ+lFhwcr/8Ppr1Hz5282g3dnwxjZauIiASIP7wgb2ycMj+qiSUnyraWg3cr3lotg4y+S4McNtomqSu0N53ruGXNhCk3S4UkRrnZ7Ucknp5Rv6qaHx3gB1qx/t8j8lt+ga3ZjmwTx4QQRHHXUlm8/JUyc7Zi+7X6arvz7z0JLIGOuKc0EWNIBiZf+KWSfKn2Mc7PorRXnyb4RH094/UM+y6Y1UTLCXMPPzKZakILI+MWD0Xe0KLRAMvP+y6RoQtg2m5UkYd1Od96OksqfIaqZBvqkK7glysLEmnljz3JB52SNV2322NA5uR8JRig3orNRXZRqSAt09Gpzhm11Atr2Jvkk1Shycy9oMnY6bQfXPoNANXgTOTw0B06eUA5dpuid64doAD1nj1xhtesJfA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,167 +179,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 09:48, Dev Jain wrote:
-> Currently khugepaged does not collapse a region which does not have a
-> single writable page. This is wasteful since, apart from any non-writable
-> memory mapped by the application, there are a lot of non-writable VMAs
-> which will benefit from collapsing - the VMAs of the executable, those
-> of the glibc, vvar and vdso, which won't be unmapped during the lifetime
-> of the process, as opposed to other VMAs which maybe unmapped.
 
-Are these anonymous folios? ("VMAs of the executable"), or is you description
-misleading?
+>> @@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>>   			writable = true;
+>>   	}
+>>   
+>> -	if (unlikely(!writable)) {
+>> -		result = SCAN_PAGE_RO;
+>> -	} else if (unlikely(cc->is_khugepaged && !referenced)) {
+>> +	if (unlikely(cc->is_khugepaged && !referenced)) {
+>>   		result = SCAN_LACK_REFERENCED_PAGE;
+>>   	} else {
+>>   		result = SCAN_SUCCEED;
+>> @@ -1421,9 +1419,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>   		     mmu_notifier_test_young(vma->vm_mm, _address)))
+>>   			referenced++;
+>>   	}
+>> -	if (!writable) {
+>> -		result = SCAN_PAGE_RO;
+>> -	} else if (cc->is_khugepaged &&
+>> +	if (cc->is_khugepaged &&
+> 
+> The only practical use of the writable is gone. The only other usage is
+> tracing which can be dropped to as it is not actionable anymore.
+> 
+> Could you drop writable? Maybe as a separate commit.
 
-> Therefore,
-> remove this restriction and allow khugepaged to collapse a VMA with
-> arbitrary protections.
-> 
-> Along with this, currently MADV_COLLAPSE does not perform a collapse on a
-> non-writable VMA, and this restriction is nowhere to be found on the
-> manpage - the restriction itself sounds wrong to me since the user knows
-> the protection of the memory it has mapped, so collapsing read-only
-> memory via madvise() should be a choice of the user which shouldn't
-> be overriden by the kernel.
-> 
-> I dug into the history of this and couldn't find any concrete reason of
-> the current behaviour - [1] is the v1 of the original khugepaged patch
-> which required all ptes to be writable. [2] is the v1 of the patch which
-> changed this behaviour to require at least one pte to be writable. The
-> closest thing I could find was: in response to [2], Kirill says in [3] -
-> "As a side effect it will effectively allow collapse in PROT_READ vmas,
-> right? I'm not convinced it's a good idea." (Although Kirill realizes in
-> [4] that this was not the intention of the patch).
-> 
-> I can see performance improvements on mmtests run on an arm64 machine
-> comparing with 6.17-rc2. (I) denotes statistically significant improvement,
-> (R) denotes statistically significant regression (Please ignore the
-> numbers in the middle column):
-
-I once dug into that myself as well as part of
-
-commit 1bafe96e89f056cb6e25d47451fb16aee2c7c4d0
-Author: David Hildenbrand <david@redhat.com>
-Date:   Wed Apr 24 14:26:30 2024 +0200
-
-     mm/khugepaged: replace page_mapcount() check by folio_likely_mapped_shared()
-
-where I noted:
-
-     Interestingly, khugepaged will only collapse an anonymous THP if at least
-     one PTE is writable.  After fork(), that means that something (usually a
-     page fault) populated at least a single exclusive anonymous THP in that
-     PMD range.
-     
-The problem I was concerned with (also documented in that patch) should no
-longer apply ever since we changed how folio_maybe_mapped_shared() operates.
-
-So yes, I don't see a good reason to fail on R/O PTEs
-
-> 
-> +------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
-> | mmtests/hackbench                  | process-pipes-1 (seconds)                                |                 0.145 |                   -0.06% |
-> |                                    | process-pipes-4 (seconds)                                |                0.4335 |                   -0.27% |
-> |                                    | process-pipes-7 (seconds)                                |                 0.823 |              (I) -12.13% |
-> |                                    | process-pipes-12 (seconds)                               |    1.3538333333333334 |               (I) -5.32% |
-> |                                    | process-pipes-21 (seconds)                               |    1.8971666666666664 |               (I) -2.87% |
-> |                                    | process-pipes-30 (seconds)                               |    2.5023333333333335 |               (I) -3.39% |
-> |                                    | process-pipes-48 (seconds)                               |                3.4305 |               (I) -5.65% |
-> |                                    | process-pipes-79 (seconds)                               |     4.245833333333334 |               (I) -6.74% |
-> |                                    | process-pipes-110 (seconds)                              |     5.114833333333333 |               (I) -6.26% |
-> |                                    | process-pipes-141 (seconds)                              |                6.1885 |               (I) -4.99% |
-> |                                    | process-pipes-172 (seconds)                              |     7.231833333333334 |               (I) -4.45% |
-> |                                    | process-pipes-203 (seconds)                              |     8.393166666666668 |               (I) -3.65% |
-> |                                    | process-pipes-234 (seconds)                              |     9.487499999999999 |               (I) -3.45% |
-> |                                    | process-pipes-256 (seconds)                              |    10.316166666666666 |               (I) -3.47% |
-> |                                    | process-sockets-1 (seconds)                              |                 0.289 |                    2.13% |
-> |                                    | process-sockets-4 (seconds)                              |    0.7596666666666666 |                    1.02% |
-> |                                    | process-sockets-7 (seconds)                              |    1.1663333333333334 |                   -0.26% |
-> |                                    | process-sockets-12 (seconds)                             |    1.8641666666666665 |                   -1.24% |
-> |                                    | process-sockets-21 (seconds)                             |    3.0773333333333333 |                    0.01% |
-> |                                    | process-sockets-30 (seconds)                             |                4.2405 |                   -0.15% |
-> |                                    | process-sockets-48 (seconds)                             |     6.459666666666666 |                    0.15% |
-> |                                    | process-sockets-79 (seconds)                             |    10.156833333333333 |                    1.45% |
-> |                                    | process-sockets-110 (seconds)                            |    14.317833333333333 |                   -1.64% |
-> |                                    | process-sockets-141 (seconds)                            |               20.8735 |               (I) -4.27% |
-> |                                    | process-sockets-172 (seconds)                            |    26.205333333333332 |                    0.30% |
-> |                                    | process-sockets-203 (seconds)                            |    31.298000000000002 |                   -1.71% |
-> |                                    | process-sockets-234 (seconds)                            |    36.104000000000006 |                   -1.94% |
-> |                                    | process-sockets-256 (seconds)                            |     39.44016666666667 |                   -0.71% |
-> |                                    | thread-pipes-1 (seconds)                                 |   0.17550000000000002 |                    0.66% |
-> |                                    | thread-pipes-4 (seconds)                                 |   0.44716666666666666 |                    1.66% |
-> |                                    | thread-pipes-7 (seconds)                                 |                0.7345 |                   -0.17% |
-> |                                    | thread-pipes-12 (seconds)                                |     1.405833333333333 |               (I) -4.12% |
-> |                                    | thread-pipes-21 (seconds)                                |    2.0113333333333334 |               (I) -2.13% |
-> |                                    | thread-pipes-30 (seconds)                                |    2.6648333333333336 |               (I) -3.78% |
-> |                                    | thread-pipes-48 (seconds)                                |    3.6341666666666668 |               (I) -5.77% |
-> |                                    | thread-pipes-79 (seconds)                                |                4.4085 |               (I) -5.31% |
-> |                                    | thread-pipes-110 (seconds)                               |     5.374666666666666 |               (I) -6.12% |
-> |                                    | thread-pipes-141 (seconds)                               |     6.385666666666666 |               (I) -4.00% |
-> |                                    | thread-pipes-172 (seconds)                               |     7.403000000000001 |               (I) -3.01% |
-> |                                    | thread-pipes-203 (seconds)                               |     8.570333333333332 |               (I) -2.62% |
-> |                                    | thread-pipes-234 (seconds)                               |     9.719166666666666 |               (I) -2.00% |
-> |                                    | thread-pipes-256 (seconds)                               |    10.552833333333334 |               (I) -2.30% |
-> |                                    | thread-sockets-1 (seconds)                               |                0.3065 |                (R) 2.39% |
-> +------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
-> 
-> +------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
-> | mmtests/sysbench-mutex             | sysbenchmutex-1 (usec)                                   |    194.38333333333333 |                   -0.02% |
-> |                                    | sysbenchmutex-4 (usec)                                   |               200.875 |                   -0.02% |
-> |                                    | sysbenchmutex-7 (usec)                                   |    201.23000000000002 |                    0.00% |
-> |                                    | sysbenchmutex-12 (usec)                                  |    201.77666666666664 |                    0.12% |
-> |                                    | sysbenchmutex-21 (usec)                                  |                203.03 |                   -0.40% |
-> |                                    | sysbenchmutex-30 (usec)                                  |               203.285 |                    0.08% |
-> |                                    | sysbenchmutex-48 (usec)                                  |    231.30000000000004 |                    2.59% |
-> |                                    | sysbenchmutex-79 (usec)                                  |               362.075 |                   -0.80% |
-> |                                    | sysbenchmutex-110 (usec)                                 |     516.8233333333334 |                   -3.87% |
-> |                                    | sysbenchmutex-128 (usec)                                 |     593.3533333333334 |               (I) -4.46% |
-> +------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
-> 
-> No regressions were observed with mm-selftests.
-> 
-> [1] https://lore.kernel.org/all/679861e2e81b32a0ae08.1264054854@v2.random/
-> [2] https://lore.kernel.org/all/1421999256-3881-1-git-send-email-ebru.akagunduz@gmail.com/
-> [3] https://lore.kernel.org/all/20150123113701.GB5975@node.dhcp.inet.fi/
-> [4] https://lore.kernel.org/all/20150123155802.GA7011@node.dhcp.inet.fi/
-> 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
-> Based on mm-new.
-> 
-> Not very sure of the tracing parts which this patch changes. I have kept
-> the writable portion for the tracing to maintain backward compat, just
-> dropped it as a collapse condition.
-> 
->   include/trace/events/huge_memory.h |  2 +-
->   mm/khugepaged.c                    | 11 +++--------
->   2 files changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> index 2305df6cb485..f2472c1c132a 100644
-> --- a/include/trace/events/huge_memory.h
-> +++ b/include/trace/events/huge_memory.h
-> @@ -19,7 +19,7 @@
->   	EM( SCAN_PTE_NON_PRESENT,	"pte_non_present")		\
->   	EM( SCAN_PTE_UFFD_WP,		"pte_uffd_wp")			\
->   	EM( SCAN_PTE_MAPPED_HUGEPAGE,	"pte_mapped_hugepage")		\
-> -	EM( SCAN_PAGE_RO,		"no_writable_page")		\
-> +	EM( SCAN_PAGE_RO,		"no_writable_page") /* deprecated */	\
->   	EM( SCAN_LACK_REFERENCED_PAGE,	"lack_referenced_page")		\
->   	EM( SCAN_PAGE_NULL,		"page_null")			\
->   	EM( SCAN_SCAN_ABORT,		"scan_aborted")			\
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 4ec324a4c1fe..5ef8482597a9 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -39,7 +39,7 @@ enum scan_result {
->   	SCAN_PTE_NON_PRESENT,
->   	SCAN_PTE_UFFD_WP,
->   	SCAN_PTE_MAPPED_HUGEPAGE,
-> -	SCAN_PAGE_RO,
-> +	SCAN_PAGE_RO,	/* deprecated */
-
-Why can't we remove that completely.
-
+I think we should just do it in the same patch.
 
 -- 
 Cheers
