@@ -4,91 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6B8CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:06:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDA87CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 243C98E0006; Mon,  1 Sep 2025 03:06:09 -0400 (EDT)
+	id 1F2E08E0006; Mon,  1 Sep 2025 03:22:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21B1F8E0003; Mon,  1 Sep 2025 03:06:09 -0400 (EDT)
+	id 1A35B8E0003; Mon,  1 Sep 2025 03:22:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 158088E0006; Mon,  1 Sep 2025 03:06:09 -0400 (EDT)
+	id 06B0B8E0006; Mon,  1 Sep 2025 03:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 029108E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:06:08 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9BCCA1A06CA
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:06:08 +0000 (UTC)
-X-FDA: 83839797216.29.3DDF26D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EFC7E20008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:06:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f/L9cw0y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E27F58E0003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:22:52 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8634F1406EC
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:22:52 +0000 (UTC)
+X-FDA: 83839839384.14.48B40A1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 35245140002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:22:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QesRIq+3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756711370; a=rsa-sha256;
+	cv=none;
+	b=M+zVdjlo20fdwSLjyXSCRaUFGjjp0C070LCqm8lFr+zq2LYQROBEi6fL4KwZNv0PHPtXYF
+	ntfJeMuEu/Pb8/3kYiWkxpVoMZ1KIElRXl+04u1IUia6gajeVKbtZhNvIG4uCToOzurRWC
+	UOrydFbgsbpFDceX05iB6t1EjIcz6LE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QesRIq+3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756710367;
+	s=arc-20220608; t=1756711370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=futEXIVmzqq6DMpppiYZ10OvvjFHVAv79YOB9UtpvM8=;
-	b=cMvhHLu8iWq49NLNBv40rzRzZzB2KHTMcKjk5hjo9VrxtQ1Dm3y/Gu26vn5fSvMMTRFd08
-	CLu67RXZGfXNOsVVT+u4JCZ5xCVNgDtJQ09iwl1mdbwXbFwvaKNglVUuKqcD/nC0ZI5Y+l
-	fy52oLdU+oMpf6KNmBBv7ImcPIqxJM0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f/L9cw0y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756710367; a=rsa-sha256;
-	cv=none;
-	b=nzcyeJGS1rr0Q2Y8mn8L2IX9BNTLbBgOHN+m7YFyFDoUl1raDJTFcrDyzfgcnILHb4icIV
-	4JmkplfZs1TAPyqtZwAPUVC4E1v65HZKG5s9YlyW11LqT0gN5wAE74ai8ACOg26iuXctRo
-	L0waGeh8BMTk4bxmy4MHQiJHa1C0/Hc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2628F601BC;
-	Mon,  1 Sep 2025 07:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26255C4CEF0;
-	Mon,  1 Sep 2025 07:06:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756710365;
-	bh=747fK6P72FtpW8Xa07ErmzcnXoqfZK5W40Qvrzm5FMo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f/L9cw0yZrXERHgTOCzGbXDqwwy7Uvc7K/kcexV6d5LQXVulWsdpMLQtbBZgga3ND
-	 VX4DTR70FAT7YBwAFyoC9z1JzIJLVqckRKfnYM6sQngd0croia9bMqhenrd6Uk03Zc
-	 mOVgY5njS4dfWqvtLhxCQIuVP/Zaid0xZyQ1rbTUGEppp0JjSrEDcyxXjlGQlCWa7U
-	 YNCES8giSF7+gPK93wL1CM3GcBLId+FLfXsJulUEmSHbwx0YuRw/J326t5u6LyrhKx
-	 hU7ZDNluohqog/jUfmCC3Ewzf+Z4qwUZPYhsGtm+DCr0RNJFXnfY7ZCLdrjUVPY8Zl
-	 liVH6jhqhlIHg==
-Date: Mon, 1 Sep 2025 16:06:02 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: akpm@linux-foundation.org, mhiramat@kernel.org, naveen@kernel.org,
- davem@davemloft.net, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 02/13] x86/HWBP: Add arch_reinstall_hw_breakpoint()
- for atomic updates
-Message-Id: <20250901160602.e25f0107e7b0ef4af1078fb7@kernel.org>
-In-Reply-To: <20250818122720.434981-3-wangjinchao600@gmail.com>
-References: <20250818122720.434981-1-wangjinchao600@gmail.com>
-	<20250818122720.434981-2-wangjinchao600@gmail.com>
-	<20250818122720.434981-3-wangjinchao600@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	bh=9V4R05sdobHBJHmAx3r85pkYP3EzkYBt4hLu36K3MfI=;
+	b=4LQ9aTgMQEr+CgXxBJqYr8y7ILJ/o8v/UkdDCFZ2ZtCKTo+iPzKHMui4hsKf+cY+JzXmfs
+	lnYahmG41lvoWbgsUHpKbfjmgBIXmjgsx40bK1G0QQnSU9DDFc50IXs9VF9JieXBtDzPAl
+	zrI0VOHr0HqS4nJ92WyETPorn+rEhz4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756711369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=9V4R05sdobHBJHmAx3r85pkYP3EzkYBt4hLu36K3MfI=;
+	b=QesRIq+3o10cszTZBvWbkKwgZOwrko4b/imL+7PR1CfaxEX1H03qdV7OKBDtexjYyUyKIi
+	HmvYm5RWyKoy+HdurAQDPdp60UMsvBUsjYL8xnSa5OB0GT8i4a4jJBq0cqFnuMHYJYuVF4
+	jyJVc13SVjHOE5V0SgM4ivBKvzKhdus=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-VS5vtgB7OaCJGmOSqF8Tcw-1; Mon, 01 Sep 2025 03:22:48 -0400
+X-MC-Unique: VS5vtgB7OaCJGmOSqF8Tcw-1
+X-Mimecast-MFC-AGG-ID: VS5vtgB7OaCJGmOSqF8Tcw_1756711367
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ccfd90630aso1690260f8f.3
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 00:22:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756711367; x=1757316167;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9V4R05sdobHBJHmAx3r85pkYP3EzkYBt4hLu36K3MfI=;
+        b=SAqe2DOqwdefRGJJzFpfMu4xWNeuXgn0aoB9CQB79CS3KnwKLbpRbEsVBW/TRaQx9G
+         t3YnA9Oj4cDC15IapmY0JZpCAnTqO/tFI6yawJcYL/JylhK/ORcZQrFDMenTjfpE4mYb
+         zlmU+MULfpiBxGJRGPfrW8hsffLFHBcB5wWhWGavwb32HxBGNgE6BJlt8OLhOdbsOZvP
+         aRg0wXLxK4Q0RpSaD8LgScHdsu00Mqvc01/7G7avq2ywaiqUIOIB3wz/2e4fwPfTIi0k
+         GxO3F6Iwc2f1D2i1FGldNNHLrpUSHGRR/uYnxud1rOYUxCnByFEkOSZp9NtNON59yDrY
+         hJ+g==
+X-Gm-Message-State: AOJu0YyDrrEDJxmHVepM0MGxBi/isnTvmpRG3pqQjwLo8bC9gC+NQSFv
+	bkpXNEbkcJObv9KyXoPOQxb2YLG/K4UyBIye9kRgm1obqeC/RBRNG3Ptpglv2vZAkL5YUXNLDCH
+	Znlgub8mrnOSiQRO79y6P+xofJ8t3AmDFIdNYaoURamNlxngJR80h
+X-Gm-Gg: ASbGncvXSGdMV9Lm/qzC8DZge24xg9cGAPDTI1P4nevF0oQz7FFr3ozzu7muyyxeAXW
+	6Ne8v7B6zLhRq5IIub/rIZo6XSkQu5u72FGa9BfLT4M5X4tlMJnl0AQebK9bH2sNKy+/NySaFtb
+	LFtnf4X2M5waOIojFmkwFq9axQ5iJg3ks4QT2sSpSC4p5xq+6SPq85c+qlw8pkZ+jsS04uqsFdQ
+	i+1RVsf3nzgEfmDLccs5bIFxJLI6tU9BOwg91SFUm5NANwtzTVgfQXLLUXh0ZefZakn2svs0x3o
+	6moEser3Tld59puvzUSga1G70EajerTivKn5iNQMRGSaNjSrZgp7xL9Or5p5ItIuT4wuXAC7I/W
+	bDpET15bYYVunLP/sdNj4OKchMEMELUBtnRNsiLwInrEmXBk9816wjvbLOcvPxC2jG0k=
+X-Received: by 2002:a05:6000:42c9:b0:3d1:e22d:df2f with SMTP id ffacd0b85a97d-3d1e22e12d1mr3737085f8f.23.1756711367089;
+        Mon, 01 Sep 2025 00:22:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVNYjwWcm6gpW0uY4rkHHxrCMQOJdbdQbgUiX4+ObJzl258/8a6I3ZT74/QxiH1Rpl4yYyjg==
+X-Received: by 2002:a05:6000:42c9:b0:3d1:e22d:df2f with SMTP id ffacd0b85a97d-3d1e22e12d1mr3737072f8f.23.1756711366670;
+        Mon, 01 Sep 2025 00:22:46 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fb9cebsm13932480f8f.46.2025.09.01.00.22.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 00:22:45 -0700 (PDT)
+Message-ID: <f8e942de-1a50-412e-9020-1bc901b4243b@redhat.com>
+Date: Mon, 1 Sep 2025 09:22:44 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] selftests/mm: check content to see whether mremap
+ corrupt data
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20250831022701.2595-1-richard.weiyang@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250831022701.2595-1-richard.weiyang@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: cOdmCqeIRTY1IA3EN4rPK252RbvV5n4kgCZQFPIJdLc_1756711367
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EFC7E20008
-X-Stat-Signature: ubnwu7o1bkyerttyp139ec78suuk61yf
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756710366-211497
-X-HE-Meta: U2FsdGVkX19KlnUlW4+RmD2jiZ8ZcQohsUxE9tMXWlvHV2vET5/zWQuUVxcrJ/G7pQDryCI8o4rFjZTRL2iwAfSAbk855IigxmIHRt3dnTM+eWJe/vygSJiYMbN/R6LmccCL+Xm6CNMgNOw+9m1JnQH4Mv2sYaGiKGtbq2PNFKmVF9sVDtJWQ1TecfpwK+CNPnM1ov5GhrlMjP+y+zquMrAw1W4+9Ggwf+7Op63ImfAEYME8aXoN1jIcmtM64PGcG2G8nu9J7Vqdi5FN1PxgQyJkycMoIqsbOho28KIj5KVLpoaRbmmBQ2EIL1l2tylbt6q+pX8G/TszWdk7+0zxAfWo+d3tbVdURGuBaI848DI9rdyfGisjXX3XXT84tNW1EFRkWXMVMlerTXbvcnMM3L4GzUA2G6lZmUf7HoeKDVnqD99YlUZMM5dxIQxm/mDiVwjYQxQoQzTs6dvAYf/cht643TfVbBBOxM3F5SM+92nxxssmoUclfPxeHtJ1tl17TcXABBrdYcPk9hwT8lZoStYhqe9+TdLeJ2IMgsc2SsqrExN+1wxH7x+FR73Mv0ZfjFvzGeBt1J7DuOHdGmgY00HQxmM0hi68beWoTxEhY8EJBu1PMqX6WxaED6OVNWGj/rwigAxmSeYKMerp3aTkhVFMclrlZ3/B1s085dtU1PMY9kLRmQcx4Lu9bkFjirlw0+Foi6iFvIGsiyJyhr4eyp8p/RxBZtRDPIOWZ2rJyYNXC8aBGkjKjPmA/0LjgA7HElkmknT8T+KtZWR2Bv4Xou2RbU0ok1N73nEONqsq+T5BtDqPJbDOPqGbYtPnBwFyfpDrsvJ7Dy4WU5KkdNpyZpeFgPdLoOGoA3koR0rlePxNrCpizFkolyGJkdUU9WOpvNgbtMi6cLHwX6wbaTmFiYJYBh7hDLMCPAkRFxl3EeURWO5V1mGv5F7nQkKcP3GFYd7tlwdJ8BZf5NERxDb
- WfN1iI6L
- C/VM2IUTN9W7vBMx9vCSOBkNf1PJxdra2P/4WXu2tnpbQvY2a/8qmFuW7gyQPMBm6MamQtfMDl2UFfjh8dbs+rtQ7kAb2a8NKLi4ZbqB4zjvvOjii5iUkhfIkBh0qXtBPO2xDzgIJcMaAgnQY0jYLghV+CcONX6bI+FfKEHdEPP00MshSkS69BRMrGWJFrlNNZkjSyrqc7IYquU23J/Nk6mdxlYTHmTwvP7vz6HABlkIttRu41dNuR4tQlAlBro4EiHekUG4pL/3IvTU8me6QH1xbJoRIrLZUNDYb2ZrQxJISH+7M6WCxBccPl/o/nlXF5NViYAVEh7YcTiDJoRBrYGOlmw==
+X-Rspamd-Queue-Id: 35245140002
+X-Stat-Signature: k7ndgjn9ank8yz8by8ojcm44n43kbizq
+X-HE-Tag: 1756711370-375742
+X-HE-Meta: U2FsdGVkX18M6HoCwVGHuPMkLsrvmnptwOZMGySBDswELrZdPjEFV2LwBXAy+ol3ZhzofX7pJBoU7mjG4CvX4xup8cjP1mtOTuPK6MbkBtWjyz08TvpYEGIt2FI31/PwrNDfSC11CCggeFjpnMKbc7EA3J4uhyERNMpLPAbV340670AyK0unyxy+Rr2b5+yW1aSTwkUjKrCBuKXJnobT1XngybuTB6wr7mx/MWRXkkVS7rn+BzB3ACGtjLchzCWZ5TYFwh8dW4rNl0CRpWRexVUZgJQb5I7KTxP47NgkixmIW70byOTb781fA2ysyPL4dpdJig9OrsUyaLHnVSP4liaLZlCSedUhuBNQkpJjhD112sHGw6kK966veb2Iu3o1cOLE534MAIFF7E6DsntEVp3vJ+/H/DnygdxrfK0Lu/VJKIJ/oMVQ8b41j864/VTZIFwaeZWPOQcK/YpF7hiRuDXQMpfud+kGNDGpUK7JNHe/ikcjrGO4qye/xm2rz+k23hSJly/zAhmuuqlu7wxAKbTV/OPni7qmpC/izIn3xpn0IbFiAWe5OPDrBUQ6+sBAEC9PALdqoHwW2uvVpcYoBKMHEtrGsBq9u1uJa9Ns/9QqnMDAzXwBToGyN/WAp96LLahpUfdnOzu4LP6fkigQ6YuPDS2cNgSZTHtdfX6WshNLs63EWzWZ5FIubi0HxriqLBdbdHLrYSXA7BXNYk2z9FX8ZqWF8X885xlnAvd60hzRGJFo28NTfVjDlTtHMEbCu66KNKUAUIpgIHzZ7Gb4m+1GDLURWn+cH17KqRrr3WThnpzDW6MJZReqbqD03o5O4XG40DvzN+GQDhPzUSMO6R4A1MIiJ/MH2DAXdU81yV/8OkpN5uZYVMz85Ak+lnQvD364DRtXvG2NTDNPam+ywsj5oVUirLcftafnWvspBsRYkEgZ12v5brJ8I3xCCsKCLRsHukgaEVd0HaDrDDK
+ At3U2Nx+
+ hbqYdE6xngDkl940MhQvC4rzUQ1uChtEPXH/9TQmqs/BSoOcZLG+BQNV/HAmBgBw6auzoloC+QiFvhHSLDthvqtfj0shO3DjAeK4FlBI/5CRJSLjyZFWI6x0B6jZ6U2fTyo+wCP4ipQGJFu9cCXWN+eidWBb4/rGd+hU/lygqnhSyu54Xy46czCZGJAEMgLiU/TtoF/7+vrAUaMQuadxpmhZR5cFIkZWW/NInWna/EwhjNR1Wg49HnOI9+84cSrjSm//pX+wrlnhsZiGNuIvLLceScJ/GDcsvxbI95AyazEMSy4bill4q/HITh5Tw+djAlvZi6BA561Hk/41SHB/UPpp1VrJY9e3BEVLej/lt7C3+nJpgC5GkeqGFACuqiUknaN+jg8OTxN5yqHtgk74NOuQYyDE4xsK8TUAVXWPb2IuvPyQDYwier0n64xSEIvemQmWhLlBut9RGvTTtexvo3c7Y8F267JTrI0m5HJc7NKh57gDh684y7/+sLByn+XgYBMSTELcA7RSvDpk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,204 +176,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jinchao,
+On 31.08.25 04:27, Wei Yang wrote:
 
-On Mon, 18 Aug 2025 20:26:07 +0800
-Jinchao Wang <wangjinchao600@gmail.com> wrote:
+Subject: "selftests/mm: verify page content after remapping PMD through 
+PTEs"
 
-> Add arch_reinstall_hw_breakpoint() to enable atomic context modification
-> of hardware breakpoint parameters without deallocating and reallocating
-> the breakpoint slot.
+> After mremap(), add a check on content to see whether mremap corrupt
+> data.
 > 
-> The existing arch_install_hw_breakpoint() allocates a new debug register
-> slot, while arch_uninstall_hw_breakpoint() deallocates it. However, some
-> use cases require modifying breakpoint parameters (address, length, type)
-> atomically without losing the allocated slot, particularly when operating
-> in atomic contexts where allocation might fail or be unavailable.
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 > 
-> This is particularly useful for debugging tools like kstackwatch that
-> need to dynamically update breakpoint targets in atomic contexts while
-> maintaining consistent hardware state.
+> ---
+> v2: add check on content instead of just test backed folio
+
+I'm confused, don't we have that exact check later in the function?
+
+Your v1 might have been better, unless I am missing something.
+
+> ---
+>   tools/testing/selftests/mm/split_huge_page_test.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
+> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+> index 10ae65ea032f..229b6dcabece 100644
+> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+> @@ -423,10 +423,14 @@ static void split_pte_mapped_thp(void)
+>   
+>   	/* smap does not show THPs after mremap, use kpageflags instead */
+>   	thp_size = 0;
+> -	for (i = 0; i < pagesize * 4; i++)
+> +	for (i = 0; i < pagesize * 4; i++) {
+> +		if (pte_mapped[i] != (char)i)
+> +			ksft_exit_fail_msg("%ld byte corrupted\n", i);
+> +
+>   		if (i % pagesize == 0 &&
+>   		    is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
+>   			thp_size++;
+> +	}
+>   
+>   	if (thp_size != 4)
+>   		ksft_exit_fail_msg("Some THPs are missing during mremap\n");
 
-I'm also trying to find this interface for my wprobe. So the idea is good.
-But this looks hacky and only for x86. I think the interface should be
-more generic and do not use this arch internal function directly.
+I'm a bit confused with this test in general.
 
-It seems that the slot is allocated by "type", thus, if this reinstall
-hwbp without deallocate/allocate slot, it must NOT change the type.
-See __modify_bp_slot. Also, provide CONFIG_HAVE_... option for checking
-whether the architecture support that interface.
+We do a
 
-Let me share a patch to wrap it.
-I'll send my series with this patch.
+pte_mapped = mremap(one_page, pagesize, pagesize, MREMAP_MAYMOVE);
 
-From 9813e9d003f4691b5fe408094a02bd9e6a5fa249 Mon Sep 17 00:00:00 2001
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Date: Mon, 25 Aug 2025 19:37:24 +0900
-Subject: [PATCH] HWBP: Add modify_wide_hw_breakpoint_local() API
+which I read as a "NOP".
 
-Add modify_wide_hw_breakpoint_local() arch-wide interface which allows
-hwbp users to update watch address on-line. This is available if the
-arch supports CONFIG_HAVE_REINSTALL_HW_BREAKPOINT.
-Note that this can not change the type because it does not release and
-reserve the hwbp slot based on type.
+Questions
 
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
----
- arch/Kconfig                         | 10 ++++++++
- arch/x86/Kconfig                     |  1 +
- arch/x86/include/asm/hw_breakpoint.h |  2 ++
- arch/x86/kernel/hw_breakpoint.c      | 11 +++++++++
- include/linux/hw_breakpoint.h        |  6 +++++
- kernel/events/hw_breakpoint.c        | 36 ++++++++++++++++++++++++++++
- 6 files changed, 66 insertions(+)
+(a) Will this actually do anything? Also, maybe it does now, but can't 
+the kernel just optimize that out in the future?
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 8e3fd723bd74..bec164bea0ec 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -409,6 +409,16 @@ config HAVE_MIXED_BREAKPOINTS_REGS
- 	  Select this option if your arch implements breakpoints under the
- 	  latter fashion.
- 
-+config HAVE_REINSTALL_HW_BREAKPOINT
-+	bool
-+	depends on HAVE_HW_BREAKPOINT
-+	help
-+	  Depending on the arch implementation of hardware breakpoints,
-+	  some of them are able to update the breakpoint configuration
-+	  without release and reserve the hardware breakpoint register.
-+	  What configuration is able to update depends on hardware and
-+	  software implementation.
-+
- config HAVE_USER_RETURN_NOTIFIER
- 	bool
- 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index ad7a6d139006..ca8331522c07 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -249,6 +249,7 @@ config X86
- 	select HAVE_FUNCTION_TRACER
- 	select HAVE_GCC_PLUGINS
- 	select HAVE_HW_BREAKPOINT
-+	select HAVE_REINSTALL_HW_BREAKPOINT
- 	select HAVE_IOREMAP_PROT
- 	select HAVE_IRQ_EXIT_ON_IRQ_STACK	if X86_64
- 	select HAVE_IRQ_TIME_ACCOUNTING
-diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
-index bb7c70ad22fe..b3db25eb613f 100644
---- a/arch/x86/include/asm/hw_breakpoint.h
-+++ b/arch/x86/include/asm/hw_breakpoint.h
-@@ -64,6 +64,8 @@ void arch_uninstall_hw_breakpoint(struct perf_event *bp);
- void hw_breakpoint_pmu_read(struct perf_event *bp);
- void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
- 
-+bool hw_breakpoint_arch_same_type(struct arch_hw_breakpoint *hw,
-+				  struct perf_event_attr *attr);
- extern void
- arch_fill_perf_breakpoint(struct perf_event *bp);
- 
-diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-index 89135229ed21..7dfc88ff6cd9 100644
---- a/arch/x86/kernel/hw_breakpoint.c
-+++ b/arch/x86/kernel/hw_breakpoint.c
-@@ -278,6 +278,17 @@ int arch_bp_generic_fields(int x86_len, int x86_type,
- 	return 0;
- }
- 
-+bool hw_breakpoint_arch_same_type(struct arch_hw_breakpoint *hw,
-+				  struct perf_event_attr *attr)
-+{
-+	int glen, gtype;
-+
-+	if (arch_bp_generic_fields(hw->len, hw->type, &glen, &gtype) < 0)
-+		return false;
-+
-+	return gtype == attr->bp_type;
-+}
-+
- /*
-  * Check for virtual address in kernel space.
-  */
-diff --git a/include/linux/hw_breakpoint.h b/include/linux/hw_breakpoint.h
-index db199d653dd1..eb14f9ab5bdb 100644
---- a/include/linux/hw_breakpoint.h
-+++ b/include/linux/hw_breakpoint.h
-@@ -81,6 +81,9 @@ register_wide_hw_breakpoint(struct perf_event_attr *attr,
- 			    perf_overflow_handler_t triggered,
- 			    void *context);
- 
-+extern int update_wide_hw_breakpoint_local(struct perf_event *bp,
-+					   struct perf_event_attr *attr);
-+
- extern int register_perf_hw_breakpoint(struct perf_event *bp);
- extern void unregister_hw_breakpoint(struct perf_event *bp);
- extern void unregister_wide_hw_breakpoint(struct perf_event * __percpu *cpu_events);
-@@ -124,6 +127,9 @@ register_wide_hw_breakpoint(struct perf_event_attr *attr,
- 			    perf_overflow_handler_t triggered,
- 			    void *context)		{ return NULL; }
- static inline int
-+update_wide_hw_breakpoint_local(struct perf_event *bp,
-+				struct perf_event_attr *attr) { return -ENOSYS; }
-+static inline int
- register_perf_hw_breakpoint(struct perf_event *bp)	{ return -ENOSYS; }
- static inline void unregister_hw_breakpoint(struct perf_event *bp)	{ }
- static inline void
-diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
-index 8ec2cb688903..473a5b76941d 100644
---- a/kernel/events/hw_breakpoint.c
-+++ b/kernel/events/hw_breakpoint.c
-@@ -887,6 +887,42 @@ void unregister_wide_hw_breakpoint(struct perf_event * __percpu *cpu_events)
- }
- EXPORT_SYMBOL_GPL(unregister_wide_hw_breakpoint);
- 
-+/**
-+ * modify_wide_hw_breakpoint_local - update breakpoint config for local cpu
-+ * @bp: the hwbp perf event for this cpu
-+ * @attr: the new attribute for @bp
-+ *
-+ * This does not release and reserve the slot of HWBP, just reuse the current
-+ * slot on local CPU. So the users must update the other CPUs by themselves.
-+ * Also, since this does not release/reserve the slot, this can not change the
-+ * type of the HWBP.
-+ * Return err if attr is invalid or the cpu fails to update debug register
-+ * for new @attr.
-+ */
-+#ifdef CONFIG_HAVE_REINSTALL_HW_BREAKPOINT
-+int modify_wide_hw_breakpoint_local(struct perf_event *bp,
-+				    struct perf_event_attr *attr)
-+{
-+	int ret;
-+
-+	if (!hw_breakpoint_arch_same_type(counter_arch_bp(bp), attr))
-+		return -EINVAL;
-+
-+	ret = hw_breakpoint_arch_parse(bp, attr, counter_arch_bp(bp));
-+	if (ret)
-+		return ret;
-+
-+	return arch_reinstall_hw_breakpoint(bp);
-+}
-+#else
-+int modify_wide_hw_breakpoint_local(struct perf_event *bp,
-+				    struct perf_event_attr *attr)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
-+EXPORT_SYMBOL_GPL(modify_wide_hw_breakpoint_local);
-+
- /**
-  * hw_breakpoint_is_used - check if breakpoints are currently used
-  *
--- 
-2.43.0
+(b) Is it even guaranteed that we can access > pagesize afterwards? I 
+mean, we specify MREMAP_MAYMOVE.
 
 
-Thank you,
+I would suggest to just use mprotect/madvise to pte-map a PMD-THP.
+
+This is, of course, independent of this patch.
 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cheers
+
+David / dhildenb
+
 
