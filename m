@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDE2CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:31:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE90BCA1002
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:35:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4AF38E0050; Mon,  1 Sep 2025 09:31:47 -0400 (EDT)
+	id 07DE98E001E; Mon,  1 Sep 2025 09:35:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD4898E000C; Mon,  1 Sep 2025 09:31:47 -0400 (EDT)
+	id 02E988E000C; Mon,  1 Sep 2025 09:35:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94E398E0050; Mon,  1 Sep 2025 09:31:47 -0400 (EDT)
+	id E11658E001E; Mon,  1 Sep 2025 09:35:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 834FF8E000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:31:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 39BB211835A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:31:47 +0000 (UTC)
-X-FDA: 83840769054.21.2575FA1
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CD5338E000C
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:35:34 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6FADC16086C
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:35:34 +0000 (UTC)
+X-FDA: 83840778588.03.FE376F6
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5C16B100014
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:31:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=j6cv+uWE;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="D SMSTkh";
-	spf=pass (imf14.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5EAF6180012
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:35:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=qOIcHpD4;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="T rZ7WmY";
+	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
 	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756733505;
+	s=arc-20220608; t=1756733732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eznu89d4Wi9DxarExeHtKpzVjwvcq68i7OTy3S868gA=;
-	b=vrDbDda7ABHDJAuKnJkVuCArzeR5mPp1o6kn44DNVZ8KQEGKGSmwZ19NFk8wU6+mdszhbX
-	OUXO87LJpWqC6LZlQHeGDTe2hBF5cIVQMJKExFB6DbOTpY9ME9/QV5Zkf5UYDzG3vdf95D
-	54AFfJ98nEbjxLRbs4naRb+FUvCtjn0=
+	bh=AnVy+GFpTqM3XIwnfxspH9w/hhNpLd3QoIWawv7MRX0=;
+	b=H5ZxoEjRp6Fqb9+sYEWYPqBDVumhxxeIxrVViH+9LgG+vwyz+KL9mL9KRR7O6XruONkQKG
+	XF81rWrLPmn99QUefg9qYNKRKPWedYTRcA2pxWEMcbs1sAPyiVGUJdMG6GMJt19fPPaYJh
+	meiR5unCuLHwBMUmKQVChiflDFjF1xM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=j6cv+uWE;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="D SMSTkh";
-	spf=pass (imf14.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm3 header.b=qOIcHpD4;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="T rZ7WmY";
+	spf=pass (imf06.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
 	dmarc=pass (policy=none) header.from=arndb.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756733505; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756733732; a=rsa-sha256;
 	cv=none;
-	b=NAi1D3UE30LRNFVXpp5dgPFaSGDw9/bKmfjsX/Y9ce2NYc6z0PhgXOrxQLDWFxl4h0S0rA
-	3nXvgyeV2xSuH4KoABYK+HFmNU6dOVw5JnPype+eTFa7d1GUkQ3+v02moufOiTZHv/e7ZX
-	WH4cV9Q50EKN4OagkFp6BaCeF/iVri4=
+	b=iH7rfWlv24MUKUmc/OOyEjjD3BmaVLkTLEPQjWJcVeiatGItRsv8EXYkfTzJvLCdq3pss9
+	uE340I9XxcMQDUQCRlQRirLQCDtepcxjA7uF97FTgYtVT0T6a6CuVl+NPnge6GlcGlLjZu
+	CXhbCsxppq2UMOWs8NOEOCr1SWRQmzU=
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 5D0C61300A65;
-	Mon,  1 Sep 2025 09:31:43 -0400 (EDT)
+	by mailflow.stl.internal (Postfix) with ESMTP id 72DA61300C7D;
+	Mon,  1 Sep 2025 09:35:30 -0400 (EDT)
 Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Mon, 01 Sep 2025 09:31:44 -0400
+  by phl-compute-05.internal (MEProxy); Mon, 01 Sep 2025 09:35:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1756733503;
-	 x=1756740703; bh=Eznu89d4Wi9DxarExeHtKpzVjwvcq68i7OTy3S868gA=; b=
-	j6cv+uWEmN4tRp4L+tzI/9Zq6plmAiANvC3bo2w95zYsUC+H+2erTLZ0M6N7rnUE
-	0WJqmOlYYzOb6wa1b0ygTdG8BC5pYAWdzw2aqVPy+8gMQw3BlT0hWNGrjJ5655BK
-	jDWe+Joso3PW8J2CnKz3MeMzgwGqXtpLwj39pSqXUuiPUDezRBK0v5/xoU+sFox3
-	GWlZUV/LVedziW2nrloxdmm+vcN5X4cO58hdosyWO1W7tMLZTaRBkEP/5cheXfwp
-	+K5jjBJhDLT22wliXgMPdBEhiHMG/Km2fCAWR75bU4MZMr7W2ppn+8l8thXubf8x
-	H1W/5LtJ+sW5tj5YEJdOHw==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1756733730;
+	 x=1756740930; bh=AnVy+GFpTqM3XIwnfxspH9w/hhNpLd3QoIWawv7MRX0=; b=
+	qOIcHpD4d/ZwPxo1YAsCo06kvto8t7fcl/eyXQIg6cyMQZbfFLNJfqA2efdp4Xsl
+	SIxwT8NGSQEC1RYPKlI0w/9nHoTAjYhQnSNteytsGnnBue+kcc/ExwpMSrzbmjfu
+	+oboS1XJQ4PeLkgo/1t43q1StwLR6V2MDXQTVGUDUXS1g42rUqUbMAM5+WH8VnSH
+	kaWZ18CwqCxP7TO5BT4ZAGk7Pn1Z/8/XDfGh4tAITg3Z8HdEgvBouVWrHd0xoAiO
+	qv4oRiSq3Mhf0KE3i7RjlwcZNN7oiL5/3iv0waT1HbgOZ3HCFVNC+vRq22I7Wz7v
+	QiBDfGjrNaidFxuWoPXK+g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1756733503; x=
-	1756740703; bh=Eznu89d4Wi9DxarExeHtKpzVjwvcq68i7OTy3S868gA=; b=D
-	SMSTkhz+YqIgiIvkfFhIfiL/7qZcqhBI4oCB9ZKy/r9OlCO0VYO0928G7HzW3t1X
-	R5CRMBk05X1v8XiPu0gU8Dsn6nFpXoqjPCqceWub8u0XqW6tCJ1OP7wG35dQCrI7
-	aSnljlc2n08wq1OFKrRVZX0kwVGoKguuQ/7/Dcw10oaWILbODGBPN66UY2hV+Hsl
-	Pxzc3wqxsF+FDOrc6yCoojuU69bPtOK3gY/ELK/7yp9zj2ym+EvtTx/qYimHAc9i
-	BoY9nsK3bIOPmDgoDjHr1nj4App+jYB2XmiH3LFMvgce7UfNmWvVI5wf8Kk3A7Gi
-	iHW0WInKpkLoSLGn621+A==
-X-ME-Sender: <xms:PKC1aIcONhsW8pFWOV14Sq7PTSfGUzdsPiv1pf9lSeQIoeQuUROA1Q>
-    <xme:PKC1aKOVe-VGCwHjIr1-HCUTyP2eI6IVsjiZwzoJs8XrW5uMtrI3FpSZ6Dsf67EKk
-    UVTmDVgbd78EjylEJU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduledvvdekucetufdoteggodetrf
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1756733730; x=
+	1756740930; bh=AnVy+GFpTqM3XIwnfxspH9w/hhNpLd3QoIWawv7MRX0=; b=T
+	rZ7WmYWNKyTbBY0kpjsY07s3bpDNclAvZsAXI08SlFwVW+Ue69i4oCFAyqUpoKm1
+	CcQIQxv7Hmp4aVz7nEpjk5GdPWcO1haigrmDuMzTGRMruHZiN4qTX5WBBR4KJm4v
+	JJY6GqEOxeOtjDk/rKAh5vtg/2MK/YVpyOLcJNiv/dDj8BBkVSeVfTw7bG3uAS+N
+	1QuVYU4DQW5tNXY+Kq5F9HRYmIFo8Dlw5ydb2ovHcxqPGgzlBclh0D3/UtBOQfYF
+	MzrQ9r9iIoMLPbV2gpH4YsjASp8H3D4jOs6RAJSARnhDv+kSET/nwrfgFY9tzqLE
+	oFX2UPss9JLXwxUKU76TA==
+X-ME-Sender: <xms:IKG1aDr3Hqrb31TbMjN78ZTLVNY4RM96ZCFBcQVyAuY4LgHcbrnlEQ>
+    <xme:IKG1aNp7u77IIkCCX9bjV4qZW5wWqe7OkAxvJPCwwbE91dmYpG4mpCOLTMXsp-Jm3
+    nn8tlWvYObQvbyKOTk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduledvvdelucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
@@ -99,18 +99,18 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduledvvdekucetufdote
     htthhotheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprghnnhgrqdhmrghrihgrsehl
     ihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigi
     druggv
-X-ME-Proxy: <xmx:PKC1aPW1RGYxcaPPwQB08we1CrOb0vWdovfn6r5qNGsSUnTRNoysJw>
-    <xmx:PKC1aACPYBlQb5Uv6Ak1zXW3vbtk9zPb7jxSCaujwkmIdsz7VISSsA>
-    <xmx:PKC1aBANLPAWF_L6c2MK_OSvCPKCWVpa-XxY8Gz3G2h9a5ymRg7i6Q>
-    <xmx:PKC1aOYWrsQphouZ9KK0mtpQNLo0VBdm9yK6cb4vr0A_2uyW7_Wa4w>
-    <xmx:P6C1aLu2umbwmZJroLvt1vyRUndw9ctOMRaDydbyr815g78VacSqp4S2>
+X-ME-Proxy: <xmx:IKG1aLMz2TINr0c9twI8YvaS3Bl-TSQE5dUZWyhg-L_0znn_f0dfPQ>
+    <xmx:IKG1aE38YbHUEz7fNiAfpCQE3WrOAZZWG3HU_NyUya0Hi5uZ6Hpw_g>
+    <xmx:IKG1aKom2NHpTpyZT_0AwJSkDC2sC6eK75faHFKKsNdr-FTPcJGMHA>
+    <xmx:IKG1aEs7wsdixga8FnPAoUQDIFaRRBPGSqTVbhgfbhKfgrnZLF3VgQ>
+    <xmx:IqG1aPF5JqcLstqMCk-eCuy-NBIHh4w5lGboHTQV22jCAUfuu3AJWcNC>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 68A5D700068; Mon,  1 Sep 2025 09:31:40 -0400 (EDT)
+	id 33FF5700065; Mon,  1 Sep 2025 09:35:28 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-X-ThreadId: A1XJ5FccVF4B
-Date: Mon, 01 Sep 2025 15:30:20 +0200
+X-ThreadId: AWRA786TDMiJ
+Date: Mon, 01 Sep 2025 15:35:06 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
 To: "schuster.simon@siemens-energy.com" <schuster.simon@siemens-energy.com>,
  "Dinh Nguyen" <dinguyen@kernel.org>,
@@ -208,23 +208,23 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
  sparclinux@vger.kernel.org, linux-um@lists.infradead.org
-Message-Id: <78ca3a1f-2ed9-4450-95ef-d690cf4aace1@app.fastmail.com>
+Message-Id: <ebe9be04-274b-4791-b883-198320cab886@app.fastmail.com>
 In-Reply-To: 
- <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
+ <20250901-nios2-implement-clone3-v2-2-53fcf5577d57@siemens-energy.com>
 References: 
  <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
- <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
-Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
+ <20250901-nios2-implement-clone3-v2-2-53fcf5577d57@siemens-energy.com>
+Subject: Re: [PATCH v2 2/4] copy_process: pass clone_flags as u64 across calltree
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5C16B100014
-X-Rspamd-Server: rspam04
+X-Stat-Signature: nxjrpzbq538x1aoio5dut9gi76y1xpk6
 X-Rspam-User: 
-X-Stat-Signature: yinz17dw11ob898u7oirmy75s89ti8su
-X-HE-Tag: 1756733505-704966
-X-HE-Meta: U2FsdGVkX1+ZJ+at+tyw+VFHqGGm1Zcx4wj1mrNcdwjORgztW+bJ6c2icWhQDUsxA0t4BPJOk4szUpzN9MAC1SzeMNEqSShSKSpOo0KH9K4qsBBkMagvpT3iN8d/BRrrJ2XCbt8ArakqQRWnxmoUVraRjWS2g8pP1fWCzLiI/nFdqaaOirHFDhjv0LQ+a/3edKv6RJ1cgk9rFxagKrUm+9qlAwUQ2KOZeGn9uhZrBUAHHxwcDVTEcUXqvCtoB+Py9Yb6VHhadofyp29YRwYN8FYSQlz6JkG8oYWRDwubaA7EjW/3nfmlLNOvwWLVtGIWWj+6nDBpvdjTHG6C00b+KRzLaqz2StBKvrffJBSta/RykIwbHeWUdOw1T6Yzm+ZrSBLqaVmko7wL5hVp95BSw1LJpee6Ntv767RjiA2aUUs5jAgTNxwfg9hxnwEkRIV5jnuscpgL1Uke6VAxkt0fc4OH3IArA0I09UcgYQvmclCoVfaQdE7mfthKJyIlhKnVgl4f/othcyX6fw89tXZPYTh4mDJ6y5j2rdoL/mMtjidVteN/+1jpBf/U5dhtvaw8kuz04CaGIclUMjp8KxsB37bFFP9CnkxdnCYwkimESTqNoZQoYUIQ3Zthhzr8ZToyOzrDOxTkr2CupxrbXApO2krWbKm7Xqn48uFA4wgTPsCyWB5dBbPTZH+5Tan1PlEM5E8EgKSXwb2rc0lfYjdS0WkGbTL5mrqXxbmSkD5pGaxVBkYOioUXdOfHzgB52tHTZosiDZqPA+4N6O5cRcMRi44cEa7oHY2z1YrecMsk62UXT2Ozn+si8edmogFJx4mogYZSIkhj6NPdnGiciGxu14XcWTV0YGEKrTTUAZv7hMXp/dEE/YOXYtgTrH/g6L3SWszI558r4SR+/MP19Bv264oeOqlXen9dHauGFVw7Jp4usCkCNxugTycHUpJsUoeaRhzE+t1Sgj/f4ATuARo
- XxSYQiFa
- 6Jvrfnc4tsX+32Ic0fJWjfKREeCow/oKGF/f+3liY451Bv4bMv8YtM+YFSyPcE9yGjshInHEKXWkuPduXGRNnQTojcg==
+X-Rspamd-Queue-Id: 5EAF6180012
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756733732-544681
+X-HE-Meta: U2FsdGVkX191MpDVT4r1axvRULi/PU9J+7lL91s3tiaJE4c/wFD1jffIPuut0T2EBzDka1ZvZQnMtoe0B50cDKyyiGIJ00zVOcokD1VPjGy34ugR/LlPBLxCNpzLoXN4ose01IKwIuv7HX6F7GcKsisj/qo/9rXqwEwR2gmekrhvtp+clL4Y05WaiXuRuqKBVXtSMTTycYEWwU645uR3cXIKyvnrJwe2QbGSyJCYxw8CG3k+S86Af64089LHZeYtVJgkBZZgEfoRcF39Mu4tWtBe6/Ap/HlibBbJO+IvEkGINmIPU8mZYha1IElpu34CzjPG1wnRvKM2loQYHsKGW111uA+3H/S6Hon39w8zjcJ40qszYLyB0SPEDc9PKJsCfJHOKIUBLhrzF+lbx5ObOOJGycNwuD/nXNXgNeu83hnVcHvdEZR34ixLEqOXCkdK033kg2q7GN2vF+B8PF+lYFg8oXlqwjqRwfkupwGWTXjBrvL7mY+iPWAvXYrHkOo1nyceXCpIdQiqhNu0nmiheRKUuMd2yjuHqv+2iYh9gZROefa7Mtn7MPq0xKWSO0RlsbJH5JatkkfhVJP4LtAQpoFab1fAAI8u0Auy0bs2EXm7XH3yrAyrsdSjBetiqfZTj8ka2+l2jlQB1XnbMhO1CWhFv0lck3xaEJ8JD0Gkt5LyyFqFNSuRRrqYMC8jHRHotmIWAE8KNhASsiZLqc8mWxA5M4pr9bYmwyFqB+uqtusz5PeoyF8iOEIf7rSUhym4SFeeXacPTffmCwqxsrC4RJ+1zG7MJPmJ+DCw6mKImImP58pQcPc5D91swNQG6gUKDfmZBct4awf7TKd4qwTmdJHASxEJOhv3Rd0fDtemWbPPa1kt50JRaQq7sadRUsCqNleg6LS/hv9QvE2iNNbXDVQuqhLEw5WwKLnMpbdY/3Si8q5Q2DiXESly0XLNfRp8/QLrDdhcjxvvK5gLWHH
+ rgbB8Wli
+ PpuqNk5BGrYzEtg2jh1wFoqFFkY34JfiATMGhIYSs70ZJLyBEmTYHcUvM/ANQJtQY2xTrdmQYbmj7/ntt7er9Md+SIM8//07ULcVtWlIbXhQJ6sMEYPWNorLAM0SOx0y1FKg1HPtA7Qf5TxgKLBQlTIHwsgG/ABDoeZlP3/3bUosnN4WG/I/Tbb4ECo5q2lPuUffuMOk9hfJlqccjF6pCXts0isn5DTj7iYPjJd+UvzKM5sG3/uPiUSUxwAi8h8LeqRTVj+y0kmhfEnX5MYGug8yiRcM9QiFML2efOAZd6NHV3okovyndDqTvlKPV52yhekWq4eRe27gIRHSfO1cBPwilb6INbDcAb6Eo8BXFmuIxkwPcO19aXjgHFlHggdLsHz+egdT+lUtR9TBpCZtyHlm4Ff/fwRRtzuhMLf3DvXk1R1w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -246,12 +246,13 @@ On Mon, Sep 1, 2025, at 15:09, Simon Schuster via B4 Relay wrote:
 > (CLONE_CLEAR_SIGHAND and CLONE_INTO_CGROUP) are evaluated, this is still
 > undesirable in terms of the principle of least surprise.
 >
-> Thus, this commit fixes all relevant interfaces of the copy_thread
-> function that is called from copy_process to consistently pass
-> clone_flags as u64, so that no truncation to 32-bit integers occurs on
-> 32-bit architectures.
+> Thus, this commit fixes all relevant interfaces of callees to
+> sys_clone3/copy_process (excluding the architecture-specific
+> copy_thread) to consistently pass clone_flags as u64, so that
+> no truncation to 32-bit integers occurs on 32-bit architectures.
 >
 > Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
