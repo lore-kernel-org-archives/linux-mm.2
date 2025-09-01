@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96DF2CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:06:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55432CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:08:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A848B8E000E; Mon,  1 Sep 2025 12:03:46 -0400 (EDT)
+	id CFC288E002A; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E6D18E0002; Mon,  1 Sep 2025 12:03:46 -0400 (EDT)
+	id CAC7C8E0002; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 839408E000E; Mon,  1 Sep 2025 12:03:46 -0400 (EDT)
+	id B9B748E002A; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 602948E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:03:46 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C43BC090B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:03:46 +0000 (UTC)
-X-FDA: 83841152052.09.F540AA8
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9FD87140003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:03:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id A7B9D8E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EF001A0914
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:06:47 +0000 (UTC)
+X-FDA: 83841159654.07.051DF16
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EAA2C10000C
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:06:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf23.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756742805; a=rsa-sha256;
+	cv=none;
+	b=JalB+SD9pVJ963F844OSo6sSM+70VwdVgGe5uwrUhYQD12SLEOnj1nUKJ/4s+Tc43yWftW
+	Eh7rajJavkjg69FqdioM1ggZ0wUZ9XXURt87voDszrHANvkpDoZv2eD1bDTumLahnuWVBx
+	cH6dVZnhfKB8iTbkW9cXwDvg4B9ewK8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756742624;
+	s=arc-20220608; t=1756742805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=P0g6SugGw/UALqv2cU10ldYc1q7M6DhWlc37IAVZPeA=;
-	b=7A0B/B+/oLtK9O3pZZ03OvxgVp3M+kOim/AOb0qPQemT4Afbg4z81dQ2peI+x44t47XNh+
-	S2YqHuBED6D+HMQpfEBnbp95XF0pgI0irjRWfsRjM0WW80Tct+S3zxmY2W7q/Ce//8oD5d
-	kCbXY2CJAyOIGuoXJC0GFxRlR/07+qI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf23.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756742624; a=rsa-sha256;
-	cv=none;
-	b=aKp8mgt5ic/KTErgwLzrXozPsQ7LvQpNSIMn49Lg0MFgv1kDp0w6MJi6afBnSlrZwmEhY9
-	lS8TcrROeI5p+PKLb29loxEFIFbv0a5O+hHkRS3HHtbhbV232b0UGSciaRK9L8Wh/z/0L+
-	09hrXUj+bHH6Tu0/ATWWxthR5b+uXxw=
+	b=60rAyn/xT3Uo55SJB68+/TF/hJnmLMkjBcYlatXAdN5j6B4Hi4mmKXsQ0RTeLMUzL+tVFM
+	reSi7lEAf8Yc64aW/ZTwQrwI6jl+Hk394Qe/YPh1aBib07C4LntjheULPlTe03XL4RT1fa
+	6KHLgfjs4NSyZZ/R16DsCqLQBejMgIU=
 Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 2 Sep 2025 01:03:38 +0900
+	by 156.147.51.102 with ESMTP; 2 Sep 2025 01:06:41 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
-Date: Tue, 2 Sep 2025 01:03:38 +0900
+Date: Tue, 2 Sep 2025 01:06:41 +0900
 From: YoungJun Park <youngjun.park@lge.com>
 To: Chris Li <chrisl@kernel.org>
 Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
@@ -69,7 +69,7 @@ Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
 	Kairui Song <ryncsn@gmail.com>
 Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
  cgroup-based swap priority
-Message-ID: <aLXD2mvx47i1e18k@yjaykim-PowerEdge-T330>
+Message-ID: <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
 References: <aKgD7nZy7U+rHt9X@yjaykim-PowerEdge-T330>
  <CAF8kJuMb5i6GuD_-XWtHPYnu-8dQ0W51_KqUk60DccqbKjNq6w@mail.gmail.com>
  <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330>
@@ -85,14 +85,12 @@ Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 In-Reply-To: <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9FD87140003
+X-Rspamd-Queue-Id: EAA2C10000C
 X-Stat-Signature: 1r6gwm1pyqetu61mjwyscxphhxnrozej
 X-Rspam-User: 
-X-HE-Tag: 1756742622-644628
-X-HE-Meta: U2FsdGVkX19ORBQCRpfTnK+rHsuwSoEcpcNKY0xcfX3EjCwJUinEOlhAlTGdMGTI8yKv/PZQCQMX/4PAPCHMuo6hnL3mg/hU2zXQZBQbyM4XyLg9CzZGGsWVR/06f37lHT175F7thj2XWqw3YWn333UojaMzKPm6K3v2n9k03zdyk0uYHmCNroqKHm0qRAr7y/JjmupnHDF9ia6Mz6RnFVc8cHtkDIOQo25c7F8f+TtGCSUgNohuewAmKUlviJmvclIvCw+gBGPvezIRAxUzImx4Q0y7C+DWKWm7SKKB/Sv1Km2hE+AAqZxVRotRBwtjte4lx5OMLSMrSC6qO/CqQuEHNN9TQrWB3+jXhrvD1GiKbU0QeyKYu7nyL7Bg6MBglVlyStvu88umMMvJcGeNWWwpiYHrB1WQyYm0XPuumDkTptoB4sLjasTaE5V3zQ94nSMiJq7iuKjWa/ewbIFD9/ux5Vy/155QF1cDnLNlRndv7raoo2+zaC/gNE2ecs8Kvu5x5PgrIeaMenllbJlhIawMomh1s1vx79tqWcP+5VmIB3aGnjB2mgTNuNRwcwCAb5JlY6t06UAKsuXtzPda1wcoDLpBqlJCRJhFbZPFKlIQh9Bo+tlCjiDvrEbIQIo5iXXaAb3aOHkChNJ689562sWOpvRYlKk/yGPZlI0Jo8MTnOGfhYX9795zPMB8xCv5BFw2bxUx5yCITJS8LL3ci6/TiW+IQDrymxg9Qu3bX7KLktNuQCjMP+QTwuL4G7oZpSUKk3PhmqSzrXu9IvD4YHRA8Wt2MxOkE2NZmhUxAnfAdzH2JTH5Xt4fvJN/FB1VpkRxCMInlok/C5aHZLSUu0CJwTC/DC+YN6/iR2qzzmbxp6EiZsKJQay8Gon17LeHBfGDQcdprcP8/fPc3spUkGzL46fWhVKnOldjnEQycdhn5gIDmEvAskbbRDzBzTWGl3Xk8bDXILimUPQ4a5m
- 7csWKVnv
- EH0a8cQhNeGErmHsL3c6/iLqZM3ISlUb0DYRPiXaN/s8Tv5cxP+U4QWqy8zsLKjOGIgKQ/nin2IVyYeZgqTIJJqlWhOpPQEsVr0dO12MntXps+HR+eW0kDpxVxyRTHUY+STRP7ndak8QImw4ZbgMT5QhmBprFWbF1RIiAP1yryV5iwMvNsBoWSV7MTBPtXufjAKPebVoaRrDZA77dqJTpc0Vt6S4SyNdAxXxUvEUjH727JP5hoNhlmAMu1g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756742804-657070
+X-HE-Meta: U2FsdGVkX1+UMd1OwTjDdZ9ibGPFLte8e2EXvjXxEYdvj+0VFVw9rmTYwCHx0kq+R1qY1Ef4KNX6IhCFnCUa+wpesGQA6BGX8FQV4bUiLJ2GVqJpApguxqdMQYZ7qY3Ad4cp35qV8WN+Iz5fkC1lKyNSL7wn8PNRs4XqXOxIHkfn2UXbkVhgeAyZqmpejzpcPMxfqzk05HPDdeU5V051prrOnDWuZc0wR6qOpP04e3DmnY06FX3wajJuLNoD6OWYhJWekp9795Vcf8NTFWvxCWjnznJkuDNh+/Kxa7VpMS16hRAv2TPMHeSgN/GIVedilWIvZegLn3x76FslXNitnapCtqhNhLCA171tPclkxV9sgC6gPFJCy2APUvKscVVZ4YhwpsLv6ajUAD6+aINdUiKcFeO50taVeRb0SfUvgKooqD9n+lgZ6LYylWIJlQD6cWcMiCsuRfoZ4uvomHbi/GMdoZVy9QWIERAvj5K97bvKrxGgK4E61GkbioOGeeWfdbHgjCWOrgnvW1M4hYNLyo03yKwcqpmKhErEzX+B1ZeiBQvrKU9E/hrWwNiED2ZwpRbpChHrOm+FDFr/zHNExLZQ8K6dtiHEeCUqW7nHRYdxLEFDXFBYq2mcAXbog5Rk6YfQXyWdYz3G+40uKO8kYQyta0A6d6D9Q707K6HGPjSBgeyLx662/UG8/I1v2EwYl220XWjfepp3w96U/SQcZCFiz/BZbJcUEcrZT0LMSvI2qeLJZ24zD7IK+/0k67r491XfOU/KpQcxY8+LRvifWmMDw09rd7RUry8JYRZX3vkp3xBrnJ+RFo/0+zXAdy6SOEeOKF9XC//aB6VmBYOdwtrYFYKQXqHyhoLw746V0I4FDWI6fCv+rA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
