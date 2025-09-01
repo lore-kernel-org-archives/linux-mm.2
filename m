@@ -4,115 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2B41CA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:05:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50B2DCA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:05:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABE658E001E; Mon,  1 Sep 2025 09:04:00 -0400 (EDT)
+	id 569FE8E002E; Mon,  1 Sep 2025 09:05:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A963E8E000F; Mon,  1 Sep 2025 09:04:00 -0400 (EDT)
+	id 541B08E000F; Mon,  1 Sep 2025 09:05:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984F18E001E; Mon,  1 Sep 2025 09:04:00 -0400 (EDT)
+	id 40A758E002E; Mon,  1 Sep 2025 09:05:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 816C68E000F
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:04:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EDEE4C0822
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:03:59 +0000 (UTC)
-X-FDA: 83840698998.11.7A18251
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 29F658E000F
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:05:13 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD1551DA5CD
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:05:12 +0000 (UTC)
+X-FDA: 83840702064.26.CF07487
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7C6D114000D
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:03:57 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S95nPi2+;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf11.hostedemail.com (Postfix) with ESMTP id C21984001C
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:05:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QqMmSdBH;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756731837;
+	s=arc-20220608; t=1756731910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4S/AvwRukxKIejg9tsdip6CFv4zbua8sXt7imfRAS/s=;
-	b=SKZXBMM/w+5Au6kb/4uIOiSijYLXzuWSTMvk64hsKWE86XHOAd+CpA4EWuGF6+MckMNzqb
-	WZwiXunAI9FBfeV/PVgsYQ80akW4VVKF4TIcGQ4mDda4QqlZm2E9ry8OJJ3azTiqRQ+zRy
-	CIjDTi472S0E4CSNQ711h0bPend/XYQ=
+	bh=8nkmkczn0wVW4LucuKT4jBlhxibrNt+qcDHWFcXh7zw=;
+	b=fRYwdRosTkXwxWcdMIf6KLblHvN6HZe/Bi/EtSZiZ2m+alF0Jh/Eqn0yj1/w5cjBtt0Rdo
+	YWPAwQGfXghtJ0KygcLV8oTKIH8l2cYMi1Tt7/5yVjFxH8Be/gnVZijLUzv6FmNHCYYPdn
+	RVROVz8tMcpydlOlFbyY+rltfFDx0b8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S95nPi2+;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756731837; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QqMmSdBH;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756731910; a=rsa-sha256;
 	cv=none;
-	b=mlV6RAocgTgNOgpdtLayhPv1Iv9Qs8lS7B4ZpliWlh1Ew08/hcM3+21prpZz9kFN6Gz4HZ
-	CT+PFt7NWKr227Vi+bMFzF1IQZ5Q8NACXWLr/ibqJm44/6bTnDPiUFV4+mkMx0bGor2gmH
-	t5RtanonRZovgxKNtwCGqMtxt7vsKbQ=
+	b=m83U0IcCaD8ciCAijBy2O+aJMU16jDZNRXnj+iqRpXEV0tOzUFD+5pnfabVNB39KAAOnaD
+	U851ViWpmt4PfTqiZeBeL/GiFL4PVJ/1pGQPddSUJNWz/IFuOYdnFtxbmEjQXHVeO4SqUz
+	FwmKd54sFzcfrEFOE1MJINNIEn6UCbY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756731836;
+	s=mimecast20190719; t=1756731909;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4S/AvwRukxKIejg9tsdip6CFv4zbua8sXt7imfRAS/s=;
-	b=S95nPi2+3yxUtBUbqS061/CRTlIjweqyL11HT95hE0K4nXMGvlB/IP2KIWrJlpB6NU/IWF
-	5Oy+VIOHu+mCPyCwlX0VA7MPnqcsd9jskAOgqcFOmt8sOVTOwQ7+iJ9l07Kgz/+Zu9Uett
-	w4IeapYL12p4UTWa3ttDTGbmrMW17ek=
+	bh=8nkmkczn0wVW4LucuKT4jBlhxibrNt+qcDHWFcXh7zw=;
+	b=QqMmSdBHchO76rIWeljNyxR8xwxGeS55M6gaqPZCV5warE1OAweQwCitawoGF3l8vIsCBr
+	RI3XWKuvAxtdsYnuhkeuBBgNOPaGoaW8dQp3tgy8GGg+GFuxQlrzSfEdDN39upc0HJ9/Wm
+	BbpbJ02QkmBUmESqibldOTRbt4ybmV4=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-jLdsSNTuNtSw3lbvoQdvFA-1; Mon, 01 Sep 2025 09:03:55 -0400
-X-MC-Unique: jLdsSNTuNtSw3lbvoQdvFA-1
-X-Mimecast-MFC-AGG-ID: jLdsSNTuNtSw3lbvoQdvFA_1756731834
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b8a307c12so6214955e9.2
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:03:55 -0700 (PDT)
+ us-mta-154-S60pwav1N1CQtXzKHTd9ag-1; Mon, 01 Sep 2025 09:05:07 -0400
+X-MC-Unique: S60pwav1N1CQtXzKHTd9ag-1
+X-Mimecast-MFC-AGG-ID: S60pwav1N1CQtXzKHTd9ag_1756731906
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b467f5173so42310825e9.3
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:05:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756731834; x=1757336634;
+        d=1e100.net; s=20230601; t=1756731906; x=1757336706;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
+         :references:cc:to:from:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4S/AvwRukxKIejg9tsdip6CFv4zbua8sXt7imfRAS/s=;
-        b=sC6aLN1k5reaDHmZBZYlTvDTKAyLrmfxjDK9D1wxghyrzFJGfNjwzlvh/eNOx3LF6K
-         lx1Yz8VCvkYrQ0dsn/FVI4dKcTqbk+LdZitpc0GZItL8AyMTfElRQnEG9gX5p2wOTV/i
-         E4DpMI7l2+7Og1RGhvAW0coObS7HMwYPJl5ep8al5dV7LkmG3K0lkHUVzeCcotsPQEQ0
-         9dwqNOy7hpFwCWbLMwN2pyosuvocK8KBR+KUBxE9j1Xli0zOjbIdxbwumsSnEkXb+jtU
-         aZUaW61/EZQSHsayBY4RPhMNI7eNI7h2LjJSVfbI5+ZLD6pMXG5nyGMMIiPHLwUxnxfA
-         ddpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXbnGUTU4rMVlg+T7daP7TB4Qp99KvtZlV3KArTVAZoZrEqIdS3ft75lnXgeMmJe8Pg2Mn3UaitA==@kvack.org
-X-Gm-Message-State: AOJu0Ywb43tE8u6/d6QzhxUrmsSszsZMohIwyVo3cSPH/8cgxhqYz2Cd
-	M9R5LBVdBX9pDawf2mfoZT/yCDqOuYCmAAn/HjWSH92wt8H1m7lSkjoe+ttJyHlq5pD0BfOWSSA
-	Y9YpGT8Qr9NmmNNVAmLiCVXKrGjgVGTTAutDVSjaqEuKXBApnEL6Y
-X-Gm-Gg: ASbGnctR7ge4D8oWdPaQcC+9yl3Ji/3VekgACQi1MRm4Vew3EkYuTpKPzmutmqxc5va
-	3kOcAGSkXb4rwH1nyR8SzZ+Sunr46LQUcbFYUOEHvc6rSo+Qd0/0u/5Ul3UDzjjS8jLE0QapEIX
-	m7UBogv8ivmv3MpY0UM+R7ecU78qQjbAyxsChXCdz8OckB7a3qjAjn64te6loo/6n5YGbJpIC1E
-	ISqEdgvoQnEJMNv3cb3s+SF20Cjbuu8bUZnconj7NiOoTpe64K6AfsoOM29sS6FW3KVLzKy7FUY
-	8dtA9LIPQsZ1OOiLvytqiLB19feKAsV/OxC8L56pqaN8Pj/VOqD0vLIltJXZzVIcV39Yf9Ge9yU
-	dzhMLoiRHA0aKHRE8MS+dvP/XiYnTipSu5eF4BtNb350LHOkcZQkTVSbylN1MLQD9OqA=
-X-Received: by 2002:a05:600c:3baa:b0:45b:8b3e:9f7b with SMTP id 5b1f17b1804b1-45b8b3ea15cmr36229275e9.3.1756731834036;
-        Mon, 01 Sep 2025 06:03:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFeSZT/6o5qBMANLK7aNiFwK9ljYFxoG5c9Qiw88K7oLWWH6nH+zDcxN4lJDLm0Ugp6jdmQyg==
-X-Received: by 2002:a05:600c:3baa:b0:45b:8b3e:9f7b with SMTP id 5b1f17b1804b1-45b8b3ea15cmr36228925e9.3.1756731833552;
-        Mon, 01 Sep 2025 06:03:53 -0700 (PDT)
+        bh=8nkmkczn0wVW4LucuKT4jBlhxibrNt+qcDHWFcXh7zw=;
+        b=tYlq+res8dVgrKB6pjmGDwpR1FlfbxnEocTtpE2qJ32XqCI14VSgp0nVu7wFmh/JWs
+         mbe3lO3oLlVrXOBpdXzaiqmYcNq4mkidGoGYRk/c6LIPMnT8INLz9eqfwLiX8hdiW+1T
+         yf7gHOFV0EqxcvrqvsaX+Ts0LTSSV1zO0ab/kVdKEUnFDMe1P/H5TU/XPFbmN0JcWQn/
+         qJsSOyX+MN74CWR6PzLBmPX4cR9XDWJyq00pkbfAte/YQvmclBkUSKN0pR9vrRkRqLYq
+         W71rvcA5cRf/QISQaQSWF5WQLAPLCaGrYQ1FSuxUjYDAbJrafxWAExhJQeo9+G6LGZn5
+         NePA==
+X-Forwarded-Encrypted: i=1; AJvYcCWF7u/jpGI/YATKuiZSF5GwDAih9uDjM46o6sITjghYiLP1GD7AgEFO2HM9apTkP5ILn1Fc8fHUSw==@kvack.org
+X-Gm-Message-State: AOJu0YwSa18LR4bvNwn4mMIJzYrnB9X5VODQSZUc+k598mkkalJpUGFv
+	AvjidVjhqgDMTLZyR0HJPuleaEcmORi0MxWQEnLAHrlzNXD3aQ2P7Ajf0P7Tt7pB9HcB+tlvS7c
+	PnRqI/0m6wARq79RsiNvrPFtwAdg8LIYTGWa+EGefjc5hbtrA8wPO
+X-Gm-Gg: ASbGncs9FPjTkiRDNvzoPhvoIdhIVIL6dL4Ad/WtFDUfMr7FnHNpK8kSovF1UlfIkKE
+	rR5URrZetLZmsuRZ/m8HOpK+8UaYO2cTr1+USueiHTHMi74w93VanonA3URPPW+L95SNlFdD9Gc
+	aZuv7aaHVPVSUhGCRGjwCbjLreMK+xEwix07lHDAeb5/thFvgh39DXKA3YZh+2o3i0cszIQy7RM
+	jUp0sfirr9UjAOJFdn7NYhBNJVsLtcLXBTd3w7nUup9fdTtHUJCV66Ct7oeC4SIqh47Wz5P+IZ1
+	Z9ql/OLM+Xlak76DAehLQoa1MhynTqtpWveMqE+Gd0nShUPlYpTTdUowsld1do217oKar+ebl8k
+	2o0ub37vhbIiL35aa5iFWJUiI8uEA0xtbpKbKjxR3bLOfGzFpkS1IkYN5Nx5gaxcte4Y=
+X-Received: by 2002:a05:600c:4687:b0:45b:8e26:5f46 with SMTP id 5b1f17b1804b1-45b8ee17c88mr20110395e9.5.1756731906174;
+        Mon, 01 Sep 2025 06:05:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWa3r7A8AggYrjdFt2+SHUMlSQVb9n+a5JUNiRtfjx+X+oCWa99HqvVm+upzvltHy+V7+Gdw==
+X-Received: by 2002:a05:600c:4687:b0:45b:8e26:5f46 with SMTP id 5b1f17b1804b1-45b8ee17c88mr20109845e9.5.1756731905500;
+        Mon, 01 Sep 2025 06:05:05 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf34491a65sm15061948f8f.56.2025.09.01.06.03.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fba9fbsm15296676f8f.50.2025.09.01.06.05.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 06:03:53 -0700 (PDT)
-Message-ID: <0a0b0018-9427-4201-bf53-6aeb251bc482@redhat.com>
-Date: Mon, 1 Sep 2025 15:03:50 +0200
+        Mon, 01 Sep 2025 06:05:05 -0700 (PDT)
+Message-ID: <c42eefd8-3239-4385-a313-9c2157728f8c@redhat.com>
+Date: Mon, 1 Sep 2025 15:05:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] selftests/mm: check content to see whether mremap
- corrupt data
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+Subject: Re: [PATCH] selftests/mm: directly add pagesize instead of increase
+ until page size
+From: David Hildenbrand <david@redhat.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org,
  lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20250831022701.2595-1-richard.weiyang@gmail.com>
- <f8e942de-1a50-412e-9020-1bc901b4243b@redhat.com>
- <61E58B7C-23D0-49FE-8D0C-CE0B672114E2@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
+References: <20250830023102.14981-1-richard.weiyang@gmail.com>
+ <E0C570E7-C4CD-4E41-9590-DDB64757CA2C@nvidia.com>
+ <c89a9096-716a-4bbb-a911-99096ff8f0a0@redhat.com>
+ <20250901125126.furb4fkgim7adzhq@master>
+ <76079f7e-9874-41a5-ab00-9fa4765f8ee0@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -157,21 +159,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <61E58B7C-23D0-49FE-8D0C-CE0B672114E2@nvidia.com>
+In-Reply-To: <76079f7e-9874-41a5-ab00-9fa4765f8ee0@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: cGiqCRDDC-UTyQx1HEq6v7sJEsjlqOr4kg8Ueta7enQ_1756731834
+X-Mimecast-MFC-PROC-ID: bKf5GHlJpbldo9HyL7Kj06PZeUVkkJZj2z_k90e2Q5k_1756731906
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7C6D114000D
-X-Stat-Signature: nodd5xme76ue5xd6e7rqt9cjf5ux9d6n
+X-Rspamd-Queue-Id: C21984001C
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756731837-676521
-X-HE-Meta: U2FsdGVkX1+jxPKZ4fEzjzzRL08NiR+Z/bXX3YnyTEOK1v5p2UgpYtpfkBh7KM42fYor4duAE0+FL6oWlJkZG6QFc2it5uUz+GRSXI/CiRnSQIUGcV1VrAneRX2x9JMmO5oZ5oI/V0hB32zOUOdNyCDDyhkwhaEXGI9UqIf1hT7RCAVJ81uSLHkdCa/lTcB9vJkIT/MeXUhJdF1J5Yfl+wqAmzbkpPI09n15umFupIp4kzcd0XzwEfsk1xoFSlhJNHfT5y2hB0Iw7KzDm1EqP0+KiTifCwC0vWPYQsQMK3c4JmimEQDVW5tIyunf/8P9whoGvvFDa+d3iQYl4slspHsH42H+tLdcrJkO5UV5RaEWWPGaxiw4neeTJhWCSQbtp6653HntcXXQCut5NFWEUJFwyTVIuIrrDAh1MrboHRICaPExlGXuMnKJvlE6fQXLrINw1RgUtpflUQ2I98DavgTWUH/Z1RZgc8NFN0mmByLHTsWfXoEclOXmhrb26XF5QYN9gFq+vKiseCveqRKTCG8Qu1spzdI9xfAYvg9pnSDuyLNzjn8BWu4nM3QhK+3AADF682ciQFsDKZ8fp1KQ8Ji9x4UWV54zA12a8IrhgpnsB2QF8YCEocEy17OTjKcZ0WnQMurjn2shXFZF+4nlrhhiRwGVgAeEC4q7PhovcLV2C1BeNnEvOOoVamQhjy7LnzIbTqSZT/QGEtnYiddsYzpvadsi5dGW2ECq+N6dZftprOtrlE0mIEJJUlWX0j+lUB2JdA+1veJdz8Z98ttZTY5D66P+9nD1aPcn5Gfvlo6J2XqqdzTJ9xO/PKj6O/skB1dYs/j9fgaeyvUyy2KdJdQv2yvwPfjViAJs+6IKnNUnoykS1Z/Vcm8foAzUA88L+x1OukzP+6qsbrIEJAI0g/VKl9t5NN6SvQmkGwQHW0OgEaScAVrRxNBwXYiOMyhBi+Two+rEXmiZI+TkgFa
- xc8wrx9O
- xPtPYD+63u1q/IFdjrstIaraX/OiNbpDnfc8SNoIP4VAfIwqHJzOA3qB6K+NVZg40W1EplIxpktD01ChLcjNDW+ek24nOJ7BVeWyVPiHLDTzdPXimNpNLPQMqY35sz2Jg8p0DwNu002nYstKUYGTDqcPW0IRTKxJUyUmMEKuAsr2lflkgemZ8ntBp0dL2lY4z2q3ohWSdaj3CWnRwg7t1o10xwx+NPGek/D42cOVthCfDOENQn/B6MX2/F2+IZSiU/1qKqJfPpoZPISKeq4RcQMstkTFZ2Y41V6c186Fs1zLV33nf0JcD5fqBNz4pcw81r/KsF/+wsraqA1U7IZ0EDKY7l+umJ1cX7CO8PaEdcpwZ+/SFVZWVE93sEGi1KhsTpVx3VseRXUl7lvyOgBIFUlIziMWf7LphHo4qi2NYP3ApyFfzX9tjBTfjX3fB04tP/GKpQxJlbBT4l+soEEKDGRgiBEfEo2aBeRx2E9kYg+tuvILoCN00Za5XeTFZzr58A3tMmc23fbV5HG3JO+6PbY7kFwwdZBZ/qtmCgz8ddOyCrSphRW06LGXIWn6vOf6Evi0fXO60HzFrL6EUVi9N8E81/tM80PrkfQfhx55GfOhzCXw=
+X-Stat-Signature: ffxwxxfkjxo5bmuhdw3qxadsgp7crofe
+X-HE-Tag: 1756731909-918544
+X-HE-Meta: U2FsdGVkX190zeBRf5lo8g7Xjhqk2U5w0U+1oaIod0+9NVdjiM7uAKifeQyQk5mLVRzSLKTGonZMNMo8xge0jYkyCI++YTMSQgE4DSkoKhjRktJg2iLJLJSdxXikhquoajc5N9ciPProrlZySH0oEpef6+KVZAexPhxUIs9lgMERvQuY0aHPLsx5kEKrmK8zLpd4UGPQKiPyK79QKsz9CpwdrE2wnmZMqhSXybBcJP3o3huy68DSIfA8N+B05z/ZINFtCWs8kWWeWJ4i7sddZ3f5/p3UOqtO/sOQdn4d/ORND7eC9oUr8lYIHmFF/S5Dhw26Q2m0CKwA2ylNb8Ai+L1ce6WyPV5oXj2AnpRr4xBKetc8or0OHPAKekGcGTuWF2G5hwTqXKXATgeP//W5MlHcO7tGU9fhEJ/MOlJK+gn0TjQeXW/un9Vj1YQWsUb1PxNrMb/M0NBDtqFKbHyAzAegbW1zlw82wtMUC1gDQVOQs36pYiInwyjqkoWdfpMaQvL6/WPJUGS9u8RQl8ch/qXX4lVh+N6NKUShrbjTP60RPYw7AA0Uk2VHPv9c/T3WeyqKR87wHCJ5ojXgnGegJjmdyzPCmscOZBICUiiACtZgY5SqAZ31oqTzhjPYo2Mf0dV1jmNP6EP5hIcyXRPxazJZSWwnl2hE38SqIar8xiftydchwc8jtA/t6QRzYTYhZG04bxAS5drY2t8Fvv9VCNCdWvByJxbmURLuil6HWHfEFsHQSC9tcY44/hzVMyXlPg0QyBkTgdfvByTkTuCKmojW0JdwA/OSFV/9UspbzC35RiLTHIhAy0xunnlEJb7U8yp6nX/EErZ092wcGXd2EWpxPAImYchDMfjJ57B1bhgyDV5UMo9JaTxw1xo4v1mFA/+tQUyr8qwvlBwsf4ioNMcs6ozbxj5JOXsjPik/mtlN9cPLd8gwP5fZfICkNDzUpb6HdDtBmCps7y6fZc1
+ vTcya/3q
+ XfQmc+7dwHv9mC6jw4XLhOlQUN0MTSVzm4RzpLtjV0NILpukrccOzj2llVteZ3Uvq6hapk3XY1z7tuQsZx7HJIvKcd3NTLdD4zgf2LyqWY61Bv8J96wapmlIO+2iiX/avnshHMzsWFmBzg0QxgxTHAy5s++MQgjK9o57c1TMs4LWYPtkT56cc4ZC/mfDyFHYjul7IeOXAf8u1LEYeyphS7xJpbtSz1meaCV00y8jgC0H/BD7kBFB5P9LYK/N14jSDt89xTxeVAzsTrIAuKL0951Y9o9XuEhpxfa7Bft/BTO2y5G+mviJEeK0F7Q1/qKPKF/Cropso7nl2JlkaJoddlpVWPFoopNLOmBVinZIRDPtpoF3tano1f81tTkiCawTBP11QaM9vz2FpVhpJ07/VcL4NVYwmUrUMOPWihrlaJLbKS/J2lnXCNdof6Ko5fg5JEsxusLmH5b0VukYk+FdwBsXPWL7W6jrcpnI4jq8LrURKMbnicLsykTFugditjKrpp0AzdYw8apNp9E1us4vXrfivy3piT7rOj07D1xIMZMZ+OM5JCUzT8h3h4mrTH0y6tppobQNxwPW3mVyuxDDIbxGSZN4v9v9HWap+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,70 +182,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 14:56, Zi Yan wrote:
-> On 1 Sep 2025, at 3:22, David Hildenbrand wrote:
+On 01.09.25 14:54, David Hildenbrand wrote:
+> On 01.09.25 14:51, Wei Yang wrote:
+>> On Mon, Sep 01, 2025 at 11:32:11AM +0200, David Hildenbrand wrote:
+>>> On 31.08.25 03:32, Zi Yan wrote:
+>>>> On 29 Aug 2025, at 22:31, Wei Yang wrote:
+>>>>
+>>>>> The check of is_backed_by_folio() is done on each page.
+>>>>>
+>>>>> Directly move pointer to next page instead of increase one and check if
+>>>>> it is page size aligned.
+>>>>>
+>>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>>> ---
+>>>>>     tools/testing/selftests/mm/split_huge_page_test.c | 5 ++---
+>>>>>     1 file changed, 2 insertions(+), 3 deletions(-)
+>>>>>
+>>>>> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+>>>>> index 10ae65ea032f..7f7016ba4054 100644
+>>>>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
+>>>>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
+>>>>> @@ -423,9 +423,8 @@ static void split_pte_mapped_thp(void)
+>>>>>
+>>>>>     	/* smap does not show THPs after mremap, use kpageflags instead */
+>>>>>     	thp_size = 0;
+>>>>> -	for (i = 0; i < pagesize * 4; i++)
+>>>>> -		if (i % pagesize == 0 &&
+>>>>> -		    is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
+>>>>> +	for (i = 0; i < pagesize * 4; i += pagesize)
+>>>>> +		if (is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
+>>>>>     			thp_size++;
+>>>>>
+>>>>>     	if (thp_size != 4)
+>>>>
+>>>> It might be better to add
+>>>>
+>>>> if (pte_mapped[i] != (char)i)
+>>>> 	ksft_exit_fail_msg("%ld byte corrupted\n", i);
+>>>>
+>>>> instead to make sure mremap() does not change pte_mapped[] values.
+>>>
+>>> We do have a corruption check later in that function, so I think we can just
+>>> keep it simple here.
+>>>
+>>> So this as is LGTM
+>>>
+>>> Acked-by: David Hildenbrand <david@redhat.com>
+>>>
+>>> As noted, we should just move from mremap() to mprotect() or sth like that
+>>> which has clearer semantics.
+>>>
+>>
+>> If my understanding is correct, we should
+>>
+>>      mmap 4 PMD_SIZE region with RW
+>>      madvise and fault in to allocate pmd-mapped thp
+>>      mprotect first page of each PMD to read-only to split to pte-mapped thp
+>>      check whether the page is backed by pmd-order folio
+>>
+>> Is this the correct way?
 > 
->> On 31.08.25 04:27, Wei Yang wrote:
->>
->> Subject: "selftests/mm: verify page content after remapping PMD through PTEs"
->>
->>> After mremap(), add a check on content to see whether mremap corrupt
->>> data.
->>>
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>
->>> ---
->>> v2: add check on content instead of just test backed folio
->>
->> I'm confused, don't we have that exact check later in the function?
->>
->> Your v1 might have been better, unless I am missing something.
->>
->>> ---
->>>    tools/testing/selftests/mm/split_huge_page_test.c | 6 +++++-
->>>    1 file changed, 5 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
->>> index 10ae65ea032f..229b6dcabece 100644
->>> --- a/tools/testing/selftests/mm/split_huge_page_test.c
->>> +++ b/tools/testing/selftests/mm/split_huge_page_test.c
->>> @@ -423,10 +423,14 @@ static void split_pte_mapped_thp(void)
->>>     	/* smap does not show THPs after mremap, use kpageflags instead */
->>>    	thp_size = 0;
->>> -	for (i = 0; i < pagesize * 4; i++)
->>> +	for (i = 0; i < pagesize * 4; i++) {
->>> +		if (pte_mapped[i] != (char)i)
->>> +			ksft_exit_fail_msg("%ld byte corrupted\n", i);
->>> +
->>>    		if (i % pagesize == 0 &&
->>>    		    is_backed_by_folio(&pte_mapped[i], pmd_order, pagemap_fd, kpageflags_fd))
->>>    			thp_size++;
->>> +	}
->>>     	if (thp_size != 4)
->>>    		ksft_exit_fail_msg("Some THPs are missing during mremap\n");
->>
->> I'm a bit confused with this test in general.
->>
->> We do a
->>
->> pte_mapped = mremap(one_page, pagesize, pagesize, MREMAP_MAYMOVE);
->>
->> which I read as a "NOP".
->>
->> Questions
->>
->> (a) Will this actually do anything? Also, maybe it does now, but can't the kernel just optimize that out in the future?
-> 
-> It remaps each subpage of 4 PMD THPs into a contiguous 2MB vaddr range and
-> perform split on that range.
+> Yeah, I would just mprotect(PROT_READ) the first page of each PMD. That
+> will trigger a PTE-mapping of the THP reliably.
 
-I'm afraid I am missing the "why".
-
-I would have thought that a "split_pte_mapped_thp" test would want to pte-map THPs
-to the see if they can be split.
-
-Why is the mremap required? IOW, what exactly is the test trying to test that
-exceeds "split_pte_mapped_thp" ?
+Zi Yan mentions that there is a reason we are using mremap in the other 
+thread. So likely best to just keep it as is unless we can understand 
+that it definitely can done simpler.
 
 -- 
 Cheers
