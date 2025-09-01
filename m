@@ -4,112 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BD9DCA1002
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:23:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DAF5CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 13:25:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 963C68E004E; Mon,  1 Sep 2025 09:23:32 -0400 (EDT)
+	id D111D8E004F; Mon,  1 Sep 2025 09:25:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F2C58E000C; Mon,  1 Sep 2025 09:23:32 -0400 (EDT)
+	id CC14C8E000C; Mon,  1 Sep 2025 09:25:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73FA38E004E; Mon,  1 Sep 2025 09:23:32 -0400 (EDT)
+	id B62248E004F; Mon,  1 Sep 2025 09:25:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 59A1D8E000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:23:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08E8A1A0873
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:23:32 +0000 (UTC)
-X-FDA: 83840748264.15.CC8F6FF
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0968E000C
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:25:09 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 409B55B9C4
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:25:09 +0000 (UTC)
+X-FDA: 83840752338.10.7635B3E
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9F317120003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:23:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K0i1LV80;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id C4C381C0012
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:25:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NHQOl1Zw;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756733009;
+	s=arc-20220608; t=1756733106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5EHyQASudRpMIxAo74+7riZFD6rvogYVCRTIssUbz+k=;
-	b=fw5XOQGwO5avtXfmFtKXxDzmkJgmjuowihs+2yFfWfyUnqtjOIOsuK147x0xFQUUxMXu6q
-	caGTmggcCXr5o1Qq8DFN0moLfeLbjn+p713ts/GQHGFd+vom4cdJZcaU/fUoL/beIYEisx
-	M5dNmOcv6VEoNaxKEtSKZfZImUjRN4I=
+	bh=tnXepClSCa4TtmpEoW4LNnvfPXJBpj0jhMGD19t2OsQ=;
+	b=bTcmE6GuXR8TSOvgvpRQuYWM+jPtCLtCeeg5kFPPY6NFBBi5HM5Uq+ET3OJ6i4D7hBYyQ+
+	rgkSgI+Cqf4/kxj/mCPFfqW4K/uYCl8sdyoNolv9oOtSjC40gjfQslHMg4TrosA8/MCuy+
+	f/c3kQAGk52xcKD+tnwRElhBTpNFH4o=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=K0i1LV80;
-	spf=pass (imf29.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NHQOl1Zw;
+	spf=pass (imf18.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756733009; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756733106; a=rsa-sha256;
 	cv=none;
-	b=izHQnpQBtciT1eeoa18AP82JBhVoegFaMOULhQz1aZ8hOsfOplrRG7zuuS4DZo4MoZze79
-	FEeNq1cEMMdXkNDMkMdg1sz1bfjAVkBPFxS8h/1sEMpbVUWJDgYY0q2g0ro5EQ7+VEFk0x
-	Avn/Ytz5b1ELjYIrj8LHh4LlFP5TxOM=
+	b=bgXJPzNHaHe15pV0e2XH++fAg9sCLW3MC5P/fOWQGTlYu9nGTrxBKTH3xb3l7yx+d3n1RY
+	nm45pl9PkEWNDCQt4A2W4XSdhI3yzZLX8yqRrKVtv2gWhstbC9zZZ7z9AyVOqHliOAYdSp
+	ngxuaSPJM7fFnauduq3h8RIJB+AR158=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756733009;
+	s=mimecast20190719; t=1756733106;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5EHyQASudRpMIxAo74+7riZFD6rvogYVCRTIssUbz+k=;
-	b=K0i1LV80LAuqEJ2R9PqYsZTibZEQMQ2VqtzxSxQzqZ2W2mi0eyZdkagxPPWbX9l6bHsArx
-	f+dKIV2LjX0h3wFqFDEsEFQ5Kgv1r7hjbkXv0jcyTIOcve22Li//kKM/s0LhM5bCSYuMnC
-	vWCeQZf7NEuk5cJfteL7JyfwuFkBjnM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=tnXepClSCa4TtmpEoW4LNnvfPXJBpj0jhMGD19t2OsQ=;
+	b=NHQOl1ZwFxLB8evLMxbJ90x+Zw1HjQgiZv7mxBxUj+IOOOrDHZowUmhyUeYniBUZZnt7wc
+	ROmESOmX/zsY6dACNpvegw2Q00A4W73eoRBMi6zRcfEdxHaQvw54r0TcKidJlCFTxYiMTq
+	7Xhh2t+JjgSJoHDg4OMfmT9ZZt36/IE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-kCiYGQQ9M5Gk2-UnrLY6TA-1; Mon, 01 Sep 2025 09:23:25 -0400
-X-MC-Unique: kCiYGQQ9M5Gk2-UnrLY6TA-1
-X-Mimecast-MFC-AGG-ID: kCiYGQQ9M5Gk2-UnrLY6TA_1756733005
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3cca50781ddso1844318f8f.2
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:23:25 -0700 (PDT)
+ us-mta-651-roD49ZwdN5OY6J66jlS5OQ-1; Mon, 01 Sep 2025 09:25:02 -0400
+X-MC-Unique: roD49ZwdN5OY6J66jlS5OQ-1
+X-Mimecast-MFC-AGG-ID: roD49ZwdN5OY6J66jlS5OQ_1756733102
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b87bc6869so12350065e9.3
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 06:25:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756733004; x=1757337804;
+        d=1e100.net; s=20230601; t=1756733102; x=1757337902;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5EHyQASudRpMIxAo74+7riZFD6rvogYVCRTIssUbz+k=;
-        b=gS+xrAF2LIiXvzOaaHIkMxCkChzCc0lXF4D34n4i4QATClCClqqm3XxPAn1UFaivJt
-         Jj05DUI+aNKKOHVAe90ps1mn3zP0NGS2b/L7pqTl9BaZjxEOIqgY19Ugi5FcZUVktmrt
-         u5nEfo6ITlQ1XOj8cmS6N+5JBALP6OuQZ3qU1zycjJKCWRG7zFGp69hSgE8+WDiLZXfM
-         v43clkQJX3CxQ6mHq5L4jDKFEnSnrJUlXdFe+1zKDncrRy1UlBU9xtB/PwxO8YqvTl71
-         KiApFUhljSImh+zf34kAH1jMByi3xiQOtJ/hPO40+vvjUpSwqWx+tLe5ba3NjBO5DhLA
-         QVmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqro8PPczyonGVney2/nFzBGxggCztVsQEc/q+Tmi7I1DFoLaFvaKd1RsW3+khecQIhTYhKwc3XQ==@kvack.org
-X-Gm-Message-State: AOJu0YzmYYchWWHhnDWBN1gC/32KFe4xX48KMxV166eQo8sLXXuMhUcJ
-	fuWqow5cogzTAHL+rVqNfYCsPD/nTrnCPIqORkaMMuvVGq2lQGnyAYnbiHcC7Zh+I4U0IiCor/c
-	nh0wfUo2gDQj+dRfFLPpjiy47F+9T8ElYzDve7Jf3oMPRNtaoKa74
-X-Gm-Gg: ASbGnctOVpRkYYg0OcK750xM/3hnQZgT6GnR9lYmNBr9Vw+V3R5JdwHAQ//1cY9D4HL
-	Hb7pEDg7WC7L6O+tDQqQoUbtrdW6rJafMx4de1sxtxWG1md4q38vC6ksKc9x7Fho959w273w9hQ
-	AYXftr5mZu6d8cbnhOisBtECDeBvYATRJvvb6K6YW8X+uZOjZUiJIfm3MrRGEVotAXaTy7ddlaG
-	oBpZZJqEEJ8Ses9ppk0ZGefu20StIApOCT0d56tESjR0m0Pnh0Qp1Q3qpUdyP36SDFMbLUyMmXW
-	yGX7lXnsdBvzukspbZxoJKJdsVM19JNS9sOoIgkWqcOjNDI5Vz+kVTlRGXrsaDvsb+pSd5eliOp
-	XGnTgW1Uw67EF8SZ/Z9RVGonuR/CurlLFfMhmb4H+qpgPZyGWQt2t2Gl8p4JlX6ituk4=
-X-Received: by 2002:a05:6000:250f:b0:3b7:8b2e:cc5a with SMTP id ffacd0b85a97d-3d1ded76f89mr7325979f8f.40.1756733004613;
-        Mon, 01 Sep 2025 06:23:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGpCndD0LFPlutircWKghY8QG8SUd+xV9esmudoxAzufTgNwxKCMPPfcvQOOFMy8QRFAF3U3w==
-X-Received: by 2002:a05:6000:250f:b0:3b7:8b2e:cc5a with SMTP id ffacd0b85a97d-3d1ded76f89mr7325955f8f.40.1756733004178;
-        Mon, 01 Sep 2025 06:23:24 -0700 (PDT)
+        bh=tnXepClSCa4TtmpEoW4LNnvfPXJBpj0jhMGD19t2OsQ=;
+        b=U2QVNQ0kNi5PYIX3ZaRzyOVDNlUOxOko2QzcSBpKOWtkpupptDeuV+S5aRLDTPfLyN
+         4Jk3LXMu6JETz97IlH8Ja0xHnPEpvFYQ16z0mX+ejXU3bblxi2wtqybG3i7P/niNw9b+
+         V/V+RLLg5MQJiNomYh0gupWTKFNYVwbMK3A81hRWqgXQSjPsNi8j/adXVZTfIIsGYsZM
+         0f/zouyzSOMP8BtU69yaVv/vHBI7d43ikTxAi4ch9d3IqsofKsndljZV7/zz0G0Gv0OD
+         nQRsmoXoTRz365QqO3m+xCVW8J/QyvOpgKz3XYmiq8j2iMnfvLR2OKjHrKJlgjkjQ4wK
+         LXBg==
+X-Gm-Message-State: AOJu0Ywexy3hgo+cS6QsnDGdy4BbYQLaoGvuZtxjGmAuGNyxmOXuXF21
+	LGBm8g4N87mHHacRQwfTe/USaQWvSdh5ZLnETQaav628p5NICCRD0Vay6N8vZeVHM7B7QNDva/J
+	B2A1EMUoShlV86HvqlPAqa2oNaBtGHDkvBjk4+zrYLylK+28JbtNW
+X-Gm-Gg: ASbGncsFKGlR55KZ0k7gT3LB0WvYZA7379yuawZ8GCPtVFrAjA6VsyWzRN/p5coZy+X
+	oHffbQ0JGuCAeJOV4P312NzJt+rEOjGA1mQD5vLoKS4d3ItS/iIG+7ddQaklUNvr2ydmBzTCuS1
+	nvWwHDIXUT3bKWpb8ALEYOe/eyc8u4r+ZiY8haJyRiPwXCDZOcWqYw++DoFYiW13ZK7/nPHQwWt
+	h5GxaxXpdIgmyp0mSbmFYD63Oeag+TqRxCykLUqSlDJ+fnrpAyxhqE1gZ1r5OlOiMPK5x2XTv/t
+	VqHiZCFWM5B1oS+Mh8H+Bb1T4xdf5tDWJjL/VyGlAKRQWhuRePnGhjIUulhvmH1eJTa6n34DxAQ
+	V1GW+pNRGdl4XF03d5rTGy3fgOHgZLQEgFomnOxphXtjtbtIZOhwcALYk5NhuDBlbGeM=
+X-Received: by 2002:a05:600c:1c98:b0:45b:8cee:580a with SMTP id 5b1f17b1804b1-45b8cee5b84mr29479365e9.35.1756733101685;
+        Mon, 01 Sep 2025 06:25:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFn4DAGKD4/hR6ptaEjNoxJNELsNDQWoqjaZ80cydfGU/2h/6IoyZcnqEvOz4BgFx0o138wIQ==
+X-Received: by 2002:a05:600c:1c98:b0:45b:8cee:580a with SMTP id 5b1f17b1804b1-45b8cee5b84mr29478885e9.35.1756733101175;
+        Mon, 01 Sep 2025 06:25:01 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf275d2717sm15422593f8f.15.2025.09.01.06.23.23
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6dc1sm239218725e9.1.2025.09.01.06.24.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 06:23:23 -0700 (PDT)
-Message-ID: <177f4c8a-1ac7-4fee-bb34-ebecc4ba9384@redhat.com>
-Date: Mon, 1 Sep 2025 15:23:22 +0200
+        Mon, 01 Sep 2025 06:25:00 -0700 (PDT)
+Message-ID: <94ec640b-76cd-478e-9ee7-ff8597d1fafc@redhat.com>
+Date: Mon, 1 Sep 2025 15:24:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memfd: remove redundant casts
-To: Andrew Morton <akpm@linux-foundation.org>,
- Joey Pabalinas <joeypabalinas@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>
-References: <efbbe6093b64a5b19f974871d5262d6e75dff2c0.1756639225.git.joeypabalinas@gmail.com>
- <20250831123426.3ce56a2448b520aba75f8edc@linux-foundation.org>
+Subject: Re: [PATCH v2 1/4] copy_sighand: Handle architectures where
+ sizeof(unsigned long) < sizeof(u64)
+To: schuster.simon@siemens-energy.com, Dinh Nguyen <dinguyen@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com,
+ selinux@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, stable@vger.kernel.org
+References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
+ <20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -155,21 +171,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250831123426.3ce56a2448b520aba75f8edc@linux-foundation.org>
+In-Reply-To: <20250901-nios2-implement-clone3-v2-1-53fcf5577d57@siemens-energy.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7SqpMUAtY5ufBuOYFXlj6kTWrEXyNxQCu1Mbd3XSwF8_1756733005
+X-Mimecast-MFC-PROC-ID: LgHHeisHcQMyVGhfG20WoLLgwSNtPQdhRO3TQA8Zgbs_1756733102
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fje7t5fu6azi6zswrywai81wxopeauuq
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C4C381C0012
+X-Stat-Signature: 1ut1xcqrjcskns81uf6kyre9bhipxdwa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F317120003
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756733009-892273
-X-HE-Meta: U2FsdGVkX19EpqIBzqZLXUL5Usg66BIs2CLx4GyS0TWj+kWVa6iJjWG39ZLbuYXNnIal/1Wp6rI2075oZMZkFm9uJt1V0cCFizv72cgClimlC5FV80XzvNLipPOjTf+pgqfxY1OoDe2G0/XgZYP6m//LEV2qQSBLbnFEXd8OYaaEMDX/79eYSGlVFHqdVI9NCTnlS9gTN+bfuzmDWdBqR5KxNaNeThOFeaGFks7zKVh8nl+V5f4hI0JCvjHr34EZ/nfxM4atoqBsvzCxBBKLPl7FnZha2zxi+kyvql2GL1FftatLqhJuVTcFqvkysPjkzFBcwYzEQarcXdQ9r4aIUyWTKK/gMJ65CEvA4UXlFzbN4fyaDx4ere1Lc3H5AlH5c/c3rd3rnXMmDYiXY2+BcRzDnXKssdJEaztYVyxI6V8Lrs1+Osylj9esuDqHY2YH89x8RiICBWlWiIT1FWTk2PC/Z9x5DKwMpm8YlZqPzgpR+gBfAirbCdQyfZdV2K4GmnbRWYbJzwUQZT9rqSwerQpM8K5OVGU4YpI5K4Ya5yHKTNExdddIHFOIApJ/Nb9oDbJYSoWoepAvrJzwM9UEs06vB8w+MZxIT4rV5O+ZCLCIM98PuLkgG3EMZRmXUvbdZ0V13i/4AMGoDfHWNhvREA3WTopGsLnSuPpa5rR87kB7xLJKs9cmUs+qKXN5VZyA+0XAY4sEQrhkGD3gXyspIaoxHyJ7VdVjr8C41qLhF+kZ30wrTpn2EMkOkO/I1yu6QudBjzuJIKfz8DCMAJcdc61Z/OCBFUkBKnPId9nrUi2f5Ncopbd3ACOSWdQb+6W8Ul4Ylz9s589RMOez7VODD+bs1VJhIULclB6QMbKEDz+FK8zZ8P8xaFREpmNREa6AvSHwftQLKM+8mOER0x/tNUH1kPdLV4s42pa2EOXSTRFu/LFQaPWBj2LmnbjoT5dHGyL6KfwJIQM+6RMXFrO
- Pi7lATtF
- sSSK62Llj1+YbYCey/TM23nV5XBoJhRncOI66BmmI1f7M5c4vvEm9fJ0w5KvPnI7V3ZjN4f/jfYvTnbJ/qUyMwrEFr7ZJyDTEbZ4og5kQtilKj7j7nAL1RdYIZpKTWj3FihAvQxYuXUvWCbsH3fDzopgC/7UxuqkZk+yjNY218t/eI/OELEAdSk/RH1/ohNTpSlEoDtLP/NtiD+r6Ze/nEBru8dbW+5xVdOO2ihkq1bUzYdm+05aknaA3QeyX6DOGN/fUANLf01aV0TiSq5mVf5jBDg5aIzuammr135ruTDAzZdBlKpBkxGYJr4XqPPB1PA9sVLIW80SS2e6QK/+mC5d+6lMThHya5I0CczIHNA6sIVFs6/ru2xKzuWOPKJmFRw8ArbJFXK8Y5G9rTiQWaYzCBygjSXKYa9wleD7u2wI8wmDMr7WUD2SAfOPpuYzBCoH4T2mNHaBP7rklVCwy+URJVUaUVMzm+Qukgee8htBXK49FalHt/VWwn85tvXQX1b3T6gZ+lhSBisu3CbvPMi9nGnjlos5ps1CZpa2uLg9WgdDzIZcclsordjcnFOgrFXZ9v3FGVLcWywQXxT0N3IV/kTTMCZY2VMPq
+X-HE-Tag: 1756733106-356931
+X-HE-Meta: U2FsdGVkX18GpKll4GRK71xjU5P/aI3aoGWQMilVt1gxx6X3f4WVRXSE4GZCb2INkUlmjgIe+SqzNN2Ts7y/IMXcWjITO4k2pkrqhoGlLHfBOIE9JyW2ukgs+GlpPn4a/qVJEyTYclREaDOvWm2v3TNr6WGHlBJJionwgJyiD/iIKvfoABrV7pajUrY93qPt5szxSErOTIbSso69NJ1PNbOv/804SDJqMsOl6xlvEE1lZCDVKd9PItCh9intR80EAbzn4rbsD0gy+za9Jlf7JJBAOZ3TqP4dlQBarWuzOWb/zPFOatm8q1JauyrteCnZg2d9fhoY+ba9NRhiqTaOWSAIBqgw3C5bHDSzAL87IiNBOwr2aoaxNV+rhRhgf5NZcSgrKBy17CCE1RKCVl/xOsSovldpbypa2pOI7RaR8nNX1G7a9FixDugjyggzA1PtRb6902qT/5fW6jVz6umKUkaWCHIKdz3VNE4tCbUUUvkHbtLDwoeGMbJsfvt94ls8FycLqtlvTqGffMtO3WRftDik+1r2CbfEsoVHj2ee/LnXYRAdd0UxQQk2X3kp3I+N4urXjglO8e/THxIGwjg+E/wkBlV303xYApDBl4RazqcwPfxRqScKkJfe29g9c/ZbqXEhIn1u4aQXkzQz4GUhF+4wHJkFfqoOOTCQ1L9jKCVgs6uGQTUG4T0dFnlHOXbLdyk3/+Wq2C4LkIY9J/jIsTRXSbMZH+totGoxhJEwbwnvpiVwHfsLmzZCICPlHO5lK4ZfVHGtIHaMLrppprU7uW1bxMMjgzf5aCTcj8V8O9mRIcctazAtRSE9qGGksU0uCDp/xgB1+7EtDbTycv5ac6Fgtcc9QfgZDq+DJgEaFQDR/dYl9ogwg9rPz2tBOfgYhcDSXv/Ol/GR+zZOkrLlzY9FPmpWz5jfpx5GLeOcbkxRGulKDhn5AkaY/muRTUiRJntWtqExmQyCmzW8nw2
+ KraQm1Ra
+ iCvRsl5gCZwkaQ+I8ssVC7LcGaPwu6ZLzXgrkzy/A8MU7WrtFjR5fM1Jodn7rpH8TZvAVzZ7f6gsU6FAdNzhygwWDfZnpcj+97qoja2pTYyc+R5Of0RPnj+V3v4qIphOoV3JDGtiqbKuLVsuvkDAaDPHXdiNEk2V7pjpNELWnJoMSqdgMPtj9fiMFHBu3wXGlH8dmQ8HwMiVublvP9rY3G6Yi9ov6ieXPEaqbI+OSt6cU6sCCoArVN+DDE2Drs9kEN+ytLasQYZeWSPrFz1YvTwWq/FCxyorngQRFSm1mInnuqkVL9TLvgdY7gXEZSSO6Mea76MSt3pzFv42rbqizF0Hlde6bPd1yr1ylB6Cl37aFT0u/cxzaLEBpSfSC4xFdkseI772+7DgQ1dfhd26Wu3Jqlm3v2HUY819wA5qYaqgpKfpdXy7GLAoPYOCbhItbtyjN5hxlOZxkwnZW+D/attLEiBKGMt9dum4778UJ+88jsD7Um12OhHD30o0NrmoxFclvE5iWmh9i7oAQ2f/+9zapzJcTZooOTHsvKeDDkW01J8h/ohm0G58SBN68QIzw6GDTCOVzvdmuLVo2lBsPr2XOvbFmVgKP21aSKMzfdQwTmeOThX4yZV69DOcPtBIZwsr8L2d9EC/OBa2J9cc9Gyw6fYydyHrNiwNVbjIqmESD19O9deOUrAsdwjaQ2xp9VXgG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,64 +194,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31.08.25 21:34, Andrew Morton wrote:
-> On Sun, 31 Aug 2025 01:47:48 -1000 Joey Pabalinas <joeypabalinas@gmail.com> wrote:
+On 01.09.25 15:09, Simon Schuster via B4 Relay wrote:
+> From: Simon Schuster <schuster.simon@siemens-energy.com>
 > 
->> MFD_ALL_FLAGS is already an unsigned int. Remove redundant casts to
->> unsigned int.
+> With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
+> clone3") the effective bit width of clone_flags on all architectures was
+> increased from 32-bit to 64-bit. However, the signature of the copy_*
+> helper functions (e.g., copy_sighand) used by copy_process was not
+> adapted.
 > 
-> lgtm.
+> As such, they truncate the flags on any 32-bit architectures that
+> supports clone3 (arc, arm, csky, m68k, microblaze, mips32, openrisc,
+> parisc32, powerpc32, riscv32, x86-32 and xtensa).
 > 
-> It's rather annoying that the MFD_ALL_FLAGS definition is so far away
-> from the other MFD_* definitions.  What do peope think of this little
-> cleanup?
+> For copy_sighand with CLONE_CLEAR_SIGHAND being an actual u64
+> constant, this triggers an observable bug in kernel selftest
+> clone3_clear_sighand:
 > 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: memfd: move MFD_ALL_FLAGS definition to memfd.h
-> Date: Sun Aug 31 12:29:57 PM PDT 2025
+>          if (clone_flags & CLONE_CLEAR_SIGHAND)
 > 
-> It's not part of the UAPI, but putting it here is better from a
-> maintainability POV.
+> in function copy_sighand within fork.c will always fail given:
 > 
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>          unsigned long /* == uint32_t */ clone_flags
+>          #define CLONE_CLEAR_SIGHAND 0x100000000ULL
+> 
+> This commit fixes the bug by always passing clone_flags to copy_sighand
+> via their declared u64 type, invariant of architecture-dependent integer
+> sizes.
+> 
+> Fixes: b612e5df4587 ("clone3: add CLONE_CLEAR_SIGHAND")
+> Cc: stable@vger.kernel.org # linux-5.5+
+> Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > ---
-> 
->   include/uapi/linux/memfd.h |    2 ++
->   mm/memfd.c                 |    2 --
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> --- a/mm/memfd.c~memfd-move-mfd_all_flags-definition-to-memfdh
-> +++ a/mm/memfd.c
-> @@ -313,8 +313,6 @@ long memfd_fcntl(struct file *file, unsi
->   #define MFD_NAME_PREFIX_LEN (sizeof(MFD_NAME_PREFIX) - 1)
->   #define MFD_NAME_MAX_LEN (NAME_MAX - MFD_NAME_PREFIX_LEN)
->   
-> -#define MFD_ALL_FLAGS (MFD_CLOEXEC | MFD_ALLOW_SEALING | MFD_HUGETLB | MFD_NOEXEC_SEAL | MFD_EXEC)
-> -
->   static int check_sysctl_memfd_noexec(unsigned int *flags)
->   {
->   #ifdef CONFIG_SYSCTL
-> --- a/include/uapi/linux/memfd.h~memfd-move-mfd_all_flags-definition-to-memfdh
-> +++ a/include/uapi/linux/memfd.h
-> @@ -12,6 +12,8 @@
->   #define MFD_NOEXEC_SEAL		0x0008U
->   /* executable */
->   #define MFD_EXEC		0x0010U
-> +#define MFD_ALL_FLAGS		(MFD_CLOEXEC | MFD_ALLOW_SEALING | \
-> +				 MFD_HUGETLB | MFD_NOEXEC_SEAL | MFD_EXEC)
 
-No strong opinion.
+(stripping To list)
 
-When we are exposing this through uapi, wondering if we should rename it 
-to something else that includes "MASK".
-
-Quickly search for similar instances. For mmap we have the internal 
-"LEGACY_MAP_MASK", but that's also a bit different.
-
-There is this oddity that we store the hugetlb size in the upper bits of 
-flags, masked by (MFD_HUGE_MASK << MFD_HUGE_SHIFT).
-
-MFD_FLAGS_MASK maybe? not sure.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
