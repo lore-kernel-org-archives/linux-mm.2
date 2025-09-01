@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A4F3CA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 09:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31290CA1002
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 09:19:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 841468E002B; Mon,  1 Sep 2025 05:19:46 -0400 (EDT)
+	id 8C6648E002C; Mon,  1 Sep 2025 05:19:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B36E8E0002; Mon,  1 Sep 2025 05:19:46 -0400 (EDT)
+	id 84F268E0002; Mon,  1 Sep 2025 05:19:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67A318E002B; Mon,  1 Sep 2025 05:19:46 -0400 (EDT)
+	id 67C098E002C; Mon,  1 Sep 2025 05:19:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 53BB18E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 05:19:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E4D916072D
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:46 +0000 (UTC)
-X-FDA: 83840133972.15.3EA1D60
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2431240008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FA788E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 05:19:48 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16BB485C37
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:48 +0000 (UTC)
+X-FDA: 83840134056.27.DFB3273
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 31A3A40004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:45 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=c7Ue1YeB;
-	spf=pass (imf27.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=OhKc5Ttt;
+	spf=pass (imf27.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
 	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756718384;
+	s=arc-20220608; t=1756718386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g27oviGyH1E7poP48wwMPEGWPzCs6iGckjbF7ofuUGI=;
-	b=pCOKLubZXdryyMS74eg9e78NWJS95ZaFPnb6I8TLIV3/51jL0c1vrX3ccU/PcinvByhRBR
-	Q/32s4incHLJgLF9fYu7eYHTWEcH+PdRbDkRcKAMSTsV5bYUzWvayYqcYFly/8Al9UmYZ6
-	4lUHZu3emBfKw3XrXCV9Ae1Vgz7fkik=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756718384; a=rsa-sha256;
+	bh=ZWR7oxTxdlLJJjGEzgnWnG58Pm+0fE4rR05OeDaJbk0=;
+	b=gep1i2mqIoop18uQpZH6OkmhFOiXUw+do97ZSKoYQWXln02VujPQ33n55pttLjcDZs86rG
+	RSPuZh3748iUK3Bxffdi5mhh4Be2EWzLbyJnPatWknNmieiNsgwfWNhLDvNOc+e+jndG5k
+	neKXwIjhifxVfWWiJCMK0EQlx1Dh61o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756718386; a=rsa-sha256;
 	cv=none;
-	b=tE4h0fC6YelbbsJDPJOE1vkez4FV34zITyWEcfcBj10K6xifvWycq0aIRCMlZz6t79iosB
-	i9HmRN+IFVRtvg0aYfZEZxH5d2HKf4qwPgq0bT+G5EQGll8etq2Yc0r6HOTXZ+1VFZZv2L
-	DRS7q+Xs3rNNEYNVypeZns95OCeY1qI=
+	b=c7bnc7Uk2/ackj65EZsFJXbajEXkiub+4FW6Ec6SRnbUyjtGbpov+kDY1OY34JF8QbS/PP
+	dbqBsAOJlcxSuxQH/FOgJraNagnNe4oh0PRVOYIgAgmK7VTxg/DCLGvuxaYevGaZV7uwvM
+	PUlnaZo9sq6xQ41NbYeGlthHxlgl7ws=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=c7Ue1YeB;
-	spf=pass (imf27.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=OhKc5Ttt;
+	spf=pass (imf27.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
 	dmarc=pass (policy=reject) header.from=ionos.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb7ace3baso118927266b.3
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 02:19:43 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b043a33b060so48124466b.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 02:19:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756718382; x=1757323182; darn=kvack.org;
+        d=ionos.com; s=google; t=1756718384; x=1757323184; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=g27oviGyH1E7poP48wwMPEGWPzCs6iGckjbF7ofuUGI=;
-        b=c7Ue1YeBBdmhhmOsVv/b3Fqbn9nMu8YpOPhp1/jv5gA2XvZqg7msANRPbJ3BIo/0Ni
-         T2Mx+cto2VSvCovTE1NiXx0k9P+nuugKNwfIWV9YM8+hU+97J0grpQzJkry8KuzaTeiM
-         D4OrhBSzAca7K1gxZ5PSt/35eq2OymC7uoPwy400qPBbaRbu1XF46J/W0SgzzAt2kSDf
-         K+6kzONSoKLcJ166ud1PgoqJdWxLV/28ydPXvRPiSfXX6C9ByAjADE4jcQkaGJ6WRRyn
-         +b/5YgbyILQZ09onY6QKHbIevUQkxqbDda2ZL9zsXfqPLcWr5zEl8TD9NMvteJTOfRev
-         6MIA==
+        bh=ZWR7oxTxdlLJJjGEzgnWnG58Pm+0fE4rR05OeDaJbk0=;
+        b=OhKc5TttdHLlgmLe4GejEWPWeY8rJZNyHCZt+mol2f18RNbrdb5mo4baRB2A4RuCZm
+         6qnOxBoRG9IyERPLqEZOMrYBk0HnXnLKz5nKVu9WVCwPXFRCTEsOOcwrx0rJxfpl3a5s
+         l7DcCFLHvk0cnN8X/fwjV++1+cQm1qy3+UX7GdB2y4218DsMivOderXyrAsE70LqG8hN
+         uIS/OLRtjg3p+tIeJS1xJdymBb6EYLPi1So3VY1puEggugt1R1sOH0B8RljxN4M9OyZR
+         ZL5SCFnWuV1e6Vdg4Dj/aEXoyvV/RadXN+Vc7dVRdbfb74cumohp4ebo5tBaYLX9ow1j
+         iy0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756718383; x=1757323183;
+        d=1e100.net; s=20230601; t=1756718384; x=1757323184;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g27oviGyH1E7poP48wwMPEGWPzCs6iGckjbF7ofuUGI=;
-        b=J7Y0ogMGu3YKaObwd0s8TE/0DZY2X5zV23OCwDusbLV1inXAdjGPqCisob8MqpmcyB
-         DT6jJ50gl8Ir9K950/gEL5ZpS0SICCML92XVZAZyh4RDGE9Ioz5CLrKYwWHjTZtT/FTG
-         aD6oiWXcD2BLXVGKNgGxagueuioGks7mrnE5tFFNil7DOm07+idvY95NNBJFYb7KwvzF
-         jbzwrRzlWvomTmSIbwQSfYxrwZvmB/qK8bbDFGrj6f8tV0ljP1bkAr10/Vs9KkPzkxg+
-         gVYqCsgCVrQiZJ/sqnkuDsMdyckFEGKJH0PDkuqkxf6Igb6NyAMzwNkSVPge7OElxgjI
-         J9LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnMWnMQy6TP2XauhKdCLBJ+a78w8msuelpU+5QgvieTu86JgpJMWpdyK7hm3ptNfwUtpS3hDH/AQ==@kvack.org
-X-Gm-Message-State: AOJu0YzqrsmIFjqil7CVr0KQr/Ih87cRtQkujrpTMOXsFEm5sKn3ghHU
-	oykBfFjBybbKZQ30zQ0fb1O4PrguEY1IilFhG2itle2MvhbX8az5hZgipKCvMzsmVvI=
-X-Gm-Gg: ASbGncstS/ZQRKv2b4CsqZm5M6f8u3VZXgCw/peRFYM80Tz734NLejgtqWdmOyJKIEc
-	sOesQ5ei4y9XC/Xj7BYXEwh2k355KzIuILzOOqfcCcye5XevX6bidfcA6wsKsiATL1EOlwKJmJq
-	xwPhlIjO/aCjIWeqg1P5wkdcqxN+j5a1pu8wRTcDc3sVL7F3PN4HdmTb3qmw5EhA63ebMl20pIM
-	UZCwgFEClZJaRGgxABgCpj1+f2ai1WeXxhsP/xPAqx9J+vhzA/CtMtt23PXKlyhByTgRb+7J+DD
-	mDNupP3gusVsO18dTELS7aoEoc4bqZ6/s/NkzJ8Ujlvl0Igm6aQFq3Kd0SDTR8alsx6Ie7Keew7
-	9pV/JgkZ/GOrU6HsMEnHMqRzrwr9kRH0B+ViJSAPsbP99oZXr0KAIVglNLdD42MWj+WhB91ybhI
-	ZTZP2NcpK3mGWVdMnEz+z+3244bG36Lbybvw9EPBMcMok=
-X-Google-Smtp-Source: AGHT+IE/NGoKVl7E/tUqxPYYVhGW9MLa5x5g5kYKEMsRq2hhu2ZhegH9KRzjvzCYerPMCTr/toceTQ==
-X-Received: by 2002:a17:907:86a4:b0:b04:3888:5a5b with SMTP id a640c23a62f3a-b04388890admr126924566b.42.1756718382390;
-        Mon, 01 Sep 2025 02:19:42 -0700 (PDT)
+        bh=ZWR7oxTxdlLJJjGEzgnWnG58Pm+0fE4rR05OeDaJbk0=;
+        b=bP2xgy7wkctV9dTKyT/j/etg+u6SXGQ2tjp8uTofSIT9jZgreRoXPvDcM3oM/6uQqU
+         q6TMhxBxBwtuM8/lc7yFQszTusx3GV3wF3Uvuc2yuZUiRFYqatG4WXJ2J17vkZFiRXrX
+         SzPSIDrDP7pNGYImz+ikk5njQ8rZ3DYAejvW6mBiuf969jBFAhi2PCpnsCkdr/P6sNuF
+         Qjz+QHMkd99RIMTI/7gVlcqdUad4UxZckohBsdtd2h4OmoLEYx9T6RBL3JTIotdxfd/U
+         BD+CdNvVBU6CBDQXL07DnXeSIiCcyG+Q3PLOpzBckVtG51aNZK4NLuEqYqdqwYJPrB5f
+         cReQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmB7rHzMqWd81HK6SneELvtZ/kQmpM0inACS/GQmtit8eOMIQ4fVdx9Z2pzaHbu9PivFHgb7/RNQ==@kvack.org
+X-Gm-Message-State: AOJu0YwtOZD/M5g2JE068mBLPPvWg8J+3rQWvGhKldVz5JagObCsllAb
+	I5dxLWioI2O703Sryg+AQEsRMQ9QN4osuERFAU/xa93R+nzuhH55SGWv/bE+YaJWxzI=
+X-Gm-Gg: ASbGncubozU8U3OBmT8PhGjWsf1fTJ+IIXgaiovARUB+uW3nzytbZl4SBQy2kdUhSL9
+	eikhmoFXUMwlOvAcpcHOXbYeatsispaMIykuEdfDvgD0y42V9kbHAQikB8MPrZgMaiwr8shCyDS
+	3zbguyATsiUapfygKJ/QGQXsWGDigwqvGPGy0ljT9olXzFIb1ysYhH7c4KIBaqx2nCRtRk7pZ+B
+	R12eoqRJ+mUmWNe8QZv2NyMLm0eYjS3rXv4UR3GH4dWk9z/o/prXMZPRmdQvFAefAejXdmjUTAy
+	IHGKrND9k4FUEs2GdR4Uo7PrIYxZW2X0WAosRE9N0JfNFqL2PjiUl0QssMKWnzl1hgvx3j010Zg
+	juUuyBOTmpH2F2BUMAXXYhcjSjVIEQx9cYfSR7jXlofrTh7a/qJqfTLhsMT9akdolFcihzUzpPY
+	GLbCRZLze8Zgc+OtpuYBF84t0pPRVSJpbk4dsEv86e3yo=
+X-Google-Smtp-Source: AGHT+IHaglaKkw7QyMbGEsEV4gTcSx4b/Ps7GCifY+uWygIU+PJPwrgvRO0dRVpnqktVCBoBvNUDww==
+X-Received: by 2002:a17:906:eecd:b0:afd:d94b:830d with SMTP id a640c23a62f3a-b01e52b79camr796896166b.62.1756718384210;
+        Mon, 01 Sep 2025 02:19:44 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b01902d0e99sm541005766b.12.2025.09.01.02.19.40
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b01902d0e99sm541005766b.12.2025.09.01.02.19.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 02:19:42 -0700 (PDT)
+        Mon, 01 Sep 2025 02:19:44 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -147,22 +147,22 @@ To: akpm@linux-foundation.org,
 	linux-s390@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4 10/12] mm/mm_inline: add const to pointer parameters for improved const-correctness
-Date: Mon,  1 Sep 2025 11:19:13 +0200
-Message-ID: <20250901091916.3002082-11-max.kellermann@ionos.com>
+Subject: [PATCH v4 11/12] mm: add const to pointer parameters for improved const-correctness
+Date: Mon,  1 Sep 2025 11:19:14 +0200
+Message-ID: <20250901091916.3002082-12-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250901091916.3002082-1-max.kellermann@ionos.com>
 References: <20250901091916.3002082-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 31A3A40004
+X-Stat-Signature: 7k9o59idzrwehtsszbo7yukur4jcsfzf
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2431240008
-X-Stat-Signature: 3tg5azr5qtaaye688ur5uz7qynfyhaw6
-X-HE-Tag: 1756718383-911360
-X-HE-Meta: U2FsdGVkX194VQnWesBlStDIg1krHvL8i3nEW10V/87VJPibAUDgn0g8OD35ELcG7N52wJBUhVRhsJgvLCdUmYSUDDxZAv9QLWCnxVSXiCHT/esIas06Qy+TAbC3AWtGr8KVhlbQcU6lACMutfEuvObdsAsTf+FbCi8Hiw3fP+cBgOK2yA9gC9TFD5fEdjZwGomEm4jieYQx8WbuJ2w3R+f4DOStOzu2waOmlBN9rkDvn+v3Pq/fPT46c1QzGO/gv0gfA72HyAM4/MCKvIVoFuUv+nYxENtZeOeqKeIGwV4tW9LG1ZztTWbiawN56gpDMJtURa/A0VN7hu0OZq6pV0uJAafeM5/E9aQPdbOuEnC7TECHklEOCcdHN3tw8DbuVww6o9Ay9PAcX+O6qnrLf560/yG9GtXYadkh0OjNoMCu7/VCeOdx3ivCJUCF7aY53x1sjT+D0KyjEscaA7Z7BD5YYVV0VLmdV2h329Oz76JaIfHemureYrpkvLekMSnDl2NdoCgDLoxyfUXOIeS2K/29+2JcOGfdSi1wTQpEtvhASzNrqbVCOp8vXK1CKIcUOkzQCnKfpDQ2H3Hgcwj/mRFxypfnJfMpH8tS0h7nJiVDqEE8tuAdNbAUkTgC9ZipPMZ2Nkod2HbLsjyASFU2+0wdywpiss09KjobYpoVGCekITNuVpip2yl1kIKPUqymENSITvU8NPeaZtYt2YwMeugxcuwXYdAw98oUpOlxFf0bxU0ns/4Az8vC6xrqDk0safkQ7K0ka4ex8RFBFirMGYSt3Bh5pPr66O5bnjdT6c+fkSl+S/sVCDZVmhppJ/abl4Itgmy3ecpvQhx3cxTb/iOi47mvABt1cvcH/f01eASokk/hsVkpesbSf4PptFMyNBWnNnReHUW9Ltkr1VpF7O0GjLyzGhoxl1VMBTkLkoxkvmlpxo5KgpWopQZtnd4NesxT2OK9hsDtzi4O2uN
- S5bdY0fI
- n3ztLhE64YEy/iYG9zxLa2BXzkpqhPmD+AyecroiwE0+1FuVA4Qvs9V+AR9lHx1nLOPlAxlCr/xWhXBm11G+Y0aIK5tA7+jD8Wz49BR5M1CKzWZX6BK1+rttNmSlUGzySxpwSUoJgOI7n9LKmsZk1v2XPiDomOYiwlX/kqN+YN3DflgUdT4e/7F41lhq3SAJ5JK1l/ago1sbqzINtTcDlbUJs9Ty/COs70Sko6u/xr5HKSsOVxcD8eIdmUSUmXS7EF1EuT3RPcCCP5AMNWZ/i9kvD+zRsRwrqNVEcydbwS1lWfHllFPOed/gIpg/nl/qNXEpyAMKomJblTOX64L5qHL28bP6Hgyj/PBqbtTV0D18PE6ejnwh/MHt/MRJeLTqXmO2/ZjZ2nvhHFtFagBEWTo0RLtDQjZrx55LQ3GbanafebHVEigigJlqt9zRzrgx1mYkG8+ob/cLvdcg8K4uH6CNoigwfReyGz4eDkEd3LGDb+RM6X43Mdlda5Q2ZIYLBc3I4
+X-HE-Tag: 1756718385-828908
+X-HE-Meta: U2FsdGVkX19JGtvUGmrkSQl1zY66lGqYfrG+xfRQ8++xR7Gvx3399bqHCySKDXE34HjtfWsKTkNfHVEpDTKX5JS2+XMYJNMeV9Ib7+S7H564gwsDlDPHsoPUCwcAsX9N6RuFzpKcdokkFqJ4St23g3aDeu/SNeuvJLkZJtNAu57cCHunYKD5ihCORJ9wW0zwnjtgwq0KU9eVKxW18/ibgpGP1k+zHHpsisg59mP3HarPvC0O/X9go4BEXXtiQIY+4oGbgKNKoeNxOmKhA2SePd8luop1GPFtFjtk3V4/k+tob0yJqZQZE1ryYUDt3F3sC9tySTi08Yz9Mfw/evpYog/lXK6uZpuzhe3UrZ5Xp3gYv8eEBQIHMO3zVky4OwfMcklp7ycOXgMeglzgM6BkFO7hkqH/12iQeIKDE+HI1FiMQ19efwp6z6Ou13Ei+WdbeFxQTisWqRHjEk8L7Cwe/AuPYpTcyagIH6cV0bsri70DqGCi1rUCqeV42EjwzpZ0q3stNz3CX3kXgBDfCA2MpAXFp0+1S0JW59FhmGq5afcuRb28Um0OwMCVC5WUytu4YbQmcbK0wzBzQzOquITRFZO92dMd1zu0Ls0c5h5d5NMtHnYucIAx4alxCArDVTmijRy7ZrgjMC9DwFFbY7JT/F2pqBuZx9PN26LjMZbVVgoYZd4YwsEqE9z0086arhlcYs0j69EyepWVm4/AZ4tZOWK6Y55dPGaV8KkbM3ttKijkBlYU+jNK+NNNHRNmERE0nDzcMHXjjrveCzr2547HFcn71J/t5TDRmDLqM5edriljHJdiTaRqmgTaMhqOl/nNWslH5LAeMPTLDaqiMSCrjSz0RJ6f9xBeijmH9SOhliwckCPT/pN3fqjD2xILMYAaiweVftH4ELsrlYJ6sZMLsbmARK3UXDfUA6X2GMs3uhx+NWatVItUlZp0WaamB/sj25fObGP8qVdDTPmS7cx
+ BYoDFFtx
+ sjKFq5XPdnevmDTNV4032Lnuomdj75ai7pdgfP5/x/UMgLrn+eqhq6GR16gxSIUyiUHh2JZsqvFHvYHZWO06eLdSpk7KE2I5kO1Boe6+/+pRleB3Fv/nz1U7uJS1AXirWLgn3YZfuwKp3sqHGnSLeLu3FNIaZ2jjVD1AAbK2Mqk2qOmfPohQlQFh4fP+X/4Lsj0UmNbMuecosjXL2oE2hgQtYowt1jFqI3k1RUEMLh/pFTIr1RiQvcwoNW5jLxsN1oqbKGVtezZPaRBHA4mn8V6ksx/ikf8N9I2+RB3usd+kNWiymd6HBsFbAbxlLgZ3oHZ8g+OkW1ZTDemr8wOW8q30KlTQh0Tf2hro3yo7GlAg0qBM/tsGOZ1OMhBA2KK0OtQWrRdjE7NWWJRljn6GVhIfvOvdLA9nLq0areNm6HncQaR/uawZeA1EOvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,139 +178,179 @@ to also adopt const-correctness in their interfaces. This patch lays
 the groundwork for broader const-correctness throughout the kernel
 by starting with the core mm subsystem.
 
-This patch adds const qualifiers to folio, lruvec, mm_struct, and
-vm_area_struct pointer parameters in mm_inline.h functions that do not
-modify the referenced memory, improving type safety and enabling compiler
+This patch adds const qualifiers to vm_area_struct, vm_fault, page, and
+vmem_altmap pointer parameters in core mm functions that do not modify
+the referenced memory, improving type safety and enabling compiler
 optimizations.
 
 Functions improved:
-- folio_is_file_lru()
-- folio_lru_list()
-- folio_lru_refs()
-- folio_lru_gen()
-- lru_gen_is_active()
-- lru_gen_folio_seq()
-- folio_migrate_refs()
-- mm_tlb_flush_pending()
-- mm_tlb_flush_nested()
-- vma_has_recency()
+- assert_fault_locked()
+- vma_is_temporary_stack()
+- vma_is_foreign()
+- vma_is_accessible()
+- vma_is_shared_maywrite()
+- stack_guard_start_gap()
+- vm_start_gap()
+- vm_end_gap()
+- vma_pages()
+- range_in_vma()
+- gup_can_follow_protnone()
+- page_is_guard()
+- vmem_altmap_offset()
 
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- include/linux/mm_inline.h | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ include/linux/mm.h | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index 150302b4a905..8c4f6f95ba9f 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -25,7 +25,7 @@
-  * 0 if @folio is a normal anonymous folio, a tmpfs folio or otherwise
-  * ram or swap backed folio.
-  */
--static inline int folio_is_file_lru(struct folio *folio)
-+static inline int folio_is_file_lru(const struct folio *const folio)
- {
- 	return !folio_test_swapbacked(folio);
- }
-@@ -84,7 +84,7 @@ static __always_inline void __folio_clear_lru_flags(struct folio *folio)
-  * Return: The LRU list a folio should be on, as an index
-  * into the array of LRU lists.
-  */
--static __always_inline enum lru_list folio_lru_list(struct folio *folio)
-+static __always_inline enum lru_list folio_lru_list(const struct folio *const folio)
- {
- 	enum lru_list lru;
- 
-@@ -141,7 +141,7 @@ static inline int lru_tier_from_refs(int refs, bool workingset)
- 	return workingset ? MAX_NR_TIERS - 1 : order_base_2(refs);
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 23864c3519d6..08ea6e7c0329 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -703,7 +703,7 @@ static inline void release_fault_lock(struct vm_fault *vmf)
+ 		mmap_read_unlock(vmf->vma->vm_mm);
  }
  
--static inline int folio_lru_refs(struct folio *folio)
-+static inline int folio_lru_refs(const struct folio *const folio)
+-static inline void assert_fault_locked(struct vm_fault *vmf)
++static inline void assert_fault_locked(struct vm_fault *const vmf)
  {
- 	unsigned long flags = READ_ONCE(folio->flags.f);
- 
-@@ -154,14 +154,14 @@ static inline int folio_lru_refs(struct folio *folio)
- 	return ((flags & LRU_REFS_MASK) >> LRU_REFS_PGOFF) + 1;
+ 	if (vmf->flags & FAULT_FLAG_VMA_LOCK)
+ 		vma_assert_locked(vmf->vma);
+@@ -716,7 +716,7 @@ static inline void release_fault_lock(struct vm_fault *vmf)
+ 	mmap_read_unlock(vmf->vma->vm_mm);
  }
  
--static inline int folio_lru_gen(struct folio *folio)
-+static inline int folio_lru_gen(const struct folio *folio)
+-static inline void assert_fault_locked(struct vm_fault *vmf)
++static inline void assert_fault_locked(const struct vm_fault *vmf)
  {
- 	unsigned long flags = READ_ONCE(folio->flags.f);
- 
- 	return ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
+ 	mmap_assert_locked(vmf->vma->vm_mm);
+ }
+@@ -859,7 +859,7 @@ static inline bool vma_is_initial_stack(const struct vm_area_struct *vma)
+ 		vma->vm_end >= vma->vm_mm->start_stack;
  }
  
--static inline bool lru_gen_is_active(struct lruvec *lruvec, int gen)
-+static inline bool lru_gen_is_active(const struct lruvec *const lruvec, const int gen)
+-static inline bool vma_is_temporary_stack(struct vm_area_struct *vma)
++static inline bool vma_is_temporary_stack(const struct vm_area_struct *const vma)
  {
- 	unsigned long max_seq = lruvec->lrugen.max_seq;
+ 	int maybe_stack = vma->vm_flags & (VM_GROWSDOWN | VM_GROWSUP);
  
-@@ -217,12 +217,13 @@ static inline void lru_gen_update_size(struct lruvec *lruvec, struct folio *foli
- 	VM_WARN_ON_ONCE(lru_gen_is_active(lruvec, old_gen) && !lru_gen_is_active(lruvec, new_gen));
- }
- 
--static inline unsigned long lru_gen_folio_seq(struct lruvec *lruvec, struct folio *folio,
-+static inline unsigned long lru_gen_folio_seq(const struct lruvec *const lruvec,
-+					      const struct folio *const folio,
- 					      bool reclaiming)
- {
- 	int gen;
- 	int type = folio_is_file_lru(folio);
--	struct lru_gen_folio *lrugen = &lruvec->lrugen;
-+	const struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 
- 	/*
- 	 * +-----------------------------------+-----------------------------------+
-@@ -302,7 +303,8 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
- 	return true;
- }
- 
--static inline void folio_migrate_refs(struct folio *new, struct folio *old)
-+static inline void folio_migrate_refs(struct folio *const new,
-+				      const struct folio *const old)
- {
- 	unsigned long refs = READ_ONCE(old->flags.f) & LRU_REFS_MASK;
- 
-@@ -330,7 +332,7 @@ static inline bool lru_gen_del_folio(struct lruvec *lruvec, struct folio *folio,
+@@ -873,7 +873,7 @@ static inline bool vma_is_temporary_stack(struct vm_area_struct *vma)
  	return false;
  }
  
--static inline void folio_migrate_refs(struct folio *new, struct folio *old)
-+static inline void folio_migrate_refs(struct folio *new, const struct folio *old)
+-static inline bool vma_is_foreign(struct vm_area_struct *vma)
++static inline bool vma_is_foreign(const struct vm_area_struct *const vma)
  {
- 
- }
-@@ -508,7 +510,7 @@ static inline void dec_tlb_flush_pending(struct mm_struct *mm)
- 	atomic_dec(&mm->tlb_flush_pending);
- }
- 
--static inline bool mm_tlb_flush_pending(struct mm_struct *mm)
-+static inline bool mm_tlb_flush_pending(const struct mm_struct *const mm)
- {
- 	/*
- 	 * Must be called after having acquired the PTL; orders against that
-@@ -521,7 +523,7 @@ static inline bool mm_tlb_flush_pending(struct mm_struct *mm)
- 	return atomic_read(&mm->tlb_flush_pending);
- }
- 
--static inline bool mm_tlb_flush_nested(struct mm_struct *mm)
-+static inline bool mm_tlb_flush_nested(const struct mm_struct *const mm)
- {
- 	/*
- 	 * Similar to mm_tlb_flush_pending(), we must have acquired the PTL
-@@ -605,7 +607,7 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
+ 	if (!current->mm)
+ 		return true;
+@@ -884,7 +884,7 @@ static inline bool vma_is_foreign(struct vm_area_struct *vma)
  	return false;
  }
  
--static inline bool vma_has_recency(struct vm_area_struct *vma)
-+static inline bool vma_has_recency(const struct vm_area_struct *const vma)
+-static inline bool vma_is_accessible(struct vm_area_struct *vma)
++static inline bool vma_is_accessible(const struct vm_area_struct *const vma)
  {
- 	if (vma->vm_flags & (VM_SEQ_READ | VM_RAND_READ))
+ 	return vma->vm_flags & VM_ACCESS_FLAGS;
+ }
+@@ -895,7 +895,7 @@ static inline bool is_shared_maywrite(vm_flags_t vm_flags)
+ 		(VM_SHARED | VM_MAYWRITE);
+ }
+ 
+-static inline bool vma_is_shared_maywrite(struct vm_area_struct *vma)
++static inline bool vma_is_shared_maywrite(const struct vm_area_struct *const vma)
+ {
+ 	return is_shared_maywrite(vma->vm_flags);
+ }
+@@ -3488,7 +3488,7 @@ struct vm_area_struct *vma_lookup(struct mm_struct *mm, unsigned long addr)
+ 	return mtree_load(&mm->mm_mt, addr);
+ }
+ 
+-static inline unsigned long stack_guard_start_gap(struct vm_area_struct *vma)
++static inline unsigned long stack_guard_start_gap(const struct vm_area_struct *const vma)
+ {
+ 	if (vma->vm_flags & VM_GROWSDOWN)
+ 		return stack_guard_gap;
+@@ -3500,7 +3500,7 @@ static inline unsigned long stack_guard_start_gap(struct vm_area_struct *vma)
+ 	return 0;
+ }
+ 
+-static inline unsigned long vm_start_gap(struct vm_area_struct *vma)
++static inline unsigned long vm_start_gap(const struct vm_area_struct *const vma)
+ {
+ 	unsigned long gap = stack_guard_start_gap(vma);
+ 	unsigned long vm_start = vma->vm_start;
+@@ -3511,7 +3511,7 @@ static inline unsigned long vm_start_gap(struct vm_area_struct *vma)
+ 	return vm_start;
+ }
+ 
+-static inline unsigned long vm_end_gap(struct vm_area_struct *vma)
++static inline unsigned long vm_end_gap(const struct vm_area_struct *const vma)
+ {
+ 	unsigned long vm_end = vma->vm_end;
+ 
+@@ -3523,7 +3523,7 @@ static inline unsigned long vm_end_gap(struct vm_area_struct *vma)
+ 	return vm_end;
+ }
+ 
+-static inline unsigned long vma_pages(struct vm_area_struct *vma)
++static inline unsigned long vma_pages(const struct vm_area_struct *const vma)
+ {
+ 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+ }
+@@ -3540,7 +3540,7 @@ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+ 	return vma;
+ }
+ 
+-static inline bool range_in_vma(struct vm_area_struct *vma,
++static inline bool range_in_vma(const struct vm_area_struct *const vma,
+ 				unsigned long start, unsigned long end)
+ {
+ 	return (vma && vma->vm_start <= start && end <= vma->vm_end);
+@@ -3656,7 +3656,7 @@ static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
+  * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
+  * a (NUMA hinting) fault is required.
+  */
+-static inline bool gup_can_follow_protnone(struct vm_area_struct *vma,
++static inline bool gup_can_follow_protnone(const struct vm_area_struct *const vma,
+ 					   unsigned int flags)
+ {
+ 	/*
+@@ -3786,7 +3786,7 @@ static inline bool debug_guardpage_enabled(void)
+ 	return static_branch_unlikely(&_debug_guardpage_enabled);
+ }
+ 
+-static inline bool page_is_guard(struct page *page)
++static inline bool page_is_guard(const struct page *const page)
+ {
+ 	if (!debug_guardpage_enabled())
  		return false;
+@@ -3817,7 +3817,7 @@ static inline void debug_pagealloc_map_pages(struct page *page, int numpages) {}
+ static inline void debug_pagealloc_unmap_pages(struct page *page, int numpages) {}
+ static inline unsigned int debug_guardpage_minorder(void) { return 0; }
+ static inline bool debug_guardpage_enabled(void) { return false; }
+-static inline bool page_is_guard(struct page *page) { return false; }
++static inline bool page_is_guard(const struct page *const page) { return false; }
+ static inline bool set_page_guard(struct zone *zone, struct page *page,
+ 			unsigned int order) { return false; }
+ static inline void clear_page_guard(struct zone *zone, struct page *page,
+@@ -3899,7 +3899,7 @@ void vmemmap_free(unsigned long start, unsigned long end,
+ #endif
+ 
+ #ifdef CONFIG_SPARSEMEM_VMEMMAP
+-static inline unsigned long vmem_altmap_offset(struct vmem_altmap *altmap)
++static inline unsigned long vmem_altmap_offset(const struct vmem_altmap *altmap)
+ {
+ 	/* number of pfns from base where pfn_to_page() is valid */
+ 	if (altmap)
+@@ -3913,7 +3913,7 @@ static inline void vmem_altmap_free(struct vmem_altmap *altmap,
+ 	altmap->alloc -= nr_pfns;
+ }
+ #else
+-static inline unsigned long vmem_altmap_offset(struct vmem_altmap *altmap)
++static inline unsigned long vmem_altmap_offset(const struct vmem_altmap *altmap)
+ {
+ 	return 0;
+ }
 -- 
 2.47.2
 
