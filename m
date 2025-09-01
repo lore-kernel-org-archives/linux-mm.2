@@ -4,138 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03FC6CA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 11:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58790CA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 11:10:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 613EF8E0042; Mon,  1 Sep 2025 07:09:48 -0400 (EDT)
+	id B6C1D8E0043; Mon,  1 Sep 2025 07:10:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EB308E003B; Mon,  1 Sep 2025 07:09:48 -0400 (EDT)
+	id B434A8E003B; Mon,  1 Sep 2025 07:10:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5018A8E0042; Mon,  1 Sep 2025 07:09:48 -0400 (EDT)
+	id AA8E38E0043; Mon,  1 Sep 2025 07:10:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F29B8E003B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:09:48 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0E04B1A07D2
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:09:48 +0000 (UTC)
-X-FDA: 83840411256.16.1DEF2A7
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CB3E914000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:09:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="nlPUE/e7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wxl/KWzB";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="nlPUE/e7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wxl/KWzB";
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 9B3428E003B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:10:20 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C4DB1DEA72
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:10:20 +0000 (UTC)
+X-FDA: 83840412600.13.64CB261
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B9E82120010
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:10:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VjFiCT0w;
+	spf=pass (imf29.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756724986;
+	s=arc-20220608; t=1756725019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1gsZxO7UwDiPyyfTVlyF4n/52yTA0EMnZqzW234FbC8=;
-	b=sxCRJaL5Hqib8h3Rba90oI/8nLtwfgH1e5pJpQIcl0YJAMBCAbr74Az3xCtcMS0HqLS3lA
-	ZXqzNNy9VZaLekJhopkVLEd3wlWnJ6LujNUejvH7c+qoK/CR5iFpqo8w563a5VMSJV9Ma6
-	RWflsL3B04xOxaoxWLcTfhUwwnhlgxg=
+	bh=2+5CubNWcmQ4tKQGllscaqN5xA93y5xyzPP40mFbmOA=;
+	b=NCJ2jKnI1mkwWyI+askqR8IWleSkr5NG5MF2kq7A4zTXWp63NG/iTalOgFplrlHbVaQt4p
+	/t2F2Z8Eq9eOj9yxQuE14Tbg0ZaUR8k8mBQrgHQDkzf0Ll/vgr+MhNsxNcap/8GMpCZnc7
+	Ppp8BKGDlk8nrT4IeqK1Gt/u2k2F+qY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="nlPUE/e7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wxl/KWzB";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="nlPUE/e7";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="wxl/KWzB";
-	spf=pass (imf26.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756724986; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VjFiCT0w;
+	spf=pass (imf29.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756725019; a=rsa-sha256;
 	cv=none;
-	b=CkgBMTAiZhAT/VAftJf41srepOj1ZSETovko8nGksii7MPjVScPKils4JAA5Iqwm6SY7z6
-	Uvbk/fKN9irLkdKUeG6bgcQWWLGiXcpFJ71E4tE0xkNcasrEQ3gPlHMiY4QCCdEyIIBQzf
-	gU/dDHZ17w4nRuoxw/J0/njkzcSo9B4=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2495F2117F;
-	Mon,  1 Sep 2025 11:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756724934; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1gsZxO7UwDiPyyfTVlyF4n/52yTA0EMnZqzW234FbC8=;
-	b=nlPUE/e7F+X8WrUw6J4qfcaLHa1uKKS4XsuggwRVtF7gTcz6nFif/WwVknP27fkOgF8s+Y
-	c+EmrfkGo3vXsFVUVjzCG1vpuxoslzDrD/1Puf/BAybyr8hg2XeZZ68zHLelYE+w82cAC9
-	XaT0ZxkP1W+ocEUdOALgCcVJZY1mdRc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756724934;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1gsZxO7UwDiPyyfTVlyF4n/52yTA0EMnZqzW234FbC8=;
-	b=wxl/KWzB0/GJpacisYIzHBgqZs9iqq7+mJn12vMwX9zQiiIWqooa/mHXaGDOtTjlqsCTbv
-	FZdwNt8oIPrStaCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756724934; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1gsZxO7UwDiPyyfTVlyF4n/52yTA0EMnZqzW234FbC8=;
-	b=nlPUE/e7F+X8WrUw6J4qfcaLHa1uKKS4XsuggwRVtF7gTcz6nFif/WwVknP27fkOgF8s+Y
-	c+EmrfkGo3vXsFVUVjzCG1vpuxoslzDrD/1Puf/BAybyr8hg2XeZZ68zHLelYE+w82cAC9
-	XaT0ZxkP1W+ocEUdOALgCcVJZY1mdRc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756724934;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1gsZxO7UwDiPyyfTVlyF4n/52yTA0EMnZqzW234FbC8=;
-	b=wxl/KWzB0/GJpacisYIzHBgqZs9iqq7+mJn12vMwX9zQiiIWqooa/mHXaGDOtTjlqsCTbv
-	FZdwNt8oIPrStaCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E11A1378C;
-	Mon,  1 Sep 2025 11:08:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oAwtA8Z+tWjtDgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 01 Sep 2025 11:08:54 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Mon, 01 Sep 2025 13:09:02 +0200
-Subject: [PATCH 12/12] maple_tree: Convert forking to use the sheaf
- interface
+	b=GB290xJ+3X8s3Bh2vCmD7omxifqfxbRWSsvQPkaFLo2sCemVkdyLFM3t7Kk7JqKS2NH4+I
+	bBIsqpG7kYS52N+zKaqgJ6m0W/yy2ppV2QNnARj2u+yuDzt1bdiE1s6sYRFBli3kqT1qpl
+	S7u2tUMMiQbygnOf3r8RzE7fImHJIYU=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1756725014; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=2+5CubNWcmQ4tKQGllscaqN5xA93y5xyzPP40mFbmOA=;
+	b=VjFiCT0wRGHaMapK+RWlhrJWrvzjRGgI8ro+POy5PYwm19Wy2Lnq319CnmCNpltk8k4ED/++6JM31hT5hNd3rIiGByfIAZUCSGtzHfFGQtLXs/R7yFx/xs7RqVOUokYFNTwtgnqCjm+tRQfFWQSKUc4/hTRZHU9WMUC9+hf+Mpg=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wn23mIs_1756724995 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 01 Sep 2025 19:10:12 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Ruan Shiyang <ruansy.fnst@fujitsu.com>
+Cc: linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  lkp@intel.com,
+  akpm@linux-foundation.org,  y-goto@fujitsu.com,  mingo@redhat.com,
+  peterz@infradead.org,  juri.lelli@redhat.com,
+  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
+  rostedt@goodmis.org,  mgorman@suse.de,  vschneid@redhat.com,  Li Zhijian
+ <lizhijian@fujitsu.com>,  Vlastimil Babka <vbabka@suse.cz>,  Ben Segall
+ <bsegall@google.com>,  stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm: memory-tiering: fix PGPROMOTE_CANDIDATE counting
+In-Reply-To: <20250901090122.124262-1-ruansy.fnst@fujitsu.com> (Ruan Shiyang's
+	message of "Mon, 1 Sep 2025 17:01:22 +0800")
+References: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
+	<20250901090122.124262-1-ruansy.fnst@fujitsu.com>
+Date: Mon, 01 Sep 2025 19:09:55 +0800
+Message-ID: <878qiya0os.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-maple-sheaves-v1-12-d6a1166b53f2@suse.cz>
-References: <20250901-maple-sheaves-v1-0-d6a1166b53f2@suse.cz>
-In-Reply-To: <20250901-maple-sheaves-v1-0-d6a1166b53f2@suse.cz>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Matthew Wilcox <willy@infradead.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, 
- Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>, 
- "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-X-Mailer: b4 0.14.2
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: CB3E914000C
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B9E82120010
+X-Stat-Signature: ano1cchrckwt4oqsqqkpaahc7yshnqtp
 X-Rspam-User: 
-X-Stat-Signature: 5p4di1okgad1j7owtwdsk96jqzty66fs
-X-HE-Tag: 1756724985-726680
-X-HE-Meta: U2FsdGVkX1+iQRGgugU0QuGAgIRoXF/C+E2eFyi8HK9CVvUbvQqObSl60TJblZpGZ+fAjWf/hS1az/RDLawJboAOhP7rXEgC5gMeaQVc1d+9v4RIC7bgf6vcWQ781U3v+Fa3eiN1eZJOfCyvx0tRwFcdxdlLoz/9hrtaRyKwcoMkkc3QASirBvcV4DFOzMmhRyAZUtlk5UTenqdp5+Y1gbfQ4N1iCKxp3eRhZ1zBVg/fwVyATbYvJJBiW9YKz67ZiPdgDZaI7p/1dVoH3toh3N2zx/R1oFvzJC4JQU5Dmzx72ADO77pI2tysu3iUR0LN0aLfv6EB6u3t9B/5ICeoUDwUj0WbQ9fW4mBGuqiaqMBn2Yl2rYklhGmea34NrSuGQ1shQxfPnJBf5z4oiSSzYmuDuxnBIus0CIlWzQ7FNZhH53yLwAWoMqSTSFYvEyYwTS5MwCMYzCabe2E/SeE4Rwio30V90WZ2jJpd/AFtgPpme2oY4ryP8WXn8zvxahieJ/1Wydd6O41soVQXgh/KagwFOuyplQPCoYmE9xNsgkGGW0sPVXileVGWqsDU1oKiFkWZChCHW3QypK6NBt8DMrZKTRiLVPiRAmGtuEshyrEgCRy6+q8Wv18RuxRWX3o9Co1AfmAqO+0/bo+9MYV1MELvRzN3XToLaqVTyqzvhAJuC64CC7HzxZetsrXhKva+52PQ51+SI+IC/z6p+yAbXAZLaCWhBKR1dOgUKW9ztDgVsBHm1YhXgOCr9HyPlCjDw5Wuf1MhlWQGrbu38XLN/Sd9dNSTDhXeAA4Dk179IUQttLcU9hD/q2BfaeyKNwHE5bjukisYnaNqXgSRnmSvC+8T2CTJ0u5kG38j/YXk3Jx4xMoH5ShSfOPdcrA5xP0FkU6hV3fuS2C8nVlwx6LUZBGihwvta35KhdyhCxUu8/8BUf8qO705qlayDWUDI0e/tKzsaYKZJTxgg/EuZJB
- kceoUaTP
- zA8NrMB4rk51otZXn2y26zeFaA6c6LrG3mA8tizjmiFU7djEOnNnZ9G1Hxh6DUW26pjTQ75UPxgLtGMwOffm6eC+co5IuWTpRDJ7uShVXINaOukcBwkxIZ0mslupF/Qjctq+APJhx5xBNpEufmSJ+cfd15zMvUHbK0DoixBdUE2BRwtQhejIru+V4UMPWfUVrht01dnRX5Kpkt0oIcmt3co5Mr1fV6UKTw2KPtNstM5YcXv8NcS1xcuyQTNIQ7A9iTwSQOfTMEye0qQdkDA0JfEUPQfm6s3K5bhMpoeivrL1ZJYFMvE+yBwyVUVcThst67oTd2oCbmzRIUdSpsnMrOsKjFhG3/iG52DUfvqCMVYoZynFtnKnW5+URtAHM0AVVjp4q
+X-HE-Tag: 1756725017-842687
+X-HE-Meta: U2FsdGVkX18e+/6Y3rRQI6hn1XF7u91kw6geBrno7PCDutrs31JGGnbo/vEgIwq58na/3bOOhVX7lVeRBSEBEd6sl7weuS2W6X/uxcR7UEUoM/H+RpYA96OdpxjvFfUZ76BGHqzAJbjkM7utTuSrxGT4KHAby5AzKTspipclMyuCuJIJ8hvS7/5NpieZp0oaA6BMb5dxw2g5Uki2oZmvwXO91cgLIwbINTIicB/cKDh7YiaAP09n917YxxdPkAB3aXZjCJl5E3YpcX/ePu4Gwd6I4dh4gYisjmXIWfPcjuBxwR5pEhmHpwGSj5V79pVfdKXzSggXfD28cLplvGkzSY4Nx0e5mpNEjAAogx7Cz9i8xf4lcI0BFNGo7YHWcAuEScqJTIeczsmjqAdHWx9OrHhnJzR7yOJBkELHEby/4RL+zvcok5G7sCA9xkLdSduIMV/gWOcZPsloq+IbK5SevaillIUl7lRmpf6fP56ZKTIthudxAP/YL0aDLAT13GHgYF3lGgsIloHQy4QPA8LO6yaaj6ofCfBy7so+PqOrtfylwCEOhmKSOrOzluyPGL7vurXTFIx3C04UmiokafpSG6Wm9DUH19vpKk+4p1arQQO8n0JblRGqVjD3n+8AWuTC/g1sIUIqxtzTapBxo96L4IYJ/hQJwPUZn4OZvuwuAzUWayCvqDR6sMU4Af+hDrAg+wrMMoWitI0bfTc817iQI2B/CG99fpVTLFUNoFhFSq7fLZcDfcsFQCr6Z9qA6+F78gj6JwkfObVVdqaWBIWzyOsPgY87SHxrvBM+GrfOYeBKlTBcr6+tnIhmWFIjuQ92asRbnLG7hikzSBsJ2hk0k/x5oyHUdkDgBY3DGG5Px1Wjl3iSXNPHq0hPDSt6I/RZio+xYCIvyNzFrDErtdr6RjN0RTwGki8qQlH+wa600IAwYp53iJQGNMN0ndFyGt+n+bBIpjk8BHCzJZZ7CXQ
+ 2Q4w6evO
+ ye4xYAZCC6S5O11ofYpxF3AS/3LylfNOxhMcIze4xb/s7q0IbBlXdgI+NZ3barObO23AMzgGWRpN5HgY8IX8ET3NevjP+DDRFwxaZqUCDgIlv+RlU3mA4tDe5kTmqlmQdZqwPnrqPXrVu5d6V1GaiXOCb6DU518Ajuqsb7xHWDTx5SjTB8WHKxi/qVxdEj1ZJr6xk9TckN9LMX4hZQWz+KfesdBzQ1DijXKtuqGEZLWm17aEtFaTILf6Gu7IrDQ+NqNwYImPD13qaL6M+9tVtt9J6yqgVvfooNJHoLZIqb9Gma85+hXCnUjY6Vtje0CE6AdMlb1BgVu6BgA4VwP68tEwzicLp/z4hdwxTKseMDu/V+YUQP1YNIdiOypwP/O5lib63qe0M1e7wExyOy+sD35xNaYdEuj7ZBGMh2Wk148Oz1saG4GtmRc1AzAkyqU7muPQPWAEdct72vQaChnhe9BQz3YLbwWO/NB0jjC15LkLIdc9ONc0GUpcIQ+zo2wS3gEUU86//UnflAnAKfCTxe1vtBoCX/PKVmaVlvob4Q3LCU1IOeAcNDyLK6NUp/cHkHjomjMvtr2Z/nAwpLVmWkjpVvQcBBME+tF7OMV0X230ILBTvOYQfsAS2+8KpGVApf9yrDGjHoEQxdsN+jYWplZw4wACeVNVQBrgRMswHvAwwZpeTUDJQGlv3p2si/UL2BfHS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,119 +91,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+Ruan Shiyang <ruansy.fnst@fujitsu.com> writes:
 
-Use the generic interface which should result in less bulk allocations
-during a forking.
+> Goto-san reported confusing pgpromote statistics where the
+> pgpromote_success count significantly exceeded pgpromote_candidate.
+>
+> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
+>  # Enable demotion only
+>  echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>  numactl -m 0-1 memhog -r200 3500M >/dev/null &
+>  pid=$!
+>  sleep 2
+>  numactl memhog -r100 2500M >/dev/null &
+>  sleep 10
+>  kill -9 $pid # terminate the 1st memhog
+>  # Enable promotion
+>  echo 2 > /proc/sys/kernel/numa_balancing
+>
+> After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
+> $ grep -e pgpromote /proc/vmstat
+> pgpromote_success 2579
+> pgpromote_candidate 0
+>
+> In this scenario, after terminating the first memhog, the conditions for
+> pgdat_free_space_enough() are quickly met, and triggers promotion.
+> However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
+> not in PGPROMOTE_CANDIDATE.
+>
+> To solve these confusing statistics, introduce PGPROMOTE_CANDIDATE_NRL to
+> count the missed promotion pages.  And also, not counting these pages into
+> PGPROMOTE_CANDIDATE is to avoid changing the existing algorithm or
+> performance of the promotion rate limit.
+>
+> Link: https://lkml.kernel.org/r/20250729035101.1601407-1-ruansy.fnst@fujitsu.com
+> Co-developed-by: Li Zhijian <lizhijian@fujitsu.com>
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
+> Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
+> Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Juri Lelli <juri.lelli@redhat.com>
+> Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ben Segall <bsegall@google.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Valentin Schneider <vschneid@redhat.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-A part of this is to abstract the freeing of the sheaf or maple state
-allocations into its own function so mas_destroy() and the tree
-duplication code can use the same functionality to return any unused
-resources.
+LGTM, feel free to add my
 
-Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+
+in the future versions.
+
+[snip]
+
 ---
- lib/maple_tree.c | 42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
-
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 61a322f945c28f5c3297c506923f00bcce5c7bca..5ef15e39fda8c7c65035fb7ed125b82dfa52ca69 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -1172,6 +1172,19 @@ static inline void mas_alloc_nodes(struct ma_state *mas, gfp_t gfp)
- 	mas_set_err(mas, -ENOMEM);
- }
- 
-+static inline void mas_empty_nodes(struct ma_state *mas)
-+{
-+	mas->node_request = 0;
-+	if (mas->sheaf) {
-+		mt_return_sheaf(mas->sheaf);
-+		mas->sheaf = NULL;
-+	}
-+
-+	if (mas->alloc) {
-+		kfree(mas->alloc);
-+		mas->alloc = NULL;
-+	}
-+}
- 
- /*
-  * mas_free() - Free an encoded maple node
-@@ -5408,15 +5421,7 @@ void mas_destroy(struct ma_state *mas)
- 		mas->mas_flags &= ~MA_STATE_REBALANCE;
- 	}
- 	mas->mas_flags &= ~(MA_STATE_BULK|MA_STATE_PREALLOC);
--
--	mas->node_request = 0;
--	if (mas->sheaf)
--		mt_return_sheaf(mas->sheaf);
--	mas->sheaf = NULL;
--
--	if (mas->alloc)
--		kfree(mas->alloc);
--	mas->alloc = NULL;
-+	mas_empty_nodes(mas);
- }
- EXPORT_SYMBOL_GPL(mas_destroy);
- 
-@@ -6504,7 +6509,7 @@ static inline void mas_dup_alloc(struct ma_state *mas, struct ma_state *new_mas,
- 	struct maple_node *node = mte_to_node(mas->node);
- 	struct maple_node *new_node = mte_to_node(new_mas->node);
- 	enum maple_type type;
--	unsigned char request, count, i;
-+	unsigned char count, i;
- 	void __rcu **slots;
- 	void __rcu **new_slots;
- 	unsigned long val;
-@@ -6512,20 +6517,17 @@ static inline void mas_dup_alloc(struct ma_state *mas, struct ma_state *new_mas,
- 	/* Allocate memory for child nodes. */
- 	type = mte_node_type(mas->node);
- 	new_slots = ma_slots(new_node, type);
--	request = mas_data_end(mas) + 1;
--	count = mt_alloc_bulk(gfp, request, (void **)new_slots);
--	if (unlikely(count < request)) {
--		memset(new_slots, 0, request * sizeof(void *));
--		mas_set_err(mas, -ENOMEM);
-+	count = mas->node_request = mas_data_end(mas) + 1;
-+	mas_alloc_nodes(mas, gfp);
-+	if (unlikely(mas_is_err(mas)))
- 		return;
--	}
- 
--	/* Restore node type information in slots. */
- 	slots = ma_slots(node, type);
- 	for (i = 0; i < count; i++) {
- 		val = (unsigned long)mt_slot_locked(mas->tree, slots, i);
- 		val &= MAPLE_NODE_MASK;
--		((unsigned long *)new_slots)[i] |= val;
-+		new_slots[i] = ma_mnode_ptr((unsigned long)mas_pop_node(mas) |
-+					    val);
- 	}
- }
- 
-@@ -6579,7 +6581,7 @@ static inline void mas_dup_build(struct ma_state *mas, struct ma_state *new_mas,
- 			/* Only allocate child nodes for non-leaf nodes. */
- 			mas_dup_alloc(mas, new_mas, gfp);
- 			if (unlikely(mas_is_err(mas)))
--				return;
-+				goto empty_mas;
- 		} else {
- 			/*
- 			 * This is the last leaf node and duplication is
-@@ -6612,6 +6614,8 @@ static inline void mas_dup_build(struct ma_state *mas, struct ma_state *new_mas,
- 	/* Make them the same height */
- 	new_mas->tree->ma_flags = mas->tree->ma_flags;
- 	rcu_assign_pointer(new_mas->tree->ma_root, root);
-+empty_mas:
-+	mas_empty_nodes(mas);
- }
- 
- /**
-
--- 
-2.51.0
-
+Best Regards,
+Huang, Ying
 
