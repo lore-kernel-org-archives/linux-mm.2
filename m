@@ -4,183 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A4CCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9205CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F07488E000F; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
+	id 0E4988E0003; Mon,  1 Sep 2025 03:59:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDE248E0003; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
+	id 0BCD78E0002; Mon,  1 Sep 2025 03:59:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCD3C8E000F; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
+	id F3B738E0003; Mon,  1 Sep 2025 03:59:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9E558E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:52:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 73F7A5AF00
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:52:26 +0000 (UTC)
-X-FDA: 83839913892.17.7678574
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 165E22000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:52:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d2neTr1z;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756713144;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HllG5yxgEuvgobHZe1WNgsnnNNSMr0+x2czShD/v46g=;
-	b=4hPf89jb7MYap0/5dDulshfpasBiBXLQ1cwJ8Enyl1mY39LheZV8nkHIVMjj4lvuh0AlOu
-	lsedX+AQWx3fVPNZNaRrBtdCkvpjS34dZmedY/MGQq1kOu1CiVriDv+CEj9U4QektG8eqz
-	yRTFEU7Ns7A4tjFjTdJ2qTivVmIYlQ8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=d2neTr1z;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756713144; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DEC188E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:59:04 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7FC7A5AF12
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:59:04 +0000 (UTC)
+X-FDA: 83839930608.08.37441C1
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C48F780007
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:59:02 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3RVK1aAkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3RVK1aAkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756713542; a=rsa-sha256;
 	cv=none;
-	b=CKRTyWmk/PEIJulN5FgMXAI+76vvpBWbIrtyzzZXymTEa/6Hs1xd0aqqzyAhMmKuqiZfVU
-	7T7fIGbb+USEtAYy4nsp/5lKqk9OHATB/UM2d0A6DjvG4jK71fDGK0V/VY8ZSVJ/zLenlL
-	7PYPsL88tc/GWEpppjAMmV8EB/lGsuA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756713143;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HllG5yxgEuvgobHZe1WNgsnnNNSMr0+x2czShD/v46g=;
-	b=d2neTr1z+lW0Qw0mpjusjwmEJ9Xzkm0mPaGe+TaAhCkVtSnvohJ9Thi+rtbXYT0XRCV8Ej
-	NcL5R2llg+4LOkVEkO4HB1nbSgvPIxhC9Ge217sf9kMtLCu0YYkPa/eaLUzlAOAPETtLtq
-	XXm/3xXY61FkXRRwsWAJboi86022sck=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-usDMeNGjNqieiy-t66hD-Q-1; Mon, 01 Sep 2025 03:52:22 -0400
-X-MC-Unique: usDMeNGjNqieiy-t66hD-Q-1
-X-Mimecast-MFC-AGG-ID: usDMeNGjNqieiy-t66hD-Q_1756713141
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ce059e3d42so2358703f8f.2
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 00:52:22 -0700 (PDT)
+	b=ZF697hMIJpUDtJp7xwr2YN7fD5igDj8dFZRMUBKra77aWFKSGbblWJleL+L0fqoSnP08QW
+	DB3C/wEua+WXfBjesrNrWtmkm3Ajd9imAYQzWWZszBlSLRiSiR7ltaF0wOX3wgJx8IbuMU
+	kCXFzziZqDc5bKkWBvRISDzgnT26MFY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3RVK1aAkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3RVK1aAkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756713542;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=ncCn6bpTVDHk1ba1TpluJzliVkR7s5GToCEpP4HhJVg=;
+	b=0j2pd52eL2McB8KI9r79L1vB9DVvx0amk/zsAXv2izVYE+V1Sk/axYBKcEvDhNTJuhEX4I
+	ZzjVpkCHUrMP+BJNob59o2lof8sKRb1mbJn/fYFo3ID4DlNB8/v8xO2fXM6Skbvdg2Ex8n
+	L5PkCGGLdPNpsABFHWkYMnnnGWaHVf8=
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3f34562d167so30956825ab.2
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 00:59:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756713141; x=1757317941;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HllG5yxgEuvgobHZe1WNgsnnNNSMr0+x2czShD/v46g=;
-        b=Qnd4hnqRvvJiRZhLwJwnzE50JbJAyiYB0MJkQvvccju3Of+cYQ9vTKOYPnOR1nIrXg
-         kXgNNYC4aeFGYvqa4wsfZ00Hx7rYy7HqRqJxzuW6sd3EAq8Ne7jp1cQdWYhlp6ZF2ZNm
-         H8gqNFhVfLTQ4dCieooFezYboEVL2j5gg0uC6W/jIe3bR6mOL8zyE1gWfcBRzy8ezkQ5
-         GR9vaLE4n87/+jVj0KMf3UKHhNr1hH1b2xy/zQwN1GB0b18qAII+wKIfo5NvwW93orol
-         CUm7vA95BvNS+Z4+jNQPBHNQYgPmnZZlVGxvzWB00WZS/177CPy8be2RmD9uYkSlOAht
-         bvHA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmpGCGWWSDL33TXdgIl7ZZrFSuG9wEWGsFHZmcPVcZ1PdYSQesRoh31cgb+aXp8wKf1tYN1uYAYg==@kvack.org
-X-Gm-Message-State: AOJu0YwXyF37uE58qKcNbT/6ZL42f+Iawu8VVGB0+KOOVZ/e/RaU6eoC
-	xfCCSZZTDvkYhIPlLmZmyn7P+GYbb3Rk1xB0RXxc/7sNZnCNZsZptlCI+VhN6+0uVIQZZAtDdsp
-	IIRhBk2S1c3wCz/ZlAf0pYQvwISRusgvADUvTY9IZ2H+BUT7tQQXo
-X-Gm-Gg: ASbGncuKg8Xh0MiJ3rbnyfOeSlcDljGetx8r0599z0aKxiPZq/k1QJdKvctY5n8kTRj
-	R8x3awc+XmH+yRz4GhrGYXURHwME/1/1OYbXm1/sYWhhVN7Y3jVHWxb8M9EyH5kd0d/m5mACN4Z
-	wpgQAhDJptqUS/hQgrZ4uwaDxjQYt35pU0sD0XckVD4zdcCcYkrEJUW7zJUowh9gOkY8cWN4cyj
-	lsuN0vn/EB01fLJiHFOMsica87b8qErsKM4yvR1XDSQeJSlCDSnCPisMY3yGjN5PWav2gjHyZqX
-	ZrT99sv6Dc8yG4KTX+sVd8jcBTdaV1cTtyRZPWxOnp9fF9oxcdFO+dg2VWyMNsljjocFmcNnU+l
-	q7HQIBf5XH+5PDUEKFtNPBVHjgR/7EUbCs2TnY0qJ4RIY1/22wQcU9WP51yAhiePepE0=
-X-Received: by 2002:a05:6000:22c8:b0:3d4:d572:b8ea with SMTP id ffacd0b85a97d-3d4d582029dmr3197731f8f.34.1756713140936;
-        Mon, 01 Sep 2025 00:52:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkxrzk0lP+lzTzium88rZISj1JP6wQQDJHhaGn2DR4npJJgvliAA7HY6y8ULZXDuQ1rwzhPw==
-X-Received: by 2002:a05:6000:22c8:b0:3d4:d572:b8ea with SMTP id ffacd0b85a97d-3d4d582029dmr3197620f8f.34.1756713139105;
-        Mon, 01 Sep 2025 00:52:19 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d0a1f807f9sm13185017f8f.38.2025.09.01.00.52.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 00:52:18 -0700 (PDT)
-Message-ID: <92def216-ca9c-402d-8643-226592ca1a85@redhat.com>
-Date: Mon, 1 Sep 2025 09:52:16 +0200
+        d=1e100.net; s=20230601; t=1756713542; x=1757318342;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ncCn6bpTVDHk1ba1TpluJzliVkR7s5GToCEpP4HhJVg=;
+        b=ShGl08CrG9osvIk5rwp5qMqnsYScu0OI7Sv23RObC5snWTtN0YkVpWALIB07dBuJkE
+         azwMWu2E5ckA3Pvy5sQ0ulq5f+fvJdwE7e53IJz2KgO5xRP9v401J8D/7Bt1IwhacYSv
+         tDKlaIhY1VWrUwItmzpbOHVyCPDko/HHIb8vle1eir+ep2E8kIwiAOzri6hH+WSIlDdj
+         tYbsye60yhZKWUYF39AfyY70ieHQqLgvKPxSWs5rD7B2MnJtUO5c40pmU6B6Zs5HfnXk
+         J0Zf2+x+rucNfRYFJeeCKBNhgF0DfSdCOasa191ribOSREjgDYu8HHtc2J7dIzEwzVBV
+         Y3zw==
+X-Forwarded-Encrypted: i=1; AJvYcCXcVanKXzcl+0ZKL7WNK7j4Q2LQfScKu1Tpho7COb7aoFOec/zEFQphrpY63R6rBL7f1W1ZO3p/WA==@kvack.org
+X-Gm-Message-State: AOJu0YzELvnIo/UaIdHTzzIClQMvLgyTnqk8q/AqcSG+X240cq2tzyXh
+	ALKk/EYVe6MlifxXSHXSJifwEQIqWGL/qNQjEp13hc5AcbVOrbt59M/qV7cDLh6tv9HIsX0YeHK
+	N8TGstBghAHEAuYdlMLGgAwYglxDPmg1Gp212nZ9piaNWRId/BXT9JBzv3oY=
+X-Google-Smtp-Source: AGHT+IG1coevK4BPflUC3vJfg3mRNLVwz6bIIweWGs6nW994OKtQhlFQDvA5RRrv/tDtocb6ctTseJaAcH45ebW8YHSROsp0rn+s
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] mm: fix folio_expected_ref_count() when PG_private_2
-To: Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- Shivank Garg <shivankg@amd.com>, Christoph Hellwig <hch@infradead.org>,
- Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>,
- Peter Xu <peterx@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>,
- Alexander Krabler <Alexander.Krabler@kuka.com>, Ge Yang
- <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
- Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
- <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
- <aLTcsPd4SUAAy5Xb@casper.infradead.org>
- <52da6c6a-e568-38bd-775b-eff74f87215b@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <52da6c6a-e568-38bd-775b-eff74f87215b@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FnrDPLYEag1fLSjmWlfwgAYCFxg3P0UZjfDO4EyOkOo_1756713141
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 165E22000B
-X-Stat-Signature: 6n9rusictwts5pdfijbr7r6mjj7qi3wq
+X-Received: by 2002:a05:6e02:148c:b0:3ed:6cee:f83d with SMTP id
+ e9e14a558f8ab-3f4019f6bd1mr126599275ab.20.1756713541938; Mon, 01 Sep 2025
+ 00:59:01 -0700 (PDT)
+Date: Mon, 01 Sep 2025 00:59:01 -0700
+In-Reply-To: <00000000000091e466061cee5be7@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68b55245.050a0220.3db4df.01bc.GAE@google.com>
+Subject: Re: [syzbot] [hfs?] INFO: task hung in deactivate_super (3)
+From: syzbot <syzbot+cba6270878c89ed64a2d@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, brauner@kernel.org, dave@stgolabs.net, 
+	frank.li@vivo.com, glaubitz@physik.fu-berlin.de, jack@suse.cz, 
+	jfs-discussion@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mcgrof@kernel.org, 
+	shaggy@kernel.org, slava@dubeyko.com, syzkaller-bugs@googlegroups.com, 
+	viro@zeniv.linux.org.uk, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C48F780007
+X-Stat-Signature: b3z3coqb5w17hjjw71mfhmzrtu78xpsn
 X-Rspam-User: 
-X-HE-Tag: 1756713143-779828
-X-HE-Meta: U2FsdGVkX1+Hme0OR4umC5iVxgaveiI/4o8F4d0NTlHkrl2zPFMt5rzvYvggIS0PhFXWEQcp05LaRzVkUQU3x+ZWo+c33xvUc/dzvaLvLPbldeFOEwiEdSy5rvNIJ54BB3BEYyDGVSbqYRD/hXIuXAk5zlPni92yJw2hbXPR1w/7kxfuLPDLEJ5iiru/wygUrJx7KI75ca6srBgzAs4zslteawXSM2+W4Wwa88M26z4Yp2E1/iO6w2VNq02RcLKrPrzC66WpGX7Dzcup0z8rjy8KMscZCN4WjzzJHjR8cG/wsvJOHxQ2O7izAaNGjJQIAe0DHHVFa0WoEhGeIMIBTUn8iLsdfTuyPKw2p0VBvmUuqfvJ5bWOzra6KtYK7uRSgHiLXpYWi7ePuaUnrAwBTVJshDo7zr7DEurdnG4/ZhMP2bf738B5q0K+S7UtNUCPklDWqcdrGCuxrgnW3PwtjYUm6fxWXLgiPDaTRb+fStgsTV8Cut66Gszoh/N7YnYLjYVkc8+zhIudMuonCJUpsJ9kMW2YAhABk/omf+kiD+ZR+66NBdOeFXsYFf0Bxuyw4flWclJovcHsM9+WV02yCpMTWX1gZkEF44mcCD1HJ7usK3C7iJspql5etDof5OMjeXhE6Kn8bkSN7YcKqSCXndkC4CPnb/BuFzm9bhADpPP7pVgx17L0qGcZUCzZD+0JQnSEb33E/rbsfAdMwzAq7f7HOqsO/c7QGxU5Lmc7sNJOcERQ6is6zuKeduO1r9fzr2QgGGAjhHCBNyIv/Mu3BKqj5p0MqJ9z//NjfFZTwn3rnnPVTuNBYUu8JwEyBvn5IROBZlgCjbFDHZwmJPqltodewhpLj/0N91i2L5lZsSGjcPE6RCnjNx86ohcVoVWJ6kHgnPP+KUwE8nkvOnSSii5JFPrtUuTtJDkoozvD3Hq2Wc6fFOf82xoLcsWVNz9Y/LyZjqdxkuQZNCniz6w
- ANlOlEId
- c/ZUaI5kf5olwiRFJRARfLAI/SS9pU6OU+UaaIsNZYdYu2a9Jkoo7P6LAOE9dQoveNUcIz2tMjviKeZY8zzYjfl+XBNgYaZn7iWZFNNlMfCfYfEY8NwffYcFETh34NAq/kPk1Nf3BFGhaC9Zqpk6npyw+gEitHw0n2gr+3XH6q5EKMTf9Bf7CUXs+3DDWW+0xrVPv5PEwWSS/Tqrdmde7rXQDjZbyKyS38365v/9svZ6ImgTJRCLtAfZlAjFtBM65VT8dBRTWjjaNYd8JgG5xL64ygBrGcQXlME2Gx5zf7NDFgZ/WzcHn/S7H2tsAz0gZwhcEpSp7G6BRGKMeuNBQed/6mQgFZKvMDGmfwJecgD3LgXQldCd0yH251EQOvxdirQ6lRlYbAPPUI0qwXsoag7R2cIHlXzJAS1jYqwq+Cg9FWtbz3TLZQPAosMCTKcBSPZKQ5YQd9E6cVpGUu/9o9hMLWlYbmV5TtsHy
+X-HE-Tag: 1756713542-782138
+X-HE-Meta: U2FsdGVkX1/UQtE1VIsdXSD55P3ULb/kYIFlelANTlJg1Ojk7w6cnbAAlEf1fffMzUqSxnI1UL919uHhDsCR86/+V6UMuqQ2SE7ioe3qWVz0as7DPkBKZiyM00DURhU/4YXlj3G0x/FVcVzR68xQ/GzAbC1EIKmMhbInppWQ7ySMJf16vfJHvRh1OQ1D1GVNCo9J1Xr8dLSorKCYP4zwQHod4c0EJ8CjFzOz4llCCNfnohRd75tVd+3Qnb9Xr2mb0SHoFuNyMdJfrZx2jTG7I3wm6iNwxs6kPMnLzfQ7/1HrcRUsgCTwVG6i07R3bzfsv7K3nINi94NFPuMioePUbDMiZxg3xGHwYMSqqEfxeyGHjFhphXP1Dl5IWQxtFN3HMLyQyf/jFyElfyuiGk17nFoIXoWHL1Fdiy44cLAlh0DXBxF/ysEp43FzzpSs6XGWPzx7ctGDtpspgp5e322ynkEUtBPr1mmZ4fVWkfnI+toFjfwV/tLzQ3d1OkSfsaSJr0XQlD9Ihh/oH6fWeDfJg21Aie/QHUx1s8KEQtQMvf3RhOztSz67M4O9IoCpnHD6rek+7ZOdwxihyDaNMfyyvDV+P5QKRVgSh+A/EmRPxLWdwLH+oxln1+FsXiUWmtbw6PKP0X1tYOL+mUZ7w8NK6q/2ODBmbTQUQuskVoVTWQbgRCPxzfpx3VIStwGR0Z9UbtBgKXPlLYrMFoKx0vM3ytdLtcMSk4HGCv711q90d1sWLShQmRAY2KfOEGCRWcBhYaMKQZNvMraPbLtxjYOV7pT0Vcx9iW9Ay+fK/NFGQqzJs4sZp2NFnn8ROIX0k912kfXWKrljvltktzqiZrzxMGVXJ/BoVnZZ9BYsor8npKixdNr6bF3PANMoJgpjMHuasxehCi8YTu9esrzUpS7IY0OLXuhT56La8mgWsf5gUUGikbTGdgcd8TmOca41rT1xhJM/F/Mgn/fNMnm9Gz+
+ riPrmE+X
+ fXzrKQqKO+GTzxF90zBQcl7kGxW8E/4DGySGoqSVyF+Gg7+dMA+8442zx7mCqtms/ybL6ZpuEVciF0KQQyv2JoH95rW9XURa5ianhPPveBH8qtpv7h+IAiy4tJQMKeUGGQh1BRQ8odk118y8u0t62mPh0PIgr7LeOWO+6BuvS+LXbuD0GFNf3NeeQAfBLH43xNTje+75VULBFvzX/deNu41/4UT/22EQy1SEDGKF56ahSLcX5ygV0KVcDGlqKaRlbYdw1zhtiOJDuDvjZ3QGKehS2n/RSZ5WTfpiXMtkqggnJH2+5mgmQs4m83pCrejP7yXhxpOp+89tAjJLBqdBKYpY0FW4dlwPosoaFJ/+cAzQItEtAZFSJmc7cZeUXJAXvdlBkhzMOsc2V538FSY0V4T/eagf/wDHrwMzD3C2+20UYQFiGbXeGv8KKgWp3lfx2Mn1WiYiMLBzRsAlS2bjz6uuHf6RCGutyxJd3a542uzpS/iyzuuUM8ydpsfZ8q15y3jTYjnvl4qHEEPB3diyN9KqLcZuzJU3ColWl0HLv7tnnzQ1wNkRr5RuCm7es1FhJnZqmpA+N6fcRgC4rArqCWkx+tCMLRCoeIA4N4JMOi0qzBDwVTMsjk+0BDHrvoG0rJ50SayvHrH0GsTqDMGc455lPNHLSLG8R/vPZzoEs30npuckCz11BFbg0PgIAZFByiRI5au0gDrymBTSprrBaSUzinvyDwg9z6zU/Ju25bc06Sm9PyRvORItYeL6WzyigrfFC/wmX+33aDSBsyf1LHNyog/Bpp64dkXBBnj1bQqHzb5QnznmD5HC21F7sHIs73e3vwcrcpojBAzMCBspOEj1okocNBobR8touqkVbavC+kcDX6QgR7jl4J6yZZ4hLQAXH04YjnkboNxaNnb7gxfTIkEvWhxP8s8a1oRX2EPNej7dHTpGFnCl9RERgoPnw5NoBhIR26kEedLZg8Nji7Hr7w1EE
+ 30HZZ1JB
+ R4n3ehyjTF1xZHKEGrXtMo9lXujQUAXAUChfWSsHwtAjyZi6YgOBQmKjMJpkOj6JvRkb74puML7ZY7jCYYMTbwfyZVYirAWzeFV4x9jdwhurxmKfCWNTFgAKVqdawlemaXqEYxnW6qyW6lF5ka3DDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,110 +102,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 03:17, Hugh Dickins wrote:
-> On Mon, 1 Sep 2025, Matthew Wilcox wrote:
->> On Sun, Aug 31, 2025 at 02:01:16AM -0700, Hugh Dickins wrote:
->>> 6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
->>> which (like PG_private, but not in addition to PG_private) counts for
->>> 1 more reference: it needs to be using folio_has_private() in place of
->>> folio_test_private().
->>
->> No, it doesn't.  I know it used to, but no filesystem was actually doing
->> that.  So I changed mm to match how filesystems actually worked.
->> I'm not sure if there's still documentation lying around that gets
->> this wrong or if you're remembering how things used to be documented,
->> but it's never how any filesystem has ever worked.
->>
->> We're achingly close to getting rid of PG_private_2.  I think it's just
->> ceph and nfs that still use it.
-> 
-> I knew you were trying to get rid of it (hurrah! thank you), so when I
-> tried porting my lru_add_drainage to 6.12 I was careful to check whether
-> folio_expected_ref_count() would need to add it to the accounting there:
-> apparently yes; but then I was surprised to find that it's still present
-> in 6.17-rc, I'd assumed it gone long ago.
-> 
-> I didn't try to read the filesystems (which could easily have been
-> inconsistent about it) to understand: what convinced me amidst all
-> the confusion was this comment and code in mm/filemap.c:
-> 
-> /**
->   * folio_end_private_2 - Clear PG_private_2 and wake any waiters.
->   * @folio: The folio.
->   *
->   * Clear the PG_private_2 bit on a folio and wake up any sleepers waiting for
->   * it.  The folio reference held for PG_private_2 being set is released.
->   *
->   * This is, for example, used when a netfs folio is being written to a local
->   * disk cache, thereby allowing writes to the cache for the same folio to be
->   * serialised.
->   */
-> void folio_end_private_2(struct folio *folio)
-> {
-> 	VM_BUG_ON_FOLIO(!folio_test_private_2(folio), folio);
-> 	clear_bit_unlock(PG_private_2, folio_flags(folio, 0));
-> 	folio_wake_bit(folio, PG_private_2);
-> 	folio_put(folio);
-> }
-> EXPORT_SYMBOL(folio_end_private_2);
-> 
-> That seems to be clear that PG_private_2 is matched by a folio reference,
-> but perhaps you can explain it away - worth changing the comment if so.
-> 
-> I was also anxious to work out whether PG_private with PG_private_2
-> would mean +1 or +2: I don't think I found any decisive statement,
-> but traditional use of page_has_private() implied +1; and I expect
-> there's no filesystem which actually could have both on the same folio.
+syzbot has bisected this issue to:
 
-I think it's "+1", like we used to have.
+commit 5b67d43976828dea2394eae2556b369bb7a61f64
+Author: Davidlohr Bueso <dave@stgolabs.net>
+Date:   Fri Apr 18 01:59:17 2025 +0000
 
-I was seriously confused when discovering (iow, concerned about false 
-positives):
+    fs/buffer: use sleeping version of __find_get_block()
 
-	PG_fscache = PG_private_2,
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=101ba1f0580000
+start commit:   c8bc81a52d5a Merge tag 'arm64-fixes' of git://git.kernel.o..
+git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=121ba1f0580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=141ba1f0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=bd9738e00c1bbfb4
+dashboard link: https://syzkaller.appspot.com/bug?extid=cba6270878c89ed64a2d
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10857a62580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14f5ce34580000
 
-But in the end PG_fscache is only used in comments and e.g., 
-__fscache_clear_page_bits() calls folio_end_private_2(). So both are 
-really just aliases.
+Reported-by: syzbot+cba6270878c89ed64a2d@syzkaller.appspotmail.com
+Fixes: 5b67d4397682 ("fs/buffer: use sleeping version of __find_get_block()")
 
-[Either PG_fscache should be dropped and referred to as PG_private_2, or 
-PG_private_2 should be dropped and PG_fscache used instead. It's even 
-inconsistently used in that fscache. file.
-
-Or both should be dropped, of course, once we can actually get rid of it 
-...]
-
-So PG_private_2 should not be used for any other purpose.
-
-folio_start_private_2() / folio_end_private_2() indeed pair the flag 
-with a reference. There are no other callers that would set/clear the 
-flag without involving a reference.
-
-The usage of private_2 is declared deprecated all over the place. So the 
-question is if we really still care.
-
-The ceph usage is guarded by CONFIG_CEPH_FSCACHE, the NFS one by 
-NFS_FSCACHE, nothing really seems to prevent it from getting configured 
-in easily.
-
-Now, one problem would be if migration / splitting / ... code where we 
-use folio_expected_ref_count() cannot deal with that additional 
-reference properly, in which case this patch would indeed cause harm.
-
-If all folio_expected_ref_count() callers can deal with updating that 
-reference, all good.
-
-nfs_migrate_folio(), for example, has folio_test_private_2() handling in 
-there (just wait until it is gone). ceph handles it during 
-ceph_writepages_start(), but uses ordinary filemap_migrate_folio.
-
-Long story short: this patch is problematic if one 
-folio_expected_ref_count() users is not aware of how to handle that 
-additional reference.
-
--- 
-Cheers
-
-David / dhildenb
-
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
