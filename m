@@ -4,185 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEC1FCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 17:07:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8317FCA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 17:11:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05EF18E000E; Mon,  1 Sep 2025 13:06:33 -0400 (EDT)
+	id 8CD088E000C; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F08ED8E0007; Mon,  1 Sep 2025 13:06:32 -0400 (EDT)
+	id 8A4A08E0007; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCED28E000E; Mon,  1 Sep 2025 13:06:32 -0400 (EDT)
+	id 7E1738E000C; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C76398E0007
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:06:32 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 754D41A09B0
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:06:32 +0000 (UTC)
-X-FDA: 83841310224.25.C2799DA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 024902000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:06:29 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EVZ+yMWI;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D3F38E0007
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23CA616093F
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:11:08 +0000 (UTC)
+X-FDA: 83841321816.16.64BD565
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 91C8840011
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:11:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TUUI4mWI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756746390;
+	s=arc-20220608; t=1756746666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eh14gSBsHlX8t4z8lOLowLFjFUmXdmvvFT/ssHquVjA=;
-	b=DS3BhBhDTHcZq4jz+Ked8hmAFHRRdlY9N8vpXsIY4f1+WOpgW8JMxZgd4ryn5chBd8tnzW
-	Mqy7q2M74xAn5UbLiKXbkqxTWl67mrMbScldZ6VV+PGVVneXusmHCZOYwY7kHYoa/xrMLd
-	GAbTbd9R8DRT53JuseunWNFlsF8E18c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756746390; a=rsa-sha256;
-	cv=none;
-	b=gnIPSaKa73NzOAd/lmlKfW8SY5mfyunRfBUpWqepdnHtILYBhfl+L1bdg8HcK//P+ekedn
-	jjZXi975frOeIFjcRLsR0FgNP5OZwFfGIgCzXLGOMvlZKdV5CEwGri3SAgMXhp838eGaUh
-	Agsi07gdGUy/bkX7+H8zeQdJ8i4+WWE=
+	bh=oxNB/3Da+XIexCdnEiPjOOqKyHicxPLTrARqP9TSq78=;
+	b=ZEJoixSLIfdn9c8+WMumn+xYL4e1AJcqEG/lrOty9B42kD0M20S0Jg9cgZKhS8OU2iP9sO
+	CUjYkraESPaXaATWIG2Hz1EtZ24A3c5R/SG80ilAnUvbeuHOeF3GL5BamM5uR7Kk8Jf9ef
+	TRY6cbVfVM8VlESDJaOmIgMgptx8s2s=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EVZ+yMWI;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756746389;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eh14gSBsHlX8t4z8lOLowLFjFUmXdmvvFT/ssHquVjA=;
-	b=EVZ+yMWIEBsDn5NSx704/BTtHmcDel0ngrzfz8ZI6O8gWzgFJU6gD5evjWyWezO/140JT5
-	qt4nM+dborf2TpYw9Q/3iodbe/UCbl2nmGD12W8C0i/aV1HNSYMsJHFKXkCINJlOIJxxQ0
-	5/bxrGtOC7epVWcTGTwFUr6DXpXrG9Y=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-253-BoPjKKWFMWKflnDhoKhsKQ-1; Mon, 01 Sep 2025 13:06:27 -0400
-X-MC-Unique: BoPjKKWFMWKflnDhoKhsKQ-1
-X-Mimecast-MFC-AGG-ID: BoPjKKWFMWKflnDhoKhsKQ_1756746385
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3cbe70a7861so3274242f8f.3
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 10:06:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756746385; x=1757351185;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eh14gSBsHlX8t4z8lOLowLFjFUmXdmvvFT/ssHquVjA=;
-        b=veraA1d17Ob7pJ7CfubC/v2rt6fhC6lCWTZeHx4qDfuFGFSf51LAEAALGlj2WIV3pk
-         u1SF/aAye5Bmv4vdbC00Skt81xvCahZ2vpDf00zKqg2boDdIZ3309JtGXCGhhUIMVKPg
-         RMmjVncXW3Zs2CUw0EF0c+oxBBYyprYUp+SzqnLxuGRubLknpzAuRNrf38ApWk1WF0OT
-         2x5cBc5X9idl+8TnlOROn0Th5Z2OlazvTL/9D8SO4dW+WiZEzPl2XT81RvQoE72nef1Q
-         A4ZRM5x+JKc0xqqfnt3l8eGQcYU1oeDzCDLwYN8NPvwAeA9K+I6GDg4nQDxG7uX+nWYx
-         UkXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVT1VI5LSvFMk+aSBL47S9ZCQCX3Lh34ZGZsa04wjpVd2SqprkE0TUMSAlBwBmmtXpyQz/94OEaLA==@kvack.org
-X-Gm-Message-State: AOJu0Yzs8kp2L7zKNgjVCyjLIk+jwJ5s3EijS3EbpuG7iSHKuEhZF6df
-	gMN3Ad+GwtVYYorvKkEjqu16Y/vJewlIHrPoUW3jOGAtqpXb9A43cMfNTwqEm7Cf83j9v8QHpeJ
-	QPS0GtbkqjBS48pnrlPIhKrOiI2Xt6Z3PEmoX2a2Yb0zUv44J4pe8
-X-Gm-Gg: ASbGnctsFG2wR9pHbaJvv+iilYoHLr0i4H9SVgs2+kw/5RYoI5f44qSG2HNe3ybjnfv
-	sxp/3NuYOH/NzEwy8xUwel1tKk8K3hNh09aaP1mwzAoXVCj5tNCUaKBkd/ZTKGAGyzKnJSsGN9b
-	GHV2cdKVCSue0+ofMPqg+izetnBs6x44UaoqeoM6vGunzTTgtmw0Tgqu2AeXH8KtR/NA71Ewvwf
-	V4MCD1SA95jRuw4qXC7Xip4Y7jkW1z2D9zCtBvVYh1FoPWjP5Su4nd7JxpAOTQ2TvzCPiaONeBi
-	X+INNQIImle3M53RBtOylHuNyImRN3yFG+wGeBVEy1A2wWgCf/JlOzsq6/n5At5Ab/HlXTUc98V
-	0Cv/CGAxBGbId0OQJ3Em+OoOo0iIXnjxcsQ4XB+94qBNkewTEbvGD4bRER4Z2y/Tnn2s=
-X-Received: by 2002:a05:6000:4205:b0:3d9:415c:b146 with SMTP id ffacd0b85a97d-3d9415cb164mr902842f8f.15.1756746384875;
-        Mon, 01 Sep 2025 10:06:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtXV1RpZ3Z9Kk/q7xvuAzJpMudeH+8bX9H5YuBYHQqIOkcUcfv4sOsuljm2RvZo8tcSQgolw==
-X-Received: by 2002:a05:6000:4205:b0:3d9:415c:b146 with SMTP id ffacd0b85a97d-3d9415cb164mr902818f8f.15.1756746384422;
-        Mon, 01 Sep 2025 10:06:24 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f306c93sm247892275e9.14.2025.09.01.10.06.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 10:06:23 -0700 (PDT)
-Message-ID: <bf03c2e2-66fc-4745-952a-de3fbf65c4ab@redhat.com>
-Date: Mon, 1 Sep 2025 19:06:21 +0200
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TUUI4mWI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756746666; a=rsa-sha256;
+	cv=none;
+	b=HBU/Yneoq+GX5FCAqMVnrqj9UpluI+03UB1uAXotNZX9rcHV0q+R35Xr/TdEiK2JdH8Rdf
+	PDKIsrGfUqOy4s/fyiXLpACUKfzOJVR8uRYkrMLst+NeHCSkKVGqTh6CR+9Os6l9dpFM38
+	NkzsrFDCSAnBohwurGRRldGHYPJ2AvQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id DF3C8601EB;
+	Mon,  1 Sep 2025 17:11:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20273C4CEF0;
+	Mon,  1 Sep 2025 17:10:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756746665;
+	bh=4H0TvV5SATbPpUhZV/kpTrbxsbMRGPlfcGGMf566Pzg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=TUUI4mWIbQYkLpKOkdoxxSUBAWTkDGIYzdhS0o8slwr8l2r1Piu0dUL/l4nBep+rG
+	 0yJmQw4jAg/OFnBDLBuTCbytHtcsfNnnUgNkZT3gLgEb3ShbgGVAKwQxkOyPSP18C8
+	 7llU/i7XIFhO9U0XbVOYJRMrxGrbX605fmK7MccA+FrMFzq540oBoLsId10kVkUbl0
+	 lAs6X6RqdrVdsl02+4MM4ddwO3muSKKRwdLGGmbbS8cho5TRe0jnQdsfS22uYIMObg
+	 eUQz4JMDeISgSUyU3IB3lnscaMdUMFfjTXMsM05sKQlT4UprJfC0pJ8VwXpakPhqL8
+	 FF3vY5xHeeBDA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  jasonmiu@google.com,  graf@amazon.com,
+  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
+  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
+  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
+  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
+  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
+  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
+  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
+  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
+  leonro@nvidia.com,  witu@nvidia.com
+Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
+In-Reply-To: <20250828124320.GB7333@nvidia.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+	<20250807014442.3829950-30-pasha.tatashin@soleen.com>
+	<20250826162019.GD2130239@nvidia.com> <mafs0bjo0yffo.fsf@kernel.org>
+	<20250828124320.GB7333@nvidia.com>
+Date: Mon, 01 Sep 2025 19:10:53 +0200
+Message-ID: <mafs0h5xmw12a.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
-From: David Hildenbrand <david@redhat.com>
-To: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
- dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
- baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
- wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com,
- aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
- catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
- dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
- jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com
-References: <20250819134205.622806-1-npache@redhat.com>
- <7d423d50-47e0-4c97-abaa-1fa865ec3e42@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <7d423d50-47e0-4c97-abaa-1fa865ec3e42@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ICLFMjQzY80XfwHVkb1EunUgPJYkSp_gKJpBTT4YaMA_1756746385
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 024902000B
-X-Stat-Signature: zpxbndezrjdbjf5aq5hzyazpopnc5bon
+Content-Type: text/plain
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 91C8840011
+X-Stat-Signature: ayymiizsxi8qeyzyuudm47ffyrc4d5xa
 X-Rspam-User: 
-X-HE-Tag: 1756746389-335273
-X-HE-Meta: U2FsdGVkX1+wwav5NXEQELJghj69v+3D+pToP1Pbcci1YKdLdS9EEDbQV7hdFpYabgodS3oVtEN+nZ/guG3hWisofrMmYjj3+I59/ekZ7gx3GdpNDah+lhRco53FjRHf5iRYFR3vEHz1XaBjSq+PLORSnO5BPtYfwe+PrgEH7OVWh4dO27y3NZv1eh77oLHyaB4sjABaJcslJ7K4Ri1MOdfxZ4W8N1dsYWynNyrf7KsWMf+CFLnwAWYjdbUjMGdo9tVc4XVwJCITVUbQYNh5FUqTtnoDhO6Q4jpIjTBvwmP+arKOtDUnkUhqdZAt2sq9me50CYrOcchhawaXxvDHPHL2/FzgV3PzRemXTP8j9CC86a1zEFBccI2DA1nWw89Y0AK8mBvnZwG1bFca2QsaPJuKlcflsIif7yWcNobejwCiHv4LwdXzl/1AEoHBnBIFbPt8sprM6be+bmPABfg/ZlVvJFiX3AbYuef3E4vI9i8B00fHafk+EAbUnY1FypYLCFoW7+F+urNLQzOKC7nhmFjL+awovTsJpRndSAXA7jOL0prl2g9SDIKPuFSBLGgTCrl5kqjBB1nUIDzt1A6oAjs+wqwpvHtR0WrcPq11Aff90WYOdnCBwgF67u5NQPZwuq1Es5VsURxVZQiUcY230fY+dEvRZz09CIrXkhMhZP6vd0+ciYlPpkM3A7woP71Hc55Fbc5yIXmfa1/g+Xs9ApAc1aHQelV5Cxt3Sx3zPBIdHyFueO4nUcx1+kQ6w/X4ClW2GhHR1pjzoCn6yu58zjeMpppsCRyYYbWhQqQJmqcvSdC+JiDYTdFU+lheLlhEJ4NTUfyeI0xTUV0+C7xTn/U3LlbK9O+lh3WzCOIRTPLUZ77/NdwZdLfVqnIeh/OtW1AT401B5GnMb+QKgKpDW5Ug/FWjUXQi7duFAjIJufbv8aK6H/k1pDef9939jAtyn0bPVsB8AhpuaE2GJZI
- vwiP/CDt
- Kzu13luHPFrRSnDA3cS0FYcx/UHw6STIVyI+WIWUL1dVT8yUyuhUHern9v/rDRSaDCDu5pZaaekJD+XydSKkY0P3O4DHA1onnuxH63hp5uDqrO5uhH5EfTOkC/vLMlNC5x8lEXkGXoajx5rDbHQc1M4Q5RCcju0Xd7e8RTTqw3RYVdip2ZVHXshMzRBUOxr9jBXFnhtQGdpU0wHrrjSpk/dcR89kutGvns2QcJX++HJYU9lEPBf69zSOqmx90SRE9+ntKJiEGRtykcC5sW7CYERIPRkXcJRqkZ3PF7SXxZXrLIPa8AdekYjwTx7jPp3xbpmrtRaHlG5CVftnC4ZIjKO4InQGydNbBHTntdwJ3dBVOIruXy7kO5r58UVCe+7CtQGPtJ6gvfq10EZ01NpRwaWXh4W6WjlvZoU6XXqEneMs1iAKNIIAhFWyCViRRF22QbJ+Ph/RV/4IyAd5JfxE0h4fPv0SbiC3C8rKIRmXjBPzaCPPYATh8Cpc/VML+wlcTfC1Z/DD2Iy0eX1J32EftwwTkgRAcsVZtvogfX2j1mL4BItflIjEXLqpr84aC/o56Eq4WjhDIFogk2PsPpqHKV0WSiNEGM0FIwyDyiQ+ICJ/TDNCbmahzE5K0w8M200SgmFRVUyJf5Q0L2R28YQvBNBK+DOs2b2QrPxss
+X-HE-Tag: 1756746666-29912
+X-HE-Meta: U2FsdGVkX18uGeRZA2405Dj3RLC0Vo/6HmrnDcIt3WFT6Xm9Qte6E8PRfFpdFbO+38elNgTQzsF0OuDDE9VJUwWkKEDxlKcJTm+bDBcmpjG1MlWUC7KcsoMQGCSnA1iyvHCA6mbOsGTMDMLBC1UXq6afuNyNsdk3BPAzDUdFji56qwyiFNW/7eC7wi6J3YiLYjCoeq3qfWU6E2lt9tCSuzNO7qGgcOMnwUc17Fj7OnagWn6SX5avAdVxaa/tiiqrlNj0SFBREhiamnUD44C15FTQLQYO+rbQ3/fU69bLgGENLAnvRhYEMlLN0AS7oeFktUiQ1ZY4Qp8etR0IXKf7z2lXvA0hZezOMKJUz+CRGR0qaWrE8+810YhsYopxwvZN4rPGe8g7CLURs/gBkFEU6+ZJp9s466tMyfxQj3I79dRWW1CAWgakh1hMJJ/YNQxalFheqgXiD7rWwIULNX6EQZTpU2o9rhzHrQCwdY6wgrbRsOu0AimDJtZDbpM3+G/YpoRKSbZsoHJAVbWlEt7+Nir7fC1Yw1vCGBIFH8qSDeNKI9D9sXtGTU0BCB8F9bzAWvxy1VRTqQMk+ae9LLkFZYrJWoen+iSmZ/zd97Y9FAWa7R2ObYjXGXaDVQ3hjzrN3sCVlV5jorofc8eCFzvQOzKxtQxMHfWiV2JGMfgqllFJL6I4bF7INNeGhPeGSImztH6NQJyfTzIRf/nNj1q0wTvVtUGU7jYAIE2G40JX4xKURcEmipcYvmAPeS0xPN/ZFGCdxoF/SkG2yKwkGsPyblvRTaKSQDIDe4mZQnu2o3hgoKFTevDPji5cjktKr+Qst9ze1DRprayyWJNYxRtbvr3RLEQVlDFe40mp6F7h5OtF8+gKb9+SajPlHTUhlssZdmjEzpL2jATJe7CBXl2l7MTPIsq8hFSPHnlQoblA7bAiUnaLoVxmpvsb7X9kH34TlqIAkT8nGTNlyP4BH+3
+ kBcJ+Rc1
+ ThRNfgwAq83sHH6R0ts+LbTu3PWi6MYDOHeZFeag7/TpPjhmjRTl1GNfTMAP6gY1iG6Vmoz0bGEzSPpRceSVwV/oZBvw/js4ATtl07UsDdr3PHkDof88EFpxfZRrtUaVfjFpuZYnJ2pqGvlffS3D3nD6nL9YClcvreZ/s1Fab/HZ3EgIGIhVihwwVhq2NChCgtyPCPtzOwkgNwvIiuFU4qPeu4pBDlrTuviavfIeCYyoqbSOM6EOTdhcdRTRyis4xcQ3fjAeapSrmeQE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,83 +119,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 18:21, David Hildenbrand wrote:
-> On 19.08.25 15:41, Nico Pache wrote:
->> The following series provides khugepaged with the capability to collapse
->> anonymous memory regions to mTHPs.
->>
->> To achieve this we generalize the khugepaged functions to no longer depend
->> on PMD_ORDER. Then during the PMD scan, we use a bitmap to track chunks of
->> pages (defined by KHUGEPAGED_MTHP_MIN_ORDER) that are utilized. After the
->> PMD scan is done, we do binary recursion on the bitmap to find the optimal
->> mTHP sizes for the PMD range. The restriction on max_ptes_none is removed
->> during the scan, to make sure we account for the whole PMD range. When no
->> mTHP size is enabled, the legacy behavior of khugepaged is maintained.
->> max_ptes_none will be scaled by the attempted collapse order to determine
->> how full a mTHP must be to be eligible for the collapse to occur. If a
->> mTHP collapse is attempted, but contains swapped out, or shared pages, we
->> don't perform the collapse. It is now also possible to collapse to mTHPs
->> without requiring the PMD THP size to be enabled.
->>
->> With the default max_ptes_none=511, the code should keep its most of its
->> original behavior. When enabling multiple adjacent (m)THP sizes we need to
->> set max_ptes_none<=255. With max_ptes_none > HPAGE_PMD_NR/2 you will
->> experience collapse "creep" and constantly promote mTHPs to the next
->> available size. This is due the fact that a collapse will introduce at
->> least 2x the number of pages, and on a future scan will satisfy the
->> promotion condition once again.
->>
->> Patch 1:     Refactor/rename hpage_collapse
->> Patch 2:     Some refactoring to combine madvise_collapse and khugepaged
->> Patch 3-5:   Generalize khugepaged functions for arbitrary orders
->> Patch 6-8:   The mTHP patches
->> Patch 9-10:  Allow khugepaged to operate without PMD enabled
->> Patch 11-12: Tracing/stats
->> Patch 13:    Documentation
-> 
-> Would it be feasible to start with simply not supporting the
-> max_pte_none parameter in the first version, just like we won't support
-> max_pte_swapped/max_pte_shared in the first version?
-> 
-> That gives us more time to think about how to use/modify the old interface.
-> 
-> For example, I could envision a ratio-based interface, or as discussed
-> with Lorenzo a simple boolean. We could make the existing max_ptes*
-> interface backwards compatible then.
-> 
-> That also gives us the opportunity to think about the creep problem
-> separately.
-> 
-> I'm sure initial mTHP collapse will be valuable even without support for
-> that weird set of parameters.
-> 
-> Would there be implementation-wise a problem?
-> 
-> But let me think further about the creep problem ... :/
+Hi Jason,
 
-FWIW, I just looked around and there is documented usage of setting 
-max_ptes_none to 0 [1, 2, 3].
+On Thu, Aug 28 2025, Jason Gunthorpe wrote:
 
-In essence, I think it can make sense to set it to 0 when an application 
-wants to manage THP on its own (MADV_COLLAPSE), and avoid khugepaged 
-interfering. Now, using a system-wide toggle for such a use case is 
-rather questionable, but it's all we have.
+> On Wed, Aug 27, 2025 at 05:03:55PM +0200, Pratyush Yadav wrote:
+>
+>> I think we need something a luo_xarray data structure that users like
+>> memfd (and later hugetlb and guest_memfd and maybe others) can build to
+>> make serialization easier. It will cover both contiguous arrays and
+>> arrays with some holes in them.
+>
+> I'm not sure xarray is the right way to go, it is very complex data
+> structure and building a kho variation of it seems like it is a huge
+> amount of work.
+>
+> I'd stick with simple kvalloc type approaches until we really run into
+> trouble.
+>
+> You can always map a sparse xarray into a kvalloc linear list by
+> including the xarray index in each entry.
+>
+> Especially for memfd where we don't actually expect any sparsity in
+> real uses cases there is no reason to invest a huge effort to optimize
+> for it..
 
-I did not find anything only recommending to set values different to 0 
-or 511 -- so far.
+Full xarray is too complex, sure. But I think a simple sparse array with
+xarray-like properties (4-byte pointers, values using xa_mk_value()) is
+fairly simple to implement. More advanced features of xarray like
+multi-index entries can be added later if needed.
 
-So *likely* focusing on 0 vs. 511 initially would cover most use cases 
-out there. Ignoring the parameter initially (require all to be !none) 
-could of course also work.
+In fact, I have a WIP version of such an array and have used it for
+memfd preservation, and it looks quite alright to me. You can find the
+code at [0]. It is roughly 300 lines of code. I still need to clean it
+up to make it post-able, but it does work.
 
-[1] https://www.mongodb.com/docs/manual/administration/tcmalloc-performance/
-[2] https://google.github.io/tcmalloc/tuning.html
-[3] 
-https://support.yugabyte.com/hc/en-us/articles/36558155921165-Mitigating-Excessive-RSS-Memory-Usage-Due-to-THP-Transparent-Huge-Pages
+Building kvalloc on top of this becomes trivial.
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/pratyush/linux.git/commit/?h=kho-array&id=cf4c04c1e9ac854e3297018ad6dada17c54a59af
+
+>
+>> As I explained above, the versioning is already there. Beyond that, why
+>> do you think a raw C struct is better than FDT? It is just another way
+>> of expressing the same information. FDT is a bit more cumbersome to
+>> write and read, but comes at the benefit of more introspect-ability.
+>
+> Doesn't have the size limitations, is easier to work list, runs
+> faster.
+>
+>> >  luo_store_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. identifier for this fd..>, /*version=*/0);
+>> >  luo_store_object(&memfd_luo_v1, sizeof(memfd_luo_v1), <.. identifier for this fd..>, /*version=*/1);
+>> 
+>> I think what you describe here is essentially how LUO works currently,
+>> just that the mechanisms are a bit different.
+>
+> The bit different is a very important bit though :)
+>
+> The versioning should be first class, not hidden away as some emergent
+> property of registering multiple serializers or something like that.
+
+That makes sense. How about some simple changes to the LUO interfaces to
+make the version more prominent:
+
+	int (*prepare)(struct liveupdate_file_handler *handler,
+		       struct file *file, u64 *data, char **compatible);
+
+This lets the subsystem fill in the compatible (AKA version) (string
+here, but you can make it an integer if you want) when it serialized its
+data.
+
+And on restore side, LUO can pass in the compatible:
+
+	int (*retrieve)(struct liveupdate_file_handler *handler,
+			u64 data, char *compatible, struct file **file);
+
 
 -- 
-Cheers
-
-David / dhildenb
-
+Regards,
+Pratyush Yadav
 
