@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8317FCA0FFF
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 17:11:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62568CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 17:31:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CD088E000C; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
+	id 53A0F6B0008; Mon,  1 Sep 2025 13:21:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A4A08E0007; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
+	id 4C4516B000C; Mon,  1 Sep 2025 13:21:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1738E000C; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
+	id 3B2D18E0007; Mon,  1 Sep 2025 13:21:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D3F38E0007
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:11:08 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23CA616093F
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:11:08 +0000 (UTC)
-X-FDA: 83841321816.16.64BD565
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 91C8840011
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:11:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TUUI4mWI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 22ACA6B0008
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 13:21:47 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A741C09C6
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:21:46 +0000 (UTC)
+X-FDA: 83841348612.30.5EEA439
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 88417A000E
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 17:21:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9dmzbN3;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756746666;
+	s=arc-20220608; t=1756747304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oxNB/3Da+XIexCdnEiPjOOqKyHicxPLTrARqP9TSq78=;
-	b=ZEJoixSLIfdn9c8+WMumn+xYL4e1AJcqEG/lrOty9B42kD0M20S0Jg9cgZKhS8OU2iP9sO
-	CUjYkraESPaXaATWIG2Hz1EtZ24A3c5R/SG80ilAnUvbeuHOeF3GL5BamM5uR7Kk8Jf9ef
-	TRY6cbVfVM8VlESDJaOmIgMgptx8s2s=
+	bh=siMaPVt6g/JKYh3FQ6uq/rcuBtJ/z3/Tz6xJHHUcN0s=;
+	b=2mCi4X1P9wFQ+Vx7QBEKYqzgaPkD8BvJolWXBrNaEYHJUU2OQ3empSDPEz4CEAVnwvCyEB
+	9HfTkpLFb2keTtaQCqwKmkGmOVp2qL+ozvdPNRjPoMkvfH5NtRxT/6qrkeoTYzTAC46c0P
+	dsUCm+zova9rKnU/680pe8VGeAGRXLw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TUUI4mWI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756746666; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9dmzbN3;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756747304; a=rsa-sha256;
 	cv=none;
-	b=HBU/Yneoq+GX5FCAqMVnrqj9UpluI+03UB1uAXotNZX9rcHV0q+R35Xr/TdEiK2JdH8Rdf
-	PDKIsrGfUqOy4s/fyiXLpACUKfzOJVR8uRYkrMLst+NeHCSkKVGqTh6CR+9Os6l9dpFM38
-	NkzsrFDCSAnBohwurGRRldGHYPJ2AvQ=
+	b=QraGc04uBvRZqZ9CjMg3lxRr6tGkhHUe6ZJ0DgBzZDW79d5bV8HTMkjegvZq4iPlBgZsEu
+	2h8lP/rL+22PHnRtTsIQd2tEiYSPr5DvhnaSQtwwTtYdrbPMHZjk/NiSIQVuxGeG+eB+4g
+	YC/NWug6S7MQSIlf1rruMR4fnRwGzLQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF3C8601EB;
-	Mon,  1 Sep 2025 17:11:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20273C4CEF0;
-	Mon,  1 Sep 2025 17:10:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 29D8441AB0;
+	Mon,  1 Sep 2025 17:21:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6769C4CEF0;
+	Mon,  1 Sep 2025 17:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756746665;
-	bh=4H0TvV5SATbPpUhZV/kpTrbxsbMRGPlfcGGMf566Pzg=;
+	s=k20201202; t=1756747303;
+	bh=3mhC2/T1c6Z+vgeTqGwgs2Xmkym2DVFtNGG4o+LNDHg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TUUI4mWIbQYkLpKOkdoxxSUBAWTkDGIYzdhS0o8slwr8l2r1Piu0dUL/l4nBep+rG
-	 0yJmQw4jAg/OFnBDLBuTCbytHtcsfNnnUgNkZT3gLgEb3ShbgGVAKwQxkOyPSP18C8
-	 7llU/i7XIFhO9U0XbVOYJRMrxGrbX605fmK7MccA+FrMFzq540oBoLsId10kVkUbl0
-	 lAs6X6RqdrVdsl02+4MM4ddwO3muSKKRwdLGGmbbS8cho5TRe0jnQdsfS22uYIMObg
-	 eUQz4JMDeISgSUyU3IB3lnscaMdUMFfjTXMsM05sKQlT4UprJfC0pJ8VwXpakPhqL8
-	 FF3vY5xHeeBDA==
+	b=T9dmzbN3vJLJmQDq1Re5bzl8OxpzTbtxHyo9VrZ09/exjPs4/S/UQ/qjokktB5xH0
+	 SSAhxDYKrSqviNam9PJfJyWLgwI4zqdg3I1711MwPV/OjBcVgO1pnXEGeXz3WuK0Xv
+	 UVuAAVWCHK9DEEZHqKg20aHU8P+mQKhAhInpwws4Klng0iRivbKWCQXm3KK6C52Kus
+	 igQubipBz8w3WOXaDSc+DURspm2666u/anhAH4CayF+VNK79UQd6Dcbo23j5PKLmkc
+	 7e7Mzu21+so4+IDhVLL5kTXhZiCBHk37Mq4vGWxsegGW2R/VeQMTHWMDaNdZO+jGo4
+	 NR5zsktrqL/VA==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  jasonmiu@google.com,  graf@amazon.com,
-  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>,  Jason Gunthorpe <jgg@nvidia.com>,
+  pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
+  changyuanl@google.com,  dmatlack@google.com,  rientjes@google.com,
+  corbet@lwn.net,  rdunlap@infradead.org,  ilpo.jarvinen@linux.intel.com,
+  kanie@linux.alibaba.com,  ojeda@kernel.org,  aliceryhl@google.com,
+  masahiroy@kernel.org,  akpm@linux-foundation.org,  tj@kernel.org,
+  yoann.congal@smile.fr,  mmaurer@google.com,  roman.gushchin@linux.dev,
+  chenridong@huawei.com,  axboe@kernel.dk,  mark.rutland@arm.com,
+  jannh@google.com,  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
   dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
   rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
   zhangguopeng@kylinos.cn,  linux@weissschuh.net,
@@ -93,24 +93,25 @@ Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
   saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
   leonro@nvidia.com,  witu@nvidia.com
 Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-In-Reply-To: <20250828124320.GB7333@nvidia.com>
+In-Reply-To: <CA+CK2bC96fxHBb78DvNhyfdjsDfPCLY5J5cN8W0hUDt9KAPBJQ@mail.gmail.com>
 References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
 	<20250807014442.3829950-30-pasha.tatashin@soleen.com>
-	<20250826162019.GD2130239@nvidia.com> <mafs0bjo0yffo.fsf@kernel.org>
-	<20250828124320.GB7333@nvidia.com>
-Date: Mon, 01 Sep 2025 19:10:53 +0200
-Message-ID: <mafs0h5xmw12a.fsf@kernel.org>
+	<20250826162019.GD2130239@nvidia.com> <aLXIcUwt0HVzRpYW@kernel.org>
+	<CA+CK2bC96fxHBb78DvNhyfdjsDfPCLY5J5cN8W0hUDt9KAPBJQ@mail.gmail.com>
+Date: Mon, 01 Sep 2025 19:21:31 +0200
+Message-ID: <mafs03496w0kk.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 91C8840011
-X-Stat-Signature: ayymiizsxi8qeyzyuudm47ffyrc4d5xa
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: qguqdudsr1i1twdi6odgwff4w4nq1ccd
 X-Rspam-User: 
-X-HE-Tag: 1756746666-29912
-X-HE-Meta: U2FsdGVkX18uGeRZA2405Dj3RLC0Vo/6HmrnDcIt3WFT6Xm9Qte6E8PRfFpdFbO+38elNgTQzsF0OuDDE9VJUwWkKEDxlKcJTm+bDBcmpjG1MlWUC7KcsoMQGCSnA1iyvHCA6mbOsGTMDMLBC1UXq6afuNyNsdk3BPAzDUdFji56qwyiFNW/7eC7wi6J3YiLYjCoeq3qfWU6E2lt9tCSuzNO7qGgcOMnwUc17Fj7OnagWn6SX5avAdVxaa/tiiqrlNj0SFBREhiamnUD44C15FTQLQYO+rbQ3/fU69bLgGENLAnvRhYEMlLN0AS7oeFktUiQ1ZY4Qp8etR0IXKf7z2lXvA0hZezOMKJUz+CRGR0qaWrE8+810YhsYopxwvZN4rPGe8g7CLURs/gBkFEU6+ZJp9s466tMyfxQj3I79dRWW1CAWgakh1hMJJ/YNQxalFheqgXiD7rWwIULNX6EQZTpU2o9rhzHrQCwdY6wgrbRsOu0AimDJtZDbpM3+G/YpoRKSbZsoHJAVbWlEt7+Nir7fC1Yw1vCGBIFH8qSDeNKI9D9sXtGTU0BCB8F9bzAWvxy1VRTqQMk+ae9LLkFZYrJWoen+iSmZ/zd97Y9FAWa7R2ObYjXGXaDVQ3hjzrN3sCVlV5jorofc8eCFzvQOzKxtQxMHfWiV2JGMfgqllFJL6I4bF7INNeGhPeGSImztH6NQJyfTzIRf/nNj1q0wTvVtUGU7jYAIE2G40JX4xKURcEmipcYvmAPeS0xPN/ZFGCdxoF/SkG2yKwkGsPyblvRTaKSQDIDe4mZQnu2o3hgoKFTevDPji5cjktKr+Qst9ze1DRprayyWJNYxRtbvr3RLEQVlDFe40mp6F7h5OtF8+gKb9+SajPlHTUhlssZdmjEzpL2jATJe7CBXl2l7MTPIsq8hFSPHnlQoblA7bAiUnaLoVxmpvsb7X9kH34TlqIAkT8nGTNlyP4BH+3
- kBcJ+Rc1
- ThRNfgwAq83sHH6R0ts+LbTu3PWi6MYDOHeZFeag7/TpPjhmjRTl1GNfTMAP6gY1iG6Vmoz0bGEzSPpRceSVwV/oZBvw/js4ATtl07UsDdr3PHkDof88EFpxfZRrtUaVfjFpuZYnJ2pqGvlffS3D3nD6nL9YClcvreZ/s1Fab/HZ3EgIGIhVihwwVhq2NChCgtyPCPtzOwkgNwvIiuFU4qPeu4pBDlrTuviavfIeCYyoqbSOM6EOTdhcdRTRyis4xcQ3fjAeapSrmeQE=
+X-Rspamd-Queue-Id: 88417A000E
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756747304-770424
+X-HE-Meta: U2FsdGVkX1+U7AVc/qA5neTgZNCPDd+RBVpDJxBv/6OZ/wnYrfTDkvhBd8q6entzxBQxIjyxsv5mdAApnhqNZ7AtgCDxDzGqAqLHqqA8Kw2oHY9GHvIrEi3NydWq3IlXNaiQpD7BG3zmtHkmd/oxTuoC+qWHDkiw2YbyJdHWpEmUg4WrR0swKnCu1UI7lph7KxzOPy3o25zEz3AUaRFGNefNNnICI4+U4BzdB8Z3cozjCrW1CNj2KPwpB7uzbdJx9LdS2J4wSsyf42dR12iZW+GV7cKdZ76o3U8089n6pJqpXVF3LYswzm60zbQDtk5fd6tODFH/vq/WXF5Hbj1z+YEJr5swOn18uldhJfywxjD9NMBi/i+0LVMmfZF7OfPCB+zE4fOXD1esvvCaGFGRdIwIzafM/f1lXgFynUmZ+LfhE1+0+U9j+3CtmF6oizuoCZgG/TZgsCFqHf6nzafNFP2sLuRU5EGmlvledGYCxA6kLRDt9AaYVhzmwaJ42j7H8sotvMlPa/y4TnbF4PeG2NdLdDg5VkzYAwmmbAQB8Bkj8R7Fo4MzvLJ4c84aGAi3c7EdV/wmjl0qBOXIe1sGfANKXglrWAisdr4zz9TzacDN0vXFZ8SnywMvpMp0VJKXL/ERC5a+rrzLVoMNMB1ku073df8B//I5GOyUol9I0Kk4UhmFmVk2GdqGEPFt1ARgr4TO0mOk9GwVFR6/8s6dbNRhc1v3+cYXyWkKtrEVJdisV/pRfWpGxsx5aYBKnImgxVURpQ7wqjzHx3IP8UwAAXHxEuvASDfsCd3XxTWr+L3blkHKYIoMBXWbqwT0FTMGDxo528YSs2URWjJkorw+uB+ipPXjuNSEtJUTPNM/Zw4hAQSrU0RIHFlDuRthFSX+4Kwa+6Qx+NTdByli4HaMXgloZaX4pTrJQFRASC6T1BkLukEqPaV4sYyzpYnOh8RumtopDPpnItQFHGWO75h
+ ziLYyShv
+ fjQNZIicVI2EftBNjCCuZV1KlWE31a0YFfLuyKAlkrAUFkXWw8l/qzjoQfxPY8cw6k/cpPYh8TCkiYQqOrsMz7KSdesFzzLwPZl+Vu7rlZB5Dq0F0cmNgzJjeg5De4K1YjOmUxqAIwBfBpMASzxn1M65WhvmvfMSUX3DByRsZoOIFIyHhQucOh103RyAzpK1gX00udROWCvXLlW/zAGZRvhv4BhI3WEv2jkg84kDmR7/vKbEBo4hvgOA6r12IZFL+1MUdFgBD3zVq4ReMqXlBDZGnY+JzW5Osa5btID4yrLUbsJ3y6nEMjD6dhg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,82 +120,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+Hi Pasha,
 
-On Thu, Aug 28 2025, Jason Gunthorpe wrote:
+On Mon, Sep 01 2025, Pasha Tatashin wrote:
 
-> On Wed, Aug 27, 2025 at 05:03:55PM +0200, Pratyush Yadav wrote:
+> On Mon, Sep 1, 2025 at 4:23=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wr=
+ote:
+>>
+>> On Tue, Aug 26, 2025 at 01:20:19PM -0300, Jason Gunthorpe wrote:
+>> > On Thu, Aug 07, 2025 at 01:44:35AM +0000, Pasha Tatashin wrote:
+>> >
+>> > > +   /*
+>> > > +    * Most of the space should be taken by preserved folios. So tak=
+e its
+>> > > +    * size, plus a page for other properties.
+>> > > +    */
+>> > > +   fdt =3D memfd_luo_create_fdt(PAGE_ALIGN(preserved_size) + PAGE_S=
+IZE);
+>> > > +   if (!fdt) {
+>> > > +           err =3D -ENOMEM;
+>> > > +           goto err_unpin;
+>> > > +   }
+>> >
+>> > This doesn't seem to have any versioning scheme, it really should..
+>> >
+>> > > +   err =3D fdt_property_placeholder(fdt, "folios", preserved_size,
+>> > > +                                  (void **)&preserved_folios);
+>> > > +   if (err) {
+>> > > +           pr_err("Failed to reserve folios property in FDT: %s\n",
+>> > > +                  fdt_strerror(err));
+>> > > +           err =3D -ENOMEM;
+>> > > +           goto err_free_fdt;
+>> > > +   }
+>> >
+>> > Yuk.
+>> >
+>> > This really wants some luo helper
+>> >
+>> > 'luo alloc array'
+>> > 'luo restore array'
+>> > 'luo free array'
+>>
+>> We can just add kho_{preserve,restore}_vmalloc(). I've drafted it here:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=3D=
+kho/vmalloc/v1
 >
->> I think we need something a luo_xarray data structure that users like
->> memfd (and later hugetlb and guest_memfd and maybe others) can build to
->> make serialization easier. It will cover both contiguous arrays and
->> arrays with some holes in them.
->
-> I'm not sure xarray is the right way to go, it is very complex data
-> structure and building a kho variation of it seems like it is a huge
-> amount of work.
->
-> I'd stick with simple kvalloc type approaches until we really run into
-> trouble.
->
-> You can always map a sparse xarray into a kvalloc linear list by
-> including the xarray index in each entry.
->
-> Especially for memfd where we don't actually expect any sparsity in
-> real uses cases there is no reason to invest a huge effort to optimize
-> for it..
+> The patch looks okay to me, but it doesn't support holes in vmap
+> areas. While that is likely acceptable for vmalloc, it could be a
+> problem if we want to preserve memfd with holes and using vmap
+> preservation as a method, which would require a different approach.
+> Still, this would help with preserving memfd.
 
-Full xarray is too complex, sure. But I think a simple sparse array with
-xarray-like properties (4-byte pointers, values using xa_mk_value()) is
-fairly simple to implement. More advanced features of xarray like
-multi-index entries can be added later if needed.
+I agree. I think we should do it the other way round. Build a sparse
+array first, and then use that to build vmap preservation. Our emails
+seem to have crossed, but see my reply to Mike [0] that describes my
+idea a bit more, along with WIP code.
 
-In fact, I have a WIP version of such an array and have used it for
-memfd preservation, and it looks quite alright to me. You can find the
-code at [0]. It is roughly 300 lines of code. I still need to clean it
-up to make it post-able, but it does work.
-
-Building kvalloc on top of this becomes trivial.
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/pratyush/linux.git/commit/?h=kho-array&id=cf4c04c1e9ac854e3297018ad6dada17c54a59af
+[0] https://lore.kernel.org/lkml/mafs0ldmyw1hp.fsf@kernel.org/
 
 >
->> As I explained above, the versioning is already there. Beyond that, why
->> do you think a raw C struct is better than FDT? It is just another way
->> of expressing the same information. FDT is a bit more cumbersome to
->> write and read, but comes at the benefit of more introspect-ability.
->
-> Doesn't have the size limitations, is easier to work list, runs
-> faster.
->
->> >  luo_store_object(&memfd_luo_v0, sizeof(memfd_luo_v0), <.. identifier for this fd..>, /*version=*/0);
->> >  luo_store_object(&memfd_luo_v1, sizeof(memfd_luo_v1), <.. identifier for this fd..>, /*version=*/1);
->> 
->> I think what you describe here is essentially how LUO works currently,
->> just that the mechanisms are a bit different.
->
-> The bit different is a very important bit though :)
->
-> The versioning should be first class, not hidden away as some emergent
-> property of registering multiple serializers or something like that.
+> However, I wonder if we should add a separate preservation library on
+> top of the kho and not as part of kho (or at least keep them in a
+> separate file from core logic). This would allow us to preserve more
+> advanced data structures such as this and define preservation version
+> control, similar to Jason's store_object/restore_object proposal.
 
-That makes sense. How about some simple changes to the LUO interfaces to
-make the version more prominent:
+This is how I have done it in my code: created a separate file called
+kho_array.c. If we have enough such data structures, we can probably
+move it under kernel/liveupdate/lib/.
 
-	int (*prepare)(struct liveupdate_file_handler *handler,
-		       struct file *file, u64 *data, char **compatible);
+As for the store_object/restore_object proposal: see an alternate idea
+at [1].
 
-This lets the subsystem fill in the compatible (AKA version) (string
-here, but you can make it an integer if you want) when it serialized its
-data.
+[1] https://lore.kernel.org/lkml/mafs0h5xmw12a.fsf@kernel.org/
 
-And on restore side, LUO can pass in the compatible:
-
-	int (*retrieve)(struct liveupdate_file_handler *handler,
-			u64 data, char *compatible, struct file **file);
-
-
--- 
+--=20
 Regards,
 Pratyush Yadav
 
