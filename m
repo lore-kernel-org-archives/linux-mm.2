@@ -4,97 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0127CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:05:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0D51CA1006
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:05:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 804D78E0053; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
+	id 7689E8E0062; Mon,  1 Sep 2025 11:05:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B50C8E001F; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
+	id 7408D8E001F; Mon,  1 Sep 2025 11:05:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67D178E0053; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
+	id 6568A8E0062; Mon,  1 Sep 2025 11:05:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A9698E001F
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:05:07 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F22DF13B280
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:05:06 +0000 (UTC)
-X-FDA: 83841004212.04.04C783C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1F0CB4000A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:05:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JBtzxbio;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CF5A8E001F
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:05:24 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F3801608E1
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:05:24 +0000 (UTC)
+X-FDA: 83841004968.02.A994F2E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3B34080011
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:05:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VoSi5aky;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756739105;
+	s=arc-20220608; t=1756739122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OLi4fM0QNdibiBA1k/MTnIMFu1+uGtd+Ar5TgdqnEIc=;
-	b=z3kQMFIXZFL/OUFRqmrIybnMc8UdMBx4+qM7ILPBHFLCKphSgy4TpduPAkCHIAskn1o8z/
-	xTqAaqpABWal9dqCHElf/68444+PKxdE1h3Vsg5RVMBHA2O3us5J40iBuHb5FUQbXtYoR3
-	0UbVamMgSC9jNHVZCsk7Xh1QoA/lrRQ=
+	bh=lga6UMMa0aQahAKpa9DbBvj6lFfUW2++fx2DNoNdxSA=;
+	b=QhWb2OeFwG63nDfIpLOE6IT566I3X5//gB388c+ij5b9aeZzAn/QIiJVdicApgL6cQDm0Y
+	C34pE8GzYwuG6Ex4zfpM0Z8zAcSBDJIcVipNm7UB9xmixgnn1uf6TcngcFEIGbu2Tn4Mx7
+	M9w2ZkI5RVU3GZh0B9aLJYpp0j/scAg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JBtzxbio;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739105; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VoSi5aky;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739122; a=rsa-sha256;
 	cv=none;
-	b=bvJFS8kc4DPvWRwbiWfQ/andONKOyj7aqhp8XbUeugmZj5bOOhZH0hL+bWINo4voAbhspa
-	XJ3uNu3nlcY5DI63XiAo9Nc1ogqpBNJWFcnGsp7Fu8pfr0nz1OZG6pTso2jJJyoZyia6K9
-	2Pxbhf/hroghiht7cn9sCzkE/H7jflQ=
+	b=zznifv7U3kjk5s3BskBn09WwqWWO9NXEpy7VaU/EV6lRdIiGvBuuKJnRXcJCniOLIr3gIk
+	bRLMDk16mkCxkhPcBfHEDK7+qtmOBle27cruhW1k/C0+f1R8QeuxEOxovx2QPinh++hOTi
+	l+RqJvUeKtBbhxdV9EqwkzJ+oMt6Wpo=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756739104;
+	s=mimecast20190719; t=1756739121;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OLi4fM0QNdibiBA1k/MTnIMFu1+uGtd+Ar5TgdqnEIc=;
-	b=JBtzxbioDzwDm5Uv/+yP44L1euP/Bb1Uhjr01L8EUDmm2BW4NvD8nFumfgcvnK2PP2XFut
-	KiN3OCs0lemQaQpqhWIoKJspq0Cq3afPDIeTH5FPYcU9INk5lzKiFLLQ72pWbZfxtK9hZ4
-	7g8xnamuBV2j7FOasZfSGDu8ANe21Ik=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=lga6UMMa0aQahAKpa9DbBvj6lFfUW2++fx2DNoNdxSA=;
+	b=VoSi5akyWi0y93C4d9KgBplUVYIdZR8R9EKsNCXfObhFpf8f8/n4ttcrSiTdgf5pslHYYg
+	7IOA+VnxyEWeShUWa52Kl7Sncq3FB6zkK00wvBiHZh/H/A+Gmi5PCUERaJJOo0GP/l68/g
+	T7hkgML1ZzqKLcjvNqC6El7Uu94ZcJs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-SnJjvg_JMVyx55RP_RE7oQ-1; Mon,
- 01 Sep 2025 11:05:02 -0400
-X-MC-Unique: SnJjvg_JMVyx55RP_RE7oQ-1
-X-Mimecast-MFC-AGG-ID: SnJjvg_JMVyx55RP_RE7oQ_1756739097
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-kjaS4mfWPCWoOwPIngtDKg-1; Mon,
+ 01 Sep 2025 11:05:17 -0400
+X-MC-Unique: kjaS4mfWPCWoOwPIngtDKg-1
+X-Mimecast-MFC-AGG-ID: kjaS4mfWPCWoOwPIngtDKg_1756739112
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BEDFD19560B1;
-	Mon,  1 Sep 2025 15:04:55 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9E3B8180028C;
+	Mon,  1 Sep 2025 15:05:11 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.22.88.45])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1702E1800297;
-	Mon,  1 Sep 2025 15:04:35 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 418001800447;
+	Mon,  1 Sep 2025 15:04:56 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
 	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	SeongJae Park <sj@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
+	Will Deacon <will@kernel.org>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -136,23 +123,24 @@ Cc: David Hildenbrand <david@redhat.com>,
 	virtualization@lists.linux.dev,
 	Vlastimil Babka <vbabka@suse.cz>,
 	wireguard@lists.zx2c4.com,
-	x86@kernel.org
-Subject: [PATCH v2 01/37] mm: stop making SPARSEMEM_VMEMMAP user-selectable
-Date: Mon,  1 Sep 2025 17:03:22 +0200
-Message-ID: <20250901150359.867252-2-david@redhat.com>
+	x86@kernel.org,
+	Zi Yan <ziy@nvidia.com>
+Subject: [PATCH v2 02/37] arm64: Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+Date: Mon,  1 Sep 2025 17:03:23 +0200
+Message-ID: <20250901150359.867252-3-david@redhat.com>
 In-Reply-To: <20250901150359.867252-1-david@redhat.com>
 References: <20250901150359.867252-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Stat-Signature: hrunahfpok81tbzc5pe35nywdusoring
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3B34080011
+X-Stat-Signature: ynszi4j4q9qmqg519stditsnwauc1n4f
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F0CB4000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756739104-992312
-X-HE-Meta: U2FsdGVkX1/P0jAcDcd9uOzKQYf0drcqAeAhePqWuxcIkRLOn/sbJ3Gf6/8GdW7B+Xd+BxUt/JMiKhakvJaWQCoVw0y6aOEEsGedjjmWzKqE34VLLGP96KRsItGT45qs6y4pW6W1dsnyld4HDVzURZ+P7nfsJMBOAnk8gcelmpVh+dGxnl8Z9YPuOjf3DZlegv+5wSAKqC115v6LKPQ9IR+JjjTK08ecA4FAKbSPCNwqm5lqQJemz08fdCmH+30mJv+kH60jxW0PTn2al3oIOEh4MknrjSndMJkHctR7ONxC1BNHRWqSQmq5qCHVr9m9QhC89fz9vuVPZ0v5BF9kvm8W2lCMcfN+YJDj+HHMwhTENIJ8ejFS7dlzSDV0DngdcJwwxEGUWEYHM33iUuSg3wyvt9PkIFSTbvPj3TGKxeD2o5nUsj0I0NCBZoURmqwfPnT+HHS50sJSGTjf0s4VZOuKjVxVC6vldB0WLl0NObCTKOe8gCo5ELbyRjEezDtPt52Bj8TVfYZAGoCIBHRU32Mo5U9L4AjWbtxBWMWRESwY1aChY8sFHUKXW3li/ki6ImbM0VTzgfxVr+mEPDaGrqWGWS/tY8LXe3JZztYiNqTIhN9pqTZm/TCT2F9pykpmFpJEXX1O4UuEGzu/sJ/wA6jRn9y8BLWVETPmucXwXyT6nCENs8lduw4Y9rO2RE6eaO6Xswqx1X63jJ/d9TivwTH0oJb2QJn+9jpZ2fmjnuGzkmmy0pUaXQsLBHXQnzutqtZ81f/U1b4+zYNpc3JE0DKMTnULleSxOhu/ZLjkHWrUXdOokMBYbY2QMQocc2PKhRH5nd0jsBZBcZeTeZ/34ZyU++O2KGVos+7vUUMW/brIncwf4GIo5vKv6vbLj06aNSdrQThMDZXA1s3vbOkUs/t1weg8AsBfEKKX7r72uSdRIGD+Und90lcMHLccd8Yipjaxbmp4EVyCogVcjHh
- TDvH6Q9K
- AbluBZ+gWpcalq7M9gu/q2fC2WbolHohuw2dOvRDiGGM28uzRgR2wlWKYCqf4aVjk/6Ehp0idRicLN03GCGKs2j1WTdu1JGdtrqzRykRAMk52Gt+Fsi60rYxLXn+3bnCd75v3gXC4p4yDmmi9xbuNU5EJnlFaKL4Q/MzdJ5iws481z8RNDBEAanv/+Qheycq6+wmeFr67QDTmc2RRMts3dySawG3sINaYwMB0uA6jBhOcDqJKHJPGHhplECrZMbLPIgjVuVd8OuCX3olaZyHc09yDfUWMvaO+3V+9Wv590MiNahut+bjR3pujLicQOurYSFFLllw+97eJWMQKMnmUKdqa5LiPOw2TT7vWYpZ2iAN5VBGz1mZGyNDjM2RCrfRGvpVArp8rf7iNT1Ra8kB17F4itagHqdOaesEs4u5diTjLAsJ4asl7qscXMzKLGA7xj9B98gKx7YOGpwRteHD5yuFy0QnWugFuqf6QpBjDxycO6crWwkLJlmbbvaETJ4gNYdmi3L5KbKcv7zrPq93UdPSnfrLbaxGUK9C79mAq3plvooA2O4n1x6pat9p8ASZEUAXV5c56e58+N2/REymiRSWDnZ6W0cnilUFWn/wRdlDFRG8h5yypqRRyN9LehgdqJMlW/zWr1szcESywhZX1fxOnp3yaeVtKz8f3tbQhq2ydk9wF4vRTIZUpT95ybF7hB795akjiFIaB6BON2NiGKHoR1JdrJPQciiy1lQcIHYaj6iswAsf5SOTyhnJ+U8scL9znKona2lcaopXN3qtTnK6CHla+JiGug78JEq0LVOSvaHwIbAvce6OLbfpj3EndNasdgSvNkeL+Cmrie6m6G3E8P1O5eMXLq3tZ
+X-HE-Tag: 1756739122-400562
+X-HE-Meta: U2FsdGVkX19OX0it+6dc1iiJxqoddasAa0qMop9iuijxu98NOtmfeDOTreC6t+Qm+/tUo3JuYu+lMbyA/nlkXdU4HkLiKbkLQ6PLxDdADA/teN+uFgynFoMkaHxQNoDFuhlMNibymsU7HFI8H+hslnU8ciLHEbuJRU1r4a2P7E65BAYbRXtEd9X2RYm2W9pQVl4S7QYOF4eKqc+QRPJrYYNODwbA2+2KgJaGONCyNCfJilgLVkuNkfSD3DbgOY1ErAh9Rhb/ubrtwGG0wf13cCmR1DDrEUxBRAKm5qArWgr3fQcfa3BNhbzD72Af3E9e4KNeZssS50SVBpGiciaJXzm9ZdQ9iyUgWGt/6pvv/eYE1hLe9R7FyE0aE1Vrklgv/CZ/1dNBaDXyLCDNg7ZVcBflsK02FQhdob3otXlztgBeP7yehzj3ISOvOtCuJjQeoSud4Um2AN7pMlyhCH3OJj/gNwErQrP2QoiAbqseTX+kh2QOzp8TWWkGHIm3x4kSH1Wt6ONA51Qajund+TbFfzCpTHA8RWBb7l7f+iXQ6GJJzl/6iVmav8ZV4/vCFfRdu8QmtCoP+LDCRhp1mBoF62wJWwRKkd/DRYUqkS1qqOSfSjz6WDhjUiIewiBk6cH1TRz/tLGEVXzO1b5wkeZZoZ00b4kXfrQFdL9kAmDdlsOJcWGjJcKfVnETX3FgIaEHBbCmXySF7u0bi2/tbwSvEy2r2hfzjPmEBn6YsWfvP4cG6eyQUFBW+XAMpoWtnt0geySCuP8nlOdz22Iha9ZiASb/4ZQIGczQ0xnqVRM/VJ3LLkbCIEzODBv0M2ZbANmedaVy5zoPZDfFDMPFSmo53Jx62e+x7iKxyLk0RrT7iq7M1i708IPjShqVUKhztVG1Gwxm0GOnjbPD677Dirm+rGoPQ1d6U/y2kgS6hmKA9O9KjHr2q0T1a/LMpMkO3OJOXk7WM/597e7LYlGVcHn
+ fLt5fTRo
+ yXlkWtUlEiN4k6w4hQPsJd6eM8DuSZI/x6uKQqDjGw4w+2xZJbdwLMEf0STDqATKzJiU4tVemyXvUZkitQVUEg4XM5eUGogRPXSM0IRMsJTY2huY8a1DsNZPQ9I1ncSe7GsO8KmkvMQRonrtjFdX0I89tUxhYRthFfADGPBytlhAIJs13qEOdeDZns/bLEm/kCkh89it8y0iCLAlYlGOPDpWgE5qvTzFTB1XcC2b58ZvfpzpZ/XuvBBnUfrbKf++8EAnDWi8HeFuZqMSzB3wr50TaHmN68FT80GCxAU4tcruBecLr4/PFu1dfh2eDX5jvmzqjg/7oo6mMq94UNuTTDFCn34YJcU90u2CPQ2+06TN3/Y301JyxLD6n9GNfpbHMdCEjgsvl4s+jRvznGoxjcdLCuZrz+esivafVwaP8UwdZcfgEwBSrnKr9Zkq3lbR1IvUYNBGBQtj12jxhadHsRLRIMdl/mSr0vfExcYuHmcxKiRQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -161,69 +149,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In an ideal world, we wouldn't have to deal with SPARSEMEM without
-SPARSEMEM_VMEMMAP, but in particular for 32bit SPARSEMEM_VMEMMAP is
-considered too costly and consequently not supported.
+Now handled by the core automatically once SPARSEMEM_VMEMMAP_ENABLE
+is selected.
 
-However, if an architecture does support SPARSEMEM with
-SPARSEMEM_VMEMMAP, let's forbid the user to disable VMEMMAP: just
-like we already do for arm64, s390 and x86.
-
-So if SPARSEMEM_VMEMMAP is supported, don't allow to use SPARSEMEM without
-SPARSEMEM_VMEMMAP.
-
-This implies that the option to not use SPARSEMEM_VMEMMAP will now be
-gone for loongarch, powerpc, riscv and sparc. All architectures only
-enable SPARSEMEM_VMEMMAP with 64bit support, so there should not really
-be a big downside to using the VMEMMAP (quite the contrary).
-
-This is a preparation for not supporting
-
-(1) folio sizes that exceed a single memory section
-(2) CMA allocations of non-contiguous page ranges
-
-in SPARSEMEM without SPARSEMEM_VMEMMAP configs, whereby we
-want to limit possible impact as much as possible (e.g., gigantic hugetlb
-page allocations suddenly fails).
-
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Will Deacon <will@kernel.org>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/Kconfig | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 4108bcd967848..330d0e698ef96 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -439,9 +439,8 @@ config SPARSEMEM_VMEMMAP_ENABLE
- 	bool
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index e9bbfacc35a64..b1d1f2ff2493b 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1570,7 +1570,6 @@ source "kernel/Kconfig.hz"
+ config ARCH_SPARSEMEM_ENABLE
+ 	def_bool y
+ 	select SPARSEMEM_VMEMMAP_ENABLE
+-	select SPARSEMEM_VMEMMAP
  
- config SPARSEMEM_VMEMMAP
--	bool "Sparse Memory virtual memmap"
-+	def_bool y
- 	depends on SPARSEMEM && SPARSEMEM_VMEMMAP_ENABLE
--	default y
- 	help
- 	  SPARSEMEM_VMEMMAP uses a virtually mapped memmap to optimise
- 	  pfn_to_page and page_to_pfn operations.  This is the most
+ config HW_PERF_EVENTS
+ 	def_bool y
 -- 
 2.50.1
 
