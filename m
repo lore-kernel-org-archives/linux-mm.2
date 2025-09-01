@@ -4,82 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 127F5CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:21:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97D7CA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:22:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7F258E0088; Mon,  1 Sep 2025 11:11:12 -0400 (EDT)
+	id C0AB08E0089; Mon,  1 Sep 2025 11:11:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2FD48E0084; Mon,  1 Sep 2025 11:11:12 -0400 (EDT)
+	id B94518E0084; Mon,  1 Sep 2025 11:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1E3B8E0088; Mon,  1 Sep 2025 11:11:12 -0400 (EDT)
+	id 998AE8E0089; Mon,  1 Sep 2025 11:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ABB38E0084
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:11:12 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5227A5BC6E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:11:12 +0000 (UTC)
-X-FDA: 83841019584.06.68D25A8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9706D4000E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:11:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="c4R/HSUG";
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C7CD8E0084
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:11:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CB4D1608B4
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:11:27 +0000 (UTC)
+X-FDA: 83841020214.20.1F55E07
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 80214100009
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:11:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FZiMXx7r;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739470; a=rsa-sha256;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739485; a=rsa-sha256;
 	cv=none;
-	b=D7fvIY+yPznL0yPJKkBZbbmqhMZlQybqPmV+u00fp17ACTetIOjRkriXZQL6iEaIZQcP4r
-	DvRBL+K23kmk94ASmrIN24l4AIyi+5rszMTK23DDQIqJRTVDNKQEm/frXmLHJTOFdavjVi
-	9s7AFwbcjGymL3r0rqK7/BeQVoJDg/g=
+	b=pJAx027s7g6FB2TtkrTJUyn16VbJwekfL6vUKePbjNSvG1/aMeZQh8wEmwj5oseiO2VxqP
+	Pjobo4ANY34gIcLOGZvibUdN0w5AIMI6XqYQD+jME2Ho6VAEGHXT3T8nHnJ2+2LvIB5Dxr
+	Re+29FIEYHKlvJ+cw3Z2WP4JyEo6sU4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="c4R/HSUG";
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FZiMXx7r;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756739470;
+	s=arc-20220608; t=1756739485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XXIrQPK2KTSHTm5n0r+eAcK1OeXNu/U6cGKCJgmF5aw=;
-	b=ejVRqejNpCUFB8xBjOe5fj7PtX8EqIhw3XnV77+dnjfagdG6Bqc80+utPz5jHNr7hNS0CW
-	faT5OLp1ZbE2o19sQ7tGOOs+YgJx6YJ3p28nh/SUsxOY8a5NbPyl55+10Je6TnpgM2UqJl
-	c5+HkCtyC+H/m0cZy5r5n4KhiFNc3E8=
+	bh=EAbURELJ45jcqE6eG2dah5q682UY9xPl8wQ2wDImPZA=;
+	b=wenssv+OnAFrwcVhqFvhPoolsLS1a7G0RxzpaJwpX5ATgEcDyuYVrT4V4EsjA4pLg6bZik
+	Oq4MPrGF2EFCH1dII9w3FefC+HtWRfNaXETDkadsRQ/uLA7vWCgqSYFz7I6N6xfZ82t2g0
+	aFNHpCglcM1EhoCfKdVXODBHIFTtP38=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756739470;
+	s=mimecast20190719; t=1756739484;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XXIrQPK2KTSHTm5n0r+eAcK1OeXNu/U6cGKCJgmF5aw=;
-	b=c4R/HSUGSvBTEtAstycVjSPvmqUhu9nOYFCuV5q2fVcYkg/h5/nflj64mspIXY0y5iL3Ke
-	C/FJzvSJYa7S7NRJdp53BthVC0icGQ9WFCvdyJaeZK7kJMdIQvuK7xpfEkzEd4my6P2fmY
-	2Ioa8p8tmWhYuZvkFXJdrCZxrbd+vjU=
+	bh=EAbURELJ45jcqE6eG2dah5q682UY9xPl8wQ2wDImPZA=;
+	b=FZiMXx7rRShn9ylxscrOTIZ8FwhUX4cAZVK8CZ3i+KGmpe3KxJKwVJ8vL88J6Qfmol6yDc
+	GktW9AKGUUHkYoZJ9iSGeqrj2yswV0g/y+yfo5xwPHVj1C1XHndq6T7DeyppaECnzR8ovr
+	tJUhILbITcVVoeRZsaHb6UTHaoL1VgA=
 Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-VJeTZUpaN-Gpu0-I1j8nww-1; Mon,
- 01 Sep 2025 11:11:05 -0400
-X-MC-Unique: VJeTZUpaN-Gpu0-I1j8nww-1
-X-Mimecast-MFC-AGG-ID: VJeTZUpaN-Gpu0-I1j8nww_1756739460
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-33-LCEUb69uOTm7Rg26mamX5A-1; Mon,
+ 01 Sep 2025 11:11:22 -0400
+X-MC-Unique: LCEUb69uOTm7Rg26mamX5A-1
+X-Mimecast-MFC-AGG-ID: LCEUb69uOTm7Rg26mamX5A_1756739477
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 389871955F27;
-	Mon,  1 Sep 2025 15:11:00 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6565919560B5;
+	Mon,  1 Sep 2025 15:11:16 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.22.88.45])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0AAD418003FC;
-	Mon,  1 Sep 2025 15:10:44 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A6BF518003FC;
+	Mon,  1 Sep 2025 15:11:00 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -125,22 +129,22 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH v2 25/37] ata: libata-sff: drop nth_page() usage within SG entry
-Date: Mon,  1 Sep 2025 17:03:46 +0200
-Message-ID: <20250901150359.867252-26-david@redhat.com>
+Subject: [PATCH v2 26/37] drm/i915/gem: drop nth_page() usage within SG entry
+Date: Mon,  1 Sep 2025 17:03:47 +0200
+Message-ID: <20250901150359.867252-27-david@redhat.com>
 In-Reply-To: <20250901150359.867252-1-david@redhat.com>
 References: <20250901150359.867252-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 80214100009
+X-Stat-Signature: 3a856jmmo3ub7n8ma89ohhdkus4wnaek
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9706D4000E
-X-Stat-Signature: p9xrdwoj96ff1cuke1op8bfwb7mwfmgj
-X-HE-Tag: 1756739470-691956
-X-HE-Meta: U2FsdGVkX1/ry47eS5pnGVSxD0p0DJ9cymhw3j+mmG+ha1lbsYKU2BNIV8wxEtoJL+uwXlPXYVHh8vIvKk+k5kCuSxwuQCbIrWXH5ZuuzJXgvhny4N+HBHM2+K6qfF8TyFSdycNfoXFW+2P7VdoX9VsbqPc5z1Bo0hcgJswSmsuf+MsuC3QgDlygyWf4I90aU54HaunaZv5BpVhahVz07NcaRCFinOlIk3yLDKMRf/i2KAI8eIJKQNq956tKBKNmrPAMegqVzZ2gEn1SOB4lt3i0SQEcRvQzLkU1ze2wSYJDRCts5feZZQgh+V7gTCgsSfiRJf3PZtVjjZ1RWwyG8jFrB2u63R7woAOc6GIVXg9WbLM59skDbLGYRxxa21c/I4f83o6SWpmpW8y8ofzvI6kL3iw96phfjrXrMqHy7pEG1Zl6riEhTSTyCjwSE9uF2SwLFncFHjHyC3Du2T0MPtAQmUQbmOZVgKG8dH+ypqPEP6PPqAJLimuYHpJkRZkUQ7dkFj03fjtFgOWSBAc33sEncYaCGu5kRdhndL+DHnkNzEXni5GiS5SNy3EsM7hCKym2rqtzJpelwZv0gebhWm4t+9kbFQuAT1jCxOHXUSm1A7IpaY7C9BcW/Qh1CDLZUoUCbjogPQQg+yWVT2uDsaZ9yhYOrixsvwz3P+CEM03JyKEsLbNtaqaM6IootCxte6cbEknbxBwdAXAyYDZy8vR6vP42aO2uTvHLUmnapq5/V7xuzGs3zCypY9K1VT86OFYY1XvFwydS7sKMkA4y07V6zd++33iJNamiwBLx0a5B1m6fS/tKbE4CsRlosc3RsPC9bIXCYt/EfAoV03WsFO5PCJLp1aTgCO3TCicfYOyPklBZ0YNozzKxCGPFvKfbaHv9d3nhfko6puyXz5r0owXJgv5C7Dz8Nh8rDkFAmawATnhiG6HrS03mYsKIxEBJRfYLx73kmSx26gF0+e/
- tsIiadOZ
- lL3j19hiLRPcLgeVEOkwjbSZ6zGwXsrD2OuMRQ+4BRmgy+0EV3GK/+p/nQL3ju5Uf32gheZlbnJfTF7dbWCVHxAUKdiI1wEcITi+5zwczPDPZezaLqZUkeXNKA1FD6wJSBamt67ANokvtwAtBjVu1Lf3DdF+eoZqhnixpR7md9KqpU03cINvm3FN7uPjr+fxfPXi5IRHzhzEB7BcKhv4UyFhtfr489ZKTEjMXaiSdlQSelLmUX37R4P9NQo1oHA1PGQXxqMSoId+JQlbTxcj+oj2LjRrGMDJR1DLRNZXdjCHvvlIzgzgDUsZyXg03DBPJMLIVChqmIk+3hNtyhO46kSxL9QGOz6dYlh/C5fltm2fNpuTBmD88YvWxOpJKlHVYW+xNz9/fUTumvMWg99ywYsOcd27W5xfUiv831otM3ES8fJA=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756739485-991448
+X-HE-Meta: U2FsdGVkX183BGakg94vQOpMUUx6g9dOoQG1iUMSydyo4ajdJ23OLTG35cuj020hcf/HEyDaF2IJQ/kd06b5BENpdGAI071zYu7B2zl+Mw5Fpw1D+ST7rExj7ty1p2kytDqCl8tvUsXG90s8E19v2qmXdJeUDtcKA96DshyIimmHWP1uTuih7GEoqpc1K99I/rogBV9Xf/DdzFRvSrO7My2wDNNvUVBOJohGJADL8Xiib1jDuIoHXBFFnWPreAuPTZkzi96HNoH7yvfSwMFAPpIg5eAERyo7ZpeKDOdW5jPdq2NhxY6TJzJk9RGDfLqGT+6wNc40aczf7csG2fAgYMB27hhqcjgME63JOOi4OlUMB+BiT3wG0MsUOG0IHd3qWKspz/tLez/f8dDJu8futBgMmpl+28WmhSlHFAtM4uXRSdPIE4Yufm47wJvPG1ZuLewSLMaoWeWNgXOn/403tFC00LOVwcutrhgn2xc95KKWiSZXUAP+qT2I/QiBje3kn6ScAosnW65XbvHZRCQsUjNOWarT6lAAfSuw1ysvXXLYN5oeZ1/z1wPYNulvnjdyTSBmFNVm3qYInRRcBQIVdgbqOoaJdPbM5b4oOfLIpLOTFsNg8jKYpZlIpfPErzQOCjuUCu5gQqnPttat25BslTA7AQ0Sq2ThwOsW3ED+h5xJiVXClbjtzogDouVf1Qoa2Ff5fD6ba4wXZk1nz8QcZHaHQuZ2gs1Pw1Q73bP9/z/vq7hEi65css6He6/D0ErrNePNhddq9TAuw88psN1B4B/PdyCcrn6zG8PYnZfBD1B+nXMUlmhXKx53blwid3VjDGWbH3KzSifg67WElfU3sSFnsQAUS5N78L2S1No5R6u8kV1DN+0OKJl0pJO4FFbJPeHImaq7lgtSShS8f5RxuC0I0ULeq4MhF3TJbeOSdaD+u0gCI6XSWnzqfyTDR+HKkh0FAJJt0lrFC9q1WV5
+ 0o7CBkmJ
+ J1XWsXkPzj2tGundx93G1UQBTUWuaub6ZmlDLdZRuKxfJJ1iTa9LBn5PzAyZLekJ44aD1eZDgtDLWuW/KobJQ8t4M49T8JlmZvT3YmJejqjpkut0LJUf0Y8eXUnJM/eJHrcO//ORz9TwKW9N3u+xibFNRLmaBpWNMnHekNYPHuM1FqdsviZHRgQF7+6dVrcBMmmThhWlxXaB8eW76FU/aqoAeDQ4flLxBxUSqTEtunfKwyzb5Eflys2FXoKfB/7ITLrGK+XRz3f7FY132d6xa94viYmJ8w5HpJBfMyPyLcclkMBoApFWhAH4nqPrFXIlzHPcwX7ZuYzbzfG4OGEXZjPvbU5GPA4yPfJLonxuc7EkfjXdNgCj4AopUoltdXGNo1sCXBKLEeVzxuxKQRchmne1m43GvFFiqeEMGrTgGerv7G+gD43WCM9gBnfwWTeU8R8C/gY+zWn+8GNVsytNHaCQsgu90PBqdYx5E/PdomY4og5JMkyyaphdoNDFDo/29Nrgm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,45 +156,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 It's no longer required to use nth_page() when iterating pages within a
 single SG entry, so let's drop the nth_page() usage.
 
-Acked-by: Damien Le Moal <dlemoal@kernel.org>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Niklas Cassel <cassel@kernel.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- drivers/ata/libata-sff.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_pages.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index 7fc407255eb46..1e2a2c33cdc80 100644
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -614,7 +614,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
- 	offset = qc->cursg->offset + qc->cursg_ofs;
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_pages.c b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
+index c16a57160b262..031d7acc16142 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_pages.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
+@@ -779,7 +779,7 @@ __i915_gem_object_get_page(struct drm_i915_gem_object *obj, pgoff_t n)
+ 	GEM_BUG_ON(!i915_gem_object_has_struct_page(obj));
  
- 	/* get the current page and offset */
--	page = nth_page(page, (offset >> PAGE_SHIFT));
-+	page += offset >> PAGE_SHIFT;
- 	offset %= PAGE_SIZE;
+ 	sg = i915_gem_object_get_sg(obj, n, &offset);
+-	return nth_page(sg_page(sg), offset);
++	return sg_page(sg) + offset;
+ }
  
- 	/* don't overrun current sg */
-@@ -631,7 +631,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
- 		unsigned int split_len = PAGE_SIZE - offset;
- 
- 		ata_pio_xfer(qc, page, offset, split_len);
--		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
-+		ata_pio_xfer(qc, page + 1, 0, count - split_len);
- 	} else {
- 		ata_pio_xfer(qc, page, offset, count);
- 	}
-@@ -751,7 +751,7 @@ static int __atapi_pio_bytes(struct ata_queued_cmd *qc, unsigned int bytes)
- 	offset = sg->offset + qc->cursg_ofs;
- 
- 	/* get the current page and offset */
--	page = nth_page(page, (offset >> PAGE_SHIFT));
-+	page += offset >> PAGE_SHIFT;
- 	offset %= PAGE_SIZE;
- 
- 	/* don't overrun current sg */
+ /* Like i915_gem_object_get_page(), but mark the returned page dirty */
 -- 
 2.50.1
 
