@@ -4,244 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CFA4CA0FFF
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 14:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92BE6CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 14:38:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FDF98E002D; Mon,  1 Sep 2025 10:33:47 -0400 (EDT)
+	id AD3A88E0055; Mon,  1 Sep 2025 10:37:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AEC58E001A; Mon,  1 Sep 2025 10:33:47 -0400 (EDT)
+	id AAAF08E001A; Mon,  1 Sep 2025 10:37:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28BB88E002D; Mon,  1 Sep 2025 10:33:47 -0400 (EDT)
+	id 9E8498E0055; Mon,  1 Sep 2025 10:37:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0270F8E001A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:33:46 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B60FC0717
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:33:46 +0000 (UTC)
-X-FDA: 83840925252.13.3C725A8
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 369D6120011
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:33:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=UfTBdt0y;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Myw95xqN;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756737223;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F3748E001A
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:37:47 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0EC2385F5B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:37:47 +0000 (UTC)
+X-FDA: 83840935374.08.BEBEA42
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 51DCD20008
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:37:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DJgb866O;
+	spf=pass (imf13.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756737465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cj7H5l71z7n4ab26E1+FSdQCJ4yVGBa3bZL1TiIPLH8=;
-	b=zeE0Ga0n6dIfSmStY+SRoBmoKPPlbAKnZi29hraL618m7uwZbIr2eaqSc7IwlldURNDduu
-	cY7KvAb1UwqVXI1FU9a/7KUvulW0oFUVh9gnqkw9NHPLW1hV0YBN9yQr620JwufhQHdGej
-	1zvBhibm9VASbrTbTI+vBIZ09PH1JsI=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=UfTBdt0y;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Myw95xqN;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756737223; a=rsa-sha256;
-	cv=pass;
-	b=l6l8Ya85VWFYuz1MkyWYFsp0wZ8FgYBpHeGLawQhjj2seK5+onY45VZM4dU8fss3EK3a50
-	GniydAjP8InPF/VhVvrTCz9z/SvHiYaRft7JHWMZtK0MhFJKtxCDginVag37MW9F7fT5Ao
-	/8p4n6NeYn/GBVcYY4zePwDQjc1btws=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5815fm59026614;
-	Mon, 1 Sep 2025 14:33:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=Cj7H5l71z7n4ab26E1
-	+FSdQCJ4yVGBa3bZL1TiIPLH8=; b=UfTBdt0ynsByWskip+i3k9i+AZXjrYOJ/O
-	a1RP9NehIZHSP/5RbWlKc7q1LBr3xURmFfxyDkWukTbq64Fukyk1oUD3Kks50FHt
-	xjvlmxzhGpUwtEcdP9YZ1XKut7bcCIRy8mwLMmDPsDgPGZwWRpnJmJ//rX9EKm1r
-	ENZ2A647E3trRQ0TiVslsDfEgREGqAoxq5hG/MFnru+/gvRwIAiTI6Z9VaPfKjPk
-	WZSRQc1PDWImGhwyHiCOdt1kaSEIm2x0gSZXGXKEpmHGlBoCYVz6F+csHHubQ9Kz
-	03p4+jqBc2R3vU9HT8SI5n9qyz6iWDgOI9wpmdkYtODbbp8dqSmw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48ushgthyq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 14:33:08 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 581DjajF011674;
-	Mon, 1 Sep 2025 14:33:08 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2048.outbound.protection.outlook.com [40.107.93.48])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48uqre7mth-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 14:33:08 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uP8hy09sPHMfTUGHdDk4m3hlOhc/OiAOFD39FxKCJKH/BX/R8Cl5pbqfJo507hx4pypdkEOck2F3Z8LLyrs0M9BCZGxa6rWV1KJ6EO9PHO40PPuIUWEygPvPSX/KBwj0ddKs2+9o9RZiFwV419th0qlWzn785hmXLAmSeK9cnzZvgSPwWBEN0LsT80zsslqyggBT0l/1V9sYgArkJkPUE4ZAB8zpAS94Y21nvABT1hfoE3mnolOuvp74JNEhGxLRVR8INO4WR0wnzEkmTnDI1+mSJOuVcD0JHPO8hXHiUHYYrxWLt/hOn9RHw1kVrBNKP+Y6sP/ILIeSkDk1lWQm3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cj7H5l71z7n4ab26E1+FSdQCJ4yVGBa3bZL1TiIPLH8=;
- b=xGLTO+RhKSdkbT83y5MlzicjJ+z3MKX1LgMEfxbdKXpDLni2MpUSs2LeL9ApRRxjQC8KDcbNR+S6Gzw4BuSVGiLGKu2Ca+iXIXKrutx5MsPMbpzGg92EOK4qXKiufg/XFTLhjzJiS6udvn/svFH8ePvZahhrzSMUYa6hlvWvPuDZ3JUndxVokZb0PztU2eMD92Q9IPubxuCS9nP9XKz9ieUtCvClPzJlPvGjGIxdjLbBGTxmksKRyeJuZsvDy5dx92+wdsi0yeHOenf2FcuDOiwJ2C9bXQfS0EmKBIhH4QYZtINXfP3lkiDo9gay5/uyaameIrxV8aJHMogsyTByew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cj7H5l71z7n4ab26E1+FSdQCJ4yVGBa3bZL1TiIPLH8=;
- b=Myw95xqNDuQhfUixjBD9IxX9A5JziNXhedjtI6BHDB7lCo7Dn8EhE0hqqfGKXF0sjkNdhrNjBF2kHcUKiYYcGcKCHIcY3eOqLwdJfLBNYgzv3DTF5M726kDe/7t3lsV/LjVnA50OnQu/D81xFg4tfsdPrtds1dbEE9PcYj9L2RM=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by BN0PR10MB5157.namprd10.prod.outlook.com (2603:10b6:408:121::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Mon, 1 Sep
- 2025 14:33:00 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%3]) with mapi id 15.20.9073.026; Mon, 1 Sep 2025
- 14:33:00 +0000
-Date: Mon, 1 Sep 2025 15:32:49 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
-        yuanchu@google.com, willy@infradead.org, hughd@google.com,
-        mhocko@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-        surenb@google.com, vishal.moola@gmail.com, linux@armlinux.org.uk,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, davem@davemloft.net, andreas@gaisler.com,
-        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-        weixugc@google.com, baolin.wang@linux.alibaba.com, rientjes@google.com,
-        shakeel.butt@linux.dev, thuth@redhat.com, broonie@kernel.org,
-        osalvador@suse.de, jfalempe@redhat.com, mpe@ellerman.id.au,
-        nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v5 00/12] mm: establish const-correctness for pointer
- parameters
-Message-ID: <16d2d53d-a2d0-4cd8-9323-eb91ba51b061@lucifer.local>
-References: <20250901123028.3383461-1-max.kellermann@ionos.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250901123028.3383461-1-max.kellermann@ionos.com>
-X-ClientProxiedBy: GVZP280CA0079.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:274::12) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+	bh=eDBs7h7WrM7l69Eva8SJd0Cr/dn27ADGm+SkuMR5gmc=;
+	b=GA0kK3V4KV9WqiqlW7Pi7/DyFQ8nwgC6j4aJROyVmgb8UzTy4QrXIZL0b+Sw5O4LveLmrT
+	y0NwcCZfXIqAnFVkBpi3q6bXNbpvHLWA6OYkAquEf5L3ASPi2Lp0MddZ8I7A4z8IG2wKlW
+	yYItudNRTsQePLz3cW5AOnyZ1Dr9HXo=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DJgb866O;
+	spf=pass (imf13.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756737465; a=rsa-sha256;
+	cv=none;
+	b=ocqUCEeMzdvWoBGnPg0CyJHx38m+N49t81eu8jqh5XrQJSdL6SlTWos9p2QBruPZQANy8/
+	ZLnZ5Fhuh6OwZKFB8JqyVC95Lhg+Uu3SFKi9qJWwQeZf8XpUNSZh3hO2DpRiz/vVLV/J8u
+	ErkVeIaMA4E3V2lSyuwJ/KsS8sZvX1o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 939CA60010;
+	Mon,  1 Sep 2025 14:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91158C4CEF0;
+	Mon,  1 Sep 2025 14:37:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756737464;
+	bh=gIvp8Vp/E1swy4wyBXx3jb2SoCxt+LuCiS4lw6AuyVU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DJgb866OavVlQXKjEcSDRgX01RL+TgYXMilYRhox1DG2A4pbmL/EMuUOSPQkhKm9y
+	 ZvbgzuWzlkHcKChIVmdcfSamTbXnIcObi8vEvl5/9muDCgJpxid02CByyOsACIh1yU
+	 OKX98+D8HARzpuduhCAuxsNQWh5qbLNOOQS83t6frONv3iLVNfsFrehXLjwvOHBqVS
+	 gJYuwaea4P7AtESKCzphgnRjeu3/3j4HbVoPTYqH34hpPGEiqkEowrs9BdVtPLHybV
+	 TE95H7tVbki8s9jUEg4vMUHVN4eZ+ZaHfW6KZvrIPhItfOg2iPgxsvk5RylWjzgxwD
+	 tuJt2jvYGPKOQ==
+Date: Mon, 1 Sep 2025 15:37:33 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v6 06/15] pinctrl: imx: don't access the pin function
+ radix tree directly
+Message-ID: <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk>
+References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
+ <20250828-pinctrl-gpio-pinfuncs-v6-6-c9abb6bdb689@linaro.org>
+ <61bad868-d976-4f49-805c-8d14d4d8b3e4@sirena.org.uk>
+ <CAMRc=MfB_3e0sjCpV+XaKcKvit7Opk5LczH2wsxO=RftrAabjg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|BN0PR10MB5157:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0d061c4-de37-49bf-08c1-08dde96473a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?whuhX3thdaEqR5rSqYlLIb/ufhopzcrYL3UbEiRMyzt9cXVXUmZWwiiNme3h?=
- =?us-ascii?Q?3p1lmQE2tqPhs7iXO+vO+LOkFQBTKff7zK3jiBd9rjOn/NBuWWpsDnyFN10S?=
- =?us-ascii?Q?dAP4mKParWOIEVhLgMehoKgtomxujPrMHqBqrRd0oGHJMzBetH7GNqDf/2Nj?=
- =?us-ascii?Q?fnlNAeRZqmdGyDneX8K/oSYMqk5X5glIcMNlAdJbt3ylkohyt3RgycL8mfQX?=
- =?us-ascii?Q?Ryr1nUAqshz3MtrzK/dpYOcy6r/rJW44+qQpE1sHJ9lUHkH+tCpHnWXyUVYm?=
- =?us-ascii?Q?BuJ+YQ6fTHGYlJT/E34PW6s6JPvOFONufUn1ZoV/qfAnl6/OVESsC/4KEddc?=
- =?us-ascii?Q?WZ6JThCrkFTLu8w1Cu3pJe2buc5gUs81LbBP9/VCsm8jO1H7+U73FS1QEGnu?=
- =?us-ascii?Q?zFV+Zj2/oFe/7cePzRfZCOrOLBBwU1F06nIOsXvYgdV8yu16WHJUpcYXADbd?=
- =?us-ascii?Q?/d1Re5RlOSQYcethKo70XQrBrWWynrgLpx1rGmembqhA2eDBJqpCNa+DnmwO?=
- =?us-ascii?Q?OGK25m72DyUgqqwPpwvpcLWP+XUtXbuQl0UcRMUJl4p1Y8yIzKv+Wjc8LFeR?=
- =?us-ascii?Q?uaoMNAUVowAuDIXpVwEptrmblX66fTNRtjN/eq3u6W61un+D/7XUNsahhZjP?=
- =?us-ascii?Q?Ci+1EuS/L+wg3kuiBu/CZaQJs1y2KMfMBSH2mozAdAvekEtpwfBWEL1gGX3L?=
- =?us-ascii?Q?hB4iLf3v1oKegVTS8doQZnot4k5G6Wmofm9gh/8+1/s1G2V0GpNw9qfqhcfQ?=
- =?us-ascii?Q?rmh6ORAUPQ1Xxc2qXaE9YCFDo0Pt3bdSqMSMdv7ztG5NuI4lVHX+yxcgAZLe?=
- =?us-ascii?Q?ewE46nJXDLEAG8w7x4uferoYUMcuuaRMz3bovAPYYu9wyCtQm20HXJBB87ED?=
- =?us-ascii?Q?+cPIBKxYFCeSSZ6+8jCYasSx8CEultofClcc6gZc+5xWOsD8WMHxcp0Z+ivH?=
- =?us-ascii?Q?wYEfB9iwonhgUNCdA8+3RGRQXZ19nkuV1vh55KtsCS3yily5Far+bESwpVWx?=
- =?us-ascii?Q?zqbg9hzE5QTwRR0cAoKurC7Nu3gdLFVWFolvRlRHPtuA/7TwxYmlF9s82sR7?=
- =?us-ascii?Q?N+3wGTahRSzTpbDI5Lp/OaliITtx3T+RpNoEzSbt0srI1R/n5mph3ihETBqY?=
- =?us-ascii?Q?FEuTmsz2YGvHTm6NXNfkWIzl52jwNDN04H5qSIkXcvuXBdLV89ZjjIl8tLAg?=
- =?us-ascii?Q?W28uL/q34OJXdkhFyyjzQxZsIpq2BxQNra8dTM2LfhOtEBgMnLTA21Nqqvjp?=
- =?us-ascii?Q?sflGJljyXVSb5OopritYz4RICfNLBA5KXLPvPBVaW/R4huJh0ncp7XqeaQWh?=
- =?us-ascii?Q?20AEvEVi1dQUDiu+3yn2QHoHzfx2Pw3dgC+VqIznrd487O/0DZz0zjAGE9RX?=
- =?us-ascii?Q?8MtTdF/lveyZWQYZy9Xnx0Fj3jjjjn1bw5xJ4CoWqaJjxKBgmwpkS7osnbDg?=
- =?us-ascii?Q?cjB8K/p5kGs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hMljCElO6zygyLvEh/IECnuJmWJcvZS9qdJ+wlWdKgwSE0eZFYHHbPsOosLK?=
- =?us-ascii?Q?nT3YO+tcBrjJhiJn8tCztf3NMqGg4yIq1Zithi4gUZDyh2gR7rDHAH9w7+9o?=
- =?us-ascii?Q?+GF0jhpoaHsztaAnVrGo3ihCVQhH84r5Z3JutZdaZzsFOI7DN/T9c92Wcyh3?=
- =?us-ascii?Q?dR+73FIpSoagRy3nddItRSdUDRy/P/WT6Xls101c2SVRT7df5sGX8tK6Rpac?=
- =?us-ascii?Q?l9OoiH0GZPmuQyZMZUS+CQJ4354b0ivFH+6oRIWErv5JWoZM1OavDjPi5m6/?=
- =?us-ascii?Q?DdQQkVCIfLvBKebrXbDN4bmcoGNyE9z9I71EeglF16DyhCePzHDyPX7/0ILp?=
- =?us-ascii?Q?Mb7uR0l2ISpeV/X8muJJyaM+4h36UeikPjSs03TkC7IueA77EJiyN3I2eQyC?=
- =?us-ascii?Q?ir/1SuTyjfXT50wOnOiew3LM/aEZAz+lgPpt+xNECBPPXILUylh/jTBoTReY?=
- =?us-ascii?Q?we69DG9vaoQ/LEMYoDA7I6oc+faMGI33KB34BAFNz4pTIu3wUEMWSTpTMKU2?=
- =?us-ascii?Q?hZDoBGC5qNbZOxW05vi1xv9dKku7zC4VSbHprVfg6QE/nWdkBLQWcqHkYm1V?=
- =?us-ascii?Q?KDbXfv86pCmq0PGDia+hu/SYUhq6yqT4bgWwo8h0MqKwgIuOyWs2506jOVck?=
- =?us-ascii?Q?5oW5ho7og8k2/W0dTDA/B/w8UhehwaUrrOxbwPgHfQ9h8bH9PJ6fQXp+jMfL?=
- =?us-ascii?Q?bz+kN/VCG5w3E43CItdPQwZEb8Wj9vkxnyoyilbO5TiDFAymabvEn3pI9C+6?=
- =?us-ascii?Q?gSyI7LfJbWu3k1iTYP3C4eNSWENG4PGL1D64l/tfrEBtHQQPu1t1oMQSyf9a?=
- =?us-ascii?Q?6j3x6o/R40GcKcYrggymMTXwskWdflfgo0FL5bFW3sMp4dNeBqM6MAcKq9W4?=
- =?us-ascii?Q?z9Vad/OjImO3iZJUFx9gYzL8SCIVUxYTmHgE0Brh+VnjGwmrnlf48lYE8bA+?=
- =?us-ascii?Q?eS9FvzFnikERO4YvvXeM3aczzI4weK/+wYWqc0VR1+vwen4xtyyIHyvkAj5L?=
- =?us-ascii?Q?ie19h3kkGbEwYtNBcDYINgxkoqq95UTXFWSdi8V6STtgMcO/mQhYTT+0byuC?=
- =?us-ascii?Q?temAV1sG7gV5Nur4kYQCA+nC5y0JWgwX+V5JHRVe92GKA/kWPd5ben5Rjv4I?=
- =?us-ascii?Q?rXryU/1Y+iM/NAaJyZZ7U3grUfIdf80BkzwHlvpxP0kFF/+FMxnN1VIxJuk0?=
- =?us-ascii?Q?sTWA1Jyki+9Y6NX9NheoArK38P95hRzyVTUZjrEFHto789Gy7uwEjCO35FQC?=
- =?us-ascii?Q?LWdEjdjxsZgxVacFmFlW1Y0KRWnQHW9HT3Hqf1k0chWJRjJ1OZqpwqbKcKJd?=
- =?us-ascii?Q?oR9sbzRv3aCNrfdoPCLEOBsZzIRDzITTWZxh1JM7HbOpCcvTCsIqh/Z9D8Oi?=
- =?us-ascii?Q?RdWHDgaQMrDF137Nb2h9oInrJEAJzDQHfcYCGtXWxQgGWmWpD5CV40zaCpD7?=
- =?us-ascii?Q?o0d0jm8q94Cu8MrzF0ut/WZDRlWtsdDsyv9shrUSs4CCJMaJ50ZlaPg5D+8s?=
- =?us-ascii?Q?LTvEpi0alKidM+YRP3HUlrqgKBwD1XzPO92PICaV+Xh/kCYR4ek9TnugCI77?=
- =?us-ascii?Q?UyDroRIiZvPi4lAyRjp+xOioaY0UtjXVP0yM5hhizlicil6OmUt3bjoBby/s?=
- =?us-ascii?Q?rA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	HSxoTy8zqIZ/KYwVO4uQ4L1sWPeka8GVQcp+gm5bmD7koql3ibLAjn7IYdi9TThHShxpVOuYEgGh/BYPcgip2vxS8LKx/iu4Gj63zPdumb78Gxh01FNRiHSKtXI07ofsd3CP5iWcjCQ2U/lPSKyEP+ra+as5pNdDZ7ZAs8341IBmJSOLB3yJwQ8ms5Fnt/4rAhBrpRk1/mFvqX23Haxh6/3cnYKECyYPBsExbw3Kt4NLJJuzmn/CUwAip4UiEIiar8cxlS3Vmr5hf34/iOFIJ/qUx4/ujM7ObMezabLnwi1UZoGsxausy0FbbCfeZ3q6Gqa54hLZ7fSc4beSpT2mTN/gE+9k7pSSsdhw0Af6Wtn2IoNG3+JIp1eYUD1jORC5ysQHGOrEyNtPNGXWR/mYtsRHigqg0PZ57LiAqNu9QAnUW36rqJjhITCuRu+kqH1ACNXlx/IHGvJYsYlu5rBxwpaz+Q2kqSZFJYrorrlNO1gINUtOhCe171dsC1ejskM5/6E0N4FKlzLMWyArG0wM19KaDwRXHIQmQXMI4UKvuj5WBP6xQLor0uAF8ORk1MKCUiWeaJFIJNZsAVY8ttLL1NEv17Pu5+GWrIBzT8xzWEI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0d061c4-de37-49bf-08c1-08dde96473a4
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 14:33:00.4243
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rdSaQDiHCalSlC5c4KfpNPeyk2bsC/Bavp5Len0Lkac5KmT0vE3/OLMXl1pepEm3lBsCo5dWZcGGV9QNpzB4mZymkwa8pWJHoZUknhY9PZA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5157
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-01_06,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 bulkscore=0
- adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509010154
-X-Proofpoint-ORIG-GUID: W8arrgByg0kZdwMClcGbtC3EZVvBgcW5
-X-Authority-Analysis: v=2.4 cv=YKifyQGx c=1 sm=1 tr=0 ts=68b5aea4 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=UgJECxHJAAAA:8
- a=K2KB93EhwB_LE_f0r-4A:9 a=CjuIK1q_8ugA:10 a=-El7cUbtino8hM1DCn8D:22 cc=ntf
- awl=host:12068
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfXzzjtxnD1bi3v
- Ja6PpoYwi4Y+ITInw/r+cD5bx/8wNu7MvmAF2gF/ZgkIgaTt6K1fgoUX5prS7gd5y81h4L9TqMI
- Co90dEhEkg0a9kYv3ZQpvqvWtYtQuaRiQ31uOlbv3kGRIuXo9TbYcxBlMaQ+Nm1wn0Hz4orql8v
- IHO9yIpcy50TdysFoayV9eWFa0QGpXX72TQHS6xPI2x8jiL4Gw1l6Wv1C2bE20k2E1goznx4f1y
- msJBUbFZPpEpzxK43pLi02P1xAdCjzvYYreexb7Teeg+HKrs1z5iXZcZ0Az2irK7DOeu0c2pSfq
- 0n/WAJxvtVY0APLjIxxdCnoRUEr9iaV5Hweo0gjtHNDacSOIdsjWpq06/JAIePozPRKA8vBfh+R
- V5DVgkS1LHuF5jVWPL/6GVRWQPG6fw==
-X-Proofpoint-GUID: W8arrgByg0kZdwMClcGbtC3EZVvBgcW5
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 369D6120011
-X-Stat-Signature: f5jjogrx7zpx13438pkq7ftrfpn9rnhi
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="j8LdXSlZH7SdW4XI"
+Content-Disposition: inline
+In-Reply-To: <CAMRc=MfB_3e0sjCpV+XaKcKvit7Opk5LczH2wsxO=RftrAabjg@mail.gmail.com>
+X-Cookie: Auction:
+X-Rspamd-Queue-Id: 51DCD20008
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756737223-64690
-X-HE-Meta: U2FsdGVkX18Cqtm3fm+1h2+vpD3T5/k06QQK8g8nJcb8Gfyd/WoViAS1Xs0zmHcwamg03hUq4qDdILJd4eMhxjd5saCELHW/joxAED+zRYVUWTT0mFfg2UvhanfReWfYsmTL63j/OOgDQWna2JrkqIRPX50aqdzRsKJ8nXNle/GFuKztDk2bP3ZCmcMM0zpC4illrc95eUAQ9FKt/xi5zbh4xsA7NWzh15DwE5agC3RwrQqxmTAMnqUmhX3CdPRD1/6QiGKonMjlyhCDptXBe0saFMQqh3+r1T5TJKrlpzXYe9WCY4+ztLHwnwgNU+wYFmm0W5uDEWTREmAw9xi1Qy3/NtOWJ7Mm75MVNwN5aljEjZb1ebslrrrnBYr3mGi6P1zrxyXRiAQxZHWgVh3BMkBFzJ7MX5NBXNArq7vmnqdPe2g/koSFvD3SoxKB5pN9+FLGw3x0ANQfYjPrFkjPUd78WW4BNH6rCxzgLYliK+jvtPjGq4LxOs9AEgZCcxO1GXJH8mLVeZBaDNV4q6cVjrhUuSXorQihAziZ+Oo4rb6A2xDijLNw+RicF9QkkdnFcYsPM+7lrvjF+eD+i7Saf6/cjN+Fni9Bhx66MnHQI16XY7ArdpAu/T9TzkwBvuUQ8fKYMAYXAaaeMgAT2rO9ZoOFai6KrCHFhDaCJqWlf/dHcsJDtrjFIDsKxdVgK79u5rK2hPOF74sdShC67ndV2kpaedMTYwaoomKw6YcgB21wjGKdcVcaYMWsJXqTORY6cWCa+OyMRWVpAuXetVEdiJczH1kzLAwQVXxOhuknCoYbXrIyTC//wFoJHmCGCKzEL1HmiF/BGEY3ifIT7JBVhwlS7iCH9buBEJyMmReKD7WLfOAYZU8IzjkZO4+xIUSjVRdBPx8ItSm/kYkEUjIgYxJtBqpHbC50Th+bLgRpmZQriyGqKARC/yoTb2OmjU3m8m4y0tALmTwGmTOP1m/
- sMwT/2Kh
- uC++o3cpAuT1hTOAwbRd0jKyAaSMbyAhu5MAFyDYlOMbdQ0qxeNSkrbtijrWtGZgQ3arj+7kRZ+zyseaVvJ11/nLmrH7eYVST498RZeBNAi61IuT80Du0vuRhPjVE/zNKtURrChWwdN360bd51PGMJqXRWWLW6Rd/d8Vz1UMpA5+C4FPLfOvohgPHVMiapR+DrNR9ZFy57EbNpCfE1xkeXKt/SzREIZT8w8xAtdrdfKtBRCHMc2prF7yjlq1kqX+tQ9nQhDavvW20idetxk1Oi0ErFDGxYjYaU/ZeS6mqugnQxszcBMPw76zS6dh8qHqAZ5oIdmXA8ta0N1LpGygqVQVebc3lnqL70ftqfXevdyKd/3ucqP6krlUsp1bOoWjEmxjeG8CR9dw//aujon+QRLO0Fcvz23i03hR4Wwcngeta5nVFOCqGY2GPtoyfaVeeuVShzT/dhFnhASvjJuylW4Dn+wXBqih140IqPxzzzGhUKWt5G+FVKG5wH7JLiOCnogzQ4M3DTirFCATeOV8BeYpVbOx1lnxwFEtOBMHLO/8QXFPacIYj0/yl6TBuKElND6l2DA4cpqZ23ytfwUDrfVMXDjh8I1YMidzBMXknKJBr5KD9lBYjkUwsflufHG7JEq5ngD4qT5cFuALmn8g2x1mjnaCR2jvByFtt0Xr68IPM8PiWvSHOFeypvzl+b67PNEBW/xTBGFdDOCMA+z5KEHkEMRhlDK2N1IsrDDLPlHczFoB65QDrSMz3FHUTEnLZSwCrgl1jD5DEM7N752fnrgo8kbfoNTvbH2mz5Y2Y4wCRQAJ8o/xcfRS7W+dsRTwQLzKCLlhz8uuqSsejYkPZaTYAO4qmfmfy94DFlRRWmT872dy+L1+/U6kMBw==
+X-Stat-Signature: n3cduzicd76m7on54prrmet9dn9y3yjk
+X-HE-Tag: 1756737465-936088
+X-HE-Meta: U2FsdGVkX19pQ7vSXDTX4OoCAv4H/YxYD5GO+98LTSMZre5VXVMQb44T71Uthx9Y+b6retAGglzrUWfSqUy6s946YQopxY5EwrBARevEwY10qJ2hBxdbqI/l3h/EB5IzUfdpBAsDty/PTQhoEgIbwdQMe3gl8TTYzA5ut9VSILtARv7fd0DYUqurdw6/2ftDyWAfeTirciG8Ylb/x2HjC4xMAtFsewheUAV8JC4mUrT0VZlL8uua4HwO5/dNSJmcIkpH4TMczfRSrfB/Yd7w8NBy1+creGb6Q7lyGV4Fh7oq9Mk2616SO1a9idjcVelkYz7cc8B8Bv1XcrGclKrn6SIrixWIKvyDxjXTE8Sx+SRP4qNzlKDhXhrNru6C34wGLZWgbzED751UXGH6vg+TkkhSJh/pqc232lVysZ6AcBDLXYUogD5JaYyMS9p8mwP8/8n8497FwyZOOwDiq3EFC0Qm/zaRVMUNsmZ+gRaXI8GOmBrWamQ72b7nsUhd2zslkkeNP1VZgBUYzmcv4kx4FQ691CUV0J+YnFX+nC025AQ4UeLNFj7NCjY7OU9mOWeam69zUScY2vVMM4x+SdCjlsijR3HqkSVR3Z9QELl4Y40RER+oynt7VowDZOkH8lZy+qDin30SFX9TRwWVxpjbmTkvlQfWpio+8xnVog/FIKdPoIWHfGtm9YVVKMOWZnKPlZAQ/Rgo4fD2SfBcQxDnDHli03jcOZnacD2+f3xzyDKhTTwm0rSg13iRZLXk0DEwNMkuBEOWFm0ikueo9scNMoXRjl+EVtLYPGkmzCw10XTpYJEd6lLVMhy6fPCwqALjO+93FoPMnjjEjivIap0PHidTrdzb4DTS2tH51GGx6mJUDvDFAMsI8xqwmB5255Da+FBc0rt5gAeZ2k4DKbDbI+GJcM8P3sxIkLySGemSy4uD0hPCRdI24tCGZTUP6E+Wko/s3xKWvSDIMRkB5oj
+ HQNr9DYz
+ geDQs7ByH6jDDmJ+W03DGiWeNUuHCNHFW8umfbhnTRdq/BpxQDBaKeNsykzxyPgFYLYJt7ngT2DVBWg0siE50p21f4Xp528L7d2x7SHWqJWwK+i2FhU+x1mDx6ANmStUXOxKt2CTAxDBEDqbeeXRubwudZzGtG1qE857b5BBL+N1ZycbdDZhrK6TpN0CXYwLR9Y+6Ytb1N4bcbjRSUgKCiDXn7E96GdKrBFGOOvApkFURDJMYbUpR+jpWni4H9yDKXwa39J8gp3hfhHAKbN+6Af4oekYwHZwJf6oCQwiZsN1y+BlFQHMcv8d8/eqkGo8Tos4qSF3SWY4tRkgSl55EoKSuUNLsMbf/nWxS3f6PhvGU7zHq4QllsNn2WdMrMrZQb4mu90nSiIL9a81uWbDgoEo4Wv+AQ34b4OVTlcMLNBMWCxbiYh2xuFtjvhgS71QBwS6nvZMaVzRtreg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,169 +131,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 01, 2025 at 02:30:16PM +0200, Max Kellermann wrote:
-> For improved const-correctness.
->
-> This patch series systematically adds const qualifiers to pointer
-> parameters throughout the memory management subsystem, establishing a
-> foundation for improved const-correctness across the entire Linux
-> kernel.
->
-> Const-correctness provides multiple benefits:
->
-> 1. Type Safety: The compiler enforces that functions marked as taking
->    const parameters cannot accidentally modify the data, catching
->    potential bugs at compile time rather than runtime.
->
-> 2. Compiler Optimizations: When the compiler knows data won't be
->    modified, it can generate more efficient code through better
->    register allocation, code motion, and aliasing analysis.
->
-> 3. API Documentation: Const qualifiers serve as self-documenting code,
->    making it immediately clear to developers which functions are
->    read-only operations versus those that modify state.
->
-> 4. Maintenance Safety: Future modifications to const-correct code are
->    less likely to introduce subtle bugs, as the compiler will reject
->    attempts to modify data that should remain unchanged.
 
-I think all of the above is really a lot of noise that doesn't add a huge
-amount of value.
+--j8LdXSlZH7SdW4XI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Please in your own words say why you are doing it, and also please mention
-why you feel it's justified to do:
+On Mon, Sep 01, 2025 at 03:20:44PM +0200, Bartosz Golaszewski wrote:
 
-const <type> *const param
+> That's not a lot of info but it fails in strcmp() which - I suppose -
+> is the one in pinmux_func_name_to_selector(). Any chance you could
+> check what the value of np->name is in imx_pinctrl_parse_functions()?
+> Is it NULL for some reason?
 
-As mentioned on review of 2/12.
+[    0.628245] imx8mp-pinctrl 30330000.pinctrl: np->name pinctrl
 
-I'm pretty well leaning towards - let's just not do the 2nd const at all,
-unless there's a really good reason to do so.
+https://lava.sirena.org.uk/scheduler/job/1758947#L705
 
-There are also legit cases where you might want to reassign a local
-variable.
+--j8LdXSlZH7SdW4XI
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Largely, granted, you shouldn't be reassinging params, but it's pretty
-constraining.
+-----BEGIN PGP SIGNATURE-----
 
->
-> The memory management subsystem is a fundamental building block of the
-> kernel.  Most higher-level kernel subsystems (filesystems, drivers,
-> networking) depend on mm interfaces.  By establishing
-> const-correctness at this foundational level:
->
-> 1. Enables Propagation: Higher-level subsystems can adopt
->    const-correctness in their own interfaces.  Without const-correct
->    mm functions, filesystems cannot mark their own parameters const
->    when they need to call mm functions.
->
-> 2. Maximum Impact: Changes to core mm APIs benefit the entire kernel, as
->    these functions are called from virtually every subsystem.
->
-> 3. Prevents Impedance Mismatch: Without const-correctness in mm, other
->    subsystems must either cast away const (dangerous) or avoid using
->    const altogether (missing optimization opportunities).
->
-> Each patch focuses on a specific header or subsystem component to ease review
-> and bisection.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi1r60ACgkQJNaLcl1U
+h9BW/wf/VkjCjvE+ktBljc+ZJ9dT0UQZrXYUDHUyuCETxomTnFA+SILt5aJ5bGe/
+iD8AWBpbbDsJH4vnF0ozS/kwuILQKFDettcRtaH7dIBsn/izkOQipQk8GdpbQ8WM
+hWYcC4httv6HQ2rMJMgKMjRxy7L5L6xf+VRzgPc8X+0GfzYeCig6jLv6tX80PLkO
+kOxJn1iP3VVHkXsDCw2fENaiXRuUOaSlrbwkkvBihKNbrM0499j/uQ4hwqAT8bTa
+9ubBJhS8X9FGO12dl2qkEJPtjal2M0Vf4H4PoJilobNInq/WByIDsQANxJC8XDhG
+4/h5vZiPNAzd8Qj8VQAkfeNquySq2Q==
+=Lt5F
+-----END PGP SIGNATURE-----
 
-All this is unnecessary noise, can you summarise more succinctly.
-
-More words than 'const-ify everything' doesn't mean 'several paragraphs of
-noise'.
-
->
-> This work was initially posted as a single large patch:
->  https://lore.kernel.org/lkml/20250827192233.447920-1-max.kellermann@ionos.com/
->
-> Following feedback from Lorenzo Stoakes and David Hildenbrand, it has been
-> split into focused, reviewable chunks. The approach was validated with a
-> smaller patch that received agreement:
->  https://lore.kernel.org/lkml/20250828130311.772993-1-max.kellermann@ionos.com/
->
-
-^--- All of this should be below the line and is associated with versions
-not the series as a whole really.
-
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> ---
-> v1 -> v2:
-> - made several parameter values const (i.e. the pointer address, not
->   just the pointed-to memory), as suggested by Andrew Morton and
->   Yuanchu Xie
-> - drop existing+obsolete "extern" keywords on lines modified by these
->   patches (suggested by Vishal Moola)
-> - add missing parameter names on lines modified by these patches
->   (suggested by Vishal Moola)
-> - more "const" pointers (e.g. the task_struct passed to
->   process_shares_mm())
-> - add missing "const" to s390, fixing s390 build failure
-> - moved the mmap_is_legacy() change in arch/s390/mm/mmap.c from 08/12
->   to 06/12 (suggested by Vishal Moola)
->
-> v2 -> v3:
-> - remove garbage from 06/12
-> - changed tags on subject line (suggested by Matthew Wilcox)
->
-> v3 -> v4:
-> - more verbose commit messages including a listing of function names
->   (suggested by David Hildenbrand and Lorenzo Stoakes)
->
-> v4 -> v5:
-> - back to shorter commit messages after an agreement between David
->   Hildenbrand and Lorenzo Stoakes was found
-
-I did ask you to do this in reverse order and add lore links :) I mean
-these aren't big things but it's REALLY helpful for reviewers.
-
-Thanks.
-
->
-> Max Kellermann (12):
->   mm: constify shmem related test functions for improved
->     const-correctness
->   mm: constify pagemap related test functions for improved
->     const-correctness
->   mm: constify zone related test functions for improved
->     const-correctness
->   fs: constify mapping related test functions for improved
->     const-correctness
->   mm: constify process_shares_mm() for improved const-correctness
->   mm, s390: constify mapping related test functions for improved
->     const-correctness
->   parisc: constify mmap_upper_limit() parameter for improved
->     const-correctness
->   mm: constify arch_pick_mmap_layout() for improved const-correctness
->   mm: constify ptdesc_pmd_pts_count() and folio_get_private()
->   mm: constify various inline test functions for improved
->     const-correctness
->   mm: constify assert/test functions in mm.h
->   mm: constify highmem related functions for improved const-correctness
->
->  arch/arm/include/asm/highmem.h      |  6 +--
->  arch/parisc/include/asm/processor.h |  2 +-
->  arch/parisc/kernel/sys_parisc.c     |  2 +-
->  arch/s390/mm/mmap.c                 |  7 ++--
->  arch/sparc/kernel/sys_sparc_64.c    |  3 +-
->  arch/x86/mm/mmap.c                  |  7 ++--
->  arch/xtensa/include/asm/highmem.h   |  2 +-
->  include/linux/fs.h                  |  7 ++--
->  include/linux/highmem-internal.h    | 44 +++++++++++----------
->  include/linux/highmem.h             |  8 ++--
->  include/linux/mm.h                  | 56 +++++++++++++--------------
->  include/linux/mm_inline.h           | 26 +++++++------
->  include/linux/mm_types.h            |  4 +-
->  include/linux/mmzone.h              | 42 ++++++++++----------
->  include/linux/pagemap.h             | 59 +++++++++++++++--------------
->  include/linux/sched/mm.h            |  4 +-
->  include/linux/shmem_fs.h            |  4 +-
->  mm/highmem.c                        | 10 ++---
->  mm/oom_kill.c                       |  7 ++--
->  mm/shmem.c                          |  6 +--
->  mm/util.c                           | 20 ++++++----
->  21 files changed, 171 insertions(+), 155 deletions(-)
->
-> --
-> 2.47.2
->
+--j8LdXSlZH7SdW4XI--
 
