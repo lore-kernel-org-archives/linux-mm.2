@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C83BCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 19:41:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04766CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 19:59:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44E418E0009; Mon,  1 Sep 2025 15:41:50 -0400 (EDT)
+	id 4C3DD8E0006; Mon,  1 Sep 2025 15:59:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FEA68E0001; Mon,  1 Sep 2025 15:41:50 -0400 (EDT)
+	id 49B668E0001; Mon,  1 Sep 2025 15:59:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 314BA8E0009; Mon,  1 Sep 2025 15:41:50 -0400 (EDT)
+	id 3B0AF8E0006; Mon,  1 Sep 2025 15:59:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 204708E0001
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:41:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D3DB88509E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:41:49 +0000 (UTC)
-X-FDA: 83841701538.27.67CD14C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 583C4C0005
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:41:47 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cjY6ZXaO;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2D4728E0001
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:59:22 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD9CEBC4A2
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:59:21 +0000 (UTC)
+X-FDA: 83841745722.14.81CA61D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 19CB820005
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:59:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="N2nZhoK/";
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756755708;
+	s=arc-20220608; t=1756756760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=fdBLC1cUm5Q5UudCz69QxXF3IRCbD2Oo5UlhHiMrJlY=;
-	b=tUhHkz5NmYdOjaeYSN1VEd+lOiUaKtlX6JFxjysKuuXzoCoK3ER/WPJnsSSJtiG7KZXidW
-	apC8j99+Qh9yJSL5sByi/fygnqTUTuC22XZCKXe/+4h78QLmnf1T1S5iKtdpR6fdZGJBV5
-	eMtE8UYocLCO/c9Po1zb0EBqPq8p9/s=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zqOhLbrcIqzuhpABpgctrJgRyjHn/kFRl9Zasvn2ISI=;
+	b=IN+pJ808LjhKAzE8UAb8V80G8FIFG7Jg4sAPxIf7h4FoUZRbaTNugQZm/t8UPcF4X5rBBG
+	Pt4gWfB98CrZhzzYjUsOzqL0uai7NvcSkgJw22Twe2IJ8vI75KaJUNQ14SjULo9n4tHOZA
+	T0HC+KhOsEXeonPydWYkfR2epQ/60CA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cjY6ZXaO;
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756755708; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="N2nZhoK/";
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756756760; a=rsa-sha256;
 	cv=none;
-	b=BWkoI3VJvDn49mFoeuxjjyaCDgsbHObaUqecg7qBS5dJuJWCYo9I4jmaJHG3sfI8NLI0/R
-	iKDrw14eL0GjS0g9QRD/kg5zRqun3fGJR+bf7UfsI3tROk8C6h4NFViH4NGXho1ObHpziu
-	/++YWq54t68e/xanbhwtWFcrs06t/Bw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756755708; x=1788291708;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Z/9rqC9Vy2wI209K3Fl8dMXhC9KQemBOPTKkT40Opi8=;
-  b=cjY6ZXaOM1sTg5MlFXrvq/+4fol8EYm5Te/6xQI15V9xK4uYOlfcd+8g
-   x/Utnw/Yl78WqL18aQpNTy9GXOj7+qmr9Th8RW8RX28BHRt/n9PoOwp5a
-   Ir8P4PlW52SQZyboCsrqYj5KZVxFZh6KIqWRMZ+3PKmHR5i/crPds+w8T
-   FUn2jV7UQr3u+/PIHJEcspZaoSs49VGS9F1NuQChdsxwBQRStA3sNc7w3
-   cyM7Bu06w3D1RPFlS47NUcKQ3xOuqjtinan3q4g1hXNnuimPEDVVuZueE
-   JEGmpi+i4gceQT6VW4oLDAvIVDvr8frNdeLJbPF0D6mQOc7BNA+NCSYFu
-   Q==;
-X-CSE-ConnectionGUID: QhZrZndgQPyY8HUx1zHQTA==
-X-CSE-MsgGUID: 7UCibldkTJOIxtAXkuUF3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="58873398"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="58873398"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 12:41:46 -0700
-X-CSE-ConnectionGUID: qJEH03foRcygz9NHGQv6CQ==
-X-CSE-MsgGUID: /G7pRcArRRKJyrJPi/Yf5Q==
-X-ExtLoop1: 1
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 01 Sep 2025 12:41:44 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1utAOn-0000yV-1u;
-	Mon, 01 Sep 2025 19:41:17 +0000
-Date: Tue, 2 Sep 2025 03:40:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [akpm-mm:mm-nonmm-unstable 90/91]
- samples/vfs/../../tools/testing/selftests/pidfd/pidfd.h:28:10: fatal error:
- kselftest.h: No such file or directory
-Message-ID: <202509020304.IC1Dqlra-lkp@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Stat-Signature: sisnug731ybmrshwocksw6tutgwgagoi
+	b=8few8ll4GG43L38gBRchS39PKdfIJlfwxok9RhVJafaTpyeOB5+yAJvZTcNBTVr+IReUiL
+	VoVIRNT4lHWtDvdhhYfumTMOHA06EWpL9DGlBIvnYiF59m6XfPsil6E3s+P5AhJtsCWkRX
+	zcWIcXOTUxQTNus2sUhoGhWw8ZCoSsA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 35164601ED;
+	Mon,  1 Sep 2025 19:59:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A35C4CEF0;
+	Mon,  1 Sep 2025 19:59:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756756758;
+	bh=C4TZGfosvdpMdKEeuKbEg3eDbne8rkSeMAqsXA1tYqk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=N2nZhoK/Q21LIbrSnildvG4xpGY+k68+D5kfaDcIxkTjgeF3IUDsP7xsKzTzMKStp
+	 GHMPTe3JVyTaKevz1ZPsATz3LZevBNmkcINf5YYDPMuSccRpOz243d4StJy5RGtIeb
+	 xP0OlHp/akySD5KbATJbrZ5IaVKH9SRieMRW8uBg=
+Date: Mon, 1 Sep 2025 12:59:17 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ruan Shiyang <ruansy.fnst@fujitsu.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, lkp@intel.com,
+ ying.huang@linux.alibaba.com, y-goto@fujitsu.com, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
+ vschneid@redhat.com, Li Zhijian <lizhijian@fujitsu.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Ben Segall <bsegall@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm: memory-tiering: fix PGPROMOTE_CANDIDATE counting
+Message-Id: <20250901125917.e9792e5d0df12ba1c552c537@linux-foundation.org>
+In-Reply-To: <20250901090122.124262-1-ruansy.fnst@fujitsu.com>
+References: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
+	<20250901090122.124262-1-ruansy.fnst@fujitsu.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 19CB820005
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 583C4C0005
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756755707-655558
-X-HE-Meta: U2FsdGVkX18Gdhc+7mDymWbOMj9cCVFwVCu4ALNgPgbFT9ePpXP3CDFk5DSlP89KTtmr6cT6RdBdSf2JWXYlI0oi6ApCGakY+ARTUwtG9RbuDcxqYLpc66irHDkM/jNIqgv9fa7qc3j+qBXYaqr+ApWtXrdmaleZIuZEa5QQi3jjcLBMjRZgr80rzjVpNgtbPSmNOhnj6JcMHZbrFCyvoYRQcFF0cATyCGxDWhdT9/SdYpB7cFbJpE58KxWPNHwnSg6DHULa4BYcBlKigopUZizrCTsvzvXveNewWGvxlwPOrqF17s7NFxC1OBRBO34tZBpE5VECKS5jw/cPFDjdGZNumVDmbu/w3BpfKqRtDrSLkNv77yAuLAUGVRxTF49hkuQO9Uq6Vhy3yOcMMsELELB3IxPBABbA2B/EBOZWaaz0vhekqh0A6/XRcLWEyqnZPxFnNAiKiodPh6L69bpfBIMag+aauXEowVm2t3fKVyun3DjCbSVjyQfrpkFocQK98Io9ijEfuWDBM+tmY8m9fSf2jtlsblegUsyt0kDgY5zivqnn1QnNS170OXZYu1YXG+pqvhUrUgPYU4s5dp21ToKPt0KT/c7mgTNwmVr2F9AEQQYELfr/2rNgyO4s75HMtr6qGl8GdBLSwYnFYEof2UNFeP5MEgMVeMA4ZVsy8vRH9MpxAi3yJQ7XU4p4GsovDP74NGpj6+5TTr5TXAcEP/OW7GTrXK4Ntq+3vUJ1flosCAqkuTRyHbM8D6jSg200sdrh/2fCF+d+2sasT5n109uc/s+mAmbUz0+AtQ5ccaQDaE5jJm6Y9WlLP3uOvv+OWz5RkW4WVU+vOn8h6hpfRyV/k6ImYuaH5FhfmvFTXvic4PeC74+3os9flDo/lB3yu5X9hQ4HQbcXX8On0uZ+Bt8O6J58v8KdCA3mjGugHCgYyAuHlWfk9OJQvkWnST5jJoTy2YgZyIjQfyfNjqK
- 99knai8I
- JWP/Vr4nDKclLtEqrwXs9YoFsz9Aq8ny6xMx/LoS/PQgiP/EWQ0LU5hb7dJzIh/GVtpdGLo1IHluk1mz0iMXFajz8KOpnKr77MqtSycE/C0eSTGJFnfT1Ln9nmWMW1I74QrJn/6tSMV7nXxwfyJr/ZCbP6gqtHYY0r4AJNvJ4yNFKfZsvukFltI5LsYFBgXzRPG8j1kj0q7LLhVXQ/P16fgYLZCvJSHK517R2CBRHv/2NZ77Kn77dAmKiSsWBVS2e8twTHQd3XVLurLGo8ZYgK1NmQT4z2iIqKAzoZVVLhRZlrXRAQ1zlaVNoEHVlhZKUXfvyxoSbPc0Cyhf7KK/tVEZaeGtGMwedlsa2L54swqFWxVRRPxsMDQJE5OIrgOQhgZmBREyvO7JHjJA=
+X-Stat-Signature: 8fbr1zm9erfgqexezeg6hh7q46qnuarx
+X-HE-Tag: 1756756759-680994
+X-HE-Meta: U2FsdGVkX1+Ika3bVw3PWM89MUlM+dmWi0UtEYSW1IaVRr2ckdyxKO3vN4k4G5UBQcU6cV5hq9tFiVxFjb8WZdZ57+lI2buBQx560hIqHHCbIpDiT6DjNRPWKjLpQq4BwOQ89fLJuScWEI/bIxkJQ5q0R27jTNOSarcuKBXlkmJbtUTHJ1CNbbYDZVYD30lIKp9oU/035j/sCNyZiGAUpn0qtu3tXxfJVP8ZAzwrNTPjT4fYz98BMAPYD8PBHNMrWZG1Hjxh8AiSGGh8/EKCV0douxZm/TFtX1ToAXfV0QXyRw5bU92u5hKXh8MwoWKvD5TiXv9DpO5bFng2ZNkX+o093us1c/xnPXia3Vh7u/BYc02eQUnA+h/ts1inbEXVja0PJ7mMmiuZqDh5AvTFUtYxPiPTh0qNIXyFjjhLEnVeXoyZh5M0vwFRjoe9TiAsELKDYtlraDiXt6vrqJgFQaej47P4UWVWUdEg15FCUHq73YFbVT/46q/tvWVAj7ph7Qs/VyoQwOF97xl4kmW6KeHjq7Du2O8dunR6s/nwpGHmRfhqRIL1gF2QhAH87yBo3nyQ6GGp1vdR/LLWJsyD06pHlALSeaikzPHdp8Wfdeytgg9Dyv/28fZ7XtxkySu9hhJ2spFHmRImGH7IBkunrWKNYEZ7R6O8+i/LX7lhW5X2c6Is+emApqKhv/kNOHSuxN37MWV4XGxty5QuPUZC7DC7jHhd0UeQot+pEmC5YFocqOntDY85UzUMrXxsQ8DOGgHlhHwvIq9h1U9Xvaa9Zagb9s1xZbutfaJFawyjJpXa849aQg1vNdLLZ/olTlurv3/FkcYXawGV5iCWT7F8vtZ+ODZQmoqBbphUda3AQBLd/o+E1nL4E0VVgkrx8gAeRoydwKKGkernTT8WI4w8ipT7SGLHXcGDHpA3NzPOZ3V3OpQT9ZaEP76zVMo3kjKN9lEred/7D0tSrsY8Hes
+ qMMbV3Ax
+ 41z5tK8bVpidlMXxLoeBp9eKukhcquS3RFYD/h5lBQzmf8nCyhcFw+3N+FhjY+qt7rpf1WbY+3y9E12Fwk4EsdT2Zr3+J5XnwOi/p/RGRaUo/EcESc+zC1ms2H0I7vMgNWlCE2feSXodNwjEq5pRbXzY81XPBgJyFQ9yQwemo8agtDzILSdqHXqihvXYykmEa2qxLOsAJE09Fy5MGlmTfK0HhYfx05Z/AmTidml5CwgJaVDF2dHmH9LAtAjW2yNld574mlvp3lbsb8hCmyD/GhU+FzgpXyig0JvyN85qpk8vw1FC72DK97hOxLwaSDoEATC1C
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,35 +95,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-head:   44c3fe32c28a9a6322ce85333810f02affd66431
-commit: 98f3e3d66d6b0e97cf3d3875343d9240699a5db7 [90/91] selftests: replace relative includes with non-relative for kselftest.h and kselftest_harness.h
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20250902/202509020304.IC1Dqlra-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250902/202509020304.IC1Dqlra-lkp@intel.com/reproduce)
+On Mon,  1 Sep 2025 17:01:22 +0800 Ruan Shiyang <ruansy.fnst@fujitsu.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509020304.IC1Dqlra-lkp@intel.com/
+> Goto-san reported confusing pgpromote statistics where the
+> pgpromote_success count significantly exceeded pgpromote_candidate.
+> 
+> On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
+>  # Enable demotion only
+>  echo 1 > /sys/kernel/mm/numa/demotion_enabled
+>  numactl -m 0-1 memhog -r200 3500M >/dev/null &
+>  pid=$!
+>  sleep 2
+>  numactl memhog -r100 2500M >/dev/null &
+>  sleep 10
+>  kill -9 $pid # terminate the 1st memhog
+>  # Enable promotion
+>  echo 2 > /proc/sys/kernel/numa_balancing
+> 
+> After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
+> $ grep -e pgpromote /proc/vmstat
+> pgpromote_success 2579
+> pgpromote_candidate 0
+> 
+> In this scenario, after terminating the first memhog, the conditions for
+> pgdat_free_space_enough() are quickly met, and triggers promotion.
+> However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
+> not in PGPROMOTE_CANDIDATE.
+> 
+> To solve these confusing statistics, introduce PGPROMOTE_CANDIDATE_NRL to
+> count the missed promotion pages.  And also, not counting these pages into
+> PGPROMOTE_CANDIDATE is to avoid changing the existing algorithm or
+> performance of the promotion rate limit.
+> 
+> ...
+>
 
-All errors (new ones prefixed by >>):
+It would be good to have a Fixes: here, to tell people how far back to
+backport it.
 
-   In file included from samples/vfs/test-list-all-mounts.c:11:
->> samples/vfs/../../tools/testing/selftests/pidfd/pidfd.h:28:10: fatal error: kselftest.h: No such file or directory
-      28 | #include "kselftest.h"
-         |          ^~~~~~~~~~~~~
-   compilation terminated.
+Could be either c6833e10008f or c959924b0dc5 afaict.  I'll go with
+c6833e10008f, OK?
 
-
-vim +28 samples/vfs/../../tools/testing/selftests/pidfd/pidfd.h
-
-    27	
-  > 28	#include "kselftest.h"
-    29	#include "../clone3/clone3_selftests.h"
-    30	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
