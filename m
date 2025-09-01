@@ -4,115 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 405B4CA1002
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 11:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B58FCA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 11:08:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A08EE8E0036; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
+	id 7239C8E0037; Mon,  1 Sep 2025 07:08:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E0768E000B; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
+	id 6ACA88E000B; Mon,  1 Sep 2025 07:08:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F6488E0036; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
+	id 59F8A8E0037; Mon,  1 Sep 2025 07:08:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E9F28E000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:08:57 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A1DC1DE953
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 43EDA8E000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:08:58 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE45385EFA
 	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:08:57 +0000 (UTC)
-X-FDA: 83840409114.09.685A83A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1326A80011
+X-FDA: 83840409114.11.AE5507C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E5054C0009
 	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:08:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="I+plZ7C/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J8/V7o8t";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="I+plZ7C/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J8/V7o8t";
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756724935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
-	b=40fVFbcwWL82zoUKqZx572qZDR/pwo7ceEwXDordCr4toLI1pxXiWqWxgNgtpYqeVbRCZa
-	zuQnfT+QvcpPN1oL3LWD1FB7s/BnPhQDi6TstdSlw+DPZfQ8iM12Rj5YgUkoqurXZKQMdg
-	PWkVkxIfzzlwlhfOsBYiFslTtyuJ038=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=feUOntQoitUe7mPlmKZms9YiTw8kD3bBDWarz0bQ+B8=;
+	b=UpGgMg5e1uxRgngF0x2/nLFMzBNx0GfsIrGNQMoR4l1tN84Dq7aXpgI85SwwOLRNgESef8
+	7za0ZTAJiW0NfWFmrqegQ1R1bohs5R1yLA0bRMd4oizNA0wdg8olCEcTRzlPbEXDCy0dHi
+	KxniOk5KVHYtEd9nebpPR7hQXUlI+5A=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qVn5rTNk;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T9nykotc;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="I+plZ7C/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J8/V7o8t";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="I+plZ7C/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="J8/V7o8t";
+	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756724935; a=rsa-sha256;
 	cv=none;
-	b=BrCMgfrVTXTKECydXdrvQjZd+O8q2k7TQZ3KplQTrBglOm+LvMAoEKcsv8e/RiNq1Xi2VP
-	7ts9+7TMeWbaBGZ8Pbh634NLxpVAnk+RfzJT523efnuaQEsf9PzSJmPjQiyRang/LgQAi7
-	Rq9lsI4UsM0XxiMYjKLf6HTJCe3AcTo=
+	b=LAE6BWTjv5tjDNwj55LIeQX+ZhOV64CQDbQFJL8uNTmQaBRFzY6m/yu1+a9G6B+Fv67/78
+	d+W0RnBoDlM+ZQINkznT/S02gV4XLsMTIut2cVbgpFIdmiw2/tPKBQRkrUEKp3sDymVBTy
+	8/5dha2QaM5IBU1j1ZrvpgNUwgnkmwk=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1ED341F387;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 383BC2116F;
 	Mon,  1 Sep 2025 11:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1756724933; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
-	b=qVn5rTNknZMzGbK67J36RUzRhlsiDWA+viXwVqKrOfKtaTI4zicyHaMAxlgrUQ4uCaxWfa
-	Tbb4yNV54DUA4hzpJI/I08NC5DFLzTBnfewN581Pjw/CLKOP0PNyV53H+iez3RDr2jXZVR
-	ZRARQzWleXgkhobw/q4He+ndd76vesw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=feUOntQoitUe7mPlmKZms9YiTw8kD3bBDWarz0bQ+B8=;
+	b=I+plZ7C/i7j6SSn1V9IG+u3eTFEI5fgncxBLiuSBgfdbPBCnbjQakhASgZmVp8xFeOyarH
+	llVba0qnmEKgXbsyKEGI5gM5xAqIPvyXpeatWEj8xf7d46rgiu0pi+i+GduQfNcd24JWqG
+	dCnvXrVGi8AwAG0SwMa2LF3u3rIbPdE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1756724933;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
-	b=T9nykotcgPIf25AlYjhV9Kn46TVsFEW0RtEO+rGJtxgVIz4gsap6jaPtj9ioDJDULv40+z
-	Bp1pmk+uCsdhj2Aw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=feUOntQoitUe7mPlmKZms9YiTw8kD3bBDWarz0bQ+B8=;
+	b=J8/V7o8t0IKnVXn2OPDaVq7LyzGdfd6XpoMhRzdwYsDgYMgSe00do2GgU6OP8MHnrMUlq5
+	5ZnHlczdBI4bT9AQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1756724933; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
-	b=qVn5rTNknZMzGbK67J36RUzRhlsiDWA+viXwVqKrOfKtaTI4zicyHaMAxlgrUQ4uCaxWfa
-	Tbb4yNV54DUA4hzpJI/I08NC5DFLzTBnfewN581Pjw/CLKOP0PNyV53H+iez3RDr2jXZVR
-	ZRARQzWleXgkhobw/q4He+ndd76vesw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=feUOntQoitUe7mPlmKZms9YiTw8kD3bBDWarz0bQ+B8=;
+	b=I+plZ7C/i7j6SSn1V9IG+u3eTFEI5fgncxBLiuSBgfdbPBCnbjQakhASgZmVp8xFeOyarH
+	llVba0qnmEKgXbsyKEGI5gM5xAqIPvyXpeatWEj8xf7d46rgiu0pi+i+GduQfNcd24JWqG
+	dCnvXrVGi8AwAG0SwMa2LF3u3rIbPdE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1756724933;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SUqhGh4rTv9B9oitYXxgj0bnq1HlZpXe0FlsUWYvcU4=;
-	b=T9nykotcgPIf25AlYjhV9Kn46TVsFEW0RtEO+rGJtxgVIz4gsap6jaPtj9ioDJDULv40+z
-	Bp1pmk+uCsdhj2Aw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=feUOntQoitUe7mPlmKZms9YiTw8kD3bBDWarz0bQ+B8=;
+	b=J8/V7o8t0IKnVXn2OPDaVq7LyzGdfd6XpoMhRzdwYsDgYMgSe00do2GgU6OP8MHnrMUlq5
+	5ZnHlczdBI4bT9AQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 04BC01378C;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1CCCD13A31;
 	Mon,  1 Sep 2025 11:08:53 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id l4bYAMV+tWjtDgAAD6G6ig
+	id kHi+BsV+tWjtDgAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Mon, 01 Sep 2025 11:08:53 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 00/12] maple_tree: slub sheaves conversion
-Date: Mon, 01 Sep 2025 13:08:50 +0200
-Message-Id: <20250901-maple-sheaves-v1-0-d6a1166b53f2@suse.cz>
+Date: Mon, 01 Sep 2025 13:08:51 +0200
+Subject: [PATCH 01/12] maple_tree: Fix check_bulk_rebalance() test locks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMJ+tWgC/x3MQQqAIBBG4avErBO0KLCrRAut3xooCwcikO6et
- PwW72USJIbQUGVKuFn4jAWmrmjeXFyheCmmRjedttqow107lGxwN0T1rbdY5t76EKg0V0Lg5/+
- N0/t+V5n/sF8AAAA=
-X-Change-ID: 20250901-maple-sheaves-63b9edc69bff
+Message-Id: <20250901-maple-sheaves-v1-1-d6a1166b53f2@suse.cz>
+References: <20250901-maple-sheaves-v1-0-d6a1166b53f2@suse.cz>
+In-Reply-To: <20250901-maple-sheaves-v1-0-d6a1166b53f2@suse.cz>
 To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
  Matthew Wilcox <willy@infradead.org>, 
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>, 
@@ -120,18 +123,17 @@ To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
 Cc: Harry Yoo <harry.yoo@oracle.com>, 
  Andrew Morton <akpm@linux-foundation.org>, maple-tree@lists.infradead.org, 
  linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>, 
- "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+ linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.2
 X-Rspamd-Action: no action
-X-Stat-Signature: 1o6mhzg3y436qxsc5byu64rbifnfyz1q
+X-Rspamd-Queue-Id: E5054C0009
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1326A80011
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756724934-851810
-X-HE-Meta: U2FsdGVkX1/Tqm2In1xmmcZqPw2G+b8cz/2Q1Pu4mjYltEyJBASBAEjg/uKHJT7mD9rC/T/k01dtY0Lm5yTPj0HX/gf3a7h07uALzXEOxyFvfJFWLGhcc+Ea0vZZ7ndS82cxkPjf/tLaICxYTpKdfMgnZ7tmVsP4nN8TROp6IddlOql0aEy1VxnycyW2W3P1gD/QGxLqtNtY15QlCJFvfwcnTuS2WRAEla4pIwSw5XuQnb1cASRS9m8l2zzNVjvFoXyT5Hya1AO80FCymcOO2Ect2mtKRC7xVVlG+BYFah90c59vDfqsVt/s6d/5YG0MkgkoD+Q0yZiYphTcMnfvj0eNNTnl+uY9XtUfvxpXLhKLmanMojeOJhqQibo32QNp/QsYNQS/5HlY2eQL4WzAWXZD/GvtbOvfQlXr8Yq5U4NGIvMkzH+x+ivccqgzlc8LDQ8m9sNN2FuEB+hJPMbm9u/eGHew2nRuVXk57BTYRgSUT3gDjtXONpEupPVBYjEPt2NdGdzzN8QZneeLeJ1oemEG5NAu59u5bq2ou+TuGambbzOLD1xJYaUq893mzgZIiLqBrDHHhcJnDFrNA1A19KBUn8iMogCm8ZRxjqhGyuNdeYm5XU7lY+/GyLIIUjCg4yWCJUGwAW8F8BQhnNyINEK8Y5DmxDCLdqXnOPh4BQ5PtXLg6kEOXFcNrK7yMz/YowyPFxMPsFP1CeN0tlLwYXkTTt45XeJ2BFsYLzaK8drWK7IzNDXStRgZJkp0S2PXmaqrNRBk7kPDkxkOy5E2SZ+9zHj1UhKm8n2wZSNcYWpBSvSNGuNXltYX1viv7qU4ULtnb+k/hzee6h9jZ8cxnC+cpBv3YzUT4TfDYCI6qnMJW66waKxJqPDJj/ZAWbSRXdEOp7iKwJaZXwcL18y6lY8mj/fZTyK2SF5TS6zNtYBN7+8Cbakc2NuYxKWNgxkLaLLSuizBQgEGlw5U+Hu
- qOF2fmz5
- 023ldtFLjuoc1KdK1Sgx/mfS98dd2oI/4jOiguIfLyuJ7ORFr7P9QBTCtF1eOZbCBtmeEeYjsINehzsl6AXNLbWgBHHmeLP6FuLXxTtoEQ5o4+lbgi66Zv9yAe63W+KhsN3QHNVswi2W6kyaqnmk9RcbH58JqYyPysdJjjmy0zMvvgwxlWIET5P0D9z33kmv4j1MKskeBpdwkxt70lzE9em5dT+xtrMKmfkO3yc3KFZ67R8+itGZSsuD+tZiRpjC8br7dS7yTFcKuI4tyJ9ddJPFQzqWLksokloB8O8O3y39ClTaM+WdHvKErtBFH9K6gfD0CbIdEHbWMe2xuFojjfa5sk1hryAvBpJ84sTqhC8AFlRW29oMnL7RLRdvNxRj8zhdq
+X-Stat-Signature: j9jsmgg5omqf4zi4dokxbhi9yf69rh43
+X-HE-Tag: 1756724934-8557
+X-HE-Meta: U2FsdGVkX1/XMtg0I5qPAaSW/rRA02piI6WL2Ynfcy59bCZwe5F8TNOOcJEECnflI1To6jpbgEQ9eySvWMP2mF0aPAWPsh0dTOJlyfIJPYcS7lEQgpQ2mQW5Ik7USASzQ2EulxMnsCkTMACUQH0x/ricwtagP6S3G02TfRtOrLsc9giP34VZjI9Cw1CWRpUTE6yvCfLdmogEYB8J7rruU02OeRtKx+gAbv5q9/Pi7TFeQ9b7+4JG+XujM+5Pr9pgfbJWqtt5Byl6NgdXg6WHrv7Sdb01l89KlWM6Uj3VeEg2lkW7i9KSE5h4m6fmxv2iDpt+nCEWkvDpDc5lhTudZ2k0MA32OAbUx9ypzRKiXe/hTwKvhyJDZ04YWI8ILP9h/50wXokYbP2fkFTnibm2i+gCcA+bLksQcx3LjYOVU+rxNpmOuwqTU9MH4qM/ekxO1GHJIlZcDaYG1xAG7E1y5rI958CWuyU4BDVvKV81bGt19TGGNQu3p5sqh960b5yCEykvUjyNB2FYr3BK3qynjK5FmPTwfPvSG4v04s/LwPb4JL4byvqcpdc/u/8oIJq2AYaA7/Aa+CRpMXQCps1MO+TF/pe4vja6aqJ6ykqfNg4kUIOJcniTkVqMbGxZZ+oYvU+IMxBgtjv7zj46ySjuRjF1VnAwP4Hd/P4VD+b5OvXTWe4OrXBOzS+pSgwFsNUP+afmupIDVCcuj5th+7qYPzUYuXRD0diRuuz0iquk+4nmnhcBghTWtK3ufKUZ2sGyFNg+1zmbhEGASYijA1G/7lcix9+y4yk0u5e7uLewtOMayP2v8pUi5+YQBG0G+2kNItFTlksVuNWTBMCoHxJlRFb2Zg6KjGD0vvPli9RlV0d0deWdvdQnC6BTVYx6MdApSLSMOdpBnTN0OZqgklPe+v2ga6F81tRIUNHzvCE7d1bCG2rb//sgwPe0LIaGJJIz8aKCXODge8Per4ktN26
+ BDsA826w
+ NVYZiiP/VGeootoXWZmZ4HqpeyFVj7kgW9aMA4g55kDDmXIjOhiol3/04dbM+apFnNynx3IQritq2/ADKOB0WoBsVP/QKZkRYJJODG4DlJxbdgcWyLc/dFkWE+uIjJW/rh3p4bG7IkWwfh4z+D02GEOdbW9u2dOsT42OT/cDi5deShMIQGmzxSTIr9vAQpsS56a0QzuMtgUC1JBXqtTbLksN7p7EXCdANsKqQ0LnQ6f/2wUtSaL0pEg/0baF2uE0WwzAZPMVksFiiZfJ5YoT/5G/RY3okPVPE+2NpahkOHKQkaUpzKt3AhApoePX51gKDcEaSrfC8THmfIVvtMZz3r8IEaORb7zUvWTusU3r1TeNBKm81qKKcSLzCUg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,58 +142,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The previous version of this work was part of the patchset that
-introduces slub sheaves, but for practical purposes was split out in v6
-[1] while Liam did some further fixups and cleanups to the maple tree
-and associated testing implementation, incorporating also patches from
-Pedro [2] and then provided to me his branch [3] to include it. It
-relies on [1] in the slab/for-next tree so the intent is to include this
-in slab/for-next as well. More precisely speaking, patches 2 and 3 will
-replace the last two patches of [1].
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 
-[1] https://lore.kernel.org/all/20250827-slub-percpu-caches-v6-0-f0f775a3f73f@suse.cz/
-[2] https://lore.kernel.org/all/20250812162124.59417-1-pfalcato@suse.de/
-[2] https://git.infradead.org/?p=users/jedix/linux-maple.git;a=shortlog;h=refs/heads/sheaves-v6r2_fixes
+The check_bulk_rebalance() test was not correctly locking the tree which
+caused issues with the sheaves testing in later patches.  Adding the
+missing locks fixed the issue.
 
-git version:
-https://git.kernel.org/vbabka/l/maple-sheaves-v1
-
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
-Liam R. Howlett (8):
-      maple_tree: Fix check_bulk_rebalance() test locks
-      tools: Add testing support for changes to slab for sheaves
-      tools/testing/vma: Implement vm_refcnt reset
-      testing/radix-tree/maple: Hack around kfree_rcu not existing
-      tools: Add sheaf to slab testing
-      maple_tree: Sheaf conversion and testing
-      maple_tree: Add single node allocation support to maple state
-      maple_tree: Convert forking to use the sheaf interface
+ tools/testing/radix-tree/maple.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Pedro Falcato (2):
-      maple_tree: Use kfree_rcu in ma_free_rcu
-      maple_tree: Replace mt_free_one() with kfree()
+diff --git a/tools/testing/radix-tree/maple.c b/tools/testing/radix-tree/maple.c
+index 172700fb7784d29f9403003b4484a5ebd7aa316b..159d5307b30a4b37e6cf2941848b8718e1b891d9 100644
+--- a/tools/testing/radix-tree/maple.c
++++ b/tools/testing/radix-tree/maple.c
+@@ -36465,6 +36465,7 @@ static inline void check_bulk_rebalance(struct maple_tree *mt)
+ 
+ 	build_full_tree(mt, 0, 2);
+ 
++	mas_lock(&mas);
+ 	/* erase every entry in the tree */
+ 	do {
+ 		/* set up bulk store mode */
+@@ -36474,6 +36475,7 @@ static inline void check_bulk_rebalance(struct maple_tree *mt)
+ 	} while (mas_prev(&mas, 0) != NULL);
+ 
+ 	mas_destroy(&mas);
++	mas_unlock(&mas);
+ }
+ 
+ void farmer_tests(void)
 
-Vlastimil Babka (2):
-      maple_tree: use percpu sheaves for maple_node_cache
-      tools/testing: include maple-shared.h in maple.c
-
- include/linux/maple_tree.h          |   6 +-
- lib/maple_tree.c                    | 399 +++++++++--------------------
- lib/test_maple_tree.c               |   8 +
- tools/include/linux/slab.h          | 165 +++++++++++-
- tools/testing/radix-tree/maple.c    | 483 +++---------------------------------
- tools/testing/shared/linux.c        | 120 +++++++--
- tools/testing/shared/maple-shared.h |  11 +
- tools/testing/shared/maple-shim.c   |   7 +
- tools/testing/vma/vma_internal.h    |  98 +-------
- 9 files changed, 439 insertions(+), 858 deletions(-)
----
-base-commit: 2a2cada7250179353220bea9548acd7e7ed96e48
-change-id: 20250901-maple-sheaves-63b9edc69bff
-
-Best regards,
 -- 
-Vlastimil Babka <vbabka@suse.cz>
+2.51.0
 
 
