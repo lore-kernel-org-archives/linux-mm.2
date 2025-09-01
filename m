@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A29D3CA1002
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 09:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25727CA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 09:19:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4C1E8E0024; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
+	id 4800F8E0025; Mon,  1 Sep 2025 05:19:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FC9C8E0002; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
+	id 408558E0002; Mon,  1 Sep 2025 05:19:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 802B78E0024; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
+	id 2D24B8E0025; Mon,  1 Sep 2025 05:19:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 678188E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 05:19:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 22C521DEA99
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 11A078E0002
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 05:19:36 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B13C9BB3F5
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:35 +0000 (UTC)
+X-FDA: 83840133510.23.C5E218D
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B3587C0004
 	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:33 +0000 (UTC)
-X-FDA: 83840133426.02.26A7B29
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3125B140004
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 09:19:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=bySiTZE9;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=c+eUN05U;
 	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf09.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756718371; a=rsa-sha256;
+	spf=pass (imf28.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756718373; a=rsa-sha256;
 	cv=none;
-	b=u6vprsdJqJKxuDi26zUvOD7ZwU/eco6XT95KmTAxZFYqeEpimKQ8BEsPSewAr8YmGFlrHK
-	K5jbas/Er6FqB+MiAqRTrXWmNEipXAtvhZSeF6H2A12zdFd3Lj9GzBNJC5gZ9JyubNlAKd
-	E+zTHQflLhX1oTnFSK9vmk5yiCcqZWk=
+	b=Q/aubaZEvKlCEtxkNBcGW/buSmuLEqxipo+uQfML7Qs5smb+daSgUfcTfAw+nMQODp5ACK
+	yIzULxGzyhcYzy8kTc+f+p9P0OiWShpZ3lnw21iGD6QwmeHEsAh+3BpCLLwjvbFcg8uZOs
+	MWXn08EV8D9G3ImxKjlduyfzit/b+z0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=bySiTZE9;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=c+eUN05U;
 	dmarc=pass (policy=reject) header.from=ionos.com;
-	spf=pass (imf09.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+	spf=pass (imf28.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756718371;
+	s=arc-20220608; t=1756718373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BqkRolEiPUj7RJL2rUljUH40PaguAeYrnxbluGnyi6U=;
-	b=3L5bYeremg3A/7G/HnJ1xwj0j2CZMqSmU8WdyiyaHqwQh5q1dQq9Pd7LjzVHZireYJHMKr
-	jyFaDoVINaGbiceHjcrqSORadQJmxYFIIJMEwV8ZAvup/eIZI6nijVO5ZYqbhdTHBoYKBi
-	ex7/4wQTTzxtOlZZxcSnKLYgyC3imBc=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afcb7322da8so802414366b.0
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 02:19:30 -0700 (PDT)
+	bh=8H3eprdm8oiBq+0anIaTODIO0eIcUyIWc/5jJ7tDkes=;
+	b=0JaPtF/c//aHHVmjQTAKAJ8IjODoQao/xa+ZT43cxWk1CJjIEAdxsQoHXCGTOHiIQBazFl
+	/sfAbZZdDUQsah/kwbqMau/dL/9pdcMHyB9/ATabkzg7NrJbWj5YabA8Z3hl/FS36TaK6w
+	xlqdVjMVjRl4cFjlnuK6ZWei3fLlVKw=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afede1b3d05so694642266b.2
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 02:19:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756718370; x=1757323170; darn=kvack.org;
+        d=ionos.com; s=google; t=1756718372; x=1757323172; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BqkRolEiPUj7RJL2rUljUH40PaguAeYrnxbluGnyi6U=;
-        b=bySiTZE9OWpEfQBlpkzLTwi+11ii/udzuRUNdvyaEDVbyH8POP+DoSAoLJ6YHqp9Xy
-         YP82kZs+IXEuoIoU0NVdGiSIH0BQZzuOKbEUj08awW1aNEERDt+yUjEDwWuqDHPCeGAE
-         fthxAgoxkG1FHpzPB0+CsOI4brq655Wk7MZy7CL0rlW03gVac4zPYOO7pJedyjUxijQw
-         bV1uX8abNndvkStkH5MhG3IYo65lNxLB71/8/sO4g9/5Mb6CL0AKqakTTZ3DG8wLkC4h
-         pkH1Q2ndv12079TG6p/ije1GnslwoIyYce+mxC1PgN4XW2pLx9Njj4r4GFnSJZxU1Q5V
-         n26A==
+        bh=8H3eprdm8oiBq+0anIaTODIO0eIcUyIWc/5jJ7tDkes=;
+        b=c+eUN05UTBPeoVO1fDy/JlLd2Dd/wpvoZxsBi9D4TOnwAH+WY9B/gUY0rK1zQP0qix
+         97zLfyNwe2r1A/IW+/JE//ugtquaIhfk8SM5a3acpUvhslN06/7RLO4cuQwi7roQAwms
+         GPuzGdUEIL5U74fzQpSGA9eM5CddT1O0Oh4gtQALBu/CCTXHLscnxDzgii2RxUHZTPGj
+         uthRL5xx9fAUVT5zedy2ZrGa+QTroZFE9FT0rY9N35mXxpIPU93m0QjcnOU5V27bXFRK
+         3TGOz/k1e1zNU8epY0YiWeDcW8MKg2brZDkDLmMUEcoM8mNvdb9b/ZGOUCgG7+hYxpTI
+         lE7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756718370; x=1757323170;
+        d=1e100.net; s=20230601; t=1756718372; x=1757323172;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BqkRolEiPUj7RJL2rUljUH40PaguAeYrnxbluGnyi6U=;
-        b=XckCda6xfnH9bd7Xf4NkpUMz4f+oxlzI8vkEjKfgq/58HLVqEUqspIb8X1mbfcXEPC
-         nXGcZUpCbpWKCZNii8ir74iK73wJZHbTOflgAValyhwmR6ntd+7/1RzO0Ff9GhdbSh+l
-         zCBYQ0l2lz6AGAqdpWO8OLBBM/0Cn9p1nHx17P6rLze8bWjouCbYPtSNb5kI1OXmbNjD
-         6MxCELwN14kjjaUlxwf3t6BuJoGMgtSt2Yz3dveJNxqjITGAH95qG3SL3EV2ECGtxMUB
-         uYYn6dnZy1LFuZw9POhYp2wiOKYwTNXvYV7/nDWSI340iD2HoTkyQrcClawgMG2KA+4Q
-         JkeA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLaG4W/3AxWyooZXImKGJ+E4njUEOMX7bzChCaC6cAs8Z+6B5Ez5HAG3zzOBSAlQ5vw5pF48K1dA==@kvack.org
-X-Gm-Message-State: AOJu0YxfSLaKQkDYkaJn1fcW/N9TMry8MbKoxgObuyT4V84ykzJjJ7M7
-	zuj+AxODyGWvjLLkO3QnfeZc2nobNHwtIPaaFwEbUV57QotFD2CQ18gn6gPFGZTx7A8=
-X-Gm-Gg: ASbGnctEkS5SAJUFBbECGoNWkdWmaPiU8tWkgwT2+ldh2W/rsKazpeQ/Za9HqGjjJZJ
-	cfumV7XDm9I2GZis5P3eh/d3qzu6vclbJYYvTveSgLGubdRPMOWe/kJXQBH2Hayt7Xr5g2BajDo
-	oRm8tXYSxQEue6kIATZ2xgNuXu5R1RzTx1NF6Wm2AW2/yhoErPm+b2RrUZgW0qI74G5nr4tGy5Q
-	mgB5XpK5LlE6v2WMGwqIEDVgilUkV1yvHw6BehDmLe8pUGaP2DPcIj8KLsqFkHvHNEUahT1s145
-	j2wrOplwIXupOafIIn1PhtairZcmqFeXcqhQ1hPnZjPGLuL1kZIcPaFeDMtBjRsHp0u/YiWtofK
-	7jQFoLHls4ztfKhLTnrVlwEiY5an9izOEEXDUoZlUg1O551CMZeZIXfvLxqnoOK7baqgKG0Lh99
-	NeNK0i7/zcF03Q0FTrPp2k3/VIvC3NHkRZ
-X-Google-Smtp-Source: AGHT+IEsmw8mc9FR+7YcDO3uHr7qQk2IFaFGO9lGAZi9GzeSVQNoy7S8eVMSnXBGPw6W32MtA4kZ+g==
-X-Received: by 2002:a17:907:2684:b0:aff:13f5:1f0 with SMTP id a640c23a62f3a-b01d8a26e65mr628763966b.7.1756718369507;
-        Mon, 01 Sep 2025 02:19:29 -0700 (PDT)
+        bh=8H3eprdm8oiBq+0anIaTODIO0eIcUyIWc/5jJ7tDkes=;
+        b=Aw53ISbbAqLKJ5ks0+U0Kvq7crhh9CdrwvrDOq2odP/6EiN7OFmmj2+FI4+/+khSsl
+         TDYcH/6aaG8PieXaoxyGpFjVy518eaXo5qm3hzO9KedgXCrQr8R0uA09ILE+8HL1FuzA
+         ZrRfZasVba9mEnEzBNUYFUF8fQg3MH3Ka9oNZmAGqD7eSVb0TgicyHx/iczzhPH0IZM7
+         YhK+brhIjW0jBEsxirryCj21usSXQgLqPMEmL6PVAR4qZmLKfTFsMlfbv91TPizRKRPd
+         VkliC4s4Pj/GQrTTk7GgQ0zgRsF25foUo9CagJZmUBblZts0+ZLidWtfO7Rc3fy8aPFu
+         QqTg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHYTQmt47Gk079KepFsL+9CoGGtzC+VbII1/2OEdROBaSFVD2qfWMw+9hFOtxTmEMoFaGjuTurwA==@kvack.org
+X-Gm-Message-State: AOJu0YzbwfnVLKl1ufnPSBK/lJx0qrOXSpC2UVQuniT+YTkydUm5kLqa
+	PqrvSfpAL6EhcyKujOQB1rVg/Vy8G20pArq8o+k6BVl32NyaDI88OwnyPS2Z8SGV9+Y=
+X-Gm-Gg: ASbGncv/qtJrWgAGbsGuQsaR+g2Y2qbk6PiY8k5rr1Kc3wJu4VNhukpGDcCGa8DdwCN
+	hAFhfsLlbXPA50w6Z5z55XAI6yFK72LKT3UkybxvegmWetvWb5JkFYu2SGmj34aPqQ1MRfs6mye
+	lLSwjz1u0aAwUAfqLgVyiw6xt+jm+0dpdwW45adgfAiIPmAmUrzCZR0j3r/G+F+xsvkhnUOuwSC
+	NahNLuQ9xv3BEQtG6FJLqqYIprFwthjf5rJkLrkFR50eqC3sUor91y4KrpEM3Dm9bFsnAoc+Z57
+	i+W7+IWAUbZYt3EIrSOj4yM0lErvUVHReLXFuQhXyKgI51pkDZdaSzSE49V7GZLmkhN20NsloDE
+	qBhAgShexFOsVpJnDWFpMee7U388SJPc5X6sEn8g1EBhL4k3VF2RQKrDIpkRE/a/Mdy7gIwBwPf
+	teNIG0nRw5dRBAi/vDdSav9pVyKwMt7vnV
+X-Google-Smtp-Source: AGHT+IF3CGqBNxa77EXUE/Gi7n0PBGLpiMmjL4vqume2Hy8S1ALFuVUh9cDg4qepPIlJtHhtd6svhA==
+X-Received: by 2002:a17:907:7ea7:b0:b00:5399:f5c0 with SMTP id a640c23a62f3a-b01f20bfff5mr728590366b.62.1756718371341;
+        Mon, 01 Sep 2025 02:19:31 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b01902d0e99sm541005766b.12.2025.09.01.02.19.27
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b01902d0e99sm541005766b.12.2025.09.01.02.19.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 02:19:29 -0700 (PDT)
+        Mon, 01 Sep 2025 02:19:31 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -147,22 +147,22 @@ To: akpm@linux-foundation.org,
 	linux-s390@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v4 03/12] mm/mmzone: add const to pointer parameters for improved const-correctness
-Date: Mon,  1 Sep 2025 11:19:06 +0200
-Message-ID: <20250901091916.3002082-4-max.kellermann@ionos.com>
+Subject: [PATCH v4 04/12] fs: add const to pointer parameters for improved const-correctness
+Date: Mon,  1 Sep 2025 11:19:07 +0200
+Message-ID: <20250901091916.3002082-5-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250901091916.3002082-1-max.kellermann@ionos.com>
 References: <20250901091916.3002082-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3125B140004
-X-Stat-Signature: m8tq8j489ohcxqpkmgxcgoax8uhg5i9q
+X-Rspamd-Queue-Id: B3587C0004
+X-Stat-Signature: gmizwuufrz4eegop1a8t8uowswqx1cfn
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1756718370-175459
-X-HE-Meta: U2FsdGVkX19a4QQBNb49SLH7AxCI1V/Px5jH4t0bEp6vZPPxc+35JUHibfkRZmk748ngZX51Xi3/XxuCJzymbP/qZwX1EoL5YH6i6MDICyrY44XwRQXHVAey/wA3GxeahMeb7mnJpIihEYZ8t4Oq56O53SVchresIdOJeoKADhpL9dtHWNAVqZjA9Vs+m4BIQi/SkxpzUjPNCbHJht93O1p07JDvJxZCrjauMmY+oSQp38DtDj6+e0QXoI9TMwQHeVe+5SlM3wYVa/nLSzJSzx2VMHmBtE4VOk/TYbpsKsCfxevYHfQsB4bWnqmYJyWH0H90qtxGUgY6IfrUygawGoRSWd4domjZicnGQYCmMhGQTzYsk+N3kG3XDyufaDhArEjogny9Ydo5LA/7HrAMxJ1YvK+a3xXfMh1WLTTXCYfRF6d2wRwofMdNQAhibhbODsrse0E/9RLAwr8IPK/zlaW/dgHnNXRC/v8oFx23mXDKlBISzJJjCH3iFiqL8O25Sj6MBMOcDgmCuya/iK1QwIITWWLwgexwVLnXREBRjXDWz+TuqL0pez71Y0pS2MaDgmZR7YaicjV5SfIcxU6Ro6uv72lbxWuEy3JFOAa2cssc2pE6RaoYtrmsQNRyJT1q2dX10haZjlcGP9buAGp8FGCNu6BsaRaWuthkNbFC5GFrHjUrfYIUlNIzdCxUy89GUz/NUTiODEZvus1HZC4BBlTnRCtXHTgrN8m0+VNVXJZMJzu8fjuS+kLYl3u4gRK+DbeewkmeJReVyXGDBw9az+GQdWCCU8gEqq6uu1p6Vl9+Fd3NlAWoAxEZX5LP272cDRT7Dwd6m7l6Lnj6tKpZ41kZcS3kQAbOYvk9JvLXxGGSduxyKqttm4G6nCOMMsH3LcqrsTqTI65i08DSFoGWBr7y9ZxEueReAgw3vcKKYghtLe9EDbYoqGNLYakxIWivTgnZOGNFhBai4AkGKR9
- ZrAt3Nzh
- ndYLH3cyUcBk+CNa5/bAAwunWgc0QYzTriXx1pl5IjpHufFpozpJbYv4CgchxiM5fge+imndj3MKMgnUqEle72oLOBS8ab9sUlEZiOd44Es4IjvUQOdo1hVA5iInUlvYPACvzRv7dyBB8Hr5dxCEWRyUCI6Mib56J4eqZegJh393wlwwgU+dpzsgTlbmxl9MX6m4stiHOFWdtDydkZsm/IF7cf9L6LvJUMTsW5plznOtTtUp+l7gS0YRxgJiulvV6RaFge2UgVQ42FDFKO+BbW5lHLO5XZEn9DtWhrJLDMCN3ex9zYXp8KZEUUzSHYp3OtZuHCVzzd9tsW75J8tT0DyeCZSvB4NEMpD6t+5WaEJcgmZo49/o9TyZ1haWmAThiPEsuSuxrIK6AoNJrYAbBXzMa6XvSBUVaWoMmUv+jfzoMjArxaI6TfW7tE8VKf3Qf1a/Lmw4TxgLAspU=
+X-HE-Tag: 1756718373-300009
+X-HE-Meta: U2FsdGVkX1/Mzb1v5RBqe19b5TcesdO7LKHZmeE4XJomqCuJKmX/xYc5fRZAlzRh853CmKq5n2bSZFXEZUauGzIgI5kJIEEPPI35xJn6naWU5JmfG0ImpCyG8S/kCHG0AS4jafR5Yf+WhshWnliKChXkpkPE28G12sWzTxuVgauurKtUr1EyZo7FgEm5wKG9eL/RtatUSGNFqK2XsbMwJce8PjbOzw4L7P8HY8FaDq1nykdQ/nZqT3lzO28D9ZyWNxhSZRxpSiqtGJhbL322SdhCeV+BOTJwX0DO/1Nlmrxc1zQdduMv6/izgQG7oCyhq3pnjuUuaFxgOBLyS4Mq3xK58lzQgLW62OT09SFCLBZfF1pcwdj7Mkf5Z61UAgHKMNvN8qC59P8lOs0n1FZ+yleeieNAigvDqr1a/7/rPxccAYSqvXbZCbt2/5p5R7YoRZX/jbdaCXYLhzDIEW3CYWQa4Oxy9H0+r+OxVOGmQBfydZIvNTP6JYynpYr+YTRcnNGwXnn3lZU/b88UgT/khaLYk1UOlZ+AVZYl+RhOg9W1UC7eJ15TvCjrlwRIyvMlIkt6vDPU7C08PxUNABIyzMPPwxqR+rZkSm0aR4sIMPZ/xk9txRwROgOmHNIqZ+8cyW3XYR/XOikfu0UYsIZAUItMgPDJUZ64aHvLSzbquE8vhol95LevjZX4Ydu7P/VLrqcZAUFUCBdzjlOQjDxmx7C3cJtWD9PRnsP9lQeCILzKtkSprV9XJfVsF3wqRaz8w8OwN0sS8Z6dT7UkGE+7hpaGme7ym6Mi/sxmo26zgHpeLpjjlwkVb/FScDQFUNEF0G1CfbhouG6MhUyR4Dv4ufTrpJP+nkuwmswyQ51BgpOuCq60O5xVdLlHnmljT+/31uJgoWWjZqw56vOImQHHX7rwaIAcLwoZm7LLXo2f5vj39aHX5GssJ09sDFr+PoYI7oQAUN20ubHLKvPE5Ow
+ /0K3SAgV
+ IQvJi+yI7ZIM9qkzIzfI7+YaTYKgJNsD+KX1lTFMcp12+fOuzDfYJzxcSVJ2p6MuIM6vD+FqSOE2IO17mgJZBcx4STeHDV+aZLzBoNe86za9s4SBL227oDtgTp/z3RBvZk+M2AAaFIdzzOsoG289UiEWMByrw1Mg1XXuYB6ZhB5sVyXkYQy5KVRaDK4GRG7uqK2l6VHsk5WTpfOUYQxgTQfrAe+CFqSZUbbvFfvemzdJA5rPiqpN6GHpaTV6BIzQ1VHftmkqNdvoqwoqCcZLzZHQKD7Rq4xzvT6HxOWTQNFXsQZ6eyZQl7dmSQU0rBYzplaN0yQ7nX6m9rYg5flFNoXGYitWm4q7o4mhGB8+hSZ0QtDc3vsCOkz1Aq90Rj+rpKtPZSWiegwJ1qAZBpwAGyjGFKpsqYYpUHMT8xx5eMz3dwPY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,207 +178,52 @@ to also adopt const-correctness in their interfaces. This patch lays
 the groundwork for broader const-correctness throughout the kernel
 by starting with the core mm subsystem.
 
-This patch adds const qualifiers to zone, zoneref, and mem_section pointer
-parameters in mmzone.h functions that do not modify the referenced memory,
+This patch adds const qualifiers to address_space pointer parameters
+in filesystem-related functions that do not modify the referenced memory,
 improving type safety and enabling compiler optimizations.
 
 Functions improved:
-- zone_managed_pages()
-- zone_is_initialized()
-- zone_is_empty()
-- zone_intersects()
-- zone_is_zone_device()
-- managed_zone()
-- populated_zone()
-- zone_to_nid()
-- is_highmem()
-- zonelist_zone_idx()
-- zonelist_node_idx()
-- present_section()
-- valid_section()
-- early_section()
-- online_section()
-- online_device_section()
-- preinited_vmemmap_section()
+- mapping_tagged()
+- mapping_mapped()
+- mapping_writably_mapped()
 
 Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 ---
- include/linux/mmzone.h | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ include/linux/fs.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index f3272ef5131b..9a25fb1ade82 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1104,7 +1104,7 @@ static inline unsigned long promo_wmark_pages(const struct zone *z)
- 	return wmark_pages(z, WMARK_PROMO);
- }
- 
--static inline unsigned long zone_managed_pages(struct zone *zone)
-+static inline unsigned long zone_managed_pages(const struct zone *const zone)
- {
- 	return (unsigned long)atomic_long_read(&zone->managed_pages);
- }
-@@ -1128,12 +1128,12 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
- 	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
- }
- 
--static inline bool zone_is_initialized(struct zone *zone)
-+static inline bool zone_is_initialized(const struct zone *const zone)
- {
- 	return zone->initialized;
- }
- 
--static inline bool zone_is_empty(struct zone *zone)
-+static inline bool zone_is_empty(const struct zone *const zone)
- {
- 	return zone->spanned_pages == 0;
- }
-@@ -1273,7 +1273,7 @@ static inline bool folio_is_zone_movable(const struct folio *folio)
-  * Return true if [start_pfn, start_pfn + nr_pages) range has a non-empty
-  * intersection with the given zone
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 3b9f54446db0..8dc46337467d 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -537,7 +537,8 @@ struct address_space {
+ /*
+  * Returns true if any of the pages in the mapping are marked with the tag.
   */
--static inline bool zone_intersects(struct zone *zone,
-+static inline bool zone_intersects(const struct zone *const zone,
- 		unsigned long start_pfn, unsigned long nr_pages)
+-static inline bool mapping_tagged(struct address_space *mapping, xa_mark_t tag)
++static inline bool mapping_tagged(const struct address_space *const mapping,
++				  const xa_mark_t tag)
  {
- 	if (zone_is_empty(zone))
-@@ -1581,12 +1581,12 @@ static inline int local_memory_node(int node_id) { return node_id; };
- #define zone_idx(zone)		((zone) - (zone)->zone_pgdat->node_zones)
- 
- #ifdef CONFIG_ZONE_DEVICE
--static inline bool zone_is_zone_device(struct zone *zone)
-+static inline bool zone_is_zone_device(const struct zone *const zone)
- {
- 	return zone_idx(zone) == ZONE_DEVICE;
+ 	return xa_marked(&mapping->i_pages, tag);
  }
- #else
--static inline bool zone_is_zone_device(struct zone *zone)
-+static inline bool zone_is_zone_device(const struct zone *const zone)
- {
- 	return false;
- }
-@@ -1598,19 +1598,19 @@ static inline bool zone_is_zone_device(struct zone *zone)
-  * populated_zone(). If the whole zone is reserved then we can easily
-  * end up with populated_zone() && !managed_zone().
+@@ -585,7 +586,7 @@ static inline void i_mmap_assert_write_locked(struct address_space *mapping)
+ /*
+  * Might pages of this file be mapped into userspace?
   */
--static inline bool managed_zone(struct zone *zone)
-+static inline bool managed_zone(const struct zone *const zone)
+-static inline int mapping_mapped(struct address_space *mapping)
++static inline int mapping_mapped(const struct address_space *const mapping)
  {
- 	return zone_managed_pages(zone);
+ 	return	!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root);
  }
- 
- /* Returns true if a zone has memory */
--static inline bool populated_zone(struct zone *zone)
-+static inline bool populated_zone(const struct zone *const zone)
- {
- 	return zone->present_pages;
- }
- 
- #ifdef CONFIG_NUMA
--static inline int zone_to_nid(struct zone *zone)
-+static inline int zone_to_nid(const struct zone *const zone)
- {
- 	return zone->node;
- }
-@@ -1620,7 +1620,7 @@ static inline void zone_set_nid(struct zone *zone, int nid)
- 	zone->node = nid;
- }
- #else
--static inline int zone_to_nid(struct zone *zone)
-+static inline int zone_to_nid(const struct zone *zone)
- {
- 	return 0;
- }
-@@ -1647,7 +1647,7 @@ static inline int is_highmem_idx(enum zone_type idx)
-  * @zone: pointer to struct zone variable
-  * Return: 1 for a highmem zone, 0 otherwise
+@@ -599,7 +600,7 @@ static inline int mapping_mapped(struct address_space *mapping)
+  * If i_mmap_writable is negative, no new writable mappings are allowed. You
+  * can only deny writable mappings, if none exists right now.
   */
--static inline int is_highmem(struct zone *zone)
-+static inline int is_highmem(const struct zone *const zone)
+-static inline int mapping_writably_mapped(struct address_space *mapping)
++static inline int mapping_writably_mapped(const struct address_space *const mapping)
  {
- 	return is_highmem_idx(zone_idx(zone));
- }
-@@ -1713,12 +1713,12 @@ static inline struct zone *zonelist_zone(struct zoneref *zoneref)
- 	return zoneref->zone;
- }
- 
--static inline int zonelist_zone_idx(struct zoneref *zoneref)
-+static inline int zonelist_zone_idx(const struct zoneref *const zoneref)
- {
- 	return zoneref->zone_idx;
- }
- 
--static inline int zonelist_node_idx(struct zoneref *zoneref)
-+static inline int zonelist_node_idx(const struct zoneref *const zoneref)
- {
- 	return zone_to_nid(zoneref->zone);
- }
-@@ -2021,7 +2021,7 @@ static inline struct page *__section_mem_map_addr(struct mem_section *section)
- 	return (struct page *)map;
- }
- 
--static inline int present_section(struct mem_section *section)
-+static inline int present_section(const struct mem_section *const section)
- {
- 	return (section && (section->section_mem_map & SECTION_MARKED_PRESENT));
- }
-@@ -2031,12 +2031,12 @@ static inline int present_section_nr(unsigned long nr)
- 	return present_section(__nr_to_section(nr));
- }
- 
--static inline int valid_section(struct mem_section *section)
-+static inline int valid_section(const struct mem_section *const section)
- {
- 	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
- }
- 
--static inline int early_section(struct mem_section *section)
-+static inline int early_section(const struct mem_section *const section)
- {
- 	return (section && (section->section_mem_map & SECTION_IS_EARLY));
- }
-@@ -2046,27 +2046,27 @@ static inline int valid_section_nr(unsigned long nr)
- 	return valid_section(__nr_to_section(nr));
- }
- 
--static inline int online_section(struct mem_section *section)
-+static inline int online_section(const struct mem_section *const section)
- {
- 	return (section && (section->section_mem_map & SECTION_IS_ONLINE));
- }
- 
- #ifdef CONFIG_ZONE_DEVICE
--static inline int online_device_section(struct mem_section *section)
-+static inline int online_device_section(const struct mem_section *const section)
- {
- 	unsigned long flags = SECTION_IS_ONLINE | SECTION_TAINT_ZONE_DEVICE;
- 
- 	return section && ((section->section_mem_map & flags) == flags);
- }
- #else
--static inline int online_device_section(struct mem_section *section)
-+static inline int online_device_section(const struct mem_section *const section)
- {
- 	return 0;
- }
- #endif
- 
- #ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
--static inline int preinited_vmemmap_section(struct mem_section *section)
-+static inline int preinited_vmemmap_section(const struct mem_section *const section)
- {
- 	return (section &&
- 		(section->section_mem_map & SECTION_IS_VMEMMAP_PREINIT));
-@@ -2076,7 +2076,7 @@ void sparse_vmemmap_init_nid_early(int nid);
- void sparse_vmemmap_init_nid_late(int nid);
- 
- #else
--static inline int preinited_vmemmap_section(struct mem_section *section)
-+static inline int preinited_vmemmap_section(const struct mem_section *const section)
- {
- 	return 0;
+ 	return atomic_read(&mapping->i_mmap_writable) > 0;
  }
 -- 
 2.47.2
