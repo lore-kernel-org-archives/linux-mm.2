@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 150DECA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 06:12:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27D72CA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 06:12:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF0028E0007; Mon,  1 Sep 2025 02:12:40 -0400 (EDT)
+	id D64A38E0008; Mon,  1 Sep 2025 02:12:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C78F68E0006; Mon,  1 Sep 2025 02:12:40 -0400 (EDT)
+	id D3A388E0006; Mon,  1 Sep 2025 02:12:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB5368E0007; Mon,  1 Sep 2025 02:12:40 -0400 (EDT)
+	id C04878E0008; Mon,  1 Sep 2025 02:12:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA0A98E0006
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 02:12:40 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 76AEB1A06A8
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:12:40 +0000 (UTC)
-X-FDA: 83839662480.12.E993520
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 89A9F4000D
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:12:38 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=i+k94aYr;
-	spf=pass (imf17.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AEA098E0006
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 02:12:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7847CBAE52
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:12:41 +0000 (UTC)
+X-FDA: 83839662522.25.38EA292
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8EA96180010
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:12:39 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=djSYqf4S;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf06.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756707159; a=rsa-sha256;
+	cv=none;
+	b=djWp2XCkLfP3Sy0YMwOMeXEpukFbMznGHkASmm4Kya2O7VNG5EHPRXgTVMWE+0xBy7EK0n
+	3RNsfHJDch3+qvYBJUwFqaDtbL392UY91XYSYteVOaQqA9VNMAFcpVLitqw8IansBcO2Xw
+	rXvARvoj5K81FozsGIcgB+uaPnnHkS8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=djSYqf4S;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf06.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756707158;
+	s=arc-20220608; t=1756707159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rDgr77Raexwz3O9eJEn4/d6TiABMKv+OO6Kr02/4yzA=;
-	b=u9iC+Xfhtvri45r93YUWXnptYlYJEeolLOCVx1B5yS8mhxwpbDqMqcDDWP4RjPxhkjkjYg
-	GYPF3LUGzQrWHa+tUNE+5oGcqO1ACSfubw9ATcbFJgJpBmiVEyt6eq6lkx9Dq8+XEjPU6F
-	PZIqlLyXxbhTR2xdDlKWRmGK1+wd8bM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=i+k94aYr;
-	spf=pass (imf17.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756707158; a=rsa-sha256;
-	cv=none;
-	b=Y8HPMzfjkH5Ib5Ygl80AYHmIkzAx8YhNROj5E1BDNxd6eQBfZjqWho17OEw00TjzI83hcc
-	TbsL1zKE8YqU4OApxhzT/Frelaqd+6WQq1f+1M0p3d5mAyObH9IQEP4JUn2mWpczTdtwHU
-	BoKCgTjDux9nDc3qAgdzKHFpUwPYsb0=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61cd1046d42so4815808a12.3
-        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:12:38 -0700 (PDT)
+	bh=rR4oy7Zb2IbSctYsSrVgfFfpaXt7ypSRTmIBa0GxRUo=;
+	b=EyHWdW3eHH4uWhNWuDE7YmA9V/tr9hTuDmeDAoG6eJ9FHQkjWWS0jVcWwdFg1Iy01wEjsb
+	sQwSGtD6tAAhu+tfKLh1Srif4U1YRa735KcTQzVIm16GgDmhuIBXe86XTQgKJFxQ3+Jbxe
+	12qU79P95QLIfvysGpiMUpYvzLGKwec=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-61cc281171cso6814395a12.0
+        for <linux-mm@kvack.org>; Sun, 31 Aug 2025 23:12:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756707157; x=1757311957; darn=kvack.org;
+        d=ionos.com; s=google; t=1756707158; x=1757311958; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rDgr77Raexwz3O9eJEn4/d6TiABMKv+OO6Kr02/4yzA=;
-        b=i+k94aYrzGH6Qjz2EP9+f+8iXGzVFZxoMTQFVUI6yxQxi5mg7Wgr/9XgSJxgPaber6
-         FRwqwzAKdUttCGQguoTGpXffGpsPGRjVV+ngpL6xeEhyijh52MMy8WbODY9hISAjVqZE
-         ejC8s1/rkMw/xowiw8VTjkM2rCa3dV4Os0nBghfJA/ImulkyrQGKa9PYK5AcU3tpm1gF
-         gGbCM4sFCHtsK5/Zbb3evoIBuDAGftHTwieuEnZ4Hvaxk+hIwXu+l/UN17DRXmlSZZN7
-         Qn804gEkFF0AJrW2cc1OhwyA0MAm5PLznBmqIVc6J3nSQ1IwI79SFlZ1gsRVkFQlyZAG
-         klfA==
+        bh=rR4oy7Zb2IbSctYsSrVgfFfpaXt7ypSRTmIBa0GxRUo=;
+        b=djSYqf4SfN6SZY9dLNI6zIOi/J3tAxHriNF7wBFkdtAHsmP+zrWVpzy90GzL2WaC3I
+         eMqs9seouWGRYTG2ltFQkLGLQofH5M1VcnkYc/FPv2Y5DQISNoooD+ZRa4mu04+Z8ElL
+         QtkizkIW9dYzgHBUrbSVLJ2QMTnieBrHJ3AqvYjf2KwXTgcdtuBM4pnGG9LmxTOVt7p+
+         X0DobRHWwD1mHtz617I6K7XFrwybyvmlDVLNvY6PvR6VzcBlrPBYkDR+fuQC286DEuEU
+         X5IzhUnIEho6uu/ExHlViDD8TvlIV403gEFvUVwYIEvHMToAMW2linfih4WjN1s7UgKc
+         cRew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756707157; x=1757311957;
+        d=1e100.net; s=20230601; t=1756707158; x=1757311958;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rDgr77Raexwz3O9eJEn4/d6TiABMKv+OO6Kr02/4yzA=;
-        b=DgewTotO51QUcfX1oZViev72c4CUvWbjTOBFHPxlDoRil7Vw3mhjFFh2KxCSbwHEy5
-         qj6QSJ3ewqZ8a2sTMpyfgTdREnUWUFix/h2ZS/XGKf2RAd5iwsw/28kCrnUbSZQfeZqZ
-         XQTvOzmWrt/Ti9I2JsTBaxFVtbFnHHznN/ngul/hDG85d0lTKSCjxjJoUDaenAIbgjOW
-         Lv6SqbMLqrEb7P/TpUtz6QT1PLAEK9fIu0Gm5G5iR0UiW/9J6nFlx5JbyNiFAHdnm5xI
-         NiRkMZCFDkQs5LrJphoGdR+pMaO6WI4LR/QskuGSVGJWvvL6xAvHi/tPixfWKyxvfgir
-         NEsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxUkbQsmPgz5MK30BA9pR4kBg44Ddws5OD4lz9WoSUzo0tINxkOOca8R70Y+AqUHEPz57eBRH1Ng==@kvack.org
-X-Gm-Message-State: AOJu0Yzc0xWcXdzvIlcGvMobzj0DlQC5sTy1ehGh+BP4shTqnSYltDVJ
-	ySBdLrUA/6DAX9rq7A2vA7zQN7hUT08RzcPDkutpUPr6Egi//Bb1vzFMMl3XX6Ndh4o=
-X-Gm-Gg: ASbGnct9LyZ0Mmay8176HheIE0hc+b6X1EnoSH5U5fqWUfVT1vfxVleRuiaZI+fXNHJ
-	kih/CKWhfaPGnRi6Cr1h/sC1p4icmZ23D6FejrRFG8PllGocuFGwqx2UFJ1ycSYfBUFc8ch1mHe
-	Yt2FirhyevkI4tB5izBqMDeGscTmi2I5xjJ25r3dJonPGzuLgj+FsmuKmpJ4kWu20P2J9J9Ko6u
-	CvBV0AyUzSlGNw6fCNNTtyAewnNGtCigPIWWa9zCqlBHUkJTKX5tBzFN7xFa6ZsYsVJX8Lt3hNg
-	0FO5XIdREnDyFxD0b9IWphir/7Ng57HygVVWUe9UkmwHTsmsuytqfxsnMHjiTvvb4B8objrriXp
-	GCPIPw6Jj0qq9gZUr60q7O4QMPg+gnnFf+W0rlgCsyseVm/z30Gu67kOEWlJ3mDkhozzmp/TADh
-	QFflFGCxDkd6ApMIjrkS7j5DrJ/4wTHyyr
-X-Google-Smtp-Source: AGHT+IHFcJKCkw/RTMX7106ev96b/+IR0if6QTDEGodFGX5ZCSVjZIik/iqJRJ/PVGIEAJZPuC7HJA==
-X-Received: by 2002:a05:6402:44d4:b0:61a:8e5c:f4ef with SMTP id 4fb4d7f45d1cf-61d26c33dd5mr5229225a12.18.1756707157157;
-        Sun, 31 Aug 2025 23:12:37 -0700 (PDT)
+        bh=rR4oy7Zb2IbSctYsSrVgfFfpaXt7ypSRTmIBa0GxRUo=;
+        b=AYOV5bA8j93F5kBCUghkAAwmmKHnUVPnWDtrDi2IxoHGZhpDoxUYsgphdHBWgcbt7V
+         6AyZtxCUWLLeCTNHwhgyZjsYlTE4bLo9ORAyTYKGnjNM8d2Wo89V4qqfBXTtjq0ZdRN3
+         Yz1o65i65lZ5oogom5BCj48AA+FolQi8ahVgccc22edhAqAM4RZDE6atCydWnQe1nSmj
+         8Cs8cCtWZN+GdzKzts42AHwGKoXl+KLqtp1gVNpJSQTVEtpk2h4l0ZFjUTA99ZL20Pq/
+         SkSRTyCCrRR+XADEVXnlpSD8MY9VQE2uGLFfvdgAFS7exFHfBf7x7DUHe38bT4kR2Eqh
+         csIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFgVWHt255yOc4P9BdqCgaj66VtwqAbZOXqAsPYWzgOEcVHoK8Ynn8lLh/Zr/2MLa1XJ49v9Jptw==@kvack.org
+X-Gm-Message-State: AOJu0Yy+f4Q36i5W+SP+XnlaAKC4ly32pd6HqokgVxKU5vr7DTg310K+
+	xNPIdUKwQty+aGo4jTHT/wsUt/+nCegl98Jsh7mb3O5qRP54BJBUSc+FsBBGZoHmiHQ=
+X-Gm-Gg: ASbGnctA69L9FSjzTDLq6G6CKbfdr33ZqbPNCmW7QnVYSTJM/Ayp1ynfNjHXz0QZsix
+	plj8pfsIHpHmZ6WA0My01z7WKRn0FHrE5tiZPjR318KJxXe5+xn5LDqK+FoIvMkihKUMPdRH1SH
+	uKzeaskRdUmil//rulrax1tx2QI3OPCcHgjiAwDRkFzUzWJ/6+fJYRcxtFNraxwV87OZlEWsfay
+	gOapy2waHo15Tcz1c8EIp9MvIWdzFbxp+lbh+rBlrPysM5SzofpcgLVqfQpebkr1qWGSpj/ejdC
+	dR5rZb9i+zSdkpEt+I5TY4d4O18JNkJXfAyc4f7L6HRDrORF510fN0lz8mW6SEqKT+soqp6yLYW
+	QZk2hCOLNYThNIMrju4Ror1G+MGswVsOnQXr9933jPZy78FYQtyr+mWzisqLpHzXFRaxn1V7kNi
+	gMDzVMfWqyJ7F9tunQblI6Qw==
+X-Google-Smtp-Source: AGHT+IE0vif5vuTCMER8ckouleyP96Gy21extBt5jOZsdMhAFo++wMW7N7bZ+f0Dm6MWmYncMh0vqw==
+X-Received: by 2002:a05:6402:5c8:b0:61d:3d89:7826 with SMTP id 4fb4d7f45d1cf-61d3d897bc9mr4041138a12.28.1756707158085;
+        Sun, 31 Aug 2025 23:12:38 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc231561sm6374533a12.23.2025.08.31.23.12.36
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc231561sm6374533a12.23.2025.08.31.23.12.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 23:12:36 -0700 (PDT)
+        Sun, 31 Aug 2025 23:12:37 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -108,22 +108,22 @@ To: akpm@linux-foundation.org,
 	surenb@google.com,
 	vishal.moola@gmail.com
 Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH v3 05/12] mm/oom_kill: add `const` to pointer parameter
-Date: Mon,  1 Sep 2025 08:12:16 +0200
-Message-ID: <20250901061223.2939097-6-max.kellermann@ionos.com>
+Subject: [PATCH v3 06/12] mm/util, s390: add `const` to several pointer parameters
+Date: Mon,  1 Sep 2025 08:12:17 +0200
+Message-ID: <20250901061223.2939097-7-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250901061223.2939097-1-max.kellermann@ionos.com>
 References: <20250901061223.2939097-1-max.kellermann@ionos.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 89A9F4000D
+X-Rspamd-Queue-Id: 8EA96180010
+X-Stat-Signature: 3xpep19trdw4wh6hwac9unyzxgfuqksn
 X-Rspam-User: 
-X-Stat-Signature: ksscdfuo889tbntdgwpz8u94up6e5mt9
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756707158-667260
-X-HE-Meta: U2FsdGVkX190odXLTCbFZ/2ROC2w4n/9q8gve9n1hFUp1Xk6KR80yw3WVA2j5k6RIOvoz/tZURacFv9ob50a7fcLopN/FNCYELkaA6+vFkXbaZc6hY9EFAtvgS37Pc+S+tNqjNtADCOmqXKDYXpq96vwL672Di1HyCqTtUjTpkfEY00GEZGh9C8w+KwU36LA0ictijqxpLAsgsUKaVMBN0vWKHTdOHMChAXYFR3ZVd2RnGWgRkJ/OSC6Ckqf6i0Yxu0ewJBiIcczAMJd6iK1Vlx40psBExpsU6qxVojvczM+h90uL6D0Vt5aKuBtjTAq6ZMMmwiwu2c81PACXl1Lwan7ymgfWtDrab+aETcPGDy7X0XBQqvn3/91svIVuXP931NBj/QTOwTc8pi/NncgKn5gNRaUH5QsMMKOIzLVd9tlFjNWvV5wZJMsNhMWg3RyThGWVnAaN7mNJjcps2Dyc+FlORMtwRA6nI2ss6LGXeHtPi08/9A3fI3eOwNaay3SldcKHMr/P2loZLN3g/7/o7hvL6oTVaxzQ2KDRiw1ckcKG9yeReqiSVs+0+RrU+jbDXasn3ZzA1nZu8NujOz1GsCnOaehRCtF87fuy9RA13LMerQY5OmxvFlYrIukIXqs1QJU+K/w/wowtVNoJIurJYira4rqJJP4yRTgJZpGek1C46BL1xz6jc112Swtfwd4Dm3zAt3pJnPDgu4Ju9ISW9qpYjNygjY7nOHNBiRAkOselqth3Cg5fluBGPCH5vpq7mqW1QmLQe9UU6kJSlczwm9kBFYdCjw7UNoNZyQ1NqPgnEHxSXQ2ItHXwrSa71OOAul+vFyDWoGIH8wiI0lWof7HRD3Tup8McRKpO1OWbwBb1ozZ4tTIhJbRmWxGkVEehyyvh9a/QWbw2eusCiDE5gKzZ71R2rcP6oA3T91eSgx4+mvovzPWYeDCLhiL/PM+kizNVe2uJI6Qmcn2qrU
- ixeMIsY6
- sGNPrCUoyehrpO0aetnTbta16EPsudHMAKwcIhmfnnhsSYan/4Dz5Gx5+riKdr1rAZ6oLNxA28ZiE0IhqoBqJMC0p9PnkcqoSP85tPQeLe6AvwGpA/VmctAmDQqrGV8MxPG9hjlaQOo/649yg4Elchtuy88Yw92znj+2KPBH3ke+tvcZFsUYkZ8zD9MfGj0BsEWZQRwp+fuQSDSXZ1HeZHr9ciORKZQL6guurQ6lSQ7+Fnhfffpx7N5khFpt8FtuFNLEOEJ7aIq0RgM5AE5dWSRPp3I66arcXerQW0iwS00ZClsnabibwCHk1r9gsgB0E4z7jj156WXm18OxC2m4SIcLSwWU9hS0YCc5sITGi9kUmnR4KqO5/hdwYtGeiXLNERL77rab8CGtlJNNcAl1B6zXWwHr0YaUxt1fjc4sV/lU5bEpsHjsDlVm+6DlQ75G8MzIOWhQAUeuOpe9ffph/OA9reSWMcl9ygvh5YIRJc406BYs=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756707159-133944
+X-HE-Meta: U2FsdGVkX1/Shunih5MhMCaQAgLfAtwS88M+gO0O2sL+mTLv0F80SkKJGhb8xsO/MsVZ1ywPY35pHn0nb2TqTeqNz5mfc+1gPDySZ4uN5aMh3Bpntv+CE6ZD9GjApPfzN5F/hR8o1koFYGZjHP9h5+XHDLTIN2sr4KFNPqQvQpw9+AuZiIWHPE5ky4JJt0ZlhPPVB6zNxNtXNF749F8W8NxUyLP1j1l8rQW8Y4M8Lc0yYM7aZU6fleSTrHZjqoCu5CRUSi2jhTf9lqXDrGHnA/Lh6mabTQdzL8zRdY+emfP2mwaN/QWYJqLV+RPrBXcRjidHNNDbxvKiMLxT6cj56bKyebcd0KdXZ9S6yhHzZPsvQ7sXS6kH+Gh5GwHAD2PatqjiPgEU7q6n8GkHX4hysIJua2ntFDuAaJAs/sBKMQdusTUiiOiJThHr8PFfdRgEPxv4O031agxgbgPbkMDiR4wKD0JPeTK6FjY9ZRFuKsg2mJRa4zEG9KTpthj11MnT+ja8sfskvB3UhjZwCJmNgycJP0XWpBdxQlP1fJ6jHAzHJN6TFMaF2ZwF6HuDaAZsuAVmWtCmItx9TIaEE7QQC/ZFcUuptFFzxujm57G5ukscpdZntbciBl+Of1bBs+qB6FesB8sJcsSmvAOX379MxX8+zehcAfmy0gYAF8k3/sB6542TuxzOSrJiViR7ZSXJ82N/s5yZCr18U0XNOq58Zk/vgm54UCF7odmNekXbR44EfaxPoyyrUpIMGN2orsWL8aK5cuVSouDRnprtcWekJcGqfcNPpfYZT8IZF+9YQ75woDge83ZiocB320vnGm+w3ptCPfnFqiMuYoORa2Jhlad7AGR0GgnkyKVlVBpXNcHKYs5N00zFhZ3tUs5cb66JtbEiLYH0DM3aLIQTiEEA8FdDY7/xOJhPhMVgwCYEdk2bPsph0W8iB0Zx0al8iJaGsWa8+X5u4YmOwOmvJkw
+ e9aNYQmu
+ uPTQv7ij2nSxursNZWi4JUM1rqmEncYOXCakXpCdl1UGCUb+zImiNwEkxCDO6GP2+aumm1obnKzqA/HdsJd+49ifojwqKQgD/bba8T3bnFETKmfNre25CaQvbJ6FLl8t0W1BuGT7Npg5jABnn3Jk9LqgbTBKpJ6CBxK7KR8CUVJ0VSTeVIE7xbnqGq8nKXNtoKAFF+lAoMb6OMwqxT5rVfV1v7HdHhAyWCv4C46alWQHBr9pU6KoeRNyq7ekzLWDbNggGBZck/Gdk1NSVKUvOhTowG3CeMDZiQ/I10N8AXx3DNhlhQL380kd3s3eZiy60rL2onVhFxLye0+aTUYNeEHlQPGTm2r2UKN9UxyBcwM6Pa1MWrgHSBd2cbCKzi/wVo2lKwAwHEeJnnOEYSofrPd54uPnFh0fwq0fP9me4O0uLJheZT27XTpVaAvygIDHn2guVVRoovC3n9wg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,39 +134,126 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 For improved const-correctness.
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
- include/linux/mm.h | 2 +-
- mm/oom_kill.c      | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+(Even though seemingly unrelated, this also constifies the pointer
+parameter of mmap_is_legacy() in arch/s390/mm/mmap.c because a copy of
+the function exists in mm/util.c.)
 
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+---
+ arch/s390/mm/mmap.c     |  2 +-
+ include/linux/mm.h      |  6 +++---
+ include/linux/pagemap.h |  2 +-
+ mm/util.c               | 11 ++++++-----
+ 4 files changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
+index 547104ccc22a..c0f619fb9ab3 100644
+--- a/arch/s390/mm/mmap.c
++++ b/arch/s390/mm/mmap.c
+@@ -27,7 +27,7 @@ static unsigned long stack_maxrandom_size(void)
+ 	return STACK_RND_MASK << PAGE_SHIFT;
+ }
+ 
+-static inline int mmap_is_legacy(struct rlimit *rlim_stack)
++static inline int mmap_is_legacy(const struct rlimit *const rlim_stack)
+ {
+ 	if (current->personality & ADDR_COMPAT_LAYOUT)
+ 		return 1;
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 18deb14cb1f5..f70c6b4d5f80 100644
+index f70c6b4d5f80..23864c3519d6 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -3840,7 +3840,7 @@ static inline int in_gate_area(struct mm_struct *mm, unsigned long addr)
+@@ -986,7 +986,7 @@ static inline bool vma_is_shmem(const struct vm_area_struct *vma) { return false
+ static inline bool vma_is_anon_shmem(const struct vm_area_struct *vma) { return false; }
+ #endif
+ 
+-int vma_is_stack_for_current(struct vm_area_struct *vma);
++int vma_is_stack_for_current(const struct vm_area_struct *vma);
+ 
+ /* flush_tlb_range() takes a vma, not a mm, and can care about flags */
+ #define TLB_FLUSH_VMA(mm,flags) { .vm_mm = (mm), .vm_flags = (flags) }
+@@ -2585,7 +2585,7 @@ void folio_add_pin(struct folio *folio);
+ 
+ int account_locked_vm(struct mm_struct *mm, unsigned long pages, bool inc);
+ int __account_locked_vm(struct mm_struct *mm, unsigned long pages, bool inc,
+-			struct task_struct *task, bool bypass_rlim);
++			const struct task_struct *task, bool bypass_rlim);
+ 
+ struct kvec;
+ struct page *get_dump_page(unsigned long addr, int *locked);
+@@ -3348,7 +3348,7 @@ void anon_vma_interval_tree_verify(struct anon_vma_chain *node);
+ 	     avc; avc = anon_vma_interval_tree_iter_next(avc, start, last))
+ 
+ /* mmap.c */
+-extern int __vm_enough_memory(struct mm_struct *mm, long pages, int cap_sys_admin);
++extern int __vm_enough_memory(const struct mm_struct *mm, long pages, int cap_sys_admin);
+ extern int insert_vm_struct(struct mm_struct *, struct vm_area_struct *);
+ extern void exit_mmap(struct mm_struct *);
+ bool mmap_read_lock_maybe_expand(struct mm_struct *mm, struct vm_area_struct *vma,
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 1d35f9e1416e..968b58a97236 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -551,7 +551,7 @@ static inline void filemap_nr_thps_dec(struct address_space *mapping)
+ #endif
  }
- #endif	/* __HAVE_ARCH_GATE_AREA */
  
--extern bool process_shares_mm(struct task_struct *p, struct mm_struct *mm);
-+bool process_shares_mm(const struct task_struct *p, const struct mm_struct *mm);
+-struct address_space *folio_mapping(struct folio *);
++struct address_space *folio_mapping(const struct folio *folio);
  
- void drop_slab(void);
+ /**
+  * folio_flush_mapping - Find the file mapping this folio belongs to.
+diff --git a/mm/util.c b/mm/util.c
+index d235b74f7aff..f5a35efba7bf 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -315,7 +315,7 @@ void *memdup_user_nul(const void __user *src, size_t len)
+ EXPORT_SYMBOL(memdup_user_nul);
  
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 17650f0b516e..2620b32a8eba 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -490,7 +490,8 @@ static bool oom_killer_disabled __read_mostly;
-  * task's threads: if one of those is using this mm then this task was also
-  * using it.
-  */
--bool process_shares_mm(struct task_struct *p, struct mm_struct *mm)
-+bool process_shares_mm(const struct task_struct *const p,
-+		       const struct mm_struct *const mm)
+ /* Check if the vma is being used as a stack by this task */
+-int vma_is_stack_for_current(struct vm_area_struct *vma)
++int vma_is_stack_for_current(const struct vm_area_struct *const vma)
  {
- 	struct task_struct *t;
+ 	struct task_struct * __maybe_unused t = current;
  
+@@ -410,7 +410,7 @@ unsigned long arch_mmap_rnd(void)
+ 	return rnd << PAGE_SHIFT;
+ }
+ 
+-static int mmap_is_legacy(struct rlimit *rlim_stack)
++static int mmap_is_legacy(const struct rlimit *const rlim_stack)
+ {
+ 	if (current->personality & ADDR_COMPAT_LAYOUT)
+ 		return 1;
+@@ -504,7 +504,7 @@ EXPORT_SYMBOL_IF_KUNIT(arch_pick_mmap_layout);
+  * * -ENOMEM if RLIMIT_MEMLOCK would be exceeded.
+  */
+ int __account_locked_vm(struct mm_struct *mm, unsigned long pages, bool inc,
+-			struct task_struct *task, bool bypass_rlim)
++			const struct task_struct *const task, const bool bypass_rlim)
+ {
+ 	unsigned long locked_vm, limit;
+ 	int ret = 0;
+@@ -688,7 +688,7 @@ struct anon_vma *folio_anon_vma(const struct folio *folio)
+  * You can call this for folios which aren't in the swap cache or page
+  * cache and it will return NULL.
+  */
+-struct address_space *folio_mapping(struct folio *folio)
++struct address_space *folio_mapping(const struct folio *const folio)
+ {
+ 	struct address_space *mapping;
+ 
+@@ -926,7 +926,8 @@ EXPORT_SYMBOL_GPL(vm_memory_committed);
+  * Note this is a helper function intended to be used by LSMs which
+  * wish to use this logic.
+  */
+-int __vm_enough_memory(struct mm_struct *mm, long pages, int cap_sys_admin)
++int __vm_enough_memory(const struct mm_struct *const mm,
++		       const long pages, const int cap_sys_admin)
+ {
+ 	long allowed;
+ 	unsigned long bytes_failed;
 -- 
 2.47.2
 
