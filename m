@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D03CA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 04:46:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E5FCA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 04:51:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A59926B0011; Mon,  1 Sep 2025 00:46:57 -0400 (EDT)
+	id E82EE8E0003; Mon,  1 Sep 2025 00:51:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0A2C6B0012; Mon,  1 Sep 2025 00:46:57 -0400 (EDT)
+	id E33588E0001; Mon,  1 Sep 2025 00:51:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91FCA6B0022; Mon,  1 Sep 2025 00:46:57 -0400 (EDT)
+	id D70098E0003; Mon,  1 Sep 2025 00:51:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 807986B0011
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 00:46:57 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 15AC1119ACE
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:46:57 +0000 (UTC)
-X-FDA: 83839446474.07.54694DF
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A338720006
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:46:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="fRqU/m8s";
-	spf=pass (imf13.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756702015; a=rsa-sha256;
-	cv=none;
-	b=NbozByS6LgC2QfsL7Shc7ATg7dC5fLwznnrDbNNHvy7ByrtcmpCu0pls83KEV/QVFqhEEm
-	OJ+xDcfOpRydjC8cnpU4P5VB8augrkHL4A3r3rSgzhbXgJwc+sgeKLqPtqAcQyARK0a6+3
-	dVAhsLtsVRN5cvQUhH+Ke4RQxK79+7k=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="fRqU/m8s";
-	spf=pass (imf13.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id C65088E0001
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 00:51:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 70792C0661
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:51:29 +0000 (UTC)
+X-FDA: 83839457898.25.A519876
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 61809180003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 04:51:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UOMXXOHe;
+	spf=pass (imf24.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756702015;
+	s=arc-20220608; t=1756702287;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=LP73ps18utAybntp84+1PLZLYEttDLqr/sRpfeIOKFY=;
-	b=2x/lOOmIIaNS+BRBMLKZq1saUAzMh7br74r0dc/tSv0UOHX9DHV7yyyVZzHHUM+Qk66KsM
-	EWMs1f5KKPVi7fbVinsUj3xetc7hIaL5yyaTUganTmLytZou/mgy0xyZcqiZfZp3F8NN/Q
-	XE/v3PQytvUt9hhspW7emrDfS6+cBPc=
+	bh=Pfya29deBWJnXr7q5vkT6P10+mIgvx6M7RAZ02UmfkY=;
+	b=J0QiYze1DRxizVABIfIu1fXYtIPQ0Q46+uj2QqOSWwmJSQtyQD3H7XxbbQjj3R219RyRYU
+	tPY4dr/tEY1W/XulmgEcf7dZgv5HWXHsbjp03goJ/RP7/s4QLJ22FcpmJEc/ABanuO4588
+	9SpcNWC3TUM2cKGXyQiyo3fAHwc3Dh0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=UOMXXOHe;
+	spf=pass (imf24.hostedemail.com: domain of kaushlendra.kumar@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=kaushlendra.kumar@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756702287; a=rsa-sha256;
+	cv=none;
+	b=iG0y49pCJ6wB6PJ8jmH6JJ6Bn/FzHXlYV+6ltIjz0qM/CxbzZNuxP7kBt2yHBsK4y6EvUP
+	BgoeX7m3h4GgzM/o8vRGTuKn2SRlVNtaI2LTKI9OaT505lyWXOdfhjjG5AJzx6uhj9IlDe
+	XMFbeBpcoBR4OhFyMiDryfLKQdsATT8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756702015; x=1788238015;
+  t=1756702288; x=1788238288;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=MuaNeTsrcCfnycE6xy3wQguRBq5NjNifBvDrfBSUaNg=;
-  b=fRqU/m8sOXOhEpb5MeUWtDP3T5FPugWe2QZm51u/syiWWkqYTsezQz4l
-   UJZOmGDFSEXx9FO0IkMpwtUKP66xPkb6Ecu5Qt4PmpvZJ7uft2Iog/T1N
-   YBmqlB4Tbz3cg4U3FHj/UeAnMT8qp4HX0JuH3Mb8fOZlCi2lgg0GN4/bw
-   IXAkw+dPaJylvVnkIG2EmRQSRPLMVn7SS3UolnEZVJNjluzg+mRfc7dEC
-   VEE/r9ZI+aQnAlNt/ozaXZohMVcq/F/67dJj6xKme+FC4Ro91/JrGDVdp
-   t6qYTwKqIx1M/lAtEVGAt1ZLSbOM780SlNfaSm5/Ai5Uqcr9emh3QrblG
+  bh=O31L9/Ah3TfH/t5sj+uGW13Tn6JOtYT8pNeX9rYXvrc=;
+  b=UOMXXOHegQX+0E/BbVCF3v7IV54E+B83S+x8zhstSIz6a4dZ2Ib4WcQA
+   /Lpwp8fcj1iJWCHXT0hWl72ZOXonVEap93Z0nMzMQqbheMFT7qwbTzsv2
+   dIVBc+pjepEUINNzYJdndHZd2mHFIJQEe/At1crKmTDux1LZc8GwzFMYl
+   bFiyUSSPOKwnGrzXcUeztewaC9y3+kFOqRveTCSOOtP0TYQwbULp9S1fJ
+   VJwz7acJHGD3DhT8G5ZfiVyvVhv2j6cMHPexkHUCU3CLfyO6GbLjdkGZc
+   HOQGfh4PKQD1G4IaTff3JH+vZ258iYeleXY/LYsoCysTRN+3eFcZhqAtC
    A==;
-X-CSE-ConnectionGUID: uIhD5vPgRE2UtpO8yM68LQ==
-X-CSE-MsgGUID: 2PFlKn9JRnKJo04bh3fP/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58817878"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="58817878"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2025 21:46:53 -0700
-X-CSE-ConnectionGUID: V1rgCnV3TKuV6TvMwv+u7w==
-X-CSE-MsgGUID: EkbGzyauR4+E4TrS44CFXQ==
+X-CSE-ConnectionGUID: 6a0BFavcTIevi6ix6BEn7g==
+X-CSE-MsgGUID: ubmFWFQtTfuJbFaAogV3WA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="57917191"
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="57917191"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2025 21:51:26 -0700
+X-CSE-ConnectionGUID: aMBWSfXcTp+8UYeWcfUcFA==
+X-CSE-MsgGUID: CaezSw5/QWmft3qvCwDjNQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="171257434"
+   d="scan'208";a="170121117"
 Received: from baandr0id001.iind.intel.com ([10.66.253.151])
-  by fmviesa008.fm.intel.com with ESMTP; 31 Aug 2025 21:46:51 -0700
+  by orviesa006.jf.intel.com with ESMTP; 31 Aug 2025 21:51:25 -0700
 From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 To: akpm@linux-foundation.org
 Cc: linux-mm@kvack.org,
 	Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Subject: [PATCH v3] tools/mm/slabinfo: fix access to null terminator in string boundary
-Date: Mon,  1 Sep 2025 10:15:22 +0530
-Message-Id: <20250901044522.3902700-1-kaushlendra.kumar@intel.com>
+Subject: [PATCH v4] tools/mm/slabinfo: fix access to null terminator in string boundary
+Date: Mon,  1 Sep 2025 10:19:55 +0530
+Message-Id: <20250901044955.3902815-1-kaushlendra.kumar@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A338720006
-X-Stat-Signature: ohowm4j76me5syu78h67zyniz5hx6hmu
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 61809180003
+X-Stat-Signature: d49k8z6frz71rexs3shwsh63iwk9jmpn
 X-Rspam-User: 
-X-HE-Tag: 1756702014-264045
-X-HE-Meta: U2FsdGVkX1/VBddub4M7gFcV7thma4mZlUJGHZIxJm2PeUE3h8bX7qzE+EvH73JR9am+OlIJpgCPMVHft2lju+E94sp4VKJ0u8HkG0dSf6sAwuNWeb3G5MQ0XrnEZ4VWsKeBkUnb81nNvDm53CNDMGTzzg/EN/VHwYv6El/KkrSPOTkyeFX1YPjm4I8nlRRs3REic4oPNujCZv+GUqDofGs5yR7CLul5rTbg5h/lPFhedp1Uh8r1upmyP6ajcclgnyMKMdx63MIk46fGOaajLj2T/TLb6mh/PO5KXsIwroRSQdW7+xKzLrEL1G8dybcLl9dQmrW2DR6HYVBFr6IEFoHMErnsZpTlU42I9VM1S6JUTP02ceMzsdG4J1ud/awhG2pvMu3JkG7eksMREesrLqr8jCghu94lh5vdBYpr81J9nJu4PL5fjORl/2fbxBjgHk+gbhaAdmzPY7Fh+X7qRH7aOMQpk2+1B5hNwotCsYEQ2tDUC14Cw5Bkyv3OU2YM3cwVFuoVmY3N0josaEe+etcsKwyHy+fZ8sv1lIjgD+WqjoGAYv+iJ5J57UbxEPJmKtzDaKCu9Wgm3mN2JzkIAzVdwrCQK26+dLahARpMl9DsBKflpuhY0jzwvV7H7bskX0KhbIzSNPgo1jlYjifG1ZY3pndNxENtMejtJTFq5XxvvXnaMfYkyeBVxqTxevGvCA8A329cphLgDsOO5E1SPEJBJvQMwz5xuD6iMS2kw94KriOYh++a8fKUkxaZpRU0oOzLEetybWbfRjW2SJD8hWeAvQg1POpxTt2BK+qNmTvOGPY+TuZelAYC1DHqgwEACzLlrrVVw9EC0uKPNCXw+arHbn+jRjBJDtA/HYu3KllBVjtxzY2mJQ==
+X-HE-Tag: 1756702287-579410
+X-HE-Meta: U2FsdGVkX1+WYFXqGW/i4oe7grlyd9T2H6XEceVUbtfSG0bRgo6FRecnQvpVkw0Nm9hTHYxuvGqqDYuDxnddL22aB0kT2+EEomhBv5noovzrTEuWS+5LPt1RG0rCw4MvGNFTIGEOJG9MPLjKVQW2TzopOKC07/YCl7xBcXA9Z9xD6LalipXG6pRAU1DNcWX8lS/BOzoyk38URDuRqqRM8dzUWHBpfuZ+FlzO0larXSsSNKLkdzF2wwM64INjwKViyIU0HSrP6u9BeudGMJGpcthMVpsunSwvxd108AeQEPIa41VjfzBvdvNNFPaDqNWL1i36U6QtwBJ4WY4AHgwjOK08iPcZVj3XiRW5M4nKJe3XhYxKTkgQjviW8fcbGlgUsXMfeiogS6rP9Os5vmphEI5J5mHIlKtBUDI9/dWBX1nU/tyqOa7WcuvKQ+2Ed/8tp1U7r5qyvBaET2B3VUts5SqU3DX2Vhm/e1B9tfGeASOA6heR3hNH8P7Vd29xkjLuseGO6nj/Wy/rBJD3Ue7cwI8MgGCwjZ8kwEKlIn5bO52tm2V98hnQpPy7sVrtBYioJZgYOizwgV8oFf2jYpxAI4K0eJ//8U5pNha1ma3yEHp4QqNHbKzghlou/WIUUMQyZcKZ3umBy5zN88G+f6SESAuF+5NZ6HJmsEmPd+XWCweDHoPNGkYrmApRAJcb2rY1onXH8E6qW3Axje60rPPiQdw8cuPtNb33NwsQ3nwdzHE5sASfj4kZpruTTav9AXgExLLbuwvN8U9EkGyTlf+St9trGU9SU0Ius/aaJO+IXExKD59hN0JXbNbb/E/W7UDyMdu+mUtF5sY9JsWDQ28ZOS2q2lAAjKmVw7uNR5SeFm1aLdQF45xNA7FKlpnPVAov2Ei+dQgYuFyDSWPnI1lSdJ3VM+qkmgdLosjKgeQPxl/Z8LcL875ipTwXn485lJbKR/bP1BuvBWP3CYhjnKR
+ AgL2OAsx
+ xeq0k4dET9rY/h2YONKXSYUTejOFeyX3FBSon4BZWdzlgRdTmpzSH71VpidiMvyqOep/uVIugdGWDJaHVwb062IRYMddCnt2Y2AdwC2xkuKId7EuL5nG/7jkKoxlKdVZclTU3ab+pfb3YW0E+9y+oC5uIl5jjIwPBGyH0hIIkKyVHwz4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,9 +112,6 @@ Fix by:
 3. Using buffer[len-1] to correctly access the last character before
    the null terminator
 
-v2: Move variable declaration to function scope to avoid mixing
-    declarations with statements (feedback from reviewer)
-
 Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 ---
 Changes in v2:
@@ -122,6 +121,9 @@ Changes in v2:
 Changes in v3:
 - Move changelog to comment section (feedback from reviewer)
 - Remove unnecessary blank lines
+
+Changes in v4:
+- Remove changelog from comment section
 ---
  tools/mm/slabinfo.c | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
