@@ -4,100 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25F0DCA1007
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA00CCA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:33:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D3CD8E0012; Mon,  1 Sep 2025 11:33:28 -0400 (EDT)
+	id E58948E0090; Mon,  1 Sep 2025 11:13:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5ABB28E0003; Mon,  1 Sep 2025 11:33:28 -0400 (EDT)
+	id E09058E0084; Mon,  1 Sep 2025 11:13:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E8118E0012; Mon,  1 Sep 2025 11:33:28 -0400 (EDT)
+	id CF7C98E0090; Mon,  1 Sep 2025 11:13:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 415058E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:33:28 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 18EF51608F3
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:33:28 +0000 (UTC)
-X-FDA: 83841075696.17.53FC4CE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7718C20012
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:33:26 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QfS1/253";
-	spf=pass (imf03.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB0548E0084
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:13:18 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77D62C08D5
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:13:18 +0000 (UTC)
+X-FDA: 83841024876.12.AE53ED0
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3BF1B160004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:13:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=KKZeLbJ2;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf08.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756739596; a=rsa-sha256;
+	cv=none;
+	b=phpUeNvSwZv/6d62eeOyEgUx1fSsg30IKUfcgYnutp+x778Ibut+I7sIDAMnSxMsaz5dxS
+	n/rqQ/3tlYIf2dMFg000IoSX9BvDN7wzHt/xLMEvkUQnjEheDPW7G/D3/dljyJaQSyDT1Z
+	DaUmfWr+KId2jL6cfJv1NBplEE9XCuA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=KKZeLbJ2;
+	dmarc=pass (policy=reject) header.from=ionos.com;
+	spf=pass (imf08.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756740806;
+	s=arc-20220608; t=1756739596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TrgTQsbjRK4plaVS2IeLRNEJop7nYsHFeJcp7M6qYU0=;
-	b=oOT43acHfkZxEQM1riOTYY4s/wwM1VJROfSVDexqvh1IRxAiOMKEUUt9dMngqIO9g2LvNv
-	svcbZIpxPPFQa1EB8e/f0W+t+WY/Rjl1fPZqDyK6GHt1dg6Yx7SXxkHi4FCdOzLwJp67Z1
-	JwBPC3JzIURocqLwOrup8JaWmFKD6Ms=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756740806; a=rsa-sha256;
-	cv=none;
-	b=VFavpOigDz8+jgj8GMgqaykER6gjwL1RkNy5Ke0uii5yDPMpFX3bYLJLF6+WyICirvoeLp
-	v0O74T3MQlGogYr6ZhjygXhcKuVjSpseSF8lIkNtEH1tCHXPNxd2o6abpEJS510GRDb+yR
-	5dvONbGWgCWYHrgEjMrPRPGn0I+v4NE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="QfS1/253";
-	spf=pass (imf03.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756740805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TrgTQsbjRK4plaVS2IeLRNEJop7nYsHFeJcp7M6qYU0=;
-	b=QfS1/253a/ZjeKDKHtdEGXlEm21yEv/Avzyw6HIqQxKq45jnExjR6ISlos0THZT2YQxjYh
-	uh2DIT1B9CP3aNoVxI5+spBTvuIlulEGcK8ZoZEBqscMsB2AnqqMgPyUkgCY4Ucf07ePsq
-	9p/VNKb9X4JIMqiBNq7xzEsIRUNsgBo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-382-at_GCWa8O_q74nhYssOPFg-1; Mon,
- 01 Sep 2025 11:33:23 -0400
-X-MC-Unique: at_GCWa8O_q74nhYssOPFg-1
-X-Mimecast-MFC-AGG-ID: at_GCWa8O_q74nhYssOPFg_1756740801
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B774195609F;
-	Mon,  1 Sep 2025 15:33:21 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.127])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CE9D180044F;
-	Mon,  1 Sep 2025 15:33:20 +0000 (UTC)
-Date: Mon, 1 Sep 2025 23:33:15 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc, mm/kasan: respect gfp mask in
- kasan_populate_vmalloc()
-Message-ID: <aLW8u1Lvlcp5Y3tc@MiWiFi-R3L-srv>
-References: <20250831121058.92971-1-urezki@gmail.com>
- <aLVyia16eyoYftAw@MiWiFi-R3L-srv>
- <aLV0JrSPfitu1jFV@pc638.lan>
+	bh=A08kBdKHaoJbHo5ouUdZLXPFTzEYHeueCSYh810eJqo=;
+	b=cz2qz9rMQ1/7Dt+azor7op4dTXb4fVA/ZpWGuwx8/s7IRjX5Js6sXpZbaHC0p9ZBGiVAc8
+	anNfHl3O0nY64/+d7VYVHDIW2cHQ7/GyS05kniv5yaFRZ7KaZWH9aFQRBcTD8b7Au3dphi
+	UKVI5Zy964yTcQ5CN61pUOsnc3hoGrs=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb7322da8so869422066b.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 08:13:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1756739595; x=1757344395; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A08kBdKHaoJbHo5ouUdZLXPFTzEYHeueCSYh810eJqo=;
+        b=KKZeLbJ2z9rvNuk5/RH9pn4hrgAUFkt+26SOqUj2i2JeAV7KMhcpeFcHn+lCHpOmC/
+         DoWlxL4TEDT1/KezdibpmAMr6YsBpOYTxk1UGJTZb6ierX1OZmUmzR+YDdybot6eclFQ
+         4gaLln4SNy80fKRJqWtqcOkSJNHzYT3i46UJiINMwRT2DwqkE12WD2CEWagTZGWSKzVm
+         /ov6BVPETwz+kfaeFnpR/ol2ERorsN3tkIwutin5Fs0vPb5gosfkbkuOa20U3hvgHXLz
+         b/bohlmAFh9qiJXpJkY1KCKX4BUh6bd2QHJvtQZ1QnWtc51Cu9fqraiRt+2uDZvjflt7
+         tgMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756739595; x=1757344395;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A08kBdKHaoJbHo5ouUdZLXPFTzEYHeueCSYh810eJqo=;
+        b=P+3AxIiVPcNSbeYBQa9jpdPGeVHI9JS7y2XTQo0JLhJsFV6pPdlPhBgqlcw5CrZVHO
+         ucMBEwq7W7yYpimcqcP3vOeb5IQgCiqtNeqKY3j5Gsihrjl/S35tcqVvinOIzx70S7oO
+         ruHSv4b4CH9WWxadSGuAZ2qsWz//vOhtNdgt5ffunJWaTUMOzk0ol78mqy+Z3UBHmo2E
+         1UfowKKtPSBrldxtxZkfTcw2LQgZS/Vt0+DUQGcVPeh2Bb025ciIm3VjuFyVUhe3+va5
+         c2aTnEGwnrV64JuPIzKMk3VIvZ0YkHaNyojqYBA7qk1PUSe8tQ0nHrGlvWuVhAkyJ1NK
+         kn8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVKUQQi0Ywkry9h3WZMgTC0hRtfmenvvp2Okf6xmxZwKQZ9ciMvVPc9neSvrdVfQYw4VKh3rD8BMA==@kvack.org
+X-Gm-Message-State: AOJu0YxjOjqWpfb9xH8eaKHsFP+xUgqRIuLvKv/Kzro+2S3OX95Nm5MK
+	BOZXfNSdNZmNGJRS8yISMIu/L5OvXvqgWKFLqKztINH5XPZJ2hKfU9s9F/vYCHlur9YiSHJYnd/
+	OEEEnwVzGFMet1zqW9+y3Dqjp2j79Ya8/Y+y6+pTBOQ==
+X-Gm-Gg: ASbGncsglUzs/oCMdh/xgetiauAuJZ8qNUWuKX5zS0U6iG4uVrDCU3XGQdAwPg53ly3
+	iHgDzOdlvZbGZE5/Ht4jPDEDsRrBFqeuihORE9MinRnxUjOUaa/rNWE3X2ylpmpes+DM4+M3CR3
+	sau69Winxm7KyG7rs0JMwScfPRzrF+0NxVcdlFujiZd1UxU/+0WsynNHxzZ4JiCpKSkt0zNJFwY
+	ZHxbTh8JKQl308Wn6EiFI8bimfOzRwDHUEnTFBnhkbkCw==
+X-Google-Smtp-Source: AGHT+IEFPWeGuNqM2+QiOgw6fHvRg/b0a6N13KZkb/trfYqooePyXBS3syenI4NwqPjQnySBBQHmRMnR+cpdOfOLUuA=
+X-Received: by 2002:a17:906:9f85:b0:afc:cbf4:ca7d with SMTP id
+ a640c23a62f3a-b01d979fe6emr930093166b.54.1756739594447; Mon, 01 Sep 2025
+ 08:13:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLV0JrSPfitu1jFV@pc638.lan>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+References: <20250901123028.3383461-1-max.kellermann@ionos.com>
+ <20250901123028.3383461-11-max.kellermann@ionos.com> <5ff7c9bc-1722-4d8a-ad2e-8d567216a4e4@redhat.com>
+In-Reply-To: <5ff7c9bc-1722-4d8a-ad2e-8d567216a4e4@redhat.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Mon, 1 Sep 2025 17:13:03 +0200
+X-Gm-Features: Ac12FXzpx0s0QI5qZl1CeOcQ-w6EceVXiGl7R5sUJVErAX6WQ0b3KxehR5HEiuA
+Message-ID: <CAKPOu+-zBstZVw4LjKz7ZQyTh_PKEJXaWYsgF0-E0+shAaTvwA@mail.gmail.com>
+Subject: Re: [PATCH v5 10/12] mm: constify various inline test functions for
+ improved const-correctness
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com, 
+	willy@infradead.org, hughd@google.com, mhocko@suse.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	vishal.moola@gmail.com, linux@armlinux.org.uk, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, agordeev@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, davem@davemloft.net, 
+	andreas@gaisler.com, dave.hansen@linux.intel.com, luto@kernel.org, 
+	peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, weixugc@google.com, 
+	baolin.wang@linux.alibaba.com, rientjes@google.com, shakeel.butt@linux.dev, 
+	thuth@redhat.com, broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com, 
+	mpe@ellerman.id.au, nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org, 
+	linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3BF1B160004
+X-Stat-Signature: oskoyttiw18i8boouwxha6tzp1bucb59
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7718C20012
-X-Stat-Signature: ea3isx5dzw7e17oo8oeambzs4zepy1tt
-X-HE-Tag: 1756740806-168280
-X-HE-Meta: U2FsdGVkX1/b8Gyv5afdPSOVBEL7zluQEeesmPMvkpPQDwt/2A5JBjCgEJS4tR6e/l4+SGmJl0r8+PjnHQnOZRVoISzCPfLxwdnAYDpwtu46iXPC3JoyRJe4Hd2fPU4IJPKSi4YNuND0gVZ7sfjKKm4Fli+A7+lV8eYeycHJ66EMd6iGLKXhjcg3wHLoWsjhPWoeRde1cxukRIW0gIwipzRLpZ8R9kybLmkBrWso6PrqyQwQuYEwou3RLBk8xPh12CtcF8UmxE7kBD0sq8NZNWWl2lB/dYZ0X7eHbdx8SLM/uToTLSC006ys2PvKdGGL++P1PWZEXVFAczWEar9bn7eKhHUdb1gjNrmyqP2TaY/+m8OejSyXh+B1Dr3qxbehWu1bLS08ob2ax49iO34VwjCmhcPymQtXeo8g43zb3+/XwG7swwjg5Zjdx0xLpSmh8LBvNnAo39RJYOiYHg3UlhkMeniu77HAIr9iquvXE92SLrjU2Wlrk4sAk1/pftCI69h44OijUXbta8oRA3e4XZoNrjU05X2sMFced///30o8PG/vVXfACnpBykcFYyplbHabyGC6uxvEi+PUEABkASOR4xF8xq3urAc82fOQt2q7krqEdmWZkM19be8/Z76kXsNNXXtadWbbeEhFBbHrlDPZWq8cg9DGyG+O9svEI4hBkj227BNvTDU8ib966F5SjoPcmz8F5LHihFKZv49qo5Z7T6Ppz3B6mzl41EOns9QQxSYqqA7j5ELIv92lP1JF3+LVYHeo7YvaMwrMoR0GvkeEYpfkw6SvmDGJ49cRFov590U2or6qtHLr0NtAHWB9SED4fytcdkr8nPHo6BttCyrqK82u67cOFe9eFhV4r2IJE7Wb2u3XHIlA03e/r8qABow79A9pcWNUKma2Tk976G5IOVGowLJbcn06vkWZnb6iGBMs7kNEuUTyOTkk5FMB+7cpRUZ8MSQOFfBxE9T
- YdeODsiP
- F/GjkHPL0kKyOCQLZs8IeSg6+EZQQJKRdexNTM4x0skKue3xvaQptpcGkbQq2mcJxIV/QhI1byyfpjj1FCR5lbJBjiO4CNDi4Cy49zQAKpHYDaO0=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756739595-912173
+X-HE-Meta: U2FsdGVkX1/qIxVhhw7j8vVQh4cuovCgn8TXGBnvYbOKxTZSzERCuzpdOrHHsZ+lzcw/t5gBsDdoqwzi87pvd3ld7KJn1F8U4+VaPzgfE+DsEt2H+Dd9+HnZNs2xQZefGWZI0vdrBV+4/5pLJUa9r4AKuFD+UUfHf2rOlKNYb96gzZbCB0FnSJ8y5jYApvUrG3vLDUKwldLaS2LYYpoaBOmaqW2v1y1SG9pJK9qS4WXeCU78kFUTovNc+wWWPjlid1dzAv4DZVYIYES76wfL7fydZ01KYDBsc7nakOmo5gp0/li/DsjtKXhx1qRwa0h9c1yd1FF3LVBqQKJEbkfkt7wcRx6G0L9oauN3D6IjRfJLIEgLhqgkq6R8Qd8fwd0ShKxrbLi1RbSMjFG0A6OAvuHFW0/QjQy0bUmzO/+0FaUNnqHPnDKzGE5eDi/gS9VOgq90DaDl1FJEPD/qOFgrKFBUN84RvgFj2F+uKGocr4ZmPRi4qUbMghezvtPBcb/XDVcDcVUCAbQ+Y6JHUpgHhrzzyQ02PJMjHNBIs09J7C2uwzSJBAmKtfvBqhMGG7OLkS0eHm/ZBqzOFwh20zL3mrk6qHJbcdp7OyqnkYOfI0zyKU0QxF5mxQSPtquSiImANUe5Vyi+Q/BITssWRPwf++dI+9rTfDEmHP8i3spzw3XK28AZceMh7pSoadPLji88C7aA1uQ9h7VVOmLKKKEy6Bd0dc7gyCFTqZDTfhuyQjaXe6DFvGryPEF9RtqRXfDywJNyqKnyzu1hdpPF3dlG9+5N+x3auL4bYWqRlZQLPlEsLuziQuSz4TDXqn5lUSjcTuXSG8IlW2HtjCKju3NYUGL5/tpOEsv4fc8V97PeOcdkteM94/yabqJSkx5XcTquHNFg7cVVibUrRM4dVf/7EiL0R8vkDVChui/3iLvjGL/tb38/mot0TIe8HlNgFbYiMhopcSx32oV1yvtmA+H
+ JvArFAsq
+ OLOaMQ5G1fFgBRrV3hKJP0Dv1ItaHBSN+Y4z7Uh3VkowuvDjeeVHoCJuc6M4ZUOO5+ScDykDt44Zz9RtZZXMljIAC0+4L593/gT/8TCDibI3YDuu96EIN+5tII6zT46GzX48kKCYpvrGrKzk+D8pnzxekk1qVLjbYTO2rPZGQ4q86KgmqZk9pzfyS82mgWuVAM7ZMl1y4541Gv/uNk99UE7RKtY9kW8syly7yvZ7wD/EmR03RKRBV+hr2nkwC75ZqZQX8Qald1OK9qYLJ73J/bOHR2RzjcyhmwjJg0mVbTyoIhklgJzlmyK2HCOmXR9PUkqyafePlYcGjEPHcRGUJmaX9Pw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,28 +133,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/01/25 at 12:23pm, Uladzislau Rezki wrote:
-> On Mon, Sep 01, 2025 at 06:16:41PM +0800, Baoquan He wrote:
-> > Hi Uladzislau,
-> > 
-> > On 08/31/25 at 02:10pm, Uladzislau Rezki (Sony) wrote:
-> > > kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask
-> > > and always allocate memory using the hardcoded GFP_KERNEL flag. This
-> > > makes them inconsistent with vmalloc(), which was recently extended to
-> > > support GFP_NOFS and GFP_NOIO allocations.
-> > 
-> > Is this patch on top of your patchset "[PATCH 0/8] __vmalloc() and no-block
-> > support"? Or it is a replacement of "[PATCH 5/8] mm/kasan, mm/vmalloc: Respect
-> > GFP flags in kasan_populate_vmalloc()" in the patchset?
-> > 
-> > I may not get their relationship clearly.
-> > 
-> It is out of series which i posted to support no-block for vmalloc. 
-> I will base a new version based on this patch because it is rather
-> a fix.
-> 
-> It is to address and complete GFP_NOFS/GFP_NOIO flags for vmalloc.
+On Mon, Sep 1, 2025 at 4:00=E2=80=AFPM David Hildenbrand <david@redhat.com>=
+ wrote:
+> Also some getters hiding (and functions that actually implement logic --
+> folio_migrate_refs())
 
-I got it now, thanks a lot.
+Indeed; I mentioned that one in the message body, and I thought this
+was good enough, but I dropped the word "test" from the subject line
+to avoid confusion.
 
+> > -static inline int folio_lru_gen(struct folio *folio)
+> > +static inline int folio_lru_gen(const struct folio *folio)
+>
+> *const ?
+
+Right. Added for next revision.
 
