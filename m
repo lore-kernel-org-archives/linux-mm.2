@@ -4,251 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4972CCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:40:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7186FCA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 07:41:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BF3C8E0010; Mon,  1 Sep 2025 03:40:21 -0400 (EDT)
+	id CCAEE8E0011; Mon,  1 Sep 2025 03:41:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 749088E0003; Mon,  1 Sep 2025 03:40:21 -0400 (EDT)
+	id C54E08E0003; Mon,  1 Sep 2025 03:41:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59B5D8E0010; Mon,  1 Sep 2025 03:40:21 -0400 (EDT)
+	id B1CDE8E0011; Mon,  1 Sep 2025 03:41:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 380278E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:40:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB1FD1DE86F
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:40:20 +0000 (UTC)
-X-FDA: 83839883400.14.20C7DAA
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4277014000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:40:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="rVTINx/r";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=SNYyK8zg;
-	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756712417;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4D58E0003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 03:41:25 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B0771DE95D
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:41:25 +0000 (UTC)
+X-FDA: 83839886130.06.5DDA9C2
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5A78940004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 07:41:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bkn7o1Mm;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756712483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XeeFSB/GKbxynzmCFile3kSKhtjg76/W33iYOF7hNYo=;
-	b=sHCflRXVBfMHd8HRGOtNH6JFKOUZdp1xqe3jjSDbV9gpW9GiKOf5UE5ESf08HoKmFAM0QZ
-	wNE7GfeQS9N2UKcDxrukhIJQX8NQYTjGp+gUTg7GDaVKzlXPUeAGm5HPSO0zF8HHtCVAt4
-	TBubjZ/beT47qM0i+FBOKsv73i24oNE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756712417; a=rsa-sha256;
-	cv=pass;
-	b=zrbc7rxOadKoWvZt4cx3o3Vc5NeZhZTqGio9uhyjtxAItsLsSrg49nkFbtfDZV7HkK3tZn
-	iEwERUygtR8ck6DiHdxY4a6/ditiSajYbgPfVet2nd955n43zqhVrZXpb8vRPHbneHJODo
-	vJuuruvmMSk0fPk/eVrK3ZUTBCys+58=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="rVTINx/r";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=SNYyK8zg;
-	spf=pass (imf26.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5815gvPJ001828;
-	Mon, 1 Sep 2025 07:39:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=XeeFSB/GKbxynzmCFi
-	le3kSKhtjg76/W33iYOF7hNYo=; b=rVTINx/r9KFP1m8z79BR8dB7su1oS1bxxM
-	yVb+VJDxdODlwIKlorWavzDrQIl5V7jXKx5B3aeE5/BOFNxLzmdTqdh6oD4wIEfn
-	aQ/KjtpfW+D91ObhnTtKnktXyWN1I2MumDR6C7dDyShJHubUia1/8CUcblydQTPp
-	KqR5ybWjXifdpaNZcyu4+IcsTScmMk0GI6341QQoxcgkFye7lxZdhaksmGiO1ySS
-	0MFbgzoIOifJN9+DwQObov3O+8dTckDCP/Xn4p58DpcHYhPgTN6Kd9Gfw+VJeH5F
-	GzYmIdmSuUH8I/VJqi4v0wvSlnyEyMgw3imHyajkUuieexE0/BRA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48usmn9wn5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 07:39:53 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5816p2j7028751;
-	Mon, 1 Sep 2025 07:39:51 GMT
-Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04on2086.outbound.protection.outlook.com [40.107.102.86])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48uqr7vkuw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 07:39:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VbFxTl0D2+FGt1Hqt7Pq0nfmtm4CcbcCY7G5iansM3pyvcsJaHJ/K+8N7Akh6J/GnME3pQZF1MZ7eFY9ufSJJpNakJ6y8l2n7zjzohN+Xb+0EBG/g2x+nxIRRtsm1HMseTvnYSoM2qENRpVjLW3FmBi8OIhk6FWcFcPe+LEsu6diSawmPX2Du2iJPrUkJNrG8T+ANCoisgmZA8coV16wkCO1HneqbdZ6DeAq23DE9q3/Qf1kLb74nMXeAN/0Xty6hDFz04Kar4+LzhRHtD6CfSpJyXhcMxT+L/UqWmmnrgmkrR4JHzDNo9sVL8Ypq3LWKF4VAgK8pbk96OKLmtRfmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XeeFSB/GKbxynzmCFile3kSKhtjg76/W33iYOF7hNYo=;
- b=YOvjjoH1+kP1sgP4REtZOef0R8Yx79XDwBL25HTWb5Kn+mSBvXdDmHTUYNDG64k9+1RgTr1aFCG6G07a+LaImDYt+PW9uZHru6FUIvT7MUnkg+VT3wHhl6Z3XSiRFhSwjhJAEfjSclzBLVsLCv5L228+1jIXUkUc8xetfFwPc3Jit635u7cDDI0RW6sG22GwcWGHTP6Kq5V0SyG2UKuM1knERj+kDKOmGUftO9tDIhVBAimA9Vg25YuBYHqk/QfhLT+Q4jrNQBu65T4tg2x7ofvkLBQ/0QzCeQz/ry3qBLGmd1DBaLRRKWastFuhHWP+MPKPSs8bbPaZn8WP1yxTqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=fTibsjsZinMAL6mt7SzQqJlZlrTvbHjOaiEQY+Pnxmo=;
+	b=PZJcw4s0QsE9LLAWKhFOIiL5LRki/s52IoDKUrAAr7afnCmrYqiE4QJoJN/aM/QGpzJYnB
+	Sm2SdD/Mps4cG7N6QMeV+ZCsHR6I4b3kq3eAn1o3KzlW3d26pfwveHiPf9dlkdepnMTcYJ
+	XcDykSrkUf4UC0i3RI1CdFh57apYvAM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bkn7o1Mm;
+	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756712483; a=rsa-sha256;
+	cv=none;
+	b=MIMUOA2JDkrzCmwEeVD28zQlOM+9CijGq7+bwLiu+6/1XU7iRgZNKlg5OCYj0P6eDrD1TG
+	0UVgENRijVgbK8/wcV+NKdcVOtKwq7Ikgj63uCCzcwCxZYPDcu6+7O2ekTVMbRXbUE3kNq
+	FMkPsqXiEfOOD9bCVFSRP2EwvnTplno=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b869d3571so1628775e9.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 00:41:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XeeFSB/GKbxynzmCFile3kSKhtjg76/W33iYOF7hNYo=;
- b=SNYyK8zgqtn3nEI+Y8RGkzEeJ6sgmfgRPZPJ1IZLXlPQZr/C1cM+Y3bP8goKjVoKjSB2Y21YxdhAPrx4Z3Pz/1OR7gLjrIS0boaz0wqz/T95PlME3M2GzPh+MFx3Z9/9vjlGLPE3Hx5Z1KYeP34gXp8F9ARy8qhZNnmOh4QzRuA=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SA2PR10MB4460.namprd10.prod.outlook.com (2603:10b6:806:118::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.26; Mon, 1 Sep
- 2025 07:39:48 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9052.019; Mon, 1 Sep 2025
- 07:39:48 +0000
-Date: Mon, 1 Sep 2025 08:39:41 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, david@redhat.com,
-	axelrasmussen@google.com, yuanchu@google.com, willy@infradead.org,
-	hughd@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, vishal.moola@gmail.com,
-	Russell King <linux@armlinux.org.uk>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S. Miller  <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,  Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, H. Peter Anvin"@kvack.org,
-	<hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Wei Xu <weixugc@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Rientjes <rientjes@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 00/12] mm: add `const` to lots of pointer parameters
-Message-ID: <f75e43c6-9b24-4042-a2be-4d55737a8fb5@lucifer.local>
-References: <20250901061223.2939097-1-max.kellermann@ionos.com>
+        d=suse.com; s=google; t=1756712482; x=1757317282; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fTibsjsZinMAL6mt7SzQqJlZlrTvbHjOaiEQY+Pnxmo=;
+        b=bkn7o1MmdA6nD6LAhTpHFhRnBbdjSGCi2i1NMNMMJH4tuk4LX2BhXqgizecTf3KsIr
+         UbiDr0MI7NycNRhbLDJgHifFI0vLBkuZWqNuPS/2YBZQHRYEYDbtVT9MoPbqyTAn7hiv
+         MI2aRukhyrQxfkiKW0ltK8W4sRcIp6ivW+4VN+G30stHL/XtUuDjZB8OlezzGSx3X2DT
+         RrBtA9hsgsQqwob9V2e4HGLIk26hl4HvqieOHrZV+xsSZX6C4J3g+9vsByfAvl70+NnJ
+         cg4QPR0lzvdZ6cIW2w1keKKHU/aIeHQiEibWT/9VbPBm2BNcX5Rvzp9edogOYaaSUQQS
+         Q5Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756712482; x=1757317282;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fTibsjsZinMAL6mt7SzQqJlZlrTvbHjOaiEQY+Pnxmo=;
+        b=fogBB5zZoZQM3fMds9+Pqg6aLOvgeJxz4FJryi5c63/2tFRM/wPv9VTQPTz4ijEk9c
+         GNdM8hx2bOI0kNkkt+RLE5UnfMDGGMycpWO+JEAO7bwYGaxkGwt4FORvrCzqHd2nNFR5
+         v0GJkefT7HMAdJPw0FSNIdKA10r/zWJNhSWm4U+pfIx1uim46HJBF4BfWfxndmXAKSN+
+         l/R/3f9hQB6cnD54ztSFhoYiL1Nc+mrqxPqXbxc+MKuF3mr/aCqBojSGJff2A3Fro6ZS
+         4vHqD/usE37oIBPu9lyXKWZ3njd+e1W4luIesQzIySXZAn7l9K9TkMSWJFhYr/ici3mQ
+         ZTnw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQcq1Du8z+hB/VNoLpqEypR5weTE5nS9GSiHGYx5l/VoG/g21AJ6pevdrGOw3JxBWvq4F6biPKLw==@kvack.org
+X-Gm-Message-State: AOJu0YzQ5ib5GPR2qUG+e04gdwA6oKjoVBMYPRayLOkN5DKzRxeYl/SK
+	3JiuXaOl09ffwM7+tn4dalgI6Ug+u2zTNznmugCvGWyTlVmoqLH3J0fojpdYfq+PqQ4=
+X-Gm-Gg: ASbGncuZ9AwF9Nv53udHJdv2vfDi4W3Bm35iT/mUKCId+zjkxg9LmFiH7EVbW/acX01
+	Zz3PGrDVS16ANLGoQDz/4hBJQjnxtepfjF8g0XXzB2nuJR9EHfzO6iGsIlXi8VZgNPmmezKzirg
+	PdUuzt84+j4rNwJPR7qBhUWsSM14rbmO1gQEQFNrMsSY8dRaJiT4cu16ucrAZs8pJl+IuHjTpsf
+	EFd1jsUqIqyThp3vbFIIjpluUEAHrT4nYrSaXkoH6NY0HqBTfCgL5yy6lU9icasmhqrUFm3yqSE
+	l0dSc/glg1F9ACNCyosZ8mTxLO8ho2PkqwkjgT7kxbiw1SWZm2yOQ8jf0hgA0Mq0xIR2a2zK5g0
+	00pfPWqPbU4conBJ7V4hZ3EDAotr/PtjA65MnweCImt/7qTP+3oRcAk1M
+X-Google-Smtp-Source: AGHT+IEOHCc1C43y9L1dHpZXh6OP0LizmCzEwU9EaGTg2xElyTZrzgDrpKZg4MhMcKWHXdtU0bUDNQ==
+X-Received: by 2002:a7b:c3ce:0:b0:456:19be:5e8 with SMTP id 5b1f17b1804b1-45b855c980dmr32953665e9.20.1756712481379;
+        Mon, 01 Sep 2025 00:41:21 -0700 (PDT)
+Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b7e887fdcsm145730905e9.13.2025.09.01.00.41.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 00:41:21 -0700 (PDT)
+Date: Mon, 1 Sep 2025 09:41:20 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: zhongjinji <zhongjinji@honor.com>
+Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	tglx@linutronix.de, liam.howlett@oracle.com,
+	lorenzo.stoakes@oracle.com, surenb@google.com, liulu.liu@honor.com,
+	feng.han@honor.com, tianxiaobin@honor.com, fengbaopeng@honor.com
+Subject: Re: [PATCH v6 2/2] mm/oom_kill: The OOM reaper traverses the VMA
+ maple tree in reverse order
+Message-ID: <aLVOICSkyvVRKD94@tiehlicka>
+References: <20250829065550.29571-1-zhongjinji@honor.com>
+ <20250829065550.29571-3-zhongjinji@honor.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250901061223.2939097-1-max.kellermann@ionos.com>
-X-ClientProxiedBy: MM0P280CA0067.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:8::34) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA2PR10MB4460:EE_
-X-MS-Office365-Filtering-Correlation-Id: e94d014a-140b-4179-2f93-08dde92aba81
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pV5MR2hslKtVtVHtXpL4WD+A+H6AqvFmiVm+msBH/xE330t5FNgvHcRyUzb8?=
- =?us-ascii?Q?N7xJ31vkklAfowYnWAy2QsaBkYvoX76laf+yp1WEYr6T8rrkVLg3Akn5+Q/k?=
- =?us-ascii?Q?NhhXvIgatXPODNmTA3IqvjnkTFzaKEDaoaywbJ1F5Ulj+IIQqzxNb1LtmAu4?=
- =?us-ascii?Q?E96khzU7CEsVzHr/e7QjD1hs2v5MLl5WHjELQ9y5Q+vZOe4OIEDEKompxqpK?=
- =?us-ascii?Q?SxCfni3HbjbVrP8DsnGuvLyulJ9e8XGkDXBuhpU71fN1EXSb8SgGD3ZAvfJ5?=
- =?us-ascii?Q?RxIZ5noB5lZcbg1Nw2VyNOf5o/sbjqqAW0EYuo5OGnETq5ALGnWYy5BfPFkr?=
- =?us-ascii?Q?F6LTTTOprMyU4ZKhlalRvRVjdzY6o0RYbNdwrZlensL7orWEGz2Q5Pn2lfYf?=
- =?us-ascii?Q?+mJcvm0xuTj6duYqAfHlj6RVcYyulL9QmAukgIpqjmEZMyLYn4zUt4GzSI3c?=
- =?us-ascii?Q?Q2xKYsjlGtTnVqExGJxoSbmGBw1j0QQocCoX37NDDIheK9yT2smxKixt1bV1?=
- =?us-ascii?Q?q5jguTOmTFtzJviZTpSCQFI2ItFCoH2tOylLGkK6hJaIxXbQRWSsOxKV/EP8?=
- =?us-ascii?Q?UicPF0blli/gIdnPhYzwGZg24Tl1XxQbNMtQveBTQ+G4RzAlJ7H8cKC/lwjJ?=
- =?us-ascii?Q?/8Sg4XbvzoFJAbx2YmtSmMd2WrdLC2G6p/aRtXJzlVap1KL0HDbCVvY6ogOU?=
- =?us-ascii?Q?hrE8e9jZIxMM3gWJOwDYgMDUAtrs8QZLsjxmFSA8nBNiWmHMpFdOadiDJt0Y?=
- =?us-ascii?Q?4hAex59aC4fTjxeivGgoC4I2nLdkl1lNlzT44dx0JD69JiAI6oPj7uKKIPGj?=
- =?us-ascii?Q?M3ZUheDTETNacQpggWAuRPaD1MiB7UCqDL0Ai823le6vaKPK0lMS0j1I3R0y?=
- =?us-ascii?Q?VmzJz7+YWEszUmyFz0rdHMmkxpDTwiHU81EKiB/fzhaanLAlrZKC8SldrgP0?=
- =?us-ascii?Q?0hPETnXhRS/c+EB6+byQvYODZjUWogQNSLNptmC1AZ4V1uKQDHKP0s37K45I?=
- =?us-ascii?Q?x1EQUDRu3nOYtsKxnb53G66zZ30Ckr8zO+pK45NTqNlXk9f/xcCJKR/fwUD2?=
- =?us-ascii?Q?E0YlZzLUpSlevRhtFYKP25cl/0QBBA27ub57A/EM2h3+Qj6YYidwTH9+WAdr?=
- =?us-ascii?Q?nwsWFOt2mX7KgkBDRtF4qEhjjVi08TPPmiWZdHjmOfHDB8jq7rlNJ8rO/cG8?=
- =?us-ascii?Q?7qx73GHsUEvFFYjU0yAglQR2/o2WO1+fsOAS3/riagKfuTLAJ6E8gfCRJOXQ?=
- =?us-ascii?Q?ygid2hqf0humDQt8jb7P7mPDVho98AFrl6bl1Ib4ziommrsizWOkTv8RyW8p?=
- =?us-ascii?Q?TFmZo5/8sJnqk/LzddD7xB2jEgkQpkvliCDM8uyCG8OwfmiRheQSdwkTw17e?=
- =?us-ascii?Q?QZv//AuJiH2gROCDofD2nv5r4mcOa1r+inQL4AX32RQh7V459zkX0cAOu+b8?=
- =?us-ascii?Q?tEgJQrCBX6M=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hzGViah8ugF5csRY1r92qk/vRJsF1iMaZMNPnlQqI8Gro0EEBhS8LPkVFarw?=
- =?us-ascii?Q?jT426uoofxK9AkqwR8xU0oVY3KLBL36ip1kVrQQYdJV8FA40SJPmZCvCLsWK?=
- =?us-ascii?Q?IaBgKT7PE3IZ0gxwLD6VScQ9k2VMtoonJ9pSZ4o2Ph6YyjEJ5EFobSolUJBT?=
- =?us-ascii?Q?hx91U8Xgj2pbSWeqwZ+wh+Z5uvXETW+oFS9QRyfKmJaPpMzk9l2x168utIc3?=
- =?us-ascii?Q?mvnFdwlY1LNKa/sMJK/huatmSIiOqe9AgHtL9wI3QjFuF4dVsJAwgGsKAsqL?=
- =?us-ascii?Q?cmmBuAAtj1SajJT/U14Shxxu7Zbk0BHo8YE3NIadu5utfGSElI+6AcmOOJF3?=
- =?us-ascii?Q?Ycsu4pKSBMi8/VvJMv8/3waMtFJa+sknQi8H1V8qDf8JNmWeucp1ousVFKDR?=
- =?us-ascii?Q?GXiL/fd9r7ETeDAuojK1majLOTXF02XbQl1OhyoYKSa+/HLKulJ9MqH8wyLY?=
- =?us-ascii?Q?AcTpzENYBj7YkW9p8ru3NlsFSjOGOQHYXbZrzvh6CXAzUgsXrvOWuPqL1HBp?=
- =?us-ascii?Q?FVt3JFcG8YfuSAmOvVulB6v7QoMw1lfMUuZ0D16tOtKtpHdcq29zjnC66gyM?=
- =?us-ascii?Q?IiS/twxGQs7UW4sbYCDJazNN7n9eVPwNDqBODS2RuMgI4SO3eTaRtU8U2mmV?=
- =?us-ascii?Q?ZQOvgOd+Oa8NI0QZQwV+AoMy/BbOLwy/9VOwX45ytYIP1LC6fsNqcFVFR42F?=
- =?us-ascii?Q?mKItza73CMHPDN3X4aJvH9TevJr9/Q/vpo22Jxi1Q69cbMkPzWZXpWqPz+JI?=
- =?us-ascii?Q?yoGmtqSh6NB2olt5U3IumgGzkPvHHc4b9V3Egppg8/VELY//OpVwI+9X3826?=
- =?us-ascii?Q?BIDZJFjn/opuW69mqOSXNq2DcJdhXPcOXvdqrk9g8oe1KGELeQFD2jefL9kg?=
- =?us-ascii?Q?mK+6y1H7SuZa8seOouqMXHLzdT44Jt+nXcWKa72F7jcoGQ89SPSkDtQb5JgG?=
- =?us-ascii?Q?qqQuBvlyOwWKTwkdUuVQs9dAsPnU7OwPKpWQtxCP15K1kJfG2ohYrzGgGCkb?=
- =?us-ascii?Q?3Hp5qGaNv8gDyn0eJSa9MfOoWEj8Vsddbx7NhdgSNrQ+tzGEdXgfN850LmMq?=
- =?us-ascii?Q?dUYo2SNVrmc4tOTXwNeAvQfcLzNExlU1xQC7svWHdTXhPC/UkTvRWhAlsm3l?=
- =?us-ascii?Q?lxaJVSh9xVqmFhnaZkdRYBS/2h2RgqjQienREExUxzdptHI4Ub2xge1DME0E?=
- =?us-ascii?Q?Hy2RRNw1V7ztYVhi0hwdiQYXWzNYfbTQNlRNqVzFDOI8MA1fKE38509wAdxS?=
- =?us-ascii?Q?AWfXHh1hQDaYBOjvaTU6fJuWnbJ2iHGUWp4JiC5bv+R/WrS3iAd5B+Ygjiu9?=
- =?us-ascii?Q?HI0FZQEflOENj8ZALVtZ2LFUo8kL66FLGzruErTDRW1u1y9mP6443b1SOPks?=
- =?us-ascii?Q?M1DxBS/7ghrMgenxzwKm8LuePd1IZ+xCURzMxDuqmd2qfwFJEKMt6lefULzK?=
- =?us-ascii?Q?/Tzj8wAVNB37zv5nw5Ybwq1BCWae5Frs5VPyy6Y6Thds0QzJnUoelVnacsnI?=
- =?us-ascii?Q?nUnyvkcx83gnQ/Duyli7MzmUThtZwUqs+Gkp5wLcetfwQsCsvHcFVPKlq1KW?=
- =?us-ascii?Q?oqhsykFo1P12EgO+iXtOxYfoff3m67rDJlMh+0i7yVhCZ+m0H9gjJD1BqTg9?=
- =?us-ascii?Q?PQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	M+sbvajOl0TMZ1QQUdpVNTIIKzRp/ZvWjnICydw6WBr7vu9AX1SdlRfxgIbG6ECQt9Lvd9hP6GxbxWYmmjoxrzkcZpFGeLx5iCKeonFz2nrTf1McyGgp2AMdeQhZsfQ4eVJ2ZBTOBjdr0aRZ2njTIV0bqPJgwH6O9fvAmCPJF4Vo3nGzjddHvT9KazKyW7a8FaYOE6SdbdWY4mELWvYbTRerd/rtT++HdojyyxFD4WPU6IOJAyx5sW6Lu5+1xSSLkVo8+qszFDwu34TvNaFKAel4hRTbmmx11L7MXgAaPppDZpoNpZGfHqbOqCIRqr1FQ3CQIpuRPGXRSJxJYeZNVtP03SLlxCGqWSKSQf7t65xma/kK/OcFS7sS+CfKPlE+T/vrlUkfyC3edVpiGyFdV4PH7i4Eub9KeSRxCa8rQyu49nVNalm6c9VxZvixLLRg4TC4BHnqzH0E3qh2VA0KgJIQkpGHg9HV/v9woJtfYoxHExFk2bs4VpZL2OG8CjUXF+hMCc9RFMcZQRNA512EpudAA/d89vY2l65yxz8vHKg2pQnqq4cXzpYff0LM2JJ7Va1B87zvUd0aOOZaVYZZEWs+P5fOzjrtEKyEY/cnRnU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e94d014a-140b-4179-2f93-08dde92aba81
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 07:39:48.5473
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kzqhFL1HpzPA7EixFpYDrYp8d6FVBjVMvGouoy2Xgjakenjfl755yqdKfTQIfZXZXWbK5OUtByFi/OnQN3f2TWReHQYGWxHM0uwU0n/wrHM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4460
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-01_03,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- suspectscore=0 spamscore=0 phishscore=0 mlxscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509010080
-X-Proofpoint-GUID: FH2lblJH50kVCb2a5HvZoLOCB6jhqAxQ
-X-Proofpoint-ORIG-GUID: FH2lblJH50kVCb2a5HvZoLOCB6jhqAxQ
-X-Authority-Analysis: v=2.4 cv=Of2YDgTY c=1 sm=1 tr=0 ts=68b54dc9 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=UgJECxHJAAAA:8
- a=-gg6dhmGWeoicojpQ1oA:9 a=CjuIK1q_8ugA:10 a=-El7cUbtino8hM1DCn8D:22 cc=ntf
- awl=host:13602
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfX0dwRzi3Fte3O
- TwkqzHhPRL8LGurjbpxksGGIgYLXO7m/JtqK56R0UyaH64+cvSMRpOW5K+VyZbEPIaQqJ/VhV3F
- LBlmEqwy+zIS2ZBLskv62DJCkciopRzcFTGv6/HvqsbMcB9+1iRgnhwy7x+2sgOq08Q+6UYWg9e
- BypgqJHTZ6SSm0Enm8IEUwo81elc+QDS707y0E1/ZOW0NyjGW2HOx1Mmww7GeZejkrydZm+EQpb
- A4A4OELPwk3qH6F+Xu7J4bKw1sNOG3pgbRKrA1BnKoo28zxtFWIf3htT3QNaNon1SFGv8yXUxJn
- 7zp9Il5MJyXl019TEiorznwqWsJhxO0yyla/5agfM/oHCsCs3jsJSzyxapbbE8WTgGIBhhT1PL5
- a3+Tp3WvQgnDfAD5GJ+hjitaRnf7HA==
+In-Reply-To: <20250829065550.29571-3-zhongjinji@honor.com>
+X-Stat-Signature: gkbj9bw8uqk75ti6i7u85myisamjcgpt
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4277014000C
-X-Stat-Signature: dmpyy48tesx8nipesfgb1kemhogu97gg
-X-HE-Tag: 1756712417-308419
-X-HE-Meta: U2FsdGVkX186l4j1aCfAZWYfJoVlVZAY3xYqCtjXhQKbrtXEfQ8HUSczSCTtHRo9++NZZkj9tY6Pym1Ougp6UFpnm9ff5Eq99skN2OM7VE1NfSkffqPiP2ybD3ejgeabOEQxQi4vFkKDlDEBRzLW+J+K5NnW9OwhJ4jmqJNFx2p4DR8rpv7pVsDVK20+QztXj5orS6HLm929aJs5Rt0sWS15OIFqo4C6bAKHgH2U4rgsuA2BN/FTnR9NOBqq65FxdFW2llUFV/LHbVFRdyV/mT56407t3FQCjO9C4YSfOyO4uaMK7Ez8DIzlnEIXsL/h5oiRJ164oSpivwApWSmGgEpXq3xo4eQg3HKfibRq3Y28Q3wXQaZGdgK+y15YRZNSkPi34DU8Ld7lAt2miHF8cQzkQAmFBsPa3c2/5pRe0nMnAatDT+boQyI2bGV9koG7VodrfeBiYff8haJ+C9rxwRKhOCWpUr+3PYgyLBpDqFL+iaDJ+dUbfbJLg5XgnXEnqQ+5LIlQSOcZ43+Ay8Cz3VKcTlnY7HptFQXYYWIeH18mIJWBQ/hv7e8t3ZhySRq1CzqJ/oXuREDhW/jw6fftH1pVWRWoCJrMV6ELM4bKeB24Sn0TZQyFukwxhy3UyJNu0gnkhH58+xrM1aqRvIYawsSDCeZ1jjaKMMWJpp24T2a59eZlIa5qdnBVJui3L9tel8X5GZ15wLqs2CRZzM9vd4Aa6cNaayLVUA4JvDp5YVbyaRTBrKvo5q/GZU1gEjRBkBBHcKs4X1kXCxh5K9BTcjDWxUbMY+DGH1vlb3EPqQAqEQcjlqOqwP8YpB0ZjIvwm1dakM7kPruDZ5coCMYYgPjCabnAjMFQulEuGhYRqPFSI4Z3o8yKQHOBfnLngVNKrY/wfa0p07ZYdSb86+gRF42i/yWNb2L3OUF/W8wNo865aJuaTEtMokHfzxsFpHKJju1ohQX4zq6IZjHRQi4
- b/S7CfCd
- RS44/2DkdrrtQ0dgQyGaGyhQI7zX4IlOCT26eAwMvz+d75pSipUKwhakSoeVdSqeKjU0IP2zMNBo5GDpgw8NKxCg20AS9QCcUdsQdwqcxZixAoIzOJuVKRYV0xs159OhFVvOzwi9+fy9LC+cRJRnidpxgL+7DIPPkgLK4ysgJyvX37xAH/OEuql7E7JAqFRmFw1GqAjX4jsLRUnz/lsZck00QkYdLw0u5TFHL7Wlvw1+gAh9o3X+My4o19a2Ps9eZ6Y0MuWA3BeHqu2xCHUCIeRjmobJmXUc52V244XaZ/ciVftunJTa/6KHk9jIkBQdMexCPsn5V2eh07gPIwFRtRgIO+nVQhuEenO/+GpBbg6JCLqq7XAnLkIodSkPv2b6PvL3qQvS0vVd9dd8Fm+zHBnkBwgu/oyej3HdNI+kl3iebywpwWQ02J75wNglLRoL3h5AKC5zyuMQhnFSsCOfl56QktloEv+hJRq0u5q22HTjcz8biE1LG39sD0SX788cF7VUEDRjGQLGmRfFMFHfo0mibNmnFpH13LhbisoE+zXRHuYF66pU052ICsy2+2UfxwF/XugH1kf/0NUb1EomScK2Ba1sDKHbXqFYqZ4b2g0DMkyi5vRIlKRaPH4vLsoZRu9IgiLM9xp0dkpA4T+4W018rGTp2zAmLQ8l5Kvd8VTVYvANNS1TBwdCOd1RaQsNzRXCMlyZwP/h+QwRfAzTofNGcJIpIPDgGVrflzTBNeegVOYLtqTK0UIOxmd0jlRPPNvWyXMXxLDQxtaYVuD/tuwtknyhKf34NvQykrkb8wkH5A7aXnz3RCGnFQp9LVXlaKfEpDHrE3dXyAG6d0PrWzQQjTMiJRiOmXgRphw16dcA1U/P0G16sUfJpaMuQucnI+m3i6IGsvbEgqzr3zxilKwjqDA==
+X-Rspamd-Queue-Id: 5A78940004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756712483-926772
+X-HE-Meta: U2FsdGVkX1/2Qf0QZv/6CfDz08GcixBK1azCuvrunIm+L2sDGgrBGA4J9E0EPfMvwQgjHllU39WegDWKHTsUA0UotMLDeZ/Q6MklZQBkuudr4t2cf52quY764yiA1ansA2L7Wdn75Kl3kn0mji6rnf7igH4Icm2TnMxPVKfydSTEUGK14mQPxBKSLyHtsk/SxXA3XVjl55Co+XCtQAU53jpnskIpO1Gnx6EFJwCC8WHs6S+aP0eQ6mHfL+qhqw03KqChFlSVxqBP4Tco530MPsx/9p8LVJCFHM00iOTVZ1nYN6oI+Ms+1+3ouU/XOgbgRO/jTW0ZGwdhWHQ++q+c6ozopR8CH0OnX0mKL/Jr7sgYs505gzFEPRIs+Y1MORfYCgyWN7kFSHkGz7wXGeycsRyPXn2oYkkgx2N67eZy4MKs1tHbSW1oHO/12+ROsOM3D69Sak6JvnQC2JS4a60u3fva0br5R4AMeG61BZGEc35M0pw4i0YF3Xpv2d7fmDyJbmfj47WCSDVLf1bv64obTEFDI4SxEYKeR4Qpca+3+Lbn2kHLMC6DNJYv1vKtGjK0bWmvou3RR7MwpfySaEweIYvpkZZFQh14Q7oXtq+JdaLaoYpkZleR0T2F1YBoO8Y8e+lKX++TF9+1KDuUHB9K9ffXtdFDyoqX0Ms28PcjapUJYibUcNvRTOGIQa7VImb2r3+WJ0Pn/f703K3LtmOE3LAI2x85cJIvMa5DytKwOia+wTrsVPNACcVNPhIe2yxQN1H8ZF7HFFNtgLHoWTAc+vEaMC4NVUNwYavYfe+rstdQSMBzIvq3Xtl+oa29vKNDq+k9E4xbxm+depX9AKNwR1si2zdkl8yTUvVy1KVwvkWVZBC7DwIQ4715kJ/0s24rcUsyBSIiCsPqKnm5LPtojr2/X1rw8s2ZdDLGapwmV/D/NnWzsLtAxzo3bRerQuP8VUwJyDZarL5jGo8NtJJ
+ hvFlAo3j
+ u55+B/Xz8ifeYAuK9ZFKivudxek0dVv8nGL3R3hy2IVKS2sGkixxMkmeg5I2YaCGp6t1uGfIu+KheH3/YbZ0aN1xAMSf6AqL5nSCR0XLjjdQiM7JAp8jKbpgCKnNcaGgo0iY4x07U3iC3U+YvWGebs0bbzoKRA19mDUx26JYMuJ447KG2Zq2VvMYsJwOd1tSCwgPkND5P4SwyWZrfwuWo1gUTu4hudi7m4S8C1QJMUmw/Z2H9FhSC3liymQYCF0PiQ8DhbEKZVItRZiFwpdBq1Jri5DpjKmdIxES8HkYoTU2bP7qGnELNEohjIi/pFjn0ClmrxOcVU5S5Zig6SCqvhulMmPCTElqScuLEzo6kG8le6tj/1b1t/nCNyOuc5d4To1xAM8y8rXEUpZTyKx5tlmIYhxx7LPg13RFWqsMBQqqPizCp4YnkBNKoWWqdeFQgOwFEXfh3ChtIzVGl8ehkUTq1umgBKQU4O+eB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -257,165 +122,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc missing people/lists.
+On Fri 29-08-25 14:55:50, zhongjinji wrote:
+> When a process is OOM killed without reaper delay, the oom reaper and the
+> exit_mmap() thread likely run simultaneously. They traverse the vma's maple
+> tree along the same path and may easily unmap the same vma, causing them to
+> compete for the pte spinlock.
+> 
+> When a process exits, exit_mmap() traverses the vma's maple tree from low
+> to high addresses. To reduce the chance of unmapping the same vma
+> simultaneously, the OOM reaper should traverse the vma's tree from high to
+> low address.
+> 
+> Reported-by: tianxiaobin <tianxiaobin@honor.com>
+> Reported-by: fengbaopeng <fengbaopeng@honor.com>
+> 
+> Signed-off-by: zhongjinji <zhongjinji@honor.com>
 
-Max, this is the 3rd time I've asked (and others have asked too), and I'm
-trying to be nice here, but you are not cc'ing the correct people.
+The changelog could be improved because it is a bit confusing at this
+stage. I haven't payed a close attention to previous discussion (sorry)
+but there are two Reported-bys without any actual problem statement
+(sure contention could happen but so what? What was the observed
+behavior). Also the first paragraph states that "without reaper delay"
+there is a problem but the only situation we do not have a dealay is
+when the task is frozen and there is no racing there.
 
-For ease of reference:
+As already said in the previous response I think this makes conceptual
+sense especially for oom victims with large address spaces which take
+more that the OOM_REAPER_DELAY to die. Maybe you want to use that as a
+justiciation. My wording would be
+"
+Although the oom_reaper is delayed and it gives the oom victim chance to
+clean up its address space this might take a while especially for
+processes with a large address space footprint. In those cases
+oom_reaper might start racing with the dying task and compete for shared
+resources - e.g. page table lock contention has been observed.
 
-$ scripts/get_maintainer.pl --nogit-blame arch/arm/include/asm/highmem.h \
-	arch/parisc/include/asm/processor.h \
-	arch/parisc/kernel/sys_parisc.c \
-	arch/s390/mm/mmap.c \
-	arch/sparc/kernel/sys_sparc_64.c \
-	arch/x86/mm/mmap.c \
-	arch/xtensa/include/asm/highmem.h \
-	include/linux/fs.h \
-	include/linux/highmem-internal.h \
-	include/linux/highmem.h \
-	include/linux/mm.h \
-	include/linux/mm_inline.h \
-	include/linux/mm_types.h \
-	include/linux/mmzone.h \
-	include/linux/pagemap.h \
-	include/linux/sched/mm.h \
-	include/linux/shmem_fs.h \
-	mm/highmem.c \
-	mm/oom_kill.c \
-	mm/shmem.c \
-	mm/util.c
+Reduce those races by reaping the oom victim from the other end of the
+address space.
+"
 
-Gives you what you need, or you can just generate the patch set and do
+Anyway, with a changelog clarified.
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-$ scripts/get_maintainer.pl --nogit-blame *.patch
-
-And filter out anybody who's not listed as a maintainer or reviewer.
-
-Then cc everybody on all mails in series.
-
-On Mon, Sep 01, 2025 at 08:12:11AM +0200, Max Kellermann wrote:
-> For improved const-correctness.
-
-The cover letter is included upstream, so you need to expand upon this.
-
-Something like 'In order to ensure better const correctness, we wish to
-mark read-only paramaeters const within mm, but to do so we must start at
-the bottom of the call graph and work our way up, this series lays the
-foundation for this.'.
-
-So I think drop all this stuff about review into the vX -> vY bit, and move:
-
-	Establishing const-correctness in this low-level part of the kernel
-	enables doing the same in higher-level parts, e.g. filesystems.
-
-Up here.
-
->
-> This work was initially posted here:
->  https://lore.kernel.org/lkml/20250827192233.447920-1-max.kellermann@ionos.com/
->
-> .. but got rejected by Lorenzo Stoakes:
->  https://lore.kernel.org/lkml/d6bf808d-7d74-4e22-ac4b-a6d1f4892262@lucifer.local/
-
-:)
-
-This is the nature of review, it's iterative. Given this cover letter is
-included upstream this isn't really hugely useful.
-
-To be clear - I am actually _very much_ in favour of us trying to attack
-this, it's just how we do it, how we structure it and how we proceed moving
-forwards.
-
-Hence why I reviewed your 'taster' change and agreed with David's
-suggestion for a structured way forwards.
-
->
-> David Hildenbrand and Lorenzo Stoakes suggested splitting the patch
-> into smaller chunks.  My second attempt with one smaller patch was met
-> with agreement:
->
->  https://lore.kernel.org/lkml/20250828130311.772993-1-max.kellermann@ionos.com/
->
-> Now this is the rest of the initial patch in small pieces, plus some
-> more.
->
-> Establishing const-correctness in this low-level part of the kernel
-> enables doing the same in higher-level parts, e.g. filesystems.
->
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 > ---
-> v1 -> v2:
-> - made several parameter values const (i.e. the pointer address, not
->   just the pointed-to memory), as suggested by Andrew Morton and
->   Yuanchu Xie
-> - drop existing+obsolete "extern" keywords on lines modified by these
->   patches (suggested by Vishal Moola)
-> - add missing parameter names on lines modified by these patches
->   (suggested by Vishal Moola)
-> - more "const" pointers (e.g. the task_struct passed to
->   process_shares_mm())
-> - add missing "const" to s390, fixing s390 build failure
-> - moved the mmap_is_legacy() change in arch/s390/mm/mmap.c from 08/12
->   to 06/12 (suggested by Vishal Moola)
->
-> v2 -> v3:
-> - remove garbage from 06/12
+>  mm/oom_kill.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index a5e9074896a1..01665a666bf1 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -516,7 +516,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+>  {
+>  	struct vm_area_struct *vma;
+>  	bool ret = true;
+> -	VMA_ITERATOR(vmi, mm, 0);
+> +	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
+>  
+>  	/*
+>  	 * Tell all users of get_user/copy_from_user etc... that the content
+> @@ -526,7 +526,12 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+>  	 */
+>  	set_bit(MMF_UNSTABLE, &mm->flags);
+>  
+> -	for_each_vma(vmi, vma) {
+> +	/*
+> +	 * When two tasks unmap the same vma at the same time, they may contend
+> +	 * for the pte spinlock. To reduce the probability of unmapping the same vma
+> +	 * as exit_mmap, the OOM reaper traverses the vma maple tree in reverse order.
+> +	 */
+> +	mas_for_each_rev(&mas, vma, 0) {
+>  		if (vma->vm_flags & (VM_HUGETLB|VM_PFNMAP))
+>  			continue;
+>  
+> -- 
+> 2.17.1
 
-Has this dealt with the build bot issues found in v2? I guess this is what
-was 08/12 then right?
-
-> - changed tags on subject line (suggested by Matthew Wilcox)
-
-This is nice, but to be nitty could you do it in reverse order and ideally
-:) put a lore link to previous versions? It's super useful.
-
->
-> Max Kellermann (12):
->   mm/shmem: add `const` to lots of pointer parameters
->   mm/pagemap: add `const` to lots of pointer parameters
->   mm/mmzone: add `const` to lots of pointer parameters
->   fs: add `const` to several pointer parameters
->   mm/oom_kill: add `const` to pointer parameter
->   mm/util, s390: add `const` to several pointer parameters
->   parisc: add `const` to mmap_upper_limit() parameter
->   mm/util, s390, sparc, x86: add const to arch_pick_mmap_layout()
->     parameter
->   mm/mm_types: add `const` to several pointer parameters
->   mm/mm_inline: add `const` to lots of pointer parameters
->   mm: add `const` to lots of pointer parameters
->   mm/highmem: add `const` to lots of pointer parameters
-
-Hm I wonder if per-file is the rigth approach, but let me read through the
-series and see.
-
->
->  arch/arm/include/asm/highmem.h      |  6 +--
->  arch/parisc/include/asm/processor.h |  2 +-
->  arch/parisc/kernel/sys_parisc.c     |  2 +-
->  arch/s390/mm/mmap.c                 |  7 ++--
->  arch/sparc/kernel/sys_sparc_64.c    |  3 +-
->  arch/x86/mm/mmap.c                  |  7 ++--
->  arch/xtensa/include/asm/highmem.h   |  2 +-
->  include/linux/fs.h                  |  7 ++--
->  include/linux/highmem-internal.h    | 38 ++++++++++---------
->  include/linux/highmem.h             |  8 ++--
->  include/linux/mm.h                  | 48 +++++++++++------------
->  include/linux/mm_inline.h           | 26 +++++++------
->  include/linux/mm_types.h            |  4 +-
->  include/linux/mmzone.h              | 42 ++++++++++----------
->  include/linux/pagemap.h             | 59 +++++++++++++++--------------
->  include/linux/sched/mm.h            |  4 +-
->  include/linux/shmem_fs.h            |  4 +-
->  mm/highmem.c                        | 10 ++---
->  mm/oom_kill.c                       |  3 +-
->  mm/shmem.c                          |  6 +--
->  mm/util.c                           | 20 ++++++----
->  21 files changed, 162 insertions(+), 146 deletions(-)
->
-> --
-> 2.47.2
->
-
-Thanks, Lorenzo
+-- 
+Michal Hocko
+SUSE Labs
 
