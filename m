@@ -4,133 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2267ACA1000
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 19:22:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F7B0CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 19:23:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AA318E0006; Mon,  1 Sep 2025 15:22:39 -0400 (EDT)
+	id 5AB906B0007; Mon,  1 Sep 2025 15:23:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55BF78E0001; Mon,  1 Sep 2025 15:22:39 -0400 (EDT)
+	id 582E76B000C; Mon,  1 Sep 2025 15:23:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4709E8E0006; Mon,  1 Sep 2025 15:22:39 -0400 (EDT)
+	id 4C0C26B000E; Mon,  1 Sep 2025 15:23:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 311F58E0001
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:22:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A4731BB27C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:22:38 +0000 (UTC)
-X-FDA: 83841653196.30.6D173A7
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 89B14180007
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:22:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="2PUubG/D"
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 36DD56B0007
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:23:21 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C62CA1409F4
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:23:20 +0000 (UTC)
+X-FDA: 83841654960.09.FA03ED0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0CC2320005
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:23:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=waO5M7TU;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756754556;
+	s=arc-20220608; t=1756754599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i7ewcbrPHINPUvrYPT4zyhNXGIzXoRLTJHpyb8YY7mI=;
-	b=nSEUDujBae5TTz7cBkpOIKfu4NTII7Qm6qIPZfxkNJ4dFs8C8R3YSP+GnQ7qVj8JMvCpKt
-	Ykg/qYF+z5LbrzyhrrzR1nP1exQK9RkjfZOU26sDGFZb+3nAcCu0zG7OuxUJfTxyOZQW7t
-	CdzPJY+1Mxe1itwmLy4vEZnlFIiHXwA=
+	bh=pIqgkGlhxszd5dv+EEyL+ssQRqACdJfeCT3IkVeMdqo=;
+	b=axwr/IcvcjcVr+yf8NZG43S6rpID78VE527sEtoEq/qSuY+0GbE4L0uKmBxGEVAHf/V1TO
+	X02XoOO7iLWFuIPWjL4W4PCT01/2C41dyDHNZjYzLE6PzHzptx+d6fR3R/5PcG+0pKmNui
+	J/1rP9JDT9lYN4doTpZGS84eaDDPMI0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="2PUubG/D";
-	spf=none (imf06.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.42) smtp.mailfrom=brgl@bgdev.pl;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=waO5M7TU;
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756754556; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756754599; a=rsa-sha256;
 	cv=none;
-	b=UyMGCKUoq8UJ+RoyZZnmaMVooYn5VTNNwBz7lji3ndFBvsKmb+EEOLGZWL4WBILB+ZZ6g2
-	yEIx9rexpZxtsr7AWidABJq15a354AyywWIu+7pfT9rOTkrzLpIVSCajwkH8jf4AAgS1J6
-	NZpdcESI/6IalV0T+PfE9MrLkUQLoB8=
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55f78f32580so1135085e87.3
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 12:22:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756754554; x=1757359354; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i7ewcbrPHINPUvrYPT4zyhNXGIzXoRLTJHpyb8YY7mI=;
-        b=2PUubG/DvcBp8rBn4KSAAs6+/KZZzADLB0sOXyLziL3MYfGDulhFSCxos4LCumxyCd
-         HawwbJaYH8P38U/gt+En+VqGq15r1DK4IgTfH6SUrHW+rIh9DM5KKFF3hlHH59R1GmbU
-         2xkjLg7c1+ReaWkteGs5d8CuylgQubPMTvkajNNqRdrOG+Xqvsv83puXiqZJ/ckpZaKe
-         vSzCESC0isZBx7+wYOJ1ayBKxT6dodG6o++DsTqxQhSYCI7ZEfyiRMPTTCzdYPAzyogI
-         og6Euvhus0LHF+pClBs3SxUpCrY7byla9kpP8hO38pLwMliuGW7i9aMIzkn1GGVpmEDh
-         +NUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756754554; x=1757359354;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i7ewcbrPHINPUvrYPT4zyhNXGIzXoRLTJHpyb8YY7mI=;
-        b=kP/dQV/lWQ5vl2DG4E2s2YqJvHCdmu/EfD3McXl57lT8nOdtWVxTnJddj5oOQ4lCtn
-         AqHvcs5BuSr42mU1NnYsKNtLx5pO3F9a+iR6j1n4CmXqj7n5fmEXR74teXdwRrioBoNE
-         o92mMwmzqB5CoxQgBu5mQ0qppGBVve6fEKtw1b+BTJu6kFfemni3xMER3kw+JXoj07lO
-         nhEz0We3JiECAVA33maxWdXSGXi+vo0ATPg/+Xj0gDoD7D+l4OLKPDmz3+Xt+XE1qc9H
-         BxTJEbbuNwUKozboSPlNFxHZNnpXHDEY/UU49iRZrPiseeDWtD1nroa4aZP96OcooCBO
-         oJHw==
-X-Forwarded-Encrypted: i=1; AJvYcCVq6pqPb4AH1ly7S2ak+wFQNGwPDCetDQK0DTxVuhqR3uMlTfZ/b1HL5wy7BHkanrh8B/eJ6ctDuA==@kvack.org
-X-Gm-Message-State: AOJu0YwD3vgFjU2URLEnWA/PGmqUM9ldP1Y1I+5sd07orjKpNGfvRFi6
-	3rSq+8CVntH5ZMefq0/eqibq0tpEePDWCu8qR553E4SoGb0HSOtyDVUYxssrW7C3YGfkBewDfP7
-	qhRdbMmMbLsXWB+b8qCokp9xyUw0cuDK0IMGU9aKY+w==
-X-Gm-Gg: ASbGncv9S6XjMXmEtA4VaKrKcYUPbtbdesQELEp3niTZiLsScX5epHRe3yglVPtvZNE
-	/Msa+fqO+jedZyhvBg7G7lGfbHs2LfJ3URvbNKVF1iyqVPeMiyu7ZNJyC5udy2KVkuxR05G9Vd9
-	WV5iprrMvPbNBxvKfiK19nIEWk/nwP/7u/ZxnJCGyWTltRcjee+391b2BYaJSo5gba+ncJVHlfy
-	2250XlvZ81mOMIUo6O/ZMPp0G8vNYomvYlkcgLw8w8VqhpuUQ==
-X-Google-Smtp-Source: AGHT+IFcWj/MxjmrVdPmxch8QritOIaLTRMlhZkDbys4s6fntW4mvCl/nwD9FPfF52jhBYUT32dL+MvS1Koz6TeQoRU=
-X-Received: by 2002:a05:6512:1051:b0:55f:4f46:9f2a with SMTP id
- 2adb3069b0e04-55f708b5e26mr2212325e87.19.1756754554484; Mon, 01 Sep 2025
- 12:22:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250828-pinctrl-gpio-pinfuncs-v6-0-c9abb6bdb689@linaro.org>
- <20250828-pinctrl-gpio-pinfuncs-v6-6-c9abb6bdb689@linaro.org>
- <61bad868-d976-4f49-805c-8d14d4d8b3e4@sirena.org.uk> <CAMRc=MfB_3e0sjCpV+XaKcKvit7Opk5LczH2wsxO=RftrAabjg@mail.gmail.com>
- <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk>
-In-Reply-To: <4a633387-08a9-43c8-81d7-488e7222aeda@sirena.org.uk>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 1 Sep 2025 21:22:23 +0200
-X-Gm-Features: Ac12FXzmS2jWw7xFpjYhhy0Ln3t9KFQZe_l3JIooPobPNCmkv86DLX_8q8OSWPk
-Message-ID: <CAMRc=Mf0dOvwsWb6uraCQXeauLYP0TqY6xsQnV3fM0w=wROW+Q@mail.gmail.com>
-Subject: Re: [PATCH v6 06/15] pinctrl: imx: don't access the pin function
- radix tree directly
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 89B14180007
+	b=X+JjMYsXqi9TyQofY3oxmQKZfg6OBuWzsSbS+iMfns1pFpgfM0uklvdBN8/ls4yfHiYOdW
+	jZSmPa9gKE4XdzLyacwHWsMT1NOmg8xhnUo10w4MBmA/uTF+FCuiqIzrYwRk7QUI/C3lB6
+	VmZeubWT+4GRsyFiBrjSspj3q+SHnKk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BE35140B99;
+	Mon,  1 Sep 2025 19:23:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BD1C4CEF0;
+	Mon,  1 Sep 2025 19:23:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756754597;
+	bh=/4asbQkP1eDqEbveKkGpr0ywUBl4RSN7gR/XJ53xGVw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=waO5M7TU9BYoRGjtorAnNJETXm72HFsA3Y0tFfhW85iW307Pc3Fq86bh7keOgjgLE
+	 ktpXe34fCWJ/hIBD3X4zZpOX2irMQA3Ga0Vr8rilIjKxKv0uR7kEYqCu1sIk7u49Cu
+	 IOOyVz6paX9t7Kdqkgl01NvAx2e8rkGiaTJ3GKyI=
+Date: Mon, 1 Sep 2025 12:23:16 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+ dvyukov@google.com, vincenzo.frascino@arm.com, corbet@lwn.net,
+ catalin.marinas@arm.com, will@kernel.org, scott@os.amperecomputing.com,
+ jhubbard@nvidia.com, pankaj.gupta@amd.com, leitao@debian.org,
+ kaleshsingh@google.com, maz@kernel.org, broonie@kernel.org,
+ oliver.upton@linux.dev, james.morse@arm.com, ardb@kernel.org,
+ hardevsinh.palaniya@siliconsignals.io, david@redhat.com,
+ yang@os.amperecomputing.com, kasan-dev@googlegroups.com,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v6 1/2] kasan/hw-tags: introduce kasan.write_only option
+Message-Id: <20250901122316.6b7d8d7fdcf03bdb2aa4960a@linux-foundation.org>
+In-Reply-To: <20250901104623.402172-2-yeoreum.yun@arm.com>
+References: <20250901104623.402172-1-yeoreum.yun@arm.com>
+	<20250901104623.402172-2-yeoreum.yun@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0CC2320005
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: 546ery111dkep4spy1etiisgn8e45pdm
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756754556-725642
-X-HE-Meta: U2FsdGVkX1+g1Pg1aJLEMyGa2HN/Awna2KuEPhex6a77OklsQfZTMn01pyDK/m+YYmi0DtdI9sQlU+F7ZFKxZAc446ChG58+++uMLITS30Ce7Q1cg71d3WpcnuWKP2x+Ao3KEEGOKSUPYvj3KP/T99YX2umujLaWy64jNSYsIFQjLPCnYiFQKuz5nD1KaoEQG1/6TVbwpg8YiZtlnadiCweY7x6HW3Q0aLrN/B6wGM3kXdZi1V4BUIKIUdN7l5afNP2JuuXMUmGpPZiaKbcOKv2wSlk8E9zVrGI5B0vWHxliR6dRdpky/lE0FItgoY4ygz+mNB7tcZlUA/ZQOYWl3UoU2l2WGn1dlfc6iW5GdH+i5UsrbdYSMJI3Ag1nvbJK+Sh4I+m3tZwHfK+DmJo8agGCE0QWfN1gUMo3H5R4ZMG/o+cetbNKaRdI93E8QXJQScKmvAvAsSTyabQQPQmVZxaxjiIyF6bk5ATXWSxxk4BxfuM+nVTalxJAWB9/XRCmeHXwxfXbCsGmK7+sEVDJ2M28YGiNv50T+K7fUmqko2V+Bqo/hddctlKHE3ZdisF61semH0j8CNVBZa2hC/ehecnX2Qqt4TLfzgzfR3/7xuyDg7yVWKy8eOKySWbAj325Z5UkFgWdHIG1/IMT034HjG8PTV6k9zRGT8LanTJLuzELFEukVllKaFGEDp6P1HeIsK/15OplUyVHHar5yYt40fxrTACG6zyLQ7d3k/4dVW+YhiLJ6iI7r4SCBw19KipDpg7dfGpKrHal2e7UyHwbR6GuK2m+t3azbca/OnogDtqB+6Px3YhXFH1ubnmoNlSdLGsxGfggXA5evMjs7adRkk6XoTEr3VfhWt7/1UQfhUJv+KaCciob8s8VUxPWULQKj5X6slAIaeXqMfxaIrH2tEfyG7TN7T4hbF7tbqK7zlaAtU0WaTQMmyVec2dt8nlAgXZrXkVEM/oksSK480H
- osodC/CK
- adZ/78fPCLF2MttlgPKzqxPNgSz6+LRaPqlXgTqleK+mZO3SQW+E9knj2Qvzl68iSWrdksih5dMv5zJCK6WyDbEBvvsiUDSksNkwxqX5WVGaTFt6Ir9ZJI0yIlmox44Utw0GLpCvyu0KQBToLfYujVh5r9dS3I8mrc9iLz9CA81WGfEFy1hrHRHnybmOX2MLFTghjN5XD8rAtSBbHMlGItAEDMNKbC9960IID5cuYapqM950UK46RLSsErInahGmTkbux51bIYt0qEsx7fe3wu0BQSy7w2pf28PtJ5+HAPFrYCXveehmF1gLdfZg4MEDaXZGRq10c8sbzlVydz3/jSLMZ08MUKPVr+Dgnx0MkmgDEOVo=
+X-Stat-Signature: 88ktq849ru9gtkcq88iczku7fkipxctp
+X-HE-Tag: 1756754598-185054
+X-HE-Meta: U2FsdGVkX1/l5Oai5uljMnc4zURadJyuyKBgT/gahNFvLOhN8yi1ZEnqqIAYSf1dYG/beoUU2pVwjNtewhDHJWuQRbO9s2FIzEpV78alrbgMQj3UHCjZk9vZq6X8gj2kaIc2Q6CfXmzY0zpamIf/TEGP5mPomEtsdeoMJv1tH2GaUR9HlbGJVuEVbT/GzDj0kyF94Lm0kIUZ19Vi7k7pmVt5NAnra2cVAih95oxH0teoAYrINnFD0RSoP5EXZ1hEC7x3VzYLpi6xDjDCxwrBVbD8Y0b2MNdskA7Bl8Lg+iKBX2kyzSAZyW4q8BSc+A5SnoOfwOWqrZ6PvrNBzarxIEvdL8/L2nU+VIbdFozbl9n5oXWPxc+M4xIpU1uszYne5vUECJ3BGxl4QiBaEvrLKZbkHJC7eUA1S4IFWns2DPo80airatOLRFMl3fg4cgfAUPNafHGeQalbwNEhWJU40Az5evlAtI22FGEZOmqXwA9p5QFDPJ51CoFMzIejLzgafK+7RggeTS8Qhmv0hgNM8EE8PV39aMdElcsWW49PL7i5XgL+/zfBpI2+UtSnCMg5VjJ6CivLHzljq2gk4n+FC+zJQT2YeRMXAvCRKxBW3ZMxk9FCOKrn6YhA/Yvjycsd4KuA5FcGAF/Da94ygsAXoBKj49kzBx1F7EjearLtDLpJtwSZLmSJKA6OtFuXGC4DGG55bzonHFecAP8r5y7NjgrcbBymx4TJqY3NngzFJSc6rhc4NBVNxNZKcqDMlfuxn0smLRZpenmYkLGc+1TKY95k3pGSJc83/DnqYna3Gq+PIztfsxxCZ8D2qiCI68W613OjeEKO69JRe2jHsvxrcu8ifbtMz8QOWuKAYW1TuqaYid2ObSjHQg6J4Dsb8eyMmw/mDfg3ICM7a0AEH7xdl4UXm3jmR8ZTDyZKXA83kibdcvopjwOPIdclLJ/HtNpbAF3JqzUDoc6pg4KT+l7
+ H89oc69y
+ 61mpyPr7wEjzvHuTPdROiqR0ouA917E21dFuKGNNEMwjsuucxYsaHj/EzU21/iyBJ9AL1pVvYklwfr04tA5ua8paZBNvO3NCWwzDAMB3toKu5yyo5rZOAqiErVicNpuc7WZgAwDcmvxOS9nevsawqJZEDPWFaO+uckj+fWwhnqot8SZp1hqYkZhMCaH7BHkf4Kp4Yw+wX92dyoRkojweaDvHteK/8T+O+QsQJ1CBXkiqs+pBK4GoYvqWOLGResQNpviB9Pjo9GD+73WcwmS8xYBQEULlhV0ZoAzdeo8R3fowQQltz1wdfNXgyNMSvoRqXEedsZ1JcTQKAKHNPvuXoorWqnrPbPorNwuUuewnIFOGr0XRuvC1ommP71m2gydVp66nB1MLHYekZjs4zUBrM21Du2SUy1BqA5K8uLx4pQlu/b6M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,24 +100,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 1, 2025 at 4:37=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> On Mon, Sep 01, 2025 at 03:20:44PM +0200, Bartosz Golaszewski wrote:
->
-> > That's not a lot of info but it fails in strcmp() which - I suppose -
-> > is the one in pinmux_func_name_to_selector(). Any chance you could
-> > check what the value of np->name is in imx_pinctrl_parse_functions()?
-> > Is it NULL for some reason?
->
-> [    0.628245] imx8mp-pinctrl 30330000.pinctrl: np->name pinctrl
->
-> https://lava.sirena.org.uk/scheduler/job/1758947#L705
+On Mon,  1 Sep 2025 11:46:22 +0100 Yeoreum Yun <yeoreum.yun@arm.com> wrote:
 
-Linus,
+> Since Armv8.9, FEATURE_MTE_STORE_ONLY feature is introduced to restrict
+> raise of tag check fault on store operation only.
+> Introcude KASAN write only mode based on this feature.
+> 
+> KASAN write only mode restricts KASAN checks operation for write only and
+> omits the checks for fetch/read operations when accessing memory.
+> So it might be used not only debugging enviroment but also normal
+> enviroment to check memory safty.
+> 
+> This features can be controlled with "kasan.write_only" arguments.
+> When "kasan.write_only=on", KASAN checks write operation only otherwise
+> KASAN checks all operations.
+> 
+> This changes the MTE_STORE_ONLY feature as BOOT_CPU_FEATURE like
+> ARM64_MTE_ASYMM so that makes it initialise in kasan_init_hw_tags()
+> with other function together.
+> 
+> ...
+>
+>  
+> -	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s)\n",
+> +	pr_info("KernelAddressSanitizer initialized (hw-tags, mode=%s, vmalloc=%s, stacktrace=%s, write_only=%s\n",
+>  		kasan_mode_info(),
 
-FYI: I reproduced the bug on qemu with an older ARMv7 IMX SoC. Should
-be able to debug it and figure it out shortly.
+This lost the closing ")" in the printk control string.  I fixed that
+up while resolving rejects.
 
-Bart
 
