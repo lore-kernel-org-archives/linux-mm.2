@@ -4,112 +4,246 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B5BCA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 14:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92AA3CA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 14:39:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52EF88E0069; Mon,  1 Sep 2025 10:38:12 -0400 (EDT)
+	id 7F0268E006A; Mon,  1 Sep 2025 10:39:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 507028E001A; Mon,  1 Sep 2025 10:38:12 -0400 (EDT)
+	id 7C7A88E001A; Mon,  1 Sep 2025 10:39:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4219C8E0069; Mon,  1 Sep 2025 10:38:12 -0400 (EDT)
+	id 61AED8E006A; Mon,  1 Sep 2025 10:39:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 28D938E001A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:38:12 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C755F13B105
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:38:11 +0000 (UTC)
-X-FDA: 83840936382.21.8953F83
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 208491C0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:38:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gfIWM0WK;
-	spf=none (imf21.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.8) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756737489;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 48A548E001A
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:39:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E75E71DEBCD
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:39:04 +0000 (UTC)
+X-FDA: 83840938608.08.23617CF
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7B883C000E
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:39:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="R68yTLY/";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=m8QRNW5e;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756737541; a=rsa-sha256;
+	cv=pass;
+	b=kuka2tyKd3TAJMv7q56/ZgFlDBS/r5OMrZUui11eFaTYWvfQ3VXejD9wtaC9g4vKHF2PVg
+	gWEB7cZsXY2h3fuIfZSIFXzRl3sujozRT3LW4t/1gbhen3QSwOJSF6XNi1SMYy09oiLL7t
+	FosDit1Yq7nbJos4WE7DxV3nPAXgDYg=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="R68yTLY/";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=m8QRNW5e;
+	spf=pass (imf10.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756737541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WQNkr5EKb/5FuHLMhuxLTbLlrHHNbuV0X7itYDSvCTo=;
-	b=TqvRKqGChKZPzBO7QLQbLAPud0awByqyFBoy8Ab6HPsdUSTfGpqSse127ERcIuR5cufhk+
-	W2NNZbpDq9e3GBc0LdqFqUDsqrkC0b2GY4L24+xTiWrTaYIssN4OtH0T8101LmsBrafuSW
-	iE5WuM9s3r8xVMwbBrsoQugm9PIgw8w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756737489; a=rsa-sha256;
-	cv=none;
-	b=CdvhVRY00SpqnhSqOXpfaW3OEtMo3/9Z9kbozLUM2iKXmb5bO02SLEB8YJvRH6oAXBzHin
-	A4mNZRun893MTyJ5iwo/rdnNwECkaAUSzTVrpr4ARlnG0Myx+di73QJCGHUbgd9vm0L7b7
-	cEVCFFYtMIhklLl1hPU/O7JuRfi6lkk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gfIWM0WK;
-	spf=none (imf21.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.8) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756737489; x=1788273489;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=WQNkr5EKb/5FuHLMhuxLTbLlrHHNbuV0X7itYDSvCTo=;
-  b=gfIWM0WKGBtFugoxH1NTQBgp5oI51wkl130/ge4hmCD++bmXe2EkEs8A
-   n40ofuPm7eZR+zJTHoeKML1PGEVr6D26TL8MFikJQUYJSjsA4NUo+jhI9
-   Ywd5+gdmMY/XUfAqS6mfvDOt1zPOWiyzjTxDDAcIu6zwRlOkdI4TOkcqj
-   6VLfXP2PmAdz6Snl/ntXQbVA7pDKmhs74zEJ1dUqo+HGWr756HK0cBoDp
-   aQ51YvXX2dvXVb+R8LjwdhUKiZeLZm/4y08jv23DXjFX2HZtE1DO4MhS9
-   EW0imoj4FGXB+oocqs/SZVsU0nnoRDtF03bwHqd2htI7mC2zTG+SXH9co
-   A==;
-X-CSE-ConnectionGUID: xKLdSTc/SQyYDfZJ1bxN0g==
-X-CSE-MsgGUID: QHNAEMgCShSsj/RWiyWcVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="76595899"
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="76595899"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 07:38:04 -0700
-X-CSE-ConnectionGUID: FKyLHvmdRWK5frmJXgJzRQ==
-X-CSE-MsgGUID: TmZPTmE/S+a9W82GyBX+0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="170590896"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO [10.245.244.171]) ([10.245.244.171])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 07:37:56 -0700
-Message-ID: <3713e6d83421fcf64978927a1cb40fae1e3c7a57.camel@linux.intel.com>
-Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Natalie Vock <natalie.vock@gmx.de>, Maarten Lankhorst
- <dev@lankhorst.se>,  Lucas De Marchi <lucas.demarchi@intel.com>, Rodrigo
- Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,  Simona
- Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>, Tejun Heo
- <tj@kernel.org>, Johannes Weiner	 <hannes@cmpxchg.org>, 'Michal
- =?ISO-8859-1?Q?Koutn=FD=27?= <mkoutny@suse.com>,  Michal Hocko
- <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel
- Butt	 <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Andrew
- Morton	 <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "'Liam R . Howlett'"
- <Liam.Howlett@oracle.com>,  Vlastimil Babka	 <vbabka@suse.cz>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Thomas
- Zimmermann <tzimmermann@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Date: Mon, 01 Sep 2025 16:37:51 +0200
-In-Reply-To: <25b42c8e-7233-4121-b253-e044e022b327@gmx.de>
-References: <20250819114932.597600-5-dev@lankhorst.se>
-	 <25b42c8e-7233-4121-b253-e044e022b327@gmx.de>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	bh=YH8UYXzGabRIgRVmGP1ocoyr2t9bl70QCBxKkvm7PBw=;
+	b=Jx2aCLszNTlLWvJ0I729Qo+8GEF1lLgrEhC9TXyuaK3MG1kgEvd3QoNp5jPCx0wbEGyTfU
+	zZujsaEUJ61lARLVbSu8hkcuh/DcslEFe/L6ng1KXO9htdyw2259fBOA3t59GQqk0tNv3z
+	4Do0aKN07vs4lZWB6rvy9+jQKI4WwuQ=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5815fr4v018261;
+	Mon, 1 Sep 2025 14:38:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=YH8UYXzGabRIgRVmGP
+	1ocoyr2t9bl70QCBxKkvm7PBw=; b=R68yTLY/54e4r1FrTJd05oIJTuLH0ohRuU
+	uetdVQoup7ul+rVndOpEETxgsupqqvXzbWPQnZU3d1MHYf4l/zBajRFVbl6Y9hsg
+	Y8ouUHrq4x5aXSjXDoDTlLsEhxGi6k41M/9OsBmPm0PkTnv8FVGEoLEJphuqYYeQ
+	nyFPZhf9+92usI2100vG+02SDtJQaplEVdT6S7BXvv21u/XeHDrp9UHtXq12YQ1Y
+	66G1BgWiYPmUxvK/crl1gMfyRo3iit4DYI2F17NRjHzX11VdJw1wmmshntcOTuin
+	YHsV8yxtH+4R1X2sTZUpHGXeGwY4eiIPe0TUyReh1N2dPMtRkLig==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48usm9jktt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 01 Sep 2025 14:38:28 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 581CtWwH026772;
+	Mon, 1 Sep 2025 14:38:27 GMT
+Received: from bn8pr05cu002.outbound.protection.outlook.com (mail-eastus2azon11011020.outbound.protection.outlook.com [52.101.57.20])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48v01mf08b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 01 Sep 2025 14:38:27 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q1YFlwyRyCYl8CiebR9wT5WL6vHGZXv7XILgQq9sKbrZaaMSTUu5rTLBBkG9uxBYKDZb9+q/2k1v2IJ9A6Xlb6xavEqkq0EW2QHRL0jrkaetyn8anhVhCE4WpIqdOFrFGi5JXAEUYfLtk3IO6Q46+WgaXL1sHRIhZ2Lnt/FE9EGsx8hg14LVJmhhs4W1k6ynldYUBWx6N7j2sL2hgQFTYxD+VqG4E42ZuQW/OkWvl9+upVgWr2/bp68GFFb5LyKSR4RguGjiYwsMCeVH+ZTXx93Eri9CzITINf1KCTgtwCYZqNCsIs+Vjh9efk0Pi1tGbOqr+tj6Ka0v7qm/LKEn6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YH8UYXzGabRIgRVmGP1ocoyr2t9bl70QCBxKkvm7PBw=;
+ b=s4y7fWT4CPOhmakWPTG6phPODBwMTcPc4fWn7AFvCEi1MAQundC4XM5u5Kb+iRLW/tQBRBdQ63pFG+lQn+Ttxoo4H/HC+JN+AkMG9v41pioZL+tUap0KFgIUPuTo47Gfk03G1RwVR5hvpeIJwSY4TERq12h98Yi1+U+bCYHM98Z5ds3BKcykxphXSpEwBG8Pq+RewbT6+hlc5DRacg8qw2+13XukebwWwKOQos4e55ThlvzxalgMS3oWH5h7z6VhBT0e4Yrd99A59ENoqi89CfD1DKbWLw5PxEmOrQcdNZG/2/NDCUlyN0ayN5SaalAjv2181WPJKD0/2QLaNM+BUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YH8UYXzGabRIgRVmGP1ocoyr2t9bl70QCBxKkvm7PBw=;
+ b=m8QRNW5erAjlWkqNTWgH7N8v357oHXXAwRNy0fvyQAlO9L0fv5tPBtdN/d1vx+8OV9yZ75Icovt1zU0Y59HWgBRF/oWsODu/Xe1B6NzDnQeMedeJ+dA+MLvoSFuAs8z75N8jjSgDbCXK7CxdcTH4QPUWXiwg/YUJ6I0QosvI+kw=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by MW5PR10MB5737.namprd10.prod.outlook.com (2603:10b6:303:190::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Mon, 1 Sep
+ 2025 14:38:22 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%3]) with mapi id 15.20.9073.026; Mon, 1 Sep 2025
+ 14:38:22 +0000
+Date: Mon, 1 Sep 2025 15:37:50 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
+        yuanchu@google.com, willy@infradead.org, hughd@google.com,
+        mhocko@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+        surenb@google.com, vishal.moola@gmail.com, linux@armlinux.org.uk,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, davem@davemloft.net, andreas@gaisler.com,
+        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+        weixugc@google.com, baolin.wang@linux.alibaba.com, rientjes@google.com,
+        shakeel.butt@linux.dev, thuth@redhat.com, broonie@kernel.org,
+        osalvador@suse.de, jfalempe@redhat.com, mpe@ellerman.id.au,
+        nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v5 03/12] mm: constify zone related test functions for
+ improved const-correctness
+Message-ID: <d4d90b7a-fc5f-4f5d-8f64-7b07d3bd8d66@lucifer.local>
+References: <20250901123028.3383461-1-max.kellermann@ionos.com>
+ <20250901123028.3383461-4-max.kellermann@ionos.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250901123028.3383461-4-max.kellermann@ionos.com>
+X-ClientProxiedBy: GV3PEPF00007A82.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::612) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 208491C0002
-X-Stat-Signature: srhwfyqgyo7mpobwzx65rs5somhe5mwn
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|MW5PR10MB5737:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86499747-f775-4781-1074-08dde96529e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JYoGdow/8PzczB3QoHQJ1lALI4TL+V5s6g/tN2mOYsesZUQu6O2VhZR0aNBP?=
+ =?us-ascii?Q?u4fvPYtMuynG/vICDcJhs/x2PXD8qcJBc2pdpyXLdfb9otcYujjKfpXyRPK0?=
+ =?us-ascii?Q?hz4PrD8GOfa27ShMZwT+HoxlkSnr6cicX8o9NyO803lXd2iQHxqYK6xs4ziV?=
+ =?us-ascii?Q?Mt3bdma5z5ikP+DkAKYzEuaptNJjHLfJLBfo49sdEj+Ayi3eUt8IoTyHTk6Q?=
+ =?us-ascii?Q?4CaTGgIGR/cO0ErW2FqdMzLx4FTlqczw1HZcW7awetoZaDZTlt0OT5u4fX/6?=
+ =?us-ascii?Q?cawpc7rXlsYq+oMuUF3m8gcIVdakqslh5wlM60HaOzNZp75Bj29fzmN7pNm1?=
+ =?us-ascii?Q?kXz/wStQ1PmxIgWDP5l0OY9HSqir6/8TGm2PdCV/4qvnYUnGUfmSmI2Kcdnj?=
+ =?us-ascii?Q?v+u0BXNJHTJkLvHrq3xfUB3kgKQo73Y7V39Mq6nXeJaYHAvCZqGA97t2LfLq?=
+ =?us-ascii?Q?jUJxgDVPQoJ2QAM7X1J5FWyBxQxnUte5OVlzi/SqbqqXkjmaVxy54v7MuHCl?=
+ =?us-ascii?Q?0/ppbI2nSFrYg/iY/egjqkYDYCOoIeGXQw2rSMHuNvlj3FBt5jVrBg8CQ8+q?=
+ =?us-ascii?Q?2dz6DQvt/JLRmkpbKwfp14KJWHWjtQWlC3wM0kgGRjXEWtjWjIYJGq+lkSC2?=
+ =?us-ascii?Q?XOkIhYjzgTPZVDhqOqZoNUINuizztuB+D8o65XGWiLqKG+5o/EJvW1il+LRl?=
+ =?us-ascii?Q?nYZEEFZ0kDJ+kCoovoUhX9FpRG3o+99BsGuxySVhxk6LWwZ2GEBNICbam5zL?=
+ =?us-ascii?Q?9w1htu4AgXIa/vFHqcJW2WP+TyYJPGnvuqXjekx7k6lt9MW8xH/KHNzV/Wbh?=
+ =?us-ascii?Q?4AnAVOGlFsrVf/2kcc3KPB7HHFMpzncKmlpDmZrJhVAtd+bneLrRaHcqXmnI?=
+ =?us-ascii?Q?9yL+AtGt9LHkgvATzdRh49dEuxYnhdNOwyKfN+gRfmtbaf/HU7Lex7zRh3Ux?=
+ =?us-ascii?Q?Yyv1lvEnzXVUF7RwXcRkQ9152Q5aYwKKSy3B/OtLs50ISQVWsasepcDuTRbH?=
+ =?us-ascii?Q?ZQHOlBBLPvWS8bYYw8fg9EzuISF27Cc6o4t8Fb0OWfDywr0arCgmpYplhApB?=
+ =?us-ascii?Q?Otbqnms5Svt2ZlHvXd4shA4cpsGVitQTBs26XTC8QF+hc4AfSAFQbqhyPJ8j?=
+ =?us-ascii?Q?9gAfuHEG7azC8laOSVY7ODKdWZGJ16RY0Xa9loMCSeffVRBTyfydNiaVdhqJ?=
+ =?us-ascii?Q?z1Crvt9rxtg6zoGqr0JhiLCuYRqyXaGw4hZKUua8xxkzWltYWYPzvugw6zDk?=
+ =?us-ascii?Q?pKnxqv9H6qPjcYTWbLRgWEM8LksBfo3+aZM3V2p4G8lLW2xfVo5q7jT1RP8x?=
+ =?us-ascii?Q?6sG4vPYRIwadJuT7xHLLlMRhU4hYGw9HTwATNHFiclfMJIYnhXRI2XEYdwSZ?=
+ =?us-ascii?Q?T5plAdI43xN/VSjMlkstpcAa12MIVfpRKfVPfl8KyLAA/J5JfCW/OXut7Bsl?=
+ =?us-ascii?Q?gQsYTW1+PxA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?36Kapsdykv6cb3eYdLp5UV2zyn6d7GFkAp+RGQU/d2eAOSUnrpa5SrHtyLax?=
+ =?us-ascii?Q?q+COvmHFjgfbPBS08nxz5NxoqeAMOX/xyQ6gjH1LSxnfq7hgCyBvf/7wbdn6?=
+ =?us-ascii?Q?mz0psOoBs/Uixm2bxF9ZdQ07TGU7YFnbZUtEJZ19zQWNwPsQGB5hurEcC20a?=
+ =?us-ascii?Q?0P8XYGlGEqTUO2e7nC7n5NMSlgodvIJZ+5nXZFTF1IQH4YOwn/rZniHnxHIk?=
+ =?us-ascii?Q?55loiu1GBKzbvTpOxna2W57o54dkGLTbdbOL37eYZdKHylckjHASykfdPyYS?=
+ =?us-ascii?Q?jSNqqQ4AiUTDkew/PnzHh9cJqxAJ/UJ1gnwU74Wss7lsx5nleuY4J0GCpN1S?=
+ =?us-ascii?Q?V9b7+nACbzIqcZ5BPvoxsnA2go2LU2PuDbEtQo+JpKDw5/WmJcLotXr3JF91?=
+ =?us-ascii?Q?wPtMjxK1UUcZBhOXxR0I7vX1J/vBuc9yqXmzsm15RUWQ52Hb21SNfmkW/AhI?=
+ =?us-ascii?Q?E8mejO6qOpfQ0dBI4M5b9FAiezfp5VTiKwodAgHeWGlNbxuU3ll9frV7mu+1?=
+ =?us-ascii?Q?NuEHGWv+3JhkWKuWljC1YMCUC8rYWhHzrX2walGY7KkWMansqropxiHdOmq7?=
+ =?us-ascii?Q?O9IURKIZjunnXAkwdcmPWOJEziasTb0iZkpXGHMyCZBVDCOI/g79RJxwEsw4?=
+ =?us-ascii?Q?NwQ4AZd3qG5s+rw3KeYg5jPTWJ3pttYlEbfFw3VkLUYTuy8aGG6l6TW1K6q+?=
+ =?us-ascii?Q?CI1dmiKVt7FV/of80VLFyp+wTyzX2xaouRzGHa++qdJXNwEOLCQ8MkcYH7mR?=
+ =?us-ascii?Q?iwOmZPtPXJBpAUdq8vZgCrk4FMIfylR0khw0RiugsM0g60/gu6djYVh7h2Oc?=
+ =?us-ascii?Q?meHuCsalUbbTb/ljVilATpWtNBybG6G3qfqQGS05CiWvCU2zFXbeHloVbht9?=
+ =?us-ascii?Q?TD+NDoKAAPvo7yG837dj62DJW5jAKK7p0hTMOL5Q/UiNwkJBylbYPSuZArho?=
+ =?us-ascii?Q?dphf3s70RJ/aTf7IILmGzrmiernhbiyx/pVep2gTTcWD5LN8SE0zdxgAaa+S?=
+ =?us-ascii?Q?RkPpFhWt+2U5WC0lCQQDlP3U7An6ukd+iZJB7CYkHmuD4UsghLI7CB+7cUFm?=
+ =?us-ascii?Q?HB5W8FCNbMM1jjxcOZv5+Ay8ZU/lwCOexYocVx+aE42zgkDhgFjL8NPUxmsp?=
+ =?us-ascii?Q?8takEMigCqgvlxJPudoVC79gqbOwZnTUwZ2jLn2Z87k8Uy46Jn6euy2bHfKV?=
+ =?us-ascii?Q?JIfdHGsWImLgR8WeU/OjMJICUbsyrN0Z+Bl5mbMIIuyRtlpL3OiwsxyeovEv?=
+ =?us-ascii?Q?NoPr9Uxd2HLPNlimhqQO+GvUrwzz8UsridaMXpmKnCFEgWNbPjUEngKf+pts?=
+ =?us-ascii?Q?zxPK+ru48j1gwulBIIduRP++fvuMLh4D5nrECfq17GX2vpKd1t82h8MpZRKb?=
+ =?us-ascii?Q?EZShTiLWYStSwxaBbs0c/18yLCtAy7TC4P4glZJcuQt2GzkOq7WhRQV60mNO?=
+ =?us-ascii?Q?QLsmZhZh/NKjUaukEqxUuLP8o1ukCafzWQKHXeZ5KycxjDpkRlAxYXAaH4Tf?=
+ =?us-ascii?Q?cbdIHYGtU5iIDDw5upbm4xs/+aNljipGxlGWFUGSm8BdYBGgneH/Aeee4Cax?=
+ =?us-ascii?Q?L4EGo92rEfYDtMydnFP8o+TdtFdf2aJ3m5QUGy2Q6wPWyVY9AlySv/5cIjyN?=
+ =?us-ascii?Q?YA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	ngVl57rmW/7tt9vTjtDyFn1+jJxO79H8FxEAlu4GtSEWduNLm1GvANbBnyN09hIQi/dfbA7HOH21h3rrOacw+FXmZ2CG8BPip+HsQdnVf8YL7wuR+VHhSKd2bUN6yj5BzkRnpe2eGnovvffgIqchXK7f8Z5RxsTwiyuxmh5OWJvb1udzUYkqTWjOvNOXD9qWiQgKD/CKHsS3+N9FodP2Y/9s9NV0oKb97K/uVlr7ZqFINBAAtlkAWac0d5s/AAeSifUnkckmV4HV5rjL2XPH7dUf6aAyBVLLak7hU481vcfxzjzvI/HjgcsSsn0c7Xue8zIaldYgvjxn+nR8NTcfKGnkme07ACTLoU38XSfAmjjzUlqWI/0AmMZIuESarc2s4bCUgPc+HUUrIZ4vp41hJ6iD91yRu0XYq/NsIjvgGgVbS1tG613galt5l6ZbxhvqkuH21+CS/Ure1MgFC5aKffFHnZ9EGryQGaYHAa+3aMLb1GDr4N2LJAX/LAXQp2CKk0dEK9iiEZhN3uYoRyLEtHUyw+ICp6Q2eI6l08T3yJOaWQAx5Ka+1u7bQBxxHJZEtJfOexXC5oF9a6sSspg+sn1f453O00U9L3YkalRreY8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86499747-f775-4781-1074-08dde96529e8
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 14:38:22.6605
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fUV2B10bpkYyJX5ahS+uVUQkAEyFWTDRI3eYMHz62E8RRh91oFkD2AxsAbmx2mC0ru+w/jv+idWXoaidqj14EeB+f9c5LJI+qPNCs5Pp5Yk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5737
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-01_06,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509010155
+X-Proofpoint-GUID: 0Yjm761WiJz8OmuHS-vNSrypwX1NRmgn
+X-Authority-Analysis: v=2.4 cv=I7xlRMgg c=1 sm=1 tr=0 ts=68b5afe4 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=UgJECxHJAAAA:8 a=pGLkceISAAAA:8
+ a=yPCof4ZbAAAA:8 a=NMxtF6NneZFbZcyBqk4A:9 a=CjuIK1q_8ugA:10
+ a=-El7cUbtino8hM1DCn8D:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMSBTYWx0ZWRfX1g8kq9v0CEwU
+ lVWbh8O7a6ujYNilbsS5JMQL/UwFTB/Bd8WbKgnxe3OsQ3hlBmKI5PbuHDX3QE6dmsZivR3qE5s
+ jPpxn+Rt3c5kuxu2dzmCT3aosoukZpiOpOwIofYfjSQL63EUtSxUmUMn+mBwl2LDFk+EzgfJ5A7
+ lx+w4HWMU4pVOh5TCD5GP5fcXwnRN62BvIZ01vFTsbGPLMwp0D6ZxJVXllTGvVh1Rct9/6dfwRy
+ ceOlYDXZgGkQ18WiB9Xgc1Isw297W9OvzUGmXS3ppyEZQ1ppA3hwpI+3iisjuKfSIDHqVva9Tc3
+ HzcNOl3zbFX217gPXwew19K4dukJSKZMqPi7CZhrpax+IE76W17ZLyeM2i7FvBiZfzXlCXDB11T
+ D4/yKccS
+X-Proofpoint-ORIG-GUID: 0Yjm761WiJz8OmuHS-vNSrypwX1NRmgn
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7B883C000E
+X-Stat-Signature: emzj15gtp5ynq5cdjbw5rabfbyssn8xh
 X-Rspam-User: 
-X-HE-Tag: 1756737488-198246
-X-HE-Meta: U2FsdGVkX1/3FwPLG53ifviJ1lm2toYHqDnKtXGP1avf/++PkVx5QtkCvXqcFrp+miZonas26TyclnmwvZDnMUx+9MgT1hgxpbK5iBduc7fVFmQ2maF91vkFrEi+fnmbKbj3Jden8nAYA+msLeG+LS2KKxouHyv36GxvUpn+3bFEJCHTnwr3pi7RJyOTEuHZX3TMZjfKSGxQFbzFMNrC2MkbtBPeR+/a2wFd0kWnmJ/N02B68Qzj5KwsKYs+t3MH2pf9cTHUdrauf6UdXAQYR8Z5O8tufI/t5oqZ9jiVPh0M54HzyA59U6oFk9UisbvROaH4uE8ITKfZQmQ4BpINp3B2C/eENZtaNU3RESkFz6WOa2TxJD0f80H//3uwoh46dXmrNjBu1oIBUiUUwkHk9M6uUR22ST9bwmee4dUFBuTIdYEW8k3B2tNm9ciltTF7b1cEvHuZd3bCWCiCV6ou7zjH2wEO4GeRKWapvLu97rqA0qTlGERS7LvegwxTdI2KwS0EyGMgetSsjmp874KqI+50whfZ32nVBMT58eDne+vMFtvnEhMxfSLi6BXdO1FjUYLPx7kF27FHuH+LW6pnrw1YjgADmPkoDGjTVHZ7wz5w2MBX+oXz3GKkVdAfiUYtoO0K2U53Ac/Fqki3xcihSytP14HppxWZ1qFl5qgXo23w4GAxANASyz4JFcSggMY2sk+XJhF6mTBEOm/o0QPCWjc75OU/5OGMS6RXZi4si70t7SCLVJKvzg6mtVkNzvXSTbF1AGYoCVLghzayDdT2wRQ6J5vhYQybud4mWXilTFKdIlJJr6hfJ88HNxjxYOj3kjDwZFZR/mcT70ilj/lKwdnIYsoa2CxD1xtCq2gsI14=
+X-HE-Tag: 1756737541-849212
+X-HE-Meta: U2FsdGVkX1+m0WMut173dpHJS8KkhlJs+840K17Mb6Ejg67V0cUU2GMr1qL5cLkZr58bMt70fdm5Fqzp32H86x+w5UkJWcPOpJxdpbsD61FPUJ73gXEeqNHHDw9Zv4nVwrPIbbVsx9mVJA8/tePkaIEfh9Iv8dlyEOdjeOHA6nsfe02Ocog0NmoV0R0grjYSJDTwPp8huzsVuRsPl/DLd1GPoOblQ3Yn89YT6JYI46NXDezNdG1LMAytMXAx0FHSZmDTR0BHGrSI2jGM0pP43OEhEyBBYBDymPqKy2kxm5Bcu9gyqQDePQnw19OubsxZXmAvErlTj1jblB8mHOMJmvs7vvMF3slg0I/yqNwXSxHjqv6YvYipKgqyL/SPI18DFGDtiYomer8mM2JFjjDFYsGYwtmh9y/eugUAQH4ZRMrU/SyMhcRNmPZLw0dZPwJBejOGme9bcAUwk+qx7m9Vba/iyHtS/P10gJ+vvUS/2EP1VipecTJ243jLO/3Y8tkdnbE/bCWprjacnxwI4ZeJmydLv3k3bY9SbHsxxTJ0YVhfnhxXPFIs0IwwAIEXNH1b45QD/KoVeFlQnh8NyJUbxGH13vgxp7+EO6yuYRF2RIiQCEw/Wu/BdTgRv2xRl8A+OdgnVDvZVbCD4SOZ7ULEucswGcaI7lRDnveTLWrkboMMXTFQqTimCBSBZoHxizQSQiDOBTSH4CK74A65QaRQxXq64R5qFjfnoj7wA1wmzKsFSh3Yoy/mpVmFkaer5OwItyA24bBcsv801II3sOdJX35qQzAbAYe3SWKpU7ZnNHzLY6fB0MoJ27R+ERt7Gm4HyD1d65WWERrLpTFHTCpa62LKdc4dgoovrFGmkJP19w+ckheRkPLcdr7a2kc7SR2EhNFKRDT9aCPG1DzdSnyJ9ynR7RDplrUWLE2Eu8Z4SKIzwxaRc8oNyO3dOtnFFUNVebJbaslrJr3XYC9l91p
+ Ks4AnD5x
+ VjDfx/GIiIK95t1KMf0TKzFL18/hBtRkEcmTDaPZRV1M1B7kl91amT7OfHwXX29NmHambq71dCDB56JYtOYMgrKzPHX5wFb1UFVMixrWfcnX9gN9Jf3oPHej/LfiXOEGG50o1a1T4ckVwKAu+0bojpoX/khUQi68i1Yw1LFhCIfJ7HfoXj+kC+E0Ub8SdW+HpLD6/TBXfx+eAdKmnUE85HI1NEWjsmF8TmRFWtvl5wrbGpk8OCJ8ekNeJnQfL8Bh+xDSRvwqRtTsqusgexzLlYz8//HAzHDCuWkYDRRvjXKEHSrIt8foMP1iZku0YUJzdi7IyR8ularJhaMH8eTi9HGJ2TuRe75x8z79An40ParZZCLblWeTbmJkLr2WI6mTBhivwEVD7O5CvGhU33Z4lI3AMUIz9AGkiY6nY3TC1zqP+1++oG3nmcx6gHeLFbCHE1m2eUiiCuneSi/PHuqekrw+JgdBXsKHkTSmZ2uWUdV1BZUQBjq3q3PqtlVrym1APg2+YJy06Q3yaJtJpLaL5YZoPAwl92dzO9tHKCJzD3vhtebROgTR1wVnR4JiPuqswZrgGeon8+jmFM3OBldQOcc1/rnwfbJdrNJzp/60Vw6F1sSi4gKmUr6Da3umksJV5kMqXp0nJt1pl1IWHdGZaS4O7up06t8brJnxhUESBgJlCch90w6Wf1SduGF+8JRXc6ywqTjQCvRtZPKOutD4TX07tJvEt186P0MB1btonviaK+l6TTfpVD4D6gQCEoCQaDXDQW05ygdqxZvHSrj+MGmfE5RzDi/hSZIgPirM5iCzikeQkIXybDbdb9m14v98uMt+3uEz8C8G3U5qtcAoAL9PHzASUGKMpiGbC0R8RctEY53kUA7LbaLz6bbVxCUGKGotS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,115 +252,200 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Mon, Sep 01, 2025 at 02:30:19PM +0200, Max Kellermann wrote:
+> We select certain test functions which either invoke each other,
+> functions that are already const-ified, or no further functions.
+>
+> It is therefore relatively trivial to const-ify them, which
+> provides a basis for further const-ification further up the call
+> stack.
+>
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-On Mon, 2025-09-01 at 14:45 +0200, Natalie Vock wrote:
-> Hi,
->=20
-> On 8/19/25 13:49, Maarten Lankhorst wrote:
-> > When exporting dma-bufs to other devices, even when it is allowed
-> > to use
-> > move_notify in some drivers, performance will degrade severely when
-> > eviction happens.
-> >=20
-> > A perticular example where this can happen is in a multi-card
-> > setup,
-> > where PCI-E peer-to-peer is used to prevent using access to system
-> > memory.
-> >=20
-> > If the buffer is evicted to system memory, not only the evicting
-> > GPU wher
-> > the buffer resided is affected, but it will also stall the GPU that
-> > is
-> > waiting on the buffer.
-> >=20
-> > It also makes sense for long running jobs not to be preempted by
-> > having
-> > its buffers evicted, so it will make sense to have the ability to
-> > pin
-> > from system memory too.
-> >=20
-> > This is dependant on patches by Dave Airlie, so it's not part of
-> > this
-> > series yet. But I'm planning on extending pinning to the memory
-> > cgroup
-> > controller in the future to handle this case.
-> >=20
-> > Implementation details:
-> >=20
-> > For each cgroup up until the root cgroup, the 'min' limit is
-> > checked
-> > against currently effectively pinned value. If the value will go
-> > above
-> > 'min', the pinning attempt is rejected.
->=20
-> Why do you want to reject pins in this case? What happens in desktop=20
-> usecases (e.g. PRIME buffer sharing)? AFAIU, you kind of need to be
-> able=20
-> to pin buffers and export them to other devices for that whole thing
-> to=20
-> work, right? If the user doesn't explicitly set a min value, wouldn't
-> the value being zero mean any pins will be rejected (and thus PRIME=20
-> would break)?
+On basis that we figure out whether we want the "const <type> *const <param>"
+thing or not, this otherwise LGTM so:
 
-That's really the point. If an unprivileged malicious process is
-allowed to pin arbitrary amounts of memory, thats a DOS vector.
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-However drivers that allow unlimited pinning today need to take care
-when implementing restrictions to avoid regressions. Like perhaps
-adding this behind a config option.
-
-That said, IMO dma-buf clients should implement move_notify() whenever
-possible to provide an option to avoid pinning unless necessary.
-
-/Thomas
-
-
-
->=20
-> If your objective is to prevent pinned buffers from being evicted,=20
-> perhaps you could instead make TTM try to avoid evicting pinned
-> buffers=20
-> and prefer unpinned buffers as long as there are unpinned buffers to=20
-> evict? As long as the total amount of pinned memory stays below min,
-> no=20
-> pinned buffers should get evicted with that either.
-
-
->=20
-> Best,
-> Natalie
->=20
-> >=20
-> > Pinned memory is handled slightly different and affects calculating
-> > effective min/low values. Pinned memory is subtracted from both,
-> > and needs to be added afterwards when calculating.
-> >=20
-> > This is because increasing the amount of pinned memory, the amount
-> > of
-> > free min/low memory decreases for all cgroups that are part of the
-> > hierarchy.
-> >=20
-> > Maarten Lankhorst (3):
-> > =C2=A0=C2=A0 page_counter: Allow for pinning some amount of memory
-> > =C2=A0=C2=A0 cgroup/dmem: Implement pinning device memory
-> > =C2=A0=C2=A0 drm/xe: Add DRM_XE_GEM_CREATE_FLAG_PINNED flag and
-> > implementation
-> >=20
-> > =C2=A0 drivers/gpu/drm/xe/xe_bo.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 66 ++=
-+++++++++++++++++++-
-> > =C2=A0 drivers/gpu/drm/xe/xe_dma_buf.c | 10 +++-
-> > =C2=A0 include/linux/cgroup_dmem.h=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +
-> > =C2=A0 include/linux/page_counter.h=C2=A0=C2=A0=C2=A0 |=C2=A0 8 +++
-> > =C2=A0 include/uapi/drm/xe_drm.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
-10 +++-
-> > =C2=A0 kernel/cgroup/dmem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 57 ++++++++++++++++++-
-> > =C2=A0 mm/page_counter.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 98
-> > ++++++++++++++++++++++++++++++---
-> > =C2=A0 7 files changed, 237 insertions(+), 14 deletions(-)
-> >=20
->=20
-
+> ---
+>  include/linux/mmzone.h | 42 +++++++++++++++++++++---------------------
+>  1 file changed, 21 insertions(+), 21 deletions(-)
+>
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index f3272ef5131b..9a25fb1ade82 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -1104,7 +1104,7 @@ static inline unsigned long promo_wmark_pages(const struct zone *z)
+>  	return wmark_pages(z, WMARK_PROMO);
+>  }
+>
+> -static inline unsigned long zone_managed_pages(struct zone *zone)
+> +static inline unsigned long zone_managed_pages(const struct zone *const zone)
+>  {
+>  	return (unsigned long)atomic_long_read(&zone->managed_pages);
+>  }
+> @@ -1128,12 +1128,12 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
+>  	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
+>  }
+>
+> -static inline bool zone_is_initialized(struct zone *zone)
+> +static inline bool zone_is_initialized(const struct zone *const zone)
+>  {
+>  	return zone->initialized;
+>  }
+>
+> -static inline bool zone_is_empty(struct zone *zone)
+> +static inline bool zone_is_empty(const struct zone *const zone)
+>  {
+>  	return zone->spanned_pages == 0;
+>  }
+> @@ -1273,7 +1273,7 @@ static inline bool folio_is_zone_movable(const struct folio *folio)
+>   * Return true if [start_pfn, start_pfn + nr_pages) range has a non-empty
+>   * intersection with the given zone
+>   */
+> -static inline bool zone_intersects(struct zone *zone,
+> +static inline bool zone_intersects(const struct zone *const zone,
+>  		unsigned long start_pfn, unsigned long nr_pages)
+>  {
+>  	if (zone_is_empty(zone))
+> @@ -1581,12 +1581,12 @@ static inline int local_memory_node(int node_id) { return node_id; };
+>  #define zone_idx(zone)		((zone) - (zone)->zone_pgdat->node_zones)
+>
+>  #ifdef CONFIG_ZONE_DEVICE
+> -static inline bool zone_is_zone_device(struct zone *zone)
+> +static inline bool zone_is_zone_device(const struct zone *const zone)
+>  {
+>  	return zone_idx(zone) == ZONE_DEVICE;
+>  }
+>  #else
+> -static inline bool zone_is_zone_device(struct zone *zone)
+> +static inline bool zone_is_zone_device(const struct zone *const zone)
+>  {
+>  	return false;
+>  }
+> @@ -1598,19 +1598,19 @@ static inline bool zone_is_zone_device(struct zone *zone)
+>   * populated_zone(). If the whole zone is reserved then we can easily
+>   * end up with populated_zone() && !managed_zone().
+>   */
+> -static inline bool managed_zone(struct zone *zone)
+> +static inline bool managed_zone(const struct zone *const zone)
+>  {
+>  	return zone_managed_pages(zone);
+>  }
+>
+>  /* Returns true if a zone has memory */
+> -static inline bool populated_zone(struct zone *zone)
+> +static inline bool populated_zone(const struct zone *const zone)
+>  {
+>  	return zone->present_pages;
+>  }
+>
+>  #ifdef CONFIG_NUMA
+> -static inline int zone_to_nid(struct zone *zone)
+> +static inline int zone_to_nid(const struct zone *const zone)
+>  {
+>  	return zone->node;
+>  }
+> @@ -1620,7 +1620,7 @@ static inline void zone_set_nid(struct zone *zone, int nid)
+>  	zone->node = nid;
+>  }
+>  #else
+> -static inline int zone_to_nid(struct zone *zone)
+> +static inline int zone_to_nid(const struct zone *zone)
+>  {
+>  	return 0;
+>  }
+> @@ -1647,7 +1647,7 @@ static inline int is_highmem_idx(enum zone_type idx)
+>   * @zone: pointer to struct zone variable
+>   * Return: 1 for a highmem zone, 0 otherwise
+>   */
+> -static inline int is_highmem(struct zone *zone)
+> +static inline int is_highmem(const struct zone *const zone)
+>  {
+>  	return is_highmem_idx(zone_idx(zone));
+>  }
+> @@ -1713,12 +1713,12 @@ static inline struct zone *zonelist_zone(struct zoneref *zoneref)
+>  	return zoneref->zone;
+>  }
+>
+> -static inline int zonelist_zone_idx(struct zoneref *zoneref)
+> +static inline int zonelist_zone_idx(const struct zoneref *const zoneref)
+>  {
+>  	return zoneref->zone_idx;
+>  }
+>
+> -static inline int zonelist_node_idx(struct zoneref *zoneref)
+> +static inline int zonelist_node_idx(const struct zoneref *const zoneref)
+>  {
+>  	return zone_to_nid(zoneref->zone);
+>  }
+> @@ -2021,7 +2021,7 @@ static inline struct page *__section_mem_map_addr(struct mem_section *section)
+>  	return (struct page *)map;
+>  }
+>
+> -static inline int present_section(struct mem_section *section)
+> +static inline int present_section(const struct mem_section *const section)
+>  {
+>  	return (section && (section->section_mem_map & SECTION_MARKED_PRESENT));
+>  }
+> @@ -2031,12 +2031,12 @@ static inline int present_section_nr(unsigned long nr)
+>  	return present_section(__nr_to_section(nr));
+>  }
+>
+> -static inline int valid_section(struct mem_section *section)
+> +static inline int valid_section(const struct mem_section *const section)
+>  {
+>  	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
+>  }
+>
+> -static inline int early_section(struct mem_section *section)
+> +static inline int early_section(const struct mem_section *const section)
+>  {
+>  	return (section && (section->section_mem_map & SECTION_IS_EARLY));
+>  }
+> @@ -2046,27 +2046,27 @@ static inline int valid_section_nr(unsigned long nr)
+>  	return valid_section(__nr_to_section(nr));
+>  }
+>
+> -static inline int online_section(struct mem_section *section)
+> +static inline int online_section(const struct mem_section *const section)
+>  {
+>  	return (section && (section->section_mem_map & SECTION_IS_ONLINE));
+>  }
+>
+>  #ifdef CONFIG_ZONE_DEVICE
+> -static inline int online_device_section(struct mem_section *section)
+> +static inline int online_device_section(const struct mem_section *const section)
+>  {
+>  	unsigned long flags = SECTION_IS_ONLINE | SECTION_TAINT_ZONE_DEVICE;
+>
+>  	return section && ((section->section_mem_map & flags) == flags);
+>  }
+>  #else
+> -static inline int online_device_section(struct mem_section *section)
+> +static inline int online_device_section(const struct mem_section *const section)
+>  {
+>  	return 0;
+>  }
+>  #endif
+>
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
+> -static inline int preinited_vmemmap_section(struct mem_section *section)
+> +static inline int preinited_vmemmap_section(const struct mem_section *const section)
+>  {
+>  	return (section &&
+>  		(section->section_mem_map & SECTION_IS_VMEMMAP_PREINIT));
+> @@ -2076,7 +2076,7 @@ void sparse_vmemmap_init_nid_early(int nid);
+>  void sparse_vmemmap_init_nid_late(int nid);
+>
+>  #else
+> -static inline int preinited_vmemmap_section(struct mem_section *section)
+> +static inline int preinited_vmemmap_section(const struct mem_section *const section)
+>  {
+>  	return 0;
+>  }
+> --
+> 2.47.2
+>
 
