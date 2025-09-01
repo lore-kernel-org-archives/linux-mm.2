@@ -4,113 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC409CA0FFF
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E5CDCA0FF0
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22A748E0040; Mon,  1 Sep 2025 11:50:23 -0400 (EDT)
+	id 5FFC38E0050; Mon,  1 Sep 2025 11:52:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DA198E0003; Mon,  1 Sep 2025 11:50:23 -0400 (EDT)
+	id 5AF7D8E0003; Mon,  1 Sep 2025 11:52:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A2038E0040; Mon,  1 Sep 2025 11:50:23 -0400 (EDT)
+	id 451118E0050; Mon,  1 Sep 2025 11:52:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EC5FC8E0003
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:50:22 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A4DD085F2B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:50:22 +0000 (UTC)
-X-FDA: 83841118284.24.B215965
+	by kanga.kvack.org (Postfix) with ESMTP id 312158E0003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:52:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D774011A4AF
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:52:58 +0000 (UTC)
+X-FDA: 83841124836.23.0AAF635
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 42EF91C000E
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:50:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="HQV/e8ih";
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 74A15140004
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:52:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RAINU0Q6;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756741820;
+	s=arc-20220608; t=1756741976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FFB/nnIls2YEMkJJaENT0MJmgWbxUwVCfeQdW43zAOA=;
-	b=HYZUrA+sQ4xhMrzb2Tr0wYxjuUakSdE/VG32lfAaRC3YyRAWg/4z6Lmjshz9DQfEeh+Ef8
-	h/V1jjp4MWayNzFKoCKBZ+oC431SfERNFQZljgagpYja6q2XjPYgoS2W1aLgymBh5f0v4S
-	AL9QlLvjJLifSiKQ39hQT2G2ohLcwVs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756741820; a=rsa-sha256;
-	cv=none;
-	b=OS6HK2TKc5JGHPSwAzSZf4zMsc49IVvPf3XDYpfrdtlOyLNfihis0LGuulmM058yxbPvkb
-	kfeOdIv4mEpgEHvAY+dxNbx0y+HXMuMADuQVEd1Cnap1v+W/pdUwL13gkA3So/cOsGCzRJ
-	n+L5AB4zItk6BIvuU/qYtZm3thqzUB8=
+	bh=mbEdJL0isBBnB3JXZr3cyBmB7UVFLdKlgzj7B1K9tQk=;
+	b=Nhj0rP3DNdn2uHlioBtCvSBYjsfWST6kQHhtJg7zThU66LD8xjwh2bqMvrNrjK607Ampke
+	zZAwTauF9aqkBhYJ3npE33MI4OGjHOnXdqXi4vpgUtTjQTVinxjtaChLFOJ6OOC5XXhRPH
+	Vh0Yc7zglYQZc1C7wvyVILhGQYjUXXE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="HQV/e8ih";
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RAINU0Q6;
+	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756741976; a=rsa-sha256;
+	cv=none;
+	b=pBlBvYCmz3U3yttdfcsXFB3E6VyI50uUj5H4eJvIQu8oVnh3+KX/wvtFnJ9yVF9129PoqM
+	UZu0anGUD/xN+HUK2stKOivv+XtvlFdH676xxYBcSJPc3v7oOlOTY7iolsZV+gSye1DeaB
+	D4aHYMglZrn+2ev9trMhofyCjmzQcXA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756741819;
+	s=mimecast20190719; t=1756741975;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FFB/nnIls2YEMkJJaENT0MJmgWbxUwVCfeQdW43zAOA=;
-	b=HQV/e8ihIpmtoue99vrmEZXaeyXqCw1snmmg8TCnaa5df+a06hHyUpZLVk//3QNlm6Dc6P
-	ODaVVb6EReEu7cRcJ54neYEgnWMEAzebkLeGSPeO29DQ7E4V9MWHJbxPYjEBwHXXDG25XD
-	wVUCMhowPOQWCdMBE6B3rFxaDPG+u24=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mbEdJL0isBBnB3JXZr3cyBmB7UVFLdKlgzj7B1K9tQk=;
+	b=RAINU0Q6+TtQB5/R0urUSyiS6xNMMD0VCx/Mo1PhqlTUEXNGEZnGy6VPK/jTmcrQSsDcNK
+	bX/24O6HUA1ftHeRB3g38/0xi+5kvNp3GL/xEf3LxFwJMQLShfGg8D0GcbP0PzgWjo0ZNb
+	z/cDaNEGKsO66XzdCm1khwOe60LhX+8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-f8MRrjXTNqyUMGEUvj8jDQ-1; Mon, 01 Sep 2025 11:50:18 -0400
-X-MC-Unique: f8MRrjXTNqyUMGEUvj8jDQ-1
-X-Mimecast-MFC-AGG-ID: f8MRrjXTNqyUMGEUvj8jDQ_1756741817
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b869d3572so6161795e9.1
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 08:50:18 -0700 (PDT)
+ us-mta-662-kjOkkLHnP_iWMg8nLtk0ng-1; Mon, 01 Sep 2025 11:52:54 -0400
+X-MC-Unique: kjOkkLHnP_iWMg8nLtk0ng-1
+X-Mimecast-MFC-AGG-ID: kjOkkLHnP_iWMg8nLtk0ng_1756741973
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3d48b45fad0so989940f8f.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 08:52:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756741817; x=1757346617;
+        d=1e100.net; s=20230601; t=1756741973; x=1757346773;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FFB/nnIls2YEMkJJaENT0MJmgWbxUwVCfeQdW43zAOA=;
-        b=KVqiMNzQNErP1K9Uu3UASx1ztG2pMK69/rj+Y/34HEeDi34dBFC5PJl76Kcf0Zu2jE
-         dRcQBgvwm9GG0kFv4xW6Z4i1kQrBiYGYvK+bxGGzjiQBaWLv/untyvjiywmZu8oPf60z
-         VigcWOpO0PDk3HinhmUSOCy56TgFgYfTFavtIVl5kl/xMSj0C3s2nKzkyuqMznCTGOyv
-         l3CIsT8yz+4tEXlNkhAe1/5BRJ3nvbhoCuDb5FJpR3xc1I7f/Cad+wkHtMs6IpakElwd
-         kiKCWbBaHcm/WV77ZOAKDIliiiLP/in8QzCPzTxa448PCDrzXGTqH9R+YPkQS/eGs2Wn
-         wsdA==
-X-Forwarded-Encrypted: i=1; AJvYcCWgzIi+TtKDtM+Q0iuultw6DBOaGL5n/XpEfIrP/PQczBfmJ1911vkLX2xdliLTtk0LbJX62SC42A==@kvack.org
-X-Gm-Message-State: AOJu0YwbRo6VijjqzYsO1TFaoTICJxQdFHWtc+e38JbFhdr0tclMv72k
-	jkszCDt3CStnz4sBcBs34xJY+BxbCexAbu3zExYvzbvCV4YvwGBIqT206T/MjPGls7Ad/IYJLuM
-	l+JpByfJDFctsXhN28dRJZjW0iCW0oTX/zUCaeYpbqySOOAlS+lx7
-X-Gm-Gg: ASbGncs7Zo7mNHO8wQMtlut546efrGn4KzVvVlRY5S5m9VoieMNnPVjwyxxDGSLRtvS
-	ysR8RxzzVAvao5k+iAmD1uPZu8IslC1bfLkRifymSnuwoTmZSbHqOlFLtF9yn0cmGWpuVk1fo4y
-	RGTjrM2qtpT8q4G2YxVJ1EvMYzcWplKMczMF+bM/DFWDJqJY21oISLv5UTO2cDPu7PvH4S/xpUD
-	GQWRqHEH49paVDa6wvursmjuuow+aynq8bLdP/i9AixRRQymunHRv42MRDp8mYWlKooj+wPS2aA
-	9DoMEWD4aSK1rGsn6HPHvywzxhb1TIu6UpyGvZH2DbkMy7pNPI1dfYyZxLZzAjYJ25cxlaPDbTe
-	iIX2jbozqvv6m6Xg03+FUNnVq8y5vmUlBZ4htxXMI2QnM2+kS19nsnWl0CajtC3ctgxg=
-X-Received: by 2002:a05:6000:420b:b0:3b9:13e4:9693 with SMTP id ffacd0b85a97d-3d1df34f200mr5638084f8f.52.1756741817350;
-        Mon, 01 Sep 2025 08:50:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGFO+Zpu40u/ZMiH4dKr/oqTQ1iB8aLnxg/PlKUmxEp2nhtKV6CGOLSQt4EQC3AL0E5hRgCpw==
-X-Received: by 2002:a05:6000:420b:b0:3b9:13e4:9693 with SMTP id ffacd0b85a97d-3d1df34f200mr5638061f8f.52.1756741816874;
-        Mon, 01 Sep 2025 08:50:16 -0700 (PDT)
+        bh=mbEdJL0isBBnB3JXZr3cyBmB7UVFLdKlgzj7B1K9tQk=;
+        b=WWgismzoNGDsBpObDLYmOi4JkQ958MfkADnw9D9hA9ruik/KK6ys751/43jogZBQ8W
+         SnB+TQxytsAa6Byr/x5uxw/APWCfTW9ZJzmXfLV3TkfoKPD1lda6+Q23KwtR+vABymCo
+         GqUgtYiBgSqlv8v6iLCafny32BMKqyxj29JLtr9mZLNFgbWzwRwz2b1euf2ZxDwqc7zt
+         WjceLMFJX67hzVN/wb7VQAg2yvcFpA/H3d6C52+kkjQTZm50IoHaQhIjsKownGLIdK0h
+         Bpj10FVIcyPtWZbEysuy6wuSfEd1oGiCkn6mW1Jfds7O7MfXrivL8ZLzpzzYM14CuU5f
+         VLTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqFM7Ia/DiD+7fBPeYWt+mRQAKwdKWMsQTJeoxq0jpW7jWYwpD45E6T0rE4wSItJ7RIvLXZX+I3g==@kvack.org
+X-Gm-Message-State: AOJu0Yw34GsIJukeoz4lgFF03sEYaEWKXf/KQnKveUcVcUAkzt+rEmm3
+	2+Ia23wuAS/ZUM8D1o72oAEP8+I8vaKOEiJkYMKYDm2qN0ZV7VTm1IXg/FNnecrzDumXi0DwSpY
+	cbfVmcLt3+FA8t/H+qaHbE2N7BIBWFyfMRW+3GwfCE+iMOj4MjIcI
+X-Gm-Gg: ASbGncuUOlWxwQSSDJoLa6hFsHu2i9b/9LDQzSABga9wyQgrH6d+OtE+GtwFnWRogJ2
+	FHWZZNoTrAKv4bw+pfqyfIAyP3itH0Mfv/cS3lSngq2Xev0SqyOgMmEVymDeV7odCWfD3iz1spR
+	IqxfJ0N/SvY3FC36zN4fsKN16rkb4EydsCrOz6FkM263cVPNSgE41DbNnDoJCoBNYOuI1yp+Pj/
+	xuWsurWO4HMq4cxeTReYFgoS5TD+knaacWa+H5IvUXzmreRIXY7jU2I6Og/c8h9rbtjV1bImE6Q
+	I4+7ksRIddJ2PoCCttn/UFq6fLtNieiv+2zMsTvin3zaMzENyvjqHuLGZkEh+QhEsy6NGez4dLE
+	cO8XBZY5Zdu8qcIKVnWGebR3ElSMNLHnXIWVs7GJGGzlNDG7pqJ9s0XYPwpRPaBEkcg0=
+X-Received: by 2002:adf:a3d5:0:b0:3d3:b30:4cf2 with SMTP id ffacd0b85a97d-3d30b30546dmr3216751f8f.19.1756741973320;
+        Mon, 01 Sep 2025 08:52:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWAtKuDlQ702dYFHQ1RXyln2bmyih7xTaCXC/Ysq58gGE3o708RIRxMtCSozokpICZYopN0g==
+X-Received: by 2002:adf:a3d5:0:b0:3d3:b30:4cf2 with SMTP id ffacd0b85a97d-3d30b30546dmr3216732f8f.19.1756741972788;
+        Mon, 01 Sep 2025 08:52:52 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33add7f2sm16821687f8f.32.2025.09.01.08.50.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fb9dbfsm15756340f8f.43.2025.09.01.08.52.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 08:50:16 -0700 (PDT)
-Message-ID: <a6f218c7-2caa-48a9-b4ce-4df1fbb288ee@redhat.com>
-Date: Mon, 1 Sep 2025 17:50:15 +0200
+        Mon, 01 Sep 2025 08:52:52 -0700 (PDT)
+Message-ID: <001833dc-ee02-4bd3-8a37-820d0cd56be0@redhat.com>
+Date: Mon, 1 Sep 2025 17:52:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/22] slab: Reimplement page_slab()
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org
-References: <20250829154728.3397606-1-willy@infradead.org>
- <20250829154728.3397606-7-willy@infradead.org>
+Subject: Re: [PATCH v5 02/12] mm: constify pagemap related test functions for
+ improved const-correctness
+To: Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ willy@infradead.org, hughd@google.com, mhocko@suse.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, vishal.moola@gmail.com,
+ linux@armlinux.org.uk, James.Bottomley@hansenpartnership.com, deller@gmx.de,
+ agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ davem@davemloft.net, andreas@gaisler.com, dave.hansen@linux.intel.com,
+ luto@kernel.org, peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, x86@kernel.org, hpa@zytor.com, chris@zankel.net,
+ jcmvbkbc@gmail.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ jack@suse.cz, weixugc@google.com, baolin.wang@linux.alibaba.com,
+ rientjes@google.com, shakeel.butt@linux.dev, thuth@redhat.com,
+ broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com,
+ mpe@ellerman.id.au, nysal@linux.ibm.com,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20250901123028.3383461-1-max.kellermann@ionos.com>
+ <20250901123028.3383461-3-max.kellermann@ionos.com>
+ <26cb47bb-df98-4bda-a101-3c27298e4452@lucifer.local>
+ <CAKPOu+_aj3wA14VaZo8_k+ukw0OafsSz_Bxa120SQbYi4SqR7g@mail.gmail.com>
+ <8e3f20bf-eda7-496c-9fb2-60f5f940af22@lucifer.local>
+ <925480c3-d0ff-4f24-ada0-966ad9a83080@suse.cz>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,21 +177,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250829154728.3397606-7-willy@infradead.org>
+In-Reply-To: <925480c3-d0ff-4f24-ada0-966ad9a83080@suse.cz>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: v_fg5WPL2R_HfQQ1gpoPvQLmvc9gRwHzo7YQF4NGk2A_1756741817
+X-Mimecast-MFC-PROC-ID: _4ALnsCRNXgtdagltBiWGVlgssKOBvTh3qx-Nd8se3g_1756741973
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 42EF91C000E
-X-Stat-Signature: ocjc93io8p483ist4hcxis6n49fsghhy
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 74A15140004
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756741820-792257
-X-HE-Meta: U2FsdGVkX1+19K0Yxw3ngUs6+9wkpa6gk3cY31XOX4VS6zkGuYYpZd/v/7Wmjaa7hE/ctoiScCCNAx1ow2PPHpJVZRI+5GUHkK2c9BpkRNNIwOOPxL8wudtjGcOzkx6hYMZ0VKlkKBKJ2qBUhry1Y1v3hupKxLvo6UBtVAocYxqdhGYQ3jhRFTmNoUMolkB9YxEZHXX/2dopAxzQwjLl3m4iuM0l9HnRCRtRk+RVKPs6rtB27syOnIgcZVsAwwPYWiG9OaFm14k2n8/FfCBF9qUBwRpQ5wIgsRwNjieeB8zE+bj6uHPuR2gKFSF6rbvipbvvh5BudDKrQu20bAj8AwDrEYdqa39z2ywcO08KF8vyfWIS7a4Jf1kk12FDptluAnzy3UuVcsT3eLLh0Z/RZo0UxN3DT/QI9HKeooPVyumSfTPUO23OEXiKJo4qHLV9ZyMRVhGua2b4NL2zVIrGL0LsLkEiBfpjjwD/h5/A5aNBSD3v+Oe57mZWXReOJK+CnXds2Awt9yJxnmceRlYJwT/qXhgYh1FBc+LD+tXmcw2464R7FnXEyEewfevIilZBWVyLGBHwtFFFkoZrBzzB+vqySpocW+9u3SJr81FzHBgfjrymjpHGIlOBNWE65pRHakPKTRStxAafmpcdhfqQ2OZCov8Lq6E0wgouLRt+JVVz3wupVVzsvzBmI7QagwTBtidQlEvP9SZu2oVJuawQFyD2LLr1G7RZIobGhgjVLTI1tDn/DmH18MwemUD/D1dUldGoN2ArkI7hnr5pdzgXo922JXWtG/8XwgXneC+sv1BBbdPO5F0RSA3JtR2WlTrsHHy/0rGlZmzo2/n6k5x4T2+kKx/fVsaxgaQtiUo+DZzzrx90/sNjq3Uz5w9ldYU6Wb/rBiyKf2TTOxXs0L16pf012udqQd1oAII/XA9SsPhUHGeXpEpAmbrXzP2PgMS7CSlzfCuiCWUzKqxJr/0
- LZxY8mMF
- DpgkvopvqJwL5cV7JxgvoVKUolVqgSSYzfUIUw6M4ohEJHR21AiDdTgDfvErjurNke7myZBE42IogCYKf3+wD35NTfdZT+fAxpc1jLzo9UsUuOtOkhypS+R6kW4hlyqqFEJNrRKB4RSKrXXk4TPTieg0J9hTjv8emXIcniyXVbhgmegwqbKI9Amo+m62O6NrQh8f8ggv/IEEHn8M8kc5eCVhI7Mzce27yhcwadEB2w1z59ETfCdeGbiq9AZn60bBFYYKmBWkuNyd7KDyPTdmSg71f/La+lizR66bpgji33J8Wi5XzLU3D5UL0ZNzrBTq/MVFXU0cFD4Ncw+OEV/oGLWVGAxVIOqjoBMifnH0u9WtHcOFkMfRm/4RloNFFBlY+3qwy8qib/2DrDPb/DcjvtLXwKyWuHggo5+iDbChKKBcjuRDSxlTDEDDSLBa5e3N4lcloOJYmUBzTlXyy52eHuJ+zdcBhB96ln/sYNA7vd7RVMenOCNPbc9Bvzg==
+X-Stat-Signature: rysjgdn7e4aatpzkxfa7yoq1c4eg7wm7
+X-HE-Tag: 1756741976-62047
+X-HE-Meta: U2FsdGVkX1/wqvBpEB2W/7aRfAPmZoEaZXQeM3GP5In4VjL9Bl0M6QoNqUnXVnJxduslpLvjZBICAzG7cffTuDF+fIGSd1xyFUpG3weTrD8PYkGCZFzK67hOjhl20GTIFNKJrxN/d/0H5i2vvPQzfZIp/Fva+ILz5JKDhG2WeeDYxffTufsn4Ei1Dz1Y5PFM0wjedRQfukv2y81fMjU1h2LOrjYy+4LO574q2gvAijaS2hFZjWBYXBfsbCUANblA6p3b8gg7QGXDOsaPS5ll96Fwt01r8d0cUnB9lCxptl8ZtBqgLV7TDSOrCrqE+2nELrFIGPjpioYCGkt5zLYA1E1JvzUvad5yXR4xzBkWXnDuxcEJnAxkZXVihCDI9KSgtfCaTKDFQwZyCdgaYRcI+BQ7QV+2oX9ACsPUG0xnXeueEr70SjUIpXVurUpK5XgNuQkbgCx63GCiKXt6anpn25E/t2fqMDlPoqkLIMkADwqtaO14eYNohw8d6v1tRC+T1IEVJKd1hmr22ObpBMtkuKgYjhP4ClnyB5Ux/GqUHjeeKv6wr99hvbrFPDUHfNFGEt9zKVdtv/FAUxlrDB9c8dJE0W/2d7zOVavguRIETUGW8bZk7d0IIkCcZJMY6cplA45cpuSodFrSMBjXYbGZdup9qKvCkG/rAypiGEZZPVxQD6dIPzbEBPjNvMOO8VNd6nhXm2/3Ep5Bmi46b7aj3yPUAjQo64EkR0qM3/aEpjxjSLA6+nJdpvrqBu+4SQUOmBnpxvW+fnEIZBXixs2hXW8yyKsj0p2+iILEZz+iH5pGVO68IcPFy81cBmt+fdZlolKxW8LvOSYzdSFmsfmTRd049IrYbgUN+luCXSaDQ8dA0tQICFA6H1atB+n4C6KBZm5th/WWJihcygHChp1BPmSLMcwJoXoj8sbFzHK93R+0Nii2x8ULz8fLDlPJPd9YLxUEqgCjuDt5ZXoyISy
+ G2UNJZPX
+ HxVXtLh6jbKk7N5Y+OtNOQKu3Veq8u4DRLL+sRTizLFE0Md9QLy42SbzN89iqNk2WWo2hIV6cURwk9DLBgNmrThGXamIOWfJ3tY7aCUwf6AQVGGE91yHGzuwMq1z1j7Az5NCynXcu6CyeimOtOYNahjegWBtdaotnO2O6bnxg/QQFQ8mkMk4ldzQRCIlbhCaMPlXv0a53mgL0rivRNmLeLtc9u3SqWCVJGjr53kWd+0EOgPHilrn9xISN9FcCXc0dRcRpEEQveLmNlOjFSTjgO+OavkwWk8LYiApIkALijZSKWa3Nu4+um8dLrRnPNwhiyGTfYUn3daTrGuaS+FAwv4PB5CW8moLI9f/EcFnxI3+NKHji893XMcrLMk1aWPoXEzQDcioS2wMUmDyzlf1at3WbitGsqNtpE7rJz/NtexOrXJGugZWtdh2/N4z4WTcPVOkeyEoJhfZVsu74Mf6iX7CgyJLkLzsBJhUQ2IS0uKOvs63oRCcNmW7OAnltMuj6O/QdT9Eg7dJvuqsU7djcQxUkglpDKRRrZ1WLI4YshqJzGVLW3z17QT6E0TSaq5s7/AFaH8LapaKEj18SpiOFRoioOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,67 +200,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29.08.25 17:47, Matthew Wilcox (Oracle) wrote:
-> In order to separate slabs from folios, we need to convert from any page
-> in a slab to the slab directly without going through a page to folio
-> conversion first.  page_slab() is a little different from other memdesc
-> converters we have in that it will return NULL if the page is not part
-> of a slab.  This will be the normal style for memdesc converters in
-> the future.
+On 01.09.25 17:47, Vlastimil Babka wrote:
+> On 9/1/25 17:14, Lorenzo Stoakes wrote:
+>> On Mon, Sep 01, 2025 at 04:50:50PM +0200, Max Kellermann wrote:
+>>> On Mon, Sep 1, 2025 at 4:25 PM Lorenzo Stoakes
+>>> <lorenzo.stoakes@oracle.com> wrote:
+>>>> 1. (most useful) Const pointer (const <type> *<param>) means that the dereffed
+>>>>     value is const, so *<param> = <val> or <param>-><field> = <val> are prohibited.
+>>>
+>>> Only this was what my initial patch was about.
+>>
+>> Right agreed then.
+>>
+>>>
+>>>> 2. (less useful) We can't modify the actual pointer value either, so
+>>>>     e.g. <param> = <new param> is prohibited.
+>>>
+>>> This wasn't my idea, it was Andrew Morton's idea, supported by Yuanchu Xie:
+>>>   https://lore.kernel.org/lkml/CAJj2-QHVC0QW_4X95LLAnM=1g6apH==-OXZu65SVeBj0tSUcBg@mail.gmail.com/
+>>
+>> Andrew said:
+>>
+>> "Not that I'm suggesting that someone go in and make this change."
+>>
+>> And Yuanchu said:
+>>
+>> "Longer function readability would benefit from that, but it's IMO infeasible to
+>> do so everywhere."
+>>
+>> (he also mentions it'd be good if gcc could wran on it).
+>>
+>> So this isn't quite true actually.
 > 
-> kfence was the only user of page_slab(), so adjust it to the new way
-> of working.  It will need to be touched again when we separate slab
-> from page.
+> I understood it the same, that it would be nice if gcc treated incoming
+> params (i.e. pointers, not pointed-to values) as const and warn otherwise,
+> but not suggesting we should start doing that manually.
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->   include/linux/page-flags.h | 14 +-------------
->   mm/kfence/core.c           | 12 ++++++++----
->   mm/slab.h                  | 28 ++++++++++++++++------------
->   3 files changed, 25 insertions(+), 29 deletions(-)
+> I personally agree that adding those extra "const" is of little value and
+> makes the function definition lines longer and harder to read and so would
+> rather not add those.
 > 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 5ee6ffbdbf83..39ed2f243279 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -1052,19 +1052,7 @@ PAGE_TYPE_OPS(Table, table, pgtable)
->    */
->   PAGE_TYPE_OPS(Guard, guard, guard)
->   
-> -FOLIO_TYPE_OPS(slab, slab)
-> -
-> -/**
-> - * PageSlab - Determine if the page belongs to the slab allocator
-> - * @page: The page to test.
-> - *
-> - * Context: Any context.
-> - * Return: True for slab pages, false for any other kind of page.
-> - */
-> -static inline bool PageSlab(const struct page *page)
-> -{
-> -	return folio_test_slab(page_folio(page));
-> -}
-> +PAGE_TYPE_OPS(Slab, slab, slab)
->   
->   #ifdef CONFIG_HUGETLB_PAGE
->   FOLIO_TYPE_OPS(hugetlb, hugetlb)
-> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-> index 0ed3be100963..5fb0f0f8f99a 100644
-> --- a/mm/kfence/core.c
-> +++ b/mm/kfence/core.c
-> @@ -613,12 +613,14 @@ static unsigned long kfence_init_pool(void)
->   	 * enters __slab_free() slow-path.
->   	 */
->   	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
-> -		struct slab *slab = page_slab(nth_page(pages, i));
-> +		struct page *page = nth_page(pages, i);
-> +		struct slab *slab;
->   
+> I mean we could first collectively decide (and that's not a review
+> half-suggesting we do them) that we want them, and document that, but AFAIK
+> that's not the case yet. While there's already an agreement that const
+> pointed-to values is a good thing and nobody objects that.
 
-There will be a slight collision with nth_page removal that should be 
-easy to resolve.
-
-Nothing jumped at me.
+Yeah, and discussed elsewhere in this series, it would also have to be 
+clarified how to deal with the *const" (or const values in general) with 
+function declaration vs. definition. I don't think we really have 
+written-down rule for that yet.
 
 -- 
 Cheers
