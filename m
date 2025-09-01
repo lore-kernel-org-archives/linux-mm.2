@@ -4,128 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD463CA0FFD
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 10:54:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0177BCA0FFD
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 10:56:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15E038E0017; Mon,  1 Sep 2025 06:54:56 -0400 (EDT)
+	id 5A6B08E0023; Mon,  1 Sep 2025 06:56:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E808E000B; Mon,  1 Sep 2025 06:54:56 -0400 (EDT)
+	id 557298E000B; Mon,  1 Sep 2025 06:56:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3FB68E0017; Mon,  1 Sep 2025 06:54:55 -0400 (EDT)
+	id 46D7B8E0023; Mon,  1 Sep 2025 06:56:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DCCFD8E000B
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:54:55 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 805081407D8
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:54:55 +0000 (UTC)
-X-FDA: 83840373750.05.C10DE6C
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5483D1A0008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:54:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=iHTXAk6K;
-	spf=pass (imf19.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3383C8E000B
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 06:56:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B6C1BB7A4
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:56:13 +0000 (UTC)
+X-FDA: 83840377026.19.07FE9DA
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 706F84000D
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:56:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=EsB4lakP;
+	spf=pass (imf17.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.221.50 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756724093;
+	s=arc-20220608; t=1756724171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y0cJUednc/5M4WDwpNxVBOifAr3cOm70FaB8K31QTbM=;
-	b=loldfohfC3UicNZVrKPtfy3391ti2hHd7Q3B6ufRACemzMx8MCRQGg1fhbIfsSIXctOlHt
-	yHOjtokCmnvJ3CPq3J8nOvx8xJjcO4sZqfuslHqR6SGiX0qEmXx8Ci5Hr+x3My5B36MBc4
-	fu+c8+H5mP7Iz59RGQBdkTX5u7LcOWw=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=s51XmWZJp5DHxpHOLeJmnLNp4ozg3yH12eVI2vl1w5Y=;
+	b=NbSzAZDjEEEELsMgAsnrDJ10euj0hFu+eED47BXZhRoVXeF00rPW+VpPictK57RvV5djX2
+	8GsI7J0YStMHQ4vN5P8eT3Pc/dOzvZ/Fl5HJ9Qa5X8y4WmnwrIfJyfNVT2EJP5/VcgkPGA
+	76lIZhRYz7ZLjXMz5Og9xFv7hKmZwXQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ionos.com header.s=google header.b=iHTXAk6K;
-	spf=pass (imf19.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
-	dmarc=pass (policy=reject) header.from=ionos.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756724093; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=EsB4lakP;
+	spf=pass (imf17.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.221.50 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756724171; a=rsa-sha256;
 	cv=none;
-	b=LzoZ4W/3R0c2okLmMgs5pl7W3UaL6cGCc1fRSmKW9S14W0YboC2V2K9T9XV+x88wzxxOMP
-	ls+JV72wOHGJEuhR6fb5Sk+yYdosDIs61WCLcDZqkSNEkrdZ+jHpZkMLPlDAiyjXah8oWa
-	v4/GYmq9E5k/owY8ivKbWkiKK7htIQU=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b0431c12df3so103322766b.1
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 03:54:53 -0700 (PDT)
+	b=TJ4sAQyscpPV+Pg6fsdSqRQrlfzYMdQgG8fqI/LcqhfXM89tUDPbVV51mT7mBAea2eq1rF
+	tC7NFXlWXB/0GIPL+LrA2Om4hCnKz07gZm7gjUAtHQ4defVfNVHCAEygaNvwgvqs+N7ZHy
+	HkFccf16PUoqoobtn1iZqPj6FLrKFsg=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3d17731ac0fso1991281f8f.0
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 03:56:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756724092; x=1757328892; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y0cJUednc/5M4WDwpNxVBOifAr3cOm70FaB8K31QTbM=;
-        b=iHTXAk6Kp/X4uyC12Fhp+zEz/I9O5n9PjUX3E2FvX6NhRZjZYO8oXxJIntlwc8dLO4
-         ccwzp/2G17X+6KZuHmJukuMJHGpEFpt2uxmI6zFDgZAZudn1lBu34bTRAkHS8HQYPGVX
-         1oQ41eE3NtkdbMRRjEckLcJYQaFbGzxyOQ2mS5uyvUPx5UnC2N37VB09R42hMt14VC2s
-         u32iYUHNkWM+s3hy/zaAoDeaYWOqedyjDvb/+LLfjp689BhOmop1iLO2cxwSgGrZCuie
-         hOYqnjCJPN0e2Y+DyWLq/lGwQgyFVy1BbfBjT210jGZd7QXSPFXjkRvJlzYKF0/RXBd/
-         k9KQ==
+        d=linaro.org; s=google; t=1756724170; x=1757328970; darn=kvack.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=s51XmWZJp5DHxpHOLeJmnLNp4ozg3yH12eVI2vl1w5Y=;
+        b=EsB4lakPm7eFFVTx8omTJGxEOOeb5/WNXeSkbK5nsSTy+X/ayCCKwTH+vf8lNxgyUW
+         /tzCXvLG4NEvcPdUGmgBObofLIjk9N15fhJyILiQHbZFV5WpxqI3oLbyQC7Yv+O4znGx
+         zRvoNAKEZw5glFDC6NZQ14CQg21CN2ptfZPdp8fsBjC79jZWqlMU7CyiSoG/up40Zwae
+         S2lRuNvA4bAbdSqhefyLfsDGFaDqETcYigwXRlss5Xk0OSjc9n41TISdimBUews+xnwq
+         y6bmTAO6v4MRllc1Y3fwYayPVBkuLaERz3mdjLgOtb5JLctnwZenvPi50/uv3K9TD53I
+         d90Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756724092; x=1757328892;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y0cJUednc/5M4WDwpNxVBOifAr3cOm70FaB8K31QTbM=;
-        b=D693BaCugYyJG1dJX3XL3/CXXleVhW6aYBK/fACXwx9ZkTHxHtAdYqOtLSXZUz/duj
-         MCJ0Az/POJ7GZDsvVAGXhgA6VZQHEs2pCgKAqKq0ZPaj2K/38SvWIH5C3UBQgqZJI2xj
-         4Q69uM2YaTkuBnmP5ak2A8JtvuzEIHoVS4cKkd45MfY/V0BB5p3okIxHJbXKXjGKersi
-         L49Y7gW8nQeP0VPEdWJPZeRhfaXtEbML2JGHcLGTmTKgUh7Ueens7c9EqmfeRWRKjLNR
-         bOziB4g77wx3vpN/x2z5cCCUfxz/JppMzgE8MBYxmxLiz19JfS+zWhhMtPL7lrZycKiA
-         L6TA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPBIVwFTKS/kR6OxRTyE+vWAPypNQJnZJVx7t82MHhRvJe1pmly7eEQtRE6wC5ZW0g/JkEGelL6w==@kvack.org
-X-Gm-Message-State: AOJu0YwGbWOTZHe0nR5NWEI/b51ScKtDUdeOWQF/xDMjrbUMiLwB9VLZ
-	pfnj/JeAvQ5FyMzqvb9qeKEInaHhix/uBEzXYD50BjZ9uG/v+TgxOnl4XAgXE4as+heQAZ2Bzx4
-	bzAXdjsX3L8IG76iQF7UuqHEOISPboobUWc0N8TxNgg==
-X-Gm-Gg: ASbGncuWgbiU0KN1058p43LG9NYsTgZeUmX5/RhOj8f3JGI9Gii2N80YiVf6e4fsD6A
-	YV+Ugqw/WqMQ0JlT69lu1no0LhFRYG0BoXJRLW9tAmv2irksY/nEL2pNiEWadalx5iSTTben5ml
-	bj7rnPOBEjn+A1YcaNGq3XaVS1Zf71Sv7Wmlz9sYthL7zr64evbgtFTqz+NRVzrOekuNn7RTfj2
-	F+4SF/dfQkSoCtCopT4hj/j5y6tEYjHuvVLZMGNGtjGpA==
-X-Google-Smtp-Source: AGHT+IErujEHTbrp8kr8EXUBMZI1Sefo257M2ZPpsFs+QhTHhEsC5J8bRxn273glh6y2fAFm2YbZZ83e+kTpefkb8iw=
-X-Received: by 2002:a17:907:3e08:b0:afe:a4a7:df95 with SMTP id
- a640c23a62f3a-b01d8a26e5amr703688566b.3.1756724091540; Mon, 01 Sep 2025
- 03:54:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756724170; x=1757328970;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s51XmWZJp5DHxpHOLeJmnLNp4ozg3yH12eVI2vl1w5Y=;
+        b=sUFivA25AxWxD5vBUr3GLw6RYYr9Nodeox8MZWGlARocYlzO+fryV4+Z88tPw0B8In
+         zuVXpfsGGajGQ5HE/ANOGKlLLJ0bCBraLjtFZn0Wm9nYdo7XpDxxeRNWysfZ+I5OgVWp
+         JtKb3+C3qfeA1Knd8KJ35guCaD1yRLpMELGPkOAT7VStA5boWvl/3Y+NUNYXU0U21SQ6
+         xgkwKOfnHc4E3YWPetmKMvKosOHz8UO5dCKgTh9L3T2RLz1lZaQBNHe4y6rTW5lr+3aY
+         OTsIEOF/Lr83vYH2u6a+yPnuNnh90DgaE7u5XtGlVUAfZGcxrM6Az2MEqjB38+li3z3u
+         NZaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEEvADQ3r1Yos5qcx0mUsx+LfWKlNPvfY+F2INhKIdWNoyrVF2KPPjYJfV9bj2QD40Cx6djG6fNQ==@kvack.org
+X-Gm-Message-State: AOJu0YxIzxzHZGehOuWRbQvp+KW7rwr8lEFY2an1FT01Iq9cRIi/0sNn
+	4BfCRG2guw5MDDRqPsl0MwGsXi6w/wmXmtWbErSgTK6a/Tnfz5roNDDoexpI0q3eUIQ=
+X-Gm-Gg: ASbGnctCzubyDacf+tdh5PUMZs2wNrF4Z5x3agxzY7V0MdQUtZ5Y1ReXY22aJs9pYU6
+	XNmmcEzjYuvoTBStpwSUlYBeaqSGv0SAL+nduLeXny4sQhFGWXs1Fx4eqGON3oyJtvhPfVWRPa4
+	hWCMtWFrVG6Ij+vy5eD8BK2PqyuDb2hImVVygtoMZ+MA4yANgDv2yUBvpss4ikKRSAVEyKjyKuo
+	EpsS/wZXXadPD3yDBWMFhcCPezGFVPZUqXej/AG41RpO97Wv3rOKDvYZEXynAybDUK7is//8oIZ
+	AT41B4Qyg2L0G4P/i4jhJYzfaWc6y4aW3xaOpsejFio6Trs78G6RK3bXwG7HQ4LifB2Fb9eX0Pu
+	gcJ8Vlxg2Ub2OXEAy6DWIdb08pm4fb9oH3JHu1A==
+X-Google-Smtp-Source: AGHT+IFiaIyiVHKBvWcuJ7j9OGQvV5jS+bUEoZBiN7Wnh2kb+IM8kDKm5zixCaYx5Z385dGIbHqAEA==
+X-Received: by 2002:a05:6000:26c6:b0:3c9:fc3c:3aa3 with SMTP id ffacd0b85a97d-3d1dfc07101mr7147467f8f.40.1756724169658;
+        Mon, 01 Sep 2025 03:56:09 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3d3a7492001sm8737165f8f.42.2025.09.01.03.56.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 03:56:09 -0700 (PDT)
+Date: Mon, 1 Sep 2025 13:56:05 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master 4756/5283] kernel/fork.c:457
+ account_kernel_stack() warn: we never enter this loop
+Message-ID: <202508300929.TrRovUMu-lkp@intel.com>
 MIME-Version: 1.0
-References: <20250901091916.3002082-1-max.kellermann@ionos.com>
- <f065d6ae-c7a7-4b43-9a7d-47b35adf944e@lucifer.local> <CAKPOu+9smVnEyiRo=gibtpq7opF80s5XiX=B8+fxEBV7v3-Gyw@mail.gmail.com>
- <76348dd5-3edf-46fc-a531-b577aad1c850@lucifer.local> <CAKPOu+-cWED5_KF0BecqxVGKJFWZciJFENxxBSOA+-Ki_4i9zQ@mail.gmail.com>
- <bfe1ae86-981a-4bd5-a96d-2879ef1b3af2@redhat.com>
-In-Reply-To: <bfe1ae86-981a-4bd5-a96d-2879ef1b3af2@redhat.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Mon, 1 Sep 2025 12:54:40 +0200
-X-Gm-Features: Ac12FXxbsfem92CYCNntd3O-eNuFX0uYoorx93G08GlL_Qka4oUWgjKqGl2mAAE
-Message-ID: <CAKPOu+_jpCE3MuRwKQ7bOhvtNW8XBgV-ZZVd3Qv6J+ULg4GJkw@mail.gmail.com>
-Subject: Re: [PATCH v4 00/12] mm: establish const-correctness for pointer parameters
-To: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org, 
-	axelrasmussen@google.com, yuanchu@google.com, willy@infradead.org, 
-	hughd@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
-	surenb@google.com, vishal.moola@gmail.com, linux@armlinux.org.uk, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, agordeev@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, davem@davemloft.net, 
-	andreas@gaisler.com, dave.hansen@linux.intel.com, luto@kernel.org, 
-	peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, weixugc@google.com, 
-	baolin.wang@linux.alibaba.com, rientjes@google.com, shakeel.butt@linux.dev, 
-	thuth@redhat.com, broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com, 
-	mpe@ellerman.id.au, nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org, 
-	linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, conduct@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5483D1A0008
-X-Stat-Signature: ke5yzcyhb9tqqqzz7r9gg5dz3kcsy5he
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 706F84000D
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756724093-961198
-X-HE-Meta: U2FsdGVkX18FPmVLrkk+u6+hNbykLTt9PIvqCk0maUc5ch9Tu/nVzdNH9gqeR7G7TALlhGAK/Jy5qoZZx9fOaQn+lx0G3UUG+kfE+q3M51JSwCu8mutgKgHP+53gyeNtYBKDGWml0QDHZ7ggKA+7Dy7mqamU0rDXTpI6yk6JcOlLwEhJ6Mxp7e/A7TVWSfCnkkUCNybA6LiUTjmgdscr5SzBib5+WtxzuI6EBx1+hsRpl3qu076WTs8rulUx2JeJ3rRGjkxOfKn2nLedxRSu/5MNoeSSCctUS1eq8Cq9Lz4GFZwXbRQpWxMcTc96/TqS/kuOCogXYCqvwoEDKSEYRzcFZT+4s6SIlGTTUtjWkL2ll640QZRb2U5jljZFhH50EWMWw2OyL8Mw7GqyRS/05mQLB9T13Md9b0XC6LK563VkWltXZYXp1yxkuRH2kgbMZAUJZ3gkBr1Erxpc/o3dj/J08HXzXv9owfdl1SkK8vp5c8+hP2aOY02LaGOEn3S2yn9kDvZBNImpyCtGVV+mk7mQOwOLbPLqwmRnnVlJRbXi1NjRtpIL2bYn4WvGk3/gPsu4D2ipm6Wpve3bW6Zj1dzlEHBUupnmu+SjsUzeJ09+Ql/ag1FsspkZFQlIoZXU6MUzSZf8Ymg5DPrDAA2bIbsXWGly4ubwQj6VflG/P7Qre/cGZXJt33KQ01bA5005XhBXZK2xh2LJ43hKomxxbr09cHUtG7Px6mYzcPU0jS6AyDda01neeZlQBUgy5p+ItBJLGVCthTHDkQq6Lqipax3iqHMo5yio79mPr8EOOyTyoP/SpihwupLL6S0f9Rc5KWI/TdP7yLzkdkk8tGrxMVVfXYbUOQC6WcBXE2/7PKLnmWBxe/e4aEGJ45uqX62/kHCXHhqEDxq9vTRsGvNH5IJz1CgwyhdQSZjBVBURWlpZN4DAVNnqpdS/G9+gCL6ntyTrYd3gl/nce7LL+tx
- RX3UeQ95
- SO/Enqo6FAODXlENi8C62MOpPUr5kSafJcdGxLuCJZCuQeiobmsVMf+ujKUhf6cGPC6DQhS8otxZd6BGrHi7vyYiHfo4MI8HSmAk+Yk5gbwMw5CprYKECRGZxe6Nmhc7bUXUbbzwvTkrqnw0WXL+icNu/M1Zriq9x/RVb7BsmSoCfRNFYcWp0VGD/67lAXUjimHOQ7wqg4Ge5nUayH65cwF/A3qkYtasnwZpUeyktceEMpRnfLPbw7moNCdR/CkgU4tmerygBkLL+ibLp4o13ZE939Q==
+X-Stat-Signature: n6mg8ze8gd7z59oszb5qqghj54wih3ko
+X-HE-Tag: 1756724171-765756
+X-HE-Meta: U2FsdGVkX1/qKVydHLt/1YQQd5Gyl6vEjdNrE730soSoVIZ2p3voS3wV8ssFmbTlwtYjDDR0PhPb5u3d/A/61Ku33QgiRjdc64NVsmOO6L32pe368tBRml6gH3oOBdPj7oWFDv2GdX5h0JsFjsqVCZhjsTnlwGp1MMBw4w3LjKogDqwmpZ1d/BCA9H0D0gGINa5TuNBtGV2jCkTl7ZALF2ezb1QwiJz4lNLMJpz6TkUrWB0MgLgqkQuCfrOaS6QQBOBBExdbVCOUjaCY3omSuO5g0uYRKz1dIb9uBH6DePoDX1KaAsJbFH+9zWizW+NmF6lGE30IVUAbdi6qoyHLdXiU/qbpTZCG6ur/Dh00ZhJyx/bOSA5AB3m5sYixlEyhE6bGlRrvi/fj9/MwW9gl9P8aY3LrcWZXSkSyY2X9T4bHA9ib527994/gyrhNG9K0rL6TBdmORcy3Ioo4LWViQIvSYsR0sO3gAK499yMOokts1PX+8Drnsx8tEqzMuSOGhoELnY/Cl0tnvRYO0Vb4MDXyyHF6Fo/UXFP18YMhOK8aDXR0MUzYj8XRtn9e8ZozAw2xGJXgSMqr/af8KT3VtDL+onJfj4wyBted5e43v7NjqVinWk+XJWjSqr+u/GSut7Mp1QhLLw5l77TIU7MIzWiaElcdduAIVEtMUvjFnwD72Rl80qzyWVrxrLf2OiJDeeLyp/+SFN0a+1UsFoGC+io33vDRcGfg7Os3M0v1g8BaOeDO4Llx8HLwIniqYmVVMoCxipSN1DQxusuNXE631AdztHHkndzizouCk3fSMRia03LAyCw4VAB+TxT+ioxjSzqSqWO6b/en9M5mUPA7cN6iSgv1BSd1mRE3DEPPBLl8vox/YEbU8qdPTbYYlk1hnGFW3NQV2FWeHs1DSGXh5AL3ehMk1ZXUrlUnPVXsFW8/oX2elG8f63+bTy3M3DcV7R/vkQSo9CE7ENxXvNU
+ WZAGDWn3
+ 4ZNdob4y3PDi6D3oRodv/zr/5un4kJKT1WgLp9VdzIg0/UKaUMnCXCfJnZcuZ2Le7a5D5HnaUNCeqq4uoxV69MwSHr3XtY4WnhTfg2mUCwe3pFXiLE0sMyEj7EZ1mN1AWZYEUCJCMILXFd+s+igrgjPcPBsSBRLnDqa9KKn86TSFRozrD06nkAgTctQ67UBV+nJFNlVMZDrO/+VwOKEEZE+O+KfwnSUlgXtoHVHsnw/iBr+5nmFtTYy3hrzgD5KXjzIHHJCifdZcOW5ZNlmHPQx5DEDEgbz7YrD0qHURrrlO1LXzwhnmqNKgM8DqcHLEq3CARnWRPVzHrKr0TgnHVvC5M/N0KL/oLveIVbdZ7lpjX4je4HJrkPKzAjES6X9mmdveS2ZgD7x8+6z5QpOfpb6gIeTQnO0Z+87A3G04e1ms+VxlDMYgR/ocVSdsbqJG/WLEwf5Z3fb0LnUJVGyUG4XrQh0TE8vCul0gZJ7y8U0pVBchoR4UTJSBZIymNpM/CAp1CntMcF3Q/4AYyzHbPpNxai1YXQz/Vmm6/ZvtZALjwCrVCoEsa5ZLQlcm6lyTaTgVl5vJaKejy0nE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,20 +116,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 1, 2025 at 12:43=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
-> Max, I think this series here is valuable, and you can see that from the
-> engagement from reviewers (this is a *good* thing, I sometimes wish I
-> would get feedback that would help me improve my submissions).
->
-> So if you don't want to follow-up on this series to polish the patch
-> descriptions etc,, let me now and I (or someone else around here) can
-> drag it over the finishing line.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   3cace99d63192a7250461b058279a42d91075d0c
+commit: e0aa7237ef4323a66ed06953225d9b07cf039530 [4756/5283] mm: tag kernel stack pages
+config: hexagon-randconfig-r072-20250829 (https://download.01.org/0day-ci/archive/20250830/202508300929.TrRovUMu-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
 
-Thanks David - I do want to finish this, if there is a constructive
-path ahead. I know what you want, but I'm not so sure about the
-others.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202508300929.TrRovUMu-lkp@intel.com/
 
-I can swap all verbose patch messages with the one you suggested.
-Would everybody agree that David's suggestion was enough text?
+smatch warnings:
+kernel/fork.c:457 account_kernel_stack() warn: we never enter this loop
+kernel/fork.c:457 account_kernel_stack() warn: unsigned 'i' is never less than zero.
+kernel/fork.c:479 exit_task_stack_account() warn: we never enter this loop
+kernel/fork.c:479 exit_task_stack_account() warn: unsigned 'i' is never less than zero.
+
+vim +457 kernel/fork.c
+
+ba14a194a434cc Andy Lutomirski           2016-08-11  437  static void account_kernel_stack(struct task_struct *tsk, int account)
+c6a7f5728a1db4 KOSAKI Motohiro           2009-09-21  438  {
+0ce055f85335e4 Sebastian Andrzej Siewior 2022-02-17  439  	if (IS_ENABLED(CONFIG_VMAP_STACK)) {
+449e0b4ed5a16c Pasha Tatashin            2025-05-09  440  		struct vm_struct *vm_area = task_stack_vm_area(tsk);
+27faca83a7e955 Muchun Song               2021-04-29  441  		int i;
+efdc94907977d2 Andy Lutomirski           2016-07-28  442  
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  443) 		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++) {
+449e0b4ed5a16c Pasha Tatashin            2025-05-09  444  			mod_lruvec_page_state(vm_area->pages[i], NR_KERNEL_STACK_KB,
+27faca83a7e955 Muchun Song               2021-04-29  445  					      account * (PAGE_SIZE / 1024));
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  446) 			__SetPageStack(vm_area->pages[i]);
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  447) 		}
+27faca83a7e955 Muchun Song               2021-04-29  448  	} else {
+0ce055f85335e4 Sebastian Andrzej Siewior 2022-02-17  449  		void *stack = task_stack_page(tsk);
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  450) 		struct page *page = virt_to_head_page(stack);
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  451) 		int i;
+0ce055f85335e4 Sebastian Andrzej Siewior 2022-02-17  452  
+991e7673859ed4 Shakeel Butt              2020-08-06  453  		/* All stack pages are in the same node. */
+da3ceeff923e3b Muchun Song               2020-12-14  454  		mod_lruvec_kmem_state(stack, NR_KERNEL_STACK_KB,
+efdc94907977d2 Andy Lutomirski           2016-07-28  455  				      account * (THREAD_SIZE / 1024));
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  456) 
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20 @457) 		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++, page++)
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  458) 			__SetPageStack(page);
+
+Apparently in the linked config the THREAD_SIZE / PAGE_SIZE is zero.
+Is this the expected behavior?  I don't know mm enough to say the
+answer...
+
+ba14a194a434cc Andy Lutomirski           2016-08-11  459  	}
+27faca83a7e955 Muchun Song               2021-04-29  460  }
+c6a7f5728a1db4 KOSAKI Motohiro           2009-09-21  461  
+1a03d3f13ffe5d Sebastian Andrzej Siewior 2022-02-17  462  void exit_task_stack_account(struct task_struct *tsk)
+9b6f7e163cd0f4 Roman Gushchin            2018-10-26  463  {
+1a03d3f13ffe5d Sebastian Andrzej Siewior 2022-02-17  464  	account_kernel_stack(tsk, -1);
+991e7673859ed4 Shakeel Butt              2020-08-06  465  
+1a03d3f13ffe5d Sebastian Andrzej Siewior 2022-02-17  466  	if (IS_ENABLED(CONFIG_VMAP_STACK)) {
+449e0b4ed5a16c Pasha Tatashin            2025-05-09  467  		struct vm_struct *vm_area;
+9b6f7e163cd0f4 Roman Gushchin            2018-10-26  468  		int i;
+9b6f7e163cd0f4 Roman Gushchin            2018-10-26  469  
+449e0b4ed5a16c Pasha Tatashin            2025-05-09  470  		vm_area = task_stack_vm_area(tsk);
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  471) 		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++) {
+449e0b4ed5a16c Pasha Tatashin            2025-05-09  472  			memcg_kmem_uncharge_page(vm_area->pages[i], 0);
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  473) 			__ClearPageStack(vm_area->pages[i]);
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  474) 		}
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  475) 	} else {
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  476) 		struct page *page = virt_to_head_page(task_stack_page(tsk));
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  477) 		int i;
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  478) 
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20 @479) 		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++, page++)
+e0aa7237ef4323 Vishal Moola (Oracle      2025-08-20  480) 			__ClearPageStack(page);
+9b6f7e163cd0f4 Roman Gushchin            2018-10-26  481  	}
+9b6f7e163cd0f4 Roman Gushchin            2018-10-26  482  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
