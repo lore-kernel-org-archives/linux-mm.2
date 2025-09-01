@@ -4,121 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD94CCA0FFF
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:02:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 752B0CA0FFF
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 15:03:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35D758E0048; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
+	id 4A5338E004D; Mon,  1 Sep 2025 11:02:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30E068E0062; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
+	id 47C2E8E001F; Mon,  1 Sep 2025 11:02:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2295D8E0048; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
+	id 05CFC8E004D; Mon,  1 Sep 2025 11:02:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 101088E0048
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:56:47 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B06E8118BAA
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:56:46 +0000 (UTC)
-X-FDA: 83840983212.16.B97D490
-Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 33C8EA0008
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:56:43 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="Zz/3rOz0";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756738604; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E3E068E001F
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 11:02:56 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E5295A2B6
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:02:56 +0000 (UTC)
+X-FDA: 83840998752.17.3AF5E5E
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5086640018
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 15:02:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=YtFGIUwV;
+	spf=pass (imf17.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756738974; a=rsa-sha256;
 	cv=none;
-	b=f9fy9yPn1l2BaXYfJF5/OBqDYnkuHk+Tmhs80WyUxk6piVPrBVITcayNPVXrH6KPwhoPKj
-	ptWLnte/HF3KQmbItRRmonKVyMKlFGuTq7xGK0ixx7ZCxHre73Drv3jFfK8DWQ1tmE05Ay
-	I9/roD/JelL3A8VbeTZdveK0E9NKJi0=
+	b=trRMAqJaEk4MRTV95Q5QAjAzv8GPzVBUuSRoysq83HkwN381jTsYN9D0P4jcYTjkNTJ6x/
+	NMEJre6+FN8e1oxy300XNvgKMFolOgivU7vjFdKUcG+AMFxc7+aCNdUy5BKcrcOwTqsHnh
+	c5PYIUvnnD0zHA44EqQMaFFSCzIl+C8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b="Zz/3rOz0";
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf25.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 52.28.197.132 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk"
+	imf17.hostedemail.com;
+	dkim=pass header.d=ionos.com header.s=google header.b=YtFGIUwV;
+	spf=pass (imf17.hostedemail.com: domain of max.kellermann@ionos.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=max.kellermann@ionos.com;
+	dmarc=pass (policy=reject) header.from=ionos.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756738604;
+	s=arc-20220608; t=1756738974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DzdixQuy30cIOdtGPtZhymwxAjNsuo6l8KhPTQzil28=;
-	b=IjxLdxmsl+L/jQ01keSy8hUR9ZWHiTYzl31upDdxXtORNxx2XYVaKEE4j4v9IxhZ+CcLK8
-	V5lsVRu/71J/VrBJFWhD+O4uDH+2Ehi1hNW+OKeWvWg2+fb1rVu8IbrgdchKIxTaQv+PBK
-	qqbh9l7tTciS38j+laHxO214wtzdO20=
+	bh=VGz5s3CgG5oZbwfB15yu/ysF7dSGyM9kka20nq6+kjg=;
+	b=ROuylxjMpod2MPf5haCRVBWYvqRG4jrlCcIRu28juFggzcbTjr/TGl5BI6njisauxwWZAt
+	edZDRSNaF80J0aJvIXAc0nqQgXSCrVsnhtSKy1sQYnkw3OHx35lWPnlZW1TVWtFh+l8boh
+	92JiPwoqfL/Y3A23k8gammQOhM1o2Wk=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb78ead12so723436366b.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 08:02:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1756738604; x=1788274604;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=DzdixQuy30cIOdtGPtZhymwxAjNsuo6l8KhPTQzil28=;
-  b=Zz/3rOz02k0CZijphqp9ZkI2uI+MNzRHVUtqSaZj0zco6n+GKXQecmxT
-   v0winJS3clIBs3DoevV7i21tnrZHvkBYMIzZc488ErWNdDvdPuLXFlic3
-   NuB7uWF4peU+w6IYuB5aimAFu4wNfAFqvXa/fFYQIGJnFRMcutOZpWs9f
-   oqYoFpzHYBbU3aJ4Z+RCn5ucKCSQzhGWMN10ISnPXJMlsJ+uYjPy45Lsu
-   ghCjiS03i/pxxXd1WGydNCWFW2Jf3/yYQg5NHwJNGCbTfwbYRonT8wMzR
-   T34wslWVo3fHlrDg31uws6b6a2gxBCVEp6Bz6wBNIukxyJOYNZmEjo2B4
-   A==;
-X-CSE-ConnectionGUID: TP9bWQ1xROib+ix+/ngIXQ==
-X-CSE-MsgGUID: YwAZ6XeoRvujHV/6Dg0jJQ==
-X-IronPort-AV: E=Sophos;i="6.17,290,1747699200"; 
-   d="scan'208";a="1364214"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 14:56:34 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:28303]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.36.37:2525] with esmtp (Farcaster)
- id 90fd1a2a-3fc2-46c8-b14d-04ef65bb514a; Mon, 1 Sep 2025 14:56:34 +0000 (UTC)
-X-Farcaster-Flow-ID: 90fd1a2a-3fc2-46c8-b14d-04ef65bb514a
-Received: from EX19D015EUB002.ant.amazon.com (10.252.51.123) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Mon, 1 Sep 2025 14:56:33 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB002.ant.amazon.com (10.252.51.123) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Mon, 1 Sep 2025 14:56:33 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Mon, 1 Sep 2025 14:56:33 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-To: "Roy, Patrick" <roypat@amazon.co.uk>
-CC: "ackerleytng@google.com" <ackerleytng@google.com>, "david@redhat.com"
-	<david@redhat.com>, "Manwaring, Derek" <derekmn@amazon.com>, "Thomson, Jack"
-	<jackabt@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "rppt@kernel.org"
-	<rppt@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"tabba@google.com" <tabba@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"will@kernel.org" <will@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>
-Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-Thread-Topic: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-Thread-Index: AQHcG0fkqK4jccjXtUKv/NLtaS3P1rR+aqUA
-Date: Mon, 1 Sep 2025 14:56:33 +0000
-Message-ID: <20250901145632.28172-1-roypat@amazon.co.uk>
-References: <20250901135408.5965-1-roypat@amazon.co.uk>
-In-Reply-To: <20250901135408.5965-1-roypat@amazon.co.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.88.180]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=ionos.com; s=google; t=1756738973; x=1757343773; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VGz5s3CgG5oZbwfB15yu/ysF7dSGyM9kka20nq6+kjg=;
+        b=YtFGIUwVozgKhYKap+9qR5B4h/NAPtE8ViIO2OLa2iEahP+7I00liHApKYMIPi/vd2
+         +cFOzQ69QRYfj511fSVz20SQvpUO58JlZeDHLSpNZOjBVU7hcL+DuukKNARUphVTvuuY
+         wK+JtgIrGNnSbrWYclzVnopPu+LTYpi4Gfvymoj2Qd4INSxTr3GhRL0XyvtOI96T1ymv
+         ucNEs90OuK5YeniCrXSPHk2ZRYRuGF6W5E0nkLInewLCccysuoXexTKm17qgnzu41HVo
+         O+BNY1HtUA8cQB1dTYhIHaR4h4N/cYj4Q2zbE0E3dGerszt6RbkU/PJOFMmWpMS6ZTrq
+         tO2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756738973; x=1757343773;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VGz5s3CgG5oZbwfB15yu/ysF7dSGyM9kka20nq6+kjg=;
+        b=CCWgDbrWJRHBTfaqizClnjabyEZhTIgTFxAftA5BiInBO+zbKLYQtwZD3ShHAgpxw5
+         CjRhYmJcMF69wPkkH8qv/NBfb0jqawn0Q28vr/AENtybqBK9DBv48CMsPKOMA5A7Ddx/
+         bgPG49j3OugfMbXDJ4QfKomhWDQH1Dnz6kqro0xo18LRulyv3RfOndPw8q4eC/E1251z
+         VB67htDWngZjJaCCZWnN7Lk4wljvWAon2dnZLXFb1PiYPxjtwzBSCjAhRXeq7WAuqx00
+         WnvAkSKvmpbKV44sOOQbRfv23k1wkmYPMysPOJZ8ZWwKuPVyFFoLvxhX1o3+8W3h/Glm
+         H2hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlx1XDwXqK7Ch9Hp0U/Wf1qKvDGUFr/dkYMWC0YoZaBZWqIEk43BWXI1CUHTfuenHitG+uOpflXQ==@kvack.org
+X-Gm-Message-State: AOJu0YzjjwFWwZrUfSlMWRs50CYJxkMul8iaiFBbuqabIvCSl4kzT9Iw
+	2uJ8s98lURUZ+YyjzYFmVUSXCH88+H6mMK2p6Dz1mxcsU29ataaXuNPjUHKHJwQCeNDAlhkgwDu
+	7YwMuQpSRY+KW94rMUM+gVMAfPKQn5VnQjAspT5hCXQ==
+X-Gm-Gg: ASbGncsWdHCvfQTCgb05uzpTWe4D30OAEpFWfGMp9nKU2rSVYVjOcTXoDtn6WpblnKo
+	8MI1gcteuQdJT7xiMmLN9Rgma+Rz03h3PAzY6U8GZGvZ+sVgllmaqXtEycvA/smiBSRqvA+M1H1
+	uhRx24r0F/GLcRaeCvbv8JVKgjYvEMJ/FSSKS9OFBmhnuAaPfs2de+UTNAKDuLu26jCWSMWQtnq
+	UCelBUggI1urm+0q3a1zbTZXLVxdnzceYo=
+X-Google-Smtp-Source: AGHT+IFezK1h8zD4ulbO+LoYFx9UJvceg5e5MjfORD1cX6aK9EX6zhmOpTUVOQiq+Ui4qjbP7WefWWIq7O/4+eTMSZU=
+X-Received: by 2002:a17:907:3d42:b0:aff:d39:e350 with SMTP id
+ a640c23a62f3a-b01d8a25c91mr803197066b.3.1756738972529; Mon, 01 Sep 2025
+ 08:02:52 -0700 (PDT)
 MIME-Version: 1.0
-X-Rspamd-Server: rspam03
+References: <20250901123028.3383461-1-max.kellermann@ionos.com>
+ <20250901123028.3383461-7-max.kellermann@ionos.com> <ce720df8-cdf2-492a-9eeb-e7b643bffa91@redhat.com>
+In-Reply-To: <ce720df8-cdf2-492a-9eeb-e7b643bffa91@redhat.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Mon, 1 Sep 2025 17:02:41 +0200
+X-Gm-Features: Ac12FXwscizWLWhMN1KX5yHTr-lGd0ZaL5gCF07LzPcgk8nWDqkiCbWTaVe_QQY
+Message-ID: <CAKPOu+-_E6qKmRo8UXg+5wy9fACX5JHwqjV6uou6aueA_Y7iRA@mail.gmail.com>
+Subject: Re: [PATCH v5 06/12] mm, s390: constify mapping related test
+ functions for improved const-correctness
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com, 
+	willy@infradead.org, hughd@google.com, mhocko@suse.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
+	vishal.moola@gmail.com, linux@armlinux.org.uk, 
+	James.Bottomley@hansenpartnership.com, deller@gmx.de, agordeev@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, davem@davemloft.net, 
+	andreas@gaisler.com, dave.hansen@linux.intel.com, luto@kernel.org, 
+	peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, weixugc@google.com, 
+	baolin.wang@linux.alibaba.com, rientjes@google.com, shakeel.butt@linux.dev, 
+	thuth@redhat.com, broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com, 
+	mpe@ellerman.id.au, nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org, 
+	linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5086640018
+X-Stat-Signature: a1t4bqnqs1nm9yxe358sffjzs8pxtkk9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 33C8EA0008
-X-Stat-Signature: f8jfajujcdq1gudjp9fp6a8u4amn1zu5
-X-HE-Tag: 1756738603-902745
-X-HE-Meta: U2FsdGVkX18aJd8UJk1couVDIk2HYy/upH5JylbbYy3Tu96eq705Plpa08yLFjh2M3/vXgUQH3HYvdXdZbAKEbNmnMJv+InvBLaY2/z+8v2nPIqqboIXF4bVFwd41xTBsod28SN7eYFZZCxLrAd5zV/G4ASczCbwzJQoet0aPdZCuQ4ExIVdJo9UN2O03LENM6Llzy0d1kf1EAZwBZco16q+Ft2SlHmBLkDmoHvzn5ygNgukDz5tTHmGTd7BJUSvcZFLDUDoYEkBNkCtOy16WwWeUOxJygpzgGMx9gE4DfKNquIjHI5nfSbzKRxes08g/O0hQ3pJXhBXxUEEWSI3YR+n9nJ0hSYFOVyZ5aeVkOP/UZ6JjK+w6fVj70WlYRXJ3OKonvlkzDGeKtFEVIaBNYEMADQ8G4GGDgOcRPcDlIWwxyXy8fhEJk2rg7nBFts9IIAhW5VnzoYlU8/IDqawYvuohYAmnV0IMzEEbOTe1jO+YBzI+0zqHqjNgJFYt8aoL+6dYptCFu79KuMmIg6uB5iHO8MHDv0Js933bQm1mSSrc9YwX+VCYXCuMmclCPW/Ecf0pbzCRG5EUzXQu081QwUGoMGL7qgjg8qdF1gIkQC8jc6wCW/xYRtLOmdoEGc66TnoP+AtfmRRRDGEoFrRmF3bw+uatIcS5LD1oZT2kDjmLti/BEZ7GKzp0I0SHyYI2R/oUOiY2aUiXHO6G6/B3QswGN0ZT3K/epOpN0FLinMy0BxVPJhFoExKox5Pz+Yd23iKWGSfHq68rc3BNclZ3F+5dD9STldkJImJ4jQ8uhWt6Quybax1QpXoEws/hr51FzyCImiwjWYXfp2NShBF9UaZqQjC/vEbprtKJmIgkxxNswhjY5qSKyEbIfzUZWbEcff14PGymmzmndv3wPEw8yj3ePbhvjTDcWUFfLIFUgvm5xVcQt5xctH+/9osZZLPxMrVK4g09lmJJ4P6yDz
- HnUBjj5e
- vwSGjSbyJ+8uvJU7rylVk2hPBcS8IZvhGe/1ZGsAlNJlqlAbiaJCdAvhGr1hSdXDWelafTggllS5aZUA061UBhQ9Vq7LsFdJFaMR2fo/TOX18wd6GzWg7j5lbtH5OO24ViGo/NJoarGdH1JYi0MpogWph2WcBgtxNULMC0muPjUnmmKoWB55aWA12EdRR9VTOMqia6/wMA/lbGT1wliGILpG/Q76XXDYuATRjgxfnlFtE8bmbguHMjq7wAL/XaSSIBmSr+lMltAlpfDpKJugm8oJQGNTDMWGYolAYsh/wcldXxpEsr1vEGhbVREIahVMHfFA1osjfptnzaET+NsOOQeDQcVr/MkEg8eHw25DntvKlluQpeHPDBH6g9WTtIwg+301wtoZd2/sAYgxG6/8aoCBJWmLH8alHF30mZnPrPdNHLeOZszsPcBpxPB96+BZumCXRKdLGPFSizr1AE83Bzv5E7OsEX9Yh/o0khCuJQ7GKhni9YNCFng8l4F2E6XoDaimPfyxb3NmjYyxx7ZpSyL78qUl0tj4X9F+NZDv0Hw22ju4zQNBs3apNPsAW+g96Lc1gIMxW8RhUll0ZYa6CsGysMfEzLgbxLtVG4Ad97EwAXV17yZEhY0aFiCk8iP+hhSJofRfN5w9MMRpNe6u9OIM+XnpAAKNPa4wVYPSoU2YozvTUURKiXTIGb9aU1n9iGPxWUCYhiNdzcY6uO3urOjYbEZSQMYBVHVCpjwEzaDOtYz6kmDIg7weeOGqVWDmY2sUXPggRtAWLLSGwnvkWcbmSdCfG+LYzTMHr/a4pb9Vt5NjvSO2xN/2bwg==
+X-HE-Tag: 1756738974-545515
+X-HE-Meta: U2FsdGVkX18diBHMD62mEKIO0bejqgSjJl1HlKCXH/56qmRT4lR19a0LViklP3VdWSuffaipyW53+PSFFaO59wgAhqMXVdIYM3/Td/tmAksccN18wgglLR6i4xqE+u8Nvfp5v64KzTRXG1KGVrK3n8R/fA773LZ2JzdNGKlIaybAQRciJ8hqhA074cqKFmFlxFwCdFs9RViYapONjHdt1VsHtloSvj/+L9oOkvgUPvKkrP/8PhCiLix1qAw6s3IIeAFDl4CW3TeLs0xpCXLpob/REq72TNqvyGBPSwPzZyXBjjoAlUQQ5kpdFSM/PjW4ybYa7VqHJTexUaoo78d3jleBiRs/jiILRW6fJjF7kGoMLqRAhK9vKo/FutfqAmXS7qaKx79xwunTbLHMGsr/Z4CGI3JwngNhtBtPNWoyoZnbQZLhZgbjf5hJgv4j3CoASZlnnREN220tjJk3sRj8eqwfZl7+DteTFxYNyaMUg/IrtoaHDya8aqQD6omTgolJe5aol8LejnNYDLZ93peRbGJyqDKyy+YdKerPYygC7cXXYmVzEetkYnZ956771PUkTsGxM2rfc6N51XGSagUCLt9WtqcdcFv2j/WzXaJ0F0Bwo7YdlC1n4aYs9jfE5EArGcOSOc3nMAdTGK+aRrnBCaQUsfBj6Hbipi2SsIlSvzXcaY5x+TuyGv3yjyGikLdA0cNMDVthA3du7njxJg259UGABjiThgCHGIYYtMAZomuwB7G9MjhSu7jJK8MLS0wPjHwMJziOZ3XFRE4dQGBEaRdbHZeSa53PhpeZTWILyU6UrBEsdoVakpGN/mFOrALt9oitvSRdQ1P2kU8s3Xt2JA885Noyd/9l/iqeFSoiRm1eRDIxCiawAaSDWenn3EXpmTg0ChqaMB/daAfzICA3foIZMPHuxCSudNyVtiNW6/sEnyLnGMBeBV4nmJaCqOw00AEWRQvkJJ84cglbhUV
+ oTpezVKn
+ aE/rBAvJNKiK+NiNLpyqepM6VyHQBnmBwVGbaLWvlD1xxECoFTFA2Z3H9N6WQGgZbGHYFEn1sDANWliLARGI0xfSQUyri5WFb6z5eGwT0DOCT7jDA9d3kHtKb33GbAwG3AM2736bITGG6C80PAcPHqhLP5yerk6Qe2vCAByCTFgw77yK233QhESClSeA32yfsAORHMQFhPwXU7GOxbVx+QbYKkkXBAuBcgkdOV+npRdcyvi54YRZNLCExWcwGElLrLdBCbsql6RNsCmuQMbxRRt1dTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,76 +133,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2025-09-01 at 14:54 +0100, "Roy, Patrick" wrote:=0A=
-> =0A=
-> Hi Fuad!=0A=
-> =0A=
-> On Thu, 2025-08-28 at 11:21 +0100, Fuad Tabba wrote:=0A=
->> Hi Patrick,=0A=
->>=0A=
->> On Thu, 28 Aug 2025 at 10:39, Roy, Patrick <roypat@amazon.co.uk> wrote:=
-=0A=
->>> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h=0A=
->>> index 12a12dae727d..b52b28ae4636 100644=0A=
->>> --- a/include/linux/pagemap.h=0A=
->>> +++ b/include/linux/pagemap.h=0A=
->>> @@ -211,6 +211,7 @@ enum mapping_flags {=0A=
->>>                                    folio contents */=0A=
->>>         AS_INACCESSIBLE =3D 8,    /* Do not attempt direct R/W access t=
-o the mapping */=0A=
->>>         AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,=0A=
->>> +       AS_NO_DIRECT_MAP =3D 10,  /* Folios in the mapping are not in t=
-he direct map */=0A=
->>>         /* Bits 16-25 are used for FOLIO_ORDER */=0A=
->>>         AS_FOLIO_ORDER_BITS =3D 5,=0A=
->>>         AS_FOLIO_ORDER_MIN =3D 16,=0A=
->>> @@ -346,6 +347,21 @@ static inline bool mapping_writeback_may_deadlock_=
-on_reclaim(struct address_spac=0A=
->>>         return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping-=
->flags);=0A=
->>>  }=0A=
->>>=0A=
->>> +static inline void mapping_set_no_direct_map(struct address_space *map=
-ping)=0A=
->>> +{=0A=
->>> +       set_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
->>> +}=0A=
->>> +=0A=
->>> +static inline bool mapping_no_direct_map(struct address_space *mapping=
-)=0A=
->>> +{=0A=
->>> +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
->>> +}=0A=
->>> +=0A=
->>> +static inline bool vma_is_no_direct_map(const struct vm_area_struct *v=
-ma)=0A=
->>> +{=0A=
->>> +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_ma=
-pping);=0A=
->>> +}=0A=
->>> +=0A=
->> Any reason vma is const whereas mapping in the function that it calls=0A=
->> (defined above it) isn't?=0A=
-> =0A=
-> Ah, I cannot say that that was a conscious decision, but rather an artifa=
-ct of=0A=
-> the code that I looked at for reference when writing these two simply did=
- it=0A=
-> this way.  Are you saying both should be const, or neither (in my mind, b=
-oth=0A=
-> could be const, but the mapping_*() family of functions further up in thi=
-s file=0A=
-> dont take const arguments, so I'm a bit unsure now)?=0A=
-=0A=
-Hah, just saw=0A=
-https://lore.kernel.org/linux-mm/20250901123028.3383461-3-max.kellermann@io=
-nos.com/.=0A=
-Guess that means "both should be const" then :D=0A=
-=0A=
->> Cheers,=0A=
->> /fuad=0A=
-> =0A=
-> Best,=0A=
-> Patrick=0A=
-=0A=
+On Mon, Sep 1, 2025 at 3:54=E2=80=AFPM David Hildenbrand <david@redhat.com>=
+ wrote:
+> > -int vma_is_stack_for_current(struct vm_area_struct *vma);
+> > +int vma_is_stack_for_current(const struct vm_area_struct *vma);
+>
+> Should this also be *const ?
+
+No. These are function protoypes. A "const" on a parameter value
+(pointer address, not pointed-to memory) makes no sense on a
+prototype.
 
