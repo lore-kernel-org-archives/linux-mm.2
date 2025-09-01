@@ -4,93 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55432CA0FF0
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:08:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005C7CA1007
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 16:16:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFC288E002A; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
+	id E960A8E0019; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAC7C8E0002; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
+	id E46BC8E0003; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9B748E002A; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
+	id D35918E0019; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A7B9D8E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:06:47 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EF001A0914
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:06:47 +0000 (UTC)
-X-FDA: 83841159654.07.051DF16
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EAA2C10000C
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:06:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756742805; a=rsa-sha256;
-	cv=none;
-	b=JalB+SD9pVJ963F844OSo6sSM+70VwdVgGe5uwrUhYQD12SLEOnj1nUKJ/4s+Tc43yWftW
-	Eh7rajJavkjg69FqdioM1ggZ0wUZ9XXURt87voDszrHANvkpDoZv2eD1bDTumLahnuWVBx
-	cH6dVZnhfKB8iTbkW9cXwDvg4B9ewK8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C2CED8E0003
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 12:15:51 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4CBB5160920
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:15:51 +0000 (UTC)
+X-FDA: 83841182502.24.F4B3202
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D85D840009
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 16:15:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=frBZwBEq;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756742805;
+	s=arc-20220608; t=1756743349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P0g6SugGw/UALqv2cU10ldYc1q7M6DhWlc37IAVZPeA=;
-	b=60rAyn/xT3Uo55SJB68+/TF/hJnmLMkjBcYlatXAdN5j6B4Hi4mmKXsQ0RTeLMUzL+tVFM
-	reSi7lEAf8Yc64aW/ZTwQrwI6jl+Hk394Qe/YPh1aBib07C4LntjheULPlTe03XL4RT1fa
-	6KHLgfjs4NSyZZ/R16DsCqLQBejMgIU=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 2 Sep 2025 01:06:41 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Tue, 2 Sep 2025 01:06:41 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-Message-ID: <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
-References: <aKgD7nZy7U+rHt9X@yjaykim-PowerEdge-T330>
- <CAF8kJuMb5i6GuD_-XWtHPYnu-8dQ0W51_KqUk60DccqbKjNq6w@mail.gmail.com>
- <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330>
- <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
- <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330>
- <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
- <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
- <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
- <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
- <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WzCHhi4hjG4XUTM3m5FXF23YIR33PFzU4tTzZn5EUNE=;
+	b=RrTVvRbfa72TkCqsKgO5VlT4F1v9aWAauuZXDNPkpO52dJkmNrEoLKbCP7pQIaS+jrrsSf
+	OMMhci08G5aQjUjpsBoVmHKSjskSVWjRPG7p6Td+E7Kyy95Q1W8KZ0qehR4vm675AL+VLY
+	sP0TqHYwk1xFl9wPh4WAilblLs7d+wE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=frBZwBEq;
+	spf=pass (imf11.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756743349; a=rsa-sha256;
+	cv=none;
+	b=nGN/UkEdGokuTYuYfewOBtoSUopZGYbzwvcvct9oYx/RGCw0iJv3x8ZEY2cN//jHuo/Ncb
+	BKVBFg0Yz1+9GpqigmnrTnFXS4rSgjLAJ+xldMuHYBM7M2URkcpXeER+muMQbKZ8WCV2iC
+	vnT4ldT7VSSHCdyuC8RfMFEpZsAWZvg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756743348;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WzCHhi4hjG4XUTM3m5FXF23YIR33PFzU4tTzZn5EUNE=;
+	b=frBZwBEqPWiW2EhLInHqpH2K+XqZJWvgApPZbpRUimzAoodxihT8ifOVxntBqyVRc2IqQY
+	HxU5g00TARvAA7+XlTHHG4JX7oMQ6LoKP4sy29waYRf9sH41Ejrz2lt0LUyxwoZQTD2sPl
+	C39H39FDd6relMLe+GD/meMzb0cBNzk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-315-ASKRfdCHO-WTPL5j0TCahg-1; Mon, 01 Sep 2025 12:15:45 -0400
+X-MC-Unique: ASKRfdCHO-WTPL5j0TCahg-1
+X-Mimecast-MFC-AGG-ID: ASKRfdCHO-WTPL5j0TCahg_1756743344
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b8f4c2f7cso7023005e9.1
+        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 09:15:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756743344; x=1757348144;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WzCHhi4hjG4XUTM3m5FXF23YIR33PFzU4tTzZn5EUNE=;
+        b=niA1wmlCybj8YOt2QWwrxEtmOBLebmBNQ4LBhU7Ack9phrqQ45ZCiwJYdnzMilWRi4
+         LKL4qvRX5Xzk3y39woQtMHx9+0ziMpde1DZrqQUJaKAoWnksFrNKYx5YGj7pESo/r3iD
+         q6SnDPaK8EdF+znZRJvEumCj7V/iitUSj81A0cacJ2QSff/cnM4sWIQCyiEFokqq9miv
+         cDNbUCQXScA6fXUSY57pR5EvWPbXewCVp8sIPIoQcbRY8w3R+G0YCuZFtGbs3Fkndys7
+         xBKVy7NPvrGgQQ2YuS0g2GSAb4i358kuum03KcY4qic30NbTHDHOY+USUrCA2vTrvuvL
+         fKuQ==
+X-Gm-Message-State: AOJu0YyF2cvPB1h+P8+6Kxef5teGxYRMQD8YIcWWX0nrS42KJs6eLr4s
+	05Vu0anoLgmyNGu6ehimDdbWIyLXr+DaZylYSDcc1cHhxgeypUNoEhLZfu3+M5HBROgEfZUmXbQ
+	I/WM5StjhRKwFKa6qAfkWqWOLcN7wPoypWl5ufNpOGnd/nJvoBqfj
+X-Gm-Gg: ASbGncsHquvZ9MqQgx23Q8tgQ3d2zdLl8wEgloRRC1K64EKFB/R0xY3Pa/rDaM+4y9K
+	+PAp/78riWADL6H+s5IBwnw0Dk/wEqmoZGTc31A/NFuYjuDSI8HPPVKUQNBpJjKeNNWB3kGYsIp
+	afGhXHSUTtTZo+Vmwd1SgzxGTJyR5HqLcIK0oO06R9fHHjIoGaS7O70ekgaL8GNwBtPZmIEURJH
+	tFGYwwzEtV2PdW1fhHX4XJy3AMEkE7lbl3+VfHNePV7tn8M3Siow8pzyAeY63UGKgL5vb3AKr+N
+	GlBE7DCC4Ypp/P1kY8W/icRjcFfz5qV+qvgc6iBMOHpzVgMgGmCbDfD8pWzL3tUxafjYpCerWI+
+	4Sr/55s9eONmjflMzSk1x5ox5L/E5BbK9qzljFJMvOjRN2KK0t2piuXTf2hqR6o9XEq8=
+X-Received: by 2002:a05:600c:3ba8:b0:45b:6705:4fca with SMTP id 5b1f17b1804b1-45b8558b82amr80213575e9.31.1756743343871;
+        Mon, 01 Sep 2025 09:15:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGBz1k7vAtdK4ipj+F4kTUm7DgeCfwB5I9v5S+ZFupzLSKLX3A+8B7qS4i4w56nZH+z+JGhtA==
+X-Received: by 2002:a05:600c:3ba8:b0:45b:6705:4fca with SMTP id 5b1f17b1804b1-45b8558b82amr80213195e9.31.1756743343343;
+        Mon, 01 Sep 2025 09:15:43 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d12c90a01bsm13377439f8f.31.2025.09.01.09.15.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 09:15:42 -0700 (PDT)
+Message-ID: <07007d31-1601-4b95-b646-687295487cfe@redhat.com>
+Date: Mon, 1 Sep 2025 18:15:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
-X-Rspamd-Queue-Id: EAA2C10000C
-X-Stat-Signature: 1r6gwm1pyqetu61mjwyscxphhxnrozej
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 05/13] khugepaged: generalize __collapse_huge_page_*
+ for mTHP support
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com
+References: <20250819134205.622806-1-npache@redhat.com>
+ <20250819134205.622806-6-npache@redhat.com>
+ <2ddd1403-1bda-4875-91fb-7060804a50c6@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2ddd1403-1bda-4875-91fb-7060804a50c6@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: tIE4l07WOD9Br9DQCACJGi6qZVlfJF8SsIogWdb-PIo_1756743344
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D85D840009
+X-Stat-Signature: xq3x3e8ncu7f3d58c9p4opw3oyxcxb98
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756742804-657070
-X-HE-Meta: U2FsdGVkX1+UMd1OwTjDdZ9ibGPFLte8e2EXvjXxEYdvj+0VFVw9rmTYwCHx0kq+R1qY1Ef4KNX6IhCFnCUa+wpesGQA6BGX8FQV4bUiLJ2GVqJpApguxqdMQYZ7qY3Ad4cp35qV8WN+Iz5fkC1lKyNSL7wn8PNRs4XqXOxIHkfn2UXbkVhgeAyZqmpejzpcPMxfqzk05HPDdeU5V051prrOnDWuZc0wR6qOpP04e3DmnY06FX3wajJuLNoD6OWYhJWekp9795Vcf8NTFWvxCWjnznJkuDNh+/Kxa7VpMS16hRAv2TPMHeSgN/GIVedilWIvZegLn3x76FslXNitnapCtqhNhLCA171tPclkxV9sgC6gPFJCy2APUvKscVVZ4YhwpsLv6ajUAD6+aINdUiKcFeO50taVeRb0SfUvgKooqD9n+lgZ6LYylWIJlQD6cWcMiCsuRfoZ4uvomHbi/GMdoZVy9QWIERAvj5K97bvKrxGgK4E61GkbioOGeeWfdbHgjCWOrgnvW1M4hYNLyo03yKwcqpmKhErEzX+B1ZeiBQvrKU9E/hrWwNiED2ZwpRbpChHrOm+FDFr/zHNExLZQ8K6dtiHEeCUqW7nHRYdxLEFDXFBYq2mcAXbog5Rk6YfQXyWdYz3G+40uKO8kYQyta0A6d6D9Q707K6HGPjSBgeyLx662/UG8/I1v2EwYl220XWjfepp3w96U/SQcZCFiz/BZbJcUEcrZT0LMSvI2qeLJZ24zD7IK+/0k67r491XfOU/KpQcxY8+LRvifWmMDw09rd7RUry8JYRZX3vkp3xBrnJ+RFo/0+zXAdy6SOEeOKF9XC//aB6VmBYOdwtrYFYKQXqHyhoLw746V0I4FDWI6fCv+rA==
+X-HE-Tag: 1756743348-107656
+X-HE-Meta: U2FsdGVkX1/lvSZxNvJ9RldgWbrgz/PW5pLwJ5QaZ3uhHbrcG3+tIZeZ6QUo+iE+eQuRMLXUpzh6LLm7Xs1EWj14f458gmQSA6EQyOIq/AjbH8tVXYFJL3LXX6xA09cOByDvsOH0McfltpYsXAE+HCDJWNhIjN5qMm4HaqJUQBguaNa3mXzxGZHJmHZxjeuHyz2kFcwNAAo4RQ3AV2ym+3MDxjdGmTR+1X2GxsMU2fgs/DBbl7lj0bVN5E3OMGKX1+2uMjWqYivR8O9+QpDHJcDfM2HzE1wJawzme8qwEDsW+NfTM6604KK/Oir0PI+oslOxpn9AIdGD6oHZ0c53CkuU1eZUMhNa0XfVVs9VgvZ3SPS1jeizJPu9O5knjiVuOzUEp+ggBVRAaknjxZec2Wyg2UJZyI+xaR2lOGQXVL/dsssxA1EjMFjw7F7f5Et0YBhjTq5Im4O6oqaCEdjbv2EBFO49hPlIELH748VsqKivcIp6MlLMe15KOD3yVYoS3dXRP72wpx3LpQR4kl9cJGreR3vStH5Gvv2OEmdHGqrsVxGM0h5X7zYOlYvyyqRZRByC6rMTg94dJQNABHk1LZcmWjlyBz6Y0AcNa+Ir65PqmSm0SU2ZqIcby9V/CIvlKR8y+c0t+DHQEnQ5Mq62dM0e74G9lo4U5WBQqdhZlfOXAgWEhs4kMPfzDTcDH0jruB7KVd9KyW+Sgd3NXfebfgfoap5XMPimLcVBAlkJ6mspgGfx473lCXrH3CI6ZdNUDtfRasGTyHaAQGdObRMkBP6RItPc7mmZBwEkrjmlQNBkuXeTamactxkp9dBBYAJ6xqqgH6YwjH319PCn0x85C54H4lif4U0gU47P7GGFJoO5idUDX3Kp5CYirZ1pQDuYmJQot929l0xG7ll16osmR7nopWf8bYINDY5RwCMDO9GNm0hsHLS3Im0IfWXuuwNexgfVJPt4jxEUlECafYK
+ F6khOvr3
+ j2lQi8xIHboA5DA39K9YE4pxUZhRxLHh2hCB4VqRdBgDuOh9RMEu2mulOfCXCt9Vm/gZudic0syVmphXUo6e+bCQxqYF5mDhQ+oBK1sAookeARJmOeDphKYpiK60BZIF+c1Fo4ytkMPl7GsHANMctb7/uRS8g2rKWvskOt6MvbzcVCFrKuZww1zqh9Tudq0KYk5zVt8SILc+HxyxfQCJNqPxgldYVg4t11pT5MrNsZNuERuvZU/pwBGegMNLiNqARZTCNwzc22COBIQ2Dj86rahQNejZ0Z8+xgubXIT52Q/tO5M9IW0tPsopSf6BU+Br6AIAiyZcztD1VxLo1Gy+ewy9bobbq7a77rHCnhqyHUwqkrcuoa9Ca1iCA00z+2y4tAY28gRKDR5O86ttQqOkYHrTDwuPJw482QCaZzhykm6vVZNSUtuNAvFKC1hdZgwBZt3VTeWaoaR1H9z0sd5WAuscVf/MK+e8yimlHpNB6+JfhffvylYIzItQpo269GXlSK5VMZit+YEA8uUF4pzh8K/aD/hj8sMIBl6Rx1/gqNAx9MT4VzSzpSU1m2fqf7+bFQtr9jar8a9GSybMyshHvT5aActACcw8JC7c5c2y7Vs/iAVI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,189 +192,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Overall, the alignment looks good. Among the three points you suggested,
-I agree with (3) cgroup inheritance. I would like to continue the
-discussion on (1) swap tier lifecycle and (2) allocation logic.
+On 20.08.25 16:22, Lorenzo Stoakes wrote:
+> On Tue, Aug 19, 2025 at 07:41:57AM -0600, Nico Pache wrote:
+>> generalize the order of the __collapse_huge_page_* functions
+>> to support future mTHP collapse.
+>>
+>> mTHP collapse can suffer from incosistant behavior, and memory waste
+>> "creep". disable swapin and shared support for mTHP collapse.
 
-1. swap tier lifecycle
-2. allocation logic
-3. cgroup inheritance
+I'd just note that mTHP collapse will initially not honor these two 
+parameters (spell them out), failing if anything is swapped out or shared.
 
-> > This part relates to my earlier point on runtime modification. My
-> > intention was to only allow setting the tiers globally, and to align
-> > bitmask with priority ranges. For example, an input like:
-> >
-> >   ssd:100, hdd:50, network_swap
-> >
-> > would translate into ranges as 100+ (bit0), 50–99 (bit1), and 0–49
-> > (bit2).
-> >
-> > From your description, I understand you are considering allowing
-> > additive updates, insertions and letting bitmask differ from the range priority. Is
-> > that correct? In that case we probably need a way to distinguish
->
-> That is right.
+>>
+>> No functional changes in this patch.
+>>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Acked-by: David Hildenbrand <david@redhat.com>
+>> Co-developed-by: Dev Jain <dev.jain@arm.com>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> Signed-off-by: Nico Pache <npache@redhat.com>
+>> ---
+>>   mm/khugepaged.c | 62 ++++++++++++++++++++++++++++++++++---------------
+>>   1 file changed, 43 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 77e0d8ee59a0..074101d03c9d 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -551,15 +551,17 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>>   					unsigned long address,
+>>   					pte_t *pte,
+>>   					struct collapse_control *cc,
+>> -					struct list_head *compound_pagelist)
+>> +					struct list_head *compound_pagelist,
+>> +					unsigned int order)
+> 
+> I think it's better if we keep the output var as the last in the order. It's a
+> bit weird to have the order specified here.
 
-Yes, I agree that add/remove semantics can be supported,
-But it was not fully clear whether there was agreement on the full set
-format, I wanted to state explicitly that my preference is to require
-the full set format for simplicity. That said, if staged insertion and
-removal are considered useful, one possible approach is:
+Also, while at it, just double-tab indent.
 
-(side note! explanation of the interface was somewhat
-descriptive, which may not have been fully clear. If this explanation is
-sufficient to establish the general direction, I will aim to present it
-more concretely in the patch series. Otherwise, I can provide a more
-detailed explanation in a follow-up email.)
+> 
+>>   {
+>>   	struct page *page = NULL;
+>>   	struct folio *folio = NULL;
+>>   	pte_t *_pte;
+>>   	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+>>   	bool writable = false;
+>> +	int scaled_max_ptes_none = khugepaged_max_ptes_none >> (HPAGE_PMD_ORDER - order);
+> 
+> This is a weird formulation, I guess we have to go with it to keep things
+> consistent-ish, but it's like we have a value for this that is reliant on the
+> order always being PMD and then sort of awkwardly adjusting for MTHP.
+> 
+> I guess we're stuck with it though since we have:
+> 
+> /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
+> 
+> I guess a more sane version of this would be a ratio or something...
 
-  echo "add ssd:100,hdd:50,network_swap" >/sys/kernel/mm/swap/tiers
-  echo "add new:80"  > /sys/kernel/mm/swap/tiers
-  echo "remove hdd" > /sys/kernel/mm/swap/tiers
+Yeah, ratios would have made much more sense ... but people didn't plan 
+for having something that is not a PMD size.
 
-Alternatively, separate files for add, remove, and show could be used to
-represent staged operations:
+> 
+> Anyway probably out of scope here.
+> 
+>>
+>> -	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+>> +	for (_pte = pte; _pte < pte + (1 << order);
+> 
+> Hmm is this correct? I think shifting an int is probably a bad idea even if we
+> can get away with it for even PUD order atm (though... 64KB ARM hm), wouldn't
+> _BITUL(order) be better?
 
-  echo "ssd:100,hdd:50,network_swap" >/sys/kernel/mm/swap/tiers/add
-  echo "new:80"  > /sys/kernel/mm/swap/tiers/add
-  echo "hdd" > /sys/kernel/mm/swap/tiers/remove
+Just for completeness: we discussed that recently in other context. It 
+would better be BIT() instead of _BITUL().
 
-When using the fullset approach:
+But I am not a fan of using BIT() when not working with bitmaps etc.
 
-  ssd:100(bit0), hdd:50(bit1), network_device(bit2)
+"1ul << order" etc is used throughout the code base.
 
-If we remove the ssd layer and add a new tier:
+What makes this easier to read is:
 
-  echo new:80,hdd:50,network_device >/sys/kernel/mm/swap/tiers
+	const unsigned long nr_pages = 1ul << order;
 
-The show output could display staged state (imaginary output for understanding):
+Maybe in the future we want an ORDER_PAGES(), maybe not. Have not made 
+up my mind yet :)
 
-  ssd:100(bit0), new:80(bit3, in stage), hdd:50(bit1, removing), network_device(bit2)
+-- 
+Cheers
 
-After the hdd tier reference drops to zero:
+David / dhildenb
 
-  ssd:100(bit0), new:80(bit3),  network_device(bit2)
-
-> > between “add” and “reset”. Personally, I feel supporting only reset
-> > semantics would make the interface simpler, while still allowing add
-> > semantics when the full set is provided again.
->
-> The counterpart of "add" is "remove". There are two possible ideas to explore:
-> 1) only allow removing a tier when all swap devices in that tier
-> range have been swapped off.
-> 2) Remove the tier by removing a midpoint from the range. The lower
-> tier automatically gets the range belonging to the tier that was
-> removed. Optionally, you can add another tier back in replacement
-> with different range boundaries. This effectively achieves replacement
-> as well. This approach does not require swapping off the swap device. I
-> like it better. If you want to avoid the race window where the
-> swap device temporarily belongs to the lower tier, you can always swap
-> off the device before performing 2). So 2) can be mixed with 1) as well.
-
-I have already explained this from the perspective of option 2 mixed
-with option 1. Let me clarify one point:
-
-If...
-ssd:100, hdd:50, network_device.
-Insertion above 100 becomes visible after ssd removal,
-Insertion above 50 becomes visible after hdd removal,
-Insertion above 0 becomes visible after network_device removal.
-
-It means that as long as the tier exists, the referenced priority ranges
-cannot be overridden.
-
-And Regarding swap_tier object lifecycle:
-
-A swap_tier should not be deleted until all devices in the tier are
-swapped off (As you said, references are held). Therefore, cgroups that reference a
-tier should also hold a reference. Silently dropping a tier is problematic
-from a cgroup perspective.
-
-If we allow this, the implementation should behave as follows as I think:
-If a swap_tier is removed, the cgroup’s tier configuration could be
-marked invalid. This should trigger an event to the cgroup to notify
-user space.
-
-> >
-> > > > 2. Slow path allocation uses bitmask skipping; fast path uses per-cpu
-> > > >    tier cluster caches.
-> > > If the fast path fails, it will go through the slow path. So the slow
-> > > patch is actually a catch all.
-> >
-> > Do you mean that if the cluster does not belong to the desired tier in
-> > the fast path, it will skip and then fall back to the slow path? If so,
->
-> I am describing the existing swap cluster allocator behavior. In my
-> mind, we are using the existing cluster swap allocator code, with
-> constraints that only allow swap entry to be allocated from the
-> affected tier bitmask.
->
-> > the slow path would need to avoid inserting the cluster back into the
-> > cache, otherwise processes with a global swap view may end up using the
-> > wrong tier device(which must be referenced firstly assumed)
-> > Also cgroup which is tier set experience performance degradation
-> > because, there is possibility to try to alloc swap on slowpath most of the time.
-> > Wouldn’t this have performance implications?
->
-> I think we are mixing two different concepts. There are swap tiers
-> which decide which swap device to use. Then there is the swap
-> allocator to allocate a swap from the allowed list.
->
-> If we move to the swap tiers, the swap allocator needs to be swap
-> tiers aware. So it might move to per-cgroup cache list or disable the
-> cache for cgroups that haven't been allocating for a while. The
-> allocation logic should be in the allocator, not in the swap tier
-> layer.
->
-> > I was thinking that maintaining per-tier per-cpu cluster caches would be
-> > simpler. Then each tier manages its own cluster cache, and we only need
-> > an array of per-cpu caches of size “max tiers”.
->
-> Again, let's not jump to premature optimizations. Do it the simple way
-> first, then let the measurement numbers guide us.
-> It might be per swap file has a cache not necessary per CPU. per-cpu x
-> per-tier the combination is too big, I am worried about caching too
-> much swap clusters. Each cluster is 2M.
-
-You suggested maintaining per-swap-device cluster caches. As an
-alternative, I would like to suggest a per-device per-CPU cache
-approach, which could be simpler from an integration perspective. It
-would fit more naturally with the existing allocation logic, remove tier
-awareness from the allocator, and should not introduce functional
-differences in behavior. Moreover, since SSD devices are likely to be
-concentrated in only a small number of tiers (with one being the "best"
-tier), the number of clusters actually cached at any time would not be
-large. I am not presenting this as the ultimate solution, but rather as
-a simple and reasonably practical approach to consider. I agree that we
-should revisit and evaluate this approach further.
-
-> We DO want some parent level control. That is a real customer
-> requirement. The cons with your proposal is that, if you want to
-> change the whole set from top-level cgroup to child cgroups, you need
-> to traverse the hierarchical chain to set each child cgroup. While
-> walking the child tree, more sub-level cgroups may be added, and
-> you could miss newly created cgroups. It becomes a mess.
->
-> It is much cleaner if we allow the child cgroup to have the default
-> "swap.tiers" empty. Then you just need to set one value at the top-level
-> parent cgroup, and all child cgroups inherit it automatically. A child
-> can overwrite it if desired; by default it inherits from its parent.
->
-> The whole set of cgroups from top-level including children can map
-> into a Kubernetes pod. It is common to perform adjustments on the
-> whole set atomically. We should support it.
-
-Okay I will adopt default inheritance for pod-level and similar use cases. A
-child cgroup inherits the nearest ancestor’s mask upon creation. If it
-later sets its own mask, that configuration will apply to itself.
-
-> I think we are aligned.
->
-> Thanks
->
-> Chris
-
-Many thanks for the detailed review. It helped clarify the implementation
-direction, and I look forward to preparing the patch series accordingly.
-
-Youngjun Park
 
