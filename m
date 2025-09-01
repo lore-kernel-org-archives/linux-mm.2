@@ -4,246 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57862CA1000
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 14:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF239CA1000
+	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 14:22:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B2898E0024; Mon,  1 Sep 2025 10:11:11 -0400 (EDT)
+	id EF5378E001D; Mon,  1 Sep 2025 10:22:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 786A78E001D; Mon,  1 Sep 2025 10:11:11 -0400 (EDT)
+	id ECCEE8E001A; Mon,  1 Sep 2025 10:22:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DCD48E0024; Mon,  1 Sep 2025 10:11:11 -0400 (EDT)
+	id DE2848E001D; Mon,  1 Sep 2025 10:22:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 271C18E001D
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:11:11 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4623BBEDD
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:11:10 +0000 (UTC)
-X-FDA: 83840868300.29.4EEA573
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5DA7EA0011
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:11:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YKXlvMrq;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=jlxa83v8;
-	spf=pass (imf15.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756735867;
+	by kanga.kvack.org (Postfix) with ESMTP id C9DFE8E001A
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 10:22:27 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E54585DC0
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:22:27 +0000 (UTC)
+X-FDA: 83840896734.05.2E889D6
+Received: from fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com [63.176.194.123])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E5971120014
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 14:22:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=QLvSna8c;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756736545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K77xnvhqlAa1hwrp+RCkb0ernvgM4tvhQgj8QfoVwK4=;
-	b=jq1Z31l9HAvzXdCTsFlWnV4D6LUBSoYoY4pH4wZ9A3mfPZDv3LxYEk1gzJEs1dZjWAL0+n
-	0gT8hVdUTfKBdZC7EuafdNtqQhFpfBU2n0H++WyM8hDVbPCxE1xcSj6UXH2P8wBlAAyjBA
-	BI8CnxZ9x49Z55J0aWcqzFDAg2IQacA=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YKXlvMrq;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=jlxa83v8;
-	spf=pass (imf15.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756735867; a=rsa-sha256;
-	cv=pass;
-	b=dLOLtcdn6NEYnhjm6D4M5RnoQIhdslhPanpYKuLVXRojkzNDgqBQiTA0IJBuMPQI9LyJhk
-	vpi3jXTRsmA3/gTozxuPncyC7scfroUn6bIo0Fv0RNoI8fHqPfZL3UIe5mmH/CviKzqwNe
-	MOAvzBppt0UJCkzc4AXm5XFRzaL8WVA=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5815fwXT024358;
-	Mon, 1 Sep 2025 14:10:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=K77xnvhqlAa1hwrp+R
-	Ckb0ernvgM4tvhQgj8QfoVwK4=; b=YKXlvMrqk3DvL1YbN6wmgT2gAq4PYIBCAx
-	OXV1f+0ssmXCpLYpLjTuDBDas8hc2NTFvLk9YIsJUpd+IazktJnx3uZ57zlLO/+j
-	5/xBVX+xFQbU4BaQDxIlen4y/UkUWvsLsEjC7mD+xxWFulu1TakFt53LxNad+qqy
-	LxRc42ap3qhq6C0fac52ff4Mzi7s0Qv/Q2+cxp3vq/QPx5xsk4SIkiu5CRF9zVqY
-	723Wm4XdXicZ3OfHZ2BB7Gzbjn34jb0cKcClc3AQFJMO+Puen72VsX9+9Tp+gY58
-	xdlTAYgv7qHRWllB48BHaJQS/V++e2l7+ngWW8sDQP5uE/e9eVqg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48v8p4j0nn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 14:10:14 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 581CNmmv004190;
-	Mon, 1 Sep 2025 14:10:14 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11on2067.outbound.protection.outlook.com [40.107.236.67])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqr85vvx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 01 Sep 2025 14:10:14 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TF5nPd0r6JWz84uy4LeKFlPvuqlRqDbO/lkSgo/TfG7qYgcOsYYLfpp08XfkX8eCSiZ6oN5VnE9Ozv2cvgexTjxssqU4Or2FJbJsIzZTSLz36N5A3ks8q2m7DFeFIgBv8gvUwju5ckyUyzZEw83BlwkP0QiYnLCRJ8h1UEHPiTpTju01YUpUW0OBFJPdOBG1a5SH94mY6SGJH/zrmeqZeFSWJJvy0Rbw/yD1EeTluudM+x/XIrBYE/2AHQvB90NvOvjsh8FLENGkA/eRy1zLARzL/A3my2+2Q4L3dhzSak4P2jLLIHDp58creo8REo1UxDWi52BiIHXF/Aqv6CvO4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K77xnvhqlAa1hwrp+RCkb0ernvgM4tvhQgj8QfoVwK4=;
- b=bNeGcs73IPmgc7x+2BvIVdKpdBK006njaI7xVWDqkLdwnpsICB6dk/2/kqDS495SiiOLNEeplsHkib1QPR2i5vK0yeIpdQ09+r6X8WVcq+i4LW82ZVdb4mSeDdwxvk5BZHcKbZZrz3MFY5bvZknWW+sRvFGwLSk1q9kaI3WHo7iRl5SOcWC81Cd6m5TPpEid66eJJwJ0KldzWhnER1LVcfROnqyw0595TgiOBwp0K3om/MswnIri5td6sHzhlyOV8Aa1FjzlUSG8rC9GuRb7eSLo+zxOp0s5UTG5iihC6ei65yPmKSVOp9JORsCLT38tYUN7oDp2mu7s05rAo/9o4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=NexCRVeiTn8yKPd81BsG0VP8TjQq1oA2bxWGfc7HsT4=;
+	b=QcXWcjJ5nq0vE3p6S6JqUee+UcdalayAdAk54PpCyglm3v9E3NazhSUUGGOKGVOFzb6fZr
+	0YqDMJ+lCPMWFNbIzO020Fn4GCLLKtZqoHq3yiZEobxkoY9V6YdfcOnKfczilS8j5KXyXv
+	kwz1rME7ORYibGKQ+8vLI0jTMuxAnLU=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=QLvSna8c;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=332aeadb2=roypat@amazon.co.uk" designates 63.176.194.123 as permitted sender) smtp.mailfrom="prvs=332aeadb2=roypat@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756736545; a=rsa-sha256;
+	cv=none;
+	b=iOhywLsq3DoygS7Oy/g7YhC/+osRurMSOkbbHoaGra4qbLzevPbTpc2dyhIVXUddw8FqU7
+	4hoWLfGn/Sz4i0kE1H1wHejIgEBQzOYJD2xYcZIAI+VUP+j7ACRXp9rUbOLAuytYcuGHdD
+	D3h9G21Ey51TgOXFXBv3E9g0Obn9Rik=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K77xnvhqlAa1hwrp+RCkb0ernvgM4tvhQgj8QfoVwK4=;
- b=jlxa83v8/Lu6JOGUOuu6ttw7Sx3F9WrzZh6B6kNxn2twU6cjTYmGBnFDIbRabs6zd2wWytlLiOXqMxHh1i+6U0bxh4AmjEcPZtKrncp2mm6yiI5xHSuUz1QpesnQiPVCVFo2CMHD4hN3yhyE8EjhUQ7tSYhUUIEIoFzYjYvIWXY=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by IA4PR10MB8351.namprd10.prod.outlook.com (2603:10b6:208:56d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Mon, 1 Sep
- 2025 14:10:08 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%3]) with mapi id 15.20.9073.026; Mon, 1 Sep 2025
- 14:10:08 +0000
-Date: Mon, 1 Sep 2025 15:09:56 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
-        yuanchu@google.com, willy@infradead.org, hughd@google.com,
-        mhocko@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-        surenb@google.com, vishal.moola@gmail.com, linux@armlinux.org.uk,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, davem@davemloft.net, andreas@gaisler.com,
-        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-        weixugc@google.com, baolin.wang@linux.alibaba.com, rientjes@google.com,
-        shakeel.butt@linux.dev, thuth@redhat.com, broonie@kernel.org,
-        osalvador@suse.de, jfalempe@redhat.com, mpe@ellerman.id.au,
-        nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v5 02/12] mm: constify pagemap related test functions for
- improved const-correctness
-Message-ID: <06b653a4-4584-4a39-af9e-2a93c75641a8@lucifer.local>
-References: <20250901123028.3383461-1-max.kellermann@ionos.com>
- <20250901123028.3383461-3-max.kellermann@ionos.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250901123028.3383461-3-max.kellermann@ionos.com>
-X-ClientProxiedBy: GV2PEPF0000662A.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::3da) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1756736545; x=1788272545;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=NexCRVeiTn8yKPd81BsG0VP8TjQq1oA2bxWGfc7HsT4=;
+  b=QLvSna8c5AseRpSbUAD406B7YSqPUUq7C2mDvQU6i1LFMtZbOWY5F1Hd
+   RWihydQ40o+DO2IO5t2ImfchoLuVb9gy/IF/3ejgA2RbcmYeFXowZRwJe
+   ws/F1eq+2VvbJqk42XwoI00iAwexehsup173zwzVYkPNkOnk6MQoFJcLd
+   6QS0n5Ulx1Mm4uzRYOZTgmgJ6jbuumKLKW9PXI2hQgrUN8VVts6kyAtDF
+   mpAjJvBU2ecJboHQJeHgNtytV1BT1u2Zam6aF+s00gLxE2g7eicCDviFx
+   g2pYSdYWuOJ3C3IEl1v4suwmg3IDT8GDWJ79O8vqnYN9/YcjxRGiFxL/G
+   g==;
+X-CSE-ConnectionGUID: qEKZaT7/TbumQlwD4xw4aw==
+X-CSE-MsgGUID: lOy7Z9IPRo66N0b8RO5ESg==
+X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
+   d="scan'208";a="1465584"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-005.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 14:22:23 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:2933]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.3.140:2525] with esmtp (Farcaster)
+ id ce39f935-8ca3-4e3f-9b35-e9483f981017; Mon, 1 Sep 2025 14:22:23 +0000 (UTC)
+X-Farcaster-Flow-ID: ce39f935-8ca3-4e3f-9b35-e9483f981017
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Mon, 1 Sep 2025 14:22:23 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB004.ant.amazon.com (10.252.51.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 1 Sep 2025 14:22:22 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.2562.020; Mon, 1 Sep 2025 14:22:22 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "rppt@kernel.org" <rppt@kernel.org>
+CC: "ackerleytng@google.com" <ackerleytng@google.com>, "david@redhat.com"
+	<david@redhat.com>, "Manwaring, Derek" <derekmn@amazon.com>, "Thomson, Jack"
+	<jackabt@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Roy, Patrick"
+	<roypat@amazon.co.uk>, "seanjc@google.com" <seanjc@google.com>,
+	"tabba@google.com" <tabba@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"will@kernel.org" <will@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>
+Subject: Re: [PATCH v5 04/12] KVM: guest_memfd: Add flag to remove from direct
+ map
+Thread-Topic: [PATCH v5 04/12] KVM: guest_memfd: Add flag to remove from
+ direct map
+Thread-Index: AQHcG0vV41OK1VctH0adgeriedPTLg==
+Date: Mon, 1 Sep 2025 14:22:22 +0000
+Message-ID: <20250901142220.30610-1-roypat@amazon.co.uk>
+References: <aLBtwIhQpX6AR2Z6@kernel.org>
+In-Reply-To: <aLBtwIhQpX6AR2Z6@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.88.180]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|IA4PR10MB8351:EE_
-X-MS-Office365-Filtering-Correlation-Id: fcbe0a26-5b21-455b-ce12-08dde96141d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZZvioyApPLcWFKXjkhrPrdTyAvX5qq8bzHEvlCwJb/mN4eYHfPurGFZ1BKjz?=
- =?us-ascii?Q?VOKncm3wzrWWeASFFvjPOVmBJufq3AoZsS9ce58WS++DPaToIs7KdPpWO9M2?=
- =?us-ascii?Q?PeghzpM9rTFr4JaOm+3p2rVqKN3ey8KSQgVHyKKlGBhs0zL0yfsTF5vlDOEF?=
- =?us-ascii?Q?RIwjik+Xi5cbwqnYDSgAlmV7eEyFE+f0JWEDYn6HhPVnu4O9T/YJH/4tvt/z?=
- =?us-ascii?Q?Yb41Sfvp7TByJd4A/OlvvCguAvEwZjFsoi1YczzHbCtpEcKkjvK0ipZGTLjY?=
- =?us-ascii?Q?n2/SX9XbEcMajont2SGc/+wo+lw25ZUZBLe4G0PjFaLEa7jpRQS1bZzuwouL?=
- =?us-ascii?Q?tAriFk7X1lpHZYyD+hnkoSXi80V7rsj0+XQHtYWLLhM0pvkUJg8uGFr9Lqil?=
- =?us-ascii?Q?2kLbGwrT3Lr4DU+gwOhRNjRBcKTRpKHzFxwW+dvr2SAXeqt/ZPyBLe/1qdha?=
- =?us-ascii?Q?lT5J3Vpk39+EImm3cuZg9mqYIiRqT+FzeFoee7ObO7cfhgGmpxlC5WMtiZTy?=
- =?us-ascii?Q?c9drtUApof+5AE4O81XDnqbZC4vMlRn2WYnPSmNN/KdQNSaIlQc0nWJjnSb5?=
- =?us-ascii?Q?pTTua2fATZIu93FuqW7egoYNnPw7pJfkui3BKc8oo0hWy0wYRxDBB+1M1sKZ?=
- =?us-ascii?Q?WjEEE2QhsFofJkwK/h680tM4oUESmf4SGzis0QQiiUa5P++tSqXvQ6QU/USQ?=
- =?us-ascii?Q?/667jrIXvGmH+dXVJZF1P8uYUBtEJ5Kow11P+NWvXOfYGviCKuJgIGlaKIBl?=
- =?us-ascii?Q?by4bFJ5Ct6ccicqvXM+C//USoZxKGI/yHmVdFsIix0CT/ulu+ugJ6ngqfS78?=
- =?us-ascii?Q?CWmyYa9fDih+bkeUrAErdwZMSI8egBJ7MauHDvECbeViZaOS8tsKLdAkqhxL?=
- =?us-ascii?Q?mLpyU9FJPCwUyttSsbRFw3Kbslu7g/O+7pnQ0PrBuXsQRA/rpk3bNjZi/WGC?=
- =?us-ascii?Q?mvvEB1XfTcHbKro7hlgtdqK94GTfKKG0yADlmUezW09+JdbtbLblmXJiMWtY?=
- =?us-ascii?Q?PGegmpiZZEFtYFBwIoG2Me2fYkIGlEkls+s+dbGhb/pT0eZPgQR7mJJKNUSG?=
- =?us-ascii?Q?hF9D1Q4o/8gKacCcm9h1NNRPqyqEvrIMcZyyX1DoejQhrgPJm2Okn4hqyXSg?=
- =?us-ascii?Q?C6e7PfjagfOO95CUI76KisBti9B4i42aRlmPylflj0k26AvQLW5cKSUaKkcw?=
- =?us-ascii?Q?jOGUqyFwSu0wAf0HuI1O+YGYS/YDehz5/wxjeFiosjKcFSQATIjzsNU3hwFH?=
- =?us-ascii?Q?AOe8pSIsRDy2op/L1C14DrjyRm+WAbWHo2nZiwNH4DsZ/ZZ1+Nqw825TYX1p?=
- =?us-ascii?Q?+tOX9jLLseJZJwqNZVOSevESezj59mmZYwDQ1U96QkXPMKDpuPRULMCfpziC?=
- =?us-ascii?Q?dAK1P96M17zANYKi3OuU1VmJVPRnwosZgCfkNsy7FSxUkss6u78K51qvVxP3?=
- =?us-ascii?Q?mUQNsqRY48I=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9b6rS3JlvV+BVuaOSqcXTaqIURBRq8RAu8v6j8eCgaTv2Uz+MkKG3rAqI+ut?=
- =?us-ascii?Q?P9UvV+g/0M6omrDTZhtqBbVqFw7hOjY4IZqT4+VVgqovIghcxckYhGUKKeLx?=
- =?us-ascii?Q?RC++RzDO0kau19P66qCiF3abwS3EUEIsnugD7M9lHscJyM4RiJ9EKoq9vHiL?=
- =?us-ascii?Q?oou3lqfVEHcQJXid9w+SSL5MuSNbwB63Fj434DFSVqeB4hNCziiZh1vPQ8o+?=
- =?us-ascii?Q?rw6pcWLuhKKiKOqqT1wAflcwQd//9laMpiKvZXb/INreBV76o1mtwEt/hXg7?=
- =?us-ascii?Q?zRfWr3JPklcnqX0mRFxp9j4koBtNOgrjuHtQY0KYLQ2jEJUuBfSuNgV4W922?=
- =?us-ascii?Q?u8OeM1YIUmeIRfBEV/eerel00UyM7m9Brb+OXtEPbfrOx0QoI8VV0JTEDNAY?=
- =?us-ascii?Q?AT3fDpLb4hzVzCMPBDnb9C1q1KpOSypjs/4pHxTdntmL8izoRCH2vUjGs8ib?=
- =?us-ascii?Q?6SKFh94tSL4IASxK01c0xkwC1X2atbjE9U7rhAlTGAOviZdINI7zSttgMVrt?=
- =?us-ascii?Q?9cLaJK40O5m+mUBFljvPLmw7X8DduPsFd3jELgU9iuDI1Gh2O1y8W2qtEFfn?=
- =?us-ascii?Q?bJccv/gF26ONRm4nQVEOhvB0c/ldiFNU+blWTuoAZ6I9Yd/u2F8TlE63pubV?=
- =?us-ascii?Q?AStP+31z+wae5ZIOOW63YbtOUZsE/QVMrUeVJV/NGnZHzSoG3uVZckt+Tvsd?=
- =?us-ascii?Q?DT/BAhHtkpqFzPAoVQmbD3eoSfv60iW7cpLkoG4uah6/p2vxl+OqHF78VsB8?=
- =?us-ascii?Q?G2qUdLGYwroJ9mTGcYNMtMiEJ5zpfyWvsCYTs1URR8aCOz1t0ckVpsQcaF4A?=
- =?us-ascii?Q?8GiOiaXbVlmXE0Am8GK73m49i3ntAguixlH6Wnj1J884K1qqvNaQpg6BEq0y?=
- =?us-ascii?Q?q+Df0EtjWpkKwyqkl3IVuAKA3aEqv6j6nR7VZpkmDguA5u0nq9WEd9fJM3fq?=
- =?us-ascii?Q?MwBXgwFwShWI8j8ufEzUd6Ovue7lKklT1lYCF7h1iJy7QRhL+p9ImAA+5nXj?=
- =?us-ascii?Q?pr86YyuyQRdBCosSegbuVs+PcIy+/NdeigRVFs67qV3GyuasTJMcj462j5/G?=
- =?us-ascii?Q?U0dcCZ1MFGC5ZH1XVDMUuGERGNu3NlNyChceO90V9vG1W3BBwu8XyDzpOL+V?=
- =?us-ascii?Q?bR2QID98pCSfPWoqqrJeSYZXuIg7q+X+yYZeEoLhFv/qqkFKftEEXcsDB3L/?=
- =?us-ascii?Q?0RgbhPw6SKD6M10V7VMph8R7L8HavpSz6Gn91emLfW3+r518Ns4vxGNwJM0n?=
- =?us-ascii?Q?YF3j/9vIxKS3eTZLO4/HwA/PRR/3YvpZd0aNc0WKJrBBPbDA7GQlka9Q9clm?=
- =?us-ascii?Q?hpQhqwLeGuqcuZZpSSR9r/gw/eBhWLql0QKZRRcKLcXR83sS+XCNKFyuuMJW?=
- =?us-ascii?Q?zmOylo1EYgbYrEsePN/V47D3p81iygxNYRoj3F4Z90gDCWVggrKfHwdUKdiZ?=
- =?us-ascii?Q?54T2u1Fz9ei5gnw/w8znc58U8iNTJaa7mkH2wwJL7A7xB0wvk2bfzAOvsS3q?=
- =?us-ascii?Q?NBg+FjGi9fc4kw5azvBhyBVFDPMG6F0uTd1lmCSjOCAuVOVKReQPwk0WixHa?=
- =?us-ascii?Q?3i/8ty3YzaYDH7fTqaIflT46Lehj7rpUNCR1PvvSyPNiUQxnBK40a0UBzT3P?=
- =?us-ascii?Q?nA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	SrlFVAKkZCgr9oOEBSnOQD2FCVbkhyQWwWop6feMOXA2zN68e2V35Ffe7y8G3lYTkxvz3yZsSGjTK6xVgrfibkYiUdqfMnTjInpZJMW/9LdtnfZGW05vnzYbBL5xLhrsdK17mHXm89t2BpPcKjjPtj5qQsdzNTZH4REDFg+t6MJFzOkaa04W/8cvTxtMHI0qmfAZg9Z9bAhdldjwnEmsm5/LwT96V1bY2vUoIGHtPyN0ooikyrg5o1/fHGEiQ37y4F3tuUDH44NM2D+QnUd8C++kdlBldxOBGqgdndOON2XcgXFegVA0PlVQcL4KBvWVMPPaBQpr488eiZXYaFtNy+UEyIvH35plNFA8Lab09atlwx2B6tZI3Bb7DaQoV8WFRX2sKgiVTL3mMFTkVMYEPUMDOPKxe4UeI5ikx5F7ojJCQyXUPAS46Vxz1+VNMWSABGABzl9rWahAmB8Uq7njWKa6MyU6JimL8Ufvnib380qoi7DkiEvg9HCEnDO/bhw1SdKulCFMSXO6qFdCzrY5U9ipd+eXSfrbS3JplqGjjWjFsq/wg1KV5J4jDnxUFGpGOIqWr6WzejbZ1PsuyFQOTxjd5fLyWWRylU3PeLMUbZ8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fcbe0a26-5b21-455b-ce12-08dde96141d3
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 14:10:08.3480
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iUhOnhXvWts4FzVi35nETnoEge7FiNAAuKkkxp2aG+HN2orvoygKiDFK7fKo3FIwPSYRQ0yY8eAZt37L6xljiaB0DmgzlBOfwQHw2UsSm3w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR10MB8351
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-01_06,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509010150
-X-Proofpoint-ORIG-GUID: lk0X_z3mXL-El8s_axdyZDkMTqujsTFv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDIyMiBTYWx0ZWRfX+Uazz40p+bdV
- 6fwysk19XTF/4g3i1xiI0fZ4B/x2F+Ud0IC88jc617hKJN5wa+u+8nJtv0UZreYWhgNa36Qfbp6
- 43i2+WrY8Z95Q6JeiLCQlhwF0Ra8aicPvzbncw4wXWqVJx6V+IjJMbJJdWMge5oC8JdoNm/P133
- uPXT0cUCxGTapa4OKzGB9o5GTOrgro5N29NAci9xiQuUfJe9JsMgi+DSy9Zou4KUHAIwC5Kv+gi
- Nzht9mk6yQN+iN2VrsiHYiNTXakEUiobte0ZUA7sFZnsOQLqqVgIKzIrTl/o7CdjcbKbez12cnO
- iahRn5SYZwHfK0g/csIDruXRzH78MSmqBMomjW7NOdjkvLz/JGuIjBxVxOb5Azt/y7Ar59KdK3I
- RsP89t10
-X-Authority-Analysis: v=2.4 cv=doHbC0g4 c=1 sm=1 tr=0 ts=68b5a946 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=UgJECxHJAAAA:8 a=pGLkceISAAAA:8
- a=yPCof4ZbAAAA:8 a=5MwDhDkeheV_mB3NFgIA:9 a=CjuIK1q_8ugA:10
- a=-El7cUbtino8hM1DCn8D:22
-X-Proofpoint-GUID: lk0X_z3mXL-El8s_axdyZDkMTqujsTFv
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5DA7EA0011
-X-Stat-Signature: amj1yc9kn1fzox698suxug4cacdkaw3e
+X-Rspamd-Queue-Id: E5971120014
+X-Stat-Signature: i9y54okggo7e638knxcerqezndkga9oi
 X-Rspam-User: 
-X-HE-Tag: 1756735867-86314
-X-HE-Meta: U2FsdGVkX18woaXv82reUQI+dA/6QiZX3yNGYAY3Lk7wniyn4LivnkoShz6bGAwROugT8QQ/EuYtzEpl+Ha0b3jLUUGefUe3HS6vQXPX97pDUOCum+usKimM85mrPghOwh7S4iEZds7IlgztG9sDLOd1qeOL8w7IGMakok1ZecxijuL05eGEqMrBV+5ssOAN9NskCwZ/wnclP3Ldir5H8skP8dk20AQbT0vLBeAFJQ3vRHQV0JqSr5j05OWVU27IJ6NEgmqWbUfKiNzfQbBzxUrx65lOhn4T2xAcXS6ta8z62jRtt+mxNlx4yJ7uNpvd9k71thsFhenYxspeNKM99U0f3nJ+7XBPNgPsSp69R5jNmS9QMUsjci/lKIw91naURraPuHJPCg0/UJMN9ridvAPDUVI9HzzxEb3vMAQ7+9Ok3jI/qmM7tGxs/MEHf/ZELpHee99Uu2nf3PZXxXlUQ14F+33F5cs87W+7uk3M7nEOqF2OcsP5joKozzrMtkbM9xY1It/ox8eT21l90lsGl+H6HPIWNBvX93jFeDAGzNyfsH8biMjsRy/ETDsOq2icR7eEjTubyWZ913fttVwoYjVuuiR6zkrBs0kNfEpYu8bUe5koVXr1lmLaLtwC5VdDjuBh2w2y43axswn7hrx6ZMWPewVCm+PFXjBXZJRHtLK+qE7tixeQyD1GaMl80jzAPi0KeROL4GBB7NvJX6pNvpOKYG0RHq4I2iGwOkk5YbOT/ohGMJSpAa4wt9Lj2Q7G9cp1GRutvf0PBXVKWTQlgwPvSz0j1tcLVABd3oW11doniKI2WPXAMLEmIVsJBt/xOxs03/A6df/hwWEf30JDIZUgZhS41mhp/xGMInEabk7NQ+p7y+PbBxkYi6Q8B6hzSj2hF5zxgiBaD17pBt5F6CmUnIK8IgtirZOzADGD68lSBE9EQd3jZMvPehj5x6ZoZALhmfgpKs+hdQZgoKe
- TZlF5BUO
- fdfNR23Ydh+OBZBf7/Lj6H2GWrMMT4XagsCTqa35pmcnYh3aTpNIlcUf0xt/VtjV6Plnni0EWQteO7XWHk3Vwhl2U2E62uh0v2f/0cKkgqVeVT0wrL5OkHRIbuKFawNCNXGVe6/OWv46tXgiXjJ1IoplNUaBDBToSEW/gOZfJYnvyEb0eOQi2HmcwZSARN16TAXbf23Ib+tjmMJ81muhzhBC0PchyHCJGaasYI0mQKkofvaGOin8O0xlmkRkzkWmNWiaNQs7PnL97UF1Er/CGSsPMVhJnLAUFkP7V6FdvTi3+l/y9Zq5d3IICKKYweZfhC+dirNQQ0PxLcO5NgF4LSsGJrYZbvRElKpAAnolzePpcIjmqkiA+2lH9hyLyhrwPkoRcnhi/7m44WWVU7AkQBvsKilxKfQlU0Ns48BL4gHHaYfCX2LSP2wDV0lEgQd2h4K51AhKpgfs8PpCnzazNlAhgtJ5psBrN/WC2PPQQZAdW6hkfwKydrdm/xniuRviQ5E4RoTz0H9BadxRnFRGjwEAOkiFx0bzvlLo72O2RyATWApxVhs17p0xiAjPh60uKzLGYlQUH4IoRm75z8Zqt6zX1hTLOd7/iDyiS56/rVZB81/LKN53ePt8nwX5gbj6GMtl5fYwruVazctm4TYCrhhVfLki1e+yK+SAkAkEY12S82vp7FAgW1LGx0/tGgBLA3MSUba+g9gzamQVQK/hVrtSE/B71k1rHRzOXcqQ67XXN+VdpUhEak8pmruUjNIT8gSb7qJvBq0RIb0e5fY5DgvmRAAA7lFpsdEF8B6xeDcFuNct57Xd3OZ2XO2ADnxLjz96QUUbjUZIrNPPh+Nd+35VzWAmhwdi7h6vDJOFRfFCcCJgZAQUc1G29M9my+zWtJvxmUEuvHjeQAjkI3QZkjwx6mBJHi5oudWQPwqH/ENeom50=
+X-HE-Tag: 1756736544-762282
+X-HE-Meta: U2FsdGVkX1+XR39KXi7/66khMmUmEOVVUrx7xYEERb392BJfmSgEExaFZwjd/A7gNrMjr0EBLU0+jJGf7bWjOiXlbkJlqWmgNVVHKCD0TFquQsEE2edISOdBRgYV/eXKz8g4p2wuEwMvVrakjL2rYCdJPA/kpQHdKuSV6Wbd/Zf0opd7UMWuT4qFHa7Oe0johZ5Nym5KUJ9FPdABVcALW4mwOrvYOl1YVjY0QehAmsECZES+1K5y8rqt50tWdbwNuNKmpJGDMnPr5Mv5HQdc4lBMjscGRIzSxdBmhrX5laCaEHiqf3Rr3mNClp3P1JfutfsfGkNr7ONz0Hglm3ZghYKHgZ2589ZN4wQPKfZ234AdIhPZrc2gEjB6ckRayiZ9JO/4uHIxfJSeFkwZ1iSuSuC3z99nGMi8q2Nl+GGjg8IwW/Tu+RRASc8dAi4xd/70zLu3pV0TbbFbBLaGjnrxequdievJxKxKA1PR4DtPnjjjcsaBKUqYN/x2cBCSPRmC6S9oAldX/vOnvQeNjqdwQJMxqCWlpC8IkZUFU8GEBJzBLOjrc1rgrOHgUu8JcDqz/blQ/TgDiH7cX+BXOuPRIaToIDZPsyMbB9EZUtq7Twm579GqGvuehZuKrndCUPcE+79psbbapQg16ly30R+/7SHj3/JWkdaIc4SBrEJY3L3vpm9Q2YNPM/ba1LJ6wPmNkm7zG3dbXyvFc1ltkrkTfxVFV65LxWqH0CaIIOLYH9Gp/kFxvYSgLd7N0JXiakusEivtXKFXwcsM21xKrNkUmax1rLl9E2aYj1YfRkQxbD7Soc9S5rt7ARYryQ7Pwdv0HAphiOBHb45G87DfsY4AYRB+52inOwWjLgu6GdisQIhcM43ITanKYkT1KNQC2HcJcTgzsTWyKueGhTmJraVYNty7aKB300+IWKMxM7RPcoFD9hFc6LfbnnXP3YG6UntBzMfhtk/O7AJdG96IFdg
+ NNk5t2iV
+ f0UP58attrhL2eAfSGJd2fLQJj4KHeUiFNCHmz9Jm4VCtHdYb4HuPp0+eacU2J7JIOuIUvkJLh0VPYIFhNqrvaoVYPZJO5NKzSCux3Jhulttqx/QWdJwYNdvuCljsXZce6dzsZQ/ivcVFP1qAaQxX/xz4sErtt8f6zKmH1jGdXtaa9zjjMagoNiJ7NOtSGaUK29STbjbWuFTwVCtFlkWs5oDPPvEAYhvMOGDR1Yl9H/EZHZwXS/159E/KwpWJD2JIKNKDFjf/6+QOLkmwuMEIITvkQ9l0/uWU1VMZ//Mb5fKZpxXY33sW3uznHibaSBhNKneanaHNF1IiCvEP5uy4YBQk5QSe4WBEbJeYMGEn6zQnmqalGSKGbEROsmj3G4AO2+LTWEPjNUkDaa2GZzbqFHRc9K+KAfw+TSQuEXRIBbbjZ3v0a2RzWcwoLMVYCKuTwaG3Wss8LOAiD0cWNLtaPxfflSGRObIPaxcgGCTaZ1P+OcvDaLcYCpAqZqCins5RMBI8eOn9GY/+WBE0r+qKgAyLfCIYtkSDkM3RZw8G0t3QMA1T4UcfcZc6evYY5Z0FRk4KLyPTppucO6KtVOHzPjQBxLIiuMuTNSEKplML5VpSq7hwVS6cZIMufYGDrx2DZbdhKvXzAIjrrlfeuyt22f+KFuHqe8G8wmgoO6GF0ClMtXDzOvPdqVD6e+6RXu9upnPQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -252,256 +129,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 01, 2025 at 02:30:18PM +0200, Max Kellermann wrote:
-> We select certain test functions which either invoke each other,
-> functions that are already const-ified, or no further functions.
->
-> It is therefore relatively trivial to const-ify them, which
-> provides a basis for further const-ification further up the call
-> stack.
->
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-> ---
->  include/linux/pagemap.h | 57 +++++++++++++++++++++--------------------
->  1 file changed, 29 insertions(+), 28 deletions(-)
->
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index a3e16d74792f..1d35f9e1416e 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -140,7 +140,7 @@ static inline int inode_drain_writes(struct inode *inode)
->  	return filemap_write_and_wait(inode->i_mapping);
->  }
->
-> -static inline bool mapping_empty(struct address_space *mapping)
-> +static inline bool mapping_empty(const struct address_space *const mapping)
->  {
->  	return xa_empty(&mapping->i_pages);
->  }
-> @@ -166,7 +166,7 @@ static inline bool mapping_empty(struct address_space *mapping)
->   * refcount and the referenced bit, which will be elevated or set in
->   * the process of adding new cache pages to an inode.
->   */
-> -static inline bool mapping_shrinkable(struct address_space *mapping)
-> +static inline bool mapping_shrinkable(const struct address_space *const mapping)
->  {
->  	void *head;
->
-> @@ -267,7 +267,7 @@ static inline void mapping_clear_unevictable(struct address_space *mapping)
->  	clear_bit(AS_UNEVICTABLE, &mapping->flags);
->  }
->
-> -static inline bool mapping_unevictable(struct address_space *mapping)
-> +static inline bool mapping_unevictable(const struct address_space *const mapping)
->  {
->  	return mapping && test_bit(AS_UNEVICTABLE, &mapping->flags);
->  }
-> @@ -277,7 +277,7 @@ static inline void mapping_set_exiting(struct address_space *mapping)
->  	set_bit(AS_EXITING, &mapping->flags);
->  }
->
-> -static inline int mapping_exiting(struct address_space *mapping)
-> +static inline int mapping_exiting(const struct address_space *const mapping)
->  {
->  	return test_bit(AS_EXITING, &mapping->flags);
->  }
-> @@ -287,7 +287,7 @@ static inline void mapping_set_no_writeback_tags(struct address_space *mapping)
->  	set_bit(AS_NO_WRITEBACK_TAGS, &mapping->flags);
->  }
->
-> -static inline int mapping_use_writeback_tags(struct address_space *mapping)
-> +static inline int mapping_use_writeback_tags(const struct address_space *const mapping)
->  {
->  	return !test_bit(AS_NO_WRITEBACK_TAGS, &mapping->flags);
->  }
-> @@ -333,7 +333,7 @@ static inline void mapping_set_inaccessible(struct address_space *mapping)
->  	set_bit(AS_INACCESSIBLE, &mapping->flags);
->  }
->
-> -static inline bool mapping_inaccessible(struct address_space *mapping)
-> +static inline bool mapping_inaccessible(const struct address_space *const mapping)
->  {
->  	return test_bit(AS_INACCESSIBLE, &mapping->flags);
->  }
-> @@ -343,18 +343,18 @@ static inline void mapping_set_writeback_may_deadlock_on_reclaim(struct address_
->  	set_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
->  }
->
-> -static inline bool mapping_writeback_may_deadlock_on_reclaim(struct address_space *mapping)
-> +static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct address_space *const mapping)
->  {
->  	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
->  }
->
-> -static inline gfp_t mapping_gfp_mask(struct address_space * mapping)
-> +static inline gfp_t mapping_gfp_mask(const struct address_space *const mapping)
->  {
->  	return mapping->gfp_mask;
->  }
->
->  /* Restricts the given gfp_mask to what the mapping allows. */
-> -static inline gfp_t mapping_gfp_constraint(struct address_space *mapping,
-> +static inline gfp_t mapping_gfp_constraint(const struct address_space *mapping,
->  		gfp_t gfp_mask)
->  {
->  	return mapping_gfp_mask(mapping) & gfp_mask;
-> @@ -477,13 +477,13 @@ mapping_min_folio_order(const struct address_space *mapping)
->  }
->
->  static inline unsigned long
-> -mapping_min_folio_nrpages(struct address_space *mapping)
-> +mapping_min_folio_nrpages(const struct address_space *const mapping)
->  {
->  	return 1UL << mapping_min_folio_order(mapping);
->  }
->
->  static inline unsigned long
-> -mapping_min_folio_nrbytes(struct address_space *mapping)
-> +mapping_min_folio_nrbytes(const struct address_space *const mapping)
->  {
->  	return mapping_min_folio_nrpages(mapping) << PAGE_SHIFT;
->  }
-> @@ -497,7 +497,7 @@ mapping_min_folio_nrbytes(struct address_space *mapping)
->   * new folio to the page cache and need to know what index to give it,
->   * call this function.
->   */
-> -static inline pgoff_t mapping_align_index(struct address_space *mapping,
-> +static inline pgoff_t mapping_align_index(const struct address_space *const mapping,
->  					  pgoff_t index)
->  {
->  	return round_down(index, mapping_min_folio_nrpages(mapping));
-> @@ -507,7 +507,7 @@ static inline pgoff_t mapping_align_index(struct address_space *mapping,
->   * Large folio support currently depends on THP.  These dependencies are
->   * being worked on but are not yet fixed.
->   */
-> -static inline bool mapping_large_folio_support(struct address_space *mapping)
-> +static inline bool mapping_large_folio_support(const struct address_space *mapping)
->  {
->  	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
->  	VM_WARN_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON,
-> @@ -522,7 +522,7 @@ static inline size_t mapping_max_folio_size(const struct address_space *mapping)
->  	return PAGE_SIZE << mapping_max_folio_order(mapping);
->  }
->
-> -static inline int filemap_nr_thps(struct address_space *mapping)
-> +static inline int filemap_nr_thps(const struct address_space *const mapping)
->  {
->  #ifdef CONFIG_READ_ONLY_THP_FOR_FS
->  	return atomic_read(&mapping->nr_thps);
-> @@ -936,7 +936,7 @@ static inline struct page *grab_cache_page_nowait(struct address_space *mapping,
->   *
->   * Return: The index of the folio which follows this folio in the file.
->   */
-> -static inline pgoff_t folio_next_index(struct folio *folio)
-> +static inline pgoff_t folio_next_index(const struct folio *const folio)
->  {
->  	return folio->index + folio_nr_pages(folio);
->  }
-> @@ -965,7 +965,7 @@ static inline struct page *folio_file_page(struct folio *folio, pgoff_t index)
->   * e.g., shmem did not move this folio to the swap cache.
->   * Return: true or false.
->   */
-> -static inline bool folio_contains(struct folio *folio, pgoff_t index)
-> +static inline bool folio_contains(const struct folio *const folio, pgoff_t index)
->  {
->  	VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
->  	return index - folio->index < folio_nr_pages(folio);
-> @@ -1042,13 +1042,13 @@ static inline loff_t page_offset(struct page *page)
->  /*
->   * Get the offset in PAGE_SIZE (even for hugetlb folios).
->   */
-> -static inline pgoff_t folio_pgoff(struct folio *folio)
-> +static inline pgoff_t folio_pgoff(const struct folio *const folio)
->  {
->  	return folio->index;
->  }
->
-> -static inline pgoff_t linear_page_index(struct vm_area_struct *vma,
-> -					unsigned long address)
-> +static inline pgoff_t linear_page_index(const struct vm_area_struct *const vma,
-> +					const unsigned long address)
->  {
->  	pgoff_t pgoff;
->  	pgoff = (address - vma->vm_start) >> PAGE_SHIFT;
-> @@ -1468,7 +1468,7 @@ static inline unsigned int __readahead_batch(struct readahead_control *rac,
->   * readahead_pos - The byte offset into the file of this readahead request.
->   * @rac: The readahead request.
->   */
-> -static inline loff_t readahead_pos(struct readahead_control *rac)
-> +static inline loff_t readahead_pos(const struct readahead_control *const rac)
->  {
->  	return (loff_t)rac->_index * PAGE_SIZE;
->  }
-> @@ -1477,7 +1477,7 @@ static inline loff_t readahead_pos(struct readahead_control *rac)
->   * readahead_length - The number of bytes in this readahead request.
->   * @rac: The readahead request.
->   */
-> -static inline size_t readahead_length(struct readahead_control *rac)
-> +static inline size_t readahead_length(const struct readahead_control *const rac)
->  {
->  	return rac->_nr_pages * PAGE_SIZE;
->  }
-> @@ -1486,7 +1486,7 @@ static inline size_t readahead_length(struct readahead_control *rac)
->   * readahead_index - The index of the first page in this readahead request.
->   * @rac: The readahead request.
->   */
-> -static inline pgoff_t readahead_index(struct readahead_control *rac)
-> +static inline pgoff_t readahead_index(const struct readahead_control *const rac)
->  {
->  	return rac->_index;
->  }
-> @@ -1495,7 +1495,7 @@ static inline pgoff_t readahead_index(struct readahead_control *rac)
->   * readahead_count - The number of pages in this readahead request.
->   * @rac: The readahead request.
->   */
-> -static inline unsigned int readahead_count(struct readahead_control *rac)
-> +static inline unsigned int readahead_count(const struct readahead_control *const rac)
->  {
->  	return rac->_nr_pages;
->  }
-> @@ -1504,12 +1504,12 @@ static inline unsigned int readahead_count(struct readahead_control *rac)
->   * readahead_batch_length - The number of bytes in the current batch.
->   * @rac: The readahead request.
->   */
-> -static inline size_t readahead_batch_length(struct readahead_control *rac)
-> +static inline size_t readahead_batch_length(const struct readahead_control *const rac)
->  {
->  	return rac->_batch_count * PAGE_SIZE;
->  }
->
-> -static inline unsigned long dir_pages(struct inode *inode)
-> +static inline unsigned long dir_pages(const struct inode *const inode)
->  {
->  	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
->  			       PAGE_SHIFT;
-> @@ -1523,8 +1523,8 @@ static inline unsigned long dir_pages(struct inode *inode)
->   * Return: the number of bytes in the folio up to EOF,
->   * or -EFAULT if the folio was truncated.
->   */
-> -static inline ssize_t folio_mkwrite_check_truncate(struct folio *folio,
-> -					      struct inode *inode)
-> +static inline ssize_t folio_mkwrite_check_truncate(const struct folio *const folio,
-> +						   const struct inode *const inode)
->  {
->  	loff_t size = i_size_read(inode);
->  	pgoff_t index = size >> PAGE_SHIFT;
-> @@ -1555,7 +1555,8 @@ static inline ssize_t folio_mkwrite_check_truncate(struct folio *folio,
->   * Return: The number of filesystem blocks covered by this folio.
->   */
->  static inline
-> -unsigned int i_blocks_per_folio(struct inode *inode, struct folio *folio)
-> +unsigned int i_blocks_per_folio(const struct inode *const inode,
-> +				const struct folio *const folio)
->  {
->  	return folio_size(folio) >> inode->i_blkbits;
->  }
-> --
-> 2.47.2
->
+On Thu, 2025-08-28 at 15:54 +0100, Mike Rapoport wrote:=0A=
+> On Thu, Aug 28, 2025 at 09:39:21AM +0000, Roy, Patrick wrote:=0A=
+>> Add GUEST_MEMFD_FLAG_NO_DIRECT_MAP flag for KVM_CREATE_GUEST_MEMFD()=0A=
+>> ioctl. When set, guest_memfd folios will be removed from the direct map=
+=0A=
+>> after preparation, with direct map entries only restored when the folios=
+=0A=
+>> are freed.=0A=
+>>=0A=
+>> To ensure these folios do not end up in places where the kernel cannot=
+=0A=
+>> deal with them, set AS_NO_DIRECT_MAP on the guest_memfd's struct=0A=
+>> address_space if GUEST_MEMFD_FLAG_NO_DIRECT_MAP is requested.=0A=
+>>=0A=
+>> Add KVM_CAP_GUEST_MEMFD_NO_DIRECT_MAP to let userspace discover whether=
+=0A=
+>> guest_memfd supports GUEST_MEMFD_FLAG_NO_DIRECT_MAP. Support depends on=
+=0A=
+>> guest_memfd itself being supported, but also on whether KVM can=0A=
+>> manipulate the direct map at page granularity at all (possible most of=
+=0A=
+>> the time, just arm64 is a notable outlier where its impossible if the=0A=
+>> direct map has been setup using hugepages, as arm64 cannot break these=
+=0A=
+>> apart due to break-before-make semantics).=0A=
+> =0A=
+> There's also powerpc that does not select ARCH_HAS_SET_DIRECT_MAP=0A=
+=0A=
+Ah, thanks! Although powerpc also doesnt support guest_memfd in the first=
+=0A=
+place, but will mention.=0A=
+=0A=
+>> Note that this flag causes removal of direct map entries for all=0A=
+>> guest_memfd folios independent of whether they are "shared" or "private"=
+=0A=
+>> (although current guest_memfd only supports either all folios in the=0A=
+>> "shared" state, or all folios in the "private" state if=0A=
+>> GUEST_MEMFD_FLAG_MMAP is not set). The usecase for removing direct map=
+=0A=
+>> entries of also the shared parts of guest_memfd are a special type of=0A=
+>> non-CoCo VM where, host userspace is trusted to have access to all of=0A=
+>> guest memory, but where Spectre-style transient execution attacks=0A=
+>> through the host kernel's direct map should still be mitigated.  In this=
+=0A=
+>> setup, KVM retains access to guest memory via userspace mappings of=0A=
+>> guest_memfd, which are reflected back into KVM's memslots via=0A=
+>> userspace_addr. This is needed for things like MMIO emulation on x86_64=
+=0A=
+>> to work.=0A=
+>>=0A=
+>> Do not perform TLB flushes after direct map manipulations. This is=0A=
+>> because TLB flushes resulted in a up to 40x elongation of page faults in=
+=0A=
+>> guest_memfd (scaling with the number of CPU cores), or a 5x elongation=
+=0A=
+>> of memory population. TLB flushes are not needed for functional=0A=
+>> correctness (the virt->phys mapping technically stays "correct",  the=0A=
+>> kernel should simply to not it for a while). On the other hand, it means=
+=0A=
+> =0A=
+>                           ^ not use it?=0A=
+=0A=
+Yup, thanks!=0A=
+=0A=
+>> that the desired protection from Spectre-style attacks is not perfect,=
+=0A=
+>> as an attacker could try to prevent a stale TLB entry from getting=0A=
+>> evicted, keeping it alive until the page it refers to is used by the=0A=
+>> guest for some sensitive data, and then targeting it using a=0A=
+>> spectre-gadget.=0A=
+>>=0A=
+>> Signed-off-by: Patrick Roy <roypat@amazon.co.uk>=0A=
+>> ---=0A=
+>>  arch/arm64/include/asm/kvm_host.h | 12 ++++++++++++=0A=
+>>  include/linux/kvm_host.h          |  7 +++++++=0A=
+>>  include/uapi/linux/kvm.h          |  2 ++=0A=
+>>  virt/kvm/guest_memfd.c            | 29 +++++++++++++++++++++++++----=0A=
+>>  virt/kvm/kvm_main.c               |  5 +++++=0A=
+>>  5 files changed, 51 insertions(+), 4 deletions(-)=0A=
+> =0A=
+> ...=0A=
+> =0A=
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c=0A=
+>> index 9ec4c45e3cf2..e3696880405c 100644=0A=
+>> --- a/virt/kvm/guest_memfd.c=0A=
+>> +++ b/virt/kvm/guest_memfd.c=0A=
+>> @@ -4,6 +4,7 @@=0A=
+>>  #include <linux/kvm_host.h>=0A=
+>>  #include <linux/pagemap.h>=0A=
+>>  #include <linux/anon_inodes.h>=0A=
+>> +#include <linux/set_memory.h>=0A=
+>>=0A=
+>>  #include "kvm_mm.h"=0A=
+>>=0A=
+>> @@ -42,8 +43,18 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, =
+struct kvm_memory_slot *slo=0A=
+>>       return 0;=0A=
+>>  }=0A=
+>>=0A=
+>> +static bool kvm_gmem_test_no_direct_map(struct inode *inode)=0A=
+>> +{=0A=
+>> +     return ((unsigned long) inode->i_private) & GUEST_MEMFD_FLAG_NO_DI=
+RECT_MAP;=0A=
+>> +}=0A=
+>> +=0A=
+>>  static inline void kvm_gmem_mark_prepared(struct folio *folio)=0A=
+>>  {=0A=
+>> +     struct inode *inode =3D folio_inode(folio);=0A=
+>> +=0A=
+>> +     if (kvm_gmem_test_no_direct_map(inode))=0A=
+>> +             set_direct_map_valid_noflush(folio_page(folio, 0), folio_n=
+r_pages(folio), false);=0A=
+> =0A=
+> This may fail to split large mapping in the direct map. Why not move this=
+=0A=
+> to kvm_gmem_prepare_folio() where you can handle returned error?=0A=
+=0A=
+Argh, yeah, got that the wrong way around. Will update the error handling.=
+=0A=
+=0A=
+> I think that using set_direct_map_invalid_noflush() here and=0A=
+> set_direct_map_default_noflush() in kvm_gmem_free_folio() better is=0A=
+> clearer and makes it more obvious that here the folio is removed from the=
+=0A=
+> direct map and when freed it's direct mapping is restored.=0A=
+> =0A=
+> This requires to export two symbols in patch 2, but I think it's worth it=
+.=0A=
+=0A=
+Mh, but set_direct_map_[default|invalid]_noflush() only take a single struc=
+t=0A=
+page * argument, so they'd either need to gain a npages argument, or we add=
+ yet=0A=
+more functions to set_memory.h.  Do you still think that's worth it? =0A=
+=0A=
+>>       folio_mark_uptodate(folio);=0A=
+>>  }=0A=
+>>=0A=
+>> @@ -429,25 +440,29 @@ static int kvm_gmem_error_folio(struct address_spa=
+ce *mapping, struct folio *fol=0A=
+>>       return MF_DELAYED;=0A=
+>>  }=0A=
+>>=0A=
+>> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=0A=
+>>  static void kvm_gmem_free_folio(struct address_space *mapping,=0A=
+>>                               struct folio *folio)=0A=
+>>  {=0A=
+>>       struct page *page =3D folio_page(folio, 0);=0A=
+>> +=0A=
+>> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=0A=
+>>       kvm_pfn_t pfn =3D page_to_pfn(page);=0A=
+>>       int order =3D folio_order(folio);=0A=
+>> +#endif=0A=
+>>=0A=
+>> +     if (kvm_gmem_test_no_direct_map(mapping->host))=0A=
+>> +             WARN_ON_ONCE(set_direct_map_valid_noflush(page, folio_nr_p=
+ages(folio), true));=0A=
+> =0A=
+> I don't think it can fail here. The direct map was split when you removed=
+=0A=
+> the folio so here it will merely update the prot bits.=0A=
+=0A=
+Yup, will drop this WARN_ON_ONCE.=0A=
+=0A=
+>> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE=0A=
+>>       kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));=0A=
+>> -}=0A=
+>>  #endif=0A=
+>> +}=0A=
+> =0A=
+> Instead of moving #ifdefs into kvm_gmem_free_folio() it's better to add, =
+say,=0A=
+> kvm_gmem_invalidate() and move ifdefery there or even better have a stati=
+c=0A=
+> inline stub for !CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE case.=0A=
+=0A=
+Ack, will do the latter=0A=
+=0A=
+>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c=0A=
+>> index 18f29ef93543..0dbfd17e1191 100644=0A=
+>> --- a/virt/kvm/kvm_main.c=0A=
+>> +++ b/virt/kvm/kvm_main.c=0A=
+>> @@ -65,6 +65,7 @@=0A=
+>>  #include <trace/events/kvm.h>=0A=
+>>=0A=
+>>  #include <linux/kvm_dirty_ring.h>=0A=
+>> +#include <linux/set_memory.h>=0A=
+>>=0A=
+>>=0A=
+>>  /* Worst case buffer size needed for holding an integer. */=0A=
+>> @@ -4916,6 +4917,10 @@ static int kvm_vm_ioctl_check_extension_generic(s=
+truct kvm *kvm, long arg)=0A=
+>>               return kvm_supported_mem_attributes(kvm);=0A=
+>>  #endif=0A=
+>>  #ifdef CONFIG_KVM_GUEST_MEMFD=0A=
+>> +     case KVM_CAP_GUEST_MEMFD_NO_DIRECT_MAP:=0A=
+>> +             if (!can_set_direct_map())=0A=
+> =0A=
+> Shouldn't this check with kvm_arch_gmem_supports_no_direct_map()?=0A=
+=0A=
+Absolutely, thanks for catching!=0A=
+=0A=
+>> +                     return false;=0A=
+>> +             fallthrough;=0A=
+>>       case KVM_CAP_GUEST_MEMFD:=0A=
+>>               return 1;=0A=
+>>       case KVM_CAP_GUEST_MEMFD_MMAP:=0A=
+>> --=0A=
+>> 2.50.1=0A=
+>>=0A=
+> =0A=
+> --=0A=
+> Sincerely yours,=0A=
+> Mike.=0A=
+=0A=
+Best,=0A=
+Patrick=0A=
 
