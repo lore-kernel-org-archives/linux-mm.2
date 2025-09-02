@@ -4,203 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C38CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:42:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D5ACA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:42:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A29128E0010; Tue,  2 Sep 2025 09:42:13 -0400 (EDT)
+	id 806B16B0005; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D9378E0002; Tue,  2 Sep 2025 09:42:13 -0400 (EDT)
+	id 7B7076B0006; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 879EB8E0010; Tue,  2 Sep 2025 09:42:13 -0400 (EDT)
+	id 6A5946B0007; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7133B8E0002
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:42:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E27A1184AE
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:42:13 +0000 (UTC)
-X-FDA: 83844424146.01.067C743
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2058.outbound.protection.outlook.com [40.107.100.58])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6CE2E40003
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:42:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="i/4ammBC";
-	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 40.107.100.58 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756820530; a=rsa-sha256;
-	cv=pass;
-	b=ElmJzzJr2R20/vJwQS8VqAC+2zHuMGdcMAFBKRr06dCIwvgX/LNHWN8MXZAnkGymprZLQa
-	WORBWR9vKTwtcoyXAOFkj6MKk6UTuf0EtUd93xLZHkJDCfyKg0koE3gLyyW7StE9Htdwdk
-	PVi7BcpwLw6DN4eaIxEdSRFoL2yfOuE=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="i/4ammBC";
-	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 40.107.100.58 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756820530;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C9236B0005
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 03343C017E
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:42:36 +0000 (UTC)
+X-FDA: 83844425154.16.1070B81
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 344AA4000E
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:42:33 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TnX27W2b;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf27.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.19) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756820554; a=rsa-sha256;
+	cv=none;
+	b=3QbFK3zq5PhJmmzDK+baAIdgheV/QKswk+tXd5MbRaNAAOpqpYTEFj0TRS2Lz9WcJ7o9Yv
+	FtVkWePkNSnpn0uTlLn31yB9ibgzR2K6JBgn31apkkf5Ae6F+oAA9I8niTlUQWlEEVq3Qu
+	rbhxlGgr5HdnZ+bic5jTdNkNHdmJvyY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TnX27W2b;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=none (imf27.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.19) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756820554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sEybjIT39tfAtWyDWxHX2hIEW4WjU+uiXdQ+aAhfJdQ=;
-	b=VHp9MM4C+l7sH4/jMwDgUqtzPtUNIwTpb45ZDu3QB3c98+8yfsWKfaYvg4xTCsTPqqNp9G
-	H7gU9+JNGZceXX++pFGGem27F12Ld2gQGCpJu/rWuVUicIS5PyTXx0mf4tOvCjB0hMGFo1
-	vEyzO/dKhg7RY8EH1gNzFmJf/cAUIrM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nnW8n3rLPvPGL9BcHZcpBj6vgZ4/3OyweZYcfHE6/gmH0nGwODp9dHLKMBhIqZ61NTIc7lezIrAIJ++uetdlOA2GT+6LT1qUV0aftXlmNZqXkemVulZbwftKDQ7uovweuOPRjEMTJ0mHcgUK7RgNka5PEYkD2OgftjgSDguWHFpIo5ZfrU1c9IcCZVT0Tx/Max35H3On6NXWMVv6ZJP5pOisMoOc7yAaebJTD0gPdhfF33eNpKkoKK64UNYyV8Z7TPLJzR9SgBY2SKKkVH2A2Ux6m8p0u+meKkgemrVk1cgPc9tL/8sOJHR3LL3qSme/1WGv8mDW1jwPNe06yP5Ndw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sEybjIT39tfAtWyDWxHX2hIEW4WjU+uiXdQ+aAhfJdQ=;
- b=niIAe8UK5GocQkAv/8UZNHIaxc5ImaMtRxlx9CY056LnYJy4RY5qGODCKRhDsMR7RnJI+W62Z0oZy8uU2ZtgigVYC5GGiiA/1puCFQ5ziiNx6bWf/FxlrdGASpgPO/RMydWdf5yYjpHiaQJ7G5TbFcS6HqIo/rjVXejza1wghmJ3MFBIj4/r9Cx6zPw2Q8hY6zOzagWufFylHJbODjgm7rVwR6UGzdeQr8Rl4jQemPaCpJfIX5J5IvcNRZyTPCOUZvQEJjrm2tgiGmjLO5hyNQeUtBJjW1PKTnITB8eOeQtNozZd1y/iTnqlUUiezP3unRekukmS/IF+iK+0IYkHww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sEybjIT39tfAtWyDWxHX2hIEW4WjU+uiXdQ+aAhfJdQ=;
- b=i/4ammBChnBbQXtOn0lrXvWcMtGUS1zrL7gjwANl67rCPhjkMvHUMPisFIjttKLK9eAauFH8r2Rng6glCW7f6aOb5c/hSgSCFb8i5XFeUNJs/Mlh3eUrasZ8RzgbND8IEIRW76Zf6FP4ObgqmfTAP+91RLnkxOZogxMiebDrIBmetzjyhWrYq318lTxv2lW76lVavoC+EQgT5FWEewI5KhJ7ukMkLtBA0WYQFck1ihUmeXjzf1S7j5aqnw1ZxAb+7TdcsznjTL8QkUNw4ep8S1hTCAJJH14aI7CpR1pTVs6yZgIKpDs9Fse85/X+bC4vx8MIRJVEPjjk9dDf31XTOw==
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SJ0PR12MB7007.namprd12.prod.outlook.com (2603:10b6:a03:486::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Tue, 2 Sep
- 2025 13:41:57 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
- 13:41:57 +0000
-Date: Tue, 2 Sep 2025 10:41:56 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, pratyush@kernel.org,
-	jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
-	rppt@kernel.org, dmatlack@google.com, rientjes@google.com,
-	corbet@lwn.net, rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
-	vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com
-Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-Message-ID: <20250902134156.GM186519@nvidia.com>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-30-pasha.tatashin@soleen.com>
- <20250826162019.GD2130239@nvidia.com>
- <CAF8kJuPaSQN04M-pvpFTjjpzk3pfHNhpx+mCkvWpZOs=0TF3gg@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAF8kJuPaSQN04M-pvpFTjjpzk3pfHNhpx+mCkvWpZOs=0TF3gg@mail.gmail.com>
-X-ClientProxiedBy: YT4PR01CA0178.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:110::22) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	bh=dlnqyeR+5I6qruWbk7IABHALhsF2hRcTjNBGT4VTdMM=;
+	b=63XDbVZ+fYAYV8GNX3zg6UqmZvFxpZo9TJDkZU/Js3tT30WH1NL5w3ZpIpi4C8WeJKmGLf
+	I4ekMVhuPGL6unLQaMCkbZBMk3mkfguSDsR7rI7UhH0PlCgun6jyO5XbcbIgPP4zHdjGPD
+	q5EKKaKDbpxGK82a/B71WstSdxNbTAk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756820555; x=1788356555;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=dlnqyeR+5I6qruWbk7IABHALhsF2hRcTjNBGT4VTdMM=;
+  b=TnX27W2bd8MSnPDkMCApxQoxnSjCM62WnjAARwpU9c/FlXWaEWitmFba
+   JTeQ5BuhnViMzkEROcQahpDr82oAdEUm0LCQz3COW77DiBL0Qw7+ldRhd
+   UFmO/p8hTqN8vvINeg1BxsQUHUyzhcZk7tyv40e/Y4Ko1XYH09UI3A5R9
+   MDFrAEOjj1Hroa0eCab0V7OxRKMnB0LPANgbr7pu8UGld+WEte3HirTEk
+   BW7kKOeBsebhPcijr1R+QBq8Z5zwCqRpczbt9DwIC8O2O75qsmGQw6gDN
+   8bUHjwLebXsNK7DN9TwuaOklzjiBDNjAtenTVKbeAnIBhxen+IBMYWXXr
+   A==;
+X-CSE-ConnectionGUID: tLqYrVCQR5KDUyx1E2Y/Cg==
+X-CSE-MsgGUID: sDk5fz6ARyKszwtPXZKAWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="58951216"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="58951216"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:42:33 -0700
+X-CSE-ConnectionGUID: 87TOoN+JSuyyXu64BJLX8Q==
+X-CSE-MsgGUID: XyDjfStqRz6SEEHMNLLv9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="171175094"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO [10.245.245.33]) ([10.245.245.33])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:42:26 -0700
+Message-ID: <da5885a94d89a2c0dece04e09182e832e8e40410.camel@linux.intel.com>
+Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: David Hildenbrand <david@redhat.com>, Maarten Lankhorst
+ <dev@lankhorst.se>,  Lucas De Marchi <lucas.demarchi@intel.com>, Rodrigo
+ Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,  Simona
+ Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>, Natalie Vock
+ <natalie.vock@gmx.de>,  Tejun Heo <tj@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, 'Michal =?ISO-8859-1?Q?Koutn=FD=27?=	
+ <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin	
+ <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Muchun
+ Song	 <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "'Liam R . Howlett'"
+ <Liam.Howlett@oracle.com>,  Vlastimil Babka	 <vbabka@suse.cz>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Thomas
+ Zimmermann <tzimmermann@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org
+Date: Tue, 02 Sep 2025 15:42:20 +0200
+In-Reply-To: <776629b2-5459-4fa0-803e-23d4824e7b24@redhat.com>
+References: <20250819114932.597600-5-dev@lankhorst.se>
+	 <dc21e54c-d7ae-4d7e-9acb-6a3fa573b20f@redhat.com>
+	 <9c296c72-768e-4893-a099-a2882027f2b9@lankhorst.se>
+	 <b6b13ad22345bcdf43325173052614c17e803d00.camel@linux.intel.com>
+	 <776629b2-5459-4fa0-803e-23d4824e7b24@redhat.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SJ0PR12MB7007:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f298804-37d7-4bab-18a5-08ddea267c28
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5JxLcpjwR6GyS0yueaHCQW0qPezbGnIap2B3D175k2kiiFXO2F1cQk2lecM4?=
- =?us-ascii?Q?chETL4PPcJWU+Et1rsOMO0WMR2u3iVjQt/2o9wzZH7tsgy81Ia4ZAGQ8Q8AS?=
- =?us-ascii?Q?/HwvVLeJhCBr2mCOHuSRJdXWekJV+2GG+aL9gXgg3jroQ/18hNu/dqQSbNLz?=
- =?us-ascii?Q?TgHwGNegSOJKHij8wJ6OTehszTLgCWg0PqbYXYxS/c/naF6UplgCubcd8vPc?=
- =?us-ascii?Q?PxSSp8NgPG9iXloSEIuqHH/6wSySxHLn2dxRRk70t5U1u3wVUre8sVLIhZTP?=
- =?us-ascii?Q?w2HfDVp5d6oC9mIbNUmbWyj0Bgn0kVPWZ7akKiBrJf/SgIL8I+F7ASzVr+La?=
- =?us-ascii?Q?tGIzCkKxwgc6m3izmOjxpZqU33MLHhvFA3ZPy6Uxq5F5Q6++/rpCaomcZXWz?=
- =?us-ascii?Q?oUmoTOvRx0R00ir0bm+gU7ai9ZN7PBcvblORGM4efPT3jmWq2bBSUG44eijo?=
- =?us-ascii?Q?fZgBAvTqsLWuoijkiNll+D/rMKpd7lu7L7BqQckvSUsnCXqY6tI0nMWDkSKN?=
- =?us-ascii?Q?ndjASN1LlE1KV5tzhxY9Qqvg6dhzV0fbbyxRDB5qsfR7bYt8UOXT/+3mqNMz?=
- =?us-ascii?Q?0A3482g6m8hPVngZbGCHulF593p1qSXOLXnYIqNhTtlq+7mI4ef5b+8eYYg4?=
- =?us-ascii?Q?xrB3yxfWYpqlZPd3DcWuGVU8h8igp0S/seKqIxR+C5c+VJev+49NG3XgeS83?=
- =?us-ascii?Q?tnyEVgW89mRY10cU3LugbOPNGIMjJpUSgNjYmkCV5SP899vFThyKNG+P+B7S?=
- =?us-ascii?Q?OfIvmqbulb34UGq2f1pqHO4SIROrHey/2RCkW82gePJzQQdt9kjrrWEVQY36?=
- =?us-ascii?Q?bB5tt5J8JWh86lcN4J20ddfq/8map3wdEFebuUVZxFPWDjEwymn30xLh/0xo?=
- =?us-ascii?Q?RnSAJYT81s6g8JRXjn+Q/LXHR0UlHzibxOce+Dzbz/rdvrXa1uIPtGQ5Y0Xq?=
- =?us-ascii?Q?G68/DSwOJtKt1aNRfA4O7Y2lyyrM79cPynkxoF2amWa52ENdoqln1AhEOZ6A?=
- =?us-ascii?Q?qXCUoY7CCnPLVU7fi/6TFhAVhLGIugBajEaY0pOymmersXdZYFGIJ/EfV+NR?=
- =?us-ascii?Q?wJnxw5M1rTp1/4i7D4BrrX/UP/nKi4/SQwmBP2bHEbz/SgiNKjpP4J5xK04p?=
- =?us-ascii?Q?cTOeD5WVHVT2S5YfqhE31Hwh5z0IcgpszB4LQVRYL1d3Q+Ast2yBxXrDfhc6?=
- =?us-ascii?Q?A1trDAofxtRe6HctLvTop6jZass9xdr3Eik50mlTeQfUQtNAwdZyoAzAlvRL?=
- =?us-ascii?Q?0rbrG3FaD2M3/80FiYmX0/+53RdJCpYfJ+5Yl7sMSQ7lcP3QSIlXj6OqKOpx?=
- =?us-ascii?Q?0frXUSYHy7aUkhwRra0BuQcA2WuB402QyPioQXThBqQC5aUU3BHlcVCFKqS9?=
- =?us-ascii?Q?x/3scpVpe5cWdMdRPxqFnK3mHQ4DLXVOcB8Tbz7i7wYi1GpVyXvorFaHhVBx?=
- =?us-ascii?Q?KeeSt1DZQ3E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2jL1gIG+SvQNrr2tnbrZBk8GSdHeAcsd1gUKaeUARZ9PMUpQbmqlih4k8c2d?=
- =?us-ascii?Q?lQRbmlioWdzOugdIWYTSkfkZanUHD4MrO9XW6H4bh60n4jI3hNCWLLRizKHA?=
- =?us-ascii?Q?6AAJrdUJJ9PkBgAdIur6deOijCEVTRbhbgOZ369wdAl8Nag85wQVRc0x2Btx?=
- =?us-ascii?Q?+/tqkLeSwvTdMI2bdJu/MjxbZp3ZL6K6nIpebZkkzfZ15eDJ9DnWf/SNmejA?=
- =?us-ascii?Q?CtJDahXG/8AZTZlsQGNkfQvHSJvJXcz//4TQwL8OfhQoYjWZ0BTfX8AsO04M?=
- =?us-ascii?Q?nMjrY0HU02azXT9PkluPxWXZUieSb0Sl2NB3T7NpWNddvcRKxzpwFHvIHUqN?=
- =?us-ascii?Q?viaaMdRrq87x5Q3HQ5nWQXs4Ho0dNjereAg2Yq5zDRxokJjy6D2OBCE6+QbL?=
- =?us-ascii?Q?VlL9lknVjiOjPsyVq2UsLwZz0x0RIIBwJwqZiEbwPOeZYQ4AooVrXhm56vcz?=
- =?us-ascii?Q?2fysy+MPdIU2pt3x0axP9mAKSwVwGPptG4WOF7gaaJxgvP5lruGga7NJK5/A?=
- =?us-ascii?Q?TqP7f30tHcBffq2BkVR9wOWxPYhIClaViLST2RSOYcJYgjKMyG+uwg6zzCWf?=
- =?us-ascii?Q?pgFk+tYpzwl7maZbEFCdQIp8bbKd/oCVSFpPSA0JF9AFIpRa5DTF8d/TeUNd?=
- =?us-ascii?Q?eAgjalFRV6PK+Z7jOE7R2Be6bIxU4+H4X/4KT2moRfQ3mlkprKmugN9hZM7E?=
- =?us-ascii?Q?zwweDtAkzH61Mmg3NxXSpKJMLu3K5R2IyUL6ECoHWaVkOTVQVMUaL+MY+Ru0?=
- =?us-ascii?Q?fU7wS8fgG1IiAnJ2IrUFJ5wClV8lXEnjj1LcxBC+xK9AFLM/w/XU810dLXpE?=
- =?us-ascii?Q?4pXG4KJmamFlQnhb8HVtNsNXk+0JTfsgpGfbCFP65MEHDNGsyidNTasN9s7K?=
- =?us-ascii?Q?JawU++gJAdP7SsUkIKrj42ZpAMpEqpToPttt5BVWw7Wyagcl5W0A+cpSTmNB?=
- =?us-ascii?Q?auBQgFqq7+v8lPSd2+i8/ZEya1bFhwD4ap8SHCQwupNcnzZ2bnukOhmwx4es?=
- =?us-ascii?Q?YbrGTtpHUOyFBTbzs7+YGCYeQoTNI3Xie/T99KNqfatcxcaUrYNLLA0kPmPv?=
- =?us-ascii?Q?bwTPPgll/aISdZApdb1z/lromtAFjaGUe83JMjgnWzHTQysTxnk42lC2zuKl?=
- =?us-ascii?Q?fuPnqGdHBVZc8AmsKHBBu2OCUoXFOMy3v0ZSHntiC3tjtYjI2Lu0Ip7xcECL?=
- =?us-ascii?Q?CE9f7mQpFNgE1NffMLJn3bSluRjXoEff7ndlYLWHFZQDZq4cZj+x3D+xgCpN?=
- =?us-ascii?Q?CZW48MdJsCOUERGu1s6dJu7AbN4gndKxULQcu7g3en73Dpq61vMnUs5Onsf2?=
- =?us-ascii?Q?hAIKxVRMSOGuGYVqjIXBqcSKj/8eZ6V9wpsQG8Rwr/42kJz9cQcQvQ39ZlKg?=
- =?us-ascii?Q?VChKfCOU16dvQ9G8BTBKjuIL0ryuFoVJaPhlWSBKH/SI2dJqcOQsds8IwqtS?=
- =?us-ascii?Q?LvTvj+YeIlJ+J7oTn9W3eY/cTc6nBuUTqGqo8Ypxi0LuewCcqI4ztA1LhItQ?=
- =?us-ascii?Q?UmE+vQeBH4s9KE1ybbMflrocdZmTHcTMcvoMNc2dva+lFg1bkUo2HbpBEKqn?=
- =?us-ascii?Q?e/E14UaTejfS0KaqPv4=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f298804-37d7-4bab-18a5-08ddea267c28
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 13:41:57.1851
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0+EziM7yE+WN5x5MIDcTALvON33cmOgQN5RzZGpzsS8mNN4G8gW+Gqc7PmrfPJYD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7007
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6CE2E40003
-X-Stat-Signature: 55czdc7jog4xjy4qxxd7qxw6ahu16mzi
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756820530-27314
-X-HE-Meta: U2FsdGVkX1+7GSYyX2B99xo5u7RKWRubNcDqnNKKCOtAQCS/ejcq1SWtO7WsoFFJiE8FgmsJcUt513ty7J8PpvLliaV/C1NIOe+RiiyU9XCpz93r95qc8fOUQDJx1AAF7XERxgQRe3CzbRJU878S7NrGor4hAxjSHkR5MMi2ZcpbVYa45cmUJUMjcoGreD11Fc2lbciKhXAC0vs/H1Cbj8cHQLjahSaTwoCYUDA7kjV1ftgFyQj7stcR4l5csRTjtyY+xZFQIUJvBGVrdFfTVLqdz3fj/kbNbWo+1CrJCJZ2CvYvjbXCJbmrUk82uK5OJRQM0V4HwviHhWWw7sUbD171D2yOQqW/ViG3wCl2HxclKbK3ZTrtE+CysVVPV2wwifQqFC3HqRRaXl4QU2ghYlzkcq/Zj5C3bOeE8BONT3+/Gf0Tha9er618JO+N0gcMgMeK0UKdUZFVKR5dfIhD+l9HAE+kWGZ5TONSWgrKyktHq+nXYHYqTSuf0LQ/YGBk4OkIf0t8JG4SaImYQdTFv6oA2S2VKN89C/DytTEvUQeJoF5/iCzZKnRtpx+pLDfUr4aBi1BzMF8ZIJ8xzOt137PnmKlXk5/f6Yelag5Q7aEAqCpqAxgvZks7moA086tzVJJkmsdHMSeOqfduCQEvzpng/5zgvPI3vz3f2Hb5xmJTjY2WEon6Mifqc2bHBB1Q/XDxd6t1Ekpp+UnO6DT1Mn7xALReTFAPxPHXv3GTBS+lNUurk06PcRCV13bqGgx5JJJ0DoXOPMbMFT76FBp7Xl0Uin9vWosH4nOEcmFPzUA4Asd1pr8Chr7f+x5nvixEkT6mJcRHzQDSsWqnjxh5ZAEKKyMQx1pfTvS5lhi6e78HyvFrhEp6rlQQcqafrQtGQKXAodpjjdgT5/q/ELwe/J58QTqaoyZmHixhSDNZZYORRP4asyN5vGcp7xcNZxgCAlJpGcKxLvXxO8w1xrX
- /63uXF0C
- uilxZeDozdyTX9OWSDEXbZCU8i1VjjCJonX/z
+X-Rspamd-Queue-Id: 344AA4000E
+X-Stat-Signature: tgekccwgc41xhody54z6nmimkw4rzq1h
+X-HE-Tag: 1756820553-663302
+X-HE-Meta: U2FsdGVkX1/I5ny3EGRa+S1q4t0bI2vACUoIPe77M4qrMhJtZNtgDiC2lSH9c+HEb+pcENlVhGddBwoHndNIO8E1DJdwX1B1yJdzxjSUvb8xNjvBiGaBQ4crhj+Fr29oI34bDEjVBOKyYJ2BP9/MrpbRLXEqXZIT8agMB6iODBlvDylxWM8mhHClAnd4lytSdqSgGAhbkUmijtRoC8I0JYZjK4cmkhk7rw7JUEK3b2dY0MS6x1UTqxa6MXssrBWbOGLuJVYCiTMnFwdtd3CCLTm3QZgkQOfXO94wrZGQC9iTl4RtFVIVnvs+RHkzyOustmsmsPRN6/XyOeicEmZLYIasAQ+x9TVhHFrXFi4fc4zI2AzjDpzqhKAgPCc9/R4siqweOtF6luBDPzpopj3Dat1hqM8Xx/MdnRfgTZCiz0PFIa5BStKavOycENgeebByIWepbrS5vRvDG9Kfun2vSM48/7ip+By/xkPv6mYV0KXXeQA/l5VY8kbCbR+ttYV+NjfbATm1RzZ6ydmwTU5ueNjqjVAQPmlSelUVQkWre7qSHoPIcGLMV8xEL+TKb01kwPOBSSCi5eB50sfcLKrhRi5uqax6uAFGTSkK+qd7dHoGZqIpBD7Inq6yJuDe/vxbGIKip6oGbbcYYY/PRkUn1x4HYuPtktJvq10Sg5bSsDc6gmcQ4JOLpSAlULAB38vOwvWC34Xs+feqbXMK1X6fJD9qreJoyCJ7kBNrVmJpuMJOt77zxsipKjx44/HyY6b8Bzc35iQK45PhTYxZtLLFqPqgwIyXc0Ue+tb9u+rrBuBi+c6yafP+Pku7Pt5l6mA83KSelqXaf+4bNnbmtR77seruvJnbZwQ7Yhn5XOxqRouswQgZTm1wIcq2ccqMT9xTVA1cTlSnI+Ga/hk1GPUs9U9GLjDEt8MY01j6xo+pvU5er854O7jhpS8sLNZwL/VzSqINPM6hu9/1szfatnc
+ XJKIFieW
+ IkuF26JQ9TXEj71Ge2l4y0h6l0Uew6fEpWDDC5R+mI1/tKf7wn4z+IAyIdWlDjYw2cbxjTRITmscwtdLafhXEm2fw9yk8pAT6esgJ47UIf9MZtcZaO3gSgx4KrHPcQU8VuMFrt3W5MsQ4OmFL4xC2tmwvVxsI7PP/QzQnGKH0teMONV4eUhE76534rm0M66lH0rfpm05AP15R3JUeo1KrZ+GhhYN+lDfpXbrevOlA65HyJyA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -209,62 +123,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 12:18:43PM -0700, Chris Li wrote:
+On Mon, 2025-09-01 at 20:38 +0200, David Hildenbrand wrote:
+> On 01.09.25 20:21, Thomas Hellstr=C3=B6m wrote:
+> > Hi,
+> >=20
+> > On Mon, 2025-09-01 at 20:16 +0200, Maarten Lankhorst wrote:
+> > > Hello David,
+> > >=20
+> > > Den 2025-09-01 kl. 14:25, skrev David Hildenbrand:
+> > > > On 19.08.25 13:49, Maarten Lankhorst wrote:
+> > > > > When exporting dma-bufs to other devices, even when it is
+> > > > > allowed
+> > > > > to use
+> > > > > move_notify in some drivers, performance will degrade
+> > > > > severely
+> > > > > when
+> > > > > eviction happens.
+> > > > >=20
+> > > > > A perticular example where this can happen is in a multi-card
+> > > > > setup,
+> > > > > where PCI-E peer-to-peer is used to prevent using access to
+> > > > > system memory.
+> > > > >=20
+> > > > > If the buffer is evicted to system memory, not only the
+> > > > > evicting
+> > > > > GPU wher
+> > > > > the buffer resided is affected, but it will also stall the
+> > > > > GPU
+> > > > > that is
+> > > > > waiting on the buffer.
+> > > > >=20
+> > > > > It also makes sense for long running jobs not to be preempted
+> > > > > by
+> > > > > having
+> > > > > its buffers evicted, so it will make sense to have the
+> > > > > ability to
+> > > > > pin
+> > > > > from system memory too.
+> > > > >=20
+> > > > > This is dependant on patches by Dave Airlie, so it's not part
+> > > > > of
+> > > > > this
+> > > > > series yet. But I'm planning on extending pinning to the
+> > > > > memory
+> > > > > cgroup
+> > > > > controller in the future to handle this case.
+> > > > >=20
+> > > > > Implementation details:
+> > > > >=20
+> > > > > For each cgroup up until the root cgroup, the 'min' limit is
+> > > > > checked
+> > > > > against currently effectively pinned value. If the value will
+> > > > > go
+> > > > > above
+> > > > > 'min', the pinning attempt is rejected.
+> > > > >=20
+> > > > > Pinned memory is handled slightly different and affects
+> > > > > calculating
+> > > > > effective min/low values. Pinned memory is subtracted from
+> > > > > both,
+> > > > > and needs to be added afterwards when calculating.
+> > > >=20
+> > > > The term "pinning" is overloaded, and frequently we refer to
+> > > > pin_user_pages() and friends.
+> > > >=20
+> > > > So I'm wondering if there is an alternative term to describe
+> > > > what
+> > > > you want to achieve.
+> > > >=20
+> > > > Is it something like "unevictable" ?
+> > > It could be required to include a call pin_user_pages(), in case
+> > > a
+>=20
+> We'll only care about long-term pinnings (i.e., FOLL_LONGTERM).
+> Ordinary=20
+> short-term pinning is just fine.
+>=20
+> (see how even "pinning" is overloaded? :) )
+>=20
+> > > process wants to pin
+> > > from a user's address space to the gpu.
+> > >=20
+> > > It's not done yet, but it wouldn't surprise me if we want to
+> > > include
+> > > it in the future.
+> > > Functionally it's similar to mlock() and related functions.
+>=20
+> Traditionally, vfio, io_uring and rdma do exactly that: they use GUP
+> to=20
+> longterm pin and then account that memory towards RLIMIT_MEMLOCK.
+>=20
+> If you grep for "rlimit(RLIMIT_MEMLOCK)", you'll see what I mean.
+>=20
+> There are known issues with that: imagine long-term pinning the same=20
+> folio through GUP with 2 interfaces (e.g., vfio, io_uring, rdma), or=20
+> within the same interface.
+>=20
+> You'd account the memory multiple times, which is horrible. And so
+> far=20
+> there is no easy way out.
+>=20
+> > >=20
+> > > Perhaps call it mlocked instead?
+> >=20
+> > I was under the impression that mlocked() memory can be migrated to
+> > other physical memory but not to swap? whereas pinned memory needs
+> > to
+> > remain the exact same physical memory.
+>=20
+> Yes, exactly.
+>=20
+> >=20
+> > IMO "pinned" is pretty established within GPU drivers (dma-buf,
+> > TTM)
+> > and essentially means the same as "pin" in "pin_user_pages", so
+> > inventing a new name would probably cause even more confusion?
+>=20
+> If it's the same thing, absolutely. But Marteen said "It's not done
+> yet,=20
+> but it wouldn't surprise me if we want to include it in the future".
+>=20
+> So how is the memory we are talking about in this series "pinned" ?
 
-> Another idea is that having a middle layer manages the life cycle of
-> the reserved memory for you. Kind of like a slab allocator for the
-> preserved memory. 
+Reading the cover-letter from Maarten, he only talks about pinning
+affecting performance, which would be similar to user-space calling
+mlock(), although I doubt that moving content to other physical pages
+within the same memory type will be a near-term use-case.
 
-If you want a slab allocator then I think you should make slab
-preservable.. Don't need more allocators :\
+However what's more important are situation where a device (like RDMA)
+needs to pin, because it can't handle the case where access is
+interrupted and content transferred to another physical location.
 
-> Question: Do we have a matching FDT node to match the memfd C
-> structure hierarchy? Otherwise all the C struct will lump into one FDT
-> node. Maybe one FDT node for all C struct is fine. Then there is a
-> risk of overflowing the 4K buffer limit on the FDT node.
+Perhaps Maarten could you elaborate whether this series is intended for
+both these use-cases?
 
-I thought you were getting rid of FDT? My suggestion was to be taken
-as a FDT replacement..
+/Thomas
 
-You need some kind of hierarchy of identifiers, things like memfd
-should chain off some higher level luo object for a file descriptor.
 
-PCI should be the same, but not fd based.
 
-It may be that luo maintains some flat dictionary of
-  string -> [object type, version, u64 ptr]*
+>=20
+>=20
 
-And if you want to serialize that the optimal path would be to have a
-vmalloc of all the strings and a vmalloc of the [] data, sort of like
-the kho array idea.
-
-> At this stage, do you see that exploring such a machine idea can be
-> beneficial or harmful to the project? If such an idea is considered
-> harmful, we should stop discussing such an idea at all. Go back to
-> building more batches of hand crafted screws, which are waiting by the
-> next critical component.
-
-I haven't heard a compelling idea that will obviously make things
-better.. Adding more layers and complexity is not better.
-
-Your BTF proposal doesn't seem to benifit memfd at all, it was focused
-on extracting data directly from an existing struct which I feel very
-strongly we should never do.
-
-The above dictionary, I also don't see how BTF helps. It is such a
-special encoding. Yes you could make some elaborate serialization
-infrastructure, like FDT, but we have all been saying FDT is too hard
-to use and too much code. I'm not sure I'm convinced there is really a
-better middle ground :\
-
-IMHO if there is some way to improve this it still yet to be found,
-and I think we don't well understand what we need to serialize just
-yet.
-
-Smaller ideas like preserve the vmalloc will make big improvement
-already.
-
-Lets not race ahead until we understand the actual problem properly.
-
-Jason
 
