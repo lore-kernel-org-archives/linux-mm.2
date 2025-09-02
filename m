@@ -4,117 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94F0CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:49:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93FF2CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:54:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 498698E000B; Tue,  2 Sep 2025 16:49:57 -0400 (EDT)
+	id DCB1E8E000C; Tue,  2 Sep 2025 16:54:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 470498E0001; Tue,  2 Sep 2025 16:49:57 -0400 (EDT)
+	id D7B238E0001; Tue,  2 Sep 2025 16:54:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 385718E000B; Tue,  2 Sep 2025 16:49:57 -0400 (EDT)
+	id C43028E000C; Tue,  2 Sep 2025 16:54:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 276F68E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:49:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9D41B8F86
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:49:56 +0000 (UTC)
-X-FDA: 83845501992.17.D358274
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D7DCB140011
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:49:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=TCSDXZF2;
-	spf=pass (imf26.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE8998E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:54:51 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 62D09B8F13
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:54:51 +0000 (UTC)
+X-FDA: 83845514382.01.A7027AF
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 785CBC0002
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:54:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QgDYRYHT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756846489; a=rsa-sha256;
+	cv=none;
+	b=jPPVbKmAF7Ee+2t1xjlXINsV/bDzxAF4KfI0dynJfLLCJmjjXEfD7hoG4+kumtzrCoEqqt
+	ItbjnjJF/22ld1q061kfVhV+BmxazqhZGx4CY9WXHzPw9lvzSHzIeVPuO4H/4puS+zKsYW
+	tVmdlAtv1wqDtfiY6ZbND0ClbDJ4OFo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QgDYRYHT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of andy.shevchenko@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=andy.shevchenko@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756846194;
+	s=arc-20220608; t=1756846489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cns0fXIAbt1EqvizSg/wAnSv3SWVs6AXpQ/9VbxT1xc=;
-	b=0THoWS/rhZ2OiSXDg7/DoZ++8XBLuoXrmPkMsqSYMjgs34bDQjO/xRee4hnH8BY0uMML1p
-	rgom8Of400YsXC4VaApbBIOdc3lYfK01lU8jD4AfUcWdL3kcVJ96A7Y66EjtN2kZnRNMTr
-	cUUTlxERbxD27BjXnwaknaUCijAFoi0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=TCSDXZF2;
-	spf=pass (imf26.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756846194; a=rsa-sha256;
-	cv=none;
-	b=SAT/qsZU2H+5g2k7uKH//fqH2XBIjr73K9lwU0rnYqcR4+YgchnCvwjRtvO2d6qKcND8Vz
-	9LU1PfG9lZMPv9pp3B2SXh87kKdzUeoXM93tyRAeRZSLSBvjCCmLON1301vaCy8hj4K+Ir
-	ryZyejEbHooH+0BSthrNBi9EhvnU92M=
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250902204951euoutp019772216366e471dce5ab670ff270a1c3~hkk2PqBI40583005830euoutp01b;
-	Tue,  2 Sep 2025 20:49:51 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250902204951euoutp019772216366e471dce5ab670ff270a1c3~hkk2PqBI40583005830euoutp01b
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1756846191;
-	bh=cns0fXIAbt1EqvizSg/wAnSv3SWVs6AXpQ/9VbxT1xc=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=TCSDXZF2Z62YcDiWqMDDa7Dv+pRBN+EUSjgrFZ1mzkO8tak0poyAI0nhbznKNDhqf
-	 D8kNvQjhwMLyfbECL2R2+e0uzHGZze/5arbNIj/FB7PwNbK4vxp5cjSUYa4Wb+jDZr
-	 M4rtfp2Rgp2ma7OWloLOB4f81ua8G4Rw/nxkJvc0=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250902204950eucas1p1185c6ab6c55958183bb0c347b0396b5b~hkk1r34Tc3157531575eucas1p1q;
-	Tue,  2 Sep 2025 20:49:50 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250902204948eusmtip14b51a6d907c8deca19aa6660d162e2c8~hkkz6C6Li1369313693eusmtip1I;
-	Tue,  2 Sep 2025 20:49:48 +0000 (GMT)
-Message-ID: <2d8e67b2-4ab2-4c1f-9ef3-470810f99d07@samsung.com>
-Date: Tue, 2 Sep 2025 22:49:48 +0200
+	bh=kutjVkpcvEETb1qEj2HY122cngSwuEsceeDMIRlTOiM=;
+	b=c7fuRJ91l2dITK6U/lL+RNqyEa2h3Lf5G/MCbqVIpevoTTpJ9w9hwsL+RYEnNAMe2FLAth
+	sglk+Q9qMRH0Ss1cJE0d9LpueR18QRyVbqQjJ/ZFtBfEM9HVrMQU1M0V4TUendMUr9tlQA
+	oDVBO3sgEBlE0vjqJAiCCpIdZ75HgEE=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb7ace3baso442144166b.3
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 13:54:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756846488; x=1757451288; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kutjVkpcvEETb1qEj2HY122cngSwuEsceeDMIRlTOiM=;
+        b=QgDYRYHTiBBSid3HYxUCgQolRzwMgTU5XB2I6n88iPjanQHbP/oCi9pEzG2HUFMZxy
+         WUTe9Xv03vgOG7B6VRTKtZurbo9L8d/09p6V0LDLyv5TkYEOKZ3NFfBXrac/kuJz81o/
+         SQxBmc7RMk87ti1w+j/2Sii1lrfHCrMlB6Rt6mG/7QEBWwp5Hp+I2CoS9wn9G58wanAl
+         LuMFYKsQyMsRyzL2Vw/mREfVoDtoa8NO7RFWsoof34X6rw3XKEca8QLpP//5iUAIDzm6
+         fuozGNmmT+3NQx+OL3k/j9un89cY+zC7oT9OQGTGkD4461ERl8Jyhn+JadDTo+x3+aUx
+         SDSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756846488; x=1757451288;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kutjVkpcvEETb1qEj2HY122cngSwuEsceeDMIRlTOiM=;
+        b=wXhrniD8Mxggjj46tlfZ5By2cJBTP5UTBKppvxU0ROXqR18t5iniuGvm0ZQ9EznqpA
+         umz5bSynj4ZHvrdDdA+N2MZk4BOhvV0CzO0tkQXE5Ae/gdE8h2UWTiuF504tEaCwt65/
+         tTFzRW4gvJzBN20Pye8xnDwRhcLtnE2x1UdCMcry8Lzl6K/jmCAECGxE5lFs7KzQMZiU
+         9/qcGOqYOGw/Hmj4oAb2l+3fSboesUR/ikAxUa4EXYFGSBXhA7TKbOR5mcDaI06ohy85
+         76A6aH/Qe9PfgcxEeyun2ebPviA/s2Wtns99wgSBAozv0YZlmENhgBOXw2XZGAQRRUH4
+         lWIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpoezZ0lkmOOJGq5EvUqj8P2tQsEorMBzHRjlZFtqP8YdHcYgsdW3Lb2R2VvYJQA3x9h8htLL6UA==@kvack.org
+X-Gm-Message-State: AOJu0YzQzpNwyxvIX2zM1+ICcc0zWuvIZAx42+d4BGWHx9XDOZHfOs1a
+	rJ9OgtqnIYCxTQEI+tLLERLRia1+STfLcbDoNWxhM9zcHTUgtEdin4I35glskxf3Mx7q9aH6Xu9
+	pPaBwZw7TTZLwyAY/9f7cBfNVVI/PqsUF4QvXSYg=
+X-Gm-Gg: ASbGnctylN/9LgvPXHfIGI3YX3k80QnnUEcCXjqVqkXp0+EwQzl56BYFDZ6idrBHiE9
+	CwzAR8Fe4N+YTbjWmB/4ZASRPG288ECc+yhDHgb7JJNs3SkBzQY2PDeeHb+Dbw1csGtSFlcm3Xm
+	PHfFpw2rbK55XQOGL3KoFRdL0NmoKO0C4yEMaZN5/Piuvz6f3AmXdf7CBApoRqfqw8PMZ1nAlt3
+	31wOCHLQNaQFwM31w==
+X-Google-Smtp-Source: AGHT+IG4zlhdZMe5YSuufGeqwlIQK8acaeuuvg5xL+VVOl3StpGEjjD0yfcY2w04cC3rT7k1Cl4bbDXfAthjT80xlmI=
+X-Received: by 2002:a17:906:4fca:b0:b04:6546:347e with SMTP id
+ a640c23a62f3a-b0465463a5bmr50237566b.51.1756846015338; Tue, 02 Sep 2025
+ 13:46:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v4 14/16] block-dma: migrate to dma_map_phys instead of
- map_page
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Danilo
-	Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, Jason Wang
-	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
-	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
-	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
-	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
-	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
-	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
-	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
-	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <22b824931bc8ba090979ab902e4c1c2ec8327b65.1755624249.git.leon@kernel.org>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250902204950eucas1p1185c6ab6c55958183bb0c347b0396b5b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250819173845eucas1p221cd6842839f5e7130f131cd341df566
-X-EPHeader: CA
-X-CMS-RootMailID: 20250819173845eucas1p221cd6842839f5e7130f131cd341df566
-References: <cover.1755624249.git.leon@kernel.org>
-	<CGME20250819173845eucas1p221cd6842839f5e7130f131cd341df566@eucas1p2.samsung.com>
-	<22b824931bc8ba090979ab902e4c1c2ec8327b65.1755624249.git.leon@kernel.org>
-X-Stat-Signature: 6xhowm68j4jkk7nqtjshsro6tkwmhjz3
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
+ <aLcBcjvMbrxoDYoC@smile.fi.intel.com> <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
+In-Reply-To: <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 2 Sep 2025 23:46:18 +0300
+X-Gm-Features: Ac12FXzQiEATdvX4DXbIt31zcGrGliq36XoLvlgsSrCLd-DIw99Mu03fZo98CMc
+Message-ID: <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
+Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 785CBC0002
+X-Stat-Signature: d3kb5gnezpaxsh3198b6ytkgu6ee3w5u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D7DCB140011
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756846193-517690
-X-HE-Meta: U2FsdGVkX19kWUA6tPxF+llquFsIsAsaiP5Vp1jRO1jmTm2W9nuoIDEHCFrA0cHHfRl6SPyGKj8o6jWv4DgvWNwLPU4EbumY0n5alXHQI7fcb5A5m/sfMcbU7WLbyUVdPmptcCXctAYOATpQysavaPMJMvN79uAHezUWPQCbYy6rZq6pe7ZNYu3UoakzkRiKprQRHIF+rR9BO43JjaJMwLqwnC9IwKyrWgvETBfRzZ9ag0XzwMnNEMMFPkvIQTUNFDVOQIK3nbDI///AZSciHNfpZE8HcXMBSR5JiCwOamDS9+4G0Y9K6M5JTxyiwyP+X2TtgSb32UXRlrS5Cp/Bz/fQ02mUsw6ZE/VOQcD7TsnDMFG2+gaHfAFG2ILvPcaJKGpyICLQ30GoFZXWKt4QHckZrzCzQuNBQALmJ8C2gVDOLgJ8pQohp5Ee3JfQEDIw836twFJrnR/nwtW+feKcevSMYI/nKswDCm5bTMn3kxBGknLXySOgTKo97U6kjwI2MxiT3jvKRFMe9eY/O7L0f+0tbW95Ad2v2N5nZTZLOQPLgPC85zZ5EDDiM9ZeXJG0hoxwB145SIKvoBbUHi7BjolQ79luQ+ETyp+ROL+Wvz5HyczDFgsB4ecXLWOY7n2qjI+OpqaF2DmS0A1P7YFalKlm4DWXvrt8StF9YZcxUUH/hCftbfoXLDkb+o45zlBvfCoVynFvYkfS6y4A+tWADl4uKy7FilvggCDoB/m3l/0xGp1dIkREKrndBYplxqxKLZ6H3gSFJhSX1lpfXvHHdrc8ncgvQt0eb0QJtbD9GTXBY7j7QMwElP9XzMIvR3BBX98UPk2tTEBc6YPsrIZL5zA6NU5eOp7iU1HwOEmc/GQKmb9TsWOczft/dgZhJ06n0TOKVi35AYeEZCuRzAzEjT2AF2mYaFIaYOEaKmELRSPmHmfGzELP6loE9ADcn1oy+lUZsN+HWEediT2KHIZ
- PBKYx66E
- nFSzbfuUzzqGO2st8wfzDPbZ0TGaZIJ9pZfiVg8h4te7Z/2Luy1HEQ5UJfTrYYDezAGxmXFAItVteZExTCBIDFpwn1iKyp0m1IOggsMRsqFe089ysEo2nBL/6zyjvpHlayVUvSU3yQbL9rBY8s26UmQS3oYN23WJTeoyLBlz9DYLDfkexAc/YnvezDQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756846489-648913
+X-HE-Meta: U2FsdGVkX19+JZkzqb/hHLC0Yq5edXQ04ytj6RdtAQxPdtFIJMsjaHyUw3mj9bE2uca0+5W916jzhKrXk0yDafm4wTmjRORI05RsF0Z1CeMS0j9O/LoHf8N0TRhsHwYrajMOm2zdm8Op7HeheZPpqAApqLTRg6bmBgXx2/Yz+aHZvRWe2zSr15aG+0aelSfjALi9prNhN3n6u+JgtJjbXJrmy79ZILNMhlPvhi+6p4/PN7QMx1//I5pn+Co8nSd8fMefwiizPP3jDfDQ9YVWGebV3mWE34z8OYZmJR0iGB+sKgGGBbmRqKZK/EAM4J6+i4M3XqWxeXfptv4S3jzMeRjHBETSaLPo74WLcJjhU8yPJUzh5OXktm6ujYCS2lQ1N327V/UgaT4KSWYfnhQOL7DFkMyprnno8svxCyv+7MfwFq/SqPbeM8t+/asGnDcgpxrMpO89OvB+bBWkcfVlBtlRz2UYvLb5F6GmpmBAoNDVV9lcXA8jw1TZx7KvCpb9coB016qltJBjBI5mgFeDPKLunqeWTw7az/PKLUK2mknh8h/w0MmpYnFikrYVeUYUCObzF/b1wWBZjunr8EXmqgH4zCLEAQQ6VVpKbvV3Ho6aQHoA0yVZN0AwNwja2J6kJdVO2rQDJw7Ym6n24MTHl1ZnBV9H2p5+WVkMmRf7exu0mqe0f4ugX3kRH4aE7G9XfMuH2BceR3jhYEoetQ0/pFDubH952eHn9OYPRDq5ety5X6adsHComKlU4BNSNZ+39SFL5YvhHrTV0NTSURk0jAmmrwInOLg1BgOVCXjv0EvmUizfhQG8cJm36/IihBCrP3/KLxSiTbmqakx49tnknfCF6CuYltkl/q0LDKo9PmvIqvByvae+FYjuwd3cJLhWGUw/bmWil1DJE5hMR8aInQ8x5pcg6VA5GHQG/idrq9OYwBnG6yf8rG4tWFC4RTXQZuSRSLqUp+UHohggX9o
+ PcDsp/3C
+ 81zO5VBWO/hP/RDXu+eiUhdFQnf3KPSXj5FKxA8TpR4FiMpWsyq2FKmbhG/qTiBn4J7zItCA683bJ1A0isMcMshd+8lOboo1yUWsE+KpB+pl3z0dh9DoQq1/rKywnswzg7BD0U6ptg4q2h4LLm9ExHUyhB/S/h/96vIVtwRA1NMOy7K+cr6cVvQrs6C6CBiz4g/9lVKaNLnz8goQRJC1FBIId+3332q7221f1Minokudpr1zX37xkYih7cZz5vn42X0fWV7AO50KLUdWljygCRqSBYEnhhpU11JlINB9+gVQAZBCCZaZtwrGvABQdMFZtueFaobhl56mCmhIAxVuDdh0rf9fwYSqbuv+UWdqVj7vZgtn87lmpQNF2x7JzTVqx8uwjzWzvrkiSzTM+y2jozgzSYvpOHyqa4fL4aoMd+82I/61p4h5XgJLR8ickiVMTkj+9TqlT5oK7VRktITVUXhbtD4Hq6QisGY9RO3hGvrVsubD4ct3GOVIlPPQmLAh/SiSF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,40 +141,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19.08.2025 19:36, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On Tue, Sep 2, 2025 at 8:42=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
+wrote:
 >
-> After introduction of dma_map_phys(), there is no need to convert
-> from physical address to struct page in order to map page. So let's
-> use it directly.
+> On Tue, Sep 2, 2025 at 4:38=E2=80=AFPM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> >
+> > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > The strict flag in struct pinmux_ops disallows the usage of the same =
+pin
+> > > as a GPIO and for another function. Without it, a rouge user-space
+> > > process with enough privileges (or even a buggy driver) can request a
+> > > used pin as GPIO and drive it, potentially confusing devices or even
+> > > crashing the system. Set it globally for all pinctrl-msm users.
+> >
+> > How does this keep (or allow) I=E6=B6=8E generic recovery mechanism to =
+work?
 >
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->   block/blk-mq-dma.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
-> index ad283017caef..37e2142be4f7 100644
-> --- a/block/blk-mq-dma.c
-> +++ b/block/blk-mq-dma.c
-> @@ -87,8 +87,8 @@ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
->   static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
->   		struct blk_dma_iter *iter, struct phys_vec *vec)
->   {
-> -	iter->addr = dma_map_page(dma_dev, phys_to_page(vec->paddr),
-> -			offset_in_page(vec->paddr), vec->len, rq_dma_dir(req));
-> +	iter->addr = dma_map_phys(dma_dev, vec->paddr, vec->len,
-> +			rq_dma_dir(req), 0);
->   	if (dma_mapping_error(dma_dev, iter->addr)) {
->   		iter->status = BLK_STS_RESOURCE;
->   		return false;
+> What even is the "generic recovery mechanism"? That's the first time
+> I'm hearing this name.
 
-I wonder where is the corresponding dma_unmap_page() call and its change 
-to dma_unmap_phys()...
+"I=C2=B2C generic recovery mechanism" (I dunno why you put away the I=C2=B2=
+C keyword).
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+--=20
+With Best Regards,
+Andy Shevchenko
 
