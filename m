@@ -4,104 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26849CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 16:25:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA5CCA100B
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 16:25:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E0888E000B; Tue,  2 Sep 2025 12:25:50 -0400 (EDT)
+	id 92D318E001E; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B8C18E0003; Tue,  2 Sep 2025 12:25:50 -0400 (EDT)
+	id 8DBEE8E0003; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F4CC8E000B; Tue,  2 Sep 2025 12:25:50 -0400 (EDT)
+	id 818DC8E001E; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A0DF8E0003
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:25:50 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E5B2013A342
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:25:49 +0000 (UTC)
-X-FDA: 83844836418.29.E805844
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 42A2AA0011
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:25:48 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iRITIK3T;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 701E38E0003
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34BE01402B3
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:25:52 +0000 (UTC)
+X-FDA: 83844836544.24.0EFCEB9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 747AA1A0008
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:25:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sc317jNV;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756830348;
+	s=arc-20220608; t=1756830350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=SUik/jyyQ1k9liiWuKi+y+woyh+KAPCpYTGPEAo73+c=;
-	b=PtW2g0r4iDXBF6/gG6U+3SVq9qy13XhvplG+i9XXzJ4KWmJDn87TdsXI3zAST8ptNOtxBl
-	lZ7ZTmjNZcPYxA1MdhKCEZ6S0eVZJMUv/B27zGWnR4hpwnZ1G/Bn8a4cQzGvcOkKnoNgod
-	s8AdzqoDVyW/VZJ8zWc3oPJ8R68yHy8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fGt+rfAZPqOpC/usLmyRdPXY0e3SkpciH6+5LLOoAzw=;
+	b=g3C4xQ/PheLjhbEotG3ebN8G2ybnkXRIUNekOQCtHdxzpLYtsS1eYNbNpH7v88tPPAntme
+	X7ERks3HnCh99nSUIJ1Vab7zDaZpG7Ewlng4dNnyb5TzahG2cK2kAxzHch6gWP4aDwsI+m
+	D45P2luQXIRFkXbAhv63Vepv8RmaS4g=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iRITIK3T;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sc317jNV;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756830348; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756830350; a=rsa-sha256;
 	cv=none;
-	b=LAf49RNZM3PQXbJB0+VM1cLcu7cCWsuBWOjEvhTxdZDCnRMOzj2HcX6TVdixTeh3Xraa/B
-	JxK/U+egMSGvoBC+trflr88rjw59h6FGrTXQcz5h2noJq2AUXTXre2T+AD1jaSnTdhG6zN
-	fvVJ3iw4FG649yjmpicBUK85r7L0+lc=
+	b=FV+BYtDugjwWoROAWO8g0HdAeGcewOFxrMw/IFLEHRWHTbeEwZ2P+Tw5Pm9axQ2eVEuy7z
+	ei3eocPuP2jCTqZovhy3SXsEtc5hufiDgdKbivRgMIFOJUV+v2k2RH00vSWC/rR0HZQ70V
+	a1GFZ719oqMVfjqVoLOBzwEbaVfpt8Y=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756830347;
+	s=mimecast20190719; t=1756830349;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=SUik/jyyQ1k9liiWuKi+y+woyh+KAPCpYTGPEAo73+c=;
-	b=iRITIK3TB2PGGcM9bk6PNrl77mVOgIhg4Ok8FO7eJLzsiIGOXIqUZs7IvDK0zVP79nFE+v
-	zY6VH8W1Wz9ZZ8PGsSA2rL7c+9Il8gwzSQQIXnkQROXQaHnm5tjHjBthccEflRGYnO1p28
-	vJxdX2Rp/4QXS1e/sXHfyjLalKoxSWA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fGt+rfAZPqOpC/usLmyRdPXY0e3SkpciH6+5LLOoAzw=;
+	b=Sc317jNVjK/DiyAK/nLbHp3t6XNFAYUTHSoZzaPL6Ox7shjvSbqD45wtUjW5ewtUP+YFNd
+	q0sGSdYrLCU0MppKTw5fY0GzAtlsIjT5Jaj2ESarX0gElzHjeE8jPBv2pVawULW9avnRmS
+	52SpXFBFKeO/uiVEPtZrF2PQKEWfN9g=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-349-tMtwTW8sMByXxpPUBno_fg-1; Tue,
- 02 Sep 2025 12:25:45 -0400
-X-MC-Unique: tMtwTW8sMByXxpPUBno_fg-1
-X-Mimecast-MFC-AGG-ID: tMtwTW8sMByXxpPUBno_fg_1756830343
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-bSUXBqyPNWqsMD_lkbXvuA-1; Tue,
+ 02 Sep 2025 12:25:46 -0400
+X-MC-Unique: bSUXBqyPNWqsMD_lkbXvuA-1
+X-Mimecast-MFC-AGG-ID: bSUXBqyPNWqsMD_lkbXvuA_1756830345
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 293A518003FC;
-	Tue,  2 Sep 2025 16:25:43 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 983FE19560AD;
+	Tue,  2 Sep 2025 16:25:45 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.22.80.27])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AE9FC300019F;
-	Tue,  2 Sep 2025 16:25:37 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D482230001A7;
+	Tue,  2 Sep 2025 16:25:43 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [PATCH v2 0/2] selftests/mm: split_huge_page_test: split_pte_mapped_thp improvements
-Date: Tue,  2 Sep 2025 18:25:34 +0200
-Message-ID: <20250902162536.956465-1-david@redhat.com>
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH v2 1/2] selftests/mm: split_huge_page_test: fix occasional is_backed_by_folio() wrong results
+Date: Tue,  2 Sep 2025 18:25:35 +0200
+Message-ID: <20250902162536.956465-2-david@redhat.com>
+In-Reply-To: <20250902162536.956465-1-david@redhat.com>
+References: <20250902162536.956465-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 42A2AA0011
-X-Stat-Signature: rucbtgu74oznft3156ihk7htanu1ccnc
+X-Rspamd-Queue-Id: 747AA1A0008
 X-Rspam-User: 
-X-HE-Tag: 1756830348-44965
-X-HE-Meta: U2FsdGVkX1+zXB9GRbgeUL7QA02P3UyGY+TGZFc2zGAl6p5dOgPIcGM9he5vcFTtR2e2ipTTTLRtRDhlCKbmDezSF8uOnOywOLnoFdk8htx0oZoI+MwNHqYDUS7+XP+Wag23Az57EfhG21RZr9HTYIhKPvogRveHcwjKLU5Ihxbn/qOrUuGchldaQ0kF77gOzuK8Ynmd1USfKaMqpY4eokHsuq2Jmq3GdFJmKgH/PYnMNKT42usT3KLpkVFlJC5CgaQAJRor8HPWMYqqksIxI9xw6BeGDILyWs+3JYqN5Fg8T0Q2ujCY2igScIQok43igrWOup2sCROPU0Thdtc6qF7JDgSpuZ0FPq4uV8sADnTKYwnocB9ErpoeT0eHOnwBlwlBO/KsZEHsP3mcPEcdxs+s4DeufNvJTjax+Kz96veot4mtqZk3jrj/mWglvC5Jz4FVakd2kWOB1y2vK7EmweuPn4YbEPa1FxSVkVI7DBUvpCiYymS54AePAFMgTDu8OTsMsIuMguESjVdhghKfEfVNTIzQIDiGP8uskniG48RpQavIn77jt7JPocDM3FXU2Cf7gH75bSfAEd/zH1zzN91yyOjq5YH9ssovTXZdbd+N9HRVZoqz6+R+Cf/gcxS6sgo2tUYS44KsTYIDwB5OeiH+1omvvySw3wSuxHvCf4gIT8cz0pNoO9vPRVTcpBwM+LwEJkt+F46crTl85heVQieMXdiuFrfvc84So5puQ4LwOrpJeIvFWhlRqGM+eZj1bt+G8Jlm0RWxbWt0yhr/NOAuX8lNVv7ScNM8WwQoLO+V2ZgxqiX9WxpBvpmaSFbgGM3oifXvWLlD4565Xl4U7seWlwMmyD+kdaloIEE4UjGaB2fSkq2VVZohPP4pyiSFArfjhD6LLMBC+HgSfxd2HwvqGydHtsH14TbvG8n1l5QMvgVkDZqemGjPfrKey06Esx1pW4y2NxPiCVVC0EB
- U0XGYlng
- 5TKfYKpoxeAjpH33G0JPe4naadzOFtGQThIE1kHwx/j29S0Q8XEbGYcW4tB6k9948G4BMH9vPWWkblYjeCjWEG4KkwOd8EKZCMEowF7p+Hpq7RcjPH+MeOPV08Wt8C+KSp+tpdRyRXclabj1WkDzVmgsfBKpyymD6zyg24yTcJ5CBsL2ilEFhuNSEsD+Kg8AfHfmGc1ZC+7LLWfyzX5Coi083QUcwTxIrqNZAodA9oR+IDicit10GMFotbit7YFIPCLglLOsTQxYB9K/YAJMmxBNqu+uXhLfHnsOxGHNGeEh1MeBDHywOSN3U5+A1Q+pf3b5qw10f4fJnaG0tyUt68b8YUI/jWj6e/PDaoFuRjrzg0iDbNiIa0Hx7P9YrsRQyrzL9gIWFm/jqEFF2s6fAUgioyMRIDHcACYX8r2yLI+fwIU4Y5L/89Rb0FL9DNogKX/VBN+nafM4bGQ6YCdqbt7yunWhoi8Htr5VFXLBCcWKk1gc4bw0Bewa9zIBTXFzwHW5stNO5vTeoFoP7exgmuue+hQyEHjIG4KSzRh1rwR75ajE4x7lt3QZnkkR8butbVEjeJVzoGNfvnFs3Y6688ykByboLpp/gkjA5J9tEIIhvA0ZE+nsHc3+yXU/5vWWOopYNko2tf7HSbM5f3FsKkLHVRCCxt5ASI5jlgjQLjEyNMA10BRyiRXm+VQ==
+X-Stat-Signature: 7b864yz91u6em1p18mokcopghf7pfy96
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756830350-784916
+X-HE-Meta: U2FsdGVkX18Cm1NsE1SFoAnQjVOINpArjgHTyE8CT+Pg1LRlxEGpb9VrvRY7UiRgLnFllc3kY1gQKmYbPIWjIcKC7EcoRzh+cOqoSK7WvbT+0XIHgRLcZatvJQVnjdpjmpCq+SSKoCK3HTTcbtisNvYhjrR0kvr9yt7teDH8VTvrs5Gjt8n1sX/NHFwaPrFKkIZ6pHH7Pq4mBON3VUdXcLwkh89HL/+ZBncuyFFdakHwtrjRtybeDvm4s5itZpkR6IrS0ZpSiBYwsTDq07VYrl8SCz3WS4p9v9PBLF+cdno90OSXfHo8R0op+b4jF88yNjt25VADqUCDkq/yvpqG/qJ2VJMdyv1hl7k1yypvdgZoaxg17esnsDDNG7K7/i9irZOhun5iSRJwO7+wydJweNU1XWAWP6rRWY5obrKjxYCK5cTlKHBmGeEU75yjxf7acWU0AAKRoNQL2SUUVDGabxO/aX13g9/Jc///51dBKxApkysyAE1KBWfMeOfs0wrcaFitrEK7rB1DUeBw8nRP52H816CJMed1CFNzwjdZkhL1cSQSsoEUP1Gh5c/Qu68zoG3cwFSWOVM5likW4isddOglrUY83zA8Ah1QtPM4Qs1Lia7r5WeF9uR3zKn7sZl/G3m2NzoQ6Eh0+SRFJ2zQ1NeabRgreGZ1oaSiY8URduRh8xP4B2FRIu7TShwQRxOpuwuw9kQ+dHLy/5kwxjmxIu5r9nwfOMJ3tO/0lYR7KDuOFdA/7iZMD720J1oguIAz5MeF3WOcrRTXUB2x5ZzWvu3GZQuZaCHCZnT5GnvmyLc26+ZAev0MykiWxTK297yWgUSxfu8KCjvoIbhNMD5vHOWED7L9IGcmbfPyYIUwEfy23evk3JecPgxiKkAKJ4jthDUmvRbRH5B90B/YrqfqMTKp/YUQrbp58NG+Yc9927aSgL7V50WsyTyxnJ1iww4Hh4uz5TQAva1W/oMyNcP
+ 5ZgjSnSM
+ NBLaNI2tE25D2dCEmNq9WRrbj90PKG5g/o3K/uajcLHCYqWqEnZ7Q0pQEC8Qt+3ChtFjbPxW1lMOnhUHMV/PTXxcxThLICUedjDGVCdPrrQIzbPFiI/1OmVSSSysK4163+MqHPu5O34y8S9z0tQ1QLE1qbvpHuFRwUqW1G99u+3E47QTg8DokTJEGikvhi+qkx2/+db+G4+0LSrBDRkc4OJC5nE3W8KDjlnEGNLtDsnHvUWf1PdxNq40WKevawW2Z6wpemXRysaxMpNM0jaAqFiacX0VsvvkK9NJ+wXDBGQhEus9nGZ5lzDW5c1Vf9+4BklSR9gDJKQfKj4axhSnkf+1rulVYYlj9mqA4WjhXrI7itn6WhnCh5V/0PwWcYu3g1IES
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,33 +103,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-One fix for occasional failures I found while testing and a bunch of
-cleanups that should make that test easier to digest.
+When checking for actual tail or head pages of a folio, we must make
+sure that the KPF_COMPOUND_HEAD/KPF_COMPOUND_TAIL flag is paired with
+KPF_THP.
 
-Tested on x86-64, the test seems to reliably pass.
+For example, if we have another large folio after our large folio in
+physical memory, our "pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL" would
+trigger even though it's actually a head page of the next folio.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>
+If is_backed_by_folio() returns a wrong result, split_pte_mapped_thp()
+can fail with "Some THPs are missing during mremap".
 
-David Hildenbrand (2):
-  selftests/mm: split_huge_page_test: fix occasional
-    is_backed_by_folio() wrong results
-  selftests/mm: split_huge_page_test: cleanups for split_pte_mapped_thp
-    test
+Fix it by checking for head/tail pages of folios properly. Add
+folio_tail_flags/folio_head_flags to improve readability and use these
+masks also when just testing for any compound page.
 
- .../selftests/mm/split_huge_page_test.c       | 138 ++++++++++--------
- 1 file changed, 81 insertions(+), 57 deletions(-)
+Fixes: 169b456b0162 ("selftests/mm: reimplement is_backed_by_thp() with more precise check")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ tools/testing/selftests/mm/split_huge_page_test.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-
-base-commit: b73c6f2b5712809f5f386780ac46d1d78c31b2e6
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 10ae65ea032f6..72d6d8bb329ed 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -44,6 +44,8 @@ int kpageflags_fd;
+ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 		int kpageflags_fd)
+ {
++	const uint64_t folio_head_flags = KPF_THP | KPF_COMPOUND_HEAD;
++	const uint64_t folio_tail_flags = KPF_THP | KPF_COMPOUND_TAIL;
+ 	const unsigned long nr_pages = 1UL << order;
+ 	unsigned long pfn_head;
+ 	uint64_t pfn_flags;
+@@ -61,7 +63,7 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 
+ 	/* check for order-0 pages */
+ 	if (!order) {
+-		if (pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))
++		if (pfn_flags & (folio_head_flags | folio_tail_flags))
+ 			return false;
+ 		return true;
+ 	}
+@@ -76,14 +78,14 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 		goto fail;
+ 
+ 	/* head PFN has no compound_head flag set */
+-	if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD)))
++	if ((pfn_flags & folio_head_flags) != folio_head_flags)
+ 		return false;
+ 
+ 	/* check all tail PFN flags */
+ 	for (i = 1; i < nr_pages; i++) {
+ 		if (pageflags_get(pfn_head + i, kpageflags_fd, &pfn_flags))
+ 			goto fail;
+-		if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL)))
++		if ((pfn_flags & folio_tail_flags) != folio_tail_flags)
+ 			return false;
+ 	}
+ 
+@@ -94,11 +96,8 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
+ 	if (pageflags_get(pfn_head + nr_pages, kpageflags_fd, &pfn_flags))
+ 		return true;
+ 
+-	/* this folio is bigger than the given order */
+-	if (pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL))
+-		return false;
+-
+-	return true;
++	/* If we find another tail page, then the folio is larger. */
++	return (pfn_flags & folio_tail_flags) != folio_tail_flags;
+ fail:
+ 	ksft_exit_fail_msg("Failed to get folio info\n");
+ 	return false;
 -- 
 2.50.1
 
