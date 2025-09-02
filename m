@@ -4,151 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F1BCA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 15:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62F38CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 15:57:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 954DD8E002F; Tue,  2 Sep 2025 11:50:58 -0400 (EDT)
+	id BAE738E0015; Tue,  2 Sep 2025 11:57:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 905548E0002; Tue,  2 Sep 2025 11:50:58 -0400 (EDT)
+	id B61BE8E0002; Tue,  2 Sep 2025 11:57:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CCDD8E002F; Tue,  2 Sep 2025 11:50:58 -0400 (EDT)
+	id A25D68E0015; Tue,  2 Sep 2025 11:57:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 65ACD8E0002
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:50:58 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 02FFF160256
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:50:57 +0000 (UTC)
-X-FDA: 83844748596.28.C31839F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9500B20008
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:50:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YjxKiCRh;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756828255; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CAD28E0002
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:57:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4134D1A0220
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:57:56 +0000 (UTC)
+X-FDA: 83844766152.04.808C66B
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6B61A40010
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:57:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MvltdwwC;
+	spf=pass (imf17.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756828674; a=rsa-sha256;
 	cv=none;
-	b=oIO2HUkzGtQJxNmJRAwyBenoFzQHJNPr5eN4ndGqOOsy1KCmJOFSpc8ZspaIh1tG6blsfn
-	IDoBUaFS3DRamUpfxCmk/yfIxFQVpgCiv5SRErKWDPeKinW/FPSQyOymkC24ddQTTCjh12
-	apmaGa60rIXMGgSD32XyswL2h/Nv7uo=
+	b=5wNKSeYrSULg88EW2ImlpjF9Xf6k5ZQ5tvpNWpM+Hd5AMHtmo4KxQW7HO2D3xVHDUPKkr6
+	jVMiYzwNykttGVPPgN6RbWYeKNGJvPq/YVCm2o+b+YecJovvk2nXIKPCbljbJ1HoabHxpc
+	dHbtshIHC/B+ryqtUa9CdStIaNW2FLU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YjxKiCRh;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MvltdwwC;
+	spf=pass (imf17.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756828255;
+	s=arc-20220608; t=1756828674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jMZ6mf2tK9fBCnNSLx28XluD73iZYXs57OW1qCMR98w=;
-	b=Qs4ihpRB0OnLb/kUUgR1CjVecf2Xx4mbU3fMW+mNzCiHTobfNbzos44n6rKjJn/SUJaYko
-	YDMLxIkQXJcMMR6MzS3d2/deocMXm751ykJvJLNusFVucLOeNyMgFr6ib+3kNtfRIAjm8V
-	x28Pq5FTVRD0W2xmMmewahOrsKFhXqQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756828255; x=1788364255;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FfmnYnGCJ6/alf7upk5HmPOgxuX1yazLL63I2ZgSwTA=;
-  b=YjxKiCRhjO3TFC8H4hai0HMe/o3bsGdE1lrW2Bfi8nZoSIpq1DwPLYyb
-   5cqm7PXVo8MS7uvfAwvL8AGWR0Q2uu/A4I5nZdAyuxE09/UNTv3ro1oWH
-   Acc1cGIPH4tSlOXjy8vlW3/95br4J/Tn454qV0NQS/Cg2G+ifzYd/H+zf
-   bAGSTD/DaodAGHM6wLprj7a2fPWEd+Q01Qy4foIsYgFE99MKl7cGvFBvv
-   1KGGgOl0nI7Pe2izKH6uz/MYJ7lQN8D4ikQ04wAeiBcYfIBHKejugflPs
-   lHkOifmXMIkEN1EeUL5rGqY97qcgXeZUtP0Wl/8NRr/q9O16JmuFs8B5S
-   A==;
-X-CSE-ConnectionGUID: yj+Emr4mSE2MAYlIk/m3nQ==
-X-CSE-MsgGUID: ktAJO/llTBucSMDbu4IGdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="59177279"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="59177279"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 08:50:43 -0700
-X-CSE-ConnectionGUID: uD1bbWkyTIKsNnH1ivrzQw==
-X-CSE-MsgGUID: YS2ip/PNQlOxZwdxrd3WDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="171208827"
-Received: from tslove-mobl4.amr.corp.intel.com (HELO [10.125.109.202]) ([10.125.109.202])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 08:50:43 -0700
-Message-ID: <913a509d-d985-4520-a879-538a1198b946@intel.com>
-Date: Tue, 2 Sep 2025 08:50:42 -0700
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qpTWgweWXwv5CYoYaJX9o8zOdS7aXfoq/fg/YbFm8l0=;
+	b=c7nTZG2iA/Hl6mua42IkuN3aa6Y1t/uJC+rbYhB5lfJVoJznpejlYsYok2Qdr3T9Lu1BKU
+	mWbaIf2bQxlySyt3sbMOrhXwSdJx6x1lqmg/EvEbXlXRRznNdrdaXyMWyI3JAofMiax4oH
+	TLERF1EyD6U4/Hykvg3Ir46zjFe5szE=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45b88bff3ebso17310855e9.3
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 08:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756828673; x=1757433473; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qpTWgweWXwv5CYoYaJX9o8zOdS7aXfoq/fg/YbFm8l0=;
+        b=MvltdwwCvPWkHSMjdLT34lL4H4Gtb7KZs1b5Ck6I0aaTcBSV9UQiF+y40QpK60Y4Za
+         mFL0an6dkRROVQdtdP81+oQGGG7AX7+cyt75qE9y1Lr1z0hVVbxIb6ykGu3gC3zn4UEg
+         9cyvvDJ3jsioX72Ph7GnmmXSm3Sd0p5AdevUE129Uv6yZr8Y7U6yflHywfNbPCVUjel7
+         LSeKnUZ221IlNc1S6F3JRAMVeVtRWypUFRzdQ9ZPUul4AewoS4qUx+vyUDV/D6xYCyOC
+         Y1ZDDm2n5naN0RUF+RtlnhvVurgnxNT1DfcMe3bK32IVwfTBefOlI71rLcUbJuXWxTFp
+         1bzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756828673; x=1757433473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qpTWgweWXwv5CYoYaJX9o8zOdS7aXfoq/fg/YbFm8l0=;
+        b=jTaEvaPSnfnkiQEBSr1K+LvQfCszVoNCfRNwLg2XrfQc6bbXQBG+LdbEtrVts8qGt+
+         cjh2lCHkxuZEwoTXhP3XSEQQpG5Bpt9l8jPihVrJEnZiRxi3AT3a4UJxcl8Yn54iCz9p
+         eWblIkEj70fTGJzGdDOdVCt/wjXgJFMErYG+tQtp4wCC1ZhjFtZprPVIYKQmDEKg3fRw
+         jN9qxlhFDAXDu5/n0FylxIaR+GNWmw9o15q2WeeQoq8pqYlX9DMMDDPyOId62RVln7fk
+         k4tNYcpp1NoZmVv2KdzcSKwXnr3ssGLxx1c7k4YsqirfCAVp61JOFX/FmDysxQCQRhOD
+         jb7g==
+X-Gm-Message-State: AOJu0YxKZnfzdE9Bae4VE+0lZSsKbsNAWp5ARnxA/swoTOCLtRTYvZ2I
+	dZ/KK/Tw1GWQosANAEASR9YiNsL3aQBiW95LYIsfFEnVRrdYnlsaUjPHCUyveMp9
+X-Gm-Gg: ASbGncvORgFLgfDZ1WZDBJ+xDkNaxJ7RD6KHqAdPMtboNX+zsvQSSI2m6atlT4Vgk/y
+	+c7/opuOP8lWlVTV5ahHxt7H7l8M/G6mW3yw2Sbd0uJc8MCUcoG1vN5dayvGJgbW4xR1pm76+EU
+	YLbQw9+FnnGGYaRD7B7GdpjR+zF3eebmLY1wSBk93scFs3iqm5lYfusCmov8JqorhcvWqSPAT2q
+	5qrSMjQiUM7J6Gx0SFe4QYyuAtOOfhnQE/lrVkdaXKl3QsOdIW4zCSfEnjdkX6Dz9uK8/TdfJXe
+	uRTmuz482iS2O/IKv1Lgbstn87WeUY1kVfm/4+Hve39dEBKA98A86g0X7n2V9ubHS2sugG2xicc
+	1pntA41EEfrXxdQ==
+X-Google-Smtp-Source: AGHT+IEfZqY6+K9hdaYp/KwtiA903hmxnO0Hf1TH8HCjk64cyXTMeAACSnf/1A0NKMe8smJT7hSwSw==
+X-Received: by 2002:a05:600c:4694:b0:453:66f:b96e with SMTP id 5b1f17b1804b1-45c8e6d4cd9mr2987095e9.11.1756828672646;
+        Tue, 02 Sep 2025 08:57:52 -0700 (PDT)
+Received: from localhost ([2a03:2880:31ff:7::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b74950639sm253623785e9.17.2025.09.02.08.57.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 08:57:52 -0700 (PDT)
+From: Yueyang Pan <pyyjason@gmail.com>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Usama Arif <usamaarif642@gmail.com>
+Cc: linux-mm@kvack.org,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] mm/show_mem: Bug fix for print mem alloc info
+Date: Tue,  2 Sep 2025 08:57:49 -0700
+Message-ID: <cover.1756827906.git.pyyjason@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] x86/mm: regression after 4a02ed8e1cc3
-To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Rik van Riel <riel@surriel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, bp@alien8.de,
- peterz@infradead.org, dave.hansen@linux.intel.com,
- zhengqi.arch@bytedance.com, nadav.amit@gmail.com, thomas.lendacky@amd.com,
- kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
- jackmanb@google.com, jannh@google.com, mhklinux@outlook.com,
- andrew.cooper3@citrix.com, Manali.Shukla@amd.com, mingo@kernel.org,
- baolu.lu@intel.com, david.guckian@intel.com, damian.muszynski@intel.com
-References: <20250226030129.530345-1-riel@surriel.com>
- <20250226030129.530345-2-riel@surriel.com>
- <aLcQ3UCXXNcByW1O@gcabiddu-mobl.ger.corp.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aLcQ3UCXXNcByW1O@gcabiddu-mobl.ger.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6B61A40010
+X-Stat-Signature: nputcym9oap6as8p4xdqdswyabyx9bfo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9500B20008
-X-Stat-Signature: 8x1mygzeqsud4ehrioe6xtodj6k4bbmg
-X-HE-Tag: 1756828255-531685
-X-HE-Meta: U2FsdGVkX18hBBap++09oG3Sad9X4DfOaZjo4wrYgMyOOQIqACWnQONyOHDaHs2wdUD/Al/qrf0e33LKpI2IUmrkI6VVNI7Rm8PCKpVNcYUDV4B7QAGY7RiFVVPNKQuezcmYwxBzYVonktLV67RTorAyEX7cCubP/v9veJKsPBjvudCXHOqgPnKhcQYpp75dqPS9Xl/Qruz5M3heXGw5PTBZz6NXZhds1eXP6/3Jv2sD9NBBN5L+BI3jfhxfb2V+vpaOPGOh6Mz4WPLuGThHdZDUbQoNFSFbXrYRYjq1hfbtRu7ILxKqJt6AwOy9cOFW6hQ7dJ5XpG4X4c7lHXrerXmXS40nQalcqeQNJzQ+lQfCPkxFRzLeCW8boix67oiVJD2x1f0kbyYT9nmJzD2Lu13oFOCuy71qhXMXhICyMo64oTFjtXYsvzfOv6/PNpdXtF6l2p3/evOei4LB2Dtu7VO0E6UlGKtjNuH4czaEWJzbRNCTtjfiAjtm7/BP54D2E9sccJBu7r28hTwEiVwQmBUqlw80T2dDeHLN90LFoPV0rLaJxy8hdsw29ByhQCTmP5lc3D4jkbjk/dQippGgNPjGZ50M7V9EgHAtMX/hFGb+TiF4xvdv6EX5N6dMP8HeLLPSNKe6fjtB8jNkYfEKbYHYwEMtsvDWj7cbbJNzlwEmvqwUb0Ksa0TcSuZ+zZJtOdBp4wh+gVxlFVYc7/m2jfm2N8fTNfBo5twvS0e37PBRD42mylawD+Me8WkWHwqrLKw7Pfa6pHZAP3Dk4YPTS7KCbRUYThm7NOYjbCAXgQ7aWSamlXuq/6jElWLl+deQ06Cv685EAjNGwW1ooa+LL4OieInyeATOSO3tVRflheNz1TT0QjXSt5bDLOo9cTPagwMrotiaFCJRtwSSbUFVv5xEC6UyOcncWQbV1iKq+CIaJEXxm4PQBSVszC/l08f+GiSa5O/zUxL+77EDx8v
- 28NxnzyO
- VnB99RxLPZV07r/E3mA+9BjglRIZir4il8U3GfJhr5ieEJgj4a54u4VqyHtoxcTKZnicLjBJAxrbdPjbXKXjKgQbeWnUBlvfj9j/w9KrF/IP8tjL8VZ9++FfbbU2b1D6n5hT1OkR9kNTWFyT8mjRwF37wisjfpBZyBvjNGkYpz/FNZrydZ4YPZxMrup8qr2KhTjjjwnPU0oObK2ZXLNaMim8t1hU1bIBGbSe6f3OVuF25/Wi1LNcGbE2u6NmoDTch7qv1ZGP0ZuYMS2rTu3QM0lvyzg==
+X-HE-Tag: 1756828674-800280
+X-HE-Meta: U2FsdGVkX1+h3+DAydfa5IYCgZASH/gEX2Yxnwvt7IzRhnShFbM+3CkzVqYko8S+0J05uEqUDDcrYLQpR6dm5bKFTFLG054qHzcVjTt1aggVmU7r7/cN1XVcnWz88ZGjidRieC20cjCRNQZm4xWFqlpsHIHYB4zEuCB7TyErQ8r157mI+ekClePzW+0O/J0OBk+Ljr8VBiVdRc2WiskyI79MaFJ0jAyBIcLqZsPgtI67OgZ+qMUzCam5hqBaP3fPa2GkJEI1bq5gFxj7WdvvGmUJ55i9U9WFqRlcJflks6KEHdjI0mtLwLhqes6cK2AVl5uzi3Flre0le/GIAkH2KGacFiaC2YUIiP7Qj7ngSJQEdQhA/neNvyLO0EZOBCH4qYWb8VXrClsrjYJRUyShQkTc6t9dKsB2kAbNXTMilWlZPYM+z5qO38X3EzQvJxwIMZaXkLnlg9BVJcz5UTwt71qQC9c+qx2NcYIhfSxN/ff7Bbbbi8bUfkIT434z7eCV3cEs1SxMhYJFKOdEE4z5KwXnAhdAfUa3k8M5wLQCJghq+5fuSdGSN++NpYAZoaVfbh5hgFGmcDxHhmJ70eylBTIlOm6Z8QZCvHK4ae7YrhJ8TVvhXR6NEAxU4M2PAf3evh0RRrNWuW20sVh+iyX46O8nai96PHkfUZWmoUU/ZQxqd8ZbOZEKgTJZzqwkJcuBK383UCk/XfTz7PAfLOt8Yik4SyGZw+6nSASiJVOrpwBWl1MO5GW1eJ5Fo1m8clpg83LODBZbElrTxOk9WOTjBs4sDVKchKX53e1NCvQH+hfvYGDEJ4f7Wdar/b5OjW1HxLlc9uOwaq7RAEwV7q6FJgoSfFC2Zn0rBRXmAddTufOOuDC+4PRpB3fat/IV7lrMJ4cIFifrnNjn1/MAvESpnPAymin/yUvFtQJooiftm40OLD468qx9JwEEXMuwOyL1x5eMQEhw7D+G4tmd/ap
+ MXnugVm0
+ vZMjYtyRDjYqL+h3gWdQmrwlnELhsJXyhiptsr/Av1F0J4Aj/1nAjJ5UF1KW60NlZjBnEE4t/CGazMO15Bl6dx4SiAYWrGEGWmxgqNLnawEamf+hRs+gBdC2I0UxrI2q0ff6xc3UQPc9hFSMiEtIhO0zaOhLJz2FHPNKtQO7VYZ2+rCfGIlhZSOYdtc21gARtd5q7LdS/LftJghWMfmTnjOvrGYbJmE5fFNEqOdAu+oGi53oYYrnpDVt5UxAGRJvF6/s2FP2WcPQYa8i2xQcHaMQbYlNH8fb6UAMLCeNcY1mXcDdYBNt8XlfCTrM7LO8LvIrBcsHzzQshibi0uRKuj//HW944mphpehuY/9/xFfeo5ZxtumXwGCaC+V6YDJ+OfxDmPSI8omG5qA0aChpIHstA7F0BcAzYb2wqeSV56WiNpYk8XGVRiBLNUdaBjkAe/2diffycGK1ef3BOAKsJQMOjxAAUfIvp0EiyaRpsmPZBiJvCG7NBUFRb881TrWn/sSZ2g5ht8ncn3wW2dwsbBOIHcYHAMNhlps/IZdY8/T3mi/xkQD1IEmgmoNUrYYf0d9u275hAJdbKOZGsXq+137OH/sG5eW/iSqg/Vl0ShZxMRPYBd715YLgjDYFrDhcUE0vDfRDMEoZBWJ8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,27 +124,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/25 08:44, Giovanni Cabiddu wrote:
-> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> index 39f80111e6f1..e66c7662c254 100644
-> --- a/arch/x86/mm/tlb.c
-> +++ b/arch/x86/mm/tlb.c
-> @@ -1459,7 +1459,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
->  
->  	put_flush_tlb_info();
->  	put_cpu();
-> -	mmu_notifier_arch_invalidate_secondary_tlbs(mm, start, end);
-> +	mmu_notifier_arch_invalidate_secondary_tlbs(mm, info->start, info->end);
->  }
+This patch set fixes two issues we saw in production rollout. 
 
-That does look like the right solution.
+The first issue is that we saw all zero output of memory allocation 
+profiling information from show_mem() if CONFIG_MEM_ALLOC_PROFILING 
+is set and sysctl.vm.mem_profiling=0. This cause ambiguity as we 
+don't know what 0B actually means in the output. It can mean either 
+memory allocation profiling is temporary disabled or the allocation 
+at that position is actually 0. Such ambiguity will make further 
+parsing harder as we cannot differentiate between two case.
 
-This is the downside of wrapping everything up in that 'info' struct;
-it's not obvious that the canonical source of the start/end information
-moved from those variables into the structure.
+The second issue is that multiple entities can call show_mem() 
+which messed up the allocation info in dmesg. We saw outputs like this:  
+```
+    327 MiB    83635 mm/compaction.c:1880 func:compaction_alloc
+   48.4 GiB 12684937 mm/memory.c:1061 func:folio_prealloc
+   7.48 GiB    10899 mm/huge_memory.c:1159 func:vma_alloc_anon_folio_pmd
+    298 MiB    95216 kernel/fork.c:318 func:alloc_thread_stack_node
+    250 MiB    63901 mm/zsmalloc.c:987 func:alloc_zspage
+    1.42 GiB   372527 mm/memory.c:1063 func:folio_prealloc
+    1.17 GiB    95693 mm/slub.c:2424 func:alloc_slab_page
+     651 MiB   166732 mm/readahead.c:270 func:page_cache_ra_unbounded
+     419 MiB   107261 net/core/page_pool.c:572 func:__page_pool_alloc_pages_slow
+     404 MiB   103425 arch/x86/mm/pgtable.c:25 func:pte_alloc_one
+```
+The above example is because one kthread invokes show_mem() 
+from __alloc_pages_slowpath while kernel itself calls 
+oom_kill_process()
 
-Rik, is that your read on it too?
+Revision History
+=================
+Changes from v1 [1]
+- Dump status of memory allocation profiling instead of disabling 
+the output following Vishal's advise.
+- Move lock from file scope to within __show_mem() and replace mutex 
+with spinlock following Andrew, Vlastimil and Shakeel's advice.
 
-In any case, Giovanni, do you want to send that as a "real" patch that
-we can apply (changelog, SoB, Fixes, Cc:stable@, etc...)?
+[1] https://lore.kernel.org/linux-mm/cover.1756318426.git.pyyjason@gmail.com/
+
+Yueyang Pan (2):
+  mm/show_mem: Dump the status of the mem alloc profiling  before
+    printing
+  mm/show_mem: Add trylock while printing alloc info
+
+ mm/show_mem.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+-- 
+2.47.3
+
 
