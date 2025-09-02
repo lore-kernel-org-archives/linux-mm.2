@@ -4,244 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BA1DCA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 06:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6DA3CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 06:47:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E37A08E000B; Tue,  2 Sep 2025 02:20:42 -0400 (EDT)
+	id 014236B000E; Tue,  2 Sep 2025 02:47:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE18D8E0001; Tue,  2 Sep 2025 02:20:42 -0400 (EDT)
+	id F07776B0010; Tue,  2 Sep 2025 02:47:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA92F8E000B; Tue,  2 Sep 2025 02:20:42 -0400 (EDT)
+	id E1D4A6B0011; Tue,  2 Sep 2025 02:47:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B45F08E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 02:20:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5CCC2140B03
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 06:20:42 +0000 (UTC)
-X-FDA: 83843311524.26.A98976E
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 11D5318000C
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 06:20:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hDmAkNEH;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="T/xKAXsU";
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756794039;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CDA0B6B000E
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 02:47:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 54D29140B02
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 06:47:10 +0000 (UTC)
+X-FDA: 83843378220.24.73A570F
+Received: from smtp153-141.sina.com.cn (smtp153-141.sina.com.cn [61.135.153.141])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 560BF18000F
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 06:47:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=xj5c9eG3;
+	spf=pass (imf24.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.141 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756795628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VcmTPfbBh25aWGd8r5qS+r+uNAffq0URSjDSUJRGm4s=;
-	b=NriMMpJAlTCztvPblRWvBaSA878nI9oyVvKFSDcnaHXT0kLpg8so+Ji0ou164dHxP5HUoC
-	pR2v+jXMIQjVqFfnIZ9brjVCu9G3l7cTPkgnF1RpgLn9aHyEAHy1SaufmjnMhTHNxbRoW6
-	Q2aGUc3T9jjMINQHPo6xXoUCeLb5Ty8=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=hDmAkNEH;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="T/xKAXsU";
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756794039; a=rsa-sha256;
-	cv=pass;
-	b=NKjX1mM04h+dtpOcmGsBs4u3FokBU1/RHLbB5JBPBxeUaBEG76ODsI19SZQLoYDLUv5JlF
-	M4Ejk7MO83rURd6EsZHISNWxOZft+h/QFcdOGWisBveAaWQ1gS2YTRM/OTJE2tYXQ/VHNF
-	f3+6zBneYoM1VUL/bps6BW6F2XZYCNI=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5824g0Gm024792;
-	Tue, 2 Sep 2025 06:20:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=VcmTPfbBh25aWGd8r5
-	qS+r+uNAffq0URSjDSUJRGm4s=; b=hDmAkNEHWgCBsGzVYJtAAKbX9CRZCHiSFs
-	+sKBhmscyWgLMAOmLCIiKakAYfxvG4W3jS/+SF+vZbW+BNom9MWMoLgPxJVSpE2C
-	jiKZ/hofGtqtfdZQICXV1w3f9bEhLHmP/wgyP4r9AQBGQ5/yhWS+/ufKhMVq01b4
-	uBgRVnubtiOPwLlCiH6EYGYi9sGZgGk1jkUw1gjD3549z6h4KHjUmvn1ZLde+LP7
-	vwme5egBeGl5En8sw/b1t1MItA2qoDx49Vb6pFNT7RfR/GSyPTJP+jNv5z+mE2dy
-	PEv/ZYKrPr+sa+H53KM7gaDyeCWuKudIiyXHbWTbE7PibzMCKGAw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48usm9kc0n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 02 Sep 2025 06:20:07 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5824XZaS026755;
-	Tue, 2 Sep 2025 06:20:06 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10on2083.outbound.protection.outlook.com [40.107.92.83])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48v01mygr2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 02 Sep 2025 06:20:06 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gikb3rP1qol96jVs9Z/weDkAIXjzso28mWfhvOSDWY5tpEKyTPR+yf15+KuEtq+QXeyfeSJyIes7qTSVgisWVS1DAI/rgBKAK0xprBOicQ3Via1lrcCNvpvRIXs6SfDnqsETwjJQ8owAben0m5w3qpOqPBcExEEy27K9T9/cXV7QTH0/dOnYZJiEhAFHfE8jyrOQWxkWtxBNDXkoTJs97gC7ZHCa35tnClNTZeOOFhGidEkyVw85GjE7Vh057RllNO0TYJow9h+RsidW/4sxiOV6J1Vk8MIL5j+Yw++N5nuAoKMpD+oTXQgEdJMqFiaN4jbhQjOL5SLb5weWL1pD8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VcmTPfbBh25aWGd8r5qS+r+uNAffq0URSjDSUJRGm4s=;
- b=mY86PlOqPT0d4Tew6nPgp9DimUV9kjTEmMCJ7tVs05SFzmt960bAMaGKwS9/Slhou2ZmvPF3mNZ7FGLIsfqoQEB2Op4dLtYomipB6sFdb9ED4ZnejpdCYK3IdkhHVr037njTUPWWDLUIF4s8RzB7W8FuWt/ulVxV+e6aFnRxzc2oPof4xlfbFKmfcFwoviTVs3EVs+JlHiyxkG4EAc7Q400JW87qlxa+kpkmTo53SpCJ6kLgf71lmwFlzKFyMbUmjS65aKsMjnlI2WoUGDu8MhlBhcNhNFhA6K2BQqnJl9iNWzSKUZErjLpgAEbftcxMeRrornEhf5jKTyFpwewWpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VcmTPfbBh25aWGd8r5qS+r+uNAffq0URSjDSUJRGm4s=;
- b=T/xKAXsUkUcFbkPUVC1BS06fP3Ty+iYsrzgAsbiCK4d3uQrCYfYvF2andRELwQgpuzmArCoMaI9P2t9hf8ugjmMibLl62PCNKz1ugS3rj83XnKeoqC+xZ5MQPB5CpBzeHAaHnGRby4pLa7Txzsbm9x+SvrIqFP7qO84PSwwcRWY=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS7PR10MB5928.namprd10.prod.outlook.com (2603:10b6:8:84::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Tue, 2 Sep
- 2025 06:20:01 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
- 06:20:01 +0000
-Date: Tue, 2 Sep 2025 07:19:58 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, axelrasmussen@google.com,
-        yuanchu@google.com, willy@infradead.org, hughd@google.com,
-        mhocko@suse.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-        surenb@google.com, vishal.moola@gmail.com, linux@armlinux.org.uk,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, davem@davemloft.net, andreas@gaisler.com,
-        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-        weixugc@google.com, baolin.wang@linux.alibaba.com, rientjes@google.com,
-        shakeel.butt@linux.dev, thuth@redhat.com, broonie@kernel.org,
-        osalvador@suse.de, jfalempe@redhat.com, mpe@ellerman.id.au,
-        nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v6 00/12] mm: establish const-correctness for pointer
- parameters
-Message-ID: <76ec40af-d234-400a-af0f-faeb001c9182@lucifer.local>
-References: <20250901205021.3573313-1-max.kellermann@ionos.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250901205021.3573313-1-max.kellermann@ionos.com>
-X-ClientProxiedBy: LO4P265CA0098.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2bc::15) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=cfWmZjgZ7JzZ8t9RCs6Yo4Kc385FM8hAFRrU9s2mWyA=;
+	b=QCICGG52mlD+kdDkI9stD3k3KsWzE2Bl6M61z3tG4QFtmfGc6aiX3fqwuuXU//IySMv3Yp
+	e+JWmpki+7E98VtouHYq/MCLIoTmqrZt0P/e9gmP1ZQ93slGO7Tij0oMSocuKS5zoBQa7g
+	U9YVQZx5mxIp1SY09YW8VRkrqqmzc9w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756795628; a=rsa-sha256;
+	cv=none;
+	b=Kz3SOAabaWHS7uxXICBcT55Hmhas73nb+u1n36MjRLUPtPm3qDkpnoBIv2VH4gI2uad6Va
+	qe24kUS2Gtlb19lhRU/7kSLyoDS91oKZpEORNqWUjMKcVPEnzXl4QxT1alEgxxM9hZCbRl
+	i7jvAe/vcHQdbYGJBM6c/GrhbbPhDAs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=xj5c9eG3;
+	spf=pass (imf24.hostedemail.com: domain of hdanton@sina.com designates 61.135.153.141 as permitted sender) smtp.mailfrom=hdanton@sina.com;
+	dmarc=pass (policy=none) header.from=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1756795627;
+	bh=cfWmZjgZ7JzZ8t9RCs6Yo4Kc385FM8hAFRrU9s2mWyA=;
+	h=From:Subject:Date:Message-ID;
+	b=xj5c9eG3Zc0LRPSpHOTe4WAR6bD4C+Dhrux0Yf5BrSajqeGNi0cjre/dnXtisIOnO
+	 /NztpKIyHWMKp9F1n4zmC+yGaMRFKVHGIk8t4ZEd0/DIoJlENC/3FATnnzVih0kZTp
+	 NUO7ZjL9Xsz0kjVvkRS2xM9LchHHnBk0PwoodaBc=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
+	by sina.com (10.54.253.31) with ESMTP
+	id 68B692E50000044B; Tue, 2 Sep 2025 14:47:03 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 2208976816260
+X-SMAIL-UIID: 34D3DA63F4544A8DAFA9566402950A72-20250902-144703-1
+From: Hillf Danton <hdanton@sina.com>
+To: syzbot <syzbot+4032319a6a907f69e985@syzkaller.appspotmail.com>
+Cc: axboe@kernel.dk,
+	edumazet@google.com,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] BUG: soft lockup in sys_sendmsg (2)
+Date: Tue,  2 Sep 2025 14:46:50 +0800
+Message-ID: <20250902064651.6359-1-hdanton@sina.com>
+In-Reply-To: <68b6726d.a70a0220.1c57d1.0594.GAE@google.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS7PR10MB5928:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55b659b6-27da-488d-732d-08dde9e8bfb9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UlMLdaRALYxuF49fM+PxJvwsdR9QEgH2PLjm0Yy2XMVnliBTkqEibfdsDhMc?=
- =?us-ascii?Q?rUSTVT+SFGr0dIA4K0vzyPPvKcwOp2bgezreXIMKjsLnp54av36UwZkELpLa?=
- =?us-ascii?Q?+NXqW2rlTuOpBTO/P/mxpbxNIE4O2AANL07Aak1nMGN9pDjmA1XSXq+p33OB?=
- =?us-ascii?Q?CflhavIJk1gtSWNgiZu7ZA3Hg6J6rbcXVCbQkJWupw08outbfJdBb/pQKaOl?=
- =?us-ascii?Q?UgXt/XLDB3hV4RLehQ0nkZv0TSnQU0tlkRM89sfyWuRyPkk2x/px2aMHPUDI?=
- =?us-ascii?Q?l+1dki9VwnDQseJIt7wFGf8nkCiQ/QVSH2NQgCQi9RCwr8mlQ/b+QdK6SKJy?=
- =?us-ascii?Q?cuP1S8WyE7Up0l1U62OR3mt15OYc3MTOtB/hEKx1laFwokIN+qAmpoRGIPOA?=
- =?us-ascii?Q?gdls1jLW1tAcxsCn4SmMcDZNJCp8UBrrIpkRFoVk9yqscctxyJ/pQgv7IS6f?=
- =?us-ascii?Q?enH3i9Vwbmf7h0un9JZCPceYunobwJRL1HGmNT2k3DVTAb8ah1HC9lO8Wp5X?=
- =?us-ascii?Q?KxnihON9uC80KVkZtNXi1rQCsRRKRbxSCoa3V+hpdt2G2Kh1T2r5CDUzxrho?=
- =?us-ascii?Q?OTB0eGqat5zZwJl4TQN6EdJJqvXd9aaaz3RmZPWih9Wui3RCqGEU3/rJvyUR?=
- =?us-ascii?Q?y1J6I5GS5BITnrtgMj0G9Aar7Lvvr7dkO4I1/45CjNwJWieNKlBanZSQd/bT?=
- =?us-ascii?Q?em2PmG+sHNTG0t8AdoNBd9uN+EZpb4VDdqTck+Iqc7i2Dsbf6ZZAkRnhzqb0?=
- =?us-ascii?Q?UbV2xK4zGJrZnJAxJ0ISh6TH9Og+cwLLoerEu8DqAknVr+FjGjE4ckpfXDgY?=
- =?us-ascii?Q?SE45Ze87mZG3vXrVLtT3NZfDqp6UrU2/L7gJCd7g4deKFmUNI7/XBbLoY1o6?=
- =?us-ascii?Q?8BNkCFoKA6Ts1HkMRsBTXlZFBf8GCOh9eBa8UKjTaL/W425jFF5RuErgyPh/?=
- =?us-ascii?Q?gHny7/IjAykeSVsn3ldzvfEzPhpVGcRXvzL0V74ONd4Tx7rczn93ikxDqxp2?=
- =?us-ascii?Q?at9wPdxzle7891LFGgVvhUgzwvFqQ/3gcJ0gglZ2BaI9x5ZLTupMuLB0B3nL?=
- =?us-ascii?Q?ux1driWfn/3FvCrqLsGtfcENv3iINTFI2LD2NFICxLcj6xMy2zI9lPWl4gvz?=
- =?us-ascii?Q?cVM5Lbh85MHw8RkFEHo2V/UlgxdvNns9KxOBsSxJHh9gX/vpSzPyz2yvqSZ2?=
- =?us-ascii?Q?CCRxHE+H8coE6WqlbXlPXjh1puD7Q6dRbMqifsAylSDd/dexL2TcAC+pFUqz?=
- =?us-ascii?Q?ewnij5mLh8K1Q50HKw6KA4MDxPnMsdKY1l+pHkEeBauqbirmz/nTrnIzf+8t?=
- =?us-ascii?Q?dkm1GeCLFO7N6eCqYEAvfMcLqFHWrj3ouhX3fCh99ZLN7D/T5VPuTTVs9GEK?=
- =?us-ascii?Q?Er5jYA8ajbsYLrAm0evJuOdaclMoS7oB4p3Cw+yEICFFanakyfnWDGhY4jW4?=
- =?us-ascii?Q?YFil93G7C+Y=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ABLb45KiOxrrQQdWsHeXHXuTbUdQ7iqttV1vlHLdhvfS8YSxRgSKG7ehlPTg?=
- =?us-ascii?Q?13HOQ1qPELCw934tA38heKsjV7hUjnAJbsykQtLy59TzJxAhTVuIPkv0tvQX?=
- =?us-ascii?Q?kWjcWw2xaBgvumdcKXhhpifL4flKPiL5b9UvCj5gNLOnXvEV6o0oHqsuHXZZ?=
- =?us-ascii?Q?Z4ha9KeiZRVo49eUQvpzIIUHzjn80ao3mG+6SMpYZirQ9/zYW0IwMmIB2zk2?=
- =?us-ascii?Q?rpOlVuZapb93ztRBC6fjHbJGXm3H7hteGQs23poxAlZiVCzXsiDuatUA/P19?=
- =?us-ascii?Q?5X5UOM3ygAz8gl1SXuOWmjH8jQjet4BkuUpuv3UaM/Nq4fqu193lCZbFk/A1?=
- =?us-ascii?Q?cMgFVyLmJ5ESn24H2Z/Ew+R4hF0PftBlVoEAsq3lwjDHhMNHveAi2aelEmjc?=
- =?us-ascii?Q?odqIndSglNB9cY+DluiezfFY2I6tEoI64d0QMp/YcMvg/T72qEfK24bhpF67?=
- =?us-ascii?Q?Rq8OBNJYoihK1wSpVnzQ+AaQ088hQHIWvV8hccan/wKNbeHdmECjeG7f0blc?=
- =?us-ascii?Q?Wsa8zHMglBL8565rJky2SBeu1u3uueEkko/KxjDBRRYboB23Tb3OMXn8Q0qe?=
- =?us-ascii?Q?xIeRbHmeIv5h6Fgzg+kYz7QbrbLL6J6CMk17vFLIH2WqmcQwD0Q8erW5TsJT?=
- =?us-ascii?Q?OJcqNl27vQg0IBRkDYjFZd9VimYBzbbYeRXr1dTVLm27OSneOXcPPDk9RvrH?=
- =?us-ascii?Q?kBvh6p2jLS9KAKrmsGwlsiRJmfqqpK+RX4wXFKOICV2U4mHIf60Gaslcvn8y?=
- =?us-ascii?Q?x5FWksdBtyjRhT/VEeXUHVVDXjb1kpk28EjFWpIPoHJBTa9QlWiVKjkzx1M+?=
- =?us-ascii?Q?LQjhPlD77nknkrTb/4lRxcyRVYCemckZQ0TIy/x63RWdlS1C89Lz0pN4otJi?=
- =?us-ascii?Q?qsbIDYUpsvAGmW69OvtQDZxOaYC2MfJ5BS6bZF6vnErE6PTrdQto1Bs8s9eU?=
- =?us-ascii?Q?R8yGp1XP18dbj1VXUzoCeGRIlt7g3LycG3dV6slidFS76dk6n48e5sFX2MTe?=
- =?us-ascii?Q?QiBrg1b6kuPj1CoMHs5XqNQ4MUvmm2xU1RvlthMmtGWusB8QIVvG/JIMfmLu?=
- =?us-ascii?Q?Ch8rB4+tR8mz2+N/v1xZb2IMnICJgH6jm0hVkNyxDb2flgAvjatB0nU4YlVv?=
- =?us-ascii?Q?CkGRYJBSEPq8UAOHolINR95yFOjkZtKhQkQalufhEUfJCcLvqBoclVy73Qve?=
- =?us-ascii?Q?g+3wfpvlwiSfJe/2ZxhoJ3DgBy11pfqH1qANHF+aduaoZbvk9ibbYlF5PbOl?=
- =?us-ascii?Q?Rp3Si79OOLpW+VqnZvBbeMFy8b8x5stdsL1wrBaMdhLAA925aQujog89qKmm?=
- =?us-ascii?Q?pDEupr7cnvjKlQ3n6qBvVHwrQpseeEug8YTnHwUoNyPL2LrCJgogwQE8OoID?=
- =?us-ascii?Q?Z8aLF6B8TsAfjEd8rcOqeslNwVTLZbqTmvhrW3nP9fSzGbBf1BAwLGd5QZ8d?=
- =?us-ascii?Q?6EnkrVGR9NmTNm0k45J/ugGakMjAK7Dh12eQ5JOB95VWljxe73pX/5HobJe3?=
- =?us-ascii?Q?HrzR4ILetXIa7EF6GPZGQZaSJhKB2At8F0NdGD0dBbMUjTScm5rOusmz9Jqh?=
- =?us-ascii?Q?rzKGZXrOCBojeHVyVm5ujYAsKLH291NOuMq5joSXSkCjzAKlYj9yKGfOBy69?=
- =?us-ascii?Q?Ig=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	tKqloIeJ+3JTUEUBHwC7cL0jDGndcZ2zMh8s9ogacvnPn1A3mzTXHlnDGcQENccrDciDHrLyvV/6xGQmkiu3nN/5QIDKhAPlYoPi3CYAEPzqwU83QXwlNLWnEr7awRUBgv2iBt14PMrS0wA7zBKy+hX0yrXCyzG9c1noYLxWKh8Rg0G1oFVXmDuUwSbp87p0fVgGUtOEokKKtjzu/v0Q2YTbfhE+wX8aDDs9RWg3G6VLexpAV4JZIKZ69125ZcDTFFvs9PUK1DdK81ozdenoJlX+alzK9wHKXSiTWgthVlKt/EU9q5H2CvcmI5p4RgV5ADzk7q1PEE/STSuD4X6fY7Ofg/aP/1g2XKXFzywTw2ZDQ+0CM19C1mc0qUAjIWt5xZIIbGmDWz9QvZ5E9Z0j5za9KX8dB2bX23O3vJERwFo+BPiVC5hYlZ0x4zk27FQSWKjAIGT2HA1CZy58OZc7M6EY5bGF3Qb9S7rggm46KD6Q+UTtLY9NATkNn2h0+2h2pXCMx5uGOPUDfzbEAjgulIY2UnvyfbAVn2NSS/gIcMs8YVUadhqMeSMeNr+5SNVRmzfr7bE3FJlMDvISt/0kc3Sj+2kz6f3mXjYU9ebG38Y=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55b659b6-27da-488d-732d-08dde9e8bfb9
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 06:20:01.5505
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CIMBfVWxTiIdSL019bIs7WB7NczJy7Y5gwx9+nxBpkGpjDzVDDnwU7fNldFUfJdqtykOYJalEHaEIDOOlBqM6XkhsmBeknsIN6t/6JTjtuA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB5928
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-02_01,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509020061
-X-Proofpoint-GUID: QPSwk3BsPzbjMy2l_8gNS9i5P-KprX7g
-X-Authority-Analysis: v=2.4 cv=I7xlRMgg c=1 sm=1 tr=0 ts=68b68c97 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=UgJECxHJAAAA:8
- a=lHmRfTpA4gC-4aNflXMA:9 a=CjuIK1q_8ugA:10 a=-El7cUbtino8hM1DCn8D:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMSBTYWx0ZWRfX0fF6XsViOtuM
- vZFTTirD1yNvPru6uw+9OFnjUm6QyPq1yYLXGjk6QSdYRgXD5FKf8KlsU3hNJRzcDuif9/xdAX4
- Btcn7/7wXC+lzptCDNUPJ0/7BCfwgXHLMxYLtbHqF3D0E10HsGxtiEb/aC81iqHkMiEBZd6L0xm
- QOcIfgTQx1Il85DsnrH7yZRPGetUBcHeKXY4H1QOrYvAvjxDOvvpq8gIBa1nAkweea2mbW4NDjU
- sTuGtJ4Ek71wqKEqbdB6gavQJqR+lFW20AEbEFND+zOG48MKeuvs9CWkNVVKLB32C4yij6IwRVO
- KmNmw/vSkURSUC4eNLTtj/uZuQ0y3UznuEv62Nlk4Q5+UmLuJLTDrt1GMhSnuVlmMWEgQTGR+pz
- fgFJvRV6
-X-Proofpoint-ORIG-GUID: QPSwk3BsPzbjMy2l_8gNS9i5P-KprX7g
-X-Rspamd-Queue-Id: 11D5318000C
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 560BF18000F
+X-Stat-Signature: y49ztpbbdywjc5bgtxphtqre71kj9foa
 X-Rspam-User: 
-X-Stat-Signature: 8ushb93bz3z1x9ymxfz5398x8tucsw8o
-X-HE-Tag: 1756794038-183268
-X-HE-Meta: U2FsdGVkX19a8kA/h4fpCXTFXgU508Dr45RwChOFlOHMAw0OWCKFrtVzTAzlTFciD+JUI32FPiBSUUGqzP/MhxUtBwScmVEDKGRuUfnwzpjCy43GMZT3UPPckk2LtcSTENOTgIeRDTPv6r6/S/W0toQewD2/njzM/iAGHPinaIFFh7D4H6Z4TNy2WLIw7O2tDRi2fgXL0tfx/t9LaP6grf7mPIfftM28GkUYwkM+Hybq1okyHX6qsj9v5R3G/HIYNGgz0p15pL4rsra/3K5oRVwoV3rhgM+BBZU/KKHoL82eBCHokjItoMdExb/SEJx5o6znKFObQwEGlTI5K3YAIgN6GejtHR9tYoBk/hplGA6TyIFKV6vhCV1Cowj2fcZEiYlCB0xF5Bg27leybhiDFNEteCcSvj+n4Sbmr50WtDM8oegnFhIU1z/dnr9KYQtb7u+JH5NSCf0mMEWpwPUeXfKGK3lz9SYk9AFo72yJEmzCogRcE5qX96dKFl+i1/OhJNPqMcU7Bk/uhvDUz2Neg7glI1TfQHx8kw+A/TeoV6iJ6wEp41rWRSvHmT76xxal62qqSs2mgqBzdPM1W3tyOrIy9mmJHfyCG5PpJQyYamFislohQtOLJZAhOsl4xqLJ9rBjsHmA2HRWImt/vvsOvZDqSI10axHeEQjMoBZUiHqChr0qlzrzo1e2GUk/QYE3LPFy6YAgV0W70zawyWCMcE/PoaXCUNo7Eyldgz/8zYF01C4+W+dGpjdvG8wk7nxqOFzLuO581QylioAUmvpUJ7Ufv6Tr8Jo0Iw+drqoYEyh3gyXkR97kxBwqruJoBj928uT6XKnTVKjgb1X09+wJgz+dAACkMqHc6SAL5Wii8VsBkQcxPF4aMqBmLx/8mh6J+hLoijiaowUvC7GQmaRLmUtPbkQXH+V5b5WDj3ypLACC3iawB58jtAwTcA7tQuQ/Urqt99GN0hI5SLUVmNV
- U63Ub0OG
- LRT0dQB3UrP1xyUkay73s6J7eYd5oM04WTzwX3quhPmc6GfiflIDBqc36fTZhdeFZ7fxldKA0+mOgQn/lEuClyodyBzZkWzcksE1pkpYj5ezAlJvA2nOVgYQhxOaA8xF3Mheoy94n2vVSXHZaPrBNAjSBmoNOV7gX26SAq94uz9eaJeE0c7odiIfzvItV10i1KAVNyaXeDwOhas8JjJm5Dmijs+kvAGfs9miWQjoklo6TnWgFsyPOSBLPvSE3Yf6pUqqDiaRknp7Jrj7yX1Lvo9HkhdWWRi2NKXSnQlWgEieTYpWvIi3F5BvEDJXQSWh1aldVb4vU10FTMVfSm6o1cG+xF1ltYOHUfZY8lM1lDfPpoLDhSUaqY+MWpCOl0hE8bgs4MNyVLJqU5lP/n520hhIBXWQRRpJ1t2XLpt/7I/wSwNmwkumOuPLqBu/5cCnfDHEvgoy8+yHqQ66iOyMAGUne4KVyJ5V/c/KuapBlIAPoZvIncHj5bJaiQHvftydy6uk9vn+ZccAGulgjgDa84bcfJo3WrhySNycfTH4lkhoyzAYwSOocDyWzttLYzb5kCOO2OtZ6Dq8ziacqHKWXFasaZIhuMyzopkN15MXq+mLrcfOoxmhGP6gDOIf8cAuXdHySANKoTYKbTXGFBnw7RLgHgSsTmIEZzWZ7Z3LzY56Up0o1C3Q2Tc87jiurQu4zWfAXiHQFRYhdHm/tuJBlt83gRPDp1D7xRclV1m6jogf06pfErWOrUJZGTrFSmcU+dmCFOWlqW0WpjkOq26Xy3iXKArdF5FKjJTk2TR69eqe3+Cw1dAMrrbzFCBlIahrMHkVW1VIEmbXJbic=
+X-HE-Tag: 1756795626-687820
+X-HE-Meta: U2FsdGVkX19OTn/fJW2Kmdd9ruN0szwc2zuDL/ujYqYncmy0uc8nnq/Yjwc6WfAQoaKQ35aQwSx9oudYb14byO0VznfI6uyMR75zDe03ITs4DRy0UBYC7oxJT/TuMrf1C2GdXF8EbcK15OLoUrLha1XuUlPCELjlwBBqsvAQ3zC8vCWMaFKfjz4PUVLcCPlufqd2XqFP8TIYA8oy2N92clV/00vp+2e9H1EGujWqdg/MLt99u2xrvyKrXzAf7+ww6BQWtUS3aDPWtRsugkJ6pL9aF95QBtLu/4Bq7ydieOd2MCpT3IUUXoOAOLeDhQ9Qt5knO1tlSL4mPNCt0COqFBIPBOxDFtD930oxKxRJ63GlmMkRMFmmN4pI5FEbLw4lVrV5P2NfCDqhEG40AIwx1pmJDNcXDskaUCBTJTowXhrC3v+bt6ITVnVFUTdMggg4V3oWZgTJ/XHj+8ARHtoZUp+4ZUjja6gzYUe5BfxwjmAcJOGQuLaeAKzAYxD8b0fDtz/5am0E0HRztUZg8UEy7QDTn8vOcVFG1KhQ7czgSAyS4iCOV3xys5FmfNqYCpjMfHIk6TV+dJLXHpaxlNy7+U149MmsMPFro1z1cxhhp9pyEacou9gPOTPLTE1OiOXm17IcINq8sMv420rMrZEDidzawlUz5H5GcXI796Tr3MzWK50BBN1k18nTFC5iHz3acEJ+84UYSvPM6IIjTwnf4y+jFbvWTAkRPP8ztXWU544UazZHQN+HxTqcHHzBoEWep/zniYfXkMG20KZd+fYxE/viAHF6ARZGVzM0DX8vpqUT8bKDigeCg1y2BSM87Uphjau+F7iFB4YH1FeSIhrlhmB3+Fs2lgR/EJOLVkcU7hz9GdZgv//ZQaONLczcBSuKNU6O/5Vi3UakjXrx0lGIElym1ScgSUl0zwTwFts9itNuvqZgdSrAv9XGRZWAXVVsy5F9RY2aqQUQ0JH/JhA
+ ufO7DEa5
+ q7n4gdgvvHprBV4aYB4o5nbuem+TN8+wumjruC4L87rvM4t90maqj8JstXUKggrV9nYZxch9KoR730dsz/xhhj7Dk6Dm61N9wjJWnEtTHJyAuEzJNWiTksnw7SUqG8bZ6n/wNGJRXgVPf+50q1D9/VRXBV6hLT8f2UQ0MjJOvKSi9yiNdMSAbejC8i+7aQSRXbWoaena8IYRJ8RtRI2LUFiLJBfNmwwO9+E4YU+W7+ivMmrVZ1Yl2Me8y5k0YqaNFLKAtw0zXaWXvjMwusPWzeAvqVJ1nZQ2I8Xsb9fBaO1OjOvmTJp33kG4O6Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,112 +97,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 01, 2025 at 10:50:09PM +0200, Max Kellermann wrote:
-> For improved const-correctness in the low-level memory-management
-> subsystem, which provides a basis for further const-ification further
-> up the call stack (e.g. filesystems).
+> Date: Mon, 01 Sep 2025 21:28:29 -0700
+> syzbot has found a reproducer for the following issue on:
+> 
+This report makes no sense even with a reproducer because
 
-Great, this succinctly expresses what you want!
+> HEAD commit:    7fa4d8dc380f Add linux-next specific files for 20250821
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=16094a42580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=ae76068823a236b3
+> dashboard link: https://syzkaller.appspot.com/bug?extid=4032319a6a907f69e985
+> compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15990312580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/63178c6ef3f8/disk-7fa4d8dc.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/c5c27b0841e0/vmlinux-7fa4d8dc.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/9a8832715cca/bzImage-7fa4d8dc.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+4032319a6a907f69e985@syzkaller.appspotmail.com
+> 
+> rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+> rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P5234/1:b..l
+> rcu: 	(detected by 1, t=10503 jiffies, g=7533, q=653 ncpus=2)
+> task:udevd           state:R  running task     stack:26096 pid:5234  tgid:5234  ppid:1      task_flags:0x400140 flags:0x00004002
+> Call Trace:
+>  <TASK>
+>  context_switch kernel/sched/core.c:5357 [inline]
+>  __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
+>  preempt_schedule_irq+0xb5/0x150 kernel/sched/core.c:7288
+>  irqentry_exit+0x6f/0x90 kernel/entry/common.c:197
+>  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+> RIP: 0010:constant_test_bit arch/x86/include/asm/bitops.h:206 [inline]
+> RIP: 0010:arch_test_bit arch/x86/include/asm/bitops.h:238 [inline]
+> RIP: 0010:tif_test_bit include/linux/thread_info.h:192 [inline]
+> RIP: 0010:tif_need_resched include/linux/thread_info.h:208 [inline]
+> RIP: 0010:need_resched include/linux/sched.h:2211 [inline]
+> RIP: 0010:preempt_schedule_common+0x11/0xd0 kernel/sched/core.c:7153
+> Code: 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 41 57 41 56 53 49 bf 00 00 00 00 00 fc ff df eb 0d <48> f7 03 08 00 00 00 0f 84 9b 00 00 00 65 ff 05 0b 76 5e 07 65 8b
+> RSP: 0018:ffffc900030c7540 EFLAGS: 00000246
+> RAX: 1ffff11008494b40 RBX: ffff8880424a5a00 RCX: aa2a76cb3742ae00
+> RDX: 0000000000000000 RSI: ffffffff8c04e5e0 RDI: ffffffff8c04e5a0
+> RBP: ffffc900030c75d8 R08: ffffffff8fe52d37 R09: 1ffffffff1fca5a6
+> R10: dffffc0000000000 R11: fffffbfff1fca5a7 R12: dffffc0000000000
+> R13: ffff88807da4ce80 R14: ffff8880424a6ee0 R15: dffffc0000000000
+>  preempt_schedule+0xae/0xc0 kernel/sched/core.c:7169
+>  preempt_schedule_thunk+0x16/0x30 arch/x86/entry/thunk.S:12
+>  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+>  _raw_spin_unlock_irqrestore+0xfd/0x110 kernel/locking/spinlock.c:194
+>  spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
+>  __wake_up_common_lock+0x190/0x1f0 kernel/sched/wait.c:127
+>  sock_def_readable+0x1fb/0x550 net/core/sock.c:3564
+>  __netlink_sendskb net/netlink/af_netlink.c:1265 [inline]
+>  netlink_sendskb+0xa1/0x140 net/netlink/af_netlink.c:1271
+>  netlink_unicast+0x397/0x9e0 net/netlink/af_netlink.c:1361
+>  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+>  sock_sendmsg_nosec net/socket.c:714 [inline]
+>  __sock_sendmsg+0x21c/0x270 net/socket.c:729
+>  ____sys_sendmsg+0x505/0x830 net/socket.c:2614
+>  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2668
+>  __sys_sendmsg net/socket.c:2700 [inline]
+>  __do_sys_sendmsg net/socket.c:2705 [inline]
+>  __se_sys_sendmsg net/socket.c:2703 [inline]
+>  __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2703
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fa3432a7407
+> RSP: 002b:00007ffded507800 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 00007fa343a95880 RCX: 00007fa3432a7407
+> RDX: 0000000000000000 RSI: 00007ffded507860 RDI: 0000000000000004
+> RBP: 0000562320cd2f40 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000202 R12: 00000000000000b2
+> R13: 0000562320cb09e0 R14: 0000000000000000 R15: 0000000000000000
+>  </TASK>
+> rcu: rcu_preempt kthread starved for 10543 jiffies! g7533 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+> rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+> rcu: RCU grace-period kthread stack dump:
+> task:rcu_preempt     state:R  running task     stack:28008 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00004000
+> Call Trace:
+>  <TASK>
+>  context_switch kernel/sched/core.c:5357 [inline]
+>  __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
+>  __schedule_loop kernel/sched/core.c:7043 [inline]
+>  schedule+0x165/0x360 kernel/sched/core.c:7058
+>  schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
+>  rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
+>  rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
+>  kthread+0x711/0x8a0 kernel/kthread.c:463
+>  ret_from_fork+0x47c/0x820 arch/x86/kernel/process.c:148
+>  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>  </TASK>
+> rcu: Stack dump where RCU GP kthread last ran:
+> Sending NMI from CPU 1 to CPUs 0:
+> NMI backtrace for cpu 0
+> CPU: 0 UID: 0 PID: 6072 Comm: syz.2.32 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+> RIP: 0010:list_empty include/linux/list.h:381 [inline]
+> RIP: 0010:plist_del+0x88/0x3f0 lib/plist.c:126
+> Code: 5e f0 3f f6 48 89 df e8 56 07 00 00 4d 8d 7e 08 4c 89 fd 48 c1 ed 03 42 80 7c 25 00 00 74 08 4c 89 ff e8 0b 9a a3 f6 4d 8b 2f <4d> 39 fd 74 6d 4d 8d 66 18 4c 89 e0 48 c1 e8 03 48 b9 00 00 00 00
+> RSP: 0018:ffffc900030d76d0 EFLAGS: 00000046
+> RAX: ffffffff8b80e8df RBX: ffff8880b863a8e8 RCX: ffff888027c59e00
+> RDX: 0000000000000000 RSI: ffff8880b863a8e8 RDI: ffff8880b863a8e8
+> RBP: 1ffff11004f8b464 R08: ffff888140a911f7 R09: 1ffff1102815223e
+> R10: dffffc0000000000 R11: ffffed102815223f R12: dffffc0000000000
+> R13: ffff888027c5a320 R14: ffff888027c5a318 R15: ffff888027c5a320
+> FS:  00007ffbb84b56c0(0000) GS:ffff8881257c4000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000200000000058 CR3: 000000007dd24000 CR4: 00000000003526f0
+> Call Trace:
+>  <TASK>
+>  dequeue_pushable_task+0x2e/0x2d0 kernel/sched/rt.c:415
+>  dequeue_task_rt+0x25e/0x790 kernel/sched/rt.c:1457
 
->
-> This patch series splitted into smaller patches was initially posted
-> as a single large patch:
->
->  https://lore.kernel.org/lkml/20250827192233.447920-1-max.kellermann@ionos.com/
->
-> I started this work when I tried to constify the Ceph filesystem code,
-> but found that to be impossible because many "mm" functions accept
-> non-const pointer, even though they modify nothing.
+RT task can turn scheduler into the guy in the oval office if they like.
+That is why running syzbot with RT turned on wastes minutes at the first
+place.
 
-And as Vlasta said, this is great context.
-
->
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-
-Glad we got there in the end :) hopefully having more const-ification will have
-a knock-on effect anyway for future development both by:
-
-a. People needing to ensure it downstream of this stuff &.
-b. Seeing the pattern and adopting it.
-
-So this should have a positive impact I think :)
-
-Cheers, Lorenzo
-
+>  block_task kernel/sched/core.c:2155 [inline]
+>  try_to_block_task kernel/sched/core.c:6585 [inline]
+>  __schedule+0x5f1/0x4cc0 kernel/sched/core.c:6896
+>  __schedule_loop kernel/sched/core.c:7043 [inline]
+>  schedule+0x165/0x360 kernel/sched/core.c:7058
+>  futex_do_wait kernel/futex/waitwake.c:358 [inline]
+>  __futex_wait+0x1c3/0x3e0 kernel/futex/waitwake.c:687
+>  futex_wait+0x104/0x360 kernel/futex/waitwake.c:715
+>  do_futex+0x333/0x420 kernel/futex/syscalls.c:102
+>  __do_sys_futex kernel/futex/syscalls.c:179 [inline]
+>  __se_sys_futex+0x36f/0x400 kernel/futex/syscalls.c:160
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7ffbb758ebe9
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffbb84b50e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+> RAX: ffffffffffffffda RBX: 00007ffbb77c5fa8 RCX: 00007ffbb758ebe9
+> RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007ffbb77c5fa8
+> RBP: 00007ffbb77c5fa0 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007ffbb77c6038 R14: 00007ffea00f5430 R15: 00007ffea00f5518
+>  </TASK>
+> 
+> 
 > ---
-> v1 -> v2:
-> - made several parameter values const (i.e. the pointer address, not
->   just the pointed-to memory), as suggested by Andrew Morton and
->   Yuanchu Xie
-> - drop existing+obsolete "extern" keywords on lines modified by these
->   patches (suggested by Vishal Moola)
-> - add missing parameter names on lines modified by these patches
->   (suggested by Vishal Moola)
-> - more "const" pointers (e.g. the task_struct passed to
->   process_shares_mm())
-> - add missing "const" to s390, fixing s390 build failure
-> - moved the mmap_is_legacy() change in arch/s390/mm/mmap.c from 08/12
->   to 06/12 (suggested by Vishal Moola)
->
-> v2 -> v3:
-> - remove garbage from 06/12
-> - changed tags on subject line (suggested by Matthew Wilcox)
->
-> v3 -> v4:
-> - more verbose commit messages including a listing of function names
->   (suggested by David Hildenbrand and Lorenzo Stoakes)
->
-> v4 -> v5:
-> - back to shorter commit messages after an agreement between David
->   Hildenbrand and Lorenzo Stoakes was found
->
-> v5 -> v6:
-> - fix inconsistent constness of assert_fault_locked()
-> - revert the const parameter value change from v2 (requested by
->   Lorenzo Stoakes)
-> - revert the long cover letter, removing long explanations again
->   (requested by Lorenzo Stoakes)
->
-> Max Kellermann (12):
->   mm: constify shmem related test functions for improved
->     const-correctness
->   mm: constify pagemap related test/getter functions
->   mm: constify zone related test/getter functions
->   fs: constify mapping related test functions for improved
->     const-correctness
->   mm: constify process_shares_mm() for improved const-correctness
->   mm, s390: constify mapping related test/getter functions
->   parisc: constify mmap_upper_limit() parameter
->   mm: constify arch_pick_mmap_layout() for improved const-correctness
->   mm: constify ptdesc_pmd_pts_count() and folio_get_private()
->   mm: constify various inline functions for improved const-correctness
->   mm: constify assert/test functions in mm.h
->   mm: constify highmem related functions for improved const-correctness
->
->  arch/arm/include/asm/highmem.h      |  6 +--
->  arch/parisc/include/asm/processor.h |  2 +-
->  arch/parisc/kernel/sys_parisc.c     |  2 +-
->  arch/s390/mm/mmap.c                 |  6 +--
->  arch/sparc/kernel/sys_sparc_64.c    |  2 +-
->  arch/x86/mm/mmap.c                  |  6 +--
->  arch/xtensa/include/asm/highmem.h   |  2 +-
->  include/linux/fs.h                  |  6 +--
->  include/linux/highmem-internal.h    | 36 +++++++++---------
->  include/linux/highmem.h             |  8 ++--
->  include/linux/mm.h                  | 56 +++++++++++++--------------
->  include/linux/mm_inline.h           | 25 ++++++------
->  include/linux/mm_types.h            |  4 +-
->  include/linux/mmzone.h              | 42 ++++++++++----------
->  include/linux/pagemap.h             | 59 +++++++++++++++--------------
->  include/linux/sched/mm.h            |  4 +-
->  include/linux/shmem_fs.h            |  4 +-
->  mm/highmem.c                        | 10 ++---
->  mm/oom_kill.c                       |  6 +--
->  mm/shmem.c                          |  6 +--
->  mm/util.c                           | 16 ++++----
->  21 files changed, 155 insertions(+), 153 deletions(-)
->
-> --
-> 2.47.2
->
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+> 
 
