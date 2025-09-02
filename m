@@ -4,92 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4875CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:41:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FFDCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:46:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 496778E000E; Tue,  2 Sep 2025 10:41:32 -0400 (EDT)
+	id E8D886B0008; Tue,  2 Sep 2025 10:46:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46DF68E0007; Tue,  2 Sep 2025 10:41:32 -0400 (EDT)
+	id E65226B000D; Tue,  2 Sep 2025 10:46:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AAF78E000E; Tue,  2 Sep 2025 10:41:32 -0400 (EDT)
+	id D7B076B000E; Tue,  2 Sep 2025 10:46:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 252D88E0007
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:41:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C24998434C
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:41:31 +0000 (UTC)
-X-FDA: 83844573582.22.A8FA46D
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 097BC140013
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:41:29 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of 3GAK3aAkbAEUz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3GAK3aAkbAEUz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756824090; a=rsa-sha256;
-	cv=none;
-	b=KB8egZCHamJgevsq96bgm8sBqJPP2Ojd9KMA/lRoFNiAGEr/+khlqg37qDI8Do+H7xJG5l
-	HbVrz4nk8OlIA6WjxBgIYY2S2QQbuahOPNJSuXVClQOD9bjR+MwWCztHxgrUUcJLVYASOB
-	dIrsfag/LRyg+ZViQLHjXN5cMsEa8gU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of 3GAK3aAkbAEUz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.77 as permitted sender) smtp.mailfrom=3GAK3aAkbAEUz56rhsslyhwwpk.nvvnsl1zlyjvu0lu0.jvt@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C71696B0008
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:46:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BD1511826B
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:46:43 +0000 (UTC)
+X-FDA: 83844586686.05.09A95A3
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 16F3D4000E
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:46:40 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MFGskFyj;
+	spf=pass (imf11.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756824090;
+	s=arc-20220608; t=1756824401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=t/5JWzgvXCWK6jYp7RBORfP6Epn9/qkHRz9kION0DM4=;
-	b=7asKUobm4wpNHtd5DTeQzlZJG8rrJBGvp0L6ZVpnn8+P7ySd5gs/QUeF7+uqjHDHU2iU4d
-	CHFLqN9CBSsj7qE9ul2ayN/y4yT7vRoDSO81/q89G1EQRSCCKXF/UcYAdzhM3bRlNGB42C
-	zOcYJFsEqqZalBPMFUA+eHssd0NsNKg=
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-8873b4b5058so43612939f.0
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 07:41:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756824089; x=1757428889;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t/5JWzgvXCWK6jYp7RBORfP6Epn9/qkHRz9kION0DM4=;
-        b=FxKQbbcL3ucbfkMPjG3P1FNhV0uoCBUY5K0PwIjgQLTlNZd/5iyOdw4Yg35KSapBFh
-         tbogsBtI3XueuagMeYsjP8r4n9lN0k16Ia6Rn2U8j3n8gV4MmyM5Seg06KEIFgH5DK+A
-         A+RIFZ0QmhbxsXJ2Nt0IuTDW5D8hPR4vNztFUh+BtBEFZwz6w4bzmYoTCvrAHc7/R1Rf
-         PddxDxVJGBI6dmIOpBPImaWEwpqjC8DKZeUPH3GC1A7S+08kfA/N8DFh73pNxet9SUPN
-         QcH0/OKjClU3ti4XYrhRIK0puumyRGdbVEwzGqkG9/7kvjbZLDSqVADSEmr1sVzUOQDf
-         ay1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUgm8zuCcYYGcspug5hUoz0TPoOFpwAKVUtYOApYarUrkIsV8FihsH5jAEt99zf5wkmCJ4+Dfy2NQ==@kvack.org
-X-Gm-Message-State: AOJu0YwwyityZx1z+V+ONQGc31vV/KQiYThb4NB2PsBNiUAlKuN9QlXE
-	3aT1OjobR+WBvchGdMGW5wlPbklSTYcqLI71Ov9HVtwbSh4Znm7jANKq3EuEVMUpzrpBrCafp5H
-	UCZLUYFQLSwsAQMavunaqmBBKCtXvxeuDomGBLzaji8VrWTj0XSqyc/A56HY=
-X-Google-Smtp-Source: AGHT+IGhPWpx2cUi9fYTwQKECTaLcmbeLI5iD67ghTJGxyd0JULrHR0UwRjnM1auyoIIVB5SL5zDhwlGh2nEJuf65sdqJiTIinUX
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9VBlGuvfwBGT8f51xAODpfHeSqf2gAVbJfrF+G5qQ0Q=;
+	b=1ESFYzs9yoPX7HmTGYf//k2Bo/gRG1jK7AGOLuqS9vahr9xkW8xv1yaOPoAHxAtrM+TEM+
+	0LjtODC/8sj/vH57JBOCqq9xeJ0kaGpql5i8jpn1LFvmwNI6nIXS9JYhy+AAbZe5oErdrR
+	KHnGtufQPbC6ypnpvTJwXBEi0sMPw/M=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MFGskFyj;
+	spf=pass (imf11.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756824401; a=rsa-sha256;
+	cv=none;
+	b=XxnvM4H8StKX3JF0xtF/PwR7Cr+tzcB8dogptVIWDpOWDLZP0p+UMRn0iVFtUQbXX8As8j
+	jQiF7M16ksgwUkPacNdYQPQPmJOE01fVa/OonWzddIGQxKGhOdUtRtbviFlxAbwyg3JqL9
+	QgQX2hX/I/1hPuYRNyXNhulwLvI+y68=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756824401; x=1788360401;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Wx5EU3ck/BxVVGxoCPPqG0+FAlUpEvvPwJtcEzKjaII=;
+  b=MFGskFyjsH15aNbS6dY1N4MLFe5sztvKqv3LZzw3uPRMt0+432xXJ6kc
+   G0tcOzCQpdFrbvYFoQRcywZjXq5nK+W6Pr2i/XTw4TpNUTsYoWq01eGqD
+   ngU8m21J34F28/aG4dx2G2hUnokG3l00i3V8IwX6b4cQLwWaabfDWVUsk
+   dk2SvviMH1Nn4mO8bsLEvmQFQ4hJELprvMUICB/aj7f1igd3d6M0Xlf1/
+   iM1MuEKcflAdgqdooCX+ulEPvrAlXSQwHPhSjbJZQ1IVspwzPoG3m+GDh
+   dPpLBaVKxjhGDh9Rqe4Dyp3v81BOoA/aJZHf4HIlDyqMqACEAhR20OYPI
+   g==;
+X-CSE-ConnectionGUID: cpZ1e/McSvK86LK+CNg5JQ==
+X-CSE-MsgGUID: fwekvq4KRa6gnYlTkUTpuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="76545797"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="76545797"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:46:40 -0700
+X-CSE-ConnectionGUID: USnIJsbFRhyH+qHMzQmVsQ==
+X-CSE-MsgGUID: 2OVUpl5DTIeZGPOdwEp2Zw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="171189727"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:46:28 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1utSHA-0000000Aig8-04Qa;
+	Tue, 02 Sep 2025 17:46:24 +0300
+Date: Tue, 2 Sep 2025 17:46:23 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org, Chen-Yu Tsai <wenst@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
+ function category
+Message-ID: <aLcDP36eEIZ_tqFv@smile.fi.intel.com>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:17ca:b0:3f6:5ea4:f0a3 with SMTP id
- e9e14a558f8ab-3f65ea4f0b3mr1493415ab.11.1756824088951; Tue, 02 Sep 2025
- 07:41:28 -0700 (PDT)
-Date: Tue, 02 Sep 2025 07:41:28 -0700
-In-Reply-To: <6871117d.a00a0220.26a83e.004c.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68b70218.050a0220.3db4df.01d1.GAE@google.com>
-Subject: Re: [syzbot] [block?] [mm?] INFO: rcu detected stall in wb_workfn (4)
-From: syzbot <syzbot+5b4f4f81240931b16844@syzkaller.appspotmail.com>
-To: axboe@kernel.dk, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 097BC140013
-X-Stat-Signature: dcta6pigk4wd6fwutj3gcos4zpb4yurf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Stat-Signature: nhfixc9cdiyrktqysutf3c9jorutb8zx
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756824089-296878
-X-HE-Meta: U2FsdGVkX19X5I/WMqt/54QEnMKIwfAe5BGPDRvLxjbMXdQUgjHT3Xngwa13j00W0+q+qBGJ37CbQ9QdNySO6TMXThtjaZT7WzdfIT0xIwKScPgGzi5YUNmFSTSdhzNCL7CCR2mpKvh7iryBBfwlSkCc7RibFD2MxXvMIdsx4Q53dK7ycQgkft2Vomb6bZWNck+oFS89ZzVpb140yPr4xbg6jXdSj85bHDS3NEBNg3AmcHqU4mZcnVMY46SsfyoZZDj3hpoFA7RBCIfWvOEJMtJmjLc+Ndcy3ETKYhpFEpudtU0vQ6w1bPG/7A6ye9VCasZILVExmxBN0mwnUqBK2K5NzUwsABVGV2cTq9urpA+tWqpLQxa8nqMJ3alb+FkTvMF6fYG88bCUs6FC+CVsBwqSOq0FWb9tAKCplh6jl24yC+hpG5YATb0b89Sc/6y9V+VwLO3tBoGzp8bxXmhPb1OcMBN0fzBkndbbWpqezFdzXNaAOulU5I4cBYcZAcPV1DH6oCb50mU/3jpZ22iXGI4zbV0piEsulgIuigXgYdNQrAmKOuKEI7BhlU9n1MJJ6Rv7qnPIiZ2vsb4rCXC3LhxGIWzHN8FgTOnmkdUZHLPwF5w6KrHUs9jNLsyoFIwsv9hGbPfEQAtsHZW7NhRNovBqYGWCHNKITHxT5tpU9M7Zg0qtlKVpPfEkZx/6VE72lfAS7a7A8vcViKIndWK/T77VknKf4NfhGrdIZZnxhH04K3fJwHnIsugbu0GmFh3+7qnqfcLC1zNRidqN48bTA1x36L6/gneOl70YzW36CLON9zPluZs7L0GIW3t4mJF1lQzF15eZbT1n+RVzpx82bbp41nGMwH8NWSF1c0BjqgcPocenV05RtpSH4F4W7H8PX6l7FW6penV8NpONFANXPHI2B39ozekG9Gh6W7XugCgZx0475fLNVsjtbjY3QR7+V+bmnCNKVd4z47uxpNP
- SgvViGj1
- 0g/lsGsMVDXZEazZGyyilazpc1qqIsKCP8FCLl8ijZO3wa3Octq3q4AiKDVqITkBCQLgCeD3zdFHc3JLaxKMqDavfoEJEJ6WK2csszVlbur6pb33/CVFVJwvDnhwB8dlTt44fZIWwN43mpbmRQbo9HWSO/mPznCcKTbm3jk2CpdCO7bZK9fT18KdMkQt2kl6Bf8q9SzGrNMJ1Va6BQptKF5DU5YPcYBB8wprSok4gMLmA5ueEw8otl3sX1D8inLGabTMo6U/o65OeojPHxfgkgehzOPTWP17FvAMTCr7Gzvma4NhSXck4MImWzmTdVtUxXBlYB7WTEEriWE7+5wxjlO3hFLvsp8V38lQtgEJBbGDXjvNyUY8tSjQiu4/mSzYWtSsIOOf8bwG/RIU9YpcFjzl28u0+tnZkVTkfSuPBcZFyEMG2IwxI36/4iLcb6RjP8LPn13R1V7qD5lYHPsElEij9NLMRmSmNFmczzeQjrjMLC98hzdKVQcTSGH84GbaO4TV1cA8u3pC0BfDLJOYm3tFfmlahEot4iNcm98Tik+ZO8qySuA0WdrjQspmc5g6zSy3zpkESQpCaBTgJV8z26NYiWPZhVwEbygJMur6Nx2S89OQlBbqG5GmHWFotWLc3eAcdPvX2uMvPZ3hy0xcMELmRtaq6UjiFWFP0GrRtDAw0kab9iiqVmYyk9nz+rLeRQXPS2H8GUmgiAQlkJ2X1yPa4h2glE/ttKrP9irDbjLs8SSav8+OSVBmncl4mRyR7BtzjM4sk6PxlPxG8ETkAtOuNt1OybE5+MD9IxI8N08wRRXB3GYBuIWp+pcasRCT+gv+L9RThk7NwmCjRBADDJB17NXiWPw79FkplNeUck3JOdGDvtAWz8A2PwyQSIvg/PIoZSqNhRBRC0bVFCxeEq56cgdX44pBSLISaQE9FGXT3AEL81lwIejfAit8OcSWAIxj8+Zja3uWvueVWcP4ZPZmuz643
- Ymp8mJr0
- VXWnyq0f5sCp/353NEMJLBf6BexjsMfVwL+z4pjeRjvsz7r7y4+ZrSWzAe1RdvdCaTonyqB9wT1wopkunDXVRyQcnJW49qr4M2WhG+bKv8uONzDCIUPfoIXBgWgCwslT/Kn6gsWbFRIQ2bfgqZ3D2DQt69Oc/5YNuJPZd770x7sTZRgoA9hZKAyXFEmfz4213k8h+UWR4kn0MiYlJ1OqEbfXBMpp3BC3ubNVF0GZfGvvcY3qYvX6p8SKfXeyH7jB
+X-Rspamd-Queue-Id: 16F3D4000E
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756824400-640514
+X-HE-Meta: U2FsdGVkX1/uLAqaVG+tAqZzwwm8O7dIlas8PouzRlnKB066zqE+5r8mObMBNcltNTJL/pnzeCkA/uwFusRwQsKZ+gwDeqb2ChhK0TJsDra86tpd0wUXOC3FfrG5lEV/7ZkEecKucmBw1bMDRzNzef/HyR5MA6hPwhxTRS+8B0nhcUfgpZaC9ojv14jS5AQCo1Oi/oRnqpaTeCHU4938nbrcA+uDWurvz9e7CeKObnpRNa177o6QkJXD8Yly0nXTWMoCyllT2LNdfvmuYuAFE1LFesNF0DF5iIL+ADEymwNkvmL1Q/YNFuKQK61+knxEV0f4LcM68eAkQVgYCvvput1ga03d4bpGR9p1cxo/rYzAcTPpIw4gXwx8Bs1U+k945y4d2GKglyKNoEYvsFmqDLKE/w2Xh5ID8YINvG2ldgvV9aJa1Iv60HU2mLC/q0F7gGiDqpnJVdnUaaUicl6geUw84ApViKilXTcMDsUQxE/xroy1wtMUe8Tc1cs9mONZCFFvTm8kBp2E5Uapgm5ovCUYKgnJadWVDUnoKcfepMgFn2FA5+stkzpQf8DKB4HyvZwgmbt9ot0Ju0YdcNOwcHsRu5/uJxYkkbUKKzbTp0abbNMUrsjphTrhop6PsWiAtO2W77k3OxFgTZKQJi6zr60wEj2iAlNsailCo/tUjxsIKOGSgpBF3g3vzwkZvWYA8Mh4sTFtld/e9Z4G+Vv3kxquqHGIvBAd/GxsgnU0Zljlo9c7VcgQ1LfaHeFdWMNfuLivmKE/gvME1dteeeLGzTf1hgrFxr+5U0sOO3ILUyhlzeBWefaz+GSEa2MecJHFPclY/h4eEvgbkTQxISId2kuzedawCBV0EpNRFRgisHVFA5W7xFobZL9FwPvAsyqYsvyZ7nrdrxbRXuXybYvLnk/9mgdlNR6qK7i/VF44wohB0h8WDSuTERdaRe/gYCuVIhKnY0utLQX4SpHBvgq
+ 3d51Yz44
+ uNtWIwegUXkfZmJjw+chJE/4TooHwiouCAcMGBlYu/yB/WXzSdfgIZhwP6QOdJ3eBz8OW9Uz8uEjDxPsPI+844LxkW2YStC1Vkw0FY6+u33DlLp8YHx+6hgXOjV21Sta5n3XLS3lqy3NjJr7WNa2OmNuf3qZdd+NTALynBfCVzB6C1QgX3gnHaZeuHqIYAJZ/PScGQvxKpBClM3n4Re/R31rJt/rdDMI9RqMjB5cOV8HN/iyBj1yvcw0AKIIIuD/LxD5h6hNeWwMIwoDSVr+t1Kq+u1H6fQDLUgsw/SULoMoce3DqhvyCVY9wEpyMENV8sJxI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,166 +147,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+On Tue, Sep 02, 2025 at 01:59:09PM +0200, Bartosz Golaszewski wrote:
+> Problem: when pinctrl core binds pins to a consumer device and the
+> pinmux ops of the underlying driver are marked as strict, the pin in
+> question can no longer be requested as a GPIO using the GPIO descriptor
+> API. It will result in the following error:
+> 
+> [    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already requested by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
+> [    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f100000.pinctrl:570)
+> 
+> This typically makes sense except when the pins are muxed to a function
+> that actually says "GPIO". Of course, the function name is just a string
+> so it has no meaning to the pinctrl subsystem.
+> 
+> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> other platforms as well) where we mux a pin to "gpio" function using the
+> `pinctrl-X` property in order to configure bias or drive-strength and
+> then access it using the gpiod API. This makes it impossible to mark the
+> pin controller module as "strict".
+> 
+> This series proposes to introduce a concept of a sub-category of
+> pinfunctions: GPIO functions where the above is not true and the pin
+> muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> strict pinmuxers.
+> 
+> To that end: we first clean up the drivers that use struct function_desc
+> and make them use the smaller struct pinfunction instead - which is the
+> correct structure for drivers to describe their pin functions with. We
+> also rework pinmux core to not duplicate memory used to store the
+> pinfunctions unless they're allocated dynamically.
+> 
+> First: provide the kmemdup_const() helper which only duplicates memory
+> if it's not in the .rodata section. Then rework all pinctrl drivers that
+> instantiate objects of type struct function_desc as they should only be
+> created by pinmux core. Next constify the return value of the accessor
+> used to expose these structures to users and finally convert the
+> pinfunction object within struct function_desc to a pointer and use
+> kmemdup_const() to assign it. With this done proceed to add
+> infrastructure for the GPIO pin function category and use it in Qualcomm
+> drivers. At the very end: make the Qualcomm pinmuxer strict.
 
-HEAD commit:    b320789d6883 Linux 6.17-rc4
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1406ae62580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d4703ac89d9e185a
-dashboard link: https://syzkaller.appspot.com/bug?extid=5b4f4f81240931b16844
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=133b5e34580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1639ca42580000
+I read all this and do not understand why we take all this way,
+Esp. see my Q in patch 16. Can we rather limit this to the controller
+driver to decide and have it handle all the possible configurations,
+muxing, etc?
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/daf1f6c847dd/disk-b320789d.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/fbeb0bd5d987/vmlinux-b320789d.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a85084f8e16b/bzImage-b320789d.xz
+I think what we are trying to do here is to delegate part of the
+driver's work pin mux / pin control core. While it sounds like right
+direction the implementation (design wise) seems to me unscalable.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5b4f4f81240931b16844@syzkaller.appspotmail.com
+In any case first 12 patch (in case they are not regressing) are good
+to go as soon as they can. I like the part of constification.
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P1288/1:b.el P5851/1:b..l
-rcu: 	(detected by 0, t=11117 jiffies, g=9285, q=859 ncpus=2)
-task:udevd           state:R  running task     stack:27176 pid:5851  tgid:5851  ppid:5218   task_flags:0x400140 flags:0x00004002
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1190/0x5de0 kernel/sched/core.c:6961
- preempt_schedule_common+0x44/0xc0 kernel/sched/core.c:7145
- preempt_schedule_thunk+0x16/0x30 arch/x86/entry/thunk.S:12
- __raw_spin_unlock include/linux/spinlock_api_smp.h:143 [inline]
- _raw_spin_unlock+0x3e/0x50 kernel/locking/spinlock.c:186
- spin_unlock include/linux/spinlock.h:391 [inline]
- wp_page_copy mm/memory.c:3653 [inline]
- do_wp_page+0x177b/0x4f00 mm/memory.c:4013
- handle_pte_fault mm/memory.c:6068 [inline]
- __handle_mm_fault+0x1b2d/0x2a50 mm/memory.c:6195
- handle_mm_fault+0x589/0xd10 mm/memory.c:6364
- do_user_addr_fault+0x60c/0x1370 arch/x86/mm/fault.c:1336
- handle_page_fault arch/x86/mm/fault.c:1476 [inline]
- exc_page_fault+0x5c/0xb0 arch/x86/mm/fault.c:1532
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:623
-RIP: 0033:0x7f5c948b5db7
-RSP: 002b:00007ffd6b822260 EFLAGS: 00010202
-RAX: 0000000000006010 RBX: 00000000000001f0 RCX: 000055b18d0b4fe0
-RDX: 0000000000006010 RSI: 000055b18d0aefd0 RDI: 00007f5c949f1ac0
-RBP: 00007f5c949f1ac0 R08: 00000000000001f0 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 000055b18d0aefd0
-R13: 00007f5c949f1ac0 R14: 00000000000001f0 R15: 00007f5c949f1ac0
- </TASK>
-task:kworker/u8:5    state:R  running task     stack:22344 pid:1288  tgid:1288  ppid:2      task_flags:0x24248060 flags:0x00004000
-Workqueue: writeback wb_workfn (flush-8:0)
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1190/0x5de0 kernel/sched/core.c:6961
- preempt_schedule_irq+0x51/0x90 kernel/sched/core.c:7288
- irqentry_exit+0x36/0x90 kernel/entry/common.c:197
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-RIP: 0010:__sanitizer_cov_trace_switch+0x7f/0x90 kernel/kcov.c:336
-Code: 39 de 75 e2 5b 5d 41 5c 41 5d 41 5e c3 cc cc cc cc 41 bd 07 00 00 00 48 83 f8 40 74 be 5b 5d 41 5c 41 5d 41 5e e9 91 66 db 09 <41> bd 01 00 00 00 eb a9 41 bd 05 00 00 00 eb a1 90 90 90 90 90 90
-RSP: 0018:ffffc90004d1e918 EFLAGS: 00000246
-RAX: 0000000000000008 RBX: ffff888029fc9a50 RCX: ffffffff863bcae4
-RDX: ffff888028ca2440 RSI: ffffffff8c136f20 RDI: 0000000000000000
-RBP: ffffffff8c136f20 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888029fc9a48 R14: ffff888027e99000 R15: ffffc90004d1eb60
- blk_mq_dispatch_rq_list+0x428/0x1e20 block/blk-mq.c:2121
- __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
- blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
- __blk_mq_sched_dispatch_requests+0xcb7/0x15f0 block/blk-mq-sched.c:307
- blk_mq_sched_dispatch_requests+0xd8/0x1b0 block/blk-mq-sched.c:329
- blk_mq_run_hw_queue+0x349/0x670 block/blk-mq.c:2358
- blk_mq_dispatch_list+0x514/0x1310 block/blk-mq.c:2919
- blk_mq_flush_plug_list block/blk-mq.c:2967 [inline]
- blk_mq_flush_plug_list+0x130/0x600 block/blk-mq.c:2939
- blk_add_rq_to_plug+0x1ca/0x540 block/blk-mq.c:1390
- blk_mq_submit_bio+0x1a6b/0x2a10 block/blk-mq.c:3212
- __submit_bio+0x3cf/0x690 block/blk-core.c:635
- __submit_bio_noacct_mq block/blk-core.c:722 [inline]
- submit_bio_noacct_nocheck+0x660/0xd30 block/blk-core.c:751
- submit_bio_noacct+0xc20/0x1ed0 block/blk-core.c:874
- ext4_io_submit+0xa6/0x140 fs/ext4/page-io.c:404
- ext4_do_writepages+0xe42/0x3cf0 fs/ext4/inode.c:2951
- ext4_writepages+0x37a/0x7d0 fs/ext4/inode.c:3025
- do_writepages+0x27a/0x600 mm/page-writeback.c:2634
- __writeback_single_inode+0x160/0xfb0 fs/fs-writeback.c:1680
- writeback_sb_inodes+0x60d/0xfa0 fs/fs-writeback.c:1976
- __writeback_inodes_wb+0xf8/0x2d0 fs/fs-writeback.c:2047
- wb_writeback+0x7f3/0xb70 fs/fs-writeback.c:2158
- wb_check_old_data_flush fs/fs-writeback.c:2262 [inline]
- wb_do_writeback fs/fs-writeback.c:2315 [inline]
- wb_workfn+0x8ca/0xbe0 fs/fs-writeback.c:2343
- process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d4/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-rcu: rcu_preempt kthread starved for 11117 jiffies! g9285 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:R  running task     stack:27928 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00004000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1190/0x5de0 kernel/sched/core.c:6961
- __schedule_loop kernel/sched/core.c:7043 [inline]
- schedule+0xe7/0x3a0 kernel/sched/core.c:7058
- schedule_timeout+0x123/0x290 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x1ea/0xb00 kernel/rcu/tree.c:2083
- rcu_gp_kthread+0x270/0x380 kernel/rcu/tree.c:2285
- kthread+0x3c5/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d4/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-CPU: 0 UID: 0 PID: 5513 Comm: dhcpcd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:__sanitizer_cov_trace_const_cmp4+0x8/0x20 kernel/kcov.c:314
-Code: bf 03 00 00 00 e9 58 fe ff ff 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 48 8b 0c 24 <89> f2 89 fe bf 05 00 00 00 e9 2a fe ff ff 66 2e 0f 1f 84 00 00 00
-RSP: 0018:ffffc90003277730 EFLAGS: 00000202
-RAX: 0000000000000001 RBX: ffff8880b853fe80 RCX: ffffffff81af8ea1
-RDX: ffff8880213e4880 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000003 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: dffffc0000000000
-R13: ffffed10170a7fd1 R14: 0000000000000001 R15: 0000000000000001
-FS:  00007fd829003740(0000) GS:ffff8881246b8000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f9856c3ffdc CR3: 00000000782b2000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- csd_lock_wait kernel/smp.c:342 [inline]
- smp_call_function_many_cond+0xe21/0x1600 kernel/smp.c:877
- on_each_cpu_cond_mask+0x40/0x90 kernel/smp.c:1044
- __flush_tlb_multi arch/x86/include/asm/paravirt.h:91 [inline]
- flush_tlb_multi arch/x86/mm/tlb.c:1361 [inline]
- flush_tlb_mm_range+0x4a0/0x17a0 arch/x86/mm/tlb.c:1451
- dup_mmap+0xfa2/0x21d0 mm/mmap.c:1873
- dup_mm kernel/fork.c:1485 [inline]
- copy_mm kernel/fork.c:1537 [inline]
- copy_process+0x4081/0x7690 kernel/fork.c:2175
- kernel_clone+0xfc/0x930 kernel/fork.c:2605
- __do_sys_clone+0xce/0x120 kernel/fork.c:2748
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd8290d7636
-Code: 89 df e8 6d e8 f6 ff 45 31 c0 31 d2 31 f6 64 48 8b 04 25 10 00 00 00 bf 11 00 20 01 4c 8d 90 d0 02 00 00 b8 38 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 52 89 c5 85 c0 75 31 64 48 8b 04 25 10 00 00
-RSP: 002b:00007ffc8dce2200 EFLAGS: 00000246 ORIG_RAX: 0000000000000038
-RAX: ffffffffffffffda RBX: 00007ffc8dce2208 RCX: 00007fd8290d7636
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000001200011
-RBP: 00007ffc8dd02750 R08: 0000000000000000 R09: 0000000000000001
-R10: 00007fd829003a10 R11: 0000000000000246 R12: 00007ffc8dce2340
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000560acbd41ac0
- </TASK>
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
 
