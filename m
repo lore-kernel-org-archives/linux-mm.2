@@ -4,98 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AADE6CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:41:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8178FCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D6FD8E0009; Tue,  2 Sep 2025 09:41:07 -0400 (EDT)
+	id E45708E000F; Tue,  2 Sep 2025 09:41:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 087E28E0002; Tue,  2 Sep 2025 09:41:07 -0400 (EDT)
+	id DF5D48E0002; Tue,  2 Sep 2025 09:41:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E915A8E0009; Tue,  2 Sep 2025 09:41:06 -0400 (EDT)
+	id CBD6A8E000F; Tue,  2 Sep 2025 09:41:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D3A908E0002
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:41:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7EC43B6A55
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:41:06 +0000 (UTC)
-X-FDA: 83844421332.01.8ECCFA9
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8153D80013
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:41:04 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B74338E0002
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:41:19 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D23283F62
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:41:19 +0000 (UTC)
+X-FDA: 83844421878.10.5E261A1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 66B5E8000D
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:41:17 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=K3mhGzre;
-	spf=pass (imf02.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.171 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C366B2kF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=c8YOn2Wt;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C366B2kF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=c8YOn2Wt;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756820477; a=rsa-sha256;
+	cv=none;
+	b=Q6wA84NKP2OkaN+DG9dQOgcLGJTz9lPHiilh0fm6221kwnePjihhmecew/DipIARDFXeg1
+	99htbuZXDqZLUnk6TkcdMW7CnhmAD1fMjppxEUaur3c3an4O4TOvf6d1G+yTV1k7PH2v39
+	dkamyTZ8fLi79OxoYWqhIkk3cHp85wM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C366B2kF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=c8YOn2Wt;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C366B2kF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=c8YOn2Wt;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756820465;
+	s=arc-20220608; t=1756820477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ywssiw/YaYwXrQoqZBjHzV6kBM/9ffLqYweAJQR0/Tc=;
-	b=DDAJn7l1/Ai9hdGvX96/DovdVyANwduuLPgkV7IT4M1YwlbRxbWPbdFDJ/0q66gchMQn1e
-	0LvcYdV76HAmzGRxboB6XAiionoEoUAN1+DusSetQX6QgB2wuLzxa41YWLxUjSUjHhUiIq
-	RGeEXXMyLb0uS8RRgg1yAA7jsybzUTA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=K3mhGzre;
-	spf=pass (imf02.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.171 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756820465; a=rsa-sha256;
-	cv=none;
-	b=rBlDxckgOXHeAogicZfXsjgs/yH8Qi8SzsHyMr8jX8xlyIe66x+vqOCqAMGHQcjihDHacy
-	deIMH0tPj7Kb6ytbDTBTYgmrE8ttB8UC126eXo7FPqdQ85cvLtuZR/kpjzKRRvkTlR5dip
-	53oGj4ofsFuQmvvcXLgCqshMtFq2xic=
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	bh=AhOTfgygnk23brwzYKfsgKlsXFSLIcGbgvQqte8GedY=;
+	b=INAOu0eN1Ql5R+e3iFQSd/A67koBnBQ1Wy3weGGUwInrYUFjQCl81fdyn6Brh5p1Mmg7Da
+	cjgtk3cbUrv6iikKpP9bLFypHA6BweLs61dGEr+3UKZph03QEnXBsSYBunFHiGpT6tNVpE
+	QUsrlFqasw6a9qAgsj/uSe9Ap1/+Sl8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4cGRhr0yqXz9tgd;
-	Tue,  2 Sep 2025 15:41:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1756820460;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C1A731F38E;
+	Tue,  2 Sep 2025 13:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1756820475; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ywssiw/YaYwXrQoqZBjHzV6kBM/9ffLqYweAJQR0/Tc=;
-	b=K3mhGzreM+Xd/rnTCuWWyyeeSQURhtz9MzSVz380rrhsQLXWop33JBz326eCtL2131w2UG
-	nZvkOhGuSxD0qT+X4QQVW3iEwUsfRPbj/MRB8Uwv6gO1t44dXfCrN2nOBSwGbmBOuQz/uC
-	n0AePi5MebOJaXOb8Aj69FVewcca8yT0bWwNu5lm6zbFBYthSI2JbYX6e8/LhvJ3owdpMj
-	67qy/o5CuUV9hC4kVnoYQux+baZ3eFeoReIxP/KKGDDe1rvlrmEqOXf33QaS6rJr9KQ1Mh
-	hB2muN1xq55leopbH/Z7qXtphKdkuT6n7IXwrbd9mehYx/vEBcsgzeDCzmzdGQ==
-Date: Tue, 2 Sep 2025 15:40:39 +0200
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: David Hildenbrand <david@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	willy@infradead.org, mcgrof@kernel.org, gost.dev@samsung.com, 
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH] huge_memory: return -EINVAL in folio split functions
- when THP is disabled
-Message-ID: <ic5kobuxfm4zi6agfvosjxs325mdgrfpjz52mi3zn27epbuvef@z5dmowge6uyb>
-References: <20250902084036.208921-1-kernel@pankajraghav.com>
- <qh7s3j26aac3hyzgnr2ee6byjenstxhjnlwn4qxbvz2l32ohqc@qbhdxvpnuhtp>
- <90cd5be7-cbe6-42c5-b0eb-bf9613047097@pankajraghav.com>
- <6l6f5idkqebpai6qn6n3phbnydz55typdwmvp3eexwnhk4qr54@otcgssegyqke>
- <519df8fd-b02d-4b4b-bf47-79070e3d2c9e@pankajraghav.com>
- <h7pqst5vvkahposrvf2iy5qz53t4crrujold2ky4ssrpawaefv@yaqaj3so2hxi>
+	bh=AhOTfgygnk23brwzYKfsgKlsXFSLIcGbgvQqte8GedY=;
+	b=C366B2kFcPZ+d4ABXG9d7/JZfdkttWp3hQADsbYoVlwRsy5OhaB4SRfW3XPprc/AdqnkhR
+	sX/jtmLiP/tba/OOcMja3xuRKYBL265ho6XHzTVl03NyvFMMvRdjp6UutU5m9pLVNItrH1
+	F5eUBx/zaNKSkEG3pPbQFXDfZDP5WSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1756820475;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AhOTfgygnk23brwzYKfsgKlsXFSLIcGbgvQqte8GedY=;
+	b=c8YOn2WtFkxrYyvtLWKR91DZtpdVFvqyiVu0FoeIz83yqeYbRidpJLNnXqmb8DgyEfPYnB
+	0HBC2Fqj0j5oYYCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1756820475; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AhOTfgygnk23brwzYKfsgKlsXFSLIcGbgvQqte8GedY=;
+	b=C366B2kFcPZ+d4ABXG9d7/JZfdkttWp3hQADsbYoVlwRsy5OhaB4SRfW3XPprc/AdqnkhR
+	sX/jtmLiP/tba/OOcMja3xuRKYBL265ho6XHzTVl03NyvFMMvRdjp6UutU5m9pLVNItrH1
+	F5eUBx/zaNKSkEG3pPbQFXDfZDP5WSk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1756820475;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AhOTfgygnk23brwzYKfsgKlsXFSLIcGbgvQqte8GedY=;
+	b=c8YOn2WtFkxrYyvtLWKR91DZtpdVFvqyiVu0FoeIz83yqeYbRidpJLNnXqmb8DgyEfPYnB
+	0HBC2Fqj0j5oYYCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D06F113882;
+	Tue,  2 Sep 2025 13:41:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rT11L/rztmifYAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 02 Sep 2025 13:41:14 +0000
+Date: Tue, 2 Sep 2025 14:41:08 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: do not assume file == vma->vm_file in
+ compat_vma_mmap_prepare()
+Message-ID: <ngqpybolf2e2gp266k7vkehzg2xrbng2proq3jv3quurk32wzm@j7d3je7im4fj>
+References: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <h7pqst5vvkahposrvf2iy5qz53t4crrujold2ky4ssrpawaefv@yaqaj3so2hxi>
-X-Stat-Signature: gu7isfzuku8it53erjoptby7bmpccg3n
+In-Reply-To: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 66B5E8000D
+X-Stat-Signature: d9n71f9omjf3pq48j5mc5bbtpgqk67mb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8153D80013
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756820464-59128
-X-HE-Meta: U2FsdGVkX18Sb2Mwz73Skr500L6U7ZOCHTk6MfINu94wYlXXIBHn0FXDisvRFIkUW91RAgDdwPgP1jJZ4RR+AJYAPMuDeC3005L2354g7idwLTwBzf9jfkAjN/9G/do9urfoxcoigpQ2GxfFu/9h8YoSvpHVohlpssWTC9KZB0BLw6YXOE8PLCtCx1T5gxLY5ib4fojRUOXZSUjHU3oRh5pXmjVW5kD899QJvi+6XYZQFuQYVu3yPJGgAWfmHVQdOvs10ILii+DYQf8306ERed1YrUzk4hn96zno92MKVaACVfZQCKFy1tXYsJezg463NQyY7PJfI1REZPEVboo+yF1ZDJTFnTENIfTZmAxhtXbN57kLu9qEZIRyBHZ9x9APhdz1toU4FW+egKflsl+CyunzKafl+SxYVKOyph7lXVZJQ//JtRLHhYZCHMdGQsqLrFk/hAC3j0qq8vvKDWQMxnI7YpQbzR9BxiuHq0CmGWTijbhtYGKmtLdizzMWaBcpi6wXyXynQlgjDMSYx2H6XEPShr8IxjNZrglVBUlZ28nE/CptjUv3W0fb9re88g7MdoLhNr9ODsjx+uBXBzG0WY8Xf+VZqqFPLREWIZFe8GY94XAP1/l/HoflqTFsBNYslGJj9p1KUfi/Wtjz1/ZaEJ65VS8nJjHoL7Fq2Rk8W0ZR6kAPnSPCzOv0Fr+P09le62MHH2cba9EPQMr9oQkYY9Jsg1aoEjhzWbtoueJ+hK2Ahq837W2V0VRkeOxwqjtKNafx+lldrfEBfR9Bm6mbEO7T/d0U1LJG2paEoJPU9EhZtcx8sQIdOIDv84f/qmlPWjrElCXJ79r/VlEfZtkqlpRvlrtzPQCVRK7Pt41cUZ0HQs0IqX2SdT7OvexvS2Mp8peCAnj/SK1O/M0T0jPvm1n3ZAuOlPlVuzSv/zi1cqdV8MZjx1aEutP5dlyWMBVzpHXU11PJ+u98OQJvlFO
- whpIWClw
- RAR4wHPG/QCYoEU6nCI6qq2Mty9xEEL0sW0grH8wEg+0sIYiM62MhK/k3gaVRA4jZ2UBFoSt/UjJdS5Lk6g1rbSF0vFanufchL/V2IdEMQ7uNiykJq9J9HXOE8x1kfi01NR7ozYIIh0ugvLIPQ7ND9SLS/1qa9z0voXMpvXIwmKCwmNeo5hqkcgeK9SCotIzDb4QSsVQQ77ZTAwO8Eft6hLEMzss2O6JHoXLp1qE+XUn4MEkuV4oqwT9CCGGo8cRVLMT0ZF65K6WpUkaFHygIOwlS1Tlasp1pmDNv585bYPW7xFKpVeQlGqQhuQRhzhSe3gpUBXVBcOi4bN66Mkjl8yddL/ioV3c3JjDsrOprz3rInoX2JQt4v/MxBlxWGG6sTdcr
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756820477-756422
+X-HE-Meta: U2FsdGVkX18u37++FlmisKzrCC7hTDIgQ1Os7vlDN6d5g0A3H+XckfCaI2pe32laE2vVFnP/C/q5xtJB+zzbSYpAMjF93Fvk8fIh1AYYE1aarlxp3/j6arS035IWQU11kjI1vuOo85WZUbFnp0E1+swJlFwV+wY/dK0xFlnsq41phxBS5qPlSmWaZZYhHm64PKzJfUkknZVjqotfY3IJvxTFWtflvXmNM0lpVYwSn00QoEYXU38cek+6AmT80cCP7law3mgqW8wO0H1qTJ4BRrKLLTc6jWidFxuyog/S88UKILKnAoNnWpveHJeWlIJlFcGglRjWwsXlcAanshOyaSHRLexLgU3t+LnqNYYqC5DXDuDeNd9H9o0kNi0+b3e/ODbNUIdRLuN5b9kZtpPavfPA0gEp0litMlrNEy0gZgQnkb9WaqH+o9n7QXcV3fYt7ppCDvsO7B5Ddg9V6N+1Vfsdr7bItpppBAnRs5scnZ3vBIeuYNLA52J7fUIwsNpazq7M15rr3nyCWzI/UR9NsfB0xVKCq8T08wlzSA35W0uAkVDxi79+RGB1UdCwS8N9eN+kOmw7vJKC4GhCNMNMirzFkfVv8J24TmEcSJf7FhqIE8xFNGNIaVtnU5RY6wZEPtSQc6giUsIkmRYiK/5JD8YOk4NfqzZPPkrJHXyaldFEHOI0rxbLR2Z+ASIb3Vr39MmHqWGY9gQRjsLNDthN02DQdZC1V1hLIJOqGCEL5RxkpHpCm4N1TMse4byLpNrjWALpNvHPQNdKfNIeO5nz4vdgHp+uDMIXYaPF6qog4tBC+h/mBmbL7YF9UlZm6JGstxBWO1Wiqvl1raVA89M8kNGuo5XtCqhphqihma/8upXgI9dj2CKj9S021UMwFSqH81mcpZ3z2uGvDtN+0E86O5N19t8rOgDdgVJl2zvbWF6An6wmlGokmcPGuTRItnmCTRd4vyRIsov40j584Eb
+ KbbeCAhH
+ Fqs6JgyZ1IWCzG/jD4VaB2j3MHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,29 +136,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > 
-> > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> > index 48c4f91c5b13..4ddf9e87db91 100644
-> > --- a/include/linux/huge_mm.h
-> > +++ b/include/linux/huge_mm.h
-> > @@ -588,21 +588,29 @@ static inline int
-> >  split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
-> >                 unsigned int new_order)
-> >  {
-> > +       struct folio *folio = page_folio(page);
-> > +
-> > +       VM_WARN_ON_ONCE_FOLIO(!folio_test_large(folio), folio);
+On Tue, Sep 02, 2025 at 11:45:33AM +0100, Lorenzo Stoakes wrote:
+> In commit bb666b7c2707 ("mm: add mmap_prepare() compatibility layer for
+> nested file systems") we introduced the ability for 'nested' drivers and
+> file systems to correctly invoke the f_op->mmap_prepare() handler from an
+> f_op->mmap() handler via a compatibility layer implemented in
+> compat_vma_mmap_prepare().
 > 
-> No. Make it unconditional. The point is we don't expect to see any
-> splitable folios, so no reason to get here at all.
+> This invokes vma_to_desc() to populate vm_area_desc fields according to
+> those found in the (not yet fully initialised) VMA passed to f_op->mmap().
 > 
+> However this function implicitly assumes that the struct file which we are
+> operating upon is equal to vma->vm_file. This is not a safe assumption in
+> all cases.
+> 
+> This is not an issue currently, as so far we have only implemented
+> f_op->mmap_prepare() handlers for some file systems and internal mm uses,
+> and the only nested f_op->mmap() operations that can be performed upon
+> these are those in backing_file_mmap() and coda_file_mmap(), both of which
+> use vma->vm_file.
+> 
+> However, moving forward, as we convert drivers to using
+> f_op->mmap_prepare(), this will become a problem.
+> 
+> Resolve this issue by explicitly setting desc->file to the provided file
+> parameter and update callers accordingly.
+> 
+> We also need to adjust set_vma_from_desc() to account for this fact, and
+> only update the vma->vm_file field if the f_op->mmap_prepare() caller
+> reassigns it.
+> 
+> We may in future wish to add a new field to struct vm_area_desc to account
+> for this 'nested mmap invocation' case, but for now it seems unnecessary.
+> 
+> While we are here, also provide a variant of compat_vma_mmap_prepare() that
+> operates against a pointer to any file_operations struct and does not
+> assume that the file_operations struct we are interested in is file->f_op.
+> 
+> This function is __compat_vma_mmap_prepare() and we invoke it from
+> compat_vma_mmap_prepare() so that we share code between the two functions.
+> 
+> This is important, because some drivers provide hooks in a separate struct,
+> for instance struct drm_device provides an fops field for this purpose.
+> 
+> Also update the VMA selftests accordingly.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Got it.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Just one question though, in a future world where we remove the
-dependency between large folios and THP, then we can revert back
-this change to do a conditional WARN_ON?
+LGTM, thanks!
 
---
-Pankaj
+-- 
+Pedro
 
