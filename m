@@ -4,97 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA5CCA100B
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 16:25:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F867CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 16:25:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92D318E001E; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
+	id 078538E0020; Tue,  2 Sep 2025 12:25:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DBEE8E0003; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
+	id 02A7D8E0003; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 818DC8E001E; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
+	id E80238E0020; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 701E38E0003
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D46268E0003
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:25:52 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34BE01402B3
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8A9A21194B8
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:25:52 +0000 (UTC)
-X-FDA: 83844836544.24.0EFCEB9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 747AA1A0008
+X-FDA: 83844836544.22.4450332
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AAD1614000C
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:25:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sc317jNV;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k4GvEXQR;
+	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756830350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fGt+rfAZPqOpC/usLmyRdPXY0e3SkpciH6+5LLOoAzw=;
-	b=g3C4xQ/PheLjhbEotG3ebN8G2ybnkXRIUNekOQCtHdxzpLYtsS1eYNbNpH7v88tPPAntme
-	X7ERks3HnCh99nSUIJ1Vab7zDaZpG7Ewlng4dNnyb5TzahG2cK2kAxzHch6gWP4aDwsI+m
-	D45P2luQXIRFkXbAhv63Vepv8RmaS4g=
+	bh=GcPdMor0DAjh6R8iQPAqOOTJWJrwCejd8Sgqd97vrSQ=;
+	b=FHUqmZceY8bzDEKeyE5Ryc4JdXFVkwCY4MoaMs7T13meFnzj3QDsd9GH0hgVPdnVilFlXc
+	hataap4NMO4S/RWg5JyVJW70zKOeJV5AR1TAaz+hMbnIriv8HAxl0zpmrtW33+ft+TzVAG
+	htG8G1LQVNihiUY1ojFjnhE2GKSeZPQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Sc317jNV;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k4GvEXQR;
+	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756830350; a=rsa-sha256;
 	cv=none;
-	b=FV+BYtDugjwWoROAWO8g0HdAeGcewOFxrMw/IFLEHRWHTbeEwZ2P+Tw5Pm9axQ2eVEuy7z
-	ei3eocPuP2jCTqZovhy3SXsEtc5hufiDgdKbivRgMIFOJUV+v2k2RH00vSWC/rR0HZQ70V
-	a1GFZ719oqMVfjqVoLOBzwEbaVfpt8Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756830349;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fGt+rfAZPqOpC/usLmyRdPXY0e3SkpciH6+5LLOoAzw=;
-	b=Sc317jNVjK/DiyAK/nLbHp3t6XNFAYUTHSoZzaPL6Ox7shjvSbqD45wtUjW5ewtUP+YFNd
-	q0sGSdYrLCU0MppKTw5fY0GzAtlsIjT5Jaj2ESarX0gElzHjeE8jPBv2pVawULW9avnRmS
-	52SpXFBFKeO/uiVEPtZrF2PQKEWfN9g=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-bSUXBqyPNWqsMD_lkbXvuA-1; Tue,
- 02 Sep 2025 12:25:46 -0400
-X-MC-Unique: bSUXBqyPNWqsMD_lkbXvuA-1
-X-Mimecast-MFC-AGG-ID: bSUXBqyPNWqsMD_lkbXvuA_1756830345
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 983FE19560AD;
-	Tue,  2 Sep 2025 16:25:45 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.22.80.27])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D482230001A7;
-	Tue,  2 Sep 2025 16:25:43 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
+	b=oWW/vmoK4hPQb5gNGk/lGjmkrlJhanCknwrP7YQ7tFr6k7h79e4DVDf3boFVCA1B7IMeXv
+	X2mIKGLyICtKi1oE3dxo6bjfEZ4hySrWB9IHkDMGpKndpBIcleNFKvAp5zeKkc6z7PNRld
+	yAE5INKKbbzGfdHvWQwD842jGsI9fa8=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b4e84a61055so1782759a12.0
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 09:25:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756830349; x=1757435149; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GcPdMor0DAjh6R8iQPAqOOTJWJrwCejd8Sgqd97vrSQ=;
+        b=k4GvEXQR4SOmq9RlzCIQETZQoN25FZNzAmNGyWLjGZ2P9Ghtu/fbzLfzgkqTsGe2CF
+         +W2sbbL5qUHmIOgs0SzWSt/cJnfQXGZbO0YB0VSh23EbaKHCN9XUWZwB2QaO5zaVWw1h
+         vtD9ZF0XgjQpS4p2vJHEWHEsaKhoXQquT1gonk10TovHqJ9u+3NGbL2Lnaj5xBsbExkh
+         pgv/YYHAn4oL0MTDai9QdFt3uk6zZBOA8Sb6jmi9D3rDQuOsmB7AKriOjU+RuiLcUFu6
+         dQeWN657LBkr4sUon5XB6mCvqElu20n3LNECQ58Xubt3Zy+qlhn2BUjvlyn5VE+AbWVp
+         6ndQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756830349; x=1757435149;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GcPdMor0DAjh6R8iQPAqOOTJWJrwCejd8Sgqd97vrSQ=;
+        b=ARyqFUDdj3TqBcuykHtDBuR5Gti6wWRLUY8/QIbWM5LnbDDi34YCiSRIqFd8wF8TNC
+         N0L69BCl4/HN7Velb4sgFKcdGGh0YeUeuO14p42JqQsqpbkjh5c6Gb+FYjSs5Bbw3Awi
+         l1Zcsjlv5xs+8Tip9hzTprH5KQ5kQDkHbu7t22Mt9hI4cO3rJGJ/fStcG/TMA6B6VfuI
+         Ei4rMfN3Ih9ObGo2Bkfp5N8XcK0dzl7+BI2o+peJ/S5a/J1SzLj/cVuB1N6GCsqLgV9x
+         UO/TagopW32u3eHxGiNhg26dSC++uNLgzWdhAVjGCDZ2o61RncBixXf0A1NLMG/nb8cg
+         SYAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXBLX+ohRa41kRp2a6jedsBzFYsyxFykMoq7GtuG5tp4bkbT/AJ+BdHzkn9rM7gLpJ2pRgxe7+euQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw/OHHurydP3O4HpVVhGhOdMtTTa/vCL8fb1+eGtqPl7elq6ebW
+	Dxj1YBPiRCHHhcqsbV2J/ev8S4Nprpg8DYzHRmrMf4dWwvAJ2BuNlLRI
+X-Gm-Gg: ASbGncsz7ksIEzmyr2n7b9EXSibJdYOzhwEdEHEsrVXLW73GpUvZU9CpPK/fjV0m1p3
+	ud3JPwlAIpjEQN+aOjVlONx8lBPBnJEHd0lpELC194Oc9EU3Hwaf1uBxoyMsu9tMvMrRfWUrioX
+	EZXHXeIj9Mxgr9ygm2Cu18oRYd1oIpDZMOf5TPIBcmkeZnQSerPEAg5dvCS7FAi2Y+16SdScyV5
+	EjeUBU91lHm3H0gmcurM3Fyc6GoAk8NUXVNdq/3J4VfRzyCVvbfFhUYT82piW6EhO2Ym2dXcEhd
+	66KF2eUCd5m5vCgufry3JduZPV1Kb0w0j0wylShbUkZsJWkrKYuCmBW5abq5EeDWpENZPdBNcEE
+	mpwSWwpnnGtYG9JdG9EJNGbLPyO3IzBM2oZEHDTe1nBVus43QG5HFbaVqdd0sWT2Y
+X-Google-Smtp-Source: AGHT+IHRkVVvH6HeHtH/xz4nXdtQTfSeAESUw912Xim7vgS5k4YyWFipqPYxbu3wyaBkhiL2HjH8DQ==
+X-Received: by 2002:a17:903:1250:b0:249:1234:9f7c with SMTP id d9443c01a7336-24944b23caamr160625785ad.60.1756830349339;
+        Tue, 02 Sep 2025 09:25:49 -0700 (PDT)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-249066e042asm137861455ad.146.2025.09.02.09.25.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 09:25:48 -0700 (PDT)
+Date: Tue, 2 Sep 2025 09:25:46 -0700
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, hannes@cmpxchg.org,
+	ziy@nvidia.com, linux-mm@kvack.org,
 	David Hildenbrand <david@redhat.com>
-Subject: [PATCH v2 1/2] selftests/mm: split_huge_page_test: fix occasional is_backed_by_folio() wrong results
-Date: Tue,  2 Sep 2025 18:25:35 +0200
-Message-ID: <20250902162536.956465-2-david@redhat.com>
-In-Reply-To: <20250902162536.956465-1-david@redhat.com>
-References: <20250902162536.956465-1-david@redhat.com>
+Subject: Re: [Patch v2] mm/page_alloc: find_large_buddy() from start_pfn
+ aligned order
+Message-ID: <aLcaiiWiz1jHb45y@fedora>
+References: <20250902025807.11467-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: 747AA1A0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250902025807.11467-1-richard.weiyang@gmail.com>
+X-Stat-Signature: dzni5jncynnmfd8mmitzquf7t9dwiwr3
 X-Rspam-User: 
-X-Stat-Signature: 7b864yz91u6em1p18mokcopghf7pfy96
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756830350-784916
-X-HE-Meta: U2FsdGVkX18Cm1NsE1SFoAnQjVOINpArjgHTyE8CT+Pg1LRlxEGpb9VrvRY7UiRgLnFllc3kY1gQKmYbPIWjIcKC7EcoRzh+cOqoSK7WvbT+0XIHgRLcZatvJQVnjdpjmpCq+SSKoCK3HTTcbtisNvYhjrR0kvr9yt7teDH8VTvrs5Gjt8n1sX/NHFwaPrFKkIZ6pHH7Pq4mBON3VUdXcLwkh89HL/+ZBncuyFFdakHwtrjRtybeDvm4s5itZpkR6IrS0ZpSiBYwsTDq07VYrl8SCz3WS4p9v9PBLF+cdno90OSXfHo8R0op+b4jF88yNjt25VADqUCDkq/yvpqG/qJ2VJMdyv1hl7k1yypvdgZoaxg17esnsDDNG7K7/i9irZOhun5iSRJwO7+wydJweNU1XWAWP6rRWY5obrKjxYCK5cTlKHBmGeEU75yjxf7acWU0AAKRoNQL2SUUVDGabxO/aX13g9/Jc///51dBKxApkysyAE1KBWfMeOfs0wrcaFitrEK7rB1DUeBw8nRP52H816CJMed1CFNzwjdZkhL1cSQSsoEUP1Gh5c/Qu68zoG3cwFSWOVM5likW4isddOglrUY83zA8Ah1QtPM4Qs1Lia7r5WeF9uR3zKn7sZl/G3m2NzoQ6Eh0+SRFJ2zQ1NeabRgreGZ1oaSiY8URduRh8xP4B2FRIu7TShwQRxOpuwuw9kQ+dHLy/5kwxjmxIu5r9nwfOMJ3tO/0lYR7KDuOFdA/7iZMD720J1oguIAz5MeF3WOcrRTXUB2x5ZzWvu3GZQuZaCHCZnT5GnvmyLc26+ZAev0MykiWxTK297yWgUSxfu8KCjvoIbhNMD5vHOWED7L9IGcmbfPyYIUwEfy23evk3JecPgxiKkAKJ4jthDUmvRbRH5B90B/YrqfqMTKp/YUQrbp58NG+Yc9927aSgL7V50WsyTyxnJ1iww4Hh4uz5TQAva1W/oMyNcP
- 5ZgjSnSM
- NBLaNI2tE25D2dCEmNq9WRrbj90PKG5g/o3K/uajcLHCYqWqEnZ7Q0pQEC8Qt+3ChtFjbPxW1lMOnhUHMV/PTXxcxThLICUedjDGVCdPrrQIzbPFiI/1OmVSSSysK4163+MqHPu5O34y8S9z0tQ1QLE1qbvpHuFRwUqW1G99u+3E47QTg8DokTJEGikvhi+qkx2/+db+G4+0LSrBDRkc4OJC5nE3W8KDjlnEGNLtDsnHvUWf1PdxNq40WKevawW2Z6wpemXRysaxMpNM0jaAqFiacX0VsvvkK9NJ+wXDBGQhEus9nGZ5lzDW5c1Vf9+4BklSR9gDJKQfKj4axhSnkf+1rulVYYlj9mqA4WjhXrI7itn6WhnCh5V/0PwWcYu3g1IES
+X-Rspamd-Queue-Id: AAD1614000C
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756830350-163859
+X-HE-Meta: U2FsdGVkX18fCD5CiMxa6hv0MCF+YIPoRq+jrRvQLeMkLNOmIR/UTS8ulM5u53LyqOsy/600tMi8E6F+ZmUdCLFSUShaNrSWbE8ClIdy56GN0U5eco+5ziUGbNdOeO2yPoAjY/7KOa6+6JB2gAT9CIEAvbVHiKHng3UoQI2EzRVKMgk7MBzlaXn0UgpjHpwvo6qBBhUUPRoQgUjHBQnYqyfWOtZfn/W/agLNsqzN9IsonY5q8xMqB1dc6uDNXEdDD58+9MlFPNSn3VGKuc22afc1cnPv5BRGH4ugMoecE8RjZLLOaNBnTdH1Kku9kRdM+mxS6NcU919xJJMTXE4Vw6hLAqOHbgw78OUPXsmk6u9ydMkbw83wUCJ5V3Yp8ctVydVGkQtsrcJDMmlqOGUVTvPdieVllRSKbMooipVvgcfL+dB3LFQjQqB/B0HvLSn5Hfl2zIIwFAkppXWiVtlFIv6N+dMiAGo7Po38rfmLBmFxHep6mwkSgujMB+O67pWTYJOj1DOn4TTgKuGpCXHijviNQZTod0nQ4U6bO5S5Ixv8NwfcCOm9WUQDsSR+IFkmBfUEJyWPlad4hu6W2qAUe7Q8RkZbcut1gvCoHlBrQS/qUyWw+YexvFj95XaR/adCtzEDo4LnLxJn1TYWE+XTH/B7zDSC731VsqkoNXwpv3j/WuPjLSN3C1CO3VrSEwd1MlIUNAKcjuC1FujFdYOOBNlqWT2IuXz5Y0+nOZ3Jo7yTMsYACZj4WOEUT+cV8V/NWPJRfjchElJNnqwxLf2TWsfoCOD5eT/MAaRqVkA0JBP/fwfoTocrG+FU5LhajukthrikJh+cX28A/ufcKfvigjS956YI4gz7KvzJas3Evx/4uOvNk41CUzBmkuV0RvrdhE+T64lRIiZDx3l9gDYwzwwnvl5/ufWWb37PsAiR0+ur1HvCndggJNQMFDOo70AvsFZx7BCPqjdFTLoI8/X
+ kpZUgzSD
+ Av4vYeeEdjt39x96jZ+NpRbwJGe0LKyt9DNa5NEqWzhwhmh/givnlMH2UqaobOr7INMQbnzLZxtfKZ+7dnDxGeJs+hf5ZX9nGNex3PrhKwb0Ia+2H2c0iBCC7mBZsspXhSFR31E1Kf8m9AUCBukMJg9iquM0EgZGVyBuVDGlyZX7i8njjgGSzi2fEbyQnc0weJ670KcS36Ym7aZUuOvG2UgdrzWPc3R3XUzdeJeHxLyzTJDGPhKgSZq2lic9mCX+F21e0kr7VzIy2oOI6eL9zyvMDIDLHRh7ct4LGz2d+ZFLf6JFFeRFDDVifkWxMUiVOCCzu269y7MneUniZeqtozK4QdTjFMlS4+iv4juiCp/zbydzOqB+N2iQkzUMP7Y24idPcTSo4qL0k1Z9iH1r/Sbzg9CmN4ZluHffG0p7it9A+sipIYQG/EbIFZzMQlSsKiMGbYuYMs8FpQCxK1ddgr+wTOK6SiqK//OCdNmFBA3LkcLUEb/jGoxqaUXHZRn2Sbg+gfea+UHfXdKA+4B/3YZzbDNiaCbHxXvQnXLgMm0JR6NM3SBZ1NAdOxOMpnS6Y62u+g04cTEcE5MmxPpxkt7Dp7L5ws/QpXE6qXVGNHOmbj8qDboRZG3U9Yyq7sIni5m9nhjb5JeGXr1/y6M1FjdT1XSFiqVbTJvmto1hAHs6LUH7p6ZQcNxYnOct1yJQON2M06ICb1M74SseNrUG+Q+pvcUUI54ZCJJ2GJ4RhkVFTQQlZTnXphbY/Lpdfbhh/+YjOrknry4n36Ty2lHl3PPSK+Xu0ZV6lDPj2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,81 +119,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When checking for actual tail or head pages of a folio, we must make
-sure that the KPF_COMPOUND_HEAD/KPF_COMPOUND_TAIL flag is paired with
-KPF_THP.
+On Tue, Sep 02, 2025 at 02:58:07AM +0000, Wei Yang wrote:
+> We iterate pfn from order 0 to MAX_PAGE_ORDER aligned to find large buddy.
+> While if the order is less than start_pfn aligned order, we would get the
+> same pfn and do the same check again.
+> 
+> Iterate from start_pfn aligned order to reduce duplicated work.
+> 
+> Link: https://lkml.kernel.org/r/20250828091618.7869-1-richard.weiyang@gmail.com
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-For example, if we have another large folio after our large folio in
-physical memory, our "pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL" would
-trigger even though it's actually a head page of the next folio.
-
-If is_backed_by_folio() returns a wrong result, split_pte_mapped_thp()
-can fail with "Some THPs are missing during mremap".
-
-Fix it by checking for head/tail pages of folios properly. Add
-folio_tail_flags/folio_head_flags to improve readability and use these
-masks also when just testing for any compound page.
-
-Fixes: 169b456b0162 ("selftests/mm: reimplement is_backed_by_thp() with more precise check")
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- tools/testing/selftests/mm/split_huge_page_test.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
-index 10ae65ea032f6..72d6d8bb329ed 100644
---- a/tools/testing/selftests/mm/split_huge_page_test.c
-+++ b/tools/testing/selftests/mm/split_huge_page_test.c
-@@ -44,6 +44,8 @@ int kpageflags_fd;
- static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
- 		int kpageflags_fd)
- {
-+	const uint64_t folio_head_flags = KPF_THP | KPF_COMPOUND_HEAD;
-+	const uint64_t folio_tail_flags = KPF_THP | KPF_COMPOUND_TAIL;
- 	const unsigned long nr_pages = 1UL << order;
- 	unsigned long pfn_head;
- 	uint64_t pfn_flags;
-@@ -61,7 +63,7 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
- 
- 	/* check for order-0 pages */
- 	if (!order) {
--		if (pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD | KPF_COMPOUND_TAIL))
-+		if (pfn_flags & (folio_head_flags | folio_tail_flags))
- 			return false;
- 		return true;
- 	}
-@@ -76,14 +78,14 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
- 		goto fail;
- 
- 	/* head PFN has no compound_head flag set */
--	if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_HEAD)))
-+	if ((pfn_flags & folio_head_flags) != folio_head_flags)
- 		return false;
- 
- 	/* check all tail PFN flags */
- 	for (i = 1; i < nr_pages; i++) {
- 		if (pageflags_get(pfn_head + i, kpageflags_fd, &pfn_flags))
- 			goto fail;
--		if (!(pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL)))
-+		if ((pfn_flags & folio_tail_flags) != folio_tail_flags)
- 			return false;
- 	}
- 
-@@ -94,11 +96,8 @@ static bool is_backed_by_folio(char *vaddr, int order, int pagemap_fd,
- 	if (pageflags_get(pfn_head + nr_pages, kpageflags_fd, &pfn_flags))
- 		return true;
- 
--	/* this folio is bigger than the given order */
--	if (pfn_flags & (KPF_THP | KPF_COMPOUND_TAIL))
--		return false;
--
--	return true;
-+	/* If we find another tail page, then the folio is larger. */
-+	return (pfn_flags & folio_tail_flags) != folio_tail_flags;
- fail:
- 	ksft_exit_fail_msg("Failed to get folio info\n");
- 	return false;
--- 
-2.50.1
-
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
