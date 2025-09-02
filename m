@@ -4,140 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FFECA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E2DCA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0632B8E0001; Tue,  2 Sep 2025 05:22:16 -0400 (EDT)
+	id D0D326B0012; Tue,  2 Sep 2025 05:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03A756B0022; Tue,  2 Sep 2025 05:22:15 -0400 (EDT)
+	id CE49F8E0003; Tue,  2 Sep 2025 05:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6B418E0001; Tue,  2 Sep 2025 05:22:15 -0400 (EDT)
+	id BFAF96B0023; Tue,  2 Sep 2025 05:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD4B16B0012
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:22:15 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13C3958A30
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:22:15 +0000 (UTC)
-X-FDA: 83843769030.18.56462A4
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0EB1940004
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:22:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ursulin-net.20230601.gappssmtp.com header.s=20230601 header.b=EUiLUstv
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC2E86B0012
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:22:20 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C721058A30
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:22:19 +0000 (UTC)
+X-FDA: 83843769198.04.8E82945
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E5C03140012
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:22:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BBjWTJ4H;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of tabba@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=tabba@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756804933;
+	s=arc-20220608; t=1756804937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Be300C9M54HN2j6qqn3KzILYOn0Dm/rUn/s4aJntRQ=;
-	b=VYmcgFmE0f2wli53yMlVghkaPTs9Bz22kGth0Gd3/tCH/oTrNqbeZbEBr99ubheYcC7X4C
-	Bqwtx3HoOOvwqbYs3S97oNP0l2VH01+cIbXNymmK2Juaufj2UjquTNQwgCQOnuS/8Xn09h
-	YVLb4IiUxh2XIYRDGFIiVBkGku730II=
+	bh=UEJ7Ey14mWS9ux2fnI3lv4hByDSn+Z0hPpiKOiV6hv4=;
+	b=TSkVfh+iY/GsvWjr915asI4IgMpXWfAGEINGRXDyUOaLdY7DjOr0OvOdM4JI2eWQpkJoCh
+	9kLLTVJc6SCuoeGMX543QDm5jbQwxj39MJ/T26P12F2CgdJdGx/sWvtTcQbo5OJBXCxASh
+	FK6C7nA7tHeyAwUljMnoSpy2ZWZ4hDM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ursulin-net.20230601.gappssmtp.com header.s=20230601 header.b=EUiLUstv;
-	spf=none (imf12.hostedemail.com: domain of tursulin@ursulin.net has no SPF policy when checking 209.85.128.48) smtp.mailfrom=tursulin@ursulin.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756804933; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=BBjWTJ4H;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of tabba@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=tabba@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756804937; a=rsa-sha256;
 	cv=none;
-	b=cGZKTO6xZsFcFuEm54j9jd7Xo/WWI8tnB6z4ZCSRKXBK9OxSXO4PbfW+dRH2WcW0pydA21
-	NDULIbXScJkoq6FpWBALfhhQ5ogx5vo1S3d+y74+NljoYQLQHgIc61Slj04c4fDYHquvgt
-	U+MQE11Q69saP0i8n2vNsIfwueg/42c=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45b804ed966so15860075e9.2
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 02:22:12 -0700 (PDT)
+	b=wyOJDCr2GEy0UXoR7YkiyS3bB8YO0iuCwOdjSthL3E7NRTwm2/iLB84HwNvdrKqKqnOEXF
+	ENeFUqQSaWWn+hjZXHrE8SlUVebNKCsMMq0E/B65Flv71nYPZlZdYzXJbAdBf9ehwUuYix
+	VrAGdInKj0gwOlZ07I+j//c1n/KSzpc=
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b327480fd0so849601cf.0
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 02:22:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1756804931; x=1757409731; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0Be300C9M54HN2j6qqn3KzILYOn0Dm/rUn/s4aJntRQ=;
-        b=EUiLUstvNA/aNuun3lWl/rNLolURNF1oxm+EdiFmhZY4cEobR+vYTfOjfW7z42AAWn
-         kpu6YFb/bD1H0t0k69vjpBwP5ULWkHE1Npc4JRd9BEN4SYacK7jS7bTVnS2pDMXL/WyT
-         aP8PCX1NCEARtu4BHgUgV6qVVAD/JfQn4pjHfOVeaizdMx3UYE4LdAAubZCBZaoioRlD
-         MmdawuCaelc6Oj4QM1FG72U99yv28BsIMZgqnMAe3utZg57jSyab77j6oRjWtDiakm02
-         36guiK5GQw2Kw9IJBJhkiTtPm0C1FSMHUhckd8qn0OOvMXpw8KRa0Bg/zMQyEJoJiowT
-         qj8g==
+        d=google.com; s=20230601; t=1756804937; x=1757409737; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UEJ7Ey14mWS9ux2fnI3lv4hByDSn+Z0hPpiKOiV6hv4=;
+        b=BBjWTJ4HkfWj3PatFIUrbxTpMb0tF1XUrT1Wdi7IOtZZLlZDFLYBuXmwpc7NyYOyBD
+         9ACqCVnRbqufPjiHyaP6u0A+PK9LnukXA3oD9Sj/APThSSGIRMxNV92+9Kxy3xvCMaEQ
+         MhzaaYgfSYJ3Y7dFKHjJylUxC3BzhUOP38vzNXcRkxJnwibkWdYso5OsZS1cF63Ro8Z/
+         YzWHy0ia7saUeDARdlIK/1NA1WmJk1H8O6oyW/I9k0okFr2tumJrb7xMWipi6JiFy76J
+         0XZtKYGvnZLpDbGSsk6/ph8yhJSAmasjzQC2hZ66zV5fXKZXX5qzb6eyRNHtYeEyLDFo
+         dOnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756804931; x=1757409731;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0Be300C9M54HN2j6qqn3KzILYOn0Dm/rUn/s4aJntRQ=;
-        b=Rx8WZYTYJSWM6VNr6Lu6qz9Xxnv/IgDnGDxdEX9bulEzrEPkFjr4WFqK/4jHep5n1y
-         Y8OMUH35H8camdjdivSjLXy3/gtN75mEqBN2Pcr9F3CURGNa8q9xRXAvJR0NJE9OxSPZ
-         x9//Snit16XgT26QtvimfSiciAoKJBHdIpmZsF6ez/xOoV/s7u2D6HRC8m8+GTfIHI37
-         kNcw8e7UNoPbm89MXkYA6i0O5CFS+2J5uJem0jYlRgilD1cLOq5y7yGeuEIm3p8UCZ+B
-         eByJN/IHS6eC2omjaT0ASDqLNm9PFVwAqjOIo8Gt7ND0qY5H8qAfohjj4Limn21tHF21
-         tZJw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaMdwpVERcIxPfaJYDCliHJEsyWfLOriUIvkqphXOFSc3rO+xoEo6GO0sIbd61n2lcIcPORKxdxw==@kvack.org
-X-Gm-Message-State: AOJu0YzTw5oN4WX04siNXgSr9TL3gQQ0j0mi9sy6TLDBzy0PzajwqNOv
-	mQ2MGp6x/yeu28AqMqVaRilL3Ten6Ru81zkWTte8kZXVlI2wXyngFP+RfXJ0h5aVvSA=
-X-Gm-Gg: ASbGnct+/axnxYdrSi9Qs1d6c8fpO8hSEOdWGNfFPNHGsIifpLxfqp/PLflNhLLwj+w
-	RqgCJCPUGtpRTIuWoyxRonWllltF9by7KTbFL/9U9cj4X3G37GbxBRHQrvu+nUkjI43j+m/LjR0
-	kH5Y4nV8ZF0hVzTc9E/OUIxpo/MTKMLz0EYaXda60lq6kq1wA3UQov9oVo2mDCNYvhhAH9MU7Kz
-	gr61N5Hi7V+g9ZMr/otYyQmRG2xWwxD6rfA+7SaEf1BRY7gMwpsA6+LtV+nndDS3eDBhfNnPAqQ
-	V+J403vJ+o/9iYjvwXYwKECOM53I0nPirfqbX0eHV2pGwgZwFpkYMZB78+coJWawCi4mukEpJlo
-	zN/KTdw3Lts9Mm7ZfP50yUzqg9g+mDI7C7bk=
-X-Google-Smtp-Source: AGHT+IFjGWdM7r4OC2xPYq10JBW42QzIVS9ISDbv655toZnOdc57tKWSkMByc2ni755H7QY3mBnVYA==
-X-Received: by 2002:a05:600c:a04:b0:45b:7d24:beac with SMTP id 5b1f17b1804b1-45b8553335amr94619035e9.10.1756804930815;
-        Tue, 02 Sep 2025 02:22:10 -0700 (PDT)
-Received: from [192.168.0.101] ([84.66.36.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d0b9402299sm17994846f8f.18.2025.09.02.02.22.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 02:22:10 -0700 (PDT)
-Message-ID: <4bbf5590-7591-4dfc-a23e-0bda6cb31a80@ursulin.net>
-Date: Tue, 2 Sep 2025 10:22:09 +0100
+        d=1e100.net; s=20230601; t=1756804937; x=1757409737;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UEJ7Ey14mWS9ux2fnI3lv4hByDSn+Z0hPpiKOiV6hv4=;
+        b=mHc/fPPrl0A91EFiOyjIeitns1mjjchL02BhXbTNFvyYVq8rLqes3S/fznkwrtKuVx
+         EIdHuJwdx+w7rexf+JlK8fgjKsMBCiDCmrV8P4IZESNmt0U6PnY19B8AQ2Yhv+B+m6o0
+         i3w9E74anNEj+oAjJjfYVsSina+CLzb5a/qiWIVHuJVrsrKf5YB32SmyvzQphxaidi1o
+         9MU661HWR0Eu9RlFcdOaUahY5xUtgi/R6EfJt9DvuAenOP70aHuouS6qh41Otp8kfqsO
+         RvtIK9TyIerEkAw+xEb/J8OjJGMZDLmSamQMri5fa7a5OwvgXNfmp3Cl7nvhQU06nTQq
+         OoPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVk8qHEfSvH57ifhW+OSODHJBYcE7FGKM//FWESh3C9lx9MCFCrXFQM0hh2B8xwL/OXuiQJE+sKRQ==@kvack.org
+X-Gm-Message-State: AOJu0YyUyqmM/sutUtfEBE1FHF6rPNYKqKPlUlMoy5F1seXk81DXhsnN
+	M2WeKe0uKL7POBf8NpWYMvbdEf6jcsgl/xZ+IJsetuNtCudqfzpSDpArpMN0gFZ3whsV2tZBpQT
+	8IXjckg46Qkq9FiUTfg8R1sXBQClZirKYrLkdMwsn
+X-Gm-Gg: ASbGncvqBjMe0578LRKfmfkvFfqRU7dgcRwGZ5bxrKcrYyA+/xx9uTfGYt6UJCU9YSM
+	mARQNh2ppIal1k4XV94MOj5wU2h9aMYvaXrooJEqRr6kBDeq+6T8WslAXDTMQzxy8eH6+Tf0+iF
+	Kqo3eWNWili07W4OpgqjwDJFaIvOXhKFbTssI/Yx1dcDNEHE8ukhPQaZAZm9mbxGPJlg4LxquMt
+	oOiOpXp/raHGlQ=
+X-Google-Smtp-Source: AGHT+IE/365ZPa2na0I+61w5kSKHeQK2w8xYgvB2r/DuNmzeiSpIrPg40UHX6ZyJ0CzihYKx7admZMRUkLUk8hCwjvo=
+X-Received: by 2002:ac8:5a56:0:b0:4b3:8ee:521b with SMTP id
+ d75a77b69052e-4b31b0e2753mr12638851cf.0.1756804936638; Tue, 02 Sep 2025
+ 02:22:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 26/37] drm/i915/gem: drop nth_page() usage within SG
- entry
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-27-david@redhat.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20250901150359.867252-27-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0EB1940004
+References: <CA+EHjTxymfya75KdOrUsSUhtfmxe180DedhJpLQAGeCjsum_nw@mail.gmail.com>
+ <20250902091810.4854-1-roypat@amazon.co.uk>
+In-Reply-To: <20250902091810.4854-1-roypat@amazon.co.uk>
+From: Fuad Tabba <tabba@google.com>
+Date: Tue, 2 Sep 2025 10:21:40 +0100
+X-Gm-Features: Ac12FXxFB1Y6AnaQmou77bzNFiPMi0bpB9wRe5PhLp9QE0Dg7CKdLpI-R4eIPWU
+Message-ID: <CA+EHjTz1JxOy=E3p=So2q+k=UK3cDG6C8gOUgA9NQEpqRdhW5g@mail.gmail.com>
+Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+To: "Roy, Patrick" <roypat@amazon.co.uk>
+Cc: "ackerleytng@google.com" <ackerleytng@google.com>, "david@redhat.com" <david@redhat.com>, 
+	"Manwaring, Derek" <derekmn@amazon.com>, "Thomson, Jack" <jackabt@amazon.co.uk>, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"seanjc@google.com" <seanjc@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>, "will@kernel.org" <will@kernel.org>, 
+	"Cali, Marco" <xmarcalx@amazon.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E5C03140012
+X-Stat-Signature: uh31atqnsisupwy5ociwmdj97jju4xcy
 X-Rspam-User: 
-X-Stat-Signature: 8uxqmtgwfh18jffwwud3rnk1r7nsu1mt
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756804932-786900
-X-HE-Meta: U2FsdGVkX1/D61g9ixFurQgdIEe3upPrzToAMpebQhQYHyLVMrdoQylhNGbZPEuaDh3qSoFAB5Q8/vHvnIa37Zptt+7tvksJSjjsbaPPj3pzfQiP0zNFxES8TFpEOGupLVn7zDE/FCIBNaHZMTJayxNJiOR9NmNsgoLWmu9TkYdwqVi5wLILRTeav9afxQ25hjeO8I/NKoTKLOTjhFLFBopMfVEF/f4V1ocmtVLfOKtPPKfNWgHkk9MJCuesEyhZnH6HUYrhJlnUlv4fq75tK45JXrdj2exdwJhzqVtJNugSbCaMtvBFzk14YDZniWwvTJu7XhOxG6BkbE0myuo4FX2eA3A308hEFnydUe4GOyF0/NsUun7nKVPc/eaXmEjF7vXU0qhBQ+w1rJApBADLAQL3pTQ98Kc2bI25kFcmCOwTLOvk07K3vrfFONhAG65LPE0RCzrrlHQ39CiQy0t9uE/ZDHAOVm63RR3y346GP2a+s7GOeHnlwzAAqiLZyBhNYidXjvu1LSC+mHFUEMAWqWuipoNfFiEY1TXmruulBSeZ54U+QZgkfSN5dJrMqkfqp0v9Ypj3Q504X4sW/nJVv5tMXkb9rZO25/D1tclm6BIcLH/we9kYAHT08R23LnYYNqvHDxuPbdfIaxb0TRKDjg0tGGscIty3SgiaRPltvvxuT98fhL+Dw+G+UjAbLRDV78JwyfMYKFfHDKhmz2Ie2AoSOZdl+uC8kJtLUsc6OQRIQdX+0KmPTG53+U410xu9fEzKwJJzQxB+XkNo2zm5jo54XysU1LvU1XWPEHx3d6qDZRwLnE28nB9dqFeVw/8dBdI7ZO/gu8LAhxm/Va0FZsQs0d+Pu1uQsviBjNPJBmhWO557iRt8PjW9EP/4zpja49WeUUs688ACPdJ/aF0ox8EmSi7mi8S1THVTJYu/8LQ9QTvjCnSslUXunHjtfixZgwcLuC5vTX4PRe+4d6K
- BgWIG43u
- IwRuxf0IGCBQxQ2dYMqoiRi4jV0SABmZPNk35gqkdLuixRBuUCsp1Rd5eSgYc1ftw0/tWn9MO4I4ThdHbaoBpCa4qSFwmR+V6e7vv7xkqEylUX7Y+jxRDLWseXrnCNPzqcLj0MVlxd83hP9uxVNbVeGrp364qouD5xpVOXFJS5EIv/vdzlYxnDwTbAkgUD3Ec3vzNkqX6lC4vBLA4doOckxbcx7DDbjtd/tdO+J7dkExp+MrhCp537p7heLKYThrmyudDCmgpKbMel+uz3vasR2AaedsNFsySZEdR2Wu5VOr7kvz11rJyf5Omkv3kg6U2d/EEw2AINFDy+noBTEFs5S25bvQaELG077SHtp9gTjM0t3Os2ksudMh//rp1411n7c9bAbSSZTJVxxTcdkfxcKa9NhSSYyo+0qFoHY0jntgtxZCQZyeg37JrrNH6fVI8XX7n8YNBqKq/xqgJ0Er9wk87FQrRXqkDcqR/PglKQQWBHV+9fG8yKDBxQxylBfhxdgrhCWtrMDw2T8zs4k5BpfrsNA==
+X-HE-Tag: 1756804937-2403
+X-HE-Meta: U2FsdGVkX18RjEbGQA35ecUT6uo2nJqJwK0Skie/zuMbvfjDTD10Tv6ZJxniRC0O+DnSB+1/s9UNKQIil5IJ9NiIjHpo3B/0kGhX7nXeUZphEO+uLrkooQwQdIETAwf4W4spuG4tmMLB0hZDqjgMHlmrZK4K8FKOXmtqPVVgX1KbLaJA4KxNANa477+6WF6TnKbcWRXmfY8+a5hjAexlddaBnfB7aqCP9H1wOcPn+kL7W8+qKZBKhS/NVZ8gWlyZhkP9FdmveEp2XW5e0N8lOTdfwnGvsYSTHFNjS1MoQG6l+HNhyhZ5a8j323xjM7IMo2I5ZUfK+Ay7IpAs+BeiKAtlEfPd66kznfGaS45uQdWtWPtsy5YSIFnil/TiCIWFjI0p1ZHGhGucT+QZyiiCbYw1WeP0Mx+doFSAgfwJ4kGFtLBKivBlEIv7bAefBBb/iR1MosjnpolilSVEZPJLSJ2bIWCgKaIRrx7idfaXVYIRT5uaxAvaIECijzs331dSOKJ3XDsB6wroPfB5p1GI8kGB2d9TEK8aOzFbZzIjNunIs8wlTr21ICbg5cRGmNedLae88pQkC5Nc1CrirqbuyL1ESyE9/A4VzrWpxFK3LhKxRJ5/0B50Ab1psntoeVpSoKgQBuw2lJChusJcWo8ZBZa8ipJRachtN8nwdi3eDaDEb1mxlzZ6+FGMtstEMInCPvZkHiV6mzdyeUEjug72pbwc80/DUv19jq9/weUcPuWddVjYdtA/i5B+/T/8vgaczrFPwpnw/GLRm/o+LfJ3sWosmmA5yGuuay4CWS9GMfeiFy/hz02Kf/m5wwgKYoj8WdrY7SqMur7f+dhqm87Oahz6/24yDC1pfmgB4XgivAVj9eM6BrB8072KNVsPkV85sFm20i4WnGgu5xc5hZlkk1bV6IbaFyvPRVlBkjstaA/nvQpJpM48t//m8UyHjUGdEm5VkR+Utd4K9r+6Iil
+ pfL+4sGu
+ Bof+Q6imVFiRKm3Z8j8oIJ7Tb6KrITktVcVESbs/vwTL3DSvjpeoShlDvDrA/+raXAAVI/mKWbOItJOZGnxjABfFCjBnIfGgtbbV1ATntiX771+LJgutZNLgKv/22dt/njGEqxjGlgeesXSE4HS/LVR1TOz0RETZFFNKjPlTbSLPvrZngel1xJH/6GIUvdgBQHDczLjJ3fNqAw/7AP1d1FjZ8ZME3mhEdgcbJHooODBHrv8+hhWow/G/JDqHS6uSTLhvECplvGgbpRDgrI6/vBPMH2EMfgpbWsLcYgTCq6GJEOnAL3MKP3FiC+ilyrMlhpbS/G5p/XTacaalqCrxyFNRF80E+AkCy+dxvp+sdWAGpQ+ogM7D7fMCi/W6r1E3DJFfOxdxDDo9OU3pdqYhL2wLXj6tY7I9+R2vv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,42 +121,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 2 Sept 2025 at 10:18, Roy, Patrick <roypat@amazon.co.uk> wrote:
+>
+> On Tue, 2025-09-02 at 09:50 +0100, Fuad Tabba wrote:
+> > On Tue, 2 Sept 2025 at 09:46, David Hildenbrand <david@redhat.com> wrote:
+> >>
+> >> On 02.09.25 09:59, Fuad Tabba wrote:
+> >>> Hi Patrick,
+> >>>
+> >>> On Mon, 1 Sept 2025 at 15:56, Roy, Patrick <roypat@amazon.co.uk> wrote:
+> >>>>
+> >>>> On Mon, 2025-09-01 at 14:54 +0100, "Roy, Patrick" wrote:
+> >>>>>
+> >>>>> Hi Fuad!
+> >>>>>
+> >>>>> On Thu, 2025-08-28 at 11:21 +0100, Fuad Tabba wrote:
+> >>>>>> Hi Patrick,
+> >>>>>>
+> >>>>>> On Thu, 28 Aug 2025 at 10:39, Roy, Patrick <roypat@amazon.co.uk> wrote:
+> >>>>>>> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> >>>>>>> index 12a12dae727d..b52b28ae4636 100644
+> >>>>>>> --- a/include/linux/pagemap.h
+> >>>>>>> +++ b/include/linux/pagemap.h
+> >>>>>>> @@ -211,6 +211,7 @@ enum mapping_flags {
+> >>>>>>>                                     folio contents */
+> >>>>>>>          AS_INACCESSIBLE = 8,    /* Do not attempt direct R/W access to the mapping */
+> >>>>>>>          AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+> >>>>>>> +       AS_NO_DIRECT_MAP = 10,  /* Folios in the mapping are not in the direct map */
+> >>>>>>>          /* Bits 16-25 are used for FOLIO_ORDER */
+> >>>>>>>          AS_FOLIO_ORDER_BITS = 5,
+> >>>>>>>          AS_FOLIO_ORDER_MIN = 16,
+> >>>>>>> @@ -346,6 +347,21 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(struct address_spac
+> >>>>>>>          return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+> >>>>>>>   }
+> >>>>>>>
+> >>>>>>> +static inline void mapping_set_no_direct_map(struct address_space *mapping)
+> >>>>>>> +{
+> >>>>>>> +       set_bit(AS_NO_DIRECT_MAP, &mapping->flags);
+> >>>>>>> +}
+> >>>>>>> +
+> >>>>>>> +static inline bool mapping_no_direct_map(struct address_space *mapping)
+> >>>>>>> +{
+> >>>>>>> +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);
+> >>>>>>> +}
+> >>>>>>> +
+> >>>>>>> +static inline bool vma_is_no_direct_map(const struct vm_area_struct *vma)
+> >>>>>>> +{
+> >>>>>>> +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapping);
+> >>>>>>> +}
+> >>>>>>> +
+> >>>>>> Any reason vma is const whereas mapping in the function that it calls
+> >>>>>> (defined above it) isn't?
+> >>>>>
+> >>>>> Ah, I cannot say that that was a conscious decision, but rather an artifact of
+> >>>>> the code that I looked at for reference when writing these two simply did it
+> >>>>> this way.  Are you saying both should be const, or neither (in my mind, both
+> >>>>> could be const, but the mapping_*() family of functions further up in this file
+> >>>>> dont take const arguments, so I'm a bit unsure now)?
+> >>>>
+> >>>> Hah, just saw
+> >>>> https://lore.kernel.org/linux-mm/20250901123028.3383461-3-max.kellermann@ionos.com/.
+> >>>> Guess that means "both should be const" then :D
+> >>>
+> >>> I don't have any strong preference regarding which way, as long as
+> >>> it's consistent. The thing that should be avoided is having one
+> >>> function with a parameter marked as const, pass that parameter (or
+> >>> something derived from it), to a non-const function.
+> >>
+> >> I think the compiler will tell you that that is not ok (and you'd have
+> >> to force-cast the const it away).
+> >
+> > Not for the scenario I'm worried about. The compiler didn't complain
+> > about this (from this patch):
+> >
+> > +static inline bool mapping_no_direct_map(struct address_space *mapping)
+> > +{
+> > +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);
+> > +}
+> > +
+> > +static inline bool vma_is_no_direct_map(const struct vm_area_struct *vma)
+> > +{
+> > +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapping);
+> > +}
+> >
+> > vma_is_no_direct_map() takes a const, but mapping_no_direct_map()
+> > doesn't. For now, mapping_no_direct_map() doesn't modify anything. But
+> > it could, and the compiler wouldn't complain.
+>
+> Wouldn't this only be a problem if vma->vm_file->f_mapping was a 'const struct
+> address_space *const'? I thought const-ness doesn't leak into pointers (e.g.
+> even above, vma_is_no_direct_map isn't allowed to make vma point at something
+> else, but it could modify the pointed-to vm_area_struct).
 
-On 01/09/2025 16:03, David Hildenbrand wrote:
-> It's no longer required to use nth_page() when iterating pages within a
-> single SG entry, so let's drop the nth_page() usage.
-> 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->   drivers/gpu/drm/i915/gem/i915_gem_pages.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_pages.c b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
-> index c16a57160b262..031d7acc16142 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_pages.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
-> @@ -779,7 +779,7 @@ __i915_gem_object_get_page(struct drm_i915_gem_object *obj, pgoff_t n)
->   	GEM_BUG_ON(!i915_gem_object_has_struct_page(obj));
->   
->   	sg = i915_gem_object_get_sg(obj, n, &offset);
-> -	return nth_page(sg_page(sg), offset);
-> +	return sg_page(sg) + offset;
->   }
->   
->   /* Like i915_gem_object_get_page(), but mark the returned page dirty */
+That's the thing, constness checks don't carry over to pointers within
+a struct, but a person reading the code would assume that a function
+with a parameter marked as const wouldn't modify anything related to
+that parameter.
 
-LGTM. If you want an ack to merge via a tree other than i915 you have 
-it. I suspect it might be easier to coordinate like that.
+Cheers,
+/fuad
 
-Regards,
-
-Tvrtko
-
+> > Cheers,
+> > /fuad
+> >
+> >
+> >> Agreed that we should be using const * for these simple getter/test
+> >> functions.
+> >>
+> >> --
+> >> Cheers
+> >>
+> >> David / dhildenb
+> >>
+>
 
