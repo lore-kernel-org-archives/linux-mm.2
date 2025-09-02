@@ -4,97 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4268BCA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:00:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52346CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:01:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8961A8E0006; Tue,  2 Sep 2025 05:00:05 -0400 (EDT)
+	id A6E378E0005; Tue,  2 Sep 2025 05:01:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86D298E0001; Tue,  2 Sep 2025 05:00:05 -0400 (EDT)
+	id A244E8E0001; Tue,  2 Sep 2025 05:01:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AA538E0006; Tue,  2 Sep 2025 05:00:05 -0400 (EDT)
+	id 90CE18E0005; Tue,  2 Sep 2025 05:01:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 686228E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:00:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F46113B518
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:00:05 +0000 (UTC)
-X-FDA: 83843713170.13.A6D52AE
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2179218000A
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:00:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=fFtnC1zW;
-	spf=pass (imf24.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756803603; a=rsa-sha256;
-	cv=none;
-	b=QJy5gt5AnE3bnKszFJ+T9fpZVWr3JrRuyK4hPphuWQmPVrDCe6MeFCa75F7lPbS4mzPW1v
-	yCS5ks1mRJ/IsoUE53Fwj1lG1N9EZNcZzAXcB01xB3CX6eu/ZlvuDY4R7VWNkA5nCEMf8b
-	wo3qeMQoFZ54f0pjnVhoLNtqK3B83Xc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=fFtnC1zW;
-	spf=pass (imf24.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CA148E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:01:27 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FF17BDA4C
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:01:27 +0000 (UTC)
+X-FDA: 83843716614.21.0CAC1BF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 918AD100015
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:01:25 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=baUJTPlI;
+	spf=pass (imf05.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756803603;
+	s=arc-20220608; t=1756803685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u6U/TCetAKMfHaRmR9thC/jSWNiJ+4ewzJjcPKb0o6s=;
-	b=6qyxYQU+VjN497S9DJ25ePmn4wzqwAaRj+YvQ/fUov71xwT5SaetuaJceyz4hyKOCsvlqO
-	FOTbqC2kvK6Rm3kopaPSqAYvaEePGsNI3opucKkBcN0NfilVaoPaDOLu6TWGW7xZ6wL5Gw
-	OD5/DB2tSIYjGFH/ofjhw+dB1lwdZCE=
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cGKSb1P72z9tmC;
-	Tue,  2 Sep 2025 10:59:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1756803599;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u6U/TCetAKMfHaRmR9thC/jSWNiJ+4ewzJjcPKb0o6s=;
-	b=fFtnC1zW5WM1bgu/WlqUS/sI0OJC2MxE5x1uHvH6i4fIE165xyzxBv3FdZwJUjiyqLBbxQ
-	g4c8bbAwCE/LViX2pTr7zdp4JZzAlFKCMi/fgOaJK0w/t+XCnUY7EfJFqdk+sQU52wNW9h
-	40kEKzsONmRYpoT/m3a/rEpxXKETmHtAuLADBYcfnDtO+JXYmmrLXTz6xvHSHSS1EPGbO2
-	Ox6+LVfcJIZUKo0hVScj0ulzP4pQHSS/H8y8PiqftQsTBfLMVKUUBzrDHQk9bpW7VllRsk
-	PYRSoaoNd1FTzKOOuiwbVAAZrisJGYJJlNefrJvwYKY44e1IfEX0Ne+OldAQhQ==
-Message-ID: <cdbc4c22-7a6f-4c01-8d2b-550b643318d8@pankajraghav.com>
-Date: Tue, 2 Sep 2025 10:59:52 +0200
-MIME-Version: 1.0
-Subject: Re: [PATCH] huge_memory: return -EINVAL in folio split functions when
- THP is disabled
-To: David Hildenbrand <david@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, willy@infradead.org,
- mcgrof@kernel.org, gost.dev@samsung.com, Pankaj Raghav <p.raghav@samsung.com>
-References: <20250902084036.208921-1-kernel@pankajraghav.com>
- <1acb705c-4846-4a12-9e90-f7853da8a295@redhat.com>
-Content-Language: en-US
-From: Pankaj Raghav <kernel@pankajraghav.com>
-In-Reply-To: <1acb705c-4846-4a12-9e90-f7853da8a295@redhat.com>
+	bh=fMryxygkew06NlplTbkcVp3rqx9J0qMVKKT3morB4aM=;
+	b=zv3M/bR5lKHVILwObK5+ugevwzrUGHHx0MIIOOBtWVykBPaekIyMN/Vra13LgOVqVbpI3G
+	i86qtoIQuVCoqbkrrQ9VBug93X6IINEZca5ttGGA7JHvs0u/01SUN/Tz1I3R5w0D4/4dti
+	BcRcMCqzKV2zzV+BaG1SbsH6Kxax4uw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=baUJTPlI;
+	spf=pass (imf05.hostedemail.com: domain of dakr@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756803685; a=rsa-sha256;
+	cv=none;
+	b=Dp3Y4kEoy5AKjDD8TeEc1atFzWK5644w+QsZBLEBEUN8tNteeZX61/Uoe2KLBylPhjymul
+	pAgzyACvEa0P5ExOUOkOG3CykucOu5fg9/XZT3cm2R+V16h9ZjrEMyaeInqq7qOFUA6kvF
+	qmOlOo2egraaRDjZx0fstBHD6/pGW/E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D5F4601FE;
+	Tue,  2 Sep 2025 09:01:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471E8C4CEED;
+	Tue,  2 Sep 2025 09:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756803684;
+	bh=p07YiMczpEjLy1P1T4iapwfegPf/bwOQIeOyzaKjibE=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=baUJTPlIeMsuFcGtJgDaavsbxf3j0VGDSNtAa3sWQjclASyVXrz3MWb//IGV0Lm3b
+	 On1aKdbjZHd+SbeT4WbkWRlVOfo7S/V8TZXiVMKOgZTgJ+WC9ij5WbbYEkcZqSfhwx
+	 +APBQvKOZFLrZrgpzfA74IUtMW3q0p7quiIX+FdGh4fpJcaYAGkGEDvu3FpnfZh6f8
+	 g8+0C5v06W0ytqofAZ/F2Zho4InBsDqM+m8Yy9jOKvztDwpJK7qGiXWGWhGWF0mzUR
+	 y4G4ZdMRKw4c05yhGeFgJYRJowgkT3aJ1jU9XqjXojuLoVh/CaTG3fLBjn2aKU1SEW
+	 xXaYjF/4DaIxw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2179218000A
-X-Stat-Signature: pmue67iqordy57ndifphcy9ysgf54896
+Date: Tue, 02 Sep 2025 11:01:19 +0200
+Message-Id: <DCI6XGR65KH9.27TWYVKNZNGHV@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 1/3] rust: maple_tree: add MapleTree
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Ballance"
+ <andrewjballance@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <maple-tree@lists.infradead.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20250902-maple-tree-v3-0-fb5c8958fb1e@google.com>
+ <20250902-maple-tree-v3-1-fb5c8958fb1e@google.com>
+In-Reply-To: <20250902-maple-tree-v3-1-fb5c8958fb1e@google.com>
+X-Rspamd-Queue-Id: 918AD100015
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756803602-518500
-X-HE-Meta: U2FsdGVkX198FchhDGIMjXuYidy0AEgBAaB0IVKZtaq0KHVBAbrETG3PP+Z8ofJHxs4Mcjcv2wKTolWYV2dsql32+0S4dRwfwzVb4MEEwbZPol89LY4uRlPciR5WGrQ4WdJbIv4BdedaaMmGG2ZNMjvnvtmDlKaHThthJNQ9lrdxx4lTwnmgoySZwMTtfhwk4+7pKeQGj5M7lEqO5o8zv17qy3tnPCNRaEGYUROAlcFstPEWJz2tmqfbutcMRtkRRpgHgiKMzu/cz4XrkpZrWR3irfjG8G6quyhfeu0iLQPnEQXCYHx1HHOmfpkOsgWSLkAege3SKxS6eHBaO0OyHpax5P1FdNWcnOsk+JDRs+RS3VoZruvRSLXYkZFGqom68cgA4xRIqDaslroeWeJIXUcLvM6E2MuCFSAT3+s1orgByMzAZlWy7/Z0myguQC/zrnzII9v1YQ0Of4G0BTwYRcDj91TRNWYbI/3AI9IM1hQA3/1tRAms71pVRFzzSFruP6tVJpQcg7QxDloSN2qHRsHyo2OVJUOsM5IZD0+dsW1N9cXJFylwR+z3L490UEyiSTAx4+/SdYirGvUgJSgoZsFL7981SSaD5tfydKdcTuVNjDUL/2LbXl6zUZ/YcSR5v/Dxy/woUB3LUk2N/GfmFOif54FcQXFCjBU54lGmMia4x5MSBKtQOgzG29RUH/iFlOu/WDXTgkBVhSR3fdrZEuaUbmWACuHsCAPxTpU6IDUlyyJgMZw+4Gi8s/TBsjmfLoEJEze/N/5jIs1VT6SmXljI0QUXvecD36UPYzqE8//knsXDtuXwbeJvHe6ocKyIaBHZx5pIlRhldyJvvIVStAu0ZHzePiR1AwRr9Y8bENUc2Ota640abDEx27puZJscJ5TyfsLzznobe9hPfIa4E2xvXgUbmJ/Jf6JwHJppFTcKtB4wVeah+C0p/g5uFRyA/W73I9QBSf+iIJ5sqRu
- sGERc2Pw
- Bn7/EvP7dhrWvcQDzETQp+w10/JTziAkI7kJpAQwrAzTnaThcdJmwL+7kVCvIoSxeyyaP/Mr2a+bVWMz7JhAeP+vot6uD2DFhQwmtzpGDJtiPMEWSclbuGApPHLD1IKczlR5oLqAvYo8A9Fhb1EewVmZwXbVw3uT2UJ1hO7SOgzG8C5DxwOJb+m4syW8XEe9QNvFSTicLMGbI0s+SRhbzPBmfunPYZIBIpGcaPRXEJ+UaHN1iU4PKr488WAlWL38GWUfYXz85k27lcfk1359TDnwPTeM2JHOees4VycKOXkaNra1AchP0JrdinZoJfdVCiQ2zLanY/4C0XOeuIZXBlXbjwi1vnilhuf5NWlqBHHMADjaQtqdi7EslUQ==
+X-Stat-Signature: jkou5shbqh5q9s9f6a9nhpgzqnqyafzk
+X-HE-Tag: 1756803685-143572
+X-HE-Meta: U2FsdGVkX1+RtH6woc+PNeZfe08QMSkredbjOrzLFx5TFsSz52Ywm4UYtHJJCO0VHkGA0cc2V15OLy/U/aCHr7ovUlax6IUbzM/NWB15GTgIzroDvAEElTwCh7mbkCb2zgDN9FUdyBm+dm9uOegcnzLTHvEdEhzYU+lmqnVjoSnxFoXSC4TkplTBN4Ft5XQj5iOv7MW0Pfsr/SGoDuHtM0t7PWAiDTokGen63kFIjj82Jpmrl69KRYutV7HS/D04Z+ZRZfZc79Gp3gXQKEplORUfKDsP4HHsc54LIzEkZFaAktwYOtCY3s+vBulMnMCr/tfchjCpO+atyOv9xttGXuWB+HDDcCh8OqmF8por77iUSEUzFUWJ/n7G3cgF5mGoFkCBVykSbwZ8NwSX0iPu6CnWmR03vARyh03cOe3Eas1YH/x0oySCoQjpGokjNVOYXqPWIqGgUCFRv4fN970eoIRpUfPZNtwRSM2G5q0EX5tN3V26AW5pdrwbRxCxgPGYVAOLRwvBOeL/KTVQSfF4brxuZC1OJMbeFAvsJEzN9iRWFQr8TF8y5skYoAvCaucNnftob8eid+P7fo8pWNWJHrEBRp1HhhGNSRrTqWjsSlA4QsjwOPyXV6YD0sfK7C4PpevZAfoRXbzKdCUERWXDfudVD3DJ3chzLgj5Ub57IeGKqb7h5me6HaAq69GQ5a4BPRPvs5aUqxvf0s+u6T+IjXJX0KhPJEKnKQIlxMIYO/gUJWxxmI2qAYL2nlw7tvqxTEJ3DkoeihJTrW1axiHaXvuJsNXUHpdARb2s6EukHVttgTt6vZSKPw9MhKw+THW5WrKgKhxM1NceXnuZrPAU/JJI/+pzIfQSjX44+FlBCwWduB3i8akKGmd/H9yFz41aML16yiNcIqkCh6ibBM6sKAkqb6kJi8h/LnGAZAJnoeCohYd81NIQuTlJqv05NPvj0cnEFFkv8LpNII01qgG
+ pikbfOXc
+ 1XdZad/eUqM0qF641r9Q7lYYKMSRv6xO2Hi5ni/2niJXQkyktUHjNf3DrcD5SP9GAqIfFJSgpUkSsCghyh1Hie13qBtMLtPAVSYeQ13bZvm89sAnuHHL7bF7vbkX+3i0LIgEZoQVo+pcHuRuT73WZNbQcoaxFs/7aaVFmhgGaG8KIJQkoQ4yS4DL9SuM2bi65bTVvVGZ7H4DSi2zBCLZE49QQ32SNiTQBox3iVxZ3ydYzXjXvkH2Evy5HZ6A1WMsz/yzGz/EA1pqvdg0pfYyvb0yyaSbIq5gAZYG8lHC4QYkRNfFbCvMHOh5p4ACsF2t7E5wvxTJX4F67IgamiXaVZyBLnSmbwJfmcOLLQzVR3YRcMMD+J1t7c8nvBKbEBO3NjzUK/1GNCRzK0VdcDosK18NXqM57eQh1SVm7USd21oojAvxD7Vpb4120WigRZ266DxDoP0rwQlFr9coZNGAcqCD1HQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,34 +100,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue Sep 2, 2025 at 10:35 AM CEST, Alice Ryhl wrote:
+> The maple tree will be used in the Tyr driver to allocate and keep track
+> of GPU allocations created internally (i.e. not by userspace). It will
+> likely also be used in the Nova driver eventually.
+>
+> This adds the simplest methods for additional and removal that do not
+> require any special care with respect to concurrency.
+>
+> This implementation is based on the RFC by Andrew but with significant
+> changes to simplify the implementation.
+>
+> Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-On 9/2/25 10:43, David Hildenbrand wrote:
-> On 02.09.25 10:40, Pankaj Raghav (Samsung) wrote:
->> From: Pankaj Raghav <p.raghav@samsung.com>
->>
->> split_huge_page_to_list_[to_order](), split_huge_page() and
->> try_folio_split() return 0 on success and error codes on failure.
->>
->> When THP is disabled, these functions return 0 indicating success even
->> though an error code should be returned as it is not possible to split a
->> folio when THP is disabled.
->>
->> Make all these functions return -EINVAL to indicate failure instead of
->> 0.
->>
->> This issue was discovered while experimenting enabling large folios
->> without THP and found that returning 0 in these functions is resulting in
->> undefined behavior in truncate operations. This change fixes the issue.
-> 
-> Currently large folios that could be split are impossible without THP, so why should this be a fix?
-> 
-I was debating with myself whether it will classify as a fix or not. I have had people tell me that
-I should mention it as fix even though I didn't feel like it ;)
+One nit below, otherwise:
 
-But I agree with you, we can't hit this issue in the upstream kernel. I can remove the fixes tag in
-the next version.
+	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
---
-Pankaj
+> +    pub fn insert_range<R>(&self, range: R, value: T, gfp: Flags) -> Res=
+ult<(), InsertError<T>>
+> +    where
+> +        R: RangeBounds<usize>,
+> +    {
+> +        let Some((first, last)) =3D to_maple_range(range) else {
+> +            return Err(InsertError {
+> +                value,
+> +                cause: InsertErrorKind::InvalidRequest,
+> +            });
+> +        };
+> +
+> +        let ptr =3D T::into_foreign(value);
+> +
+> +        // SAFETY: The tree is valid, and we are passing a pointer to an=
+ owned instance of `T`.
+> +        let res =3D to_result(unsafe {
+> +            bindings::mtree_insert_range(self.tree.get(), first, last, p=
+tr, gfp.as_raw())
+> +        });
+> +
+> +        if let Err(err) =3D res {
+> +            // SAFETY: As `mtree_insert_range` failed, it is safe to tak=
+e back ownership.
+> +            let value =3D unsafe { T::from_foreign(ptr) };
+> +
+> +            let cause =3D if err =3D=3D ENOMEM {
+> +                InsertErrorKind::AllocError(kernel::alloc::AllocError)
+> +            } else if err =3D=3D EEXIST {
+> +                InsertErrorKind::Occupied
+> +            } else {
+> +                InsertErrorKind::InvalidRequest
+> +            };
+> +            Err(InsertError { value, cause })
+> +        } else {
+> +            Ok(())
+> +        }
+> +    }
 
+	// SAFETY: The tree is valid, and we are passing a pointer to an owned ins=
+tance of `T`.
+	to_result(unsafe {
+	    bindings::mtree_insert_range(self.tree.get(), first, last, ptr, gfp.as=
+_raw())
+	}).map_err(|err| {
+	    // SAFETY: As `mtree_insert_range` failed, it is safe to take back own=
+ership.
+	    let value =3D unsafe { T::from_foreign(ptr) };
+=09
+	    let cause =3D if err =3D=3D ENOMEM {
+	        InsertErrorKind::AllocError(kernel::alloc::AllocError)
+	    } else if err =3D=3D EEXIST {
+	        InsertErrorKind::Occupied
+	    } else {
+	        InsertErrorKind::InvalidRequest
+	    };
+	    Err(InsertError { value, cause })
+	})
+
+I think that's a bit cleaner than the above (not compile tested).
 
