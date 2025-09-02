@@ -4,169 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3485DCA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 07:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20117CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 07:46:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E83B6B0023; Tue,  2 Sep 2025 03:16:08 -0400 (EDT)
+	id 669B28E0003; Tue,  2 Sep 2025 03:46:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69E848E0003; Tue,  2 Sep 2025 03:16:08 -0400 (EDT)
+	id 61A7D8E0001; Tue,  2 Sep 2025 03:46:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 587818E0001; Tue,  2 Sep 2025 03:16:08 -0400 (EDT)
+	id 509868E0003; Tue,  2 Sep 2025 03:46:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 45B306B0023
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 03:16:08 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CAF0486509
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:16:07 +0000 (UTC)
-X-FDA: 83843451174.13.78FF58C
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 892DA20015
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:16:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=pP7TODQU;
-	dmarc=pass (policy=none) header.from=fu-berlin.de;
-	spf=pass (imf03.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FD578E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 03:46:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E6C6C5CB08
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:46:36 +0000 (UTC)
+X-FDA: 83843527992.17.3029074
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 85842C0006
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:46:34 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S6o35P2i;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756797366;
+	s=arc-20220608; t=1756799194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=75QsosR73EP7Bhx5dXwnnBiSrQlTSAdKIHehZonw/2s=;
-	b=Z4PgKjk7WwDa030d1cXnsdp77jfBzpRXM1jTPs+qDVWwsUlHkOOX2IMRdkdYUcjKNOVzU9
-	LtWHoGntA8LHLJe2JRmj+sQZL2GCZ/XvAeZ5icuCE/YPL0B9OZtmOZkP1R1kZz2mbKx/c+
-	vTWMb5VJr8Qf0GUnUgqINhvkgGZBxUw=
+	bh=Qzr7tEk9QItwIeF7TnzaOixRSPGJEnioPW1Itw0DucE=;
+	b=A+4ThMM/4oYuMkRfRRL1Bq6Uqn7d2lB8hVuXQl32HK2N7cNoZT5Q5IqlHMMWnwTAqbBzl5
+	XUM+7YuaQdclxktSyC06dThPVOTUn0kQNRItiw+PbYhDJVXlHp/OHfY+8vyzv8W8mHpVdV
+	S+fmCXbQReoMq8iCJxlx2oPCm5hY97s=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=pP7TODQU;
-	dmarc=pass (policy=none) header.from=fu-berlin.de;
-	spf=pass (imf03.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756797366; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S6o35P2i;
+	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756799194; a=rsa-sha256;
 	cv=none;
-	b=2aGsSU78ujFs+2tH3YAokjUHSd4zN4ciC+jAWYhdnTfcvrJ68rVXFvWgWZdXTuNzuxk/Wu
-	D+Ruk1gXqTSxWw+aX3SHYwC/5DlsurVJ52EbDg3XM4edLPU5r/wU6nrHnrJOmZqvHsQf8n
-	i1H1wIJiCYYSTHNfd4JzBR2IdLROcUQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=75QsosR73EP7Bhx5dXwnnBiSrQlTSAdKIHehZonw/2s=; t=1756797365;
-	x=1757402165; b=pP7TODQUs3ySqH09QonUQJREd/07argNEvU4W73xNsnPNwc1CvYTIy75Kzs3e
-	6ECGlyadaIrRbEaV5C+CwR8tMf4gB9c4/bc0h6E65mns9ERu19AtM2fbThJmbN2MHODL/YgVjaFzN
-	bgFmKNEBFfaW0I6N2NkNA0JS/rc8cUdGBNaPjyMsnTcidl/8e4AAYvZzgqQ1xymcYj4V+HZ2jWc4h
-	t5z2DTD//0cgSDL0k3xDK7XOv8OPGSm5Y1weWxQbxFnfpxCKg0XBLMhxWxkEIKGyZBKBUZSXk9wXb
-	EFPp27iNVDA2ckq5VBQPVxNwAnp62LJGVxePc6kYxOKr5XTngQ==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1utLEY-00000000Jm4-13FP; Tue, 02 Sep 2025 09:15:14 +0200
-Received: from p5b13aa34.dip0.t-ipconnect.de ([91.19.170.52] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1utLEX-00000002jxi-2pMt; Tue, 02 Sep 2025 09:15:13 +0200
-Message-ID: <11a4d0a953e3a9405177d67f287c69379a2b2f8f.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Andreas Larsson <andreas@gaisler.com>,
- schuster.simon@siemens-energy.com,  Dinh Nguyen <dinguyen@kernel.org>,
- Christian Brauner <brauner@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@redhat.com>, Lorenzo Stoakes	 <lorenzo.stoakes@oracle.com>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka	 <vbabka@suse.cz>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Ingo Molnar	 <mingo@redhat.com>, Peter
- Zijlstra <peterz@infradead.org>, Juri Lelli	 <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,  Dietmar Eggemann
- <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben
- Segall <bsegall@google.com>,  Mel Gorman <mgorman@suse.de>, Valentin
- Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>,  Paul
- Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,  Alexandre Ghiti	 <alex@ghiti.fr>, Guo
- Ren <guoren@kernel.org>, Oleg Nesterov <oleg@redhat.com>,  Jens Axboe
- <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara
- <jack@suse.cz>, Tejun Heo <tj@kernel.org>, Johannes Weiner
- <hannes@cmpxchg.org>, Michal =?ISO-8859-1?Q?Koutn=FD?=	 <mkoutny@suse.com>,
- Paul Moore <paul@paul-moore.com>, Serge Hallyn	 <sergeh@kernel.org>, James
- Morris <jmorris@namei.org>, "Serge E. Hallyn"	 <serge@hallyn.com>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker
- <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Masami
- Hiramatsu	 <mhiramat@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Mathieu
- Desnoyers	 <mathieu.desnoyers@efficios.com>, Arnaldo Carvalho de Melo
- <acme@kernel.org>,  Namhyung Kim <namhyung@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Alexander Shishkin	
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers	 <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, John
- Johansen	 <john.johansen@canonical.com>, Stephen Smalley
- <stephen.smalley.work@gmail.com>,  Ondrej Mosnacek <omosnace@redhat.com>,
- Kentaro Takeda <takedakn@nttdata.co.jp>, Tetsuo Handa	
- <penguin-kernel@I-love.SAKURA.ne.jp>, Richard Henderson	
- <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, Vineet
- Gupta	 <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Catalin
- Marinas	 <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Brian
- Cain	 <bcain@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui	
- <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, Michal
- Simek	 <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Jonas Bonn	 <jonas@southpole.se>, Stefan Kristiansson
- <stefan.kristiansson@saunalahti.fi>,  Stafford Horne <shorne@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
- Deller	 <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman	 <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy	 <christophe.leroy@csgroup.eu>, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger	
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Yoshinori
- Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, Richard
- Weinberger	 <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg	
- <johannes@sipsolutions.net>, Borislav Petkov <bp@alien8.de>, Dave Hansen	
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>,  Chris Zankel <chris@zankel.net>, Max Filippov
- <jcmvbkbc@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	selinux@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org
-Date: Tue, 02 Sep 2025 09:15:08 +0200
-In-Reply-To: <f2371539-cd4e-4d70-9576-4bb1c677104c@gaisler.com>
-References: 
-	<20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
-	 <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
-	 <f2371539-cd4e-4d70-9576-4bb1c677104c@gaisler.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	b=Mqq4P1di79iktaUJuwlxCGK4iOfNcSa/tMwZL42gt/hwt0W7MnIR/jztCUnpgjv74U7III
+	CW8QqKpQFxvHlyDD+Q9CoLihlslPiNnRLD1oZMomO2DfOhbsqj/N+uwflWzMgCd6cw3o+l
+	MjhtchvoTVTVkUr+QtDiqlPwdabjtIo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756799193;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Qzr7tEk9QItwIeF7TnzaOixRSPGJEnioPW1Itw0DucE=;
+	b=S6o35P2iu98VgVd30fXsT2U2hKTd/CRoGd+A+Qh0f10ew1YgNOUEQnLx+5j8CeZ5X/iotc
+	FjmJGeB8pOd3ICb7u6lEWGFZmEnLoPG/qmqsKoJRp3f99Q0iviDs+fNOvynmPX4e86wq5c
+	/gF2EbXyf2x/aK6B5wzEmMUwXNXVfdM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-c_LyKRzyOJOtfnb8jetgFA-1; Tue, 02 Sep 2025 03:46:32 -0400
+X-MC-Unique: c_LyKRzyOJOtfnb8jetgFA-1
+X-Mimecast-MFC-AGG-ID: c_LyKRzyOJOtfnb8jetgFA_1756799191
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b467f5173so48180135e9.3
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 00:46:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756799191; x=1757403991;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qzr7tEk9QItwIeF7TnzaOixRSPGJEnioPW1Itw0DucE=;
+        b=R6FaP1pEEXZY+uY4eWlc0ayqDA9QrdUedj6SFl2/KM9IsS0XN11ykCu7qf1JYEUM1L
+         T8CTY9A45nrj7QZqvTL1JmR/y/bqPq3FA6bcvTsjdfwMG66vnsdIsKw96a10onbG92+Z
+         xE4x2jyX81wBKYwFWpmFQzV1lNh1pkm+9dqhU2qyKjj4OVykfgFmKpo5o8QGNPUISGp+
+         p14up4rLUQZV24GnuT08ea6U9n1PX/M1rO42fZjynt2qIzpqjRkWl4lmk/fAGhE671t0
+         8FY/CAG923xR8wnJMvhZ3wWHPZid1gAP1a9jadxLFS/WRhySSv9+Yi7Kvi2n2B754uqN
+         CyTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGLhIoNFPGxO9YNkkX3SMPkd/PNOH0T/USRTTGdLfm3yg/vgsD2pa8QuX1JEGzlcRyV+lZ0fsgnw==@kvack.org
+X-Gm-Message-State: AOJu0Yx1JgkuP61oyhlApHvulTUZaibgVl6+L0Eoy102mFk3wtfiXfop
+	HoYPTw8l9F3aikgxDCJbpSKlmNvP7des5pnnYul6zA2XHy9CBaZyVSVjWnW1XNY6+SHcnoc8XWI
+	U85WD18wAWtJmqg5fqyJ+7B2IEu7evjfjexOtoqEFLxbMThyPxZce
+X-Gm-Gg: ASbGncui3z6MVnlEq/7uH1HPQF57yo/Qy59lcLOv0qjNZujkxWadMw0HgeKP/jVUZUw
+	iRDiFsP4KpmFF+PNWY8thMI+XASiPDV6A9aFs9GJWoIXQ+TTtNaqqPWfoaxPre37GZVna3D+/pD
+	sHuthOLiTmWnIupQZqFd1ZpyTD87xPtqXbFhUfxt25ALO3nGhDmBiZb8oILhdnbnUG/xf3weOKG
+	Jr6VbstXkAKJ1QgVViu+OkRd3Rea2u/4GLSIjjtoohYCGVRG51uosLI3dEkvZx5dBAcmVWgprbh
+	Pci4EoLMybpMYewltZ6pZRm3hoCzjhmhDIKLDQqcKJsO7JGrE0fEP6G5HgQgBXdtIbCODLmxq7T
+	2cKWJRINjkoj3P8QGux0yDr5nfDlf9IXUen3Myk3aIzs2URR3mQ2H+xcE4qMx0CRw9q8=
+X-Received: by 2002:a05:600c:548f:b0:45b:944b:4317 with SMTP id 5b1f17b1804b1-45b9aae5a3bmr3712105e9.19.1756799191110;
+        Tue, 02 Sep 2025 00:46:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5pO0lIsDBZdbx8V/mVrz2LttNQMwlq6E6UrKsC2j3HgWKZXpWhllYGOkAr7VnCW+kCacaog==
+X-Received: by 2002:a05:600c:548f:b0:45b:944b:4317 with SMTP id 5b1f17b1804b1-45b9aae5a3bmr3711835e9.19.1756799190691;
+        Tue, 02 Sep 2025 00:46:30 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f1f:3f00:731a:f5e5:774e:d40c? (p200300d82f1f3f00731af5e5774ed40c.dip0.t-ipconnect.de. [2003:d8:2f1f:3f00:731a:f5e5:774e:d40c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7eb05fd9sm185570505e9.24.2025.09.02.00.46.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 00:46:30 -0700 (PDT)
+Message-ID: <ee3ee18c-27a0-4c38-a639-e93e91a392ad@redhat.com>
+Date: Tue, 2 Sep 2025 09:46:29 +0200
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.170.52
-X-ZEDAT-Hint: PO
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 892DA20015
-X-Stat-Signature: bbiokccascahn8e58fadwei575d3ot7i
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/gup: Remove dead pgmap refcounting code
+To: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+Cc: osalvador@suse.de, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, dan.j.williams@intel.com
+References: <20250902051421.162498-1-apopple@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250902051421.162498-1-apopple@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8ARsZlfwRscc4_0IJ9HjoUbLY84eoKNhsrTz5lmPc20_1756799191
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 197cghm97bgpxzx43sa7kft8tz9e34en
 X-Rspam-User: 
-X-HE-Tag: 1756797365-64938
-X-HE-Meta: U2FsdGVkX1+cKitKC1/1w1Rd5zQ/vdYD3Z3TsAaEOsuo2GO5RVESQJM02Tg0ZNpH1CgSj00vlbFWmo8sk40J9JCNHHbGn7dAlQLGZO4D9kcyI5I+/8brjxavpm8lw4CnQpYKxbX4+yg8EWTPyMyNAcgvCTONBjJ7RkmqXrnvL8HdIUpOHBnxEle2eeUzirIti3Za74soYmJJkdqtgThnyCin6IkSEb09Czom3aENJ4vd3zRpRN908ytbDrqOshQp/f1RBL4E6wd5IqHRmWMoK5NGB8tTFmzDfdMiPKUT+kLtJuQ9rW0v5hWqPWrdWxsrsggLPbVDtymxRrHQgeJ2VpIZbzNC2VnriwmnzSoRaSlTpZfVYlvU2h+EDfXtZMzRvsjaJ1Fg4mcKIVCnG/Z9sZhJQUmoLd1ucpAdbpn0l28rXTw8xdL8jXw+yVPasKdPVYi2u00P9BS0kzdHyqhLD8NR1SDeGW4s4B8h+fZ6/jEvngOkotv3NpYjF0Qk43LUu3XEYDuLhFvdbpcR+X48MELm3xw8KZPisWYytaXfs61aKxFZ4ic+jfNCDLJv9RCZrLQFicXZQHgNf4yQxY58sGfcsIlyvpjC7m9cCYyW/mgrcc4igTOUpRdZw10fqqS+bbw6tXFpcUEoV3PdEPyF2KRkVjemh5qVrkutDuv60no8/jUWh1dBLzkesUmJCzHfIXvFEfwhRy0Z/rPwYcGmEwzfSqifBmQMvHxcildTx+1ah4E2N2GcrWGH2sds478lPhhOT+0jJ3fuDKfoQk7Ax6gt0xqVH5ItGDn3pJXawRuGsUXuPTAvHNAftLhmSv/3UhZHVFNAxXPSJyWJoFIzrYRXRMPwjas8JscTkswUf+RrRqT0rKCtQ/rnICS3UX9Cr1Ruba/SyZDhuKp0AdMFVfpYvr/3mS3L0r1DBgp/tLLd0SS2ZdJsnz7ZyCEkdwk0wD1mBNSvvpFWEFqVMpX
- kgyBUDLM
- Hvp5SI1wjcqGATDKWPah+VoLpSgcdq/DUeEgeEGYzp5OdMzrJtqJ3yesZWU7qSzNEr90EhJQ+CCAfdNjbUc7Q0oOhc6QWRnzpcCq43If4fwN404r2xyLVxqLoOSfp6ie0lckCApUk1N9V45zRcDmAP+X+oLjYGhE6t505wsw/SNHbnYS7DtL7iRreVeKRu24FqUuBIaD1sGL/sCgUIrtm965/izGnviaEmRwU30ODIPAqFdWs1y7PENMopXcNODmICBKtfpFoyCWo9+eFsIZUx3yqnuCO74+nnGknfo6u76yKYc1pjKU5DQJ1dW9ACeACaOjlBju4FNP2AYw6TfSLlgz68Pqcq1jZgz/2Kn71xCk6Slv1kuZPw4L89jywgbj+UlK/V6r3/oBtBz9l3t/oeiU8Fdjvku1JAfw3s0jJ7TZ1b6dXlbaJPZDmRpao2znZcNYyVHrMGUB6tru+dV1znuYuljFD7lcB/6H1W3NCggSFiHfmxxh7tOLFEUhxmyCoQfgY0WIGnr0QdzTGiyQA38J/V4qMIvZETj2Gnjzlm9wvKuPCPBoLQ6WmS9wVDwkYBR8ZWc3Jsm0Kr8VJnr6V38q9sXgv0TCo0itW1506XDGFS6OI29ZxGoqyhexlXNWpWaAqbhjUQ6sCkTorELau+UiIiZaNov9yHFMhEF9cOUCg59k=
+X-Rspamd-Queue-Id: 85842C0006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756799194-116253
+X-HE-Meta: U2FsdGVkX18TjwYeu5aNZzbj7thCqyU2Oi/7uQgfS/khoc+oggHBTH6g+697G4Awq9uyAX4vLDy+xNApn3guarIMKHnmlYuDh5QuEhobh5VwoBlRpOoS2uGlnmyIZ5h9SM+AGznXKeRecM0h/EVz0ItqsLII+kROBcO/Xo5GThfBBo7kpHELsXCR6jFfibfWjV3nB0O0dRhK0e2npUjUjKUJSuQ89syVK3vRNRIsjYnSBQuxpJVUOr2Zfzdf/3ZlwbhBrzYNOG4R+XgsnpJCvn7RbA4ccUx41J8f27HTVtnbGuZEnIKl1iwlFHDPHsZY5DDos8nFqVVHGAlNbovIqPwyyu7NgnOLODJDVBFJ/dw6FvawqEvM4pzqhJNwgrvENr/Hw7GjfXQtreAyUFqD0iiIF6gPCpoDoUebG+MyUZrUrO8zEqKOvkiRZRwznup0Uxrr1/SS5imU9U47tW1KtFYfHZLK8az+sjAASmLKxXFaoXW2AYol2hGlvifXvgXCYcyHHDixETjCo8CKVrMzTL0mcjvsc4bP/jrrqh/GB8VHr48j7Qb1cUpS234ww1im83/WAvpXZwVVWu6Jlq1XbkFjQ7BGW7I6/6UiWkCT01AQ8dENod0F0vceJBUae0mGSYdRpCX977dZE35zHYTkZWwYlsTy+N26E0qlBr4O4qjT4qyQjtBt/+CE+1udRx0BNdMiSZc2mtcqQdtduLWbQz0IqvcWfHeeZMIijUKArfkW0I4HrnUIoxDQzmLnZnmsgNzMU0Bv7pQLGKNVlnmumpm5ntZONtY5FZG3ahp6NzpnF+CAyaQDzVfIM1AiOzFxHnLgMdktN63j1xtYx84EBwPzI7fthQqIo2TPXu6xEu5sX1A57QObI5ZZY3jB13itLZKIRBgYgNnkmwwM55YqQueghrvi8Tj+2krqVHH2pw3xQF+ctiiZcXUtHf7ZW6Yvd24xX2hjxK9qRTL3sH+
+ v76yMkCp
+ lvvlKAeP24CZXg9xRuoX8jvb4yJUhXSV0H+Y6X3U+cnyT8NJw0/ANN8h6lxhW4sPPFVSaPu+unYfXqiQIPfsCq3JHRLXdyMfE0+YV4AP8QvFITv+P8kud6SJ1WgM6CmYIxGEicPPl5HsxpxiMwdDGeozFlCzjXCNL6plL3j7Oftflf1bHqh5vCtdXfYCxT0/3zmvj0G8hkfSz6taTfJf0sxPZkbErQt5BBglF1m4ov3Us3515TwcL/iLspxSEJsKrcKwcLPW91/hnS+2LdaVAMQd0vWm7iku49JEvYcJwFxtDw15+t3zGTzrO+ICsZwp7vK36q6c21nIgngmVXxL7apk6KnNVNdwSimeGeqLOttxNmZg2f6aAoGP/OrASdlB8rWGSMcRy83QEeCkqhh8QTpyQIXTDh5PGTBKq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -175,42 +177,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andreas,
+On 02.09.25 07:14, Alistair Popple wrote:
+> Prior to aed877c2b425 ("device/dax: properly refcount device dax pages
 
-On Tue, 2025-09-02 at 09:02 +0200, Andreas Larsson wrote:
-> On 2025-09-01 15:09, Simon Schuster via B4 Relay wrote:
-> > From: Simon Schuster <schuster.simon@siemens-energy.com>
-> >=20
-> > With the introduction of clone3 in commit 7f192e3cd316 ("fork: add
-> > clone3") the effective bit width of clone_flags on all architectures wa=
-s
-> > increased from 32-bit to 64-bit, with a new type of u64 for the flags.
-> > However, for most consumers of clone_flags the interface was not
-> > changed from the previous type of unsigned long.
-> >=20
-> > While this works fine as long as none of the new 64-bit flag bits
-> > (CLONE_CLEAR_SIGHAND and CLONE_INTO_CGROUP) are evaluated, this is stil=
-l
-> > undesirable in terms of the principle of least surprise.
-> >=20
-> > Thus, this commit fixes all relevant interfaces of the copy_thread
-> > function that is called from copy_process to consistently pass
-> > clone_flags as u64, so that no truncation to 32-bit integers occurs on
-> > 32-bit architectures.
-> >=20
-> > Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-> > ---
->=20
-> Thanks for this and for the whole series! Needed foundation for a
-> sparc32 clone3 implementation as well.
+"to commit aed877c2b425" ...
 
-Can you implement clone3 for sparc64 as well?
+> when mapping") ZONE_DEVICE pages were not fully reference counted when
+> mapped into user page tables. Instead GUP would take a reference on the
+> associated pgmap to ensure the results of pfn_to_page() remained valid.
+> 
+> This is no longer required and most of the code was removed by
+> fd2825b0760a ("mm/gup: remove pXX_devmap usage from get_user_pages()").
 
-Adrian
+"by commit fd2825b0760a"
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Otherwise checkpatch complains.
+
+> Finish cleaning this up by removing the dead calls to put_dev_pagemap()
+> and the temporary context struct.
+
+[...]
+
+>   {
+> @@ -661,7 +656,7 @@ static inline bool can_follow_write_pud(pud_t pud, struct page *page,
+>   
+>   static struct page *follow_huge_pud(struct vm_area_struct *vma,
+>   				    unsigned long addr, pud_t *pudp,
+> -				    int flags, struct follow_page_context *ctx)
+> +				    int flags, unsigned long *page_mask)
+>   {
+>   	struct mm_struct *mm = vma->vm_mm;
+>   	struct page *page;
+> @@ -688,7 +683,7 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+>   	if (ret)
+>   		page = ERR_PTR(ret);
+>   	else
+> -		ctx->page_mask = HPAGE_PUD_NR - 1;
+> +		*page_mask = HPAGE_PUD_NR - 1;
+
+At some point we should remove that page_mask thingy as well and handle 
+it like gup-fast: let follow_* will in the array directly.
+
+
+Lovely
+
+Acked-by: David Hildenbrand <david@redhat.com>
+
+-- 
+Cheers
+
+David / dhildenb
+
 
