@@ -4,112 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7517CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 21:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63F83CA1007
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 22:18:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 227F46B0012; Tue,  2 Sep 2025 17:59:45 -0400 (EDT)
+	id 8BA526B0006; Tue,  2 Sep 2025 18:18:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D8996B0022; Tue,  2 Sep 2025 17:59:45 -0400 (EDT)
+	id 891976B000C; Tue,  2 Sep 2025 18:18:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EFB26B0023; Tue,  2 Sep 2025 17:59:45 -0400 (EDT)
+	id 7A7846B000D; Tue,  2 Sep 2025 18:18:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F28086B0012
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 17:59:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94AE9119CE7
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 21:59:44 +0000 (UTC)
-X-FDA: 83845677888.26.6FE304A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BC7D3180011
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 21:59:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="t/Eu3Rve";
-	spf=pass (imf24.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 69DA86B0006
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 18:18:34 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14D341403F1
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:18:34 +0000 (UTC)
+X-FDA: 83845725348.19.1637CCD
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0BAEB40011
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:18:31 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=GMiLl0LO;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf12.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.51 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756850382;
+	s=arc-20220608; t=1756851512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wxLWaOMzyFn1TCsduloGVD+a0ZYJgwe6TduwxzO1EKw=;
-	b=cDFEMhYxp3p4lqxNjzn56MJavluE/7IpUO3Mk4Hi4xMJqvWSxbK3hjtksDF37O9K57N6RY
-	yw9tjPRWswuuxHg+Ti0W108FYuBzgykQPbC72rnuCbK4pc4IcKvffYoZDqSKNd/FaZSXR8
-	IIAujLCssNe0MbTPzlnBT6FQ605Syd8=
+	bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
+	b=eOvCa+NK7fEBP3LJ0e84/7KuJTx6s4943Dc7M/oY3DHNj7aeQCT44/iMZk0a2uZmdCHiHz
+	VhPW9BYhQlJa6ApzuJ/dDGFXaul/CBJJrqHZs6GQ8McJSCMYy/4neCkusMMYwg/DYkwD8j
+	l7kDwhpjuZtWKUvy8G2HBeGZWmtzr/A=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="t/Eu3Rve";
-	spf=pass (imf24.hostedemail.com: domain of kbusch@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kbusch@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756850382; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=GMiLl0LO;
+	dmarc=pass (policy=none) header.from=linaro.org;
+	spf=pass (imf12.hostedemail.com: domain of linus.walleij@linaro.org designates 209.85.167.51 as permitted sender) smtp.mailfrom=linus.walleij@linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756851512; a=rsa-sha256;
 	cv=none;
-	b=l88AP3chHILkhz55MAKyivmTrvhekSyckETTkB9cdR6fxHfDfXi39h6b6ICqoEOWKNOfhL
-	0V/PlO2B7ja0nRXF30v8pNu4ywTGWjkhpDO6+kxMZHqmavYnM8lMj45yiGulDJpShRioyy
-	FfR3HuZAwZ1yppQ2AdTyo426eYBACHg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 55E3F405D0;
-	Tue,  2 Sep 2025 21:59:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15CEC4CEED;
-	Tue,  2 Sep 2025 21:59:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756850381;
-	bh=zUOixGI5e23gDVx/zmq/5QWAYGpvZZ1gzj0irhRA2AU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t/Eu3RveeWFJ7QPQZS0HMJnJ18RJisbVk4Pk4B2mkUogsXCsDnOh5nmkT6QJ4KkpV
-	 WAD5v3cszsJls2vJneW0RL/RKpho+ZzAZhFpATDVsn7wwLvJDFu6zSx6RUEKSctSsY
-	 MYZrvd5dFbrPEZmkILy8ZxDbNlA6Ej38GRHuRquE0I86IxDtV1kdU0Sm1EDnwtGqEF
-	 c1keYzFalxZPfGjORlUbEIAtFrtMdhOixv+lPDaKzXO5a+aOyNEdMKgtKZcG+wqmef
-	 IRgJjgP6zlr77O2RCDhrfy6xxK73ZGX0o3JyM4rB09vZuyTewz4+/r6JUDL31Kg2Mp
-	 O1zPH9rjxq5Aw==
-Date: Tue, 2 Sep 2025 15:59:37 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 14/16] block-dma: migrate to dma_map_phys instead of
- map_page
-Message-ID: <aLdoyWevrQMQUGyz@kbusch-mbp>
-References: <cover.1755624249.git.leon@kernel.org>
- <CGME20250819173845eucas1p221cd6842839f5e7130f131cd341df566@eucas1p2.samsung.com>
- <22b824931bc8ba090979ab902e4c1c2ec8327b65.1755624249.git.leon@kernel.org>
- <2d8e67b2-4ab2-4c1f-9ef3-470810f99d07@samsung.com>
+	b=eCa8AtkbRKmltqQOMxEjvS7lwdl6dRhuctohw9xGEIQLm+5tJ9+5JDS4na1d6cMN59y1K0
+	7Mks4mOPERwzGmVo047zoyWCPG1m+Q4H8wbnHDFlFLxDO/fnZ2FMJNCTjvmdqiU6CuWqnm
+	alNgaaIRJt7DCFOjb1oSA7DEat/W41E=
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-55f69cf4b77so4243668e87.2
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 15:18:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756851510; x=1757456310; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
+        b=GMiLl0LOZGhOU2OmyY665XBm4Wa25NWLR6kJAwb0PsduS5URA8u5lqBq93To1d2smk
+         oBCiRpEp9QUBgYl2PDVmEcD9l2aa/hId5d1ehIcWualixO+Lv5PuNzsuniOGZoo32yNu
+         QpRrfJZUnCUwkn71zDVu7H5cofM5lKud8ggUZQUfsSee7+Zm/98Kh5ShGDJlU0LYn1IZ
+         wR7EHPqUu6XZwLMiE2C3TthbnjM1xjoIc2coqVnFns054OKBS1ER8kIBlIF3Ls/0SLYr
+         b2cDpEQgdj2YHYdQFlZ5tFK/Wtoqruqp6z1jfXcT4jeP8qKPbzjMAMsLQmLt+0ulqzSe
+         EomQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756851510; x=1757456310;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=li67uZ6xqKQCADV810jgcapd5oaTXRr3DZZuD3FIP0o=;
+        b=OmhTftUwPa0I+CAnMKf1z8kClDctGGSJC0P6CQjoRpC3B21JVD6OOcEfcOWbMeeCl8
+         myaDg5zwcaQdY0xWK1QBBwNfxW+uEDwhYTmF9ohR+kOOdDPFV71UHjrYhuly0UW8wHzw
+         /qxDEjvsvHjFjiYYw7G4NQnAJvZ/Rr0fU9xadCO5ELojchJA7Z4vzsyaMFlyWEBNIy3U
+         aJ2RHzzJz1PY5wy9CzbPzcarZbw05y4viDm4rE+ncniEnNUxrUvdCFQgYE2zDbCkQlL+
+         HNg8HY3Q0zGJbczfn+jL+9MY+DbsvNucn6usmasp6OBgEiFEOq4CVRxJTrMSY3HMLMRS
+         esrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiK9Y9ESVnWp4nl2jpHssVfvjN9BFdNhOCxV1WRFIlUopzgdUV6zAXy8WEq5xffJ8CbqLwUK3oJA==@kvack.org
+X-Gm-Message-State: AOJu0Yx4VJg/zTFeUR3ZcLUyPGp4tewP+1HUS6e9+xllL39/xS1oj7vO
+	ZjyVjQpl0ox7EhADwS5zyaIRQhFi+pUbRZkOT3kHoB+BTRn7i42j2D71vBIugVLufYPS+2KTEoz
+	VtX5e0cwLBi034RuUSPtUCFuL772TNhrL4WCz5zbbvw==
+X-Gm-Gg: ASbGnctPP/sOhNv9uo/Yp3viRRgxj+D9ZEYBBilvFXTQmGqq0yxLlYiHed0EhSMMNNv
+	sbSPQCDXaKAvEG0HGh8pYVMRTaZQcdld8nsqIZsT5arruk4EUzXIDSLMBk8lBlGZOw3xo7DxouI
+	o99esGK/kNHtBPTt/fA+zDoHIhHx4y88HXBKjGztvAeHJhJj9WjD3fbZTyzgpW8XDdjulhTn8mE
+	mMgxy7MmCLKEwkV8A==
+X-Google-Smtp-Source: AGHT+IFb5FJ4SVuaW/MZYjqlxiCtjVdy/Gs9hCmULK5gWsYMbnHTDsvg0XfXKbqBDAFJs9xAYF0giEeS6uNYA+ao+FQ=
+X-Received: by 2002:a05:6512:3d11:b0:55f:65fc:8db5 with SMTP id
+ 2adb3069b0e04-55f708b9c56mr3711945e87.23.1756851510074; Tue, 02 Sep 2025
+ 15:18:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d8e67b2-4ab2-4c1f-9ef3-470810f99d07@samsung.com>
-X-Stat-Signature: ogwudkxx9366co8hk46w48k8qfxebzzw
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 3 Sep 2025 00:18:18 +0200
+X-Gm-Features: Ac12FXw-1tPuaZxU9kVS8RfwbL5AeZ_YF1A5IdRwoR4crjvnC6JAL_oHeKPOKoA
+Message-ID: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
+Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
+ function category
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
+	Chen-Yu Tsai <wenst@chromium.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0BAEB40011
+X-Stat-Signature: 8ci4p3fn366w1dxtbq9o81bcnj9d81fw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC7D3180011
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756850382-69752
-X-HE-Meta: U2FsdGVkX1/IcpORFa0cKCxqrICmoMGuSaMBBl7167K9W7TWLszQZ+wzT7Epd/DakGAQVayWjbQBf1ODVnBcxKHy/sR/e629e3kqsrI5fO/tBEucFrSKQpZFkN+vnPQYsQIXnPy3NGFuIQrD0P6Kz1Em0/pAng9xWVgZAvRm7H5iNoxLW3kXihe1GTEJuKTwnc8FVNHXrHW9TGzjLRtteWdT5OtXudmReYhktE9uLXBX3lvj6ASjygMHYdPbDyzZxzFv76ZKBOvqsmfwzFc/ISoqvNd39/AO4zdljvPBlKl5rTP5w8y1bgzxZHLtkF3T9RccCme+w2h4YimeAuQIhjm12y50+hxQEljZ0VmdWBRjmTdE70iMxQuuqBydRRS6VaWiHZtE3M1wp3/UU7KuOrHWZ+OQQpZ6V4XHSgKQVihJn0Vkq46XIZ40AjSH0PsA0/zqOLKegf8UZ9lY+24xDqlfFkQKuVzkTzVo17giK02wz9MiWmopNKTvVmUhKc/aoOWGvXfEcG/UXYqjo3dwk8HRL3GRYhGLVn0zv4jipeQiWLRCsTUTIQRm6Kcrn6ZaFuCe4wtWGZwMOs7rugtzhhuTYwpzp9u6Nmjy8nhJ2rBwac0U7KDoJ8iQZB6F4wjdweFVpViqVzOhmRrWT8dqpbAOwGfl3voMK7n2+pYB8nHCVNPqiCAqlUDUl+LYE+kqGW0VkERT7IWCffpmWrTxbM2v+AlN6X60pWm8QKBHVcU4a4YV9JwFvrO1e7YLI5H/zoKiXMGwsKsov+LmccBmxxTtYrf+B0vBm9HTmX7olATYBiHtfD2uInwdz6DL7MtSGJUMtp4zZusjyYnrfHSAW80K9O3VsyXNelxExlthHnPXAuDsf42LTsAasvOOBkzUlhip5ZFvVkMAknqY0q+cjF1S8OKkX+Um7O3FKWQWFJOXZFvRyKytguWQNPdwpql0Sp+HTW2xEzpT9CO23Rf
- hbo81tJ/
- peuZb7rWZSbGlz6hjYv7PHJJP/W4SJs5zFzKkbinmB2X1PqfJf5GOLYb7FfZim1RN2Dj7FDLDz01cLDeuNcionydxO3Wh2O+NC6lBFm5fRWRFNvssI5FTzz/mZUNBPP9pJYDtxU69pEVz+0q8XqVetruyEA+EtgK/KvONisXcvnyPHWqZsTfjnVkPEOKzOIBN1H/simJOsUq1V2H1N74yCLa/oraJ//ZwGfCWKN5aQPWxt7ZG63tE6aPvCBjisWARRoMQpwGS3npj0kL14xSG8A/4BR21bAtQP1j0O1kCdLLv4d06j1xCqKOEAiePXRNYHpMIzQIQb0WPdMUXjNRQLM/x1C4lCjbTpI7Om8wz5k+ZCh+E+k3Bfqhw8Q==
+X-HE-Tag: 1756851511-430281
+X-HE-Meta: U2FsdGVkX1+l6rIUCOuZhV7XrjhE7LL7iShtWU+YPDWlrufjkkxtUniSFvPVv8PmAD4mcUwQ6lYz1LrcbFF6z4J3uK44QYxu7bBMOhCnuMgmtCu7QxDSJN316rbQR+f1votOd7ghUuogpLaUsHTWnGQqFG+Bl7JqpphIeMAwTMij/rRmeYKncSPGgM2Qvq5J/fzj1itScHTQhqM5YYgIM+U95ctMLZaq9spNMG/UuSyZ0BhzBWLTQHhDFS+yGQ4/A7PhEY5Ixw1gnWV4ogy1l+sSqNVjz6rJJs169++5QCqLiDwSwldDQRXoFDU9RNbS8SGflcQuaHgep0il2HPWNIxY1/pqQZAw8eTz0y91ABXSf/oc2KT2RwwGP8mkfJc6mmSL7u52gbjnOPSZa8/tqCRt5j5PwMeXowcIMsvEAEJ1jD0dQHFFS1CGABCvn1W4PYysU9rlRk92ykoLvW+GnzshlkqGKcoRuaqSX8De1ezyjExRpxecsWE3Fc9CHD680TqcZzkiqMk+QH2RMGVSv37sWth63IvnFXkjJsmZCfrktLlgScb7Bjp0VpAEl3fKlSXmOdp8NpxI1uDPNK7icnQSJ5mTwMNwDYxpW3PrLMCV2t4yO1qLXYoFyrHNvN4KqJ4275TrUdbTATsmY2qHQhApqSfrCsx5seu6G4iB4ja9HyLa5uVb66VB4g5paCrrD5VONGIOhyNrve85GxGpqGFXjcmy+4mlsFwtW5Kpal5WdJIrKsDm8pD+O4KpzWyQwEzc4ut9Av6jrVCKLtzOUzx56vw5ADkmr9nqHKnVOdOhhFQocDyDkbDEOBi3GqkArsMHOFjhGHftYaV5NG0uhshOiqvr1pmD11mtqgoqOb9zuJQ7mSCtAeBj4g+SR5v+W/1lWI4AMGKG4dGd+IaEUWAq0ZPaOL/VXrDmuJ39cP5/+Uexa1ydNszZP+M52qR1OSVbqvtzMDPzhwVlM7k
+ s6yhkSdn
+ nxerFTE9V4T309ok8zmkOBdcF02P7BRSWLArBvh3t6T2CHpUL/jTm+5DP5v6lHPWstCBCaEACWn09bZDAboWkzfvn8kNqPMTPrfha2pnPh3fRjUpkyhlZHCde0IiRbsMCxVFro9zzGtknKPelYa6QX/Ciy/o4VblHqf39QX43ic3JYKbGsBaW+O6K+ehngmK1V32FKyTh2FuzFt3z0iKz/g3YlCO0s2Q70T1Uf016Ba3GobuH9/oW5ZDn6nhDz4c6XjhJ4I0fReOcEQQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,26 +139,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 10:49:48PM +0200, Marek Szyprowski wrote:
-> On 19.08.2025 19:36, Leon Romanovsky wrote:
-> > @@ -87,8 +87,8 @@ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
-> >   static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
-> >   		struct blk_dma_iter *iter, struct phys_vec *vec)
-> >   {
-> > -	iter->addr = dma_map_page(dma_dev, phys_to_page(vec->paddr),
-> > -			offset_in_page(vec->paddr), vec->len, rq_dma_dir(req));
-> > +	iter->addr = dma_map_phys(dma_dev, vec->paddr, vec->len,
-> > +			rq_dma_dir(req), 0);
-> >   	if (dma_mapping_error(dma_dev, iter->addr)) {
-> >   		iter->status = BLK_STS_RESOURCE;
-> >   		return false;
-> 
-> I wonder where is the corresponding dma_unmap_page() call and its change 
-> to dma_unmap_phys()...
+On Tue, Sep 2, 2025 at 1:59=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
+wrote:
 
-You can't do that in the generic layer, so it's up to the caller. The
-dma addrs that blk_dma_iter yield are used in a caller specific
-structure. For example, for NVMe, it goes into an NVMe PRP. The generic
-layer doesn't know what that is, so the driver has to provide the
-unmapping.
+> We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> other platforms as well) where we mux a pin to "gpio" function using the
+> `pinctrl-X` property in order to configure bias or drive-strength and
+> then access it using the gpiod API. This makes it impossible to mark the
+> pin controller module as "strict".
+>
+> This series proposes to introduce a concept of a sub-category of
+> pinfunctions: GPIO functions where the above is not true and the pin
+> muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> strict pinmuxers.
+
+This is what I want for pin control, and fixes an ages old issue
+that pin control has no intrinsic awareness of if a pin is muxed
+to a function providing GPIO.
+So patches applied!
+
+Any remaining code nitpicks can be fixed in-tree, I need this
+to be able to apply the much desired Broadcom STB driver,
+so this needs to go into -next now for cooking.
+
+I also want to strictify some drivers using this, bringing GPIO
+function awareness into them, which is a good thing!
+
+Yours,
+Linus Walleij
 
