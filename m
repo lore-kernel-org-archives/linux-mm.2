@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64ABBCA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:59:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE10BCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:59:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20F08E0018; Tue,  2 Sep 2025 07:59:31 -0400 (EDT)
+	id 65A8B8E0019; Tue,  2 Sep 2025 07:59:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D83BB8E0001; Tue,  2 Sep 2025 07:59:31 -0400 (EDT)
+	id 5E1DC8E0001; Tue,  2 Sep 2025 07:59:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3BA48E0018; Tue,  2 Sep 2025 07:59:31 -0400 (EDT)
+	id 437138E0019; Tue,  2 Sep 2025 07:59:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AD0C8E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:59:31 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 276BC8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:59:33 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B5B25BB99
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:59:31 +0000 (UTC)
-X-FDA: 83844165342.09.E62B620
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 266B61C0005
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:59:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=cOFdCV8R
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EEC2411A831
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:59:32 +0000 (UTC)
+X-FDA: 83844165384.09.DB8D787
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D823140008
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:59:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=T8hPuetc
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756814371; a=rsa-sha256;
+	cv=none;
+	b=3HMulLM1c4zU37/GCf0IFOk4ARdCFs7tfDVVVkQ+iRRHQcdhRyVcMKupbO4BWuWuIPPRk+
+	sY2QJrQHJI7u1RGGDFGEipqxlMachRBrFpou/FIh0sbm1gjIhpbPzrtxraBwVexnnLasDM
+	ayzhT0oc3tsN4TTrlqdtfcPkObmJxuQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=T8hPuetc;
+	spf=none (imf12.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.128.53) smtp.mailfrom=brgl@bgdev.pl;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756814369;
+	s=arc-20220608; t=1756814371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hmF0qpL5oboyNo2+RmqzBhbIr3GiIG0yX04mHf79OJ4=;
-	b=nyCdYPfv3t6lWabugwxIEpTTiu2sD9/vBaC7TMvE5I1JZd2PsPd+aYmMjtgeM2aGg2fCY+
-	G5xnRUx8RpOMRA2bzTzSEA53MGUwnJmYNT9jjfgCSlYrDy6muHCBbQ3jF82by8puQtAUeP
-	iD3JG3i5jp/gxHcX571YO8As2JKFbcs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=cOFdCV8R;
-	spf=none (imf20.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.221.51) smtp.mailfrom=brgl@bgdev.pl;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756814369; a=rsa-sha256;
-	cv=none;
-	b=EySXmxwt+E5oIeG8I7XKH2L1N/La9KJbI0xGeWyYVeUL8qpdZsluXIcWYX14IAEl71I0aM
-	AeePz91QFlFre57DWkgQQyLeCqemapxfuSd24LhC+FO1dPQsKLGfUMfsoMnkh2Y+vgJos/
-	hqBprLqtWWMzt12Wq6bonKA2ZIXA3U0=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3cbb3ff70a0so3313705f8f.2
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 04:59:28 -0700 (PDT)
+	bh=Vb0Wiqevsqa8WkDdGC0D/fzhQe9xghTxObZ99u7DKgU=;
+	b=wbL/isaZT/0rPbSmUeuhPk06CGbHPb/29c7czfw7IzcsQp8FbePEnUG+XBipR479NeS98p
+	pfEvunvoD8ZHdZmZZRI+NjnWJfEH+/Mvn0Oq5ux4yfOPJ4daFrktqgnMr1KzvyszbyhkWN
+	VDd0AWgn76grhwpc0tjm0MQhAlMdh74=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45b873a2092so24456755e9.1
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 04:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756814368; x=1757419168; darn=kvack.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756814369; x=1757419169; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hmF0qpL5oboyNo2+RmqzBhbIr3GiIG0yX04mHf79OJ4=;
-        b=cOFdCV8Rzk+iIjRMYohp9v/lRiowpJeoI227XaI/q5iWWZdxXJAB+A3nIJbgUP1qb/
-         8pXbgNZvjLPJMd0SDcCyQas85jZ0EyF+3pgMiiGWZj3rAgCtYZohtJqASrxGbZw1hqtb
-         9HG7oC2eRbx4/2UovlUwb+ci/jgE/UXpR1A6FdxiAfQ4rwsVwULUPJPnYW/DtGrrjyy0
-         XASvHy+ytA4GEogpXxjPUn3D7EiAJckICgHMxE3TLb/iMMBvw7sUtoD1fEmMIzFDePK3
-         fogwJE/6JhaQ2lnXZFBCi+kTFVWaq9h7zOsIvGzuKAy1gLIzI5sO20D57j/MZW4ft+H+
-         c+bA==
+        bh=Vb0Wiqevsqa8WkDdGC0D/fzhQe9xghTxObZ99u7DKgU=;
+        b=T8hPuetcKFUu6OZZYEg+lSXlqwgT+rQadAaY6G9w4ZGBaeh1bz5tcVAZ2J8qwMvY8n
+         Lf9068pCx2ApR4uKdTe5rCMUHCLzfv+2HO0DTKDNZiiVVYo2l10AHu2xUvx4Z/m2f6/3
+         P+1FiNf1YriUDPTCcH54WJeIFUeaeM5cIFQquTPM0NaDw+EaZKI9uo2sOFk3Mzo3nzIE
+         /Z1oLq3ikMBo28ou1bCsHVLR2vlUrsLOJjTpYHx04bVItygJKFmnsDoqs4sk0uJUj7iN
+         GoVepJNWAkC+ocrlB5QJZRaLc4dY/sN3hXLATjg0NZFWhMlu4iXFG+WxAkMzIqKRaIKj
+         1dew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756814368; x=1757419168;
+        d=1e100.net; s=20230601; t=1756814369; x=1757419169;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hmF0qpL5oboyNo2+RmqzBhbIr3GiIG0yX04mHf79OJ4=;
-        b=wi7NHg+6/QGdKh3u7zmRY9HLfk0WPGTOebhf6cgp+KwAE/AegDApyxe/9lAKCc9RuN
-         SUquYVjGjVsiBiGkpMTM9bO3dIJ0sZ3fcMzal8aBI2/Xt3CBwVQULSGZAJVC4+5Z1HrJ
-         4Dbvm/9wXR6rn8V3dUzpJIIVg0jUELwyg/rKvZNhdQl2q63t+EO+XsKMzsh5jJPtdtnq
-         gNC6iySf1wtE4GmvIVpUx9IuFnxmb5ZhE93JHlE7n2ZtSz+dEF36HJ/AUVmHP1EGEeby
-         N6kqjGIRnoB68L8gmekmhFlGMvB/1Z4/5YTZZz6JOmS2jT/FhU6fqGrlIZnWhBRpfWmw
-         xvNw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0VuGlHi06Ft8s8k8gPk8NBEtAxjUF54+PIlSfbbGzaoi+2/Oakjf3aI7iVZae0cicHP2DbE4hBg==@kvack.org
-X-Gm-Message-State: AOJu0YwHz1LU0JQbUv8/VwKlUvqbgZ9v5+CoO6IrQuyg2yzaaxnlyXoO
-	wlbs6D6HhoVjADOjvgru1NThN8/PXrCd2r0jftYJ8aOFgtpjDFnECxs/xCkZcomaUrw=
-X-Gm-Gg: ASbGncvjC74D4Ck+yGHMVHUj0b5IsGDgKCSbhTjyWAZxdlf7cylsvYO36gxj/itzChS
-	xTtsoZqe34+4gQqk21qNsAHPZyXkHcyMKpBCZ7htyOg509mKsbUX13cbM7yNfCTZt5OephBPgKd
-	NAc9yp8ccP/oeLIU7bTkHeAYqgoM3q2+i0nlQSmLlTuQf3KIKRJvX1toKPGrOvxrrN09my5zkTy
-	K9fY4pmOoyR1qsXfuVd7FGwhT5/l3ZrCeBTWcnnx/YIorg4wTb3nL5rOWHElfBIqHj0FIECYALW
-	246yaeZuWae0Lxn6OE13+Pq5m3RPT/o/CkmpSu6+E5taduauXXofxTDNymg7td0wGTX+XBLsLXO
-	/K++WBlGtUMlhmm9WrNfGWourGRA=
-X-Google-Smtp-Source: AGHT+IFZ7E4qbu9GejC27onbw6mbXjiRANVPMdB54XgewR8O68DakFlPRZsFccnnckZXTOfFslbDVg==
-X-Received: by 2002:a05:6000:22ca:b0:3d0:64c1:1a40 with SMTP id ffacd0b85a97d-3d1e01d67bemr9364150f8f.46.1756814367522;
-        Tue, 02 Sep 2025 04:59:27 -0700 (PDT)
+        bh=Vb0Wiqevsqa8WkDdGC0D/fzhQe9xghTxObZ99u7DKgU=;
+        b=OYhbe1os6eIguVySWqr61F8tbtB0OAtp0q7fy5IaH4hfSajH/4jzTw2Ew23fMYiML4
+         0uHO6z1Hw/Z8W6eqK7BcnHlUkrzpsMCg1zgoNGNKdFksk3h5Zse/J13OhSNXEf+E08Ea
+         NSET4ojbYPeUk53YiJtv29I+egRg09V0ieJtxRkTBggT+UaE3rWx7TElzF/MKP1YbsJL
+         t+I/+2yNanALUjTK739NCjrqtqrJcZslO+fHJp0kOEZYRQwxlnH5FuDFBOhlHWTxPFUM
+         DTXieggGboiZ8oIV7w/aK7KmFnJokRzzhsigddgzQaUi9yUpXGF17zeRsCrWfB6nCzJ/
+         0ehg==
+X-Forwarded-Encrypted: i=1; AJvYcCW5/lBVfvifzaB4smBagfrIXCPxsepwIXU1sIMk56C8q4HCU/qD/qTMRFeXtgk+c8Ikwp78pSLr8A==@kvack.org
+X-Gm-Message-State: AOJu0YxjA6xGZSMPrpA1xS0htn8OwDhcio+3gkE3SkkQqro7rtg0efr5
+	bGRvyZuWfYJW2QIxfkniMcj92P328+k/l/+KpFtk+Gyu94q0brC3gPiZ6vCXxivRht4=
+X-Gm-Gg: ASbGncscP90+5WoaxjwfUVtAdKWYBoPbPXMp+jqeXQJ50eN03h5SI5qweWgDpz5mJaI
+	pwYvwt4VBonFP/Sas6Q/tlytjmnknKNHGrI0Y7C0jTcGu1MR8TYFKCLkDSTS1HmuG9Q+KjVqq5u
+	wS+d2qm01AzfLlw5J45CEvUJLZ9uW9UWtN3FwY79hd27SYMYl3AbvemukOCSYcbpfxoI2/SS7Bs
+	qd1Y3BH9JrHc3uyF3DSAMW3oQY+WjVaqrqbOd1UowlzDHx8sWiYWrOeFA3S0GBGo+nxAAYW9tf3
+	rMI8rXob64uA1JcO7mi8iQCkn3V8F62WC8iKFTqBq1lXHoOIW4PNXaOJKIFfmu8QaVs7mHfp3VP
+	rbW04oh/991PBhCd1
+X-Google-Smtp-Source: AGHT+IGqVPHm+CLmCWjDWIMwfD3yDb2aOG/ha9M5DiHwXSWdOPv57ls1L2plWUVpkb4U4xzMsBIF9w==
+X-Received: by 2002:a05:600c:4e07:b0:45b:8795:4caa with SMTP id 5b1f17b1804b1-45b87954e09mr79113935e9.36.1756814369289;
+        Tue, 02 Sep 2025 04:59:29 -0700 (PDT)
 Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:3327:447f:34e9:44f7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9c234b24sm10224195e9.16.2025.09.02.04.59.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9c234b24sm10224195e9.16.2025.09.02.04.59.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 04:59:27 -0700 (PDT)
+        Tue, 02 Sep 2025 04:59:28 -0700 (PDT)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 02 Sep 2025 13:59:14 +0200
-Subject: [PATCH v7 05/16] pinctrl: mediatek: mt7988: use
- PINCTRL_PIN_FUNCTION()
+Date: Tue, 02 Sep 2025 13:59:15 +0200
+Subject: [PATCH v7 06/16] pinctrl: mediatek: moore: replace struct
+ function_desc with struct pinfunction
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250902-pinctrl-gpio-pinfuncs-v7-5-bb091daedc52@linaro.org>
+Message-Id: <20250902-pinctrl-gpio-pinfuncs-v7-6-bb091daedc52@linaro.org>
 References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
 In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -132,31 +132,31 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
  Chen-Yu Tsai <wenst@chromium.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3024;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7905;
  i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=8RlOPiRQytIjx4Cw4oHKC1GB2mrKTE7YNwjd+43Fzro=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBottwSF8whOHOZFyDolz0PilXXDCaAKXuSMNm60
- NzxyV+0c/yJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaLbcEgAKCRARpy6gFHHX
- cvhOD/0doe9DrmFXc7kS6/vcFyVXmEZSMqBFgmLcg4AZiHNYSGgE6MREhSdt5aBNKA7+rTuFQSi
- Y/nixATKCNYzUBUbmWqID2G2AlCMLLQF+VWSCfX96j9ieWw3V3tRY45UwvKNYSEI5W7wMZpg2ZL
- fGGgah3dEUWiT2yUVsG+X1PwKZUR+ocw23x6qt2tkI9gdKNBYBM6bbVnBdoob0hyIWU1FWq/ysj
- yu8gwxPTG6/t7oEbmaG0azFzobwcBLlkzhmh2ogg10CIoW1biAP1md+rFvJr8gkJ6AEMCn1KTea
- WxXvATAgG0gcYNkyN3NERiEgy2JVZeIYRuv0K7EBHjdLOQpdK4giSrbqvTT24ukwhxk3VA6jl4H
- ejWypun21rg7T47OE46nHQCqtQ2yXtCJm1igGFiO2iisi3fTz//i+JWB3HFjnENnD481g4p8Zia
- l0YU3rQjP6ZF5hhPoatjaPN3JFdOjiNef99swA2bw56a2SlzEhj942caTD93krzqPAB5YJtsEU1
- C5BK073g6ZsIuQS7ZTy5mT5vEJ/wMHxuEEoMlKMOVayopJtGpV+QRvurnIVM1XST8tvP9kO/7Rb
- xRGlJWaE3kTp+D03w1FSXjJl9hi41w95tXiebDHXYqVg5NOe1p3i352a2x6yvwfMSAsYY62sRx9
- sPSneWtt5XmEl7A==
+ bh=EpTogw9AYamkr07CTHiJSmlHCa4fP6PJjItMvrYOmL4=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBottwSePhiAI04z5GFeFadhwAcEnFgvTGwedFKd
+ gLkslJmObWJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaLbcEgAKCRARpy6gFHHX
+ coHID/wKzeIrsev5zmuRg2+6QQhA/2x5h0AN7sx5CSnBHV6WofCQWrg14rXuVAKkOtzpp9mIAe2
+ FLfU9PrJvokxpPpz8GQpLLqKi0ppqNVjXbrh9HrV4xLA5H/0KCA2V23K5Stk1AmRLwsFl4Ry/8L
+ WL6adK99ntZeJBQCiSr3NN6rqY+xXMVK1H50c1a/2mZzOzr0mkAeXuD7Swp/NB1jPwLPuUV5dke
+ IpYNI3NbEBOR3PSwOXvr1x8JomrsI4My7WBYWn3e1x8smdGeHWLwscEi0etykq1AQR+lTQF4phd
+ ct4qth3i6b/mmOoWFIdoL4OPnYYE2cD7puPVwCpLRKOaAdn39RlcE743D/kSBWKhtgkgQONvqPt
+ /pNippaEaT7sQqMBNEbik4JBGlkOvDYXygLYiHOYCZ8eRwNlke4C8HjQRgmjq7R88ewKPixrnR+
+ M5FbiH/a2w/ewqoTwS3LaTAYBrIw7qIxjN7WIewBqhBp7fGXrX2L/j7BGpP7atr6wHHn9v4DpPG
+ XImlgfrRL/784C2X7A+h12vs6mCUwcUByfM97Svka56vlJ9Z+mlcoJwVQv9gAf+EJ5SXdrs2EKJ
+ AXbGAgZPoUmRtD/BoguTy3oruS3jLK+bZJluB4Iw+6ZSLShA2HRC/npItXbtOtqyxU8xytLLmdZ
+ Hzyg4ZzXRpokQLA==
 X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
  fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Rspamd-Queue-Id: 266B61C0005
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D823140008
+X-Stat-Signature: mbh1uou1sjt8uwb8cpaxsb7fp8pykh7a
 X-Rspam-User: 
-X-Stat-Signature: m5myrxik8ngdcsjqm3sqhe7efpxpwt5r
-X-HE-Tag: 1756814368-611138
-X-HE-Meta: U2FsdGVkX1/BuENBxmPdT36DN9VlJlvqWmShhnbvZphA0Lm4M6XvngunbmdV3/wnDZLx/9ev+5fW9BunPVuA9q6XwKEF/p6ESmHADddgWngugGaej9kzVS+2EsTPfzryz47a8+BwOQc1d5U9ttt45eChdT0g/LhrE18EKUG7nX5UrDcXl+OTezT4hJgBAr7P6ktAd50osgnAayqDPn78T1iQDS+edonpJXceJ8JGHgOqhK+NoXLwgUQmAC8AG2aD40NZJtn8qiAJCvf4OSr6ggt1YcncIuHPJBw+DEbRVDhTLOjKMVwLdzEdtb+wZ4mXlo7fj3ArpwtKJgbx/HZgzN9TT48UtMurtbm9cu9u4WzOzVMiNGxRF3nkFK0tmx60g55ZzmYzbbDNjlMZl1nXNnudYJjQIMVjrd59kaCXeMKDmd4pabb/ZkSvrS/OATXnMIbEOGuSTRMBjQ/oxm4YPK1fA0zs5KpLlwVl45WXxmUUBRvPipsjF2ov1j9DicQU9+9Tt1qP6Or6mI2YRg1cc1oSzi/FwVqMyfdSkEqqLpmmpOdqfBf30EMTIXVF4qk4RHPJiLOS8NzKOeJQdcGq+KSdYuieDH5ckEID8PL/Bm6xoR/4yHGHiaf/2o2nFYo5QuMuI9kWSq2abFYvH38jSZjf9gg2fsWiWCoQlPH+xcbiyGu8NJ1Vb2uD4tqi8tkvpWdn4zDWqz/GH0LKsTuttVgsD0b+zVl3RR00rAcOhpZ7fCIfyuoDyBmQmPsnzZ4OOXgzeEKbp2rO02Z7yiGYD0kh4AT4ZIMO/fGQOHOcAABuPmrREjBTV4cCYJ5pNSjaUQ1b2kU+WnQhX/wGdxHCSkEBCOX5K/ztlCV5atdsj5swKgFz5kQebBE2o5fZ4SYRmDjMQDQyEMdv8Cfao5rPumUCPYmBeipklJi/sc3eBoY7rvvb48/jce2JtfPn2tDJh4qau055Q4Hjan9Wv8+
- vGGIqbJ5
- M+tyjTySlBgevEqQTyIXfKuTZheKP5m2YuDzZ6NbhE0GseqMTkOl99/W1SdV8VDZ2RmUhv5BpFL3X2W05gtcQKyWfgDqJoY4HfcFL0TDo453YvffS59wSwgeRdWJ7KfUdspyj6fQeUl7/e5T0XSJc+j54M7JpUHePajGd74TvF6yzuystj3E9f5fpM+EsESPAXTIZmcg/wtFTYYShbtLkisGnmU0jQB5x8Fd1BmNPbAB9cMNev5v8SeVp3Db4wZoiDKU3zK5snxmWNwnQqMQ7Qu3sRmDR5klIyE7eE6TkXpsbyKF0dwhp1cI/0WJdeDu0b5YsAKPc5ZYOKumnLWpey+utNV/WfdnCPcYNs2lN3wSesvQr57xcri504vM7AnDgJMjyyHRfD7UzLp9nMQTbryrOgKBhac3VnLCt4wwBTQdiH6tlNzxIPzp2lYDvwRrR5WHw2R7Ji/KfOh8xc3JWVc+rtfsKF6UtvP+4mewe8WSTMLqIxSmY+hmnhZr9XN+MEmhRiuk9GlNTuj7bpmS1CzKni+Ob/ihgFYUAEl+j+HWoTnKXTJOJY+tnEN4kMo2Vg9n/J6UDuCYQ92Y09yutZ5kdoQ==
+X-HE-Tag: 1756814370-272382
+X-HE-Meta: U2FsdGVkX18A2Q+8AqmZh5NHflrYSpEAqDGuUoL8DXAmJeXS6XgehQAbRYqBwekbQd4Ic4s98W60TEuica73uEf2psMTo/2KqnOgFfNz+QZsQsNJkOqDGKfu/TCdTgdIW8ZRonZhxKp7kf/C9ke5xzeV5fEd6dlmr/Wo08rXobbFS2eHLJC50mSX9A3oKOnbaIIF7G4fevxpCcc2u4sSxj23V2DN03X30mU0rUT7c1+oO07uLMVjmJNSLlW9U5BmEwH/rKy74kRyfY4dgVPWiHjFLqLi1V6o8pJE1ztmzcIVwMO0l7FD5Y2GJCfDmct9dBo/6BWzUOVMaKgGm13IWWAOkDVHQwjVGThCIUL1RWzfX5/OSUg82/IOOj/RIs6nQZ2ZvlXzHrhHChg7azPo6R2hXw+9GOZLBf0TzAvMLKEy5MEOeQwUfO65zdMEXk0XKDuuO+iTnvzIPSTftIqEe3ik2tcZ1hB/pXo2c+X/OBc3n5vVxYajY3ZM3ZS8alpz5BRNIQZMqscLwN1Xr5bgel4sGYxmhOPgw60YGFDZWojz2HdkLxoT+7fsCwktbP3F9XC/453M7DyZha4/R2n2kYan7+PRMBAufPPHW98pJX1zTc8mCbdUFbBJ9jN05O3avou4tdwUWy+mWBvzPej8z4ittqmdwRcKWQmtfhe6/22M+QytUuGkYo5x7lm0PY/QucjDPhkr/2XsD2tuWDqMdY+rIs3LsqqLvv+bKc/lkqggeQL8fyyAOpHZeh6sUxBjdiGIjm1eBHOQLqCRiNKjF8gy9xHrG0oyry2k3NEZ5xs8jxHclJEYrQxZfRRq0W8uDJh9IgU7wvN84WdLPhS1pSNTI5x4R7n2cnSSYWJM7yhAXK1t21idPB8+P2iM7MwNRQHYn/LHIrvUx7sruckBYo8yzusyrvn33xJK3tmjH7zj6AWbYfubSxtX6As8edabuG/uudEwWo13xdlLSqQ
+ im+vR8Jg
+ lHf51pFk4EcaP7iVg60PokXz05w7yDbdYb4VPDdwagBisIGqS7Fj/01w2iyxTPaXQfXHgN8fkyCXCtPip2GXk4R6H20WpWA4IAsqGR26lUyzkqvU5CLE6OYDYS3hUw8n78wao2GbwrKuzc+/BTtOaY2UHuaM7kh19ff5L0lY9WX0RWXYBQQfnFZ2rXdNCQPG2yF+AXWS0jQZyuPXn9KJQmZeyxx0XS5VI/Ok7wo5blUsq2OQCCdOHyGhXqP4TzN+euu6y0oZQ9q6/gIsyJi9IaanLM0t8CVgvOlowviuywt0kq8dPF+yBrgG1fowIbFhApO/cT1fLiRdZLm5EGeiipIuwxqtFimaMVR4ZH866cjswG8x9ND5CzU10BI3JUZLlWCod+wVNQ0vdquX9gDRa/jyk1SyhERC3l+/ATH4zcJEpX2qGD+rXHwj2xKo28MoY0BOjRWAwuug1f89ZdqHEAX0pDhXXXqLM4s2ibGhnqDKAYov3pEf1DXeo535gFg2MaRW3/IzdR2h/eF8q5CU8IYPUAUIL234/qVoLf1dl8g9CyF42nEg87Q9xB9eukwbEXlCh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,70 +167,156 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-We have a dedicated initializer macro for defining pin functions for
-mediatek drivers so use it here.
+struct function_desc is a wrapper around struct pinfunction with an
+additional void *data pointer. This driver doesn't use the data pointer.
+We're also working towards reducing the usage of struct function_desc in
+pinctrl drivers - they should only be created by pinmux core and
+accessed by drivers using pinmux_generic_get_function(). Replace the
+struct function_desc objects in this driver with smaller struct
+pinfunction instances.
 
 Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
 Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/pinctrl/mediatek/pinctrl-mt7988.c | 42 ++++++++++++-------------------
- 1 file changed, 16 insertions(+), 26 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-moore.c         | 6 ++----
+ drivers/pinctrl/mediatek/pinctrl-moore.h         | 7 ++-----
+ drivers/pinctrl/mediatek/pinctrl-mt7622.c        | 2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7623.c        | 2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7629.c        | 2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7981.c        | 2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7986.c        | 2 +-
+ drivers/pinctrl/mediatek/pinctrl-mt7988.c        | 2 +-
+ drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h | 2 +-
+ 9 files changed, 11 insertions(+), 16 deletions(-)
 
+diff --git a/drivers/pinctrl/mediatek/pinctrl-moore.c b/drivers/pinctrl/mediatek/pinctrl-moore.c
+index 6e4f6c07a509326a8a7e88b2dc32635b22e7b965..982b9887521d036538f67e9919de444693c458c0 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-moore.c
++++ b/drivers/pinctrl/mediatek/pinctrl-moore.c
+@@ -622,11 +622,9 @@ static int mtk_build_functions(struct mtk_pinctrl *hw)
+ 	int i, err;
+ 
+ 	for (i = 0; i < hw->soc->nfuncs ; i++) {
+-		const struct function_desc *function = hw->soc->funcs + i;
+-		const struct pinfunction *func = &function->func;
++		const struct pinfunction *func = hw->soc->funcs + i;
+ 
+-		err = pinmux_generic_add_pinfunction(hw->pctrl, func,
+-						     function->data);
++		err = pinmux_generic_add_pinfunction(hw->pctrl, func, NULL);
+ 		if (err < 0) {
+ 			dev_err(hw->dev, "Failed to register function %s\n",
+ 				func->name);
+diff --git a/drivers/pinctrl/mediatek/pinctrl-moore.h b/drivers/pinctrl/mediatek/pinctrl-moore.h
+index 229d19561e229c77714e5fccb3d4fb68eacc77fd..fe1f087cacd0446e40628cb4fa35a135496ca848 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-moore.h
++++ b/drivers/pinctrl/mediatek/pinctrl-moore.h
+@@ -43,11 +43,8 @@
+ 		.data = id##_funcs,							\
+ 	}
+ 
+-#define PINCTRL_PIN_FUNCTION(_name_, id)							\
+-	{											\
+-		.func = PINCTRL_PINFUNCTION(_name_, id##_groups, ARRAY_SIZE(id##_groups)),	\
+-		.data = NULL,									\
+-	}
++#define PINCTRL_PIN_FUNCTION(_name_, id)						\
++	PINCTRL_PINFUNCTION(_name_, id##_groups, ARRAY_SIZE(id##_groups))
+ 
+ int mtk_moore_pinctrl_probe(struct platform_device *pdev,
+ 			    const struct mtk_pin_soc *soc);
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mt7622.c b/drivers/pinctrl/mediatek/pinctrl-mt7622.c
+index 2dc1019910662a2a52e81f277a10a32bd83b33d4..d5777889448aab86e82fa6821fdea0d30a5a7246 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mt7622.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mt7622.c
+@@ -822,7 +822,7 @@ static const char *mt7622_uart_groups[] = { "uart0_0_tx_rx",
+ 					    "uart4_2_rts_cts",};
+ static const char *mt7622_wdt_groups[] = { "watchdog", };
+ 
+-static const struct function_desc mt7622_functions[] = {
++static const struct pinfunction mt7622_functions[] = {
+ 	PINCTRL_PIN_FUNCTION("antsel", mt7622_antsel),
+ 	PINCTRL_PIN_FUNCTION("emmc", mt7622_emmc),
+ 	PINCTRL_PIN_FUNCTION("eth", mt7622_ethernet),
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mt7623.c b/drivers/pinctrl/mediatek/pinctrl-mt7623.c
+index 3e59eada2825277b3d7500cb1f2cf740242a4a8b..69c06c2c0e21e4ce785f65539254eb070bff9a0d 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mt7623.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mt7623.c
+@@ -1340,7 +1340,7 @@ static const char *mt7623_uart_groups[] = { "uart0_0_txd_rxd",
+ 					    "uart3_rts_cts", };
+ static const char *mt7623_wdt_groups[] = { "watchdog_0", "watchdog_1", };
+ 
+-static const struct function_desc mt7623_functions[] = {
++static const struct pinfunction mt7623_functions[] = {
+ 	PINCTRL_PIN_FUNCTION("audck", mt7623_aud_clk),
+ 	PINCTRL_PIN_FUNCTION("disp", mt7623_disp_pwm),
+ 	PINCTRL_PIN_FUNCTION("eth", mt7623_ethernet),
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mt7629.c b/drivers/pinctrl/mediatek/pinctrl-mt7629.c
+index 98142e8c98011d17339da74f61d6f917372dfcd5..cc0694881ac9dc536db0e46eefe5eb7359735a60 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mt7629.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mt7629.c
+@@ -384,7 +384,7 @@ static const char *mt7629_wdt_groups[] = { "watchdog", };
+ static const char *mt7629_wifi_groups[] = { "wf0_5g", "wf0_2g", };
+ static const char *mt7629_flash_groups[] = { "snfi", "spi_nor" };
+ 
+-static const struct function_desc mt7629_functions[] = {
++static const struct pinfunction mt7629_functions[] = {
+ 	PINCTRL_PIN_FUNCTION("eth", mt7629_ethernet),
+ 	PINCTRL_PIN_FUNCTION("i2c", mt7629_i2c),
+ 	PINCTRL_PIN_FUNCTION("led", mt7629_led),
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mt7981.c b/drivers/pinctrl/mediatek/pinctrl-mt7981.c
+index 83092be5b614cc164590fe5ec2b756fe6579b263..6216c2e057f6499b32741b6bd3a4854878c061c9 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mt7981.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mt7981.c
+@@ -977,7 +977,7 @@ static const char *mt7981_ethernet_groups[] = { "smi_mdc_mdio", "gbe_ext_mdc_mdi
+ 	"wf0_mode1", "wf0_mode3", "mt7531_int", };
+ static const char *mt7981_ant_groups[] = { "ant_sel", };
+ 
+-static const struct function_desc mt7981_functions[] = {
++static const struct pinfunction mt7981_functions[] = {
+ 	PINCTRL_PIN_FUNCTION("wa_aice", mt7981_wa_aice),
+ 	PINCTRL_PIN_FUNCTION("dfd", mt7981_dfd),
+ 	PINCTRL_PIN_FUNCTION("jtag", mt7981_jtag),
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mt7986.c b/drivers/pinctrl/mediatek/pinctrl-mt7986.c
+index 5816b5fdb7ca918486f57a890f73543b3198c728..2a762ade9c35505505c932b6fea75fa0cf77d961 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mt7986.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mt7986.c
+@@ -878,7 +878,7 @@ static const char *mt7986_uart_groups[] = {
+ static const char *mt7986_wdt_groups[] = { "watchdog", };
+ static const char *mt7986_wf_groups[] = { "wf_2g", "wf_5g", "wf_dbdc", };
+ 
+-static const struct function_desc mt7986_functions[] = {
++static const struct pinfunction mt7986_functions[] = {
+ 	PINCTRL_PIN_FUNCTION("audio", mt7986_audio),
+ 	PINCTRL_PIN_FUNCTION("emmc", mt7986_emmc),
+ 	PINCTRL_PIN_FUNCTION("eth", mt7986_ethernet),
 diff --git a/drivers/pinctrl/mediatek/pinctrl-mt7988.c b/drivers/pinctrl/mediatek/pinctrl-mt7988.c
-index 68b4097792b88356babe4368db7d0f60194e7309..55c8674d8d66f12d2f2246c215056d4e51296a9b 100644
+index 55c8674d8d66f12d2f2246c215056d4e51296a9b..9569e8c0cec15fb6a4a8e359d6483fa163487b0c 100644
 --- a/drivers/pinctrl/mediatek/pinctrl-mt7988.c
 +++ b/drivers/pinctrl/mediatek/pinctrl-mt7988.c
-@@ -1465,32 +1465,22 @@ static const char * const mt7988_usb_groups[] = {
+@@ -1464,7 +1464,7 @@ static const char * const mt7988_usb_groups[] = {
+ 	"drv_vbus_p1",
  };
  
- static const struct function_desc mt7988_functions[] = {
--	{ { "audio", mt7988_audio_groups, ARRAY_SIZE(mt7988_audio_groups) },
--	  NULL },
--	{ { "jtag", mt7988_jtag_groups, ARRAY_SIZE(mt7988_jtag_groups) },
--	  NULL },
--	{ { "int_usxgmii", mt7988_int_usxgmii_groups,
--	    ARRAY_SIZE(mt7988_int_usxgmii_groups) },
--	  NULL },
--	{ { "pwm", mt7988_pwm_groups, ARRAY_SIZE(mt7988_pwm_groups) }, NULL },
--	{ { "dfd", mt7988_dfd_groups, ARRAY_SIZE(mt7988_dfd_groups) }, NULL },
--	{ { "i2c", mt7988_i2c_groups, ARRAY_SIZE(mt7988_i2c_groups) }, NULL },
--	{ { "eth", mt7988_ethernet_groups, ARRAY_SIZE(mt7988_ethernet_groups) },
--	  NULL },
--	{ { "pcie", mt7988_pcie_groups, ARRAY_SIZE(mt7988_pcie_groups) },
--	  NULL },
--	{ { "pmic", mt7988_pmic_groups, ARRAY_SIZE(mt7988_pmic_groups) },
--	  NULL },
--	{ { "watchdog", mt7988_wdt_groups, ARRAY_SIZE(mt7988_wdt_groups) },
--	  NULL },
--	{ { "spi", mt7988_spi_groups, ARRAY_SIZE(mt7988_spi_groups) }, NULL },
--	{ { "flash", mt7988_flash_groups, ARRAY_SIZE(mt7988_flash_groups) },
--	  NULL },
--	{ { "uart", mt7988_uart_groups, ARRAY_SIZE(mt7988_uart_groups) },
--	  NULL },
--	{ { "udi", mt7988_udi_groups, ARRAY_SIZE(mt7988_udi_groups) }, NULL },
--	{ { "usb", mt7988_usb_groups, ARRAY_SIZE(mt7988_usb_groups) }, NULL },
--	{ { "led", mt7988_led_groups, ARRAY_SIZE(mt7988_led_groups) }, NULL },
-+	PINCTRL_PIN_FUNCTION("audio", mt7988_audio),
-+	PINCTRL_PIN_FUNCTION("jtag", mt7988_jtag),
-+	PINCTRL_PIN_FUNCTION("int_usxgmii", mt7988_int_usxgmii),
-+	PINCTRL_PIN_FUNCTION("pwm", mt7988_pwm),
-+	PINCTRL_PIN_FUNCTION("dfd", mt7988_dfd),
-+	PINCTRL_PIN_FUNCTION("i2c", mt7988_i2c),
-+	PINCTRL_PIN_FUNCTION("eth", mt7988_ethernet),
-+	PINCTRL_PIN_FUNCTION("pcie", mt7988_pcie),
-+	PINCTRL_PIN_FUNCTION("pmic", mt7988_pmic),
-+	PINCTRL_PIN_FUNCTION("watchdog", mt7988_wdt),
-+	PINCTRL_PIN_FUNCTION("spi", mt7988_spi),
-+	PINCTRL_PIN_FUNCTION("flash", mt7988_flash),
-+	PINCTRL_PIN_FUNCTION("uart", mt7988_uart),
-+	PINCTRL_PIN_FUNCTION("udi", mt7988_udi),
-+	PINCTRL_PIN_FUNCTION("usb", mt7988_usb),
-+	PINCTRL_PIN_FUNCTION("led", mt7988_led),
- };
- 
- static const struct mtk_eint_hw mt7988_eint_hw = {
+-static const struct function_desc mt7988_functions[] = {
++static const struct pinfunction mt7988_functions[] = {
+ 	PINCTRL_PIN_FUNCTION("audio", mt7988_audio),
+ 	PINCTRL_PIN_FUNCTION("jtag", mt7988_jtag),
+ 	PINCTRL_PIN_FUNCTION("int_usxgmii", mt7988_int_usxgmii),
+diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h
+index 36d2898037dd041ebc7e06526ebc085eb42f2828..fa7c0ed49346486ba32ec615aa2b3483217f5077 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.h
+@@ -238,7 +238,7 @@ struct mtk_pin_soc {
+ 	unsigned int			npins;
+ 	const struct group_desc		*grps;
+ 	unsigned int			ngrps;
+-	const struct function_desc	*funcs;
++	const struct pinfunction	*funcs;
+ 	unsigned int			nfuncs;
+ 	const struct mtk_eint_regs	*eint_regs;
+ 	const struct mtk_eint_hw	*eint_hw;
 
 -- 
 2.48.1
