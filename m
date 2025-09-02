@@ -4,187 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED46CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 08:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DD93CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 08:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B6688E000C; Tue,  2 Sep 2025 04:13:55 -0400 (EDT)
+	id 87DF48E000E; Tue,  2 Sep 2025 04:14:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98D588E0006; Tue,  2 Sep 2025 04:13:55 -0400 (EDT)
+	id 82EB08E000D; Tue,  2 Sep 2025 04:14:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87CB68E000C; Tue,  2 Sep 2025 04:13:55 -0400 (EDT)
+	id 6A83D8E000E; Tue,  2 Sep 2025 04:14:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 79F948E0006
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 04:13:55 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6FD3B160B27
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:04:28 +0000 (UTC)
-X-FDA: 83843573016.23.DB876B9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 336CF18000D
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:04:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cOCdvZPy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756800266; a=rsa-sha256;
-	cv=none;
-	b=pXF3UVCvyFVfM/lWjUm8y+vEsvuvIM7+L2hSVICNihvNjM4skx4P7VeH+cNkgYmsd42CbJ
-	CeqG6CEw927YI9A2FUllzuNKc6anHthHCH6eAlpVzJaN2VxtCU7+mVvfEwAcAp4JJmqjRI
-	ViIWQC4T2t38ulm/xzLCMhHtIuDjDdo=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cOCdvZPy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 50E3C8E0006
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 04:14:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD18D160B1D
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:04:59 +0000 (UTC)
+X-FDA: 83843574318.09.19DF4FC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6CE884000B
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:04:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a3k8FlGw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sEJP8Xbk;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oInuHaIi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mWkOX9xX;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756800266;
+	s=arc-20220608; t=1756800297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iWRs8dmxjkSLC3xxQFUr/zOxuf3XJeRB+0HV6i1wagU=;
-	b=CSx35PR219tcsAxKwkO7bv0200rjX1hWw1k94b4GvEFeFhKrlBBOWeiqr3r+tyRj8WoNa+
-	rfEmRrffi4JCPQW/nqSpsKOWil4ck0MRZJkr69tfOqNqeRwyocwZKxkZgrPi/ikj09dUcf
-	eAS0AyVhjIrG1qOPiRhVxGfGGnx60So=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756800265;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	bh=XPcqsVYfBq13gRo1p/CKZZuJuUOvh0vID2TgN8SxMHA=;
+	b=smiEV9d5F2l82p+s/Tu4cSjhPzPKpCHt2QwOm7pBXedvmQgp34FjexxfFKB+bich0EtHoo
+	noJYv/HWJlgkv5CugjT8GZFHfadZCqAQMyJ7aH7xvx96I6VMrJCCgh/mmDnDjVQ0bW1S5T
+	WIBXmI92twg9HFRZevf46HVoTAF1Z10=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a3k8FlGw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sEJP8Xbk;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oInuHaIi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mWkOX9xX;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756800297; a=rsa-sha256;
+	cv=none;
+	b=2yZWgBFcAb/ezInkGD1AeJfVDQri+Q6QxCjCaKLSmA9PLNUxJqqAI1gQqIHmPh6t7dn30S
+	GtIFePD8WSxD8FbYd0XwKbCH4mcDC6Cnwa/v7uyoPfRd4UFtDbYO7ipP+TusOjR2tfTVG/
+	+nROV2VMOjrNf4Br/dbp599F9abPWvg=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F0454211ED;
+	Tue,  2 Sep 2025 08:04:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756800295; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iWRs8dmxjkSLC3xxQFUr/zOxuf3XJeRB+0HV6i1wagU=;
-	b=cOCdvZPyWgDCWeMzoF5sJlQAJDCJNnmSX8ktlBqwV2/DS/2OwrRAaYiGjUf5BVsoVpU5yZ
-	WE+joqBeF46foipZwpYhO6+olSLTQXJA6wflfRpGL0Rm5Y0dyhov9H38kfGcsAEUQhEmrc
-	H7v7kPsK7wI/M2naWYlkuct8wfmD3ts=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-C2qZq-3dOAyE4yqdehh28Q-1; Tue, 02 Sep 2025 04:04:24 -0400
-X-MC-Unique: C2qZq-3dOAyE4yqdehh28Q-1
-X-Mimecast-MFC-AGG-ID: C2qZq-3dOAyE4yqdehh28Q_1756800263
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3cbd6cd78efso2285640f8f.1
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 01:04:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756800263; x=1757405063;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iWRs8dmxjkSLC3xxQFUr/zOxuf3XJeRB+0HV6i1wagU=;
-        b=imUZk8DHGgaUmA5s8WLe4EmLv/waDsts4Bwo4pbHD6sJCePqb6ZgPcu8kntmOjdzKl
-         sy/YkSj7d1JOSzJml4HdInhiA5SDYL5mC5X7Ia9TzQrD6oRYsDhEPYzNlRjlVjimu3eT
-         OVIUiRko/wSi6OiSgmsfEWeHPgGh0FxA7sgbPcr71zHfLoC9NB/qT7SEgE6118TV6nxX
-         s9U5HETU+wJEqKC+/F/79u1E4oBs7S3Vz//xp49xCU+gFI1HwB9npfTzlf5UZ4/reK0e
-         Q3jwQlk02RHle2FUSxa77Tee4tQvNLBSR/SCBUGBA+/VLceL81/2AaYWFHECmVthUesw
-         3IWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVH8V1u2sYM6ZGuAgiDizqIq016oaW4r1HPhHCL1JLrTiKpcszyAV3ano7913U6NtFJYJ7wJ1xFYA==@kvack.org
-X-Gm-Message-State: AOJu0YwySvyjnMOuZlhjSzPnheotL+DkAsTM3HdJSN2GdnoAAM0ozHky
-	sfc89YMLOCruKtK7aYpizSyLp8B7R7Ow9vBoLtf/wbZb4pW2CPzPOQf93El4ymGllCZ9faUzTNW
-	t41jdIgT/T2aPuBbdAVxE+RMoIf5jWUqPmK6jtRaEwogzXa0cNHoE
-X-Gm-Gg: ASbGncsW5yT0XTqmtn0jeOfz4ln7G5cwiQNTfKCNp0JvCrNwyUwlUqN1nIGVH5BoPBe
-	N1wfeiHcYh++K93ewwp2WtZ7kJRdSppQsCPAGYuBfO7rd3EJDgdLQXaYIBQBLJfx3bdEG22/e1f
-	wasf64x6onxTg16OuVPVws3WDMGN1J+6QIVgo+HV6TAwGAmzad4XazXMlz3RpiPEtO8WLT+RE0W
-	vBwqDsrb0x0MarJqUrriVVx596k7hut4iYExyAgZV1gf1Utbfusjuuax1e214F25/neAlCds1ri
-	2mLbkRAU6nfKk0Zw+kApoxbfw7KgFgn/tUky5OVlad/b6wrSaQHg9PDXhyx/olCU5plNhvFEDNT
-	CtCMKz5AV9csv4YfItTnsdyrI7Yed6iFB6C5OYwdfF6WMXdRh44WKdcIkyGjZr8FUDvM=
-X-Received: by 2002:a05:6000:1ace:b0:3c4:bc55:65e1 with SMTP id ffacd0b85a97d-3d1dd434397mr8245289f8f.24.1756800263129;
-        Tue, 02 Sep 2025 01:04:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7tZ84tBomOiZJ2viM4EfuscitGcpK97LthdnhgXpe3SACLWjKyv/xkWV2kN4g7adtuOE+bw==
-X-Received: by 2002:a05:6000:1ace:b0:3c4:bc55:65e1 with SMTP id ffacd0b85a97d-3d1dd434397mr8245260f8f.24.1756800262587;
-        Tue, 02 Sep 2025 01:04:22 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1f:3f00:731a:f5e5:774e:d40c? (p200300d82f1f3f00731af5e5774ed40c.dip0.t-ipconnect.de. [2003:d8:2f1f:3f00:731a:f5e5:774e:d40c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e8ab14esm200784145e9.21.2025.09.02.01.04.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 01:04:21 -0700 (PDT)
-Message-ID: <5529a696-4f6f-4bb9-9bc2-ba5f9f72ec8d@redhat.com>
-Date: Tue, 2 Sep 2025 10:04:19 +0200
+	bh=XPcqsVYfBq13gRo1p/CKZZuJuUOvh0vID2TgN8SxMHA=;
+	b=a3k8FlGwAfWd58o1m3YSHdwl+L8hHYMbdtPW2TBT7+8izJXsog3JGC9cawhlAUOAUrM0LP
+	xZ3daa5k086hJdKIVlwMYpItX1YRjSafUHhjeuxLSUjOpU6nDJnqWmAKRWRVijgg94fpMF
+	OdA6rWyH2j64+pliFuNu2nY+VqJ95s0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756800295;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XPcqsVYfBq13gRo1p/CKZZuJuUOvh0vID2TgN8SxMHA=;
+	b=sEJP8Xbk50aR7g/jeMvG1GiUdXYzBxINFpUGwbT7CpqEVStlTpuBJLNC7FKpN/GVadQzFQ
+	vfPV5OoCcbgm8WAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756800293; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XPcqsVYfBq13gRo1p/CKZZuJuUOvh0vID2TgN8SxMHA=;
+	b=oInuHaIiEDxHfNGotp0RvDDUwTD8S1MpuUnk6e9W82FvnHvWTN1Kph3CCaLEgHRDh/J58S
+	dOZGGXb167GrXsNBmooaBqqOhyj7dnntFffS3kVI7LRN9HO4QKDxoSdajToi5Ohg11cwtQ
+	05vTe7x8y1t/KIb9S6cW6lYPO0awjdM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756800293;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XPcqsVYfBq13gRo1p/CKZZuJuUOvh0vID2TgN8SxMHA=;
+	b=mWkOX9xXy/p2vYR2FmpLHfTsDX0S8cSc8+z41UueqSLua7n+VzotjwpLBA7vk88Mz7YWEM
+	+SZ9HOeIB44HGJBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DEC1213882;
+	Tue,  2 Sep 2025 08:04:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 84z3NSWltmiAbgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 02 Sep 2025 08:04:53 +0000
+Message-ID: <4cb33d86-12c9-4b60-bcd4-e9f9ea5a0b16@suse.cz>
+Date: Tue, 2 Sep 2025 10:04:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/12] mm, s390: constify mapping related test/getter
- functions
-To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
- axelrasmussen@google.com, yuanchu@google.com, willy@infradead.org,
- hughd@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, vishal.moola@gmail.com,
- linux@armlinux.org.uk, James.Bottomley@HansenPartnership.com, deller@gmx.de,
- agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- davem@davemloft.net, andreas@gaisler.com, dave.hansen@linux.intel.com,
- luto@kernel.org, peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, x86@kernel.org, hpa@zytor.com, chris@zankel.net,
- jcmvbkbc@gmail.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
- jack@suse.cz, weixugc@google.com, baolin.wang@linux.alibaba.com,
- rientjes@google.com, shakeel.butt@linux.dev, thuth@redhat.com,
- broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com,
- mpe@ellerman.id.au, nysal@linux.ibm.com,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20250901205021.3573313-1-max.kellermann@ionos.com>
- <20250901205021.3573313-7-max.kellermann@ionos.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250901205021.3573313-7-max.kellermann@ionos.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dtxqp22k_E8o95zwkrdyI6UiGUICOTtOqXNLEpmRXaI_1756800263
-X-Mimecast-Originator: redhat.com
+Subject: Re: [Patch v2] mm/page_alloc: find_large_buddy() from start_pfn
+ aligned order
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org, ziy@nvidia.com
+Cc: linux-mm@kvack.org, vishal.moola@gmail.com,
+ David Hildenbrand <david@redhat.com>
+References: <20250902025807.11467-1-richard.weiyang@gmail.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250902025807.11467-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 336CF18000D
-X-Stat-Signature: ptdzfe6aechk6c9h1kbz7y6mxn3gwjd8
+X-Rspamd-Action: no action
+X-Stat-Signature: m99wqut7ec961py7px63nt6fon8nb75q
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756800266-352146
-X-HE-Meta: U2FsdGVkX18tlNrJKB3X9tLyT98FfOVqPb88OgvIVAHZbhBbxA7bDoSI/3sAl4DcmRpExmBXcQzf3ZqJupCNZi9d+t80c4MbUzwnOiDLMQSY2TzmiUicfIOqdRiKHUOT2dhG3ss5nGGVjN7yCFlndhxN+otqzRZpypy5SBYS1DLqEMJUJfi6J5jfp3Brf3S8K74bULqYLQEhvFBO4uZ09mqzZW7pKz6v4CUfdpXnEmI1O8ilGZ/pc9Oe9sZHDlRVjUW6r5K3mWVDRtuAWmdC7aj4kC6l3sQ4fI5d5mqWnBQb0aF+fo9poVeOSuwxGPOtT2fOt2ydm6SHwTVtr0JPnFy/rjQnhmmt48mDpCNtdj5rztBdFRmOXLa3d+F8NQQswzIBAOzZI4BNVxuyCVOBVtFMULlLvTh+S0SIyrDeeUwDlYMHUaTHeMyWyIyjPghQrI2KLUi9bSVZOgFi4ijS0DbLFh2aYjVrJLXx0NhhWsL7g/peke/Jb2AwWHc7OZOG2A1SYI11KGZBqaVprAdJp+ZGEo2tVUOk2dD6PkYHzmxJljj942h33b4ofmhXoDfWZf0Rz4p0JciQwb/aAFQvQAt2zCAEJfwm6D3XEpt/TdCFqBC2mj853FPgpDeYn8Ndmk3z09QC3xwVt8braq6tbMmamsnSwlIibAWlvmEyQzfHDAQAaK+KZyw3Xh0c4NwKEVB+OcUpgpGvK+nkoWJfO5s8yYjkbgwkG3RlmFkx7Dl8cbUyo3b9QVvHjg1p5t9lQNC8fzcVO3V9BqqwlpEAYGg1GmuPsKZVj4D0xoy6fz9YKyJC0bCxbj6kU1D4Qu08tB4LF0uy/o0cR36/7SWxLI916IWOzZMsAExDIlQcO5PfeLM85YGnnIlNOvWbFuHikyL5rTg5rmL+eCDY/F26FyHTxsLF9Hq+doh7XAkzCQGC6qKxSNkrEmXcwJ8OnGzmHH41bsAekG83dhoZcoV
- qJMdv3Ij
- Q0eHMjUuP2G9Lq4nANuSj2o8zt2Ik6Wtj5dNJqYHIOnjUMEO/RcSNK/d7+JlWyx2k3sl9GDo7BdI4ML95n58hOia94Q+vrFwXeiQa8ATstgQL1odXqU4qnEjV53sdSYNILecVTY9c8ck0ploHGXvzLbuT64vkZHEkSSQhF5QOqwBzFgYw8rE2WjgJE3wtUnQaaYc9rsRl9AziW4myKt6nePj67x+Ppgv5+fUUAUrSgQhoX/e4U3sSL7JLvL8ptMjQ11FmPIOwrFK0MEaiATw8f/exNcj7qHxL8gS8QUBHCkELI0eCd0Z5WQPmMfaK7/ij2JFGFeE7wv+jnirOpxp42hnHluXU8J8n08sTvLyJ+W3vHCfOhAJugkBYsjOfaxi73VhMiG5/PteKCouHdzQf4O5qYFkS3woa2BdvvffT9WbhKqlW89dOtZPQxy1D+h/OsYl+r+/g1qFsIF9/RYEi0x+LWt1hUHuh66YORs/Z0f44NKEabtG30QVXn4izzAccLR+UvYfXJVuLX2QLRvW99sNQFdgXdzFK3hKNkGPp1ZhB14+np2nbpPSU2bmH6mzPTthF
+X-Rspamd-Queue-Id: 6CE884000B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756800297-932734
+X-HE-Meta: U2FsdGVkX1/8pZgEqUdxo1iwtPLS/OqflPQMB+i4uKCOVdaabMPKLKFRXU9v+x87lf+J30MDVYb4s9++J+h3MZ/3p6XhGyi+e0DbVFseJTXY6g46ANlODiuNXfFlB8Zyb7lVhP8XDkQDfWh/To4Ga0+qIJYby8L+9ixRVLBWRxykX+hgWkhX1PejRCPVoNVE9pyDLmUKbqvE7nTLzMx9lkjGd1K+T9+vtbSsWXGcBIrFia77Y96XfwYtQy1nbjbWDvql6/9jumKOAVt/yhhSikk2xfeyrkP9dvMtt2t3l6MUHw4fD5d6dsM4zybIIV2cFdkQ3wwOoz7hzCW9MIkBbDAxwGFbyZSCfANipgFL1qDTnSD9pAONmZU6sI+EyNUpwcbBNForZ/nvTZCrCymC+CfigFCI4K6RWXOAp+zjfUtMzACV7BWcu1FCf7ySdloUpN4/OBoCoSeuYzJqpUEyCzFZqgYDPvJChphW2qPLyIuF23zJPJBbnFmjER467f9gpQy27IPbwhf2s7ywVUe0hStSSNMn5PWQTkkUgUMAgte4YkJQz1Adht5B+Ks11oZrYT5FwsHoBU5p4B2ahG4sD08J3fIth1sOIuQ07ctdjIkCnEEry6NiQuJrOKG9FOvVAa8fNCitALRHCquiQzkb4NfLLyqdSVIvIOqeajI1cqXyr4B+vMYTOjbbKga4qHMv2olxLcFmPTuUvMDR5z5n5WgGzxqoeU+zrFHhNYXXdDDHqwTVArW/UtVK532AICukoi3ok9hFndjVzjNDR/GnQrc8EXAV5+Mm4rfduJGg0vxGpmNTMEaiWFNdWY6PlMxsFS0MFXOfaLBsml9N01SpPr0msCzIGcVBTvWyOQ2/ikpqp5lDepRmH5mcnOWVg7zN3HFtTDqdV21yVlwwhtJTcGHHNijhB0b6KvxXm4iUJDTbAKk/tWPzU/ZaxOJvXqqijvUR/Amzc+o62oWoP1T
+ /VfH7VP7
+ nh5/TGGbUSYuLvSoZlYj8pdZLSfxiME91HHw8S/0W8mFXIT97hqcyQ1AVOXbvhnJxjVtMRgn2yz7giIIW6O4NpXV9FiVbRZFk939XEJkIc8SgwXJWFbbIU7mE3MszZjqCi57oZp4DM57yBqmrBaQL3QsridqDJzLVyeCg//NIx3Zra3qsEqBTJgbghnmkDnNufet8uXjYeicq+BAzPrLT7zAUKGOfkaphs44PN9bWDmMABoWJ+xf4D1A2BMWa0giELiBe5lRgQMkYWo9KNssQ9od/60hqIK5WeVneiIioh0T/nMG9FQ4I0vPlFOqhuXwhj3hImxzHY93vds2Q91lzVRXCpH88RhIU/0PcFy/rndKetzUyEqZa4VWfwCXbj4yG2RBdWBMNRYRZ0QviMhzwGm/TGNoKKphq0dIIaOsZsrAIMubkjsI4wvWiVYYJvDuaPlOW+AWIaKCfvSDUpznyINEQaGQyEuwUiaXLKyZiLQNyUWJllYReSPCCO3x4DLf/pcfIkhF3547041slM1pp94M99eEc/24ic9OZFg1OaYpn9lXzDqx3ONH4zkXSibA/64NLF2q5j5+xmXGC7/fXGzhO6wnC4uO/1mkisb3vbHk/TXE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,29 +179,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 01.09.25 22:50, Max Kellermann wrote:
-> For improved const-correctness.
+On 9/2/25 04:58, Wei Yang wrote:
+> We iterate pfn from order 0 to MAX_PAGE_ORDER aligned to find large buddy.
+> While if the order is less than start_pfn aligned order, we would get the
+> same pfn and do the same check again.
 > 
-> We select certain test functions which either invoke each other,
-> functions that are already const-ified, or no further functions.
+> Iterate from start_pfn aligned order to reduce duplicated work.
 > 
-> It is therefore relatively trivial to const-ify them, which
-> provides a basis for further const-ification further up the call
-> stack.
+> Link: https://lkml.kernel.org/r/20250828091618.7869-1-richard.weiyang@gmail.com
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+
 > 
-> (Even though seemingly unrelated, this also constifies the pointer
-> parameter of mmap_is_legacy() in arch/s390/mm/mmap.c because a copy of
-> the function exists in mm/util.c.)
-> 
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 > ---
-
-Acked-by: David Hildenbrand <david@redhat.com>
-
--- 
-Cheers
-
-David / dhildenb
+> v2: add comment on assignment of order
+> ---
+>  mm/page_alloc.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 07d79ae557f8..5d9ceca869e5 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2033,7 +2033,13 @@ static int move_freepages_block(struct zone *zone, struct page *page,
+>  /* Look for a buddy that straddles start_pfn */
+>  static unsigned long find_large_buddy(unsigned long start_pfn)
+>  {
+> -	int order = 0;
+> +	/*
+> +	 * If start_pfn is not an order-0 PageBuddy, next PageBuddy containing
+> +	 * start_pfn has minimal order of __ffs(start_pfn) + 1. Start checking
+> +	 * the order with __ffs(start_pfn). If start_pfn is order-0 PageBuddy,
+> +	 * the starting order does not matter.
+> +	 */
+> +	int order = start_pfn ? __ffs(start_pfn) : MAX_PAGE_ORDER;
+>  	struct page *page;
+>  	unsigned long pfn = start_pfn;
+>  
 
 
