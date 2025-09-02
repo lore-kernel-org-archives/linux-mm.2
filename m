@@ -4,121 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5912ECA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FFECA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:22:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B50F8E0002; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
+	id 0632B8E0001; Tue,  2 Sep 2025 05:22:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 366108E0001; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
+	id 03A756B0022; Tue,  2 Sep 2025 05:22:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 254A68E0002; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
+	id E6B418E0001; Tue,  2 Sep 2025 05:22:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C8B48E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A23D013B3E7
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:18:26 +0000 (UTC)
-X-FDA: 83843759412.17.653A8AB
-Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1314C40003
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:18:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=tt6loFxe;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf17.hostedemail.com: domain of "prvs=333743773=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=333743773=roypat@amazon.co.uk"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756804704; a=rsa-sha256;
-	cv=none;
-	b=kbEikPkVA6awDj8Gw4IGfsjDkA07m1NZxCrG3C/4zLrNVnVKcsXFkmcjluFcN+Z22lJQMX
-	HgavZyjXsS42/j+PhsfLzpRqvjhH6WyoFH1c20k5gVkpfrXMkCMh0DrSa6hKR6D77jowY6
-	4fzexQ1VAHNNjeN7XN+nsRD1HBGzGnc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=tt6loFxe;
-	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
-	spf=pass (imf17.hostedemail.com: domain of "prvs=333743773=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=333743773=roypat@amazon.co.uk"
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD4B16B0012
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:22:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13C3958A30
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:22:15 +0000 (UTC)
+X-FDA: 83843769030.18.56462A4
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0EB1940004
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:22:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ursulin-net.20230601.gappssmtp.com header.s=20230601 header.b=EUiLUstv
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756804704;
+	s=arc-20220608; t=1756804933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b3121Ksby9vgseoaEWxEHU4vRAFZeQ1OVILTcsYl54A=;
-	b=QHmyfF5rqkEAjNywEu70/N++ig2vdNV+FDsyTuilXTK0iRmGKNiEotwjTrnPTGXOP5065I
-	dZFviy6UgqUPg73Pm89nzZzSSNT11nemyBX9V7PKFlmKR+zUdHfUgth1vGPd1tALCLutZo
-	xSzMvpIGiDQKDSChig9OAZkRsN/4vQI=
+	bh=0Be300C9M54HN2j6qqn3KzILYOn0Dm/rUn/s4aJntRQ=;
+	b=VYmcgFmE0f2wli53yMlVghkaPTs9Bz22kGth0Gd3/tCH/oTrNqbeZbEBr99ubheYcC7X4C
+	Bqwtx3HoOOvwqbYs3S97oNP0l2VH01+cIbXNymmK2Juaufj2UjquTNQwgCQOnuS/8Xn09h
+	YVLb4IiUxh2XIYRDGFIiVBkGku730II=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ursulin-net.20230601.gappssmtp.com header.s=20230601 header.b=EUiLUstv;
+	spf=none (imf12.hostedemail.com: domain of tursulin@ursulin.net has no SPF policy when checking 209.85.128.48) smtp.mailfrom=tursulin@ursulin.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756804933; a=rsa-sha256;
+	cv=none;
+	b=cGZKTO6xZsFcFuEm54j9jd7Xo/WWI8tnB6z4ZCSRKXBK9OxSXO4PbfW+dRH2WcW0pydA21
+	NDULIbXScJkoq6FpWBALfhhQ5ogx5vo1S3d+y74+NljoYQLQHgIc61Slj04c4fDYHquvgt
+	U+MQE11Q69saP0i8n2vNsIfwueg/42c=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45b804ed966so15860075e9.2
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 02:22:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1756804704; x=1788340704;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=b3121Ksby9vgseoaEWxEHU4vRAFZeQ1OVILTcsYl54A=;
-  b=tt6loFxeZG3wZ6xuQteyCwou4ZsFnbAEZBnxT0vlkE/rv/AMbaz9eLN+
-   j7/2rvhD9WFiLa67grWPOPVQR70EWGMCVRIIisQMIm/a7R5o6TnvFiS/w
-   YZO6We4Xs+hWVrn1JDi5YtxDhZdWGMhT/7kFSq8EJCaAntiTQO1sjsU1e
-   8BEHeoHakSPQ0k+VRV2UnDhWv+sLzBeTknqEcfVKhkCrqufLa47UQJ8h5
-   ysXMJpFUluzN9G4fBPgw97iJ57KRnvNe5s/V4jc1HcV3/mlZPf1aOkDYb
-   tqM9eRKjLKPG+f7G09NetfESyRpd3uWvjUXnCl7Wkh5gMAtxw/BkQIAbh
-   g==;
-X-CSE-ConnectionGUID: 857AEqg7QrqTm9k0lMss/A==
-X-CSE-MsgGUID: VIb4ccPwT16IyAIE1hvYkg==
-X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
-   d="scan'208";a="1502449"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 09:18:13 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:10410]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.3.140:2525] with esmtp (Farcaster)
- id 250cd30a-1333-458c-a5c1-5df8fd2d5adc; Tue, 2 Sep 2025 09:18:13 +0000 (UTC)
-X-Farcaster-Flow-ID: 250cd30a-1333-458c-a5c1-5df8fd2d5adc
-Received: from EX19D015EUB002.ant.amazon.com (10.252.51.123) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Tue, 2 Sep 2025 09:18:12 +0000
-Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
- EX19D015EUB002.ant.amazon.com (10.252.51.123) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Tue, 2 Sep 2025 09:18:12 +0000
-Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
- EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
- 15.02.2562.020; Tue, 2 Sep 2025 09:18:12 +0000
-From: "Roy, Patrick" <roypat@amazon.co.uk>
-To: "tabba@google.com" <tabba@google.com>
-CC: "ackerleytng@google.com" <ackerleytng@google.com>, "david@redhat.com"
-	<david@redhat.com>, "Manwaring, Derek" <derekmn@amazon.com>, "Thomson, Jack"
-	<jackabt@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Roy, Patrick"
-	<roypat@amazon.co.uk>, "rppt@kernel.org" <rppt@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"will@kernel.org" <will@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>
-Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-Thread-Topic: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
-Thread-Index: AQHcG+qBqyZs7keLDUCAS7X1QtiGSg==
-Date: Tue, 2 Sep 2025 09:18:12 +0000
-Message-ID: <20250902091810.4854-1-roypat@amazon.co.uk>
-References: <CA+EHjTxymfya75KdOrUsSUhtfmxe180DedhJpLQAGeCjsum_nw@mail.gmail.com>
-In-Reply-To: <CA+EHjTxymfya75KdOrUsSUhtfmxe180DedhJpLQAGeCjsum_nw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.19.88.180]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1756804931; x=1757409731; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0Be300C9M54HN2j6qqn3KzILYOn0Dm/rUn/s4aJntRQ=;
+        b=EUiLUstvNA/aNuun3lWl/rNLolURNF1oxm+EdiFmhZY4cEobR+vYTfOjfW7z42AAWn
+         kpu6YFb/bD1H0t0k69vjpBwP5ULWkHE1Npc4JRd9BEN4SYacK7jS7bTVnS2pDMXL/WyT
+         aP8PCX1NCEARtu4BHgUgV6qVVAD/JfQn4pjHfOVeaizdMx3UYE4LdAAubZCBZaoioRlD
+         MmdawuCaelc6Oj4QM1FG72U99yv28BsIMZgqnMAe3utZg57jSyab77j6oRjWtDiakm02
+         36guiK5GQw2Kw9IJBJhkiTtPm0C1FSMHUhckd8qn0OOvMXpw8KRa0Bg/zMQyEJoJiowT
+         qj8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756804931; x=1757409731;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Be300C9M54HN2j6qqn3KzILYOn0Dm/rUn/s4aJntRQ=;
+        b=Rx8WZYTYJSWM6VNr6Lu6qz9Xxnv/IgDnGDxdEX9bulEzrEPkFjr4WFqK/4jHep5n1y
+         Y8OMUH35H8camdjdivSjLXy3/gtN75mEqBN2Pcr9F3CURGNa8q9xRXAvJR0NJE9OxSPZ
+         x9//Snit16XgT26QtvimfSiciAoKJBHdIpmZsF6ez/xOoV/s7u2D6HRC8m8+GTfIHI37
+         kNcw8e7UNoPbm89MXkYA6i0O5CFS+2J5uJem0jYlRgilD1cLOq5y7yGeuEIm3p8UCZ+B
+         eByJN/IHS6eC2omjaT0ASDqLNm9PFVwAqjOIo8Gt7ND0qY5H8qAfohjj4Limn21tHF21
+         tZJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaMdwpVERcIxPfaJYDCliHJEsyWfLOriUIvkqphXOFSc3rO+xoEo6GO0sIbd61n2lcIcPORKxdxw==@kvack.org
+X-Gm-Message-State: AOJu0YzTw5oN4WX04siNXgSr9TL3gQQ0j0mi9sy6TLDBzy0PzajwqNOv
+	mQ2MGp6x/yeu28AqMqVaRilL3Ten6Ru81zkWTte8kZXVlI2wXyngFP+RfXJ0h5aVvSA=
+X-Gm-Gg: ASbGnct+/axnxYdrSi9Qs1d6c8fpO8hSEOdWGNfFPNHGsIifpLxfqp/PLflNhLLwj+w
+	RqgCJCPUGtpRTIuWoyxRonWllltF9by7KTbFL/9U9cj4X3G37GbxBRHQrvu+nUkjI43j+m/LjR0
+	kH5Y4nV8ZF0hVzTc9E/OUIxpo/MTKMLz0EYaXda60lq6kq1wA3UQov9oVo2mDCNYvhhAH9MU7Kz
+	gr61N5Hi7V+g9ZMr/otYyQmRG2xWwxD6rfA+7SaEf1BRY7gMwpsA6+LtV+nndDS3eDBhfNnPAqQ
+	V+J403vJ+o/9iYjvwXYwKECOM53I0nPirfqbX0eHV2pGwgZwFpkYMZB78+coJWawCi4mukEpJlo
+	zN/KTdw3Lts9Mm7ZfP50yUzqg9g+mDI7C7bk=
+X-Google-Smtp-Source: AGHT+IFjGWdM7r4OC2xPYq10JBW42QzIVS9ISDbv655toZnOdc57tKWSkMByc2ni755H7QY3mBnVYA==
+X-Received: by 2002:a05:600c:a04:b0:45b:7d24:beac with SMTP id 5b1f17b1804b1-45b8553335amr94619035e9.10.1756804930815;
+        Tue, 02 Sep 2025 02:22:10 -0700 (PDT)
+Received: from [192.168.0.101] ([84.66.36.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d0b9402299sm17994846f8f.18.2025.09.02.02.22.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 02:22:10 -0700 (PDT)
+Message-ID: <4bbf5590-7591-4dfc-a23e-0bda6cb31a80@ursulin.net>
+Date: Tue, 2 Sep 2025 10:22:09 +0100
 MIME-Version: 1.0
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 26/37] drm/i915/gem: drop nth_page() usage within SG
+ entry
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-27-david@redhat.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <20250901150359.867252-27-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0EB1940004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1314C40003
-X-Stat-Signature: kdzhtgngcbgrcencachr9shnbnes73gg
-X-HE-Tag: 1756804703-925078
-X-HE-Meta: U2FsdGVkX1/QxamO+FHmC02clIDLCjUBWpzOnF/DXRCpLzAbRYVwgQiX+SHdIvqtQCo8iVEtfHj730/8h2SX1uTxwtS8hYEdN4kBiywiF962okKbOt8I0WWOj3ipzjWMiJGOzqisPS5F28eiW/cwkVzsNuawouphxeP/JJ7NfdhGHPYjcfdmftDhLZ3lIYT/o0krDCxKWycIbJ6ILWGMHY1gy17DItUwQ8MLaKzEsGEDEPmIhHe5wLgZgAKFD1/qab3Sa/hjpoPHU+c2Ju+6G6a8IPgOOnZgjC32XCWpQKcAiiVmtMuVDOpaVVz2tAB8qKT9m4+ZPUccsU3AiqEkZs1//xgSgYWsUfxurl+mmcI7l0tyJ8sptEujb7Xy2Uj1oVZKSuX3kH6jqAp7jMRuR1mNbuT18dqM6/Fb+QVlIKr/Ezi0iegfk1lc0+mo08xPvU7O0RnlqqqF+N8i5/LPOjfyJQGuacPCPj3ZeOjE8BEm9R61qi4O9ZlL7NDz0ePhFJtV26BWk6poXAKlwt85UtgaKbLOur3cOBnX2hjMRJFwkNUqe8gTw/lrfb1EuuNIPc5bmtznP0eL5/ObhxUa63YNOb0QF1HKZOFBX6YmAQ9VZktwu9VOukuHNg5yUM6B3yvMuo65LBvcbUiTDya8gx39TsxUzRJJ3ZFmLV7ZvvAhMwMkArIVl+2wRgWpOw7PvbJVK9TWmV29lRR8DtlxOOfwFjBhANMxl1hZ5LULGc0IIBd1FW2EZ9QSMlugR9PWcQ+QmVYJT+VV5h47eOiYQcUO/f2h3F1P+TNNM4fz/Jo9uW/ElZSJoBN9VMnp9ULySJuo7VMpPFFlv/vDhJFS88S/8oGHZdj1yHTb8uwfKSZccwlhrkXapK2byFLT9mVSIEza32mQ8OpwmHbn0zPDNyj/D6jXNpxHpr89Z6fhL75OgxzRytBygh2/3CWsjWAjJoCjyE9OClxqaom8tyM
- gxFTfO03
- CiVsLGu2fT+iX00oHxpHXa6MfnmGuaxlUxmieCw+0h2pdjOdOfYtsG1f1ZMS+4O6CjxbTXt9eCTLXuzTHZQYc85ZFqqZGmJYZjeyg6t52GzkfLE1NEUfoTdplCZDZkpHhR5QhuxkdNhUelGSVRPuOQttjqWZi0mayrVrHp/DzbRJ0zd9/RcrX1U7TsIWilWgxOKGPE/Yuz4EXPrpLN6Z8O2TKolwd9FU+5cMYMig5sNMngOku0Mm1Vw2thFXhhHZsNuha8l4aY0jr1nHDxC7d5TiHMnzEw2iVit5abLRwWsqR5we3AbPjEiZoR4uRNf76rED+ydP1BYl2g5i4329wNGvMgNo3+j6OoouiHeNbcEuIAd1XY08TPAMsVeFghYNNuBSsT4Htw1TxPcYf0dM9qurudczNlDSTR/RPUxKEcZsv1OY2uKd6n83676z4zsT4a7WXgW8DBTV7eRZ47EZsirGC+JwY+afNjIz6Ggrr266S9jSOKcArneNhiPK6P5AvJqC/ilVmXiMjPYJ2IPjtEhyIgj39i+K2gZz+fOvCAcd72oMk7Y2+ytiFlH1EWzQBbVsNM++V2WvX9ujfIPeUbAymUK3DvcPcYcI4Ybx0415TTpodt460Tyag94dKf8z2fC/iZna0wROwsscImhK7ZH8Kp17KFL+DyV7lrUVeCH+cKnbX9f4uaUVaSZZ2U2oYpj9We/EBCwEdE4Klmo8kRsYSkROzqa03lRQGt2o3Put0Ytn8AN1reGkpg7xaya/9VaOXrzcXHzLKvE2zq2rqEnAiW8qOnt9CcP9oWeeZM5igcOPVFr0ctxC2U/8OLunMeeSHEA7eU5EW/vc81MjBx4SLQQ==
+X-Stat-Signature: 8uxqmtgwfh18jffwwud3rnk1r7nsu1mt
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756804932-786900
+X-HE-Meta: U2FsdGVkX1/D61g9ixFurQgdIEe3upPrzToAMpebQhQYHyLVMrdoQylhNGbZPEuaDh3qSoFAB5Q8/vHvnIa37Zptt+7tvksJSjjsbaPPj3pzfQiP0zNFxES8TFpEOGupLVn7zDE/FCIBNaHZMTJayxNJiOR9NmNsgoLWmu9TkYdwqVi5wLILRTeav9afxQ25hjeO8I/NKoTKLOTjhFLFBopMfVEF/f4V1ocmtVLfOKtPPKfNWgHkk9MJCuesEyhZnH6HUYrhJlnUlv4fq75tK45JXrdj2exdwJhzqVtJNugSbCaMtvBFzk14YDZniWwvTJu7XhOxG6BkbE0myuo4FX2eA3A308hEFnydUe4GOyF0/NsUun7nKVPc/eaXmEjF7vXU0qhBQ+w1rJApBADLAQL3pTQ98Kc2bI25kFcmCOwTLOvk07K3vrfFONhAG65LPE0RCzrrlHQ39CiQy0t9uE/ZDHAOVm63RR3y346GP2a+s7GOeHnlwzAAqiLZyBhNYidXjvu1LSC+mHFUEMAWqWuipoNfFiEY1TXmruulBSeZ54U+QZgkfSN5dJrMqkfqp0v9Ypj3Q504X4sW/nJVv5tMXkb9rZO25/D1tclm6BIcLH/we9kYAHT08R23LnYYNqvHDxuPbdfIaxb0TRKDjg0tGGscIty3SgiaRPltvvxuT98fhL+Dw+G+UjAbLRDV78JwyfMYKFfHDKhmz2Ie2AoSOZdl+uC8kJtLUsc6OQRIQdX+0KmPTG53+U410xu9fEzKwJJzQxB+XkNo2zm5jo54XysU1LvU1XWPEHx3d6qDZRwLnE28nB9dqFeVw/8dBdI7ZO/gu8LAhxm/Va0FZsQs0d+Pu1uQsviBjNPJBmhWO557iRt8PjW9EP/4zpja49WeUUs688ACPdJ/aF0ox8EmSi7mi8S1THVTJYu/8LQ9QTvjCnSslUXunHjtfixZgwcLuC5vTX4PRe+4d6K
+ BgWIG43u
+ IwRuxf0IGCBQxQ2dYMqoiRi4jV0SABmZPNk35gqkdLuixRBuUCsp1Rd5eSgYc1ftw0/tWn9MO4I4ThdHbaoBpCa4qSFwmR+V6e7vv7xkqEylUX7Y+jxRDLWseXrnCNPzqcLj0MVlxd83hP9uxVNbVeGrp364qouD5xpVOXFJS5EIv/vdzlYxnDwTbAkgUD3Ec3vzNkqX6lC4vBLA4doOckxbcx7DDbjtd/tdO+J7dkExp+MrhCp537p7heLKYThrmyudDCmgpKbMel+uz3vasR2AaedsNFsySZEdR2Wu5VOr7kvz11rJyf5Omkv3kg6U2d/EEw2AINFDy+noBTEFs5S25bvQaELG077SHtp9gTjM0t3Os2ksudMh//rp1411n7c9bAbSSZTJVxxTcdkfxcKa9NhSSYyo+0qFoHY0jntgtxZCQZyeg37JrrNH6fVI8XX7n8YNBqKq/xqgJ0Er9wk87FQrRXqkDcqR/PglKQQWBHV+9fG8yKDBxQxylBfhxdgrhCWtrMDw2T8zs4k5BpfrsNA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,131 +146,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2025-09-02 at 09:50 +0100, Fuad Tabba wrote:=0A=
-> On Tue, 2 Sept 2025 at 09:46, David Hildenbrand <david@redhat.com> wrote:=
-=0A=
->>=0A=
->> On 02.09.25 09:59, Fuad Tabba wrote:=0A=
->>> Hi Patrick,=0A=
->>>=0A=
->>> On Mon, 1 Sept 2025 at 15:56, Roy, Patrick <roypat@amazon.co.uk> wrote:=
-=0A=
->>>>=0A=
->>>> On Mon, 2025-09-01 at 14:54 +0100, "Roy, Patrick" wrote:=0A=
->>>>>=0A=
->>>>> Hi Fuad!=0A=
->>>>>=0A=
->>>>> On Thu, 2025-08-28 at 11:21 +0100, Fuad Tabba wrote:=0A=
->>>>>> Hi Patrick,=0A=
->>>>>>=0A=
->>>>>> On Thu, 28 Aug 2025 at 10:39, Roy, Patrick <roypat@amazon.co.uk> wro=
-te:=0A=
->>>>>>> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h=0A=
->>>>>>> index 12a12dae727d..b52b28ae4636 100644=0A=
->>>>>>> --- a/include/linux/pagemap.h=0A=
->>>>>>> +++ b/include/linux/pagemap.h=0A=
->>>>>>> @@ -211,6 +211,7 @@ enum mapping_flags {=0A=
->>>>>>>                                     folio contents */=0A=
->>>>>>>          AS_INACCESSIBLE =3D 8,    /* Do not attempt direct R/W acc=
-ess to the mapping */=0A=
->>>>>>>          AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,=0A=
->>>>>>> +       AS_NO_DIRECT_MAP =3D 10,  /* Folios in the mapping are not =
-in the direct map */=0A=
->>>>>>>          /* Bits 16-25 are used for FOLIO_ORDER */=0A=
->>>>>>>          AS_FOLIO_ORDER_BITS =3D 5,=0A=
->>>>>>>          AS_FOLIO_ORDER_MIN =3D 16,=0A=
->>>>>>> @@ -346,6 +347,21 @@ static inline bool mapping_writeback_may_deadl=
-ock_on_reclaim(struct address_spac=0A=
->>>>>>>          return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &map=
-ping->flags);=0A=
->>>>>>>   }=0A=
->>>>>>>=0A=
->>>>>>> +static inline void mapping_set_no_direct_map(struct address_space =
-*mapping)=0A=
->>>>>>> +{=0A=
->>>>>>> +       set_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
->>>>>>> +}=0A=
->>>>>>> +=0A=
->>>>>>> +static inline bool mapping_no_direct_map(struct address_space *map=
-ping)=0A=
->>>>>>> +{=0A=
->>>>>>> +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
->>>>>>> +}=0A=
->>>>>>> +=0A=
->>>>>>> +static inline bool vma_is_no_direct_map(const struct vm_area_struc=
-t *vma)=0A=
->>>>>>> +{=0A=
->>>>>>> +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->=
-f_mapping);=0A=
->>>>>>> +}=0A=
->>>>>>> +=0A=
->>>>>> Any reason vma is const whereas mapping in the function that it call=
-s=0A=
->>>>>> (defined above it) isn't?=0A=
->>>>>=0A=
->>>>> Ah, I cannot say that that was a conscious decision, but rather an ar=
-tifact of=0A=
->>>>> the code that I looked at for reference when writing these two simply=
- did it=0A=
->>>>> this way.  Are you saying both should be const, or neither (in my min=
-d, both=0A=
->>>>> could be const, but the mapping_*() family of functions further up in=
- this file=0A=
->>>>> dont take const arguments, so I'm a bit unsure now)?=0A=
->>>>=0A=
->>>> Hah, just saw=0A=
->>>> https://lore.kernel.org/linux-mm/20250901123028.3383461-3-max.kellerma=
-nn@ionos.com/.=0A=
->>>> Guess that means "both should be const" then :D=0A=
->>>=0A=
->>> I don't have any strong preference regarding which way, as long as=0A=
->>> it's consistent. The thing that should be avoided is having one=0A=
->>> function with a parameter marked as const, pass that parameter (or=0A=
->>> something derived from it), to a non-const function.=0A=
->>=0A=
->> I think the compiler will tell you that that is not ok (and you'd have=
-=0A=
->> to force-cast the const it away).=0A=
-> =0A=
-> Not for the scenario I'm worried about. The compiler didn't complain=0A=
-> about this (from this patch):=0A=
-> =0A=
-> +static inline bool mapping_no_direct_map(struct address_space *mapping)=
-=0A=
-> +{=0A=
-> +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
-> +}=0A=
-> +=0A=
-> +static inline bool vma_is_no_direct_map(const struct vm_area_struct *vma=
-)=0A=
-> +{=0A=
-> +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapp=
-ing);=0A=
-> +}=0A=
-> =0A=
-> vma_is_no_direct_map() takes a const, but mapping_no_direct_map()=0A=
-> doesn't. For now, mapping_no_direct_map() doesn't modify anything. But=0A=
-> it could, and the compiler wouldn't complain.=0A=
-=0A=
-Wouldn't this only be a problem if vma->vm_file->f_mapping was a 'const str=
-uct=0A=
-address_space *const'? I thought const-ness doesn't leak into pointers (e.g=
-.=0A=
-even above, vma_is_no_direct_map isn't allowed to make vma point at somethi=
-ng=0A=
-else, but it could modify the pointed-to vm_area_struct).=0A=
-=0A=
-> Cheers,=0A=
-> /fuad=0A=
-> =0A=
-> =0A=
->> Agreed that we should be using const * for these simple getter/test=0A=
->> functions.=0A=
->>=0A=
->> --=0A=
->> Cheers=0A=
->>=0A=
->> David / dhildenb=0A=
->>=0A=
-=0A=
+
+On 01/09/2025 16:03, David Hildenbrand wrote:
+> It's no longer required to use nth_page() when iterating pages within a
+> single SG entry, so let's drop the nth_page() usage.
+> 
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   drivers/gpu/drm/i915/gem/i915_gem_pages.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_pages.c b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
+> index c16a57160b262..031d7acc16142 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_pages.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_pages.c
+> @@ -779,7 +779,7 @@ __i915_gem_object_get_page(struct drm_i915_gem_object *obj, pgoff_t n)
+>   	GEM_BUG_ON(!i915_gem_object_has_struct_page(obj));
+>   
+>   	sg = i915_gem_object_get_sg(obj, n, &offset);
+> -	return nth_page(sg_page(sg), offset);
+> +	return sg_page(sg) + offset;
+>   }
+>   
+>   /* Like i915_gem_object_get_page(), but mark the returned page dirty */
+
+LGTM. If you want an ack to merge via a tree other than i915 you have 
+it. I suspect it might be easier to coordinate like that.
+
+Regards,
+
+Tvrtko
+
 
