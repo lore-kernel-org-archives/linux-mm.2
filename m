@@ -4,117 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC75CA1007
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 17:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD08CA1007
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 17:31:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 740E56B0011; Tue,  2 Sep 2025 13:27:16 -0400 (EDT)
+	id 2B4018E0008; Tue,  2 Sep 2025 13:31:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7178E6B0022; Tue,  2 Sep 2025 13:27:16 -0400 (EDT)
+	id 28BF68E0001; Tue,  2 Sep 2025 13:31:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62D196B0023; Tue,  2 Sep 2025 13:27:16 -0400 (EDT)
+	id 1C9558E0008; Tue,  2 Sep 2025 13:31:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 51CDD6B0011
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:27:16 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F37BDC0170
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 17:27:15 +0000 (UTC)
-X-FDA: 83844991230.15.E599B10
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 266ED80006
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 17:27:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2f5jS+04;
-	spf=pass (imf30.hostedemail.com: domain of fvdl@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 09D368E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:31:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8CBC6576ED
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 17:31:00 +0000 (UTC)
+X-FDA: 83845000680.10.92E82BE
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F340A18001A
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 17:30:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756834034;
+	s=arc-20220608; t=1756834258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vtd7VHBua4ceoiPNxCebsTr+W/5i6xNmrYZ+hl6cZwE=;
-	b=bIJNWjCTw+leKhlLzGvOUb0fmqAERcHnowtk/kJbR8BsIdb//x1WExI6esaWoXkrE+Bukh
-	VXMBi52rvKPjU9fqabUzOgGfkjy78sOoXXiYIogeGn2WnQbSkqy/l3/wn398Mxjh3TwKJr
-	8TVDP+PVy1iUxYHImjaj7huZt46vXwU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=xuhor4mLYRzI8zW/Zrz5fq+y2rUxc5JCH9lcwdLr2Z8=;
+	b=bJznsj4p7fvCfein33KO5KC5EuuuoTVKHVANlAcphuuxYBgB2Hrqr/K7l0zzapLn+z6BCX
+	U6KWv2NeK6cPjkmSffddiL4o0e/nMFeucvuLQH9Ut0vPR36cGc0NMycK/Yo0xiMPcMYf+N
+	mKAZyu2YU3aDKBIjHr/mjEW3H9IQf4c=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2f5jS+04;
-	spf=pass (imf30.hostedemail.com: domain of fvdl@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756834034; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf06.hostedemail.com: domain of shiju.jose@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=shiju.jose@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756834258; a=rsa-sha256;
 	cv=none;
-	b=LAnT5xQGEkjL+zczsH6Lme6Y2M6GnwWj2AaZHcXhYlHwyxQpPkcJY7OCYBR7MkNMHRi6RY
-	81v2BbJgDlUi8lzB5zz11ubZh5ckFp9gU1NFHiC4ABsP8WEQ1IQyjB5G+OgedN4jSnCleQ
-	HlQax+vzgxX1d/Yilupebvlt5JFmQro=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4b2f497c230so23751cf.0
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 10:27:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756834033; x=1757438833; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vtd7VHBua4ceoiPNxCebsTr+W/5i6xNmrYZ+hl6cZwE=;
-        b=2f5jS+04jTjc5aBHu2UvCndwu+jmn51t3SF0PrWyPlOHNZFgzjW1L7ohKn9KRrkYi7
-         +YisViQFr+1u6tDtCVQPHvC3lU7S6SvH0d9S6aCqPyCWZwIfPytDHvzZ5JW+PoFgbDlD
-         B5eq9c+WsHiTlf+1ibJbBvnK5ZXPuZsxmoTk1TPAilkQkLNoFy9AqS8DqwQl3wi2XWE/
-         GbS9jiwXL7VIr/GPfXh3Wq834/WM7L8j4OIa9QozxwnfiK7DH/au+KmmhRoPKQLjbj4i
-         ojj+krga56ZMvQbrp21e/dZvkmCyOOOcPTT90ebwRqs2l++2O/M8AyIX7x3NBsYGALHn
-         2zdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756834033; x=1757438833;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vtd7VHBua4ceoiPNxCebsTr+W/5i6xNmrYZ+hl6cZwE=;
-        b=TLmNVf/MhEenX9JcjnAYmiZw62IyL06ZjShWxSKeOfwR+CZprEMjZ0Vul0uDrTC4Sg
-         2/tZ69IXVlLhxm0Y4dJ5qLu7+dczq2jVSC9gitLxDLClt+pFITjJygO3v4piHCna0Vkc
-         ASO74HqKi6BGUASdc3U4Ot6F8TqeMR+0rQ1SN4ueWyiL/xKr5qsLXzAV9N+TdIsw1KGl
-         QPvEAq7eHN4RoFSHwigZarCb9VtUBqHCUs1Mj1uv+ol9wx9UUtWXLk1ga0L3cGKL8MHF
-         G6j7vOYVS6/0KAuZSYyEqRDVHZM+Rx4QhZeErL0txcQi0QXGqI2ckQTn1d+wd/U9A0T9
-         jsUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWaKP73K87xUHdR88BkVBGUF0itHkRBDI4l+73GfRRBaHXYkyiGZiII+jexZkuQaUbN+Y5NyUIBCg==@kvack.org
-X-Gm-Message-State: AOJu0YxDOUnJJvfTpzqeE6OKsOUKWq/Vjmh9PEiK0Sc45jVdqAGjgQRW
-	3X36zmgGAhXuUKXy26A2cYk7rhnhlIoe//DP8VRGjvJMK0T1V8G/HzcAAM0VBlk3SrCaXujvXw8
-	HV2P9n++uVNwHxKAGBaFlxQV636Wn+v5DOLph+lgq
-X-Gm-Gg: ASbGnctFh2iRe0JogFeOKST2g3EzUQDTmcVpbtaROdsy7bTFvXUvjojfvpS7pSFoQPq
-	sWDaG55mFr+7RBlN548LfgK2N0s8Yj1fI4Qozt0Bb3KcKc/nA1ffJdbS9h+AMAHTH1fHpF8UU74
-	P0qEzVeNsV4xfHYUiOEdE2Y92bGa6nXihpVPev4ZDoX1yzNc7ZiPQzYZyqmWuHT3Q2bv19AyKgT
-	GPFnboyWc95H6brkvU73w==
-X-Google-Smtp-Source: AGHT+IEC6y1tRdSi2UTqmtXyZZzRrZPY9SLNKXOIO98qFYX+T6uH0H7eN0bzXqp5gDwmp+jCKoimReIKubvN32ot1YM=
-X-Received: by 2002:a05:622a:609:b0:4b2:9d13:e973 with SMTP id
- d75a77b69052e-4b48dc6d116mr536321cf.0.1756834032561; Tue, 02 Sep 2025
- 10:27:12 -0700 (PDT)
+	b=26CFg6MBVbXUVec00fIi9jILQdk3TPBJPQCi9s1+0lwV+/h5oAnH/A6uM85xSxhj+sjI8W
+	r7ICTQKHYMH368ZLooPptJcZEGWbQDUJCj0Bf5DjC++MCSfl1wEjEAdCKB3BBMqo1aV1io
+	VzmTXn/2GE1HCZ5MDIDZ/JxPGl3Ngfg=
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cGXlG2zsDz6M4hF;
+	Wed,  3 Sep 2025 01:28:26 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7568B1400C8;
+	Wed,  3 Sep 2025 01:30:53 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.150.145) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 2 Sep 2025 19:30:51 +0200
+From: <shiju.jose@huawei.com>
+To: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
+	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
+	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>
+CC: <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<shiju.jose@huawei.com>
+Subject: [PATCH v12 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Tue, 2 Sep 2025 18:30:38 +0100
+Message-ID: <20250902173043.1796-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 MIME-Version: 1.0
-References: <20250902154630.4032984-1-thierry.reding@gmail.com> <20250902154630.4032984-4-thierry.reding@gmail.com>
-In-Reply-To: <20250902154630.4032984-4-thierry.reding@gmail.com>
-From: Frank van der Linden <fvdl@google.com>
-Date: Tue, 2 Sep 2025 10:27:01 -0700
-X-Gm-Features: Ac12FXxFN3O8AlGVbL0n79ufqlqXNkpXNtbyObY0H0t07exhvNnrkMb8tnUsJCI
-Message-ID: <CAPTztWa7kcx8bBEJEKvnjcD4v1-eDLVxMd9C10XiBQi4CDLfHg@mail.gmail.com>
-Subject: Re: [PATCH 3/9] mm/cma: Allow dynamically creating CMA areas
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 266ED80006
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.48.150.145]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ frapeml500007.china.huawei.com (7.182.85.172)
+X-Stat-Signature: 38x3watuokiw9eu7riuj5bumhh4yciqm
 X-Rspam-User: 
-X-Stat-Signature: 5dacwo3ojmrrh9dwdb48agxxmcmwp3x1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756834033-692826
-X-HE-Meta: U2FsdGVkX18WNq7kcKrmrzaFrLg3gmdHEk+9GpQOYiqkJ1upXFDv2BSfJ771IhoSu5cyt6O/T2qIEsBZtJWFB0kPMC9ujEuoQALJokj4Fxo65K/uusi13D7NruQT86r79i1jbXVO4pzoHlpcsOcO0S9lAoi80AVtKEn9lanbub3/BFdUS1ZC2zk0JpXMgCLAz8NELYQ+CzqFL/3oirD5toEKTbISmnI39rO54w6nYA+PJdU/ylHbWxz275KhoxmBS+C9tRNtHkfXLI05D2krV1Pmt4XnM0ym7Ap5LKmfcVqEr6YjiChPpYBNb5AaRpApLteoznQwnjFklKnr8hG8yDw2zff/jJP/b1/vAYHVtOgrygWFFxMEPB+xsicjxxcbxuiA6e3PSfKjWIqx/3yAowxsK+zCoZgiKXHlu7qLGJXL3Pt1vnWIYYGXq81MDDVzq5BmMNCLW+3b784ArU8EJS3mrhjmxeEJNkLqsgJy+9BYT7v2Mlu5nN3AaXuutdFVI+cQUpjjpajpMZSnASSUOzH+LlWzvr8dxmpLsQ4C2t7cK4tn9cQWBxoOGhLH5KRRU5HMdVCoabEPgBp/GsTzBdJV+piUn/DdkEblz9rFsi7Wxzh9W635mPDrsr+SjUrJsoKfUirQb0G8b/a6F4bD742ADHCAW3fNQbcB6mwRLxp2z3MV84RyS/RIi6pOEXPu6aBZuop1XCRWdOrxIwKBXKbYIRwIjf4LnYzIN9ZvwSGhrXESHHTu2ihaMdZjDFJoeW8PhzYIg7s8UPvZ6t9YwmrKwFKzhi3OGZGJGj6ytmVGZKT3GeQRs7Cz8r9PsRPVaqcP4qLFbVoj/0zE/ixwv6vpZQ/V91pk3kd3mqHGdfNMInEQfzuEO2xWTexRrRSXdcjV4OcP9Ra3IxMfuuH69WkzIoYYo/atHpg7MPfTCIkbODLga6KhsBOBeSrtbNhd1R7iXoG9NJNADkMnROB
- gRDZy6os
- ykidzHMl3v6RJfnHsLJZ1cxXTEvKetvrjfkKsHUw9X526ht4WGvuJLpOULbAxythv4E225YQoe3dZnPqr4veReIgvwxAZTLgZZPEkE+aG0Pi+JMM/MITajfiX6/DXGwL7ro6zFWGv2ZXrF2CLLcbktA81emdXo7DKb8HNzqhnT24lzudxmeX724Z7Mu9woJG7S+sHGzIFnGUF8P9vjgvQ8Zihf3UjA8B/r0mEBWqPGk92W68l/bj8UZ0H/Rzxp+Nrt2PfrXiQ4ILL531UxykV8Rv6OCCaIYOyua/+UFfMSfudDhlXv9gx9MrWQbpkca33XB95
+X-Rspamd-Queue-Id: F340A18001A
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756834257-605759
+X-HE-Meta: U2FsdGVkX1+0s1CWEreSClsOrLeb2lglil3C+fsWmoWiIRVrkJkaxkVf4ZHtky7N7IOgmRwyngi6flhhzRwy3Sgp0P+327LLq8GH323GLAiW8exX60GyWp5B98nTDHmauPpQY38CuJ/38vvLSzzcZ++rc4rx8K4Mzcz6fjlXogWBrj3HEGMtbjHI41pJaJUJQdL/XZbEnaQOmlhxl9v9kRVv7VHFtjps+YPSZC/weflJs74SSSGbpKPR8ti6FmUwwWAQPm/ynhGzDlz8mfLskfsu63MbqagWa07uGJuiYf/pSlQ+dDYO0yT7N8RPDeenOvsHNxsrkFFKg6Qi56i0St5PPrBeitFJKa9csBqKOdcNUIa8dbHunF11QQN8MNUism1n5qpAwTgzR+FkJoMBb25qCTZUixfsP2W0XDIdX9bkSgnrFObsKh7UaEY1OzfMyZ/Bt3pYFe7mT0QBLbX2meJ4mbJ/TQrMNlNf1yh/9UKmcKN3kYA3Z9DC7b5HE49qVUH/NljzAVbEcrYbIaeo3mjMR5UHVHq+QXz113urM9NFBvPfFJ0dFur106LOiEEa1S+3eF+aQeNHul3DYFQ7JFk1XOWkUV5FGKTJxzdtevO53wwSyhE4yqA2OA2smXtetHjqXw0NeqBebCjqs4axMM7l3dcA4C3vVkTfte1VPJA/fYCv1ET6dA7qQBep5fprah73qYlnmaAqVgiWXT3sUdlQ3j/eyrrwE4dZ9oobVITlXUZyiKhhtVL0hezkqOHncRuhGKVYtlf0n8cjWZVbnKErwUjz1W8k8br4Q6KZo5Q9E0RwVrF8y5DHEjHX/AbUM0iixZUiYxjTbamiz4MiDSGvnfHcM+Fcd/f1IzuTLX3I3WUCHZZ6HAzbtx7QmHAM8TlgamX7Xx0Mnl0UjrDGGy1zjvIu2LsF2ffWdSHbmxav5kMnaSiRIRvETYmz+VOQ9ITsmUdbPfrZVIm4E09
+ 655mMpQt
+ xkcCqQ3MTygVKBtci6fi6PfYACH29vv0IWyM7dSyEebZ9R9kpFxf+BlFxfGrQoMb7d67PC5ABkOdtAohmVW5n43ll36a/5jZHVHt9dqa2xX8Bqdg0QXfZpTNum0c6kZRJjWO9hBmWlDmD2j+f93qTeXGosbhFrO5Sdj7CmQIGiaJfzIebKHdVDobriGGKLkC3d0tJASAc2s3GCqk/3SOoiNqb8whCkb29rzVSXmiBb6KmsurjD9pFQGTZ/BlmF/MSj8PyhLyunG3SjUa3dKeoBXB5c7U8u3ZoQ+e4k/KMtxsBqhKqEUyn0y+sljZJMIWNACRtTPEPL+J/Ot7SpuBzIbVKKsBKYN7iQ1WI3kEemqgWs9FlDUlpPJ6+t/biQM48BsUX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,230 +101,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 2, 2025 at 8:46=E2=80=AFAM Thierry Reding <thierry.reding@gmail=
-.com> wrote:
->
-> From: Thierry Reding <treding@nvidia.com>
->
-> There is no technical reason why there should be a limited number of CMA
-> regions, so extract some code into helpers and use them to create extra
-> functions (cma_create() and cma_free()) that allow creating and freeing,
-> respectively, CMA regions dynamically at runtime.
->
-> Note that these dynamically created CMA areas are treated specially and
-> do not contribute to the number of total CMA pages so that this count
-> still only applies to the fixed number of CMA areas.
->
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
-> ---
->  include/linux/cma.h | 16 ++++++++
->  mm/cma.c            | 89 ++++++++++++++++++++++++++++++++++-----------
->  2 files changed, 83 insertions(+), 22 deletions(-)
->
-> diff --git a/include/linux/cma.h b/include/linux/cma.h
-> index 62d9c1cf6326..f1e20642198a 100644
-> --- a/include/linux/cma.h
-> +++ b/include/linux/cma.h
-> @@ -61,6 +61,10 @@ extern void cma_reserve_pages_on_error(struct cma *cma=
-);
->  struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp);
->  bool cma_free_folio(struct cma *cma, const struct folio *folio);
->  bool cma_validate_zones(struct cma *cma);
-> +
-> +struct cma *cma_create(phys_addr_t base, phys_addr_t size,
-> +                      unsigned int order_per_bit, const char *name);
-> +void cma_free(struct cma *cma);
->  #else
->  static inline struct folio *cma_alloc_folio(struct cma *cma, int order, =
-gfp_t gfp)
->  {
-> @@ -71,10 +75,22 @@ static inline bool cma_free_folio(struct cma *cma, co=
-nst struct folio *folio)
->  {
->         return false;
->  }
-> +
->  static inline bool cma_validate_zones(struct cma *cma)
->  {
->         return false;
->  }
-> +
-> +static inline struct cma *cma_create(phys_addr_t base, phys_addr_t size,
-> +                                    unsigned int order_per_bit,
-> +                                    const char *name)
-> +{
-> +       return NULL;
-> +}
-> +
-> +static inline void cma_free(struct cma *cma)
-> +{
-> +}
->  #endif
->
->  #endif
-> diff --git a/mm/cma.c b/mm/cma.c
-> index e56ec64d0567..8149227d319f 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -214,6 +214,18 @@ void __init cma_reserve_pages_on_error(struct cma *c=
-ma)
->         set_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags);
->  }
->
-> +static void __init cma_init_area(struct cma *cma, const char *name,
-> +                                phys_addr_t size, unsigned int order_per=
-_bit)
-> +{
-> +       if (name)
-> +               snprintf(cma->name, CMA_MAX_NAME, "%s", name);
-> +       else
-> +               snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", cma_area_co=
-unt);
-> +
-> +       cma->available_count =3D cma->count =3D size >> PAGE_SHIFT;
-> +       cma->order_per_bit =3D order_per_bit;
-> +}
-> +
->  static int __init cma_new_area(const char *name, phys_addr_t size,
->                                unsigned int order_per_bit,
->                                struct cma **res_cma)
-> @@ -232,13 +244,8 @@ static int __init cma_new_area(const char *name, phy=
-s_addr_t size,
->         cma =3D &cma_areas[cma_area_count];
->         cma_area_count++;
->
-> -       if (name)
-> -               snprintf(cma->name, CMA_MAX_NAME, "%s", name);
-> -       else
-> -               snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", cma_area_co=
-unt);
-> +       cma_init_area(cma, name, size, order_per_bit);
->
-> -       cma->available_count =3D cma->count =3D size >> PAGE_SHIFT;
-> -       cma->order_per_bit =3D order_per_bit;
->         *res_cma =3D cma;
->         totalcma_pages +=3D cma->count;
->
-> @@ -251,6 +258,27 @@ static void __init cma_drop_area(struct cma *cma)
->         cma_area_count--;
->  }
->
-> +static int __init cma_check_memory(phys_addr_t base, phys_addr_t size)
-> +{
-> +       if (!size || !memblock_is_region_reserved(base, size))
-> +               return -EINVAL;
-> +
-> +       /*
-> +        * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement whic=
-h
-> +        * needs pageblock_order to be initialized. Let's enforce it.
-> +        */
-> +       if (!pageblock_order) {
-> +               pr_err("pageblock_order not yet initialized. Called durin=
-g early boot?\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       /* ensure minimal alignment required by mm core */
-> +       if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
-> +               return -EINVAL;
-> +
-> +       return 0;
-> +}
-> +
->  /**
->   * cma_init_reserved_mem() - create custom contiguous area from reserved=
- memory
->   * @base: Base address of the reserved area
-> @@ -271,22 +299,9 @@ int __init cma_init_reserved_mem(phys_addr_t base, p=
-hys_addr_t size,
->         struct cma *cma;
->         int ret;
->
-> -       /* Sanity checks */
-> -       if (!size || !memblock_is_region_reserved(base, size))
-> -               return -EINVAL;
-> -
-> -       /*
-> -        * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement whic=
-h
-> -        * needs pageblock_order to be initialized. Let's enforce it.
-> -        */
-> -       if (!pageblock_order) {
-> -               pr_err("pageblock_order not yet initialized. Called durin=
-g early boot?\n");
-> -               return -EINVAL;
-> -       }
-> -
-> -       /* ensure minimal alignment required by mm core */
-> -       if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
-> -               return -EINVAL;
-> +       ret =3D cma_check_memory(base, size);
-> +       if (ret < 0)
-> +               return ret;
->
->         ret =3D cma_new_area(name, size, order_per_bit, &cma);
->         if (ret !=3D 0)
-> @@ -1112,3 +1127,33 @@ void __init *cma_reserve_early(struct cma *cma, un=
-signed long size)
->
->         return ret;
->  }
-> +
-> +struct cma *__init cma_create(phys_addr_t base, phys_addr_t size,
-> +                             unsigned int order_per_bit, const char *nam=
-e)
-> +{
-> +       struct cma *cma;
-> +       int ret;
-> +
-> +       ret =3D cma_check_memory(base, size);
-> +       if (ret < 0)
-> +               return ERR_PTR(ret);
-> +
-> +       cma =3D kzalloc(sizeof(*cma), GFP_KERNEL);
-> +       if (!cma)
-> +               return ERR_PTR(-ENOMEM);
-> +
-> +       cma_init_area(cma, name, size, order_per_bit);
-> +       cma->ranges[0].base_pfn =3D PFN_DOWN(base);
-> +       cma->ranges[0].early_pfn =3D PFN_DOWN(base);
-> +       cma->ranges[0].count =3D cma->count;
-> +       cma->nranges =3D 1;
-> +
-> +       cma_activate_area(cma);
-> +
-> +       return cma;
-> +}
-> +
-> +void cma_free(struct cma *cma)
-> +{
-> +       kfree(cma);
-> +}
-> --
-> 2.50.0
+From: Shiju Jose <shiju.jose@huawei.com>
 
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-I agree that supporting dynamic CMA areas would be good. However, by
-doing it like this, these CMA areas are invisible to the rest of the
-system. E.g. cma_for_each_area() does not know about them. It seems a
-bit inconsistent that there will now be some areas that are globally
-known, and some that are not.
+ACPI RAS2 patches were part of the EDAC series [1].
 
-I am being somewhat selfish here, as I have some WIP code that needs
-the global list :-) But I think the inconsistency is a more general
-point than just what I want (and the s390 code does use
-cma_for_each_area()). Maybe you could keep maintaining a global
-structure containing all areas? What do you think are the chances of
-running out of the global count of areas?
+The code is based on linux.git v6.17-rc4 [2].
 
-Also, you say that "these are treated specially and do not contribute
-to the number of total CMA pages". But, if I'm reading this right, you
-do call cma_activate_area(), which will do
-init_cma_reserved_pageblock() for each pageblock in it. Which adjusts
-the CMA counters for the zone they are in. But your change does not
-adjust totalcma_pages for dynamically created areas. That seems
-inconsistent, too.
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://github.com/torvalds/linux.git
 
-- Frank
+Changes
+=======
+v11 -> v12:
+1. Modified logic for finding the lowest contiguous phy memory addr range for
+NUMA domain using node_start_pfn() and node_spanned_pages() according to the
+feedback from Mike Rapoport in v11.
+https://lore.kernel.org/all/aKsIlFTkBsAF5sqD@kernel.org/
+
+2. Rebase to 6.17-rc4.
+
+v10 -> v11:
+1. Simplified code by removing workarounds previously added to support
+   non-compliant case of single PCC channel shared across all proximity
+   domains (which is no longer required). 
+   https://lore.kernel.org/all/f5b28977-0b80-4c39-929b-cf02ab1efb97@os.amperecomputing.com/
+
+2. Fix for the comments from Borislav (Thanks).
+   https://lore.kernel.org/all/20250811152805.GQaJoMBecC4DSDtTAu@fat_crate.local/
+
+3. Rebase to 6.17-rc1.
+
+v9 -> v10:
+1. Use pcc_chan->shmem instead of 
+   acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
+   acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
+   
+2. Changes required for the Ampere Computing system where uses a single
+   PCC channel for RAS2 memory features across all NUMA domains. Based on the
+   requirements from by Daniel on V9
+   https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
+   and discussion with Jonathan.
+2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
+    physical continuous memory range of the memory associated with a NUMA domain.
+2.2. Set requested addr range to the memory region's base addr and size
+   while send RAS2 cmd GET_PATROL_PARAMETER 
+   in functions ras2_update_patrol_scrub_params_cache() &
+   ras2_get_patrol_scrub_running().
+2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
+   to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
+   domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
+   memory scrub per NUMA domain.
+2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
+   because memory scrub instances across all NUMA domains would present under
+   "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
+   all NUMA domains etc.
+2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
+
+v8 -> v9:
+1. Added following changes for feedback from Yazen.
+ 1.1 In ras2_check_pcc_chan(..) function
+    - u32 variables moved to the same line.
+    - Updated error log for readw_relaxed_poll_timeout()
+    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
+    - Removed an impossible condition check.
+  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
+        
+2. Rebased to linux.git v6.16-rc2 [2].
+
+v7 -> v8:
+1. Rebased to linux.git v6.16-rc1 [2].
+
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
+
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (2):
+  ACPI:RAS2: Add ACPI RAS2 driver
+  ras: mem: Add memory ACPI RAS2 driver
+
+ Documentation/edac/scrub.rst |  73 ++++++
+ drivers/acpi/Kconfig         |  12 +
+ drivers/acpi/Makefile        |   1 +
+ drivers/acpi/bus.c           |   3 +
+ drivers/acpi/ras2.c          | 389 ++++++++++++++++++++++++++++++++
+ drivers/ras/Kconfig          |  11 +
+ drivers/ras/Makefile         |   1 +
+ drivers/ras/acpi_ras2.c      | 424 +++++++++++++++++++++++++++++++++++
+ include/acpi/ras2.h          |  77 +++++++
+ 9 files changed, 991 insertions(+)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
+-- 
+2.43.0
+
 
