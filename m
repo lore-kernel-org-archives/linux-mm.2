@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82984CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:07:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 702CDCA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:10:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A50368E0010; Tue,  2 Sep 2025 07:07:00 -0400 (EDT)
+	id B685B8E0011; Tue,  2 Sep 2025 07:10:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A27A08E0001; Tue,  2 Sep 2025 07:07:00 -0400 (EDT)
+	id B19788E0001; Tue,  2 Sep 2025 07:10:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9169E8E0010; Tue,  2 Sep 2025 07:07:00 -0400 (EDT)
+	id A55F28E0011; Tue,  2 Sep 2025 07:10:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AC3E8E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:07:00 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 90F1D8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:10:06 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 255EF140C02
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:07:00 +0000 (UTC)
-X-FDA: 83844033000.14.69D7317
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4622911A998
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:10:06 +0000 (UTC)
+X-FDA: 83844040812.14.467B028
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 85853140003
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:06:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=luXQtemq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id A6CFD20019
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:10:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ilRqU59C;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756811218;
+	s=arc-20220608; t=1756811404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dyRABlDv/T9upda1w/wHJxGWLnV+kWdSwU9weCJgSwk=;
-	b=jKzlkPvT9fyvkbLGVbuBCjO6/ZWKoKIb0pxxaaU8G74xwzgjdgaCHvnR5GgtCPFlAwCNrC
-	BsnpOuGTnAU5CGhSPNb4iNfLBDEzaAIUvgdr4fzZ9W2YnOYPQZXEY7IMdaT/XT4rFUma6N
-	G9hSzFwFhzGMUOAzkzyDntw12NABz+Q=
+	bh=/v/lYfXj3LoTvX8XDRwcpYifMaMKVYZ0uZ+nM7bGQsY=;
+	b=m4MDVYCogU8ou47LeaC9eDq7Ti95Pm9dm/znydp4122/9Sa0nkPKftGQLbYeIvFqOTp8nz
+	XlKpg2nEf1zwRqznHxwvNJK62pQIIuAVuaH/P/LSZ+vA/v6r5hic5elv4WBHVIo+TykHmo
+	9AHMlAh1p0UpodSC/DhXAa791VTbI6c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=luXQtemq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756811218; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ilRqU59C;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756811404; a=rsa-sha256;
 	cv=none;
-	b=LIBuiHrMU8xQtjS8kQt+jr5VWFtygj/eJS4MJuDHrGsLiSBTL1puZ8aOKYx2Vx70dLQU3/
-	7ArKasRqJT8aGUdewz4tN7M+g8qNBKOITqM4yDlWek6QMa1o0r+qk6AfLqypC7mB+N+3NT
-	v6EQ52z1t4lEDzTfnsKiHsHXV7nFXOI=
+	b=WmMlYcueDxt7k1DZMSApMpArpV2IGieMXBugHHQPgQxACUZj+tEQ5uX43mDySRgYdkD3HT
+	0oK3Jp8MvknFpzOau4dfysgek8/l030uEybvyy5MkH+PnNR49hMPjXb1q8E0HJ6Ey5SEbp
+	YFvz2fnrBVtsTgXwKy7GAT1B6EFHZmI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B389260206;
-	Tue,  2 Sep 2025 11:06:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D67BC4CEED;
-	Tue,  2 Sep 2025 11:06:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 20680601D3;
+	Tue,  2 Sep 2025 11:10:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7535CC4CEED;
+	Tue,  2 Sep 2025 11:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756811217;
-	bh=hCa1C3d5MBR18h+mVpk4RAM474rjo1/g4TQSzEy0Gzo=;
+	s=k20201202; t=1756811403;
+	bh=aekmsuo4DYTq3fjI6yMhWLLWs+yu4Y3O3M4fmojBK7w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=luXQtemqwauDCW1OGofW7KOn0Ed3TXz+7wSyh4Rq/4C4pBNfrCav73O7nhlQqKsu9
-	 pJwS6fgD10XM5MWzc2V32cauwX2xcs5uKtg2Bn+xWgyC8SmOfVZ8jKdythn+ZO4vAa
-	 0h7EOGiI+UMeKypfX8GCyk9wrCAP4tCX2z8kMskVDMEaLSOSdX6db0uWHaJchKjybu
-	 MaLbWwVqK1itWBWz4FOiOlTEHChtIjiBEjBS0WHuFG4wArCchdxmDkRdChfk7RgGoF
-	 PbQcn5XJw0e6Ezn8C5XZTAc61l/+qt/LvKdGUrn6ovVC7JKrzqR3GHSc85H+bG5dhG
-	 nrqyYFGPfwuJg==
-Date: Tue, 2 Sep 2025 14:06:51 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Alex Williamson <alex.williamson@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Christoph Hellwig <hch@lst.de>, dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v1 01/10] PCI/P2PDMA: Remove redundant bus_offset from
- map state
-Message-ID: <20250902110651.GF10073@unreal>
-References: <cover.1754311439.git.leon@kernel.org>
- <c9b6237964b9606418af400bb6bec5178fcffff2.1754311439.git.leon@kernel.org>
- <20250806145825.2654ee59.alex.williamson@redhat.com>
+	b=ilRqU59CIPr3TT5edP4S6yd9uHnB2jfenfsrgEzCnRIfDAMweT4Nq007YBhdSPwm+
+	 riUp0t1INxa4FHJZewJrIhsLcmNg1GqCQXf/DenhPmjVmJWPfPbeHAl/zCvaGlIJIp
+	 P8QKvgdAan3kg0xeZ8EGwmm5Yrg4bnrijGk8qAqtPjr+aaFqB9qy4sajaKOA33ncyb
+	 uKAsEowXQKjlyVFD2DqSQ0iQszxUHmxTJHkoRXStLQLrZaFyDAVU9p3LzE3c17x8Zk
+	 36fLkbrWKT0BGuLG8YKxRSLQbqZjmsPfECh9SlRl+pZ9+iL9oz3hVY1DuW6qkwa9Ng
+	 X5vY1HviFFeug==
+Date: Tue, 2 Sep 2025 13:09:57 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: do not assume file == vma->vm_file in
+ compat_vma_mmap_prepare()
+Message-ID: <20250902-kapital-waghalsige-7e043061b0a3@brauner>
+References: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250806145825.2654ee59.alex.williamson@redhat.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 85853140003
-X-Stat-Signature: 4zyw6uziztisuj8qp7mumzcpxemnry9s
+In-Reply-To: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
+X-Stat-Signature: pycmzosuwbu6taagmooo56eqoqr35epr
 X-Rspam-User: 
-X-HE-Tag: 1756811218-892322
-X-HE-Meta: U2FsdGVkX18Tl5MsbPYnRfsk2D75elpYajoOXOR8xr5Pe6VPP6LZ/FhVQbfarXCGIb91vnMsZVFfwieDyIA8+K52QafNgnXxHYiZfhJKZWruf7Et9kD99VbGzRDm/NG67XoZ2KIWK0BzzOp6+4bmXFG4+yny5MiAyAR3tHw3vUzvZCDYjdHi9BPV0jbaewv+hDmTLjNPyzI6YTaw8CV4tjNECkfpk6Lx2BxnF3pOtzCp9AtPFDck1GMI2oJWzIRMM1weNBGN3iOGO2yflwPOoMiTrtECve9U0Fl/pjs2KGa9AbLG4aE4r4hNFr0FJvAh5/EIY3TiwV7glqVng2UxKCaQMUCW7QizoE8aF+E/9/h7UMH1okNxq79ynaixI4j6xPa+7Nlh2gIqXz8G2APUdaL72+TXvz2VS0eJoLJDFlPrXDL6No4g/k2KnlZs1Z1uPzia1nr30eDMsWPtkLp8dofg/7B0YhVC40JJpmyYmQQrE6igBmMYrq80TEQLFl+hyRDWw5mhAIkQReyPn8c4DrPs69bt55g+olfiC2CuaHU4YPL92W7sX7rutG5BUyKQ983qdZ8NyPvYmRr3/jCBhISQccz6v7GLVuq+/21zp4UQzEC/KpeuEK5EqTqAXVPRcp91Q1c6UyJ3VmMSu+bH73IkKrrAJbJ8K6SQlu28pvxaNfZWlFNsJSxjz6XQ+r/vxpmwQKdJZUcmI0/1yeRNRo5HhwO+CAgGDCZBdK5fTUTm6qLjQDM6SsEFjqosZQw51R913fu0gpVZdV+qqcMZO6zuxaTVyuX4aNnwIPRYQwt0byDY/5Vs9j7qVFCso5bapEPWTwUXU6KFROgMNCx1pEPJ3sC1tBMqEkHmcAq0itn+Snr1PDUrcQkKDlIkLG+Tde2RZtro7iFu3pPlbBgi2dnIVjoBKM6vkPEWhfK/hwIyTBgtyz3jTK8bPPeF+ZGrts+Xd288nQUI554fjYa
- 0Q+YMatt
- RnTdMZfk4Lx+t0L84IagcV1h6SRONWaSvqd1G0aL8MiYhhosmsTsVNxJbHuyw7GGE8MyqAcPYorrfGstvGurevhlml04I3XummRT34xuCVNLTg5mWbZ6iBdB3unvj0gGeLfiX8z953Z+fiwi0U8XYvWqkO4keqLXrJCXEXyE90DcnWN8ohiJy+xNrZ/XG0d4yzQAaH6nNBfsr7qB5yQbWq9PuDJmiW0k3KVTlU/yeha1qmYAkwf7Jj0HJ7w22k7TWygoSDEWSHwyYPs71CQoawefMFp0a2JclerqcmPNI0IvIxHAlnIhQ/02VAoFVkLR42k4XMfmPL0CYicaiCR/1nh8OaN5t/ZRooweuY9LccATH9HGQyLrr/cCqNf4rk9X55OIUqShwxo+4TaMJ5OVc+HMjZw==
+X-Rspamd-Queue-Id: A6CFD20019
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756811404-258536
+X-HE-Meta: U2FsdGVkX19e51s0YxDiFlpdbWHQyV65oz0AIzfkSTmqYRFE4kO+MajQwehaS3zRcRnI1IZp/JJpQdBpuG7pqPfODqz5hKDsJXHjuTZJ5IXFTPGeWabvYBD+zE8uZrJJwdxzzzdeXsvOgN9QW87xE2GtqgULa8mfcYtJfyIaXY8YQ4qToYv6+RgfB/Pl8kN5ppzHQ093emQS7IjbFVdyU+k73q8Xe6AeVFC2H862432Rokpp5IdhlOnzwpMcJOPriDtrlSpQ3Mf4Ne3jkDbqmMFhpJOvaisBtiwVtQF3uunBSIQBswWdOLi+/r42A/b4JGyO+yzehtzsF+oTPWq0qIF3qRLVNCYF5b51+SLUAztlZWwbrNvJIIOBsdgoDL4L76aL7b6hMi03jniF0duD979v+x8ZJucG3mR99K+tsCyFwAvXrqWITUxdcod7IjcvfSV/zDYEbewgOPXFkbXyoRbWmWqmDwfnZFguA5+AXkKzmtLu+M95F7px4IXZ8eFq0RkUhR9MISmbob32qGkdlWQdntOhRRqBkGMgR7J5rmguqJPXvaQ3Gd1fo7cdggARmZT9ElhJj8S6Nyl/hmWHN95Vxo6LCo+EoGrMURbvGQ9Y+3urtcx6o7Ge76MtVPrufzLtvMh+xUM1CtvES0d9SX9MlkoA8sWovUypUhAEVEnB3RYiimfepQ+ZJroHSgiv/xafoevzFJ7CjKa7Gv0ndL8YbegHtj3t828V5cGwh6W2waXAL26WzY/3WzdANscCHA4WRjFUVSgoQqVohGMVoT9nDUu5S4G/JegBFcT7LtumECmlkng0oZyLAnmXUC770sZf3Xxftk9p8WmZzYNd5dCHUJw1J8ES2AYSrBLqM4MVNVKcwy4MPFmJZySj6TnZ1RqmiWAYGLtEIq9CXVs/EKHLmxbUg0N9+XUspu94ojEoZBqbQBqyno2IDmIgly9RWAcqvtnVShq4rDjnELC
+ 7Kynqutq
+ OzGwUjq2yRj9TJ3sW2hb/Mn0qtBEmSiw0zM8vAZio9YR59Qx6v9+nVQHHSCp9bWbf1vypkhHbst3oy2686czlLtOmDY78ccTOJuJpcPzgO5d+pAtkpExa1UZInBrBQO36NIpVReiNQkyuiUQx2cqh/OnC2Y1CPZedTqm2NecKNbRK0U+EJEzFyrIP2xXU7A+8q91E7DYABeCaR86hCCqykFESB/sgUJsgYtA0VYCmM1IUMe6GyOfRZhX+NQIxLuG2fnn+IAeOyhiFaMcsedBFFKQ8rUaUggFbXBMtKygKeIeg5QwEncGJnlZqk/RawItmZ8ZT99wJo7PxrNReII9SVscZ580voYpd6WFwzRKzbStmGLLOwGxC+gERAZ8ch1ZE3+uaXaXkJp0GOqbUbGeD5ZAQkuAX0AEMYsl9d+KaNgMpaKs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,90 +96,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Aug 06, 2025 at 02:58:25PM -0600, Alex Williamson wrote:
-> On Mon,  4 Aug 2025 16:00:36 +0300
-> Leon Romanovsky <leon@kernel.org> wrote:
+On Tue, Sep 02, 2025 at 11:45:33AM +0100, Lorenzo Stoakes wrote:
+> In commit bb666b7c2707 ("mm: add mmap_prepare() compatibility layer for
+> nested file systems") we introduced the ability for 'nested' drivers and
+
+Fwiw, they're called "stacked filesystems" or "stacking filesystems" such
+as overlayfs. I would recommend you use that terminology going forward
+so we don't confuse each other.
+
+You've used "nested" here and in the code doc for
+compat_vma_mmap_prepare() you used "'wrapper' file systems".
+
+Otherwise seems fine,
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+
+> file systems to correctly invoke the f_op->mmap_prepare() handler from an
+> f_op->mmap() handler via a compatibility layer implemented in
+> compat_vma_mmap_prepare().
 > 
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Remove the bus_off field from pci_p2pdma_map_state since it duplicates
-> > information already available in the pgmap structure. The bus_offset
-> > is only used in one location (pci_p2pdma_bus_addr_map) and is always
-> > identical to pgmap->bus_offset.
-> > 
-> > Reviewed-by: Christoph Hellwig <hch@lst.de>
-> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > ---
-> >  drivers/pci/p2pdma.c       | 1 -
-> >  include/linux/pci-p2pdma.h | 3 +--
-> >  2 files changed, 1 insertion(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> > index da5657a020074..274bb7bcc0bc5 100644
-> > --- a/drivers/pci/p2pdma.c
-> > +++ b/drivers/pci/p2pdma.c
-> > @@ -1009,7 +1009,6 @@ void __pci_p2pdma_update_state(struct pci_p2pdma_map_state *state,
-> >  {
-> >  	state->pgmap = page_pgmap(page);
-> >  	state->map = pci_p2pdma_map_type(state->pgmap, dev);
-> > -	state->bus_off = to_p2p_pgmap(state->pgmap)->bus_offset;
-> >  }
-> >  
-> >  /**
-> > diff --git a/include/linux/pci-p2pdma.h b/include/linux/pci-p2pdma.h
-> > index 075c20b161d98..b502fc8b49bf9 100644
-> > --- a/include/linux/pci-p2pdma.h
-> > +++ b/include/linux/pci-p2pdma.h
-> > @@ -146,7 +146,6 @@ enum pci_p2pdma_map_type {
-> >  struct pci_p2pdma_map_state {
-> >  	struct dev_pagemap *pgmap;
-> >  	enum pci_p2pdma_map_type map;
-> > -	u64 bus_off;
-> >  };
-> >  
-> >  /* helper for pci_p2pdma_state(), do not use directly */
-> > @@ -186,7 +185,7 @@ static inline dma_addr_t
-> >  pci_p2pdma_bus_addr_map(struct pci_p2pdma_map_state *state, phys_addr_t paddr)
-> >  {
-> >  	WARN_ON_ONCE(state->map != PCI_P2PDMA_MAP_BUS_ADDR);
-> > -	return paddr + state->bus_off;
-> > +	return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
-> >  }
-> >  
-> >  #endif /* _LINUX_PCI_P2P_H */
-
-Sorry for long time to reply, I waited to see what is going on with DMA
-phys_vec basic series and together with my summer vacation, it took a
-while.
-
+> This invokes vma_to_desc() to populate vm_area_desc fields according to
+> those found in the (not yet fully initialised) VMA passed to f_op->mmap().
 > 
-> Looks like you're relying on this bogus code getting resolved in the
-> next patch...
+> However this function implicitly assumes that the struct file which we are
+> operating upon is equal to vma->vm_file. This is not a safe assumption in
+> all cases.
 > 
-> In file included from kernel/dma/direct.c:16:
-> ./include/linux/pci-p2pdma.h: In function ‘pci_p2pdma_bus_addr_map’:
-> ./include/linux/pci-p2pdma.h:188:24: error: implicit declaration of function ‘to_p2p_pgmap’ [-Wimplicit-function-declaration]
->   188 |         return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
->       |                        ^~~~~~~~~~~~
-> ./include/linux/pci-p2pdma.h:188:50: error: invalid type argument of ‘->’ (have ‘int’)
->   188 |         return paddr + to_p2p_pgmap(state->pgmap)->bus_offsetf;
->       |                                                  ^~
-> ./include/linux/pci-p2pdma.h:189:1: error: control reaches end of non-void function [-Werror=return-type]
->   189 | }
->       | ^
+> This is not an issue currently, as so far we have only implemented
+> f_op->mmap_prepare() handlers for some file systems and internal mm uses,
+> and the only nested f_op->mmap() operations that can be performed upon
+> these are those in backing_file_mmap() and coda_file_mmap(), both of which
+> use vma->vm_file.
 > 
-> to_p2p_pgmap() is a static function and struct pci_p2pdma_pagemap
-> doesn't have a bus_offsetf member.  Thanks,
-
-You are right, probably the best way to fix the error is simply squash
-this change into the next patch.
-
-Thanks
-
-
-
+> However, moving forward, as we convert drivers to using
+> f_op->mmap_prepare(), this will become a problem.
 > 
-> Alex
+> Resolve this issue by explicitly setting desc->file to the provided file
+> parameter and update callers accordingly.
+> 
+> We also need to adjust set_vma_from_desc() to account for this fact, and
+> only update the vma->vm_file field if the f_op->mmap_prepare() caller
+> reassigns it.
+> 
+> We may in future wish to add a new field to struct vm_area_desc to account
+> for this 'nested mmap invocation' case, but for now it seems unnecessary.
+> 
+> While we are here, also provide a variant of compat_vma_mmap_prepare() that
+> operates against a pointer to any file_operations struct and does not
+> assume that the file_operations struct we are interested in is file->f_op.
+> 
+> This function is __compat_vma_mmap_prepare() and we invoke it from
+> compat_vma_mmap_prepare() so that we share code between the two functions.
+> 
+> This is important, because some drivers provide hooks in a separate struct,
+> for instance struct drm_device provides an fops field for this purpose.
+> 
+> Also update the VMA selftests accordingly.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  include/linux/fs.h               |  2 ++
+>  mm/util.c                        | 33 +++++++++++++++++++++++---------
+>  mm/vma.h                         | 14 ++++++++++----
+>  tools/testing/vma/vma_internal.h | 19 +++++++++++-------
+>  4 files changed, 48 insertions(+), 20 deletions(-)
+> 
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index d7ab4f96d705..3e7160415066 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -2279,6 +2279,8 @@ static inline bool can_mmap_file(struct file *file)
+>  	return true;
+>  }
+>  
+> +int __compat_vma_mmap_prepare(const struct file_operations *f_op,
+> +		struct file *file, struct vm_area_struct *vma);
+>  int compat_vma_mmap_prepare(struct file *file, struct vm_area_struct *vma);
+>  
+>  static inline int vfs_mmap(struct file *file, struct vm_area_struct *vma)
+> diff --git a/mm/util.c b/mm/util.c
+> index bb4b47cd6709..83fe15e4483a 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1133,6 +1133,29 @@ void flush_dcache_folio(struct folio *folio)
+>  EXPORT_SYMBOL(flush_dcache_folio);
+>  #endif
+>  
+> +/**
+> + * __compat_vma_mmap_prepare() - See description for compat_vma_mmap_prepare()
+> + * for details. This is the same operation, only with a specific file operations
+> + * struct which may or may not be the same as vma->vm_file->f_op.
+> + * @f_op - The file operations whose .mmap_prepare() hook is specified.
+> + * @vma: The VMA to apply the .mmap_prepare() hook to.
+> + * Returns: 0 on success or error.
+> + */
+> +int __compat_vma_mmap_prepare(const struct file_operations *f_op,
+> +		struct file *file, struct vm_area_struct *vma)
+> +{
+> +	struct vm_area_desc desc;
+> +	int err;
+> +
+> +	err = f_op->mmap_prepare(vma_to_desc(vma, file, &desc));
+> +	if (err)
+> +		return err;
+> +	set_vma_from_desc(vma, file, &desc);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(__compat_vma_mmap_prepare);
+> +
+>  /**
+>   * compat_vma_mmap_prepare() - Apply the file's .mmap_prepare() hook to an
+>   * existing VMA
+> @@ -1161,15 +1184,7 @@ EXPORT_SYMBOL(flush_dcache_folio);
+>   */
+>  int compat_vma_mmap_prepare(struct file *file, struct vm_area_struct *vma)
+>  {
+> -	struct vm_area_desc desc;
+> -	int err;
+> -
+> -	err = file->f_op->mmap_prepare(vma_to_desc(vma, &desc));
+> -	if (err)
+> -		return err;
+> -	set_vma_from_desc(vma, &desc);
+> -
+> -	return 0;
+> +	return __compat_vma_mmap_prepare(file->f_op, file, vma);
+>  }
+>  EXPORT_SYMBOL(compat_vma_mmap_prepare);
+>  
+> diff --git a/mm/vma.h b/mm/vma.h
+> index bcdc261c5b15..9b21d47ba630 100644
+> --- a/mm/vma.h
+> +++ b/mm/vma.h
+> @@ -230,14 +230,14 @@ static inline int vma_iter_store_gfp(struct vma_iterator *vmi,
+>   */
+>  
+>  static inline struct vm_area_desc *vma_to_desc(struct vm_area_struct *vma,
+> -		struct vm_area_desc *desc)
+> +		struct file *file, struct vm_area_desc *desc)
+>  {
+>  	desc->mm = vma->vm_mm;
+>  	desc->start = vma->vm_start;
+>  	desc->end = vma->vm_end;
+>  
+>  	desc->pgoff = vma->vm_pgoff;
+> -	desc->file = vma->vm_file;
+> +	desc->file = file;
+>  	desc->vm_flags = vma->vm_flags;
+>  	desc->page_prot = vma->vm_page_prot;
+>  
+> @@ -248,7 +248,7 @@ static inline struct vm_area_desc *vma_to_desc(struct vm_area_struct *vma,
+>  }
+>  
+>  static inline void set_vma_from_desc(struct vm_area_struct *vma,
+> -		struct vm_area_desc *desc)
+> +		struct file *orig_file, struct vm_area_desc *desc)
+>  {
+>  	/*
+>  	 * Since we're invoking .mmap_prepare() despite having a partially
+> @@ -258,7 +258,13 @@ static inline void set_vma_from_desc(struct vm_area_struct *vma,
+>  
+>  	/* Mutable fields. Populated with initial state. */
+>  	vma->vm_pgoff = desc->pgoff;
+> -	if (vma->vm_file != desc->file)
+> +	/*
+> +	 * The desc->file may not be the same as vma->vm_file, but if the
+> +	 * f_op->mmap_prepare() handler is setting this parameter to something
+> +	 * different, it indicates that it wishes the VMA to have its file
+> +	 * assigned to this.
+> +	 */
+> +	if (orig_file != desc->file && vma->vm_file != desc->file)
+>  		vma_set_file(vma, desc->file);
+>  	if (vma->vm_flags != desc->vm_flags)
+>  		vm_flags_set(vma, desc->vm_flags);
+> diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
+> index 6f95ec14974f..4ceb4284b6b9 100644
+> --- a/tools/testing/vma/vma_internal.h
+> +++ b/tools/testing/vma/vma_internal.h
+> @@ -1411,25 +1411,30 @@ static inline void free_anon_vma_name(struct vm_area_struct *vma)
+>  
+>  /* Declared in vma.h. */
+>  static inline void set_vma_from_desc(struct vm_area_struct *vma,
+> -		struct vm_area_desc *desc);
+> -
+> +		struct file *orig_file, struct vm_area_desc *desc);
+>  static inline struct vm_area_desc *vma_to_desc(struct vm_area_struct *vma,
+> -		struct vm_area_desc *desc);
+> +		struct file *file, struct vm_area_desc *desc);
+>  
+> -static int compat_vma_mmap_prepare(struct file *file,
+> -		struct vm_area_struct *vma)
+> +static inline int __compat_vma_mmap_prepare(const struct file_operations *f_op,
+> +		struct file *file, struct vm_area_struct *vma)
+>  {
+>  	struct vm_area_desc desc;
+>  	int err;
+>  
+> -	err = file->f_op->mmap_prepare(vma_to_desc(vma, &desc));
+> +	err = f_op->mmap_prepare(vma_to_desc(vma, file, &desc));
+>  	if (err)
+>  		return err;
+> -	set_vma_from_desc(vma, &desc);
+> +	set_vma_from_desc(vma, file, &desc);
+>  
+>  	return 0;
+>  }
+>  
+> +static inline int compat_vma_mmap_prepare(struct file *file,
+> +		struct vm_area_struct *vma)
+> +{
+> +	return __compat_vma_mmap_prepare(file->f_op, file, vma);
+> +}
+> +
+>  /* Did the driver provide valid mmap hook configuration? */
+>  static inline bool can_mmap_file(struct file *file)
+>  {
+> -- 
+> 2.50.1
 > 
 
