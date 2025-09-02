@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C087CA1007
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A5B4CA1007
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:06:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3CE56B0005; Tue,  2 Sep 2025 16:00:40 -0400 (EDT)
+	id 682418E000B; Tue,  2 Sep 2025 16:06:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED426B0006; Tue,  2 Sep 2025 16:00:40 -0400 (EDT)
+	id 658148E0001; Tue,  2 Sep 2025 16:06:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D036F6B0007; Tue,  2 Sep 2025 16:00:40 -0400 (EDT)
+	id 56DC08E000B; Tue,  2 Sep 2025 16:06:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3AC6B0005
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:00:40 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8991B1A0382
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:00:40 +0000 (UTC)
-X-FDA: 83845377840.07.C796F3F
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7970D180017
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:00:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SieHwVU+;
-	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756843238; a=rsa-sha256;
-	cv=none;
-	b=R32IJOu1IOmcewZDv94IoU5UAA2HYuwJDDF0Vt5S0sjWwrvJns/odU670GeTX3TLID36Io
-	X2JAz+/mYnhG/C8x/CTEH0uiXV41kgZf7rtcOz0C/YT6e46O9MF2CcuDvdnvHXozTfE5f5
-	xB2SL5AYY7wWxz3ViLPh6t1T7b2KaJU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SieHwVU+;
-	spf=pass (imf06.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 45A188E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:06:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DDD3558C81
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:06:11 +0000 (UTC)
+X-FDA: 83845391742.08.7A9D22B
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F4101160012
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:06:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="FMr+/508";
+	spf=pass (imf08.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756843238;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756843570;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vnwn8oz3u8ERteNvGUGXeU59pUXRW/r8woC2acqZVsg=;
-	b=OewYPk4YKKiq039tyYcMlvLgzpnu0GD9a2ViL0u7IpVbyzBCUm7Pf4HCbcVSC5zMOpdaEm
-	uAVW6buih8DET8AJm/aoFi/OXD9+0hzxS9JRf6ssuoX95THTEXYaxYFmdxDBeik2T/n/Gb
-	3dZN4kOwIbGWi9dm7mqrmLDEGXhRUGw=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45b7d87b90fso2589715e9.0
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 13:00:38 -0700 (PDT)
+	bh=azzJpww1T6QT9OEQQ5Xdin+vv/Lolribc8Oh9kh33z0=;
+	b=s0tP4U5rPzl/1lHMWEPSl6KLOq3SUWqgIjzLgAwzt2DzoBh5tGAbbUYtc4ZaLOmUULb+En
+	UmI915R89OcvIoTSFdkXMwkuKnzWvb+y3b3OQLXrbvO7OHflYKHbAdh2L/t3cJ+T3BNyX4
+	eyWSZhtHDIPK3KdsM2muSiFC+eHU03k=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="FMr+/508";
+	spf=pass (imf08.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756843570; a=rsa-sha256;
+	cv=none;
+	b=j/gA790UhaHewFreWbrKxkVW3LYhHVRSrndy/yI7qKT1Zs8aUBW+e1aPgjSt8cPJWa55tv
+	3BTrHNi5wSS6IgW3gE6ChZlgKR8bwJBnAAUsZgLYUFRdMTDDXPheh3rK43Uk5SWEU2kt1e
+	8hipRxojUd01WYpxSMrjau/d7ixrnro=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b49b56a3f27so3728341a12.1
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 13:06:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756843237; x=1757448037; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vnwn8oz3u8ERteNvGUGXeU59pUXRW/r8woC2acqZVsg=;
-        b=SieHwVU+DFNHRuY/9BnXIramaryoSqKw9jgM2gop3JyAb9DVkt2YO0fn9xczmM7eV5
-         TFuTkI86QioINipQcb2xFWMaLthfmxf1pB7Px0ScPvf3//3Q2jizWb67InfvKfvH4CG9
-         Wmz48pFaCfAb0Iq7PL9YGcD42Wu2cnJdae6ndBrSdBqLy+nWt5ImW25hcRX60tlV1L0D
-         KdlYHsyvp190QDipzfIpWG6jdnp5smsMlN/UZmf4HEEtbBJ4Y4wI0qC1qc8hN8bGP4pG
-         VyPpQl3GyUFIi+03/qmf5fI9Rp8A+PYy57BLd12aN/I8L9RZN95Z7oEAQDsm8Xp7Gxwj
-         +fPw==
+        d=gmail.com; s=20230601; t=1756843568; x=1757448368; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=azzJpww1T6QT9OEQQ5Xdin+vv/Lolribc8Oh9kh33z0=;
+        b=FMr+/508aFeSljZQXjD8GOjVINKLipJhCtiyHZQ0e9ztdbmmgbqCrtnlsrhsEtTQ1S
+         ArFLOuxr8FwHXOQdQHzMKONltTdQN7CUiDpPnJG6l/g75UbfR0dOwEWhc3zSmukGsO24
+         7Avbo2A+dZWeN5U7UqKF5FTsagZxcJYGwNItc9kXrEyrAJnEX5iegwpIWyOcHPkQLPbq
+         stokbJpVb8+HP9hhOtbqb97suKTrmvD9xuOeWzknw7VYSdTtF/jyfTyajY/koYNyAFeq
+         GYiD3fmYqXJVcGMp0l12cdR2q5JNQ6KEMk+rFXrfcClAYpaqRsJOWNRkHtSRjC2FM50R
+         Z9GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756843237; x=1757448037;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Vnwn8oz3u8ERteNvGUGXeU59pUXRW/r8woC2acqZVsg=;
-        b=DRX2a4CQhndVaNq0N1BH+LIRednk3fatfJycgu8f1GYx2Gy6jZnIDfDOG5aurC/EsK
-         k3JxR8ieoLXPEdWa4GYZ1olsLUiDxVm+Hs9Jfz9k2/DwXdyEI0HL1g7qErlapE8ncGJs
-         W0Y1npbpDtc3cOEWPpodWsuhLwZa6NGkJq8GwRVA6wUw+/9XjRc9hBMXd3RJr9g4CtWF
-         j3urvcmbKjftTFBJG56fZvU9hhVD6UUpaWJOyghz8gJurVwMv+F5OZ1U9gPjKWfHaE0m
-         2TqiesiwxyiXYr9vhWh89Ci28cnKZaz9irPclLpI/enJwMZ6wPVotU/+409V6uCfBzbs
-         xfxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVY3orISdYyCsqtX6WPNFJLH3RH4RJlN0uatUKNc65Omh64K9ZxFAKNF3Q9zbpI4KyIIn71NMaGfA==@kvack.org
-X-Gm-Message-State: AOJu0YxrIXdP96oDvsbWPdYQt2MDUHEICwyA+xko2dzzJ8+5AkXzWgBa
-	OFKWk+zdLLVA4+d8qWmUIOSWebHFwV+91/SujP1pWNwQCV3EgYyhN1W9KCk7rA==
-X-Gm-Gg: ASbGncsjhS082A50mpm5t9hOE5YE8OXXzWOH4Lrf3+terkJwxRcmGRuuqlUMI7kHmQI
-	6fiG014Dmg6wjNbnTavroJ0ZhxEh86OnI409q6wxPdYrOa/8lpQrCAvoLEGKtN84rqMZYWL55lr
-	7l0Li8Nrf9zIBWnltxv1jW9KGQ1yaHFuwaTnB7b9NjjRr/YvI//amhQHwvvXnD5wFEZO0ibVBlK
-	WqHdPsdbOv5zveZAAKJ5DJZahguHXxYtMiLONX+dKvAqQ48G7JzSt5wo72ozlK1t2MmkFbuyU5p
-	HtAJADT8CKeLUCbXjFyiGRci2QhtbKXpWS1kmXianXC5ZM7GqWU4aHLqYJGQN+OukdgXbtde1Qb
-	7ZiCuTsxuBeeODRgPx9p6u+C7Hg==
-X-Google-Smtp-Source: AGHT+IHEgm0JQcczqL6qbChvbVinJC0mTKPGSa9ic1yc/g9tqv/HdFawzpA/UHa8PWGwns9G5GWJOA==
-X-Received: by 2002:a05:600c:6210:b0:45b:8d2a:cd07 with SMTP id 5b1f17b1804b1-45b8d2acf12mr60904505e9.5.1756843236735;
-        Tue, 02 Sep 2025 13:00:36 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b8525a94bsm162489725e9.15.2025.09.02.13.00.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 02 Sep 2025 13:00:36 -0700 (PDT)
-Date: Tue, 2 Sep 2025 20:00:36 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
+        d=1e100.net; s=20230601; t=1756843568; x=1757448368;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=azzJpww1T6QT9OEQQ5Xdin+vv/Lolribc8Oh9kh33z0=;
+        b=TCdqT3xSz37y3qUhfVAD/ogNG9Y2OPJVhncREO2JoQFI9vVoLEoUmQ/vdsu2KNlsPE
+         CO0YiVAgr0+/4VkWbguFEuZWDTHdXaMW3Wl1Uvc+OwSnnqqULDRVbFrRClQJcdDKIn55
+         75uoG19wLT8AHYFR+sI7ooePbtCIXW8lXpViym1ZeTf81bvsEVy/y34rIwsj9cJoOlUV
+         yJVN0QHxytapTXmyafapQQAVNVOsvK8E31+ZA7uz57gz35SPAsqEk5uWWgQ3sBYaESZZ
+         pOnN8aLUetxQn+3VbTJfZtkNGggIattI9L3g/+1R4tmQXAgwolyF4ywNGCPdL/TkTIi9
+         +Xwg==
+X-Gm-Message-State: AOJu0Yz26ww82KuIxCsv5gdS/vpIbbri3A+6XBEPtqw7GwxY7CsGjMDs
+	7qUvbqpBlkGFVfNPKOdq1e9j56zXw3W7qPSUReSFYIhQsfBu1/+PXBxW
+X-Gm-Gg: ASbGnctNL/sGAnL46HT9UGaXTiCZjid7Jy1gmamyemvx2RGQ7E8phC8u8HcmlT86LUA
+	5VtANf8Yyf3Wx2NR86snhvGbo5CUPT0dIqAbzPvPDvjnPrCV9hpKRAR8QSBWeP+sZ6rEhm1Im5Z
+	Rdw5ZPq3Fcv8FRsKmzUZ18DQ0Rr6KC4wi9U71rYfOo7feA8bDngeqjvZaEviY1+61kpSeaZf1D2
+	jrx0HU6wO8QX4b/I/MWu5Ze+kc3eMd1T072vLlU7jdDV9NW3SqnU1irlC5HD4Gn3ewYz3SpMv8X
+	Wq022uxKVoUKLnNVRXQykNQzMSc5VWUdbIvNPQyKYf0coe6fo9pnXsYuf0r2yLek7rQC92lNIjU
+	L8mU79iKTaTci7HcNQ6ItkMYhvQwxrVgSBRfeK6aJnFtGJKM5lIXcWQ==
+X-Google-Smtp-Source: AGHT+IECRMkjHsjdrff1b+uYIwH526sZaUzamyfw9eNA2twwQkFG/MgXEMmYprucKZG08B8k8zHCZA==
+X-Received: by 2002:a17:902:f78a:b0:24b:11c8:2cfd with SMTP id d9443c01a7336-24b11c832c5mr46470555ad.7.1756843568456;
+        Tue, 02 Sep 2025 13:06:08 -0700 (PDT)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24b0e860ab5sm32663555ad.5.2025.09.02.13.06.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 13:06:07 -0700 (PDT)
+Date: Tue, 2 Sep 2025 13:06:05 -0700
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2 2/2] selftests/mm: split_huge_page_test: cleanups for
- split_pte_mapped_thp test
-Message-ID: <20250902200036.6mv4wqenbnjir277@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250902162536.956465-1-david@redhat.com>
- <20250902162536.956465-3-david@redhat.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Kees Cook <kees@kernel.org>, kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: [PATCH] mm: Fix kernel stack tagging for certain configs
+Message-ID: <aLdOLQLjt-A1DBGi@fedora>
+References: <20250902175903.1124555-1-vishal.moola@gmail.com>
+ <f41383c3-913a-489a-82e6-d2c8d5519eed@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250902162536.956465-3-david@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7970D180017
-X-Stat-Signature: q4d5tx63rm7iq7bh7purumefxmc7dztu
+In-Reply-To: <f41383c3-913a-489a-82e6-d2c8d5519eed@redhat.com>
+X-Rspamd-Queue-Id: F4101160012
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756843238-770021
-X-HE-Meta: U2FsdGVkX1+z1z/becX7mwzk4I346n7IsKEHrEV93q/j1mymzb65MTlewrrV+Oph9o3ZP+cRYS+GxAEIa8XV//jzlFvBznIwLc+bZ0PogvYVgwCOLwup6pMujX8DOon1uI/Pr3siMETabJq6ZNXlcjN15uF4XtW20aKnr3SDHzbStgJ53gOqjMUy71PwWIET1TP9jO3O5/mTtdkd9gg6Xq83SgbSCbFyZbhCj2kDaLjahfMs0oEX+jusanaCxq/mQIqxfThEEtoprs2PDR2nLBPOoSMedOiK5fkMLXICHqRoSjI4ZCH5B17xeL+DY+cmSrtjK05O7EkFE+zncullN9w3R4mPpon2CLH/ZSY78BhICDh3As3XdI5C9YXjXblAm4McVcHrqcmMY/b74JzlC2pw+3WqrVhO7l99CATqigxr1yL9C/lxhPBFnAsA2z//9ZBF7QtaILRaJx0uiipFdvviStVwnMytbIvB9CqT81ayaCsVWTwkJZWJm6IePCDBmZomTh9OyIoBkRo6LSnmm9ejwjiX/QN77utasO9rqCYg2Yifk7uL3n9C/n7QkFf60zeqoTAZ11WUvi36pWDbcQIiUnTeqNDDZ+Q2VhHVkxYTWNcFK9fmgnDCqjhwy5M8RVcGIDwvahumzbTc5OvuCtXeUD2dSzCuo/N2HxiXA4RLM00thG3iFjYbAoIcyLgqFutBMYPkkAfqvRlfpK0DOt6H4rCDCJO6IqhEsuCItA2+bAioiKu4SNAOh7GI1TxwODthmlTsBbnuCGr2JxHpFsrcf9e1/X+qTwXAllW5B5sfQewXEBazCpQ11MNdM0uenL4BwO/cvivDFBnJiqD/urwbJuBNAEKXr2aSbZ5SSi4/gmohnRDLIyYgtDqNY6ZaH6BNic6uQtb812vYJhBDOP7WQ1SQA5/tr7oBDTwJDYLigNKh9iu7OH69E1DBJlYZW0lpG6ZOPOFop3/Zh2t
- /W24GJ0q
- 3k3jyusCde21onjMD2KqROZcOMkdrGXLg0BKD3kHQcXcgGS3hVwpXR1DWvmaQJM2169gRCMnzmFQc9QHH9XZ7g4xuxguufFto6K2HYjxXOi3NG21kNOEuU5t3ZuYH4mbGZDZYLdclHAv1CI2mro0pMKLKJz8WAgaxJJE7L68sk4+I4iTO7TJc/ao1GOmj7xCSmM/tAiiiH0oAyZI7La1vJ+7ncIihUbYU+3t3iSIaUwQG7pyX1OHbmcfECPU2S7SsZ6XhP3i0shCPPQYxfbavQRH68mo7nwJCN97rfzadgnz80Fl8YTcAfQ4zfASBCWdL/z/uqwo8wQW3XnUV9bYMcYwQN/0sE7JHwb4tjhCeouEhuEcYOQvdyqYkgUuD5mXti7brVcfHb6N6jf3VyOTMe+RZn/d/c8KOhEq+6Uz1KKXVZ01xE7GDpDJnWDK1DxdcPM/TbbuR15gT/6BwFOdHd2BabmjvLhPpnYOCXWil+W3xorL8lzABet3l5mjVDFdruApdxlD0IStm6pfVFwss+XVvvy2PNQrym7p8wyu2j9LIgmJtVMpMrMntCoZmdf1flBo9mdslLm2O81kJjVP1xQMuhZdKxaiA882DwtIKP6Q2H7NXB6JLQrC535vL5P7rAQaGY1mjdhPWfVT4FxlB8+pAjwoYsjr+xYdP+vimYY2wdhcBqZ+5kw2ms7tbGjIqET9J5luRGJAXMhXXZm3yYsszRhvOnEQNgIZ3FB9CkZOYC8zAXm9PzerMOw==
+X-Stat-Signature: yhdtp71o7er7zq7euitbs9fgiwxopxrc
+X-HE-Tag: 1756843569-216518
+X-HE-Meta: U2FsdGVkX1+jI0GsTIhIZMbsMdZvDPr/UTW1rxxYGDCfK3qrmsDYOCeodRoVQthrWPbIrK+Zeko60dfPIqGA1XqF8Ob5P8LALdo4btXZ9pQelBapw+6w4ccV7RqDRdGOscNmMVzEAAiZAwjdBcrpgQr5Lrq6fcnSlVjsmsFob6TwRizIJGAXXi7aJjszc+0TT5Q1G00DKBZTQB7k56tKx8MsmEX2FLhlsbpBaPcsFyZeiRKSdgyfuylMLMAukTRRGPMzl0f8LnXEUjvddnOzgM7rtgT6U/9XyJiM5LLpD9yJdtQXHxTNYzOI9gSxAHLei3JpCxkoTSQW6IPsRvHWJHkLY6/6wHhFFA11pFMvFs2gaF97YqwEI2HuhHNg9ZxEti1yt48wUxvE8kNENoI2tIvLiVx3o/kO7cASkFSsfG3SqN2l61xtfCIm7lPcPghA0GKQ4S94o9oUkPpzysUkdyym3hBFD4lPx+T0ScEbd0iTlKQKqKl4V5c0+Kcb0Ep5YMt5Cxvi5PBAkntHUwrAGOIOxE/EABcs22lcKmXbogOY5jJ3YC5a/Bc4m6/AstGdlQ5olE4zPVdfjZUqrbMvFVmplqA/PoS14XARM8Kr93q3SfMFHtlVHlyeHqOWorsiWOWJFbi4ZXzcE9yU8LzRfQ68UvR1pbwbgrUXeECcBO5A77/0EE8/73dOnRbRprwNuMKsO4FapuB3YXvgyHwO0pir0882INZ5DUt6jEQF5t0fvDUyQ6uJlFdTqpH6+TV/jOihNE6/bL4Gc37DHJ3KuTAAsdKiuOLUE3ViS2FM8psQW2+yTNwjcM9ovUwawsf50Ff0g5mRiROi65fFF0bwR6CLTW85dUrQjOr3RIW4zqvDXBczRnQ2NA9oakL71NmGagMy3f5RoMHgWVYfh48IAgC4QtGklEk0nQmncBVBSWAFbDh00XzfzDJIN2gIAkJooh+wr+SsLJ/kkQBH6nv
+ x2crX/Uf
+ WT+v9iAQnb6uOdIb61ob3tjVe3WEZZecHdFDTqZQn+0tyzYHkhNMOQl9Mh/2NPTrKJ1BDs4BlJDsJabb4FcKB0a8giC0jUlOurbHhHP5SQsbe71lCXtvJahPydBlPLLPkrXTrccv07sIyFSHwukJt7pT+t6292ZZAhJFQV+cqzbdcJZhVuExDfBtG4xyWTfGw7CIaX+V2qklXXKrFAO96ku4f01GgjrcPdoc9myAex2D3yCC5I/RZUifohDXi87dRpDis8vfOkiGeobCOqh6mvIA22OkT3qdq2VYICkOnuZXpqWq7MDkhDPXt2Tt869UZlVtQ7fzqF2Qmy3NLE0YDxnHssQUi62cez8PytDUEVcaU3eVXmQh6yiSJndbbBm4BQQ/vonnrGwe+Tb5d87hygWvXSHDCeHgRLqK8NOxivH3VmzTBWm7Mxh9WBz/QSmuubHmo7XJ9Zq9Ut3Gi1pJ70JlaIcClJiuvHGUy+HPdRhzv8aIB+q6Rcpzu9f/M7AMRTuYyr8s0XPpNHYhWDxhpBd8J86nBvrelFUqGPMOdDLMyONWW+1bULEkm99+GYdek7S72x8lo3MNQB4Y5EvHDhTYfVQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,38 +122,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 06:25:36PM +0200, David Hildenbrand wrote:
->There is room for improvement, so let's clean up a bit:
->
->(1) Define "4" as a constant.
->
->(2) SKIP if we fail to allocate all THPs (e.g., fragmented) and add
->    recovery code for all other failure cases: no need to exit the test.
->
->(3) Rename "len" to thp_area_size, and "one_page" to "thp_area".
->
->(4) Allocate a new area "page_area" into which we will mremap the
->    pages; add "page_area_size". Now we can easily merge the two
->    mremap instances into a single one.
->
->(5) Iterate THPs instead of bytes when checking for missed THPs after
->    mremap.
->
->(6) Rename "pte_mapped2" to "tmp", used to verify mremap(MAP_FIXED)
->    result.
->
->(7) Split the corruption test from the failed-split test, so we can just
->    iterate bytes vs. thps naturally.
->
->(8) Extend comments and clarify why we are using mremap in the first
->    place.
->
->Reviewed-by: Zi Yan <ziy@nvidia.com>
->Signed-off-by: David Hildenbrand <david@redhat.com>
+On Tue, Sep 02, 2025 at 08:23:06PM +0200, David Hildenbrand wrote:
+> On 02.09.25 19:59, Vishal Moola (Oracle) wrote:
+> > Commit 4ef905bda61f ("mm: tag kernel stack pages") began marking pages
+> > that were being used for the kernel stack.
+> > 
+> > There are 3 cases where kernel pages are allocated for kernel stacks:
+> > CONFIG_VMAP_STACK, THREAD_SIZE >= PAGE_SIZE, THREAD_SIZE < PAGE_SIZE.
+> > These cases use vmalloc(), alloc_pages() and kmem_cache_alloc()
+> > respectively.
+> > 
+> > In the first 2 cases, THREAD_SIZE / PAGE_SIZE will always be greater
+> > than 0, and pages are tagged as expected. In the third case,
+> > THREAD_SIZE / PAGE_SIZE evaluates to 0 and doesn't tag any pages at all.
+> > This meant that in those configs, the stack tagging was a no-op, and led
+> > to smatch build warnings.
+> > 
+> > We definitely have at least 1 page we want tagged at this point, so fix
+> > it by using a do {} while loop instead of a for loop.
+> > 
+> > Fixes: 4ef905bda61f ("mm: tag kernel stack pages")
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > Closes: https://lore.kernel.org/r/202508300929.TrRovUMu-lkp@intel.com/
+> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> > ---
+> 
+> You sent the patch on August 20 and I replied on August 21.
+> 
+> I did not receive any reply so far.
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Ah sorry, I didn't mean to miss your reply.
 
--- 
-Wei Yang
-Help you, Help me
+I can't find your reply in my inboxes so I definitely missed it somehow.
+I'll go find it and respond.
+
+> And now I realize that this patch is not upstream yet and the commit id not
+> stable. So the Fixes/Closes etc. do not really apply.
+
+Gotcha.
+
+> My current opinion is that we don't want this. (see vmalloc reasoning and
+> unclear use)
+> 
+> I'm happy to be convinced otherwise.
+> 
+> -- 
+> Cheers
+> 
+> David / dhildenb
+> 
 
