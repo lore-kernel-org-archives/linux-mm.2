@@ -4,118 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FAA1CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:06:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D7A5CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 901888E0006; Tue,  2 Sep 2025 08:06:42 -0400 (EDT)
+	id D34658E0009; Tue,  2 Sep 2025 08:15:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B1C88E0001; Tue,  2 Sep 2025 08:06:42 -0400 (EDT)
+	id D0C138E0001; Tue,  2 Sep 2025 08:15:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C7978E0006; Tue,  2 Sep 2025 08:06:42 -0400 (EDT)
+	id C48AF8E0009; Tue,  2 Sep 2025 08:15:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B0008E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:06:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 16A84866CD
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:06:42 +0000 (UTC)
-X-FDA: 83844183444.10.898FDE6
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3E0C2C0007
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:06:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=QoDQ3xte;
-	spf=pass (imf22.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.51 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id B2F8F8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:15:57 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67E6952538
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:15:57 +0000 (UTC)
+X-FDA: 83844206754.22.5C38032
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 52BB814000C
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:15:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=bJ7BFzoS;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
+	spf=pass (imf23.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756815355; a=rsa-sha256;
+	cv=none;
+	b=TusXCeJaoxQtqrGoSROKdu0IsbIguFPsXOy2VEuleZ/BbdfH7OuiUyyT3HSh1fxCcW48TF
+	KPTy4D0SATx4q7peXYv3doovrq4Dns7/tdVCdEQjYZoggzBF0N3zo0Ib1JoXFrcv5dVbPp
+	6NB3z4QYqWCB5fW18vAc1ppXyiXhREg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=bJ7BFzoS;
+	dmarc=pass (policy=quarantine) header.from=pankajraghav.com;
+	spf=pass (imf23.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.151 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756814800;
+	s=arc-20220608; t=1756815355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lwHlTuko8/bhLBNZDswXiYJz77BS3zzuPZs0VGUvgtI=;
-	b=As/UY9JocdtPG8wL7eYap1Toat6Y+vMmZgJa2mdV6hmwjuegni3QapIiNSWUS2Pjg9dHEn
-	H+9anFHj+XAm6N2BQW6ckh8stEcMq+uQSPtQeZJyVkLcgJBYXzKs3iLYiWwTNHFLIzrFA9
-	BLdbKyVFUGAD031mJLFd29MjB4UgFB8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=QoDQ3xte;
-	spf=pass (imf22.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.51 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756814800; a=rsa-sha256;
-	cv=none;
-	b=A53w6ve6Kt3xGEokh9xwa56bl8UQgnNeRxFs9zaHpfBap9vwVWKGd4MyKY2m00jakp3YXW
-	9/8bf9PwQ2/wwbxmVo/2CyPPI0cuB95u9Lqujr3TUiZumeHziT2b9dI7wTkph0I7ywJ/fX
-	5M64qEv1u3g1h7JaK71/5H0aG+FLe+I=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-70dfcc589a6so50779916d6.2
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 05:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1756814799; x=1757419599; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwHlTuko8/bhLBNZDswXiYJz77BS3zzuPZs0VGUvgtI=;
-        b=QoDQ3xteq18ZrZHDvajqXBPMVIYcfnHwyagbpagK8LKPfY/ycJysSqJLt3qWSESaka
-         qm7rHrXeNkzk7NA6Bv6xWzNmqABHE3njdv4Rj/a5dQuOSqAm+EBn+11zuoNyt7Gvsnp+
-         jiw+NRcesi/rZtZyUjTqG0FMELXwsb0KJIYjHAvzAuVynkJK84tcIGrmKeg4ub3eveoi
-         U9yPIxA5AMc28iY6rAgWLJNhnI+O35l7A+9kcVzdD2hckkW8GBA5Ofs3z9Fb3UmfvuCs
-         xiweURuVhYDJO+/oW4/H1hE/L1xqd76nQ1r131m2BhPN5gntgKIdpCRs44DWLu/sCDq0
-         vdpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756814799; x=1757419599;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lwHlTuko8/bhLBNZDswXiYJz77BS3zzuPZs0VGUvgtI=;
-        b=wnUR6fYrwi4rqKIXmEdDCJeZeY1XGOvaFBPwvPVKfv5HVTscc7cR9FYf+ohXGA7OtB
-         zm1xMXwc1BW/9Phqizr9D7qcWQfOzivt7UaRUQOrFw6HlPE3vCE51ym6fm21sGkT5+BT
-         7lJ1Z9CDzzKDUQ5deCh31fZYon3TfAuoi1ii+3luwr8hP9Xa/2DBlJxyeRaIJ59huGxl
-         leIKfWsCgPiA9IogMa3a37zCrsAWAZLx/jX57xbVHhZRwp+IjPOSZP1y+wJF68Dh00L/
-         m6e4OvzIDOiRAqK13Tz2RSNmCzPdCOtDIpkK1yKWQSSB+kknf1ZJ63i/U86eM63tADSH
-         PJfA==
-X-Gm-Message-State: AOJu0YxTV+754eMS+2AdJ649JkK3OMaYqlSEmDy16hbAixsEAwNNhm67
-	by41+kPGSZ8N4Ec2mqyspEn7MCA6idpjxUjdUeeMzNWQQffi6SKNKg7f07+RsJCgrn8=
-X-Gm-Gg: ASbGncvf3YINhGh42A/mOuKfwvWnLrtFx72JKRXuwuX/nvyEcqm8+ItAkW4bqRpXg8z
-	moLh6XD34JEDMmhVAo5b7+E0g/JWYzSy6/IF9rwBh/R6ZulORtLSWAIPNLSkOe8nsHcePt7YksG
-	KLpwfUPyxPd1CY2CXDbpBDsNsOBIMmdPQhua/IhQx9QZZdZUhAjS34rSAlbEpdpKATQ02sb9Tvg
-	DVbm7cm9LWpSrgPG/CYshKYrG3LX1RDD0j4bCZuEvSboQJXigEry4SrHxPd8d7in7Q4gMJco/7V
-	2N7JSZVtbxoyl+buZn6jvwyNRU/GyisAOrN+8M3BMFvBdGYx7BWV7qcB3ka/O0X3uVvvtsMv79Y
-	dPpCJEoHk5Sj4OrFsEDpGGXoGhyLEaVxmQ2urSbMZg6CHKWKPgVPkN0XQLA95b8ZPrcEj7IJuHv
-	bZfmaaqGgRRKmv6w==
-X-Google-Smtp-Source: AGHT+IGQLTdGvLivSrgS3C3MjhD9R4PvmhmRB9ObwWSZqFcL5LLR25foDK+15fQJoFTFNVOh7BgXng==
-X-Received: by 2002:ad4:4eeb:0:b0:70d:961c:bb0e with SMTP id 6a1803df08f44-70fac9202d8mr131625216d6.58.1756814799288;
-        Tue, 02 Sep 2025 05:06:39 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-720add66632sm10527126d6.32.2025.09.02.05.06.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 05:06:38 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1utPmY-00000000sb1-0r1P;
-	Tue, 02 Sep 2025 09:06:38 -0300
-Date: Tue, 2 Sep 2025 09:06:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, david@redhat.com,
-	osalvador@suse.de, jhubbard@nvidia.com, peterx@redhat.com,
-	linux-kernel@vger.kernel.org, dan.j.williams@intel.com
-Subject: Re: [PATCH 2/2] mm/memremap: Remove unused get_dev_pagemap()
- parameter
-Message-ID: <20250902120638.GB184112@ziepe.ca>
-References: <20250902051421.162498-1-apopple@nvidia.com>
- <20250902051421.162498-2-apopple@nvidia.com>
+	bh=SseA8gH1Kt5WU32TGkwvv/o/YEcElQ+UmctNRMOZbf4=;
+	b=SAs92obLwqnL3flwyaqMeITvu4bkCPiirXl7eC/Ebea0xX48tzwbsqN0IvDENhYZxZWwUc
+	xcRBgiJe8UGue2KKYUxd2Tu1i4vaE1ohNhYPK4np6SF3wyxaUVU608prSZ8x1gl2asTYY2
+	yDsLQWE7b3Kxwr7RmOYyip7BEOolmks=
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cGPpZ3Ht5z9t74;
+	Tue,  2 Sep 2025 14:15:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1756815350;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SseA8gH1Kt5WU32TGkwvv/o/YEcElQ+UmctNRMOZbf4=;
+	b=bJ7BFzoSsug4kI4qguV4eSNmegRBgMhTFTaDePTehN1gBpxgKpl3Yqwh72c4wseMXxTsRv
+	/cHuMiaNZVt20b7YlCLUUyWGX1DrBAlOLdDoWOwD+gXTLpvChtQWzzy03D5SpOBmYIVarb
+	F/CTivV/oy2RlB8jndZ2JM9sDj4nWZ5hbonUl5mKFZ8pFgZpaqEg7b+VfNo+pjzcx7UhNK
+	inW+W8vW0CbdzSDhPcfeAcmxDOzpfyPIpGDrs/Ezav5MmCAqbe/ET7yx4Nnll8pGeqO1zW
+	VScd3ZCRmZFzOndRzdn4cMstxSp9Fj8mqJ7A8JD4wU/q/wfnHg2h9MZaJ2WuQg==
+Message-ID: <90cd5be7-cbe6-42c5-b0eb-bf9613047097@pankajraghav.com>
+Date: Tue, 2 Sep 2025 14:15:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902051421.162498-2-apopple@nvidia.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3E0C2C0007
-X-Stat-Signature: j7u54ayru3ch7rg5wsz4odbpcu5f1g56
+Subject: Re: [PATCH] huge_memory: return -EINVAL in folio split functions when
+ THP is disabled
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: David Hildenbrand <david@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, willy@infradead.org, mcgrof@kernel.org,
+ gost.dev@samsung.com, Pankaj Raghav <p.raghav@samsung.com>
+References: <20250902084036.208921-1-kernel@pankajraghav.com>
+ <qh7s3j26aac3hyzgnr2ee6byjenstxhjnlwn4qxbvz2l32ohqc@qbhdxvpnuhtp>
+Content-Language: en-US
+From: Pankaj Raghav <kernel@pankajraghav.com>
+In-Reply-To: <qh7s3j26aac3hyzgnr2ee6byjenstxhjnlwn4qxbvz2l32ohqc@qbhdxvpnuhtp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 52BB814000C
+X-Stat-Signature: an559rsdr5qoffym4j3m9pbr5s9m6u74
 X-Rspam-User: 
-X-HE-Tag: 1756814800-317422
-X-HE-Meta: U2FsdGVkX1/2cznktQ9vf5aBCjLZ/zdyR1gbvYjBH23gby+pil9xB5y3+Vm841WfHr7/Zo9B7a07Ft0ldNpnXAiVNIWbuMQzbXm0/VaSk3W+EJ6HJuz8PBI9xYUvU7CLVDXZGjD4P5cHlNcBiMf4SCZcC39xH6vp7NmIjhwXkEI69SV03Lf7PNCWo9iBx01+Tre9aELWvhf7M9mbdOAGnvPhJUYl88N2JhgyRh2vr+OnNj7X86G1ROt0wrnjoL9hIBSK5bA+49LEXEPc69Qbg0yvboe+KU0RVfvktbdIiQ3adbw+wLilaxDPxPqm0/gzoYa0hsqno1dLlLsCIPHQBL7DCAmmI873l7Btf4d5iwD8wBtw6uc9ac6np+v4jtiVpmE8dGhvxOjA+pvcOZligxuVsUJNfn6m9jaLE897pyMC9dLZ0wQzEQffHAc1iQhdsnUKmlkjNf/FQH/jTxDdLHtzBGqPVfjT+ZyXcKw3/IsOTSL0A5X6ipj3Par5RUSF5a0xVofbeTK6VkiXWlEOue9r0PHFWHZvcgGzDv6SorFGKXAb6jU9GV5NwflqbweDYMU8br4dKnhK/Sg0a8Ic9bsX+0K7Rpqf8FZ2sgwIdbfRgcDpNACFpcwbH5cP34/ARW4RuFPl5TNa63+gpRzZpIX5ZXVxHrR8rCLar+UeJT6kO5vpv3dHeD4MKuWEiHo+wL1FmhfJqBhn9Ar3qg3V6ditt4FGiVZXg6Q+Ugya6K352Z5g9+jfrPxbfCVOikpw3joPSnDQtEO9RdzSEG7RNGmQ88M/ExSVL/wDFTjNPCPnrEounup6/M5VjR7lq60yJ95+1wpkXDYvVyAT/mlc45luVL5WH1BPubfbfKCkf9j9Gj58j81quJPT+F+bEIypW72LxaLZIHB9tEHCCRCOmyfqbIUx4LwTX1CpDYM3lqO+eFjmQ8SH13p387bpwIzHlpyRCKRVgUYojGOiWfg
- 1z4VQvke
- RiDO8RxcwvVOlczFVjA5HpfKKOB9GD16aCdktkIfHow7ToRidjdtFmv4wT880A5jEyv3rQeGGo4nOl88Qfa0hurGF9V577d60UqPTOkTlvBHTybZW17hv8m3g7lz8I2VkI9wOxq9SeM15ps/2DjOt47UGScymcH3nqpT217bipbtFfpU/mxczDn3NmsLqbKwVOepDuKBTOompJ+ZPwPgylEHtavjsSuJEWpn3A8o+f4pVPvIRm8TGU/bQbxWtJbTdpNTMEUuJkFuQvgzDAyVZNgHJNUUyMOKwtwPPa2SuExCDSIR58sRy6knBSnUHvIKFgQ53SoMyLLfHGDx8UCh2VduNxdS3mdzgxbqk
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756815355-116929
+X-HE-Meta: U2FsdGVkX1+Yx0Us/zyqCM41VoVTe/tPIwykzwClGkd+wLkvD2jgOcZjBLYfViop1bbIFq4No3AiAhVmg8gNguqBd1RY6GLA46g3s9fInmafuz33IcvL0TrIIEBnstxHfcuwv8HS7p+E+e2bD6ViOpcgT0DHIBraeMZqfu4EjvmQqFm3gQeD8v8r8brZoxgApITlrxZsdWLiZhWG9qfNHYStMq/gN3yXMpn5dbc4JRNAycJ70F5iozFawerWRSY3EMxRqRhaw7bKn4tTVWFrx2fLzaptXWN0G76UpBu+Dyu8rYNA5mGnZf/3lwWUC5BEq3Tn1OBi6KOK1nXwN2vqTdDoaSgkmT2IieMSK+8GbVi3ZMXJo3asSpdM/ORqMdkX+phZSotdS6L9eHyB9OV1w2+hJWrKB301usQgFZ4CC1G6MlkCuVXBbI5CUVxI21Cg6wqMr+LGL8QVibuBeZTMAkp2+5Ak0vI//YarCgpZwuraLI+mmvXkClKHIztPlFHG9x/BhpUOSpmS96sMegv1tfV3qKJg8x/SqmJKw4jFchMgRbID1GWX2JFL/BNA/xlSZXm5mbLMkCNvvr1NvxzFM8/eotXHoVTSJt7H0kHniGpmUOA1VtSn7BZVK6qOSXSkutKhTGAaH68sPWESSF985uHMtcd6lDMFUl8W164fIiTdqKCjt97qRcKo08bpbDijy1NtQd2ehjx5zSRHqjM4+M0MJMKetO6x9+THlrEsjvpODxHDiVpLBMfaGrSQ/ZRD7qkMJvTXRiuupWqiJeqkIolcKFRh36eTEOpMf4UTo2R7zMa9pdeikGoQN4gCnXe+rI0EvbccMo+yPWLKQbJr4h+MsEma5sH74D4Rp0Z5ii1oD4IwnzlI8RFJqtNcn27Nx7jHZQ4BlYUTZduN+i0070RstQk13GyB60iGVX59vJeNmza97WGlt634HrL2ERPNyAgsAuARk/E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,18 +102,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 03:14:21PM +1000, Alistair Popple wrote:
-> GUP no longer uses get_dev_pagemap(). As it was the only user of the
-> get_dev_pagemap() pgmap caching feature it can be removed.
+
+On 9/2/25 13:22, Kiryl Shutsemau wrote:
+> On Tue, Sep 02, 2025 at 10:40:36AM +0200, Pankaj Raghav (Samsung) wrote:
+>> From: Pankaj Raghav <p.raghav@samsung.com>
+>>
+>> split_huge_page_to_list_[to_order](), split_huge_page() and
+>> try_folio_split() return 0 on success and error codes on failure.
+>>
+>> When THP is disabled, these functions return 0 indicating success even
+>> though an error code should be returned as it is not possible to split a
+>> folio when THP is disabled.
 > 
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> ---
->  include/linux/memremap.h |  6 ++----
->  mm/memory_hotplug.c      |  2 +-
->  mm/memremap.c            | 22 ++++------------------
->  3 files changed, 7 insertions(+), 23 deletions(-)
+> Other view is that the page is already split therefore nop.
+> 
+>> Make all these functions return -EINVAL to indicate failure instead of
+>> 0.
+>>
+>> This issue was discovered while experimenting enabling large folios
+>> without THP and found that returning 0 in these functions is resulting in
+>> undefined behavior in truncate operations. This change fixes the issue.
+> 
+> Could you elaborate on the undefined behaviour? I don't see it.
+> 
+> If you argue that this code should not be reachable on !THP config, add
+> WARN() there. But I don't see a value.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Little bit of context:
 
-Jason
+I started investigating what it takes to remove large folio dependency on THP[1][2]
+
+I have some non-upstream changes which enables Large block size (therefore it uses large folios) on
+systems with !CONFIG_THP.
+
+I was hitting a weird stale content read error and finally ended up with this fix.
+
+I thought this is a self-contained patch that can already be upstream. My argument is not that this
+should not be reachable, but returning -EINVAL will do the right thing instead of returning 0, which
+means success.
+
+I hope it clarifies a bit. Let me know what you think.
+
+[1] https://lore.kernel.org/linux-mm/731d8b44-1a45-40bc-a274-8f39a7ae0f7f@lucifer.local/
+[2] https://lore.kernel.org/all/aGfNKGBz9lhuK1AF@casper.infradead.org/
+--
+Pankaj
+
 
