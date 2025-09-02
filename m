@@ -4,136 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25F41CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04604CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:33:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 480B48E0002; Tue,  2 Sep 2025 08:32:42 -0400 (EDT)
+	id 45B8F8E0006; Tue,  2 Sep 2025 08:33:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 458C98E0001; Tue,  2 Sep 2025 08:32:42 -0400 (EDT)
+	id 40B648E0001; Tue,  2 Sep 2025 08:33:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36E998E0002; Tue,  2 Sep 2025 08:32:42 -0400 (EDT)
+	id 2F9E08E0006; Tue,  2 Sep 2025 08:33:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 262C78E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:32:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D7C941D90F0
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:32:41 +0000 (UTC)
-X-FDA: 83844248922.11.0F4ED56
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D44172000E
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:32:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="g DjAI6u";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=A9R1ALHL;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A20C8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:33:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC0671D145A
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:33:07 +0000 (UTC)
+X-FDA: 83844250014.12.1EEFF13
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E1A1E1C0003
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:33:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VoJVAyD4;
+	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756816360;
+	s=arc-20220608; t=1756816385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+FtZglCWUX4HE6q7QPlc7pf6zeTQT7t5TN4Mt+TpGxQ=;
-	b=wasE9pxTz6U5tWTIX4U9B7zD9nKhBwL8/c8PKxPFIl/7XPGaDFKgjKgFR58214NTtLbX2f
-	dGvF6PozMi/qLKO9v4WDFeYVsHHiUNF8yUKOcYEOlOQYU7wvDv+tS2bim4Girm/PgOU/hD
-	ZhnZrRMWYdMlM88n1/sDYKMfchpdxBg=
+	bh=/NlLtoQUyzt+LCFD4R/YFCAKe4Bek7vP8Kq+e8VE328=;
+	b=pfn4ZVxPY132EYlGytM7RebiHL0NcbkdudRodl0EumhjSIu/AwQ57P0on4MFsAB+HbBIRS
+	XRfFy1KOpjwUomzRMIKe13zEC3Do3lMgzdL7REePpfvGIRRdKIY3E0oXwlTzVnjguriDuv
+	HTsNG4cln40jIcUxUD8jk7oRKPRAy9I=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="g DjAI6u";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=A9R1ALHL;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756816360; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VoJVAyD4;
+	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756816385; a=rsa-sha256;
 	cv=none;
-	b=oBbF7A9GkGEiQ9tihpms9Q1R5fLGKkVOfuR6x1UWtODbtkwN14/qDnRE4Me4mWKPQSEfRG
-	ToyqW5cVgUovo04wNjPBAZ7CKdX5u6m4azSNdLgOaxBNu7/ol8hPovdHx+JkUZSzBt2Eb1
-	0r7lJHe1K8NktolVP7C0LyqDAepLjmk=
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 15A6E14001E3;
-	Tue,  2 Sep 2025 08:32:39 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 02 Sep 2025 08:32:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1756816359; x=
-	1756902759; bh=+FtZglCWUX4HE6q7QPlc7pf6zeTQT7t5TN4Mt+TpGxQ=; b=g
-	DjAI6uy4tOZAnFg6ywGVrNbZtovdWrTb9GA/kYsSmyTuKMx4O72CJPJGG4WUD1Gh
-	v+E+2DIqAOp9k1AEseg0pMP9ItMBtzc7zt+LUdng06++4CeIguUfZAI6H5F8LQnn
-	YjwV5NieZtzPvUFjhW5mxDBKhrpqMqqFRmgnYBTg7QnGXrsmAV8+egtYg9P7EFgE
-	vzPbzd76HwmBHP7fDdrM4AhYx1AuRYObtJxQCrwCCkaQDVZHH6j95CIOcfV9EbCx
-	SVqtLkujYnCjbBJqQMAlfqPY7l8cG4GfInkeIZtYb+GGWIdwvzBdvggF1LfkQm5i
-	5C990IapVvjBWFst8xB0g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1756816359; x=1756902759; bh=+FtZglCWUX4HE6q7QPlc7pf6zeTQT7t5TN4
-	Mt+TpGxQ=; b=A9R1ALHLw5BMAc22+yvrl1UsjkuHI0XttiKSsVNSWHgiCvKWcdd
-	CMM9P1vFA6OfXbG1SHjq3pnDytLxoeSKdlqB0ago1TW8LPRbojRLwNInJ4g5+e10
-	lv4qJsM3+pcD34kA76YMe1dyAT1fJbotsZfTnF71FmN55nFd5ne4Frf4AJp1Xf6e
-	xW67Mh7yW2/ekIwihKDdzYbnAh4OLKUyzfV8yddGXESbXhipO6cctoCn5u/ntW2E
-	JhgOgqUs1EQ6HPyx6quuvxSTbnu80ZP9HndaY3KqHYu+UmJcSaRjnT51vT25hOvZ
-	bvRQatEsW/Fpez3gZMOfsdWXNxXeBw8fLVA==
-X-ME-Sender: <xms:5eO2aAx-bc5MVSpEeiZs0d8m01MOh8DtWGc2IWPYIghd9EHZ69kxPA>
-    <xme:5eO2aPEEJq5xbYbjB98iOSvOnK-xKRKkQLA_7SZXV1hDw2ciaIu3-5uQZomTxZWrm
-    t4lJx463DGCpE6YrCg>
-X-ME-Received: <xmr:5eO2aAlt9Kx0YB2yyn7TRJzwIV4oDxhV_m6SsHS1iPO4-0ewiEDwtaU806DH>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvjecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
-    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
-    ffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfuhhhu
-    thhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrg
-    htthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtleduhfef
-    feffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfeegpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehkvghrnhgvlhesphgrnhhkrghjrhgrgh
-    hhrghvrdgtohhmpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhmpdhrtghp
-    thhtoheprhihrghnrdhrohgsvghrthhssegrrhhmrdgtohhmpdhrtghpthhtoheplhhorh
-    gvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepsggrohhl
-    ihhnrdifrghngheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopeguvg
-    hvrdhjrghinhesrghrmhdrtghomhdprhgtphhtthhopegsrghohhhurgeskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
-    hrghdprhgtphhtthhopehnphgrtghhvgesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:5eO2aOE6PJp4_Bc5G-nV6nFNA_UDXPzOgRuu07cAZCWMx2x9qMh5pQ>
-    <xmx:5eO2aLy4hhF5Ut-29bvuurfp2q6EjmhZUsBMvvwQxd50CdcNHGoowA>
-    <xmx:5eO2aPbag-AFmTw9IEC9R8mmnD6gwOZGDBYlImOqrQp4HK90Hd-oCQ>
-    <xmx:5eO2aOla-vqKICj0ACORsiltZ_3PKgjqQSIBzy-2f8lxng6Nti5BFA>
-    <xmx:5-O2aHW3cAmiLoOPv2T5qnWuUzxLYlWfKI6oEKs3cOg6Jsdi3yfmR50g>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 Sep 2025 08:32:37 -0400 (EDT)
-Date: Tue, 2 Sep 2025 13:32:34 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Pankaj Raghav <kernel@pankajraghav.com>
-Cc: David Hildenbrand <david@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	willy@infradead.org, mcgrof@kernel.org, gost.dev@samsung.com, 
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH] huge_memory: return -EINVAL in folio split functions
- when THP is disabled
-Message-ID: <6l6f5idkqebpai6qn6n3phbnydz55typdwmvp3eexwnhk4qr54@otcgssegyqke>
-References: <20250902084036.208921-1-kernel@pankajraghav.com>
- <qh7s3j26aac3hyzgnr2ee6byjenstxhjnlwn4qxbvz2l32ohqc@qbhdxvpnuhtp>
- <90cd5be7-cbe6-42c5-b0eb-bf9613047097@pankajraghav.com>
+	b=2UruEzDouRZbdAoXSqpfqHnP7AbzQSxcl+yAZBS1wjp4Pex+lZbbdbV4tQhRw71UfpLm1J
+	L36Sht2H9dbVk+6cOrX/5mCVsFRfyChX/lhT09It5M+I7m6Kuxa9lJJ0MQgTOeWznQRD3x
+	jVlqqVLxBrqJ8qbBwr7RFMQMzg9R9SM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 427186020E
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:33:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE2AC4CEFB
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756816385;
+	bh=CA0UUA72UigpJyj1WkBvnnwxWytyjCGoELrQPL5uv00=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VoJVAyD4t9u3SwwyzLu8QVYRndeyB5drflEfsebmVMqGOVE1Wv8d7/3lBjTCEoFWn
+	 itUOpaZugcOGS0jWXb2q9az2yi6f4rRQQwtDPyO5e8f/NRhXikOP9OyxIxzmH8FnyZ
+	 NG7S43AB17FFyo6euWCFfdWhrypGAZnVN62j8BKNYLk0armBHsq0M7O1ESgvZ2W+F9
+	 +M/4BpwOV86PzB0pBzG5rPA3YAVyHb6sSDozB3tOlEAt0VI//ifkCGds3e9WeoqzNu
+	 z39mGn9AauxCtapJexLThXHk4RrO2urOCuwoKNdF/08WfKDLktrl21OiCeAu53YOrg
+	 Voxo26Ze+Hc5w==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71d6051aeafso45328027b3.2
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 05:33:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXzc6co90xh39szm4LL2b2SVr2gOMPDEd+Z68U7UqPIFxtRhqcWGvip+I8LmVFt+FWw05RiA6w6hA==@kvack.org
+X-Gm-Message-State: AOJu0YxSw6w8ebeCcua86XXLQsAycvuNXZC85WRebk731Xj6nZzzl1nz
+	ZNKXQQ6ZisuCDcjaUmV4ZkI8G60BDwZANpEHJDKAMR6qAkHXdwta4O4qIoD8r1O6tEl6BMhOL3k
+	KGn9qKlTM1n/sjU6EgsFkw3DpguPKyAYsPjfxyG9dZw==
+X-Google-Smtp-Source: AGHT+IFfYPr1k+1vxa1r96GXeWzehyJG4pmR2rrje/td5emhAfo5OQhJx8XV8yU9JqVgGrdT/u4cpNxwqOOd1C7ndJg=
+X-Received: by 2002:a05:690c:6f81:b0:71c:bf3:afb0 with SMTP id
+ 00721157ae682-7227650c487mr98822267b3.40.1756816384211; Tue, 02 Sep 2025
+ 05:33:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <90cd5be7-cbe6-42c5-b0eb-bf9613047097@pankajraghav.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D44172000E
-X-Stat-Signature: ocbeg99q4coagatuhxiw7s7zo6exxakp
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-2-ryncsn@gmail.com>
+ <c4a729b8-be9e-4005-aab6-91723fcf0080@redhat.com>
+In-Reply-To: <c4a729b8-be9e-4005-aab6-91723fcf0080@redhat.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 2 Sep 2025 05:32:53 -0700
+X-Gmail-Original-Message-ID: <CACePvbVQGbyO=csbLG-0uP8gwY3JkS73nHCBb8Eq7xNwD=N=9A@mail.gmail.com>
+X-Gm-Features: Ac12FXxpY-4M4Ku106VflhPcLiF6Pc14_5Y_oPbRVEBK8d5OsGab4H4c580H9cM
+Message-ID: <CACePvbVQGbyO=csbLG-0uP8gwY3JkS73nHCBb8Eq7xNwD=N=9A@mail.gmail.com>
+Subject: Re: [PATCH 1/9] mm, swap: use unified helper for swap cache look up
+To: David Hildenbrand <david@redhat.com>
+Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 884c7wbb391rqsoyop4t6qqoa54zhxwh
 X-Rspam-User: 
-X-HE-Tag: 1756816359-648854
-X-HE-Meta: U2FsdGVkX185q+sKyGauE64bi8/Mb4TnxESfZm16+k5NqHq25wEgLWUfZj/boqripy8GGCQluMSxf2Uzp8fw8XQWuBUQ5OTOXKx7oBbDJQV1uwy3J0ppvn5ZFoLQshJhTnSwFQd3N7O9PbwUQhFkDpyEkc5f5izb6BrTiLtMwE9X1CsNn0624pwLiYT8TkkzWomAyIidttHeRzfjYug3KqkqDXLKi/WsoG0NeAIhE2RzRewW1i2rBrJWPiqmrq8Pcrwzh252BwXuTLvrIXZXXHTsHBU9keYyrWMeiRtNO+Zsovdz1QH0CUbSgFd8M2eBIyr/sZoD/V6paOOAT8kPgY8ZkeGpJcebK3u7AOUPfvVBybSa61YG/9/lIsiPoyshyV3gQRblc3YEW1fSCfP1gBv/44agoQz3X2f7qtK4oks52GnrFYzdtaS+L0F9dbj8aiUyrRyLZDAPKy+NDNbwAWI4kBtZfVY56witxF5kKONYNEPb7IQTCVkB6NW20BPXK0bEFbcV+vsIYcobl2GpxBBq1RQfUXCO/9McTOqLvihZTs1X6hklOTPsPiYWoZk2mL36tKBlk0pmkRyGi1F5rMqtSVp0gcEF+Y1KzdMWZETuoVBprKeVzl9+b9oE1vhvfluCftcQS3U1+TgMOnsnZQTN0gLGJeHbwXKwkRjCxmYqBWcDQrpxmq/UPvFTBqXrzRW4RVbBvC+sOdfl3lWX4cIX33x5ACOW5CnT37u04ulWQo5p8BlXVigqrCyorU0eI8tL0cWVi7lrYHIko/Cb4EvJMGgllWuOOocCPWB3zZ031rEpYbGwmH3ZC89mM74wyWw34ThZXJcxZBnOE6H0nL0PrsGedKg81aJV1qzOK9/L3IsDyHXoq0GfNFOYyr6zgNiWhJdLu+YyUPlT1WAwhF9HiimqNV5ssTnafPDvThMANTg0ybtGn8kJDt32tYVSYM/Ae+Hz+Yl8+l5NGKu
- +ICwzWpw
- e+YufK/vmcGgQ2PNI31fqQvmL7a4StQ+nsVACF3w6ROv2st1hQXCsgQVEnKATwWJNyQyJwZzDxD+g8koNauTVfaGjxC8YdxA3WDfIo4x3ylkKcBviKPNZKpTddlNYNUhkhd2WsZWUToO2GVUlPsmCY1JT/TUWAiBM5R9teBD8af2PNLkF5gA2R6G3gEFhdj2jzXowIITcYjDHVWTN5OBJ5QHoX7JiuIUzASjyzF78zux7up8i6OEWJiXn+DYmhnn/0xMzPTfzmZQeeSoOSUHSf0MJ54RHJ3pmlFLZOIRhcAFY0RE6hSheNcUJj94esdHNlGz3Zd30+Ydrlg7HGVZw6EBOWTMOa0HRu8tlFcjtnaTlJjQp/LQK2hbi/iN1NBQuoPD+CPxEQUmTeCvj38xYbbdbMro2OoZnyymskIQWVdN6fTcgYn4uBxQe5Q==
+X-Rspamd-Queue-Id: E1A1E1C0003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756816385-916184
+X-HE-Meta: U2FsdGVkX1+YrVHLGExvZfQHndBTqXOfKQUXQRv42t0PFisWPyQqVLliIeADSzS9ThZqJ2nXs6Eed2NTGMk475O+i5SGpDseDJCKJmlH6EG4t7bnQAGjESj9bZGO6ZNWugSnnbcUIGe1fglvEMBkmzQjzji16h8UcdaRSNt+m1Viyfpr8AkZQAAE32qcQB7ofjbG4OQbXzspjMENqU2zVHt9Xl2DL4flpzF5egsnfrfQ+DI+8gfO4AVx29Xb4l1SLwOetbIDFxiPgAUb2KFbyMIMwXQXyfX0pzMkpWFmefRsKnLisygG872gwUZ9yzfhbvkyRoHFhiGI5514HIiGyub3e6TcV1CAZwedpF8N4M0Jwf7izYaQSRkzXOF/GtgcaUTJqgEhNlhet4ySGZel7sSuPrUnmj3vmDS1sR9xdxDlUgG20XaR6PiAuZKNiaIoIRrBlmRhRL8NiNp86Cbv0sMiXaVluf8oEr1OrStLJzRg59LjZeFpQABkoA3nOgDMEYXwy2bE1K4Ed9Xv4q+MjadXx4Cp34hTFBOztx5YUpMZVSpBAr1FVbOdod/kPkY2AuFtTn+pyGCchJT/0I8cpoHFg+3AvTxlWaxQzAvzdrw0sB/wHJ21pccEdLHTi44zyBvwZlHFenkvSZKt/rwwcuPgakHWv1nD0PwrHVpl+OS1PXoWNeBIBX9qAo7jTt8C7Ldx8I4xw3iUG9JHxhMq6WrVdma08tHlZozA00ozMySUJiu+2gjLxHukSNM5dlD1Nb6NdjFfdZxDQzQdY4Y5brplfgpejeOBGnghNtZfW2lZ3S1qBuaJ+bl6Z+Yrh2pG+tGcRB1eP8Y7yObzK2K+VxsMFUqyrVo2nnlX6IOoFxJE8IE4FZhYmgYwx/dCsxS5soKlTo/fwGETl57/4XQzUrQ9Ti628wDnWQthW5Hmf7YcGSXJE+t14rBtWpjmnhELX99FlGEhao5riB+RM/A
+ GnEnsbzH
+ Yl5aY5BM+m5h+psI5E0qJQSErd7FO0tNGiSWxp3B8h4tMFc75xcPDvbu+T35c22RJoz5E/l2D5DOZjRhBk0vSMKWABLKYeAcGDJjHaZ0jlMTOFvQA+cpqI6oqb8zr3giyl2eJuSO2NhmmOKLXEy1r2QSObI1PBsGWIOMF2uIxmh8ZLvhuPjguPo8FHyv8vLLxIh5r2igI0CruIh0c1tcOL1yxNot4bfUU8xA3IgpplN2uzcUpgNEuPKWGOZRZKgogseNb57Ufi4NykMJaEb2sTkmNz0QkCkMTkM3unVNKV4meQ9F/sM9TEBkqCQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,61 +111,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 02:15:42PM +0200, Pankaj Raghav wrote:
-> 
-> On 9/2/25 13:22, Kiryl Shutsemau wrote:
-> > On Tue, Sep 02, 2025 at 10:40:36AM +0200, Pankaj Raghav (Samsung) wrote:
-> >> From: Pankaj Raghav <p.raghav@samsung.com>
-> >>
-> >> split_huge_page_to_list_[to_order](), split_huge_page() and
-> >> try_folio_split() return 0 on success and error codes on failure.
-> >>
-> >> When THP is disabled, these functions return 0 indicating success even
-> >> though an error code should be returned as it is not possible to split a
-> >> folio when THP is disabled.
-> > 
-> > Other view is that the page is already split therefore nop.
-> > 
-> >> Make all these functions return -EINVAL to indicate failure instead of
-> >> 0.
-> >>
-> >> This issue was discovered while experimenting enabling large folios
-> >> without THP and found that returning 0 in these functions is resulting in
-> >> undefined behavior in truncate operations. This change fixes the issue.
-> > 
-> > Could you elaborate on the undefined behaviour? I don't see it.
-> > 
-> > If you argue that this code should not be reachable on !THP config, add
-> > WARN() there. But I don't see a value.
-> 
-> Little bit of context:
-> 
-> I started investigating what it takes to remove large folio dependency on THP[1][2]
-> 
-> I have some non-upstream changes which enables Large block size (therefore it uses large folios) on
-> systems with !CONFIG_THP.
-> 
-> I was hitting a weird stale content read error and finally ended up with this fix.
-> 
-> I thought this is a self-contained patch that can already be upstream. My argument is not that this
-> should not be reachable, but returning -EINVAL will do the right thing instead of returning 0, which
-> means success.
+On Tue, Sep 2, 2025 at 3:07=E2=80=AFAM David Hildenbrand <david@redhat.com>=
+ wrote:
+> > diff --git a/mm/swap_state.c b/mm/swap_state.c
+> > index 99513b74b5d8..ff9eb761a103 100644
+> > --- a/mm/swap_state.c
+> > +++ b/mm/swap_state.c
+> > @@ -69,6 +69,21 @@ void show_swap_cache_info(void)
+> >       printk("Total swap =3D %lukB\n", K(total_swap_pages));
+> >   }
+> >
+> > +/*
+>
+> While at it, proper kerneldoc?
 
-Okay, makes sense.
+Agree, add the kerneldoc while we are at it. Those are important API
+to interact with the swap table.
 
-In THP=y case, __folio_split() also returns -EINVAL for !large folios,
-but it is not very explicit:
+BTW, I already submitted a design doc for swap table to Kairui, which
+will show up as the first patch in the V2 series
 
-	if (new_order >= folio_order(folio))
-		return -EINVAL;
-
-In THP=y, we also issue warning:
-
-	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-
-Makes sense to do the same here for THP=n. It might help to catch cases
-we do not see with THP=y, like getting non-THP large folios here.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Chris
 
