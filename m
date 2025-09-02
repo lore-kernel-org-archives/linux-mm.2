@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D05CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78858CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:49:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E95CF8E0015; Tue,  2 Sep 2025 08:49:20 -0400 (EDT)
+	id 139F38E000E; Tue,  2 Sep 2025 08:49:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAA0C8E000E; Tue,  2 Sep 2025 08:49:20 -0400 (EDT)
+	id E933B8E0011; Tue,  2 Sep 2025 08:49:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD4888E0011; Tue,  2 Sep 2025 08:49:20 -0400 (EDT)
+	id D0BDD8E000F; Tue,  2 Sep 2025 08:49:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A47C58E000F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A1B838E000E
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:49:20 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D7AFB4944
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5FC601A0136
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:20 +0000 (UTC)
-X-FDA: 83844290880.06.0FC54E2
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2DC6818000A
+X-FDA: 83844290880.08.52D552A
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E90E22000B
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
+Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	spf=pass (imf13.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756817358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,30 +35,30 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eD+ECkpi4oqKr8EcaiK+CRLZ+00ckibajdae0MvOVJw=;
-	b=oPMZ/vCrXyrb4tf7e9M3y6uaDnWjww0sPfyrI6YnFm/Uio/SczAtchvGFwSjCGAGMPxeuK
-	KEJrvliPe1+fFGtldDIVq4iSZ9Bf68xwvKukKMXMtJWzh6KrXoqNLN/RbLnzv45u/eGDlD
-	nnWE7Xx02+xjF7h0gXmwbBUHbowz6JI=
+	bh=24Q26XOTfnEdhJqgab8OsoPihlmt1Gmm9p55zusICxM=;
+	b=6vaDqm2MSjghESGSloLDaY96xqbXTDFgu+W/ihGAjdkju0XDIEGScdzk45oOEYUmHuhMp/
+	qGHg5SOflDaqWTt+UsNxxqn0GRVVOcNyQFetmFoQvSrhxsJgwIHPfkxtcYIvBWlYi0Zi2n
+	6q51k/K8rRhsu+0I3tS09QBEgzMkgbI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817358; a=rsa-sha256;
 	cv=none;
-	b=WM3dS7ovSgPeZ6wNbBsZNnwNaaplHV3Af2HEzcDcXQ7DWSXYhLQMJVWWyIXbH4nP28rlAw
-	HSmxUXTt7PurIyKJJDt6i/qX6renaoBL9CdAC6zcuzeqCZX+xpdXHDimbUh5K24W7UMtF2
-	iB3uYux6QC0gMZqWArcV5NYPbGS6fZQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cGQSj28ZZz13NSy;
-	Tue,  2 Sep 2025 20:45:25 +0800 (CST)
+	b=RmlWCeUwygsscnoW8uu0ningtAME/D4gmT173QzhyoYARB3Es0/VtPjmJ6Ycj8SOo3MlDJ
+	LepOGi7AMl5EjcldEw/w6nMvvezNeERJEJ5GvAvijEzYN8qT/gLHsbKK2HpRWI57vcONwa
+	Hu0nL6SaFRSjf8GpW7ljl25S5XfhQuA=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cGQTX0xXFz24hrB;
+	Tue,  2 Sep 2025 20:46:08 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 85389140202;
-	Tue,  2 Sep 2025 20:49:15 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 88BBF14013B;
+	Tue,  2 Sep 2025 20:49:13 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Sep 2025 20:49:14 +0800
+ 15.2.1544.11; Tue, 2 Sep 2025 20:49:12 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -67,9 +67,9 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
 	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
 	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
 	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 5/9] mm: hugeltb: check NUMA_NO_NODE in only_alloc_fresh_hugetlb_folio()
-Date: Tue, 2 Sep 2025 20:48:16 +0800
-Message-ID: <20250902124820.3081488-6-wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 3/9] mm: hugetlb: directly pass order when allocate a hugetlb folio
+Date: Tue, 2 Sep 2025 20:48:14 +0800
+Message-ID: <20250902124820.3081488-4-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
 References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
@@ -79,14 +79,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.175.112.125]
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Queue-Id: E90E22000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2DC6818000A
-X-Stat-Signature: gmsszxik9snxyjmxnp8ahxncqn3s5ypj
-X-HE-Tag: 1756817357-516477
-X-HE-Meta: U2FsdGVkX1/qONsH3/QS6p0kLLY28oJsrTenEuCYrBcERe+Q9rrDYfxKXZvBWtXhsLMguu7ScpsnEFszgS5RSFCMCxuwv3fGGMXLHfpnhy8uONhka7bNHtpbhz3Ed2VpA4OvC8OtXFQPES5dTsKr/I88n+aEINLxG3OurJl3tu6dnHtWJtHcshv7y/jblxRVx/UyHlt8/s+fZR8ZDUNX7OgRztX56rz0IVatMYp3i4xs74YVTSYXk7aGC7ZERm/xQc3K1BA8S/9jDVbHChfODrPCkv39/ATNHij7gew9t63dPxgaDJ3c+9SX4EeRQX191NaxVn5HTCInE4jlUgjNdTa5bpqFiitJXq8zym2cnBG85X8fuxiwrgjl5ghWhzo74YLT2oNbD+FNh/4CBcUvBcEJrJxq1H532mwbUN8YeJ3u69WJKSRvQeww1tnsrPT93YmfToyau74UJX0VfY4oPPJc2Fe7Q42/1AzKzFirF0vnL4fbwKiHwQ4PCvEYfFQPH7LePmln/liKcqegfDu3rRc+jWzoqXPsmIMax3v24ZMahl5KM0WMM3iOE6SbGQtzDEPBMfSFADKzBP6sqOyqOEf+k6MopwumJVKF8vwDzKyimLufGuSF7jLFy3SpSUlcfKYKP8akDqPFJiSYVviPClf0dGEfp8PycLvKECApvkzMIgPhpiCBt5UYXfUtMp61t5GVViVTK/H4IybmL1ss37Rz3f1rf9sLqFw+IAzhtkT1kg1TIrriyZS45PpAoHmawDlskLZ7u7TbnYtQJvpCOAivNYKnsKnrgidcoy2aawhamguhAfyTbUFTVS+9XFyvXcfSbmlGfZ0NiZPb1TjhYc2MibqlOE7/+zvkmz5E/Ik8oe3cTnrCIDo78Mmh3PDb6Bu68vl+XFzLGmMREGambPMRjq3iux09quB+Fu43/bDaefot//cEx0qGBB8Ry4uHA4j9MXkyNW5oL6t93jK
- M1p5Y6EL
- pNwcKPiRLT8PGUZZKpaSzwUOZo3zxwNsGCwQHVZN2EROm4/mqfH0a/XZ7ACMmodQB2DUTmO+s3wzQPlH21kHOvVUAoDBE4PdIPcjfc32EtlcO3vX2BUZp7tmHIe9pK7uWs5RR90U5SY+pC3fUuqCDK6WNWghpjydvwuuXFciImAFeXCUU/XrxEIQaUyYTu3UWH0ysysmCnRD2S8JvtPH+f7op9PctGVbXfX4fOe/iTNuoeqn9cFUdWXEf44mhhRlNZ3m3KRBbPinW21UlheCwrZ9pFDJ1zT9ckwSFzqdA2EfKjvs=
+X-Stat-Signature: bwros9r6erdggyzkupp5yzanzgoqgdk8
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756817357-619874
+X-HE-Meta: U2FsdGVkX1/KdRVRYFJS4nJEg1BOKSPThp9hbScLpBl3zrYWF1lbtjZfU/W/FWP8o2GYDl317s3YfmAiK216+u79YZOaCErcHW8QVOBacijbWkVAp3hV52t/qhhJn03gbFNMHV+KqgPUxcmXSAMwc1CQj4Cgkrv1fm+d8b0VSvITnI1KHc3SGTBuVe+PiRC3RJ/khYjR+HGJjXsEnSlMlaMScIxdVc03d8EU775epFlClMppe9cwMbz4C3wOic2lmdN9g99ww5Lm5STQRdOemf4cNwnn+Vi7LfdlsUuPSxemVehP/vb//Jeofrd5aUa2jWxqUutx/vqCTnteyWyKHLmjjGnTHZByia+cLnUaOSuHTpW/8iWXKFVU0Rf/v2wYmms3VAA+/+nGJv9P+AYO+s4rQrm6bWefC0uxcu+ThFc67grh16nfAdX4rdnniw32hVsoxjsYN25kYxefI33TYQ4fIA/BXmSM3K7uhPQtWifrSWa+TVDgmO/gpLKNC2EbXTrE+fA0xB06w52N4tiVncuRl0udS7THPMQ9czmAcDgnG99hsOU5jEVyjyUt8nx/fKlUCWq+0/tZYnAzLzTvoKEMjQdGFin6dLMiUksVePTZgKBE9QkqklLfJWr1WQrIVq8MkRPYNwC15/2TdJWhnglxtmZPiYlH9R5PITe5ZgYOi5i3rdReE4tMIpfGbWH4BpUtsiHoLfblUkitwg2kL0BRi5TDqxHi89FnnNstVWWc8b4ucvS9/HJaMPEjps8n0Wn0w0NqPNOZMfIzrum3HF1uTQN3f9nDEWZoze31e097dxncP/hncUvaGZpyhuAo3w/nLDhpg7ME8iIdk/2NeGXG+oX5w1+ga8CMVcmmKtQZ0iaPqdSoGCENt2I8BoWMvGaGVSVoeYPoEooz53tOyJzUIICAkSd6XulRrJw/lEib+jB+WVBpI7+MGKZ3MDO/+zb+62OcLbVOIJqh9Uc
+ qCffKKRB
+ RlYIuCxSbG3Eov57dXQPtWJBmel90JwjXxj5vr/6enDxE1ola96ysGQxsb+/vrxiT/ZdX0bv3g4Ro6E4sT15+TB/FcJ5micqFg8p9xTNa1GU5G8I5w64mTjRjFXNJGOQvBAMCbxRCy8zZYY7cL2uhjL4xHw5f5j65TouBDJUITQiJq+f+n6LvJWgTBOgp03A6bLlpafh6Jir3nCMc2LGPAsT+Fiz8MarZlGQc17+zIIcASH+ysIQLjHvAzw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,49 +95,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move the NUMA_NO_NODE check out of buddy and gigantic folio allocation
-to cleanup code a bit, also this will avoid NUMA_NO_NODE passed as 'nid'
-to node_isset() in alloc_buddy_hugetlb_folio().
+Use order instead of struct hstate to remove huge_page_order() call
+from all hugetlb folio allocation.
 
 Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Reviewed-by: Jane Chu <jane.chu@oracle.com>
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/hugetlb.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ mm/hugetlb.c     | 27 +++++++++++++--------------
+ mm/hugetlb_cma.c |  3 +--
+ mm/hugetlb_cma.h |  6 +++---
+ 3 files changed, 17 insertions(+), 19 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index ab748964d219..4e8709d7deee 100644
+index 4131467fc1cd..5c93faf82674 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1479,8 +1479,6 @@ static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask,
+@@ -1473,17 +1473,16 @@ static int hstate_next_node_to_free(struct hstate *h, nodemask_t *nodes_allowed)
+ 
+ #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+ #ifdef CONFIG_CONTIG_ALLOC
+-static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
++static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask,
+ 		int nid, nodemask_t *nodemask)
+ {
  	struct folio *folio;
+-	int order = huge_page_order(h);
  	bool retried = false;
  
--	if (nid == NUMA_NO_NODE)
--		nid = numa_mem_id();
+ 	if (nid == NUMA_NO_NODE)
+ 		nid = numa_mem_id();
  retry:
- 	folio = hugetlb_cma_alloc_folio(order, gfp_mask, nid, nodemask);
+-	folio = hugetlb_cma_alloc_folio(h, gfp_mask, nid, nodemask);
++	folio = hugetlb_cma_alloc_folio(order, gfp_mask, nid, nodemask);
  	if (!folio) {
-@@ -1942,8 +1940,6 @@ static struct folio *alloc_buddy_hugetlb_folio(int order, gfp_t gfp_mask,
- 		alloc_try_hard = false;
- 	if (alloc_try_hard)
- 		gfp_mask |= __GFP_RETRY_MAYFAIL;
--	if (nid == NUMA_NO_NODE)
--		nid = numa_mem_id();
+ 		if (hugetlb_cma_exclusive_alloc())
+ 			return NULL;
+@@ -1506,16 +1505,16 @@ static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+ }
  
- 	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask);
+ #else /* !CONFIG_CONTIG_ALLOC */
+-static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+-					int nid, nodemask_t *nodemask)
++static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
++					  nodemask_t *nodemask)
+ {
+ 	return NULL;
+ }
+ #endif /* CONFIG_CONTIG_ALLOC */
  
-@@ -1979,6 +1975,9 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
+ #else /* !CONFIG_ARCH_HAS_GIGANTIC_PAGE */
+-static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+-					int nid, nodemask_t *nodemask)
++static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
++					  nodemask_t *nodemask)
+ {
+ 	return NULL;
+ }
+@@ -1926,11 +1925,9 @@ struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
+ 	return NULL;
+ }
+ 
+-static struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
+-		gfp_t gfp_mask, int nid, nodemask_t *nmask,
+-		nodemask_t *node_alloc_noretry)
++static struct folio *alloc_buddy_hugetlb_folio(int order, gfp_t gfp_mask,
++		int nid, nodemask_t *nmask, nodemask_t *node_alloc_noretry)
+ {
+-	int order = huge_page_order(h);
  	struct folio *folio;
- 	int order = huge_page_order(h);
+ 	bool alloc_try_hard = true;
  
-+	if (nid == NUMA_NO_NODE)
-+		nid = numa_mem_id();
-+
- 	if (order > MAX_PAGE_ORDER)
- 		folio = alloc_gigantic_folio(order, gfp_mask, nid, nmask);
+@@ -1980,11 +1977,13 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
+ 		nodemask_t *node_alloc_noretry)
+ {
+ 	struct folio *folio;
++	int order = huge_page_order(h);
+ 
+-	if (hstate_is_gigantic(h))
+-		folio = alloc_gigantic_folio(h, gfp_mask, nid, nmask);
++	if (order > MAX_PAGE_ORDER)
++		folio = alloc_gigantic_folio(order, gfp_mask, nid, nmask);
  	else
+-		folio = alloc_buddy_hugetlb_folio(h, gfp_mask, nid, nmask, node_alloc_noretry);
++		folio = alloc_buddy_hugetlb_folio(order, gfp_mask, nid, nmask,
++						  node_alloc_noretry);
+ 	if (folio)
+ 		init_new_hugetlb_folio(h, folio);
+ 	return folio;
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index f58ef4969e7a..e8e4dc7182d5 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -26,11 +26,10 @@ void hugetlb_cma_free_folio(struct folio *folio)
+ }
+ 
+ 
+-struct folio *hugetlb_cma_alloc_folio(struct hstate *h, gfp_t gfp_mask,
++struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
+ 				      int nid, nodemask_t *nodemask)
+ {
+ 	int node;
+-	int order = huge_page_order(h);
+ 	struct folio *folio = NULL;
+ 
+ 	if (hugetlb_cma[nid])
+diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
+index f7d7fb9880a2..2c2ec8a7e134 100644
+--- a/mm/hugetlb_cma.h
++++ b/mm/hugetlb_cma.h
+@@ -4,7 +4,7 @@
+ 
+ #ifdef CONFIG_CMA
+ void hugetlb_cma_free_folio(struct folio *folio);
+-struct folio *hugetlb_cma_alloc_folio(struct hstate *h, gfp_t gfp_mask,
++struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
+ 				      int nid, nodemask_t *nodemask);
+ struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
+ 						    bool node_exact);
+@@ -18,8 +18,8 @@ static inline void hugetlb_cma_free_folio(struct folio *folio)
+ {
+ }
+ 
+-static inline struct folio *hugetlb_cma_alloc_folio(struct hstate *h,
+-	    gfp_t gfp_mask, int nid, nodemask_t *nodemask)
++static inline struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
++		int nid, nodemask_t *nodemask)
+ {
+ 	return NULL;
+ }
 -- 
 2.27.0
 
