@@ -4,97 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E357CA1007
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 22:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A182FCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 22:38:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D8E26B0008; Tue,  2 Sep 2025 18:30:21 -0400 (EDT)
+	id D048D8E0002; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 663B76B000C; Tue,  2 Sep 2025 18:30:21 -0400 (EDT)
+	id CDC288E0001; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 550CD6B000D; Tue,  2 Sep 2025 18:30:21 -0400 (EDT)
+	id BF1A98E0002; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E3016B0008
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 18:30:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9352F58E84
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:30:20 +0000 (UTC)
-X-FDA: 83845755000.26.CA911DE
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6E73220005
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:30:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dFpU6ost;
-	spf=pass (imf03.hostedemail.com: domain of martin.lau@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=martin.lau@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA3B58E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DFF7119CF1
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:38:02 +0000 (UTC)
+X-FDA: 83845774404.30.B9EED3A
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4C0911A0009
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:38:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gjrNvu7S;
+	spf=pass (imf19.hostedemail.com: domain of jstultz@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=jstultz@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756852219;
+	s=arc-20220608; t=1756852680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WcMClNKqF89fyusNx4KAf+ldD0MkJVJrNd35mLcgadc=;
-	b=VOvHlw+kf+IfK6+6kq2o93MJskerp08eNacXKTV3gkzNfrdYErCxDCzmQtxM0fycbcJxpr
-	+F/uKtQ2DVDp72Rw3LvH3sKUWtOZO4Elet6XmgYGZw0SVef2D86wH0TNB62jb4l+xd/j+4
-	zEnS8WZdyNdAns29YWE2QVuNVifx4uA=
+	bh=C2Z2q0BkPqIY+E04bVXl2gU0zLZQjMNqg1qcdhYoTFM=;
+	b=6df95Cz7o23k5eTWwRq1ZqGXP07ePusxFFzh5saPCXXiqyCvRpcVUOfRdpKRFaCYYSLK60
+	WmmxO00oMVUpwv1k4bRjhaLuwaXZ0GK3yRDDQk3lvWAkoWC1XXVgkmgM9jjHKKZi11+t8f
+	tHH/yXBEp/+jIpoz+eAPXpBAavEsrAc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dFpU6ost;
-	spf=pass (imf03.hostedemail.com: domain of martin.lau@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=martin.lau@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756852219; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=gjrNvu7S;
+	spf=pass (imf19.hostedemail.com: domain of jstultz@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=jstultz@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756852680; a=rsa-sha256;
 	cv=none;
-	b=c1555DQ9Gjm2lxJxVAjTB3mdU1DGV3tXOUaBcCZpfoN8wS1atVkrOPY30xMtGyafcQkalD
-	Q4LwKRV1c+8ntlU7DqfjsMnNK1vNWa/naqGXZWXdy7Alrvu6h6lazWpG8YwS3WHBgnurxn
-	uH+Qyd/sn62Y0uvpwY8jL98ITeFGOYc=
-Message-ID: <a76ad1e9-07d5-4ba1-83e4-22fe36a32df0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756852216;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WcMClNKqF89fyusNx4KAf+ldD0MkJVJrNd35mLcgadc=;
-	b=dFpU6ostNV6afKRbkI0/nNZ1eh0g4spiTyWoAwtlLsAPG6maCYx9BakMeKrqvtwODdfMoG
-	VYQQmhW5IsWl6KjdaRxwnX1U3SYA7577sVMqDFWS/RPsPxZtC4eqdoIpdKX1J77+IZaV2g
-	6KbVL82VHMnNa3lv2S59vqH/3DiDG/0=
-Date: Tue, 2 Sep 2025 15:30:04 -0700
+	b=aP/BGMu0d4WLcNWYUbHqoAZabCd72fR/EUFezKwwdsQ/eiWsydkrPDE7WmIO7/FZOtGQJU
+	5ygwzKgiHL+7OgKowhmT7issbvVdRsKYNyhQKU/YTaXV3zHFZDPk/k4JMrAU1wz+91gNFZ
+	jFuTJSeMM7K2hMz63lDJJhVUcbgCe38=
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5607c2f1598so2253038e87.3
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 15:37:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756852678; x=1757457478; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C2Z2q0BkPqIY+E04bVXl2gU0zLZQjMNqg1qcdhYoTFM=;
+        b=gjrNvu7St+nHRFmJh0QsQNiTh6274b/Tn/Ta1HHX2BZ2FJh+MkeHRBFNe0G2K6aurK
+         gw+BznzcSJqUSkMB9X72bQr0G67HV1pbAgYKr464B+IMWVAsJ3dwfbzPepaJXgeruMJT
+         h08Voljy5QmcT2R9LGlpag2HIArc6PbtjMkUU3vKLIcoFobftq5UwuODM9HjPrKHwwjF
+         CKS/CjPBgPu/FKY4KsR4T0NEFjzXDajE4ChI9p5YkF+a+zx6i0UJswXbU96W3gWaIs80
+         VpegMpJ9bgGi2BlkjvykHK+NcZzOUBVfeQT6PAWlKU9dixfxrSteCxtEJa+jL1YP3Xl4
+         MCJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756852678; x=1757457478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C2Z2q0BkPqIY+E04bVXl2gU0zLZQjMNqg1qcdhYoTFM=;
+        b=F7pysWVFLLhhcg/x6Bg6xTJbXJ6jZHGBf1aBXzN4yACu7V4QRzKeYJoXn4XwJiHX2p
+         szRzYnb7VQZd2e7g8dc41NYsxN8FcrzSID3TEYhNPNH0BkaSIIaGx+e97GGGGx83aqiM
+         3v9NLh/jdpcusR7gQpP7vCdiXSBeiste6Gyyxtslo2WT648XJA2HvEEqaHV9RtGla6lr
+         yj9nJ4nLlGScGnRGxbqdaxi8tyd7NiFakUDnMQO6dSdm1HZsib18sos2KaDUxwt1/5JB
+         2EZp1zkeahuCqDURO+JP9vY4ZPoYWcKfq61UgMNPuMMLZ9uh/mUk/+hLUiwcwcgdhJ8j
+         8euQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNFFsBmtQe2trfumG31XRG2SU1uFKOwlGIm86MJlFfPg6TJY8G2NYTYf5Kr6Yn/9VkeEGC2LlF6Q==@kvack.org
+X-Gm-Message-State: AOJu0Yxq55bV5wKbI9ou0T17reETpqVYbj5ZGn3wQkhUY0JqCCTPE6jm
+	BpaOhWPF90PsBFQn7YOOJDxBmuF/OZiKh2WJzpnuHJ0mK28Nw1Qm5m0b4Sx7RqMKLVbTi48HM9b
+	H9HfdVOEWlbH8J0kxL5VQqGZfqFvkTeGYXjixjuw=
+X-Gm-Gg: ASbGncs3HtBfo6CCjsrCbRDrDDgEK2KrqaA1+9tkA5X8/F41SMyITcPzrcuD1dwEQ5b
+	XOppvXcwwYHeNUpsOhIvdI+UIw/wwpFL495igxdWG8Jmp2fQtf5FuuNO2MAZyqdSEWbvn3xrp+G
+	e/DVDkuvwXa8JqKM0V6Qg75Y5N940/U3VOgEBTf6hNbigRwLaGldHazaXtY+bfvMK8QEjafatMl
+	uJT0IefCmLP9bv3oJ49zxUqJgmlgUFVG7XDfviuzHxNAVccEJ8tpR4Ib7vuVJI/
+X-Google-Smtp-Source: AGHT+IGmWy6Aq1ZCfTZaoiG4mkrbhZY4MfRXR19EYAWZXvoUsJvrpBj01w+uPYMLT8d4w27jw93YIe/anSgqxv5w//I=
+X-Received: by 2002:a05:6512:32cb:b0:55f:3bca:b161 with SMTP id
+ 2adb3069b0e04-55f708db526mr4266129e87.27.1756852678372; Tue, 02 Sep 2025
+ 15:37:58 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm <linux-mm@kvack.org>,
- bpf <bpf@vger.kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
- David Rientjes <rientjes@google.com>,
- Matt Bobrowski <mattbobrowski@google.com>, Song Liu <song@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- LKML <linux-kernel@vger.kernel.org>
-References: <20250818170136.209169-1-roman.gushchin@linux.dev>
- <20250818170136.209169-2-roman.gushchin@linux.dev>
- <CAP01T76AUkN_v425s5DjCyOg_xxFGQ=P1jGBDv6XkbL5wwetHA@mail.gmail.com>
- <87ms7tldwo.fsf@linux.dev> <1f2711b1-d809-4063-804b-7b2a3c8d933e@linux.dev>
- <87wm6rwd4d.fsf@linux.dev> <ef890e96-5c2a-4023-bcb2-7ffd799155be@linux.dev>
- <CAADnVQ+LGbXXHHTbBB9b-RjAXO4B6=3Z=G0=7ToZVuH61OONWA@mail.gmail.com>
- <87iki0n4lm.fsf@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <87iki0n4lm.fsf@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6E73220005
-X-Rspamd-Server: rspam04
+References: <20250902154630.4032984-1-thierry.reding@gmail.com> <20250902154630.4032984-5-thierry.reding@gmail.com>
+In-Reply-To: <20250902154630.4032984-5-thierry.reding@gmail.com>
+From: John Stultz <jstultz@google.com>
+Date: Tue, 2 Sep 2025 15:37:45 -0700
+X-Gm-Features: Ac12FXwG3iNj8EaL9OuUHyuMyacZ5I_i_Y3lylzCsdPDiddwbaDN3qJymljUZSU
+Message-ID: <CANDhNCoM4RFX-QccF7xT=+-tduGj9OZ_8SgrTVyRucMwyVc73Q@mail.gmail.com>
+Subject: Re: [PATCH 4/9] dma-buf: heaps: Add debugfs support
+To: Thierry Reding <thierry.reding@gmail.com>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4C0911A0009
+X-Stat-Signature: t3z1ycyhm61qagqfsk18iu6qbd4zgw41
 X-Rspam-User: 
-X-Stat-Signature: bbuttcr64ncwt889o3u6je5okk5cgha4
-X-HE-Tag: 1756852218-491595
-X-HE-Meta: U2FsdGVkX1+KoXHXK/o1VNcTw63AdPJP0wOR736+Inz62Igbl+1p8K/SpoqQZeMadZBCr+oouSkXcSl8PJMm14XhetwUP6bdC18/b6ouOcmdj3REh5UrnrII9F1tZjrhCX0PfxuNSd0uvL8vfv1nFf1m5G5/O7X0tEfpd5VQF8Hfn+yGdOGhFjYaYfPNQbX5VkhzLTOIGnq4wUwaIZWasN+0Y7XxTgIyjpl/u8sFcbqP8NdnQCcW4wTF1joAnQsOxFYRee3tHpBLNdMO1RrPwyf/7GobQWF98D0tNT9wtO0NxWS6rhzBD0iTKHNDqbW3bpHSMWx2KmeCE17QyZ2I0HvPAfRcJiYc0hVJeCx8w2EYPk85fPv7x0K9ubjtvYKpsRQeSPcPhtrd6MKf/+iFHFlagn0xpDQWsKwOWRmR3G6r/t9EeRT5tdJe65tHaNCWkGnA5zk8LZWtmGjqFbH7MFWC5+jGUg3CvdU6kl7CzwwvI7ICpnxhZGefYTlIc/FzlRM7jHziSSta1xgC4Bl8j5mdmUkj5Qt4lBGxReDoxCUHi3Ex8Q02ZkYPVfn/FIDoZc5eiC3ka+88fnZ2V4F2SJiMv4Bm9ctOG5868Gdn+ZJYqYmx32HszoydY18jRbM7sbrqnmhu63kfGSPpCn4w6n4puNOJmrtrJjoS3Mng+g7cBi3gK324QRrTvGv7eM1UzpQxfgqYTo9yIToeUmh0H3Wgccl05keajBluyBGPahpXdppkepKH3z0LNY57uj/pw7JDoWJ5Q8q22HbHk7tipPjrozlFTiiibThNRG1EuY0yqnGW7K5ImPS8/7gQmiBmGGd/XLr+m/bR83IV/Z+7NZqwiOVzFZihFvNh1bO4b8xdmUiyJ2qmP/5gfjfvQemmFKZ67dEVh5U+YAJI1BmO+rsqvRINWk99Jw/tu9YdVMnpim2MrqgTCtl6rdK+iOyvkwbKegKs35XriPOQFnw
- 0+wE2308
- ebqMZapK59+SQMVP7qTecvEiAgNPgZjpQZzhKZ48LG0X5h02LbFX7Le3q8BrV4uTZEuKoLwZDAIezp6eWiMjIQXUFVoXrMp7v+BRHU7+7kSfvl5cMNZfj+BelsqzVMj1NpaG/bRfg9cmOsk0qjrdEKQcVkSrrk2Cv8IiFU8/goAuYHK/R1Ye4h3If+sxycZHxerD5qXoh9aHBsGEauPEFhHJxKJ+oprsE8h6Uox3cYI10qFVUXazgjzPSQdVhBD/dOvWwC0o4nyp3q4KLK57E8g8fxA==
+X-HE-Tag: 1756852680-264773
+X-HE-Meta: U2FsdGVkX1+LFU5yl4phCMYp53FCg8oqSjMKy5PKceamTUMeHdzcOclBxxCAfRI2piaiHgk6vR0Ww6zrz6oIJkPcRqYYv0BkHX2xRYdXoxId5Pk4VgZc6BG4Wk5YYhG/S0zzPdudh+UJ9L1xNsA5f4sYTJ/PWbN0BTJ1Ohny9LsHZd731da6yUTN+VN1MY/JCtv1foZ3h43Q+0Iy8lv1/cg/wUDOuQJv0B6f1+Bxf2Zu3nyDG2Kn6gXD/kUfIqx37Ej/xd3dbo5SCH+jNGf+ENwZnwkYtJryzxcJbKKgyAufhTYT4vSHyFPMy0aMwbOq1a7p1OPJtCUsqUBpz7gLGe3mDFKr0c8lxZcCvA5E4KWA5/JWG86ToJ69ImViJvpj3CALnJsLnRuJMS7kkeXpRFBIDY8xcmj4PJer3HqNCO/+DyYgwTW7+vx6iCu36baa/PjPvwp/oxjoGue/M4FCTl8/nAcV7NV0GW7LiEfHIX+KhU4k+YkvAZ/PTBlxRvGLDL5joq6bOu0adMM/gM/rAC+aF7IEqTZQ4Uid5X83EHBOQ5ivOG4+MJWHb4P7LT+jxWP8UUYw7hoQ4Y1OpGFNDa5jWNS8KiDL94aPQOttAH7LkGncVLhj3ZwuZ/qrRF61DbMMgGKPE7fJty3BokS3mSMIIkgngEsgnzl32bfJ8dRrcmKYqQbMasc3Pmo63sSOSEpE4IftGJZK3BqyJ3bAkHuvzp4FNnpkRmhg98PVXm+oxIw/UdClkBEfCIumBS2VZVAaJTJJRhWPAWNv+3/ike+L/3vPiixa9N4fcAqKy+CsRt1KBu69ruBzfJZWzOUojiexv6KHyhkOMwfjc7WF3zFaqpmBYkBkrvCXBfOk9vwe/UUuQbFC1+LH+QFTjjpFyqCAPMlgPrWQi4MXevrwVwIC5inbLyk4PLy2/0lsrwQyCfhUBPbEDh45oyVcG7AA85ycH9xTSls2ewk/Ilw
+ A6dQa88s
+ BRKtwm40cz01oVCppKXySbQ11C2Z0G34OxCI1N3x5Pk8V5Q/c7JJABvmGSl4GhqYFytBiXbcXJVdYPxtzGZIVvj7xZ6roKoreCdrqBYtjl/EaQZeFl072htL7XY0yB96dIOnUc6UKl8KtlC9uV4WcJIpybzrHfZnFcDPddbsQCM0tGvTede4Nz39ZuSvoM9WMw1ZUnUv5L6nhUzQPmhk7jLAu8PkdUhzWVAHfEH6OgWwGLFW2agKdkI/Uxf3au+ZmLR6aXCqSJBm11tpcBAl7n8brg0qT66HLtsOnVRNk8xJvviuA8kfRM9RtGNJjq6Qe6zNC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,19 +122,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/25 10:31 AM, Roman Gushchin wrote:
-> Btw, what's the right way to attach struct ops to a cgroup, if there is
-> one? Add a cgroup_id field to the struct and use it in the .reg()
+On Tue, Sep 2, 2025 at 8:46=E2=80=AFAM Thierry Reding <thierry.reding@gmail=
+.com> wrote:
+>
+> From: Thierry Reding <treding@nvidia.com>
+>
+> Add a callback to struct dma_heap_ops that heap providers can implement
+> to show information about the state of the heap in debugfs. A top-level
+> directory named "dma_heap" is created in debugfs and individual files
+> will be named after the heaps.
+>
 
-Adding a cgroup id/fd field to the struct bpf_oom_ops will be hard to attach the 
-same bpf_oom_ops to multiple cgroups.
+I know its debugfs, but this feels a little loosey-goosey as an uAPI.
+Is there any expected format for the show function?
 
-> callback? Or there is something better?
+What would other dmabuf heaps ideally export via this interface?
 
-There is a link_create.target_fd in the "union bpf_attr". The 
-cgroup_bpf_link_attach() is using it as cgroup fd. May be it can be used here 
-also. This will limit it to link attach only. Meaning the 
-SEC(".struct_ops.link") is supported but not the older SEC(".struct_ops"). I 
-think this should be fine.
+Is there some consistent dma_heap-ish concept for it to justify it
+being under a dma_heap directory, and not just an independent debugfs
+file for the driver implementing the dmabuf heap?
 
+thanks
+-john
 
