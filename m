@@ -4,115 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35824CA1002
-	for <linux-mm@archiver.kernel.org>; Mon,  1 Sep 2025 23:51:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C93FCA1007
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 00:22:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BFB58E000E; Mon,  1 Sep 2025 19:51:13 -0400 (EDT)
+	id 988B18E0002; Mon,  1 Sep 2025 20:22:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 596D78E0002; Mon,  1 Sep 2025 19:51:13 -0400 (EDT)
+	id 939948E0001; Mon,  1 Sep 2025 20:22:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D38B8E000E; Mon,  1 Sep 2025 19:51:13 -0400 (EDT)
+	id 8763E8E0002; Mon,  1 Sep 2025 20:22:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C17D8E0002
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 19:51:13 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B39F7BC9BA
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 23:51:12 +0000 (UTC)
-X-FDA: 83842329984.12.B4FF693
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E5B564000A
-	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 23:51:10 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vn3cgA5G;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 773C28E0001
+	for <linux-mm@kvack.org>; Mon,  1 Sep 2025 20:22:38 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 118BA5C41E
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 00:22:38 +0000 (UTC)
+X-FDA: 83842409196.13.195064A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 708E9140003
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 00:22:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kGKv9AjU;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756770670;
+	s=arc-20220608; t=1756772556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqIHNFoYLFHKJhJTPf2NISmNl0Wnj/vp/3ZJmR5d4Fg=;
-	b=z8oYFEOCcf6VzqiTXpygyKqH1Fa/2KGhh/1XbTBeJSRH6wkYP+/iLhM3lzYI0ZlBYUfS0a
-	iqeNjn0XF6ptCfx+2elb1P8kPljfTri9goCWLpc4gncW0Dvs7Ozyf4KXNwvzSAmBG4oKtg
-	31uOkdrOWkMpsUXb92W9oFhTxX8VM4E=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LMVk9/PQ3ZAXlnGGCuVnFnkLtflqDfIEgCdeomop/LQ=;
+	b=E4a5YHt6tJg5XSbKJcOfdLOR8Ux/nDdIzRUhOcp0Hvn5zXeJU94SDOe79bQAJaIjF1ei9F
+	thUXOlaL7P20NtnITRiAT/BtqMdyDjnSBMLq+3zCsPhwHYhf+XVCn34t/s52Qrs7kd6gf1
+	QfISO4SFIm7CjKYv94FzicpfS5fXo7c=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vn3cgA5G;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756770670; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kGKv9AjU;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756772556; a=rsa-sha256;
 	cv=none;
-	b=R9WonuchG2cyhBowD3blVAPUKUAxeYaGHCX5m3dg6M0xA7We/2eUgrx+d/9ZAr9vDBCiss
-	44BLsJvg0vuKU9qxJ1zfx8jh+a+AlJHHUZO92WjL0e4gNjRPbcZfuzPG92U2slBnCL5d8b
-	d3wv15FuRLfYlMsFydi3wVAquSHyJgE=
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8072bb631daso593085a.1
-        for <linux-mm@kvack.org>; Mon, 01 Sep 2025 16:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756770670; x=1757375470; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nqIHNFoYLFHKJhJTPf2NISmNl0Wnj/vp/3ZJmR5d4Fg=;
-        b=Vn3cgA5GZyi1rp/SCEhe7gBWkh712sVsfxMJ5oKBI7DPZQ0ToMVJwtchy0eLLbACOs
-         mdbUyOT8vXTyzGH5nQHEICiLboU1c356F968FtYd1hw3bHC3yyIB8pBkAWjUjUsI+wpb
-         LHkyPzkBQWe66IUrNN5lHfdd8TngAIFPRw6/WP0FXxwawrQh9uVCl4clYngbbnFHLnGp
-         VAtT/xGgWJXQ5XZliohdCJ4m0NMrCAU/DSLiv55V5O1MkjLkwwoaBkJA0Kn0yV9FBkoL
-         EAjuV1cRkbV5HDNJzwucZOVYZ+uZvQZlF1SjjERyTJYWVXeO6ASdxWgETd6zWezaAmd9
-         kXnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756770670; x=1757375470;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nqIHNFoYLFHKJhJTPf2NISmNl0Wnj/vp/3ZJmR5d4Fg=;
-        b=lTKrX2BoYPe5OS6vbUWPjzmsj1nRZmE4g1ZkOqcHsz0D8N9l9NDx6hnEtHl8B7x2HT
-         G3irPGi/P71BwKi0rFWAzAF6iCi10tfdJ9wXC0jWmkoxRMv8zNRZrkwiQPe2kOgPfnnu
-         tA7B49/ufhyM6S2dmvLq2I0th38F+gYaBb2Q6vHK7HxjQPzGpYmdTA87V+y6OVFeYwKh
-         bOqmB1J6FJYIAoOAFGOippo0yleqdFNNtskGm3CLGEiUxPtkL6CGzfB6Nvtuw8Nat1xK
-         ypZiTb+A46pNnQmII0eyr6Aldr+Jl3KcrlF15/sO95zoZPhjVxndm81MddbXBIsQesmm
-         F3RA==
-X-Gm-Message-State: AOJu0YzaDuVRokUcAX3vOyPDLi3eGANG+CsNnmKrjtS8phtE/fpO6qIh
-	iMg5TzRUqi2xSvuhL8wwJHeK/YOJij/jxpypIFC6jYXc/fC3SzvikN4LslPLMI0wQAACNBYXXdj
-	4iKp6iqRRSra1q3lsqjx84V7WGZlCS8o=
-X-Gm-Gg: ASbGncsladO7KJwx6+Jn/r3mqdqCIZ9YD8lKIkCDAo3c94h5PYG8pSkOw+7581zJsO9
-	j/hYmiXT0dU3/NHhwGkqOScAUs+GWke+aIpJqNkR1lOGx1xh8xSrlKlGFJ88zKNBunF9bIOtt/Y
-	bdEzsE1e8+gIrBtZzx0xJTqs2AMjJBWn0no+x7s3sYbuGGNVb79RMaa9daNzzkYyhCHIrALsqpy
-	cLJAnZ6Q9vpNELuGA==
-X-Google-Smtp-Source: AGHT+IFEljUaTil2+CEYlRXkXKAo+TnC+CteD5ohkve5fALgKeduVJE5mcFQyP1+j0xsB7Wac6Acd0GFwDcqkZ7qAh0=
-X-Received: by 2002:a05:620a:a80a:b0:801:a5f7:1645 with SMTP id
- af79cd13be357-801a5f71a68mr586445885a.85.1756770669823; Mon, 01 Sep 2025
- 16:51:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-2-ryncsn@gmail.com>
-In-Reply-To: <20250822192023.13477-2-ryncsn@gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 2 Sep 2025 07:50:57 +0800
-X-Gm-Features: Ac12FXxqtGbLYCOlRJLl0vKc6QhZHbL5Ut-TDLRHKuwjm64bxLdZG0Cg3nR9zxY
-Message-ID: <CAGsJ_4xoN35Av2H70o+dwGzhKrAnm7gppEseG0MgAUPQt2TygQ@mail.gmail.com>
-Subject: Re: [PATCH 1/9] mm, swap: use unified helper for swap cache look up
-To: Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E5B564000A
-X-Stat-Signature: wixp85qjcfihqa834atisje9rfh4eo6m
+	b=Boy0hUij4LzpIAC0x41d6mcRMvc9Ay1zY4tfvyAhaGaXXNbfA9IiOYBQg9G33spFkXhwq/
+	UosDU5u+iz89Qms6wDy64m28WON0ctsXiGLqdjhrRfCDyNWf18aC2RG+Kaj7ubWSCg+fag
+	HW3MxVJiakF1W6yPrzkTwvbYqP5RkwI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7579A601E7;
+	Tue,  2 Sep 2025 00:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A5AC4CEF0;
+	Tue,  2 Sep 2025 00:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756772555;
+	bh=y4WZ00EXLNOU4Dwc3A5fvI5jPMAfBOHh+PUZX1asazc=;
+	h=Date:From:To:Cc:Subject:From;
+	b=kGKv9AjUrSkK0VZwVhBMOPhSeX1oTmpVcExKGhxd+LMeO4hMyWMuZluwOVCCoN3VC
+	 jhW5ca+1uOVXITiXti5dd3hhqvQV+djPKSaQb9tlJvwsArUSOPuLk+DY1wGl0/wL4t
+	 KecXMbWOQiR3Af6tVvcH9b54TBPWuXRiL8cfu9QU=
+Date: Mon, 1 Sep 2025 17:22:34 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 6.17-rc5
+Message-Id: <20250901172234.3a74524a97b595a5a81d1697@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 708E9140003
 X-Rspam-User: 
-X-HE-Tag: 1756770670-315751
-X-HE-Meta: U2FsdGVkX1/uiITtdfjuyNFgAhy2hN0SeIs5wqI65ibqi4IE+rlERR+jjDT8qTnLWYzbTtsRNB5P7Sg6kVvUwyAmQ4Q+LhSrAQKgTig+oRI+p9rv8kDqPSgsu7CplM4B9tjemROg2w0+4b/Hc8XBilr1E9EkQTC65zMOO1EyIXHCz0TAaMlM4pDqGwabZc4oswLngTtOgl3uABypujk5RcgowUCjU8IAUYRjpYyPq6s3gymCThD1uO+wBURU7SYw8S/2prXAHTTtKd07n4wGVfCpa0aEL0XRhkJuXBL3JDAUP8200aC3SDGbAEEWtgVGcl92zjJj6u3nPZGEXQDiDytgTrnJt4PTXDvba6BDkvY23WyA1B9OV0pVRyciriOc+4m9wK/7GyulNzRUS2YQUFErPd12S/2OFsE/rm5/lCfum/YeKddowHx8VZDHlNpEUv3credZ+Y5SJqB+dTEJmTCMZmJX2A4XUuPdR0vvrX03oC5NHYsnkCpH10ks0HRwm/mr7rFh6I18J8HnfkLv6+8STvGZOptaWT2xJcyBMdgBDlW0SGF8+kDeeURjcMkxwxNlHk4zrScxh25iBwXfROLsXaCwUO8p1wRtqqrM8By2/3pwNcS95V336++zarpyh6xyVQrP2CrAYBIXx7M+EPV1pVSigZwmzaxQ8bSBSGaLM9YcFp1XuVteqvgeBZQLOZLN4UyYSkTxOG6OlfyVqhazQrvASHj5dQo+xL5vKRh8UJ1+A9O1B1v92dWW09VMev819lqtQ7R95ZLCsJa1mfbYDmJ2ytAZlyGWqHATMh16GHTkkvMHFX7k8uHxaihQFaJ0oGN0t0+vCio4K1NypwvpvdMj/HgDXp+4pheTsGvAd7jJ+q+nw02xwBEN1cGvuGy5S7fp05CUsN1Frhj9KtNzrptT4PQV8u2V4sUymg0n2fdi7vKKsOlfb5H3jyNqauq1cLwi+R77KtoTNRH
- KWQG2HDo
- PtnLEKwvnlESzEXuyfY+OMZlTd6AA2GnaCbIdkWwTrefZWkcc0HYEU9b3AS/THh7ZLlxQ5C/XMaEeKBpJ5LqUOQkp3K/RLz8RS/OmIE3BSBhzIX8XPWmY75+4lDYBZ7oy4Lc8EFEV+AZf7egR6DfQ49HQ5QkS6oiumhX5P/9NS7eYvK53Fbcdg2ZPp0J+keVjfZwPyMjTtgr3/tIJ6fwqjHAkzpPdwkkYVy0HsqGaRbyQDDpOI2YNlmDPwG62/DXFrrJACcc6y+YVsJtfgETgQ/eUOgCTDpt0jxu1/7YaEdnTxqQ19jZuCWt3PGzF2l4nDxkWu5v/EaGGPjHdVfvBpB0yDcfOuwVi/ZBKaAw3hEAjiawmMzsikUVFJYCpGBLWEPLDd+Elt5ecH2vqrms88dfOUhS225Dsy0BEWadoswA1niA=
+X-Stat-Signature: h8yqhrb7qpzwkktaimrpkwiujmkgzi9p
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756772556-966597
+X-HE-Meta: U2FsdGVkX19PVjYfK5c1SheDQ10/5QS50GB4dUcs4/qLyCR3wZHEWHDaMXV/9c6neYZX6gpGqpU8Nw0NW4BSjAyFUmdZPtpBe8y4rbKfhZQYUQgINy208MDyzAjyq2uukB0WIGLDlLIIH8TadQ9omLARxgAPLSoxkOm0bcgwUaTr1IJFa1ovBRt2dOX0OkORF9tFRLBWlyY1O0tt1leID5W9/Gr97XvhwAeeBTEMTTgt5QgXowlxiG+P6JAy3NZqKtg31LAdlGH7uofNWnwlgP+AVfAtN4bPQRcieDh6LB7O0Yr1dB/EqpuDxm7HL3Ak04LbpF+xLyGrAuDK7vhi8hG6+Ay/LVzBBDQrGtwQAVLd07DAW6dVO8ydKd9ZRzzBpNcQx7fo9x/7vA/vrq9JNkD8solM3x03t4mpoyY2lfRl7LvfEkE6wsfQbfJWjJ3qTNjUJXGUXYBcxOPB+/2GjofuM1fkqhywvsJPAd0ta8HcKKgIQj8oDZ5EueXr5LOUn/Q3iYqj9UsfJltccVcUlN2re9bQBuqwzFtVb+ZoDmYAC/+5/UEGRiyiypHJshdFLz6cJ/8aUMKdf9TUuAcT3hczhUQykunx21+XvSd/8G7Ai6OSBLkft+EHdYmgQUuO8tnWLc1cRwg977VlLCHkcukqq9lQ2pFhpLzwMpZJiYoj+MMuXTjM+dr54i9FWXnHQbNQXNR/va/ol4a9jk+Oj0GME5lDEg5vMSNLrJUveA54YH9JTQG+BqR+lC3+MjVaAY7lRU0V4wvIATJu227VXpteEBS/pWDwIn7d/1SoongWDEMdMHGLsuNiWFciiFLjo0d23BN1tclr/uA1AJJtz+LvGh1s/sQ0gDzaysL0dVa8mV6eHML4mw7aHo6urn0/P5AHFsMzuS7YvBKR/F4GBmJChI2qlwPi8jkHqoZy2qKNWxWgwbdTLC5YCjW2SdMWyRSGRYBaGnooe3TEVv+
+ gFp7NDsf
+ VNALXLYktL6PsNZt/O86Bz3IsdmMpdohowUmZxTexWhPX5umq8zczkfkKJ+oKNtlGSIllFXmcX3blwt12WJeRIYcixm6eXeVdSuPt4qeHWh9F27z8WQ2WgksvFmctgb70bkJ71W/CsIBmeETCl0AYDH+spszZMO0+lFN5i7JsXgQLkH6AAEoybt7y18MWmE8XuysIHAC1xt4rlvyBRzLqYYf5a15fJX0ju/Z+S3SPU/z8H9A7e6PQHMH0oGbtthmzQdCmGom45FtNBrA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,43 +87,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Aug 23, 2025 at 3:20=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Always use swap_cache_get_folio for swap cache folio look up. The reason
-> we are not using it in all places is that it also updates the readahead
-> info, and some callsites want to avoid that.
->
-> So decouple readahead update with swap cache lookup into a standalone
-> helper, let the caller call the readahead update helper if that's
-> needed. And convert all swap cache lookups to use swap_cache_get_folio.
->
-> After this commit, there are only three special cases for accessing swap
-> cache space now: huge memory splitting, migration and shmem replacing,
-> because they need to lock the Xarray. Following commits will wrap their
-> accesses to the swap cache too with special helpers.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-Nice! This has cleaned up the confusing mix of using
-swap_cache_get_folio with VMA, filemap_get_entry,
-swap_cache_get_folio without VMA, and filemap_get_folio.
+Linus, please merge this batch of hotfixes, thanks.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
 
-Do we have any potential "dropbehind" cases for anonymous folios?
-I guess not for now.
+The following changes since commit 1b237f190eb3d36f52dffe07a40b5eb210280e00:
 
-__filemap_get_folio()
-{
-        if (folio_test_dropbehind(folio) && !(fgp_flags & FGP_DONTCACHE))
-                folio_clear_dropbehind(folio);
-}
+  Linux 6.17-rc3 (2025-08-24 12:04:12 -0400)
 
-Can we mention something about it in the changelog?
+are available in the Git repository at:
 
-Best regards
-Barry
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-09-01-17-20
+
+for you to fetch changes up to c873ccbb2f8db46ad9b4a989ea924b6d8f19abf1:
+
+  mm: fix possible deadlock in kmemleak (2025-09-01 17:11:37 -0700)
+
+----------------------------------------------------------------
+17 hotfixes.  13 are cc:stable and the remainder address post-6.16 issues
+or aren't considered necessary for -stable kernels.  11 of these fixes are
+for MM.
+
+This includes a three-patch series from Harry Yoo which fixes an
+intermittent boot failure which can occur on x86 systems.  And a two-patch
+series from Alexander Gordeev which fixes a KASAN crash on S390 systems.
+
+----------------------------------------------------------------
+Ada Couprie Diaz (1):
+      kasan: fix GCC mem-intrinsic prefix with sw tags
+
+Alexander Gordeev (2):
+      mm/kasan: fix vmalloc shadow memory (de-)population races
+      mm/kasan: avoid lazy MMU mode hazards
+
+Baptiste Lepers (1):
+      rust: mm: mark VmaNew as transparent
+
+Brian Mak (1):
+      kexec: add KEXEC_FILE_NO_CMA as a legal flag
+
+Edward Adam Davis (1):
+      ocfs2: prevent release journal inode after journal shutdown
+
+Gu Bowen (1):
+      mm: fix possible deadlock in kmemleak
+
+Harry Yoo (3):
+      mm: move page table sync declarations to linux/pgtable.h
+      mm: introduce and use {pgd,p4d}_populate_kernel()
+      x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()
+
+Quanmin Yan (1):
+      mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
+
+Sasha Levin (1):
+      mm/userfaultfd: fix kmap_local LIFO ordering for CONFIG_HIGHPTE
+
+Sumanth Korikkar (1):
+      mm: fix accounting of memmap pages
+
+Yeoreum Yun (1):
+      kunit: kasan_test: disable fortify string checker on kasan_strings() test
+
+Yin Tirui (1):
+      of_numa: fix uninitialized memory nodes causing kernel panic
+
+Zi Yan (1):
+      selftests/mm: fix FORCE_READ to read input value correctly
+
+wangzijie (1):
+      proc: fix missing pde_set_flags() for net proc files
+
+ arch/x86/include/asm/pgtable_64_types.h           |  3 ++
+ arch/x86/mm/init_64.c                             | 18 +++++++++++
+ drivers/of/of_numa.c                              |  5 ++-
+ fs/ocfs2/inode.c                                  |  3 ++
+ fs/proc/generic.c                                 | 38 +++++++++++++----------
+ include/linux/kexec.h                             |  3 +-
+ include/linux/pgalloc.h                           | 29 +++++++++++++++++
+ include/linux/pgtable.h                           | 25 ++++++++++++---
+ include/linux/vmalloc.h                           | 16 ----------
+ mm/damon/core.c                                   |  4 +--
+ mm/kasan/init.c                                   | 12 +++----
+ mm/kasan/kasan_test_c.c                           |  2 ++
+ mm/kasan/shadow.c                                 | 22 ++++++++-----
+ mm/kmemleak.c                                     | 27 +++++++++++-----
+ mm/percpu.c                                       |  6 ++--
+ mm/sparse-vmemmap.c                               | 11 ++-----
+ mm/sparse.c                                       | 15 +++++----
+ mm/userfaultfd.c                                  |  9 ++++--
+ rust/kernel/mm/virt.rs                            |  1 +
+ scripts/Makefile.kasan                            | 12 ++++---
+ tools/testing/selftests/mm/cow.c                  |  4 +--
+ tools/testing/selftests/mm/guard-regions.c        |  2 +-
+ tools/testing/selftests/mm/hugetlb-madvise.c      |  4 ++-
+ tools/testing/selftests/mm/migration.c            |  2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c        |  2 +-
+ tools/testing/selftests/mm/split_huge_page_test.c |  7 +++--
+ tools/testing/selftests/mm/vm_util.h              |  2 +-
+ 27 files changed, 190 insertions(+), 94 deletions(-)
+ create mode 100644 include/linux/pgalloc.h
+
 
