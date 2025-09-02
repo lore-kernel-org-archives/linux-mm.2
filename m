@@ -4,93 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22B90CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60C5CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B0918E0013; Tue,  2 Sep 2025 10:11:59 -0400 (EDT)
+	id E4FC26B000C; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58A328E0001; Tue,  2 Sep 2025 10:11:59 -0400 (EDT)
+	id E279D6B000D; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C5548E0013; Tue,  2 Sep 2025 10:11:59 -0400 (EDT)
+	id D3D286B000E; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 375118E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:11:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E00A0B6E24
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:11:58 +0000 (UTC)
-X-FDA: 83844499116.07.B64AA81
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 22D82C0004
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:11:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uegviDeS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C31196B000C
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6148BC0175
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:20:29 +0000 (UTC)
+X-FDA: 83844520578.27.678A8AD
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1E9A580011
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:20:25 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cQPxhns8;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756822827; a=rsa-sha256;
+	cv=none;
+	b=Md3g0iNSHQKl0D8eawdQOoCgmSGEZoFTRc/NtEBk3ADjfKkrLwoL/XffxDo8EmA/9WH0KM
+	0gO0mp4aR5J1z4JYFefgtiY8Kw9UMEVdH6nWLz11s/0wj+xamXeJ3R0qX/P3JryuWL/hoz
+	XyGR8ZZPQ8GAv7Xa7aMuH/J0xIDjAOc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=cQPxhns8;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf30.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756822317;
+	s=arc-20220608; t=1756822827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QGbCDt+q0ztyAOLxL6E1WNxpSnCpGOUVL8aWXtAq2Js=;
-	b=Pu3sz/2P6eebo+6XhSdZTT/GsS7TdrqnTjjKC1Ak3KYJ4XqTxoHx/kcMo/LU+YTN9hFROF
-	3B4q0kIMElHSqartUqmsEFuIgeREAeSkcfwxUt3haLZXJvKfTTygztQ8GEzDREkGE6VA1P
-	/qe03klcKVgKstO6j/54lt09wfdy0AM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uegviDeS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756822317; a=rsa-sha256;
-	cv=none;
-	b=lboApfJ/Wgqhu1Xj24Y5qqEhDXenR5n0FTUjCT3z3XWI5HvtogoaG0FoE8t7mAcBIAxoMZ
-	bRblBLO0iJs0gyojLOsFjF5L/vPt/2JJBSIYzdA9Sk3zUaXrTXG43ffStDv+DZCsrxYzDt
-	YE6CxchqZ6HD/SCiNyvW9mt32iJtwkc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C438643218;
-	Tue,  2 Sep 2025 14:11:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEC5C4CEED;
-	Tue,  2 Sep 2025 14:11:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756822315;
-	bh=1xFBw0aYZ3pncn46SvO4NtUQ09sWcq0onAb9a8kbZ3Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uegviDeSHU2tMUPDyq1CrblQFM0ye6D0fJm9e3Uxa8HbcBDCkCWN0PTjRX0VyQ4VQ
-	 1kccY/Dp5e52/Ouqqmt3GrrMo7n/70mUGLvD9iMaiqbbrKNjfsx5awdDtjbh9Vswh7
-	 yUv7PxIgHutWVZ/EvQSuqoK6SmH6I3PTHIdO04+rNR5cQiOYPN1RmXuvvABMqj2hXh
-	 5U4mEtaJ07+78Lm1qi/yDnF7lNwziqOyYMTVPT/nALSp6Iv37XZv/5LQquxEMOZTxV
-	 KKUlCEXL/7sCVE3lD0OaB5IEY0ZeiT3PdWVA5msHvssOPypbAVhpMA4NAs2qjPP+pr
-	 oqFvDYU8Q+dbg==
-Date: Tue, 2 Sep 2025 23:11:52 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: akpm@linux-foundation.org, naveen@kernel.org, davem@davemloft.net,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 02/13] x86/HWBP: Add arch_reinstall_hw_breakpoint()
- for atomic updates
-Message-Id: <20250902231152.442041a74774d888cec39201@kernel.org>
-In-Reply-To: <284d5eef-447f-4e12-a121-3742d708c96f@gmail.com>
-References: <20250818122720.434981-1-wangjinchao600@gmail.com>
-	<20250818122720.434981-2-wangjinchao600@gmail.com>
-	<20250818122720.434981-3-wangjinchao600@gmail.com>
-	<20250901160602.e25f0107e7b0ef4af1078fb7@kernel.org>
-	<284d5eef-447f-4e12-a121-3742d708c96f@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 22D82C0004
-X-Stat-Signature: fjtojphthjac9uakb83cjbqg3qqx7wt3
+	bh=qHXyTgYlsVDOCondbOXFmhOPZeYBMwy1Jb4bmEJyWmw=;
+	b=U4K2c3NOQYh78h8zfqkVwLteu53zW4dyddqy663tC5mn9sACk15g/7BiHj5Qy8ZJGxXkkU
+	xf0G5kDz3scAGHjbQwiPHRb2EkWd7YpSrfpEvitFuQuMkdYcEPNnqbju5yM+Aee1N1pzZ8
+	+X+oWueWRFdZ/KKEhvZ9aH7OFksO/Tk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756822826; x=1788358826;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=iAXUSwwbvwiZC9bhMY6s6lbOEzUht7j1jWcYwHXsu+I=;
+  b=cQPxhns8MHQZenxbPiCBIZ/L0D9MAOHkNmQQvtt97EYxTFc7kpPafqJa
+   AhvOIeUXkD7HQd9jTdahYZPNU3UYAU/JVyxF0/vzmIvDl0gJLYcjGJf4/
+   tPj7XuD1yoEF2uuOdK+umRraSr+ogGhqsbJRjXZEfZ0Q7Q5t1N4g1ri08
+   fhuSnqyjL9bIt71zAmzatUNvQlHt4+8CifJklxIQT7y+XlQxmJNZ4oVSA
+   kYQ0X/k+QQwhi6trvJHTsfJvjOVSjYW7ONxNsTaUhDQyOaiffB5JJDfTk
+   V3uYMmmXbyKsEugTW54K3GC+XbAmXqOwogdeRGjXN6zq++p52dUZAbXf1
+   A==;
+X-CSE-ConnectionGUID: 3FeMCDEcRcSCHz9bcy3Z3g==
+X-CSE-MsgGUID: ww454mnOSdWRDZtI88hVdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="58305906"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="58305906"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:20:24 -0700
+X-CSE-ConnectionGUID: MsrrCbkESHiLoR6gD4wQng==
+X-CSE-MsgGUID: WARwoctoTZupLE1EBSrbfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="202237611"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:20:13 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1utRrk-0000000AiLA-3gUk;
+	Tue, 02 Sep 2025 17:20:08 +0300
+Date: Tue, 2 Sep 2025 17:20:08 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of
+ pinmux_ops::get_function_name()
+Message-ID: <aLb9GKnQkAiayqpD@smile.fi.intel.com>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
+ <aLbrz5DYS5Yxx_UE@smile.fi.intel.com>
+ <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
+ <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
+ <CAMRc=Mdp2djgGbgu_uwLSkrtRPomAU=6-SRdzCdSbrHWzS2c2A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=Mdp2djgGbgu_uwLSkrtRPomAU=6-SRdzCdSbrHWzS2c2A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756822316-39700
-X-HE-Meta: U2FsdGVkX1/ZMmGEilnuM6IETw6UgiRi/Lnq+cjIbDedehmBWTXeClOmKmsqnwOsZ7wdPQXsY/H8sFnt9CQka8FWF7A89NsXjsa03ECkc3NjNUJptwDKdmE6nbC/+t+38d1FHv7taG1OxZzF3LMUXdEus8hTzokKUXylW3J9aGmm49bde6wtnthi6gNeX768+njoNQESN4DYScq3y1azjHLS+YMNZYcrDkkOBoVQYGZPKHGOavj1PmQzVm3wYvGh8T/geNEsqZLsV3ktnGVXIGsBBVeCWLMsbZeAZ3WjzNOzH9wi6pyiZSqlrmDDP62Wq5CA0NIF93v3t1z1caUBggV4+Ghb96Vjd05aqv4dLZKroIn6MxSpnW0YJsN6szjW7F0ueoiuDTrhSRrQir9RgkfxOz77dVuDxbo5Y9cH/xdQzN6fq4kwLymw4hh7BZcoaOdD43IIYwAFvxuWCw2VlObdIOAMI9SwSXo+i9C7x0dBcShHSRrH+5+qGiJvzGd9SriQhzi4YfRhiFH+zqIQmHj4qaa7O0+gBcjRj7UrQy18KYqzrRFkV4UaKDabBq+F3Dakw3l8kfUoYPSngfgPiN7MJeAWIvj2R963OBniQUdcafVnoajWi0vgzLkE8Zv+3RskNtPTu4jVuSPYDGJlDoRcb88wnIHzD11FtK7KoaCbLHnOQz88w9Xb9Nbf314uzH30QrYZDeuhY9GdY3eb9LPQQeft1DGRK7gksK3vCgLtRQfTWCgkDrxW12nYMkEp+PKZt9kSyAVI6CwznxHJA9COPqhM/fGXlRbV+RSsQUzvtLvWUskoLM9KCHVbH0MQkooXuHEh5vSOngUvNWmT1Ro0qxUou+YqdC07F6h5EaO0TU+IE1Exn2BOzgOqLuqgriYoLB/2uujy9xQ4Q/aDacq6zeH6qRiQU/+bc7xRw3zFRy4uoeulfD5H8KFGBnc6YZNr5pLB/dKb4W6QBXj
- NfcoN3HN
- QW/QR2mgj4pmJyD9jjZ7Dc4jh0fyuKgNmqAVJ2K5Qcmx6+eSRYTrq3CSELAzM6XtMyroadEmAo3H4Y2NUdtkdBF8XZraFTs4OwpHJaNdh8m0z4EjZlmhQu1QMNslgubFH0bpCGhXyCN6f6Yr3Br3N1jmjPaQMGLAjifvusnXgtb0njCOAn6e6/XHnCoK6UyCVSXfwdb8IpOu4qWlf0VK/6sqqTpPWSNkxl9CTM6xS34UoTRf9DR4D7myXRUHjbu28eplwFw8lenJ2iXQmBnKiDrVhf9HjpJZtPpcw2FdDi7JvNVU3Bic3nW9ClX4UspkLycdUkHMKPvR3Yf95pfAlKeZ2ug==
+X-Rspamd-Queue-Id: 1E9A580011
+X-Stat-Signature: 3c78pywuq8ao7pf34fsjudtrc6hi8m5o
+X-HE-Tag: 1756822825-290482
+X-HE-Meta: U2FsdGVkX1++woXSiSTQBd0TYHm9ubZSH6GcSj3Dowxgrfl1qMIaQ19APEG2UOzd/apvS5VjaX56aAM8h0nySM2wjmsk1QL/HicSS0rY0MS99wVtPHNxjAnZ3svVxOSc2WlWp/Aa0T6fCFjDziLliPPc/cUVucz1kUCAONBE7X+fY48mVz0GmbHfB1rqWD6M6kPLrOHwY11gjHX9QkUvZjKA+PLy1Pvx8gCJZu1ZCFGGWaKKmstl1x2TqpeSox1VH32EtU31Bkb5a5zzSjEoO1IhYXOvwfoAWHz6KB1GKzj49i9fEUK9WD3MWsEz6KRMUJgqXWL3ftIzKeQ1zbpnVgaNHy0Vbp81f9/SRFAtEylzmoG9bEyuQkgYAf+crowUpXxpBb3Z8noLMfZzuQSkw96JHUPVyjA3h0YzuZWYcCcH7KYstUhFQyK05AZl5a3Le3k6++FR2tOsM6uFl+cE/TNiBvgSE7AlaQhsYMXb5GnjHTLIk6er7p6L41KCsAEK+/5RhobxYKmrsToKVq8hZXz+FRm5fNFnFdpmqeSXOpm5itBDN97lp9Op1neSc1JPOx+G2Iq3a6qV2x+K7lzAqHzOHdG8hNn4kpCO70fZVx7xWTlhswNl2sfNT6rx+fz/Mh18jJr0KLg6/4i3xkjhcZiq89T+a2/hFQEd1Lge3v+NNRmCclqkEmjTF0R+gvIfy5VJmWOwGOLeZ5f9aEYLnA+1D234bwLBkjy2LgiS8VxdfG4WskHVgPzrOmkT/0dTh1RMuCiwpd1hJctYMPp5tjD7wuPEhFtereckn5/T9xcsBPVTG7MLTM6Gi4XYsFWeFjL3LnMLRDFpPnUTyaBa8So6SiCWbtrLFO8XoWEDKe7WlQItKP9Iw7JUOL/ipI1mRQROSAhuQdT3dPsozaZdAWomfHiwjlmPCa9ucAhBLrUpgotUeSEtIOVkvG53dNNJ89fX4W+tbQIkHh1PONl
+ ubPnIqPW
+ p8RfDwg5SyZhoIT6LSQlJ9OZP+7lZTZTr6lVWL+0xsDXjE//Sjt/Nx9i/Tyt7bKZBT6cwvygjWnUDEkRMvGCoZMFA8FtMD8jRiDxb6kTBWse2iG1NEjh8tcFzs285b9muyvu2D4P4nDsDtW05TDbHvaeimu8e6TabNoG3IIA4q2IItxpcUcF2+WVb6ccVN0LOEHRTl4lZ+sHkFzMtnAZrGmOFcHomoQqqkrCihUPEAiVb+XCHhnqgVrCGBrEGBv36hzfYg2+mnqDdX1LyK6qiWyovxwj8RWjL3e78H5uIC5wuCBc3aPOzT7JdyG+UoQloVvE90arHa8hMx343P5X757LO5kobti72s25oXTa716itIBqXfdCUbBjBDxWmNm7iYbU8wknRM3+A7c4ZnAIxSgnh+CLT+SMsr02j
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,80 +153,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 1 Sep 2025 18:23:44 +0800
-Jinchao Wang <wangjinchao600@gmail.com> wrote:
+On Tue, Sep 02, 2025 at 04:02:27PM +0200, Bartosz Golaszewski wrote:
+> On Tue, Sep 2, 2025 at 3:50 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Tue, Sep 02, 2025 at 03:29:31PM +0200, Bartosz Golaszewski wrote:
+> > > On Tue, Sep 2, 2025 at 3:06 PM Andy Shevchenko
+> > > <andriy.shevchenko@intel.com> wrote:
+> > > > On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
 
-> On 9/1/25 15:06, Masami Hiramatsu (Google) wrote:
-> > Hi Jinchao,
-> > 
-> Hi Masami,
-> 
-> > On Mon, 18 Aug 2025 20:26:07 +0800
-> > Jinchao Wang <wangjinchao600@gmail.com> wrote:
-> > 
-> >> Add arch_reinstall_hw_breakpoint() to enable atomic context modification
-> >> of hardware breakpoint parameters without deallocating and reallocating
-> >> the breakpoint slot.
-> >>
-> >> The existing arch_install_hw_breakpoint() allocates a new debug register
-> >> slot, while arch_uninstall_hw_breakpoint() deallocates it. However, some
-> >> use cases require modifying breakpoint parameters (address, length, type)
-> >> atomically without losing the allocated slot, particularly when operating
-> >> in atomic contexts where allocation might fail or be unavailable.
-> >>
-> >> This is particularly useful for debugging tools like kstackwatch that
-> >> need to dynamically update breakpoint targets in atomic contexts while
-> >> maintaining consistent hardware state.
-> >>
-> > 
-> > I'm also trying to find this interface for my wprobe. So the idea is good.
-> > But this looks hacky and only for x86. I think the interface should be
-> > more generic and do not use this arch internal function directly.
+...
+
+> > > > Fixes?
+> > >
+> > > This has always been like that.
+> > >
+> > > > Reported?
+> > >
+> > > I mean, technically Mark Brown reported my previous patch failing but
+> > > I don't think we do this if we're still within the same series just
+> > > another iteration?
+> > >
+> > > > Closes?
+> > >
+> > > Ditto.
 > >
+> > I meant that this fixes a potential issue disregard to your series, right?
 > 
-> I agree with your point about the architectural dependency. I have been
-> considering this problem not only for the hardware breakpoint 
-> reinstallation,
-> but also for other related parts of the series, such as canary finding and
-> stack address resolving. These parts also rely on arch-specific code.
+> No, as long as the imx driver keeps putting stuff into the pin
+> function radix tree directly, this cannot happen. The issue was
+> triggered by the discrepancy between the number of added selectors and
+> the hardcoded number of functions (we started at 0 which was not in
+> the radix tree and crashed before we got to 1).
 
-Yes, even though, the hw-breakpoint is an independent feature.
-Directly using arch_*() functions (which are expected to be used
-internally) introduces a hidden dependency between these two
-components and looses maintainability.
-
-> > It seems that the slot is allocated by "type", thus, if this reinstall
-> > hwbp without deallocate/allocate slot, it must NOT change the type.
-> > See __modify_bp_slot. Also, provide CONFIG_HAVE_... option for checking
-> > whether the architecture support that interface.
-> > 
-> Regarding the slot allocation, I would like to clarify my point. I 
-> believe the
-> event->attr.type should not be changed when reinstalling a hardware
-> breakpoint, as this defines the fundamental nature of the event. The type
-> must always be PERF_TYPE_BREAKPOINT.
-> 
-> The event->attr.bp_type, however, can be changed. For example, from a
-> HW_BREAKPOINT_W to a HW_BREAKPOINT_RW without needing to deallocate and
-> reallocate the slot. This is useful for future applications, even though the
-> current use case for KStackWatch only requires HW_BREAKPOINT_W.
-
-I understand your point, so it also needs another wrapper which checks
-the type is compatible on the architecture.
-
-> 
-> By the way, I have sent an updated series.
-> https://lore.kernel.org/all/20250828073311.1116593-1-wangjinchao600@gmail.com/
-
-Yeah, OK, let me review the series. Thanks for update!
-
-> 
-> Thank you again for your valuable review.
-> -- 
-> Best regards,
-> Jinchao
-
+Ah, thanks for the explanation. The problem is that current commit message
+implies a (potential) but lurking somewhere (regardless IMX case). Can you
+amend it to make more explicit that there is no bug right now.
 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+With Best Regards,
+Andy Shevchenko
+
+
 
