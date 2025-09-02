@@ -4,116 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64134CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:44:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBD83CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:45:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1B048E0008; Tue,  2 Sep 2025 07:44:48 -0400 (EDT)
+	id 32C0A8E000B; Tue,  2 Sep 2025 07:45:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF2158E0001; Tue,  2 Sep 2025 07:44:48 -0400 (EDT)
+	id 2DC348E0001; Tue,  2 Sep 2025 07:45:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2EE58E0008; Tue,  2 Sep 2025 07:44:48 -0400 (EDT)
+	id 219358E000B; Tue,  2 Sep 2025 07:45:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 91A9F8E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:44:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 40FDA1A0C29
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:44:48 +0000 (UTC)
-X-FDA: 83844128256.20.DC9563F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 85484C000B
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:44:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GcGkOYvo;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 101538E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:45:02 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B57B711AA2D
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:45:01 +0000 (UTC)
+X-FDA: 83844128802.17.9739672
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B472120008
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:44:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=jXmzEnXa;
+	spf=pass (imf13.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756813486;
+	s=arc-20220608; t=1756813500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v/dvqOus0XyjyhWt95La5h1ta2/lykd/DYGgkrxXOj0=;
-	b=qUoU+BxDb0y1sHLGrqgrCpfjDcdUjhxs7Rjp3n49O8xJI9TjpCDAK9WtErtOFANOEQaVbH
-	2bILGZIdsUk5cBt2+wB+xN0w0jqnwm3nT9PFOTz6nT7Lm615eVPRXhBdxZHyoYFuKqh3Zg
-	DM7xSOTCi2m+8zaEV+lpqU2Q5m7vNdA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GcGkOYvo;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756813486; a=rsa-sha256;
+	bh=voGobjfJ+JDIyxPuu8fGQb2u9QP7Z513vboXRHjWrpI=;
+	b=zaTau1kdfXAvWsK5jutfCwlrfO/Divaw5kgFnUbHQhtyGe5zJe+uJwcXcjbsoXJHOvjQ+t
+	o3y1TXHB56uV3V2WmrVBRf/0A2kVdv2kbXOaQjk8qalAlxWfzlF3N1v+H7R4Gv9bZYeNQI
+	w2JUWjYaqekvVDZT5T+beUP/9jjbiLE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756813500; a=rsa-sha256;
 	cv=none;
-	b=gFgMbU0dR3XXEcq4vz4xVMjzFA3yUEyP2u2XKQvQoJfayYlj0tkM1oRTyz8enGMtL0U232
-	rMkQ4tE8AgniJLJy1T+9fwdGxYlXfAyZqU+FGSaUeKDRVAKw+0a0j/bcFB26Q5SF3YKw3F
-	eeMiR4ONq0L0tlMcRUgrebVU3dmE7RY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DE96644ABE;
-	Tue,  2 Sep 2025 11:44:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0680C4CEED;
-	Tue,  2 Sep 2025 11:44:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756813484;
-	bh=PsdWXEKScSpvyy0S+Dxl056IK+zdYsrlrpfYJKzyZ9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GcGkOYvoGCguKJ/jUPJf7VxrZdwrL4lVESQFTriaR2Al6lroyZ1GB6QAt5k5qWJf6
-	 q3qN+YuCyjEj06tqOyAvFa6LmxWY+fkNRRvM2Fm/FaWZ47BrhQ57c5IkbTs+Kmjbxo
-	 jYn3m/b2Qt+qEWFTfr7Motq5MlPMe1vWqQ2sCSESTGio/7/xhmbPYdOH4Q1OcuVHUj
-	 0Qf6LRJj60aZatHetbId9ILp7QfUSrYcYBf+2DcIKerzqQP4jv1B+F4QtNdlONUyTb
-	 oqSiFYIiLItMyOvFUFDVomGAq1PbDiyqYtk62VAgEE+tHDutp1f6++/ufGbmNlFvY7
-	 geX873CKX7JcA==
-Date: Tue, 2 Sep 2025 14:44:19 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>, jasonmiu@google.com,
-	graf@amazon.com, changyuanl@google.com, dmatlack@google.com,
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org,
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com,
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org,
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr,
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
-	vincent.guittot@linaro.org, hannes@cmpxchg.org,
-	dan.j.williams@intel.com, david@redhat.com,
-	joel.granados@kernel.org, rostedt@goodmis.org,
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
-	linux@weissschuh.net, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
-	aleksander.lobakin@intel.com, ira.weiny@intel.com,
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
-	stuart.w.hayes@gmail.com, lennart@poettering.net,
-	brauner@kernel.org, linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
-	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
-	witu@nvidia.com
-Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-Message-ID: <aLbYk30V2EEJJtAf@kernel.org>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
- <20250807014442.3829950-30-pasha.tatashin@soleen.com>
- <20250826162019.GD2130239@nvidia.com>
- <aLXIcUwt0HVzRpYW@kernel.org>
- <mafs0ldmyw1hp.fsf@kernel.org>
+	b=agybrtoaX6Q4PV+qE4Fu5D6NNc7tM/AVr0yxuKtLcINSTrF1o6v9nwdUI4WeUMQoGhT8R9
+	0OKTPMMwPo5MqnWKK7qFxgU1bO4C00+W/tG/gBoHu9eAmbbas3o2LQbCjL+e4L/p3/co6p
+	xkjUVik4ScF3X6rvRxsNb66AQqJ/KD0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=jXmzEnXa;
+	spf=pass (imf13.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cGP6x6Rpwz1FZPJ;
+	Tue,  2 Sep 2025 13:44:57 +0200 (CEST)
+Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cGP6w5mgsz1FXjD;
+	Tue,  2 Sep 2025 13:44:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1756813497;
+	bh=voGobjfJ+JDIyxPuu8fGQb2u9QP7Z513vboXRHjWrpI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jXmzEnXapdgWj3k2C76LGG7k/5mt1kwvMqAYSfMFYlJ0dMOQ80Oj2YE0pnZAtNJ4t
+	 tXQk/LzaZA57Nv160y42KGcSc12HLtx5zDkXLTwO001yujBIUCUp0jXWbSqOup1wEK
+	 caelEQWo/j1aiLxV7BPWjSbstlue7ClkuM93YSG2cSzlCJSLWryT6cSw2EEQcr+aVF
+	 FTt0lGn6fnMuHg7U0U6sd3U2Ku9tEiPKwlVMzDHUsOHxPUryMAOV1qAvelOgjen0aR
+	 RoDQinmHdiIG1eCVLztKOXDNMYphrSPAPE4G8u5ceaF4FDq1DzCH6UTTJUx5w29cc0
+	 vZYTj+Lq2QLjQ==
+Message-ID: <92bace9a-b5c4-4ea1-a1f7-4742c15a64a0@gaisler.com>
+Date: Tue, 2 Sep 2025 13:44:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <mafs0ldmyw1hp.fsf@kernel.org>
-X-Rspamd-Queue-Id: 85484C000B
-X-Rspamd-Server: rspam04
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com,
+ selinux@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org
+References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
+ <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
+ <f2371539-cd4e-4d70-9576-4bb1c677104c@gaisler.com>
+ <11a4d0a953e3a9405177d67f287c69379a2b2f8f.camel@physik.fu-berlin.de>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <11a4d0a953e3a9405177d67f287c69379a2b2f8f.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B472120008
+X-Stat-Signature: ikysuwyzbrko5ticx9wiqrwpwqrhxzd6
 X-Rspam-User: 
-X-Stat-Signature: hkpiq3ppzytg4qugqbcu4xe8zpnw333f
-X-HE-Tag: 1756813486-957327
-X-HE-Meta: U2FsdGVkX19mduJDllQpT+sSlOY3p5FhLVO/gwGgDOt4dIf3moUIffahdHUh6egf35myxWxkk8VxDcj2d85Qk0P3Qy2+PAhI7uV0s+uRJmYShrClQU4qfnwHO/w2jgLvGA/8cmIsRUjou9wDJs7vw6kZEZra0lTDTB2EcL0GOa7ZfxY+RDgDGVAgaju36ao/4+POrDIoWNG7lC2Ps5q86S1JEY2kjWzBUKeKbMnc3AYO3DAt/p7RzLzYMnVcB/2MEW1TLeLRmo/hLPj9ezpJi1znPb5QKt2xNrsq5spVCQL/iE7n8bzm9YsJP0gGVuySSxi/EfzD2Hp7WwHDItBwW/HJG7vPkilqvVbkwWYNn476I3UnucUfXIansElghNscNPGnyaMMrjsgPCFbEH9uFYgvvRgg3jd2AWW47IKgg+YfKijf4Txi3k2LTKG4Q4feq/qr/ga56/X4rmIOd5kgWNoE6d3KAtRuqjJQGPN0V03OyLDlvz4wCFFNKHJwA9IwjsLQVz+UC8xvG3x/X7D8SV9PUFdNqTUXcXcD0UH+GBHI6jVfZ/P+lo0etu1SpXeIyZ3s7EUruf+5cy68fDAgbRT2xLWTYrx0mJwqFnkRj9nrNch1L9RdngDLgKteGz9/ZWAv/6rUXiyBjdqN+VBfHgAuWvzLQNY1l+HIznGNDabDLZ2YpbQj9W1ZREnhsS4/oxmRFGwKiT9QKFhtMxc4s2NRtb7ASF91sAgUMZX7lb4wkpWkyRHEJhjKrlLfx1HTxiuc0rsW+6s3/t0zMiUgCiAGHMIQWU0CcwgHQA+uJUPUV4ghOmFlC/kZsshBgMJH7u2VhONWKJf1pjsstHJG0D6RyvFGu+1VqaoR6lr/wPw9DMm56LQzxSESsfnn1J1/1ruytKMy6cFjt+QbTrHMn4Rfu/OHI06nWIGGK4gKzmsm5t4wkfexLqoPtRB6VRrXVwp7AHFElYOu0vLCk0D
- xs7i8L/5
- ePwtT3k3LFZC4pqTa0bc4n4hO/cdzpXEsI1u1YZyPOGsHkYg24OddLNs5yzpl59VKA7Cmn1eK6n7weRRT4s09FVuS/j9ADttQRRyUPwa60IoC2R1wNcKsNcB/v/+m7wchxbvXXXoaEfpM15rDm/gwm8MmboFgN+0GEC9OXCj642Jt9geGKQbqG6SIlxcqqXPAcZEk4rbeisi47EtRYEXYiVmP8nrHdP/CTnoxw4DbuRDWuSpTDIAw745KG4NplUst2BMJ8f+vJrl4mR9I6uImd83r7uQuBz2sLPa3gAkeBbJQu44Oa5y8HvaF8cKauWqqSBQX/lapetJCi0+0z2In7T2SQC+oLUuIJmku
+X-HE-Tag: 1756813499-797758
+X-HE-Meta: U2FsdGVkX1+x74QGqLRkycJI41j+Nriq5dp6wf/TfVmsOye5EKlvlwAQzdbMjnJEB0uz61hEWu72XPq1jLhOKkpvwG31x/VF1/uKK03Gy6jz82VhFjutInpLhF0A4OVxybwnxQ1zQPS6ShIHvTqdOz/JO4YUsLLf2+TpaoNlv3UZeNE11AXfo6C0n9ybQLG8GdhkMHRcAgfOGhu2co2rbXQrSh/QkVUK2nMEcielnqZGJM+tzA8FbOn6lpwBZ6ZTyB8dPPTSbj0FZHwJRIdlXaV/Ky6mAJ5edzT4rvghzBVxZTgSTq1a/w9e63LFS4VqS+IQxtg1SBIluWehUdHi0Ur7jEkGACYLWuLDsVABpFnNKUdK8Iff46Pek4oQDEGKmhToWXNFWfyKKHtEk/PyWAey32l4g2pEkzdHKq0Go0WPaXWOf6xtDDROcdbuTZCddnONAmh9lc/t71wK0vbkTCXjeuyHvqgFmDWy8BHJ2+GJybyUd5hewuzvIuIhKGYq89SspL+nDAYKzuI9EHEB9VVx38vq8Mqm0KEmgbkavdF+s/deKuC+3yg4aqLCyIVNDXLylUD9NvbU4rtd2xc/yg7j93Vy44Wl6jJX9F5wG5A4oWQKIaLsAmQ6Elq3K5kOE8H5VvAGf/TaN+1eiGUto9wIw/rpNmtfXBATdIeuu7idsAlz453puqn+z+eet5Z3/YpdHKrQju5+IKNDDtZDa7Enuu9AOkmv/zXlMg302J/uXiq/gbPbD47/seafpDfBBjsV/YKjPARrVlXm3vVIw5JvJhcWE20FqhVGgYz/p8MRFna5VTE004YMIL3J1uv3mtZPAMxJkxIHyjrQgSrJZrdrQgMAi5uySUW0zjd/4KUO8ZFp6htutXNTpOKU9R9TnpgBu0U/etJaoM/LkSjZEv5VBOpLub6Rbsc/cG0l/nB7oSFeQXBXJaBp6K+oT9+diwJUJWUWRZ95j33h/h6
+ VhFmNe9c
+ HoWA8+XazxP6NjeTOSAtdc6URzYK8KaCCoLJ/fhyEo+JEM8mP3DGbbBnnYCvFiBuBZOGLnfZO7mkyqt1cSYfS0CBKaKFyxh7sirikLrJX/FNsKQYgufCvx0TijS79zgXW1gn6Kt4uEaSb2bE5Tg9euvHR4dzrDTHE1C6SdZhqAs4s6N9+wnMvYqQ1tLA9BaLNz+xCuZJyY/j5J5/Fhz8t4LoXJLB+rC+gszwVKE2Ewh3oAy+D3wAvPjg/fQbGiKQa+hdb1+VgLA0+USGYkmOu//Of1viSKXRz/iR2xbBb5Vv1ygMQKEV9ntnwwBgmmCHyUmryflfMPK9ZHMihA61xIZbkz55wfWyDJZIlIBeVQj8l8IA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,94 +114,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pratyush,
+On 2025-09-02 09:15, John Paul Adrian Glaubitz wrote:
+>> Thanks for this and for the whole series! Needed foundation for a
+>> sparc32 clone3 implementation as well.
+> 
+> Can you implement clone3 for sparc64 as well?
 
-On Mon, Sep 01, 2025 at 07:01:38PM +0200, Pratyush Yadav wrote:
-> Hi Mike,
-> 
-> On Mon, Sep 01 2025, Mike Rapoport wrote:
-> 
-> > On Tue, Aug 26, 2025 at 01:20:19PM -0300, Jason Gunthorpe wrote:
-> >> On Thu, Aug 07, 2025 at 01:44:35AM +0000, Pasha Tatashin wrote:
-> >> 
-> >> > +	/*
-> >> > +	 * Most of the space should be taken by preserved folios. So take its
-> >> > +	 * size, plus a page for other properties.
-> >> > +	 */
-> >> > +	fdt = memfd_luo_create_fdt(PAGE_ALIGN(preserved_size) + PAGE_SIZE);
-> >> > +	if (!fdt) {
-> >> > +		err = -ENOMEM;
-> >> > +		goto err_unpin;
-> >> > +	}
-> >> 
-> >> This doesn't seem to have any versioning scheme, it really should..
-> >> 
-> >> > +	err = fdt_property_placeholder(fdt, "folios", preserved_size,
-> >> > +				       (void **)&preserved_folios);
-> >> > +	if (err) {
-> >> > +		pr_err("Failed to reserve folios property in FDT: %s\n",
-> >> > +		       fdt_strerror(err));
-> >> > +		err = -ENOMEM;
-> >> > +		goto err_free_fdt;
-> >> > +	}
-> >> 
-> >> Yuk.
-> >> 
-> >> This really wants some luo helper
-> >> 
-> >> 'luo alloc array'
-> >> 'luo restore array'
-> >> 'luo free array'
-> >
-> > We can just add kho_{preserve,restore}_vmalloc(). I've drafted it here:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=kho/vmalloc/v1
-> >
-> > Will wait for kbuild and then send proper patches.
-> 
-> I have been working on something similar, but in a more generic way.
-> 
-> I have implemented a sparse KHO-preservable array (called kho_array)
-> with xarray like properties. It can take in 4-byte aligned pointers and
-> supports saving non-pointer values similar to xa_mk_value(). For now it
-> doesn't support multi-index entries, but if needed the data format can
-> be extended to support it as well.
-> 
-> The structure is very similar to what you have implemented. It uses a
-> linked list of pages with some metadata at the head of each page.
-> 
-> I have used it for memfd preservation, and I think it is quite
-> versatile. For example, your kho_preserve_vmalloc() can be very easily
-> built on top of this kho_array by simply saving each physical page
-> address at consecutive indices in the array.
+(heavily pairing down the to list)
 
-I've started to work on something similar to your kho_array for memfd case
-and then I thought that since we know the size of the array we can simply
-vmalloc it and preserve vmalloc, and that lead me to implementing
-preservation of vmalloc :)
+We'll take a look at that as well.
 
-I like the idea to have kho_array for cases when we don't know the amount
-of data to preserve in advance, but for memfd as it's currently
-implemented I think that allocating and preserving vmalloc is simpler.
+Cheers,
+Andreas
 
-As for porting kho_preserve_vmalloc() to kho_array, I also feel that it
-would just make kho_preserve_vmalloc() more complex and I'd rather simplify
-it even more, e.g. with preallocating all the pages that preserve indices
-in advance.
- 
-> The code is still WIP and currently a bit hacky, but I will clean it up
-> in a couple days and I think it should be ready for posting. You can
-> find the current version at [0][1]. Would be good to hear your thoughts,
-> and if you agree with the approach, I can also port
-> kho_preserve_vmalloc() to work on top of kho_array as well.
-> 
-> [0] https://git.kernel.org/pub/scm/linux/kernel/git/pratyush/linux.git/commit/?h=kho-array&id=cf4c04c1e9ac854e3297018ad6dada17c54a59af
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/pratyush/linux.git/commit/?h=kho-array&id=5eb0d7316274a9c87acaeedd86941979fc4baf96
-> 
-> -- 
-> Regards,
-> Pratyush Yadav
-
--- 
-Sincerely yours,
-Mike.
 
