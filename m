@@ -4,148 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D592ACA1007
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEAEECA1007
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E7B48E0010; Tue,  2 Sep 2025 16:23:13 -0400 (EDT)
+	id 054958E0002; Tue,  2 Sep 2025 16:33:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 398748E0001; Tue,  2 Sep 2025 16:23:13 -0400 (EDT)
+	id 004C28E0001; Tue,  2 Sep 2025 16:33:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25FEE8E0010; Tue,  2 Sep 2025 16:23:13 -0400 (EDT)
+	id E35A58E0002; Tue,  2 Sep 2025 16:33:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EB5D8E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:23:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8F3116039C
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:23:12 +0000 (UTC)
-X-FDA: 83845434624.06.4EE4114
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A617740005
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:23:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZFDCG+0Z;
-	spf=pass (imf07.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C83FA8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:33:11 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6FD761403B6
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:33:11 +0000 (UTC)
+X-FDA: 83845459782.17.05828FB
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3DABD100012
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:33:08 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=k7MXFOoG;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756844590;
+	s=arc-20220608; t=1756845189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e3kOiwL5zqleYtylmerMclyHJqoKO1uL5DJ0d9m4VY4=;
-	b=Aupxez8r+dqObfePcmQZJbfsDxeoKp38NfHcKOjDktNBO8bbVkCSVQk6Fqsu+t3A0Po8kz
-	YnTELMGnNNeFmaBS317J5L34mREjHKaRcokDJ1ynmmZ9G1ON0lSqjfaKo1llmBjmWRTXSk
-	3t67r4nmrzXl3eQxlNSvyQ1EKy485lM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZFDCG+0Z;
-	spf=pass (imf07.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756844590; a=rsa-sha256;
+	bh=2rR582s4KMYq71kmMjrFvHN9MuGNWDhru0y7bSnNyZs=;
+	b=Fr0UYjihRFBB3OUjqfWQDO1p8xI3Bs8nW90AvtRKuZN9pJTzBfrx5sVkVI12xjtEDXy05k
+	ph9M4KveSHpd3Vxfu8ITkf2/Dday0q1OSMVXbra+xEZ9otyk0gWgN+nAiz/+00qbC57WTO
+	+Ufsj8una2f8nzTM+nCWfKTN4gfoWhc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756845189; a=rsa-sha256;
 	cv=none;
-	b=jV8NYWnEG4XivrgzlIQV/NK+JM+4zDWaRA2XN9JCZmgws65SGm7ZwMl0myBiRAQT4xK74g
-	ZpbU8fX6kLODuhITiW0RKqtUOYovFzE7kDlTxTtKOqHYq0jb9ycQ3C5uGmn5gVulhgCwB+
-	T2m781KbpuoEfYrR+BbDxCQcDpk4pSE=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45b86157e18so19519145e9.0
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 13:23:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756844589; x=1757449389; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e3kOiwL5zqleYtylmerMclyHJqoKO1uL5DJ0d9m4VY4=;
-        b=ZFDCG+0ZbIJGh4RlIKCuWnSPWcQJ7LvV28OZ7xNYxi60s/toif4drDmq5WZA/LPWVk
-         xjKwIQArld9ySDT/ejds0MpndH4iy5emDaKEnBpbtrffR69eZ/jJJUjPFvDF7upbCNKz
-         jRs94F6Wjru2oR75/0pz8/7gbV9FY93STTSrU3JHwm6QbkZL7eHNbr1LgBoyKYPM6LeX
-         RREIyO5aBG04cIwekXrO9qD/Z3IqIGQ/BQuwt3iYXLn7k/SAZ1AGqsUnlfSunWjRMczN
-         aX4jPESRhEsg5rOEhshMWgqMNQ06Ba/dIATcIdfsRGdpzzKoQrcY1qpGrbBcbd1C/ryj
-         B+9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756844589; x=1757449389;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e3kOiwL5zqleYtylmerMclyHJqoKO1uL5DJ0d9m4VY4=;
-        b=SLd0QM4qGJQfhp/I5zFhB8AsLANioczIu6GDGtpcsSbb6bJNRRzwG+1swgLkwz25i8
-         l3LyT3IC026CFZSv0DAs2BGQxuMT+c3akZcxUh1epjNqxO4vHEsVZ/pIHRR2E+mcEZi4
-         XZH1LWrH7dzXjYnUWYWp30Q7KWwdpLSBysxTZs3Hg/saP1BvV4HJyEwB5Azh8JFYQLTA
-         VexIb9wgFyNHI1EBg7Li9ZqO4KT0ZAeESSP8EwRJKqml4EsP3VWY9pXiCUrbghuwq8Pp
-         o9EX7hyEJAKG0YWY2Gef5yaa+OIbqIxhqia4wVgePBMtVbMz+yJcoZXCEXW7R//boHwh
-         vLsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/++LlO0TcF/jmOv3m2fm4Btf6D2+VANULGUA6R9X+6RGg1xeUHFUFBjDbuBUmPRFX5sxI4h5Fyw==@kvack.org
-X-Gm-Message-State: AOJu0YxSMlgsQhjWWa8VNvkL4xVCVMZ/Fx/qt3bQYjgvm9SNfw5+rGhp
-	RjY/GBs5y3RtoN54KU1fx4EjtGzvBQkPZBzwYhlxNOQZ4vlip0PvTygd
-X-Gm-Gg: ASbGncs2GltfFW9urah/jL/2w9k8uVY4by5T3p44piPZFoYhMEM4QtgNBBSQTvDnS6w
-	sAKBmFcHl1/tbXI513aDwW/t6exIe2VAzqJP1/AqE0Ulhy5BKY+Oxm5c3qJUovWJ4ZiZEeO/N6B
-	emhaadH3Xrza8JUbiPVBLV673UCW5jypy0TsATUz9u2gFXZknKzueUI/Z6ch8XbziVOMvCjz0gV
-	uGuhjRAc9phbFqceYOeBib5ar+IxVQ+aaW1k+ZrE5SzYR8VXZlYIzAF5l1q++a3vL19cdmVFbfG
-	wfpBviuOzDqbX4xHnkBeGr5o+U6zbZvGpmvKl6ujz6lpXJ2+VqgJo8BjiZPEbHGUq4vW8zfR7L2
-	1zAVircWaapV6shqbCnGp/VDg7rF5FdzgoVXnjz4C2FPKtL/Qc3aL4T2+OIWT/2ZX7Ja93E12An
-	H6zk6rcI66sesIDP8MISvmHtFafdOZ
-X-Google-Smtp-Source: AGHT+IEh5zVEDLWkkm40Gzc0xQdpKMazKhJsQrIOonj4uGsn8SXP4VX6pG/odlqnt8wetWFbUq75gQ==
-X-Received: by 2002:a05:600c:4705:b0:45b:74fc:d6ec with SMTP id 5b1f17b1804b1-45b8553f1e8mr116428895e9.8.1756844588788;
-        Tue, 02 Sep 2025 13:23:08 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23? ([2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b81a9e971sm211259005e9.18.2025.09.02.13.23.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 13:23:08 -0700 (PDT)
-Message-ID: <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
-Date: Tue, 2 Sep 2025 21:23:04 +0100
+	b=8ISm8ujkr3DWm0rlATnwdqiaNhVQk/Na+ylr7jRtCxPfOYju4eeItD+2B96ow4vTo85U0M
+	x9bmqAdPVQbWwOvCBR/yvBodftoMvxAcLMvyrZwIdwiy0PqgeX1MTkuFg+4Hs6SjLSImne
+	JIE63HKHgXTLvyBCjuQHMIb9ABjLzY8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=k7MXFOoG;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756845188; x=1788381188;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GoShCcC4zkp4YyNiPnlHqVA9/MAGDmqqoiUbCVRHKDo=;
+  b=k7MXFOoGqoBS/BiccjCoh2vWpsspqOr+HUcL4/baehVEmyOHKu1sl9ii
+   ylAcnWMbNrtr0jOuiMHZ0ng1ZMG68ncgM9azWKudjb+z16fDvW74TU6sS
+   mLgHvf3PWlTfPYG5JV/n/B14XZatl4lID+vm4sCPJHSd7sl4IoUDiP9g5
+   giD8FiBUorBfiTueqY0YPxB2BlT2xJ+sosT3HkK7bAcepZwUbOXj+qDAl
+   cyo+qaVLnzB877m5695pahEwpLpv/d/9jC5F0le8JB7Vrq+P08qbpYcpu
+   ev6EzIjpQYUlRpOvNwPLy9NQAgGvVy89640ma/II5V8h7mzd3CI1C4/c7
+   g==;
+X-CSE-ConnectionGUID: SqjlkUN9Sv+zVzW3spLQQg==
+X-CSE-MsgGUID: FzvkhOj7QX2SHbsiw5z/cw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62970451"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62970451"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 13:33:06 -0700
+X-CSE-ConnectionGUID: VxwCyw4fSY2VxTS1CCg/7w==
+X-CSE-MsgGUID: xy5zL5IoT3Wdp7/aK4bZFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="170937857"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 02 Sep 2025 13:33:04 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1utXgJ-00030F-0W;
+	Tue, 02 Sep 2025 20:32:48 +0000
+Date: Wed, 3 Sep 2025 04:31:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Cc: oe-kbuild-all@lists.linux.dev, david@redhat.com, osalvador@suse.de,
+	jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
+	linux-kernel@vger.kernel.org, dan.j.williams@intel.com,
+	Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH 2/2] mm/memremap: Remove unused get_dev_pagemap()
+ parameter
+Message-ID: <202509030434.fEPVFkG4-lkp@intel.com>
+References: <20250902051421.162498-2-apopple@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
-Content-Language: en-GB
-To: David Hildenbrand <david@redhat.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
- peterx@redhat.com, wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com,
- aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
- catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
- dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
- jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com
-References: <20250819134205.622806-1-npache@redhat.com>
- <0d9c6088-536b-4d7a-8f75-9be5f0faa86f@lucifer.local>
- <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
- <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
- <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local>
- <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
- <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local>
- <95012dfc-d82d-4ae2-b4cd-1e8dcf15e44b@redhat.com>
- <bdbb5168-7657-4f11-a42d-b75cce7e0bca@lucifer.local>
- <e34e1ffe-c377-4c9a-b28b-ca873f3620ac@redhat.com>
- <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com>
- <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
- <2a141eef-46e2-46e1-9b0f-066ec537600d@linux.alibaba.com>
- <f34b5fcb-6a97-4d97-86a8-906083b53be6@redhat.com>
- <eb02c281-6d41-44af-8eaf-8ffc29153a3a@linux.alibaba.com>
- <286e2cb3-6beb-4d21-b28a-2f99bb2f759b@redhat.com>
- <17075d6a-a209-4636-ae42-2f8944aea745@gmail.com>
- <287f3b64-bc34-48d9-9778-c519260c3dba@redhat.com>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <287f3b64-bc34-48d9-9778-c519260c3dba@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A617740005
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250902051421.162498-2-apopple@nvidia.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3DABD100012
+X-Stat-Signature: 8wm5arbso9st871n9wkh4mk14z6s1omg
 X-Rspam-User: 
-X-Stat-Signature: t7mifzw1mnupjxpriu386481e4mmysxn
-X-HE-Tag: 1756844590-628930
-X-HE-Meta: U2FsdGVkX18DS9ltlwZaWwm1DdDsOxOgo1LNF47Fp0BMGMlAsi4NuMvWu8WEvS4zjc98v5d5M0pDYEBTDf14k3KldBmM1YlJ8yTcit1+o34xjWb50G0UTOvVoUj6ZiCHhDcPkH588lCP9u7Cv/LHhsxY98OFwoBb6SB5YHTO+dkfdMwzWgA/fWRXEGq6+U3Y+yBt6uW/QPAQis3az65vTmn6UnHtnutLbEkVtDHe1MneXyvvQMfnoQ4EN6Yi7LInVvRyF5rF/zazUfDzuT2ob5KOzbZEw1dHXK3/0Eihh4RTItQVX9Pu9EhW+ZRzy+5fOO5B/+NEG8+Af7c2W4S8ptqv9mpVcOulcwuZQfj9fKBlfgjg76B3Wf/EqmnM25pow38hyvy2FRYievmAJ9ZAvlo1r1dSpPTdolCmw4lNT0cCFqHAhF3f8XL4bCm3aTDXP8gNuYyNeBRZOEIW/NjViHHwNWrYdweH83ErQtiiVZCoeF4GG6xwTjUN2ibFWtxb4h/XUXvyaLkWibFtUm55tDMufjqbn54GWIYzwkayY58mGxJmWlWBb9w/Gd5Cz2o9XIY5Ogq72gdcoXqZyGAZ0YcoMCcNdHfYbFopxscWuvdWTqqS+g258LCqQh4p6LJhFNvFwUhOdMyRGvcCNgb6xeFMsTNzsG9v8oU7/OQHYnHBBOR/vuhPztp0bhx9vHh7cn1WoyGj6Ttc8Yhs1cRDfA/KXIbVAZbzb/99G+Y+EufWWKLCdOVmMZyaSD6UV67yY+TXtmrs25tRORQ8o36vdS48hlS3r/sJ3TAY1fnNRT9ghJgjzN+oXznl9ZqjP83BaiGRlj/TgjTPPrncTGnvCRXLcAH+sCQWBI4s6CiXPqBoND9FCczr90tGbJhzKraL/Gu0AGGQm61He1q/nX2X6L0a85qFx5XNm9xvqAcAnDRWVbE2xB9wCc/qwbdjNqYFg9dXVYfBNBpwPUnemwC
- l3yNpNWY
- DCKD6M7HEB6hwOWS9l9pXam861iG9c/P0c+9eb32KBa8bm5aSuKu9rwTHos3Jq8QOAVMKOCuf303oSFgZvg8USgHqCoXuCBQhwrfUgXtP7Xj0QnLRjDL8Bm0BM0rsKlSfbm7eWMDadDp0L8cE+wzwGvGQXFgoLh9hmJQhZAd58DkEfcLgc+pIfYgjWGhYiIqLzkdbxZD1pZeMr6n0lvhoOVm5BWZtxNs2BTFL6EWtB7oDzufD5rwJLHJfUllhDIBqEhnUJqZ9yAuUVZ3OMNqV7aEsHnVZbxXZGl8Xrqs0b1YQUPThgiWVrBDJJtDVYjx5UWlzIm1ciy7jcP/H49blhzBpWvAHKHduR5QZlFhJyFQ4RL9nhHpD16APbnAKaLoJcYPNaivDEE98ubG0w47DGohHw5hJsu7Lr6rmMl4/kVJERkwPz3icxNvfQrzKd/kyIfXiK5HjhJcAgmrypwNJ+fkYCNSPiPgTM4hN2gjPNKnklc+SpuDHcQglKSEnm4NS0bvw7NFQausWJT07EnvAtwdFLZuCcPi9X5R15STwPztntBBHt1u5we1AxAsKL1tsoXjuAfbtElmhXcuQhKu8OIQXTsW2+ss34by7
+X-HE-Tag: 1756845188-889805
+X-HE-Meta: U2FsdGVkX18m7xzkFztSffbZITogv1NIO73t0jiDmP/y51KOMJV+opopekrco+x/dsBTHsJyIDgfGbX1LVCfqJoiHJVOoi5tjQzwPdFhApou3kvPEsOFsPyFi+12dgzZQJNF1ed3UbvlCDH3ciQwHSYyqItPC9YhvMhyE+Sf3ZrPrucZ4v1F7z6HdR/YAt8zFe9xvuyNdqHRJ7dCocElgWhb95p89WfQF8cFgu8vhTgkqQDCpsi8h4JS5+650UwkmqEdgEWphvVI/G0Tg/brU/sBVkQF3eFJHNtBGSdvo4jAxRbmR4ziGbaVji8Vn4o/1L7QF6QYpX2UaCfVMAmogWtRjj3fXeECFqluLrGEXZnhCVqtLaiBD+j1DlrAJaElRfyWHzUrYddhA11ZrR0KBlkA+k/gTF6xygLeYFoEQC044XsqaQQweXxldgfmcT+b5N8zzq98vosJnbw4Pc3jvAQNhxVURwZVL3JmbxY8YnnECF3dnJkrVVV+K0lXDOqZLsIVjUHMpgjMv8Cd0U/o2Xlrxo7O81Jus+hBCdbyUJESf+W/QL/isU7vlBs9kJ7kyWbhhGh1nDXBJY5RrFUXBixhooxcpw4LuUqB9vO57J8/K3VsdD3v17r6yqoAqPn06mfryxkxDBFdqd2AMqV75u8KUR+KNucyYyyuoMs2Z/h7Be4l9Ssphmzpz+5zXZmesL9zBVkiGAocrJ0aHXsKrKxABT7TZ/9D38n4f+VsRB15otCZxqtXhJFeFh57+IVsBFKRFPL9pkiNtPq1k/JHX6W3u5KBm+kS/ChwtxuY+6GGoYZiQugctnzveG5rv4NBdoBZ2+/wokRsRFD0Pl46eUOpaYP8r1DVPO/Dkgo4eAbTW4oR5QPQucnEMXk2KUVBHSDXWSbfI8mDzo/PcQPdinIbSuxphSFMLYOQThpWZ6kl8wVUlrwMLpcGY3Yzl4iqY6IHka6l8lxhT3CpaJT
+ R0i0KxPm
+ X/8B/WLHL0JN3Ifi7cmJAxV8DYljz2DE0OADqMRAytJG2GXYClraBxZ/DIce9/2Ze0auxLgIWDYlJwpjd3Sc+Y1RZ7tguaXPA1rE0mJZdOExXME8eLD+S5ue2JXk/rJ1Fmcthqu9blloWEGqHphDy+AmaeuwCkhVWuDbL5QdE+CTDn18CcbYamjSR2XLKcSrN9EfsfNLmxvgUFpFy9fsIzMnJrutWsQMHD2nkwUhHdna1VDsI66Tu5D4lkl+gTsnd5iH7CSsS6W9s/pwdxFJMbipqaKCsucRGZ1lnVMSAjzw0FqJnfCRbQDvHLCZ2NSGkaZZvRh/YBdAyHQa4wEQO6OrCgYJYWn8LNtLKFyI3Veuw2r8JKoyTn3blTSc6Q4jRv9PDoGfZevUwakw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,164 +111,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Alistair,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on akpm-mm/mm-everything]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Alistair-Popple/mm-memremap-Remove-unused-get_dev_pagemap-parameter/20250902-131811
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250902051421.162498-2-apopple%40nvidia.com
+patch subject: [PATCH 2/2] mm/memremap: Remove unused get_dev_pagemap() parameter
+config: i386-buildonly-randconfig-001-20250903 (https://download.01.org/0day-ci/archive/20250903/202509030434.fEPVFkG4-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509030434.fEPVFkG4-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509030434.fEPVFkG4-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/memory-failure.c: In function 'memory_failure':
+>> mm/memory-failure.c:2269:33: error: too many arguments to function 'get_dev_pagemap'
+    2269 |                         pgmap = get_dev_pagemap(pfn, NULL);
+         |                                 ^~~~~~~~~~~~~~~
+   In file included from include/linux/mm.h:33,
+                    from mm/memory-failure.c:40:
+   include/linux/memremap.h:236:35: note: declared here
+     236 | static inline struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
+         |                                   ^~~~~~~~~~~~~~~
 
 
-On 02/09/2025 12:03, David Hildenbrand wrote:
-> On 02.09.25 12:34, Usama Arif wrote:
->>
->>
->> On 02/09/2025 10:03, David Hildenbrand wrote:
->>> On 02.09.25 04:28, Baolin Wang wrote:
->>>>
->>>>
->>>> On 2025/9/2 00:46, David Hildenbrand wrote:
->>>>> On 29.08.25 03:55, Baolin Wang wrote:
->>>>>>
->>>>>>
->>>>>> On 2025/8/28 18:48, Dev Jain wrote:
->>>>>>>
->>>>>>> On 28/08/25 3:16 pm, Baolin Wang wrote:
->>>>>>>> (Sorry for chiming in late)
->>>>>>>>
->>>>>>>> On 2025/8/22 22:10, David Hildenbrand wrote:
->>>>>>>>>>> Once could also easily support the value 255 (HPAGE_PMD_NR / 2- 1),
->>>>>>>>>>> but not sure
->>>>>>>>>>> if we have to add that for now.
->>>>>>>>>>
->>>>>>>>>> Yeah not so sure about this, this is a 'just have to know' too, and
->>>>>>>>>> yes you
->>>>>>>>>> might add it to the docs, but people are going to be mightily
->>>>>>>>>> confused, esp if
->>>>>>>>>> it's a calculated value.
->>>>>>>>>>
->>>>>>>>>> I don't see any other way around having a separate tunable if we
->>>>>>>>>> don't just have
->>>>>>>>>> something VERY simple like on/off.
->>>>>>>>>
->>>>>>>>> Yeah, not advocating that we add support for other values than 0/511,
->>>>>>>>> really.
->>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> Also the mentioned issue sounds like something that needs to be
->>>>>>>>>> fixed elsewhere
->>>>>>>>>> honestly in the algorithm used to figure out mTHP ranges (I may be
->>>>>>>>>> wrong - and
->>>>>>>>>> happy to stand corrected if this is somehow inherent, but reallly
->>>>>>>>>> feels that
->>>>>>>>>> way).
->>>>>>>>>
->>>>>>>>> I think the creep is unavoidable for certain values.
->>>>>>>>>
->>>>>>>>> If you have the first two pages of a PMD area populated, and you
->>>>>>>>> allow for at least half of the #PTEs to be non/zero, you'd collapse
->>>>>>>>> first a
->>>>>>>>> order-2 folio, then and order-3 ... until you reached PMD order.
->>>>>>>>>
->>>>>>>>> So for now we really should just support 0 / 511 to say "don't
->>>>>>>>> collapse if there are holes" vs. "always collapse if there is at
->>>>>>>>> least one pte used".
->>>>>>>>
->>>>>>>> If we only allow setting 0 or 511, as Nico mentioned before, "At 511,
->>>>>>>> no mTHP collapses would ever occur anyway, unless you have 2MB
->>>>>>>> disabled and other mTHP sizes enabled. Technically, at 511, only the
->>>>>>>> highest enabled order would ever be collapsed."
->>>>>>> I didn't understand this statement. At 511, mTHP collapses will occur if
->>>>>>> khugepaged cannot get a PMD folio. Our goal is to collapse to the
->>>>>>> highest order folio.
->>>>>>
->>>>>> Yes, I’m not saying that it’s incorrect behavior when set to 511. What I
->>>>>> mean is, as in the example I gave below, users may only want to allow a
->>>>>> large order collapse when the number of present PTEs reaches half of the
->>>>>> large folio, in order to avoid RSS bloat.
->>>>>
->>>>> How do these users control allocation at fault time where this parameter
->>>>> is completely ignored?
->>>>
->>>> Sorry, I did not get your point. Why does the 'max_pte_none' need to
->>>> control allocation at fault time? Could you be more specific? Thanks.
->>>
->>> The comment over khugepaged_max_ptes_none gives a hint:
->>>
->>> /*
->>>   * default collapse hugepages if there is at least one pte mapped like
->>>   * it would have happened if the vma was large enough during page
->>>   * fault.
->>>   *
->>>   * Note that these are only respected if collapse was initiated by khugepaged.
->>>   */
->>>
->>> In the common case (for anything that really cares about RSS bloat) you will just a
->>> get a THP during page fault and consequently RSS bloat.
->>>
->>> As raised in my other reply, the only documented reason to set max_ptes_none=0 seems
->>> to be when an application later (after once possibly getting a THP already during
->>> page faults) did some MADV_DONTNEED and wants to control the usage of THPs itself using
->>> MADV_COLLAPSE.
->>>
->>> It's a questionable use case, that already got more problematic with mTHP and page
->>> table reclaim.
->>>
->>> Let me explain:
->>>
->>> Before mTHP, if someone would MADV_DONTNEED (resulting in
->>> a page table with at least one pte_none entry), there would have been no way we would
->>> get memory over-allocated afterwards with max_ptes_none=0.
->>>
->>> (1) Page faults would spot "there is a page table" and just fallback to order-0 pages.
->>> (2) khugepaged was told to not collapse through max_ptes_none=0.
->>>
->>> But now:
->>>
->>> (A) With mTHP during page-faults, we can just end up over-allocating memory in such
->>>      an area again: page faults will simply spot a bunch of pte_nones around the fault area
->>>      and install an mTHP.
->>>
->>> (B) With page table reclaim (when zapping all PTEs in a table at once), we will reclaim the
->>>      page table. The next page fault will just try installing a PMD THP again, because there is
->>>      no PTE table anymore.
->>>
->>> So I question the utility of max_ptes_none. If you can't tame page faults, then there is only
->>> limited sense in taming khugepaged. I think there is vale in setting max_ptes_none=0 for some
->>> corner cases, but I am yet to learn why max_ptes_none=123 would make any sense.
->>>
->>>
->>
->> For PMD mapped THPs with THP shrinker, this has changed. You can basically tame pagefaults, as when you encounter
->> memory pressure, the shrinker kicks in if the value is less than HPAGE_PMD_NR -1 (i.e. 511 for x86), and
->> will break down those hugepages and free up zero-filled memory.
-> 
-> You are not really taming page faults, though, you are undoing what page faults might have messed up :)
-> 
-> I have seen in our prod workloads where
->> the memory usage and THP usage can spike (usually when the workload starts), but with memory pressure,
->> the memory usage is lower compared to with max_ptes_none = 511, while still still keeping the benefits
->> of THPs like lower TLB misses.
-> 
-> Thanks for raising that: I think the current behavior is in place such that you don't bounce back-and-forth between khugepaged collapse and shrinker-split.
-> 
+vim +/get_dev_pagemap +2269 mm/memory-failure.c
 
-Yes, both collapse and shrinker split hinge on max_ptes_none to prevent one of these things thrashing the effect of the other.
+1a3798dececa8c Jane Chu                2024-05-24  2218  
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2219  /**
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2220   * memory_failure - Handle memory failure of a page.
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2221   * @pfn: Page Number of the corrupted page
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2222   * @flags: fine tune action taken
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2223   *
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2224   * This function is called by the low level machine check code
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2225   * of an architecture when it detects hardware memory corruption
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2226   * of a page. It tries its best to recover, which includes
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2227   * dropping pages, killing processes etc.
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2228   *
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2229   * The function is primarily of use for corruptions that
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2230   * happen outside the current execution context (e.g. when
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2231   * detected by a background scrubber)
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2232   *
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2233   * Must run in process context (e.g. a work queue) with interrupts
+5885c6a62533cb Miaohe Lin              2023-07-11  2234   * enabled and no spinlocks held.
+d1fe111fb62a1c luofei                  2022-03-22  2235   *
+d2734f044f8483 Shuai Xue               2025-03-12  2236   * Return:
+d2734f044f8483 Shuai Xue               2025-03-12  2237   *   0             - success,
+d2734f044f8483 Shuai Xue               2025-03-12  2238   *   -ENXIO        - memory not managed by the kernel
+d2734f044f8483 Shuai Xue               2025-03-12  2239   *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event,
+d2734f044f8483 Shuai Xue               2025-03-12  2240   *   -EHWPOISON    - the page was already poisoned, potentially
+d2734f044f8483 Shuai Xue               2025-03-12  2241   *                   kill process,
+d2734f044f8483 Shuai Xue               2025-03-12  2242   *   other negative values - failure.
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2243   */
+83b57531c58f41 Eric W. Biederman       2017-07-09  2244  int memory_failure(unsigned long pfn, int flags)
+6a46079cf57a7f Andi Kleen              2009-09-16  2245  {
+6a46079cf57a7f Andi Kleen              2009-09-16  2246  	struct page *p;
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2247) 	struct folio *folio;
+6100e34b2526e1 Dan Williams            2018-07-13  2248  	struct dev_pagemap *pgmap;
+171936ddaf97e6 Tony Luck               2021-06-24  2249  	int res = 0;
+524fca1e7356f8 Naoya Horiguchi         2013-02-22  2250  	unsigned long page_flags;
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2251  	bool retry = true;
+405ce051236cc6 Naoya Horiguchi         2022-04-21  2252  	int hugetlb = 0;
+6a46079cf57a7f Andi Kleen              2009-09-16  2253  
+6a46079cf57a7f Andi Kleen              2009-09-16  2254  	if (!sysctl_memory_failure_recovery)
+83b57531c58f41 Eric W. Biederman       2017-07-09  2255  		panic("Memory failure on page %lx", pfn);
+6a46079cf57a7f Andi Kleen              2009-09-16  2256  
+03b122da74b22f Tony Luck               2021-10-26  2257  	mutex_lock(&mf_mutex);
+03b122da74b22f Tony Luck               2021-10-26  2258  
+67f22ba7750f94 zhenwei pi              2022-06-15  2259  	if (!(flags & MF_SW_SIMULATED))
+67f22ba7750f94 zhenwei pi              2022-06-15  2260  		hw_memory_failure = true;
+67f22ba7750f94 zhenwei pi              2022-06-15  2261  
+96c804a6ae8c59 David Hildenbrand       2019-10-18  2262  	p = pfn_to_online_page(pfn);
+96c804a6ae8c59 David Hildenbrand       2019-10-18  2263  	if (!p) {
+03b122da74b22f Tony Luck               2021-10-26  2264  		res = arch_memory_failure(pfn, flags);
+03b122da74b22f Tony Luck               2021-10-26  2265  		if (res == 0)
+03b122da74b22f Tony Luck               2021-10-26  2266  			goto unlock_mutex;
+03b122da74b22f Tony Luck               2021-10-26  2267  
+96c804a6ae8c59 David Hildenbrand       2019-10-18  2268  		if (pfn_valid(pfn)) {
+96c804a6ae8c59 David Hildenbrand       2019-10-18 @2269  			pgmap = get_dev_pagemap(pfn, NULL);
+d51b68469bc780 Miaohe Lin              2023-07-01  2270  			put_ref_page(pfn, flags);
+03b122da74b22f Tony Luck               2021-10-26  2271  			if (pgmap) {
+03b122da74b22f Tony Luck               2021-10-26  2272  				res = memory_failure_dev_pagemap(pfn, flags,
+96c804a6ae8c59 David Hildenbrand       2019-10-18  2273  								 pgmap);
+03b122da74b22f Tony Luck               2021-10-26  2274  				goto unlock_mutex;
+03b122da74b22f Tony Luck               2021-10-26  2275  			}
+96c804a6ae8c59 David Hildenbrand       2019-10-18  2276  		}
+96f96763de26d6 Kefeng Wang             2022-07-26  2277  		pr_err("%#lx: memory outside kernel control\n", pfn);
+03b122da74b22f Tony Luck               2021-10-26  2278  		res = -ENXIO;
+03b122da74b22f Tony Luck               2021-10-26  2279  		goto unlock_mutex;
+6a46079cf57a7f Andi Kleen              2009-09-16  2280  	}
+6a46079cf57a7f Andi Kleen              2009-09-16  2281  
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2282  try_again:
+405ce051236cc6 Naoya Horiguchi         2022-04-21  2283  	res = try_memory_failure_hugetlb(pfn, flags, &hugetlb);
+405ce051236cc6 Naoya Horiguchi         2022-04-21  2284  	if (hugetlb)
+171936ddaf97e6 Tony Luck               2021-06-24  2285  		goto unlock_mutex;
+171936ddaf97e6 Tony Luck               2021-06-24  2286  
+6a46079cf57a7f Andi Kleen              2009-09-16  2287  	if (TestSetPageHWPoison(p)) {
+47af12bae17f99 Aili Yao                2021-06-24  2288  		res = -EHWPOISON;
+a3f5d80ea401ac Naoya Horiguchi         2021-06-28  2289  		if (flags & MF_ACTION_REQUIRED)
+a3f5d80ea401ac Naoya Horiguchi         2021-06-28  2290  			res = kill_accessing_process(current, pfn, flags);
+f361e2462e8ccc Naoya Horiguchi         2022-04-28  2291  		if (flags & MF_COUNT_INCREASED)
+f361e2462e8ccc Naoya Horiguchi         2022-04-28  2292  			put_page(p);
+b8b9488d50b715 Jane Chu                2024-05-24  2293  		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+171936ddaf97e6 Tony Luck               2021-06-24  2294  		goto unlock_mutex;
+6a46079cf57a7f Andi Kleen              2009-09-16  2295  	}
+6a46079cf57a7f Andi Kleen              2009-09-16  2296  
+6a46079cf57a7f Andi Kleen              2009-09-16  2297  	/*
+6a46079cf57a7f Andi Kleen              2009-09-16  2298  	 * We need/can do nothing about count=0 pages.
+6a46079cf57a7f Andi Kleen              2009-09-16  2299  	 * 1) it's a free page, and therefore in safe hand:
+9cf2819159d5a3 Miaohe Lin              2022-08-30  2300  	 *    check_new_page() will be the gate keeper.
+761ad8d7c7b548 Naoya Horiguchi         2017-07-10  2301  	 * 2) it's part of a non-compound high order page.
+6a46079cf57a7f Andi Kleen              2009-09-16  2302  	 *    Implies some kernel user: cannot stop them from
+6a46079cf57a7f Andi Kleen              2009-09-16  2303  	 *    R/W the page; let's pray that the page has been
+6a46079cf57a7f Andi Kleen              2009-09-16  2304  	 *    used and will be freed some time later.
+6a46079cf57a7f Andi Kleen              2009-09-16  2305  	 * In fact it's dangerous to directly bump up page count from 0,
+1c4c3b99c03d3e Jiang Biao              2018-08-21  2306  	 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+6a46079cf57a7f Andi Kleen              2009-09-16  2307  	 */
+0ed950d1f28142 Naoya Horiguchi         2021-06-28  2308  	if (!(flags & MF_COUNT_INCREASED)) {
+0ed950d1f28142 Naoya Horiguchi         2021-06-28  2309  		res = get_hwpoison_page(p, flags);
+0ed950d1f28142 Naoya Horiguchi         2021-06-28  2310  		if (!res) {
+8d22ba1b74aa94 Wu Fengguang            2009-12-16  2311  			if (is_free_buddy_page(p)) {
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2312  				if (take_page_off_buddy(p)) {
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2313  					page_ref_inc(p);
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2314  					res = MF_RECOVERED;
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2315  				} else {
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2316  					/* We lost the race, try again */
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2317  					if (retry) {
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2318  						ClearPageHWPoison(p);
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2319  						retry = false;
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2320  						goto try_again;
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2321  					}
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2322  					res = MF_FAILED;
+a8b2c2ce89d4e0 Oscar Salvador          2020-12-14  2323  				}
+b66d00dfebe79e Kefeng Wang             2022-10-21  2324  				res = action_result(pfn, MF_MSG_BUDDY, res);
+8d22ba1b74aa94 Wu Fengguang            2009-12-16  2325  			} else {
+b66d00dfebe79e Kefeng Wang             2022-10-21  2326  				res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+8d22ba1b74aa94 Wu Fengguang            2009-12-16  2327  			}
+171936ddaf97e6 Tony Luck               2021-06-24  2328  			goto unlock_mutex;
+0ed950d1f28142 Naoya Horiguchi         2021-06-28  2329  		} else if (res < 0) {
+b8b9488d50b715 Jane Chu                2024-05-24  2330  			res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+0ed950d1f28142 Naoya Horiguchi         2021-06-28  2331  			goto unlock_mutex;
+0ed950d1f28142 Naoya Horiguchi         2021-06-28  2332  		}
+6a46079cf57a7f Andi Kleen              2009-09-16  2333  	}
+6a46079cf57a7f Andi Kleen              2009-09-16  2334  
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2335) 	folio = page_folio(p);
+9b0ab153d76972 Jane Chu                2024-05-24  2336  
+9b0ab153d76972 Jane Chu                2024-05-24  2337  	/* filter pages that are protected from hwpoison test by users */
+9b0ab153d76972 Jane Chu                2024-05-24  2338  	folio_lock(folio);
+9b0ab153d76972 Jane Chu                2024-05-24  2339  	if (hwpoison_filter(p)) {
+9b0ab153d76972 Jane Chu                2024-05-24  2340  		ClearPageHWPoison(p);
+9b0ab153d76972 Jane Chu                2024-05-24  2341  		folio_unlock(folio);
+9b0ab153d76972 Jane Chu                2024-05-24  2342  		folio_put(folio);
+9b0ab153d76972 Jane Chu                2024-05-24  2343  		res = -EOPNOTSUPP;
+9b0ab153d76972 Jane Chu                2024-05-24  2344  		goto unlock_mutex;
+9b0ab153d76972 Jane Chu                2024-05-24  2345  	}
+9b0ab153d76972 Jane Chu                2024-05-24  2346  	folio_unlock(folio);
+9b0ab153d76972 Jane Chu                2024-05-24  2347  
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2348) 	if (folio_test_large(folio)) {
+eac96c3efdb593 Yang Shi                2021-10-28  2349  		/*
+eac96c3efdb593 Yang Shi                2021-10-28  2350  		 * The flag must be set after the refcount is bumped
+eac96c3efdb593 Yang Shi                2021-10-28  2351  		 * otherwise it may race with THP split.
+eac96c3efdb593 Yang Shi                2021-10-28  2352  		 * And the flag can't be set in get_hwpoison_page() since
+eac96c3efdb593 Yang Shi                2021-10-28  2353  		 * it is called by soft offline too and it is just called
+5885c6a62533cb Miaohe Lin              2023-07-11  2354  		 * for !MF_COUNT_INCREASED.  So here seems to be the best
+eac96c3efdb593 Yang Shi                2021-10-28  2355  		 * place.
+eac96c3efdb593 Yang Shi                2021-10-28  2356  		 *
+eac96c3efdb593 Yang Shi                2021-10-28  2357  		 * Don't need care about the above error handling paths for
+eac96c3efdb593 Yang Shi                2021-10-28  2358  		 * get_hwpoison_page() since they handle either free page
+eac96c3efdb593 Yang Shi                2021-10-28  2359  		 * or unhandlable page.  The refcount is bumped iff the
+eac96c3efdb593 Yang Shi                2021-10-28  2360  		 * page is a valid handlable page.
+eac96c3efdb593 Yang Shi                2021-10-28  2361  		 */
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2362) 		folio_set_has_hwpoisoned(folio);
+1a3798dececa8c Jane Chu                2024-05-24  2363  		if (try_to_split_thp_page(p, false) < 0) {
+1a3798dececa8c Jane Chu                2024-05-24  2364  			res = -EHWPOISON;
+1a3798dececa8c Jane Chu                2024-05-24  2365  			kill_procs_now(p, pfn, flags, folio);
+1a3798dececa8c Jane Chu                2024-05-24  2366  			put_page(p);
+1a3798dececa8c Jane Chu                2024-05-24  2367  			action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+171936ddaf97e6 Tony Luck               2021-06-24  2368  			goto unlock_mutex;
+5d1fd5dc877bc1 Naoya Horiguchi         2020-10-15  2369  		}
+415c64c1453aa2 Naoya Horiguchi         2015-06-24  2370  		VM_BUG_ON_PAGE(!page_count(p), p);
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2371) 		folio = page_folio(p);
+415c64c1453aa2 Naoya Horiguchi         2015-06-24  2372  	}
+415c64c1453aa2 Naoya Horiguchi         2015-06-24  2373  
+e43c3afb367112 Wu Fengguang            2009-09-29  2374  	/*
+e43c3afb367112 Wu Fengguang            2009-09-29  2375  	 * We ignore non-LRU pages for good reasons.
+e43c3afb367112 Wu Fengguang            2009-09-29  2376  	 * - PG_locked is only well defined for LRU pages and a few others
+48c935ad88f5be Kirill A. Shutemov      2016-01-15  2377  	 * - to avoid races with __SetPageLocked()
+e43c3afb367112 Wu Fengguang            2009-09-29  2378  	 * - to avoid races with __SetPageSlab*() (and more non-atomic ops)
+e43c3afb367112 Wu Fengguang            2009-09-29  2379  	 * The check (unnecessarily) ignores LRU pages being isolated and
+e43c3afb367112 Wu Fengguang            2009-09-29  2380  	 * walked by the page reclaim code, however that's not a big loss.
+e43c3afb367112 Wu Fengguang            2009-09-29  2381  	 */
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2382) 	shake_folio(folio);
+e43c3afb367112 Wu Fengguang            2009-09-29  2383  
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2384) 	folio_lock(folio);
+847ce401df392b Wu Fengguang            2009-12-16  2385  
+f37d4298aa7f8b Andi Kleen              2014-08-06  2386  	/*
+75ee64b3c9a969 Miaohe Lin              2022-03-22  2387  	 * We're only intended to deal with the non-Compound page here.
+8a78882dac1c8c Miaohe Lin              2024-07-08  2388  	 * The page cannot become compound pages again as folio has been
+8a78882dac1c8c Miaohe Lin              2024-07-08  2389  	 * splited and extra refcnt is held.
+f37d4298aa7f8b Andi Kleen              2014-08-06  2390  	 */
+8a78882dac1c8c Miaohe Lin              2024-07-08  2391  	WARN_ON(folio_test_large(folio));
+f37d4298aa7f8b Andi Kleen              2014-08-06  2392  
+524fca1e7356f8 Naoya Horiguchi         2013-02-22  2393  	/*
+524fca1e7356f8 Naoya Horiguchi         2013-02-22  2394  	 * We use page flags to determine what action should be taken, but
+524fca1e7356f8 Naoya Horiguchi         2013-02-22  2395  	 * the flags can be modified by the error containment action.  One
+524fca1e7356f8 Naoya Horiguchi         2013-02-22  2396  	 * example is an mlocked page, where PG_mlocked is cleared by
+4d8f7418e8ba36 David Hildenbrand       2023-12-20  2397  	 * folio_remove_rmap_*() in try_to_unmap_one(). So to determine page
+4d8f7418e8ba36 David Hildenbrand       2023-12-20  2398  	 * status correctly, we save a copy of the page flags at this time.
+524fca1e7356f8 Naoya Horiguchi         2013-02-22  2399  	 */
+378d05afc7b1bd Matthew Wilcox (Oracle  2025-08-05  2400) 	page_flags = folio->flags.f;
+524fca1e7356f8 Naoya Horiguchi         2013-02-22  2401  
+e8675d291ac007 yangerkun               2021-06-15  2402  	/*
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2403) 	 * __munlock_folio() may clear a writeback folio's LRU flag without
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2404) 	 * the folio lock. We need to wait for writeback completion for this
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2405) 	 * folio or it may trigger a vfs BUG while evicting inode.
+e8675d291ac007 yangerkun               2021-06-15  2406  	 */
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2407) 	if (!folio_test_lru(folio) && !folio_test_writeback(folio))
+0bc1f8b0682caa Chen Yucong             2014-07-02  2408  		goto identify_page_state;
+0bc1f8b0682caa Chen Yucong             2014-07-02  2409  
+6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2410  	/*
+6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2411  	 * It's very difficult to mess with pages currently under IO
+6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2412  	 * and in many cases impossible, so we just avoid it here.
+6edd6cc66201e0 Naoya Horiguchi         2014-06-04  2413  	 */
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2414) 	folio_wait_writeback(folio);
+6a46079cf57a7f Andi Kleen              2009-09-16  2415  
+6a46079cf57a7f Andi Kleen              2009-09-16  2416  	/*
+6a46079cf57a7f Andi Kleen              2009-09-16  2417  	 * Now take care of user space mappings.
+6ffcd825e7d041 Matthew Wilcox (Oracle  2022-06-28  2418) 	 * Abort on fail: __filemap_remove_folio() assumes unmapped page.
+6a46079cf57a7f Andi Kleen              2009-09-16  2419  	 */
+03468a0f52893b Matthew Wilcox (Oracle  2024-04-12  2420) 	if (!hwpoison_user_mappings(folio, p, pfn, flags)) {
+b8b9488d50b715 Jane Chu                2024-05-24  2421  		res = action_result(pfn, MF_MSG_UNMAP_FAILED, MF_FAILED);
+171936ddaf97e6 Tony Luck               2021-06-24  2422  		goto unlock_page;
+1668bfd5be9d8a Wu Fengguang            2009-12-16  2423  	}
+6a46079cf57a7f Andi Kleen              2009-09-16  2424  
+6a46079cf57a7f Andi Kleen              2009-09-16  2425  	/*
+6a46079cf57a7f Andi Kleen              2009-09-16  2426  	 * Torn down by someone else?
+6a46079cf57a7f Andi Kleen              2009-09-16  2427  	 */
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2428) 	if (folio_test_lru(folio) && !folio_test_swapcache(folio) &&
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2429) 	    folio->mapping == NULL) {
+b66d00dfebe79e Kefeng Wang             2022-10-21  2430  		res = action_result(pfn, MF_MSG_TRUNCATED_LRU, MF_IGNORED);
+171936ddaf97e6 Tony Luck               2021-06-24  2431  		goto unlock_page;
+6a46079cf57a7f Andi Kleen              2009-09-16  2432  	}
+6a46079cf57a7f Andi Kleen              2009-09-16  2433  
+0bc1f8b0682caa Chen Yucong             2014-07-02  2434  identify_page_state:
+0348d2ebec9b00 Naoya Horiguchi         2017-07-10  2435  	res = identify_page_state(pfn, p, page_flags);
+ea6d0630100b28 Naoya Horiguchi         2021-06-24  2436  	mutex_unlock(&mf_mutex);
+ea6d0630100b28 Naoya Horiguchi         2021-06-24  2437  	return res;
+171936ddaf97e6 Tony Luck               2021-06-24  2438  unlock_page:
+5dba5c356ab3bb Matthew Wilcox (Oracle  2024-04-12  2439) 	folio_unlock(folio);
+171936ddaf97e6 Tony Luck               2021-06-24  2440  unlock_mutex:
+171936ddaf97e6 Tony Luck               2021-06-24  2441  	mutex_unlock(&mf_mutex);
+6a46079cf57a7f Andi Kleen              2009-09-16  2442  	return res;
+6a46079cf57a7f Andi Kleen              2009-09-16  2443  }
+cd42f4a3b2b1c4 Tony Luck               2011-12-15  2444  EXPORT_SYMBOL_GPL(memory_failure);
+847ce401df392b Wu Fengguang            2009-12-16  2445  
 
-> There are likely other ways to achieve that, when we have in mind that the thp shrinker will install zero pages and max_ptes_none includes
-> zero pages.
-> 
->>
->> I do agree that the value of max_ptes_none is magical and different workloads can react very differently
->> to it. The relationship is definitely not linear. i.e. if I use max_ptes_none = 256, it does not mean
->> that the memory regression of using THP=always vs THP=madvise is halved.
-> 
-> To which value would you set it? Just 510? 0?
-> 
-
-There are some very large workloads in the meta fleet that I experimented with and found that having
-a small value works out. I experimented with 0, 51 (10%) and 256 (50%). 51 was found to be an optimal
-comprimise in terms of application metrics improving, having an acceptable amount of memory regression and
-improved system level metrics (lower TLB misses, lower page faults). I am sure there was a better value out
-there for these workloads, but not possible to experiment with every value.
-
-In terms of wider rollout across the fleet, we are going to target 0 (or a very very small value)
-when moving from THP=madvise to always. Mainly because it is the least likely to cause a memory regression as
-THP shrinker will deal with page faults faulting in mostly zero-filled pages and khugepaged wont collapse
-pages that are dominated by 4K zero-filled chunks. 
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
