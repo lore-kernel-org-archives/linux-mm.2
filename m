@@ -4,106 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A147CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:50:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8462BCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:58:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C271A8E0022; Tue,  2 Sep 2025 08:50:44 -0400 (EDT)
+	id DE63F8E000D; Tue,  2 Sep 2025 08:58:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB06B8E001D; Tue,  2 Sep 2025 08:50:44 -0400 (EDT)
+	id D96C18E0001; Tue,  2 Sep 2025 08:58:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9F248E0022; Tue,  2 Sep 2025 08:50:44 -0400 (EDT)
+	id C8B748E000D; Tue,  2 Sep 2025 08:58:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9581C8E001D
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:50:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51667C0120
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:50:44 +0000 (UTC)
-X-FDA: 83844294408.03.219E651
+	by kanga.kvack.org (Postfix) with ESMTP id B3A938E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:58:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69B85138AAB
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:58:32 +0000 (UTC)
+X-FDA: 83844314064.08.AB95DAB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4CFC04000C
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:50:42 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RBEujoMD;
-	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817442; a=rsa-sha256;
-	cv=none;
-	b=5wk3W3hxkl3P934fn5HKRjS8BGawsPj33Z6T+5mJQrc3PVEPsoxnYZBRz9OZLgvilIkuNE
-	wQpmxrrGG4N0DaMglJPLzFB1qZcdi9s1dzj7IUSClFfggeqbJvg4dlUcX38KoPTr9hThaJ
-	e545Kp7BhYpoMSoNXzMidTka4ROOmyY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RBEujoMD;
-	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id D21B910000A
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:58:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y03rLipQ;
+	spf=pass (imf14.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756817442;
+	s=arc-20220608; t=1756817911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2UHY+NiyY4gVCdz6M9f2xN2PNjs2AgATEY4XF7MF98Y=;
-	b=bXdvboRFFqhmVcmQhxg9B1ivFi592bdDQ26TUXVAr+vZo4/FMcU36VkP4NPSjJxQjkQy/B
-	TP8x599bR08B1h7ahM+OdQA6+yGFMdM4djztYKzZJufM3xH/i3c3zZ/jjQavtZfYDEe8+z
-	lNTdjC0gzrqig/lN53eUzX3Q8N1HBLc=
+	bh=a0gJxSB8XWTrVKmtvWsr6MEfNQMybJ3AZkFJpGUht/g=;
+	b=AB1O2hbiRNt/koCEBVTKNsw70szOJEnYrjGPufUco0LK1CHFAz5vdVYNuNkRb/4bZKwKat
+	wTmfXD+q1ENRToAi9PHbVB7ml/k8NumA46PI44ZKoBJfkP8hYz39ZxtQZGi4DNmeAfY67K
+	q6VK0vL94uivQ3KM0CPbvQ/D7zpWRsU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y03rLipQ;
+	spf=pass (imf14.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817911; a=rsa-sha256;
+	cv=none;
+	b=f1iOLIrYNjjLPkai5w3zQq3RJR5KLarqV890HW/DYpfSkI6x1xAZX30cCiMUbVG66eqwTb
+	X4L9aE2g29xU21Ypmm3U0OOhmfiMP1QhgVbmaERJ+pwHVDazVTMd/ualBZyY1JTm11kwt8
+	IoPd1dQXp6cFczxdLbHw34WhexxEOQk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D6AC44634
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A47BC113D0
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:50:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BD99743995;
+	Tue,  2 Sep 2025 12:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08555C4CEED;
+	Tue,  2 Sep 2025 12:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756817441;
-	bh=qtptNUL8d4rhr8+RJ1neEPE2bGDD2Ksu68uXBEjf0Tg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RBEujoMDrKCKRavtx6n1+N2Md6Yyu0iAykIwwEjBUppN2pstys2YzkyPmf/cUfQAp
-	 rq3A1DympA1Okn5Jzv/KQkmbbQo4LVkxSrLxEV/vWni/C/URusk2q4QAEwjOYQaRQ7
-	 CNlNwT/oCHzLk4y7hi3rT8vWrj7JHl/JoM/Vbn+Z+xcKuuV704DjNgJWSPre2TjWXG
-	 3hVUHgl7xH7IUi8zIM1yfPB6y8T5Y48FnLHHs5dQHXfbwOPGkc2lDyDZC2tBGQDgZ8
-	 KtM+nf0bUjh6OgFBhDRkQ/cKgYbwesFtNFMZ9iuefL7zPYIMZjLB8FC84TSkQM6YWB
-	 MLp+arQ32E7Tg==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-71d60504bf8so46404307b3.2
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 05:50:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX0NzcPx7YTcW3Ugb9iv4bW+XaG7ggshfA1kTX7tVIhg25FIq4FPm+p1kGqdkDgQvr2NDdpd2bvwA==@kvack.org
-X-Gm-Message-State: AOJu0YzNMyiehhTWu8ccyIseqTP6Drt3vYncFmVsxHkremblIGa/Rjud
-	ciyp2BXx1MUhTDf8j76Zbeu7/rosoeDBmXRaJ5+hc3zL9cYYSMy974eq3fJxUzwFSYnn5nuwWJG
-	FhzXOacyZVB5jJ51PELg3MLDM3FfDvyzpHT5zrDO9sA==
-X-Google-Smtp-Source: AGHT+IFVXBziZnAXtY7UJyF4jsrXraoffuaNWH6DNadyTShnx/MSIVbICVBeT/+7TTzFGz2dzYpxMqBWI8MahuDUmOc=
-X-Received: by 2002:a05:690c:dcd:b0:720:378:bec2 with SMTP id
- 00721157ae682-72276511331mr119403207b3.33.1756817440419; Tue, 02 Sep 2025
- 05:50:40 -0700 (PDT)
+	s=k20201202; t=1756817909;
+	bh=CM1gzdTND9tJKwW5aJTGTYza7PZbOeFeI+0kiHDsfk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y03rLipQ172HNCWdzae1SvWeUKEZCuyy4iT/sxqmRUG2Mk9XAm0JD2Cf43Q4ccXI4
+	 vJ3zCW+7bhV2I/8W3AQ/zj+cPA9rZhBtVccOf2Syvu2xP3GZZOcRUzTwD1l9Dszm61
+	 coTmrjtssASLghJ0YobZBbn3b5yvo1gmHUuMYKl3N+eOUDvW9dLkEd42uz6ExoscbL
+	 AN9nGwSWGJAg2aXnrk/T8mIOnh8SJFTLZoRnFwoAw9p/ZVbj1um54ETkG1UmVJ0yaX
+	 k1mi0ufFXvprbr0GmTrnZJZPMNtSonfXc/UWWvtDhkzWmzN/ZJ+J57M3aRwqpyvkrT
+	 ePb8jIU/SceyA==
+Date: Tue, 2 Sep 2025 15:58:24 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Christoph Hellwig <hch@lst.de>, dri-devel@lists.freedesktop.org,
+	iommu@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+	Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v1 08/10] vfio/pci: Enable peer-to-peer DMA transactions
+ by default
+Message-ID: <20250902125824.GH10073@unreal>
+References: <cover.1754311439.git.leon@kernel.org>
+ <edb2ec654fc27ba8f73695382ab0a029f18422b5.1754311439.git.leon@kernel.org>
+ <20250806160201.2b72e7a0.alex.williamson@redhat.com>
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-4-ryncsn@gmail.com>
- <ed486d6d-1664-43b6-9d5c-696305f833b1@redhat.com>
-In-Reply-To: <ed486d6d-1664-43b6-9d5c-696305f833b1@redhat.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 2 Sep 2025 05:50:29 -0700
-X-Gmail-Original-Message-ID: <CACePvbV=iR=r3rR8Xov9B9ntgG+XXM4jwy_bhGzUQmi8yWzpzA@mail.gmail.com>
-X-Gm-Features: Ac12FXy15-vkRjE13xZWnbwl5FOzZS_8Qv0OdwUQBfi8tnkwI6upzb-z1-HyKYk
-Message-ID: <CACePvbV=iR=r3rR8Xov9B9ntgG+XXM4jwy_bhGzUQmi8yWzpzA@mail.gmail.com>
-Subject: Re: [PATCH 3/9] mm, swap: rename and move some swap cluster
- definition and helpers
-To: David Hildenbrand <david@redhat.com>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4CFC04000C
-X-Stat-Signature: nhttq6rjbdmxktbu7ntedw1g1ugx95an
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250806160201.2b72e7a0.alex.williamson@redhat.com>
+X-Rspamd-Queue-Id: D21B910000A
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756817442-841106
-X-HE-Meta: U2FsdGVkX1/oSBgm+8ULQYzP9Z4+1IpfHxahdudFL6c8UsB7pbdJ2jzgAHQFMPV+gVeCqIvEwwmeHUfEKoPCYbqa2wC4qiKO4RHSRlFxYddPrNNJgGhn5f2ZsajrGRdZY/1RPTY/TxFEvdBBhoJsuzVRGp0Z9i8CVG3LUfTmbKTsILeR15SW7P/dGJKc9FPy1MmtOy6RH4sKlQ+zPqiT5qnfD0wHCfKYjKSMOnaka8Ix5jbhRs6zB9bZfWppp1r1teOFgZj+Y2iORbLAX4C1aEi+uCHQgEjfHl2nVpSAk3XsEAJ+tfNSEnIlMcdavvHt1F+x7YFeIjY2iCgDie9fHeD6VLYBZuCc+pDTb00FgKOMBzrzr6vWebWseBu8GcT01hvAYYpuYJqmlewCQB9CfdIUG5RwHRtvNOdYIjzArYKdYVOunZbU0PA1lo/c+3ZuKrw244v1sR8fwJjicmYc+4ygTs7mfcr39j4+NgcXoVu5pPeO3UkEWpRtaUDG0f4LMlNvdnkoy8NwryGZYxGLoBJK+IFIi7PncQZEN69bP1JvehJUGrwOYXUZvhW4k9RXbaoxhkKyRvofVwjlbTupViFMG8IM9mcGj0GTuS4JhArR+ytA+M4Ra68RqNChJg5e/6HOxRq8NMAiKOigoHpWV1SRMQZrqhJbYn7rnWK17uiNAKqA/znYp9r+XkVPUJ+7PmewyDLRkC0yVJxFIG+F+KxkCZ0EjSVaDqkuk7SvepihqsvZ7jzTs+2iywTS27ATFTI5swEeOfZn4tES8zd6sGhi7c+VBMhnYdEu4Mhe5uwM9zWTLlxVvf/A69G3T9lCqo8QIvFbaccQUWwFoY7Pcdy94M1XHAbkzyJHlelxvWSuP60s3hWxbnCISyhncccwkuvXK+kJgHe1x+NlTvA8IIVxz109JZ/78NagxbP/HCvIo9/ElxeCAlAkW435Hf6jzlfEQf0I9qqJWav/sAx
- y5fph1gz
- JoRqNq/IqU6FK9pg/6ITjFifOJCG7ONkDn5olFDy6F8Gc8cK3Bj5X9B9nyLKnnFF94kxK5E/HWjDhDCSKVcFFwavASn9VxRmxZ4INrhHtK7MU9rxrt7LcGnOwwrk+GfL4CwfpYLOVIP3SKYN28EhDMWKDcffMKjdMbBAI+7+lyvdHSNr77WLI9HG+njr7z/iGocEy3qsBrvmGPq+ucHY5nw2XjkzLPgBVsrXPf20ruFdQq7PlYR6ctSBvxkqM+m9ptEPrmyb/Q6fG7VfdN2m7bHrxQSdM8G/VPOSHzI1iukbsFvAwbrk+lpkPL/hOLTewrRtabMGip8XVCxI=
+X-Stat-Signature: 4tfftib31iu7a1gjxqff391a69x9u6ew
+X-HE-Tag: 1756817910-28248
+X-HE-Meta: U2FsdGVkX189aTE2tYQ+kNTOCRYEp63ETNHmYy6fIJUxU+OGmGuVpBobYhhwVbesw/i72AhdrwifejEFFf4cRwzNmNnNCmBM9giVSKQ2IOxpdXITpJ03VvgkLJhWta/E4fMGMrWIntDVICb41+MjtTI4/nTLOCIYu4xhG9dm4pq06bxx28MRNbS0LEUMQKLrOd1dWAAo5iCZwMvSgdhP1qwJJIgd8kcuiH1cKtN/zK/98+89tPAlR0eUe1OOpRFMc631C5yaH4iWjUNGIFqv3nlITjVudqA9lZTSrRc/Kox9dqrTOCfX6nQmbg5i9p/8ZKUzui1oAWMgu21LlR07MKPBUWCZCLNWfB/+fvnuin3PcyH677Wty6GTtvXd4988wvRSYUQ2Kr5IngPkwWGphvwjUXdwit0TPlt4MFR4wKfDYEiRZKrz6ushUjA7JBIQz3bInf7iAnjyAWZV+zEu56uUCF6l/oVJd11Zw7RuVsr0D9yNcLcQd8+NXdfCkJtVs+UL51zyDeUsdKAUTk/mUeIlGFD5xD619qBWYm8BTYjCKCVqEPJ/EI/SJoXHxDlksQbIIlGGPOGqLGi0NF5iuWAQwpff79kEwKLylUClKowg3lqV9gMBm3pS25eLdmzEU6eGSl4y2lMnwYBVj72jgvG3BA1Vv/yz6PQfKc/lF+glzOEyqCbegrdv5gFPwRhNVwpq7pYb0fUbOYISRb/pyrjtTU82V5WIcu0DMpaoErRKbdRYV1JGGMpGCW7IP/nCsi1aVbLwtxkN8ranNMJh0AcUtzSc7L2BNOw+848EV6UhX+60NzdPuwi7GryKTEdbYVQCnsUE+NnSbt6PmFhRSpFPT7AbWWQJ3AHvQVYugE+OalZi+qEYA0VNnrxurFVcpzEJ/gQ/EBtsoMaFOX8o64EVMktcMMRunufG43vfXlCfT/tnY1n0/YfpVjuN50LbS6QnWDLsuZ4oyMGLuFO
+ fRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,45 +107,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 2, 2025 at 3:21=E2=80=AFAM David Hildenbrand <david@redhat.com>=
- wrote:
->
-> On 22.08.25 21:20, Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > No feature change, move cluster related definitions and helpers to
-> > mm/swap.h, also tidy up and add a "swap_" prefix for cluster lock/unloc=
-k
-> > helpers, so they can be used outside of swap files.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
+On Wed, Aug 06, 2025 at 04:02:01PM -0600, Alex Williamson wrote:
+> On Mon,  4 Aug 2025 16:00:43 +0300
+> Leon Romanovsky <leon@kernel.org> wrote:
+> 
+> > From: Leon Romanovsky <leonro@nvidia.com>
+> > 
+> > Make sure that all VFIO PCI devices have peer-to-peer capabilities
+> > enables, so we would be able to export their MMIO memory through DMABUF,
+> > 
+> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 > > ---
->
-> [...]
->
-> >
-> > -#ifdef CONFIG_THP_SWAP
-> > -#define SWAPFILE_CLUSTER     HPAGE_PMD_NR
-> > -
-> > -#define swap_entry_order(order)      (order)
-> > -#else
-> > -#define SWAPFILE_CLUSTER     256
-> > -
-> > -/*
-> > - * Define swap_entry_order() as constant to let compiler to optimize
-> > - * out some code if !CONFIG_THP_SWAP
-> > - */
-> > -#define swap_entry_order(order)      0
-> > -#endif
-> > -#define LATENCY_LIMIT                256
-> > +#define LATENCY_LIMIT 256
->
-> No need to touch that line IMHO.
->
->
-> I enjoy the new function names.
+> >  drivers/vfio/pci/vfio_pci_core.c | 4 ++++
+> >  include/linux/vfio_pci_core.h    | 1 +
+> >  2 files changed, 5 insertions(+)
+> > 
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> > index 31bdb9110cc0f..df9a32d3deac9 100644
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -28,6 +28,7 @@
+> >  #include <linux/nospec.h>
+> >  #include <linux/sched/mm.h>
+> >  #include <linux/iommufd.h>
+> > +#include <linux/pci-p2pdma.h>
+> >  #if IS_ENABLED(CONFIG_EEH)
+> >  #include <asm/eeh.h>
+> >  #endif
+> > @@ -2088,6 +2089,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+> >  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
+> >  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
+> >  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
+> > +	vdev->provider = pci_p2pdma_enable(vdev->pdev);
+> > +	if (IS_ERR(vdev->provider))
+> > +		return PTR_ERR(vdev->provider);
+> 
+> I think this just made all vfio-pci drivers functionally dependent on
+> CONFIG_PCI_P2PDMA.  Seems at best exporting a dma-buf should be
+> restricted if this fails.  Thanks,
 
-I enjoy that naming convention too, wink wink.
+It is temporary solution in next patch "vfio/pci: Add dma-buf export
+support for MMIO regions", the strict ifdef is added.
 
-Chris
+  2107 #ifdef CONFIG_VFIO_PCI_DMABUF
+  2108         vdev->provider = pci_p2pdma_enable(vdev->pdev);
+  2109         if (IS_ERR(vdev->provider))
+  2110                 return PTR_ERR(vdev->provider);
+  2111
+  2112         INIT_LIST_HEAD(&vdev->dmabufs);
+  2113 #endif
+
+I will split "vfio/pci: Add dma-buf export ..." patch to introduce CONFIG_VFIO_PCI_DMABUF
+before this "vfio/pci: Enable peer-to-peer ..." patch.
+
+Thanks
+
+> 
+> Alex
+> 
+> >  	init_rwsem(&vdev->memory_lock);
+> >  	xa_init(&vdev->ctx);
+> >  
+> > diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> > index fbb472dd99b36..b017fae251811 100644
+> > --- a/include/linux/vfio_pci_core.h
+> > +++ b/include/linux/vfio_pci_core.h
+> > @@ -94,6 +94,7 @@ struct vfio_pci_core_device {
+> >  	struct vfio_pci_core_device	*sriov_pf_core_dev;
+> >  	struct notifier_block	nb;
+> >  	struct rw_semaphore	memory_lock;
+> > +	struct p2pdma_provider  *provider;
+> >  };
+> >  
+> >  /* Will be exported for vfio pci drivers usage */
+> 
 
