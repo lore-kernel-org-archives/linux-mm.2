@@ -4,117 +4,204 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D5ACA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1086CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:48:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 806B16B0005; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
+	id E060A8E0002; Tue,  2 Sep 2025 09:48:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B7076B0006; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
+	id DDD568E0001; Tue,  2 Sep 2025 09:48:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A5946B0007; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
+	id CCC218E0002; Tue,  2 Sep 2025 09:48:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C9236B0005
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:42:37 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 03343C017E
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:42:36 +0000 (UTC)
-X-FDA: 83844425154.16.1070B81
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 344AA4000E
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:42:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TnX27W2b;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=none (imf27.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.19) smtp.mailfrom=thomas.hellstrom@linux.intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756820554; a=rsa-sha256;
-	cv=none;
-	b=3QbFK3zq5PhJmmzDK+baAIdgheV/QKswk+tXd5MbRaNAAOpqpYTEFj0TRS2Lz9WcJ7o9Yv
-	FtVkWePkNSnpn0uTlLn31yB9ibgzR2K6JBgn31apkkf5Ae6F+oAA9I8niTlUQWlEEVq3Qu
-	rbhxlGgr5HdnZ+bic5jTdNkNHdmJvyY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TnX27W2b;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=none (imf27.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 198.175.65.19) smtp.mailfrom=thomas.hellstrom@linux.intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756820554;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B93B88E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:48:55 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 679F41601A6
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:48:55 +0000 (UTC)
+X-FDA: 83844441030.01.8D0A252
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2080.outbound.protection.outlook.com [40.107.102.80])
+	by imf24.hostedemail.com (Postfix) with ESMTP id A3F05180015
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:48:52 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="AxjI/3KN";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf24.hostedemail.com: domain of jgg@nvidia.com designates 40.107.102.80 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756820932; a=rsa-sha256;
+	cv=pass;
+	b=LI1IyLmi/Fxs7oI3i1X+PHBDnUOIa6LWAt0skrNkOD9wEb3lokUr4gK2Y7tLdqoZTO1bOY
+	QC7Edv/OA1u6FJhEztm9EhDsdU4En46HV8o6fe0jLuPauS7aUVr5Hwd7kRvwNDFe5Pkhi4
+	bMFfc0SpyPli7oJU6TiFPNyZu8fRsas=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="AxjI/3KN";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf24.hostedemail.com: domain of jgg@nvidia.com designates 40.107.102.80 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756820932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dlnqyeR+5I6qruWbk7IABHALhsF2hRcTjNBGT4VTdMM=;
-	b=63XDbVZ+fYAYV8GNX3zg6UqmZvFxpZo9TJDkZU/Js3tT30WH1NL5w3ZpIpi4C8WeJKmGLf
-	I4ekMVhuPGL6unLQaMCkbZBMk3mkfguSDsR7rI7UhH0PlCgun6jyO5XbcbIgPP4zHdjGPD
-	q5EKKaKDbpxGK82a/B71WstSdxNbTAk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756820555; x=1788356555;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=dlnqyeR+5I6qruWbk7IABHALhsF2hRcTjNBGT4VTdMM=;
-  b=TnX27W2bd8MSnPDkMCApxQoxnSjCM62WnjAARwpU9c/FlXWaEWitmFba
-   JTeQ5BuhnViMzkEROcQahpDr82oAdEUm0LCQz3COW77DiBL0Qw7+ldRhd
-   UFmO/p8hTqN8vvINeg1BxsQUHUyzhcZk7tyv40e/Y4Ko1XYH09UI3A5R9
-   MDFrAEOjj1Hroa0eCab0V7OxRKMnB0LPANgbr7pu8UGld+WEte3HirTEk
-   BW7kKOeBsebhPcijr1R+QBq8Z5zwCqRpczbt9DwIC8O2O75qsmGQw6gDN
-   8bUHjwLebXsNK7DN9TwuaOklzjiBDNjAtenTVKbeAnIBhxen+IBMYWXXr
-   A==;
-X-CSE-ConnectionGUID: tLqYrVCQR5KDUyx1E2Y/Cg==
-X-CSE-MsgGUID: sDk5fz6ARyKszwtPXZKAWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="58951216"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="58951216"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:42:33 -0700
-X-CSE-ConnectionGUID: 87TOoN+JSuyyXu64BJLX8Q==
-X-CSE-MsgGUID: XyDjfStqRz6SEEHMNLLv9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="171175094"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO [10.245.245.33]) ([10.245.245.33])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:42:26 -0700
-Message-ID: <da5885a94d89a2c0dece04e09182e832e8e40410.camel@linux.intel.com>
-Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: David Hildenbrand <david@redhat.com>, Maarten Lankhorst
- <dev@lankhorst.se>,  Lucas De Marchi <lucas.demarchi@intel.com>, Rodrigo
- Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,  Simona
- Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>, Natalie Vock
- <natalie.vock@gmx.de>,  Tejun Heo <tj@kernel.org>, Johannes Weiner
- <hannes@cmpxchg.org>, 'Michal =?ISO-8859-1?Q?Koutn=FD=27?=	
- <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin	
- <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Muchun
- Song	 <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "'Liam R . Howlett'"
- <Liam.Howlett@oracle.com>,  Vlastimil Babka	 <vbabka@suse.cz>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan	 <surenb@google.com>, Thomas
- Zimmermann <tzimmermann@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Date: Tue, 02 Sep 2025 15:42:20 +0200
-In-Reply-To: <776629b2-5459-4fa0-803e-23d4824e7b24@redhat.com>
-References: <20250819114932.597600-5-dev@lankhorst.se>
-	 <dc21e54c-d7ae-4d7e-9acb-6a3fa573b20f@redhat.com>
-	 <9c296c72-768e-4893-a099-a2882027f2b9@lankhorst.se>
-	 <b6b13ad22345bcdf43325173052614c17e803d00.camel@linux.intel.com>
-	 <776629b2-5459-4fa0-803e-23d4824e7b24@redhat.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	bh=DdBvEc7GQRcvyLDLWtTW8aXd9jBRc0uKyJxw5KIjyGQ=;
+	b=VhdUp0YyD3BCF17WsvD7/T7TnsGNv1st2hUeTi+DiDhBC3cku3j0nlJfgIp0o+QBX+45+e
+	nX3wKoAAJx1AtrY7va0osjhRMgr4ypdWEWFN5vCjD9q+xbKcp+M03KD+ArkHDZKhtC0IR7
+	iir4VNQDjwpIK0/y4hjt5YbVovoIn1E=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZZm3v0uJoXYs1ESOcj57rAZW3TpsUObwmaPUltrt5V1nf1ME+XB2NjQ5yUa1nlfQ47Pwu8sCzLjie0IokRI9y+aNbOGUSGJWZ0QhXgxGq3NL/tlgOvr95ZJmr/a3C6CkUdmADWb3kWu14SHpv59d/DaqKaCpbIJ+mlmGjIXUL8WRF9/z+LAUUAy+ueISsg2jbXsjTmXwzZ+CS5jF97l7VhohAiU3RRFjCrmPj5lX60msG+n6HuhlyBH5t6EQcBhwLdacrRGoUiZGFYTWDP1WIQTfVyYBbW0b83FMMspGw7NXpkoTa0JmEQtaeEOSmWt2QFYl2vv70O8XmJTbq1y/OA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DdBvEc7GQRcvyLDLWtTW8aXd9jBRc0uKyJxw5KIjyGQ=;
+ b=aKP6LvlrO8Y6lwNhdENuNr7rExulSgBHwZWFKmPOVj+vkbstR+swu7eEZ/i4zyguIBv9GwUiLprlrcx+DkeWLcnST2oIVG0/Sr5PHJ1PAUo/dy4wbCzrK+P7S5OyBO9XUMaNZE6FDLht8DOMjq+9rJhLCpPdARd40I3ixZfRXvRWedauFOYaG02xrjGFLyS7CSAtuckRjKNf7GG6gmGvue1GWbOMwv4hIIeOfd+ruJFGhoZ9TvIeAscgGs8a2c+6wqi4iCEhF+aj49lXgtzhQrsYCFiXPS4cuSvUgezHRWjC3CkLUuScURf51TXGvZXh7782EqIgwSnqf/bIy5dZHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DdBvEc7GQRcvyLDLWtTW8aXd9jBRc0uKyJxw5KIjyGQ=;
+ b=AxjI/3KN6/HYNXL650ArOwmVvmSo6yI/UTlLfer46j9qH+I/UMO7gjlSdk74OcdyC4MPLOraRxGwFY7L6jANPoHwrFYgRpNB4RaKR2wKdqQc7gt8YAzM3qxXbPQwL7YLlGYQBp06CQqiuVciALj/Zo+DcRWR0QYnSJGNMs1j8BipYuYgaSX33GRTuCT5GcEDQh6pVVcIk3ejQOUlmdRCA1tpng9ZGQLDoFFIrN8uxp7eyd+PP5/tPH4Tfn4y+Z0dF/5YMzO2eOntc/egChCwtbZ9JIFc/sGu4IbeNoEGGmElKfZyCNs/eTgnT3dqwReMO8uzGEWWElLtHNqjw/6zZQ==
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by IA1PR12MB8286.namprd12.prod.outlook.com (2603:10b6:208:3f8::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Tue, 2 Sep
+ 2025 13:48:48 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
+ 13:48:48 +0000
+Date: Tue, 2 Sep 2025 10:48:46 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, jasonmiu@google.com,
+	graf@amazon.com, changyuanl@google.com, rppt@kernel.org,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
+	witu@nvidia.com
+Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
+Message-ID: <20250902134846.GN186519@nvidia.com>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-30-pasha.tatashin@soleen.com>
+ <20250826162019.GD2130239@nvidia.com>
+ <mafs0bjo0yffo.fsf@kernel.org>
+ <20250828124320.GB7333@nvidia.com>
+ <mafs0h5xmw12a.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <mafs0h5xmw12a.fsf@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0117.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d7::23) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 MIME-Version: 1.0
-X-Rspamd-Server: rspam03
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|IA1PR12MB8286:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30e58965-b691-476b-7300-08ddea277121
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?abdIctlk1fDKbFTAVuhfyjn24jVsQtdLNYFAxgOTD/e7ql4+94Rl5pqFxOtw?=
+ =?us-ascii?Q?ik++dyxFsLc3PsrK03O/eqQt8HoFkALCLrKS2i/Yvoe3k2g3O6Bq17jacf5S?=
+ =?us-ascii?Q?cgG1qEcX8u9AxRHr2oeF7Q/bQazc14/s/NpI36ajwjhR75HWsdkSPgDUn+g8?=
+ =?us-ascii?Q?2Toqfld8MPvZzZQXCL+A/bxxA0JFXGGMLn1JO0Iaes6tYogrgsjx3YYIrdhi?=
+ =?us-ascii?Q?nIueAaOVvhXVyMD5WVj1yWUskxp5njmpq0CMdSv/d9MkZNUqfXcxlloNoH6G?=
+ =?us-ascii?Q?kGqC0d30vTviQ6/AL+IOWyZRhcCz5FBsSBt+rt8RO/PiQvsYG7f+5biAFrLD?=
+ =?us-ascii?Q?pSaBQm3r2ob/Zibi0Y9w+wli+j1RPTRUcQTaeQX9L6Jh1ErjUNb1KDKjjiEt?=
+ =?us-ascii?Q?LuGa3O6+q029kYgJKe1x3f6EJZLz3qnBJsGOeUeVvshVnHrct24zJ90W5ig/?=
+ =?us-ascii?Q?7quhLR8Oqtne2SjD8F22kEP9SDUMnfYm9c9b1IAOlY3SdmnpZoez4U2ZpgPS?=
+ =?us-ascii?Q?nsf5Y0TnzZ9FOhS+Pvc9rHTkCLLs7lN4Zao59Yxm6pn4y6rRuntbzwwSEQsZ?=
+ =?us-ascii?Q?6B3Xx1h/XnHwpi9QJiXTQU7J9nGVs9uMhy8iiFsCkg1A7/rw8OEn8TKM3AN7?=
+ =?us-ascii?Q?A5udUlX6UrBC3igDdAML+zHODjmVo1cmWKHjC3a3hzFjsjf/4IPFNBcpt7HU?=
+ =?us-ascii?Q?KIPRqIptRZiaSKsb2HaQNoVnf06+Ux11+P0woEGxkZrpGAu1f+1BHCxmQOYf?=
+ =?us-ascii?Q?3dmbXtMD9D0/LGnUzPcpBNDgAnRPPFUbN1yMw3PFwCzWxsMHs9y3IGSuWx5D?=
+ =?us-ascii?Q?AybJuDxYiMx9h5qD2xAw2pjlD8x1XQN+GJ3/OKbVl6kcYGp06VIH6XOYJEUt?=
+ =?us-ascii?Q?jbMmstSxDGcb8EWG/mlDx/Ryrx6HRs7pDRpT2GT0m8C804Hi3XwzEFH3z730?=
+ =?us-ascii?Q?qlnMwgdV5/oVuEa+DHijwN5Ht1aDIvxfKw74m7N34+KAMqVUJUNH3q8uE+KJ?=
+ =?us-ascii?Q?VudikDXKa1oCBPqENeNcHM6QKFwAcYqB2rPGu0la3H8uR1gNM7caiCMkTFhT?=
+ =?us-ascii?Q?9L24ptrq8tfXkTJ0AxKLv7pixyrx/V6vKHYcSMVZX1mOYJCculWf8NizAszA?=
+ =?us-ascii?Q?PQE2t0ED2nihxxrRYITAOfBBvDRkHBtRD2d7edPzbOetzBgusxWhww0apKge?=
+ =?us-ascii?Q?5bU8phD5WKfN2ADtZOPwxLBJzqwlhvkUZxnivwHdOS10V5kUdSR5kYnr9QRI?=
+ =?us-ascii?Q?2FBR4Sz/gFZNU6Wvz0NemRCNGgTadb6H4aEkp7KqZ2OxtE8FPhLbz2vtOQ63?=
+ =?us-ascii?Q?G58X0X8F+CgwveNN9M5yAFvIhoaQKh+34MqzkLUA0D0ZWyxnDZXrrix2SMLj?=
+ =?us-ascii?Q?jU8+UYIICjZlwOOnilChBrtw8o55g9Pn8Z/5W/r9NBNpzs3m3Yg9wLj2mKJW?=
+ =?us-ascii?Q?KsutXYWElPo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?F2NesRrVX2u78ppjs7NWneGNyLJli2h2orjQNwoQZGf73dDgQZ1hXyVekwf7?=
+ =?us-ascii?Q?agiLRcIrGAw0hw8fbZ1R9cHG+iYK8Btf0LmvbxA0tl5fg4v5m4IuRBGjEpkD?=
+ =?us-ascii?Q?IlJ2wDo/Uc7maHoyKBMhAizLGxgWBkazBPJDlmswuwq0QdmI1RQ6cDsnc08o?=
+ =?us-ascii?Q?jQdh0rmqsAljBCFSYOLFGyENWuKIvsBgDtxuBH6XSiko3TzINQP+76Sdmd58?=
+ =?us-ascii?Q?ZiWvPMidl02KDSLwzYy2ak4pw49o3dd11SX0/BSofpA1pdHhNAsR1ukUT3Rf?=
+ =?us-ascii?Q?otvC4VlBixrhbMc0EzAW4+dsthVq4fwdhYh4hLsnDXJu7/t+9W+99exMY5K7?=
+ =?us-ascii?Q?14a+AU3U6Ah6OLp8gktTgOWTGvRrUZnBJVPR29eDvFiBRT+p4x8o58hC7z8l?=
+ =?us-ascii?Q?Rk/EUqpocERF8PLyNhqZy05TpB41AwvCFkR7n40Mu1N8DrvRpkFzHIzqqMog?=
+ =?us-ascii?Q?FrfTzoxmMGZxxGPIDQwwH792oXfTANlyytJm083XFvVwph8RT+pT5TQmWrBq?=
+ =?us-ascii?Q?vSfXoPW4zg29FEMb7fDLBgmPO+R6AoGL7e5vOHQmOLiNsx00S9R3jM+akHzo?=
+ =?us-ascii?Q?oWwdm8MqSBDfJYb94bHYidYQ9TyMMby4G3gBi1K4uQh3h57VFVzCgacQR6OR?=
+ =?us-ascii?Q?sNRMjKKszzZGyXlbPPhHyo5Q6sxryQftk2IU8oObkyMPJD7a8XzFgVsgznTs?=
+ =?us-ascii?Q?+wwwmkYcI6Snra0T6uD8zLsmxJych2I2lOTbEHa01lxdzunQbDZO4fnuK2o9?=
+ =?us-ascii?Q?gy0YjAO1IiF2a1GfEXfafn17joaGaJlNaUnFyDYLfST4ohgNzcdWy/hTYHe4?=
+ =?us-ascii?Q?F6Q2wA8lQDp9WL6+6B76dCW+P6zu3w74/X9jKqgMrU+ACwCvWxKPaeFq9wTy?=
+ =?us-ascii?Q?ypKIBexbebw6Mz2wX/KLv+2bYmeO9YH5W548n24Gy1BIXbFpJ2rzmBZDLi/m?=
+ =?us-ascii?Q?2eeR8B0qTZ/BZg+DUs1VZZAl66lLwrbpq6kpqo7EtsIRl6+wSj+f5PgSr6yp?=
+ =?us-ascii?Q?OIAhtLonqY5WakBM0j7NaWOvSFzxxRMCqVc44fcUFddhea3omER9s2xYLd8I?=
+ =?us-ascii?Q?f+ivUdMZe+vVMISzv4gDJhsmYa7WZoLclg7tBaV+hQqVGYpkTUqcXHdciC8M?=
+ =?us-ascii?Q?jxG02HUs4oBWWIL12LlyXdv3lePbCe2Hh3Oqe5UfPMeLwEuhd6xwLqk178EB?=
+ =?us-ascii?Q?mlbodTi0wDkpwr1+Zz49VXW29NGhxAZWhqZ0v6+ngX7aMNKiWGfT/Oc2nYAW?=
+ =?us-ascii?Q?uhmZtX0DBxJDfKH8966kYzBWMHfXPUXymhBO1+BKw2+Liv0CUOgCJi588bd9?=
+ =?us-ascii?Q?ftQmsxby9fKmTCoBvq/LLuJAec5pjoYy8M5ox54hGWBWXJLHLjamd8JscQFZ?=
+ =?us-ascii?Q?OHDJrsvsCnAf6BCgOkGYOTf0FszfMhBYjPW6zcTWFgUWANCnFOQXb8hvPpFe?=
+ =?us-ascii?Q?VsUaps/AEZP8N/38CCa0GPNW8B33ATtSSGLlGgy27nMPN0WXuvoUSDMKpbZo?=
+ =?us-ascii?Q?/Gs4RgLilZDJUES6eNCCV07USe9gJjFbl7VfVpOnVs28sJEa7bQ4cXNWLUcM?=
+ =?us-ascii?Q?apI1xdmCxl6USzOJ2bE=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30e58965-b691-476b-7300-08ddea277121
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 13:48:48.1771
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9OjQGxfb0wtw/QXWKaAcoITr65vVZwQpIikiHYseu/7ig51FaSTnz1K3n9cZ5Zrf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8286
+X-Rspamd-Queue-Id: A3F05180015
+X-Stat-Signature: 86cjxcqzrpazmjq7yaxp5ghs99ce39sb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 344AA4000E
-X-Stat-Signature: tgekccwgc41xhody54z6nmimkw4rzq1h
-X-HE-Tag: 1756820553-663302
-X-HE-Meta: U2FsdGVkX1/I5ny3EGRa+S1q4t0bI2vACUoIPe77M4qrMhJtZNtgDiC2lSH9c+HEb+pcENlVhGddBwoHndNIO8E1DJdwX1B1yJdzxjSUvb8xNjvBiGaBQ4crhj+Fr29oI34bDEjVBOKyYJ2BP9/MrpbRLXEqXZIT8agMB6iODBlvDylxWM8mhHClAnd4lytSdqSgGAhbkUmijtRoC8I0JYZjK4cmkhk7rw7JUEK3b2dY0MS6x1UTqxa6MXssrBWbOGLuJVYCiTMnFwdtd3CCLTm3QZgkQOfXO94wrZGQC9iTl4RtFVIVnvs+RHkzyOustmsmsPRN6/XyOeicEmZLYIasAQ+x9TVhHFrXFi4fc4zI2AzjDpzqhKAgPCc9/R4siqweOtF6luBDPzpopj3Dat1hqM8Xx/MdnRfgTZCiz0PFIa5BStKavOycENgeebByIWepbrS5vRvDG9Kfun2vSM48/7ip+By/xkPv6mYV0KXXeQA/l5VY8kbCbR+ttYV+NjfbATm1RzZ6ydmwTU5ueNjqjVAQPmlSelUVQkWre7qSHoPIcGLMV8xEL+TKb01kwPOBSSCi5eB50sfcLKrhRi5uqax6uAFGTSkK+qd7dHoGZqIpBD7Inq6yJuDe/vxbGIKip6oGbbcYYY/PRkUn1x4HYuPtktJvq10Sg5bSsDc6gmcQ4JOLpSAlULAB38vOwvWC34Xs+feqbXMK1X6fJD9qreJoyCJ7kBNrVmJpuMJOt77zxsipKjx44/HyY6b8Bzc35iQK45PhTYxZtLLFqPqgwIyXc0Ue+tb9u+rrBuBi+c6yafP+Pku7Pt5l6mA83KSelqXaf+4bNnbmtR77seruvJnbZwQ7Yhn5XOxqRouswQgZTm1wIcq2ccqMT9xTVA1cTlSnI+Ga/hk1GPUs9U9GLjDEt8MY01j6xo+pvU5er854O7jhpS8sLNZwL/VzSqINPM6hu9/1szfatnc
- XJKIFieW
- IkuF26JQ9TXEj71Ge2l4y0h6l0Uew6fEpWDDC5R+mI1/tKf7wn4z+IAyIdWlDjYw2cbxjTRITmscwtdLafhXEm2fw9yk8pAT6esgJ47UIf9MZtcZaO3gSgx4KrHPcQU8VuMFrt3W5MsQ4OmFL4xC2tmwvVxsI7PP/QzQnGKH0teMONV4eUhE76534rm0M66lH0rfpm05AP15R3JUeo1KrZ+GhhYN+lDfpXbrevOlA65HyJyA=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756820932-59999
+X-HE-Meta: U2FsdGVkX1+JmdWmR0PdF+1zbzthY9g0vKiDQ8pSGKw0IPHe9Lo7mEa/GYSFu6fRN1VD+Ziy8Jv3mh78LqjMpSvGOqofdv+euoxHq3jB7lzV8OKep4P12ymDT9Q86Q5ltkzxGx89ZoJoHUwr7STqXVr27CXsFOSj5IBP02mubte+HrxfToTWxFP+8CcnzPAVcz/N0QVIZcFydtVsLwzZGpRGS2RtqMt5m3SwPvSAOjQi/hA1PJEgdV38/hCe8cam9JDKnXi5YtV2DiTy7d/1KGbEIoOnOaDuNbEgxagdb5EUHjl9Jt9xbs0fqTZUM10spWA2dWiy6OBnqBfpAf7drOpWzHY68fOIoSM1a09Fddt/L8cXa7H1IYWmc9AzQEsMncEJK/D0waLxsMZeGu3uKFrKddefY32RGWa462Ah/pxnKCQj98aiX07ywKq2XaqbgLfuhIwrPiGQG4ocnEYAWktanDM3pQas2Y8/ck+Uz+JtdDTFyQkTBfiu3a0CKPQyXUxMjdTXDhYPzjUUY3xpqrmkY6LPruYTWiWHyMHtFij0RAJrhKSfhKP5gdyhLWk4+5x27VYtiQHHDyxvtHJQdr14McVU3+VhrrsJ165LOSOPTaN2N3oIWW6g4csVSgkIKvJhcTuvi/1YaiDGfU8IojTZny2D6uIYAFqFdFQtpmclXhO4ylzpBtu9R1gUiWjiIZwnRsqYzR8FaZoRfpn76jSLl0ZMFp8p4wHUPIs2NxiQL6c7E7RxuEgdsfgyaJmGG89E3LkhVe/tdlqHtK0rppbTKnKrkZ3JT3N8sYlfU6BRXPwXsHW3JHCK2OOkV793gKindCBLvxZMDbAQXKFA6mQWicHw74bb0HsRayQNaxfckwEfrsdsiJzLkyYehkveCInmP1x82xEZdwNlFQEJSjQAa7UC9UK56Zl8+JSk/zrNeRt/Z+f67drY1cP6TvU4D8gVt5cBCuZO07P0c9R
+ yrIKDBaj
+ d0ilHoH+82cqov6lZAXtRtoz8/jyy+w0xsSpX/l4MRD7qrG0/9DclDppvdIKPnJ7q5b0JfFiJXEOfxeTIzdKcq21wGWjunf/tk+gaxeqen3mIEDfuXuEAK9Ip+Z8Bqb+9FmrDO2ESKgL9bOJYBB9nphtyU1qn591bCd9Vs/P6eaiRThj6YVZ7YLdFekji8106dkg4O9wMrSUXi8IyjZLUJ/htwwaOqlKud8gB9eyewCK2u1aZLniN+JK/PsgLDw+4rNN4/WGlZHWBcRVV6JFBbDsRVQL+1vYqB7VrI6eqKfy/AzOEcPv4MiuVlZaXcf0BlnRB/M0Uxwlc332NTiY7czvluTQFfUWE5wvvpPYibZs74mVLNg7RFtasy23hidLN/qPcjtLk/xAe6Jy0Tp3O9ZYKb2691Xo4Yuw1Nb2h9okesRVPXcbyw1w7tNgjNKurhIJFVvFwpRMnrmpT/RmVhI+Pnj5YW/bmjyAqkB30FZpxTaFwal2U0xNsWKQW34DwXKMuawmlbijx54Q8HmZz0AC/BcnGEdEjG2RJn6Gw8KinCmW5hPw7s/F8wl8ACbL67FmRoorPXnJ59TwhZlPbfn3hiQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,145 +210,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2025-09-01 at 20:38 +0200, David Hildenbrand wrote:
-> On 01.09.25 20:21, Thomas Hellstr=C3=B6m wrote:
-> > Hi,
-> >=20
-> > On Mon, 2025-09-01 at 20:16 +0200, Maarten Lankhorst wrote:
-> > > Hello David,
-> > >=20
-> > > Den 2025-09-01 kl. 14:25, skrev David Hildenbrand:
-> > > > On 19.08.25 13:49, Maarten Lankhorst wrote:
-> > > > > When exporting dma-bufs to other devices, even when it is
-> > > > > allowed
-> > > > > to use
-> > > > > move_notify in some drivers, performance will degrade
-> > > > > severely
-> > > > > when
-> > > > > eviction happens.
-> > > > >=20
-> > > > > A perticular example where this can happen is in a multi-card
-> > > > > setup,
-> > > > > where PCI-E peer-to-peer is used to prevent using access to
-> > > > > system memory.
-> > > > >=20
-> > > > > If the buffer is evicted to system memory, not only the
-> > > > > evicting
-> > > > > GPU wher
-> > > > > the buffer resided is affected, but it will also stall the
-> > > > > GPU
-> > > > > that is
-> > > > > waiting on the buffer.
-> > > > >=20
-> > > > > It also makes sense for long running jobs not to be preempted
-> > > > > by
-> > > > > having
-> > > > > its buffers evicted, so it will make sense to have the
-> > > > > ability to
-> > > > > pin
-> > > > > from system memory too.
-> > > > >=20
-> > > > > This is dependant on patches by Dave Airlie, so it's not part
-> > > > > of
-> > > > > this
-> > > > > series yet. But I'm planning on extending pinning to the
-> > > > > memory
-> > > > > cgroup
-> > > > > controller in the future to handle this case.
-> > > > >=20
-> > > > > Implementation details:
-> > > > >=20
-> > > > > For each cgroup up until the root cgroup, the 'min' limit is
-> > > > > checked
-> > > > > against currently effectively pinned value. If the value will
-> > > > > go
-> > > > > above
-> > > > > 'min', the pinning attempt is rejected.
-> > > > >=20
-> > > > > Pinned memory is handled slightly different and affects
-> > > > > calculating
-> > > > > effective min/low values. Pinned memory is subtracted from
-> > > > > both,
-> > > > > and needs to be added afterwards when calculating.
-> > > >=20
-> > > > The term "pinning" is overloaded, and frequently we refer to
-> > > > pin_user_pages() and friends.
-> > > >=20
-> > > > So I'm wondering if there is an alternative term to describe
-> > > > what
-> > > > you want to achieve.
-> > > >=20
-> > > > Is it something like "unevictable" ?
-> > > It could be required to include a call pin_user_pages(), in case
-> > > a
->=20
-> We'll only care about long-term pinnings (i.e., FOLL_LONGTERM).
-> Ordinary=20
-> short-term pinning is just fine.
->=20
-> (see how even "pinning" is overloaded? :) )
->=20
-> > > process wants to pin
-> > > from a user's address space to the gpu.
-> > >=20
-> > > It's not done yet, but it wouldn't surprise me if we want to
-> > > include
-> > > it in the future.
-> > > Functionally it's similar to mlock() and related functions.
->=20
-> Traditionally, vfio, io_uring and rdma do exactly that: they use GUP
-> to=20
-> longterm pin and then account that memory towards RLIMIT_MEMLOCK.
->=20
-> If you grep for "rlimit(RLIMIT_MEMLOCK)", you'll see what I mean.
->=20
-> There are known issues with that: imagine long-term pinning the same=20
-> folio through GUP with 2 interfaces (e.g., vfio, io_uring, rdma), or=20
-> within the same interface.
->=20
-> You'd account the memory multiple times, which is horrible. And so
-> far=20
-> there is no easy way out.
->=20
-> > >=20
-> > > Perhaps call it mlocked instead?
-> >=20
-> > I was under the impression that mlocked() memory can be migrated to
-> > other physical memory but not to swap? whereas pinned memory needs
-> > to
-> > remain the exact same physical memory.
->=20
-> Yes, exactly.
->=20
-> >=20
-> > IMO "pinned" is pretty established within GPU drivers (dma-buf,
-> > TTM)
-> > and essentially means the same as "pin" in "pin_user_pages", so
-> > inventing a new name would probably cause even more confusion?
->=20
-> If it's the same thing, absolutely. But Marteen said "It's not done
-> yet,=20
-> but it wouldn't surprise me if we want to include it in the future".
->=20
-> So how is the memory we are talking about in this series "pinned" ?
+On Mon, Sep 01, 2025 at 07:10:53PM +0200, Pratyush Yadav wrote:
+> Building kvalloc on top of this becomes trivial.
+> 
+> [0] https://git.kernel.org/pub/scm/linux/kernel/git/pratyush/linux.git/commit/?h=kho-array&id=cf4c04c1e9ac854e3297018ad6dada17c54a59af
 
-Reading the cover-letter from Maarten, he only talks about pinning
-affecting performance, which would be similar to user-space calling
-mlock(), although I doubt that moving content to other physical pages
-within the same memory type will be a near-term use-case.
+This isn't really an array, it is a non-seekable serialization of
+key/values with some optimization for consecutive keys. IMHO it is
+most useful if you don't know the size of the thing you want to
+serialize in advance since it has a nice dynamic append.
 
-However what's more important are situation where a device (like RDMA)
-needs to pin, because it can't handle the case where access is
-interrupted and content transferred to another physical location.
+But if you do know the size, I think it makes more sense just to do a
+preserving vmalloc and write out a linear array..
 
-Perhaps Maarten could you elaborate whether this series is intended for
-both these use-cases?
+So, it could be useful, but I wouldn't use it for memfd, the vmalloc
+approach is better and we shouldn't optimize for sparsness which
+should never happen.
 
-/Thomas
+> > The versioning should be first class, not hidden away as some emergent
+> > property of registering multiple serializers or something like that.
+> 
+> That makes sense. How about some simple changes to the LUO interfaces to
+> make the version more prominent:
+> 
+> 	int (*prepare)(struct liveupdate_file_handler *handler,
+> 		       struct file *file, u64 *data, char **compatible);
 
+Yeah, something more integrated with the ops is better.
 
+You could list the supported versions in the ops itself
 
->=20
->=20
+  const char **supported_deserialize_versions;
 
+And let the luo framework find the right versions.
+
+But for prepare I would expect an inbetween object:
+
+	int (*prepare)(struct liveupdate_file_handler *handler,
+	    	       struct luo_object *obj, struct file *file);
+
+And then you'd do function calls on 'obj' to store 'data' per version.
+
+Jason
 
