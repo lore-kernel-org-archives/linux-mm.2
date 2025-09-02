@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7073CA1009
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BA56CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 11:59:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A30B8E0016; Tue,  2 Sep 2025 07:59:28 -0400 (EDT)
+	id DD3DF8E0017; Tue,  2 Sep 2025 07:59:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8540A8E0001; Tue,  2 Sep 2025 07:59:28 -0400 (EDT)
+	id D84048E0001; Tue,  2 Sep 2025 07:59:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CDA78E0016; Tue,  2 Sep 2025 07:59:28 -0400 (EDT)
+	id BB5758E0017; Tue,  2 Sep 2025 07:59:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BDB88E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:59:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E821613B8A9
+	by kanga.kvack.org (Postfix) with ESMTP id 98BCF8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 07:59:29 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 67BB51609A7
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:59:29 +0000 (UTC)
+X-FDA: 83844165258.02.BA48052
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 53C4F10000F
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:59:27 +0000 (UTC)
-X-FDA: 83844165174.12.23ADA0F
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C86C3A0009
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:59:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=WtKLdtA5
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=lBH1GH47
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756814365;
+	s=arc-20220608; t=1756814367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lgFR4JYzku3DnxtnEcUmOfGy601E4B4cVXuLJg4blgE=;
-	b=sEJFYR3dpB+CkdVcNwbm7sZ3rbl4OuWURI1FEpkV5kYp/C/73FtRN4kAZeg5HwGN/RL4wQ
-	WoRjrBmSNw/2QMBrcS/h7Etx3bH4wJ/dNdT54dKb7kDv0hzjLUEIbOKIZROfH3xZKajtjP
-	iQvWi9N61z/9TTvYbzRvy6mSWxYH47Q=
+	bh=bswhw1GYJgLkiQcdAy82i30rP02s8V3NVyufQL1WnW0=;
+	b=hUDffJmsr1Z8p8B7WLFXqcuzz98hHqoKvzdMEnOPf1v+B8nQes+F3kHn6VuBr65D1hD0er
+	cyk4CxeLJO9ne+wCrxAen3WPqjGwwiiGM/ZoiLUY1O4pbiTMDBezLLKZtABlPSadb9+QjM
+	2O+7+HA02r2tmIRlxGlH19EeFnFyBr4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=WtKLdtA5;
-	spf=none (imf25.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.128.45) smtp.mailfrom=brgl@bgdev.pl;
+	imf14.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=lBH1GH47;
+	spf=none (imf14.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.128.44) smtp.mailfrom=brgl@bgdev.pl;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756814365; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756814367; a=rsa-sha256;
 	cv=none;
-	b=Z5P8nXEYZa5gSMyxqfRz8VuCQ/zZ6bU5W7bwAEs575XeZOqps1iOvpSp5gsH6MuIlxfSsc
-	ROCNSJFJr61VlX/rYpt2WVxKaJczrV8Bsw1Wp9HTyOUJP+LGXleXhZCcZfrPbfnqDrwmNJ
-	RfX8dILeplEZWbKPLXXZAmN/4JuifP8=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45b84367affso28070745e9.3
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 04:59:25 -0700 (PDT)
+	b=DyF+VPXN7jxt9cfEfQ7W2ShEQNVjLG83bXwUUPRR5umi6TJMSQ56yn+z3mPnkiBu+q37kT
+	kv6xAFTFZxjOcf2Q7dQngaFt9sf0bgfWwSdzsT4VY5St67+OD/NLxoqGUZeEUm2VJ/tNNP
+	ogEQ8SHKdrtU56EigsD9d2vkyK8OpHo=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a1b065d59so36395985e9.1
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 04:59:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756814364; x=1757419164; darn=kvack.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756814366; x=1757419166; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lgFR4JYzku3DnxtnEcUmOfGy601E4B4cVXuLJg4blgE=;
-        b=WtKLdtA5t7zRJwjjHtXL5j8hW3rMvyQqmAcjqvjTFUOcf82DAJlwCtuAvwyPpoqcYo
-         W2vc5s2hsPmhpmi9aadA3FwK0+6aEt641Av+s/FW9TP6KyD7rFV1y1Bs0Be/3lneYhTD
-         djB/AdTFXP1/kQVuKtsXE1KzQBZCVXRkdIOBQRe8dl/PoLsHRA9+24C4g9tkNytDyQ4m
-         +kth7K/MU62/4D5gnt6lFiAVx0HKJNimkRX6EohgaXTBwjk1kfUqSCWyAQwaiuzZLt9F
-         7cjSc/E3TVtssM+4uJ8R9uEhI8H//Ay8TuHinRbagfrjpKnaf2AfEw6AioOYB5nowOxM
-         JcQA==
+        bh=bswhw1GYJgLkiQcdAy82i30rP02s8V3NVyufQL1WnW0=;
+        b=lBH1GH47EO/BIjSGN75r6VR69/nHneapORyfpT7px2Z80QL63BEulprjn0UhHQLTLt
+         3AClSgaSeHCogH+l88d+2ZdV2TaRmyUOa9PWUP7wL/0KRLIDTYt0AYSZq1YlkA39jN/J
+         fnWczgEnefRw35rrxHPojR70Z46cSShq8EdA7eLuRKxK2SiHdRf/hn/WMP1jVDv/s4+t
+         ooaOBTES6+g+IaZXbF6/Mkkkr8vTg+OTzxP8sHbGEZyf5NIATbu8uL6QvOFW6Z05OYHi
+         c5Tw+R+qlHxRnwisIB9hMy7BcqEtARWOxndNVPBeIjXdkncCDSOJ7DyXb2u2AXQs7ITv
+         yeqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756814364; x=1757419164;
+        d=1e100.net; s=20230601; t=1756814366; x=1757419166;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lgFR4JYzku3DnxtnEcUmOfGy601E4B4cVXuLJg4blgE=;
-        b=nnR5hBNpucoyhqOrVe/1dt5YTP1Z40Y/w3qzoatcotmNNDWtqibPelmc3X+TsFHzHz
-         U6GkvJGMBPvlDv27az2Uv+uYgnwi5IXbL4u3zINU4lqb9TvslslrPAC2mkpzqOvzwvVx
-         utMsG5RGPm2De5sFN+YRxAKf/7Lo48bFYpOUnmiF54iS3RYp56wtf8SkxXvMj41sRrK3
-         25njhfKs09wtnceEbuoAmp71+rZWlZwn0KyLAMi6ZiTfLNCRtul9GNYL/rlrhwc2l2Jj
-         KLEQhcvrjz9qQp7mcgYV4j2PVC0ItYv2m18//PGUxl5NSvSTjIu1Z1+QTbewh6Jg9/hP
-         qk6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUhzjWUA1+UqN8Q0yMySOVoRwcP9+q+PW5iVLl3i7l5Xuek8hatjT36/E/b16p3cGGUoD9iHsFVPA==@kvack.org
-X-Gm-Message-State: AOJu0Yy3VCt6ERpiNcCSDEXn5ADOqn42SfHEar7TbiLslhC+xAQ9kgD5
-	5OM3a6FnUAFGH3z46b3WrJ0dV15ooOK8NVAAmg3lZtDCojkdUNHzKpjeBZOjTQ/H3VQ=
-X-Gm-Gg: ASbGncv12pnU5ARx+Bol+22IMyCBCRWHjItXtlDZSOBm/Ln/mY0O0W71EBRCTJRGHHJ
-	ICvzz4osrFT2kp/hGeGbqRbDrptBpa556O6E6jne11mn7oYl/ageD6Ci1mE5UzhA7TorXodDRPQ
-	nvgEk7tTCn8zxUSudIpeWN46Y3P3508R6VSjjXJ+qknyCWIOySGJtp2ay8/Oeg4LcBfLZud1b6/
-	jtsqq+1WqgYinBzT9Y7w0RwEpvFAEWos6fcZcbNHbN88QzUooHyD3vaAJqM6qFDl085rgiMc0Qy
-	KiYmMoAbiFQVAVQFBAm2Jy6cC36s7+aI+hYfj6FBblCBmokEroTrNu0JDL1KYGuryhezrfHWWzh
-	Yan3lKjzRBbxpuD5N
-X-Google-Smtp-Source: AGHT+IEKXsHjEUhuH6wRWLK489irD13ITqJD/VynaOuVYt4g+rvkQtR7GAX4bOkX9Wr9zTMFFREQDA==
-X-Received: by 2002:a05:600c:524b:b0:45b:84f2:76ff with SMTP id 5b1f17b1804b1-45b8549c809mr92371695e9.0.1756814364206;
-        Tue, 02 Sep 2025 04:59:24 -0700 (PDT)
+        bh=bswhw1GYJgLkiQcdAy82i30rP02s8V3NVyufQL1WnW0=;
+        b=ohCvZP2SyIAAJVHjAA3TyX+v79jDHp5dXv275b3ouaxk0rf9FU0DYc0FUNawnNMbDI
+         I79PDT9AgbsYviAxAh9SW7BM0G7nCGOXvt2zFlxC6KMMtfkhuSMDQi0L1jC9/+rYAP52
+         d9QHnrVCxx9499wzM5MI+8Y6VLx5OgFQEs0M9anZs12WgD3VmvVidAQrSD5N+n0384OW
+         rj39tXg5yTTZqgficeVCPVB9jIB13E/VOpwsvScLPLq5Yi1uZpJhmmV/NPUhXEKKrjgD
+         icbW0VmkW5pFCjaDLmDJWq48M3oB9AqVMOyoHeeUhy2e31XuTHsStWTRN5+JLdWzpoMo
+         pqig==
+X-Forwarded-Encrypted: i=1; AJvYcCU90e6qBGSOcGHkbLn9V8Yr9NR721ZNrYLp9zGqIr7JOzimVJ5Q4uuBfOeHS7cfLw/j/pg902FDBA==@kvack.org
+X-Gm-Message-State: AOJu0YztkveO06817paoKu4EtT0sk7ldHRNJnXvwSV1iNolHO2eKEiYh
+	5fTXMpqZeOuzcgdV1JMb3fkPP0vuesZj7sknkNph2X9JeR4qwq8or6zMwcObF+F2uR4=
+X-Gm-Gg: ASbGncsaRlVNMNkufObWau2rPT9VSjKkDaj77qzS0YK4nSJDkreHchroi1MhKkMT24W
+	m8GNGzvTFQhzmrzHMUtn/mmaluyT+j1n/05krezyk1bXbDZRMdBYHD0zpCrae/CBnaovrnz/iJn
+	N8v11LWjPheaGcEb/3+bAftE3zPAoNJamGXmQImFyI/K1YHUAQACbDJLI+oBTk/ZBIw7nyvLZwO
+	VnyQSUXlqDZE4MUAAq04n+inIRiS2HvUBfY4DocPjhwqe91PUiKxttmI/o5yR8DSU28CLVOffmT
+	G4F2jDsJGnwAB/lwY+R/1iEIJYMCObDbczwCuRt76ZiglbzRbgLFRgHiFAwDO9//keFrQLFz5Ar
+	pPfMThyH+XaDi53D9
+X-Google-Smtp-Source: AGHT+IGIpBaz6r7FFnIRCIEC0+a7WcaTtJlzxcvaE/LJOrX7ntXW3p38zffYBjnK1uGkAz25Buql4Q==
+X-Received: by 2002:a05:600c:1c15:b0:458:f70d:ebd7 with SMTP id 5b1f17b1804b1-45b9353e81amr25870145e9.20.1756814365845;
+        Tue, 02 Sep 2025 04:59:25 -0700 (PDT)
 Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:3327:447f:34e9:44f7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9c234b24sm10224195e9.16.2025.09.02.04.59.22
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9c234b24sm10224195e9.16.2025.09.02.04.59.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 04:59:23 -0700 (PDT)
+        Tue, 02 Sep 2025 04:59:25 -0700 (PDT)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 02 Sep 2025 13:59:12 +0200
-Subject: [PATCH v7 03/16] pinctrl: ingenic: use struct pinfunction instead
- of struct function_desc
+Date: Tue, 02 Sep 2025 13:59:13 +0200
+Subject: [PATCH v7 04/16] pinctrl: airoha: replace struct function_desc
+ with struct pinfunction
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250902-pinctrl-gpio-pinfuncs-v7-3-bb091daedc52@linaro.org>
+Message-Id: <20250902-pinctrl-gpio-pinfuncs-v7-4-bb091daedc52@linaro.org>
 References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
 In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
 To: Linus Walleij <linus.walleij@linaro.org>, 
@@ -131,31 +131,31 @@ Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9044;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2093;
  i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=FkLrNkeOzJSHzI/Py7RyDUr6KQps7dFmE2AsFFRpc3M=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBottwS1UKRgkb9ccIEU3IZ3aW5VjhJjzIWrcLvA
- hZ9ye192huJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaLbcEgAKCRARpy6gFHHX
- ckpiEADcWoZprO9Xud4RwPgcecXpho5pCPR8wMVVtHaWIF3NsJfE2Kjy2nGdi3EpUqADsyOJnnb
- UJYIoAWcyM1Umxp4vDl5gaQelD8e4X3w3aFvpSYpH29Myl8Vw3K/UWIfrgz0CZv9OEJvWDQwXT6
- K664I284sIKrYEtXGYTUZ8H2Ffj7OEF2Ts221vDtkho1puGzJX7qzs7Fdf1Q27mYeVvhL9892gm
- atbQcnqjY/a/8xKwCyJJmaDmrnLnFoReX/tB9MEWiYLKK6KsQXApTqPgAQJ4hyQFwYGZI/UbNUE
- O4RnB5pZ3IbLMWdn733nIeeUbBywAKt92kxjmv/N0Ovl/8cwQwmNMwqJkvhZKdJ/KCmxhr8Xp38
- zYsfy6+sY8+dbnRYqDcXxOlZcWMegK1eKgyUc6OEEktog+JNGoYYeDGsILee2KqX7N4BYCP4a4u
- VuJfCSLrgH3iNwUTINLmcIYULAebuoq+BdjBKhPLlma8tq2jy9DRoM05S9gxvcr6ShCo1X6yiF2
- v10RD0B9g6NqC4oN7ovyMhSdts67P1P0E5cDbF7q9b5XaHWokUaarYXFUCu4O8aMrDGu84GkkUB
- j7GGq0nJrNfm5dsdUSpwJSnQR7bqwb/F23b/cCfFSEe69ge2KLJiQiEl0/teWhWx7WKIr89iWmT
- JyuUv2S5n9ijytQ==
+ bh=/XFuHQ/ODPhn9fKCd0Ju7j35cIiLPr5VI6W7KxiJtqQ=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBottwSXkG4aY2cOKQ1+2ZlnidJXDf5tdbvHx7xm
+ T6spE59tAWJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaLbcEgAKCRARpy6gFHHX
+ ctGBD/9MbKPzAcDoovqTMIPxr8BtMxjfGlz3gLMXljCSbdBNiVKbz5YkKncvqSgoWFE8RgJf0lG
+ 4MXXFZah6ndL7XHk/j0H5Vk77deGulzZJPpYB/vTdKdTEXoqf2UNSvfFdaCO4GrYQCP918QKMbX
+ Y3s5IeIFgdIKmHIOPtdTujxu+9GB19fBzWGn3Xn00xS5oq5wWcLacLqgtBNZ3zbqJAzJ/uNfJPs
+ qN4Q0Dmp++ZUAAJw6r6umhTypcX6Zg8iMC61jkRLgnU/D+2n4dWGJizXrMxhUBexefXxLOkpp9P
+ sBQ4DwOYb30i6GHdcCw9HykSNsNDvjDGgYjg207NXQ1aVGkE/9pE4CMyafvGn3AuGndzULmR7zt
+ F/DShfIHttSBvsvdDThKnIT3lHMC0y8RBeoqEkg7NMd2lj5F2IXSblwbWjmfH2haAU16IoU8K63
+ BB1ibO9AbrpHX2s/1ZYVXpD2knkhUXnwr29hJowBAuxojdr3z69Zs2oxlj9hUoQmrs4F+XAqsmB
+ XcnxELikDisTVpBMve5oB/fjqGZp2rWuGuC6sykJ5jY00e9mdKF21zIYYBAygClSBwbdekEKGWy
+ u9jdXOcXRRsC5p59bShjaSz0LjR1fU877tgST2UoQw6XScesIDYv6cUiRWjgnFQkhjQkOqP8/4R
+ AWXs/njP4gntjFg==
 X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
  fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C86C3A0009
-X-Stat-Signature: fiktutyenh5qeumy4hknwdznmma9a7z4
+X-Rspamd-Queue-Id: 53C4F10000F
+X-Stat-Signature: kzb444daa71j9rdo1usm4j7oyom45ito
 X-Rspam-User: 
-X-HE-Tag: 1756814365-380119
-X-HE-Meta: U2FsdGVkX1+NAg3+WRZF94VMhTgLdfy/k4i2iwD7Yh+gZB9d2Tbi/pjyaPX7Jbx969PlC9QKHVtGzcw1DwfSK6lK1CTyyPaSzgpgWztTB8GKPSCFmN6Jxa2phbjsuFzlBC6HIszPG2c0Xvn0+4SPxuy2XkLBO9WXWyzxxS8IiSL2LVmTKBByrDIaW13GJe24hz84TPT9MtXCWqnjfPTmcLlBsIMD7KfNK0dSaBHPEe8FQpAm8AjQP5kTqq4cp3VN6Sv5POuIqdNvI/s/w6EOBt2H2PhPZvZtbiF+qJY+CwTKDH9jv/P44yTTnsrcBoNCgVokU8mhN+ISXXHNY6KhItTd4OvrIYJfuAhR+DLhbCAGRM+ccrjccWdXaeK4S6w9/GSeukQQ3ZvsB7bMgVed6ruBK/r2I1JgD8VsVhZoe62FBs89bbp/WRoUPyYIUU+fEc4IP8jowy0bfia3LeBI8uhRuPHDzxulUrrI04fiA1oAKwn/0Lnxd8ACrso1+QXfC/w5YjxfVg4Ifme0H6rC/qW+/e7l8JJUeydNikkLJVcknMuLpOi0aMpfN/ulaO/EwEu/WT4pTSbrJMKGrl2FXPnmzBpnB/X7R9l0yXA3R72p9pF2JiHfIIQwmHrubzQkV8zbK27l+vVZ859qWowPZU575bQmeAHIiDjGsFxcL8pX1+3Pxjjrxl8lWjLg70I/bev2JobKrwn6njciqpZmGfOkqtBExxjOOv42aLN/J1S6qMt7JBPdaUXJknvlYYZ3MZCqUjXXbDhcs/s8BiZ/+m0m++ime//jOySycheTgHripuzjX0Db9hbMyPseB6ZpLKG5ItYXAK45vCzdW+N2so5jG3fNUuEv7Sdl28usLfjZSN6tZ401dNYJLOsg3ZHvcKMjVtnxjnm+VpUiOYu8UPgGNr65R7ETqKVFFnQ2FcKmPZxLiJwSRVX4pTpF/rNV+mDrB78BqPPonMHp9tG
- icDAymof
- dMx74Rywbe8COsRpKg/5XMDpf79xI3Bx+WJPlF9hz0JmyecO0rGS6R5pEinXWdp3Es2dEQiP/s+LGv7Qj1NnwByZxbd8mx855YZqsGWV6lPFvcON8uuKaOZy2+s9AI349pwlGufCw4fIwH9E11Yk9Jfk5gGCm7tm9hcvJpXA8nV7UPQvbif4TuzqMK6pwEVhKVRJS2UXM90GgLyuPGiHg73vutRaAY3WqDyyWhbiTvVas2JR3dNW3GTZiE8DEwNiHsLp04GSFXwF6W8Ofx8JdlWZOAajUm1/Cgtm706VXsdoM+aFEi5BSELNg39eee873N5KR7WihoZegPdE5yLu7UJQ6wU8hgSZc/v9sF65zHIttyThqGUwaeJf+xtJE6/FlnEshvncWzaq4lYKthVDJya5R3mf+UfuRUubouKzowr9yw1dE8ra5CPAfOq2N46yAy2JEdo10alB8S2LJNEqn6JHVheajvcg6javLGSNweyGlswwD/oVQ8w+XKvLtrsd7FH4EMxjFnfMW1xeLHxTfmu8WeVZ6gvRoGtrn95FNBAdHjSKxIBQF96IQX+Kf0+xEYzhaoLn2xtF3c0Cil3OH23XXvS/l/Lsc3MwBVx2rfbRKU1c=
+X-HE-Tag: 1756814367-397564
+X-HE-Meta: U2FsdGVkX19imY7HQTzyl1zaJ29hjTSJrRsg4HQpQ6pRStHIi7AD9NNuU9CIrQUlUyoWkcxZ9wipaCVJjsCAPbZjsv5tMWc0BEIw7yx9lG9yyeSbNS2kQA3EqegfyQNjcHXAXUNUp94R8r6EntJ7IBqabIKgXgd8ayV0qB9aJ4SHb4O7YVP8F3SWxt6nRL74pdFQ9SBZ67oNcvxnmxueaSVsPsggSJd2/Yo7na4KE6xXpy69HCs36uJpCt0T5/INc52rRpG5itltZQ4XTskUNp1+jEVzD0LBnknk53KN1PFLTGmcLv9/RZ59ReyDZGH1cnlbcVcrNEUAcTUiaArH3VAUxLWOPLEklNka5vx17hB8MLsFb+O8j9nJ1NyeXhBUSQnXm7R6oI+gG2leGbJeYMGun/tQW1zcxo+0of6K8Ohxxoo4jQVSqSsOXCuEDvZAWGKI1hlb8t93/4uMaLhOHQTn3/+UGjrcJ3re8Jx44vI3N629CCKmUXkpoDlJHjojaldM5yyWDcwqeWebWIlRU50gi61S9PG6WPtANIfsJ5UDzkG+4Ie25FVtmiLUKWV8E7EjaGn9Cw3RGZfvoOmh8OHvKbE9/2SgmmGPCQ0LSpyO+mCc6fV5yrMihkOVqh6dVyFxg1qOs/z0gTaHyoCC7jpCv1S53rJJVJgOrLFGG+O4nDEG+R5JZSRpuDmpG/k43aKAwO8GhYv9A1E8d7gHgNsE0XgHXFjJvwU9FSbCW8eJ8B8WKEDoI8m+QPL4rSnzAaamLU2MnQSfZxFwMqap94YkHgMqP9ofEc52t6wePNR8WT2vnV85qLUhC+t+MDbF8AGQiQ7H9aTKWGnNIBYZ1pAf3+EMm3Fih7raVic7VNhIngxi106VqDYFnsH07VMKRkMZy0TsjegAeTcIi8gFA/HenSy2OqdTsvsjVmg6e+D+HMyZbLhNB3/OEFiszr+v47HmfUUijpOiZWF+jpN
+ cXihNZMT
+ 8k90TJmIQ0DmJYcmX4EI7ZyYZIGKUawFAGkuF7igBH/IN/cmoH0rZPazSN6Zu+CoI78D+m+OHNgLsPqB1w1bO5DGoNfqiDXr2+1KRTo3hzGeTaPKvBcYLFZb5nf16PAuZ9u9Z8w0ClyoMxlymuANEC1WItN5PMU3J23H/ETC/UnCyjwqyi5iKlXJUYXTLc50cM1jYVt51mHa7qyHFueDUfo6fdsQhKCljTnMHm5SWIer8bd4wvX/sns0sTpV8zI3c4YUZYvY/HZ8kq7E+pD3cmt7wiXSZxhVK+fV7tW+X2RFmJ58W5hWxWLUD8xa83rgVDL1xHXC7eQdhqia2/2477D7rdGTvNXa8q+BUqSuqDUMNo2GkYBhG4YPC821JUm9WMckzSrJAnuo5CFrh/ZV1+VynILhR7lNprgsEkqbalgcXX+kDhpheRti8/ab00DHzAO38IujbNljIMJ6AdLV94ERhf/yuL7kPpHnhax8Hs2T8mWKksvARDcPjefb90o7dHiSiJOmT0ywGQsqlfiNIhHBRUpxjxiOGPLfukFErEcxIfoPaS/Tqk0tKK4nZ0sYdyeJ0i36Q5jOe3Os=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -174,189 +174,55 @@ accessed by drivers using pinmux_generic_get_function(). Replace the
 struct function_desc objects in this driver with smaller struct
 pinfunction instances.
 
-Acked-by: Paul Cercueil <paul@crapouillou.net>
 Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/pinctrl/pinctrl-ingenic.c | 45 +++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 25 deletions(-)
+ drivers/pinctrl/mediatek/pinctrl-airoha.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-ingenic.c b/drivers/pinctrl/pinctrl-ingenic.c
-index 2900513467fa4e2e9374946fc9c7a30d48aef9eb..af9d2f3081859bc4b22f6820f3b3753eba36f959 100644
---- a/drivers/pinctrl/pinctrl-ingenic.c
-+++ b/drivers/pinctrl/pinctrl-ingenic.c
-@@ -96,11 +96,8 @@
- 		.data = (void *)func,							\
+diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+index 1b2f132d76f0aff78768ed846e8d5980e5b46770..796dc2461ebae167d9daccbb26c4ef6f358851a1 100644
+--- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
++++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
+@@ -35,13 +35,8 @@
+ 
+ #define PINCTRL_FUNC_DESC(id)						\
+ 	{								\
+-		.desc = {						\
+-			.func = {					\
+-				.name = #id,				\
+-				.groups = id##_groups,			\
+-				.ngroups = ARRAY_SIZE(id##_groups),	\
+-			}						\
+-		},							\
++		.desc = PINCTRL_PINFUNCTION(#id, id##_groups,		\
++					    ARRAY_SIZE(id##_groups)),	\
+ 		.groups = id##_func_group,				\
+ 		.group_size = ARRAY_SIZE(id##_func_group),		\
  	}
- 
--#define INGENIC_PIN_FUNCTION(_name_, id)							\
--	{											\
--		.func = PINCTRL_PINFUNCTION(_name_, id##_groups, ARRAY_SIZE(id##_groups)),	\
--		.data = NULL,									\
--	}
-+#define INGENIC_PIN_FUNCTION(_name_, id)						\
-+	PINCTRL_PINFUNCTION(_name_, id##_groups, ARRAY_SIZE(id##_groups))
- 
- enum jz_version {
- 	ID_JZ4730,
-@@ -128,7 +125,7 @@ struct ingenic_chip_info {
- 	const struct group_desc *groups;
- 	unsigned int num_groups;
- 
--	const struct function_desc *functions;
-+	const struct pinfunction *functions;
- 	unsigned int num_functions;
- 
- 	const u32 *pull_ups, *pull_downs;
-@@ -263,7 +260,7 @@ static const char *jz4730_pwm1_groups[] = { "pwm1", };
- static const char *jz4730_mii_groups[] = { "mii", };
- static const char *jz4730_i2s_groups[] = { "i2s-data", "i2s-master", "i2s-slave", };
- 
--static const struct function_desc jz4730_functions[] = {
-+static const struct pinfunction jz4730_functions[] = {
- 	INGENIC_PIN_FUNCTION("mmc", jz4730_mmc),
- 	INGENIC_PIN_FUNCTION("uart0", jz4730_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4730_uart1),
-@@ -370,7 +367,7 @@ static const char *jz4740_pwm5_groups[] = { "pwm5", };
- static const char *jz4740_pwm6_groups[] = { "pwm6", };
- static const char *jz4740_pwm7_groups[] = { "pwm7", };
- 
--static const struct function_desc jz4740_functions[] = {
-+static const struct pinfunction jz4740_functions[] = {
- 	INGENIC_PIN_FUNCTION("mmc", jz4740_mmc),
- 	INGENIC_PIN_FUNCTION("uart0", jz4740_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4740_uart1),
-@@ -474,7 +471,7 @@ static const char *jz4725b_pwm3_groups[] = { "pwm3", };
- static const char *jz4725b_pwm4_groups[] = { "pwm4", };
- static const char *jz4725b_pwm5_groups[] = { "pwm5", };
- 
--static const struct function_desc jz4725b_functions[] = {
-+static const struct pinfunction jz4725b_functions[] = {
- 	INGENIC_PIN_FUNCTION("mmc0", jz4725b_mmc0),
- 	INGENIC_PIN_FUNCTION("mmc1", jz4725b_mmc1),
- 	INGENIC_PIN_FUNCTION("uart", jz4725b_uart),
-@@ -606,7 +603,7 @@ static const char *jz4750_pwm3_groups[] = { "pwm3", };
- static const char *jz4750_pwm4_groups[] = { "pwm4", };
- static const char *jz4750_pwm5_groups[] = { "pwm5", };
- 
--static const struct function_desc jz4750_functions[] = {
-+static const struct pinfunction jz4750_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", jz4750_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4750_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", jz4750_uart2),
-@@ -771,7 +768,7 @@ static const char *jz4755_pwm3_groups[] = { "pwm3", };
- static const char *jz4755_pwm4_groups[] = { "pwm4", };
- static const char *jz4755_pwm5_groups[] = { "pwm5", };
- 
--static const struct function_desc jz4755_functions[] = {
-+static const struct pinfunction jz4755_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", jz4755_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4755_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", jz4755_uart2),
-@@ -1106,7 +1103,7 @@ static const char *jz4760_pwm6_groups[] = { "pwm6", };
- static const char *jz4760_pwm7_groups[] = { "pwm7", };
- static const char *jz4760_otg_groups[] = { "otg-vbus", };
- 
--static const struct function_desc jz4760_functions[] = {
-+static const struct pinfunction jz4760_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", jz4760_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4760_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", jz4760_uart2),
-@@ -1444,7 +1441,7 @@ static const char *jz4770_pwm6_groups[] = { "pwm6", };
- static const char *jz4770_pwm7_groups[] = { "pwm7", };
- static const char *jz4770_mac_groups[] = { "mac-rmii", "mac-mii", };
- 
--static const struct function_desc jz4770_functions[] = {
-+static const struct pinfunction jz4770_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", jz4770_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4770_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", jz4770_uart2),
-@@ -1723,7 +1720,7 @@ static const char *jz4775_mac_groups[] = {
+@@ -334,7 +329,7 @@ struct airoha_pinctrl_func_group {
  };
- static const char *jz4775_otg_groups[] = { "otg-vbus", };
  
--static const struct function_desc jz4775_functions[] = {
-+static const struct pinfunction jz4775_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", jz4775_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4775_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", jz4775_uart2),
-@@ -1976,7 +1973,7 @@ static const char *jz4780_dmic_groups[] = { "dmic", };
- static const char *jz4780_cim_groups[] = { "cim-data", };
- static const char *jz4780_hdmi_ddc_groups[] = { "hdmi-ddc", };
+ struct airoha_pinctrl_func {
+-	const struct function_desc desc;
++	const struct pinfunction desc;
+ 	const struct airoha_pinctrl_func_group *groups;
+ 	u8 group_size;
+ };
+@@ -2908,11 +2903,11 @@ static int airoha_pinctrl_probe(struct platform_device *pdev)
  
--static const struct function_desc jz4780_functions[] = {
-+static const struct pinfunction jz4780_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", jz4770_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", jz4770_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", jz4780_uart2),
-@@ -2211,7 +2208,7 @@ static const char *x1000_pwm3_groups[] = { "pwm3", };
- static const char *x1000_pwm4_groups[] = { "pwm4", };
- static const char *x1000_mac_groups[] = { "mac", };
- 
--static const struct function_desc x1000_functions[] = {
-+static const struct pinfunction x1000_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", x1000_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", x1000_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", x1000_uart2),
-@@ -2341,7 +2338,7 @@ static const char *x1500_pwm2_groups[] = { "pwm2", };
- static const char *x1500_pwm3_groups[] = { "pwm3", };
- static const char *x1500_pwm4_groups[] = { "pwm4", };
- 
--static const struct function_desc x1500_functions[] = {
-+static const struct pinfunction x1500_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", x1500_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", x1500_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", x1500_uart2),
-@@ -2562,7 +2559,7 @@ static const char * const x1600_pwm7_groups[] = { "pwm7-b10", "pwm7-b21", };
- 
- static const char * const x1600_mac_groups[] = { "mac", };
- 
--static const struct function_desc x1600_functions[] = {
-+static const struct pinfunction x1600_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", x1600_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", x1600_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", x1600_uart2),
-@@ -2779,7 +2776,7 @@ static const char *x1830_pwm6_groups[] = { "pwm6-c-17", "pwm6-c-27", };
- static const char *x1830_pwm7_groups[] = { "pwm7-c-18", "pwm7-c-28", };
- static const char *x1830_mac_groups[] = { "mac", };
- 
--static const struct function_desc x1830_functions[] = {
-+static const struct pinfunction x1830_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", x1830_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", x1830_uart1),
- 	INGENIC_PIN_FUNCTION("sfc", x1830_sfc),
-@@ -3225,7 +3222,7 @@ static const char *x2000_mac0_groups[] = { "mac0-rmii", "mac0-rgmii", };
- static const char *x2000_mac1_groups[] = { "mac1-rmii", "mac1-rgmii", };
- static const char *x2000_otg_groups[] = { "otg-vbus", };
- 
--static const struct function_desc x2000_functions[] = {
-+static const struct pinfunction x2000_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", x2000_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", x2000_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", x2000_uart2),
-@@ -3449,7 +3446,7 @@ static const struct group_desc x2100_groups[] = {
- 
- static const char *x2100_mac_groups[] = { "mac", };
- 
--static const struct function_desc x2100_functions[] = {
-+static const struct pinfunction x2100_functions[] = {
- 	INGENIC_PIN_FUNCTION("uart0", x2000_uart0),
- 	INGENIC_PIN_FUNCTION("uart1", x2000_uart1),
- 	INGENIC_PIN_FUNCTION("uart2", x2000_uart2),
-@@ -4571,11 +4568,9 @@ static int __init ingenic_pinctrl_probe(struct platform_device *pdev)
- 	}
- 
- 	for (i = 0; i < chip_info->num_functions; i++) {
--		const struct function_desc *function = &chip_info->functions[i];
--		const struct pinfunction *func = &function->func;
-+		const struct pinfunction *func = &chip_info->functions[i];
- 
--		err = pinmux_generic_add_pinfunction(jzpc->pctl, func,
--						     function->data);
-+		err = pinmux_generic_add_pinfunction(jzpc->pctl, func, NULL);
+ 		func = &airoha_pinctrl_funcs[i];
+ 		err = pinmux_generic_add_pinfunction(pinctrl->ctrl,
+-						     &func->desc.func,
++						     &func->desc,
+ 						     (void *)func);
  		if (err < 0) {
- 			dev_err(dev, "Failed to register function %s\n", func->name);
+ 			dev_err(dev, "Failed to register function %s\n",
+-				func->desc.func.name);
++				func->desc.name);
  			return err;
+ 		}
+ 	}
 
 -- 
 2.48.1
