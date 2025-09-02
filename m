@@ -4,30 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4196CCA100D
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAB43CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:49:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 155A58E0010; Tue,  2 Sep 2025 08:49:19 -0400 (EDT)
+	id 35D038E0001; Tue,  2 Sep 2025 08:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 060088E000E; Tue,  2 Sep 2025 08:49:18 -0400 (EDT)
+	id 154018E000F; Tue,  2 Sep 2025 08:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5BA08E000F; Tue,  2 Sep 2025 08:49:18 -0400 (EDT)
+	id E93258E0001; Tue,  2 Sep 2025 08:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BBA738E0001
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C37228E000E
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:49:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B2AD55AD0
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92A451D8949
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:18 +0000 (UTC)
-X-FDA: 83844290796.28.072B0F9
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8AB92160004
+X-FDA: 83844290796.22.548B9F7
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 170761C0003
 	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
+Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817356; a=rsa-sha256;
+	cv=none;
+	b=1u8VxZDOadlGiait6WSv5/VK3u4dACfwytCmJN4v/zd7ctp2A7y1y58egO2aIDnm4htixF
+	IqMbO86Zos84UJlotlxCsmOlsTQi0tQDa/fZR5z4TCsZ/jFsxHm7dhfR/lGYH4bFP6yTEF
+	FYh5OhCsqemx9lSgAL22/yRNnfAg5Sw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1756817356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,30 +45,20 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vZf7Ee6V9kehDy+5Gg4zRY2A0yeR9f+pMkPe4wIx/g0=;
-	b=Z+kJqqg6EEZbsPqL9H4vRxkw9LFbOlhulPYNKBXkSoJySdS9BOZa3fmmxOtQtR7Q8G9Ue+
-	+zQqqbKr+FCwWicMZOalQQXOgQnfdTf+FNXi4yDHa7vYaah0F043BZ4U23RyGEtI4z2c0Z
-	2V7GI3l2xf0iLj1fA/pJM2IhuUDI0zc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	spf=pass (imf08.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817356; a=rsa-sha256;
-	cv=none;
-	b=EBqgXfSqcLrsPYOgSRhN/YRI2hUQVlU8ZCrxoi29S/M+0QVXMz4s0Fbhi/6QQxqcwxo0NY
-	2NW2D1PmeEPNXaEqzj6+nr+7iHLKpvaACirWglaBNsI6LaPL+EVzk+8lcHAgu6j/aUU7w8
-	hm/GYueO86Gr/gAdf6fsiB64cYzHoJE=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cGQZM1vYHz27jVR;
-	Tue,  2 Sep 2025 20:50:19 +0800 (CST)
+	bh=P12jBTjQte/keqXxg6gAnGZE1UoT1JIALiE0K2KBdas=;
+	b=S6TGICABA1CVBUBHf448GXkQwtJPEmmn/RfOsP8p33xPr2YbV69amAK+GFNCq6WnnpZMhi
+	8JTSj8cKUJp9rTR/BD2jb62pbyS9DgNwTB8ekUTxAZOOtlDxVL5B6VyZEp0gluKQVBUsyJ
+	5q6T9+7aXz+AMcLz1oVOi53ej+7ZETc=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cGQRl702yzPqbG;
+	Tue,  2 Sep 2025 20:44:35 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8B4F91A0188;
-	Tue,  2 Sep 2025 20:49:11 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 84052140258;
+	Tue,  2 Sep 2025 20:49:12 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Sep 2025 20:49:10 +0800
+ 15.2.1544.11; Tue, 2 Sep 2025 20:49:11 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -67,9 +67,9 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
 	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
 	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
 	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 1/9] mm: hugetlb: convert to use more alloc_fresh_hugetlb_folio()
-Date: Tue, 2 Sep 2025 20:48:12 +0800
-Message-ID: <20250902124820.3081488-2-wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 2/9] mm: hugetlb: convert to account_new_hugetlb_folio()
+Date: Tue, 2 Sep 2025 20:48:13 +0800
+Message-ID: <20250902124820.3081488-3-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
 References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
@@ -79,14 +79,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.175.112.125]
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8AB92160004
-X-Stat-Signature: f1dzofs1nfxhkyzk7d3xuaf7r88cxc4f
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756817355-774269
-X-HE-Meta: U2FsdGVkX19xbFEI8tMtSDs48+pQVEYpqEIOn03GvqkcoLp+N5iz7X3Ht526umPAKaZw1iCGS/my4JBHLR4CcVbtgYsOhaRNS4+JG+Q3Xw2WHbR9sTKDKuFTryNd1vnDLOGL6pOUbvgMMXYSh3hj/K3xzBZ+SUyVhcFNdgaFz1hxwy/hWi3oxZjOZMG+dyn8oq1yN6gG2kJkv5lZ0uQ2OcaDSDZH0O9FbQIzQfOdv5JcN8+kQ06nhqH+Xj1RCj+Chb7BtvdPuQt0GHt3/fSgkhQUI1dngREDFjXNOBj3XVY+bmtr6oRay4S9CkgSBV9ljagjTHafKq3HQI85Hi6GvG0V9u7ObX6NypCgfcqc4QF4Cc0/mBi6opO85lK3EB4fuHcz3N1Etq2R/F3PBoAbZvfX9j8mK/7cMg1xVeitNn+SU16d2k5EyWCigexg2PlEQrPHcI3xEzEvVXiqtXy+oxtAnoA9wwBwYLKpWfpQCPLieqNBHdq7aOA941xxQMKciurQ77az3aGF2T5bj4dFn0dqEN6YO5o35J1Wjurxa8ErMcRlX4WjW88bDPdVjKoie8c2GrIB+tkjuHAkGdMFDoQ2nFZZem6DzoceWun/yfl3bNSxtIoU55tZF7AZU5C0G1oEg/l5YMG/wAZa9JsqVMNpJrh+jli0HnI+qMUHGl/EG+fFxNVM+QyftrJGdiO6Lxr5X/Yc5bI/fjp/+48O4dpPqCuBf2rwSoRYyzMyg1Lwna/7M1A0oz/MRxEzdyK7CwP/4p6Li1gM/UY0GRQXC3dpC3V3RS29xIsS3dN6NMVXj4vpj4WWgHP/UNzV8/Tzen6Hg+OMBFh3RWWL7RxHtcMWMAMTWYnIhook03AgDW4pS8Cwp4Jyih+Z5si3M7XoNk7FX7S3QmNPDz5x627T0VsBbHuFUJcvLEXsrGreKhni1Aas4zCK3yf/PgT1VL0IUl17c/1BFjzt5L9MQw+
- OMc0rD7/
- Sg5og9hlVZ31iu38ak+5QETXzj3p2+a/5h+/d6FeAj1UXzbemkxgEta3TMqhxAwsO+3t6DAPZHkfWDWhj2JFi6k+bG6USlyPShJLxCGIbDh4+rITEL1SZCXi3oS028VtOqeM9mZa3LzcUm/HSbeOomZStj4qhpVMdEguam/Zm+xj0NV8puIAZjVX8OBI6A+ZG5tmarqAZt9li+FaNP5VuCKa2qfM/H9w12cPP
+X-Rspamd-Queue-Id: 170761C0003
+X-Stat-Signature: d7kg4k4gm54zaqcrkybsnhknofmryx1h
+X-HE-Tag: 1756817355-298068
+X-HE-Meta: U2FsdGVkX194AZCW2HHAiMExdm1HsdV/zQ1HmYl/Ct1W8VXqctWEklf4v6AEOAisQdcJbuh3OK0MDOqV6EcEKaRCEOqI7+2UEm5LFV0po4v4iDfTxulo069g35DXkutB1xhxIzVgtVbMEpwvsP4Drd1YboFINlGLtUy0h5YX4w19qpnNJWcL1OFflc7X+jBfB7VczrsRRSiNZwjTQYqA94nEYX6zPHj5H74VIYkzjFfZuHi92RJHZzLFFK+p/vtmM5RTXYItlXxM+Dl6NUY83oEpWL91z15h5Fll5wSb56g1FuaDI7FoxJWbpBW+ksZQqpr2nKbeHtLNJ4wsLGcr5OECJdUiqvbUh/mTvg3Kcn9hCK+QcgHeiyL/iAG4Y6HSMjREhqHwGRR0LHNkmAxhwltMlP8rmPGoky6OT39N0jS91QeWJ14tj/2Q96neEhxOJJQ9V7fiYu8JcuOhHTCcfKcDguYR6IB2WrA3kSSGwZM8I21RIS3nPyAApNgGpMkmFm+SlPkskSvkmHYgKQGoyvq7YdxKOLZKwZ7ADkDNXkjdGkh6dj/JEeGwnhMvigReKA872jfKgzRLwvN2tSh/ykS1AabFPnymJSVzcExDQ9lAktT7sIgPsHG0gZsQSGfKs60fkmYTzqKSEhJDOt1r+GFc44/TGaOhm8P4cy67rV75Twy3XvxaXGHCbmPchlalKi4+HddBLG3iNekksPqinZjUyxnuta8EckNGkwEr4qJNY1d2QT0nKITXeoTTKMHrzNtLfD+vu2+P8/3pZNOij9M9EW3kBSzT/OX2dqhor3EYAcdA/hk9zzOLUZiHhFTatGMaGIbyp3I8Ycvd6gBqJvRDg9AbKtZsT0wBbuUEplEkd6Rj3agWv8Ehx5gbv7807tiOLNvwFTICrkV2mX12eyjwZjKopptF615o4PHMulZHSIL+HxBmGfcsA7n1o4btv05JzMGgaIuHUCYbwxr
+ dS9O8fgZ
+ +/aLX/7AMxHcybYvMnvFKxhFe6UsXCJBZuSW6/NvvHnzftOj1aG533mrCILc5dBTrNK7HkHA7sy6yWCrooilJNl12YJD8+VJUeL/Rb4P7b+scNFhfKijH/FP+JrrgjhZ+dvPZlIZ3NbpcH3Qr95dc2lqSfCMK38OWduq4eMMjm5/XGa9kntWJaWKmMDBUekBJxO3I9dnFnDIx+Bh9VF9LeYdmBxOPMl8okVkZptuTSn/5JJyRj6RXAXCYln0uRNgsA+MXV29EiBvIuvc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,112 +95,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Simplify alloc_fresh_hugetlb_folio() and convert more functions
-to use it, which help us to remove prep_new_hugetlb_folio() and
-__prep_new_hugetlb_folio().
+In order to avoid the wrong nid passed into the account, it's better
+to move folio_nid() into account_new_hugetlb_folio().
 
 Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/hugetlb.c | 44 +++++++++++++-------------------------------
- 1 file changed, 13 insertions(+), 31 deletions(-)
+ mm/hugetlb.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 572b6f777284..93aa32c51265 100644
+index 93aa32c51265..4131467fc1cd 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1906,20 +1906,6 @@ static void init_new_hugetlb_folio(struct hstate *h, struct folio *folio)
- 	set_hugetlb_cgroup_rsvd(folio, NULL);
- }
- 
--static void __prep_new_hugetlb_folio(struct hstate *h, struct folio *folio)
--{
--	init_new_hugetlb_folio(h, folio);
--	hugetlb_vmemmap_optimize_folio(h, folio);
--}
--
--static void prep_new_hugetlb_folio(struct hstate *h, struct folio *folio, int nid)
--{
--	__prep_new_hugetlb_folio(h, folio);
--	spin_lock_irq(&hugetlb_lock);
--	__prep_account_new_huge_page(h, nid);
--	spin_unlock_irq(&hugetlb_lock);
--}
--
+@@ -1890,11 +1890,11 @@ void free_huge_folio(struct folio *folio)
  /*
-  * Find and lock address space (mapping) in write mode.
-  *
-@@ -2005,10 +1991,10 @@ static struct folio *only_alloc_fresh_hugetlb_folio(struct hstate *h,
- }
- 
- /*
-- * Common helper to allocate a fresh hugetlb page. All specific allocators
-- * should use this function to get new hugetlb pages
-+ * Common helper to allocate a fresh hugetlb folio. All specific allocators
-+ * should use this function to get new hugetlb folio
-  *
-- * Note that returned page is 'frozen':  ref count of head page and all tail
-+ * Note that returned folio is 'frozen':  ref count of head page and all tail
-  * pages is zero.
+  * Must be called with the hugetlb lock held
   */
- static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
-@@ -2016,14 +2002,9 @@ static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
+-static void __prep_account_new_huge_page(struct hstate *h, int nid)
++static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio)
  {
- 	struct folio *folio;
- 
--	if (hstate_is_gigantic(h))
--		folio = alloc_gigantic_folio(h, gfp_mask, nid, nmask);
--	else
--		folio = alloc_buddy_hugetlb_folio(h, gfp_mask, nid, nmask, NULL);
--	if (!folio)
--		return NULL;
--
--	prep_new_hugetlb_folio(h, folio, folio_nid(folio));
-+	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL);
-+	if (folio)
-+		hugetlb_vmemmap_optimize_folio(h, folio);
- 	return folio;
+ 	lockdep_assert_held(&hugetlb_lock);
+ 	h->nr_huge_pages++;
+-	h->nr_huge_pages_node[nid]++;
++	h->nr_huge_pages_node[folio_nid(folio)]++;
  }
  
-@@ -2241,12 +2222,10 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
- 		goto out_unlock;
+ static void init_new_hugetlb_folio(struct hstate *h, struct folio *folio)
+@@ -2020,7 +2020,7 @@ static void prep_and_add_allocated_folios(struct hstate *h,
+ 	/* Add all new pool pages to free lists in one lock cycle */
+ 	spin_lock_irqsave(&hugetlb_lock, flags);
+ 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
+-		__prep_account_new_huge_page(h, folio_nid(folio));
++		account_new_hugetlb_folio(h, folio);
+ 		enqueue_hugetlb_folio(h, folio);
+ 	}
+ 	spin_unlock_irqrestore(&hugetlb_lock, flags);
+@@ -2232,7 +2232,7 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
+ 	 * as surplus_pages, otherwise it might confuse
+ 	 * persistent_huge_pages() momentarily.
+ 	 */
+-	__prep_account_new_huge_page(h, folio_nid(folio));
++	account_new_hugetlb_folio(h, folio);
+ 
+ 	/*
+ 	 * We could have raced with the pool size change.
+@@ -2270,7 +2270,7 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
+ 		return NULL;
+ 
+ 	spin_lock_irq(&hugetlb_lock);
+-	__prep_account_new_huge_page(h, folio_nid(folio));
++	account_new_hugetlb_folio(h, folio);
  	spin_unlock_irq(&hugetlb_lock);
  
--	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL);
-+	folio = alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask);
- 	if (!folio)
- 		return NULL;
- 
--	hugetlb_vmemmap_optimize_folio(h, folio);
--
- 	spin_lock_irq(&hugetlb_lock);
- 	/*
- 	 * nr_huge_pages needs to be adjusted within the same lock cycle
-@@ -2290,6 +2269,10 @@ static struct folio *alloc_migrate_hugetlb_folio(struct hstate *h, gfp_t gfp_mas
- 	if (!folio)
- 		return NULL;
- 
-+	spin_lock_irq(&hugetlb_lock);
-+	__prep_account_new_huge_page(h, folio_nid(folio));
-+	spin_unlock_irq(&hugetlb_lock);
-+
  	/* fresh huge pages are frozen */
- 	folio_ref_unfreeze(folio, 1);
- 	/*
-@@ -2836,11 +2819,10 @@ static int alloc_and_dissolve_hugetlb_folio(struct folio *old_folio,
- 		if (!new_folio) {
- 			spin_unlock_irq(&hugetlb_lock);
- 			gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
--			new_folio = alloc_buddy_hugetlb_folio(h, gfp_mask, nid,
--							      NULL, NULL);
-+			new_folio = alloc_fresh_hugetlb_folio(h, gfp_mask,
-+							      nid, NULL);
- 			if (!new_folio)
- 				return -ENOMEM;
--			__prep_new_hugetlb_folio(h, new_folio);
- 			goto retry;
- 		}
+@@ -2829,7 +2829,7 @@ static int alloc_and_dissolve_hugetlb_folio(struct folio *old_folio,
+ 		/*
+ 		 * Ok, old_folio is still a genuine free hugepage. Remove it from
+ 		 * the freelist and decrease the counters. These will be
+-		 * incremented again when calling __prep_account_new_huge_page()
++		 * incremented again when calling account_new_hugetlb_folio()
+ 		 * and enqueue_hugetlb_folio() for new_folio. The counters will
+ 		 * remain stable since this happens under the lock.
+ 		 */
+@@ -2839,7 +2839,7 @@ static int alloc_and_dissolve_hugetlb_folio(struct folio *old_folio,
+ 		 * Ref count on new_folio is already zero as it was dropped
+ 		 * earlier.  It can be directly added to the pool free list.
+ 		 */
+-		__prep_account_new_huge_page(h, nid);
++		account_new_hugetlb_folio(h, new_folio);
+ 		enqueue_hugetlb_folio(h, new_folio);
  
+ 		/*
+@@ -3309,7 +3309,7 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
+ 		hugetlb_bootmem_init_migratetype(folio, h);
+ 		/* Subdivide locks to achieve better parallel performance */
+ 		spin_lock_irqsave(&hugetlb_lock, flags);
+-		__prep_account_new_huge_page(h, folio_nid(folio));
++		account_new_hugetlb_folio(h, folio);
+ 		enqueue_hugetlb_folio(h, folio);
+ 		spin_unlock_irqrestore(&hugetlb_lock, flags);
+ 	}
 -- 
 2.27.0
 
