@@ -4,179 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC89CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5912ECA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 017CD8E000B; Tue,  2 Sep 2025 05:06:28 -0400 (EDT)
+	id 3B50F8E0002; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B188E0001; Tue,  2 Sep 2025 05:06:27 -0400 (EDT)
+	id 366108E0001; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF9B18E000B; Tue,  2 Sep 2025 05:06:27 -0400 (EDT)
+	id 254A68E0002; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CD8EC8E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:06:27 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6DD7AC0BE2
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:06:27 +0000 (UTC)
-X-FDA: 83843729214.12.3DB13AB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4771F80006
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:06:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fj6UO1+X;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C8B48E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:18:27 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A23D013B3E7
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:18:26 +0000 (UTC)
+X-FDA: 83843759412.17.653A8AB
+Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1314C40003
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:18:23 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=tt6loFxe;
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf17.hostedemail.com: domain of "prvs=333743773=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=333743773=roypat@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756804704; a=rsa-sha256;
+	cv=none;
+	b=kbEikPkVA6awDj8Gw4IGfsjDkA07m1NZxCrG3C/4zLrNVnVKcsXFkmcjluFcN+Z22lJQMX
+	HgavZyjXsS42/j+PhsfLzpRqvjhH6WyoFH1c20k5gVkpfrXMkCMh0DrSa6hKR6D77jowY6
+	4fzexQ1VAHNNjeN7XN+nsRD1HBGzGnc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amazon.co.uk header.s=amazoncorp2 header.b=tt6loFxe;
+	dmarc=pass (policy=quarantine) header.from=amazon.co.uk;
+	spf=pass (imf17.hostedemail.com: domain of "prvs=333743773=roypat@amazon.co.uk" designates 18.156.205.64 as permitted sender) smtp.mailfrom="prvs=333743773=roypat@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756803985;
+	s=arc-20220608; t=1756804704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lw+TgGPA9m83rrPJxFL67Me2TH+0qzayEhRMRZt18Jo=;
-	b=RIJDSQMov5XDVkT3TKo3iBzsXav19lj+KdPxGW3IfbiOwQ1UlF/Mh70wow3/9W3Dyu86vi
-	RlGzBJHZcW7AyAYA90APAttld2KCiHPfjh4b9RKiKQmvW8PMv0ZW4F4Uz12aoTzD50AGIk
-	3MSPVeIqm7HcrThU1jHupt/q45r8+/I=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Fj6UO1+X;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756803985; a=rsa-sha256;
-	cv=none;
-	b=LMq6YiJg6yoZpAmPCxV4oXGzd9gp/P/yMUdZEv7//QhQJE/ujqMXULD1NhzWvt3qfPbEU0
-	K4n854hBH+HZXTuzaH3J6aT0k4iDvA18YSDuIdRwzqTWwyq5VAgBS7wR/FJ48WvFapKmUb
-	481j+aniQikw/NjHH0onHAUffpL6GZ4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756803984;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lw+TgGPA9m83rrPJxFL67Me2TH+0qzayEhRMRZt18Jo=;
-	b=Fj6UO1+Xzcsl4lE1S5Gy1QSzlkjO98eWmeU6MG11AI1fDInHrz0rlLD7M0QyNRXRseZBIc
-	ROGAovw+hetIHM1XB3JpGKTwe8iyUJFAWEbWymSceYMdEZkLkOMnSyJAc8PxfHjOTqv6rH
-	s2r7mUY03+6XODyDj1X4QTNktzCkA5k=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-176-yxxX1JnvMAqkSyDTL7U4vg-1; Tue, 02 Sep 2025 05:06:23 -0400
-X-MC-Unique: yxxX1JnvMAqkSyDTL7U4vg-1
-X-Mimecast-MFC-AGG-ID: yxxX1JnvMAqkSyDTL7U4vg_1756803982
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45a15f10f31so46715515e9.0
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 02:06:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756803982; x=1757408782;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lw+TgGPA9m83rrPJxFL67Me2TH+0qzayEhRMRZt18Jo=;
-        b=H8pbQkQbAjo+Vm9HUTsUlXQyk0UgiWB0+DZavLwoWbDogSkXqM7UWtmHUcFkFAJU9S
-         I5cwfYa7iU7Q7lqadF9BrGnovJppzhWtpnm2g8ikBiL44LOm4UnVBJSaYkZv0bJLsqlC
-         Ej/o9sdHLt1amD1WOH/eHVNhAppSkeBCvqg5yKgNGH5ILYVfN7CUWOaITnhW9ri1m41q
-         vRJCUWC5q4ELKNudwTQdsrfruPruPgmHzSgzyZu2KXC7jyT2Pfn/uZbNakB1Gs+jGrBT
-         jpLhBhYgk93P96nN4cj9MszhlZAJVOcPjffbVcJ7c4xS0IBrW8bFy6oDJ9xaisWmKCZy
-         sZzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVAN2yvSkMPcL55/WNy2tU2TiN9gh1aTwuiheWPj0hAeIinR6wkzlBJrVzkqMqeaapK2BEbtzASxw==@kvack.org
-X-Gm-Message-State: AOJu0Yw/LCVChzamRV/89MlAyszfLqBKFwMHF0g6BcnS1t665d7o5plr
-	WfEN2Sm1wCmKeX5PUSXWR42luuVzhwxBtqZkIW9NqHaXdsN4SA9KlswwiGxambcfBeh3kk/jU9k
-	ub7cvNQ40RQ2nQYmUmN/tFlBOE+aC3QO0lNFXNORaldMNz424WdrY
-X-Gm-Gg: ASbGnctKVAbeZV0EqyR2GTWPmffbSDkhNQkG5IvJJ+qRzeg9cNF5xUi86v8NQxfCmqv
-	bTnwUphjs5b7kYv5XH/C58niQ++Mu9mQ25Vif6Zm1/LMSR3v/UMlpDUh5r/61Blw1F/cGpuDnFr
-	d+LDGjARHp6dMb6H7dRUsYjM4AamZbxzKBRAWkvNoJO/gKh4nutNvTFtctuHoTcvEHnCuQm4cy2
-	qE1BEiBDzFur2CUeVUZPU6EyDlDXmbGAc+pArLOu1LEYyuhcOjU12QJvUDtqXO8q4/xojsqL4s4
-	BsfX6lO5yWy4ErB6BZgE1DNPNPagbzxH+LbFdn7Rg9//lwahh2wGar3JcC88g4PUMJmkmL/mxmP
-	ExPUsNv7HJItoAFODedeDrpFV44NRdLjk2lUiJBJEq4LTf+VreeyDcD+qjKF2prgx0sM=
-X-Received: by 2002:a05:6000:2908:b0:3cf:3f1:acd8 with SMTP id ffacd0b85a97d-3d1df8281e9mr9399424f8f.28.1756803982124;
-        Tue, 02 Sep 2025 02:06:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFyW9riAT2iFuFssRMjNWNJBp/HthxIq7RSmrdziyCSMPX23wcSGgenXtzWkh/pnL+2k3HStQ==
-X-Received: by 2002:a05:6000:2908:b0:3cf:3f1:acd8 with SMTP id ffacd0b85a97d-3d1df8281e9mr9399394f8f.28.1756803981694;
-        Tue, 02 Sep 2025 02:06:21 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1f:3f00:731a:f5e5:774e:d40c? (p200300d82f1f3f00731af5e5774ed40c.dip0.t-ipconnect.de. [2003:d8:2f1f:3f00:731a:f5e5:774e:d40c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf276d5816sm18703055f8f.25.2025.09.02.02.06.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 02:06:21 -0700 (PDT)
-Message-ID: <40f4a688-42e3-4556-979a-209f0ab24c2a@redhat.com>
-Date: Tue, 2 Sep 2025 11:06:19 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] huge_memory: return -EINVAL in folio split functions when
- THP is disabled
-To: Pankaj Raghav <kernel@pankajraghav.com>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, willy@infradead.org,
- mcgrof@kernel.org, gost.dev@samsung.com, Pankaj Raghav <p.raghav@samsung.com>
-References: <20250902084036.208921-1-kernel@pankajraghav.com>
- <1acb705c-4846-4a12-9e90-f7853da8a295@redhat.com>
- <cdbc4c22-7a6f-4c01-8d2b-550b643318d8@pankajraghav.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <cdbc4c22-7a6f-4c01-8d2b-550b643318d8@pankajraghav.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZaG6OoUbqbAMK4vB6ZCVItCCoMVRUuqyAaKVLAUw2Kw_1756803982
-X-Mimecast-Originator: redhat.com
+	bh=b3121Ksby9vgseoaEWxEHU4vRAFZeQ1OVILTcsYl54A=;
+	b=QHmyfF5rqkEAjNywEu70/N++ig2vdNV+FDsyTuilXTK0iRmGKNiEotwjTrnPTGXOP5065I
+	dZFviy6UgqUPg73Pm89nzZzSSNT11nemyBX9V7PKFlmKR+zUdHfUgth1vGPd1tALCLutZo
+	xSzMvpIGiDQKDSChig9OAZkRsN/4vQI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1756804704; x=1788340704;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=b3121Ksby9vgseoaEWxEHU4vRAFZeQ1OVILTcsYl54A=;
+  b=tt6loFxeZG3wZ6xuQteyCwou4ZsFnbAEZBnxT0vlkE/rv/AMbaz9eLN+
+   j7/2rvhD9WFiLa67grWPOPVQR70EWGMCVRIIisQMIm/a7R5o6TnvFiS/w
+   YZO6We4Xs+hWVrn1JDi5YtxDhZdWGMhT/7kFSq8EJCaAntiTQO1sjsU1e
+   8BEHeoHakSPQ0k+VRV2UnDhWv+sLzBeTknqEcfVKhkCrqufLa47UQJ8h5
+   ysXMJpFUluzN9G4fBPgw97iJ57KRnvNe5s/V4jc1HcV3/mlZPf1aOkDYb
+   tqM9eRKjLKPG+f7G09NetfESyRpd3uWvjUXnCl7Wkh5gMAtxw/BkQIAbh
+   g==;
+X-CSE-ConnectionGUID: 857AEqg7QrqTm9k0lMss/A==
+X-CSE-MsgGUID: VIb4ccPwT16IyAIE1hvYkg==
+X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
+   d="scan'208";a="1502449"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 09:18:13 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:10410]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.3.140:2525] with esmtp (Farcaster)
+ id 250cd30a-1333-458c-a5c1-5df8fd2d5adc; Tue, 2 Sep 2025 09:18:13 +0000 (UTC)
+X-Farcaster-Flow-ID: 250cd30a-1333-458c-a5c1-5df8fd2d5adc
+Received: from EX19D015EUB002.ant.amazon.com (10.252.51.123) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Tue, 2 Sep 2025 09:18:12 +0000
+Received: from EX19D015EUB004.ant.amazon.com (10.252.51.13) by
+ EX19D015EUB002.ant.amazon.com (10.252.51.123) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 2 Sep 2025 09:18:12 +0000
+Received: from EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a]) by
+ EX19D015EUB004.ant.amazon.com ([fe80::2dc9:7aa9:9cd3:fc8a%3]) with mapi id
+ 15.02.2562.020; Tue, 2 Sep 2025 09:18:12 +0000
+From: "Roy, Patrick" <roypat@amazon.co.uk>
+To: "tabba@google.com" <tabba@google.com>
+CC: "ackerleytng@google.com" <ackerleytng@google.com>, "david@redhat.com"
+	<david@redhat.com>, "Manwaring, Derek" <derekmn@amazon.com>, "Thomson, Jack"
+	<jackabt@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Roy, Patrick"
+	<roypat@amazon.co.uk>, "rppt@kernel.org" <rppt@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"will@kernel.org" <will@kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>
+Subject: Re: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+Thread-Topic: [PATCH v5 03/12] mm: introduce AS_NO_DIRECT_MAP
+Thread-Index: AQHcG+qBqyZs7keLDUCAS7X1QtiGSg==
+Date: Tue, 2 Sep 2025 09:18:12 +0000
+Message-ID: <20250902091810.4854-1-roypat@amazon.co.uk>
+References: <CA+EHjTxymfya75KdOrUsSUhtfmxe180DedhJpLQAGeCjsum_nw@mail.gmail.com>
+In-Reply-To: <CA+EHjTxymfya75KdOrUsSUhtfmxe180DedhJpLQAGeCjsum_nw@mail.gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4771F80006
-X-Stat-Signature: hm7yws85nh9y7swxh5jbzt51s7mzyhtq
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.88.180]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756803985-389657
-X-HE-Meta: U2FsdGVkX182vj1BUxqcqQ8aIHSNWwUN988WHBkCO4S8xzXzF7gmw/EzMPLreD85TLuyXcaROrjOokom0MnYHFHmjr9abh1FNgifuA/NDBRbLWzBjO04S5HPvuDFsqATXV64dYuQgZntecZHLuOdukPC3LKzFHimdRsf840GdGnJdf2b2JvwsE2PoQ001plxHsG2hVDpWavmWa8mnEc1TGHow/IOMulX0WeHsbF/9aNylZ7TBZqM5DbncIjnuVZtH8p5gj7FZEQVYiFa+SMm/38/4ReigM2zDhVFcpS3YQNxcYk/naXn+8gaXS2JIXE5FBezXby7TFgK51gKKiVjekMTHEOqg/D54XQRcPPcZiWWXsJj72frLA7VRAff9nIA+RUbpqgNmuilEGyQ0hrS8TLDzuIBP0mHPAV2Ub/XlwoY315GU8eWJbrUjiFkAa328Ic7wX+Z69n7AqM6uvCAHCMT0wm8qgw2acWzlV8/2dx8buct3DP371vLK4xazN2iYDJQSs187tL53UZSkQpl17RQE/qJZIteL7rjFyVDRuaY/fqRH/14W4McrlcP3ZuxdX6ITbvDmX1EbG+RSeG4HEw4YvlEopHUSK+EMGzige65/GLciHmvCXTIfY/lTejZc0wC4QPFKATzg8kavcW8rf3BzGmWBZ799Fo1LjmpKPikDtjsdRDHtua7j1U0OTNmMYA2AmdIlE0bIenzLLKMkcKeUjsnPgAmd1Q39VChJKKYX4nBxWomR3Gg44BuSM2EwfphE8+yVdfiJtu29LmOyfdqHYyJHiSKSJf/cek0MT4INTXbj/dCNe7nd4RPegklm7d2Fgcxc7/gVYZ7ju4uZoim5aVVcrbJZPfmuo6V7PFCO3j2/ipMyVFuXqCCF0EFCKOCOa35yJZYwyBg1q4F89Jgd/gsf+PdGGzWlf1cfAGymvGC283u1x1RB6b5F5uxYJeLw3sQYawaxouxhPf
- f6pOHfYD
- htLxeTUeK3q6lKFpFQu0AHKQzg+lMX2Hdm7ecmRItjR9xMqkTCACF6W2Ix0u26UehxKDCfdln7unaceZNL9CtHnmKvA==
+X-Rspamd-Queue-Id: 1314C40003
+X-Stat-Signature: kdzhtgngcbgrcencachr9shnbnes73gg
+X-HE-Tag: 1756804703-925078
+X-HE-Meta: U2FsdGVkX1/QxamO+FHmC02clIDLCjUBWpzOnF/DXRCpLzAbRYVwgQiX+SHdIvqtQCo8iVEtfHj730/8h2SX1uTxwtS8hYEdN4kBiywiF962okKbOt8I0WWOj3ipzjWMiJGOzqisPS5F28eiW/cwkVzsNuawouphxeP/JJ7NfdhGHPYjcfdmftDhLZ3lIYT/o0krDCxKWycIbJ6ILWGMHY1gy17DItUwQ8MLaKzEsGEDEPmIhHe5wLgZgAKFD1/qab3Sa/hjpoPHU+c2Ju+6G6a8IPgOOnZgjC32XCWpQKcAiiVmtMuVDOpaVVz2tAB8qKT9m4+ZPUccsU3AiqEkZs1//xgSgYWsUfxurl+mmcI7l0tyJ8sptEujb7Xy2Uj1oVZKSuX3kH6jqAp7jMRuR1mNbuT18dqM6/Fb+QVlIKr/Ezi0iegfk1lc0+mo08xPvU7O0RnlqqqF+N8i5/LPOjfyJQGuacPCPj3ZeOjE8BEm9R61qi4O9ZlL7NDz0ePhFJtV26BWk6poXAKlwt85UtgaKbLOur3cOBnX2hjMRJFwkNUqe8gTw/lrfb1EuuNIPc5bmtznP0eL5/ObhxUa63YNOb0QF1HKZOFBX6YmAQ9VZktwu9VOukuHNg5yUM6B3yvMuo65LBvcbUiTDya8gx39TsxUzRJJ3ZFmLV7ZvvAhMwMkArIVl+2wRgWpOw7PvbJVK9TWmV29lRR8DtlxOOfwFjBhANMxl1hZ5LULGc0IIBd1FW2EZ9QSMlugR9PWcQ+QmVYJT+VV5h47eOiYQcUO/f2h3F1P+TNNM4fz/Jo9uW/ElZSJoBN9VMnp9ULySJuo7VMpPFFlv/vDhJFS88S/8oGHZdj1yHTb8uwfKSZccwlhrkXapK2byFLT9mVSIEza32mQ8OpwmHbn0zPDNyj/D6jXNpxHpr89Z6fhL75OgxzRytBygh2/3CWsjWAjJoCjyE9OClxqaom8tyM
+ gxFTfO03
+ CiVsLGu2fT+iX00oHxpHXa6MfnmGuaxlUxmieCw+0h2pdjOdOfYtsG1f1ZMS+4O6CjxbTXt9eCTLXuzTHZQYc85ZFqqZGmJYZjeyg6t52GzkfLE1NEUfoTdplCZDZkpHhR5QhuxkdNhUelGSVRPuOQttjqWZi0mayrVrHp/DzbRJ0zd9/RcrX1U7TsIWilWgxOKGPE/Yuz4EXPrpLN6Z8O2TKolwd9FU+5cMYMig5sNMngOku0Mm1Vw2thFXhhHZsNuha8l4aY0jr1nHDxC7d5TiHMnzEw2iVit5abLRwWsqR5we3AbPjEiZoR4uRNf76rED+ydP1BYl2g5i4329wNGvMgNo3+j6OoouiHeNbcEuIAd1XY08TPAMsVeFghYNNuBSsT4Htw1TxPcYf0dM9qurudczNlDSTR/RPUxKEcZsv1OY2uKd6n83676z4zsT4a7WXgW8DBTV7eRZ47EZsirGC+JwY+afNjIz6Ggrr266S9jSOKcArneNhiPK6P5AvJqC/ilVmXiMjPYJ2IPjtEhyIgj39i+K2gZz+fOvCAcd72oMk7Y2+ytiFlH1EWzQBbVsNM++V2WvX9ujfIPeUbAymUK3DvcPcYcI4Ybx0415TTpodt460Tyag94dKf8z2fC/iZna0wROwsscImhK7ZH8Kp17KFL+DyV7lrUVeCH+cKnbX9f4uaUVaSZZ2U2oYpj9We/EBCwEdE4Klmo8kRsYSkROzqa03lRQGt2o3Put0Ytn8AN1reGkpg7xaya/9VaOXrzcXHzLKvE2zq2rqEnAiW8qOnt9CcP9oWeeZM5igcOPVFr0ctxC2U/8OLunMeeSHEA7eU5EW/vc81MjBx4SLQQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,50 +127,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02.09.25 10:59, Pankaj Raghav wrote:
-> 
-> On 9/2/25 10:43, David Hildenbrand wrote:
->> On 02.09.25 10:40, Pankaj Raghav (Samsung) wrote:
->>> From: Pankaj Raghav <p.raghav@samsung.com>
->>>
->>> split_huge_page_to_list_[to_order](), split_huge_page() and
->>> try_folio_split() return 0 on success and error codes on failure.
->>>
->>> When THP is disabled, these functions return 0 indicating success even
->>> though an error code should be returned as it is not possible to split a
->>> folio when THP is disabled.
->>>
->>> Make all these functions return -EINVAL to indicate failure instead of
->>> 0.
->>>
->>> This issue was discovered while experimenting enabling large folios
->>> without THP and found that returning 0 in these functions is resulting in
->>> undefined behavior in truncate operations. This change fixes the issue.
->>
->> Currently large folios that could be split are impossible without THP, so why should this be a fix?
->>
-> I was debating with myself whether it will classify as a fix or not. I have had people tell me that
-> I should mention it as fix even though I didn't feel like it ;)
-> 
-> But I agree with you, we can't hit this issue in the upstream kernel. I can remove the fixes tag in
-> the next version.
-
-No need to resend, I think Andrew can just drop the comment.
-
-I'll not that I assume with any large folio support (except unsplittable 
-things like hugetlb), we would require splitting support.
-
-So calling these functions would rather indicate a bug I think.
-
-Fine with making them return -EINVAL.
-
-With the Fixes: tag dropped
-
-Acked-by: David Hildenbrand <david@redhat.com>
-
--- 
-Cheers
-
-David / dhildenb
-
+On Tue, 2025-09-02 at 09:50 +0100, Fuad Tabba wrote:=0A=
+> On Tue, 2 Sept 2025 at 09:46, David Hildenbrand <david@redhat.com> wrote:=
+=0A=
+>>=0A=
+>> On 02.09.25 09:59, Fuad Tabba wrote:=0A=
+>>> Hi Patrick,=0A=
+>>>=0A=
+>>> On Mon, 1 Sept 2025 at 15:56, Roy, Patrick <roypat@amazon.co.uk> wrote:=
+=0A=
+>>>>=0A=
+>>>> On Mon, 2025-09-01 at 14:54 +0100, "Roy, Patrick" wrote:=0A=
+>>>>>=0A=
+>>>>> Hi Fuad!=0A=
+>>>>>=0A=
+>>>>> On Thu, 2025-08-28 at 11:21 +0100, Fuad Tabba wrote:=0A=
+>>>>>> Hi Patrick,=0A=
+>>>>>>=0A=
+>>>>>> On Thu, 28 Aug 2025 at 10:39, Roy, Patrick <roypat@amazon.co.uk> wro=
+te:=0A=
+>>>>>>> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h=0A=
+>>>>>>> index 12a12dae727d..b52b28ae4636 100644=0A=
+>>>>>>> --- a/include/linux/pagemap.h=0A=
+>>>>>>> +++ b/include/linux/pagemap.h=0A=
+>>>>>>> @@ -211,6 +211,7 @@ enum mapping_flags {=0A=
+>>>>>>>                                     folio contents */=0A=
+>>>>>>>          AS_INACCESSIBLE =3D 8,    /* Do not attempt direct R/W acc=
+ess to the mapping */=0A=
+>>>>>>>          AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,=0A=
+>>>>>>> +       AS_NO_DIRECT_MAP =3D 10,  /* Folios in the mapping are not =
+in the direct map */=0A=
+>>>>>>>          /* Bits 16-25 are used for FOLIO_ORDER */=0A=
+>>>>>>>          AS_FOLIO_ORDER_BITS =3D 5,=0A=
+>>>>>>>          AS_FOLIO_ORDER_MIN =3D 16,=0A=
+>>>>>>> @@ -346,6 +347,21 @@ static inline bool mapping_writeback_may_deadl=
+ock_on_reclaim(struct address_spac=0A=
+>>>>>>>          return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &map=
+ping->flags);=0A=
+>>>>>>>   }=0A=
+>>>>>>>=0A=
+>>>>>>> +static inline void mapping_set_no_direct_map(struct address_space =
+*mapping)=0A=
+>>>>>>> +{=0A=
+>>>>>>> +       set_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
+>>>>>>> +}=0A=
+>>>>>>> +=0A=
+>>>>>>> +static inline bool mapping_no_direct_map(struct address_space *map=
+ping)=0A=
+>>>>>>> +{=0A=
+>>>>>>> +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
+>>>>>>> +}=0A=
+>>>>>>> +=0A=
+>>>>>>> +static inline bool vma_is_no_direct_map(const struct vm_area_struc=
+t *vma)=0A=
+>>>>>>> +{=0A=
+>>>>>>> +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->=
+f_mapping);=0A=
+>>>>>>> +}=0A=
+>>>>>>> +=0A=
+>>>>>> Any reason vma is const whereas mapping in the function that it call=
+s=0A=
+>>>>>> (defined above it) isn't?=0A=
+>>>>>=0A=
+>>>>> Ah, I cannot say that that was a conscious decision, but rather an ar=
+tifact of=0A=
+>>>>> the code that I looked at for reference when writing these two simply=
+ did it=0A=
+>>>>> this way.  Are you saying both should be const, or neither (in my min=
+d, both=0A=
+>>>>> could be const, but the mapping_*() family of functions further up in=
+ this file=0A=
+>>>>> dont take const arguments, so I'm a bit unsure now)?=0A=
+>>>>=0A=
+>>>> Hah, just saw=0A=
+>>>> https://lore.kernel.org/linux-mm/20250901123028.3383461-3-max.kellerma=
+nn@ionos.com/.=0A=
+>>>> Guess that means "both should be const" then :D=0A=
+>>>=0A=
+>>> I don't have any strong preference regarding which way, as long as=0A=
+>>> it's consistent. The thing that should be avoided is having one=0A=
+>>> function with a parameter marked as const, pass that parameter (or=0A=
+>>> something derived from it), to a non-const function.=0A=
+>>=0A=
+>> I think the compiler will tell you that that is not ok (and you'd have=
+=0A=
+>> to force-cast the const it away).=0A=
+> =0A=
+> Not for the scenario I'm worried about. The compiler didn't complain=0A=
+> about this (from this patch):=0A=
+> =0A=
+> +static inline bool mapping_no_direct_map(struct address_space *mapping)=
+=0A=
+> +{=0A=
+> +       return test_bit(AS_NO_DIRECT_MAP, &mapping->flags);=0A=
+> +}=0A=
+> +=0A=
+> +static inline bool vma_is_no_direct_map(const struct vm_area_struct *vma=
+)=0A=
+> +{=0A=
+> +       return vma->vm_file && mapping_no_direct_map(vma->vm_file->f_mapp=
+ing);=0A=
+> +}=0A=
+> =0A=
+> vma_is_no_direct_map() takes a const, but mapping_no_direct_map()=0A=
+> doesn't. For now, mapping_no_direct_map() doesn't modify anything. But=0A=
+> it could, and the compiler wouldn't complain.=0A=
+=0A=
+Wouldn't this only be a problem if vma->vm_file->f_mapping was a 'const str=
+uct=0A=
+address_space *const'? I thought const-ness doesn't leak into pointers (e.g=
+.=0A=
+even above, vma_is_no_direct_map isn't allowed to make vma point at somethi=
+ng=0A=
+else, but it could modify the pointed-to vm_area_struct).=0A=
+=0A=
+> Cheers,=0A=
+> /fuad=0A=
+> =0A=
+> =0A=
+>> Agreed that we should be using const * for these simple getter/test=0A=
+>> functions.=0A=
+>>=0A=
+>> --=0A=
+>> Cheers=0A=
+>>=0A=
+>> David / dhildenb=0A=
+>>=0A=
+=0A=
 
