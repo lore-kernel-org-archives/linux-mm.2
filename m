@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 913F3CA100B
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 15:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DACACA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 15:46:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA18A8E0025; Tue,  2 Sep 2025 11:46:41 -0400 (EDT)
+	id 098D28E0026; Tue,  2 Sep 2025 11:46:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E79BB8E0002; Tue,  2 Sep 2025 11:46:41 -0400 (EDT)
+	id 048568E0002; Tue,  2 Sep 2025 11:46:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB6798E0025; Tue,  2 Sep 2025 11:46:41 -0400 (EDT)
+	id E53318E0026; Tue,  2 Sep 2025 11:46:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C99438E0002
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:46:41 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6ED8BB746A
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:41 +0000 (UTC)
-X-FDA: 83844737802.28.3E5E61C
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 863B6120008
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cBKK6Ho7;
-	spf=pass (imf29.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id D04E58E0002
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:46:46 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9648A84DD9
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:46 +0000 (UTC)
+X-FDA: 83844738012.03.92DC62B
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 944B5140011
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="fNkZS8/+";
+	spf=pass (imf26.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756827999;
+	s=arc-20220608; t=1756828004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Ehw/eR0F2M+6G/BFd9v/1nkHSYwDgsa32Hkiapct/js=;
-	b=b5zPkPTqj4KrMkRznH839bu9HEBXPQg3tMtkgna0plQJHJApbcCxxkscdQPdi6y0GL0acI
-	14M+GWDAHZsjvR+tMNXGj/7BehKgBzmQUOtZruYZlxanGLrqEDqNe6sRydXnQwBdywxWy3
-	zsyY+5Dipeqhu33OhlCpjwY88nLzB80=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9qDZYWOWH5Nm8yxbrqXFYbkGArZ8+SY8u8XQGrfbmV8=;
+	b=ZVj6I6y1xdZH1VZE10pxsjpCsAZNDovxDJJFRMD7zVGpUdpGmaYg589adJIUHX0aOexKxe
+	f5DV+vWyuGifurBACIF2cWvaPW4vZMgpprGssKwgZA298zrUdonEJojjYrqM+n4L0EsYQV
+	nmYOjdaOCNwm+3SL7i6ORSOjyKNqOn0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cBKK6Ho7;
-	spf=pass (imf29.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="fNkZS8/+";
+	spf=pass (imf26.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756827999; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756828004; a=rsa-sha256;
 	cv=none;
-	b=Kq3b3pyULu9+fdbi9BHvM784it33xqMf6uUQjtP8TwfzgUoCi6IllkdoFf+1HpU0PZnE0O
-	+BN4nsFnqe/dtFI7SEIPMgo6+WnaUC/ZUMbURgURVpjaBB5Bvkmg0rHKo/1LebAh4ng9bb
-	ZrQ/AKs0406/mFsuImEWSU+ezNevn24=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45b873a2092so26889895e9.1
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 08:46:39 -0700 (PDT)
+	b=e2nZy62w/BD59wZTJ5sJPtDtLA8UXovF3BBu1/2TuSREW+dihW2y+pj+E1hYZT+iK3COxQ
+	xSu7MtLzCXSrj8cKdovREuyM6mrUcoP++hDl2qDCxDtmSNfaULZYEktpFsS8bOrEqZ8DWY
+	fR8lf1FVuL8tTqK0fmUx+UQu0yLAR34=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b82a21e6bso26800885e9.2
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 08:46:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756827998; x=1757432798; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ehw/eR0F2M+6G/BFd9v/1nkHSYwDgsa32Hkiapct/js=;
-        b=cBKK6Ho7KCi7k4vCiG975kP9oUkGRlvw1pTUC1Ei3fhFuaJbX33HXeN3ZXtYCAcrHh
-         VXoa3GYxxBzSP7pHn3n1/74/gQCazaPx/K8tbh3XA7AcTuZqcBjji8KpFLo2YQpm0B6E
-         2a8gKoTIZPBe4DwK0B5bbGlTCbXcsMubSN5d/8BcNNFs1cN7D/gBvAI53v3szo7JKjRY
-         Azk9R6pbzjQcDm6lRkNWUtYVt2HdMn6gb7M4qBwy/9F9IecA2ylvgmCS0O6c+TyP+E1C
-         iBf2nbgzJ0da0ZvmYwJWSTIJv6VPAYVyD0Ul8zkfK8TJGFluDh0KpXYhEPWORuRxy7cE
-         q+iA==
+        d=gmail.com; s=20230601; t=1756828003; x=1757432803; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9qDZYWOWH5Nm8yxbrqXFYbkGArZ8+SY8u8XQGrfbmV8=;
+        b=fNkZS8/+avzcJcwPcY9cP5AH/r+iFrhHCihfJ8CZ7hvL4hPM+7vyZ6ccYJPfQnKHP0
+         fYLCxGmeUeIY2sNuJXb0gDh7vyjdUTu8c3x1WQYwOu+kTOV2ve/N8otUGtMbwroMSYWE
+         qCdweWjsOPt+poSLxzL5vGo5p3Mn3rB1f/DT7v/CMlrzYUL2elrIbiL/wfRQHs//bNyO
+         lejICo1UOQDErO1hIfdtmcXqhsTKhVp2iWoPxHWeTfcn+kIYQZShxbD6Gkwfn7n5xmsV
+         SExWLutlR7sJQ/Tj01c+NbsF63RaXrQqk//1gAGT1cRX1pKRov2fL7XkkL+RN9YT35BC
+         cnZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756827998; x=1757432798;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ehw/eR0F2M+6G/BFd9v/1nkHSYwDgsa32Hkiapct/js=;
-        b=F8imj8dFexR9dJ2XBbWquuXQX43Oqb4cXzWgtbLdd5Ir8v3KYTrxfKpba8Olb6IK3v
-         GF+B2lMACP92YIj4qMPabAZ/HDYkD0Qk1+Tvr7PUfWbTS3Cv6mGH+sGK8J+NB8263C1r
-         ucDmLwyhE0zLzIpkmfwWgzgWxdNJpi6c039zLvKgG6ykwJwzIt9MBCUFc4Wh/I/SWl//
-         mKqjG1bRNtX9JW6gKuHOu7KUhpGg4wB9VZtu3+3lFjxYelaBrpNto4NVi3cqOiHP7xxD
-         lmeQDNWyChUqgUvz8rq4xqCfxw2s9XvRDrcMEQ73JTaN1kP4QGV5/xyJlhP+J5puoK5w
-         WAyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwT3jiU0K5E2zyCPMErTziedPiVkiQ74minZ0/DfEz3T3Tw0h3DO1W5iCEEQV4l4oeSnp7gaLiMg==@kvack.org
-X-Gm-Message-State: AOJu0YyhB1iv6xfjMizyj/jFQm1mjIM99TnY+9Q0hl8FZMi567bWuCLO
-	O+lCQ2arvTZONwh48i0uFKzHr3K88szXxrcUeWOCvVnAzb+ALyeXOR8+
-X-Gm-Gg: ASbGncsjvYA+HM0OuM6Cx7LgECtAVPXn8IqG/uI1qoVhXyYRc2OpUzk15M3HNH30+RL
-	m8l/SG3NgyaxhYjnx8lDrcbXQ6Dn9T4FkEZLCgQHzFbSyhcvjAcSvsGRuPdAHJikQsDB2jxOuH9
-	bB65uBbWF3Wl9/YOu/fAGhznq5KPkPY8tWO/bG7bHuH/N+gal3Ct46HfWwhzA3TG8nHng6vHR71
-	a5lelkFFEAFjgp8olRbeyv46QwRi85iUZJBVjPLZ+l85cFdkRGUY6OOt3kZ75CovuJk7nYAH2a8
-	n9gQjUCdNl5Ipifsek84VWfvgcNQ6XKHTwTBlSB1sAN9APvpYGaQoewIZkviORKEioTv9YjzDjw
-	6kQ5R18nElWXQdahFPWX1QITXFqsBmPcgUZwYUvrrybavA2HTLxUEqKleMSvpWfCkR89suWxowB
-	vJowlGAH8w/MWMqw==
-X-Google-Smtp-Source: AGHT+IFWiFaPK/3SzCCDMU0eaVs82NQJjjs4OJMxCNhx+PRy+qfGvhLoB3urjp1BVbB0eezwx8zy/w==
-X-Received: by 2002:a05:600c:8b33:b0:456:302:6dc3 with SMTP id 5b1f17b1804b1-45b877be066mr95265895e9.26.1756827997621;
-        Tue, 02 Sep 2025 08:46:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756828003; x=1757432803;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9qDZYWOWH5Nm8yxbrqXFYbkGArZ8+SY8u8XQGrfbmV8=;
+        b=HlKJJgk6c3YNEKdjuv5ZrSpSiwKN8WwRC+vi8qQMCiMpS3xbvUl21xrZSJM2bQD842
+         +afnzvoSZ1M+ZuvruIVpIxof8A4l6TRkhGenlOJV/jnCxT7S5d43rP4IXc6g6upM5otM
+         Gk1dARJcm1JCXM+InOK+lr8WoT7CnABmjAWzM3tFp8jmcBH9TBVMPOyWGlaM5LD7/GM0
+         4roF/lkhWGplG662ruKE7o3bOUCe58OvZBy/l8DWAbQ4P4MLy+5jNNdQz3nIndRv7uh1
+         t6v4ET1UQFfsXjnoXcyt0Aw+Ui8zrUwUSjICuNrZo74vEFeJD2mWlqKqNGu9XLAvO2lc
+         cCig==
+X-Forwarded-Encrypted: i=1; AJvYcCXKXwqr8F9wuUvJpiRS+AdR4m+ML39wq2Hx0iIKT6f5+oUPyFXyogqDt4RzMnnoz15L3olbiPZEvw==@kvack.org
+X-Gm-Message-State: AOJu0Yw0/vcwyrncTHw31tjRIR3svj/M8QKSJtvQm2eBfrCr2GA6CiV8
+	NRkTSWv2e+x+rqwboPoLxvmGW5iaHMEgQPUShxoG425W8vrUJTKU9jga
+X-Gm-Gg: ASbGncuow0f+2zwX2VTa+0y/tLxchrRdbc0gVkWA/mvQ5R9mYobd+gVTUpS/jJal/h+
+	JhAnNcTJamm9ANYbIno8pfg9wXsmt/q7PPRvs4K1XktmYuQgCtxbqUhDSwMX+5p4z2jh6kYuP93
+	EGHa1yRl3iBnREpkHJWrY2vAebRfEGVSW/9jKxNMoefCXmE6AowtxoaM2HLGsjmPojHjI2WLunY
+	jAlYiFuRgTWG39FccTIdKs2xtdEMj3hTLdwT4zrwMvwhhXRIxU/BrQeiX91OzkIhjZom5xlLjX0
+	2vekU0FS8gsObQGNfR3JSi1uOrXcJt9kopqx6fRzvF84C2xTn8PfJ20BuzqzxBnoz7ELAllE67A
+	izcZ3kOP5ZUdsu3nWI9M0f37IFJWW7Phz9jLPmS2VkeAkB88YF7XUNmnJDqb5CH2iWTOJR1GzIM
+	XWVxJVXnqXNq2lmg==
+X-Google-Smtp-Source: AGHT+IFcgEUq9qD0GZO46TpNwavpzh+hTQklCsGnRUm93f3x88gh4dc9vHpbCmQtmoM4+DhaY2NGrQ==
+X-Received: by 2002:a05:6000:290b:b0:3c7:df1d:3d9 with SMTP id ffacd0b85a97d-3d1dfa19a4dmr10655884f8f.39.1756828002702;
+        Tue, 02 Sep 2025 08:46:42 -0700 (PDT)
 Received: from localhost (p200300e41f1c4d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f1c:4d00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf33fb9d37sm20384921f8f.49.2025.09.02.08.46.34
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3d85f80d8casm6829077f8f.54.2025.09.02.08.46.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 08:46:34 -0700 (PDT)
+        Tue, 02 Sep 2025 08:46:38 -0700 (PDT)
 From: Thierry Reding <thierry.reding@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
 	David Airlie <airlied@gmail.com>,
@@ -110,20 +111,22 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-tegra@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/9] dma-buf: heaps: Add Tegra VPR support
-Date: Tue,  2 Sep 2025 17:46:20 +0200
-Message-ID: <20250902154630.4032984-1-thierry.reding@gmail.com>
+Subject: [PATCH 1/9] dt-bindings: reserved-memory: Document Tegra VPR
+Date: Tue,  2 Sep 2025 17:46:21 +0200
+Message-ID: <20250902154630.4032984-2-thierry.reding@gmail.com>
 X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250902154630.4032984-1-thierry.reding@gmail.com>
+References: <20250902154630.4032984-1-thierry.reding@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 863B6120008
-X-Stat-Signature: 4eb7a4tijbit5sp7kfx6sqhgmzk7y9px
+X-Stat-Signature: duidq351cf1pth4bynsdenxkzcbtyh9j
 X-Rspam-User: 
-X-HE-Tag: 1756827999-604410
-X-HE-Meta: U2FsdGVkX18LlPd6NkQqK8wkRvcpOX+OvsOS66bKh1PXGdCpxV2hkQ2Dxi9rvK+7HzJ8F15K4EG8SuFHDCSRV17pt3gNvv9VlHUG6sUgGzKo0CjzKl/6Z1pHwFy21NTG7dQhdfEYOIBsA+ZzxirXfHdn676yE0k5+WGQgCKGGTswTIyhVJc75D3IeLXt6FYai2CDfQPkDRnA5fohVHqxp87WGg//AeJbH3y7jPWofFwQ077yqzJTPCS+tNPxw7SD40m7UJODI2rottHhYNkfkSW3tObk9qogYM7bFfZcbqSA8qCreknvhb0MSWh6Uidh/BHZH5jtv7wtSFA1yAYTw72XPm6N6h68lXqVXNaDBMUXbdPbVZCNTkAd7krx13bcJCjmkVlz6SOjVP+XmVlVnbt3xqypgUwokQn9CQTE8/qWjJzaVhZKI7IUo6itLd0doczBB1pPDGSzcmdsrjTHSSiOr1QMhUTsp4WjhgCDP9XT8aY4DGSWZRs3OqghlkCu4uapTn5DF7Fme6VBK95nD4pXufhTWx5Xhi0oSMnLc1WF9vQez/5w+42DtCo+wTeXGTVOBSNT73QYHHrOwBvfZRm9rjTiVaHvK5HupiVCqyfhpHcJii9d8impSk1tzTRFG9rD0j/vZZa/7A0xiB0aJV9xYSF5gVVEV+BSN1X2Cna5PVEPxBlkR7XAlnMZR6O/k6TJQVmebX4tXL1SNx0bIjFTQFsbuHuv3fsdPZiVXg5Lz0ENW5/SptorPKOudUSny+e9G2Ky5ydYvR85ubxbIrypIeoShl8xHvKeRFdp9uQRnrpLdMW9YG20GE3Jnt4zTcn9SKSqaqP6NXFjEO+78zgO6AJR+X6d03VF+W119CTLIF+rKxjyGrY+ng8A0ZxZ3rZ2tJqCOSQlOY53u4C9/sr5gdiTYkN6BibVfLejcyDHbzrSAz0vdqw2K2+Gl8xQkuZ+0pK1mTYyFw6AIFi
- nk+vuXTR
- wGHTdg9trhQO14GKKtBdwPx9nNk1Yi6WXj8H28CgWit+vTPORrB+Y2He7f5Pf+aVN/yXdgxb3PIY6ZgerW+T7HI8Gd8tS1FVWJqEyQn1i1jVKY1yPsQM/WP1crHyT6tl6PW3pb36asOTmnZ5eLtY73dfwyGt5TfThDWROu3Ex8F3MPT4KAPi2shRdS4L4jSwyj5YhBbWCXybN6DY8NqJOOa9ChcbzPNvXhEy2ss36NaDm+ZheH8rzKhfiBZSKDWuu8nXd8CrLc7Dx4KGUMenXjLfkANtOonnD50BfP637/F1LGkQAqEFr+1QdbEu8SuyxxDCo4+ZNCT+EoWruye4UvbfCWkBe5lVdyMxPx0NALhkj8wnAFyapTwHCfZ14NoBRFRg/8Bib27V/DhAFQiffePeBpwxJbyVI9Oc51wOLJDP2xlmAs7aymgK8dSADc0V01vKfMz866bm1RdzeSybRH+mMS4sSowOc+IwBkZXqOESHK4BHEJY97eSjtccL378Gv2AJ6Pu/fyusZ5LmEhk0mvPdShCgCC8t3S5y5JSVd1E0JR4jL7YK1nYb0U2/Xnu5Ynoq
+X-Rspamd-Queue-Id: 944B5140011
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756828004-688964
+X-HE-Meta: U2FsdGVkX1+y5pB6e9yHXVSJaeLsp8dv6Nncg9KItl7euPKgbGzXxCJi+yFC/q4pv7EEeUc0KuV5QpvqxTHjN3kkIqM5Lr+OVtFi1kqG9SxLNwmv/1PvAmGY9WPUqT26OUMnulyNXn28u95Cp78CZwenLUSJlrf/mywtBxa8esfSxgkcCzq4cdTeYwOgaMUe31qp+XTYd4xTpovLSERjB09sIqOckB7vbBDpP5/pQwVkmDLMakXu5H4C3UqMvEWaDVhk53uWZ7aRiXObMWE4X3VJevz0wZ2Zj5PlJaVcwPuI9mpYe7a2/4oBIPekJiSWm5XaVnvVFLBcyjFyamK6xPL1aG0OLueYR/4JKnbCeeJaJRIe30/8GQq7lIJN87ljbXtLB7R9MTXyLq9hJ+SaUDrmvCD7dSLOlmg3TyXwt1xc3Q+bVkfW+RVAQRkA0CrL5hUNVkazGZCex8V+e9tS9kZOP4Xcg/2DZgXLge7QrTPaT6S3sBTkSPzH84TQ9bSG3hEKuvh5lt6Hr999xdT1uIFoAr4xcGLhJco6M3kyloDFUun30quov2n6R4r7ZDcbfyIEzUwkLwW5GFQHfg/v1lj8CMCfNtOwMEtbBsGbI5KPdGBI2hiZqlQvj+yIhFyNnywjTZtZwyBALFWhH7F542Htsu7PdxCH2GIuShoM6gmZ0mMrLWeuo5536HJIk5MEHRCJKQyeqD97yIXj9O36FNS+hUYYSh8SoOtUBN2oGszPiCNgAZo602nPB9pTXKNm1XaHCKUNcvdp+LEp8/D15r8Q4VxXw7AritSIEnzYhzQw21oETRWeOPkDzKk6vpjQ2qj3iyarEL7/zFCTftkvrDEpeowdWvsLapUpqfSKzZEpPJpCOlO7QsWWJkNQq+tiKWkzgTt+LgYUcO7tTSRM5E6Bmm+nm1xKYfdWiRFhUvdjyh3SpX7ViDpYRgeTkFa4ACKgMZFtLwJlelTDRcD
+ f07zxoUS
+ tFzYwBJqJa00Un0MUoiIxprshmw0cWa9Ua+eW68gSNfikw/30M5gWrPEnCc4w3YyP79nPcHXTtgqUzf3ph9o1pPbtEfvIhqOBwmUHrHhBCsMFhsyvBkNDiatZ2v64/QqL5vluglPZSwTdMzfc+Vc0syDWnGK2ZGGma3oSyPwkfD08VIcWTWpFiNUZM/ZtRblww7NGYJhpUx4P1E9ixYHlpNXiPTCftIAOUEeocvv5YgXxuqhT+c1IaOBJcSpSJy0iBlPvkgkwZJlM+3vbKGHL1rDFyfHaNCzo2KYE9EGkKXieH7Ii/ZImSeJ+OITuz9sFZ+BfvYTYcwGx9YzkkXmWSoNDqiV3GYlxyoOVJQN9ACnQzda/LP+vUdXloiLaDg0Q/btvoo6NFksTptVx25dNNVf5dRJLJ3oMev5uBAwerRTpI1rCmfpwIksVf4q3GqT87P/WJzZTl/k8NNYzkVlAgcwiBwrWGYrhH88rvBCTvLOCkR3Ty7vFcXPyHikfeifVM1aOW7m7YjnbEYj/GnUKjlTEQzAIEc0kd8nZ8Ov0uf7ij0Zfd9DLapoF3kDy282ukMviAHTfc0KUUhs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,63 +137,83 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-Hi,
+The Video Protection Region (VPR) found on NVIDIA Tegra chips is a
+region of memory that is protected from CPU accesses. It is used to
+decode and play back DRM protected content.
 
-This series adds support for the video protection region (VPR) used on
-Tegra SoC devices. It's a special region of memory that is protected
-from accesses by the CPU and used to store DRM protected content (both
-decrypted stream data as well as decoded video frames).
+It is a standard reserved memory region that can exist in two forms:
+static VPR where the base address and size are fixed (uses the "reg"
+property to describe the memory) and a resizable VPR where only the
+size is known upfront and the OS can allocate it wherever it can be
+accomodated.
 
-Patches 1 and 2 add DT binding documentation for the VPR and add the VPR
-to the list of memory-region items for display and host1x.
-
-Patch 3 introduces new APIs needed by the Tegra VPR implementation that
-allow CMA areas to be dynamically created at runtime rather than using
-the fixed, system-wide list. This is used in this driver specifically
-because it can use an arbitrary number of these areas (though they are
-currently limited to 4).
-
-Patch 4 adds some infrastructure for DMA heap implementations to provide
-information through debugfs.
-
-The Tegra VPR implementation is added in patch 5. See its commit message
-for more details about the specifics of this implementation.
-
-Finally, patches 6-9 add the VPR placeholder node on Tegra234 and hook
-it up to the host1x and GPU nodes so that they can make use of this
-region.
-
-Thierry
-
-Thierry Reding (9):
-  dt-bindings: reserved-memory: Document Tegra VPR
-  dt-bindings: display: tegra: Document memory regions
-  mm/cma: Allow dynamically creating CMA areas
-  dma-buf: heaps: Add debugfs support
-  dma-buf: heaps: Add support for Tegra VPR
-  arm64: tegra: Add VPR placeholder node on Tegra234
-  arm64: tegra: Add GPU node on Tegra234
-  arm64: tegra: Hook up VPR to host1x
-  arm64: tegra: Hook up VPR to the GPU
-
- .../display/tegra/nvidia,tegra186-dc.yaml     |  10 +
- .../display/tegra/nvidia,tegra20-dc.yaml      |  10 +-
- .../display/tegra/nvidia,tegra20-host1x.yaml  |   7 +
- .../nvidia,tegra-video-protection-region.yaml |  55 ++
- arch/arm64/boot/dts/nvidia/tegra234.dtsi      |  57 ++
- drivers/dma-buf/dma-heap.c                    |  56 ++
- drivers/dma-buf/heaps/Kconfig                 |   7 +
- drivers/dma-buf/heaps/Makefile                |   1 +
- drivers/dma-buf/heaps/tegra-vpr.c             | 831 ++++++++++++++++++
- include/linux/cma.h                           |  16 +
- include/linux/dma-heap.h                      |   2 +
- include/trace/events/tegra_vpr.h              |  57 ++
- mm/cma.c                                      |  89 +-
- 13 files changed, 1175 insertions(+), 23 deletions(-)
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+---
+ .../nvidia,tegra-video-protection-region.yaml | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
- create mode 100644 drivers/dma-buf/heaps/tegra-vpr.c
- create mode 100644 include/trace/events/tegra_vpr.h
 
+diff --git a/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml b/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
+new file mode 100644
+index 000000000000..c13292a791bb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/reserved-memory/nvidia,tegra-video-protection-region.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NVIDIA Tegra Video Protection Region (VPR)
++
++maintainers:
++  - Thierry Reding <thierry.reding@gmail.com>
++  - Jon Hunter <jonathanh@nvidia.com>
++
++description: |
++  NVIDIA Tegra chips have long supported a mechanism to protect a single,
++  contiguous memory region from non-secure memory accesses. Typically this
++  region is used for decoding and playback of DRM protected content. Various
++  devices, such as the display controller and multimedia engines (video
++  decoder) can access this region in a secure way. Access from the CPU is
++  generally forbidden.
++
++  Two variants exist for VPR: one is fixed in both the base address and size,
++  while the other is resizable. Fixed VPR can be described by just a "reg"
++  property specifying the base address and size, whereas the resizable VPR
++  is defined by a size/alignment pair of properties. For resizable VPR the
++  memory is reusable by the rest of the system when it's unused for VPR and
++  therefore the "reusable" property must be specified along with it. For a
++  fixed VPR, the memory is permanently protected, and therefore it's not
++  reusable and must also be marked as "no-map" to prevent any (including
++  speculative) accesses to it.
++
++allOf:
++  - $ref: reserved-memory.yaml
++
++properties:
++  compatible:
++    const: nvidia,tegra-video-protection-region
++
++dependencies:
++  size: [alignment, reusable]
++  alignment: [size, reusable]
++  reusable: [alignment, size]
++
++  reg: [no-map]
++  no-map: [reg]
++
++unevaluatedProperties: false
++
++oneOf:
++  - required:
++      - compatible
++      - reg
++
++  - required:
++      - compatible
++      - size
 -- 
 2.50.0
 
