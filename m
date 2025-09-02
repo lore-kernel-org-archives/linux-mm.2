@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84106CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E382ECA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:49:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EACC8E000F; Tue,  2 Sep 2025 08:49:24 -0400 (EDT)
+	id 7202C8E001C; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 174FE8E001C; Tue,  2 Sep 2025 08:49:23 -0400 (EDT)
+	id 6A35B8E0017; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCFAF8E000F; Tue,  2 Sep 2025 08:49:23 -0400 (EDT)
+	id 4F6898E001C; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BDD348E0017
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:49:23 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95B6B117BAA
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:23 +0000 (UTC)
-X-FDA: 83844291006.15.501EC40
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1C002100007
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F89E8E0017
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D0B741168A5
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:24 +0000 (UTC)
+X-FDA: 83844291048.17.99BA044
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 93F5414000C
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817361; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817363; a=rsa-sha256;
 	cv=none;
-	b=o0m/60WPumwUrqWpwJVgI5XPwXbWSqk7gr3ICxK6c1Sdzj+nImjS2qCfsoG9jHghpw9X5C
-	DRIxMC0ohxLqXwCWd+7Rb1q3y+e5/Pr/bI4B1LObbDFm++JWWSXOh6ZfuzpiEHswHESyuM
-	VT4fXwkGuarwz+z+CJnQvhJIIeoN8bk=
+	b=eaikelgfyPLT0tblnHsjTQweeGdcv/fsQhRC7v5IC+1EU/7jvZSXIogP+SYUEvVIlwXiky
+	znoYVVknm6duFvyyrHHpAq0b+eByZVh0lxTV97rT7C57u6BDRsOQLZEbc3EJt9/HFK5zCq
+	y5Iqg4xm9eT3xritdeQje2S3wc1rd80=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756817361;
+	s=arc-20220608; t=1756817363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R+qu8QHQulvBVzJyUgvepPPe6980yHKz2AHvJ8G327I=;
-	b=CgGFqZPFkCwT/sxgz+V1rQlLG0G9q0wM4YAlrocJ7ltzq/DvGaIHy6agy1Vrl9rj5yz9/A
-	CAhctwbh/6EE17WcU+de1wbJawnPV1sY4VQRTQK/Oz8xDgByxJPNC5yCtuLTHI8i5n0WdM
-	UujCI4Sm2Tzv+BOD8l5vNhZop7L9TaI=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cGQRz4Y1rz1T4Yt;
-	Tue,  2 Sep 2025 20:44:47 +0800 (CST)
+	bh=s97fL5l5vqENHjtNrCn8DUwfgbMf2JpKOBdzegpSfys=;
+	b=CHJAou3iaclWK6vTJZ8WfbBoBvnrjlxzAOX0HlJP5GEnSz13mqOAO7RIXxOi610DVt4fXG
+	BSv7C4ni1NNzy+AhAF7MzXCkfi+2ohIBncZTS4rXVOOYRcLfehXiEuMnutFdjdCLBsSrDq
+	4Dr8lnhTfauCF2kn2gGfg/m0JZG4RtU=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cGQTf0tfxz24hwX;
+	Tue,  2 Sep 2025 20:46:14 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 885BE140258;
-	Tue,  2 Sep 2025 20:49:16 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 888E11402C1;
+	Tue,  2 Sep 2025 20:49:19 +0800 (CST)
 Received: from localhost.localdomain (10.175.112.125) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Sep 2025 20:49:15 +0800
+ 15.2.1544.11; Tue, 2 Sep 2025 20:49:18 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
@@ -67,9 +67,9 @@ CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
 	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
 	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
 	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 6/9] mm: page_alloc: add alloc_contig_frozen_pages()
-Date: Tue, 2 Sep 2025 20:48:17 +0800
-Message-ID: <20250902124820.3081488-7-wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 9/9] mm: hugetlb: allocate frozen pages in alloc_gigantic_folio()
+Date: Tue, 2 Sep 2025 20:48:20 +0800
+Message-ID: <20250902124820.3081488-10-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
 References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
@@ -79,14 +79,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.175.112.125]
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Queue-Id: 1C002100007
-X-Stat-Signature: b7kch8uyq1ee18xy9chciwfxc6n871y1
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 93F5414000C
+X-Stat-Signature: xjpz7oc19rdtzbdr8ntzxtpddtqapswh
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756817359-819138
-X-HE-Meta: U2FsdGVkX19giPLrgt4t+qf0A5rI06ntEGwuf+NDDnpzZAN1W3szVj2VrGACJ202T7pyKFtBIy/9NmmMfBBHkEDR9OndTf4ezEtHXAjEOfb+rQI0Wou9oLS3RyJKZ3nHlk1YyByzvtJ7hzSvAiS2lgH7MZ922dcNM4NaGO26ty5x9ZhfpnaACZOQ7jTXFQ3K92gZeZ1inZ2fNZOucO/X2Anw31gPvrG3b8ySe/a4X2zb3e/4g4glUsif5lMXCjhxjRHxY9Z+D9fGzvZS+EMFlw3OIX4PgJCtqGotGXaHNfCpz5koQjyMSEb8NYe0whQzApZhN9NtDpFcszA0HX517nwzqdnlAufhOhOkJsjf8DEHTI5kQyhT8ojAHUIvYzG/sT/pruWfmwGE/cYA8JUSBNlr6JM8I41EVxdNHmB0yD3Ire1/66yIQK5CqMUv6UavCa1HoWMW90idTjWhh8sGdFAWiEYe/1t4aS30PNd17I94ZOsv3QFStGDydFISeg1f6si8v2YltOPolKvRCRmELQdIhfILMAUU7Aq83e71fQxCqf7rjW84z0QuVJsxPP4MZeWwKS/KMxTQcby0FGaQnF0KfomwcVwQx+6wPyFhzwrgO3nq+xayHtmWUK6kKaYGZtYIDvGt+r+VFRgm3/ZyNDFyKZLVaY8gs0H82woZddSz4OeBNhTa+NOtwwJK/6dp0RW/uvZv4IeL7R7YNWWR6OKBTW0FWkt9p8u5eV4DXU0Gvu+q/XHzuFT9FL9Y/xwAurLiqHaNasYWDS6F+oQl06klOnFgrS1wfK9rS9Gt65CNw56tdniq4giD1epy+09jmDx34oCnscinGmptS8Avet4qb6YUGWTpbmvbWlAjkGYs9OK5a6nkX1z7GRUaoPamg3V9tDU/eArGI5ZVeYla/69HDxQFA1Jsa2KGcuSVq7O3kL2jqzHlC12wLc6a9W1DzHFWKma/2XE8+ta/rDI
- N1ycn6Fi
- 9g3DRvuKwA0Y5+c6ePUUKsLAAW283ywoVoIvqo2ow1MqUkQzuDfcv+hHUu/dVM7eGFFaq4GD/lmcaG+oOJRVmLZHNaXARJ+788a/oFWGcoKeW8rdT+cdTD0uqGCQxsgE2DiP97tfdDtHxSKwgMsj90jV3RoT4EWKuO0lyXzbOvj4UWHKRRDRsK3zszE2h5LDH4hgIJoqY1lH/3pQ8l0TNw7xQvGE4cCPIs7+lGb556sVukD4UPkhHdkllLg==
+X-HE-Tag: 1756817361-264207
+X-HE-Meta: U2FsdGVkX1/GUmB+xIrG0Hr/mdGEcJMKTmEkTkxAjZnHCRJVJGAMqM/Tx8wlmR7udSMLr2swetfG41txQVJ3iae7EW3R60YNjGucNJLIS8J9hJphsrLspLO/a4U9zLPkQ+nY+LcQ9q3mb9eJTLWh991OcOMcH5qS5j+aN2Han1Fgxs6/hMeRLoDzSw7YBm5BLKT/m0/UwJNRwTLg+vNAqrrNOoweY1bpEvEH1KMYEo2qFqKfiCuG8aUJnHTEk+KsDh/RK/tNgXQJtV9lfEMr9vmmla+2LEHN9YSbkI6Rp0EP9X5vV923oQlUs+nh13YhqnLUkJZ7oO+3b+f566UuccDNgEr7DPAjXJZlzDOx6hj09VJSq2BInMssxQs6SKWthtLOGagL+KFFrcpt1nbSVR7iX0hIW+rH6KqxB8Td1adRRi48TpK1NUSk2z7eAIfh1xhV7XOCxBFirQTPdAae+1hZe5NzggJKdQrE0V4UqbReGFva5tPKONm2aKqxeCVqvl12u0Tx45+E77cq/jxYUtQmmLvk3wuFDd3fsS7v0LX85+Twcc44/N5Bfwj1pG9WqjRGFgEhiwdQDd9CXl4778p3wECTMtux9YmebwapllW82Fil5+B7p4DhrSgkWSg2Td01uG/CtBEg5KUUgbCDx5XDEM2HHhoGzBCAygqeVKBY0pMYzLW8hi/JU2iJluNCN9r+32+1B7R3I9TFJ6iD01gEL0yPiwtvzlYqx4UpWMAv6YRKQI9yw97srKypcHhcbVeo+iUg2ZI+U+qo9UErbNvzEBl9vYhy9/aVthhP4ncmwx5CjpoBBaa0bdI3EHnfKOYuAnSl5d1grLZfEDt+1aX97Ax2+8EUaT0dPE2BAZZ8zF9SI5IOIehQQfXYxu4vX/4K/mAMotZcyjmupkqIsgQCRra3c3mjq26EVK8xvA4ESTf10rXILVEm5CItUSwHGGFblXszg3JmjonuaHp
+ Sl+66FjK
+ N6uef
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,173 +95,310 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a ACR_FLAGS_FROZEN flags to indicate that we want to
-allocate a frozen compound pages by alloc_contig_range(), also
-provide alloc_contig_frozen_pages() to allocate pages without
-incrementing their refcount, which may be beneficial to some
-users (eg hugetlb).
+The alloc_gigantic_folio() will allocate a folio by alloc_contig_range()
+with refcount increated and then freeze it, convert to allocate a frozen
+folio directly to remove the atomic operation about folio refcount, also
+saving atomic operation during __update_and_free_hugetlb_folio too.
+
+Rename some functions to make them more self-explanatory,
+
+  folio_alloc_gigantic		-> folio_alloc_frozen_gigantic
+  cma_alloc/free_folio		-> cma_alloc/free_frozen_folio
+  hugetlb_cma_alloc/free_folio	-> hugetlb_cma_alloc/free_frozen_folio
 
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- include/linux/gfp.h |  6 ++++
- mm/page_alloc.c     | 85 +++++++++++++++++++++++++--------------------
- 2 files changed, 54 insertions(+), 37 deletions(-)
+ include/linux/cma.h |  8 ++++----
+ include/linux/gfp.h | 14 ++++++-------
+ mm/cma.c            | 22 +++++++++++++-------
+ mm/hugetlb.c        | 50 +++++++++------------------------------------
+ mm/hugetlb_cma.c    | 13 ++++++------
+ mm/hugetlb_cma.h    | 10 ++++-----
+ 6 files changed, 47 insertions(+), 70 deletions(-)
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 5ebf26fcdcfa..d0047b85fe34 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -427,6 +427,7 @@ extern gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma);
- typedef unsigned int __bitwise acr_flags_t;
- #define ACR_FLAGS_NONE ((__force acr_flags_t)0) // ordinary allocation request
- #define ACR_FLAGS_CMA ((__force acr_flags_t)BIT(0)) // allocate for CMA
-+#define ACR_FLAGS_FROZEN ((__force acr_flags_t)BIT(1)) // allocate for frozen compound pages
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index e5745d2aec55..cceec7b25bae 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -57,16 +57,16 @@ extern bool cma_intersects(struct cma *cma, unsigned long start, unsigned long e
+ extern void cma_reserve_pages_on_error(struct cma *cma);
  
- /* The below functions must be run on a range from a single zone. */
- extern int alloc_contig_range_noprof(unsigned long start, unsigned long end,
-@@ -437,6 +438,11 @@ extern struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_
- 					      int nid, nodemask_t *nodemask);
- #define alloc_contig_pages(...)			alloc_hooks(alloc_contig_pages_noprof(__VA_ARGS__))
- 
-+struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
-+		gfp_t gfp_mask, int nid, nodemask_t *nodemask);
-+#define alloc_contig_frozen_pages(...) \
-+	alloc_hooks(alloc_contig_frozen_pages_noprof(__VA_ARGS__))
-+
- #endif
- void free_contig_range(unsigned long pfn, unsigned long nr_pages);
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index baead29b3e67..0677c49fdff1 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6854,6 +6854,9 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
- 		return -EINVAL;
- 
-+	if ((alloc_flags & ACR_FLAGS_FROZEN) && !(gfp_mask & __GFP_COMP))
-+		return -EINVAL;
-+
- 	/*
- 	 * What we do here is we mark all pageblocks in range as
- 	 * MIGRATE_ISOLATE.  Because pageblock and max order pages may
-@@ -6951,7 +6954,8 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 
- 		check_new_pages(head, order);
- 		prep_new_page(head, order, gfp_mask, 0);
--		set_page_refcounted(head);
-+		if (!(alloc_flags & ACR_FLAGS_FROZEN))
-+			set_page_refcounted(head);
- 	} else {
- 		ret = -EINVAL;
- 		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
-@@ -6963,15 +6967,6 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- }
- EXPORT_SYMBOL(alloc_contig_range_noprof);
- 
--static int __alloc_contig_pages(unsigned long start_pfn,
--				unsigned long nr_pages, gfp_t gfp_mask)
--{
--	unsigned long end_pfn = start_pfn + nr_pages;
--
--	return alloc_contig_range_noprof(start_pfn, end_pfn, ACR_FLAGS_NONE,
--					 gfp_mask);
--}
--
- static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
- 				   unsigned long nr_pages)
+ #ifdef CONFIG_CMA
+-struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp);
+-bool cma_free_folio(struct cma *cma, const struct folio *folio);
++struct folio *cma_alloc_frozen_folio(struct cma *cma, int order, gfp_t gfp);
++bool cma_free_frozen_folio(struct cma *cma, const struct folio *folio);
+ bool cma_validate_zones(struct cma *cma);
+ #else
+-static inline struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
++static inline struct folio *cma_alloc_frozen_folio(struct cma *cma, int order, gfp_t gfp)
  {
-@@ -7003,31 +6998,8 @@ static bool zone_spans_last_pfn(const struct zone *zone,
- 	return zone_spans_pfn(zone, last_pfn);
- }
- 
--/**
-- * alloc_contig_pages() -- tries to find and allocate contiguous range of pages
-- * @nr_pages:	Number of contiguous pages to allocate
-- * @gfp_mask:	GFP mask. Node/zone/placement hints limit the search; only some
-- *		action and reclaim modifiers are supported. Reclaim modifiers
-- *		control allocation behavior during compaction/migration/reclaim.
-- * @nid:	Target node
-- * @nodemask:	Mask for other possible nodes
-- *
-- * This routine is a wrapper around alloc_contig_range(). It scans over zones
-- * on an applicable zonelist to find a contiguous pfn range which can then be
-- * tried for allocation with alloc_contig_range(). This routine is intended
-- * for allocation requests which can not be fulfilled with the buddy allocator.
-- *
-- * The allocated memory is always aligned to a page boundary. If nr_pages is a
-- * power of two, then allocated range is also guaranteed to be aligned to same
-- * nr_pages (e.g. 1GB request would be aligned to 1GB).
-- *
-- * Allocated pages can be freed with free_contig_range() or by manually calling
-- * __free_page() on each allocated page.
-- *
-- * Return: pointer to contiguous pages on success, or NULL if not successful.
-- */
--struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
--				 int nid, nodemask_t *nodemask)
-+static struct page *__alloc_contig_pages(unsigned long nr_pages, gfp_t gfp_mask,
-+		acr_flags_t alloc_flags, int nid, nodemask_t *nodemask)
- {
- 	unsigned long ret, pfn, flags;
- 	struct zonelist *zonelist;
-@@ -7050,8 +7022,8 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
- 				 * and cause alloc_contig_range() to fail...
- 				 */
- 				spin_unlock_irqrestore(&zone->lock, flags);
--				ret = __alloc_contig_pages(pfn, nr_pages,
--							gfp_mask);
-+				ret = alloc_contig_range_noprof(pfn, pfn + nr_pages,
-+							alloc_flags, gfp_mask);
- 				if (!ret)
- 					return pfn_to_page(pfn);
- 				spin_lock_irqsave(&zone->lock, flags);
-@@ -7062,6 +7034,45 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
- 	}
  	return NULL;
  }
-+
-+/**
-+ * alloc_contig_pages() -- tries to find and allocate contiguous range of pages
-+ * @nr_pages:	Number of contiguous pages to allocate
-+ * @gfp_mask:	GFP mask. Node/zone/placement hints limit the search; only some
-+ *		action and reclaim modifiers are supported. Reclaim modifiers
-+ *		control allocation behavior during compaction/migration/reclaim.
-+ * @nid:	Target node
-+ * @nodemask:	Mask for other possible nodes
-+ *
-+ * This routine is a wrapper around alloc_contig_range(). It scans over zones
-+ * on an applicable zonelist to find a contiguous pfn range which can then be
-+ * tried for allocation with alloc_contig_range(). This routine is intended
-+ * for allocation requests which can not be fulfilled with the buddy allocator.
-+ *
-+ * The allocated memory is always aligned to a page boundary. If nr_pages is a
-+ * power of two, then allocated range is also guaranteed to be aligned to same
-+ * nr_pages (e.g. 1GB request would be aligned to 1GB).
-+ *
-+ * Allocated pages can be freed with free_contig_range() or by manually calling
-+ * __free_page() on each allocated page.
-+ *
-+ * Return: pointer to contiguous pages on success, or NULL if not successful.
-+ */
-+struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
-+		int nid, nodemask_t *nodemask)
-+{
-+	return __alloc_contig_pages(nr_pages, gfp_mask, ACR_FLAGS_NONE,
-+				    nid, nodemask);
-+}
-+
-+struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
-+		gfp_t gfp_mask, int nid, nodemask_t *nodemask)
-+{
-+	/* always allocate compound pages without refcount increased */
-+	return __alloc_contig_pages(nr_pages, gfp_mask | __GFP_COMP,
-+				    ACR_FLAGS_FROZEN, nid, nodemask);
-+}
-+
- #endif /* CONFIG_CONTIG_ALLOC */
  
- void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+-static inline bool cma_free_folio(struct cma *cma, const struct folio *folio)
++static inline bool cma_free_frozen_folio(struct cma *cma, const struct folio *folio)
+ {
+ 	return false;
+ }
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index d0047b85fe34..ceda042be704 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -447,26 +447,26 @@ struct page *alloc_contig_frozen_pages_noprof(unsigned long nr_pages,
+ void free_contig_range(unsigned long pfn, unsigned long nr_pages);
+ 
+ #ifdef CONFIG_CONTIG_ALLOC
+-static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
+-							int nid, nodemask_t *node)
++static inline struct folio *folio_alloc_frozen_gigantic_noprof(int order,
++		gfp_t gfp, int nid, nodemask_t *node)
+ {
+ 	struct page *page;
+ 
+ 	if (WARN_ON(!order || !(gfp & __GFP_COMP)))
+ 		return NULL;
+ 
+-	page = alloc_contig_pages_noprof(1 << order, gfp, nid, node);
++	page = alloc_contig_frozen_pages_noprof(1 << order, gfp, nid, node);
+ 
+ 	return page ? page_folio(page) : NULL;
+ }
+ #else
+-static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
+-							int nid, nodemask_t *node)
++static inline struct folio *folio_alloc_frozen_gigantic_noprof(int order,
++		gfp_t gfp, int nid, nodemask_t *node)
+ {
+ 	return NULL;
+ }
+ #endif
+-/* This should be paired with folio_put() rather than free_contig_range(). */
+-#define folio_alloc_gigantic(...) alloc_hooks(folio_alloc_gigantic_noprof(__VA_ARGS__))
++/* This must be paired with free_frozen_pages() rather than free_contig_range(). */
++#define folio_alloc_frozen_gigantic(...) alloc_hooks(folio_alloc_frozen_gigantic_noprof(__VA_ARGS__))
+ 
+ #endif /* __LINUX_GFP_H */
+diff --git a/mm/cma.c b/mm/cma.c
+index b4413e382d5d..49d53879c1d0 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -924,20 +924,21 @@ struct page *cma_alloc(struct cma *cma, unsigned long count,
+ 			   ACR_FLAGS_CMA);
+ }
+ 
+-struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
++struct folio *cma_alloc_frozen_folio(struct cma *cma, int order, gfp_t gfp)
+ {
+ 	struct page *page;
+ 
+ 	if (WARN_ON(!order || !(gfp & __GFP_COMP)))
+ 		return NULL;
+ 
+-	page = __cma_alloc(cma, 1 << order, order, gfp, ACR_FLAGS_CMA);
++	page = __cma_alloc(cma, 1 << order, order, gfp,
++			   ACR_FLAGS_CMA | ACR_FLAGS_FROZEN);
+ 
+ 	return page ? page_folio(page) : NULL;
+ }
+ 
+ static bool __cma_release(struct cma *cma, const struct page *pages,
+-			  unsigned long count)
++			  unsigned long count, bool frozen_page)
+ {
+ 	unsigned long pfn, end;
+ 	int r;
+@@ -960,7 +961,14 @@ static bool __cma_release(struct cma *cma, const struct page *pages,
+ 	if (r == cma->nranges)
+ 		return false;
+ 
+-	free_contig_range(pfn, count);
++	if (frozen_page) {
++		struct page *head_page = compound_head((struct page *)pages);
++
++		free_frozen_pages(head_page, compound_order(head_page));
++	} else {
++		free_contig_range(pfn, count);
++	}
++
+ 	cma_clear_bitmap(cma, cmr, pfn, count);
+ 	cma_sysfs_account_release_pages(cma, count);
+ 	trace_cma_release(cma->name, pfn, pages, count);
+@@ -981,15 +989,15 @@ static bool __cma_release(struct cma *cma, const struct page *pages,
+ bool cma_release(struct cma *cma, const struct page *pages,
+ 		 unsigned long count)
+ {
+-	return __cma_release(cma, pages, count);
++	return __cma_release(cma, pages, count, false);
+ }
+ 
+-bool cma_free_folio(struct cma *cma, const struct folio *folio)
++bool cma_free_frozen_folio(struct cma *cma, const struct folio *folio)
+ {
+ 	if (WARN_ON(!folio_test_large(folio)))
+ 		return false;
+ 
+-	return __cma_release(cma, &folio->page, folio_nr_pages(folio));
++	return __cma_release(cma, &folio->page, folio_nr_pages(folio), true);
+ }
+ 
+ int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4e8709d7deee..1d801bf65916 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -125,16 +125,6 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end, bool take_locks);
+ static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+ 
+-static void hugetlb_free_folio(struct folio *folio)
+-{
+-	if (folio_test_hugetlb_cma(folio)) {
+-		hugetlb_cma_free_folio(folio);
+-		return;
+-	}
+-
+-	folio_put(folio);
+-}
+-
+ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+ {
+ 	if (spool->count)
+@@ -1472,43 +1462,20 @@ static int hstate_next_node_to_free(struct hstate *h, nodemask_t *nodes_allowed)
+ 		nr_nodes--)
+ 
+ #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+-#ifdef CONFIG_CONTIG_ALLOC
+ static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask,
+ 		int nid, nodemask_t *nodemask)
+ {
+ 	struct folio *folio;
+-	bool retried = false;
+-
+-retry:
+-	folio = hugetlb_cma_alloc_folio(order, gfp_mask, nid, nodemask);
+-	if (!folio) {
+-		if (hugetlb_cma_exclusive_alloc())
+-			return NULL;
+-
+-		folio = folio_alloc_gigantic(order, gfp_mask, nid, nodemask);
+-		if (!folio)
+-			return NULL;
+-	}
+ 
+-	if (folio_ref_freeze(folio, 1))
++	folio = hugetlb_cma_alloc_frozen_folio(order, gfp_mask, nid, nodemask);
++	if (folio)
+ 		return folio;
+ 
+-	pr_warn("HugeTLB: unexpected refcount on PFN %lu\n", folio_pfn(folio));
+-	hugetlb_free_folio(folio);
+-	if (!retried) {
+-		retried = true;
+-		goto retry;
+-	}
+-	return NULL;
+-}
++	if (hugetlb_cma_exclusive_alloc())
++		return NULL;
+ 
+-#else /* !CONFIG_CONTIG_ALLOC */
+-static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
+-					  nodemask_t *nodemask)
+-{
+-	return NULL;
++	return folio_alloc_frozen_gigantic(order, gfp_mask, nid, nodemask);
+ }
+-#endif /* CONFIG_CONTIG_ALLOC */
+ 
+ #else /* !CONFIG_ARCH_HAS_GIGANTIC_PAGE */
+ static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
+@@ -1641,9 +1608,12 @@ static void __update_and_free_hugetlb_folio(struct hstate *h,
+ 	if (unlikely(folio_test_hwpoison(folio)))
+ 		folio_clear_hugetlb_hwpoison(folio);
+ 
+-	folio_ref_unfreeze(folio, 1);
++	VM_BUG_ON_FOLIO(folio_ref_count(folio), folio);
+ 
+-	hugetlb_free_folio(folio);
++	if (folio_test_hugetlb_cma(folio))
++		hugetlb_cma_free_frozen_folio(folio);
++	else
++		free_frozen_pages(&folio->page, folio_order(folio));
+ }
+ 
+ /*
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index e8e4dc7182d5..24738a1d6098 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -18,29 +18,28 @@ static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdata;
+ static bool hugetlb_cma_only;
+ static unsigned long hugetlb_cma_size __initdata;
+ 
+-void hugetlb_cma_free_folio(struct folio *folio)
++void hugetlb_cma_free_frozen_folio(struct folio *folio)
+ {
+ 	int nid = folio_nid(folio);
+ 
+-	WARN_ON_ONCE(!cma_free_folio(hugetlb_cma[nid], folio));
++	WARN_ON_ONCE(!cma_free_frozen_folio(hugetlb_cma[nid], folio));
+ }
+ 
+-
+-struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
+-				      int nid, nodemask_t *nodemask)
++struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
++		int nid, nodemask_t *nodemask)
+ {
+ 	int node;
+ 	struct folio *folio = NULL;
+ 
+ 	if (hugetlb_cma[nid])
+-		folio = cma_alloc_folio(hugetlb_cma[nid], order, gfp_mask);
++		folio = cma_alloc_frozen_folio(hugetlb_cma[nid], order, gfp_mask);
+ 
+ 	if (!folio && !(gfp_mask & __GFP_THISNODE)) {
+ 		for_each_node_mask(node, *nodemask) {
+ 			if (node == nid || !hugetlb_cma[node])
+ 				continue;
+ 
+-			folio = cma_alloc_folio(hugetlb_cma[node], order, gfp_mask);
++			folio = cma_alloc_frozen_folio(hugetlb_cma[node], order, gfp_mask);
+ 			if (folio)
+ 				break;
+ 		}
+diff --git a/mm/hugetlb_cma.h b/mm/hugetlb_cma.h
+index 2c2ec8a7e134..71db3544816e 100644
+--- a/mm/hugetlb_cma.h
++++ b/mm/hugetlb_cma.h
+@@ -3,8 +3,8 @@
+ #define _LINUX_HUGETLB_CMA_H
+ 
+ #ifdef CONFIG_CMA
+-void hugetlb_cma_free_folio(struct folio *folio);
+-struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
++void hugetlb_cma_free_frozen_folio(struct folio *folio);
++struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+ 				      int nid, nodemask_t *nodemask);
+ struct huge_bootmem_page *hugetlb_cma_alloc_bootmem(struct hstate *h, int *nid,
+ 						    bool node_exact);
+@@ -14,12 +14,12 @@ unsigned long hugetlb_cma_total_size(void);
+ void hugetlb_cma_validate_params(void);
+ bool hugetlb_early_cma(struct hstate *h);
+ #else
+-static inline void hugetlb_cma_free_folio(struct folio *folio)
++static inline void hugetlb_cma_free_frozen_folio(struct folio *folio)
+ {
+ }
+ 
+-static inline struct folio *hugetlb_cma_alloc_folio(int order, gfp_t gfp_mask,
+-		int nid, nodemask_t *nodemask)
++static inline struct folio *hugetlb_cma_alloc_frozen_folio(int order,
++		gfp_t gfp_mask, int nid, nodemask_t *nodemask)
+ {
+ 	return NULL;
+ }
 -- 
 2.27.0
 
