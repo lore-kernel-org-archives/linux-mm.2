@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1A4CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 15:46:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C137DCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 15:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BF4A8E0027; Tue,  2 Sep 2025 11:46:52 -0400 (EDT)
+	id 294E68E0028; Tue,  2 Sep 2025 11:46:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0706E8E0002; Tue,  2 Sep 2025 11:46:52 -0400 (EDT)
+	id 26C338E0002; Tue,  2 Sep 2025 11:46:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7A2A8E0027; Tue,  2 Sep 2025 11:46:51 -0400 (EDT)
+	id 182768E0028; Tue,  2 Sep 2025 11:46:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D17A38E0002
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:46:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7FB2616026C
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:51 +0000 (UTC)
-X-FDA: 83844738222.17.E271CF5
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 96CBF40009
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gtZxL25x;
-	spf=pass (imf17.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0856D8E0002
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 11:46:57 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4063160256
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:56 +0000 (UTC)
+X-FDA: 83844738432.11.E9D8169
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf02.hostedemail.com (Postfix) with ESMTP id ADA5680006
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 15:46:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J3wc91pw;
+	spf=pass (imf02.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756828009;
+	s=arc-20220608; t=1756828014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h4LUm3xzftHp/xE2ENw2BOhVhXc1ZcghNq/wiRAVNUo=;
-	b=FIxPD9KjuIUXt1UOvzVZVMR92lgxAa2p8K9Bp1LHqWAyZ2KOziLtlOt+/j28p97fLKD7v5
-	nznmYCJLzReuXFgVm6msRNdZKEosHY1PL2T2x60L6o+Qv+exJyEdXJl6yGPIpYGgH4Diki
-	18T44QfxPonhDjdD41XyJFqBRi+nFlg=
+	bh=n/5Ql6ePEZB3sncY9PXrRkrrrgHDmfb5EstPCmtwQL4=;
+	b=FZDfxhW/wDX1LEzYB0SjVn1d2DlOTUabxBnU8i2Ao+2rAb/TdZ7u6Ey9UpdQzFMko7/nU3
+	sDNWPbh1pxY1BSmzrPDHE0UCK7hICCPJ2NgE08HBmBJOS9fsnMuSRdc8yKyV/0ypS4mII2
+	KIkdJ2nETENbLbqodgwuKn73EpapYXI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gtZxL25x;
-	spf=pass (imf17.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J3wc91pw;
+	spf=pass (imf02.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756828009; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756828014; a=rsa-sha256;
 	cv=none;
-	b=iPBGW3y1T58lb2SfgL9KokSYpISO/VJ2nqQsg7Ewrdf3a/WrNXpMy94OD5Xysd73DZyPkY
-	CFLeqELeqGoHaifmKiKSQoaMFV0gWqMLXZ8Nj7d/ARfKE40MgxYq2zqI8IcLzGfRkHpSXs
-	TpQXgXIwYdBZ+e++BlM4FImLoS7/whU=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45b883aa3c9so17970165e9.2
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 08:46:49 -0700 (PDT)
+	b=0f8RuWtlfe5DaDgC1SUmFp7ec0vTEurLZUVPu04NCLSS1oQE/zb1VUN8saR6mUnNlfdOB4
+	lTSA1a20i0yrKlyOCRBH4NyJ4DHVRUnTMPdmPoTZNfhQ0fgiRUD7WgS45knOgvTflT59/m
+	prjCPGWe5lqN6VtmTJ0vsl+S21uTx2o=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3d965477dc0so951912f8f.2
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 08:46:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756828008; x=1757432808; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756828013; x=1757432813; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=h4LUm3xzftHp/xE2ENw2BOhVhXc1ZcghNq/wiRAVNUo=;
-        b=gtZxL25xzvw/t0WnVmi3exuczhHtlcotLgqMPa9Lkytyxc0FUGfSQPzZTxiu6SVmo0
-         wzHsX6EvmO1D/y2iQIIhWSNxXu8nHkpbHtSv391jys4tz55RrlNak35A4TsBUeeAVAOk
-         JdTHdtUvWIyBPITqq5veChcncJsOaN8OvluQ8YDw2bmowsFavrvLgWpgVLzsnWFo8erJ
-         cmb5DY8w9lPFyDjB2kH3/zV/WTibpOGT5bH/GjYSeEizWD06o3O2hfEIaL/zSPoTTQQS
-         Xzgs1uMJQCq9Ls5N+LPL/t2G/ZY9c9nnvWCP47pFBcKOzTiLo7u4M0b43dXZRTfb6Cp+
-         8BHA==
+        bh=n/5Ql6ePEZB3sncY9PXrRkrrrgHDmfb5EstPCmtwQL4=;
+        b=J3wc91pwTu5RKTox8ghGsswZ0W8494wUuOlhGD2qr254iMx2Y/AoAyA18LUUgpBEiU
+         oo/MTbf4eGnRE3I4Y6aDqDg/vgGNukX+pxTQYi5AAJgRKBOa5GTHa7rGFaAFOyV0HSyN
+         tdaHmuI+u5z4N3uX6zTXHYfaM4wTeohTRls+Ch6WskYrjk3y5HuCqpuR9rELKrF8vKqG
+         8U7HaXyS1EeDFsgibAIehOfx2bV4D+IsnBvRw70PphEYqZfroEhwvJ7ZiEPb7BzDevcO
+         MyMCzINY/6svKnP5MPqbuHui2rbznQGEbUMpF5YMcBORyRxrfhi3n6vNT9Itmy+Trxpe
+         bdYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756828008; x=1757432808;
+        d=1e100.net; s=20230601; t=1756828013; x=1757432813;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=h4LUm3xzftHp/xE2ENw2BOhVhXc1ZcghNq/wiRAVNUo=;
-        b=m2p0R727nX24Ogl26oYW2XxwiukPfW4AG5e8MgeYJKaO3x1hh+DfRjc89k4XjRJE24
-         3bsMB+v2+1E6SWIq2/oIr3RCJMr+db6UniboTK/GZVHsF9uN+25XvbzkpDPW1W0xRy6c
-         pf14YBzxQmWioufmEBsgmBgiXnN7OmPdWE3evTnw6nUE0J6jb1YXOHarWeFMovtqGCxk
-         McilclHW4q0NEFTsTr7gdIf+XalRpzq9H9Sk8xpOLVuSGWqnk0HeDU2LWjHdoKE2h5Wj
-         qdheEbMXz9TupYP3CH2mkqpAMhaHrLogcsrqYjC/eIENQLKlWGFdUBuFFiIrB/AOesZV
-         H95w==
-X-Forwarded-Encrypted: i=1; AJvYcCWaUNdTUDnjYbYjuaw+uvZPg7fJA0Ot7KCLw+7rPVfSCM4sRndzefJXmsXjupB1gOEweD9Jgn4ThQ==@kvack.org
-X-Gm-Message-State: AOJu0YwhEB4tBnCg1qypfhuMpoBTlluAJZGoRPiHeO2e6zqcdKpOkRYG
-	r6FMcm3f7Tq0Swjf/SDcyIwZc0463T5NFGhxtFJmGsogmemHoImX+iVS
-X-Gm-Gg: ASbGncuXj3gNkRtptnfsDrz+OtjR9gvHS9ljCPH/EFVtUcPrOZl5M0LbLKu2zyyjwpd
-	EGkvsWsaZZX9DTDNY52rBdKE688mfXQKoHRXMJJPTlUOHLhDISjodt6xrPWSBtTJZcwilHkFAcq
-	FoEHjj6vy9bRZrAwgaUWStuYTeFiAXCCqMNeB+94YMz6H9JOev/LC091zgLzqFtDYKhIJdEDA5b
-	uP8n1az/Vi0Sq8z5wjjIc8GRK+0SnlztLwNaf5F7oqjHCwwJheU2kFOB0DJ3Nj7COxaCw4grZtA
-	b1aXLano2aHfoq5xYXgrteRHyASh9VaqVwTP57IZ/ObDq1i3l5nM112BhipOgvyp6s2Lzjdmwl5
-	f1DsT9kv4rixSxg8QPjcjcF2J0DWnZEMNTB3aXEzWT8iMmSrrv9r/wnTU/oGozqdxD+KyaYES+Q
-	7E08sB7FbABVF+cw==
-X-Google-Smtp-Source: AGHT+IH1ceyRh0TFSkY7cElx5alHVXNEHIyhpSLS5qn4WT0MeK4fu88w2CD9wveL/P6+3CQyGvCJWA==
-X-Received: by 2002:a05:600c:1f94:b0:45b:772b:12b9 with SMTP id 5b1f17b1804b1-45b855336dcmr103786195e9.15.1756828007780;
-        Tue, 02 Sep 2025 08:46:47 -0700 (PDT)
+        bh=n/5Ql6ePEZB3sncY9PXrRkrrrgHDmfb5EstPCmtwQL4=;
+        b=avJAtmmKFJfa3Hhh5W2KIHOzytYJo0/a+SGV9UHU59KnaHb2bPSlt6513FQ1obHJcS
+         8UwhyBkFPwJzYfgPERAYae1LKWakGytkwS9vrZhBy4c8pw5NygFNQXjmDd5Lomf1URJ2
+         FKKrEntZLQPnP4JzBP9q4Gauzqab5e/rXUVceJxikrb1k7SL5S87xEYjih1zz3l5nMWU
+         dvJ6vnJ8D+lKLPJLMEz1HGDUuBULu+/6q1siX5oGIQa4XMneJNpmnsW9DwUTaakQs3QD
+         1dPyUw147ISZk4jeGX1hEV1UmVrkkNldKcfeapkNGLS7UsMK+32qzzN4SioXTkl9oZsi
+         Jpgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUir0/l75gzY+vrLcr53C+fwFUBqjk0EevDslmgjaCOPDz8fOr+tTSkiZ9W7zAOk2SXotGx47aJsA==@kvack.org
+X-Gm-Message-State: AOJu0YwpErcNq6C8nkKf68rLTS4YTCaY6moF+pL2D6MHZa1wPhAbwS4X
+	8CreuBXGet5RiAfm+P+lmyZzT5JUAlslTLD5Sn/qEYPQ9uuIE53BuiFW
+X-Gm-Gg: ASbGncsI+PUqSQFpw6IeujtPhbWF+IlS833LKqGxf73NYvgvt/l3FPuYni2FhurYV2m
+	B4SS50f85InIk6JsIzMcOJJ/1KTGcEVW/wZGjBDpiRPSf+YZ4HfQfzLMQhz4uW0RiJPxMllSf+2
+	04JCLo39ByVcQocM5/1IaUdmn8ieEq44xNe8Gd9KMVVX2UABOcW/qRYWjiMAUc7axb5XMKTva19
+	yjzy0va/Vs2n+BYPxMgTmLgYgKGzbwaCR+8GBk4Zs34v8izMXf43sKmuTPNo3zfI0a4+7SXZYF5
+	xw3kIjyxTJns18z991svVtOMkBCBbsaZlZqUJxdH4gjpRsjb/fwGTlY28S0peUY4PW01xMKsXKU
+	M7H8iqnwyPHJg19+1/S5F6I022y4xvXnsMCgZ3AJvmw0bEzVEOXuZfYrKKsTm20jdGi57Ae0sZs
+	P+sdCGecXkgfVwfAaZsNZ49SEc
+X-Google-Smtp-Source: AGHT+IHq43AbE5VkmkapAR0tzhsq3zXTXrsk3nysd56WKEVtoZpJPwZ7v6YnW4KfZ38+U9nLscJHkg==
+X-Received: by 2002:a05:6000:25c6:b0:3ce:f0a5:d598 with SMTP id ffacd0b85a97d-3d1dca7bfdbmr10337054f8f.10.1756828012868;
+        Tue, 02 Sep 2025 08:46:52 -0700 (PDT)
 Received: from localhost (p200300e41f1c4d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f1c:4d00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b7e898b99sm202121435e9.19.2025.09.02.08.46.43
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45c447244c4sm4765415e9.6.2025.09.02.08.46.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 08:46:43 -0700 (PDT)
+        Tue, 02 Sep 2025 08:46:48 -0700 (PDT)
 From: Thierry Reding <thierry.reding@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
 	David Airlie <airlied@gmail.com>,
@@ -111,22 +111,22 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-tegra@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/9] dt-bindings: display: tegra: Document memory regions
-Date: Tue,  2 Sep 2025 17:46:22 +0200
-Message-ID: <20250902154630.4032984-3-thierry.reding@gmail.com>
+Subject: [PATCH 3/9] mm/cma: Allow dynamically creating CMA areas
+Date: Tue,  2 Sep 2025 17:46:23 +0200
+Message-ID: <20250902154630.4032984-4-thierry.reding@gmail.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250902154630.4032984-1-thierry.reding@gmail.com>
 References: <20250902154630.4032984-1-thierry.reding@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mh3o9j13d5i7uz4uhniqicxasjyjbd5z
+X-Rspamd-Queue-Id: ADA5680006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96CBF40009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756828009-6800
-X-HE-Meta: U2FsdGVkX18Fz6GacDY3oAEInOHbqM1gOc05vAXs2vS+o+MCfenIMrQRRWN/7dZ9grKdzBpaQo4HsHJsGUC09Qzoa0yHjdXQipWjOKDP56Ec87YIcr8P740DFiHwj+qxj8s/Hvr7fNkgenZaWcTZpBOiz/LuDmP9b0sZe3VCrsMA7EBQMZZ+9dohxB26y0TThMDVe0CFO2bHOgQC6sUcRXDB6GZdBAvVm6EHB1qGq1iwNI+1IsFwCRxovfOJ1873fqhKcnLzBKP0t7JcozmjhyLKVk6qqtbpu5jDnvsRZJ2TBFeR/oRdh03ErHhFCkePqVbFr6NCPv7KqrK0E4LvVfRkhOvXx0nG+7SBVuc92XADlKaPOzP5y92Zuab5/6u3lNWX/Xl6Icx/nXlyRakFqSrTy1HJ/X7b20Lk5Eb4I/UupJA5oARjpUPT7+SR6WclB3FGrFQv6qjcelYiVXPQWJEUww2Q97puenktCA+IJpcuuz84i4l1o0hJd+/heVlFW+XBkeHwxyzPyeMBnz6Op3VOd9xXgLNHES8n4WkPuQfz+YPglfm4d2R7CGqEtfzOb1KoWc4pEB+e8jNS6S+E1dkqJMxdVbCxep4vGBrSK9wL0Hy0nWkr+6zR0QwWyKjWGbEdxDtIuE2FfXF8RlJdDfaCoJ1ut5skkxXolRygaA9Q/pDzVX4XNoiKO+8oIVOv74G1/ojNxLKGj/JDV08A39gp5THw4JSByOpbXrKmiMcItYKBSDQIwnznSO3CZn73OposhrlA4sOM6SQUGXlmZu6juIF8DtFWAiFXhLdsEQJNuk1+gfinKPsaigBiCOgf/Y+vtJkg1AHBX+fdBNT7esWTM3ZAPIMO8m2XNVt6/i7fDt5NpX+/Jt+Nio8l9iUzf7ayMvaZvOUP+H+TsHz7KhkwAcBOmtTWa5dKYtO3qL/wT/3d8mlFfd1Y28VnBUk/udxvYHj2nHNv1HfhsWu
- JMj5B8OE
- 5um6ktGc6BrfHTSgo1SApa4S9QzjD+NrAbuTx8BycimPpFnc74ppyj208qhhH7/iP+bX2Nd3rzPGK+g7uV8E/lhaIs73qGDZN0R7LSOqMEOUy12jJHy2mAjwlA7tmin1BQEXsp8F590/oRLl612TpnVPVHE2rQP9Fumst3ASmIZxQaUb/YPsozalegpa5PsA9VYvfSpyNautYqtBpEUITBxR9U9aG4jq8x2K1HrEmFpTWxTgaohJOCHAS1kAQVKQYk3t0h4u6aOK1PaFTUwEXoy+e/T/agLSl8hoSV0mOM3OszCA0x2WELQaenqtNabtAV1K1AzWXgaPnMO6SI1OuU7CdNwao1AQaoQCwGpG+gRuxIY35H5mVFXjRep6rLVQpl1La24ByPORD4GhauckNQE5OjB52WWlSzlq4arH8I6VSLEwyTlLbjFAQUDnKlSI2UGjw1Bwo4eRh3NCZkvU+OJUjOHoQ4f6m6p1CTlOtpYkZJirxl0Bjg/Pl2/pe7PKA64ASq3zeDvS5RPa1HO7Hs/eQjnuv+LfvSimPJWY3y5dWs5zTiE2SobHoHpP7fSXEDW2d
+X-Stat-Signature: ogobedfrbt1c67pryezepawqfgkjo7bg
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756828014-395900
+X-HE-Meta: U2FsdGVkX1+C3pES2aiX6ooPVnx0oQJmFxEsI14DdXUp1GO2wQ41foVEL+n4XuywtwpkhpbLpQzra7Bwu18iAkJmWM7LI8N3SZFBoPH1s1KvOpK0wTi5djUtOJGCQipwxXZw19FYtQ+wJLOZRndv/U65k6HWLwAAfiiRdEdk6BhzPSPRahlJeZ06+RTXrMxh24OXJiTCBFFyTAVVDwfGiesjESni/MJPKpP11t5rSpFS6vxOaD1fwaZHYSC+ZnZKg9di3wxGciRTV5hgCc6si3K7w/ttHIEUTOaXxGUUNVHoF2iNzfZUYI5oIvYvUPX/i88NVM1McxxXz+LKuZzGyzWzzUziGVa8+NKxtcLMlIae4xf5faSUzIqXhvGYjZoS3uyjpgqdQlWxJa81u7+/4gjFl+t0TShTGZtvPxh/rae+fuvDRJbXZ7y8dv7gofW75gvNm/oOoe7wTwoiN+LRB0dqBSY34uHBmBmiSOPrd0bCWAtCHNczy9ki+jRHan6VLLVT4y+B4Uu9E5/0hpV9cjlnf06lTksYqOamlX84JPFnRjSCLdSPeBQ+PHhhAvpwvhx2wsZIlDXrKiKJ3MhMS1r84eP1HtZzQJ3v4clsULlWBXFSla6bi+5p+215G+rs0tY9RCkIyMbR7ijcVv4bpotoGZigoEn5nt9u4SrW5kdCGe/BZiUx9KaZ34IcmHFrkTHCMDGTLTcTEqUviAHgOnqLcgu7v+ixM6vZ5m8oQ0nyljMnEJTr3JPXN1YvFP3mvRTwi2dCr9lSUO5qrMhEUfdpnFmILFIQVPdviL+Zh83+do7tYj0bLo1OVT2mUKo19QSN/NlUULgNhY1LSrHnjWc3IsIStKWqRROera9yQlmpNSXN0ufWR169FMGi7jq7XmkPxEkKEWdydfdf7NIDRJ0yyuqxBW+cYqoZJS2pr99SB2QGK0VkCrwC9Ex26o3kxTsvmhXEaCezVk1Lx23
+ cvrbyHZo
+ HOMBkREt5p5cl69hCDs3bAvFXp5BVne+1PzKwLlcMyvcS/y+64WCwDe/vw3XnPNtCL/YpRS3O/6RZzIC8l703Q020TjtlLwA9Wdxdo4I3L8ot0B7wdanaZsLoSgtxfedeywITJDMFn3PB0zla+hd/cKaZk6qyFQvpkWFc34CsmXx4UZsLrcE+GM3ukbpZOHMN8Iy5cP2SwVhGWbKU+6YfC9dL13Fo7+xXHGUNXKKbQXCG/CWUm+gwQJu0ohvBAyt7B+KWzcW9tw/0cbPLX5Qt5f4vYDTCQ48Pmdom9uftkb4fFs93rf+juNHgSDHxYotaqowo4zVX0Nf7QPoOZqmjvrHsu3Ea939VG63tYKhqFbKSG9YxeucIRw6rQfi/kNABRywlde6fCytitYuUAYFlrwOjgRSqWo4Z4388z28yx3RmATOF0Lr4USzYdjp+hhomxZXcIdIyB+4CqJ1CIkqBwr5wj822uLK2aJi9Sv91cIlJwtIFHocQ8yaBv8RuJwNuUt3WTXqHHhQNn4f48O6ZApujZOcZgH+9kvzcO1OAkkhr/6pC1yRJEo4fgv/UrxHAdLVy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,78 +137,185 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-Add the memory-region and memory-region-names properties to the bindings
-for the display controllers and the host1x engine found on various Tegra
-generations. These memory regions are used to access firmware-provided
-framebuffer memory as well as the video protection region.
+There is no technical reason why there should be a limited number of CMA
+regions, so extract some code into helpers and use them to create extra
+functions (cma_create() and cma_free()) that allow creating and freeing,
+respectively, CMA regions dynamically at runtime.
+
+Note that these dynamically created CMA areas are treated specially and
+do not contribute to the number of total CMA pages so that this count
+still only applies to the fixed number of CMA areas.
 
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- .../bindings/display/tegra/nvidia,tegra186-dc.yaml     | 10 ++++++++++
- .../bindings/display/tegra/nvidia,tegra20-dc.yaml      | 10 +++++++++-
- .../bindings/display/tegra/nvidia,tegra20-host1x.yaml  |  7 +++++++
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ include/linux/cma.h | 16 ++++++++
+ mm/cma.c            | 89 ++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 83 insertions(+), 22 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
-index ce4589466a18..881bfbf4764d 100644
---- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
-+++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
-@@ -57,6 +57,16 @@ properties:
-       - const: dma-mem # read-0
-       - const: read-1
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index 62d9c1cf6326..f1e20642198a 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -61,6 +61,10 @@ extern void cma_reserve_pages_on_error(struct cma *cma);
+ struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp);
+ bool cma_free_folio(struct cma *cma, const struct folio *folio);
+ bool cma_validate_zones(struct cma *cma);
++
++struct cma *cma_create(phys_addr_t base, phys_addr_t size,
++		       unsigned int order_per_bit, const char *name);
++void cma_free(struct cma *cma);
+ #else
+ static inline struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
+ {
+@@ -71,10 +75,22 @@ static inline bool cma_free_folio(struct cma *cma, const struct folio *folio)
+ {
+ 	return false;
+ }
++
+ static inline bool cma_validate_zones(struct cma *cma)
+ {
+ 	return false;
+ }
++
++static inline struct cma *cma_create(phys_addr_t base, phys_addr_t size,
++				     unsigned int order_per_bit,
++				     const char *name)
++{
++	return NULL;
++}
++
++static inline void cma_free(struct cma *cma)
++{
++}
+ #endif
  
-+  memory-region:
-+    minItems: 1
-+    maxItems: 2
-+
-+  memory-region-names:
-+    items:
-+      enum: [ framebuffer, protected ]
-+    minItems: 1
-+    maxItems: 2
-+
-   nvidia,outputs:
-     description: A list of phandles of outputs that this display
-       controller can drive.
-diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
-index 69be95afd562..a012644eeb7d 100644
---- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
-+++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
-@@ -65,7 +65,15 @@ properties:
-     items:
-       - description: phandle to the core power domain
+ #endif
+diff --git a/mm/cma.c b/mm/cma.c
+index e56ec64d0567..8149227d319f 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -214,6 +214,18 @@ void __init cma_reserve_pages_on_error(struct cma *cma)
+ 	set_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags);
+ }
  
--  memory-region: true
-+  memory-region:
-+    minItems: 1
-+    maxItems: 2
++static void __init cma_init_area(struct cma *cma, const char *name,
++				 phys_addr_t size, unsigned int order_per_bit)
++{
++	if (name)
++		snprintf(cma->name, CMA_MAX_NAME, "%s", name);
++	else
++		snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", cma_area_count);
 +
-+  memory-region-names:
-+    items:
-+      enum: [ framebuffer, protected ]
-+    minItems: 1
-+    maxitems: 2
++	cma->available_count = cma->count = size >> PAGE_SHIFT;
++	cma->order_per_bit = order_per_bit;
++}
++
+ static int __init cma_new_area(const char *name, phys_addr_t size,
+ 			       unsigned int order_per_bit,
+ 			       struct cma **res_cma)
+@@ -232,13 +244,8 @@ static int __init cma_new_area(const char *name, phys_addr_t size,
+ 	cma = &cma_areas[cma_area_count];
+ 	cma_area_count++;
  
-   nvidia,head:
-     $ref: /schemas/types.yaml#/definitions/uint32
-diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
-index 3563378a01af..f45be30835a8 100644
---- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
-+++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
-@@ -96,6 +96,13 @@ properties:
-     items:
-       - description: phandle to the HEG or core power domain
+-	if (name)
+-		snprintf(cma->name, CMA_MAX_NAME, "%s", name);
+-	else
+-		snprintf(cma->name, CMA_MAX_NAME,  "cma%d\n", cma_area_count);
++	cma_init_area(cma, name, size, order_per_bit);
  
-+  memory-region:
-+    maxItems: 1
+-	cma->available_count = cma->count = size >> PAGE_SHIFT;
+-	cma->order_per_bit = order_per_bit;
+ 	*res_cma = cma;
+ 	totalcma_pages += cma->count;
+ 
+@@ -251,6 +258,27 @@ static void __init cma_drop_area(struct cma *cma)
+ 	cma_area_count--;
+ }
+ 
++static int __init cma_check_memory(phys_addr_t base, phys_addr_t size)
++{
++	if (!size || !memblock_is_region_reserved(base, size))
++		return -EINVAL;
 +
-+  memory-region-names:
-+    items:
-+      - const: protected
++	/*
++	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
++	 * needs pageblock_order to be initialized. Let's enforce it.
++	 */
++	if (!pageblock_order) {
++		pr_err("pageblock_order not yet initialized. Called during early boot?\n");
++		return -EINVAL;
++	}
 +
- required:
-   - compatible
-   - interrupts
++	/* ensure minimal alignment required by mm core */
++	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
++		return -EINVAL;
++
++	return 0;
++}
++
+ /**
+  * cma_init_reserved_mem() - create custom contiguous area from reserved memory
+  * @base: Base address of the reserved area
+@@ -271,22 +299,9 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 	struct cma *cma;
+ 	int ret;
+ 
+-	/* Sanity checks */
+-	if (!size || !memblock_is_region_reserved(base, size))
+-		return -EINVAL;
+-
+-	/*
+-	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
+-	 * needs pageblock_order to be initialized. Let's enforce it.
+-	 */
+-	if (!pageblock_order) {
+-		pr_err("pageblock_order not yet initialized. Called during early boot?\n");
+-		return -EINVAL;
+-	}
+-
+-	/* ensure minimal alignment required by mm core */
+-	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
+-		return -EINVAL;
++	ret = cma_check_memory(base, size);
++	if (ret < 0)
++		return ret;
+ 
+ 	ret = cma_new_area(name, size, order_per_bit, &cma);
+ 	if (ret != 0)
+@@ -1112,3 +1127,33 @@ void __init *cma_reserve_early(struct cma *cma, unsigned long size)
+ 
+ 	return ret;
+ }
++
++struct cma *__init cma_create(phys_addr_t base, phys_addr_t size,
++			      unsigned int order_per_bit, const char *name)
++{
++	struct cma *cma;
++	int ret;
++
++	ret = cma_check_memory(base, size);
++	if (ret < 0)
++		return ERR_PTR(ret);
++
++	cma = kzalloc(sizeof(*cma), GFP_KERNEL);
++	if (!cma)
++		return ERR_PTR(-ENOMEM);
++
++	cma_init_area(cma, name, size, order_per_bit);
++	cma->ranges[0].base_pfn = PFN_DOWN(base);
++	cma->ranges[0].early_pfn = PFN_DOWN(base);
++	cma->ranges[0].count = cma->count;
++	cma->nranges = 1;
++
++	cma_activate_area(cma);
++
++	return cma;
++}
++
++void cma_free(struct cma *cma)
++{
++	kfree(cma);
++}
 -- 
 2.50.0
 
