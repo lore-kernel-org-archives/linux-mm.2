@@ -4,109 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48AC7CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:28:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F3FCA1009
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 09:29:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E6668E0009; Tue,  2 Sep 2025 05:28:16 -0400 (EDT)
+	id BBE018E000A; Tue,  2 Sep 2025 05:29:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BDE88E0003; Tue,  2 Sep 2025 05:28:16 -0400 (EDT)
+	id B95768E0003; Tue,  2 Sep 2025 05:29:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FABE8E0009; Tue,  2 Sep 2025 05:28:16 -0400 (EDT)
+	id AD2BF8E000A; Tue,  2 Sep 2025 05:29:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F3E88E0003
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:28:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 999048E0003
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 05:29:30 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 384A6C0BC3
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:28:16 +0000 (UTC)
-X-FDA: 83843784192.20.9322123
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6DD19A000A
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:28:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zXjeI2gI;
-	spf=pass (imf15.hostedemail.com: domain of 3rLi2aAkKCEUhspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3rLi2aAkKCEUhspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 53D0A140AB0
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:29:30 +0000 (UTC)
+X-FDA: 83843787300.20.1CC7CE7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 873AA180010
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:29:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u+YP0LKc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756805368; a=rsa-sha256;
+	cv=none;
+	b=dbfPqwnMv5HrN92cqRaYKLrve8+wwQo4FelNnlse1kLVAXlR/L0l5ZPAQ0WVB70Uelae+C
+	fAUhYY2QHuMjVuWVpXRveSBx5/RN5zQrrm0ONH1xsWME8Lh85b7xdoCByn491ClHhod/Av
+	IouDx5BBkF7PRwFkkUpTX/doB8L9mPM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u+YP0LKc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756805294;
+	s=arc-20220608; t=1756805368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WCJ5Pd5hSyUTTNVQBWxsmI+HwwsqepTaJK7vsUpGjOQ=;
-	b=pM4gRW4Sm72I5BdDGlghb6Ka3j9KtUlXR9+89lMzH5yNozzCce9+afEo8Rm0SBXkLP4E5m
-	iZDUY6bSsTrSE7UB7z9Y3E1OCvw5+fvk5za6jEfG05f4NXTL2U2YcKZjNnU2PkseGxjnyG
-	0m9h7aJmabW8FUD7LnKlrO3BkgmHuco=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zXjeI2gI;
-	spf=pass (imf15.hostedemail.com: domain of 3rLi2aAkKCEUhspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3rLi2aAkKCEUhspjly5osnvvnsl.jvtspu14-ttr2hjr.vyn@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756805294; a=rsa-sha256;
-	cv=none;
-	b=13iqACiILTmwkCoiSJcLKqbx3JrMWcjWTsr6uff5eIzUTmjgV1/+Cb5QG+3lNOs5kZti89
-	PeIaSCkzUBTIUmz2DSL8SpizumSb2KAmVrJDVXDJzUQuuFb5HWry/Xh7GOd1cpzvU9ffBE
-	HuzXxChiu5tbLfW/QGzvjxTHgolSIxk=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b7f0d1449so19635205e9.0
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 02:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756805293; x=1757410093; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WCJ5Pd5hSyUTTNVQBWxsmI+HwwsqepTaJK7vsUpGjOQ=;
-        b=zXjeI2gI3lzRhJAp1iSMHby1I09X1Eezdv4m67j/ovTxQAWZ2FEtDSG+DL7xN3/liM
-         Ej4JXj+GR0E3WyzGnX4VbWkqh/OXTPXjqM/Oa9XLGiVrFMqV1JO0Z/8ieNfxv75/ipil
-         V11zVNf7WKfk/GNihxauDWFF++diJ4RcKdjylWuswnCDpcDjFOm1V7mHJUVbQsmKvrze
-         CtIt6cTLObnQTHMKMqWeuU4JmrXjDGfMX7grlAjDFtLfaABV09Kw5W2OY90OeTWR62QG
-         1azhuqY0UNu4Sgi28cCe/MXoZ86YPVL06gp72G/i4p71Q4cLSYsMKvxSB423RQ8bhhj5
-         DA7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756805293; x=1757410093;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WCJ5Pd5hSyUTTNVQBWxsmI+HwwsqepTaJK7vsUpGjOQ=;
-        b=dd5CCHLyf8SoNwA97ePaZMxW6wjY3OTEVBk8I916vY/iFOEY3tKvxOXoFnqoonVokz
-         +iCqIKarEt7+0rn1uAYzgfLG0jeX6AlW29sT9f12A/1hvPdreCj3/ETMTO9l9/grVmWq
-         VEH1/r8zjPSA2e/gKxlTXaj9hGuwaayIQweKbtWFcM/ZNH4M3NX+GjXOo+enq/nPUUyH
-         8BaYToDxeOHDRoNkLHSpjX+kx06rQaG9BXlMvvZRe0kRhPESmk5kSu4aON4TH+QVQdSS
-         cS0UjTlexZmCtLEJSiXnCFCGRE0Jz0bvrkpRHDe0exdl1Oq/sRLiLZxLD9XSNHVop26d
-         jPSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJpYYvpRvfNbIVSgJxAGPFM3YkH91h0cmlAaAOdrMOZTZ87kPNX1gntSG1ladNnhS+RwvVEmqcDw==@kvack.org
-X-Gm-Message-State: AOJu0YwU7/VuMj5cqElresUsn2tKd09NPa5/sQEXJRTGELxPuhcKJNq9
-	5raAVbytBBLFFq3a7qkaP8c7Gm2eTzky1iMJjWso+63ZcKexQA60/D0+0t6oN3tXwWQgQC06TxX
-	h84u9mbjvMWzclnENDQ==
-X-Google-Smtp-Source: AGHT+IEHQOyKU6+Ue9693mOKlMNG23uPJov9FA9k1toBo6GMI9ziGkGJK7zza0Cq4est0sUsZ8sgEdWMBaBwbSI=
-X-Received: from wmbji5.prod.google.com ([2002:a05:600c:a345:b0:45b:6337:ab6b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b22:b0:45b:4a98:91cf with SMTP id 5b1f17b1804b1-45b8554fa14mr103519015e9.15.1756805292964;
- Tue, 02 Sep 2025 02:28:12 -0700 (PDT)
-Date: Tue, 2 Sep 2025 09:28:12 +0000
-In-Reply-To: <DCI6XGR65KH9.27TWYVKNZNGHV@kernel.org>
-Mime-Version: 1.0
-References: <20250902-maple-tree-v3-0-fb5c8958fb1e@google.com>
- <20250902-maple-tree-v3-1-fb5c8958fb1e@google.com> <DCI6XGR65KH9.27TWYVKNZNGHV@kernel.org>
-Message-ID: <aLa4rNojDIeShIrw@google.com>
-Subject: Re: [PATCH v3 1/3] rust: maple_tree: add MapleTree
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: d8zpi4puwxcp7rjtrta8gkwjnkxrscix
+	bh=RUP9TtL1xAhoFb9CaSEK22nm8Sa8vb9894tliSqEP4U=;
+	b=Ja/LGyXE3w5Xsk63EvhFQ76HqwHDheXC+hwJjDFyQcFCg0zUj9WQt7zTxEPTr4kexkDs5X
+	kK+uXTtbQMaTY5bpFpnF7UlVc7BGQXlZ21lzWGbt4WMn063wkQnGHfp/E2/fipL5PLs2xR
+	xsSz6QpaEgUM9gr9s9Hw2O+E6EuXKP4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6678F43E7E;
+	Tue,  2 Sep 2025 09:29:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793FEC4CEED;
+	Tue,  2 Sep 2025 09:29:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756805367;
+	bh=DnDVES5Jg8WrIGoMPMfvxV9Wox20mcRcpnotwmcTmTg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u+YP0LKc7Ca9KSEGyhHI9LWKXOpYxDkmlx+xi/d94i28PXwnbkADYdG/kMj0eiK5B
+	 zd/GooYAccyXKqdo2LtN0swNMmhiizGQIgjHrkSZ2IAXK/1jBPSRk3StbcZycbdrVP
+	 g5quZtmGQMVEWVOV9clnOLPmMIcFNqak1dVeFhnzWaY1VIAyIlM9TCnw1bUSOb10fT
+	 eYPBFQEGyOkOZzS7K5YPtS3dmkawe2LLvJU33SWPAwVjDdMQDDLsS8LD6Qfe4rZdHI
+	 wki/IP/V+av0oWZTHcazqMPHDSPlXAIhw9qhWxKa10uhggFEbKZZEF+GYaHO+zcGYb
+	 634HFrNZvr1dg==
+Date: Tue, 2 Sep 2025 12:29:20 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 00/16] dma-mapping: migrate to physical address-based
+ API
+Message-ID: <20250902092920.GE10073@unreal>
+References: <cover.1755624249.git.leon@kernel.org>
+ <CGME20250828115738eucas1p24f3c17326b318c95a5569a2c9651ff92@eucas1p2.samsung.com>
+ <20250828115729.GA10073@unreal>
+ <26bd901a-0812-492d-9736-4a7bb2e6d6b4@samsung.com>
+ <20250901222302.GA186519@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250901222302.GA186519@nvidia.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6DD19A000A
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756805294-481344
-X-HE-Meta: U2FsdGVkX18I0wPubw9rbez383rUWl0X2LV6D8SVIOP6YT/jgviDpo1N76m4bt9YUoZyTpMuSLzNQ018yBLjvj+MU5/6l1a0wl/tJ/O6Fyi42LvFVueDfHUH9JjnWKeSw/mZFokr8b0sLc29+9BifA46e14frSSN8p7nYzd3MLGhdA7HC6l4Nj87T9OSv4P/7lyh3b81pdI11JDol8UgQ8KOde5/HLnHM9/OGDtOOvq1Ag5IhGZUMPjxN9NNiG66nGhTAf1rZ5OB4e1k29WzA7Hz+n9lNIH+UrVgwv3I7Yo+55MHLTY+vr11rMwWb8X59p5qTeGe06y6BFteBceoYct+ktc0g7ULuvgLJLV26POemJFa7W39lBNa2krmkFAk6MD4eD1/cx/y38JRzDKCnhRpoXjRv7bSEygBBj7UB+WFBmyA6h41lfSB/i9d1QTJpm8Cbpmb4k3WlC4nmQ9Ln/3qin3/7Ie3hn//tbDrGey2+7G0wtu2GwuZwrEpL4KJ+WVTPV8UteOv5JSpba0VSnRXanxoYZHIGIGHnFdQonRmk/T4clV+RvYDjUcxg+9Q3Mp/CWiAeIr0VTqD+09a9pVt1+PLS1I/Sc/a42ocAbLuUqdzsYp7+o7LYR3WLsrAVSLGuJ4aHbj8R7Ue9PjDM4XBCik/BR/5glz0KW0egU7nkC2ewHtAUuLtsHRqT3RC+gwijgL8mMmFoPOiR8JJqZnfXsFNAF8UvLuXqZsqP2iIA/Z/cJuIgR4T2GJHN8qcIX5ca9S01JKSJRLoQZuVwINPcxhPT90q0ZKZO7J6t60bnaJuXixn8pwWfTwq7GOh6urHWkEAIRYlEir5oNdGpuOiSD4/fXWggvcNpj91NRQP3Zf+F+gWV5jVpDYJpnKviTqnjN+3eagCIOJEfN6aJgdvceor8Y8FSVcAT/4bN74HH+Sf1oivd0+mtcD0GdN9nlL7RUtWB1Kpiq5qMPQ
- 9L1T9cle
- hGBJ9B82Enlnz2eBdTWZlxljP8GGti7NP0LdKzXRFYVaInr3kg4cj873K5NaMw50a0d/R+8QVhyxKi24V/vnvMnF0PaLMEbHiAEw7wFaW0vZ1qnJlW9qxUOwHlNQ0SzLncv0lYHTa8S8kmZbji4Lo9N2QpdYYz5XLnz4uV2vtwk8mZ/YBksSio4rpOu10I/QwIPmBwZDPTjyRna91IwXzA6Soshu5L4xey/X7Rf9X7UKZ9oMszliuEe+AnBgsISrUtUvDuUW2vkYVTQO3MtC45rakSZ+OlXKn/XWaETxILuKUZqxGG7dX2QTMbM5wP7Okwb0Srzi4ezfbDG85cmnt7VWos7Adf6F6x12d/dBpqcqD0YEHtFMN3JCbHizIbWXJL5rp5qlDhmF08K3ozkm6SbHLAK0VfPgzlamsuJrYgrSSWRXBsVkYFbwhrlg7d0rSlJjISty3W8OE3hKBTloJiYvrPdWzeB4JY0ftXPcHNz3nUC1am2EGkFjGga/1HJN+jzXSeUWN33jQaZHFfRIgNY8VHvjuRkCPrXQ32owl4kDjE2Atao7PmUgtooP6SlL7Fr4wN9uT3gtXHd1rzqZ2U8bvWZVNeSJxFOF4eHjcqhcEBhguDvUdhwmE21l9UPE7Rd5nXNCYI2e4p4mGZkgxRk+LYEy7+duva5wfkHjE/xy3Do+SwwRcMGVNENzzBqN1bNJW/ybuyRYeKKtuOxPI1P8qcz+skmscRwViwfjIdXChJDfW/uwtuMr/5J0lSqxcD8+S7b8pTPqXdhM=
+X-Rspamd-Queue-Id: 873AA180010
+X-Stat-Signature: 9edua8dw84qzbkt3tw6n44ay6s8pi7qf
+X-HE-Tag: 1756805368-111420
+X-HE-Meta: U2FsdGVkX1+QDwCKd8wlgc8RDq1aga21SiWPf7leh8h9aWLdCRM84wFzTPzWRDQopjiwSccMnwaEQ1CrfmgK0BI6/K7jMTvMiqdkz133X1wCjK7slemHsY2nyZHA5JalMkNHhflOQ1ydE9e2CBdKPlf1n3xM17nMouew+y9RUZZfoI1nDMsKnVjBaGtxZQ9K9DTBULdw5fwk/PBmdLQjm+zh4n0fX6uKK+CVWQJZXYKNTxO2+Xi3Gl8ShWdu5vUz7l3SYGShrnABIUs+y9SJNRoIp3MGyR3GJo8U5UdSE4h7wYb11v3OUTLpouxHT3BF3ms0/IZAM8cC9H+DouhvEDfJHHU64tgYuTqMLv5T0ihwfDTplp1DhiXNedTEp3cCbHD6a3RUAzPSlP1P16VVjHxabhYcwVSiimN/sendvMI3fuUHlKWgwQdQNGIhslEJQ22B2x7nt4GelMs7JpxfgWT0hJqqUNhYuxrvbmNX5UcjiDfBBBL4RXRvG/nC2ehKGVmFhaojcRVBHNR3n5oThW5zxBEWnp3JoXadUSCgpErFSc6OvykMay8+NxOwZhOBVI1MMcB7BADlZ8vJl59VYIKUA3NjFoPwdhtjGkBkFT/KS5uxcg2hBJZVtf4S/E5N/G34IWMo5vKaZdt087LoG2P+x6zhlGx1yyIzdOseH1bUlfdXy5sqX63oNQQ4H68T++fG/w5kU5zQZa+lURnJVRrSp6becV46dLyBKje5VFkLiJNK4n/+2toTbEkVsRQLEZRr5yS3cN12fi5osoRSez8iq8mvJ0/Xr3fuAoXbwlgk3yBoXBPeHEstbw3vEuWukUqUJN0Fo25LczBSCtzfUZw6XwCly1rGVFqAAfU7tusCovVyRAHQiXe+DT+lKwMJ+7R0YA7IZ8kpHz/VVkYetCKKf/ZcwUd9klzDF6G9Z+priEath8hL9IBNL0k8/ngJWezS7+BZ1tcv8faouSw
+ liFwtM16
+ 6u7MlCTsr34ikscd6ueWdYK8JWBBwU/ZBNpKW+JktH3it3xu7sTlApmUGaj8xM14v2OuqYf6Tbo4jy0PCKQLP6v1QLcYyKmp21Hb9+rLHDfdqNRNrzsOBKzU4XpZx4QStJXkLFUfx2uw6Ythwwf8Xl4ZGkY3YuaHV57EsWxaMvtij5upb9fGowdNZqgPXNnsp5LxmhYaUMWNWSGb5JXh6FwrnuZCRgXwY3LxtYM8eyV9DV1/8aElhIL7hQL+w8y8LB+6f5P92ptL9RfqmrXNbUVdkl/y6HtiaD6GYLRrsHlF2NQbXHMAaWsHF8jTVrTPdPDB0ebX+251gPep0jiz64wKF03vBcbdGCuRvnu+zQN4XoWahvK33+w1SVw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,83 +121,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 11:01:19AM +0200, Danilo Krummrich wrote:
-> On Tue Sep 2, 2025 at 10:35 AM CEST, Alice Ryhl wrote:
-> > The maple tree will be used in the Tyr driver to allocate and keep track
-> > of GPU allocations created internally (i.e. not by userspace). It will
-> > likely also be used in the Nova driver eventually.
-> >
-> > This adds the simplest methods for additional and removal that do not
-> > require any special care with respect to concurrency.
-> >
-> > This implementation is based on the RFC by Andrew but with significant
-> > changes to simplify the implementation.
-> >
-> > Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
-> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Mon, Sep 01, 2025 at 07:23:02PM -0300, Jason Gunthorpe wrote:
+> On Mon, Sep 01, 2025 at 11:47:59PM +0200, Marek Szyprowski wrote:
+> > I would like to give those patches a try in linux-next, but in meantime 
+> > I tested it on my test farm and found a regression in dma_map_resource() 
+> > handling. Namely the dma_map_resource() is no longer possible with size 
+> > not aligned to kmalloc()'ed buffer, as dma_direct_map_phys() calls 
+> > dma_kmalloc_needs_bounce(),
 > 
-> One nit below, otherwise:
+> Hmm, it's this bit:
 > 
-> 	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-
-Thanks!
-
-> > +    pub fn insert_range<R>(&self, range: R, value: T, gfp: Flags) -> Result<(), InsertError<T>>
-> > +    where
-> > +        R: RangeBounds<usize>,
-> > +    {
-> > +        let Some((first, last)) = to_maple_range(range) else {
-> > +            return Err(InsertError {
-> > +                value,
-> > +                cause: InsertErrorKind::InvalidRequest,
-> > +            });
-> > +        };
-> > +
-> > +        let ptr = T::into_foreign(value);
-> > +
-> > +        // SAFETY: The tree is valid, and we are passing a pointer to an owned instance of `T`.
-> > +        let res = to_result(unsafe {
-> > +            bindings::mtree_insert_range(self.tree.get(), first, last, ptr, gfp.as_raw())
-> > +        });
-> > +
-> > +        if let Err(err) = res {
-> > +            // SAFETY: As `mtree_insert_range` failed, it is safe to take back ownership.
-> > +            let value = unsafe { T::from_foreign(ptr) };
-> > +
-> > +            let cause = if err == ENOMEM {
-> > +                InsertErrorKind::AllocError(kernel::alloc::AllocError)
-> > +            } else if err == EEXIST {
-> > +                InsertErrorKind::Occupied
-> > +            } else {
-> > +                InsertErrorKind::InvalidRequest
-> > +            };
-> > +            Err(InsertError { value, cause })
-> > +        } else {
-> > +            Ok(())
-> > +        }
-> > +    }
+> 	capable = dma_capable(dev, dma_addr, size, !(attrs & DMA_ATTR_MMIO));
+> 	if (unlikely(!capable) || dma_kmalloc_needs_bounce(dev, size, dir)) {
+> 		if (is_swiotlb_active(dev) && !(attrs & DMA_ATTR_MMIO))
+> 			return swiotlb_map(dev, phys, size, dir, attrs);
 > 
-> 	// SAFETY: The tree is valid, and we are passing a pointer to an owned instance of `T`.
-> 	to_result(unsafe {
-> 	    bindings::mtree_insert_range(self.tree.get(), first, last, ptr, gfp.as_raw())
-> 	}).map_err(|err| {
-> 	    // SAFETY: As `mtree_insert_range` failed, it is safe to take back ownership.
-> 	    let value = unsafe { T::from_foreign(ptr) };
-> 	
-> 	    let cause = if err == ENOMEM {
-> 	        InsertErrorKind::AllocError(kernel::alloc::AllocError)
-> 	    } else if err == EEXIST {
-> 	        InsertErrorKind::Occupied
-> 	    } else {
-> 	        InsertErrorKind::InvalidRequest
-> 	    };
-> 	    Err(InsertError { value, cause })
-> 	})
+> 		goto err_overflow;
+> 	}
 > 
-> I think that's a bit cleaner than the above (not compile tested).
+> We shouldn't be checking dma_kmalloc_needs_bounce() on mmio as there
+> is no cache flushing so the "dma safe alignment" for non-coherent DMA
+> does not apply.
+> 
+> Like you say looks good to me, and more of the surrouding code can be
+> pulled in too, no sense in repeating the boolean logic:
+> 
+> 	if (attrs & DMA_ATTR_MMIO) {
+> 		dma_addr = phys;
+> 		if (unlikely(!dma_capable(dev, dma_addr, size, false)))
+> 			goto err_overflow;
+> 	} else {
+> 		dma_addr = phys_to_dma(dev, phys);
+> 		if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
 
-I don't love it. How about a match instead of if/else?
+I tried to reuse same code as much as possible :(
 
-Alice
+> 		    dma_kmalloc_needs_bounce(dev, size, dir)) {
+> 			if (is_swiotlb_active(dev))
+> 				return swiotlb_map(dev, phys, size, dir, attrs);
+> 
+> 			goto err_overflow;
+> 		}
+> 		if (!dev_is_dma_coherent(dev) &&
+> 		    !(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+> 			arch_sync_dma_for_device(phys, size, dir);
+> 	}
+
+Like Jason wrote, but in diff format:
+
+diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
+index 92dbadcd3b2f..3f4792910604 100644
+--- a/kernel/dma/direct.h
++++ b/kernel/dma/direct.h
+@@ -85,7 +85,6 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+                unsigned long attrs)
+ {
+        dma_addr_t dma_addr;
+-       bool capable;
+
+        if (is_swiotlb_force_bounce(dev)) {
+                if (attrs & DMA_ATTR_MMIO)
+@@ -94,17 +93,19 @@ static inline dma_addr_t dma_direct_map_phys(struct device *dev,
+                return swiotlb_map(dev, phys, size, dir, attrs);
+        }
+
+-       if (attrs & DMA_ATTR_MMIO)
++       if (attrs & DMA_ATTR_MMIO) {
+                dma_addr = phys;
+-       else
++               if (unlikely(dma_capable(dev, dma_addr, size, false)))
++                       goto err_overflow;
++       } else {
+                dma_addr = phys_to_dma(dev, phys);
++               if (unlikely(!dma_capable(dev, dma_addr, size, true)) ||
++                   dma_kmalloc_needs_bounce(dev, size, dir)) {
++                       if (is_swiotlb_active(dev))
++                               return swiotlb_map(dev, phys, size, dir, attrs);
+
+-       capable = dma_capable(dev, dma_addr, size, !(attrs & DMA_ATTR_MMIO));
+-       if (unlikely(!capable) || dma_kmalloc_needs_bounce(dev, size, dir)) {
+-               if (is_swiotlb_active(dev) && !(attrs & DMA_ATTR_MMIO))
+-                       return swiotlb_map(dev, phys, size, dir, attrs);
+-
+-               goto err_overflow;
++                       goto err_overflow;
++               }
+        }
+
+        if (!dev_is_dma_coherent(dev) &&
+
+
+I created new tag with fixed code.
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/tag/?h=dma-phys-Sep-2
+
+Thanks
+
+> 
+> Jason
 
