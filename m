@@ -4,178 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A77D0CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FC8ECA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:02:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CC698E0015; Tue,  2 Sep 2025 09:54:48 -0400 (EDT)
+	id 59CE38E000F; Tue,  2 Sep 2025 10:02:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07DD68E0014; Tue,  2 Sep 2025 09:54:48 -0400 (EDT)
+	id 573458E0001; Tue,  2 Sep 2025 10:02:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E87268E0015; Tue,  2 Sep 2025 09:54:47 -0400 (EDT)
+	id 489868E000F; Tue,  2 Sep 2025 10:02:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D660D8E0014
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:54:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B2B4139079
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:54:47 +0000 (UTC)
-X-FDA: 83844455814.19.16DA938
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf29.hostedemail.com (Postfix) with ESMTP id CEEB5120003
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:54:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PWFgYU8k;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RxdH1eOS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IJF9w9R2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TptAsxda;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A6518E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:02:44 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE0AB1186F4
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:02:43 +0000 (UTC)
+X-FDA: 83844475806.04.094A337
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7A241100012
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:02:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=JWe6Bncx
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756821285;
+	s=arc-20220608; t=1756821761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yRncs/XLu3VtQZMRFo34tEIibZeN/NBkeF5ufzYobyA=;
-	b=KyZ7SJkozhJ/us+lSAOXBRtteqvS0Ht39gEdWutxUSTmT6YusTfdw5NiJO+Xi9kfQUuseJ
-	y79BK6N6aYBY3rzTVa3ghSy/5Pm+VMpFLfwE9K6LgvJPCAgTzhoVUlgcJbpEMdEcK1ZWRs
-	mzSaUalzIMqgz4TsVdpBMR1t0N7Y05E=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=PWFgYU8k;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RxdH1eOS;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IJF9w9R2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TptAsxda;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756821285; a=rsa-sha256;
+	bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
+	b=tj56hCt4ZoKSTUkOcxS4pYFy62uoVj5q2NcqAXVXT3cIdwfbk9TD/xMCnbetnJt/5/FEKJ
+	i/lgE8Ksx+JqYAAuXImtBtftrFMKG5DxqE9b1K+/JylJYVzaLm9CVEykrOFivwVw+f+bFY
+	TXkKRYY2iW/JkkqAq/cJy0VLaeu8Gww=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756821761; a=rsa-sha256;
 	cv=none;
-	b=8hISsPo/1xwksXw6KMFJ+EOeknt75PTJyfEjwfdCf4cicdcjrWu66W4C+s3AFGZWF9s+gs
-	kc/XgmY3+jRhXtpG/eC5qtF5w/T/38r7caHrLJWU68p8WdShCduV8Dv9+DTIcysDdjxeSV
-	c/NMbfhRsVZ17eMITOLFOdskngoG17M=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D67B81F38E;
-	Tue,  2 Sep 2025 13:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756821281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yRncs/XLu3VtQZMRFo34tEIibZeN/NBkeF5ufzYobyA=;
-	b=PWFgYU8kH5Z+dLcfPOpJKhlRc39tkcOGWJdcqze/Tm1mxnoGDVcgjmG68PI09U+9cknFo4
-	DFOIMWo2cHZXs5AEU2PwuRiTTqSTHHUKw4emhD/ScHLrMi+iVv0AKW6lv8FiMZ7TinVwp/
-	ZbOkkzIKnJXej+10kHcZKoF1D8LPuwk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756821281;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yRncs/XLu3VtQZMRFo34tEIibZeN/NBkeF5ufzYobyA=;
-	b=RxdH1eOSJurfKL0jgxUhkpVzDwO9klofsqIlT7rKnaUZfIEgFs5VRlAsPMmbn/ehFXwyhV
-	kkQn2kIe4o1bTTAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756821280; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yRncs/XLu3VtQZMRFo34tEIibZeN/NBkeF5ufzYobyA=;
-	b=IJF9w9R29mv9I7xuR2Zm+Y2ajPMwkADuFndDlVdGv7yb1tWGPV2U7qGC+87ZADHWv59jRt
-	/KQ3KpAnRfxaasyiIZThpTQq55kKVwMuJUyZTK7WgIyagtc2+2vmIBgG4DjPKNnU5jwJVo
-	WrTRLa4evqnRf7CmwNmbiTdwEVwIBPI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756821280;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yRncs/XLu3VtQZMRFo34tEIibZeN/NBkeF5ufzYobyA=;
-	b=TptAsxdafq6ovaBAc7LZpm+QSGrrOIee+D1s/1CITGfckhTc+qv76/wZgAZcs88EaDYfKJ
-	HZtwZSywpPpSX9Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B630313882;
-	Tue,  2 Sep 2025 13:54:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8TcmLCD3tmieZQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 02 Sep 2025 13:54:40 +0000
-Message-ID: <68db0611-3ecd-4cd1-8003-285981e21ca3@suse.cz>
-Date: Tue, 2 Sep 2025 15:54:40 +0200
+	b=N6AxNr71VnqB6BbghPnY98SXM8XtXTMzvOKpC3eYKRbT5/bbG05oNU3E8SDSyHjAZktpwQ
+	FVc83CxtXks7Bnz3GoiDMQUtoDCOyskxRNQcg35CQhfvpirPdXzKDawvI0+FMgEoWmmKFz
+	2nT0Fkj0dDyKgmwVbtIOlonekR5lY3E=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=JWe6Bncx;
+	spf=none (imf14.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.48) smtp.mailfrom=brgl@bgdev.pl;
+	dmarc=none
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5607c2f1598so1694171e87.3
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 07:02:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756821759; x=1757426559; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
+        b=JWe6BncxAB3PEV+WMxZQzK/5bgMyPqYihCLSBSi6vWPwg3g1JNLmMNN3q3QMIgUexa
+         Nlf2JAqMLScSu26IP9yf75FPvE/k/62sCJ87OmQ1/uJ+z/THuyzxDOTBNjycajOejD7h
+         vQcZcrYXCi83esxHXMcGXY9VTWnUEKBHdDVhSU2vU2qg4niLsoQN+JwLfpYKOUp77sj7
+         Fe7h9SiS9X4NyEQgLxCNqBUlCGHsV/Zr65ogPX3FEPADZhWdbOxH8hM03KDt/Ae4hOcO
+         pXVEWq/JuszMw5JuCFhd7HnY5ZMKUj3Q4GhCrYLBKe/exO7+8Lx009Ql53xtBovi8RLx
+         Yevw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756821759; x=1757426559;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
+        b=fLn8TdI9tanytDgCPMjfFFgg5FxHsJ4jQjYc9N1IMNnRs3ObB/J5xqVVMNPWnoOo8M
+         DvVZztGB4gUWfdnDsGQ2qoYNh4r8ssv0JBAdUc8b117u07GRj9hHz42mkWxEOo4jLKsz
+         5TSawpbCni6tGYst5FnHzO82geyISDCZFHTs/13K9JuAHr/U9Pr6bVHzfQcV8AJshW/Z
+         +mwV11IxiG6k6DmFoEV8N3uTuZCkoRK45qK2MMuBNZZmweBa4BqFg+vkneQGfQO10oiL
+         jbY+7xi1wNJSyJFyjjzzYT6xTDEWQ2QGHMqTyoe65z+CeByxHyKtW6Vs+7ikADWrdbgf
+         jaFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9PfN3hp4zc8TaWsWiKBeBRAvJT9z2/wmWDt5m3vPlndB8J18PUVnYRlEshHBuGpeogT0FwILIEw==@kvack.org
+X-Gm-Message-State: AOJu0Yw3oBjEwQV+nOAVnW5fys4bfbCYNXSnCi7qutw6cF1bACOgfqSx
+	jBobrHKdLsXMyRJEkt/ZH1fnha3H+SVbo6tsdpwZMoLjHimdPU1tE4mgE7XB5VatuoI/BxWTQn0
+	2VtmK+KauPUvsR8jqLTzbQf+JoFlborqZyUgGORAPzw==
+X-Gm-Gg: ASbGncsv56+qW2CxHiQyJN+nzoQI2TvFgA4ZIAEfeay8ysLBi5IbhGdo8alLg9vJ1z4
+	6BTr94U10OpdANLuSOlPXue4aFC4W61Q9jtca7z4MRUcLZ+1uGPVNX8zVqTysDgmvEXMzGj8SXh
+	loW0qoFZS6TiJmg4DwstkKqPcemfGgT2iWQDVwAewUMzRuZweAgyfAYsvx2T8ncMjQZKV855QIc
+	9+YG38oehg4/n0G30UB406/GfHNhH8vBlTz4PkssI4G2GbC7g==
+X-Google-Smtp-Source: AGHT+IF0XxTo4Eof/cAnsUmsXyl7FaRgZjHqhfNse8z4FzsrSjUbnY+JobcnARjelIxZIYceGk+U5xWeRaOHkRoNgZc=
+X-Received: by 2002:a05:6512:1289:b0:55f:3f25:f03d with SMTP id
+ 2adb3069b0e04-55f708dbc89mr4083265e87.32.1756821758848; Tue, 02 Sep 2025
+ 07:02:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: show_mem: show number of zspages in
- show_free_areas
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
- Chengming Zhou <chengming.zhou@linux.dev>, SeongJae Park <sj@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com
-References: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CEEB5120003
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
+ <aLbrz5DYS5Yxx_UE@smile.fi.intel.com> <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
+ <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
+In-Reply-To: <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 2 Sep 2025 16:02:27 +0200
+X-Gm-Features: Ac12FXzmmMVa4i5hYh_JJ6GZvRRv05y-_-Nk_APJiumjkhCqONHKECafTZ1ySu4
+Message-ID: <CAMRc=Mdp2djgGbgu_uwLSkrtRPomAU=6-SRdzCdSbrHWzS2c2A@mail.gmail.com>
+Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of pinmux_ops::get_function_name()
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: dm1phz5mx7b1w9qipdz1cxeo84kgmmop
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756821284-498115
-X-HE-Meta: U2FsdGVkX1/DPj0zbwN7KhSVYRF71AINLhOVXWrYfi7IPfmo/e7PwoX3QsEyIdJNSL9EHFZgci1OMnhCZCDtXbOXmvAHqS9GBnNRKjQ+gBo1rMUJLJIcIyrrzXw/kKLAnM3zkDsaXnQWsW8K7u/z3z1p5MCFMWsl5bOoGK8gynRth4kTWoPVYBnb7LWiWG2rmXT/3NMOPdAHr8DD7/XZi5VyAg+SJSbB237VXzzWwtYB3DlTtyFasDgrP+WuKQgeBtifC5gVRjv9A9lQrlYc92wQHynE2oALrqQDl64QlCf9gy5sU19wyt5Y480Ur5DGrxTjySs+Ug6RrcW+33oNJyPnbabhjpEgrR/vwfm8bttM1NhlT7zAu6aEVUznmRb/VI6oujrxWCtz3s52IPbs5pXfdBtS7CyPhI1UCEE4J/lRXqbkRa8upoU6C5p1KNTZFqv9XfHAGjE1Br9QhriWL6vMWOoqlNkqb46/Oowx1yXE8HOsk9WsHDxQc6itr7ELDUvH2EqMU3o7jIPFzpp5EFRHfj12+OVy1ujMNsAa+HgDaKji8q+w6nsMfWIIJMyW5mOiWzeTOAt+aiRUMyFPVN6ks+N7JjgoUMH+/ooMBtMAMzKrIQgRvvFkPd2cEKiRLs3LbH24almpsQ1QybgY5o+GCgOzsGEbuYMpoZOKhoEaI2yKgk6hZMO1gLs160LHAkN3X4b8FQDpPS+L0kT3xQK5wKo4QQLTRokVV3ADgPn0wf17aXnTDGxHsgru3MtnVXWNr7eYmrZsUhQSr3oEWLmbrQN1n5yR8Iaa58ExdbVrbpSMYfHAQtDqQk7NISCLnleO81KE6z9bn863SMXk708xOozCV1AmUh3zmMrOGmHyTfVLdNMES5iM2kZSYXG5ZfrqL2xAESI11pey3/GtLANwCEi4MdELiC3/GlNrfatSfRkgpDuhOxhM5ZXNH3gOKJeTdPuJA7Q6ydSLbg1
- bb3JTKde
- 3MJzLXdZ7qKK0WcFp+m9aK5stq1FVQOxUxcGLTLnJHoi6AHNs4OeJNIg674MsY9i5e+1vX9OWNZtRQplVifbx8sUWXWe+cHXuhLIjsex++/guF/51x5wKjwwNhj+R+BOFp77qnYwbmE48sJdR6/9+2R5SOInL/Iau+5LfSCz+04KQJ1gmW+JP/DxCFG4gbChe1mUsPoEXS77RR9LF9AeDUveXcfTwz4sax6+kPOa19D7OujPs8rBQNrcjv1gjJss4mhphgvVjccxL5xI/98W4bkORVng6eldY59+1d1Tz0GKWz5MlQ/zutQTfwZpKqPJtVu8HcPT6F0N8tH1L7K4HfV4QkPJ9v+NR7JULmmpNNfCzphjExRfQU/zLDg5B+mVSKN0XXRjyBVvb2PE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7A241100012
+X-Stat-Signature: poqxtmd3geh3bgyo8jw7z1hohsxokfns
+X-HE-Tag: 1756821761-147085
+X-HE-Meta: U2FsdGVkX1+B+lhitkNl4wcolo2M7/9x12gUiwJ2IG+050Qx1f6n3JrKNsaWk9gC1vupqij/ZFN5lkjld5XZZqcxZY/TGqVXbmN4M3h0QWunVllR4UYijtgmpmJWB9RsCatMEsgBCNgYHP3WKZ5reb1070/Okcy4ya0x4kaPF89I3OeV2q4Sl91l8ZXMlSz27w/iLfxrfZ0pXuatb+fYGioJkr4hs3i3qaAfFj5nTiOzryW9Tid0NY6jkLVUV3yXfLQNImC1ZbcQ/7piAUSzeDczGoGMjIIhzWl0vqoY+vTD6c/PzgG+AVg1svA5WfjMREZp7F3cfoeqB9E/135TEF/CyZrl7PNlqUcQWTLIJjdKtJmqY3thFsq9ri4TdVaieCoONpnrqDPvoNvINkOTGZpGkfLJ4ArfeOzYKWjjhY5qfZophWhwS+Tn6xo8Lo27jvirDPWvv9Dfuwwg0v0+sxwgF/O1EUEjI0qcU2Ndca0DyqQsxHg5+VsqulMLTTDidS7hyNst6mspnIyiGFdNcVCtiOCMY+y/1ca1rXTBHSW7q2d/KvoCcwzgx0pm0F/8RL7op4i37PTpXVCWXmUC6tERuiU7Q0D0Zn2SYlmfdmXedi9xhHUtFIFbU35Jeo2omcKMuuMFvIi35URgngbz9zdg8L8Y8uAKGMo2QKOJnrYWyojQ5JqY1+1a0XVZWck5IJxexmQip+Kbval0TqDrYazfhn/vkHykwAIovsWclkf9r8SVEi//hQKflyhTJ+yVPbYR0LT/MSxQfW64wkL+tuuXXcml3L1yO7NIvpZvKp499Y/sXeQYatS5xKnCDgRvAq1rMnBygTHLm9vYJrEEJ+QzRGXLx7EJhSUArh172J5TKQZkb3ZaA11bbNYyxaPNVXeGvfkVSvBwWGx/ABY/3SY8Oo2RFZgcltdnNNuCMDMFn0Nqr7B2GUi/Q4mMWtBArr1VVmJ14HNEqZifOAH
+ ZkW2duWq
+ 7l9OuRbu4anL2xcxq2cCnPbDoXKpqHzz0R+ou4i5vo54gb3PTBGp5R6w4hhbfeyrCiVYMkA9R8gU2W4b4PVPSd1VOt1EjYtHP8aZjjAGa9xKg0RZtwcBx36J7xMiPbwWW60x2WQRzIeXhlbgR4Iin6fi4Ef+bKVpUi2ZrYBLLrOibT2UYnuKOvnhArPIP89V/aRkRJDHSxbiLMWjzZ6Bk6gyLQv3W3DJen2Z7MFyH5ZxV5H0CBPiMXoeMTmApWKKsyZJJArjdJgpqZVeUFVRmuNVz3g7IXZ1Lt9/TJdwPbkKVjOlEuVhB0bqyyLh+vL4zIXpo1z9ydfoa3cZL0rgXe/W0diVNol4Lbqsi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,56 +139,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/2/25 14:49, Thadeu Lima de Souza Cascardo wrote:
-> When OOM is triggered, it will show where the pages might be for each zone.
-> When using zram or zswap, it might look like lots of pages are missing.
-> After this patch, zspages are shown as below.
-> 
-> [   48.792859] Node 0 DMA free:2812kB boost:0kB min:60kB low:72kB high:84kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB zspages:11160kB present:15992kB managed:15360kB mlocked:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
-> [   48.792962] lowmem_reserve[]: 0 956 956 956 956
-> [   48.792988] Node 0 DMA32 free:3512kB boost:0kB min:3912kB low:4888kB high:5864kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:28kB active_file:8kB inactive_file:16kB unevictable:0kB writepending:0kB zspages:916780kB present:1032064kB managed:978944kB mlocked:0kB bounce:0kB free_pcp:500kB local_pcp:248kB free_cma:0kB
-> [   48.793118] lowmem_reserve[]: 0 0 0 0 0
-> 
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+On Tue, Sep 2, 2025 at 3:50=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@intel.com> wrote:
+>
+> On Tue, Sep 02, 2025 at 03:29:31PM +0200, Bartosz Golaszewski wrote:
+> > On Tue, Sep 2, 2025 at 3:06=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@intel.com> wrote:
+> > > On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
+> > > >
+> > > > While the API contract in docs doesn't specify it explicitly,
+> > >
+> > > So, why not to amend the doc at the same time?
+> >
+> > Because this series is already big as is. That would be another commit
+> > that can be separate.
+>
+> I meant _in the same_ patch.
+>
+> > > > the generic implementation of the get_function_name() callback from=
+ struct
+> > > > pinmux_ops - pinmux_generic_get_function_name() - can fail and retu=
+rn
+> > > > NULL. This is already checked in pinmux_check_ops() so add a simila=
+r
+> > > > check in pinmux_func_name_to_selector() instead of passing the retu=
+rned
+> > > > pointer right down to strcmp() where the NULL can get dereferenced.=
+ This
+> > > > is normal operation when adding new pinfunctions.
+>
+> > > Fixes?
+> >
+> > This has always been like that.
+> >
+> > > Reported?
+> >
+> > I mean, technically Mark Brown reported my previous patch failing but
+> > I don't think we do this if we're still within the same series just
+> > another iteration?
+> >
+> > > Closes?
+> >
+> > Ditto.
+>
+> I meant that this fixes a potential issue disregard to your series, right=
+?
+>
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+No, as long as the imx driver keeps putting stuff into the pin
+function radix tree directly, this cannot happen. The issue was
+triggered by the discrepancy between the number of added selectors and
+the hardcoded number of functions (we started at 0 which was not in
+the radix tree and crashed before we got to 1).
 
-> ---
-> v2:
-> - fix build when CONFIG_ZSMALLOC is not enabled
-> ---
->  mm/show_mem.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/mm/show_mem.c b/mm/show_mem.c
-> index 41999e94a56d623726ea92f3f38785e8b218afe5..c563d9adfa87765a8736e91c1f68d824b03eaea8 100644
-> --- a/mm/show_mem.c
-> +++ b/mm/show_mem.c
-> @@ -310,6 +310,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
->  			" inactive_file:%lukB"
->  			" unevictable:%lukB"
->  			" writepending:%lukB"
-> +			" zspages:%lukB"
->  			" present:%lukB"
->  			" managed:%lukB"
->  			" mlocked:%lukB"
-> @@ -332,6 +333,11 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
->  			K(zone_page_state(zone, NR_ZONE_INACTIVE_FILE)),
->  			K(zone_page_state(zone, NR_ZONE_UNEVICTABLE)),
->  			K(zone_page_state(zone, NR_ZONE_WRITE_PENDING)),
-> +#if IS_ENABLED(CONFIG_ZSMALLOC)
-> +			K(zone_page_state(zone, NR_ZSPAGES)),
-> +#else
-> +			0UL,
-> +#endif
->  			K(zone->present_pages),
->  			K(zone_managed_pages(zone)),
->  			K(zone_page_state(zone, NR_MLOCK)),
-> 
-> ---
-> base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
-> change-id: 20250902-show_mem_zspages-d090ea0bd1d4
-> 
-> Best regards,
-
+Bart
 
