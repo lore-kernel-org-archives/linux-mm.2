@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A81B7CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:30:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3268BCA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 13:32:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 138E68E000C; Tue,  2 Sep 2025 09:30:55 -0400 (EDT)
+	id 92B738E000D; Tue,  2 Sep 2025 09:32:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C2958E0002; Tue,  2 Sep 2025 09:30:55 -0400 (EDT)
+	id 903138E0002; Tue,  2 Sep 2025 09:32:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1AB18E000C; Tue,  2 Sep 2025 09:30:54 -0400 (EDT)
+	id 818D88E000D; Tue,  2 Sep 2025 09:32:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E09F18E0002
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:30:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8F5FD14016D
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:30:54 +0000 (UTC)
-X-FDA: 83844395628.14.0507F9F
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 91A4080017
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:30:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=zgf8kL7z
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756819852; a=rsa-sha256;
-	cv=none;
-	b=z5F+veiK/GcKf5kvRWWeoPVT2vu3lbkWpufcXUWWU2wk0yI9eEdmRVP0K0FCQNn8Z0X9Qs
-	Q95IgzuoiYOPvG5zl/ucVhQNLN7P+1wvYEfPjjG2jOABemW4aWtUqEG6L5TO4OZdD9j7Yv
-	ALL6hXIVrVI0QJXVS0Pvfm93g72haq4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=zgf8kL7z;
-	dmarc=none;
-	spf=none (imf30.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.42) smtp.mailfrom=brgl@bgdev.pl
+	by kanga.kvack.org (Postfix) with ESMTP id 71E768E0002
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 09:32:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3754DB6540
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:32:35 +0000 (UTC)
+X-FDA: 83844399870.30.7236F9A
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 43A522000B
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 13:32:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="O/O2p4ZQ"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756819852;
+	s=arc-20220608; t=1756819953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZhR5vC+b5jGByrsGl+I17mSTr+5gAmJbDumtIuc2ZA=;
-	b=nX6WY4JeLETWXqkEMG3TTg2uPRpsQC6FtFa0n5H3tZk4JD04oMpRbyS79CjeEHnLrNawgm
-	2Wyj42UyKXGiQ7y3FBp56kEuwPe1y5taSTNPH7zvca3fgZaOO/5Zgk2WnWWLg8dyxJ1nS+
-	38M7w64Iph+NLCjGBgzF37DVkv3JkR0=
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55f6507bd53so5138243e87.3
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 06:30:52 -0700 (PDT)
+	bh=lnoH1+ZsxBYCzbeJtuEiwBsgC/lAs0DmEqE9uy46sWE=;
+	b=1SCyBIqzBsGbL9jutK5gLArRTWHXKHVtXsTIki7cpGXR0uaNlMNgiTHVKx58eVcRxClCg4
+	w0rLLdcFpfqFwm5TSIXeO6Q07dLH7Tyvo2CQ93tk1+uDOQbjZnR2N1jeCAnjDwJqXVinJ5
+	Y6No8a18uGASV0KlMSLmHtA/99We0gA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b="O/O2p4ZQ";
+	spf=none (imf13.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.50) smtp.mailfrom=brgl@bgdev.pl;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756819953; a=rsa-sha256;
+	cv=none;
+	b=Z010mhHaNSfXiq6K5U9BPvj40vq3WKuqI0Fe8ppHnIutMtcagOrsaAY9Ikm3+8aLavMzvf
+	sxA6mV7/SHef3yy6EkhTXQebhtNs4RxpMsRw69y9/ixsD7c9DG1uAuaU+2d5c4xHCJpYP/
+	enAv2nLqawkJudTXNE2FotRjHs0V7Ng=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55f6507bd53so5140376e87.3
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 06:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756819851; x=1757424651; darn=kvack.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756819951; x=1757424751; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XZhR5vC+b5jGByrsGl+I17mSTr+5gAmJbDumtIuc2ZA=;
-        b=zgf8kL7zbLX46IU28jhhsckM06HgUISHMie+m693xB50YSQCUrShMOcJsMi/VgIbWX
-         cycfcN2xktbQVqyrJj9wGLu+Ma2aekTJ17++UUQGwn6eB2nYsLdzN+DatlfndqudIqco
-         Jwm1I6v805eRTd9MTyyZfE5dii33Y6Q38oJL2Xi8F7NdYAOJhP3nl+h+ws2WFXJg8NxL
-         4tCKHBBVhPHGyZkfpQfH4Yay8SNSfcRp8mVyBz2Gfb6Yq5XqnGjXG0/C4FFObjHAbyY8
-         1OY9ILFprKWl/xON8DiErA1xylMpzxRDAHODWq2ormcvUsQnCBM3GzEKCbQeSdGsSWBK
-         uEOA==
+        bh=lnoH1+ZsxBYCzbeJtuEiwBsgC/lAs0DmEqE9uy46sWE=;
+        b=O/O2p4ZQdTEmhT1fOZCifyBo94ZKTf1T1qI40z/ZPv65KdRHAgdHdClNulNNvICn9t
+         5t3pkgB5ARhNm6xND3I82bFUjX98L/Zbz9jz/8Od/BoNjNx79AEGJEuKzu0kMnhjRVgt
+         qUChbKQohR1jrshaFkixeZ214Dn91FLYgIiWN5EPziO+3VvIeWBb5xVM46pSkL9yhIbt
+         TskwEgG1A//id5/1cYbS2avb2UvNOka3lwAPjLVoIA9JzEwMUfHnSicU5MR4q8eAen9/
+         CyL+QrL/qqSoz7c+uwa23yU9z4a66jAY1m1hOd1GBqrYAn9wKcmRsBqsPyIYWQ3Yp2Ey
+         glnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756819851; x=1757424651;
+        d=1e100.net; s=20230601; t=1756819951; x=1757424751;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XZhR5vC+b5jGByrsGl+I17mSTr+5gAmJbDumtIuc2ZA=;
-        b=cElueE+UCDitz1MpvBz+iRN/h8AOxvb9P3qiM9g9DheEQF7hBmIxNpGd1Gy18pXrtb
-         oGFa70GuExOi0WBSbD5ZXsSSLABAwhskL4qP1nvX9wMxDgkEEW/eu+1VJQ5Y0U3HPxeL
-         uzZaRmCmkrnnJX6YSXvN0qg2+XAVPgYOhOaF+3YX6EUh2x4NKLJJvPppXttVPG0mZeJL
-         zcXcwJGqeKZ04+9VsgOxHMqlvT5MyQK0xUS6yKgc1x4EftWlG2vfDMUbM+KHookr8FAM
-         4trpPxuv+forEXPDln9e7BrtIEMhvkB4jPe8/DnvgdUWxGgbOI+Q9Cb9vvdKMDfzKNwY
-         fy1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXlA9gcCKvS8xoVgielgEGRukqTfxlBah1LgHD9P9qBu6Qyy0TqRkSnlANml43qHUp0Sr0VLAHv6Q==@kvack.org
-X-Gm-Message-State: AOJu0YytDzp1oJ2cV+wQlKcyx+ooR6OXW8vA4Gd2ngEQfG+PeSeLoLn0
-	qhT7A0LEDORosNz65FmC4X8VKHriykZraLSKzewhDO9E1+nlLwf+dzb7vq/cyRvpbDkaaCNKVYv
-	0lFB7INmCgE/bQ/Djrxyg7Dm3DmSOtItvnw+InHkyfA==
-X-Gm-Gg: ASbGncuFuWnGz9S+U+m1TBw96jtQ2cNQhuJw92sWnxUPZWMZ2Wx1voyqdlSodFBWijP
-	z/KMwNWLDQO5fmCpG77sqeNYUwtweoCzik5rtY8/Rm7pj3SI4boFuTeb0YpV0bA6UEEEQh1WEYn
-	qrl7timvOSTSc1+TdQcqC7UYUIFJD++rFiWHOU8cCCvVy5sEUce3911IaXxdQq8lb6GaIfWByZy
-	o1gopHI9IIfWy1wRNTclrjl/ndtTao5Tp5jM34=
-X-Google-Smtp-Source: AGHT+IETXrXrPtCI9kHaUsOk3PiYBtzLQDyO5BpniBUPpd4tNEA5zWWpm33Zl8pshGOfywjYNp9sGHw+kB/41Th8Wwg=
-X-Received: by 2002:a05:6512:2522:b0:55f:4429:15a6 with SMTP id
- 2adb3069b0e04-55f70967db8mr4302395e87.48.1756819849325; Tue, 02 Sep 2025
- 06:30:49 -0700 (PDT)
+        bh=lnoH1+ZsxBYCzbeJtuEiwBsgC/lAs0DmEqE9uy46sWE=;
+        b=UvFFeoHNl27hYQDiSzyRwQ09J8gqY0bg7KlO+9RvsluGb4LCPowVQ4S2nvr7+/kgj0
+         z1Obo1tgpvcyu3rv6uOTf86bf+hw2uaOvAXft/jlKgFFsLBmYWEldJuL4K5VNN9sNCvw
+         mv3vn+WPg8N0mtsMIQ0KOgkg0qM2SZMJBzt4h81VBraaUq2Wc5+GD8xnEDWQEex/xP5d
+         aFzKEHe9k7GuZwZPb9p1bpessnKwhEG6+kwSxHeDQl6low0U8UD/UYzn4pt4qZeJEwjm
+         AdJPPk+HYH17ugG7I5ojt2xGl60drh7hB0EVJf+UphjaCKLDzLuSjJJYcjbhSUeMIwU8
+         OF6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUWX8JMEBm9FuayVcvWSv5i36LwDBld3klDUp36VEj8KWyVkRnC1POCG1o7ZVls1ZUSETZscDkyhg==@kvack.org
+X-Gm-Message-State: AOJu0YzAp1kgQA6oDCevS4Dt8Fz8hNg+wzrSkwPDWVvJUQKdLzmVrb6V
+	Jgi3W6J2GIrE+44NIl6HtQ33pEBJIc3UGCshF79MGM+D3j79XfMKAQ6VzoYOrVsfRwO4ajCo5pY
+	Xl0PGYMHmwhiRdfo8DgjYPmJEefGYH0r3LJdQ93XSOw==
+X-Gm-Gg: ASbGncslXqxWnvZ+6HCPUu6q8xV0JLTxtVMcSnQPsDWmXEpvOjmsHqndWStFAdnL3G2
+	9fgVtc3Z/JRISw69HfNH8T31cUz2oFsNKW+7Jv7t4n/yT21bJ0Ru1aAy7mwfqOR0PvxP4A3oKql
+	uuG5qFTSpQKQlKLuf21v68SX+T8cZwlJFXOb0vdLn+7qwBiuo/e79SdPA9sJ86av25cqjmf9E7+
+	JeHgB87al+Jg9Xmu4/BbhJQj2wUL7X8r7G2mSQ=
+X-Google-Smtp-Source: AGHT+IHbC8qI4AC5+0YZNljCnPe19ZYxRaps+B2CcXld1o2mGtDbXzoveQoI0IeEbDNxVlYlEUG/+tn7nGWqsyLzmeE=
+X-Received: by 2002:a05:6512:3ca9:b0:55f:55ad:2263 with SMTP id
+ 2adb3069b0e04-55f708b6c5bmr4286185e87.16.1756819949961; Tue, 02 Sep 2025
+ 06:32:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-8-bb091daedc52@linaro.org> <aLbsr4s7nfvCKLnd@smile.fi.intel.com>
-In-Reply-To: <aLbsr4s7nfvCKLnd@smile.fi.intel.com>
+ <20250902-pinctrl-gpio-pinfuncs-v7-12-bb091daedc52@linaro.org> <aLbt2euqYQM5xXuZ@smile.fi.intel.com>
+In-Reply-To: <aLbt2euqYQM5xXuZ@smile.fi.intel.com>
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 2 Sep 2025 15:30:38 +0200
-X-Gm-Features: Ac12FXwa7a499RP9JirYFVy7SbY2WfOVu2ugSGxCUkawbutvsj6hahPNBLiFvFg
-Message-ID: <CAMRc=MfgXac4kRgeiw+SkNUZS_ThoX5qcXeRX5bPWm-t3JQ9Xg@mail.gmail.com>
-Subject: Re: [PATCH v7 08/16] pinctrl: keembay: release allocated memory in
- detach path
+Date: Tue, 2 Sep 2025 15:32:18 +0200
+X-Gm-Features: Ac12FXySKFnql5rdsxfRBFF-2EejY2a696V_6zV_jaWq_9WtZl4uQNoHEj4w7YY
+Message-ID: <CAMRc=Mdnp8T46Gi_xZintgc9AZGCGiRPYc9mR32Xwodxy7DLqw@mail.gmail.com>
+Subject: Re: [PATCH v7 12/16] pinctrl: qcom: use generic pin function helpers
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
@@ -119,17 +118,18 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.
 	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
 	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
 	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 43A522000B
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 91A4080017
-X-Stat-Signature: zxr8crujcftxwpiijesf6dqx579crx16
-X-HE-Tag: 1756819852-822883
-X-HE-Meta: U2FsdGVkX1+u7Xu2vBs0HHpLbUowmjtQ7yFLqbQcWND1s3hp1HLVlJDqX2QtTmiZ1i5JUZPHb8eKSPsYkf89hWw/NCYWyPUcofl6JJ//YDHTzE90heVpJm+UUR6KI4VeumOEjv6L8SwhWrp1FQpXrMapACaLg4s6sy9lbgetKVdOxc22x4kw2dNiQ9IklGHjpJq5vpevdx4fml8/1ZzmxqwlEgNXppUQnWqLqJ8RvQMHyjMSqvfcmGepmbkdIb8V7K34dte+/ej2NBjoCyOpUiT6QaPhBmY+kpULyScUVKBhPlU1xIbgiSRaye2u0oXJBS0S81W1aiC7f6gZgicRPUOQcl0MwKm6n5NOoONf7aCrcNJGCkxHeIqVXyQXwSFvofMKVILPoL6xuCEusYdPjuRCBZHGyQVeor7wb8k8/2ozgng5fC7ibTL5VLaygy3XbFw033ihBZajaH+BsZDMOQuFHp8eDBU1+sK+KIV9XxjNF9fLVNFCkA+nwGB/dCfM0phts1MuUX+7ksnv4vag9zLzDeAlNs1THEt+RQwJzw2Mz4x4A5LNWDH9O2BX//VlJACAugbpb32xe4AjEB5rpvDbJRSyOXmwNrMAz1hJL7gsYBiOwAeKcCzW99vAKLpeYI0YbBn1GZYgnlIJ0W5ZaZF70n9/zaia0SXRJkcVVgAFiShGShna5E6ZqD/dRX5Eg6LjK6oA1C+m94H7/CZwDCrvu10MglIzEVhCbpvuUWNYh0VNoRShulzF02TS0Cd7WdGdNK7IcKr791FbvLmRVE6cSPJQ3H6xWjS9sOPE9C9mRVHtVvjN7eySZ+PSTPSf7a0S9TezAZ5Bir0pk5Ais2mbUhCcgzgiQjk86l7cNL/7YJw3XuR0HzD/MjnMTkVOEHcUuj4lr5OQE79XcH9Kvt9Gl976zT7PMRAzi99DgklsMnp7ZRjcXbhr8Hjwdnjim2LlDuof7cRDG0S1JN0
- YlBQdjhb
- dbj1SyVQO697RrXu+sNx989w7vLl3gkqbiweK1EI9DhNK0xmQf/GUP2VNn/mbMD2uq5jQfx+HH59yx3LwqjOdO61eXh5ubo7jc7iRzsy3SVNBf8/n9cNgI+wmU0MF1+2gSSihcmwTOdmaU8pbK26ijg2ZlChxnVedqlSbgKwt/7J58yUYZpngBrSXv1BHr9nhqDphhxPTwzoHM45vXInZ+Yzle2ZjmBM8Hq5TqERAzV/O4chd++c9tO7Z4Krf1KkLLPu4LDP7LR+5WhJNXFx6ST4Y7gyh3O6f+n19llqnWEklCPUYVamMF99i+vPVV3inhOTOPES2rQuJTsNertsNjgYX7Ynx93Pcyjr1ODOUPuEtj3g=
+X-Stat-Signature: snccxharfnq8r7pz43u51bbzdxia6fxs
+X-HE-Tag: 1756819952-747093
+X-HE-Meta: U2FsdGVkX1/7AsjtQgmSC2S+SH3Jz6A6xS0ufy3T/jcpnT5j0mlo6rerOa+zXiw/4J1XjQVacSSVLETrIKVL1mEUBQ6QRi6ts8Ag43Bx/1ndFltRsN1ce3IIq4gDqhaU73V5SQQl46RxqfPGcaBCmervvkcefj5973InbCWZ1mZpZGluTmTOpoO04wPFxBVK+XUo+OcAODO7SOtuQPe4vwIjwDMNrqI4qD8sZZ3NVgpUt4TnGo6ZlBzakMwVarfa6yoAHJOPGCihxU70XT0vger+o1xDGugeTwT7UICY1wE113IryBu1DY81t5yfJUVUmWJq7D4+/wxO1qqVsaYQ+DzYFcd4bTelwCXUrmWyWkNl/FMNPpnJyDxQ9xVqj7UjOKqa2UxJ6Z44tv4vh8tYUh2PMNUTLin+opTMr2dnc1wPkEVPH+03F4R484531fYx1lRRb8OOrMhGT5PU/XGZTf7KQBCteBR09O/6/Q776HiPJFQ1kl0yowGM81wulnrDPSIZGdIxlBgZcfiPbF1vrjOGDVgqSKbPECvIbvIuZ19L8Ov4s9ZWt+npKpI3VybSOXnKXyQLDrJPpa+zOEI0zteWFE9eyoFdPVloccqBGUzGafL4fEOp821NwGhtfxMjJIAmZqOceag228JQUyJn2U6cFVbRPgicgDaeh7G13HytY97yom09AiTfTdIC6hisw7Eyyv2+u94MJsaq/OmqPvuURikjFQ0vGcXI5Zv2FO87gx0m+xJ0ZqvUob+kOM32W6i+TIfez4hNZl34IMt+qSe19Z90mJBz+XxPq6SZLjF1Lorx1hDjFO15XQz8+KowFk1Dnyv5FnaDScO/0/9lwJx/Pv6ZOfwXsACjbvJXqnPYoUidcPQArGBOXUQW62NS0eZOliv8qGLR379HMhqGWnEww+f/eufeR5M0I0S2Q6OteMoRlVO7WKNovJaYq6zC2hBqVfn1cBkz2ze/inY
+ DmpDvSTV
+ 1XCR2F0o8C+l0vFKMKD2iW09Gmat75Rjqo6D6mrbVkJUztsIx+BNxEThvloijWitfjb1cmWVPtRzx4W4ok9u+jXAcxcpiZ3pgvGXFUhFImjOa5Aw43Rv7odtozEctmZ8mLrIpqfDZ25ja6rNyLZsFTPMKMiFvOpBwF7zPq7zzrICMOfoTsc6ClfySiWoBaW3JJSnLH5YOHxIwzSIar4qR6uZinG86la36bEqoYnGQhJphINQzdKvTmBR6mCbtH42J0KwUufTpFpk3T0+MgunAOm5XXfnEydh6OzA4ec/A8SPDGmA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,55 +138,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 2, 2025 at 3:10=E2=80=AFPM Andy Shevchenko
+On Tue, Sep 2, 2025 at 3:15=E2=80=AFPM Andy Shevchenko
 <andriy.shevchenko@intel.com> wrote:
 >
-> On Tue, Sep 02, 2025 at 01:59:17PM +0200, Bartosz Golaszewski wrote:
+> On Tue, Sep 02, 2025 at 01:59:21PM +0200, Bartosz Golaszewski wrote:
 > >
-> > Unlike all the other allocations in this driver, the memory for storing
-> > the pin function descriptions allocated with kcalloc() and later resize=
-d
-> > with krealloc() is never freed. Use devres like elsewhere to handle
-> > that. While at it - replace krealloc() with more suitable
-> > devm_krealloc_array().
->
-> With that in mind...
->
-> > Note: the logic in this module is pretty convoluted and could probably
-> > use some revisiting, we should probably be able to calculate the exact
-> > amount of memory needed in advance or even skip the allocation
-> > altogether and just add each function to the radix tree separately.
+> > With the pinmux core no longer duplicating memory used to store the
+> > struct pinfunction objects in .rodata, we can now use the existing
+> > infrastructure for storing and looking up pin functions in qualcomm
+> > drivers. Remove hand-crafted callbacks.
 >
 > ...
 >
-> > Tested-by: Neil Armstrong <neil.armstrong@linaro.org>
+> > +     for (i =3D 0; i < soc_data->nfunctions; i++) {
+> > +             func =3D &soc_data->functions[i];
+> > +
+> > +             ret =3D pinmux_generic_add_pinfunction(pctrl->pctrl, func=
+, NULL);
+> > +             if (ret < 0)
 >
+> Why not simply
+>
+>                 if (ret)
+>
+> > +                     return ret;
+> > +     }
 
-Ah, I just ran b4 trailers -u and didn't check the result. :(
-
-> This tag is not applicable to all patches, I do not believe this has been
-> tested.
->
-> ...
->
-> > -     keembay_funcs =3D kcalloc(kpc->npins * 8, sizeof(*keembay_funcs),=
- GFP_KERNEL);
-> > +     keembay_funcs =3D devm_kcalloc(kpc->dev, kpc->npins * 8,
->
-> ...switching to size_mul() also adds more robustness against too big npin=
-s
-> values.
->
-
-Eh... ok, if there'll be a v8.
+Because it returns a possibly positive selector number.
 
 Bart
-
-> > +                                  sizeof(*keembay_funcs), GFP_KERNEL);
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
 
