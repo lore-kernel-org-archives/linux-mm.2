@@ -4,169 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 048DDCA1007
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7F05CA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 20:10:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63AE08E000D; Tue,  2 Sep 2025 16:09:57 -0400 (EDT)
+	id 134AC8E000E; Tue,  2 Sep 2025 16:10:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EBAE8E0001; Tue,  2 Sep 2025 16:09:57 -0400 (EDT)
+	id 10B608E0001; Tue,  2 Sep 2025 16:10:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 501868E000D; Tue,  2 Sep 2025 16:09:57 -0400 (EDT)
+	id 0482A8E000E; Tue,  2 Sep 2025 16:10:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FB358E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:09:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E29401603AA
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:09:56 +0000 (UTC)
-X-FDA: 83845401192.18.348AAC8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 91B0920011
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:09:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MywhPdyD;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E7CAB8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 16:10:45 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BA77D119B1F
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:10:45 +0000 (UTC)
+X-FDA: 83845403250.08.FADB983
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E53A540009
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 20:10:42 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Asqa15kJ;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756843794;
+	s=arc-20220608; t=1756843843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yItT2cQsaw/fbz2dDlIsrigUmbNJq/0D5dgv554K35s=;
-	b=gOtfpawvnf8PezBDfT6XZS0Fsjz5+H5X1BQUderM9TGBJvros5v1Hcd53ArEDalSGycoSl
-	km/naKNzob5ve+od4uItmwSCiTpFuis+XTWAgTa/babq6zEvbnEaflxXBUlVZOtW7NwwZN
-	Uix4yWWDIZUacpPCGqgofuCEE3dB5j8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=MywhPdyD;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756843794; a=rsa-sha256;
+	bh=TvGIsd/PEWRl4fnfgopJg9dmr0evm5GCYMMtcvV/vaI=;
+	b=tn6Pmq/zz24q01U/LtComS4pI6sJz4CnweGOwi+cWKAD1qBD103fPE+VUQpzql7dxzy7sp
+	T8AlLiz3yb6e7334rrrE50uDIF7ktHefUd0X9WbntT1XNQepk+2OaxRW184CjYC3hNBx1B
+	/QZIrT2mlLHALvYunfP0zkTsLyCNZZU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756843843; a=rsa-sha256;
 	cv=none;
-	b=GyoC9U5MOPUNMS4BjjKA2Nt+Tpqk/bS/QPg6BV1o1/J4aXTdLkACj/1lBdU+JC1ZIVfn44
-	4VUyRtNlUcGJB11Xxff21Tu0RGdvMx2gSVBKJ7yAN0g7iomahXjAhZwAAcLl498wkxJAqz
-	/9695EGwVrscJWklRylnDUm4zJncuV8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756843794;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yItT2cQsaw/fbz2dDlIsrigUmbNJq/0D5dgv554K35s=;
-	b=MywhPdyDL3rnSQ0QJVMGY4L3KLEHtK85kKFdt1lF2A7MOp9RKQf5J4dJrXNWxSOLWA5IA4
-	6MXSl+CERCQOq+GXiMK+qcv5xOtxosaQqfZX1WkStizGq8OTaDJZFQGutEMIk1Smd6+fTe
-	mk/sMLb6mmhZBHAnBXIQDxxV3+oR/Cs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-490-WhKNSmXlPTiId6GCNEnsqA-1; Tue, 02 Sep 2025 16:09:52 -0400
-X-MC-Unique: WhKNSmXlPTiId6GCNEnsqA-1
-X-Mimecast-MFC-AGG-ID: WhKNSmXlPTiId6GCNEnsqA_1756843791
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b986a7b8aso7912895e9.0
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 13:09:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756843791; x=1757448591;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yItT2cQsaw/fbz2dDlIsrigUmbNJq/0D5dgv554K35s=;
-        b=r33yshQqfvbZlRq1sHz6a8gvhXzqmf9OjVssr6Xbs4lddsMjGvI658z0JgxEkWE+t/
-         s8203mCUPnHurri+qSG5rxl8hLDDnXRRZ2sP1OzMt0GajgSiAAF+RgSfDgXmmIhtKeEF
-         rHSudgAzMQO1wYx+zA1dHNsL0st2BjyRxDztMRwnKI+LrxYwYLb1TpRnhAiKjeM4lqOH
-         OU9Iy2syqU/u0llRg7qUP7/kZH7DBGGHWK/HlSN3Sl9YCg+SqCqXy8rK/VkJpMjLEonc
-         jQVKUh+TrqLVclhZUUjIzTDS0BxgQNZ4vVyo4TXDI0e6P4ax/wDNu1DsngdZBG6BNXS2
-         vHkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJyA1IYMAxtwpG7krTsUwmw+CNfC9BiO8+8RcFKYxB3HJYXzbTh08fibTjHa3XxiQdbGxcj66j+Q==@kvack.org
-X-Gm-Message-State: AOJu0YzgvGrIF7htv4Upg9m/P4KqWGa+ocKiGzDp8SxKCUK1V46dEWDH
-	FCP6qVcb7jZavReHJ89mmZcqGY6eOJLlVv6oGQkPo4lbl+MlPQanIU8eCd7C03HevgMfBNCAoTg
-	te9l3ks5YacqqsvcypvXuP0+TZwj4lpRRfVAarrJQIkbBpB+5bROAfK7ihvyo
-X-Gm-Gg: ASbGnct5elzRcTGg++i6O1Q1cucuRXUtJzW+tZ33LO/eRj+fBVeybCvU5LcZNApIPf2
-	iC5vBggqh21NbSWRFBnOKPw1/stYHOlc5VyyyOoq5Uldqs3W9hgDbTc6ln9ofN9gdi6uiGRUIkm
-	0wH66+/LeZHPZWG6p8K2AVMoEk2XTsCvyyBx3A9mB30SrGhWLO2+D8vlfyIzLyR82T2u6Pkg2RF
-	+RtYFjyLvzjUGjBU1pSSWBk7aCF1LZG83hnQav50DGZ3BP5ABTPvAEd2uKfkTzu2BiB1HXjx96z
-	JH4Y3kUI7HNyExN7Mf0qP+VAQQW5w/zJCozwzE/QFH/UIGNzOf02Ka0x3r8q9iGTaTh8UW1qBaT
-	gAH5whwzrF94TWUiVg6WDgcnj81GNPHJ/xhtkeYgh4xAjemGcRq8XbZZPtTzenDht2GM=
-X-Received: by 2002:a05:600c:4e44:b0:459:dde3:1a27 with SMTP id 5b1f17b1804b1-45b855fc86amr96674765e9.26.1756843790743;
-        Tue, 02 Sep 2025 13:09:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAuTNanc/C1ZsT8U/zhQaFlozDe8jYnd2Fmk4HfNnyAQ2NgrSUMJoHJdGO9Rf2IEfrEQMPbw==
-X-Received: by 2002:a05:600c:4e44:b0:459:dde3:1a27 with SMTP id 5b1f17b1804b1-45b855fc86amr96674585e9.26.1756843790317;
-        Tue, 02 Sep 2025 13:09:50 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1f:3f00:731a:f5e5:774e:d40c? (p200300d82f1f3f00731af5e5774ed40c.dip0.t-ipconnect.de. [2003:d8:2f1f:3f00:731a:f5e5:774e:d40c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b66f2041fsm173854155e9.5.2025.09.02.13.09.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 13:09:49 -0700 (PDT)
-Message-ID: <bfd5161e-c76e-4a0e-bc1a-bf7510868827@redhat.com>
-Date: Tue, 2 Sep 2025 22:09:49 +0200
+	b=x3fpDpulYxA3gTzCEL6w8BpJwpKfw4OntYNaxulb9Gqi/gLAmdjrLOmTFPutva61FnQHpc
+	xeOL8a5n/Ubu1IzCJSRlGcPldtLjp/BTnEe/ai12B4BcPeuX9Lbj2qUn4K+LrCpke2dsjc
+	PmUaQ/QaUXjvAYTjs2hcIPpsPIhPP0I=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Asqa15kJ;
+	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756843843; x=1788379843;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YSX3ayXvCq2CuS4CQ/bYGZn6jqqI1INvzwUeD7fjKTo=;
+  b=Asqa15kJD/Bgyl0YwQv9+99FFAGFpMa69ZuJdT077nHncP9481DMzg+I
+   I8AITMi1eNqg7TcUh9QxvnJjJkFsubpq8Nrw5DZNscQfqHuwFRjZh9C6k
+   mieZwzN2lZMDKCXGqlmVVqbvoFRGMWCBoZ24c0MrvqedftTW1LlAdSPxf
+   Jh24ZRCUsR0+wXMIoFddm+O1sLLcWSImMn05WU03/KjmkehZrmJWVAAXA
+   5kLHA0nG9NZ4h2tQ6TPr603wIYLBRobRx35uLLjBBoqL4Qqz+SIp1Ic0V
+   WSLuDuqsPAuEfXjPYbNJ2CgkkIHioX6ZiJPuVAWha87e6fV4Uz/OW5edl
+   Q==;
+X-CSE-ConnectionGUID: LuSsQgjsReqGAmBHe2pQQQ==
+X-CSE-MsgGUID: eVGkuIJBTQSC9j7jgGANbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62968933"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62968933"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 13:10:42 -0700
+X-CSE-ConnectionGUID: JqVyyvvhQ7m/l28TUMxOow==
+X-CSE-MsgGUID: BlvYY114S769WpPW3JXOug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="202281602"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 02 Sep 2025 13:10:36 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1utXJx-0002zX-0W;
+	Tue, 02 Sep 2025 20:09:52 +0000
+Date: Wed, 3 Sep 2025 04:09:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, x86@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
+	david@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
+	peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
+	tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com,
+	ankur.a.arora@oracle.com
+Subject: Re: [PATCH v6 11/15] mm: define clear_pages(), clear_user_pages()
+Message-ID: <202509030338.DlQJTxIk-lkp@intel.com>
+References: <20250902080816.3715913-12-ankur.a.arora@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Where to put page->memdesc initially
-To: Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-References: <aLc_nckaDc2ePRv7@casper.infradead.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aLc_nckaDc2ePRv7@casper.infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6OUm-1grwnLXkZdDchYooUxhS5ie3O5vGRLSTY8s02w_1756843791
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 91B0920011
-X-Stat-Signature: 8pe5p4b3h5us15w7qt7zw3u71u1qe3su
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250902080816.3715913-12-ankur.a.arora@oracle.com>
 X-Rspam-User: 
-X-HE-Tag: 1756843794-387763
-X-HE-Meta: U2FsdGVkX19/5hTbG4T/CSkiLBS/jtFMc6GFw/s52GWzI2/el+hyqnDopFjcSoPjEB/o411KMd9Inn23zDEQJeW8I2vayQ9klLlmGZGbDwSnlG3fsnr/EVYIqqlDGADuEZ4v9W6byawck4sarSEjap/G/Wm9zvZYHCdaBHaGVJMbpkjY3hX1jo7afWPTjRE5w/rpWfpn8KzAHqztSqbDWlX6/BhddvhsjxuF/ZiJvU0l+gt/K1GxPK/kz8kK+KpAnFTC1C8IksOzuTWkOQqpkKWMbNZlBY4IDDuABHi70OKaNlW87tVOVfDRL/g2j6aIe//HwK8od7hYXHdULuloB1q36CI6qpadarVzoJqGkAGW5vqK/jbKvrwvqccL3sVE4O2rGEa6Y5qIaOnNfHdKU+nrnEONynioahkJqiNjkwBIH+Xwiya5c4Yv2yNSMdb8GMl/feIgug2jlQl49kzkC1x6D4r3pN9r4UH0wfN8rBzGjAUiMZgeCwxOftnl4NbgWOrT+ad0CwuT/26imL765gGxtWJwu/EV+QCMXtx1N1gF324EWbUbDotE5NzhXNy3bvcKc1+0EzrjN4CKe0sK9i0JjgeUwdzPeUXEnrzpJBpH0FBP3GWtKEMcbwri9hps1WqIP8TjOs4H8TMQx3NVqtv6ECafj1aeG0e35ABW/UDv7PxkAj9zNxbFLTl9NwwvKOJWlgWUuRwcKWi7LJx4GSl5mtOS9xJQBEZ303yXs1hitLr1c5etnzA4b0YUyYRdhQH5XW0qKGf28xGEyxo0SVVs9eWUHbNVpdF+w6joc61jMSg8WVK3dG9dTwqIYdnXsccHA6rB2EKcsNteyLuD1/vYrsMg8g6MfYbI2/sGb56erPpCnT2S42KH4RuQtzNLtTb7KDLK9F5h5UFSVhsedtBc/67Y022VYtg0clO1YxD7ZW6jHAhNU3DQ86dXXSL/eTTZau1ZUElQNjzjje6
- XOVyJObr
- WWtsfyh1VT6/DPHDUXTPnp4NSpY3sm+PLAClIJ3589dQVwvf+zbRzACDHvfs4vYZ4TV3I3yxci7onjyidAsr+0Dzrs5Oqd/gq2REpRgZmvRqz3lffbQurH6U0+Hd4baI5XIMrspjwZ1TQSFzMkZwlrrGz8qD9KUvWSOXLZwFbWeyvDuxZBW8OtMNtNilgJRawBQSAS+vfGlRtjwoDqTHYXjMExzMgyCzDw+09LaEn/ozkmAEiu77SxarO0JvIR+u7YMzCZJ5hhE9uyik+u2AQR74ZLB9rmvYHjrSanox+s1egtdRuynfPqR+EMr/LiTpkzlFxNZUW/spk2kM4U0WtslE4tkqmvAvBWVwI8qXo8IInwvYeMTKEttsOtI53sOCtSZJhH+6DskBUrAipILN3SUxxrTLsbg3WO/4+9C/EByiV6qrmc0OnPGr5ljHFA8s5gxmRPwykG5YqfdF+stvcS/rIErgiDcIK9dJFC2/yklHQl4UDCWkzHw1r3IgEGeLn9jTBzUYc32WD5wg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E53A540009
+X-Stat-Signature: yb3n4kx4eeu79bssfm3ri7qm7jhsnzbq
+X-HE-Tag: 1756843842-177631
+X-HE-Meta: U2FsdGVkX1+a8v/aN4Kv+ihs52e+VmHnOJ++NSPdwZhfl0gZwJZBYg7tHMMir0ZfIJ2ZkmvF3bS5c/WA+0CiJUr5qxCdexqBcmQn1o0QCQ7aw/ZY4YGoHeSbQ6GISeD6M7q+nFhP4kBdFcD2BYGsKuDhSyXbCp2lzQyKznX1qzDCXFRuF0Z442dRzt0OUyKeDZT8cTy8QILusEttxmss4UBRlYKEv+JiAlosdtZvyCPv23Yaq4aDT0SXciIhmWtUXd+nFiQnzdmDC8xtyp2nChWMLYqUgPfRMwnWWMSsWXQzZ5IZpRY9pfnJpEQqbWQ1g9mU17GXLwZKr90TGFMYk3B97S7jkdEza7jZb4AODupqitAw047uCx0P2o69m6ZSCDF2Ew9jy6WzLBgui9TlLYWFFjzf29PcCeX9z0jC21h5d5/pDCZuJkFawD/Cl0FmAx492U79ctZUyuqOHxZtUprWCr4KXYaIVL6d5t00QsDsmqjjnAD5ETsCYkUVDP3mIOb0Wj0f6duah9UCNuyt9G39KG/vkMcwp+heH4YAkVVHykH+lomGX1ID32yxFud3++fLY93t6N9SRgxhvObt7d7Dc3ZOszCDRLdhDJ90uvClSqu0EOvzQDs0aiMnuEhJPottbu0yvee3CIqfU2vddydKrghR/CMBtyXMvPQyxHGBZJ074flEkIPZj5Wv9djNrXBSua87/c9s5sN7/ijPc/zwhGbaJxeIYr2uOidOa8QUepdTqdTRbL1QsQJr51nolofCFW/8Ne3hFKW773qmAT1IouNvqabam2rtaKnP/q8xMFtoWQy05SJsT9GnIEAa/dZ3i4yVIUIvyazaqeOZy/l7cZnlnlbLlMwu+wbpZCGQLkYz+4w+aIilLtQhcmws0Yw4aq0uAr19PXvGs0XNTBJvgZ9Zy1s162IyX/kOHwhBoidbg3w3riwlLI6FO0SpqFdtRfsicWnmHnMyome
+ YAMymgKG
+ U2/7IJ7D4PQoxi0ienr+NDmC8NCGQTvlGsNvnWGHUQcgE8nTIWl/NV23Wuxg0wiijXEC/lKzFUBlgj1UzKv99P658XFbfE3jeS/C5jL2ou/4itc0cJlnrIFOHfWLvtqsB+/gJllplNjS5xeK6nK3yk04JwhlWdXM2NzkXw6KjXPrUIZBS5bLCr/ihXH36jL3y+If0xgpKoXIFuiTNG+OCDbkwutjWRuFuWEIwenO9W0cS09k/8LUgV3KcZWKjL4UeoRGMikZrkhpYPifo38PEClSURJrs/9fCNwxYLeW/nVQKuMSTFoZkqj7yMgs7YJiw2njj8wIoP2R3tQ4i6BIgMwluaDBp8px7Arw/HK/TE7pczQBgkqcoE50pKamTPKkx6+ovzUvvmGDJzuz8XcAzv4R1YGkUH1qfW6k54+kxPgZUobrpP6elh7whmQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -175,65 +113,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02.09.25 21:03, Matthew Wilcox wrote:
-> With the recent patches to slab, I'm just about ready to allocate struct
-> slab separately from struct page.  This will not be an immediate win,
-> of course.  Indeed, it will likely be a slowdown (overhead of a second
-> allocation per slab).  So there's no urgency to do this until we're
-> ready to shrink struct page, when we can at least point to that win
-> as justification.
-> 
-> Still, we should understand how we're going to get to Page2025 [1] one
-> step at a time.  I had been thinking about coopting compound_head to point
-> to struct slab.  But looking at the places which call folio_test_slab()
-> [an oxymoron in the New York Interpretation], it becomes apparent that
-> we need to keep compound_head() and page_folio() working for all pages
-> for a while.
-> 
-> As a reminder, compound_head() will _eventually_ return NULL for
-> slabs & folios.  It will only be defined to work for page allocations.
-> Likewise page_folio() will return NULL for any pages not part of a folio
-> and page_slab() will return NULL for any pages not part of a slab.
-> 
-> My best offer right now is to use page->lru.prev.  At least one of the
-> bottom two bits will be set to indicate that it's a memdesc (we're only
-> going to use thirteen of the memdesc types initially).
-> 
+Hi Ankur,
 
-Just so I understand it correctly:
+kernel test robot noticed the following build warnings:
 
-Would you want to move the page type already from the mapcount into the
-memdesc? That sounds challenging, because for any typed folios we would
-not be allowed to reuse a field we want to use for the memdesc. IIRC<
-hugetlb pretty much uses all of it.
+[auto build test WARNING on akpm-mm/mm-everything]
 
-The easy way out for now would be making this page type specific: Only
-selected typed pages will store the memdesc (here: slab pointer) e.g.,
-in the old page->mapping place.
+url:    https://github.com/intel-lab-lkp/linux/commits/Ankur-Arora/perf-bench-mem-Remove-repetition-around-time-measurement/20250902-161417
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250902080816.3715913-12-ankur.a.arora%40oracle.com
+patch subject: [PATCH v6 11/15] mm: define clear_pages(), clear_user_pages()
+config: sparc-defconfig (https://download.01.org/0day-ci/archive/20250903/202509030338.DlQJTxIk-lkp@intel.com/config)
+compiler: sparc-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509030338.DlQJTxIk-lkp@intel.com/reproduce)
 
-So PageSlab() still checks the existing page type, put page_slab() would
-simply lookup the pointer in the old page->mapping place.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509030338.DlQJTxIk-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from arch/sparc/include/asm/page.h:8,
+                    from arch/sparc/include/asm/string_32.h:13,
+                    from arch/sparc/include/asm/string.h:7,
+                    from include/linux/string.h:65,
+                    from include/linux/bitmap.h:13,
+                    from include/linux/cpumask.h:12,
+                    from arch/sparc/include/asm/smp_32.h:15,
+                    from arch/sparc/include/asm/smp.h:7,
+                    from arch/sparc/include/asm/switch_to_32.h:5,
+                    from arch/sparc/include/asm/switch_to.h:7,
+                    from arch/sparc/include/asm/ptrace.h:120,
+                    from arch/sparc/include/asm/thread_info_32.h:19,
+                    from arch/sparc/include/asm/thread_info.h:7,
+                    from include/linux/thread_info.h:60,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/sparc/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:79,
+                    from include/linux/spinlock.h:56,
+                    from include/linux/mmzone.h:8,
+                    from include/linux/gfp.h:7,
+                    from include/linux/umh.h:4,
+                    from include/linux/kmod.h:9,
+                    from include/linux/module.h:18,
+                    from init/main.c:18:
+   include/linux/mm.h: In function 'clear_user_pages':
+   arch/sparc/include/asm/page_32.h:22:17: error: implicit declaration of function 'sparc_flush_page_to_ram' [-Wimplicit-function-declaration]
+      22 |                 sparc_flush_page_to_ram(page);  \
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/mm.h:3886:17: note: in expansion of macro 'clear_user_page'
+    3886 |                 clear_user_page(addr + i * PAGE_SIZE,
+         |                 ^~~~~~~~~~~~~~~
+   In file included from arch/sparc/include/asm/cacheflush.h:11,
+                    from include/linux/cacheflush.h:5,
+                    from include/linux/highmem.h:8,
+                    from include/linux/bvec.h:10,
+                    from include/linux/blk_types.h:10,
+                    from include/linux/writeback.h:13,
+                    from include/linux/memcontrol.h:23,
+                    from include/linux/bpf.h:31,
+                    from include/linux/security.h:35,
+                    from include/linux/perf_event.h:53,
+                    from include/linux/trace_events.h:10,
+                    from include/trace/syscall.h:7,
+                    from include/linux/syscalls.h:95,
+                    from init/main.c:22:
+   arch/sparc/include/asm/cacheflush_32.h: At top level:
+>> arch/sparc/include/asm/cacheflush_32.h:38:6: warning: conflicting types for 'sparc_flush_page_to_ram'; have 'void(struct page *)'
+      38 | void sparc_flush_page_to_ram(struct page *page);
+         |      ^~~~~~~~~~~~~~~~~~~~~~~
+   arch/sparc/include/asm/page_32.h:22:17: note: previous implicit declaration of 'sparc_flush_page_to_ram' with type 'void(struct page *)'
+      22 |                 sparc_flush_page_to_ram(page);  \
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/mm.h:3886:17: note: in expansion of macro 'clear_user_page'
+    3886 |                 clear_user_page(addr + i * PAGE_SIZE,
+         |                 ^~~~~~~~~~~~~~~
 
 
-> There are a few overlapping uses of these bits in struct page, so if we do
-> nothing we may get confused.  We can deal with mlock_count and order (for
-> pcp_llist).  But the biggest problem is the first tail page of a folio.
-> Depending on word size and endianness, there are four different atomic_t
-> fields that overlap with page->lru.prev.  That can't be solved by using
-> a different field in struct page; the first tail page is jam-packed.
-> 
-> So, page_slab() will first load page->memdesc (the same bits as
-> page->lru.prev), check the bottom four bits match the slab memdesc, and
-> also check page->page_type matches PGTY_slab.  I don't like this a lot,
-> because it's two loads rather than one atomic load, but it should only
-> be present for one commit.
+vim +38 arch/sparc/include/asm/cacheflush_32.h
 
-As a first step, I would really not use the bottom four bits. Why
-perform two type checks initially?
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  19  
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  20  #define copy_to_user_page(vma, page, vaddr, dst, src, len) \
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  21  	do {							\
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  22  		flush_cache_page(vma, vaddr, page_to_pfn(page));\
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  23  		memcpy(dst, src, len);				\
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  24  	} while (0)
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  25  #define copy_from_user_page(vma, page, vaddr, dst, src, len) \
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  26  	do {							\
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  27  		flush_cache_page(vma, vaddr, page_to_pfn(page));\
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  28  		memcpy(dst, src, len);				\
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  29  	} while (0)
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  30  
+5d83d66635bb16 arch/sparc/include/asm/cacheflush_32.h David S. Miller         2012-05-13  31  #define __flush_page_to_ram(addr) \
+5d83d66635bb16 arch/sparc/include/asm/cacheflush_32.h David S. Miller         2012-05-13  32  	sparc32_cachetlb_ops->page_to_ram(addr)
+5d83d66635bb16 arch/sparc/include/asm/cacheflush_32.h David S. Miller         2012-05-13  33  #define flush_sig_insns(mm,insn_addr) \
+5d83d66635bb16 arch/sparc/include/asm/cacheflush_32.h David S. Miller         2012-05-13  34  	sparc32_cachetlb_ops->sig_insns(mm, insn_addr)
+5d83d66635bb16 arch/sparc/include/asm/cacheflush_32.h David S. Miller         2012-05-13  35  #define flush_page_for_dma(addr) \
+5d83d66635bb16 arch/sparc/include/asm/cacheflush_32.h David S. Miller         2012-05-13  36  	sparc32_cachetlb_ops->page_for_dma(addr)
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  37  
+f05a68653e56ca arch/sparc/include/asm/cacheflush_32.h Sam Ravnborg            2014-05-16 @38  void sparc_flush_page_to_ram(struct page *page);
+665f640294540a arch/sparc/include/asm/cacheflush_32.h Matthew Wilcox (Oracle  2023-08-02  39) void sparc_flush_folio_to_ram(struct folio *folio);
+f5e706ad886b6a include/asm-sparc/cacheflush_32.h      Sam Ravnborg            2008-07-17  40  
 
 -- 
-Cheers
-
-David / dhildenb
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
