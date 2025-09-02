@@ -4,89 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D095CA1009
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:49:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D93CCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 12:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5CA28E0017; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
+	id E95E88E001E; Tue,  2 Sep 2025 08:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE4BC8E001D; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
+	id E473A8E001D; Tue,  2 Sep 2025 08:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B381A8E0017; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
+	id D5CF28E001E; Tue,  2 Sep 2025 08:50:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F4558E001D
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:49:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 555891A013F
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:25 +0000 (UTC)
-X-FDA: 83844291090.30.962C7CB
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EAC7AC0008
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:49:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C1CA48E001D
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 08:50:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 68EA21D9AFF
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:50:22 +0000 (UTC)
+X-FDA: 83844293484.26.D09F36B
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7562FC000F
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 12:50:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=jaZqhi2L;
+	spf=pass (imf10.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756817363;
+	s=arc-20220608; t=1756817420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Sbnro22SFv8m5CdBKvPnr8v7Fl7aYhkn+QQTWR1LUiw=;
-	b=OOkofC4a+CWOPFn35c0hOZENELg0KQba4ryoUtgW55nAQDibGyP6cdJf9tEtVIuSrXcUih
-	BZfzBmCGjuj2orvdwyDp8dEnFUiep2qzGgui4FxbXcljeryXPi+8U47SMqrpQ1hTJTk5tA
-	wY5gN0cT0WuU8hF8/9P1ZRRtWaUv7zE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf22.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817363; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OCLJ7IL81yMCm3CkgJ6YDqd5R6ee+khIMm++FZhsZD4=;
+	b=1ILH1XhfZYAvyhLE+V4eUZwyJ3CeFi4tTHZlzyyw6V2B+1l39XHs88byd4f7yWDAik/C3A
+	veJ1qVs845kTzovypo55TtPLErG+ML9cMJb7W8vJKQAJGeS8jZqoZA2ls3+fDEBEdhVnfZ
+	nBlbXDaOPsyVz9MDop8sRzVoJlH9X6Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756817420; a=rsa-sha256;
 	cv=none;
-	b=cx5D6PMgZBA89KV0NwEyMkwtNNOkuPiKDAoxs2GVmjdidd7MPMb48sXA12HUi3ubMLY2MR
-	Il0rsMd8mc8+HeLVXwm866lP6l+MY3eUhj+0kW8FcwuTlXnOQrcRUf7/Ro2JuLY2qX/SfI
-	ETLY5PlgRflxeUcJH7BkTrnDD2gE8sg=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cGQTd0ZfBz24hrd;
-	Tue,  2 Sep 2025 20:46:13 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7EDA71402C1;
-	Tue,  2 Sep 2025 20:49:18 +0800 (CST)
-Received: from localhost.localdomain (10.175.112.125) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 2 Sep 2025 20:49:17 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
-	<muchun.song@linux.dev>
-CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
-	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
-	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
-	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2 8/9] mm: cma: add __cma_release()
-Date: Tue, 2 Sep 2025 20:48:19 +0800
-Message-ID: <20250902124820.3081488-9-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
-References: <20250902124820.3081488-1-wangkefeng.wang@huawei.com>
+	b=Anrxd6xeCzn1JwEtwb8pMncAM2SFQNUqb0IQoU3fOmuvlhPnDzo4URmgdpFCZunRbsrh74
+	sP3bk9+jt4q+ggRlrKucMm8LCwQy5j6hC0Cebbqva2+Qr0U3QMxf8b5FtS/lhG4gCmdfWe
+	thkNDV8xg24il7kuq6sX4i56gaWGVhQ=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=jaZqhi2L;
+	spf=pass (imf10.hostedemail.com: domain of cascardo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=cascardo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=OCLJ7IL81yMCm3CkgJ6YDqd5R6ee+khIMm++FZhsZD4=; b=jaZqhi2Luu8YSodhuadft0VC/J
+	Umw97nj2ZI8vabQRSvpDogs7pWcqH2MdDlg63NSePyMA3ZI70QaVZCYGamLBT5jWSelo5ds4gg/hg
+	JUjy8aksdRxUVsIvai2AcRoFzG/meS+XuLJefRPov9ETVNmX7TzO6dbbb1ywAicOIus991UjeNVTs
+	DAx9VHfEEDjOy+G0xQYfKFiE6iUs7b+R/DUk9GzDmMNRHUIj3+kgMORFkzIIiKwNN1E8DJnRnaVYP
+	tzrTQzkV32QBUh9N8n//3sAgVqPz9/V1uCGztpRkTZsGKRM0kkHAmN4sVGNHhbUzhW8/K5MFAxe2+
+	Sb5w6qag==;
+Received: from 179-125-64-234-dinamico.pombonet.net.br ([179.125.64.234] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1utQST-005hVE-LJ; Tue, 02 Sep 2025 14:49:58 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com
+Subject: [PATCH v2] mm: show_mem: show number of zspages in show_free_areas
+Date: Tue,  2 Sep 2025 09:49:21 -0300
+Message-ID: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20250902-show_mem_zspages-d090ea0bd1d4
+X-Mailer: b4 0.14.2
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EAC7AC0008
-X-Stat-Signature: ue3in8ssia9qjjdjjbee9hdadp3pysha
 X-Rspam-User: 
-X-HE-Tag: 1756817362-93175
-X-HE-Meta: U2FsdGVkX1+FDspQsS+WBBmsc9kn4zy298O5mqw4+j6DFLsX1ouTsmjzQUF2Lb6mhRP2VHm2mSvq10qM9TDtIBfAkTpigCTdL4qcrHL/gRvoUueqyrTJF/yPuZhdf3pCHQw+KT4S8C5VmVutVA2N4fTyp3KFmMpkaJlOxkehQPJnrxxFBytXXPTSIScJO2K/VvUpygX1XVw3pUKQ5cU30QeJpoGWjneKcMSTv0fzbXr/lxXDkx6BBSkPo8X6T5MERxWGZKLZ/Vj1Unet6V8Y2bS/OX35GMeNe7WXLFtdza/Mudrn09H9nbOLpqQ4JE3ti1iPkp+7acycX08B/hfTN0I08gNs8XAJIYWfPeZeTGKm5W8cgcYvng+6eLXrrmt4W5m4KWPfP+IrBNeHXJoHsn2OPKBPqx1mGb7aFOn55qvaloa2k8A6xHWL6mjKUYuXoLCXLWzMhg1ffv37debcFUFnes/OJ7thglylv4hFLVNFAS/OGLW0opvQfWhin2SWZFXKVFAiDzV7n6ZSS1BBNbOlKyWplhneBqq+jIddqg622ZuZbezUdR+XLLVEcek7ftyrYnyeTwQNue9CVnjky5Vg4PyC0EAAO1OiaqG8Ez/p1W5PQH/RNpqw+JLGYV4bVtrtXPrXezCAgKYnI6sVfGbXoTHy5p2LTZ9m6OsOCgRjIdm8WqRkcsCgPMtzx7RDunW3saqOvtHOGQsaJyOw23D+ClVLSiDlLh+gudQewtOnhsMEZXVFHhs8bjf1I7KYFD8VcwR93A2PE6P4ctbrC/Cvq8rv+ypEC5EgbdKmkAS8kqCyzHNgAFUVt9hu7PDoNAQu/1WCbi59OOO1s0M7GBrPavYKrMoI4vYIn7SM251rbfBs9gcdjPb/BxNxUIqBjHKtcLfz0O9rV+Say0YLEbVY0+gPavhxVeYcUm4FDSU0fL5AdFWtapk1BDoy6qUUbpsTT0Ho04KekjxUqlg
- 7u6nRkR6
- Bf0KU9gXbCG93HTYFRTv/kLtUrqHfcXt2F56prLPiLcp4JeJ54PLyq31Ccvf+ilLX5G76Qjl9wyYoEr4uq4YNtJrW2IdScGaOSvyW82fSom9KZyAVd+n6pejCELqDkK76/kYe9Gp2PpBl/Xxbpy0u3L3ILPe4U8DPekXntYQPl4TzSDK9w0Fb2hShJE2rMwJHXD+ZJNyulSOETqn3EfLYedgtUypSuhKer4/gGgul3/TyZss=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7562FC000F
+X-Stat-Signature: zjk86hihdx1ajbzpya9rzxcujbbm37fe
+X-HE-Tag: 1756817420-779692
+X-HE-Meta: U2FsdGVkX198D06e4T3nW7Q+rfWsII8LKOjpK4iccHMYYlVNCkJO0wCqPuTYOm+a6138EhAv1xtCvTYSFoJTn5ZKEX6KOYIQGPYeruBkeMaMJBh4ONK9W7lLvSeFEqp4ryzIGdgDZqGCpj8u2lTg8Ch0ajhFJfcWh/qzmWFcwr/N9sHXOsdGz5F/83UMwz7A2GQGuU/OlHOATx04giROm5GtdGDh6U1mBdgct5SV3ntc3kaa1zEEOmc0ljt4RFqdZW7uLtgB1gHAeBrIrDYdUCF28ey2TpbnMSeP8KZ05sJnOjh9ilwZxej3+nsu5NH8G5Tfm7N4eOI7/8rfhw0zTHhe5NCUb7uunSRRwNxdOsGNiI2j3RBoeoJdZQo4BoPiiJNEy55nVWhtK+ZNYLF0Pg2DVZ82zmwO9FOHg5NNdUtj3fG1oEsKo+8zqMABg6wMujBvRZlRFJAqsqJiaiW47xFQEf0+8q8cAkEexoD3pvIIJqVBcrDZ4iGgZieEKGvaOGG3zmervmapa8zo3Iz+RRQ9E3Ih5VyCrAgfRZPc00sKxWgJGYKwv0HyI2Zv3apgPMs1EtNoamWmbHdSBIYHrF05LbIn8tfquzOBdLrFUDqUq9FZBrqMRdoNw8wULNnym86lX4THR+z+mFElYVZFQRVTg8TxwkzSUUS4+jo2Yo7u7mr/IXDXrz58X1951YzF3rmrYdswjM9oDfavBY0WXjgaG/R7ah2bY4JKtTOqvgif/TW0tpWbf1Ku4BOn6N7aewVhcO+bFWsR6KQIEdGJ8pYzhlp/xcfJT9MXLtsgbOUSvzDT8+7jmyJIbcoD5HVuOAjZMnsRFLdEn4Tvw89Ia5JBQLhOq7J+guiNtXkvl9xfUai3fuw+7cUmeoK7Z8YY3JSXuLYurfTOwWa42vSJ00LUmF7l2rW6xYQNDj2HhWl8N7wJ73z2AHuG3vPXlJGui+Vs/yUo2ibykgUwQ2O
+ 1Y/dSXxT
+ 87dw4gHUnWcVZ1y5bjg/Zu+pwLbJo/dFSsz1wsv9RIl+0JsavQ5rWdX8nJxT5KVOCA4vWNeazaiIK3+2BHhgtBnYgyx5hqWmkgFKDXY3hu9gasskYDsT5NTGEgsn13vLSFJCymhcMHe67rLCBi9lSrgSOh4Lli1qwgkI714g3send6zIJa8sMevzO8mCiXOM/GCHdGqzXW7TAFwB5tXPb7IsqATMAYxOX3w/7gdAQECyZ6cktHzQae0uxkpxCXnCzLKIGl/mJzFiIeismcgu54ae4h28tamOBxt+3z3wQoAv2rGdcQHVMvaWonVsybcHg+afZ0pW3u4M18SJBZbPUVWud2EfEoBQ55pidoFF0brE7W9Kk6BCx1YER4uTnRTTLHLBZ8GLA4EC+CoVJz14FfCnSg3R2gYlox7thTfqLeaX/u01zFryA1Hy2DHtcwPDfygct0jFKjGPK4Jw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,129 +108,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kill cma_pages_valid() which only used in cma_release(), also
-cleanup code duplication between cma pages valid checking and
-cma memrange finding, add __cma_release() helper to prepare for
-the upcoming frozen page release.
+When OOM is triggered, it will show where the pages might be for each zone.
+When using zram or zswap, it might look like lots of pages are missing.
+After this patch, zspages are shown as below.
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+[   48.792859] Node 0 DMA free:2812kB boost:0kB min:60kB low:72kB high:84kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB zspages:11160kB present:15992kB managed:15360kB mlocked:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
+[   48.792962] lowmem_reserve[]: 0 956 956 956 956
+[   48.792988] Node 0 DMA32 free:3512kB boost:0kB min:3912kB low:4888kB high:5864kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:28kB active_file:8kB inactive_file:16kB unevictable:0kB writepending:0kB zspages:916780kB present:1032064kB managed:978944kB mlocked:0kB bounce:0kB free_pcp:500kB local_pcp:248kB free_cma:0kB
+[   48.793118] lowmem_reserve[]: 0 0 0 0 0
+
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- include/linux/cma.h |  1 -
- mm/cma.c            | 57 ++++++++++++---------------------------------
- 2 files changed, 15 insertions(+), 43 deletions(-)
+v2:
+- fix build when CONFIG_ZSMALLOC is not enabled
+---
+ mm/show_mem.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 62d9c1cf6326..e5745d2aec55 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -49,7 +49,6 @@ extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
- 					struct cma **res_cma);
- extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsigned int align,
- 			      bool no_warn);
--extern bool cma_pages_valid(struct cma *cma, const struct page *pages, unsigned long count);
- extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long count);
- 
- extern int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data);
-diff --git a/mm/cma.c b/mm/cma.c
-index 3f3c96be67f7..b4413e382d5d 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -936,34 +936,36 @@ struct folio *cma_alloc_folio(struct cma *cma, int order, gfp_t gfp)
- 	return page ? page_folio(page) : NULL;
- }
- 
--bool cma_pages_valid(struct cma *cma, const struct page *pages,
--		     unsigned long count)
-+static bool __cma_release(struct cma *cma, const struct page *pages,
-+			  unsigned long count)
- {
- 	unsigned long pfn, end;
- 	int r;
- 	struct cma_memrange *cmr;
--	bool ret;
-+
-+	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
- 
- 	if (!cma || !pages || count > cma->count)
- 		return false;
- 
- 	pfn = page_to_pfn(pages);
--	ret = false;
- 
- 	for (r = 0; r < cma->nranges; r++) {
- 		cmr = &cma->ranges[r];
- 		end = cmr->base_pfn + cmr->count;
--		if (pfn >= cmr->base_pfn && pfn < end) {
--			ret = pfn + count <= end;
-+		if (pfn >= cmr->base_pfn && pfn < end && pfn + count <= end)
- 			break;
--		}
- 	}
- 
--	if (!ret)
--		pr_debug("%s(page %p, count %lu)\n",
--				__func__, (void *)pages, count);
-+	if (r == cma->nranges)
-+		return false;
- 
--	return ret;
-+	free_contig_range(pfn, count);
-+	cma_clear_bitmap(cma, cmr, pfn, count);
-+	cma_sysfs_account_release_pages(cma, count);
-+	trace_cma_release(cma->name, pfn, pages, count);
-+
-+	return true;
- }
- 
- /**
-@@ -979,36 +981,7 @@ bool cma_pages_valid(struct cma *cma, const struct page *pages,
- bool cma_release(struct cma *cma, const struct page *pages,
- 		 unsigned long count)
- {
--	struct cma_memrange *cmr;
--	unsigned long pfn, end_pfn;
--	int r;
--
--	pr_debug("%s(page %p, count %lu)\n", __func__, (void *)pages, count);
--
--	if (!cma_pages_valid(cma, pages, count))
--		return false;
--
--	pfn = page_to_pfn(pages);
--	end_pfn = pfn + count;
--
--	for (r = 0; r < cma->nranges; r++) {
--		cmr = &cma->ranges[r];
--		if (pfn >= cmr->base_pfn &&
--		    pfn < (cmr->base_pfn + cmr->count)) {
--			VM_BUG_ON(end_pfn > cmr->base_pfn + cmr->count);
--			break;
--		}
--	}
--
--	if (r == cma->nranges)
--		return false;
--
--	free_contig_range(pfn, count);
--	cma_clear_bitmap(cma, cmr, pfn, count);
--	cma_sysfs_account_release_pages(cma, count);
--	trace_cma_release(cma->name, pfn, pages, count);
--
--	return true;
-+	return __cma_release(cma, pages, count);
- }
- 
- bool cma_free_folio(struct cma *cma, const struct folio *folio)
-@@ -1016,7 +989,7 @@ bool cma_free_folio(struct cma *cma, const struct folio *folio)
- 	if (WARN_ON(!folio_test_large(folio)))
- 		return false;
- 
--	return cma_release(cma, &folio->page, folio_nr_pages(folio));
-+	return __cma_release(cma, &folio->page, folio_nr_pages(folio));
- }
- 
- int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 41999e94a56d623726ea92f3f38785e8b218afe5..c563d9adfa87765a8736e91c1f68d824b03eaea8 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -310,6 +310,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+ 			" inactive_file:%lukB"
+ 			" unevictable:%lukB"
+ 			" writepending:%lukB"
++			" zspages:%lukB"
+ 			" present:%lukB"
+ 			" managed:%lukB"
+ 			" mlocked:%lukB"
+@@ -332,6 +333,11 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+ 			K(zone_page_state(zone, NR_ZONE_INACTIVE_FILE)),
+ 			K(zone_page_state(zone, NR_ZONE_UNEVICTABLE)),
+ 			K(zone_page_state(zone, NR_ZONE_WRITE_PENDING)),
++#if IS_ENABLED(CONFIG_ZSMALLOC)
++			K(zone_page_state(zone, NR_ZSPAGES)),
++#else
++			0UL,
++#endif
+ 			K(zone->present_pages),
+ 			K(zone_managed_pages(zone)),
+ 			K(zone_page_state(zone, NR_MLOCK)),
+
+---
+base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
+change-id: 20250902-show_mem_zspages-d090ea0bd1d4
+
+Best regards,
 -- 
-2.27.0
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
 
