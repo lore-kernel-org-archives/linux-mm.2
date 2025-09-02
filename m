@@ -4,139 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72781CA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:33:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C9BCA1005
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFDAD8E0001; Tue,  2 Sep 2025 10:33:14 -0400 (EDT)
+	id C73CD8E0006; Tue,  2 Sep 2025 10:34:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BADB86B000E; Tue,  2 Sep 2025 10:33:14 -0400 (EDT)
+	id BFDBB8E0005; Tue,  2 Sep 2025 10:34:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A75918E0001; Tue,  2 Sep 2025 10:33:14 -0400 (EDT)
+	id AECD28E0006; Tue,  2 Sep 2025 10:34:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DDE96B000D
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:33:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 406CEB6B50
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:33:14 +0000 (UTC)
-X-FDA: 83844552708.10.5BD2BCD
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0E7E5C000C
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:33:11 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=meafgg8O;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756823592; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 966F38E0005
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:34:10 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C8C0140227
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:34:10 +0000 (UTC)
+X-FDA: 83844555060.16.214F3F5
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 967A74000D
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:34:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=a64vnD1n;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756823648; a=rsa-sha256;
 	cv=none;
-	b=Fhu8x7iXqzlzY5aHaUlmHysq4f5XlGm7/tNoGOd2cAZ0296QmMtU7A01iToDbq8oFCpbXK
-	w3AhAz3nEMOpdwhp6SO07qd9KlQUdgDxokmhlmoijPoyUaAAk2Wq49pioOsRq+OeTcDLd5
-	QAilrqq5jD4nKV2aVUf/UZc3u1GmgJc=
+	b=NwbMqjmrQgZMSKy/I+ATy03p617CSr6hqY1z9fVDBaFtcT6Gyuck4tAKYJd3uiEsCczrlA
+	E6Ex2zTCHJW5XdHI+/Zds5bwSZnDamQAXOalwJMXabHbMGx655UmEwS5GHiIkrMA8v/J0V
+	YReLwM0VlDU34mvgtzQT+j8KbjffYSA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=meafgg8O;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg-org.20230601.gappssmtp.com header.s=20230601 header.b=a64vnD1n;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.218.42 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756823592;
+	s=arc-20220608; t=1756823648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vy67ObTbkZdZhbIeej3G7oE3M7Losn79kkcFsXwKCg=;
-	b=NXU5JY1C8psLD5ivjn6tqjIS3ydKkEcpjlVH5jx8gyGQVafGmjKZB6MXjsehQze8f5p5Mu
-	Mi5ogzl4qz/kc7IZ6yCr2X64TynqDSCCRqv1eWFryrV4aWLmvxCCrdF2VHk07wbRHW/g/6
-	wr+O1TTH5JmMk/y7JWtFg1EiXmJ5Mo0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756823592; x=1788359592;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CqeygO38G2UqLYwyJWypxYe4AznIXuR38IzQgfyWO78=;
-  b=meafgg8OJu0T6RohHETMjiaKPCARIs7ryaEnB+BwtpUYj8w8V1diDRQ2
-   2NuYlbNRhbFBUck0rr3/iiKyrgWHCPm8kU4u8fzRBYXZhEK17a0fAP3hm
-   7ZJ5RTfl/7nEbCduhkslyatQoly3/MtlMQKXsYou5mlyYrIQPl4A2t6q/
-   /9Hy9Py9LupJzDgc562GhpdQIKL/Epm4A0PNZNuDex4O4ySiFok1l4kdY
-   cL5nRG2fDIq8/j8HF0qF3uxZAXpW2MPibSf55xRjpJKYrY2sRipJ5sRwo
-   R2OvIxZ8P9hw3OiBSvOa8G/grvdvJfVIsI/ZTX6xxjwIy5g0bOHGO6jPB
-   g==;
-X-CSE-ConnectionGUID: 24h6Me1ETJ+QXeE6LrJu0A==
-X-CSE-MsgGUID: 6yMlALlERkO15QHJ4W674g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="70529026"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="70529026"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:33:10 -0700
-X-CSE-ConnectionGUID: t6YdkPslS0eCpPn1gsG2vA==
-X-CSE-MsgGUID: 2hQHF1LATnKCD8YNAvpqBg==
-X-ExtLoop1: 1
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:33:01 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utS49-0000000AiVG-092e;
-	Tue, 02 Sep 2025 17:32:57 +0300
-Date: Tue, 2 Sep 2025 17:32:56 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 15/16] pinctrl: qcom: mark the `gpio` and `egpio` pins
- function as non-strict functions
-Message-ID: <aLcAGKnrh-GeR-NL@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-15-bb091daedc52@linaro.org>
+	bh=jml8ElDJBmGpsEO8gZRSuwQYyAaJ8aUmNNtqcGSf0K8=;
+	b=tEeoWwtFSHOTrnvcfir4ZY04h0oGreItuLx7mJy8+LeiEnpQNYceDDTsCZQTKeoWImUSRj
+	6h3SSNLEB+1BuppJd4VlIV3xOQXrZ8LLlGOeS/mwlGgU3CVfC1MjBvBUi7Axl+8h+rbOgd
+	B+jkWj98ujocbqLCOiMHXdKx5neTL0M=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b04163fe08dso420608766b.3
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 07:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1756823646; x=1757428446; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jml8ElDJBmGpsEO8gZRSuwQYyAaJ8aUmNNtqcGSf0K8=;
+        b=a64vnD1n1O954rVPTkWJyD1rPFY6EOtgQG474hGAlXDE+u555vn/N0iQFYL7phPJkX
+         VkYLIrJBKZPlneF5LpZl7fAl2+KuZlYyU+UUdqwN7ynwugnSmT9IkEuXoiEqa1dCp8hi
+         +O/LwBMP83Ac8gB3MV0+vpDx/UsmCS0qN3xytO/kjeSAu/ZuhpV92xaI5Omql06+4GP4
+         LuI4xKAi+hFSEC7jueo4gNuyleCqRTkUSPbgTILEy2M7JhggkXYurORVNMoOjfdkaalL
+         Zq7IA7rbGv6Ytjgi6Eahzna6VmahwSygGSx9LczOyf8KNMQbYUnFcyv6gnW4c5zZYfD0
+         UGYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756823646; x=1757428446;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jml8ElDJBmGpsEO8gZRSuwQYyAaJ8aUmNNtqcGSf0K8=;
+        b=rtUpaRLZAZa38tFRNTVn7qJhv8SeosbNgoYLgER9t1J5tOJ7KFsuUa55ocuUdu6JDf
+         Ju848I+W/I9mJZwfm6XQNxr1J05NJ/2IYb82PFYvGQFJTzn+hd2IwaJpDIc3Bl74xV27
+         z5kOQH6i7ukieMiH9HZ8hWAI2ye+BPOiP/zzgBRq6GcjTiD+laI/Z9Ht5hs9tlV7NpeY
+         17NC1//ambBxMUAOEy4jdoPe4mtsV0WyQHtCOoDnZq5QTbudiROqLiOtOJAhDinBU5d3
+         wdTsyRSKojt0lOf8eB59qXeAJz8mKgsefnwyl7Df8MiFILmKlcvJFITlXLykR0Q5YlqT
+         1NWg==
+X-Forwarded-Encrypted: i=1; AJvYcCWeifV/vkSvczPLT8uED3ebwNQ2bD8uXWvRIi77gjMnZhsHpR2rRZzyasDlrYv7g1ITBaZsl1QA9Q==@kvack.org
+X-Gm-Message-State: AOJu0YzMneHqW+1KiLKK9GUgK4uO+khXeutj6AJTh7ySOQSPyawhQg6h
+	DRz8DwG12M2VxpthFxAts5yYoo868mmKu04lxpTbpw1E51OX6cx9LbgCUfJF5EoTc24=
+X-Gm-Gg: ASbGncvZxd59pfWRxWGVnTtEgbfyYV63gdElz2vWpCHnCRwwEBe5PUM8WBEKAd7yUjS
+	AbU5p32vU3WeiBVO9t7xaYDPqvgXK7OuKgCJH2yDDsh3Xf/AelUESB//Y+DEZyKWC5R0MC+jqNr
+	VcAFH5lBWNsYBhdoeDTiruji608iwDjpPK/144tYy7uYHJfwRiaI1JzqX7sSBdfHER4bEERgZC8
+	/K2cj0LD0dqH35CJznA/M7WFe8dUbBfG1KNqjy0IR5/2jnyFhMlFo98ZanH9IWbMqPsxJP6vD3U
+	1Cc+vP1bhZOLcXn3WQLlrn1yQTyd5y3Mg1H6+R6wrPujgCHExWOceBQQsGNieKl7q/eWrX0IvsD
+	NGw2W6K+7ot5UiusOamCTt3rCI/ILCZtXd4If8Sk2KLjNxg==
+X-Google-Smtp-Source: AGHT+IFhNrqfcx2OD5a7WMMfm9hdvh32RzMT9SwaoQX98MOh3rsjs5bl8ZcPw6ANmXCMAiufhtedgw==
+X-Received: by 2002:a17:907:9623:b0:b04:388f:224 with SMTP id a640c23a62f3a-b04388f4a0amr632116166b.1.1756823645539;
+        Tue, 02 Sep 2025 07:34:05 -0700 (PDT)
+Received: from localhost ([2a02:8071:8280:d6e0:e14f:ef73:8858:fa53])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b042523ee7bsm575191466b.109.2025.09.02.07.34.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 07:34:04 -0700 (PDT)
+Date: Tue, 2 Sep 2025 15:33:57 +0100
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, ziy@nvidia.com,
+	linux-mm@kvack.org, vishal.moola@gmail.com,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [Patch v2] mm/page_alloc: find_large_buddy() from start_pfn
+ aligned order
+Message-ID: <20250902143357.GA6654@cmpxchg.org>
+References: <20250902025807.11467-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-15-bb091daedc52@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: 0E7E5C000C
-X-Stat-Signature: uwniqn8fi8xcs9ho3gfzoh4r8eho7fa3
+In-Reply-To: <20250902025807.11467-1-richard.weiyang@gmail.com>
+X-Rspamd-Queue-Id: 967A74000D
+X-Stat-Signature: 4cui9ss7rqe8xqdz9fhix7qg9qef4fna
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1756823591-892090
-X-HE-Meta: U2FsdGVkX19H3SL7/anR6DjWcbOGGbwPvTvKtvqWp5+KoP0NDKFcayERgXAGwzcGY9Bcdi5O3SxJVjHy+ngE09yYtBk+PzV4Z8fQVXvxJ7QJzoCu6kdx6o7cG0mW2QU9iHUm9EHQNx/wAHqaIVBEqGmeCHfa+++zMXlBnr9H5VFvpLXY96GrVlg2qzRMjS6C4Tf9kr6xftSdYHsELndQjqKfuBCd6fm/DEOSpSNJxPe0T3t/Pa5O91IVEt1eWZB6lplkZZdfE2Fc5QnF4xbQp0O6QyaMXRkEbtLNcZBeo9OC/nuOILhNnHb5DnO7GLfrtjbnAFL2Egj8oKCJLgqPGeOfYdFKTbOkDuII+jcvXYEmYNeryxdWa+HzdrKsVL1hZk+0mvs1h9tO2o5GP1L/2/jIm7BkIvItGhss1ULJrQRFGcH7V3dxHualzu7OqAZoVBP54Wd9Pd9/yx1X9aU9X5zCMoHsd1dJ61mSINYs6AMSNps+ck7By9gPFFc2jQKXVrSJgGPqDNw/VEag4C1SuuD0fg/6CQbKyL2/TyJhdPXvGRvLb2Jh2W2PlWoM7IXB/dZ53N70tRLv7znnvKEbOEUsIazCG/TykRH1c+q1Di7F3+0ZcQDZs4Jr9g9ssBvE71mbbPa0yzcL1F/H7dHjMUosUd4uZ/4TvnekR2pmK6GnxLVQGuBcF/MCx6DVCwHSG1ySueocrW0aWVUVMVnTx5OB952HqEnNOkLuIsRB44nZoVVnI8FncvUqQxEa8Fo9IWtVJH+z1gDT6LMpTlmFwcnh1o8jZSkEEEMG6QtBUpet/XrYTFOgPZwO5gTMOpeONlFKMd+Xx7bvAnD/9oIQebCmNrOq10UkouE9Bnl1U3daQlB5SMFYVYiI5Y6vjNJuzOwM4Zh1bbdCoISQID/wLjYdp4GVkwxWqfXi4XhQ1s1yjsREByZVmWqrI5CtCKfjxKbYO9vlWd/sqgWmLJ7
- a52aC5QS
- Q86H8BI5t8p2ivYRkUNNvxeKJLEGLt/1hZnzCb0yQPUJg7gTxtpD1HJZZsJLHaDONAbOsbENKhaw+vsQtQqB+lI064ATxvVV9mrLuG5MYFzaMBhWTwBkhnHhCEuQelc8/0sj7nCT+vRII3FeWp3P/jcNZez0w+/gwEt5mgWPTV4gPwYY6vgxrlIEnbjHWOC2jSGDa8/YwnkrStm2fTY2TLf/FWGGA2owvDp9n5VkZ57/Nddi7khExzG/55DLGbIceFBB7nhWLjo/o0j5Eqj/qgEgX4S8ceknRoPN9ridIPu/fAX5rNg7UkB4UVhLSOlxEosnY39P0ZUpfobGHvMrTmRzbY+4uJzaEMhKzABXn7/mY+AF+F6jp8ZNle3XA5ynk4xeZhiddoXw7zkE+6cPbCgwqZg==
+X-HE-Tag: 1756823647-398517
+X-HE-Meta: U2FsdGVkX1/Yt4EVzikiPTPUoy0JAHbf7lpxiSbRxYDL1K16F3sWBG4qUgfbACQMlNiPByG0PpZ0Nj/LRE9S3a3bmgT3uyuqkYea8D/aZYNvUU8WijqtjKB+rL+tFgofiPZDWpXFIagVvTCHTf2hfn3R++oIMsmmzPnKhCkD2iSc8wmLqV+Ml/twYBiVWnZ/sypLVXaJ3Nnaf5IOdSZtuvmhtcOYQiHjafGIgnVQliviKtJiePNeP4Hay5bvxPd0OMbLvK+eQ7m+5GDSb/r3ajHzOgn4ox9UceuxAoybiaDiInmzkAgyBZGkLOHK7tC9qcVnzvZTWUetl0UJ7jVe6oNAQd/raGkW9CeJgQVOmUcgAnjeobCjAGvcCihlpSMfcda8g9bJwT5rBg4By6nxKmdHXle/QdjtUUP1Yt0WyRWO+0/1gDpPLw1kZiSnNsSWViQbtioPLfgjeWu1WZqKk3D54Na1f+vKRGps7tnMxd5JkFUvC736UqdQm3i939jvMWKS+3li7ewSeo/CRlGTvxnjCRq4+kJJbX620GIM7B9lH3wxQ5Hrff8bTB443NslhoWL6cs5oHJHs/zYQy/wQltGLbWyLXpJxynFR/tQAWbcaeSOFQelKINiPcjHivlw/PyxRIAmHcvSJFxPM93gw1rTKz/HiRMRtB43c+X7FVQ0v4BathJrPtVT42HC0Ygvf2xtQzndY4WtstVrDt3TbgcO4Va3ItPZMdpw7ioPU30eQA0gvLanoKyucXasdJlsAdxDpcupq2YcXlW+pkvxwENXowQKfPlDfWTgnXzR7Ca1xVQ2C6Fk80i4Z63pxMKhLD4wh9uNqlJ1TghzQTbv/EXUS6N42Q90dG8bnsHvgYPbKK/VmElRq1aWPjg1mRHZhYoQAp3XGru9jE3XyKNFE4x42qcJuoa+EGkKgx40K1rczLyxhwE3bF2gx27I8kCuS2LIO4AzreVBkJXkskC
+ EVucKbHz
+ 6XAlvBTnKoBbS8t4AO9ubwEIQpf4snEB1jdA7B+I83hGu5DBQXsZ+LktDqNHBNdqO2PBuBRV9l14G48dMnORC+9NJmNLKULsN/KVKNkzGIWlF4HaXC3TtuTkdx3f3wuihnifX/dIrtjPUdYDTTXt+IO2HDzLH6gIR7w7DAVFuAfdjoHrMF4pNL/s8j7ecKOx4lyahhckKgzMYr6IP5UGKcxOkxxvrZDswFw+mwp5wVYOFMpUzkTzHflDTd+KXrrxtU+BTVlkm/EQkBsghl2hsYe/Johv6olpib2N9QxzLNTQFcbvdVUYTRrH4wC7rMfQdFzH7hEBTWg5O28H/d+JRN8kIxNa5Rbf3ZpdkU08tyJNz8FMBpmYvRyl0dTL5gqY9NY9B2ZVYb5NgaqmIXJ64vG8Fya6zt7T0aX7sm0ab8/SNPHn+qGSIoal+sX4IEj1EgKwdgLfgk4yNMFZ7PoBbKHEcj5k1vNM64OibrULDBVpzASBqopiwBpeIOGWO/cyG5SydaStMps+YRDFxhDnBi7UUjKg+wSq9ogHHBQhpVvgFOeavJbwBTc8bTiVLjCv4v2mK6gzSh6AOJBI2BXodhYFJcJzbyrGxSjF8r2oE9VcQVWU0MK1zO5zBpYAuZ2XTpdvvwhT9RO5X0Q4x9bNoRoeys1FcOc1gEElAR8IiGRQ+ryTicp4dwnp4rshwy8MZti/pDv0orQg3mXsDYzMOOIMrg7S3Jx8uFbJO0VaEsUG2ly9tWRlNrlOe2K05In/F/ZTdrs3xXKoAK9GmDy8YBfqQ0n5OSlbbIhvR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,17 +119,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 01:59:24PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Tue, Sep 02, 2025 at 02:58:07AM +0000, Wei Yang wrote:
+> We iterate pfn from order 0 to MAX_PAGE_ORDER aligned to find large buddy.
+> While if the order is less than start_pfn aligned order, we would get the
+> same pfn and do the same check again.
 > 
-> Allow pins muxed to the "gpio" or "egpio" function to be requested as
-> GPIOs even if pinmux_ops say the controller should be strict.
+> Iterate from start_pfn aligned order to reduce duplicated work.
+> 
+> Link: https://lkml.kernel.org/r/20250828091618.7869-1-richard.weiyang@gmail.com
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+> ---
+> v2: add comment on assignment of order
+> ---
+>  mm/page_alloc.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 07d79ae557f8..5d9ceca869e5 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -2033,7 +2033,13 @@ static int move_freepages_block(struct zone *zone, struct page *page,
+>  /* Look for a buddy that straddles start_pfn */
+>  static unsigned long find_large_buddy(unsigned long start_pfn)
+>  {
+> -	int order = 0;
+> +	/*
+> +	 * If start_pfn is not an order-0 PageBuddy, next PageBuddy containing
+> +	 * start_pfn has minimal order of __ffs(start_pfn) + 1. Start checking
+> +	 * the order with __ffs(start_pfn). If start_pfn is order-0 PageBuddy,
+> +	 * the starting order does not matter.
+> +	 */
+> +	int order = start_pfn ? __ffs(start_pfn) : MAX_PAGE_ORDER;
 
-Why?
+This should be __ffs(start_pfn) - 1, no?
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+If you have the lowest bit set in the pfn, you should check the
+order-1 buddy to the left first. But ffs(1) is already 1, which means
+the loop will check order-2 next.
 
