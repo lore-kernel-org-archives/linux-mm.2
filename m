@@ -4,83 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60C5CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:20:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFAFBCA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 14:31:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4FC26B000C; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
+	id 457478E0003; Tue,  2 Sep 2025 10:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E279D6B000D; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
+	id 42EE98E0001; Tue,  2 Sep 2025 10:31:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3D286B000E; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
+	id 36BA88E0003; Tue,  2 Sep 2025 10:31:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C31196B000C
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:20:29 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6148BC0175
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:20:29 +0000 (UTC)
-X-FDA: 83844520578.27.678A8AD
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1E9A580011
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:20:25 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cQPxhns8;
+	by kanga.kvack.org (Postfix) with ESMTP id 236278E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:31:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C60AB84990
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:31:20 +0000 (UTC)
+X-FDA: 83844547920.01.7E291BA
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 64D5380013
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 14:31:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hi7F8Pqx;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf30.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756822827; a=rsa-sha256;
+	spf=pass (imf02.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756823478; a=rsa-sha256;
 	cv=none;
-	b=Md3g0iNSHQKl0D8eawdQOoCgmSGEZoFTRc/NtEBk3ADjfKkrLwoL/XffxDo8EmA/9WH0KM
-	0gO0mp4aR5J1z4JYFefgtiY8Kw9UMEVdH6nWLz11s/0wj+xamXeJ3R0qX/P3JryuWL/hoz
-	XyGR8ZZPQ8GAv7Xa7aMuH/J0xIDjAOc=
+	b=Jq3ifX+ukU5MbOr6TFWu9fsjh9/rDTwhNYHpD28fLVY/8s2YJQSeqkkuIXTqS63meEfYrf
+	7LiJudx5ptJJyUe344ffRt5TdE0dHx3eTbmqrOzGN3BvmRTgfFQowzDsJXVC944Q6eZX24
+	PCowkhhg70Jpr0mS7VWoqwk+XmjhoYc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=cQPxhns8;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hi7F8Pqx;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf30.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+	spf=pass (imf02.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756822827;
+	s=arc-20220608; t=1756823478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qHXyTgYlsVDOCondbOXFmhOPZeYBMwy1Jb4bmEJyWmw=;
-	b=U4K2c3NOQYh78h8zfqkVwLteu53zW4dyddqy663tC5mn9sACk15g/7BiHj5Qy8ZJGxXkkU
-	xf0G5kDz3scAGHjbQwiPHRb2EkWd7YpSrfpEvitFuQuMkdYcEPNnqbju5yM+Aee1N1pzZ8
-	+X+oWueWRFdZ/KKEhvZ9aH7OFksO/Tk=
+	bh=tasK8TskdTx60J9GJNRpcyksYAQk990fnvsSxxEeMs8=;
+	b=AtxVOaFQralR5+uQ7gZc4gA4oWBoYdpeSMu1WwCJwLs4Hm5JCUKmPM+0/SC6pYkRwilkkR
+	F3NdFKkTLEps5hnMSh0531XyMrm7ddMJzVEZwgiabAAKoJhlcEAA+S2qaMaRZpEp3+xmjt
+	3Jro3DB9xSKJ/wUjH/dLhaKPvQLl5gc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756822826; x=1788358826;
+  t=1756823478; x=1788359478;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=iAXUSwwbvwiZC9bhMY6s6lbOEzUht7j1jWcYwHXsu+I=;
-  b=cQPxhns8MHQZenxbPiCBIZ/L0D9MAOHkNmQQvtt97EYxTFc7kpPafqJa
-   AhvOIeUXkD7HQd9jTdahYZPNU3UYAU/JVyxF0/vzmIvDl0gJLYcjGJf4/
-   tPj7XuD1yoEF2uuOdK+umRraSr+ogGhqsbJRjXZEfZ0Q7Q5t1N4g1ri08
-   fhuSnqyjL9bIt71zAmzatUNvQlHt4+8CifJklxIQT7y+XlQxmJNZ4oVSA
-   kYQ0X/k+QQwhi6trvJHTsfJvjOVSjYW7ONxNsTaUhDQyOaiffB5JJDfTk
-   V3uYMmmXbyKsEugTW54K3GC+XbAmXqOwogdeRGjXN6zq++p52dUZAbXf1
-   A==;
-X-CSE-ConnectionGUID: 3FeMCDEcRcSCHz9bcy3Z3g==
-X-CSE-MsgGUID: ww454mnOSdWRDZtI88hVdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="58305906"
+   mime-version:in-reply-to;
+  bh=wNLf2ov03mImFGkf61U7OTdGwEMuGY1mZCV4bcE5xQ4=;
+  b=hi7F8PqxTiWmXg6tOg2omhuA8qoAj1WmL2vsIhAh++8y2daC+M56gfv8
+   OJ04UBZMGEfUbTKFmlWjNST+zfchgROgDLecQy+PhAalpzreLiLtbuyhG
+   9r8xqXc8TR0M6hyjO8GHw8Y77SqvfQ2+TsVEDAv1F2icxHwzVqbwRiS4i
+   zdCK+819Z3deGa+JTJNaVzJMM5T4laD6qXOu3vUP865+vBEY30lMNK73w
+   qWbrHPx/Iy5UJ0juwbiniKCgS7T+mMgxaZf+QCiP2b6Cln5APBk/5CVhj
+   DPhiGZbTHJ/MURdjtPnjiQEEZPzSnaMbTaDWIcQFWU4Si4Ppsn9pCIMRq
+   g==;
+X-CSE-ConnectionGUID: QcjstPy/SgWPZT4bLTO0Fg==
+X-CSE-MsgGUID: 7F1vjFJQT8aH1AzLymHkhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="76543118"
 X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="58305906"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:20:24 -0700
-X-CSE-ConnectionGUID: MsrrCbkESHiLoR6gD4wQng==
-X-CSE-MsgGUID: WARwoctoTZupLE1EBSrbfg==
+   d="scan'208";a="76543118"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:31:16 -0700
+X-CSE-ConnectionGUID: fiXJ/SYAR0Our4Y6vRb6cQ==
+X-CSE-MsgGUID: /BXe/BoATnONrCvRrOtmbQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="202237611"
+   d="scan'208";a="171186010"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:20:13 -0700
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 07:31:04 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utRrk-0000000AiLA-3gUk;
-	Tue, 02 Sep 2025 17:20:08 +0300
-Date: Tue, 2 Sep 2025 17:20:08 +0300
+	id 1utS2G-0000000AiTf-1Q9X;
+	Tue, 02 Sep 2025 17:31:00 +0300
+Date: Tue, 2 Sep 2025 17:31:00 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Linus Walleij <linus.walleij@linaro.org>,
@@ -119,32 +118,26 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
 	imx@lists.linux.dev, linux-omap@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of
- pinmux_ops::get_function_name()
-Message-ID: <aLb9GKnQkAiayqpD@smile.fi.intel.com>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v7 13/16] pinctrl: allow to mark pin functions as
+ requestable GPIOs
+Message-ID: <aLb_pOG-yc-CHoiY@smile.fi.intel.com>
 References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
- <aLbrz5DYS5Yxx_UE@smile.fi.intel.com>
- <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
- <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
- <CAMRc=Mdp2djgGbgu_uwLSkrtRPomAU=6-SRdzCdSbrHWzS2c2A@mail.gmail.com>
+ <20250902-pinctrl-gpio-pinfuncs-v7-13-bb091daedc52@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Mdp2djgGbgu_uwLSkrtRPomAU=6-SRdzCdSbrHWzS2c2A@mail.gmail.com>
+In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-13-bb091daedc52@linaro.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 64D5380013
+X-Stat-Signature: at3q45rzdafkx1pokzdpmgqycmtdzg6u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1E9A580011
-X-Stat-Signature: 3c78pywuq8ao7pf34fsjudtrc6hi8m5o
-X-HE-Tag: 1756822825-290482
-X-HE-Meta: U2FsdGVkX1++woXSiSTQBd0TYHm9ubZSH6GcSj3Dowxgrfl1qMIaQ19APEG2UOzd/apvS5VjaX56aAM8h0nySM2wjmsk1QL/HicSS0rY0MS99wVtPHNxjAnZ3svVxOSc2WlWp/Aa0T6fCFjDziLliPPc/cUVucz1kUCAONBE7X+fY48mVz0GmbHfB1rqWD6M6kPLrOHwY11gjHX9QkUvZjKA+PLy1Pvx8gCJZu1ZCFGGWaKKmstl1x2TqpeSox1VH32EtU31Bkb5a5zzSjEoO1IhYXOvwfoAWHz6KB1GKzj49i9fEUK9WD3MWsEz6KRMUJgqXWL3ftIzKeQ1zbpnVgaNHy0Vbp81f9/SRFAtEylzmoG9bEyuQkgYAf+crowUpXxpBb3Z8noLMfZzuQSkw96JHUPVyjA3h0YzuZWYcCcH7KYstUhFQyK05AZl5a3Le3k6++FR2tOsM6uFl+cE/TNiBvgSE7AlaQhsYMXb5GnjHTLIk6er7p6L41KCsAEK+/5RhobxYKmrsToKVq8hZXz+FRm5fNFnFdpmqeSXOpm5itBDN97lp9Op1neSc1JPOx+G2Iq3a6qV2x+K7lzAqHzOHdG8hNn4kpCO70fZVx7xWTlhswNl2sfNT6rx+fz/Mh18jJr0KLg6/4i3xkjhcZiq89T+a2/hFQEd1Lge3v+NNRmCclqkEmjTF0R+gvIfy5VJmWOwGOLeZ5f9aEYLnA+1D234bwLBkjy2LgiS8VxdfG4WskHVgPzrOmkT/0dTh1RMuCiwpd1hJctYMPp5tjD7wuPEhFtereckn5/T9xcsBPVTG7MLTM6Gi4XYsFWeFjL3LnMLRDFpPnUTyaBa8So6SiCWbtrLFO8XoWEDKe7WlQItKP9Iw7JUOL/ipI1mRQROSAhuQdT3dPsozaZdAWomfHiwjlmPCa9ucAhBLrUpgotUeSEtIOVkvG53dNNJ89fX4W+tbQIkHh1PONl
- ubPnIqPW
- p8RfDwg5SyZhoIT6LSQlJ9OZP+7lZTZTr6lVWL+0xsDXjE//Sjt/Nx9i/Tyt7bKZBT6cwvygjWnUDEkRMvGCoZMFA8FtMD8jRiDxb6kTBWse2iG1NEjh8tcFzs285b9muyvu2D4P4nDsDtW05TDbHvaeimu8e6TabNoG3IIA4q2IItxpcUcF2+WVb6ccVN0LOEHRTl4lZ+sHkFzMtnAZrGmOFcHomoQqqkrCihUPEAiVb+XCHhnqgVrCGBrEGBv36hzfYg2+mnqDdX1LyK6qiWyovxwj8RWjL3e78H5uIC5wuCBc3aPOzT7JdyG+UoQloVvE90arHa8hMx343P5X757LO5kobti72s25oXTa716itIBqXfdCUbBjBDxWmNm7iYbU8wknRM3+A7c4ZnAIxSgnh+CLT+SMsr02j
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756823478-338872
+X-HE-Meta: U2FsdGVkX19hYlg32gu0D4w5HRQXsOLTc71MtyKXXYRZ8tASwZv7l5EDwFsn8gO7/XYC9aFji0OKl+fu/VeKLrL+IunVvdIAk0Zqd+KsCOkCtkfJwYLSezqZQyVRzTFfX6mJR8QnZp5YVNhOHjb3uwZUSjgY8/iF2AFLu/eFaX4Z/Ow0U+u57VlMW9LQfjOszNETkiU0iPmKwwn6Hld/WsyPy12ILZCqT+Ki7LY21eqb+ITbrXWfpOJYWm0Tx3Tugzu7XyLmgweOd2eznD0HiHeUQRhvyBMfjzTdGZx8+q7kTFfPwop/QUqBR05SjUb4nCAmdUC7/blCa1bWhGg7uhDZwHAxWUpfosONVl48yHmUcgmoazuj/X40E8dx7LQSAx5DB8283n2ytGIArRUCymIdG0Wr6lTxKUmV8yGvKIgGWx8+18QcvfJaRGB1PeihPhjo4o3truPOPClkP2D0a9n82GIK1spKl79g2mDXamCojDBo5xMk8X76xlHeOwXC6rnV01MKV6ohrcGMVodwR86QjaY2ZxQ2nQdRiL5dDELL/ILs+ABPyNtuRs0OMLfb++AI8+T6teeeoOX5I4mlfQhJ0K5xCoXf5miRn677sZjobJ/vvub5zcDF432m2GixRmarebFAvbMgl/61kxF8sZsrn6zEoqsPtG77aqDiirXAxiycmxq3aMwaH4U0b53qiMZn9uypLL39146aSiPdjnvpTNfWDlRzcnYa3Jgfc/yIaF/nge0UpA8ahwkwvf4j3tGPfA+dBY2ADeaJzAHTYc/dS8r4Y05uXv1O0cSfebOsDjHNaPBhxJhX6TSCZjeEvCFdc5W8NmGywjlIwErIqPQfM9LaWe9HIqeBazcHP/CN+USDlxFDVCK0t1A/corSQ1DSAmrXcXi2vl8mtQ6j6OxuwYREMKygHvgZVaVO84Is/NgLBfH/OqBxAGU+/SVc7WLvfJvqWfycYkOdYOW
+ qaa76Rid
+ FG6cBHz5E5/zhklt3s9XNQKZcXQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,41 +146,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 04:02:27PM +0200, Bartosz Golaszewski wrote:
-> On Tue, Sep 2, 2025 at 3:50 PM Andy Shevchenko
-> <andriy.shevchenko@intel.com> wrote:
-> > On Tue, Sep 02, 2025 at 03:29:31PM +0200, Bartosz Golaszewski wrote:
-> > > On Tue, Sep 2, 2025 at 3:06 PM Andy Shevchenko
-> > > <andriy.shevchenko@intel.com> wrote:
-> > > > On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
-
-...
-
-> > > > Fixes?
-> > >
-> > > This has always been like that.
-> > >
-> > > > Reported?
-> > >
-> > > I mean, technically Mark Brown reported my previous patch failing but
-> > > I don't think we do this if we're still within the same series just
-> > > another iteration?
-> > >
-> > > > Closes?
-> > >
-> > > Ditto.
-> >
-> > I meant that this fixes a potential issue disregard to your series, right?
+On Tue, Sep 02, 2025 at 01:59:22PM +0200, Bartosz Golaszewski wrote:
 > 
-> No, as long as the imx driver keeps putting stuff into the pin
-> function radix tree directly, this cannot happen. The issue was
-> triggered by the discrepancy between the number of added selectors and
-> the hardcoded number of functions (we started at 0 which was not in
-> the radix tree and crashed before we got to 1).
+> The name of the pin function has no real meaning to pinctrl core and is
+> there only for human readability of device properties. Some pins are
+> muxed as GPIOs but for "strict" pinmuxers it's impossible to request
+> them as GPIOs if they're bound to a devide - even if their function name
+> explicitly says "gpio". Add a new field to struct pinfunction that
+> allows to pass additional flags to pinctrl core.
 
-Ah, thanks for the explanation. The problem is that current commit message
-implies a (potential) but lurking somewhere (regardless IMX case). Can you
-amend it to make more explicit that there is no bug right now.
+Which I disagree with. The pin control _knows_ about itself. If one needs
+to request a pin as GPIO it can be done differently (perhaps with a new,
+special callback or with the existing ones, I need to dive to this).
+On a brief view this can be done in the same way as valid_mask in GPIO,
+actually this is exactly what should be (re-)used in my opinion here.
+
+> While we could go with
+> a boolean "is_gpio" field, a flags field is more future-proof.
+
+This sentence is probably extra in the commit message and can be omitted.
+
+> If the PINFUNCTION_FLAG_GPIO is set for a given function, the pin muxed
+> to it can be requested as GPIO even on strict pin controllers.
+
+So. this changes the contract between pin control (mux) core and drivers.
+Why? How is it supposed to work on the really strict controllers, please?
+
+> Add a new callback to struct pinmux_ops - function_is_gpio() - that allows
+> pinmux core to inspect a function and see if it's a GPIO one. Provide a
+> generic implementation of this callback.
 
 -- 
 With Best Regards,
