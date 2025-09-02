@@ -4,181 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69311CA0FFE
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 10:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 506F1CA0FFE
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 10:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD3258E0007; Tue,  2 Sep 2025 06:21:49 -0400 (EDT)
+	id 9B6E38E0007; Tue,  2 Sep 2025 06:34:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAAF58E0001; Tue,  2 Sep 2025 06:21:49 -0400 (EDT)
+	id 968438E0001; Tue,  2 Sep 2025 06:34:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99A238E0007; Tue,  2 Sep 2025 06:21:49 -0400 (EDT)
+	id 82FF78E0007; Tue,  2 Sep 2025 06:34:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 86F238E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 06:21:49 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1E4461A0BE2
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:21:49 +0000 (UTC)
-X-FDA: 83843919138.14.F865072
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F1C4840003
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:21:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LS92d6nz;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756808506; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 70C108E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 06:34:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 204F586612
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:34:22 +0000 (UTC)
+X-FDA: 83843950764.17.8BC7A96
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2004940013
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 10:34:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rzr3Bx7U;
+	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756809260; a=rsa-sha256;
 	cv=none;
-	b=qWNrZKQcSPazirXI2aTsddoi0KIToxgehuCFYimlRmHa9YQpfWxgQzH7wzqNoaesvp/npa
-	wGTlERyviNBOgOoM+IRHmDdDhbw7J7TZ2D1uWSk5hhGCaoY2IDO60nSX993wgwftdr404V
-	hREJra/MTe9EmgV2KBA6wtbzh2bcI0Q=
+	b=v8Y63lKQGSu7bo+K9CT07sP+/zHfzhEtWZR+wkgWSrPHU8NbiGJYriVUyHX19Hks3zwqLa
+	Eug10pOj+2VJwxDfJGK1IqvZqEPEUoZFvoWWKb4qJYJKdNoP1Bl7h/17pRXnTJFvSVTKQ4
+	7D/8QowWOdcfqNUMCB8nfkYAEo+Kot4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LS92d6nz;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rzr3Bx7U;
+	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756808506;
+	s=arc-20220608; t=1756809260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MGigtSodY2ufJETuQQ6JObO7ddBHNbjmaKCUTXaU8Xg=;
-	b=AyKaWkWzdLmeqzGjTFy0XtOa+xUPl3KSlXynNsGyYKfOtpim1bWQTZSGroooH6vFYr0lgb
-	q27NCXJ+haRca30671MzyjDX2Tpv/wlGRNtRqE/oQpOMWBVTweZAl/Y18tlBKU4dc84P3l
-	xzf/iq+AY2H2x3tGxeu1tUB3/xWVdp0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756808505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MGigtSodY2ufJETuQQ6JObO7ddBHNbjmaKCUTXaU8Xg=;
-	b=LS92d6nzwc5u1dyd0Gy8l5AVMbfoaCXX8oe+XmfcDWxZcnEQOHp6i0zmPsoubsT8HmR869
-	sJNaI9DHTi1jARAZBPJJ2NJ0hpFruIVe5JxJZdeEi8h/mkdTh2PwU5fKrTxiTWAJzqBAqM
-	+fF4D23aMDZ97hpt25OEi6B0ncmSvb4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-S5rhdf9NMJq74kXF134gaQ-1; Tue, 02 Sep 2025 06:21:42 -0400
-X-MC-Unique: S5rhdf9NMJq74kXF134gaQ-1
-X-Mimecast-MFC-AGG-ID: S5rhdf9NMJq74kXF134gaQ_1756808501
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ce059e3b83so35423f8f.3
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 03:21:41 -0700 (PDT)
+	bh=4gr05sFl9E5mGpq0zxI24mI1hqeAukkuCMWxkJ3Xa7A=;
+	b=ZEGaPKeJFo7sGvx6cCJIfyvwWClKm8EWGyWQ0CREmkOrNT/5cvvp7Bv3rIi1sGaJ8vGlge
+	bsWfPUgJtAkqONVCUfcY8WWnfYXyeKK5FHCVgOa4COyQJExGPyzZstrkRYT6Fhww54USX7
+	t15Yp9DsB7D4niICQa7dusK2sT057yo=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45b7d87b90fso35088875e9.0
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 03:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756809258; x=1757414058; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4gr05sFl9E5mGpq0zxI24mI1hqeAukkuCMWxkJ3Xa7A=;
+        b=Rzr3Bx7UyolVKhk4/Zv5Lmn4WT4ttkGurmmv4LJEmqodXa7kaT0MivRBY+ViNxdyAc
+         A4S2MsuRv2Zv73U1wJSsYUa7tVwYCh3VRd1fv1ujnuQQlAI/5chG8euW+lq+MibNpqQ5
+         t8bFdPBXU6VGxMIiaASgJWtIH+Dx9IsTIXaSxULQNY/pUxu0L0gIz2Y1A/Eo9RPTbDxF
+         23UlnhdY6PtoZ3Mquux9lwGslvs+LMixswEJy4Yt/xpqKmbj9TQ1w+YeLFEUbN+vFqtR
+         p6StFIs52S6PM4I+RiLw7Kxxwd0M1RGHukUMksFUC4OSfjbesL/ndk1polimd+M08RfT
+         u9xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756808501; x=1757413301;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MGigtSodY2ufJETuQQ6JObO7ddBHNbjmaKCUTXaU8Xg=;
-        b=bvQN4O6LwHqob0j5PzFcg9dBvE6ttql6sxflNkHFvrlzmn7rHKVNXZelyEamDvZgsa
-         9giNnh1BVx+wLMX+2o1O1AwtOOAIC5yRX8kPv8JMbfIY7fHy8aei4ImJjdTk16fObrwv
-         vUYCuN7uAayoub5BNx9nlndrQbkZu2ej3mPOxiLrVGHbGrHtvd6VE8uCk4byOkSOGNSF
-         ICdMqH36kJrIgoTxC2hlNgmqmrXCjN96JiGtd+l9I/PdOJjkC9ESM7TqTPydNLB+zgPk
-         Y5mmlkTW6wLJyn6S5z0YCTiUPJLB9eUbL5Xq4Vk2yJkoWMb5onbeDtfTCNjogzHiCYh+
-         d0pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFNQEetVApExvdUzTPCq3UpzEAXavEqg9BRKAWbyAC3IQxp7Mw8abAmL44tZugSlzD52I2KOcMQQ==@kvack.org
-X-Gm-Message-State: AOJu0YxBa2KXRhqv2KxvxSLOcUvbKK29BWJEGtA1naLicMae7Ga76YI2
-	HfyRvp4ADyVBKuHm1NltmUDKwhqlaXkyjHJrkWjv8MPIXkhIDuwaXbdggnvLyHwvZWdHo4ZltP4
-	nyaLM/BlUwFg8shrDhGo51ZR8uswBGonBvfExLMlvzMmL+bUsG3q/
-X-Gm-Gg: ASbGncsZUq3dk7bijQxUvR0uog56LK9Rf8pCWbZSWQzfMWNw/OJ55H0RQIYWW3Zba10
-	iqITim8VRD3YG9uAAxFuNz9O10EUi9raX8pS0WZMXVlvd9DCB+t/USnbuSj7Su/grhEVmukDbx0
-	KQG9yMkI9cdJxCUgsI5vI+AVquEN4ZfBECQ1ZruW3mD0TMkqRIb7hUBVmXz8oDdqGF4u7OrCBZS
-	+bJocnPpmHd1LFDafa4QiZedZLtqkERCKx6mcsPy0mkw5fYM/A+Vo5ljzaxqCiGjfqWVY0GwdCV
-	gyi1GgOCVjUmedmr0W9Rib+GmQkpWMccPSOQDA7ABaCFDqr1DsSylRMbJhwGIGNfc9RNVCqcQvc
-	WKi9lN+bhRhGo9aKOKCv/OhZpu9sIfWuyrk8D/CPbbLZ+5Dg1VhQIpoxfp8A6aqXkIFc=
-X-Received: by 2002:a05:6000:2886:b0:3d7:7def:8424 with SMTP id ffacd0b85a97d-3d77def8cb3mr5101947f8f.24.1756808500788;
-        Tue, 02 Sep 2025 03:21:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuwAQ5AtqvG7eXO2gkUyF/tXrtUAMsjJ9ZGj6VVfhIUzEBqb3ntAVaiYHv3ttfnME/tutQ5A==
-X-Received: by 2002:a05:6000:2886:b0:3d7:7def:8424 with SMTP id ffacd0b85a97d-3d77def8cb3mr5101917f8f.24.1756808500236;
-        Tue, 02 Sep 2025 03:21:40 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1f:3f00:731a:f5e5:774e:d40c? (p200300d82f1f3f00731af5e5774ed40c.dip0.t-ipconnect.de. [2003:d8:2f1f:3f00:731a:f5e5:774e:d40c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6dc1sm274580235e9.1.2025.09.02.03.21.38
+        d=1e100.net; s=20230601; t=1756809258; x=1757414058;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4gr05sFl9E5mGpq0zxI24mI1hqeAukkuCMWxkJ3Xa7A=;
+        b=jIL2qPK1NWIFsCUnaSEQ7tF45GQD0/k2tzOr2Am0ynTPK6sNT5I2PQNQYxoeh4QQ6r
+         sPsjQKf3t/ZDJ8fUH8Zv16W+hgcDu2BvfZ/AsJoyxecFxfuyrSrfY75JkVVAXqbBfCo3
+         7vKEpiRzK2d9j3mPodLybkQmK2shKMah/LC0x9SgyDkuH8iJCCetZomlFFLp/NSzq4Mw
+         mYwq/zGffxINQGyOBVmxaDFzJIJZhuHXa22Rv6curG0QYgrXcOkPFQI0QgS4AKXIhehw
+         P1mVOPHxKEE9F2lMJ2/kUC1+Xd9pVeZnBp0kgvqyOJ1sSR2c4WOlfSWsjn9s42RTsbk5
+         NoQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiahpFtL4Dg3r3QL1lZc4xEvxtieq8+tKoPXmfv3BMaD4oMsSbcmlhq9IaroYNvGuhyoQA8nWTsA==@kvack.org
+X-Gm-Message-State: AOJu0YyN4BviJy/Td8PMeGohyolLFAja1//9sivoiTgwMHUhyXW5Da/W
+	engljc90bgKPkF4HVOFaNdIAxa4pg6wtoV3/epfi2sOzOGOheVGmraMb
+X-Gm-Gg: ASbGncv4vAqCH/BOtQgCS5D9ZKQSZ9K6T8tFpqW+rYkCwhDd6oS+PI+PKsU4Wg+rqLW
+	QAvZHNr2v6Zo6rnXcNDeIvEeNEHGM0pMr77GIplp9oko8YrXeOixDEgIkHX2IqsXbKPbzYG3CtG
+	twL6EJfcU17NZPZf3WZO5aTn4lKio2kAnps+Bt+r41ZaYavmtvhrpBs2osGAMFKzTNkxxJ9QAVD
+	AIhyXo+RaNSZE5iz1f0Zotg2nHektHbbOtScXecw46UVwagSs4zwIrPHajncVWizEb9bJrQ/23S
+	lpppiJOtO/MOmMzjVWeMu2S19T+qIVBfd+baLqLhof7zAwiJJXxdV6ONNo8t1CrL7LLBaCqqjJ+
+	uhKcpyNxAAZHl8hmefnehLE8MVq+gCOC77Drb9uK3kb5IeMzqTxDo/M6Fb45bXC+3oMWoCfXN0b
+	uxQx/AK1As50Sam0BZ
+X-Google-Smtp-Source: AGHT+IHr9wRTUh3+XFyRCz1Zu9zWA4/sbliCfxf1+3LDP5RehEXdAv+muRODoSoFjICHs5NQzhGYrg==
+X-Received: by 2002:a05:600c:1389:b0:456:942:b162 with SMTP id 5b1f17b1804b1-45b85589e58mr99248955e9.11.1756809258185;
+        Tue, 02 Sep 2025 03:34:18 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1126:4:1449:d619:96c0:8e08? ([2620:10d:c092:500::6:2ee9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b813816desm103955815e9.4.2025.09.02.03.34.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 03:21:39 -0700 (PDT)
-Message-ID: <387271d8-7ad3-4f56-b6da-b0deb0a6be6b@redhat.com>
-Date: Tue, 2 Sep 2025 12:21:38 +0200
+        Tue, 02 Sep 2025 03:34:17 -0700 (PDT)
+Message-ID: <17075d6a-a209-4636-ae42-2f8944aea745@gmail.com>
+Date: Tue, 2 Sep 2025 11:34:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] mm, swap: always lock and check the swap cache folio
- before use
-From: David Hildenbrand <david@redhat.com>
-To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
- Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
- Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org
-References: <20250822192023.13477-1-ryncsn@gmail.com>
- <20250822192023.13477-3-ryncsn@gmail.com>
- <911dc3b4-c511-4ef2-a159-091780987965@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <911dc3b4-c511-4ef2-a159-091780987965@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QzJV7D-tnakr96jeGbRnD_9HJMDSUDthIFOeq5iP1VA_1756808501
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
+ vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
+ yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com,
+ aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
+ catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
+ dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com
+References: <20250819134205.622806-1-npache@redhat.com>
+ <e971c7e0-70f0-4ce0-b288-4b581e8c15d3@lucifer.local>
+ <38b37195-28c8-4471-bd06-951083118efd@arm.com>
+ <0d9c6088-536b-4d7a-8f75-9be5f0faa86f@lucifer.local>
+ <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
+ <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
+ <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local>
+ <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
+ <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local>
+ <95012dfc-d82d-4ae2-b4cd-1e8dcf15e44b@redhat.com>
+ <bdbb5168-7657-4f11-a42d-b75cce7e0bca@lucifer.local>
+ <e34e1ffe-c377-4c9a-b28b-ca873f3620ac@redhat.com>
+ <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com>
+ <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
+ <2a141eef-46e2-46e1-9b0f-066ec537600d@linux.alibaba.com>
+ <f34b5fcb-6a97-4d97-86a8-906083b53be6@redhat.com>
+ <eb02c281-6d41-44af-8eaf-8ffc29153a3a@linux.alibaba.com>
+ <286e2cb3-6beb-4d21-b28a-2f99bb2f759b@redhat.com>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <286e2cb3-6beb-4d21-b28a-2f99bb2f759b@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F1C4840003
-X-Stat-Signature: tk56xnrc9j19ujwoxrzza9nw4qbxobro
+X-Rspamd-Queue-Id: 2004940013
+X-Stat-Signature: 96j4q5zjfuhyj9qgc3ip68bzraacz3ph
 X-Rspam-User: 
-X-HE-Tag: 1756808505-53021
-X-HE-Meta: U2FsdGVkX1/Ag6vlE3LClJuedp9jOdLdzw9tlret7tElxI6AOIA7gmkJP28IZ1KOkhAe2CKYnumVsFCkAB5Z25cAlHMSDUKaCtlVe5V/Tn0P8tqDJpyvpQ/TFdS/6OJ4+zWqjUJTNBY5KGucHIwpmqTEc4KJtoGXDNMxbW32XvhlRHvFqREvNfCIG69rOeSYY1dpjHSAFM7qLB58KtjSrGkItHGOwXwVZaTfabVDX6d08CYTss8MIMeWE/hqptSvkKIG4IE9kdLWy0Xmk19eC79TTxOo27vPKosPxteGA2wlf5wpLN4dyZp7ZjlwHOhDEnt0XaXRZaUbL2ooLtigV8+UbNsGB6vRXrET02abJ+86oZGWI5ap0JDReW0BXTXR0MFce213Lt4ecsR9edaPQxQraSD4+manh8gCPz49EJxRWzvmKZ0PJv9w2ipYHNNJNCE8k1ZmAbekPTIiu89ze3ek+1CK/HgGLkXns2pGrGJC0aFOGFYKll5LJoyWMqRU6BpcoElf6kK5xlPGBS9cUXfdyApLHk3fkw4/a8GAUrUSvzCi4cEYIURdZjzeuIxF1b8U7HLIzehdsQCR1e8c6hgbEcmJaL15bI8f/FfHCSZ9x5C39KJOiXE5d6Y+jXjtZB3K+NLJurNV0wElSrA+ekuP6Rur3lsbblKAsBcWll7tyj1oycrrTkYNMDx2ZcAlcWOi5rGX97Gzv2dOU/6NSfs4pXp6HlauvWs/1dCPeJlPm/rXtw3g1BtTtETwlx49hdNmi9RC1aTLyHf80JXhcobtfs7355uNOKQDDo2L2sqE9z7FNyWl1oIytplNvAWhkTquqV0Ek0nVOwKV1NwklkI8Do7IUA5bKlYmUSzMoe6UL4USf1qd+RT+JEDiuN9oJtn0XCePcyVA1CNDu4D5jI/io2B7aV37i7Gf8WhwZ+CluidMkoTTQv7xXb/oE3FSGyq5cFiiaCaaoNbYw+M
- CHPK8OnJ
- iPoTi4IY4ABA3StAFhJ7NBGjALpTqsLJtl6KGjc7U8vCQIcA=
+X-HE-Tag: 1756809259-81475
+X-HE-Meta: U2FsdGVkX1+wUQka8gfMa1eatJPovUnYDIWpqfInUnlWMQ8ClHkINjPrQVrPtFk0XbT1KfDmojtAwlFOIsmdKW6g1O/DSwU6EKmuLYQbdZUzfBw8DG88HqlIeLwPeYaWrp8GKejK682dx/0OD29xfzxAx1huwogXHLwOWmuAxAMIoPEHBW8WcWNhPII1sIrQdAyuU792p8kTLZBTqp3DhMmy1vKw3SsvSmq28QNW+wh6t+Ck2urWNA6cAjS2pzeNIAR8bodfdvijOyRCnB/ImKK6fGa+bA5us+9V4W3brshgA9WruSt984YUxpEDWRaYudhQ7R2PGdPFs4uWEdYYMTstvdRc2oSpMR47jYf9r/pC3eEJXHdQcbd7nt1nQt0tCpbTFUrzsmyPapHCNo2WK+GP4J1MnSHF/gqOqB+oLlVLyPe95UKGpAj+A+y6gkBAgpchSMKfykM5iQ2CT6GBbd8kPp4bw4Q78Cq2iaOBteTq2Yn++GlJjPaSR0do8AsV/ccw3hjGZxP9yddyVGzHLCWvr51c0Km99+W7u8//kAwUXzpGRxEU2YaHcr4ZB1nETVVM1xSdxJaHRVPU9yr0ZNSXCsRrwd9x2rfDbz5+igeUg76VYR0nkHnYKsBzfI7Wl3quczlJcujtXj4HSC8BH5PZ6zY/UnkHlPlta6/HWehFr9h3OxtpxTZn3vrwKfDeT6KSaaBfQNqV0FFZCDfpF+w0IcQ9HH2mzZYqKyhsLv+cxeNPm8tjUci/vOjSrYzu02HWLng/hQOr83jhNB9tZWtmZLG86DLapTtabKk82FGNE0Dnl0WCJzKNGdPvuFhwUBUBESY3rjVsbO6iSSQ8lC3qgdR8Y3t4zsRghEdGw/DkKL9+30hMUp+dsSWsu6KsmjOD9x/2nSASA9gQlLXU4dpu6CAJY1wlBFLsWSW/eDDBeSioRoWxritwjiny3z1VacQikTbPh+noBPCv8nG
+ MGIYbxjP
+ sZ8y5/pzThrp/HxfHL4u2+C5pz40rpBs+lXWDBFrhkk/DAhhfTVgkw44ByIRsq82+R9k2G+2BdXNwe822pzreaUIG5xklP+0qX8gQMzkkW0fooAlMeJ+VM+wkTCNJjoA/qO+Kx1snKqSWM4kjr3BpfGTm9MJSRBFJ0EPRsnXuYhwALHkFYNjzISJaqe2C4393uQjEIcBMtDoTGUlyhVureYtm+zwtGqUEnXN0W9OWTUbArthaBk6Dky2glrl4JTCBCo856fPAOow/T8m4eDY36RLePUp67qpuwQ0+bd+IOR05YXkA/KJ008Mwz7GQhzDZNnzHGwe/NnEkITEP+Wanj1WD6JDVNH0/ZPmwQBuoApDHpA7sI3eYTHBieU7cbV/YZnd15rkK8OnRElefzpwbrcWkTIs8KlRyHnlT84FA8kPLMDqSRegVkevsb+ZRgAJbKLSQnUep1LJvsccNN89mJQz9IKkEwrvmhPKLKMAviHVPBynQg3X4qcqTQ7SxSbcE1SeW5YUEHZSk1oyEhnO8VundSPr6oFi3FCeEPHkKocrVfjbccFAUAiCbVlSTpquES6CS5Bgkw3Dt0s+qYebniG5RHK92BOfwD1oA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,58 +154,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02.09.25 12:18, David Hildenbrand wrote:
-> On 22.08.25 21:20, Kairui Song wrote:
->> From: Kairui Song <kasong@tencent.com>
->>
->> Swap cache lookup is lockless, it only increases the reference count
->> of the returned folio. That's not enough to ensure a folio is stable in
->> the swap cache, so the folio could be removed from the swap cache at any
->> time. The caller always has to lock and check the folio before use.
->>
->> Document this as a comment, and introduce a helper for swap cache folio
->> verification with proper sanity checks.
->>
->> Also, sanitize all current users to use this convention, and use the new
->> helper when possible for easier debugging. Some existing callers won't
->> cause any major problem right now, only trivial issues like incorrect
->> readahead statistic (swapin) or wasted loop (swapoff). It's better to
->> always follow this convention to make things robust.
->>
->> Signed-off-by: Kairui Song <kasong@tencent.com>
->> ---
-> 
-> [...]
-> 
->> +/**
->> + * folio_contains_swap - Does this folio contain this swap entry?
->> + * @folio: The folio.
->> + * @entry: The swap entry to check against.
->> + *
->> + * Swap version of folio_contains()
->> + *
->> + * Context: The caller should have the folio locked to ensure
->> + * nothing will move it out of the swap cache.
->> + * Return: true or false.
->> + */
-> 
-> I appreciate the kerneldoc.
-> 
-> Intuitively, this should be called "..._swap_entry".
-> 
-> But I wonder if "contains" is really the right term to use here. It's
-> more like that a swap entry "belongs to" (was assigned to) a folio, right?
-> 
-> Sure, we store the information in the folio, but the "contains" is a bit
-> weird.
-> 
-> folio_matches_swp_entry() maybe?
 
-folio_matches_swap_entry() is what I wanted to say :)
 
--- 
-Cheers
+On 02/09/2025 10:03, David Hildenbrand wrote:
+> On 02.09.25 04:28, Baolin Wang wrote:
+>>
+>>
+>> On 2025/9/2 00:46, David Hildenbrand wrote:
+>>> On 29.08.25 03:55, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 2025/8/28 18:48, Dev Jain wrote:
+>>>>>
+>>>>> On 28/08/25 3:16 pm, Baolin Wang wrote:
+>>>>>> (Sorry for chiming in late)
+>>>>>>
+>>>>>> On 2025/8/22 22:10, David Hildenbrand wrote:
+>>>>>>>>> Once could also easily support the value 255 (HPAGE_PMD_NR / 2- 1),
+>>>>>>>>> but not sure
+>>>>>>>>> if we have to add that for now.
+>>>>>>>>
+>>>>>>>> Yeah not so sure about this, this is a 'just have to know' too, and
+>>>>>>>> yes you
+>>>>>>>> might add it to the docs, but people are going to be mightily
+>>>>>>>> confused, esp if
+>>>>>>>> it's a calculated value.
+>>>>>>>>
+>>>>>>>> I don't see any other way around having a separate tunable if we
+>>>>>>>> don't just have
+>>>>>>>> something VERY simple like on/off.
+>>>>>>>
+>>>>>>> Yeah, not advocating that we add support for other values than 0/511,
+>>>>>>> really.
+>>>>>>>
+>>>>>>>>
+>>>>>>>> Also the mentioned issue sounds like something that needs to be
+>>>>>>>> fixed elsewhere
+>>>>>>>> honestly in the algorithm used to figure out mTHP ranges (I may be
+>>>>>>>> wrong - and
+>>>>>>>> happy to stand corrected if this is somehow inherent, but reallly
+>>>>>>>> feels that
+>>>>>>>> way).
+>>>>>>>
+>>>>>>> I think the creep is unavoidable for certain values.
+>>>>>>>
+>>>>>>> If you have the first two pages of a PMD area populated, and you
+>>>>>>> allow for at least half of the #PTEs to be non/zero, you'd collapse
+>>>>>>> first a
+>>>>>>> order-2 folio, then and order-3 ... until you reached PMD order.
+>>>>>>>
+>>>>>>> So for now we really should just support 0 / 511 to say "don't
+>>>>>>> collapse if there are holes" vs. "always collapse if there is at
+>>>>>>> least one pte used".
+>>>>>>
+>>>>>> If we only allow setting 0 or 511, as Nico mentioned before, "At 511,
+>>>>>> no mTHP collapses would ever occur anyway, unless you have 2MB
+>>>>>> disabled and other mTHP sizes enabled. Technically, at 511, only the
+>>>>>> highest enabled order would ever be collapsed."
+>>>>> I didn't understand this statement. At 511, mTHP collapses will occur if
+>>>>> khugepaged cannot get a PMD folio. Our goal is to collapse to the
+>>>>> highest order folio.
+>>>>
+>>>> Yes, I’m not saying that it’s incorrect behavior when set to 511. What I
+>>>> mean is, as in the example I gave below, users may only want to allow a
+>>>> large order collapse when the number of present PTEs reaches half of the
+>>>> large folio, in order to avoid RSS bloat.
+>>>
+>>> How do these users control allocation at fault time where this parameter
+>>> is completely ignored?
+>>
+>> Sorry, I did not get your point. Why does the 'max_pte_none' need to
+>> control allocation at fault time? Could you be more specific? Thanks.
+> 
+> The comment over khugepaged_max_ptes_none gives a hint:
+> 
+> /*
+>  * default collapse hugepages if there is at least one pte mapped like
+>  * it would have happened if the vma was large enough during page
+>  * fault.
+>  *
+>  * Note that these are only respected if collapse was initiated by khugepaged.
+>  */
+> 
+> In the common case (for anything that really cares about RSS bloat) you will just a
+> get a THP during page fault and consequently RSS bloat.
+> 
+> As raised in my other reply, the only documented reason to set max_ptes_none=0 seems
+> to be when an application later (after once possibly getting a THP already during
+> page faults) did some MADV_DONTNEED and wants to control the usage of THPs itself using
+> MADV_COLLAPSE.
+> 
+> It's a questionable use case, that already got more problematic with mTHP and page
+> table reclaim.
+> 
+> Let me explain:
+> 
+> Before mTHP, if someone would MADV_DONTNEED (resulting in
+> a page table with at least one pte_none entry), there would have been no way we would
+> get memory over-allocated afterwards with max_ptes_none=0.
+> 
+> (1) Page faults would spot "there is a page table" and just fallback to order-0 pages.
+> (2) khugepaged was told to not collapse through max_ptes_none=0.
+> 
+> But now:
+> 
+> (A) With mTHP during page-faults, we can just end up over-allocating memory in such
+>     an area again: page faults will simply spot a bunch of pte_nones around the fault area
+>     and install an mTHP.
+> 
+> (B) With page table reclaim (when zapping all PTEs in a table at once), we will reclaim the
+>     page table. The next page fault will just try installing a PMD THP again, because there is
+>     no PTE table anymore.
+> 
+> So I question the utility of max_ptes_none. If you can't tame page faults, then there is only
+> limited sense in taming khugepaged. I think there is vale in setting max_ptes_none=0 for some
+> corner cases, but I am yet to learn why max_ptes_none=123 would make any sense.
+> 
+> 
 
-David / dhildenb
+For PMD mapped THPs with THP shrinker, this has changed. You can basically tame pagefaults, as when you encounter
+memory pressure, the shrinker kicks in if the value is less than HPAGE_PMD_NR -1 (i.e. 511 for x86), and
+will break down those hugepages and free up zero-filled memory. I have seen in our prod workloads where
+the memory usage and THP usage can spike (usually when the workload starts), but with memory pressure,
+the memory usage is lower compared to with max_ptes_none = 511, while still still keeping the benefits
+of THPs like lower TLB misses.
+
+I do agree that the value of max_ptes_none is magical and different workloads can react very differently
+to it. The relationship is definitely not linear. i.e. if I use max_ptes_none = 256, it does not mean
+that the memory regression of using THP=always vs THP=madvise is halved.
+
 
 
