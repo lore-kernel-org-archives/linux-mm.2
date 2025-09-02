@@ -4,116 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A182FCA1005
-	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 22:38:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B85DDCA1007
+	for <linux-mm@archiver.kernel.org>; Tue,  2 Sep 2025 22:40:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D048D8E0002; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
+	id 1C00F8E0006; Tue,  2 Sep 2025 18:40:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDC288E0001; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
+	id 197828E0001; Tue,  2 Sep 2025 18:40:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF1A98E0002; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
+	id 0D50D8E0006; Tue,  2 Sep 2025 18:40:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA3B58E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 18:38:02 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3DFF7119CF1
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:38:02 +0000 (UTC)
-X-FDA: 83845774404.30.B9EED3A
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4C0911A0009
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:38:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gjrNvu7S;
-	spf=pass (imf19.hostedemail.com: domain of jstultz@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=jstultz@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EDD438E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 18:40:47 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98E7C1A03E8
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:40:47 +0000 (UTC)
+X-FDA: 83845781334.20.CADB310
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BA1D418000D
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:40:45 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=F4WV3TXS;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756852846; a=rsa-sha256;
+	cv=none;
+	b=Y4O7/iWDaDgtNT/dBYlc/buoUZTfvqfv9H4FMnvUAklsLd+NlGCxiCR2QDkUR0+6WMFb5k
+	k8ksoXmYAN8q+Urr2RaH5YUhOWPUsw5gnAEZEv78MMa7AXzkm4dhU+hy0Br8yWnRXfGkd1
+	KIdFFDixkxEw/4jfRkeLqiA/zQZy3Vk=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=F4WV3TXS;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756852680;
+	s=arc-20220608; t=1756852846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C2Z2q0BkPqIY+E04bVXl2gU0zLZQjMNqg1qcdhYoTFM=;
-	b=6df95Cz7o23k5eTWwRq1ZqGXP07ePusxFFzh5saPCXXiqyCvRpcVUOfRdpKRFaCYYSLK60
-	WmmxO00oMVUpwv1k4bRjhaLuwaXZ0GK3yRDDQk3lvWAkoWC1XXVgkmgM9jjHKKZi11+t8f
-	tHH/yXBEp/+jIpoz+eAPXpBAavEsrAc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=gjrNvu7S;
-	spf=pass (imf19.hostedemail.com: domain of jstultz@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=jstultz@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756852680; a=rsa-sha256;
-	cv=none;
-	b=aP/BGMu0d4WLcNWYUbHqoAZabCd72fR/EUFezKwwdsQ/eiWsydkrPDE7WmIO7/FZOtGQJU
-	5ygwzKgiHL+7OgKowhmT7issbvVdRsKYNyhQKU/YTaXV3zHFZDPk/k4JMrAU1wz+91gNFZ
-	jFuTJSeMM7K2hMz63lDJJhVUcbgCe38=
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5607c2f1598so2253038e87.3
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 15:37:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756852678; x=1757457478; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C2Z2q0BkPqIY+E04bVXl2gU0zLZQjMNqg1qcdhYoTFM=;
-        b=gjrNvu7St+nHRFmJh0QsQNiTh6274b/Tn/Ta1HHX2BZ2FJh+MkeHRBFNe0G2K6aurK
-         gw+BznzcSJqUSkMB9X72bQr0G67HV1pbAgYKr464B+IMWVAsJ3dwfbzPepaJXgeruMJT
-         h08Voljy5QmcT2R9LGlpag2HIArc6PbtjMkUU3vKLIcoFobftq5UwuODM9HjPrKHwwjF
-         CKS/CjPBgPu/FKY4KsR4T0NEFjzXDajE4ChI9p5YkF+a+zx6i0UJswXbU96W3gWaIs80
-         VpegMpJ9bgGi2BlkjvykHK+NcZzOUBVfeQT6PAWlKU9dixfxrSteCxtEJa+jL1YP3Xl4
-         MCJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756852678; x=1757457478;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C2Z2q0BkPqIY+E04bVXl2gU0zLZQjMNqg1qcdhYoTFM=;
-        b=F7pysWVFLLhhcg/x6Bg6xTJbXJ6jZHGBf1aBXzN4yACu7V4QRzKeYJoXn4XwJiHX2p
-         szRzYnb7VQZd2e7g8dc41NYsxN8FcrzSID3TEYhNPNH0BkaSIIaGx+e97GGGGx83aqiM
-         3v9NLh/jdpcusR7gQpP7vCdiXSBeiste6Gyyxtslo2WT648XJA2HvEEqaHV9RtGla6lr
-         yj9nJ4nLlGScGnRGxbqdaxi8tyd7NiFakUDnMQO6dSdm1HZsib18sos2KaDUxwt1/5JB
-         2EZp1zkeahuCqDURO+JP9vY4ZPoYWcKfq61UgMNPuMMLZ9uh/mUk/+hLUiwcwcgdhJ8j
-         8euQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNFFsBmtQe2trfumG31XRG2SU1uFKOwlGIm86MJlFfPg6TJY8G2NYTYf5Kr6Yn/9VkeEGC2LlF6Q==@kvack.org
-X-Gm-Message-State: AOJu0Yxq55bV5wKbI9ou0T17reETpqVYbj5ZGn3wQkhUY0JqCCTPE6jm
-	BpaOhWPF90PsBFQn7YOOJDxBmuF/OZiKh2WJzpnuHJ0mK28Nw1Qm5m0b4Sx7RqMKLVbTi48HM9b
-	H9HfdVOEWlbH8J0kxL5VQqGZfqFvkTeGYXjixjuw=
-X-Gm-Gg: ASbGncs3HtBfo6CCjsrCbRDrDDgEK2KrqaA1+9tkA5X8/F41SMyITcPzrcuD1dwEQ5b
-	XOppvXcwwYHeNUpsOhIvdI+UIw/wwpFL495igxdWG8Jmp2fQtf5FuuNO2MAZyqdSEWbvn3xrp+G
-	e/DVDkuvwXa8JqKM0V6Qg75Y5N940/U3VOgEBTf6hNbigRwLaGldHazaXtY+bfvMK8QEjafatMl
-	uJT0IefCmLP9bv3oJ49zxUqJgmlgUFVG7XDfviuzHxNAVccEJ8tpR4Ib7vuVJI/
-X-Google-Smtp-Source: AGHT+IGmWy6Aq1ZCfTZaoiG4mkrbhZY4MfRXR19EYAWZXvoUsJvrpBj01w+uPYMLT8d4w27jw93YIe/anSgqxv5w//I=
-X-Received: by 2002:a05:6512:32cb:b0:55f:3bca:b161 with SMTP id
- 2adb3069b0e04-55f708db526mr4266129e87.27.1756852678372; Tue, 02 Sep 2025
- 15:37:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250902154630.4032984-1-thierry.reding@gmail.com> <20250902154630.4032984-5-thierry.reding@gmail.com>
-In-Reply-To: <20250902154630.4032984-5-thierry.reding@gmail.com>
-From: John Stultz <jstultz@google.com>
-Date: Tue, 2 Sep 2025 15:37:45 -0700
-X-Gm-Features: Ac12FXwG3iNj8EaL9OuUHyuMyacZ5I_i_Y3lylzCsdPDiddwbaDN3qJymljUZSU
-Message-ID: <CANDhNCoM4RFX-QccF7xT=+-tduGj9OZ_8SgrTVyRucMwyVc73Q@mail.gmail.com>
-Subject: Re: [PATCH 4/9] dma-buf: heaps: Add debugfs support
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4C0911A0009
-X-Stat-Signature: t3z1ycyhm61qagqfsk18iu6qbd4zgw41
+	bh=OLIzVFT/uyPXgr1OWQXgpxPUaaQ301GIaV5BIOr4BlY=;
+	b=nwrcFPX9Yb/2EUsE4Ot1/JvFP5kuG4RqT4//PCKPu3kJqycl+LX/CWVIv3UDHjOTTE4POz
+	NGg6W0D9MrZRPR4cEcyd9BfJZ3j9Ajkua0zIu+wub5ir7WAJVh+naSya8G0IP88IKVG7b0
+	/SIWn+z5IZQVKHUiwLmCJ6xBBiIMBzM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B33C43566;
+	Tue,  2 Sep 2025 22:40:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF14C4CEED;
+	Tue,  2 Sep 2025 22:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756852844;
+	bh=aGIRsV9W7yRHkxZ5RFmGNXNNlqvBFtD/ngQ0qVv3OSg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=F4WV3TXSoWes6xFTKpw/mxjIT3/thiuBh6crUHxk7GOnw8fsvmxLTgHhU2tQKe8Fg
+	 hd7vZJvdW6CFunsHRzmbsuA/CzqDeB2VdZECvfRlMKwfHOg55oLsXXT4Y/Hm3m0NqL
+	 F5M69AfoRzwvYPpub50mQ0gWSm53We47+qwdvREA=
+Date: Tue, 2 Sep 2025 15:40:43 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Aleksandr Nogikh <nogikh@google.com>
+Cc: david@redhat.com, joannelkoong@gmail.com, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, m.szyprowski@samsung.com,
+ mszeredi@redhat.com, willy@infradead.org, syzkaller-bugs@googlegroups.com,
+ Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] mm: fix lockdep issues in writeback handling
+Message-Id: <20250902154043.7214448ff3a9cb68c8d231d5@linux-foundation.org>
+In-Reply-To: <20250902095250.1319807-1-nogikh@google.com>
+References: <345d49d2-5b6b-4307-824b-5167db737ad2@redhat.com>
+	<20250902095250.1319807-1-nogikh@google.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BA1D418000D
+X-Stat-Signature: iuwcq1so6zrcy5we6si3y8dpjktxycgo
 X-Rspam-User: 
-X-HE-Tag: 1756852680-264773
-X-HE-Meta: U2FsdGVkX1+LFU5yl4phCMYp53FCg8oqSjMKy5PKceamTUMeHdzcOclBxxCAfRI2piaiHgk6vR0Ww6zrz6oIJkPcRqYYv0BkHX2xRYdXoxId5Pk4VgZc6BG4Wk5YYhG/S0zzPdudh+UJ9L1xNsA5f4sYTJ/PWbN0BTJ1Ohny9LsHZd731da6yUTN+VN1MY/JCtv1foZ3h43Q+0Iy8lv1/cg/wUDOuQJv0B6f1+Bxf2Zu3nyDG2Kn6gXD/kUfIqx37Ej/xd3dbo5SCH+jNGf+ENwZnwkYtJryzxcJbKKgyAufhTYT4vSHyFPMy0aMwbOq1a7p1OPJtCUsqUBpz7gLGe3mDFKr0c8lxZcCvA5E4KWA5/JWG86ToJ69ImViJvpj3CALnJsLnRuJMS7kkeXpRFBIDY8xcmj4PJer3HqNCO/+DyYgwTW7+vx6iCu36baa/PjPvwp/oxjoGue/M4FCTl8/nAcV7NV0GW7LiEfHIX+KhU4k+YkvAZ/PTBlxRvGLDL5joq6bOu0adMM/gM/rAC+aF7IEqTZQ4Uid5X83EHBOQ5ivOG4+MJWHb4P7LT+jxWP8UUYw7hoQ4Y1OpGFNDa5jWNS8KiDL94aPQOttAH7LkGncVLhj3ZwuZ/qrRF61DbMMgGKPE7fJty3BokS3mSMIIkgngEsgnzl32bfJ8dRrcmKYqQbMasc3Pmo63sSOSEpE4IftGJZK3BqyJ3bAkHuvzp4FNnpkRmhg98PVXm+oxIw/UdClkBEfCIumBS2VZVAaJTJJRhWPAWNv+3/ike+L/3vPiixa9N4fcAqKy+CsRt1KBu69ruBzfJZWzOUojiexv6KHyhkOMwfjc7WF3zFaqpmBYkBkrvCXBfOk9vwe/UUuQbFC1+LH+QFTjjpFyqCAPMlgPrWQi4MXevrwVwIC5inbLyk4PLy2/0lsrwQyCfhUBPbEDh45oyVcG7AA85ycH9xTSls2ewk/Ilw
- A6dQa88s
- BRKtwm40cz01oVCppKXySbQ11C2Z0G34OxCI1N3x5Pk8V5Q/c7JJABvmGSl4GhqYFytBiXbcXJVdYPxtzGZIVvj7xZ6roKoreCdrqBYtjl/EaQZeFl072htL7XY0yB96dIOnUc6UKl8KtlC9uV4WcJIpybzrHfZnFcDPddbsQCM0tGvTede4Nz39ZuSvoM9WMw1ZUnUv5L6nhUzQPmhk7jLAu8PkdUhzWVAHfEH6OgWwGLFW2agKdkI/Uxf3au+ZmLR6aXCqSJBm11tpcBAl7n8brg0qT66HLtsOnVRNk8xJvviuA8kfRM9RtGNJjq6Qe6zNC
+X-HE-Tag: 1756852845-963797
+X-HE-Meta: U2FsdGVkX18D3Q8eft+5Upa2e+MaAmycMspB4QpJcILw1zOY1ZDB+8NwvMqumAefBcho6SIGCFMXPKTgzNMjFJWQpcjVRGDY6h2bs9i760DOBdvbixHclI2Nm+Mvu/PVhQgDZ3JG3bhWL4ohTMZDBX2ES/giAoY0jzEI9qr3mKxYNJeZFbnsz70m2ZAjQtKQDr/jXwuMH2o1b4y3u8ECWcY5+VGk3V4120ArCfookXKAbBt06dOqzXceTl0JF/h7L3FE7MfNG+eCRcNefYa4rtfj4C44PozaBNKpdzSuOPV6UFRgeIPmteUZrcafttYJ+QvyBYxE1/ucPriguQtD1v/Qwl6LMEg8/OrR7plgNJQfkfFsS9VElar49x6Y02+3MOy0YFDy2kvw0vGqQLKCfGsBsqnewaxIkVyOu+u6vDXLE76kCxI8HjkGHuAgEpwtIgihQZ+f72u0ksC2tqdva9zXt/G5EfosV02XBpI+Kkh7RXlJh6lXipaQegATgC8dfcXcsAMV63YvyB39R1IwVXclPxiSTFDqQs2bQUL+N5ti5+WJecjqqpy+9vojc7y+yjfV62A5D+CQ19kKt3ZNz2SlC1b3HD0wuY8EFo5CGaMw29FRVUk4OG23eOH2yXly+/FingXS/G5Vv2OEo2VIvpSKIxcOanRr48OfyhBXB4QCqp7U4AdMjiKU6iToLz3hE7gahlZwE9BEaH0xkvAROpsMOyy0SsXk5+azv2JGJNNy7FH0IsdV2ZT9S/z2zIXo2uiQwhd8LNATTGd0F24HC+AzHExkijAa7PN4jML8vkIHnh3mhWNkuLSNryCJaH+w4teJ0TnMmpYVWMoFPHoICiDwEX5IH12/quleiT9wx9xOXD8xzD/h1AdH8XP/GD7WTAci95677u6lL/I6dAVzqcVew+D5KZjtFrLRfrFmdid5+gsoy9qCLh5xq2hAfIgT41phreeFOaAj3yOwhEQ
+ 8BIwQ/TN
+ cVvlPEXD/0FqG0T8D2Yg0m0N3F66mkBymI8In1nhKrK8S2GOpWwbS801hDhYnVfiqeCctbArl6BD2P6wGk5AukZ96qXbFyuKiQ0js8EXqUkot+E9Jf1bGCRlLesFdF3rFPpdm65PF26oSorG3O7wZZ2oXLh9djBFYc2tZRnrq4mqX96gHhjHGPBL+YaX73otbloPvQe9dniym7lRwbOawzjPDueGfbGBEOmy8y9V1YjkjmpkKOX/2YU+syjPQUw2jTya8zKykAwDtznu8VEDkD0LFKmFyZlJsews4SRxihZ2CFfZCxamCKqoz41P38uLg4GLPnH66Kc0T0UXTC56Q97VyLaJUzaLYYOQuUr9si7c6aaF2pLEyExXTTFYVgAA4OQvVQlxA/uj5vb55UB6YGYVGiv6U9r8+FFq4qS4JaMahm0UlfSnDhEfsbsCb/tYuz/rknFas5KydccO8ie4zjkbCAe1Is9uyNsO8/HOlge4yFTQ+rVpdcfVb6tIUI/86QcoR/AX0GILbJli+cqiff80rsw8OduOvY/66
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,26 +93,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 2, 2025 at 8:46=E2=80=AFAM Thierry Reding <thierry.reding@gmail=
-.com> wrote:
->
-> From: Thierry Reding <treding@nvidia.com>
->
-> Add a callback to struct dma_heap_ops that heap providers can implement
-> to show information about the state of the heap in debugfs. A top-level
-> directory named "dma_heap" is created in debugfs and individual files
-> will be named after the heaps.
->
+On Tue,  2 Sep 2025 11:52:50 +0200 Aleksandr Nogikh <nogikh@google.com> wrote:
 
-I know its debugfs, but this feels a little loosey-goosey as an uAPI.
-Is there any expected format for the show function?
+> Hi,
+> 
+> When can the patch be expected to reach linux-next?
+> Syzbot can't build/boot the tree for more than 12 days already :(
 
-What would other dmabuf heaps ideally export via this interface?
+Please don't top-post - it messes things up so much.
 
-Is there some consistent dma_heap-ish concept for it to justify it
-being under a dma_heap directory, and not just an independent debugfs
-file for the driver implementing the dmabuf heap?
+There's nothing I can reasonably do about this - it's fixing an issue
+that's coming in from Miklos's tree and perhaps he's offline.
 
-thanks
--john
+Perhaps Stephen can directly add it to linux-next for a while?
+
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Miklos Szeredi <mszeredi@redhat.com>, Joanne Koong <joannelkoong@gmail.com>
+Subject: [PATCH] mm: fix lockdep issues in writeback handling
+Date: Tue, 26 Aug 2025 15:09:48 +0200
+Sender: owner-linux-mm@kvack.org
+X-Mailer: git-send-email 2.34.1
+
+Commit 167f21a81a9c ("mm: remove BDI_CAP_WRITEBACK_ACCT") removed
+BDI_CAP_WRITEBACK_ACCT flag and refactored code that depend on it.
+Unfortunately it also moved some variable intialization out of guarded
+scope in writeback handling, what triggers a true lockdep warning. Fix
+this by moving initialization to the proper place.
+
+Fixes: 167f21a81a9c ("mm: remove BDI_CAP_WRITEBACK_ACCT")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ mm/page-writeback.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index 99e80bdb3084..3887ac2e6475 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -2984,7 +2984,7 @@ bool __folio_end_writeback(struct folio *folio)
+ 
+ 	if (mapping && mapping_use_writeback_tags(mapping)) {
+ 		struct inode *inode = mapping->host;
+-		struct bdi_writeback *wb = inode_to_wb(inode);
++		struct bdi_writeback *wb;
+ 		unsigned long flags;
+ 
+ 		xa_lock_irqsave(&mapping->i_pages, flags);
+@@ -2992,6 +2992,7 @@ bool __folio_end_writeback(struct folio *folio)
+ 		__xa_clear_mark(&mapping->i_pages, folio_index(folio),
+ 					PAGECACHE_TAG_WRITEBACK);
+ 
++		wb = inode_to_wb(inode);
+ 		wb_stat_mod(wb, WB_WRITEBACK, -nr);
+ 		__wb_writeout_add(wb, nr);
+ 		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
+@@ -3024,7 +3025,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
+ 	if (mapping && mapping_use_writeback_tags(mapping)) {
+ 		XA_STATE(xas, &mapping->i_pages, folio_index(folio));
+ 		struct inode *inode = mapping->host;
+-		struct bdi_writeback *wb = inode_to_wb(inode);
++		struct bdi_writeback *wb;
+ 		unsigned long flags;
+ 		bool on_wblist;
+ 
+@@ -3035,6 +3036,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
+ 		on_wblist = mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK);
+ 
+ 		xas_set_mark(&xas, PAGECACHE_TAG_WRITEBACK);
++		wb = inode_to_wb(inode);
+ 		wb_stat_mod(wb, WB_WRITEBACK, nr);
+ 		if (!on_wblist) {
+ 			wb_inode_writeback_start(wb);
+-- 
+2.34.1
+
+
 
