@@ -4,100 +4,232 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 571E4CA1007
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 03:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F6E5CA1007
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 04:08:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B8F66B0007; Tue,  2 Sep 2025 23:53:59 -0400 (EDT)
+	id 323D06B0006; Wed,  3 Sep 2025 00:08:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96A3A6B0008; Tue,  2 Sep 2025 23:53:59 -0400 (EDT)
+	id 2FB096B000C; Wed,  3 Sep 2025 00:08:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87F306B000C; Tue,  2 Sep 2025 23:53:59 -0400 (EDT)
+	id 19B456B000D; Wed,  3 Sep 2025 00:08:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73E876B0007
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 23:53:59 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3FE10B9A3A
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 03:53:59 +0000 (UTC)
-X-FDA: 83846570598.26.59E2C68
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7432140007
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 03:53:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RsAyj5be;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756871637;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 055D96B0006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 00:08:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EAE0858EB
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:08:44 +0000 (UTC)
+X-FDA: 83846607768.07.814D979
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 26541140005
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:08:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=OSp7XEM1;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="gdFQL/44";
+	spf=pass (imf26.hostedemail.com: domain of ankur.a.arora@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=ankur.a.arora@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756872521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mmqPh39juKQQC8YZwxo6erfgz5KPO9senq2OXA7PBrw=;
-	b=AUNUOQCQPLScH7SV+8ei0VoBCOAD3/DguhfUj/UQoWiU5OsUkbGiod9v45qLjP9ZSb+o4F
-	iGTOy4o5FJ5MJjueBUrMzn9qK9gPezCobW8sRzg2vLGHtRlcpjnJftWMyehh84nXvwKisb
-	7XsOCt6wRB8a22z83JyihrMobZQA0GY=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RsAyj5be;
-	spf=pass (imf11.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756871637; a=rsa-sha256;
-	cv=none;
-	b=DwKsG4m/UlyCoXqPaM0zGtMNTo94Tu3fznZvNn7VO74xjMUU1EHb9o2Plim+m1LPJooDqm
-	VWl+VeZAVoTk4NRwc3aufR99hiSWhQiAUBW34oqPIX1K3j+yzbD140/0eHCB7rV3wEkc0n
-	vFxg2pyVpzmi/LZu2VMcQQbx+ahOj9g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756871636; x=1788407636;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=hHJm4RhYvy1lWmzocwyI81r00Gwr1hI6d9XuDTkkn9g=;
-  b=RsAyj5be6YAgAigbDpbaTX3+5OCiVPK9VfhTjZEM487Hmles+mtfvJgy
-   XZLGjOC6kU/gXp2jTlvci+IiVXxlD+VBzOHjRoah8iXGJKT8ayepAB941
-   eHvcWzi4+5PY7RT2usaUHcSd/fVBIPdiXBfY16hGB+O6/xPeU1TFoZOVm
-   42Iaag8nBIXNr3mbkFsFpdblWYmcNBCoRAx8IfvJOhorZn51iD8K5KE+J
-   xEKBABVZ+UGxt086j/CojxpnS6n9d5kWO5s4nuSzLt7j/kzTWvaPSUkxy
-   BPf/BitExBTcxxSZwRRKdFrR8qDU+A9Ykjz1rdDLVtx4SUSi3N+r5H6iA
-   g==;
-X-CSE-ConnectionGUID: //EGfHUBT06n9miaGQyX6g==
-X-CSE-MsgGUID: RqrP6XgcTZyo7jROXv7tdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="62817098"
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="62817098"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 20:53:55 -0700
-X-CSE-ConnectionGUID: L1S3t1vqTw+0JrPnK9xJww==
-X-CSE-MsgGUID: VJrZtQI2Sj2vJbJVmSsckA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="202363943"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 02 Sep 2025 20:53:53 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uteZC-0003Kj-2N;
-	Wed, 03 Sep 2025 03:53:50 +0000
-Date: Wed, 3 Sep 2025 11:53:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [linux-next:master 5272/5641] arch/um/include/asm/kasan.h:29:2:
- error: UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-Message-ID: <202509031153.WYCE6uYO-lkp@intel.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SdN1ndzotNSa0cD8K5VaWRYxVkjBM8zmDwKUNrNDBL8=;
+	b=Fxyc2Zmn4TDkrGojhZy7z7cjtlkQ+UQh15TBYnZJ6lmKBy+UkfMGIO9VVm0I3iEPiCHtO+
+	JQlxC0DwY7Espqdt8uooI4BEGsfLAPafZCfpWEhF9nGHrQMgnLnbXptUJWX7QGkH2rR2Zf
+	YjRVOJoK1ui0I6txWhLvBMjx1OVjyUQ=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=OSp7XEM1;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="gdFQL/44";
+	spf=pass (imf26.hostedemail.com: domain of ankur.a.arora@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=ankur.a.arora@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756872521; a=rsa-sha256;
+	cv=pass;
+	b=0j/AAOrllZzE0S1z/AiECUGJ/vR5GS1CgXpxTdOtyCS14hzMVNaT6uOd2yiWq4LTcujVJa
+	RnD9syngHn7Hj/ToZ9SIUcrGuzrJ8MmTqfbX14250whDJyLXEeZm0RurP+oABc+9dKrJCe
+	rl231rR/CcYxETEKJ1Z5j3rFovxlppw=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582MNL1H000567;
+	Wed, 3 Sep 2025 04:08:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=SdN1ndzotNSa0cD8K5
+	VaWRYxVkjBM8zmDwKUNrNDBL8=; b=OSp7XEM1Rpx1UcvlPJ8JMb2G1XqPLQV9hb
+	lS/tiPpTCp/j7oECDpsl+vYtN0e+vlymJRRcd2p/H0jLBPHRwzT7bLaqDC6PnMXx
+	yUiC/5CwNbgwpG7m9BJYcJPwkNAqjMxcFvziggQrifzkNhDwNlB1q1ZpSsOIvTUA
+	pVW9SlSDk5YsN3IHete1PwzZILQfmfLo9BtryKkCG941NtJFu1BG0+UOFkfJnf19
+	ypv8Ljc/+C3YcNS2E69MPbs1iz9RvsIAtFnjlvJPHiFQweH520NqKPtgGoCcR7PQ
+	A0B89ag6k6PSVp2yTHGP9dKKCk4S5Pn0UsB8tdd0wSFU3mj9+bCg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48v8p4muke-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 03 Sep 2025 04:08:23 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5833Sr3Y030940;
+	Wed, 3 Sep 2025 04:08:22 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11on2081.outbound.protection.outlook.com [40.107.236.81])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48uqr9xh40-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 03 Sep 2025 04:08:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RjWPz7FE/ZjqliCCyjUSaSYSIhDSXjIs57GNIabQAYU+1ez86hXcizjdpTGQJs6UWWDgqvzruECvlTGNmpiTiMCVCK3npwJn9jTvCz7g+H4n1NCmblqZm6kvPP5uLOwBl5aMdch/HO/Z31YtXTz84A2HzNJe/qOSuJ8RgDdNM7JrgOVaNATN1sNef2XPml3YXyRm/dzXuyTM9ILDgvx04Ls/T/R2GT9smoeOLr7JKbZeR8KNvJbKmqubBQM5YIZs6S5ShqLC47BXZ3m/NdpaQ1NG8ugGqg+sgdWGWg566vkFR+JABn9p7BZd+8NL233AyW6oVF6BG5vBd3U3yThVTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SdN1ndzotNSa0cD8K5VaWRYxVkjBM8zmDwKUNrNDBL8=;
+ b=eUMjg4HKTOLjyVuD1gh+CmF8FNzWDtI83GqPFvIDpFa6Ta7S6IfBC8u4v1bfNqCvOO/OZwMqBAlf6zyo+MLX1QR3tKUN7mZ78G/LHWSQCJH2ut5HtVx+OoGvDIkbmow/PLvn0CWGE6ydM2DClO1nvnycRWDIhPYUYNbJqigROPWogZk94b/3tK9XQoBOhur67UDGs45dFXdekXhWQIHWWxKhtasMTzSCEWo+NXP/Oftgl1PZDcR2zF286c6Q3kEwXg1f0ewc6TSE2cfk3iSVPPFs9TmApFTg6jkfRx6GrUVxhgbqrVnqxImuf7DHKGM5MtvrD2zSuFFD+xqjyQkcew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SdN1ndzotNSa0cD8K5VaWRYxVkjBM8zmDwKUNrNDBL8=;
+ b=gdFQL/443RHNzvEP9eiToFwHIKCeSI6y/1wMNuZqNZEUa+ICdB77ZaaoA6naQd+bc6qo6bAuJTiSblbBppKCl3PBd5TY7XsRGUWAGSbWTSSmptIRbHah9tS96FWTlvukwm0QQ4ABVqtSQuhBO/E1ctK2a73BTEGjT2sYhxGN2mU=
+Received: from CO6PR10MB5409.namprd10.prod.outlook.com (2603:10b6:5:357::14)
+ by SJ0PR10MB4511.namprd10.prod.outlook.com (2603:10b6:a03:2de::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
+ 2025 04:08:06 +0000
+Received: from CO6PR10MB5409.namprd10.prod.outlook.com
+ ([fe80::3c92:21f3:96a:b574]) by CO6PR10MB5409.namprd10.prod.outlook.com
+ ([fe80::3c92:21f3:96a:b574%4]) with mapi id 15.20.9052.013; Wed, 3 Sep 2025
+ 04:08:06 +0000
+References: <20250902080816.3715913-1-ankur.a.arora@oracle.com>
+ <20250902080816.3715913-12-ankur.a.arora@oracle.com>
+ <643f5482-cd34-4534-8cd8-69f32482bc27@redhat.com>
+User-agent: mu4e 1.4.10; emacs 27.2
+From: Ankur Arora <ankur.a.arora@oracle.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, x86@kernel.org, akpm@linux-foundation.org,
+        bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
+        mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
+        peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
+        tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+        boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+Subject: Re: [PATCH v6 11/15] mm: define clear_pages(), clear_user_pages()
+In-reply-to: <643f5482-cd34-4534-8cd8-69f32482bc27@redhat.com>
+Date: Tue, 02 Sep 2025 21:08:03 -0700
+Message-ID: <87frd4p49o.fsf@oracle.com>
+Content-Type: text/plain
+X-ClientProxiedBy: MW4PR03CA0026.namprd03.prod.outlook.com
+ (2603:10b6:303:8f::31) To CO6PR10MB5409.namprd10.prod.outlook.com
+ (2603:10b6:5:357::14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7432140007
-X-Stat-Signature: r1k36k7e7yuoywoghtrssni7b44hybb3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR10MB5409:EE_|SJ0PR10MB4511:EE_
+X-MS-Office365-Filtering-Correlation-Id: 241ff2ec-236f-413c-4dea-08ddea9f7b32
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?omL3Xy6auyvDzF5+easq+5rCRfC49JsMhr9ea3gLQQdXHdoOv3V0q4MrZaHK?=
+ =?us-ascii?Q?ZVa+exZrf2+pIiQkR+MSAyC+DwrntiMW3p/07KMkdAvpgW54vx/Qx8grUher?=
+ =?us-ascii?Q?zMY9YKqCR2r9b/G2eLgpEYAb7P5Es4Vwt4jAMnn0bAqhjfkMPl3j2ydRfcO4?=
+ =?us-ascii?Q?ZuVlqa7OtuwmYVFYarItEwSaJCPydZR8aLZmhwZqmeSFLPcNVx4vEuhdtJoC?=
+ =?us-ascii?Q?NX/Kt7Vlo7rCTPHK8lFfjzRv3DWUdqCZhUyVPSBNCM+nz0IxFrvLeAqCHHRd?=
+ =?us-ascii?Q?cr2PBEI+c+1Tb23SvVlX+r8HvIFK1cDFNOMxwsjhrIm5cZ4NgPEnyvqoSf6y?=
+ =?us-ascii?Q?S3y2K0Y5UddvjZqq5j4tZy6LLtRD3vxxgCAhgJEI3V2ql50cqQk0g5It2lT1?=
+ =?us-ascii?Q?d8bvqIX97dJQi7FH/9uWEPR8TYNY0TBwo14Hdpd8D/jX1Z0/Ck4xYL1LWSMf?=
+ =?us-ascii?Q?myi3i8AlVg4j9hFYZAxooilhHCLgdjq48T6ih21LHKoS6zwppGcjojBd1nBn?=
+ =?us-ascii?Q?m9lDd7gsb4fvIeYhMIoB9XsLw8fn4BLJHSAKOgheebItZrDu+2+ntAkI5rqj?=
+ =?us-ascii?Q?b4LYXHBBOz2zTUih1C2K0Oe5zy7/VG4sQp9Y6Jz3I5+g8jPQzSJad5fSWl8u?=
+ =?us-ascii?Q?uwYgJ4ORLmWh91FIR0fM9NSH1Wa6bTApAm6BSoLO8myCimqzcr+oYiqzwwua?=
+ =?us-ascii?Q?0SLFDtohRlIoxpKVmsVghYPH12Xk6kkGAMzONAw8RTpsPusUIFjfX/kb0jCr?=
+ =?us-ascii?Q?+0JwOTZKQRUtez94uq35XCAZ2UGdfZLhyHGDT8w6nZBswnJEqgsMFExQtVVJ?=
+ =?us-ascii?Q?DY/myCz6Gj6OpBMHs06Uf+TyAh4w8jnyn16xCuPDBwNCxcaLGJOTCxvsKg3c?=
+ =?us-ascii?Q?lX4eoSK3UVVnWJv+E72THOVco2P7qySGQAkWsfVhNcplMfzH17AMUiYvUKk5?=
+ =?us-ascii?Q?Yr3KTXKvBmYjWmyod0t0mnjQBPy+WUR1yGsC9w2XSc/YHjJTstcDrG4mla34?=
+ =?us-ascii?Q?CkUBEIErB6K2T1bGW84UFgu1w99mu/vVpAAj6dbPzlyUz7NorefjPVoO1wcu?=
+ =?us-ascii?Q?+Ji+HXsSd5Dxt3+nPuUMjSfNbhUa2rEFJBzMx00urnCGJqyAEb7jrP0MO1N3?=
+ =?us-ascii?Q?5pR48PQ8z+FUYgNX3PeCWF4sF3jv5J79dav1hqzbey9BBTRTpzif9MX1qGB9?=
+ =?us-ascii?Q?c7kGB2hGjFjlIcAe7TRUs3LlVzf8Hani3403nWue2XNwLQkq7bJUKyBySHoS?=
+ =?us-ascii?Q?ogIVFW5ZRM/5rS0tCt5ny3KL2eAPyBLoLUEY7fd4Vvl1HeIJs7ABWVO/MHTH?=
+ =?us-ascii?Q?L6zMGQ6PFMhpcUl/c6ET1ZqUzRBD6DhX+N0ZhiJlJZ20f65IgCv8g7wFIRji?=
+ =?us-ascii?Q?b3SiVb3I+Y2+UaxK5ywjhGDq7+YNv67E13fG7TFPIyZgoq+8gg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR10MB5409.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wG9khyR9DNNqfkV205IHesJzrj8MRNYqozH1RRWRK/EH9MqESzbJFHg5NJXa?=
+ =?us-ascii?Q?aSlSLg67rVMZ2VAG9iBIlOM8JWyW2JKJeHMuXsZlt/kwBdUHBJTSPBuFlN/N?=
+ =?us-ascii?Q?sGG6U2Oo9yT7jYicT+/U0E/5CsdPjrByJsCQVoE2pOzanh8GD+RLu3AP1b0n?=
+ =?us-ascii?Q?Yt7NCH6vf5pohlv3WGakG2xxvzgTaSsAwUaaM+560wZFW1qI0SrYX2T6dDDi?=
+ =?us-ascii?Q?stj2EMDq3mbPeYAERr9AHw0Q6QNWPCGra2XpbMzxLvX6dB29JgA6Re5MWjf6?=
+ =?us-ascii?Q?buTFINEPrjS6sQjsvNxNNbmr4P7N8jcDbMcZ7QsaWKm56raZjxStFRZycWoq?=
+ =?us-ascii?Q?fyRNbC+vvDMnoYcHbjhi0UXnn0gwZbsabV56pz4VuW64CLXO6VTJzL/iLRI2?=
+ =?us-ascii?Q?Wa6GDWmN0ODQhJhpV7lb0Kc4kQFmOYuByNwCYqSC1hpfwmAO8oC0Mkjln/V9?=
+ =?us-ascii?Q?3UhovgyvAvEsPUT+F8fE7u6b7E0MJygMHD1aLuXAVX7yxVbmr26j3Q0sc6fl?=
+ =?us-ascii?Q?tnDWt/n7h4jis5kISML4DumUiJDMiT8f2qq9a6/3teIqBKLqSX09bEBqoXc2?=
+ =?us-ascii?Q?FJ9bxE78e8MwQkYrHf+gRoKs5H77ywCjy7dHOTzaw5A8I358VK65kcZfgU15?=
+ =?us-ascii?Q?qGuH+SogG+zN4kP7zJ00rbS1cCxwiVc2Zn+wCKGqkX/ui9zN+rjgrklm5yCV?=
+ =?us-ascii?Q?WLsAOVPfgzzZx5ouFYTMgA0Jnh6ghsaz6IWNiGRiATRH4GdZlSAJYkixrQy2?=
+ =?us-ascii?Q?fX/T22oFW4ootxwtEuywp1tUdxqIihVlW+KzgJ0qLyorok5+2zwjWxNEXCnH?=
+ =?us-ascii?Q?O/sdTnbeBDsIGoQdiwcjYL7/6fMaYyaWKJ2KZ4go8W8gG6x9we6snUBg5IJp?=
+ =?us-ascii?Q?ofEE7bbCA2RtrEnz8d1cDD/SEBBSH3Sh/13jKNeab4fEkloLw5j2jPdkHNFU?=
+ =?us-ascii?Q?HMBw92eszPrDvrbFOkXE7zQz4ZpEn7m/Wx4Hgp0dOBm3trZrI9CX4rHEFGwb?=
+ =?us-ascii?Q?ikEZWnV2s1d/XVelVpPIZC38B+vc5c83oYm8kSJYRsjbyijGuJHJNUHWwC1J?=
+ =?us-ascii?Q?D0p2mdjX0tDrpGrcVU063uxQ634LVjhahls5kBPBQxWExBGDY/i6CogZB89P?=
+ =?us-ascii?Q?MW/WL+dl3XV9dCWXE+UmC4N6rwwSjb5dCGJ8zoHEgIdIxoNNFjkeI/H7aAxV?=
+ =?us-ascii?Q?hGF42vlYexH0xeBXvCxEgyvYYXOAdiUkQnHwIIJa9O+ub41NzvEbCnHvMnoO?=
+ =?us-ascii?Q?0ktPuUrf/DTN7vbsXkCYdbX/RD/uqiYIXxyTwQaz6cMnrRex/Qgw2MCtiuLp?=
+ =?us-ascii?Q?W3WTuwR+JsPOgEufmrLYNjR5M6a4Ytv+ofH5EdJPbcvD1clNxPM5nmZGrQUz?=
+ =?us-ascii?Q?54yTVv05Cz/eWT1wx8v8LZasP+xT7s5ED9nsGRyp4TgrwO6B0avGOPP4o3rX?=
+ =?us-ascii?Q?DI82UGU65adPhcaitNajdALjyXfbjdHG4JTEoJiVaEg4fWeAVuIBwN1nCEXQ?=
+ =?us-ascii?Q?EoFdztSxIPSbctModu8OPjOuCzpKPznhrTr53jAnt1QKagmBVlu/xQ7ep7+R?=
+ =?us-ascii?Q?duBlqi6M4iPL4Qq1HnUtcUUbhLHZcGWgIFVz7xaUumTO2Zad/xOQqMBd+v3G?=
+ =?us-ascii?Q?EQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	wTi9CCW3WCejRDXFrOO1LWQBOSsXmtEASdq75jhMjN/ALYpWWOX7KQPNI5OeCSSR//yKLShm2Qxf1Ms7cD0P9lK4gRGigBDG3DvXaLA8cY5pT/oraZZFt3FM6FL3LKgRPR8RzbAlSQlpg0s466jUB28lEkjZ1PTyzjrCG+il7PklfonRXHvbe+WJO69GHzyrH3/uSaDiARhf40gDWWi+BZ6EDaeVHInblfaElBM+RaCbYpG5gmDkry9jrRLBOJN2pqiVX1zHhCA2aUxxXDYbn5wQt33dYXeg5K2N2X639undaN/DdrmLGmMwJKxEiVHxClrTRIk2GURH8a3+Sa1l6gTeH/qd4wJEa8WRzz/xLbbl/Gm3FiWrjs314zghT7X7jkMhKuR5FM3BfezeORBqFJhI/n0TBu/jyDD9wdJyYf2Rga2FLxM6ZKk18dKy5wyRxqe3k+3lh2QECzCIR/TCR7bH0vmlqxNwPMZKChXsGHq0OTEFQGXegIvgyQ17tqE0SjnNww8zKxzeSaOFdNLRW5D+keuC1Yx4WSIEgUx9UTm1nJVY4wsnhVH6eodlmHzRa2KXnfGHkdSoJCHwd35PS4VflXTW2p5gR7mkOnv7DaI=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 241ff2ec-236f-413c-4dea-08ddea9f7b32
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR10MB5409.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 04:08:05.9271
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7pUFiuLSdvOxxnIENFbr5VcOcCHqVP9TAAXYZpp7JrKa9LAYGvQh+HfBR3MYIUfjoH3mTlYyH3jfQ3K+IJd4rVfXxFBD9GxcTHc9Ruw686o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4511
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-03_01,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 spamscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509030037
+X-Proofpoint-ORIG-GUID: 8_jWFIkzP2bhjQuS_1eFUbjXo3jyXank
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDIyMiBTYWx0ZWRfX12cri6dxazoc
+ m8OnZJXk+lbWK2LBIcvNDVHVq4Z3t0V/533t5efTNEoOUGgsfKjghAqAUN1+f7dNm8uhKPMjunp
+ s9N0DAVYvQl5TwJYBm3T0HzR6fmqD1cPcmD6cOAUJDmLe97lG15G+7fY2K433C+tPdwgbY0ILKl
+ iPxDCrlHHxYkqfgouJH0Gg1cHkPgdBBkbBljQPmihd7uO47DOWlS/nQ0rTVD++FiMMDenVGk3fH
+ R0Li4lFy2gS8DZz/jPmrI8CxXpPyPAQeqcpzobJXISO5m3+FjZtTQSJJZ29FfnoWf95YeZwvUs/
+ T+pgU+H93X/x1ZFBeiEWlggisEx3kxTuLKGLr2sNs7cyPGVM4LF8YbPefxSIZhNTebpuLls8VwG
+ UDRpUTcGcqcBVevxxKna0ZHBcA3q2A==
+X-Authority-Analysis: v=2.4 cv=doHbC0g4 c=1 sm=1 tr=0 ts=68b7bf37 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=yJojWOMRYYMA:10
+ a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8 a=_2jW0KM6d92rkqGiJZMA:9
+ cc=ntf awl=host:13602
+X-Proofpoint-GUID: 8_jWFIkzP2bhjQuS_1eFUbjXo3jyXank
+X-Stat-Signature: cbo5efmu635mwgauzoimspok441i4ptn
 X-Rspam-User: 
-X-HE-Tag: 1756871636-962703
-X-HE-Meta: U2FsdGVkX1/nLui7/wpJEl/iV16HrIz7a9HUid4KJbgFZr+yoMn34qrANADI69xqmzwcG+9BLwsyuFkPKLv2ZvZMSKgxFmA1/grNwcL+1YmzSx6F6l+uxss1yNdxf86MWmAegmoWX5C7uQCOcrf4vBRpuTBh51TdfuOuNIAIv2xLWUNJ9zkyF3rzCjHCLsoH0ixFUMSuS3Dy1X34qYjs1Uj9stWLWDT9XVhkx+WgW1QSmZ62m3cjuIcJWsYa0AB7VeHfEh86v/s5vSlsikXtNp5StNR4MsylpEf8AvqX3GB0eF35tap8YREVrDrjJf2BHdMCdjxu440sKgAqRQEk4AZmTBJmOlGIbOqJ1Wst2U2+rMyDx/62toC1/4/+zKNH5Rr9BBkk4zJkiF/vOYSGPwpfCl/EW+Xld4BCP3oN9Q+o0Ex63v2C+7OE3+ZNWrQ5XjojZKemo8v5dQYatq57E9+mTRloTIPghB/zv73RlreGmiN16bcONFIz/83KKnyz/yb2FoyZlGFVh0B29aktvVSVuvviNzDQBsZakCk3ZdNvQ1iT3gFaRGKASky6Srk18krqK0jiZEtAujnGqG7iWKe6oYTbX4lPSIulN6psg4UjoIWz0RgXim87z3NozMdZSFB8a4IDt6x1mBo3elhJ8Vi5TEgBoVIpfXG8TyD4IU4gc2yCKIF35CALXsiqAVMgQvfQ3uwewX/2mqS6p6VL+9bLDLfB1pfeUS0jYjgVvQI/pkGyATujf2zylzms1AFYjPBzlMnNY3lfGX7KZ0UCIHhIO5Ws4ope5GRfiHnbPTGfxVoqEQjFY02yJscsiOa3/TmZqB6mKPGfU+xy5/UlQl8dojZaIEuZx2oke3xzZe2Iq8vPaKxUx7tJA9hnZlazdc3j0rck6SojejzD8zYm+pLAOiQknrevKUZxPBjK5lOlMKS4l2jL1rTFGlWxsYL22GX8xeBaJasEZcP6EXH
- RDQGj7Fj
- ixmeMUah2EFjMrVAEVChvC8kAC00o9nVweOLr9vCR5Ma+X/HJQFjHAK4V+6WFw5rnEN0GUQPmshV60kHcbz4GcYmPE6j3RpO8i5b5EBF0EYw/VYuHaDw5AVPEbwc2fNtT+egdOhCB6zwAKI2a1plBiL98jFIKktiEsCxJLaQ3nrPMdLuFN/rSIbuXBlCic7ibgYYOPJTe1FjgrKK0Qe/izmHnAvbLKpf/db7jnSV/CoOahqXmji547doFXZ46+kH7I/FG2s1W9Eq8EI4WNVL9IneRW1+WEZCLt4lS3/5DBchIecMFxQ5aE/AJPDM0wNUNsJoQI5iiuK5T2KnEuN7ccAJnwMkkBo1LHR4coMnXRegwcQV9Wh/7hef1GLF6Whwxid8GzkCouGCg1B4Y0kpWynW2lGTbuQ+E5GNqa+c2LXKDxUAi4l74jVzrg0aNdQxTC7yp
+X-Rspamd-Queue-Id: 26541140005
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756872520-365915
+X-HE-Meta: U2FsdGVkX1+80QVImEBcC6nyrJwOpPDOHf019NFzIBcjAsmrWxNq3g8ugh3P+JAevKV4nCp2MKlAs1QP/LkUEU90JbgL6W3fT2Rvq2skgTZfXRtPYSk3gHd7nROClbejYmqYTdcYkW1L3hJ7Wic49k6iqYJRmUCkJPMQBAQipZPMxc3em0ibiHTi+pQY3eWPpPRZd8wRhuv4LH6cVDE08wirRQhHjTXU9aKJOZ47zV1I51W1nPYPdnEBn/kqkkNdt/C/R5lnWYYDsh+F/Rcno2qVKRckFO3CNdnzBbX98HIiKP85O9MCLZoW2O1Xi2UKX65uAWMYDs/CFUL2Jrt1AqnnMz8+OM/6/4j0nfqOStZQiYkgxr3cBNLz1MKs6YwOfhVgK1d3YXHbvJCGMg2BfypwveiHPb72/l0yghepj2fmdyHp4bTacraR8fUcwEWrnBrgabb7hbak3wqVdYFQxhnBQk9eJVM+2DSU5mRDJudfOMjLSSO7M51WuacrY7YcfeZGHGIeLdGt52N5r6qC1ux0eB7ShK21IjTZ0SF5KBPVFPFSk1ZA3ellNvE9JpSsf6dECO1260qg0FtjhmaD1PsDXBwTx7qJTuSNb6hfvfIzF476AY9+iukXFCnkGk6vDp3dlbGNpt6FBQvMmJhfmeWrK92ZlobcH3oD5VbWiq0YgRJ3r8m+YzrFld4gDUkkMhVLO9U8dF7VeH4TlanA9BkwGsOUdbcYTqqW2n6gwFea7Yrk4iP8basb9EJ9NqsPuaoMHl4Jc3Lcntgxq3KU/A0Dcrb+RMdhqdTSFQzNHBUXfV4+2YITPzcEttsJK+3zsSpYSLm9BMlbuq6y1au09azZmqFLV2RZYaVaFP8X5Edlg5tHel9EkcaXyUw3+jqlEsP45MFYSm19H696WhZVn6DwLTYICU5PVQ7Y1Tw7fWHlQSSWgt3b88hD/Y7J/VBOI8t3Ij6adjcm57WFmBm
+ Rp8yN+Xi
+ hNnknN53cR3KxSW0jLIvZetBZMufkmMlIPk4Vya4rg1QTDXctBduD4kR9dZA3Lne4zoh43RXoqUqVHpQUVfYRGIln7QWyjc7Qn2QelUtuAGQU3KuDQuNVzHACUwGpIQpSrdAN7zjq+DdpBMw1arHWUbgf/4Lu9rIO7ZGJ/UxjqVfcqBrF0M/vqiwGo5AseRoUBpYDUAU9RtqxDjZhNWJRBvvG3OiqP2d3MIKs4uImrZdDdCNp+PQwnUPJW99JcwMjfkgJcJuDjhAlRqaK8OJcgsUtFmQx1kibfrQdaVeDCGTB9hLsJIAIH+MS/71j88rghCUkn3x/p4xNkaFgd1CuWUiJ+loZUHTlm+xAz7tO8xfVEu7aWFb7+ya/r+ZhI2R4kFM3YMgK+kc2Oeb9pY0YcQk3U1ffLTvQcwjMF+eG1zhbzXAuakf0Xt9dACQMEYJrA7XOXy1lfF/MVpooGcaWlUIAWwXM9B61eMr/FuCp2BTxtgbgABf9dMUYT5QV39xuzf7Ehw7K2J4LrRvIX74nImzYPogcwKYVJS9j1xGBS6kOtdB9b+oTGg19z5Ax4KVtl18fBqUqdsARS9Q+1AaLg8kWc7aFAsmxfwUX/A4NOzPpBkI74sPKIA34SrGW8ZU8L0ZboFf20oq53SKZes8JI4mekEnria5owpbAFYGK2Xg1gv9bis4HfVbQRaxwoZPBUSKdcm9bxho4qyIG3gKeNsEkWQ2Ju13Ayut8KCveKMoqdqXsr7Rr9q6N/4sem0Yz6NDOj3vO62lLxkgwCsdHuqnyft1htO8PD1uMqfHSQ6WiFFk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,140 +238,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   3db46a82d467bd23d9ebc473d872a865785299d8
-commit: f5dd875907292162bd6de7c47e6b047461ea2b7b [5272/5641] kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
-config: um-randconfig-r132-20250903 (https://download.01.org/0day-ci/archive/20250903/202509031153.WYCE6uYO-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509031153.WYCE6uYO-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509031153.WYCE6uYO-lkp@intel.com/
+David Hildenbrand <david@redhat.com> writes:
 
-All errors (new ones prefixed by >>):
+> On 02.09.25 10:08, Ankur Arora wrote:
+>> Define fallback versions of clear_pages(), clear_user_pages().
+>> In absence of architectural primitives, these just do straight clearing
+>> sequentially.
+>> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+>> ---
+>>   include/linux/mm.h | 32 ++++++++++++++++++++++++++++++++
+>>   1 file changed, 32 insertions(+)
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 1ae97a0b8ec7..b8c3f265b497 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -3768,6 +3768,38 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
+>>   				unsigned int order) {}
+>>   #endif	/* CONFIG_DEBUG_PAGEALLOC */
+>>   +#ifndef ARCH_PAGE_CONTIG_NR
+>> +#define PAGE_CONTIG_NR	1
+>> +#else
+>> +#define PAGE_CONTIG_NR	ARCH_PAGE_CONTIG_NR
+>> +#endif
+>> +
+>
+> These likely don't belong into this aptch :)
 
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:5:
-   In file included from include/linux/crypto.h:18:
-   In file included from include/linux/slab.h:260:
-   In file included from include/linux/kasan.h:21:
->> arch/um/include/asm/kasan.h:29:2: error: UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-      29 | #error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-         |  ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      99 |                         set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     101 |                 return (set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     116 |                         (set1->sig[1] == set2->sig[1]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
+Yeah :).
 
+>> +#ifndef clear_pages
+>> +/*
+>
+> /**
+>
+> for proper kernel doc
+>
+>> + * clear_pages() - clear kernel page range.
+>> + * @addr: start address of page range
+>> + * @npages: number of pages
+>> + *
+>> + * Assumes that (@addr, +@npages) references a kernel region.
+>> + * Like clear_page(), this does absolutely no exception handling.
+>> + */
+>> +static inline void clear_pages(void *addr, unsigned int npages)
+>> +{
+>> +	for (int i = 0; i < npages; i++)
+>> +		clear_page(addr + i * PAGE_SIZE);
+>
+> If we know that we will clear at least one page (which we can document)
+>
+> do {
+> 	clear_page(addr);
+> 	addr += PAGE_SIZE;
+> } while (--npages);
+>
+> Similarly for the case below.
 
-vim +29 arch/um/include/asm/kasan.h
+Ack. Though how about the following instead? Slightly less clear but
+probably better suited for caching the likely access pattern.
 
-    27	
-    28	#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
-  > 29	#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-    30	#endif
-    31	#else
-    32	static inline void kasan_init(void) { }
-    33	#endif /* CONFIG_KASAN */
-    34	
+   addr += (npages - 1) * PAGE_SIZE;
+   do {
+           clear_page(addr);
+           addr -= PAGE_SIZE;
+   } while (--npages);
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>> +}
+>> +#endif
+>> +
+>> +#ifndef clear_user_pages
+>
+> Can we add kernel doc here as well?
+
+Will do.
+
+Thanks for the quick reviews.
+
+--
+ankur
 
