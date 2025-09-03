@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52120CA1010
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F223CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:16:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CBF98E0009; Wed,  3 Sep 2025 07:16:21 -0400 (EDT)
+	id 3D1548E000A; Wed,  3 Sep 2025 07:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9276B8E0001; Wed,  3 Sep 2025 07:16:21 -0400 (EDT)
+	id 35B4F8E0001; Wed,  3 Sep 2025 07:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A1CB8E0009; Wed,  3 Sep 2025 07:16:21 -0400 (EDT)
+	id 1D5258E000A; Wed,  3 Sep 2025 07:16:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 63BEC8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:16:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B2CCA1DE920
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 01A738E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:16:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DC9E1A05DF
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:16:22 +0000 (UTC)
+X-FDA: 83847685404.11.7A1E4EB
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C8486180010
 	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:16:20 +0000 (UTC)
-X-FDA: 83847685320.13.12E3472
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CF3B91A0006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:16:18 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="aqSx2d/z";
-	spf=pass (imf19.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iTan8OVE;
+	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756898180; a=rsa-sha256;
+	cv=none;
+	b=mMqpPrINBhn0CsJiCbyPrrEFidzzJpsi3ks/rssU/eOGUyBd0ScNX3wJqFq00ZrIqr2+a8
+	ktZVsh+KIa4a1meAOahtsW4Mk2Whvwam9aL/jmxXyS+EzP5OzWsGF0QGTuTYq4M8oCdfS0
+	IG0KaXK+HCZO9MW6bQOmz6k5pNQj6qs=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iTan8OVE;
+	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756898178;
+	s=arc-20220608; t=1756898180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lABkHSnvIXMnQ3mvHA4p3Yj4MTD8nCbzazJj3CjC75I=;
-	b=Fz6lfvqYWQiaoMPfggQ+w9xmYlMo8Xs29HNp5O6OY0F5b1mWH/38NU6GPWwpmaQhzniWfs
-	5vxkziik9ydK6WIHfjQI/gUoeShu9+8fbF6nyu2hWDxqVU7G0qRSOAp8JmO3lmJ6Acl3pc
-	mGGFOH/6suR/R6of55tTOL5CnFYY8iw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756898178; a=rsa-sha256;
-	cv=none;
-	b=1u0HVXAHWCip2Thg3OHBF/3McMq0jyeo3O11VVlCha9h99b/kEM3Amn0yWkQfjXLhqML/g
-	Akl+h30CVLQndqqeOnvr138sORAKOHWEllRLU4QmlI3bPIZqgjmCXzTLFaoHfgsz6d6osW
-	KSiKr14H9wD2G7UJu2qTRjwxk9z5Kg0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="aqSx2d/z";
-	spf=pass (imf19.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3dce6eed889so547563f8f.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 04:16:18 -0700 (PDT)
+	bh=6/J6B5kO21qmim3edptXX1lboSXT3A4ICQCYNPP7b6E=;
+	b=fxWw4GXYuaiPFaHyEssGGr6HmdyuM0HVbnK++m8/bonrq9XNZ/h6KCIly6hNL/uj34rF/y
+	VLokWnWt45j8TcO9Z8gXn/gug6YpJmLs3Uofxt49f8g6ZkN4vXD4f7W80fePPHFbvY3SQw
+	2QOStlSll1Nj+u/AZlCBD4fci3kL7z8=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b9edf4cf6cso5566270f8f.3
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 04:16:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756898177; x=1757502977; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756898179; x=1757502979; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lABkHSnvIXMnQ3mvHA4p3Yj4MTD8nCbzazJj3CjC75I=;
-        b=aqSx2d/zKdmr6k+epSWiHMciml2BiC3Ql1cQ4yunjGXUQzAfm6tAAqmJz17giixP7r
-         kV9fb87/6+6KQuTOV0bDd2igW6jCKo483BOTiFbJFHIwc/JQaR1aYLkU/uy97Yzf8nOh
-         C+5f9TNngv5esgKzYxhk6pyoW/3atik+7o/m7vfrwNYofjJAbC1QI/dhSDHJDvfE1QVB
-         aAvrQA/M7JUlIW2MSOxgyC3jxkVwTXOmMQijN4oWzMmFId3GspW3mBCtmRx5wtDxqNjJ
-         +iaG6bbksqsuDGBfjHSVnNQac3c+4+r48uPhlLKN80yifYZqsDEcMttGhvHr/EmdXpe1
-         kJ3A==
+        bh=6/J6B5kO21qmim3edptXX1lboSXT3A4ICQCYNPP7b6E=;
+        b=iTan8OVENEUQp+K313GTeO4yQSkyG6x6FYIljYGeL4G1abFf5l35BmWKKq07bRSbGH
+         K4UMYhq8dnCFVeupYjFo+JKtUbCyUBZ8alBqtyFS2o4gtpB12KXjAoXe9dl7UrnB+lyn
+         7EWucStrzRWDGJ3v4FL1KWNRDwEzBkI0FgcpLtfB9b6Txnyq+Dyesl0t5j0NS/BGSH7b
+         QfNGs6OgAm9nrvzt1UxpEAtOMjIwB1cirpP1Fbfy75livcPWCtAANigdznAnsK1CrlkT
+         zgWF5C1vO9M1psOjRT3MVkmO9b40baV12nQpBy53ibo5sWjt13sXIFsVtzg3XwCA+YgG
+         LfLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756898177; x=1757502977;
+        d=1e100.net; s=20230601; t=1756898179; x=1757502979;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lABkHSnvIXMnQ3mvHA4p3Yj4MTD8nCbzazJj3CjC75I=;
-        b=BGS+dX5E8lqKEwpkQF5yEXcC7VV9ZD6wwR0zTPJVGt2HVGKwyLW5xYqZR4QU352xNG
-         LEXT4kHFS7Kq+jEpFgdbxO6PfmkE4h1VCcenBqSb6mUcxnQSlNdqq6XcWBPhc+QqQL3F
-         aCLwIzikc7yQv0H/hhAToDAmDyHqMiUCliDHFmOoXPCIHgQZDZXE1TrwvDMqjVepx9YB
-         /q1msReMxja+gsihYClOMvJ1DoclhpPtNdz29vwIM1JVM14S+aJxhfmid6T1ez2B12mt
-         U/Pc4dgRd3bCFN/R59U4cmoPmhOpKqj9XDUwZWK+PzgQ1Ghx9MHy5X4Os5hwQ0AHx8ne
-         WNdQ==
-X-Gm-Message-State: AOJu0YzMoxaEBg4yCxRbZ8ZyNPR+clELO/ErmLl3lt2JEbg2Vlnv1WB1
-	e3rMSK5C8fgYnoum2dO/nQK1SyDTkSWKF5Auw8hxYFT3ON581BqA+IuNtz/lNdU09EIz9g==
-X-Gm-Gg: ASbGncs2CNQ8x7DgssEGy/SRMg+1NdYN6SiqrrImW6fJZGPg30cTlC8tI74Videmkce
-	FU83hTughlZxqNqSj0ozslh+/UDUavxik9/Rb4IKLzXSbraTbbpB6kn0zYSh6VeGUyqfqIr9WWS
-	zLmtC0qW9r1icVrZXKvUbQz/KOExIKy9jzn2OhgqAbqZ/98q0rh9Yp5f7YEG59hRWDghkvFgsKy
-	2i5H5ZTz4OYDyrGrCcFtq296WZflSAn84moEWGytj9n1WH045HpqJQXpSW5DQRm/umaa+uMdfRa
-	An9eohF1m6c3ck50YSqrNGwhlZnwfRLCGE6bgVoD5c9BsHbxI0wwoM7kTYYNwd7WFo00uP7uOR8
-	75e42ZEUcf77y1A==
-X-Google-Smtp-Source: AGHT+IGyItH6fhxqweNdBqrIhVxCLFxL0ES/3HbetquX8Ifljh6FJc6e7DueFc9I4VoDCyRFj9PknQ==
-X-Received: by 2002:a05:6000:4203:b0:3dd:ab51:d979 with SMTP id ffacd0b85a97d-3ddab51daacmr1895384f8f.10.1756898177219;
-        Wed, 03 Sep 2025 04:16:17 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:6::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3db72983560sm4717559f8f.1.2025.09.03.04.16.16
+        bh=6/J6B5kO21qmim3edptXX1lboSXT3A4ICQCYNPP7b6E=;
+        b=gbm1q4BwsdjC5EcWA8KTbFGMg0NB5h/+MhDi74kp8cX5EvbPfQX/zS0ktNWVTGwwAD
+         KIPNOAmB8XC/p8ZW1sGfJhyWgREykc+OXNy6g0MWi0cRSupK35RtNRdxs+Zj91l2zY8U
+         mnl4x4CiLr+jgtG8OHVH5GncCjKtaxzzNPXrBbftDbIghCLppPTb9eT8aaKVFE1a22mG
+         wk7LSegY9ym6GgVm94YCASaaRTTVqbjaZ3aAiMmkPwM0+A1mfno9zyxSbPOP5kypRfRD
+         qg4qVO4+RyATacUHiGWCIDqBb7xv2e5RAcmcEc5yLEebr9ViHznhbgiSgJsXfSJmis3o
+         YEHg==
+X-Gm-Message-State: AOJu0YzYTOoqcd1cSiIRz/ZkN8/w7Hzyhd8wNe+NaCx7QNFcNGp03F53
+	DTrPPXnEHLBg+9yWw4dr8bmRZVnRY3CCqxf2P8LMS9KUFGrjgN1QPKUk
+X-Gm-Gg: ASbGncv1P4gcsI+0UqrBGuVp5EbnNuHXXVF8whU6JnaBJkVOu0T707nRX5qIsTQBcMW
+	OcYaRUD9p2Up1aMRMqGjopoEbh6/r6N9Uvhe0uhPDot25b7tEm9A842JKyWk8ZiZ8pBR5msRQpS
+	H8tYp2VQ8g29DMo71PMeZhie20J+vXlW3H8YHcchvP5q5P7f6qY2or/anQ5ZDOf8k+9njuAucg4
+	oiLvr6BoMAUqBXbXI5K46VXshsxZqvLTQn2Q6SPkV53CMsAIoUMuCTS2cPHZKvOiYPiWAUfDmAp
+	2RCfQdQttHlDBAzGQVz3aH0FY3Q7FXtTvRUAbhm0j/NR+A/P14ps/6w618w2HtVl95xhFTRH+gl
+	pM2g/xwxuuKDFNHObuW8zi5HlbQ==
+X-Google-Smtp-Source: AGHT+IE4XJp50UJAl1TyaOPKdT+BVYrcIKTmTgL9yNbuNNlBknPz1bjnwok/rktMidIrBE8JQNXNTA==
+X-Received: by 2002:a05:6000:2909:b0:3d0:e72d:867d with SMTP id ffacd0b85a97d-3d1def6a593mr11880201f8f.53.1756898179208;
+        Wed, 03 Sep 2025 04:16:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:31ff:4e::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7c461edasm144127605e9.9.2025.09.03.04.16.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 04:16:16 -0700 (PDT)
+        Wed, 03 Sep 2025 04:16:18 -0700 (PDT)
 From: Yueyang Pan <pyyjason@gmail.com>
 To: Suren Baghdasaryan <surenb@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -103,22 +103,22 @@ To: Suren Baghdasaryan <surenb@google.com>,
 Cc: linux-mm@kvack.org,
 	kernel-team@meta.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/2] mm/show_mem: Dump the status of the mem alloc profiling  before printing
-Date: Wed,  3 Sep 2025 04:16:13 -0700
-Message-ID: <d7998ea0ddc2ea1a78bb6e89adf530526f76679a.1756897825.git.pyyjason@gmail.com>
+Subject: [PATCH v3 2/2] mm/show_mem: Add trylock while printing alloc info
+Date: Wed,  3 Sep 2025 04:16:14 -0700
+Message-ID: <4ed91296e0c595d945a38458f7a8d9611b0c1e52.1756897825.git.pyyjason@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1756897825.git.pyyjason@gmail.com>
 References: <cover.1756897825.git.pyyjason@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CF3B91A0006
-X-Stat-Signature: 793z5o1go54woi1nmqdjte7c9g1wwxqg
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C8486180010
+X-Stat-Signature: hrb8ppeezj6jp6cqtiwx8h87mka6w3qe
 X-Rspam-User: 
-X-HE-Tag: 1756898178-209054
-X-HE-Meta: U2FsdGVkX19PSSz5o81PKC3qs3rnk48e1xgrl9MJBFwaXPVYxN//9UByW4k6V2gE8EieLfW1k7zmZgmTMw1po4QsZwxreZHvfgiAs3DOsRFsr0gQU2YOY5SyCPwWgoxtTELfmqCVhfv+I69evqAURpyFH61O4bY8zU4H2zuRawbYcMayc1fWK30jX3/N0gsiRmAebljxiyCQW8dwLYGZ+Im7HxxFb/Wu53YYRlE6jI5egBggrUZVtPQUCvZ3H/vGALvWxPPheJHVsuj8pEasKz2DEXEjaQ7hvQSUzNQnbbf/5PRO7NR8npW545bTYEWPbHisSRxt1eRRRlnNbqXIi9XkjEsQgPuyB35ahBlFxC6mrxqFzPwGm018J4EIpUWhJrU+ZYGTP48OqPyCJOIh2tVoP+/HRJeLq/MAYl8PnS0NjyMqy/SAGdPkZlCnRyujzAzbJ+8OzTyf1Sdr9ctEZs+ClNzpsEkIvpBTZsSxaLzrKP56Qu7KnwHcFxwL7hIojeaBk9ZOfNa6hBkF5yhdL+idlH4aLNJK/gyA1Lyphc69nlEMjZPn7azTf5W3exfWhBpg7YK8vWsjcOe9gRADmqX0PXmcF47KJmQw8QYYwp0XP6evvTZ68YHpV748xeAvEXc1jvolKAWAE2uJGfO1nWuscqw9pdS5jtf5aq945axilsFEDqotBkCS5bu1vFeBkME94/64iKU4dovHXB/JllewKtUxlwSVAdRTl5rSgT8TPbOqj97S52B44ZrbBjO5PGHWPvGLfN61/dRySGoielsMj1Oo0ztEKZGsjsQAEWm+5bX17o44EHFSdSiGbl7FonZGyCQiZ3bUpZozjD7hfU3DTTAuvEF7Sh98qfQoCpED/mZoHsVDxXTtgwpEIVerC/G06aVzL4ZV4pH76m3CDaOMYPw4csv1HnztCdzR9YpyTYXbxR3Ww/HRy256GdoVyGpyx+Ol4wKsS1Uu5U5
- m/NZb5+g
- 7k+lsXIE3hJMiq8wLE70ER3VtH8MOpMdpfXqkikc0vCVbKHptUHXv6YK0gDaFfkuAaqMZcCOJcYkDNhMEX2+1H9WpxWyh9U1xplrDNAImkWsHSe7DRk0Mscp7eIAwXmxyYmqisaUcPDrxtxso9RL+fxueb2Qe6KkpHOfj7zH0zgj9m58I0ZYhbPARAWgrqe0geg2yPd80C7ldP3OLmq71VeU9mWyW0bfAzDHjnutqGZfvSio1+Wdr50AU3k/tieoYOh7C3i8nK6RvtyAfz35jB/+v1WM4unsRZgNRKMabE5DvvMBaXgUH+qqws9S1MEOzuqJSQ+Hf4zMgy7Kz26ahVt3taYONHeqCL1a46Q37pRlrsFpxtTP+psHd8B3Qp5EaKqlSNqIpOctJGJqVlIbu4Bye8PawPD3sFyx+ytAz2N3GggzDtM2a+KGlDs7J/ualpVVWtMzjafZQQs8Mv/PooSBdAE5jLjuM7/zvxGf5EXh+gsXc9okDwnhcB2sHM73Rbqx1rXzz8shgu5A4xxzD4MX94ZU1ZN+BVxtZQ9nsmvf3998MFSFVWj1NlzQ0z4HE12/0DHTMP7Vl/6S0p6cUShe/ubahcsIouWQmWl+y+yayqqqNZiqT9hizQg==
+X-HE-Tag: 1756898180-266734
+X-HE-Meta: U2FsdGVkX19iZb0+wHmSyVBWdiGKYHbLFehvd0fSx+fxxmXUM9rHeBQWjsdtOiV4Qd8bumjC1xVyaLkkkf+DsjXI2AGEs4n/4R3ERI/1/HKQrjmI49W47MxmjR7ja9GbLZLlYi1nmJjgyZMLOIWfHcVcioTJX5ooytpJydxCu1aOE/VSAlorD/tdlO21EX6sCOVkcY6D+485p/r6hdywe2+nJ0tmKu3OVUIk0p6UgRW5i84W7SNWRqYNE485MIn4jL3oMrMa7yB27rXSEc3k9YGJkz7bPajh2MvqEwOqAaHXLtXR8OiY2mp+QRixaKYPAGVkbtBTSvhZAz7I1H4dLcC9TKqQKB2C/yZ5LUdy5WuWlrddwNDvPC6MB0Gp5HqE9+z4Pwn2V3G6erhN/xqwJNj6eAdvV2ut8QJXso8AAbZIZYieIY0IOk5IwF5gC6ct+BSDoIclpQXnJdp106BFYPJQxNQCe6LTlFEXeSlu/Mb2QUyaxj4oA9tgFOKvMc79cxVwJXl+O+ssP6IfCLwqaUkPNbyXmve4I7FHos4qoxJQeTz50U17WuKOKcnvb22MLXm8nNbc+g4ne8ERAsX8N+isj573mJR5d8sYLLo3JeBTAEKvOqSFy26WKArtARWcKZO0ZqaR0brh2CQAKMJO1ACLfdp/YTliYDiUaIvJUFFPJqo7+PTp+zVq8ZvgwvAqA0RaVtG8dUu1wtx7kY0QP/Z937PaFgIrEqO9F5Y76sUQr1gRfm6DX1hO26gf7ctLR+ZN2t5O76v+DYRSy/eUo3kiRhhpkrsd6gZ5RWoe3MHgi0HPqq1wK2j0z1SyJHj5D8zQQj/es1AAwp2zH1N3VFxoOLsHMYUyLxRxfaQq+RBp9tF+WIneDEB6eSn2CeZ8ZBrS0QnAdcJS+j0aXOkphSyV80MzhiE3SYVY9xkdJN10TqZCXtrfT14FD/739kefb91O75ezmaUsfwwxEhd
+ nZDcCw2n
+ zVYkP/xnWxune1ZcqVg7JT3EAC2aLUJ6sOpLPbO8I/ZL2JeJvk35Bka1+d3eP/hCbEd2orgorpJs9u8dy1IahxMXLO9j9xIvXHx7QM7Wvv5E66zOLKaKd812lLgenG5myNgonKwSBHhekNY8SWbn7aKagK2wbK3lcJZVxIKEAX2wBZBXYCMwNDTATFeSA+alXkHjW4qk4jpkGIXA2rnPYfGyoWZfmcdo1ZQ0Kyz9CsaYQQ2Htd2gt82OnacL+AS282dhs6e7FlW8lMSP5LFmJUy6SFM8n9tS/TRZXgcHNT0HUtKBmJtqyFo3cOVRotGY3KyAi2dS+79Q7DjWBSlJFQyGJlgsVznwSm01y+vfHMAGWUpcXJpuWLmT/1iVw7uDXqShlSOz2IF/icF5/OELzQ2Cyes22SIuAvflO44sW99v+e0Xjo578OtUX6nRSeo74RbO+fEgF7gMAK0GSv0+6ZltnuqyDRtJBOvcz21Eu+VmAyFUeM0bi0nC4yvc0KsbXie3rXldyK47T1RfptZtan/V3NrSU6qxirlg64gMnclZj/yuG6Ej9CyMcwqSznhkNS6vDxVsjwNXnHuHcMf1U9OiS+rRd7VNgvpyU2nKMOaXvcLBLKituFSmHOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,31 +127,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch prints the status of the memory allocation profiling
-before __show_mem actually prints the detailed allocation info.
-This way will let us know the `0B` we saw in allocation info is
-because the profiling is disabled or the allocation is actually
-0B.
+In production, show_mem() can be called concurrently from two
+different entities, for example one from oom_kill_process()
+another from __alloc_pages_slowpath from another kthread. This
+patch adds a spinlock and invokes trylock before printing out the
+kernel alloc info in show_mem(). This way two alloc info won't
+interleave with each other, which then makes parsing easier.
 
 Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
 ---
- mm/show_mem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/show_mem.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/mm/show_mem.c b/mm/show_mem.c
-index ecf20a93ea54..fd85a028a926 100644
+index fd85a028a926..e9701d07549b 100644
 --- a/mm/show_mem.c
 +++ b/mm/show_mem.c
-@@ -427,7 +427,8 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+@@ -421,7 +421,9 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+ 	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
+ #endif
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+-	{
++	static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
++
++	if (spin_trylock(&mem_alloc_profiling_spinlock)) {
+ 		struct codetag_bytes tags[10];
+ 		size_t i, nr;
  
- 		nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags), false);
- 		if (nr) {
--			pr_notice("Memory allocations:\n");
-+			pr_notice("Memory allocations (profiling is currently turned %s):\n",
-+				mem_alloc_profiling_enabled() ? "on" : "off");
- 			for (i = 0; i < nr; i++) {
- 				struct codetag *ct = tags[i].ct;
- 				struct alloc_tag *tag = ct_to_alloc_tag(ct);
+@@ -448,6 +450,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+ 						  ct->lineno, ct->function);
+ 			}
+ 		}
++		spin_unlock(&mem_alloc_profiling_spinlock);
+ 	}
+ #endif
+ }
 -- 
 2.47.3
 
