@@ -4,182 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7788ACA1010
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 23:00:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D947BCA1012
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 23:05:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC5F98E0006; Wed,  3 Sep 2025 19:00:12 -0400 (EDT)
+	id 0C0A28E0007; Wed,  3 Sep 2025 19:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9E098E0001; Wed,  3 Sep 2025 19:00:12 -0400 (EDT)
+	id 071ED8E0001; Wed,  3 Sep 2025 19:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 966068E0006; Wed,  3 Sep 2025 19:00:12 -0400 (EDT)
+	id ECFFC8E0007; Wed,  3 Sep 2025 19:05:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 861418E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:00:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 21F5C1A08F0
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:00:12 +0000 (UTC)
-X-FDA: 83849459064.17.ADC18B2
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2067.outbound.protection.outlook.com [40.107.100.67])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 63E1EA0004
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:00:09 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=l7N1takA;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of apopple@nvidia.com designates 40.107.100.67 as permitted sender) smtp.mailfrom=apopple@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756940409;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA9528E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:05:51 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72481C0673
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:05:51 +0000 (UTC)
+X-FDA: 83849473302.15.5B00FE8
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 85D40C0009
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:05:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FUGlFCGZ;
+	spf=pass (imf28.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756940749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hU6+Ady6aLl2rVK7oQBFdMGCrF29m+xSa6Z9u8FWszQ=;
-	b=e/Pf6zaVpPTW/T3kkx5bZWN+ygPaXmiAhRjTyeBQgI4z3Y2Q7G3DgSxK7hMif2GUiFuZr9
-	yNZlyeKiTFxx+LsqXjCcJT0c9CogfKGPL+Isr6cwsOT1JYGWTD4BC9S7y2vFjiY/nQh2P5
-	S78xthATIXhoOIXF7sCg8UDtZ6zSCyo=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=l7N1takA;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of apopple@nvidia.com designates 40.107.100.67 as permitted sender) smtp.mailfrom=apopple@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756940409; a=rsa-sha256;
-	cv=pass;
-	b=FNUdb9pcFWH/wYI6V2HJDqOlZZzn1SWnUmt+Bgy20LVwjnN/LQRrFGN7o7VIU1NKfO/rSn
-	mFAAc+9zX7OCCedbVbE7aEa4RZXI58nIZ4btXDTuwNPdwJL3fUPeMrDlaBgQE392zNOYtU
-	hZrL7YK+l4kJS6U9JPUaLwy+lrKJyKU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RDsZnJPWg4oPEbqSXQZv2aDZhlmyvUVmOaVRwWWr8vhzTx0ri9J4phQ86i7kHFstEEcNK7rrtWsSzMJ1/UwA18Eat7Xo97B985D7pOHl9eZDYGYnOcbpnZqpSaj6XJSaVpGcgE24Gh7HrW2PtwKRv/uj/2fCam2y2MSXo43iWvHpDuGpHKFB0gYWJCnoj5r7qTp32cGsdowQPrcYQZle73GjU2NSauizyyLv/EmY9AVGJHZJo9uI2bql/nEIo4e6tDTYz36x3r98uqHL5K8JncLMqnyLHS6EQ5HRZtvJjcb761hArrJZYlzj09iqmsg2O/+8BstRZklu4rY9yV+PGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hU6+Ady6aLl2rVK7oQBFdMGCrF29m+xSa6Z9u8FWszQ=;
- b=NGRYGuamfNfmxKviA7bBQgmgTC6yvmsMGTG/XnwtbL0cGAwSjxAJbco2bH1aFri2tPMzxiiAXQfv4ppoZr0eYEb8jHd7zKYuMW9ic7nVH6LRwM8Yvj4kD9RVH3pLdDpOcCIjfdSK9FnJyc7TKeEDAbak/ltsWeyhpv2PlcW9S843QcRb+eP67OEzTqjRBJ7WJrNWS/YRNMKZKFiWGmSr7N48s1ZbgpyHOBl7f3djtAG7mjeQ7V31g0CN2lfwbohhi7EOEfHL4/Q4CuXmIijdpKZB6Ox77LMJDWv33O5gsDQhNirfpoLidnxOfjRIEEaTcYehZrofokQmzG0EsvWGJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hU6+Ady6aLl2rVK7oQBFdMGCrF29m+xSa6Z9u8FWszQ=;
- b=l7N1takAL/oddlxtXo9NYczyiasYky4eCR/Qq6RX+B3fb2yuRHRw88FZF8izJfrsAm9JvpbwCLx19dNTUI5vZIbuDv+FeObQ6urZDDBU8bzoRNDZQcGvWFn+ErUvH6ZW6mgRbvy9qk8RZba3o5OApdE6LIPnnLUlo8wd6rr0Oa9mYPmxez4zzHX1Y7kGG3AC9oDf93xnuO+YVwjb/qUPO5PlxybY47PyTixWVq5Jp/4j6rErZ0eioPsqsh5ITI+c34+juhjx6MjcA67ATMD9Xx/ZADhPrTHd810S/XH5v7LOVHPe2Ub0jRIje5sYUXv3N7r46Xr9YyeAAH9ICbmUbw==
-Received: from DS1SPRMB0005.namprd12.prod.outlook.com (2603:10b6:8:1e3::12) by
- CY5PR12MB6345.namprd12.prod.outlook.com (2603:10b6:930:22::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.17; Wed, 3 Sep 2025 22:59:55 +0000
-Received: from DS1SPRMB0005.namprd12.prod.outlook.com
- ([fe80::7629:20ac:4306:5f4f]) by DS1SPRMB0005.namprd12.prod.outlook.com
- ([fe80::7629:20ac:4306:5f4f%5]) with mapi id 15.20.9073.026; Wed, 3 Sep 2025
- 22:59:55 +0000
-From: Alistair Popple <apopple@nvidia.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Cc: david@redhat.com,
-	osalvador@suse.de,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	linux-kernel@vger.kernel.org,
-	dan.j.williams@intel.com,
-	Alistair Popple <apopple@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v2 2/2] mm/memremap: Remove unused get_dev_pagemap() parameter
-Date: Thu,  4 Sep 2025 08:59:26 +1000
-Message-ID: <20250903225926.34702-2-apopple@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250903225926.34702-1-apopple@nvidia.com>
-References: <20250903225926.34702-1-apopple@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MEWPR01CA0174.ausprd01.prod.outlook.com
- (2603:10c6:220:1f2::15) To DS1SPRMB0005.namprd12.prod.outlook.com
- (2603:10b6:8:1e3::12)
+	bh=SAh+dME9OWSqfZnxDjcTM+6W1pRlteZ4zjfIGpBbxFM=;
+	b=YNRO8bTDymmK6x9yCuCCY2HNGLkxp+jt1jcxfShJVBlkMw5fVogsjIcOE18W20zqo+915J
+	vvf3/UgsrzTDtVj7lvY9MmfO7nC+JwaVaLzKik0FcOcCmuKWJuWIy7ujCArX8zq4WGZiUj
+	J+sE4twFGER2Y4g9exkV0sBrJSL4yGo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FUGlFCGZ;
+	spf=pass (imf28.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756940749; a=rsa-sha256;
+	cv=none;
+	b=d2w3xBdbIMgoyaWbh40SbWmgZo0O5M/ri60aKoi7CC+91sjcteLqFN05NoBhR53dnPa/N5
+	467z/jKe2MvqpkTTNr+OxTcz6Hr5pv9aQTZJmR4NxJsIDNYFZ2stltswpFWwT22LU9fiCJ
+	Xmv5NyO+RATKInziRvL8H6sRAqkSgDA=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24b132bd90dso688865ad.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 16:05:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756940748; x=1757545548; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SAh+dME9OWSqfZnxDjcTM+6W1pRlteZ4zjfIGpBbxFM=;
+        b=FUGlFCGZQ1CZlUuim7PExF7cRyeexpEPwtphvKaRvnRTrhS5MppSa80isd4UMwpILF
+         TBTgzB4PH265m7BHekHBC8VdHnhAvMcD1rMeuqAdjyfPwKFq7sZ+waBHHTv/Jl68e3R9
+         KMb27MXGsgxI7eIAzWBjFvr0BL9FNO6lFhhuM/W7Wv8UF3A6iabTDj3LuLRzaeyuGaex
+         k1bo3RmiiYiLbFei7bogwOlszNLXBiK/OjATgtTEaBaOplqWhQrvpkte6l0yGhmolkpd
+         UHdo8NktNQKSmlXtXYsaRrqHOTF3S5YRsff8GG2hD3ZAxeZfDvnDxBwJUjjDfOhfZnUR
+         CpZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756940748; x=1757545548;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SAh+dME9OWSqfZnxDjcTM+6W1pRlteZ4zjfIGpBbxFM=;
+        b=dDhEiBVilu/9p/4nNsYxXDqpFHsFfK4ThAzfzG+Pd913VxOyY1W2bouKu3Ts4kPA3p
+         IVjOQsAGKpgiTxuxEOD+jsFJmr1ccwwmlqD+fGUaG+BY2OvLjboG5swKMNX2u3aKCXSB
+         eTt5cYqjOYs/GmwfkRbeGt3IvSw2FUPNhC+EjoYUv+/w3ESIaksoIhJEliuV5sv3Y5nO
+         BzImqIZNsRUeKjXVtQ5XbTnaSXWDKTkuJleCgoHpJ4cWWl2atigMu6HP4yhmeJfvJ5H1
+         FLQbHt3tUawVsFM/UkNeEtf+Z71GzExqVaFYTzmKpVAZcVlyRxiNrwqqIbTLAM6240aw
+         Go6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWUM4RqnkxFQ1zSRVYW7vefgbcaIKINhYRR4ZVYRwFCA73y+OygDsDFTx4K/uc6+cJHjVCo5EAIrQ==@kvack.org
+X-Gm-Message-State: AOJu0YytyGXZGFtFZHfNlQZzbDUFF1Igk6JgzA5Aj6f7mkWshEIeZeQJ
+	5O7KdjtHgx9K+GNzDWIVrtKxi0SvI2Q1hwbVWlez4FGcfOC55q7Wv1JjghGt7d0/sg9/NI+M1uW
+	Fj5eGZtzZdGyTkpcH2GROQe60NCkLprQ=
+X-Gm-Gg: ASbGncsrY+rkkrGf/kbo6MiJJQIrwYuamn1CrmCl3vKdKj9LNFPsHJYPLYnWddzkGeK
+	tlKSuSjtOrlkTRmSCOn6QsLHcXJn43fF6fUUbjdhF7RA1sMz7ifsyySF8wBzQSUYNXU2780PeE5
+	+SklVMUYr0sOt5EBZphtAnEhV9mwjqXDVTkgIYVTVwUmnH8mzC3h636Sn46fVr/h6uO7hr841nY
+	LxhmgKfroZqMZSfmwtHLqR8F5yYj1jT8IWA1RRGacc/2Fs7GPIFMXYqaJrsm+ALQxoE24tTTF0p
+	n8oYcRUUIwv3Km+p8+U00P3ogA==
+X-Google-Smtp-Source: AGHT+IG3ySswXqKjDVnI6DYwqiLKZ+zahBDaGUECQtFUfaWb6/E3RF2IzUEhOFKBc0MKjkW2U6s15CTFTiZJNbe+kmE=
+X-Received: by 2002:a17:902:ea0a:b0:248:7a43:e1c5 with SMTP id
+ d9443c01a7336-2491f112bdbmr141413195ad.7.1756940748238; Wed, 03 Sep 2025
+ 16:05:48 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1SPRMB0005:EE_|CY5PR12MB6345:EE_
-X-MS-Office365-Filtering-Correlation-Id: d59999d0-cff2-4d4f-e5b5-08ddeb3d9915
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?F1CxV7IJG6T8GbYI8SClX3RGX74xV/U+Rj7GHu6P5iyCOLOUCN954NrkLUFr?=
- =?us-ascii?Q?7ubaxo2rShE2o/iRu8m+cqVgydmg/+zjUqygntLZyzKF0Mb5NLMz1HpFd5n3?=
- =?us-ascii?Q?gEjLyTLdSxDSQWUNqdCGIg8mwyyP+HuZaZgB3XpAZV6gs6mEUzMvWcLz9y2s?=
- =?us-ascii?Q?T8PHFFB+iXrvu8mqsY1Jz6/wSMjknxTmQ72cX8PvxU3eVGeVyvQ7WPo+g2iD?=
- =?us-ascii?Q?4DLORenWZoEnBc4nGHkxYGDi0hsqHtIPksFHsB9dfWrNF2uVEPzAAVxOePYw?=
- =?us-ascii?Q?2D6Kom13cgwIDfUZLrqpBh6PDeFN1+CVaHSSaoZIh4Uc/rEijtnBV2T5mD3D?=
- =?us-ascii?Q?OG10tazfrNC5JirTRorrIul7v1xQzp1FYlGHyBYemNakZmZqk/FTRQt/kq4v?=
- =?us-ascii?Q?kr5wfuEGCwyxBcg6tWHy3km8E063iJT92bc2LsLTDJTgncfSXneB/CBJvAmY?=
- =?us-ascii?Q?3xsFZ7litVRlXLkbED0qmDmxxwAccj4JVtpYjpDu32L9ZGUeZ6axcqicnX9G?=
- =?us-ascii?Q?l4sFVySZWoD9LBEn6WTCSlmIHOmZuN3JReJYZk9ylbJs0tzQu109GyEmgeMq?=
- =?us-ascii?Q?LJ/Em+1T8E86XuApviSDPOL1ctxqJSNGw0HHCQxBPSUcN2HGiUJ5WJ7OiEFi?=
- =?us-ascii?Q?x5HCO4XNgt6w67vjS9BgOqoxaRiNMIFrhcOQUBG5R/FqZPG49++ifkZUc1iQ?=
- =?us-ascii?Q?4fVmS2afqtqN5qKl3cunbBGkwabOHZZg/iluI8q93Q3eHHviIPfS9D5eKN0/?=
- =?us-ascii?Q?cn4+QFE1ceO5sCxMk4YSOTljMPf2pPG6qZedEf1F1zItW9aIBpjM8zN0830V?=
- =?us-ascii?Q?OJ5Oo3HWFhUi8qLFyWzSOC8RrZ7eOvctUvnKQ64rCNLflc8m0R/YVHimKa21?=
- =?us-ascii?Q?0/lwiXdRKswTdQTVSkeCOvsDDyiOXVmXeJNcS2j5CkZ6uEEiCo9UgEIdJ5ie?=
- =?us-ascii?Q?kVK3qMGhihQONr0d1MY6K8+DKp8QvYoeQ0kqOlkClOLGnjoxZhnPitiuDjXY?=
- =?us-ascii?Q?A3c0WkL8m/8o9k/f0TSbyN7ggfgnI44R2HinQvRcrj1y9TD4+RlBrgkV3SXY?=
- =?us-ascii?Q?srRIvUWHd76dJwv/9msafW3s3rX+apLhTXynYUVUCwzvt+L3D6gAs1f+FVgM?=
- =?us-ascii?Q?syt70zykiCZ2qoBKZD5pVrIrkl//AHSKda5M4I3ZkZ0/gPECJzVosoT7zRlr?=
- =?us-ascii?Q?nRKeWH36+jb9pzXDEteCaSTsdIrjAb9C0Mez689YpZCiarfaQvuM7rJ3Iny+?=
- =?us-ascii?Q?mMUR5lrvj1Y8E1ccavdjCUQitGHtXCcp5y019fRRjb3mgLgZfplpGzPFgAm+?=
- =?us-ascii?Q?vnFMPxO4fFRIjPaXDBaakRWp3dzUJUd9vYkpe8tQOWfkYdiWt1f34Hs+l3k9?=
- =?us-ascii?Q?b94r+JmeS9KhQBnJKOW80LE6sbKdJpzQwr5oxF+4h2t5eIRGQJqnP2VDFNv3?=
- =?us-ascii?Q?iSqEP0kChzU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS1SPRMB0005.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ewSBhqrLjHR8iOLGVBSvowjlNEsjGOy5Vrqr/03ahibHYru1KeEQJu8rbeso?=
- =?us-ascii?Q?nBN0T88Qek2tU3uP2eo2MLXYI5ns8dTQwcPtNNkkGPmqp/cBExcx9HQ/p9K3?=
- =?us-ascii?Q?XhXFqz31QEZs83WSMUinh4sEEjWMA7xza+m39CVVvLk9Daq4LCxbqoQ/3VI1?=
- =?us-ascii?Q?bZawrUEusg8PZj9pK+d0C83aNZDt0e7RVZaRC0bLn5P0/dqkPZQTVgDUwQJU?=
- =?us-ascii?Q?7S5GosAgtJqoKBt3gvM+6NRYibJKCQF3zU8nDlKcv4IgyGuBmVf/6eSbAUdy?=
- =?us-ascii?Q?75TIGA5unzhFc5FllEaz1ifSonA29GdBS/J3LOykv3vymfK2sA5Rpoik2sD3?=
- =?us-ascii?Q?jmTedCyINLyCJY/jtZi0HJp94HmdS//CbGrl5hzrho5/tUfxXXcWIy6CtlgA?=
- =?us-ascii?Q?nb5CuyuGIr4u6IoKQKSAM2rpy0OZKIjQlhUN8K0a2uZeMhu0yfn65h1CgXTS?=
- =?us-ascii?Q?17glvwq4dCCseGkqT//+jqfDpF5+SyKLmOCVTMy2hPa5AqfaZmLAM9Q57AzY?=
- =?us-ascii?Q?PMG88iDhMMmDz/bNkeG+oqUditb/KQLuLGOnwcEIo9F7LIhixPdvkgcIo4qi?=
- =?us-ascii?Q?mFiEvYLRYGaDoiap7A3I3bF5TkXcYlDEJKTZpJu0Xfx1DpdHHxernDtTzA0M?=
- =?us-ascii?Q?8nc/cSbujcvnSCnQ7rFIqtuaHPaGb7zh6CcceFZptp4vawMzeiSwVNe3qRjr?=
- =?us-ascii?Q?eRb6we5FIE4oPTzd6HCitufU3L1tuhbqie7Tb4TQv+uM/iRNxjJJCKv8c1UG?=
- =?us-ascii?Q?Nx2cxlpm6JdI9LaZH5kDtFxDsFGq9iunPKlwrhn2S2Cdmq5MG/1+95eAVTfM?=
- =?us-ascii?Q?Opxy22D5DgyS5HddoKLSsaK4s5FFCsSTlSAx/pMIL8/p1UvLaL19OFQemz92?=
- =?us-ascii?Q?0gP8tZ7jNEoSRP5R2s9CFfzSUrMVNUKGKCUUf85uKsbrEOSHuO/iwQHokxxF?=
- =?us-ascii?Q?PUZmY8bTLLBvbuVJ96zBrXmTCWMhkaXawr7z+4eus2EXROrOygkds+494jGg?=
- =?us-ascii?Q?r9GzBxoBYXmNEU8YyVTGa5LyGxud9DDsKZHR1iXNbUMPea46sDMxog5QfCbj?=
- =?us-ascii?Q?koxEU+3OS1KChprAeomf7RAHqvw3/JUPKt6QO3DinDyvzupXVUEZtvDRR3yc?=
- =?us-ascii?Q?bFb8jeFPMGrlACAy5yD2Or/xDUC+KxLpfSemVSW9RqUvW3muQSvvYLGwufDj?=
- =?us-ascii?Q?NsEnzmvub63Ilhg7yPBWUZLvKZwJfPmOmRuSsrhqEm3mauSjV/2fqzjGFGqg?=
- =?us-ascii?Q?L1+2DZVqzHsm/sfqUFXGdjnUNhUe/ulcUut01akMFJwTYcfj+HIWOtZa1b0r?=
- =?us-ascii?Q?cVmgQxWfnlGQt52w1A3pMLnJJGbJEX7EHVHr0TugAFbB4u6bh/8x4FwepQ+w?=
- =?us-ascii?Q?ihzmwKBLeP01y5oFNO0rW7rsXLvKiHEVhAJLzTWDsEX7icHL6E5Y2v0ZPxkD?=
- =?us-ascii?Q?xFiWFgLu98m5Z0ntEgiQgYr78TnZfMTgOBAZkrHoDvHG0zDLcLtIC5IzqRGg?=
- =?us-ascii?Q?s4seXUpSneNoa1qDg/JsLPjyGZQp3Fzb/sJ49fMqFrY4XIyChAL1i8tP17Qa?=
- =?us-ascii?Q?DWgdASV/WcDeEGgsHSfTH1lTKb/TXR8QyR9Mt1BK?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d59999d0-cff2-4d4f-e5b5-08ddeb3d9915
-X-MS-Exchange-CrossTenant-AuthSource: DS1SPRMB0005.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 22:59:55.3740
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AIx7aWbs6kmeSiQER17Uy+yDagyhJuqf6LAPCn6/7H31OOLKLCOCblAMPtT46CtiHJkWhlP/7pqVPWHf1oj6XA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6345
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 63E1EA0004
-X-Stat-Signature: i8nfe1cwkseijy4a5nnb86kkems8q1dy
+References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com> <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
+In-Reply-To: <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 4 Sep 2025 01:05:36 +0200
+X-Gm-Features: Ac12FXzihGQzDs_GFutYOUS54a14oRZ9cA9ZcvsQfbCtCM9R-v8HIZFcT-sGIq0
+Message-ID: <CANiq72nnWmzOfZ1PhSid4t_e-yWEgi_hVx5Uj4hrB9wzpuP6nA@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for DynamicPerCpu
+To: Mitchell Levy <levymitchell0@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 85D40C0009
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756940409-925280
-X-HE-Meta: U2FsdGVkX1/9KGK0Y1tOk13pRT1+zTilNJRMhGs5jO7h4A7Zfl6CVv2iG3gKBxyZAqCRFPbn5+x2iumq0JIkFzeHIMub18k+OgcdD5psXyG2wMiBE7vuTayAypkE0Z8ohza/hBUip6PKABOS4SYSeI60in26a74VkhwoEbw2DAmeVvFhYGNib/J1qE9uaoIzpwu/FcK1nZ9lPj1w68Xmf1BBBMLsCAf9xJ0foPVxb/1lRtr9E9E1p3+RYfV22W/2XR23dRhdJcivDV8FlyYZ44wbRZZGP+8hXrt3ebDg30z/0gGfl4ZMcGB+kuNbDbRkMHTQ8ebwTqbuoGjVLJjWCNzUC53Zi4GS65RRgSubFAg262l3Pl0yIA/t/y2nhyRbgn5D4RR6WPUOKfDynXDiDXafRnnAcJLIEizmDGRD0550HaOJXu4xmVmt2KVm4TPY2yHDCsccGt9vzTfknK9wD+H9tVqMrf/nuZEN1n/z4eDKs0tYOVK3SiRdB8uuuXk4VXG9sQBF/Aqw5XVrZTponmGuj0tvQ/Wmx5fozTm6v6YycNojF8nZCYHvKFP8yujStsCPCnmc8T3dDqwx5+LGsSHOy6G9G+k8uR0xxh7w8pCyxA+rz6IkC4SyXpoInuVU/LsCn5hAl6b4VVgY3Lmb+gXNcIBOPY78Th3vg4UNubY7XCM8dLnrtTpX+IQpeqdhPYMzYNJxBra7RD0UswT51LDgUdmYbNhviPuUouYlTL6zHakJNmchP4M4p0EcWTdpevoZPj5hO1g5ehv9cAEMnp8JqIC2g1K06Z5UaHIk7r+/TegH8cZAnC0RSB1BHUrPn4VbeIZFciIkUgCHbA/pcQCBlncvHrsbnqwhJBPGSBdrODZ8bSIHw3F6OEuc8u/v2lPxuj3+4EPQSbGVX297wFzeetNV8RE7yxSqoIvodzyCK0AN1NOWFZNvYPUHDkP5t1ZtqC1DT9JsOPJDQ4K
- gYQSA2II
- l8tr16uvU7UALTN9o8NtwRaVNnbjNqTBfMrUbMuKmFEAFYvFKZXQK8r3rs67mTobPLSrVPtqxxqrGVHvTjF49XZ+cHozPOOZ52+vVirxeGYFMCcv0qFGtMgEZ72gOrcTsOleikUBH7OPIcctjx5KL6Q913iO74Iw95/iqrXXqPLZ3S9ypAcAbUz9QuX0qb53pqLflY3FgK3ROWmABZ3UqDG/7QUTPMetrxJA9mSX/iKTo4FPPFaqG/Nsw0JSmVNjIGfOwCUI4wQo9//kKKUmP1qLbyHsjTT64XNMSx20k4B4M5PEDbjrBnPo1aJp5J55vh1JjNAHPqnPSUNQUGre+TbwhpxT4ms66kBjYEv8r8qrzEyx1qj/s47wsQIvE5MGoh+lfJChGUuR/H2aAVpIIezRZsZkR2CkDSduc/36E2qJSP7Kx1ujPXcLlcSYts7VmzGYRsjpkAEPSLwwOKIJMaR/QzvVGR6AgbU3Y/iMRNzZsnHTfMx+DODQx9Q54tX9j0dSi1nBpcd5jQaXSwOZLgmGNNKooIpdwwjZoGUk6E/46Oyghgeqn+vkWUHtSS2WhQnF+
+X-Stat-Signature: 8un8i8zbqrqycybrp7zipyushm49q5tj
+X-HE-Tag: 1756940749-857482
+X-HE-Meta: U2FsdGVkX18k3hIJNdM8zJif4vLQJoFEqit2xTf1ptP8yJOJ8piSBaSUdANaR/8TT5vSeLL76dcKJ6uNkEyKiUGzWja+i0lZ3a714tHhb1HQKZghm7fJ6TU+Rljhhay1ziZuxWaNmzigBfeF2LlJ+nRk5VQd8bE1QBSls92o60hrsCU3IFyfCq0nIekoopbYry8r0mPEECwct8sNsQrAfzAsTVA4j9ffe/s8RghfHUcBQUxhEUZwzAQEiLlciW4J+s/7Ig5pDsHFMpAxqUNpr2wc3RxC/jNh5VEddloVrvQg8+0AvfRFGi6+b170UhVU6s1C7CBDHtcnSlVNKFC4mkzz6WC5lXhmYchhRUs3PVZ7d//WcVRtB8e+advvP7SvjoHOuDKf2WPYVv1G+XhYgmYkOIfLyzIJscKqsUtErMty31m3Qcyjoy7n1jAe6g9CiJn5sYkIU9AuRo/yRDq/UJxtCZegWGEvoybquAmMsBiIL8awWVrPTCMdAbQADpyI5qT/DBf7IbEaxMyBbr4kEf2eL66KrlKAi71tau1hmLstJqcQHwU11IHI0aNVEekN1NRqi2dEp+gLnj6ZbCs2dud0wQe3ZWztxhOOZMxkBLtD4wUe3tW/IoA05okmjc+q3pspr6rj9jGtXGebIh0zdQgwVSSD59zvVnKUmo40d7soiiZajaj7Gmg7DzvjTVoQz3ZoJnOrZ0KVKA22iVb9TaxJcr0ToMPrzedk+fnjtwTYfb0NwRdx5pgX1QCuCBLYwqMDV5fJEGyqxkTso1z+g25JU181j/I12oRbahes1BEZQR3+ObB+lCs3ZcanxhdVqpDBPhpsSFsfq65YlNRtO9/KVdA+6JYGTu87khKt2AUkcGUHuXMA/r0VeAn7vTbiTy0Bc5iNu4pi+NySPDpbDahJfnAck3NSxHc3ifuJG9KnQBrNjNc/utlfQ+sdIZo5eiiy+1hUoybZtmoBiTP
+ HcKZ9ARm
+ TN9MdMAaWvHKuKTaF8rK2imJSBwVjTyfL7Mwn8z/8CL2hBHtRyeHHg1NHsO2CG1+cVHvmCS80IJ8LTASspkH7JQ4qVDSrOo1TECUEhvzkyLTe1jC3sJIyX43lOzUhvo7n6KlpoetP7AWhSCxkzwazZv6A6NS4Xiokj2XOil35VTfPbcMfbKIoZ5+/u6BzZkFYuOClZrf6dUqUBfvlLjZdF+gw+DvJ1rNDK5Y1UqZhMfn4nfHBuxkXZco1BFQDY7rlSi8ac5f8f86JVFcpkGOE3PbnWW4P6SHNzetJvdpeWgkTK2uh3Bd2vF6dfuBZ+bakV2JMRlU09rdffltBXr1FgGgSY3+JvB0rOQnFuR2ouXW4XOwDvblwO6i+zlYU0asfgyVa/g8bTVkkB8WZf6TtkdSYJwNiXsB4hwTcvcj+g54SLe/3zUE8J188suEjTHL7XwqdjKfGXX4AkzZFHJmeThTVldthGYL2+VA2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,121 +124,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-GUP no longer uses get_dev_pagemap(). As it was the only user of the
-get_dev_pagemap() pgmap caching feature it can be removed.
+On Thu, Aug 28, 2025 at 9:01=E2=80=AFPM Mitchell Levy <levymitchell0@gmail.=
+com> wrote:
+>
+> +    /// Get a `*mut MaybeUninit<T>` to the per-CPU variable on the CPU r=
+epresented by `cpu`. Note
+> +    /// that without some kind of synchronization, use of the returned p=
+ointer may cause a data
+> +    /// race. It is the caller's responsibility to use the returned poin=
+ter in a reasonable way.
 
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
----
- include/linux/memremap.h |  6 ++----
- mm/memory-failure.c      |  2 +-
- mm/memory_hotplug.c      |  2 +-
- mm/memremap.c            | 22 ++++------------------
- 4 files changed, 8 insertions(+), 24 deletions(-)
+Please try to make the first paragraph ("short description" / title) smalle=
+r.
 
-diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-index 4aa151914eab..5cfc2ae6c98b 100644
---- a/include/linux/memremap.h
-+++ b/include/linux/memremap.h
-@@ -204,8 +204,7 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid);
- void memunmap_pages(struct dev_pagemap *pgmap);
- void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
- void devm_memunmap_pages(struct device *dev, struct dev_pagemap *pgmap);
--struct dev_pagemap *get_dev_pagemap(unsigned long pfn,
--		struct dev_pagemap *pgmap);
-+struct dev_pagemap *get_dev_pagemap(unsigned long pfn);
- bool pgmap_pfn_valid(struct dev_pagemap *pgmap, unsigned long pfn);
- 
- unsigned long memremap_compat_align(void);
-@@ -227,8 +226,7 @@ static inline void devm_memunmap_pages(struct device *dev,
- {
- }
- 
--static inline struct dev_pagemap *get_dev_pagemap(unsigned long pfn,
--		struct dev_pagemap *pgmap)
-+static inline struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
- {
- 	return NULL;
- }
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index fc30ca4804bf..21298f861a5a 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2266,7 +2266,7 @@ int memory_failure(unsigned long pfn, int flags)
- 			goto unlock_mutex;
- 
- 		if (pfn_valid(pfn)) {
--			pgmap = get_dev_pagemap(pfn, NULL);
-+			pgmap = get_dev_pagemap(pfn);
- 			put_ref_page(pfn, flags);
- 			if (pgmap) {
- 				res = memory_failure_dev_pagemap(pfn, flags,
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 1f15af712bc3..14e98c89f5b4 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -375,7 +375,7 @@ struct page *pfn_to_online_page(unsigned long pfn)
- 	 * the section may be 'offline' but 'valid'. Only
- 	 * get_dev_pagemap() can determine sub-section online status.
- 	 */
--	pgmap = get_dev_pagemap(pfn, NULL);
-+	pgmap = get_dev_pagemap(pfn);
- 	put_dev_pagemap(pgmap);
- 
- 	/* The presence of a pgmap indicates ZONE_DEVICE offline pfn */
-diff --git a/mm/memremap.c b/mm/memremap.c
-index b0ce0d8254bd..3b4717cf3a6b 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -153,14 +153,14 @@ static int pagemap_range(struct dev_pagemap *pgmap, struct mhp_params *params,
- 				"altmap not supported for multiple ranges\n"))
- 		return -EINVAL;
- 
--	conflict_pgmap = get_dev_pagemap(PHYS_PFN(range->start), NULL);
-+	conflict_pgmap = get_dev_pagemap(PHYS_PFN(range->start));
- 	if (conflict_pgmap) {
- 		WARN(1, "Conflicting mapping in same section\n");
- 		put_dev_pagemap(conflict_pgmap);
- 		return -ENOMEM;
- 	}
- 
--	conflict_pgmap = get_dev_pagemap(PHYS_PFN(range->end), NULL);
-+	conflict_pgmap = get_dev_pagemap(PHYS_PFN(range->end));
- 	if (conflict_pgmap) {
- 		WARN(1, "Conflicting mapping in same section\n");
- 		put_dev_pagemap(conflict_pgmap);
-@@ -394,26 +394,12 @@ EXPORT_SYMBOL_GPL(devm_memunmap_pages);
- /**
-  * get_dev_pagemap() - take a new live reference on the dev_pagemap for @pfn
-  * @pfn: page frame number to lookup page_map
-- * @pgmap: optional known pgmap that already has a reference
-- *
-- * If @pgmap is non-NULL and covers @pfn it will be returned as-is.  If @pgmap
-- * is non-NULL but does not cover @pfn the reference to it will be released.
-  */
--struct dev_pagemap *get_dev_pagemap(unsigned long pfn,
--		struct dev_pagemap *pgmap)
-+struct dev_pagemap *get_dev_pagemap(unsigned long pfn)
- {
-+	struct dev_pagemap *pgmap;
- 	resource_size_t phys = PFN_PHYS(pfn);
- 
--	/*
--	 * In the cached case we're already holding a live reference.
--	 */
--	if (pgmap) {
--		if (phys >= pgmap->range.start && phys <= pgmap->range.end)
--			return pgmap;
--		put_dev_pagemap(pgmap);
--	}
--
--	/* fall back to slow path lookup */
- 	rcu_read_lock();
- 	pgmap = xa_load(&pgmap_array, PHYS_PFN(phys));
- 	if (pgmap && !percpu_ref_tryget_live_rcu(&pgmap->ref))
--- 
-2.50.1
+Does "reasonable" mean anything different than any other raw pointer?
 
+> +    /// # Safety
+
+Newline after section headers (also elsewhere).
+
+> +    /// - The returned pointer is valid only if `self` is (that is, it p=
+oints to a live allocation
+> +    ///   correctly sized and aligned to hold a `T`)
+> +    /// - The returned pointer is valid only if the bit corresponding to=
+ `cpu` is set in
+> +    ///   `Cpumask::possible()`.
+
+It sounds like the returned pointer can be invalid without triggering
+UB -- could you please clarify why the method is `unsafe`?
+
+In addition, please use intra-doc links wherever possible (e.g. there
+a was also an `Arc` elsewhere).
+
+> +        // SAFETY: The requirements of this function ensure this call is=
+ safe.
+> +        unsafe { bindings::per_cpu_ptr(self.0.cast(), cpu.as_u32()) }.ca=
+st()
+
+Please try to explain why, not just that it is. It isn't clear how the
+safety preconditions, which only seem to talk about the returned
+pointer, make this OK.
+
+Thanks!
+
+Cheers,
+Miguel
 
