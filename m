@@ -4,177 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E05B8CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A62EACA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:35:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 142258E0001; Wed,  3 Sep 2025 08:29:09 -0400 (EDT)
+	id EE55F8E000B; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F2D88E000B; Wed,  3 Sep 2025 08:29:09 -0400 (EDT)
+	id E96258E0001; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F03208E0001; Wed,  3 Sep 2025 08:29:08 -0400 (EDT)
+	id D84F18E000B; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DAE2A8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:29:08 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2453BA901
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:29:08 +0000 (UTC)
-X-FDA: 83847868776.15.4270AC4
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2083.outbound.protection.outlook.com [40.107.94.83])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E50C84001A
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:29:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QcZOFYQW;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of jgg@nvidia.com designates 40.107.94.83 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756902546;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C113B8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CA9411A6D8
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:38 +0000 (UTC)
+X-FDA: 83847885156.12.7C4F71A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6753340010
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iNCshDMl;
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756902936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VsFxHt6bCE/g1j9WUSGZzHtfgIgT9HYpEelVPgqLong=;
-	b=iXzBfpfzCtudgoTNrYlW3ILsVnVKOvEqGZ+I0SJAuEQ5ybRP2eFaGF++EhaG5kfb7/xXY2
-	S1YEJhTnGi/fZzvWZDdrInjS3uQijrR6sAr8RhEP30APVkk/as9tD+hKxUbM8UxlzpBNVz
-	iS/fGTfCHNzPcnZAGjBRq/oyEuB4i94=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QcZOFYQW;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf17.hostedemail.com: domain of jgg@nvidia.com designates 40.107.94.83 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756902546; a=rsa-sha256;
-	cv=pass;
-	b=Td3dSQ8Uz9zrGAssMpbQ/FNhV4rXycurvQoGaMkE8+ckYnx8eUOvMB6zmbzd9QkOZa/70F
-	7rBFD+osluAx9ijujBL2e4D01sXRzWeVDw7e3SX2/c/YvD4fSP/O+ZDUxvnplmDEAmKouZ
-	CAM40CvOkvYaCfYaRpcC41EBn7lXBPo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MJpjB/VRn6EZrvRmAFbbEhNSk01+C2pxwwUPDz2E0edgwbu2I8olh928eHRPimsSbz8z40IcN+/X+YHnwplme0V737Kz8Y7E/ugYe2ygioWluxl5POE/jpfIxn6rqcpE8ndi5SZRHTSH9xBfZ56fIQx5T1gYnZ7yT+IeGpH70GLnI9kKPNC6P3NQKhbI5hneXC9FYHwK5qOWlYM3BkhNPAXMCCHIXoekV9ra7VoFzHyz3eQozhmsnf6pOdZRW/ystVjWbuH0Y1dAqOTlXhxFGkme8yMktdNKjyyUtNuYDzV9+9bzv1+YvsongieCaTysC+UYdHn2iu+ycAqFsr2RAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VsFxHt6bCE/g1j9WUSGZzHtfgIgT9HYpEelVPgqLong=;
- b=c+RQMJra+Hfg7egp1+vA1+CJyYKDzllD3+qUFP8D7IKMj9+0ysFUBDF2teJ0l62oFihrF2bifr5+pan/Pv/qNBw+jVmXLySRsGFfbt8ZJwu8QDkmH44I28gdu5Yqgs1LMW7V42ICtn5Xcbbuxe20zKqhBQgJd45zQps78hi26nCZfm019SZiFE/Qma6TcIZ18f353b4XobOyHnnLS8r/NyIZuP6XB2hXOQ/XezFwsDVuUs8i7Kto89tEP8Z/S9cKgVfRM+W9K4hBn8e1IN9pbIX4CwSdaFKFOyShdwmUWT7Zb97ARg7d8pcYrPE6OmA0whR8vHA0UDpzhgzVG2/v2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VsFxHt6bCE/g1j9WUSGZzHtfgIgT9HYpEelVPgqLong=;
- b=QcZOFYQWNtpEPDQ8F3LdRboZyPjM+m7DGQiUCZl5hY3wc9p7CNaIWKlhuH8GZtyZjW24RqBTVvCe6aDsvnP1hRTLDVVluVwgbyecoivKUvlH6DxVU5/9pNrZWV1nJyFiQdJqzQm8KSgauQh0ACY8F7dy2tvBBpJyYZGce0mHUXoGC0Z/x4hEJvbrpiijrOzFSyDzzQY6jHwkDIrs8mOVNfoGtAh6Mc5Ej9ymNnI5i5kD4SZqWkyB/GOHp50HqOD1aeJXiRs+/uWEZKjkr0dVRk81DjXRkulRrCZOXbfLejP6MJCNmJnev7c9pH4ZmnwU/VbO5bbyIGzCe7TRH1/5BQ==
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by DS7PR12MB8324.namprd12.prod.outlook.com (2603:10b6:8:ec::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.16; Wed, 3 Sep 2025 12:29:00 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9073.026; Wed, 3 Sep 2025
- 12:29:00 +0000
-Date: Wed, 3 Sep 2025 09:28:58 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Subject: Re: Where to put page->memdesc initially
-Message-ID: <20250903122858.GE470103@nvidia.com>
-References: <aLc_nckaDc2ePRv7@casper.infradead.org>
- <bfd5161e-c76e-4a0e-bc1a-bf7510868827@redhat.com>
- <aLdcPeb8zrfDwd2p@casper.infradead.org>
- <20250902211514.GQ186519@nvidia.com>
- <aLd8l8v_DL75NU43@casper.infradead.org>
- <20250902235740.GD470103@nvidia.com>
- <aLfIEKLqpe_xB7mW@casper.infradead.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLfIEKLqpe_xB7mW@casper.infradead.org>
-X-ClientProxiedBy: YT1PR01CA0123.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:2c::32) To PH7PR12MB5757.namprd12.prod.outlook.com
- (2603:10b6:510:1d0::13)
+	bh=DLEC9Evf5FlWOMlAZljYLeumaRL0HGk6iNDsEWfj9Yk=;
+	b=QJkFWN4vUDQLZ43wmoYKSv4kOz3bDGzI09E9MzgCa/aRi6W6B6dnhsqhBgswPHja1sk+hf
+	cWgVhW+mR/Km5/KJLQrWCz6JL8iEfCjAmt7nAaEDkK4fL7bCOC1M8B1ALBBua0JDwFG8Zs
+	lxEEcKgTAn/xrgluNT+Pm7VEUpQEt2c=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iNCshDMl;
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756902936; a=rsa-sha256;
+	cv=none;
+	b=d9y0nVy/ZBHxJhfTKIxbDOKxOKfsGMU/85hMAonnZWqLZPeoQ43oew3z6T+utKPCyIFRfi
+	c1a6ZVMRU5YsxdkRCyEOrWaNwR7AHUQ4GC0vejaqXKWv1v/RrLwcBduylz0+LaMwsHmmvf
+	iN16IOm2rXXcyfJDtSOi5tz2KUuG0DA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D5D9A41842
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AC9C4CEF7
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756902934;
+	bh=DLEC9Evf5FlWOMlAZljYLeumaRL0HGk6iNDsEWfj9Yk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=iNCshDMlH0PP+U9tYmnBYVOGgDIkcmqrwdh58SuD3jbDPCfT4moWf816Uj/eyH1S7
+	 xr6Rsz3M4EqSRpcx0hvbNvyyWs5zwuoj/6hF5BVsUMOZf20AweHu2VMcIkWbDoEm6x
+	 ylEuQbTRLsGKMC1RD+YXty13wYoqapj7BYfUc8Rf7KjNSN2Uu1AIJc2ww91TbO6kIC
+	 eSHMsXBM//vvLNUR9i5Ca/bCJUbVtIFxo0QpsA86qs4I1iiybANMQtPVr33aeZzCgG
+	 yTcC5kBMtuCaAl/492FDWR7eKBOjpJv2n4qd0EGNVANtGlWKdpGO2V5qyYACUqyXwk
+	 /NzZXzwtJB3FA==
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d603cebd9so68051977b3.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 05:35:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVlIaAoPR1CQVGpcOvlWyMwA2t9ry2dmJPTMBaPL1+i3DvlkxTOBnI7XZBnzaQldvV3PPBl9xHyQQ==@kvack.org
+X-Gm-Message-State: AOJu0YxeaUhgw4RfoXG16579pu9tC0P4qRS1RQDBa/UII6tnIJzvWT8q
+	1Cgzqpr3aRzNM4mVU2hbFMEts0wA3+W7SNNEuGC7KvZp5/mgv9Z02xhp0Az6qrkTGPAIa1q+JOG
+	DaP7Rl+9jrtRg4c4oGKUQDV20SdWjD+tN0FBjAPjZmg==
+X-Google-Smtp-Source: AGHT+IGmgXA5iAxR2DYRbTXvmclzzmqAtU6Yh8IWC7J9OjhAjhsYHmOxUIuiq8Gsl1Ovbv6IdvDksI2ck1w83DXMZ4A=
+X-Received: by 2002:a05:690c:6903:b0:721:40df:7383 with SMTP id
+ 00721157ae682-7227655ae4fmr199308807b3.41.1756902933940; Wed, 03 Sep 2025
+ 05:35:33 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|DS7PR12MB8324:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f23122f-f8e6-4f22-99a5-08ddeae5759a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XI9HEEKwAiXBROksYWCFMlcqRDrHHLGpAtMy0Cebmakexm/IbGfM23YvzrmE?=
- =?us-ascii?Q?CNf9VXtomty+hdxH9MQYslHgBiTlEehpPtabUTcRJqoRbwSt/jrU7Lwcoc3K?=
- =?us-ascii?Q?XsPAIsUnVXTvNRyZO6fhdfedvzhaA9CoeG9xrQjzhK0XRKl7d6YA+fz4Ygvu?=
- =?us-ascii?Q?iXCN3zZ884XjeAbHkRj66oRWTorYsJS+yX0SlG6rpgySp/9tJHWIU9MLBP+8?=
- =?us-ascii?Q?Xa1zjSuHiP9u2cio/k6ZDUiRG1OJfyKa+dSbb0L7vj1mMMK/L77hb6LVTM+n?=
- =?us-ascii?Q?3eUFUtJeYGHJxebCG60XdoJ//skyD135qMJA04+zZmlFDKkeDG19/4/K/WqY?=
- =?us-ascii?Q?G3MGJmrCh30ToYkNJHFYBcmj6QpX/ypHQ+L0VPd4F3vaRi+8FoX/vYTgQ+4I?=
- =?us-ascii?Q?Eeu/scs7KCDmXmfCPXE9+DielLxUlrmcqLmoorYMqyBSHYTAjzXHT5w/f8Xb?=
- =?us-ascii?Q?QH1u2ezpMgVmfIRx9llBlFuyhw1miobtO2bUeqYPgag/JNW5g4+SEJddX758?=
- =?us-ascii?Q?+edZ66nGq5kFMzT3J5uPFuFkUy+PItk6bignUwC//gtWuNMgo76pmk2svAXS?=
- =?us-ascii?Q?vEwCCdyYF0OlV9f5w8eaUiBWHM/nIco8jf7vehhlLXiEjufRtsekHrdohlgs?=
- =?us-ascii?Q?56Bv07l6LhPnTxd0iyDYVngICnRB1dEHwsnTEv3NtZu9sTrls3EivWmDOB8Q?=
- =?us-ascii?Q?fS5iT5j6R7/MNNpTWdyk+RMaN+8F0cbRCAs27niLOOuSjHezX/hxGo+EbfhQ?=
- =?us-ascii?Q?cdVMBFhPg5aUPHSPgwPeRpmA+9tI5NmBGKPK2MXnIvo+zCq0pvYlpuPsmYiQ?=
- =?us-ascii?Q?xQ/hEy+ohdQFxjw8Biy990lW6RULkNpy1oJuz6WJiQcQ6zS3Ze6d3yxmfFd6?=
- =?us-ascii?Q?NqJzg4mguq9XEbFzQCA8br5xEAIzHi1r5QaFvLvTNDVXmLRgwDhRpqjzUBio?=
- =?us-ascii?Q?3v2zpBkV02s8GxmR01vDL2zxpSx2mIevUK96XNbMgauw5oWNXBhdpfH8UTAx?=
- =?us-ascii?Q?gCYqoHzwVQqB1san+rQXRa3+RlIr+gaSB88tLXF5/4Zecp3QO59bFJSix/BI?=
- =?us-ascii?Q?yM5+4UUvgkp83i3duZKEhTPeNtEaihII01ASV6QxXkyABUZC5lIsR65SPXeW?=
- =?us-ascii?Q?vWLfEChV1Z+BZmttbgM+kRxnrR92dBH9SwDGrzi7grKSdnV6hOcSQs8I7lHm?=
- =?us-ascii?Q?xm6vBerttxJh5f/R029m8I7OjFDxd0EOgl009eVxU31JWaKQUNHV+6hXAz9T?=
- =?us-ascii?Q?pxXnlO29LsVKZy9qIWGSplCqKYlV/5FcYR2sWtvzYx5YzEm4rJjBTF3t7esD?=
- =?us-ascii?Q?LbQANl2xJ0sfFcnk5bbNs223SvtrjvDwymtnfhOunGfiT3J3Xb2ftxWm50km?=
- =?us-ascii?Q?SoHRpx4IUjbDHeAKQ3n5X5iReI3OjlfQv6ZBQ+O/eBllWWgN9fsxjEbwd1J7?=
- =?us-ascii?Q?PGkeAqDUN6M=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7RPqnngKKwCl7plVNDBtevtda6SqzxS5bHBZFkCNDYzHX9m0qRgYekEYt39y?=
- =?us-ascii?Q?7mKXnHnK9llxVWwiGzPxXmeK6nCkM+nFMQbtAzc/ke7hEAr9se4NjmajvXx1?=
- =?us-ascii?Q?j0xR4oCbu9h9wbB/OsnMhDVT8CPV6DNP7PzGMwJ3m2Hv53bs/HU/5/2uq8c1?=
- =?us-ascii?Q?RSx0S5xX7h3nbrJjFAGfXYDbItRiMBVpT9Wqezlcz2pCJHrTMkGyzdfAyKk7?=
- =?us-ascii?Q?QeBymCE9uFt6h0jGiKwxhwcWQOeLFxoC621LXqRB8OBXOZLjCjMRVLp7bIxw?=
- =?us-ascii?Q?eGi5nWdxMfxq1vDa7qtvnd9MmgS0vK42fMYocgK/tWoi34thgNAmIqfV/wvi?=
- =?us-ascii?Q?KaiBSFjLM/rrniZK/PgXsNRMDUmo0k8pxJfjdiKeqbuKeLDJ9n2MSg9xQiJ9?=
- =?us-ascii?Q?6w6k6zhrJJeYcW1OC43CuuBXB/6sD3OSir8x+JGPa3VRNIOAY1gnWjW13bGc?=
- =?us-ascii?Q?YNQVa+FB3fPCv9hrIqoahnfSzB2oki4J8sRpYixmrvZeC9JVc3Bfz60bBusz?=
- =?us-ascii?Q?hG7tP2UQfE18TC/l4XP5IdEH2PlfmnffCI3mFvIpYuN/IKzOSBLVutxSulRM?=
- =?us-ascii?Q?5zSe4gM0bpvuvm89hPeiEClDhm7oHBRX5NJQqjwaO5yf1B5+5a4CnaPops6R?=
- =?us-ascii?Q?DmXsU4XqmZATQLJTbqF4kNoSB4GnGeLmYIuzN5RaYh9sJnNnHMNydvoNU/3k?=
- =?us-ascii?Q?+jMrPrknkzm/uqKhvqhmrFm6w15jjOgPr5+ebDwZOOIAvnvZ9rP3PGQKC/H9?=
- =?us-ascii?Q?1cdHLAdhEDe5NUK18OPwVUCJx8/X6eTHFGlfmH4uQPuxmUpWq50iECXceuBi?=
- =?us-ascii?Q?HgWlGXtn7lwwIMQTO+TMFb8BStQo2h/RubiD6y3eXVs/pqG4KMLW3AUhe3Mv?=
- =?us-ascii?Q?bSGmPDsvcd6h9ia9MHW8fAVbZe8DgAPsARgQl1tkMsjIM9wXhoelMYb8B+P4?=
- =?us-ascii?Q?Rr4kstQkNLB6p53aIJAp++3FYxG9ovtq/DHIJgkXdUVV2R1UAm7SR4aLpSaN?=
- =?us-ascii?Q?1vp+lP0RjWnHgDFj/pw26i1yiikkhQTr0ng261Q2gitfBpIA8xjrzBB7w9/S?=
- =?us-ascii?Q?VsTlq1rDdRGPMSkpBjdZheWinEwfzT7kJmladneLQrsGloRx0tqSNfwxifBG?=
- =?us-ascii?Q?/kVES5z0UHFoGAWFNRol3rxUNnwZkoCTVAQfLPVGmYHBnkt5+gMtauA+U4EI?=
- =?us-ascii?Q?x+4oyAHzgJ6p/pQIISyhdSLFJ88Cj9sWMo5jS9bCpGwXncapgxgb6JvHLHOR?=
- =?us-ascii?Q?iZBn9uLZ3gsnB2PkBNmRZp5dDTCXM3rEKImC93FHmyRhW0hx4tKU5uhjOeGb?=
- =?us-ascii?Q?O6SMOeIBhAc2RelR1ZmSlkXCrUMOac4+OPpOVy7ig8/kOPbqruh0YROujUN6?=
- =?us-ascii?Q?5V5XuCtsX1ooahK5qy9lvHTOCWRTCMXwDX6SkNcv0Z6E9803ubDCBKLCRme9?=
- =?us-ascii?Q?NGrCgLRFl2aEEaZ+cT68K2gWLu4K6gPKwCdV4UD7fqr/NzzvqVDIGuZJ5U1V?=
- =?us-ascii?Q?wb8Z2jQs66UNLpcCaeJDgVC+tapM924mlJEAeZdLGCeXf10JVm8kRlHRYNhc?=
- =?us-ascii?Q?FTUiDnOKlnEd0IakEkA=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f23122f-f8e6-4f22-99a5-08ddeae5759a
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 12:28:59.9516
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6wzevXJ7OadQJgpF0lcTEFkx/hSDkUVDrVZlTmGJ+Qx1JAUJ0W4ccpm78f0EZJBu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8324
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E50C84001A
-X-Stat-Signature: 168b7d84dj6jhfhcpstwqowrhhh5a16w
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-9-ryncsn@gmail.com>
+ <CAGsJ_4xON7fYg1VvcjLOsgBb_Wp4ruC+vdA4Q496GH1jXunU1A@mail.gmail.com>
+ <CACePvbUVK45uRPVoO3ubDfQHikebSHFNQOsMTMvJ91QQZH2HwQ@mail.gmail.com> <CAGsJ_4we4ZfNqJ+v7+=0hjNKLakJ-s8qtRsGo_kp0R_th7Xvkw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4we4ZfNqJ+v7+=0hjNKLakJ-s8qtRsGo_kp0R_th7Xvkw@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 3 Sep 2025 05:35:22 -0700
+X-Gmail-Original-Message-ID: <CACePvbXjbtowr5wSKR_F_2ou6nVhxK3-+HvSs+P71PYOo0h3UA@mail.gmail.com>
+X-Gm-Features: Ac12FXzB2G67O6c2neqhsxxf2zRfAm25LgGfCqfNTYe7Va-TDT5xLTpHlg6jKIU
+Message-ID: <CACePvbXjbtowr5wSKR_F_2ou6nVhxK3-+HvSs+P71PYOo0h3UA@mail.gmail.com>
+Subject: Re: [PATCH 8/9] mm, swap: implement dynamic allocation of swap table
+To: Barry Song <21cnbao@gmail.com>
+Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6753340010
+X-Stat-Signature: 1qbupnot5475j9ytiou99qkgwrgo3com
 X-Rspam-User: 
-X-HE-Tag: 1756902545-919928
-X-HE-Meta: U2FsdGVkX18lkvH6pGwMvclUSYvtuD/byNuk1f4JNIt9TULWUQp9LX8TirQJRXe4nRBac7NE2kRDEegO1bExLHgN8m9dZGzYDFRVMvdo9kDFdRd+zUqwuiOB6fp+BKPCHYnjlaDPi7wQcSOBl9d7ac/haSLnUj0d94ObRki/NCsBkXpc5ff3Q5a4j5NbEU6nps1xI0DS8ZbkppXkmIGJy6bJw1hZwwfW6N1QndW+givGlenzUote8n+Gcn+4arlEeuQCa0/YzniWd9fni/zv7kPI0FLQm4Jaal2S1hhJ8Q41diUvlV9B9bzz9MPzsnfu6sW3EVerSJNOR/OAjgE1yJeyzTVw/J4bsEj/pROwQVWQ+srg6+TmwBezjUjpx/5l4Zpv4KWMWTmV/yd1FFTmnG1uYYsxe7tlGdEUNSGnfnN5ZR/kYkWFWsAcmB48bFKR+JIn2bryyERhIG1g1GBDlP0F8BUBZF3jGU3AZrttiCXdoyQ8iZ2FNR6u5V3S+rMICDPQ1+1XGk81lX9QBskTChxuLBdgAIyI6o5raGz+voSdKJjTY9MXg3jHXucmEetyfhNM//TCgD70qhEcb27m/ilumWVucMe609UfRUrn541N8lifUIa+UK9NKR/UaIPv8BFo4XMN3dXJyREpPzUGgkEbwhKZa1YaP4+ukxYqDwkpBwR0qjgC8vp+I4dKICIbsRjSExmSrYKWN/lS4QMBRMCt6ZVtSyij7ngQmivIC1d/eT21Gv/L/xXVt1TBXAflhr3nuOwHWvdI9UbKCoab/IeAFs+5E9YYQRlTIUFxHrgMYlw+taSMC7iZjqryWLkCXHfLH6+retjCij/Np+pn2eIjqrqqCT9LlHpjkLqIUXxUZa0FEy58VAuN8lEDxNp0AY5NII4GFLeeHlAptivJ+HZ6qehRTkw3h1uI3RUBBBaKnogFtuKpcJIcZDEaVjzXaPHSRFDhqUUtVuM0MZ5
- XPpEcYpa
- j/pJCnFPH60ITdzGvYjanT57+XH3OfYKzHSU8KxycZ4EGbmJQ3XoWcnQKWxtDwuz1e4msT9/KVAJdr343/J2I2BpcAR/zE10uvc9DeksfxsjdePlmDvAWE4VMzNV7/5CE7XjDDxbpbbWM9VyPcEs6kOzpiLnil/auj/eTQzHT0MRsiM/lErYdwjLQKHjijy3gbwdtT7Dw9MiOS3k+mHDBnYACJNipTZeJ/ozG5h2/3vIfc/UqlQ8P0m0Q0TkghV/ccpxxNRMOKx1DrA7i/d7o2SzqBoeBrF+VouinwQNpTV7akzbUT+e0G7YQLhRXpl/HAbDw+aHEvzCI6qUiOKUrJFSfua1yLv0T5z4WtSLecMSfQPD9ypzel0W+CO6Q2NwDfFELj55Qu8WuIQo0/KL5jWnyZcMENcUSlC1qSvWVXNzGx2UaQTJqhUkloUVcOkKUTFO59gNU/lJE/Q7M9AJlWBHOdIgKnJs2ngtAz+AhVpa97AWXeWV2fg/8bCOh/JIhH3+14BCwORCTUi8bZooV5WbN6g==
+X-HE-Tag: 1756902936-683370
+X-HE-Meta: U2FsdGVkX1/lRvmobpxFYEtEbn3smavlhf5a7DVKia/amEOpiHwp/TXH9ay5lIRK9njcetsNxqMxPZGk/RAhrdofCKstjxsemuq7TT7JDTb6a8oqhK1Z9P2FRSn+HmFjiVqSfpO/IRk1Kxap+g/gBhjr9BkigCPpBAkV61snkAa6Ue1Nqwm2iG/WpYMTSKRPnQ9vlqX2vLbQP2GR1XdcYDN1F8eN0GbQunJj/dY4BEKmY/YXE4XR0MKaHyaIrcrfjrpSj60EEsbgZ54nZ63klLk3Uc+DYoopFtObVvHQaajXcsM+VfcHOVrF4K3an0ofZJBNKITpQnU/J9zFYWIfGXN7KHwsQnjYVM5laBLG5hn7LDfiPMxL51lTY66EcwNW3I3xeD7c5x8PSfdtNLu2mHi8r7fFFp6xbjTqqGjjHIhf8i5SK27NyEWxLYhkqRCod0nijJDcW2+1XVamwth125l3wZiyyKzHlywfnXrRAsUX/eei2K6LnWHxGG5WUgfdpXSOvRfz7f/j85FWx0OZ3Ecsj7rnUVvNezy6Ultbzgd+NaBS505r4GwxZ5Ud2gtKTos2GJHik/eclox1+PSFi9V8a3YrpypAYRa+ylHrlMD6Qh5kIPDeQysc2/VYCvOPGEnKZB6yNV5OdcpxYgx0uaIS7gF69s4uANYtVGTvqB0g2N1c51JHtGRPvKNKUIcmECvPO4XzLj3KT4M3gBxYZj/XYHydZkPBg2bV/tWr5XKiBNClCgfPsf7cWbXXgC44IqF94yiRzns69hc51bkjemDue/Ia1wYuS3qCNcO9W6spH3Ch4Bao960J7ZkWtOWNCg76sMMyj2hp3k/GtCngXvsm+z2WQ+usSNU7iOadPX9UoO/unODyTKtcWdvGzySjBnFnsZAr/tDJhCZpQqMmDRVpqfYhZ4D3Qwyqr0aA9SBk7W74yqWszmXuqn6r/cBRs9JitTWs1n/ed6KwrPn
+ t3oCBufr
+ aRHjh66qFqR+1Y4OdqTStuCtc0N4YTPypo5VJaz4bxwUOAOet9Yhc89t8bR2/loPnqJ8ir8sno7MFz/368o3xdlcXJXMtXHgrHHEMma4UNV9RLnf5ET8CUUdg1nHzJOUJZJ7V5TIfrIy4ZvNREE9XfutNmLqz4tLbyb35XMkQmI2uAH5AZ7MPVmdpQFdpNElvP5jdjocMtZ3+E4Q6zlap1lNVbpw3tsuhUDV5NhgHVX2NvE7zf07ZZnZvc3nvXNWu01Wo2wl2V59Ev88IRj8mfwlJQME90/UkstzfOnTEN1s6K5k4kSFIqVkvf1HbQBOrUCMr6y4m4yWzGS3Y3HWWxuHikjAMYvNZECwpz5QtgSWFrDM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,24 +112,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 05:46:08AM +0100, Matthew Wilcox wrote:
+On Tue, Sep 2, 2025 at 4:31=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
+:
+>
+> On Wed, Sep 3, 2025 at 1:17=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
+:
+> >
+> > On Tue, Sep 2, 2025 at 4:15=E2=80=AFAM Barry Song <21cnbao@gmail.com> w=
+rote:
+> > >
+> > > On Sat, Aug 23, 2025 at 3:21=E2=80=AFAM Kairui Song <ryncsn@gmail.com=
+> wrote:
+> > > >
+> > > > From: Kairui Song <kasong@tencent.com>
+> > > >
+> > > > Now swap table is cluster based, which means free clusters can free=
+ its
+> > > > table since no one should modify it.
+> > > >
+> > > > There could be speculative readers, like swap cache look up, protec=
+t
+> > > > them by making them RCU safe. All swap table should be filled with =
+null
+> > > > entries before free, so such readers will either see a NULL pointer=
+ or
+> > > > a null filled table being lazy freed.
+> > > >
+> > > > On allocation, allocate the table when a cluster is used by any ord=
+er.
+> > > >
+> > >
+> > > Might be a silly question.
+> > >
+> > > Just curious=E2=80=94what happens if the allocation fails? Does the s=
+wap-out
+> > > operation also fail? We sometimes encounter strange issues when memor=
+y is
+> > > very limited, especially if the reclamation path itself needs to allo=
+cate
+> > > memory.
+> > >
+> > > Assume a case where we want to swap out a folio using clusterN. We th=
+en
+> > > attempt to swap out the following folios with the same clusterN. But =
+if
+> > > the allocation of the swap_table keeps failing, what will happen?
+> >
+> > I think this is the same behavior as the XArray allocation node with no=
+ memory.
+> > The swap allocator will fail to isolate this cluster, it gets a NULL
+> > ci pointer as return value. The swap allocator will try other cluster
+> > lists, e.g. non_full, fragment etc.
+>
+> What I=E2=80=99m actually concerned about is that we keep iterating on th=
+is
+> cluster. If we try others, that sounds good.
 
-> > This recheck is because GUP fast effectively runs under a
-> > SLAB_TYPESAFE_BY_RCU type of behavior for the struct folio. I think
-> > the memdesc would also need to follow a SLAB_TYPESAFE_BY_RCU design as
-> > well.
-> 
-> I haven't quite figured out if _all_ memdescs need to be TYPESAFE_BY_RCU
-> or only the ones which either have refcounts or are otherwise
-> migratable.  
+No, the isolation of the current cluster will remove the cluster from
+the head and eventually put it back to the tail of the appropriate
+list. It will not keep iterating the same cluster. Otherwise trying to
+allocate a high order swap entry will also deadlooping on the first
+cluster if it fails to allocate swap entries.
 
-Anything that de-references page->memdesc under RCU using the re-check
-flow you outlined has to also use TYPESAFE_BY_RCU for the
-page->memdesc allocation to avoid UAF under a RCU read side critical
-section.
+>
+> > If all of them fail, the folio_alloc_swap() will return -ENOMEM. Which
+> > will propagate back to the try to swap out, then the shrink folio
+> > list. It will put this page back to the LRU.
+> >
+> > The shrink folio list either free enough memory (happy path) or not
+> > able to free enough memory and it will cause an OOM kill.
+> >
+> > I believe previously XArray will also return -ENOMEM at insert a
+> > pointer and not be able to allocate a node to hold that ponter. It has
+> > the same error poperation path. We did not change that.
+>
+> Yes, I agree there was an -ENOMEM, but the difference is that we
+> are allocating much larger now :-)
 
-Likely it doesn't make sense to RCU de-reference page->memdesc for
-anything other than incrementing a refcount.
+Even that is not 100% true. The XArray uses kmem_cache. Most of the
+time it is allocated from the kmem_cache cached page without hitting
+the system page allocation. When kmem_cache runs out of the current
+cached page, it will allocate from the system via page allocation, at
+least page size.
 
-Jason
+So from the page allocator point of view, the swap table allocation is
+not bigger either.
+
+> One option is to organize every 4 or 8 swap slots into a group for
+> allocating or freeing the swap table. This way, we avoid the worst
+> case where a single unfreed slot consumes a whole swap table, and
+> the allocation size also becomes smaller. However, it=E2=80=99s unclear
+> whether the memory savings justify the added complexity and effort.
+
+Keep in mind that XArray also has this fragmentation issue as well.
+When a 64 pointer node is free, it will return to the kmem_cache as
+free area of the cache page. Only when every object in that page is
+free, that page can return to the page allocator. The difference is
+that the unused area seating at the swap table can be used
+immediately. The unused XArray node will sit in the kmem_cache and
+need extra kmem_cache_alloc to get the node to be used in the XArray.
+There is also a subtle difference that all xarray share the same
+kmem_cache pool for all xarray users. There is no dedicated kmem_cache
+pool for swap. The swap node might mix with other xarray nodes, making
+it even harder to release the underlying page. The swap table uses the
+page directly and it does not have this issue. If you have a swing of
+batch jobs causing a lot of swap, when the job is done, those swap
+entries will be free and the swap table can return those pages back.
+But xarray might not be able to release as many pages because of the
+mix usage of the xarray. It depends on what other xarray node was
+allocated during the swap usage.
+
+I guess that is too much detail.
+
+>
+> Anyway, I=E2=80=99m glad to see the current swap_table moving towards mer=
+ge
+> and look forward to running it on various devices. This should help
+> us see if it causes any real issues.
+
+Agree.
+
+Chris
 
