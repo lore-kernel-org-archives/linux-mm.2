@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 878AACA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:51:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44838CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0B5B8E000D; Wed,  3 Sep 2025 07:51:24 -0400 (EDT)
+	id 88F028E000E; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3508E0001; Wed,  3 Sep 2025 07:51:24 -0400 (EDT)
+	id 866918E0001; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF8668E000D; Wed,  3 Sep 2025 07:51:24 -0400 (EDT)
+	id 77CEE8E000E; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BDDF58E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:51:24 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 741B91605F2
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:51:24 +0000 (UTC)
-X-FDA: 83847773688.10.3B9D132
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 32A9F160010
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:51:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WwwQj+ZQ;
-	spf=pass (imf08.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6726C8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 313B21605F2
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:52:21 +0000 (UTC)
+X-FDA: 83847776082.12.0CE9888
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D6D9F40004
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:52:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kvHUnwvV;
+	spf=pass (imf12.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756900339; a=rsa-sha256;
+	cv=none;
+	b=o25d17J7wPv1vwQQMEn7wYXplPNSTkpn+s2ssd+jp2OTLLFWgikjXioPPN+yra22DJ3+UM
+	8UsjQ1hRml+yRc9EBKWKXi30sV2laHVCkduYUcU8FD7ltXKSu/zpXNExdIUSWEWJ34iG+h
+	V5ACjShrY+/6gQPLgPzGqC7d4cXdDwA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kvHUnwvV;
+	spf=pass (imf12.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756900282;
+	s=arc-20220608; t=1756900339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VIzMLsOLaDWB1GYhoINqzSJt837aONUkQA3ng3cfEkg=;
-	b=yFoVrJvehvtSdrVn/c99T2opCiiml+g9hrJ5N52aDa0wgGz4ls07xE5BHXmzoGAoNRjGHa
-	3Rzp0turg34Xxuou/H0GQplgV9wEV67tRjTQOPWMyMGln3acKqmAHtTN/Yh0Yar4mTcOB+
-	UQ9PPMXBgAJ5RJiKxyZs65VsC5vr8l8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WwwQj+ZQ;
-	spf=pass (imf08.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756900282; a=rsa-sha256;
-	cv=none;
-	b=EGeoBUbd8bPUfrXbTdNPV/rS3rqhh1DOnL+EpwXcfIE+vDHo0Yf15KvTSJ00Z7DSzBDBhd
-	KqGZohwP8yeh+UmxmZas8PygMWsmVTbuQAaf5LKn7H/VEM1dQI29l+k7ZZdBgc2bDvsFaU
-	HOynzNteXdeSUboP7plDkR88EUw9odg=
+	bh=WHZN4q7ULscnLBVN5oyiAwBFdj4bB2ZTF7RZxwdQl7g=;
+	b=KQ9MhcDb4oJSrRnLkQYr7CExE5efF5dCMOa9Gzy0ggpsvAcMsOzxXzx9dDo5iau2Ahh4nK
+	y/5ytICAMI+CbbvgLzYSnw8xOmT6/KuYV6g9DR7jzO5YbkomcY65y4UnR2y62ZEz63Baku
+	wpgFtQWYPLGKWK64cSRf8qS1qpOhDiY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756900281; x=1788436281;
+  t=1756900339; x=1788436339;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=nDvbAiY6rHd3SKV/DYo7HnX4lUjAZdHwuJei+GGsRW8=;
-  b=WwwQj+ZQYt/6BqYvYcHz7lWjbLg26wheztfaS2gTmdYfpxM5/MgwvfII
-   BmBMFbCNBcsh5Kaz8VDNYj0d6DKUYdeoTgPIJF59OT97w0hNdf6OJCy+W
-   Pm3y1faZw5lyBEJNILax+qF7ro175aFBhLXz3Xiq4j+hik6TNgODxwJCR
-   v1tEek+nGSDaFEq73+53KqX9N/TV/bCocuy+74h+pIcloDSoU/uOc1zSe
-   J2xfobxUZr6sjyb8IVIz/m622/2hadnvpNc+D9ZSuDiHC5ghUXlhrZqjt
-   /e631TOHFuerOOohDB/7jIdZxxzlOJ1Q2l6ZGLnqsDYZe+IMmXz1TcwiE
-   g==;
-X-CSE-ConnectionGUID: vmJENXytReq4jxFp+KXU0Q==
-X-CSE-MsgGUID: eE9fDQufRVyfS4TaBwZ1vQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="69822601"
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="69822601"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:51:19 -0700
-X-CSE-ConnectionGUID: IwmxuAerSUCIeLGnj4/KSA==
-X-CSE-MsgGUID: exSghXJzT32WBa3jKCspRQ==
+  bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
+  b=kvHUnwvV/N0ZPGXC2V6Ond7NHVlRL23Sf5tjPcVX2ANRRXFZbH3ttL/L
+   LmsGeSb3zORhtOYsh27LPkNn393bSKuom3rBNn+m7pRB2A0bGhGljKYJL
+   6oE0D59b8i9rj3cFjiProl//iW+54WcFXi6yCK2wVoSr5ikFUNtFJhM1G
+   3V7jvEtrvlZG69yelk4lAFJvkcXACdVBR9Cc7bO9dU7YlxWC5SWbqXpvN
+   jrVj+K4dRHhqmZytCX935aRfgJ2sO9V3HzrvV9L2ibmtQb4JhmUwWKqcH
+   Us9CBjRVPgIEifKfEe0aS+I0a/iFUuIhuyLpz0F+Bt7yRP/sBzMCtu3eF
+   w==;
+X-CSE-ConnectionGUID: qkjNrjQwRDKKHIOglcSJpA==
+X-CSE-MsgGUID: zRraFdN7S2GVA+aE+pV0cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63043883"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63043883"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:17 -0700
+X-CSE-ConnectionGUID: LSXzFaryTGiV559A8n4EkQ==
+X-CSE-MsgGUID: vvcyrhQPS3KYbuchLY9f0g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="195199401"
+   d="scan'208";a="176849676"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:51:09 -0700
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:06 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utm13-0000000AyQC-2iW1;
-	Wed, 03 Sep 2025 14:51:05 +0300
-Date: Wed, 3 Sep 2025 14:51:05 +0300
+	id 1utm1v-0000000AyQf-39cY;
+	Wed, 03 Sep 2025 14:51:59 +0300
+Date: Wed, 3 Sep 2025 14:51:59 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konradybcio@kernel.org>,
 	Alexey Klimov <alexey.klimov@linaro.org>,
@@ -121,34 +120,28 @@ Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
 	imx@lists.linux.dev, linux-omap@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org, Chen-Yu Tsai <wenst@chromium.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
-Message-ID: <aLgrqZETNLmuMHhv@smile.fi.intel.com>
-References: <aLcBcjvMbrxoDYoC@smile.fi.intel.com>
- <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
- <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
- <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
- <aLgW7J-j4nn0u8uo@smile.fi.intel.com>
- <CAMRc=MdA21fwnamymG6YhqBjKDso_nJs_4xefPNONQNfEcPHXA@mail.gmail.com>
- <aLgaoivmBUgoeO6B@smile.fi.intel.com>
- <CAMRc=Me84OX=UEmAXxmwE8oOH=1UBsyHe-7XmU0c8a2gG9JnCA@mail.gmail.com>
- <aLgeDNLABpmkShIU@smile.fi.intel.com>
- <CAMRc=MdD9g4WiBCP0qYGuy5e3pnQf5MUHTqkUOnrUvcWUYK27A@mail.gmail.com>
+Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
+ function category
+Message-ID: <aLgr30rvGBCcsOWa@smile.fi.intel.com>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MdD9g4WiBCP0qYGuy5e3pnQf5MUHTqkUOnrUvcWUYK27A@mail.gmail.com>
+In-Reply-To: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: 32A9F160010
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D6D9F40004
+X-Stat-Signature: pfzqoaphfbawsarhn7g6cussin93cqzy
 X-Rspam-User: 
-X-Stat-Signature: mcswfujhrhmtjmtuxnyozgq7eo4i59wc
-X-HE-Tag: 1756900281-356675
-X-HE-Meta: U2FsdGVkX19Ri2Bff0AP/fILI/CmArkPudbKI3o/qjm5HfajE+Iura7bjFDAw1oulWJXF6Fl2j4rVTfiYElFP6HUGNmz0VslQEja8u3U7VjEBS2JGUyIMQNT+l/Zb8UsY5QXPhJ4l0QzV/hwMGVYLZB6v1496dHBGNk433sGmW8BLqyrI38IpkW3NMgToqaXNOu2DWuBmsVswvqsh70GcVoPa6kpdFKa5W25omj4HZiQaORkRsGz1e0kLhGaV3T8YoC94Mc7bIMHklpG/VNO2mbuxAT61GxHC/U2DxOp2TV88Z3OccijS+Q8j6o6tRrfA2aa1LqdqaCB7mAx9zleRJTgiVn5XmREBHqYUhtd/WGk+0qiRaeJ+lmqo69ouihh3gQ+3Q+mDVhb9XV97lgFvXijo+B4egy2Tzx4b+sYxtXskfwJs5oizpAdMWeghfm6WlfkvVuVD4RgzfOCZmk6vjBmL8YxS//iUh1rHv0UMr5KfNTOxBXYfKV/p3Die6P4xsAmIDFn9GytA3D08jDBWKjaHla8Wb1DwT+aVwcVX8rOxSQT+mR+eZCbipo61TCSt467/CHlzKOwJRLUwxM3dwhby/z3V/kwcXD5wnKmfoeNg8z+OfG1jZc/tP1PZ2w8pbKi8u5pOU0+eaB2MA7HCPe8AOxiy2ZzpBQqvah06sDYPHgmYpQY1EpW5ee282fLwFQZXDZie9nd3DJANhDH9gRYg7MlnzAa0gySiEY08vlEkx40SdhB+ooQnD9l3ixU5BF1BXLgorfq4C+MbyS4mOhXGlbY3+gL45HPxuqAqo7snKWPivJ2ciKya6wiOfHDZIwkzb4H0PvjuMwCZjBX4HrpVvTYfNf0DHeMONPMOdTRu7tYVp1LXxwMRtHukWFFn1LxVyid2hZSISBb9ETXoOwK2vezIs9YyqHsLzflRSZV8yoTLZNUT7Vqdk0lkDfyRg4eOvwjyVb/lxLsDBp
- O12LhA6r
- dKPWSMXZtA5fMuE5sJa6easQ+vnP97I4wFW3+2R3ZKAFWt1A6gfGAjHo5x2SS0zFL4+2JIRvyP5TQ+dd5OHI7mYXf0BNqIlmJ5zkQKmSgv8HZ+sfjh+1jFn2MoZNJDp5yevpdgtpma2DM/y7LzQp5z8TKC4QvAcVJ153seYqQAXfB8Hp55acE1TgtubBo+SSADOHGW1QAM1Ei2mxzOIxVVZMHmkVUMMlkOrqI+dOB/VYJjDctVvhMdnrH/3krj/TFWFBquVn3IKuZTSZUN1caUHwjnMpS1NnBJukwzD8r1JXqSwebPaKsMI8dy1zxiV6y4TXBKiY64zvKViqMIQBZ5rYOSnoLFL2rBbmnalT1g00B85KXRy2mgx2wRtpWUXBe4b7p27I1E5amoD4=
+X-HE-Tag: 1756900338-150140
+X-HE-Meta: U2FsdGVkX1/yRN+bJAM3MPR0hSBLudzWFDLUN1xYoFn6hklwRaexUG1RGbFvlTagPqSFvxxZpkdtlpNLh8KDRzVT6r1oB5IvuEfH2qG+16oMruShQrU+qNu7L54h3yCycFuXjF+rG3VhgZ4OzTT9BHmhdTO3v5vTZ+97JzLXYmVFt8i/bRqvqVwm+R12BRZTdV+f0nf/36QGRT+72U0pyYoOnAaGwzXu7qdAE9b+ZywdhLQy3bAODSiGwN8hX4EG6Nx7uErUlqDvfNgsVtf6/pr5+se+0Lm/WgdXgFRRq2f/i8q1+msFu08uKcw3TZoi/QMqPrvPvBarYm8Wr841nWp9hvNJuWd8Za44WnPeMAP9IhT+KcoNtKxo6xBqqfnfPb748YI4CzV5eyzJI2LhZbvWFOLX0xpp0NZoMgxqHmY8eFew4QQz7sNXgrZkZeYTx6E0yCWf2zwB1IvZtPacst48p4KdGgS62/QNKLJSbQSpYoqAN7tGItN4wgIfMHR5z3zfVKYk/jXO1ub3Zj4MPaT4d9lbBdteuKcla6mcTlQwFUPwlYlw3mV6Tfyfz7vd8ZKpRe/V82MX+CtyvkxLJqhrxj+tDaMt06CYdWSF8n/xqygAgO1UvjVmX6YyS/sR2x+72/StNUlOTcQ7fU/+p0+iro2rR3J/kOzLnh70+Fkq1oAryUYyRr/kk0ghC6sEXld6nQVIUQS/+veGjt3aZsdV3nvpqoj5K/IVib26+1ABDeT6Zi79oX5FgmKXymqm5uu39mWLUijHYxcNPCjPgIzfVD7iGoUzYvQcO1wSTAUT/lt9tcX4a5w1NCm/kTFtZpKI2es5jS7DEorVxlVuqIW3goQsfmBaHWs3XIPQtVNM349DOuTO3tbe6u8NoxwBQcO3awrddDIgOoVqLobIUSWbz/rqX0/G8bs3McZDumAWpNlex1lOpBjk/t8geqblmuoeMKDsSgTQTqG+JK4
+ 5CgM/ItQ
+ oIQFoEeq8kHn9mk94I1FFj3yVYVndN2Ox0WMfEpzjZMBEXW91Avqe94W/FBan0l2zlTGtBGuXcXgmJlA7r61oMGjjBBI4lGEbJAAofe31tpM+vB16mYp8zXMeN6BVjvQraKHOcuevrbBjhDvWscasHK6yXBlTsck3wJmYuSpnDnZwnioBfyFFnDEs51ag/p3OUMsE4CiY3VONspzNSUpPpJ8e8ufApGjV+hxFIXR1o5f2iJFPVL5YjH8avi5njQiAWbk55IKJfsXZxjSQFb81+eX7zQctZh/zbiLre9lT7e7SVjQsuzhVW29AWiGACu8s7D6YOetAwZpm3QwFKo+NXVFiCQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,80 +150,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 01:05:27PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Sep 3, 2025 at 12:53 PM Andy Shevchenko
-> <andriy.shevchenko@intel.com> wrote:
-> > On Wed, Sep 03, 2025 at 12:41:48PM +0200, Bartosz Golaszewski wrote:
-> > > On Wed, Sep 3, 2025 at 12:38 PM Andy Shevchenko
-> > > <andriy.shevchenko@intel.com> wrote:
-> > > > On Wed, Sep 03, 2025 at 12:34:00PM +0200, Bartosz Golaszewski wrote:
-> > > > > On Wed, Sep 3, 2025 at 12:22 PM Andy Shevchenko
-> > > > > <andriy.shevchenko@intel.com> wrote:
-> > > > > > On Wed, Sep 03, 2025 at 09:33:34AM +0200, Bartosz Golaszewski wrote:
-> > > > > > > On Tue, Sep 2, 2025 at 10:46 PM Andy Shevchenko
-> > > > > > > <andy.shevchenko@gmail.com> wrote:
-> > > > > > > > On Tue, Sep 2, 2025 at 8:42 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > > > > > > > > On Tue, Sep 2, 2025 at 4:38 PM Andy Shevchenko
-> > > > > > > > > <andriy.shevchenko@intel.com> wrote:
-> > > > > > > > > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
-
-...
-
-> > > > > > > > > > > The strict flag in struct pinmux_ops disallows the usage of the same pin
-> > > > > > > > > > > as a GPIO and for another function. Without it, a rouge user-space
-> > > > > > > > > > > process with enough privileges (or even a buggy driver) can request a
-> > > > > > > > > > > used pin as GPIO and drive it, potentially confusing devices or even
-> > > > > > > > > > > crashing the system. Set it globally for all pinctrl-msm users.
-> > > > > > > > > >
-> > > > > > > > > > How does this keep (or allow) I²C generic recovery mechanism to work?
-> > > > > > >
-> > > > > > > Anyway, what is your point? I don't think it has any impact on this.
-> > > > > >
-> > > > > > If we have a group of pins that are marked as I²C, and we want to use recovery
-> > > > > > via GPIOs, would it be still possible to request as GPIO when controller driver
-> > > > > > is in the strict mode?
-> > > > >
-> > > > > Yes, if you mark that function as a "GPIO" function in the pin
-> > > > > controller driver.
-> > > >
-> > > > How would it prevent from requesting from user space?
-> > >
-> > > It wouldn't, we don't discriminate between user-space and in-kernel
-> > > GPIO users. A function either is a GPIO or isn't. Can you point me to
-> > > the driver you're thinking about or is this a purely speculative
-> > > question?
-> >
-> > The recovery mechanism is in I²C core and many drivers use that.
-> > I'm not aware of Qualcomm drivers in particular. But mechanism is
-> > in use in I²C DesignWare which is distributed a lot among platforms,
-> > so using word 'purely' is incorrect, and word 'speculative' is a bit
-> > strong, but you can think of the issue coming later on when somebody
-> > does something like this.
-> >
-> > The same applies to the in-band wakeup UART mechanism.
-> >
-> > Which means that with this series we will relax it back anyway for
-> > the above mentioned cases.
-> >
-> > (Not sure, but SPI DesignWare requires programming SPI native chip selects even
-> >  if the GPIO is used for that, this might have also some implications, but here
-> >  it's for real 'purely speculative'.)
+On Wed, Sep 03, 2025 at 12:18:18AM +0200, Linus Walleij wrote:
+> On Tue, Sep 2, 2025 at 1:59 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 > 
-> The high-level answer is: yes, a pin that will be used by GPIOLIB
-> needs the function it's muxed to, to be marked as "GPIOable" in its
-> parent pin controller if it's strict. That's still better than the
-> current situation.
+> > We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> > other platforms as well) where we mux a pin to "gpio" function using the
+> > `pinctrl-X` property in order to configure bias or drive-strength and
+> > then access it using the gpiod API. This makes it impossible to mark the
+> > pin controller module as "strict".
+> >
+> > This series proposes to introduce a concept of a sub-category of
+> > pinfunctions: GPIO functions where the above is not true and the pin
+> > muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> > strict pinmuxers.
 > 
-> I can imagine we could differentiate between in-kernel and user-space
-> users of GPIOs and then make it impossible for the latter to request
-> certain pins while they could still be requested in the kernel but
-> that's outside of the scope of this series.
-> 
-> I don't see why this would stop these patches though, as they don't
-> break anything unless you decide to make your pin controller strict in
-> which situation you'd need to verify which functions can GPIOs anyway.
+> This is what I want for pin control, and fixes an ages old issue
+> that pin control has no intrinsic awareness of if a pin is muxed
+> to a function providing GPIO.
+> So patches applied!
 
-It can't anyway, Linus already applied :-)
+No objections, let's move on.
+
+> Any remaining code nitpicks can be fixed in-tree, I need this
+> to be able to apply the much desired Broadcom STB driver,
+> so this needs to go into -next now for cooking.
+> 
+> I also want to strictify some drivers using this, bringing GPIO
+> function awareness into them, which is a good thing!
+
+Well said!
 
 -- 
 With Best Regards,
