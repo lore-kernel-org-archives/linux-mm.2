@@ -4,99 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8488FCA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 18:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87F7ACA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 18:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE6A88E000B; Wed,  3 Sep 2025 14:49:43 -0400 (EDT)
+	id DFCCE8E0006; Wed,  3 Sep 2025 14:59:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBDB58E0001; Wed,  3 Sep 2025 14:49:43 -0400 (EDT)
+	id DAD828E0001; Wed,  3 Sep 2025 14:59:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAD378E000B; Wed,  3 Sep 2025 14:49:43 -0400 (EDT)
+	id CC2BE8E0006; Wed,  3 Sep 2025 14:59:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B7F5C8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:49:43 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 538C91A082B
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:49:43 +0000 (UTC)
-X-FDA: 83848827846.24.5286293
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6D978160015
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:49:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ERcPVr2t;
-	spf=pass (imf08.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BAAEE8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:59:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 549931A0837
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:59:37 +0000 (UTC)
+X-FDA: 83848852794.22.FF60028
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 952BC18000D
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:59:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Xkhg45AZ;
+	spf=pass (imf24.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756925381;
+	s=arc-20220608; t=1756925975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rlsHyD8qFclQgXEjGTKjDJD1rFu3mlPS6ILNfKfG5wA=;
-	b=jILb94XWpO8pT6krog/amtFIpM5w/W20JBufCGmvvOXPgGmjeGZWCE9WfB5pXYO/l5C/RP
-	WUGN+St4c/l2PlaHiCoHCTQAINpGEpiwNm8Dzv7Po6rw3jZNCsM49HxslepZL4gTbhcdhA
-	xyotQv1TirR2MkWipzv2lxmfSHPwIUs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qZy30c40uMQ+C5mAmU5IprjDTVrN2KgzxusGEfWx0IE=;
+	b=sz7UyrbkMzqMImQKODt1QTIY4ZldYmplP3P1n3sjstqNKaa33tDjFS4VhXtPs7GwuzHbiP
+	2go/ihmg4EBSPHOT/nmx4rSZtCYLvkE2Vr9FtKzZhZz265aT+wmnBxCf4P/b6ieY3hC2KT
+	lN/UJ7+T0bruY+2X/vqWeqXlJvLDbUk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ERcPVr2t;
-	spf=pass (imf08.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756925381; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Xkhg45AZ;
+	spf=pass (imf24.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756925975; a=rsa-sha256;
 	cv=none;
-	b=lDTDwcctwxXncPhZuKMD0zFKMFQAE5nWZKdDsfe9tcKS4/JEbXCf3PaTzv1qKIS1xifQ5n
-	cvP03xwnIrkpdvCv+duuWH+/LQOi/dSQfiDZcsjbRffXHRfXkot0iqnkwxulhmRjmKRcpP
-	ahjhvgO/TuGqO/xsLKAWf/I4IL5LQYQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756925380;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rlsHyD8qFclQgXEjGTKjDJD1rFu3mlPS6ILNfKfG5wA=;
-	b=ERcPVr2tvJOD8VGPSZP7A74rXhu2mqeKy3NVYBsmtBXbAEeMBy0CLLcLNR2Xcdhy3sO50H
-	kUBQ1w+aOIs1QqYgH50CZZxnrMMVscDwb9sd98cN0/F0398/hH0UPykNqvEz+U1QazhSJP
-	Lxot75AK/kmgExfI3AgADddwdreifms=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-L0DAT_DfOwa0swGZDg2KjA-1; Wed,
- 03 Sep 2025 14:49:35 -0400
-X-MC-Unique: L0DAT_DfOwa0swGZDg2KjA-1
-X-Mimecast-MFC-AGG-ID: L0DAT_DfOwa0swGZDg2KjA_1756925373
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E60219560B0;
-	Wed,  3 Sep 2025 18:49:33 +0000 (UTC)
-Received: from bfoster (unknown [10.22.88.143])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1C4901956056;
-	Wed,  3 Sep 2025 18:49:30 +0000 (UTC)
-Date: Wed, 3 Sep 2025 14:53:33 -0400
-From: Brian Foster <bfoster@redhat.com>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org,
-	jack@suse.cz, hch@infradead.org, djwong@kernel.org,
-	jlayton@kernel.org, linux-fsdevel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 10/12] iomap: refactor dirty bitmap iteration
-Message-ID: <aLiOrcetNAvjvjtk@bfoster>
-References: <20250829233942.3607248-1-joannelkoong@gmail.com>
- <20250829233942.3607248-11-joannelkoong@gmail.com>
+	b=Neh7dTsi5BPlYQnC3bFLoD1+I26hkGA6fU0xrdg+LIiZ4+M1mEIbbIlQoo7Kl0oNT1h23v
+	+bZGcfsaRZ9gwn7y11fGSYy//xcmkss6rWAhHAn5/ZkkAGQh8pG4rnTlISuHAEI+2U8gZd
+	NHRnJz25gnzpDFXip+WaY0UDCQt9sUI=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24456ce0b96so2498375ad.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 11:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756925974; x=1757530774; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZy30c40uMQ+C5mAmU5IprjDTVrN2KgzxusGEfWx0IE=;
+        b=Xkhg45AZOxpLhXQ+Apw42v6MJkqBEuUvO+qSW1I84QOhgTwSd1mI4tNJeO+fiQ41PI
+         pmURlUQSb4INdaq+GPbSZYgCbwcvfuOTdvDX20lPxuijgPeZkWGpp8m7elnisk3nApGR
+         0QIO0o7OKQSgahKbr+46J9Fo+IBTJ6r50ZQrTRGFad1TXgIyHyKABUCucYtYCQzpgBlb
+         JsOhwaKHxrTUWhQEkyGaf6ktqMtc8Wow4ioWvfjGeH5WwAy/4UmgcWtW1NbOhJekHqH8
+         onR8gHqNedr4nOYGSTdkIroz5+5NXZKm91a8Ju9hPKmMjg4I2/9soWPFs/LtsQHGwECB
+         jGjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756925974; x=1757530774;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qZy30c40uMQ+C5mAmU5IprjDTVrN2KgzxusGEfWx0IE=;
+        b=n1YDBgxlwm/jGVQ6PdLwMP3wCTp+yY9AE857l3gVtJT1d6zDyqEEdJRHIuQY+ryDQg
+         zWHknUzdlxeeu1QhwX6WsF+dvt2RAiMPmhWyqaPkHpMdcd50TWqxgRW7sZ/P0O+aNbWU
+         xk56fSDSjcc0UDh68OLf/XwZBae1bO8B3K3XzcFHL7e5xrJ/ye+OaEyzdRJxaqs4T5pe
+         Y8ze009+2dVrXbnflaS9AACUYPpxLRIgl/ge9xCRPJqWG7gcHkcIICGvuP/fnNWleWc6
+         fhtCzZJSY27uuqQh923ypUZsA3HEHoKfOSx6B3temZAbr58DGT22VQ1GO+Th1X4B7R/a
+         fhWw==
+X-Gm-Message-State: AOJu0YyGm4nuSMXgB2OjshpmQF5s3LElSB91X9N91VnvcwYlrEQg8WJ4
+	lUIMZIfBxOfN1lORDPnO5JIuCKVLBllKM+2bx2TAsy5apGFX0r8IluStUF8xMALE
+X-Gm-Gg: ASbGncs3sJLXz0paY8xh2B0DnHgv4zE+sOMtV79Dkd3w2rMHJ9PVyp4xI+vcO1ETO5h
+	PC2PQsvif0PYwfX+t01fOUtGsgixPG7JKKiWqQLHL35tvg0pdEcLX4G0W+9uN/wAW3tIech4C9z
+	/l31p+Yp4zBORqHvaCZ0YN9zZEV6uTxoKfWljTK1Ts/6O7rOuBG+Fv59ogN2fBpYkVY/lW8G6W5
+	VZQzGpBDc3k6jkncKXB4DNFtUT4iDmu4QGGSUBDnmOYeYr7GHtPDcgMer8rj0rB6CtW1yNLHnWh
+	N3HnzEmU5W+g4i0pE4ivqEub0KoDJ2ox3gQPWwVZkxvBP2Q2WS12uf8Q+3NQNUIx3tAU/3GOfIK
+	/idNAyE8GD9gWf5A3OLqpiOJJN5vh848ioQqoyRLoalpZ4YJLkxxh4Q==
+X-Google-Smtp-Source: AGHT+IGc1hOCFlrmhtuYXy2RF4eOcL1ED3xkJpQYquvPOenW1RGNO8PJflQF3KtC2IpnrJ0auNPnsg==
+X-Received: by 2002:a17:902:f642:b0:234:986c:66cf with SMTP id d9443c01a7336-24944ac387bmr203183595ad.16.1756925973872;
+        Wed, 03 Sep 2025 11:59:33 -0700 (PDT)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-249065ab343sm169403475ad.126.2025.09.03.11.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 11:59:33 -0700 (PDT)
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-block@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-efi@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Justin Sanders <justin@coraid.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH v3 0/7] Cleanup free_pages() misuse
+Date: Wed,  3 Sep 2025 11:59:14 -0700
+Message-ID: <20250903185921.1785167-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250829233942.3607248-11-joannelkoong@gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Rspamd-Queue-Id: 6D978160015
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 952BC18000D
+X-Stat-Signature: ps486gz6dahyp4td1cu9xi4kic7ogpew
 X-Rspam-User: 
-X-Stat-Signature: eo7zqnis8o93tqcwsed7xp78g5ckwgzf
-X-HE-Tag: 1756925381-859182
-X-HE-Meta: U2FsdGVkX1/qAbjKiY8b/a6l6H56VZT2gkc0/0ypmjKipC7i6F6kj17XFxbOGafYBBiSf/5i2h7/wa43K7zT+27DfZYyPEt+xcKCUG61qSwCzRQiBxdSjjSVb5hvb2UD7ZukvfxpK8pBAVTSDTqz1WViIABJklsq9hjVxCcJvT+aT5etbQOsvWvHoPdeq/eDWV+LpNceH7cHDm9E6jjLGJW7fG4/WyLt8ZC2GePHiI1s2Ufo7h4Kit4rKW2uwm6GKtlELJogyEZY4ZYN5wPf9RlXbBNq3RnmuWENRzGW/1ye2LA2BmE6Pn2D5BLf1rmr0QOaYERjMo0N5KA8Oe60pX1Tf1oJejXMJg9dE+WFsMYv8YbcxsYloTl+a762uQKvVxMJVOfUbC8Zkx9l/gix0UX1Zao5ohE9eRSu9tClAi8qSgu9cjZX0ykqH6Otmr6f4ghI/oB7NvOk56CQGcXLwI+xcY2ZNchT0AQf+HLDgPxhrTNtemgqU/DBK1VAX2tV4LKPeZji12Y8LswCFKJRnWTsRzTbJfkVxH2rmYFQsiwKmJ+QJ3ooY3lj0yIh4/oOvjElVanJGGPbFwqWeABVAIOHYKjMkrjJqfSLnEQM24d1zHgnAKLkzz6O8NECTj9hhsHMEoAjEtvYSTbRoyEzdMAEmZIuG5cnOVy30xRO1x72aF/kJ/UDJNpTzL0Mm+9IsEIx1F7ZZ1gp08uD4Nx4fwGmA0Vg1ItFhlPlbTYPrYUx5o+6A2xFs+ORKMngJQRE+1sTWVwFnEORXU39407ZC+ac73KtsPa/n126BmPiUeuG3uSqebNNGAU9NDqdk810NvRYF8hCMVklPr9rjkGQyawIu3r3eC6C1lWyMolHV1eHrHS7jvyj8fos7UzNtn4FHYJd9GW46YZKl15DqgbQWF/cO44Gh023X3AL06RNz3j+kruHvXGW3cIORYBfFcQzUCN8Bkmj1dHT+LZnvuy
- fshLk8Sb
- xecwZ9MqnhAXJF2Rd3+8EzqjsamKQ3Nsch64Z98j5++pu0ximzk17dOcpxBpMLKAl8gN6nOZFIZmcrNCZuLeE+znvbQBfOwAPnidmuOM/y64UsKR11q6Nlct/GyfmQEWgQQYYRJ/JPQV6dcL1CXMt3Bqlwmq6dcX5WUOOcCYl0QviNzZB+1DXG+ej/zQdvPaioSWbW8rlb9reLklPBrFqgL3aZGFdhf3qZebnWwWzWY5HEhXXYmpTvrD9AK+bzDmSrG6JjV3uUTR2Ub83guBMhqMP9raF9yJ7/1dS3yO5scWY4Hd4fnSAGJMd8/r2lK00e/g1tsr2YGfq7GeIhihq5PQ8iCZt9+zDUYW893COH8Vd7rQAqXIFbce2O7sYzmiljk2541rTGB8UT6gc3DRMS6piIgp7tDH992B7N4g1KpeV41f5M5pygphJysTvfS0TEDtw
+X-HE-Tag: 1756925975-727354
+X-HE-Meta: U2FsdGVkX1+ClsqfCWdAaOoZd7gisCNdKp4V6N9dJQ7S2CuqPVlzQAs27PoFJB/UCghiwOo4wC8kfxzjYWPnr06bSF33iJawuov99ZSnrRBq5Wb4KIJ20YlBHaYOtQpnOe+J1VxhQog+mkunUNvZqEgz7bcGGya/W5BN0PPvwAtYXsB3JpPCya3MpoY8TMNvNLqAmAXEF96HouQ051WE6E57xEewGQ44h0mGIVOB8Z8Dvyf9WB3K28GTO/HH+CSvIfnuvaDqilGvB6cxXmhZYv8gudzX/0QOT9Meh2nfp8Jwpdod0FS3iHuONeWKPiLqMRB1YMijjlbgg8Q+T42x2ukzAyuqjrIg+HjXZJBYWmixxZUssX5G2Zx6nbsmqOjjye6KfHsPBjDKA6qKixDYxtf6sBvmeJeks7d+x2I3Tk5hCenTEKV7Kl3iU1i9SwWiPlJchDp5G8+C36DMPfOPss1b0j+F3wy1P8ZDzYQKSluJJeoGUDq2VEcIBlOaMwpp4PQQV198ezE8KMzA6dhShDnYuyPnyzPyy6a7FXLrIrUJ1ywOicTySatkRVGKfzRMquSAYbwjkxO+/yC1EIFhWujZ027i9qIHDsFnFLJsLYaxLJW1eyv1AMxvh2r5gZzHiZ62MReufQvyVUKqqL4FMpES02rCetUxTumGcjCg1744jjSrXpMX40C+dbJgQ4FXZEI6QR3oxbsh1GAfHl9riCDsKP4NhimoQ0VLIosGYFUrg4jCHm0iCHB2PgXXIqPl2VIJP0hhHkcQUmC/mC5lD1gFsXR6H+gT9KPK7ScCl/QzV/3HDX4CD+vUZnRill3+XAeBSiJH8e9jLWNWQYuyAK6n4VPcoZabgmA1HnjtobhheFV8acwxeeoaa85+rKR3/McW+B2eant+KqrJ/twc+1PtkXTdsnvKCvWOyzeccKae78csCV2xRDJ+zjSD0zNQR1MLdmaA1UZ55sIE3cl
+ OippmZ9K
+ V5y6cOrfY5rkIWherLoLUpMkLLTdn9rUPOeiUbP6mN4i6EFhrDH2qxAKy7doD3eUe/SDRD8d1/71nebgtO3PnKSqe7wK9x0OwDenZScUJPS8paPMWazOk5PZurqWutk73Sys9rN+U3Qhw+XUZTgK0JhPY3a+V6KXIc8jDPF3ZbNjYZ9wPznjl4bsqTp2DL4sHyFgjldcBkIo9mIUo2sSDJnMqUEvca4t4FBpLEa2uwAgE9yxGowNkz8JNAI/6jEhuz75lZ14cpw/PCxm/33c3whuv5qKQ2ILEk89jJd6HjMKHyVJmIno7T3VxwNK8VIsJTvr9OWWjgBZfpHqO1rlgywZLqak6K9wJJ9zIuwsMb8BH6jn/AKHTBtqBpqpUFJ7iJnSY7ikDSsuA5IdTBFQUcgG50lCTK4CSlQ8XAtxF4wqEfTSMqLSxaZquPlk4nTAwfZPevyrAFOFzCP/n/AmjEzvPRg0krz/aOucwLTMqBN9ZVTvOM7TYZQIMduGsro9oVBk5at4/tYa8z+7W4C2q1jWGIl/Ju0h/UKWv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,135 +135,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 04:39:40PM -0700, Joanne Koong wrote:
-> Use find_next_bit()/find_next_zero_bit() for iomap dirty bitmap
-> iteration. This uses __ffs() internally and is more efficient for
-> finding the next dirty or clean bit than manually iterating through the
-> bitmap range testing every bit.
-> 
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> Suggested-by: Christoph Hellwig <hch@infradead.org>
-> ---
->  fs/iomap/buffered-io.c | 67 ++++++++++++++++++++++++++++++------------
->  1 file changed, 48 insertions(+), 19 deletions(-)
-> 
-> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> index fd827398afd2..dc1a1f371412 100644
-> --- a/fs/iomap/buffered-io.c
-> +++ b/fs/iomap/buffered-io.c
-> @@ -75,13 +75,42 @@ static void iomap_set_range_uptodate(struct folio *folio, size_t off,
->  		folio_mark_uptodate(folio);
->  }
->  
-> -static inline bool ifs_block_is_dirty(struct folio *folio,
-> -		struct iomap_folio_state *ifs, int block)
-> +/**
-> + * ifs_next_dirty_block - find the next dirty block in the folio
-> + * @folio: The folio
-> + * @start_blk: Block number to begin searching at
-> + * @end_blk: Last block number (inclusive) to search
-> + *
-> + * If no dirty block is found, this will return end_blk + 1.
-> + */
-> +static unsigned ifs_next_dirty_block(struct folio *folio,
-> +		unsigned start_blk, unsigned end_blk)
->  {
-> +	struct iomap_folio_state *ifs = folio->private;
->  	struct inode *inode = folio->mapping->host;
-> -	unsigned int blks_per_folio = i_blocks_per_folio(inode, folio);
-> +	unsigned int blks = i_blocks_per_folio(inode, folio);
-> +
-> +	return find_next_bit(ifs->state, blks + end_blk + 1,
-> +		blks + start_blk) - blks;
-> +}
-> +
-> +/**
-> + * ifs_next_clean_block - find the next clean block in the folio
-> + * @folio: The folio
-> + * @start_blk: Block number to begin searching at
-> + * @end_blk: Last block number (inclusive) to search
-> + *
-> + * If no clean block is found, this will return end_blk + 1.
-> + */
-> +static unsigned ifs_next_clean_block(struct folio *folio,
-> +		unsigned start_blk, unsigned end_blk)
-> +{
-> +	struct iomap_folio_state *ifs = folio->private;
-> +	struct inode *inode = folio->mapping->host;
-> +	unsigned int blks = i_blocks_per_folio(inode, folio);
->  
-> -	return test_bit(block + blks_per_folio, ifs->state);
-> +	return find_next_zero_bit(ifs->state, blks + end_blk + 1,
-> +		blks + start_blk) - blks;
->  }
->  
->  static unsigned ifs_find_dirty_range(struct folio *folio,
-> @@ -92,18 +121,15 @@ static unsigned ifs_find_dirty_range(struct folio *folio,
->  		offset_in_folio(folio, *range_start) >> inode->i_blkbits;
->  	unsigned end_blk = min_not_zero(
->  		offset_in_folio(folio, range_end) >> inode->i_blkbits,
-> -		i_blocks_per_folio(inode, folio));
-> -	unsigned nblks = 1;
-> +		i_blocks_per_folio(inode, folio)) - 1;
-> +	unsigned nblks;
->  
-> -	while (!ifs_block_is_dirty(folio, ifs, start_blk))
-> -		if (++start_blk == end_blk)
-> -			return 0;
-> +	start_blk = ifs_next_dirty_block(folio, start_blk, end_blk);
-> +	if (start_blk > end_blk)
-> +		return 0;
->  
-> -	while (start_blk + nblks < end_blk) {
-> -		if (!ifs_block_is_dirty(folio, ifs, start_blk + nblks))
-> -			break;
-> -		nblks++;
-> -	}
-> +	nblks = ifs_next_clean_block(folio, start_blk + 1, end_blk)
-> +		- start_blk;
+free_pages() is supposed to be called when we only have a virtual address.
+__free_pages() is supposed to be called when we have a page.
 
-Not a critical problem since it looks like the helper bumps end_blk, but
-something that stands out to me here as mildly annoying is that we check
-for (start > end) just above, clearly implying that start == end is
-possible, then go and pass start + 1 and end to the next call. It's not
-clear to me if that's worth changing to make end exclusive, but may be
-worth thinking about if you haven't already..
+There are a number of callers that use page_address() to get a page's
+virtual address then call free_pages() on it when they should just call
+__free_pages() directly.
 
-Brian
+Add kernel-docs for free_pages() to help callers better understand which
+function they should be calling, and replace the obvious cases of
+misuse.
 
->  
->  	*range_start = folio_pos(folio) + (start_blk << inode->i_blkbits);
->  	return nblks << inode->i_blkbits;
-> @@ -1077,7 +1103,7 @@ static void iomap_write_delalloc_ifs_punch(struct inode *inode,
->  		struct folio *folio, loff_t start_byte, loff_t end_byte,
->  		struct iomap *iomap, iomap_punch_t punch)
->  {
-> -	unsigned int first_blk, last_blk, i;
-> +	unsigned int first_blk, last_blk;
->  	loff_t last_byte;
->  	u8 blkbits = inode->i_blkbits;
->  	struct iomap_folio_state *ifs;
-> @@ -1096,10 +1122,13 @@ static void iomap_write_delalloc_ifs_punch(struct inode *inode,
->  			folio_pos(folio) + folio_size(folio) - 1);
->  	first_blk = offset_in_folio(folio, start_byte) >> blkbits;
->  	last_blk = offset_in_folio(folio, last_byte) >> blkbits;
-> -	for (i = first_blk; i <= last_blk; i++) {
-> -		if (!ifs_block_is_dirty(folio, ifs, i))
-> -			punch(inode, folio_pos(folio) + (i << blkbits),
-> -				    1 << blkbits, iomap);
-> +	while (first_blk <= last_blk) {
-> +		first_blk = ifs_next_clean_block(folio, first_blk, last_blk);
-> +		if (first_blk > last_blk)
-> +			break;
-> +		punch(inode, folio_pos(folio) + (first_blk << blkbits),
-> +			1 << blkbits, iomap);
-> +		first_blk++;
->  	}
->  }
->  
-> -- 
-> 2.47.3
-> 
-> 
+-----------------
+Based on mm-new, I intend to have all of these taken through the mm tree.
+
+I've split the patches into separate subsystems to make it easier to
+resolve conflicts, but there aren't any functional changes.
+
+v3:
+  - Collect some Reviewed-by Tags
+  - Replace remaining free_page() calls in patch 7 (all other patches
+    are unchanged from v2)
+  - Add all appropriate mailing lists that were missing from v2
+
+v2:
+  - Reference __get_free_pages() instead of alloc_pages() in the
+  free_pages() kernel-doc
+  - Get some Reviewed-by tags
+  - cc the subsystem maintainers related to specific patches
+
+Vishal Moola (Oracle) (7):
+  mm/page_alloc: Add kernel-docs for free_pages()
+  aoe: Stop calling page_address() in free_page()
+  x86: Stop calling page_address() in free_pages()
+  riscv: Stop calling page_address() in free_pages()
+  powerpc: Stop calling page_address() in free_pages()
+  arm64: Stop calling page_address() in free_pages()
+  virtio_balloon: Stop calling page_address() in free_pages()
+
+ arch/arm64/mm/mmu.c                      | 2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+ arch/riscv/mm/init.c                     | 4 ++--
+ arch/x86/mm/init_64.c                    | 2 +-
+ arch/x86/platform/efi/memmap.c           | 2 +-
+ drivers/block/aoe/aoecmd.c               | 2 +-
+ drivers/virtio/virtio_balloon.c          | 8 +++-----
+ mm/page_alloc.c                          | 9 +++++++++
+ 8 files changed, 19 insertions(+), 12 deletions(-)
+
+-- 
+2.51.0
 
 
