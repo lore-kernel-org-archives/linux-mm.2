@@ -4,106 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A62EACA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8658ACA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:43:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE55F8E000B; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
+	id AB1A78E0009; Wed,  3 Sep 2025 08:43:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96258E0001; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
+	id A62778E0001; Wed,  3 Sep 2025 08:43:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D84F18E000B; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
+	id 929D58E0009; Wed,  3 Sep 2025 08:43:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C113B8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:35:38 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8CA9411A6D8
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:38 +0000 (UTC)
-X-FDA: 83847885156.12.7C4F71A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6753340010
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iNCshDMl;
-	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756902936;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D4238E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:43:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 35B2113B4BE
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:43:22 +0000 (UTC)
+X-FDA: 83847904644.03.DFDE4BE
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2066.outbound.protection.outlook.com [40.107.220.66])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 71CF520013
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:43:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RieRX0rW;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of jgg@nvidia.com designates 40.107.220.66 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756903399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DLEC9Evf5FlWOMlAZljYLeumaRL0HGk6iNDsEWfj9Yk=;
-	b=QJkFWN4vUDQLZ43wmoYKSv4kOz3bDGzI09E9MzgCa/aRi6W6B6dnhsqhBgswPHja1sk+hf
-	cWgVhW+mR/Km5/KJLQrWCz6JL8iEfCjAmt7nAaEDkK4fL7bCOC1M8B1ALBBua0JDwFG8Zs
-	lxEEcKgTAn/xrgluNT+Pm7VEUpQEt2c=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iNCshDMl;
-	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756902936; a=rsa-sha256;
-	cv=none;
-	b=d9y0nVy/ZBHxJhfTKIxbDOKxOKfsGMU/85hMAonnZWqLZPeoQ43oew3z6T+utKPCyIFRfi
-	c1a6ZVMRU5YsxdkRCyEOrWaNwR7AHUQ4GC0vejaqXKWv1v/RrLwcBduylz0+LaMwsHmmvf
-	iN16IOm2rXXcyfJDtSOi5tz2KUuG0DA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D5D9A41842
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AC9C4CEF7
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756902934;
-	bh=DLEC9Evf5FlWOMlAZljYLeumaRL0HGk6iNDsEWfj9Yk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iNCshDMlH0PP+U9tYmnBYVOGgDIkcmqrwdh58SuD3jbDPCfT4moWf816Uj/eyH1S7
-	 xr6Rsz3M4EqSRpcx0hvbNvyyWs5zwuoj/6hF5BVsUMOZf20AweHu2VMcIkWbDoEm6x
-	 ylEuQbTRLsGKMC1RD+YXty13wYoqapj7BYfUc8Rf7KjNSN2Uu1AIJc2ww91TbO6kIC
-	 eSHMsXBM//vvLNUR9i5Ca/bCJUbVtIFxo0QpsA86qs4I1iiybANMQtPVr33aeZzCgG
-	 yTcC5kBMtuCaAl/492FDWR7eKBOjpJv2n4qd0EGNVANtGlWKdpGO2V5qyYACUqyXwk
-	 /NzZXzwtJB3FA==
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d603cebd9so68051977b3.1
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 05:35:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVlIaAoPR1CQVGpcOvlWyMwA2t9ry2dmJPTMBaPL1+i3DvlkxTOBnI7XZBnzaQldvV3PPBl9xHyQQ==@kvack.org
-X-Gm-Message-State: AOJu0YxeaUhgw4RfoXG16579pu9tC0P4qRS1RQDBa/UII6tnIJzvWT8q
-	1Cgzqpr3aRzNM4mVU2hbFMEts0wA3+W7SNNEuGC7KvZp5/mgv9Z02xhp0Az6qrkTGPAIa1q+JOG
-	DaP7Rl+9jrtRg4c4oGKUQDV20SdWjD+tN0FBjAPjZmg==
-X-Google-Smtp-Source: AGHT+IGmgXA5iAxR2DYRbTXvmclzzmqAtU6Yh8IWC7J9OjhAjhsYHmOxUIuiq8Gsl1Ovbv6IdvDksI2ck1w83DXMZ4A=
-X-Received: by 2002:a05:690c:6903:b0:721:40df:7383 with SMTP id
- 00721157ae682-7227655ae4fmr199308807b3.41.1756902933940; Wed, 03 Sep 2025
- 05:35:33 -0700 (PDT)
+	bh=vA7qH3RBngbDiPDaHS0LAPVRXB/NhC5VF19iAp5pHs4=;
+	b=L5kIGrW2mCUBnbrBl5jAysyLOJ2VUCVlmE6/vQtL8Ux3e7JBf1pIw42B52tf0+EHaEbKsI
+	YnYZz2NXqWDKe4cK0886bswsWi/rAzOMhmI/bOnFy+v05qABYPWKRfrk4xZnSF1oG1CGT4
+	sHh0GvrU3eWVgzzkXxaZpCX6T4k8z+U=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RieRX0rW;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf03.hostedemail.com: domain of jgg@nvidia.com designates 40.107.220.66 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756903399; a=rsa-sha256;
+	cv=pass;
+	b=e4TmGh2BzSNOtS9K/jJo6v5DHFX/I/NIpGeJLSUMVTsh2tYZO6VfmAwWByuPg4ZOOzE+KF
+	0M0vTzaaIORuYdH61Y/WgXXkrpd7AQaAPIXxEIrijVVhepr5k4ZK2ZRRikP3LNJXlN3noX
+	c6WwNMBalvda8Z0IeXanXX1Xe9gG+iY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GsKYUca4p012gCmh48lGX4VEuVdMYgIp3xiDT2g4Qi8wxofnT30FDWX4ln62efglvf/Q7S+uZEjID84+iGlc3+Bf0Id1ul/1s/LWpa3VWgnSt3G5QL4H+TAdWYyL8v1S/WAeKrGxYXSdrFQuTtKuDQjJi1iaP8bZh0Jn+E9H+2TLtJgJ2/SRhEESA8UTNKyynxMoDpta2f8i/Q5u63Bq1IjoJb0D5CBYjaPqA/rNCFC+9yO75zHZjS5BuPkACy4TZhcg8+sHcKf1WwiqG4ckyT26HWD69D1Vtuq2P020pI7oOMINESxCMAN/ML8k3h8UvDbeileD97sBaHrw93n0Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vA7qH3RBngbDiPDaHS0LAPVRXB/NhC5VF19iAp5pHs4=;
+ b=By/2eckztJSDcXBiB3r035qcecJvNJu1BWcpASYUUPcR9kOHGKu/IgI6AOtNRQaNFw9am5QPcJ5nh5imiUFsp6XlM9szSC2hKwwLcMWwyOSNj93tiiFp+FPbyN4r6rtuOLeTZcTsqluUi7w9hsVMM6woTXpzLbKwi34h9eeYJmxjsDF5quW6ahECrjvKKbNH7YeJ7nJkc3It5L1AZzU6z+/j8OU7Db2KsXgqDucUoefA8A9bh5RjH8yrHR0HvWptb4epQkoxMMdr4HTJmnUoEr0JLJ1WkERIqD/2UXAyKsc2N6yp6c9nC106B4toQ2E98D1Hv0o/QauSV2tZULhAow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vA7qH3RBngbDiPDaHS0LAPVRXB/NhC5VF19iAp5pHs4=;
+ b=RieRX0rW4aKVUWByTX5f1Y0nyi5xg+cQHvQglxUVlvyvSaJ3edYiZ9cK3eRQ4UV+EeRgwxeXCSBTF5uKH0OkrZ9QMA6XQ4CYuxKS5BDK+LWpRTcQhsqqZxso5Gz9w+OB73Vo+1jz1idgbQ6BbEMx4Su1egfzumjCUeafFJkoJ8IIMldn7YPyFpgBcpQMbqrftz0qtmPj8/SRiFdNLv3IT+nrtkzo+Mi0zmHF14ZRjhZeJMO8ufG5kLhFjqaBIxA+FfE/SYdGQEYOg3uhb0MI1YDLd5NK0czLwdhKErKn7d74KyL61RmUKE2FsNnBTxOxdP8BbHs9EXHmshuBpRIzVw==
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by CH8PR12MB9766.namprd12.prod.outlook.com (2603:10b6:610:2b6::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Wed, 3 Sep
+ 2025 12:43:16 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9073.026; Wed, 3 Sep 2025
+ 12:43:16 +0000
+Date: Wed, 3 Sep 2025 09:43:14 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Subject: Re: Where to put page->memdesc initially
+Message-ID: <20250903124314.GF470103@nvidia.com>
+References: <aLc_nckaDc2ePRv7@casper.infradead.org>
+ <bfd5161e-c76e-4a0e-bc1a-bf7510868827@redhat.com>
+ <aLdcPeb8zrfDwd2p@casper.infradead.org>
+ <20250902211514.GQ186519@nvidia.com>
+ <aLd8l8v_DL75NU43@casper.infradead.org>
+ <20250902235740.GD470103@nvidia.com>
+ <aLfIEKLqpe_xB7mW@casper.infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLfIEKLqpe_xB7mW@casper.infradead.org>
+X-ClientProxiedBy: YT1PR01CA0142.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2f::21) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-9-ryncsn@gmail.com>
- <CAGsJ_4xON7fYg1VvcjLOsgBb_Wp4ruC+vdA4Q496GH1jXunU1A@mail.gmail.com>
- <CACePvbUVK45uRPVoO3ubDfQHikebSHFNQOsMTMvJ91QQZH2HwQ@mail.gmail.com> <CAGsJ_4we4ZfNqJ+v7+=0hjNKLakJ-s8qtRsGo_kp0R_th7Xvkw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4we4ZfNqJ+v7+=0hjNKLakJ-s8qtRsGo_kp0R_th7Xvkw@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 3 Sep 2025 05:35:22 -0700
-X-Gmail-Original-Message-ID: <CACePvbXjbtowr5wSKR_F_2ou6nVhxK3-+HvSs+P71PYOo0h3UA@mail.gmail.com>
-X-Gm-Features: Ac12FXzB2G67O6c2neqhsxxf2zRfAm25LgGfCqfNTYe7Va-TDT5xLTpHlg6jKIU
-Message-ID: <CACePvbXjbtowr5wSKR_F_2ou6nVhxK3-+HvSs+P71PYOo0h3UA@mail.gmail.com>
-Subject: Re: [PATCH 8/9] mm, swap: implement dynamic allocation of swap table
-To: Barry Song <21cnbao@gmail.com>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6753340010
-X-Stat-Signature: 1qbupnot5475j9ytiou99qkgwrgo3com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|CH8PR12MB9766:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8da1f1a8-fa7b-4187-3268-08ddeae77439
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?OzAKuzvt0a9hm51j35ddRSuMLAkK1YWTQbKxRUeSoGzqNaIi4LmLNUVu7rnL?=
+ =?us-ascii?Q?9FpXeGSMDF4z9h7k8SFz24b8Nw6e/DHOTHWax1o52sivuUsg6BsDKUXWstif?=
+ =?us-ascii?Q?JP/DkjZ+unkG0z/91upkDvAnpS/dVQzyO56ibzZLH4zVKd+LGqDPXqeoYSRk?=
+ =?us-ascii?Q?2NaawvDXKb+uzRbLqrRgi5M2VHmkkLmUoneJRS6DQmxD3ld8fUU4K1lSWiUt?=
+ =?us-ascii?Q?Fv4xG6OnyboVAbbd+roPZIviyAjMnbTcSD3zqMda9YE7WyT1hcgFJQwk+9Gg?=
+ =?us-ascii?Q?W3sAH7maBgG2e4dAXYez7IbA0t0u1e5nA42ObgL+rXgzaat2I6VxidXvnFI+?=
+ =?us-ascii?Q?1AfNDAYyQS1w0dyIeTx+9wzB40b4MMJkE/YrHu7fGCT3j1Dkk5KpBWNWU9za?=
+ =?us-ascii?Q?AJwFwaOYoFdhBfK00rRvpzvFO0WFTTE8wabFpxTyS8w1gvZqe6Ps8sT1vj9L?=
+ =?us-ascii?Q?TcsDi9+pSMDYD4nxP4kl8hhEfSk5BcmfRcKSptS/2ZwhrsCUM5IvA+//ZNCH?=
+ =?us-ascii?Q?z0N2k/H9j9pwhTh4C17fEKsPeEpaCNXxQny+iZ+YjeDkxawvWKHYnPCoY8I6?=
+ =?us-ascii?Q?2LIzIc8mRUr0Xe1vYVlg1MjGV3IA7MyjdLAHOm0tZ4dAWKntJ8QZZkPKXXQY?=
+ =?us-ascii?Q?ICcpapn4e8rDZHumnURpK42tYMD8AN2DN02EYXBufrFOXAxudn0cv3Jkuziq?=
+ =?us-ascii?Q?0DR4Bi7tFWT6qXbqxiP7Qv5iiZz+iX7jeOdmIIpFACVFQVs6MyLq3MyNLWR/?=
+ =?us-ascii?Q?AXizRHMN+53z54CGIKQVLV8Rvpj/59ycj/SmUkP8LA7gVj/5CXymgR8FmN3N?=
+ =?us-ascii?Q?cF6QMNzyUEiBvSUZUprfPH193onH+Rtn8iWM8O3smvADYrcJWYrOnYMs3XWF?=
+ =?us-ascii?Q?sDiXudrKJPiQPVyicJU/10wKRq3Co3vD2GHic0MC16tDkLFr1BPOyreosNxB?=
+ =?us-ascii?Q?QIqXB1doZbFbcPkY2k5Aw5q86vfu4s+TmUtm5gW7sXdE3xTVxXYM9JrFAmn9?=
+ =?us-ascii?Q?GK8LPvKuJ4R1VIgATSht3bTXJQgc5p5aHHfP21/LI/Up47aafOGfgoYk1lUC?=
+ =?us-ascii?Q?mwWT3KRaUzg/cDWIFeYkTRE+nSbiN2L2PyTtQds46PT4BWMeYwzfq0Jt0BYF?=
+ =?us-ascii?Q?cVQlxyNTFScnPMc9XQf5vToz5kuZiuqM59d8u9zZZ1dAvqaxrM+bp7EGCJRM?=
+ =?us-ascii?Q?y9dBRUkNOgKVNpScxqR7tqBGd6ay+Cm72Zv30WH/bEouRXRID5P+nrvwHjCF?=
+ =?us-ascii?Q?j//kFEizbMzlpizxbf7WTw1p3Glx1AUfrtsIu89CK9Zngl54+rQHekZPVsqM?=
+ =?us-ascii?Q?tTzGafCWTOzlhO4b9Btehu3r7TnAQ2/eWukaz6G4lpJRwbET/sr0rQiwABLF?=
+ =?us-ascii?Q?m0qFZnlU5sEI/qIsNQusXVTrhkD9ygFXxRPFPMMMALBFF3+4Yz/Xg9bx8Pkr?=
+ =?us-ascii?Q?b6Oyt2qzk5c=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZELyOVLOrh58cBiS4VKejhDMtuebFkfBB9HhDLnTQYYhZjWps/gk/NilizKI?=
+ =?us-ascii?Q?koVEBt9mb3ootlx6h1eEFobx2nyy0RaHUgprdHx8KLp/UZ57hdiB3M471SCx?=
+ =?us-ascii?Q?dLKTu8iZhWSP2zwoF/n8UU0haNqI4AJj+ioJnyuP0eg9y4nW8tJYA3hB3dbk?=
+ =?us-ascii?Q?Onv/mufFF4Ntyb0g8sOOoFMephUMh6kxTVZzPa/YckOqT0NzstYWDR2aG9V5?=
+ =?us-ascii?Q?r/ZFqU1Y1Wqfh+PVK7/pC9Vgu73rmPKRFfZkcCcoYiK8WtxnZiqTPVZ2rfR7?=
+ =?us-ascii?Q?naHwHYl6Dy+nt/Q3nendX2PXC+F4OAJA7x1VzUMklNc0fb1Q8q/UUPYbgZdV?=
+ =?us-ascii?Q?FeHgj+zc8Cl1UFizj5mUKytnIvS5SdZj6epbPuqJoUV7uP5PPEpOR1YeJl92?=
+ =?us-ascii?Q?0RW1GtrxfRft5J4KN7KLUq7g+pDjRNerTbvQQVOX/3k6d2SXHVi1/HMIeQtY?=
+ =?us-ascii?Q?A0ByF2jLAOX+Dv+G+u282+5MIBFNW0FDbzRoKecnrWoL+dL3EbKIt/CvhZVk?=
+ =?us-ascii?Q?Ye011knElaGcI+0l6Q9ej55Ukz+KWtNQ6WDBMUDuMbuPjacIhfmPSk/oGwcV?=
+ =?us-ascii?Q?0INQjMXzH8OESh0iQgy8mY7V45W2yvB1ME+vNPxbQnET4ZvoV4jCnyjJh9l1?=
+ =?us-ascii?Q?IsiYRs9xBwY+8A6JPdf7GdtdZho5F3LKe5GyeNTDK6DHnOXSVAWsRjwvqkoK?=
+ =?us-ascii?Q?6YUdP610pudBKvON375SrG128yfwyzXPxr8M3SrMPI5QSesTJZnnMZgX3Pxh?=
+ =?us-ascii?Q?LehMvDCqzuvpfYuRcjVBLkWDn6/GderhufRWpOOWbLeRLZzRxJiuCbmrNnLI?=
+ =?us-ascii?Q?EvkuXhyeM15h/AhVcFxbZH9ywo7rwUMpPCuA/1LzruSLUMLjNX5V50oEX3Pd?=
+ =?us-ascii?Q?HYgKt/ZCsQE5Ljz/jD4VW4kSKOMPGaV4IFD7fgHHJ7LRTFL3dMzTL92yeR/o?=
+ =?us-ascii?Q?NeKue7xSljviGQ4OGFnDedesDyhuStJjYZ5mhW6dKaVOcjT9efnAnuYFVscY?=
+ =?us-ascii?Q?p5nBuZC7FyNJ+0nr5mh+PrxFqMbGF12xOETZ4gzScNAfxU1xCptdKRo+5Ykw?=
+ =?us-ascii?Q?1d/kqKNliCW1QWX15CqmOVciWaO/V/1gJkiNhfyLxqm/AFHj5WWZxPFGNO7K?=
+ =?us-ascii?Q?Tj8pqIjYsPYk+JYs8vHIiOmDxWXOYg1Dt9e8DmJ3d8b9IETy1BVKw9kM0rFz?=
+ =?us-ascii?Q?w4dFTylGq/qiDAgU8tyIzNnJ6mtadjRRtq4EVKTI/2H9ojM/u54vt6xfyFc3?=
+ =?us-ascii?Q?H1wG4sb1SDdU1RmaMirJWf635skZ5wtI4T0IU6NkuCK4c9648g0O4rrst6Lb?=
+ =?us-ascii?Q?sJPPDZBXpvSBK0DTA34A7Nr01OK3/4zfnBmckbTl7LeHFFNDxnGgbkJzm/pd?=
+ =?us-ascii?Q?i5kyUNdswWLah9oqPnkt1nL7LsWwjIFYqfY/ovfJ7bPr2ADpt4jBqad05tuG?=
+ =?us-ascii?Q?LFRmaPQkQibXBAR0gQSZxXG8liYvYLOTDJc3mxxf7s8qcXqhEDwX++CrwZYW?=
+ =?us-ascii?Q?N9yvlOJq9EMIgQEMo4c/XJhiY4JjKFC6BUdcjYJTBEZrTXirzioBnVaBxwI/?=
+ =?us-ascii?Q?w57fz9uk61Y2KHTRsKw=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8da1f1a8-fa7b-4187-3268-08ddeae77439
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 12:43:16.6256
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +gKbYppeDzSIJavXjQKkdcX07d77qIy0IhrJ3Oza2hEcHiFYNrkR1yhsp7haKJeu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9766
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 71CF520013
+X-Stat-Signature: niqp9q5pcej6mnr3nufo9nqkbmjm8t7w
 X-Rspam-User: 
-X-HE-Tag: 1756902936-683370
-X-HE-Meta: U2FsdGVkX1/lRvmobpxFYEtEbn3smavlhf5a7DVKia/amEOpiHwp/TXH9ay5lIRK9njcetsNxqMxPZGk/RAhrdofCKstjxsemuq7TT7JDTb6a8oqhK1Z9P2FRSn+HmFjiVqSfpO/IRk1Kxap+g/gBhjr9BkigCPpBAkV61snkAa6Ue1Nqwm2iG/WpYMTSKRPnQ9vlqX2vLbQP2GR1XdcYDN1F8eN0GbQunJj/dY4BEKmY/YXE4XR0MKaHyaIrcrfjrpSj60EEsbgZ54nZ63klLk3Uc+DYoopFtObVvHQaajXcsM+VfcHOVrF4K3an0ofZJBNKITpQnU/J9zFYWIfGXN7KHwsQnjYVM5laBLG5hn7LDfiPMxL51lTY66EcwNW3I3xeD7c5x8PSfdtNLu2mHi8r7fFFp6xbjTqqGjjHIhf8i5SK27NyEWxLYhkqRCod0nijJDcW2+1XVamwth125l3wZiyyKzHlywfnXrRAsUX/eei2K6LnWHxGG5WUgfdpXSOvRfz7f/j85FWx0OZ3Ecsj7rnUVvNezy6Ultbzgd+NaBS505r4GwxZ5Ud2gtKTos2GJHik/eclox1+PSFi9V8a3YrpypAYRa+ylHrlMD6Qh5kIPDeQysc2/VYCvOPGEnKZB6yNV5OdcpxYgx0uaIS7gF69s4uANYtVGTvqB0g2N1c51JHtGRPvKNKUIcmECvPO4XzLj3KT4M3gBxYZj/XYHydZkPBg2bV/tWr5XKiBNClCgfPsf7cWbXXgC44IqF94yiRzns69hc51bkjemDue/Ia1wYuS3qCNcO9W6spH3Ch4Bao960J7ZkWtOWNCg76sMMyj2hp3k/GtCngXvsm+z2WQ+usSNU7iOadPX9UoO/unODyTKtcWdvGzySjBnFnsZAr/tDJhCZpQqMmDRVpqfYhZ4D3Qwyqr0aA9SBk7W74yqWszmXuqn6r/cBRs9JitTWs1n/ed6KwrPn
- t3oCBufr
- aRHjh66qFqR+1Y4OdqTStuCtc0N4YTPypo5VJaz4bxwUOAOet9Yhc89t8bR2/loPnqJ8ir8sno7MFz/368o3xdlcXJXMtXHgrHHEMma4UNV9RLnf5ET8CUUdg1nHzJOUJZJ7V5TIfrIy4ZvNREE9XfutNmLqz4tLbyb35XMkQmI2uAH5AZ7MPVmdpQFdpNElvP5jdjocMtZ3+E4Q6zlap1lNVbpw3tsuhUDV5NhgHVX2NvE7zf07ZZnZvc3nvXNWu01Wo2wl2V59Ev88IRj8mfwlJQME90/UkstzfOnTEN1s6K5k4kSFIqVkvf1HbQBOrUCMr6y4m4yWzGS3Y3HWWxuHikjAMYvNZECwpz5QtgSWFrDM=
+X-HE-Tag: 1756903399-48734
+X-HE-Meta: U2FsdGVkX183k8XR5IXEuzkrvh73vXyFv4Iomrj7V9jQnwvxNZze1R3AgflEW5YOpMKmnW7Gk2a7CUGZ2y89iwNDQhQ33JTO837uKvl+fSgTVrpNnvQVqLpva3zJr+h8saiY9MvUET4sQyYZLmLWwFhBTJEz+8yMjn4I9a0acg/y5LxEbe2SPwkbcCygxgqeFZ0TljUeCxKE2gJ7q3zVzSOtXOHbXv1FputeDIfdmtkP3Iq72zdJftGyXTFou30pF4rOntqXcsNdsEmgp2WXR7FR+ue7jMPSMIDYFmi/HJLOpfvXt1NMB9ocmOy1CshLaYK0UoVezZr/dcXFd5m3Y73bA8c71X5Vvrqm2nngvh0jENaW5we3BPOQsfHHXjleM8cT7hVIFERE2FyUMejibm+36/pgYq0Ee/T5tqfNiozqd+kaQNrKjTbbi9N0ThYTaCVCe2YRLdttsNpsfG1x543tvYJzigjkWV3iLbrR4LgSeDRNeGNlblig+sfDhT2lZrH7k7IdsvpkbsSOOJn3aVHhqUGYvskkJ6NWYtMdBCraGL/GHKNq1pbdzaLjvJL7wNa2ITYffGDTQxWK/vdJUv/3FWhBI9I5pFVqIGjdMisaZ4lL2DYdAXYJm6lx66y/VO5beI4Z+vn57Oef0zIxF4Csjw8NOR6EZNX0JZGb9Rcv/akMGy9vW6pizzOlB/SPSSqEFOTBdeJf70GJJjc05qroXGXx7VzPFjVB0jxAARm6thbnmYF/05VCKqFZ7oYpU14oa+burCKbDY1eWgDuz/elEc9NW8o+t6lnCr1JDzI30R5nsPWZGEJdq283PReg4mzCNq61nTzm18seF7r8EUtvAPDK+tlUGl91V5+KThpDLXMnlp3OZrZ1/LpcP2juA5WRQ8y4Y7HGJ43J+sInHS8TaSkfawg8QMBm1eeuCr9Lh0mL1pILG1uunoBzQIHPCFGhxoLCT1R4X9dIKc3
+ kIXndzyQ
+ Z8eFEHqbCSsz4Pd1K6hPCwnMuBx2GmsW1GQ7Dh+oq6pP33BozWaU1QbNVPfy7fCDfWuTxK9klult27dtEMODqb1GZ9vDkUhNbOz0mmY/JpxY7zHkvUD4F+TSMEP0/KlRygUGd4SkeZFrpdN1VWO7LmFOCNTmvrOavN3gXOiE2pRHurI6DIpR3fy9i/Scucw/4NiW4HWtwIpvapHPTXOr8wGECzrs4YdV6ntbOTToZPsmOB4LMIw+UfpwIzS1GoZAHOtocbdwOeAGuaIt/b6SrmwKOlc4dCtMlCCrprxFXy4yTadykSswawIoObP6tZxgtiugTYyyEM4/huUJNX/SrSyIEg/nx6FmuOULAs8nq8ygyvhgVq9u0cDXT7w5vV7SGrsnq9Mc/pRWYLJOOkbNiUoZpZBlDvr+4C10g5zElc+YzNQZ59UwYIDqLS9KiJLKzfPmTLgJ6TcSiahJSQAsz+zIAFe4/l4yHjlxRt5DRPbDJUPv5qYh3tDt/2Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,125 +184,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 2, 2025 at 4:31=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
-:
->
-> On Wed, Sep 3, 2025 at 1:17=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
-:
-> >
-> > On Tue, Sep 2, 2025 at 4:15=E2=80=AFAM Barry Song <21cnbao@gmail.com> w=
-rote:
-> > >
-> > > On Sat, Aug 23, 2025 at 3:21=E2=80=AFAM Kairui Song <ryncsn@gmail.com=
-> wrote:
-> > > >
-> > > > From: Kairui Song <kasong@tencent.com>
-> > > >
-> > > > Now swap table is cluster based, which means free clusters can free=
- its
-> > > > table since no one should modify it.
-> > > >
-> > > > There could be speculative readers, like swap cache look up, protec=
-t
-> > > > them by making them RCU safe. All swap table should be filled with =
-null
-> > > > entries before free, so such readers will either see a NULL pointer=
- or
-> > > > a null filled table being lazy freed.
-> > > >
-> > > > On allocation, allocate the table when a cluster is used by any ord=
-er.
-> > > >
-> > >
-> > > Might be a silly question.
-> > >
-> > > Just curious=E2=80=94what happens if the allocation fails? Does the s=
-wap-out
-> > > operation also fail? We sometimes encounter strange issues when memor=
-y is
-> > > very limited, especially if the reclamation path itself needs to allo=
-cate
-> > > memory.
-> > >
-> > > Assume a case where we want to swap out a folio using clusterN. We th=
-en
-> > > attempt to swap out the following folios with the same clusterN. But =
-if
-> > > the allocation of the swap_table keeps failing, what will happen?
-> >
-> > I think this is the same behavior as the XArray allocation node with no=
- memory.
-> > The swap allocator will fail to isolate this cluster, it gets a NULL
-> > ci pointer as return value. The swap allocator will try other cluster
-> > lists, e.g. non_full, fragment etc.
->
-> What I=E2=80=99m actually concerned about is that we keep iterating on th=
-is
-> cluster. If we try others, that sounds good.
+On Wed, Sep 03, 2025 at 05:46:08AM +0100, Matthew Wilcox wrote:
 
-No, the isolation of the current cluster will remove the cluster from
-the head and eventually put it back to the tail of the appropriate
-list. It will not keep iterating the same cluster. Otherwise trying to
-allocate a high order swap entry will also deadlooping on the first
-cluster if it fails to allocate swap entries.
+> Once we switch to memdescs for these things, they no longer need a
+> refcount field.   By the end of Page2025, plain pages have a refcount,
+> but folios/slabs/ptdesc/etc set the page->_refcount to 0.  
 
->
-> > If all of them fail, the folio_alloc_swap() will return -ENOMEM. Which
-> > will propagate back to the try to swap out, then the shrink folio
-> > list. It will put this page back to the LRU.
-> >
-> > The shrink folio list either free enough memory (happy path) or not
-> > able to free enough memory and it will cause an OOM kill.
-> >
-> > I believe previously XArray will also return -ENOMEM at insert a
-> > pointer and not be able to allocate a node to hold that ponter. It has
-> > the same error poperation path. We did not change that.
->
-> Yes, I agree there was an -ENOMEM, but the difference is that we
-> are allocating much larger now :-)
+Reading this again, I didn't quite get this till now. Maybe it is
+worth adding this detail to the wikki.
 
-Even that is not 100% true. The XArray uses kmem_cache. Most of the
-time it is allocated from the kmem_cache cached page without hitting
-the system page allocation. When kmem_cache runs out of the current
-cached page, it will allocate from the system via page allocation, at
-least page size.
+In this case, what are "plain pages"? 
 
-So from the page allocator point of view, the swap table allocation is
-not bigger either.
+One I can think of is naked calls to alloc_page*(), which I see often
+used in place of kmalloc(PAGE_SIZE), do you imagine a project to
+favour kmalloc instead?
 
-> One option is to organize every 4 or 8 swap slots into a group for
-> allocating or freeing the swap table. This way, we avoid the worst
-> case where a single unfreed slot consumes a whole swap table, and
-> the allocation size also becomes smaller. However, it=E2=80=99s unclear
-> whether the memory savings justify the added complexity and effort.
-
-Keep in mind that XArray also has this fragmentation issue as well.
-When a 64 pointer node is free, it will return to the kmem_cache as
-free area of the cache page. Only when every object in that page is
-free, that page can return to the page allocator. The difference is
-that the unused area seating at the swap table can be used
-immediately. The unused XArray node will sit in the kmem_cache and
-need extra kmem_cache_alloc to get the node to be used in the XArray.
-There is also a subtle difference that all xarray share the same
-kmem_cache pool for all xarray users. There is no dedicated kmem_cache
-pool for swap. The swap node might mix with other xarray nodes, making
-it even harder to release the underlying page. The swap table uses the
-page directly and it does not have this issue. If you have a swing of
-batch jobs causing a lot of swap, when the job is done, those swap
-entries will be free and the swap table can return those pages back.
-But xarray might not be able to release as many pages because of the
-mix usage of the xarray. It depends on what other xarray node was
-allocated during the swap usage.
-
-I guess that is too much detail.
-
->
-> Anyway, I=E2=80=99m glad to see the current swap_table moving towards mer=
-ge
-> and look forward to running it on various devices. This should help
-> us see if it causes any real issues.
-
-Agree.
-
-Chris
+Jason
 
