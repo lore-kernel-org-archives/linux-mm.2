@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF769CA100B
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 06:23:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5433CA100B
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 06:30:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 402C88E0006; Wed,  3 Sep 2025 02:23:08 -0400 (EDT)
+	id E257E8E0006; Wed,  3 Sep 2025 02:30:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B3C68E0001; Wed,  3 Sep 2025 02:23:08 -0400 (EDT)
+	id DD6318E0001; Wed,  3 Sep 2025 02:30:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F7868E0006; Wed,  3 Sep 2025 02:23:08 -0400 (EDT)
+	id D12D18E0006; Wed,  3 Sep 2025 02:30:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 228558E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:23:08 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8F1B1404E0
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:23:07 +0000 (UTC)
-X-FDA: 83846946414.15.2695DB8
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E525B4000A
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:23:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf11.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD48F8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:30:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48E4913B0DB
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:30:28 +0000 (UTC)
+X-FDA: 83846964936.12.E97C606
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C5CB9180011
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:30:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r8L5J+Up;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756881026; a=rsa-sha256;
+	cv=none;
+	b=pEaQHw6d0oXk2kPAKIaw27qZqNFyv1AU0XEu0dsfq+gCt3OReTOZ/oJpM9qf1D7gV6pLwc
+	S5dBEU93qtazuCD1ILCfmADKP+7yZIWFCpabM01Hdn4s6fcOKcKaK3mKyTxL+wWHeXElPw
+	0SA6V7hoRbS1XPJpj5hm0GcOH/jVFEo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r8L5J+Up;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756880586;
+	s=arc-20220608; t=1756881026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xPv3BwPAMgx4p3qpUZqWmSky2KO+HERu7fEQ1KpK6cc=;
-	b=qhKJuDbGlUMFM52qKaq8dw60kQh8U2EIieUPOdakKc3LQLMFvy3JY6u48PD7e7AUpLnRvK
-	tTSXJTDSL+Jiqe6y0pBuFqpLWSDaBNpISxNjKLs6He/XLGJbVvDwa5A5rPXNQKOj3Rz2QK
-	pdMtDYGySzaibuSEVMxXlj3/VSifkkc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf11.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756880586; a=rsa-sha256;
-	cv=none;
-	b=GIOl66dj2xwxaM5cFaqicog9r/BTfAL2WEfQD6RYT+jyYHEV3meYz28zdllyjua6xLg6MC
-	fBntKCBtTLR52Y4GQTVrve2vZ7lDbuJ8hUOkLJQgWsTyNdW4/iniV+/2qeo/SlFP9ZOEU/
-	bWIxoJM84PCGoPex2us5bSmcQNB/sRg=
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cGsyJ73bZz27j7G;
-	Wed,  3 Sep 2025 14:24:08 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 296341A016C;
-	Wed,  3 Sep 2025 14:23:01 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 3 Sep 2025 14:23:00 +0800
-Message-ID: <763d9a72-d1a9-4352-ab77-05891bd94dc3@huawei.com>
-Date: Wed, 3 Sep 2025 14:22:59 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=x9VALCUu5PPY2af6wI6+9K/vJZQgbiXo+WV/pWMB534=;
+	b=LVq3HkGr9VVVODETo4ZF3MQHIjHKmKXJmoptfLTWhQG1QOJzaakZFNrBCQyP1MHTqC4Lmn
+	EOvdDgujj7JoOJZgyRiBxH5GQhDB6zRTEMU2GSFu5C+pgkITZpTeLMrFh44njFSewOZq4u
+	EBwerI3M6PNakOdAeQkrPQT3HnDyMNE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CCC1660239;
+	Wed,  3 Sep 2025 06:30:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FC5C4CEF0;
+	Wed,  3 Sep 2025 06:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756881025;
+	bh=0BP7MTU7WtClcd5jUvnxmjOIUJ5oBGFWJ9RXidmD/b0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r8L5J+UpwsZFc6vxvw/oeG2L7/kI3GOXOPF1wkLa53P0zXa/EWSrxgEzwd7YgKQE9
+	 ydDjrfNusiUWQwYgKKVHO0PosNWMB/PZmMN9tLVni5+5hRx8udYAnSqB6SYqDNV4pd
+	 /FfuvmrZuh9EtDb3aev9j3WRR/o2+RmZNeZKMA+S6uw4+BXkw2F961clb3kXyG/v4A
+	 oF/fqFlwj7ciQc6VI2sP/soaMg/0ReJ4Ymze8kKhGy0nwNoECivEoI4pjBNmzw1cck
+	 zQoKoyfddujrP8rjmcowiXA3gThpuJZskxVpkE3NEMVdEryDcPKcclpQ52m1PZKsE7
+	 Ie5WO9SfESaBw==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Graf <graf@amazon.com>,
+	Baoquan He <bhe@redhat.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] kho: add support for preserving vmalloc allocations
+Date: Wed,  3 Sep 2025 09:30:16 +0300
+Message-ID: <20250903063018.3346652-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] filemap: optimize order0 folio in filemap_map_pages
-To: Matthew Wilcox <willy@infradead.org>
-CC: David Hildenbrand <david@redhat.com>, Jinjiang Tu <tujinjiang@huawei.com>,
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
-References: <20250819140653.3229136-1-tujinjiang@huawei.com>
- <aKSdsH_yk69EvkMX@casper.infradead.org>
- <b7a1100c-2302-4781-97c3-1146ed2b44a7@huawei.com>
- <aKXCz0QOlE8QkPIn@casper.infradead.org>
- <98f0333d-1ae6-4a5b-b5cd-c8abddbfae5e@huawei.com>
- <aKcU-fzxeW3xT5Wv@casper.infradead.org>
- <bb6e89e1-ff86-43cf-980d-b03b644d85be@redhat.com>
- <aKcdBrq_xwOeUQTp@casper.infradead.org>
- <b990aa82-bc98-4739-89e3-44c96e0117a1@redhat.com>
- <1c51623c-818c-4135-a9b1-28d0b4edbc89@huawei.com>
- <aLfJFKBZCjhH7so2@casper.infradead.org>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <aLfJFKBZCjhH7so2@casper.infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E525B4000A
-X-Stat-Signature: 1qzs9hxqpxutcic3ir955s6jibeyxt5a
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C5CB9180011
+X-Stat-Signature: 9ymb187ph67nmymbphdk8qc6uaq3szsr
 X-Rspam-User: 
-X-HE-Tag: 1756880584-36816
-X-HE-Meta: U2FsdGVkX182uEQze9yUXJOjlXwnDAJseZJpB49In57h/58pzbyHnT15ciICSRbJUSz8I9UepI9bQlGaMb38KI7Llst+BMj5IAlt6P0KJRfdBvcveBlwW+5US88atWi8uln3Yb2SafPSuByNF5d6BshYt6TqfySWw0WlCZmUY+hnXG64sRDhw7hp3elPefZfgCNnInkZ2BvNkuRt3NijPY6vjMimKi9p5vAwD08cS1C2WKDoEBOQc0LVOfNnfPjlox4bjIWuDFrjTrp1gqYikdtxd30P/vtf6vvO1eUpzkRLeWlU2jxS+bmbtTvxrOJbD3PjCwSmhEbz9bbX9Zbc+TQLaYjbESBocPztWVdG8U8jllz8MskHLZsADGrKlxUBKKlvpBWdtPAXAmJujEY0vQZKMLEmcePwhd7jpnoNlOYetToI+ditlLaHnKFkUmvdwM+q2EpusWkC0DaUZ7bXFCjZz+jfyBVAxkoV2iYQVSXwBrxvFew768pzBhAZLoBpcHg7uxRJuEjyDS/leaDk5UQPHMXeDBCvKfquqqXsnFzI1Kjlv/MwI8ev3HVzyX8xk0aXCLXohpOWI+07FGw4/XVR0qLAkhZKg0gOppOpQXsJMR/OKvBL6rwnk+RW5DFBbg9e13EagFmq7/XvtcyAYvmpSQ7v342Os5HOB4JgthUHAAy+ytCpc/8UHtOuXKgeAQUUxz7JoLaQ1XGTRthdjLQQAh8JYjrmqlx1TvnLQUUO8u+8Fr7f/kuhjeE0rSOjgg9kCIj0R0r0XGYpg7P++C6Vk90ZiQhbFzM97ilmhY7s7CMGKfkEWfb8KyxIBv1y3QqkswNzcsm1D2nG1zLub6Orzq5tKLWBXLJsyUOt8mZw8GvrBh62BHfybLhm2EZPUFIa0hKS895m+UxcYOI6sLthnUYiXK7qaNN51GMV3RwPskKqs9wZRCwH7GU+3W8D77LHDCTwM1psc61C67t
- 8qZAM1fJ
- SusK8KBzXEXIiJZzXlcJMJIYVQICUGpgIkShcjzdWmXUg4ZLbZ7ryld2QmaSk4H/JuzCV1APusCfm5637MuInE+XH9Yp66Y9VnBn0/Tu/w/qZJLXfFye9mBeOlCnzx4l93ZiDQoKEdCoErPcByPeu0bx1PeCSKgQUTpl1U/DBEpRQewjEMmD67peXuAjZE/MMEwAaD3MnzcNEjLZPUqhnobG0pAcP52uR/lDwebLMMWfxTaE3PPibmzrAdPrZnzfpIZJ9
+X-HE-Tag: 1756881026-274592
+X-HE-Meta: U2FsdGVkX18GviY+xnxFwYADCkgGquntT4Ke+GTUCQKcG66UwhX/s/Oi80yjccQO3aZtDS7j1wEoJCSU6rKZJ2IIlswYUz96rdBcJ/doy6LBdTftHrH11x2Uon0Bq/jNlu9yr8nc6LQQJKC9xoWAmp7UqL078Xz6R0S7BaXJIVxJ04UNoVqdt/MTpSQ591OmEEE3ZrAF+tsbw7h/v/A5NmnB0ERZTVK8tcPJNw92eOjN7y/R2az6pAh8blAR75J/vakCZqn4a+3Y85p4Gqmy996I5uvRET6KEPiTvTqRj6LUZfOU0bRyXt8BF/6x2Ybcp+H8udqRdH/M+9YDBLIGZTfZVCyWtn4pBZldbi6ODpi58j+C7lZEavgFp6srTzl081CKUkfsdAAQgFN/r1KNhbtzCBaB+106EK3XHZnQENCZw+/mu/+pAIIARo1WG9IeFGHV/QpH3yKeOZi+TK9xiuTUhaTLbBSZ3XIc06I4s0hUBfqbNhaN14hCpOC3YU1GEyWdv1VGZftlobT4LRfg46IcOYg9yS4dAJboGqRMMe3RlM7XUcAQoM4PBwVts1Q/vYtOD2a54xHPBzp5HCOo0u9qVZSjwUiKKcAMQMbUj+7FQQCwiRpp6qHLnny/w09FzB6u3UNszsb6mfI2c6+Ng7KL9im5ph3sUXRIFo9oQJSYrTDddLCfrER9Ohhbux0Q0Y5SvqBNzxk8Z81aixM9QhLbu1f30ovnpkkPzg24/TMgK5QQuMyN8L2JDlVQVeuDFc/9WxVkWcr4vpiu+46GDsGelE0SnkVazKIyYSHGGtYnLOcnGw1qFKBRDw/PwdWmAJam1liuqtxL1qRlwE6/ZMtgPs7tFnTmBzum64k1RENwfwlWzDRY5ptnPFfFhtM6hatQCL86g/ULiUUgy3IHFez6msFkTKHT5DjAEVlz42Jls7VP6p2zCEmVgez5od5z+YlgrT9szDZ18RzDU13
+ 3qf3mSA6
+ gdVDYObtqYl+KWTMhZW/iiBNslWwexPaVogYGD7X5iwpMUxLfqpkkwLZbXf+PA+f4+WEjQ56m5oCSsYrXsoSD6E7Map+bw7tK3t2BbaYi3lQu6Fh3mDFL5SCgLto+5ygUDGISB7a2n0Pm+fQ+UqnbHlbOxZJOpWHbLWlkN9y92n1LeIPKdS6M65MjGnuXRceRCJdHqbD5LjVQfm6nHWYF7COowlwo01ZCKYJSuSHfdqbY0NAy//LJuhV18pLEC61acALSDCgW8cT3dAo3Dr2Wx9EA4JxTCugjMbCTZXTnhNXceZhR29a1U5ByXhCVLgpG7rJR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,13 +98,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+
+Hi,
+
+Following the discussion about preservation of memfd with LUO [1] these
+patches add support for preserving vmalloc allocations.
+
+Any KHO uses case presumes that there's a data structure that lists
+physical addresses of preserved folios (and potentially some additional
+metadata). Allowing vmalloc preservations with KHO allows scalable
+preservation of such data structures.
+
+For instance, instead of allocating array describing preserved folios in
+the fdt, memfd preservation can use vmalloc:
+
+        preserved_folios = vmalloc_array(nr_folios, sizeof(*preserved_folios));
+        memfd_luo_preserve_folios(preserved_folios, folios, nr_folios);
+        kho_preserve_vmalloc(preserved_folios, &folios_info);
+
+[1] https://lore.kernel.org/all/20250807014442.3829950-30-pasha.tatashin@soleen.com
+
+Mike Rapoport (Microsoft) (2):
+  kho: add support for preserving vmalloc allocations
+  lib/test_kho: use kho_preserve_vmalloc instead of storing addresses in fdt
+
+ include/linux/kexec_handover.h |  12 +++
+ kernel/kexec_handover.c        | 140 +++++++++++++++++++++++++++++++++
+ lib/test_kho.c                 |  30 +++++--
+ 3 files changed, 175 insertions(+), 7 deletions(-)
 
 
-On 2025/9/3 12:50, Matthew Wilcox wrote:
-> On Tue, Sep 02, 2025 at 10:04:09PM +0800, Kefeng Wang wrote:
->> So, Andrew, could you help to pick this up?
-> 
-> NAK.  Send a version that does not move the folio_unlock().
-> 
-OK, Jinjian, please update.
+base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
+--
+2.50.1
 
