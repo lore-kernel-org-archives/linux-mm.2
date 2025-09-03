@@ -4,170 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41271CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:34:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94E59CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:34:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1AB58E0009; Wed,  3 Sep 2025 05:34:07 -0400 (EDT)
+	id 00A678E000B; Wed,  3 Sep 2025 05:34:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F2658E0001; Wed,  3 Sep 2025 05:34:07 -0400 (EDT)
+	id F23528E0001; Wed,  3 Sep 2025 05:34:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E1638E0009; Wed,  3 Sep 2025 05:34:07 -0400 (EDT)
+	id E39278E000B; Wed,  3 Sep 2025 05:34:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 785998E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:34:07 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CBB08603C
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:34:07 +0000 (UTC)
-X-FDA: 83847427734.09.DD3A72F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A30C6C0015
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:34:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BK3yCZJX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756892044; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id D0EEA8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:34:31 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A167859B50
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:34:31 +0000 (UTC)
+X-FDA: 83847428742.13.F7E1D70
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B2A06180010
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:34:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K0nmlxot;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756892069; a=rsa-sha256;
 	cv=none;
-	b=PtKIM9pFIChlY9VKTOm79sG1hNmNHiQF6kRdLCeQORXgKj/LT5P1ncoRqR0pSkbnypfJJ4
-	cdwCAuyXBeaJYoVgGmWhuVhNJ+x00mjddhNYi6XDTBcmTIIcbmdZGLDX1vO8QBktT4+XuH
-	rfd48ktHyJCQdNIXSHcCLedrvKW9uKg=
+	b=kdulnhZ2NhHQCf7IEInjAZZXyDcmdc2R7bmB3RKcQO3NMcDFWLu6zre50lTmPxJyAeawE/
+	Yn0otc1sH5AEwuFmGQ8qS0SqDCEjjcZiErljqRWBDOxii0vE081lkxl60KqZoFs9UU533A
+	2uUiRpdh8MnLcxH/TU/TgKSxAxglxKs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BK3yCZJX;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K0nmlxot;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=pyyjason@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756892044;
+	s=arc-20220608; t=1756892069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=62bXuPvp9QS1Qrw5JNj0rH3dpztoKcuDRvY+keYGksI=;
-	b=IOadkXOc3QWi5V16+Z/vv2JWxA+q7M/DQ/e7KeGPp2DYJ1tesN83tKivibugOByVe6KGo6
-	s17cZD1iUt9pLyr8KOYNN9AuPe1VmgRsvRGqbMQgzgtj11p6cpiNXXhXd5VYUmt4rxn5cI
-	GdYK5sXpFonMzKsnbC1zyP5h8owVbGU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756892044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=62bXuPvp9QS1Qrw5JNj0rH3dpztoKcuDRvY+keYGksI=;
-	b=BK3yCZJXC7CNpfqUM/N5WruC2jAOzEPzdhQdmDwaksn6wTrD2M8Y/iaXBrpPNr4961d/Mr
-	pEViS33R2wzvTmPqP0mIaMSsHwhSmV310A5gk8Nawg7vXe9e/BU472dQSBZaK9JvbSJMFw
-	YZH+w/sPBVNF1IOkMSp5wtXT10DsOY4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-297-uTUfO3_MP92AdsQA78KI1A-1; Wed, 03 Sep 2025 05:34:03 -0400
-X-MC-Unique: uTUfO3_MP92AdsQA78KI1A-1
-X-Mimecast-MFC-AGG-ID: uTUfO3_MP92AdsQA78KI1A_1756892042
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b8dde54c1so18995195e9.1
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 02:34:02 -0700 (PDT)
+	bh=mnXxYUmSUAbuziAVQp/tntBVhySw2bhEF1h3PYk8Xjc=;
+	b=QUXb+Nhw2rJtFOINC4eBZb0kEyuIvT5IjSIp7TapaYNmVpZuuFl2BoVdRH/rKFIY2v7VCN
+	Mm5dR8XcU1H41Ajs4crpOIqyPl1OZTdnpzIxDBi5ImE46Z90FRNI/9wVqbGF2rERH3KI3o
+	nWpTqbPiBL3pBZuKh7YCL7ENL38yeWE=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3df2f4aedc7so237625f8f.2
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 02:34:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756892068; x=1757496868; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mnXxYUmSUAbuziAVQp/tntBVhySw2bhEF1h3PYk8Xjc=;
+        b=K0nmlxottqIkS5xxBJFmDkxhGYYxny7ch+IJYaazM8Sk5sD7AABPWbC6ssDeWzGVAA
+         hJ4Htm2G1++W+hYQaS3xmNb9HhH2ZGGTAD/PGZHvLNyqqpGfqBaZVLaa+e38f12nuXsC
+         +qZABXRCG0GL1v5RRhD/y7ahusNpyyxV4eIXF/P+/2e5KriYE0Gr8ZdcBAUR5b27iLax
+         TUecOBf9CuaRcL6/0wf9eV4HTqqdcxCnGH4plortH1tJLQfQD6AHe0y6ZVfmUwghlim9
+         RJAQ/NRWrjzEitaK7OM2Tgebj6QyCYtY7oC7v+vPZL58wTEfN4hMo29e/Sf81JjMiqxV
+         pD6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756892042; x=1757496842;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=62bXuPvp9QS1Qrw5JNj0rH3dpztoKcuDRvY+keYGksI=;
-        b=eqiBcrrG/atRPXtMBqI2EtOYuaGOKaZEf7An8FTRc4vp5e71bmQ3uAEP8N1pmyzGP/
-         7On52W0+J+RngMwQSf0zEm69RLhw9/3e26+A6Q2TRCvEekb/17a6aUJx0i86Ez5tlW3y
-         gTbeVb7XupVqbPhWwvC3FKG/k1ndc9lAVNmtPbzgOaZkeAHjVg16UlEtKCfuGS+chk8g
-         5EUmIAuoUUvV/NQWt623Qa7OAT0UPeS7HlXI8f03RKn4BnxFfvzIycHTxhdfG37DN1gM
-         IbhuKDte9SQJxYvdmfcCpsNzHBuPFwUORZtIcPob6tiuZIZwdHOwE7hIIOgEv3/wdhSD
-         T7aw==
-X-Gm-Message-State: AOJu0Yw0ckXDGsFeUEBOW/ycYWVjxFCO/zNrQZanfypKTb2JcaVvJOKy
-	gA0UCPrthBFhZL35lBmsRTrd01pUkm0CLFEs34vvMhwYWQEBDn5WEK8PkQVjQ4p20JSHmlIRzLo
-	fRD9IC4tr0Otx6gB20wM+yFdRFeUrIU4JdG34z6w2Lt5pjEUUp4VC
-X-Gm-Gg: ASbGnct+iOdifQUvAkxBk6YxZH+GhKIMxvNxH7jgqU2yRvGKBcYHfCl/ejCPU/Fp7zy
-	Ei3NLz9hPRB/5og+RYRE8AaDS4BwM7Fde0fJqzpkZxqZOJIMwPmnzpG3NZe168Ad0/zGtKBcwCj
-	dx0jWhM/jENTtQp9Elhcxuz4QyHVT6XIFLbsLDMqynxdUTCuR0sPwMm+LZhryNXIzaAgXMhEcZB
-	LwaMHQvngJv3QRxJQKs/V2C6mdHBttLs3tGSdoAryKvfcm/iDdhUZGJ1eN9Fnm85yOb1hZByvI8
-	soZ60kaifaeFYw/nbBZpvD04En7p+dFnwg5Wm6d+XsnQBmFg4WI+WAyQWSzwBd2Nv6SuvA5c1fb
-	+8ppCRZOe5wnKf8uUs2EnZhAcOGCvJYqk33mlDNjSFeji4nznUrWgoArKtkAI9j2hayI=
-X-Received: by 2002:a05:600c:548b:b0:459:d8c2:80b2 with SMTP id 5b1f17b1804b1-45b85526618mr120348505e9.7.1756892041695;
-        Wed, 03 Sep 2025 02:34:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIB8MUXfWeryR85gNwolfPCgdvhNsdHM7EaNVBRXwyIk4X32nsBrQ2ihXheOmTBp3W3qWpNA==
-X-Received: by 2002:a05:600c:548b:b0:459:d8c2:80b2 with SMTP id 5b1f17b1804b1-45b85526618mr120348275e9.7.1756892041204;
-        Wed, 03 Sep 2025 02:34:01 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e7f14bbsm237407345e9.8.2025.09.03.02.33.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 02:34:00 -0700 (PDT)
-Message-ID: <d460b91d-3be7-4515-a9a3-468909aaf769@redhat.com>
-Date: Wed, 3 Sep 2025 11:33:59 +0200
+        d=1e100.net; s=20230601; t=1756892068; x=1757496868;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mnXxYUmSUAbuziAVQp/tntBVhySw2bhEF1h3PYk8Xjc=;
+        b=vEqJ5vB2/9cehicM2o7G0ZY9NKXRC8JdHS8IxzcgOPYY7cgw2MK9JU5hbCNPunrNDC
+         FLo3JlwiLzBcSeDSzVDR64l696SZYMVEiQsgU/CQpZL8wv+/mS4mqzLaYyV44GKrQMp0
+         tPX5qvDEscm4D+OHNdDvjarHaJyMIZn5t5mQk4lgBJwlzDkKgMH7cVFJeVV+pE4IRt4p
+         uCo063/8GkNCk5G4FR5lXf8fJGP5/gkZ7q4+Mq0MMt1tdZTmVBAymo3FMPP/dkCWq0W2
+         Pj9tL9EiJLjcDNhwN/3cwyQoM7ryZv00AjUYWTV/ckTf3bylwYq8LDGi/1Q8IW8ftAIt
+         j5Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCXC5O6qJrQ3kQEBbhhEIB3w6JiYiFj5EnHYaBYTzFoJk+n/7ZxVviNky5ooOPwxhzQLvT7EA7+7Eg==@kvack.org
+X-Gm-Message-State: AOJu0YwqwcTzcyLuhBvpLy7ptWWfwYjZvpmXUYtzrsMkO8fAVFNpRC44
+	TElNAdCKHufGq0Q0IGGOFIJhEZBVNE5ujKLwyYKC0LdsLPiXouGF1Ccu
+X-Gm-Gg: ASbGncvT6NTtKtGCEfPXIoaA/0of3UsfYVttPAuCGMT0yPKK68rIYOSs75iKp4Uf6zA
+	I1rQmmEbUBTinP+D677Ou6frVTqhGGex3tbLBOKoosdTHLxJR1YAx3upDs/Zk4596yirVx0rHRU
+	DUH30lthxUKQ4TRQdJ7aGRHJ1vx5DV1P+y+3pGQPzio1JD87fTUaula+25bR+aHeL7GRFGhb7F0
+	1wB0hXzzsbVdelnuQHuwYdYZEaLMQfopj1wYyN7pIF3Rugru7tF5+aJlyjYM/r2aSWzBu8lWK94
+	e0loh3Oykp55TrlKmWYjlJZvJ4D5Fsi2MR2KFs2qSpoPcJWpToHSv7gwgWGr3oBpulDtJWwVMja
+	PEaFlVd+tCSSJTQBzDaHR1I1+UL/4EZIjPehMBmVkKaubUTnScg==
+X-Google-Smtp-Source: AGHT+IH0igkYbyCZ0CHxVl196rXHiK6GWYO92Ep1yKJ+DiFqBD6jyauf5QFuTCkfYbls91RIKaQpxQ==
+X-Received: by 2002:a05:6000:250f:b0:3b7:9c79:32bb with SMTP id ffacd0b85a97d-3d1e01d54b6mr13455125f8f.44.1756892068052;
+        Wed, 03 Sep 2025 02:34:28 -0700 (PDT)
+Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:4d::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3dcc19a386dsm2501197f8f.4.2025.09.03.02.34.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 02:34:27 -0700 (PDT)
+Date: Wed, 3 Sep 2025 02:34:25 -0700
+From: Yueyang Pan <pyyjason@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org,
+	kernel-team@meta.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/show_mem: Dump the status of the mem alloc
+ profiling before printing
+Message-ID: <aLgLoal9q7Zx7Yto@devbig569.cln6.facebook.com>
+References: <cover.1756827906.git.pyyjason@gmail.com>
+ <8dc71d31de53afa4c0bb25234807b1e6ead5ba55.1756827906.git.pyyjason@gmail.com>
+ <ef1b79ab-15cb-4720-ab05-d77617143a26@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Where to put page->memdesc initially
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@nvidia.com>
-References: <aLc_nckaDc2ePRv7@casper.infradead.org>
- <bfd5161e-c76e-4a0e-bc1a-bf7510868827@redhat.com>
- <aLdcPeb8zrfDwd2p@casper.infradead.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aLdcPeb8zrfDwd2p@casper.infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 5DdkT2xEVgAxsxeB3buXRJTqb4jF3ZG_lZVleyRbEoc_1756892042
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A30C6C0015
-X-Stat-Signature: xny5r73ekhejcydmjjdhiqmxunwiwe5j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ef1b79ab-15cb-4720-ab05-d77617143a26@suse.cz>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756892044-677100
-X-HE-Meta: U2FsdGVkX1+HjJnfK3b91WEekCxYa1u3ZdSE0f7gNjqQQqG81UXWMrTn52FsDov3ULTE67vii6CjKXX5aTNWrBwCcvOucn/HqRJtTiWpRxdm8hrpq15H4Xr8iMl2LJBASkDzMy51t8JNML0LA890cWUl6yYl9Mz16GbLn7qnw/vmZVHR6GuahveONjkOntpGjWD6CfphZot/ERL1+jz0q1tUEDjinR4D7zZwMDF0luzQ1FVyvjzs1sEvgAQLFUppHN5l64wJpZetRbgxfltIbzcGIoRu19Ho+3DmBR79lCdSwaR55v4NMHjWaRKrnUn7LOquwzLTeWioVxYRIU7O417VA5XmgrSIw/7DqNl/44f8c8r2HuZtDtktvTHipZqG0td6OYyFolX7QH2+HC9f87ywno6LcISRUIR4Ywa+2IEC9h2J0gJXA8ojdzE13p3lTBByNILYkXZgWMwQ9uuBl9Lnq1QSAJrPrryLwDjZDw5odnBEsw4G9PnvjezSIOccwm2Gm9WvHyZf6riQarznmZM+I4yB1V+5yc+YfHqllLvipHLJY1KW41bzvwN7UyHhDOe1F/42aq93I1VHSQciwlAEZnnzoRTY/yZ3HV9KipGfLiN0uJPJkqHzzHP9H86RwGI57PL/Kgo6x6zsryFNC7uz95G2o/jjuNb89vi/UEf+ZfovbixdSWdwS7JjusrsGu/FsonLZK/H2a2pZBqFmrfjMPNPsu33adYAWcIEFZifU2FP7wRPoWCVq6TuhkWQEpMSd8IX2YhxV2yx3PjGaY29yxCyE+yEIYURisCsHiK3z/+HEyFKJKuIL3wO731xkctVHBb8ec5YSKgQvL+aViPWoLpnHwRXMphaZA6eqmTcvPlC1oNbgX0Ow/x7QQ63/6bf9U1ujuOzwP2Jg4Ebd8boyW25/9EHer9TNjuALqqkWeTYPLRL1juTfpNSd2vDuANkUfkfZCvs/DrXi8L
- gYDZ0uXc
- 50L5e/tGnRWU51Xd178tmWzurVEiEAWKn21FCj0XbQuo25r+TtK7YXHFvKQrUEgPemV5YGkHxPnsL//97R3h62YfhKJd1krJo378teFPPh2raEf4aw6/hdN0WLxVy0+KUHwoELEKLhMCUnebFBQ6maG9rGNB0Dw9G7mUNQtzeqZiWQidsw48/Ag4CKJRmjS/1V/3e97apktGoyt2gWoEoxAeaIRGgyYrwi/JTe1SZU9Jvocl/bSGzhgqt0p0fA/qd0CqcZot3p2HjJWNo4RVEsXsvvHSkn9eAovjW9xmWRpTIZpmM+6YtNj6HAiRrFDi/dyechdQlk0wO3/3eTCV7R1sWHQbKsX0AGoUFAlyfuKkxMIvyAm9CEArxkBjHZ4pAW/6S8ulLnDvgaVdx2r8q7GsKZ9FKrkwmZwKlKqjF+JTEJ5M=
+X-Rspamd-Queue-Id: B2A06180010
+X-Stat-Signature: 7z6ztwhn6351dzqwaosziinpwhsidxun
+X-HE-Tag: 1756892069-564577
+X-HE-Meta: U2FsdGVkX18E+51BBMbBVIbECoee/wy+7iKiuYUTD18Sv3zQct/tdoZp8AihZ4YIH9JiUqj4trdZiHPsTNQkMCD57TMlNa3v98mIxTYY5k7Kn9/CR5W9nK0lkvj+GBwCYQZfF+imt0gXlcvFSZ6CY8PL8KAcZF8W3zfzZM9+4NBvFBZpCa3pIsvlhfvMQU51v0up1ZbMpQSp2N5yueM5AVoA22qOWj2jZIt1cbvn/cj1ceteZcm48MKpIsJmPhRkxr6rMKuN9vQc7bryt7ySxpHhlrmX/HZqIEWkd/5XW4ya0YCV+5r6JZHD1Zf8Jsr1ocmnNJ58U5QGHJT7pq8mkuzfAHCksZAwa7dxc7/llabmcdmXQAVfnqnCakfwTzofUnAZg+p7RZrPWn598rGzB9V3Q58kMoCaGWUFp6gNYgIrInU/3kzONCJ8Y/cxz8BaR3L5A2SMdrMMQD8e/eJzMltm7bPm9+i6J2wWlFrhUIk7nByIJZx8mMpFgj6PKJpG+yPXILu4Pk13yfajBL5n/pY5eRZpZcOCDPuE7KFJXS1ChAutshtnULwHNA1FngzceuJzdeMBMXByx4XvvBDURIE10I1DJLj+5YpUjbJiAr+We7f22Y+F7rc7UoO0VipNTAKlL0yqtix2Lu5GCR9b89mTdMyocq3wrsvNvG/2l272d6ft6kvAbFgIblLeSgMnmq5RIMjvpWyFMIjX44TLs4ahbGM4qrB7X7qMKghgpUzrveyIeSAgljrCCmbsvbiCNVbJCmPcVsH1N5+vvCvEYQvzojP+LQU2Qcofg8CAjQ1o7AbBZ3auqRUYMeCCkRjWhvLKCfF45fUrE3M+mRbnftKYSrH85VS51AXPq0sXio3GagtMXPlIJxrDJz9ENOMEwvw2Z8VchQ36U0dw4TiChahZgO9aNhhl9jArZ2Grn0bbXQvAAHEVBLs0P6rZqTYfBXkjw68s3rdBt83gMkl
+ AsNbSG6w
+ yH7rgJambV1clHQDxnxLlyqq/fYfheQFpBsOAA/HpKaRVDe6bczUysyNMtFwww5tc1i5Ib0JvjpgAxx7WT11Ldv9eAn4tj1WrpJQMcKMb8fMwEgp+r5O1mICmz0d/LWWgBBp4GPEzwtrCwWvZlWylnoEbu1n9HZILPsS9AqteTzmePIC6Ghjl4f8EiIe4VPbe+NSK+hjnVq6a9fI6usg14rjZmy/ais4JbdUnqDJ7ox9Uw1XpTLdbgnyxcInHTee4Gdw56DXcWcHJpwAD74+R/g1Yl1Ax02W9SsduOVm+a3+oacZPIRIhfkVJQ/WjtvPk/eVy1rMfytYoSw6EUpFRzWZLRLFtKetggkP8JChcojZIi4nE7FdFu2VsHoSw4YApFSBo1z1L3HYhdx6cVSMjO17B2HkRT+tnoL+u/vWl7tRzN6/MoOwAeybJVBN7DzaUwR+csQmDVNx6S3bnpJGiu8z0OByBH+9mX3OOXuAS0HHqV+wEmeDFRoCw+Qq5YWVes7yVojelFlwJhlGSYQO6syss9bTpPPtq5C/xPP9HQw2gQ7rRytV9oHkfbgepshq2+KWDz2ao+2Omeb4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,78 +127,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02.09.25 23:06, Matthew Wilcox wrote:
-> On Tue, Sep 02, 2025 at 10:09:49PM +0200, David Hildenbrand wrote:
->> Would you want to move the page type already from the mapcount into the
->> memdesc? That sounds challenging, because for any typed folios we would
->> not be allowed to reuse a field we want to use for the memdesc. IIRC<
->> hugetlb pretty much uses all of it.
+On Wed, Sep 03, 2025 at 11:26:01AM +0200, Vlastimil Babka wrote:
+> On 9/2/25 17:57, Yueyang Pan wrote:
+> > This patch prints the status of the memory allocation profiling
+> > before __show_mem actually prints the detailed allocation info.
+> > This way will let us know the `0B` we saw in allocation info is
+> > because the profiling is disabled or the allocation is actually
+> > 0B.
+> > 
+> > Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+> > ---
+> >  mm/show_mem.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/mm/show_mem.c b/mm/show_mem.c
+> > index ecf20a93ea54..51892ce2efc4 100644
+> > --- a/mm/show_mem.c
+> > +++ b/mm/show_mem.c
+> > @@ -427,6 +427,8 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+> >  
+> >  		nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags), false);
+> >  		if (nr) {
+> > +			pr_notice("Memory alloction profiling is turned %s\n",
 > 
-> That would definitely be part of the same series.  But possibly not the
-> same patch.  I think the series has to include separate allocations for
-> slab, folio and whichever other memdescs won't fit into 32 bytes.
+> There's a typo "alloction".
 
-I was wondering whether there could be a single patch where we do this 
-change (separate allocations), and just prepare the code in previous 
-patches for that accordingly, such that the resulting patch is still 
-reasonable small.
-
-I feel like this way of splitting patches might cause unnecessary 
-headaches :)
+Nice catch. Thanks!
 
 > 
->> The easy way out for now would be making this page type specific: Only
->> selected typed pages will store the memdesc (here: slab pointer) e.g.,
->> in the old page->mapping place.
->>
->> So PageSlab() still checks the existing page type, put page_slab() would
->> simply lookup the pointer in the old page->mapping place.
+> > +				mem_alloc_profiling_enabled() ? "on" : "off");
+> >  			pr_notice("Memory allocations:\n");
 > 
-> I *think* that's roughly the same as what I'm proposing, except
-> that we already have a meaning for "the bottom two bits of
-> folio->mapping are set", so there's potential confusion for
-> folio_test_anon() & friends.
-
-IIRC, we must always make sure to never call folio_test_anon() on 
-something that is a slab already.
-
-But if in doubt, we could use bit[2] in ->mapping, which should still be 
-unussed IIRC.
-
->>
->>> There are a few overlapping uses of these bits in struct page, so if we do
->>> nothing we may get confused.  We can deal with mlock_count and order (for
->>> pcp_llist).  But the biggest problem is the first tail page of a folio.
->>> Depending on word size and endianness, there are four different atomic_t
->>> fields that overlap with page->lru.prev.  That can't be solved by using
->>> a different field in struct page; the first tail page is jam-packed.
->>>
->>> So, page_slab() will first load page->memdesc (the same bits as
->>> page->lru.prev), check the bottom four bits match the slab memdesc, and
->>> also check page->page_type matches PGTY_slab.  I don't like this a lot,
->>> because it's two loads rather than one atomic load, but it should only
->>> be present for one commit.
->>
->> As a first step, I would really not use the bottom four bits. Why
->> perform two type checks initially?
+> But I think the message would be more obvious if it said e.g.:
 > 
-> I'm concerned by things like compaction that are executing
-> asynchronously and might see a page mid-transition.  Or something like
-> GUP or lockless pagecache lookup that might get a stale page pointer.
-> It's a lot easier to reason about if we can do a single load and treat
-> that as a source of truth (with the appropriate reloads to make sure
-> nothing changed after we got a refcount).  Doing two loads makes
-> my brain hurt a bit because it introduces more possibilities for
-> inconsistency.  I'll need to write it up pretty carefully (which
-> annoys me because we're going to need it for a single or very
-> few commits ...)
+> "Memory allocations (profiling is currently [on/off]):"
 
-Makes sense, but maybe we can avoid all that by just structuring the 
-patches differently :)
+I can change it in the next version. I saw Andrew gave approval. In this case, shall 
+I send v3 or create a new patch?
 
--- 
-Cheers
+> 
+> >  			for (i = 0; i < nr; i++) {
+> >  				struct codetag *ct = tags[i].ct;
+> 
 
-David / dhildenb
-
+Thanks
+Pan
 
