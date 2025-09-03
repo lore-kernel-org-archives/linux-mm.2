@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4593DCA1010
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 19:59:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90343CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 20:02:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3D198E000A; Wed,  3 Sep 2025 15:59:17 -0400 (EDT)
+	id D03028E0008; Wed,  3 Sep 2025 16:02:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ED868E0001; Wed,  3 Sep 2025 15:59:17 -0400 (EDT)
+	id CBAC28E0001; Wed,  3 Sep 2025 16:02:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92B0E8E000A; Wed,  3 Sep 2025 15:59:17 -0400 (EDT)
+	id BC95C8E0008; Wed,  3 Sep 2025 16:02:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 826588E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 15:59:17 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2BC2D1A086F
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:59:17 +0000 (UTC)
-X-FDA: 83849003154.19.C115407
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 76B47C0002
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:59:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bX63U8aU;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A6EE18E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:02:13 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4EDDD1A0873
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:02:13 +0000 (UTC)
+X-FDA: 83849010546.09.DA9426E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DC0DA180015
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:02:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hlmrm62D;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756929555; a=rsa-sha256;
+	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756929731; a=rsa-sha256;
 	cv=none;
-	b=X0LFxZIeH5p19Qq11DpiSP8o5Vh7zSFCVPn6GvEsRm7N4VYQ+Hep3wbsW+rtJDW+v4ygrn
-	6Sdh25ykfRqGq75NL0tAx6nqkLFfXs2AU9oWr4xClyNZ3prly4i93HgVnF0YiFfAR+AgYA
-	hsuq9ig1ZS89jJ5QKd8ZkmszCgnR+I0=
+	b=0gySeeflAxg+uSZg0+tPWL8KOXXaHz6BlZ9xz5xtu6XML6KTHTvvh5moGtceMmi0hFi00p
+	70MrLZEryuyTt7TPrHG8PQ8NkA9Ux6Eaei6SBqtqLeuAtfT/ZUG0tUhfjp5orcqiF+1+Fj
+	mvPSfBrBGHKcgLo7MBBWsKbBpAC2y4s=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bX63U8aU;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hlmrm62D;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756929555;
+	s=arc-20220608; t=1756929731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j6qXBxUtO5lCHnfICV1SkqXW5RoXvSvvwOdRQPrRlpk=;
-	b=MGF5KOzPLoB01z4q+ym4ZscnzYzkpZbZesjfkINvMPGW6UkqclIz1SnV5YxOpmdxkR6b6Z
-	S2tSOm2LIamjTDxVI0cV9r/P+8C0Ia3lfCW+hC3jp7JwA4i56jD9WrXD5DLevk2aO9xyJ/
-	HXkJpT7ozwHV+X8kufL6qurL2PAUgv0=
+	bh=PzmBV4yzCOsz4Dzv0UkbC45GrPiDQWSxooxBBUDK99Y=;
+	b=IBOycx2EFTloXvXBoag4Qa+7Ntqgjk7K4iSEfbmNh/Un24J/yjjZefYxnvOdKCVkN1sL0l
+	TGkJgP0P2udjVFOUqM7rZCL3wvaXIN2rXG1+nzaRXODxpmQIGHe0/IFlPROO3M0WnQXD2h
+	MsbUotNmFbNmwZdJ7dQeTDyYjlzA5ZE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 163AE433AB;
-	Wed,  3 Sep 2025 19:59:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F9C4CEE7;
-	Wed,  3 Sep 2025 19:59:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 43309601BA;
+	Wed,  3 Sep 2025 20:02:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C02C4CEE7;
+	Wed,  3 Sep 2025 20:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756929554;
-	bh=2z9kS7xFX2YHHT9aFQOsDh2+yGO/NVq4empiwKxtveM=;
+	s=k20201202; t=1756929731;
+	bh=vxIovzy/iAeQqbzPhYJg0AFSyB2BO7DsqIFM+fM972g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bX63U8aU7N0uHcqoesYm9ICut+eUMp10p2j2uLfFeXed7mIRBiENbsPMq1xhtchPj
-	 AlX+c6OaQSbM8oE8GKksb38cdxmrvny9py6TyZIJCCKX8KOF5v6TEoYVS/PrPSxvkD
-	 pXbidS31hWJQkiic7Y1q/1/NUIWSO64NEyHimCz906LOJuQ+tcxbKropQhp+tKdygz
-	 oM5yHbr4xuiJg05hB2sjt1kQpcuytA5lEWDSYs0hs09Fvuw+ycB95Tu+rxJxjCgr46
-	 Sbl5caqVzm5xWKOnv1sEqtLvfmNn9WFeMwN1c8kvvIsoyGm3EjHCIEPf3E8aTugQtR
-	 NfTBF7fvzbzJg==
-Date: Wed, 3 Sep 2025 12:59:13 -0700
+	b=Hlmrm62Dm7Kb10KfPCz2NQ3cJGKSLS6Uw2ZLxVRDQVXNI7T6s1VuqmrHMgDMZDp1C
+	 ReSntuXtFj8H5TXg2208lA6XNAVjer5xvJtTVDS8Xae2EaR98CKufAJVPa/2hUOHmX
+	 1pZYnEFsaR+skYOLDghdMCZOggwOnK2VERCuduhLXvn6N6UCx7Ln46H36H8eXO+Vqg
+	 k+vHn0YUSyQzyVU/9cnxqx+uHhTIySua5sMcOJLShXabwOEYG99fjun47GaQW+KhqE
+	 qy4+DFgvtZDQ4G/4QjaIfWSbEqXQp6jSKdzYqm0ecUVPiIc8mp5UHUItsDRX4wILR9
+	 bR4OVqUgVkclQ==
+Date: Wed, 3 Sep 2025 13:02:10 -0700
 From: "Darrick J. Wong" <djwong@kernel.org>
-To: Brian Foster <bfoster@redhat.com>
+To: David Hildenbrand <david@redhat.com>
 Cc: Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
 	brauner@kernel.org, willy@infradead.org, jack@suse.cz,
 	hch@infradead.org, jlayton@kernel.org,
 	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 10/12] iomap: refactor dirty bitmap iteration
-Message-ID: <20250903195913.GI1587915@frogsfrogsfrogs>
+Subject: Re: [PATCH v2 01/12] mm: pass number of pages to
+ __folio_start_writeback()
+Message-ID: <20250903200210.GJ1587915@frogsfrogsfrogs>
 References: <20250829233942.3607248-1-joannelkoong@gmail.com>
- <20250829233942.3607248-11-joannelkoong@gmail.com>
- <aLiOrcetNAvjvjtk@bfoster>
+ <20250829233942.3607248-2-joannelkoong@gmail.com>
+ <e130c95a-103c-40ba-95d9-2da4303ed2fd@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aLiOrcetNAvjvjtk@bfoster>
+In-Reply-To: <e130c95a-103c-40ba-95d9-2da4303ed2fd@redhat.com>
 X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 76B47C0002
-X-Stat-Signature: yxdm41ys15atpwq93ymo9xiwo6kkn7i8
-X-HE-Tag: 1756929555-103886
-X-HE-Meta: U2FsdGVkX18HvRuKP6j958dJFmxEQELmQcleEws2cicKxJemu2vx3lsZZV8EfWJ50c9VWkNAVq+bTFYcl6pHdodXUDSWIh6TD2zbQ6oyF+b64Riq+Pb9ss9PVKZIJMhhv0LAEYiigQnE0vs2EhmaeXw7eAEg05NnJP+n07osvBosoIYb5CPa7323cr6rKvEp8lXExAy69UX7LICTlX/8L7GKXNitK0wvm+lnE5mcSesrv9WzaeZ/NqvHOGvDrTwfqup/XGM9oUXsd/FuJdVbTcKx1GcMMnb2IDjged99Wm+hTTRUYH1DpCQmUBupFwanSfRGfs9KD7h/dMC/aFXDpT0lZT3/2gieBXt8UYmqiKVpsyQfUlUk3j/XfuYo5GRc3bzuvnqDOGa3LdVqvtU1sC3sSGNt4/igNQ+CpuPKpdr1pmZFKJyK4V45aed8JSCBvzGm1cZv4NyjkvOBUP6Giwyz0a9FVXwn7Pnn0kIWlOragPY0wbiM+r7V0aCALjet7srhpenYctICRSWjuY3zMRxzZDXS7jKJeh4kKV5xwUI+DHGS3w5WT4RX+exBmR+tWkXDfMgfWD0sitN1uINSuyJeFsnABRRQq0sjdqZXzs306E6Cs7UY6ECuJgKWcTc28Me56HwbUaimmZDRBWqmLf9Z6OJZX0d4ivQ/vP80rrpxN0rBCaw1kiwu4A2p1IS2lznGzjCk/fD0liY+chNs5dwvPpRN/vDDd5ZSElCAtL9otZy6yUJorbeYi9GSnTYo8LnI+5J3EAfap6meSWpp9Vx6U5YruRcw+Ku37T0Lk8i8WTl66MLQZ+AniChoN+evW2j0A/vdKoL9vwWnkagY98xFTFHtH4UtwquRroR967ZraX4J6yLAvDaIiPpsIfjmo560CN2Uo/j5WHD3JO1AC8SwiYK/thPvnFU4hf6c+ZYmI0VGa9xbbY8zlQ7JV97aWjmkzs4+i7+rlHUyZpC
- 4aoXbRpI
- Gj/+Dt+t+rbJlUXWsGjQ3Vah7/ZlhBpxXhaaQ9KAvtrFEtMyLy59i/TQf6zNPFDYeS+PW2sDhUNFnCmYziAw9ShA8e4uBwE6i8PUIWTm+AOOr3sXteJxM9JRgBDgvSFdEQafoN0LzTcl+3oCaBJZ48P6fRbQBgIe1V2LZwLKoORgMu3zN7bSu5iBplFMx9nEcwvY+fnHEiTGFe+xoILDQ+VNR6D+3wA/g2m0M3KBR18hhw2nKFxDWaZt2SjU35vBCuX4vWFg0RE9icJVIGwaoklfwNPmIwbEBb4OU1p7HM3cwsz5SRETj5bnPq3BsjdRoWDK8I0CCgYdLXbPpgsvY81VDZg==
+X-Rspamd-Queue-Id: DC0DA180015
+X-Stat-Signature: q6kxj7kijurxak4csnfo1qny3rme946o
+X-HE-Tag: 1756929731-697587
+X-HE-Meta: U2FsdGVkX18mp3RcNAAGTU893MfYeh3xgzo0cOnN0QVSNChWwa/D876V23QEuzLHfkxeU+ioStQO8EYDX84HSqrcofea15V1CFGJLNU3MqMrv/P3KTVdci2EHEk1xBQVHO0ce/ozIZfoVDZGl6Ddb+SJ+y1dueKlkW3ypxyE6O/UKrkD1bJLXRQctciKQDjDOjD5kZODYKwIyxU4gd7r35dZibRSWbONe2UXyMYb69b/UkrFCYifH7lZThYw8ctjhnUKl+aJ0CI/HEegUlAIC/oB/06YfPAkQTtmh0ToKJNhwyevVHe/7Ydj8LGR6AKt5Tk5BoBAnXTxsqZO813GZ8vnrODEw3FEqPowlavaTaKcwqEqbO0Y/fvmA2AGxkHLjbUtZHMvW9NJQcE2+MHH//mamzk4xRSh4NuMfhCGNqFv7yKfNSQoSELHpU/x5B7C170x5lQ178YE4U5s4baemLGxbm6K7C4YZEC+7z1ExLaw2a8lqalBDG4WhWbbw4Jtdzr4IS7t6wFUB/MXgADY7y07dp1thh69CR6ybeHgZTMDFZzinErq9qcwi2SX3wezwFUdHl5SmBHGqaUz5177cfWIJ2CF0Z270uhIE6tJ1DEuhqG7mPxuSbl2uaA9V+AE0y3XfRyjLL/Xuj1vwQKMdEFqwFU5Y01cLhE4vmfwrCDCMn8ohgilYAHZcl0+Z44jcofBLXuHs3vfnili4/MdGQh/uocQyHArH7Zp6MxvGXG4l7TF7oTGZzYviFW2Yo3yThALyP02ZHKPI+N/RtHfYDrppKvK4dxZEpdAnDiVnOsNFS679WhoPloSbX4RgiubwgzCgBa+ykRbfAZHz7M53b9CIlPyt6TZrU1QyRuMoFYVDdYqn2Vv5v4auSi1oKQX2NJWBFqu2WgHI9aHpLFaUPoTPo7FStj7u1vPVMjH+DgvsGVzDiOf44jyaip6kogRdAgEOl+r7KWWaSMpF56
+ SvB3uGwm
+ JpdF2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,167 +96,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 02:53:33PM -0400, Brian Foster wrote:
-> On Fri, Aug 29, 2025 at 04:39:40PM -0700, Joanne Koong wrote:
-> > Use find_next_bit()/find_next_zero_bit() for iomap dirty bitmap
-> > iteration. This uses __ffs() internally and is more efficient for
-> > finding the next dirty or clean bit than manually iterating through the
-> > bitmap range testing every bit.
-> > 
-> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > Suggested-by: Christoph Hellwig <hch@infradead.org>
-> > ---
-> >  fs/iomap/buffered-io.c | 67 ++++++++++++++++++++++++++++++------------
-> >  1 file changed, 48 insertions(+), 19 deletions(-)
-> > 
-> > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> > index fd827398afd2..dc1a1f371412 100644
-> > --- a/fs/iomap/buffered-io.c
-> > +++ b/fs/iomap/buffered-io.c
-> > @@ -75,13 +75,42 @@ static void iomap_set_range_uptodate(struct folio *folio, size_t off,
-> >  		folio_mark_uptodate(folio);
-> >  }
-> >  
-> > -static inline bool ifs_block_is_dirty(struct folio *folio,
-> > -		struct iomap_folio_state *ifs, int block)
-> > +/**
-> > + * ifs_next_dirty_block - find the next dirty block in the folio
-> > + * @folio: The folio
-> > + * @start_blk: Block number to begin searching at
-> > + * @end_blk: Last block number (inclusive) to search
-> > + *
-> > + * If no dirty block is found, this will return end_blk + 1.
-> > + */
-> > +static unsigned ifs_next_dirty_block(struct folio *folio,
-> > +		unsigned start_blk, unsigned end_blk)
-> >  {
-> > +	struct iomap_folio_state *ifs = folio->private;
-> >  	struct inode *inode = folio->mapping->host;
-> > -	unsigned int blks_per_folio = i_blocks_per_folio(inode, folio);
-> > +	unsigned int blks = i_blocks_per_folio(inode, folio);
-> > +
-> > +	return find_next_bit(ifs->state, blks + end_blk + 1,
-> > +		blks + start_blk) - blks;
-> > +}
-> > +
-> > +/**
-> > + * ifs_next_clean_block - find the next clean block in the folio
-> > + * @folio: The folio
-> > + * @start_blk: Block number to begin searching at
-> > + * @end_blk: Last block number (inclusive) to search
-> > + *
-> > + * If no clean block is found, this will return end_blk + 1.
-> > + */
-> > +static unsigned ifs_next_clean_block(struct folio *folio,
-> > +		unsigned start_blk, unsigned end_blk)
-> > +{
-> > +	struct iomap_folio_state *ifs = folio->private;
-> > +	struct inode *inode = folio->mapping->host;
-> > +	unsigned int blks = i_blocks_per_folio(inode, folio);
-> >  
-> > -	return test_bit(block + blks_per_folio, ifs->state);
-> > +	return find_next_zero_bit(ifs->state, blks + end_blk + 1,
-> > +		blks + start_blk) - blks;
-> >  }
-> >  
-> >  static unsigned ifs_find_dirty_range(struct folio *folio,
-> > @@ -92,18 +121,15 @@ static unsigned ifs_find_dirty_range(struct folio *folio,
-> >  		offset_in_folio(folio, *range_start) >> inode->i_blkbits;
-> >  	unsigned end_blk = min_not_zero(
-> >  		offset_in_folio(folio, range_end) >> inode->i_blkbits,
-> > -		i_blocks_per_folio(inode, folio));
-> > -	unsigned nblks = 1;
-> > +		i_blocks_per_folio(inode, folio)) - 1;
-> > +	unsigned nblks;
-> >  
-> > -	while (!ifs_block_is_dirty(folio, ifs, start_blk))
-> > -		if (++start_blk == end_blk)
-> > -			return 0;
-> > +	start_blk = ifs_next_dirty_block(folio, start_blk, end_blk);
-> > +	if (start_blk > end_blk)
-> > +		return 0;
-> >  
-> > -	while (start_blk + nblks < end_blk) {
-> > -		if (!ifs_block_is_dirty(folio, ifs, start_blk + nblks))
-> > -			break;
-> > -		nblks++;
-> > -	}
-> > +	nblks = ifs_next_clean_block(folio, start_blk + 1, end_blk)
-> > +		- start_blk;
+On Wed, Sep 03, 2025 at 01:48:41PM +0200, David Hildenbrand wrote:
+> On 30.08.25 01:39, Joanne Koong wrote:
+> > Add an additional arg to __folio_start_writeback() that takes in the
+> > number of pages to write back.
 > 
-> Not a critical problem since it looks like the helper bumps end_blk, but
-> something that stands out to me here as mildly annoying is that we check
-> for (start > end) just above, clearly implying that start == end is
-> possible, then go and pass start + 1 and end to the next call. It's not
-> clear to me if that's worth changing to make end exclusive, but may be
-> worth thinking about if you haven't already..
+> Usually we pass something like page+nr_pages so we know the actual range. I
+> assume here this is not required, because we only care about using the
+> #pages for accounting purposes, right?
 
-<nod> I was also wondering if there were overflow possibilities here.
-
-> Brian
-> 
-> >  
-> >  	*range_start = folio_pos(folio) + (start_blk << inode->i_blkbits);
-> >  	return nblks << inode->i_blkbits;
-> > @@ -1077,7 +1103,7 @@ static void iomap_write_delalloc_ifs_punch(struct inode *inode,
-> >  		struct folio *folio, loff_t start_byte, loff_t end_byte,
-> >  		struct iomap *iomap, iomap_punch_t punch)
-> >  {
-> > -	unsigned int first_blk, last_blk, i;
-> > +	unsigned int first_blk, last_blk;
-> >  	loff_t last_byte;
-> >  	u8 blkbits = inode->i_blkbits;
-> >  	struct iomap_folio_state *ifs;
-> > @@ -1096,10 +1122,13 @@ static void iomap_write_delalloc_ifs_punch(struct inode *inode,
-> >  			folio_pos(folio) + folio_size(folio) - 1);
-> >  	first_blk = offset_in_folio(folio, start_byte) >> blkbits;
-> >  	last_blk = offset_in_folio(folio, last_byte) >> blkbits;
-> > -	for (i = first_blk; i <= last_blk; i++) {
-> > -		if (!ifs_block_is_dirty(folio, ifs, i))
-> > -			punch(inode, folio_pos(folio) + (i << blkbits),
-> > -				    1 << blkbits, iomap);
-> > +	while (first_blk <= last_blk) {
-> > +		first_blk = ifs_next_clean_block(folio, first_blk, last_blk);
-> > +		if (first_blk > last_blk)
-> > +			break;
-
-I was wondering if the loop control logic would be cleaner done as a for
-loop and came up with this monstrosity:
-
-	for (first_blk = ifs_next_clean_block(folio, first_blk, last_blk);
-	     first_blk <= last_blk;
-	     first_blk = ifs_next_clean_block(folio, first_blk + 1, last_blk)) {
-		punch(inode, folio_pos(folio) + (first_blk << blkbits),
-		      1 << blkbits, iomap);
-	}
-
-Yeah.... better living through macros?
-
-#define for_each_clean_block(folio, blk, last_blk) \
-	for ((blk) = ifs_next_clean_block((folio), (blk), (last_blk));
-	     (blk) <= (last_blk);
-	     (blk) = ifs_next_clean_block((folio), (blk) + 1, (last_blk)))
-
-Somewhat cleaner:
-
-	for_each_clean_block(folio, first_blk, last_blk)
-		punch(inode, folio_pos(folio) + (first_blk << blkbits),
-		      1 << blkbits, iomap);
-
-<shrug>
+I think all the "nr_pages" here are actually the number of dirty pages
+in the folio, right?  Or so I gather since later patches have iomap
+walking bitmaps to find all the set/clear bits.  Perhaps that parameter
+ought to be called nr_dirty(_pages)?
 
 --D
 
-> > +		punch(inode, folio_pos(folio) + (first_blk << blkbits),
-> > +			1 << blkbits, iomap);
-> > +		first_blk++;
-> >  	}
-> >  }
-> >  
-> > -- 
-> > 2.47.3
-> > 
-> > 
+> -- 
+> Cheers
+> 
+> David / dhildenb
 > 
 > 
 
