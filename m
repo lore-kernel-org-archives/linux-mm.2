@@ -4,113 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02114CA1010
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 23:13:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E0E1CA1010
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 23:24:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 083BF8E0001; Wed,  3 Sep 2025 19:13:13 -0400 (EDT)
+	id B99968E000A; Wed,  3 Sep 2025 19:24:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 033F46B0006; Wed,  3 Sep 2025 19:13:12 -0400 (EDT)
+	id B4C808E0009; Wed,  3 Sep 2025 19:24:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E64438E0001; Wed,  3 Sep 2025 19:13:12 -0400 (EDT)
+	id A61078E000A; Wed,  3 Sep 2025 19:24:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D0AAC6B0005
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:13:12 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71828140734
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:13:12 +0000 (UTC)
-X-FDA: 83849491824.26.7F61406
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 64090180003
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:13:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e6ZzwxBB;
-	spf=pass (imf24.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9590B8E0009
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:24:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2555A1A08ED
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:24:48 +0000 (UTC)
+X-FDA: 83849521056.07.066095E
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 501AC40002
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:24:46 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="LlKKm/Kp";
+	spf=pass (imf07.hostedemail.com: domain of 3Pc64aAsKCAoukvo2r2sxqrqyyqvo.mywvsx47-wwu5kmu.y1q@flex--kaleshsingh.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Pc64aAsKCAoukvo2r2sxqrqyyqvo.mywvsx47-wwu5kmu.y1q@flex--kaleshsingh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756941190;
+	s=arc-20220608; t=1756941886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGxTBfrf5rFsONCC9HJBGQ/kdfQbCEnToA5Y48+NVH8=;
-	b=dyhPg2lGwQJqegUrqqf1i1VKcvFa4OKWdsOH85Ivpc40EoFTKuCVMhiPhT5hKI+AdhSPsc
-	jUjbOrxLpkpHtqUpHA7dK8Pgo4Bbc+kwBXMUdTTCxv7ejCCZAFFc1HqQMSjU1NfizY/7XJ
-	sLNM7Ie1bKzaeBkdQacnUcxvc5EV0FY=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=JgPTVCi/fpzUuEvg9xD+jIRme2pJE3B6Yq7rj7B3nZY=;
+	b=mlLLyp59lg3OJR41BtscEPlg1traxR1SxbL/awsWYLvQNuSVL2C54iOoSqkWtypOI/A57Q
+	x8TUm95uHzJC2SjhPJzofoBGQwT4mR1fzNupdxSo+gZ5F0C9A9IL8iMmhiCyy62IqKykl7
+	TwCbvTH/gljkDLHnomIb30e5DAFcf6Q=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e6ZzwxBB;
-	spf=pass (imf24.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756941190; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="LlKKm/Kp";
+	spf=pass (imf07.hostedemail.com: domain of 3Pc64aAsKCAoukvo2r2sxqrqyyqvo.mywvsx47-wwu5kmu.y1q@flex--kaleshsingh.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3Pc64aAsKCAoukvo2r2sxqrqyyqvo.mywvsx47-wwu5kmu.y1q@flex--kaleshsingh.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756941886; a=rsa-sha256;
 	cv=none;
-	b=AZohH9xzERXAVv0TTufUzA/6h7MU5iwzHutmSCGsgfsRWb6ttAdQ57n+cHVVyl2R2lyCx6
-	X9d7x0FR7A9Q7tP5JT4o9k0ZFtsyxkuBTxpOvk3gDOZH6n9yertt9+7EN8fNNIdKnWt956
-	2ukx4XKIiRyx7HMEGCJ5P0KTkqpeNWo=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-80a6937c99bso53240085a.2
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 16:13:10 -0700 (PDT)
+	b=BqpS8pRrfeoN0KZtDfcNf0fjU2QDXajdPEMNwaXrDvBoh5yAlWkl5g/9Ok66B1EJSV+xuw
+	bbYJtlIrhEiQCNLDDqk+MUIM5PhtNmlCmU/ohYa8nmqOuBs4ooNk1/UcXoKO8Sgf7/oksV
+	XAKDNLluH7sPjW9JTB7bImOMCcs9UJE=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3280d0d4d11so467569a91.2
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 16:24:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756941189; x=1757545989; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wGxTBfrf5rFsONCC9HJBGQ/kdfQbCEnToA5Y48+NVH8=;
-        b=e6ZzwxBB7y6HYFVyermoGy7/knBP8hlqOMJAKiBXgFV/KaGl57uF2UAWLxWBUglX5w
-         nqjHNGDWD8LzmbEk8OfzWrVugK7CvpoBU07cmRXCyag05qh9MVPx4gDg+VYwWwRdHjFS
-         ygo4n6NHztBWbDFngKlmhj1maYiD0k2JVbJAGc6V4L62ish+W6nGcAc1UHu5fvVqZfaA
-         wU5gNeHYMWzNhXwdxJZ2h06/IO1Aodaoa99ScJCM+PlCqYY9HeAngZWOboet3W/pWamt
-         ZBfJEvMHxwNIhwQsqTasF/8VfXjWfpqiUAJ+TeSJ0HxvA2JOzLiLdNr6xxd0gQTIzpDZ
-         YeRA==
+        d=google.com; s=20230601; t=1756941885; x=1757546685; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JgPTVCi/fpzUuEvg9xD+jIRme2pJE3B6Yq7rj7B3nZY=;
+        b=LlKKm/KpIJqhvI3RxkUNtYGvfZnS2F4AYq4o+JUPKdBDskfwnkgRjnr2AI2Wbzv+xj
+         QT1jkp7irOv9e3heTQHFP/vROLnaIItALZmN1YK7eY/2rwMfxl1L6sJGusJcq7t80Ywp
+         GRHdxYURCC8veIZ35ilrFQELj1yM/RtpLYXMKiS9ipSyOhUGfMDzM+2gaAB+bQeypqQc
+         Fyauht4PIm44CozmwRFNjgxE/7Xc9peXO2jnrU3vRWio8PEShWcn4JitwjN5BZR8Gran
+         hmnki+rDkYHcB8g54aATDckPbB5s4Ho14yGwNgNPtP6vqaCZX37W7iuRitUC59O0frlg
+         NIZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756941189; x=1757545989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wGxTBfrf5rFsONCC9HJBGQ/kdfQbCEnToA5Y48+NVH8=;
-        b=EYEVtDPAZUVpZURcu2RVJiNGfz9dxCt7+cipN8JFSZeyxovQZuHFtPYwTetvtQGGUh
-         H9PQR/zTOhO3k+ZC71tGBUU5d5LzAQ8yRISo++/vOFBD2i2xiewxEiUzsBqqFANZLsOU
-         64LDJcL64EmmSCiFyurEP5bxykg9cDl7cp6mjFGcWx9sLDrLFA7W5iN1bV3/BEhmZUE9
-         r+N3BBHQ6E39EnhRdiFuLzyNwjkEBSwuoW7Vadt3B8Xjn+dd0MDJ+ZaghAQHsbLe6Mya
-         PVcA8OcuVcH+8QsRGUsxphLt/IKlKYdGOxa6yHCgvOZhWRepz90xWB4ObYumaHi7RJxe
-         Irtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbZmF+gDaSvjLL5WsqIIfr3qiW09O/ACJXUMIIne9bzemcWQz4OSD2FCNoneib6snUFGNyQrgSNw==@kvack.org
-X-Gm-Message-State: AOJu0YyNoydBcFtxVOw5OjmECepcb0A3fp7KkyXx2h8SAbnF6qSkFG4K
-	45OiWR5qG4Tz01xck9Y5SJT+kd0xPyLQDuHr7sCdQxPi7yqSBSYidcyiVkbDPAbeLtHhTNYGtn2
-	sM/18kVkOlUU/lPp6LsYyaQepFyEkoNkX1aR0
-X-Gm-Gg: ASbGncsW2NK9qLjzArlswIV4AgwArhhSM9rakJtthDfK0Vvbsbu/CKAyONVwtzIMzJ8
-	XAwbdT6HuB4rn3pTn32d2+WrLghulA3qTeRpoe76oFSg1qiWllo1WNhB/Z4Cgo2tiszYFwp3qB8
-	S5f3CeUZV6ULOi2u9YYnDghA3/m7Biz42xtDl7WA/9ER8UDZVPTpj1WhPjkX97u8w4zNnYVrxZ6
-	3+Qy6qZ
-X-Google-Smtp-Source: AGHT+IFpau2abrWRbQ6A4uKGUrJfNNMVYMekyYwLs3CQEfWWKl3J8XeYxo0PNci/3ZoHXqJZ1hj9M4S7craopEe6L+s=
-X-Received: by 2002:a05:622a:1214:b0:4b3:10f0:15cb with SMTP id
- d75a77b69052e-4b31da3fe45mr211322051cf.38.1756941189320; Wed, 03 Sep 2025
- 16:13:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250829233942.3607248-1-joannelkoong@gmail.com>
- <20250829233942.3607248-2-joannelkoong@gmail.com> <e130c95a-103c-40ba-95d9-2da4303ed2fd@redhat.com>
- <20250903200210.GJ1587915@frogsfrogsfrogs> <701a1718-fddc-4ae1-817d-d9549ad71a09@redhat.com>
-In-Reply-To: <701a1718-fddc-4ae1-817d-d9549ad71a09@redhat.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Wed, 3 Sep 2025 16:12:57 -0700
-X-Gm-Features: Ac12FXwgoZxlIzrq8oeC0r9blKti-Fhf4qdYBK9a6mMv6r07wm-GvRIqwEqP5kg
-Message-ID: <CAJnrk1bxDbDv_7QTdv9wXKum11t-hk3cU6wQ01NB4bPvV2HWUQ@mail.gmail.com>
-Subject: Re: [PATCH v2 01/12] mm: pass number of pages to __folio_start_writeback()
-To: David Hildenbrand <david@redhat.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org, brauner@kernel.org, 
-	willy@infradead.org, jack@suse.cz, hch@infradead.org, jlayton@kernel.org, 
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+        d=1e100.net; s=20230601; t=1756941885; x=1757546685;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JgPTVCi/fpzUuEvg9xD+jIRme2pJE3B6Yq7rj7B3nZY=;
+        b=GYsB/9peEUDeVjZsHYchIZvoSTKPId6n3oGkhgT0uuMlnDd7z5ZWIt/0axDbVDBpuZ
+         mAxYw+2LQBVqi4r88659ukZgoLsR51KQm6QUDZ4cP3Fhc64bN15w5DaxPOHxdeT7rQG6
+         JULnrzq8o0mn3rdQmcOxEma5uiULqkBdKIi3/zMw3GxST7sB9rTi5L5+m3+k/BvQaznR
+         0YGpTEyo6zfHa5oQrHe1XVQC604TUx0CBkR1mO1xcy+RcUaDo1vG4r9vxp4GMpTwfKLf
+         OIbWBtPuGfZX4O3NsJ+xVOR8lK2lX0yh3DdgbGW6krCrhGiv/Xubl+7jgQYKXtiPT8Kd
+         ysfg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnk6YOk6iXBKBMeI2aWD5ZNQSUOVd8UVnNJCqLMNEPY1yJ+wbq/Xljfz82dB6x/r/dc2dyRh4vyg==@kvack.org
+X-Gm-Message-State: AOJu0YzRu3Cpf5SON6TayQ4/ULdI/lkB2UeX7L7zvQ4A0BWd0bttSeTz
+	crKXGKMiNOZnEW7ShiDahip3ymPlqRAtKEedfxGCU7GGr+TnSeEs3KNz4B2jwTQofknw8hKfxA8
+	4Ex0FMMMKLNdS3BxR5mWyjNvL+g==
+X-Google-Smtp-Source: AGHT+IE847aFywtv64trKEqJQS4xk/rRzoYt8J98LejVPNK+qtP1XoLxGjxJLrG9gDKIj8QvnnA8vG+EvTtsf7QD3Q==
+X-Received: from pjbst8.prod.google.com ([2002:a17:90b:1fc8:b0:312:ea08:fa64])
+ (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:c105:b0:32b:9506:1780 with SMTP id 98e67ed59e1d1-32b95061914mr549097a91.9.1756941885037;
+ Wed, 03 Sep 2025 16:24:45 -0700 (PDT)
+Date: Wed,  3 Sep 2025 16:24:35 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.338.gd7d06c2dae-goog
+Message-ID: <20250903232437.1454293-1-kaleshsingh@google.com>
+Subject: [PATCH] mm: centralize and fix max map count limit checking
+From: Kalesh Singh <kaleshsingh@google.com>
+To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com
+Cc: kernel-team@android.com, android-mm@google.com, 
+	Kalesh Singh <kaleshsingh@google.com>, David Hildenbrand <david@redhat.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 6mt98n4f73s51bektrep9u38koecc8z6
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 501AC40002
+X-Stat-Signature: 7nm5iqhrk7hkeoc1xtzaba7phxtxeuyz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 64090180003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756941190-366107
-X-HE-Meta: U2FsdGVkX18Q35EfGyFVKoVPJE/oNeMFrpykHwn1ufIu7Wbi81urbgGHx1mdjJ4Xb3tIbDu+87IS3qT7M/fahuUBRS+5f8l0lpzDZjlBKKdSAH+eSTJRUffqsLwxlhdocSrVBqNg6OyPNynhA59yFWo1+cQPwRSprhZfvGA44FOITKX400hLCnwaSN/+VQyspuoKy9DAk+ylFj59sNy2lL2L8haj53dt0lndCym5Hlo6HvxpeXBpzEvAbYf4CVrqJVkEHTxkCVOtiQmS/ajHX4Dn69L11m0zPsMbYQ34tA8+VvPn2wrFmrjg30emGPUq8RZpkcSeEJyVeKnUg56DW4Kxwxc39ArrAx5YJQcahWrm5h5unCuhOim0/mrnvEeTc2Zb2y/0XOu83n4WdWGZFkmEYT5zKrhVViUUSHEJbFTLyf0LPBOC9rUN5Xj8mXw1HrxoR0j+2hPMZoXT9XZuU4k5VNyT9Bpa7N7b08GveUxTlbtMxCgk/n/zUrXXr1h2MfQelXIbrzgrbzp4Bxc6eVXHC+mMR1igqX8ZXcGUsfFLA2Vk0y9TcEg2TF/+YlRSorODf0cM4J0BHx7p1FLEk1qYzqc/RUGZxMvKIjDVZh3hf2xGyfUvsEMt2AaFFtEaEpWSsqxrSPhN1MY52XeBwvuf+n1kW9QPpyNyd7w+e0X7AQRvEiHHiFnrrdSEH+7otfCMP79AerDecEJJIzd7npC5YSHwAePXJNZ7owUCguXQc5yOGw9qeb0wwA10z5sT934t4wsN9hjVH5RqXm1gYitWR6NwQUUCPs9jv3H485C5Pp4/aGuze3f3Dc4bxt7MueRtq/bdgo53Nz45vKfRkpOEJi71qdz4kYGMQ/lyje68GIePuYTlqrsInQJr5fFB4Xf8+VRSmkJh6B5vOMnxT+Ivsn2IfBeUF3SFLBvJNbw5cpDQLoqhRiv0BcTBNijfaToDiTg6iKg1UbT0cl5
- 1Sza2ze8
- Nwh9Cz75AdcE3m69ZMCp54428kuDJT6zu8WeeBexe4WVSkcbooRGUFXSheww5sNJImIxqa9vjvsG/eWQY+KjDeQJCSI21Uyqrr/guUBy3cBIP5+kAKskwKpxtSQzhB2OCYK4GRab/nIjyTMSPOK8tmz0X/v8DpwKpLMtY9MYNL0RKsaHrUHLNCJBzFXsH9WlcLvNfrCxm9rQ5EDE5mrPyba2C/czSRR4LGyvRvd4AJT45g1cxr57BgsXLmDvp/D1phbsHFcyQ7NDJ7tc2itOEj+43I+kPfEywFtMG5BCI5TiEwx5sQWzGpEo+y/o37eYuUtXsEd1Rh5xlfOhAc1OVAdS3zXByUkzw6RmSz11MOJaMlbR1yacFb8AVoXNUpkx6KnHepTvQveA857TaAqspRUyeIw0oi4aXRQT5Op1NBY5SQ08=
+X-HE-Tag: 1756941886-618231
+X-HE-Meta: U2FsdGVkX1+mz/K8zqjR1+WLYagPb9EWF2hrB+n8S/xKzNS+FQ8ksbvgchK2FmWY7idfG9gz/UT457EbtNvdniUM5KUK1rBEg1GtCQJWM3uDFf4dx+SK5YsRxv4EfvG0Z5PQ2Flq+pA/JWWhJkuTf1Jps8HI312BIPiIov3uMY9Khs7OR/J+KOxEUpk2kGCorcCN/TNxsuqbnwjiucr7EMFmdZYEfJFAexYYMcnf7rpojSQQ/TpOywx/tKeiKm5zQl+i0d6qq+csovGo+wQD6R1WzzAY8zs/5GzZiEMJSCSTAg2YVTX0YdwFX3fVnEC/7r137i/jYA4f7qcNUHY/5doOiipR63QCy9ujJQkeXJ+9otcf1JpGaqnzXfd98JnCSJvIRLIPMKrznY23jWsUeYWhqXl/dwLp61y5p/S/j8AMo3x5rUEUiBDT3Ljn28ZoHzoDHTvYqUbAg4XTBA/PQTO1GHID5/GkongNzCordxszDIcbcqkePW4juehkdo0Vx0/pnmX8zaSIdNLUSh9yqPLfwj6HBqpMldwQqduRJbdp0GeNh7zQ5eMSRHB4G4hvsQzksvfQmVkMqloq9zNdjdUJbAu09H5OPBRNon0vVhq3DVY3tCuMeWOUCaGzGIYE5Kh00/8ZOD6ga34WlVTHpqb68lCjyrz+Wl+eTSXH52ZzWPLDQlRJ8zdEQMfir4I12lDJa1DWpjKPC7CvgCP0zVP0rDpKC4FsaOt/mSvCjiFeCCsVnMJA1nLCjqNPwErrk/dqqajNBIpFPbapI7LyYaZKY0kuUJV+7n3KPcqhF/PYtpQT1M/Jv6vUSAtBenVZm1iGkSRx6WoBgatKtDxflDAxOcqrEG5Js9C+Ri3FKyi+CLNV937nX3jwXbbBsTy5HZWXPXaqWWlk8iwhle7KTY6y1O9obwrNCFdUKeA004WIHn2mJBYOh2Cd8dzuT3x+W6N40udzdqgD7eJvVEN
+ T3BhvcbD
+ Yss6KgCpmWEmardl/cGnWoR4lqecNVZRii9DvPj0+m4XNwXi1p/GBFZZxYFD4X8UzU7Xljglg1zt7GRE3/kF5WkRyFp9gKY5p7mjE2G+mEBkEfUSBuEPR891HbRM5BhS6p0xu0srDm6qCPKf/CeWf6GPeYsm5HMhVp6dbGmBL9hm/AW6H3IoZLAUFLdKucWZGYRGAqUWAHD+mD83QmJq9UpGLkahiIZURCmrNvzW+UG3ywj6DDEJmpbBYOsZRJduWPajV344ir6IbQge1GVfnnpiHUoKdfcCgFKBQ+0AODoZhTf0gRZ9XAWYTV2VK1t5tCEIMTFgz2yDU1ECeP9ATt9a5Y/+wsCQdI+4R17a+a3EBX/1UVwxQnDUv4CMuALqpVUwskXY9gvp9nBpLOYp2vIz9iKXbdhch1XeH1VpLduFRfWdWWlM0uETw2Daxfsykltf32SLsj+xWv/86PRc0ybixfPIqiZa+F5Qa4IizmBa4Gy67/kSwilhm8LqM3xcH83GOoEDC1BhA/zSa0Bf/DvStcQDrZ4lV/97duPb7y4CyenlTAU1xr+3NinaSmvbdQBRQahe25rUB166/Y/RKRofjTTTkSC5z6uAfPGOU4HFrFxhb6Ymy8p/VZhS0lxQUnBQIcPW2dcOKZ5g5zWDmKsGVBpzgNqBoHpA5YCMoB9XHkOB4mqkQVbFC+JC5+qz4lkJ73Fg0+Z0ondTjUl9YL7wR5g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,36 +110,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 3, 2025 at 1:05=E2=80=AFPM David Hildenbrand <david@redhat.com>=
- wrote:
->
-> On 03.09.25 22:02, Darrick J. Wong wrote:
-> > On Wed, Sep 03, 2025 at 01:48:41PM +0200, David Hildenbrand wrote:
-> >> On 30.08.25 01:39, Joanne Koong wrote:
-> >>> Add an additional arg to __folio_start_writeback() that takes in the
-> >>> number of pages to write back.
-> >>
-> >> Usually we pass something like page+nr_pages so we know the actual ran=
-ge. I
-> >> assume here this is not required, because we only care about using the
-> >> #pages for accounting purposes, right?
-> >
-> > I think all the "nr_pages" here are actually the number of dirty pages
-> > in the folio, right?  Or so I gather since later patches have iomap
-> > walking bitmaps to find all the set/clear bits.  Perhaps that parameter
-> > ought to be called nr_dirty(_pages)?
->
-> That would make perfect sense to me :)
+The check against the max map count (sysctl_max_map_count) was
+open-coded in several places. This led to inconsistent enforcement
+and subtle bugs where the limit could be exceeded.
 
-I will rename this to nr_dirty_pages to make this more clear / less confusi=
-ng.
+For example, some paths would check map_count > sysctl_max_map_count
+before allocating a new VMA and incrementing the count, allowing the
+process to reach sysctl_max_map_count + 1:
 
-Thanks,
-Joanne
->
-> --
-> Cheers
->
-> David / dhildenb
->
+    int do_brk_flags(...)
+    {
+        if (mm->map_count > sysctl_max_map_count)
+            return -ENOMEM;
+
+        /* We can get here with mm->map_count == sysctl_max_map_count */
+
+        vma = vm_area_alloc(mm);
+        ...
+        mm->map_count++   /* We've now exceeded the threshold. */
+    }
+
+To fix this and unify the logic, introduce a new function,
+exceeds_max_map_count(), to consolidate the check. All open-coded
+checks are replaced with calls to this new function, ensuring the
+limit is applied uniformly and correctly.
+
+To improve encapsulation, sysctl_max_map_count is now static to
+mm/mmap.c. The new helper also adds a rate-limited warning to make
+debugging applications that exhaust their VMA limit easier.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+---
+ include/linux/mm.h | 11 ++++++++++-
+ mm/mmap.c          | 15 ++++++++++++++-
+ mm/mremap.c        |  7 ++++---
+ mm/nommu.c         |  2 +-
+ mm/util.c          |  1 -
+ mm/vma.c           |  6 +++---
+ 6 files changed, 32 insertions(+), 10 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1ae97a0b8ec7..d4e64e6a9814 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct page *page)
+ #define MAPCOUNT_ELF_CORE_MARGIN	(5)
+ #define DEFAULT_MAX_MAP_COUNT	(USHRT_MAX - MAPCOUNT_ELF_CORE_MARGIN)
+ 
+-extern int sysctl_max_map_count;
++/**
++ * exceeds_max_map_count - check if a VMA operation would exceed max_map_count
++ * @mm: The memory descriptor for the process.
++ * @new_vmas: The number of new VMAs the operation will create.
++ *
++ * Returns true if the operation would cause the number of VMAs to exceed
++ * the sysctl_max_map_count limit, false otherwise. A rate-limited warning
++ * is logged if the limit is exceeded.
++ */
++extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vmas);
+ 
+ extern unsigned long sysctl_user_reserve_kbytes;
+ extern unsigned long sysctl_admin_reserve_kbytes;
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 7306253cc3b5..693a0105e6a5 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+ 		return -EOVERFLOW;
+ 
+ 	/* Too many mappings? */
+-	if (mm->map_count > sysctl_max_map_count)
++	if (exceeds_max_map_count(mm, 0))
+ 		return -ENOMEM;
+ 
+ 	/*
+@@ -1504,6 +1504,19 @@ struct vm_area_struct *_install_special_mapping(
+ int sysctl_legacy_va_layout;
+ #endif
+ 
++static int sysctl_max_map_count __read_mostly = DEFAULT_MAX_MAP_COUNT;
++
++bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vmas)
++{
++	if (unlikely(mm->map_count + new_vmas > sysctl_max_map_count)) {
++		pr_warn_ratelimited("%s (%d): Map count limit %u exceeded\n",
++				    current->comm, current->pid,
++				    sysctl_max_map_count);
++		return true;
++	}
++	return false;
++}
++
+ static const struct ctl_table mmap_table[] = {
+ 		{
+ 				.procname       = "max_map_count",
+diff --git a/mm/mremap.c b/mm/mremap.c
+index e618a706aff5..793fad58302c 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -1040,7 +1040,7 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
+ 	 * We'd prefer to avoid failure later on in do_munmap:
+ 	 * which may split one vma into three before unmapping.
+ 	 */
+-	if (current->mm->map_count >= sysctl_max_map_count - 3)
++	if (exceeds_max_map_count(current->mm, 4))
+ 		return -ENOMEM;
+ 
+ 	if (vma->vm_ops && vma->vm_ops->may_split) {
+@@ -1811,9 +1811,10 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+ 	 * split in 3 before unmapping it.
+ 	 * That means 2 more maps (1 for each) to the ones we already hold.
+ 	 * Check whether current map count plus 2 still leads us to 4 maps below
+-	 * the threshold, otherwise return -ENOMEM here to be more safe.
++	 * the threshold. In other words, is the current map count + 6 at or
++	 * below the threshold? Otherwise return -ENOMEM here to be more safe.
+ 	 */
+-	if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3)
++	if (exceeds_max_map_count(current->mm, 6))
+ 		return -ENOMEM;
+ 
+ 	return 0;
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 8b819fafd57b..0533e1e3b266 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1316,7 +1316,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 		return -ENOMEM;
+ 
+ 	mm = vma->vm_mm;
+-	if (mm->map_count >= sysctl_max_map_count)
++	if (exceeds_max_map_count(mm, 1))
+ 		return -ENOMEM;
+ 
+ 	region = kmem_cache_alloc(vm_region_jar, GFP_KERNEL);
+diff --git a/mm/util.c b/mm/util.c
+index f814e6a59ab1..b6e83922cafe 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -751,7 +751,6 @@ EXPORT_SYMBOL(folio_mc_copy);
+ int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
+ static int sysctl_overcommit_ratio __read_mostly = 50;
+ static unsigned long sysctl_overcommit_kbytes __read_mostly;
+-int sysctl_max_map_count __read_mostly = DEFAULT_MAX_MAP_COUNT;
+ unsigned long sysctl_user_reserve_kbytes __read_mostly = 1UL << 17; /* 128MB */
+ unsigned long sysctl_admin_reserve_kbytes __read_mostly = 1UL << 13; /* 8MB */
+ 
+diff --git a/mm/vma.c b/mm/vma.c
+index 3b12c7579831..f804c8ac8fbb 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -592,7 +592,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 		     unsigned long addr, int new_below)
+ {
+-	if (vma->vm_mm->map_count >= sysctl_max_map_count)
++	if (exceeds_max_map_count(vma->vm_mm, 1))
+ 		return -ENOMEM;
+ 
+ 	return __split_vma(vmi, vma, addr, new_below);
+@@ -1345,7 +1345,7 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
+ 		 * its limit temporarily, to help free resources as expected.
+ 		 */
+ 		if (vms->end < vms->vma->vm_end &&
+-		    vms->vma->vm_mm->map_count >= sysctl_max_map_count) {
++		    exceeds_max_map_count(vms->vma->vm_mm, 1)) {
+ 			error = -ENOMEM;
+ 			goto map_count_exceeded;
+ 		}
+@@ -2772,7 +2772,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	if (!may_expand_vm(mm, vm_flags, len >> PAGE_SHIFT))
+ 		return -ENOMEM;
+ 
+-	if (mm->map_count > sysctl_max_map_count)
++	if (exceeds_max_map_count(mm, 1))
+ 		return -ENOMEM;
+ 
+ 	if (security_vm_enough_memory_mm(mm, len >> PAGE_SHIFT))
+-- 
+2.51.0.338.gd7d06c2dae-goog
+
 
