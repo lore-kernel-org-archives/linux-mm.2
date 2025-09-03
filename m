@@ -4,112 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74922CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 08:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9746CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 08:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CBD18E0002; Wed,  3 Sep 2025 04:41:35 -0400 (EDT)
+	id 0A5B48E0008; Wed,  3 Sep 2025 04:42:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97C5B8E0001; Wed,  3 Sep 2025 04:41:35 -0400 (EDT)
+	id 056718E0001; Wed,  3 Sep 2025 04:42:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86A888E0002; Wed,  3 Sep 2025 04:41:35 -0400 (EDT)
+	id EAE768E0008; Wed,  3 Sep 2025 04:42:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EB408E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:41:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D92A1140587
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:41:34 +0000 (UTC)
-X-FDA: 83847295308.14.0068CF1
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F3F80C000B
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:41:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fn2jjB9s;
-	spf=pass (imf28.hostedemail.com: domain of glider@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D74238E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:42:26 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E738BA285
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:42:26 +0000 (UTC)
+X-FDA: 83847297492.17.87007B7
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E6DA414000C
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:42:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756888944; a=rsa-sha256;
+	cv=none;
+	b=opAFz0yOBnAiO8TXVvCExOpK3SbdJUGyFCuEtxNRxo1qvuVcYS1T7Df8aB/kldHnepc5Vh
+	sZpMfmg0PF6lthHXMjiZ7uRN9U7OCP+DnimVAC8WBk1QfxaD5JB9nfkzTwuypycyNo04Ur
+	/6LkfCe8iVEflqJ0jj2Nyo3N0kggADA=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756888893;
+	s=arc-20220608; t=1756888944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/+sjUPKzzeyDNJhhYPMVRz16X6YZ4H6NdmqB+0gdRo=;
-	b=zl00loH4PjZJJCiUp0LQ+cTDTypOAbzW+4jkh0PJnXJXreVG4LqrY4l6kpvaEBlisbK7xv
-	5+MXBIN40dEoSGv3QApBO47HAF6/AE9I8pI9W8UcjOfSHGspovtY1bz0hL6Yj9ro2olxBj
-	d0iiF9vcFfaClSFkENlMXnCFbcYGj0c=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fn2jjB9s;
-	spf=pass (imf28.hostedemail.com: domain of glider@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756888893; a=rsa-sha256;
-	cv=none;
-	b=f1aZjbgWllOPCBWVo6fnSfS7WpxrF+Bm0mzFLhge8T9Rc9VPWcW6TXTi2HsjWOezlAXnCJ
-	OFa1MfXfZYM93gv3X/YW/KuecaQhH0PQ/KWq0gAcsDePpDw76Wt1FcCbYuszOZJqJ8Rh7H
-	Neml/wf1FWb1aZbTfUrgXITPzofItdU=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-70ddd2e61d9so67786746d6.1
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 01:41:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756888892; x=1757493692; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/+sjUPKzzeyDNJhhYPMVRz16X6YZ4H6NdmqB+0gdRo=;
-        b=fn2jjB9sDQetKgvA4Qbxg3K2gnjqE9eQffYBroOp2G+uK8v8QYffWC+yan4JR7upQJ
-         DuUavb/vnQvlNibQZjG4CHUjwUTdkRMfTVy3e7QKyLsJsQEh3VNY7kdLT1EH4OMYmKmO
-         54DmuY1NkX9CQU/1t1La5vtcHOgZ3BMMo0R53YhkkTtlS3TyiH2EMbdgH7083WMeuhMK
-         afI7ywquYyM8m/lGY2UNj+34JZDbMXzz3N5vyR6UwEnKsDhSP2KaNfW4A0vhQ8c0Cpaa
-         F5smsU7xFv8ZlXow4uMlKZRIOpbUixLumQZaJ+9VN4efnr3ymxvkfIBSNdFbZgkndyzK
-         dwgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756888892; x=1757493692;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q/+sjUPKzzeyDNJhhYPMVRz16X6YZ4H6NdmqB+0gdRo=;
-        b=KGhROftMlchbA4e+NlbN06swvJWLYxGi/PW97F1Oaex6cBru3W7gsZtaDfI9RoSRUi
-         TqyTgnF4IINScRNyBAfOSgclLlCnWzIBuKV5RtnWkOsx+MGNqJ6oXFrAt8VBII5ULXL6
-         reJ+GrD48W5hlAY6dJJoOTncHXNWjfxs10X/a+XctRco20wnukFCbtg8QDdzzUj7acpz
-         KfeGUG7MYfYqIU0m5lkEJOSylnxwUYpii+mUYcACmaCdY7KFYmXIQahhnM1XGycqIPvM
-         iZJx/96HNWbppWJryQ8cDWxG1/YJdYXh7WqgybRygzK+QzstrDBXtuBCt/NxDv9CYtZJ
-         pQmA==
-X-Forwarded-Encrypted: i=1; AJvYcCUzyhpr1Uja/sXqA3H2BsoAQ4c7lEJ3HE8uagIDNkmFQNV6AIaz0fccsF/tqz5ycHqaRcwXCGZIHQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw8x5GKDZvkQia7xF6Xr61QOcHiMJ3xQxOIJEH3GmxtbE9kAg84
-	JDrDXc9s58XVj5zUE8G6WSl9KcQmLJL3Y8fADxbJ8lA7PESwsJcW6YEtSj98LYAr5jXJwKIyVYX
-	Qesf0Y940FSytTYFjfZF9lk5OSE6/UCHpWKX//A5r
-X-Gm-Gg: ASbGnculFSfpyrNY8zKMICzc++x0hy5QM3uPjCMIUapW310uw3nQPTuTfS2dQDdDWpq
-	MgSZSWyOab+EGAMkU0WJ5sq8TPjxf7uJ/50dmSJuwxbDwQ7zLSTfnHqs0BtMbUBp6omppTNEetm
-	si/KRms6kyQtHwVpaHcEbg+5TPrFjPR/Q1FVQNslu6mfs35TMMivhMzLudolZ0+W5J4GXSwCgce
-	SSqPKnCs9pGlYPl9BiIMmU68g6ODngMrsvrtoOND9g=
-X-Google-Smtp-Source: AGHT+IF4vmfJfHqBQxZcNttdrfTYxkvTiSAKs+ul8tcs9Dnds2dX1cmh7ADC/k+xZJ11x/E266a48LBXxeBGRHRjSoc=
-X-Received: by 2002:a05:6214:400c:b0:70d:fd01:992d with SMTP id
- 6a1803df08f44-70fac73d452mr164331216d6.16.1756888891694; Wed, 03 Sep 2025
- 01:41:31 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=V6a7l0GPRDx2xh47VQ6TP5rBICWca4ldNcroSjlOhwQ=;
+	b=5r/6Sn6fcpfUrPzznX4EbDOLeC3oGuFOq+UFfG3ps9Vf+JnHYP1fx8zj+/D+DS5tpq7Vsc
+	Gx8Zx9qS0qLw6K+DCCOSKxiZNWMl6PXFTa6IypLf9x0bh7DAzQjlKa4jj/U8Y3+sWkifuL
+	+jK6ntVvcjWgzCoP/CYRnt02T+U3+V4=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cGwwZ5bWvz2CgS2;
+	Wed,  3 Sep 2025 16:37:50 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id C7258140297;
+	Wed,  3 Sep 2025 16:42:19 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 3 Sep
+ 2025 16:42:19 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <willy@infradead.org>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <tujinjiang@huawei.com>
+Subject: [PATCH v2] filemap: optimize order0 folio in filemap_map_pages
+Date: Wed, 3 Sep 2025 16:42:23 +0800
+Message-ID: <20250903084223.1653192-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com> <20250901164212.460229-3-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250901164212.460229-3-ethan.w.s.graham@gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Wed, 3 Sep 2025 10:40:55 +0200
-X-Gm-Features: Ac12FXwvjV2R_1nfj-fpPxtTM3Ef-lrf13TD6fJR0T0JxJ4IOXBIbC7rd81mwII
-Message-ID: <CAG_fn=XWr1_Qvzqq3_dUm-3DjpCFxBz7SbYaW8OMZ1BohjVYDA@mail.gmail.com>
-Subject: Re: [PATCH v2 RFC 2/7] kfuzztest: add user-facing API and data structures
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
-	davidgow@google.com, dvyukov@google.com, jannh@google.com, elver@google.com, 
-	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
-	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, dhowells@redhat.com, 
-	lukas@wunner.de, ignat@cloudflare.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: yxdiehet8ngqojpshrdxagp5xfupgdm5
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: E6DA414000C
+X-Stat-Signature: j1d766ctmff98qecsoeo85oc9ueyngyu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F3F80C000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756888892-242756
-X-HE-Meta: U2FsdGVkX19+zp8RNBLFP1V4fY1LMq+Sfec68urvgfJt3ErPiHYmnWzAwnHpUfWo+eQBmSquzROemawOhtGSFSezjIsBB7J56OlxoNLL3LdcnwlIhYt33k3V+jnHKCRXSUUkFUhk8o4luJzLZaJ9a/PApgCkuwIyyORcfCEkw5WjtePftFJ4sQOu6sWeUJexISHeP7Dapvvzk4kM+Bdzt0M+q5za6TDZQrvuk49aionwF6LqrlKdUSlxhOARaCk7FKRhNKPyLxKbLugdKHLLFhJIy7ImIohR3yg5EsTFVaxIwFieplGOaLwhaGYeoAyMFa1+25E9ctpYe1fDzBmA2c7Xol6A5Stw/NY47XMJo992MsyymhAmLFChBxOAMzmaS/SVD/9OuDY4yxWlKxOYXHAo25yr4OPwKYi6xVoZou99F1z9CG901XgXKQFZvhHlRx+tO3pIWcU6HUOOZBSgNJLpYJR5ZiDbfetG0tyx72ihvteBRba+8mEBexhjgBjbXBP9OF17G8OZRoAElMpDqy0AjYDGDUyFD+UeHbf55DtL1wq4srXpDWhtLbPSc9UvkreLOAilfre1rXuksxSAcDFNB9CyZB0LowbBdBiR3RHIhzHvfhtVT/xBgLD/ef7Xi0/BAPECUwckSWbeYIVYQl15vGCuwIbGt1g49H8o8gkX3auKf740x2cQ5hM4QFawFBzufjOTAjzETe83uvcToO4PjfG7Fj7v/Etc3T9LzWhOupYX6wKAsMj/pE11qYiAG0l0qRvusv11pj4BJUq65ZV/UnEDUpeoDHRAOJxneZxwymLvIiXZmzVByCttlEUxxSvAWhPCRmG2puAnnSzXmJZBpCP4Z1AfiYm+QcNpyxWUJDhnwRyM9ObirV24Ac4EK31REpq3pnWvALqMxzE/Fxh/jUk+EzSfh8BSBGhSmqKtpst/aizy2ToS2kZe+w5lerZl+HqiO40DDkCgUAq
- RktW2dxf
- yfPre2FC8uIkwI4XPSxQaGxVS8U3OjQh6jAxhH+XhE5XOaSPLQT0uReBNQ9IrudEqjlhzYpJ4xt7S/+FJgjSMxXwP5tfNGqCdCjRkXBBe/8Haqh6/xnQoKZ9kNs0KFkF2m8II2yOVZYWw98bWyBdLrf3Nw1+aeY3X8bVgqbPlQ+jUj7Kq2yWu3EgutV61D7DQFUWphgpF70nnu8mlMnzSNvE3S4xwLQ0QLn/YvhLrU3+x6LtkuM5I6JWEvH0c4yu/AIDEMJ8aL8RrNC4=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756888943-4764
+X-HE-Meta: U2FsdGVkX18i3jfgu03RL8MUbHPQiWZ/SpEMppeb3Z4uW39iqmfqtB8yu/+Aivj2ab7PVFexSel4Qpl+etN1yGRoG4oqexLWiSypXR/k40wgOPgIMzYApzOiup6FRhOWwORWgQb8mq7jTsqch0rZhJMuoShMnf+f2NFJWUdhfUuNfPvCXITj16x2Z4IxR9o92geCY6ZfkYygu/n9ONcueW/m+hRdmE0AywNqIxrOGjox5n6zUJT2yI1JPv9r+dzgsD5kVMN8jokqcz2O6PjsLXXKlzG4j4d0bEae3WrfqO08eeGzCk6wnuV3VH2e28zIPoSNWX6EjPSh4O0yf/0jwPb1Jtv9GQ8KyTGF5zT/GLK7lcKOvV3CueALSqDnVwxLyGiLF+f4nweHxfWrwjEvxYHeqyil3iYJ/Hgy7tRKoLPOQ9sj2lbnBIokU6knhaMshn3/t+BverSQ6Se6pPAelNu4aw7X4CXtVY/KvmOLVcJH7zd8+HLy99Rzw2mOoynWeT59BOjmWWOPoTmfvue29VMcK4tG3yklTKMjzcp8H/SrexjpdA5UJ6qj/dPO/IPDA+5nMYeFbVh7r7B9XluaJnIr8ATzAmHmXL7mPNVJQWCfnZutKWjObhH6J3BZ5eiihBsdFd+kODAshoTlPnPw+LB8W9MfssrLpKC+AJCrDicpLWlqGMj2+6B0GlLnNdwL1M9nRWB3WX3whHie4WFZOy8jJQHoj4H++IXyhBAMCwvu52HAiYx2L9FIxsuSSFA4Vh+iOtfxfg0b6r76aFnpvBOnjzZz0rLV9mkO6ASpycxsJqeZF0pUDbeOm2h1MjypZCEAH8VODDLHHun1tYOr0zE5rKY6NmTAVfU/LHW8y3POQyGAF2pYgcsZASSISH72T38+i2j1HZ0xU7PRDkwHDleTRooCqfPWzVk9zlW2ZEAh3iR2ciykRFPgYOAKn/BfVxrsq3jev3w3P1uofCQ
+ Kj6nxBU4
+ GWbfOO/OW23eucN3mw0tRPs2mAC0UbkI+C/KVp0rxAEjcpVdWJslQ4IKZwmtuLIRYj5IQYt7E0S9IGfxX6BQoAs7NiDZX2fEqvbVDz8eRUNC/UgT/sKvhEGBQpdARi4i1u2veAJBj/t6lHE7mATrNXtbh+yJTXnxrua2GbMwpJcfHVrdSPDnlPYS3gDHCZjxne5iiXiYqfuB8li1C+a8TxwD8BhUQ5V21dbVALAhiQ3mTWOVUb1F68N8m23dOcwyiFLz04CUyF3dIJUaQ/lPOqHVXkFnpGB5mqHvkeWiLgjHi0zxe5UkwAVZm7V2//03nkG1twgpH13Tvj2lK5veCoexsmIo527xax9Oq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,135 +88,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> --- a/arch/x86/kernel/vmlinux.lds.S
-> +++ b/arch/x86/kernel/vmlinux.lds.S
-> @@ -112,6 +112,26 @@ ASSERT(__relocate_kernel_end - __relocate_kernel_start <= KEXEC_CONTROL_CODE_MAX
->  #else
->  #define KEXEC_RELOCATE_KERNEL
->  #endif
-> +
-> +#ifdef CONFIG_KFUZZTEST
-> +#define KFUZZTEST_TABLE                                                        \
-> +       . = ALIGN(PAGE_SIZE);                                           \
-> +       __kfuzztest_targets_start = .;                                  \
-> +       KEEP(*(.kfuzztest_target));                                     \
-> +       __kfuzztest_targets_end = .;                                    \
-> +       . = ALIGN(PAGE_SIZE);                                           \
-> +       __kfuzztest_constraints_start = .;                              \
-> +       KEEP(*(.kfuzztest_constraint));                                 \
-> +       __kfuzztest_constraints_end = .;                                \
-> +       . = ALIGN(PAGE_SIZE);                                           \
-> +       __kfuzztest_annotations_start = .;                              \
-> +       KEEP(*(.kfuzztest_annotation));                                 \
-> +       __kfuzztest_annotations_end = .;
-> +
-> +#else /* CONFIG_KFUZZTEST */
-> +#define KFUZZTEST_TABLE
-> +#endif /* CONFIG_KFUZZTEST */
+There are two meaningless folio refcount update for order0 folio in
+filemap_map_pages(). First, filemap_map_order0_folio() adds folio refcount
+after the folio is mapped to pte. And then, filemap_map_pages() drops a
+refcount grabbed by next_uptodate_folio(). We could remain the refcount
+unchanged in this case.
 
-I think the definition of KFUZZTEST_TABLE should better be in
-include/asm-generic/vmlinux.lds.h, so that it can be used by other
-architectures.
+As Matthew metenioned in [1], it is safe to call folio_unlock() before
+calling folio_put() here, because the folio is in page cache with refcount
+held, and truncation will wait for the unlock.
 
-> + * KFuzzTest receives its input from userspace as a single binary blob. This
-> + * format allows for the serialization of complex, pointer-rich C structures
-> + * into a flat buffer that can be safely passed into the kernel. This format
-> + * requires only a single copy from userspace into a kenrel buffer, and no
+With this patch, we can get 8% performance gain for lmbench testcase
+'lat_pagefault -P 1 file', the size of file is 512M.
 
-Nit: kernel
+[1]: https://lore.kernel.org/all/aKcU-fzxeW3xT5Wv@casper.infradead.org/
 
-> + * further kernel allocations. Pointers are patched internally using a "region"
-> + * system where each region corresponds to some pointed-to data.
-> + *
-> + * Regions should be padded to respect alignment constraints of their underlying
-> + * types, and should be followed by at least 8 bytes of padding. These padded
-> + * regions are poisoned by KFuzzTest to ensure that KASAN catches OOB accesses.
-> + *
-> + * The format consists of a prefix and three main components:
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
 
-Nit: s/prefix/header?
+v2:
+ * Don't move folio_unlock(), suggested by Matthew.
 
-> + * 1. An 8-byte header: Contains KFUZZTEST_MAGIC in the first 4 bytes, and the
-> + *     version number in the subsequent 4 bytes. This ensures backwards
-> + *     compatibility in the event of future format changes.
-> + * 2. A reloc_region_array: Defines the memory layout of the target structure
-> + *     by partitioning the payload into logical regions. Each logical region
-> + *     should contain the byte representation of the type that it represents,
-> + *     including any necessary padding. The region descriptors should be
-> + *     ordered by offset ascending.
-> + * 3. A reloc_table: Provides "linking" instructions that tell the kernel how
-> + *     to patch pointer fields to point to the correct regions. By design,
-> + *     the first region (index 0) is passed as input into a FUZZ_TEST.
-> + * 4. A Payload: The raw binary data for the structure and its associated
-> + *     buffers. This should be aligned to the maximum alignment of all
-> + *     regions to satisfy alignment requirements of the input types, but this
-> + *     isn't checked by the parser.
+ mm/filemap.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Maybe also call it "target structure" here?
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 751838ef05e5..3da8bf8b93ec 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3693,6 +3693,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+ 	}
+ 
+ 	vmf->pte = old_ptep;
++	folio_put(folio);
+ 
+ 	return ret;
+ }
+@@ -3705,7 +3706,7 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
+ 	struct page *page = &folio->page;
+ 
+ 	if (PageHWPoison(page))
+-		return ret;
++		goto out;
+ 
+ 	/* See comment of filemap_map_folio_range() */
+ 	if (!folio_test_workingset(folio))
+@@ -3717,15 +3718,17 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
+ 	 * the fault-around logic.
+ 	 */
+ 	if (!pte_none(ptep_get(vmf->pte)))
+-		return ret;
++		goto out;
+ 
+ 	if (vmf->address == addr)
+ 		ret = VM_FAULT_NOPAGE;
+ 
+ 	set_pte_range(vmf, folio, page, 1, addr);
+ 	(*rss)++;
+-	folio_ref_inc(folio);
++	return ret;
+ 
++out:
++	folio_put(folio);
+ 	return ret;
+ }
+ 
+@@ -3785,7 +3788,6 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 					nr_pages, &rss, &mmap_miss);
+ 
+ 		folio_unlock(folio);
+-		folio_put(folio);
+ 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
+ 	add_mm_counter(vma->vm_mm, folio_type, rss);
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+-- 
+2.43.0
 
-> + * For a detailed specification of the binary layout see the full documentation
-> + * at: Documentation/dev-tools/kfuzztest.rst
-> + */
-> +
-> +/**
-> + * struct reloc_region - single contiguous memory region in the payload
-> + *
-> + * @offset: The byte offset of this region from the start of the payload, which
-> + *     should be aligned to the alignment requirements of the region's
-> + *     underlying type.
-> + * @size: The size of this region in bytes.
-> + */
-> +struct reloc_region {
-> +       uint32_t offset;
-> +       uint32_t size;
-> +};
-> +
-> +/**
-> + * struct reloc_region_array - array of regions in an input
-
-Nit: newline here for consistency.
-
-
-> +#define __KFUZZTEST_DEFINE_CONSTRAINT(arg_type, field, val1, val2, tpe)                                         \
-> +       static struct kfuzztest_constraint __constraint_##arg_type##_##field __section(".kfuzztest_constraint") \
-> +               __used = {                                                                                      \
-> +                       .input_type = "struct " #arg_type,                                                      \
-> +                       .field_name = #field,                                                                   \
-> +                       .value1 = (uintptr_t)val1,                                                              \
-> +                       .value2 = (uintptr_t)val2,                                                              \
-> +                       .type = tpe,                                                                            \
-> +               }
-> +
-> +/**
-> + * KFUZZTEST_EXPECT_EQ - constrain a field to be equal to a value
-> + *
-> + * @arg_type: name of the input structure, without the leading "struct ".
-> + * @field: some field that is comparable
-> + * @val: a value of the same type as @arg_type.@field
-> + */
-> +#define KFUZZTEST_EXPECT_EQ(arg_type, field, val)                                    \
-> +       do {                                                                         \
-> +               if (arg->field != val)                                               \
-> +                       return;                                                      \
-> +               __KFUZZTEST_DEFINE_CONSTRAINT(arg_type, field, val, 0x0, EXPECT_EQ); \
-
-Doesn't the compiler complain about defining __used in the middle of the block?
-Maybe move it before the if statement?
-
-> + * KFUZZTEST_EXPECT_NE - constrain a field to be not equal to a value
-
-Nit: you could probably save some space and extract the boilerplate
-from KFUZZTEST_EXPECT_XX into a helper macro.
-
-> +config KFUZZTEST
-> +       bool "KFuzzTest - enable support for internal fuzz targets"
-> +       depends on DEBUG_FS && DEBUG_KERNEL
-
-Given that you only have the sections defined for x86, you should
-probably put something like "depends on X86_64" here.
-If you go for it, please mention somewhere that the framework is only
-available for x86_64, and add "x86:" to the patch title.
-
-An alternative would be to add KFUZZTEST_TABLE to vmlinux.lds.S for
-every architecture.
 
