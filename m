@@ -4,113 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D840CCA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 14:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4732DCA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 14:18:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BD7C8E0005; Wed,  3 Sep 2025 10:17:29 -0400 (EDT)
+	id 918658E0007; Wed,  3 Sep 2025 10:18:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36E138E0001; Wed,  3 Sep 2025 10:17:29 -0400 (EDT)
+	id 8EF138E0001; Wed,  3 Sep 2025 10:18:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25D398E0005; Wed,  3 Sep 2025 10:17:29 -0400 (EDT)
+	id 82CC58E0007; Wed,  3 Sep 2025 10:18:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 10DFB8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:17:29 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7BD3140714
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:17:28 +0000 (UTC)
-X-FDA: 83848141776.30.5B674E5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2645E40003
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:17:27 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 721348E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:18:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4742814072E
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:18:47 +0000 (UTC)
+X-FDA: 83848145094.16.BF58CF2
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 51A2240002
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:18:45 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g2qkEx0s;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bKxdjpoS;
+	spf=pass (imf04.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756909047;
+	s=arc-20220608; t=1756909125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YXpHEicHM8rWBAHduDH0XoOkOiuEkvnWoFXufhyx0h8=;
-	b=WHoXguSkbJPu6r6lNA6izXgyKY7rPXbk4iCjxMTHeurp2RNxc14yumO439RLIVzmgWEvSh
-	adU6XLdzQncODxAu0UvXk5TF/fabr6+9CSdu1+D0gyjACPK9vFawEaH+h9/kd5DUY3dBG+
-	cmovYIrG5zI/7mNJ6E9QnMLLDrH3Feo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756909047; a=rsa-sha256;
-	cv=none;
-	b=J/VHK97Fwi1Tk0+QSgj6qXX/GqOOcfOCpl5fGD9hJWFWVPXX/SU47QDc1uaxTaVvptk1jD
-	eW+/GicfVfl0bi/BS7ybU+YhKwx3tWwV67KRSPt2tmfUse6T3XZ+HWJluvqjkTDNP5ikAk
-	X7XFgjVFb4m+VYlHitY+wjqS8AUPcPI=
+	bh=p1tH95Juuh1rXl0JBiJjZ+pvaXEYbkUC7vChoclECFQ=;
+	b=ir6nIXPR9QFQJ+aSnMcdALVQacvkhyt27GtBj9iv4DyYLr/CZlXWx7YpprcUMRgodDgzTM
+	MNezLS1LFJgSX9V3ARXrHrNt9wFhnM9nIo4YApv0ZVfDtekPG/tpqGOmtY9JwPP/FtnPYv
+	V5i2ihob8iMox7tLbpoWsal4O9ki/mQ=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g2qkEx0s;
-	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4E6E460054;
-	Wed,  3 Sep 2025 14:17:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075E6C4CEE7;
-	Wed,  3 Sep 2025 14:17:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756909046;
-	bh=rkSg1vCoekuc9whKWjo4hgqm1Elyfx6nN2+yYBdxBhc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=g2qkEx0srlnMZm9jvTuQkoAfUMqfZLmOGvMvWAXSFNRLeSDA5jxOcfWXXmUvxxNM8
-	 yvdadUNZgnBX3z/+e4yDpoxMbRzcPuAnr38KTH3Vu7n/1F7mqMnQLDtY97FOFmU2qb
-	 f3BqGPAIhHQlFrXQgm64XqEAf2KGNfJM92WGL8OAKBaRXkA/f3UgK0fIr7zt5swxiJ
-	 hgOUO2rzO4bNzczWxkpktx7lTBG9e6nmau7vZmkjiEckwkS4MGMoDE1PbRdr39Xoxn
-	 kj4QeQgwRxQT2rdLQor3kdwOYj76BPFKEkjV4l2X1fOg6RdjMK6qKg5Z6N5j4zrE8l
-	 ZL568mTWs7NNw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Jason Gunthorpe <jgg@nvidia.com>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  jasonmiu@google.com,
-  graf@amazon.com,  changyuanl@google.com,  dmatlack@google.com,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
-  leonro@nvidia.com,  witu@nvidia.com
-Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
-In-Reply-To: <aLbYk30V2EEJJtAf@kernel.org>
-References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
-	<20250807014442.3829950-30-pasha.tatashin@soleen.com>
-	<20250826162019.GD2130239@nvidia.com> <aLXIcUwt0HVzRpYW@kernel.org>
-	<mafs0ldmyw1hp.fsf@kernel.org> <aLbYk30V2EEJJtAf@kernel.org>
-Date: Wed, 03 Sep 2025 16:17:15 +0200
-Message-ID: <mafs0qzwnvcwk.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bKxdjpoS;
+	spf=pass (imf04.hostedemail.com: domain of nadav.amit@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=nadav.amit@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756909125; a=rsa-sha256;
+	cv=none;
+	b=fVwXj21QOHCYYGZBK6ltgeGE2epQcBHeoG+SzusKWym/hjA0ZfpfDTuuKualbfYOZh86nB
+	v1nevFrCprva0Eo2m8RW3BUjflzSD5HkIbuPSnTIKjq78oCQ4Q67El6iQ29JULjgDdMzxG
+	PtBbu1U8/QeNGIrpNjihN7/GRJaREKE=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45b7d87b90fso11077235e9.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 07:18:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756909124; x=1757513924; darn=kvack.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p1tH95Juuh1rXl0JBiJjZ+pvaXEYbkUC7vChoclECFQ=;
+        b=bKxdjpoS6P8GpntdhJ2oW3MxBcPTLAJgAngr1P1cLOlgXrMh8WysCZ77UJ9jD67yhL
+         RWwTfgtOFMgB6Ac+L3YyPmebPlX3RH24P11JbbTEfGC7O9EGyw7Afs1pB5ZpF/PUWwTB
+         VqJN1+LiMuQ4Ua+5Yyw+IQu56k60JRNyC9i+TorIyRq2vHlcgCmgeEszvs1z9IIKgYxQ
+         DttB01J7pIXVIDHmSAgjyxpnvf6gmNcbzeoZh8E+nDwNxcBW5iQeyhMF7v+5KUVpBZsV
+         UVnboPR6E3RcMSRh43qiIosxrQCveXosD69HPmLgH2igHcMGtV0282yTyLsiSaIxEbbX
+         VXPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756909124; x=1757513924;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p1tH95Juuh1rXl0JBiJjZ+pvaXEYbkUC7vChoclECFQ=;
+        b=wsr32YfnOpKtDnH0wNQvrK8ygild4MflTJewfaliSGR5yNH4rmLSC3JCrzJS48gXbN
+         rRaS8dMXuVsneQYGTusAi2NXmx8RaSAS8Vmo30hiqRmyuSVMICaaR/CVQhq1WYbsmt1C
+         TtLwTiW25qRMDzErH/txZ3WdU+nGNfI5rmOQ7eZ1STgXC8NZ6pNbstWR/hGDlI4lxs9I
+         XZ9kjvbs6gLD9zgWs03AV6fbAoS72+KVup9ITSLb77a14dBycKkpvPypsh1oCWCWgcg7
+         vRJjxuViPUX/TxW8sCDjMJaQKo1xyvfWAWL3uRtExg4Iue0fuLulqXK0nq0aCxUsntD1
+         RmOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWprX0r0Od7JYgOvjDENRpSN7GdgFaF79Q1vmqImQ5CI89qutVfe4wcZp4MzhzjCGM6r0ybO2dTGQ==@kvack.org
+X-Gm-Message-State: AOJu0YwBIWdoXbSUeTVqFpOjDGPUqGmIBJuaSexireiAV2y0p94P7eBv
+	LxYu9rrmCNYX3tJOu577WLcdmyvXsTAdGeVGsi2AEkTnfoliyYc0lrED
+X-Gm-Gg: ASbGncsMCpgz1WyJNK1/L3rbfxWB5GQXGlARBPjaajq81+4oHpBeHQVh3LvABT4pdV9
+	neOczf63ZoKeaSUD6HUPatH96mo7kE7F1XpMJOYZ4RiFBVSx0Pg/nyHDAv/v9WQrwCdNITDXo1L
+	gZDgE4LSxYfeaUDaHZJCVU8xVAgephv5W9zIo2oVMUpqkbyAGdRr0xexWhy/nyFf2DM0D8DTXgk
+	2mRbSaXFDGNumtZAuw85cRKq7cigpbcamtc3SU6e03KDfn+ufa1KZe/+oI8zTMicB4Bcqo0KyUZ
+	Ab1AORSg68hzV4/G0wouXqT6U3jsOceIjMAArTRckVBvGt6XNVld8w9YDe2EVUg9XEqbn4xP9Yd
+	4iPw/ROHxsF0Z2sTwpw6LRApGlSAj2LztasLKfw==
+X-Google-Smtp-Source: AGHT+IGxeY1z+y0/N2JQWJRsW96745IalLmq/FAayUobFdSig7XcZQ3JpsZDzaXf8TTCBRgdaspBrQ==
+X-Received: by 2002:a05:600c:c105:b0:45b:9c79:6612 with SMTP id 5b1f17b1804b1-45b9c796832mr35338115e9.1.1756909123431;
+        Wed, 03 Sep 2025 07:18:43 -0700 (PDT)
+Received: from smtpclient.apple ([132.68.46.23])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d701622b92sm12542740f8f.58.2025.09.03.07.18.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Sep 2025 07:18:42 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [BUG] x86/mm: regression after 4a02ed8e1cc3
+From: Nadav Amit <nadav.amit@gmail.com>
+In-Reply-To: <CAG48ez1q_Sgk5nr7Bngyt0UB3FkYb6e0cHv18wqD=sLEdrZkmw@mail.gmail.com>
+Date: Wed, 3 Sep 2025 17:18:29 +0300
+Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Rik van Riel <riel@surriel.com>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Borislav Petkov <bp@alien8.de>,
+ peterz@infradead.org,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ zhengqi.arch@bytedance.com,
+ thomas.lendacky@amd.com,
+ kernel-team@meta.com,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ jackmanb@google.com,
+ mhklinux@outlook.com,
+ andrew.cooper3@citrix.com,
+ Manali.Shukla@amd.com,
+ Ingo Molnar <mingo@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>,
+ baolu.lu@intel.com,
+ david.guckian@intel.com,
+ damian.muszynski@intel.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <920DC212-880C-4688-A577-2589CABEED75@gmail.com>
+References: <20250226030129.530345-1-riel@surriel.com>
+ <20250226030129.530345-2-riel@surriel.com>
+ <aLcQ3UCXXNcByW1O@gcabiddu-mobl.ger.corp.intel.com>
+ <CAG48ez1q_Sgk5nr7Bngyt0UB3FkYb6e0cHv18wqD=sLEdrZkmw@mail.gmail.com>
+To: Jann Horn <jannh@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Stat-Signature: 51x49unpmmbwd8kyxrab3rfxdmijpia7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2645E40003
-X-Stat-Signature: k1g175ca7w9c9p9k3ajsffbem1qqskif
-X-HE-Tag: 1756909047-443580
-X-HE-Meta: U2FsdGVkX19f4zLcBINvuJaBt0NCIihZOLKv2wx30s2vEMwX8wmunm3jJQRhOgTd8rnQNPoQm1oDEi2sEZkztKiE9n3RXBnee8pKE/i2OVa3eR295uqpDFT+BHrlROvFe8uHO3rVHsOiP3M/btq/K5Q6WnQfavolSPt99KxiASj4uLLvL4rjaWdYRQLS93YszKav9+fDY3Kw5hvBSt2YSF89DkkwZbKmQu0M3LkAQGKuwfzhemu9jqrISVUZl5Kc8NtPudZF8LMe43F9aWH85TafVmXgFG48iE47QsY5PTIdXG7GA/5vAnybHJ1Qp1va4B4JnWvYoVLMnLpUfY1UUAtKtuKMnfF1tDzLgHdGsao3F89pZwFWOxEQI4uS3WR7UVkyBOsxjB0uX1LBA0MeeBBkvoK9nuZ0y0ZXbaaq90Og6/FkBZjj5j7KHY3kKUKbluC5QAzJStFD/HZKYhK8VCf85MIToR8behcRC5UVxR7rGmCdvPNpBduQXaJDQFSPhEQIC8PpmJde5LIB1qKHX8SBigltTxFUDZsoGNdOfyJbohGt1lWCLGuVEn7GV/FdXne27GQNiH+LwIis+MJH6PYSEDk7YOGwAwMI2Rdp62PBL1hmlsY/3ZAphicVPBHF2wdnW6m4ARvuX2bRvB2hqu7Y8v3QLeZ0/2OIOAZF97SwiOVmVLqCuEv2pvAUjrWWptQ0HfKi6hvpK1fh5pSKjZSxsF8HtVvoO4pJMRSgUv6lak5oqSgVTyMgi2mXkzZD8B/9N88z4GV9vYXYIUEjS8PoE9c7QDY1oYUTRotOSPnd2gH7HvtTpsHFmJDX2Sh6fnJh9ODuuxWm7cFvOcQGfnR384bOz1TXSeDlDeMgwQtK8uvJIwEiVScKsKCoqzA2vm5hhJFSPqUWHuRU75BvnQvo4r8B5QAQBA6fpjaROxtESENvluZ9L0DJvacuKbD8O/ZLnEJ3ocDiIt1xjsO
- alQ73+RT
- +QJJ/k1wemrnJU2E4UQg7q/8G4/dR0Wt+r2FcQLBcP0A+DrCPyWnW6Q4WSsr0dZeY8Uxq4bm97CIZAe/z2kT/uiJpieqagDEtOJbfRyAP7ebzutjGWfar0+p+xsIl7mDMCBUrqwx8Mo4zaY2tQqQM40fIZbl8KanjvDjuMpKSc9iqiDnMMHARdtfcZ5MQQG0C41+bl3CkzIxN6uE1BHq2JeeSlarjVQd94lKz71siKPiyi2Bhb3CvjELX4C861nnXOXEbcgcQpFwU+5U=
+X-Rspamd-Queue-Id: 51A2240002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756909125-651527
+X-HE-Meta: U2FsdGVkX18lRrJrvp0y3O0yoVpe0h9u8vwvYhPkjKMZOQFgqfyxemI4Mk8Cc9rumAaSeoT1ziAFID8XCK/SrzU7X3Pfabb3JqqLmnCph7vnnanyPPoz+771yYLnkESIiktC5/Dxjl1DoH83Up/bfZc76pveDMUghlpgPV1SFoxSujigNmK3sgbGcSkdhZBL3OqsNZ8FjTqNKPegi3vBYqHFO2j2Pwb+Nz/cv4PHEkcytJs19YGS2AYNogDN5yWI1B6WoY5aIcnsulHY7pskkE1TqOdf9PZn5Ucpt5SvnPMMLbVUZSX8d9hq+MVmvyKyRS/5E/UDcilOGwQs+Np1CiE0ayvPGJzp5o0j4P94bnv7JefyA2Jt7KFhgvxnvWO4D0/d8Fnl5pek+CV6mDpcKWqN7bqmieMEQoT01iL+1ysZxPMmfCivLhttgPBrGJavr6d7dvjZEQxcl183BRErY68kySX5BgMWEjW6AK8jQW0sZHB3OHUZjN7KTz6OOkb1GnpneBJmf08Ar4eszkgVhBrCrc9z3zu67yGzBMN8uCzBZ3L7Q3zcIhUjtkDs8J9E/r4EDyE1v0itlH8xBwCXD3tkqlLA9yiyOHoy8wILEcpSL/AIh3tZqzR+3HyL9tM1sY+f7NL9iVwjTorxu2Dgrmop7QRdIfyVg9RtdbTLzz6YGRPG1A24J7L8fpXne4rxea+RsFaJUuDt7xM2y7Vnoq7BJG7UR6EbBEi6xnmggkUPqaoPhF2NTwopfY0PuubZrVRIL607lcQoaZ2csIkAaiCbf5aECclVOCW5GeYLqGIJyKcjHU5CBV9k4O5jf1ShX9YS9A9aWqL1QRKJ99KDYxDjgqmvlb7TWd7Nt+oQppdvz+JdAI5mphPQWzmTVO+8FHRhgjQ6KDHf2anpgob/fcxAF+1g7A9Cb9x+7EswR/FxETkDqqTPci7slpXplYVOwQiU7DPjNoS/IBDWcyf
+ yQDdjOrh
+ d7xKHvxrXUxziAmJwaf6I1EIKc5/yyst9G6XLQ3cS5WpG1kwaDzFkGOipQsajqrYjRLblfpLvHWef+tSx4FR3WOLBmjbXK90DlBzV7Cu9W+BhmIpkWOVsCaTkJCBhuPEvd2PK+29ZUDYAeV6hb7bYMEDNShJ3e0xNOubAxQxJ+tSgZgnoucvu3N+rDUqHuFuDFBQUBKVjitd7Glw3vV1Aq/BanUtIGj67OWIpRP8l0J8Nsx2chOzBNgSs35oaUdLCN2QGoiH3UHvlxpNyGAqt0hEUQRqFxrtwzwdZAs3xIQlakH0uyqk1HbeuDrm0n1bUiMFQct4fyp2V3S4xlJbsO/1H0zrAM5J4Y7W/eQdOQFTQho1nI43g+GTC8RME4eu+LWnEY3z2M5DBgKXOOZhSCXPgw9lu3HyFqsjR5k1y7iDJvHFlKa+qh4mIAVjG80S3q7DmC+JwZTeOH4Oo+4kvWdGT4fPg+2dLiIOidU4gZWgf7NxBy4U9KqMCA1DU5ztgteFqG2gDuMofIWQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,113 +143,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
+I just noticed few things need clarification
 
-On Tue, Sep 02 2025, Mike Rapoport wrote:
+> On 2 Sep 2025, at 19:05, Jann Horn <jannh@google.com> wrote:
+>=20
+> On Tue, Sep 2, 2025 at 5:44=E2=80=AFPM Giovanni Cabiddu
+> <giovanni.cabiddu@intel.com> wrote:
+>>=20
 
-> Hi Pratyush,
->
-> On Mon, Sep 01, 2025 at 07:01:38PM +0200, Pratyush Yadav wrote:
->> Hi Mike,
->> 
->> On Mon, Sep 01 2025, Mike Rapoport wrote:
->> 
->> > On Tue, Aug 26, 2025 at 01:20:19PM -0300, Jason Gunthorpe wrote:
->> >> On Thu, Aug 07, 2025 at 01:44:35AM +0000, Pasha Tatashin wrote:
->> >> 
->> >> > +	/*
->> >> > +	 * Most of the space should be taken by preserved folios. So take its
->> >> > +	 * size, plus a page for other properties.
->> >> > +	 */
->> >> > +	fdt = memfd_luo_create_fdt(PAGE_ALIGN(preserved_size) + PAGE_SIZE);
->> >> > +	if (!fdt) {
->> >> > +		err = -ENOMEM;
->> >> > +		goto err_unpin;
->> >> > +	}
->> >> 
->> >> This doesn't seem to have any versioning scheme, it really should..
->> >> 
->> >> > +	err = fdt_property_placeholder(fdt, "folios", preserved_size,
->> >> > +				       (void **)&preserved_folios);
->> >> > +	if (err) {
->> >> > +		pr_err("Failed to reserve folios property in FDT: %s\n",
->> >> > +		       fdt_strerror(err));
->> >> > +		err = -ENOMEM;
->> >> > +		goto err_free_fdt;
->> >> > +	}
->> >> 
->> >> Yuk.
->> >> 
->> >> This really wants some luo helper
->> >> 
->> >> 'luo alloc array'
->> >> 'luo restore array'
->> >> 'luo free array'
->> >
->> > We can just add kho_{preserve,restore}_vmalloc(). I've drafted it here:
->> > https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=kho/vmalloc/v1
->> >
->> > Will wait for kbuild and then send proper patches.
->> 
->> I have been working on something similar, but in a more generic way.
->> 
->> I have implemented a sparse KHO-preservable array (called kho_array)
->> with xarray like properties. It can take in 4-byte aligned pointers and
->> supports saving non-pointer values similar to xa_mk_value(). For now it
->> doesn't support multi-index entries, but if needed the data format can
->> be extended to support it as well.
->> 
->> The structure is very similar to what you have implemented. It uses a
->> linked list of pages with some metadata at the head of each page.
->> 
->> I have used it for memfd preservation, and I think it is quite
->> versatile. For example, your kho_preserve_vmalloc() can be very easily
->> built on top of this kho_array by simply saving each physical page
->> address at consecutive indices in the array.
->
-> I've started to work on something similar to your kho_array for memfd case
-> and then I thought that since we know the size of the array we can simply
-> vmalloc it and preserve vmalloc, and that lead me to implementing
-> preservation of vmalloc :)
->
-> I like the idea to have kho_array for cases when we don't know the amount
-> of data to preserve in advance, but for memfd as it's currently
-> implemented I think that allocating and preserving vmalloc is simpler.
->
-> As for porting kho_preserve_vmalloc() to kho_array, I also feel that it
-> would just make kho_preserve_vmalloc() more complex and I'd rather simplify
-> it even more, e.g. with preallocating all the pages that preserve indices
-> in advance.
+[snip]
 
-I think there are two parts here. One is the data format of the KHO
-array and the other is the way to build it. I think the format is quite
-simple and versatile, and we can have many strategies of building it.
+>> diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+>> index 39f80111e6f1..e66c7662c254 100644
+>> --- a/arch/x86/mm/tlb.c
+>> +++ b/arch/x86/mm/tlb.c
+>> @@ -1459,7 +1459,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, =
+unsigned long start,
+>>=20
+>>        put_flush_tlb_info();
+>>        put_cpu();
+>> -       mmu_notifier_arch_invalidate_secondary_tlbs(mm, start, end);
+>> +       mmu_notifier_arch_invalidate_secondary_tlbs(mm, info->start, =
+info->end);
+>> }
+>=20
+> I don't see why the IOMMU flush should be broadened just because the
+> CPU flush got broadened.
 
-For example, if you are only concerned with pre-allocating data, I can
-very well add a way to initialize the KHO array with with a fixed size
-up front.
+Agreed (as Rik also indicated now)
 
-Beyond that, I think KHO array will actually make kho_preserve_vmalloc()
-simpler since it won't have to deal with the linked list traversal
-logic. It can just do ka_for_each() and just get all the pages. We can
-also convert the preservation bitmaps to use it so the linked list logic
-is in one place, and others just build on top of it.
+>=20
+> On x86, IOMMU flushes happen from arch_tlbbatch_add_pending() and
+> flush_tlb_mm_range(); the IOMMU folks might know better, but as far as
+> I know, there is nothing that elides IOMMU flushes depending on the
+> state of X86-internal flush generation tracking or such.
+>=20
+> To me this looks like a change that is correct but makes it easier to
+> hit IOMMU flushing issues in other places.
 
->  
->> The code is still WIP and currently a bit hacky, but I will clean it up
->> in a couple days and I think it should be ready for posting. You can
->> find the current version at [0][1]. Would be good to hear your thoughts,
->> and if you agree with the approach, I can also port
->> kho_preserve_vmalloc() to work on top of kho_array as well.
->> 
->> [0] https://git.kernel.org/pub/scm/linux/kernel/git/pratyush/linux.git/commit/?h=kho-array&id=cf4c04c1e9ac854e3297018ad6dada17c54a59af
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/pratyush/linux.git/commit/?h=kho-array&id=5eb0d7316274a9c87acaeedd86941979fc4baf96
->> 
->> -- 
->> Regards,
->> Pratyush Yadav
+This change is not correct. Do not reference info after calling
+put_flush_tlb_info().
 
--- 
-Regards,
-Pratyush Yadav
+>=20
+> Are you encountering these issues on an Intel system or an AMD system?
+
+I would note that on AMD IOMMUs there is some masking functionality
+that allows to make large yet selective flushes.
+
+This means both that we should not force IOMMU flush range to be large
+just because we decided to do so for the CPU (as you correctly said)
+and that there might be an unrelated bug, like in the mask computation.
+
 
