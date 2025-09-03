@@ -4,84 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D299FCA100B
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 05:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F835CA100B
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 05:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04AAA6B0007; Wed,  3 Sep 2025 01:23:49 -0400 (EDT)
+	id 7083B8E0003; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 021EB6B0008; Wed,  3 Sep 2025 01:23:48 -0400 (EDT)
+	id 6DF798E0001; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E79DF6B000C; Wed,  3 Sep 2025 01:23:48 -0400 (EDT)
+	id 61C538E0003; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D72976B0007
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:23:48 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6102285CC8
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:23:48 +0000 (UTC)
-X-FDA: 83846796936.18.C377DA2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C57131C0009
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:23:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CPWbebEH
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 51BDF8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E46CB1A046F
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:26:50 +0000 (UTC)
+X-FDA: 83846804580.19.CE891B6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3B5E040005
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:26:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MI3hIWVb;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756877209; a=rsa-sha256;
+	cv=none;
+	b=WK2ixK0pS34m4a8jORxvQUd5qXBci+SAeCOVGG/dObwiPN83vMwRlUMKH5ipRUBTxMTPj4
+	gCA6fhaWPSW6QQklOSrTBbXxMA+xDqNqsTlXn4Y1M3qrIkui+bdvAY1O2dn1pka0ycLryL
+	VUqhUTJw6j0u3Whgg5SEtHEe2V3awWQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MI3hIWVb;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756877026;
+	s=arc-20220608; t=1756877209;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qRjLV1qt7qnMoxu1/nhjb2dUbiJeayY0vDYRf8D713I=;
-	b=FvZEF0K7tWA+BtsQ6jyGBorLa6MtEFs2mCenZzZB+4JT4l1y2cRMjQ7FHTUAj2RYVEUgxN
-	5LadFJkT26tdsB3ELWjVbu7OuBpM5AsdVk599qLOdXD8M5XN4BN3rRImxk9MehHsK4db1I
-	ohdAI4vw6DHZ5v0/+tdwIoFucMCVTsc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756877026; a=rsa-sha256;
-	cv=none;
-	b=D4XFImXZt1DxvPPSrz1eIOREQGOCHLRAfBXw73rH38U+c5/0uaCG2+i0GUHFmqdpBA9869
-	DWK1z1bvThbQTIFZEfJ01y4K50JxApNyf42c3rKQeiC8+T4q3D8cY4e0/Ppsym9PMu3GKh
-	JsOdbAFuVYYl2uAM5kZ2slOWKIg71Co=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CPWbebEH;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qRjLV1qt7qnMoxu1/nhjb2dUbiJeayY0vDYRf8D713I=; b=CPWbebEHKF9oA7dtV1pPY8+ssE
-	rMa0Oe2pKL5USXsh3LSxYi5dw25BB/epmf6WmJiZ+PQif+QvY+Qvr7rKPgehnnlFEUIC4qttwi1Z2
-	vPGWLg7xA04Inx3B/833lFi6Vo1WDWK3hgXd4RbEG9nmfMPVvQVkPWZkw0MIf9+WIF+OQqvf30FTm
-	YKFXONn5IgAcEc6xXi1T5MWWkrupDe+VsB8abbc8LnS78tO1AxxlqQW5gyV1oCeH/5Xcu7koXKyu+
-	ENqJR8fsSPoTNy1bsGkAHlC8ZUjYwXF7sxyivrPvgi9lJc61Lipl5klwCQUlQyn2Zbq76K6pe7WI8
-	AE/4W52g==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utfyA-0000000Fhub-0mQW;
-	Wed, 03 Sep 2025 05:23:42 +0000
-Date: Wed, 3 Sep 2025 06:23:41 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>,
+	bh=HHneDkjVSU9dC34t9LMkjRUhMpIbPTjSsbaFNQXQ8Bg=;
+	b=rigS+C5jRAAl1gBXkvo+Mdj6yw0m19sUEgDOkE6FPT+NdLkppw8AzsIF7IfbjOTFC+89s+
+	YRQ4EnKrbtxaV4WEYSYGKTcjpyTUaTwXG0XzqA3tCG3Kmv8oQ2H875vAgSpgE1d9qRS1H5
+	XkjciwRVMwovQjSnUxyx+5OH6p+m50k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756877208; x=1788413208;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+U/qyUVufuO9/Wxc0OWe61I/W1hyzeIS2pBPmz4WWRg=;
+  b=MI3hIWVbBpG0OBI19jADcPMh4H6LxJnjop562fIfTQPhnoMfRUUjTCTS
+   W012YYi9qGXXCETqXTBDuZMIgmBUkx/Ae+61i+P9zRk2JpvMkvTMNF7Y1
+   jzh95ngoUmfmncmt6yES1ZrC0YqwZna8/Lu6fHJT1Ml9PXwHbkYYVG71z
+   N8iPDnV33fQkJndiYgNJVsw6pFghDPAkb+Xdap0+J8N5WR4BzPincl42y
+   PZZ4acjDTh4VDWmky8MhsdT3GdLHIhdhkWkTCbnroH3ZxRrRcxb3TiQ4D
+   ZxI4Av9vhq0nUd0EAK4YAd8hmVajoD5wuA3PkhTNtrDV01MXgGkDwNaMH
+   w==;
+X-CSE-ConnectionGUID: SFhh9Bi8TlysBvAvS3/Rjg==
+X-CSE-MsgGUID: i4ChV+h4SD+N3KNq04PqSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59092859"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59092859"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 22:26:47 -0700
+X-CSE-ConnectionGUID: wIW/+0vBT3Oa/imtc797sg==
+X-CSE-MsgGUID: ucQq6avgRw2qGrKoH2kdIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="171865325"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 02 Sep 2025 22:26:43 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1utg12-0003NX-2f;
+	Wed, 03 Sep 2025 05:26:40 +0000
+Date: Wed, 3 Sep 2025 13:25:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org
-Subject: Re: [PATCH 07/22] slab: Remove folio references from __ksize()
-Message-ID: <aLfQ3UdoiZc9HKyS@casper.infradead.org>
-References: <20250829154728.3397606-1-willy@infradead.org>
- <20250829154728.3397606-8-willy@infradead.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: do not assume file == vma->vm_file in
+ compat_vma_mmap_prepare()
+Message-ID: <202509031346.N6FpuQIA-lkp@intel.com>
+References: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250829154728.3397606-8-willy@infradead.org>
+In-Reply-To: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
+X-Rspamd-Queue-Id: 3B5E040005
+X-Stat-Signature: xecfk1imx3t5do3gefs3ptrq8i8sjwhc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C57131C0009
-X-Stat-Signature: gtnxcshaqiibfiwmrym8imbo55qky5xy
-X-HE-Tag: 1756877026-128833
-X-HE-Meta: U2FsdGVkX19/NqLyf4SxfW2e5mkhjwVqFz9vA1DTapJE5sAqmS3Coj9sqQpiz0qpWQxzLuTkqZDcY5jfRI/r6eumre2sD/M9goey6/h1LVqpEuR97TFIA2DDOmOoLNXCDrvz9Xezeh+aTSfjXrM3F+3+zscrSL6bXKmaVA8/08rVR27hdoOIGE+dkJ46ZiSJRvtFKuLyZ9JgWC2KXZ8thB8MhGcsF5WXlZtKprwqsTZhMRdIdQha2W7+sgihWGtloaQGPCz/KyeX6pnC07hHFi4BE/71HnHf1Gx2Dger5fJAoqhpPyED794RKsfVatDGrvEYIG/Pa5EtGObTO/J5UaRd9FM06rtxBqno5DAbAdx8p7e6XmRyf4hbPuTxLHgmxBPEgnivA7fAIQ/qt6BEyoN8Lt7Ra4LSBXxGJ7DDg6m8v/JHaM+G8GVyjlomzedqSEKKAJxhEGn2hjuJ+d8KPjfCIOCkV2+M4ZUDY7CY3t5BvIySObWt4edqahF1NM7lahNAu5In4YzYZK4yuWf3fQXIuJtu7RV1SJoTeZviBe12cluDw6HNENpL+9n7yWQ2COKJV5fyprQMihHlybw5AoC9MKoBdBqx45Z358buRMygyv/w8/sOF4WTgcTFvTjODmbvYcJC1/QJR1jeDXuUsjzuO5xFXuUk/YOuq2SlkkgVyomZyBR5Dm9AsJEESsKdiKVZmW+XqvwqIO1/pCaxNVKTiECvHrRIJBBrPl8gJDOgdeDCPH9k8uVewOVbyoCOp2MQ1r8Py3VWMftYw3gkvAKecRj2kHbgUHhOBV7kCQ6SI7Vbzqqms8xr4kSeyrt/0dusyufcYP/y+61G8hv3ubYPPKRnbxGlCOgTnMgJo5E1HlT/RzK2P0iCQo8ieKFjhghAiizpqhI/BW8SuEWRz1UblV5lIKsBPROUA5u+VHthre+q3BTepyBzgvcO1nZYgHbLkXUKAxdJww/lfB7
- sTCvyj3M
- 7JV42UXkD1XB0gwlm1UNXHiGWF4+OjB6+eN3tcPd375u8CDZAhr7m2JV31o00zlsRcfCsrKIre0a7SqLoNZWo2ddUoYcT4AoHG5Z1OPqhZNSOlYiImjMvd10hHvundNalVC47edes/arQWEKXljfFiFG91tZ7ALNRBUa5ovI2PHDfXRErj7RfrEL+Hduq/OmAKqNwYMxnRPu1VONhS5h6vws+IRtU7mZ9lxDA9S+0onRpCtdgR7/kRlpVj6r2ZCGrk2JfDBWW4/UyEKw=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756877208-592048
+X-HE-Meta: U2FsdGVkX19JV7QTCHLQvAAqM9iBXP1VBJuNesnHVIHF6w74QFBk68kMZUIChJMNzapeJkOceVBgnXM0izn/bnm0wtusARcROuTSwj4Wv5f20WWMitTzmyyIBmQVkb4YCKeLtKO7x1Q9szBoLNwy3c97gCE2AXY76Gwa/Ofxm+j2Q8KpSztbU2+w31iUQYikjpTsfKqr9NrQM4UWbrfH37uNjQbpjmD3/6jyd8v581TiSOqAOdDU1unk63MdBPZo9CaFJRM1m7kS51Py+0n/OGuLwRwr6qJZqwuoDHRztphggtUJaszwMO+Wr/ldgyZwwPgyjP+vvp3FBe4MCFd35SsEK5nh9wFS87bHGzB3ahBAItG4pRCUpLwlUANTm/oD5tnlOQD9YcCBT12GZBQB32A2kAQUAlSZ+ck2ETCTbfASOqtpVk3YbJjKQnMPXrMnbun0Uw7axb0QPUwL9O4k/RCviip04MVPqy7TYY5l4YKHcXE659K2Um3nFMjQ2/g1LjhwcWmQ7Tk+JkxOb4mC2QJTZEdYB/IL1k9TKn87ugn9kh6KDCzUkAQ+8gi+4rSmlGnoDyH054Jm9fuWxz4OHHLchSoMtadoDNDmC4e3TzZZeIufmjnRjVegt1Dlk8SRVVzk2KAR/P9jdnoNVRcoAb6OoAWCKBMEJ7Ux1iWWep6w9CmUIn0Jm4QpduSS8525vs91XNXTn8j/ofGnUVnPa9LHzdFLgDbqUzyEttbGk6sDeVplRK6p1/bXvYSpPzW1nKPWO7eNp7/9++wAAH2smnARM40ltvCyZo0QdTArud4o4bpQ+UCEc1QgQzdlPnJcKiNlqltP7+ZFJkgCS45maLvP2krEQGs6wqkA/xV41+vuM3LUzcddc5I3M9894V08rxWXcshL3aq7aHprY6w87m5LEm2voqCl02yE+IOsGzxoWxYAnlrJAGAvG/LxTbwHbcBDNQfxlCtIlbgAYdZ
+ 7+gR1q16
+ KhntUWpEPYvkW5G9kREfNowB/U3M5ZrM54zjhrqj8r2OkA1rmFtfW7kCHZWS5sbxQGyIqRo7BRoS144CWxdbhFyCvkuLW6i4hc2lHFXF462A9jvsEhLv5ajhBd3nHfpX3LwWJ4Oi8vmShf/E2MS/Ly+fXexM62/z1t6TUCv8jtiLwT71Tj+sdNC40TyVCdyAFutV3rE3tEDmH2tXZUtFbcHshBTTzZWqsSxeIxcXUq9xKXXg+a0QopFNbEExEQjJxkYgzSiPzizdC5Huf5KRLBgC8J+KNVMbAL+ELfh4C+Jir4EBCDrlOJEsFtPrY65MtyLgpLnNiLBJScy/NQSEiQfWarCxS4XU1OYJPXQWp2zE8HR3J0gzOwg5W7H41+8PEGmzCMjcLCebEIXQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,39 +118,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 04:47:11PM +0100, Matthew Wilcox (Oracle) wrote:
-> This deprecates calling ksize() on memory allocated by alloc_pages().
-> Today it becomes a warning and support will be removed entirely in
-> the future.
+Hi Lorenzo,
 
-We can't do this.  At least not without fixing x509:
+kernel test robot noticed the following build warnings:
 
-https://lore.kernel.org/all/202509022248.dbe9cc08-lkp@intel.com/
+[auto build test WARNING on akpm-mm/mm-everything]
 
-The important bit:
+url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-do-not-assume-file-vma-vm_file-in-compat_vma_mmap_prepare/20250902-184946
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20250902104533.222730-1-lorenzo.stoakes%40oracle.com
+patch subject: [PATCH] mm: do not assume file == vma->vm_file in compat_vma_mmap_prepare()
+config: i386-buildonly-randconfig-001-20250903 (https://download.01.org/0day-ci/archive/20250903/202509031346.N6FpuQIA-lkp@intel.com/config)
+compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509031346.N6FpuQIA-lkp@intel.com/reproduce)
 
-[ 33.279697][ T1] WARNING: mm/slab_common.c:1016 at __ksize+0xf2/0x120, CPU#0: swapper/0/1
-[ 33.341827][ T1] kfree_sensitive (mm/slab_common.c:1234)
-[ 33.343783][ T1] mpi_free (lib/crypto/mpi/mpiutil.c:?)
-[ 33.345494][ T1] rsa_enc (crypto/rsa.c:62)
-[ 33.347230][ T1] rsassa_pkcs1_verify (include/linux/crypto.h:383 crypto/rsassa-pkcs1.c:256)
-[ 33.349482][ T1] public_key_verify_signature (crypto/asymmetric_keys/public_key.c:432)
-[ 33.352192][ T1] ? __kmalloc_noprof (include/linux/kernel.h:?)
-[ 33.354454][ T1] ? asymmetric_key_generate_id (crypto/asymmetric_keys/asymmetric_type.c:147)
-[ 33.357247][ T1] x509_check_for_self_signed (crypto/asymmetric_keys/x509_public_key.c:126)
-[ 33.359744][ T1] x509_cert_parse (crypto/asymmetric_keys/x509_cert_parser.c:130)
-[ 33.361690][ T1] x509_key_preparse (crypto/asymmetric_keys/x509_public_key.c:157)
-[ 33.368645][ T1] asymmetric_key_preparse (crypto/asymmetric_keys/asymmetric_type.c:409)
-[ 33.371160][ T1] __key_create_or_update (security/keys/key.c:858)
-[ 33.373639][ T1] key_create_or_update (security/keys/key.c:1021)
-[ 33.376003][ T1] x509_load_certificate_list (crypto/asymmetric_keys/x509_loader.c:31)
-[ 33.378485][ T1] ? load_module_cert (certs/system_keyring.c:280)
-[ 33.380708][ T1] do_one_initcall (init/main.c:1281)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509031346.N6FpuQIA-lkp@intel.com/
 
-so mpi_free() calls kfree_sensitive() on memory that didn't come from
-kmalloc().  I don't have the stomach to go crawling through the
-crypto code to figure out where it did come from, so I'm just going to
-assume it was get_free_pages(), take out the warning; make ksize()
-work for raw pages and document that this is supported behaviour.
+All warnings (new ones prefixed by >>):
 
+>> Warning: mm/util.c:1145 function parameter 'f_op' not described in '__compat_vma_mmap_prepare'
+>> Warning: mm/util.c:1145 function parameter 'file' not described in '__compat_vma_mmap_prepare'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
