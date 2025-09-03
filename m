@@ -4,137 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC360CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9812FCA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:01:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F3AC8E001C; Wed,  3 Sep 2025 09:01:02 -0400 (EDT)
+	id EAB758E001D; Wed,  3 Sep 2025 09:01:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 730218E001A; Wed,  3 Sep 2025 09:01:02 -0400 (EDT)
+	id E5B9C8E001A; Wed,  3 Sep 2025 09:01:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55B908E001C; Wed,  3 Sep 2025 09:01:02 -0400 (EDT)
+	id D23B78E001D; Wed,  3 Sep 2025 09:01:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A5698E001A
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:01:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5E2E5A91A
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:01:01 +0000 (UTC)
-X-FDA: 83847949122.29.2AEA6B2
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 856D7180011
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B25138E001A
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:01:08 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75105C06B0
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:01:08 +0000 (UTC)
+X-FDA: 83847949416.16.5127A74
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 450A6180003
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:01:06 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eZN9GeJP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iAV3Bxo3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A1v4I9i6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="YMDwB/Kt";
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="K3gRqR/L";
+	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756904459;
+	s=arc-20220608; t=1756904466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WHNZEYi9bvdu6nDqIqDNg2B6UR4wge7RdUooBFAPhWo=;
-	b=r3bEjNSHHTdIFPZuuNUeq9qKjkzXVP1vDIJVtPuJKQxMcQ3hzMDRt878UZkgnqZs+kCyuY
-	rsTA7tKTLbObfuAcA7FnlR1IVj5Imlj68ZWZq532+FGmMBAiNyM0k0nIRZSHzw1CTd3OaN
-	3d0TQFk6Onh80RxnsdbVr1aUm2w1I8g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904459; a=rsa-sha256;
-	cv=none;
-	b=o6sPP4lFMYf476sQPfDRpNZGyalzHCx5HoOiBPyGr/sl6xg0Xbscyyfa4+nNTdaMddQip+
-	O1dgtlh/okjhBY0nmtzziWXJZUA5SrNabk1AyUYg0n/HggpfBBkOqz78KMJE4i/+tkrxj5
-	q2QKbCUqYpgJFktGIQplcVUOvLU6PIE=
+	bh=qYSwqCgu84qbau7mayL9WQ6qrUE6GPNeb+3BZMvbBjo=;
+	b=cAUeU9VnkeMlW7A1vs6Mn0fjXY/2Rtv0tXr2SrLL6fYf4P+374CdzbzETzRzKXvRmU4/Oc
+	Cay1sTJQAmNsYNqzJWfWnwtOp04fE/EyGt0wbKmIPIqcFWJlZPoYxV8mhqL61CBlv9e0gu
+	daqy8X80Ls5J2ZizvwAZlfmR2UitL3Y=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eZN9GeJP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iAV3Bxo3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A1v4I9i6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="YMDwB/Kt";
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7B3DE21225;
-	Wed,  3 Sep 2025 13:00:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756904410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WHNZEYi9bvdu6nDqIqDNg2B6UR4wge7RdUooBFAPhWo=;
-	b=eZN9GeJPhRRPdRpmi1n0tbVJR0iTRmAv6QHL6zBSDNYz4ruAgOCIpoZpeedgRnVUU0bINv
-	mZPE41l2pNjwDPO47u4pMtvc7+RzPHFIqWQPwJDvmnqX0u+4ar4UUvoqXhBZ9hJ+h65hfy
-	YhQxuU1nE//R15R+uyDzDoWnu+f5CJA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756904410;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WHNZEYi9bvdu6nDqIqDNg2B6UR4wge7RdUooBFAPhWo=;
-	b=iAV3Bxo3pliTFUWFDM5jZea+ATJqVIzU9QilYsofcOjt5WoahEt/zEMMOvMF79o5eCZbz+
-	KqOsJ04LQkRMqPAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756904409; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WHNZEYi9bvdu6nDqIqDNg2B6UR4wge7RdUooBFAPhWo=;
-	b=A1v4I9i6ducf211y79IWDB7D1LUKJv0UisWd/0vIZJFIJSgnwIb2MfInaLoTEGKISK0I/m
-	v1PT73NixhMPxDwR7WHi6JjthxYksM7eXpUc7WPPf/3YpooIdQ8Fyc0epX2e4fnmvey/Yj
-	VN2e9uK9rk8XV6n5QYIhkQ7UkJo/zog=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756904409;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WHNZEYi9bvdu6nDqIqDNg2B6UR4wge7RdUooBFAPhWo=;
-	b=YMDwB/KtKJx5/4nORybCyIAoTVQXoy8DVDKWH7FVnqZOYJCJ3A6gkJ4eI1/kmy21uab90w
-	ZSQptfzrqiVA2uCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 61D8113AF8;
-	Wed,  3 Sep 2025 13:00:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uAObF9k7uGitOAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 03 Sep 2025 13:00:09 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 03 Sep 2025 14:59:46 +0200
-Subject: [PATCH v7 04/21] slab: add sheaf support for batching kfree_rcu()
- operations
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="K3gRqR/L";
+	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904466; a=rsa-sha256;
+	cv=none;
+	b=VzjdXitjG9DSQqV2xuXFoFNRD9DygEV1gr75bisKGAs8DveqbZ3OdY/9SFj5N538GfLreo
+	c1QJsRxawZZ/Mj34oXaG60Zcq2UFMLZGr5Auz/eZclpu06cv0B5Cfpy6KizwxheoadFU+0
+	C0RfYSnXQaxgoa8+gPg6EeOo/iguDZ4=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3d1bf79d758so3484127f8f.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 06:01:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756904465; x=1757509265; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qYSwqCgu84qbau7mayL9WQ6qrUE6GPNeb+3BZMvbBjo=;
+        b=K3gRqR/Lk+aWKGEKpgUnbcPC7e23f3OB1vN8kwB0tSFnJVsYbUCurlYU9NMcqtULT9
+         Czz4gL0uWkRwxSxl35SRZExQitmgP/FSZm1XyHJQ7ezytL/SqLzRfy7FVpoalhlt2KI3
+         WCDioyReKcNOV/2hpM5PC/sAJZG4jD9xgWrJ8B3AAAMGuDvNxZAcIfEvrs4deaAC26xu
+         uBWExudCIrBlR+H5LuLUiG7yoXCp9MDK3eRMBrZh9FZk4Yc+N6y+nW68LIzT2PKCN4+h
+         9rcUPFyTN3RmM5rxVrGjF/uRAH1828FJ0ki3kZOfUdsdfcAj4RKUl1wQ9bDUawp6F6r2
+         2chg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756904465; x=1757509265;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qYSwqCgu84qbau7mayL9WQ6qrUE6GPNeb+3BZMvbBjo=;
+        b=TCJU2C4WzS9tKr0JRBE6uQFClgo9Zu/c6wSid5WAPCMC+qVzUFCeAOyon3X2S56phj
+         wjx1js5yhp1xjFgzZPiOguv1pC2G44yLKIbJAiWMvo+tsSTCIwO1Qnl6SRPh/S9JNhqU
+         rccaZvToLgXd8o5c/L7WTBJD16M4MZyXKZOWVkJnu55AVyxXcQCaEu2Z4G36PFYr8NRG
+         6SsTxsMi3t4TLgqo7ghtP+zpmHkwwwqB9pzOQ2svpmXCB3gXTmDD6x6676FwPMu6m6Ys
+         cD+KzOmOUC4oqvxmFvXzjLnr18pky56syX7e9GzhLyUaxKQ73+/6OWGn/5RU20KyGku4
+         6RvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUX5MjXazdQGbCDCeQ5h1s4G51QquD4TYAgln8hUzT/unsE2hohCz1ZHEXQ3ZODJuplRFsZOmnCKw==@kvack.org
+X-Gm-Message-State: AOJu0YymskryeqawKuw2AtqTM6U2COwbbmyHGbNF7BV+/+c1ozRziCJv
+	PRzDSw4nnUjqkpojWnMH2PicuO/Hw5ikLWTk858sBPjlrd3T/igpSIa6PpWdRI2EBWN39C0D2hS
+	pBHGYxVIkq4TzCUHtId0nygYUHpdoqk8=
+X-Gm-Gg: ASbGnculLS7L8FAlzsewCikzT8rRD31/0GYAov91N/EWNhUJn328FFqD6MaW1SuZ3Dy
+	7dLsw2kZWULE12aF3FpcMq0tgFXNWDKeNrm33ooiGi6zDItr0wLAc93M5XcJl5+IqeQEPU95GHq
+	PTlfX/HQ/6tu0LI2fL+1/MJ0nlaY79bc6PY/krSGJ3frHLH0f/X3bOOlBG/42aFsauoY8lOGMkQ
+	qeAtH16sJdDYxh4vik=
+X-Google-Smtp-Source: AGHT+IHmFsCDos3JjwBl9pEpIyEmAobS1Cy/2UBIBVeqw3OwTMDcCiU/gRIfeUZhimchcjr+QbcdMfGJc4+vkNvUnsY=
+X-Received: by 2002:a05:6000:2387:b0:3cd:cf31:d77b with SMTP id
+ ffacd0b85a97d-3d1dfcfb96fmr10273005f8f.37.1756904464118; Wed, 03 Sep 2025
+ 06:01:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250903-slub-percpu-caches-v7-4-71c114cdefef@suse.cz>
-References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
-In-Reply-To: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
-To: Suren Baghdasaryan <surenb@google.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, 
- Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
- Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
- maple-tree@lists.infradead.org, vbabka@suse.cz
-X-Mailer: b4 0.14.2
-X-Rspamd-Action: no action
+References: <20250810125746.1105476-1-snovitoll@gmail.com> <20250810125746.1105476-2-snovitoll@gmail.com>
+In-Reply-To: <20250810125746.1105476-2-snovitoll@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Wed, 3 Sep 2025 15:00:53 +0200
+X-Gm-Features: Ac12FXwLRBVR2f4PuzzrU7nT5oZZzEoQNIqQrmp4mufnQl0O4d2hk_ueC-1EYNs
+Message-ID: <CA+fCnZdFp69ZHbccLSEKYH3i7g6r2WdQ0qzyf+quLnA0tjfXJg@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
+ key across modes
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: ryabinin.a.a@gmail.com, christophe.leroy@csgroup.eu, bhe@redhat.com, 
+	hca@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn, 
+	chenhuacai@loongson.cn, davidgow@google.com, glider@google.com, 
+	dvyukov@google.com, alexghiti@rivosinc.com, alex@ghiti.fr, 
+	agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com, 
+	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: rzsngcsye5adz4bmciar1e841srzfzi3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 856D7180011
-X-Stat-Signature: jw3i8owcw6ywxdm88dsw8tw7ft6goumz
-X-HE-Tag: 1756904459-745737
-X-HE-Meta: U2FsdGVkX1/VdPOUDYQDrd3cUGkFxmBGOfAckKiSEv+UJQjuhw0H+FrGXpMcz5P/EHze/EbJUQ3618o8hVcOGOxha+HqqJinmS2zSIzt1JXSva0ScfO8mFMZxF9Sw9GDomjdzRg+/nb4kgYlMAkTTAwjc0K5JqEbeF2xdRGiIck6EKt9CUDyF/Skg0pzIVb7cEgOCg6Q9zZY6pPc4AGIfnH6jCtPH1m/AFSEDqKdyQFah3KVIF8xc+nOSBv282rEuNc3sniKP19Za7Id2ZBIyGajBKVNkhHCJayJTo1leum29JljkwAdI+PX0O8+E10zSsHmMdxmgYsdoriivZdHegoTaZE5FXllv1otppTnHqcAUeMO/NH5X642+i7hk86X5P7GKAreVy0rqh6GGme3ihYflCQ/gxxfQ9nrXjrthHCCbFpqUe3Jw8YCdABWvheRNb2SeHz0iVG8UQPtR8QJJ3WevAqROIxxrwSV6rV3XRSOiXchTUrw9+RlVEuURFF1DbhGxrPV1Su7UQeScV6QkD0f03kRQ6I051IGrSUfNLlW0re0JN+FCjEtspEIg+/9/NrZ/yDCCZhzuSjhiDcqPazTFmSQmpqiZ5Km8+CyBmDk2KOC0TEp3rqFHDMfew30JCPgMba9/Okj10sUuTYWcR9km3Kwg/oFDMYhSvlBzDmfin7KgsZ//0hl1mxFx0kDcimaPgLHnHzwwtumoTIDVhWpouDjzXmYtrcczg8o7jmkDzmGg17OosJ3olcwMeBQyxEKcYvugExef+ZXiq0lzKIRMoFW8d8nn/qvVEHc33JTIc+JF9Z5Qn4itVaeiEgNOZTH48s/aIuf7JJO8SNCvcTZOhekqKT+63QSr9J+VoSUZLUTVsPYGLY7OiGZjV5ktKmAUjzzWNnkFNdKVsbh20RJLOEuK/LgcQTsrsOO5xbm9KbYogjSUh4z0frM0cqLbPcgHTdY3JdqjdY+ecw
- 364cjmA2
- MJw950kARzRn/mzFdAQy1dyr50MGz2pu2BzbLZDdsr5NPXJtUAHp2i/3owNSu+Ns6EVEYAyc5pUCQW5YfutyBgjuKNPj24Xy9oEtf6a+sz54SXJ6krqfNGZZQGksoPrHksXCoUTSuuH0PFbiGClZ2HcFQNRpao8kFNztK2M2LOAp3+8lsm4qdVWerBZv/i4tZjolWMUW9JejoX+sf1tQxVKUAiN1u7e8guwXg1/jusZWPhRrD16X3J8mR7Xw3q8GCizIrQvYKbOF2bXlPaXGObhc0QqlLTay4vZZ3QRv2qiGWe2n4DOuf4/+RQOu8RyFVO8rtG6Cz/WJYhapUa/Ko/VnMCA==
+X-Rspamd-Queue-Id: 450A6180003
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756904466-247814
+X-HE-Meta: U2FsdGVkX1+H19tx+VLu08WEj2vjnsbjKvKUA5GwsCNa805IvoPuKEpizZDDbUjYZAANO8+gLo5uM9PppZlUZigWrqM6/iybsf5qsE6INls+oTYCP0bFge5mUYNURxmYmiZtZ/jzfS5xaZxEvAAmFgJScXCk2oSfMDG2QQ9Bf7nfsmb8fnXRGJl0B0gEIq6AkXpixZu+A/Lz2h7hslbJepAXalvBDp55OOV9TRokQ3FWTnD3TwF8Jw5fUDqdc8I+y2TkqUgocUy9JENrcFPr6TTggUAUhz1OdUDRcAX8TOq2dYybnAHQb75SFoLuT0o2gcl79G91iM8zMaa4Nt3p2dD3jJALgOudGRAct+UQF0BsuaFzPk7JeFjsLobwEeqYgPVzGTJrgHS+iP4Y9KPAiZkEDLu3lsj/rcv5QJr4AUSfUKjYyZ5KsCEUezTK+fsFGgRQ8DpVH+Hc/Kl6uGH42ASYk6RuOHEztyC5abXoq0k66DK14pokARipzC7XtU3APvVVnL3NuIZ9ueGSBB/sFEH+HOKcz5ilslfYjxNMk40w9Le7XonI8EjZF4sbLTa6Uf4rpQYWJDQsD/spOZ1euwvluGecx41ZuQyKptExra4KtBl1x2H8NDrA0P2p2IPc6YOMjYYenbwcWYrxEiwqlUH0KkIq5K5EedyCugk9jyw2Aj3EZ7pDJdfL/tcQB3BmgQyfSU8eVDRnWeXfT0J6Qz81um2NMFB/VctY1MvHh5mE247cFazto3B65Ri9cxu05BMDlAAvrJqsOrzoJzw56aoVVMaKgjSNi2KbnYpbt/6B9NJzcFsr0BU77K95UQiLnhOotY35gSNl4MmOKONp8gCue5NJ+3OAwErDturzoO6lsVEdswstB3jFloL9SHiot9c4yZRr0AKqkqCmcSFxZKZDBzGp+2wQiPh44JqiHsxNvTWaywmzl69rbWClACo4gJE6MZxoRZakdrcIZ3E
+ RnyBHs/9
+ e+luifS7xC0YnRAc7q4NI+b0VvPsmGhm9gZSHhIgP+FMRdxWP6MKSYyehSjc3XrWLwoakNLF4SAaE/mYpXNI3mSOYofZ3ODwa3h5SxD5k/JccFlVY5ceoAp66TY6Pzo/PdqNOXJ7s8mHYh5S0Mp5ZIJ002pjS2QiQ3FVszxMTe3sOsiQDc07HDvRm/fyPQD6DrSdwHWj4P7CSVuu1EN4GLPNi4wCt5a6tvb8HSFaafVzijgqoo+gAUzGCFABTuhQoYDdARL7XOK0SjbkNpxg+ThBQrOmLo98AWSe+BtST1Jj87DJMT6EDUtPLB9nGLZ3zr41a6l5hogUGciZDCE7uVO5mS5BJBS8S01f44JPIVpZ2fs+gAYQGQzLP1o+/2V0rh5Lif3uzj7DmsLhB67neemYYXD4IU0rf5CXl4B1u2EOK81qAakhcxXhHiutb/uBxO7Gi3Vb+pz3GKK5+jVWkTj0WypjphESvAWYhymj3dAYDNj4h1fhpFoN14QVrEaVN5WSbQhkuWx9iAos=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,408 +124,717 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend the sheaf infrastructure for more efficient kfree_rcu() handling.
-For caches with sheaves, on each cpu maintain a rcu_free sheaf in
-addition to main and spare sheaves.
+On Sun, Aug 10, 2025 at 2:58=E2=80=AFPM Sabyrzhan Tasbolatov
+<snovitoll@gmail.com> wrote:
+>
+> Introduce CONFIG_ARCH_DEFER_KASAN to identify architectures [1] that need
+> to defer KASAN initialization until shadow memory is properly set up,
+> and unify the static key infrastructure across all KASAN modes.
+>
+> [1] PowerPC, UML, LoongArch selects ARCH_DEFER_KASAN.
+>
+> The core issue is that different architectures haveinconsistent approache=
+s
+> to KASAN readiness tracking:
+> - PowerPC, LoongArch, and UML arch, each implement own
+>   kasan_arch_is_ready()
+> - Only HW_TAGS mode had a unified static key (kasan_flag_enabled)
+> - Generic and SW_TAGS modes relied on arch-specific solutions or always-o=
+n
+>     behavior
+>
+> This patch addresses the fragmentation in KASAN initialization
+> across architectures by introducing a unified approach that eliminates
+> duplicate static keys and arch-specific kasan_arch_is_ready()
+> implementations.
+>
+> Let's replace kasan_arch_is_ready() with existing kasan_enabled() check,
+> which examines the static key being enabled if arch selects
+> ARCH_DEFER_KASAN or has HW_TAGS mode support.
+> For other arch, kasan_enabled() checks the enablement during compile time=
+.
+>
+> Now KASAN users can use a single kasan_enabled() check everywhere.
+>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
+> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> ---
+> Changes in v6:
+> - Added more details in git commit message
+> - Fixed commenting format per coding style in UML (Christophe Leroy)
+> - Changed exporting to GPL for kasan_flag_enabled (Christophe Leroy)
+> - Converted ARCH_DEFER_KASAN to def_bool depending on KASAN to avoid
+>         arch users to have `if KASAN` condition (Christophe Leroy)
+> - Forgot to add __init for kasan_init in UML
+>
+> Changes in v5:
+> - Unified patches where arch (powerpc, UML, loongarch) selects
+>     ARCH_DEFER_KASAN in the first patch not to break
+>     bisectability
+> - Removed kasan_arch_is_ready completely as there is no user
+> - Removed __wrappers in v4, left only those where it's necessary
+>     due to different implementations
+>
+> Changes in v4:
+> - Fixed HW_TAGS static key functionality (was broken in v3)
+> - Merged configuration and implementation for atomicity
+> ---
+>  arch/loongarch/Kconfig                 |  1 +
+>  arch/loongarch/include/asm/kasan.h     |  7 ------
+>  arch/loongarch/mm/kasan_init.c         |  8 +++----
+>  arch/powerpc/Kconfig                   |  1 +
+>  arch/powerpc/include/asm/kasan.h       | 12 ----------
+>  arch/powerpc/mm/kasan/init_32.c        |  2 +-
+>  arch/powerpc/mm/kasan/init_book3e_64.c |  2 +-
+>  arch/powerpc/mm/kasan/init_book3s_64.c |  6 +----
+>  arch/um/Kconfig                        |  1 +
+>  arch/um/include/asm/kasan.h            |  5 ++--
+>  arch/um/kernel/mem.c                   | 13 ++++++++---
+>  include/linux/kasan-enabled.h          | 32 ++++++++++++++++++--------
+>  include/linux/kasan.h                  |  6 +++++
+>  lib/Kconfig.kasan                      | 12 ++++++++++
+>  mm/kasan/common.c                      | 17 ++++++++++----
+>  mm/kasan/generic.c                     | 19 +++++++++++----
+>  mm/kasan/hw_tags.c                     |  9 +-------
+>  mm/kasan/kasan.h                       |  8 ++++++-
+>  mm/kasan/shadow.c                      | 12 +++++-----
+>  mm/kasan/sw_tags.c                     |  1 +
+>  mm/kasan/tags.c                        |  2 +-
+>  21 files changed, 106 insertions(+), 70 deletions(-)
+>
+> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> index f0abc38c40ac..e449e3fcecf9 100644
+> --- a/arch/loongarch/Kconfig
+> +++ b/arch/loongarch/Kconfig
+> @@ -9,6 +9,7 @@ config LOONGARCH
+>         select ACPI_PPTT if ACPI
+>         select ACPI_SYSTEM_POWER_STATES_SUPPORT if ACPI
+>         select ARCH_BINFMT_ELF_STATE
+> +       select ARCH_NEEDS_DEFER_KASAN
+>         select ARCH_DISABLE_KASAN_INLINE
+>         select ARCH_ENABLE_MEMORY_HOTPLUG
+>         select ARCH_ENABLE_MEMORY_HOTREMOVE
+> diff --git a/arch/loongarch/include/asm/kasan.h b/arch/loongarch/include/=
+asm/kasan.h
+> index 62f139a9c87d..0e50e5b5e056 100644
+> --- a/arch/loongarch/include/asm/kasan.h
+> +++ b/arch/loongarch/include/asm/kasan.h
+> @@ -66,7 +66,6 @@
+>  #define XKPRANGE_WC_SHADOW_OFFSET      (KASAN_SHADOW_START + XKPRANGE_WC=
+_KASAN_OFFSET)
+>  #define XKVRANGE_VC_SHADOW_OFFSET      (KASAN_SHADOW_START + XKVRANGE_VC=
+_KASAN_OFFSET)
+>
+> -extern bool kasan_early_stage;
+>  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
+>
+>  #define kasan_mem_to_shadow kasan_mem_to_shadow
+> @@ -75,12 +74,6 @@ void *kasan_mem_to_shadow(const void *addr);
+>  #define kasan_shadow_to_mem kasan_shadow_to_mem
+>  const void *kasan_shadow_to_mem(const void *shadow_addr);
+>
+> -#define kasan_arch_is_ready kasan_arch_is_ready
+> -static __always_inline bool kasan_arch_is_ready(void)
+> -{
+> -       return !kasan_early_stage;
+> -}
+> -
+>  #define addr_has_metadata addr_has_metadata
+>  static __always_inline bool addr_has_metadata(const void *addr)
+>  {
+> diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_ini=
+t.c
+> index d2681272d8f0..170da98ad4f5 100644
+> --- a/arch/loongarch/mm/kasan_init.c
+> +++ b/arch/loongarch/mm/kasan_init.c
+> @@ -40,11 +40,9 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __a=
+ligned(PAGE_SIZE);
+>  #define __pte_none(early, pte) (early ? pte_none(pte) : \
+>  ((pte_val(pte) & _PFN_MASK) =3D=3D (unsigned long)__pa(kasan_early_shado=
+w_page)))
+>
+> -bool kasan_early_stage =3D true;
+> -
+>  void *kasan_mem_to_shadow(const void *addr)
+>  {
+> -       if (!kasan_arch_is_ready()) {
+> +       if (!kasan_enabled()) {
+>                 return (void *)(kasan_early_shadow_page);
+>         } else {
+>                 unsigned long maddr =3D (unsigned long)addr;
+> @@ -298,7 +296,8 @@ void __init kasan_init(void)
+>         kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_S=
+TART),
+>                                         kasan_mem_to_shadow((void *)KFENC=
+E_AREA_END));
+>
+> -       kasan_early_stage =3D false;
+> +       /* Enable KASAN here before kasan_mem_to_shadow(). */
+> +       kasan_init_generic();
+>
+>         /* Populate the linear mapping */
+>         for_each_mem_range(i, &pa_start, &pa_end) {
+> @@ -329,5 +328,4 @@ void __init kasan_init(void)
+>
+>         /* At this point kasan is fully initialized. Enable error message=
+s */
+>         init_task.kasan_depth =3D 0;
+> -       pr_info("KernelAddressSanitizer initialized.\n");
+>  }
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 93402a1d9c9f..4730c676b6bf 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -122,6 +122,7 @@ config PPC
+>         # Please keep this list sorted alphabetically.
+>         #
+>         select ARCH_32BIT_OFF_T if PPC32
+> +       select ARCH_NEEDS_DEFER_KASAN           if PPC_RADIX_MMU
+>         select ARCH_DISABLE_KASAN_INLINE        if PPC_RADIX_MMU
+>         select ARCH_DMA_DEFAULT_COHERENT        if !NOT_COHERENT_CACHE
+>         select ARCH_ENABLE_MEMORY_HOTPLUG
+> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/=
+kasan.h
+> index b5bbb94c51f6..957a57c1db58 100644
+> --- a/arch/powerpc/include/asm/kasan.h
+> +++ b/arch/powerpc/include/asm/kasan.h
+> @@ -53,18 +53,6 @@
+>  #endif
+>
+>  #ifdef CONFIG_KASAN
+> -#ifdef CONFIG_PPC_BOOK3S_64
+> -DECLARE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+> -
+> -static __always_inline bool kasan_arch_is_ready(void)
+> -{
+> -       if (static_branch_likely(&powerpc_kasan_enabled_key))
+> -               return true;
+> -       return false;
+> -}
+> -
+> -#define kasan_arch_is_ready kasan_arch_is_ready
+> -#endif
+>
+>  void kasan_early_init(void);
+>  void kasan_mmu_init(void);
+> diff --git a/arch/powerpc/mm/kasan/init_32.c b/arch/powerpc/mm/kasan/init=
+_32.c
+> index 03666d790a53..1d083597464f 100644
+> --- a/arch/powerpc/mm/kasan/init_32.c
+> +++ b/arch/powerpc/mm/kasan/init_32.c
+> @@ -165,7 +165,7 @@ void __init kasan_init(void)
+>
+>         /* At this point kasan is fully initialized. Enable error message=
+s */
+>         init_task.kasan_depth =3D 0;
+> -       pr_info("KASAN init done\n");
+> +       kasan_init_generic();
+>  }
+>
+>  void __init kasan_late_init(void)
+> diff --git a/arch/powerpc/mm/kasan/init_book3e_64.c b/arch/powerpc/mm/kas=
+an/init_book3e_64.c
+> index 60c78aac0f63..0d3a73d6d4b0 100644
+> --- a/arch/powerpc/mm/kasan/init_book3e_64.c
+> +++ b/arch/powerpc/mm/kasan/init_book3e_64.c
+> @@ -127,7 +127,7 @@ void __init kasan_init(void)
+>
+>         /* Enable error messages */
+>         init_task.kasan_depth =3D 0;
+> -       pr_info("KASAN init done\n");
+> +       kasan_init_generic();
+>  }
+>
+>  void __init kasan_late_init(void) { }
+> diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c b/arch/powerpc/mm/kas=
+an/init_book3s_64.c
+> index 7d959544c077..dcafa641804c 100644
+> --- a/arch/powerpc/mm/kasan/init_book3s_64.c
+> +++ b/arch/powerpc/mm/kasan/init_book3s_64.c
+> @@ -19,8 +19,6 @@
+>  #include <linux/memblock.h>
+>  #include <asm/pgalloc.h>
+>
+> -DEFINE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+> -
+>  static void __init kasan_init_phys_region(void *start, void *end)
+>  {
+>         unsigned long k_start, k_end, k_cur;
+> @@ -92,11 +90,9 @@ void __init kasan_init(void)
+>          */
+>         memset(kasan_early_shadow_page, 0, PAGE_SIZE);
+>
+> -       static_branch_inc(&powerpc_kasan_enabled_key);
+> -
+>         /* Enable error messages */
+>         init_task.kasan_depth =3D 0;
+> -       pr_info("KASAN init done\n");
+> +       kasan_init_generic();
+>  }
+>
+>  void __init kasan_early_init(void) { }
+> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+> index 9083bfdb7735..1d4def0db841 100644
+> --- a/arch/um/Kconfig
+> +++ b/arch/um/Kconfig
+> @@ -5,6 +5,7 @@ menu "UML-specific options"
+>  config UML
+>         bool
+>         default y
+> +       select ARCH_NEEDS_DEFER_KASAN if STATIC_LINK
+>         select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+>         select ARCH_HAS_CACHE_LINE_SIZE
+>         select ARCH_HAS_CPU_FINALIZE_INIT
+> diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+> index f97bb1f7b851..b54a4e937fd1 100644
+> --- a/arch/um/include/asm/kasan.h
+> +++ b/arch/um/include/asm/kasan.h
+> @@ -24,10 +24,9 @@
+>
+>  #ifdef CONFIG_KASAN
+>  void kasan_init(void);
+> -extern int kasan_um_is_ready;
+>
+> -#ifdef CONFIG_STATIC_LINK
+> -#define kasan_arch_is_ready() (kasan_um_is_ready)
+> +#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
+> +#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
+>  #endif
+>  #else
+>  static inline void kasan_init(void) { }
+> diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+> index 76bec7de81b5..32e3b1972dc1 100644
+> --- a/arch/um/kernel/mem.c
+> +++ b/arch/um/kernel/mem.c
+> @@ -21,10 +21,10 @@
+>  #include <os.h>
+>  #include <um_malloc.h>
+>  #include <linux/sched/task.h>
+> +#include <linux/kasan.h>
+>
+>  #ifdef CONFIG_KASAN
+> -int kasan_um_is_ready;
+> -void kasan_init(void)
+> +void __init kasan_init(void)
+>  {
+>         /*
+>          * kasan_map_memory will map all of the required address space an=
+d
+> @@ -32,7 +32,11 @@ void kasan_init(void)
+>          */
+>         kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
+>         init_task.kasan_depth =3D 0;
+> -       kasan_um_is_ready =3D true;
+> +       /*
+> +        * Since kasan_init() is called before main(),
+> +        * KASAN is initialized but the enablement is deferred after
+> +        * jump_label_init(). See arch_mm_preinit().
+> +        */
+>  }
+>
+>  static void (*kasan_init_ptr)(void)
+> @@ -58,6 +62,9 @@ static unsigned long brk_end;
+>
+>  void __init arch_mm_preinit(void)
+>  {
+> +       /* Safe to call after jump_label_init(). Enables KASAN. */
+> +       kasan_init_generic();
+> +
+>         /* clear the zero-page */
+>         memset(empty_zero_page, 0, PAGE_SIZE);
+>
+> diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.=
+h
+> index 6f612d69ea0c..9eca967d8526 100644
+> --- a/include/linux/kasan-enabled.h
+> +++ b/include/linux/kasan-enabled.h
+> @@ -4,32 +4,46 @@
+>
+>  #include <linux/static_key.h>
+>
+> -#ifdef CONFIG_KASAN_HW_TAGS
+> -
+> +#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
+> +/*
+> + * Global runtime flag for KASAN modes that need runtime control.
+> + * Used by ARCH_DEFER_KASAN architectures and HW_TAGS mode.
+> + */
+>  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
+>
+> +/*
+> + * Runtime control for shadow memory initialization or HW_TAGS mode.
+> + * Uses static key for architectures that need deferred KASAN or HW_TAGS=
+.
+> + */
+>  static __always_inline bool kasan_enabled(void)
+>  {
+>         return static_branch_likely(&kasan_flag_enabled);
+>  }
+>
+> -static inline bool kasan_hw_tags_enabled(void)
+> +static inline void kasan_enable(void)
+>  {
+> -       return kasan_enabled();
+> +       static_branch_enable(&kasan_flag_enabled);
+>  }
+> -
+> -#else /* CONFIG_KASAN_HW_TAGS */
+> -
+> -static inline bool kasan_enabled(void)
+> +#else
+> +/* For architectures that can enable KASAN early, use compile-time check=
+. */
+> +static __always_inline bool kasan_enabled(void)
+>  {
+>         return IS_ENABLED(CONFIG_KASAN);
+>  }
+>
+> +static inline void kasan_enable(void) {}
+> +#endif /* CONFIG_ARCH_DEFER_KASAN || CONFIG_KASAN_HW_TAGS */
+> +
+> +#ifdef CONFIG_KASAN_HW_TAGS
+> +static inline bool kasan_hw_tags_enabled(void)
+> +{
+> +       return kasan_enabled();
+> +}
+> +#else
+>  static inline bool kasan_hw_tags_enabled(void)
+>  {
+>         return false;
+>  }
+> -
+>  #endif /* CONFIG_KASAN_HW_TAGS */
+>
+>  #endif /* LINUX_KASAN_ENABLED_H */
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index 890011071f2b..51a8293d1af6 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -543,6 +543,12 @@ void kasan_report_async(void);
+>
+>  #endif /* CONFIG_KASAN_HW_TAGS */
+>
+> +#ifdef CONFIG_KASAN_GENERIC
+> +void __init kasan_init_generic(void);
+> +#else
+> +static inline void kasan_init_generic(void) { }
+> +#endif
+> +
+>  #ifdef CONFIG_KASAN_SW_TAGS
+>  void __init kasan_init_sw_tags(void);
+>  #else
+> diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
+> index f82889a830fa..a4bb610a7a6f 100644
+> --- a/lib/Kconfig.kasan
+> +++ b/lib/Kconfig.kasan
+> @@ -19,6 +19,18 @@ config ARCH_DISABLE_KASAN_INLINE
+>           Disables both inline and stack instrumentation. Selected by
+>           architectures that do not support these instrumentation types.
+>
+> +config ARCH_NEEDS_DEFER_KASAN
+> +       bool
+> +
+> +config ARCH_DEFER_KASAN
+> +       def_bool y
+> +       depends on KASAN && ARCH_NEEDS_DEFER_KASAN
+> +       help
+> +         Architectures should select this if they need to defer KASAN
+> +         initialization until shadow memory is properly set up. This
+> +         enables runtime control via static keys. Otherwise, KASAN uses
+> +         compile-time constants for better performance.
+> +
+>  config CC_HAS_KASAN_GENERIC
+>         def_bool $(cc-option, -fsanitize=3Dkernel-address)
+>
+> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+> index 9142964ab9c9..e3765931a31f 100644
+> --- a/mm/kasan/common.c
+> +++ b/mm/kasan/common.c
+> @@ -32,6 +32,15 @@
+>  #include "kasan.h"
+>  #include "../slab.h"
+>
+> +#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
+> +/*
+> + * Definition of the unified static key declared in kasan-enabled.h.
+> + * This provides consistent runtime enable/disable across KASAN modes.
+> + */
+> +DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> +EXPORT_SYMBOL_GPL(kasan_flag_enabled);
+> +#endif
+> +
+>  struct slab *kasan_addr_to_slab(const void *addr)
+>  {
+>         if (virt_addr_valid(addr))
+> @@ -246,7 +255,7 @@ static inline void poison_slab_object(struct kmem_cac=
+he *cache, void *object,
+>  bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
+>                                 unsigned long ip)
+>  {
+> -       if (!kasan_arch_is_ready() || is_kfence_address(object))
+> +       if (is_kfence_address(object))
+>                 return false;
 
-kfree_rcu() operations will try to put objects on this sheaf. Once full,
-the sheaf is detached and submitted to call_rcu() with a handler that
-will try to put it in the barn, or flush to slab pages using bulk free,
-when the barn is full. Then a new empty sheaf must be obtained to put
-more objects there.
+Why is the check removed here and in some other places below? This
+need to be explained in the commit message.
 
-It's possible that no free sheaves are available to use for a new
-rcu_free sheaf, and the allocation in kfree_rcu() context can only use
-GFP_NOWAIT and thus may fail. In that case, fall back to the existing
-kfree_rcu() implementation.
+>         return check_slab_allocation(cache, object, ip);
+>  }
+> @@ -254,7 +263,7 @@ bool __kasan_slab_pre_free(struct kmem_cache *cache, =
+void *object,
+>  bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init=
+,
+>                        bool still_accessible)
+>  {
+> -       if (!kasan_arch_is_ready() || is_kfence_address(object))
+> +       if (is_kfence_address(object))
+>                 return false;
+>
+>         /*
+> @@ -293,7 +302,7 @@ bool __kasan_slab_free(struct kmem_cache *cache, void=
+ *object, bool init,
+>
+>  static inline bool check_page_allocation(void *ptr, unsigned long ip)
+>  {
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return false;
+>
+>         if (ptr !=3D page_address(virt_to_head_page(ptr))) {
+> @@ -522,7 +531,7 @@ bool __kasan_mempool_poison_object(void *ptr, unsigne=
+d long ip)
+>                 return true;
+>         }
+>
+> -       if (is_kfence_address(ptr) || !kasan_arch_is_ready())
+> +       if (is_kfence_address(ptr))
+>                 return true;
+>
+>         slab =3D folio_slab(folio);
+> diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+> index d54e89f8c3e7..b413c46b3e04 100644
+> --- a/mm/kasan/generic.c
+> +++ b/mm/kasan/generic.c
+> @@ -36,6 +36,17 @@
+>  #include "kasan.h"
+>  #include "../slab.h"
+>
+> +/*
+> + * Initialize Generic KASAN and enable runtime checks.
+> + * This should be called from arch kasan_init() once shadow memory is re=
+ady.
+> + */
+> +void __init kasan_init_generic(void)
+> +{
+> +       kasan_enable();
+> +
+> +       pr_info("KernelAddressSanitizer initialized (generic)\n");
+> +}
+> +
+>  /*
+>   * All functions below always inlined so compiler could
+>   * perform better optimizations in each of __asan_loadX/__assn_storeX
+> @@ -165,7 +176,7 @@ static __always_inline bool check_region_inline(const=
+ void *addr,
+>                                                 size_t size, bool write,
+>                                                 unsigned long ret_ip)
+>  {
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return true;
+>
+>         if (unlikely(size =3D=3D 0))
+> @@ -193,7 +204,7 @@ bool kasan_byte_accessible(const void *addr)
+>  {
+>         s8 shadow_byte;
+>
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return true;
+>
+>         shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
+> @@ -495,7 +506,7 @@ static void release_alloc_meta(struct kasan_alloc_met=
+a *meta)
+>
+>  static void release_free_meta(const void *object, struct kasan_free_meta=
+ *meta)
+>  {
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return;
+>
+>         /* Check if free meta is valid. */
+> @@ -562,7 +573,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache, =
+void *object, gfp_t flags)
+>         kasan_save_track(&alloc_meta->alloc_track, flags);
+>  }
+>
+> -void kasan_save_free_info(struct kmem_cache *cache, void *object)
+> +void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+>  {
+>         struct kasan_free_meta *free_meta;
+>
+> diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> index 9a6927394b54..c8289a3feabf 100644
+> --- a/mm/kasan/hw_tags.c
+> +++ b/mm/kasan/hw_tags.c
+> @@ -45,13 +45,6 @@ static enum kasan_arg kasan_arg __ro_after_init;
+>  static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
+>  static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
+>
+> -/*
+> - * Whether KASAN is enabled at all.
+> - * The value remains false until KASAN is initialized by kasan_init_hw_t=
+ags().
+> - */
+> -DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> -EXPORT_SYMBOL(kasan_flag_enabled);
+> -
+>  /*
+>   * Whether the selected mode is synchronous, asynchronous, or asymmetric=
+.
+>   * Defaults to KASAN_MODE_SYNC.
+> @@ -260,7 +253,7 @@ void __init kasan_init_hw_tags(void)
+>         kasan_init_tags();
+>
+>         /* KASAN is now initialized, enable it. */
+> -       static_branch_enable(&kasan_flag_enabled);
+> +       kasan_enable();
+>
+>         pr_info("KernelAddressSanitizer initialized (hw-tags, mode=3D%s, =
+vmalloc=3D%s, stacktrace=3D%s)\n",
+>                 kasan_mode_info(),
+> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+> index 129178be5e64..8a9d8a6ea717 100644
+> --- a/mm/kasan/kasan.h
+> +++ b/mm/kasan/kasan.h
+> @@ -398,7 +398,13 @@ depot_stack_handle_t kasan_save_stack(gfp_t flags, d=
+epot_flags_t depot_flags);
+>  void kasan_set_track(struct kasan_track *track, depot_stack_handle_t sta=
+ck);
+>  void kasan_save_track(struct kasan_track *track, gfp_t flags);
+>  void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp_t=
+ flags);
+> -void kasan_save_free_info(struct kmem_cache *cache, void *object);
+> +
+> +void __kasan_save_free_info(struct kmem_cache *cache, void *object);
+> +static inline void kasan_save_free_info(struct kmem_cache *cache, void *=
+object)
+> +{
+> +       if (kasan_enabled())
+> +               __kasan_save_free_info(cache, object);
+> +}
 
-Expected advantages:
-- batching the kfree_rcu() operations, that could eventually replace the
-  existing batching
-- sheaves can be reused for allocations via barn instead of being
-  flushed to slabs, which is more efficient
-  - this includes cases where only some cpus are allowed to process rcu
-    callbacks (Android)
+What I meant with these __wrappers was that we should add them for the
+KASAN hooks that are called from non-KASAN code (i.e. for the hooks
+defined in include/linux/kasan.h). And then move all the
+kasan_enabled() checks from mm/kasan/* to where the wrappers are
+defined in include/linux/kasan.h (see kasan_unpoison_range() as an
+example).
 
-Possible disadvantage:
-- objects might be waiting for more than their grace period (it is
-  determined by the last object freed into the sheaf), increasing memory
-  usage - but the existing batching does that too.
+kasan_save_free_info is a KASAN internal function that should need
+such a wrapper.
 
-Only implement this for CONFIG_KVFREE_RCU_BATCHED as the tiny
-implementation favors smaller memory footprint over performance.
+For now, to make these patches simpler, you can keep kasan_enabled()
+checks in mm/kasan/*, where they are now. Later we can move them to
+include/linux/kasan.h with a separate patch.
 
-Add CONFIG_SLUB_STATS counters free_rcu_sheaf and free_rcu_sheaf_fail to
-count how many kfree_rcu() used the rcu_free sheaf successfully and how
-many had to fall back to the existing implementation.
 
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- mm/slab.h        |   2 +
- mm/slab_common.c |  24 +++++++
- mm/slub.c        | 192 ++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 216 insertions(+), 2 deletions(-)
-
-diff --git a/mm/slab.h b/mm/slab.h
-index 206987ce44a4d053ebe3b5e50784d2dd23822cd1..f1866f2d9b211bb0d7f24644b80ef4b50a7c3d24 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -435,6 +435,8 @@ static inline bool is_kmalloc_normal(struct kmem_cache *s)
- 	return !(s->flags & (SLAB_CACHE_DMA|SLAB_ACCOUNT|SLAB_RECLAIM_ACCOUNT));
- }
- 
-+bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
-+
- #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
- 			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
- 			 SLAB_TYPESAFE_BY_RCU | SLAB_DEBUG_OBJECTS | \
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index e2b197e47866c30acdbd1fee4159f262a751c5a7..2d806e02568532a1000fd3912db6978e945dcfa8 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1608,6 +1608,27 @@ static void kfree_rcu_work(struct work_struct *work)
- 		kvfree_rcu_list(head);
- }
- 
-+static bool kfree_rcu_sheaf(void *obj)
-+{
-+	struct kmem_cache *s;
-+	struct folio *folio;
-+	struct slab *slab;
-+
-+	if (is_vmalloc_addr(obj))
-+		return false;
-+
-+	folio = virt_to_folio(obj);
-+	if (unlikely(!folio_test_slab(folio)))
-+		return false;
-+
-+	slab = folio_slab(folio);
-+	s = slab->slab_cache;
-+	if (s->cpu_sheaves)
-+		return __kfree_rcu_sheaf(s, obj);
-+
-+	return false;
-+}
-+
- static bool
- need_offload_krc(struct kfree_rcu_cpu *krcp)
- {
-@@ -1952,6 +1973,9 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
- 	if (!head)
- 		might_sleep();
- 
-+	if (kfree_rcu_sheaf(ptr))
-+		return;
-+
- 	// Queue the object but don't yet schedule the batch.
- 	if (debug_rcu_head_queue(ptr)) {
- 		// Probable double kfree_rcu(), just leak.
-diff --git a/mm/slub.c b/mm/slub.c
-index 42cb5848f1cecb17174967ff8b102b20a50110e3..6a64478befdebdb44cd7896d673bd20a7a6e2889 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -367,6 +367,8 @@ enum stat_item {
- 	ALLOC_FASTPATH,		/* Allocation from cpu slab */
- 	ALLOC_SLOWPATH,		/* Allocation by getting a new cpu slab */
- 	FREE_PCS,		/* Free to percpu sheaf */
-+	FREE_RCU_SHEAF,		/* Free to rcu_free sheaf */
-+	FREE_RCU_SHEAF_FAIL,	/* Failed to free to a rcu_free sheaf */
- 	FREE_FASTPATH,		/* Free to cpu slab */
- 	FREE_SLOWPATH,		/* Freeing not to cpu slab */
- 	FREE_FROZEN,		/* Freeing to frozen slab */
-@@ -461,6 +463,7 @@ struct slab_sheaf {
- 		struct rcu_head rcu_head;
- 		struct list_head barn_list;
- 	};
-+	struct kmem_cache *cache;
- 	unsigned int size;
- 	void *objects[];
- };
-@@ -469,6 +472,7 @@ struct slub_percpu_sheaves {
- 	local_trylock_t lock;
- 	struct slab_sheaf *main; /* never NULL when unlocked */
- 	struct slab_sheaf *spare; /* empty or full, may be NULL */
-+	struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
- };
- 
- /*
-@@ -2531,6 +2535,8 @@ static struct slab_sheaf *alloc_empty_sheaf(struct kmem_cache *s, gfp_t gfp)
- 	if (unlikely(!sheaf))
- 		return NULL;
- 
-+	sheaf->cache = s;
-+
- 	stat(s, SHEAF_ALLOC);
- 
- 	return sheaf;
-@@ -2655,6 +2661,43 @@ static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf)
- 	sheaf->size = 0;
- }
- 
-+static void __rcu_free_sheaf_prepare(struct kmem_cache *s,
-+				     struct slab_sheaf *sheaf)
-+{
-+	bool init = slab_want_init_on_free(s);
-+	void **p = &sheaf->objects[0];
-+	unsigned int i = 0;
-+
-+	while (i < sheaf->size) {
-+		struct slab *slab = virt_to_slab(p[i]);
-+
-+		memcg_slab_free_hook(s, slab, p + i, 1);
-+		alloc_tagging_slab_free_hook(s, slab, p + i, 1);
-+
-+		if (unlikely(!slab_free_hook(s, p[i], init, true))) {
-+			p[i] = p[--sheaf->size];
-+			continue;
-+		}
-+
-+		i++;
-+	}
-+}
-+
-+static void rcu_free_sheaf_nobarn(struct rcu_head *head)
-+{
-+	struct slab_sheaf *sheaf;
-+	struct kmem_cache *s;
-+
-+	sheaf = container_of(head, struct slab_sheaf, rcu_head);
-+	s = sheaf->cache;
-+
-+	__rcu_free_sheaf_prepare(s, sheaf);
-+
-+	sheaf_flush_unused(s, sheaf);
-+
-+	free_empty_sheaf(s, sheaf);
-+}
-+
- /*
-  * Caller needs to make sure migration is disabled in order to fully flush
-  * single cpu's sheaves
-@@ -2667,7 +2710,7 @@ static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf)
- static void pcs_flush_all(struct kmem_cache *s)
- {
- 	struct slub_percpu_sheaves *pcs;
--	struct slab_sheaf *spare;
-+	struct slab_sheaf *spare, *rcu_free;
- 
- 	local_lock(&s->cpu_sheaves->lock);
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -2675,6 +2718,9 @@ static void pcs_flush_all(struct kmem_cache *s)
- 	spare = pcs->spare;
- 	pcs->spare = NULL;
- 
-+	rcu_free = pcs->rcu_free;
-+	pcs->rcu_free = NULL;
-+
- 	local_unlock(&s->cpu_sheaves->lock);
- 
- 	if (spare) {
-@@ -2682,6 +2728,9 @@ static void pcs_flush_all(struct kmem_cache *s)
- 		free_empty_sheaf(s, spare);
- 	}
- 
-+	if (rcu_free)
-+		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
-+
- 	sheaf_flush_main(s);
- }
- 
-@@ -2698,6 +2747,11 @@ static void __pcs_flush_all_cpu(struct kmem_cache *s, unsigned int cpu)
- 		free_empty_sheaf(s, pcs->spare);
- 		pcs->spare = NULL;
- 	}
-+
-+	if (pcs->rcu_free) {
-+		call_rcu(&pcs->rcu_free->rcu_head, rcu_free_sheaf_nobarn);
-+		pcs->rcu_free = NULL;
-+	}
- }
- 
- static void pcs_destroy(struct kmem_cache *s)
-@@ -2723,6 +2777,7 @@ static void pcs_destroy(struct kmem_cache *s)
- 		 */
- 
- 		WARN_ON(pcs->spare);
-+		WARN_ON(pcs->rcu_free);
- 
- 		if (!WARN_ON(pcs->main->size)) {
- 			free_empty_sheaf(s, pcs->main);
-@@ -3780,7 +3835,7 @@ static bool has_pcs_used(int cpu, struct kmem_cache *s)
- 
- 	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
--	return (pcs->spare || pcs->main->size);
-+	return (pcs->spare || pcs->rcu_free || pcs->main->size);
- }
- 
- static void pcs_flush_all(struct kmem_cache *s);
-@@ -5415,6 +5470,130 @@ bool free_to_pcs(struct kmem_cache *s, void *object)
- 	return true;
- }
- 
-+static void rcu_free_sheaf(struct rcu_head *head)
-+{
-+	struct slab_sheaf *sheaf;
-+	struct node_barn *barn;
-+	struct kmem_cache *s;
-+
-+	sheaf = container_of(head, struct slab_sheaf, rcu_head);
-+
-+	s = sheaf->cache;
-+
-+	/*
-+	 * This may remove some objects due to slab_free_hook() returning false,
-+	 * so that the sheaf might no longer be completely full. But it's easier
-+	 * to handle it as full (unless it became completely empty), as the code
-+	 * handles it fine. The only downside is that sheaf will serve fewer
-+	 * allocations when reused. It only happens due to debugging, which is a
-+	 * performance hit anyway.
-+	 */
-+	__rcu_free_sheaf_prepare(s, sheaf);
-+
-+	barn = get_node(s, numa_mem_id())->barn;
-+
-+	/* due to slab_free_hook() */
-+	if (unlikely(sheaf->size == 0))
-+		goto empty;
-+
-+	/*
-+	 * Checking nr_full/nr_empty outside lock avoids contention in case the
-+	 * barn is at the respective limit. Due to the race we might go over the
-+	 * limit but that should be rare and harmless.
-+	 */
-+
-+	if (data_race(barn->nr_full) < MAX_FULL_SHEAVES) {
-+		stat(s, BARN_PUT);
-+		barn_put_full_sheaf(barn, sheaf);
-+		return;
-+	}
-+
-+	stat(s, BARN_PUT_FAIL);
-+	sheaf_flush_unused(s, sheaf);
-+
-+empty:
-+	if (data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES) {
-+		barn_put_empty_sheaf(barn, sheaf);
-+		return;
-+	}
-+
-+	free_empty_sheaf(s, sheaf);
-+}
-+
-+bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
-+{
-+	struct slub_percpu_sheaves *pcs;
-+	struct slab_sheaf *rcu_sheaf;
-+
-+	if (!local_trylock(&s->cpu_sheaves->lock))
-+		goto fail;
-+
-+	pcs = this_cpu_ptr(s->cpu_sheaves);
-+
-+	if (unlikely(!pcs->rcu_free)) {
-+
-+		struct slab_sheaf *empty;
-+		struct node_barn *barn;
-+
-+		if (pcs->spare && pcs->spare->size == 0) {
-+			pcs->rcu_free = pcs->spare;
-+			pcs->spare = NULL;
-+			goto do_free;
-+		}
-+
-+		barn = get_barn(s);
-+
-+		empty = barn_get_empty_sheaf(barn);
-+
-+		if (empty) {
-+			pcs->rcu_free = empty;
-+			goto do_free;
-+		}
-+
-+		local_unlock(&s->cpu_sheaves->lock);
-+
-+		empty = alloc_empty_sheaf(s, GFP_NOWAIT);
-+
-+		if (!empty)
-+			goto fail;
-+
-+		if (!local_trylock(&s->cpu_sheaves->lock)) {
-+			barn_put_empty_sheaf(barn, empty);
-+			goto fail;
-+		}
-+
-+		pcs = this_cpu_ptr(s->cpu_sheaves);
-+
-+		if (unlikely(pcs->rcu_free))
-+			barn_put_empty_sheaf(barn, empty);
-+		else
-+			pcs->rcu_free = empty;
-+	}
-+
-+do_free:
-+
-+	rcu_sheaf = pcs->rcu_free;
-+
-+	rcu_sheaf->objects[rcu_sheaf->size++] = obj;
-+
-+	if (likely(rcu_sheaf->size < s->sheaf_capacity))
-+		rcu_sheaf = NULL;
-+	else
-+		pcs->rcu_free = NULL;
-+
-+	local_unlock(&s->cpu_sheaves->lock);
-+
-+	if (rcu_sheaf)
-+		call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
-+
-+	stat(s, FREE_RCU_SHEAF);
-+	return true;
-+
-+fail:
-+	stat(s, FREE_RCU_SHEAF_FAIL);
-+	return false;
-+}
-+
- /*
-  * Bulk free objects to the percpu sheaves.
-  * Unlike free_to_pcs() this includes the calls to all necessary hooks
-@@ -6911,6 +7090,11 @@ int __kmem_cache_shutdown(struct kmem_cache *s)
- 	struct kmem_cache_node *n;
- 
- 	flush_all_cpus_locked(s);
-+
-+	/* we might have rcu sheaves in flight */
-+	if (s->cpu_sheaves)
-+		rcu_barrier();
-+
- 	/* Attempt to free all objects */
- 	for_each_kmem_cache_node(s, node, n) {
- 		if (n->barn)
-@@ -8286,6 +8470,8 @@ STAT_ATTR(ALLOC_PCS, alloc_cpu_sheaf);
- STAT_ATTR(ALLOC_FASTPATH, alloc_fastpath);
- STAT_ATTR(ALLOC_SLOWPATH, alloc_slowpath);
- STAT_ATTR(FREE_PCS, free_cpu_sheaf);
-+STAT_ATTR(FREE_RCU_SHEAF, free_rcu_sheaf);
-+STAT_ATTR(FREE_RCU_SHEAF_FAIL, free_rcu_sheaf_fail);
- STAT_ATTR(FREE_FASTPATH, free_fastpath);
- STAT_ATTR(FREE_SLOWPATH, free_slowpath);
- STAT_ATTR(FREE_FROZEN, free_frozen);
-@@ -8384,6 +8570,8 @@ static struct attribute *slab_attrs[] = {
- 	&alloc_fastpath_attr.attr,
- 	&alloc_slowpath_attr.attr,
- 	&free_cpu_sheaf_attr.attr,
-+	&free_rcu_sheaf_attr.attr,
-+	&free_rcu_sheaf_fail_attr.attr,
- 	&free_fastpath_attr.attr,
- 	&free_slowpath_attr.attr,
- 	&free_frozen_attr.attr,
-
--- 
-2.51.0
-
+>
+>  #ifdef CONFIG_KASAN_GENERIC
+>  bool kasan_quarantine_put(struct kmem_cache *cache, void *object);
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index d2c70cd2afb1..2e126cb21b68 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -125,7 +125,7 @@ void kasan_poison(const void *addr, size_t size, u8 v=
+alue, bool init)
+>  {
+>         void *shadow_start, *shadow_end;
+>
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return;
+>
+>         /*
+> @@ -150,7 +150,7 @@ EXPORT_SYMBOL_GPL(kasan_poison);
+>  #ifdef CONFIG_KASAN_GENERIC
+>  void kasan_poison_last_granule(const void *addr, size_t size)
+>  {
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return;
+>
+>         if (size & KASAN_GRANULE_MASK) {
+> @@ -390,7 +390,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsign=
+ed long size)
+>         unsigned long shadow_start, shadow_end;
+>         int ret;
+>
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return 0;
+>
+>         if (!is_vmalloc_or_module_addr((void *)addr))
+> @@ -560,7 +560,7 @@ void kasan_release_vmalloc(unsigned long start, unsig=
+ned long end,
+>         unsigned long region_start, region_end;
+>         unsigned long size;
+>
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return;
+>
+>         region_start =3D ALIGN(start, KASAN_MEMORY_PER_SHADOW_PAGE);
+> @@ -611,7 +611,7 @@ void *__kasan_unpoison_vmalloc(const void *start, uns=
+igned long size,
+>          * with setting memory tags, so the KASAN_VMALLOC_INIT flag is ig=
+nored.
+>          */
+>
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return (void *)start;
+>
+>         if (!is_vmalloc_or_module_addr(start))
+> @@ -636,7 +636,7 @@ void *__kasan_unpoison_vmalloc(const void *start, uns=
+igned long size,
+>   */
+>  void __kasan_poison_vmalloc(const void *start, unsigned long size)
+>  {
+> -       if (!kasan_arch_is_ready())
+> +       if (!kasan_enabled())
+>                 return;
+>
+>         if (!is_vmalloc_or_module_addr(start))
+> diff --git a/mm/kasan/sw_tags.c b/mm/kasan/sw_tags.c
+> index b9382b5b6a37..c75741a74602 100644
+> --- a/mm/kasan/sw_tags.c
+> +++ b/mm/kasan/sw_tags.c
+> @@ -44,6 +44,7 @@ void __init kasan_init_sw_tags(void)
+>                 per_cpu(prng_state, cpu) =3D (u32)get_cycles();
+>
+>         kasan_init_tags();
+> +       kasan_enable();
+>
+>         pr_info("KernelAddressSanitizer initialized (sw-tags, stacktrace=
+=3D%s)\n",
+>                 str_on_off(kasan_stack_collection_enabled()));
+> diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
+> index d65d48b85f90..b9f31293622b 100644
+> --- a/mm/kasan/tags.c
+> +++ b/mm/kasan/tags.c
+> @@ -142,7 +142,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache, =
+void *object, gfp_t flags)
+>         save_stack_info(cache, object, flags, false);
+>  }
+>
+> -void kasan_save_free_info(struct kmem_cache *cache, void *object)
+> +void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+>  {
+>         save_stack_info(cache, object, 0, true);
+>  }
+> --
+> 2.34.1
+>
 
