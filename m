@@ -4,119 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBA0CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2029ECA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:32:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46EDA8E0006; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
+	id 81BBB8E000A; Wed,  3 Sep 2025 05:32:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F9328E0001; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
+	id 7CD008E0001; Wed,  3 Sep 2025 05:32:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E7278E0006; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
+	id 6BB498E000A; Wed,  3 Sep 2025 05:32:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F4C38E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4ADA1405BA
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:31:20 +0000 (UTC)
-X-FDA: 83847420720.17.9C4460B
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C8DF740008
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:31:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTdqAQ+w;
-	spf=pass (imf07.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 598D68E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:32:41 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 239711405B4
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:32:41 +0000 (UTC)
+X-FDA: 83847424122.16.21EE748
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1BC17100013
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:32:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qhfLccV8;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756891878;
+	s=arc-20220608; t=1756891959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3JERqtIgcAWYxTcLUucE5Blenbg8zXWgwZ0D8YaVejQ=;
-	b=vYycW2VFWzHBAk8s/UQxaFRwycDOOiCCVHq26qAike+YBb1HrKQaB9Mc6saXuAmO/MIh+l
-	NrPoEKvJ1wSiV2Eyiid5j8nS0wEbIMXUv0l6MrMnOl6oEVfcYYDoHLOH7/BpKKyAokoeyf
-	bzEIP0IEBEA/XREw7SNSDDr64BpPEKM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756891878; a=rsa-sha256;
-	cv=none;
-	b=6bQ7iE0dgHZBWud7zFmPCO/8rhp3XXPs964Otnzm1Vgunuyfo9uio1UQ8wg59+jqS9KxIO
-	d76GvkZ1XNIkPFIx0db6IGxCt8PO+Q8P9HXQZmpCqSpRh+Y7+1t6Sny46PaYZ9UWD97rVx
-	agWXUyXQbZY54bJbYZzCW65VKi3gx/o=
+	bh=7tkZi1hqb7jdEmw/46wBYRYDsSEnL6BoP1nCDfCgTg4=;
+	b=Z7u8hoPB0ERf4EVCn4awB05zH3lbiTnLoaNyeI0XZZ83ff/vQTQfGbtml77FtWfV1rDYQ2
+	WAvQGQIWVUAizZXHnv/628IGtrCLF0E8P6VnoOO25OaMVWGF1iizYEsm8rJcFDS81Xi6hU
+	tTktUWPiCEc3RwOsXXw+OCeZA+EnvPk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTdqAQ+w;
-	spf=pass (imf07.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3df15fdf0caso204755f8f.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 02:31:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756891877; x=1757496677; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3JERqtIgcAWYxTcLUucE5Blenbg8zXWgwZ0D8YaVejQ=;
-        b=YTdqAQ+w5lDU5J8owVb4ouBkJP8pC5D9WDAcJl3k9c70fZfN3gXreTXOaSg9NPFYUZ
-         +vi/BQ4kcBeXdhHPRaH6rO1KqEm+fG6yayUdopI5T5pM/hh8fbRGsXECHvKJ14fWo7ot
-         M41frQ8uViPelXuqV7eaV75U6SlF8yHrf6yuVH6tdsE3pFbo1zhEj7K3Z4B1KC1A3tdt
-         1+BaK1FNXrgjiqktuJnF1Bqv8A9QPt+bchAdbMtrHucwSkyAVj3miteQYwlO3gBkgnWT
-         I06bIC+mumm/8rQCvm/aD6TIyZK3y9ar+tbdjPNSEJal8eOe0WiTCwh8RaAuk/qyQucS
-         L+9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756891877; x=1757496677;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3JERqtIgcAWYxTcLUucE5Blenbg8zXWgwZ0D8YaVejQ=;
-        b=UrTTZw2S06aHW63SiwCXKUKJ1PDf/aIBWPR/ZyqB1TVorqHpEaJ9Z6IHQW1Et/mGVA
-         ir/aoY/yHKMK/UyoF30hvlqUe1StGwvhcWXHw7H7w4gTPAbPIsSEYZvgXBHlyK+TQB4U
-         s81yKjf2h5Hc9M468bidyicR0fRO8284dRgSStvzUls1XziS/i0ESAXPY3+y7y8jnYNx
-         uz1VgtksnUyJ1ZTKdGIPRBq7L5MSRCzNmWryVJE/tlm92JFTwZBAeEG1/kDuAKx9bsaD
-         i2+An2gbFIbY6XJ3qddPgdrzeJl60pEuVvYxUiy5xRJIJVSxK3F04QkcoWD+oe4Opmsx
-         HVrw==
-X-Gm-Message-State: AOJu0YyFqOydBTx6qiBZGNa5ebDwAK8nMbm87inlFpn4SFNJnVYSbKVP
-	o0v3aE03XHt5CL5gfE0PlIZe2AWNmpdjmg+JlbGidh0sgGHWfX5KMfSz
-X-Gm-Gg: ASbGncsoPIUpjeGyBmgv3it7N25vK+ozYePOFlPg5S3z5M2JjbEo5YZhK//LK46JA0u
-	eFGwxT5XrZbGuhcBd9JeS6A1KkwdfhftBSGW4Xuj8bVQOW0vLHOdxrqF8Oe+J4Mc0KMr8zCF5yW
-	o5rogvSQ2rt7XAv7YlUqOrWffmIYSVT4DMidRHQbwl5/G5hkLslx8yxNdHPMdbsBmZ4vhnnjqco
-	QA3gxHn6ZoM2vONXtrHbkFMmIgZCdwwNTi1EuA6Gidln97IoqRsjoCh3lTngzaS1U9lzmSsXVCB
-	Sj9POKqrbwoAmn1J9PS+/GYKTMqfLpStG3tX//u3nflpuXG4SsrXJeEwS3HZCG6DiGD6MTGIntI
-	ORFarna3pZ63j2WHgHLGVd+8wAhDKVZUoR1qUZKggFGXbsFJgdAJXZNNtYJvwC2rVrKAxyijT8Q
-	obaUr7nIjR8dysOHg7Gw==
-X-Google-Smtp-Source: AGHT+IHg2hod8nukF0mnZNlawMmT+p3dWVTvWH+uV9p/eaiLcHW/vzr9TtixHzkgeaarvDlS1nLNjQ==
-X-Received: by 2002:a05:6000:2601:b0:3dc:29f8:979 with SMTP id ffacd0b85a97d-3dc29f8097fmr2085044f8f.39.1756891876890;
-        Wed, 03 Sep 2025 02:31:16 -0700 (PDT)
-Received: from ?IPV6:2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23? ([2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9bcda91dsm54806295e9.6.2025.09.03.02.31.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 02:31:16 -0700 (PDT)
-Message-ID: <7f13fcb1-82d7-4464-8be8-770fc1a665cf@gmail.com>
-Date: Wed, 3 Sep 2025 10:31:15 +0100
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qhfLccV8;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756891959; a=rsa-sha256;
+	cv=none;
+	b=2366AhYawFLOflofLZJ4knbs/8CIPpq4wSgm84UxLgESmErV54Ru5Nq+w8q4xSkrYbJwvZ
+	VVRZ0ZgKxonAb9jZnt99pFcwqHW15YusoYDEubKJDkQw9ekX9bz8KrGtL3KErt5/Xl3MrU
+	lYbkJX02n4Oon3y/9MUPqfQvZnSuniM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C84B44B04
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:32:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81461C116B1
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:32:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756891957;
+	bh=QYNEiv8UzZcglF4OuHMoI1sYm9C7MmUjrT8VXMrcbjs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qhfLccV8/Wbfuwadslg9tMoSbyC9NvfNemfzNfxSH06nEDnEN0sNAWr77z/XZ8n9J
+	 9VfNzkq4/ecF1fmyWEYvi+TEKFq8YzUvonjCkDUs9OAqZkgBBDCbe2gugiQYPpdaol
+	 X6b6WfUD71CUarVo/NS1fFB5p3xaogSGU6DU+p4va/RS1u0jfd3T0UwXKkF+ESNYh7
+	 Z9g4X1DWTGA0TnA39LqW/05YHGpCm9C9d65MPwAD8TYxHTOtJ8vuvUboATXt8PyvVg
+	 y/nAbH+p7iBztJIeDNbx4bkVnHUwusXDiQyKpxkSVTpwDSm2G4C+cG1rWD4c/4GUJS
+	 pdFRWp+53f01Q==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71d603a269cso54399947b3.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 02:32:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXgiFZaDtArEo8k9LgKO8kXIrMCZB2TdTdcU64Q60ks6tbhwYCcCdml/avY/NMhsL7lIEqcj3sXTg==@kvack.org
+X-Gm-Message-State: AOJu0Yzl5m8JIr5MLsHHj4YyS2CcZ+eSj2ulv7SCTaKX7tQDA3j24iDN
+	GuLsojbAid2x6aaN2pebsy8lTYt+uDS2uQz+Sp7R7/PeYwLCCDkjFVyL6J02VC3y1fmdbvEpWVc
+	Yflqd0Gi+9aMPDJ6jzkttPOLgyEZcvxvDS/mCjCbsJQ==
+X-Google-Smtp-Source: AGHT+IHVyg4p5QR0RAptgKvMSgPMubewuNwv+4U8GLEeqLb+YipS9iGNECUENqyGY22+4BFCeDQZqDuyHgVV9qNx8gs=
+X-Received: by 2002:a05:690c:6d8c:b0:722:6a6c:c010 with SMTP id
+ 00721157ae682-7227633350bmr137460257b3.8.1756891956703; Wed, 03 Sep 2025
+ 02:32:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/show_mem: Add trylock while printing alloc info
-Content-Language: en-GB
-To: Yueyang Pan <pyyjason@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Vishal Moola <vishal.moola@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org
-References: <cover.1756827906.git.pyyjason@gmail.com>
- <1491df0ac12a7626b7c9b00e26a6e10adb8c9045.1756827906.git.pyyjason@gmail.com>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <1491df0ac12a7626b7c9b00e26a6e10adb8c9045.1756827906.git.pyyjason@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C8DF740008
-X-Stat-Signature: ficgoudy7gw7s4q6th1xugfh9f7tdwn4
+References: <aKgD7nZy7U+rHt9X@yjaykim-PowerEdge-T330> <CAF8kJuMb5i6GuD_-XWtHPYnu-8dQ0W51_KqUk60DccqbKjNq6w@mail.gmail.com>
+ <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330> <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
+ <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330> <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
+ <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330> <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
+ <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330> <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
+ <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330> <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
+In-Reply-To: <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 3 Sep 2025 02:32:25 -0700
+X-Gmail-Original-Message-ID: <CACePvbU2iqLyjc2uR3d=56S4A-N4P7k3oUnwA-6D=TFfQ17jBA@mail.gmail.com>
+X-Gm-Features: Ac12FXybUwxod4Em_QKVug5j6Ua_Z4DLXXFTPr86WOiopqyMskJfrqtzgT6b41k
+Message-ID: <CACePvbU2iqLyjc2uR3d=56S4A-N4P7k3oUnwA-6D=TFfQ17jBA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
+	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1BC17100013
 X-Rspam-User: 
-X-HE-Tag: 1756891878-782652
-X-HE-Meta: U2FsdGVkX18f1aho6xeRcF6siC+WMPeaMnx0euSMVYeg5vmlfLbWio2AyXrS72+HdI0uqQiN6Kk8j4vput3hJoR4LtnJyhOUBsLerJwywuPFsuBZ2fOi8IpZMb/0eTEhI1ukTo2udHigWrd34hOgfET5nkcGkuJucxqqrvaUZ9+Do4m81zOBKUJLggNi9oIx85niSZlIwsKzS0gY/Rh4iE1xYjRBnf8zGiiUar2ls7Tyy7xcBmrlzRmE7762K3zUQSAfQycC2sZXVN/jROxAUzZ+G64csqKj/VVl9DJCf5SOBqWIL5CpQpd4rdrsS6SCflGFSfcQ45c8ddeHwaoEJWmmoK4fUBMFklAIP3YmAkJfgrDeuHiXXofgzi1Tst2cfoLvYEfypJ4xydVm666ICKU2hYh4MAR3uOLpSpHtBDYYIl1QdfsKibZ8BBx14Yr8dQgxKapq3pg+gwyjizfGPo27kPghhHglE5890qXMn6I574MGlvFxixh+14YLlaziWVnjFtcePOXd0D6Uz/ER7Ghfi5ZGH2akoF6nOPpMazh+g5Mtz+igC4+otXjL0R3BYj4AWRL6Ehge3GIIBDYuzZ2yuRQ/Rgc8kiqjURYexCo7JxpPXuKnQHTQJOtw7REGG0gmpaeTA033229DK4DSJg4Ee5I8zyrUpz6JnRBymuksAaRNArXYVpzAGSejWTXSZTCvtGcvwoTSASqY1Qf/Oou8hYcLIntBlk5EwJdLyWlFdbNzCa4shJ5Qv0eSfhtMW+10aKBqrWexTKYKuivSHRkBT72xYCooXfDof/rw+tfnXXEZ/0kykM2javvNm0Qv6/vMkbI6VOogPI9fcqEWDQHanzt0qXOBpI295A9HgOvKqpZEQiQZTa2X0eZVfLJU91KCHjEvhE+93Swted4aymNVOCsVsMQfwL0euUv5o7WTCIpoC5FFk9OPMb5u4q4fkGBvqdq7f3rHRfuK5t2
- Mxp1D7vR
- m6bSaKcEHX5OVTymizKV0XgEg+eDs5O26WXRsJrZM7wHCwdGLEVjbKLcl8YAESyc9nYCSQY/fjxBy0B2jfMagoY3EMQKJqf0YR/n26dnUyCver3WMABSPYPvloKCxbSFDUACiofdc3/bKn09OPD7IG7w/xdFsTQhEP2IolR0+CrTYIc1wR2HBG9Vt2QtLIklCIrE9EmcssOAYD8r/s6XhiQ5SJcFyMCZlLatRsS+kWSRoP74H+aTl1S3dUyYwvRNcpC5XplkDf9NPBckza34sSi0grPS1iNGWjHkEmqU45vR6zuW6BVsHhItGZXvvEARJGTBzcUItbBBO/soyzQ5BcD7b1xwzk7iC3McUNKnKWHM8xq6nsrqCK6gKtL4poY9C0ig26TWxU5AU9jUfRWwrFEjJmhsQu5CCSOIYsq7Q5fUSfnDs4j41cqJHZgUklnRnY2dYGrKOGEwqmU6y6iV6NsNw5Wbht54yl1fBxbeqng6ecZNI4huFtl8WmTIRFV9++tDRE0kRPFeebiML5Yt65EtazdWVu6geKUOEJA3uNddEEnufnvqyzFcVhHhbJA5aPhqq
+X-Stat-Signature: t4p555udikneynnbehh9jjaoa4bfhdcg
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756891958-689425
+X-HE-Meta: U2FsdGVkX19qsDc1YDYBCFMxmutJQnwntyDrS6TysNUuN6zu9nZRs4XdvltdleocGctvFNTw4On9sLK5+e8lpOco2t1sV7zIO8DYNvVRJEZttc7PUbi+M0JgtlYBofC6p0FBbBsTLJccvz5hB7svqRFJlIcQjTDP6qRaq6Ycq7D0puhx4c69MbHsxQVwpu4Mnwd5R1a2N9KEpWRgUii+yWKJJZyHPGcbBYSciEHJgXXn+f0v1IyxosinGsSLTaFgOucd2Pgk9WOkCD/NNViLUkrIQESudiH7XL2ORmlE1EQ//DPfs1x+M39oz3M8Y2Mc1NXx6b9KknjjEEYqZ+NebtzsRmYPp5bnUZ33ktykz6qtak5Lb5ECTBjZZSr4Mlf3srsrti+Sn1+vuB3NDStOPEC3QjqWjo29V10szBeNufF0rU45kMnjCwogCtyf2akijSplud+5jG3mfmkucFWhEGSdVFG0bBd4mGtxKVm7cteGvuHCLqdnO8NWxRomN+Dz1hSPzRMI/SkwGUpN/D4Bs88XtSrl6vCl5T/boynBjNovWcVMFqzV867mbTTS22R6HgSLBvSqvbioeBchaJSV25Wp8dh3f7SPlARgkRh1B3Nrg3CBh+BoEMYWiwonHd0Lou5H9f6Y5QlT98mRVJxH1q4ZClrVLHLyvv82I2xZ9ZxUYu8futwr6cbdFaomHcAAhEJ3EOpHrVfXTRQ55z9+89Bzwqhp/mMn61C99nxDxt3nRaNPDek/yp6EBDvjL5HJ1lya1qn/fCN4fc7+PDvt4tJGwjU4lAD5uYE8cloI9HC2q2JOkDznNe9k5oji+7nDl8yJi78M0Mevk103KviUW/6ysAiPWxBF+Zop7Xxq7abwWkVW2g121nsxWVCXLZpk12HD6NbgKN3J/maFmiue3sbfcPHQH7b1yHow2goMuiKp15IhX/OKKi3OGtsRMEWK0IJ+2vG7AnLZ2tzbAIU
+ 1USDdh5I
+ mE6ih/TxfEMG0pHn0/QK21lyrnnI14OoOOd1kYvYBJoCyHd5ncDEPLDjSQPyPHmeLFjBHVwxw9jbIsu/7m9PFtVjyr7BpSMUKJyzzl0z+/4+x/e+7AK5V8HCXQnd6Q9c3WdPUOMvWFil4OckZmXCO/vEdc60Zff7aDo4xnVnxV5QZUbHGZT2aVeyTsD11hzHkL9y613C4dqhjDzom9MEU2VGyw7pq3+kybFslda/j1EbCQMvQyZNvP22mCHR/sRXxeux/iYg0cSVtLl7i683+bbKUiLCa6dYGRGySkVL1TgzF/+Q8AnKucVbtCA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,52 +116,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Sep 1, 2025 at 3:40=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+> You are missing the fact that you need to track two sets of the tier mask=
+.
+> the "swap.ters" is a local tiername you need to track. Default is empty.
+>
+> The runtime tier set is the local tier mask walk to the parent, and
+> collect all parent local bitmasks and aggregate into an effective set.
+> The effective tier bitmask is used as the swap allocator.
+>
+> What you purpose still has the same problem at:
+> 1) parent "- +ssd"
+> 2) child "' # same as parent.
+>
+> If we do what your proposal is. Child will have "ssd" on the bit mask
+> at creation
+> When parents remove the "ssd". the child will keep having the "ssd".
+>
+> In  my original proposal, if a parent removes ssd then the child will
+> automatically get it as well.
+>
+> I am not happy that you keep introducing change to my proposal and
+> introduce the same buggy behavior again and again. Please respect my
+> time, I am spending my long weekend writing an email to you. Please
+> don't introduce the same bug again just for the sake of changing
+> behavior. Be careful and think through what you are proposing.
 
+Please accept the sincere apology from me.  I was grumpy, sorry about
+that. I was under pressure to be somewhere else but this email is
+taking longer than I expected to write. I let my bad temper get the
+better of me and I am sorry about that.
 
-On 02/09/2025 16:57, Yueyang Pan wrote:
-> In production, show_mem() can be called concurrently from two
-> different entities, for example one from oom_kill_process()
-> another from __alloc_pages_slowpath from another kthread. This
-> patch adds a spinlock and invokes trylock before printing out the
-> kernel alloc info in show_mem(). This way two alloc info won't
-> interleave with each other, which then makes parsing easier.
-> 
-> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+You might not have realized that the proposal you made has the same
+kind of buggy behavior for the usage case where the change of the
+parent and the child gets it.
 
-Acked-by: Usama Arif <usamaarif642@gmail.com>
+One side note, I do want to rate limit the new proposals I have to
+defend against. On the other hand, when you make a proposal to change,
+you have no way to predict where I will consider it good or bad.
+Otherwise we don't need to have this discussion. My hash reply is
+uncalled for and I realized that now.
 
-> ---
->  mm/show_mem.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/show_mem.c b/mm/show_mem.c
-> index 51892ce2efc4..4c876ea2b66f 100644
-> --- a/mm/show_mem.c
-> +++ b/mm/show_mem.c
-> @@ -396,6 +396,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
->  
->  void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
->  {
-> +	static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
->  	unsigned long total = 0, reserved = 0, highmem = 0;
->  	struct zone *zone;
->  
-> @@ -421,7 +422,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
->  	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
->  #endif
->  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> -	{
-> +	if (spin_trylock(&mem_alloc_profiling_spinlock)) {
->  		struct codetag_bytes tags[10];
->  		size_t i, nr;
->  
-> @@ -449,6 +450,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
->  						  ct->lineno, ct->function);
->  			}
->  		}
-> +		spin_unlock(&mem_alloc_profiling_spinlock);
->  	}
->  #endif
->  }
+I am over it now, let's put this behind us and continue our discussion.
 
+Best regards,
+
+Chris
 
