@@ -4,120 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04ABFCA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97551CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:22:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60FB76B0007; Wed,  3 Sep 2025 09:11:26 -0400 (EDT)
+	id ABBDC8E0003; Wed,  3 Sep 2025 09:22:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E7A08E0001; Wed,  3 Sep 2025 09:11:26 -0400 (EDT)
+	id A93CB8E0001; Wed,  3 Sep 2025 09:22:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D64D6B000C; Wed,  3 Sep 2025 09:11:26 -0400 (EDT)
+	id 9D1518E0003; Wed,  3 Sep 2025 09:22:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C4CD6B0007
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:11:26 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED942140199
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:11:25 +0000 (UTC)
-X-FDA: 83847975330.10.1FB6A06
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1B95940009
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:11:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Sbq3SGvO;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756905084; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D8F38E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:22:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 422091DDFB5
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:22:29 +0000 (UTC)
+X-FDA: 83848003218.07.76C254A
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5BDFB20011
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:22:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ue8O16bd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756905747; a=rsa-sha256;
 	cv=none;
-	b=kz5Bx5QhBtjPYYLTewT+eru398HZL431KxloOADpOuE45oNvbEHxVMokczL27ZnM1X5tkC
-	ZI3BB1mImSc6wZPqrRSd6WieomXpjW0R2RxIYUuGfYHNcsypxh6srK6ltnq2P06pat+D6N
-	cbxKuo7cZDKF05CYa4bNGtHGWGe7YWY=
+	b=GsY2OajJfVhBKMYS3V8GqY1PSg/YhL4aVTXLEaU1wNmvUVKvldO8FZIWZL+ZLlKrXPCJAC
+	Vs1gPRAKrPByj99KzliqkMGCILanmxMv9+hi54o1wjK1UgN+03D0ioCaVkwoWd8oHF+lWS
+	1Bj5jwy9IVGyrBnlkHAbtKWNpb/n00U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Sbq3SGvO;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ue8O16bd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756905084;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756905747;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4HclYStwOCOKmcMB/Tt8c6EjEFXgSd65p/VjuWOlNOQ=;
-	b=VSHPaiTccuNM70irhUwhctAdEWcYK8gCpaQr5vEiSBFU7InT2/oFm3bqmAyK/EMFPpevCX
-	2MJW6/JgsxWDccD2+ZKdnpxErRKKt6pTC1h2ke4kD13LSFee1erGwij/QAmoBC3CstEOj0
-	rwMnBxLDIweFHxjel0q80SNV+xTOZT4=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b043da5a55fso396110366b.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 06:11:23 -0700 (PDT)
+	bh=+3/FvEb2tmp04THrfe7Q6R4Z9tV9DSLFC8M+VKKCGW8=;
+	b=k8/LAGql7VrlpqldlMC2ydYldjV/cFRAXFJ8fVaSHAiAX7HTsAP9ERM9vSzKOab+Y474it
+	u1L2oMowNjEGWohqhYjfzF+bezOAnEsXQiGtlrtq5NKSPGeSXioIGldNN6/2JX2Q8FOyOB
+	SFANSlJHSyq8m8e+CBpkAjv3b8pd0qc=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b84c9775cso26714205e9.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 06:22:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756905082; x=1757509882; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756905746; x=1757510546; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4HclYStwOCOKmcMB/Tt8c6EjEFXgSd65p/VjuWOlNOQ=;
-        b=Sbq3SGvOnc5NQdJ/dFIaBp633KXQwxRHDd1ryTulzA1gCWeuw3A/ZmmrvUR2MhVxQV
-         N0WBZV5PloMo/wOjnTxqO/PvniMIHgN6fPzitdgrXqs/pxSnEY4XN+h4TBBbq4QfXJP4
-         qyFCT5zlUX+EcGpYfwvdYvAsdUyLeNigR3ECvWbspwZwPTC6hO2Gx3kVc7LoKQQ0i7Is
-         bmzgZL1FMuY/CKFLcY5gnhl1S7uzua1/yA6PVOhVl3QV0vqL511mQPnMz4U3sm97eX5P
-         WTmCGC7Kvgw6Uat0xAIlUB791UT9uUOBtVZR2gWKn3B74p6eD6umADvFv2wWro+QZp/Q
-         89Tw==
+        bh=+3/FvEb2tmp04THrfe7Q6R4Z9tV9DSLFC8M+VKKCGW8=;
+        b=Ue8O16bdESKzfvnzMmEFV3IYvQqNqPVjKO5Yd4oY7H1i+1ucrps1gJ/28B7F2UIcnR
+         mBdHAxdKqFI20D2UOMJ7iQ4H9QZ4E+cgZE1Dwkzg5qMeCeaXG2Uw4c3ZOTdLa5e9dYbf
+         b+Vjd7xZ/KSdmu+VVm7Tx9rYUE1cP0KsXi0/a+/kN+zW5QtjW+1zTNesr2LiQ/5HU3yP
+         HJE2Xe5aHzMbkwmp/NhN+UUogQlDv2b0npaVy32lwZ4Qwk27Mv7cy0FWe/2kndpJlJbR
+         Ra3d4VoPsnLWhiPePqhTgEgAFMc5mtD6HTLBCI+Tk4pXizpacz737rKISC584MNXAvOY
+         0NEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756905082; x=1757509882;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4HclYStwOCOKmcMB/Tt8c6EjEFXgSd65p/VjuWOlNOQ=;
-        b=sW8tWxHdwYrc/UiixrTcaNBQ9kGknF70anyYcAB6W4yCvn9QSLUOr9t4aVADqN/o/Q
-         lFU27HV2GeNM4mEP0bVj+MReRY9YNf0Yapqn084BDjgCeTZeI5Urp0hSBkG6Kv7C35FB
-         zPgmk/soXUO+vwf7wIwJeLyNCOprnq7HVTBBFM/71dH2T2XRpW/PDtV40Vt+YmQvG40p
-         GBHIpb/65bEPePpq2Kw1AJ3JdIsmcOWPobCB9nMUqbDgfNny2MBc/xtFrtEzrpT+Hh3w
-         Mc/3IBrtvjtuHTTI4vsZe08kioTBSQT1KsCiUhjkhQ8/KsESwa0hZFGpVh+ol33FLgti
-         PEfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSm5OFMLMQQVsxNYZfz6HG8wypSv7rg3TwFgok27JXvkLviZTD01whptsBufj+2M+ZAF/IjDTz3A==@kvack.org
-X-Gm-Message-State: AOJu0YyXp6z/BbW1drOHkUe6tSO9CTEBLReW5diBwV4yZcENqYrrWNNU
-	z5DVA6DjLLLgpuSQPleZGR/3laSEb99cmcCioig1QC659r0hfvbhmC9q
-X-Gm-Gg: ASbGncv6Ga0j20bzqcDGIkNTKWMkDbcNVhCy54ESH4tRPd9lxR2RM1O5FJ5Eyr1OMab
-	h8OLWgf3iZZZEcA9cvE5R3o5twUNNKe3B4Djc10Aat6JAVbwDeYBZ0QfzHHM/Sm1Qq5rpLzwFAm
-	Yk8Sjo94J/USAFBn/jC/qMLZ/n1kDFsV7ov1Sr6MemYcYREGBJt3yPZIAJzAoq/wJuzLVwYRztu
-	dyIYf0Nu00DOSu7KgYKJLuyGfUSnnS5KquAKT/TOzoxdJAfnHzLl7FM9uTx+Yx2uzdZvEVIqpNj
-	izD1NzIGRd1b5VJ9VrPft0O12j55tjSBsL71Vwt1adYbanXMdWqGj3vm8TAu7xYdXShToVUfE0n
-	5EEEnQ1wIqvHwkw7BO31rYqFpgC/lEzRNPc3o
-X-Google-Smtp-Source: AGHT+IEvolQ0TZapG8a9VwnXAMFKX6vFBRt9OPxFXx9ScLuFAy8TDm0fNdRCVyXZA4v1mqzngETARA==
-X-Received: by 2002:a17:907:a48:b0:afe:c795:9ad5 with SMTP id a640c23a62f3a-b01d8a32186mr1345554866b.2.1756905082215;
-        Wed, 03 Sep 2025 06:11:22 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b04709b3effsm79021666b.5.2025.09.03.06.11.21
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 03 Sep 2025 06:11:21 -0700 (PDT)
-Date: Wed, 3 Sep 2025 13:11:21 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, kas@kernel.org, willy@infradead.org,
-	hughd@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, baohua@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: Enable khugepaged to operate on non-writable VMAs
-Message-ID: <20250903131121.eq32tcuswgiossgi@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250903054635.19949-1-dev.jain@arm.com>
- <20250903080839.wuivg2u7smyuxo5e@master>
- <0a52cb54-5633-4374-baa5-199194dfc2e1@arm.com>
+        d=1e100.net; s=20230601; t=1756905746; x=1757510546;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+3/FvEb2tmp04THrfe7Q6R4Z9tV9DSLFC8M+VKKCGW8=;
+        b=hsGSCLQCTceH4iR9tZm/YbKSatc4yAj5U+ukSYKiwVIzkYsUDEVs4YMxnx4x346bLw
+         vsGgNjEjaR+aZbcB/ZACbMNflwSodBOd7LMQocwTZlH0Iy6lkE298+Zor83iyUqfQMge
+         zzeA98e5URUf+U91RW4HWU6iyL5EmlmBqkJlUJYk1alBykSHCmsgXiiAwrjA2ZmVaW4c
+         6eVUpBbmr8xxFr4NCkUVE0tiyNLEkgTFbio+xRfGDlwqCOYvPfW2tey/mofb+c9X5WHx
+         oRyw3GSnrhWBe1ndwA7ujOdbbDJJaifFtblyD2scBBv3GuAtibnTql4W6wYQul+0q1iX
+         1LIg==
+X-Gm-Message-State: AOJu0YwKsD59lErD2UbLrmuWxGsvo0gE7jwf0pDs/L3A6N9S4yI1pl5H
+	SzZH3k0e5jq0df51EMAfAP3duox/Ozk8QIqfSZ4gPJMjKuD4vgqV3B7UBmqiJMrTcJW/LhQcMXx
+	dwnGeocSRk+2vd/PotAICMaJp8bRfmr4=
+X-Gm-Gg: ASbGnctAKa+XyerpVFcsgMiRtEWdgR45/ofPsH+amtSYhHfC2pk4KajqW6DBkYPzBcQ
+	b/EpYVv79OweYGpo0tQ9NMw8uIwlvLgZGVICcoExBn2YSDKa9s5IXzYUrZivuicstFDfnc2T7Km
+	SF23yBoqfnxAKkPO0RL+udQt09diPtINy+9UegUlu0PjIjfJJDyM/waWXjLAwevNIwrkzRgSmIz
+	L6r3BtF
+X-Google-Smtp-Source: AGHT+IHTlltZP/PiYSefk4BiHHXMLghkkMyukGhjP2TxeCsHmSWWTRuInnnO1putZr6sen4D8zESFOr8o1LvNPk4oE8=
+X-Received: by 2002:a05:600c:c8f:b0:45b:7ce0:fb98 with SMTP id
+ 5b1f17b1804b1-45b85528677mr134028325e9.5.1756905745452; Wed, 03 Sep 2025
+ 06:22:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a52cb54-5633-4374-baa5-199194dfc2e1@arm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1B95940009
-X-Stat-Signature: q5fwwdci5jdxhshz6bef6ai7inksrrdd
+References: <20250820053459.164825-1-bhe@redhat.com>
+In-Reply-To: <20250820053459.164825-1-bhe@redhat.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Wed, 3 Sep 2025 15:22:14 +0200
+X-Gm-Features: Ac12FXx6JqZw2o7u1Ppz_iF81kfxsSp5T4xMMmvHYDtA-FZpsjtY5aXsfqZMrYM
+Message-ID: <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three modes
+To: Baoquan He <bhe@redhat.com>, glider@google.com, dvyukov@google.com, elver@google.com
+Cc: linux-mm@kvack.org, ryabinin.a.a@gmail.com, vincenzo.frascino@arm.com, 
+	akpm@linux-foundation.org, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, sj@kernel.org, 
+	lorenzo.stoakes@oracle.com, snovitoll@gmail.com, christophe.leroy@csgroup.eu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5BDFB20011
+X-Stat-Signature: ajwhxfhtitoay5cz7nqa41xad666pgxx
 X-Rspam-User: 
-X-HE-Tag: 1756905083-303628
-X-HE-Meta: U2FsdGVkX1/hoFI+0mTYM4z6XLuSMkvg4ZOv0a3AbN+TGXMeSCvoemK3lIRTScY2WpXZz/+TY3I9urMX5uuX62tFOqhaDKRh6JND87pLSW0iIHMw3b6NEfRGFoe1/N/W0pgLX+w3rHmkZVzF/HPp+tUgpNsjlfxp0yWI1GDZs/N/aceJiTx1tWW1gemqfRXVTxT/vxJY7n915h/1Z+yUxl4CSiF8Mvy2U/nlr0rgblFsCEU57LncyeZIkneRccp/0qDG+QznxP6D5KPLAmRywKGVIvxorDVEDNsEowNxv0OT8PRKr/IQYbPCMgrQi7P0lgoKAEHrE+osTsz7AQJeQQ8/2OAn1FzNoI9d0/5YM76B+p4xytdwY6FKu5GRGaeiaXVQml/kiLXDRILLoc7DZxhSEOTdqcf4H+4Y8MC6jO/i/LJK82PoSqGg6r+JUDPUnTzFyrIIrqujMqXAE5/SeYCRHsFDKvrl5iURS1+q3qSDTCZlu+t9ZTTlxn2YHdBVtIz1jV9IC9ffTWoSqH5RULoZiNDNyfQxd6sU6MPFjp4yh1DO9S+fg+nTJ+DK7gycp6eEWCrTgQJosjsEb0VoRns5OdWR3867NEnxiZdsv/warQYOXl5CaZ243bPXUns7yPqt3XMlqbRyV6My0iuAuW7ChcF57r0Dfd5LIHfY9ycPipU2u/2Arc4WB2utER0Ag9w1ozSAVQ8GY0EyRBpWvn2MaAlCCB+eKESwm+/oC29DF070P7wgdjXU6tvmDyLNZ4a8Rar/B7rAvfC7Uvf7n37t9Ily9G87MWNYsH/o2Q2ojdmQgno1SeubyAqgn4c48hUJY8KSOkf6M3KKvsFzzxdAlS7BH+SPcAGNeTR3X/vi+YerU64mphgtTALipzsFybdjl3WuddgrhtHMfKIcY4Uolja1qPI3rDGUISOnA5TpXg4hf51hAI+rbgnS910GGpZ5//Il8OMNmqlLakO
- vdJ/T+uo
- wjezyc9qyM/H+Ifi5wCA/kI/t9O5yRRYhIc0dJHXGT+TILfIQGrs0OGzRag+IGD7ZcO2X5JnlkwbNVr2u8fX6kqSGnP4GGf6IRp+o8B/Uvt8C4c6EwpKuXzo/91UQ3yuOBll8N7ssEMVWnQrIZaE6oxpRMbQL5UUwpYk3F5OBnhAr29gcFb2p1rhgf16Eb4ivBWMPRpypXXhIsk3nrT5v8sRXgYpriozPDwMASHDptvMsF2PcwOwzv+m2+LySpP96gWrzMYK5COZvsUM=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756905747-625158
+X-HE-Meta: U2FsdGVkX18li8BhmRaONawZK8gwpgv8Kbll1Je6eTxnp6X87NPf7WOlq2sydcXylFo9oh9F2le0qGvd43S8lFWUFRQGvQB/cw2+CnTc7SnDJG7rdSt3oigbrF1qYERHy8Y0Hu/LtygwPRvALU2ALv7qj1XUy3n3fJcl16QpJALVpXeoexTNg2F8RV8BWE85y6oZe1jtKEjSOjMh35Ek54brCA3AbUXRt0hyR/Xeiz6S8dCUlHS0QDeaU0Z1afYbvvuebh+D88UpCiSN84+IEr18ke5IkHmIRkopFQssGW6uYa4BVDRZzATwQ7YL5g7L/Fr9r62rThet+3WJuQTC+A/jBsklj2fKhMWMmy1thPlW/8+lFibhHexGnKTqfVMMSuHE/Sb8WTiChmtQxdopyC8aN+1hRDbQgjI856QkHlu3wVecQ8QiQu949T1MfGyo1IWyMClZKrC6ufx5zdFuKqWzXBqe8MVelrUa7gCo6Ut4j/bZ0VmG64lDj2OU96Ws0Th8HWAxmj8FUMLYiEyGQLKTNeWeER5omCYYHcbnE1pG3AWrW0mqhG8O6D0INajCvTvlr4Qr0Tk1GknW5p2s2BXd9/KTKpYDytMdVmIYhhxL0Gs+CJndrq0PIgUxeMm4kwkMqSihSgaFSBXLgirsqBpiooGoAPugpJT4+K5MpfZ4/5odbGpHjS5BMrYcpRrLxrQ4D/gmeDAtXpg8QIJzU/DH+ZIl02wOFKZ0/P852RmcetuvFtQnVjvocvjJwLGn9Ib+ynl8JzY9PjfsjPpPI++HsWYE7x5t4nxIOY1kXKiRQMYqUikrh/QWT5TgjEca2GamlK9QNIjz4009ubk2zrFj+5e3jjzv5TNFtm3Jo2jNBrzzx5rA4kCYD/UFb+UUvnlAAhGUBB5b2RvfYjoFcvhZ9yUJ2HF8CTxvfjUUuZqpL4Blqyhgm5JSBNZIYtnImexHcopO9fxFq7xgpOE
+ YuKprHFy
+ 5uYIP2gZBlv1nrov7fus+2bUjZB7G3hhNquX1OitqPvFiq4FHVhApYplIlUnh2eU9iipvSkIpEW03/tORn8t37RDTp7Daexij0zmYKyFYQUkEsYFNTnCyt/nbEG3+igDKBcwnNVzpfV0Yq0607KfpGfqhMOM/WW7qkgwYYKOR7MJKJg6A+LN1AAqVXcBLtAyRgi9sU1eCE8MsIlEOU14dnYaRi4B7ZQ1TmTCyJNDsAFL06KlLKZLAGhDEMpsglfKJnAILMA/ScgXHlgdBQCMSbhWqD5IjKQuYEIXtVmOMffJKSPyRMhTuYKGbQTo8DAqUTbVsv9fHXh+clIicL55g248DkEh3slt2Enz9khF5IQmj5suAY1xLBYbGuQRibE2g11ml5gBeKLRwSklNo+/1XxSv/PLSCdezcDGI/ea26cXwfaTL+L0satJ5BxbicJtiUNb4u47kL4r04ksht/ycco7R5BJT4pBt/VpsaLlUz6yq5RbibZZQ1Jn6dg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,70 +117,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 02:45:28PM +0530, Dev Jain wrote:
+On Wed, Aug 20, 2025 at 7:35=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
 >
->On 03/09/25 1:38 pm, Wei Yang wrote:
->> On Wed, Sep 03, 2025 at 11:16:34AM +0530, Dev Jain wrote:
->> > Currently khugepaged does not collapse a region which does not have a
->> > single writable page. This is wasteful since non-writable VMAs mapped by
->> > the application won't benefit from THP collapse. Therefore, remove this
->> > restriction and allow khugepaged to collapse a VMA with arbitrary
->> > protections.
->> > 
->> > Along with this, currently MADV_COLLAPSE does not perform a collapse on a
->> > non-writable VMA, and this restriction is nowhere to be found on the
->> > manpage - the restriction itself sounds wrong to me since the user knows
->> > the protection of the memory it has mapped, so collapsing read-only
->> > memory via madvise() should be a choice of the user which shouldn't
->> > be overriden by the kernel.
->> > 
->> > On an arm64 machine, an average of 5% improvement is seen on some mmtests
->> > benchmarks, particularly hackbench, with a maximum improvement of 12%.
->> > 
->> > Signed-off-by: Dev Jain <dev.jain@arm.com>
->> > ---
->> [...]
->> > mm/khugepaged.c | 9 ++-------
->> > 1 file changed, 2 insertions(+), 7 deletions(-)
->> > 
->> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> > index 4ec324a4c1fe..a0f1df2a7ae6 100644
->> > --- a/mm/khugepaged.c
->> > +++ b/mm/khugepaged.c
->> > @@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
->> > 			writable = true;
->> > 	}
->> > 
->> > -	if (unlikely(!writable)) {
->> > -		result = SCAN_PAGE_RO;
->> > -	} else if (unlikely(cc->is_khugepaged && !referenced)) {
->> Would this cause more memory usage in system?
->> 
->> For example, one application would fork itself many times. It executable area
->> is read only, so all of them share one copy in memory.
->> 
->> Now we may collapse the range and create one copy for each process.
->> 
->> Ok, we have max_ptes_shared, while if some ptes are none, could it still do
->> collapse?
->> 
->> Maybe this is not realistic, just curious.
+> Currently only hw_tags mode of kasan can be enabled or disabled with
+> kernel parameter kasan=3Don|off for built kernel. For kasan generic and
+> sw_tags mode, there's no way to disable them once kernel is built.
+> This is not convenient sometime, e.g in system kdump is configured.
+> When the 1st kernel has KASAN enabled and crash triggered to switch to
+> kdump kernel, the generic or sw_tags mode will cost much extra memory
+> for kasan shadow while in fact it's meaningless to have kasan in kdump
+> kernel.
 >
->Misunderstood your concern - you mean to say that a parent forks and the children
->VMAs are read-only pointing to the pages which were mapped by parent. Hmm.
->
+> So this patchset moves the kasan=3Don|off out of hw_tags scope and into
+> common code to make it visible in generic and sw_tags mode too. Then we
+> can add kasan=3Doff in kdump kernel to reduce the unneeded meomry cost fo=
+r
+> kasan.
 
-This is one of the case in my mind, while what I described above is file
-backed VMA.
+Continuing the discussion on the previous version: so the unwanted
+extra memory usage is caused by the shadow memory for vmalloc
+allocations (as they get freed lazily)? This needs to be explained in
+the commit message.
 
-Since pages are mapped both in parent and child, we would count shared ptes
-during scan. So max_ptes_shared would decide whether to collapse or not.
+If so, would it help if we make the kasan.vmalloc command-line
+parameter work with the non-HW_TAGS modes (and make it do the same
+thing as disabling CONFIG_KASAN_VMALLOC)?
 
-To play with max_ptes_shared, this is a magic to me... Probably, there is no
-optimal value for all scenario. And if it do gain much performance after
-collapse, maybe it is the application author's responsibility to use hugetlb?
+What I don't like about introducing kasan=3Doff for non-HW_TAGS modes is
+that this parameter does not actually disable KASAN. It just
+suppresses KASAN code for mapping proper shadow memory. But the
+compiler-added instrumentation is still executing (and I suspect this
+might break the inline instrumentation mode).
 
--- 
-Wei Yang
-Help you, Help me
+Perhaps, we could instead add a new kasan.shadow=3Don/off parameter to
+make it more explicit that KASAN is not off, it's just that it stops
+mapping shadow memory.
+
+Dmitry, Alexander, Marco, do you have any opinion on kasan=3Doff for
+non-HW_TAGS modes?
+
+On a side note, this series will need to be rebased onto Sabyrzhan's
+patches [1] - those are close to being ready. But perhaps let's wait
+for v7 first.
+
+[1] https://lore.kernel.org/all/20250810125746.1105476-1-snovitoll@gmail.co=
+m/
 
