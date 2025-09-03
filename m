@@ -4,112 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F835CA100B
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 05:26:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8EF0CA100B
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 05:46:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7083B8E0003; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
+	id 0F4146B0008; Wed,  3 Sep 2025 01:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DF798E0001; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
+	id 0A5386B000C; Wed,  3 Sep 2025 01:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61C538E0003; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
+	id EFC7E6B000D; Wed,  3 Sep 2025 01:46:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 51BDF8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:26:51 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E46CB1A046F
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:26:50 +0000 (UTC)
-X-FDA: 83846804580.19.CE891B6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3B5E040005
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:26:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MI3hIWVb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756877209; a=rsa-sha256;
-	cv=none;
-	b=WK2ixK0pS34m4a8jORxvQUd5qXBci+SAeCOVGG/dObwiPN83vMwRlUMKH5ipRUBTxMTPj4
-	gCA6fhaWPSW6QQklOSrTBbXxMA+xDqNqsTlXn4Y1M3qrIkui+bdvAY1O2dn1pka0ycLryL
-	VUqhUTJw6j0u3Whgg5SEtHEe2V3awWQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MI3hIWVb;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf07.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DFEB96B0008
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:46:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4072D5885E
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:46:51 +0000 (UTC)
+X-FDA: 83846855022.23.4DC73C9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 35A14A0002
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:46:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756877209;
+	s=arc-20220608; t=1756878409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HHneDkjVSU9dC34t9LMkjRUhMpIbPTjSsbaFNQXQ8Bg=;
-	b=rigS+C5jRAAl1gBXkvo+Mdj6yw0m19sUEgDOkE6FPT+NdLkppw8AzsIF7IfbjOTFC+89s+
-	YRQ4EnKrbtxaV4WEYSYGKTcjpyTUaTwXG0XzqA3tCG3Kmv8oQ2H875vAgSpgE1d9qRS1H5
-	XkjciwRVMwovQjSnUxyx+5OH6p+m50k=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756877208; x=1788413208;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+U/qyUVufuO9/Wxc0OWe61I/W1hyzeIS2pBPmz4WWRg=;
-  b=MI3hIWVbBpG0OBI19jADcPMh4H6LxJnjop562fIfTQPhnoMfRUUjTCTS
-   W012YYi9qGXXCETqXTBDuZMIgmBUkx/Ae+61i+P9zRk2JpvMkvTMNF7Y1
-   jzh95ngoUmfmncmt6yES1ZrC0YqwZna8/Lu6fHJT1Ml9PXwHbkYYVG71z
-   N8iPDnV33fQkJndiYgNJVsw6pFghDPAkb+Xdap0+J8N5WR4BzPincl42y
-   PZZ4acjDTh4VDWmky8MhsdT3GdLHIhdhkWkTCbnroH3ZxRrRcxb3TiQ4D
-   ZxI4Av9vhq0nUd0EAK4YAd8hmVajoD5wuA3PkhTNtrDV01MXgGkDwNaMH
-   w==;
-X-CSE-ConnectionGUID: SFhh9Bi8TlysBvAvS3/Rjg==
-X-CSE-MsgGUID: i4ChV+h4SD+N3KNq04PqSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59092859"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59092859"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 22:26:47 -0700
-X-CSE-ConnectionGUID: wIW/+0vBT3Oa/imtc797sg==
-X-CSE-MsgGUID: ucQq6avgRw2qGrKoH2kdIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="171865325"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 02 Sep 2025 22:26:43 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1utg12-0003NX-2f;
-	Wed, 03 Sep 2025 05:26:40 +0000
-Date: Wed, 3 Sep 2025 13:25:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: do not assume file == vma->vm_file in
- compat_vma_mmap_prepare()
-Message-ID: <202509031346.N6FpuQIA-lkp@intel.com>
-References: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=Z58CnCvGqyK7sajlRmZg0CLT8oTakvjhA+ekt0QMIU8=;
+	b=4MrdZLV1L9UB++WR4pZ1+Dzy3KSyqZvbXLTJVgqXuCgDI876XwgQuq+B00IxpbjGoq12CG
+	s0vnBS5id1gk2XNqOvvT2wuyXrqyjO1pt6YwAvfLpHdcVnPeMjpg+eFa77N9INaVUcqj9Z
+	xPh+pZ8w3ecEk4KTCCXIVip9OfeAdDI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756878409; a=rsa-sha256;
+	cv=none;
+	b=uTXYpUSrev67r34Ep4nVpe6bpYodxgsi/9fTb2vvduaaTJmfws89A6SsfpRXKEandUJOk5
+	B3YpzMiW45gjp6S4alZIGTxvTiBsrmVC5A42uBWY6qPwo51b+UWvJogEzEAMie/0rsooLR
+	tCA58aXd+kxesB6VKdgC9cHCYDIJPU4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C17EF1691;
+	Tue,  2 Sep 2025 22:46:39 -0700 (PDT)
+Received: from MacBook-Pro.blr.arm.com (MacBook-Pro.blr.arm.com [10.164.18.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F2F7A3F694;
+	Tue,  2 Sep 2025 22:46:43 -0700 (PDT)
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	kas@kernel.org,
+	willy@infradead.org,
+	hughd@google.com
+Cc: ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	baohua@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Dev Jain <dev.jain@arm.com>
+Subject: [PATCH 1/2] mm: Enable khugepaged to operate on non-writable VMAs
+Date: Wed,  3 Sep 2025 11:16:34 +0530
+Message-Id: <20250903054635.19949-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902104533.222730-1-lorenzo.stoakes@oracle.com>
-X-Rspamd-Queue-Id: 3B5E040005
-X-Stat-Signature: xecfk1imx3t5do3gefs3ptrq8i8sjwhc
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: app6bbapgq41dh15whneoawyqy5tb11z
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756877208-592048
-X-HE-Meta: U2FsdGVkX19JV7QTCHLQvAAqM9iBXP1VBJuNesnHVIHF6w74QFBk68kMZUIChJMNzapeJkOceVBgnXM0izn/bnm0wtusARcROuTSwj4Wv5f20WWMitTzmyyIBmQVkb4YCKeLtKO7x1Q9szBoLNwy3c97gCE2AXY76Gwa/Ofxm+j2Q8KpSztbU2+w31iUQYikjpTsfKqr9NrQM4UWbrfH37uNjQbpjmD3/6jyd8v581TiSOqAOdDU1unk63MdBPZo9CaFJRM1m7kS51Py+0n/OGuLwRwr6qJZqwuoDHRztphggtUJaszwMO+Wr/ldgyZwwPgyjP+vvp3FBe4MCFd35SsEK5nh9wFS87bHGzB3ahBAItG4pRCUpLwlUANTm/oD5tnlOQD9YcCBT12GZBQB32A2kAQUAlSZ+ck2ETCTbfASOqtpVk3YbJjKQnMPXrMnbun0Uw7axb0QPUwL9O4k/RCviip04MVPqy7TYY5l4YKHcXE659K2Um3nFMjQ2/g1LjhwcWmQ7Tk+JkxOb4mC2QJTZEdYB/IL1k9TKn87ugn9kh6KDCzUkAQ+8gi+4rSmlGnoDyH054Jm9fuWxz4OHHLchSoMtadoDNDmC4e3TzZZeIufmjnRjVegt1Dlk8SRVVzk2KAR/P9jdnoNVRcoAb6OoAWCKBMEJ7Ux1iWWep6w9CmUIn0Jm4QpduSS8525vs91XNXTn8j/ofGnUVnPa9LHzdFLgDbqUzyEttbGk6sDeVplRK6p1/bXvYSpPzW1nKPWO7eNp7/9++wAAH2smnARM40ltvCyZo0QdTArud4o4bpQ+UCEc1QgQzdlPnJcKiNlqltP7+ZFJkgCS45maLvP2krEQGs6wqkA/xV41+vuM3LUzcddc5I3M9894V08rxWXcshL3aq7aHprY6w87m5LEm2voqCl02yE+IOsGzxoWxYAnlrJAGAvG/LxTbwHbcBDNQfxlCtIlbgAYdZ
- 7+gR1q16
- KhntUWpEPYvkW5G9kREfNowB/U3M5ZrM54zjhrqj8r2OkA1rmFtfW7kCHZWS5sbxQGyIqRo7BRoS144CWxdbhFyCvkuLW6i4hc2lHFXF462A9jvsEhLv5ajhBd3nHfpX3LwWJ4Oi8vmShf/E2MS/Ly+fXexM62/z1t6TUCv8jtiLwT71Tj+sdNC40TyVCdyAFutV3rE3tEDmH2tXZUtFbcHshBTTzZWqsSxeIxcXUq9xKXXg+a0QopFNbEExEQjJxkYgzSiPzizdC5Huf5KRLBgC8J+KNVMbAL+ELfh4C+Jir4EBCDrlOJEsFtPrY65MtyLgpLnNiLBJScy/NQSEiQfWarCxS4XU1OYJPXQWp2zE8HR3J0gzOwg5W7H41+8PEGmzCMjcLCebEIXQ=
+X-Rspamd-Queue-Id: 35A14A0002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756878409-494500
+X-HE-Meta: U2FsdGVkX19mZi4+7MqT9Q0lbfQilNkLNiBeAtezNAFJDH+PLTfDmSjz9457OwAI+RJJjpOYo4nUGOX/WxLmMQ9qOgOV2xNeUT71EJ7AEWqVhB7gGH2fQ+TadKbQ7x4SxHWQHoIUCaVSG91J9mUwUOtxgaNeXabq+K7T2/GoNYVGKkQRcANlvaI99JMfKLTh1gHbZov7t+mUy0BAC/d7AeIIRnBAUejVJTY4oHYjzEnuQ7NVuEqMr2aoANYXu+2p1Tx2Nmwm+PEay61GtS/f2C383LVqWywA+hDgk4dKt+AMTzS4BAPrITcsh0gcWgMKmq/yfsVptBk+oJ6vTPG5/5xs7+gNrJ0Yt7cO3/N9LvstmR0df/+D11OnwrLxBsTfGOBs6K84ztrJi8S9e10IYhy3H6C1/IjfFOAnSRVLChVEjlg2oZ9e3vNmZo7OsqfiQD88yGF6rVtN58fBGCE3khB5S5HkkWL8OfIj6ww9m5gHb9aRku7+cjvBoeLaqCzSvYdqVhnCzIDAE32fVKk/BbKxq+RgKnbcJGemrmQ1ETA46aMRL5WXYIgXc/ckWvLC/1JmYP3BqCXMx+LXUvO+rTqDaAQIja8w7ZXfRvJb5Fokwj94K3/1f6trGxWIBZ7AguBhBbybih8z8e5QRhONdY0LhXUOg1Wtp/+gQKDvRhS57+7FLar6kJFkuLfCAzcdCxOhQqZAhKERXKiplghPAcCC/829xziVyUfo87npjRn0u6JFkl/fPTxaNgvmYA4/9emgDwExBUzZTf2g7C/EAzueHMLCk6t8svcwoxKbRTYe2/EEiaxGHILvy9D6hjVjUGP9kjmZGewiRImk/VlQrnGWOi5ZStrHPHbjJwnS9D8uXEerJeP6XePU/qvkm6682jYd5L6HI8N6jnUbu16AsvpFsCFnEDajt6JPQ8Jf7yFfR/R0pgD7AltK4gC134SRbn54xDnIiMIVFjRMHo4
+ 74kMu3q5
+ QPPmy3qvJ2RneEWONUCkqyi7D66Xkcs66imLifKg5jrHHoH4PBBrOGdoHjQEfCUFpxhe5EyxTqYpI1+w6XlKTYoi9JF3J5IXr1+80j3SRvK9L0SAk20JNc0EN80UKkavK0FSQx9hR38HWoI1VrA8jwHAollxnnEmPjW2HaLo7el12wcg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,31 +91,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+Currently khugepaged does not collapse a region which does not have a
+single writable page. This is wasteful since non-writable VMAs mapped by
+the application won't benefit from THP collapse. Therefore, remove this
+restriction and allow khugepaged to collapse a VMA with arbitrary
+protections.
 
-kernel test robot noticed the following build warnings:
+Along with this, currently MADV_COLLAPSE does not perform a collapse on a
+non-writable VMA, and this restriction is nowhere to be found on the
+manpage - the restriction itself sounds wrong to me since the user knows
+the protection of the memory it has mapped, so collapsing read-only
+memory via madvise() should be a choice of the user which shouldn't
+be overriden by the kernel.
 
-[auto build test WARNING on akpm-mm/mm-everything]
+On an arm64 machine, an average of 5% improvement is seen on some mmtests
+benchmarks, particularly hackbench, with a maximum improvement of 12%.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-do-not-assume-file-vma-vm_file-in-compat_vma_mmap_prepare/20250902-184946
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250902104533.222730-1-lorenzo.stoakes%40oracle.com
-patch subject: [PATCH] mm: do not assume file == vma->vm_file in compat_vma_mmap_prepare()
-config: i386-buildonly-randconfig-001-20250903 (https://download.01.org/0day-ci/archive/20250903/202509031346.N6FpuQIA-lkp@intel.com/config)
-compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509031346.N6FpuQIA-lkp@intel.com/reproduce)
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+RFC->v1:
+Drop writable references from tracepoints
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509031346.N6FpuQIA-lkp@intel.com/
+RFC:
+https://lore.kernel.org/all/20250901074817.73012-1-dev.jain@arm.com/
 
-All warnings (new ones prefixed by >>):
+I can see performance improvements on mmtests run on an arm64 machine
+comparing with 6.17-rc2. (I) denotes statistically significant improvement,
+(R) denotes statistically significant regression (Please ignore the
+numbers in the middle column):
 
->> Warning: mm/util.c:1145 function parameter 'f_op' not described in '__compat_vma_mmap_prepare'
->> Warning: mm/util.c:1145 function parameter 'file' not described in '__compat_vma_mmap_prepare'
++------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
+| mmtests/hackbench                  | process-pipes-1 (seconds)                                |                 0.145 |                   -0.06% |
+|                                    | process-pipes-4 (seconds)                                |                0.4335 |                   -0.27% |
+|                                    | process-pipes-7 (seconds)                                |                 0.823 |              (I) -12.13% |
+|                                    | process-pipes-12 (seconds)                               |    1.3538333333333334 |               (I) -5.32% |
+|                                    | process-pipes-21 (seconds)                               |    1.8971666666666664 |               (I) -2.87% |
+|                                    | process-pipes-30 (seconds)                               |    2.5023333333333335 |               (I) -3.39% |
+|                                    | process-pipes-48 (seconds)                               |                3.4305 |               (I) -5.65% |
+|                                    | process-pipes-79 (seconds)                               |     4.245833333333334 |               (I) -6.74% |
+|                                    | process-pipes-110 (seconds)                              |     5.114833333333333 |               (I) -6.26% |
+|                                    | process-pipes-141 (seconds)                              |                6.1885 |               (I) -4.99% |
+|                                    | process-pipes-172 (seconds)                              |     7.231833333333334 |               (I) -4.45% |
+|                                    | process-pipes-203 (seconds)                              |     8.393166666666668 |               (I) -3.65% |
+|                                    | process-pipes-234 (seconds)                              |     9.487499999999999 |               (I) -3.45% |
+|                                    | process-pipes-256 (seconds)                              |    10.316166666666666 |               (I) -3.47% |
+|                                    | process-sockets-1 (seconds)                              |                 0.289 |                    2.13% |
+|                                    | process-sockets-4 (seconds)                              |    0.7596666666666666 |                    1.02% |
+|                                    | process-sockets-7 (seconds)                              |    1.1663333333333334 |                   -0.26% |
+|                                    | process-sockets-12 (seconds)                             |    1.8641666666666665 |                   -1.24% |
+|                                    | process-sockets-21 (seconds)                             |    3.0773333333333333 |                    0.01% |
+|                                    | process-sockets-30 (seconds)                             |                4.2405 |                   -0.15% |
+|                                    | process-sockets-48 (seconds)                             |     6.459666666666666 |                    0.15% |
+|                                    | process-sockets-79 (seconds)                             |    10.156833333333333 |                    1.45% |
+|                                    | process-sockets-110 (seconds)                            |    14.317833333333333 |                   -1.64% |
+|                                    | process-sockets-141 (seconds)                            |               20.8735 |               (I) -4.27% |
+|                                    | process-sockets-172 (seconds)                            |    26.205333333333332 |                    0.30% |
+|                                    | process-sockets-203 (seconds)                            |    31.298000000000002 |                   -1.71% |
+|                                    | process-sockets-234 (seconds)                            |    36.104000000000006 |                   -1.94% |
+|                                    | process-sockets-256 (seconds)                            |     39.44016666666667 |                   -0.71% |
+|                                    | thread-pipes-1 (seconds)                                 |   0.17550000000000002 |                    0.66% |
+|                                    | thread-pipes-4 (seconds)                                 |   0.44716666666666666 |                    1.66% |
+|                                    | thread-pipes-7 (seconds)                                 |                0.7345 |                   -0.17% |
+|                                    | thread-pipes-12 (seconds)                                |     1.405833333333333 |               (I) -4.12% |
+|                                    | thread-pipes-21 (seconds)                                |    2.0113333333333334 |               (I) -2.13% |
+|                                    | thread-pipes-30 (seconds)                                |    2.6648333333333336 |               (I) -3.78% |
+|                                    | thread-pipes-48 (seconds)                                |    3.6341666666666668 |               (I) -5.77% |
+|                                    | thread-pipes-79 (seconds)                                |                4.4085 |               (I) -5.31% |
+|                                    | thread-pipes-110 (seconds)                               |     5.374666666666666 |               (I) -6.12% |
+|                                    | thread-pipes-141 (seconds)                               |     6.385666666666666 |               (I) -4.00% |
+|                                    | thread-pipes-172 (seconds)                               |     7.403000000000001 |               (I) -3.01% |
+|                                    | thread-pipes-203 (seconds)                               |     8.570333333333332 |               (I) -2.62% |
+|                                    | thread-pipes-234 (seconds)                               |     9.719166666666666 |               (I) -2.00% |
+|                                    | thread-pipes-256 (seconds)                               |    10.552833333333334 |               (I) -2.30% |
+|                                    | thread-sockets-1 (seconds)                               |                0.3065 |                (R) 2.39% |
++------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
 
++------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
+| mmtests/sysbench-mutex             | sysbenchmutex-1 (usec)                                   |    194.38333333333333 |                   -0.02% |
+|                                    | sysbenchmutex-4 (usec)                                   |               200.875 |                   -0.02% |
+|                                    | sysbenchmutex-7 (usec)                                   |    201.23000000000002 |                    0.00% |
+|                                    | sysbenchmutex-12 (usec)                                  |    201.77666666666664 |                    0.12% |
+|                                    | sysbenchmutex-21 (usec)                                  |                203.03 |                   -0.40% |
+|                                    | sysbenchmutex-30 (usec)                                  |               203.285 |                    0.08% |
+|                                    | sysbenchmutex-48 (usec)                                  |    231.30000000000004 |                    2.59% |
+|                                    | sysbenchmutex-79 (usec)                                  |               362.075 |                   -0.80% |
+|                                    | sysbenchmutex-110 (usec)                                 |     516.8233333333334 |                   -3.87% |
+|                                    | sysbenchmutex-128 (usec)                                 |     593.3533333333334 |               (I) -4.46% |
++------------------------------------+----------------------------------------------------------+-----------------------+--------------------------+
+
+ mm/khugepaged.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 4ec324a4c1fe..a0f1df2a7ae6 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 			writable = true;
+ 	}
+ 
+-	if (unlikely(!writable)) {
+-		result = SCAN_PAGE_RO;
+-	} else if (unlikely(cc->is_khugepaged && !referenced)) {
++	if (unlikely(cc->is_khugepaged && !referenced)) {
+ 		result = SCAN_LACK_REFERENCED_PAGE;
+ 	} else {
+ 		result = SCAN_SUCCEED;
+@@ -1421,9 +1419,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		     mmu_notifier_test_young(vma->vm_mm, _address)))
+ 			referenced++;
+ 	}
+-	if (!writable) {
+-		result = SCAN_PAGE_RO;
+-	} else if (cc->is_khugepaged &&
++	if (cc->is_khugepaged &&
+ 		   (!referenced ||
+ 		    (unmapped && referenced < HPAGE_PMD_NR / 2))) {
+ 		result = SCAN_LACK_REFERENCED_PAGE;
+@@ -2830,7 +2826,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 		case SCAN_PMD_NULL:
+ 		case SCAN_PTE_NON_PRESENT:
+ 		case SCAN_PTE_UFFD_WP:
+-		case SCAN_PAGE_RO:
+ 		case SCAN_LACK_REFERENCED_PAGE:
+ 		case SCAN_PAGE_NULL:
+ 		case SCAN_PAGE_COUNT:
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.30.2
+
 
