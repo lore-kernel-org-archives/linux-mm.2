@@ -4,119 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE211CA1007
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 02:31:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2E3BCA1007
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 03:28:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 074C66B000D; Tue,  2 Sep 2025 22:31:55 -0400 (EDT)
+	id 0307D8E0002; Tue,  2 Sep 2025 23:28:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04C1B6B0010; Tue,  2 Sep 2025 22:31:54 -0400 (EDT)
+	id F24418E0001; Tue,  2 Sep 2025 23:28:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA42C6B0011; Tue,  2 Sep 2025 22:31:54 -0400 (EDT)
+	id E3A428E0002; Tue,  2 Sep 2025 23:28:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D5E446B000D
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:31:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 687B8119E95
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:31:54 +0000 (UTC)
-X-FDA: 83846363748.28.B4F440B
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8D2D74000E
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:31:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ad0n8wET;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756866712; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id CE8228E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 23:28:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 751C71604AD
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 03:28:08 +0000 (UTC)
+X-FDA: 83846505456.13.F87965A
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2DE471A0008
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 03:28:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BkZAXLvt;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756870086; a=rsa-sha256;
 	cv=none;
-	b=j2FCPGjw70BgQD2tQrISQncjvS+cRdi982pBp1kfIVurHQfgQ4iV9SoL0L4uHk3KJIJUNe
-	JeQpEo+ywJxQapydWTYHDCsaUoROSHdNIaeXipNBO3/2at+PxnfZvR/QrJp8eNiD0oLKQ7
-	I6GgAhAa36IELyuwQodEnejStki4SEs=
+	b=xcZEgX3ZFAkFRLULkjIQjLKyoU9Q968NRcv42mc3Nl3KS/nLk6BPiwnxx+PxW3ozAuMh3F
+	+i9Jke+XBHONjQF7MkpdsPqsWl+kUXGQHkLc3KSCcVHaXrfU+RVyQohlDnMXVHcIGH4JWV
+	VW5notGgUiD89qjA2s4SRnyyWjsRPn8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ad0n8wET;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=BkZAXLvt;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756866712;
+	s=arc-20220608; t=1756870086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JaM8jElx76QsWPCI4i/bmHE7wpK9FrSZCqDi9Z/x0BU=;
-	b=oBxD4FFoVRUQv/vmxMi/cQjCJAn6p9Laj87HISYUyqDyYCwUPTaDKt/VfE8eIY6JdtRVo2
-	2/t639QtBbmEO8EBRTgHDUkSOi2IdOVjzv1KaYKMUcsQly6hlLxUWdReUfFdgMc7u/2J4L
-	7Sxeh64+uHV/vCpexR5cexm8akCvWJk=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4b2f4ac4786so47701691cf.1
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 19:31:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756866712; x=1757471512; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JaM8jElx76QsWPCI4i/bmHE7wpK9FrSZCqDi9Z/x0BU=;
-        b=ad0n8wETbU8aYm0SCd0H6xsUAgD3S4XNkNpWlSKVuWczwb7pNOyuUlkBKNww9o3z1Q
-         Fa8Bh+J02qRIMJG+zCv7bd2QsvqqAlerwi9xan1aHIb5CcNNdpM4nu4HcubbCL1x5j5j
-         alHZAJ3CmF4+GkgkVyS7yIBaucWAcnQs6o8KzdP2C/7KQlM3PhJlQSwJftDTk0jikuQI
-         fZyk0s06LDH8ckLQEoeNteXf2JKjPqcsOtVYLWW/ckJYn5F6n2fWcHCOLT+Pq5ZPHxRv
-         QGHWJBiSzZ6phMURA2tTm7D36Lw+pRy7ab0xEdxPzECW+wbzqYOltBs5oQknNy81eN5i
-         V6Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756866712; x=1757471512;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JaM8jElx76QsWPCI4i/bmHE7wpK9FrSZCqDi9Z/x0BU=;
-        b=VVZ1UaJo051eZYz7T1UcV1f2omOACVKxBfXj453JcRXTgex2j/IBN/fxCkDn+uwavv
-         yaWgeysCDdONJ7xu/7I9zRpPct2dC6zWtSagxmYUNlmfpfQtOnHIJgYTFR2AxjImx1cy
-         rkJTC4CRXlsp3LSyeQzjnjyAFqGAuc1hdT8i0i09Celd5fqovy7Vqn8bq/owa6K6WUsd
-         AMNZePLBFxHxp6+3o1FGu7LG8V4vIlet+S1gmwrjDf5hflfK5jjZtTDkJY35Q89ZiuxR
-         p95nQpD6bJxjgVVuXLK/51wcHQ3NbS/GNd5ZbVKtLrPgHdvklW8/whL5o7Sdr/ETc3bI
-         YT+w==
-X-Gm-Message-State: AOJu0YzU4T5sePb/7OtRqxnV4ZphqSfqypjom16D0H4VC2F/HETXt+o5
-	JHe++vZsYhkXcnLZ+Jt0HvipWjDdQo1ylSAdksevkloKh54ZO9FY37ZFaq6ticJFtRsQ0SZK0Vx
-	G2OY1MHzwWx/6ejWVe4RX668gsEt7JOA=
-X-Gm-Gg: ASbGncugA82z09C3ahdxiOs7JWKT8usJmKyZFkwuTt2ne6+vHyv2j07X7cRV2fFIt4b
-	Q43N+ABNU2Rlf2icLmnztL0SIc4GasTONo5JUuFONMbCfRRBUQW0J8ohPvHIbklIUDtXKpQkqer
-	ZXRHh+6yUvoOGbXZ0DdLqkHLdkAF2W/bCBPwTi7UVMPRjgi+HTlnW0S0cdLmHU8BqrlB3jUCTvj
-	1eO2rx6Hfk97v5xNQ==
-X-Google-Smtp-Source: AGHT+IGsu1otmlJC2BFf+whMMlTjSxOF7/4Mm300tUoYFIc19VewwnIHMj3ISJYok6gXjAx3c3Kr8hfeQ69x85fqyg8=
-X-Received: by 2002:ac8:5e4d:0:b0:4b3:219:b74a with SMTP id
- d75a77b69052e-4b31dcccadbmr180598031cf.72.1756866711488; Tue, 02 Sep 2025
- 19:31:51 -0700 (PDT)
+	bh=9pNvoK8E483FKVV4UiISiOQElVaIf1JmFvnG6QIAnXY=;
+	b=tsAQ4N3xp6neLx75LkDsfge9Kr85UIy5hJDZj30vteseIQkeZe1YNR6zrRjOeF9hWz5fY+
+	/w+J1xwefBUEk681rMNMGBHVZ9AflH3GeCJPNa559Sl6c2ydfGGM7GlKFzcWUyBxZUMw1S
+	0tr32RpJ6oRev4vr6YQfYVynTutOA3E=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1756870081; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=9pNvoK8E483FKVV4UiISiOQElVaIf1JmFvnG6QIAnXY=;
+	b=BkZAXLvtY0n2juOzVrzk/O44rN55Z1lhmA7cKSsAjIhLiMp1f31QElyu1OcYd7RThpKiZdYKIoOi2GpgwvtJ/T27VRg7G8G9Ea8+WrkHB9UkoNGcxTVAfFZFvavLgdR4OyCpozvD4EvQ34pXRSF1vspFNHpBgho7BiacA12h9to=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnA-49f_1756870075 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 03 Sep 2025 11:27:57 +0800
+Message-ID: <9ccc6d6b-c077-4b8a-b8da-99cabf182e17@linux.alibaba.com>
+Date: Wed, 3 Sep 2025 11:27:54 +0800
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-7-ryncsn@gmail.com>
- <CAGsJ_4yRa65ogB0d90LmtOigGTqQ9mM-eUU6VbmcX63j6vgHEg@mail.gmail.com>
- <CAMgjq7A5Gr2V9TDFg=_S+SjZ1r1gWXTtRGNofuzAgWNYLMW_DQ@mail.gmail.com>
- <CAGsJ_4w7iV0YU+sXdYPrzqXAdaLncoP7bnGx8ELcpETL6y+cOQ@mail.gmail.com> <CAMgjq7AWQtbXMH4iOoV473wJj0TA8SEUyvsWKvsUP_=1oRuH9w@mail.gmail.com>
-In-Reply-To: <CAMgjq7AWQtbXMH4iOoV473wJj0TA8SEUyvsWKvsUP_=1oRuH9w@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 3 Sep 2025 14:31:40 +1200
-X-Gm-Features: Ac12FXw9QoA8aC-zRqLH3kdz8gE1l6zpGqF39cGUZA-kcxrOVqv_LPaFpOqQt0g
-Message-ID: <CAGsJ_4z7BagquRVHoJq612h-_n87F_VuTqRxOnSCoox2qpYmRg@mail.gmail.com>
-Subject: Re: [PATCH 6/9] mm, swap: use the swap table for the swap cache and
- switch API
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8D2D74000E
-X-Stat-Signature: 1n98z3a787hzf9gw6f98nhh44otqch9q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
+To: Usama Arif <usamaarif642@gmail.com>, David Hildenbrand
+ <david@redhat.com>, Dev Jain <dev.jain@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
+ vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
+ yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com,
+ aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
+ catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
+ dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com
+References: <20250819134205.622806-1-npache@redhat.com>
+ <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
+ <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
+ <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local>
+ <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
+ <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local>
+ <95012dfc-d82d-4ae2-b4cd-1e8dcf15e44b@redhat.com>
+ <bdbb5168-7657-4f11-a42d-b75cce7e0bca@lucifer.local>
+ <e34e1ffe-c377-4c9a-b28b-ca873f3620ac@redhat.com>
+ <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com>
+ <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
+ <2a141eef-46e2-46e1-9b0f-066ec537600d@linux.alibaba.com>
+ <f34b5fcb-6a97-4d97-86a8-906083b53be6@redhat.com>
+ <eb02c281-6d41-44af-8eaf-8ffc29153a3a@linux.alibaba.com>
+ <286e2cb3-6beb-4d21-b28a-2f99bb2f759b@redhat.com>
+ <17075d6a-a209-4636-ae42-2f8944aea745@gmail.com>
+ <287f3b64-bc34-48d9-9778-c519260c3dba@redhat.com>
+ <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756866712-960068
-X-HE-Meta: U2FsdGVkX19wz8Ww4IozY7nKrvx6ZsmNmphPqcZe7PhceBF4oABqS+Vxc1vdqqkmmu2fA0s1WVe9Dx42F8IfavjEi0Os37N1lHRNGMD0dtdCi9hMXjsrMD2S3Xcb9IzDNjvkkdxhz4CiJ3pvxcpacLO8msx0/Xaax95TpZIKsKenC4DPmq7OvLF4gxX5jq2XcHlvjizvb/Nehwf84kIaZ/mY25VlqwVPZhXcIkWeoHu+R9dzfEmq1SMzb7QKXTnu28KQraB47402zUnlWNgQvwYSsfKm9ePNkYIu4Mu4GKQU/ulesJnWjB0bPXeca5I1M1S2NZGumuBiXlnwayh2mlaZieoF3tLUpS1OT202tAZGOXuXqUTvmqcxuPhktCrKMSHk65TDf17e/XDEwNo0pDloFY6HhzuXhwxBRb3OG+YWGD+yrzr32higvOSqNbA+FxsdMhbiRbh01950mruxWLAHKeTYKDffsw+Y1V4D6K6pDU9J6mholL9+pmGYnSmMvKA6XcRMkcVh9AnQhxuhGtI0PcS40n1tuT0UdQk1b8MeHqL2FCih66/EcgorQEuLqewKgU2/e7fjU6K18xaX5j04TNUwsg7m2cbkug4N3n8hRYTHpl0XUHM6m3UW8h+zC0jSssqIgzGDDMfWCj2KVLP8lANdTh4Ye8BT8GMZ9F4QKQXL2QZMQvbL6/oiRNUD7cnvQ6dZercZFi+f/9atHFgTJJ5+tigdxed95T5FiMrWA6Z4Sie4bXPlBdN2vw0JkPFE4D63iDCxv+51YKCOQ6qwYypXdwFux4JJtCaCCJNbORyd/i9pj/dZu0z2XRZPbCYQLlYxuGMTeelvwmiEjBDRAy9bxUMpOo5K58+qPDBAdSUNBTUE24YFPqYAwf4jY3M1pF+TI1ys1D9ocN01ydYdkwDCuxn3nBs6omKqHL6dIQgcb3jxpxDWbx+ONjL8GfNz42c9K/WiAESyOkG
- efhzMMXU
- 3Fm9FOiW7f/p6b8JXKzlywgqjAMvoDTHEzEGqPcHOdrw69o1vFJRLgUSJIqnhfzVSMSizV7vKDdVcxW+y+rNdwwEVzHFplrzT1X4vhZnCM20OuCCKz7Sgkv1xPs6E6G3tsKDxFz6Z8JMqLO2toMexFfcf8RvBEI5tryi9EkNqAKYMaEfy27U4bhXx3Ao6Gt+4E749mvtV70S621cndn5mPSp+/u0agvIXhD6P8uvxBeSmrgnuRlCNJNMQTFkQGeUmMolcJdSr9m2PJOk+Bct1XuijdF+YXR3VNYJoV3D/RjQG8CPclreN+JBtzD+OzINToFqwH5YDikYYDPtZAY86tKmA5SUL+nfuiLMvfudtObmTKJAzhg1oL9e1g0X5SFtixk1f4aM3ngWTibuIofwxuB6aVRm/zMwUoVxx1FiA1iSrh6/CVIU8ZTsKvw==
+X-Rspamd-Queue-Id: 2DE471A0008
+X-Stat-Signature: bqy89m9n7rsiyrzy19ehzdsegpomznqr
+X-HE-Tag: 1756870084-458143
+X-HE-Meta: U2FsdGVkX1+AWBF+/91vnyAUWF8gMsoD+7kkgnSYhbeMuLpQ5nrfO5mFpcscJI7qFlPXw/g6DExJQ5bTN7tX3CskiKSrTAv6M4ZYDBLNvPVYPQ/WG75G+ABgzzWr8DNxE7r66YICNH4ohQDlRSfQrFln4XFez+fYY6ngSUBj2dKvxxyweI+iTj8FdSw3qORk368ytk9+4ZYVX71ETHR/mBBK/AUEUf5skMkUouolfs50hfpI7DwuZgDRFAb6QDCYQ47iOalyT5odtvXbH12gGw987r9ZJQPi1YWerCBhZVrNqoH9toiyIUs215/7xrJtnqz7JDtMTLwvvSD0UuVZ/cglocJQCaYXUgvEg+AtOTlMWCEw0RW8WAYxjhv18GoNGfDBZM+/ZYV4QNN7S1e2jd9YxmPyaEYCJP/88zINHk1lT91N8tQrDOrEF1BRiFKKNUtY0c/Y77p7smG2mFE1fDPQZgVBnyJRfDQTVR4yewAXFBiyDoARXOhCXR1gKHO4KUP+fULzTRgZejHc/LE9g0xuaNbiBVi+9AXw/IN0cetlpc7rTLFo/Lezgo4C8R+hs73OdOhRida3U+SOPJTZvpBKromzIQVMm8fs6bZx5x5mEO9H9dYBFdowmngHFhXywE8Pwz8aJS4t3Uvgsrf3L9fcZAnER4yFAKL7FeAhpk0EV8SF8zGM6/TjpEX23IDKxpkNxircTHp9tiYwSI21v8HkQoCflPLOU+RgeuXGPHv0TSLeUWRqybJraFwmqJ/5hGiI5jN97akZl3v8cfAwOv8twmAkGwciWuLBpJATJL6EQ95j66T/FiMfGSvW/GKZyVszyp/yykrc3w3FnbMiyvPEZMFm9C+6ZGNKI7zffXoDfAVuA3DC7cPZBV2YIScSDU+WfLeb1hbS0QLCU6b/jBE9IgLIBlWc65Los8YNPdFyEU8PTP2Zn/v0f1UOBMBeHaonDSud9lgJX+/9DuQ
+ HX+r2M3T
+ iajtsbHU6/KJT8aSd+d/S0DKoa9e4uPCn5ZWJ0ohXQPLdNsiCzcgiQ6Yo0Mj5YbCjjVSKYICco1UTj9oZzG6vdhst0p8RzkN3NmRzqOtFs0Pnb2maC4S6PNwxwkzFNGOwXjSUP1h/EKvEnbybzI8rPjmYYq2LCa1OXbZuWL0VwRiEAvVYnbGDsGwe+qLcRauppipHWFjsrGFnxX5GNUk9H6dqvMKtsFseAVVo4iwuus+Iyj1EFnuS54FMbWdgfQ1AYDN/VS+Angxvksj8fnKNh1uTXW5wyfAaHAIELQPAZd7pRv35Ee0KiwpMrBcXpEy3ygPDDxabnirm7ZkFTr0AndZJHcEBEyYj7Cn+Sq5g0wtP66b2I/WvIETll2Y9VZfHlhV42Mw+XUamKdr2MCsgM4IqQmbT2W4yTyd5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,114 +118,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 3, 2025 at 2:12=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
-:
->
-> Barry Song <21cnbao@gmail.com> =E4=BA=8E 2025=E5=B9=B49=E6=9C=883=E6=97=
-=A5=E5=91=A8=E4=B8=89 07:44=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > On Tue, Sep 2, 2025 at 11:59=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > >
-> > > On Tue, Sep 2, 2025 at 6:46=E2=80=AFPM Barry Song <21cnbao@gmail.com>=
- wrote:
-> > > >
-> > > > > +
-> > > > > +/*
-> > > > > + * Helpers for accessing or modifying the swap table of a cluste=
-r,
-> > > > > + * the swap cluster must be locked.
-> > > > > + */
-> > > > > +static inline void __swap_table_set(struct swap_cluster_info *ci=
-,
-> > > > > +                                   unsigned int off, unsigned lo=
-ng swp_tb)
-> > > > > +{
-> > > > > +       VM_WARN_ON_ONCE(off >=3D SWAPFILE_CLUSTER);
-> > > > > +       atomic_long_set(&ci->table[off], swp_tb);
-> > > > > +}
-> > > > > +
-> > > > > +static inline unsigned long __swap_table_get(struct swap_cluster=
-_info *ci,
-> > > > > +                                            unsigned int off)
-> > > > > +{
-> > > > > +       VM_WARN_ON_ONCE(off >=3D SWAPFILE_CLUSTER);
-> > > > > +       return atomic_long_read(&ci->table[off]);
-> > > > > +}
-> > > > > +
-> > > >
-> > > > Why should this use atomic_long instead of just WRITE_ONCE and
-> > > > READ_ONCE?
-> > >
-> > > Hi Barry,
-> > >
-> > > That's a very good question. There are multiple reasons: I wanted to
-> > > wrap all access to the swap table to ensure there is no non-atomic
-> > > access, since it's almost always wrong to read a folio or shadow valu=
-e
-> > > non-atomically from it. And users should never access swap tables
-> > > directly without the wrapper helpers. And in another reply, as Chris
-> > > suggested, we can use atomic operations to catch potential issues
-> > > easily too.
-> >
-> > I still find it odd that for writing we have the si_cluster lock,
-> > but for reading a long, atomic operations don=E2=80=99t seem to provide
-> > valid protection against anything. For example, you=E2=80=99re still
-> > checking folio_lock and folio_test_swapcache() in such cases.
-> >
-> >
-> > >
-> > > And most importantly, later phases can make use of things like
-> > > atomic_cmpxchg as a fast path to update the swap count of a swap
-> > > entry. That's a bit hard to explain for now, short summary is the swa=
-p
-> > > table will be using a single atomic for both count and folio tracking=
-,
-> > > and we'll clean up the folio workflow with swap, so it should be
-> > > possible to get an final consistency of swap count by simply locking
-> > > the folio, and doing atomic_cmpxchg on swap table with folio locked
-> > > will be safe.
-> >
-> > I=E2=80=99m still missing this part: if the long stores a folio pointer=
-,
-> > how could it further save the swap_count?
->
-> We use PFN here, it works very well, saves more memory and the
-> performance is very good, tested using the 28 series patch which have
-> already implemented this:
-> https://lore.kernel.org/linux-mm/20250514201729.48420-25-ryncsn@gmail.com=
-/
 
-Alright, I see. With the PFN, we already have the folio.
 
->
-> >
-> > >
-> > > For now using atomic doesn't bring any overhead or complexity, only
-> > > make it easier to implement other code. So I think it should be good.
-> >
-> > I guess it depends on the architecture. On some arches, it might
-> > require irq_disable plus a spinlock.
->
-> If an arch can't provide atomic for basic access to a long, then that
-> justified the usage of atomic here even more.. The read has to be
-> atomic since swap cache lookup is lockless, so the write should be
-> atomic too.
+On 2025/9/3 04:23, Usama Arif wrote:
+> 
+> 
+> On 02/09/2025 12:03, David Hildenbrand wrote:
+>> On 02.09.25 12:34, Usama Arif wrote:
+>>>
+>>>
+>>> On 02/09/2025 10:03, David Hildenbrand wrote:
+>>>> On 02.09.25 04:28, Baolin Wang wrote:
+>>>>>
+>>>>>
+>>>>> On 2025/9/2 00:46, David Hildenbrand wrote:
+>>>>>> On 29.08.25 03:55, Baolin Wang wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>> On 2025/8/28 18:48, Dev Jain wrote:
+>>>>>>>>
+>>>>>>>> On 28/08/25 3:16 pm, Baolin Wang wrote:
+>>>>>>>>> (Sorry for chiming in late)
+>>>>>>>>>
+>>>>>>>>> On 2025/8/22 22:10, David Hildenbrand wrote:
+>>>>>>>>>>>> Once could also easily support the value 255 (HPAGE_PMD_NR / 2- 1),
+>>>>>>>>>>>> but not sure
+>>>>>>>>>>>> if we have to add that for now.
+>>>>>>>>>>>
+>>>>>>>>>>> Yeah not so sure about this, this is a 'just have to know' too, and
+>>>>>>>>>>> yes you
+>>>>>>>>>>> might add it to the docs, but people are going to be mightily
+>>>>>>>>>>> confused, esp if
+>>>>>>>>>>> it's a calculated value.
+>>>>>>>>>>>
+>>>>>>>>>>> I don't see any other way around having a separate tunable if we
+>>>>>>>>>>> don't just have
+>>>>>>>>>>> something VERY simple like on/off.
+>>>>>>>>>>
+>>>>>>>>>> Yeah, not advocating that we add support for other values than 0/511,
+>>>>>>>>>> really.
+>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> Also the mentioned issue sounds like something that needs to be
+>>>>>>>>>>> fixed elsewhere
+>>>>>>>>>>> honestly in the algorithm used to figure out mTHP ranges (I may be
+>>>>>>>>>>> wrong - and
+>>>>>>>>>>> happy to stand corrected if this is somehow inherent, but reallly
+>>>>>>>>>>> feels that
+>>>>>>>>>>> way).
+>>>>>>>>>>
+>>>>>>>>>> I think the creep is unavoidable for certain values.
+>>>>>>>>>>
+>>>>>>>>>> If you have the first two pages of a PMD area populated, and you
+>>>>>>>>>> allow for at least half of the #PTEs to be non/zero, you'd collapse
+>>>>>>>>>> first a
+>>>>>>>>>> order-2 folio, then and order-3 ... until you reached PMD order.
+>>>>>>>>>>
+>>>>>>>>>> So for now we really should just support 0 / 511 to say "don't
+>>>>>>>>>> collapse if there are holes" vs. "always collapse if there is at
+>>>>>>>>>> least one pte used".
+>>>>>>>>>
+>>>>>>>>> If we only allow setting 0 or 511, as Nico mentioned before, "At 511,
+>>>>>>>>> no mTHP collapses would ever occur anyway, unless you have 2MB
+>>>>>>>>> disabled and other mTHP sizes enabled. Technically, at 511, only the
+>>>>>>>>> highest enabled order would ever be collapsed."
+>>>>>>>> I didn't understand this statement. At 511, mTHP collapses will occur if
+>>>>>>>> khugepaged cannot get a PMD folio. Our goal is to collapse to the
+>>>>>>>> highest order folio.
+>>>>>>>
+>>>>>>> Yes, I’m not saying that it’s incorrect behavior when set to 511. What I
+>>>>>>> mean is, as in the example I gave below, users may only want to allow a
+>>>>>>> large order collapse when the number of present PTEs reaches half of the
+>>>>>>> large folio, in order to avoid RSS bloat.
+>>>>>>
+>>>>>> How do these users control allocation at fault time where this parameter
+>>>>>> is completely ignored?
+>>>>>
+>>>>> Sorry, I did not get your point. Why does the 'max_pte_none' need to
+>>>>> control allocation at fault time? Could you be more specific? Thanks.
+>>>>
+>>>> The comment over khugepaged_max_ptes_none gives a hint:
+>>>>
+>>>> /*
+>>>>    * default collapse hugepages if there is at least one pte mapped like
+>>>>    * it would have happened if the vma was large enough during page
+>>>>    * fault.
+>>>>    *
+>>>>    * Note that these are only respected if collapse was initiated by khugepaged.
+>>>>    */
+>>>>
+>>>> In the common case (for anything that really cares about RSS bloat) you will just a
+>>>> get a THP during page fault and consequently RSS bloat.
+>>>>
+>>>> As raised in my other reply, the only documented reason to set max_ptes_none=0 seems
+>>>> to be when an application later (after once possibly getting a THP already during
+>>>> page faults) did some MADV_DONTNEED and wants to control the usage of THPs itself using
+>>>> MADV_COLLAPSE.
+>>>>
+>>>> It's a questionable use case, that already got more problematic with mTHP and page
+>>>> table reclaim.
+>>>>
+>>>> Let me explain:
+>>>>
+>>>> Before mTHP, if someone would MADV_DONTNEED (resulting in
+>>>> a page table with at least one pte_none entry), there would have been no way we would
+>>>> get memory over-allocated afterwards with max_ptes_none=0.
+>>>>
+>>>> (1) Page faults would spot "there is a page table" and just fallback to order-0 pages.
+>>>> (2) khugepaged was told to not collapse through max_ptes_none=0.
+>>>>
+>>>> But now:
+>>>>
+>>>> (A) With mTHP during page-faults, we can just end up over-allocating memory in such
+>>>>       an area again: page faults will simply spot a bunch of pte_nones around the fault area
+>>>>       and install an mTHP.
+>>>>
+>>>> (B) With page table reclaim (when zapping all PTEs in a table at once), we will reclaim the
+>>>>       page table. The next page fault will just try installing a PMD THP again, because there is
+>>>>       no PTE table anymore.
+>>>>
+>>>> So I question the utility of max_ptes_none. If you can't tame page faults, then there is only
+>>>> limited sense in taming khugepaged. I think there is vale in setting max_ptes_none=0 for some
+>>>> corner cases, but I am yet to learn why max_ptes_none=123 would make any sense.
 
-I actually confused atomic_64 with atomic_long. After double-checking, I
-found that on almost all architectures, atomic_long_set/read are effectivel=
-y
-write_once and read_once. However, many architectures override these in the
-common header file. This seems like a spot worth cleaning up for those
-architectures.
+Thanks David for your explanation. I see your point now.
 
->
-> Xchg / cmpxchg is a bit more complex on some arches, they are optional
-> in the swap table anyway. We can use them only on arches that provide
-> better performance with atomic. I believe most arches do. For the xchg
-> debug check, it can be dropped once we are confident enough that there
-> is no hidden bug.
+>>> For PMD mapped THPs with THP shrinker, this has changed. You can basically tame pagefaults, as when you encounter
+>>> memory pressure, the shrinker kicks in if the value is less than HPAGE_PMD_NR -1 (i.e. 511 for x86), and
+>>> will break down those hugepages and free up zero-filled memory.
+>>
+>> You are not really taming page faults, though, you are undoing what page faults might have messed up :)
+>>
+>> I have seen in our prod workloads where
+>>> the memory usage and THP usage can spike (usually when the workload starts), but with memory pressure,
+>>> the memory usage is lower compared to with max_ptes_none = 511, while still still keeping the benefits
+>>> of THPs like lower TLB misses.
+>>
+>> Thanks for raising that: I think the current behavior is in place such that you don't bounce back-and-forth between khugepaged collapse and shrinker-split.
+>>
+> 
+> Yes, both collapse and shrinker split hinge on max_ptes_none to prevent one of these things thrashing the effect of the other.
+> 
+>> There are likely other ways to achieve that, when we have in mind that the thp shrinker will install zero pages and max_ptes_none includes
+>> zero pages.
+>>
+>>>
+>>> I do agree that the value of max_ptes_none is magical and different workloads can react very differently
+>>> to it. The relationship is definitely not linear. i.e. if I use max_ptes_none = 256, it does not mean
+>>> that the memory regression of using THP=always vs THP=madvise is halved.
+>>
+>> To which value would you set it? Just 510? 0?
+>>
+> 
+> There are some very large workloads in the meta fleet that I experimented with and found that having
+> a small value works out. I experimented with 0, 51 (10%) and 256 (50%). 51 was found to be an optimal
+> comprimise in terms of application metrics improving, having an acceptable amount of memory regression and
+> improved system level metrics (lower TLB misses, lower page faults). I am sure there was a better value out
+> there for these workloads, but not possible to experiment with every value.
+> 
+> In terms of wider rollout across the fleet, we are going to target 0 (or a very very small value)
+> when moving from THP=madvise to always. Mainly because it is the least likely to cause a memory regression as
+> THP shrinker will deal with page faults faulting in mostly zero-filled pages and khugepaged wont collapse
+> pages that are dominated by 4K zero-filled chunks.
 
-Thanks
-Barry
+Thanks for sharing this. We're also investigating what max_ptes_none 
+should be set to in order to use the THP shrinker properly, and 
+currently, our customers always set max_ptes_none to its default value: 
+511, which is not good.
+
+If 0 is better, it seems like there isn't much conflict with the values 
+expected by mTHP collapse (0 and 511). Sounds good to me.
 
