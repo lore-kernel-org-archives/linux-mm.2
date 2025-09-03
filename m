@@ -4,121 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F223CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4BC4CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:36:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D1548E000A; Wed,  3 Sep 2025 07:16:23 -0400 (EDT)
+	id 2ECE28E000C; Wed,  3 Sep 2025 07:36:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35B4F8E0001; Wed,  3 Sep 2025 07:16:23 -0400 (EDT)
+	id 29DBF8E0001; Wed,  3 Sep 2025 07:36:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D5258E000A; Wed,  3 Sep 2025 07:16:23 -0400 (EDT)
+	id 1DA7B8E000C; Wed,  3 Sep 2025 07:36:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 01A738E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:16:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DC9E1A05DF
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:16:22 +0000 (UTC)
-X-FDA: 83847685404.11.7A1E4EB
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C8486180010
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:16:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iTan8OVE;
-	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756898180; a=rsa-sha256;
-	cv=none;
-	b=mMqpPrINBhn0CsJiCbyPrrEFidzzJpsi3ks/rssU/eOGUyBd0ScNX3wJqFq00ZrIqr2+a8
-	ktZVsh+KIa4a1meAOahtsW4Mk2Whvwam9aL/jmxXyS+EzP5OzWsGF0QGTuTYq4M8oCdfS0
-	IG0KaXK+HCZO9MW6bQOmz6k5pNQj6qs=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iTan8OVE;
-	spf=pass (imf06.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D5AD8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:36:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9EAD98602E
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:36:22 +0000 (UTC)
+X-FDA: 83847735804.07.10782EB
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C41731C0002
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:36:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0l01KSj1;
+	spf=pass (imf21.hostedemail.com: domain of glider@google.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756898180;
+	s=arc-20220608; t=1756899380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/J6B5kO21qmim3edptXX1lboSXT3A4ICQCYNPP7b6E=;
-	b=fxWw4GXYuaiPFaHyEssGGr6HmdyuM0HVbnK++m8/bonrq9XNZ/h6KCIly6hNL/uj34rF/y
-	VLokWnWt45j8TcO9Z8gXn/gug6YpJmLs3Uofxt49f8g6ZkN4vXD4f7W80fePPHFbvY3SQw
-	2QOStlSll1Nj+u/AZlCBD4fci3kL7z8=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b9edf4cf6cso5566270f8f.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 04:16:20 -0700 (PDT)
+	bh=a3IW4gClMpsxg8pegPHxJ+hydJ79H7ht+ce7OmUzWyQ=;
+	b=hiCzfJJK2Dm+ubiOoy0aYZo43rLmyHHxWTT/x+VqdEij3GV9rlGQ8D1e0myjTreWpjHcR6
+	qodYoiEOpqMtXdKW9JGe6/JXWtNB2UK7K586t/lj55Cx9VdBAilnvVkX3ENFY7sJL7IO7i
+	qfN71fQ3YL4JC0p6IK//RHwvrqficE8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0l01KSj1;
+	spf=pass (imf21.hostedemail.com: domain of glider@google.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756899380; a=rsa-sha256;
+	cv=none;
+	b=maIS/AIidmc5Xh25+NCY3zG/9SkYOJMcrIQwH/PxZwnJ4WNH4yMuherboiGVjfrkYoyFGX
+	IgkS5s3+nQx0jf/5vjfGavN9L8zx+3vzOK4Xj+7UaYJ4ywshnmcgT/QhP0mE4hPbO10ZN6
+	N2XqU8aW2/lzkHqzy17qdhwaDF0khAw=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-70dfa0a9701so67367236d6.2
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 04:36:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756898179; x=1757502979; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6/J6B5kO21qmim3edptXX1lboSXT3A4ICQCYNPP7b6E=;
-        b=iTan8OVENEUQp+K313GTeO4yQSkyG6x6FYIljYGeL4G1abFf5l35BmWKKq07bRSbGH
-         K4UMYhq8dnCFVeupYjFo+JKtUbCyUBZ8alBqtyFS2o4gtpB12KXjAoXe9dl7UrnB+lyn
-         7EWucStrzRWDGJ3v4FL1KWNRDwEzBkI0FgcpLtfB9b6Txnyq+Dyesl0t5j0NS/BGSH7b
-         QfNGs6OgAm9nrvzt1UxpEAtOMjIwB1cirpP1Fbfy75livcPWCtAANigdznAnsK1CrlkT
-         zgWF5C1vO9M1psOjRT3MVkmO9b40baV12nQpBy53ibo5sWjt13sXIFsVtzg3XwCA+YgG
-         LfLA==
+        d=google.com; s=20230601; t=1756899380; x=1757504180; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=a3IW4gClMpsxg8pegPHxJ+hydJ79H7ht+ce7OmUzWyQ=;
+        b=0l01KSj1Y4NVuqcriYCKG9F+uhvJIpsEsKcCcvmQoZQrVyktIiWGLrSNxihlykX553
+         0vGvHenNhGbI1zLn1Ubu2wQ4xxOtcybBthltg9Njof0IZVJnSU8GjW317IRVRVI+odeT
+         MzSP9/rPDgXGWvr/hpi1xY1S34RzgYobX6AT7qW6SAj/Pmo+O+/HimXCabAJJ5UjKL3p
+         xCSKQmGcnT2HRYnzXYxuT2D4fu/VVUPCOMcTD9UTADwlSMZQ9HrCb8he7nXIxXusUpYk
+         ifN/xIDAh+7YktAUwW8KkTdJKjfFsEmzW5k1C1GsYyHWA7TIU+F8noqf2tnCjWLAumDv
+         JlzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756898179; x=1757502979;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6/J6B5kO21qmim3edptXX1lboSXT3A4ICQCYNPP7b6E=;
-        b=gbm1q4BwsdjC5EcWA8KTbFGMg0NB5h/+MhDi74kp8cX5EvbPfQX/zS0ktNWVTGwwAD
-         KIPNOAmB8XC/p8ZW1sGfJhyWgREykc+OXNy6g0MWi0cRSupK35RtNRdxs+Zj91l2zY8U
-         mnl4x4CiLr+jgtG8OHVH5GncCjKtaxzzNPXrBbftDbIghCLppPTb9eT8aaKVFE1a22mG
-         wk7LSegY9ym6GgVm94YCASaaRTTVqbjaZ3aAiMmkPwM0+A1mfno9zyxSbPOP5kypRfRD
-         qg4qVO4+RyATacUHiGWCIDqBb7xv2e5RAcmcEc5yLEebr9ViHznhbgiSgJsXfSJmis3o
-         YEHg==
-X-Gm-Message-State: AOJu0YzYTOoqcd1cSiIRz/ZkN8/w7Hzyhd8wNe+NaCx7QNFcNGp03F53
-	DTrPPXnEHLBg+9yWw4dr8bmRZVnRY3CCqxf2P8LMS9KUFGrjgN1QPKUk
-X-Gm-Gg: ASbGncv1P4gcsI+0UqrBGuVp5EbnNuHXXVF8whU6JnaBJkVOu0T707nRX5qIsTQBcMW
-	OcYaRUD9p2Up1aMRMqGjopoEbh6/r6N9Uvhe0uhPDot25b7tEm9A842JKyWk8ZiZ8pBR5msRQpS
-	H8tYp2VQ8g29DMo71PMeZhie20J+vXlW3H8YHcchvP5q5P7f6qY2or/anQ5ZDOf8k+9njuAucg4
-	oiLvr6BoMAUqBXbXI5K46VXshsxZqvLTQn2Q6SPkV53CMsAIoUMuCTS2cPHZKvOiYPiWAUfDmAp
-	2RCfQdQttHlDBAzGQVz3aH0FY3Q7FXtTvRUAbhm0j/NR+A/P14ps/6w618w2HtVl95xhFTRH+gl
-	pM2g/xwxuuKDFNHObuW8zi5HlbQ==
-X-Google-Smtp-Source: AGHT+IE4XJp50UJAl1TyaOPKdT+BVYrcIKTmTgL9yNbuNNlBknPz1bjnwok/rktMidIrBE8JQNXNTA==
-X-Received: by 2002:a05:6000:2909:b0:3d0:e72d:867d with SMTP id ffacd0b85a97d-3d1def6a593mr11880201f8f.53.1756898179208;
-        Wed, 03 Sep 2025 04:16:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:4e::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7c461edasm144127605e9.9.2025.09.03.04.16.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 04:16:18 -0700 (PDT)
-From: Yueyang Pan <pyyjason@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Usama Arif <usamaarif642@gmail.com>
-Cc: linux-mm@kvack.org,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] mm/show_mem: Add trylock while printing alloc info
-Date: Wed,  3 Sep 2025 04:16:14 -0700
-Message-ID: <4ed91296e0c595d945a38458f7a8d9611b0c1e52.1756897825.git.pyyjason@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1756897825.git.pyyjason@gmail.com>
-References: <cover.1756897825.git.pyyjason@gmail.com>
+        d=1e100.net; s=20230601; t=1756899380; x=1757504180;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a3IW4gClMpsxg8pegPHxJ+hydJ79H7ht+ce7OmUzWyQ=;
+        b=Q7s1h9gZ7s9B0pBpPDe6z8LkCrco8Nj3F5F/4M15639n20zmtLzWjWnJbjFZbod4dW
+         5Zl5if0RlKuaPZFKJ/DWqizhe7hb3rvUllWhaQGoHs3t7H8QSAEI46zC4HLSObNeqso5
+         CV0d0BIxDJnpBCGvEcp51eA21ifwB3Xo9ajxhVts5A4uDuBmDAu+39nH+O5hduDkkMLY
+         omhfpTO6eOx798YyIkPUuC3HBQ/LObTS11KVQijko2rgZ1TyOcbCwNvbtnqAeeSOHX63
+         LHam4vcze0m5Fjxz+1+yONMXtqjjEfiJuVNDv67XmhkyuZaxKgnRipoddhtew6QVAscV
+         uoyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTyFgYAmYOGJhWqSVegwSM3gSwiClchWgoWtWxLsqIJRFw4gAn3+aXiSD+IhR3oTwWQPQ/WVyt/g==@kvack.org
+X-Gm-Message-State: AOJu0Yw9fEKbrJUQGk1TpCXP6VlZ0ja7j2JGYyY0eionDkBjxjCXVVjr
+	35P/8foZ+xRtZ/Ukn58bxhrkmo33zK2dFVBj46zL/mxNnyOynFYcQANEROpIy43MKdl2OYmNB5r
+	KY5cjrDCOWW8ytmStvTGrJYjEg+yOFiKiukMoimnc
+X-Gm-Gg: ASbGncsgYp6ipAlRVgXBtrlHhw4KzatXOCnNysenhUrO7DR+0qsIDq0z/hkNnsoUAqR
+	sER61Orp1oqZGTcNAUVNf4rhunmEmZKb/3FMW39+6ceZa7L5K0xeDnfuvhG+Du23SfPRFEsvjWL
+	gjGvxxhGkO8nUduQ3BUG6b097T1F3W22Y4Q+N4MMgVNVVwFtEMxr7+tiM5SugbIcBtfT852wZxQ
+	UzWqvuNZxaUaQx7lr+flnXILD2yo+tYnIa7/m+EzqU=
+X-Google-Smtp-Source: AGHT+IHt5Uf7f9hHKKGO4y+S7XWf9ByCdyBez8I/gMbmDbS05z3pOWgerpBal3i6mcnzy0T4lRXiKY79hwA2pscstuA=
+X-Received: by 2002:ad4:5aaf:0:b0:725:1fb:a6b6 with SMTP id
+ 6a1803df08f44-72501fbac03mr16948666d6.31.1756899379536; Wed, 03 Sep 2025
+ 04:36:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C8486180010
-X-Stat-Signature: hrb8ppeezj6jp6cqtiwx8h87mka6w3qe
+References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com> <20250901164212.460229-3-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250901164212.460229-3-ethan.w.s.graham@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Wed, 3 Sep 2025 13:35:41 +0200
+X-Gm-Features: Ac12FXyA87fTSQv-blZ3tbQBrKQAAZ9Bwbod18tXQa26iNm899ybg0GqU8LYCbA
+Message-ID: <CAG_fn=U+xi3zjr+g+PaT_41JHSca1W6J72xd5=c0dVrSy75XpA@mail.gmail.com>
+Subject: Re: [PATCH v2 RFC 2/7] kfuzztest: add user-facing API and data structures
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: ethangraham@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
+	davidgow@google.com, dvyukov@google.com, jannh@google.com, elver@google.com, 
+	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
+	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, dhowells@redhat.com, 
+	lukas@wunner.de, ignat@cloudflare.com, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: y8cyhx3dag9wmqqr5d6hh4ebcn19m6m1
 X-Rspam-User: 
-X-HE-Tag: 1756898180-266734
-X-HE-Meta: U2FsdGVkX19iZb0+wHmSyVBWdiGKYHbLFehvd0fSx+fxxmXUM9rHeBQWjsdtOiV4Qd8bumjC1xVyaLkkkf+DsjXI2AGEs4n/4R3ERI/1/HKQrjmI49W47MxmjR7ja9GbLZLlYi1nmJjgyZMLOIWfHcVcioTJX5ooytpJydxCu1aOE/VSAlorD/tdlO21EX6sCOVkcY6D+485p/r6hdywe2+nJ0tmKu3OVUIk0p6UgRW5i84W7SNWRqYNE485MIn4jL3oMrMa7yB27rXSEc3k9YGJkz7bPajh2MvqEwOqAaHXLtXR8OiY2mp+QRixaKYPAGVkbtBTSvhZAz7I1H4dLcC9TKqQKB2C/yZ5LUdy5WuWlrddwNDvPC6MB0Gp5HqE9+z4Pwn2V3G6erhN/xqwJNj6eAdvV2ut8QJXso8AAbZIZYieIY0IOk5IwF5gC6ct+BSDoIclpQXnJdp106BFYPJQxNQCe6LTlFEXeSlu/Mb2QUyaxj4oA9tgFOKvMc79cxVwJXl+O+ssP6IfCLwqaUkPNbyXmve4I7FHos4qoxJQeTz50U17WuKOKcnvb22MLXm8nNbc+g4ne8ERAsX8N+isj573mJR5d8sYLLo3JeBTAEKvOqSFy26WKArtARWcKZO0ZqaR0brh2CQAKMJO1ACLfdp/YTliYDiUaIvJUFFPJqo7+PTp+zVq8ZvgwvAqA0RaVtG8dUu1wtx7kY0QP/Z937PaFgIrEqO9F5Y76sUQr1gRfm6DX1hO26gf7ctLR+ZN2t5O76v+DYRSy/eUo3kiRhhpkrsd6gZ5RWoe3MHgi0HPqq1wK2j0z1SyJHj5D8zQQj/es1AAwp2zH1N3VFxoOLsHMYUyLxRxfaQq+RBp9tF+WIneDEB6eSn2CeZ8ZBrS0QnAdcJS+j0aXOkphSyV80MzhiE3SYVY9xkdJN10TqZCXtrfT14FD/739kefb91O75ezmaUsfwwxEhd
- nZDcCw2n
- zVYkP/xnWxune1ZcqVg7JT3EAC2aLUJ6sOpLPbO8I/ZL2JeJvk35Bka1+d3eP/hCbEd2orgorpJs9u8dy1IahxMXLO9j9xIvXHx7QM7Wvv5E66zOLKaKd812lLgenG5myNgonKwSBHhekNY8SWbn7aKagK2wbK3lcJZVxIKEAX2wBZBXYCMwNDTATFeSA+alXkHjW4qk4jpkGIXA2rnPYfGyoWZfmcdo1ZQ0Kyz9CsaYQQ2Htd2gt82OnacL+AS282dhs6e7FlW8lMSP5LFmJUy6SFM8n9tS/TRZXgcHNT0HUtKBmJtqyFo3cOVRotGY3KyAi2dS+79Q7DjWBSlJFQyGJlgsVznwSm01y+vfHMAGWUpcXJpuWLmT/1iVw7uDXqShlSOz2IF/icF5/OELzQ2Cyes22SIuAvflO44sW99v+e0Xjo578OtUX6nRSeo74RbO+fEgF7gMAK0GSv0+6ZltnuqyDRtJBOvcz21Eu+VmAyFUeM0bi0nC4yvc0KsbXie3rXldyK47T1RfptZtan/V3NrSU6qxirlg64gMnclZj/yuG6Ej9CyMcwqSznhkNS6vDxVsjwNXnHuHcMf1U9OiS+rRd7VNgvpyU2nKMOaXvcLBLKituFSmHOA==
+X-Rspamd-Queue-Id: C41731C0002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756899380-19983
+X-HE-Meta: U2FsdGVkX18an21zE9sqQmDDe+Q1N0SrN8irIB8+oIhal9gdE3NjQMivlm/OeREc4MCsOwD3fGk5olgbocC9G2INRhuZo2vMyirh0VibrUrNiX+znDqCO4Yx9UveN29WGUYCXxVoMe8pt63LjfPWMyL0R2Mh5NGBJjgH95eNq4GBGBhDgSKmkKE8PFht2kHhd9jtS04iwhEcTFSf10S0w7NAdrDazhrhuV0KhNSrBgpR7bGVMEBqxVhUMZdhZ63r/MIM3SVQgWrfsW+2pgqmL5+YbVbu1PofNzlpoaXEma/eSrjZbWS8wvpf6mUgrREBQ178amKkMhX3DBd3w81TdbDMZvwOZs/l8WNXwfme4c4+pdhjDxO/QKe+3eFEOO1ZC8BPfmybwWIIb8U9PyKygAT8YC9AEcBdeOWMlVgGJhsSnPUAzjI4kVh8O/xa5ZtuoaP6KdW9B6QnQKMaPZ98O5vM8DUy15qCjnf8RjE9OA8wSmUE1jXiFStbDeO7K4BPe03kZH/6GMNOpVvJ7GFYVp1TYshByimyW2Fug8THoCQsJMohM0aP3UciTl/HUyUcb0LkyGTVkqkKiZO5yRxLFcF6RvbEoo4jb+DVi9UCO42jWUwr+m3L2IquVq7eMIEsen2Hs8js/w3vxwAgy//1T7T5eBmwYQBno1+7+mTASYm5uHZSSdwzDdwPLlK0QAvIcf966iopveFuLkr8G58otFuUMTCUQ0BV+x/epFPgdKgn45MoCTge0TAKogs0exTad/yaREzbNZafWnSym0HiHfCC6GX00JHY3BArWvpWM0wS2+E0mMMjjdtLPRjihuLEzDceHqZqMMWeNWYa8AwHkwc0qyWmT8GaWhwR8dCYecHFIKR8W018aGNbqfUn6jcr1k+kWVcdHetSnsbZmsL4zMG96mfh19jujxfJRfQ3tsLquC0LDpp0ix4a2zItShY71OP0XtTRft9OEBAYuqh
+ RLU3mQV/
+ eGjAVXOjvTIFI3HgHTX0H5qYf+mBg8p5z9Dn1CejLn0B4pMEvUmEUfm0J7Zo09QuHake9RILjoMyfPRU81pfRvmbP792v9+jbSm2jq2bkyj9TA0y/veyVnpoUEnwFu/qaPEqt+2moNTqGB9VTtSDtmKPg6v7d+uhnAuvuRvmMZFhM5ju8GpkVU/K2cOE0RzIgW0h7CetdtuQhmuA5H+NX1PMHPGqunNonv9qreMV0Ntmh00d362OBB1mYP2eJP5bz3DIzGSPK84i0i6o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,42 +118,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In production, show_mem() can be called concurrently from two
-different entities, for example one from oom_kill_process()
-another from __alloc_pages_slowpath from another kthread. This
-patch adds a spinlock and invokes trylock before printing out the
-kernel alloc info in show_mem(). This way two alloc info won't
-interleave with each other, which then makes parsing easier.
+> +       static ssize_t kfuzztest_write_cb_##test_name(struct file *filp, const char __user *buf, size_t len, \
+> +                                                     loff_t *off)                                           \
+> +       {                                                                                                    \
+> +               test_arg_type *arg;                                                                          \
+> +               void *buffer;                                                                                \
+> +               int ret;                                                                                     \
+> +                                                                                                             \
+> +               buffer = kmalloc(len, GFP_KERNEL);                                                           \
+> +               if (!buffer)                                                                                 \
+> +                       return -ENOMEM;                                                                      \
+> +               ret = simple_write_to_buffer(buffer, len, off, buf, len);                                    \
+> +               if (ret < 0)                                                                                 \
+> +                       goto out;                                                                            \
+> +               ret = kfuzztest_parse_and_relocate(buffer, len, (void **)&arg);                              \
+> +               if (ret < 0)                                                                                 \
+> +                       goto out;                                                                            \
+> +               kfuzztest_logic_##test_name(arg);                                                            \
+> +               ret = len;                                                                                   \
+> +out:                                                                                                         \
+> +               kfree(buffer);                                                                               \
+> +               return ret;                                                                                  \
+> +       }                                                                                                    \
+> +       static void kfuzztest_logic_##test_name(test_arg_type *arg)
 
-Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
----
- mm/show_mem.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/mm/show_mem.c b/mm/show_mem.c
-index fd85a028a926..e9701d07549b 100644
---- a/mm/show_mem.c
-+++ b/mm/show_mem.c
-@@ -421,7 +421,9 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
- 	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
- #endif
- #ifdef CONFIG_MEM_ALLOC_PROFILING
--	{
-+	static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
-+
-+	if (spin_trylock(&mem_alloc_profiling_spinlock)) {
- 		struct codetag_bytes tags[10];
- 		size_t i, nr;
- 
-@@ -448,6 +450,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
- 						  ct->lineno, ct->function);
- 			}
- 		}
-+		spin_unlock(&mem_alloc_profiling_spinlock);
- 	}
- #endif
- }
--- 
-2.47.3
-
+simple_write_to_buffer() may write less than len bytes if it hits a
+protected page.
+You should check that `ret == len` and return -EFAULT if they differ.
 
