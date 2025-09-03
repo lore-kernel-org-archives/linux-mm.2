@@ -4,82 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9746CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 08:42:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EF79CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 08:54:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A5B48E0008; Wed,  3 Sep 2025 04:42:27 -0400 (EDT)
+	id B6FE48E0003; Wed,  3 Sep 2025 04:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 056718E0001; Wed,  3 Sep 2025 04:42:27 -0400 (EDT)
+	id B46DF8E0001; Wed,  3 Sep 2025 04:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAE768E0008; Wed,  3 Sep 2025 04:42:26 -0400 (EDT)
+	id A84148E0003; Wed,  3 Sep 2025 04:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D74238E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:42:26 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7E738BA285
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:42:26 +0000 (UTC)
-X-FDA: 83847297492.17.87007B7
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E6DA414000C
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:42:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756888944; a=rsa-sha256;
-	cv=none;
-	b=opAFz0yOBnAiO8TXVvCExOpK3SbdJUGyFCuEtxNRxo1qvuVcYS1T7Df8aB/kldHnepc5Vh
-	sZpMfmg0PF6lthHXMjiZ7uRN9U7OCP+DnimVAC8WBk1QfxaD5JB9nfkzTwuypycyNo04Ur
-	/6LkfCe8iVEflqJ0jj2Nyo3N0kggADA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 94A548E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:54:37 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0F534160575
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:54:37 +0000 (UTC)
+X-FDA: 83847328194.11.60D3023
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 22E43100009
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:54:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="VRr/TdD1";
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756888944;
+	s=arc-20220608; t=1756889675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=V6a7l0GPRDx2xh47VQ6TP5rBICWca4ldNcroSjlOhwQ=;
-	b=5r/6Sn6fcpfUrPzznX4EbDOLeC3oGuFOq+UFfG3ps9Vf+JnHYP1fx8zj+/D+DS5tpq7Vsc
-	Gx8Zx9qS0qLw6K+DCCOSKxiZNWMl6PXFTa6IypLf9x0bh7DAzQjlKa4jj/U8Y3+sWkifuL
-	+jK6ntVvcjWgzCoP/CYRnt02T+U3+V4=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cGwwZ5bWvz2CgS2;
-	Wed,  3 Sep 2025 16:37:50 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id C7258140297;
-	Wed,  3 Sep 2025 16:42:19 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 3 Sep
- 2025 16:42:19 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <willy@infradead.org>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <tujinjiang@huawei.com>
-Subject: [PATCH v2] filemap: optimize order0 folio in filemap_map_pages
-Date: Wed, 3 Sep 2025 16:42:23 +0800
-Message-ID: <20250903084223.1653192-1-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=gEHG9nUxE9p+ugJXn8Eg6VJXyeh53liew47f+ZzW61M=;
+	b=j3+V6a5eqn5uUyB85uMWFHhWvi4WLhh590xE7GuQoaCBriAu8hFWKZNHnnNJH7ln6qAksC
+	dc/PAn1z6feO+fCCbqxJv7BJcUTO/C4SmjKUabogyPXJylaHOg++rjBd3jSRkAQr+pK7BT
+	ZJnryrqAAK/nDSLJ5xNNRCnLCA23TYw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="VRr/TdD1";
+	spf=pass (imf14.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756889675; a=rsa-sha256;
+	cv=none;
+	b=RDCS4KrpfUWKoyG8NOyL/f17o2x3CABHNCJRYnohYFQvjPQVfHBSsUfIhwZup7vb+KlMk6
+	6xd6JbQNuibTZA+klf+EdNBSMKX93lMRcZSG/l3y8q9/eZ5M2dKhV/p+Vkg6dnhMx/0TXr
+	WcGVm7cecbH8JplnyGg9s5auYkVyLXQ=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1756889669; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=gEHG9nUxE9p+ugJXn8Eg6VJXyeh53liew47f+ZzW61M=;
+	b=VRr/TdD10tkspcHeBZwlXYZGZtcJ7r/beNUy8MclLMf2/fQUdRR5WIJJvk2K5GtiCJ/I9hcS2vGFHlnCeKLgMQW5yLvR45su5ZJh/aLigiR9fuvQUf/iX9/AGZhZURCKe57YncLhURdCZrIHPFUPKv4xAmD2b54rQFmJ5CI1/jg=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnBDMmT_1756889666 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 03 Sep 2025 16:54:27 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	hughd@google.com
+Cc: willy@infradead.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: shmem: fix the strategy for the tmpfs 'huge=' options
+Date: Wed,  3 Sep 2025 16:54:24 +0800
+Message-ID: <10e7ac6cebe6535c137c064d5c5a235643eebb4a.1756888965.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Queue-Id: E6DA414000C
-X-Stat-Signature: j1d766ctmff98qecsoeo85oc9ueyngyu
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 22E43100009
+X-Stat-Signature: hbinr9sspccfi6ghnq1n1z68tnx8rfgd
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756888943-4764
-X-HE-Meta: U2FsdGVkX18i3jfgu03RL8MUbHPQiWZ/SpEMppeb3Z4uW39iqmfqtB8yu/+Aivj2ab7PVFexSel4Qpl+etN1yGRoG4oqexLWiSypXR/k40wgOPgIMzYApzOiup6FRhOWwORWgQb8mq7jTsqch0rZhJMuoShMnf+f2NFJWUdhfUuNfPvCXITj16x2Z4IxR9o92geCY6ZfkYygu/n9ONcueW/m+hRdmE0AywNqIxrOGjox5n6zUJT2yI1JPv9r+dzgsD5kVMN8jokqcz2O6PjsLXXKlzG4j4d0bEae3WrfqO08eeGzCk6wnuV3VH2e28zIPoSNWX6EjPSh4O0yf/0jwPb1Jtv9GQ8KyTGF5zT/GLK7lcKOvV3CueALSqDnVwxLyGiLF+f4nweHxfWrwjEvxYHeqyil3iYJ/Hgy7tRKoLPOQ9sj2lbnBIokU6knhaMshn3/t+BverSQ6Se6pPAelNu4aw7X4CXtVY/KvmOLVcJH7zd8+HLy99Rzw2mOoynWeT59BOjmWWOPoTmfvue29VMcK4tG3yklTKMjzcp8H/SrexjpdA5UJ6qj/dPO/IPDA+5nMYeFbVh7r7B9XluaJnIr8ATzAmHmXL7mPNVJQWCfnZutKWjObhH6J3BZ5eiihBsdFd+kODAshoTlPnPw+LB8W9MfssrLpKC+AJCrDicpLWlqGMj2+6B0GlLnNdwL1M9nRWB3WX3whHie4WFZOy8jJQHoj4H++IXyhBAMCwvu52HAiYx2L9FIxsuSSFA4Vh+iOtfxfg0b6r76aFnpvBOnjzZz0rLV9mkO6ASpycxsJqeZF0pUDbeOm2h1MjypZCEAH8VODDLHHun1tYOr0zE5rKY6NmTAVfU/LHW8y3POQyGAF2pYgcsZASSISH72T38+i2j1HZ0xU7PRDkwHDleTRooCqfPWzVk9zlW2ZEAh3iR2ciykRFPgYOAKn/BfVxrsq3jev3w3P1uofCQ
- Kj6nxBU4
- GWbfOO/OW23eucN3mw0tRPs2mAC0UbkI+C/KVp0rxAEjcpVdWJslQ4IKZwmtuLIRYj5IQYt7E0S9IGfxX6BQoAs7NiDZX2fEqvbVDz8eRUNC/UgT/sKvhEGBQpdARi4i1u2veAJBj/t6lHE7mATrNXtbh+yJTXnxrua2GbMwpJcfHVrdSPDnlPYS3gDHCZjxne5iiXiYqfuB8li1C+a8TxwD8BhUQ5V21dbVALAhiQ3mTWOVUb1F68N8m23dOcwyiFLz04CUyF3dIJUaQ/lPOqHVXkFnpGB5mqHvkeWiLgjHi0zxe5UkwAVZm7V2//03nkG1twgpH13Tvj2lK5veCoexsmIo527xax9Oq
+X-HE-Tag: 1756889673-744742
+X-HE-Meta: U2FsdGVkX1+wwB+y5UgyBsmCUf8CQ2zHufhT/RjYyOnKIHet0X6o0XLq0kQzuvkxAS48zApYW8RuSD+TzkrYHbSytVVShlTySzZ7oFvG+OQBAjENo1WbQUo5AChOiEPXMFI1KYvauf/1K8bj7WP8q5dMwBoLH1h0Y2KPDFjtF8+21kA0TRiHCzdYi81igSwo2EjEnGfyb+ADXnC1aTAmzQiqGR4rQWm/MulsfRisrc+7MGpgYu6G1f5DxUh7M+QK9mqMojFugd5dhdJex02MxhSdx+ZclRZ+LhbWxYHwBHFiS5KsZJDhdjT6krPUGeAgedFPktw/0pUCWewaSHkZYLqRpJtO06erHJBLQA0sLv2Qbxpxqn6jEy0Uxo9ey3paRKFHkBT5nulvxUDXi31reObNmMvboxNmUjAHqROwB/12VJP6uVQHMfCstnLsW3jgyWW6H57nNFPoiQa3VF+MS12F4HxAxHuxNc85II548K1MUt1120Fl8P0KX6yYu+4oHkkHNdfj4wSlQ1UzHDSTcINOCrogEOwei1+XpGbk9KL8147vhVUyr2NZxTYK7psC31HRwigZw6lLtyJgamsV+/D5fEHtbVGvqEIHfsbZ9Ji3APhe5vErRAv0FY73w9NgD5mm1JuJ6kOCnD9InOm+vfNdE+/e9a4YdVyHdxG2UAIwNR1EoNPr9oQupDPtuwggkDO9U37aw0Wu202YSttJe7VS8KJkttXrGtkn2tbgFA/JI1ReLg6uQnhXKSGnU2gwAltRJX/t32ORvH/bSbD8uEQWKuTLmM6YNuR8ZGQi/EubIw7OXLa5FCrzcW9XtliXhrYwv0AnGOoEfVbykg8C620eUDq1Vbds/ZtlQTMVQDpUq3ue449G/OgSWLgSZ8iF1AlUWW7YdCimVFsI0WvX8Ls4fw9jTpmP1d+BPVDFqdR5uB993nriR2ijMsVrqs+JtkNGm30iy69sP9IByOF
+ 5S8iMvMn
+ IORqX05YRQjblyPtyHbSH3+tS8gzo2QAyPKtUH5zWsAB3z5CGCwxT9wiRJ5cAiaWoMj5ppgS39T8JAsRxRpf76cSQ/86EoQOuHC8nXWy91TLWRR4yfnGf17SaMLnVmwvezZKcqAMiR1+fnuGCym2z2i/ZVkq6epuVHRrx0DSlvNWevBYXmFrWheTpukbcC17kb6y/h0N18ovfR+QopQi6oJ94eBb/olO5wHmhcN6FpJb45H7aD0jxqaqZdKa+O+sbJwH+ePbAR6lwOlOOblUK31ennQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,80 +93,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are two meaningless folio refcount update for order0 folio in
-filemap_map_pages(). First, filemap_map_order0_folio() adds folio refcount
-after the folio is mapped to pte. And then, filemap_map_pages() drops a
-refcount grabbed by next_uptodate_folio(). We could remain the refcount
-unchanged in this case.
+After commit acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs"),
+we have extended tmpfs to allow any sized large folios, rather than just
+PMD-sized large folios.
 
-As Matthew metenioned in [1], it is safe to call folio_unlock() before
-calling folio_put() here, because the folio is in page cache with refcount
-held, and truncation will wait for the unlock.
+The strategy discussed previously was:
+"
+Considering that tmpfs already has the 'huge=' option to control the
+PMD-sized large folios allocation, we can extend the 'huge=' option to
+allow any sized large folios.  The semantics of the 'huge=' mount option
+are:
 
-With this patch, we can get 8% performance gain for lmbench testcase
-'lat_pagefault -P 1 file', the size of file is 512M.
+    huge=never: no any sized large folios
+    huge=always: any sized large folios
+    huge=within_size: like 'always' but respect the i_size
+    huge=advise: like 'always' if requested with madvise()
 
-[1]: https://lore.kernel.org/all/aKcU-fzxeW3xT5Wv@casper.infradead.org/
+Note: for tmpfs mmap() faults, due to the lack of a write size hint, still
+allocate the PMD-sized huge folios if huge=always/within_size/advise is
+set.
 
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Moreover, the 'deny' and 'force' testing options controlled by
+'/sys/kernel/mm/transparent_hugepage/shmem_enabled', still retain the same
+semantics.  The 'deny' can disable any sized large folios for tmpfs, while
+the 'force' can enable PMD sized large folios for tmpfs.
+"
+
+This means that when tmpfs is mounted with 'huge=always' or 'huge=within_size',
+tmpfs will allow getting a highest order hint based on the size of write() and
+fallocate() paths. It will then try each allowable large order, rather than
+continually attempting to allocate PMD-sized large folios as before.
+
+However, this might break some user scenarios for those who want to use
+PMD-sized large folios, such as the i915 driver which did not supply a write
+size hint when allocating shmem [1].
+
+Moreover, Hugh also complained that this will cause a regression in userspace
+with 'huge=always' or 'huge=within_size'.
+
+So, let's revisit the strategy for tmpfs large page allocation. A simple fix
+would be to always try PMD-sized large folios first, and if that fails, fall
+back to smaller large folios. This approach differs from the strategy for
+large folio allocation used by other file systems, however, tmpfs is somewhat
+different from other file systems, as quoted from David's opinion:
+"
+There were opinions in the past that tmpfs should just behave like any other fs,
+and I think that's what we tried to satisfy here: use the write size as an
+indication.
+
+I assume there will be workloads where either approach will be beneficial. I also
+assume that workloads that use ordinary fs'es could benefit from the same strategy
+(start with PMD), while others will clearly not.
+"
+
+[1] https://lore.kernel.org/lkml/0d734549d5ed073c80b11601da3abdd5223e1889.1753689802.git.baolin.wang@linux.alibaba.com/
+Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
+Changes from RFC:
+ - Update the commit message.
+---
+ Documentation/admin-guide/mm/transhuge.rst |  6 ++-
+ mm/shmem.c                                 | 47 +++-------------------
+ 2 files changed, 10 insertions(+), 43 deletions(-)
 
-v2:
- * Don't move folio_unlock(), suggested by Matthew.
-
- mm/filemap.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 751838ef05e5..3da8bf8b93ec 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3693,6 +3693,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
- 	}
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index a16a04841b96..1654211cc6cf 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -419,6 +419,8 @@ option: ``huge=``. It can have following values:
  
- 	vmf->pte = old_ptep;
-+	folio_put(folio);
+ always
+     Attempt to allocate huge pages every time we need a new page;
++    Always try PMD-sized huge pages first, and fall back to smaller-sized
++    huge pages if the PMD-sized huge page allocation fails;
  
- 	return ret;
- }
-@@ -3705,7 +3706,7 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
- 	struct page *page = &folio->page;
+ never
+     Do not allocate huge pages. Note that ``madvise(..., MADV_COLLAPSE)``
+@@ -426,7 +428,9 @@ never
+     is specified everywhere;
  
- 	if (PageHWPoison(page))
--		return ret;
-+		goto out;
+ within_size
+-    Only allocate huge page if it will be fully within i_size.
++    Only allocate huge page if it will be fully within i_size;
++    Always try PMD-sized huge pages first, and fall back to smaller-sized
++    huge pages if the PMD-sized huge page allocation fails;
+     Also respect madvise() hints;
  
- 	/* See comment of filemap_map_folio_range() */
- 	if (!folio_test_workingset(folio))
-@@ -3717,15 +3718,17 @@ static vm_fault_t filemap_map_order0_folio(struct vm_fault *vmf,
- 	 * the fault-around logic.
+ advise
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 640fecc42f60..85a40a5b3f2b 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -573,42 +573,6 @@ static int shmem_confirm_swap(struct address_space *mapping, pgoff_t index,
+ static int shmem_huge __read_mostly = SHMEM_HUGE_NEVER;
+ static int tmpfs_huge __read_mostly = SHMEM_HUGE_NEVER;
+ 
+-/**
+- * shmem_mapping_size_orders - Get allowable folio orders for the given file size.
+- * @mapping: Target address_space.
+- * @index: The page index.
+- * @write_end: end of a write, could extend inode size.
+- *
+- * This returns huge orders for folios (when supported) based on the file size
+- * which the mapping currently allows at the given index. The index is relevant
+- * due to alignment considerations the mapping might have. The returned order
+- * may be less than the size passed.
+- *
+- * Return: The orders.
+- */
+-static inline unsigned int
+-shmem_mapping_size_orders(struct address_space *mapping, pgoff_t index, loff_t write_end)
+-{
+-	unsigned int order;
+-	size_t size;
+-
+-	if (!mapping_large_folio_support(mapping) || !write_end)
+-		return 0;
+-
+-	/* Calculate the write size based on the write_end */
+-	size = write_end - (index << PAGE_SHIFT);
+-	order = filemap_get_order(size);
+-	if (!order)
+-		return 0;
+-
+-	/* If we're not aligned, allocate a smaller folio */
+-	if (index & ((1UL << order) - 1))
+-		order = __ffs(index);
+-
+-	order = min_t(size_t, order, MAX_PAGECACHE_ORDER);
+-	return order > 0 ? BIT(order + 1) - 1 : 0;
+-}
+-
+ static unsigned int shmem_get_orders_within_size(struct inode *inode,
+ 		unsigned long within_size_orders, pgoff_t index,
+ 		loff_t write_end)
+@@ -655,22 +619,21 @@ static unsigned int shmem_huge_global_enabled(struct inode *inode, pgoff_t index
+ 	 * For tmpfs mmap()'s huge order, we still use PMD-sized order to
+ 	 * allocate huge pages due to lack of a write size hint.
+ 	 *
+-	 * Otherwise, tmpfs will allow getting a highest order hint based on
+-	 * the size of write and fallocate paths, then will try each allowable
+-	 * huge orders.
++	 * For tmpfs with 'huge=always' or 'huge=within_size' mount option,
++	 * we will always try PMD-sized order first. If that failed, it will
++	 * fall back to small large folios.
  	 */
- 	if (!pte_none(ptep_get(vmf->pte)))
--		return ret;
-+		goto out;
+ 	switch (SHMEM_SB(inode->i_sb)->huge) {
+ 	case SHMEM_HUGE_ALWAYS:
+ 		if (vma)
+ 			return maybe_pmd_order;
  
- 	if (vmf->address == addr)
- 		ret = VM_FAULT_NOPAGE;
+-		return shmem_mapping_size_orders(inode->i_mapping, index, write_end);
++		return THP_ORDERS_ALL_FILE_DEFAULT;
+ 	case SHMEM_HUGE_WITHIN_SIZE:
+ 		if (vma)
+ 			within_size_orders = maybe_pmd_order;
+ 		else
+-			within_size_orders = shmem_mapping_size_orders(inode->i_mapping,
+-								       index, write_end);
++			within_size_orders = THP_ORDERS_ALL_FILE_DEFAULT;
  
- 	set_pte_range(vmf, folio, page, 1, addr);
- 	(*rss)++;
--	folio_ref_inc(folio);
-+	return ret;
- 
-+out:
-+	folio_put(folio);
- 	return ret;
- }
- 
-@@ -3785,7 +3788,6 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 					nr_pages, &rss, &mmap_miss);
- 
- 		folio_unlock(folio);
--		folio_put(folio);
- 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
- 	add_mm_counter(vma->vm_mm, folio_type, rss);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 		within_size_orders = shmem_get_orders_within_size(inode, within_size_orders,
+ 								  index, write_end);
 -- 
-2.43.0
+2.43.7
 
 
