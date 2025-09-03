@@ -4,119 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6D88CA1011
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 16:41:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12D6ACA1011
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 16:45:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B9EE8E0001; Wed,  3 Sep 2025 12:41:34 -0400 (EDT)
+	id 6DD488E0006; Wed,  3 Sep 2025 12:45:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 091CE8E0006; Wed,  3 Sep 2025 12:41:34 -0400 (EDT)
+	id 6B5078E0002; Wed,  3 Sep 2025 12:45:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF00F8E0001; Wed,  3 Sep 2025 12:41:33 -0400 (EDT)
+	id 5CAB98E0006; Wed,  3 Sep 2025 12:45:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE5608E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:41:33 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 984C5BA64F
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:41:33 +0000 (UTC)
-X-FDA: 83848504866.07.8D7DBF4
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BE53680008
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:41:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Wze+4d1E;
-	spf=pass (imf30.hostedemail.com: domain of fvdl@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A7078E0002
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:45:31 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E6107863AC
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:45:30 +0000 (UTC)
+X-FDA: 83848514820.17.C4E689B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 583351C0009
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:45:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UkWhlLvR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756917929; a=rsa-sha256;
+	cv=none;
+	b=RLdvo+oX4RcgOiS3RIV6aW83EqSmOnm3ZKshzds7T7IMuKQN3lvUvvfWhxOxTvXVVp2gY4
+	niCXRkiy0uZXSxZpRSUmm6Y0KGtOpBWfcmzBnDyJ/S2HV0Nxt+16KibrovwZSe7OVtYBzp
+	XQfluKSmouKFHAo+1YHEf9DJRvQslho=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UkWhlLvR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of robh@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=robh@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756917691;
+	s=arc-20220608; t=1756917929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b/vJxcPRpGvESlgzYXyBU2wvc3GwYzu+Leq41l/JUsw=;
-	b=6FiwDz6KVfEq3G1WTiOSas7CWHicIK7ZrMFZE1BbScuvXrP1E/BjmdPPTTw/Xa3vUFe5qQ
-	Jd9EmCTuInMwdC4yYIXgTC13IOrWWmQ2p9YsVsYZZUf90jVrE7ZfXDfY/FKFnYxbAOzTT7
-	m5axQMrQhN9XsSpED/4T1kolxPyGiJg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Wze+4d1E;
-	spf=pass (imf30.hostedemail.com: domain of fvdl@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756917691; a=rsa-sha256;
-	cv=none;
-	b=LACv01a80dBYBoarmfG1UArlI8rqyxqwssk1CkksKAyIUeYsfNxxDCoIH6ZsVfwk7zWBxm
-	R9bat8pqR+BgKV2uG9qHkZjstDEy17fzqyQsu30xmzu3nzeNMG9hcJRcBGw2ZBn46CAwTz
-	RjfC4byl/mdGUSpLUITaieuTs7JfHtc=
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b327480fd0so2151cf.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 09:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756917691; x=1757522491; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b/vJxcPRpGvESlgzYXyBU2wvc3GwYzu+Leq41l/JUsw=;
-        b=Wze+4d1E0XcQoi1T9TNW5vxdMyR5USAN8oB7w07zqQFxd7syI6Byseo/wXi8HC2JlC
-         j+gakHVNfhsmoIh0fmn6ltKFS8k/b0b72lmhvGDzRIONeY/r+Lv+u+bqkcCeucuhMOkM
-         3GQvN1s8cp6jEXvfdYIG1fpYsPaCtiqojo60Kynytn2Sn0ui7CicAZ3SrQ/VbEQRlkMS
-         u0O2526U9zuU/0xm63FPyToYY3Z3PU8s7dTtcQ069kBh2x0vtqsTpluFdGuyb+9Hhhgi
-         l4GqaXEn7eHlvBahrK1BdfCOJefZqJLhzImvUd2WvI8OzHlTo0YtKSz4rVTwCm0l+a7m
-         Sqdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756917691; x=1757522491;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b/vJxcPRpGvESlgzYXyBU2wvc3GwYzu+Leq41l/JUsw=;
-        b=DIMylBhN9fCcDTBccdAtKYbM2UNKYiLXeeSbeLWDwdUaKfqKjKGN4PW28/upciZKw+
-         ebN3yESBP8+yCg9XnTEni3JtPXBwKAp+bvC/F4z9dUAIAE7ZXQTB0HilfJ3XvJI3Z49p
-         jTXm4r7EHjT3aP/pf4oabPUnsNTJeEuJUT28vYDdjqtk1DjlUZ5tFe+7mUEImK7mfxBc
-         13WOEhTtjiLLJtCN4U61YHNL5ERlcMbenGAg/Yu/L5yoY5CnQ7UvN+ONNLvnYab7Kp5a
-         hNh3v+SnShZapKOiT0Zs530moqQGhiVvvtIKOgqvLHVKUZvmYcAr2LFK8kLnAeNlKDJV
-         0KYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVf1WvK6MaEH6mIbzi9p59XG9yCnRFJqOYpJchmLwyRM2eE90T9PzRZRoHaDNEnyA2MWYj43CM8tw==@kvack.org
-X-Gm-Message-State: AOJu0Yw1V0Hn9kt7zgDnFwAzkm0HHfJtV6PMbzZEwhuyVEBataQTHEcI
-	puyiskPZW5190ksI9xblCKt3N5MmCNLzKgmTqpVJKjegAq5S8me3EflKu/mrg1k2pDQhZY5Sv8p
-	yLMJbznHZZxRbW9QgntfQiAAqANQfxQup/q1a6tvh
-X-Gm-Gg: ASbGncsk6BYkQgWxpXLhIQ2jJRH99sp/FmgSxmENmHpG85ZZIH3zmf4YX6iigHJT2tQ
-	hXz5fKEaQJ8wa2na0Jq98jJQKhBYXlcroLsf9uqvrrDrokDWr1V5kpLJrYRmzkA+MJz7LF2xuJe
-	ny6FOhBEKQZWtnaVQIaR7D6vvMMt1KpPJodOtrNljYD9HV74VzagLvZwbr4uOkCD+pKk/gvnw+z
-	ZR8yVrOptMQC7n053xP+A==
-X-Google-Smtp-Source: AGHT+IFoHehzzAC3at7wJqvFXiruuFBM2qqp0XopgJmPwvY+aBFXS+0msH1KaCucKaOoLggA7VwXzewO9Mt5vZOrJ2o=
-X-Received: by 2002:a05:622a:1a94:b0:4b3:7533:c1dd with SMTP id
- d75a77b69052e-4b37777a325mr9305051cf.1.1756917690086; Wed, 03 Sep 2025
- 09:41:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250902154630.4032984-1-thierry.reding@gmail.com>
- <20250902154630.4032984-4-thierry.reding@gmail.com> <CAPTztWa7kcx8bBEJEKvnjcD4v1-eDLVxMd9C10XiBQi4CDLfHg@mail.gmail.com>
- <v7zrmrhvemyymq6qamz6wbgzr4cijfe4n76ivwyadmltadlot7@3csy442wfasf>
-In-Reply-To: <v7zrmrhvemyymq6qamz6wbgzr4cijfe4n76ivwyadmltadlot7@3csy442wfasf>
-From: Frank van der Linden <fvdl@google.com>
-Date: Wed, 3 Sep 2025 09:41:18 -0700
-X-Gm-Features: Ac12FXwYZoUQJMYKoMG2IfRlVgeA9SBEMubP3Ywv8OOtSs4p9NBUTv7ipqCvUr4
-Message-ID: <CAPTztWZJqzbR7Y6jE6NM1qQOumYz-ckzSfGDfUcsgMVU7SBb0Q@mail.gmail.com>
-Subject: Re: [PATCH 3/9] mm/cma: Allow dynamically creating CMA areas
+	bh=GNjz6ireZy+p3cAv2x37qZF4cjRqc9AMo4/Pb+kdJcM=;
+	b=R0HRWgNScj9tOV6MWuIbJyVqwzpqTjchua34V57/JBZSUSli0gvyqLHLs6Ue+faU/lyBB4
+	nEeBbjYaS9fp7IR5co1TZutohBqT4jhq0CJxSRgXqfxvvE0T4i3pWRGU+ruCk2oRKAwNRO
+	CWJ2JPoSfEkyRlflRTC71vL3zrz/q0k=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A71C46013F;
+	Wed,  3 Sep 2025 16:45:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4FCC4CEE7;
+	Wed,  3 Sep 2025 16:45:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756917928;
+	bh=1QCnhHk4YrbcljgZa4CIM09QqYheSpXKbkWo83aUiBA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UkWhlLvRnJr6ayb4Mng7/14tuavR02NoAo9XeCgTB/5K3v5y26XRy3pL1nHIvzpVo
+	 Dn38VyfEu5u4ggHiuf1rlqoblQScmF2gjYxPS26gnp/84X6prefSXBDc4SGcU4jVmV
+	 GgByW2YTigHjEiJ5pghcpSJ6FL20HQZZiwYDM9E6Is2l5xL/z2SlqQrmZyd62mHfef
+	 kHNH2kx4gOmI+ozktvajibFsYx6syJhF5oL43UkIn1HNWfgVDoQJx6Fyv2lTYgnXUY
+	 Y76w5eD/VP6VjR/Rgij0/nEUdUcV+LE/WBEqS2iY+YWtX/nGpN5ubrn9oP9U7/I1j0
+	 7bgomSEmNytEw==
+Date: Wed, 3 Sep 2025 11:45:27 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Thierry Reding <thierry.reding@gmail.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, dri-devel@lists.freedesktop.org, 
-	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: BE53680008
+Cc: "T.J. Mercier" <tjmercier@google.com>,
+	Conor Dooley <conor+dt@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	John Stultz <jstultz@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+	Brian Starkey <Brian.Starkey@arm.com>, linux-mm@kvack.org,
+	Mike Rapoport <rppt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	linaro-mm-sig@lists.linaro.org
+Subject: Re: [PATCH 1/9] dt-bindings: reserved-memory: Document Tegra VPR
+Message-ID: <175691792593.2483010.8132765871876943036.robh@kernel.org>
+References: <20250902154630.4032984-1-thierry.reding@gmail.com>
+ <20250902154630.4032984-2-thierry.reding@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250902154630.4032984-2-thierry.reding@gmail.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Stat-Signature: 6gs11mpan5hh9919j9597eem3w6wi3kz
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756917691-799425
-X-HE-Meta: U2FsdGVkX1+7oSzC/myGbpuxuRwdNVbbujIR7mujXHwyVYuGXNcw9xtpo2baHJGE3DN5j+MIqJv/6t/9mFiLCJkZCpPmCmNYzWxkJZIw6FAqoANlcf9Nc2vzXqWCA1XNXfKpM55/U7IUeZZ5KbYnBRnZVWL26SruYnwFeeKHdczH7YAy5vqct6tO3x5j7IdmOx96Hj1HtxTPQFCJIB5auAc94hEC+MCoVg9YyF86dkUQdjUqGnQ1rrAO0OLTIxE0aaz7dvF3XF9+PJDjMH11ZOpiUEOlPWQ/78f2FqsXw2VsugGNKrvtkO78hrqWlOoKompKsL1I/cseyZrZWpDxU2FuCwQ654wJfj5AeNCwsr11QErUCkymKSsBuo23h/qE2Sr9Ouo7Wd/N7SbeIF0PJMZzAx4RvKoga4/Hu5rB1TRc/95lfFcZ75aZyVDif5Pv00Au+dkcyzmZV2rNmq2g3nlfXOwNaepORGGdvQ1lghDXJVbl5MgK3lmjwxtqdymkGBi4xZd8zzmwPn1CshDYxoUzY1l9rrwSvmGezbnE/QYBD7hnnDdgoJepCURR6uURSEbPbxHWyIKhN9zgu8bbYKB/hyLgrxdD9btLuc2H0tL3S+qYDIM5l9AjjJ4pSorUXmB92XW6XIlNB+K8Kz3sRtFuY2m7l50SIt6UFLUx/UDmBAufpCRv/AMU0trAvUHJ/0BvigywVohShkjf5Aue/s2rW3yXwb9B7NSp2lIARV+3m1dpcv0lYmgHx3My8QTsaUlytngBenb0wlFXzuO1Jtj18kVBxSK+nr1reXxLJh77HyQrbZtK9mCJQW73zY/9SkAJQsgYQFlqotxqEeoD7vZZFUOTGwto6mOHUI0autYGKMNPfB6ftUSYVDAudEq2Hcvw1rKf5y1Kj6Ey1lGga8ranaVr+44oeMCvmmopDseNpft8OqALpamP6Ebdww0XhWMl0Qb1rPIMgCC1Y+B
- lFUjJfo3
- ZJXTtREmte8eZskghtz86g6+drXTwdV99mZfl1Ki0k2SynE4Vji7XLVrc+xIU4Yx26TLsqvbQiPx4O6RgJru7W+uUyfISrUlTSXFortxa584+iyyRs25mxOEgLF6jVYvFAXCGycNJ2zJy8hStN4WIbxB2SLLB8WCtGGWZhenaQrBbOSlnH6x7gaKJCb5KDhe8MxjGIqjD+2MhE7eVeWe1JgdW4dbxKO/tx1gLu46z+oxGoC7MI7MLznqH0ExQx+inKAUZLx/Uj12PNJbbk+pixS6zI0Z33ucl6gBEJTk5WIiB9Yhr2eaV7CW4UVYeTmqWBkrx
+X-Rspamd-Queue-Id: 583351C0009
+X-Stat-Signature: ypzx8m9ya8ij7ih7p4txtrba8gw3d5je
+X-HE-Tag: 1756917929-165449
+X-HE-Meta: U2FsdGVkX19KtfN34Bnklg4cnKmwWHv/+qWjHbI5RKVyppYA3/o1pxyrrz7RrDYwlFt1X8q3yg7fNwWe6uZwhUBwUluU9tJ7KPjSQqqBlv9Njl+LFVCfp87XqfD2hKJT9Au1oG3fY2zW7PH+Q5K1yMWt+SxsfCfQYPq6dxe8UgMbP62osAavPcxjnn78nr23wUaWhfn2zmdRa3QyAlEzp9kL/hyiV27Gcohxvwpq4joJc6K///dTDxUyVPHOQaTSslTha8CFVYIXliPrO31JhqT9x/XHOFThxG4ux6a75o2fXgEo64ZBlZx/43XYHGL4pppEua0JncZOa5Hyimm4/3WgUr7Ibha0xI7IJM5OIFeUZZNiU++ZI+vYK76kIlO4Bw+nk9Zo3MihckVDS2gvZkBhagSNE+0EODyz9VbMlu5ecLOobGG65bW36Ua+c5RzPNJ7mZ490hWlGm0/V4IWkR0JNTPrMeA36PC0xiCYZ8pgZdnT5jpXmuKTAhD9e9HTjRbvSrcTTqJpOJpnubR6bDOXtG/7EShg1+xmLwN7FBdWf6ueUGfhB2Qs5CYvnVXLKkz0mkKzFk5q4jQF4zhzWKMWC0bOrMGRcAAzqWuRUIMV3+IpQEdRx45f16wEzLEb8Ua3o+wzgLzKNDURj8RWAew88IgY10LsZH14AK0WjlNz1Yzoo45hYuxebXL9gYh4m0V8f0VMN7tEPGddz7J211TZ/a8Lom4N0CcTuO9QtlyYNbN6Nz4BX2qWXt8DeRo1vKts604TLGjH/S8Lhe9tbxbs10lY2pRl65GLUkWvkw2wcFU+T09HdnSzFsBVhWH24Po3aY5N2C9kpOS+fPqREGSW9+BkVRsqKfPfPkoI9WWaqjXgzBz+8cGn+T2+2f2eo4VW5RruSEhlS6YZ0goUzaKPvHnRYlboF8Qn3hec+LbzYKatLNuzoXTNtGIAlqS9oZOI/HCAXoMl11JkI3y
+ DDTf+lyG
+ 1Xk3wUAS3IiUZPgpJq+2xjXDCcZkryi6EYKqJqUgSWZubTVMnokBzTjYnDzNaUCtIE8V+tGZfNTPe5bczs71B5m3w3AchgZ2OPuODPsxOGhuQNoChezLOQ0+TySysnrqQWzbG2MpagW0wY/llHKjfbu95gZ/nZjO06iHh8zw8NzzUWYfSGcpIaAQwZesPXVshYKG+G90x5MzOh90d3dYOwH36gOD6v56Kc031zLmEPdmnw+kmxWFQ5/p9jE64SpBAsm6ohFeDTySW/FhCe1BF9OCyVQfNVZ0q9SmA8iAwHR2u36QN8Ai340j2aGi+I4NxO99k/doqW3AVz5KRDQRPjeCFAiB860Wg4a0h14oeSnhY5F4+Ne8UTZjb0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,118 +104,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 3, 2025 at 9:05=E2=80=AFAM Thierry Reding <thierry.reding@gmail=
-.com> wrote:
->
-> On Tue, Sep 02, 2025 at 10:27:01AM -0700, Frank van der Linden wrote:
-> > On Tue, Sep 2, 2025 at 8:46=E2=80=AFAM Thierry Reding <thierry.reding@g=
-mail.com> wrote:
-> > >
-> > > From: Thierry Reding <treding@nvidia.com>
-> > >
-> > > There is no technical reason why there should be a limited number of =
-CMA
-> > > regions, so extract some code into helpers and use them to create ext=
-ra
-> > > functions (cma_create() and cma_free()) that allow creating and freei=
-ng,
-> > > respectively, CMA regions dynamically at runtime.
-> > >
-> > > Note that these dynamically created CMA areas are treated specially a=
-nd
-> > > do not contribute to the number of total CMA pages so that this count
-> > > still only applies to the fixed number of CMA areas.
-> > >
-> > > Signed-off-by: Thierry Reding <treding@nvidia.com>
-> > > ---
-> > >  include/linux/cma.h | 16 ++++++++
-> > >  mm/cma.c            | 89 ++++++++++++++++++++++++++++++++++---------=
---
-> > >  2 files changed, 83 insertions(+), 22 deletions(-)
-> [...]
-> > I agree that supporting dynamic CMA areas would be good. However, by
-> > doing it like this, these CMA areas are invisible to the rest of the
-> > system. E.g. cma_for_each_area() does not know about them. It seems a
-> > bit inconsistent that there will now be some areas that are globally
-> > known, and some that are not.
->
-> That was kind of the point of this experiment. When I started on this I
-> ran into the case where I was running out of predefined CMA areas and as
-> I went looking for ways on how to fix this, I realized that there's not
-> much reason to keep a global list of these areas. And even less reason
-> to limit the number of CMA areas to this predefined list. Very little
-> code outside of the core CMA code even uses this.
->
-> There's one instance of cma_for_each_area() that I don't grok. There's
-> another early MMU fixup for CMA areas in 32-bit ARM that. Other than
-> that there's a few places where the total CMA page count is shown for
-> informational purposes and I don't know how useful that really is
-> because totalcma_pages doesn't really track how many pages are used for
-> CMA, but pages that could potentially be used for CMA.
->
-> And that's about it.
->
-> It seems like there are cases where we might really need to globally
-> know about some of these areas, specifically ones that are allocated
-> very early during boot and then used for very specific purposes.
->
-> However, it seems to me like CMA is more universally useful than just
-> for these cases and I don't see the usefulness of tracking these more
-> generic uses.
->
-> > I am being somewhat selfish here, as I have some WIP code that needs
-> > the global list :-) But I think the inconsistency is a more general
-> > point than just what I want (and the s390 code does use
-> > cma_for_each_area()). Maybe you could keep maintaining a global
-> > structure containing all areas?
->
-> If it's really useful to be able to access all CMA areas, then we could
-> easily just add them all to a global linked list upon activation (we may
-> still want/need to keep the predefined list around for all those early
-> allocation cases). That way we'd get the best of both worlds.
->
-> > What do you think are the chances of running out of the global count
-> > of areas?
->
-> Well, I did run out of CMA areas during the early VPR testing because I
-> was initially testing with 16 areas and a different allocation scheme
-> that turned out to cause too many resizes in common cases.
->
-> However, given that the default is 8 on normal systems (20 on NUMA) and
-> is configurable, it means that even with restricting this to 4 for VPR
-> doesn't always guarantee that all 4 are available. Again, yes, we could
-> keep bumping that number, but why not turn this into something a bit
-> more robust where nobody has to know or care about how many there are?
->
-> > Also, you say that "these are treated specially and do not contribute
-> > to the number of total CMA pages". But, if I'm reading this right, you
-> > do call cma_activate_area(), which will do
-> > init_cma_reserved_pageblock() for each pageblock in it. Which adjusts
-> > the CMA counters for the zone they are in. But your change does not
-> > adjust totalcma_pages for dynamically created areas. That seems
-> > inconsistent, too.
->
-> I was referring to just totalcma_pages that isn't impacted by these
-> dynamically allocated regions. This is, again, because I don't see why
-> that information would be useful. It's a fairly easy change to update
-> that value, so if people prefer that, I can add that.
->
-> I don't see an immediate connection between totalcma_pages and
-> init_cma_reserved_pageblock(). I thought the latter was primarily useful
-> for making sure that the CMA pages can be migrated, which is still
-> critical for this use-case.
 
-My comment was about statistics, they would be inconsistent after your
-change. E.g. currently, totalcma_pages is equal to the sum of CMA
-pages in each zone. But that would no longer be true, and applications
-/ administrators looking at those statistics might see the
-inconsistency (between meminfo and vmstat) and wonder what's going on.
-It seems best to keep those numbers in sync.
+On Tue, 02 Sep 2025 17:46:21 +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
+> 
+> The Video Protection Region (VPR) found on NVIDIA Tegra chips is a
+> region of memory that is protected from CPU accesses. It is used to
+> decode and play back DRM protected content.
+> 
+> It is a standard reserved memory region that can exist in two forms:
+> static VPR where the base address and size are fixed (uses the "reg"
+> property to describe the memory) and a resizable VPR where only the
+> size is known upfront and the OS can allocate it wherever it can be
+> accomodated.
+> 
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
+> ---
+>  .../nvidia,tegra-video-protection-region.yaml | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
+> 
 
-In general, I think it's fine to support dynamic allocation, and I
-agree with your arguments that it doesn't seem right to set the number
-of CMA areas via a config option. I would just like there to be a
-canonical way to find all CMA areas.
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-- Frank
 
