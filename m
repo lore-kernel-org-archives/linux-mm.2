@@ -4,181 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3105CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBA0CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:31:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 182646B0006; Wed,  3 Sep 2025 05:28:41 -0400 (EDT)
+	id 46EDA8E0006; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 133B88E000B; Wed,  3 Sep 2025 05:28:41 -0400 (EDT)
+	id 3F9328E0001; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 049698E0001; Wed,  3 Sep 2025 05:28:41 -0400 (EDT)
+	id 2E7278E0006; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E98756B0006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:28:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8C6731A05A1
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:28:40 +0000 (UTC)
-X-FDA: 83847414000.24.48349E9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4F3751C0007
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:28:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gRD29229;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F4C38E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:31:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4ADA1405BA
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:31:20 +0000 (UTC)
+X-FDA: 83847420720.17.9C4460B
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C8DF740008
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:31:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTdqAQ+w;
+	spf=pass (imf07.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756891718;
+	s=arc-20220608; t=1756891878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XagSL380WccLaX3yNvgvVCZJRmkRkG29drasxwyScUk=;
-	b=fzxyxj1d21uEV9IqtYaviTUzmZvxrUU+2eDi96Nl0l+rA7e7HCVjSDf/XqN0ZdFRx8mHeQ
-	YdPnGRPgrpVhkys6IMqXZPnWDBCRyMd6YF1RGs94zGGLjMZXvf6UMo3FEUr7giHezAx0eq
-	RW4VjL03FZbMBRhrvuh0hEH5sFB1l/w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756891718; a=rsa-sha256;
+	bh=3JERqtIgcAWYxTcLUucE5Blenbg8zXWgwZ0D8YaVejQ=;
+	b=vYycW2VFWzHBAk8s/UQxaFRwycDOOiCCVHq26qAike+YBb1HrKQaB9Mc6saXuAmO/MIh+l
+	NrPoEKvJ1wSiV2Eyiid5j8nS0wEbIMXUv0l6MrMnOl6oEVfcYYDoHLOH7/BpKKyAokoeyf
+	bzEIP0IEBEA/XREw7SNSDDr64BpPEKM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756891878; a=rsa-sha256;
 	cv=none;
-	b=oB33ei2igCp1bX9u3TVh5zr0k9daAfURUhf6Wcg0spkLSDPG49LfAE1vstGE9m6QVNKC07
-	oUlilFo91nPrLh8PGZQUJcJjvyZWyJhb1gtG29k8H/DZIhKPa3XqOuu9YqlbFRPyNvjFXT
-	3lO8OXe7eg1OL0dZELx9PEviBocVjnc=
+	b=6bQ7iE0dgHZBWud7zFmPCO/8rhp3XXPs964Otnzm1Vgunuyfo9uio1UQ8wg59+jqS9KxIO
+	d76GvkZ1XNIkPFIx0db6IGxCt8PO+Q8P9HXQZmpCqSpRh+Y7+1t6Sny46PaYZ9UWD97rVx
+	agWXUyXQbZY54bJbYZzCW65VKi3gx/o=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gRD29229;
-	spf=pass (imf20.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756891717;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=XagSL380WccLaX3yNvgvVCZJRmkRkG29drasxwyScUk=;
-	b=gRD29229umt5B8pdP7aoVquZ9gMsVkM/CGKS3pSbnGNNywICZiPZj7RgdsXek1/GPcfh28
-	fPZ3LfZ38ck5Q1QIBS04FzUOCo4/omJjx7255t9S9dSGRaV5XyCS+S/L/g9XJyc3t+1Y2s
-	GIPkNSDXZbk5jW63SinWkhSoZmfZ+6s=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-99-2tTqPlq-MQ2MBXohDRzxGA-1; Wed, 03 Sep 2025 05:28:36 -0400
-X-MC-Unique: 2tTqPlq-MQ2MBXohDRzxGA-1
-X-Mimecast-MFC-AGG-ID: 2tTqPlq-MQ2MBXohDRzxGA_1756891715
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b7d84d8a0so17568175e9.1
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 02:28:36 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTdqAQ+w;
+	spf=pass (imf07.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3df15fdf0caso204755f8f.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 02:31:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756891877; x=1757496677; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3JERqtIgcAWYxTcLUucE5Blenbg8zXWgwZ0D8YaVejQ=;
+        b=YTdqAQ+w5lDU5J8owVb4ouBkJP8pC5D9WDAcJl3k9c70fZfN3gXreTXOaSg9NPFYUZ
+         +vi/BQ4kcBeXdhHPRaH6rO1KqEm+fG6yayUdopI5T5pM/hh8fbRGsXECHvKJ14fWo7ot
+         M41frQ8uViPelXuqV7eaV75U6SlF8yHrf6yuVH6tdsE3pFbo1zhEj7K3Z4B1KC1A3tdt
+         1+BaK1FNXrgjiqktuJnF1Bqv8A9QPt+bchAdbMtrHucwSkyAVj3miteQYwlO3gBkgnWT
+         I06bIC+mumm/8rQCvm/aD6TIyZK3y9ar+tbdjPNSEJal8eOe0WiTCwh8RaAuk/qyQucS
+         L+9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756891715; x=1757496515;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XagSL380WccLaX3yNvgvVCZJRmkRkG29drasxwyScUk=;
-        b=hJLiZM8SydLEeMniSVsKaQ1RYjb/S5QcA0vlIjPPYhk8P6F+Dde7nkLpX3YccCZX1H
-         rGE+GlBNmd2Yx5p735P7Xu7gTQEV5m695b93fwUIFuY3vG0ewVQG6pLb6Nf0VlX0AsJo
-         Ut7ZTjrJ6rIhwkrEjGpOv9vOXT8LDe1UR91DcpjJK7hw9qLItn8JYyH0hIbs0+P+71/D
-         Agfc4fGaUTUnb6UIBMlBEyWDrNNwuwu5ysBdiNEoSTL8+4CkFau7yrkKLWv+WLdWGHc8
-         u0WOblLnlAHSEkiRIMNdHyTFxofSgo0AR93nQzOIQkWofPHIN7JNQELIMEZiebYdwIba
-         h7sQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVL/CRYSxkExSpGmKXTz86rJdyy8c99utPQ8ui9F7Y3AUn8jMTQ0Bc1Z6PtW70nNY/ydmEyl9bdRg==@kvack.org
-X-Gm-Message-State: AOJu0YwN0R+W8Rpmk4vV5KPODoVIBYvTqIjsjJLgGqSHJWnHHHRYaIhU
-	G6o890DymDQF89HTqI8cFxXKtmUYhCd4bexZ9I1/rdAI0cWkfN25LQbnzlq8B7U196p418/Qwfw
-	4cFXzdtdN5evpx+HA8BCOpt8Xf7ddm+urI9g3vJxfh/FaECvrkKYK
-X-Gm-Gg: ASbGnctYkn/Vos1rs9jaw+MJMuRzTPRSUl1cSzloZqkMyRUBzCY59B/8BSbROfB2sYk
-	0U/eS5FunQW+V66nxf/gsFJJKj5MmlwqCHo3db60CoqcFEBil3UHCH3e4g4ycRjZYUccx/2z37D
-	JlKYyMN2NlsLtmGH4TAl0nlWYslsV3z1ceEqYzSwy/aGpEfQUh3PJVlHcUTAy9NLOubCDGmT+hB
-	y0opYtJB7tXL9NA/sKJBnqS/r45NsjLadYimOttJ5KrwhqlFhUiXMjeBx8vLiUiULE18dTJwpvb
-	F3TQZ7Xz2IzPUwElfbK5JoRvSiKMMiAENgO6HcBj1Cj7MsP/FL9JC3uCjYPk6tkRLNiu+HnP5Eh
-	keMS1Y2VQrmryM2tDsYDJWmoNyqI4aaZomkxRCKUdqyATK/T0oOrkV5nc3Ly+YuKZ890=
-X-Received: by 2002:a05:600c:4513:b0:456:1a69:94fa with SMTP id 5b1f17b1804b1-45b8554eb6amr113087285e9.13.1756891715122;
-        Wed, 03 Sep 2025 02:28:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3OIdbpC7eGStYBAaUEmvB6GqC1LGQrt2fa6m2+JUmDdqtUbkPiWQgVRbPGhaX+85Ybhui+g==
-X-Received: by 2002:a05:600c:4513:b0:456:1a69:94fa with SMTP id 5b1f17b1804b1-45b8554eb6amr113087045e9.13.1756891714619;
-        Wed, 03 Sep 2025 02:28:34 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9bcda91dsm54688595e9.6.2025.09.03.02.28.33
+        d=1e100.net; s=20230601; t=1756891877; x=1757496677;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JERqtIgcAWYxTcLUucE5Blenbg8zXWgwZ0D8YaVejQ=;
+        b=UrTTZw2S06aHW63SiwCXKUKJ1PDf/aIBWPR/ZyqB1TVorqHpEaJ9Z6IHQW1Et/mGVA
+         ir/aoY/yHKMK/UyoF30hvlqUe1StGwvhcWXHw7H7w4gTPAbPIsSEYZvgXBHlyK+TQB4U
+         s81yKjf2h5Hc9M468bidyicR0fRO8284dRgSStvzUls1XziS/i0ESAXPY3+y7y8jnYNx
+         uz1VgtksnUyJ1ZTKdGIPRBq7L5MSRCzNmWryVJE/tlm92JFTwZBAeEG1/kDuAKx9bsaD
+         i2+An2gbFIbY6XJ3qddPgdrzeJl60pEuVvYxUiy5xRJIJVSxK3F04QkcoWD+oe4Opmsx
+         HVrw==
+X-Gm-Message-State: AOJu0YyFqOydBTx6qiBZGNa5ebDwAK8nMbm87inlFpn4SFNJnVYSbKVP
+	o0v3aE03XHt5CL5gfE0PlIZe2AWNmpdjmg+JlbGidh0sgGHWfX5KMfSz
+X-Gm-Gg: ASbGncsoPIUpjeGyBmgv3it7N25vK+ozYePOFlPg5S3z5M2JjbEo5YZhK//LK46JA0u
+	eFGwxT5XrZbGuhcBd9JeS6A1KkwdfhftBSGW4Xuj8bVQOW0vLHOdxrqF8Oe+J4Mc0KMr8zCF5yW
+	o5rogvSQ2rt7XAv7YlUqOrWffmIYSVT4DMidRHQbwl5/G5hkLslx8yxNdHPMdbsBmZ4vhnnjqco
+	QA3gxHn6ZoM2vONXtrHbkFMmIgZCdwwNTi1EuA6Gidln97IoqRsjoCh3lTngzaS1U9lzmSsXVCB
+	Sj9POKqrbwoAmn1J9PS+/GYKTMqfLpStG3tX//u3nflpuXG4SsrXJeEwS3HZCG6DiGD6MTGIntI
+	ORFarna3pZ63j2WHgHLGVd+8wAhDKVZUoR1qUZKggFGXbsFJgdAJXZNNtYJvwC2rVrKAxyijT8Q
+	obaUr7nIjR8dysOHg7Gw==
+X-Google-Smtp-Source: AGHT+IHg2hod8nukF0mnZNlawMmT+p3dWVTvWH+uV9p/eaiLcHW/vzr9TtixHzkgeaarvDlS1nLNjQ==
+X-Received: by 2002:a05:6000:2601:b0:3dc:29f8:979 with SMTP id ffacd0b85a97d-3dc29f8097fmr2085044f8f.39.1756891876890;
+        Wed, 03 Sep 2025 02:31:16 -0700 (PDT)
+Received: from ?IPV6:2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23? ([2a02:6b6f:e759:7e00:1047:5c2a:74d8:1f23])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9bcda91dsm54806295e9.6.2025.09.03.02.31.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 02:28:34 -0700 (PDT)
-Message-ID: <baa1e5f6-d559-4874-a7c1-7daa7f1c3ce2@redhat.com>
-Date: Wed, 3 Sep 2025 11:28:32 +0200
+        Wed, 03 Sep 2025 02:31:16 -0700 (PDT)
+Message-ID: <7f13fcb1-82d7-4464-8be8-770fc1a665cf@gmail.com>
+Date: Wed, 3 Sep 2025 10:31:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/9] mm, swap: tidy up swap device and cluster info
- helpers
-To: Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
- Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org
-References: <20250822192023.13477-1-ryncsn@gmail.com>
- <20250822192023.13477-5-ryncsn@gmail.com> <aK5/1so7a0i80+dz@MiWiFi-R3L-srv>
- <CACePvbU8pnjWCiWcSXRr4UdpuD_wdtrouLMz_fNB_=KRrdHLmQ@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CACePvbU8pnjWCiWcSXRr4UdpuD_wdtrouLMz_fNB_=KRrdHLmQ@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FRZw7AZ1diWrmaWDQK89nQap7ueSU3j1UE-928m1VGM_1756891715
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 2/2] mm/show_mem: Add trylock while printing alloc info
+Content-Language: en-GB
+To: Yueyang Pan <pyyjason@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Vishal Moola <vishal.moola@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org
+References: <cover.1756827906.git.pyyjason@gmail.com>
+ <1491df0ac12a7626b7c9b00e26a6e10adb8c9045.1756827906.git.pyyjason@gmail.com>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <1491df0ac12a7626b7c9b00e26a6e10adb8c9045.1756827906.git.pyyjason@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F3751C0007
-X-Stat-Signature: cnb3fnxe6mj1jap6kgozmthp64pnu9r9
+X-Rspamd-Queue-Id: C8DF740008
+X-Stat-Signature: ficgoudy7gw7s4q6th1xugfh9f7tdwn4
 X-Rspam-User: 
-X-HE-Tag: 1756891718-202537
-X-HE-Meta: U2FsdGVkX18XNX3pAb2x/E0clE6rMNW0xXbNn7il8UlmOS0eVBvYrTqe51W9+TlM35Qki9lc+UepiezzbDEeh+bCt8SDdULv4pTEfFW+4sPZ5f4RAHddgJTmw8Qg7s/1oj0izxMORqSFXfJkslYbqI28AjUsRPGeWJN9MwcKLCDoYflXPuyLbFqaVzSvplmwCSvEpFGPXD7M7xMPQ9dh5d7yxsGp5kpQbIfOUOgB8XMhFVHOVQJ3wFhm+Re+cYUDpG159k3Y3CUtrz4np0756rCaOiIDS1Iu/CoaR3O43osrQsxlSGf4NK0e3NxrXxJYr1gD7C9pEMuM+eQ2JEvwLLEW9Z6e6TuJUx9n54TGpOx3IMjLDqQTJX+OC+tZElhyCcTvWnbFnRqg+z9n/SHFFGq8PulqxUH6EnkLLwA2C5LRdMf4On/ZdDxPctU/gGX+vXJClkkk+c5o38mWi1942TcvPhtti68dYyl4cNU9WgAbpXRu5v94GFS8KmhqgfPabKenik4OGcAbNJK59AnuoEe+SikCkKciAqo0wgN8qZl9YwhJ+8FPNMUHZyiOrqCGt64u514JA5EtxB5p5DTa/oCoRm51xwmbwlHQXitvvKHwiOWhRYQfZwVcq6Y75Rbedd3nDQjo3Rxnb/Qp7/pmDmaE4hcXEt6mQ0Z2MnJhPJ45ehLWsFZb0aomWuYTeNusZhMMNf7UljxbUy/7f3hJb28GLIy/qWqOS8EveGpdn8LZSI+TQX2yXmH0E+U1ECRf05Ovd045/6n9CTQ8azPCVDUdW37YyMZHDpbAHM161jeaQo3swfCstz3dElrcqFO3AtbJCuITjSMba6Py0/teZvQXu8F1xmnqnwxgA1af7M1xmQ/lKvd5AgWD4op3FJQPaGCj3UMvmTqM4F0ibB+erIhCy0QTfv8QYAjyiHpx9t9SwtldHCbmrPvrfioAG1ZHF99eIO6UfoIMDD2elsf
- 1Yu5k1p/
- GKlt5klvLvEp0sYUDPkIV74ZoYAJERPx7nj6XYyR9fWtXp5kJJeHycp/3sMwVKLLn1jB9WuqVKi97qmCB0jI2G5Rkt8xA58AeZZy+ffMN+Tz7RSNmdxHQ4Yi7jDXGPOBlOVlQ
+X-HE-Tag: 1756891878-782652
+X-HE-Meta: U2FsdGVkX18f1aho6xeRcF6siC+WMPeaMnx0euSMVYeg5vmlfLbWio2AyXrS72+HdI0uqQiN6Kk8j4vput3hJoR4LtnJyhOUBsLerJwywuPFsuBZ2fOi8IpZMb/0eTEhI1ukTo2udHigWrd34hOgfET5nkcGkuJucxqqrvaUZ9+Do4m81zOBKUJLggNi9oIx85niSZlIwsKzS0gY/Rh4iE1xYjRBnf8zGiiUar2ls7Tyy7xcBmrlzRmE7762K3zUQSAfQycC2sZXVN/jROxAUzZ+G64csqKj/VVl9DJCf5SOBqWIL5CpQpd4rdrsS6SCflGFSfcQ45c8ddeHwaoEJWmmoK4fUBMFklAIP3YmAkJfgrDeuHiXXofgzi1Tst2cfoLvYEfypJ4xydVm666ICKU2hYh4MAR3uOLpSpHtBDYYIl1QdfsKibZ8BBx14Yr8dQgxKapq3pg+gwyjizfGPo27kPghhHglE5890qXMn6I574MGlvFxixh+14YLlaziWVnjFtcePOXd0D6Uz/ER7Ghfi5ZGH2akoF6nOPpMazh+g5Mtz+igC4+otXjL0R3BYj4AWRL6Ehge3GIIBDYuzZ2yuRQ/Rgc8kiqjURYexCo7JxpPXuKnQHTQJOtw7REGG0gmpaeTA033229DK4DSJg4Ee5I8zyrUpz6JnRBymuksAaRNArXYVpzAGSejWTXSZTCvtGcvwoTSASqY1Qf/Oou8hYcLIntBlk5EwJdLyWlFdbNzCa4shJ5Qv0eSfhtMW+10aKBqrWexTKYKuivSHRkBT72xYCooXfDof/rw+tfnXXEZ/0kykM2javvNm0Qv6/vMkbI6VOogPI9fcqEWDQHanzt0qXOBpI295A9HgOvKqpZEQiQZTa2X0eZVfLJU91KCHjEvhE+93Swted4aymNVOCsVsMQfwL0euUv5o7WTCIpoC5FFk9OPMb5u4q4fkGBvqdq7f3rHRfuK5t2
+ Mxp1D7vR
+ m6bSaKcEHX5OVTymizKV0XgEg+eDs5O26WXRsJrZM7wHCwdGLEVjbKLcl8YAESyc9nYCSQY/fjxBy0B2jfMagoY3EMQKJqf0YR/n26dnUyCver3WMABSPYPvloKCxbSFDUACiofdc3/bKn09OPD7IG7w/xdFsTQhEP2IolR0+CrTYIc1wR2HBG9Vt2QtLIklCIrE9EmcssOAYD8r/s6XhiQ5SJcFyMCZlLatRsS+kWSRoP74H+aTl1S3dUyYwvRNcpC5XplkDf9NPBckza34sSi0grPS1iNGWjHkEmqU45vR6zuW6BVsHhItGZXvvEARJGTBzcUItbBBO/soyzQ5BcD7b1xwzk7iC3McUNKnKWHM8xq6nsrqCK6gKtL4poY9C0ig26TWxU5AU9jUfRWwrFEjJmhsQu5CCSOIYsq7Q5fUSfnDs4j41cqJHZgUklnRnY2dYGrKOGEwqmU6y6iV6NsNw5Wbht54yl1fBxbeqng6ecZNI4huFtl8WmTIRFV9++tDRE0kRPFeebiML5Yt65EtazdWVu6geKUOEJA3uNddEEnufnvqyzFcVhHhbJA5aPhqq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,80 +125,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27.08.25 19:44, Chris Li wrote:
-> On Tue, Aug 26, 2025 at 8:47 PM Baoquan He <bhe@redhat.com> wrote:
->>
->> On 08/23/25 at 03:20am, Kairui Song wrote:
->> ......
->>> diff --git a/mm/swap.h b/mm/swap.h
->>> index 223b40f2d37e..7b3efaa51624 100644
->>> --- a/mm/swap.h
->>> +++ b/mm/swap.h
->>> @@ -15,6 +15,8 @@ extern int page_cluster;
->>>   #define swap_entry_order(order)      0
->>>   #endif
->>>
->>> +extern struct swap_info_struct *swap_info[];
->>> +
->>>   /*
->>>    * We use this to track usage of a cluster. A cluster is a block of swap disk
->>>    * space with SWAPFILE_CLUSTER pages long and naturally aligns in disk. All
->>> @@ -53,9 +55,28 @@ enum swap_cluster_flags {
->>>   #include <linux/swapops.h> /* for swp_offset */
->>>   #include <linux/blk_types.h> /* for bio_end_io_t */
->>>
->>> +/*
->>> + * Callers of all swp_* helpers here must ensure the entry is valid, and
->>> + * pin the swap device by reference or in other ways.
->>> + */
->>> +static inline struct swap_info_struct *swp_type_info(int type)
->>> +{
->>> +     struct swap_info_struct *si;
->>> +
->>> +     si = READ_ONCE(swap_info[type]); /* rcu_dereference() */
->>> +     VM_WARN_ON_ONCE(percpu_ref_is_zero(&si->users)); /* race with swapoff */
->>> +     return si;
->>> +}
->>> +
->>> +static inline struct swap_info_struct *swp_info(swp_entry_t entry)
->>> +{
->>> +     return swp_type_info(swp_type(entry));
->>> +}
->>
->> swp_type_info() is only used by swp_info() in the whole series, can we
->> open code it in swp_info()?
+
+
+On 02/09/2025 16:57, Yueyang Pan wrote:
+> In production, show_mem() can be called concurrently from two
+> different entities, for example one from oom_kill_process()
+> another from __alloc_pages_slowpath from another kthread. This
+> patch adds a spinlock and invokes trylock before printing out the
+> kernel alloc info in show_mem(). This way two alloc info won't
+> interleave with each other, which then makes parsing easier.
 > 
-> BTW, off topic here. I really don't like the "_info" suffix. Anything
-> you can put into a C struct by definition is some kind of information.
+> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
 
-I guess we use "info" when we just have to have some metadata and we 
-don't really find a better description / abstraction.
+Acked-by: Usama Arif <usamaarif642@gmail.com>
 
-So I don't completely hate the "_info" suffix here.
-
-> Same to the _struct. Anything defined by a struct is a struct. Don't
-> need to say that.
-
-Yeah, at some point people thought it would be a good idea to do that 
-(mm_struct, vm_area_struct).
-
-> The "struct swap_info_struct" gets two of the unnecessary words. It
-> should be something like  "struct swap_file" or "struct swap_device".
-> Renaming it is too invasive to the code base and it will mess up the
-> git annotation history.
-
-I wouldn't be scared about doing something like that that actually 
-improves the code.
-
-You'd likely have to find an abstraction for "swap_file" and 
-"swap_device", and maybe that was the challenge back then.
-
-swap_info_struct has a comment above it "in-memory structure used to 
-track swap areas". So naturally I would just have call this "swap_area".
-
--- 
-Cheers
-
-David / dhildenb
+> ---
+>  mm/show_mem.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/show_mem.c b/mm/show_mem.c
+> index 51892ce2efc4..4c876ea2b66f 100644
+> --- a/mm/show_mem.c
+> +++ b/mm/show_mem.c
+> @@ -396,6 +396,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+>  
+>  void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+>  {
+> +	static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
+>  	unsigned long total = 0, reserved = 0, highmem = 0;
+>  	struct zone *zone;
+>  
+> @@ -421,7 +422,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+>  	printk("%lu pages hwpoisoned\n", atomic_long_read(&num_poisoned_pages));
+>  #endif
+>  #ifdef CONFIG_MEM_ALLOC_PROFILING
+> -	{
+> +	if (spin_trylock(&mem_alloc_profiling_spinlock)) {
+>  		struct codetag_bytes tags[10];
+>  		size_t i, nr;
+>  
+> @@ -449,6 +450,7 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+>  						  ct->lineno, ct->function);
+>  			}
+>  		}
+> +		spin_unlock(&mem_alloc_profiling_spinlock);
+>  	}
+>  #endif
+>  }
 
 
