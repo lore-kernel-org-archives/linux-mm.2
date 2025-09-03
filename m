@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7CECCA1007
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 02:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05BEDCA1005
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 02:13:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 023DD8E0008; Tue,  2 Sep 2025 22:12:50 -0400 (EDT)
+	id 63ED06B000E; Tue,  2 Sep 2025 22:13:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3C538E0001; Tue,  2 Sep 2025 22:12:49 -0400 (EDT)
+	id 6171C6B0010; Tue,  2 Sep 2025 22:13:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52028E0008; Tue,  2 Sep 2025 22:12:49 -0400 (EDT)
+	id 52CFF6B0023; Tue,  2 Sep 2025 22:13:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D31E68E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:12:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 79A3C1404AB
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:12:49 +0000 (UTC)
-X-FDA: 83846315658.07.53D2D57
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4123D6B000E
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 22:13:47 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E8E611DE307
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:13:46 +0000 (UTC)
+X-FDA: 83846318052.25.A265C63
 Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9B95BA0006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:12:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gc2BVzYE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	by imf29.hostedemail.com (Postfix) with ESMTP id F31DE120006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 02:13:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DoE3LcY4;
+	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756865567;
+	s=arc-20220608; t=1756865625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NHNEMXnQPJ7mnboxGgw4UKiDM5+vXgQtKv2FqnlXfUU=;
-	b=NASc31iMsBPowMgt6JUTm4/4LiknEcMf9Rtqb7BPet0+p+nr0SGjm1BZyGDAQuxyi5nnF4
-	172xDJRb5E2nBgY+ASXfxE6l6k2iZYZKvfZitoHvS1GeftwGNKvnHhu8QDuP3jBLju9TZ3
-	xAM+M9hQiueRev4dTy4BW9C7nhUtPHk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gc2BVzYE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756865567; a=rsa-sha256;
+	bh=gENk5oy3VPH1iTtwOCQdC87R/NjbhqCM6vXEQKfriYA=;
+	b=mmuuUNDe2s4Q/60U2jHawGiMuV09pMllTVsoT+e/fwX64JshRwSSqmvXhdOfVm/3Zmpt5a
+	Tk8PC0319PByasB8nMgVYSoLfRklsFBq4GyYHMBBQMxu5IUG+SU9nx2qMKL6R449JNUUbE
+	7PYb3RDDeW7+Ce9WaFVyZVdwVjbhk+Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756865625; a=rsa-sha256;
 	cv=none;
-	b=Qh51UqB+fDKEcrp2fvtQv+5UHu1KPvzPHfFe206w7G1UNgymBEVGVuyczaFXWz2tMBO1Bi
-	FFMtqUHAnvGFDzBrsxveVcnk95WGHlFEXHrKp3LkampPz2D8BlUN3QLKkuI93ZaiojVHcN
-	Lq2D+zJVRD9qtwvFjdwHwhAVTEFOma0=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-61c26f3cf0dso9241220a12.1
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 19:12:47 -0700 (PDT)
+	b=yBXP3UU/1MuuvUPlZlZu8lCj4sDobFegkLKMI8jpqjjUSBCZBl7um4l+2BOxIwapgcM2j4
+	A34adMVGndynxppqgAgdwQeq83kL+twC9TZCu/EX7Ajjiifw7wo7UaO6iUQv3NvpMk8GMT
+	hoU+cn5jiYVBMdhTECR1JioMMPSBgmE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DoE3LcY4;
+	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-61ce9bcc624so6969272a12.1
+        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 19:13:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756865566; x=1757470366; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756865623; x=1757470423; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NHNEMXnQPJ7mnboxGgw4UKiDM5+vXgQtKv2FqnlXfUU=;
-        b=Gc2BVzYE3VBW3EpxQ6FVJfi4Uva2mbvAgReLGDugR3fEv5bdzUFEpjymZWoXasEpAi
-         6AGIwAVWx8PJ1TOwxjCDzLG0hLNRV/0IEySnGS2qZ8FHD/AhLTh43+6oulySurYcrgIl
-         28GfCMc1ASsRnNsL3+NiKJhZZv0Nv6M+5gEtk5w7QVDCI92gdFlWJ9qDY4BBHmz9JKLF
-         ldLsY3BYnDXEXjHhFZef+pcwnLTHlAUOYoQl827Y95W5AqUwitB6/X8U0gOZ6aiakedV
-         It2h316lShq1YyndRLmXXMDTJbqalletv5nqinNyOJHaK0x2LPm8s2DenjdaCvEFBqMe
-         eNpA==
+        bh=gENk5oy3VPH1iTtwOCQdC87R/NjbhqCM6vXEQKfriYA=;
+        b=DoE3LcY4uhyynhT59tA2LJtmxRr5AhBhZqx/7xxleSLB4vxr7GLZ1dVoxPzTNqMn+v
+         dh3S3FSpW6e00Ip+rUFuS/Xam5R4buEzj2bVY1N9w6IxblnK/EtKZq7Nw8QM9J+EhR2+
+         k/vy+a27QePOuHK/fr5/rYl7f92VC97RBPq++80o+NpdDGVuUrl0aQIWXG9+nkWZRJCa
+         icD78v8AxwMSglAJbvTFCTdn0znC+SfF+OEwxcvoYp6eOiIz+bdDaOCwSJWNXdolunFF
+         TDZn4a9EcUdURMniudadPIUUUh7nPkBPe7gul0AY8l0U1ZZ08ZvXeYQssutuLrjChFji
+         mWrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756865566; x=1757470366;
+        d=1e100.net; s=20230601; t=1756865623; x=1757470423;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NHNEMXnQPJ7mnboxGgw4UKiDM5+vXgQtKv2FqnlXfUU=;
-        b=RH05GX04g7OdJjXLuROsfRYu1BmOMgQulodc+KptQCakjBy58xI0rNsKXaeDMoRHcg
-         DulJDDagal39L/Ut78yMtKifgs1QIW8DDnXrHLR1uLNWPrcp0i03wenuxZjMGtTvckFu
-         HHo9skZD1oEuW/jrNr6cfm7SKfOQtnBoi1OEgaedty0JpYAUotRvkHUUz0lffC9k50qH
-         gbfcDoEaip8K20hxyDeivVS+jHZcH7r8Qery01Q8avslRr6nU/qbaH1t0pe0hxg5o1p6
-         iYMmL5JZscOAjZccqplFgb0HI+nMilau/aOPGDVYgl2G1yhRk8qUC+Rf5xP+oljGTEGP
-         F7Ww==
-X-Gm-Message-State: AOJu0Yz979hQ0Fuv6rQFFoT0YuXjlyAV5v1EWPdFGIRYx95yiYGPn7qc
-	qvr7p/KisVbps/OK3qM76QTaxLO4bv9ESTx8vpk95C6R9SQ/78+EPCHFPSaemWuFmFSscI1Vb/W
-	fXRzkeHMtzWy5CrZfdoKYPxZOuktPcuE=
-X-Gm-Gg: ASbGnculewNV9oe8aDQhO1Cg5YXCoiS9SpuVNUXq10V1yr884z1nBNruFdzY4P9MlFt
-	ItpxWZCetdfDuw7Q1nzpbIzaVY/HFLBdd6v9/Xj+AL003ef/G86QStxKLHOFJJIqLzTVMn7kuWR
-	k0lQMk8NEuiFrBMv7IUfw/dhSGVyzRBv1PaZEl4kAwki0UXdnzXvRw28ZrbNkSeLBfZy7ZU6VpD
-	1f+wxHNygLfGtkwQozOkA==
-X-Google-Smtp-Source: AGHT+IHJvSP0ZDGFIfI+a5x+hY3UFf7dXrZwZcpOSVJter6Xgczmltyt1tECkViagWTXnDDgWy36JsqoLxz8HOvYWbw=
-X-Received: by 2002:a05:6402:2787:b0:61c:fb8e:ab6e with SMTP id
- 4fb4d7f45d1cf-61d26d923famr10793090a12.32.1756865565722; Tue, 02 Sep 2025
- 19:12:45 -0700 (PDT)
+        bh=gENk5oy3VPH1iTtwOCQdC87R/NjbhqCM6vXEQKfriYA=;
+        b=GjcFOyBd7jsE+jEYvSMTzJEF2Ea5EjOf/e7ubleNC1Ie15i2rsDQh5NHYb1/Xou65j
+         Izxu757PchTb7DkgGuJLG+LAtS0zqmBAy41RrRQEJRvUVkF/TLySPnQ0xstn+JBJvfjj
+         HEAekdPFdawoHh9YzYtiB39YzIPzGBCsFGOmFj2bRaXzk08Dn0VC53N2iI1oTSSEkQMv
+         GUBlEmjDUXgi9KTn06wwXFyUDQg+XyIUwqTbF5jxRTjU5XfAwLcRyMr/COXfdTgFQyJp
+         wcAkMmw1Djc5UHZM9VbOPb5eXFW/yGa1zKR2hHF96WLeat1l3hQUnu1cbPb6agPCRHJf
+         u+cA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0zoGHQAfB3IHTRgHoTVRZKQoPYP6ZNpjikrM6OOSHLPPPWZ/Sn1Bxzk5C4HNVfugHRlBnL1xMqA==@kvack.org
+X-Gm-Message-State: AOJu0YwZs/funHxUbua6sGF1Zps2NYyr91QWe1IoBtwb6QIgGqixUYH4
+	QZzjUDcs4FncMRHblYNLRVWUNvAgihujZRkFeaw7JxIC3ux32Sh7DwaNvvzDU32YfZviLz1S47e
+	5PbT6cW5bzHVZFSDRy6Grh9z2yuw9Kzubmw+XMrc=
+X-Gm-Gg: ASbGnctk7KKfmNcxdFofXTzmyTcRvCHCo+9eoyAL54wL2uGRjCgK/qJLf7/QzLd7Ow5
+	Z1ajq+zuzCmXP4b72QWl8WnZ4cUNLEehFtfPJTAYRZ8DYp4NtxA6z09ZEXoalbntoWuMqjwmSMV
+	be5q3U9H9KDbRBAPUhLqlTJYnBTManX+em0GJXu6jQpM9gP1CPtTasQJINyzbJq0yQvVItt1i/2
+	ulZFVNXvgQ=
+X-Google-Smtp-Source: AGHT+IG6d+Qs7jEfLV+2GlfeM2NxgKykyZEZ8CaSTEyS6WNoJKY3VPzhv/tG8RqTorogqedmIV3bT8045r74TvWBm88=
+X-Received: by 2002:a05:6402:40ce:b0:61d:cd5:8b6e with SMTP id
+ 4fb4d7f45d1cf-61d260cc220mr12247397a12.0.1756865623431; Tue, 02 Sep 2025
+ 19:13:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-7-ryncsn@gmail.com>
- <CAGsJ_4yRa65ogB0d90LmtOigGTqQ9mM-eUU6VbmcX63j6vgHEg@mail.gmail.com>
- <CAMgjq7A5Gr2V9TDFg=_S+SjZ1r1gWXTtRGNofuzAgWNYLMW_DQ@mail.gmail.com> <CAGsJ_4w7iV0YU+sXdYPrzqXAdaLncoP7bnGx8ELcpETL6y+cOQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4w7iV0YU+sXdYPrzqXAdaLncoP7bnGx8ELcpETL6y+cOQ@mail.gmail.com>
+References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-9-ryncsn@gmail.com>
+ <CAGsJ_4xON7fYg1VvcjLOsgBb_Wp4ruC+vdA4Q496GH1jXunU1A@mail.gmail.com>
+ <CACePvbUVK45uRPVoO3ubDfQHikebSHFNQOsMTMvJ91QQZH2HwQ@mail.gmail.com> <CAGsJ_4we4ZfNqJ+v7+=0hjNKLakJ-s8qtRsGo_kp0R_th7Xvkw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4we4ZfNqJ+v7+=0hjNKLakJ-s8qtRsGo_kp0R_th7Xvkw@mail.gmail.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 3 Sep 2025 10:12:09 +0800
-X-Gm-Features: Ac12FXwXU3cGEpdDG2B4PbKuGKDDUeEJi395AB_neJedEa8KRWW3ViJ9k_m11YE
-Message-ID: <CAMgjq7AWQtbXMH4iOoV473wJj0TA8SEUyvsWKvsUP_=1oRuH9w@mail.gmail.com>
-Subject: Re: [PATCH 6/9] mm, swap: use the swap table for the swap cache and
- switch API
+Date: Wed, 3 Sep 2025 10:13:07 +0800
+X-Gm-Features: Ac12FXw1AUa6fSBq5i5DCUWbpe7DiaS0JIvFp0rfOypSx71p22kxXjov0LKnUyI
+Message-ID: <CAMgjq7Apnxx2GbTG5_dA+Vy1wGaxMHuS9APp0nny8tNURX8jDA@mail.gmail.com>
+Subject: Re: [PATCH 8/9] mm, swap: implement dynamic allocation of swap table
 To: Barry Song <21cnbao@gmail.com>
-Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+Cc: Chris Li <chrisl@kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
 	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
@@ -108,14 +108,14 @@ Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
 	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9B95BA0006
-X-Stat-Signature: jomntqfbipytof393fn6re81ahwjp9ee
 X-Rspam-User: 
-X-HE-Tag: 1756865567-992682
-X-HE-Meta: U2FsdGVkX19UiRPa2+NOM9Zx8bwq3u1T8mZ0Pu8jmRko+fbxjfh59eS3o9RgKtmvnEJQgCNoV3UQfku8RIn9aslxz/F2ov8SGl8zUnak7sZkFwQVuiMDSR3VJfhw34Pr/zBVEQV8aJ+Z3ZGFJ8asYY/ucA8g9FTDqZS/vhRQocnWv4DLxF/rcVJOZQU9voR9nI/kH4nospFdDXToWYEXW7Ei2h6Mgkk/k0lpSyh94j8NAc8H/492t7O/Ab0Nau6lHJ5XdRfBl9keC19ihyZKwNfsFYTm3zDR/t7qQVJVn1fgs+4AiREOz6msJ5OToe2KyUIvGPsSy25C4OA3nxLQp87MK2aUveym4c5uJ/Ruvjc+ycpBBN7FCym4NNH2Vyr3kWtADW0/ZBaCzM2ImX2/c032Wy4m2B/A52JSWtxmppUWh1Y6D9CDjkVTsGdv4HwdjI8yMPwlm1VTT3jznxoGSPF83jsp0/NG/5PQhaZXXrKz6CV0QJFQMujnsxyovaMR4DLhL0gYKC4+Wf6dYIObjGuxWUFVZcDWLWzdspgXBGUMKgZHD4/e3Lsh9q3PqvD/ql1EwOzNTgwcNLHdqnvrVP8aH81tODVzoPwROz3571Z78dtB3kgBYznVGwR0zu5r6pupeazk8AdK1RAdkBEMSTW9UXBQtaE/y7X00n8wf1Lc9DQ55jVWzgJPco+BLm8SGPIlRLlNFe4ES2DB1qO2xa26yQFCPFQrt6D1U880zvzd8vU/I4KwNgKKI+DPxSJ1ge0F2zQDL/osOKmvyVpLCBqu+JNg6pqry1xQS5FJolmFxqHY0z9KkyyKmf4pjtJ1kxcXgh82rV5agT5dYHyxkXU0mISr/ueU2VEXQEsqcnczuRgztVTl+coVvyo8iDNpNz6/fsaOZ/9Vie5fiIPHPSr436j3B3WOCilEXcKI6SgnOZ1JaZQEAx8J40HU8NaWrkPQNGOeF94zTXZTLnu
- BQvbJY7o
- stkhFlY0r0wonh8Oi8FpbTi0H0vtqpVTcIcA10wzM0oSNMBYKdqydYeV+SyfCNxRMzS7XO24T5AIVKvxczzeKxnQt9YHRMO9NWV/ANUp0BmDrScFYF04tuZgarGhnqBz7V9mR+qHJlSdV66HtIEs8sQIlVzu01o3f1fIRu1DiZLp1LJRVXdgUNdX0Eb3rsatbHoV9HXtcANUduy0El7gz3Vs+lS7BHyTRrzcIL+Nm1ImPg9eesTTUjzhlXe2l7PtQb+FBXygGLg++YA2ojGctOjHAQBrRNM4+D/vzyQ6Kg2Xi2USzG/na5ZvxwQGTfeyLEdnqUlP62WzELpMMHfvapCRqddQqGX8Xbk1UcaZwZQ+dN8n3X6HZqgBW83BNaDg52NbZ2FkPan9IKw2wzLpM0IvK+XqyPE4VmuG6Qi+Ou+NQdBJil+wxhS/Ngw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F31DE120006
+X-Stat-Signature: auguk7cocxiipk96xhqmbai88s38kx6s
+X-HE-Tag: 1756865624-973527
+X-HE-Meta: U2FsdGVkX1+3vkVaOeTbrOeVwRFKNMnt02wExjkjNurYisMYm0JiPQqUyyhmiGEQYasZ4WU4T/OFBl8QjYKFZEWmWZzPDor9p9CitkyPujIKgN5oSlX07iKXFL1TxROlByBeuZ26QitPTTI6ZaJ4tNXJfYDyfZvcLmmzRZSCDtpo0QRVRCkS1xVUykpS1NTNkP9sgkm3h7oUW++1zWLgvn24mvNXdTDQTJ+TYLDHxrc8NCIK6KLO1MwpafefrGGQQf6R//pAPY1ERsR6gtgvkfCwF2RzwEhh0DrH1Z9Xr9Pb7Z31GUEJgKo0KC0wfuCnr9YTC3uW9jHG12E74lSBpJ+L+jYeWUEb+7SMoPAcZKRlfixGmhXwF5ZXB5P5gxiStHc/kHNgljQRo/3uK52jSAHB7Ro0ReL57uQeIc0cFgMnXsJuW6zSN2oByRs3YZ8JcJGirI7MK6YZFDnV6DI2VxYZlG1tUJo64VpVxXBXb2RQDND/Bzx3NDsnsxJFw+5ssAe+p0WHFol8GQGtvpaL7tkYdE8UAV0d3IhBkhw2ZNxtD8viFkk1yTk19VbRoExCzXGKQcnASjiMBkRH6kMfDuqgD3no2Y6dUt8Qmqy97XNPAaXzWw61dGWTHp+krY3Fz71kmLIg3RdijYuQXEXJsp7yW0KrUmoSS54mdwADpu6kO+zJYIRS6KhLNk1r5rbmcd00qaaxheVp6S7uluHXm11E2+HDpmMH5cTvMHFBC4wLIGZC4U8JcR4GRnJLsim3R0lFx+PDWFWoWTLQkhDEsWFTYgAhjt9/gewUtIRTSPHVsAiPQrQk7xqZDeRnP7sEp0/j18NOqv9Q/UwOGGGEBM9zLthXyomozU/SWzhs6ffGCjIvzVxj3keGdLUP1nx6zufLG9XD9wUHp061cadNiIVlMJVvDl29+nb1glni1kKIeQaTIcLDkSDqdjTW4VCP/Xx60mnyd+q3ndtH13w
+ /dtC9DPc
+ OFRzwq2PVoCX74ia88SL+8fbVpkxugvUS9ZcsWLPlytu9h0DsPB0UC71HUh6vaB//pZN/w/79afDjqNESYTZxpTFpezbduAy1pF2e6t9MGkot9wxRe+jgfTtlLTirEZ1r1MUS8EC4rCyLv2gsZgQCuLXZITdV8Tv+WjUDDU1HW09e5sRUZIE1nqmsWiZ8h1pfv+liru44ncC2CLwUWkuEWRhoOjs52zEWAlshpak8pZbjQq96HiHIf0gTSMHrVVExGzX+9oQFjMQzMn5ISpkDY7gVV2YtywHlFIpLrDJlyxoXmGvlCVc7DHPVHe8/bsiqpRNoYcuwKfIPIDlFr+Q3GWh4x0YPMUIyefFUAqn+jxihLqSYYV+G+dWbyhkrS+tpYGQumDO0i0d4CJxWD9gU9JA3M4tFv8Pe9VbhcoriglGLf1o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,93 +125,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Barry Song <21cnbao@gmail.com> =E4=BA=8E 2025=E5=B9=B49=E6=9C=883=E6=97=A5=
-=E5=91=A8=E4=B8=89 07:44=E5=86=99=E9=81=93=EF=BC=9A
+=E5=91=A8=E4=B8=89 08:03=E5=86=99=E9=81=93=EF=BC=9A
 >
-> On Tue, Sep 2, 2025 at 11:59=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
-ote:
+> On Wed, Sep 3, 2025 at 1:17=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
+:
 > >
-> > On Tue, Sep 2, 2025 at 6:46=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
+> > On Tue, Sep 2, 2025 at 4:15=E2=80=AFAM Barry Song <21cnbao@gmail.com> w=
 rote:
 > > >
-> > > > +
-> > > > +/*
-> > > > + * Helpers for accessing or modifying the swap table of a cluster,
-> > > > + * the swap cluster must be locked.
-> > > > + */
-> > > > +static inline void __swap_table_set(struct swap_cluster_info *ci,
-> > > > +                                   unsigned int off, unsigned long=
- swp_tb)
-> > > > +{
-> > > > +       VM_WARN_ON_ONCE(off >=3D SWAPFILE_CLUSTER);
-> > > > +       atomic_long_set(&ci->table[off], swp_tb);
-> > > > +}
-> > > > +
-> > > > +static inline unsigned long __swap_table_get(struct swap_cluster_i=
-nfo *ci,
-> > > > +                                            unsigned int off)
-> > > > +{
-> > > > +       VM_WARN_ON_ONCE(off >=3D SWAPFILE_CLUSTER);
-> > > > +       return atomic_long_read(&ci->table[off]);
-> > > > +}
-> > > > +
+> > > On Sat, Aug 23, 2025 at 3:21=E2=80=AFAM Kairui Song <ryncsn@gmail.com=
+> wrote:
+> > > >
+> > > > From: Kairui Song <kasong@tencent.com>
+> > > >
+> > > > Now swap table is cluster based, which means free clusters can free=
+ its
+> > > > table since no one should modify it.
+> > > >
+> > > > There could be speculative readers, like swap cache look up, protec=
+t
+> > > > them by making them RCU safe. All swap table should be filled with =
+null
+> > > > entries before free, so such readers will either see a NULL pointer=
+ or
+> > > > a null filled table being lazy freed.
+> > > >
+> > > > On allocation, allocate the table when a cluster is used by any ord=
+er.
+> > > >
 > > >
-> > > Why should this use atomic_long instead of just WRITE_ONCE and
-> > > READ_ONCE?
+> > > Might be a silly question.
+> > >
+> > > Just curious=E2=80=94what happens if the allocation fails? Does the s=
+wap-out
+> > > operation also fail? We sometimes encounter strange issues when memor=
+y is
+> > > very limited, especially if the reclamation path itself needs to allo=
+cate
+> > > memory.
+> > >
+> > > Assume a case where we want to swap out a folio using clusterN. We th=
+en
+> > > attempt to swap out the following folios with the same clusterN. But =
+if
+> > > the allocation of the swap_table keeps failing, what will happen?
 > >
-> > Hi Barry,
+> > I think this is the same behavior as the XArray allocation node with no=
+ memory.
+> > The swap allocator will fail to isolate this cluster, it gets a NULL
+> > ci pointer as return value. The swap allocator will try other cluster
+> > lists, e.g. non_full, fragment etc.
+>
+> What I=E2=80=99m actually concerned about is that we keep iterating on th=
+is
+> cluster. If we try others, that sounds good.
+>
+> > If all of them fail, the folio_alloc_swap() will return -ENOMEM. Which
+> > will propagate back to the try to swap out, then the shrink folio
+> > list. It will put this page back to the LRU.
 > >
-> > That's a very good question. There are multiple reasons: I wanted to
-> > wrap all access to the swap table to ensure there is no non-atomic
-> > access, since it's almost always wrong to read a folio or shadow value
-> > non-atomically from it. And users should never access swap tables
-> > directly without the wrapper helpers. And in another reply, as Chris
-> > suggested, we can use atomic operations to catch potential issues
-> > easily too.
->
-> I still find it odd that for writing we have the si_cluster lock,
-> but for reading a long, atomic operations don=E2=80=99t seem to provide
-> valid protection against anything. For example, you=E2=80=99re still
-> checking folio_lock and folio_test_swapcache() in such cases.
->
->
+> > The shrink folio list either free enough memory (happy path) or not
+> > able to free enough memory and it will cause an OOM kill.
 > >
-> > And most importantly, later phases can make use of things like
-> > atomic_cmpxchg as a fast path to update the swap count of a swap
-> > entry. That's a bit hard to explain for now, short summary is the swap
-> > table will be using a single atomic for both count and folio tracking,
-> > and we'll clean up the folio workflow with swap, so it should be
-> > possible to get an final consistency of swap count by simply locking
-> > the folio, and doing atomic_cmpxchg on swap table with folio locked
-> > will be safe.
+> > I believe previously XArray will also return -ENOMEM at insert a
+> > pointer and not be able to allocate a node to hold that ponter. It has
+> > the same error poperation path. We did not change that.
 >
-> I=E2=80=99m still missing this part: if the long stores a folio pointer,
-> how could it further save the swap_count?
-
-We use PFN here, it works very well, saves more memory and the
-performance is very good, tested using the 28 series patch which have
-already implemented this:
-https://lore.kernel.org/linux-mm/20250514201729.48420-25-ryncsn@gmail.com/
-
+> Yes, I agree there was an -ENOMEM, but the difference is that we
+> are allocating much larger now :-)
 >
-> >
-> > For now using atomic doesn't bring any overhead or complexity, only
-> > make it easier to implement other code. So I think it should be good.
+> One option is to organize every 4 or 8 swap slots into a group for
+> allocating or freeing the swap table. This way, we avoid the worst
+> case where a single unfreed slot consumes a whole swap table, and
+> the allocation size also becomes smaller. However, it=E2=80=99s unclear
+> whether the memory savings justify the added complexity and effort.
 >
-> I guess it depends on the architecture. On some arches, it might
-> require irq_disable plus a spinlock.
+> Anyway, I=E2=80=99m glad to see the current swap_table moving towards mer=
+ge
+> and look forward to running it on various devices. This should help
+> us see if it causes any real issues.
 
-If an arch can't provide atomic for basic access to a long, then that
-justified the usage of atomic here even more.. The read has to be
-atomic since swap cache lookup is lockless, so the write should be
-atomic too.
+Thanks for the insightful review.
 
-Xchg / cmpxchg is a bit more complex on some arches, they are optional
-in the swap table anyway. We can use them only on arches that provide
-better performance with atomic. I believe most arches do. For the xchg
-debug check, it can be dropped once we are confident enough that there
-is no hidden bug.
+I do plan to implement a shrinker to compact the swap table of idle /
+full clusters when under pressure. It will be done at the very end.
+Things will be much cleaner by then so it's easier to do. And
+currently it seems the memory usage is quite good already.
 
->
+>>
 > Thanks
 > Barry
+>
 
