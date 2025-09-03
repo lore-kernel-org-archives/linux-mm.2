@@ -4,100 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4949ACA1007
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 01:31:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EF0FCA1007
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 01:40:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71CC18E0018; Tue,  2 Sep 2025 21:31:07 -0400 (EDT)
+	id 68E428E0019; Tue,  2 Sep 2025 21:40:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C6198E0001; Tue,  2 Sep 2025 21:31:07 -0400 (EDT)
+	id 665AA8E0001; Tue,  2 Sep 2025 21:40:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B4AC8E0018; Tue,  2 Sep 2025 21:31:07 -0400 (EDT)
+	id 5A2C88E0019; Tue,  2 Sep 2025 21:40:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 488368E0001
-	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 21:31:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E12C616045B
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:31:06 +0000 (UTC)
-X-FDA: 83846210532.30.615B6E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5B4BCC0006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:31:05 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ph0ZExWO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4729B8E0001
+	for <linux-mm@kvack.org>; Tue,  2 Sep 2025 21:40:04 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F219FB9879
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:40:03 +0000 (UTC)
+X-FDA: 83846233086.29.5DE595A
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2288840005
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 01:40:01 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VWWYQ1yQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of chengming.zhou@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756863602; a=rsa-sha256;
+	cv=none;
+	b=wnUMdH7K7AedBDTNHzGGgCVKA2O/kL/EWAGnIy03lx9MLlR3PXt2oeD9dedmV5c4MC7qgT
+	JDY73NH6DGR1z6+txuVdn0E3XJ6yn2SspxQo6dZ+MSVXvs5Eq9JEsBWZnhMOW0dd/JkxVn
+	jIWdf8dmQxKC32JWBdWIWCQauG9tywI=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VWWYQ1yQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of chengming.zhou@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756863065;
+	s=arc-20220608; t=1756863602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XI2iubCmcs7ueWi8ob3uwcWZAwJRoVi0RP+o2ePR/fU=;
-	b=rZWxotwtTpsayWOBIvQEx9oJcmK7O27Uk3wiGc3flKfCrOUk7iC7qZLZBBJ4bdL+roM8Rh
-	FzpAwXrGYKCIuZeCdQJ1Iz3q7J2NzrBvCS+rKQ9zDA78eKbobjATk5DLcKL1H+awp4tVUp
-	c+6OcszKb6cSKSSJNzTXQccdqElK45w=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ph0ZExWO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756863065; a=rsa-sha256;
-	cv=none;
-	b=K7+cDYVI0H47kO3REWpbcH+ZJBDfMv2D8uRJEqtf/cLb/NzWH/RlAcvR2rzEfB3AA8/Ldr
-	IKx5E8BP4c/13W8ICt6CoguwIpCLE1ZW2LFpsXN203/Vg+K58gaa8axly0iFh2OGQuUQbJ
-	AOEjn3HPC3m3jJ/o4ThGU8HNnbIrU4k=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6076360223;
-	Wed,  3 Sep 2025 01:31:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58D8C4CEED;
-	Wed,  3 Sep 2025 01:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756863064;
-	bh=kqYf/4DtmRggyCL5vvRGSjcy7p5hV4/sZ1rl1iXDH6k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ph0ZExWOTBSSmdRfB4nmMhQhpcprkugPz/3bDYGAsmJlDy/PRZCLfFe4VWhx8UcxK
-	 GvxTS2gTgHt8ho4jjnQBpzPHuy8cKx+bXFnjPwq2x/KVW4W8VleFoKZZVbpOJDeYmZ
-	 X02vYw4zs7CnPVub1abgfNYQFzxZ21DKLEVxtzXqwVyu2ridEC87Zi8fKV5PdqicZM
-	 WUK/GQH+5IW6Z7ZCIVBoiG1t5Vu//ll0qvnjvGgcTac4EumsDOGn8MWGTdUfQKzXjH
-	 lrceChUUKZhRSYVUXIYGQ3VRp6Z93MZweRgm7Jb0Zvysbzuxy3hjs3gOqUcc9ZY+TA
-	 uxjPGStPBlnnw==
-From: SeongJae Park <sj@kernel.org>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-dev@igalia.com
-Subject: Re: [PATCH v2] mm: show_mem: show number of zspages in show_free_areas
-Date: Tue,  2 Sep 2025 18:31:00 -0700
-Message-Id: <20250903013100.190488-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
-References: 
+	bh=nBFnrycFy90OytnzxFhcHJdc8o4eGnhelby35FOE5H4=;
+	b=1tLm9k+aYh0gmCxEiajwAQYqHgT71gqnLxWkECYBvvF2UkJZyDM+om3ZmW7WsyHyhy44Lm
+	SqXAdL+nTR8i+GTdTen+n6pwMskmTzW8YXDyUFVMwnlE/tDPHOqYyLxdoyweC9QoOGl4Nc
+	YdIxH1d1MVT401jadZ8kCylHygWDZPQ=
+Message-ID: <06c7a189-7ea2-4005-a1f2-12608fb2931e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1756863599;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nBFnrycFy90OytnzxFhcHJdc8o4eGnhelby35FOE5H4=;
+	b=VWWYQ1yQyLGa2x64akE37pTTcmFwUyCWMES7oeh7Gzd3h2W5kN4HNNW9NJXIN2+H4P9G+V
+	N24WCyDrr7uCsLuT5sQvcY6Ibpe5BWJ6fYvJsn6v5FH3kvQDPjyv6FeVDxPYgMf7p9HSsK
+	3jP4FvdKFqz8D+3uytEsLaEmU+kaBWs=
+Date: Wed, 3 Sep 2025 09:39:44 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5B4BCC0006
-X-Stat-Signature: hob8ojoqi9k3b4agmx6zaabmu7nbf617
+Subject: Re: [PATCH v2] mm: show_mem: show number of zspages in
+ show_free_areas
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+ SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-dev@igalia.com
+References: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756863065-158479
-X-HE-Meta: U2FsdGVkX19+BXAJg8G7qQYECCneipH5DKn9p4wZfAP4RyR/cyCw7oD9BQ+yU0qCc4z4eNRQqYbA7cb0KbuDKMvgCDFRgcZ10BYmRNyCr9UfJZLGdMyjIOtSfdQuylvfYnG2dYNBijpIuVN03FDDNEC0dMN5XFPfiB8VvXWofVJTojQlNqk/EDdm7fDKaSB09wawcjyp2D6J/5XEZSF1WUWce3hLyAksXQkTMuZ1vqP5U8BPz99UCIAo8OeMYU6Cq5J+xCjnwdz0ZUQOIAzgHnBiP7CebR94Jf0lsi0C3mTVse/A/bg10IAJZg6Fbr5MP329kvv2bUJ8Zc4qvNoDaQ8w4RgZdXcfodbwb0/CdkDCjaUerHf0tmIvYRcXMdncvcLsqbj/b+a/LPcKgH3MoFmNimDBeUEUXUqm62K9EDAObquIJPoAqxDdWnF0v22ipgOOfx5XNkCrlkTLEYlwQPQqeP1er3KgE/+31CJgyiuVJKmOMWcZJAqE9tpMaMRh09IMzT5MAP8u6T6kXONsaSLWmVY/MI7qAMlOgzQi6AuqsVyWpWCu6lF7DkBxaY7E27t5aE65zO4WbDFLodO1MapyROR19YUFhvIu6FePcTLGJoju1WA74lTT56Ch47NWZSo/rsCUFqe4lrKdkAaVM5YNJFIp9iTHxWgLVgI7dOZ43fK49H8ddnlZ0bKid+BiPEyM63iAD99cqv968MchemSVSmmsV0yjvjoqCA0CkbIDZkrJQ3LRHDLjhLtU5ptPuYE51AuMs62pnBuYSDUfyES9U+oMfiToaGo9yuQJMVRkGj9qHS7iwREchM7WzmSK4TNTmpucxqJHKzA7+WJMqKM6NARnKkC1mgH7cXvrG2Is6ams4YQxdXDe/4m70o825Qfvp/XCZGuxlL0rasoMa7j8F9EBr7Llu2WeEXL4yM6LXeYknYjiTFoa+/wHhgH6lIn1FzRxNY+0o+IhX9x
- s4GxbTYK
- +RkcVKIw/wgLGQFbVrIWBBui7cqxuhFxqGG/VY+vTNm01/cy56sLpXVoqU5Fh4T+HxZvTxiCmb6xMLQwrGemlcJBKzgGcI8Z93YiFF3S317xlBwJmxILQvf/aIwI4jEzkSWdqIf0kWF9Lh1QB812WhUX24+Q1NGWzh9xBlwtSUFTuCiErRYJVgQpp75MhAiF5ZAr9hZHXgRw1DbEFod+k7pj2tgrESyTkn0hLa1kVewFdqwBbgdTu1C1ke3tEWKxZswtsThZNrsve6pAehXfX5vSOzyI7i/Cwo+p1h4JdqhK/hC+i5Cse62BYSW9lv9yP8UHKttJiyqQ/fCczKObVg8cxkQ==
+X-Rspamd-Queue-Id: 2288840005
+X-Stat-Signature: 5rsnaa8thtu5irdghogiumchgzju6fsx
+X-HE-Tag: 1756863601-262622
+X-HE-Meta: U2FsdGVkX1+iAyWsxHR/ooujDGKcmJp6YzpubtRaaoOl+VQuqYMO4eM54yPnG0NveQS9E9tCS1AaxnoEqvp8u+jHp8bFh+hfIM/Gcqgy4XJK1QCZBik6xO7U3YSb7L3QLVYQBLdwmR1QONQrdm5HDtNuR0JuuS612Re2OX6/5bYOlU9ixPOh7RgLNefNujP+odwUt00XGhBJN6ioMznU801SmAHP8ZhyuAFQPP5zn7SEtcfRXXlKEvtx+Q5zpD+V1txoSBMJeWIaj3dH/PRrQCXNw9z8pBQEuo+2NaKmgxwh4iEVtw25QrYXlOKUj+spMYE+4VyAwVbOLA4JkBo67RsmbP1WhOcINASdpCJ3iGBpJCmz7HGwTvkI3dQXSbpj8Aww1kfzHn5QoEuOPgjFKgGok2jgTxig3iCAVNqXYtrjW9ft0RcEntF/LQkC5AsWu1Os9IdfEhEvMQ/YpWtD/0ZzQmPMjjVAgaHP51UKoiJEhWqopwHrXuC/ugQJokLVAkfYAWBQfGm7Om4zkW/4zzQigNDLZOBkza6TyI5J/PxMampMoyv2wFQEXZtRxWqvHaNKMgd5AH5SbvmWAzmab+3tYBGppRmmn3w8LCKHl69HH8Dg2FUJK73crheDVLW2GH66t0N/6LYSt/uj5Ud4EkzS1QPTlpMEoCkkyIIm0FBb7OEfI9goWGwWfmVhXQSGJNUugOwG/VWikVfI9F6/7d3F92jp4YQ35HCml0J8udOEIfdDUzoBEVNS4X9sJBXT2aWhCfkfcw22Ntvz2Wd7b3vq0Z67s9eseOmifT8fhCcxqTBrgkFI2mLa83GINLGiASswJDKSoeW/7UTAdW4fls8cuM0fjgT2d4Fr0I0W7ZAQycQ1nTQUTh1aVtMse8k5o7AOY5SYIoH52FMfxnyUE/QA3hHFP8OFEFR1lztggD8G+Yt2jjdfFuDOvdW+qFX3gO4woSxm+BXG1GeKBsk
+ 4NmQdUgf
+ y9fLR5um/A1oLBr4Jty2z5D7VDsuQeCtSAa2cBen80aLzNNN9pJogajEdSouPpYOrTJAbVH1RCFTK0T45TNwarO/Mz6+9tOFURGPsjQ6tOZQasvwgK6npe+yNoOTTF7pPZ9i/VxUdGYSIZlpO8ob96y6kyG5Iix9+FxYDhpW88JW2RM+lb1nUzjv8Jy2CGIBbMMF+ptbF4m3mUescSqWfnIDD560xf6g7RGzgxgUoaWbyTWxqTBBrif/4CbiIvfRpbZtROuQqj5IrlFOxq48SjcIqWYzCqZ8U0YRjjoDw1PkcbjSpyyRw64mfqMddqj8OS9FO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,8 +96,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  2 Sep 2025 09:49:21 -0300 Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
-
+On 2025/9/2 20:49, Thadeu Lima de Souza Cascardo wrote:
 > When OOM is triggered, it will show where the pages might be for each zone.
 > When using zram or zswap, it might look like lots of pages are missing.
 > After this patch, zspages are shown as below.
@@ -119,11 +108,45 @@ On Tue,  2 Sep 2025 09:49:21 -0300 Thadeu Lima de Souza Cascardo <cascardo@igali
 > 
 > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-Acked-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
 
+Thanks!
 
-Thanks,
-SJ
-
-[...]
+> ---
+> v2:
+> - fix build when CONFIG_ZSMALLOC is not enabled
+> ---
+>   mm/show_mem.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/mm/show_mem.c b/mm/show_mem.c
+> index 41999e94a56d623726ea92f3f38785e8b218afe5..c563d9adfa87765a8736e91c1f68d824b03eaea8 100644
+> --- a/mm/show_mem.c
+> +++ b/mm/show_mem.c
+> @@ -310,6 +310,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+>   			" inactive_file:%lukB"
+>   			" unevictable:%lukB"
+>   			" writepending:%lukB"
+> +			" zspages:%lukB"
+>   			" present:%lukB"
+>   			" managed:%lukB"
+>   			" mlocked:%lukB"
+> @@ -332,6 +333,11 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
+>   			K(zone_page_state(zone, NR_ZONE_INACTIVE_FILE)),
+>   			K(zone_page_state(zone, NR_ZONE_UNEVICTABLE)),
+>   			K(zone_page_state(zone, NR_ZONE_WRITE_PENDING)),
+> +#if IS_ENABLED(CONFIG_ZSMALLOC)
+> +			K(zone_page_state(zone, NR_ZSPAGES)),
+> +#else
+> +			0UL,
+> +#endif
+>   			K(zone->present_pages),
+>   			K(zone_managed_pages(zone)),
+>   			K(zone_page_state(zone, NR_MLOCK)),
+> 
+> ---
+> base-commit: b320789d6883cc00ac78ce83bccbfe7ed58afcf0
+> change-id: 20250902-show_mem_zspages-d090ea0bd1d4
+> 
+> Best regards,
 
