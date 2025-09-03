@@ -4,119 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C05CA1012
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 20:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24AC4CA1010
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 21:26:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA39B8E0008; Wed,  3 Sep 2025 16:52:49 -0400 (EDT)
+	id 141288E0008; Wed,  3 Sep 2025 17:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7B688E0001; Wed,  3 Sep 2025 16:52:49 -0400 (EDT)
+	id 0F22E8E0001; Wed,  3 Sep 2025 17:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB8568E0008; Wed,  3 Sep 2025 16:52:49 -0400 (EDT)
+	id EFBE48E0008; Wed,  3 Sep 2025 17:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A5AF8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:52:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 373401DEDDE
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:52:49 +0000 (UTC)
-X-FDA: 83849138058.18.5F79291
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5AF08A0002
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:52:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lAS56mrS;
-	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D84988E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 17:26:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 834E3868C2
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:26:26 +0000 (UTC)
+X-FDA: 83849222772.01.9B9648E
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3885520004
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:26:24 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=enbusPC+;
+	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756934784; a=rsa-sha256;
+	cv=none;
+	b=cTVUd7TGum4M1jcMUmyXOt6rD93eJReEI4d5Rnbp81cqpYWc44/USxy5Q07LMlAwae2Sy6
+	AtXnU8yiHHHPbCvqKZRRnDrpLWtIRg2m2O0e1W53gR+ReqRyjWo2C1CGpCHEj+dybX9BIV
+	0y7cQulNFljctWM3Kh5WvyKDybWD524=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=enbusPC+;
+	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756932767;
+	s=arc-20220608; t=1756934784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lrGbbZHkPmOkrhxaF1dT80bUwOd57ENAbsAwajvsVvg=;
-	b=o8O4D7dsWADM+2ujwo44hMP5qO930MJ4tSH5hrpI1UyVWj5WofkZWa3LM1z/FXVg/ykvl/
-	Om+zqUR+TqhkcOpcSf8Uj25mqVdliA1T6c2vFwuFb14slvUgK3fhX0usDJb9aKqGWkjRVa
-	FfE9qPyzj49horLgE6S7tcJAyEY3tNc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lAS56mrS;
-	spf=pass (imf15.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756932767; a=rsa-sha256;
-	cv=none;
-	b=zSK3MlCLoPOIC7FAn1tAqabMzrLjQN6of8HzaknYOWtrvPcQ6d1EuW0d44iAQv9hsNqG1U
-	vAtNE/GXDPt2DLgS1H0UslL1/KK3YlrnDPNTZg3jj3HrT3V6uArLXM+EIA25102fOpBozu
-	HMukuITcYQt7+0M1D5fBoYWOrvhLY4I=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4b307179ea4so3347971cf.2
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 13:52:47 -0700 (PDT)
+	bh=ZKAFUEHK8OBYchmycuUbisd/bzFy1QHMzYkOvBvFOpA=;
+	b=oS1D5sSy4QhgTdso9IK4682AG5VcEUSRPDEs9Im1I/nEKwBzDVJUL1hM+YwncNi4isQ4Z/
+	Crc3h3KvTejeaRIiw89RaeB7lZxuN+Or9WqwdkFGaolTOxTwJ8bqHZpnax97kkOO6T3tW0
+	iR6jRgph64OY3YBbda+ZIav0cv/JNLY=
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-720f0dd2809so1736636d6.3
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 14:26:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756932766; x=1757537566; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lrGbbZHkPmOkrhxaF1dT80bUwOd57ENAbsAwajvsVvg=;
-        b=lAS56mrSzC9lwOXI4A1WL7TDoM1AXSUBpDqMVetvLoS0j08AZnXry6+r9jsP1zvVZo
-         TsG2tTQzrwbRewzxMOzBwHrsArZfAVYLo65Xkn/2y8CWKyd/6nH7S/6redTgQhI1zw/m
-         /JFtJZt1iTbPrusf1K+nHZKgjjokQXjpfRnJlJgQJ0OGRz2VPNL7KD21j6JR31UD++RF
-         Pv3P83LM/Ee4yCJYzpgLeaefcAtfus8ke5FLQnie/68n+VTHM+qrgJ7OiNQC38HPLfxl
-         I0Yd4H25VukV6rcNj59QTEig8LKGNv9p3LPGB0PBIAVCn8KafrZYy30AAPgSWtUmyxyv
-         bOmg==
+        d=paul-moore.com; s=google; t=1756934783; x=1757539583; darn=kvack.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZKAFUEHK8OBYchmycuUbisd/bzFy1QHMzYkOvBvFOpA=;
+        b=enbusPC+mwfL2PtullM/LFFzOXVa/pviQ7/V61Y8IqPWW7ddoNGcc14nyrAOIyDCvF
+         up6JF4uqf3nDGtUz2EGluykjrO4pKJDav14wH1EHDMwWw9lbulzAGIO3vJaBbNY6BCuo
+         paCkKJqzcpqhFJCQptT01AtSCO8yBWAtKj4086JKv/qyEF0uu/c5cglSuQx7xlZIM80W
+         Al/UwckR4HVM/f4YnD7uQbXqLLcI0gkwfSN9Ui0S90HHOZtZVoWSwUvAsKRFGNKCkNzk
+         dTTujPH+8To9j8uBZYhgoyhPEXT6k8T8ZdqOeo6OVcvR47tPns5mVOpnFJF15Nuzj2mN
+         Sy8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756932766; x=1757537566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lrGbbZHkPmOkrhxaF1dT80bUwOd57ENAbsAwajvsVvg=;
-        b=c0+h7kbGujFpw/sfnLEVb0LHknsOdAuNT18Urh8eVxjRycV4JaADieKJnz2ySl5jkH
-         gmKrBJ62r6LtoVJSk7iUVNKvccQRtKcfl9LreLGfgz2umCHLo5DgIapFVVZSM4w32rYs
-         rxOJ1vV8kzH+LP0Rrz9JILYa5Go0ftSOLMe/CoqKwD/Yx6DY/7UNtvNzhnBmlyUKfOxX
-         QAsHjZfkaVrI/V/wmEJRcARuuLItoLo+05/fm0icvpNm2DVxB2iCMGMoXJUwu4J9g9Up
-         /DVO7W7aMA0fxnWxj1kuJOvR3EMx4HGjoRagXg/upOVvEokq7yJB6mRUauaZC9glFHqj
-         g00Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVHT0/xxo5THpJqWPTI3yIyL902fOwGX7W0bsCzu8EYQsuUlolqFYbHtRkDp/Zcqv4ylgoq0O5DZw==@kvack.org
-X-Gm-Message-State: AOJu0YxX5XzhxRdBodi8/sPagquKA8gTWOiTxGE27+yEUE7zOuAaDKSz
-	dHnbAnerNVg5i/zfCV0E/tpk4St0fWOHDyFPReJeEMR81FeW7ObdZ7wE8FRGy/Lihf/fYPs8Gae
-	DEj7WF4zzT72PLL2JisTKui/HynxwaY7XJxQf
-X-Gm-Gg: ASbGncsvLVZWH1OIJfRtyw0PNy0HKOckaNV1JS12QWMij9nJTScQkO3sQknUSResHSg
-	tnaVpkqTqdpD3UH/VKt89pdMflrTa1LzCwjYbe8zF8hGwbc4eBQ+gQ/iqK0s9MJQiKzJDql+7au
-	jqSjRc59LTNZsMQG0mjiZiEEZQjH+9I4aeH/r7fGGNIZlVjuGf1VDR4CgkP7MZmn5oK20w1w1xJ
-	tFfPBdo2Vaunhr3cw==
-X-Google-Smtp-Source: AGHT+IEeKTRk/jxWcQ9dPhf7ezzD2Bpp4UPWhsV8IsVl0FOkyOHHFGsrc13kHi1JV4+qraqX+0jyUZiSZbSXNsYcJ90=
-X-Received: by 2002:ac8:5a91:0:b0:4b4:ff15:2c22 with SMTP id
- d75a77b69052e-4b4ff152eddmr23444781cf.15.1756932766141; Wed, 03 Sep 2025
- 13:52:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-9-ryncsn@gmail.com>
- <CAGsJ_4xON7fYg1VvcjLOsgBb_Wp4ruC+vdA4Q496GH1jXunU1A@mail.gmail.com>
- <CACePvbUVK45uRPVoO3ubDfQHikebSHFNQOsMTMvJ91QQZH2HwQ@mail.gmail.com>
- <CAGsJ_4we4ZfNqJ+v7+=0hjNKLakJ-s8qtRsGo_kp0R_th7Xvkw@mail.gmail.com> <CACePvbXjbtowr5wSKR_F_2ou6nVhxK3-+HvSs+P71PYOo0h3UA@mail.gmail.com>
-In-Reply-To: <CACePvbXjbtowr5wSKR_F_2ou6nVhxK3-+HvSs+P71PYOo0h3UA@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 4 Sep 2025 04:52:35 +0800
-X-Gm-Features: Ac12FXz0qfkg7F_ObHqoqis0mbjXyNQlDtGx4gRi-mD9FYViJi2Cg8w3R_9QaCs
-Message-ID: <CAGsJ_4wK2vXzc0z7+JNwChhtk2gSPcrZ=vHJx=qfXcr+cZiTgw@mail.gmail.com>
-Subject: Re: [PATCH 8/9] mm, swap: implement dynamic allocation of swap table
-To: Chris Li <chrisl@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5AF08A0002
+        d=1e100.net; s=20230601; t=1756934783; x=1757539583;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZKAFUEHK8OBYchmycuUbisd/bzFy1QHMzYkOvBvFOpA=;
+        b=bIayUWN1z8Jsmp3MyLL20F6AOlr9G34XhRLcroo/GPI+bRxxHJQiUhjnwSlvsdO4Lc
+         YWJmkG/CczQNJ1Q2t8A5t4bK/Ebdq8hBRP5cqrr/aaH5DtZjDNBVMGEleJoaVGWnnATo
+         PJuh79gZAP2MLcwK9rv05t8rhwFx/wil5OfpkO+YBGSoCFOsrAFsl0oSGR6z3BEHQmup
+         Hl0q4vLd8KLOFORLyaqDijHuReUsgudh0kr8Q4Mwe3DgDXUWr3P8uTs/B4BvyrobC+Nl
+         C+V0nwy5DBf3BPWXquaoLD9Cv6vt06IIVpjxgUldS5W4ZvpOzthbICUHqG3owMX7en9X
+         jfoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUAN+40Z9teMEgZrNKhPv6PdvXcbWGN840h+UpqT6vawMTk6DESW6D1v3S0PIpEMLraZEd9U6a5w==@kvack.org
+X-Gm-Message-State: AOJu0YwzLD25x7P2YD+u8kBH7K4LdLovFP9284KNaNosNJNWNlGEjEcQ
+	spUMyMencxDJJobJ39pIUkLl70ZhtOwmwSwV6G7OffnkHLG9xVcpTBgBv4goCrTYwQ==
+X-Gm-Gg: ASbGncuDDBIapTbzkYqvSkd39vyRUGzOdScRz+u1EUKL9oeCKaGA+Bo6m8uOr7KdVMb
+	+XdPcrpRakQiFb2EqRbIWtQBx1KataFq9RMARQfu2I8zjXSzX+4zHUaA+rZj0JWt0EJs95Vh3CJ
+	G25GzvUywhpLQJiflFyyxl13yoRk4dIDzSy30VTyBD9ggecjppMytFoi6S7qF2biK4zOlX7/SCD
+	Zkl7RanVCFBGVgJYdE44XxNPj1qS8OeKv1sJjsgoFfftO883P8JMVrsKhqivFEG6Vq22uksXXf6
+	HTXgcrhqMlgpGUktywJwqAfpaYyqfIkR7Uv/adWDEwwM5zaVOKOWTokP+EI7fRJXG/v8ViQFp5N
+	/AaUplU1b3XcCH5wvX3sVaxEdPx1upv/3Jpk8GCKEcquY7LBLgGTZ0ZZBRWe9vsu6RUR7LnQ5eI
+	C54h0=
+X-Google-Smtp-Source: AGHT+IGjeGVBk59qanrKojqKe1+ebv5QbBLUr+xq2vrJdB1gpx6C81S9JV5wN46o/dcj2HWmCycKCg==
+X-Received: by 2002:a05:6214:c65:b0:71d:478f:e0cd with SMTP id 6a1803df08f44-71d478fe49fmr118773496d6.26.1756934782933;
+        Wed, 03 Sep 2025 14:26:22 -0700 (PDT)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-720b466614bsm34702456d6.38.2025.09.03.14.26.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 14:26:21 -0700 (PDT)
+Date: Wed, 03 Sep 2025 17:26:21 -0400
+Message-ID: <6afc91a9f5caef96b2ca335b6d143670@paul-moore.com>
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=UTF-8 
+Content-Transfer-Encoding: 8bit 
+X-Mailer: pstg-pwork:20250903_1645/pstg-lib:20250903_1606/pstg-pwork:20250903_1645
+From: Paul Moore <paul@paul-moore.com>
+To: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>, James Morris <jmorris@namei.org>, Stephen Smalley <stephen.smalley.work@gmail.com>, Hugh Dickins <hughd@google.com>, Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>, linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] memfd,selinux: call security_inode_init_security_anon
+References: <20250826031824.1227551-1-tweek@google.com>
+In-Reply-To: <20250826031824.1227551-1-tweek@google.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3885520004
+X-Stat-Signature: nky5mafyh1761kmqt6t65xkq8qrxqyj8
 X-Rspam-User: 
-X-Stat-Signature: f4dm6dn6wc6gbspx14esub1nct8ipdn4
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756932767-917048
-X-HE-Meta: U2FsdGVkX1+vB/pcUtV5PCIDYxQefXKwo6ueTr9+HxL+LwRe8eeBrHWDkyxeTBPjt5dKH/2OOvWoTAf3EMJXxD/wolkSlsJ+UooWktszRpnrHwyXtKvK6uQg5aHCQHThBzgzBuwfYSk/iP6hVvtHCcAK4kt7ine8moPuMXSscXnOPKNcTbyoj6iC6YsYW3spfAo4NFDVc+/ZDknbdMIoqsMrIaVCQt+dECIXBEJYh3rQVl+PGDC8EJkAPxke4BwRvTIXXSH/b5TiM+4sseHptpvvIO+8RMb7FHt87Wpx3ST11F0uGhmF/Ex//8RYAzE0vspPd4kdRIrBsHY7l2LGYMLTTIoUBJM4ozn2t44IdpmHWrFA5ERlUdjXdx8/+PTLZ7w54L0CF01VmLEGOvAbVFtTa5hMYEMNvOfCrxg3M81UG87hGowggxTDvbJAYUPtxSdddHFSgjF/cx4FsiKDC5GM+HdRXF+AEl63XIy0+yjakc88fA3H8+Xd5IJ15EDUNZi/0fIfA5gTpnwQd07kaXR/4Bu7OdlBqVMvr0Ip+LKOmYTdbrWivCXheb31lDds2nUnsTGFTrQ9YyNWR+/NDHJYkjBOMb7xqJrl1KWzpBZpA5PptFN7RjhezZGZ8InPskeiGo3pBtSJU2eVNqxNeP1fGjz4bnPZe6Co9aMAnMz4TMEuNGiSaJDPhfcoKwvRlmv+YE8u+7l1fTQEQeE1uigrgHxM3RgiPfppK9i8fTfdkZex1110swLZJkV4hXynE7WDquOtYRO5id6m+az8ShXBpXU2DEq9w0LLkzFqk4SWhViIASzORfhlEJ+oHXvaE9zWc3eErbZq9cSs0BDFfrPs+lxEZSXzsNseSruhg97azLaL3PuI19slNeGZS4K25zdIO5jLWfs73k3BwPr8uMOQGuG+drPwaGAzNystxVUfUOsAhSQf2XtQyi5Rous2VdnLlGnVHQN/zOeyTw3
- SLew6ggj
- +EoR86E7KuktleMkfBIVwSwKoiKF0N1pItYEzAjURvKLT5OND4IGsbHM1MfRtDWV8jWWa50xXo/DJ1mvG410VmsVM4ToqilEKxKYPJY8irrmejMU7IEQ10c0JNr1tsCu9xBm1x34oYLN/mxknfLx0d1gHeQGhf19rv+4fK7MhrPyg2Dqaqi1y4insYrqLqF1Fq7qSsyI3ub7es8606wXMeO/cam7vq/vsxra0ErJe1Tm8NvzeTv72OS6SUE9gpiDYZwTnmfGG0ay27PQ+GC9eJmsW1UBWksbrMBOfzAv21u4nSqbUYWkyKsWMldh4rqvt/ITbCYRARy7NsZIuLqGQ4sZG7ksd0J4ZEI/nZM25CJ9rR2X00/q9SHySGm2jIQEevU6W2an6RPMIJ92LervVJkQYQk6M968op5OAqEvwxQnhcuCtnZeWdmnQ/A==
+X-HE-Tag: 1756934784-657137
+X-HE-Meta: U2FsdGVkX1+HrlrflgFp0B3HCQIVeUMCap4iShEDaRj4rIB+WWz5EUG0GPt5w7Me7h+yqtWYxSvO3Sv2Fn9EhubILgLohe0biFo2MQKRCvYZhP98U4yIJyd+JICaFD7XanqhcFEdYAp5gpFyQHU/jyVisdA9VXrc0PoNq0znAnXwpiMqH+n9KQAkt+td/Ibpjad6RubYZEvbSoHKWvnJ4k+9jiFp5MQjR9i2re2LE5JtGpUj7duFLub/bXvHGWVyG79r5bnUdhjF5FGFcOghUXiePAYzOwGPgdOCyKjaUDytP0SQzw3z9Q/5gWNk0LYCJ9xnz5X9BhUMDbciSoCOnxirKqpbz7AF9cmJbelM0m99H71wHb5iKMHMlP+mJczVvhMfdASk//QnJHU4DbnM2+cc2N/w6TP/uaMcby7+SEtFWuPCmfMz1k9izKO0GgHrNmwvAt7ayArglQ5qs7C075wzRa1hPB6QtSVUR6LESwiASNpTGTduFDslfSYUOfMaTNnFLXQrkWwkaDzgZ7cjaYa2rE7HdHVbneBXJbKDxzP/tcGn5Jt2WnoopUC7oKgj4pROCBtJU1zFfkAvEUisl/gXixkCJjAK1zQIA3pTi6ggROV1IAZ+6YdwgZ3L0+wIRAmmHVpxZ6Bd8FDhS9ZC8WwI5OYsqL9K5icdOj+uJZhWBASr2S+ubdhs2iB0dqMs+gyOtlKcKp30gm/yBTezXdGu+DZlAIoDD17XMAF+ioqFARctWi5+GpCTQLIaytI8ZGHmRP1VSp12Au9xE9xjxpHu4/PkE69nqkMRLR7JCx5m6BqEqzGgMbec+3FgJZ6Ki+ArD7NOEAaAUYffWbw21p2V31U/reqUlAp4/IBvA8V0AaUY1aaJiUMp0GB9zJs3mea/+Cq8/k9eiSfAA9yA05/3yk4HPDmnu9l0dOvLaB4Q3YPwNihF+NSrPOs9d3UKCd+rDxIWHvdT9UrnHbo
+ ULt6vksX
+ xkYhzmLQil5NeDeckbbuVEcTJdwjQB0fqgj6rrZLYYl+D5XpZr2JPKGJIx/omESguO6jLX1vv7PDPo4OoKdS9rzEsRvO+sVkG0BtRxhlN+ltQqTGDP5WwZaDUPkbm4kAI1o+QUUzWh6pBAsoupFqLUu/CYJ8mJdJhIUHD1L1ePAfqKmUy/irFzvmKaT8Zc88uZOkIZS2CwqbZ/oVir39iJKEwVlLSG98n1uzFKmbVim0NseD8S1cCptMTbQ8rVUswTuMf/PuYTIgrf4EWktvYtSbVh/0oG6eKkI/zkncZYVsrohY4pxUYUcI0kckXupxBvpu0Y2ifF2d0Yc8WA0oNJAwIVAsXxgsAqVqK8hLnHUTW8hv1lAD3tTkk1tnZrUt4I61it8lX4o1FZMy0hZ8iW1smUSu488Sf7yD8wKx8VTZEUX64PZW/LOWqy6Mx5yMAVoAbTew+9rwZnWQEWuQdJCVJNw6eBIQqpa9bFNJZmtwty1vQ65nkqqRUuaEV2D4Xo38dGMZYKzXamT8j8Hx+4fMRjju1/D5yWBtSKjpfadA7QZ/vpTrxipojS8FJk5rFTr+AmJPeKtLNcms6nipMww6CT+pX58lreYrsSOfxBRxt2Xc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,152 +120,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 3, 2025 at 8:35=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
->
-> On Tue, Sep 2, 2025 at 4:31=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
-te:
-> >
-> > On Wed, Sep 3, 2025 at 1:17=E2=80=AFAM Chris Li <chrisl@kernel.org> wro=
-te:
-> > >
-> > > On Tue, Sep 2, 2025 at 4:15=E2=80=AFAM Barry Song <21cnbao@gmail.com>=
- wrote:
-> > > >
-> > > > On Sat, Aug 23, 2025 at 3:21=E2=80=AFAM Kairui Song <ryncsn@gmail.c=
-om> wrote:
-> > > > >
-> > > > > From: Kairui Song <kasong@tencent.com>
-> > > > >
-> > > > > Now swap table is cluster based, which means free clusters can fr=
-ee its
-> > > > > table since no one should modify it.
-> > > > >
-> > > > > There could be speculative readers, like swap cache look up, prot=
-ect
-> > > > > them by making them RCU safe. All swap table should be filled wit=
-h null
-> > > > > entries before free, so such readers will either see a NULL point=
-er or
-> > > > > a null filled table being lazy freed.
-> > > > >
-> > > > > On allocation, allocate the table when a cluster is used by any o=
-rder.
-> > > > >
-> > > >
-> > > > Might be a silly question.
-> > > >
-> > > > Just curious=E2=80=94what happens if the allocation fails? Does the=
- swap-out
-> > > > operation also fail? We sometimes encounter strange issues when mem=
-ory is
-> > > > very limited, especially if the reclamation path itself needs to al=
-locate
-> > > > memory.
-> > > >
-> > > > Assume a case where we want to swap out a folio using clusterN. We =
-then
-> > > > attempt to swap out the following folios with the same clusterN. Bu=
-t if
-> > > > the allocation of the swap_table keeps failing, what will happen?
-> > >
-> > > I think this is the same behavior as the XArray allocation node with =
-no memory.
-> > > The swap allocator will fail to isolate this cluster, it gets a NULL
-> > > ci pointer as return value. The swap allocator will try other cluster
-> > > lists, e.g. non_full, fragment etc.
-> >
-> > What I=E2=80=99m actually concerned about is that we keep iterating on =
-this
-> > cluster. If we try others, that sounds good.
->
-> No, the isolation of the current cluster will remove the cluster from
-> the head and eventually put it back to the tail of the appropriate
-> list. It will not keep iterating the same cluster. Otherwise trying to
-> allocate a high order swap entry will also deadlooping on the first
-> cluster if it fails to allocate swap entries.
->
-> >
-> > > If all of them fail, the folio_alloc_swap() will return -ENOMEM. Whic=
-h
-> > > will propagate back to the try to swap out, then the shrink folio
-> > > list. It will put this page back to the LRU.
-> > >
-> > > The shrink folio list either free enough memory (happy path) or not
-> > > able to free enough memory and it will cause an OOM kill.
-> > >
-> > > I believe previously XArray will also return -ENOMEM at insert a
-> > > pointer and not be able to allocate a node to hold that ponter. It ha=
-s
-> > > the same error poperation path. We did not change that.
-> >
-> > Yes, I agree there was an -ENOMEM, but the difference is that we
-> > are allocating much larger now :-)
->
-> Even that is not 100% true. The XArray uses kmem_cache. Most of the
-> time it is allocated from the kmem_cache cached page without hitting
-> the system page allocation. When kmem_cache runs out of the current
-> cached page, it will allocate from the system via page allocation, at
-> least page size.
->
+On Aug 25, 2025 "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com> wrote:
+> 
+> Prior to this change, no security hooks were called at the creation of a
+> memfd file. It means that, for SELinux as an example, it will receive
+> the default type of the filesystem that backs the in-memory inode. In
+> most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
+> be hugetlbfs. Both can be considered implementation details of memfd.
+> 
+> It also means that it is not possible to differentiate between a file
+> coming from memfd_create and a file coming from a standard tmpfs mount
+> point.
+> 
+> Additionally, no permission is validated at creation, which differs from
+> the similar memfd_secret syscall.
+> 
+> Call security_inode_init_security_anon during creation. This ensures
+> that the file is setup similarly to other anonymous inodes. On SELinux,
+> it means that the file will receive the security context of its task.
+> 
+> The ability to limit fexecve on memfd has been of interest to avoid
+> potential pitfalls where /proc/self/exe or similar would be executed
+> [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
+> similarly to the file class. These access vectors may not make sense for
+> the existing "anon_inode" class. Therefore, define and assign a new
+> class "memfd_file" to support such access vectors.
+> 
+> Guard these changes behind a new policy capability named "memfd_class".
+> 
+> [1] https://crbug.com/1305267
+> [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.com/
+> 
+> Signed-off-by: Thiébaud Weksteen <tweek@google.com>
+> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> ---
+> Changes since RFC:
+> - Remove enum argument, simply compare the anon inode name
+> - Introduce a policy capability for compatility
+> - Add validation of class in selinux_bprm_creds_for_exec
+> 
+>  include/linux/memfd.h                      |  2 ++
+>  mm/memfd.c                                 | 14 +++++++++--
+>  security/selinux/hooks.c                   | 27 ++++++++++++++++++----
+>  security/selinux/include/classmap.h        |  2 ++
+>  security/selinux/include/policycap.h       |  1 +
+>  security/selinux/include/policycap_names.h |  1 +
+>  security/selinux/include/security.h        |  5 ++++
+>  7 files changed, 46 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/memfd.h b/include/linux/memfd.h
+> index 6f606d9573c3..cc74de3dbcfe 100644
+> --- a/include/linux/memfd.h
+> +++ b/include/linux/memfd.h
+> @@ -4,6 +4,8 @@
+>  
+>  #include <linux/file.h>
+>  
+> +#define MEMFD_ANON_NAME "[memfd]"
+> +
+>  #ifdef CONFIG_MEMFD_CREATE
+>  extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg);
+>  struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index bbe679895ef6..63b439eb402a 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -433,6 +433,8 @@ static struct file *alloc_file(const char *name, unsigned int flags)
+>  {
+>  	unsigned int *file_seals;
+>  	struct file *file;
+> +	struct inode *inode;
+> +	int err = 0;
+>  
+>  	if (flags & MFD_HUGETLB) {
+>  		file = hugetlb_file_setup(name, 0, VM_NORESERVE,
+> @@ -444,12 +446,20 @@ static struct file *alloc_file(const char *name, unsigned int flags)
+>  	}
+>  	if (IS_ERR(file))
+>  		return file;
+> +
+> +	inode = file_inode(file);
+> +	err = security_inode_init_security_anon(inode,
+> +			&QSTR(MEMFD_ANON_NAME), NULL);
+> +	if (err) {
+> +		fput(file);
+> +		file = ERR_PTR(err);
+> +		return file;
+> +	}
+> +
+>  	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
+>  	file->f_flags |= O_LARGEFILE;
+>  
+>  	if (flags & MFD_NOEXEC_SEAL) {
+> -		struct inode *inode = file_inode(file);
+> -
+>  		inode->i_mode &= ~0111;
+>  		file_seals = memfd_file_seals_ptr(file);
+>  		if (file_seals) {
 
-Exactly=E2=80=94that=E2=80=99s what I mean. When we hit the cache, allocati=
-on is far more
-predictable than when it comes from the buddy allocator.
+Hugh, Baolin, and shmem/mm folks, are you okay with the changes above? If
+so it would be nice to get an ACK from one of you.
 
-> So from the page allocator point of view, the swap table allocation is
-> not bigger either.
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index c95a5874bf7d..429b2269b35a 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -93,6 +93,7 @@
+>  #include <linux/fanotify.h>
+>  #include <linux/io_uring/cmd.h>
+>  #include <uapi/linux/lsm.h>
+> +#include <linux/memfd.h>
+>  
+>  #include "avc.h"
+>  #include "objsec.h"
+> @@ -2366,9 +2367,12 @@ static int selinux_bprm_creds_for_exec(struct linux_binprm *bprm)
+>  	ad.type = LSM_AUDIT_DATA_FILE;
+>  	ad.u.file = bprm->file;
+>  
+> +	if (isec->sclass != SECCLASS_FILE && isec->sclass != SECCLASS_MEMFD_FILE)
+> +		return -EPERM;
 
-I think the fundamental difference lies in how much pressure we place
-on the buddy allocator.
+In the interest of failing fast, this should probably be moved up in the
+function to just after where @isec is set.  There are also a number of
+checks that happen prior to this placement, but after the isec assignment.
+While I don't think any of those checks should be an issue, I'd rather
+not to have to worry about those and just fail the non-FILE/MEMFD_FILE
+case as soon as we can in selinux_bprm_creds_for_exec().
 
->
-> > One option is to organize every 4 or 8 swap slots into a group for
-> > allocating or freeing the swap table. This way, we avoid the worst
-> > case where a single unfreed slot consumes a whole swap table, and
-> > the allocation size also becomes smaller. However, it=E2=80=99s unclear
-> > whether the memory savings justify the added complexity and effort.
->
-> Keep in mind that XArray also has this fragmentation issue as well.
-> When a 64 pointer node is free, it will return to the kmem_cache as
-> free area of the cache page. Only when every object in that page is
-> free, that page can return to the page allocator. The difference is
-> that the unused area seating at the swap table can be used
-> immediately. The unused XArray node will sit in the kmem_cache and
-> need extra kmem_cache_alloc to get the node to be used in the XArray.
-> There is also a subtle difference that all xarray share the same
-> kmem_cache pool for all xarray users. There is no dedicated kmem_cache
-> pool for swap. The swap node might mix with other xarray nodes, making
-> it even harder to release the underlying page. The swap table uses the
-> page directly and it does not have this issue. If you have a swing of
-> batch jobs causing a lot of swap, when the job is done, those swap
-> entries will be free and the swap table can return those pages back.
-> But xarray might not be able to release as many pages because of the
-> mix usage of the xarray. It depends on what other xarray node was
-> allocated during the swap usage.
+>  	if (new_tsec->sid == old_tsec->sid) {
+> -		rc = avc_has_perm(old_tsec->sid, isec->sid,
+> -				  SECCLASS_FILE, FILE__EXECUTE_NO_TRANS, &ad);
+> +		rc = avc_has_perm(old_tsec->sid, isec->sid, isec->sclass,
+> +				  FILE__EXECUTE_NO_TRANS, &ad);
+>  		if (rc)
+>  			return rc;
+>  	} else {
+> @@ -2378,8 +2382,8 @@ static int selinux_bprm_creds_for_exec(struct linux_binprm *bprm)
+>  		if (rc)
+>  			return rc;
+>  
+> -		rc = avc_has_perm(new_tsec->sid, isec->sid,
+> -				  SECCLASS_FILE, FILE__ENTRYPOINT, &ad);
+> +		rc = avc_has_perm(new_tsec->sid, isec->sid, isec->sclass,
+> +				  FILE__ENTRYPOINT, &ad);
+>  		if (rc)
+>  			return rc;
+>  
+> @@ -2974,10 +2978,18 @@ static int selinux_inode_init_security_anon(struct inode *inode,
+>  	struct common_audit_data ad;
+>  	struct inode_security_struct *isec;
+>  	int rc;
+> +	bool is_memfd = false;
+>  
+>  	if (unlikely(!selinux_initialized()))
+>  		return 0;
+>  
+> +	if (name != NULL && name->name != NULL &&
+> +	    !strcmp(name->name, MEMFD_ANON_NAME)) {
+> +		if (!selinux_policycap_memfd_class())
+> +			return 0;
+> +		is_memfd = true;
+> +	}
+> +
+>  	isec = selinux_inode(inode);
+>  
+>  	/*
+> @@ -2996,6 +3008,13 @@ static int selinux_inode_init_security_anon(struct inode *inode,
+>  
+>  		isec->sclass = context_isec->sclass;
+>  		isec->sid = context_isec->sid;
+> +	} else if (is_memfd) {
+> +		isec->sclass = SECCLASS_MEMFD_FILE;
+> +		rc = security_transition_sid(
+> +			sid, sid,
+> +			isec->sclass, name, &isec->sid);
+> +		if (rc)
+> +			return rc;
+>  	} else {
+>  		isec->sclass = SECCLASS_ANON_INODE;
+>  		rc = security_transition_sid(
 
-Yes. If we organize the swap_table in group sizes of 16, 32, 64, 128, and s=
-o
-on, we might gain the same benefit: those small objects become immediately
-available to other allocations=E2=80=94no matter if they are visible to the=
- buddy
-allocator.
+We're duplicating the security_transition_sid() call which seems less
+than ideal, how about something like this?
 
-Anyway, I don=E2=80=99t have data to show whether the added complexity is w=
-orth
-trying. I=E2=80=99m just glad the current approach is hoped to land and run=
- on
-real phones.
+  if (context_inode) {
+    /* ... existing stuff ... */
+  } else {
+    if (is_memfd)
+      isec->sclass = SECCLASS_MEMFD_FILE;
+    else
+      isec->sclass = SECCLASS_ANON_INODE;
+    rc = security_transition_sid(...);
+    if (rc)
+      return rc;
+  }
 
->
-> I guess that is too much detail.
->
-> >
-> > Anyway, I=E2=80=99m glad to see the current swap_table moving towards m=
-erge
-> > and look forward to running it on various devices. This should help
-> > us see if it causes any real issues.
->
-
-Thanks
-Barry
+--
+paul-moore.com
 
