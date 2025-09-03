@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D4E6CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:00:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4CBFCA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:00:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D9258E0015; Wed,  3 Sep 2025 09:00:44 -0400 (EDT)
+	id 163EF6B0005; Wed,  3 Sep 2025 09:00:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 163408E001A; Wed,  3 Sep 2025 09:00:44 -0400 (EDT)
+	id 0C6F98E001B; Wed,  3 Sep 2025 09:00:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF5068E0015; Wed,  3 Sep 2025 09:00:43 -0400 (EDT)
+	id E34988E001A; Wed,  3 Sep 2025 09:00:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C83E78E0015
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:00:43 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B3AB1606D7
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:43 +0000 (UTC)
-X-FDA: 83847948366.22.8EA56E6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F037E18001C
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:40 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904441; a=rsa-sha256;
-	cv=none;
-	b=wRwa5gZbwhwLs24FYZNbyIIAfdExKukYXJTm3/TW8caM7GGAFJS/ANE9JnP9Dzs7B4xkI3
-	9HMuF0y75pTGsApou/cqQ5hTFZ1SNTFQ2NSrd8GbqJ62ebuLSKTKHC3CHYG2NL2nPlS6xc
-	RdQSxjom+AYTwS1wxGhOVSPoMfXgOUY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C8CCD6B0005
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:00:51 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85B8D8636D
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:51 +0000 (UTC)
+X-FDA: 83847948702.14.EB20F37
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3876A4001B
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1rC+6R4/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sGfYSGgv;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1rC+6R4/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sGfYSGgv;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756904441;
+	s=arc-20220608; t=1756904449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
-	b=wOxvYk/9/QwVF/umuy6tkRn8vXeu23lFa8/Bih/y3F/1EhEs3n2fenHI48zRAsgO7Cuq1Y
-	nO1sBCm3KKWxzbWMZM6DzqsTp/bEKnDNzm1RsRhdRzYr5pEPiAuo7krfJBeYUDIHBoTw/s
-	+qwkKDM5dr+XbJVlZt2htvCPY9Rrcxo=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=/GJ/0Wx5QlG8JUnl44VCEh2zTPKqkIPoz/HEUfq/O7s=;
+	b=yXJSok22dqonQs3pwCANHQPGTo1EuoIV+op222H9HMNF7WJlMye+qXtLptszMd0IdYPYr3
+	zyz99RZISA8dotgJwbSnsVsI8VbMnPgha12oChg1m8iToT+wb0pdDL/5wmAzaGdgni6Nyc
+	+4S673S51Blot9mvxR4WKj2XGX81npQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1rC+6R4/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sGfYSGgv;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="1rC+6R4/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=sGfYSGgv;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904449; a=rsa-sha256;
+	cv=none;
+	b=f24a04M75vhS79LJBfrSey6WRHC1wRt8Nfkpnb3RAmOg/4EbuBdvn4Wl2ozQ2uLIF6qaqd
+	JOfVug4CnFgi6uE6bZ7Qgs9iRQwI7QH+muxMrcHdJENv3vS+k8cI8sylDq/3gDegnKXPD1
+	sVVcZ70sspVG4MR3Z4v5kHOp5Pjvglo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4F49F21227;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A5D691F6E6;
 	Wed,  3 Sep 2025 13:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1756904410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
-	b=LoETShIMk0pCx5L816uJyvFy7c4G6hgcTgDNeP0wdw3yv0H1gKUdk/cqAYnCOz9H7IfMBQ
-	HDr9bFcRAknhxCqHENhCd3m3YzDFv71MZmJZCdVgC1HKbU0Y75RhdAXAhziIlsleurg51T
-	VNyNCxItm6H6usKuYzzlrfROk7g2Vzw=
+	bh=/GJ/0Wx5QlG8JUnl44VCEh2zTPKqkIPoz/HEUfq/O7s=;
+	b=1rC+6R4/UzSv0rkdSlCfIa7Eoeu0lG3zpKHDAhymb8aKOBkwIR/UOHat/o8wp6i/QxrZrD
+	1YU+AGxQ1RWk3gwZFv6wsiUwGkc08siPxPtmi+kXfV2wome66MVEMUZSPZQVoT57gminoL
+	ODLxXLJwToVND2oh5kD/aTyV1DBaRTw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1756904410;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
-	b=MyQghC5DsjfSLaNXl3OCffrJh1mZIzymp5cPWwwkaVoofGSGp5XZAZ+nQGdVjDXWQmPKlF
-	PfA/Q+4MQ1QPxkDQ==
+	bh=/GJ/0Wx5QlG8JUnl44VCEh2zTPKqkIPoz/HEUfq/O7s=;
+	b=sGfYSGgv2ij1HpOHi0G+iG8LsnAE/Z4PBBXfzvdxCBXrmMoMkqNJhxJU4OAcRudAX2RDIy
+	zvuoQZWaxQro17Bg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1756904410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
-	b=LoETShIMk0pCx5L816uJyvFy7c4G6hgcTgDNeP0wdw3yv0H1gKUdk/cqAYnCOz9H7IfMBQ
-	HDr9bFcRAknhxCqHENhCd3m3YzDFv71MZmJZCdVgC1HKbU0Y75RhdAXAhziIlsleurg51T
-	VNyNCxItm6H6usKuYzzlrfROk7g2Vzw=
+	bh=/GJ/0Wx5QlG8JUnl44VCEh2zTPKqkIPoz/HEUfq/O7s=;
+	b=1rC+6R4/UzSv0rkdSlCfIa7Eoeu0lG3zpKHDAhymb8aKOBkwIR/UOHat/o8wp6i/QxrZrD
+	1YU+AGxQ1RWk3gwZFv6wsiUwGkc08siPxPtmi+kXfV2wome66MVEMUZSPZQVoT57gminoL
+	ODLxXLJwToVND2oh5kD/aTyV1DBaRTw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1756904410;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
-	b=MyQghC5DsjfSLaNXl3OCffrJh1mZIzymp5cPWwwkaVoofGSGp5XZAZ+nQGdVjDXWQmPKlF
-	PfA/Q+4MQ1QPxkDQ==
+	bh=/GJ/0Wx5QlG8JUnl44VCEh2zTPKqkIPoz/HEUfq/O7s=;
+	b=sGfYSGgv2ij1HpOHi0G+iG8LsnAE/Z4PBBXfzvdxCBXrmMoMkqNJhxJU4OAcRudAX2RDIy
+	zvuoQZWaxQro17Bg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B0FB13AFB;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE9BA13B04;
 	Wed,  3 Sep 2025 13:00:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YPyuIdk7uGitOAAAD6G6ig
+	id iDgAOtk7uGitOAAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Wed, 03 Sep 2025 13:00:09 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 03 Sep 2025 14:59:48 +0200
-Subject: [PATCH v7 06/21] slab: determine barn status racily outside of
- lock
+Date: Wed, 03 Sep 2025 14:59:53 +0200
+Subject: [PATCH v7 11/21] tools/testing: Add support for changes to slab
+ for sheaves
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250903-slub-percpu-caches-v7-6-71c114cdefef@suse.cz>
+Message-Id: <20250903-slub-percpu-caches-v7-11-71c114cdefef@suse.cz>
 References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
 In-Reply-To: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
 To: Suren Baghdasaryan <surenb@google.com>, 
@@ -124,17 +124,15 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
  Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
  Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
- maple-tree@lists.infradead.org, vbabka@suse.cz
+ maple-tree@lists.infradead.org, vbabka@suse.cz, 
+ "Liam R. Howlett" <Liam.Howlett@Oracle.com>
 X-Mailer: b4 0.14.2
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F037E18001C
-X-Stat-Signature: m9kuiizz1ynendeeci4sfoyh9c4oadko
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3876A4001B
+X-Stat-Signature: gji86s9d9okimysw9sq9rtt6ez4jkb47
 X-Rspam-User: 
-X-HE-Tag: 1756904440-842475
-X-HE-Meta: U2FsdGVkX19Mu1yJSVbGS0GYLDiOgprk/ZIw4KAN5SeROjCXr+s+zwgP441ra4TFZnpJc0Z9fSbw7pGpggrFROhQIir8eBrPWWTkRC55NuqFjUmX5hXPoQ8n416PpjrsxjYf1G4kmyG5AWzESoy1do+RBC1ISLGpJCIGZ66FyI03/Hhbqpimz2wpIWaTMJ/KtNh4mqX9cuQ5Au0fl1PmXlgByegEo++Ue/040eJ5t6pAcieMDB5JWoDcfwiiviTkh9CnUOjvIC3HK0XoaYm4rGRDJmhx33DTSb6dSt7rlwPFSQTwvsqkaspcOQ6R6cCWpHQAIpaDWwI/bUnYNY4oS3vQhTn/hgntmtrwize/kdFhtR7Fk7fCIlZZFCIT4cHryqC3HX28j7gplws4D2HgxQG2gh9C2J+yM3bYmD/Glu2v4kB8FmSZjaSfRndTJ2ZYRvmxYh80Sg+N7s+i4VRVkc/YAPOLcMYV59w+VFnE+sbWB8QxVI0f5tIJiKsS8F2TavTBNkLF0xdVJLm2fM1SMiv6L6infM7ZJXaU87RW7HkZAugpcqftRH/wn0qypl3K/hHqet6d6f/KvmsoOPoKgt+RvzsHi6yYDsL0pBroD7b2OuiH4adYbLr/u8LkAq7lanLKftAiBHlrFGAMUXnh+8vuVgnGU0iL53BON9LpVT+YYjrKnLGEkdA9ImaJ5A079cz7moAfd+l/7DTTwZSWPbgLmDLTnxqog0vqRu05w6DhXhFrMVFeJ1AH5yGVG8dx/tHkyTO3GLCoVyjPp3pQNO9oW7zwHIa86gN1CiNZX1eRwA7im0XTGYCcnQpTbPKNgw9TFep0y8XvGp4qL3PC11amB8TbmNcrQmYr03zEGk2dqzL0LU9jlQOD63G5teF5HwYmnA3ur8QePclfLDwpVY6Es2jjW2Lo+CS7cv/ZAFV/gQwkkJHdYBn/RdJFqhEcxyDl8LlqWgcVy2OSytv
- YZWTBw1i
- fbx+Er+GWRBYzTzBoERhLGHWSuNW73xlmKOEMimJ37yOodblLDxStiPwd9HhWKeiE/STGkVVeqYUERzhxcuERAZapCj18sOv3Qxi6f466lno2nE12tGC+UJqf5dNef9ERo6JR4VLk++TsxRtAXn90lChrRQk/yep/uU5CdYyR6flunE77QyKiC2Ahh/PRETFlGgUuTfBSOW55ad9r2QsSRHopCxp7MPi6FEze1TH9tgXQM0FLSDVt/ZsZgx4Oq0ymhHWZEl3HOqoRLMnY/iWwZUTHiQf5tGomy1HB0huyRgDWPfo=
+X-HE-Tag: 1756904448-629235
+X-HE-Meta: U2FsdGVkX19b3fNmYwFRMwhDv+MGX3iQh0aSp8fLQJGWuuXeBiaNqeDL8VpN1OOOTM0ZnGaFJPxKVGuW+JQc3POC5sQ52ulgbJt/wLJSMxGK+ydcc1QXUQSyyEv0s447mgpVBO10KMemArrXENUCPVg5bVBQunsri+92jQlN0vnSRUT58jfN0bRE3Fw3KMSaGLtJRiP4BCfX80etiuxoenFQDHBHZfdF2r1bT3Q6IhMGQmy3r2RaM8nwERTuJP3oYr/r6frlBjLerVHvgH8mAbhHFnPmUriNXUQKTP72hyUQP3iGE84JK9VSsrH0E0F5Q5nXjBg3Lzj6fUYZozb57wCeHjoiIq+1uJcJiSN3TjJBP3542HMaMYdtokPeZn3XZ4o1ms1PM7AU0owKbkx1mHma/UFospeuTrffeYjGbgcjGdEpcBP4tkO8qe+zogsyPlbwRiHPMDBjCytOEzNxuCL3JVqEpA+QMRYd9ZuF7qIFFI+Pq4aTcc6zDOJHB+uswn+z6ukuHUNPMRbcfMxx+9FYz8dbuluNzXbd6+Q9SWg4S7gFjb1gYnu3KXuWql8xUyg5w/4wHf8GPE4She055dN8mQqsRRZrPxzf+xy7bUOd/sxqeC6RpuMYj2Jl7zy+7mVJC69zGHnM4ESffG1aKLcEl3WXqmAld4a7PCziwvGAsSaXhE+xgaKukSi8MkWXwPS2k9hOOrMe+BtVJAYHgeTlzFt254tjLRSCH15fOCQtRTPCRcYNsjch2kze9nhQQoZRJG3Dwiwri9+jjzpR8TsixFiqiM3a45ZGmfIZscJAAQjCiN92MaAQW6weuec7/dNqhf9PuqRCdZK0KBUXZOXN77Xkzm7o73l5qBckTH6lH38FbjfR0ajgNnvUzK9AUQEo1APGfU0TYXQspsJ19Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,96 +141,380 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The possibility of many barn operations is determined by the current
-number of full or empty sheaves. Taking the barn->lock just to find out
-that e.g. there are no empty sheaves results in unnecessary overhead and
-lock contention. Thus perform these checks outside of the lock with a
-data_race() annotated variable read and fail quickly without taking the
-lock.
+From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
 
-Checks for sheaf availability that racily succeed have to be obviously
-repeated under the lock for correctness, but we can skip repeating
-checks if there are too many sheaves on the given list as the limits
-don't need to be strict.
+The slab changes for sheaves requires more effort in the testing code.
+Unite all the kmem_cache work into the tools/include slab header for
+both the vma and maple tree testing.
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+The vma test code also requires importing more #defines to allow for
+seamless use of the shared kmem_cache code.
+
+This adds the pthread header to the slab header in the tools directory
+to allow for the pthread_mutex in linux.c.
+
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ tools/include/linux/slab.h        | 137 ++++++++++++++++++++++++++++++++++++--
+ tools/testing/shared/linux.c      |  26 ++------
+ tools/testing/shared/maple-shim.c |   1 +
+ tools/testing/vma/vma_internal.h  |  94 +-------------------------
+ 4 files changed, 142 insertions(+), 116 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index c6ca9b60acd15520410ac08d252bb09e111db6f1..d078630f7211b617f390a16fa080da8a1df45355 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2801,9 +2801,12 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn)
- 	struct slab_sheaf *empty = NULL;
- 	unsigned long flags;
+diff --git a/tools/include/linux/slab.h b/tools/include/linux/slab.h
+index c87051e2b26f5a7fee0362697fae067076b8e84d..c5c5cc6db5668be2cc94c29065ccfa7ca7b4bb08 100644
+--- a/tools/include/linux/slab.h
++++ b/tools/include/linux/slab.h
+@@ -4,11 +4,31 @@
  
-+	if (!data_race(barn->nr_empty))
-+		return NULL;
+ #include <linux/types.h>
+ #include <linux/gfp.h>
++#include <pthread.h>
+ 
+-#define SLAB_PANIC 2
+ #define SLAB_RECLAIM_ACCOUNT    0x00020000UL            /* Objects are reclaimable */
+ 
+ #define kzalloc_node(size, flags, node) kmalloc(size, flags)
++enum _slab_flag_bits {
++	_SLAB_KMALLOC,
++	_SLAB_HWCACHE_ALIGN,
++	_SLAB_PANIC,
++	_SLAB_TYPESAFE_BY_RCU,
++	_SLAB_ACCOUNT,
++	_SLAB_FLAGS_LAST_BIT
++};
 +
- 	spin_lock_irqsave(&barn->lock, flags);
- 
--	if (barn->nr_empty) {
-+	if (likely(barn->nr_empty)) {
- 		empty = list_first_entry(&barn->sheaves_empty,
- 					 struct slab_sheaf, barn_list);
- 		list_del(&empty->barn_list);
-@@ -2850,6 +2853,9 @@ static struct slab_sheaf *barn_get_full_or_empty_sheaf(struct node_barn *barn)
- 	struct slab_sheaf *sheaf = NULL;
- 	unsigned long flags;
- 
-+	if (!data_race(barn->nr_full) && !data_race(barn->nr_empty))
-+		return NULL;
++#define __SLAB_FLAG_BIT(nr)	((unsigned int __force)(1U << (nr)))
++#define __SLAB_FLAG_UNUSED	((unsigned int __force)(0U))
 +
- 	spin_lock_irqsave(&barn->lock, flags);
++#define SLAB_HWCACHE_ALIGN	__SLAB_FLAG_BIT(_SLAB_HWCACHE_ALIGN)
++#define SLAB_PANIC		__SLAB_FLAG_BIT(_SLAB_PANIC)
++#define SLAB_TYPESAFE_BY_RCU	__SLAB_FLAG_BIT(_SLAB_TYPESAFE_BY_RCU)
++#ifdef CONFIG_MEMCG
++# define SLAB_ACCOUNT		__SLAB_FLAG_BIT(_SLAB_ACCOUNT)
++#else
++# define SLAB_ACCOUNT		__SLAB_FLAG_UNUSED
++#endif
  
- 	if (barn->nr_full) {
-@@ -2880,9 +2886,12 @@ barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty)
- 	struct slab_sheaf *full = NULL;
- 	unsigned long flags;
+ void *kmalloc(size_t size, gfp_t gfp);
+ void kfree(void *p);
+@@ -23,6 +43,86 @@ enum slab_state {
+ 	FULL
+ };
  
-+	if (!data_race(barn->nr_full))
-+		return NULL;
++struct kmem_cache {
++	pthread_mutex_t lock;
++	unsigned int size;
++	unsigned int align;
++	unsigned int sheaf_capacity;
++	int nr_objs;
++	void *objs;
++	void (*ctor)(void *);
++	bool non_kernel_enabled;
++	unsigned int non_kernel;
++	unsigned long nr_allocated;
++	unsigned long nr_tallocated;
++	bool exec_callback;
++	void (*callback)(void *);
++	void *private;
++};
 +
- 	spin_lock_irqsave(&barn->lock, flags);
- 
--	if (barn->nr_full) {
-+	if (likely(barn->nr_full)) {
- 		full = list_first_entry(&barn->sheaves_full, struct slab_sheaf,
- 					barn_list);
- 		list_del(&full->barn_list);
-@@ -2906,19 +2915,23 @@ barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
- 	struct slab_sheaf *empty;
- 	unsigned long flags;
- 
-+	/* we don't repeat this check under barn->lock as it's not critical */
-+	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES)
-+		return ERR_PTR(-E2BIG);
-+	if (!data_race(barn->nr_empty))
-+		return ERR_PTR(-ENOMEM);
++struct kmem_cache_args {
++	/**
++	 * @align: The required alignment for the objects.
++	 *
++	 * %0 means no specific alignment is requested.
++	 */
++	unsigned int align;
++	/**
++	 * @sheaf_capacity: The maximum size of the sheaf.
++	 */
++	unsigned int sheaf_capacity;
++	/**
++	 * @useroffset: Usercopy region offset.
++	 *
++	 * %0 is a valid offset, when @usersize is non-%0
++	 */
++	unsigned int useroffset;
++	/**
++	 * @usersize: Usercopy region size.
++	 *
++	 * %0 means no usercopy region is specified.
++	 */
++	unsigned int usersize;
++	/**
++	 * @freeptr_offset: Custom offset for the free pointer
++	 * in &SLAB_TYPESAFE_BY_RCU caches
++	 *
++	 * By default &SLAB_TYPESAFE_BY_RCU caches place the free pointer
++	 * outside of the object. This might cause the object to grow in size.
++	 * Cache creators that have a reason to avoid this can specify a custom
++	 * free pointer offset in their struct where the free pointer will be
++	 * placed.
++	 *
++	 * Note that placing the free pointer inside the object requires the
++	 * caller to ensure that no fields are invalidated that are required to
++	 * guard against object recycling (See &SLAB_TYPESAFE_BY_RCU for
++	 * details).
++	 *
++	 * Using %0 as a value for @freeptr_offset is valid. If @freeptr_offset
++	 * is specified, %use_freeptr_offset must be set %true.
++	 *
++	 * Note that @ctor currently isn't supported with custom free pointers
++	 * as a @ctor requires an external free pointer.
++	 */
++	unsigned int freeptr_offset;
++	/**
++	 * @use_freeptr_offset: Whether a @freeptr_offset is used.
++	 */
++	bool use_freeptr_offset;
++	/**
++	 * @ctor: A constructor for the objects.
++	 *
++	 * The constructor is invoked for each object in a newly allocated slab
++	 * page. It is the cache user's responsibility to free object in the
++	 * same state as after calling the constructor, or deal appropriately
++	 * with any differences between a freshly constructed and a reallocated
++	 * object.
++	 *
++	 * %NULL means no constructor.
++	 */
++	void (*ctor)(void *);
++};
 +
- 	spin_lock_irqsave(&barn->lock, flags);
+ static inline void *kzalloc(size_t size, gfp_t gfp)
+ {
+ 	return kmalloc(size, gfp | __GFP_ZERO);
+@@ -37,9 +137,38 @@ static inline void *kmem_cache_alloc(struct kmem_cache *cachep, int flags)
+ }
+ void kmem_cache_free(struct kmem_cache *cachep, void *objp);
  
--	if (barn->nr_full >= MAX_FULL_SHEAVES) {
--		empty = ERR_PTR(-E2BIG);
--	} else if (!barn->nr_empty) {
--		empty = ERR_PTR(-ENOMEM);
--	} else {
-+	if (likely(barn->nr_empty)) {
- 		empty = list_first_entry(&barn->sheaves_empty, struct slab_sheaf,
- 					 barn_list);
- 		list_del(&empty->barn_list);
- 		list_add(&full->barn_list, &barn->sheaves_full);
- 		barn->nr_empty--;
- 		barn->nr_full++;
-+	} else {
-+		empty = ERR_PTR(-ENOMEM);
+-struct kmem_cache *kmem_cache_create(const char *name, unsigned int size,
+-			unsigned int align, unsigned int flags,
+-			void (*ctor)(void *));
++
++struct kmem_cache *
++__kmem_cache_create_args(const char *name, unsigned int size,
++		struct kmem_cache_args *args, unsigned int flags);
++
++/* If NULL is passed for @args, use this variant with default arguments. */
++static inline struct kmem_cache *
++__kmem_cache_default_args(const char *name, unsigned int size,
++		struct kmem_cache_args *args, unsigned int flags)
++{
++	struct kmem_cache_args kmem_default_args = {};
++
++	return __kmem_cache_create_args(name, size, &kmem_default_args, flags);
++}
++
++static inline struct kmem_cache *
++__kmem_cache_create(const char *name, unsigned int size, unsigned int align,
++		unsigned int flags, void (*ctor)(void *))
++{
++	struct kmem_cache_args kmem_args = {
++		.align	= align,
++		.ctor	= ctor,
++	};
++
++	return __kmem_cache_create_args(name, size, &kmem_args, flags);
++}
++
++#define kmem_cache_create(__name, __object_size, __args, ...)           \
++	_Generic((__args),                                              \
++		struct kmem_cache_args *: __kmem_cache_create_args,	\
++		void *: __kmem_cache_default_args,			\
++		default: __kmem_cache_create)(__name, __object_size, __args, __VA_ARGS__)
+ 
+ void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void **list);
+ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
+diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
+index 0f97fb0d19e19c327aa4843a35b45cc086f4f366..97b8412ccbb6d222604c7b397c53c65618d8d51b 100644
+--- a/tools/testing/shared/linux.c
++++ b/tools/testing/shared/linux.c
+@@ -16,21 +16,6 @@ int nr_allocated;
+ int preempt_count;
+ int test_verbose;
+ 
+-struct kmem_cache {
+-	pthread_mutex_t lock;
+-	unsigned int size;
+-	unsigned int align;
+-	int nr_objs;
+-	void *objs;
+-	void (*ctor)(void *);
+-	unsigned int non_kernel;
+-	unsigned long nr_allocated;
+-	unsigned long nr_tallocated;
+-	bool exec_callback;
+-	void (*callback)(void *);
+-	void *private;
+-};
+-
+ void kmem_cache_set_callback(struct kmem_cache *cachep, void (*callback)(void *))
+ {
+ 	cachep->callback = callback;
+@@ -234,23 +219,26 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
+ }
+ 
+ struct kmem_cache *
+-kmem_cache_create(const char *name, unsigned int size, unsigned int align,
+-		unsigned int flags, void (*ctor)(void *))
++__kmem_cache_create_args(const char *name, unsigned int size,
++			  struct kmem_cache_args *args,
++			  unsigned int flags)
+ {
+ 	struct kmem_cache *ret = malloc(sizeof(*ret));
+ 
+ 	pthread_mutex_init(&ret->lock, NULL);
+ 	ret->size = size;
+-	ret->align = align;
++	ret->align = args->align;
++	ret->sheaf_capacity = args->sheaf_capacity;
+ 	ret->nr_objs = 0;
+ 	ret->nr_allocated = 0;
+ 	ret->nr_tallocated = 0;
+ 	ret->objs = NULL;
+-	ret->ctor = ctor;
++	ret->ctor = args->ctor;
+ 	ret->non_kernel = 0;
+ 	ret->exec_callback = false;
+ 	ret->callback = NULL;
+ 	ret->private = NULL;
++
+ 	return ret;
+ }
+ 
+diff --git a/tools/testing/shared/maple-shim.c b/tools/testing/shared/maple-shim.c
+index 640df76f483e09f3b6f85612786060dd273e2362..9d7b743415660305416e972fa75b56824211b0eb 100644
+--- a/tools/testing/shared/maple-shim.c
++++ b/tools/testing/shared/maple-shim.c
+@@ -3,5 +3,6 @@
+ /* Very simple shim around the maple tree. */
+ 
+ #include "maple-shared.h"
++#include <linux/slab.h>
+ 
+ #include "../../../lib/maple_tree.c"
+diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
+index 2f1c586400cfd65413d2ff82199590b43796b18c..972ab2686e0a3654cef611ce9f3409bc0c38dc80 100644
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -26,6 +26,7 @@
+ #include <linux/mm.h>
+ #include <linux/rbtree.h>
+ #include <linux/refcount.h>
++#include <linux/slab.h>
+ 
+ extern unsigned long stack_guard_gap;
+ #ifdef CONFIG_MMU
+@@ -509,65 +510,6 @@ struct pagetable_move_control {
+ 		.len_in = len_,						\
  	}
  
- 	spin_unlock_irqrestore(&barn->lock, flags);
+-struct kmem_cache_args {
+-	/**
+-	 * @align: The required alignment for the objects.
+-	 *
+-	 * %0 means no specific alignment is requested.
+-	 */
+-	unsigned int align;
+-	/**
+-	 * @useroffset: Usercopy region offset.
+-	 *
+-	 * %0 is a valid offset, when @usersize is non-%0
+-	 */
+-	unsigned int useroffset;
+-	/**
+-	 * @usersize: Usercopy region size.
+-	 *
+-	 * %0 means no usercopy region is specified.
+-	 */
+-	unsigned int usersize;
+-	/**
+-	 * @freeptr_offset: Custom offset for the free pointer
+-	 * in &SLAB_TYPESAFE_BY_RCU caches
+-	 *
+-	 * By default &SLAB_TYPESAFE_BY_RCU caches place the free pointer
+-	 * outside of the object. This might cause the object to grow in size.
+-	 * Cache creators that have a reason to avoid this can specify a custom
+-	 * free pointer offset in their struct where the free pointer will be
+-	 * placed.
+-	 *
+-	 * Note that placing the free pointer inside the object requires the
+-	 * caller to ensure that no fields are invalidated that are required to
+-	 * guard against object recycling (See &SLAB_TYPESAFE_BY_RCU for
+-	 * details).
+-	 *
+-	 * Using %0 as a value for @freeptr_offset is valid. If @freeptr_offset
+-	 * is specified, %use_freeptr_offset must be set %true.
+-	 *
+-	 * Note that @ctor currently isn't supported with custom free pointers
+-	 * as a @ctor requires an external free pointer.
+-	 */
+-	unsigned int freeptr_offset;
+-	/**
+-	 * @use_freeptr_offset: Whether a @freeptr_offset is used.
+-	 */
+-	bool use_freeptr_offset;
+-	/**
+-	 * @ctor: A constructor for the objects.
+-	 *
+-	 * The constructor is invoked for each object in a newly allocated slab
+-	 * page. It is the cache user's responsibility to free object in the
+-	 * same state as after calling the constructor, or deal appropriately
+-	 * with any differences between a freshly constructed and a reallocated
+-	 * object.
+-	 *
+-	 * %NULL means no constructor.
+-	 */
+-	void (*ctor)(void *);
+-};
+-
+ static inline void vma_iter_invalidate(struct vma_iterator *vmi)
+ {
+ 	mas_pause(&vmi->mas);
+@@ -652,40 +594,6 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
+ 	vma->vm_lock_seq = UINT_MAX;
+ }
+ 
+-struct kmem_cache {
+-	const char *name;
+-	size_t object_size;
+-	struct kmem_cache_args *args;
+-};
+-
+-static inline struct kmem_cache *__kmem_cache_create(const char *name,
+-						     size_t object_size,
+-						     struct kmem_cache_args *args)
+-{
+-	struct kmem_cache *ret = malloc(sizeof(struct kmem_cache));
+-
+-	ret->name = name;
+-	ret->object_size = object_size;
+-	ret->args = args;
+-
+-	return ret;
+-}
+-
+-#define kmem_cache_create(__name, __object_size, __args, ...)           \
+-	__kmem_cache_create((__name), (__object_size), (__args))
+-
+-static inline void *kmem_cache_alloc(struct kmem_cache *s, gfp_t gfpflags)
+-{
+-	(void)gfpflags;
+-
+-	return calloc(s->object_size, 1);
+-}
+-
+-static inline void kmem_cache_free(struct kmem_cache *s, void *x)
+-{
+-	free(x);
+-}
+-
+ /*
+  * These are defined in vma.h, but sadly vm_stat_account() is referenced by
+  * kernel/fork.c, so we have to these broadly available there, and temporarily
 
 -- 
 2.51.0
