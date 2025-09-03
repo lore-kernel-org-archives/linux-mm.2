@@ -4,93 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E8DCA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 10:18:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1EECA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 10:22:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 685348E0007; Wed,  3 Sep 2025 06:18:11 -0400 (EDT)
+	id 186EC6B0006; Wed,  3 Sep 2025 06:22:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65C488E0001; Wed,  3 Sep 2025 06:18:11 -0400 (EDT)
+	id 137B38E000B; Wed,  3 Sep 2025 06:22:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5992E8E0007; Wed,  3 Sep 2025 06:18:11 -0400 (EDT)
+	id F40428E0001; Wed,  3 Sep 2025 06:22:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 489468E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:18:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1A7F59D3C
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:18:10 +0000 (UTC)
-X-FDA: 83847538740.09.233C516
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 997F81C0003
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:18:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DC2416B0006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:22:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80D5B13B20B
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:22:55 +0000 (UTC)
+X-FDA: 83847550710.16.623FD20
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B40F0140006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:22:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HggVaUDs;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf09.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756894973; a=rsa-sha256;
+	cv=none;
+	b=WKl2NWhXC18DD70mkdY1nrloE8m/neCvy3hX5MKwWI8faByN70CJCzlWnHZpGnMiN7joXD
+	M3h0WduXurVw4dOyW0q/qi20y4GImGqo8QJNfiLgke/R0aNOgL4kN07hjNPOCP6cH5m8or
+	0VzSWxEGPBiMdtwXFN+B7ZB1W7lvGMA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HggVaUDs;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf09.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756894689;
+	s=arc-20220608; t=1756894973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sJ65Befhlr72Ia3ZmnOetqt80T+UP+YkUCseLmOi+mg=;
-	b=za/NyR4eGgJTJJlLCkeYa757px3yH8Oz+AXXJnLEG2DFqSIChyhvGkOYStxRiFoufdM6zt
-	X1ZiVkiitkSd16bGHOwUdsBP94n6XcGWcMM156sfdyqCAvUWxXehVclUWr0fnIMDYI/Iky
-	r/atAhAE9LeM2zdty7KphScil5H8bYo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756894689; a=rsa-sha256;
-	cv=none;
-	b=KQ/jfyXX7/UAjcxiAGuKIV0yO3afsrtJnej72IlFW5b9YmaD+WeCChsH0VHeUczKukbtbz
-	LoO4oCtT3+6fptSR9Y49GN8ts+RF8PAVFh5KzFlOWOO/pNc3FiEaHcm7o6PfYhEwL12u62
-	WBnCy5ZauVv4htDXxSY7QTgY6xqExKc=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 3 Sep 2025 19:18:05 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 3 Sep 2025 19:18:05 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
-	Matthew Wilcox <willy@infradead.org>,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T31GhvMgDcDqa/8wxluLN+dNwm4mTxHX2BFlOQeV59E=;
+	b=ZKy1+mK9lAD0abI+PEFBMuL+saGh+g1Iz1C45KZiXwlOO28xqelELmdLxNUierPZuzwDa7
+	JoJAsEcNB9mmS03Yj6VSxXeUQiO49BswZbBjVyDDBWqqrPVuot2OW5WjsrKNIbTm5XoQ0B
+	lFqUlltTayxHVBU08dJfQtUedH8Ccmk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756894972; x=1788430972;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=hEddkyRBq0eYhs86EpYDI0PR1kM06ibMXa7C70wF0A8=;
+  b=HggVaUDs6B5f0jjwnfhFSe8/Ze/5LEgjauNQ/5TUJY30DB18cimKRVkT
+   +aNsLVgdW55iJaeiH7gtEgadiG+IjSN3n6xz20M2CsssdMiQ0/aLUtxlc
+   vCgaGi1TB7AbGvlg6SgwfpuANKZ9vf3lKfLI1k8V6BsWuiC+kv095E8sM
+   OZE3t4WV4l13e4hwEWIuf4Q+dVawdt66nXtB5qSekXcp5xPM5iX+QLm96
+   2DjXdKqLpo/pKvvgwFGszxCfBbhoaMEKEfjafZYOW9AEgzkvYZwBDfXy5
+   h97+mgrGnUqBdI38YP63yiC4Fl8T1uGjmG1zPyi6o60nqR/5is3wICIE3
+   g==;
+X-CSE-ConnectionGUID: X+lik4XMRhatXNxRFxFkDg==
+X-CSE-MsgGUID: 3a49P2O7RIKOGw+kVywAcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="59318121"
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="59318121"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:22:50 -0700
+X-CSE-ConnectionGUID: YTo0WasPQBSP1GD2jJB+Ig==
+X-CSE-MsgGUID: 5tCXY7/9Tha1Hp4Y6DZptQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="195180921"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:22:40 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1utkdQ-0000000AxFa-1l46;
+	Wed, 03 Sep 2025 13:22:36 +0300
+Date: Wed, 3 Sep 2025 13:22:36 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-Message-ID: <aLgV3YF9uds7LC9T@yjaykim-PowerEdge-T330>
-References: <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
- <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330>
- <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
- <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
- <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
- <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
- <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
- <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
- <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
- <CACePvbU2iqLyjc2uR3d=56S4A-N4P7k3oUnwA-6D=TFfQ17jBA@mail.gmail.com>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+Message-ID: <aLgW7J-j4nn0u8uo@smile.fi.intel.com>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
+ <aLcBcjvMbrxoDYoC@smile.fi.intel.com>
+ <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
+ <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
+ <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CACePvbU2iqLyjc2uR3d=56S4A-N4P7k3oUnwA-6D=TFfQ17jBA@mail.gmail.com>
-X-Stat-Signature: 9196s7obhbzgdknk5w4gqt8qjpmzgri7
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: B40F0140006
+X-Stat-Signature: qmwpfi576tsfebxeaesxez186ft4sp47
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 997F81C0003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756894688-740716
-X-HE-Meta: U2FsdGVkX18TcQi1eRr5t2M7F6NtXqKdorpg8lBxm9BlPAm8t4htG/36m55W66BWMMG8/pMusWvZM61Vyl8fO1Dp3hmTv3E1EX2LO1bdzj0V7DvaBZoxBHRHPnY2oJOHx8wutl3BXHytco3WQiHG/2UvVQx++RvgJmIb1NQLbV3Tw3bwJ3wewpK35WskyCk/WB0y8I4AYXy0F2/RK3Lgcy8rB2z+wJhFOyD03yzO6/50Osk+LxGAUfOaaNdcajrXG8yVeGOZYvLVFn1SDJZdUQaizArxwtUMFcVnjfEwuzLXUlzTEigY40t2UCt7Cd/Q987sE+r+m21uq2kdMKsyiIpSHPGlob48X0n+JvxSKRjVARgtf6WLcPddBrEyH41Tls2qkgWZq8+UTWkTusemGQibiGPScJ2XdzFgBehRe74AgdwKKllAuDNELKJiids+WkVp47h5gXqh3DLoB5wtpZHsfUI0/kcPKgum5hzBuawj7xK4FLsR+y/ZChGYB52XH0qRkUes+lv7CDCyGxWnOC3nWse05m9nb6nL2aO2PgsOntVE+wQqf4P01uDnNVdgHQE8ZzHqvcnn9NKxdDLj9pmf0V6n0jLv5Gn3pD+cJovaHV9FG7FxNVXz3Y24HZ6vb9LBOtqJIC55aEMKLiYn2p2zXXYeNe6pCPEfkKM9m4z2MgOhrw8bBZuYQfBO9xw49QNxITwVYCPHj3xNsnMXJj4SzgmJzp5efymW7i6bI2gkG7Wk7n058cUvI9cINv2HhZykyHlUXTXo2lWChO1DPu5vW4jjcqaDOflbtdFUkwXDVaY7TvFRKnLqz+O5i36pco6xkX6XcXubTb2Mm6v/e9a7+Va907GYQc+BxEuarduoem/cp9ZQQfpSFQ41DMe/Jzy91YkMelSNChAU96bN9r1qSsk+vTyU/EeO/NpDXLNF5LfPI3uOubjvrwOiVAPRpBuoZq1Ki1zBR8fAo9k
- BkOiLgiH
- WB/AJOc0NEiMfBr0T62KRwE0wlkr5FdyTaCjhmddkI3iqgDo4j9yGvgMHGconw1WRDP4RhyG5BE5+R47QlKcC/pRoK7ENmYcsdQZZ69UoK0SfXPZY6vCi+k2ISbdOeqq1tPKF6+uJwPleaWtoJ952umZiW8DaH+H9rC5JgW1yLqGljg4ehXRJQxQpjQuSLlHZuu7yZmUaXeMPar/8AsIgTLJU3g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756894972-905386
+X-HE-Meta: U2FsdGVkX18+1k76EPZnTDNz39U56MulJHGP/jmQPJiaq252YwltwdEdeJbBpOVrtlmOcuwCC1yJfKF3glKI44jTcgjpmvzLQcMBlxochTJrqXquAQRwOyi9JI0kB3hRt4FL8Ho1xYr8jULuQZEf8crvnad/ZqjuvM1JGLQlx7UEwc+DApXj8Oqs9fhM9KA3UK5wrn1ABKWhV5raf+zFIlEWN7mTI8X4DhdSUZE4JqF67ty7zfDMLyGLOt3GPorUfr1OKLccjAh7zXoRiLIAGaSbxWD/RL7gjdMctg6VemtUUya5T9XEpGpGLT6T5T2gdVSj/dqGj0ZklFDygJdtpPYVUIVaiZUWEAmlmPj6wsViysJzmapb9MqX7zjtsc6Nq379po5uBJN0jkz4eLzHNILX5PBJHpR6uNg4XLzn5/WXKEWXZbB+rp9Qak2uqm+sSUfnk0Kr/4VMuIFC5lktUZYF8GjC6SKI1Ke+/Zn/q4bSSg2Oz6JF5hC4DrYxQGYA3JSjSZfElgQFyufs1ZSXaBNrKiY4UDu77X4xobkl9GLix3s8Uw2PO4qiLXAaGThj+69JXHq8ZDlJIqTq8XoqePJVanaXOThYIGYwlwhWhfS4nJVxQcpSozBijkVUzY6maa1ItZzktDsH39gsOyi7uuZYeJI/s9FqVpVmOQ5XFbhsJAWGNJNjK5CP36awxjmU5LBdvba01XvWuaTMfXPvicG+fsnuxaqBtEEB4/VoyPQr2k3TnSMraW/E49NXVFPu2CFW7htnpNRnR1NQvJFEovVVXuZPxXRCgIdsyQO3pPnFQBGQuM9K0yJ4T40qSjzZsu4Cc2mViDaEADHYGdp29q0ICShrqm/oP6/9Z3qJNV4FMJZIJIwVLtnfhDfZ8/d40t83y6FVKnDcEq3bE7ekGc2TGNvvnugwbIv/PEQpx9MLwHqPPS5AH1QrypU4yCtRqC4frEtxntVev9xB8sW
+ iqfJNUz7
+ uDK092GVsaA0kqfcEwmT51qSiQKjSKIYp0HZtnr4di3LNfc8RRkUm2MzEm7NJv8XLe6O8cxthZX2sN93jeRBifn6+/LqEY8HF1A3l+whilXGUickmsZDBa+v8zDIu86uicW9X8ech4zvJ9V9e8tvi6CdRpdpvIoz/DdTPggT0H2C6I1azfXgtElq3njIcSLwGSxnvxEfvI1BdXBerIj2I+7XHuoE10/ynOqE8U0D8j+LYr8kKYxnlNEbTV3W2JjHl5dgfs+Ce6mlf4OjOxAItkCwkJl7D64EaK0OYLCkUB0E3/bKbLUEZXsE6UN39aek42geRbgUs8OpQyflqh3YIyGCxso0li0ldJM8J86pInOp7JMSUBoYpm4oWG/POmHYzsTBJExU796ZNsdg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,55 +153,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Please accept the sincere apology from me.  I was grumpy, sorry about
-> that. I was under pressure to be somewhere else but this email is
-> taking longer than I expected to write. I let my bad temper get the
-> better of me and I am sorry about that.
+On Wed, Sep 03, 2025 at 09:33:34AM +0200, Bartosz Golaszewski wrote:
+> On Tue, Sep 2, 2025 at 10:46 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Tue, Sep 2, 2025 at 8:42 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> > > On Tue, Sep 2, 2025 at 4:38 PM Andy Shevchenko
+> > > <andriy.shevchenko@intel.com> wrote:
+> > > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
+
+...
+
+> > > > > The strict flag in struct pinmux_ops disallows the usage of the same pin
+> > > > > as a GPIO and for another function. Without it, a rouge user-space
+> > > > > process with enough privileges (or even a buggy driver) can request a
+> > > > > used pin as GPIO and drive it, potentially confusing devices or even
+> > > > > crashing the system. Set it globally for all pinctrl-msm users.
+> > > >
+> > > > How does this keep (or allow) I²C generic recovery mechanism to work?
 > 
-> You might not have realized that the proposal you made has the same
-> kind of buggy behavior for the usage case where the change of the
-> parent and the child gets it.
-> 
-> One side note, I do want to rate limit the new proposals I have to
-> defend against. On the other hand, when you make a proposal to change,
-> you have no way to predict where I will consider it good or bad.
-> Otherwise we don't need to have this discussion. My hash reply is
-> uncalled for and I realized that now.
-> 
-> I am over it now, let's put this behind us and continue our discussion.
-> 
-> Best regards,
-> 
-> Chris
+> Anyway, what is your point? I don't think it has any impact on this.
 
-Hello Chris Li,
+If we have a group of pins that are marked as I²C, and we want to use recovery
+via GPIOs, would it be still possible to request as GPIO when controller driver
+is in the strict mode?
 
-I received your mail and have been taking more time to think through the
-discussion you raised, so I had not replied immediately.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Looking back at my proposals, I realized I kept sending out questions as
-I was trying to align fully with your view and bring things up to patch
-level quality. Considering you also have many other topics to think
-about, I will take some time to review this subject myself and focus on
-reducing communication overhead.
 
-Over the past week you have been quick to review and very engaged, which
-I greatly appreciate. I feel happy that our ideation has aligned to a
-good extent, and my frequent questions came from being motivated to
-bring this up to the same level of patch work as before as quickly as
-possible. In hindsight, I realize this also reflected my own impatience.
-
-I am also in the process of clarifying my thoughts by working out the
-aligned parts at the code level. At the same time, I am considering how
-this connects with the points we have discussed so far and the areas
-where alignment is still incomplete.
-
-Once my thoughts on your last review settle, I will send you my ideas
-and any remaining questions. (almost done!)
-
-Thank you again for your thoughtful reviews, and the respect I
-have for your guidance throughout this discussion. 
-
-Best regards,
-Youngjun Park
 
