@@ -4,91 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95987CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 19:25:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9B8DCA1012
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 19:30:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F20A88E0008; Wed,  3 Sep 2025 15:25:12 -0400 (EDT)
+	id 2A9BB8E000B; Wed,  3 Sep 2025 15:30:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF8548E0001; Wed,  3 Sep 2025 15:25:12 -0400 (EDT)
+	id 259F58E0001; Wed,  3 Sep 2025 15:30:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E352C8E0008; Wed,  3 Sep 2025 15:25:12 -0400 (EDT)
+	id 148A78E000B; Wed,  3 Sep 2025 15:30:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D21258E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 15:25:12 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74836867E8
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:25:12 +0000 (UTC)
-X-FDA: 83848917264.23.B11DEEE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0A2341C0006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:25:10 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=adGL9oZg;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756927511; a=rsa-sha256;
-	cv=none;
-	b=wupU515YBBQX85kGyhX/KoQ5nHbMiPi1L/xj5chn6j3BYIyDlsrb5FWRka5l+hrjC6U1tA
-	Oc8ZguPBo2/8QzWKuCMm86+VdgEM8+5XRyQAcmtjiGwzL9sl+X/yq7AvuMWVJkkYBQyFUE
-	64D0fwrosFiI7xqYig6xQQHyESPDepU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=adGL9oZg;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id F2D9F8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 15:30:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95A245AAC9
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:30:23 +0000 (UTC)
+X-FDA: 83848930326.20.63682CE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E68E14000E
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 19:30:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oEswwnUF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756927511;
+	s=arc-20220608; t=1756927822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EUhagBJ1/j4PgqvRx1RFIGu/KN6tTSm9ODHSfQrEMNo=;
-	b=sg/+U6XSJtb37FBlrXwueMIxGVGjGji1rEowWqaor5V0nJ9jDazY2EQkqWgby2ngoFVr0o
-	rQiPDhQrj6Gh8u7Y4psF5d3G4TzDFw1WbyHpFCVMZrvz9BF0QNWH3cp5se9WEajq6/EGBP
-	wcWBGFTV3ZPY4b+yhPRewqN3h0Ke9ec=
+	bh=QwX9DrdQ5CKSd6pwYo4K3d4ooyYflVXlOjkUbRLGPL8=;
+	b=UWvBRonanjrcTWQt47qmWikAL2+HoulkKubXo154S2HBCjG5XFdR58cSqQPGWaUrnt7A6G
+	rn6T4da1U/KQxv86BJJyKqbxNJ0WJGRLq2BtwTe3C2blaAQ4ZWvdmJdiRn2kN/dJYtEpcS
+	d1Hwg2DSWiSeLoKDH2PCZLMGeo/DZZQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oEswwnUF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756927822; a=rsa-sha256;
+	cv=none;
+	b=6CcUCZLuaCTe46hlY+Rqx9SkvEcPXvNa1XRB5AFUPDldYwH4aquD/DhDB1bQpfPCBTUruD
+	pQSN9z4p5dSATbCCsGR1Qae7E4l8cnBTx3KCVEmEuE51o4af+5gsDQaOSazcslHvOWjGMm
+	RzJgDD5q+h7fmv+XrROh101eTCclMes=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 67A676013F;
-	Wed,  3 Sep 2025 19:25:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA59EC4CEE7;
-	Wed,  3 Sep 2025 19:25:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 834BA40BE2;
+	Wed,  3 Sep 2025 19:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8947C4CEE7;
+	Wed,  3 Sep 2025 19:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756927510;
-	bh=NBbsDMjSKsI2AUxX91Gb4WbI92rKyuNDqjM76TYzfBg=;
+	s=k20201202; t=1756927820;
+	bh=gbiYfCYnwD77BhT/g17AX8EiRn/Z+Y0d8Hl4eh52DYo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=adGL9oZgYPs04NhMzOYDFe9H2zXCIScCmhp8FCYjAVCIaThHiJXOKPyFhhI426ebE
-	 k1bk9ze6Ty/eCH+cYXBYDRWSUo2bNGShsPuDahO15R/7AM35F+xpGfrHCIEUgCqrzv
-	 y0Iup37vzMUHfXI4vtdfimIlD1BKXSnwdfF5tBXXe7IVS/eBu8QkYieuXYB2jPNdOo
-	 8w7+0baLFy4wDDUWyccec8EJ8oxOHuyWAvPfOxyAbH4GSxG0k+a+0AofpgoYzsaQtl
-	 kzpeMlLyMrc6gOFAJBSyYLqQnrCguEuLzG10UvjAZxXT/sq8OUwW7bqAWeviAC5ejz
-	 UFSY/7caqab2g==
-Date: Wed, 3 Sep 2025 22:25:02 +0300
+	b=oEswwnUFyX6YzOK/z9N9LFcK6410onGyQhtt7HqMPuK+Bz5kIyDe1S134VWl3YnUs
+	 lZyvI6AgrLghgDHiy98MMxoZ7WvyVFYkjxu4ggWww2iXWCZCPdO+Ia4TCZZyXyLm5D
+	 UT5oVtvwFau4bDLQtWOz7WkB//w1DzoalLjz1HHEtmXWa3UJMx17L3ErzqCldiZIxH
+	 FmdEuS2fDqllHE+JjRk/ZP9kPsJNHnxvQD2u17gru4gEjBt8mMxdpcpLAJZMg8+ot7
+	 cItYGLq9Pi0pvmfdOGQ/cJvywzKibKRdUyepLU/iOzvdqBqn/6gndLRA0AWLDHJKG4
+	 CiNh1699nhn3w==
+Date: Wed, 3 Sep 2025 22:29:56 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
-	Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] kho: add support for preserving vmalloc allocations
-Message-ID: <aLiWDl3sq3RTkdfJ@kernel.org>
-References: <20250903063018.3346652-1-rppt@kernel.org>
- <20250903063018.3346652-2-rppt@kernel.org>
- <20250903125620.GG470103@nvidia.com>
- <aLhg2Jli0KUe-CXC@kernel.org>
- <20250903170631.GK470103@nvidia.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
+	jasonmiu@google.com, graf@amazon.com, changyuanl@google.com,
+	dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
+	kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
+	masahiroy@kernel.org, akpm@linux-foundation.org, tj@kernel.org,
+	yoann.congal@smile.fr, mmaurer@google.com, roman.gushchin@linux.dev,
+	chenridong@huawei.com, axboe@kernel.dk, mark.rutland@arm.com,
+	jannh@google.com, vincent.guittot@linaro.org, hannes@cmpxchg.org,
+	dan.j.williams@intel.com, david@redhat.com,
+	joel.granados@kernel.org, rostedt@goodmis.org,
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
+	linux@weissschuh.net, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com,
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org,
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com,
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com,
+	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
+	aleksander.lobakin@intel.com, ira.weiny@intel.com,
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
+	stuart.w.hayes@gmail.com, lennart@poettering.net,
+	brauner@kernel.org, linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, saeedm@nvidia.com,
+	ajayachandra@nvidia.com, parav@nvidia.com, leonro@nvidia.com,
+	witu@nvidia.com
+Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
+Message-ID: <aLiXNLiWNFuvh4_G@kernel.org>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+ <20250807014442.3829950-30-pasha.tatashin@soleen.com>
+ <20250826162019.GD2130239@nvidia.com>
+ <aLXIcUwt0HVzRpYW@kernel.org>
+ <CA+CK2bC96fxHBb78DvNhyfdjsDfPCLY5J5cN8W0hUDt9KAPBJQ@mail.gmail.com>
+ <mafs03496w0kk.fsf@kernel.org>
+ <CA+CK2bAb6s=gUTCNjMrOqptZ3a_nj3teuVSZs86AvVymvaURQA@mail.gmail.com>
+ <20250902113857.GB186519@nvidia.com>
+ <CA+CK2bB-CaEdvzxt9=c1SZwXBfy-nE202Q2mfHL_2K7spjf8rw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250903170631.GK470103@nvidia.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0A2341C0006
-X-Stat-Signature: f413an379qk96oxo6k9d61xsxo95mc43
+In-Reply-To: <CA+CK2bB-CaEdvzxt9=c1SZwXBfy-nE202Q2mfHL_2K7spjf8rw@mail.gmail.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E68E14000E
+X-Stat-Signature: u4qz5s67io1amn4tgyub4upytit1jat1
 X-Rspam-User: 
-X-HE-Tag: 1756927510-976108
-X-HE-Meta: U2FsdGVkX19CBTwpXZiwKAGS1KfTHgtG8DO70F9NLk+D8pdgxdHp9Kkqfdgk6NkOmjKuFCGsj28rBtyaTlNwunf6w/0oGepFxD0vztdRL7yKAUSb5k4v12FbtSJ9PUDdtVAYd7Tseuz4ataFgmbrdXxT/iWJZDcHkN31NsB7XBlOmSiY4gHV2cZW5w28WQVyMY+wsOO1Qim2NMMVjx7/WX+fuoNKqyZGjwqBvq8LR3duQMcBK0GHSTvBR597t11v00fTn4298ghMasvfS+0aPUBkh2mW2b46fhfbvGBRKoUNdWh0BVYrp0cTgofK7g2lArH93lxy4Zk6NSZALagwDbNHlbzZ4v7fJ1EiBtlHv2HpXg4cbq/4xrcuMU/rhKM9rlHlGDkvytS0i2o+CbuCX+P7mYXcLzRjWi+GF+1NkmdH8BzZjmRfckZjyDt3UgfGi8PeefLO6oezB7gzP+KZtXf+hlGdUSGPPhfjpCdpeE7X+g9n0AyFf/nFSix6aYmMccvl0Gob8r6Om9d+fouWyOs40wXKyimOWmpZ98YyfgpFRjyruTphdLXGOGo6C2QvOyjmVVJBbQ1/If82i4y4uXUEObqvUuACCoAIzl98BZTqndmVC092XoKnNQbqoXHrhh3bvhc1BwUxOQlmKh8xYTc0zNnIkTcld/Y0YfbtDUME8gEWKimOh96vGR6p16U3eVQi+IPmRnhMgnR74UCKJfwApiSN3JCfk9LDqdaV/LET9bnventvTKli+0Y6oA1kg5szmRtZCt77tLqaMbqPF+NHPsdSnLsHa9hkoj/Db2j9BwPz0JBSoI+FwprrSG8xsuNKMiOjsQ9im+UAp2pecaiXQw1rjAZQc+iLacxnI5olyGNDCEv2Juj4E7RDTeqC6AWSrTjLJpbF2TpzmHzHYbew8/boIsiE6eTPk2QbHQqSDqjs4+0ZvQ==
+X-HE-Tag: 1756927821-890434
+X-HE-Meta: U2FsdGVkX1+4QP9GO+Ue8aVmDgn/JjZBdi6RYjkMeI7jBIAP20pfRoWSMSxn4Di97eK6u+m93BP795ErEO8xlmP1/KgVS/j1yiK+Q3qNdMDLC0I1azNa7ysNcrGsOEEo/pOyMaFN2tlkvJSiIuTfAKJa8mupmJfQJkaS/vXU4LeiWunsitkraKQGPkmMNVcUIi75Roo1U9muEfFV81w43rGx9CiRKL1nqKhxZmYXXvnTV4fCfDfMercy4h0fhKD50JPynnuELqyFiM+p0nJAMHQ1rHuso8Vy8LbxPIPEKu/bUm7iD5YP5TqibRb0IuKvRyHqjL02+NLlaw6QiXMhqOck7KjQ53v0N3ARTyDYEd7Tflx8AOjWiXZH6XAHYrLqQTzxHwQ3QmQC0awBwT3AnNxckh8Fij+utXggbvENywyyBq7aQD4jOB5davMucOBstaNKAyxKjz2eoVmOnjAm06pchBDTIrCKixnWG0ZUCPoIlqGbVLpB+vUcYrJ1kEDwgEPwiAxHdEcTEs9ThMjYGA4PUtzPJwPCYa9ckArmmCKf4FjScbasNrKInKMVtCgaC6eCikp6oj7H4HHq8ywf6GlsPjBKVx46m5ZAbzaJHRFO1LG4Jm9nr+FV6OnCsEEGWk1B2a50CMYwmpZYSBYhj/dEJT8dAv+0FkDlEUsJ0EvmxAlm96qKl0+z5R9WdKntWe15/ypm0nUFat7s3w+KS/hJDv4/adSLOcBs3t/nNShY10qFe99mvOlX32dO3BjtwRXLB39H/vaD4XWC0pw24vddfb8OVuzkXiKIvLBAwT0kInCF/FNr+VbENsE9fmebw+xUZ1IrFr5ZpfiW6NzXTnTK/DyKg43zoMgdVG/6/zdz6MNKSgF+87BDGdo1qI23om0bQMtOWRc7ZVcPJRZPEDEpItAJUPdLFK0Jgde4GbZMObR8vBXcxMvnUCbdtdvu/6aeAoifxeZBTB7CRIq
+ qhylofdj
+ rNwoG1Yo4T80lkrHwuDn7ZILrwWkd4cqei0DiyY7BtiYGBSci9sVTFFziZ534MHLNP0kZe75P/hNO89Wprkq5d/z3iNvaR/FMNpzfA/x1e2uh4K7p5lfBqTZ5TOW/GsHPsIE9qfiYpovjPPrSevOG5w+t87K5j0LWxgBTV3Y4uZy79YBRp56oRSfVaDJQbBFScNrSWBnYNqFZl2nysdr0T9mEIpN1OXLd39ATpLj2V5ISSIoiartiFjYB/DKGyOh0dG934a7ajFrnM+9Y+QlhmHxAKacJ5oCvTmYqmVt4HUvIYt9mPuI5O99VkZ9uNF06hVc0kiVHtvn+VyA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,84 +125,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 02:06:31PM -0300, Jason Gunthorpe wrote:
-> On Wed, Sep 03, 2025 at 06:38:00PM +0300, Mike Rapoport wrote:
-> > > Don't call kho_preserve_phy if you already have a page!
->  
-> > Now seriously, by no means this is a folio, 
+On Wed, Sep 03, 2025 at 03:59:40PM +0000, Pasha Tatashin wrote:
+> > 
+> > And again in real systems we expect memfd to be fully populated too.
 > 
-> It really is. The entire bitmap thing is about preserving folios/page
-> which are basically the same thing ATM. folio is the prefered type for
-> what used to be compound pages.
- 
-> As Matthew moves ahead it will effectively become preserving
-> memdescs. This may even start to happen this year..
-> 
-> Every memdesc has a type, so when ever the physical pages are restored
-> KHO will need to recreate the struct page and page->memdesc with the
-> correct values, including the memdesc type code and any memdesc
-> allocation that Matthew plans.
-> 
-> Meaning everything should be struct page or folio based at this API
-> level, and restore functions should be logically paired with the
-> allocation functions that created the memory in the first place.
-> 
-> vmalloc() is calling alloc_pages_bulk_node_noprof() to allocate the
-> memory, so the restore of that memory should also have a 'kho restore
-> page' type of name that clearly refers back to the allocator it pairs
-> with.
+> I thought so too, but we already have a use case for slightly sparse
+> memfd, unfortunately, that becomes *very* inefficient when fully
+> populated.
 
-I'm actually all for having a single entry point
-kho_{preserve,restore}_page() that will do
-
-	if (folio)
-		do_folio()
-	else if (vmalloc)
-		do_vmalloc()
-
-etc.
-
-It seems that our major disagreement is about using 'folio' vs 'page' in
-the naming.
-
-In my view calling everything 'folio' is a bad idea as we are moving fast
-from Ottawa interpretation to New York interpretation of folio.
-
-I'd rather stick to the good old 'page' and when the time comes we can
-'s/page/memdesc/g' supposing Matthew actually plans for it.
-
-This way we won't need to handle the fallback from divorce of folio from
-page. This indeed is less relevant to KHO, but there are a lot of
-folio_alloc() in LUO and PCI patches that will have to be changed to a
-different allocation apparently this year.
-
-> In the more general case this should be setting the cgroup and
-> charging it as well.
-
-Yes, eventually :)
-
-> > How do you suggest to preserve memblock?
-> 
-> Does the memory have a struct page? Then it should be a preserved
-> folio list so you get back struct pages in the right state for what
-
-page list you mean ;-)
-
-> memblock is doing. Someday that will turn into some specific memdesc
-> type and so on.
-
-> If it doesn't have a struct page then it shouldn't be in the bitmaps
-> at all.
-
-There is a struct page for everything that's memblock_alloc()ed. And we can
-do page list, but for large  physically contiguous allocation it does not
-make sense. 
-
-I'd rather replace kho_preserve_phys() with kho_preserve_memblock() and add
-a restore counterpart to properly set the struct pages for it which we lack
-now.
-
-> Jason
+Wait, regardless of how sparse memfd is, once you memfd_pin_folios() the
+number of folios to preserve is known and the metadata to preserve is a
+fully populated array.
 
 -- 
 Sincerely yours,
