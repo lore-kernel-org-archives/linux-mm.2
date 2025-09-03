@@ -4,138 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2247CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB8A3CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20CB78E0002; Wed,  3 Sep 2025 07:05:43 -0400 (EDT)
+	id 480CD8E0009; Wed,  3 Sep 2025 07:07:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E3E58E0001; Wed,  3 Sep 2025 07:05:43 -0400 (EDT)
+	id 457F88E0001; Wed,  3 Sep 2025 07:07:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FA048E0002; Wed,  3 Sep 2025 07:05:43 -0400 (EDT)
+	id 36E328E0009; Wed,  3 Sep 2025 07:07:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F3FE88E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:05:42 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 954211A05E6
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:05:42 +0000 (UTC)
-X-FDA: 83847658524.05.FDDF77E
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9256BA0013
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:05:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=ogeHREFo
+	by kanga.kvack.org (Postfix) with ESMTP id 240188E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:07:10 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E3DB159FB9
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:07:09 +0000 (UTC)
+X-FDA: 83847662178.22.06B9156
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1BB2BC0009
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:07:07 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X8WNaEN/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756897628; a=rsa-sha256;
+	cv=none;
+	b=ft+fMqVlL8kRiDuEyEsjS8Uq4F97/QrZFFO55rpp3tEk8x9mvW0vAmiDU1CEuV8XxQ8SVS
+	4VH+Nxlgbh1RxwH2M3BmpMZzNbE/9qzTU4WSiLY5gxB2k/2CoWHDDX/rQlNEgSAke/X1HU
+	GIQOFJD3QzKk8lQZ4sd3w0/9eRqfCak=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X8WNaEN/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756897540;
+	s=arc-20220608; t=1756897628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TY99cVzo51RXHn+Vw+SAL0C6lDtANRsUUB+6t6UiVNI=;
-	b=Yx2tW8ilm+hU6zNfdKoGqSuAzLJ7yyoC60FAxMy8xGKkgvd4uSTNqTY6RvdPn27ohTuJLC
-	aCM/e3gwiC/y3KQxS0i9fNgzCInNbleYsqqJrTlpO9HkwcLIOWNZyX0wTUjJbgvPEssSd2
-	dHHX+ZPPL5Oe61LPNdNmaKf4E3Af0G4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bgdev-pl.20230601.gappssmtp.com header.s=20230601 header.b=ogeHREFo;
-	spf=none (imf25.hostedemail.com: domain of brgl@bgdev.pl has no SPF policy when checking 209.85.167.45) smtp.mailfrom=brgl@bgdev.pl;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756897540; a=rsa-sha256;
-	cv=none;
-	b=TVza6s5plIePBM0MVme20CXL38LOivv3OYfdg5J0cB/xD58kGgHwi8NV7vjyXR1rWM4dXu
-	FdwLKdKzO7B/g2b8h/9oTHfj7B4pTmcpTD36YcS3Ss/kGegXUZVcq0/h7LAoIE+YVmfI2Q
-	k1DlzuPNruOtflCV4lM/BIY/nlqkXtk=
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-55f6ad5146eso3936875e87.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 04:05:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756897539; x=1757502339; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TY99cVzo51RXHn+Vw+SAL0C6lDtANRsUUB+6t6UiVNI=;
-        b=ogeHREFo9aIsQkHhuL8bBc6mzm/oBkejWqVzlKMMmFo7fNfTwSBL/4aXJLnkM+3HaF
-         JijZqj9XD7rrw6smi7PrcPuPJkrMCmaaWtnqgfwK224XnziNctPV6cOnqtRmm1s+n2st
-         GvVdLFNz7pKTjpSn4DS2cHNBOs4e4I1HMuwjFa47EnKneusYGg1nhKYhnSTcD1Qn81Qd
-         2Fwjo/nAiky9qeItiZ7q982ROZpfZm8hEHv7bKlr7skehpzRXYNiy+UnDN2vzSS4qmso
-         RGK3UxUBC1eZ+FRqzmI/zXowWSOedV/KDuBVuGWnP8DMiGoqaab8VtYCqxrxZiG5bDIV
-         k+UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756897539; x=1757502339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TY99cVzo51RXHn+Vw+SAL0C6lDtANRsUUB+6t6UiVNI=;
-        b=B0+deIYUzxv7UM0FDnm7pX/CnajQpNXyEriJUqIChfbr1LQfKDBkwst7jVEWL3IlOb
-         HwtfjBIwgaGJ0C8LZHkprXNypR/1c5Nm6/lIovp5N6U0MTRE4WYoifiS8r5wdIkI1VI6
-         FsiloxCBMBVPqilS99BJPmFsIi7vYe7pRCxGzdkwS2MLoScEYA5jQDJ5OGLwUGVByLux
-         AYdB8omWp3L8crP67eHYHaYRAlb+1XoigbHrcDUJBZ8DMnfymUe4IXAhmLahP0T/ER6R
-         7z0EdEh7V97B9hk0eckua8qMjbKAM69OalSw8EU26NbQMG2vbEXcfl2RzDvJjvmnRj++
-         mD5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWwZ98VVgJYjhfd6df2FokB+BHnTK0oys5SKmrgsVLsgH1zYjabBjc73mctUcfnB+EBW3EIQtH84A==@kvack.org
-X-Gm-Message-State: AOJu0YyaZu9aCS2AYKyAvK8JU2l6+9EBfkS3KA6iO8npli1jkhsrK1Bh
-	y+/Ez/dH5Uwac9lFgY8/5tM2POJcyvU2sDEQLGGmsquBp3StpiZcmmABqvT2MJc7Se819aPUNeo
-	vtjEtyaKLP25OtkksXs1AYC+t2K5ysgxlBz0B2EOgvg==
-X-Gm-Gg: ASbGncuQlBqswZHPe+Lc79qMZQ5MCCHxY+QCdZ96c4FPKC4jjx3Rc/nxCZ8Z4D9K+16
-	FcQ9/tQh20E7af/0SlhYbHj6WoPW50A/2DD9n0MEGvfDyb7iX08uKcRsK1ttBJpeG4qFN8PajFx
-	WUAG7NOOVuNNioAE+GjKfa/h0sJLRyjB5/6uGbYFooz3cKOb9gcDiuQqsWwTKeiSEAhMhTbg842
-	/1lWtNLbwPq4Oz2g3qD9oQ9FtH/6SMPwbLSX0hGs5ANHYYbyQ==
-X-Google-Smtp-Source: AGHT+IGaO6jKgae4Bb0nnUY/KIMNPM9fcQrt4rcPCJpxbytVdpNy16Q2X9IuotKVynxw9JndtWotWpVme+DKGbgxexI=
-X-Received: by 2002:a05:6512:b8a:b0:55f:62f9:cad2 with SMTP id
- 2adb3069b0e04-55f7093e564mr3786208e87.26.1756897538646; Wed, 03 Sep 2025
- 04:05:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
- <aLcBcjvMbrxoDYoC@smile.fi.intel.com> <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
+	bh=BZXz+xk759zPv/VLZPRnNX9kRrlEZgEOWXXiOzKQHdU=;
+	b=OtoIT2b+2xchqdYSaYJ8zwM/CmqUWLIXHjh78KcKtXZtdxqAcv+/oDv5iTiCmGF6O+YnDE
+	Yx24cmHtnXG/I1mTHd5aIH/hWkwvx9TUgxGIqv6EB8Z3fhr50q4A4Kd8roz0ipUlnCTw6M
+	vyq8Jji7tDJMEvphdYq10rBDhm1I2KM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 09A04444B8;
+	Wed,  3 Sep 2025 11:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F797C4CEF0;
+	Wed,  3 Sep 2025 11:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756897626;
+	bh=virt440YX1VkOxJaTmEr80xjwMryJlZsQui9kt/izTs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X8WNaEN/VwOhZmnWe6N6MP7x5vfstlLdgDw2eZrZCeb3sK1BIcrWgrADCpGviGRw8
+	 9eXvp6RGfYqzwQ3VPiDQd1B0QvXzi2heoZ6QyApM39eJFhuewyi6wxiMUciaaG9Gtl
+	 ySaWqYLyotZFWePjR8RceMk+5F4IfB4wX7CeIOfoFScC9w4l8RLBt534eUcMHkCOt7
+	 DX47DcrOhsixkweNukJ8QvVSuquvQ0MAr/z2JRSSosFemG4LpXfRE/5tOgHWF6DyYM
+	 +s7K/ZK1BTWNET730nOALste8EyPz7s8CKPbsVudE05b7jj44zK/1ERrqX5vQoyh+C
+	 V1+KewudYEZXA==
+Date: Wed, 3 Sep 2025 12:06:55 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
+Message-ID: <8a54bbbd-2b7a-482f-9ab5-eac83264b1f6@sirena.org.uk>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
+ <aLcBcjvMbrxoDYoC@smile.fi.intel.com>
+ <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
  <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
  <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
- <aLgW7J-j4nn0u8uo@smile.fi.intel.com> <CAMRc=MdA21fwnamymG6YhqBjKDso_nJs_4xefPNONQNfEcPHXA@mail.gmail.com>
- <aLgaoivmBUgoeO6B@smile.fi.intel.com> <CAMRc=Me84OX=UEmAXxmwE8oOH=1UBsyHe-7XmU0c8a2gG9JnCA@mail.gmail.com>
+ <aLgW7J-j4nn0u8uo@smile.fi.intel.com>
+ <CAMRc=MdA21fwnamymG6YhqBjKDso_nJs_4xefPNONQNfEcPHXA@mail.gmail.com>
+ <aLgaoivmBUgoeO6B@smile.fi.intel.com>
+ <CAMRc=Me84OX=UEmAXxmwE8oOH=1UBsyHe-7XmU0c8a2gG9JnCA@mail.gmail.com>
  <aLgeDNLABpmkShIU@smile.fi.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/BwkSBKy/i3w/XmA"
+Content-Disposition: inline
 In-Reply-To: <aLgeDNLABpmkShIU@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 3 Sep 2025 13:05:27 +0200
-X-Gm-Features: Ac12FXyayAu5ynqkVYj2uRlegQC_XlF19483EKV3MWs-LYc9T7mcvfMXmn9zXkQ
-Message-ID: <CAMRc=MdD9g4WiBCP0qYGuy5e3pnQf5MUHTqkUOnrUvcWUYK27A@mail.gmail.com>
-Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Sean Wang <sean.wang@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: hnyixzzpbx6np4oixbczc1sx8reeceqm
+X-Cookie: You were s'posed to laugh!
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9256BA0013
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756897540-480607
-X-HE-Meta: U2FsdGVkX1+iz9+I1bxMQaqjnlcwHwCT9vpAhRXAfpwbho9QWmaugY3cuh1ZAr/pIM2imcaliezO9HOOmmXA1qrdfv8w6miIicubv+7uTYgQaGHnJrfNwLEKQRseFYktxObNYqmL8BCnIiNOmTJp62QLcqZJ9WXSqTZ4B4jZ3P4l40YanPRWx0NqHXNQrtdgC3y8q92wJIwn1Nf4xfMbK7cT4hpZ6ti10cOZwmA+yCyJ54zNH2NNhqL4PE3HrqMd6vjnKPWkK84OUgGllsM2ZPOUSEourVJc9Ruvh4ND3gIdb78MWTYWCCoUEqcipCejyQxjUl4eTVEIYajHlKF9NuoiIi8+C0N6eVehYPAOvTs/mjlHh3bPAFvIXZS4ZU+SZV7z+KMyX5FG3xoUdVvV525L2hdA7Cr4wJ5XBzSCBZ0856Dbf8mMkuAd+14X2xlOqBgvGPZY+5+z0FpPHAwWgjU2HAqehjWvvglxWwn5FsuQKA/khnZIFvfs+bNp4sVOiKie1ef+q2QeNobby432UAuLRysODncEU4Jgv5O+PmRG2wVl3yoCVbX7GOLgZnkgUbH3mbWLj0mUyc5r9xGVMwQK2TvpwG54tO5nX2KCdOp79Wknah3QVoTiyuNEV1Uw8clwmGU4VC4fS7LmPqJGRS1an5Ghf4+sskDgtr2s4GkUH5g/Dkrn/fftTUbHrDDfAdi+wn0FvPsXt9JKnPB2tyUTxhwAC73LjOtPq3zCd+OX3+MczkhHsUfVlQZ1svJ5lL8eM6k8dLfK+h2kdPlw0v3AZZR8vF7qMMsCncT5kOtTt7dUkc9Svkbq+eUdn47skblLOEhEgB/n3aECwAMEC277bTTjF4YFJq5+3Nx+eNaUvszifYoHfAo+5tAW5JAVwHIR3yi7lBro1nsV76tzg9LQ0wAE4OHtPyhR1dm/TCCd5anlVTaDxBVUv4OpBLiCp/ny7kog+Yyj26fHTaS
- dZtxQA8y
- 7lTTXFlcpJc85ritWbvFgPYgKzcUUp51ftMU8yroatM21JnyMjUKOZJDKnVYBRONCfDoN8uMlxjAZ7k0Lcx2HeQ9iYe8b+51aYLnJ0HNZsGVQAVugMXVvhsYT+8ZLRZCHaGUTJI8sYXvyM9QFj9XAYr1TmopXUG8lPmBUQRgpKQBvEUUwXJE2ooTKy4qHGdJ4yOk/H29ha8yztP8kpovcVuWdOlWxLtlsct8dqU5iJIrJV4Vb5kmkrfJNfiec1Yext8FnrGoxOW16I5dtYKHEyL/UiVP+Rrje+FuWM3kv3ckgzeNQKLBw2w2fwsiVDvSsPYlW
+X-Rspamd-Queue-Id: 1BB2BC0009
+X-Stat-Signature: nqwac1d7ktprbm9cp6uxyf1eiqfjwr6i
+X-HE-Tag: 1756897627-169141
+X-HE-Meta: U2FsdGVkX19jGT8ryVom9oQXi3O0fNQ7twbFDYqVikSIm9OTJ9mQ1hzA3TK9yK9JNap7iXdCMayAdgZi4PF0VChNe6AVnRCP6uInh/VeiHAv2SFsBVzYxtWxFIuGarrOx6+AsF++IiejKOLqjvv4LFxN6GggZhxbsvI5Vl5pFpDMPsYb8qP1JjkCCX1Bk7UxRo125QuJpuXmwNqtNO1U659uVs6M+DyMyBCkecra05JjL+tXJTjW1FdHSGHh3WhfyCZi/yuJWcfPhSPiAFyEPpz8kXN17ZeX5XSeqNVeXeOuepGr550ar9NjFMQCxJSTbXFKhyHh+tsJGDYl5YtEB57Po3G7IwxLHApoSsNQcKmU1DliGxWoAM4wVDUVX7CQNaLGYpD64uy602Ahud7dnMigJIF3B/TclSlsJyfo76rl67h28/+yggwCN3tvPzR26bHYYw5wiu3NhGa0GrJqJz9Vx5n4KvNn88YUF37G4vbzgfp2y1/FZ/HZlb6zillMtsiJJj1Uki29F6im9GyY+rX6P9fZFysbe5Gbh4BI6GyxqI/9ak6YDUVjHL9h48xGTexvOTAfKYTLIhmIBdZtkQfzk2685c/EjK1uz8a4dNfaaTY2jJ5Nxq/Shtt1yA7pZeicH6jaX5fSycy6348opKDCFSzEcMmiaixf71fJfLPuedOKWATB8bg9jp1wuhcxjGmzQcoMUwH84zPyFBxlyrlmGt6Tcszc2R7BbbzvX395NcGCT4pdiB8wLHKUBpJqwUdHEWQSj6nQQTrICysN4xVJ8PYBldeV7hwlGkZfjrLPME+jRagj/FchEd0SfGNM4X0RHEOc2lwzjPASC6kOEluImCzdQuPAmpShtPI+xHHJnZG4DBH5ya4L7fvVGg6IljmkMcnooBM/OuMPZFP9wqAo4tlUB+yZngJpkcrorEeDoFmyWCDx4l2UQgTkzt04Iy5YVWBrD6bUOrwy7+9
+ MauKFut+
+ X0RaiRmf1VLHoS7Xc+ioVE5g6gARCK/D2QShBp0sv1HSfFKKCovpnN83YFHKYUAHCiDyV6t3oM3IU33vY1utI+9WnmBfaiAvdbr6o7/R7iL5zvIyPGBNnoxwOPjSLKjC7rB8jrc5qJd6OKjGa8nmlPSeEra3ytKYKDk0Woeza6cHriEjeJJumQBbCBUTD8D2bXxAbnrZk9MlBbC+UZzQgqU1AzXGE51aovZPO+oLfhIwL2n79CpUJA5sdPolxxzrbcsOU3Jc9FGcVi9G1qjQeyTUhxIBFiGfAz13ewM/VE5uYNMGN9w6Dg+Wg8hELeA/O12NZ2BCEIX3E5nCtZX4dhReNnsx1rMdmZSDscwIGcxcmHTBrGmndvEs6STAI6r95xP69MLaLtoWoEwGP4+zIkdDJIUZV9h+F+cX8hlO3qkbprhA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,93 +139,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 3, 2025 at 12:53=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> On Wed, Sep 03, 2025 at 12:41:48PM +0200, Bartosz Golaszewski wrote:
-> > On Wed, Sep 3, 2025 at 12:38=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@intel.com> wrote:
-> > > On Wed, Sep 03, 2025 at 12:34:00PM +0200, Bartosz Golaszewski wrote:
-> > > > On Wed, Sep 3, 2025 at 12:22=E2=80=AFPM Andy Shevchenko
-> > > > <andriy.shevchenko@intel.com> wrote:
-> > > > > On Wed, Sep 03, 2025 at 09:33:34AM +0200, Bartosz Golaszewski wro=
-te:
-> > > > > > On Tue, Sep 2, 2025 at 10:46=E2=80=AFPM Andy Shevchenko
-> > > > > > <andy.shevchenko@gmail.com> wrote:
-> > > > > > > On Tue, Sep 2, 2025 at 8:42=E2=80=AFPM Bartosz Golaszewski <b=
-rgl@bgdev.pl> wrote:
-> > > > > > > > On Tue, Sep 2, 2025 at 4:38=E2=80=AFPM Andy Shevchenko
-> > > > > > > > <andriy.shevchenko@intel.com> wrote:
-> > > > > > > > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golasze=
-wski wrote:
->
-> ...
->
-> > > > > > > > > > The strict flag in struct pinmux_ops disallows the usag=
-e of the same pin
-> > > > > > > > > > as a GPIO and for another function. Without it, a rouge=
- user-space
-> > > > > > > > > > process with enough privileges (or even a buggy driver)=
- can request a
-> > > > > > > > > > used pin as GPIO and drive it, potentially confusing de=
-vices or even
-> > > > > > > > > > crashing the system. Set it globally for all pinctrl-ms=
-m users.
-> > > > > > > > >
-> > > > > > > > > How does this keep (or allow) I=C2=B2C generic recovery m=
-echanism to work?
-> > > > > >
-> > > > > > Anyway, what is your point? I don't think it has any impact on =
-this.
-> > > > >
-> > > > > If we have a group of pins that are marked as I=C2=B2C, and we wa=
-nt to use recovery
-> > > > > via GPIOs, would it be still possible to request as GPIO when con=
-troller driver
-> > > > > is in the strict mode?
-> > > >
-> > > > Yes, if you mark that function as a "GPIO" function in the pin
-> > > > controller driver.
-> > >
-> > > How would it prevent from requesting from user space?
-> >
-> > It wouldn't, we don't discriminate between user-space and in-kernel
-> > GPIO users. A function either is a GPIO or isn't. Can you point me to
-> > the driver you're thinking about or is this a purely speculative
-> > question?
->
-> The recovery mechanism is in I=C2=B2C core and many drivers use that.
-> I'm not aware of Qualcomm drivers in particular. But mechanism is
-> in use in I=C2=B2C DesignWare which is distributed a lot among platforms,
-> so using word 'purely' is incorrect, and word 'speculative' is a bit
-> strong, but you can think of the issue coming later on when somebody
-> does something like this.
->
-> The same applies to the in-band wakeup UART mechanism.
->
-> Which means that with this series we will relax it back anyway for
-> the above mentioned cases.
->
-> (Not sure, but SPI DesignWare requires programming SPI native chip select=
-s even
->  if the GPIO is used for that, this might have also some implications, bu=
-t here
+
+--/BwkSBKy/i3w/XmA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Sep 03, 2025 at 01:53:00PM +0300, Andy Shevchenko wrote:
+
+> (Not sure, but SPI DesignWare requires programming SPI native chip selects even
+>  if the GPIO is used for that, this might have also some implications, but here
 >  it's for real 'purely speculative'.)
->
 
-The high-level answer is: yes, a pin that will be used by GPIOLIB
-needs the function it's muxed to, to be marked as "GPIOable" in its
-parent pin controller if it's strict. That's still better than the
-current situation.
+It is very common for SPI controllers to absolutely require setting a
+chip select in order to do a transfer, when using GPIO chip selects with
+such controllers the standard practice is to just not mux out the chip
+select signal from the controller and do everything in software.  The IP
+will be doing it's thing with it's chip select signal but that signal is
+never actually connected to anything.
 
-I can imagine we could differentiate between in-kernel and user-space
-users of GPIOs and then make it impossible for the latter to request
-certain pins while they could still be requested in the kernel but
-that's outside of the scope of this series.
+--/BwkSBKy/i3w/XmA
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I don't see why this would stop these patches though, as they don't
-break anything unless you decide to make your pin controller strict in
-which situation you'd need to verify which functions can GPIOs anyway.
+-----BEGIN PGP SIGNATURE-----
 
-Bartosz
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi4IU4ACgkQJNaLcl1U
+h9AQfAf/cIyTMUWIKvnzF/bbQpaevTEUa1OBu/7ZBFg8nC5nbLhvhVdYli97003E
+aKUauEzD22LQFP4msSIUEmLifRDXBb4pRIP4hVwWteB+GakiyOdtVyAxV7uySCKT
+95KpISbIE8ooH7RkAXe8N1iYnqwy9VRmdjYa2FdzpLuCPCawD0+YiYWzPPLLVtgA
+quzmvAfna367i9/zeuRw6JPL7bZOm3lq0EAs4Y/xEDQVXW2aVcW5K8mzJqoBJot+
+gjs2B5fH1gVJxjLMx5QO/i7tktneqkpdo3YQhL8m9VKl7/DAuBacjsHoBN7exY4u
+23ENTRMf7dNs8GE3wrhuLAFBjmihdw==
+=ZPrJ
+-----END PGP SIGNATURE-----
+
+--/BwkSBKy/i3w/XmA--
 
