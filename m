@@ -4,117 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB32CCA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 08:08:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E62D2CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 08:11:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E67FF8E0006; Wed,  3 Sep 2025 04:08:44 -0400 (EDT)
+	id 480E98E0007; Wed,  3 Sep 2025 04:11:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E195B8E0001; Wed,  3 Sep 2025 04:08:44 -0400 (EDT)
+	id 40A2E8E0001; Wed,  3 Sep 2025 04:11:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2F208E0006; Wed,  3 Sep 2025 04:08:44 -0400 (EDT)
+	id 2AAD88E0007; Wed,  3 Sep 2025 04:11:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE9A28E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:08:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5EC7B85F23
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:08:44 +0000 (UTC)
-X-FDA: 83847212568.06.96BCF9E
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5DB41C0004
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:08:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CwCeOGE9;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0FE968E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:11:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C60E111A383
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:11:13 +0000 (UTC)
+X-FDA: 83847218826.19.597D5BD
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6A9DEA0006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:11:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="TyrXk/NQ";
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756886922;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1756887071;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aUJC3Krq7zEXPK+epzbi9xFTpRQGWoixqKJ3ll3WSso=;
-	b=Ym0bKTyZcDxJR8gPA2V/h0b4S8fL6UpEilnDPSyWgMoMMPy3IL5lxxXbMRF9/Gu6Ksh+Sl
-	UcG0oHGt69fs+nfDap9fqaiQxPSef12orPnKt0V4Bdtj3JjeUfGcIhmT/AB9d/b7OMruY0
-	DOpzMM0qGfO3E3XVAuppes2ViNoUncU=
+	bh=8UkxVY/g1eI/pJSPhScZgnxFl4cSUR/RLbF6nS7dre8=;
+	b=3slxO7i64Lt+YzQ1YZCED70x6S+WsV867X/3Io+wvnqJhRyHjGx1c5L0N76NISYfyk3iQH
+	zQinjfGRLe/XPZOcQSY9qem3OmQNbn59viRh/qR52BEEubc13bWTPq0N/4LyFTaU6HRLoT
+	DPPnno1Lmti77O6sFL4360rRpd3Per0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CwCeOGE9;
-	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756886922; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="TyrXk/NQ";
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756887071; a=rsa-sha256;
 	cv=none;
-	b=vwH1XXClcduIZnXQ6+uKi6UBxOQyPI+B4u+M+MDbwGtiUrD1EFhLJLhwIVB6UZ6sfVEoK7
-	GFl17n7YxPUi/SqjqvpjRdoHdsABoJtWiYfPnODBM/0/r/yf7MunSA2dX5BjGDW7qQJ7NX
-	W6Xz1HdhPzSsytTwYl8P8D/PIjtbSh0=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45b89147cfbso28627715e9.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 01:08:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756886921; x=1757491721; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aUJC3Krq7zEXPK+epzbi9xFTpRQGWoixqKJ3ll3WSso=;
-        b=CwCeOGE9VVyrLX1DZ3hpWM7Zbj+qFZWbXP1BNvbrHUYXs+njsfwFljouCl2NRuMmNp
-         alDM5nc5b3ARYC3Fo9UYmBEKlZlDiljC5BT6RWjkC53pLWpbcG5flrYFNs6KVRtGxCJP
-         O4ot0GjdmaY2bbVzmIA4OwOTOyOgx1YaA9n4kH4ilIE7tLdra+jeFB8ukrcT4/KsYCQP
-         V2O7hgLICoRThAS5ewoqwr2XMcw9nAjlI2AnaYiUDo0rlWj93fAaFgFYhkvLB9Hkvr9a
-         JfouyIDnMs61c91foa1vvpWbeD6OKup3SRwbi+Z6ZTowZ0yVUP+7VLc+7acYpvksiVXz
-         PEvw==
+	b=CNuu538EC5XbJ/9z23I5gZv/5/gHaqhEDpCYzx8kEQbknrp0mn5c4QK+WeeYbIa42jsN2n
+	FG4MTOzwYDHQJpmn/q3Zhibe+OuxjDKeTPQ+rpcTN97c+g54zm+FnzxQyvSOaB+CJngWCp
+	WoomQqkBzDzfyZRg/0YcSMG+dcmuRE8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756887070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8UkxVY/g1eI/pJSPhScZgnxFl4cSUR/RLbF6nS7dre8=;
+	b=TyrXk/NQksavwA4asZcQZ/ICxNncpkzWqSCaqzoatx3nLE4rANYLSCf3lSRqDzYLMaJyYx
+	T6kXKC9HpuzwR/QciD3P050b5wPblEopY6bJD1havkxKR7b33faKOy0cPRPAYxYUKRW7Xt
+	vOcuqr/wpB6Kbbtbm6YHIsJNlGjavUg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-7HrGsDBaObaDr8Nr7JdAMA-1; Wed, 03 Sep 2025 04:11:09 -0400
+X-MC-Unique: 7HrGsDBaObaDr8Nr7JdAMA-1
+X-Mimecast-MFC-AGG-ID: 7HrGsDBaObaDr8Nr7JdAMA_1756887068
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b8af0b986so4852525e9.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 01:11:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756886921; x=1757491721;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aUJC3Krq7zEXPK+epzbi9xFTpRQGWoixqKJ3ll3WSso=;
-        b=jqzgcrwN3HxGpO8E6yEdmsBdMelmh85EibWS9hJbiXmTmBltexUDCl0eBxBr9fjlGR
-         OB3J9n+JSOiROIclls9ptE5VR+O0+j+zqzZ66FN7ba8Rm7IXwWdzQJ4ttT9OJ2VKqozd
-         vGdzQTg+sXWonJDxc980t3WQdXTuEbwAGz0D5fa9wMqlnBdT39P3X3WiiOlQni/ENpdT
-         1ymAWToChlwOoZc/TQ4x3sclqYl18x4+TpWhFkW4hfrvM7xIJd1IIDSxRKpDhQ96fSwv
-         h991ZEp9Nwv5jI+TKXO1K6/4Yspni+il6nJ+HlMsE6upHnsXL8iC60iVvFS7zdG84Zml
-         TM2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVBFipNtDPFMJyOC+WtLFRB5a5eIEXThMUEXOxr6/A3LxVCwHH6o9iHD9D/Wl8091bIDEuRlJUerQ==@kvack.org
-X-Gm-Message-State: AOJu0YxI3hlW35zGMkPqa/Tf1GwZK8qPOsmZiLhKk8lGT9EWwDGag9S7
-	gRRKVbOAt5ISgDLeSByyz2AprPODSYt/91V4heFSnyQ21TQKysidhhIt
-X-Gm-Gg: ASbGncu64+eNl8iGQdFrWzdK6LWjieq2Nv76llwdEZdo0CK4ROKU21+RCkoP7QLijeW
-	o4/vP3uQ8o/efFY5EvsDccV9MP60PTmUtc00DHzRX2idSC4KXKgALtgcOy/E4cYRQun2H3hcVrG
-	65JJXd1jb5lGRKmLmM9wQMJrVIATbfZpaEddD/TPX5z1djSeUns7jPsfNDDstHQzvGAFpdpAyUx
-	31qWB/slOAllloMqfqPAyOi2w1uJQYjzg8AnUa+OR8nqlLjfNRQ9hP6PdjVQ8u6dY2pD0f9AMgh
-	02jj9Y+8kWKXUIS8aMgLbiJ+pFHpHjrpFxZ2ANoP2pvc7q/nHTFxO12iw6tSF4Aa8OZn2Ox4tM3
-	hba4JpX73RUZgtGxIdZ6XQm3j9q0nDUpq7BFB
-X-Google-Smtp-Source: AGHT+IEAoZKHZM3kQNHID82SoPVu7/HP6eUC0AqiI51jOtxQMatQKooo7/Z73SID7xfpnH1QOreivw==
-X-Received: by 2002:a05:600c:c4ab:b0:45b:47e1:ef6a with SMTP id 5b1f17b1804b1-45b855bec54mr128326785e9.37.1756886920536;
-        Wed, 03 Sep 2025 01:08:40 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45cb61377a7sm13188495e9.13.2025.09.03.01.08.40
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 03 Sep 2025 01:08:40 -0700 (PDT)
-Date: Wed, 3 Sep 2025 08:08:39 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, kas@kernel.org,
-	willy@infradead.org, hughd@google.com, ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: Enable khugepaged to operate on non-writable VMAs
-Message-ID: <20250903080839.wuivg2u7smyuxo5e@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250903054635.19949-1-dev.jain@arm.com>
+        d=1e100.net; s=20230601; t=1756887068; x=1757491868;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8UkxVY/g1eI/pJSPhScZgnxFl4cSUR/RLbF6nS7dre8=;
+        b=Sq+Otfefb0/WA6PI/QyvbrQnlxzpA3I6Di75354A7ecnqXcY5H9Q8cfSwCqrMSpExj
+         Ng5USxlULz8L2xrf/aKmrvk2phYVgICc0HgfLTBENZ6KDqu/bHJnRsHMJ66VompWk+cH
+         lvcZr3EdGFSTI/n7f5msKE8t1zAt9zTiUlXk/tbku5MdIw2SDjMrXwyLpO+fW4wR/CVF
+         gLgvu22O+cXnJmP7akv2f+5UgwVtC3NtIcKGz6I8U4ukUmhcCN/scfSLyONieyfhFDYt
+         mhY1JYTBd8y26xEI71GX447cX9sjcdFZT/MinUDWzWkWBkbpjLg383iG33/GqLqo5HJK
+         GIIA==
+X-Gm-Message-State: AOJu0YzzsbSQW38ET0nQRiu7Z72fxLSAM8FUDvK/BB5Gt++NngR2kdAf
+	YtKkPOIIstyQFlngHjSaWoWBMaAzt3DZnkdtaEpW+o2vPNsMJV+pzpIM0BURs11rzo+t9YENGTh
+	s/gD8b6wnTvYtJrjaXTIzqy74IEk079KdxUN1kc315gy3kvM92VJF
+X-Gm-Gg: ASbGncvT8YNYxwuJQssstl1+wVFIDl+5t7wKRr+iG5YBzxF1zp360x5gvihE0kJn4Qa
+	/IME1xuI+D3Hhw7pf2uLAG5pMOyO7tphOZ62FpAKmIUOF/fGs8OWD7CUT2uTZ66Y4bENZHtrVQd
+	glcQrXnw0qxg3ytwYXP2CN3GkSbjv/dbKz1xYA0naX3Ky64SNyPrsqIBpGMYGKghDIp6BS+YNJQ
+	o4LRdkaFssAMGJLa+UE1vwAZtti+2eqqpJE+vPaUdofSFEiKHEeKa8KFOqM2EG1w7gngVltGhTO
+	XD/SVznyJeE2Xr9HZliU/pTqCld3tvz9dLAo7JpeMpKlZn2L/6mOixzYfBROlx+TU/WisvsVBmj
+	2WBiCPDGkcu++dGKNcNSaF77Dd+h666PDURPCkqLr7KjRULhbaUbMruBG+a2DL1w5a6w=
+X-Received: by 2002:a05:600c:c4a1:b0:459:443e:b18a with SMTP id 5b1f17b1804b1-45b8559aff8mr131317665e9.14.1756887068452;
+        Wed, 03 Sep 2025 01:11:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDxGXVQhvmfQ7QL41Vte3hx4orJbJWoRMyeFq2/Ey7ZnhPJtVK5izMGQC+aAFle3fgJPi6zg==
+X-Received: by 2002:a05:600c:c4a1:b0:459:443e:b18a with SMTP id 5b1f17b1804b1-45b8559aff8mr131317115e9.14.1756887067920;
+        Wed, 03 Sep 2025 01:11:07 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7c461edasm140355785e9.9.2025.09.03.01.11.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 01:11:07 -0700 (PDT)
+Message-ID: <cd52244b-12f6-43aa-9db2-925348566bed@redhat.com>
+Date: Wed, 3 Sep 2025 10:11:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903054635.19949-1-dev.jain@arm.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/9] mm, swap: tidy up swap device and cluster info
+ helpers
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
+ Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org
+References: <20250822192023.13477-1-ryncsn@gmail.com>
+ <20250822192023.13477-5-ryncsn@gmail.com>
+ <39087ce8-6f6a-4998-95e4-813e265318d0@redhat.com>
+ <CAMgjq7C+mChdnbcrYEkKyuuRN9-THXwBdFeCVwvW_m-_CWCzvw@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAMgjq7C+mChdnbcrYEkKyuuRN9-THXwBdFeCVwvW_m-_CWCzvw@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: yeZdvigDC1cV8zgWa_mM_yS9C80Ke4AcPq5XTXFZyNA_1756887068
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5DB41C0004
-X-Stat-Signature: fyun5f89qap7zj8yidiwp8mabhsicokm
+X-Rspamd-Queue-Id: 6A9DEA0006
+X-Stat-Signature: di95nse1pp9isdjnbix4ab3wk573gxgf
 X-Rspam-User: 
-X-HE-Tag: 1756886922-852971
-X-HE-Meta: U2FsdGVkX1+VLSkz9lxi9DLuYGVrTJNWlGHJy3uN0g0mzINzLayysVxS5SJTvPUazORA42XX4iZNVSZrVmpXXU3gdZrpvvUm3viU9PpeCAtnTu0gTl8Nf/0UH8Bjwb0YAmNGWKbZ55ZJHVYmA7wGH9yu9j5oKrgH9b+Q64DncAXc12kYlRcpcH/sOFA4Fg/BiVqLCG3JpluVs86UW4SMkPkjhA8379eFGs3TKXEkuQ07gwqRl/k/APwv8A0JxG4daeTbaC/gt/0tA7fVvKEbZB5zU3XlDsncW8wZ7AF6a8kSH/9gVQ7QRycnKCFEdOl7FVjEUJODmTBPjpioAaajvmiqhEBPf9TykA0D+NOXonHKnBy3uHt+gHxv2NRwfZinIL1fPbXEgap7D+4zzrkV2XvcP7VAXz1XIS2xcAiW7wVqgGEoL1gtNikNQiNWgxcMJFc85gAPuE7oBc8BWmqVmSOp8pruMi9mPDbAkFvW8x+5gyaf5nMDyUNhqvFb5vLZ1f/Pv/HQE8GbJbfCi8LpBp62Jp9WlAq7Kbl+85FuCf7raA9E+dr47EuD/gm6D/EqewQyA+flOsWiT3n4gcklPjcWst/fRpFVm/aAkoiBYcPC5gRSx+90vXFgQTZg9Qs2cQTB4lofF5ywb7gFQwM12He9r//9BBx0Zy6NIzW+NBaMmBM14WMdaEoWTsT21iBm5V+n5nXSZp07oOpCPZtKGpJLTM9VfBYkBhrbBhwvAMNsbZLd7P6d2jac6Vh/amPtj1Xk9BnGOoZ6Ek+nu+dMb4TRCHftF0rd4EFAkqcSRHPbl59RHvQnp+7Wa2tEYyADKEAqbL6/jj6U+Ls8seP2dCKHEDcMPxMCEw9h66cJb3pMV5NLw2vRIEaVLgDv96JgWvR5jZ+mVjevVbIxZXCyx2TCKZ18q21K1NQvfD0kp0vPyxo7LoaehfWRx7t96hXJnoJ2j1WA/jkBW1hd3bZ
- 96+ziPtJ
- nhq2NYWRUCb2xFdT1vFsKcbgkmdO/k9FugUz7M40UbsqdGSrAuIHUa4SrzhY2fv622XprC0M14y5DYEiEZLKkZumYi7cg2MM4loaLXVel8jlX1ECz5Sy4Q9EQ6CTCJVCRBoRFTZWMehHXaX7IUFnLTuXOHC1j3uf7+1DflJ/HpTmcqRUC/cJHLBnCqsdCWwZHIxOd1lwmYZh4LW1wvosMm+5z9QU6EvKPCTc54ijxmx5POnDXqJ1PJllmA0u6QPDVDwUECSpDY18ywxCDQyTcUn+fR9JX7yqGdx5zph+4sxzJRPRhYLP14+b11RQ2z1ndkUxs0qRGWK7nyzZ8RBm28VfGVfoQX/WGUHddwDASfn2yDA51Fe72M6GmBEek4gmNdknay7VoLYVNUDOKnNrtxDJvC9zYZ/9gEs2Txg8Fpb5ykm1epn0TQQTb1+r8TTVTee6Ta3wOvPcs5LG+3AGPvhaNd8ULS/4kT+rXHl27J6zdPs3jX/n/XkTwjFd66nsJTcvpgSmKpbJ2AhsUJjOsVjpXIc57Mcn16malKpbKZ5D7H+tj95lrCDDkU236GDF5Ybv2mxM8Vn2OZs4vOQRZ2PSvyrkUh4c+WKpPxAqUf4aS31qk9O5gAQVcMIDkdVFzxIzg7XAAZPTEMKFy0GCwCIkjx4Qt9mJt/wOgjtePYs3V2IzQyZLY7gSyY/SAIqC9/y84
+X-HE-Tag: 1756887071-939943
+X-HE-Meta: U2FsdGVkX1+BIWwbwqvnhm98TDLzGS97Oe6QrmlcGq/pZ20AL3U5fBIPkEAkk2jXbkVxACtdSljmEqc9lINa/sT37CpoEbjhyDYKjBO0rgydgmwPORb3+G/GOd2nzInhUR9XtgdclOllZYWdzjMQNO2Y9vVMLcLmBLtesMJPivNDyy+ThtVY0P68FExRsNgbb3+1DlOCnkZDP1HGCOxvSmkJa+KoUrqyIKZXF1apGPmZDa1lgpsRg5irrHtl/Wltf35p5QK1gGG/NDELggZSzW6HBlm7sLz1BKmmsuryePLHc+Tk/j7EW4In6JrRXHZoHLQjDgQF7DAU86XMRmtRvrdeFHMZsZo4YsKcURVBDLFs1O1ww2QDrQD3i0aZqHs4C28mz9p18YownxFlEzdoR+HGjvMIkMbiKOxON/+uFYlsCdMbzCRxcjchWOFRA3xQbb644VPtqU2272in4t2eRlPumSFPeX+90Yf6FVsBZYLW4hoOKC8dm2wlqx8z1bwk/TWM1RrZIfmTCXhD540cBTRYzzXGHxlShfZ6rtqIAKf8CQJn9MEfOY+0i+7gVZux1T3lBjyfqIXjNlbNyAOIIlYy7A39PkufQA9vClEelTiWEZhzlF7cQRQDvPMswzsIHyRLDloDP2m+AS2+7oEa7/3M8w0FdvqsD7tvhnkHRRlUH/jqEJKwwzqNhGqGeueKsTgStlbdXs7s13tT96S/w6xagnTnxKQrQrd9qyHw0JVvuG/zmtfYVtDocGkQNHfax+Ce4200T8AXpNkxVl4gQAmIkRgA0CfvI0iJk7Bi9QRUhGbZE8AMi3SwoYxETajoTww19dwCLF1pvwtcGyfAYs877Jbvt2rpsPKLbRCx3V3tT3OG39BnetE367CU8c89udkksDqoROpmZMZZBvi4UdyqEH0ycRhf8AAbasAQOp+4BdublCaT10ah+H77xlJJNCLKcWJePrJKoAXBudK
+ 3Lm5Qv8h
+ fAf7DD1UZcNqd7R+RArMFTZK7HmkeJnttdzqsSImePiF1qa7M0K7ApJ5CD4c9ubPejNhmYyJZEdAX9rPwLNmVxJq2XOOAP4fPVUjPTyVrrq0rYvsSTmy9K/9RBpESahRxxnwUHHIsthB8NkUkIYdRYB1XEfdoZehPGv2DV5TbbNl+jnqmhxhRYDcFoaMRQKNWhRfan7XQDwH+Qh6szOwrNiwV8aFuUTMr+xkqjgVGBxEmh0Yu5Rgt8OCoDehB6iOT5abTdXkb65BvQQm+b/wwLRaWNj3gmGrCzJF76fGG2fTXjNILgfCYBUKLpLcsiCSHIjfI8w8uiKMBx4ABqFTdp2+1JY+0m6byOez1DqlkwwWGcABWRe/iKq0lh2sSDZFHL49V1unPIvORKP/OR3hCTlqKsZwlNypDj3axcVjtN+sKSzOXqazfQuFgTz/191lqu1S+/MCtgL6cVNiyj5THqSetOw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,81 +187,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 11:16:34AM +0530, Dev Jain wrote:
->Currently khugepaged does not collapse a region which does not have a
->single writable page. This is wasteful since non-writable VMAs mapped by
->the application won't benefit from THP collapse. Therefore, remove this
->restriction and allow khugepaged to collapse a VMA with arbitrary
->protections.
->
->Along with this, currently MADV_COLLAPSE does not perform a collapse on a
->non-writable VMA, and this restriction is nowhere to be found on the
->manpage - the restriction itself sounds wrong to me since the user knows
->the protection of the memory it has mapped, so collapsing read-only
->memory via madvise() should be a choice of the user which shouldn't
->be overriden by the kernel.
->
->On an arm64 machine, an average of 5% improvement is seen on some mmtests
->benchmarks, particularly hackbench, with a maximum improvement of 12%.
->
->Signed-off-by: Dev Jain <dev.jain@arm.com>
->---
-[...]
-> mm/khugepaged.c | 9 ++-------
-> 1 file changed, 2 insertions(+), 7 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 4ec324a4c1fe..a0f1df2a7ae6 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
-> 			writable = true;
-> 	}
+On 02.09.25 17:03, Kairui Song wrote:
+> On Tue, Sep 2, 2025 at 10:14 PM David Hildenbrand <david@redhat.com> wrote:
+>>
+>> On 22.08.25 21:20, Kairui Song wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> swp_swap_info is the most commonly used helper for retrieving swap info.
+>>> It has an internal check that may lead to a NULL return value, but
+>>> almost none of its caller checks the return value, making the internal
+>>> check pointless. In fact, most of these callers already ensured the
+>>> entry is valid and never expect a NULL value.
+>>>
+>>> Tidy this up and shorten the name.
+>>
+>> Shorter != better. But yes, "swp_swap" was a mess.
+>>
+>>> If the caller can make sure the
+>>> swap entry/type is valid and the device is pinned, use the new introduced
+>>> swp_info/swp_type_info instead. They have more debug sanity checks and
+>>> lower overhead as they are inlined.
+>>>
+>>> Callers that may expect a NULL value should use
+>>> swp_get_info/swp_type_get_info instead.
+>>
+>> High-level comments:
+>>
+>> 1) I hate the "swp" vs. "swap". Is that a valuable distinction or could
+>> we just convert it to "swap" as we touch it?
 > 
->-	if (unlikely(!writable)) {
->-		result = SCAN_PAGE_RO;
->-	} else if (unlikely(cc->is_khugepaged && !referenced)) {
+> Totally agree. I was just blindly following the old style. It's kind
+> of confusing indeed.
 
-Would this cause more memory usage in system?
+... and not a lot of space saved :)
 
-For example, one application would fork itself many times. It executable area
-is read only, so all of them share one copy in memory.
+> 
+>>
+>> You're converting swap_type_to_swap_info() to swp_type_to_swap_info(),
+>> and I am not sure if that is the right direction :)
+>>
+>>
+>> 2) Can we just call it "swap_entry" when we work on a swap entry and
+>> "swap_type" when we work on a swap type in the function name?
+>>
+>> swp_info() is a rather bad function name.
+>>
+>>
+>> 3) I am not sure about "to" -> "get". "to" is much more readable in that
+>> context and consistent.
+>>
+>>
+>> 4) swp_info[] vs. swap_info() gah.
+>>
+>>
+>> I would just have done:
+>>
+>> swap_type_to_info(int type)
+>> __swap_type_to_info(int type)
+>> swap_entry_to_info(swp_entry_t entry)
+>> __swap_entry_to_info(swp_entry_t entry)
+>>
+>> __ are the expert functions where we don't expect NULL.
+>>
+> 
+> Thanks a lot for the suggestions! I also like the idea of using "__"
+> to seperate the non-NULL version a lot and implis the caller have to
+> careful.
 
-Now we may collapse the range and create one copy for each process.
+Right, it's the "pro" version :)
 
-Ok, we have max_ptes_shared, while if some ptes are none, could it still do
-collapse?
+> 
+> My concern was that names will be getting very long in later commits
+> following this convention. Which is also the reason I want to shorten
+> them here.
+> 
+> A lot of SWAP relate operations will be cluster based, so it will be
+> very common to get offset or the swap cluster from a swap entry.
+> We will end up having a really long name like
+> __swap_entry_to_cluster_offset (convert swap entry to offset inside a
+> cluster).
 
-Maybe this is not realistic, just curious.
+That's a perfectly fine length though :)
 
->+	if (unlikely(cc->is_khugepaged && !referenced)) {
-> 		result = SCAN_LACK_REFERENCED_PAGE;
-> 	} else {
-> 		result = SCAN_SUCCEED;
->@@ -1421,9 +1419,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
-> 		     mmu_notifier_test_young(vma->vm_mm, _address)))
-> 			referenced++;
-> 	}
->-	if (!writable) {
->-		result = SCAN_PAGE_RO;
->-	} else if (cc->is_khugepaged &&
->+	if (cc->is_khugepaged &&
-> 		   (!referenced ||
-> 		    (unmapped && referenced < HPAGE_PMD_NR / 2))) {
-> 		result = SCAN_LACK_REFERENCED_PAGE;
->@@ -2830,7 +2826,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
-> 		case SCAN_PMD_NULL:
-> 		case SCAN_PTE_NON_PRESENT:
-> 		case SCAN_PTE_UFFD_WP:
->-		case SCAN_PAGE_RO:
-> 		case SCAN_LACK_REFERENCED_PAGE:
-> 		case SCAN_PAGE_NULL:
-> 		case SCAN_PAGE_COUNT:
->-- 
->2.30.2
->
+> 
+> Since we already have the swap entry type called `swp_entry_t` and
+> helprs like `swp_offset` and 'swp_swap_info' that convert an entry to
+> other swap things, so I thought that anything converts swap entry /
+> offset to others are named `swp_*`.
+
+Yeah, I think that's just bad historical baggage we should clean up at 
+some point.
+
+> 
+> Maybe a bad practise here, we can fix it while at it, or at least no
+> longer introduce more confusing names.
+> 
+> I can follow this suggested style, will it be a good idea if we have
+> following set of helpers?
+> 
+> For swap cluster and swap device (swap_info_struct):
+> swap_type_to_info(int)
+> __swap_type_to_info(int)
+> swap_entry_to_info(swp_entry_t)
+> __swap_entry_to_info(swp_entry_t)
+> __swap_offset_to_cluster(struct swap_info_struct *, pgoff_t)
+> __swap_entry_to_cluster(swp_entry_t)
+
+Looks great to me, but let's hear other opinions.
+
+> 
+> And for offsets, we still use:
+> swp_offset() (Existing helper)
+
+Yeah, there's also "swp_type" and "swp_offset_pfn". They really only 
+extract basic properties of the entry, so they are a bit special.
+
+I think we should call them "swap_entry_offset" "swap_entry_type" 
+"swap_entry_pfn".
+
+Now, that's not something I would expect in your series.
+
+> swp_cluster_offset()
+
+That one could later become swap_entry_cluster_offset()
+
+> 
+> Now all swp_* helpers are pure arithmetic operations (we just renamed
+> swp_swap_info which seems the only exception). Is this better?
+
+I'm already happy once we name+document the new functions properly.
+
+I could probably live with "swp_cluster_offset" for the time being :)
 
 -- 
-Wei Yang
-Help you, Help me
+Cheers
+
+David / dhildenb
+
 
