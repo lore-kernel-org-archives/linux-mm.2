@@ -4,176 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C337CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7ACCA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:57:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5B1D8E000E; Wed,  3 Sep 2025 08:56:27 -0400 (EDT)
+	id 52B698E0010; Wed,  3 Sep 2025 08:57:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A32268E0001; Wed,  3 Sep 2025 08:56:27 -0400 (EDT)
+	id 5037C8E0001; Wed,  3 Sep 2025 08:57:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9484F8E000E; Wed,  3 Sep 2025 08:56:27 -0400 (EDT)
+	id 4409B8E0010; Wed,  3 Sep 2025 08:57:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 846798E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:56:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3832016069F
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:56:27 +0000 (UTC)
-X-FDA: 83847937614.27.7594BD0
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2087.outbound.protection.outlook.com [40.107.237.87])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AA20E1C0011
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:56:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oJM72u7T;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf21.hostedemail.com: domain of jgg@nvidia.com designates 40.107.237.87 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756904184; a=rsa-sha256;
-	cv=pass;
-	b=Iaqbdgyfc9FOx5cRO6JM7s7ksVBa9S+7rkRcspdWhEljtivteeMTxDthU/qQ8JeOarSqDt
-	7o03/bRyFx7HevSFgizQAZbBDuyBgDRIfZXYfECCRmv9wH8kKFb8lzpYlUjgXHi5F/7aoM
-	U+XwoxIWZjn9zh7m3MB7O3uv83BsT6w=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oJM72u7T;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf21.hostedemail.com: domain of jgg@nvidia.com designates 40.107.237.87 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756904184;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 30EB08E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:57:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE98E119AB6
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:57:01 +0000 (UTC)
+X-FDA: 83847939042.25.BE19F83
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 06DE840007
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:56:58 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WlRhQKUe;
+	spf=none (imf01.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.16) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756904219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hR6IJbj1Vfo1F8yJ7ahz2cOIPT3YmpnAowzpDDMIGdQ=;
-	b=Yb/HJsFtQjvPolNsiP0Slnfinh8ptU8KoXcr5x2qf+j622GktwE2VurpmnJH3HKXpOSIWd
-	/mZks1/rjp28xFdeA+hEDpQg0znpLrM8g/A+e2PdsYr8l/F7Lr2ABD1Nm66YO7E7tl0SDI
-	nAcgUgYEGl9hN4WLq7Ts35ydwo9vtVw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iMYIjoreorXNUnQuL/iZ2u7zBsqlwMISU4b/iVYCQRnaeYdY27NaRMGTVWoSzPWoQE2bW+jIerv/QuB01M1R4LwrOglBKyvDtlCOvdfDhu//bSofoMmLZKlz7ZW3BV4i2UYndyEoeyPoKtMlisl7BoaNjH9DJnhLWB+Ut/AcnnfZi9soHlxpNBIQEplL5wSngJfg4XaKI9dTrMUetfqFxtw2zowvzJj5xeGXij3pcMPvXdbQntTEAakX48IPjdo/x4L9/hohxh+Jkim3GXKx6eQ9t4qggKoBPucGD/koWlHeaQ/hnequAyHS1MIwYVUkszRV/aSij0jkyCew45/fMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hR6IJbj1Vfo1F8yJ7ahz2cOIPT3YmpnAowzpDDMIGdQ=;
- b=v6WgGoyS8ziXe5oPVQ1sk/G6Ypow80fyHA+Lja63XdLUtG5Rt46TcgruDL0xpKoKcnHN5y21LR6rONzwQ1jJzmMfbCTVoHwtGTNoCR9KCGjxPbz2BWOgfKTOeSh5V3m3kfaaM1KtcaenbrY7yJpqIhz2/SNhul+ByBnqA2dTJAQbP3DJgbK76nzZzu9Y49aI6F7J4t7tU6sgEEhcdS+UsNOwN8/dn8vrmbC3xsm8VP6lz47s/tn3kUzoRSnn/geETG7thPAUSPz2JiiyElOkBUSokTN9yZg5mC/NPuAiKOv/oqTyOJhPUP6BNuwzAEowptKbD5oeVVvKfGChYLN8dQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hR6IJbj1Vfo1F8yJ7ahz2cOIPT3YmpnAowzpDDMIGdQ=;
- b=oJM72u7TKDfIoC3UQetVbsZkjaNRpp9S85fKb2O8EKNsIi3P9m2OnAMquK6r1JrScq1Wki/60/sdx+wXcZFaXLjnQoWc8yoydW/DM2+eFIpe7olVmbwGwEAFdPB6aB4JIZI5L4/+wtONOTNrpbw4FU+wwnajkEVAELaxtu79wjkZzlIbXZQaNGrFIIRUir6Y6rU2wyFFcraYrihnon5MPxEuu+JjYkxocSoKjIRdwZn5v3NcVvxAGsN8HfaG0ilLSNPt7GzeAM3V+BZUBhaSP8EcZ1M+DQe+ToeJYCqw7kWQnmMW5Od11vNhZgT0AwVVX/sDQczGCoulRNTXjbfbDg==
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by LV8PR12MB9264.namprd12.prod.outlook.com (2603:10b6:408:1e8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
- 2025 12:56:22 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9073.026; Wed, 3 Sep 2025
- 12:56:21 +0000
-Date: Wed, 3 Sep 2025 09:56:20 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Graf <graf@amazon.com>, Baoquan He <bhe@redhat.com>,
-	Changyuan Lyu <changyuanl@google.com>, Chris Li <chrisl@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] kho: add support for preserving vmalloc allocations
-Message-ID: <20250903125620.GG470103@nvidia.com>
-References: <20250903063018.3346652-1-rppt@kernel.org>
- <20250903063018.3346652-2-rppt@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903063018.3346652-2-rppt@kernel.org>
-X-ClientProxiedBy: YT4PR01CA0137.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:d5::24) To PH7PR12MB5757.namprd12.prod.outlook.com
- (2603:10b6:510:1d0::13)
+	bh=Oq76gFGq6Yx9M0kbWkAKTTpUzfaq8x2iOzO5Dy5R/5Y=;
+	b=Ome/HeaMtj6FQz9uW8TL3LKKcCX2mg3WZuf/419ZYrWjaBaowhtD2X1OUxO+FiYKlSN7l+
+	Xy51u5tTwAIyEMcVHtT8dT21knU0PGShBqLrnTL2MbINx5MCd+IOzVZQPj/2kUSn03RNIB
+	Kby8BiFBeVe//msLT84/nX628xv9XDo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WlRhQKUe;
+	spf=none (imf01.hostedemail.com: domain of thomas.hellstrom@linux.intel.com has no SPF policy when checking 192.198.163.16) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904219; a=rsa-sha256;
+	cv=none;
+	b=5M3VYg1Wft/0vpu/moTqMnizMAsNIhsUs2+O3Kr88GsDPfkCYZJ3dvd4W9ofsexGv0wrk+
+	eiW6wYrUSLlbyj1EtFG0420zaDZOhqYH5uIdbqZXXbYpeMZYMCIGEquiWOPL2uk+xHR09O
+	3Kv1hX/NHLHS0o7ivCndbhpgQUGNoiU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756904219; x=1788440219;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=P7y4rxcEmnkPyvqalWo+DCK6I3OZbrNSHV44uG0z3aM=;
+  b=WlRhQKUepfaIzoIrG9XA45e6x0w2YDte14ddcY0urMW9YrUTQNtUV2X+
+   H64qHZx4BYE8lmRXlnOAYA2U7fd9Iwf0g9gUzUZzMpoZ3gd7b8+0UENWm
+   rpQJTcebSwH3VaoMSmd156xbt7iTj+IL7mUpArg3wwAtMeWv2HP4ChDdU
+   TAXbC9GpEsil46y0NzvdN0zs+fKwuXFQIPtGO7MUnDqD15Hm3QuVQKgnV
+   RbaglleD4cjdM9E4mDLKv7e79qBpcSvu53HcxJgz6RM/AIKAXmUZ1pbK5
+   19Xacm9dssrnNm1SksS549HYL3LHs5VmSpGOZbSMYPNHPcMuT3LMNDjF1
+   A==;
+X-CSE-ConnectionGUID: uRKHk2VjQgC5/JFAyn4ztg==
+X-CSE-MsgGUID: yoK1n+s4SeCKmbfCDpsyUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="46789851"
+X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
+   d="scan'208";a="46789851"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 05:56:56 -0700
+X-CSE-ConnectionGUID: ECe5td89Suizr/8TBzjWNg==
+X-CSE-MsgGUID: GnUpQBeWRj2KsY7nFJI38g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
+   d="scan'208";a="171139910"
+Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.245.191]) ([10.245.245.191])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 05:56:54 -0700
+Message-ID: <1a47196a82c4d0644e2dae3af5d3f9f33bfc8fd8.camel@linux.intel.com>
+Subject: Re: [PATCH 1/6] mm/mmu_notifier: Allow two-pass struct
+ mmu_interval_notifiers
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton
+ <akpm@linux-foundation.org>,  Simona Vetter <simona.vetter@ffwll.ch>, Dave
+ Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>, 
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>, 
+ Christian =?ISO-8859-1?Q?K=F6nig?=	 <christian.koenig@amd.com>
+Date: Wed, 03 Sep 2025 14:56:49 +0200
+In-Reply-To: <20250821114626.89818-2-thomas.hellstrom@linux.intel.com>
+References: <20250821114626.89818-1-thomas.hellstrom@linux.intel.com>
+	 <20250821114626.89818-2-thomas.hellstrom@linux.intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|LV8PR12MB9264:EE_
-X-MS-Office365-Filtering-Correlation-Id: e8626334-0c2b-49c5-b4f5-08ddeae94842
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?b8XdwMsnf1ADUDutP+3YyNer4xm/+XjOcQU+rWs5QoO0Bg3tfQgt5BXTtyrp?=
- =?us-ascii?Q?+KOvUPCbt34vb4yj82hCbYTCXEk3EQFqFCpLVPOaqDdu85TrxCYeaN09Ny0+?=
- =?us-ascii?Q?HFETlOCYEzBZIRPiNNkx9bDM4vcseSkBDv3dFzE7R2OwwqgLHbKyybYtIeEy?=
- =?us-ascii?Q?9jBeqV58RelIuE/ryZ/RCNqwucRK14syzRoXqh2o1kEqH4NR68QB4JfhW3o+?=
- =?us-ascii?Q?G5ZxZpy8obsg9POSVwa6bmQC2kUBukPxLJC7cGlVM3tPIK/7Jls2HobnsQMF?=
- =?us-ascii?Q?P56aXBZXJglH+YqNV2FEFYJURjersFOlL8AEXl2fA0CjkXAIGAx9nKCgsNCt?=
- =?us-ascii?Q?eJoWV5QVwRQuXFtigxzWb53IeQrNGN85s5dAXKmDMKpv91yV5I27K0oHqKki?=
- =?us-ascii?Q?4UZi2nUXglaI77MGOmL4uE/soDEmjvpr2inrINdWTudy4imQw/QDJrnr3rDX?=
- =?us-ascii?Q?NI6JFebu49ILJCQEFOsnKKEjr5I8NZhM/MwUC23QS7h0fWDfsWy/ACC+VdBb?=
- =?us-ascii?Q?Nk6vB8Hn4u7Igtz/DpoMDVn6f5spCuFHZ4NyY+ZYLosxAJSi7scPEMTcRM53?=
- =?us-ascii?Q?C8YNs5Xb22yyjTgme7nwn5bEYwWV/F6GubOSHAMO5gPw3x+PofB9sC+iow+n?=
- =?us-ascii?Q?s0WJU6xuQEC43p0AX+bO3JYL/k4pu+vl9WYz5BQRFRW5ySWNwD9fCxScmowJ?=
- =?us-ascii?Q?Za215oWjRSqwseIh5gUED8ukh21h0m1+ftebqdjNCPm76zyPO4834JGIozSq?=
- =?us-ascii?Q?/tOjK8EzGNzvt61uckUcrn1r0oSXNYgJv1Ky4+X0nSqA1KNbltWKtKg1wYF+?=
- =?us-ascii?Q?rL4qInrPpx2WWdsqyjibH9P6gjyps+UOu2tdgSxljlKqTiY0c553Ybu+dzmT?=
- =?us-ascii?Q?DH9jaDygg6T8JKpc9Ka/HZ0Uwcpbc9F3lHzoW6Mi4CJT4UvXDSvNDkwEnBpr?=
- =?us-ascii?Q?MefY+3IuNByDTs/sNrcLHjwAmVmqyBR2fbLPM+c/zAFOnP9dKqauOJ/2tq3u?=
- =?us-ascii?Q?A6narhFAYmK6psr8X614qZ388DiRNgMBt4Lbj2OyvcJsfhFzJ2YxNuweJLx8?=
- =?us-ascii?Q?E5icPYyY5tkQPaEAfP1IAYuBqels5ItqNkCqYhh45JxU4YW3d0UurUK+aYzU?=
- =?us-ascii?Q?dGDNbM6YihN6rzhk3Dp2zkJSPUsXt6SSNqRjSdvnMJITX9lyOEAk2oCBfuiG?=
- =?us-ascii?Q?WbPdWZ2qTUzBF1S0tHWwHMZ2wia11bDaDvBYF0MYAc3SMfrGtV4iIYi8EQlD?=
- =?us-ascii?Q?rdizFhQGKeoX7kQwIJwB6lgVvYQUjzfWJX2b59jSM9at3qdObqiB1wNIRi9s?=
- =?us-ascii?Q?tGntTKtDcFuJZtKtspnXxzGn/5fIOlNRclEyUI6OIXIn7BgF2LMWx1g/prS4?=
- =?us-ascii?Q?vc6xiGpab7fWYpA9X3/W6sQS7XkplNuxXXIrkyE1zhRZ9557WtMfbyz9Eya6?=
- =?us-ascii?Q?ZlPfuf/1ffc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FuBwuQpJJbJ3C4gECWgpctoGrAIHUAm8BMqE4/ebCzTa07wVrTrcBnnFIoGB?=
- =?us-ascii?Q?4SP2LDUlxzGb/L00uNr0SzZ3s+94nwA+Cd1PwFC9OyJYqThPErWsiIXGarfZ?=
- =?us-ascii?Q?wDFeC02s38U7gwXskqagdCpWtT3vGnSQus6snyUZxdkU7ks1KgQQO/0weSzs?=
- =?us-ascii?Q?knm9LIsNAxlHdkBFxvD7LHE/1t94NYO0ujsuVdEqhUS7kcSwWNyULv+ead1w?=
- =?us-ascii?Q?Grytk88uNy9TAu455kcVYDuLQjq3IDGkRHg37mXwPYZmv7SjevLMfC+XHE5Z?=
- =?us-ascii?Q?Hz425tTk1sWieRbozdd3psPClLJsM+PbxFjyAaaJNi0p4R3p3MVffuo5DsuY?=
- =?us-ascii?Q?nzL1Dvtqs72nbKy4RhM1WHFvn2SHMPWup4cURosIuhWMxndoJdouqimEqTO0?=
- =?us-ascii?Q?D6fk/9F29CzTM95QNxX/pA2p6P4bWwtbD6qQL3buw5Ga7ya7coGCixqkpVHP?=
- =?us-ascii?Q?8wp3+kBLl9+Q+E3CZFg4Ll8trt3NG77iOjsReFgtC8M4VY7RuEsazQjwgkri?=
- =?us-ascii?Q?+HbdTZIgOFiYM0KNYUoEdLCdcZMb+fyd8SPl2eSgcA7kMuZizijIHYOFrTyt?=
- =?us-ascii?Q?Y6UkbHclWhoAbRm2iMf63O03gaOq3OGF6sZl7mAZCLEX6xR9AW3OIN7/sGvG?=
- =?us-ascii?Q?1B25HrWWx/N9OlzkFPa6Jcdw3SgPTb7c+bXNd8iyrccl0GGfPgxSA23PVAYl?=
- =?us-ascii?Q?JWQLX9YZjembX46yweGlVKq4y+QriwrcZP6Vk8ljlwYcDGUAJfAcONWPv2HM?=
- =?us-ascii?Q?Z/wtec1P8mBxXOQTrgDNE3SaFd0R7BIB423h2p4yfvUBVjm0jQ/nXnWDZbzw?=
- =?us-ascii?Q?l12NLPJnnp3nXDwxNbwh/MXkcZcX0hdy+aw6fVDcgmGNIG2Ob/z2j/FiW65s?=
- =?us-ascii?Q?5lNJEzQF+1roIAIrjuo0pe48CQu8O7G69GKPEBWRSm0A/Fwu/WJh+28VmZ0m?=
- =?us-ascii?Q?Zf1blKvnAnLvdsi7SCmZskPfOV2lhf+qYlM3ZTfUB/Y+7B2btQLKEMeRYH/k?=
- =?us-ascii?Q?V1e84TpLmwBo4ys7PO7hJwimgj+yh16dfDeema9hHOnQgYjshcTwi8NRVvoO?=
- =?us-ascii?Q?colP75AMQdMhNvnojLv9WMHjsYbgNEwBPkyX8aqYUgoSkSQm16n90kJ/OHFH?=
- =?us-ascii?Q?HFx80wvrvv1chai48OXcJsaKmyJToRHcYAchh7LVBwZ2VKvE2VLV89fnNhNB?=
- =?us-ascii?Q?g7heh/uYOykTeISYN4y4wTk2wHknpmVBpwNxPXehUYb+Bzl9zqoxDNpwO2oZ?=
- =?us-ascii?Q?x/nj3QOBT5jbGAhz55IOT8gH2KKAC2ZPKJoRJs/ZyvWlLuPfUsSs4GRSk2Oq?=
- =?us-ascii?Q?AknMwhRRj0uKedv0h/4AjY8MP8dTSj9KRFsmP6AQtP2h85zZ+gBaykSZxoE+?=
- =?us-ascii?Q?HBQ1n6RzATyLFZVz1c/zDnWHWZxd3HMPGDDygjGBTvZ+/g0dlKOu9zZpbdOA?=
- =?us-ascii?Q?j6r7jvGCvNdEboClsJ3eqze6wI42iFrycq5w2Xr6MwxSKs7JB0O+smB+ceQ+?=
- =?us-ascii?Q?essNz6SSpxxjoX8fWXhveUftAaZSg8vGvneUBVe+h5Ab8Y/Pk+HUprQ/5Wxj?=
- =?us-ascii?Q?tzivcBMORiIY5oK5ihI=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8626334-0c2b-49c5-b4f5-08ddeae94842
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 12:56:21.8745
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6PiYiKNWaUgv4BJdanJin8iIhpO1Bx7J/hvpO3EledOoLLGlMogw+iGxxm0sJiZ7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9264
-X-Rspamd-Queue-Id: AA20E1C0011
-X-Stat-Signature: 8y37oxoahmyekknz6s3eq7m7psgw93x9
+X-Rspamd-Queue-Id: 06DE840007
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756904184-667611
-X-HE-Meta: U2FsdGVkX1+22XAYyxxfNBkDS8bg/5RYFjjgRtTrkzkRE6+ZswF3Iv9PESImTvpd5EViydJR84+ZL+tfdAlVpwp0bEljqczeK7uBDK3DZTVA3fkqIB/W99/PH+115D8icuVvU4SkWbeFTWZ3i6Nh6HpQMBPX6bVYHxu10AGdFhnQdZhIpRP9jmtImva4NcWriC9bLkrZ358eH5Sj3z3SozRwdOxDExCNcxpSKzsX7LZkmZsAxQy4gHu4gGwzapI/vlaEB9cgagE91QrKU2cKWEbDErm3RzGrlGAuEcBMPWxK1DguZrubQUhDMCi13HbNznEy/EvLwIFSv7E2Zk2mwR7tBY51PhElugjuxiDJHgxyyp+6y4JhEkPho4vPLzRkYjgDJXpL/tKZctPfV7rBKCKPlxe7CJsrMtMiIQqCcwGhI5qQ8Z4rJHl4tTQI3bjXlmy9/YzRva7r2cU5HrjHh4kj+i2CgeiNpZhzwtG6EnqCNNjbt8AbNnUO0eBYHP7LC4KfpuqEoBK8znzBQa5Na0O6fuShP5pjzGgT1w4PZGAsfU2dZ6zfcDiGOTN6wwLRKi2+WO+HoWwbRGbkS7STfY3yd30nf1LA8lLzPLPFzLKZPDhz00ol0+ARPKtF/avfPul6YoAbDemZB8r0NpqI/mul1N9UWnqMebxkPEY5LVaz+S/ciflkIJHneOMcUJN5PK3jJM5MxaquBJ28Ye90qpbyqyt7kpcW/lYxyhlsIKUdlLWC/FQ84ctC++s32Cw5xwvvv8ZcHSbWxdZgGAg8wjn+TMS++Ww3H7+qWBb34crjhqnpVCXJRq8vIzWjaU86GHrXWPgOrv12SnNrOdiamCVTaZtl5fbNg5dqVBE0gvOw55mORfLqs4Q3+HljHUgkcRDKE88DNBVHmV2Pq2SDP2y1Oxd+Xkde9WJF0w5d6vyKnZrPaqig0Q==
+X-Stat-Signature: dxcy9brfq8ca6p1dni6z46f7fzxn91s5
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756904218-540952
+X-HE-Meta: U2FsdGVkX1+/ytlHkMW6J53NLZKKyHz+IeOS+kWueloJ8LpZ1XJB79IJz10mzo9T0WYlX5+mDms75Sgd106LZT9OTa5AiDVbVTIuBZoMjQl7OiI6/gDwSa7l4Pe8EfV7fA8rQKWEbkc004bxffspocwN3wymMHDoRNNlHkSJoMlCWk/B3yUAKkSPlo1EReL8WtHyhA8zyhSJcXhZVubNYdhPcj+WsJmnUzeKv/CKF+nt9Iz3+5TgiMBayeyI/DAQaHw3Fzg/xjsB1/q1BvFSyUCBqr8gPa6hdSaqarAR75/60kSVqjvCQ0qJobybKsHgE8QAbQRartzOhcnR3/NWD/aAciQXUnXeqNwnA4lzOVRWIC6EN6VSdWl+gtCR/A9cdReb6m40NXhzp+k4H+K4+PGc58bmXQDfq4xJjy7lbpJmpJmrLsPhx3aZ84Ytb3L5gGxb36jcWbrmEfU7P452DEsuEU/qpJCZ4XA9xwuehVx1C48nbgS0oXs5U1b/fcxDraLvIRQunz4Bdmq/qOANP7OSCMURVS+zhbkQb+RIFFXVyvR6AxTjmAG2nQ7jDndMOR8ol67O62o/igg8zlqNU6xcJQzk2kb7B3vxueTet0HN57QFF/NGzk0Qr99OJ6g+zMxsX7vinjk2Ibacxi6vOOu5Kmvplm9i9+xnFfe/XMq0nNQYeOAHS0RXQ5EdmiqwAkOaG0c2AVeNGpt3w8mQZ96alWJxQcJjcb0Jvv59U6MX1BnT+ovlhxqVXU1jSHKTgGxSPE1Zl/lNqgsQUkGQZ6tCkYUTXrd1nuSL+ILU1GuHlvCSXFxyhq2rVfHn4W6fEIaDWG+nuph0j+auOfPlKaCohPOMfOeQaz2zBswhukWnKCmIOqcSM++YpMaMUtdiZ4sXBTZBJiFHJoTsSVbWzuuwFAm/pHUCEcLfjgxp4Acz1AC6CFAtbnaFkiC49oyT/rciZcskoIMDLZjP2VQ
+ 1ZVz54yi
+ VMlUgYQKHcdQ2aEHmFmoUPRflqHBFLLkcUI/aSBWl6Ly0E2NJtb2Jhb/4aQkuKVw5kaI79SPPHfpUA+Eqb8rGtk5YShi7ldUw45hBMKkx7hV8mu6VvpMFofUh6lU6uM1Nv1SiPNV4Im8fkXcF9fGRNwc/m2IoFrcxHxt8WTYbtHtvvYgcxpWHbJ3h6G3iC8FW38Pnr7eunL8oHlSKspt9YlD8mxUR4sWdhnVcWFaAmJnBMKYiwmMrdJ2SomuDeO+q31cJBw56kvlEErSHC1okXXB57AIqhAZUYYGyZiJBAmtbfGRpSo+4T4wGEYfWBxmddfvEyD7xHUBy64Hi4jKMZE/Ei6ZIkIuvZZnS2NwE/SRrOyZMjsO6VB1Yjv21m0DJjQ1dBGL8qjEqYIDJwnbmAyS0aWxlP2Zz9LN3JFiayVKDTTilWElT4J+WwsoWQ4rS13xcKJlNDFiW9ldI0PnhLCJGVS/Nkq4Ol70LqUfte5lB87ftvM2nX0MpMy6JiHpmiCYu6Tm35KnrOznM0qPWHsAnUEQTz3B8A9v01hP2hz/e2rxGDuS7lLjgP57bggBpfsmpL+Syl1U8LenXhErq1Ip9IKLtc7Qqw2b/tV1xtthRNxw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,37 +112,307 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 09:30:17AM +0300, Mike Rapoport wrote:
-> +int kho_preserve_vmalloc(void *ptr, phys_addr_t *preservation)
+Hi,
+
+@Jason, @Alistair, Gentle ping, could you have a look and R-B, Ack if
+OK?
+
+Thanks,
+Thomas
+
+
+On Thu, 2025-08-21 at 13:46 +0200, Thomas Hellstr=C3=B6m wrote:
+> GPU use-cases for mmu_interval_notifiers with hmm often involve
+> starting a gpu operation and then waiting for it to complete.
+> These operations are typically context preemption or TLB flushing.
+>=20
+> With single-pass notifiers per GPU this doesn't scale in
+> multi-gpu scenarios. In those scenarios we'd want to first start
+> preemption- or TLB flushing on all GPUs and as a second pass wait
+> for them to complete.
+>=20
+> One can do this on per-driver basis multiplexing per-driver
+> notifiers but that would mean sharing the notifier "user" lock
+> across all GPUs and that doesn't scale well either, so adding support
+> for multi-pass in the core appears to be the right choice.
+>=20
+> Implement two-pass capability in the mmu_interval_notifier. Use a
+> linked list for the final passes to minimize the impact for
+> use-cases that don't need the multi-pass functionality by avoiding
+> a second interval tree walk, and to be able to easily pass data
+> between the two passes.
+>=20
+> v1:
+> - Restrict to two passes (Jason Gunthorpe)
+> - Improve on documentation (Jason Gunthorpe)
+> - Improve on function naming (Alistair Popple)
+>=20
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Simona Vetter <simona.vetter@ffwll.ch>
+> Cc: Dave Airlie <airlied@gmail.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: <dri-devel@lists.freedesktop.org>
+> Cc: <linux-mm@kvack.org>
+> Cc: <linux-kernel@vger.kernel.org>
+>=20
+> Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> ---
+> =C2=A0include/linux/mmu_notifier.h | 42 ++++++++++++++++++++++++
+> =C2=A0mm/mmu_notifier.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 63 ++++++++++++++++++++++++++++++----
+> --
+> =C2=A02 files changed, 96 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/include/linux/mmu_notifier.h
+> b/include/linux/mmu_notifier.h
+> index d1094c2d5fb6..14cfb3735699 100644
+> --- a/include/linux/mmu_notifier.h
+> +++ b/include/linux/mmu_notifier.h
+> @@ -233,16 +233,58 @@ struct mmu_notifier {
+> =C2=A0	unsigned int users;
+> =C2=A0};
+> =C2=A0
+> +/**
+> + * struct mmu_interval_notifier_finish - mmu_interval_notifier two-
+> pass abstraction
+> + * @link: List link for the notifiers pending pass list
+> + *
+> + * Allocate, typically using GFP_NOWAIT in the interval notifier's
+> first pass.
+> + * If allocation fails (which is not unlikely under memory
+> pressure), fall back
+> + * to single-pass operation. Note that with a large number of
+> notifiers
+> + * implementing two passes, allocation with GFP_NOWAIT will become
+> increasingly
+> + * likely to fail, so consider implementing a small pool instead of
+> using
+> + * kmalloc() allocations.
+> + *
+> + * If the implementation needs to pass data between the two passes,
+> + * the recommended way is to embed strct
+> mmu_interval_notifier_finish into a larger
+> + * structure that also contains the data needed to be shared. Keep
+> in mind that
+> + * a notifier callback can be invoked in parallel, and each
+> invocation needs its
+> + * own struct mmu_interval_notifier_finish.
+> + */
+> +struct mmu_interval_notifier_finish {
+> +	struct list_head link;
+> +	/**
+> +	 * @finish: Driver callback for the finish pass.
+> +	 * @final: Pointer to the mmu_interval_notifier_finish
+> structure.
+> +	 * @range: The mmu_notifier_range.
+> +	 * @cur_seq: The current sequence set by the first pass.
+> +	 *
+> +	 * Note that there is no error reporting for additional
+> passes.
+> +	 */
+> +	void (*finish)(struct mmu_interval_notifier_finish *final,
+> +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct mmu_notifier_range *=
+range,
+> +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long cur_seq);
+> +};
+> +
+> =C2=A0/**
+> =C2=A0 * struct mmu_interval_notifier_ops
+> =C2=A0 * @invalidate: Upon return the caller must stop using any SPTEs
+> within this
+> =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 range. This function can sleep. Return false only if
+> sleeping
+> =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 was required but mmu_notifier_range_blockable(range)
+> is false.
+> + * @invalidate_start: Similar to @invalidate, but intended for two-
+> pass notifier
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 callbacks where the callto @i=
+nvalidate_start
+> is the first
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pass and any struct
+> mmu_interval_notifier_finish pointer
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 returned in the @fini paramet=
+er describes the
+> final pass.
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 If @fini is %NULL on return, =
+then no final
+> pass will be
+> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 called.
+> =C2=A0 */
+> =C2=A0struct mmu_interval_notifier_ops {
+> =C2=A0	bool (*invalidate)(struct mmu_interval_notifier
+> *interval_sub,
+> =C2=A0			=C2=A0=C2=A0 const struct mmu_notifier_range *range,
+> =C2=A0			=C2=A0=C2=A0 unsigned long cur_seq);
+> +	bool (*invalidate_start)(struct mmu_interval_notifier
+> *interval_sub,
+> +				 const struct mmu_notifier_range
+> *range,
+> +				 unsigned long cur_seq,
+> +				 struct mmu_interval_notifier_finish
+> **final);
+> =C2=A0};
+> =C2=A0
+> =C2=A0struct mmu_interval_notifier {
+> diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+> index 8e0125dc0522..fceadcd8ca24 100644
+> --- a/mm/mmu_notifier.c
+> +++ b/mm/mmu_notifier.c
+> @@ -260,6 +260,18 @@ mmu_interval_read_begin(struct
+> mmu_interval_notifier *interval_sub)
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL_GPL(mmu_interval_read_begin);
+> =C2=A0
+> +static void mn_itree_final_pass(struct list_head *final_passes,
+> +				const struct mmu_notifier_range
+> *range,
+> +				unsigned long cur_seq)
 > +{
-> +	struct kho_vmalloc_chunk *chunk, *first_chunk;
-> +	struct vm_struct *vm = find_vm_area(ptr);
-> +	int err;
+> +	struct mmu_interval_notifier_finish *f, *next;
 > +
-> +	if (!vm)
-> +		return -EINVAL;
+> +	list_for_each_entry_safe(f, next, final_passes, link) {
+> +		list_del(&f->link);
+> +		f->finish(f, range, cur_seq);
+> +	}
+> +}
 > +
-> +	/* we don't support HUGE_VMAP yet */
-> +	if (get_vm_area_page_order(vm))
-> +		return -EOPNOTSUPP;
-
-This is a compatability problem.. Should have some way to indicate
-that future kernels have an incompatible serialization so restore can
-fail..
-
-> +	chunk = new_vmalloc_chunk(NULL);
-> +	if (!chunk)
-> +		return -ENOMEM;
-> +	first_chunk = chunk;
-> +	first_chunk->hdr.total_pages = vm->nr_pages;
+> =C2=A0static void mn_itree_release(struct mmu_notifier_subscriptions
+> *subscriptions,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 struct mm_struct *mm)
+> =C2=A0{
+> @@ -271,6 +283,7 @@ static void mn_itree_release(struct
+> mmu_notifier_subscriptions *subscriptions,
+> =C2=A0		.end =3D ULONG_MAX,
+> =C2=A0	};
+> =C2=A0	struct mmu_interval_notifier *interval_sub;
+> +	LIST_HEAD(final_passes);
+> =C2=A0	unsigned long cur_seq;
+> =C2=A0	bool ret;
+> =C2=A0
+> @@ -278,11 +291,25 @@ static void mn_itree_release(struct
+> mmu_notifier_subscriptions *subscriptions,
+> =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0 mn_itree_inv_start_range(subscriptions, =
+&range,
+> &cur_seq);
+> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 interval_sub;
+> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 interval_sub =3D mn_itree_inv_next(interv=
+al_sub, &range))
+> {
+> -		ret =3D interval_sub->ops->invalidate(interval_sub,
+> &range,
+> -						=C2=A0=C2=A0=C2=A0 cur_seq);
+> +		if (interval_sub->ops->invalidate_start) {
+> +			struct mmu_interval_notifier_finish *final =3D
+> NULL;
 > +
-> +	for (int i = 0; i < vm->nr_pages; i++) {
-> +		phys_addr_t phys = page_to_phys(vm->pages[i]);
+> +			ret =3D interval_sub->ops-
+> >invalidate_start(interval_sub,
+> +								=C2=A0
+> &range,
+> +								=C2=A0
+> cur_seq,
+> +								=C2=A0
+> &final);
+> +			if (ret && final)
+> +				list_add_tail(&final->link,
+> &final_passes);
 > +
-> +		err = kho_preserve_phys(phys, PAGE_SIZE);
+> +		} else {
+> +			ret =3D interval_sub->ops-
+> >invalidate(interval_sub,
+> +							=C2=A0=C2=A0=C2=A0 &range,
+> +							=C2=A0=C2=A0=C2=A0
+> cur_seq);
+> +		}
+> =C2=A0		WARN_ON(!ret);
+> =C2=A0	}
+> =C2=A0
+> +	mn_itree_final_pass(&final_passes, &range, cur_seq);
+> =C2=A0	mn_itree_inv_end(subscriptions);
+> =C2=A0}
+> =C2=A0
+> @@ -430,7 +457,9 @@ static int mn_itree_invalidate(struct
+> mmu_notifier_subscriptions *subscriptions,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct mmu_notifier_r=
+ange
+> *range)
+> =C2=A0{
+> =C2=A0	struct mmu_interval_notifier *interval_sub;
+> +	LIST_HEAD(final_passes);
+> =C2=A0	unsigned long cur_seq;
+> +	int err =3D 0;
+> =C2=A0
+> =C2=A0	for (interval_sub =3D
+> =C2=A0		=C2=A0=C2=A0=C2=A0=C2=A0 mn_itree_inv_start_range(subscriptions, =
+range,
+> &cur_seq);
+> @@ -438,23 +467,39 @@ static int mn_itree_invalidate(struct
+> mmu_notifier_subscriptions *subscriptions,
+> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0 interval_sub =3D mn_itree_inv_next(interv=
+al_sub, range))
+> {
+> =C2=A0		bool ret;
+> =C2=A0
+> -		ret =3D interval_sub->ops->invalidate(interval_sub,
+> range,
+> -						=C2=A0=C2=A0=C2=A0 cur_seq);
+> +		if (interval_sub->ops->invalidate_start) {
+> +			struct mmu_interval_notifier_finish *final =3D
+> NULL;
+> +
+> +			ret =3D interval_sub->ops-
+> >invalidate_start(interval_sub,
+> +								=C2=A0
+> range,
+> +								=C2=A0
+> cur_seq,
+> +								=C2=A0
+> &final);
+> +			if (ret && final)
+> +				list_add_tail(&final->link,
+> &final_passes);
+> +
+> +		} else {
+> +			ret =3D interval_sub->ops-
+> >invalidate(interval_sub,
+> +							=C2=A0=C2=A0=C2=A0 range,
+> +							=C2=A0=C2=A0=C2=A0
+> cur_seq);
+> +		}
+> =C2=A0		if (!ret) {
+> =C2=A0			if
+> (WARN_ON(mmu_notifier_range_blockable(range)))
+> =C2=A0				continue;
+> -			goto out_would_block;
+> +			err =3D -EAGAIN;
+> +			break;
+> =C2=A0		}
+> =C2=A0	}
+> -	return 0;
+> =C2=A0
+> -out_would_block:
+> +	mn_itree_final_pass(&final_passes, range, cur_seq);
+> +
+> =C2=A0	/*
+> =C2=A0	 * On -EAGAIN the non-blocking caller is not allowed to call
+> =C2=A0	 * invalidate_range_end()
+> =C2=A0	 */
+> -	mn_itree_inv_end(subscriptions);
+> -	return -EAGAIN;
+> +	if (err)
+> +		mn_itree_inv_end(subscriptions);
+> +
+> +	return err;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int mn_hlist_invalidate_range_start(
 
-Don't call kho_preserve_phy if you already have a page! We should be
-getting rid of kho_preserve_phys() :(
-
-Jason
 
