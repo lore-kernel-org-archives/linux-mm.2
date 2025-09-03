@@ -4,123 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92892CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 14:01:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93F75CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 14:07:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9EE66B0008; Wed,  3 Sep 2025 10:01:48 -0400 (EDT)
+	id BBDA98E0002; Wed,  3 Sep 2025 10:07:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A76708E0002; Wed,  3 Sep 2025 10:01:48 -0400 (EDT)
+	id B6F228E0001; Wed,  3 Sep 2025 10:07:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98C7C8E0001; Wed,  3 Sep 2025 10:01:48 -0400 (EDT)
+	id A5D048E0002; Wed,  3 Sep 2025 10:07:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 843826B0008
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:01:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 19F91137A61
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:01:48 +0000 (UTC)
-X-FDA: 83848102296.06.8EC558F
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D616B14001C
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:01:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Gb2fAwLM;
-	spf=pass (imf26.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756908106; a=rsa-sha256;
-	cv=none;
-	b=ZwCE55Mv2wK6XOF6B0T9MeBmnyKUBtAqNPlamnu5Lzjhv0FbxsviIbJiatMZE6fA9+BV0g
-	hhiw4Sm+NxBp3UPnnlNkPsAPWnlneCBH/JekmDt31Njq8m9ouYjuN7xWEhEoVrY3AlmHEY
-	20znfi2caNvv8LuTxFQudEYCtvaTSWE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Gb2fAwLM;
-	spf=pass (imf26.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 91E4E8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:07:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 43EC2119BCE
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:07:50 +0000 (UTC)
+X-FDA: 83848117500.04.E24BF86
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 64D61A0017
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:07:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t1gTxbwy;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of glider@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=glider@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756908106;
+	s=arc-20220608; t=1756908468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MywEynYNUb/+vviy4Gt34/JK2ggRg79daM+ma7Rs1DE=;
-	b=GSMN6eNuR+ExCQJxL/EiZhycIP0BMAepm5Ej1I1/V9UflARAIhr4sBQNVc2lVJZt+pmsrS
-	mT0oJJ55Ry7JGcHSu3GtPqOrCoIj8VZhYJSa9S7o8fKOAjObfgS6/F4HRvI8NNckd7lRac
-	GzJ1qdbKIjC5TyIzV0oENcxxZxo1crc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=MywEynYNUb/+vviy4Gt34/JK2ggRg79daM+ma7Rs1DE=; b=Gb2fAwLMTtymMLa7ezoFfLhSpS
-	u1sDrLJZmp5PAtqVxy0YMI0UTXeBzWzUcr7lHjAnImbU3dlfXlHzRl/Xucj3+YoAfx2GyQwBWHpuR
-	liEjR+KCRhUOAwctQBJJkX1DU1wcO9l90tbTfIpKFNcGR7X6lbIVdcRHK+QhZqy53jVmOtm4VAvK3
-	iv6Poz6xSKgnerY7XlnNM22ysjWf0/DoOSviiAXdZGSAdPYWcOZaMl31ClSL3mtlhAE7w00R9gPrM
-	ElZ/15hOBqiJVJ75N/RdDELHMI0bVBnJruPCWJ4JipggYDYB+yAJiaV78QiTfDTTkK4Xty9eVnVK9
-	yguwjVaA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1uto2H-000000004Ed-2uVr;
-	Wed, 03 Sep 2025 10:00:29 -0400
-Message-ID: <59f1b1b6e1ef24b0d514a9885a08400c76b0eeec.camel@surriel.com>
-Subject: Re: [BUG] x86/mm: regression after 4a02ed8e1cc3
-From: Rik van Riel <riel@surriel.com>
-To: Dave Hansen <dave.hansen@intel.com>, Giovanni Cabiddu
-	 <giovanni.cabiddu@intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, bp@alien8.de, 
-	peterz@infradead.org, dave.hansen@linux.intel.com,
- zhengqi.arch@bytedance.com, 	nadav.amit@gmail.com, thomas.lendacky@amd.com,
- kernel-team@meta.com, 	linux-mm@kvack.org, akpm@linux-foundation.org,
- jackmanb@google.com, 	jannh@google.com, mhklinux@outlook.com,
- andrew.cooper3@citrix.com, 	Manali.Shukla@amd.com, mingo@kernel.org,
- baolu.lu@intel.com, 	david.guckian@intel.com, damian.muszynski@intel.com
-Date: Wed, 03 Sep 2025 10:00:28 -0400
-In-Reply-To: <913a509d-d985-4520-a879-538a1198b946@intel.com>
-References: <20250226030129.530345-1-riel@surriel.com>
-	 <20250226030129.530345-2-riel@surriel.com>
-	 <aLcQ3UCXXNcByW1O@gcabiddu-mobl.ger.corp.intel.com>
-	 <913a509d-d985-4520-a879-538a1198b946@intel.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	bh=5K9EI/c+PZFvJEHF5Aa1VFvLskC+dFsbaSIMq7wWgXc=;
+	b=H7aWeJWqpufUffK5JQY7JdqMZXFcam9pT1ilzT/Kxo/SCClSOaME4mDn5OvIHwGn1MtZkO
+	o1Mu+Qi1Xp9C/Ipa6UMWpbazQDSzbKb25JbwcYt2mMxDeTonS52ZgPgy8w5LCqsxwREBkt
+	3bcfaVK2bR7wGdAfqnRjSgWk7gm8t8w=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t1gTxbwy;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of glider@google.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=glider@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756908468; a=rsa-sha256;
+	cv=none;
+	b=5UqbHEDZ40l3LTJCAyyHPNgElP4+IG9/Ve5mTSu/MZ8FjPj+tYwbAkOmfCct0aDkOLreCp
+	sFcnrr/wj5BGRtV4+JWluB6kSZD8Ka7K/Emt5UNBhLCuBFcKGDCtxcjdKMRRtqCbRaMrOS
+	XaBJxWZSABIavNuJdg8rMzfFJz2lszc=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso5714464a12.3
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 07:07:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756908467; x=1757513267; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5K9EI/c+PZFvJEHF5Aa1VFvLskC+dFsbaSIMq7wWgXc=;
+        b=t1gTxbwyTTteEx0sPmymEVVkuCPO9cQOyASWl3F8F4hkIk4ZUCN2Y6fjzm0VgdDXKU
+         vw2yntcqhFuT/TtrsvrfQ8K5v3INCA+ScTBAn4zXHSFDr0LO5+npKV93w3DXuyNl5vbt
+         A/wd0vHg14+MBimQdcEjl3IIZZSZMr/g/tS42kB72avbWbzw8bPgh6k3xE6+qn9RV9U2
+         DVVwATrU3RSF6k4VWpisKzO7IxfG6Ovst6QzNhfzYBqI2L8bKJD+pxww8S9LwbknMbjw
+         BTG4IkKpdo4eLmeGcfbsOeEWbvxZ33y2dAh6K+WS73NKH0OIK1/PIPVSdqohvFnmRold
+         90hA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756908467; x=1757513267;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5K9EI/c+PZFvJEHF5Aa1VFvLskC+dFsbaSIMq7wWgXc=;
+        b=qDMtP+iXDuFwfxSrEe0A3Hsn5nj+PTQBRtj/dUvPkIRIOyKJYVU5m9IXb0B/+ACxGY
+         so/4DIzvPvbD6n1KE9I8FdynoDWimbskmu1IdULbR7AXC+pbukhvWcazktDzqScOKdzG
+         4YTpaEffih3+KPbAM3eTILlWLg3kSe9Bg7IXf0n+caZrFWWpCJYpUrXClmAPATUmyygO
+         V7TEsN4KWrpsaCDXnkhP+dg0isZjWyi16FQ71ANuBmky6ZVIC+xckMj7XCCWSpTv5EOt
+         6nLEWMNvUkb0TzChh7tmULAnwKU4g6u2RTkOtQt54PlTM3bqG3afw6L563Tb1I8p4jPf
+         wMHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXevo8uXYm9V3zD+Vovd/QbZLbbDZgUTmiXjNEniDjX8326HQMYMINFy6e0+K8ElyPvlo8i8/LzPw==@kvack.org
+X-Gm-Message-State: AOJu0Yzlr6xHrUK5gU8Nqf+7lvpKp4/FidRWf+2F9Zrs7cZEqNZrcUYT
+	FcVM1DXSNdVL1Wf6RLWLEeIKt793ktQe7sjMqDKzA9uQ2189uldZ6uwEOGMS0NBVBIY9JMchAAr
+	LDQ2709KD0xOTBtUQ/ANTFjOjAD3xufOXpUtTVp03
+X-Gm-Gg: ASbGncusNqTmb6hX+K3xcHw7eZlFzba8/6E99B4or1quOLvJdFxpMPvlUByAFys4J4R
+	eVjOhPKSQbvwXmM49XvUkkwWqsFy32xEy432ugkM52ROeK2F7cftelGg1ZHfIFFHqKn3xmA2T8/
+	QA9FOhCyqxUALPhV3CicDSOYTQjP3ZG5kOMZ/wqGntcZSiL3g5PZmNHzG7MWIHWfM3Skr81/a9/
+	nn83TB67UQ/A6XhIWCnZz3Z8fR9kR3PoUNbFiRaoKht+w5PVFFLZg==
+X-Google-Smtp-Source: AGHT+IFuhXZJrFj9HYn4+7oas4LyVhrv+Mi5Jn59BmW6xsC0VtOu4EqtvC/C0bP5fykXZiH8qLFls+MaLNs5naVgZ74=
+X-Received: by 2002:a17:90b:2888:b0:327:ad83:6ce6 with SMTP id
+ 98e67ed59e1d1-328156bab71mr18212350a91.21.1756908466847; Wed, 03 Sep 2025
+ 07:07:46 -0700 (PDT)
 MIME-Version: 1.0
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D616B14001C
-X-Stat-Signature: aqyggja1tcf9ui5iku4s1crfqubdiuas
+References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com> <20250901164212.460229-5-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250901164212.460229-5-ethan.w.s.graham@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Wed, 3 Sep 2025 16:07:09 +0200
+X-Gm-Features: Ac12FXz0U-3N7wPl6bYh7KGL8GiZ-rYE3Roev_WD4ikilRDTuvPr9ZMXra7VBOo
+Message-ID: <CAG_fn=XxRoZJtxKJrLGTTV42H7gDMFEaQZiYQ+nFgmhexzgW9Q@mail.gmail.com>
+Subject: Re: [PATCH v2 RFC 4/7] tools: add kfuzztest-bridge utility
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: ethangraham@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
+	davidgow@google.com, dvyukov@google.com, jannh@google.com, elver@google.com, 
+	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
+	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, dhowells@redhat.com, 
+	lukas@wunner.de, ignat@cloudflare.com, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 64D61A0017
+X-Stat-Signature: agmra1oyjotuhisohy9sc7h48zymdx95
 X-Rspam-User: 
-X-HE-Tag: 1756908104-506463
-X-HE-Meta: U2FsdGVkX1+5VUYiMFghUwwxFZlKLtVlIKNCcNR48mP+5PDeADWhACAv1slZEHjIy4Y2kFW/L/XUx0Lbmq5IWdYczkCJUGZ7T7l00iyH/3pDI6XpNlqw1DlptrhxK+z5YqMfCa6O1LFAVb8J441mtg2D7wfgAXd9HPspiyCekj1sTbCPklf+NHpSG0XA0e9C0sF47eVdTHSYqYue51urz4+ProYBPNRkf4ko8mzAK5sx4RT8PGF7ScL93QO7lZHdI98+8L23sKSxv0YtTGTcUd9ZrgA9vKqRPQtIYZJ/d87F1cNMGM9onqw5zZVubQN9p0Ufjum+5RyMGU7NEkFsjSDGNEV7w7RebeghDKYwJFRZLncI8NYGyYIvUIzPD7srMRg/EvAxT53ILTkBcgZ7uv+D8Yv3+S9KRnJMcGcJiwXAuFHIsljvTTpmxnSgCf5Gf6JAgKm7RqzzB4HB1OXQEuNKAnRecZjuF5egW7RoJphV7aNW2/3zdsRLmh8VPkLlauYnDjxeumvjvgaIJaRKUGk+qS1YyFOVTAgV4VlLtOpfbUnARNkMjsE8b617rZa4hd6vZMXDLZED1R24q582ZDZelvDpjtKFqDCy4tWn5tw3M0UHOVia0vd+cfOxT2eAJbTGQLiNeRVBW37uauGe6ssDURauEQM/SAqz1RfW+JqtGmKmu8/wOwGR6udlDkMxqEdFk4yFj4+8qI8I+bU66F+ueEqtfrLj3QRpnlXDRVlFd5rR6q9hDjp6iNjxPWdx3tsiBz93Rfj5dfd8esZksn3GwF+X2M/BDnrokalCmbuuQAklXGCCDFFOEqQ/TAlvJaSGmkFp1HL9W7dL8XUqARYPZ+AeXRNNJCcMrG8VT2w3M1PpBQgoqIygKFNhgafYqzmheQp9mNqjXqYXrZfH5T9f+mBLv0cwFp7PoVuwJec5Hg1tkh/KPpMupaPjuoj8SXXzFLWvkxj2Pg6rygr
- J9pzDuel
- sG/PZT0G6mG/0bIEeBsVE3OaRCgqabS3K/pVQ5sc+ZjQ4d/JOuCo8V+EYTZfqLt7lSBsKBBFd7a7OU02vM6gsT0Th8mjeyKf1a6RU/Zt7/qUg9Fzl4F08jAXDO3CVrh9xXPyY8A51zD5CFN6AfdvkzaxpjRwrN0mLQEVN/lj5WPkXuWu4crUUQ6dG4+omKBfusJj2NIQhGM3dhOJCyRtxJ2w8pqmm4Emzm4X3py4NZ/UBuNb4Rv3AebX2PheEh9FIs3pRPoTiGK4IeiJc/n8Qq1xZy/xkQQKXnqYqwYIwkNCneW8=
+X-HE-Tag: 1756908468-559808
+X-HE-Meta: U2FsdGVkX1+clLSksXWehZrkpfj40KZnTkoEQ4RxY3pBDtlAxotEYTNF/jsrb7HP3plkOK73HSgFkr837jdECCtq0CLVwzWs/1oPIIi4kEPOW+uz3631BnwvYoNp02kjov5cBkkioA7W4qdLDduXFRWVRgeXcZYdo0hmZIRqfK6pOHWmj6KAngC8AZ8VG7Jm7A7KetFOWEAuj/PbPT0Tg4fim847uKzTTOxS0NWwo6MYA/TxdfuXUwody2yQdlco05yaGV2wlWpC2ISD16eNN9B+MYZiSW7yhmHPHMMANdLcksTqMVUoeGBmbD2rfueHPEWkw0u8j8wY1FVXO8fqm2vP5rCp7G+civT5V7CRCCZa5uSQxfVsedzBb/UgxcZmX/abn69bL6yO8ztwLappRMsTGYdkP/sdX+SjLTIcQvGBpFyQl9jGxukQv9YlN8zfwWAMbFh1PQOKqFIRz8ThVzBekqLQY3qU4x6KZzS0PgCAafxU7Mb+5Jq1t85hfZSuIpFYFAD+IpwY9W8J9ReTpEgZygvcwdV/yNmOhJw7qjDxg5Lp6O+BXsdpnT7Xq4MRROCYnM4m4kPho4IYfmODuKmu3Z9cApehXnEoodTS3cRzQKFkSExMj36uS1dqbKpoikQ93QRV0RUs5RFKYWSjiAgi1KUE9arWhsRNpi2ZQ6A4187tE/Y0/U7UDF+mauabBD+XRjcjvRfA8gYvIkrUV1OSLsuTOtnm6zJKSI8JkM2GS/kqRad/wXYjGYYveM4rUIrkDeMNguofTL8jIgkAmTtwRHlhxTMdkX4PyUMXiTGx7JbkVY+ioqpzLAgLONlMN3GQx42KuTMUMWKQj5GMCuGA67CdvXSp1FrlRkROLIs3f99JBE4v5jyymRf8Z3sKjrNP5QaeLVg8+x2KZjdZUCWVIrV2nzmonxxnplRQU6bk36dVoPV15l8g/lKiJesRCiBavyrDpYBjhnryWgh
+ xFH7SZbp
+ Q2sfEOuPhRdcT8wYcd9z34ggsH11RqDU8AhLrjjWd8E5+vQ9c3kHennFwEDGXI2N15vlqMa1OF4niE1y/Nrt5MhCNJ/tGGPUmIgFaIIcfB6edBxU0xuAF1NP6vgvvSsGMG9LK2Ce5Gc6Yyuy6+eIHMPV7C218hsZT654HsO6MGhonY7d5s509P2MJQ8/K4WXBkBZGGWmRGAmVnfRiFGgTHZT0nYHTrfFr4oZ55z1Di4uUY07/KiSrSOnsN4roMCeQZhCG0e0i4nPPNlo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,42 +118,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2025-09-02 at 08:50 -0700, Dave Hansen wrote:
-> On 9/2/25 08:44, Giovanni Cabiddu wrote:
-> > diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-> > index 39f80111e6f1..e66c7662c254 100644
-> > --- a/arch/x86/mm/tlb.c
-> > +++ b/arch/x86/mm/tlb.c
-> > @@ -1459,7 +1459,7 @@ void flush_tlb_mm_range(struct mm_struct *mm,
-> > unsigned long start,
-> > =C2=A0
-> > =C2=A0	put_flush_tlb_info();
-> > =C2=A0	put_cpu();
-> > -	mmu_notifier_arch_invalidate_secondary_tlbs(mm, start,
-> > end);
-> > +	mmu_notifier_arch_invalidate_secondary_tlbs(mm, info-
-> > >start, info->end);
-> > =C2=A0}
->=20
-> That does look like the right solution.
->=20
-> This is the downside of wrapping everything up in that 'info' struct;
-> it's not obvious that the canonical source of the start/end
-> information
-> moved from those variables into the structure.
->=20
-> Rik, is that your read on it too?
->=20
-In flush_tlb_mm_range(), we only need to flush from
-start to end. The same should be true for the mmu notifier.
+> +       fd = openat(AT_FDCWD, buf, O_WRONLY, 0);
+> +       if (fd < 0)
+> +               return fd;
+> +
+> +       bytes_written = write(fd, (void *)data, data_size);
 
-The only reason info->start and info->end can be modified
-is because a global TLB flush can be faster than a ranged
-one.
+We need a check for bytes_written == data_size here.
+There's no way we can use a while-loop to ensure everything was
+written (because the debugfs handler expects us to write the whole
+packet at once), but at least a sanity check won't hurt.
 
-I can't think of any reason why that should affect the
-range the mmu notifier needs to flush.
+> +       err = tokenize(input_fmt, &tokens, &num_tokens);
+> +       if (err) {
+> +               printf("tokenization failed: %s\n", strerror(-err));
+> +               return err;
+> +       }
 
---=20
-All Rights Reversed.
+I would probably make tokenization part of parse(), but that's up to you.
+
+> +
+> +       err = parse(tokens, num_tokens, &ast_prog);
+> +       if (err) {
+> +               printf("parsing failed: %s\n", strerror(-err));
+> +               return err;
+> +       }
+> +
+> +       rs = new_rand_stream(input_filepath, 1024);
+
+You probably need to destroy this stream after use, like you destroy the buffer.
+Same for the tokens.
+
+> +
+> +int append_bytes(struct byte_buffer *buf, const char *bytes, size_t num_bytes)
+> +{
+> +       size_t req_size;
+> +       size_t new_size;
+> +       char *new_ptr;
+> +
+> +       req_size = buf->num_bytes + num_bytes;
+> +       new_size = buf->alloc_size;
+> +
+> +       while (req_size > new_size)
+> +               new_size *= 2;
+> +       if (new_size != buf->alloc_size) {
+> +               new_ptr = realloc(buf->buffer, new_size);
+> +               if (!buf->buffer)
+
+You should be checking for !new_ptr here.
+
+> +
+> +static bool is_alpha(char c)
+> +{
+> +       return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+> +}
+> +
+> +static bool is_whitespace(char c)
+> +{
+> +       switch (c) {
+> +       case ' ':
+> +       case '\r':
+> +       case '\t':
+> +       case '\n':
+> +               return true;
+> +       default:
+> +               return false;
+> +       }
+> +}
+> +
+> +static void skip_whitespace(struct lexer *l)
+> +{
+> +       for (;;) {
+> +               if (is_whitespace(peek(l))) {
+> +                       advance(l);
+> +               } else {
+> +                       return;
+> +               }
+> +       }
+> +}
+
+while (is_whitespace(peek(l))) {
+    advance(l);
+}
+
+> --- /dev/null
+> +++ b/tools/kfuzztest-bridge/input_parser.c
+> @@ -0,0 +1,373 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Parser for KFuzzTest textual input format
+
+Some description of the format would be useful here.
+
+> + *
+> + * Copyright 2025 Google LLC
+> + */
+> +#include <asm-generic/errno-base.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +
+> +#include "input_lexer.h"
+> +#include "input_parser.h"
+> +
+> +#define MAX(a, b) ((a) > (b) ? (a) : (b))
+> +
+> +static struct token *peek(struct parser *p)
+> +{
+> +       return p->tokens[p->curr_token];
+> +}
+> +
+> +static struct token *advance(struct parser *p)
+> +{
+> +       struct token *tok = peek(p);
+> +       p->curr_token++;
+> +       return tok;
+> +}
+
+It would be nice to check for p->token_count here.
+
+> +       region->num_members = 0;
+> +       while (!match(p, TOKEN_RBRACE)) {
+> +               err = parse_type(p, &node);
+> +               if (err)
+> +                       goto fail;
+> +               region->members = realloc(region->members, ++region->num_members * sizeof(struct ast_node *));
+
+Missing a NULL check here.
 
