@@ -4,121 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF21BCA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 16:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC37CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 16:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 302F06B0006; Wed,  3 Sep 2025 12:05:43 -0400 (EDT)
+	id 7528E8E0007; Wed,  3 Sep 2025 12:10:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DACC6B0007; Wed,  3 Sep 2025 12:05:43 -0400 (EDT)
+	id 704178E0001; Wed,  3 Sep 2025 12:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 217958E0001; Wed,  3 Sep 2025 12:05:43 -0400 (EDT)
+	id 5CB198E0007; Wed,  3 Sep 2025 12:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 110226B0006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:05:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C000713B888
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:05:42 +0000 (UTC)
-X-FDA: 83848414524.08.76B1ED3
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A07E14000E
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:05:40 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 46E0A8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:10:16 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F06E58660F
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:10:15 +0000 (UTC)
+X-FDA: 83848425990.02.8ED68FA
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 65D2040005
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 16:10:13 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BfC5fqrV;
-	spf=pass (imf04.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OGIcL53j;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3GgwWeT6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A2oJl7rd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EIDC7OUi;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756915540;
+	s=arc-20220608; t=1756915813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yLCSap59X655LjRRdRVDlno90QWSbu9XZF5TPpJulw8=;
-	b=hErn6hfO7O2yXpJn2VeYRnkjpYUH6cYTpLSiso4pD36uVrugq/+v3AT7aLLMoEomJrYDuK
-	aTEl6cebbooHrWwRfixHKNR3x6tBWBo9+XpWJxw6XM+L8EiQSVz+djBxsVezKqq7XJBPS9
-	ADXgsabmLiFp0h5hK8EoWGTRLXlxGCw=
+	bh=4kFdrcOpazHZrThB6UJlu0enSEY95qx9lQ2QWGdUPhM=;
+	b=da7JklCMA+fTCvcEI0umgODZcFqkeRCPBV6/MlotadwasLJ/192f3W3GliBwvTiD7ZJaqT
+	79Eovo+BFA0TFxTS0S31E9w93cJWpncLG/YkNeriZAIQINCFQf+m5kUFk9AIgtdmYYV8Qr
+	ozxWmcm9LV0IGgCPWKEcCJC9n9SaWho=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756915813; a=rsa-sha256;
+	cv=none;
+	b=WdlMFoGu06xQnfD4Aicv49v2idx+3Aq5G9eKonu3JV6mojCuoUt+9HIa53TIOoopW6wWiI
+	VHbbP7QSejNZLtOUxTC+J1BkaIF7uoGL37E+4EmWWis0XYRx2Sw2T4u8LzK75ocl18T7Hw
+	LocOo5m36yhur1wyafF9VHBeiPxkJp8=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BfC5fqrV;
-	spf=pass (imf04.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756915540; a=rsa-sha256;
-	cv=none;
-	b=S6gzgjHtuLjW/jxIExHZHwiAaz+uZoFCRMgwBNNHdtfXdXrRHtJsl6yDQDGkTuSHcGWU7X
-	8QKTgZj5nsmnIAEWJ49Er9+WzwraBep8nZLCdvN7rnnaCfFin5iPcHak778a+DIQZFUa5p
-	mtnC/OfMmYRIcueTEgXofcKNwUN86m4=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3c46686d1e6so72781f8f.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 09:05:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756915539; x=1757520339; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yLCSap59X655LjRRdRVDlno90QWSbu9XZF5TPpJulw8=;
-        b=BfC5fqrVO4xryL3NW+9XjOYJx5uZy7AAil4jRI597WX1gt5ap8l/saEI9w8/KONwW4
-         mHdtLRxkV0rjYn98seZ++MurE85KZW2sL3zv/ltaF/u9bBq5O6/fRcLNWch2mkpBHxQj
-         HyMnazSSMl8jIXcFIfA8c4s8+Xn96dFbmoWIipAoLDGgY9tS5qd8hL0AUwNpzTS2JhKd
-         KGFGPTb66w1zcGeuq8eG7R7QfJ/WYGdiylms+teyYhR3sNSzxkFlTYRHGmKMsdV7Uo3f
-         CmjB40xBF4z9/08CyAw3Q30JkJ8I1/GxuGPFikDXeGWYROCE9abJVfHleGPq1PWn79nP
-         hEtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756915539; x=1757520339;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yLCSap59X655LjRRdRVDlno90QWSbu9XZF5TPpJulw8=;
-        b=oQG5lcAxKl7OBenCfkvR+2pnvUQQPIsrfxBk4y5zmAjpKdW1Yw5V2zoNy9eC+z4OZi
-         GacBO6mVaKFS2BL3P6XArUOmgGcNGgo2qU5R5vXWKu3Q6eBJ1zKb1Pz+0ibeWdgZ3IHa
-         VNuw8otYQIrbmdPPngegQsO+c+X/T7OclrmiOdgf9MKVtv/ttJTYPb8IOe8iaThZltp7
-         CqZTCboCdyoNQsvBMzQbSiEqPA/HhCm5KY+Kd+Q0UUAP3s0OIe+zueyNn6TXxYWOUg8g
-         t9FWDj3VGKOgcr+V1PqFfTeT5ei7Fg9h7XBl1M6y7Xv7DJEHyYQ7DMI0SP5hT/MiosGg
-         HzpA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4yoPlv0q471EoQPu3NAm+QfiDP0Q0eUPnNhokyH6urGEj63R2X1BiW7PzmMR+l5+7Z2R3U8rVew==@kvack.org
-X-Gm-Message-State: AOJu0YxMB8sh/FE0LhR+rKGcRW0qRNpyhot2u0B25Ym3lcjmKn6qi1u+
-	oX4Fnis2liGo39NKP84qaVxpaoQ9mM+E9v23a1MXi9OzGnaJWcpTgdX9
-X-Gm-Gg: ASbGncu2JT80H0q+M1WSnCPnfrlNBJPAWBhwnoC71Qd8rLPUpYTj9sC4VSB+pgMJnES
-	0mmyuvGSHsH1GsbVuW0yUG9LWyGYDkpjCFPVKv63u292MaokCu1SbwpslKV56bWmrilAjmk89Tv
-	jUicnvJNwmXemcYaT36ubMZfLrqjPkZkBDVxqIFF0Huapn2n1DAWQ44ZSPdM4iziNJG0IECyGdG
-	t6ZmLbe2Atray2IluujK28sr13N2ASTsMTqqvhzs2XgntS9ZCCnph06qErbuX3T0VQdJ9oEcgq9
-	suwdopC2U0X5ZdggXFt7T110gYIE6ZURV6BQ2p+3LUfy2/Zb8Ln08+0nlfsGdLC7kFxYZDvRZnC
-	jtF332qnQNPCSzlly/s3uL0r7pbZ8kD+Jz3LsKfUjDtGY1ZZIKaiUmN6TE/+4FIVTT059SFyp5l
-	+/42WU/kkv
-X-Google-Smtp-Source: AGHT+IEK8F7kNjGc7W/OtAYN0SPufkeKfdMjFea1WYfcRndMdqBIHchu0H33lCxAbsFDmGMqVedfpQ==
-X-Received: by 2002:a05:6000:3111:b0:3db:c7aa:2c4a with SMTP id ffacd0b85a97d-3dbc7aa304amr3472709f8f.42.1756915538938;
-        Wed, 03 Sep 2025 09:05:38 -0700 (PDT)
-Received: from orome (p200300e41f1c4d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f1c:4d00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d66b013b7dsm13160799f8f.28.2025.09.03.09.05.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 09:05:37 -0700 (PDT)
-Date: Wed, 3 Sep 2025 18:05:35 +0200
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Frank van der Linden <fvdl@google.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	John Stultz <jstultz@google.com>, "T.J. Mercier" <tjmercier@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org
-Subject: Re: [PATCH 3/9] mm/cma: Allow dynamically creating CMA areas
-Message-ID: <v7zrmrhvemyymq6qamz6wbgzr4cijfe4n76ivwyadmltadlot7@3csy442wfasf>
-References: <20250902154630.4032984-1-thierry.reding@gmail.com>
- <20250902154630.4032984-4-thierry.reding@gmail.com>
- <CAPTztWa7kcx8bBEJEKvnjcD4v1-eDLVxMd9C10XiBQi4CDLfHg@mail.gmail.com>
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=OGIcL53j;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3GgwWeT6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=A2oJl7rd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EIDC7OUi;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DFB7F211CD;
+	Wed,  3 Sep 2025 16:10:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756915811; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4kFdrcOpazHZrThB6UJlu0enSEY95qx9lQ2QWGdUPhM=;
+	b=OGIcL53j2wIBWIy54VCWoJGMfkKi/rFapnhivXM5JN09scRlkfxsd4QHOkAcYJA1XCnYQj
+	58xyukuIpX7sDl+6ZGFaoSHsgmNswxgPppitKUUDJK//bdhQdfMB3voDuMec8RydYuQf4o
+	q9OT1xvFRG0890fodzUv+ozADHUZq38=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756915811;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4kFdrcOpazHZrThB6UJlu0enSEY95qx9lQ2QWGdUPhM=;
+	b=3GgwWeT6M3RfdoReY85K7sr7KrAarVPqpyKxSf3A6k+WmBUnwRi/HBOjqt9XhS+wMQ02M3
+	guqz+AIlSCAjpqAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756915810; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4kFdrcOpazHZrThB6UJlu0enSEY95qx9lQ2QWGdUPhM=;
+	b=A2oJl7rdUeSEENGB3+o6WQU/LWh4bphI9pqf+AyoMyp+7gEM4nr7ADKgHea+I2fzt7AadF
+	sE3BoUHP6x10CKb7cAZQm7HEEJ8VfVYCADWc3fbiq2Fv2aWEnl4w9Bajr9p36NIjBm2Kuj
+	VsExHBQiuOZW0Yx7CzycsQSJaHPgLGQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756915810;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4kFdrcOpazHZrThB6UJlu0enSEY95qx9lQ2QWGdUPhM=;
+	b=EIDC7OUibeJ1NT1YVW7XMCD+kJt6I/bqMcSyuhDOPJus1hos9HVVjZltrl/ePOPK+6m7dH
+	HwG9Y2U+9D6Mr8Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BA2F913A31;
+	Wed,  3 Sep 2025 16:10:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qxcdLWJouGjtdQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 03 Sep 2025 16:10:10 +0000
+Message-ID: <b1b683e7-e191-4487-b549-79a57986c670@suse.cz>
+Date: Wed, 3 Sep 2025 18:10:10 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cd2jrjiunyvxx6e3"
-Content-Disposition: inline
-In-Reply-To: <CAPTztWa7kcx8bBEJEKvnjcD4v1-eDLVxMd9C10XiBQi4CDLfHg@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A07E14000E
-X-Stat-Signature: 9fqxmgdb5rwqgmm3famzmomw6sf1y9o4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/show_mem: Dump the status of the mem alloc
+ profiling before printing
+Content-Language: en-US
+To: Yueyang Pan <pyyjason@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Vishal Moola <vishal.moola@gmail.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Usama Arif <usamaarif642@gmail.com>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org
+References: <cover.1756897825.git.pyyjason@gmail.com>
+ <d7998ea0ddc2ea1a78bb6e89adf530526f76679a.1756897825.git.pyyjason@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <d7998ea0ddc2ea1a78bb6e89adf530526f76679a.1756897825.git.pyyjason@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 65D2040005
+X-Stat-Signature: 5dxe4rfq15rbnkseootjkjz54igk6mqp
 X-Rspam-User: 
-X-HE-Tag: 1756915540-631570
-X-HE-Meta: U2FsdGVkX1/5fEXLmlkbV85hkGCBHq8fqgC+jzP6FEMKB/FmWz/XKUBcvofTICltg/g0yI1ElkvTiJ5g6O5Eyy4BnM9hs8eVugWPr3CwgR+7ncUjfke4OYYzR9zrBSspCwEJNKqIwIj+s3qwuF19v/QhNPaDTusEoZjthTj70jD69Tnea++ILckk0HIyh1LfrHizsdDFSehkTzecgCLoOAaq+oj0Yh2EhvZxTDEvoLPlAZT2jhUb++NK2sbX4NvHbtfLqKeBqwzbHC7AWSghIMJb80o0kWL70GLdgeXwU+OXmKbtX7ajVTIGXpi0w/l9hMQezAI9iqGLKLDddY3wmI0eyGcGQUa53+x0GD/qROs+vftJxOA9EcE6k3DHvSQ9CPCPGJIEQl/9VwCiP/aNxcgI/jwJDC3UKu7nYo1WhqHsIE/50db8USQR2VKALjOUDcgMYSjRn8K5q/RsrID+51n49StJy58FDwaFnKYt9g3W9AhUslH9A6W3CoHn3TAkAEXD013ElgToo0eljUbp/04H8wSLYML3Eq+lcuVXfqANUrJVLZfpTGcPvIYI8QPNXJJOX8kYNHi5F8NBI+L0zgVNli2MKgyK5v4edZlPwaWT9RPT2gfurUGHh47qG8Ad5WkwiCv54rjL85/J2qj4HnD+ALrVyMMYHN0k2yiugKffuZmdirVkpdIJK27fRfsvfmEJ80dVPSpTRcwJPRJKMz94XwCr/e+2Hy2ex+qEWdOi7GRz8X+WCRcbauAFYDV2I4iX/D/8fWTnj/O3F3+ELRw7xZOrcXqYrNTkJzC03/1KX0u030FoATnYNUwC8Wbm7DiDr1L3I+Q8lyUlv749A0LmUr+EVfbDTQIN3Fz9cYt11jIepyeY0CQ6UEWyaUkWsrzCiMDTzrLNcU19/OQNs2QiS31FKKtqYEHSGlgt6dU2cuI274iPWbLFNXNMuGP2KaZDHIlc8rfrPf1xCkn
- SYQjlM80
- /lMFFqplkSDLElDnEVRvi+9W2CL24sXh278gZQWjd6cWFMWuMuINVDETiFcEaHBm92HZttwS/OOhSj0JcWlt5v7z+Cwh7CsKPwzOeh8/X0BfVPWjbZZe5oF/Gh3Usnnbb28bxw2xv1YHZb1qpZfYZsOa/sLgSZhsx1ndvh/4dFIVODpWe1X/zJmAzyOt8ODe7UQztTCjB0UcIRlEG+4oP+HNQKhU+9blaSI306fk4o82FVElQkay+gczhvafiCDHJC3A/YjmvYWxD1eWWqQ6p7Oy5K4v1pVonNwd29LAJv0jQ3N2xtwm2RApldmx/E15IvIiBQO0IHnylEH/uSuHEST8vdkVL01pos0EZfbMz3RQq1ENW5bK0QJiTCtGPrbH+NUSk8B1qeyPVu0QmkB5Qb2LuwoUcM9iYf7PjIBnKURfvQKjz5FP6UD7U3PNOF5KLITqiumiJG16xG4L41y3vB+TVnytM0bwE28sFAmzOs6kHJYiKDP7RzZuYlbio/WHYdwcArtgdX+3MIWXO6yWKTEwf0L2rwxXdg9AZtzGZfIW+erjYocUParjazzaPPDwBKZ4kovyOldO9aJwbpGqskjYmCkko+rhc356lPRsy23xcRP52oYCqoPqXtl1N9JFXaMBxxTs9Hg2N7N7RDaYmSumwu60V3TUIzjWzOD9dHL9dTrJ1b8BK5GkOA4N6xZJTFofc
+X-HE-Tag: 1756915813-845276
+X-HE-Meta: U2FsdGVkX1946LcndWhCHfbP232cJHBk3bnsKft6504/+WoKAmNRfWmybDUX4MtsKn/Y5D24FedaKyLp0neip6eG+P3dWLrw96OT6LxearMAE5yEByzy7++t2DrYkIncR+wCFwLE9s6KlXjWD/Y0BTG9nz8Fk7pocCVcosrlWWGt6YOyLZTm0jArkbd5nHS6wi9tTKSO2pH4pE2uU/gSalv2ctjsslB+4EKzjsSwIry0cXAaCZmInh8f5xvRN4je2ILT30bVuyFQvOD60bf8u7SugQyuFdpEhEuoEdd+OZSVy7QAfe5OjMcaug/vakpFen2MsSy/MbU++b3VsqV7Fmqw95fs1FBtu54INeuFikBmisoCio41Td0YIbf/nLd6CUL7Ey4W6M/aufNq05I38ErUQL0zR5DxTmr4f6lE/qGiIb7ZgdFb8ikhFoQ4txKrOP42Ewcx+bUxYe45ix1liszZSBNhfuLORiJA9X2fsL5zbKueOyjwudQEbVzccYpIafxkbvfBl3BUVyY+mKIk3b5ZDou/VPToeVMJoboteASw8NidXLltr/dkU2acdHB9BHSKzt8PjKwRiyCnLzBUwgcrs3qcKtw7ttOlovyE2djigKZhl541lcJ7lq7BXIdRsnyTj5hwHNzaY4wRSJ5mplHMbGfIRt3mxiM5aepudbbfn3e2Gh+NGD/DkyU6exqsUrp0IlqkKCWPF89BqH9WDme8EMven/06CeYGmAyvFsHayj3oCUWbFagO7sAV/PBf6xfOMVPcXankCOyWgah1mqBDjzwxfF+PY4kyw4JHeJ6zWw3QsFskVk4wtMkesqHI0WULBvSWXZq9/MxQgBkztisoqIxs577mPZ97QFA5T3X0BSXeisSfMalrVOXT4aXTBC6su3hkfSt6woYbLClq3Y7tDY855k2E43CnU6RLKaB/xD5gNAY3Dw/EVnKbwHPmh9FHN0I1xJwIkITg6XJ
+ keXanADO
+ lq84B/TKAHTNkGo+UgLJuuMbbA+NGtULNm2JyHu+2IWvIq1L6kCnmHSi+I8JXYmibS/drCAO6ircU8uU0HLPMbTkSubFvvjmVg3ZjHjFOnEbvaoqFRSDo7VICF+FYqtaGXIW52yRnniaOK6nXSI0PRvbJjqEb4voXr2o47dGa/YolRc6kI044/xD/1X5RNpwRGK1R98duoNTz+TXjtxcH6HIXTiFSKuVU1NVyeQIQQLy5lA1w/YgG73dWWd3kPvgcBMJmFuO6TsRge+BtLeTfqgIZX+6b5dy1C1N3cl1YaaBbmrvMTSLa1GDcEQ3KDObitWlrRkltk+QTlEBW9/m+iIxv1ky+oKvbK0u75gJ4hYg3v818gMbzeY6xGwMhH+pbdZTcYmop5/IzuImcMFd/CNq/+H+Vnr2a3lYMzR/CHqKOEyc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,128 +181,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/3/25 13:16, Yueyang Pan wrote:
+> This patch prints the status of the memory allocation profiling
+> before __show_mem actually prints the detailed allocation info.
+> This way will let us know the `0B` we saw in allocation info is
+> because the profiling is disabled or the allocation is actually
+> 0B.
+> 
+> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
 
---cd2jrjiunyvxx6e3
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 3/9] mm/cma: Allow dynamically creating CMA areas
-MIME-Version: 1.0
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-On Tue, Sep 02, 2025 at 10:27:01AM -0700, Frank van der Linden wrote:
-> On Tue, Sep 2, 2025 at 8:46=E2=80=AFAM Thierry Reding <thierry.reding@gma=
-il.com> wrote:
-> >
-> > From: Thierry Reding <treding@nvidia.com>
-> >
-> > There is no technical reason why there should be a limited number of CMA
-> > regions, so extract some code into helpers and use them to create extra
-> > functions (cma_create() and cma_free()) that allow creating and freeing,
-> > respectively, CMA regions dynamically at runtime.
-> >
-> > Note that these dynamically created CMA areas are treated specially and
-> > do not contribute to the number of total CMA pages so that this count
-> > still only applies to the fixed number of CMA areas.
-> >
-> > Signed-off-by: Thierry Reding <treding@nvidia.com>
-> > ---
-> >  include/linux/cma.h | 16 ++++++++
-> >  mm/cma.c            | 89 ++++++++++++++++++++++++++++++++++-----------
-> >  2 files changed, 83 insertions(+), 22 deletions(-)
-[...]
-> I agree that supporting dynamic CMA areas would be good. However, by
-> doing it like this, these CMA areas are invisible to the rest of the
-> system. E.g. cma_for_each_area() does not know about them. It seems a
-> bit inconsistent that there will now be some areas that are globally
-> known, and some that are not.
+> ---
+>  mm/show_mem.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/show_mem.c b/mm/show_mem.c
+> index ecf20a93ea54..fd85a028a926 100644
+> --- a/mm/show_mem.c
+> +++ b/mm/show_mem.c
+> @@ -427,7 +427,8 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+>  
+>  		nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags), false);
+>  		if (nr) {
+> -			pr_notice("Memory allocations:\n");
+> +			pr_notice("Memory allocations (profiling is currently turned %s):\n",
+> +				mem_alloc_profiling_enabled() ? "on" : "off");
+>  			for (i = 0; i < nr; i++) {
+>  				struct codetag *ct = tags[i].ct;
+>  				struct alloc_tag *tag = ct_to_alloc_tag(ct);
 
-That was kind of the point of this experiment. When I started on this I
-ran into the case where I was running out of predefined CMA areas and as
-I went looking for ways on how to fix this, I realized that there's not
-much reason to keep a global list of these areas. And even less reason
-to limit the number of CMA areas to this predefined list. Very little
-code outside of the core CMA code even uses this.
-
-There's one instance of cma_for_each_area() that I don't grok. There's
-another early MMU fixup for CMA areas in 32-bit ARM that. Other than
-that there's a few places where the total CMA page count is shown for
-informational purposes and I don't know how useful that really is
-because totalcma_pages doesn't really track how many pages are used for
-CMA, but pages that could potentially be used for CMA.
-
-And that's about it.
-
-It seems like there are cases where we might really need to globally
-know about some of these areas, specifically ones that are allocated
-very early during boot and then used for very specific purposes.
-
-However, it seems to me like CMA is more universally useful than just
-for these cases and I don't see the usefulness of tracking these more
-generic uses.
-
-> I am being somewhat selfish here, as I have some WIP code that needs
-> the global list :-) But I think the inconsistency is a more general
-> point than just what I want (and the s390 code does use
-> cma_for_each_area()). Maybe you could keep maintaining a global
-> structure containing all areas?
-
-If it's really useful to be able to access all CMA areas, then we could
-easily just add them all to a global linked list upon activation (we may
-still want/need to keep the predefined list around for all those early
-allocation cases). That way we'd get the best of both worlds.
-
-> What do you think are the chances of running out of the global count
-> of areas?
-
-Well, I did run out of CMA areas during the early VPR testing because I
-was initially testing with 16 areas and a different allocation scheme
-that turned out to cause too many resizes in common cases.
-
-However, given that the default is 8 on normal systems (20 on NUMA) and
-is configurable, it means that even with restricting this to 4 for VPR
-doesn't always guarantee that all 4 are available. Again, yes, we could
-keep bumping that number, but why not turn this into something a bit
-more robust where nobody has to know or care about how many there are?
-
-> Also, you say that "these are treated specially and do not contribute
-> to the number of total CMA pages". But, if I'm reading this right, you
-> do call cma_activate_area(), which will do
-> init_cma_reserved_pageblock() for each pageblock in it. Which adjusts
-> the CMA counters for the zone they are in. But your change does not
-> adjust totalcma_pages for dynamically created areas. That seems
-> inconsistent, too.
-
-I was referring to just totalcma_pages that isn't impacted by these
-dynamically allocated regions. This is, again, because I don't see why
-that information would be useful. It's a fairly easy change to update
-that value, so if people prefer that, I can add that.
-
-I don't see an immediate connection between totalcma_pages and
-init_cma_reserved_pageblock(). I thought the latter was primarily useful
-for making sure that the CMA pages can be migrated, which is still
-critical for this use-case.
-
-Thierry
-
---cd2jrjiunyvxx6e3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmi4Z0wACgkQ3SOs138+
-s6HhmA//SMOIdCPTIhm9/2hI6bIiP7AY1j6GdkcEqHRdfrj9+7vySjIRju4hKC3/
-YFfr1tCxniYIMxmH+EBUK8bZT3ul0IYLIAO0WA2a8Tc2MypvKL7bvvo4lf+ecbUE
-Nsu3LO8MVZQTZ2KFR6mFiXKVi4MTs7XD05csQuvxazvHixU+AueWaKsSwhL1YWmK
-yZ14mjJNHFwVJrZ+4Pj4nsmjQw6Qe9D8eZ+d1gXMeTyPg+RJDay+EJBxM7/Vs8Sy
-T0m/UudLZIle+EYXBzhlKyHvkFDuUuutaZaYESuiRvts7iwQnhLYaIheHIj9x2gG
-VC1vjkFeh4RhbB1srxB71CzyJPKbwJ5oIdvnA1kBeDUlPGuFGm1wM+FygAwoKXvR
-HHCF+FaX4H/FeFz0y6z0fkvhfLm+LLuBBuj5KHTCblCLk3cYfVha+Lr4msWjbI4I
-51F8NtxQehBsHWv1F2JOguGRE4lv3svHyb3yuQeJC9SPdN12/2gmY85xnm3knlhB
-hq9a/y2r622vqFwgPTg5kKhBdjIwWf6tdxefR230K+Qw5ypbrNQQoPhFR/4lG2IX
-n/BX8IGEoVCHH7OC3/JfinZyE2td7+xKs/GF81elCfACdkeCRJhL4EWSGVRTI/TP
-3OcUwmEbp+Cr0gdYspxD0nxw7bP5SUuAIZRRBEH1KfamNw5DEcE=
-=TbFN
------END PGP SIGNATURE-----
-
---cd2jrjiunyvxx6e3--
 
