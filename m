@@ -4,85 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 927DACA100C
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 04:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D27BCA1007
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 04:50:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D39548E0009; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
+	id 0235E6B000C; Wed,  3 Sep 2025 00:50:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEB458E0001; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
+	id F163D6B000D; Wed,  3 Sep 2025 00:50:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFF1D8E0009; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
+	id E52F56B000E; Wed,  3 Sep 2025 00:50:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AD71A8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B9BF11A211
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:46:13 +0000 (UTC)
-X-FDA: 83846702226.28.4C73A36
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D3D806B000C
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 00:50:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A7C0C0506
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:50:34 +0000 (UTC)
+X-FDA: 83846713188.25.BDF6265
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7854280006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:46:11 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MwyoeGeY
+	by imf10.hostedemail.com (Postfix) with ESMTP id DC95FC0007
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:50:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EgFmYLBg
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756874771;
+	s=arc-20220608; t=1756875033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YBIV2Rq6nhfDaht+Xn8FKJDk3X7/E1Il2Cd8F0Qu5yQ=;
-	b=HtF3i5ykKDjAufNCKYrmau1R1Tli/25OHDdHO//xvDqIKpwiCmpaUlZf2ubiuaUB/8PUrO
-	oJZZD4WCTNRJZLOaN5mcSpmsSDAT5Lf389u4lNAQfMvlQ82GbIL+pBMqeHXTdaX+Vodn3m
-	UPYDLDiS1gwTDTr/hx2qWxKx5H/Oru0=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MwyoeGeY;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756874771; a=rsa-sha256;
+	bh=wN2QC/8grULTUSyMcvaJ5bVK4JCfaQgLPF4srfOgdZ0=;
+	b=IEbuhpx3Gxx/35VDzWwRnGKI3C8xT+DbwFnB8EsHkrwoiI3W2kmSjF61g7Nb9CP/CkEO42
+	BfgeSX43iUv3fbi0JXilu2o5qNO3611VwGqyLxNDjAWKfeBkKI0nw0V1bkY0iVLEkxZ8Fp
+	jJOeFD2y3Gxqsti9v18JGUalrrbhLxU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756875033; a=rsa-sha256;
 	cv=none;
-	b=mnj8NkLSiSpZ6uEEFms/J+fq92j3ncgI3qwuZy3idr2/E0pUV/6Xkne7fsbS+xMQ4WkEsv
-	7xpPt8EV1gbm/E2qMQ3BRdh5pi52lP/aObOkcAWgpXyrNRldZw4Mh7oSWK8btvre27gQ5j
-	HEIggSx9E2iv04MsHfODpHVxlKIlBWY=
+	b=I7qnM/pqk2sJcrTDq2QUxd3s4xe91eZlpsFz2KZIWtt3JcJx2qMykSZQOmzbHzrPgs3qVq
+	VWc2VyZojHtysuS54G+Np6s5R8pTZjqM7Pbi9rc7RPGpZ0OJZWdDGTL1AODAfeSE1C8gtB
+	F9VPNHWWFuKSaDYy49XYg23k7jcHN1M=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EgFmYLBg;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YBIV2Rq6nhfDaht+Xn8FKJDk3X7/E1Il2Cd8F0Qu5yQ=; b=MwyoeGeYDysnGGXNZz+O0/g4jV
-	z5ER5viBikaFx+wIz5kbIl9PG9kmg2E59NLsrndZUqCnBZeCHPRSSni+epRecdWciLKIuNr/a1FZd
-	Wtj3FDf0nzg4Jqw/yu+OYOXratjiSQ/+IOzJIlhCNGFZk7mdqji39t57n+YPbTBkaKb4DwahhwljX
-	XBqksxgksdRSvLnd0H8EVeVT8M3RzUjYfMqatCS9Y7zeZPDXziJOuJ6nsSeYW9Yw6F4tKy3WHo2q0
-	yCCWTfWQzOR/E25XfdjRs8hNUHlUs/JMA6Zv50+/G69bTe0wckvfPBV51FayrvnVZGKsxBWwSp2tg
-	/89rZfdg==;
+	bh=wN2QC/8grULTUSyMcvaJ5bVK4JCfaQgLPF4srfOgdZ0=; b=EgFmYLBgEkzqkkiL1S2Leu9RSf
+	jdZpiLKycItf7Wzry2cgsVLTSMOccIvJ5V47LQEafwlbwIu2nx6nMtQZ80N0B9vbtBD7yNIVVZBcv
+	/IdL6z+++eW0QXFff/tceqZKmQuB9oK3DUwtdrq6sj7oeV1eD4noXQL8/GlQGKjRbnodg5UiZqFs2
+	hdlyR0qFT+qwAxL/xLbmmUHSoMIyDpFkwJIjfYocaM0X95Jy41ktyhzBoDXX8vmDpwqfKbu944kHW
+	2YbfZ4ZOROfiR47g+xKDwnc3vItfN3ZOC0Aa6IxxoMXReBaDM6HKNkBTU1vuHe0waDhF2HQXWwTbZ
+	r3gCvuKw==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1utfNp-0000000FFuY-0MbQ;
-	Wed, 03 Sep 2025 04:46:09 +0000
-Date: Wed, 3 Sep 2025 05:46:08 +0100
+	id 1utfS1-0000000FK8B-0tIO;
+	Wed, 03 Sep 2025 04:50:29 +0000
+Date: Wed, 3 Sep 2025 05:50:28 +0100
 From: Matthew Wilcox <willy@infradead.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Subject: Re: Where to put page->memdesc initially
-Message-ID: <aLfIEKLqpe_xB7mW@casper.infradead.org>
-References: <aLc_nckaDc2ePRv7@casper.infradead.org>
- <bfd5161e-c76e-4a0e-bc1a-bf7510868827@redhat.com>
- <aLdcPeb8zrfDwd2p@casper.infradead.org>
- <20250902211514.GQ186519@nvidia.com>
- <aLd8l8v_DL75NU43@casper.infradead.org>
- <20250902235740.GD470103@nvidia.com>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>, fengwei.yin@intel.com,
+	akpm@linux-foundation.org, linux-mm@kvack.org
+Subject: Re: [PATCH] filemap: optimize order0 folio in filemap_map_pages
+Message-ID: <aLfJFKBZCjhH7so2@casper.infradead.org>
+References: <20250819140653.3229136-1-tujinjiang@huawei.com>
+ <aKSdsH_yk69EvkMX@casper.infradead.org>
+ <b7a1100c-2302-4781-97c3-1146ed2b44a7@huawei.com>
+ <aKXCz0QOlE8QkPIn@casper.infradead.org>
+ <98f0333d-1ae6-4a5b-b5cd-c8abddbfae5e@huawei.com>
+ <aKcU-fzxeW3xT5Wv@casper.infradead.org>
+ <bb6e89e1-ff86-43cf-980d-b03b644d85be@redhat.com>
+ <aKcdBrq_xwOeUQTp@casper.infradead.org>
+ <b990aa82-bc98-4739-89e3-44c96e0117a1@redhat.com>
+ <1c51623c-818c-4135-a9b1-28d0b4edbc89@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250902235740.GD470103@nvidia.com>
-X-Stat-Signature: ix16npu64ni8sctstdypbmpx8nys8ro8
+In-Reply-To: <1c51623c-818c-4135-a9b1-28d0b4edbc89@huawei.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7854280006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1756874771-173993
-X-HE-Meta: U2FsdGVkX18Qm0UTGVx7p+8ES2A0mpueW7+21n9OUk79JsE1w6/rCuCwKV7yH5qFHA/bk8qUrIrqJ6cOPAT49gygwY/ohP1c5aRfp5c42myS5TSQ+EEbNHbWcoK1ieDEUkb9UCIj2J8gxR2kgmVDYv2Z8MLeAkKyh0HpYLuL5TDFngXXECrTNwcnnxaJhhjYlVLe7AQTvmiLue9ZVly7XPNw1Of7HQW2bH/YaW8mjtoYYXzClUwctcSuxIwfm1+xcf3sv+4e/ik+HggaC2qn+OhXHiriedZXi4bsOJlkfuxPdMujZB4LHH1sFTYugNcf4O4Ks7TNakGWTeAXVE3Z0QGeDHVN5HeZW0Z7DM4waSH8gq7TilwkxoCvygDKzU9miitJoSPFgPN2RwDxrNyMNOW4SHvN9CGT6Fy7XPtg+sfsFVZLMfQo2dIno1OiSBJTPYNrfxo8344quf5/9mX7hg/Gt+LuEdLYGNAt5CFcm9KTJMFxx5bjTYrEkTjkR7+BBb+6Odcs2vfpAG2Xn7Z40vVYe+EGuozTzKEcr+gXEfjbzV9LzoDgEcJ4V04lFVp+DCEFq7CazouTS+lrf73IQi7sIvI46+IZuvm3syoeXGJksxPGjpiRzG8/FSWnmRXHe5r5pg0zxRM7jUBoD4p7IEb2R81KNbBl9ntqfTSxWiJfKLVAoMmdX/2Yi5QLHqXBxt65H3GuavjgHOMRyuEy/CY76SFLbuDRv0b2Sjw0BvH8zt5Sd8HwriDGttdUgQ3ysAAbjpk1DSPpsVuZrJz4LmPx3mq6rtO24noF7pLCoBrFlrDsXWJ1fv5U+rR1Xynky4ie65p/NeGiYIcyvZVS7uZ+DIKdKrKKWx1l2/b8IqwSTaDY+C0DH0R4ziGnbi/DE/N0Uiy2yWJ856HmMajBSfGRpscPUcuSITiK3FLr/6ghhrcQT38i5KUfGGla4Avn/XSqSrVCsrFA5GklnP7
- JFd6/dfi
- TNNRkaB1J5ZrN6XbBY1HE7Xy55Cx5aPPXsvd3ibsMONgiRdkLdH0UWrYL0rpRuNCR+aLaUtizaUsvBzVvlNgBv933G8VyxYYDyV7SLL3JP7XFOYaGR08VHsk8ao8SLSHXZ3NT/lG3Yo6ZcHwCKChhJ/uaahWkTC7a8DwFwqidbNmUM4Q=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DC95FC0007
+X-Stat-Signature: 5h3oxidmw7eidfwpa4gttayz3wexikck
+X-HE-Tag: 1756875032-448199
+X-HE-Meta: U2FsdGVkX1+2B2oXFIA/gdskm+Z0zsjfUFNqK5CxnQ/oDnOQYQD2KYDu/+asHMy4ecNfc1Izw8G6SrJk+ATloOagCZuVPnXLYCj8yejG3r0jkbXZbO7zPd4HNZYLLIQZMZd5rrdliZSnMbmOaloTS466Fa1tjav3fe4S9uqruK9/BFxZxtVXEbLdkdTou3HZweI3QJsgRxYkz0T0C2C1oQZ2xSt41oJ8cEqpYq9RmQVUVBgE3shVSJoScS6jLv+KPZ0ZgZVNiFZhMtcjLw5XtpG7fDQiIQzLX161YcEwaavCtnttdTK5M9xMIfZPw7tO8vCgU89qUFvqJgfJOkloHC3x5lT/A8j0xYxv/ZTXSbhjGo3nE4Zg/NE7KOUParqzNVpitLR9exkHjcuOJTLGRqamoM09e2IJyRl40VPbatSytGzJdKd2ubLFMwZYIbl70+G8MTDmd5Hs1/UfcMQDE/nGzRJRHFog1x5S936tfSIUo78eeI4JtTdtRm5JyYlJcl+xfWTw99iuR1vZsHRAlPlDSDC56CJteM269MWYhEgoqujd+Ki3JCXJYSRZnJyXXkGwvNzp+iww1xeWpvMTcynM/p5p0MaGjWcOOQvJcxqvzCo5PiFmEpNKT+qkb5xkAJYRp/ARv18E1OQH1HvZgp3VTllpcTg6TliK1HFTIQ362lE8U8Ldph08dJ0Gt8wZoayFESokO/4WU5lG1tdm+MatA6VnRkd6dMLY1tDMEU+YlUwEOQMopqkAz7by6T3BXTsrOWBPzO4zgKS95fFpJbCGsJYLra8iD+topm2bkQWbACTB5//jJB7poo0/vocsPaytTU2yjminO3UESJ0kTNRxsfRdXb6jCBf0ehn4XB7YSmDfuhLhV3szN9tPD++nOLUVx26CYmudzA2VxLJAmL6H2OnTu8j/I/6/Fdsj9iOOMGZgKKf9/BgfIG9Y1NsZBcPxRtZM++t9vkYWjk8
+ CdwXbFMu
+ pR9l3Eiew01VqDGF8PTFVctvn7XV+AH5o8m7PXck/Elqgcr8DXtbpS5j63yo5hHeQY89HpjwrVes9RRGk0WZ6ga29vniKDhBVHmwrEqOP5lWg7FKhsoNZsVgCllx9wPahkhZxJ4phiLeuhvmdN59sthemJi5lMg79oanRiItlZgN3Exj3gIrYwBq2d5kKtcR/eRXcri0vD+Ecl76FTN2F+Yctv1ZNQfuHAFbv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,106 +97,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 02, 2025 at 08:57:40PM -0300, Jason Gunthorpe wrote:
-> On Wed, Sep 03, 2025 at 12:24:07AM +0100, Matthew Wilcox wrote:
-> > On Tue, Sep 02, 2025 at 06:15:14PM -0300, Jason Gunthorpe wrote:
-> > > On Tue, Sep 02, 2025 at 10:06:05PM +0100, Matthew Wilcox wrote:
-> > > 
-> > > > I'm concerned by things like compaction that are executing
-> > > > asynchronously and might see a page mid-transition.  Or something like
-> > > > GUP or lockless pagecache lookup that might get a stale page
-> > > > pointer.
-> > > 
-> > > At least GUP fast obtains a page refcount before touching the rest of
-> > > struct page, so I think it can't see those kinds of races since the
-> > > page shouldn't be transitioning with a non-zero refcount?
-> > 
-> > OK, so ...
-> > 
-> >  - For folios, there's already no such thing as a page refcount (you may
-> >    already know this and are just being slightly sloppy while
-> >    speaking).  
-> 
-> I was thinking broadly about the impossible-in-page-tables things like
-> slab and ptdesc must continue to have a refcount field, it is just
-> fixed to 0, right? But yes, the code all goes through struct folio to
-> get there.
+On Tue, Sep 02, 2025 at 10:04:09PM +0800, Kefeng Wang wrote:
+> So, Andrew, could you help to pick this up?
 
-Once we switch to memdescs for these things, they no longer need a
-refcount field.   By the end of Page2025, plain pages have a refcount,
-but folios/slabs/ptdesc/etc set the page->_refcount to 0.  put_page()
-moves out of line because it's really complicated; it looks something
-like:
-
-void put_page(struct page *page)
-{
-	memdesc_t memdesc = READ_ONCE(page->memdesc);
-
-	if (memdesc_is_folio(memdesc)) {
-		struct folio *folio = memdesc_folio(memdesc);
-		folio_put(folio);
-	} else if (memdesc_is_slab(memdesc) || memdesc_is_ptdesc(memdesc))
-		BUG();
-	} else {
-		page = compound_head(page);
-		if (page_put_testzero(page))
-			__free_page(page);
-	}
-}
-
-... there's probably a bit more to it ...
-
-get_page() probably looks similar.  GUP-fast obviously wouldn't use
-get_page() because it needs to be very careful about what it's doing
-(and it needs to fail properly if it sees a non-folio page).
-
-> >    you're silently redirected to the folio refcount.
-> > 
-> >  - That's not going to change with memdescs; for pages which are part of
-> >    a memdesc, attempting to acess the page's refcount will redirect to
-> >    the folio's refcount.
-> 
-> My point is that until the refcount memory is moved from struct folio
-> to a memdesc allocated struct, you should be able to continue to rely
-> on checking a non-zero refcount in the struct folio to stabilize
-> reading the memdesc/type.
-
-Definitely once you have a refcuont on a folio, the page->folio
-relationship is stable.  page->slab is stabilised if you've allocated
-an object from the slab.  page->ptdesc is stabilised if you hold the
-PTE lock or the mmap_lock ... we need to write all these things down.
-
-> That seems like it may address some of your concern for this inbetween
-> patch if a memdesc pointer and type is guarenteed to be stable when a
-> positive refcount is being held.
-> 
-> Then you'd change things like you describe:
-> 
-> >  - READ_ONCE(page->memdesc)
-> >  - Check that the bottom bits match a folio.  If not, fall back to
-> >    GUP-slow (or retry; I forget the details).
-> 
-> gup-slow sounds right to resolve any races to me.
-> 
-> >  - tryget the refcount, if fail fall back/retry
-> >  - if (READ_ONCE(page->memdesc) != memdesc) { folio_put(); retry/fallback }
-> >  - yay, we succeeded.
-> 
-> It is the same as GUP fast does for the PTE today. So this would now
-> recheck the PTE and the memdesc.
-
-Ah, yes, I missed the step where we recheck the PTE.  Thanks.
-
-> This recheck is because GUP fast effectively runs under a
-> SLAB_TYPESAFE_BY_RCU type of behavior for the struct folio. I think
-> the memdesc would also need to follow a SLAB_TYPESAFE_BY_RCU design as
-> well.
-
-I haven't quite figured out if _all_ memdescs need to be TYPESAFE_BY_RCU
-or only the ones which either have refcounts or are otherwise
-migratable.  Slab should be safe to be not TYPESAFE because if we ever
-see a PageSlab, we won't try to dereference the pointer in GUP,
-pagecache lookup or migration.  I need to look through David's recent
-patches again to understand how migration is going to work (obviously
-we won't try to migrate slab pages).
+NAK.  Send a version that does not move the folio_unlock().
 
