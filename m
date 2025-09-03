@@ -4,144 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44838CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68A9ECA1010
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 11:54:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88F028E000E; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
+	id BC95A8E000F; Wed,  3 Sep 2025 07:54:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 866918E0001; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
+	id BA1728E0001; Wed,  3 Sep 2025 07:54:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77CEE8E000E; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
+	id A8FA38E000F; Wed,  3 Sep 2025 07:54:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6726C8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:52:21 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 313B21605F2
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:52:21 +0000 (UTC)
-X-FDA: 83847776082.12.0CE9888
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D6D9F40004
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:52:18 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kvHUnwvV;
-	spf=pass (imf12.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756900339; a=rsa-sha256;
-	cv=none;
-	b=o25d17J7wPv1vwQQMEn7wYXplPNSTkpn+s2ssd+jp2OTLLFWgikjXioPPN+yra22DJ3+UM
-	8UsjQ1hRml+yRc9EBKWKXi30sV2laHVCkduYUcU8FD7ltXKSu/zpXNExdIUSWEWJ34iG+h
-	V5ACjShrY+/6gQPLgPzGqC7d4cXdDwA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kvHUnwvV;
-	spf=pass (imf12.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9862C8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:54:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 59D23C0640
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:54:57 +0000 (UTC)
+X-FDA: 83847782634.02.A9D6C9F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id F06C21C000B
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:54:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dDRZrJiv;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756900339;
+	s=arc-20220608; t=1756900495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WHZN4q7ULscnLBVN5oyiAwBFdj4bB2ZTF7RZxwdQl7g=;
-	b=KQ9MhcDb4oJSrRnLkQYr7CExE5efF5dCMOa9Gzy0ggpsvAcMsOzxXzx9dDo5iau2Ahh4nK
-	y/5ytICAMI+CbbvgLzYSnw8xOmT6/KuYV6g9DR7jzO5YbkomcY65y4UnR2y62ZEz63Baku
-	wpgFtQWYPLGKWK64cSRf8qS1qpOhDiY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756900339; x=1788436339;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
-  b=kvHUnwvV/N0ZPGXC2V6Ond7NHVlRL23Sf5tjPcVX2ANRRXFZbH3ttL/L
-   LmsGeSb3zORhtOYsh27LPkNn393bSKuom3rBNn+m7pRB2A0bGhGljKYJL
-   6oE0D59b8i9rj3cFjiProl//iW+54WcFXi6yCK2wVoSr5ikFUNtFJhM1G
-   3V7jvEtrvlZG69yelk4lAFJvkcXACdVBR9Cc7bO9dU7YlxWC5SWbqXpvN
-   jrVj+K4dRHhqmZytCX935aRfgJ2sO9V3HzrvV9L2ibmtQb4JhmUwWKqcH
-   Us9CBjRVPgIEifKfEe0aS+I0a/iFUuIhuyLpz0F+Bt7yRP/sBzMCtu3eF
-   w==;
-X-CSE-ConnectionGUID: qkjNrjQwRDKKHIOglcSJpA==
-X-CSE-MsgGUID: zRraFdN7S2GVA+aE+pV0cg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63043883"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63043883"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:17 -0700
-X-CSE-ConnectionGUID: LSXzFaryTGiV559A8n4EkQ==
-X-CSE-MsgGUID: vvcyrhQPS3KYbuchLY9f0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="176849676"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utm1v-0000000AyQf-39cY;
-	Wed, 03 Sep 2025 14:51:59 +0300
-Date: Wed, 3 Sep 2025 14:51:59 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org, Chen-Yu Tsai <wenst@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
- function category
-Message-ID: <aLgr30rvGBCcsOWa@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
+	bh=Vy+lxzXfL0kgtP99rbzpLuAz47IO4D0JFyDaKKvEah0=;
+	b=I+jNFdUGMQeJ3alVe8HpKGtzCpWyUnGOf/ml3kL7dVAdLafxVoXULasbEW9G1bbtPLdItT
+	cEHwhxAkwCF9Rh9XLMD4zjPE1Rz7534vmkvAY0/d/VzED+P2Tem42qfnAOH6rUFmaiJUNv
+	CyFokk/JNMi6mgz6yB2ONI8lBAh7s6I=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dDRZrJiv;
+	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756900495; a=rsa-sha256;
+	cv=none;
+	b=xjASiXoVJaPCPbBQnehY8pNKmkAXsH8AQupgTssrAf6Tue9Eg2+AzdyDDV1I9Ph0/8Is3u
+	vAPDDTfLHqI6s2uZ07pcn6gb+vYfjBLGeAEU3kgieBChkebrtBk8WhyTwVdBg2DSwaiEmw
+	uOUQ+kuOeMe1WDqo9Xvisols0VihGZg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756900494;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Vy+lxzXfL0kgtP99rbzpLuAz47IO4D0JFyDaKKvEah0=;
+	b=dDRZrJivtvIXxAnkZlWy3Ku1u91kpQ9r7ZOtO4MW9APA2iGkP5vOAc0Zibs9ah5YSg9Qd4
+	YL1le+SSSiqnmpdQoptf/1RIzejR0o91VVmuZUT7lxerAC4ayxpJ97HlyPHikKfJFUn4pO
+	SLqqiYzgCG97ecTNtGpoCnNK638YlGA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-Lt3y4LUIOSWRR2gCVpTkOA-1; Wed, 03 Sep 2025 07:54:53 -0400
+X-MC-Unique: Lt3y4LUIOSWRR2gCVpTkOA-1
+X-Mimecast-MFC-AGG-ID: Lt3y4LUIOSWRR2gCVpTkOA_1756900492
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b96c2f4ccso11452475e9.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 04:54:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756900492; x=1757505292;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vy+lxzXfL0kgtP99rbzpLuAz47IO4D0JFyDaKKvEah0=;
+        b=g5V4PYraudGT5i+yS4B87U50Sg/FVzs4akv1UTWKh2zE2sTgWJL4WDKamja3A/MlUF
+         rGklsVTjZgOLYeA8KiGRtGO1TKkpB30lDmWYK7clZhLndy935+ExxWdWa+9B6NrZXRop
+         F/AZrC6O8DM2s0M3cWZ7yMiSIjHHTL1H3IPW8l4BKzvdZF70pBmrJALDD1+zi/UiTibx
+         PTr/3D+MwO3pLlz46mT+gpA8YMeqhMfINZY5epYLB96jE1JRmzsbfju702ykqIYLpBLZ
+         bzFzIstaPrmdgluM/AXVr/itzbombjzp1EUIHtV/riKiofq9GEfQMTSJ9gWjAtV42k8N
+         k/2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWf4CgPlDA4c+clo/O6i+SDDbgdhgmDixTjyZC5eZPhtTRgbod7SQKN5QnUaEBPV2XcTyy0bsSPoA==@kvack.org
+X-Gm-Message-State: AOJu0YztK4FuI1eZg1r5JA/oGMWmT0k8hw7/VnaTvw0CMCsw++T5zcPt
+	vygviAmFY1c20jM8E1pexFExcYbZ/nwlzkZeq1Baks0y0a67Sd0iqD4fp9ct4tg4ZpnjJfduxnp
+	Zg7+rXmGr2fQMTLage4npRpGdd5pS3Nkqita0pk+C+tN3KgloY/fg
+X-Gm-Gg: ASbGncvs6rXdG9te4aRZTQej3g7tWOISyx6L/ScoDIY68KUjKoSobq2xNXrv60k/DLG
+	eOCxBx28APARTM0fXFNPSwG4v3oX/ZVgNxNnQr8YjCA4vzmJJkB7kJDbNizJqIIua0FeB0+1TfI
+	ULF4+DjjypsV1eRNIpZ/tXcpi+S75c6IdZSoLsjfd55vMcTe1H7EflBZ1fPYbKULIdI/qIXccwk
+	6lcWHBpgFd8nvRd+30ZVBpBsz+OPRkc2sQzA+lTcNd+yKszMpjR5wQpxbzLkVaBRJteYmQ0474O
+	tAdOP246W75gCYjgePgQjNFjcQ1eeW9FIcNQ4JUR9Dbcd70XURQzLbQTQod9wQ1guX00iVwIhVU
+	CdV8AQguAhOawcoSTBnmUDaNKSW9WlAAVGaTIWvmkkBQSxmsPHNBgc+ez7NESIamFmwQ=
+X-Received: by 2002:a05:600c:3b07:b0:45b:b05a:af04 with SMTP id 5b1f17b1804b1-45bbd1e7bdemr33528675e9.14.1756900491953;
+        Wed, 03 Sep 2025 04:54:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4cpqBq++Zrb9IT80A4uabVZk9ElZFleozbFNUtapOQ1NF258s1FbhAQ7gOCAX/tb7ptHTCQ==
+X-Received: by 2002:a05:600c:3b07:b0:45b:b05a:af04 with SMTP id 5b1f17b1804b1-45bbd1e7bdemr33528325e9.14.1756900491452;
+        Wed, 03 Sep 2025 04:54:51 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0d32a2sm347689785e9.9.2025.09.03.04.54.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 04:54:51 -0700 (PDT)
+Message-ID: <735f70a4-049b-4be7-9d08-97e2b326808a@redhat.com>
+Date: Wed, 3 Sep 2025 13:54:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D6D9F40004
-X-Stat-Signature: pfzqoaphfbawsarhn7g6cussin93cqzy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] dma-buf: heaps: Add Tegra VPR support
+To: Thierry Reding <thierry.reding@gmail.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
+ "T.J. Mercier" <tjmercier@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-tegra@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-mm@kvack.org
+References: <20250902154630.4032984-1-thierry.reding@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250902154630.4032984-1-thierry.reding@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 05rbMtSXut2VUAvQHs-Hln2fltR3Xfg0MT3sBp_F6mk_1756900492
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: gspyho4bkhmmkgnq3ihn3mcncr7mq5xy
 X-Rspam-User: 
-X-HE-Tag: 1756900338-150140
-X-HE-Meta: U2FsdGVkX1/yRN+bJAM3MPR0hSBLudzWFDLUN1xYoFn6hklwRaexUG1RGbFvlTagPqSFvxxZpkdtlpNLh8KDRzVT6r1oB5IvuEfH2qG+16oMruShQrU+qNu7L54h3yCycFuXjF+rG3VhgZ4OzTT9BHmhdTO3v5vTZ+97JzLXYmVFt8i/bRqvqVwm+R12BRZTdV+f0nf/36QGRT+72U0pyYoOnAaGwzXu7qdAE9b+ZywdhLQy3bAODSiGwN8hX4EG6Nx7uErUlqDvfNgsVtf6/pr5+se+0Lm/WgdXgFRRq2f/i8q1+msFu08uKcw3TZoi/QMqPrvPvBarYm8Wr841nWp9hvNJuWd8Za44WnPeMAP9IhT+KcoNtKxo6xBqqfnfPb748YI4CzV5eyzJI2LhZbvWFOLX0xpp0NZoMgxqHmY8eFew4QQz7sNXgrZkZeYTx6E0yCWf2zwB1IvZtPacst48p4KdGgS62/QNKLJSbQSpYoqAN7tGItN4wgIfMHR5z3zfVKYk/jXO1ub3Zj4MPaT4d9lbBdteuKcla6mcTlQwFUPwlYlw3mV6Tfyfz7vd8ZKpRe/V82MX+CtyvkxLJqhrxj+tDaMt06CYdWSF8n/xqygAgO1UvjVmX6YyS/sR2x+72/StNUlOTcQ7fU/+p0+iro2rR3J/kOzLnh70+Fkq1oAryUYyRr/kk0ghC6sEXld6nQVIUQS/+veGjt3aZsdV3nvpqoj5K/IVib26+1ABDeT6Zi79oX5FgmKXymqm5uu39mWLUijHYxcNPCjPgIzfVD7iGoUzYvQcO1wSTAUT/lt9tcX4a5w1NCm/kTFtZpKI2es5jS7DEorVxlVuqIW3goQsfmBaHWs3XIPQtVNM349DOuTO3tbe6u8NoxwBQcO3awrddDIgOoVqLobIUSWbz/rqX0/G8bs3McZDumAWpNlex1lOpBjk/t8geqblmuoeMKDsSgTQTqG+JK4
- 5CgM/ItQ
- oIQFoEeq8kHn9mk94I1FFj3yVYVndN2Ox0WMfEpzjZMBEXW91Avqe94W/FBan0l2zlTGtBGuXcXgmJlA7r61oMGjjBBI4lGEbJAAofe31tpM+vB16mYp8zXMeN6BVjvQraKHOcuevrbBjhDvWscasHK6yXBlTsck3wJmYuSpnDnZwnioBfyFFnDEs51ag/p3OUMsE4CiY3VONspzNSUpPpJ8e8ufApGjV+hxFIXR1o5f2iJFPVL5YjH8avi5njQiAWbk55IKJfsXZxjSQFb81+eX7zQctZh/zbiLre9lT7e7SVjQsuzhVW29AWiGACu8s7D6YOetAwZpm3QwFKo+NXVFiCQ==
+X-Rspamd-Queue-Id: F06C21C000B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756900494-588999
+X-HE-Meta: U2FsdGVkX1/MljjjHnFW2LGvCgCTL39fNobh2T2oRJU13y230KQ/kAtxG1ReHotKP6txJd9zpQJZmHSISB73Uj5sbwT2+Eyu7NMrDJClFtAqJCp7+IJzfjagBZsndy/1tkUATxVvmb6acMYuyTjk/Whw7PDq09gXspuSCwsf7HHNGo68QDcT1LYCXZMZ3tdxiBmRLRITHx5hX0kexvgHuPwzGADlZF7RDmJr999lgDlRDV1yaMZoKAkVC17Mo6RZ+Ul50V1vTvttv4IKVY28h6Q8MfdeTSmCmoy4p/sr7lSfLREmEDFpQr7yH3gtL5mLPlnMmyOkB8iGYAa5caRr5HK746F6zOGiqABKRADhXD4GIMITPVd5pVJnAbGIHCnHhhUm+ZnT6kyivsUN8LTucKkqpk/9A+zWzb2ZyZkrWqDb9zOGil11MYOYCeU4GbQNZHKz9q2hBavdPqtRB9CnHlI1Dd2w9kSfSOWcwVooVNREwY1eskViQ0AzkmTHefjnd/sEBEv5o6MONfRP+qkSVpaTaqZseIeG77Qu4EcqwrSKlSwE8tSx2DtRBqS/KM3MvupI/gvPMXK4oSW+tNM+SFJ7jynLMcG42cPu/6HaotJxRlx3HlHCqq/VDXXg3mizjagVWQ/zgBdw1HZeyLseF2XvDDCh3+DXQDLoH/8cDGZRgaHh6Z/tMPo9PlSoyegcCkiKCoaanckrFojxUefjmQXMotmiR8XnZPVTRP3dGrbEfyOWPZSNUv1MY5MGSoklKbeenM/J4dzYLIojHjbeimlXrgoQEDjxFMfW8rPl8QnLUj+n7bM9N3Dwx3YxolJwoFtpw7KtdueUJOUnNaJXnFlczKznc9APcwmVVOgxlptfgDVgi0z9TnYJA2TosBngoQmgjS4UECW0FiMFfPC8lzD6Jt8CoDxv5G6ph82pejcQRILKqfa5ltZxr7XjeVSPwjYaewPTHUsG5Q+LbR+
+ dBTYiHAf
+ 0qVTwx+KT68pSdGPMaWvuZSxjP7/CwD4gKN+eC/LD9MejrPp0FdAILju95M8cg0KcdZlDQpgeJ0zZqZOGr3wjoQJ9tKhXQhcUkzG2lDFp/iKIFmYzw2r7v2XCtkKC97Ag/vvgHKL7kixRCsd4CCORnPr0bKQm3hQCxelznbNdvZZp7fBiW14f3kVs5Fy5neCCI5SATLLlPljHrf9WbcEWxhaaRj2wWoG04SrjBoNh+ebLFwhOnYziKpR5+bO2yQ8JdH66COH+Yc34HnpGAfFSC9xWeidzaWbR3Wk6r9qNWK9PeheOq6ZuJ5NIA+1/2rfweWfgmiXV0HTyOmvIcy4ig2L+6kuWughvrPFbeEvOuV+tLxTEJSxXWgNW4wIXbayKV8SycV5pLnJz6qQPbTiWiKZGfb0mKSJwq+AVfSe7IJulORNEXgxUJbkXpZUu/3gloEUFakK91dhLA7RMc81Ej9oF4wXM5emiCv47WO0kkDGr8gzXIBSKb+ulzys8FJ70U7eQHITfYX4QfJHQftyYpm6Jbw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,39 +185,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 12:18:18AM +0200, Linus Walleij wrote:
-> On Tue, Sep 2, 2025 at 1:59 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On 02.09.25 17:46, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
 > 
-> > We have many Qualcomm SoCs (and I can imagine it's a common pattern in
-> > other platforms as well) where we mux a pin to "gpio" function using the
-> > `pinctrl-X` property in order to configure bias or drive-strength and
-> > then access it using the gpiod API. This makes it impossible to mark the
-> > pin controller module as "strict".
-> >
-> > This series proposes to introduce a concept of a sub-category of
-> > pinfunctions: GPIO functions where the above is not true and the pin
-> > muxed as a GPIO can still be accessed via the GPIO consumer API even for
-> > strict pinmuxers.
+> Hi,
 > 
-> This is what I want for pin control, and fixes an ages old issue
-> that pin control has no intrinsic awareness of if a pin is muxed
-> to a function providing GPIO.
-> So patches applied!
 
-No objections, let's move on.
+Hi,
 
-> Any remaining code nitpicks can be fixed in-tree, I need this
-> to be able to apply the much desired Broadcom STB driver,
-> so this needs to go into -next now for cooking.
+> This series adds support for the video protection region (VPR) used on
+> Tegra SoC devices. It's a special region of memory that is protected
+> from accesses by the CPU and used to store DRM protected content (both
+> decrypted stream data as well as decoded video frames).
 > 
-> I also want to strictify some drivers using this, bringing GPIO
-> function awareness into them, which is a good thing!
+> Patches 1 and 2 add DT binding documentation for the VPR and add the VPR
+> to the list of memory-region items for display and host1x.
+> 
+> Patch 3 introduces new APIs needed by the Tegra VPR implementation that
+> allow CMA areas to be dynamically created at runtime rather than using
+> the fixed, system-wide list. This is used in this driver specifically
+> because it can use an arbitrary number of these areas (though they are
+> currently limited to 4).
 
-Well said!
+I am pretty sure we want a system-wide list. Currently we maintain all 
+areas in a static array limited by CONFIG_CMA_AREAS.
+
+We can adjsut that to support for more dynamically.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Cheers
 
+David / dhildenb
 
 
