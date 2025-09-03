@@ -4,116 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB089CA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D4E6CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:00:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50DD78E0019; Wed,  3 Sep 2025 09:00:43 -0400 (EDT)
+	id 1D9258E0015; Wed,  3 Sep 2025 09:00:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46F818E0015; Wed,  3 Sep 2025 09:00:43 -0400 (EDT)
+	id 163408E001A; Wed,  3 Sep 2025 09:00:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C2B58E0019; Wed,  3 Sep 2025 09:00:43 -0400 (EDT)
+	id EF5068E0015; Wed,  3 Sep 2025 09:00:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 117C58E0015
+	by kanga.kvack.org (Postfix) with ESMTP id C83E78E0015
 	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:00:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7E251DEB37
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:42 +0000 (UTC)
-X-FDA: 83847948324.04.7FB8FBC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 75988180018
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9B3AB1606D7
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:43 +0000 (UTC)
+X-FDA: 83847948366.22.8EA56E6
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F037E18001C
 	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xmlnP3KJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N4++Wte7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xmlnP3KJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N4++Wte7;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904440; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904441; a=rsa-sha256;
 	cv=none;
-	b=DpRFLLzdhx8HfxQC+NVWQCsnbCLKqAIAG6Pnz53LzUe+PKVnKq9XTos3jRkodLicnZXNqj
-	YMb1Df/wkiHTdKklzEjiBw0bP67SZHNUAJQm5k6h6a0SeJlVmWvwBCr5N9vgbBe/73tigS
-	WyacTH9+JxPXfYKpRtU+TFWtpDQrjzk=
+	b=wRwa5gZbwhwLs24FYZNbyIIAfdExKukYXJTm3/TW8caM7GGAFJS/ANE9JnP9Dzs7B4xkI3
+	9HMuF0y75pTGsApou/cqQ5hTFZ1SNTFQ2NSrd8GbqJ62ebuLSKTKHC3CHYG2NL2nPlS6xc
+	RdQSxjom+AYTwS1wxGhOVSPoMfXgOUY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xmlnP3KJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N4++Wte7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xmlnP3KJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N4++Wte7;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LoETShIM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MyQghC5D;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756904440;
+	s=arc-20220608; t=1756904441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y8VowGBFfDXG/GD85vj37Bupo+CslYBKF/PIHnrFTIo=;
-	b=WOHCQALDVxy4oKIc4fSaWDG9qGDWfs0Jj792toLH7TldnTBYstD3ct2NebBia/s55rLY7Y
-	h6u2SGMQwD5tnCVXwOk7uoF+B1fgPgXLW63J+YKtou0c999yOPNC9nXQDxvs8BtcrlVRT1
-	JEfkYIixzRm990+7f12FmtQ7FQM4zuQ=
+	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
+	b=wOxvYk/9/QwVF/umuy6tkRn8vXeu23lFa8/Bih/y3F/1EhEs3n2fenHI48zRAsgO7Cuq1Y
+	nO1sBCm3KKWxzbWMZM6DzqsTp/bEKnDNzm1RsRhdRzYr5pEPiAuo7krfJBeYUDIHBoTw/s
+	+qwkKDM5dr+XbJVlZt2htvCPY9Rrcxo=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AEC901F745;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4F49F21227;
 	Wed,  3 Sep 2025 13:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1756904410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y8VowGBFfDXG/GD85vj37Bupo+CslYBKF/PIHnrFTIo=;
-	b=xmlnP3KJzd9cpQ2KM9zzpkXW/WInltLBBIOx1WWqZstmEQ8zlGEsKFADxRv2DWWqhVy+g7
-	bH6hbWOVsz1cZLixljP1tJxgbpWYrX16+YFgN6UjjsXNaHGrhSrVHTYdM+v2zVQvWkGRf1
-	2WBXlMwwIxcQZds6glBZ4JTZmCtNwBo=
+	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
+	b=LoETShIMk0pCx5L816uJyvFy7c4G6hgcTgDNeP0wdw3yv0H1gKUdk/cqAYnCOz9H7IfMBQ
+	HDr9bFcRAknhxCqHENhCd3m3YzDFv71MZmJZCdVgC1HKbU0Y75RhdAXAhziIlsleurg51T
+	VNyNCxItm6H6usKuYzzlrfROk7g2Vzw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1756904410;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y8VowGBFfDXG/GD85vj37Bupo+CslYBKF/PIHnrFTIo=;
-	b=N4++Wte7jeEZOXvrC75+VMaUkacqmOM3kfAzUKtfPmsg95/u4HsVUJSInm3u2ssLDRl2z/
-	ZvUNnf7oZJOVtVBg==
+	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
+	b=MyQghC5DsjfSLaNXl3OCffrJh1mZIzymp5cPWwwkaVoofGSGp5XZAZ+nQGdVjDXWQmPKlF
+	PfA/Q+4MQ1QPxkDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1756904410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y8VowGBFfDXG/GD85vj37Bupo+CslYBKF/PIHnrFTIo=;
-	b=xmlnP3KJzd9cpQ2KM9zzpkXW/WInltLBBIOx1WWqZstmEQ8zlGEsKFADxRv2DWWqhVy+g7
-	bH6hbWOVsz1cZLixljP1tJxgbpWYrX16+YFgN6UjjsXNaHGrhSrVHTYdM+v2zVQvWkGRf1
-	2WBXlMwwIxcQZds6glBZ4JTZmCtNwBo=
+	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
+	b=LoETShIMk0pCx5L816uJyvFy7c4G6hgcTgDNeP0wdw3yv0H1gKUdk/cqAYnCOz9H7IfMBQ
+	HDr9bFcRAknhxCqHENhCd3m3YzDFv71MZmJZCdVgC1HKbU0Y75RhdAXAhziIlsleurg51T
+	VNyNCxItm6H6usKuYzzlrfROk7g2Vzw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1756904410;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y8VowGBFfDXG/GD85vj37Bupo+CslYBKF/PIHnrFTIo=;
-	b=N4++Wte7jeEZOXvrC75+VMaUkacqmOM3kfAzUKtfPmsg95/u4HsVUJSInm3u2ssLDRl2z/
-	ZvUNnf7oZJOVtVBg==
+	bh=GvueOpBRqUSJBVmPF3IuGLVWneYsx8iJYPivjgPVl+E=;
+	b=MyQghC5DsjfSLaNXl3OCffrJh1mZIzymp5cPWwwkaVoofGSGp5XZAZ+nQGdVjDXWQmPKlF
+	PfA/Q+4MQ1QPxkDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DB42D13B03;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B0FB13AFB;
 	Wed,  3 Sep 2025 13:00:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +FNHNdk7uGitOAAAD6G6ig
+	id YPyuIdk7uGitOAAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Wed, 03 Sep 2025 13:00:09 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 03 Sep 2025 14:59:52 +0200
-Subject: [PATCH v7 10/21] tools/testing/vma: Implement vm_refcnt reset
+Date: Wed, 03 Sep 2025 14:59:48 +0200
+Subject: [PATCH v7 06/21] slab: determine barn status racily outside of
+ lock
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250903-slub-percpu-caches-v7-10-71c114cdefef@suse.cz>
+Message-Id: <20250903-slub-percpu-caches-v7-6-71c114cdefef@suse.cz>
 References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
 In-Reply-To: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
 To: Suren Baghdasaryan <surenb@google.com>, 
@@ -127,13 +128,13 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
 X-Mailer: b4 0.14.2
 X-Rspamd-Action: no action
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 75988180018
-X-Stat-Signature: ewy7dqa5e6iogupkdbh46bme851jxq94
+X-Rspamd-Queue-Id: F037E18001C
+X-Stat-Signature: m9kuiizz1ynendeeci4sfoyh9c4oadko
 X-Rspam-User: 
-X-HE-Tag: 1756904440-77274
-X-HE-Meta: U2FsdGVkX18RU2STn7Q//G9CGb0+jyD7Y8G7LjcWXd0JFhggDHWZnq9ukGQ/Y9PM1GVGiJWHZH9YVnhzg5Bfksno5B47XhJ5pLA88A8QF+9PZz5lYjxeG564BlYCD8yPkXpAHIX9BmvYoQrhvVzuIfx7JgqMYeTAobTEQzUkA2bfqgDKe7QE+RtttHPHUS8JfDEC2FD+9NJX2O7jZl54UF0TkKcxSGuF6R7GPodhdMfi0WqDIPZFFAEnePGmxYn5VKNGnTinI8ndpFLFMKQRQLD+egK7yQlJtPKAjIr/w2qcvJrGvusNxDZoVRvBzIJj/Wnp0uKDWrGKP6EwDw1jjxlt8OnsqC6IaFNQr4vm5x58/gLPn0RXKBEse7KjMBGMQ+8HG5y0gtY/dJHwR7mcXCmZhcRSYjZ0X3+4nwN6qytf3JDmKFD1fQXiovAF7FSg7UBOwUmuZwV8U3P+BZE5tLskTE4qqOeoSjVYWSIADTldJb9T7HtSiNTvqNxbsmmZWiIfo5ThTi9giC2m768Bf7RkeqAKzrxV5HZ2zr4zgvDd18X+MiAK/vrbw3LfOfI7KVcOXp7VeddxEMiFobeLDnxRBkG/2CO8k3DMghOO5V3/ET7bmxEo/s5lPVs89LQZcpjmQPj4CBofLOHOHnvkzpNz3sxdV8FippQn/EHS/5GWLnwAfpJXnbNjkWecfCM3KFx29t6tMLDvsTaRcC+kqlBZICzn0jsRPX8EYTW+U8O3uAjNzVGAiJxVy9HDCdPLpGppHVDqm2WgKqN7VWf6/G5iOaBsd9aRFkf4E4K8JEm0q4ddTLLB/dmsHSxoQ4B1Uftco6+yl4bMk3/G9wG8mH5VnmbUm2B/oSJW2asIP3W9xOq3Xpl0gr84RbO+7YQz/uXCqCQcuR7Aoy/XU+c6XtZVVgXw5slCy+fdUgrql8HbTH49XQ+kS5Qp/ly1dPAYk/a1btPWr0N6iJcc2LB
- 5WjdmMIT
- COjJ0H3RSkpzMDZZlIUq9OG/taFOEjGmQ7oRms3bKt028hbBkUgnIAYnm8Ooj+v2Mi3zCEiVSHqrq2Lp447TxtUfgSL+fn6FKHubdrxle7dLB2UjXvTPCivC2t5Aafrd3TAzK3Mbxz7t2BLIrEggIn0dcRaiJEUlKJwpnegwtgxR3ccKTY/7wJXjSNrgrvIxH7NRjBvvuI2Nifdby9cCzfUszleS6y2Bndm80R+yk7Q+3dBHRLA1eqRFbqaT7mNtwg9+uuiG949W/mnaYIEC+AjzLSIKlLwSht2E/
+X-HE-Tag: 1756904440-842475
+X-HE-Meta: U2FsdGVkX19Mu1yJSVbGS0GYLDiOgprk/ZIw4KAN5SeROjCXr+s+zwgP441ra4TFZnpJc0Z9fSbw7pGpggrFROhQIir8eBrPWWTkRC55NuqFjUmX5hXPoQ8n416PpjrsxjYf1G4kmyG5AWzESoy1do+RBC1ISLGpJCIGZ66FyI03/Hhbqpimz2wpIWaTMJ/KtNh4mqX9cuQ5Au0fl1PmXlgByegEo++Ue/040eJ5t6pAcieMDB5JWoDcfwiiviTkh9CnUOjvIC3HK0XoaYm4rGRDJmhx33DTSb6dSt7rlwPFSQTwvsqkaspcOQ6R6cCWpHQAIpaDWwI/bUnYNY4oS3vQhTn/hgntmtrwize/kdFhtR7Fk7fCIlZZFCIT4cHryqC3HX28j7gplws4D2HgxQG2gh9C2J+yM3bYmD/Glu2v4kB8FmSZjaSfRndTJ2ZYRvmxYh80Sg+N7s+i4VRVkc/YAPOLcMYV59w+VFnE+sbWB8QxVI0f5tIJiKsS8F2TavTBNkLF0xdVJLm2fM1SMiv6L6infM7ZJXaU87RW7HkZAugpcqftRH/wn0qypl3K/hHqet6d6f/KvmsoOPoKgt+RvzsHi6yYDsL0pBroD7b2OuiH4adYbLr/u8LkAq7lanLKftAiBHlrFGAMUXnh+8vuVgnGU0iL53BON9LpVT+YYjrKnLGEkdA9ImaJ5A079cz7moAfd+l/7DTTwZSWPbgLmDLTnxqog0vqRu05w6DhXhFrMVFeJ1AH5yGVG8dx/tHkyTO3GLCoVyjPp3pQNO9oW7zwHIa86gN1CiNZX1eRwA7im0XTGYCcnQpTbPKNgw9TFep0y8XvGp4qL3PC11amB8TbmNcrQmYr03zEGk2dqzL0LU9jlQOD63G5teF5HwYmnA3ur8QePclfLDwpVY6Es2jjW2Lo+CS7cv/ZAFV/gQwkkJHdYBn/RdJFqhEcxyDl8LlqWgcVy2OSytv
+ YZWTBw1i
+ fbx+Er+GWRBYzTzBoERhLGHWSuNW73xlmKOEMimJ37yOodblLDxStiPwd9HhWKeiE/STGkVVeqYUERzhxcuERAZapCj18sOv3Qxi6f466lno2nE12tGC+UJqf5dNef9ERo6JR4VLk++TsxRtAXn90lChrRQk/yep/uU5CdYyR6flunE77QyKiC2Ahh/PRETFlGgUuTfBSOW55ad9r2QsSRHopCxp7MPi6FEze1TH9tgXQM0FLSDVt/ZsZgx4Oq0ymhHWZEl3HOqoRLMnY/iWwZUTHiQf5tGomy1HB0huyRgDWPfo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,32 +143,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+The possibility of many barn operations is determined by the current
+number of full or empty sheaves. Taking the barn->lock just to find out
+that e.g. there are no empty sheaves results in unnecessary overhead and
+lock contention. Thus perform these checks outside of the lock with a
+data_race() annotated variable read and fail quickly without taking the
+lock.
 
-Add the reset of the ref count in vma_lock_init().  This is needed if
-the vma memory is not zeroed on allocation.
+Checks for sheaf availability that racily succeed have to be obviously
+repeated under the lock for correctness, but we can skip repeating
+checks if there are too many sheaves on the given list as the limits
+don't need to be strict.
 
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- tools/testing/vma/vma_internal.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/slub.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index 3639aa8dd2b06ebe5b9cfcfe6669994fd38c482d..2f1c586400cfd65413d2ff82199590b43796b18c 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -1418,8 +1418,8 @@ static inline void ksm_exit(struct mm_struct *mm)
+diff --git a/mm/slub.c b/mm/slub.c
+index c6ca9b60acd15520410ac08d252bb09e111db6f1..d078630f7211b617f390a16fa080da8a1df45355 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2801,9 +2801,12 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn)
+ 	struct slab_sheaf *empty = NULL;
+ 	unsigned long flags;
  
- static inline void vma_lock_init(struct vm_area_struct *vma, bool reset_refcnt)
- {
--	(void)vma;
--	(void)reset_refcnt;
-+	if (reset_refcnt)
-+		refcount_set(&vma->vm_refcnt, 0);
- }
++	if (!data_race(barn->nr_empty))
++		return NULL;
++
+ 	spin_lock_irqsave(&barn->lock, flags);
  
- static inline void vma_numab_state_init(struct vm_area_struct *vma)
+-	if (barn->nr_empty) {
++	if (likely(barn->nr_empty)) {
+ 		empty = list_first_entry(&barn->sheaves_empty,
+ 					 struct slab_sheaf, barn_list);
+ 		list_del(&empty->barn_list);
+@@ -2850,6 +2853,9 @@ static struct slab_sheaf *barn_get_full_or_empty_sheaf(struct node_barn *barn)
+ 	struct slab_sheaf *sheaf = NULL;
+ 	unsigned long flags;
+ 
++	if (!data_race(barn->nr_full) && !data_race(barn->nr_empty))
++		return NULL;
++
+ 	spin_lock_irqsave(&barn->lock, flags);
+ 
+ 	if (barn->nr_full) {
+@@ -2880,9 +2886,12 @@ barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty)
+ 	struct slab_sheaf *full = NULL;
+ 	unsigned long flags;
+ 
++	if (!data_race(barn->nr_full))
++		return NULL;
++
+ 	spin_lock_irqsave(&barn->lock, flags);
+ 
+-	if (barn->nr_full) {
++	if (likely(barn->nr_full)) {
+ 		full = list_first_entry(&barn->sheaves_full, struct slab_sheaf,
+ 					barn_list);
+ 		list_del(&full->barn_list);
+@@ -2906,19 +2915,23 @@ barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
+ 	struct slab_sheaf *empty;
+ 	unsigned long flags;
+ 
++	/* we don't repeat this check under barn->lock as it's not critical */
++	if (data_race(barn->nr_full) >= MAX_FULL_SHEAVES)
++		return ERR_PTR(-E2BIG);
++	if (!data_race(barn->nr_empty))
++		return ERR_PTR(-ENOMEM);
++
+ 	spin_lock_irqsave(&barn->lock, flags);
+ 
+-	if (barn->nr_full >= MAX_FULL_SHEAVES) {
+-		empty = ERR_PTR(-E2BIG);
+-	} else if (!barn->nr_empty) {
+-		empty = ERR_PTR(-ENOMEM);
+-	} else {
++	if (likely(barn->nr_empty)) {
+ 		empty = list_first_entry(&barn->sheaves_empty, struct slab_sheaf,
+ 					 barn_list);
+ 		list_del(&empty->barn_list);
+ 		list_add(&full->barn_list, &barn->sheaves_full);
+ 		barn->nr_empty--;
+ 		barn->nr_full++;
++	} else {
++		empty = ERR_PTR(-ENOMEM);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&barn->lock, flags);
 
 -- 
 2.51.0
