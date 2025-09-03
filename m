@@ -4,147 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1EECA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 10:22:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC57CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 10:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 186EC6B0006; Wed,  3 Sep 2025 06:22:56 -0400 (EDT)
+	id 7565D8E000A; Wed,  3 Sep 2025 06:24:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 137B38E000B; Wed,  3 Sep 2025 06:22:56 -0400 (EDT)
+	id 706DD8E0001; Wed,  3 Sep 2025 06:24:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F40428E0001; Wed,  3 Sep 2025 06:22:55 -0400 (EDT)
+	id 5F5828E000A; Wed,  3 Sep 2025 06:24:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DC2416B0006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:22:55 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80D5B13B20B
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:22:55 +0000 (UTC)
-X-FDA: 83847550710.16.623FD20
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B40F0140006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:22:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HggVaUDs;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756894973; a=rsa-sha256;
-	cv=none;
-	b=WKl2NWhXC18DD70mkdY1nrloE8m/neCvy3hX5MKwWI8faByN70CJCzlWnHZpGnMiN7joXD
-	M3h0WduXurVw4dOyW0q/qi20y4GImGqo8QJNfiLgke/R0aNOgL4kN07hjNPOCP6cH5m8or
-	0VzSWxEGPBiMdtwXFN+B7ZB1W7lvGMA=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HggVaUDs;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of andriy.shevchenko@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 495198E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 06:24:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EEA5C1A05C6
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:24:26 +0000 (UTC)
+X-FDA: 83847554532.13.1A38A26
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0ECB140009
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 10:24:24 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="L5mop/IM";
+	spf=pass (imf27.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756894973;
+	s=arc-20220608; t=1756895065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T31GhvMgDcDqa/8wxluLN+dNwm4mTxHX2BFlOQeV59E=;
-	b=ZKy1+mK9lAD0abI+PEFBMuL+saGh+g1Iz1C45KZiXwlOO28xqelELmdLxNUierPZuzwDa7
-	JoJAsEcNB9mmS03Yj6VSxXeUQiO49BswZbBjVyDDBWqqrPVuot2OW5WjsrKNIbTm5XoQ0B
-	lFqUlltTayxHVBU08dJfQtUedH8Ccmk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756894972; x=1788430972;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=hEddkyRBq0eYhs86EpYDI0PR1kM06ibMXa7C70wF0A8=;
-  b=HggVaUDs6B5f0jjwnfhFSe8/Ze/5LEgjauNQ/5TUJY30DB18cimKRVkT
-   +aNsLVgdW55iJaeiH7gtEgadiG+IjSN3n6xz20M2CsssdMiQ0/aLUtxlc
-   vCgaGi1TB7AbGvlg6SgwfpuANKZ9vf3lKfLI1k8V6BsWuiC+kv095E8sM
-   OZE3t4WV4l13e4hwEWIuf4Q+dVawdt66nXtB5qSekXcp5xPM5iX+QLm96
-   2DjXdKqLpo/pKvvgwFGszxCfBbhoaMEKEfjafZYOW9AEgzkvYZwBDfXy5
-   h97+mgrGnUqBdI38YP63yiC4Fl8T1uGjmG1zPyi6o60nqR/5is3wICIE3
-   g==;
-X-CSE-ConnectionGUID: X+lik4XMRhatXNxRFxFkDg==
-X-CSE-MsgGUID: 3a49P2O7RIKOGw+kVywAcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="59318121"
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="59318121"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:22:50 -0700
-X-CSE-ConnectionGUID: YTo0WasPQBSP1GD2jJB+Ig==
-X-CSE-MsgGUID: 5tCXY7/9Tha1Hp4Y6DZptQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="195180921"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:22:40 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utkdQ-0000000AxFa-1l46;
-	Wed, 03 Sep 2025 13:22:36 +0300
-Date: Wed, 3 Sep 2025 13:22:36 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	bh=iq+2oZ/KcgO95X7z7Iwm4V3d8FmvBHKC4zBSx2fR9sg=;
+	b=4JVWe1R6BHXXL8TZ5FnxObTWUb+Rnn0Hj5O9++7aNlgokZkVHaeuScjR7jL6XW3dsAsqCc
+	DZWhPl2tqTCqqJ/+txDaryVmIfF5j7VYWOgwzLldWD9ysyVxAjwWX4FPlRUNZ/721MxYEW
+	NyiTP1EVYQlSKe+b1jaD92lh4zejj5o=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="L5mop/IM";
+	spf=pass (imf27.hostedemail.com: domain of pyyjason@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=pyyjason@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756895065; a=rsa-sha256;
+	cv=none;
+	b=lI4xZD/CrzT12/6x/F34U4FsXc9RitumkbaOy86Z1tGy5y46x6P8Ne3ZTE272eztcRYltk
+	FvJ9h5ENBnpKjjefmdYdIIg1CqaDJ1pM7IREkCuQU1BjyPoEVx2NjCYgMahyRcTgPTD2uc
+	7zxzWzQGgrhs1hv64p+/punaTfVEh0w=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45cb6180b60so2444325e9.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 03:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756895063; x=1757499863; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iq+2oZ/KcgO95X7z7Iwm4V3d8FmvBHKC4zBSx2fR9sg=;
+        b=L5mop/IMTegxU4c6gjA9dKT43T3h2UbeYImY/uyl5JKHXLiVpvJc2XaJoaVNPfa0Gw
+         VA4TUrRJF5t0Slh7EcEUhYxRfJ9iv9ZhJtNFIC3xwu+L4pyGyn96fOCGjTGNyZi3hLIZ
+         H6k0yNDw+XDLlHsrO0MaMorGymP6hjw7ioNnFlT6BH53yz0CZQueW2jGdkribwmGw+fq
+         7hcWLySeG2YWjyy9Ma/KY4EQlBZ/Lx4+X10hotrDyPK68kWaF7xQeQw8aoH59ukoYZB+
+         kdMbnOHdPgEcGZmzoLIhFoSlF5X6YVcHwbr+91J5hlLHzXEShDzjz8ItBmVYTvVmIXYX
+         CbfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756895063; x=1757499863;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iq+2oZ/KcgO95X7z7Iwm4V3d8FmvBHKC4zBSx2fR9sg=;
+        b=r3MrGK44kFzzWFs1pVPbxGFpQRVBKFdfCQ//yNXfH0MAZgEyfLjKDu+glSsDpIWDlD
+         q45FNcD7jg7BssqC9hZh/N04w6PqWS9lASoO37P3wOpskQQtw+mGHT0wgt9CwusZHWvG
+         BVX0f+8K9I+kG+djV4C5o8Uw3XOjV1VNPXb1Ukp9Xw4ZnBjlGfu3TE31M87BR6BdakRD
+         oQ588Tr/Ye3tLbW4WsfyWgCAz6VjX2THMKbDAugofaQz07hxF5yxG0BCA0lm21L1qhBA
+         F5GC/7a1jwIWgdODGOmMdNyxWrRGPaRbAIcvInofYs4wmWFWDXtmJSejS84M1F5EVRqu
+         R1YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcYQispfZ/YbV1SfMxQqif9N11LquTOlSevd1k8RoCa02YxkSdmXeveR+hv/lbY5B+YqG6CCov7w==@kvack.org
+X-Gm-Message-State: AOJu0YyhDHGmd1NNuQPg/55r+XW4+lXGZ/5PY6TIiAkD9/Z+KJyo7qs/
+	EsOH2Jb8Huh0329KJdfutqT64dyUN0c6K/F0/xrOfaZiCTgDUT9SJyTX
+X-Gm-Gg: ASbGncsuVUerMjgqtgKDe1YCUXe42L1egzq9inZAce0H3J9a6h/CATFaL7n0fXRevkf
+	CZt0TTxqRbjTiOLiIMa6614GJ+Eclhg7dc0+5NoBvR1Zeqr4U3VPqTlaVENq9emYkRaz1E3b25y
+	E+rm+RmL8u6HwnK6rmASlNjY68oB6J+il1K8FU6r36+/dJkRRIgFBXziBXBnwnlE6/7PncMIKb5
+	+i6ijeMd8Q554mHnDmBV2iofLQtr16wsbOUPD5SrHAyx0bXISq/VjbIiLrBtdNadr67H1ae4Ktv
+	Nbf9E3UyW+JLYVLvqnf/cgySia3YzPGX8nVdbsqCsOmtNYEJdYbRUsov0CHG86xRiTRKs19+aF0
+	rKLhihd56J69Aad89XOMnAuozWkkNUOoiiai2qa07sn0qiSpTLw==
+X-Google-Smtp-Source: AGHT+IHjlg0yHyZ7YsY89pq9m16v4pKhC6s3zw1wicDWknab221B4wj1sid8VcPOZQd1k2UL+vWaMw==
+X-Received: by 2002:a05:600c:c8a:b0:45b:9afe:ad48 with SMTP id 5b1f17b1804b1-45b9afeaeefmr51851595e9.16.1756895063039;
+        Wed, 03 Sep 2025 03:24:23 -0700 (PDT)
+Received: from devbig569.cln6.facebook.com ([2a03:2880:31ff:52::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf34494776sm22895356f8f.61.2025.09.03.03.24.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 03:24:22 -0700 (PDT)
+Date: Wed, 3 Sep 2025 03:24:20 -0700
+From: Yueyang Pan <pyyjason@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: kernel test robot <lkp@intel.com>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 16/16] pinctrl: qcom: make the pinmuxing strict
-Message-ID: <aLgW7J-j4nn0u8uo@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-16-bb091daedc52@linaro.org>
- <aLcBcjvMbrxoDYoC@smile.fi.intel.com>
- <CAMRc=MfcFMgkNqWNZV5o0NxkAvxBTjC3vv56Cr98n0R2CkxuPw@mail.gmail.com>
- <CAHp75VcgaqnDrPH27wxfgyK6zz4RAKJQB0r7G2vbTONTxkEzTw@mail.gmail.com>
- <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Usama Arif <usamaarif642@gmail.com>, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	kernel-team@meta.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm/show_mem: Add trylock while printing alloc info
+Message-ID: <aLgXVIxyFpvZ9PU7@devbig569.cln6.facebook.com>
+References: <1491df0ac12a7626b7c9b00e26a6e10adb8c9045.1756827906.git.pyyjason@gmail.com>
+ <202509031744.HcibSETe-lkp@intel.com>
+ <c41c82f0-e5c3-4c2e-b711-3ddf8fcb0135@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MfhhX2NJ0fhhX8u+7=sdyUy0G27n7caGf9=TpHxUDJVxg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: B40F0140006
-X-Stat-Signature: qmwpfi576tsfebxeaesxez186ft4sp47
+In-Reply-To: <c41c82f0-e5c3-4c2e-b711-3ddf8fcb0135@suse.cz>
+X-Stat-Signature: bssb7csmhwpwakdnbmd4seaca4nhbbgz
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756894972-905386
-X-HE-Meta: U2FsdGVkX18+1k76EPZnTDNz39U56MulJHGP/jmQPJiaq252YwltwdEdeJbBpOVrtlmOcuwCC1yJfKF3glKI44jTcgjpmvzLQcMBlxochTJrqXquAQRwOyi9JI0kB3hRt4FL8Ho1xYr8jULuQZEf8crvnad/ZqjuvM1JGLQlx7UEwc+DApXj8Oqs9fhM9KA3UK5wrn1ABKWhV5raf+zFIlEWN7mTI8X4DhdSUZE4JqF67ty7zfDMLyGLOt3GPorUfr1OKLccjAh7zXoRiLIAGaSbxWD/RL7gjdMctg6VemtUUya5T9XEpGpGLT6T5T2gdVSj/dqGj0ZklFDygJdtpPYVUIVaiZUWEAmlmPj6wsViysJzmapb9MqX7zjtsc6Nq379po5uBJN0jkz4eLzHNILX5PBJHpR6uNg4XLzn5/WXKEWXZbB+rp9Qak2uqm+sSUfnk0Kr/4VMuIFC5lktUZYF8GjC6SKI1Ke+/Zn/q4bSSg2Oz6JF5hC4DrYxQGYA3JSjSZfElgQFyufs1ZSXaBNrKiY4UDu77X4xobkl9GLix3s8Uw2PO4qiLXAaGThj+69JXHq8ZDlJIqTq8XoqePJVanaXOThYIGYwlwhWhfS4nJVxQcpSozBijkVUzY6maa1ItZzktDsH39gsOyi7uuZYeJI/s9FqVpVmOQ5XFbhsJAWGNJNjK5CP36awxjmU5LBdvba01XvWuaTMfXPvicG+fsnuxaqBtEEB4/VoyPQr2k3TnSMraW/E49NXVFPu2CFW7htnpNRnR1NQvJFEovVVXuZPxXRCgIdsyQO3pPnFQBGQuM9K0yJ4T40qSjzZsu4Cc2mViDaEADHYGdp29q0ICShrqm/oP6/9Z3qJNV4FMJZIJIwVLtnfhDfZ8/d40t83y6FVKnDcEq3bE7ekGc2TGNvvnugwbIv/PEQpx9MLwHqPPS5AH1QrypU4yCtRqC4frEtxntVev9xB8sW
- iqfJNUz7
- uDK092GVsaA0kqfcEwmT51qSiQKjSKIYp0HZtnr4di3LNfc8RRkUm2MzEm7NJv8XLe6O8cxthZX2sN93jeRBifn6+/LqEY8HF1A3l+whilXGUickmsZDBa+v8zDIu86uicW9X8ech4zvJ9V9e8tvi6CdRpdpvIoz/DdTPggT0H2C6I1azfXgtElq3njIcSLwGSxnvxEfvI1BdXBerIj2I+7XHuoE10/ynOqE8U0D8j+LYr8kKYxnlNEbTV3W2JjHl5dgfs+Ce6mlf4OjOxAItkCwkJl7D64EaK0OYLCkUB0E3/bKbLUEZXsE6UN39aek42geRbgUs8OpQyflqh3YIyGCxso0li0ldJM8J86pInOp7JMSUBoYpm4oWG/POmHYzsTBJExU796ZNsdg=
+X-Rspamd-Queue-Id: 0ECB140009
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756895064-474054
+X-HE-Meta: U2FsdGVkX19vNUhWSJssZR2aQP90iVEf4suuA9SkwNKByrOue4fYCaQjpHeaDiEu8B4yDavwT6RwStzuS+dGimWapHwhUJ+0Ne7RlfJVj03hyZ7IEixG5GMpzey/IE3tJlEJtPVPr00xuFBrjBSMjezxQ5g9OLcWmKcOxh8LR3oiy7stdYvr2YNqpAuA8DbJHldZVD18nM0qbm4OWEbj8TGDdNIs81SLZIgpnYtbESNSt62B9IDdtMRgz3mquWa3xPo0+9EgTqOBIZ/UIoWIq7wySsx0hQKWjNDvdhFowwB3kBfsA9+Q/ILdYmTsaYp6Jw1DXrMfoX5cHkjrH2U6ElGAHwI/GU4+n0Alb9HXBv5X149+WqujSTwJj7Ne0KA+tqlPzKsSrrovhYprh03VP9chbyIVF3TZlywlIjtRqI8o3UY7qs6tJuW1NnRYf8/taCrvrTpCR/SEUXxiJiiV72rIEgxm0LitB0yr3MboFXNT4O3oyoCxk0W0ia3YSewv+xzGjVuYa9V/JLhiMmCRiC4aR1FKrels/LVlHmOhFTOBfUftMwN3Aw6Bqwv5gvkniBX1uTxeELKmAnj9KpK/5E3FzwDLtDkbUTaZ67ojAv9tPdEGF5EOF1ZnXNV1WI5GwZQKtYHg7HJ64OIrMmrsQg3tx3MSjL8OoFkDAEiSVDB8jmt2Qtk8ZLyWoUODUxNWXsY8l1l4c4bnfejzzGnk+BTMwmR4qJIStycUuiHwCFHk3KOzQ0XUhl9WnaEtQhnUIM1iDzNPLyoG+W0ZUIktUD9Tq0X469Qs9eJbwmgqWTQ11qUxTA0kNrcr7ikwWyySGFRZOyR32ewT9Vm0zZqURNIgc0mb+Uxv0qo/155W5Un9/XiLtrZ8VoUukHe7/auOM5pPaL49Z14KMcyF43MKL1OANibO9PF1q6Z8uA7Wmxf4SoPK04xMvnVxWvxnsFy3RxQ1U6jIosJ3S07al1U
+ mwrz+G5X
+ ZHZp4zFcxFHTOZ926TaLuegTivFV6e62l9C+3uLHI+oZ4TgkF5zFio6Zm5wGsDlHSk6aHiyydB0koz09RAmoiZYl1mIcL7SE3t0e/T/L8e8QtpmB7MopUL1QZcZgUAPeHqdgkH10QyWRHsodJt7UCCsdXhFclCHrsRTnQ0l4bnuRPJgaJ9/UkWJt8BGG/vq+JGwkJ5c1H3A3BFVYxNAOYsY3olVMZGkHtBSGoCagNh+TtOIIGDJIo3nFCVWe9N78duUvLYczo/csi0gurL8qUv/cQGJ0+kAsPkKtQpO9PJLe2f2yctXJ6Z2suIONcGMuRIX0/MS4OLKwupZZzOq5UbWsbKyc4XCcWs3BY8Y2cSVV2/my63yGKlhC/12HrwcbLwbqtMrY84bV8HlSCLkTB7xz6rJY4K4g3GTp5P7B3fTOzr7m8TcEAumXBESS9irJq3XeGQ+CzDgejuRiMviOVcA7JmpGICpzfzAo513Va4bNaN6WixvcFlDsFJBS1HTm9LrrweWgxZUtFQiCFqRBA1AWxXoxX4D65KB9HRV0g5XpZPIpCG8v9XIlnn3Gbvm2kUGA3jVqDqvxN1eBibxchwmPhbR07/HBvXZin0IZFVAaIUYnmiDTBO6lFW1g4rxyu0mpC1RWc1XOhtexXopxXFC9D3RDb8d6+yAICKvJrsOOsduecOesVBEVHArZJWhrh28aECwLe84z6LDY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,33 +128,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 09:33:34AM +0200, Bartosz Golaszewski wrote:
-> On Tue, Sep 2, 2025 at 10:46 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Tue, Sep 2, 2025 at 8:42 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > > On Tue, Sep 2, 2025 at 4:38 PM Andy Shevchenko
-> > > <andriy.shevchenko@intel.com> wrote:
-> > > > On Tue, Sep 02, 2025 at 01:59:25PM +0200, Bartosz Golaszewski wrote:
-
-...
-
-> > > > > The strict flag in struct pinmux_ops disallows the usage of the same pin
-> > > > > as a GPIO and for another function. Without it, a rouge user-space
-> > > > > process with enough privileges (or even a buggy driver) can request a
-> > > > > used pin as GPIO and drive it, potentially confusing devices or even
-> > > > > crashing the system. Set it globally for all pinctrl-msm users.
-> > > >
-> > > > How does this keep (or allow) I²C generic recovery mechanism to work?
+On Wed, Sep 03, 2025 at 12:16:45PM +0200, Vlastimil Babka wrote:
+> On 9/3/25 11:47, kernel test robot wrote:
+> > Hi Yueyang,
+> > 
+> > kernel test robot noticed the following build warnings:
+> > 
+> > [auto build test WARNING on akpm-mm/mm-everything]
+> > 
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Yueyang-Pan/mm-show_mem-Dump-the-status-of-the-mem-alloc-profiling-before-printing/20250903-000616
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> > patch link:    https://lore.kernel.org/r/1491df0ac12a7626b7c9b00e26a6e10adb8c9045.1756827906.git.pyyjason%40gmail.com
+> > patch subject: [PATCH v2 2/2] mm/show_mem: Add trylock while printing alloc info
+> > config: i386-buildonly-randconfig-001-20250903 (https://download.01.org/0day-ci/archive/20250903/202509031744.HcibSETe-lkp@intel.com/config)
+> > compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509031744.HcibSETe-lkp@intel.com/reproduce)
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202509031744.HcibSETe-lkp@intel.com/
+> > 
+> > All warnings (new ones prefixed by >>):
+> > 
+> >    In file included from mm/show_mem.c:18:
+> >    mm/show_mem.c: In function 'show_free_areas':
+> >    mm/show_mem.c:336:49: error: 'NR_ZSPAGES' undeclared (first use in this function); did you mean 'NR_STATS'?
+> >      336 |                         K(zone_page_state(zone, NR_ZSPAGES)),
+> >          |                                                 ^~~~~~~~~~
 > 
-> Anyway, what is your point? I don't think it has any impact on this.
+> This is from a different patch and being fixed. Interesting that lkp will
+> report additional warnings even in presence of prior errors.
 
-If we have a group of pins that are marked as I²C, and we want to use recovery
-via GPIOs, would it be still possible to request as GPIO when controller driver
-is in the strict mode?
+Thanks. Understood.
 
--- 
-With Best Regards,
-Andy Shevchenko
+> 
+> >    mm/internal.h:560:16: note: in definition of macro 'K'
+> >      560 | #define K(x) ((x) << (PAGE_SHIFT-10))
+> >          |                ^
+> >    include/linux/printk.h:512:26: note: in expansion of macro 'printk_index_wrap'
+> >      512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+> >          |                          ^~~~~~~~~~~~~~~~~
+> >    mm/show_mem.c:298:17: note: in expansion of macro 'printk'
+> >      298 |                 printk(KERN_CONT
+> >          |                 ^~~~~~
+> >    mm/show_mem.c:336:49: note: each undeclared identifier is reported only once for each function it appears in
+> >      336 |                         K(zone_page_state(zone, NR_ZSPAGES)),
+> >          |                                                 ^~~~~~~~~~
+> >    mm/internal.h:560:16: note: in definition of macro 'K'
+> >      560 | #define K(x) ((x) << (PAGE_SHIFT-10))
+> >          |                ^
+> >    include/linux/printk.h:512:26: note: in expansion of macro 'printk_index_wrap'
+> >      512 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+> >          |                          ^~~~~~~~~~~~~~~~~
+> >    mm/show_mem.c:298:17: note: in expansion of macro 'printk'
+> >      298 |                 printk(KERN_CONT
+> >          |                 ^~~~~~
+> >    In file included from include/linux/spinlock.h:89,
+> >                     from include/linux/wait.h:9,
+> >                     from include/linux/wait_bit.h:8,
+> >                     from include/linux/fs.h:7,
+> >                     from include/linux/highmem.h:5,
+> >                     from include/linux/bvec.h:10,
+> >                     from include/linux/blk_types.h:10,
+> >                     from include/linux/blkdev.h:9,
+> >                     from mm/show_mem.c:8:
+> >    mm/show_mem.c: In function '__show_mem':
+> >>> mm/show_mem.c:399:32: warning: unused variable 'mem_alloc_profiling_spinlock' [-Wunused-variable]
+> >      399 |         static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
+> 
+> This is the warning
+> 
+> I think you can simply move the definition to the existing #ifdef
+> CONFIG_MEM_ALLOC_PROFILING block above the spin_trylock(). The kernel now
+> uses a new enough C standard to allow this and not only at the beginning of
+> a cuntion. While not encouraged to do that in general, this seems to be a
+> valid use case.
+> 
 
+Let me quickly fix both and push v3
 
+> 
+> >          |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >    include/linux/spinlock_types.h:43:44: note: in definition of macro 'DEFINE_SPINLOCK'
+> >       43 | #define DEFINE_SPINLOCK(x)      spinlock_t x = __SPIN_LOCK_UNLOCKED(x)
+> >          |                                            ^
+> > 
+> > 
+> > vim +/mem_alloc_profiling_spinlock +399 mm/show_mem.c
+> > 
+> >    396	
+> >    397	void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+> >    398	{
+> >  > 399		static DEFINE_SPINLOCK(mem_alloc_profiling_spinlock);
+> > 
+> 
 
