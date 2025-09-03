@@ -4,232 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A297DCA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 18:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C0F0CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 18:44:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 069E18E0007; Wed,  3 Sep 2025 14:25:23 -0400 (EDT)
+	id 54EAA8E0002; Wed,  3 Sep 2025 14:44:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0412C8E0001; Wed,  3 Sep 2025 14:25:22 -0400 (EDT)
+	id 4FF548E0001; Wed,  3 Sep 2025 14:44:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4B2D8E0007; Wed,  3 Sep 2025 14:25:22 -0400 (EDT)
+	id 414A28E0002; Wed,  3 Sep 2025 14:44:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CC5DA8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:25:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C3B386785
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:25:22 +0000 (UTC)
-X-FDA: 83848766484.07.3C6C3D9
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0EEA3180012
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:25:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Z1rKlLfE;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=gVRod7TQ;
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756923919;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 32C7B8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:44:10 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0DFCBB9DC
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:44:09 +0000 (UTC)
+X-FDA: 83848813818.23.427F7BB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 01D3040015
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:44:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LrNIVQLF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756925048; a=rsa-sha256;
+	cv=none;
+	b=VQA24N10fT9Pefj42vjvBVUY/+sJ6rXv6/JolCfoQ9GtiL3o9YZy18Gyz3jO3kIVy50orF
+	vEqVO4ETPvqXJacCXS5Up2HsLYXDrHHFxGb1EqO7DqVroosbakgb9Ds+jg8wu5H6eQwFoO
+	Ydpw2/61cWTV2/9TEQd5Kit/TDHldV0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LrNIVQLF;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756925048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fQ/jDRyP0zgUu4R7Hz4iF5ffyqCjw8z5KbVkBYy5UhI=;
-	b=Stdvzc+ky35oMcZFq2JP5zzBevSVadewTFSUaKevxHLxppG19EFj3upoZpn4KLQq3F998X
-	gW6IWCdepD+SjuLM2LYu39msslF5q8Hd9VIVXJ1AmaNmiP38QIwMfKA71wIC2HgtLPVfaZ
-	/WMhLVC/jKExINEiXh0X8mgNe//JNFk=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Z1rKlLfE;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=gVRod7TQ;
-	spf=pass (imf06.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756923919; a=rsa-sha256;
-	cv=pass;
-	b=xhdWuVWeQQbtbtgK6kYUiNaFCqmWbh9/L9e9AOSSxdLLoNcHXnS6N3VmmKP0t75nFtl2//
-	R886QyOCcl7GHX4a00Fu0xDzqoUzY+N+wg59CQhYKLaFhmR74aSZd1SBPMsJ0MJJJ5/u0z
-	238tMTH1fOohi0eCgNsgmqy1tDHu/lQ=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583I4iqa026354;
-	Wed, 3 Sep 2025 18:25:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=fQ/jDRyP0zgUu4R7Hz
-	4iF5ffyqCjw8z5KbVkBYy5UhI=; b=Z1rKlLfE6uJc8HtJqlME4XFVWLjq/Biuc3
-	xaOApGucVOmVtMdE/e1ZG1IW+IFqC3yLoSzh3jtXh6QR+W6eino8RAvDTcV3oytG
-	Ihj7md9zUpBsSeKn6ussf8Se8ilRvcsQotZ0ijI6dVnKMRhhT8TumQUrXgkwTz2H
-	FztqPFjethPBwD2oZdtUtpaOLUc/K8ZawTPbjYFhpGSKRvD9E9X24SQkZNh6tQcu
-	nzitCwflDuoTKz8PBOYDaeVXODLjl9i13CAtNTWx+Rkl4rp6sgGjPhxlcWtpnnFk
-	oayuZnBg+5eiNAyplY/hRoDN4UpZuCnVzctzfuBmCEBSjo6Vpv0w==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48xtmrg119-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 03 Sep 2025 18:25:08 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 583HjT49036197;
-	Wed, 3 Sep 2025 18:25:07 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12on2057.outbound.protection.outlook.com [40.107.244.57])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrancmn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 03 Sep 2025 18:25:07 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eYdm3YX2+Wf9/AQ8tFbEfc+LBJECEXL+rOrFP5DPSONcyICNSif9HSjkdEA64+8rPVO4RTcLVZ3M7dpMmKt2WoxL2j1DbCV5X0sI46Rt8tdOMrBmtROpd31p1DvV72m2EqMfYCihjxNyDbIW7n60EfuAelajx94AgZ+aXnVEf8xD195jV12DkVVmX5xNWDwDpJB+cr3e+opmYA/RoBYvA7j/ghJbm4WWUfeVeHkR7k+9Y38ziPf+a4SVdmvutaZvxdyng1Z/GmrkB7v4jnRpP+BgDQrTCVnn00B/skFGqKWGf9ueaHf/JbpZTFDOEZv03HKK6wDPbIwg0kNCneIgnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fQ/jDRyP0zgUu4R7Hz4iF5ffyqCjw8z5KbVkBYy5UhI=;
- b=iLIDnDpHyI/srJG2OkEvkUiGCeglc/jOQO/kqG8Opw6mqmNwtiv9NFcRyPMHwSKXt206SotkpzIKSleKYf2H3u1neXVu91KQiVzGYV7D5zZlilY2XYLkQExuEyYomUbaRhd+/HstA2SdG2sPIPq+9QEOksQE8vzcn9rvXBOSu8l9OzkxKCM7ogp9uM30v/VKtKrfp/EVIomXyWof9h4cE1s5hirq9ZaBCLA346hb5BNOgET5vc1nuBt+FnpIhI+wJDy6td+q/74Bjm4dKxTcT2Q1x8OudVqjTPJ3XXEKPI2dVrgG8bggYghpOssjtUMWMcZZdunTzacM282nIiOzpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fQ/jDRyP0zgUu4R7Hz4iF5ffyqCjw8z5KbVkBYy5UhI=;
- b=gVRod7TQFAFSZAyqgN9eWehpZ63pxJq5aUceYpsA2+oTEiRoHqjTEcE6Hv0YTv08vNwTcPKFf1rGuy3E/geZOfsV+GIbGYyLB5cgZb7DoDzx2dd694Y+KBE2JmPmRF2GZw6I5ZjdOqS6m8Li7idzvK2i6b+IUeVPIAOnfjPr3bs=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by BLAPR10MB5092.namprd10.prod.outlook.com (2603:10b6:208:326::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
- 2025 18:25:04 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9094.016; Wed, 3 Sep 2025
- 18:25:04 +0000
-Date: Wed, 3 Sep 2025 19:25:01 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Dev Jain <dev.jain@arm.com>, Wei Yang <richard.weiyang@gmail.com>,
-        akpm@linux-foundation.org, kas@kernel.org, willy@infradead.org,
-        hughd@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-        Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-        baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: Enable khugepaged to operate on non-writable VMAs
-Message-ID: <6f5db204-d606-4f7e-9075-29ccabbf927e@lucifer.local>
-References: <20250903054635.19949-1-dev.jain@arm.com>
- <20250903080839.wuivg2u7smyuxo5e@master>
- <0a52cb54-5633-4374-baa5-199194dfc2e1@arm.com>
- <3bd9ff5d-de8a-469f-a7b0-41c192b23993@arm.com>
- <99f8cb5e-828a-444c-b207-2a12e13a45f5@redhat.com>
+	bh=IpesNG/xAl2hZY5d1Hciez0SX4IFVTS/HvxVHV7ixlU=;
+	b=EfAfAtqjjjjaWAGZkQyORYFrptQnVryY57RRaH6RekSu4uspujnnDhui7GWpDz9qjNyMze
+	mvTpW2mhz6yTqNP49CZwI+Xm5krXWDGTlnWz7H072qhIpncj1mKne4BmjdV99cvLJYuVL7
+	tTsQBquBHMq/SQtRvXi6vrqZoXUQbxM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756925047;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IpesNG/xAl2hZY5d1Hciez0SX4IFVTS/HvxVHV7ixlU=;
+	b=LrNIVQLFLhT/Yfr/VJPA1bPEMMFiWtwiEwFNlSSo/+m4ciEaxcSUqrQ62RchVrEry91Ivi
+	Q8iqBq8zz0rh9WzFEjPq185+CNON52fW0pMyCRat/plttzcEAUWJ2rOInQitmdhO+T32Pi
+	63XE2Z4xHoQv2KjB7cZ1bHkmPK0Pp6A=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-amsZ2VZQN4mRQ89bEiCdGA-1; Wed,
+ 03 Sep 2025 14:44:04 -0400
+X-MC-Unique: amsZ2VZQN4mRQ89bEiCdGA-1
+X-Mimecast-MFC-AGG-ID: amsZ2VZQN4mRQ89bEiCdGA_1756925042
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 03614180034A;
+	Wed,  3 Sep 2025 18:44:02 +0000 (UTC)
+Received: from bfoster (unknown [10.22.88.143])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E9DC300021A;
+	Wed,  3 Sep 2025 18:43:59 +0000 (UTC)
+Date: Wed, 3 Sep 2025 14:48:01 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
+	brauner@kernel.org, willy@infradead.org, jack@suse.cz,
+	hch@infradead.org, jlayton@kernel.org,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 12/12] iomap: add granular dirty and writeback
+ accounting
+Message-ID: <aLiNYdLaMIslxySo@bfoster>
+References: <20250829233942.3607248-1-joannelkoong@gmail.com>
+ <20250829233942.3607248-13-joannelkoong@gmail.com>
+ <20250902234604.GC1587915@frogsfrogsfrogs>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <99f8cb5e-828a-444c-b207-2a12e13a45f5@redhat.com>
-X-ClientProxiedBy: LO2P265CA0509.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:13b::16) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|BLAPR10MB5092:EE_
-X-MS-Office365-Filtering-Correlation-Id: 229540b4-e29c-4db5-fdba-08ddeb17339d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YMNfl60a4FJo47fLrghfZpXjn9eRi6coYTrHZWH8w8u1X1myeiuXG3gHqY6L?=
- =?us-ascii?Q?O3WsdnfOoi9G+xichyKj6yhg+amjPWvyyC7/1fC6i8s+0yAhNKo8YKRKt/CW?=
- =?us-ascii?Q?qU4bfSRUj+Wqviqub5oXbgmMX2FO5UGHMTmwg2vas7IrFAW1yaUS0WR/CHQJ?=
- =?us-ascii?Q?lQfFtULq5eJqQJHVhVX6Vrqo/6B3swH8h9X/cAmiHJ3k7Wm0EHMHCzeMJC1V?=
- =?us-ascii?Q?yy2ilSwAX4Xg76upAa3geev9XZ1tNfKQ4qRvnREAOjrX1whMGnY77TXsz7oU?=
- =?us-ascii?Q?oK6aDJhY4X0eWTxS7YBjPqGAam4i+JZp0aZO5TIZ0MJoFxGFUD46bGdS13FF?=
- =?us-ascii?Q?zE+xQBbW4nLXJ2QEk+IzZzPwV3NkJcVceo6S0WMlMbeTgX0ByObBNrepnkWo?=
- =?us-ascii?Q?6GqQutruMxh2CQrW/gM2faYav9S9WYpCQswTndRqKch7nr0d4wkTW/ESUPBg?=
- =?us-ascii?Q?ObKp3+SNs0wlbXlp1iQIOh0g8OwCsLS8pK6EtD4ISJVg8NRmivkgZe2u5a52?=
- =?us-ascii?Q?cHpfD3MwkOQD3lkRVbkGb4u/ZIY3lwGSNYs+5XzOESLRoHSyzznUBIj9HkUU?=
- =?us-ascii?Q?IqmO3uH4hdUSWe3oJUwTO9121eeZ0nilwkJCeSH8nj8wkyE80/+L6wcAmqKJ?=
- =?us-ascii?Q?SPY7BNjoRzqWDKaLkkK4JHMJibsRAV00WRBPoey1xO592HXUcAQJTZU/dJ5U?=
- =?us-ascii?Q?PjZBxw5wfssyZD6zKyel8cdD2KaMd1lBo0lB+l4EiAUViILD4yQI3ZsXigbK?=
- =?us-ascii?Q?O3va+xwtb9myvLtnahFdnhwI4mJ7f2GAlpRf1La79t1n1FwOvgl/MJLiuwh3?=
- =?us-ascii?Q?N0TLDBf7dq3hduVo0JyePAMp7RZxgG3F+PwFIungav1i8sVKZD6lCSOv8qOM?=
- =?us-ascii?Q?ikJ0lg7aupPkdNLKtYWllaUVNXuyeKA58Ld9dJXxvFzeysT47Skw1bQqbBUI?=
- =?us-ascii?Q?+umM9LduR3Ft9n+6cgxMR2NzHTHtf2C/VDy4J5ZtIpK07wJGebnHl8LE8ebY?=
- =?us-ascii?Q?D3aH446FVDkGdSyDDd4Fd94gVUX0nq88Fb224LtygwbaEldYOuWHc675fSv7?=
- =?us-ascii?Q?i+GyXp7DiKz+/LR0ANoKtrykWlXUJ0c6SNebkPqPin18i+jOPfw1d7zDrLSg?=
- =?us-ascii?Q?x/sxy/DHWu/+aKNRsBMcmqhmJIkomBbQLGxl3A+3LEG9u1DQgjgTyHc01Nb3?=
- =?us-ascii?Q?MQUr/QxRQx+rzXSUqbZcA6GI5gp6zKyGUP6tueH72/a11Y5U6Hi+FfguOlbZ?=
- =?us-ascii?Q?yjPZq69so85FoHSIo3dE7gwJpr16ABKJfyZUJC44fMvGf6LWL9lO4pQ/Gc4h?=
- =?us-ascii?Q?AQLibvCE3ZnFIxyxNT8LU+Ymbz2k+9MxDEm46zETdf4ZQUkNq+wk8iQcPbeV?=
- =?us-ascii?Q?gESi+24n+665DnRMR7c7m5g8aIWdaPKeeZl+mqaNgbh8uwJivKXg5/OX3Ut6?=
- =?us-ascii?Q?FoL+xlcCBR8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dMENKZHra0TyoEijosfCwvql50wmNewuriXF8vCTNlDyQ3cqXuU5B1uYv90l?=
- =?us-ascii?Q?rxoB8jjodsrbnTcFZyEVSx+GhaxZp8a8p2ty3cujqvKa8D7JlbYEO3A7UaVw?=
- =?us-ascii?Q?Vtj2VNavC1supWGPDP61Jn95BX5cPLT0xVhLRfI0SgMKLqSEO5D3IaQkqcZa?=
- =?us-ascii?Q?FpWMe1s9uzhspFPUXm93cau4FFpmSkxVWtUNBddPuN6NdnXIWXllQCOnno/J?=
- =?us-ascii?Q?2jgMmSLrxuzLbuSA+YIm6nxzgI/CnRAwe+xKA4sbxTF+xLffmCLL5OYEAnW4?=
- =?us-ascii?Q?8Ay5/289riIgYzFz5HM4JcOS182AEmyZ8ww4HIuZ8VFn/diYoSnj81nH8UWS?=
- =?us-ascii?Q?ADU8xH3uN2NYSazGS5KyLW41EciVXf9O7URSN5YebrTCwCMA48CIn3dtAVvz?=
- =?us-ascii?Q?Lq1+948aUYdE85ODREg/MXAq5x05waCsOYrqB/JmDZkrPnbpNnEB6FGtleli?=
- =?us-ascii?Q?PThBnTRAm7VqQV6HlAimz7p0MfN/Cjvx4GAHJOr+Knb9AVvWZVAOsm9/RTLm?=
- =?us-ascii?Q?7EAFHqKAozSo6+LpGAJY+CqeLqhGnsd9U6OxUiDbVjn8VETYRTV6hIerIqaD?=
- =?us-ascii?Q?3hrKCpGLYtAl+9CS5JB7wvB6a91Fq4uCgYUs6+5vyJ43WJeF9HxQ9ZpU1l4T?=
- =?us-ascii?Q?pgQSUtYy8EpeCp70MZRNewGgHMH5hIPUE/yPb6r0Ho52bFIJJhmgNn8bQ3br?=
- =?us-ascii?Q?regu0Z/14f+mZszBIpZrCT6c8yh/OZqum9Aeg4oXvDls7PJhQEzP7/sMC+fb?=
- =?us-ascii?Q?uMgnYdK2oa/k1b/cVQHI1yZgB11n9MY8+AaybuyXcJUCdH7eLXJ89/CctcIB?=
- =?us-ascii?Q?btDuaxHyWfVbIutsERa5Gmcvu/MUz7c+1sJqWLp9NjvGzdfi1vqzUmAP8zYW?=
- =?us-ascii?Q?MGxmLf0YqSyyopgFp4vP1kGEVuz2vo1XE8C6M8jKaPfPmsI9fltrMeF3pfh6?=
- =?us-ascii?Q?l9ACv0ItXHfS/56FI8r/S1VT8JNURcsVmhEdnDIBA6h4Soxwj6yRH2QHbl1W?=
- =?us-ascii?Q?5UmDtskp/uAQxSGsQyE6NpAgZ+cjl05Hoo2xme7ZuYp7D8EruLFzlH5ki/LR?=
- =?us-ascii?Q?12+1DrEbGZxNmjbzCFI5uYmOPY/WVFwF150JjhPlr4Abcoblt2AuxsJAzTkG?=
- =?us-ascii?Q?LTyeoe6aO/OV5L+6jVPDL9zro7LdnCHAleCa287x1zhPVT96+XFydH7VbSZ9?=
- =?us-ascii?Q?YLEUMxYhzqo0kaee0ARcuLBpW2hFcAXfP9+wXSFdHN5GxOtdanY5lRw7k8AA?=
- =?us-ascii?Q?yfX/PpnLkyoOAzTZBdV6R9ECnpOSvixiSqFjRdnEGSP6aoAT4DA/RCJ31JuI?=
- =?us-ascii?Q?BFvycZwpxXVSxEcTpteOhZahlNgo97LfofekY7Tz7WR9z/PUNW/yf5Ecr5bD?=
- =?us-ascii?Q?R2vW4Sz0EExxm4M6r1R/1w2lxMyNCX0izp5XLJ30rTMTwQI7J9z1qUk9+jua?=
- =?us-ascii?Q?+FH3A9u/oXSBAWbvpZn2u/TKxAK8eA5QBwEGCdOueXiyVbB837XWdq0nW4se?=
- =?us-ascii?Q?uOPXyMmbD8pC0GFSnuhAbUqKFdAFLiqffpr4Td8cdZpidM+2YLe1rvlWc1Kt?=
- =?us-ascii?Q?AF8PEpbMcwIcCL3yRM+Px+spTTaSy1qn6Cp5+9PkpxPTLTJY3Xu7VIchvedV?=
- =?us-ascii?Q?aQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	x1+cEYCEuV1mi+K4X+rd8pNKtiV7voEqC9IJnDQqsvDyM+U/FnF2N8limKiQjdyH6cS7hr4vBTbgPx9CW+KdCSDBP3HecExjYwrx2F+LKTtoRei4tPd9yr0f77JjZLqFc4P454tmkEUdgjy4shY2+GQgbYA3CrRnTxEjaoAJONllP6v4aVDBYRVgqmvWmCxOaD0+y/FyV+3MrbG9xRpia2UNyLvyBThJoTN0Reap6eNR3BGkATXWlZ1bEL96NMpzwo53dVG1keQNr67geuhNSHmzBFd/6wDuViZGyqjC98gzx8qrLbE9eaok1FEsMeRiIRDcFVNMXsg6YujSJRGVrioPWZKU0nc+J2TYiHLncQvWZQkaXIaY9Sk7w58Rwlh5OouQ2mtnSqMVvH6DHYh/Fvs/7BXFnrkTOIyvG6UXXjeHeJxIXhRKDFcHTq+Like6bNseDVTmXUToPTmdbFkmRKdXvzjiB+rt9wyA+JJ910NsADEYL0gkPebmefWS+6V7fC/MSPGpXJY0xhU5pAp42YJdKtYtFtl2yYYipzQ2FI9m14ezBHsqLJrWfJQdRP0plz59rrByLl5ZFY89SKTM1Ni0bxEzMBOVvBuhgabpqp0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 229540b4-e29c-4db5-fdba-08ddeb17339d
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 18:25:03.9917
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aLWgGf93OzFHdXpy8CkpVgoMjkFiGKZ/tBeggKGPoHXYQrXKjdPeABNe6wMHtPWLLNCP7fWl/FdW1cdWc86QfOXrC7wJ50gOXCPAuwBGiU4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB5092
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-03_09,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
- suspectscore=0 mlxlogscore=860 spamscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509030185
-X-Proofpoint-GUID: ozewlYMapFJ_iwUNhbzr-7UBBFQAPOw5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAzMDE4MSBTYWx0ZWRfX45Zr4XfAMB+C
- Y6eureUhWt8zLfL/mpazel+LpLC8h7nfgKsUKCXrvSo4oRWIwcQj/J+kGa7NKGiLw3CXCwd2Ax8
- yV/0yyUhB/S6rDsu/kXo+STI1dbTOg83Jl+2P5RrAgjUmbZoitVGh8Eqjnm7ide5ztvkorxU6RU
- kHyLpq+cQsMccOqJv5XFBiS+3GjvJRvJOU+1WWj6YRkKu/oOIWb7nK/DX+kODbqv1Upufcia+YQ
- 06UkX/XNrFol5VaGqQyCL9JefkCLP7cdI9xNgQaKyRHxeAQ9PjfS2qd5OvEOxCxgxEIqYeU4xCD
- dO+MP6Bu+VwQX5gnEYliAnNzyUNKfLC8aeVO6OpLduL1OJ9vZTdA8QJk3qzKUG8a5gMuYE73wSF
- RBleLjGH
-X-Proofpoint-ORIG-GUID: ozewlYMapFJ_iwUNhbzr-7UBBFQAPOw5
-X-Authority-Analysis: v=2.4 cv=HZQUTjE8 c=1 sm=1 tr=0 ts=68b88804 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=MpsUNeAMH11VS22DSrYA:9
- a=CjuIK1q_8ugA:10
-X-Rspamd-Queue-Id: 0EEA3180012
+In-Reply-To: <20250902234604.GC1587915@frogsfrogsfrogs>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Rspamd-Queue-Id: 01D3040015
+X-Stat-Signature: oxpe47b1357wzg4qkp8w1u3rbn8msgdo
 X-Rspam-User: 
-X-Stat-Signature: i5zurzcychrge69ao5e4a8kn4ryndhwh
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756923918-7609
-X-HE-Meta: U2FsdGVkX1/JffB2F5tO9YXxxt8rdI91bFhBMcQnhYR6MQGPhrmZTaUnrHutvoyJa5itxVAH5S36GRJqCtBApg0ffRpD8sHczKUGMZ+VnCbAz111LpBaC0A+BfEVA5db07y/4X/C/1JpQSPyf++9pqUk7oqxuePyDnuCbHhxOgjUOPeWozNJer+HTll/KpGb33atCe5YwuPqhhXc3NHg98hWo+NYJKHH8Wi8QzQVH7tk/WUZGUbqPKkkvavnYi3ZxI+MdnJnJ9/DTvy0pGMRdk+3jW35/HA1XNYwGRsIaj4NNQuqljkmDiax1KcXmQ486VqxbhKed2X2ZUiA34yReoaVFuA75rA5rdvrA7xRSRTXE4BD/V/NxVZHHs4silmtL0yTKrID2YSzVO+yuAd7kinacBNaX8SrJIY59CL1m0nfpkyNfOfpZS1kzIvbkD6gs6RK1eH+5dV20yyENz2NkvzBwZylSoJ9ML8UJDCz1fekGTA2nLq0p5Ji5TEQq4yjC257Z1ipbppXZvGCuEZlrbHSkcSyzLrdkW0U+pLQY6oI8PS/KXDHhiAD5M4mbXdeqLRRKydYDxpo3EnFxcg3NwegfpPlSITWzD2d1Md03BD3ZVvWBj/eOXibDTiiqIrXWYscuVmdnkJRtuXPPzq2bVAqL2uI82vsVwssJOdtYjZSi866j7KOHkpOErygiQTBbotwCqxeaPJvsG53UnLAMOeYm8iHxzof8pyfMmOERueMYrSGBCbtqmm1B2sbAyY/wzQKYiOyBVTDKG13eXi4pXQyTaBGhIOJydrBBiQ5paeC8AkE5TWQ1MWWw/jg8/unC5GRT/EAw7dGNzlH//UbY04lo8m/oftrmS/fEM0ATudZmOUiSw+wtU7OPaKqi9smCHniLc41jQkrsW597dRNH2NpWO9vBNaRbCAZ+0BYWWK2vIVBbnAp4XL/P2wb183I58qz94HUN+muE0RDtFC
- I0Zt/odY
- j8iel3t968sVHansqxKOEH91dX5nD1IuRm4D0zSkz0GS6K2gYph9lCe8TYcmoQXc0Q/350JA7EaE6pPfQ+OZcnhbNt0RGSrbFcdvyIlb3DmpHqWkPuaKMG5xae9KyFSmRvJ/UpfhE6QJEoMwAsnXdO95hUuP8/qGTRLOCI5SYaZGW7M6LYx1waz+bPr1h9nOKAdRUNhkWW/3LIw6uaLLNX5Mhx6LGmfvgKTOSVQ8qnu1qRx911owRMdvPjNiJYHD/iHwV8oA7WoCiCaEDVHNyQlkmibNJfYdjHOb9L/R3pi4qDM39ULzTgXZ5WMscrYumb7qsgitrv3LXHZjQ/IMI0ROvaH2L6UdnrPIHHiaSQ9ZGKlwOUCenzWZqkjye/ncsmKPgE1Y0xpqXe8HOK/f+J0E/SRomdgEbhKsAoSln6WJgBZAyfOQTsPMapZ6CIDEwy82dVTu+DHnqtJhHDqTkXAYqWj8miZhZzIE3h39xbvryicdp+rP4xUYlTM+dmtcmroSQZKmMx3dRE0Cz7vTpio1G77GZAo3fR/KU3Guj68lWPGyNSeiymYvPhODfjaUyuy5fUBbGOZU+dUOY2+7XNymtxGRBpV6JvT0nxQxhvLrpbRioH9BjcBnfV0XgYH02ql51PCYQcITxCMG2x/+jSNjQ/FNbznzdMfK3l1OdF7l75ax4s0KEb0hjcQTC7djqfR8KDr9AyLYBtmczL8ZjJJo/6qCxy78aMq6dsTy1tGng+I2P2D+WRnFPejoK8rmcsXua0P/fkS6ZPEUOYBg9ID5aMqII7jHC2/Yl
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756925047-989801
+X-HE-Meta: U2FsdGVkX1/jBu2mdUNU0KIkrU98VkNcCtckdFsNAd8kPGOWOcJbM5tCFhJU7oe2sf8XL1KOl0+fhaV2sZ6qMkLdRdSb8c1wrePUuCKRp2bk3JWcYJ7087uaTsh3XpB29KvrF5pinbvRPpL8xZqfUWVVx7ilFpJF4gyAEO5WSWoPjtzaapyX2ERy9rvOZdIc5euORCeB2cSqzDf9TJvbHvyeGprNPTaV60HJFhauUvnS0nqZr0f74i/k15NlWf/o0FDdUf8qwKqlMbj0QO21HJ+YRemq2CQFsZ9mOIw6dMzAPkUQwdGpyMnlVlaSpq/UlXpsd9NaWGUXe8n4+erdjztGyHPdTFNzbzbzS4tNxqeRaG3NRapotJ38mU//SeMPrcxeiVlUK70zPAsbwNTHDtGPOAJ4RRvwkJYYDhLBk+Kg20t679owlwZSXVbb9CSBbLycqWn5GEwitLjR4+zmpxNUG3TF1JMrIrVtD8ixVwuLSKZqIhsq1Jtbw+Y6GbosoXsmPq9JZ0zIXnfm5ok4IFzNU3IifH57d1eOdRr4PTf4OQsuXtvYmRhyY2NKEBY/AXAOAHWKslpk3oFSw0NH9unQbSzIkaqZEcB5wzvxg+iFXqsUS5pFq8cB/2IV2dVSjCg+ZF7LXV0M7dxltgElSCca/ZNjUZKtL9SrEoi8BS3P+yy2YeL5+kQ+BOGQgS8ywYybPUVtj8JpUj8gXWVGjSVWVFe7tvRHrUs4HfZCDyMnlHDUtrKjL4vrTC6YUq/YvlVD8pqwrT+3bgwwbznu0iqlbsyX8GwDSlrx8EH6ijvNfmg5ZKlSztM32cwfrAklHe6h2MB5frDdPaNK7JcAUijUL1N+S3Saty0xQBsoh93B0lSaP3TwE8PJ94nefyktQQee68Kb53sTAkVya1zcCe3RKJkVPDkef4aKTIr0kEmJg6bsPKP8CDc2VqA4tKqj8S8KbLDN/QYrKWMKFuj
+ IK61n+fA
+ vuFvEq7toPBgiAHYsen1oC4VUFJuZ3Su+89qdhie5qt2IWciVcUSx7/ZQUb9P2Vird3nFHBHUhj5nzhr/9AEz/OWl/EjVnaeiGYzTd/r4gktMZSjQup0ez9Ew/JS6x520IRI7V5ngWBNKZa+1zlvDt2UB4Th4O1sZGHDHNxE6CWzOeTwk4j2Oqf+LyrN39f1SDL6tWsuufSpQ/Ywgi+Q50USlWXjVHCA6gilCTEZ2HBs1ILVpSrxs4zXTIyChPD9BA03RtuQQ9bpx2ISFVVjYQ2JBX/UyCd4td2yol1NQiVmR9IILmFz3h4sW0nSQzLpMxgSFndIH2pjo3YOn2qX5Zz71PktwzrzgQnCVb20UHDPFSrEKmO+y/G1GVEXcqBwEgXkz7qgmb0PrHQ3W68KASEE61R3nXsS2LCHJRtKt3JxOfIQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -238,30 +107,316 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 11:22:09AM +0200, David Hildenbrand wrote:
-> On 03.09.25 11:18, Dev Jain wrote:
-> > I meant to say, writable VMAs with wrprotected ptes. Maybe after this
-> > patch, people
+On Tue, Sep 02, 2025 at 04:46:04PM -0700, Darrick J. Wong wrote:
+> On Fri, Aug 29, 2025 at 04:39:42PM -0700, Joanne Koong wrote:
+> > Add granular dirty and writeback accounting for large folios. These
+> > stats are used by the mm layer for dirty balancing and throttling.
+> > Having granular dirty and writeback accounting helps prevent
+> > over-aggressive balancing and throttling.
+> > 
+> > There are 4 places in iomap this commit affects:
+> > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
+> > b) writeback_iter with setting the wbc->no_stats_accounting bit and
+> > calling clear_dirty_for_io_stats()
+> > c) starting writeback, which now calls __folio_start_writeback()
+> > d) ending writeback, which now calls folio_end_writeback_pages()
+> > 
+> > This relies on using the ifs->state dirty bitmap to track dirty pages in
+> > the folio. As such, this can only be utilized on filesystems where the
+> > block size >= PAGE_SIZE.
+> 
+> Er... is this statement correct?  I thought that you wanted the granular
+> dirty page accounting when it's possible that individual sub-pages of a
+> folio could be dirty.
+> 
+> If i_blocksize >= PAGE_SIZE, then we'll have set the min folio order and
+> there will be exactly one (large) folio for a single fsblock.  Writeback
+> must happen in units of fsblocks, so there's no point in doing the extra
+> accounting calculations if there's only one fsblock.
+> 
+> Waitaminute, I think the logic to decide if you're going to use the
+> granular accounting is:
+> 
+> 	(folio_size > PAGE_SIZE && folio_size > i_blocksize)
+> 
+> Hrm?
+> 
 
-So, I think you really need to update the commit message here to reflect
-that!
+I'm also a little confused why this needs to be restricted to blocksize
+gte PAGE_SIZE. The lower level helpers all seem to be managing block
+ranges, and then apparently just want to be able to use that directly as
+a page count (for accounting purposes).
 
-And of course, do a cover letter :P
+Is there any reason the lower level functions couldn't return block
+units, then the higher level code can use a blocks_per_page or some such
+to translate that to a base page count..? As Darrick points out I assume
+you'd want to shortcut the folio_nr_pages() == 1 case to use a min page
+count of 1, but otherwise ISTM that would allow this to work with
+configs like 64k pagesize and 4k blocks as well. Am I missing something?
 
-The test results would probably work better as a cover letter as will be
-put in the first commit by Andrew in any case.
+Brian
 
-> >
-> > can finally make some real use of the max_ptes_shared tunable :)
->
-> I hope not, because it should be burned with fire, lol :)
+> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > ---
+> >  fs/iomap/buffered-io.c | 140 ++++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 132 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> > index 4f021dcaaffe..bf33a5361a39 100644
+> > --- a/fs/iomap/buffered-io.c
+> > +++ b/fs/iomap/buffered-io.c
+> > @@ -20,6 +20,8 @@ struct iomap_folio_state {
+> >  	spinlock_t		state_lock;
+> >  	unsigned int		read_bytes_pending;
+> >  	atomic_t		write_bytes_pending;
+> > +	/* number of pages being currently written back */
+> > +	unsigned		nr_pages_writeback;
+> >  
+> >  	/*
+> >  	 * Each block has two bits in this bitmap:
+> > @@ -139,6 +141,29 @@ static unsigned ifs_next_clean_block(struct folio *folio,
+> >  		blks + start_blk) - blks;
+> >  }
+> >  
+> > +static unsigned ifs_count_dirty_pages(struct folio *folio)
+> > +{
+> > +	struct inode *inode = folio->mapping->host;
+> > +	unsigned block_size = i_blocksize(inode);
+> > +	unsigned start_blk, end_blk;
+> > +	unsigned blks, nblks = 0;
+> > +
+> > +	start_blk = 0;
+> > +	blks = i_blocks_per_folio(inode, folio);
+> > +	end_blk = (i_size_read(inode) - 1) >> inode->i_blkbits;
+> > +	end_blk = min(end_blk, i_blocks_per_folio(inode, folio) - 1);
+> > +
+> > +	while (start_blk <= end_blk) {
+> > +		start_blk = ifs_next_dirty_block(folio, start_blk, end_blk);
+> > +		if (start_blk > end_blk)
+> > +			break;
+> 
+> Use your new helper?
+> 
+> 		nblks = ifs_next_clean_block(folio, start_blk + 1,
+> 				end_blk) - start_blk?
+> > +		nblks++;
+> > +		start_blk++;
+> > +	}
+> > +
+> > +	return nblks * (block_size >> PAGE_SHIFT);
+> 
+> I think this returns the number of dirty basepages in a given large
+> folio?  If that's the case then shouldn't this return long, like
+> folio_nr_pages does?
+> 
+> > +}
+> > +
+> >  static unsigned ifs_find_dirty_range(struct folio *folio,
+> >  		struct iomap_folio_state *ifs, u64 *range_start, u64 range_end)
+> >  {
+> > @@ -220,6 +245,58 @@ static void iomap_set_range_dirty(struct folio *folio, size_t off, size_t len)
+> >  		ifs_set_range_dirty(folio, ifs, off, len);
+> >  }
+> >  
+> > +static long iomap_get_range_newly_dirtied(struct folio *folio, loff_t pos,
+> > +		unsigned len)
+> 
+> iomap_count_clean_pages() ?
+> 
+> --D
+> 
+> > +{
+> > +	struct inode *inode = folio->mapping->host;
+> > +	unsigned block_size = i_blocksize(inode);
+> > +	unsigned start_blk, end_blk;
+> > +	unsigned nblks = 0;
+> > +
+> > +	start_blk = pos >> inode->i_blkbits;
+> > +	end_blk = (pos + len - 1) >> inode->i_blkbits;
+> > +	end_blk = min(end_blk, i_blocks_per_folio(inode, folio) - 1);
+> > +
+> > +	while (start_blk <= end_blk) {
+> > +		/* count how many clean blocks there are */
+> > +		start_blk = ifs_next_clean_block(folio, start_blk, end_blk);
+> > +		if (start_blk > end_blk)
+> > +			break;
+> > +		nblks++;
+> > +		start_blk++;
+> > +	}
+> > +
+> > +	return nblks * (block_size >> PAGE_SHIFT);
+> > +}
+> > +
+> > +static bool iomap_granular_dirty_pages(struct folio *folio)
+> > +{
+> > +	struct iomap_folio_state *ifs = folio->private;
+> > +
+> > +	if (!ifs)
+> > +		return false;
+> > +
+> > +	return i_blocksize(folio->mapping->host) >= PAGE_SIZE;
+> > +}
+> > +
+> > +static bool iomap_dirty_folio_range(struct address_space *mapping,
+> > +			struct folio *folio, loff_t pos, unsigned len)
+> > +{
+> > +	long nr_new_dirty_pages;
+> > +
+> > +	if (!iomap_granular_dirty_pages(folio)) {
+> > +		iomap_set_range_dirty(folio, pos, len);
+> > +		return filemap_dirty_folio(mapping, folio);
+> > +	}
+> > +
+> > +	nr_new_dirty_pages = iomap_get_range_newly_dirtied(folio, pos, len);
+> > +	if (!nr_new_dirty_pages)
+> > +		return false;
+> > +
+> > +	iomap_set_range_dirty(folio, pos, len);
+> > +	return filemap_dirty_folio_pages(mapping, folio, nr_new_dirty_pages);
+> > +}
+> > +
+> >  static struct iomap_folio_state *ifs_alloc(struct inode *inode,
+> >  		struct folio *folio, unsigned int flags)
+> >  {
+> > @@ -712,8 +789,7 @@ bool iomap_dirty_folio(struct address_space *mapping, struct folio *folio)
+> >  	size_t len = folio_size(folio);
+> >  
+> >  	ifs_alloc(inode, folio, 0);
+> > -	iomap_set_range_dirty(folio, 0, len);
+> > -	return filemap_dirty_folio(mapping, folio);
+> > +	return iomap_dirty_folio_range(mapping, folio, 0, len);
+> >  }
+> >  EXPORT_SYMBOL_GPL(iomap_dirty_folio);
+> >  
+> > @@ -937,8 +1013,8 @@ static bool __iomap_write_end(struct inode *inode, loff_t pos, size_t len,
+> >  	if (unlikely(copied < len && !folio_test_uptodate(folio)))
+> >  		return false;
+> >  	iomap_set_range_uptodate(folio, offset_in_folio(folio, pos), len);
+> > -	iomap_set_range_dirty(folio, offset_in_folio(folio, pos), copied);
+> > -	filemap_dirty_folio(inode->i_mapping, folio);
+> > +	iomap_dirty_folio_range(inode->i_mapping, folio,
+> > +			offset_in_folio(folio, pos), copied);
+> >  	return true;
+> >  }
+> >  
+> > @@ -1613,6 +1689,29 @@ void iomap_start_folio_write(struct inode *inode, struct folio *folio,
+> >  }
+> >  EXPORT_SYMBOL_GPL(iomap_start_folio_write);
+> >  
+> > +static void iomap_folio_start_writeback(struct folio *folio)
+> > +{
+> > +	struct iomap_folio_state *ifs = folio->private;
+> > +
+> > +	if (!iomap_granular_dirty_pages(folio))
+> > +		return folio_start_writeback(folio);
+> > +
+> > +	__folio_start_writeback(folio, false, ifs->nr_pages_writeback);
+> > +}
+> > +
+> > +static void iomap_folio_end_writeback(struct folio *folio)
+> > +{
+> > +	struct iomap_folio_state *ifs = folio->private;
+> > +	long nr_pages_writeback;
+> > +
+> > +	if (!iomap_granular_dirty_pages(folio))
+> > +		return folio_end_writeback(folio);
+> > +
+> > +	nr_pages_writeback = ifs->nr_pages_writeback;
+> > +	ifs->nr_pages_writeback = 0;
+> > +	folio_end_writeback_pages(folio, nr_pages_writeback);
+> > +}
+> > +
+> >  void iomap_finish_folio_write(struct inode *inode, struct folio *folio,
+> >  		size_t len)
+> >  {
+> > @@ -1622,7 +1721,7 @@ void iomap_finish_folio_write(struct inode *inode, struct folio *folio,
+> >  	WARN_ON_ONCE(ifs && atomic_read(&ifs->write_bytes_pending) <= 0);
+> >  
+> >  	if (!ifs || atomic_sub_and_test(len, &ifs->write_bytes_pending))
+> > -		folio_end_writeback(folio);
+> > +		iomap_folio_end_writeback(folio);
+> >  }
+> >  EXPORT_SYMBOL_GPL(iomap_finish_folio_write);
+> >  
+> > @@ -1710,6 +1809,21 @@ static bool iomap_writeback_handle_eof(struct folio *folio, struct inode *inode,
+> >  	return true;
+> >  }
+> >  
+> > +static void iomap_update_dirty_stats(struct folio *folio)
+> > +{
+> > +	struct iomap_folio_state *ifs = folio->private;
+> > +	long nr_dirty_pages;
+> > +
+> > +	if (iomap_granular_dirty_pages(folio)) {
+> > +		nr_dirty_pages = ifs_count_dirty_pages(folio);
+> > +		ifs->nr_pages_writeback = nr_dirty_pages;
+> > +	} else {
+> > +		nr_dirty_pages = folio_nr_pages(folio);
+> > +	}
+> > +
+> > +	clear_dirty_for_io_stats(folio, nr_dirty_pages);
+> > +}
+> > +
+> >  int iomap_writeback_folio(struct iomap_writepage_ctx *wpc, struct folio *folio)
+> >  {
+> >  	struct iomap_folio_state *ifs = folio->private;
+> > @@ -1727,6 +1841,8 @@ int iomap_writeback_folio(struct iomap_writepage_ctx *wpc, struct folio *folio)
+> >  
+> >  	trace_iomap_writeback_folio(inode, pos, folio_size(folio));
+> >  
+> > +	iomap_update_dirty_stats(folio);
+> > +
+> >  	if (!iomap_writeback_handle_eof(folio, inode, &end_pos))
+> >  		return 0;
+> >  	WARN_ON_ONCE(end_pos <= pos);
+> > @@ -1734,6 +1850,7 @@ int iomap_writeback_folio(struct iomap_writepage_ctx *wpc, struct folio *folio)
+> >  	if (i_blocks_per_folio(inode, folio) > 1) {
+> >  		if (!ifs) {
+> >  			ifs = ifs_alloc(inode, folio, 0);
+> > +			ifs->nr_pages_writeback = folio_nr_pages(folio);
+> >  			iomap_set_range_dirty(folio, 0, end_pos - pos);
+> >  		}
+> >  
+> > @@ -1751,7 +1868,7 @@ int iomap_writeback_folio(struct iomap_writepage_ctx *wpc, struct folio *folio)
+> >  	 * Set the writeback bit ASAP, as the I/O completion for the single
+> >  	 * block per folio case happen hit as soon as we're submitting the bio.
+> >  	 */
+> > -	folio_start_writeback(folio);
+> > +	iomap_folio_start_writeback(folio);
+> >  
+> >  	/*
+> >  	 * Walk through the folio to find dirty areas to write back.
+> > @@ -1784,10 +1901,10 @@ int iomap_writeback_folio(struct iomap_writepage_ctx *wpc, struct folio *folio)
+> >  	 */
+> >  	if (ifs) {
+> >  		if (atomic_dec_and_test(&ifs->write_bytes_pending))
+> > -			folio_end_writeback(folio);
+> > +			iomap_folio_end_writeback(folio);
+> >  	} else {
+> >  		if (!wb_pending)
+> > -			folio_end_writeback(folio);
+> > +			iomap_folio_end_writeback(folio);
+> >  	}
+> >  	mapping_set_error(inode->i_mapping, error);
+> >  	return error;
+> > @@ -1809,6 +1926,13 @@ iomap_writepages(struct iomap_writepage_ctx *wpc)
+> >  			PF_MEMALLOC))
+> >  		return -EIO;
+> >  
+> > +	/*
+> > +	 * iomap opts out of the default wbc stats accounting because it does
+> > +	 * its own granular dirty/writeback accounting (see
+> > +	 * iomap_update_dirty_stats()).
+> > +	 */
+> > +	wpc->wbc->no_stats_accounting = true;
+> > +
+> >  	while ((folio = writeback_iter(mapping, wpc->wbc, folio, &error))) {
+> >  		error = iomap_writeback_folio(wpc, folio);
+> >  		folio_unlock(folio);
+> > -- 
+> > 2.47.3
+> > 
+> > 
+> 
 
-+1 :)
-
->
-> --
-> Cheers
->
-> David / dhildenb
->
 
