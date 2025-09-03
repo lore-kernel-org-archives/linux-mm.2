@@ -4,176 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE232CA100C
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:22:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D481CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 09:26:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 175FD8E000D; Wed,  3 Sep 2025 05:22:20 -0400 (EDT)
+	id 85AB78E000A; Wed,  3 Sep 2025 05:26:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 125688E0001; Wed,  3 Sep 2025 05:22:20 -0400 (EDT)
+	id 832B78E0001; Wed,  3 Sep 2025 05:26:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 014BE8E000D; Wed,  3 Sep 2025 05:22:19 -0400 (EDT)
+	id 748438E000A; Wed,  3 Sep 2025 05:26:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E24308E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:22:19 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A030911A359
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:22:19 +0000 (UTC)
-X-FDA: 83847397998.27.02A447C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4929018000E
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:22:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BsezCilZ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756891337; a=rsa-sha256;
-	cv=none;
-	b=jqbDWB8B63fkHOu1/HOSqPUJlVOpsXSSUpxGxQbgn4UAxEmuWwPpH/AEriUIGZQdF9igRJ
-	EeLao8YsSWpkG3p+OR4AXt+++DnHF4Pg55ga9rhUJUybdZ7GXRxshLTI4nUAJlZ5b0LL+D
-	R6WIdAb1r5roIl979xn2iPCdq739H64=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BsezCilZ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 657978E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 05:26:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0A53459BE8
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:26:07 +0000 (UTC)
+X-FDA: 83847407574.12.871FB29
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 998CD40006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:26:04 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CYrPLbeW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=McADqQm4;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r6o3bBqm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=C4tR98NC;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756891337;
+	s=arc-20220608; t=1756891564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x0FPh5XZdEAd+Tv8vDi5Fj27lr8KTz0TZ6Jk5W1QXK8=;
-	b=g+5UMX0OB5KNujbofQ5imRqs5a/86FMrOddB6RPVBfLYf8xOjFk6Sw0+zbq6ERhp2vzUK0
-	Cu24ibuXQvYMLu/t9fZUus9Z331JuYMj5j/TTt1TiPjAwVbZBnuxyrC0wyqZqz3uwEbkos
-	LRVKq2D2CTJt73QvZGLxBw8Oj/wSf28=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756891336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=A8T8Nj21cWCWy/GFruQ0Nkz1WCXXils8q9OhLNNO9rc=;
+	b=eSSsg1ESszgFWkJucK1svfxgL8W2+MmtzfBgyJWjBriaQswhNATJjZ9wKF6xN4sVujEx4A
+	7Uc5MlvxK/4/m0f2Ew+t0MSaQIsax8ytt9V6qt1gFUqASQ5FBJlyH/RizGDGZ29m1wwgVn
+	uGEUfMkf/w8JnJMwoujZZanVtWwPtLg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CYrPLbeW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=McADqQm4;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r6o3bBqm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=C4tR98NC;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756891564; a=rsa-sha256;
+	cv=none;
+	b=DGpKOnCEy6lO5AMaSHQe2dKO3K6Egm5z0FdutQwdqq3ujZimJN8S5luqScvSlpGeAfuzvW
+	ApSJZCi5TEuiq7tiePRs/4/Bxg3N8c0Cl6bzitS4Qe0kv2hiPLbyGXClNAAKHedv5pYwpy
+	qDkej177O4i1kStTxc78vP0ltDraSUQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 05A741F456;
+	Wed,  3 Sep 2025 09:26:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756891563; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=x0FPh5XZdEAd+Tv8vDi5Fj27lr8KTz0TZ6Jk5W1QXK8=;
-	b=BsezCilZ41Mo9SNGkqEtFJ+QLNF8htT09PJvfSduUnVGevXeu+uFnPw308UF7pSXgQCX18
-	9tW2zDB8hDgMuphS65OZxKZCR8jwJucerFC+De/S98f2RIdh4tr8UoTFDPFT22/C43oeA9
-	u5sZ/uoJZcW7s2nAiWZPHFo9vCZGH4I=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-1S0gCUTZMSO-5uniyuJfVQ-1; Wed, 03 Sep 2025 05:22:13 -0400
-X-MC-Unique: 1S0gCUTZMSO-5uniyuJfVQ-1
-X-Mimecast-MFC-AGG-ID: 1S0gCUTZMSO-5uniyuJfVQ_1756891332
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b8af0b8deso17957515e9.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 02:22:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756891332; x=1757496132;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x0FPh5XZdEAd+Tv8vDi5Fj27lr8KTz0TZ6Jk5W1QXK8=;
-        b=SSOcgGD21RAZYyjiMGpA4sTpiufZRO6X6ODBn5XleN8HEXUEyOMLQFYlm+Mg4VO7gA
-         Mj6MybFV0wXbi4dXAM+7inK8zm+sITXCXQXLZgnkORS5nx0JMoVp9VyAR35q8hGnTcAP
-         9QVj8ZfPhAcGU20PDnj1gFljMveWQB1g7zRYkvYXPNW2ltb1UJPD0FKDSSgy/KI9MsTG
-         j6O4R/C8uaKfJxaFXDTvqCPdjbpHbZWkZZvHL8lsfkN4Fka8H9Z8r79o5dSJoN/z/7ZZ
-         21jAwZWCqlP5QjlACqYHfoyW8aBb1X7B+7hHrU3MCI85mtqbRsY4iYS579qEGmwuWGz9
-         z2MA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+I80PDqa2zx+hvvmTH7F7ozGIPWzyFQVnavWUKrv1DQpCc4dug8or0eSajxgKPTpbSTxjztkDKQ==@kvack.org
-X-Gm-Message-State: AOJu0YxQG2ScK4dtUDQ7e4ZLFQQtodI0TB+clueyazZHfoEosEWTeduj
-	dZ4gW42tIDiR36KIATZU+d8h77jSEeIrFmJbLgaemzRFBIys+CJe9jU6kAnVCrp8LaoBOeY2/GX
-	uCxtOhP/0PgwJXa8lTX+FTCzq5uCSnc6NF9sVIK/6F+96GfcIZKLF
-X-Gm-Gg: ASbGncud8NLUw5boBf5mMEfWbya+KfXOdxOSmtzT6mpZyC9TpcWhV50+oKKJQHc2oDz
-	CS9BvqBSdtnsgk5n7SDJ+C8IJsaebzRfZltyNXpb7EM+Lq/hPBIEEZhhZL78mf0cFZ+jeZ2BM21
-	+PXqUqaTTUFixGNR9vzlMVhlH59zrmOgtreOnxF4SxLcPnOhjrGRCQnwVbj7EbfOHwKqrbdwu+i
-	fj29335OqBoCrHafXtFoL/SQibS0ZIL5YhnSd8nKzmw/pKZldkj9TN/wnKRjHCM/NO4cihfjw5z
-	m1RBbvmEZ1EugwCiYZYH9SxbdZOFXmkGWDS5XhvAMrm4/a1jXi6zNW4KdtVl2o8M6WDCybKtSpz
-	ov7W7lh0d3RZVGGeIe4bF+KUEuuHhZrv0D4+BxUeYeeFyziTyTJlCtBzNpt3It+CpG/Y=
-X-Received: by 2002:a05:600c:46c5:b0:45b:8477:de1a with SMTP id 5b1f17b1804b1-45b8553f190mr114776365e9.7.1756891332345;
-        Wed, 03 Sep 2025 02:22:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFyTITMyA6nVzMKbQzFQh0ovQa5Cva0N2A6qZKj+3NSqQ+k4TdT5orYCpErVlCrii0lBjSVnA==
-X-Received: by 2002:a05:600c:46c5:b0:45b:8477:de1a with SMTP id 5b1f17b1804b1-45b8553f190mr114776085e9.7.1756891331912;
-        Wed, 03 Sep 2025 02:22:11 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e898b99sm231483255e9.19.2025.09.03.02.22.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 02:22:11 -0700 (PDT)
-Message-ID: <99f8cb5e-828a-444c-b207-2a12e13a45f5@redhat.com>
-Date: Wed, 3 Sep 2025 11:22:09 +0200
+	bh=A8T8Nj21cWCWy/GFruQ0Nkz1WCXXils8q9OhLNNO9rc=;
+	b=CYrPLbeWfpZSWiwyQYT7m46mVFVtOsT28U+oyY0mCxKVMbAonZbojs1NmqUfc9U06WfltO
+	Dz2tZrUgST7qXEJJ9UMld5Kv48glvj2vIKnyev2Si/hoN1TgLHAxkdawrG3UYNiNu3vkv5
+	Py9HNi9KKJS0IsJNLkB0JM02/vH2YEI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756891563;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=A8T8Nj21cWCWy/GFruQ0Nkz1WCXXils8q9OhLNNO9rc=;
+	b=McADqQm4Uqrs+CdQshzDZD66nG0ezO+E+DSC/ZYcMIlxHhw0CfBquIzc5yFdsLLyeMcYPw
+	L+c5joNrfy1zROAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756891562; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=A8T8Nj21cWCWy/GFruQ0Nkz1WCXXils8q9OhLNNO9rc=;
+	b=r6o3bBqmRpHj2PnhXyQi5U6dh68FbAnsIG6Hd9oG2fHUX4NMN71tsgyX4u0741/KyuA4B7
+	LPvkBcSCVRxAimUjlC90RPL4Jc/Ng6fbJ+rUDH1mjjkSCzglT+CuAMmbZLdPjRK1whzGJK
+	4uLN6QHBqTenZ+2GYf2LjGMJ5mJ51wk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756891562;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=A8T8Nj21cWCWy/GFruQ0Nkz1WCXXils8q9OhLNNO9rc=;
+	b=C4tR98NCb+yuVKREUWl/1P6ZyR9UOh8hHBGCdC9eef7sA9iOS40zrpNENyNeHnAGAstdoZ
+	bXb4wI1lXKqSnTDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DEC4013888;
+	Wed,  3 Sep 2025 09:26:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TVSvNakJuGioZgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 03 Sep 2025 09:26:01 +0000
+Message-ID: <ef1b79ab-15cb-4720-ab05-d77617143a26@suse.cz>
+Date: Wed, 3 Sep 2025 11:26:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: Enable khugepaged to operate on non-writable VMAs
-To: Dev Jain <dev.jain@arm.com>, Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, kas@kernel.org, willy@infradead.org,
- hughd@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, baohua@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20250903054635.19949-1-dev.jain@arm.com>
- <20250903080839.wuivg2u7smyuxo5e@master>
- <0a52cb54-5633-4374-baa5-199194dfc2e1@arm.com>
- <3bd9ff5d-de8a-469f-a7b0-41c192b23993@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3bd9ff5d-de8a-469f-a7b0-41c192b23993@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: eK5dPVY38BCABoaSBpsu1ZLZEPTNbRHD5N95zZo96ak_1756891332
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v2 1/2] mm/show_mem: Dump the status of the mem alloc
+ profiling before printing
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+To: Yueyang Pan <pyyjason@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Vishal Moola <vishal.moola@gmail.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Usama Arif <usamaarif642@gmail.com>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org
+References: <cover.1756827906.git.pyyjason@gmail.com>
+ <8dc71d31de53afa4c0bb25234807b1e6ead5ba55.1756827906.git.pyyjason@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <8dc71d31de53afa4c0bb25234807b1e6ead5ba55.1756827906.git.pyyjason@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: se4xdkuib7xrodn34uh71mcx3pas5xj7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4929018000E
-X-Stat-Signature: m8k5id7nbx8h9u5z6ayhg4oaj9mp1r4c
-X-HE-Tag: 1756891337-324663
-X-HE-Meta: U2FsdGVkX1/dALdVt4w0dISlFw+/pgVblsSuQkhZGINyn9rNXyeBKM0rV4eay6OixVXzzTdmU2Pdrr+3TbqdCFXZG51kCApZCRZUhzEJDdzZ23Lb90AXiZsP+JS6Te3u+vLly/TnvgqK+f4ilSsDHMcseO2jlVD+s5lHtfXV93h7/y8DdfG94+p4sJFI+bHGCETXQdVgGRVq+wpBd5pKWByjfXeZpB69Sb+znnQ0qiC4+/px8JVOtKyOJL4cMc46iuDcSHF1mThodzKZ+VmvB1s7uUlhq3e3ZWoH3WGcn+b2VNpPIehWY5CGpqZc1VLy7Wg9bkXEWHvq6PtBMQzavZQozjjj8DaR15BudxWcg9YEQZKXtBsnfCtTy9Da4AZOss1HXVByo9nzSBZ0GyV5SySHea7+PgexkTHriAPnkSRFO/ATNxNGOxawF+GLzlyXv1eDqw8BRYfBBCiXejmDLo9CeUl38VCVqq19XudRicz8qroK2IT3/BkQnTB834paF8ZvV1pu2Jr0+byJPYy6HfEcfniFBM50WeaeQ15tgNr+Sr1ZGOtZp9Sf1+7kBu8drB3zTPy7n6TIoiTcTRhz7IlS0p4ja2Cal+DyEfanXoLcNuBTfIBscKEY3bjI7a6TjfFOCRDmfy8mM48TJnM8EGgqcsenzCxCvo0VuBOuHFDnYGuyAxmFu7IeGkjDIfUhUnmnZWDt2qJZAxr9XQbebaH9pI9/svQObvV3opKv9w/R2J1SJXQG+sTNCSBYLzb4TVMdj9MmOt7Uc1HJv2qELa7evP15Y5rz3thXH+I5NtIys2lwZyRZ7MQ59QW9/3ZoRdRyNRQl5uqUF7hn8fewk1nYdBvuA76Yk7Ci0bhRjoMSCBq0tm9OxI3ua9XoQJqhC/OmUyPTMqUrxCy0KBHYCW0lr8nJtRKL0huJId8z7KUrEjLWNNiqGgGTWonjd/DzAqEM1R/kHmr5jzMUefi
- dCEVLcqb
- oGzvp26B4fALDEHhmiWiBCNP7jQLsDxbPhsUFTYnjaQcPCNNdj9n6GAP6GOFJVn+nkNxXbF10378L45gSrbWVJ85LkuyFUkTQlnCsSv28VWyAFIO7Zn5vFthHoJgnekeHrqnuc/OETuHtWVlSWmDms1+lHQ51w/XGE6i+g+b+Ka5EwsYD7nkBXaX10bCiKcLruyoJFveIl+CMfYu3X9Z/ZAmP4CLP0HviTx1M/S25MGsyooiZ4ZZuIurmBWTHfteeyqIy+JZjSUF0uTq1L8mcrk7KWDjAkii6RICF+jbMzkJO/f6rSf/Sze5ZDhhDb9yM7oKeZdMT/mYVccy4S5AKzmwET2zvM+iblNceZJae5L+Xr5SH2g/hNtbSH7tNnQOvjsh2Mgij0voC8doTPqXSR6DIog9x8/P22IToUaUtEArDs8L9+6irBzDFbVu6bo00xQ5xF87h4fRmC+7oJA+hUviELSTnWpBFD+sWGKLATHj6x5cnr0nJKMnkpNAbbs+GAb5HhGzPU9DM6xY1MMrc38BoE+B+mkzQhBGY6YEjFs23BnsT2N0VQ9Tql1Susfzk3CfKqzR3894mkgX4vkVGMbBGq+bFh1TPVfwSeY707N/2tAigcR85U8tEsn6wpfD5791TSFNvtLxB4xp8FW0O7VIn3vjtT6jOoWKHNzbNi9FLShQ=
+X-Rspamd-Queue-Id: 998CD40006
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756891564-449691
+X-HE-Meta: U2FsdGVkX1+x41YbR8/lGwIUPaj5UVl83wMdnGrDSAmzJTlQU24zqVFRTwYtbozdwECEyHKlBHAwimAzEw35UGwx83AEyG9nS3U3tLVeJP6JyOSjCz3cgQLwPSdXsC26tl1lH7xpAQjaWCz1ZD3uQBIhV/1BAxfJ2lk6SEyY8ZZ0lbsmSW6inijE5+jXE60ih2u1r/he6aswsXdPWqQ1aNX2zc3zbaM2MWoJ7K87o625NWxyuOH8YCYk6FkmP5OlCK7UdDJIQB83qucrg2CN6UuRjFXoeX+eKjKeh0L/tADcP5W929/FxSe1VeD4ImFU7y82DSu8Cg5cmafwtR8EVPg2NYWuRMo+SNczD2sbq5lvY1ZjjdAeBl7VLHcB7ngrUhva3tu/m5KXavefZx8YyPcxq6nGzGU/l5QepmJl0LxvlJlbbuoARFdrVQ5Cg05dKA0TpmHV8cz3V33a0fS/5PFuLEFL0/2pVkSMmnM5h9DXVPSTMjhzb+x/Guzn0BXucLN3p5vHDjynzpKgGr+ep1Ov6F4dozTi4Q1wohD8vWWy/wg+TATf+ADSucoSaS7H4kJdnYIDR067mtfMVzLZLKYZANe2rXG20qv0wcVpmRAEwfiJDrZnKM5zj+a4e4b+KuMPnoLUOeMHT+8ppTvtvbC7iGCla1+n/lTebEh2AgYUXm2up99GwwgApZPPuX7kGYG3Gz6iZzKuziTAYAUfNHuDNa6KE+Jnr7wVYy334y+7tNzDld88pns8kEA3v4IqMU74gzUQUqhEv6DCXZYy6xhOrO/WbMrE9SjPqxHLB61aLQZ94fZcWcEkkTYE/90EgTeD5ILrRh9XsYtPH5TwpWtM7S6uKqBPaKqzBB4x6LVxUGozObJi3hTkZw/uvAp+F0PuQ7vzXGwgvyG54seceGtPrjUOSGKafC5R0Ktntfr3fzxxfqkJTi5Oiu0Fdq9tS0aglQTwOjS5fyP/4kG
+ YspstBHT
+ BeHO3adJiHHyd8vM3Pz5JVEYDnrFZz6rTk9FFfdpSbZCpG+88ZCiA7w8avQtIldRbHnHuYDOMz9s30z36Uayhlh+zg0d6AFOYGA7nGJX9yhZzGQfRzsw3KK8tvkkqAK3/OdKN5U/VwSKzJ6pzDOWON3qn2dXpOM/UU5ckJqBvG22oDIQ+OkNuYYTbruPSZaxcI8OfnjuYoqxw3j9UGcnJfvYZCXbY3viIxc81/lPuIkeKpjpArTl2Yh0HYpobLErzkJSZZH9Rirl5P9Ndst6I667i58G7S3ygREkmlfm1EUszAGkz3Yc3FHXXSQu5xFHfU5mrQoii+pZz7+hJQeUi4xr4yrNtkPZ3R2h6SoXH/7bZW3Q6FyTrGb33rW3AgmeHSejGNHdExhJQQfb7MO2K1hvqH9Fw48NxxLn2VSV6jBsR3ig=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -182,79 +182,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03.09.25 11:18, Dev Jain wrote:
+On 9/2/25 17:57, Yueyang Pan wrote:
+> This patch prints the status of the memory allocation profiling
+> before __show_mem actually prints the detailed allocation info.
+> This way will let us know the `0B` we saw in allocation info is
+> because the profiling is disabled or the allocation is actually
+> 0B.
 > 
-> On 03/09/25 2:45 pm, Dev Jain wrote:
->>
->> On 03/09/25 1:38 pm, Wei Yang wrote:
->>> On Wed, Sep 03, 2025 at 11:16:34AM +0530, Dev Jain wrote:
->>>> Currently khugepaged does not collapse a region which does not have a
->>>> single writable page. This is wasteful since non-writable VMAs
->>>> mapped by
->>>> the application won't benefit from THP collapse. Therefore, remove this
->>>> restriction and allow khugepaged to collapse a VMA with arbitrary
->>>> protections.
->>>>
->>>> Along with this, currently MADV_COLLAPSE does not perform a collapse
->>>> on a
->>>> non-writable VMA, and this restriction is nowhere to be found on the
->>>> manpage - the restriction itself sounds wrong to me since the user
->>>> knows
->>>> the protection of the memory it has mapped, so collapsing read-only
->>>> memory via madvise() should be a choice of the user which shouldn't
->>>> be overriden by the kernel.
->>>>
->>>> On an arm64 machine, an average of 5% improvement is seen on some
->>>> mmtests
->>>> benchmarks, particularly hackbench, with a maximum improvement of 12%.
->>>>
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>> [...]
->>>> mm/khugepaged.c | 9 ++-------
->>>> 1 file changed, 2 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>>> index 4ec324a4c1fe..a0f1df2a7ae6 100644
->>>> --- a/mm/khugepaged.c
->>>> +++ b/mm/khugepaged.c
->>>> @@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct
->>>> vm_area_struct *vma,
->>>>              writable = true;
->>>>      }
->>>>
->>>> -    if (unlikely(!writable)) {
->>>> -        result = SCAN_PAGE_RO;
->>>> -    } else if (unlikely(cc->is_khugepaged && !referenced)) {
->>> Would this cause more memory usage in system?
->>>
->>> For example, one application would fork itself many times. It
->>> executable area
->>> is read only, so all of them share one copy in memory.
->>>
->>> Now we may collapse the range and create one copy for each process.
->>>
->>> Ok, we have max_ptes_shared, while if some ptes are none, could it
->>> still do
->>> collapse?
->>>
->>> Maybe this is not realistic, just curious.
->>
->> Misunderstood your concern - you mean to say that a parent forks and
->> the children
->> VMAs are read-only pointing to the pages which were mapped by parent.
->> Hmm.
+> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+> ---
+>  mm/show_mem.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> I meant to say, writable VMAs with wrprotected ptes. Maybe after this
-> patch, people
-> 
-> can finally make some real use of the max_ptes_shared tunable :)
+> diff --git a/mm/show_mem.c b/mm/show_mem.c
+> index ecf20a93ea54..51892ce2efc4 100644
+> --- a/mm/show_mem.c
+> +++ b/mm/show_mem.c
+> @@ -427,6 +427,8 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+>  
+>  		nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags), false);
+>  		if (nr) {
+> +			pr_notice("Memory alloction profiling is turned %s\n",
 
-I hope not, because it should be burned with fire, lol :)
+There's a typo "alloction".
 
--- 
-Cheers
+> +				mem_alloc_profiling_enabled() ? "on" : "off");
+>  			pr_notice("Memory allocations:\n");
 
-David / dhildenb
+But I think the message would be more obvious if it said e.g.:
+
+"Memory allocations (profiling is currently [on/off]):"
+
+>  			for (i = 0; i < nr; i++) {
+>  				struct codetag *ct = tags[i].ct;
 
 
