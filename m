@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F44CCA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 15:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7080CA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 15:47:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CC8C8E0006; Wed,  3 Sep 2025 11:46:41 -0400 (EDT)
+	id 3EC576B0005; Wed,  3 Sep 2025 11:47:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A4428E0001; Wed,  3 Sep 2025 11:46:41 -0400 (EDT)
+	id 3C3BA8E0007; Wed,  3 Sep 2025 11:47:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 792CB8E0006; Wed,  3 Sep 2025 11:46:41 -0400 (EDT)
+	id 2B3168E0001; Wed,  3 Sep 2025 11:47:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FCB38E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:46:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0A1FD5B326
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 15:46:41 +0000 (UTC)
-X-FDA: 83848366602.29.854CDAA
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2059.outbound.protection.outlook.com [40.107.96.59])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 29F35C0014
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 15:46:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AHH3TYs5;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.107.96.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 176276B0005
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 11:47:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B4A691DE877
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 15:47:23 +0000 (UTC)
+X-FDA: 83848368366.15.10325CF
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2081.outbound.protection.outlook.com [40.107.236.81])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1FC5180006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 15:47:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QN3JxMwo;
+	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.81 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756914398;
+	s=arc-20220608; t=1756914441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vfgfun54Eyt+H1kr82jjedU4Gap2AhoJHAfG++ekZr8=;
-	b=egvZKv+zoqaOiYXxnyoWkRcmBuijX0k2VsXTYOScyqcozRGi6dIyBwiUDJgkuZX2szFMYM
-	IcEhaGPDAZ8Nukl0bOWUV+PjSMBDINfVLdnKoqkEWWupVYaiR8pgJPeYV83wx5vFm5n+r9
-	3mkazGwtfyNIc+1zGsFhDbTOiOPGRBw=
+	bh=P0L3RIOigInXVvCIQ8BP4Idwwi1dEDAQs6WJ8tdOoAA=;
+	b=kVqouhDclEUhiTD3F2bjnh11XHQGGyxbsgFLvA1SDZTb3neU0kttKGn17alZvZ9Z70J83+
+	dXKljV8znqpAAcrkKrYm43zurKL87GNkEOedkHUIM4yqORit6Le7wbMNPpofN+Tf3CIvzk
+	9jB484McufwCkiahVN6UTWVwBjHwS8c=
 ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=AHH3TYs5;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.107.96.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756914398; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=QN3JxMwo;
+	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 40.107.236.81 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756914441; a=rsa-sha256;
 	cv=pass;
-	b=EOeBf2uR6yGjyMMudxkFet/D0jnSsI7iro2aHLxNo7ZXSPPr4QGWo2AiTWiRMA2Q5e7bNF
-	/0t2o1b0tjMSvbLk+xL9NB7f1LJjbL1kiQRk0e0gqI0WjTXFe08KFj/heV/eV5TgVWWVdm
-	TcCGoHZZRg2/0/6aqYh5P+LN7zKXH6E=
+	b=bTv4U1wB0MWa2oOY2eOiX1NXhXsN+LkY99+WvuCGq7NPH7vp6MnmSccEtNnDQ61ZNVCZiy
+	lc6QZqMdW7aOBUbip7LT0KsotDmCp6ZbSN64ZCj1lFaC9e3h8sBi9fijgsyU7/in5gfSKW
+	CJGm5eAbePWcIHXlOgtD4gQ8fQSx1rc=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YJxLrT2Q+1sRI3OvkpB9FopQ3iEfHGCHV6oxQU9fbx7MNZryjkVtXoxXLvgDAsQ2YQ+aGNOaio7i5FXqeafj4vkU9nFEJlYj0y2iWssBd/nM64ngnrYO64L3IIP3taHxYqlXioZiNtwYW7u8vpCCJZ8/jMDTYk3Z4S+j7v6vupqMc47h5yRzJHiCWJcDJKo7LPYNc3zkCP9eV6DpHOBC2VdUmksJgYdRuKe+YlgM63j33rJNnaCZYTAg5yAn0oED+BJXnXD9+rSX3o0f4fbL4UQ/NR7NZkpmZj7tIa5GEdAmOK1yg0vX2aeIOkkQE9IZ3NxfraYia0b+xWsSP5GvcA==
+ b=xbaJU4ZY43wfIAG/eoX1rqH00ay3vl41EasP4ZEYPLp4YDXBDyds68vBj3/Aa77mp1EYJUgQoPs006vEXeKD7CTlQMgwGBCS77hXDd0Gjuncmt+qU/+P4INW2HivEwgPzN2O4QAy5VDD4wN5nxBEI+aWcH9/yUIUgX0IcZ7+HuF5j4Ql2xuUzXOTb7aJpiaBZekX0GYBBof+lZyl6rQd16pvTbKNduXpkNcwd9Fo5K5e2cDUk/h7pdXbd7y4Vi9yDWI9M6aqNMhRdjLudgP7LOvMmcHdNjAE8f/JPs3PjLbLb1FoFc2xhbqVb6zJ2fBZGBEHXacESqxhl9+VqEo4rQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vfgfun54Eyt+H1kr82jjedU4Gap2AhoJHAfG++ekZr8=;
- b=RXYAhkpV355GVDG4nmEKF93ANDYRaFfK7Gfnq8pe04WAJux1lf2Y48vGqxWc2EmKiQ6xv/MlUdj9pNsIphfuSXEdxeCzF7cipQdZyv2i8fN3athJGikyZkLKXpwyIOvXJxbixMof0GpCjzlr5MvWoWBPShMqBHm5LZeIpqAAX21jwPC7IcLU3YTEPXfUMBTiVt4IEesnKU8J4GHnO25Fv7boHr/5Jup7bbSGn5iJigXEB40ZtKk6TeKUKpiK3VeRB9TQp7z/jzUL3Q0DBF7i3mNdFgc00B/6q0a1MBTrLbVqXvDqdRiMF6jjVL9ErS5nI4hbBI3TKkKbv1oxW91A1Q==
+ bh=P0L3RIOigInXVvCIQ8BP4Idwwi1dEDAQs6WJ8tdOoAA=;
+ b=RBfMy0Ky2wNf6aSs/v2lKkgu3Xf3+qMbM7T8I0KbNjdPcHH0zpo8Hhw5v2LCclygimvaX8QHdtRu7x1wZk3zgM6ZJhUNwJfa7ppKPPAFfjkVYt8SDDuB7WYNNnRqfwNuo3cyVTi17bYzQzZBGAl7lSq4A5ayzD/Yxy34VRDPqz67uD04+4QqMPRdM7jisawOcpfZonuDdEbpkJnbU0mB9tltS6CFLoRziUG+Ysgcreu6Wy1fdfmn/+EnqHijcODF2uKLUZRaZJYnZfuYw8AUBrv9GISD8Nl1Ns90u9GFUQGYBW7i4vyZhrDYBPRvdsw3rCH+SHcZjC8xLLOfLwUbCg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vfgfun54Eyt+H1kr82jjedU4Gap2AhoJHAfG++ekZr8=;
- b=AHH3TYs55F5OKnqyvgQi/tEemMtdCc2FHbA4Ks5wtA/bYxMPcl/COP4E6xFWQNwrI+VuPVAQAZt3/7P4Z6j7d99/6ZdzqP9xsO0rWRqGHjripWpnDtXu7Z+h3xMr/alGcQuoToNnbZ+OsTFQTonpMqjZuiAkJiDgH2s0FH5c27MWa+mqMw0qcoAVsVEDmLbSyh3YvoKy+FXB3cs3etSFmZIuIrAPU8O29np3zpGKscyv/DyIvAGcSmL6TGGIzd84ZXH7UFBiK+tEqo9T79LjNGDjTrbZ269Tfdqa2O0i34Fz2UcvBibeAF3Dym8X3Ykn92wZQ0V2IEx9swCthQ4v0A==
+ bh=P0L3RIOigInXVvCIQ8BP4Idwwi1dEDAQs6WJ8tdOoAA=;
+ b=QN3JxMwoPoBIGaZpzhqSqA6j8HbQ3PbDXfFfxcSh6hpnTlRTazh19+x30bCo7a4AjVG0ku+huWte2zcGtSwkZiEp7KOfFVm77Qy/CxfKCawasWIB9VdpxCvH0fkKmxUwJ5imxU7BZSLQKCCmrKE9nWE89NDQFuNp1fA/KpYwf1L/21ELXqnW6FR3cjQ6TSgFHTOIbrJO0+V/Uhxbu4aj8S/my47rCI2lGmZC4WEoC6naB7qSG1vBAaO37jW35uYhNsmAoGCNzHudD3yY7bEJTUS4RwUFczn+Bo3MoU1HkIA4Y7HEgXNoScjDMdPkEtYBHTfcB/BpiHFdrL2keVmR4w==
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
  LV8PR12MB9232.namprd12.prod.outlook.com (2603:10b6:408:182::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
- 2025 15:46:34 +0000
+ 2025 15:47:18 +0000
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9094.016; Wed, 3 Sep 2025
- 15:46:34 +0000
+ 15:47:18 +0000
 From: Zi Yan <ziy@nvidia.com>
 To: Dev Jain <dev.jain@arm.com>
 Cc: akpm@linux-foundation.org, david@redhat.com, kas@kernel.org,
@@ -82,101 +81,101 @@ Cc: akpm@linux-foundation.org, david@redhat.com, kas@kernel.org,
  lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, npache@redhat.com,
  ryan.roberts@arm.com, baohua@kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: Enable khugepaged to operate on non-writable VMAs
-Date: Wed, 03 Sep 2025 11:46:31 -0400
+Subject: Re: [PATCH 2/2] mm: Drop all references of writable and SCAN_PAGE_RO
+Date: Wed, 03 Sep 2025 11:47:14 -0400
 X-Mailer: MailMate (2.0r6272)
-Message-ID: <EF78EC48-5AA7-4999-99A9-181C50C35A6D@nvidia.com>
-In-Reply-To: <20250903054635.19949-1-dev.jain@arm.com>
+Message-ID: <EE308B13-E049-443D-8807-049132C34B8C@nvidia.com>
+In-Reply-To: <20250903054635.19949-2-dev.jain@arm.com>
 References: <20250903054635.19949-1-dev.jain@arm.com>
+ <20250903054635.19949-2-dev.jain@arm.com>
 Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BN9PR03CA0060.namprd03.prod.outlook.com
- (2603:10b6:408:fb::35) To DS7PR12MB9473.namprd12.prod.outlook.com
+X-ClientProxiedBy: BN0PR04CA0169.namprd04.prod.outlook.com
+ (2603:10b6:408:eb::24) To DS7PR12MB9473.namprd12.prod.outlook.com
  (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|LV8PR12MB9232:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8df8e291-337c-4c9a-46b9-08ddeb010f5d
+X-MS-Office365-Filtering-Correlation-Id: e4f4eed8-1aa4-4edf-f70f-08ddeb0129aa
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?F2zZjxj3Fyys8ITba1j58TS30wo4LLXpOo06AXFxGqvl0nX0yZYny/5CaMM9?=
- =?us-ascii?Q?PvObY6e7DL6gzVLspi6vtA/LbwjkHTuILWSZeeZ5CtrEtWvTRrUSiwApbu0E?=
- =?us-ascii?Q?xT+r/BXh6TNKXRwMTszp/e1MsLGAwSAvb5iGdKrG0NghK0XauQp8knHiyBfs?=
- =?us-ascii?Q?T2nbTQ1FyGnbz6m+wZm2+b3w8Qe/s1A9F+6MSLlcq4EQEa+lLzWtceEwl83Z?=
- =?us-ascii?Q?Uyl+h9jlqcHpZ9pbJifI0Ta0u2MC0HXxgUJkhDJad33LJZspMyEVZILj8SVq?=
- =?us-ascii?Q?zDBzhvNqjznVdXUgj01aXB03BKteeg0INiuWPsmWXwIKDNtSM9lyqmxMmOwG?=
- =?us-ascii?Q?4QzqDarkxM6zIW1wTEzGrtRewXdHQfBn+LD8IEi4N0E/juMiSHDJMcPW3BJW?=
- =?us-ascii?Q?lg7CsE4X+qPDfgUiX8MrmmuBZRnQIuT2YeJPeqjbnweRzNPAcZmS3PE+p/WF?=
- =?us-ascii?Q?j5X6z1n+LQq4eR6gBxRqMh0zCeULbDXeUtnMpeLP61wZ7dTHdb+CB0q9lRPh?=
- =?us-ascii?Q?wOi0UjHW5avdXjgpHzAYRbpUyTwGfXDsy+JWKXe1u/Met2TwqucmfUrJ0KF2?=
- =?us-ascii?Q?nSVJRLGfHt4a52ohsDBN2lTvssaxWVT5fujswieImCG40ZpzYgZ+wqVU+LAj?=
- =?us-ascii?Q?FD9dNgKZyM80E/2yu1k7mflV8OneGYf/QK+Tv5aGPbMsoMO1zEZ7rAjfFrlH?=
- =?us-ascii?Q?gxz/k/sQ/gPYABMHsO9ItdwbR7VgwFvrhB3g9/HdHg9Em+JdYOeBtLBRl4+7?=
- =?us-ascii?Q?3CfP3dEkw6oNJDAZjJpDZIqgbNXfCv916ANUt3Pz4fDlm57xw/7GrlbJxM4F?=
- =?us-ascii?Q?C0PInD65KHNX7kpWxV25lZm+q4pSLNaF26LW6c3gLLo00ELOtf8xA+zOSQEN?=
- =?us-ascii?Q?jT/4EmKKekRhJE7+kXM1sPJfXyiAIBGydoMlzHqlL5j9z/ffSEsT71veykHk?=
- =?us-ascii?Q?VGfScG+iYhiDQRkf3/1zQPKMP7N+ME7eJBJPZjT9Em2xPhl2UoptWjZ4qAV6?=
- =?us-ascii?Q?3lOeKD4R/YtT/+XufNji6zq80G0xWLTOdzf4ZCW5ScD1MczxNUMC52CK4oS4?=
- =?us-ascii?Q?IHS2bdbvWhj99aKUg41GOcLNra5baWgRvnqQJmXxdNr4TrZ4KY2uqaL6HDVx?=
- =?us-ascii?Q?rwtDXdjBJMg10guatwSAW+BtIjeDbiRyzWl+3Ho3vNAqoKzI3PDGgLGKjMU0?=
- =?us-ascii?Q?1ZviZsjDsN5i5fmVPr0CTgU5sqJWzK82Lc6C9aX1BR34wKGSLCyOKu63Paq0?=
- =?us-ascii?Q?U6OibIRS8ez7snNhMHpIWT2xT/dwspO9olM6OhMDMDY6Hb4QaaokgmDcW8o2?=
- =?us-ascii?Q?lhsYCC/MXzSYwM/wc1mmch+RUHdHVid5BagLAZSRspdnXxGx3U5AISWN1rwP?=
- =?us-ascii?Q?q07jof7DInMxtWzisQZ42H2f7WCzqo/Ulzyu0XHX+wewYiMn/ouLp3pPggKm?=
- =?us-ascii?Q?wblSOG+KgQo=3D?=
+	=?us-ascii?Q?lOmHwUdF5GpVYFTyuCg7yGERw7c1WhwX1GoiuY7XorIyr7FqMT/uoGOvlkBW?=
+ =?us-ascii?Q?1mAIJ3goXoorKTi6Dj8IKJKOYkv0qDCAwRX39E9W165/7qonU8k35lx2ct/B?=
+ =?us-ascii?Q?U0avtNbgRQPzVqpZyHJItKSIJt/yZViKQgbzthNvGdrudTxOm57AInMI25k6?=
+ =?us-ascii?Q?zq0YjFbmlD5Otb4S0/NcfvAwDjaVoPaJeSLCbK/ifJIaqKi1oL1ADc9duSeg?=
+ =?us-ascii?Q?aVaH1ZaTgi6ziCv8rMIEW/46BHiNravHKlcMtCpW/ONhMosHJdyr5USluX0l?=
+ =?us-ascii?Q?J4Y2uCdob1iNotNeyG2qGQ9bY5G2ybGaHcjtlkAP8rBLiK+5FVFaGtn7IVta?=
+ =?us-ascii?Q?C7dwtiquOwHQjim83E8YuxqsjHnlV2LK8ztLWpS0jYNSY7KFb/kOW6dDEwQV?=
+ =?us-ascii?Q?O5CMZY0EwbJYJpVgboEtcJ/LpJG1CIB6Wt6QD7/fF7DOCZpXtXL0jOiPtYuH?=
+ =?us-ascii?Q?p72Wk/KJ6INe4k8Vcqgm6r9CeroWJlcWAJEPDNesEWsry82AfQ4YOWBggL4N?=
+ =?us-ascii?Q?ifN9B5lsIhD0dyyYFgYaQAxlL70LalK/J9nJaSLNFwpoq+AoGoDOFGDrmfYf?=
+ =?us-ascii?Q?QwN1RO3dnru8GTaLnTa4M3/QzI6iYtzU86DpY9x0HW0Lf+ycjd9l1ssWNMKc?=
+ =?us-ascii?Q?UhNdLYqEfXWSyoEJ/sT5ECwq6/wvR07/9JgvPtRThJ3Y8fA8y3ivFL7oAljt?=
+ =?us-ascii?Q?mLGVgvXh9lM2vQKBEL/gq9kxfF5LGCtuz/8Vm291cJm1yKmo+Al+zMtsarP8?=
+ =?us-ascii?Q?vYieCt+Rg+Nj4FDpA+lFZ6Lcia8NyZsgkj33C0JEMhGPfpJ/km4GK2dPbbU2?=
+ =?us-ascii?Q?PIlbRYvppw6GulhWzOEw7LnuhX4/R8YFPCenqGaCKiw5KlImf84r2wYO7QzZ?=
+ =?us-ascii?Q?Ib716WgYyLw/aIub8wxB3NogiNbXYi7l3MMKbfiHNR6CLrMN1hyvyymGxZGZ?=
+ =?us-ascii?Q?OykZ6wb/9GyllXj+pN1YjKY4RgGRzoDrN4RK6fWDotIy+ibpCMuUe/RKIZ7I?=
+ =?us-ascii?Q?Ngdk/3nrtX6jwOx/9DllnzEVpFU+s05AmigFU4fNiBUuK9HiOJLvjCp8PqaY?=
+ =?us-ascii?Q?0BNm2/qgJnfZlGG9ju9+aYOjfkt8cQGyGN3Wy96WvZlEdCnbgYz/yPrtIvlB?=
+ =?us-ascii?Q?gV3m46VFOM5QMGZQDypqgwUkVvU2FR0fwVcliOp8XcRawEzpFegey04zYuHi?=
+ =?us-ascii?Q?PdK+ZV1ncZ8dxts02i4xlLvc+OrllVsL4PTybfMy+vVp9DRgXQU5DLuzHwrG?=
+ =?us-ascii?Q?m/bsLy8u27+bqdXVMGNUEC9CEemF0rI8EjaDrNk+x8O+B1IYj/N8/Op7cybM?=
+ =?us-ascii?Q?7nOOk14KpUPQlryUxS3G+vhKxxYeFkYfoaqOQzgptj+pS6kCJJOShoB5K0BB?=
+ =?us-ascii?Q?+NquM+0GwAyUwiwggBDzKuP1cZTlsoHwcmYahnuZ5wWpoDnLc/GGmL6j21RT?=
+ =?us-ascii?Q?mXWrBBvxGdk=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gWKXvo7NS8e/LLHiwlS1VNrkMIWQKX1hVlHxm02//1Wr33V5GdYJtakGLIVJ?=
- =?us-ascii?Q?jlQ917p/oRq/IuAWTUeSTmM6En7M6p/34IZMYnO9mmLy9maZeTuJkgDihTnJ?=
- =?us-ascii?Q?cNwErtHKbeONh+7xcTIG4futErVN/eHkaId9kD+Jj1RtqdCrav2UnmFh6mhW?=
- =?us-ascii?Q?ZaTHpwlSASMWQp7BQlwD2eARFU3l/DyQcgPdaP0CV1NKcTaVIRTDx+NERFnW?=
- =?us-ascii?Q?f3eNIjBzGHagkRymFKlIzxnGiaT98SN46VMwGHJmS3BhStmAR3O7POiH+sxS?=
- =?us-ascii?Q?fTsdPHi82r2H+ogbpkZFz9lGp4GRQs/Ctd3iijO0S2+Qypqgxc+MIhjN8Zk+?=
- =?us-ascii?Q?4+WGL0AIyOlE56APAn47F0aueAShAgdsaSvOjAwmeMaFuwroP4wK04V4xRGE?=
- =?us-ascii?Q?IB0mpua6wQUpz5/D4X5ouxPaR8QFLsP099VoQLL9lwfYW5REIcVGWH8XBUae?=
- =?us-ascii?Q?Cf73X5iSwkCCwBUB3RQzWAGsXIuAqZEKk2pHdDV6rQL/wkxYrn9m5kq4LKVT?=
- =?us-ascii?Q?yIAMrs7HbonkInAxLQ+qlY7BFBtvOCKa1YRKY9wtgDhFWNdM7foPgvQ+77N/?=
- =?us-ascii?Q?VFrx8NFy5kXwQEuDEKn5abQE8zmjnyiVIDwSPLIX6sb81C5ZFPyAveCtZq/l?=
- =?us-ascii?Q?pKgOmak9JShBIOpq+5xiLZxY95RUxvEfyCzvubQ5kZWcg2KyGgV/FXohiXBa?=
- =?us-ascii?Q?9u9eOP6bKWUf3nq28Q9Kt3jP0V/hWjRvSS6hXVkGrRpbJVWBlWo3ZdBOXVX+?=
- =?us-ascii?Q?5odkm9fuGAClziNuaKTENr9LBPRUUiIuuAKpfkWMBf3FQ6Eml1ELRRC/hgya?=
- =?us-ascii?Q?M2aB5WeLyKpCaXD27JnxgUe35HqdukqD+7GdmfYmbvSPL3ZbhjRJ//NiJEs7?=
- =?us-ascii?Q?onXtjzpjkHqOafz74Tdj0uWXlf/OC6+wADG0o3vNBZ1RnEI5Crez/z8UAWSg?=
- =?us-ascii?Q?+/2556od2X2BYjCgJtoCQ0iSdoJhZwClZWUbEg+URMmBzYzUUdvUWTFGXkRX?=
- =?us-ascii?Q?S6Dqrm+olboy2HW3qBz8+wrEaAtdS8/vPw/j/Mt2LUrWHtab8mUxdr2mirah?=
- =?us-ascii?Q?K0AqeJvU4nz0rKyA9p+lA9qlClJKwlRDuUUK6Wecas5etaR3SN3b6HdJhLTF?=
- =?us-ascii?Q?Ik1vhtzD7LwrYT3e1nNV7lGsQuAdcW1wGj0Mh1IQUbGj2NTdi60moXTach4P?=
- =?us-ascii?Q?g/1fCxWjugGLCieq5GWyN6zgJixOVZWt012hWbItbAfUM1pOVivCMQRU9ebp?=
- =?us-ascii?Q?oRT4FoyDgI1Pzs2Y9KgpGwucoYSTGL7ScQ7zNmnpg8KGINs49kPQxEfDMv62?=
- =?us-ascii?Q?ZLd1Z+8zKV6IaJUk7QLP+hcy7vGuubiKXCJ3ydhIwxEDMIlaqKP4YPVwbrB8?=
- =?us-ascii?Q?SFkPbMbHdXSL4TOqMsn5hNye5Ge/Fp522vshtqjYhoE4aaNWWNN+xa3qksD4?=
- =?us-ascii?Q?FhYPEkcxw8jOiB6JMLqznSZtlv1TSlmmpbe9v+d6533c2dTPRUeXfj5jLPOs?=
- =?us-ascii?Q?qcw3hWOfRhmaocrW7OGBVlx4Oa8fwocakByrVGBwZSSGTXH8Vofe8/sGmvmu?=
- =?us-ascii?Q?L6spWFEU1b3TS3h1uEdSKxksHIviYJhn3FA7uUvn?=
+	=?us-ascii?Q?zB+ISWdgPsaaTT+RTyUfMwKfbM/+VbXAb800bJBVsefpSCgi2gZ3T1PyvBMg?=
+ =?us-ascii?Q?w9wdd3fc3aaqY/OMjGhUJfQDU/b8tsZQnQPRcNjcP39jmt7baid4vGZjvGHM?=
+ =?us-ascii?Q?HEgs1LnRcDYZGzV3gyfkpU2ya0/Lf6Dyf3ZvJl81tz12AkN5taj50Y+v5KJ3?=
+ =?us-ascii?Q?QCozxuTBl/M1lbZInKktonA5FftTD8JG8iRlk1xH7QFYEF5OP83YasSVbkkq?=
+ =?us-ascii?Q?r8G0OljWjfN4FesC6aEkmG3JZ+sVDcJRhlqcOaYSkhttDfKtpMyyUodeCnn2?=
+ =?us-ascii?Q?vXdScxsrZV4NnopmkfaI2bNu/MyFMAnvUF8zVF8VS9VYIysq9KDnW5YANRuz?=
+ =?us-ascii?Q?/N8/3XgG35UpZnXYUPzPmzVMVupNtLuubwsAfeTovR+ZwsU4lt81bN+8zl9e?=
+ =?us-ascii?Q?ml1qE2Ztw021vHK7pbvdQVppEdmzw7Pbpx1Blz+36EMaJsk6oZom8M/VOOQA?=
+ =?us-ascii?Q?h3oVeMjjcDNp6UZFMHeKqHoRZ66hd9nWabLYk0Ix2nYWDXDyodanWfpztDzT?=
+ =?us-ascii?Q?RKy67GeDY9IqKWSM6zUQT8M6NDsicdLpfKfT1xjSrgSo//st9geM/HdOiayR?=
+ =?us-ascii?Q?54Rth3hQWg4i5nd59hLnbEzhucq2L3En3Dy/3tQpzTIJQbh3BN0qtVjq3KVo?=
+ =?us-ascii?Q?YAWxOylAB186Q0xXPtshO+/o4lF5kLXlph9bpEXytEtq32C5848joG4QOiCO?=
+ =?us-ascii?Q?jgPFztK077lJnVclN8mWLRWkrTBmHZGW5r0+eUSKl/bdlFOGPHSEay/10yXz?=
+ =?us-ascii?Q?cwhT6+4FUPwPvX8XJX0OE6UjX8MzSaKRuXEppTBlgSSx2Qn0BD59lcZd9oQ1?=
+ =?us-ascii?Q?7ATcY0Cw0Rw3EXI45gbvrBy92YmdHSokCJGgMZ2zUBZOD9iR7BjqJ72bpau1?=
+ =?us-ascii?Q?jEUdfj1UF7dQZLV+aDhgUiAhHSO7bh8imZ9NPZxvQJUij+Asj3SC2rz5Jt1p?=
+ =?us-ascii?Q?3wRMOrl8qtcjmNkHt+SBsRkB47rv871JlwE9DQRDxqHBh6e9+Vlbvgi+Wa5b?=
+ =?us-ascii?Q?U8w0kulRdlbuxrtnslp96nFdT1vv3cNsWz3fsfADhuFDwtviz/d8qLRAEbsJ?=
+ =?us-ascii?Q?KP4uYvwegQ7mesHpOc0bCZmJNWuKfTULtoeUhtjeVWTK3WyL47b683X9xt/F?=
+ =?us-ascii?Q?HFm/QWfT2LxpTjgQJJ1ELnBQElXt2KhOijZ1CC1N3sU8IjOIWZXfG6SPZcco?=
+ =?us-ascii?Q?P+Mb6wACXtEWa3OeC0LqqTjTs6NL/60amkivZRKlIJkHSqQFVuQgZ2r60/G/?=
+ =?us-ascii?Q?m+oN6jjzSiXtpHy4VgY9iZyyZI0hTOsI8qmzzHVOebA6CTvVQLL6oFaM6/k5?=
+ =?us-ascii?Q?H6oacwdt/Hq27CiBNszAOJWS/n1p1JbZ11W7YWJPZ2rGiCIm9O4Tgrw2HHKO?=
+ =?us-ascii?Q?ZemlQOQacNcgT1ppJ9IPiAuGEAd/OAhSlQly5EX1pz+GG1XBQaK08Mvic77/?=
+ =?us-ascii?Q?qEW1ohw5eizHCX74dJzsqVfl7it32aG5xBYpnD6D0k7MkK36nVDFABI5A3pm?=
+ =?us-ascii?Q?3dDchC9LBGvLC751/hzqOJ/27xvTqnRYnNQXxw5HwXHq96kPhUVcpTIVa2TC?=
+ =?us-ascii?Q?P5G5gubeRZJ5oslFdodxrVpg0Wyjjh4wr9xWBJ5W?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8df8e291-337c-4c9a-46b9-08ddeb010f5d
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4f4eed8-1aa4-4edf-f70f-08ddeb0129aa
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 15:46:34.3066
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 15:47:18.4180
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U3HPE6TMpdVeVvP3sHwAkOdE1M/Qv8bL4TY6an1LRd0j0a/QtgIYu2XYCE2Q4WVW
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mf+bk+RCf90lfdKBzADN//0SP4MOY9dk+K/Q2bkzjfUsHWwi8QP21xGCbC3+fGJY
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9232
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 29F35C0014
-X-Stat-Signature: iwbypmozx4xckakrxsqs3kaff4r6q9nd
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1FC5180006
+X-Stat-Signature: kydfzys31mg9oowxfbrsxhg3h1w17zit
 X-Rspam-User: 
-X-HE-Tag: 1756914397-747985
-X-HE-Meta: U2FsdGVkX18Ig2zBn8oRIiFZze4h0rvNV3tHysmJ6VnCVsXOE8N3aFSFajOgWUUKmVGO+lwnop/O6yWCuIK4KsfPzpuQ2/DQgccOiYZO94HzMMcmNtgm7pYguOQUzrCVbCILmtuZp3+y46GlFvPSGsl1roC2BI0RweuNBQDpnf+CnXKcLOZxI0YqNfg8ZugyZOPnJQPWNGDhJAuF9SiHVRjkrqZVIR3baX68gdKcX413W+iTiDe8NHwkLYiklmOe6M0IuSQkAxb3BSW/sN25BhXM2/DuIPVmoHyaVd8R01Hp1wHETGGSIyl47+VqT0sYovD+WCUckhGxDRkKmqekFsVIudLggGnnYBc4EIYq3a+dAYY1o933dRZeGLKAJapNHF7YJil+VNmU6uFQECMH2uPdVO4Z5yZ5IpvOoFqAwNyRsWHga8wGyWyyw8sCRjjZ/dMbt6BSN0HGjRZcuvnbGZ0+eeWBsN7lmEoVL/gEB/jDv8Aa+I/I7xhy5dOtZPPeDFkXs1Wn0W++E6BBcS+eLt+O8w+Gy/gh4pAIidMjaQZxl5rBRqk5T4ow6OVu/MncSlpceOW/gQCEgRQ7IvYKTu9q4dIJEm3fB5JwnveOB1hBYhRjnvAwn7zqg8vjcB1n3rRGEMWRHzAA8EADCvobq4WgvmHxtPLTy5n9LCc8adKpBBey0GI5vdlZjOnV28cfFmUCyyBWy6t9iuf1Y8AF2QYvrCiKorHU91a1E/+ut0S3T2W6vIbDBROo+5UySzX3Tmsk4YJyGhZu01tHLJu1EiiujQHxYRSBZ8IzcHwZx00nWh8Yopb1FXIJT01bTjK8cCFR1p4RmYWEEJ46f4nljoIpdeHn6RMLKkMjzikX0dHNtGiRZ82+nLH/t9tLIKrQrkj5gzB+rouqNh1PX/gWTTxI+EE0SOdwle+5kxbZI5RNXqFssh7omRL4XTTdJ3Cs/KeZXkpt7n7kQ3OJGPP
- nXKYYZBu
- spzI/DQ3o5nC7NRaNfU5nIUYwmOaaYr3rHmYDtCgmzT8QXKrZ1zwXAln+WHG+r8JVLk5nYMqHDFCZku7jKN5uJW2fy+KunlaNx+DXSQC0i/AcBT+ydTutjADIfy5g3K00dJGYpE0TlHWsunAZQq58AwtCeIaZd4xjXGduyf8PTvvufnjVaasnOprHO+3EYNVxkLcIzVpqBaXDlZ/utR+8Olj9e1Q5LBqP4NAv9wl8DCCbbwVcpIm+7zjAcn82RA9jQ0HJDg+SeGzGvBYV8c41+LCk+BShX+CgGV+znsm4URdM4NlijLBXujMjfiEvH7nnqboLJyteBaKV41ZPPjLK9jxhYVaK9/zVSavmJvmetNQMyE3iSjopxwZmZgeAGAzf1BoHPegUGjT4gEUiQqgpZ8K8HMcnnc3OTcrF5vkqFBPfJP7dTdu+d1gYDAU14E4vqDK4VxZOxBQU9J7OoNIOA7WNuAsiaS9j1G7rN8JZjCFSrbsmYj/qtT0tlaLrtOWq1vHeCVJHqS1Ye+7XuFO7xnJ0IXTw7MmIUVplpxwzFEqHJYn4ZMZxbiPIfA==
+X-HE-Tag: 1756914440-372327
+X-HE-Meta: U2FsdGVkX1+GdjawvL9fYT4RcATNnvScPnTYhQ1QIuFqAdk7b7P+20OaBxSmnzpT7/Du1MUTgZsvtc0bNxAHBg5W92MK2Ls7upPdJkOhAzdVJEuv6LB5sKx8+2qMYvl6rtV+UrAwxCc+JMynpx/B2K2yNGetq/eF1p6HftpyRkhk4Q7IP03j41odSObMc+oAetdonEIfLKsWGl9SCEX7wpwUahYIWJCqZiD3T8WZMsM1VZdE39jsf4lOmzynk6vULTGPPWFjAIR0YOouLFZdFHTqLUsSH25Uwq+8+ge59M2Hk6GJxq5FCG0G9NvQgjdI98h3xD8uNNFGk4oV8uUD2jO/RdgVYqKYmyHTYHbwsWDLsH4t1C6LfMkcumVAmhp/KvZyZpKvfQ4ARy4TPxJu7VZN9NY8JGP8OT8yVYFJ3EcjnUH0jOKu0rl1u232YKcCruF/TWNZlSsWNYb5jo++LoFkIHYaJm6JbQ5KWuRhzeBhfWgAhMCgkFxDhwvp6sIzGmnY3RtvQLl0PMMRctDH0N0sZk2vfkIw43eDXTFKEdwNzf/2Y0DjYS60+T8htPGaAwDFuVRenST3K4ZghU39k2vOsPWxjxOnKK0NZjGITqG07fdNEkDnf6QJf8lLsUKEvSyhhOFElQ9B/aKyUrt7IuTd5JJq5tfP7MzV/p47OqNGxXMA3bEBdV0AfeYGCe+l/OaJ1L8Y0BrJV3fwAINvNrBrlD+SmEKIo+X0qWBua6YppHFWQ95NGO/cfrpTZjtjipwb54Kh730bZV2ruhOd02UmFrL2wLHx7dGketuY6W/SSZnc++I1FUlH5QVIl66qihTsoli9QPPHOcmqhZdgK382xwbTGeR7YQfD+yQVjDS5dcFUdklJEQtBggme3inN59uCXeSxS1iuKvyBedcP8y8MMWaXRsxCtcfG7E+xj3xOJkJJrVhyKifi63FL2Fjg6zCvbbPtX24smaCw/35
+ XGlE8jSK
+ BdszyOHUXHe3hDMzyd+P6eBOU2sHW1Z13T85mdMjpG1Uzh20TcvWy0/yTDhV/oqvumCcSThoYUa93fYRfr6uOQjMzHimRWiy5I/dZecgSnIj2I9BKZKC8FhDAAtQk8ebsdPS51+WKzzM0OJPFKp/hvz+jj9cCG94Yb+SUZqvEPDzrhWbVDzJbGHzvXs0/JlhFbGBn+7UA1TkJnDp/xeP3P7+tHKGi7xqbX1sPEjxnL4ucVsAovlRwsYiDd+af8f0VTre8UU4/4EGhV1fgHHUVWZIbQQZ+oF6yGgVw/lEJlWRpsk41wPH9gK3xFHBLJ4xNSfYZA9eTKdnmqi00rItwVYXRJ0uOv7T7Vk2YPJBDtCvV668CO7uuTx+q6WB/sMTTG2CJLD+Od1DZZr1i0erIbCYXJbcJdaXg0KjX4FO3gcEEoP4ZjRl8hVA9P6cT0pitGOTtLhlnhoN6kfwh6WE9tjOnmU6pSR/hSgnIAymR7CkEhm4hhBnKSvewN3ZXxRqWO4MJhBo/nrvqf5p9Hf3hk7oeNNEjFdOIcIwZSYrxVlNEc5l3tQnSNjghAfZmfYWvGS1S
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,216 +186,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3 Sep 2025, at 1:46, Dev Jain wrote:
 
-> Currently khugepaged does not collapse a region which does not have a
-> single writable page. This is wasteful since non-writable VMAs mapped b=
-y
-> the application won't benefit from THP collapse. Therefore, remove this=
-
-> restriction and allow khugepaged to collapse a VMA with arbitrary
-> protections.
->
-> Along with this, currently MADV_COLLAPSE does not perform a collapse on=
- a
-> non-writable VMA, and this restriction is nowhere to be found on the
-> manpage - the restriction itself sounds wrong to me since the user know=
-s
-> the protection of the memory it has mapped, so collapsing read-only
-> memory via madvise() should be a choice of the user which shouldn't
-> be overriden by the kernel.
->
-> On an arm64 machine, an average of 5% improvement is seen on some mmtes=
-ts
-> benchmarks, particularly hackbench, with a maximum improvement of 12%.
+> Now that all actionable outcomes from checking pte_write() are gone,
+> drop the related references.
 >
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 > ---
-> RFC->v1:
-> Drop writable references from tracepoints
->
-> RFC:
-> https://lore.kernel.org/all/20250901074817.73012-1-dev.jain@arm.com/
->
-> I can see performance improvements on mmtests run on an arm64 machine
-> comparing with 6.17-rc2. (I) denotes statistically significant improvem=
-ent,
-> (R) denotes statistically significant regression (Please ignore the
-> numbers in the middle column):
->
-> +------------------------------------+---------------------------------=
--------------------------+-----------------------+-----------------------=
----+
-> | mmtests/hackbench                  | process-pipes-1 (seconds)       =
-                         |                 0.145 |                   -0.0=
-6% |
-> |                                    | process-pipes-4 (seconds)       =
-                         |                0.4335 |                   -0.2=
-7% |
-> |                                    | process-pipes-7 (seconds)       =
-                         |                 0.823 |              (I) -12.1=
-3% |
-> |                                    | process-pipes-12 (seconds)      =
-                         |    1.3538333333333334 |               (I) -5.3=
-2% |
-> |                                    | process-pipes-21 (seconds)      =
-                         |    1.8971666666666664 |               (I) -2.8=
-7% |
-> |                                    | process-pipes-30 (seconds)      =
-                         |    2.5023333333333335 |               (I) -3.3=
-9% |
-> |                                    | process-pipes-48 (seconds)      =
-                         |                3.4305 |               (I) -5.6=
-5% |
-> |                                    | process-pipes-79 (seconds)      =
-                         |     4.245833333333334 |               (I) -6.7=
-4% |
-> |                                    | process-pipes-110 (seconds)     =
-                         |     5.114833333333333 |               (I) -6.2=
-6% |
-> |                                    | process-pipes-141 (seconds)     =
-                         |                6.1885 |               (I) -4.9=
-9% |
-> |                                    | process-pipes-172 (seconds)     =
-                         |     7.231833333333334 |               (I) -4.4=
-5% |
-> |                                    | process-pipes-203 (seconds)     =
-                         |     8.393166666666668 |               (I) -3.6=
-5% |
-> |                                    | process-pipes-234 (seconds)     =
-                         |     9.487499999999999 |               (I) -3.4=
-5% |
-> |                                    | process-pipes-256 (seconds)     =
-                         |    10.316166666666666 |               (I) -3.4=
-7% |
-> |                                    | process-sockets-1 (seconds)     =
-                         |                 0.289 |                    2.1=
-3% |
-> |                                    | process-sockets-4 (seconds)     =
-                         |    0.7596666666666666 |                    1.0=
-2% |
-> |                                    | process-sockets-7 (seconds)     =
-                         |    1.1663333333333334 |                   -0.2=
-6% |
-> |                                    | process-sockets-12 (seconds)    =
-                         |    1.8641666666666665 |                   -1.2=
-4% |
-> |                                    | process-sockets-21 (seconds)    =
-                         |    3.0773333333333333 |                    0.0=
-1% |
-> |                                    | process-sockets-30 (seconds)    =
-                         |                4.2405 |                   -0.1=
-5% |
-> |                                    | process-sockets-48 (seconds)    =
-                         |     6.459666666666666 |                    0.1=
-5% |
-> |                                    | process-sockets-79 (seconds)    =
-                         |    10.156833333333333 |                    1.4=
-5% |
-> |                                    | process-sockets-110 (seconds)   =
-                         |    14.317833333333333 |                   -1.6=
-4% |
-> |                                    | process-sockets-141 (seconds)   =
-                         |               20.8735 |               (I) -4.2=
-7% |
-> |                                    | process-sockets-172 (seconds)   =
-                         |    26.205333333333332 |                    0.3=
-0% |
-> |                                    | process-sockets-203 (seconds)   =
-                         |    31.298000000000002 |                   -1.7=
-1% |
-> |                                    | process-sockets-234 (seconds)   =
-                         |    36.104000000000006 |                   -1.9=
-4% |
-> |                                    | process-sockets-256 (seconds)   =
-                         |     39.44016666666667 |                   -0.7=
-1% |
-> |                                    | thread-pipes-1 (seconds)        =
-                         |   0.17550000000000002 |                    0.6=
-6% |
-> |                                    | thread-pipes-4 (seconds)        =
-                         |   0.44716666666666666 |                    1.6=
-6% |
-> |                                    | thread-pipes-7 (seconds)        =
-                         |                0.7345 |                   -0.1=
-7% |
-> |                                    | thread-pipes-12 (seconds)       =
-                         |     1.405833333333333 |               (I) -4.1=
-2% |
-> |                                    | thread-pipes-21 (seconds)       =
-                         |    2.0113333333333334 |               (I) -2.1=
-3% |
-> |                                    | thread-pipes-30 (seconds)       =
-                         |    2.6648333333333336 |               (I) -3.7=
-8% |
-> |                                    | thread-pipes-48 (seconds)       =
-                         |    3.6341666666666668 |               (I) -5.7=
-7% |
-> |                                    | thread-pipes-79 (seconds)       =
-                         |                4.4085 |               (I) -5.3=
-1% |
-> |                                    | thread-pipes-110 (seconds)      =
-                         |     5.374666666666666 |               (I) -6.1=
-2% |
-> |                                    | thread-pipes-141 (seconds)      =
-                         |     6.385666666666666 |               (I) -4.0=
-0% |
-> |                                    | thread-pipes-172 (seconds)      =
-                         |     7.403000000000001 |               (I) -3.0=
-1% |
-> |                                    | thread-pipes-203 (seconds)      =
-                         |     8.570333333333332 |               (I) -2.6=
-2% |
-> |                                    | thread-pipes-234 (seconds)      =
-                         |     9.719166666666666 |               (I) -2.0=
-0% |
-> |                                    | thread-pipes-256 (seconds)      =
-                         |    10.552833333333334 |               (I) -2.3=
-0% |
-> |                                    | thread-sockets-1 (seconds)      =
-                         |                0.3065 |                (R) 2.3=
-9% |
-> +------------------------------------+---------------------------------=
--------------------------+-----------------------+-----------------------=
----+
->
-> +------------------------------------+---------------------------------=
--------------------------+-----------------------+-----------------------=
----+
-> | mmtests/sysbench-mutex             | sysbenchmutex-1 (usec)          =
-                         |    194.38333333333333 |                   -0.0=
-2% |
-> |                                    | sysbenchmutex-4 (usec)          =
-                         |               200.875 |                   -0.0=
-2% |
-> |                                    | sysbenchmutex-7 (usec)          =
-                         |    201.23000000000002 |                    0.0=
-0% |
-> |                                    | sysbenchmutex-12 (usec)         =
-                         |    201.77666666666664 |                    0.1=
-2% |
-> |                                    | sysbenchmutex-21 (usec)         =
-                         |                203.03 |                   -0.4=
-0% |
-> |                                    | sysbenchmutex-30 (usec)         =
-                         |               203.285 |                    0.0=
-8% |
-> |                                    | sysbenchmutex-48 (usec)         =
-                         |    231.30000000000004 |                    2.5=
-9% |
-> |                                    | sysbenchmutex-79 (usec)         =
-                         |               362.075 |                   -0.8=
-0% |
-> |                                    | sysbenchmutex-110 (usec)        =
-                         |     516.8233333333334 |                   -3.8=
-7% |
-> |                                    | sysbenchmutex-128 (usec)        =
-                         |     593.3533333333334 |               (I) -4.4=
-6% |
-> +------------------------------------+---------------------------------=
--------------------------+-----------------------+-----------------------=
----+
->
->  mm/khugepaged.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
+>  include/trace/events/huge_memory.h | 19 ++++++-------------
+>  mm/khugepaged.c                    | 14 +++-----------
+>  2 files changed, 9 insertions(+), 24 deletions(-)
 >
 
 Acked-by: Zi Yan <ziy@nvidia.com>
