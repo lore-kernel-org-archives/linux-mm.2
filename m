@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DD51CA1015
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 18:59:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5CD1CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 18:59:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 350028E000E; Wed,  3 Sep 2025 14:59:43 -0400 (EDT)
+	id 39D5F8E000F; Wed,  3 Sep 2025 14:59:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B0B68E0001; Wed,  3 Sep 2025 14:59:43 -0400 (EDT)
+	id 375C18E0001; Wed,  3 Sep 2025 14:59:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A0D88E000E; Wed,  3 Sep 2025 14:59:43 -0400 (EDT)
+	id 2168F8E000F; Wed,  3 Sep 2025 14:59:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0160F8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:59:42 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7463C0839
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:59:42 +0000 (UTC)
-X-FDA: 83848853004.24.76E88F7
+	by kanga.kvack.org (Postfix) with ESMTP id 107FF8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 14:59:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C794513B4D2
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:59:44 +0000 (UTC)
+X-FDA: 83848853088.05.6BC6656
 Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 14D754000B
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:59:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fEFtgmDY;
-	spf=pass (imf27.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by imf05.hostedemail.com (Postfix) with ESMTP id 03E33100013
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 18:59:42 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h+r2lmWG;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756925981;
+	s=arc-20220608; t=1756925983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6wz/bZSqqVx6pRJeL2TZzvIUdrr6/vXiyt+C/9X3zJM=;
-	b=6h8Rc9icYWf16jHy5wXQ2bXITQFAynqPhb1BH6xhnN2NYJOwRE2a+H+ktuL2h+6qKb9Lj2
-	Jr6vggZNnnYlpivuKuyp3tb16YvHLcAh3uMp7Q2c4b143xM7yApxRTsKvvJ09aAGDjjD/+
-	xIQEAwmvAUZtj6KtKMmzFycZhGOT9+8=
+	bh=tE4h8lAMatl8zOgx47ZsHYZprqFSGIay3bVnFsp5zpE=;
+	b=ugubLGnC2y7hFIzrSvaYkiuITQjYYhL9SuYOYpnNqZG7Tbnuy/pj//LvXOL9sUOhE1Ezw+
+	S88VWIr+FuAIbTh1s9KFKZOX30di+VLo7AkLghCZYw5bsKzr+4RVjYOvxkdosJ/MClkRKm
+	/QahOmAEac471wvD+3Wj/iqKixKZ9ug=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fEFtgmDY;
-	spf=pass (imf27.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756925981; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=h+r2lmWG;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756925983; a=rsa-sha256;
 	cv=none;
-	b=FHQYW59skJd8TNY2k73JgDI2f2r/QNbbuyKBKR3bRkldxUqzPXkLSKatvLLr4/SwO72WRd
-	fJTFKuS1SBp9qT3fijMpP0zKS1XIFQr0/hpOHTRQ0kJ6vjn3rwh6K78tgq/ntdwSc2MjdG
-	1vyjm88IsIZAItulYW5gMr4FJALawvs=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-248cb0b37dfso2585865ad.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 11:59:40 -0700 (PDT)
+	b=wmc6VM/k4Rf6MQAmdCdmgFMIMUGSHxMmSUvKolA5hbemI2k+I7DA5p39I1Qk93nHgMfg4t
+	WljhoMPD2FJPMVpbBO6alv4hjFg05S2AUub1poOphGiIRAXJ+CseQspsSX4J/NP4S1mZ7a
+	rIxPhYRHvFQznK+sdaKWSz25S+i6yRw=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24c89867a17so2865955ad.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 11:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756925979; x=1757530779; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1756925981; x=1757530781; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6wz/bZSqqVx6pRJeL2TZzvIUdrr6/vXiyt+C/9X3zJM=;
-        b=fEFtgmDYwsQ0jzDPLHlO3yux8OIZOG9GFyTLSpQSnOg2sN5juulIreLKPrwfKgyzGC
-         ZQIMH7uL+F7+4YBV5UhUpLAY+3ZLgQ77mpwlyWwUO2RLuDAnMHqoYaDVU7j3JHWq8k1t
-         zIXaIAot4hsjUb/albICHbjZpksEAHcztBzq/ZVlYk56M6rOXrC1wAm5bgMOWC8Xqpf8
-         7CBj02YZSSlHhz3nN9hhFpCGFn5C0v1xsn1CPc8GBEUMDbmb3XL3G1PniXKtqCDwpLZC
-         GAIeu58xOz3+HsqsjJkbCjR5kJ+6+7ZZIt8MRcQ85CCfB+z7f/rOAy3d6B4goBhp5pqY
-         Gskg==
+        bh=tE4h8lAMatl8zOgx47ZsHYZprqFSGIay3bVnFsp5zpE=;
+        b=h+r2lmWG706l5JZbGqSyrZXhtAOJ/MTB5sYKstdzHZhu6W+pkWQAiEwT8GcYu6HkMp
+         jm5V1PJyj1DleVI4TLY1eq0aKcV9MVgRVidfOcNDul4Wqvl01HgdXfEbo5iLazAkj/+M
+         eRw3IWBM35iIZs/R7Xz/4ryn4rYZ57BzdESATJCNFB+fcu0g3I4Mn7CXW0n8o53gPCr3
+         igpd9l2NNkWEhId2L9d1qgKUbTVC6xB+QX0L/tMBzQ6SeMwn7U1GM/VBA1WPxgJ9MISl
+         Q27FbYtsmKU1FzHDv8WrqgqivkWZguDxn2pRnGH1/bD1eKIjY4NYqsiOYWKYNHKDur0O
+         iSNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756925979; x=1757530779;
+        d=1e100.net; s=20230601; t=1756925981; x=1757530781;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6wz/bZSqqVx6pRJeL2TZzvIUdrr6/vXiyt+C/9X3zJM=;
-        b=K8+kUcT4qdmMX3topUW7tdvWBXMFvNQao4t+RY+SzKP5RXUcL24e1Fjks1XdT8dFzo
-         wZxW/2dDcCmQSQ4Dw1n7gfhSLo3Bvv300WRsWOHC3zORqIF29Xn+a/bJwY0mwv8JX4Qt
-         IctCjPmYGZm0jXyfR9IkuBa2e+BeVIUg2aQUJqrUAlN2r14dFAhaq44jLqC4nIkLqYxP
-         AiMyZGvgodP3poPourxO5KXZP7HyitBSvKxzbQVD3HFEGq9xfOaPiqmI2qOYuBj9NLse
-         raokja/pHFrS02mVw23M5jdZJ39ss49FPx0G7I8u64aGU8lwGEF1I/JSM/CST/y/lr6s
-         VrYQ==
-X-Gm-Message-State: AOJu0Yz+tHR3OiTdeuv+KfysYff5KPt6uveG9WTuyuC/K2mHz5LR2b1z
-	EpTDXdMqY/xBlVyKncytWrHrJXrmQsG1H8EEEppp3RjRmNaPreAnPeR+vWxNhA==
-X-Gm-Gg: ASbGncvyVGg+vQWGYpf8BYJX9GixU5H6Lv5Ul2XvrNPafaDgCbVQMd87y0OXtTsFQi/
-	iQ2aKSomvnpCDU3g7DsdTEUNUFXwHWwbJs3p7WDqBj5Dd8mP809U/1kUv3vshbsFX1/c2S7Nwbk
-	KwtuTL/E39AAhSu/IK4XhXV2YqAVQyQ4VqeyTrsg4rLWa2XBJhnxbjBvvvcJHDpzMtfHVjHXPpY
-	KYqPUTVgG+MVSt2nkbzrvw2q1J8/7exF+NdwX805o7f2EK/b99bkVwT0Nl0+NRvKCk1pW1m19WH
-	6vll1zJsm41/VBjAhdG8PF4x5iIO73T8G5i/9kB7e7KMtsiRtKbZBwdsDMZ430BZcGEKVUKMlLK
-	GYW6b8VAXVcIIxe1EMQvoYa+e+VrqHhxdG+21ehmYpg4esxxc3DW7mA==
-X-Google-Smtp-Source: AGHT+IFLYxGq/uXWczWSmoJ4dYmB1R4jOWZAcKlvb1pf3KqvOH6hTCxx8eQlFrsP54M7TPt133nTbQ==
-X-Received: by 2002:a17:902:f789:b0:246:d383:3964 with SMTP id d9443c01a7336-249448ac3c8mr239306545ad.18.1756925979423;
-        Wed, 03 Sep 2025 11:59:39 -0700 (PDT)
+        bh=tE4h8lAMatl8zOgx47ZsHYZprqFSGIay3bVnFsp5zpE=;
+        b=BkpPYN3Yqsb4ljjohsiDlgXYlZJHqpTp0N0FDNvySIjMYx2s1cfnNGFBUbleKHGKj6
+         Wkqiik6WrL2jef63pt9h123P8E3dsYqYs8mF6jgQ4o2danQAl4L2Xu6Xvst45fn1zvH6
+         k8Rx0lDvbYPFr1JAOeHbPYuc9UwucjYp4V/hHRlAb3vCmGR7G+yD9G6DE/mij3oFkbFL
+         RyOATYdX5v11Th7rN9VVcZeb9Gy2PeamUHThzNtZRgllmuSymiqG8gRNv2jb7d9UAnnn
+         8GT36kvj4ST6JgmBdwFV8zcBCU6SrkmJugEsm0dPHkRMS8bzdWmu53JGF47lgh5l5eZ6
+         MPww==
+X-Gm-Message-State: AOJu0YwTvl4/wmYZNwp0zdh5FAgvAYVy/+oQVfwgsoOIp/gomC14DFft
+	0O6qBXuXMN1Qi/YTu9g9P/8LI+Wr3NeI4HDiUkUPF9wfUghopZq53oUMQXLRzQ==
+X-Gm-Gg: ASbGnctNhMiwXcg79AdvwNsZXAJQSW6rqdylxXrNiV4mts/LNWuM/w3ia3KzuSehNhi
+	SGhQf5TPM8CllZHVhNZISf1kBJpYMWpYOXlD0IBRJbooyiQtjai7GsGvms3rI7jbUIIogNmIN/E
+	tgxbvJBAPCUcls9T3KZ+pHswecfMfhgOVRPT34ddwIAJ7yhmfyFjGnWox8NH1QwDMGiW5BXB7s4
+	70MJ5XXB7VlAQVAkIJJxtTrLQeiB7yhcnWNZWd00BW4CPKZqxzA/77jpki3bDUQIUFHK748zKs4
+	LYg+Ke6hnQJT+MeTH86anrZaMh1ZE8J0R1t+PUiL6g44+2GYaq8FJKXaWCzMs0IT0D4CUoRiSHl
+	pJIzQOH7KiwJQ/mSP7q6znO8VSmpeKNG9LeYsgJo88JiyE4pYC0i75tkmrNS3j+FN
+X-Google-Smtp-Source: AGHT+IFOzZVS9DP4L6Y226muKjeIB1JH5DNA05hxxzbj7ORa/S2amssbHzjMdMYqRSy3xMpxXA++JA==
+X-Received: by 2002:a17:902:cecc:b0:24a:aeb6:f1c8 with SMTP id d9443c01a7336-24aaeb6f63bmr166407785ad.43.1756925981346;
+        Wed, 03 Sep 2025 11:59:41 -0700 (PDT)
 Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-249065ab343sm169403475ad.126.2025.09.03.11.59.37
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-249065ab343sm169403475ad.126.2025.09.03.11.59.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 11:59:38 -0700 (PDT)
+        Wed, 03 Sep 2025 11:59:40 -0700 (PDT)
 From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -100,25 +100,25 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-efi@vger.kernel.org,
 	virtualization@lists.linux.dev,
 	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH v3 3/7] x86: Stop calling page_address() in free_pages()
-Date: Wed,  3 Sep 2025 11:59:17 -0700
-Message-ID: <20250903185921.1785167-4-vishal.moola@gmail.com>
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Subject: [PATCH v3 4/7] riscv: Stop calling page_address() in free_pages()
+Date: Wed,  3 Sep 2025 11:59:18 -0700
+Message-ID: <20250903185921.1785167-5-vishal.moola@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250903185921.1785167-1-vishal.moola@gmail.com>
 References: <20250903185921.1785167-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 14D754000B
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 03E33100013
+X-Stat-Signature: c66b1dcscfxqk9uukqkkkxngzrsmegeg
 X-Rspam-User: 
-X-Stat-Signature: 57kumjezmwpzcamb4dyy9qksr3rh86by
-X-HE-Tag: 1756925980-372652
-X-HE-Meta: U2FsdGVkX1+q2ACrITSNByLfCxYcCxWmKBJIQFbW8/O62qemiNAtGGnk/GwedZiyO5LC1iLS7FhSJiQm1n4q/lO9Y87EqIDTEey3Z3sD26iynSc3cEU5NNO41lQ2udkcHy8irypeaJQWjekiNQVSIfxanFwDBG8KfG3+vNP20GcsBUswKoPFI+Aak25kCsMom79esgjxHP7Jf19+cRWHw1K/1Xyv/PItfgmoNHOO685Uc1O3Mqq6lNpJc2w4LBMhvNyeESheSgAWUMME+oNtyr767ZI1g7sb+sdginHhwuG0wjQ5BwaDPcnZj2+Wq1KEkyovktnhnRXYMS51XxJm/BrNxeNUMJts8Ua2uRMyO6LxVJwrDhd6NT4gH8NjJdrQpcC2WN2nFGlUSVIHpqkG7YmbiDKy8oXwCjxov88I4ggT56/fZuh4HYQtN0x/UfdNn0OWiDWBKTpHqXbqq5sjOcbsDVx2VcemU97LIyNDqJuP4GzA3Ippdjw1/ArwR5+yKGNxjMDwnmnCjROZ9kHQ5KWEtfcKmA+0nrfOHBb7H2hQYOhqBQVlolBB1kV15Ccy+kBms8VZ16HSfsEfas4omw3zszn5bsAawvzWOTVaYFOZ9LQKwu4Rr8HPV6VA4N9ugK5cHJtpjKr5nylpqjmIv3wKzGQJnWF9l75tdaQhmLx5xjaSyMxNHk1uc1WP0Qj2+15IadZ/3jZb+916KDFBnGiBJDczM6YleFQRoSUtydf4loB0j+nBjTA/ATi0yCAwTEESXVc/HdpzM2mQo1+yZT16Ic75e0N83/Y9bAaNJx+2bMUwnWMgJ/TOB8fbHRzu3gB+H54jmVVpIXu698r1RVPaEQ0gNE7+NF34YfZ54qUEiZSOiev3lsgoKW5+gyoKjiE3fCloQA/hY8WCV8tX4bUyR7jsOxy+UK2i2wb8GNqE1D3QOdMwCYDq5kkuiisTAMm1IqhOELQjM8H0zAq
- 2LCq5a1k
- F3hNaHE2yM0YqLBvaa6yBx7ujwOIBbQ21OLfqHnZN9IVdmntoJYQ1gzi/W2BKBdyXEz3RZPF8qPk3FFaWHbZKSC35k9Xkv9wEN0OJRfWpDRlS6OAECDYtdSwfIs4B3ZxyH3sis43D4O1jXkIauV+T1E5wz/oBjEl1r2fcIBDTJ11S2cwpDy1ZHThxfuniecCDW/D7BasQtloI2kAPTi7DnilWkQ==
+X-HE-Tag: 1756925982-792120
+X-HE-Meta: U2FsdGVkX1+93BuYEr9zsZTY6RmAdB/P7gw8i8z6+/v2QJ5nwYy0irZPToid4E/PEvKwQVqW8OXXh1is9n5Qa6oCsRsXoffX+x9sl9NqVazTP8HD5rAM2nEkWhle6GojZrSHZAO03+/bBetVr/aQYxfXllONxiyL9ipli6tmLfHopjwlXSfEHjx/I5LMAxbYL7ObyGAtUS7/LHIt+MtYJDLkGI/2y+8M16C3q6oBhw0TOpV3UAzFMe9Tu0/TyFaV6G6uLZueJeKmQG+GdIe2uVEpYw5jXnUx41QK+aHcD1eDqsPxVJ5kNsFs/ZsZnF85pELoxJVfG8RTIiybI7y1bq4Dt0cyjgTOMjqkiBn5BJCTR/CfHhsOGL5WS+aSHpb5O/2B7xOW/dLWMzUrAoIP3iOhuoMbhvP1UMVfwOYWZ7FMuZ551IO5/iWcPlVCs3YaEbz4GcpmO6LBuY11QUi6+gj4EtTOBcD3gdeUfXlC4T3GmOWpmGVaonHto7eCKoumJMc5e8iHgSMglmRyl+idLpFlQzleMM/Di6GGay6MMWK9f2RabrxJyeEm0KaMyBduIrN0wcglM6Q5UwapLMINla2mLEILfuogNAzK5OWMHZHU6qeU6QEOwPTfyLWC59oXWob7fHnIAmGKLRDOksb9GG+vXUovPwL3ULx7+TaXNLFqjGY/yvkitba1SLQ//S14qgwWmLVE1NoqN56yjnQmJd4rt0N7+8mOWKOIHa1ptRTzoFBpMJT3AGhD6TErCTEMCH/0MwM0aK8q/4gd3ueetvpfOmSH4ZHiviREQvTmzyrcIMqUpJVkrNNvtq5pq99PzCsA6oildqUMI9AyjC5JnPfKyCdJ36XFGFCHBVBMdwLb5bXOshJOC8Wc6FKbTJKTK+g1AAGNay99rmUpBDJP6uf613C54MJQPoQ1sd6mbBk7IsNPtlHotEuCD5gZElSZiI4uVFbfzWloBvDRsJY
+ dUly8p4q
+ n/+nd1qNa5e2DqXUC0/DEldl3rPINr5uFwpu3O+DjbabG2B34Ew5DHWhynhWUoLgtO2tmBtK/FgoVCRyAM92n4qwRG0usj9V/fGXzplS7wHbknCB66Kvg1vftt+1QzVrkQ/GQcDnC0mJ94EN6MZJ2DE0maAqBOAQDQU+JzVaR/4Xzh+GWdM6aHKOYZ9B8DjJgo+AvCX5P4XDyrjQmXE4Imj1i9caY97BT07D5FJkB6bsBcNQ+6B5iETslxgXdpOMaKhB0C5ObDy09+FYEeTPr8fmAok7hgY/5K5RNTUWhYviRB+MCLdf4Grrrk78896WKp5OOYkdinOvE7GVWTnhIIdIDfBo+Z2Pvf4xWMsvIEDJnjDT+RpNSM17o47kOwFF2AtiJHHCKQjSb9XtJxJNJhAuRCEkQZDTvo1vJKr0bQdUSytShGJCLI2A3MLBK0nf8hC8OmT22fEF2SYNgb+H93wUuq5143ASAcZxSd8lmQPBbS9lGsvppGz2AsO1CzM9RbXp/YgR4ofu5DxzyKxQNrSiTxCAgMPfhI0HqU7mhnnUyN43WDy90phlBHA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,38 +131,32 @@ free_pages() should be used when we only have a virtual address. We
 should call __free_pages() directly on our page instead.
 
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/mm/init_64.c          | 2 +-
- arch/x86/platform/efi/memmap.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/mm/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index b9426fce5f3e..0e4270e20fad 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1031,7 +1031,7 @@ static void __meminit free_pagetable(struct page *page, int order)
- 		free_reserved_pages(page, nr_pages);
- #endif
- 	} else {
--		free_pages((unsigned long)page_address(page), order);
-+		__free_pages(page, order);
- 	}
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 15683ae13fa5..1056c11d3251 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -1624,7 +1624,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
+ 	if (PageReserved(page))
+ 		free_reserved_page(page);
+ 	else
+-		free_pages((unsigned long)page_address(page), 0);
++		__free_pages(page, 0);
+ 	p4d_clear(p4d);
  }
  
-diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
-index 061b8ecc71a1..023697c88910 100644
---- a/arch/x86/platform/efi/memmap.c
-+++ b/arch/x86/platform/efi/memmap.c
-@@ -42,7 +42,7 @@ void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
- 		struct page *p = pfn_to_page(PHYS_PFN(phys));
- 		unsigned int order = get_order(size);
- 
--		free_pages((unsigned long) page_address(p), order);
-+		__free_pages(p, order);
+@@ -1646,7 +1646,7 @@ static void __meminit free_vmemmap_storage(struct page *page, size_t size,
+ 		return;
  	}
+ 
+-	free_pages((unsigned long)page_address(page), order);
++	__free_pages(page, order);
  }
  
+ static void __meminit remove_pte_mapping(pte_t *pte_base, unsigned long addr, unsigned long end,
 -- 
 2.51.0
 
