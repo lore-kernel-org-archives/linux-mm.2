@@ -4,141 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C673ACA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 04:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 927DACA100C
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 04:46:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA2658E0008; Wed,  3 Sep 2025 00:40:53 -0400 (EDT)
+	id D39548E0009; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2C198E0001; Wed,  3 Sep 2025 00:40:53 -0400 (EDT)
+	id CEB458E0001; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCC898E0008; Wed,  3 Sep 2025 00:40:53 -0400 (EDT)
+	id BFF1D8E0009; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A64928E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 00:40:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 04FCCB99F5
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:40:52 +0000 (UTC)
-X-FDA: 83846688786.07.812D642
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B8642C0004
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:40:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="g/0NYcxN";
-	spf=pass (imf10.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id AD71A8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 00:46:13 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B9BF11A211
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:46:13 +0000 (UTC)
+X-FDA: 83846702226.28.4C73A36
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7854280006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 04:46:11 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MwyoeGeY
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756874450;
+	s=arc-20220608; t=1756874771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nFKFd7BRRcC6ayNrWC4OEZv5/Y2ehiWbsueptb8aZyE=;
-	b=Q7CagkChqXiaIjktzDRRDNqoYPm/QY7k+/EFQnTp2NJ60DgjZzHiDhqZyqHuFi3p4CTJmL
-	wa2TuQpqd9S2xFQBo4/rMKnbJUJ/khxZI2/pN9aARbUZcDG/Thoj8lZEyEAPIUTJMlAZvW
-	tIcHRfSKis05X5kvWBAJOqjtobagHtM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756874450; a=rsa-sha256;
-	cv=none;
-	b=73s1hLWaXBc9gJeFPCyeF+bUb9Sdm8I8Li36nyE20Pn7wOyrjMHVMXUqLaoDgs+YUTY1xw
-	6XFszcgiKe8RylAD7mVkzLvDNgV86qDKnPVMnXgDSTQZ1boK5A2ynXVCuuhtusaVMzOSij
-	20nyMPxufWUbkw9rpLwKJZ7tvTDmOcQ=
+	bh=YBIV2Rq6nhfDaht+Xn8FKJDk3X7/E1Il2Cd8F0Qu5yQ=;
+	b=HtF3i5ykKDjAufNCKYrmau1R1Tli/25OHDdHO//xvDqIKpwiCmpaUlZf2ubiuaUB/8PUrO
+	oJZZD4WCTNRJZLOaN5mcSpmsSDAT5Lf389u4lNAQfMvlQ82GbIL+pBMqeHXTdaX+Vodn3m
+	UPYDLDiS1gwTDTr/hx2qWxKx5H/Oru0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="g/0NYcxN";
-	spf=pass (imf10.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756874450;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nFKFd7BRRcC6ayNrWC4OEZv5/Y2ehiWbsueptb8aZyE=;
-	b=g/0NYcxNSEr4GgYqXVxw9p+peUkNR9aQ133p1ox4aYurC8k5T1oAtJ+1mdRml9O6ZXmJ9r
-	vwQUH+o4z7IfwkB1CNqOsJAXI1o1j2aWVO0hx9hM4hv1T+AsqqnhXr1IkVF3K1bHQu5qjQ
-	Ay+cx/MWO6PSfbR9V8+VnXHiBQjWVjA=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-zpsSxfeUOVawH7u6NeGAVQ-1; Wed, 03 Sep 2025 00:40:46 -0400
-X-MC-Unique: zpsSxfeUOVawH7u6NeGAVQ-1
-X-Mimecast-MFC-AGG-ID: zpsSxfeUOVawH7u6NeGAVQ_1756874444
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-337f3ee628eso7600731fa.2
-        for <linux-mm@kvack.org>; Tue, 02 Sep 2025 21:40:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756874444; x=1757479244;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nFKFd7BRRcC6ayNrWC4OEZv5/Y2ehiWbsueptb8aZyE=;
-        b=fxy0eXN0DnMs93rXdoMPr49FPQLXacQaYkezLN0+gmu6k//Fkx5pPermpPQTWyZ3MX
-         HKY0DV5mlDG6fgytgmo5RiwqQgeTbx8nEovX3Ek4vsHvSzexm0OyyVEZH5oVEu13fWXS
-         YV1C8mgsEvLtDMtWzqd0Rm8rz/M6CDma4zG8uQBGFkNKGajnh19Kh90RIeS57u6UWged
-         C1WnGnIpI/bEE78dsPXX+BffM2TpHoI9wrEmsU29b9h+Rm2HrJww72Ux3q2rNrkxoI2Q
-         lCMgD7Q4wT26nILtm/lkT0fa2hTn8Q1ZbeqNnXm/XD31mwlTZPJl9FSHCXDaTD7J1VuC
-         /0MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUetAvRrn8fNNk4teXyTNqgqWhEKWTiDsuGnJG7HXTdVDMCYdfxHoLlAxRjykJVMUhO+iFGmEhFnQ==@kvack.org
-X-Gm-Message-State: AOJu0YwtJ8U4OOGmfiucy2fkbiMaTShfAZjD0nlsqsFhSs5zNktC3Fm2
-	0SChOjyhWcHJu7J6JhVL1zSWk7CO226aNs+SVOZgepxG6V4b+WPaG7QMNrJsmG+gWZMxoavKbRn
-	SIDH4W5BwzQunX9FaaFcyVDgyl9SwrBGpOTC/Ih0i9IIkRZQfgRY=
-X-Gm-Gg: ASbGncvH2IEvWid/nyYnaT+JmJpp3Mrz9Vweo9EdrzHwy/UaTJunDjraS2zKLpmzNGn
-	8YfDvKd7PsptlGzAD1CYlxqSeClPT5n+ClC2YnzewYhMdYw77greClKdbmR7Pzo1hzpoaqdPp8r
-	fP1XLY9vbwHV0zVT96fjqqtrNtcBXSKUgxHy1myIhXoDK7+pf2VGsMteeMOH8+Chl17EKgMEaqc
-	QlUbmwp8s1YKzReQtirV++E50em5vOfxqd3GbR7iSlJECVSzOM24sLBtC2AfX1LHzj2h5in/YUW
-	cUf6lBIy7n8JvfJMsfFSGI1WrxLWhyvlXqxP7UlN3jpjI4Vp+8DnClWiLLakY5DCow==
-X-Received: by 2002:a2e:a990:0:b0:336:e1d6:8920 with SMTP id 38308e7fff4ca-336e1d6917cmr23417411fa.31.1756874444351;
-        Tue, 02 Sep 2025 21:40:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEB9QYuRkeTjERXflES7M4qiiN/3BjWaFP3YSaUZpEcyOTHs10oLde5VZHbPVXv9pkoXi4/XQ==
-X-Received: by 2002:a2e:a990:0:b0:336:e1d6:8920 with SMTP id 38308e7fff4ca-336e1d6917cmr23417061fa.31.1756874443807;
-        Tue, 02 Sep 2025 21:40:43 -0700 (PDT)
-Received: from [192.168.1.86] (85-23-48-6.bb.dnainternet.fi. [85.23.48.6])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-337f4c50f79sm7951591fa.1.2025.09.02.21.40.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 21:40:43 -0700 (PDT)
-Message-ID: <ea6caec5-fd20-444c-b937-6cab61198c46@redhat.com>
-Date: Wed, 3 Sep 2025 07:40:42 +0300
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MwyoeGeY;
+	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756874771; a=rsa-sha256;
+	cv=none;
+	b=mnj8NkLSiSpZ6uEEFms/J+fq92j3ncgI3qwuZy3idr2/E0pUV/6Xkne7fsbS+xMQ4WkEsv
+	7xpPt8EV1gbm/E2qMQ3BRdh5pi52lP/aObOkcAWgpXyrNRldZw4Mh7oSWK8btvre27gQ5j
+	HEIggSx9E2iv04MsHfODpHVxlKIlBWY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=YBIV2Rq6nhfDaht+Xn8FKJDk3X7/E1Il2Cd8F0Qu5yQ=; b=MwyoeGeYDysnGGXNZz+O0/g4jV
+	z5ER5viBikaFx+wIz5kbIl9PG9kmg2E59NLsrndZUqCnBZeCHPRSSni+epRecdWciLKIuNr/a1FZd
+	Wtj3FDf0nzg4Jqw/yu+OYOXratjiSQ/+IOzJIlhCNGFZk7mdqji39t57n+YPbTBkaKb4DwahhwljX
+	XBqksxgksdRSvLnd0H8EVeVT8M3RzUjYfMqatCS9Y7zeZPDXziJOuJ6nsSeYW9Yw6F4tKy3WHo2q0
+	yCCWTfWQzOR/E25XfdjRs8hNUHlUs/JMA6Zv50+/G69bTe0wckvfPBV51FayrvnVZGKsxBWwSp2tg
+	/89rZfdg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1utfNp-0000000FFuY-0MbQ;
+	Wed, 03 Sep 2025 04:46:09 +0000
+Date: Wed, 3 Sep 2025 05:46:08 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Subject: Re: Where to put page->memdesc initially
+Message-ID: <aLfIEKLqpe_xB7mW@casper.infradead.org>
+References: <aLc_nckaDc2ePRv7@casper.infradead.org>
+ <bfd5161e-c76e-4a0e-bc1a-bf7510868827@redhat.com>
+ <aLdcPeb8zrfDwd2p@casper.infradead.org>
+ <20250902211514.GQ186519@nvidia.com>
+ <aLd8l8v_DL75NU43@casper.infradead.org>
+ <20250902235740.GD470103@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v4 05/15] mm/migrate_device: handle partially mapped folios
- during collection
-To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: damon@lists.linux.dev, dri-devel@lists.freedesktop.org,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20250903011900.3657435-1-balbirs@nvidia.com>
- <20250903011900.3657435-6-balbirs@nvidia.com>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <20250903011900.3657435-6-balbirs@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7cCs_ZqSpmamF0B7uZw6yx1NqITczt0RmajcErd-MgU_1756874444
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250902235740.GD470103@nvidia.com>
+X-Stat-Signature: ix16npu64ni8sctstdypbmpx8nys8ro8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B8642C0004
-X-Stat-Signature: ep7itf77hjw7izpe35ymiaypr1yrdcib
-X-HE-Tag: 1756874450-958997
-X-HE-Meta: U2FsdGVkX1/nTJTlA6mA0hqwfw6crCv2qSYLvGHB13QSNtUFg4vd3whzg3/9sdqFjl6fWXQHVrmmDroQ3CXFQlYowrcRBDjNXrPpDNTrGcJGZXSVPt6T2t3mfq3/Jycrr+9PaXnB/Dsn/bSqpnhonPYEKcufu+VfDHzHyDx2dR646zwPDIeBUzvkACW9yvHMfojHyUldoLXwlE0hfi1VMwOt3innFhQlv6DGw0P6WRQGs/jkIB3TYK/DmAKWpgYY2IrQNQCAApie0nJbx4Z8xhr+EFl7HlH7hgsSRgDsHXw7f5HT7LA2g2VNSRSiXeA3hlVa5E+EcY3dFlxZr/oJbUpARYTKiFLOOqm4XpO75oz2dwtgLoKSNLKs2NImJc1z0KSt2c37HIuyUYg4yMfRgu/JgIgNvuFoJQhzGz3DCZQLeBbEQg8JWGlruSXDAbH+LHkhUfGhqQRxGSb7glyFlhDfu0IAS7LUhJGsnc7gxWfAOVbV7MEhcx2wKO3pRJLrPBUcefw5+8DphpCHveRbkucRinSL24Og38DG0v3ut/PDHEkIf94RGve44ketK89GJ5ZuXA18iyFYfS9hTUkdaQlt5C7kSYr314ovObRiAmQZnzITqOVtzZOdI1fZ4Jd53hzX2pxnNSB29iRk+/0HZqXhyrx1vsT5QkFWOVXJ4Dgm0iD53O8ico1Ma/IlqljLbhwea8B2gjzltyQ3R4ppTbw9NCJh8a53fXIe0xRZhF3/nySP8MeO0hEWclxvhEm5Voc/sWnvW9vQTu1tOTRQASeMhhhHbRVp+r0eIiXFnHXZItEVjTdK6UpXqQijuX4lomy5nkc51ltaEzKW4SiGbFaEvM4vuWOdlxOVlDSlPewWjyuyF6hh3mRwpP9AaVhc3iCKP3DRbg+4yx//8u38fqyN3TgVQLryLka5LrNGp+IBY4Pg1FSmI4f5+l345VY+hprDGz6VR52Xi8LyxLq
- +qrz1+bG
- SrcD6erdVZ1Pb5kx5fIRI/shWBn98cajqc+MNka81tTRTxnfF5Ul0BOjt+w3Jz1Cu5uYs/SW88+LJtQx+Q+IhFvmBufFcq82ZqACwnF4FNg0F3hVg19CKfw5wzmOY/WusGnSha6tdwddtRm5DvBpoud86cAPgwGQKphfMjv3oj8CWZeFoKEzGveb7iU4w0j2e8vBMn4sHbWZMlF25BPFIEtsYOKywVgdEq5jnwApI4xgBtUp2m+Kz7a571plPHHusAf7/cUF83DFDB0NLv3nRH7yu4C5awvwEM2v5dIr9/w4f/lSHqPKjJtzPYmAXmVw/K1/NOOS2n5eg2ocN0jL4K4rrdp9xFeEbZ/BxQVJSRbe0GsptjMBZwijh/4GgoYgCFQg854yWS2gc0u4XnefNs7ZN9SHAvka/6M9YK7+YM8ibLCI6npbJgpN77XMZZfka6B1JFt4gLP8Q3dqNt09D89ErI4+tIxP5EjJBU4J9EeOIaEltITiMo3ttcir0M4u4UayUxu8rXwIC/5gs7wEaQEEYgiqzqTJ2dcFy1qHrSZIF0UGliOh7wiYIfrXXpfqNlsY9u9MtNcaLpPLlJUySZDaLiAuNWrue+ny74eLWUlkJvTgZQkbsxknLibtPOzCmANTKupUXD3CLBHgj6MIFQVijivRzmpy8pkMXouGuo2FJ2YYFazJOZoDSpIHqzKVRfKw9YIoAANHMzY/i6fpN3LbcDRgsdq9QMwrkQXGf3UoMZQY1BIsUlfnT7jTjTCfdN+2y9b6yf1Bj8pqanau4oaAu86FQw5ewNAtLbs9XVBPKJobCLxeCmCIE0lXlNQ4ERqAN9+p9OlCXdU0trd/agiw/QOxWmL8ykhPg79nVoFM9wITGT3Vlr+RtQg0mayU85ceFH7xIedTS7rog42DmqqmBRiuuFmrAqJrF
+X-Rspamd-Queue-Id: 7854280006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756874771-173993
+X-HE-Meta: U2FsdGVkX18Qm0UTGVx7p+8ES2A0mpueW7+21n9OUk79JsE1w6/rCuCwKV7yH5qFHA/bk8qUrIrqJ6cOPAT49gygwY/ohP1c5aRfp5c42myS5TSQ+EEbNHbWcoK1ieDEUkb9UCIj2J8gxR2kgmVDYv2Z8MLeAkKyh0HpYLuL5TDFngXXECrTNwcnnxaJhhjYlVLe7AQTvmiLue9ZVly7XPNw1Of7HQW2bH/YaW8mjtoYYXzClUwctcSuxIwfm1+xcf3sv+4e/ik+HggaC2qn+OhXHiriedZXi4bsOJlkfuxPdMujZB4LHH1sFTYugNcf4O4Ks7TNakGWTeAXVE3Z0QGeDHVN5HeZW0Z7DM4waSH8gq7TilwkxoCvygDKzU9miitJoSPFgPN2RwDxrNyMNOW4SHvN9CGT6Fy7XPtg+sfsFVZLMfQo2dIno1OiSBJTPYNrfxo8344quf5/9mX7hg/Gt+LuEdLYGNAt5CFcm9KTJMFxx5bjTYrEkTjkR7+BBb+6Odcs2vfpAG2Xn7Z40vVYe+EGuozTzKEcr+gXEfjbzV9LzoDgEcJ4V04lFVp+DCEFq7CazouTS+lrf73IQi7sIvI46+IZuvm3syoeXGJksxPGjpiRzG8/FSWnmRXHe5r5pg0zxRM7jUBoD4p7IEb2R81KNbBl9ntqfTSxWiJfKLVAoMmdX/2Yi5QLHqXBxt65H3GuavjgHOMRyuEy/CY76SFLbuDRv0b2Sjw0BvH8zt5Sd8HwriDGttdUgQ3ysAAbjpk1DSPpsVuZrJz4LmPx3mq6rtO24noF7pLCoBrFlrDsXWJ1fv5U+rR1Xynky4ie65p/NeGiYIcyvZVS7uZ+DIKdKrKKWx1l2/b8IqwSTaDY+C0DH0R4ziGnbi/DE/N0Uiy2yWJ856HmMajBSfGRpscPUcuSITiK3FLr/6ghhrcQT38i5KUfGGla4Avn/XSqSrVCsrFA5GklnP7
+ JFd6/dfi
+ TNNRkaB1J5ZrN6XbBY1HE7Xy55Cx5aPPXsvd3ibsMONgiRdkLdH0UWrYL0rpRuNCR+aLaUtizaUsvBzVvlNgBv933G8VyxYYDyV7SLL3JP7XFOYaGR08VHsk8ao8SLSHXZ3NT/lG3Yo6ZcHwCKChhJ/uaahWkTC7a8DwFwqidbNmUM4Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,177 +91,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, Sep 02, 2025 at 08:57:40PM -0300, Jason Gunthorpe wrote:
+> On Wed, Sep 03, 2025 at 12:24:07AM +0100, Matthew Wilcox wrote:
+> > On Tue, Sep 02, 2025 at 06:15:14PM -0300, Jason Gunthorpe wrote:
+> > > On Tue, Sep 02, 2025 at 10:06:05PM +0100, Matthew Wilcox wrote:
+> > > 
+> > > > I'm concerned by things like compaction that are executing
+> > > > asynchronously and might see a page mid-transition.  Or something like
+> > > > GUP or lockless pagecache lookup that might get a stale page
+> > > > pointer.
+> > > 
+> > > At least GUP fast obtains a page refcount before touching the rest of
+> > > struct page, so I think it can't see those kinds of races since the
+> > > page shouldn't be transitioning with a non-zero refcount?
+> > 
+> > OK, so ...
+> > 
+> >  - For folios, there's already no such thing as a page refcount (you may
+> >    already know this and are just being slightly sloppy while
+> >    speaking).  
+> 
+> I was thinking broadly about the impossible-in-page-tables things like
+> slab and ptdesc must continue to have a refcount field, it is just
+> fixed to 0, right? But yes, the code all goes through struct folio to
+> get there.
 
-On 9/3/25 04:18, Balbir Singh wrote:
+Once we switch to memdescs for these things, they no longer need a
+refcount field.   By the end of Page2025, plain pages have a refcount,
+but folios/slabs/ptdesc/etc set the page->_refcount to 0.  put_page()
+moves out of line because it's really complicated; it looks something
+like:
 
-> Extend migrate_vma_collect_pmd() to handle partially mapped large
-> folios that require splitting before migration can proceed.
->
-> During PTE walk in the collection phase, if a large folio is only
-> partially mapped in the migration range, it must be split to ensure
-> the folio is correctly migrated.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: Rakie Kim <rakie.kim@sk.com>
-> Cc: Byungchul Park <byungchul@sk.com>
-> Cc: Gregory Price <gourry@gourry.net>
-> Cc: Ying Huang <ying.huang@linux.alibaba.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lyude Paul <lyude@redhat.com>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Ralph Campbell <rcampbell@nvidia.com>
-> Cc: Mika Penttilä <mpenttil@redhat.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
->
-> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-> ---
->  mm/migrate_device.c | 95 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 95 insertions(+)
->
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index e05e14d6eacd..e58c3f9d01c8 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -54,6 +54,54 @@ static int migrate_vma_collect_hole(unsigned long start,
->  	return 0;
->  }
->  
-> +/**
-> + * migrate_vma_split_folio - Helper function to split a(n) (m)THP folio
-> + *
-> + * @folio - the folio to split
-> + * @fault_page - struct page associated with the fault if any
-> + *
-> + * Returns 0 on success
-> + */
-> +static int migrate_vma_split_folio(struct folio *folio,
-> +				   struct page *fault_page)
-> +{
-> +	int ret;
-> +	struct folio *fault_folio = fault_page ? page_folio(fault_page) : NULL;
-> +	struct folio *new_fault_folio = NULL;
-> +
-> +	if (folio != fault_folio) {
-> +		folio_get(folio);
-> +		folio_lock(folio);
-> +	}
-> +
-> +	ret = split_folio(folio);
-> +	if (ret) {
-> +		if (folio != fault_folio) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +		}
-> +		return ret;
-> +	}
-> +
-> +	new_fault_folio = fault_page ? page_folio(fault_page) : NULL;
-> +
-> +	/*
-> +	 * Ensure the lock is held on the correct
-> +	 * folio after the split
-> +	 */
-> +	if (!new_fault_folio) {
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +	} else if (folio != new_fault_folio) {
-> +		folio_get(new_fault_folio);
-> +		folio_lock(new_fault_folio);
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  				   unsigned long start,
->  				   unsigned long end,
-> @@ -136,6 +184,8 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  			 * page table entry. Other special swap entries are not
->  			 * migratable, and we ignore regular swapped page.
->  			 */
-> +			struct folio *folio;
-> +
->  			entry = pte_to_swp_entry(pte);
->  			if (!is_device_private_entry(entry))
->  				goto next;
-> @@ -147,6 +197,29 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  			    pgmap->owner != migrate->pgmap_owner)
->  				goto next;
->  
-> +			folio = page_folio(page);
-> +			if (folio_test_large(folio)) {
-> +				int ret;
-> +
-> +				/*
-> +				 * The reason for finding pmd present with a
-> +				 * large folio for the pte is partial unmaps.
-> +				 * Split the folio now for the migration to be
-> +				 * handled correctly
-> +				 */
-> +				pte_unmap_unlock(ptep, ptl);
-> +				ret = migrate_vma_split_folio(folio,
-> +							  migrate->fault_page);
-> +
-> +				if (ret) {
-> +					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-> +					goto next;
-> +				}
-> +
-> +				addr = start;
-> +				goto again;
-> +			}
-> +
->  			mpfn = migrate_pfn(page_to_pfn(page)) |
->  					MIGRATE_PFN_MIGRATE;
->  			if (is_writable_device_private_entry(entry))
-> @@ -171,6 +244,28 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  					pgmap->owner != migrate->pgmap_owner)
->  					goto next;
->  			}
-> +			folio = page_folio(page);
-> +			if (folio_test_large(folio)) {
-> +				int ret;
-> +
-> +				/*
-> +				 * The reason for finding pmd present with a
-> +				 * large folio for the pte is partial unmaps.
-> +				 * Split the folio now for the migration to be
-> +				 * handled correctly
-> +				 */
+void put_page(struct page *page)
+{
+	memdesc_t memdesc = READ_ONCE(page->memdesc);
 
-There are other reasons like vma splits for various reasons.
+	if (memdesc_is_folio(memdesc)) {
+		struct folio *folio = memdesc_folio(memdesc);
+		folio_put(folio);
+	} else if (memdesc_is_slab(memdesc) || memdesc_is_ptdesc(memdesc))
+		BUG();
+	} else {
+		page = compound_head(page);
+		if (page_put_testzero(page))
+			__free_page(page);
+	}
+}
 
-> +				pte_unmap_unlock(ptep, ptl);
-> +				ret = migrate_vma_split_folio(folio,
-> +							  migrate->fault_page);
-> +
-> +				if (ret) {
-> +					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-> +					goto next;
-> +				}
-> +
-> +				addr = start;
-> +				goto again;
-> +			}
->  			mpfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
->  			mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
->  		}
+... there's probably a bit more to it ...
 
+get_page() probably looks similar.  GUP-fast obviously wouldn't use
+get_page() because it needs to be very careful about what it's doing
+(and it needs to fail properly if it sees a non-folio page).
+
+> >    you're silently redirected to the folio refcount.
+> > 
+> >  - That's not going to change with memdescs; for pages which are part of
+> >    a memdesc, attempting to acess the page's refcount will redirect to
+> >    the folio's refcount.
+> 
+> My point is that until the refcount memory is moved from struct folio
+> to a memdesc allocated struct, you should be able to continue to rely
+> on checking a non-zero refcount in the struct folio to stabilize
+> reading the memdesc/type.
+
+Definitely once you have a refcuont on a folio, the page->folio
+relationship is stable.  page->slab is stabilised if you've allocated
+an object from the slab.  page->ptdesc is stabilised if you hold the
+PTE lock or the mmap_lock ... we need to write all these things down.
+
+> That seems like it may address some of your concern for this inbetween
+> patch if a memdesc pointer and type is guarenteed to be stable when a
+> positive refcount is being held.
+> 
+> Then you'd change things like you describe:
+> 
+> >  - READ_ONCE(page->memdesc)
+> >  - Check that the bottom bits match a folio.  If not, fall back to
+> >    GUP-slow (or retry; I forget the details).
+> 
+> gup-slow sounds right to resolve any races to me.
+> 
+> >  - tryget the refcount, if fail fall back/retry
+> >  - if (READ_ONCE(page->memdesc) != memdesc) { folio_put(); retry/fallback }
+> >  - yay, we succeeded.
+> 
+> It is the same as GUP fast does for the PTE today. So this would now
+> recheck the PTE and the memdesc.
+
+Ah, yes, I missed the step where we recheck the PTE.  Thanks.
+
+> This recheck is because GUP fast effectively runs under a
+> SLAB_TYPESAFE_BY_RCU type of behavior for the struct folio. I think
+> the memdesc would also need to follow a SLAB_TYPESAFE_BY_RCU design as
+> well.
+
+I haven't quite figured out if _all_ memdescs need to be TYPESAFE_BY_RCU
+or only the ones which either have refcounts or are otherwise
+migratable.  Slab should be safe to be not TYPESAFE because if we ever
+see a PageSlab, we won't try to dereference the pointer in GUP,
+pagecache lookup or migration.  I need to look through David's recent
+patches again to understand how migration is going to work (obviously
+we won't try to migrate slab pages).
 
