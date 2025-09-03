@@ -4,113 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65023CA0FF2
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 07:46:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18821CA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 07:49:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8E268E0002; Wed,  3 Sep 2025 03:46:52 -0400 (EDT)
+	id 6A2288E0003; Wed,  3 Sep 2025 03:49:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A17798E0001; Wed,  3 Sep 2025 03:46:52 -0400 (EDT)
+	id 672768E0001; Wed,  3 Sep 2025 03:49:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DE618E0002; Wed,  3 Sep 2025 03:46:52 -0400 (EDT)
+	id 539EB8E0003; Wed,  3 Sep 2025 03:49:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 77B458E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 03:46:52 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF31F8558A
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:46:51 +0000 (UTC)
-X-FDA: 83847157422.12.1525F39
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BBEC8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 03:49:14 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CF6B885EF0
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:49:13 +0000 (UTC)
+X-FDA: 83847163386.23.E344EF9
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C43DE80006
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:46:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZWtjDNvd;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8B24B80006
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 07:49:11 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DP+Jdxs9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756885751; a=rsa-sha256;
+	cv=none;
+	b=Tgy08n1rHVPbFZe9b5R++VC1Ms22dDqcbZcvlDMKv78Am7x1mNELZ0BeO+ck1QWG60PLKG
+	Ns2atioHzKSZQFjSHHGzElUvc4MmbJxYsqZJAVvBwtrq1DWPgfkIfhR4n7T4mWymlIzq+o
+	mLsKy0ABjiFk5ydygVhgW+wfXUWMmWU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DP+Jdxs9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756885609;
+	s=arc-20220608; t=1756885751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aShlhK0M5I/4dFVaTyFFcCXOwiHo3P/PmXViFObtfNA=;
-	b=wsaLnpfOnKVujaHA3/dwroh7DduZHBIzPt4izU0Qcr7pAvP6WvrWRtvghfeAirAvc3R1RN
-	yKyqNi60XirD7t7XaaIjPkbXhsCfU1dGutYCoHWpXOo0oW58oJRgtbPqh4D4ROTbGiFP05
-	fJzQ0fwQF4XwgDmzsyHo0Rh3K+bebAU=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZWtjDNvd;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756885609; a=rsa-sha256;
-	cv=none;
-	b=JPIktKFbqHt2Lo5sT35r1BzxsaTKqpeG4uIDDtZS1b4jbpa+jQAdAHDYq4sJS1jnAD04oi
-	FQ1Y4KsZnHD5j+oujEWDZHmzFkUE6XLXD8LS7EgAq6pxER5zE1NO+K8OjFzG0tVgab0Gop
-	LeU91wd4gRuI4W7uGoyPp5Vh+ZNitK4=
+	bh=JtjZS3oI1Ds2ec1UKAPpV4aTFHH5FBSt1NM1wfVNoVE=;
+	b=d5RdgLvaeFxeJndA4W6lzaQHKXlZnF3zh9tII06e2wPsXtCsuEgqH3GfOiAB3s0Iw65XGQ
+	QiF6Mcx22wlODTl+Q3VeV5piV+uSOW31S7fE8RitdHXt2ftTwuQKDqlTlEDSSGBazx4ZWZ
+	vXrvglwzf00T+hZU2eCf89+33IoZJak=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756885609;
+	s=mimecast20190719; t=1756885751;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aShlhK0M5I/4dFVaTyFFcCXOwiHo3P/PmXViFObtfNA=;
-	b=ZWtjDNvd0KDnXiEQrcWgdp16KgNDXk80TIXrkaISZtnfqlAeQs5ezMKU76VxgPQWrpgYXm
-	JelOER1D76XcPcLpAa7nlcso8KVRxjd3c8X6b9VlLUI7fuIpAQ7NNmEYoYLpXjUQz9U/3X
-	JA9UvFXcPuVk6Hr96lyMlL6wQmZpZNo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JtjZS3oI1Ds2ec1UKAPpV4aTFHH5FBSt1NM1wfVNoVE=;
+	b=DP+Jdxs96PQDK3Cg+NMfUCwTIA7a7WVbpwZBYQL7v6eMhg0IBA64DAGqo/1bVNc5lc4nI6
+	R2FeGbQo6dI/ZMtNNxxIxR+FzEJnqCTkm5kYpZATCQur/ZfG1hplgMu8sdxAG82a+8489e
+	Ej0Tk0EIv60wBN9MJWq5Of8kz3L/RA0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-fFfHjnmKNa6ejwz3P6iEWQ-1; Wed, 03 Sep 2025 03:46:47 -0400
-X-MC-Unique: fFfHjnmKNa6ejwz3P6iEWQ-1
-X-Mimecast-MFC-AGG-ID: fFfHjnmKNa6ejwz3P6iEWQ_1756885607
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b920e0c25so16217335e9.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 00:46:47 -0700 (PDT)
+ us-mta-313-YSFNhWH9P_uVeqEDOXlDkg-1; Wed, 03 Sep 2025 03:49:09 -0400
+X-MC-Unique: YSFNhWH9P_uVeqEDOXlDkg-1
+X-Mimecast-MFC-AGG-ID: YSFNhWH9P_uVeqEDOXlDkg_1756885748
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3cf48ec9fc1so3145007f8f.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 00:49:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756885606; x=1757490406;
+        d=1e100.net; s=20230601; t=1756885748; x=1757490548;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aShlhK0M5I/4dFVaTyFFcCXOwiHo3P/PmXViFObtfNA=;
-        b=SBvIOPmNAWUHyyFLrpSoCtUWIGl5n8xz6tYLh9Tq1yZiqC6ZjxRXj3gsCUEFZgVjq+
-         8Bk35QAZ6C28hgJYIksxl2hj2AWdmeOyDiQu3jAa2x0fUywXb8//t2PagIjWvCxEHhAS
-         CozNuvu+dT93302fiot1/YuyrZeTZoCGnVLC0c54sKwB+OFPJNkxWjEW8P2BoWugtfBq
-         vGtDbBm9rHrnJFAlqKRqt024LQ2mGa2kmUKkZ7wh2Qnyt8jtl+8qnRL6+LZqVEehfb1I
-         6dtz2mLXafhCUvWXBbF1Yn+iyVt9aOJCiW/g+vmSL/5dh0crRyaY+zu7Up72vslazFJ9
-         e01A==
-X-Gm-Message-State: AOJu0YxhhuIJ3dAVNsBLEiCrlHWVDCQ+UFpVLxMvf51r6rrBZjClEXFN
-	ka9AYcloG6/dlSqdBC7Kromc5tTBKxxPL7n9FP5AxR3oE8XLpPLnLWv72/wt+Qed6wlj/amiYTS
-	tAK6Er45DisgHfCkxwXatBwVmHG0IrgL7waUiSWK8MWaM+Rphfc8X
-X-Gm-Gg: ASbGncutE/lLn9UlDixEfJez764eKgIIZr468Et6yKFt1IF+p8sA6cUzhtua00aiZ2h
-	Ck8CbyQr17WQmF4j8ltEDVsnmOyTBTlYsqbKUg3sQsmu0s4Lyv/bELPfBmJrtmUfG0Mrldx9ifg
-	2HPPYFh5EPMnZxLpicTdMgkfovsON4pmMqfipkAt+cQUjmysLNR/K0Lnx6jv8GW9ACVcjWN4xfG
-	oUyis6hPpGwY0UNfk56kzj533t5mhsjCDYIVQjVjJy9Q+AOl8I3k44SYWIYp6sQiGdWx+A42rPk
-	QFvI0Yk+0DCEopLR9pCmNh0KdzM8hdmLdeuO1r7wp8ggCbokMWZi0UGHNhr649yoyAfMgaKDXK/
-	IXotlCe1nc9HB8iQy/M8O3Ihw68f0LC2HdVrWjG1xwk0pJ4cFcqQ3ElbxHCitHZRnplE=
-X-Received: by 2002:a05:600c:4f08:b0:45b:6b0f:caf3 with SMTP id 5b1f17b1804b1-45b8843e109mr99804495e9.4.1756885606515;
-        Wed, 03 Sep 2025 00:46:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcK11Fj01Y4VYea50OLhr0MjERaXU7HBpVg+QX6sa8pEoH5KpraGIdHQTkUtzFV9er9RgALg==
-X-Received: by 2002:a05:600c:4f08:b0:45b:6b0f:caf3 with SMTP id 5b1f17b1804b1-45b8843e109mr99804165e9.4.1756885605992;
-        Wed, 03 Sep 2025 00:46:45 -0700 (PDT)
+        bh=JtjZS3oI1Ds2ec1UKAPpV4aTFHH5FBSt1NM1wfVNoVE=;
+        b=v6ruVoJED9+5rZ03/Pz9odyiK//RAIVBtzXnCm8Oo/VcWVc+7zQh5ra6FpWKReIVE0
+         XpcffrJTJPL2CjnZxGSONOgrbmGqbLf+jgQxgg/i6qnfOauDlRbTX1CBMSslencX4+Qi
+         L85DjccOBPNrsFWEAqFqXQNceAXsusMjLsxrqqKqU2FvneGfGhVrSF2Ulc7IP14X3CGp
+         tVMjzkuzAM+Ygz/hjDibahYyOH1JuuHNaokwtz2nBzjeue76mTyqo5oH8BvPThPMsKUE
+         /9wI1fsVIoo9gPGkGWTHI9sEm6w9bBtx87Z0ybTnunX3if2Fpa6uIGffW8qahHAa0qVR
+         79Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDGrkSo+nOuvDeOqQqNLaNRpboTt4oDO6riLAITTueM0Sxi2Ya1G+v5ZtF5fCGwwuKREhbn+LQzw==@kvack.org
+X-Gm-Message-State: AOJu0YyLR8gGpmh6AVML1a3PwiJ9Pfe1zIqieZUiTFm3vLmYok8kWgU/
+	YZ7vDieJf5+fDq+hfuiRuwkemBPjBP/Hjb0Xukuxk2/s0CR2irMERZfiT0cdUxvMmwdh2d1GjT0
+	kwqc1IzS7ZIEvIHum+ehh6qyfBKpxpPPzT/t6rKKVlP3lmUqTpLemrf/tMkEq
+X-Gm-Gg: ASbGnctjvJWNWVQ3iIEjNhFpwJY1ZA0Gnvu4scPrcym9N+Ed/8uAZrq58Cx2c+h6FUp
+	j40uYqU097nH5+s2WA7yg/ocYF6+RZDmnWRVlYMxE/XPEKDgqK7SP7wJz7LrJt/Z1bSdl8SA6Ci
+	iO86TQucOWUdaDDGncqBXx6vhjTiT1/LYQ3E9Udpdabruil6MSVfoAW8eW2HjIOih/XzNVjzxC0
+	FeuIL+gSsR4rFKff1OAKwMlfy2yHevYz6Kfykxr0VvX1REYRwHAE0rv8333h/kix5f56uHFJnzV
+	GKqnbs/eGAqzYC5S1eHnLILgH6d+zIUdLET+INwf15ST63JrXObqO8+wIwY82C5VgUbXCMd8B4y
+	r1h/m6qaOIcZ9EFSjYSCeAXK14/7/CcZUvQxhidiYer/T8h1+g1ocrnbMjsl4Nwk4hbk=
+X-Received: by 2002:a05:6000:4282:b0:3dd:e4d3:d172 with SMTP id ffacd0b85a97d-3dde4d3d286mr1041592f8f.7.1756885748232;
+        Wed, 03 Sep 2025 00:49:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGUOLgBAUDmMz80z4OZdF860ZqnxqbWORYZdE1I9b8GTgj1H3cajVGrCdKRXxtWcIn72gKz9A==
+X-Received: by 2002:a05:6000:4282:b0:3dd:e4d3:d172 with SMTP id ffacd0b85a97d-3dde4d3d286mr1041567f8f.7.1756885747761;
+        Wed, 03 Sep 2025 00:49:07 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e8879cesm227680705e9.12.2025.09.03.00.46.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf34491a65sm22115160f8f.56.2025.09.03.00.49.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 00:46:45 -0700 (PDT)
-Message-ID: <b0ed22cd-ebf9-41f7-b5fb-6fb078db593e@redhat.com>
-Date: Wed, 3 Sep 2025 09:46:44 +0200
+        Wed, 03 Sep 2025 00:49:07 -0700 (PDT)
+Message-ID: <ea48bc1f-7ee7-48b4-b389-c3622fc4d3d1@redhat.com>
+Date: Wed, 3 Sep 2025 09:49:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Fix kernel stack tagging for certain configs
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Kees Cook <kees@kernel.org>,
- kernel test robot <lkp@intel.com>, Dan Carpenter <dan.carpenter@linaro.org>
-References: <20250902175903.1124555-1-vishal.moola@gmail.com>
- <f41383c3-913a-489a-82e6-d2c8d5519eed@redhat.com> <aLdOLQLjt-A1DBGi@fedora>
+Subject: Re: [PATCH] mm: tag kernel stack pages
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+References: <20250820202029.1909925-1-vishal.moola@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,21 +152,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aLdOLQLjt-A1DBGi@fedora>
+In-Reply-To: <20250820202029.1909925-1-vishal.moola@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: h9OI1yzdeoJ5FxEg490FFjcnEDaPJH63Ap-TGH7Uej0_1756885607
+X-Mimecast-MFC-PROC-ID: p4rm2nhtdNUCpnGXCP2gWrDQVDm-XiJkEeq6ghom8ks_1756885748
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C43DE80006
-X-Rspamd-Server: rspam04
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8B24B80006
+X-Stat-Signature: wm11uquyx1fw15zuwj636b7ehs5m3fpm
 X-Rspam-User: 
-X-Stat-Signature: 4puop6d9aqni9m5fq73r7eeq8umx38eo
-X-HE-Tag: 1756885609-819614
-X-HE-Meta: U2FsdGVkX1/97aO2159YhFELPMUHEGvZgLGT0N7NPkyllcc8lCLHJKEI1TS0VGCnVyXFL3RFPiJJ1H3Zt4siAkUeH7HEbKoZ+44NSBIqg2asFmKgadiTv3OX9M+87efvnqKLY6Ed5uVFNgmtuMfxPiZTcNczHFSlc/NOp4VtGvQMEl1MMA8pRhEp1clpgDNubWufWTbbUq4vdvkHZpyJp1xSN2yPQz7oiIvaw2bR4Kh430HbGJ2RfABBr9zQBdcePN8ux1l2aXN9ls3UCx/Xp/7aQDMHJUFLb/EvPFMYQ/x+oGk4PMoATMuAgYRleAevuV+yEcLfhLq8LOsGyp+s6tka/g0SlcjEW0tHASsSDA/FclFj6jiHkQ0etr7AL+asZAJepx45vZpy1Us2CXS7l4XE/T6VGDrtOEt4QwEM3I3sbzWKfDlw1UdYn/Sfcs0rV2hhNfLuXh3jCM/K4JjiQGmVMg6C2cTWAqfWFhaRdfr6qYRuRFN9AkJ4plFIL9nkz1T7mmTLuwYB8stWIlPO69lpD9LsSlG4JldZB2LNl/IfwzMiLIyKw8vSuDDlzfCRfnuaQ4OWcPCFx/JPpmrUe3SLjJ+Jjf9nUd6H9wFo9qAri72VnKunf3cBY6yJP3zFvXW6OgIWUiDGreJqiG0NR8wIP/kWZDt/gKaWMZ76fo4JbJ2NskXmPyK7Xctq8TP3hVQ9/niM7uA9nLlxaPZAUDSxeTqht0nW5Ly0y4GXq/Snt3wTTXr5bvyKxj4/UHMhULfllr4Nk9pdzsKikXapCXikPSsIYj3s1QP7WjmUnlVF3FogP8xsrYE+Vdb0W4QP635vwQPx5olm0jnRiN3ps5pFPcIUKxvyOgRJAWtTj45Tn8jjSKWJ8OXCNy+rsTpKCgGzE/DpTNTHYOXLl/ph9vVW+WpPVlACIbGIWypvs/FqNhoWMArxJu3exr4SLczkJUeG/8iGph/AVrfY+OP
- rYH8ynth
- KNL00fMdwkzfGKTvNn6jW7/LUnBym4VUQwPY0t4etb/6g0NK2p9fz6to1Dcn9Qf8P4m812NXQf4PpCJx31PSuSknUW55xcsgxrX+8ofqfjdQqYXU=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756885751-451913
+X-HE-Meta: U2FsdGVkX1/tnwQZ/8KXywxXlj6rDh3v70qq/mQhRmtv3hFWh4epYIrgo80amXKCz9iLXJXUNREfGIeHBoYhBIlYmVA+SyWbmRorLL1vpPHe20LfW3tC1nTSK605CjMzzKDmpgv9Q1sgUB6ZCsRkylhDRtLMtXMvfVqqUmhSkyI0PifpeHef7WMMuNqvKIzF2hOxGe9jhs/CCfzeB5gF8oHFV2jHNtr2hiL/GxtlSLmS+GKmKL1eArUaMAL1HjF7FJ3/oC3s8tez8BdAqz89jYdi/frkxACW1BglxpER4iArJm9Y1VaKNmBleaUmL0Ok0OXgPT5/gZSNz1rWeCBKS83RvSmR+wdOayD+viNWcR97mWFf/vFT0anL6q4q0H4kD9PB80hppZoc/Oxk39oKQw8o3rdAysuluNAjXlz897naoffrZnb+jxFmVEKnBLXUByjYt+kmsRK+cafnFR4x8KF+ZzK6/3bhNGTTVZFIvj+oo73c74iS4vV+r0QIbu8TEWNh+c9jhK6BShToEkuwsa4Ztthi02nBR1TJ1r96H2KmuWJR6rPPgX1Cv8/2gnjEy0s9Nr2sheAqIWq8WzGt7JspNyv2q/gQrY729VPFQwwxtYf4QRPZ5Ha698OOaOZMul8uCCv19K23D4ovdLSs6lYttRxWm7tpi+ccsJEMmM5b8pyw3cEOiEsdrsOXwf7AT7qYg55sNoZPClaKUEvfe7IquVvgAOej5qAj0NxV0gqE7tLvDZti6wUk0eGGVEJYo3k+95k9qlL+p0Nb/k29Crv7fMizLRX+TDYvLW70GixipxBCc1JTcvSoc0wTp+gBJMoK6HeUJUeTuGZQ8VmsYm44YRr0Uowvja1sJKUkYWCd2DKcH5L3uRaiDr3hgT5mOxGQvHAxIbvKbyRKdekBh82ghJMNEjdviQ2WfRtaYmSWXsazCr47YfwLz90P/vJmzQBQCu8Nph1MJQxMfnm
+ fGfmaoEn
+ h4eSXB2r7iIwfJg2h6KRzwFfXjHiNhGyRB3b7f03qW8ZiERa80wi6i+3IGbuukQy5Iean0+2yuhVRECK4BYlirwySZBURywaH8/ffqnZzAF/P3SDk6XEVmTLXTwznK0Tcces3STQH6+JG9lB+rjAMpyF6kGgcy4uNezveKzxTA5P0TWx2Y0uZqtvYeBZF4GrrDgUi9a4DDZzZPvmUsfhzbbYVQycV1sAMnAFwfTKWnv3qERvh/qPxKzTAXow8M/m7z8xogX/e3IOIFCFSEscHVgS3MRiZp9igSSabH5qlyvuBP0zWclNTMb8Oi2XfjpU9LJImRizD1ivrz7oQAmPKE6C5dbHBfwRRGPeWF5n6Wy5kszSBms/oq7Ga1246+7Wn1hxEKOrxvI1+NRop9Y4dy/4jncA+Zlh5PmSfyF4h1z+fIwI+iAu0EShzPWMeo84NM3r83wQ5O8cfKfUq08tuAxycbOiXhEmFeP9CbYzRoSlrWkLJmaCCbZ9DLGLTqVaVyQV54NzalD9uilGkOqID3fMyDg7FKywVg3zwK5TMgxt9koSOYs1X1XtrQMIaj+BrCqE7f78yb6JrBmhdD3xKMxCgO0pPTmWEnmrnqhBNmu4W2QN8z0jq0o99u7roSUgzpkqD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,67 +175,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02.09.25 22:06, Vishal Moola (Oracle) wrote:
-> On Tue, Sep 02, 2025 at 08:23:06PM +0200, David Hildenbrand wrote:
->> On 02.09.25 19:59, Vishal Moola (Oracle) wrote:
->>> Commit 4ef905bda61f ("mm: tag kernel stack pages") began marking pages
->>> that were being used for the kernel stack.
->>>
->>> There are 3 cases where kernel pages are allocated for kernel stacks:
->>> CONFIG_VMAP_STACK, THREAD_SIZE >= PAGE_SIZE, THREAD_SIZE < PAGE_SIZE.
->>> These cases use vmalloc(), alloc_pages() and kmem_cache_alloc()
->>> respectively.
->>>
->>> In the first 2 cases, THREAD_SIZE / PAGE_SIZE will always be greater
->>> than 0, and pages are tagged as expected. In the third case,
->>> THREAD_SIZE / PAGE_SIZE evaluates to 0 and doesn't tag any pages at all.
->>> This meant that in those configs, the stack tagging was a no-op, and led
->>> to smatch build warnings.
->>>
->>> We definitely have at least 1 page we want tagged at this point, so fix
->>> it by using a do {} while loop instead of a for loop.
->>>
->>> Fixes: 4ef905bda61f ("mm: tag kernel stack pages")
->>> Reported-by: kernel test robot <lkp@intel.com>
->>> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
->>> Closes: https://lore.kernel.org/r/202508300929.TrRovUMu-lkp@intel.com/
->>> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
->>> ---
->>
->> You sent the patch on August 20 and I replied on August 21.
->>
->> I did not receive any reply so far.
-> 
-> Ah sorry, I didn't mean to miss your reply.
-> 
-> I can't find your reply in my inboxes so I definitely missed it somehow.
-> I'll go find it and respond.
+[resending my original mail because it might have landed in the spam folder]
 
-I had a mail server config issue on one day last month (sending 
-@redhat.com through kernel.org :) ), let me check if that was on that 
-problematic day and it might have went straight into your spam folder 
-due to dkim mismatch.
+On 20.08.25 22:20, Vishal Moola (Oracle) wrote:
+> Currently, we have no way to distinguish a kernel stack page from an
+> unidentified page. Being able to track this information can be
+> beneficial for optimizing kernel memory usage (i.e. analyzing
+> fragmentation, location etc.). Knowing a page is being used for a kernel
+> stack gives us more insight about pages that are certainly immovable and
+> important to kernel functionality.
 
-So the mailing list did not reject it:
+It's a very niche use case. Anything that's not clearly a folio or a
+special movable_ops page is certainly immovable. So we can identify
+pretty reliable what's movable and what's not.
 
-https://lore.kernel.org/all/96148baf-f008-449b-988b-ea4f07d18528@redhat.com/
+Happy to learn how you would want to use that knowledge to reduce
+fragmentation. 🙂
 
-And yes, indeed, it was on that problemtic day, and there is:
-
-	Received: from smtp.kernel.org
-
-So, problem on my side. Willy already replied, but let me resend that mail.
+So this reads a bit hand-wavy.
 
 > 
->> And now I realize that this patch is not upstream yet and the commit id not
->> stable. So the Fixes/Closes etc. do not really apply.
+> Add a new pagetype, and tag pages alongside the kernel stack accounting.
+> Also, ensure the type is dumped to /proc/kpageflags and the page-types
+> tool can find it.
 > 
-> Gotcha.
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> ---
+>   fs/proc/page.c                         |  3 ++-
+>   include/linux/page-flags.h             |  5 +++++
+>   include/uapi/linux/kernel-page-flags.h |  1 +
+>   kernel/fork.c                          | 19 +++++++++++++++++--
+>   tools/mm/page-types.c                  |  1 +
+>   5 files changed, 26 insertions(+), 3 deletions(-)
+> 
+> diff --git a/fs/proc/page.c b/fs/proc/page.c
+> index 771e0b6bc630..46be207c5a02 100644
+> --- a/fs/proc/page.c
+> +++ b/fs/proc/page.c
+> @@ -201,7 +201,8 @@ u64 stable_page_flags(const struct page *page)
+>   
+>   	if (ps.flags & PAGE_SNAPSHOT_PG_BUDDY)
+>   		u |= 1 << KPF_BUDDY;
+> -
+> +	if (folio_test_stack(folio))
+> +		u |= 1 << KPF_KSTACK;
+>   	if (folio_test_offline(folio))
+>   		u |= 1 << KPF_OFFLINE;
+>   	if (folio_test_pgtable(folio))
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index d53a86e68c89..5ee6ffbdbf83 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -933,6 +933,7 @@ enum pagetype {
+>   	PGTY_zsmalloc		= 0xf6,
+>   	PGTY_unaccepted		= 0xf7,
+>   	PGTY_large_kmalloc	= 0xf8,
+> +	PGTY_kstack		= 0xf9,
+>   
+>   	PGTY_mapcount_underflow = 0xff
+>   };
+> @@ -995,6 +996,10 @@ static __always_inline void __ClearPage##uname(struct page *page)	\
+>   	page->page_type = UINT_MAX;					\
+>   }
+>   
+> +/* PageStack() indicates that a page is used by kernel stacks.
+> + */
+> +PAGE_TYPE_OPS(Stack, kstack, stack)
+> +
+>   /*
+>    * PageBuddy() indicates that the page is free and in the buddy system
+>    * (see mm/page_alloc.c).
+> diff --git a/include/uapi/linux/kernel-page-flags.h b/include/uapi/linux/kernel-page-flags.h
+> index ff8032227876..56175b497ace 100644
+> --- a/include/uapi/linux/kernel-page-flags.h
+> +++ b/include/uapi/linux/kernel-page-flags.h
+> @@ -36,5 +36,6 @@
+>   #define KPF_ZERO_PAGE		24
+>   #define KPF_IDLE		25
+>   #define KPF_PGTABLE		26
+> +#define KPF_KSTACK		27
+>   
+>   #endif /* _UAPILINUX_KERNEL_PAGE_FLAGS_H */
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 5115be549234..c8a6e1495acf 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -440,15 +440,22 @@ static void account_kernel_stack(struct task_struct *tsk, int account)
+>   		struct vm_struct *vm_area = task_stack_vm_area(tsk);
+>   		int i;
+>   
+> -		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++)
+> +		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++) {
+>   			mod_lruvec_page_state(vm_area->pages[i], NR_KERNEL_STACK_KB,
+>   					      account * (PAGE_SIZE / 1024));
+> +			__SetPageStack(vm_area->pages[i]);
+> +		}
+>   	} else {
+>   		void *stack = task_stack_page(tsk);
+> +		struct page *page = virt_to_head_page(stack);
+> +		int i;
+>   
+>   		/* All stack pages are in the same node. */
+>   		mod_lruvec_kmem_state(stack, NR_KERNEL_STACK_KB,
+>   				      account * (THREAD_SIZE / 1024));
+> +
+> +		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++, page++)
+> +			__SetPageStack(page);
+>   	}
+>   }
+>   
+> @@ -461,8 +468,16 @@ void exit_task_stack_account(struct task_struct *tsk)
+>   		int i;
+>   
+>   		vm_area = task_stack_vm_area(tsk);
+> -		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++)
+> +		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++) {
+>   			memcg_kmem_uncharge_page(vm_area->pages[i], 0);
+> +			__ClearPageStack(vm_area->pages[i]);
+> +		}
+> +	} else {
+> +		struct page *page = virt_to_head_page(task_stack_page(tsk));
+> +		int i;
+> +
+> +		for (i = 0; i < THREAD_SIZE / PAGE_SIZE; i++, page++)
+> +			__ClearPageStack(page);
+>   	}
 
-If there are bigger changes it usually makes sense to send a v2, or a 
-simple fixup as reply to the original patch (I prefer as inline reply).
+Note that exit_task_stack_account() stack calls
+account_kernel_stack(tsk, -1), where you would do a non-sensical
+__SetPageStack() first.
 
-Of course, once it's in mm-stable or upstream, things get more tricky :)
+... so this would better be done in account_kernel_stack() based on the
+"int account" flag.
+
+But I wonder, if this should actually go to the actual place where we
+alloc/free.
+
+Now that it's no longer required to clear page types when freeing,
+alloc_thread_stack_node() might be a better place to set it, and to
+leave it set until freed.
+
+I'll leave Willy whether we actually want this type, cannot spot it
+under [1], but if we have sufficient types available, why not.
+
+BUT
+
+staring at [1], we allocate from vmalloc, so I would assume that these
+will be vmalloc-typed pages in the future and we cannot change the type
+later.
+
+
+[1] https://kernelnewbies.org/MatthewWilcox/Memdescs
+
 
 -- 
 Cheers
