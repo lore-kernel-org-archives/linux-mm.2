@@ -4,123 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94A0DCA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:07:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7538FCA0FF2
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:27:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECC9D8E0011; Wed,  3 Sep 2025 08:07:47 -0400 (EDT)
+	id 955168E0003; Wed,  3 Sep 2025 08:27:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2EAD8E0001; Wed,  3 Sep 2025 08:07:47 -0400 (EDT)
+	id 92CEE8E0001; Wed,  3 Sep 2025 08:27:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF67F8E0011; Wed,  3 Sep 2025 08:07:47 -0400 (EDT)
+	id 86A168E0003; Wed,  3 Sep 2025 08:27:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B26388E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:07:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 471DA14061F
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:07:47 +0000 (UTC)
-X-FDA: 83847814974.02.E54325D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A3B36100005
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:07:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ixEbLi2A;
-	spf=pass (imf14.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 72BED8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:27:51 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FB7B1DDB8F
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:27:51 +0000 (UTC)
+X-FDA: 83847865542.19.25D07DE
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2EA1A18000F
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:27:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=X6EfIC5w;
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756901265;
+	s=arc-20220608; t=1756902469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m1Ang/Ev5msbe29qUOK0afUPlJKTCWi4jjZ05SuuqY8=;
-	b=OvTEkbvyKnYR4bC6Apt1qc4o3fIkHdn8vegj/OhpU17WzEJf/r/zLShj8HvqG+ySR9U0gR
-	7LqEmKBKQDltZKvi4s1MxoGWqd5O5pM4pEwXO9Z/Fc5AsD/GHxPkcwrIYprda0ZkCpKiC/
-	hTXH59h+aSlWsnFadkG98w5UlyTw8DM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756901265; a=rsa-sha256;
-	cv=none;
-	b=EXwEuAwK+wmV7ovOV5rSlp7teb+FSEB9htYsZLJPhenY2RH1Qrml++AQcG+cn8xgHmizb4
-	WiCtOqerSxBgrDRgBCg8+LnA3P5isFcdeIrnzlURuISRVmJ3ib4HZya99HQMa2W/r7iEug
-	/m3tLGudmSGS5N+Oe9Y3liYZBsfKhcA=
+	bh=Ow89xrjnsbNKNS24LObxWfvrCfFy+ufBe9CUqvS3aF4=;
+	b=YCti1IpL+Nj9sQMTIPMnyzYK0v5nHR1jQddyXmEZic/+AL3yBHFq1kPWZjComu4gpQQFwY
+	gl0fMVYy5cpuqr6h3F4yYGPHRq8JtreUf1PX9PRTG3FcHpOcILHussbvV2SaWHO/3uW2Hy
+	2FRGqDkqzP3Lh2sF8h4PThBJBljCzi4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ixEbLi2A;
-	spf=pass (imf14.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D0CB16025A;
-	Wed,  3 Sep 2025 12:07:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5248CC4CEF0;
-	Wed,  3 Sep 2025 12:07:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756901264;
-	bh=m1Ang/Ev5msbe29qUOK0afUPlJKTCWi4jjZ05SuuqY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ixEbLi2A6jjg3LDOMR+jiLI0kr10I8xn9VvAhh0P7/z4DH0i1kyknq5gSkeU0VCh5
-	 i7tl5kkxInZ+7hYu+tRelEpYAuP8FN2uFIlm5P42FO3SelGzylxnLKF/pNSR2m1aFw
-	 RE/5Os5QrL3UByY4KoMftxBxXI8nABa43VeNvttCKTwJnSRMLLSkAAqu3VLPfLy7vD
-	 AeMa8NriBmA/D6erdbbe4fr51rNUQY9oaQtg+HQjcR31u8e8fIRtxBTyJgVpc39MZw
-	 KS0+rKXi8YwhnPg5XMTY+J7MPSqIPKFVJNPfLuAXIVPCyL2HDJsMj/a8wFJkAKiMQ+
-	 b2BQwIrvDUtwA==
-Date: Wed, 3 Sep 2025 13:07:33 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v7 07/16] pinctrl: imx: don't access the pin function
- radix tree directly
-Message-ID: <bfb9a2f0-92b4-4f68-ba54-2c01e93eee97@sirena.org.uk>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-7-bb091daedc52@linaro.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=X6EfIC5w;
+	spf=pass (imf16.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756902469; a=rsa-sha256;
+	cv=none;
+	b=TWlIkjnrGvBcQI0oSpP+hqXJ2Vlc+Dm1v+tvatz+8hjTuIS3Pr6W3pTPEm1j+7lOSSePvk
+	PI2oFe9PF3qBb8Lv+lXQb8QDdqXuGOsKrQZ5e50YLYIfUsUNLdfKCUB9wBeNhES7T0PibW
+	/Bc4mziO5M0hFczFV5W8tQehodukB8g=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3c68ac7e18aso4137504f8f.2
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 05:27:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1756902467; x=1757507267; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ow89xrjnsbNKNS24LObxWfvrCfFy+ufBe9CUqvS3aF4=;
+        b=X6EfIC5w3saJ/uxQD+XYXLGbx7OKdSVecqROalUroA6uIEff6Gguy84RQ/PKhKAg5f
+         1dxfU6DXscwAWMapnuwXswFYrkirkZI/lCIhKqNsEH9cHONh8PwZTbOD4+kZaz+9ZnsE
+         ZuZfP1S6K010HW3a7DyIj36Tp4yFWbcQU0pshGAnyLY+wxjuI52rRDI8fQD2wOG17FW5
+         liahxSm8N1NWoPgh6NvtQUNt4iFsKRAM0I0Pv6XulkUYCwv45O3f7XctfUtsTyoC7rI3
+         PKZsfy8Gk9gnNaoGTT733YcEGHUDl5kxQFsJbx934VEfcfCwk05E+CjIhgZP04GciyfK
+         ZrpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756902467; x=1757507267;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ow89xrjnsbNKNS24LObxWfvrCfFy+ufBe9CUqvS3aF4=;
+        b=u2r3O4I5E/ewFaTjtDdgjSUF34y8cmnOmjnP8+rD6W+xWUNER/B7VqQMnGX3U62kZ7
+         8QXvP0pMwj+UuFvwl9g6tZQk7gGQctxsKNt6+sQVNiOX8w2iqt5bZuyLy0S2TsEvnS4T
+         u17tO/Ia2M6xQunSN3mxr2Nwzj+SbHFYo5TXr/IReaiVEjW4L3IFJgQwVgWrZhqR7G4e
+         1HJbfCKnnsxbfcCAibngLTz24383PvLWSBs+YIpD67VfUzBOEygp4C/zKoyhaIvK5mAl
+         wzQ0CvpEgrIKeeXc3R2EBrP4Y0jopCu2XSB0qoryUrBz6UAh+DbW6PUkrPJKiywDEe8G
+         XEHw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8g+903jC2G/JngmB+NaEcs+x5rdlR9xbJ2qULB0u4dF5HZDdZF/UyTCS35pZL8AZFWaE+UkxOFg==@kvack.org
+X-Gm-Message-State: AOJu0Yxx1/ZF8s7/3s7h12CQ3c/usxeNHuR1BGYICydA+xcYUvNh9uFC
+	fV9QC84WCzJob9duRPv8OHVq6gbwBchInutDcfVEHmqEh9N+UuEkZe8QP/it4DLXG/Q=
+X-Gm-Gg: ASbGncuh1SsRWyoIskal1hScTnoO+Pla94BH7yjLHSVp0abz2BDDJoEm3q5OA88w0Kz
+	ea18hQHDi6sEpwe2JeofuzxChWiV7KVe3EYVhGhwimh5vXt9937ppQ06dCr4HKuabmVWYhTjpL8
+	1bC/HG4NFtgQLAKuaKTsTytQEzCqUMEzc9OUi2GIfDfwv69KTKVt2RKHNJljk+AWp6BKYjs2DHY
+	Yl7JbAjGHc3VgHdlLK32cWarU86Faxc75hdI9u7WNMlqxiB/q4BQjrZJH/7rIWAqwvKoPioq3n6
+	CA/dXiENRpIHf3bk5ezj5VlJlc4Wro2zXFF29cX/DKsTPgf4jXHTR59YkAxNdOk3vwwC0aKFxgH
+	IycUtHB92VcDfRANqmsumKo4Bn23w1GAmUDMvtFC8E+QLXQ==
+X-Google-Smtp-Source: AGHT+IHU4yMyqQulSlJlrYj9+G4ULF7MakFGi0tAtaV3rKdWzPVcIYjLJfUJpv+mJdgP3MWvAdEV0Q==
+X-Received: by 2002:a05:6000:1788:b0:3df:c5e3:55f4 with SMTP id ffacd0b85a97d-3dfc5e35d8cmr342968f8f.6.1756902467402;
+        Wed, 03 Sep 2025 05:27:47 -0700 (PDT)
+Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45c6faad9cfsm44331935e9.0.2025.09.03.05.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 05:27:46 -0700 (PDT)
+Date: Wed, 3 Sep 2025 14:27:45 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: zhongjinji <zhongjinji@honor.com>
+Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	tglx@linutronix.de, liam.howlett@oracle.com,
+	lorenzo.stoakes@oracle.com, surenb@google.com, liulu.liu@honor.com,
+	feng.han@honor.com
+Subject: Re: [PATCH v7 1/2] mm/oom_kill: Thaw victim on a per-process basis
+ instead of per-thread
+Message-ID: <aLg0QZQ5kXNJgDMF@tiehlicka>
+References: <20250903092729.10611-1-zhongjinji@honor.com>
+ <20250903092729.10611-2-zhongjinji@honor.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="LMkJw+F2UT+cDaFZ"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-7-bb091daedc52@linaro.org>
-X-Cookie: You were s'posed to laugh!
+In-Reply-To: <20250903092729.10611-2-zhongjinji@honor.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2EA1A18000F
+X-Stat-Signature: 9bhurdzgk6ftackxyd8hjyzaudkg9ezz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A3B36100005
-X-Stat-Signature: nss1qk5gbamht11i3xwqfjfkjrdkmw9c
-X-HE-Tag: 1756901265-955611
-X-HE-Meta: U2FsdGVkX1+la+vXr+CM4ylPSu/+p957xxVyyenEc1vK1jbunmOkUloun64+Wzwy5ylwzqZbZo4EIjg4jIvKNMcoGJTLfryry8YwHLqMQrO6vtycsvompoMInQmKA8/GQpfim5HoajnKDTGOW7z9YycXN793uJoYu2FqMSydu1wh2dxJc877UJMhKZl1NxXQheg1P1AosKAbUYr2juzmnU1NC8wOiccga5M3j5Llhx2woP23+nX1enGmpzGrZV+wpf177ZexXp0Oh6P2xivtFT4nLYibvNC9sE1gGUvM9KtdX72Sa17W2bxACMTjcSfImGQGSrzXC+BYvcweN1w7ZTlo21NT1Pe0c17RHhQUGnC+jtSrhaPy4M47IQIEmJUu/Kbk3DatRH4bUH6tffCwxgt6apn7YbwW4qQmeecDwXfcs2Fd8DBLTtScKK8VTQHs3rofaf0ZmC7CsFrG6VKb6/LHuG4y2CS4nM7fClIiqHPAZC92EC8NbAit5odvtgleTS3SeseXuCBzTQ/kLG/Pjhzv8sk3hqTNUXY+tvXi70oF8t8pEnkunxkYB/nVpDoyc5tznSmkl5+uGMy3DDfEQSO/HiusoBorQiiMJwuLNNopHoxWczCq3ZYQk+wN3HS5fE44zDcJuXsY814W/QXw4o6qQt5eCCjCMeHLetaiL7nSNl0DUbbz1QjaiiQ9rHoTnEdsrZ5N62b8NiLCaxKzDCEc0uLDBv3bW6Yqzt+unGw/KGfK+JCiHSE1dtJKAjIzLuzGSKzSr6W3xhv2EKbNkdC+/3iZrmkG3QeuZOCUmbTCDVVPzsRyIF7coQLXw7rS9iQuO3JIo1ZDTgskwbGinzJPA/t7EEwxtQcLPwWziQ1h5rttvP5L+AiJ8GJfJ7sJLUP/xefl1l6kCCaKc4JMXu8mm8BTZSNmYMqVhzuTiH5sd0dr6pQkIvT7tSHfB8b4WMfqnR/CV43tMczlV1x
- 1k2Qtq8b
- S0yuVDVsPwDNRwsv0n+YD7F/bPPkPNpbyxOIJ+FwQyYOvFmiMQD+HAZI1ZR3KTXC8+2D5lmbXV9I7G7suaM9Y3lG7MvJu5REGCL/lqltxrUtY4SwjsKtEiajUBez7UIeW84T15rGOt/ROrGp3vy2CMxFkkffkbgsmNqPYhBlWHEsBDPvP783H+qNssTpuJOwuj0ajTyDWXxMtT/y+lfXP5sFsIc1kRC8BGbeK8Jbl18u42zztVjf4SN0o6wAe8C99q6HxqAo+gdbyQBMtn58DQlPfjQd/CuYWGV0PsZtIfhhpnIXiYDxe186GBbLvTXZKUxbYKC4Uoy6VSX+ST/SU7TCpVLV0SZgOeBGFH08eZlvHaLogxEESvgiBBMnFs+46X9RRTs6ao/7rTN4JojEIZ12VdVSTMwq7kS/Us2izVb8gYfA0W4WnBAo+hDloE8q5sAerZEMTn7AonSnejH8IeYnymxTsCaVeL9LS
+X-HE-Tag: 1756902468-702467
+X-HE-Meta: U2FsdGVkX1+LfSttFn7N5jN/MZEFQTVwI1gDhWPqj6G4aaJcF49g5/ajv7I00xCMy22An+onYjtmZ3LROfCRjKVl8w3lO67LRY90iZYSTOhyNm1SzF0sGAoFPHASncDhHxSJbaOCu4lWGx3RB1q3uT9qHc2WypfHBTOnhu54QVofVvGAOC+yhqzLcyz0gC2EWEkOrUV8H47nHDHH+RX2NyG3GD6ralWmiYvc6QUeBoLER5xradGaGt3SocjszERWLMz5mLe9RQV9brf3HdYBhJ5Ft7vtNR60BdcCAFc9ZlKH2Rb9UdOYFEqBW4Dvw6Up77Jw9z3WzIUamVvIeMmvlHBelox/eplO7BDgu1YunqHxRIQP/WoXhhOoJvZyouHxXXlEHpyU2QfHPS8r3TkfB+d2UAZQYDBYqsuA9Lq0qa7p/TWoCM+48jdVWHO6DN+6X3/As1Dh6Sft0ZkCmbdIKjowGQ2HScgyKjuEIKJlSjUlar1vvgdXn7MYjmncoWzLf4tPlQX4PQDaNw3s6eiwx8PZE5COvyWdyORJG3zG6w0mmxWZ65OahoStMP3HxnGcDeFVDSwHUWeHonlRmK+nftIU7vffJE0LW27AtZMkG8c1F0ibv9EOxoqhjmzSIJvj8hd46bqtL/gOidXIpcXcNdtKrvJ2SkmHNKDdCSoDdHIvlfvEuVEuWQgIWSDASios+83AfpLikzPDq0Liigp9J6iHD9jb43KDbL9r2G06qCVqwdtFGbAAoVUOV5I5dDbhOLpJMN9Sf1vdB8cyVsQrEhCfXl/vQo4PSZS1D5k3s2LZxHBIkx/XiP55kCI1YxAJuMTyapSlP83A7qCJ3Tl6aahlBUYq1tWhURqVDvM45MyT1Yo+2dt8oROYiv6LXzzIN5JmPadz57y16SkPu2XaDxjorUTfLmrLHEnLslmm/TqG9mkZrOIyzYRTfzPSCcHQslErKVhUYwcZyX6H6lC
+ aYS2dzPj
+ p0TZbdYozmPqnwwofgRHjzo48RTv8rgBdJGLYfG0VGgd3U5C06FNoroskpRMFfjXj8vA1ZHi4Tl9zqDR4nPdh4Y9eAd+8D2sxjTzJ7g/Q/+1BAx2jBLvYaye9+TOOnEswOdUPH2zPhK344sR2kFZnwg2SLp3nY+lVnko5UupQUJv/0oLvOecVIDiN4H8z3aC7TDrWdKoHH4cY+U292PREnNT1kswtvB0aVWzT4/3vp1xlGZqGpUAglpwzXGL2DmM9vYX9/YmdJUINSW+MUdr0NIgqIvdR5yALPKUwxVsN5DkRKhZyW3xns7D7Gj7/dQelROG4MYBCsiUzrt/SCz7vncfdXQUvM3sNpBhnqwJguuJagiPTIjO7P2fHRijSlPrYO6aj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,37 +122,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed 03-09-25 17:27:28, zhongjinji wrote:
+> OOM killer is a mechanism that selects and kills processes when the system
+> runs out of memory to reclaim resources and keep the system stable.
+> However, the oom victim cannot terminate on its own when it is frozen,
+> because __thaw_task() only thaws one thread of the victim, while
+> the other threads remain in the frozen state.
+> 
+> This change will thaw the entire victim process when OOM occurs,
+> ensuring that the oom victim can terminate on its own.
+> 
+> Signed-off-by: zhongjinji <zhongjinji@honor.com>
+> ---
+>  mm/oom_kill.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 25923cfec9c6..3caaafc896d4 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -747,6 +747,19 @@ static inline void queue_oom_reaper(struct task_struct *tsk)
+>  }
+>  #endif /* CONFIG_MMU */
+>  
+> +static void thaw_oom_process(struct task_struct *tsk)
+> +{
+> +	struct task_struct *t;
+> +
+> +	/* protects against  __exit_signal() */
+> +	read_lock(&tasklist_lock);
+> +	for_each_thread(tsk, t) {
+> +		set_tsk_thread_flag(t, TIF_MEMDIE);
+> +		__thaw_task(t);
+> +	}
+> +	read_unlock(&tasklist_lock);
+> +}
+> +
 
---LMkJw+F2UT+cDaFZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sorry, I was probably not clear enough. I meant thaw_process should live
+in the freezer proper kernel/freezer.c and oom should be just user.
+Please make sure that freezer maintainers are involved and approve the
+change.
 
-On Tue, Sep 02, 2025 at 01:59:16PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->=20
-> The radix tree containing pin function descriptors should not be
-> accessed directly by drivers. There are dedicated functions for it. I
-> suppose this driver does it so that the memory containing the function
-> description is not duplicated but we're going to address that shortly so
-> convert it to using generic pinctrl APIs.
-
-Tested-by: Mark Brown <broonie@kernel.org>
-
---LMkJw+F2UT+cDaFZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi4L4QACgkQJNaLcl1U
-h9Cofgf+Nx2+OT+tp4D5FUxhtTOmhW7sSoV0qG4ncMEPM9CqTpXL04wbbzyJxjJi
-x44Lzl7dhYejlq1ljZcrLRtyyOEx2GJmVq+XHynLGl0+WRR2yx5BIF/VZUKrpjdp
-Rd7Wd/4PDIWu+9AdKJ05UjqdXCojpVhxUDMFoha24910w0dlC3/GOS+5CLd3t5nP
-o8DekdJ0fH6kx1PD4bw8qgA54bkwX/A1xWWTNxpAg/4zlmNuqFrT48Nuyz9AxY7W
-KRh+JFWffC6f3gBQeYYoJOJsaSojIuYpDVDTTwkkrtr0ZmxbYGan3Gfw+uDC2O8W
-SI38WHTPgNA+BpMaBE3K/SB/spudUA==
-=Wljw
------END PGP SIGNATURE-----
-
---LMkJw+F2UT+cDaFZ--
+-- 
+Michal Hocko
+SUSE Labs
 
