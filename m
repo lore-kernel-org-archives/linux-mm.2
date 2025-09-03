@@ -4,114 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24AC4CA1010
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 21:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71D20CA1010
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 21:42:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 141288E0008; Wed,  3 Sep 2025 17:26:27 -0400 (EDT)
+	id CB0E38E0007; Wed,  3 Sep 2025 17:42:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F22E8E0001; Wed,  3 Sep 2025 17:26:27 -0400 (EDT)
+	id C87428E0001; Wed,  3 Sep 2025 17:42:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFBE48E0008; Wed,  3 Sep 2025 17:26:26 -0400 (EDT)
+	id B9CA88E0007; Wed,  3 Sep 2025 17:42:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D84988E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 17:26:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 834E3868C2
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:26:26 +0000 (UTC)
-X-FDA: 83849222772.01.9B9648E
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3885520004
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:26:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=enbusPC+;
-	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756934784; a=rsa-sha256;
-	cv=none;
-	b=cTVUd7TGum4M1jcMUmyXOt6rD93eJReEI4d5Rnbp81cqpYWc44/USxy5Q07LMlAwae2Sy6
-	AtXnU8yiHHHPbCvqKZRRnDrpLWtIRg2m2O0e1W53gR+ReqRyjWo2C1CGpCHEj+dybX9BIV
-	0y7cQulNFljctWM3Kh5WvyKDybWD524=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=enbusPC+;
-	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A31928E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 17:42:15 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E3ED1604E0
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:42:15 +0000 (UTC)
+X-FDA: 83849262630.18.2832843
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2256B40005
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:42:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T0FltFFV;
+	spf=pass (imf07.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756934784;
+	s=arc-20220608; t=1756935733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZKAFUEHK8OBYchmycuUbisd/bzFy1QHMzYkOvBvFOpA=;
-	b=oS1D5sSy4QhgTdso9IK4682AG5VcEUSRPDEs9Im1I/nEKwBzDVJUL1hM+YwncNi4isQ4Z/
-	Crc3h3KvTejeaRIiw89RaeB7lZxuN+Or9WqwdkFGaolTOxTwJ8bqHZpnax97kkOO6T3tW0
-	iR6jRgph64OY3YBbda+ZIav0cv/JNLY=
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-720f0dd2809so1736636d6.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 14:26:23 -0700 (PDT)
+	bh=913G5mrad7tqw4Q34JzVSSV+9stS80/tzD0diJIXDJg=;
+	b=LJQF+sOksOtleOy65Iwh9U8UI3NEdAeq5UBE1nuFntBcEt9/Fc3/zXzVKB50a590QAqJ4Y
+	iNW6HJK2ofPQq+new1pmOnV4AN5M9tX+nLYQj0hjFfOCOLXIYs0PH3CuPi2oPGcnD46omh
+	SJ0Zh7PHkm5VYnKVlkcr5dMvgSQpiWg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756935733; a=rsa-sha256;
+	cv=none;
+	b=3tOddtzRkyvSmbu8BddHa6Pz4vydG9faqrjmgftEiC5zxYDvZQgkDY64WyQXdywjr6NKPO
+	FyL5vf21y2W5OyQK5Z7epbe69N7EMGdgjwl1mSJAfp7qEW9e9+fSJLqBGy0sq17fRl/mAb
+	nT3E1Elr4wJr27HGCRgEQHr6Bd2+mC8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T0FltFFV;
+	spf=pass (imf07.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4cf40cd0d1so258675a12.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 14:42:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1756934783; x=1757539583; darn=kvack.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZKAFUEHK8OBYchmycuUbisd/bzFy1QHMzYkOvBvFOpA=;
-        b=enbusPC+mwfL2PtullM/LFFzOXVa/pviQ7/V61Y8IqPWW7ddoNGcc14nyrAOIyDCvF
-         up6JF4uqf3nDGtUz2EGluykjrO4pKJDav14wH1EHDMwWw9lbulzAGIO3vJaBbNY6BCuo
-         paCkKJqzcpqhFJCQptT01AtSCO8yBWAtKj4086JKv/qyEF0uu/c5cglSuQx7xlZIM80W
-         Al/UwckR4HVM/f4YnD7uQbXqLLcI0gkwfSN9Ui0S90HHOZtZVoWSwUvAsKRFGNKCkNzk
-         dTTujPH+8To9j8uBZYhgoyhPEXT6k8T8ZdqOeo6OVcvR47tPns5mVOpnFJF15Nuzj2mN
-         Sy8w==
+        d=gmail.com; s=20230601; t=1756935732; x=1757540532; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=913G5mrad7tqw4Q34JzVSSV+9stS80/tzD0diJIXDJg=;
+        b=T0FltFFVI/nC/LttVeYK44yn1CNhFGZPyl7AqrzPlY54yg39oQkyxqPFN1noYH9S6s
+         iG5cS1vhCAOoEFdk4vrvdovXCL/nuLf7vu+Qha2+3Vj62/mdzCuB30QRpIkLdhGv3d9v
+         7NdVSzlsKuT/keRuoi65UxI+6om0EtF/yLBF6jvd5B5nJXJSSBKMCDZc2NEYoY/VYNJQ
+         0UpF6IRHCsAFiQhIIS3NKQKNXiFf0cQmD84LL7dPIKQshe5RL6Kj5DtSe0ieE3GQHZTp
+         FdEx+6ompB1ZUtb8+Wubx6xlJqH/KL8j/Xr/0uuroElQAiN6uvVPGuLrliHfmF48XItA
+         sXsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756934783; x=1757539583;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZKAFUEHK8OBYchmycuUbisd/bzFy1QHMzYkOvBvFOpA=;
-        b=bIayUWN1z8Jsmp3MyLL20F6AOlr9G34XhRLcroo/GPI+bRxxHJQiUhjnwSlvsdO4Lc
-         YWJmkG/CczQNJ1Q2t8A5t4bK/Ebdq8hBRP5cqrr/aaH5DtZjDNBVMGEleJoaVGWnnATo
-         PJuh79gZAP2MLcwK9rv05t8rhwFx/wil5OfpkO+YBGSoCFOsrAFsl0oSGR6z3BEHQmup
-         Hl0q4vLd8KLOFORLyaqDijHuReUsgudh0kr8Q4Mwe3DgDXUWr3P8uTs/B4BvyrobC+Nl
-         C+V0nwy5DBf3BPWXquaoLD9Cv6vt06IIVpjxgUldS5W4ZvpOzthbICUHqG3owMX7en9X
-         jfoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUAN+40Z9teMEgZrNKhPv6PdvXcbWGN840h+UpqT6vawMTk6DESW6D1v3S0PIpEMLraZEd9U6a5w==@kvack.org
-X-Gm-Message-State: AOJu0YwzLD25x7P2YD+u8kBH7K4LdLovFP9284KNaNosNJNWNlGEjEcQ
-	spUMyMencxDJJobJ39pIUkLl70ZhtOwmwSwV6G7OffnkHLG9xVcpTBgBv4goCrTYwQ==
-X-Gm-Gg: ASbGncuDDBIapTbzkYqvSkd39vyRUGzOdScRz+u1EUKL9oeCKaGA+Bo6m8uOr7KdVMb
-	+XdPcrpRakQiFb2EqRbIWtQBx1KataFq9RMARQfu2I8zjXSzX+4zHUaA+rZj0JWt0EJs95Vh3CJ
-	G25GzvUywhpLQJiflFyyxl13yoRk4dIDzSy30VTyBD9ggecjppMytFoi6S7qF2biK4zOlX7/SCD
-	Zkl7RanVCFBGVgJYdE44XxNPj1qS8OeKv1sJjsgoFfftO883P8JMVrsKhqivFEG6Vq22uksXXf6
-	HTXgcrhqMlgpGUktywJwqAfpaYyqfIkR7Uv/adWDEwwM5zaVOKOWTokP+EI7fRJXG/v8ViQFp5N
-	/AaUplU1b3XcCH5wvX3sVaxEdPx1upv/3Jpk8GCKEcquY7LBLgGTZ0ZZBRWe9vsu6RUR7LnQ5eI
-	C54h0=
-X-Google-Smtp-Source: AGHT+IGjeGVBk59qanrKojqKe1+ebv5QbBLUr+xq2vrJdB1gpx6C81S9JV5wN46o/dcj2HWmCycKCg==
-X-Received: by 2002:a05:6214:c65:b0:71d:478f:e0cd with SMTP id 6a1803df08f44-71d478fe49fmr118773496d6.26.1756934782933;
-        Wed, 03 Sep 2025 14:26:22 -0700 (PDT)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-720b466614bsm34702456d6.38.2025.09.03.14.26.21
+        d=1e100.net; s=20230601; t=1756935732; x=1757540532;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=913G5mrad7tqw4Q34JzVSSV+9stS80/tzD0diJIXDJg=;
+        b=q5cmJWuqpP1vkVSD69E+6VurjpXetG6VNxcXOcc4oKNCNCABefmJBLuUnTew+TUf2E
+         lO4voRzkvBGiIXR/jsri4AVbIvoOMvYF+HRCD5Sz9L/jZfR+YzJXb/1wnNefOmp4gTXf
+         XJqoVMPHPzgBktYStYZsjO8IBpc20ZR49hyY8YO5PUEamtpuyzhqku8HvDykaWPrNoHN
+         x2dokjN490rnlL2ZKMXeB2PCv6PWLa18vYDZrCpNiG5RgX5A9SLqpX4FGU4aemI8sQWG
+         5T9CGZ8h1ynqNhp08k+M9O4WSOarkqg0/9g7N5ianEuzSV9xQQgUkBWYZc8vVpPKQk7b
+         OrdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWeLp1w8DS9pJLoY4Ii0qQpDFbtClWinKlTp7GK0mPrKzVjn8ZaldmzsxoNngypTBIXKVjvcVnFew==@kvack.org
+X-Gm-Message-State: AOJu0Yx5gJrn/MlAxQUPPXPyA7FC5LPFtlr6oh21K2FNm5Qto9rGLUt0
+	OnkBD7IZLXelZa0vmC3QXlw5sIUB3oyu63upFIUOOrFWGnrE+3wfTKXS
+X-Gm-Gg: ASbGnctupeouGudHoGlMdInFCpMVNoZBPrEWOCbryRevAQTLBtK6dVMDCPMIGQFTlWc
+	GXOyCEPhgCkHj48/TAD/FEN/FvYrR07kJXT4fNZ2rGX7i1XjAIWb8E2EkIjNoaJqSDAOGuBaTWC
+	vvJzk+0fpkX3+zu5DGyHozUnMGvPTYyqsh197rPsq/CiGSrxwZwuzP3ZfAaM1nnvjguPry2zKO6
+	DcVvXkjOxweiwfPS0Cwyg8FTWsVzkMs+3tr3zdcAa+Iy9iSgmeVzYZi0AA74Z6yynZeZ6k4xphk
+	g28eoOkoiOvUWMAqcqUfH7lnMqn/5nCldJbKMMRZh1JYy974OPH8p6MsGeEpFWQKHfMX0IcC+Zi
+	qtNK0CdCPn1DTL0kgK2tA11Em8A3qKbfdYS6cImKTEWA=
+X-Google-Smtp-Source: AGHT+IGEYHhpxlwqty29iAepYIz+AXBP+Q3J6jABrmveCaY2FnQU2gGFW3oELEV3nWCQvKX8RF2QGw==
+X-Received: by 2002:a17:902:da84:b0:24a:ad8a:81f0 with SMTP id d9443c01a7336-24aad8a8560mr158617335ad.51.1756935731425;
+        Wed, 03 Sep 2025 14:42:11 -0700 (PDT)
+Received: from localhost ([216.228.127.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24b15780a11sm57490635ad.93.2025.09.03.14.42.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 14:26:21 -0700 (PDT)
-Date: Wed, 03 Sep 2025 17:26:21 -0400
-Message-ID: <6afc91a9f5caef96b2ca335b6d143670@paul-moore.com>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20250903_1645/pstg-lib:20250903_1606/pstg-pwork:20250903_1645
-From: Paul Moore <paul@paul-moore.com>
-To: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>, James Morris <jmorris@namei.org>, Stephen Smalley <stephen.smalley.work@gmail.com>, Hugh Dickins <hughd@google.com>, Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, Jeff Xu <jeffxu@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>, linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] memfd,selinux: call security_inode_init_security_anon
-References: <20250826031824.1227551-1-tweek@google.com>
-In-Reply-To: <20250826031824.1227551-1-tweek@google.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3885520004
-X-Stat-Signature: nky5mafyh1761kmqt6t65xkq8qrxqyj8
+        Wed, 03 Sep 2025 14:42:10 -0700 (PDT)
+Date: Wed, 3 Sep 2025 17:42:08 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Mitchell Levy <levymitchell0@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/7] rust: percpu: introduce a rust API for per-CPU
+ variables
+Message-ID: <aLi2MBAwoD65tokv@yury>
+References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
+ <20250828-rust-percpu-v3-1-4dd92e1e7904@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828-rust-percpu-v3-1-4dd92e1e7904@gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2256B40005
+X-Stat-Signature: zc4xq1uj9n6w9ixgk3g655d9wtgrdbja
 X-Rspam-User: 
-X-HE-Tag: 1756934784-657137
-X-HE-Meta: U2FsdGVkX1+HrlrflgFp0B3HCQIVeUMCap4iShEDaRj4rIB+WWz5EUG0GPt5w7Me7h+yqtWYxSvO3Sv2Fn9EhubILgLohe0biFo2MQKRCvYZhP98U4yIJyd+JICaFD7XanqhcFEdYAp5gpFyQHU/jyVisdA9VXrc0PoNq0znAnXwpiMqH+n9KQAkt+td/Ibpjad6RubYZEvbSoHKWvnJ4k+9jiFp5MQjR9i2re2LE5JtGpUj7duFLub/bXvHGWVyG79r5bnUdhjF5FGFcOghUXiePAYzOwGPgdOCyKjaUDytP0SQzw3z9Q/5gWNk0LYCJ9xnz5X9BhUMDbciSoCOnxirKqpbz7AF9cmJbelM0m99H71wHb5iKMHMlP+mJczVvhMfdASk//QnJHU4DbnM2+cc2N/w6TP/uaMcby7+SEtFWuPCmfMz1k9izKO0GgHrNmwvAt7ayArglQ5qs7C075wzRa1hPB6QtSVUR6LESwiASNpTGTduFDslfSYUOfMaTNnFLXQrkWwkaDzgZ7cjaYa2rE7HdHVbneBXJbKDxzP/tcGn5Jt2WnoopUC7oKgj4pROCBtJU1zFfkAvEUisl/gXixkCJjAK1zQIA3pTi6ggROV1IAZ+6YdwgZ3L0+wIRAmmHVpxZ6Bd8FDhS9ZC8WwI5OYsqL9K5icdOj+uJZhWBASr2S+ubdhs2iB0dqMs+gyOtlKcKp30gm/yBTezXdGu+DZlAIoDD17XMAF+ioqFARctWi5+GpCTQLIaytI8ZGHmRP1VSp12Au9xE9xjxpHu4/PkE69nqkMRLR7JCx5m6BqEqzGgMbec+3FgJZ6Ki+ArD7NOEAaAUYffWbw21p2V31U/reqUlAp4/IBvA8V0AaUY1aaJiUMp0GB9zJs3mea/+Cq8/k9eiSfAA9yA05/3yk4HPDmnu9l0dOvLaB4Q3YPwNihF+NSrPOs9d3UKCd+rDxIWHvdT9UrnHbo
- ULt6vksX
- xkYhzmLQil5NeDeckbbuVEcTJdwjQB0fqgj6rrZLYYl+D5XpZr2JPKGJIx/omESguO6jLX1vv7PDPo4OoKdS9rzEsRvO+sVkG0BtRxhlN+ltQqTGDP5WwZaDUPkbm4kAI1o+QUUzWh6pBAsoupFqLUu/CYJ8mJdJhIUHD1L1ePAfqKmUy/irFzvmKaT8Zc88uZOkIZS2CwqbZ/oVir39iJKEwVlLSG98n1uzFKmbVim0NseD8S1cCptMTbQ8rVUswTuMf/PuYTIgrf4EWktvYtSbVh/0oG6eKkI/zkncZYVsrohY4pxUYUcI0kckXupxBvpu0Y2ifF2d0Yc8WA0oNJAwIVAsXxgsAqVqK8hLnHUTW8hv1lAD3tTkk1tnZrUt4I61it8lX4o1FZMy0hZ8iW1smUSu488Sf7yD8wKx8VTZEUX64PZW/LOWqy6Mx5yMAVoAbTew+9rwZnWQEWuQdJCVJNw6eBIQqpa9bFNJZmtwty1vQ65nkqqRUuaEV2D4Xo38dGMZYKzXamT8j8Hx+4fMRjju1/D5yWBtSKjpfadA7QZ/vpTrxipojS8FJk5rFTr+AmJPeKtLNcms6nipMww6CT+pX58lreYrsSOfxBRxt2Xc=
+X-HE-Tag: 1756935732-630027
+X-HE-Meta: U2FsdGVkX19N+6GUEFjjO3WRUXvfPljChMTB11AlIyCt9HaRZ9kuUN24m7gWK7gTuHiG+o083pRc6Nrn8YTmojsgSFovAhuRCao1egYLOv80zZ9m72FrtZvnDLDgblUF2JmVtKbYNAntUnJ7rJ0Y2SlRM5Xwc4UC6Zjj6bh1BxUpsqPtfNxAXvQNpuqcL8x6gxI5sRo4kn/m/AtLfxT9Y9SNqplBuG0z9aMCqmBT/TAtnjXjtOJSElB/5A+rogkS+VDlWcL2gKxVcVbHe/L284CK0oq7gX+6IHWMA2p4gwrM7pVKx+Po2HTWNHyLfDYZaqYwf7abW64cjaXdeeyIWFUxD6h0iiOH0gQaF16zLLUi7Vzen4/9ctGJO6zcv8+OPGqR8c518O7OCdjT8yaaZri9Rkhma831RPNcsCSGnOGxwJKZIbdd3SE5zEP3VDWD7X4nZQw8mcCAWnsT0CP1rUQp7pTKOzHYBWmuYRnrHUYqPJsb5LBbvL2gDoDrJcuThrEkHhcsmpqqAhX/25cPKvUO1bE4pGmUHnt+OGoBPzFMKTdORaGXmWyCh6ZWvMeHTgT/6FH8qnkViHt9Ks1bQkb1B/+flS+pC6mUttTeIP0Bk2xUQxAjVntwtNU99K03zNY5kfNKWi1b9cp+9tIq1h+3+LtxJznpbFi4KW0YIJ4f6ThDfluqp7UhL+oyuHlvB9WSoK2Hr3iyy/AcBzVmOAM9XR48jEdCJDDDxy8/b3gEA4m4yFnznHonbKLLU+16iob+eQJgnlywVvUalZp0T0Vi2LYtVHSNCzJlIXrPZ+ZBp+MyniT0NQYucgwKdSWtxHar4pfrrrPUdH5ZD0cFqInVc5aEmpjWRpo93bob5vYoDZOsT6XB11d2jQGiWhwGXCz/7HExbF2ATpxzKDUSKvkYXSZO3rDOsNA0870ZSajYJeSKIfMD+wrdcRSRUCWHXKxMw0M2JpZpAHqVxEl
+ 7gfuobdq
+ v3NbFbuuqxJ7l0z+8vx8ElO7GYaJteLPBhndsUr/vDQRJB728SVBwD74u+uHB0ueO5E6DvCBOGObFdq0t6nvG42ZtryF/9MrflOmGxhQu7bhuT0LmMr82flde9Ale42uiCol0x5QDTMWKUmMqTXagYDG22JuZwppqn7FwZ47JCN21Pumb8dn+aFbgooIZioBsBzuTc8Q3U3Ow3qoZGJ2CpCrt2GJigxOkaRuvNKuFirabbswxyr6Qddny534UDzL24tDhIvSxWVIFfphLaK+bhXBXiMcTUMLs7bNffVYWHcGUsBGLBNlZ7sTjQWvZc7azAf2lYGnmrl6k6UfRJRqWHLIqUCqCIofJb3xt+CSo+8Rg5nmRhb55ezxMa7KzA8rITy6PY/QmvSRIAMNzRwQ9ByABn+HeRQrbKmXNKUbjGloHzDlm9p+qqs3E2+8ITmhIxFxN01xE5ZQCYUZT7aEtS2120dHzqVz/5VKePb5yZflnS05575hioWT5pKcmHSAJFGuHQ+BlVo6m44gwpLbBviggP8cy5wf0b/FWgzdpr0e0FH1yu8PJ6AAvO1HZK/16RsQny+zjskeZI3nELkFtUMXe9B+y6NopPeHA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,202 +130,609 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Aug 25, 2025 "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com> wrote:
+On Thu, Aug 28, 2025 at 12:00:08PM -0700, Mitchell Levy wrote:
+> Per-CPU variables are an important tool for reducing lock contention,
+> especially in systems with many processors. They also provide a
+> convenient way to handle data that are logically associated with a
+> particular CPU (e.g., the currently running task). Therefore, add a Rust
+> API to make use of per-CPU variables.
 > 
-> Prior to this change, no security hooks were called at the creation of a
-> memfd file. It means that, for SELinux as an example, it will receive
-> the default type of the filesystem that backs the in-memory inode. In
-> most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
-> be hugetlbfs. Both can be considered implementation details of memfd.
+> Add a `CpuGuard` type that disables preemption for its lifetime. Add a
+> `PerCpuAllocation` type used to track dynamic allocations. Add a
+> `define_per_cpu!` macro to create static per-CPU allocations. Add
+> `DynamicPerCpu` and `StaticPerCpu` to provide a high-level API. Add a
+> `PerCpu` trait to unify the dynamic and static cases.
 > 
-> It also means that it is not possible to differentiate between a file
-> coming from memfd_create and a file coming from a standard tmpfs mount
-> point.
-> 
-> Additionally, no permission is validated at creation, which differs from
-> the similar memfd_secret syscall.
-> 
-> Call security_inode_init_security_anon during creation. This ensures
-> that the file is setup similarly to other anonymous inodes. On SELinux,
-> it means that the file will receive the security context of its task.
-> 
-> The ability to limit fexecve on memfd has been of interest to avoid
-> potential pitfalls where /proc/self/exe or similar would be executed
-> [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
-> similarly to the file class. These access vectors may not make sense for
-> the existing "anon_inode" class. Therefore, define and assign a new
-> class "memfd_file" to support such access vectors.
-> 
-> Guard these changes behind a new policy capability named "memfd_class".
-> 
-> [1] https://crbug.com/1305267
-> [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.com/
-> 
-> Signed-off-by: Thiébaud Weksteen <tweek@google.com>
-> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
 > ---
-> Changes since RFC:
-> - Remove enum argument, simply compare the anon inode name
-> - Introduce a policy capability for compatility
-> - Add validation of class in selinux_bprm_creds_for_exec
+>  rust/helpers/helpers.c          |   2 +
+>  rust/helpers/percpu.c           |   9 ++
+>  rust/helpers/preempt.c          |  14 +++
+>  rust/kernel/lib.rs              |   3 +
+>  rust/kernel/percpu.rs           | 223 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/percpu/cpu_guard.rs |  35 +++++++
+>  rust/kernel/percpu/dynamic.rs   |  83 +++++++++++++++
+>  rust/kernel/percpu/static_.rs   | 132 ++++++++++++++++++++++++
+>  8 files changed, 501 insertions(+)
+
+That's quite a massive patch. Can you please split-out C-binders, and
+maybe make separate patches for each .rs component?
+
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 7cf7fe95e41d..2fc8d26cfe66 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -31,9 +31,11 @@
+>  #include "of.c"
+>  #include "page.c"
+>  #include "pci.c"
+> +#include "percpu.c"
+>  #include "pid_namespace.c"
+>  #include "platform.c"
+>  #include "poll.c"
+> +#include "preempt.c"
+>  #include "property.c"
+>  #include "rbtree.c"
+>  #include "rcu.c"
+> diff --git a/rust/helpers/percpu.c b/rust/helpers/percpu.c
+> new file mode 100644
+> index 000000000000..a091389f730f
+> --- /dev/null
+> +++ b/rust/helpers/percpu.c
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/percpu.h>
+> +
+> +void __percpu *rust_helper_alloc_percpu(size_t sz, size_t align)
+> +{
+> +	return __alloc_percpu(sz, align);
+> +}
+> +
+> diff --git a/rust/helpers/preempt.c b/rust/helpers/preempt.c
+> new file mode 100644
+> index 000000000000..2c7529528ddd
+> --- /dev/null
+> +++ b/rust/helpers/preempt.c
+> @@ -0,0 +1,14 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/preempt.h>
+> +
+> +void rust_helper_preempt_disable(void)
+> +{
+> +	preempt_disable();
+> +}
+> +
+> +void rust_helper_preempt_enable(void)
+> +{
+> +	preempt_enable();
+> +}
+> +
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index ed53169e795c..ed0d5756dc55 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -106,6 +106,9 @@
+>  pub mod page;
+>  #[cfg(CONFIG_PCI)]
+>  pub mod pci;
+> +// Only x86_64 is supported by percpu for now
+> +#[cfg(CONFIG_X86_64)]
+> +pub mod percpu;
+>  pub mod pid_namespace;
+>  pub mod platform;
+>  pub mod prelude;
+> diff --git a/rust/kernel/percpu.rs b/rust/kernel/percpu.rs
+> new file mode 100644
+> index 000000000000..35afcdba3ccd
+> --- /dev/null
+> +++ b/rust/kernel/percpu.rs
+> @@ -0,0 +1,223 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//! This module contains abstractions for creating and using per-CPU variables from Rust.
+> +//! See the define_per_cpu! macro and the DynamicPerCpu<T> type, as well as the PerCpu<T> trait.
+> +
+> +pub mod cpu_guard;
+> +mod dynamic;
+> +mod static_;
+> +
+> +#[doc(inline)]
+> +pub use dynamic::*;
+> +#[doc(inline)]
+> +pub use static_::*;
+> +
+> +use bindings::{alloc_percpu, free_percpu};
+> +
+> +use crate::alloc::Flags;
+> +use crate::percpu::cpu_guard::CpuGuard;
+> +use crate::prelude::*;
+> +use crate::sync::Arc;
+> +use crate::types::Opaque;
+> +use crate::{declare_extern_per_cpu, get_static_per_cpu};
+> +
+> +use core::arch::asm;
+> +use core::cell::{Cell, RefCell, UnsafeCell};
+> +use core::mem::{align_of, size_of, MaybeUninit};
+> +
+> +use ffi::c_void;
+> +
+> +/// A per-CPU pointer; that is, an offset into the per-CPU area. Note that this type is NOT a smart
+> +/// pointer, it does not manage the allocation.
+> +pub struct PerCpuPtr<T>(*mut MaybeUninit<T>);
+> +
+> +/// Represents exclusive access to the memory location pointed at by a particular PerCpu<T>.
+> +pub struct PerCpuToken<'a, T> {
+> +    // INVARIANT: the current CPU's memory location associated with the per-CPU variable pointed at
+> +    // by `ptr` (i.e., the entry in the per-CPU area on the current CPU) has been initialized.
+> +    _guard: CpuGuard,
+> +    ptr: &'a PerCpuPtr<T>,
+> +}
+> +
+> +/// Represents access to the memory location pointed at by a particular PerCpu<T> where the type
+> +/// `T` manages access to the underlying memory to avoid aliaising troubles. (For example, `T`
+> +/// might be a `Cell` or `RefCell`.)
+> +pub struct CheckedPerCpuToken<'a, T> {
+> +    // INVARIANT: the current CPU's memory location associated with the per-CPU variable pointed at
+> +    // by `ptr` (i.e., the entry in the per-CPU area on the current CPU) has been initialized.
+> +    _guard: CpuGuard,
+> +    ptr: &'a PerCpuPtr<T>,
+> +}
+> +
+> +impl<T> PerCpuPtr<T> {
+> +    /// Makes a new PerCpuPtr from a raw per-CPU pointer.
+> +    ///
+> +    /// # Safety
+> +    /// `ptr` must be a valid per-CPU pointer.
+> +    pub unsafe fn new(ptr: *mut MaybeUninit<T>) -> Self {
+> +        Self(ptr)
+> +    }
+> +
+> +    /// Get a `&mut MaybeUninit<T>` to the per-CPU variable on the current CPU represented by `&self`
+> +    ///
+> +    /// # Safety
+> +    /// The returned `&mut T` must follow Rust's aliasing rules. That is, no other `&(mut) T` may
+> +    /// exist that points to the same location in memory. In practice, this means that `get_(mut_)ref`
+
+How long is this line?
+
+> +    /// must not be called on another `PerCpuPtr<T>` that is a copy/clone of `&self` for as long as
+> +    /// the returned reference lives.
+> +    ///
+> +    /// CPU preemption must be disabled before calling this function and for the lifetime of the
+> +    /// returned reference. Otherwise, the returned reference might end up being a reference to a
+> +    /// different CPU's per-CPU area, causing the potential for a data race.
+> +    #[allow(clippy::mut_from_ref)] // Safety requirements prevent aliasing issues
+> +    pub unsafe fn get_mut_ref(&self) -> &mut MaybeUninit<T> {
+> +        // SAFETY: `self.get_ptr()` returns a valid pointer to a `MaybeUninit<T>` by its contract,
+> +        // and the safety requirements of this function ensure that the returned reference is
+> +        // exclusive.
+> +        unsafe { &mut *(self.get_ptr()) }
+> +    }
+
+Here and everywhere: would it make sense to enforce it by testing
+the CPU with preemptible() before returning a reference? 
+
+Thanks,
+Yury
+
+> +
+> +    /// Get a `&MaybeUninit<T>` to the per-CPU variable on the current CPU represented by `&self`
+> +    ///
+> +    /// # Safety
+> +    /// The returned `&T` must follow Rust's aliasing rules. That is, no `&mut T` may exist that
+> +    /// points to the same location in memory. In practice, this means that `get_mut_ref` must not
+> +    /// be called on another `PerCpuPtr<T>` that is a copy/clone of `&self` for as long as the
+> +    /// returned reference lives.
+> +    ///
+> +    /// CPU preemption must be disabled before calling this function and for the lifetime of the
+> +    /// returned reference. Otherwise, the returned reference might end up being a reference to a
+> +    /// different CPU's per-CPU area, causing the potential for a data race.
+> +    pub unsafe fn get_ref(&self) -> &MaybeUninit<T> {
+> +        // SAFETY: `self.get_ptr()` returns a valid pointer to a `MaybeUninit<T>` by its contract.
+> +        // The safety requirements of this function ensure that the returned reference isn't
+> +        // aliased by a `&mut MaybeUninit<T>`.
+> +        unsafe { &*self.get_ptr() }
+> +    }
+> +
+> +    /// Get a `*mut MaybeUninit<T>` to the per-CPU variable on the current CPU represented by
+> +    /// `&self`. Note that if CPU preemption is not disabled before calling this function, use of
+> +    /// the returned pointer may cause a data race without some other synchronization mechanism.
+> +    /// Buyer beware!
+> +    pub fn get_ptr(&self) -> *mut MaybeUninit<T> {
+> +        let this_cpu_off_pcpu: PerCpuPtr<*mut c_void> = get_static_per_cpu!(this_cpu_off).0;
+> +        let mut this_cpu_area: *mut c_void;
+> +        // SAFETY: gs + this_cpu_off_pcpu is guaranteed to be a valid pointer because `gs` points
+> +        // to the per-CPU area and this_cpu_off_pcpu is a valid per-CPU allocation.
+> +        unsafe {
+> +            asm!(
+> +                "mov {out}, gs:[{off_val}]",
+> +                off_val = in(reg) this_cpu_off_pcpu.0,
+> +                out = out(reg) this_cpu_area,
+> +            )
+> +        };
+> +
+> +        // This_cpu_area + self.0 is guaranteed to be a valid pointer by the per-CPU subsystem and
+> +        // the invariant that self.0 is a valid offset into the per-CPU area.
+> +        (this_cpu_area).wrapping_add(self.0 as usize).cast()
+> +    }
+> +}
+> +
+> +// SAFETY: Sending a `PerCpuPtr<T>` to another thread is safe because as soon as it's sent, the
+> +// pointer is logically referring to a different place in memory in the other CPU's per-CPU area.
+> +// In particular, this means that there are no restrictions on the type `T`.
+> +unsafe impl<T> Send for PerCpuPtr<T> {}
+> +
+> +// SAFETY: Two threads concurrently making use of a `PerCpuPtr<T>` will each see the `T` in their
+> +// own per-CPU area, so there's no potential for a data race (regardless of whether `T` is itself
+> +// `Sync`).
+> +unsafe impl<T> Sync for PerCpuPtr<T> {}
+> +
+> +impl<T> Clone for PerCpuPtr<T> {
+> +    fn clone(&self) -> Self {
+> +        *self
+> +    }
+> +}
+> +
+> +/// `PerCpuPtr` is just a wrapper around a pointer.
+> +impl<T> Copy for PerCpuPtr<T> {}
+> +
+> +/// A trait representing a per-CPU variable. This is implemented for both `StaticPerCpu<T>` and
+> +/// `DynamicPerCpu<T>`. The main usage of this trait is to call `get_mut` to get a `PerCpuToken`
+> +/// that can be used to access the underlying per-CPU variable. See `PerCpuToken::with`.
+> +pub trait PerCpu<T> {
+> +    /// Produces a token, asserting that the holder has exclusive access to the underlying memory
+> +    /// pointed to by `self`
+> +    ///
+> +    /// # Safety
+> +    /// No other `PerCpuToken` or `CheckedPerCpuToken` may exist on the current CPU (which is a
+> +    /// sensible notion, since we keep a `CpuGuard` around) that is derived from the same
+> +    /// `PerCpu<T>` or a clone thereof.
+> +    unsafe fn get_mut(&mut self, guard: CpuGuard) -> PerCpuToken<'_, T>;
+> +}
+> +
+> +/// A marker trait for types that are interior mutable. Types that implement this trait can be used
+> +/// to create "checked" per-CPU variables. See `CheckedPerCpu<T>`.
+> +pub trait InteriorMutable {}
+> +
+> +impl<T> InteriorMutable for Cell<T> {}
+> +impl<T> InteriorMutable for RefCell<T> {}
+> +impl<T> InteriorMutable for UnsafeCell<T> {}
+> +impl<T> InteriorMutable for Opaque<T> {}
+> +
+> +/// A trait representing a per-CPU variable that is usable via a `&T`. The unsafety of `PerCpu<T>`
+> +/// stems from the fact that the holder of a `PerCpuToken` can use it to get a `&mut T` to the
+> +/// underlying per-CPU variable. This is problematic because the existence of aliaising `&mut T` is
+> +/// undefined behavior in Rust. This type avoids that issue by only allowing access via a `&T`,
+> +/// with the tradeoff that then `T` must be interior mutable or the underlying per-CPU variable
+> +/// must be a constant for the lifetime of the corresponding `CheckedPerCpu<T>`.
+> +///
+> +/// Currently, only the case where `T` is interior mutable has first-class support, though a custom
+> +/// implementation of `PerCpu<T>`/`CheckedPerCpu<T>` could be created for the const case.
+> +pub trait CheckedPerCpu<T>: PerCpu<T> {
+> +    /// Produces a token via which the holder can access the underlying per-CPU variable.
+> +    fn get(&mut self, guard: CpuGuard) -> CheckedPerCpuToken<'_, T>;
+> +}
+> +
+> +impl<'a, T> PerCpuToken<'a, T> {
+> +    /// # Safety
+> +    /// No other `PerCpuToken` or `CheckedPerCpuToken` may exist on the current CPU (which is a
+> +    /// sensible notion, since we keep a `CpuGuard` around) that uses the same `PerCpuPtr<T>`.
+> +    ///
+> +    /// The current CPU's memory location associated with the per-CPU variable pointed at by `ptr`
+> +    /// (i.e., the entry in the per-CPU area on this CPU) must be initialized.
+> +    pub unsafe fn new(guard: CpuGuard, ptr: &'a PerCpuPtr<T>) -> PerCpuToken<'a, T> {
+> +        Self { _guard: guard, ptr }
+> +    }
+> +
+> +    /// Immediately invokes `func` with a `&mut T` that points at the underlying per-CPU variable
+> +    /// that `&mut self` represents.
+> +    pub fn with<U>(&mut self, func: U)
+> +    where
+> +        U: FnOnce(&mut T),
+> +    {
+> +        // SAFETY: The existence of a PerCpuToken means that the requirements for get_mut_ref are
+> +        // satisfied. Likewise, the requirements for assume_init_mut are satisfied because the
+> +        // invariants of this type ensure that on the current CPU (which is a sensible notion
+> +        // because we have a CpuGuard), the memory location pointed to by `ptr` is initialized.
+> +        func(unsafe { self.ptr.get_mut_ref().assume_init_mut() });
+> +    }
+> +}
+> +
+> +impl<'a, T> CheckedPerCpuToken<'a, T> {
+> +    /// # Safety
+> +    /// The current CPU's memory location associated with the per-CPU variable pointed at by `ptr`
+> +    /// (i.e., the entry in the per-CPU area on this CPU) must be initialized.
+> +    pub unsafe fn new(guard: CpuGuard, ptr: &'a PerCpuPtr<T>) -> CheckedPerCpuToken<'a, T> {
+> +        Self { _guard: guard, ptr }
+> +    }
+> +
+> +    /// Immediately invokes `func` with a `&T` that points at the underlying per-CPU variable that
+> +    /// `&mut self` represents.
+> +    pub fn with<U>(&mut self, func: U)
+> +    where
+> +        U: FnOnce(&T),
+> +    {
+> +        // SAFETY: The existence of a CheckedPerCpuToken means that the requirements for get_ref
+> +        // are satisfied. Likewise, the requirements for assume_init_ref are satisfied because the
+> +        // invariants of this type ensure that on the current CPU (which is a sensible notion
+> +        // because we have a CpuGuard), the memory location pointed to by `ptr` is initialized.
+> +        func(unsafe { self.ptr.get_ref().assume_init_ref() });
+> +    }
+> +}
+> +
+> +declare_extern_per_cpu!(this_cpu_off: *mut c_void);
+> diff --git a/rust/kernel/percpu/cpu_guard.rs b/rust/kernel/percpu/cpu_guard.rs
+> new file mode 100644
+> index 000000000000..14c04b12e7f0
+> --- /dev/null
+> +++ b/rust/kernel/percpu/cpu_guard.rs
+> @@ -0,0 +1,35 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//! Contains abstractions for disabling CPU preemption. See `CpuGuard`.
+> +
+> +/// A RAII guard for bindings::preempt_disable and bindings::preempt_enable. Guarantees preemption
+> +/// is disabled for as long as this object exists.
+> +pub struct CpuGuard {
+> +    // Don't make one without using new()
+> +    _phantom: (),
+> +}
+> +
+> +impl CpuGuard {
+> +    /// Create a new CpuGuard. Disables preemption for its lifetime.
+> +    pub fn new() -> Self {
+> +        // SAFETY: There are no preconditions required to call preempt_disable
+> +        unsafe {
+> +            bindings::preempt_disable();
+> +        }
+> +        CpuGuard { _phantom: () }
+> +    }
+> +}
+> +
+> +impl Default for CpuGuard {
+> +    fn default() -> Self {
+> +        Self::new()
+> +    }
+> +}
+> +
+> +impl Drop for CpuGuard {
+> +    fn drop(&mut self) {
+> +        // SAFETY: There are no preconditions required to call preempt_enable
+> +        unsafe {
+> +            bindings::preempt_enable();
+> +        }
+> +    }
+> +}
+> diff --git a/rust/kernel/percpu/dynamic.rs b/rust/kernel/percpu/dynamic.rs
+> new file mode 100644
+> index 000000000000..ce95e420f943
+> --- /dev/null
+> +++ b/rust/kernel/percpu/dynamic.rs
+> @@ -0,0 +1,83 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//! Dynamically allocated per-CPU variables.
+> +
+> +use super::*;
+> +
+> +/// Represents a dynamic allocation of a per-CPU variable via alloc_percpu. Calls free_percpu when
+> +/// dropped.
+> +pub struct PerCpuAllocation<T>(PerCpuPtr<T>);
+> +
+> +impl<T: Zeroable> PerCpuAllocation<T> {
+> +    /// Dynamically allocates a space in the per-CPU area suitably sized and aligned to hold a `T`,
+> +    /// initially filled with the zero value for `T`.
+> +    ///
+> +    /// Returns `None` under the same circumstances the C function `alloc_percpu` returns `NULL`.
+> +    pub fn new_zero() -> Option<PerCpuAllocation<T>> {
+> +        let ptr: *mut MaybeUninit<T> =
+> +            // SAFETY: No preconditions to call alloc_percpu; MaybeUninit<T> is
+> +            // `#[repr(transparent)]`, so we can cast a `*mut T` to it.
+> +            unsafe { alloc_percpu(size_of::<T>(), align_of::<T>()) }.cast();
+> +        if ptr.is_null() {
+> +            return None;
+> +        }
+> +
+> +        // alloc_percpu returns zero'ed memory
+> +        Some(Self(PerCpuPtr(ptr)))
+> +    }
+> +}
+> +
+> +impl<T> PerCpuAllocation<T> {
+> +    /// Makes a per-CPU allocation sized and aligned to hold a `T`.
+> +    ///
+> +    /// Returns `None` under the same circumstances the C function `alloc_percpu` returns `NULL`.
+> +    pub fn new_uninit() -> Option<PerCpuAllocation<T>> {
+> +        let ptr: *mut MaybeUninit<T> =
+> +            // SAFETY: No preconditions to call alloc_percpu; MaybeUninit<T> is
+> +            // `#[repr(transparent)]`, so we can cast a `*mut T` to it.
+> +            unsafe { alloc_percpu(size_of::<T>(), align_of::<T>()) }.cast();
+> +        if ptr.is_null() {
+> +            return None;
+> +        }
+> +
+> +        Some(Self(PerCpuPtr(ptr)))
+> +    }
+> +}
+> +
+> +impl<T> Drop for PerCpuAllocation<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: self.0.0 was returned by alloc_percpu, and so was a valid pointer into
+> +        // the percpu area, and has remained valid by the invariants of PerCpuAllocation<T>.
+> +        unsafe { free_percpu(self.0 .0.cast()) }
+> +    }
+> +}
+> +
+> +/// Holds a dynamically-allocated per-CPU variable.
+> +#[derive(Clone)]
+> +pub struct DynamicPerCpu<T> {
+> +    // INVARIANT: The memory location in each CPU's per-CPU area pointed at by `alloc.0` has been
+> +    // initialized.
+> +    pub(super) alloc: Arc<PerCpuAllocation<T>>,
+> +}
+> +
+> +impl<T: Zeroable> DynamicPerCpu<T> {
+> +    /// Allocates a new per-CPU variable
+> +    ///
+> +    /// # Arguments
+> +    /// * `flags` - Flags used to allocate an `Arc` that keeps track of the underlying
+> +    ///   `PerCpuAllocation`.
+> +    pub fn new_zero(flags: Flags) -> Option<Self> {
+> +        let alloc: PerCpuAllocation<T> = PerCpuAllocation::new_zero()?;
+> +
+> +        let arc = Arc::new(alloc, flags).ok()?;
+> +
+> +        Some(Self { alloc: arc })
+> +    }
+> +}
+> +
+> +impl<T> PerCpu<T> for DynamicPerCpu<T> {
+> +    unsafe fn get_mut(&mut self, guard: CpuGuard) -> PerCpuToken<'_, T> {
+> +        // SAFETY: The requirements of `PerCpu::get_mut` and this type's invariant ensure that the
+> +        // requirements of `PerCpuToken::new` are met.
+> +        unsafe { PerCpuToken::new(guard, &self.alloc.0) }
+> +    }
+> +}
+> diff --git a/rust/kernel/percpu/static_.rs b/rust/kernel/percpu/static_.rs
+> new file mode 100644
+> index 000000000000..be226dd2c3aa
+> --- /dev/null
+> +++ b/rust/kernel/percpu/static_.rs
+> @@ -0,0 +1,132 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//! Statically allocated per-CPU variables.
+> +
+> +use super::*;
+> +
+> +/// A wrapper used for declaring static per-CPU variables. These symbols are "virtual" in that the
+> +/// linker uses them to generate offsets into each CPU's per-CPU area, but shouldn't be read
+> +/// from/written to directly. The fact that the statics are immutable prevents them being written
+> +/// to (generally), this struct having _val be non-public prevents reading from them.
+> +///
+> +/// The end-user of the per-CPU API should make use of the define_per_cpu! macro instead of
+> +/// declaring variables of this type directly. All instances of this type must be `static` and
+> +/// `#[link_section = ".data..percpu"]` (which the macro handles).
+> +#[repr(transparent)]
+> +pub struct StaticPerCpuSymbol<T> {
+> +    _val: T, // generate a correctly sized type
+> +}
+> +
+> +/// Holds a statically-allocated per-CPU variable.
+> +#[derive(Clone)]
+> +pub struct StaticPerCpu<T>(pub(super) PerCpuPtr<T>);
+> +
+> +impl<T> StaticPerCpu<T> {
+> +    /// Creates a `StaticPerCpu<T>` from a `StaticPerCpuSymbol<T>`. You should probably be using
+> +    /// `get_static_per_cpu!` instead.
+> +    pub fn new(ptr: *const StaticPerCpuSymbol<T>) -> StaticPerCpu<T> {
+> +        // SAFETY: `StaticPerCpuSymbol<T>` is `#[repr(transparent)]`, so we can safely cast a
+> +        // pointer to it into a pointer to `MaybeUninit<T>`. The validity of it as a per-CPU
+> +        // pointer is guaranteed by the per-CPU subsystem and invariants of the StaticPerCpuSymbol
+> +        // type.
+> +        let pcpu_ptr = unsafe { PerCpuPtr::new(ptr.cast_mut().cast()) };
+> +        Self(pcpu_ptr)
+> +    }
+> +}
+> +
+> +impl<T> PerCpu<T> for StaticPerCpu<T> {
+> +    unsafe fn get_mut(&mut self, guard: CpuGuard) -> PerCpuToken<'_, T> {
+> +        // SAFETY: The requirements of `PerCpu::get_mut` and the fact that statically-allocated
+> +        // per-CPU variables are initialized by the per-CPU subsystem ensure that the requirements
+> +        // of `PerCpuToken::new` are met.
+> +        unsafe { PerCpuToken::new(guard, &self.0) }
+> +    }
+> +}
+> +
+> +impl<T: InteriorMutable> CheckedPerCpu<T> for StaticPerCpu<T> {
+> +    fn get(&mut self, guard: CpuGuard) -> CheckedPerCpuToken<'_, T> {
+> +        // SAFETY: The per-CPU subsystem guarantees that each CPU's instance of a
+> +        // statically allocated variable begins with a copy of the contents of the
+> +        // corresponding symbol in `.data..percpu`. Thus, the requirements of
+> +        // `CheckedPerCpuToken::new` are met.
+> +        unsafe { CheckedPerCpuToken::new(guard, &self.0) }
+> +    }
+> +}
+> +
+> +/// Gets a `StaticPerCpu<T>` from a symbol declared with `define_per_cpu!` or
+> +/// `declare_extern_per_cpu!`.
+> +///
+> +/// # Arguments
+> +/// * `ident` - The identifier declared
+> +#[macro_export]
+> +macro_rules! get_static_per_cpu {
+> +    ($id:ident) => {
+> +        $crate::percpu::StaticPerCpu::new((&raw const $id).cast())
+> +    };
+> +}
+> +
+> +/// Declares a StaticPerCpuSymbol corresponding to a per-CPU variable defined in C. Be sure to read
+> +/// the safety requirements of `PerCpu::get`.
+> +#[macro_export]
+> +macro_rules! declare_extern_per_cpu {
+> +    ($id:ident: $ty:ty) => {
+> +        extern "C" {
+> +            static $id: StaticPerCpuSymbol<$ty>;
+> +        }
+> +    };
+> +}
+> +
+> +/// define_per_cpu! is analogous to the C DEFINE_PER_CPU macro in that it lets you create a
+> +/// statically allocated per-CPU variable.
+> +///
+> +/// # Example
+> +/// ```
+> +/// use kernel::define_per_cpu;
+> +/// use kernel::percpu::StaticPerCpuSymbol;
+> +///
+> +/// define_per_cpu!(pub MY_PERCPU: u64 = 0);
+> +/// ```
+> +#[macro_export]
+> +macro_rules! define_per_cpu {
+> +    ($vis:vis $id:ident: $ty:ty = $expr:expr) => {
+> +        $crate::macros::paste! {
+> +            // We might want to have a per-CPU variable that doesn't implement `Sync` (not paying
+> +            // sync overhead costs is part of the point), but Rust won't let us declare a static of
+> +            // a `!Sync` type. Of course, we don't actually have any synchronization issues, since
+> +            // each CPU will see its own copy of the variable, so we cheat a little bit and tell
+> +            // Rust it's fine.
+> +            #[doc(hidden)]
+> +            #[allow(non_camel_case_types)]
+> +            #[repr(transparent)] // It needs to be the same size as $ty
+> +            struct [<__PRIVATE_TYPE_ $id>]($ty);
+> +
+> +            impl [<__PRIVATE_TYPE_ $id>] {
+> +                #[doc(hidden)]
+> +                const fn new(val: $ty) -> Self {
+> +                    Self(val)
+> +                }
+> +            }
+> +
+> +            // Expand $expr outside of the unsafe block to avoid silently allowing unsafe code to be
+> +            // used without a user-facing unsafe block
+> +            #[doc(hidden)]
+> +            static [<__INIT_ $id>]: [<__PRIVATE_TYPE_ $id>] = [<__PRIVATE_TYPE_ $id>]::new($expr);
+> +
+> +            // SAFETY: This type will ONLY ever be used to declare a `StaticPerCpuSymbol`
+> +            // (which we then only ever use as input to `&raw`). Reading from the symbol is
+> +            // already UB, so we won't ever actually have any variables of this type where
+> +            // synchronization is a concern.
+> +            #[doc(hidden)]
+> +            unsafe impl Sync for [<__PRIVATE_TYPE_ $id>] {}
+> +
+> +            // SAFETY: StaticPerCpuSymbol<T> is #[repr(transparent)], so we can freely convert from
+> +            // [<__PRIVATE_TYPE_ $id>], which is also `#[repr(transparent)]` (i.e., everything is
+> +            // just a `$ty` from a memory layout perspective).
+> +            #[link_section = ".data..percpu"]
+> +            $vis static $id: StaticPerCpuSymbol<[<__PRIVATE_TYPE_ $id>]> = unsafe {
+> +                core::mem::transmute_copy::<
+> +                    [<__PRIVATE_TYPE_ $id>], StaticPerCpuSymbol<[<__PRIVATE_TYPE_ $id>]>
+> +                >(&[<__INIT_ $id>])
+> +            };
+> +        }
+> +    };
+> +}
 > 
->  include/linux/memfd.h                      |  2 ++
->  mm/memfd.c                                 | 14 +++++++++--
->  security/selinux/hooks.c                   | 27 ++++++++++++++++++----
->  security/selinux/include/classmap.h        |  2 ++
->  security/selinux/include/policycap.h       |  1 +
->  security/selinux/include/policycap_names.h |  1 +
->  security/selinux/include/security.h        |  5 ++++
->  7 files changed, 46 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/memfd.h b/include/linux/memfd.h
-> index 6f606d9573c3..cc74de3dbcfe 100644
-> --- a/include/linux/memfd.h
-> +++ b/include/linux/memfd.h
-> @@ -4,6 +4,8 @@
->  
->  #include <linux/file.h>
->  
-> +#define MEMFD_ANON_NAME "[memfd]"
-> +
->  #ifdef CONFIG_MEMFD_CREATE
->  extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg);
->  struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index bbe679895ef6..63b439eb402a 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -433,6 +433,8 @@ static struct file *alloc_file(const char *name, unsigned int flags)
->  {
->  	unsigned int *file_seals;
->  	struct file *file;
-> +	struct inode *inode;
-> +	int err = 0;
->  
->  	if (flags & MFD_HUGETLB) {
->  		file = hugetlb_file_setup(name, 0, VM_NORESERVE,
-> @@ -444,12 +446,20 @@ static struct file *alloc_file(const char *name, unsigned int flags)
->  	}
->  	if (IS_ERR(file))
->  		return file;
-> +
-> +	inode = file_inode(file);
-> +	err = security_inode_init_security_anon(inode,
-> +			&QSTR(MEMFD_ANON_NAME), NULL);
-> +	if (err) {
-> +		fput(file);
-> +		file = ERR_PTR(err);
-> +		return file;
-> +	}
-> +
->  	file->f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
->  	file->f_flags |= O_LARGEFILE;
->  
->  	if (flags & MFD_NOEXEC_SEAL) {
-> -		struct inode *inode = file_inode(file);
-> -
->  		inode->i_mode &= ~0111;
->  		file_seals = memfd_file_seals_ptr(file);
->  		if (file_seals) {
-
-Hugh, Baolin, and shmem/mm folks, are you okay with the changes above? If
-so it would be nice to get an ACK from one of you.
-
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index c95a5874bf7d..429b2269b35a 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -93,6 +93,7 @@
->  #include <linux/fanotify.h>
->  #include <linux/io_uring/cmd.h>
->  #include <uapi/linux/lsm.h>
-> +#include <linux/memfd.h>
->  
->  #include "avc.h"
->  #include "objsec.h"
-> @@ -2366,9 +2367,12 @@ static int selinux_bprm_creds_for_exec(struct linux_binprm *bprm)
->  	ad.type = LSM_AUDIT_DATA_FILE;
->  	ad.u.file = bprm->file;
->  
-> +	if (isec->sclass != SECCLASS_FILE && isec->sclass != SECCLASS_MEMFD_FILE)
-> +		return -EPERM;
-
-In the interest of failing fast, this should probably be moved up in the
-function to just after where @isec is set.  There are also a number of
-checks that happen prior to this placement, but after the isec assignment.
-While I don't think any of those checks should be an issue, I'd rather
-not to have to worry about those and just fail the non-FILE/MEMFD_FILE
-case as soon as we can in selinux_bprm_creds_for_exec().
-
->  	if (new_tsec->sid == old_tsec->sid) {
-> -		rc = avc_has_perm(old_tsec->sid, isec->sid,
-> -				  SECCLASS_FILE, FILE__EXECUTE_NO_TRANS, &ad);
-> +		rc = avc_has_perm(old_tsec->sid, isec->sid, isec->sclass,
-> +				  FILE__EXECUTE_NO_TRANS, &ad);
->  		if (rc)
->  			return rc;
->  	} else {
-> @@ -2378,8 +2382,8 @@ static int selinux_bprm_creds_for_exec(struct linux_binprm *bprm)
->  		if (rc)
->  			return rc;
->  
-> -		rc = avc_has_perm(new_tsec->sid, isec->sid,
-> -				  SECCLASS_FILE, FILE__ENTRYPOINT, &ad);
-> +		rc = avc_has_perm(new_tsec->sid, isec->sid, isec->sclass,
-> +				  FILE__ENTRYPOINT, &ad);
->  		if (rc)
->  			return rc;
->  
-> @@ -2974,10 +2978,18 @@ static int selinux_inode_init_security_anon(struct inode *inode,
->  	struct common_audit_data ad;
->  	struct inode_security_struct *isec;
->  	int rc;
-> +	bool is_memfd = false;
->  
->  	if (unlikely(!selinux_initialized()))
->  		return 0;
->  
-> +	if (name != NULL && name->name != NULL &&
-> +	    !strcmp(name->name, MEMFD_ANON_NAME)) {
-> +		if (!selinux_policycap_memfd_class())
-> +			return 0;
-> +		is_memfd = true;
-> +	}
-> +
->  	isec = selinux_inode(inode);
->  
->  	/*
-> @@ -2996,6 +3008,13 @@ static int selinux_inode_init_security_anon(struct inode *inode,
->  
->  		isec->sclass = context_isec->sclass;
->  		isec->sid = context_isec->sid;
-> +	} else if (is_memfd) {
-> +		isec->sclass = SECCLASS_MEMFD_FILE;
-> +		rc = security_transition_sid(
-> +			sid, sid,
-> +			isec->sclass, name, &isec->sid);
-> +		if (rc)
-> +			return rc;
->  	} else {
->  		isec->sclass = SECCLASS_ANON_INODE;
->  		rc = security_transition_sid(
-
-We're duplicating the security_transition_sid() call which seems less
-than ideal, how about something like this?
-
-  if (context_inode) {
-    /* ... existing stuff ... */
-  } else {
-    if (is_memfd)
-      isec->sclass = SECCLASS_MEMFD_FILE;
-    else
-      isec->sclass = SECCLASS_ANON_INODE;
-    rc = security_transition_sid(...);
-    if (rc)
-      return rc;
-  }
-
---
-paul-moore.com
+> -- 
+> 2.34.1
 
