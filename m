@@ -4,116 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EBCECA1009
-	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 12:58:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A71ECA1009
+	for <linux-mm@archiver.kernel.org>; Wed,  3 Sep 2025 13:00:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFB5B8E0012; Wed,  3 Sep 2025 08:58:23 -0400 (EDT)
+	id 952A38E0014; Wed,  3 Sep 2025 09:00:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AABC28E0001; Wed,  3 Sep 2025 08:58:23 -0400 (EDT)
+	id 929258E0013; Wed,  3 Sep 2025 09:00:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E91A8E0012; Wed,  3 Sep 2025 08:58:23 -0400 (EDT)
+	id 83F128E0014; Wed,  3 Sep 2025 09:00:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CE8D8E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 08:58:23 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E7695A421
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:58:23 +0000 (UTC)
-X-FDA: 83847942486.08.04F3BAA
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2B20D40015
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 12:58:20 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=KqPvARNc;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 752658E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 09:00:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24CB51DEA65
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:14 +0000 (UTC)
+X-FDA: 83847947148.11.0E74932
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B125C8001F
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 13:00:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=arrlLRSN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Dt+VVdAf;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EFlow2CE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oiNOm3uq;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904412; a=rsa-sha256;
+	cv=none;
+	b=N0kP+mRIUr4D+et2J11QLZqamhdGbRGyDA8pt0TbVmP4lnjKE5nuMbZylqVVPlIgTy5JAB
+	yJXABU+K27Sen8IvdYsHJAFJJztdX5wDXPl1yRv5euDqkg3WEFHOKiZomiYQ5JgLgAiaVt
+	+gbFKzEKYAd1XyYO2LIH0s09PJcb8vI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=arrlLRSN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Dt+VVdAf;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EFlow2CE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oiNOm3uq;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756904301;
+	s=arc-20220608; t=1756904412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MC77pG8YTMZbdsVNvsxb7MX4BGndC3HL8xv81scZppk=;
-	b=f8nrUnmHL5fupe2Au490VBJViqP+KY+k9+GrDN4yPT1oJDiMiqekaPvJ0A0uJYLNW1tJso
-	z46K+OL9Ucm+RKFIKqKJ6AKzkHvxnAEfBJ+//2cUO1kbzOWZWt5pY7HWUAGV3RQu+G647y
-	TNqi+HdwCVz78jrUBfchS0NFgjBRYzI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=KqPvARNc;
-	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756904301; a=rsa-sha256;
-	cv=none;
-	b=hzXDWDHhsJXrj4Mjm4QJ75tz6+9QF204UlZ8yzPLOjTvo+wXc/owmTdJKP0ZNUAE/DqPbj
-	6i7ObU8Zci5KMRLhowSR/x/Ew2wllA//EkG0pPPLnXBTxRg4ogL3a4h1NBdCrnKMYw2M1K
-	qSTzXikPM1GgcFq+08htOMyTLfqhsZc=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45cb5e1adf7so5927235e9.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 05:58:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756904300; x=1757509100; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MC77pG8YTMZbdsVNvsxb7MX4BGndC3HL8xv81scZppk=;
-        b=KqPvARNcvXis/7cH+9U7DkVVlAGRflRnNSEXMnammEB/1pyfhK0P7NIYkoXcImXLH0
-         VxklNYs2dbwneGUpT3mXOmo7Up1YVqfDLVKJCVEOHAiFEjnDnuL9+HNKVeBW+/wD21Sy
-         aFc5B2BQ+zpxvezhRnRbn4MYDhyD8mZqs8Smb7Ju0A+iVzT0sZSBYlCZnw1eHXSVlYn/
-         3naDic8y6muYa9icJyzFct1FKDvWWfJNr8JPp1bQy+XP3jLhgQxSsFvFdO2nntNy6UTS
-         Ru06SmtP5bF5tUqA7Jls0IcP2jt5qqctVz/zmMmXKqzTWnKsEv5nFoE3L7fPclpzQq7i
-         ao5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756904300; x=1757509100;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MC77pG8YTMZbdsVNvsxb7MX4BGndC3HL8xv81scZppk=;
-        b=nT8rJTG/dQ+ltltkV8lUP3HfCGX0UBPGzqawyCEnLWda2JNEDEwmlcJ3CApmjJuNQG
-         hR897cfeTXCxFmPmhyqtr30EP6xyJw21M3h6ILfdqKdSCZzba4mFDcMquSIBhMUKx4kL
-         Pq+y+1fJDmVUH2TUq8I982Zs36imlwpEcc8qpMkqvkNm0g9EvRs6AyBEeOqmHaXw/1nh
-         kUf6TSSnBe0rS5mwXqNlfIk/amEm3zy4LzEnzlH2wxnh6ZyCgOYr27J4P4uQuPcEVc/e
-         ibuHbKrI6dvIuc6ubSFnacwy7K10WLEbXTCAQwsZ/XJo1ksVLBt/3ltcW3Pkp/gQoE0E
-         q78g==
-X-Forwarded-Encrypted: i=1; AJvYcCWLCri5MbaWwKPjtL4Xdv72l4FCqSreIydr5RXuio9O2kw0kRjxEb0p+Ji7qI7ex4NOlm/RMjjiXA==@kvack.org
-X-Gm-Message-State: AOJu0Yy8ZR3OW8C7mVMSKvd7+EiABJ9eLcK939hEr1dlaQQNENBanlbi
-	+THxD99YSjGUi24gx7tgXEBLZNWelVnHkJTDVwnOD+7UjWsKM5L/KalGaqBJzSP4ebE=
-X-Gm-Gg: ASbGnctXVr4X0WBBV563azIJBNp333z5eIhaljzdgVPOraRasgGR76PUKgsL+nTpkvm
-	g3UopXCk8grLvSIzAXVNSx53otVqXe6mtoQJZvKtzZuy6DZH1dpTZWHG5BAANjeR6F9KjZYQ9CZ
-	IN+H6An6bYmq14cJS+eZWvxeLfXu7P+mny6o62na5d31R2VpO+Q9Txz1pWNzmg3KfTOOb4521VZ
-	ByS0dVVGl3U9IJ1n0g3f6tuWdqgWZVkWz5Y0ZnPFhCDC6bfb0Z6y81VvdLbUpvtQcI/4ABa6Rk5
-	KQzuACob/8dGRPb5/dgVRc70kSSD6XC0POQOZ8q0pGIW9ehLu1JFhgQiomiPMBS1g9nF+006Q8D
-	BMLiI6iiF5BvfS9MM4qhjPOy6wO9m4UnsjAAgiDY5svmpZg==
-X-Google-Smtp-Source: AGHT+IGA/EYr9siPLdAQFtA01/sYfVZcSrreq7W5+wyFJ0oMa4bqky4nIByyFn+cR542vJGQDzatNQ==
-X-Received: by 2002:a05:600c:1394:b0:45a:236a:23ba with SMTP id 5b1f17b1804b1-45b85575801mr117379825e9.22.1756904299566;
-        Wed, 03 Sep 2025 05:58:19 -0700 (PDT)
-Received: from localhost (109-81-86-254.rct.o2.cz. [109.81.86.254])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b7e7f14bbsm245164425e9.8.2025.09.03.05.58.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 05:58:19 -0700 (PDT)
-Date: Wed, 3 Sep 2025 14:58:18 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, liam.howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, surenb@google.com, liulu.liu@honor.com,
-	feng.han@honor.com
-Subject: Re: [PATCH v7 2/2] mm/oom_kill: The OOM reaper traverses the VMA
- maple tree in reverse order
-Message-ID: <aLg7ajpko2j1qV4h@tiehlicka>
-References: <20250903092729.10611-1-zhongjinji@honor.com>
- <20250903092729.10611-3-zhongjinji@honor.com>
+	bh=04+J/P3cAQAe3/G2iQS1u1ZbTuFSibWkDWn/mbh0R6o=;
+	b=d8tfxIQy88AYQ3B3mfLr1iGDCGMPjSspasphIAEVXHENEOGSSmlkHPycYPu3wO4TKnNa5p
+	IGU17DCzeoUSh9LjEhRa6VLwgl4Gc07HLyO0HEgqQvDvMcg5XfXhaliv6T0O/FPwuJJSUX
+	rZHmLHPAY9Oe4JNNDputFfxy+83VEkM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3C4771F460;
+	Wed,  3 Sep 2025 13:00:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756904410; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=04+J/P3cAQAe3/G2iQS1u1ZbTuFSibWkDWn/mbh0R6o=;
+	b=arrlLRSNCRL6ztrX4z+FD1hSkyyR9ZqSZNGG9Ed+HwGctCLDYHwoF/xJXBgSnpXh8ZYbHa
+	ImQWKKzYk+O3SFPxoA44W6RoOKd22MkH39Wa/SNLF1GLnCqBN3HKYxgVz+wQ3849+Kivo6
+	QDOrNC8qkUlCSZbqJeGL9B+JCJHw2ZA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756904410;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=04+J/P3cAQAe3/G2iQS1u1ZbTuFSibWkDWn/mbh0R6o=;
+	b=Dt+VVdAf1kIxpkQBwHp5ohN73Uh9pPEAROl9LO8dyW7F8E9ilLpImzRQORnm9urOS2kZqA
+	zEW7Pi2l0WmCC0AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756904409; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=04+J/P3cAQAe3/G2iQS1u1ZbTuFSibWkDWn/mbh0R6o=;
+	b=EFlow2CECEAnA7D8X1e5og3e94SIX/I73jq5GNahYqNxIwOTEctVEt8z4kzvQn0rNE7ywJ
+	Nx8GvUXnF9YbrZ771Q62/SM6ZLBb7jW6aZNiaqvuYh5ylYB6PFUSU+HLNjTNWQc5n2Ho6+
+	yESXtGfE/J7n1Z4NbG0RqzkObpqorXA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756904409;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=04+J/P3cAQAe3/G2iQS1u1ZbTuFSibWkDWn/mbh0R6o=;
+	b=oiNOm3uqjFRngvdN1r9enuok7DnUulcXMnJLb7Th9LxevZPfHOm3qhKwdrMH2qgHABx0pB
+	qf+yX15kU2XL36CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2097613A94;
+	Wed,  3 Sep 2025 13:00:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CJWwB9k7uGitOAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 03 Sep 2025 13:00:09 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Wed, 03 Sep 2025 14:59:43 +0200
+Subject: [PATCH v7 01/21] locking/local_lock: Expose dep_map in
+ local_trylock_t.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903092729.10611-3-zhongjinji@honor.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2B20D40015
-X-Stat-Signature: d45xcct8ao6n47tbmgeuthm688nnfe1g
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250903-slub-percpu-caches-v7-1-71c114cdefef@suse.cz>
+References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
+In-Reply-To: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
+To: Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, 
+ Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
+ maple-tree@lists.infradead.org, vbabka@suse.cz, 
+ Alexei Starovoitov <ast@kernel.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+X-Mailer: b4 0.14.2
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B125C8001F
+X-Stat-Signature: aounegj4onris8ym3wr3y71fhfidqpwr
 X-Rspam-User: 
-X-HE-Tag: 1756904300-718924
-X-HE-Meta: U2FsdGVkX18LhR6TTE2iT0ABufvgIRsbBmnh9Eq2+dai8HacEIKBA0B5i4pkVX1SdgA0MVBGOjQBhbce4M9l798gWea05qi5Po6zdWnod6X0pp5IiYfX8XQO1VmeLqzuO/Humiww9aOhjTp9QdqN4U6t46KC7BQ3acAhOzxiheI/FUYXytQ2KxQgrzpG4RXMXXf2g7onYrhjpgM8d28iOS8XA1GgIcnT/SILABoFD/PZ/CdfBs2WPlWZTV48Mpf8CY3a7vO9K+QtkGA/8ATG5u9GwdtNUJXP5N1UP7QPmSZTHOHKjOk7ppHNz4tqJ7lHi841B4GVtGv556YAfwtIljavtrpCERnI20Twfanr7fzHnS0TYNtOBkMwLymChKrnEAxABfJcl65lMwqToHOuBBZby6h3oksI0kqnhNvZTqa8W132/cgkR0UpYAdvRKzISHUpVaFIQSj9AYRSppcr6VFZST0rNMoxmQhLb4fJhV7xiVrlhX8TlAeSCEuInSqRH2R8CNu3uvOTMbr0eG9ecVLlGrovlt2Aifean3P20UiqjttbpZiZFMK1qv0LmTIi2PK97sjP8jcC53WANb8VxZNjOhvVAaiWKOb3JFxW2bxS5mNx57Qf5j7/dvEDt6e8WD4pIGq6q+SeAZu2MPy9tCAjLJ72hLkl9Kvrypg/n7sslj6O7dZT3ejzzRw6FBNnH8Z4a15OrtM7yiZTisfzh5rzHQOKbWabzEfWedW5aBn5FvE/OiR4+3RAGsoLnUcB+C/LPmRvWNRWFYKJdkc57fkQnlYf2uoOw7Z5Q6nsFBFa13wYdRPlh1/2QDO1OsGnjtOoP2kVzcPHjKdYr+c1PwtEzTZi0aBdO/JDrlYiqepM1PslyHAvNbbjvTwCUqsDuUgbsQdYIx3CY+iJVGMog+Ewu0tjsHXSBWGoC/5I33eLTKryOlExwAsb8G6w+LDFOvbE0qwr5qLwA4W1swS
- 2G0JSALa
- 1r60+jAvKgj1Rj7z9+LnZnmX5MHdQZx+3vf2Mw7A2HzUlPr1SMY5PN1A8FsF45HFr4k0oMDZt71aBphvfJqvLXtiqIKq5Pxp24BmjQsAJBr7jcaB7vRqlWiKU2qD95U6uT7XceHlB0klxE2eM9CigC18flB3NOP6k6AI6nmLRBC2khQZAGrHXhVxgv2CZ4aBtcQ+QqozxlFpuVpoOUwlNDoaB9fiGq2AJ09gPyNZmCdRsKdmbfb2n5DvHzr4FHbxpFfjIMgqo91RBmW7eq0qG5ky65Ru8DJmeYyVyelqEaOeR1fC18VYbpe68QUYw8TK85pOi+ZxxxEl4IbfRvCNkTOoNB1VqOkjZVSeZhc04i+iXraaGXpSMx6gCirxxC0Z+Gt76MC1hx9ejy/RLliFUbQHv799AgGY3QW6OEnt33+1PEO3lL96F9gU2g2fFDRaKN3nPgcV380zGvOvyscBol2Hz6f8yoB9tGCrs
+X-HE-Tag: 1756904411-805706
+X-HE-Meta: U2FsdGVkX18Opyu7jIH+jZXKYURkuZCjQhDcvublFghhPpoiCw4fJ8iiP1Rgv5Gdxh230tqy37LAzsmY+VHzWjQ+/LKCY0SLKgc+ySzDPsEDsfGl4Bam0E+SrqTlqcAXuY/4OWQACEKzXa5cEgw2/jk3jnalqiFrkR4lhgnmN28HpCEGYNugx9XCFlTx85ab7RryjGWyWDX7dYXFkYUrtSZwsPB9CcRa4NA4HE0zSOJYHYtYzWFS+T9z15i/XCHJ7QmN25kr4E0+SwLMwbusz6+LvRfmxEYo4CjDYkONVp1wLrP4pSxJhLVGH0s6Cw76csNxP61DUofFeDv9Wwq2s2BjLQVdI15FDPQIt26a0fDk+1Li/4eaZVfdtWow51mTWv4bxRMKRm5P7uf2dUFiZffBdquu5FWkmK6j+on5+jKiB4WGbQEEUsgXLyMM7XREHIA0g47N/2TxDwIQxc8iTVWn4Q6e7JAK56huUOncyx5idSkLr/yf6Z/pw5N4V6mgaWXoT1k+4BWBp9dqSf5KWeGlGrCIr9j80fKqzAHy202+WUxoumd90P1CG4Xur9My9NFzQym6QCjIdtJCmFrNJ5znEZzXvKK8rG/P+mDU5nB2tzd4h8gM0o/tifHB1wpmGtCk4yGIPF/1juFNozCxO1Nh0recqcKfQWUfuLx7E8ZaNgebl6wV9Ej73TuD/o/Xi9UnhLBqlWUuyyBpyoRF2QWv6MklbpwQkDnLOp2O8XN7Xtsa4jvCJW+6NL+U3vKyRUCMtwsZVsWdjYy480KgZlsd3Ap6dCn/FGKD4xMAa1LQORgnJEL64OQz95Y46jthWnyq68Y3tskvah1SFEWu6SlQXfK0yrSzl2G0SSl+lIjqsp2IdLnv/Yoo0Ojcw8sxbGzWZxLqYRXdzlwxxq1yxKxFPqfXkCNfx1u8QQSRAGzLIwY15BJcfUm1bpHakkoEKPTElJrKFklC6rUb5kl
+ /M/G6XgH
+ 3AeoqEL1tCVe9nhEDoCIFDgoHcKjogeVgQaQ47GYW9Z/olHRrAYsHcUA9ifRJYSVnfwMNkoW2HZZ62xV0tcW3qviF1nBYr+qmIxtC3ye2brzaFmMNXSbYyTu57t5KF5db3Xgx/HLl0x0Ich5T1UHM6dKPBibvvuQL9k3UCYiX0YCCGAH5w4vpM1Rf+CCrRD15m4m5BG9mMvT1GmXFyyOUZN18dKrcC+UuUxpJu0peyfzzZpueLxzHHPc9apdtgs7bn4sgtBQrNjLw7WzytgjP4Ei9sjfPT03wIwFQvyKRbHWF1H1K40a1DKulVJRBtAqmkR+GI8+phayxfU7W95xO0syKma4AuAYLKKH1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,90 +145,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 03-09-25 17:27:29, zhongjinji wrote:
-> Although the oom_reaper is delayed and it gives the oom victim chance to
-> clean up its address space this might take a while especially for
-> processes with a large address space footprint. In those cases
-> oom_reaper might start racing with the dying task and compete for shared
-> resources - e.g. page table lock contention has been observed.
-> 
-> Reduce those races by reaping the oom victim from the other end of the
-> address space.
-> 
-> It is also a significant improvement for process_mrelease(). When a process
-> is killed, process_mrelease is used to reap the killed process and often
-> runs concurrently with the dying task. The test data shows that after
-> applying the patch, lock contention is greatly reduced during the procedure
-> of reaping the killed process.
+From: Alexei Starovoitov <ast@kernel.org>
 
-Thank you this is much better!
+lockdep_is_held() macro assumes that "struct lockdep_map dep_map;"
+is a top level field of any lock that participates in LOCKDEP.
+Make it so for local_trylock_t.
 
-> Without the patch:
-> |--99.74%-- oom_reaper
-> |  |--76.67%-- unmap_page_range
-> |  |  |--33.70%-- __pte_offset_map_lock
-> |  |  |  |--98.46%-- _raw_spin_lock
-> |  |  |--27.61%-- free_swap_and_cache_nr
-> |  |  |--16.40%-- folio_remove_rmap_ptes
-> |  |  |--12.25%-- tlb_flush_mmu
-> |  |--12.61%-- tlb_finish_mmu
-> 
-> With the patch:
-> |--98.84%-- oom_reaper
-> |  |--53.45%-- unmap_page_range
-> |  |  |--24.29%-- [hit in function]
-> |  |  |--48.06%-- folio_remove_rmap_ptes
-> |  |  |--17.99%-- tlb_flush_mmu
-> |  |  |--1.72%-- __pte_offset_map_lock
-> |  |--30.43%-- tlb_finish_mmu
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+ include/linux/local_lock_internal.h | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Just curious. Do I read this correctly that the overall speedup is
-mostly eaten by contention over tlb_finish_mmu?
-
-> Signed-off-by: zhongjinji <zhongjinji@honor.com>
-
-Anyway, the change on its own makes sense to me
-Acked-by: Michal Hocko <mhocko@suse.com>
-
-Thanks for working on the changelog improvements.
-
-> ---
->  mm/oom_kill.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 3caaafc896d4..540b1e5e0e46 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -516,7 +516,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
->  {
->  	struct vm_area_struct *vma;
->  	bool ret = true;
-> -	VMA_ITERATOR(vmi, mm, 0);
-> +	MA_STATE(mas, &mm->mm_mt, ULONG_MAX, ULONG_MAX);
->  
->  	/*
->  	 * Tell all users of get_user/copy_from_user etc... that the content
-> @@ -526,7 +526,13 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
->  	 */
->  	set_bit(MMF_UNSTABLE, &mm->flags);
->  
-> -	for_each_vma(vmi, vma) {
-> +	/*
-> +	 * It might start racing with the dying task and compete for shared
-> +	 * resources - e.g. page table lock contention has been observed.
-> +	 * Reduce those races by reaping the oom victim from the other end
-> +	 * of the address space.
-> +	 */
-> +	mas_for_each_rev(&mas, vma, 0) {
->  		if (vma->vm_flags & (VM_HUGETLB|VM_PFNMAP))
->  			continue;
->  
-> -- 
-> 2.17.1
-> 
+diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock_internal.h
+index d80b5306a2c0ccf95a3405b6b947b5f1f9a3bd38..949de37700dbc10feafc06d0b52382cf2e00c694 100644
+--- a/include/linux/local_lock_internal.h
++++ b/include/linux/local_lock_internal.h
+@@ -17,7 +17,10 @@ typedef struct {
+ 
+ /* local_trylock() and local_trylock_irqsave() only work with local_trylock_t */
+ typedef struct {
+-	local_lock_t	llock;
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lockdep_map	dep_map;
++	struct task_struct	*owner;
++#endif
+ 	u8		acquired;
+ } local_trylock_t;
+ 
+@@ -31,7 +34,7 @@ typedef struct {
+ 	.owner = NULL,
+ 
+ # define LOCAL_TRYLOCK_DEBUG_INIT(lockname)		\
+-	.llock = { LOCAL_LOCK_DEBUG_INIT((lockname).llock) },
++	LOCAL_LOCK_DEBUG_INIT(lockname)
+ 
+ static inline void local_lock_acquire(local_lock_t *l)
+ {
+@@ -81,7 +84,7 @@ do {								\
+ 	local_lock_debug_init(lock);				\
+ } while (0)
+ 
+-#define __local_trylock_init(lock) __local_lock_init(lock.llock)
++#define __local_trylock_init(lock) __local_lock_init((local_lock_t *)lock)
+ 
+ #define __spinlock_nested_bh_init(lock)				\
+ do {								\
 
 -- 
-Michal Hocko
-SUSE Labs
+2.51.0
+
 
