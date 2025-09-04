@@ -4,114 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD08CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 10:04:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8444CCA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 10:11:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE7228E0002; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
+	id CE14D8E000A; Thu,  4 Sep 2025 06:11:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B982E8E0001; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
+	id C91A68E0001; Thu,  4 Sep 2025 06:11:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAD848E0002; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
+	id B594F8E000A; Thu,  4 Sep 2025 06:11:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D0728E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 28BAD140A6E
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:04:50 +0000 (UTC)
-X-FDA: 83851133940.18.A7DF3C9
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4691B14000F
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:04:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="njQ/2kZa";
-	spf=pass (imf09.hostedemail.com: domain of joeypabalinas@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=joeypabalinas@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EFC58E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:11:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40EF6140B07
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:11:21 +0000 (UTC)
+X-FDA: 83851150362.24.16B0890
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D9FBE100013
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:11:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V3WwGysz;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756980288;
+	s=arc-20220608; t=1756980679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UwZNvRadpxpxIRVf3m84OtosJaq4M967tWbwpaNg/Xk=;
-	b=g3TEwYangth/FClXD7OcMz6dpeVTHWj+fxxvQhMJ3TzXdMq5JdJSgGmaQMsmQL8z27fgcK
-	0dm/wtQB2W4mYT5hcEQQMRa/ST4bjptN8hLRmO+fdC6WqjsT54uQZzyd6VG7HLsOsa6sng
-	3HqCIhQJDplcvBBUaD1+VxGjX+BBYtc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756980288; a=rsa-sha256;
-	cv=none;
-	b=y+8M6H3l+douF3QzhH9ZiGX5gryx19fa2X5q0n7BxZgUQRp589WY49kawFapFbEKgF3YRl
-	3W/YJCEqym2jOcMBFlxcy7zgqEBFtfbjESsXDLxFinji4V4XGoG1ULwyUKzLEYssprV4mT
-	2ZZT94MUBKnjHVU0/1CGHKvLm/rt0tw=
+	bh=wer6AdnyPuzKc/3mex250QgaFlSlOoyoixBdkTMFff0=;
+	b=xX2aoqtQCArfan281FRFyc54mcBTod7Lc3fK74Jk6QJp/Fvbvqys7fo9YzUDJeWO20FNzo
+	FjyDz5sMrTWqf3vv9ZYY883HKQGZJJ8pO2e9E15qUubxuKTtC1f0DZIXEO+6CE2wkTpa/P
+	zPrQcK/amihdwxgt28sLoiLoM3PP7YE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="njQ/2kZa";
-	spf=pass (imf09.hostedemail.com: domain of joeypabalinas@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=joeypabalinas@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-77247e25a69so111039b3a.2
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 03:04:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756980287; x=1757585087; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UwZNvRadpxpxIRVf3m84OtosJaq4M967tWbwpaNg/Xk=;
-        b=njQ/2kZapdUNASJLB25087Zj4bdkC3+WAZ7rHmDlUnDDAyb2zdqLHsmexRj+dDwRMj
-         RzuFYH9boa4j2bV4GapCqgun6GM3s/gTKSATAeGGP0RY5fK3RRATWlJ+jNz59+UcAdg0
-         X7VAG1Xco3S/KOwV8QdA6P11GCOR1dls0XuAbkVowPN3sP/JIYb8rYBCoeP2/E3QYoH/
-         OhjV6lKhdxfqprNI5bJGS31xRnFW8dyOwUbU+0xFIPEvUUnKa0Tl25CaGZIEpM45iVp8
-         SV2PXrKfxllHZAoZP3PIEBZx4icNLk9WENgLP08OOj9ahCPCDtawK06XH2TBKlRI3Mi7
-         LV4w==
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V3WwGysz;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756980679; a=rsa-sha256;
+	cv=none;
+	b=AFFtjHSjWNIqwn3PjUIywPgJGze+DYgOvZCM26UNRkdHln3s+gHvRwQIN37PJsN/+weuZ6
+	yiYvEi+e/DLauBCs9HLYSXnMVVXSqXSVHzU8hz0LreG0IhTKA7jYMVTUGX718ltQVz0xV+
+	03Vqr4nP7lFpo5GFoCATf/OcGF+GxQI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756980678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wer6AdnyPuzKc/3mex250QgaFlSlOoyoixBdkTMFff0=;
+	b=V3WwGyszYEJQH3Y8o9SxcrxgkWbgxZYCXHn3eRlVvwU22hc5S/HRxRULG00ZS+tvOWnIOK
+	/4RDOcmWtK9y04GFcLOyx7aGv287sUzUPYUuuG4HUChT/PVAzVT/fUP/Dc+qcd8vboxzIp
+	4SzkXnIL1RPYK68mchUXu7HzoO58NXI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-q7Q2RqVROPqqwZkEz-14vw-1; Thu, 04 Sep 2025 06:11:17 -0400
+X-MC-Unique: q7Q2RqVROPqqwZkEz-14vw-1
+X-Mimecast-MFC-AGG-ID: q7Q2RqVROPqqwZkEz-14vw_1756980676
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b98de0e34so6792865e9.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 03:11:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756980287; x=1757585087;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UwZNvRadpxpxIRVf3m84OtosJaq4M967tWbwpaNg/Xk=;
-        b=Dd7VNd7ivd0n4wuj31Qj46ym2s6m6H8pnKEA4vGvLiX8UAT4nQ1bIUSSBpcoz1xcjL
-         a4cAPZ4DNK+Y4003OH5+66P8smjtHKxdx5294gYB4GZd4BEAeLYJrWKjzamvleysT4cO
-         As4dhYDw4hY6r7xTpFVs0SS83ZhrdkhzxVd9MS898P6TN2EhDleQgBgFaZsR9nkIUuWD
-         WiYZEcmPCC/zx7CSmF9RqoZfCLjzbOjtg0i0MjgGDQ2cHM8gWPgMIqNEBaq4pZKukINF
-         ADxyJyxtsO06CXcUvOxfwwlQp+Qtc0TFpvvzc1v4TDPmOKwCKm1Ou5rgZ9KWb93waqWP
-         aGZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxDvZbpvTRRCB3cU6ZU2z6+Hwn5DwA9E+ZvZbp/o2XFGO79zKrSeuIKr3zvWn2OF7JtopwOioF/w==@kvack.org
-X-Gm-Message-State: AOJu0YztZAgiClfSPLCbYepzXJ9Kb/Ih2lVtx3QDnO1Q0RSnip8KCC+h
-	mA0cvhAkKjxh0eWHhonx4dP1hpEG2OHqmSYk9Flr8149WRvgRSAKgFGMn5X8n9qX
-X-Gm-Gg: ASbGnctkNYwR/LwF+z2KhWeVVj/xxwuCwQdWtSgI/4+lzTJxwG/28kQIOdDd/AxG9Lz
-	EbG5eCF8vGkdqIMtiaTAF0wUDo/5q6lfqIQP4zsNp6BxtOqvebxUSwblCGGnyf+EJNI1iKqCoPL
-	YVFn1xcA5PktZMjhnwhKnHxNWXnPM4gohLsWHMXzxnu49RZtpycvKd9WX6etiIN8LFOXJ7cEypJ
-	o00UYC6eJYrL4BPX2gJTZQX6KHU0ZGsX6IIoAA+kM9eejb79lFdw9kLDB/LoBhTX3UiZRveR+fH
-	ZLxqt4Y1KOhc6heFZdhwl4vBKQb94pcexPZyIgcyAf+PaAvnQKLcIhc2KNqBBSpBaQIiY/X0W6i
-	wsCbD7fUIKGUoAGcudpERvZosDbFtBBE=
-X-Google-Smtp-Source: AGHT+IF+X1SXhSvLsR2STae5B7BzOvXd3uYUXi34g9hAOLpClEHMDf7lkVlOfzMYCE6WICcwBjc7Ww==
-X-Received: by 2002:a05:6a20:244c:b0:240:a2fb:f8b4 with SMTP id adf61e73a8af0-243c832443fmr17655871637.1.1756980286943;
-        Thu, 04 Sep 2025 03:04:46 -0700 (PDT)
-Received: from hobbes ([2600:70ff:f833:0:8e07:c9e8:902c:6ffa])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd28ad188sm16564555a12.26.2025.09.04.03.04.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 03:04:45 -0700 (PDT)
-Date: Thu, 4 Sep 2025 00:04:40 -1000
-From: Joey Pabalinas <joeypabalinas@gmail.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH] fork: simplify overcomplicated if conditions
-Message-ID: <ka3dhrfkc42ydbiiqa4ygr545ndydcpekjco36sdwf2nypuy33@vpsgevacmzjv>
-References: <357638f71edc7f1d9814b1851a64e09a8895bffc.1756968204.git.joeypabalinas@gmail.com>
- <tzjq757k4tt7k2mkcapttjuax6zgzr3nl7ivusuvxfmok5kvb4@vub2gw7vp7vu>
+        d=1e100.net; s=20230601; t=1756980676; x=1757585476;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wer6AdnyPuzKc/3mex250QgaFlSlOoyoixBdkTMFff0=;
+        b=YB8Q6VXMgeOLlld0kv7LBlEfa5uDDfst7yoBOWAAV5Lm8qBEnysX4mf3vSex6Jx8LB
+         ugFO84rXatUfuHKe4UZVBpO1KC23MR7fpx9Cv+W1V40JBJYYfGan9Th4d05xE/9/DXEZ
+         a6CfTYj8s2prLyM2IeRaM8/w9q8cOeP7sWbitFXMTyrMaBY32Ti6DtXtuBwzfFiiaynp
+         AVSR2KF3mGbp7C3c7G3N4CY9zXgMPLCQklRJRo+pjTxv4sGaNyMTYcpsNiqE/Nhdn0Dz
+         BuqhiLCXoZ7gCfJ4NQNZVU8zwVCUKZf8Jpfq3kHzK0/u2NOj61SDHOdX5tFepPwTL0p7
+         BSTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXazhxcnVtbskGVbKBPYeB0GMaYoFEqkSvEtNDBjvvPGe6PThRNlSd0Wa9GmoJuZFr0M6i3EuMxfw==@kvack.org
+X-Gm-Message-State: AOJu0YyY3ePmhO2HegOTgcjd/PLwiY/ec3QIX6IimGu5WmubdIkWIn4l
+	f25cxMMjMdQu9VJVqAnNwKQdTUzLml41jpg9WyKNEE8b4RSq96oupWZkCdzN0Cl8kv3jlljP2ZC
+	Z37kRmsfrTg5vQDaDrBUH4PNWcdD9nPQOgJGK369Rr1Ice83Tgawz
+X-Gm-Gg: ASbGnctF9hi4bqPhSF41Kc/rzibNzWfYObbV04T3IAABMA3By/+tPSa3D/7VVnScDN2
+	3mj78J+Z86WLfJs1UtYxKNG7T2GhmSq7P+CP5aNL2xx4oRX6oW7liE2FbrLplDzz/t5pTeyqGo5
+	pA64R9qKCPB01DQbrnGwhRNusfa3xM3oL5DYQh60AbIF7SZ9KsZqrXTe+8/vC3eBI3MlLvnhiOk
+	Gf9yBKCYxepzCIXX+Q4JF1H1bKYpxHFCo51oK4XrR2JkJmkMhzjNiZBBhO2KuQ9ePY5DzezUhS7
+	vDViAnU+RthXEpiQjSCC9rNLJE44MQ5Fj3ckheugljpqrrC1fKJV/bQUJFOZFluPEeh2NYGaOmd
+	T/1DF4u4JWJ7vw+W+c65MRIjAlprYxBvrnujdRSliyW2SsggGOnedFx6WCYAo1WX2
+X-Received: by 2002:a05:600c:c4ac:b0:45b:76c6:cfb8 with SMTP id 5b1f17b1804b1-45b8555c585mr167062575e9.9.1756980675747;
+        Thu, 04 Sep 2025 03:11:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzGOJzi2aENDJJt0ZVdjKlhBTp7D5WQuKkO1HkqG0ky4yXo3VOnWS7xXiXzSOprc5hMxrM7w==
+X-Received: by 2002:a05:600c:c4ac:b0:45b:76c6:cfb8 with SMTP id 5b1f17b1804b1-45b8555c585mr167062225e9.9.1756980675229;
+        Thu, 04 Sep 2025 03:11:15 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:1e00:ce4c:be3:97b3:6587? (p200300d82f251e00ce4c0be397b36587.dip0.t-ipconnect.de. [2003:d8:2f25:1e00:ce4c:be3:97b3:6587])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dcfc3e11esm16569715e9.0.2025.09.04.03.11.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Sep 2025 03:11:14 -0700 (PDT)
+Message-ID: <2b681fea-555a-46f2-84b1-9d729cc3b0e2@redhat.com>
+Date: Thu, 4 Sep 2025 12:11:13 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ymzzeawwxc2g3zor"
-Content-Disposition: inline
-In-Reply-To: <tzjq757k4tt7k2mkcapttjuax6zgzr3nl7ivusuvxfmok5kvb4@vub2gw7vp7vu>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] huge_memory: return -EINVAL in folio split functions
+ when THP is disabled
+To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+ Zi Yan <ziy@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>
+Cc: linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
+ mcgrof@kernel.org, gost.dev@samsung.com, Pankaj Raghav <p.raghav@samsung.com>
+References: <20250904095129.222316-1-kernel@pankajraghav.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250904095129.222316-1-kernel@pankajraghav.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: okAF_KMWcfuw87iiVvhL9HBqP999c57BqAfqolIjzsY_1756980676
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D9FBE100013
+X-Stat-Signature: 76jfik548job9sqaff6bse5ku9re8ueb
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4691B14000F
-X-Stat-Signature: xpnk8778zaf1685dk6brutxyu3uiwzcs
-X-HE-Tag: 1756980288-682683
-X-HE-Meta: U2FsdGVkX18IceFnE4He5NGK15i2A7d5T1jECuiUvQ44y4asYEuj53my0sbSBhLyCHLJKqXTnTSdQDB0gTNzuldrxrxVCH1RxwQr40TJUzgG77RDjcCc9gdKzE4Q6Ncx9SLhmzlYZ7zFQFHxWZ7KD4TBF0Rh58Mi3eXeTzFcruRIaHKQjc2nuEyr3HYG2au6OswOpEKoLFDBt4K6Nvs9tQbRde2k3rI4oym7zBqAdrhzM/P92mhsoi5LlKXq8VVV1bZSMpDTPd5wQ5/0gCzLIwj626+ocx4GHJMlWkU+nYIN57VRY9lDdCFqxzes6AeXPJqkzgmvVr03rOHeB71VHzTTAhKguSQIiuL0unlISZtUGnXTVyl4Uk28X35EKITfL/HK7bj9g3Eyq9AtnBD56k+tt+JRMmOzioRGHZwhQEpXbKi4gz6sQvrUXuoRWwZC8oXWzqVkocfKa4PZiMjousgJ5oDoLa56dnRqD5+iIhjzZ0PhK+2zdhfFC7u6k4ZSGdDviMT0lIz+aszSCxkZ3zjOgNmBMpzqxK8hHW6dxL+LThkZuBpzzGVwcZAMCh6jfbjJGRdB8T+DzP13Ukl1VSZBEodyRrnySlcY1PQkSJokucfRUAP/xCRlJEpfyV2MIyZkmZApHwV6xnS29vq9sj7cF+rFIwMyZ7XxfBaS4grqEEDSsdLE7HtZlZZqX5HCqFJvsy/AEtHgaMg7vx2PGZJx/pXVrs0sDrZ2NfXSPh+AM9GGGZQZ9lPT1JcNg/4tmRsmXb0UWiWTG8NBk+I31cs2uzZxBu85DVb5EPg68sxYPgBqTbojN5/aYEjx8rN5x8Wiic7dFn+jXcSROja0eic4m0fAvRMsIGID7gDlkccz3X5EsvdmfCCl9OyDyKDVsITLbP4zAihKAQItsYGyJagiU7YDW7Uc6s11OkIhmvMGaGO426M/7ODeScgf96ztd00Iddys1tWt4+v5VpT
- UBBW5bH2
- A0JEfA9FJCNAIj5xiOx69YtCWjihDrsFRQ2Ap75i5+VGzpXYAVXfSsANH8VgJijpOySGq1tm72Gaxmv5dwrk6/SUfX8ulsk9FyRmBdZGt3y5n2oO4NAGE/WcgNNAlmdPdTMzteUqqt55JA5sGfGvl7+hcljWHrT0VKnSv/H8lkfKQUuXGHDBGl4tYdcsF1k0ymWqtpiCA24+mngeqTL+AX7SSdUzrATmE3HwU5QTtJ/5npXlTreNyHz2edsPD8y5oqdpD/lRUR4bTA2idFnVFJpIBHqqXknh3BmNSq+gq/wVP4TLxh6pm8LiQ1NpQeipI82EnH6rhEsHw1vDC2Koy9+MxBb6uWDidWdtqxzUckdm3P0q+bSdClPr68h0jNGXoyWTFBDf987H50coA3ID27qBi7GONc9vBoygzKTZvKbOJovoZYFrTn4L9uM3Ofv/MDBICkQ0iEiA/EeQPbeSt5ynG3hz6GObT1Cv4/hRU4FsHhuc5mi79Dely1F5O0MOHjl+rVPKqeo58WKrLMTEsQaGj6Yv9S+r84GXyKywIVEi6K+rw0TtCIXo3vvCOZPeIBMMi
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000100, version=1.2.4
+X-HE-Tag: 1756980678-744670
+X-HE-Meta: U2FsdGVkX1/SjdkQKReaNzgMYAEBO16bUCLbJexpRXZHQc9OB0xswLCgh7pjurBvQDgnztSzN7ar+Yj4SaWxbdiI5Xb0mXN8Q/aDwnYm0BoUojcuqDZTH4zeMkmY2IS43tUPEkf8HC8mS/Kq2mfqU8XOtdwBeCmQpMc3v5xfpTKsVy00hkF8uLsCtbadF6bF7rGX790ABwd5/pkbW500L9ckY+kUw0K1xP8UDl23AFHXmbV/ZCWAglf4BjEbZoA9iU1Cw64wXfbyg1OfCowwRGjT3SPzxSuOpqGS9bgtCUk+2pTyD+hlM4Zrzp6Cr8IbhDfrMbcQqH4kmsWEzOLaP45nJMWJ65JD1BxCEe5Rl8lWGukyt2k/VGslZrRYUU1Mo4N04RIXZWPttlbG4ql3NiOG9nlOo3ExAdRBG0qkqA/Jd0gZPJXG6TwG+ooUbPC1RlXPbkTxCze7NrO05+OPenQlWe+g7OSrqTwneyXHzaN3CuzFkFOojEf2ljoC4dLcEko+G3ulhGXGalIBsWaCxSXTrmYbvqNleZ6TdH2lQeJMQZTne3nd9hihOfNqzXdJISrwsVHNYDu/NalgHRJbAfbaTdUdKLgCGMLIMaDsGrNmMc+2nbhG9sXkPBhrj94Eo8wVGSWBAId3veBct75G4Nsp0e4vVvPIpL9L22LH835bF6UtYhpXUNIusCWMExDUOAW5RaJO/CJ/8SF76DmxBsyohTouJ4Wiyh47KDOssH1vHe6E7TKwUrOArcf05czBh83vNsEs6HYWBScxyo19Ofjd4fQ4GqNb2AvNBUvYrrfemnjtueVgdFKsZbJev6Oaz1YID6yvaDcFSzh0Q42PFZETpvD3VoA5f8TK5NWrLiNJ5y6vnIAGYN1x7FrLncTsWNaLt0XhKfN4bzynjGY4VZ2DfnzTVZn1ErjldISjQn5dQ810KlqNXD4/ZkAO7nn1ACggDElDMPIU+ZwmLEp
+ B8O+A/6W
+ KW877inr9mH9iGLQ4Meqgc1XmLFVPJ6YUf7U9JxRensoJMxU/kSyBPVb7sw65tJf3uTd/8F4tgfcKmXsIRQBUj9FCw1jEfI0SKr4uWd/3zF6DNK46XyG4obST+5DDUI2vjxc1GgljcO7rp7giMp4wmwRxOivb2sI/9F3Pw3UFwYK98E2+g3aOYJaYJhcv7RX8iHHh0GM3iLKbZtcNNliAr54OPYDizreTGansA5RASnsXZZm1qmc7Z5OyKOZZmugvDG3erBS1ugffCcL6+WL9jxe5fAj9thiE9KxSRGgWbxysmZwALWzdvSALQCDPbp5ye7U+3jiKQyUgIzcMLQbt2BJS7QQe26gH6gyxTHD85llctp1OdyYXQE0GV1aza0DIZPKslrLpKr0qh5rTxYJMeHujqyirOrWQWwZFTkvBdrHp5DSiIEDelqAHqj2if25RCD4EKcNVoeJ5UB20uMaGcr65wY07dS4AMoxYKSPljFLb3Mg=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,54 +182,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 04.09.25 11:51, Pankaj Raghav (Samsung) wrote:
+> From: Pankaj Raghav <p.raghav@samsung.com>
+> 
+> split_huge_page_to_list_[to_order](), split_huge_page() and
+> try_folio_split() return 0 on success and error codes on failure.
+> 
+> When THP is disabled, these functions return 0 indicating success even
+> though an error code should be returned as it is not possible to split a
+> folio when THP is disabled.
+> 
+> Make all these functions return -EINVAL to indicate failure instead of
+> 0. As large folios depend on CONFIG_THP, issue warning as this function
+> should not be called without a large folio.
+> 
+> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+> ---
 
---ymzzeawwxc2g3zor
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] fork: simplify overcomplicated if conditions
-MIME-Version: 1.0
+Acked-by: David Hildenbrand <david@redhat.com>
 
-On Thu, Sep 04, 2025 at 10:56:44AM +0100, Kiryl Shutsemau wrote:
-> On Wed, Sep 03, 2025 at 08:46:29PM -1000, Joey Pabalinas wrote:
-> > Since `((a & (b|c)) =3D=3D (b|c))` is the same thing as `(a & (b|c))`, =
-use
-> > the second version which is simpler.
->=20
-> Huh? No it is not the same thing.
->=20
-> a =3D 1;
-> b =3D 1;
-> c =3D 2;
->=20
-> (a & (b|c)) is 1 which is true.
-> ((a & (b|c)) =3D=3D (b|c)) is false.
+-- 
+Cheers
 
-Ah, you are right. My mistake.
+David / dhildenb
 
---=20
-Cheers,
-Joey Pabalinas
-
---ymzzeawwxc2g3zor
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEx6b1SGGPTKxTmPDYqoHu9CTxowIFAmi5ZDgACgkQqoHu9CTx
-owLh+w//U4ZIZrFjLogDei6exnHDOuFwna9rLLOTeaNNuCkYQ/bYafNjDKPxGRiG
-8G8+8Zp5E8ikB+OjsL9Hv5QlOEcSd/d/iDg0Gz7WP5QqWj40zn9i4RD1mKyOPRvk
-n856U0I63VRyihPXU9HfxD10hEkK4HY+B+6u68qt3MYom7imTqWWNJEEkdeHYhUV
-U/80q7aLhADIPwdI+dimNX5vy2GPZ0NDhPnuBgHev6dyhSBypbaGTY5Obluwa4qJ
-b8aTS9mD5gj1ig2W3P4LJWZQcarTxgC0Qgqtndwil5gta8Fsdwm6xhpMa6WKwXda
-F8YeUzc1QzWFp4OFsOcGHdLikesUGFQvkq1Dyolq3HIvkZWYJoRsXi0Y3hynvldc
-GKG64E1mbHd7u6l8pHTGPjgstUyji3IuUGLrz17hST5lO7SXKcq4SuEtquA/2Fnu
-QHtlXmD3g9Jp42A6k9FRBjpdTV06KxMZK+aFpSOgaa2pgOJYJB5XkjvlByBlWWez
-M6ujDIyXC4DryasgAAUhDK4w9wd9VporBa6dlWqmxVRE1QJgmOjqlEVjstQK2Psq
-IbUQt1UZaJ3KoQulTcQjKJVUjCstQ3sL6M92iSvt2dqvJ1US6TB8t5QQthrh+wGn
-k1abKf4f+8MxDnzmgKBkF5psz+dFfjlI8QWXBWEInRsYBBIJSEk=
-=zIT4
------END PGP SIGNATURE-----
-
---ymzzeawwxc2g3zor--
 
