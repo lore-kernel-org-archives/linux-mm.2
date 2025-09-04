@@ -4,126 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 151EFCA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 19:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF74CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 20:07:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7294E8E000A; Thu,  4 Sep 2025 15:55:51 -0400 (EDT)
+	id 178968E0002; Thu,  4 Sep 2025 16:07:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D9DE8E0006; Thu,  4 Sep 2025 15:55:51 -0400 (EDT)
+	id 150BA6B0024; Thu,  4 Sep 2025 16:07:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C8788E000A; Thu,  4 Sep 2025 15:55:51 -0400 (EDT)
+	id 08D948E0002; Thu,  4 Sep 2025 16:07:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 45C8D8E0006
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:55:51 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFBE685E41
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:55:50 +0000 (UTC)
-X-FDA: 83852623260.19.7A612D1
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EF22A18000A
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:55:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/yiSF8j";
-	spf=pass (imf24.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EAC4A6B0023
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:07:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88B9BB8F13
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 20:07:53 +0000 (UTC)
+X-FDA: 83852653626.22.7B067B8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B425F1C0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 20:07:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JYRlrQGd;
+	spf=pass (imf20.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757015749;
+	s=arc-20220608; t=1757016471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bMvvP6Q6P7dnqKHCgcbrirHcRzQIivzHuvswVHDmhxk=;
-	b=oaBpTdcDiepD10H2fAhl2aGq4s43R7C/7Pa14vHqyzMTezlew1sZpCLS2FcSbpxWg5sA/y
-	85pZ+mE/7yyqlRnMo0Tmtd+ElyMZvw3jZQBjRqcNcpcG8LsbNp3NUUk+XTiweAjuz/4sRQ
-	LHotNaFbVyecbdn6o8nZFfLnKxENVYA=
+	bh=tryea39PsCs7tLZjWzilGh52UxIYKf05eV3aaJFoG9I=;
+	b=PybDQ/8T3TawMvOub4SRyvEWdWHyeHV+nUHr3e4vnsrUFWQyjNj1CP0wUDlu+wh5EM2tLM
+	MGaL1ankLBq45GjqU9Nhg8E4qBw8M7vg5LRt1l44CCpmDm62YUzwMfnpvsD53mIjla3Bfy
+	7wajAKr0r1e1oySif/+toOgd1uenqL4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z/yiSF8j";
-	spf=pass (imf24.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757015749; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JYRlrQGd;
+	spf=pass (imf20.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757016471; a=rsa-sha256;
 	cv=none;
-	b=RLW1dMMKvd9OrBjHkk+lq025UYcRffeoBRChBzBzf1yts5qv7HJ/5OBtCG3CQwy9bLvYLP
-	mKINy3l+vWyDyyJt/gIT1RJ+TI4jhuGyUP3UB0n7VFuErIk3I7V8oafcg930EA8zlGOMx7
-	gWZFbejvgutK9SHbVgL51WhTkbJfc4U=
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b4df220483fso927224a12.2
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 12:55:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757015748; x=1757620548; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bMvvP6Q6P7dnqKHCgcbrirHcRzQIivzHuvswVHDmhxk=;
-        b=Z/yiSF8jVnhbzRndhy1dF6VBIlwb1AxiGSs2BH9/UGqMhDEZxOaUFYIA2al9J9t1vX
-         HsUlaccI3Bkn/Ylv54jbhM+ZYLh0yCBuxgj3STh/kwfHJVqeezlwAp8bY3R7350oI0rA
-         6UKkPkw4CP7qIk2IwUy4LrCHhh8iFa2qwmBqDAk3S/ndOTFLHcS3muLLr8sxv6DtwV3t
-         ie/Ew5VKza0FJhY2A0FfiqZjLAEDst5IdE9cJqTsGLtwke1ugXvcDFtJ4IQPr0uDi8QP
-         e6G9NndSMU4gqVizJRscnz9QIUHDj/ETC9QYQDYHRE6z72k9mrX5PtwL6aaT/cF+XUL+
-         ktXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757015748; x=1757620548;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bMvvP6Q6P7dnqKHCgcbrirHcRzQIivzHuvswVHDmhxk=;
-        b=lA2/X9FoVvFHtMgYefir/crvKOd8jMo87CGS0MuELfxlEe8lgvCBN8CPMRUy6l7Zf5
-         NxZIMykdkHNQKU8Box+gz9D9FN1imZupJoI32XpVaYCLzJAtnqw5ZTPxidbUZIeASKO0
-         Xt7pbdNmOZCh9sEhhot0KFsvIJqyPZV508T15yawPxz41jHw6LehvCaj4uWrkUllhOpP
-         vMU3MlluU6PH2+Y4FcnFngtUdkdZUHOgoQbBkx3alUYSkRo8fFz5YzLXjVR6ZLuyMtml
-         WTAegcElvgoAABzUceeUqzXpO0+XBAB3jqO8cn1MRutwzRFqEZannl3UVnhUUjKA6gy3
-         tXXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpV5ojbbtGyrGh6MF3CvTG8scHw+TTNQtq8Zrxo/yfYs5IQHzWNyqA49VEgVY7nYqDUkyxJw4Byw==@kvack.org
-X-Gm-Message-State: AOJu0YyG4wHQ9uBRH6LLQoBGNqDqhsuyFyfAXgNLt92x3zJLbS1x3T6M
-	Q+8H11FoHL90YH8nWgB/5Q9+fyEG+wSKmnzELgSnays8lfB8yNypZQPHhEGo0IkL
-X-Gm-Gg: ASbGncv4s+79VLVFsj6iMYeYkacKYiseDkMviBd5/x6lquQ4K6y6tb4iXIIH0MQ3nTb
-	cSITD+r4PKACLZ34mZ99TT9/SnWvWWK+FxF/1AJA3Wah08p3/2YVKyVRbz1xDyZEfqym0XecD2N
-	xeAjGIunQz4mAWJ9wg2+TrjFnlFiQzJ8cYiY8YmlH00PJATAcLZEPGb98SEJ8awzkYOEgD7tVtN
-	Y7W7vMzF9zPxBgQ9rqXKqAnDZOOu+Q0XCagBbAaldeo5ESbx/qA8b02IKhfuK0BXbKXB6/O0Q88
-	2mulpygjp6T4fyce/tSuuGUlfij0zpiqFMOYjjIlb6PDs+t8lL9gY2uhDGSRfRIjjgDTNxZENYv
-	L+93ACIMUSvoFD9jSbAU/cMZ4RRkWPRZnBXvAWFs82kufCCfy
-X-Google-Smtp-Source: AGHT+IHW6f+P8YnMRKWbSCVkVppITDLw8F9XmDLoYK0RMqz7/Up3hPmTP38YZ62HC4D/4i4MyuBATg==
-X-Received: by 2002:a17:903:1a67:b0:24c:b83f:c6bc with SMTP id d9443c01a7336-24cb83fcae1mr71797005ad.56.1757015747493;
-        Thu, 04 Sep 2025 12:55:47 -0700 (PDT)
-Received: from Cyndaquil. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cac2f24fdsm39950505ad.46.2025.09.04.12.55.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 12:55:47 -0700 (PDT)
-Message-ID: <68b9eec3.170a0220.67a17.2278@mx.google.com>
-X-Google-Original-Message-ID: <aLnuwADb4/E8BhN9@Cyndaquil.>
-Date: Thu, 4 Sep 2025 12:55:44 -0700
-From: Mitchell Levy <levymitchell0@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 4/7] rust: cpumask: Add getters for globally defined
- cpumasks
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-4-4dd92e1e7904@gmail.com>
- <aLi7Ptya5xp22P-B@yury>
+	b=7Lpab7km3+aRxNRs1cS3u8GAt3HGXJ0n1sLI78/yPuJ/d2KPe358nyqCgdeigrWLDqFX+B
+	roZug+UL6p8lh3Yn+6X+vU+/B7pfV2zKM8lEOHQlSQtfq3SzIsh/nIoCj4shtHblErNcGO
+	t9uvpUKBFEFI7paXZO/V3Gn3zdXZTys=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 514EB44A7B;
+	Thu,  4 Sep 2025 20:07:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FEBC4CEF0;
+	Thu,  4 Sep 2025 20:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757016470;
+	bh=fOPZA0KJEUrdKHOHSaA3Ttq41D7TM5+LUPSrZ7CX+Rc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JYRlrQGdBf96PW3sr0pFdl60HeD3/mo4Xuc/Uo0C5LnQdcJJTUFZhR4BSDxoBl/3V
+	 PLL9i/79tqzPBsmceRQyhccFaojQX5rIYqXnjXbKOkPPbkXVPkSsHSxr+aRz4p34gl
+	 6g0xpIxx7aGQV3sbl4XycnTeiGX8jP5clgmaUpFZu9KTCpRR46/+hHLA8lYT9Q8XMg
+	 2uUro4EPrJtVRXN+ut60EtEpUM6yXyrtF9KLXzN7sARAfICAhYxlMkhOuQJ6mhgpIq
+	 rBfHPx1WweyQMOYDgMEwt9+ZNfQAjJ5YS6ZBCF86pygN3pj+a8vRXZa0mwfKgDyvEc
+	 9W0MoFl2rEvFA==
+Date: Thu, 4 Sep 2025 13:07:49 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Brian Foster <bfoster@redhat.com>
+Cc: Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
+	brauner@kernel.org, willy@infradead.org, jack@suse.cz,
+	hch@infradead.org, jlayton@kernel.org,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 12/12] iomap: add granular dirty and writeback
+ accounting
+Message-ID: <20250904200749.GZ1587915@frogsfrogsfrogs>
+References: <20250829233942.3607248-1-joannelkoong@gmail.com>
+ <20250829233942.3607248-13-joannelkoong@gmail.com>
+ <20250902234604.GC1587915@frogsfrogsfrogs>
+ <aLiNYdLaMIslxySo@bfoster>
+ <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
+ <aLl8P8Qzn1IDw_7j@bfoster>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aLi7Ptya5xp22P-B@yury>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EF22A18000A
-X-Stat-Signature: s5gdpzfowwrjrobq1fqpkdmdrcpskbue
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aLl8P8Qzn1IDw_7j@bfoster>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B425F1C0002
+X-Stat-Signature: wkgqhhgnjxcnenyizd6bmrq533xmq65g
 X-Rspam-User: 
-X-HE-Tag: 1757015748-798302
-X-HE-Meta: U2FsdGVkX1+uoLi3I3VQmEhHujZLH9To9pBeZKAa4s3HU1lXv+06Xbnd4XB/ySck0YRPqzh2YxMNr9AjrRsowtXJnEzmEIRMZSrWxEKar2cpaDdyX1dro7cHRbDHT8LKENXkGi26jVHFbsGgRHOkiuItgz97vSxV27S3KRToQ9++2rBMMBS18tJhVvp8XCem87oV1qnQe2qchzDwiWisMCd+XfHY5GbyefqYtht8+7OpSfXO8weYM9K0rzc5TfrIRqSitRofDEpjfDjCTkSon82Y09BgsFVOTD7EM9rvZKeYiW3PPJvzLn6L2FLxn/MQposHdFdTCstwbMs/PloaMI6CCanqlYmvaYebwOTM87sPHgeTZ5SEiySlYkIVPetJHj2TjD+AmpgayWnVx/4AtqCGuiTCsKBG9Zs3yCw5II8oJBM9etmJ8pQ71P1SWTFLE76C2DfP0GDG1VAIQcDNKp8tVjmT2UQWsJtY8X3kZr+Vv5d3me26TYSTiNMaan0egUuVzdczLtjMwYQPuntqxWGK/mEGe0V/gz99fQyWZjFKbzTtnX3BJiIYc8Ac/5AbLq4enueaDQB0LhNbPPSVhki+fQmnfPbAgaXZpAg0kTRXmu3hDgehS5VtEPJ7ibYgPCep62V/9/t8Wspwmdc4mOcTLAzSiCYKEpRzbeU0h/zTGRAZsf/gzYNqaVsWRpXJkTCUVDncSCBPR2AuYbUHMMFxH68DkiEzki721rPl6N8fFQW+lv32eOZe1fvBhg60BEW0NjhPOkLyK4cUqW0r3tKrzmwV91Z8D1pIzvT0BN+XMCgBU+LNh3t/EqCw7Ayd9qpVJFYF3/Ol+wQ7NCv78H4dBKOWvomCWNODX1+JP5ZNwj4AWYHzN720YFsCegebJuffIbE1dPLCX9DJtR5Q0j2toPIDEPwt4kpwZtGJX00CfHszSAAKMKJfnDsDaXRde8Xkr3iLthGUlTW1XI3
- FiEqhl0B
- u6TkmnDqlMgFegVSLy9dTTVJ8Vn07niUudQHRfbk7FrI+vinTq9/Xdf55FIKT+Bg4E3328+iM0uuCpvGnEYRP51kOaydwVhCqq6TfElgt+5OB9s9S49wloTPbxW6AbU+0QWIEN+eKqZYk+cquy3XwekXRENd37tG2iAZeBiSMFwmFGLITUQX67OAB6zr+K993SCavNAaBkqq3Bzcf9DaSul0XFYIm+0OgZjjFarBVWQ3QKKpN4R2kzUt4YWzLCPeRPfGBWdfPjruOqs70BrOE7W6LzaVDO/+u6+mTlNABbJ1e31PHFaacqAmuZORaJRlqpurqU4u+RCGGXjVvZRog3jSYKAnQIkb8C4zu1DiowGuSXXDkiTqAxwPm05XHoBmuWptb/GmTlC2l9rOknqs1lMYGYKXFFnBtwrsaSFmBY5nJ1Boa+BDl2LIeThZlhaWbLZJu27Z3dwlb+RL6pkBpWdvUZGZ2/r2P8W9Rr3On5Bex99c=
+X-HE-Tag: 1757016471-517926
+X-HE-Meta: U2FsdGVkX18p+ngs5QCfVtN09u+yk5A23O70zy1wh7xuynLhidiqTfTbLQ3UQYDSlLepRMbtlFNHyHjwWgwJhcdB1lOTXyha+cxmhEBRkEqZI1h7ylt4LzqoYQTofXZ/nlX8kjGBW7ff2FGj2FOPRrpn0rbIOpCBX4Ms1kn8fHOUrSZhm5E7mvPOdFqFJDdPFO4DvJ6ffK7q/DdFd4XulBLpGzYKTqYsuuYLgijlh7+scKiIy1hGAwbnhF2qsSPYjnCeqV1Md/HnMmsDAVitIRmzbYXhDfv5qW/ukFadiKlhDHDja1uQe+IRnZUup06RtPcTKOvr7LKIa0KL39WiQm76Svz13Toi4aBMPJ295LHmcP6vDBd7ZzM9jjJ5gOk3OYHMASBqyeYop9kQ/QxQqMEYORh4wVAlvqrkNGhQykifRiU51JNjMjfA122doVy8sOMVJDo7Qf0u9miapKrnmPvl3docBSRGbvmCj8COShOMhaTsjZAIuQlbbNevaQQIJ0qztUIukAr0UlENNfnFPgsUKmgiqenzlzSoMVmJ4dHw5uNCtbdlIamHmUFUpV1H3+pJlYCOnGG9NX1Zu5OYgq03iROWhu4o53M0R5IFfb7kLGRKU4pMqwpmFLlXTRYLeIdLb5w6cehOWNXH1Y9/PSRaPUzW1sTvZjFeBG/HnoIZfvgnh/Nvv6seBJRFfpsbjU6hDRPTToPxT735Uzs4dTOm6yY7Exzc0vxvsHtkA6VuEbj3QmLr2OuY4YFtUZaOuY1gfAyTlIhgB3JkeCzd9nzUe/eu45hEYWzwyGEdxTSa0jxrNsO63P7BMo7vzpPC2WCdSW3Y3/TvGQUvlUxNUFq7Ydjtm0a9rxFxpAFI04Qg2CWK4I/W+5nRuvAvcInBKc2NYHPCNxNwfQg6XKxrEodiHU6GVCTryg/I6fwAtIMmoUmPr0E7U4gXwD/AwcIrjp6D99S+C3E6zpSXUXD
+ +2L4fiUp
+ 23GbVLPTMrTD862ICAViH8KSJDS8DmXGlmQ3ZXIcwplsLE2ixwhpTximM+DgsWW9kPy3DXRceuiiU3BzxQqTxGkSvT0QB8OL1rJHJZllGGTiqZb1c7ESF3sBrJmw6xM2KM9NzdubdfkZsxtT8ZJ9ZIYYkgJ//672UcAo0NBB3/M+CJJkUY8a9JLvebIBFhtQRETuEua8w4LG5UMAB4LWK8ZXZFlyIzXVe83d0PVUjbPcqvxsWT/6L20ZVRubUme7vNHAEVQS/dyrjtq0iuERBgLwkJ4wG/VWSR+wQBSvROE/pCWwok9PmE7WdlthympVOxwg091EelIMrevs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,97 +101,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 06:03:51PM -0400, Yury Norov wrote:
-> On Thu, Aug 28, 2025 at 12:00:11PM -0700, Mitchell Levy wrote:
-> > Add getters for the global cpumasks documented in
-> > `include/linux/cpumask.h`, specifically:
-> > - cpu_possible_mask
-> > - cpu_online_mask
-> > - cpu_enabled_mask
-> > - cpu_present_mask
-> > - cpu_active_mask
+On Thu, Sep 04, 2025 at 07:47:11AM -0400, Brian Foster wrote:
+> On Wed, Sep 03, 2025 at 05:35:51PM -0700, Joanne Koong wrote:
+> > On Wed, Sep 3, 2025 at 11:44 AM Brian Foster <bfoster@redhat.com> wrote:
+> > >
+> > > On Tue, Sep 02, 2025 at 04:46:04PM -0700, Darrick J. Wong wrote:
+> > > > On Fri, Aug 29, 2025 at 04:39:42PM -0700, Joanne Koong wrote:
+> > > > > Add granular dirty and writeback accounting for large folios. These
+> > > > > stats are used by the mm layer for dirty balancing and throttling.
+> > > > > Having granular dirty and writeback accounting helps prevent
+> > > > > over-aggressive balancing and throttling.
+> > > > >
+> > > > > There are 4 places in iomap this commit affects:
+> > > > > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
+> > > > > b) writeback_iter with setting the wbc->no_stats_accounting bit and
+> > > > > calling clear_dirty_for_io_stats()
+> > > > > c) starting writeback, which now calls __folio_start_writeback()
+> > > > > d) ending writeback, which now calls folio_end_writeback_pages()
+> > > > >
+> > > > > This relies on using the ifs->state dirty bitmap to track dirty pages in
+> > > > > the folio. As such, this can only be utilized on filesystems where the
+> > > > > block size >= PAGE_SIZE.
+> > > >
+> > > > Er... is this statement correct?  I thought that you wanted the granular
+> > > > dirty page accounting when it's possible that individual sub-pages of a
+> > > > folio could be dirty.
+> > > >
+> > > > If i_blocksize >= PAGE_SIZE, then we'll have set the min folio order and
+> > > > there will be exactly one (large) folio for a single fsblock.  Writeback
 > > 
-> > Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> > ---
-> >  rust/kernel/cpumask.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 46 insertions(+)
+> > Oh interesting, this is the part I'm confused about. With i_blocksize
+> > >= PAGE_SIZE, isn't there still the situation where the folio itself
+> > could be a lot larger, like 1MB? That's what I've been seeing on fuse
+> > where "blocksize" == PAGE_SIZE == 4096. I see that xfs sets the min
+> > folio order through mapping_set_folio_min_order() but I'm not seeing
+> > how that ensures "there will be exactly one large folio for a single
+> > fsblock"? My understanding is that that only ensures the folio is at
+> > least the size of the fsblock but that the folio size can be larger
+> > than that too. Am I understanding this incorrectly?
 > > 
-> > diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-> > index b7401848f59e..ca9aa6875b4a 100644
-> > --- a/rust/kernel/cpumask.rs
-> > +++ b/rust/kernel/cpumask.rs
-> > @@ -77,6 +77,52 @@ pub unsafe fn as_ref<'a>(ptr: *const bindings::cpumask) -> &'a Self {
-> >          unsafe { &*ptr.cast() }
-> >      }
-> >  
-> > +    /// Get a CPU mask representing possible CPUs; has bit `cpu` set iff cpu is populatable
-> > +    #[inline]
-> > +    pub fn possible() -> &'static Self {
-> > +        // SAFETY: `__cpu_possible_mask` is a valid global provided by the kernel that lives
-> > +        // forever.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_possible_mask) }
-> > +    }
+> > > > must happen in units of fsblocks, so there's no point in doing the extra
+> > > > accounting calculations if there's only one fsblock.
+> > > >
+> > > > Waitaminute, I think the logic to decide if you're going to use the
+> > > > granular accounting is:
+> > > >
+> > > >       (folio_size > PAGE_SIZE && folio_size > i_blocksize)
+> > > >
+> > 
+> > Yeah, you're right about this - I had used "ifs && i_blocksize >=
+> > PAGE_SIZE" as the check, which translates to "i_blocks_per_folio > 1
+> > && i_block_size >= PAGE_SIZE", which in effect does the same thing as
+> > what you wrote but has the additional (and now I'm realizing,
+> > unnecessary) stipulation that block_size can't be less than PAGE_SIZE.
+> > 
+> > > > Hrm?
+> > > >
+> > >
+> > > I'm also a little confused why this needs to be restricted to blocksize
+> > > gte PAGE_SIZE. The lower level helpers all seem to be managing block
+> > > ranges, and then apparently just want to be able to use that directly as
+> > > a page count (for accounting purposes).
+> > >
+> > > Is there any reason the lower level functions couldn't return block
+> > > units, then the higher level code can use a blocks_per_page or some such
+> > > to translate that to a base page count..? As Darrick points out I assume
+> > > you'd want to shortcut the folio_nr_pages() == 1 case to use a min page
+> > > count of 1, but otherwise ISTM that would allow this to work with
+> > > configs like 64k pagesize and 4k blocks as well. Am I missing something?
+> > >
+> > 
+> > No, I don't think you're missing anything, it should have been done
+> > like this in the first place.
+> > 
 > 
-> This function and the following look like returning a boolean.
-> Maybe possible_cpus()? 
-
-Agreed, I think that's definitely better. Will do for v4.
-
-> The general rule is to keep the rust naming as close to C as
-> possible, but in this case Cpumask::cpu_possible_mask is, OK,
-> somewhat excessive.
-
-Agreed :)
-
-Thanks,
-Mitchell
-
-> Thanks,
-> Yury
+> Ok. Something that came to mind after thinking about this some more is
+> whether there is risk for the accounting to get wonky.. For example,
+> consider 4k blocks, 64k pages, and then a large folio on top of that. If
+> a couple or so blocks are dirtied at one time, you'd presumably want to
+> account that as the minimum of 1 dirty page. Then if a couple more
+> blocks are dirtied in the same large folio, how do you determine whether
+> those blocks are a newly dirtied page or part of the already accounted
+> dirty page? I wonder if perhaps this is the value of the no sub-page
+> sized blocks restriction, because you can imply that newly dirtied
+> blocks means newly dirtied pages..?
 > 
-> > +
-> > +    /// Get a CPU mask representing online CPUs; has bit `cpu` set iff cpu available to the
-> > +    /// scheduler
-> > +    #[inline]
-> > +    pub fn online() -> &'static Self {
-> > +        // SAFETY: `__cpu_online_mask` is a valid global provided by the kernel that lives forever.
-> > +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_online_mask`
-> > +        // may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_online_mask) }
-> > +    }
-> > +
-> > +    /// Get a CPU mask representing enabled CPUs; has bit `cpu` set iff cpu can be brought online
-> > +    #[inline]
-> > +    pub fn enabled() -> &'static Self {
-> > +        // SAFETY: `__cpu_enabled_mask` is a valid global provided by the kernel that lives forever.
-> > +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_enabled_mask`
-> > +        // may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_enabled_mask) }
-> > +    }
-> > +
-> > +    /// Get a CPU mask representing present CPUs; has bit `cpu` set iff cpu is populated
-> > +    #[inline]
-> > +    pub fn present() -> &'static Self {
-> > +        // SAFETY: `__cpu_present_mask` is a valid global provided by the kernel that lives
-> > +        // forever. Since we wrap the returned pointer in an `Opaque`, it's ok that
-> > +        // `__cpu_present_mask` may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_present_mask) }
-> > +    }
-> > +
-> > +    /// Get a CPU mask representing active CPUs; has bit `cpu` set iff cpu is available to
-> > +    /// migration.
-> > +    #[inline]
-> > +    pub fn active() -> &'static Self {
-> > +        // SAFETY: `__cpu_active_mask` is a valid global provided by the kernel that lives forever.
-> > +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_active_mask`
-> > +        // may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_active_mask) }
-> > +    }
-> > +
-> >      /// Obtain the raw `struct cpumask` pointer.
-> >      pub fn as_raw(&self) -> *mut bindings::cpumask {
-> >          let this: *const Self = self;
+> I suppose if that is an issue it might still be manageable. Perhaps we'd
+> have to scan the bitmap in blks per page windows and use that to
+> determine how many base pages are accounted for at any time. So for
+> example, 3 dirty 4k blocks all within the same 64k page size window
+> still accounts as 1 dirty page, vs. dirty blocks in multiple page size
+> windows might mean multiple dirty pages, etc. That way writeback
+> accounting remains consistent with dirty accounting. Hm?
+
+Yes, I think that's correct -- one has to track which basepages /were/
+dirty, and then which ones become dirty after updating the ifs dirty
+bitmap.
+
+For example, if you have a 1k fsblock filesystem, 4k base pages, and a
+64k folio, you could write a single byte at offset 0, then come back and
+write to a byte at offset 1024.  The first write will result in a charge
+of one basepage, but so will the second, I think.  That results
+incharges for two dirty pages, when you've really only dirtied a single
+basepage.
+
+Also, does (block_size >> PAGE_SHIFT) evaluate to ... zero?
+
+--D
+
+> Brian
+> 
+> > > Brian
+> > >
+> > > > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > > > > ---
+> > > > >  fs/iomap/buffered-io.c | 140 ++++++++++++++++++++++++++++++++++++++---
+> > > > >  1 file changed, 132 insertions(+), 8 deletions(-)
+> > > > >
+> > > > > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> > > > > index 4f021dcaaffe..bf33a5361a39 100644
+> > > > > --- a/fs/iomap/buffered-io.c
+> > > > > +++ b/fs/iomap/buffered-io.c
+> > > > > @@ -20,6 +20,8 @@ struct iomap_folio_state {
+> > > > >     spinlock_t              state_lock;
+> > > > >     unsigned int            read_bytes_pending;
+> > > > >     atomic_t                write_bytes_pending;
+> > > > > +   /* number of pages being currently written back */
+> > > > > +   unsigned                nr_pages_writeback;
+> > > > >
+> > > > >     /*
+> > > > >      * Each block has two bits in this bitmap:
+> > > > > @@ -139,6 +141,29 @@ static unsigned ifs_next_clean_block(struct folio *folio,
+> > > > >             blks + start_blk) - blks;
+> > > > >  }
+> > > > >
+> > > > > +static unsigned ifs_count_dirty_pages(struct folio *folio)
+> > > > > +{
+> > > > > +   struct inode *inode = folio->mapping->host;
+> > > > > +   unsigned block_size = i_blocksize(inode);
+> > > > > +   unsigned start_blk, end_blk;
+> > > > > +   unsigned blks, nblks = 0;
+> > > > > +
+> > > > > +   start_blk = 0;
+> > > > > +   blks = i_blocks_per_folio(inode, folio);
+> > > > > +   end_blk = (i_size_read(inode) - 1) >> inode->i_blkbits;
+> > > > > +   end_blk = min(end_blk, i_blocks_per_folio(inode, folio) - 1);
+> > > > > +
+> > > > > +   while (start_blk <= end_blk) {
+> > > > > +           start_blk = ifs_next_dirty_block(folio, start_blk, end_blk);
+> > > > > +           if (start_blk > end_blk)
+> > > > > +                   break;
+> > > >
+> > > > Use your new helper?
+> > > >
+> > > >               nblks = ifs_next_clean_block(folio, start_blk + 1,
+> > > >                               end_blk) - start_blk?
+> > > > > +           nblks++;
+> > > > > +           start_blk++;
+> > > > > +   }
+> > > > > +
+> > > > > +   return nblks * (block_size >> PAGE_SHIFT);
+> > > >
+> > > > I think this returns the number of dirty basepages in a given large
+> > > > folio?  If that's the case then shouldn't this return long, like
+> > > > folio_nr_pages does?
+> > > >
+> > > > > +}
+> > > > > +
+> > > > >  static unsigned ifs_find_dirty_range(struct folio *folio,
+> > > > >             struct iomap_folio_state *ifs, u64 *range_start, u64 range_end)
+> > > > >  {
+> > > > > @@ -220,6 +245,58 @@ static void iomap_set_range_dirty(struct folio *folio, size_t off, size_t len)
+> > > > >             ifs_set_range_dirty(folio, ifs, off, len);
+> > > > >  }
+> > > > >
+> > > > > +static long iomap_get_range_newly_dirtied(struct folio *folio, loff_t pos,
+> > > > > +           unsigned len)
+> > > >
+> > > > iomap_count_clean_pages() ?
 > > 
-> > -- 
-> > 2.34.1
+> > Nice, a much clearer name.
+> > 
+> > I'll make the suggestions you listed above too, thanks for the pointers.
+> > 
+> > Thanks for taking a look at this, Darrick and Brian!
+> > > >
+> > > > --D
+> > > >
+> > 
+> 
+> 
 
