@@ -4,129 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E72FDCA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 08:53:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53A71CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 08:54:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D608F6B0005; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
+	id 991786B000D; Thu,  4 Sep 2025 04:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D11336B0008; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
+	id 9426C6B000E; Thu,  4 Sep 2025 04:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD8556B000C; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
+	id 8315E6B0010; Thu,  4 Sep 2025 04:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A76766B0005
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D0001DF4DD
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:53:31 +0000 (UTC)
-X-FDA: 83850954222.06.34AF299
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9BE0D40008
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:53:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B2806B000D
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 04:54:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9EB1C1A0A81
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:54:13 +0000 (UTC)
+X-FDA: 83850955986.07.FC8DBFE
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C2CFB140006
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:54:11 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3Ssz+FR6;
+	spf=pass (imf09.hostedemail.com: domain of glider@google.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756976009;
+	s=arc-20220608; t=1756976051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
-	b=D9j03aCLdGMQWWo2uvs+9wBfJYBq8sKkIfPg9a7PkJZ3L5ZU3zpMTBujJPvqw11DKCrt7l
-	4udwa9l7/6864Om01WgU9Hd7po4bXqWkeBp6rlVxtzFmtQ5QeHPLjY9verP3T98tmEdi9J
-	aHWhRWpoMg0xj65pmNc1rnE0ptrXDpU=
+	bh=9VicjXT4pdNAgXdUSH6UsBDRLh+o/JYSTnI74S8PEYQ=;
+	b=yPUELKoZsoBN0bkosOF8XwznIbJy7LTvSy+cqSTJJLPnc9V26qZhfz474vFlDgMQBPqIna
+	NkWACLhvQt7ZV+9sDmeERGSfbVNs0oJwqKQm9FlLs2Var8W4QMVzdBbGPs5/TLQ7vNHSD6
+	JFv+3myLz0hs1N+oABd/beJcq8suH0w=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756976009; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=3Ssz+FR6;
+	spf=pass (imf09.hostedemail.com: domain of glider@google.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756976051; a=rsa-sha256;
 	cv=none;
-	b=57GPMeHVuuOswxPz0cjSX/zdzbdK4PU5g/4cRxXIDLmnkrWx4Bid+kC8f8rdkMCX+r23LP
-	w4ubyXH4BV+KynEigkmHtlvWHca7F49TKqdfgleP/Wo09L0U04UAZ2lEe7iuNf3sSS7ofe
-	DqYQDNowe2iOUerWCFAv0qdG8ZxaknY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7619B33F61;
-	Thu,  4 Sep 2025 08:53:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756976006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
-	b=zLY0z0sKVWzhzRyIbQlPUo4m/YP4rEXl2vWzHuOLU0U5wdSzWrLpPL14PpyZwl/3qBUvTb
-	rKaEslebF5hPZjCAjVsD1OUXeyCWXPcDPw2CAfakN0tG1eRxPTorzw/JL7x3rHhN7/8Of7
-	D+3/tMdTZX6vSBZ5b6Y0kE9t0JQGgTw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756976006;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
-	b=Ks14tQUF4QfXY3dKTad0ND0t1O3z2jPZSLpeLYMg+2yG3fErY4sRXypbYiiIo6S2x88NXf
-	XLr/5Bal3QW4uPBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756976006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
-	b=zLY0z0sKVWzhzRyIbQlPUo4m/YP4rEXl2vWzHuOLU0U5wdSzWrLpPL14PpyZwl/3qBUvTb
-	rKaEslebF5hPZjCAjVsD1OUXeyCWXPcDPw2CAfakN0tG1eRxPTorzw/JL7x3rHhN7/8Of7
-	D+3/tMdTZX6vSBZ5b6Y0kE9t0JQGgTw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756976006;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
-	b=Ks14tQUF4QfXY3dKTad0ND0t1O3z2jPZSLpeLYMg+2yG3fErY4sRXypbYiiIo6S2x88NXf
-	XLr/5Bal3QW4uPBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 69A9113675;
-	Thu,  4 Sep 2025 08:53:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QCDEGYZTuWhOEAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 04 Sep 2025 08:53:26 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E8B40A0A2D; Thu,  4 Sep 2025 10:53:25 +0200 (CEST)
-Date: Thu, 4 Sep 2025 10:53:25 +0200
-From: Jan Kara <jack@suse.cz>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org, 
-	jack@suse.cz, hch@infradead.org, djwong@kernel.org, jlayton@kernel.org, 
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 00/12] mm/iomap: add granular dirty and writeback
- accounting
-Message-ID: <5qgjrq6l627byybxjs6vzouspeqj6hdrx2ohqbxqkkjy65mtz5@zp6pimrpeu4e>
-References: <20250829233942.3607248-1-joannelkoong@gmail.com>
+	b=HDFle/mMDZH85ubBdAVtNakzsFFJYt6xGZg0zppe0W+UtGNMaD8qunVjRoQfmVdkBaiGMY
+	pCd1TOlxIT9Gndsz2JZ7qWS8ryZMm4NkU4Hy5zxvNZM7VdYueZMSEe/ORkpTwiMkB+vOae
+	wGyV0ws6DPA5zUws1fkbcImsGwpCto8=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-7220d7dea27so6086426d6.1
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 01:54:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756976051; x=1757580851; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9VicjXT4pdNAgXdUSH6UsBDRLh+o/JYSTnI74S8PEYQ=;
+        b=3Ssz+FR6onoQWjyUdBzU0xBLWypd9JubdDpDwf/meQw/kKedeio7vA4OR/uFIp1vNk
+         p+x2YeHlBhKY+kzxyFf9zBbbir8LkZo0ysNPBWr6I3ml+zbmRfMrtlWudSJbwsTqqfd0
+         Ec9G+OR3kpL+enCKa8RO0v0Ts4pceMEkcoU0dlrIyHGWzkDAeMDAvyEfu12AE0E4krtm
+         3WFtNzenvwPHUziCQJH3JU7HCYvepxftUZvvcaK1obMdpvDYDCnk0mt4eDWCHh0qxUMQ
+         QXxbQojfdNaZKL69Yre7Awe2KnbABTJwTlbLovCJHjz6YIBGtmyJD3K1wGZ/jkTiIfJp
+         kYaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756976051; x=1757580851;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9VicjXT4pdNAgXdUSH6UsBDRLh+o/JYSTnI74S8PEYQ=;
+        b=vGMv9Z5bDADKjgIN8HvIxBGtN3pgZAxifC7+lUi/dVDw6t1d5XrrugRqEcCm5xQ/UY
+         U3pFwrNJUiKCW5gYLeDEJ4Coy4Ph22ua1e6wcqvHhH7gXb4fBiVkG5Hrq9yoaFjpXwN4
+         gb9spuriERcyDQ9NTKoMNPFzzviTnG5WzWcoCBeOgtkwPl5OO/WIJYi0PX1QF4BGhS4u
+         9iObqYC/oNpI9XZDom5Hbe8ncHgHGo4/1pxTqptd70JrvcTpl/MKq6cwfTOK3JPygL+F
+         /o3CslI7qP/qtXi1BZH1ZX0TA8C/UGxi2mOUWfe3GqPA2VGvHI98A9epvr+whiVoUOF4
+         2Tjg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZheDJhC8K4DJA/ibcTdX8NpQqL65SIMrmevy+vMdtBvmIKnfn9c5bvh0nVCt9YkGnA81Hni/x9w==@kvack.org
+X-Gm-Message-State: AOJu0YzFeqV+93CWIQcNOrShvc55TPpSclhNzV27lrnlZlaAq7T4FU4g
+	2O8Mzd5nbGoVyo3/eIFA3Ww9yZhmER62YbspCvisT8+HQ9FrByXlx14S68tw/SwqN7x7Q5kMxvB
+	kspGxIfim+ER2aQxgQPC9+wbsav7SUwDKsSFHO+9T
+X-Gm-Gg: ASbGncv09UMSkSg9qPKp9YlkPbFt+uDcibMr4zryUu0WPAtiseHw+DSsCgPU4P8BSk6
+	0/25BG4NFL5VM37rOMpt85jbQPKhoX+9wpANiaOH7CoLioct+ktEyotVLzVkf0zAA1vt8uLfex2
+	A+kT2kuXENWBFVaMzsOIFnRC5GArkWdjPZmSRGft9QHgKKK5Cwf/ZHilyQ+5sTPGXvve72to7vk
+	7UZXPPeyAj4jU1CXVp3OOWmm03Txl5kZ3Hhx45nDfY=
+X-Google-Smtp-Source: AGHT+IGe+3QGfd9IKV2sPPBcSKIkB+warv0bCWnhX474CyKZjMxan/mTdhVbYwwEQVkV0lnKX5ceY3UjV6CSO+x3hLI=
+X-Received: by 2002:a05:6214:19eb:b0:723:255a:9168 with SMTP id
+ 6a1803df08f44-7232569d525mr82498246d6.4.1756976050489; Thu, 04 Sep 2025
+ 01:54:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250829233942.3607248-1-joannelkoong@gmail.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 9BE0D40008
+References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com> <20250901164212.460229-6-ethan.w.s.graham@gmail.com>
+In-Reply-To: <20250901164212.460229-6-ethan.w.s.graham@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Thu, 4 Sep 2025 10:53:32 +0200
+X-Gm-Features: Ac12FXzGXGcfd1LWU7AL2P0uHHVI9Cjfbatglasugt3XjpaIrqiLrO1UVJEntQs
+Message-ID: <CAG_fn=VBbSqb07-pbbEw7F=SP5_t74Re7ki0+ZS=mBm2S9BehA@mail.gmail.com>
+Subject: Re: [PATCH v2 RFC 5/7] kfuzztest: add ReST documentation
+To: Ethan Graham <ethan.w.s.graham@gmail.com>
+Cc: ethangraham@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
+	davidgow@google.com, dvyukov@google.com, jannh@google.com, elver@google.com, 
+	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
+	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, dhowells@redhat.com, 
+	lukas@wunner.de, ignat@cloudflare.com, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, linux-crypto@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 8syj6xez9i1zxooq1am7zbptawb6fnzc
 X-Rspam-User: 
-X-Stat-Signature: 9bmp8app733s7ipnyo4b696a8h6rfsm1
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756976008-796390
-X-HE-Meta: U2FsdGVkX1/d8tIKOnCKFf/XYNZbW8G84PkZkFx8v8atA42kN/qJbjY0XEiT14XYX5nz9HxrJcEwBjUwc/wiVrcxLp6HVy2PbSUcmqii1Z1bFAI1eHaH4chda1GxFWgAh3oWado49hr86asll4LT1uOtUaWXb6ZYE3/NfbiaFisCy1QGAMoyNxMuiqnc4FSjOg1e4TRiR8cXXVnijXBaIUxbYZLlgZmvhBdlZlHfUj/wQv0TwWutp1adJ0u5smUikDXKC//M6R+dKMyJr+43IZNiSZNqhKONAHcVPB1fvkH5g44taBRJ76ZdERj2b1wt+v1TfvRFsQ5S3SbpAHqaVQWzdF6Kwt3pYRM4anRZ5EOBN0sm5DLeUSLN21pWnlfhjzRrTzBjxzLfF2d5OAmAHKdBNvQg5uc7/bG12w2ePwZTg3DZ1aaPyqHZXBua0fHuZ4b/+KwQFJiHGC8gnX/L7RsFJNEfwdRHplpZFO2ip4F6TV1rdbV8S15/kINUFN+aJv/4z5wgSnyDq9vRb78pBMfBA3MxX3NeqNRvxrw0ktJ1NTtnYibRS3qXHfwoSVXow6a/rh82cAyeYTpNutkzcuxFjfccHfaQ8PdLbYhZeRP0KH7FxsY1ZxCp1phqbRmuMUetvsiWzEiG2wEqKCnwr3bdcZYoeTKbeRgch3VZP0/rgBnWUm1IPVhBVotWhkErsyJtUmM7NuBv62Faqo7sX0AKuUhet8i3BaamKB3YcLnTFqNrXfh00+6dLlTVrXA2kQksnlPAQqZTadhArA6aTnZpBnKwNZzpVSDZYhX2SvC2L+/uhP44hlq51j9p6scp6LUrBZpliuL7uN68MyAT3rkoif9FMeOz9tc+UaVWvJVKlWiERf4R6xuEh4RKd0A1gZWlwxFf2DjH74GEBQ8x/EtXb6fS821mDU8zKGqTzJ1K3/zhIpGbAvKAjrL2nfFskp5zd4fIv6uasaj/uOh
- uUbfA56u
- wurEUM2vtA0PeyfoFowf2IAGTQvtsz2XZDuTYQW7BxicLOtItfCxO4Yoyzb0hVNdE3ERDLciE4sEnUU1gUnE4x1KeYk56Ju/hTRk4e8+QjdmOOm5MNHEorKGn+YHXgZLQbiJuQwuxWpzWfzeniU1t7jR0wjr57e3a/RluOz46SDIJQt9bajcJK8Vo/8kugKXJrZubWkU/T5BTSZt/oqx0dWjf8pb17p1dswobaPcpvotjG7zTG1W4uhUqexphFxHUPrw+nkxHAuisHuthMzPAn+6J5ML2WnnpFN//NUy9Dp3nvgKNu+jM0oeveRNNql9JB+rZRXg65boDTCJX9VuMlbs1VNyJWsIj4hj0e7TdTIijj9g8O3m0rROt8XyvckkCJBhLSPgorMIqYXQmwVnWvUV3LYvSM0nZvoTB
+X-Rspamd-Queue-Id: C2CFB140006
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756976051-547140
+X-HE-Meta: U2FsdGVkX19x1NCInc5jFZEXTYBD6P0gGu7+StkgM1rqLqpas4kiw0QGZ1UFSrB19wE5TUBBUkPoVs7GLOjk48eELw/977RzynYt0oOM/snd0JHcch99jbxdjkIrtzqOYOFc9VL2CHAta2tmUX/ThUiiNrtAr4WdmRLSJtmcAxPlnFr04KEo3pqHqBw6pL+1LNEx9CzXwOaMb6PJXmeJSFBx99Gzs6Z/N7sCY0N6b3dWfRbj1abaHX11GtIBfVuwlrUGjUJiY2NXpU6QnwVGC37vVkpJleevrdJ5GwoRnN8NiiRCQF09L3jUl4rHtqxqeWnjdxgpUxnKBv4O8Kc0DMBtbetD4Gtbf/j6eE27YODokko2UmG7BLGZYhwCyG8HwKMXIn1TC/13t4dzKOA8No9zcToaQxHs6Hwz+k0HZSpu28hMfCRXFx7l01pKzr2mFzhwPeYfpBFD8QC9ODrfMLzSipuOvR2aLSwHVfZzi504T/gyawxxlKb5wsjvoL1H6CG1PeKbPBAcMQM0h3OiEYIUS0oHzrf3MdudYCSt3WHqUoJ7fFf8p33Mrm+p4aGXh4qyYJkBVio3Ltby2eMvayZkU2/txWQCIuOg+Z9kfPxAWCzeOI3chNTUM1Wu14+y5nY523kkgMhFEQHVUguxPSavT1bHvfAm6p6sL3V5ghPvH04GIX1MsK2UJT0cHdgPRA1sI9lA4CNG8gZz/L16Vf5Pb1osOYOJtsUzq/zqgnmSvdtENPO9k4UA1ZTeEZSQ/gT8l6A64IQzuBBVzzXRzQZ502bSiBEC3a/+0fGX+HSNqlARLYc1ttVm4vkGFN+8tPNGenQrT8g/TdGe2zuxT10Khij2S0RlGce2fBZpKSTfBDDnD2Y2uwl47WG1MFiJli93svyQuT60jlZon7rVlpKLxdwQ11is7EbY9fYMlTt8+JOeFDiSfc8Sn6ILnMLafZkrJSNcxvaOb36rmOa
+ XAAikoVC
+ rERp8DrLN1IqgCCcnftRrOfdiM7K4vnjriZ7P6gmO4RO/ed7yfqI6v9eKMiTGy8jbXDBh/HYZ1N3nqkcHZD9pxm/5RGLOb1Q/GFtRRYQzdbAKwGaweDekcaBmptSwTyTjNWq0Q4iR53zaw/ybwlKimyRvmTo9Yk2/X9ua3Z7BgK4rQ5RCQd8f+1Py7oCSkWr/l8vUFLugqrWNyCdjia35oDqnnQhgHK/HWmeqNQKGTrk0jiNZH0BiDUu8LK3iaJkbMcz3p43Jl/wryJWFPHyWCE+2ww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,166 +121,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello!
+On Mon, Sep 1, 2025 at 6:43=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmail=
+.com> wrote:
+>
+> From: Ethan Graham <ethangraham@google.com>
+>
+> Add Documentation/dev-tools/kfuzztest.rst and reference it in the
+> dev-tools index.
+>
+> Signed-off-by: Ethan Graham <ethangraham@google.com>
+Acked-by: Alexander Potapenko <glider@google.com>
 
-On Fri 29-08-25 16:39:30, Joanne Koong wrote:
-> This patchset adds granular dirty and writeback stats accounting for large
-> folios.
-> 
-> The dirty page balancing logic uses these stats to determine things like
-> whether the ratelimit has been exceeded, the frequency with which pages need
-> to be written back, if dirtying should be throttled, etc. Currently for large
-> folios, if any byte in the folio is dirtied or written back, all the bytes in
-> the folio are accounted as such.
-> 
-> In particular, there are four places where dirty and writeback stats get
-> incremented and decremented as pages get dirtied and written back:
-> a) folio dirtying (filemap_dirty_folio() -> ... -> folio_account_dirtied())
->    - increments NR_FILE_DIRTY, NR_ZONE_WRITE_PENDING, WB_RECLAIMABLE,
->      current->nr_dirtied
-> 
-> b) writing back a mapping (writeback_iter() -> ... ->
-> folio_clear_dirty_for_io())
->    - decrements NR_FILE_DIRTY, NR_ZONE_WRITE_PENDING, WB_RECLAIMABLE
-> 
-> c) starting writeback on a folio (folio_start_writeback())
->    - increments WB_WRITEBACK, NR_WRITEBACK, NR_ZONE_WRITE_PENDING
-> 
-> d) ending writeback on a folio (folio_end_writeback())
->    - decrements WB_WRITEBACK, NR_WRITEBACK, NR_ZONE_WRITE_PENDING
+Some nits below.
 
-I was looking through the patch set. One general concern I have is that it
-all looks somewhat fragile. If you say start writeback on a folio with a
-granular function and happen to end writeback with a non-granular one,
-everything will run fine, just a permanent error in the counters will be
-introduced.  Similarly with a dirtying / starting writeback mismatch. The
-practicality of this issue is demostrated by the fact that you didn't
-convert e.g. folio_redirty_for_writepage() so anybody using it together
-with fine-grained accounting will just silently mess up the counters.
-Another issue of a similar kind is that __folio_migrate_mapping() does not
-support fine-grained accounting (and doesn't even have a way to figure out
-proper amount to account) so again any page migration may introduce
-permanent errors into counters. One way to deal with this fragility would
-be to have a flag in the mapping that will determine whether the dirty
-accounting is done by MM or the filesystem (iomap code in your case)
-instead of determining it at the call site.
+> +Macros ``FUZZ_TEST``, `KFUZZTEST_EXPECT_*`` and ``KFUZZTEST_ANNOTATE_*``=
+ embed
 
-Another concern I have is the limitation to blocksize >= PAGE_SIZE you
-mention below. That is kind of annoying for filesystems because generally
-they also have to deal with cases of blocksize < PAGE_SIZE and having two
-ways of accounting in one codebase is a big maintenance burden. But this
-was discussed elsewhere in this series and I think you have settled on
-supporting blocksize < PAGE_SIZE as well?
+Nit: missing second backtick before KFUZZTEST_EXPECT_
 
-Finally, there is one general issue for which I'd like to hear opinions of
-MM guys: Dirty throttling is a mechanism to avoid a situation where the
-dirty page cache consumes too big amount of memory which makes page reclaim
-hard and the machine thrashes as a result or goes OOM. Now if you dirty a
-2MB folio, it really makes all those 2MB hard to reclaim (neither direct
-reclaim nor kswapd will be able to reclaim such folio) even though only 1KB
-in that folio needs actual writeback. In this sense it is actually correct
-to account whole big folio as dirty in the counters - if you accounted only
-1KB or even 4KB (page), a user could with some effort make all page cache
-memory dirty and hard to reclaim without crossing the dirty limits. On the
-other hand if only 1KB in a folio trully needs writeback, the writeback
-will be generally significantly faster than with 2MB needing writeback. So
-in this sense it is correct to account amount to data that trully needs
-writeback.
 
-I don't know what the right answer to this "conflict of interests" is. We
-could keep accounting full folios in the global / memcg counters (to
-protect memory reclaim) and do per page (or even finer) accounting in the
-bdi_writeback which is there to avoid excessive accumulation of dirty data
-(and thus long writeback times) against one device. This should still help
-your case with FUSE and strictlimit (which is generally constrained by
-bdi_writeback counters). One just needs to have a closer look how hard
-would it be to adapt writeback throttling logic to the different
-granularity of global counters and writeback counters...
+> +Input Format
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +KFuzzTest targets receive their inputs from userspace via a write to a d=
+edicated
+> +debugfs ``/sys/kernel/debug/kfuzztest/<test-name>/input``.
 
-								Honza
+Nit: "debugfs file"?
 
-> Patches 1 to 9 adds support for the 4 cases above to take in the number of
-> pages to be accounted, instead of accounting for the entire folio.
-> 
-> Patch 12 adds the iomap changes that uses these new APIs. This relies on the
-> iomap folio state bitmap to track which pages are dirty (so that we avoid
-> any double-counting). As such we can only do granular accounting if the
-> block size >= PAGE_SIZE.
-> 
-> This patchset was run through xfstests using fuse passthrough hp (with an
-> out-of-tree kernel patch enabling fuse large folios).
-> 
-> This is on top of commit 4f702205 ("Merge branch 'vfs-6.18.rust' into
-> vfs.all") in Christian's vfs tree, and on top of the patchset that removes
-> BDI_CAP_WRITEBACK_ACCT [1].
-> 
-> Local benchmarks were run on xfs by doing the following:
-> 
-> seting up xfs (per the xfstests readme):
-> # xfs_io -f -c "falloc 0 10g" test.img
-> # xfs_io -f -c "falloc 0 10g" scratch.img
-> # mkfs.xfs test.img
-> # losetup /dev/loop0 ./test.img
-> # losetup /dev/loop1 ./scratch.img
-> # mkdir -p /mnt/test && mount /dev/loop0 /mnt/test
-> 
-> # sudo sysctl -w vm.dirty_bytes=$((3276 * 1024 * 1024)) # roughly 20% of 16GB
-> # sudo sysctl -w vm.dirty_background_bytes=$((1638*1024*1024)) # roughly 10% of 16GB
-> 
-> running this test program (ai-generated) [2] which essentially writes out 2 GB
-> of data 256 MB at a time and then spins up 15 threads to do 50-byte 50k
-> writes.
-> 
-> On my VM, I saw the writes take around 3 seconds (with some variability of
-> taking 0.3 seconds to 5 seconds sometimes) in the base version vs taking
-> a pretty consistent 0.14 seconds with this patchset. It'd be much appreciated
-> if someone could also run it on their local system to verify they see similar
-> numbers.
-> 
-> Thanks,
-> Joanne
-> 
-> [1] https://lore.kernel.org/linux-fsdevel/20250707234606.2300149-1-joannelkoong@gmail.com/
-> [2] https://pastebin.com/CbcwTXjq
-> 
-> Changelog
-> v1: https://lore.kernel.org/linux-fsdevel/20250801002131.255068-1-joannelkoong@gmail.com/
-> v1 -> v2:
-> * Add documentation specifying caller expectations for the
->   filemap_dirty_folio_pages() -> __folio_mark_dirty() callpath (Jan)
-> * Add requested iomap bitmap iteration refactoring (Christoph)
-> * Fix long lines (Christoph)
-> 
-> Joanne Koong (12):
->   mm: pass number of pages to __folio_start_writeback()
->   mm: pass number of pages to __folio_end_writeback()
->   mm: add folio_end_writeback_pages() helper
->   mm: pass number of pages dirtied to __folio_mark_dirty()
->   mm: add filemap_dirty_folio_pages() helper
->   mm: add __folio_clear_dirty_for_io() helper
->   mm: add no_stats_accounting bitfield to wbc
->   mm: refactor clearing dirty stats into helper function
->   mm: add clear_dirty_for_io_stats() helper
->   iomap: refactor dirty bitmap iteration
->   iomap: refactor uptodate bitmap iteration
->   iomap: add granular dirty and writeback accounting
-> 
->  fs/btrfs/subpage.c         |   2 +-
->  fs/buffer.c                |   6 +-
->  fs/ext4/page-io.c          |   2 +-
->  fs/iomap/buffered-io.c     | 281 ++++++++++++++++++++++++++++++-------
->  include/linux/page-flags.h |   4 +-
->  include/linux/pagemap.h    |   4 +-
->  include/linux/writeback.h  |  10 ++
->  mm/filemap.c               |  12 +-
->  mm/internal.h              |   2 +-
->  mm/page-writeback.c        | 115 +++++++++++----
->  10 files changed, 346 insertions(+), 92 deletions(-)
-> 
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> +- Padding and Poisoning: The space between the end of one region's data =
+and the
+> +  beginning of the next must be sufficient for padding. In KASAN builds,
+> +  KFuzzTest poisons this unused padding, allowing for precise detection =
+of
+> +  out-of-bounds memory accesses between adjacent buffers. This padding s=
+hould
+> +  be at least ``KFUZZTEST_POISON_SIZE`` bytes as defined in
+> +  `include/linux/kfuzztest.h``.
+
+Nit: missing leading backtick.
+
+> +
+> +KFuzzTest Bridge Tool
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The kfuzztest-bridge program is a userspace utility that encodes a rando=
+m byte
+
+Nit: do we need backticks around kfuzztest-bridge?
+
+> +This tool is intended to be simple, both in usage and implementation. It=
+s
+> +structure and DSL are sufficient for simpler use-cases. For more advance=
+d
+> +coverage-guided fuzzing it is recommended to use syzkaller which impleme=
+nts
+> +deeper support for KFuzzTest targets.
+
+Nit: please add a link to syzkaller.
+
+> +
+> +The textual format is a human-readable representation of the region-base=
+d binary
+> +format used by KFuzzTest. It is described by the following grammar:
+> +
+> +.. code-block:: text
+> +
+> +       schema     ::=3D region ( ";" region )* [";"]
+> +       region     ::=3D identifier "{" type+ "}"
+
+Don't types need to be separated with spaces?
+
+> +       type       ::=3D primitive | pointer | array | length | string
+> +       primitive  ::=3D "u8" | "u16" | "u32" | "u64"
+> +       pointer    ::=3D "ptr" "[" identifier "]"
+> +       array      ::=3D "arr" "[" primitive "," integer "]"
+> +       length     ::=3D "len" "[" identifier "," primitive "]"
+> +       string     ::=3D "str" "[" integer "]"
+> +       identifier ::=3D [a-zA-Z_][a-zA-Z1-9_]*
+> +       integer    ::=3D [0-9]+
+> +
+> +Pointers must reference a named region. To fuzz a raw buffer, the buffer=
+ must be
+
+Maybe insert a paragraph break between these two sentences?
+
+> +.. code-block:: text
+> +
+> +       my_struct { ptr[buf] len[buf, u64] }; buf { arr[u8, n] };
+> +
+> +Where ``n`` is some integer value defining the size of the byte array in=
+side of
+
+s/Where/, where/ ?
 
