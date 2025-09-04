@@ -4,96 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C710CA1015
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:14:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4EBBCA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:19:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEE428E0009; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
+	id 0B0108E0010; Thu,  4 Sep 2025 03:19:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9F398E0002; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
+	id 060E88E0002; Thu,  4 Sep 2025 03:19:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB4E28E0009; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
+	id EDFB58E0010; Thu,  4 Sep 2025 03:19:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 96B198E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2ADE95C24B
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:14:33 +0000 (UTC)
-X-FDA: 83850704826.17.F7BA83D
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 10020A0009
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:14:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DB8688E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:19:38 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 849CF11A927
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:38 +0000 (UTC)
+X-FDA: 83850717636.28.E657FAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A9AF980004
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RkpRQhtW;
+	spf=pass (imf30.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756970071;
+	s=arc-20220608; t=1756970376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yQFtSGmSmsUqUdi1kJEQZ5Ac2b9AfyFnN7ZWwP46VX8=;
-	b=5qFuW5r/xJ3IrzHAeGbgZhqXk8ECsviJr+V4xdgqLfC/oGB4StZGnD0ccnv1xo+0MRtxxZ
-	nXx2nDKVqvDbY0RyVk3eSZbuvDiBvc4j1lhB/bDoJh9HQqTy0XbRZsWWCXcbX/LKzfdnEQ
-	ZnhpfLqex5p0G4LSWPwrOiexY16aVwc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756970071; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tb40G1BP2UOmzBv4K9eP2Zzmqp+7E3i2B0tVuKcnrc0=;
+	b=PL82SppBCdOCuwyoJVYCT/oDyfZ0FH1fgwvZ9aGCYqlpb5G/ihbC6TlkxprXmag6Hh/Zpk
+	C4YxxV4PG4GEO/a4iaM8xv7eK1QE6YFFohYyKz948o4Vcwxl/5TrHOrDCcjKZBYzq9JUwH
+	IaA3Z9WOavCJlyUrJX83qdtUS0CcXMI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756970376; a=rsa-sha256;
 	cv=none;
-	b=KSMXuq4dzHXSE73sK9EcfaeOgjX0a2J8UzpW3jIocQlZfBEN4pwooylHfCw2xiNkLn8tJI
-	YorbCLJprcq89moD6oF9MrT0LLe092CUbWVbHZcCTwAMy22/PuPlE0nfqmG7/mNWeWuu0i
-	w9CLv9nNVFb2jzf3RQEfwyRnIz4lY7c=
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cHW1x3QJkz9sVl;
-	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id i2kdusz8gaKW; Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHW1x2g6Bz9sVk;
-	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4512F8B764;
-	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 3J62ZvdVNPwi; Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 220558B763;
-	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
-Message-ID: <8c8fa4e8-0c81-4697-b620-696adf8e50e0@csgroup.eu>
-Date: Thu, 4 Sep 2025 09:14:28 +0200
+	b=MCCjHpUtNgGGcxOl/iqjQVWpRGTDICIojnvxuRgjckqRcokRPAyiTD+6MWSmRjb6Yy7kz5
+	WU2uNA0pTcktilXhWeEetCiAJtfD/XVTnFafhgMIwDNA1PxootVCRUQ8STmXdDQ7u+ecL4
+	rRQMgYaNDbbUcZaVqKIhlfAgo94NiVs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RkpRQhtW;
+	spf=pass (imf30.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AECCC6026D
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656D8C4CEF9
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756970375;
+	bh=72oYlNKXXmAjA5Q5e13+DWrwi/CpM80zljJXvzw63aw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RkpRQhtW+a9Y5lrqRKRhT35FXEw1JPCeIWAQrYQnCH0PzIhHfBAOhG2Y5tMpknarz
+	 Pl6vzMh5wTJkjfijbtkfNLawzbNfsDaIq0XFhQ03u1qXSHpsWOyAsewXLQkmGGDpF4
+	 g5AZtKvc/NMoBuOSrEYboremIyftnqUZnccdN63+lyYaqC2zXAg1ev7wfVJH2lBPPs
+	 JVWLymM+QXBvbXwT51vLAHuB98LJ3hPXoXOI0XidDfDFuhAkXtfKW2uJbzeDUKLK45
+	 gu3YhlMYSQbv5cDMx39swAF/M58+EsE1FTxDMYZouqSbCtxD0PLFI34ZU+9r65T2RB
+	 b7Av9NcRTOQvQ==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f69cf4b77so787856e87.2
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 00:19:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXm3a99DPRUwyKD8eSkd0z6FIpolNhhDAOUl59RPCBS/hqP3ghMOZeBMWTZrPh035EjezRvibhesQ==@kvack.org
+X-Gm-Message-State: AOJu0YyC6ujmcAyonH0IyNfhOeJ+Y60LUXvH9Whk44+BhJsEgpJUCPmk
+	2DowX+do6stt+heDIrDoZ594K5niJGfVEaseAVItyKizaBxTuBWdQtuUucANyAtbs+vfjOG5f2Z
+	bIG97o05jUJ1AEpSB3mF5ozHF+K6Ejok=
+X-Google-Smtp-Source: AGHT+IEFvmAnCvfgO7PlnrG1BYUxZTjjsz6BPZ180OOcQw+OkZ+byNbMMbmHC7LJX6qhewccjpN/hH5j8/8g6mEFmZQ=
+X-Received: by 2002:a05:6512:239a:b0:560:8d97:8bb8 with SMTP id
+ 2adb3069b0e04-5608d978cd1mr1413481e87.32.1756970373660; Thu, 04 Sep 2025
+ 00:19:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Question: a module for wiping userspace RAM before
- shutdown/reboot/halt
-To: Kamil Aronowski <kamil.aronowski@3mdeb.com>,
- Danill Klimuk <daniil.klimuk@3mdeb.com>, linux-modules@vger.kernel.org,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <bfe72929-ba4c-4732-9f80-25cc7b95a0c8@3mdeb.com>
- <eb88e58f-1515-4f51-8102-79cd3c20fea5@3mdeb.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <eb88e58f-1515-4f51-8102-79cd3c20fea5@3mdeb.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 10020A0009
+References: <cover.1755721529.git.epetron@amazon.de> <b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
+ <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
+In-Reply-To: <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 4 Sep 2025 09:19:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com>
+X-Gm-Features: Ac12FXzg-Gwf5w9Dkz74akKGMbsagt1QMuLWSxeot3bSIi-D7R24FEVq60rM11k
+Message-ID: <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] efi: Support booting with kexec handover (KHO)
+To: Evangelos Petrongonas <epetron@amazon.de>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Changyuan Lyu <changyuanl@google.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A9AF980004
+X-Stat-Signature: gs4tnct3qnu8mayoxpayz7pz3wjc4oud
 X-Rspam-User: 
-X-Stat-Signature: rkpof46pwpgbybdirfpwfgbt8bxewwur
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756970070-555800
-X-HE-Meta: U2FsdGVkX1+EmHWTNzjUQKUhTHcV/Rl6XVxVsoA/PER7lrQECwtStRUvbba3WWNcFlD7pTNjLXVU+VfEH4aZsGUtNZWNrYmhIIANd2roF3ZX2OK+0cHUWhA81lX4gAqOlgFbfwi/x6yHFBaw15cgm+Y11zlDrZuU7gyHWoRoksVUeyn6NIsVgI3ztyHLon1F3tas3ymQNwTtqbPOkNOPzeejeb9BAqj/Ec4N+M12pedNIycBhnW0W07Pti6yegswcIgrIFp16NgoINAgTGwM0XFGgThkJBUNGUm4IHBaDJ8iT4ydx8E5ftuYCPaxZtAvA1Y9J8NvVW8A0SHGqz2Q5rqYEYIWN6Mt1KCiudHWsLxKsP3JEVdmWmTw9YchSLHG7yeuQBHR3gX5ThdBdq1pkRJkSHyzFRMm600/Imv3xmr+9dTq8h6AP6WgVaJQVzeuXt5tleyPgDGSkjXuZghiagZJ1UhQ5+oNO3G8KjAvEd5XQGANoWRWwk4i2mMB9W+8uKOWfzCzq1SI1U2eLINO47QCZwJo/Hk6NljxDvYU/WJ2LCBic9DKqp1KZJ2vCZq1ZA59HvVWX0SzcfYQDnmS33TvwvVwS8FVEB6/eGPlbfmDKT80tWCR7qPSL7Slh2gjbucq9lJsOgJB7g05/retawiaga4c+v5ngrQtYKCADt0oGocoiN/zvdcOKM9eRm+J0dN+bQTR3E+bqc/VCo31pVtaZX7kEtumZYguL6Uo7N2Dzckmv58jXeCaO+JxnPXuYQuGWUXOQXLeVqUcre6lyB/cuq+vE6wvc6BY9rHiVSArYZyC5cFZBejIIJFXDIbrB9wFl+Og0WK4WD4BXrQ3WHfGuhcUeGLJV9FsVHYrDbDfGM+LA7PXYhpKXemoqhMUOMq+fIOW0VJ1LKY0Mu6r/1rCTy1WwIiVDeHAjm+2rPICa8TqVgF0i4HW/8EvuHd/AsVzTFmAdJNSS3AzRFk
- BDv1IWLg
- bGPAF+ZwpEY3lmslhWrQOfpJhK7AmVVy9lPnGg/s+d80st1F32yU4eGU2vPRFo6SYPCC+8grDS+i48lLZYr02W1DSbsbI6KHqwr4o/3DMS4g0S3YcyBKNbdBpEzfYZ/OOnuWZUzURMVGj+s+1kNP9MflVSGVJfNZ90Hwug69WWOk4z8lz0qYcWByIgFd7HLo0AILtuYsRKKOiD4pf2ViNvYPMLEH5Uy+Id5EmYxkmd/veDNfgqvS++nRlcz9Lceyw+AR/Lqr9qxxdpQc/OJb/8fX/8FpkfFzDSZojSrYSgvMx5SpTEl1aVhe2BS8qzmKuJuva6TTYTTkgCcQ8jdLUC9VHRspdDOvrde+QLNPvVFvp3Z0=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000035, version=1.2.4
+X-HE-Tag: 1756970376-332574
+X-HE-Meta: U2FsdGVkX19I19kT0OCh7/wAeu+gCBeJqcs4BKpjVBBbO+/cNP5duYN6he8q5NnLTJJLC+z8TTPl0hI5aXWJSoKusXXnDjVklLHoI1xQ1y+ve8XiDwX3Y+2lCcD66M0nnWuXW7H8vMESp5ejFFzXFbIiQMjf+/osM5k9CKnk9dlWr2yrxNVzqUi1Hc6+e2NhIxZgGSpSbn1HaKy9Hn7xiPwhEmb8hRaCZnZTgbADLu2zopCQ5IEV1h27ccKuUiOoeYvAky0LFNudcbyu/rx9O3cXieT1hH6wEMCVTZ4WGgqqFglrHPUjAOzt+W9sM16/MWH6xWqjMOGdsSR/SYFiMsYFG43PNo4mi6TfhSpEZ1UGVyrW8vbXAOuYx9W9SFHUGOuCflfX3kQvt7BKghRf+Amrq2UDe1VJIy6uq7RhZrZuCiJ46/Y555oKhKM3Lc0hymPScvfrrAifyjXbZu4JFbtQx4Sue3h+ZmQ10yqSuW1wy1laOTC48CwfzZ7708XZDYcWW8FeWeZeHbAa41HzM4Swn0aWMiEMJ2WN4HmXCTPlV+7zK7xDrQ/wv/kEBwCr7qsaN+2Tfm3blXnWzNNQqQkxlV9JLou5Cztxfa7d4jBO1p9zgV155GgRVPaKBc0PUxfmCjfdJ8cw265VqMG5e0YwceSKlQSrkWdvabrnRyM3n/vMUOdw7qnb9zpDQwCDnHM0RcsBbVg3W14n8fwsGw/VTPcZ+X5FZHzQto63spaS/d5KzI54TvVCp1q5sboYj4+N4HOGK5bk5a/6Fjx/8xjaDNu8U3omxTqhMz2HV69bdWXBYMzi2GhljcTIGbH3aRkf4BYnqlrW4RC8WLOtucJNNWHkLLyMkz5fo45aa+PevRUKAsF0UyggUfsYKZrs2cRoFVw0jk2CYJlVlqTBWHxczYinR/3i/tN0XaHTl7lgljtyIg2NinFamRVqRV5oMZls0v16uG10aKwV18x
+ iUfeq/Ka
+ osvA/lNXKbFLYvC6KYHE/BiB2aHi9RYO4c4qRk06XkEngZgKpZfA0Fmc6+AkuwFx/8KROI67x9/bai+4cm+dkiu1U/70kLqXmLCrjvE+J4yELzEc0R1urI3alLlmVQjqFQFlxQOiuk0MUTs3e+s5qvn7uVatU2oBZc2z6GdoSDWoE8//ILn8yBe9S18e9kW6Vg7SbiD/jtuT6q8aIl/PkmM7Guq17wbMT7mJh15OoIdBdwMOJ5fM109naXg3Zf9y4jdMarsxOiEkMLg3jq6mOSqzfHGDKwt4SssJszDxLu9d7KLUNd97lFo4owQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,78 +106,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+mm list
+On Sat, 23 Aug 2025 at 23:47, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> (cc Ilias)
+>
+> Note to akpm: please drop this series for now.
+>
+> On Fri, 22 Aug 2025 at 04:00, Evangelos Petrongonas <epetron@amazon.de> wrote:
+> >
+> > When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
+> > early during device tree scanning. After kexec, the new kernel
+> > exclusively uses this region for memory allocations during boot up to
+> > the initialization of the page allocator
+> >
+> > However, when booting with EFI, EFI's reserve_regions() uses
+> > memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
+> > rebuilding them from EFI data. This destroys KHO scratch regions and
+> > their flags, thus causing a kernel panic, as there are no scratch
+> > memory regions.
+> >
+> > Instead of wholesale removal, iterate through memory regions and only
+> > remove non-KHO ones. This preserves KHO scratch regions, which are
+> > good known memory, while still allowing EFI to rebuild its memory map.
+> >
+> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+> > ---
+> > Changes in v3:
+> >         - Improve the code comments, by stating that the scratch regions are
+> >         good known memory
+> >
+> > Changes in v2:
+> >         - Replace the for loop with for_each_mem_region
+> >         - Fix comment indentation
+> >         - Amend commit message to specify that scratch regions
+> >         are known good regions
+> >
+> >  drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
+> >  1 file changed, 25 insertions(+), 4 deletions(-)
+> >
+>
+> I'd rather drop the memblock_remove() entirely if possible. Could we
+> get some insight into whether memblocks are generally already
+> populated at this point during the boot?
+>
+>
 
-Hi Kamil,
-
-Le 21/08/2025 à 14:13, Kamil Aronowski a écrit :
-> Recently, we evaluated the effectiveness of the `init_on_free`
-> mechanism, particularly in the context of preserving privacy by
-> clearing RAM for individuals with high operational security
-> requirements.
-> 
-> As mentioned
-> (https://lore.kernel.org/all/e71bd62c-5ba7-4363-9af1- 
-> d9c9de394a54@3mdeb.com/),
-> we'd like to ensure that our clients do not have their confidential
-> data leaked after their session has ended with a shutdown/reboot/halt.
-> 
-> In short, `init_on_free` appears to wipe the LUKS secret key
-> successfully, but some non-kernel space snippets remain in memory.
-> Some tests have been performed by dumping memory after booting Debian
-> 13 (with `init_on_free` enabled) and then rebooting to our custom EFI
-> memory dumping application.  For instance, the mentions of
-> `apparmor_parser`, XKB, udev, or systemd units have been found in the
-> memory dump:
-> 
-> ```
-> audit: type=1400 audit(1755156467.556:2): apparmor="STATUS" 
-> operation="profile_load" profile="unconfined" name="Discord" pid=967 
-> comm="apparmor_parser"r"
-> [...]
-> 
-> partial alphanumeric_keys
-> xkb_symbols "tib_asciinum" {
->      include "cn(tib)"
->      name[Group1]= "Tibetan (with ASCII numerals)";
->      key <AE01> { [ 1, 0x1000f21, 0x1000f04, 0x1000f76 ] }; # 1
-> [...]
-> 
-> I:10114000
-> E:ID_MM_CANDIDATE=1
-> S:disk/by-id/dm-uuid-CRYPT-LUKS2-00b4b79c209a4dcfadf37e310778f583- 
-> sda3_crypt
-> [...]
-> 
-> [Unit]
-> Description=Switch Root
-> AssertPathExists=/etc/initrd-release
-> DefaultDependencies=no
-> Wants=initrd-switch-root.service
-> Before=initrd-switch-root.service
-> AllowIsolate=yes
-> Wants=initrd-udevadm-cleanup-db.service initrd-root-fs.target initrd- 
-> fs.target systemd-journald.service initrd-cleanup.service
-> After=initrd-udevadm-cleanup-db.service initrd-root-fs.target initrd- 
-> fs.target emergency.service emergency.target initrd-cleanup.service
-> [...]
-> ```
-> 
-> Is this the expected behavior, a bug, or a misconfiguration on our
-> end?
-> 
-> If it is indeed a bug, we'd be happy to cooperate on improving the
-> `init_on_free` mechanism. If it is expected behavior than we will
-> consider wiping userspace memory some other way, e.g. by implementing
-> a separate Linux Kernel module as described in the previous email
-> (https://lore.kernel.org/all/e71bd62c-5ba7-4363-9af1- 
-> d9c9de394a54@3mdeb.com/).
-> 
-
-This topic seems to be a memory management topic, not a modules topic.
-
-As I mentionned already in this thread, Linux memory management topics 
-should be addressed to linux-mm@kvack.org
-
-Christophe
+Ping?
 
