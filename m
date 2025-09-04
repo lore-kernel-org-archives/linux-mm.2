@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF58BCA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:47:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F017CA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:50:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFD7A8E0014; Thu,  4 Sep 2025 11:47:47 -0400 (EDT)
+	id CA4218E0015; Thu,  4 Sep 2025 11:50:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD4F18E0001; Thu,  4 Sep 2025 11:47:47 -0400 (EDT)
+	id C7B818E0001; Thu,  4 Sep 2025 11:50:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D11D08E0014; Thu,  4 Sep 2025 11:47:47 -0400 (EDT)
+	id BB8788E0015; Thu,  4 Sep 2025 11:50:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C1AA68E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:47:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5CB0B580AA
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:47:47 +0000 (UTC)
-X-FDA: 83851998174.26.D885F8F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 212EC40005
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:47:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AABC28E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:50:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5958A583B3
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:50:25 +0000 (UTC)
+X-FDA: 83852004810.08.22708C4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5F9D040014
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:50:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iTLatd9F;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757000865;
+	s=arc-20220608; t=1757001023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7L6zmwF6yGggWJMfeGBoaeDd3ftd/sKTwPXe5q8sYhE=;
-	b=7Q1r99GI+5QdhO+FYdx3UE4x4ymiFcZ36nUYqTQwFEkjVt32f+X1vziAbCOMYsMZVe/N/y
-	wggthYtQ0cvEg8l4IcnS18CPMInOSU7bCfg0z/lPVm0Vxhp1dRf2EHMD+mNQEcaKZS5k1N
-	ai0/X7nT4Gtk4bXH3kE5FM/x9ppZZyg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757000865; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mI4ZBZL3Ia5lpIaHKSFLsQ7JBIVGHzEwCgn0Mvgh37w=;
+	b=Pn+nPIXElYWdqMf//9bME/Kh98k4nEF3OHK1jP87fN1qRK7BdfKfLdJ5eXB7LOVQttwfw1
+	s5SRgwIYFsilu6SCk7DBpf4b0VCDBcJb4i0bv8o3TBnf+pQDEn/kTc+MB809+JlU+fdK6B
+	MPdBt8EpKgGl2QhnWiaEMrG+NT8WbBA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757001023; a=rsa-sha256;
 	cv=none;
-	b=pw4hP1LBxjIspkbN7bvAvo1YYL+W5/b7YJzBmk36dXIN1y+0ErKjoHsHD03Qstf7mvspk8
-	2vEfXlAZCRbZbOVQK3AtD3O0Rg+FwmxWFFiia2cw7oXSfvmTxcH/sAV645cw+VvmkQkAOy
-	03fJn3bmkYwR+TeU6NGunNLYbeSZzeA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F682339;
-	Thu,  4 Sep 2025 08:47:35 -0700 (PDT)
-Received: from [10.57.59.221] (unknown [10.57.59.221])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1309D3F6A8;
-	Thu,  4 Sep 2025 08:47:35 -0700 (PDT)
-Message-ID: <af6ea636-a5cb-4b78-aae0-ff7e7caa5e5d@arm.com>
-Date: Thu, 4 Sep 2025 17:47:32 +0200
+	b=BKXlyBdpn97uv2aQ9BBBN6tOizzPdTjtdMTdMLu77Slg/bxWEcyvqALSEqVIMOryeQU0cW
+	jMdnNlK5YGCfCbM9lTPwi5/G25qbBv8vDglk+4sML/Rh88L3nE6JkOzp379uD7Bs2/OgjP
+	vxhF0u6AuPXCPs+pdvjPlpZeemSQWRs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iTLatd9F;
+	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757001023; x=1788537023;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=+VqBBhZBCeoAw2ubvhHyzZUkjrXEDSn1rG3+isinRcE=;
+  b=iTLatd9FolZfckU4NSBvMfqx9gyyIC/IbZctLFhu3XccuruJs3RHnTAe
+   uB+sRQF7krUsCrgT95paF/+pF+ZdBivray3nnTVa1CnpsxaTSNS2uneMD
+   RK7OZZ6cLidZ3ItXZW6bjNy8N0+8RVblBGYKnu9vgrIWvDnMgbRZAHxR0
+   ldTFJl8Ddpfy81M00zNza8uMSOaeMgDscf7ujluJInPd7AL6X8jSmwYQN
+   f02KWnewt/7bF7pHD/yROV3YjcTM/6czQB1PyusC+asExLy/gCN3hrUQ6
+   VHUnY9Hd0ZM9hvEcUp1IAxORGoaKudKxqflzAr3C1hmGGVWq7zx2u3DZz
+   Q==;
+X-CSE-ConnectionGUID: Aq/dl6JmQ8C5Lx4MTs02gg==
+X-CSE-MsgGUID: W07d3GT/T1GQcsQumSYOjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="59044760"
+X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
+   d="scan'208";a="59044760"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 08:50:21 -0700
+X-CSE-ConnectionGUID: eBtfQWtPSse8SygtQDuQRg==
+X-CSE-MsgGUID: zkAOWk1hRiuPyQ/lgoRTWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
+   d="scan'208";a="209108915"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 04 Sep 2025 08:50:19 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uuCDM-0005S3-0e;
+	Thu, 04 Sep 2025 15:49:46 +0000
+Date: Thu, 4 Sep 2025 23:47:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [linux-next:master 6049/6355]
+ include/linux/scatterlist.h:161:undefined reference to
+ `page_range_contiguous'
+Message-ID: <202509042330.paF1vmVV-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] mm: introduce local state for lazy_mmu sections
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org
-References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
- <20250904125736.3918646-3-kevin.brodsky@arm.com>
- <aLmq+dwZV9dyTYuq@e129823.arm.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <aLmq+dwZV9dyTYuq@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 212EC40005
-X-Stat-Signature: jyogzskbsadeujgfh9jaaggtqcma67sj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5F9D040014
+X-Stat-Signature: cbrjswhigzw4tzotcu7rem8ywwktxd3h
 X-Rspam-User: 
-X-HE-Tag: 1757000864-233384
-X-HE-Meta: U2FsdGVkX1+Qu7qhARnS5h3MM/AV4+JFpSEklnE6IQF3EmLPKCh4urE7z/XhwoU4mfgH9RmoLQwdDWP6iimmMHdNNjS5TEFvhfCWoEy8O14q/LY/0l2JuHwcUB5fH/3T3hUPTBE8ls4CjPcue/XYWVomxl6fUf90WT4E/VfVF2tAW2ol+4Zb/4WIGsuX/w3JZmgaYmbGnX/zHI+sShN63ZZLrgrx7aLaMYd13GZKx2y4Jq2uVgTiCIwPrwh7DOLaRruPUknJC19VKzMJP9KnJVELVtxQr5Sb55Yec0TD71BuGl8hUk7BhDwNVAbmcz+fs2vzdglk/S+RbqZqerOdemPEhVPy9Gn9AFscXabeD5ZQB+/ieXJSqfWfj62by7y/9XDrExr/PHctnB2T6jONwW8tF0sK4SlbiEsDD8hWGbXsScdwtUaIUCtCWPRRkRopJVd7p9pud7VFCwrkUtTdPksi0yWhtwr+I6+sgGQyizDUKtb2UrJP2PwBSTToRzKLfzNXigVLsYtnDnSdSqnQYf8UOvpIklcAomXAo/ZTNqKs31es8u/IduNijNcm+HZGmVLypBkVk/NOxECjpB7KSxWvk8e+BfVKwO8MAYHdQqLPsxQDAM0yVeK1sgAbiCurP8v1mEueujpL9O92Towq8iHN8NWeKJmUI8R2LnoIFQvpsL9iz9HndcKP5LwNK4x/yZIU7CXwxaVeQVJPZ0dxSlQOvshrpqY6VD67W1hwO2VKQP+QStDf6ucj7/OFhPhPkHZs3jDdZdT5Q/ytoONq9FogGcT+HwcWMllyGZqPN/vRnasPkT9srFas1wBdlybWBAEu2T98SJaA9o8jQ71HqLLie+NOoqvgfnuK6vBnZzDhHgoU2qWdeQJMA5czAc8uzTo8drqGl30RJNUAflSs2ii11I+/oWYN/qoDzahMKAwV3hXzrzYcLy5ajfxrw+FZCA7lzTPEkbOnWJSXuUf
- 9kuUb2A1
- D3FKx9xJmRNFOINxoUNBD8TtyXSw5E0bTpwXgo9cwb6mcmUE3T2mbeEkashIrxld/zml4sxRRdUI+KPXCg4WuK4xd7nBU2cZNYhaZMeWHGqeHygkiOM3rkYBFCwBaKegUI8pYb6gPxhCUjjeGqGbKhyzq4tLj50O+aTFExzytuptZMPAkcM6xI1eAvCAd5yAfk41dqMKxNqt2mUnxEgNyMwcCy8BgQsahsUZ6ZOMaHGjgSSgGQmWvK5sZqu7bsrDpk4fgs+5Cg8AjoonVrObpm2lXUjHRDG2pHO0iI2W88tzGaJU=
+X-HE-Tag: 1757001022-949835
+X-HE-Meta: U2FsdGVkX181trR5cT8+Vrbnz6T2t7FZBmGLSsNXSnWtJFXiiyti5hA7+Udt2dOeeqPNTIX62/SwjoqhhDpFH5MQ8Klzh4RrOgmlGDqiZp394tP/nGniK8nr+KFZkypvyFyLszQmnIdxb6MdmZVZ2/BNTBATh3hAErSTjyuXHBTT6Tn7dj0RLG3LYbTqFiLIE5eqMVakgTL+MxvYSL800A3WL7HjfwdjsWTa5jEfWUGTEtjaAH0AaFoBiCyjvLt66c8x4y32wuq2hUuF0Vnq36TKqTCVEkgaQp7NDcAcJA18cBWVV0WH993TjoZoTiPyjXC7K08+kjf+ihA7mBnNumqDoJ15RM9VXqC+eVGHJMALvEGAxFr4//WyV61NCr5qfEpNgHmOCRSuF6WqBuI3a+hAuZ0oCBukY7lzOJ0uSi3LbKe4ZFkS5psHeRRXrrXKMlQljr/dfLf3TT9QOvjEPkmHi/Enr5bh117WjrtARA4jNoHByQ4bs0NuXpz7/pinWrXt7umDstObJW8lOm+XqSEQE02ma6hinVqzJ80iUvBl4zPVH+xNmYSJXyAwhZSq0Z8okDEBztVC+Oau/M2DIMME8xqqZ6dJCBbA/ae4jBqVYf7tq06PY0/L2W45HNAPu/xAf2WpYbDluh1lchuUheIS+FOj4Jyc5+yrU2sKBulfVrslo+b/A7XW5g3Y7p4LsrbVNo1a/AL2gG9NuP5MIYChh6qSkDnJDKZ6ZA3J/JlCL5D1A0sNEOIzNcq0UIkivcK92g4Lgqiap8CGYRQtotNSgM6+cy6hORYiSynhSbjJmHDOocpZuOiF9gHfH+rC94ty3A2YiS1V42AP+w9rwmi4dZh64zM9EOknasVw2ME7FEPujYbgdmFVFTEcamwvih4+I3UTzINwDxDIH19dvDLr7ofW11N6+/8Ul9cq3nNJeAUHiuzlyeluOTF0oE2rfdgf1VvNWgreCUwZ8FQ
+ +RfC8dYe
+ eW/6SLUg7t8hXm1Z5GrxSW7pKHZnxbQ121JqDZSaGkV7kO//pPWuzUQd0E8v7bcA13UcpZEwXKwsJU+v1dtx8QGglgdE3ysE/Hx6han2ufVnkWN3chny0knLxMECyYER8RV7pHX53XvMo/RxMu3Z4mKSQmq5V+zyjnhBRhCZuyCXBUEsOhVCgNhSrbym6AKT8A0V1bwAUoj7QpiywQjPq+y48uUEnFvrIwRo1K6GG++h2QcjFNfay2QjEMX2JChEl7DxcSDj0kyrPU/+m2KY1XDoPSK+VHVXqI2fb5cBKpETL/W3LZLgGzJJl6lWiV4dMT2EBywquAqprGX0P9wTrgm+0MP4dczTpKuK7hkxoWafRuxDXbpqte5POmA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,67 +107,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/09/2025 17:06, Yeoreum Yun wrote:
-> Hi Kevin,
->
-> [...]
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  arch/arm64/include/asm/pgtable.h              | 10 +++++++---
->>  .../include/asm/book3s/64/tlbflush-hash.h     |  9 ++++++---
->>  arch/powerpc/mm/book3s64/hash_tlb.c           | 10 ++++++----
->>  arch/powerpc/mm/book3s64/subpage_prot.c       |  5 +++--
->>  arch/sparc/include/asm/tlbflush_64.h          |  5 +++--
->>  arch/sparc/mm/tlb.c                           |  6 ++++--
->>  arch/x86/include/asm/paravirt.h               |  6 ++++--
->>  arch/x86/include/asm/paravirt_types.h         |  2 ++
->>  arch/x86/xen/enlighten_pv.c                   |  2 +-
->>  arch/x86/xen/mmu_pv.c                         |  2 +-
->>  fs/proc/task_mmu.c                            |  5 +++--
->>  include/linux/mm_types.h                      |  3 +++
->>  include/linux/pgtable.h                       |  6 ++++--
->>  mm/madvise.c                                  | 20 ++++++++++---------
->>  mm/memory.c                                   | 20 +++++++++++--------
->>  mm/migrate_device.c                           |  5 +++--
->>  mm/mprotect.c                                 |  5 +++--
->>  mm/mremap.c                                   |  5 +++--
->>  mm/vmalloc.c                                  | 15 ++++++++------
->>  mm/vmscan.c                                   | 15 ++++++++------
->>  20 files changed, 97 insertions(+), 59 deletions(-)
-> I think you miss the mm/kasan/shadow.c
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+head:   4ac65880ebca1b68495bd8704263b26c050ac010
+commit: 92c22f6cc03ea9d5b172276d6ae45c691993b257 [6049/6355] scatterlist: disallow non-contigous page ranges in a single SG entry
+config: arm-randconfig-004-20250904 (https://download.01.org/0day-ci/archive/20250904/202509042330.paF1vmVV-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 13.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250904/202509042330.paF1vmVV-lkp@intel.com/reproduce)
 
-Ah yes that's because my series is based on v6.17-rc4 but [1] isn't in
-mainline yet. I'll rebase v2 on top of mm-stable.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509042330.paF1vmVV-lkp@intel.com/
 
-[1]
-https://lore.kernel.org/all/0d2efb7ddddbff6b288fbffeeb10166e90771718.1755528662.git.agordeev@linux.ibm.com/
+All errors (new ones prefixed by >>):
 
-> But here, the usage is like:
->
-> static int kasan_populate_vmalloc_pte()
-> {
-> 	...
-> 	arch_leave_lazy_mmu_mode();
-> 	...
-> 	arch_enter_lazy_mmu_mode();
-> 	...
-> }
->
-> Might be you can call the arch_leave_lazy_mmu_mode() with LAZY_MMU_DEFAULT
-> in here since I think kasan_populate_vmalloc_pte() wouldn't be called
-> nestly.
+   arm-linux-gnueabi-ld: net/core/skbuff.o: in function `sg_set_page':
+>> include/linux/scatterlist.h:161:(.text+0x1864): undefined reference to `page_range_contiguous'
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in net/core/skbuff.o
+>> include/linux/scatterlist.h:161:(.text+0x1864): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: kernel/dma/mapping.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x912): undefined reference to `page_range_contiguous'
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in kernel/dma/mapping.o
+   include/linux/scatterlist.h:161:(.text+0x912): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: kernel/dma/direct.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x64c): undefined reference to `page_range_contiguous'
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in kernel/dma/direct.o
+   include/linux/scatterlist.h:161:(.text+0x64c): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: kernel/dma/ops_helpers.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x52): undefined reference to `page_range_contiguous'
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in kernel/dma/ops_helpers.o
+   include/linux/scatterlist.h:161:(.text+0x52): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: mm/page_reporting.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x1d8): undefined reference to `page_range_contiguous'
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in mm/page_reporting.o
+   include/linux/scatterlist.h:161:(.text+0x1d8): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: crypto/scatterwalk.o:include/linux/scatterlist.h:161: more undefined references to `page_range_contiguous' follow
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in crypto/scatterwalk.o
+   crypto/scatterwalk.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x296): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in crypto/ahash.o
+   crypto/ahash.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x272): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in crypto/rsa-pkcs1pad.o
+   crypto/rsa-pkcs1pad.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x54): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in crypto/gcm.o
+   crypto/gcm.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x3e8): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in crypto/drbg.o
+   crypto/drbg.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x10c): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in crypto/tcrypt.o
+   crypto/tcrypt.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0xba): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in crypto/af_alg.o
+   crypto/af_alg.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x12dc): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in block/blk-mq-dma.o
+   block/blk-mq-dma.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x36a): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in block/blk-integrity.o
+   block/blk-integrity.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x186): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in block/blk-crypto-fallback.o
+   block/blk-crypto-fallback.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x3e): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in lib/scatterlist.o
+   lib/scatterlist.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x22c): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in lib/kfifo.o
+   lib/kfifo.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x640): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/char/virtio_console.o
+   drivers/char/virtio_console.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x3be): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/scsi/scsi_lib.o
+   drivers/scsi/scsi_lib.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x12b6): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/target/target_core_sbc.o
+   drivers/target/target_core_sbc.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x646): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/mtd/nand/ecc-mxic.o
+   drivers/mtd/nand/ecc-mxic.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x208): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/hsi/clients/ssi_protocol.o
+   drivers/hsi/clients/ssi_protocol.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x1b2): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/i2c/busses/i2c-qup.o
+   drivers/i2c/busses/i2c-qup.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x5c2): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/md/dm-integrity.o
+   drivers/md/dm-integrity.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x1566): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in drivers/vhost/scsi.o
+   drivers/vhost/scsi.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x602): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in sound/virtio/virtio_pcm_msg.o
+   sound/virtio/virtio_pcm_msg.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x2bc): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in net/core/filter.o
+   net/core/filter.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x4412): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in net/core/skmsg.o
+   net/core/skmsg.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x8e): dangerous relocation: unsupported relocation
+   arm-linux-gnueabi-ld: (page_range_contiguous): Unknown destination type (ARM/Thumb) in net/9p/trans_virtio.o
+   net/9p/trans_virtio.o: in function `sg_set_page':
+   include/linux/scatterlist.h:161:(.text+0x62): dangerous relocation: unsupported relocation
 
-In fact in that case it doesn't matter if the section is nested or not.
-We're already assuming that lazy_mmu is enabled, and we want to fully
-disable it so that PTE operations take effect immediately. For that to
-happen we must call arch_leave_lazy_mmu_mode(LAZY_MMU_DEFAULT). We will
-then re-enable lazy_mmu, and the next call to leave() will do the right
-thing whether it is nested or not.
 
-It's worth nothing the same situation occurs in xen_flush_lazy_mmu() and
-this patch handles it in the way I've just described.
+vim +161 include/linux/scatterlist.h
 
-I'll take care of that in v2, thanks for the heads-up!
+   143	
+   144	/**
+   145	 * sg_set_page - Set sg entry to point at given page
+   146	 * @sg:		 SG entry
+   147	 * @page:	 The page
+   148	 * @len:	 Length of data
+   149	 * @offset:	 Offset into page
+   150	 *
+   151	 * Description:
+   152	 *   Use this function to set an sg entry pointing at a page, never assign
+   153	 *   the page directly. We encode sg table information in the lower bits
+   154	 *   of the page pointer. See sg_page() for looking up the page belonging
+   155	 *   to an sg entry.
+   156	 *
+   157	 **/
+   158	static inline void sg_set_page(struct scatterlist *sg, struct page *page,
+   159				       unsigned int len, unsigned int offset)
+   160	{
+ > 161		VM_WARN_ON_ONCE(!page_range_contiguous(page, ALIGN(len + offset, PAGE_SIZE) / PAGE_SIZE));
+   162		sg_assign_page(sg, page);
+   163		sg->offset = offset;
+   164		sg->length = len;
+   165	}
+   166	
 
-- Kevin
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
