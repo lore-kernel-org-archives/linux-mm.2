@@ -4,203 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8BFBCA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 00:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02AD3CA1010
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 00:53:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C12A8E0005; Wed,  3 Sep 2025 20:52:20 -0400 (EDT)
+	id 5F9008E0008; Wed,  3 Sep 2025 20:53:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299218E0001; Wed,  3 Sep 2025 20:52:20 -0400 (EDT)
+	id 5D0908E0001; Wed,  3 Sep 2025 20:53:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 187B78E0005; Wed,  3 Sep 2025 20:52:20 -0400 (EDT)
+	id 50DC18E0008; Wed,  3 Sep 2025 20:53:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 094738E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:52:20 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 936C513BBDF
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:52:19 +0000 (UTC)
-X-FDA: 83849741598.10.ECED0E1
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2109.outbound.protection.outlook.com [40.107.237.109])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BCDD21A0006
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:52:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=keZxe+9n;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
-	spf=pass (imf19.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.237.109 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756947136; a=rsa-sha256;
-	cv=pass;
-	b=d+qi83I2mFYEbuAwLSeFfk3Afx21eiiQV0uU1QCNDnwH222n8aoEX5yf/i1CvN6m3o20wj
-	AgrpJmQLpPtMcVi9eAxHRloUfQd9Q+BhQxxUEFrbnakO+cF9//11fL6GMukpVffuHnMfUn
-	oFcvvM02pmOdGuEd0rR/+tkCPRd7UfI=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=keZxe+9n;
-	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
-	spf=pass (imf19.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.237.109 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756947136;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 412858E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:53:57 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E375E1DEEED
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:53:56 +0000 (UTC)
+X-FDA: 83849745672.01.B4714F2
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E224BC0004
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:53:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P2CH+oZc;
+	spf=pass (imf10.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756947235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nDdhcdIoG9/zlfeYm4ArRcS7libMYgR/pNNdqJK6E5A=;
-	b=xmeRTM4XOLBNMX11CTbg275OPf6Rsq9twJHg2J4WBUX4EE039MdEyEWDx8CEDr5rAfed/b
-	Er0fmNzbmlTDxinXfxV23ZbRq7uReDSTK0wANdJ0s9x0vUhLaFocmQ8kMLemhulCX4GpgB
-	ywLw9nZXzdObwARGLnZpJ+EeoN3sLUM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LKJlMsTtXnZUY8lUrv4y8X186Xf9/QF+Xg65kAmsyobG1B08V+yHhhnwQ3nBMhKPsw37m/H2WCjnUraiunqNbOLOLK10ilaDNYrAv6Mc9XmzpSi/6OO0fsyfA5VRFw21RMW0/VqRfJuZni0fCiKt/pwTZ484vqSEtce9Fa3/TcttHFmj5FO2D5IXfBOcKjAGkKFj7cvZM0YuYgol8EhwwPRzlmBtaq37Mmfzq3P4H5iTOfyYqbzulDPKvCV+0NC+GuUkhrjqAnJNMp9twi1mpQCYbgIW9eDmFVyAIqkHiv8DeDoQEN//u9oNkIZbOCpA1ByLNJZXZegJdzWm/dOq4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nDdhcdIoG9/zlfeYm4ArRcS7libMYgR/pNNdqJK6E5A=;
- b=TsTBa85WYRWDulPFQAljbvUYSiBbskuXX8HJu5GPhGNT3/6Way/BmdUPmaFuthBOZSo1gtHNLBO1b++jtrwNIyXNDFXyl22znAwXgpoMnGWp8rtVoHom17fagM7fl0VQfQudGYl51AC+cT8YF1foUBErNHo+VwqwhPrQS3GxHRD9PVkWE9HnImi/NpH2htZcdoWMveVbJIG6/G76GrZitkRxjos+LeVc6PZRXIE4LeuKZSqhf08pyDtzbgtt9Y9OtirQibU1WuhoStn0/eq0X0OOgR73Lu343tX+WLRVmeHwgaIDwBvcnpEJ23jAzVQ9leMUWzVy+8K8n1saNsyWCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
+	bh=Fpt21/2dXymrTrGtlDxkh6WDP5Hwjh1uV/oV9OO6L3Q=;
+	b=hGUwVY//bwWqrETGsmo7btV+mjpjAe+W0hrR/fvB0KXTUUqpatpkjf6P61eD0yESXyNRon
+	RrNq5uVBiFXPmhlIWJSA0yKbeJqx3XoL0yreY8GSLf+Scc53fJdY+tJV5yc41ZiIkAq0mG
+	KnN8xuSaUYU+Qg5CgBSw82TAp9by0To=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=P2CH+oZc;
+	spf=pass (imf10.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756947235; a=rsa-sha256;
+	cv=none;
+	b=diDcggGEQn3jWwJPnLSp1YjoKFbBsP2AtjDB+DVEf5PwODV4KNfBQhShwGIS9AEXQ2QIlg
+	QL5IaO0sl54O/PdXsM2J1rRQpvPET5AwDhUlUklGjm+mtQcm+qvsAP07XWWewWTnH8FSMx
+	fnXDGYQxKBM3hL5MYjgqHpoWaxjMCAc=
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-32b590d819aso345768a91.3
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 17:53:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nDdhcdIoG9/zlfeYm4ArRcS7libMYgR/pNNdqJK6E5A=;
- b=keZxe+9nNOM1395t1UCd3eTlwIispccuqcCOLRU5CmvQ4g1c/UeUDTyPRtLxUpuyyoCuCSjUL8sJB3pSvrUEDlCFtC+BXXEyh6ZotMxn3lv2d9gxaghMEX4nvPBpAbFlkTAiVifm2vx0WRATPTlqf2t8PJM4ubp5c3Rzl2Nw8Mo=
-Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
- SA1PR01MB6735.prod.exchangelabs.com (2603:10b6:806:18b::17) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.17; Thu, 4 Sep 2025 00:52:12 +0000
-Received: from CH0PR01MB6873.prod.exchangelabs.com
- ([fe80::3850:9112:f3bf:6460]) by CH0PR01MB6873.prod.exchangelabs.com
- ([fe80::3850:9112:f3bf:6460%2]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
- 00:52:12 +0000
-Message-ID: <dd9e94b3-d6f1-4440-82f3-322ab9b8e6cf@os.amperecomputing.com>
-Date: Wed, 3 Sep 2025 17:52:08 -0700
+        d=gmail.com; s=20230601; t=1756947234; x=1757552034; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Fpt21/2dXymrTrGtlDxkh6WDP5Hwjh1uV/oV9OO6L3Q=;
+        b=P2CH+oZcn9Ud+i2jSbj8k/2/EvYkwgTeOBN0z7RbIp7Qf8/AjpUq62rLNBm7UrQNyH
+         RIJL686K1WCFnecW6UMnpC1Uq+d2YrSbgNRQZVbmdARYNSxwi2aFJBI83RQHcisuKeFd
+         jztaKxIbjPj7Go4v9AUIAJRbwse8pnhatWGZ4/vmkq3imAg96rTonkJDhuaWruKNm/5a
+         9S8dpJoKyOd79g0XFb3p2UFHJ9CpHK8WwO1z5pupWf+q0FxkWsu1+HmFHU3t6kow4Sev
+         vTLopiUEzaVvrOIRWZw27iPhp3UJFzQEiiAxfoe9m+sXd0tdHZdK3lNF+6V5+Nlw78iR
+         +E+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756947234; x=1757552034;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fpt21/2dXymrTrGtlDxkh6WDP5Hwjh1uV/oV9OO6L3Q=;
+        b=g3U6ddAOWCBzINjtMaJhxk0otvfF16tuSDoFHCAl+caTW+4J2N+YxJVPpI5FympN05
+         8uWgiqTN0cWRd+B+vlP+Q1NFz2kRPeluOsIGhb9mkfy1BwCfATOIFyeN8jBFUSZ8l5t1
+         EsjBXjV+3o2KqSBL/cqOnI+FoaVxAWBWst4RoWwoJW5iDJhaNeg/G7P+B0F4DDPChpN+
+         LlFvVNm+Ya+VgyN3RR93GLlymEUStkrT3s/aLBkY/mAV/DlAmf+6lDL5OlduGyHbzy6c
+         Nwsqy9Bfc9Bpii3FKvcte119HC469G/9SO/tDDjF9+xnS1y6O8+SRs9Jmqvq7LsmGA6I
+         VoTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWipGkZRVD4cqo65Vj+h6tXsJ5AmasnAfrVkXBy4euTWeQYtkQvHLmM4uF4wuxDp0mLH2ChgW8CyA==@kvack.org
+X-Gm-Message-State: AOJu0Yz2qQmeMR2cJEl3dsAH8zVUNiMxWbXhtJm59YYfn5nCvcLgculy
+	4esBz7OrFFlEILMkgSn0ko130rwY34rLIB0fk7etx19YKeCbci5gLSUz
+X-Gm-Gg: ASbGncs6yh12Je13klJ9fYuClZV1PT3cIHOO8tE1P1ktB82GEa+nAoeGTSPeH/XoDGD
+	mXAjZooj19vVDQd27xneIigFzsJmat+hNZxNmg/zhxcSCqBuwmYrE4cWKiE5XYZPkXPomjcYUtl
+	Ggmiqcdw8SbZwhaBo8oPYe6uPTeDubOVTymPHnoUKDgMSW38TiaPD9t9/7tELXE4OcFZEXvGjBq
+	1Fo94LGqaxpMkAD48/VRn9vX6fFeTxoLpqgn5aZLt/NWEwdi8IE+K+UERktvz7pn0aFZy7moGb3
+	9LIYtJAWVMwyN0VdYXV+B6nzbEZv40AtNg0QgPE11dYZeY/WrsHjGBAYiYzsm5QwKktprDl9FMG
+	hsy8z9GAjc8eNVst/f4fmvmi+ouLUpC2Dhm7s
+X-Google-Smtp-Source: AGHT+IFS6U7cNiPi3jk1jx6kSKBR1YaQ2RMeDyXRDytuUUaEbR8NxZhWZ1vHQ4n9l+d2nUGFpF4tHw==
+X-Received: by 2002:a17:90b:3bc7:b0:32b:97f8:d3fe with SMTP id 98e67ed59e1d1-32b97f8d486mr180700a91.6.1756947233684;
+        Wed, 03 Sep 2025 17:53:53 -0700 (PDT)
+Received: from [127.0.0.1] ([45.8.220.62])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3299739e0aesm11478253a91.8.2025.09.03.17.53.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 17:53:53 -0700 (PDT)
+Message-ID: <4ed45039-63c6-4639-b73c-7121d419a8d5@gmail.com>
+Date: Thu, 4 Sep 2025 08:53:47 +0800
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/6] arm64: mm: support large block mapping when
- rodata=full
-To: Catalin Marinas <catalin.marinas@arm.com>,
- Ryan Roberts <ryan.roberts@arm.com>
-Cc: Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Ard Biesheuvel <ardb@kernel.org>, Dev Jain <dev.jain@arm.com>,
- scott@os.amperecomputing.com, cl@gentwo.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <20250829115250.2395585-4-ryan.roberts@arm.com> <aLiTzJ6E-YBIYuGo@arm.com>
+Subject: Re: [RFC PATCH 02/13] x86/HWBP: Add arch_reinstall_hw_breakpoint()
+ for atomic updates
 Content-Language: en-US
-From: Yang Shi <yang@os.amperecomputing.com>
-In-Reply-To: <aLiTzJ6E-YBIYuGo@arm.com>
+From: Jinchao Wang <wangjinchao600@gmail.com>
+To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: akpm@linux-foundation.org, naveen@kernel.org, davem@davemloft.net,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20250818122720.434981-1-wangjinchao600@gmail.com>
+ <20250818122720.434981-2-wangjinchao600@gmail.com>
+ <20250818122720.434981-3-wangjinchao600@gmail.com>
+ <20250901160602.e25f0107e7b0ef4af1078fb7@kernel.org>
+ <284d5eef-447f-4e12-a121-3742d708c96f@gmail.com>
+ <20250902231152.442041a74774d888cec39201@kernel.org>
+ <5a6dde06-11ee-4ce7-9cb5-f0b8096e42ed@gmail.com>
+In-Reply-To: <5a6dde06-11ee-4ce7-9cb5-f0b8096e42ed@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR02CA0004.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::17) To CH0PR01MB6873.prod.exchangelabs.com
- (2603:10b6:610:112::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|SA1PR01MB6735:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a2a8c42-0ff0-472a-4ab5-08ddeb4d48a9
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OU4rb1Z3ai9Ud3FrWnJTY0VxV2pqTTJsUkpFTElJcDIvSHI3WnNGUll6WFhz?=
- =?utf-8?B?emF4OTVSdW1UeXJUUFU5ZEZkL2dWYnlpcW5sd2pUQzRkcG5NdDRhcExKOWww?=
- =?utf-8?B?VDl3WWJZYUpXbm45MitFYzFlT1VhUllXbWFUZ0hBM0MrOTlQYlovWE9sQXlN?=
- =?utf-8?B?NzUvNW9QbEdvTGN3QWhNQkpjTzRnY21tZjhzWWRTK05tci9qbFloNzFMNDVS?=
- =?utf-8?B?U0FqUFZlcHY0cnM3QVZxUlBqMllJL01XQTkyTEs1cUJsbC9ic2FNVUZVbU9r?=
- =?utf-8?B?V0oyaWVBbWtsNUM3eXh1NndNQUZ1QlNXbEFSL25vZnlnSmhWS3JWWXVLci9x?=
- =?utf-8?B?ZkZqMGtqWk5yaTBSN29tSGplQ1Iwcmd4RGhHRHNGcG13dHNidDFjUkJxWVoy?=
- =?utf-8?B?cTRXZ1dnNkpIbTJQTHMxSEFZSG50VnRVZUViSjMzK2VwcXJZNGliTEE5Yjcx?=
- =?utf-8?B?TGh3MExZQWdTdS9MLzBvZ3FkNmpraHlCNWN0RzJqMjlLbnIrWTVwWm9oOHJJ?=
- =?utf-8?B?UjNubWFyL3pNY2NTYmMwdDRxc3l3T0RXUXg2NTZEVXB4QXY3YktveXMwZHU0?=
- =?utf-8?B?ZGR1S3VUOERqNDlZZmE0OFNldEFueGUvc2NQMG1tN3grY2NSWEFmMDZjQ04r?=
- =?utf-8?B?S3dNaWRoTHB1UWg4SXFLeFphUjVmTVQxaTJrOGJpVHlZdndseE00b3hFZTVY?=
- =?utf-8?B?Z1QwRm5lM0t6V1RiQzJkbVUzMFE1MEcxV1lHNkRleURXODNOWmtLNDIvQ2Zm?=
- =?utf-8?B?R05oTC9mN1J5RUNkYkhmdk4vc2p4bHczK0ViTlMvOFNLaUJ2NGdVZEhKa2ZV?=
- =?utf-8?B?NFFQUWY5RVZ2clJQS2xzc04yTko5dTFtekpIaDhmT1RwTVpvbFZHSnhFTkV5?=
- =?utf-8?B?bVB3SGNuNGFBUUJZU0xPakxqSWo4aThEVkhnOXlsQ3dQejhtWm90YjV6Qkdr?=
- =?utf-8?B?SDM4K3pCNDhGODk3ZWRJRVFtL0N0bjE3OGZzUHg3K2ZleVRrOWdvSko2bEtM?=
- =?utf-8?B?cXFNcVByYmVXYVRSR3U3YmtJQlViMCtNYVpkZXRQajVIa1hXTU8vc2wzZTJ4?=
- =?utf-8?B?TmNrd0pVZGpvWUpEZyt0b0c4L1l1d0U0TkMzdXNxMnZhMFBJNndLVCtQMjNW?=
- =?utf-8?B?VjFZdER6TVFLQkhtcy9pc1NZMG9DNGwvUmRTRmQ1dWFqY0xmYjNTZ29OdERU?=
- =?utf-8?B?NURPc3VDZHNFampLRGlxUzZjc0Y5NnNicDJyclRyRTZjVzhJNXJCdHBhSm5I?=
- =?utf-8?B?dTN5NjhyaXhrVVlGa2NZeFIzMlF5NGx6SENOY2I1TWh3VlN6bFIyQzk0Ym53?=
- =?utf-8?B?YThBQXVmc080dzk5WkFIalJxSllCZGdQd0dRZkVYNWZEUGwyYmFtTDQvOHdh?=
- =?utf-8?B?cjdYa09BaWY2dHlzckpIZzJyQWo4OHE3Q0lkaDYvMm1HaDBJSGc4N2tSNG02?=
- =?utf-8?B?VjYyWUlYdkJZdlhQVGRnNDUrOUsyVG1sTGdpVU11ZjQ5c0U3YkhHS0M0RFVm?=
- =?utf-8?B?aUJ4ZXBSS25LaDlWSlU2d3dJbmhZbjNqSitPRXlOVHF5eHU0cjBUQ0txNVAw?=
- =?utf-8?B?T2VoOVNyTXRCWU44WFZHVzJ2cWVPb0JndXhPdXUzWTRKaW9Hc1lxTm44NXkx?=
- =?utf-8?B?NFFDK0xMZFlVZWlJMExYa0wrcmZaU01MSXdIVnpYUHEwUDBIVEExeC9wWEMy?=
- =?utf-8?B?N3AwMTRiVVV1UFZ5OEcza2FZZ05acGcvdER3cHFQZlBVQ3JWNWRhRFBqTEgy?=
- =?utf-8?B?bThENGVIdk0zelllaDZHckVFNFNkNkh2SVUyZklpclNmSDd2ZGhLVklGRTh0?=
- =?utf-8?B?MmY1eXhCUlVBU24yZkx1VzlQeXovRnlyRFQ0QzFIdW9ldDNwN25CNXhmbHF4?=
- =?utf-8?B?THJ4Z2tEZXNneWN3L3daM28wdDlkRUZqcGtEQnFSNkIyOGc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y3hRSXREdmZpbXpSLytUaEJPOEZobjVraG1ydmxNZkxoVTcveDYzelAvN1ll?=
- =?utf-8?B?bElnRkhBMjQvVk9wMzhDUGxCR05tbGhlWWdGM0s1THJ6Z00va1ZtNTBBSGRp?=
- =?utf-8?B?a1RsbG1TZ29aWjBTMU5ZaEVScjhVUFNpUWVJZ0hLM1pMaWovUm5FcmcrajFS?=
- =?utf-8?B?aHE0NzFRQzhlVStNcThhK3RscjFOcWVmNmpvNmhpYkhyV2Rqa01LbFJYWDVw?=
- =?utf-8?B?UGV2ZThJR0krd3huanliL3hYL1c4TEthbzVUSWowOVVMVUZMWENYYzdIQXBD?=
- =?utf-8?B?NzdUQVBLejJvL0QzVUUyMktGcEQ4L1ZrK2MzTGg2YThsOFlJZXNJbXlDeXBm?=
- =?utf-8?B?Qnk2eFZrN3huLzMyVllBYS9yYTM1d25sbURtYTNyRWpNc0lVa08yNm54Ty9t?=
- =?utf-8?B?SWQwUFNacjBQQ0FuQlJJdEJCTHpNNjRJQVR1NVB3NUZ4Z2J1T3hsakg2UURo?=
- =?utf-8?B?MVBWdnNhUDA5L3ZsaTRqbHcxejhCMlhWRFlUVkMxRDE2UW02b3hzUFBPbjRa?=
- =?utf-8?B?T1R4dzBuOWJEWFFGQ3NvcEJ1RUcxclhqZXBZS0kydWRlNDZoZDRkL0xkeTd1?=
- =?utf-8?B?a1I0c0hpT29VSDhyZGdBMWFzRVlzVndiZHZESHZEY0pOUC9LRWZ6K1dLSWlP?=
- =?utf-8?B?M3RrSG9CRXdGWWFWbFV4K09iT2tmdUVJYkMxbEJZNkNqaWdhM2VMMm5zOHFN?=
- =?utf-8?B?dmEwdG85VlEzV0JaOElpWGZJNWNRRVBtMy9IL21EOHVxbVNLWG1rTHBHYWVM?=
- =?utf-8?B?dS9NaXNwaGVmODkxSW03dThySkEyYXpudmNMNmt1aDA1akFUS0MycDRGakFF?=
- =?utf-8?B?WDZzZ21GY0prNnpReWRUS2tOeSszcVBiT3NvYjk4YW5xd2F0L1ErbVpyZ2xM?=
- =?utf-8?B?SDZlYzljWndUaERkT05OMmc1OGZIekJQaVpzMFAyRUVRNlVuNW9MWGovaDN0?=
- =?utf-8?B?SVBTY00zM2VvUUx3MWhVTlNtODdYVGFNdkhVZ24yTEhwRWFqOG83eFZwb0ov?=
- =?utf-8?B?ZzBUQlVvN0U3U3BzTHVmQjQ0Wk9lRzZ0YXBDYk51dFk4c3dkajVPdEVkMk1v?=
- =?utf-8?B?Y3NOS2kvSWZzbXZSaTBOaSs0cmRiTnJqNnNWL0NlWXg1Z2NGUDZxcVpmUHZG?=
- =?utf-8?B?b2VKVUkxcG51YlJJVjdyc0hmUGdmZTM0d0s0YmF1anFDT01jaElCampMMDE3?=
- =?utf-8?B?MGVTVFF2VmliQmcxV3dVQ0owWnBDbGZqUGwzZWFWUm1oaGh5VWpHRzAwUnhv?=
- =?utf-8?B?OStmTUF2MEdPYlVtaVUwb2g2RjE4U2hSekg4bXRXSkt6SXhKQk1jeXJWQkVQ?=
- =?utf-8?B?WTM1MU0zTGxoYTAwNjAzZURxaHN1OUZLVjR6MXVuUzM2c0M3OE8yNnY2WjJM?=
- =?utf-8?B?NHVPcm9GWm01MDliTjZySHNoZnltY1V1ZjRlazIxaWRyK3d0Tnh4RTFyMUVz?=
- =?utf-8?B?dnQyOGZUbG85aFpNdEJtOC9UQ0ZkVmc4NlpvZ3BEaU80SHEzN1hHb0VHNlBq?=
- =?utf-8?B?K1g4REFvYUdGZW5ZV09iSS9kSHdJZVdWak9tZnVJSFNNVUp0N3pIem94bURG?=
- =?utf-8?B?Qkd4c1ZvWFkyZHJrOFE5dGtKQkJVT0JlcGxxRk02M1RHWVp6d0VCMDhpU1VX?=
- =?utf-8?B?OXpCRjlVRDZhTzNLTVNmcy9IUUxnNGpNZy96SlNrY3pEb0tvRGNWa1pJcXNx?=
- =?utf-8?B?TzNXNktnalFXeExEeTVnY3FaaW1aZ3BXY3AwdEdVdXJQdXFjK1EvcE5sS3kx?=
- =?utf-8?B?UW5UaGgwcjZ0TDZYSUxQMEkrUWdjZiszb2pUK29JeCswWEZoSFRVZno1alBz?=
- =?utf-8?B?OEFTOUkzTUhRL0drcFVJZTc4T25xK056ZnBsa2hxV3BwSHhuaHl0ZHhSODBY?=
- =?utf-8?B?eWVReU9Ralltd05BbVlzTmdRMElwbys4Q3hHMi9RY2NqWGxJNEwzS1RnZEhz?=
- =?utf-8?B?NHp5NzBJOEp2Q29EODZlbFJIRFpLdEN2djZQS09IYjV0cWtpUEJoSm1XbnBl?=
- =?utf-8?B?aGVzKzA5bWJNSUZCK1Y0dnVBd25oL0c1cmtjWWo2OTVENWhtbnU5eVhGcnAx?=
- =?utf-8?B?VzRId09XNERUdFo2YTRQWVF4TjJxa1laeVBOanVYeHVlYUNuZXlmVlpoT0Z5?=
- =?utf-8?B?L0tHNzcxdERWd1hRYVRKTk5XS01yVUJZREw2ZjV4M2wwRGRnQ2cxb2pYWi9l?=
- =?utf-8?Q?GDOy0kwYVy1GBMkfCcaZ0MA=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a2a8c42-0ff0-472a-4ab5-08ddeb4d48a9
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 00:52:12.3637
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VSj5vZmnNm+5hpSBerFdmlyXPhBoTICYFO9UL0dokxy1489ZFf1MGBkMXocKzwVHvpUY6mp5ZXwm99VFI8EV3222h3CG1QYG/18XRkycDCk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR01MB6735
-X-Rspamd-Queue-Id: BCDD21A0006
-X-Stat-Signature: 9wchiee6xr7t4rwefxm5kucsxgq5f8hh
+X-Stat-Signature: wthnizunehtbm54zyh3511k6uyhgr8y5
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756947136-327737
-X-HE-Meta: U2FsdGVkX1/ZZT9P4dHk6LmXYJHY4YgtgwKfHCv0rGnscKi8sICIRrhxzlKRyOaHks1kpMSOoxzgUVDUDcHX4hF6snrt4KuL7ymcFHtQd3y3K2FF3WzTMUckrmhJckNYMRFiERHr6hDpNm9E2biJF492f0oyzKn/VZG9U7UvOhdYEjtp+s8eRSRYRnbmEnSPx5An4YverZzY9XTQRNjWZ8xlSEwxx3LXQZxrupALqx/38nS5r3iSc1hOxYmLLL6fh+PlXgetkAwSgvC8zwWPUweLpLay0F2gTklca039iDVr+AJS4nV+73mjLRnI/5VfsiGTQSRxVbdAhgC5bzjaIQ3XKMxkwFNr5nNi9ZxF7Q8171zgzBxQpi/gtSn6GR9fHLhlcf6laMQN6+0fKOJxWC6R/HPlE6XvPnLfjVwYtXuB9SZwdGBudc2gF6VO+H2FzV+MawkBvQtlDnYwycTz4i96p8HgyITVW8b3pdS8ySbQ+SzjsegQsxcWcwPB23HySKPtnu/QC/xy4DrTdyHTjQYOE9IzXYXJvDbZ1LlcC67626YaV/S0buUiJ1jsPImIGnbbu1wEd4Yo4Kbwt7n4a/g39CHKPj1m6ElFsGE7y1AvoM2DHHffKuBIt/zyPDjIgXlwYOhcKlRT9yD2tYhfitP/aA0at/bfdPyZDWtwhiazucyer5Yf8tkHYrC/6upFHrB4ecnB5e3XRJO2aQJJyGXsvQJf2foEnj2k88jI9zRU7Zan3bc68Uot0Qpy/5uo8bAUxn3b7PTA1YdZwBfFvCp9d/I90jbrj1ysHJ1KjP+K9UkSUacqfzibnWgr32/V8W3Wzi0RaACg6rYSW1q8//9vr1/rHZmlmpoAG2Wzf8FGSi/f4faj/bubawDa/xCdxqvkyLeQCJ07rv8ZGetpWpjamdsVfsEu8U5gwVc5Bfximqe0b+UJNwjkqyp2mI7NwuYzY7MF6RC7Ol4cA+H
- gECFXP7d
- ZL0QzQEgVkFqZhKacPS3HiqUIivBMyM2Ff57LLIrlTKDoIHa00NocDdt4ElTq4/T/uPDGWHtcx1hz7O8N8nbPVXS134Bjh8cfjji2Gtj2dkYQtp5hd0AuzZbbGjmu7XPMmh5XwvsMet6ueBF2MuhAMYK3bA0mIZ1zejjaotHSiXXg9L4beg5f9MchP31wyBKKGlDKSp+9y1LuOwqsTr15EKODyF+4gD5GYn0S3nN64tZ8TNVlFuV25o/BXvwSiOtfK92yFEl6HybT97aqFAnPrAtCLCCjbL7MQRykuopKTqLW56wNkQ2cKHOcOUwUegw+g3tV3B3KcY/negBg2n32GYquSjhIiZQWH7WHGgfJkN8JaJ4KP/fUt41m8ExeMbq3PfVjsazxMq3a6rDRvBlaRP3Ivdmc7KL50zP4EjyL+0DkaOZOExdP4rbNDE6Ir+0hKRq7RXxOKskstTSCUtGhSFzxfGjPXbeP6an8zGBhW2p7R2TwejvHtUsCzYhswxnV5J5Rq5n/6O4AjfU8qCTieuJo5ar5uTMnDPe+UMa4TwwfSnNLe5OdxfJYYoNi4XUDKITvkVs32G6RwjbUV1GZKcF6AhLIK/+iS/pR72Wih57ZzmY=
+X-Rspamd-Queue-Id: E224BC0004
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756947234-656603
+X-HE-Meta: U2FsdGVkX18c+EsKw95amGsJpz/gsqrc32aPJRD8aVYZTLLXoQm/mjx7lPhJHwwxI2wGXBbZlVi62kxYkcWM0YA9Qt2NASdGRAadyklImA8Wskuxu+W8ziY3IeVKxzOvqLXF/4GsfU2yEBuSDaKvsXnKkm9Y6puu6gggq9fsYpnKSLNt+TYTfwgE8gjXdqa1K3QkaCrXwDaC7/VZZtp1y10ywEM7ozg82n1dFzEAsXAnK3QMpDI5yI9p41k8dUAltkD/WBdBm+QUdodLuAKPg1RiklPd3H7L0psVohJ0DtUi69+6HZJe2kVt9S/u83HRHFq4IM1OSzwiFvjcPi93p5FzcvCnoR5DrdoH0dyEJmtt3Eu4NO5PLNaT0pM6GcMCzp9uaUeCD1zLjZJP1GureiAZoCJPXd1xzXMvPRclFLj+aqrPrfbmjAyQuFlLKwv24eTo/IzYnDO6sGpZ5GVqu0eG/vg7o2TuKaaUD3yE8DJaEzMId3IJqusrPWyISCc66uZMyU8Xlj5tS40r2qGF8zKU54jYPm7xU/3r3w6MFdEmT4Am50wWlw4k4IY0yy2KF4l5FWirMhu+haVRtUALRtrXL3oXGuJa6z1zdxHvVrtSS3z0Yk1hEqy/fO4hWuEd8vl//rS1304CcHmiaSf41D3cyw+mWz3WFouZLoqX+8COvyzgOTcfS+c/KrEouVtXB4SVthkfYqRBfQCVdVSASdy+RqOguHCOrzQkigEYIEXJEONHt9/PARRSuPgOFzdSAhrOR56ogLyCEBFAHDr/le88NEv9DNsKdDvJIG/ZEU42QosgRBA15JxO2AMEOlQla6EJFuwXOcpSUq90dqyOPlDtTnuKIZPz8XAwYFAMbW7Vt4baZLy9bgfeumdx5y1SDTAD8F/R96JgfYzNZadKo/i+nbiXf3ODOfzyJh3NJiD9czzeWzR5FqS2mGrkUPngQws1ievIDbSI4GLbOtP
+ r6UC1lpV
+ KcngOvJNQ5wwKXRxSM04Dl9G1Cf0QXKUD+esmIqdccqqyoX2NMi3rZRbE9zwCKpi0ndIX8ZFENdvGjAzxMZ7xyLu8b9rq3ksqDZQygeb6Rn9Sl6iDCVNh/1thZD8E70Pm11ZAdaRBWuTUx4ffSz7MOV3bEgAmHvnFodRab8zukS6fEehqrm29wq7HW1YsEojKVSqJ11f8dDUFVC8kScMAKDa0U1MWWzskve74GUqFcLc+ISoWu+7xm9G2Ce643Y6FgiHf8AFo25F4BXCqOhukAI0j0onG6ZmRKQ9RCPNsF6WXc2+8gtCZhf0tlFVYG7xaIu+yW8uiR0F+JUYRuhFrwowDe1RTEIyfh+2bU01OcNWjfe6i4HqyLf+mAUUNUVMR90sduN+fbMMgOt0f1HJABkHROv2cLEtbZeSWq1M+c2kw0d1TMvU/mOjk932p6fmAwMVdempaVWy9/Rh1btfTWnBWnL+KkPTwh/RQAKppzfdwuBCIUj/z6BimxuV48M+9rfhSO+R4JaKRqO4vkGEI3cQAA6GoFIaU04/3nZqOTLMqrsrC3AHqUKgG07R37YFsHwPUmA5RVoSw5DJV5UTcoJLfeSQxiBPsmniu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -209,28 +129,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/3/25 15:58, Jinchao Wang wrote:
+> On 9/2/25 22:11, Masami Hiramatsu (Google) wrote:
+>> On Mon, 1 Sep 2025 18:23:44 +0800
+>> Jinchao Wang <wangjinchao600@gmail.com> wrote:
+>>
+>>> On 9/1/25 15:06, Masami Hiramatsu (Google) wrote:
+>>>> Hi Jinchao,
+>>>>
+>>> Hi Masami,
+>>>
+>>>> On Mon, 18 Aug 2025 20:26:07 +0800
+>>>> Jinchao Wang <wangjinchao600@gmail.com> wrote:
+>>>>
+>>>>> Add arch_reinstall_hw_breakpoint() to enable atomic context 
+>>>>> modification
+>>>>> of hardware breakpoint parameters without deallocating and 
+>>>>> reallocating
+>>>>> the breakpoint slot.
+>>>>>
+>>>>> The existing arch_install_hw_breakpoint() allocates a new debug 
+>>>>> register
+>>>>> slot, while arch_uninstall_hw_breakpoint() deallocates it. However, 
+>>>>> some
+>>>>> use cases require modifying breakpoint parameters (address, length, 
+>>>>> type)
+>>>>> atomically without losing the allocated slot, particularly when 
+>>>>> operating
+>>>>> in atomic contexts where allocation might fail or be unavailable.
+>>>>>
+>>>>> This is particularly useful for debugging tools like kstackwatch that
+>>>>> need to dynamically update breakpoint targets in atomic contexts while
+>>>>> maintaining consistent hardware state.
+>>>>>
+>>>>
+>>>> I'm also trying to find this interface for my wprobe. So the idea is 
+>>>> good.
+>>>> But this looks hacky and only for x86. I think the interface should be
+>>>> more generic and do not use this arch internal function directly.
+>>>>
+>>>
+>>> I agree with your point about the architectural dependency. I have been
+>>> considering this problem not only for the hardware breakpoint
+>>> reinstallation,
+>>> but also for other related parts of the series, such as canary 
+>>> finding and
+>>> stack address resolving. These parts also rely on arch-specific code.
+>>
+>> Yes, even though, the hw-breakpoint is an independent feature.
+>> Directly using arch_*() functions (which are expected to be used
+>> internally) introduces a hidden dependency between these two
+>> components and looses maintainability.
+> 
+> Yes, I am trying to improve this in the v3 series.
+> 
+>>
+>>>> It seems that the slot is allocated by "type", thus, if this reinstall
+>>>> hwbp without deallocate/allocate slot, it must NOT change the type.
+>>>> See __modify_bp_slot. Also, provide CONFIG_HAVE_... option for checking
+>>>> whether the architecture support that interface.
+>>>>
+>>> Regarding the slot allocation, I would like to clarify my point. I
+>>> believe the
+>>> event->attr.type should not be changed when reinstalling a hardware
+>>> breakpoint, as this defines the fundamental nature of the event. The 
+>>> type
+>>> must always be PERF_TYPE_BREAKPOINT.
+>>>
+>>> The event->attr.bp_type, however, can be changed. For example, from a
+>>> HW_BREAKPOINT_W to a HW_BREAKPOINT_RW without needing to deallocate and
+>>> reallocate the slot. This is useful for future applications, even 
+>>> though the
+>>> current use case for KStackWatch only requires HW_BREAKPOINT_W.
+>>
+>> I understand your point, so it also needs another wrapper which checks
+>> the type is compatible on the architecture.
+>>
+> 
+
+> I think the wrapper should handle the type by type_slot, something like[1]:
+> ...
+> 
+> For kernel breakpoints, we might also consider introducing a
+> modify_kernel_hw_breakpoint() helper, similar to
+> modify_user_hw_breakpoint(), to encapsulate the kernel-specific case.
+> 
+
+Hi Masami,
+I have a new idea, indroducing hw_breakpoint_modify_local():
+   - call hw_breakpoint_arch_parse to validate bp_{type,addr,len},
+     eliminating the need for a separate type-only check
+   - use a__weak arch_reinstall_hw_breakpoint for other archs
+
+If other archs require additional checks, they could add that logic to 
+hw_breakpoint_modify_local or their hw_breakpoint_arch_parse().
+
+Seems clear and simple enough.
+
+Regarding the arch dependency problems you mentioned, I have solved them 
+and sent a v2 series:
+https://lore.kernel.org/all/20250904002126.1514566-7-wangjinchao600@gmail.com/
+
+>>
+>>>
+>>> Thank you again for your valuable review.
+>>> -- 
+>>> Best regards,
+>>> Jinchao
+>>
+>>
+> 
+> 
 
 
-On 9/3/25 12:15 PM, Catalin Marinas wrote:
-> On Fri, Aug 29, 2025 at 12:52:44PM +0100, Ryan Roberts wrote:
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 34e5d78af076..114b88216b0c 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -481,6 +481,8 @@ void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
->>   			     int flags);
->>   #endif
->>   
->> +#define INVALID_PHYS_ADDR	-1
-> Nitpick: (-1UL) (or (-1ULL), KVM_PHYS_INVALID is defined as the latter).
->
-> Otherwise the patch looks fine.
->
-> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-
-Thank you!
-
-Yang
-
-
+-- 
+Best regards,
+Jinchao
 
