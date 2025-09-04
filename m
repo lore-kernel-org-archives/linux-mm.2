@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BB70CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 23:47:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DC0FCA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 23:49:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA19E8E0006; Thu,  4 Sep 2025 19:47:14 -0400 (EDT)
+	id 90F548E0005; Thu,  4 Sep 2025 19:49:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B78228E0003; Thu,  4 Sep 2025 19:47:14 -0400 (EDT)
+	id 8E5C68E0003; Thu,  4 Sep 2025 19:49:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADC618E0006; Thu,  4 Sep 2025 19:47:14 -0400 (EDT)
+	id 849988E0005; Thu,  4 Sep 2025 19:49:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A012E8E0003
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:47:14 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 120DF1DD5A8
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:47:14 +0000 (UTC)
-X-FDA: 83853206388.22.FDD7613
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4E37A40008
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:47:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PZ5Q9uHb;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7456F8E0003
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:49:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 36963B98A8
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:49:43 +0000 (UTC)
+X-FDA: 83853212646.10.F655CEA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BEC0440013
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:49:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lyL0oixy;
+	spf=pass (imf11.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757029632;
+	s=arc-20220608; t=1757029781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9OB79J9OkzW9PQ4wTsToiX0t9gI13FhERYOzkV/zoaA=;
-	b=SJDdJxXy+vKP/ln4tZWG3DJo/+5DvyJIq4OY30nQsfso633Y8O/KM/aqzxRVsF8L8a13Az
-	+ffS0ZwjLo6TfPAlr8LqpS9I3gdcVGRSOeI1lhqP4C51RjvrYjtrWAKoHoMFUeZYb+YJP9
-	HuPmgDp4AQtRfCNmcT1gh2m3BvXDWs8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757029632; a=rsa-sha256;
-	cv=none;
-	b=XKcoI8sJzOo7kVU8lVz0j4LoNAXY1rNAK9tSc6PSTAbi2PkD1lLz8qCRUzuVm1fvEDqSwr
-	isRnx69MeSMVC3tHSRX3LLZBa9a+qToi78YJGBBhykjXsYSfblM+agiUW9WGaqX0gbPDWe
-	efv0D9fp8g+B0W/2akZaZV37blDAMcA=
+	bh=xXe5ay+6i+g3rJzW1RcB2PTwCi91i1l+IAL8/HR6JxM=;
+	b=5OiiGkVowJnVaV9Z3ccO3Z9butrrknkPJ8z/nA4jmBEsr38UW5PfLlHx04rdsboVVg82hq
+	BcVufD+bQOK/I19w0OSIAChg83zJkETodHBUSAjzovYjjKWFAnAYZuOc+SlLVH1267BCrU
+	Ui0kYxKY5Qc1I//vkyNqN8qzim/f11M=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=PZ5Q9uHb;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lyL0oixy;
+	spf=pass (imf11.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757029781; a=rsa-sha256;
+	cv=none;
+	b=1efv4/VCH/6KMr55isDgZ8pZ8YxnjxnEsjw4oBee6d9i3m/FdVyh2tuyMSsijTC+TtBqMX
+	ihcLnqgTy/dVFJp4ZtGLbby5F746X8w+qiJ/+gVqKWIX8BckreLwm4OMtIottNTn2iDmAV
+	whxUdsde9AfB20Odvr3FoC4JLAirJLg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3472544133;
-	Thu,  4 Sep 2025 23:47:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8FAC4CEF0;
-	Thu,  4 Sep 2025 23:47:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757029631;
-	bh=wBY61Eq9TrYmzEriZktQvbsr92drztU25kt7n6mRRO0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PZ5Q9uHbUhKuZcOxdhN8wKAybQx/ha0k6QUz9jeOmyL9u5PkrnGxfRfnpj/7h2CWx
-	 j0NUem97OttUtPfXr+ohp2wBfl499zuHANfI3yD8bhB8zFf4rJ6kfQevz2nTKgbTqP
-	 7fNJXc79mEDQBbuFHCI7vWMe5aVFj4j7V2zMfVlo=
-Date: Thu, 4 Sep 2025 16:47:10 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: hannes@cmpxchg.org, linux-kernel@vger.kernel.org, Vlastimil Babka
- <vbabka@suse.cz>, linux-mm@kvack.org
-Subject: Re: [PATCH 0/3] mm: remove zpool
-Message-Id: <20250904164710.210731847fe25d9419203886@linux-foundation.org>
-In-Reply-To: <20250904093325.2768507-1-vitaly.wool@konsulko.se>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
-	<20250904093325.2768507-1-vitaly.wool@konsulko.se>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id DB28F60195;
+	Thu,  4 Sep 2025 23:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615B8C4CEF0;
+	Thu,  4 Sep 2025 23:49:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757029780;
+	bh=BD1dRu8L4G2KUFxQwJiVulBBTnT0MQ8MPDUK0rLqLgM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lyL0oixyw2+2ovVX0RfwivH+ujiPNHbLZ/YRrFLypBiwysp9N1M4+ZpKXg2R+a1AQ
+	 krj0onYIblEtFtdTgN31HH0pse/2cdaNDhR5DR9o8PrgP5yuPHnlXaLyyHg/rLKlG5
+	 xe3vPxDMRZAPWS+wV5KhLaxl2rni2j+BlZmMvGEH02hs2eOoMpIgjYLHQs4oV7R3AZ
+	 REl3u6FKW2tDdkvIiAs3xtRqp747bFMe1gmeVFNSuaLRSW+0UJLiA5AWV2Ivlm6MTA
+	 RUUo5dtFYRKfvVCk14OybyeBhQauatAkvBk+g7/bUf8dCGCLKs4BlVJv1FbblhTzxQ
+	 gvi2h83st+Aww==
+Date: Thu, 4 Sep 2025 16:49:38 -0700
+From: Dennis Zhou <dennis@kernel.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-mm@kvack.org, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm/percpu: Add a simple double-free check for per-CPU
+ memory
+Message-ID: <aLolklCw7wFbXrSl@palisades.local>
+References: <20250904143514.Yk6Ap-jy@linutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904143514.Yk6Ap-jy@linutronix.de>
+X-Rspamd-Queue-Id: BEC0440013
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4E37A40008
-X-Stat-Signature: 8bd6yx1g8pemer6gd8h18cfpnwqo4x6b
-X-HE-Tag: 1757029632-640959
-X-HE-Meta: U2FsdGVkX19bhBqjb6x1IENy/0sUhRHL5c+tIg3R2W21nltYlMtvzS5mDy9cUDsBARTaKSW20MJsbJogextQOKcuzSjdqf4MFqK0ChUOk+SspgqvwnhiTHuIXGZU7ckEiilR/GZEuEvQDUvC5+aw+OfZ9SzCPJwnAtFzu1FQy3/qEdbIxLLNhc8NToiMeIOOea0cLpSxySn74+Q6Lc+EScIbeTUdAWqenLzAyHxskFI0zoGNdzmydGD0NF+mnsjonntXJ3q44et04J4rgvBnk3CLU9HxemgyGTl5NTQZ4BuHVkRCsFTDcSOeP+/H+FYvnfJIN2nbPEezHczHDy1GvtZjtMBZAACIUcIgDesFuan0KbiuDjaUM3FgONndQcOyCaT5k531DAvTc9MOtpRsHe9StUGHb5aU0P8MOgvBBeXYKBbJpMDpT8/R11hBAfV7QEfYuikI9k0cXnIgP5tuwp18gI3s7L7Y8jjp0t6nzAkc4XnDZ4hJJZYqHP4zCEfbo7xmMlLM6PImg9pjKudR/nLdNbzeNCkIy2Dw/nkADRJXzNQIJqe8U4K5tdrheW4UM+z+mTuMX95SzA3JcNTBRo9kiziHvf/P9rgGcHYpleBJIEr/jIoW4i29txc1CFOOPqR4CJK6XF44EfwRwKgEZ5+e9Rf2iMy8PkCAV1PygfxzTtZCM/bhj7aZ0UCMwZ9ta4rOo8mRuRGfyw3lQH46f+Wk+anoEvNqmgNdw9i5huz6xEPOnQ9e48IYGtMYdLCSTvHeNAwM6R7H5Fjs0aBI3sdx6yDEt+Jb1SY6UmBhQInkzhcBaiTSOVnQwxDzmstYZHkp3EEB2vSHwf8IlaHBDE7jAb9qDDuSTiFwRNZFesb5u/HNkWpqEMmmt8u6AS2NbFCDMBj+fn2LaYNawbYtegHTGfuql7cu+a8M8aeMiTbFmxtJZnqLa9FD3qzrZPAIqtNDRvFSzqVJdioFQP4
- kMWXUs63
- z709McYEU9HcvvQ6MCmfL2qbvlSEeDxCFodyRlvAUdFo31oYljD5BySmDu7uoNYqxGSMLwsnfGCAzHR2izhjR6d/+HVQDofJcywbjBlBl/0nxtxB1ImSD1FBciM13r80oyX6AAsNWxMgLDezjFSRr9JCyQcp3nHyewXmojBN5UBWStrRekeOSwdF9o/QIvxC4D6q/QztUc3L2zG7wcKrGoiDWJi4I+3Y+T1Hv4k5LaTXfsknupluiW6CBIWg6p8HIthzzDRs+IXWrNAdmniOyBI0/x7j386fYo5O+DIjrMRSOWEZgeXgZP9Kd5bjTUXWhXAEmhZkRmEG8Rsg=
+X-Stat-Signature: 4cq1t95mady1j8iu4rd4egthdpa4zt74
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757029781-875820
+X-HE-Meta: U2FsdGVkX19TWMuxHfoJWn/iFcgXS6uzUFM6ucHSEfCP5zJUebfy/nP3v8lMMCqV5KxXjHnEtJ1kGC23AMhHSA1zPAuHidv4eIS+XFWfJwRUkCG8AWf8i8FwliBpFtYqX30KpsfydMJY3Kqkyx50lNdWfenU1pwbw9slmmGYJLEH1u1+hCZutLQ0GhcCjEmiPxdSKFsNSLSe/mx00Z3ipuhGDo5jeuz2JfOPY7y6YAkcl1pD6sOMg4kp4pGNe/YWSPdbBWwLz7P5fI6BIb7B+SKZI0TMN88B4e4diTP8YeHiA5nBsDmCWZGkFEQisK0dlxBNW3Ee4ZB/apBx3JAqByMHu8kLDiJUvsU8ZFNZu6Kn0zVj28YhC+r2IJVVwXlA7RzJrj4LYOMrFKqW92Yjh2xBV5miDQfAFuNoJiyhdHmzq53E/I6UcRjn/7gab3I6XThKe4ZYaVe3oQAfGyPiCuZYJjHdUf2cHa1+BoL0BwepMUVX/iE+wKNkRyH/vTqjg0h3HdDBklBEXCO7mTzVX60osK6kjo5pOdiulOmCOWtnqdbDiUUkBuhYXzVsjNZk2sL41a/QaeOzQTc+nGgVXGiQFamNnLIZjuyS03i4nt91sGH8drCc3EsPmXyCtCYQvRbU5yHs8mhyL71Hc5e4XovwbFAo1K78CRCSgUc9Ve4yKFLdYLDW9tnIEDickU/fyXvkU5bt5a4Q+oiAYjF68oPYyUvZYj7NDx6ehUPm8dTE6j/XcPcMMQEr6QyKe0ymidhA+5EcylsxCr05JwxPKSNUUk/36oKgjo1UWOaDRSvUggcSv2eieSOONFVjvM6J+MbN26lWspKFXshIu9RTYU/QjlMQyedZE9M4ceIxjf0++3MJfuJ9/luv/B5cZT9x
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,20 +91,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  4 Sep 2025 11:33:24 +0200 Vitaly Wool <vitaly.wool@konsulko.se> wrote:
+Hello,
 
-> > With zswap using zsmalloc directly, there are no more in-tree users of
-> > this code. Remove it.
-> > 
-> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+On Thu, Sep 04, 2025 at 04:35:14PM +0200, Sebastian Andrzej Siewior wrote:
+> The free path clears the allocation bits in pcpu_chunk::alloc_map. A
+> simple double free check would be to check if the bits, which are about
+> to be cleared, are already cleared.
 > 
-> Per the previous discussions, this gets a *NACK* from my side. There is
-> hardly anything _technical_ preventing new in-tree users of zpool API.
-> zpool API is neutral and well-defined, I don’t see *any* good reason for
-> it to be phased out.
 
-Well, we have the zpool code and we know it works.  If a later need for
-the zpool layer is demonstrated then we can unremove the code at that
-time.
+I thought about the double free issue in the past. It's a bit imperfect
+because the same pointer is handed out with no metadata for future
+allocations. Worse, the whole percpu chunk could go away too should you
+be so unlucky and then the whole path to get to the chunk goes awry.
 
+> Check if the bit is already cleared. Issue a warning and abort free in
+> that case.
+> 
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> ---
+> 
+> I managed accidentally a double free recently. This would have noticed
+> it. It looks low overhead so there might be no need to hide it behind a
+> debug switch.
+> 
+>  mm/percpu.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/percpu.c b/mm/percpu.c
+> index d9cbaee92b605..a2abddd85294a 100644
+> --- a/mm/percpu.c
+> +++ b/mm/percpu.c
+> @@ -1276,7 +1276,7 @@ static int pcpu_alloc_area(struct pcpu_chunk *chunk, int alloc_bits,
+>  static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
+>  {
+>  	struct pcpu_block_md *chunk_md = &chunk->chunk_md;
+> -	int bit_off, bits, end, oslot, freed;
+> +	int bit_off, bits, end, oslot, freed, free_bit;
+>  
+>  	lockdep_assert_held(&pcpu_lock);
+>  	pcpu_stats_area_dealloc(chunk);
+> @@ -1289,6 +1289,11 @@ static int pcpu_free_area(struct pcpu_chunk *chunk, int off)
+>  	end = find_next_bit(chunk->bound_map, pcpu_chunk_map_bits(chunk),
+>  			    bit_off + 1);
+>  	bits = end - bit_off;
+> +
+> +	free_bit = find_next_bit(chunk->alloc_map, end, bit_off);
+> +	if (WARN(free_bit != bit_off, "Trying to free already free memory"))
+> +		return 0;
+> +
+
+We might want to test_bit(bit_off, chunk->bound_map) also to make sure
+we aren't accidentally doing partial frees if the region becomes say the
+second half of a larger allocation before the double free.
+
+Possibly good to move the WARN to free_percpu() and exit early too for
+the other hooks rather than do all that with free size of 0.
+
+>  	bitmap_clear(chunk->alloc_map, bit_off, bits);
+>  
+>  	freed = bits * PCPU_MIN_ALLOC_SIZE;
+> -- 
+> 2.51.0
+> 
+
+Thanks,
+Dennis
 
