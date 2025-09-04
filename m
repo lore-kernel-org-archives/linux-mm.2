@@ -4,174 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9920CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 11:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B640CA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 11:43:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E3CD8E000A; Thu,  4 Sep 2025 07:26:19 -0400 (EDT)
+	id 78EFA8E000A; Thu,  4 Sep 2025 07:43:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BA188E0001; Thu,  4 Sep 2025 07:26:19 -0400 (EDT)
+	id 73FAB8E0001; Thu,  4 Sep 2025 07:43:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D0278E000A; Thu,  4 Sep 2025 07:26:19 -0400 (EDT)
+	id 62DFE8E000A; Thu,  4 Sep 2025 07:43:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DAE58E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:26:19 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B999D16012E
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:26:18 +0000 (UTC)
-X-FDA: 83851339236.27.9134161
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 516F68E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:43:20 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06E8D14011B
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:43:20 +0000 (UTC)
+X-FDA: 83851382160.28.FEF0A43
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7127C18000D
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:26:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L6tO1+kv;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756985176; a=rsa-sha256;
-	cv=none;
-	b=WQ3EMeTRyz3YhdOLK5rVcw2Oub7ZinUmzFBUlMPC2/1YRQcF2xfG/jlzi9tWu66MG2LO74
-	JNGNtUROn2N8+/y+aDI5/DkNFHMXO1OyT5YwG1cNtOd2q/1WPSQkeiJZhg8q03btcR2tf7
-	uJxDAVSwEtc24qFPsL+tUhBgFXU0M1Q=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=L6tO1+kv;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf24.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf17.hostedemail.com (Postfix) with ESMTP id 304DC40003
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:43:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cMqpj/ZP";
+	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756985176;
+	s=arc-20220608; t=1756986198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYj7vNnXdBif94nkLRSjqJE0U4PgTPFgog7KMgt+5Lw=;
-	b=URoK9NqybnZUguTngv4grgfM6s64nM0pzsVjyLeHw+4UH7IC5RGIyfZkPv4onvqkU/Ayvr
-	CI/4JrFCOphFIPAzBiE0oEJa2zm3PpjL7zMwAH/bPCuVj+lHmnpbWBBc2HPbQ2puhnwtCD
-	2AA7w3pDLzAnloeH8Bt5HoGa8H31bRk=
+	bh=E1+46tEpahi4RxjqU4Pt4az4ogzA+MJjz/lD3bIkWTw=;
+	b=JdZbuiwaJN+9dPZDq5Ue3y03GGj/zAyWTmkW7hs2lkUYYYxYQ7EvbYC1UVMeftJ/hYH22o
+	BCTIvtNtmxLZzo6h4QksE9p41U3KBS1By9wdgICyj5ZsHmGGdd/UsI8xXrw6lcNzcem09W
+	ZZjxTnpkJW+XhdqDt5GWyVie12H8mBo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="cMqpj/ZP";
+	spf=pass (imf17.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756986198; a=rsa-sha256;
+	cv=none;
+	b=bU5/DXDmAMOgOJTkdKyBvoz7epFVo/6US0poPWtYE18oXQZafAwJyDK/YhXfT8gimNc5yW
+	aoOmbwQ6JJ4ACWtVZfLOdUlfkPNPFS+wBVKwTb4pvT0pV6lwCgI91keMb4omf/Bo7sS11M
+	Q7uclMV1zbtvI3Zw7nchudJra6MzR94=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756985175;
+	s=mimecast20190719; t=1756986197;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FYj7vNnXdBif94nkLRSjqJE0U4PgTPFgog7KMgt+5Lw=;
-	b=L6tO1+kvx0aTpxn9Xppn+1eb84NthxI+d5Ves8ms8tmG9iQc5fnBiIYLojTncZDzfTPVgu
-	fbAAKVxL5l+N0nhW4Xzu5ulONT5aXxnmNhvzWryReUvRLndQK+DsyIKG1vIJ1Gr4/WConE
-	ruAS1Rw+9OouEyECryOk5zYwEcN2rWY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-y810XbySPae70DCtnz6Iww-1; Thu, 04 Sep 2025 07:26:14 -0400
-X-MC-Unique: y810XbySPae70DCtnz6Iww-1
-X-Mimecast-MFC-AGG-ID: y810XbySPae70DCtnz6Iww_1756985173
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b8a2b9fcaso7565465e9.0
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 04:26:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756985173; x=1757589973;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FYj7vNnXdBif94nkLRSjqJE0U4PgTPFgog7KMgt+5Lw=;
-        b=LvgfmXvTFgQy1jcYVzoXSlbS9s4duOWCBLJcGsUuxlZegqj+RBMnLRmt9u1HJ5bPB5
-         /xCGknb90cWiA72CngIdHzwyaN/gFZkcBRfoIpyHqJHKel/5oZF714DPGNOFxEeabBfQ
-         hFAlRNbLfnB6MG70cyZXXerlBEbB5dt6vXpIEUN7d9JPQdrS/RrFQlHxrmbOLuDOwbYG
-         Sy4rCATvuZhZ5H5gVE2mbpaPYfhn1aLst3h5Y0TtK8EkVuj0RvtMZI7U8yf85eHzNEci
-         gswcK1ERBXw9JAbx5Mk6vqdFiztugTbGaIGY3xbTCDJ9Egv0KKLX6hGkJubCF/9ZnMFZ
-         wQzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUn1V9pmkqVabFCEj7qWMDzo8tFq57/JYbhdmavk9cvF7JwPJHBNNXjLJigk0AnO3pHr33z60PDQQ==@kvack.org
-X-Gm-Message-State: AOJu0YzreCUFf1yghoKWHDB6oAV+N1VOu8fQ7qZQtDzBP8thfzq7sS5n
-	HR7dlRIBfb74TuhLPYZ2ics8OtHjXeJ2aYCnvGJuesVelFu4Z6z8b91UUG0MHQLLpETB9qyghP1
-	U/FPpbJx8+PbUmTlwiOMTgvH6wzczr9u6InzD0hZmJppNxFnK06Ne
-X-Gm-Gg: ASbGncuHfauUVaWIbq5o1mrqv4xlbEy+eChudW3nbQVEHBEa0zUshSg1TgJhzbfYkRt
-	MmsZu58D3hXl1wKc3SoWq7ESck5O+8kjCchb+WCjUIhEOc+aZ6u6z6/FARQ0HBASdcEVFT5TTZ8
-	dEUi4apLjZe9vHxGOm3MIYaQMlZXGJK0iL3QJHI6kk6/U82MwQkJWC5wSHp6u8maGMVvRBWng6X
-	8H66Kb4gxOn2q5LqgNvzZtM7D8rf5nsNY/k1evJvJ8DHcvTKvhad5wN8wvkeE7isqeu2+pyvo2o
-	yAwukDILCZJm2JqK8tMA5O4fqZznWGeEcPhGQo56VdgYoM/0S9oC8f4jtbCyfQuK/3wiLbK6XVe
-	cHM+xBtAGkpn9QgfpPCr4eMls3yIL7yk3PbfJRat3TXKK7wmvdRCJ91ZAnFAOjQWJ
-X-Received: by 2002:a05:600c:1c0d:b0:45b:9a76:ebea with SMTP id 5b1f17b1804b1-45b9a76ed12mr67521275e9.20.1756985173013;
-        Thu, 04 Sep 2025 04:26:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHA1kxxSVjg9EPss1WbdwZlOW60kNPkZEhsIHevJbu19C93SnnQw25G1XfcOFYBQHy8oHojpA==
-X-Received: by 2002:a05:600c:1c0d:b0:45b:9a76:ebea with SMTP id 5b1f17b1804b1-45b9a76ed12mr67521145e9.20.1756985172620;
-        Thu, 04 Sep 2025 04:26:12 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f25:1e00:ce4c:be3:97b3:6587? (p200300d82f251e00ce4c0be397b36587.dip0.t-ipconnect.de. [2003:d8:2f25:1e00:ce4c:be3:97b3:6587])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d0a1f807f9sm26554201f8f.38.2025.09.04.04.26.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Sep 2025 04:26:11 -0700 (PDT)
-Message-ID: <8984f395-9043-49dd-a53d-bd344fd419bc@redhat.com>
-Date: Thu, 4 Sep 2025 13:26:11 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=E1+46tEpahi4RxjqU4Pt4az4ogzA+MJjz/lD3bIkWTw=;
+	b=cMqpj/ZPOqzE4HDTYsK+tYfi3mkvE3f84WYhcLX2FkwrtkPIyxMfldbkeAV6gD15SDTD9F
+	LXMGrxwA0WOJ4xgsXqKjEOgYTz7DRgM/c9/B7amcZ1cI/NIzAK7tRAT8iIfyqUVviUmEoa
+	fuqncgd4bMusHc/anNAoEbvMjoBDlkw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-32-zk-vE7rFM-GCGfsmuus5OQ-1; Thu,
+ 04 Sep 2025 07:43:14 -0400
+X-MC-Unique: zk-vE7rFM-GCGfsmuus5OQ-1
+X-Mimecast-MFC-AGG-ID: zk-vE7rFM-GCGfsmuus5OQ_1756986192
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 826B718002C6;
+	Thu,  4 Sep 2025 11:43:11 +0000 (UTC)
+Received: from bfoster (unknown [10.22.88.143])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CB7D1800577;
+	Thu,  4 Sep 2025 11:43:09 +0000 (UTC)
+Date: Thu, 4 Sep 2025 07:47:11 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org,
+	brauner@kernel.org, willy@infradead.org, jack@suse.cz,
+	hch@infradead.org, jlayton@kernel.org,
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 12/12] iomap: add granular dirty and writeback
+ accounting
+Message-ID: <aLl8P8Qzn1IDw_7j@bfoster>
+References: <20250829233942.3607248-1-joannelkoong@gmail.com>
+ <20250829233942.3607248-13-joannelkoong@gmail.com>
+ <20250902234604.GC1587915@frogsfrogsfrogs>
+ <aLiNYdLaMIslxySo@bfoster>
+ <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: remove zpool
-To: Vlastimil Babka <vbabka@suse.cz>, Vitaly Wool <vitaly.wool@konsulko.se>,
- hannes@cmpxchg.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@infradead.org>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _gb8F_V95_xj7IhN_NtWk4B3ljykg2tGRpgUg8eAccM_1756985173
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7127C18000D
-X-Stat-Signature: psbk4w5x5udtna5qacrufzji35synx9m
+In-Reply-To: <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: 304DC40003
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756985176-80726
-X-HE-Meta: U2FsdGVkX19o6l1ZRxU7EJXJrTVErSt2e0VJxCrTkhwUfhUZsCPmA3mpLCoQ9jEqT5MVlR53rkYqADQvLqyhC9i0I+As0J/u96yAOHM2kDxp6DRiPypjkTFAkDs704pQHKD2UBc/eOio+cu4VLacCkQii+2h0lo6In61LX9wPEWz8hUHgdL7tiZjJzEjiAStPbi3nlSRqUwCA4rzvrmD4Sn3PvD9WmzNDA7TCWr4CS7vsfRES8eXdX43Iht3i4VoOzju5MfRI1vw8kHZ3RJui7A4Gwft/2lYIx6lAcH4knrLNn6DdS/EWeJVjMilgwDJggENkZUe/iv16U7Jfj+sJ96fOt4MZ0cPkt8iWPV8QX2AkgzoWhag6ObB7IBmW0FAh/Kft79JjaZ0s6nPqAKCnYotFV2tfkfWx3gAbL/eqj/sXRtI5lDrH+/thlheg3m3IZZD51MLPQvTt/T/c9Zob+9hePz01R+XOHOt8nW4ENN3gnBmcKOrDBZWOuZ+yHDzQtYgZm2Y1xf91iLSFyfnv29mMYmBN3GhXplFCYEbkFDETdexbMnguDabrT7Fys8Bh/LIuIxx3BEyNdoZ/zgQF7fv0irgYBBKywneJa4IZ5bARCZ0NXa5hyYi7eqMPN/gOF4PhNUfTauKBLk82OHeHB59uSanusinGj590iP/ELLVJkcDTzVO4zd5un027SDG1VJ/oB7Z2pNpXK7EjZdOiOP0sAgLlR3fSIBtADHWlssaWE+iaJ3+JWFPfDVf9o3P+jRoP2C4vj7m40OqPSqofk5/XPdgHTQXgl12I3ql4PDcPQRKXmyuwysVUcwZxg3JLDay4hAMgObJPkoNjDNGDbFuWMCnPUpUjdzh/F7ZkrN0a5yndDzraQobh/xYGUmQ4FcdvsbQRdp5zUOFzw2oPK3ePrNFCQksJi/iGBfIDHvQZe23aSEEVI0CkIAAMlIKGS9nnVqfCMiO51OgH6E
- 2SuIMHA3
- D4QPPH9xYdcw0w1N7vDf1d4UGuhs4VHQK8Wfp9FizWiC1WObyrDP1jsyjt0yvV4oNwSB83AxNB3C/CTm83XkoRoyhLNpPcS58CkrIcQnXzBIToYk5a2KUTEQTF//u0jgLcT9n4TA7NotaTwVl/ucsD85LAHtMJx49qga0bp7rOyZRvAvEbqGJes9+VS9+dyvEpD4IrteuyIO6dEWbba+Gasc1kVomu91SniDf6TG8jZHEl40BYBYBNYyWW2BndiwZqY9EGYhS+T52UN5qEAhfWg3DFIJ/Bb3Ic4SkQVQb6qkZNJviXfjT7ENqTO/EPg/Fvj7DlwwQeNx1eOU4/HR3gfnjTYs5olLqKLyzOXBTO1z0UlWtAybaHaeByCf7zEV6/n5duBW1PcFjx8GfrIwiSrbHvPes6KMQwxw2mQDYqhKgzM6XS3M/tt87MmllFM//mkGe+aJgm9/5LKzODVfglBP+dmG7Lco57DRff+fiT225dty/ZY0qUShV1g==
+X-Stat-Signature: fo9e9igk6jz9fanpxyp959kgswxn6ijq
+X-HE-Tag: 1756986198-197301
+X-HE-Meta: U2FsdGVkX19nQUGjrc5Z9V+ym56/eLg92L1fdZhErG0pFHD0FFtsr0bFou7wiXSKSK2RkBC5wMFwgs+pihJTK03loQS8FOrJEhasjXmfrkC/raqAYy0Imfbcu1lb7DCe26Y5w3NIC4cyBb6kY146EPQByszt+Qp5k130jzfccFEqVo2Wzjek2agxrW/bsECJiw6df5XPSsogTi7cbUuhsegY7/sjrg9HNuS4tZOXEvMyDVhs3Fysa+smf1sAvr4MsYPJRiO2MoLpLpfM1NZJh8sbD0xONXqfqKDs3cXzH9UdCKxRBxgBDpZP2j6eYrGNTMBZCOFZbwmYE+GULzArflpiC8yxJPOLzmUKp+8+HTWKf1I19YZRXU8TWkb08y+Pael1rGBNf0q1YCqaAoZKAHaqTzhUoj6BYxHxa2Eor34T+mOyM99t5+VCANhRaK1ckOXk9cfWEeLhIs4lisrhYWS6awDwD8Q5u8ZjyVSMVkd7r0vYuCEallrBNvAoEmRpHYJzJ73QgMnzcdcN3ipkQm01BnDX3jpf8AWbcZwE3vaJEHB1CaiL3weasqsJydf54Hor5VGaIOh0TjzkhEP6HJLQgqxx1cfyG7iICRs2AossuhUkWpByBuzKnTKJ9p8t3kjWn2skWrCN7yc+ZvedKw97cd1mMWdSzYK6mCVnCk8UpoVLoOemcf7Tt4H46VFKX7HB3blTemi3fuuJfn4AgYvKU+TriLHmqXyvt72EihxVulHaaJkkOh7E8vRNqHSK44fkOb1RFFLjZez/K9nm7Jcy32UXh+6qaL+sjH7voN8Z5+FIt6tF/pLxeBvJSS2jJEr5DVgdqrzzy9VKpJxfpwazqOvUJEWcbKAhOWk4GeP+Fbmu7wTOxDsCI61oHpI9E2MSFVq5SYqCm/TSQipc0VUohx7H+FnjYTe5/h4qxC2DNgLZQLjKtWknKeX0Evq0uPnstwFj9Hvuak+2Knd
+ pzxIr6/2
+ UbJjMVtDn1HOiDRXO/rYoVO7bToGY3Fuyh/U2XxJ5GcolOug7aMLrcUfN8B97xdDJJnhda9esR8AHN30Ur8fqlUxXa718+HBBepmIK5UIULMAQmxQAXMkufRrIA4x9gAOtX4Q2giuRLs1XqqK/PWYAqkBAFbxgnjnKAVMLE3fj9KV+upxXB6ptF/9pGTotAJeasP/RlrOXfNhpX/qOiu9r/USbcEOFfBj5dJbbVUEUgv//2vF97smy11VIeWdmkmZejwpR5cPsqTsbaK6QP9fqQ4ZZdTLjd0jXka0K/3yQmKOLqHXip4fwyyeN93LbL8V755DvAAIHXryhNGNREu85aX5O1mJszMRg1NxwqPdaTA3wv57n24C+bTEzYW2qujaK3x73BHl2cOkwmFxgjAnwcKyaTuDcO5bQ9+XJecF9ifHPiFmh9m4POR/qA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,34 +112,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04.09.25 12:13, Vlastimil Babka wrote:
-> On 9/4/25 11:33, Vitaly Wool wrote:
->>> With zswap using zsmalloc directly, there are no more in-tree users of
->>> this code. Remove it.
->>>
->>> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->>
->> Per the previous discussions, this gets a *NACK* from my side. There is
->> hardly anything _technical_ preventing new in-tree users of zpool API.
->> zpool API is neutral and well-defined, I don’t see *any* good reason for
->> it to be phased out.
+On Wed, Sep 03, 2025 at 05:35:51PM -0700, Joanne Koong wrote:
+> On Wed, Sep 3, 2025 at 11:44 AM Brian Foster <bfoster@redhat.com> wrote:
+> >
+> > On Tue, Sep 02, 2025 at 04:46:04PM -0700, Darrick J. Wong wrote:
+> > > On Fri, Aug 29, 2025 at 04:39:42PM -0700, Joanne Koong wrote:
+> > > > Add granular dirty and writeback accounting for large folios. These
+> > > > stats are used by the mm layer for dirty balancing and throttling.
+> > > > Having granular dirty and writeback accounting helps prevent
+> > > > over-aggressive balancing and throttling.
+> > > >
+> > > > There are 4 places in iomap this commit affects:
+> > > > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
+> > > > b) writeback_iter with setting the wbc->no_stats_accounting bit and
+> > > > calling clear_dirty_for_io_stats()
+> > > > c) starting writeback, which now calls __folio_start_writeback()
+> > > > d) ending writeback, which now calls folio_end_writeback_pages()
+> > > >
+> > > > This relies on using the ifs->state dirty bitmap to track dirty pages in
+> > > > the folio. As such, this can only be utilized on filesystems where the
+> > > > block size >= PAGE_SIZE.
+> > >
+> > > Er... is this statement correct?  I thought that you wanted the granular
+> > > dirty page accounting when it's possible that individual sub-pages of a
+> > > folio could be dirty.
+> > >
+> > > If i_blocksize >= PAGE_SIZE, then we'll have set the min folio order and
+> > > there will be exactly one (large) folio for a single fsblock.  Writeback
 > 
-> AFAIK it's a policy that unused code should be removed ASAP. And that's the
-> case for zpool after Patch 1, no? It could be different if another user was
-> about to be merged (to avoid unnecessary churn), but that doesn't seem the
-> case for zblock?
+> Oh interesting, this is the part I'm confused about. With i_blocksize
+> >= PAGE_SIZE, isn't there still the situation where the folio itself
+> could be a lot larger, like 1MB? That's what I've been seeing on fuse
+> where "blocksize" == PAGE_SIZE == 4096. I see that xfs sets the min
+> folio order through mapping_set_folio_min_order() but I'm not seeing
+> how that ensures "there will be exactly one large folio for a single
+> fsblock"? My understanding is that that only ensures the folio is at
+> least the size of the fsblock but that the folio size can be larger
+> than that too. Am I understanding this incorrectly?
+> 
+> > > must happen in units of fsblocks, so there's no point in doing the extra
+> > > accounting calculations if there's only one fsblock.
+> > >
+> > > Waitaminute, I think the logic to decide if you're going to use the
+> > > granular accounting is:
+> > >
+> > >       (folio_size > PAGE_SIZE && folio_size > i_blocksize)
+> > >
+> 
+> Yeah, you're right about this - I had used "ifs && i_blocksize >=
+> PAGE_SIZE" as the check, which translates to "i_blocks_per_folio > 1
+> && i_block_size >= PAGE_SIZE", which in effect does the same thing as
+> what you wrote but has the additional (and now I'm realizing,
+> unnecessary) stipulation that block_size can't be less than PAGE_SIZE.
+> 
+> > > Hrm?
+> > >
+> >
+> > I'm also a little confused why this needs to be restricted to blocksize
+> > gte PAGE_SIZE. The lower level helpers all seem to be managing block
+> > ranges, and then apparently just want to be able to use that directly as
+> > a page count (for accounting purposes).
+> >
+> > Is there any reason the lower level functions couldn't return block
+> > units, then the higher level code can use a blocks_per_page or some such
+> > to translate that to a base page count..? As Darrick points out I assume
+> > you'd want to shortcut the folio_nr_pages() == 1 case to use a min page
+> > count of 1, but otherwise ISTM that would allow this to work with
+> > configs like 64k pagesize and 4k blocks as well. Am I missing something?
+> >
+> 
+> No, I don't think you're missing anything, it should have been done
+> like this in the first place.
+> 
 
-Right, and
+Ok. Something that came to mind after thinking about this some more is
+whether there is risk for the accounting to get wonky.. For example,
+consider 4k blocks, 64k pages, and then a large folio on top of that. If
+a couple or so blocks are dirtied at one time, you'd presumably want to
+account that as the minimum of 1 dirty page. Then if a couple more
+blocks are dirtied in the same large folio, how do you determine whether
+those blocks are a newly dirtied page or part of the already accounted
+dirty page? I wonder if perhaps this is the value of the no sub-page
+sized blocks restriction, because you can imply that newly dirtied
+blocks means newly dirtied pages..?
 
-  13 files changed, 84 insertions(+), 715 deletions(-)
+I suppose if that is an issue it might still be manageable. Perhaps we'd
+have to scan the bitmap in blks per page windows and use that to
+determine how many base pages are accounted for at any time. So for
+example, 3 dirty 4k blocks all within the same 64k page size window
+still accounts as 1 dirty page, vs. dirty blocks in multiple page size
+windows might mean multiple dirty pages, etc. That way writeback
+accounting remains consistent with dirty accounting. Hm?
 
-speaks for itself if there is no new user anticipated.
+Brian
 
-IIRC, we did a similar approach when we removed frontswap.
-
--- 
-Cheers
-
-David / dhildenb
+> > Brian
+> >
+> > > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> > > > ---
+> > > >  fs/iomap/buffered-io.c | 140 ++++++++++++++++++++++++++++++++++++++---
+> > > >  1 file changed, 132 insertions(+), 8 deletions(-)
+> > > >
+> > > > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+> > > > index 4f021dcaaffe..bf33a5361a39 100644
+> > > > --- a/fs/iomap/buffered-io.c
+> > > > +++ b/fs/iomap/buffered-io.c
+> > > > @@ -20,6 +20,8 @@ struct iomap_folio_state {
+> > > >     spinlock_t              state_lock;
+> > > >     unsigned int            read_bytes_pending;
+> > > >     atomic_t                write_bytes_pending;
+> > > > +   /* number of pages being currently written back */
+> > > > +   unsigned                nr_pages_writeback;
+> > > >
+> > > >     /*
+> > > >      * Each block has two bits in this bitmap:
+> > > > @@ -139,6 +141,29 @@ static unsigned ifs_next_clean_block(struct folio *folio,
+> > > >             blks + start_blk) - blks;
+> > > >  }
+> > > >
+> > > > +static unsigned ifs_count_dirty_pages(struct folio *folio)
+> > > > +{
+> > > > +   struct inode *inode = folio->mapping->host;
+> > > > +   unsigned block_size = i_blocksize(inode);
+> > > > +   unsigned start_blk, end_blk;
+> > > > +   unsigned blks, nblks = 0;
+> > > > +
+> > > > +   start_blk = 0;
+> > > > +   blks = i_blocks_per_folio(inode, folio);
+> > > > +   end_blk = (i_size_read(inode) - 1) >> inode->i_blkbits;
+> > > > +   end_blk = min(end_blk, i_blocks_per_folio(inode, folio) - 1);
+> > > > +
+> > > > +   while (start_blk <= end_blk) {
+> > > > +           start_blk = ifs_next_dirty_block(folio, start_blk, end_blk);
+> > > > +           if (start_blk > end_blk)
+> > > > +                   break;
+> > >
+> > > Use your new helper?
+> > >
+> > >               nblks = ifs_next_clean_block(folio, start_blk + 1,
+> > >                               end_blk) - start_blk?
+> > > > +           nblks++;
+> > > > +           start_blk++;
+> > > > +   }
+> > > > +
+> > > > +   return nblks * (block_size >> PAGE_SHIFT);
+> > >
+> > > I think this returns the number of dirty basepages in a given large
+> > > folio?  If that's the case then shouldn't this return long, like
+> > > folio_nr_pages does?
+> > >
+> > > > +}
+> > > > +
+> > > >  static unsigned ifs_find_dirty_range(struct folio *folio,
+> > > >             struct iomap_folio_state *ifs, u64 *range_start, u64 range_end)
+> > > >  {
+> > > > @@ -220,6 +245,58 @@ static void iomap_set_range_dirty(struct folio *folio, size_t off, size_t len)
+> > > >             ifs_set_range_dirty(folio, ifs, off, len);
+> > > >  }
+> > > >
+> > > > +static long iomap_get_range_newly_dirtied(struct folio *folio, loff_t pos,
+> > > > +           unsigned len)
+> > >
+> > > iomap_count_clean_pages() ?
+> 
+> Nice, a much clearer name.
+> 
+> I'll make the suggestions you listed above too, thanks for the pointers.
+> 
+> Thanks for taking a look at this, Darrick and Brian!
+> > >
+> > > --D
+> > >
+> 
 
 
