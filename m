@@ -4,112 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D678CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 09:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5243CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 09:28:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 613AD8E0001; Thu,  4 Sep 2025 05:11:47 -0400 (EDT)
+	id E58CA8E0006; Thu,  4 Sep 2025 05:28:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EAF76B000D; Thu,  4 Sep 2025 05:11:47 -0400 (EDT)
+	id E024A8E0002; Thu,  4 Sep 2025 05:28:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 527808E0001; Thu,  4 Sep 2025 05:11:47 -0400 (EDT)
+	id CCA408E0006; Thu,  4 Sep 2025 05:28:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 412646B000C
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 05:11:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B289413BDB6
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:11:46 +0000 (UTC)
-X-FDA: 83851000212.25.B35F6A4
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CD9BD180010
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:11:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fRiNRT2Y;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of davidgow@google.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=davidgow@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756977104; a=rsa-sha256;
-	cv=none;
-	b=qUmPfhrW5D2M3bnbltWklQtYZ/P8/Um56liO20D6wMQJklTxCJIQ+8U/OeSVCqIKiczQnX
-	nkf5f4/PVxnQov3avPR550H1td4drGtaYexeAbAya8s3wBcYtS0kq6T6vxtCqu/1D+kRgC
-	i8oHFHf92z1x26+AXExbm6DuRn6+rCk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fRiNRT2Y;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of davidgow@google.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=davidgow@google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BC1368E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 05:28:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 64C291DD9C2
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:28:30 +0000 (UTC)
+X-FDA: 83851042380.10.403CB6E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1272C140011
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:28:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JiNys9ep;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756977104;
+	s=arc-20220608; t=1756978108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OiBL4xUOfg7gCGVbKRZ2miCXhQoK6jtoEjlt5pZuFFU=;
-	b=OqC6JLbXez7idVJfZIRWaLJyHMoQH4q0SxcGGWlITfnVNF7JLEAtUo92iNyaSCXCq7LEd5
-	fOTzE60Y+scrS0oXsXthe8yjiBJv6IuGFDxR7WqqoDt4IXykp1hP+nbe6ChZ9XUDTtpYuv
-	kFgn/cxQZo6yFh2cBGMhaQxxtcEFFSg=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-80e33b9e2d3so71037185a.2
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 02:11:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756977104; x=1757581904; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OiBL4xUOfg7gCGVbKRZ2miCXhQoK6jtoEjlt5pZuFFU=;
-        b=fRiNRT2Y3rUyWIp68oL2VsWxAs7dL80GXKjseegdkTZOBrjU5BvdxyEyPo2VpAyn+1
-         pJo1rg/KuS3pxsS8kQgzbo8H2kbRTp3uEFoqc8Lshh+SKccf8HtdkDiFdOn8lI9NnFZR
-         TF2dlkAzVXmTZ2kBx+QpLcKrOkjt/r90gfN0yOtCe/FOJsNuRBkN+O5x6GdhjArB6uW7
-         Cq8v1vE6/QnZ/yaZ2ba8/G+dcYars5QF3BFNE4sWXcasrQDTabg+b/YfA8EtLKo66fSu
-         1znRiAx/arV/xOjDJbgYiAXkE2o8kZpoBAUlEKrF+BJPwFbf01wJmdgK+7TVcDi1McLK
-         Hiyg==
+	bh=rqtVp+dWESwWsztacKgmL2rUMUmFFYmojnDpgO2tdkE=;
+	b=QTGVaoM7CLWrNPK3Fgf8KikRpVjsLiUHYecUGVQKuTIAqLIiZE6PYJcOzQtvWyBIQUTuR4
+	qoOBOQWuxwOBorGtmwLARFZ2uo1vLYBjpxmb6tEbp+52vvpHu8kLxHNPjd/gJeLXwxxZd4
+	+bocdjcKt1FvkVYmR0HpRGrsBv6vcIA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756978108; a=rsa-sha256;
+	cv=none;
+	b=rK8qmj5ZGeHoauNiMIdSpZvw1gTVd1mzSB/GN6/7xmV7oQxAEnjnQ7mjbIHpBTYqxkzAQO
+	bw6o4LeRWLt8vdWzWhwmmXUH9kuDJNttxxeLylxqMQuaTdSeeYOpo4APWq8GSbkxzNF8/N
+	BPExDSag5Lx4xZTMJsMRzVizkn6ORoM=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JiNys9ep;
+	spf=pass (imf26.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756978107;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rqtVp+dWESwWsztacKgmL2rUMUmFFYmojnDpgO2tdkE=;
+	b=JiNys9epNiYevvMizoilLaFkqjQ6IX3y1POh7NDCAdP+AbTF4eEMBVCvPNybnyJt7AaMLL
+	+3PioFHOfVW2dhWw8N7uE7d68sMLFj2iz1/As54yoDYsHILfSai7N+54OIJCh20x+UyUQD
+	b8+Y9UPHdEro5adnuu2DFSgXCqqVUJU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-294-eRJ2iOrvN2ylcj3wjQk4Lg-1; Thu, 04 Sep 2025 05:28:26 -0400
+X-MC-Unique: eRJ2iOrvN2ylcj3wjQk4Lg-1
+X-Mimecast-MFC-AGG-ID: eRJ2iOrvN2ylcj3wjQk4Lg_1756978105
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3e2055ce94bso173812f8f.2
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 02:28:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756977104; x=1757581904;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1756978105; x=1757582905;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OiBL4xUOfg7gCGVbKRZ2miCXhQoK6jtoEjlt5pZuFFU=;
-        b=iMmsDoCqLCZHoZYzP3RN8B83HOVL5ZlaZa58HOBskY4zbnwWKSJgp0bi9vq6kq7I42
-         Cgn/vBnYA9IcazFKyg5dspJl2dQ2CE1uo8boxifvE35lVXewJHEuR8IqECzlA36G0OvJ
-         x86Dws+j45gxRYiczL7j5dO7lXJxphR/R6fW9ekfidM0yWlk4SB+NZNMeRk+gQeK5RKJ
-         ehVODRtSvJkwufRc5ixTYtsuFGYXtiGb2gf2e0kc53plJWbNApXYMf5vEEIdsJtcMWxw
-         EqBBPyW11ajVxRrB7QfIElC6JmT2Y2aDdmyG6G9dMwKQq9TgLPyNa8EQP89Qqig129Da
-         C4fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRWh1TXyw9zmDX6GvNgCAxNyVL0uu48N/HwiPHn8CrEa4NDe6Xm5cQbfkLp3uYDhZrorl0fsjikQ==@kvack.org
-X-Gm-Message-State: AOJu0YztExyut48nIL9kxNnSkkKl956h8xUbJ1nBJ59S4klpTWh7OC8j
-	+j8OvQI2/uRBbjSjlYS7gPRQRthEO/sO06nrAzVT+ZMAGV2Mf6qe4LzaHRRNYjC9Mm2gYriwbdM
-	LpYbhpHO1UgCrBobNbZ1yCTLxpzV/VYB944fJ4HP/
-X-Gm-Gg: ASbGncuHMt9dJRlHINfgSHzvbuBD5yHJdh6h5N0aL7uKPADfdVdA4fQyfTpydzqIhyW
-	L5vxCwWWn3qiK4Clp7anfPH9XwtqIUIVdbaEwUF21ut4KaNGeI42ZROI5LlwCcC05fvH/+rkxIJ
-	p+PgQ7FvEUiU5ugsv/CS4nWlPUsdcVkIo+Kc5t3cNsl5dBNFHGDux18qRF6dCFVMBsXCXUjBX58
-	pRO2/0oHk5Edxgf1/tdTNQ=
-X-Google-Smtp-Source: AGHT+IFYlGXJ486TQ9EK/95uU3SyFcsBM0z1rBaAV0ho3WsC4leYY3WLao7HT7YaJJ2NIcq6dX8hgE65KVC5TnV8Eb4=
-X-Received: by 2002:a05:620a:284c:b0:7e6:572d:abe9 with SMTP id
- af79cd13be357-7ff2869bd22mr2202626385a.37.1756977103394; Thu, 04 Sep 2025
- 02:11:43 -0700 (PDT)
+        bh=rqtVp+dWESwWsztacKgmL2rUMUmFFYmojnDpgO2tdkE=;
+        b=Pl+jAobhOh7LhamGDqT72qIule5xrV2LfpStFcr0T3NzUKWHOvh2P2l+3z2Nog0w3n
+         kJi/u++x3VwoeqzRydORbQLIQ0tOi8QzwpAixJGjp/DaoHzvipvGQCITyQMMem04x724
+         2Q5ERgIeqAJCkzjMD2FGVTBQMx6xE4v5WSTQecSkG57rFkrIzCpqP3JoJBHpkb8Js3BK
+         wceEJ2eVjOKnT5/Q/t1Mc9GOcIR5il2TpaCKdwpiA/twiiaJO7IqwtLhqSU48k8YenQW
+         SA+WN4d16ouiRiakKzv7VitEfFYg1cr62N2VzcIpNwHFalKZJ9IhGsrUSEqYAboBUEui
+         sO5Q==
+X-Gm-Message-State: AOJu0YwdWgCgin+sdyDNYsQXCWQtKASassSyMiSYi+BMBob/dQnAJ7T6
+	7wEj9OA9aV+Am+NBtil1dojFSWV40zU9nQZvycsa7C32mBnc6z7Pmeg/t2p92vGRJoiJ3c9Zj29
+	yHqW9uO9M73/LeISDx621niQakzJyi4sYjkYlIH7njZExbvgi0V1t
+X-Gm-Gg: ASbGncups8rpc9MuiiRep2n58WJ2G+SgUaa/uGOftsk6YX8RLmw+eeoo612/RGQz3Bz
+	xxpc8KORt4aIVcKwtbCi78CdkrVIASBfIBxUllHiy9mVfUJ0HPww2OMEA7/n1X1f9xD1n6P0/rT
+	f0Ellz/J6isQdNHckNtv04yBGnNtvQIFw5fJi1EUoh+rE2/l4Nj1jI85zuKSJO4SOrCE1wA69fG
+	sbUwS6kWO+B6qmErJDh1XSeqO8u64f3dS67e5RRVgkVlnI+iPn1X9+dcO2VXhKwVg3nLvcav965
+	PnGU4ltfWM9DOprsuZ7D7zQgmPOzWlcInKVHf6hMe2HQUkV8pgeAI2FMPwi+a/1G9h7UtT53bcg
+	Z6/8X3hgDRetMzSvSbhgE7l6eLY5C/rvDsE7LhB5RcV8dDdV9Z2T6ly1yWbNgF5Ob
+X-Received: by 2002:a05:6000:178f:b0:3d6:fe34:1178 with SMTP id ffacd0b85a97d-3d6fe3416c6mr10383650f8f.27.1756978104567;
+        Thu, 04 Sep 2025 02:28:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPjjpCqdHOizCp1x9jFe7gjDg5+srRLP3tm8qElUsk9XFS3CXOS6UY0v+F/eqM7CoYz+ymVQ==
+X-Received: by 2002:a05:6000:178f:b0:3d6:fe34:1178 with SMTP id ffacd0b85a97d-3d6fe3416c6mr10383620f8f.27.1756978104124;
+        Thu, 04 Sep 2025 02:28:24 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:1e00:ce4c:be3:97b3:6587? (p200300d82f251e00ce4c0be397b36587.dip0.t-ipconnect.de. [2003:d8:2f25:1e00:ce4c:be3:97b3:6587])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3df4fd372ccsm4936283f8f.32.2025.09.04.02.28.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Sep 2025 02:28:23 -0700 (PDT)
+Message-ID: <21b8a9a7-b737-4ed6-9690-dfe07ee233b5@redhat.com>
+Date: Thu, 4 Sep 2025 11:28:22 +0200
 MIME-Version: 1.0
-References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250901164212.460229-1-ethan.w.s.graham@gmail.com>
-From: David Gow <davidgow@google.com>
-Date: Thu, 4 Sep 2025 17:11:31 +0800
-X-Gm-Features: Ac12FXxFg-YSHUgrBqJ-5TrzXWGp5KCpZbo80fhtQ-VWPd3R1wCW9QCV-W4F-oA
-Message-ID: <CABVgOSmZffGSX3f3-+hvberF9VK6_FZYQE_g2jOB7zSMvVuDQw@mail.gmail.com>
-Subject: Re: [PATCH v2 RFC 0/7] KFuzzTest: a new kernel fuzzing framework
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, glider@google.com, andreyknvl@gmail.com, 
-	brendan.higgins@linux.dev, dvyukov@google.com, jannh@google.com, 
-	elver@google.com, rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
-	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, dhowells@redhat.com, 
-	lukas@wunner.de, ignat@cloudflare.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: CD9BD180010
-X-Stat-Signature: eyzxb3rfujpqc8kbk4ky9reqbnxbxs6q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/9] mm, swap: use the swap table for the swap cache and
+ switch API
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
+ Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org
+References: <20250822192023.13477-1-ryncsn@gmail.com>
+ <20250822192023.13477-7-ryncsn@gmail.com>
+ <c492b99e-b6fb-4da8-8055-1e93c6141a12@redhat.com>
+ <CAMgjq7DAbMMmPVPqiGg_-2vghpPc9Jn8rkVNDFgq3reFx6CZtw@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAMgjq7DAbMMmPVPqiGg_-2vghpPc9Jn8rkVNDFgq3reFx6CZtw@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zflddZWS-uMLc_nlbVLmE4PTcWD9wlYyTLaVk4rL8NQ_1756978105
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1756977104-630521
-X-HE-Meta: U2FsdGVkX1+hfKvmJbEUFDzu2WkYYyMslJwsaYhw3Mi7SSHF5Cepk/N3cwIl4Gw5xJTRW+LKFBYlTgPURM9zW6/db8xjLUMdrtpj9QBt2ww0vNPR+2XUm20Md28EffUy9D36hMNQnDfYQYVTqYNHBlfHkWJbRD5Fu7Aw5EQWBr7JMHqgIEkpElM77M/oKjqNY4dIZ2qXJEqNMO1lsfgZHhsuluMg3lI3aMaJNDw5Uus5YFQn8n2eDRyEgzfNP8BkjsSzF+dFqMndC7b+Zfa1CosPbiUYc5DKbLkU29MnAcSIxjF64nWLrYpOT+RWdjyCIkqz+CKXqzB8c0wfNtzfR7w/cuK5SG14e6p6UMGKvSs/ZfGB/+fsZcAFcT3SkMJl9rbfrmiqev6lKhnXu4eRN/kLqvb+gnyPozQyJjjrilyQdfeXmWNcgeUQ0OgbQKOlwoCxGk4ShA1wypQfKjFuyVJ2wQ+lWuBDGVy9QZc2Or+m1fc3aCz08xjyK0gLqN+ZQCDXKtZYmOh48CQ/rBv08mvoiCMgHkBBCfTMyMk1A7FXb4FWLo3K3jPs94m5p+iQChjzdOAUy8jAu/auzSQZ5dbWeKqN/7oeIFAKrv39zHd7455u0rWjvRVNBMFq1P2PKZCqAMvLoAySnF4rru49tBfYUkPxDJnHFGkaRyJ8Tffquz5XBzbw8xF208GFwrYMkmjaA93rH9LohLq1nCkCLWHEXbUZ9P1/mbSlSzk/eIpd/8a1AmYBfRaVRjA34by0GBhVTcEJ4evmXU+EHjZUVcJiRvHwUiyewP8Mj+AcrVLPMcNYWZFtPEZqrz3Z2oxUOqsfypJoflUwbXwkBfaiGWnE4oMGdcZVfyFr1sYit+dYktcPUgc3vPvF59OR0gwiIaJpOGycgf0Fg1C5g3vhNa0/Lt+ykICFjdApEt8wWvCAR5/SxuDfpMd8BU4cLWRccXWXOOhqPdKlZNmwEGW
- 5IWtd9Hz
- CgRvbL95IBXiO1tJWfHX/6drmchsaZouMu70EE53JwMMvVsNPIwdFaLbiAu2euPiqvGCHef2KRpfUVYBErWqVtc4utUlUiQxDEfmP8YNzuaAoRA49FpeQVQftS2yOFNOSkrbuTWSLD/zoe0vI8j79wUjZvO+VAwPNeumNvo7utLDhHZg04eFZn5s37dJ3i2WlExc7vZVpz9U+zYPuYXivlqDZN3X4KUa05rY7Cxykv6kmaisOzalCMTVhEzW0T+wvNebi9DMltCp6MZWHe0rt1eXBmxTnQhFMKSOnY0W/vVCNlAUp0RIJGf4ggTpkRxlJSjGW
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1272C140011
+X-Stat-Signature: naeakxh547h6nsq89m3ebacqfzgsh74d
+X-HE-Tag: 1756978107-613092
+X-HE-Meta: U2FsdGVkX18ZDmQcGqVA0/zAK3pd7tW7A4LwMSDitb0XmGxkXAqKFw/PS4cHJK8kRJb/uCAKsZKWW3L4U9xI/L/K0O0chluNfqMkotMYLqL5lHDbNQU/CpZDZir7gcYSUPyB/wHi9hNFCfQHT/aNma39t2O7Gx2j85Hm6ELbgTEmYoAI2Uc/UW+t9iszSF52LWK+F+tZQzH+dvHc2T6bmEypaqpEe91wpKds7fN44Edt92MYgTLKPYgqohIsXNx2yPhKV8jHwzag+Vj9s2Mvgb+T0PKRBxMAmjVkvz723ND2OeTkXQBNrqqyDxVIHCmaNv2ErqZTnPNMtWCvBhhmZUkPtRERiZE3HNovhFt/wOgq35r7A3uFm/XBfY7y67/S8G2BOftVHBhUMYJ/gooF1AmHe4FCI4o/1ivJGK+y4cur07oa4CcIU0iRr8dCyDZNyOrW9LJNgWLAxYaucwKzHPGe1JCIbbYBvggS+0KLL5UGDC8R1DbZLmkcoue3dX45VRcs0KdR+qDyA4/Wq8mGNXQ+AWHMgGvI5DRs3d66AZ0xo2QE9nXctV4Dq4MPe2ltafUtMHz2riLd1H0C4srW9ZgHWKd4Bxaj0yHHVcuywBOiao3Cu75MHm9HJtrj4jwLPaat4UbDDdKKMzSG594TETJANYZvM5kwMeg2J149dLNFr5OfqzW0xSAMqQRHhAhzZ26qPJdnT6/VVnXFpJO16OyQo6dKIN/gniMoxH53OYCoerpAIWqw1r3Nt8/Ha5/hXGG7x48DM+LyMM7AH2wtcGffnqeR7gn2Tk4QHaM0eF1UmE7kUiQfpfrIFyS2yfxSvbraZ9sHdSF0EK8vfHCsfCGa4/q7EFfmwaadwP4lonsmqa/encoEWYidlSPxzl+VmGYjwx6Z/lhkUr7cIe0dAoxJVJi7dXotQeFkZxDHmydGhBW8c+RUfeXSB1OIv7NRzUutqNedk6Vqrjkqg6u
+ QUWTWrJR
+ HBzfAc7WUWGqJHw5kILwbqPb3hfmBOT73ESKfw4VAvymn0exlxd9lfQ1wBOx5Kn7tqI1rJgF95f7zKJVObC7q0W6LWDKJiXyen/jF95/ACRTNIHPYtP9ySWy9C3+HEig1oYlSktZ1XDY6L/S3iB73IEnHYSUhaIlV4+EarCtc58RlbNcNgx7J6rVeWuuPAEzdUANP1VY/a1J/E4iSS7pNaxoxkfJbYAVLs5E0xZaOKugWtQZ68GTXAhzHrg9pjFcGZf3fyle8Q51YsGdxHTuWPBjv+1UIMzNltP8bSLPnMEthMWw3DEZkCa85mAYQM8lbataoGoZA6LKokQzcgGUtwVGCAKKWxkyPnivT0RUxc3foQB7+RR80hTxOnoulYUeA38hz9bk4GqHIQuvHepiD1Ve32WwasHgf+Law+VWVFfKtIWhdhZFPQ2y5jjYMudMHAzSI6Qw4A9aslEc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,120 +187,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2 Sept 2025 at 00:43, Ethan Graham <ethan.w.s.graham@gmail.com> wrote:
->
-> From: Ethan Graham <ethangraham@google.com>
->
-> This patch series introduces KFuzzTest, a lightweight framework for
-> creating in-kernel fuzz targets for internal kernel functions.
->
-> The primary motivation for KFuzzTest is to simplify the fuzzing of
-> low-level, relatively stateless functions (e.g., data parsers, format
-> converters) that are difficult to exercise effectively from the syscall
-> boundary. It is intended for in-situ fuzzing of kernel code without
-> requiring that it be built as a separate userspace library or that its
-> dependencies be stubbed out. Using a simple macro-based API, developers
-> can add a new fuzz target with minimal boilerplate code.
->
-> The core design consists of three main parts:
-> 1. A `FUZZ_TEST(name, struct_type)` macro that allows developers to
->    easily define a fuzz test.
-> 2. A binary input format that allows a userspace fuzzer to serialize
->    complex, pointer-rich C structures into a single buffer.
-> 3. Metadata for test targets, constraints, and annotations, which is
->    emitted into dedicated ELF sections to allow for discovery and
->    inspection by userspace tools. These are found in
->    ".kfuzztest_{targets, constraints, annotations}".
->
-> To demonstrate this framework's viability, support for KFuzzTest has been
-> prototyped in a development fork of syzkaller, enabling coverage-guided
-> fuzzing. To validate its end-to-end effectiveness, we performed an
-> experiment by manually introducing an off-by-one buffer over-read into
-> pkcs7_parse_message, like so:
->
-> -ret = asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen);
-> +ret = asn1_ber_decoder(&pkcs7_decoder, ctx, data, datalen + 1);
->
-> A syzkaller instance fuzzing the new test_pkcs7_parse_message target
-> introduced in patch 7 successfully triggered the bug inside of
-> asn1_ber_decoder in under a 30 seconds from a cold start.
->
-> This RFC continues to seek feedback on the overall design of KFuzzTest
-> and the minor changes made in V2. We are particularly interested in
-> comments on:
-> - The ergonomics of the API for defining fuzz targets.
-> - The overall workflow and usability for a developer adding and running
->   a new in-kernel fuzz target.
-> - The high-level architecture.
->
-> The patch series is structured as follows:
-> - Patch 1 adds and exposes a new KASAN function needed by KFuzzTest.
-> - Patch 2 introduces the core KFuzzTest API and data structures.
-> - Patch 3 adds the runtime implementation for the framework.
-> - Patch 4 adds a tool for sending structured inputs into a fuzz target.
-> - Patch 5 adds documentation.
-> - Patch 6 provides example fuzz targets.
-> - Patch 7 defines fuzz targets for real kernel functions.
->
-> Changes in v2:
-> - Per feedback from Eric Biggers and Ignat Korchagin, move the /crypto
->   fuzz target samples into a new /crypto/tests directory to separate
->   them from the functional source code.
-> - Per feedback from David Gow and Marco Elver, add the kfuzztest-bridge
->   tool to generate structured inputs for fuzz targets. The tool can
->   populate parts of the input structure with data from a file, enabling
->   both simple randomized fuzzing (e.g, using /dev/urandom) and
->   targeted testing with file-based inputs.
->
-> We would like to thank David Gow for his detailed feedback regarding the
-> potential integration with KUnit. The v1 discussion highlighted three
-> potential paths: making KFuzzTests a special case of KUnit tests, sharing
-> implementation details in a common library, or keeping the frameworks
-> separate while ensuring API familiarity.
->
-> Following a productive conversation with David, we are moving forward
-> with the third option for now. While tighter integration is an
-> attractive long-term goal, we believe the most practical first step is
-> to establish KFuzzTest as a valuable, standalone framework. This avoids
-> premature abstraction (e.g., creating a shared library with only one
-> user) and allows KFuzzTest's design to stabilize based on its specific
-> focus: fuzzing with complex, structured inputs.
->
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 2a47cd3bb649..209580d395a1 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -3721,7 +3721,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>>>        /* Prevent deferred_split_scan() touching ->_refcount */
+>>>        spin_lock(&ds_queue->split_queue_lock);
+>>>        if (folio_ref_freeze(folio, 1 + extra_pins)) {
+>>> -             struct address_space *swap_cache = NULL;
+>>> +             struct swap_cluster_info *swp_ci = NULL;
+>>
+>> I'm wondering if we could also perform this change upfront, so we can ...
+> 
+> This one seems not very doable on itsown since the cluster idea wasn't
+> used out side of swap before this patch..
 
-Thanks, Ethan. I've had a bit of a play around with the
-kfuzztest-bridge tool, and it seems to work pretty well here. I'm
-definitely looking forward to trying out
+I think there might be a way, but it's not that trivial. Anyhow, long 
+story short, try to move as much as you that logically makes sense can 
+out of this patch.
 
-The only real feature I'd find useful would be to have a
-human-readable way of describing the data (as well as the structure),
-which could be useful when passing around reproducers, and could make
-it possible to hand-craft or adapt cases to work cross-architecture,
-if that's a future goal. But I don't think that it's worth holding up
-an initial version for.
+-- 
+Cheers
 
-On the subject of architecture support, I don't see anything
-particularly x86_64-specific in here (or at least, nothing that
-couldn't be relatively easily fixed). While I don't think you need to
-support lots of architectures immediately, it'd be nice to use
-architecture-independant things (like the shared
-include/asm-generic/vmlinux.lds.h) where possible. And even if you're
-focusing on x86_64, supporting UML -- which is still x86
-under-the-hood, but has its own linker scripts -- would be a nice
-bonus if it's easy. Other things, like supporting 32-bit or big-endian
-setups are nice-to-have, but definitely not worth spending too much
-time on immediately (though if we start using some of the
-formats/features here for KUnit, we'll want to support them).
+David / dhildenb
 
-Finally, while I like the samples and documentation, I think it'd be
-nice to include a working example of using kfuzztest-bridge alongside
-the samples, even if it's something as simple as including a line
-like:
-./kfuzztest-bridge "some_buffer { ptr[buf] len[buf, u64]}; buf {
-arr[u8, 128] };"  "test_underflow_on_buffer" /dev/urandom
-
-Regardless, this is very neat, and I can't wait (with some
-apprehension) to see what it finds!
-
-Cheers,
--- David
 
