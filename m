@@ -4,115 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65E2DCA1017
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 06:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10872CA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 06:31:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3CC48E000D; Thu,  4 Sep 2025 02:23:39 -0400 (EDT)
+	id 6D14E8E000C; Thu,  4 Sep 2025 02:31:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BED688E0002; Thu,  4 Sep 2025 02:23:39 -0400 (EDT)
+	id 681F98E0002; Thu,  4 Sep 2025 02:31:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B03D48E000D; Thu,  4 Sep 2025 02:23:39 -0400 (EDT)
+	id 5BEAB8E000C; Thu,  4 Sep 2025 02:31:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A0BAB8E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:23:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 59E4ABC969
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:23:39 +0000 (UTC)
-X-FDA: 83850576558.20.1989957
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7CDB3C000F
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:23:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=esKt04t7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of joeypabalinas@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=joeypabalinas@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A8988E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:31:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0402C0A42
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:31:54 +0000 (UTC)
+X-FDA: 83850597348.16.A21A379
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E32081C0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:31:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756967017;
+	s=arc-20220608; t=1756967513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MpJy0SmFfEmeoeaFkzFs+WVa2Vc5JdK+bPJTBjQhA74=;
-	b=FNBI4YCUUz6G5fBlESwyiCg0JydMRSn7gndlC4sV9LKvqzCfzBFYXTGGbOSTbsaYoT9xDL
-	Ews3HexTcMGLSAnDusPPDru2A1wdFs1wUFGlHMd40F1bprLTVLKOPw9+ctusZldf231DEf
-	Yb3+aLls76zedPZG4lwc4X4+EoW7478=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=rV3Xie5byfnGSl1a5MCMsVLTCCu0ZrqrKCOqITDcdac=;
+	b=7dQMYMN1e3ytMH4N3ujFqvAnWvKgDIHjgunnZ6lbWwNSKBDSKMeD4haHWBXseO8mTISbys
+	5ToMOpr9QVA7NNri5TTAsS5gGz2mL32ZDdJYnpOuQX6a4dNfeteGbxygGBxw/La+0yxsMm
+	7d4yZxvUXlz+BN6sO/O+KxW3XE59Yek=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=esKt04t7;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of joeypabalinas@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=joeypabalinas@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756967017; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf20.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756967513; a=rsa-sha256;
 	cv=none;
-	b=paU9Yn31SCbYZga+EPgSzorL8JXOsnn3TiEM5oIf9A112z+to+LWUJhZtE1FPwSJDynWu5
-	IXgv4HTV8fH8dG+Rw6quxcMgal8ANQsDWXBIsxxj144Nu8cqkAFHLuBa7gqntS5Waro8qK
-	VkUsUrFQzmY6Btyl4T97K04kDBwB1GA=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b4f8050e031so33993a12.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 23:23:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756967016; x=1757571816; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MpJy0SmFfEmeoeaFkzFs+WVa2Vc5JdK+bPJTBjQhA74=;
-        b=esKt04t7lt4xZ52EiMkG1igYrfsg2GLjQ/KlpV8ibf9Zz/j2Ge8Ib5eWTN1lNFOda+
-         AFp1PrNliUN5ryp4x5oETIf8mhi3vKEvywEF5eGNascCO3VmSyP1MIuobcGthg79B4tC
-         zLSPYbbnQWJSerEY7TwF/bDXHOBfVXDvxsX0sYEZA4O4KDt/8T/B6yYBmZHO9ZVmwgA6
-         0/YHLSojFueiQBcONdWa1T0XojVsCQ3wSgt6XhpgcXbyNl7Ad6l0KPA6s1junE78dr/1
-         MHfYTskaKGNNsRXIFZQcMyJGaO2pMibHYZLm8ShA+jEZzYGgIgKUmy+PqjligLUpncPK
-         qL4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756967016; x=1757571816;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MpJy0SmFfEmeoeaFkzFs+WVa2Vc5JdK+bPJTBjQhA74=;
-        b=sUIZMaJxsoh8KfeznMJbLOXGDuRJwzWiOvFk/osGJr5A3lVi1KbN+UlwtsZek/fsQ3
-         i1ZyWtfrzQvkfbzR2ksmibGy/zZf6YmIkYxva2DzvHz0OxDnnNoIk6uFqdqyIQMRwOwO
-         1y5m86zh0/Q9m7SdiPE9e6tzmWz3ztMKmKneTrYT7BG3EAtrmE42db2ZwpYKz+QqOO8y
-         4jW7WG/qgRsGVMZ7daLodCJVvpNN1zDaYJDzho55mn194uTRNhswrxjQPguIbLo3e9iW
-         UMW2ZwsoyJM+vmYi7UtJpH0yik6P9v4hYW4Q3QTQO1OIMJhbokI7CtQkGloZeLMpJ2q8
-         Qfxg==
-X-Forwarded-Encrypted: i=1; AJvYcCXueJo55JelOR9ll4bFQdKhU7KhJHfyZKpZS+9JnN3qBuOwNlNSKcE4IZKBEaMEvzF/gab0F4STIQ==@kvack.org
-X-Gm-Message-State: AOJu0YxC01YK4Q3tNraU3MCAtnJWARsWrsX6A2MMfi9CMy48JuG/bvtc
-	39FjqMcAixpJMM8Rh2CBs9bL5bB2lzAUwjMnHBwv7/jJDiZNF6iW/rop
-X-Gm-Gg: ASbGncs5Vb+5zFPz8BYIFvFq0qoBrHBzeCs6WfQeaV/+ciq5hvg+ql+Tyc/dfQUDh6Y
-	YXNMFS1FFOy/HiyTz6nOaH+O1/WIV4T79cyIdyQeyjdEozJxUtKjgNDE0yLS2AbJl80K47zcjeU
-	hIPRK2Gq+iJFaFOV2v2JE5CDwwmYNrUyLJd2mqB1oTX6PXNXESSxMw1mAryKcL3hjKeRDzeeoYG
-	gwES9iZqg3TbXWLBRMTMNSKV8QTwQ+sKDP1JO2M9nQt9pmbjO5Ag+rvjftFiAKP0g3IQw5u3x0u
-	99fVxXT3SU0WNBI4VWK0FxVBLvsKpYaO9rho2lue4lm0AwSRLTLx2eoXNYQEFPkBHyEPF4NQ+9f
-	a1U5Aq4AB3dYlepMk7h79il5OAqahq3vohUqYHRXkr66HDere
-X-Google-Smtp-Source: AGHT+IEBJZvQVehY2sHFoniuE6A9P1WB/bX16Yql21Kl7/uCiWvYj5gVnHq0ENPDwr3ALXi69eZlZA==
-X-Received: by 2002:a05:6a00:1c:b0:772:39db:fa09 with SMTP id d2e1a72fcca58-77239dbfb77mr9444420b3a.5.1756967016264;
-        Wed, 03 Sep 2025 23:23:36 -0700 (PDT)
-Received: from hobbes.T-mobile.com ([2600:70ff:f833:0:8e07:c9e8:902c:6ffa])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7725f0c4008sm10198397b3a.35.2025.09.03.23.23.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 23:23:35 -0700 (PDT)
-From: Joey Pabalinas <joeypabalinas@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-hexagon@vger.kernel.org,
-	linux-mm@kvack.org,
-	Brian Cain <bcain@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Joey Pabalinas <joeypabalinas@gmail.com>
-Subject: [PATCH 2/2] fork: change "a mm_struct" to "an mm_struct" in comment
-Date: Wed,  3 Sep 2025 20:23:26 -1000
-Message-ID: <1c468cd846ba6839fea08df36d8d6e9718625661.1756966290.git.joeypabalinas@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1756966290.git.joeypabalinas@gmail.com>
-References: <cover.1756966290.git.joeypabalinas@gmail.com>
+	b=wRXvMNsYNYT35hQgsRD7PWA4FVjdomrlvMJyMdPqICTnm4wJdyeUZLp1j9OQkdsWlr/N+u
+	qoyl3RUCVSYKe2jm5eZQ4++vYfZ+iryz45aB895r0bDqoKQLOv2vE1WMUNxbSezeeqoz+T
+	sGEdfIpyXoqDX0KulCXfDfvd8S/HmLk=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cHV5z3SB2z2wBDt;
+	Thu,  4 Sep 2025 14:32:55 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 72CCF140118;
+	Thu,  4 Sep 2025 14:31:47 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 4 Sep 2025 14:31:47 +0800
+Received: from huawei.com (10.173.125.236) by kwepemq500010.china.huawei.com
+ (7.202.194.235) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 4 Sep
+ 2025 14:31:46 +0800
+From: Miaohe Lin <linmiaohe@huawei.com>
+To: <akpm@linux-foundation.org>
+CC: <mhocko@suse.com>, <david@redhat.com>, <nao.horiguchi@gmail.com>,
+	<linmiaohe@huawei.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>
+Subject: [PATCH] mm/hwpoison: decouple hwpoison_filter from mm/memory-failure.c
+Date: Thu, 4 Sep 2025 14:22:58 +0800
+Message-ID: <20250904062258.3336092-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7CDB3C000F
-X-Stat-Signature: 7adoy8qhgzx6qerfbm7bchao5ukcmc19
+Content-Type: text/plain
+X-Originating-IP: [10.173.125.236]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Stat-Signature: g3gj8ammahmqi9nmk7esgmajppaxpcif
 X-Rspam-User: 
-X-HE-Tag: 1756967017-446368
-X-HE-Meta: U2FsdGVkX1/ALFHPXBHhHqhZOmKn29Z6Vv4iwfcEUuFcdnatApkfHJKt2ir44OEd5pX/waxN+gi2QGDpA4dT0fTlIEPX1yTCfAZqE52S8kb2Lek9TWcVmJvMQcdfuw6/6i9Tgcacal93GCurwIVtzr73aaziLp2gJ/MEHWcqvVbxSJjGMy3uu0l71/nCYU1SjuAkE7Ter9J//aRgv1vv2jL73fN32Lq2Q4zYfIdyHieMgdYnbgOZ38dIm7mUKtNvPyqXdmZj1HnPYB6GvbBZVzz1GPTkf0GQp9/GejtWighshPPXb5TmmrpvOix0FdXTyZg7POTPqseeiXJ8jJAUn/QOui1957sVjn6HdnrhhrY53Q8QAec9baBt7zVAwB+7dsmzpvYzDbcFKzmmd9aAI5h61vIDHx2lxC9/ZSm0+x4RfecXuprfAYh0v5QhkjuYX4dL/fK/A+c4xvP+fs8r137jKJeyxHkiEdObPt9QTErHmTywqWz2ILRyMwId+iiTTDCabjRyLPc0ybQECzQLEsicuSbjio9tyh30BctPUX1kwGvcGhb82FDt9xFYDxpiLcyeqBhcAwShU5jRvlAzSSqj7HeSYVBoSNUMrGbatgRoYxdRzcd9IY3taplXlNnse447gy/vcIfqAmNM2Bj1HjLIOuTJxaZ5np55JlmC2Y9H7zOFCCzvKZ+lbTOiKwtBPiVUXlXHFuSQ+BnncQuwZjBWLb0gxO4hYCZLA9ulTuR3WNTktNRbXDS/pKFuTPvsuLMQlB9Oa8d/QUtiuk220xUz4wiuHtWzeaUH1Aus6YwxhDa3TpkwYPd2kASAR4EZZn1p4RrR+PHxRg5TrL6V37WnCo2hTLg0XNjzhmAL1X6a5gzGclrOV2sEGeEPro1JvRQII0niSoBE60kk/YKD2N9YBf1kSsn2RFA4O69x33agBptpqsZ7P8gkOC2rsZve7Ywc1r10gJzTdfOZgsE
- wih4+UT/
- uT5cYS9kX/VsRrWoMs6NNIwIeA2h1G+km/DFEuNIO4l9LmEvZ10DefDX0Y5KWTEv8z/lNFoYdFI7HMfCmQ4rRS2plCm92cPpDqsHvgTkyUF/u+BLroMtaoVxTQhcZSQcNd06NE31DKTtUxy9KHq0HNYVviUr9AQAQzPQUHPH48Pk3ZjeC3GsD0HVFSfEd1UaGjycyLlFc6olJ+lhdduNa6JuWkzAB+4CWDhSD5HlP5CLnmm/nQp6UtzvbBt26nRAVl4/XVfcWo0cUeWs5VoDQNK/c+aZC9vLEHo84bVKBMTcPgiFu6mEuf+XPRQ7jxE6aJPNmvmE+dwUMRDhpjrYtm26ic7iNSqLV96149EABP7rBuHlleiaDFXgkEE02hnKJ3G1bevgG6bqJj+PqDgwyCSAhDfOk9lpiGp9llVgH7JjDXkjsBDDB7gTIsbOfodB1leHc96pXhBPzUl33vzPMBxEJvMUin7hJs/aTBC+QDfqcy3jZIFthvKcwzw==
+X-Rspamd-Queue-Id: E32081C0002
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756967511-738276
+X-HE-Meta: U2FsdGVkX18JG2pjlQrl3EeUztQvqWyBt3iB0HhKvcv5/8k4pih2RGqU88Ku9GYI8yLE1UGXSRtebnQ83dB3qDa8agcPtXl+/3i8dMqGeWkoeAubgdSPcD42RGvOI7kl5EuyXKG1tab2XR1wNeFKznr/IMWM6NyyigSTohuzt/ZnbBy+avi1wCZRv84h6wUV3/7AzjJgSxxz5zyEVZ3BouiArPSEAvv8ReRZv629uJxdKWfHqV2Iys0eYMVmU2tz8VZAUYzKMwW3oeQiNROs+djncZkFoLFzfRU6jLseJGGqGbnLPJ1huwWu/9XrFMU3gribe7rnia3r9NYf4xQSuR2ji2Vl3oOE7ho47dfpfapO5hxwymZ7HcqFBExCDYYztqJNriJZpWdnqH5JiyzLZpV2e4AMq6gCTM7vBr+wWC4OlzkivN2fuRm7r1u+H7xRZZo1E3dZnMv2JXbih6Wdhc5VMsdjtO5eKwmdLOQecTskyksU6hPor7PGDjDpCxMtnKGYnwbijKkboHk34oEjL+cvWzgrpRfueuj9F0oHIg2oFNXwEB60G8PyxAau/CdzWASySxT3Ro/eGHeoNBVj6Ad+3dcUbCM3veAIz31aIKeFiudaCm5rBxQU0TBXYDoko+nphjoowqamqxsoADO5Vs8sZFKVV0S7XjzVoH3txekAXIVzhbvlJ0xmRobA/Sdw9Zy7iRHXNQ63M2VQd9KVV3sZElOUKYMQiV8TTcBs5oswzy3RqGzeFHl8hTVnCdO3Z5F1Bhdy0dmVOv3dsQ5YSAlGAki7fnSsVBRMNU6zdN5sSIO2ciOS/5sosJPjJPcF0Tkp5SnUuul1RGsMpWICKAwEtPd3tYqCvbQ/ECS3Ktp2dkFGqdhOEl2Tzuz2PVpARFmXC+CqTYlX6cnHh0/qXuHkvqIreAtZ0+1dL+aGEtLGzGEeSogOK6USDNKzae+WloLkj5AVFqHejlUbOSr
+ xd05lKeZ
+ weFn+kAB6t84YkeW+/GH4PyiK1GmgJGO6VRXb2gEc9Yhy7MdRMNzQspsPxyqoA+j7DVeHFavlC6Av4AJx8b6lYhu3q/+vnH8m+ypDBvENT12lE2eSxVNPFbjwco9O9Yroa07/0FRQE0nEjUyL82NIgj4tD6eeD3waLhJ4prd7LNjEaDqQY8PA8liJt5L1qWR7D5t4iUDVSTWOmfuSFsDRyjlyDCBujaIF25ImhLV8jsEVrzhDA1A76sdAR6lnh9TY94Ner6vt0uHvrx7RxCx/nKSwFhZ2PphWeJnn5MgasUWi0hAWRpyCnQmKLX59UYIYd4eWKMHFl7UHAqwhyZaxoyDFA48K5jetT1sW2a0Us4gptZI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,42 +93,315 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The correct english is "an mm_struct" which is used everywhere else
-in the kernel.
+mm/memory-failure.c defines and uses hwpoison_filter_* parameters but the
+values of those parameters can only be modified via mm/hwpoison-inject.c
+from userspace. They have a potentially different life time. Decouple
+those parameters from mm/memory-failure.c to fix this broken layering.
 
-Signed-off-by: Joey Pabalinas <joeypabalinas@gmail.com>
+Suggested-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
 ---
- kernel/fork.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/proc/page.c       |   1 +
+ mm/hwpoison-inject.c |  91 +++++++++++++++++++++++++++++++++++++
+ mm/internal.h        |  12 ++---
+ mm/memcontrol.c      |   1 +
+ mm/memory-failure.c  | 106 +++++++------------------------------------
+ 5 files changed, 114 insertions(+), 97 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index af673856499dcaa35e..9a783cd46d097a2d68 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1397,18 +1397,18 @@ static int wait_for_vfork_done(struct task_struct *child,
- 	put_task_struct(child);
- 	return killed;
+diff --git a/fs/proc/page.c b/fs/proc/page.c
+index 46be207c5a02..8a3280810397 100644
+--- a/fs/proc/page.c
++++ b/fs/proc/page.c
+@@ -257,6 +257,7 @@ u64 stable_page_flags(const struct page *page)
+ 
+ 	return u;
+ }
++EXPORT_SYMBOL_GPL(stable_page_flags);
+ 
+ /* /proc/kpageflags - an array exposing page flags
+  *
+diff --git a/mm/hwpoison-inject.c b/mm/hwpoison-inject.c
+index 7ecaa1900137..a11222572f97 100644
+--- a/mm/hwpoison-inject.c
++++ b/mm/hwpoison-inject.c
+@@ -7,8 +7,96 @@
+ #include <linux/swap.h>
+ #include <linux/pagemap.h>
+ #include <linux/hugetlb.h>
++#include <linux/page-flags.h>
++#include <linux/memcontrol.h>
+ #include "internal.h"
+ 
++static u32 hwpoison_filter_enable;
++static u32 hwpoison_filter_dev_major = ~0U;
++static u32 hwpoison_filter_dev_minor = ~0U;
++static u64 hwpoison_filter_flags_mask;
++static u64 hwpoison_filter_flags_value;
++
++static int hwpoison_filter_dev(struct page *p)
++{
++	struct folio *folio = page_folio(p);
++	struct address_space *mapping;
++	dev_t dev;
++
++	if (hwpoison_filter_dev_major == ~0U &&
++	    hwpoison_filter_dev_minor == ~0U)
++		return 0;
++
++	mapping = folio_mapping(folio);
++	if (mapping == NULL || mapping->host == NULL)
++		return -EINVAL;
++
++	dev = mapping->host->i_sb->s_dev;
++	if (hwpoison_filter_dev_major != ~0U &&
++	    hwpoison_filter_dev_major != MAJOR(dev))
++		return -EINVAL;
++	if (hwpoison_filter_dev_minor != ~0U &&
++	    hwpoison_filter_dev_minor != MINOR(dev))
++		return -EINVAL;
++
++	return 0;
++}
++
++static int hwpoison_filter_flags(struct page *p)
++{
++	if (!hwpoison_filter_flags_mask)
++		return 0;
++
++	if ((stable_page_flags(p) & hwpoison_filter_flags_mask) ==
++				    hwpoison_filter_flags_value)
++		return 0;
++	else
++		return -EINVAL;
++}
++
++/*
++ * This allows stress tests to limit test scope to a collection of tasks
++ * by putting them under some memcg. This prevents killing unrelated/important
++ * processes such as /sbin/init. Note that the target task may share clean
++ * pages with init (eg. libc text), which is harmless. If the target task
++ * share _dirty_ pages with another task B, the test scheme must make sure B
++ * is also included in the memcg. At last, due to race conditions this filter
++ * can only guarantee that the page either belongs to the memcg tasks, or is
++ * a freed page.
++ */
++#ifdef CONFIG_MEMCG
++static u64 hwpoison_filter_memcg;
++static int hwpoison_filter_task(struct page *p)
++{
++	if (!hwpoison_filter_memcg)
++		return 0;
++
++	if (page_cgroup_ino(p) != hwpoison_filter_memcg)
++		return -EINVAL;
++
++	return 0;
++}
++#else
++static int hwpoison_filter_task(struct page *p) { return 0; }
++#endif
++
++static int hwpoison_filter(struct page *p)
++{
++	if (!hwpoison_filter_enable)
++		return 0;
++
++	if (hwpoison_filter_dev(p))
++		return -EINVAL;
++
++	if (hwpoison_filter_flags(p))
++		return -EINVAL;
++
++	if (hwpoison_filter_task(p))
++		return -EINVAL;
++
++	return 0;
++}
++
+ static struct dentry *hwpoison_dir;
+ 
+ static int hwpoison_inject(void *data, u64 val)
+@@ -67,6 +155,7 @@ DEFINE_DEBUGFS_ATTRIBUTE(unpoison_fops, NULL, hwpoison_unpoison, "%lli\n");
+ static void __exit pfn_inject_exit(void)
+ {
+ 	hwpoison_filter_enable = 0;
++	hwpoison_filter_unregister();
+ 	debugfs_remove_recursive(hwpoison_dir);
  }
  
- /* Please note the differences between mmput and mm_release.
-- * mmput is called whenever we stop holding onto a mm_struct,
-+ * mmput is called whenever we stop holding onto an mm_struct,
-  * error success whatever.
-  *
-- * mm_release is called after a mm_struct has been removed
-+ * mm_release is called after an mm_struct has been removed
-  * from the current process.
-  *
-  * This difference is important for error handling, when we
-- * only half set up a mm_struct for a new process and need to restore
-+ * only half set up an mm_struct for a new process and need to restore
-  * the old one.  Because we mmput the new mm_struct before
-  * restoring the old one. . .
-  * Eric Biederman 10 January 1998
-  */
- static void mm_release(struct task_struct *tsk, struct mm_struct *mm)
+@@ -105,6 +194,8 @@ static int __init pfn_inject_init(void)
+ 			   &hwpoison_filter_memcg);
+ #endif
+ 
++	hwpoison_filter_register(hwpoison_filter);
++
+ 	return 0;
+ }
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index 45da9ff5694f..0bb0f4471673 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1227,14 +1227,10 @@ static inline bool node_reclaim_enabled(void)
+ #ifdef CONFIG_MEMORY_FAILURE
+ int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill);
+ void shake_folio(struct folio *folio);
+-extern int hwpoison_filter(struct page *p);
+-
+-extern u32 hwpoison_filter_dev_major;
+-extern u32 hwpoison_filter_dev_minor;
+-extern u64 hwpoison_filter_flags_mask;
+-extern u64 hwpoison_filter_flags_value;
+-extern u64 hwpoison_filter_memcg;
+-extern u32 hwpoison_filter_enable;
++typedef int hwpoison_filter_func_t(struct page *p);
++void hwpoison_filter_register(hwpoison_filter_func_t *filter);
++void hwpoison_filter_unregister(void);
++
+ #define MAGIC_HWPOISON	0x48575053U	/* HWPS */
+ void SetPageHWPoisonTakenOff(struct page *page);
+ void ClearPageHWPoisonTakenOff(struct page *page);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 9712a751690f..8dc470aa6c3c 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -287,6 +287,7 @@ ino_t page_cgroup_ino(struct page *page)
+ 	rcu_read_unlock();
+ 	return ino;
+ }
++EXPORT_SYMBOL_GPL(page_cgroup_ino);
+ 
+ /* Subset of node_stat_item for memcg stats */
+ static const unsigned int memcg_node_stat_items[] = {
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 4af8875b07b6..cebec87d9fa3 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -212,106 +212,34 @@ static bool page_handle_poison(struct page *page, bool hugepage_or_freepage, boo
+ 	return true;
+ }
+ 
+-#if IS_ENABLED(CONFIG_HWPOISON_INJECT)
++static hwpoison_filter_func_t __rcu *hwpoison_filter_func __read_mostly;
+ 
+-u32 hwpoison_filter_enable = 0;
+-u32 hwpoison_filter_dev_major = ~0U;
+-u32 hwpoison_filter_dev_minor = ~0U;
+-u64 hwpoison_filter_flags_mask;
+-u64 hwpoison_filter_flags_value;
+-EXPORT_SYMBOL_GPL(hwpoison_filter_enable);
+-EXPORT_SYMBOL_GPL(hwpoison_filter_dev_major);
+-EXPORT_SYMBOL_GPL(hwpoison_filter_dev_minor);
+-EXPORT_SYMBOL_GPL(hwpoison_filter_flags_mask);
+-EXPORT_SYMBOL_GPL(hwpoison_filter_flags_value);
+-
+-static int hwpoison_filter_dev(struct page *p)
++void hwpoison_filter_register(hwpoison_filter_func_t *filter)
+ {
+-	struct folio *folio = page_folio(p);
+-	struct address_space *mapping;
+-	dev_t dev;
+-
+-	if (hwpoison_filter_dev_major == ~0U &&
+-	    hwpoison_filter_dev_minor == ~0U)
+-		return 0;
+-
+-	mapping = folio_mapping(folio);
+-	if (mapping == NULL || mapping->host == NULL)
+-		return -EINVAL;
+-
+-	dev = mapping->host->i_sb->s_dev;
+-	if (hwpoison_filter_dev_major != ~0U &&
+-	    hwpoison_filter_dev_major != MAJOR(dev))
+-		return -EINVAL;
+-	if (hwpoison_filter_dev_minor != ~0U &&
+-	    hwpoison_filter_dev_minor != MINOR(dev))
+-		return -EINVAL;
+-
+-	return 0;
++	rcu_assign_pointer(hwpoison_filter_func, filter);
+ }
++EXPORT_SYMBOL_GPL(hwpoison_filter_register);
+ 
+-static int hwpoison_filter_flags(struct page *p)
+-{
+-	if (!hwpoison_filter_flags_mask)
+-		return 0;
+-
+-	if ((stable_page_flags(p) & hwpoison_filter_flags_mask) ==
+-				    hwpoison_filter_flags_value)
+-		return 0;
+-	else
+-		return -EINVAL;
+-}
+-
+-/*
+- * This allows stress tests to limit test scope to a collection of tasks
+- * by putting them under some memcg. This prevents killing unrelated/important
+- * processes such as /sbin/init. Note that the target task may share clean
+- * pages with init (eg. libc text), which is harmless. If the target task
+- * share _dirty_ pages with another task B, the test scheme must make sure B
+- * is also included in the memcg. At last, due to race conditions this filter
+- * can only guarantee that the page either belongs to the memcg tasks, or is
+- * a freed page.
+- */
+-#ifdef CONFIG_MEMCG
+-u64 hwpoison_filter_memcg;
+-EXPORT_SYMBOL_GPL(hwpoison_filter_memcg);
+-static int hwpoison_filter_task(struct page *p)
++void hwpoison_filter_unregister(void)
+ {
+-	if (!hwpoison_filter_memcg)
+-		return 0;
+-
+-	if (page_cgroup_ino(p) != hwpoison_filter_memcg)
+-		return -EINVAL;
+-
+-	return 0;
++	RCU_INIT_POINTER(hwpoison_filter_func, NULL);
++	synchronize_rcu();
+ }
+-#else
+-static int hwpoison_filter_task(struct page *p) { return 0; }
+-#endif
++EXPORT_SYMBOL_GPL(hwpoison_filter_unregister);
+ 
+-int hwpoison_filter(struct page *p)
++static int hwpoison_filter(struct page *p)
+ {
+-	if (!hwpoison_filter_enable)
+-		return 0;
+-
+-	if (hwpoison_filter_dev(p))
+-		return -EINVAL;
+-
+-	if (hwpoison_filter_flags(p))
+-		return -EINVAL;
++	int ret = 0;
++	hwpoison_filter_func_t *filter;
+ 
+-	if (hwpoison_filter_task(p))
+-		return -EINVAL;
++	rcu_read_lock();
++	filter = rcu_dereference(hwpoison_filter_func);
++	if (filter)
++		ret = filter(p);
++	rcu_read_unlock();
+ 
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(hwpoison_filter);
+-#else
+-int hwpoison_filter(struct page *p)
+-{
+-	return 0;
++	return ret;
+ }
+-#endif
+ 
+ /*
+  * Kill all processes that have a poisoned page mapped and then isolate
 -- 
-Cheers,
-Joey Pabalinas
+2.33.0
 
 
