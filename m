@@ -4,142 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28886CA1010
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 02:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C12CA1014
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 03:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 848188E000A; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
+	id DD6418E000A; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E758E0001; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
+	id DAD858E0001; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 734C28E000A; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
+	id CE9F38E000A; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CB568E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F310D1409B5
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:55:11 +0000 (UTC)
-X-FDA: 83850051222.08.FADA430
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id BD1F8140003
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:55:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JmjFlbDE;
-	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756954509; a=rsa-sha256;
-	cv=none;
-	b=VYMogcGtEZ7z9dWm5E4OvChZkqnUnnF2isduYQPNW/PpdgAEhKb028HY3liYQl5BkczT9G
-	bvxUHWMFWlDk6kxV3rhFwjztGCXLR1S9WjPLNoaTwcVuHLZK2dmZHKCMxbzhk3gb2cm3XX
-	eG5I3oAQJqC5nDDgEUnJ2ORga8j2bEQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JmjFlbDE;
-	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE7158E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C40FC09CF
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:02:05 +0000 (UTC)
+X-FDA: 83850068610.25.587CF5C
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 70790160012
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:02:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="KihRr/F4";
+	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756954509;
+	s=arc-20220608; t=1756954923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BFGsvyfGlZeRUoo142qkd9fYdJJZqaobhSbYex4lato=;
-	b=C+01M6twKR+7hBBuHqcNiOpfythYagvJDB3kJqUYDTKq2YtkWe1Q5XVrZImMjh35d2o0gS
-	t5y+DXRx9KmOjafyktAlGHSqHyuyi/rxVYhO2OvJp2aBN6P7gjPOIydBqMUB2rdaC/dzn0
-	6HEcgDDkbHipNHzZZFFKVLxczjJI1Rk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756954509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BFGsvyfGlZeRUoo142qkd9fYdJJZqaobhSbYex4lato=;
-	b=JmjFlbDEySnDZF9YYVFoOFsbAnywXyUrwr9ftux3re5h2DGbfn6MZgidrMB9J5mEkuH3a5
-	IS0imKgGH5sQSOUPgoI/Aab6FSjeOYQO40zVe6YuCdo3BXn/IMRyRMPqWlNg9RxkACmkBj
-	OBjkbsLqBUyUar1PFOCdGvGA+m/B/l0=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-vLQg8eUjMRqs5lICaBeAEA-1; Wed, 03 Sep 2025 22:55:07 -0400
-X-MC-Unique: vLQg8eUjMRqs5lICaBeAEA-1
-X-Mimecast-MFC-AGG-ID: vLQg8eUjMRqs5lICaBeAEA_1756954507
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-722866d8e9fso9010287b3.2
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 19:55:07 -0700 (PDT)
+	bh=Sg3/MOE3S1m7f3fF13n1hw3ITE04y8oKW6xr+zs7pi4=;
+	b=XAFCfBFawg5FOIUKGsdsG8w2uf+dFUtoCS8jsej8ZGRl98RaTJrmDNDc/2wV7Nuo3jB/87
+	2tBPrDzW1BwDklIA2djxbe1CJkIIBSKiUXX10u6utD1mmauKihohqaMlYpotHPuaYd2ZId
+	iq8IcDn63T1Xh1cvI/qXJQqEgn6A28k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756954923; a=rsa-sha256;
+	cv=none;
+	b=l9PuFx1elB2QFrox9CeVReJZ+Ia3rKqAgPIycZs2qAfwoFA9jGHe/50wNSN1fm6P2x/6F7
+	sUiV1qCqJvz6SNunug36hV1DkEURlvwg06v4h3wjqdGySrHDPaKkS4DTb+lLOngaGdMrPT
+	3fBrtKoNkvORDU5/8GzWq6xinsnbTsQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="KihRr/F4";
+	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-24b2337d1bfso109225ad.0
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 20:02:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756954922; x=1757559722; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Sg3/MOE3S1m7f3fF13n1hw3ITE04y8oKW6xr+zs7pi4=;
+        b=KihRr/F4HwXeU3FD9aubdLs1H/vD/V2ENi4FXQbE6TyatlAeN4ieQdPERGSHgUkvNe
+         3BjTOu66NQOUo/EWFSNWLEreJvFK1zERKE8hvX9eQOh+zZrGPuOTGfMZ+ZRhYdlPa5JH
+         G+e/Z6B1cjS87qFRitMDsEe8LL7xzfiotv6d//5UpPwG245+JDXuT0hqdUxMoMueLay8
+         lBrk/MAbXWLPJapZH5FE/Z3jXCtxU6UpCUmWQveccMu7ui6tAlDL+J8XFolHqrQqXvFy
+         swz5oGKCeMJb4FPj24DPvXNrhQkSQxAuetbbc1vJhgf1IkiBPvjrtStwvskGCfqecyWD
+         OAyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756954507; x=1757559307;
+        d=1e100.net; s=20230601; t=1756954922; x=1757559722;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BFGsvyfGlZeRUoo142qkd9fYdJJZqaobhSbYex4lato=;
-        b=v5TmwFxZtZlmv0rICfFZoeUVlf6JsFtZsRhXyMxvdD/h+eqekvD/p0xXcoG4tedwy5
-         4x1nPPOqI5t4SbHbI3rqKRTh1o2xAF9HoNyIBV6IhihMdQR9M18pKBmjoJHbsrudz+WC
-         ZFCBVVUrnAVOSgohtv3u1FQJJnaIQHjwt2wP1faGWEPUbl9Z47Agk3YUM/37VOY3SNOc
-         kuJtPNjgai+3sFbS45UrkUPp5CMzSsGAi5cmtT/1UO2vYM8HDCFNzArAI+LWx2lauW9B
-         gkVr8/8XeHKG8/YvbEhwvjXFfxTM5dJK0gJqNGs9jPdK30/T1ODGNBm3G8LyO5f89pfn
-         onyw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3NbZk8y48dOvBktvxfh3SrEvLNXcUAu5cH/Tvlw2XDL9TtO8bpkaTsSk1LNSEVcB2oRy9Pc1+BA==@kvack.org
-X-Gm-Message-State: AOJu0YwbvepsZ7KQlWo5bfcv6R/XF0gRhsgm6OanPVVHPQetWcXtATD0
-	lNxieaDmlyzmFs+vd4Irbp90BuktfBTZKuc04fyz0y3QQfWMTEBrGKdtpJGT6RgHyep8AMkZqwV
-	dvlmEIBGm/fCowV9jRA85e73GFEn1sN7WCnEGqsQA0z+BpYCbPIpV8SlqtX+yjqcKHmYqAqb+1G
-	sRXi4whB5ra5SE6LCE+T65herixqI=
-X-Gm-Gg: ASbGncuSh+oRUeH2UZiZrisF6lGpTROKJT1zz6RT7HiYyeNic6uP/31sqPF6I+3kr5V
-	zbLmL+6T16BNj6/sfZ3cIaMVMEDylsbGDxMYa+OqRzF1uNjJ30Aibp3Mm4dbS7miz2CzYfH8HC5
-	JgkFWY4OqPOLLezyBN5HGmxoZd2mQB6dSspkI=
-X-Received: by 2002:a05:690e:2483:b0:5fc:aef:28c9 with SMTP id 956f58d0204a3-601782d5d5dmr1244612d50.29.1756954506645;
-        Wed, 03 Sep 2025 19:55:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFDp5KBBiAm/A14c1UZ2x88hWB4XMoRs9mNoQ299w19LQV6LRXEBDT8MMPS9G/48qZ5qMyz3tFyTQ/kB1gAxKA=
-X-Received: by 2002:a05:690e:2483:b0:5fc:aef:28c9 with SMTP id
- 956f58d0204a3-601782d5d5dmr1244576d50.29.1756954506194; Wed, 03 Sep 2025
- 19:55:06 -0700 (PDT)
+        bh=Sg3/MOE3S1m7f3fF13n1hw3ITE04y8oKW6xr+zs7pi4=;
+        b=p+RVdWcoBckEKuOGWRbwcaEC3EyGpfTP1cmWAgqSPHNRnPjEpDnNG72ujCnzEvInT6
+         NoYmMovzpngph1pYLjNJPznjRBtqYpeJ4WdiMMzNe6C4jKtWp3Eqi7pIS+8m6+uQkoC5
+         sfPKCNINJXumluH/U292NHd+CWmkEDKaLjfzrLoqWhgl7kGLAkpqVhK3OcLD9GxGQC7h
+         oRhIHeLa262XYNoxxgoygJ13e9tBG2msdpPmB0uhAM6L2zsLMAPzSHXGFuPEsIBeYyrp
+         u5ZU0R2TVVi5cL2EggJJT5E6uLQxei5ctO4xx1AqfOtxpzJSfBllD9kDnr9HL0zOma1b
+         nkLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXeA6rxG+BSY7xgqRh71H9gDQfz602RmnwYeDwwvRZBPMPWxgHOEt6Os6zrBA/YMWFjARRJorq2IA==@kvack.org
+X-Gm-Message-State: AOJu0YzwY0tHLwd75bwpXfQEeo63DLDk+dKjJ2yGGZiWwhD1eKSBFyKW
+	+voWOmqcByyTnKLFOqYyBLyrgpLlhud1KZnAaTHVX+khspzzf2jHpsUzU0eGg6Sm0DPCgUMej76
+	Eauc42KCq9/lpLlypdDsiOqaX9rq5O/ZqaVQE/EJX
+X-Gm-Gg: ASbGncsOjabIecM0OHqh0I5IGj+1K8eV7JjlFkrTDiVQcOyi3xOlp+S0/MF5wYHZ9Jo
+	F8VrKXrZCy/ooFDUz/8WrYzmT4b/EFKZtdttmZ0ierh3k3KKqHe4SQAMgE9q9RVscn60Qz1Bd3E
+	9aAAPdH3ua5BiAITbVw7KqKaBbuUyenIekexLBXCD8pJTUjiQ6Rwe3UUMBsC4KCwY6TvO/N3k8L
+	a+ajRNp2M7NPzaajKzWnHDIk8ML9yRLYax+2vgj6OYMuFu2vuvyuVXBeQ==
+X-Google-Smtp-Source: AGHT+IG8YHt751a8iagriEcNsKMllgaN6wY06ZE8CJTNDUcFMlf5P7pepAtKth9DhLzX66wuKthgL0uNwy/D9mA5rp0=
+X-Received: by 2002:a17:902:e748:b0:248:dce7:40e1 with SMTP id
+ d9443c01a7336-24cccca7f62mr454025ad.9.1756954921579; Wed, 03 Sep 2025
+ 20:02:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250819134205.622806-1-npache@redhat.com> <0d9c6088-536b-4d7a-8f75-9be5f0faa86f@lucifer.local>
- <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
- <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
- <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local> <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
- <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local> <95012dfc-d82d-4ae2-b4cd-1e8dcf15e44b@redhat.com>
- <bdbb5168-7657-4f11-a42d-b75cce7e0bca@lucifer.local> <e34e1ffe-c377-4c9a-b28b-ca873f3620ac@redhat.com>
- <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com> <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
- <2a141eef-46e2-46e1-9b0f-066ec537600d@linux.alibaba.com> <f34b5fcb-6a97-4d97-86a8-906083b53be6@redhat.com>
- <eb02c281-6d41-44af-8eaf-8ffc29153a3a@linux.alibaba.com> <286e2cb3-6beb-4d21-b28a-2f99bb2f759b@redhat.com>
- <17075d6a-a209-4636-ae42-2f8944aea745@gmail.com> <287f3b64-bc34-48d9-9778-c519260c3dba@redhat.com>
- <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
-In-Reply-To: <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
-From: Nico Pache <npache@redhat.com>
-Date: Wed, 3 Sep 2025 20:54:39 -0600
-X-Gm-Features: Ac12FXyZ7Om70-q7zqgNTiGl13FCHecHMQ3x9cRnHFwQsUK8x6vVkC5jouQ4XXQ
-Message-ID: <CAA1CXcCMPFqiiTi7hfVhhEvHs4Mddiktvpmb7dMe4coLDF0bgg@mail.gmail.com>
-Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com, 
-	ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
-	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, 
-	peterx@redhat.com, wangkefeng.wang@huawei.com, sunnanyong@huawei.com, 
-	vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com, 
-	yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 41CHiYIO_cwzJ0Hqr_cdSqfK2A-nQ9RTWAI8ymtBWQ8_1756954507
-X-Mimecast-Originator: redhat.com
+References: <20250903232437.1454293-1-kaleshsingh@google.com> <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r>
+In-Reply-To: <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Wed, 3 Sep 2025 20:01:50 -0700
+X-Gm-Features: Ac12FXy43GL9nI9zR7z8e9dj8Hz5wlrXATZLKUd47Qr5ZkcfHVn_XRh1JMB9T7w
+Message-ID: <CAC_TJvd0SnHpEv0MSwXsF4UFpP0MNvRc033=JS1xTEHAOjQY5A@mail.gmail.com>
+Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	kernel-team@android.com, android-mm@google.com, 
+	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BD1F8140003
-X-Stat-Signature: 4jxune4wf3ydbfwd1di7xeoy5b7qo3pp
 X-Rspam-User: 
-X-HE-Tag: 1756954509-182119
-X-HE-Meta: U2FsdGVkX1+NUKtA/8BDZRD7LCP9OQ1hekiPLqRwweHX3vFD59b29w5VV+xR2N5zefSEss/zoUJ56as7JgVjDPZ8K2ejLU2FdjiKEGdBmiofEhANZUrPPzIw/PuZhsi9q6NmT5r+8S1UFlcCv41K26Wptl+0/X7ZtxJIQQ1Cam57usVuDuU/BeFscxclHDHLYGtrCit+SMORsysKnOb6ud7tyTitao4ZSIFunQPltPYA0+FeRSM2FWGRQUcfBmbgtANvrGRgubRcW1gV/4ku9cP0ALwzwLYhXqqfZMXgY/kFyA4ZeQEYeDJem6+7kpnvsAAgpW0V1ZwpHg4vz8PE+lvLRckPjxEB21B2Rf6wkJPMBCvtX0HVpfPIRFJKMfGYyHCm42UVghYrRZpp217i7LE9BRzaMQ/PNhAOOwxCAD/vGs69b9TEE1OIL2pCiGcpXU5tRx3gNxGHiA+BAQpwdZ4enekwxJ5Zqe8hnhtmjkmnWEK4+xFdTb318NNAcEE4Vbbtcjn1jENZFs+tCWGKPNSk1UxuRDNZNQBoOluSyFMzfmUwPlFQDB7zKhVL9UFm+Dxob/HS8jONH9KQwT701DiIZiz7J8rLnvGDWnZ0co8QpxArO7iP5n5Y0tU5BC7csrTYi4lFtcjAhITri3y9qK4W3rfC94UGMIlcWWqGgEFHUTWTcjZWlYxb1WSSApX2REh9DGQ9nLgsdYsy7XU3haY9HoJH+PoZfZzC7r2zB9x4ST+2HYNTm5Z8gBXZXD155GrpFKjEXpdv29LJ/UzFz7kVO3AfgorMxeIZ0pBaQFXsaPQAoOgvAmdg6M3EGJE21+1htfebjTVvAQHDo4NkhBDj0qt7ZyD5vslpUaD5DjcxDtIMnYwxJ8Eu5SNWJzz1SiHXKTDaLnihGNmFPvANKKucepxDn9wZySxK2jILZv2UvWpr/vm8ruJpMOVMSElMwVZBQ5ZKyjJoSZHrZoj
- Rp8YvA69
- 5ywTkesXCNAGBssE1/CuEC4AX5TrsfQjuHpIDY733ogfUo2wvlvnIt6emFJoJNDWHUVeMCpXpy8NFVWNlmiEAgSDCPi5pbAyBkW/9C5EVDvsbUcUaUya29nUajMkZ3Ci+R1fg+0Lm99ZP1A5ORtwuEpBeNFa74PCFq04Hp1qCKDOFhet6SSUrSVkYnQeI/0nuo88stXM6hqCYNOP3JqU50lnxv8qDDACkZrpRbrGc/Ei5uCouR8xj4PVFbs76Tesh9ojASImLWPYTyVqjtNST48r3VazBo45yb9/GXoXuPVb6VSSuoW7HwdQgblfkCKIbYynRhWAnRQaepdTsIF2CGFoXiTlwwhoNhsZx
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 70790160012
+X-Stat-Signature: 4os98qhpofmmmc6kb6n6jidnttweytcm
+X-HE-Tag: 1756954923-301113
+X-HE-Meta: U2FsdGVkX1+ZNbQZtHrEJz5T4kQ6MA8mT5A4S0US2AteiuaJSFho0mmszpo9JIiUv9OW4tj9XuUbgi/G39Wu2oh0pUHpID5Mu+4Mqmyeqh6HAqSp+UIv5122hDxO5XVJTvkGxCbZ08KGcmLpvklKWhxVthm3s7BHYCE/pS3a/r0vYqIbtn318IFMGzcCmobx4oDRJryCnotzAS6jPcuVw1xYbl8Ov48OGxjZ8odJmApZfcA+0cdnS7NJy7ZWmH9FItDXvRvzuP4R46KjuDtRdSOyJx+Cl5tJPbJ/zMU2Rgja7EZExE1jNkx+Ft3cXY9uB6CKME6nFwW9TRW8cXdg/DpL2VTITwGvK7hMTns1BLXPl0cs1wa3qfcE0Z1ThFRDq3zlozHnbkimbx4fBOlqE8WrygVHGnp0/fj+IyQeYLH6rj8pzBz/IBFfOI0zHMCHjSjXFtute5b1OJnSCfRT9/7uI2eGreAn7JxqMc6F4x2W0PMeSCc4UasiKg6Pp6QcaumtOLAgmsQPOfIr1Djsg5uhnJQLut7F7P+0iASOTakzsPvywC1uoSTM9sr84LlH7zKZAhrQ7iNDjBVOAiKKRlwE8JqzZxFAx53nJHgEcZup66BNivLSeUUTKbi1gl42vN/DQ+vwdWcISOTsu8R7wuHUBWjwErReJoYfaG5/gLDdXMbYW1260PXYfbULVwnm/YEQu5MT7/sXMUC1Ug9lnto420rDBsO1GSKjjwSmPSmy83WWxG4ZpK1Tfo4mpKOZF48DuLlKyRYrkqNMDQGvNe+B0RqcvMF3faPsWRGlI/XYGGuBJIli6IRW9VZA+fcj1wG4Q7sA3L7wbdxq8rkvD6tMC8UlfC3Gp8MzKa4741S6dqRVXBy0x1/vZ26KPba5fQBA/tplsh5GD3BvPrWWMn7eXnDwGZmPYQySAVzkpa6rrjMtO2gcSkwRKiUEkthM7pn3+PquFEOzd9EkAtW
+ N/Phd9Go
+ ydhbL/kJntjIIwgBJtKRNpbmMXo4WeuKqX5Up4hF4iY9KlStznbcp22vMSy4112qHPf9g6vamjV2usS9EW5W2ZTfcl+1tbamwnXx7tU3hR+yJJNeqD1XIYX8+CD0IjzkJobnvJ6g4jzquzR/WtPIYRJ3UtyszZuZLuwZW5DSw9oJ6pqOvap5OwNBel30fsHkNxupiTaVZ95uasmFqzg2tkt+qzIPZ1o9HmO+aRNZZrrOdt6HOHHGXsf8WDdHJ1rZp5zPTkcI1M7FDxpPHAAgkD9LAQCEG86Z/WVByJWJEtYKAhqGqYOsUk9YhjYRx8+0tx30ExEE5CLTLi4CcwsyxCC2G1kmmyFuUkewh51dA0pp7L6M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,227 +120,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 2, 2025 at 2:23=E2=80=AFPM Usama Arif <usamaarif642@gmail.com> =
-wrote:
+On Wed, Sep 3, 2025 at 4:46=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> wro=
+te:
 >
->
->
-> On 02/09/2025 12:03, David Hildenbrand wrote:
-> > On 02.09.25 12:34, Usama Arif wrote:
-> >>
-> >>
-> >> On 02/09/2025 10:03, David Hildenbrand wrote:
-> >>> On 02.09.25 04:28, Baolin Wang wrote:
-> >>>>
-> >>>>
-> >>>> On 2025/9/2 00:46, David Hildenbrand wrote:
-> >>>>> On 29.08.25 03:55, Baolin Wang wrote:
-> >>>>>>
-> >>>>>>
-> >>>>>> On 2025/8/28 18:48, Dev Jain wrote:
-> >>>>>>>
-> >>>>>>> On 28/08/25 3:16 pm, Baolin Wang wrote:
-> >>>>>>>> (Sorry for chiming in late)
-> >>>>>>>>
-> >>>>>>>> On 2025/8/22 22:10, David Hildenbrand wrote:
-> >>>>>>>>>>> Once could also easily support the value 255 (HPAGE_PMD_NR / =
-2- 1),
-> >>>>>>>>>>> but not sure
-> >>>>>>>>>>> if we have to add that for now.
-> >>>>>>>>>>
-> >>>>>>>>>> Yeah not so sure about this, this is a 'just have to know' too=
-, and
-> >>>>>>>>>> yes you
-> >>>>>>>>>> might add it to the docs, but people are going to be mightily
-> >>>>>>>>>> confused, esp if
-> >>>>>>>>>> it's a calculated value.
-> >>>>>>>>>>
-> >>>>>>>>>> I don't see any other way around having a separate tunable if =
-we
-> >>>>>>>>>> don't just have
-> >>>>>>>>>> something VERY simple like on/off.
-> >>>>>>>>>
-> >>>>>>>>> Yeah, not advocating that we add support for other values than =
-0/511,
-> >>>>>>>>> really.
-> >>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>> Also the mentioned issue sounds like something that needs to b=
-e
-> >>>>>>>>>> fixed elsewhere
-> >>>>>>>>>> honestly in the algorithm used to figure out mTHP ranges (I ma=
-y be
-> >>>>>>>>>> wrong - and
-> >>>>>>>>>> happy to stand corrected if this is somehow inherent, but real=
-lly
-> >>>>>>>>>> feels that
-> >>>>>>>>>> way).
-> >>>>>>>>>
-> >>>>>>>>> I think the creep is unavoidable for certain values.
-> >>>>>>>>>
-> >>>>>>>>> If you have the first two pages of a PMD area populated, and yo=
-u
-> >>>>>>>>> allow for at least half of the #PTEs to be non/zero, you'd coll=
-apse
-> >>>>>>>>> first a
-> >>>>>>>>> order-2 folio, then and order-3 ... until you reached PMD order=
-.
-> >>>>>>>>>
-> >>>>>>>>> So for now we really should just support 0 / 511 to say "don't
-> >>>>>>>>> collapse if there are holes" vs. "always collapse if there is a=
-t
-> >>>>>>>>> least one pte used".
-> >>>>>>>>
-> >>>>>>>> If we only allow setting 0 or 511, as Nico mentioned before, "At=
- 511,
-> >>>>>>>> no mTHP collapses would ever occur anyway, unless you have 2MB
-> >>>>>>>> disabled and other mTHP sizes enabled. Technically, at 511, only=
- the
-> >>>>>>>> highest enabled order would ever be collapsed."
-> >>>>>>> I didn't understand this statement. At 511, mTHP collapses will o=
-ccur if
-> >>>>>>> khugepaged cannot get a PMD folio. Our goal is to collapse to the
-> >>>>>>> highest order folio.
-> >>>>>>
-> >>>>>> Yes, I=E2=80=99m not saying that it=E2=80=99s incorrect behavior w=
-hen set to 511. What I
-> >>>>>> mean is, as in the example I gave below, users may only want to al=
-low a
-> >>>>>> large order collapse when the number of present PTEs reaches half =
-of the
-> >>>>>> large folio, in order to avoid RSS bloat.
-> >>>>>
-> >>>>> How do these users control allocation at fault time where this para=
-meter
-> >>>>> is completely ignored?
-> >>>>
-> >>>> Sorry, I did not get your point. Why does the 'max_pte_none' need to
-> >>>> control allocation at fault time? Could you be more specific? Thanks=
-.
-> >>>
-> >>> The comment over khugepaged_max_ptes_none gives a hint:
-> >>>
-> >>> /*
-> >>>   * default collapse hugepages if there is at least one pte mapped li=
-ke
-> >>>   * it would have happened if the vma was large enough during page
-> >>>   * fault.
-> >>>   *
-> >>>   * Note that these are only respected if collapse was initiated by k=
-hugepaged.
-> >>>   */
-> >>>
-> >>> In the common case (for anything that really cares about RSS bloat) y=
-ou will just a
-> >>> get a THP during page fault and consequently RSS bloat.
-> >>>
-> >>> As raised in my other reply, the only documented reason to set max_pt=
-es_none=3D0 seems
-> >>> to be when an application later (after once possibly getting a THP al=
-ready during
-> >>> page faults) did some MADV_DONTNEED and wants to control the usage of=
- THPs itself using
-> >>> MADV_COLLAPSE.
-> >>>
-> >>> It's a questionable use case, that already got more problematic with =
-mTHP and page
-> >>> table reclaim.
-> >>>
-> >>> Let me explain:
-> >>>
-> >>> Before mTHP, if someone would MADV_DONTNEED (resulting in
-> >>> a page table with at least one pte_none entry), there would have been=
- no way we would
-> >>> get memory over-allocated afterwards with max_ptes_none=3D0.
-> >>>
-> >>> (1) Page faults would spot "there is a page table" and just fallback =
-to order-0 pages.
-> >>> (2) khugepaged was told to not collapse through max_ptes_none=3D0.
-> >>>
-> >>> But now:
-> >>>
-> >>> (A) With mTHP during page-faults, we can just end up over-allocating =
-memory in such
-> >>>      an area again: page faults will simply spot a bunch of pte_nones=
- around the fault area
-> >>>      and install an mTHP.
-> >>>
-> >>> (B) With page table reclaim (when zapping all PTEs in a table at once=
-), we will reclaim the
-> >>>      page table. The next page fault will just try installing a PMD T=
-HP again, because there is
-> >>>      no PTE table anymore.
-> >>>
-> >>> So I question the utility of max_ptes_none. If you can't tame page fa=
-ults, then there is only
-> >>> limited sense in taming khugepaged. I think there is vale in setting =
-max_ptes_none=3D0 for some
-> >>> corner cases, but I am yet to learn why max_ptes_none=3D123 would mak=
-e any sense.
-> >>>
-> >>>
-> >>
-> >> For PMD mapped THPs with THP shrinker, this has changed. You can basic=
-ally tame pagefaults, as when you encounter
-> >> memory pressure, the shrinker kicks in if the value is less than HPAGE=
-_PMD_NR -1 (i.e. 511 for x86), and
-> >> will break down those hugepages and free up zero-filled memory.
+> On Wed, Sep 03, 2025 at 04:24:35PM -0700, Kalesh Singh wrote:
+> > The check against the max map count (sysctl_max_map_count) was
+> > open-coded in several places. This led to inconsistent enforcement
+> > and subtle bugs where the limit could be exceeded.
 > >
-> > You are not really taming page faults, though, you are undoing what pag=
-e faults might have messed up :)
+> > For example, some paths would check map_count > sysctl_max_map_count
+> > before allocating a new VMA and incrementing the count, allowing the
+> > process to reach sysctl_max_map_count + 1:
 > >
-> > I have seen in our prod workloads where
-> >> the memory usage and THP usage can spike (usually when the workload st=
-arts), but with memory pressure,
-> >> the memory usage is lower compared to with max_ptes_none =3D 511, whil=
-e still still keeping the benefits
-> >> of THPs like lower TLB misses.
+> >     int do_brk_flags(...)
+> >     {
+> >         if (mm->map_count > sysctl_max_map_count)
+> >             return -ENOMEM;
 > >
-> > Thanks for raising that: I think the current behavior is in place such =
-that you don't bounce back-and-forth between khugepaged collapse and shrink=
-er-split.
+> >         /* We can get here with mm->map_count =3D=3D sysctl_max_map_cou=
+nt */
 > >
+> >         vma =3D vm_area_alloc(mm);
+> >         ...
+> >         mm->map_count++   /* We've now exceeded the threshold. */
+> >     }
 >
-> Yes, both collapse and shrinker split hinge on max_ptes_none to prevent o=
-ne of these things thrashing the effect of the other.
-I believe with mTHP support in khugepaged, the max_ptes_none value in
-the shrinker must also leverage the 'order' scaling to properly
-prevent thrashing.
-I've been testing a patch for this that I might include in the V11.
->
-> > There are likely other ways to achieve that, when we have in mind that =
-the thp shrinker will install zero pages and max_ptes_none includes
-> > zero pages.
-> >
-> >>
-> >> I do agree that the value of max_ptes_none is magical and different wo=
-rkloads can react very differently
-> >> to it. The relationship is definitely not linear. i.e. if I use max_pt=
-es_none =3D 256, it does not mean
-> >> that the memory regression of using THP=3Dalways vs THP=3Dmadvise is h=
-alved.
-> >
-> > To which value would you set it? Just 510? 0?
-> >
->
-> There are some very large workloads in the meta fleet that I experimented=
- with and found that having
-> a small value works out. I experimented with 0, 51 (10%) and 256 (50%). 5=
-1 was found to be an optimal
-> comprimise in terms of application metrics improving, having an acceptabl=
-e amount of memory regression and
-> improved system level metrics (lower TLB misses, lower page faults). I am=
- sure there was a better value out
-> there for these workloads, but not possible to experiment with every valu=
-e.
->
-> In terms of wider rollout across the fleet, we are going to target 0 (or =
-a very very small value)
-> when moving from THP=3Dmadvise to always. Mainly because it is the least =
-likely to cause a memory regression as
-> THP shrinker will deal with page faults faulting in mostly zero-filled pa=
-ges and khugepaged wont collapse
-> pages that are dominated by 4K zero-filled chunks.
->
+> I think this should be fixed separately, and sent for stable.
 
+Hi Pedro, thanks for the review. I can split this out separate.
+
+>
+> >
+> > To fix this and unify the logic, introduce a new function,
+> > exceeds_max_map_count(), to consolidate the check. All open-coded
+> > checks are replaced with calls to this new function, ensuring the
+> > limit is applied uniformly and correctly.
+>
+> Thanks! In general I like the idea.
+>
+> >
+> > To improve encapsulation, sysctl_max_map_count is now static to
+> > mm/mmap.c. The new helper also adds a rate-limited warning to make
+> > debugging applications that exhaust their VMA limit easier.
+> >
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Minchan Kim <minchan@kernel.org>
+> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> > ---
+> >  include/linux/mm.h | 11 ++++++++++-
+> >  mm/mmap.c          | 15 ++++++++++++++-
+> >  mm/mremap.c        |  7 ++++---
+> >  mm/nommu.c         |  2 +-
+> >  mm/util.c          |  1 -
+> >  mm/vma.c           |  6 +++---
+> >  6 files changed, 32 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 1ae97a0b8ec7..d4e64e6a9814 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct pa=
+ge *page)
+> >  #define MAPCOUNT_ELF_CORE_MARGIN     (5)
+> >  #define DEFAULT_MAX_MAP_COUNT        (USHRT_MAX - MAPCOUNT_ELF_CORE_MA=
+RGIN)
+> >
+> > -extern int sysctl_max_map_count;
+> > +/**
+> > + * exceeds_max_map_count - check if a VMA operation would exceed max_m=
+ap_count
+> > + * @mm: The memory descriptor for the process.
+> > + * @new_vmas: The number of new VMAs the operation will create.
+> > + *
+> > + * Returns true if the operation would cause the number of VMAs to exc=
+eed
+> > + * the sysctl_max_map_count limit, false otherwise. A rate-limited war=
+ning
+> > + * is logged if the limit is exceeded.
+> > + */
+> > +extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int n=
+ew_vmas);
+>
+> No new "extern" in func declarations please.
+
+Ack
+
+>
+> >
+> >  extern unsigned long sysctl_user_reserve_kbytes;
+> >  extern unsigned long sysctl_admin_reserve_kbytes;
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 7306253cc3b5..693a0105e6a5 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned l=
+ong addr,
+> >               return -EOVERFLOW;
+> >
+> >       /* Too many mappings? */
+> > -     if (mm->map_count > sysctl_max_map_count)
+> > +     if (exceeds_max_map_count(mm, 0))
+> >               return -ENOMEM;
+>
+> If the brk example is incorrect, isn't this also wrong? /me is confused
+
+Ahh you are right, this will also go over by 1 once we return from
+mmap_region(). I'll batch this with the do_brk_flags() fix.
+
+> >
+> >       /*
+> > @@ -1504,6 +1504,19 @@ struct vm_area_struct *_install_special_mapping(
+> >  int sysctl_legacy_va_layout;
+> >  #endif
+> >
+> > +static int sysctl_max_map_count __read_mostly =3D DEFAULT_MAX_MAP_COUN=
+T;
+> > +
+> > +bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vmas=
+)
+> > +{
+> > +     if (unlikely(mm->map_count + new_vmas > sysctl_max_map_count)) {
+> > +             pr_warn_ratelimited("%s (%d): Map count limit %u exceeded=
+\n",
+> > +                                 current->comm, current->pid,
+> > +                                 sysctl_max_map_count);
+>
+> I'm not entirely sold on the map count warn, even if it's rate limited. I=
+t
+> sounds like something you can hit in nasty edge cases and nevertheless fl=
+ood
+> your dmesg (more frustrating if you can't fix the damn program).
+
+I don't feel strongly about this, I can drop it in the next revision.
+
+>
+> In any case, if we are to make the checks more strict, we should also add
+> asserts around the place. Though there's a little case in munmap() we can=
+ indeed
+> go over temporarily, on purpose.
+
+To confirm, do you mean we should WARN_ON() checks where map count is
+being incremented?
+
+>  Though there's a little case in munmap() we can indeed
+>  go over temporarily, on purpose.
+
+For the 3 way split we need 1 additional VMA after munmap completed as
+one of the 3 gets unmapped. The check is done in the caller beforehand
+as __split_vma() explicitly doesn't check map_count. Though if we add
+asserts we'll need a variant of vma_complete() or the like that
+doesn't enforce the threshold.
+
+Thanks,
+Kalesh
+
+>
+> --
+> Pedro
 
