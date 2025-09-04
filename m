@@ -4,120 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28DE8CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 21:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FC4CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 22:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 559A98E000B; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
+	id E054E8E0006; Thu,  4 Sep 2025 18:14:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 530328E0001; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
+	id DDD2E8E0001; Thu,  4 Sep 2025 18:14:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46CE18E000B; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
+	id D1A5C8E0006; Thu,  4 Sep 2025 18:14:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A038E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE6C811982D
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:57:18 +0000 (UTC)
-X-FDA: 83852929356.23.A50C710
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf14.hostedemail.com (Postfix) with ESMTP id ECC7B100009
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:57:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WCX+Wpcn;
-	spf=pass (imf14.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BC0718E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 18:14:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EE8311A53E
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 22:14:55 +0000 (UTC)
+X-FDA: 83852973750.30.4158240
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DF8D840007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 22:14:52 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757023037;
+	s=arc-20220608; t=1757024093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rcZeZoGWZd6oDyE1JgIMLenB9ELxcn6jjg+gL7yAmkY=;
-	b=B4NdPmlZuZF0FJ5UbWOg0kp4z+EPTUMPylpikO4FvQNUjwhalRU2kB1W/grOowvMDMVIA9
-	/3n63Hc+Uul2+drAdZz/t3vfjb/smRvDY57uXiAhHgbgY/7k8vL2DYWXTro1F5DgmGqdPP
-	bnTOIGbKS5PmTFMPazv1FElbyxEmI8s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757023037; a=rsa-sha256;
-	cv=none;
-	b=i19xC0Ar3hr3BjX6K0cuSg0q3u8czbgINPKrHisHZqbWRxO9WAYWKnT5ag6i3b0laYy/kn
-	cPVmXgxmn6ee3Ou2o69/wIG3iJOunyK7SG9KWDEYnaG/iKBrZphja2ad5zlpYOpGBv+bjd
-	vQdUfCcpR2ZW6kSF/wa+nyo1G9jWX4I=
+	 in-reply-to:in-reply-to:references:references;
+	bh=O1s9lw6tbe2htYbahVRtjD5lIa+YY9RGI9knjEL6DjU=;
+	b=e6bapkSSE5pgW0C3VPj0uf0u8fPtza4effUwfjyYobi4nMeKFQsG8o2o7jSTkEOL+Q7Dgb
+	0YGKRHsNYvj0U/TACs2vDNAkwoGOBY6a8kT77ZQLaw/Xok6eR7qOjmyf6Kh715hzDQezkH
+	Pu1wOFSSWme/L9zlnxrTlgoZXgI0jRc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WCX+Wpcn;
-	spf=pass (imf14.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b520539e95bso89299a12.3
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 14:57:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757023036; x=1757627836; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rcZeZoGWZd6oDyE1JgIMLenB9ELxcn6jjg+gL7yAmkY=;
-        b=WCX+Wpcn5hSmyTbNThzHR063eFdCjErogPcEZzuG/icdmFKsmEV5Wz5JUF9Sb7Rx/N
-         Sa5oZqJVdGdnXAfMegtfZsIBxFp+P4PYvP+/L1SQtsp4IZB6Q9PvOyybx2x/S2UFOkCE
-         7mX0hWNvCU4mZEncI4t3Wzc/xhiBSV+mEBvHGvLSTKB3Q7cG2c194hWWODXP7+/Qmdzi
-         4O+Bq/lFwNRiKrpA582RdqaSlexZAXaxphebLm/faHcCtTS7ApU6l7c2YINwTo22EY6W
-         x3/VvRzz7NW+UflfmKw/eROxV7bARaEw98vFN8w85tPbp8FTDxB3cYdvxk2i/RkE3Ofl
-         cuOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757023036; x=1757627836;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rcZeZoGWZd6oDyE1JgIMLenB9ELxcn6jjg+gL7yAmkY=;
-        b=NTzLU1CMUZ5IUpQhN1iKhoREyR53n9DHDcW4oVo2zi2a0a92S6pTb80nOSLKEMz2hZ
-         Ksc+MZzE2tXEc5S2WBb0NnlMN8gOAW/+Av+yQBCeNtiphuFt66/Ui8w+ifixtocjiA0H
-         BaAXiCUd7Z9oHXo5ASGCEviaZdCZMoCpvM29DNhv6Id0r4AgV+6eISL65q0++O69bbYP
-         frNK/mmpiKiwfzOubO3zUkgOqWwtvnMdPhVf2nzvYl/nboHI2fH+WJaixqmmlQD33luU
-         3GebkzUBKBRxNvRq9HcoKciJlskxwAjWaLqGtA7H0+6jQrtmtk/vtRKtvOy0Pn0s3Wrn
-         7FMw==
-X-Forwarded-Encrypted: i=1; AJvYcCW565+ZHQTy34K7hZ4WVue/g4G0w7JC8AnGN32CUCvuS+0u7rSfDLpgwykSP3ogRJXJ4pBxLiKcxg==@kvack.org
-X-Gm-Message-State: AOJu0YzO9OKoLcJRhNF1r72fTZxX+Woejqlq2/8OTkb8sxjIbNwE/CTq
-	grjO2jm2R2a05g+WJIifuh/VU6xzbCA7PxVgQBRuWd1CF08aohz2wgmZnKz6pFfgXl5jy3lllPh
-	9y9ovpWGqNLB4/JeWYhalds2CbdxXGAo=
-X-Gm-Gg: ASbGnct2VnfSvi88FtJ0tOpmR8XXoJ17pJGsPFwmnq9yYLMy1bS+g7o7W1IS53Hw5eV
-	k04O/aUiu5Bb2E1dp7clH2xgKl5iaIR927yUywt3wMBeHMI4mHCiWaxTuJkLBK2Z1jxE1q5hISw
-	+7GUSn4gi3FgWytf3DYE652icmawHIOSi6ifPZoxPQi/DEesaAOCpXFJy/wADBUbeU8M5nOjgbY
-	qpS5k7hSioeMQRg564bhatgaUOUIPsYihKfZXwewaHaOc9jHX7iiPzFreFkjiP89DqmT6Ax2sfT
-	djd19wyK/g0lOc4vXXf/VmD7QewBr/F0nUas
-X-Google-Smtp-Source: AGHT+IHZzzEVWO5PSFfDM0hepN4yQvN1y0+nmWEUBQlDiGcXUbGHi5nbA08+gO7LBQf4rthVM0fgKbPH71PBos20E9w=
-X-Received: by 2002:a17:90b:1c86:b0:32b:8f2a:ae35 with SMTP id
- 98e67ed59e1d1-32b8f2aaf59mr3254587a91.1.1757023035654; Thu, 04 Sep 2025
- 14:57:15 -0700 (PDT)
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757024093; a=rsa-sha256;
+	cv=none;
+	b=QOWVq9kulyfTva8YEerpKwMrkV9ZKb5Vs5eQ+5MWaZcUGbvCgj0a8k+dkyExoQqEaIS+XX
+	4py8a6PuxzoqOi90gjwlYVZe0FRYxkFZfjL5B+HQppbCFsZU9O5otQi+8iReRjJcBw5zsp
+	O59iO/zQb6CjAIqTrORQKhOADfSjf4U=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2977D1596;
+	Thu,  4 Sep 2025 15:14:43 -0700 (PDT)
+Received: from [10.57.58.14] (unknown [10.57.58.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 46B793F63F;
+	Thu,  4 Sep 2025 15:14:44 -0700 (PDT)
+Message-ID: <75db1f58-98b3-463c-af4f-2ce9878cba9f@arm.com>
+Date: Fri, 5 Sep 2025 00:14:39 +0200
 MIME-Version: 1.0
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com> <aLi-7W21N45fBGJk@yury>
- <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com> <aLn4bopPt8uS4d1O@yury> <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
-In-Reply-To: <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 4 Sep 2025 23:57:02 +0200
-X-Gm-Features: Ac12FXzzgEdE64V3Xyhcttg0HrRdfADWmugK1SarEVytCTaLM5JzuX5Un97wiHw
-Message-ID: <CANiq72k1oRcxKbBpp4B-uCmqm+Hd7_xPqwM1kt-BYikbcsUSVw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for DynamicPerCpu
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: ECC7B100009
-X-Stat-Signature: chrbjoa5p6ogeso5btwhswh7d45gd798
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] mm: introduce local state for lazy_mmu sections
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
+ <20250904125736.3918646-3-kevin.brodsky@arm.com>
+ <22131943-3f92-4f5a-be28-7b668c07a25c@lucifer.local>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <22131943-3f92-4f5a-be28-7b668c07a25c@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DF8D840007
+X-Stat-Signature: y8sidceipp1j7uh1jhs5ocx9t371tzi7
 X-Rspam-User: 
-X-HE-Tag: 1757023036-831157
-X-HE-Meta: U2FsdGVkX19MUhKJKqkW+uUOM5H+0g4qed9y7aDg6madcJnxATrM/mxjS2ajeOpZs0roIBg6yPWcqa4xLq+2iQQR8g4dVLF6dPx3ZdPCIhyuuoxQJwp+VaZ5YscRN7Wc6h5celNljJuC8Wn38Dmzry+2KdCfBGYBFJptQZ/1dWcoZXDuN1Kj8kFDR+8sr24GH5xnI5JT0Z92/wkWsDgSY6QUA9ygdXO5PL8s8NCplitP95ZnY5uCcG8Bh+mkVJGwkkzd59qnvFMzbFxO2Nxe0gt+ss8VwrNB4wQpQdf477jsvT5LOVOep4hJxqPGXgtG1oZlB+gQfJi07g2WjJ+UeB94CynUjuvGVIFmTyCmmiRIdFgmYZjhEnwwY/0c6k3aSHTizJb06jObxY3oEoJtgBZr376ONHOK8mULiKgEwh638KD/RY4be3Wd8eyud5rXnxVaBVjHdfHwrLBh7ZLovwL+mSOlaNGR40EZoU0cTvm6uCyqtJmgjlpBcZGl0gwD+bBxY0te8o9eTd1NuiI8gmkoB52wrC0qQo+R2oYTsrF59Yjo4UlMjupS3izhsT2sdRR5vwSD9WSQ3iBFNwM/GWjTgilTPtj3Q0NwE74lRvXE7cY1tDufM1pBYWkeLMkgOzTK/C8mTTNWLkO8hQrqpr85939SXSP8VvlXEtR11JmFsgaxM/7MhiFjWpz3sj9ux57mcpT8pU/cEoKFsaVSDu8y6dqwJMPPm2YwA9dit24KCFbkuD0F4uo0ghccXhsLnZ5F8bMGxjxm5DzT3XDjaP3aCp582q7B5wzP2Z8bwT7FO5BY6WBcUWVuAh4pg7ffqxD4/YyYB0VB926SeLxhEWJPv5O2pB0IdW1rxfVWSqbbUiMwwTcxSIFdfBQ4G1IBHv69duq5eN2mJ8odw412GF/RBjD1ny6nk6Y2AZi9cjUsEyQyL0BJo/7YWDULHY8y/7LdZOwDzrYuOiRLzzP
- SMNBPJzv
- eHkGdi8NavkfAGjKouxX3HQvDotl0RXkPwCstYh1VppRvIAYFjevAkMs9REMrYCYgoV+bAowNOMd9gzVxA7JnkLrDmcv3ceUfHww+dRrhsQRv5qRLnD7aFvpL283MFsIIkGTwq8W1jgWel+OP3TgQZ0hxBRS9hcYNkQ8wHsn8bdbNloinBmKVTcAQn+9G7WwhZuJmEvKOPHrusA31LKnttV80+CR4Jz8xJ+i03rCM2KrhLXWYp2kiAwEtGP+csLtjxVmBcC5I+GQRdKl4g01p5rw6N5XSzIVm69qsU1W8xctfDBMtZbhXUzAjHbkyzLmzLNTAnZyf+0uaSKeFBkF813lG4b0/m25URFQGZomFoUGY7eDWvSN0z5IEBsVwpyUWe58o5GbLoSKlAwrTODMnqVCepkK/FCk45lduQkqhQ1Us46Kb8+cWZwfeSakyLZdCiCBDx7TXGETPXNzdJuRI6j7T1zVICQEvm0E/w1eolYLXH9czhT2OpCMWhZlcFRe5Wy7L
+X-HE-Tag: 1757024092-34151
+X-HE-Meta: U2FsdGVkX18gdYSx8Z1RICp6YV0XKEY8wzzzs6MAxGNJSGTQxDkqrtd/eDjj4vNkNYZr2vYIOMEahqaNZJUy2huOtrG8m7ZpcHbV7NCgp/tuNglQjn/Pq20Wk+0k2BcpV+7tpN08NMaHrZumnWLeRWyg+AwVCLG4P/7vVp3qR2w01zuiSM7qxQ0Orji/9po9f7/oVBAq2sY3b2X22JoaLQLN5LJyho9t0lDSqHIkpHM4PweESC+fKwf8mdkvZlMXo59KsjBiJuGW0mBWmQLhmALuuxyJcX38ivEkQMwPqoe4DKrevKSzNcznI6VeiqEFaSuaKbTqXpt4EOdP+ZOB71iby8WBDy+7xM/fJvDVd2NpEkusgokULiogcpZwSOGYYUocrwB44477N1gemIHcJthbN19h52j0sSvFORMpxpHV6yCeXU6ElEv2IeoV9n/ij0cIOw8+SE4L9U20tuCe0lGjBBgrkaC2i6E9jSSo0P7X2Yb904g9Qs5rFrRLz9LUvC9W69b9/TwGkfUijAGWhkjIO1ZprNgOa8paF45jVe2bVY43SyiRI/fgiV7KT1nxBkOixBmwFHqeC9WgEsoftyCiHASeH0KisRq27XU4saM0JDjkwnvsm7ClGbSbyPa4A03nHXz5auTbYZyB4nM2FouQN2pVrMIxHLjWGLwStaexxkr1/SuFJzlnejDf7VzkNH+v6sccdG4vUygVyJ69j7g3V1azmWonj0z8nZENPZzb5om0pUitr5pkOtYGgukIkHetPEgqGwfTClD2mAiDBZW/wFKKlBBiGAdpCdQ3bhuW85J7dJZRfkktmm/OpbrThWQaH45JjQ/7MwoQqiJ3go9erS6FCFcHv0CLd/SjGpLnlBjal//Rvjh7naB5xivNtcbWZ1L7BIVF/5vxaaELNOTKG+oMZTduGpfSSBPYQqoISymwHkbH7lQJeXmwUxPSsUQDxDGFsFRcJOXd+oy
+ vxsJLuRl
+ fbPuII2HxK5r30NNao5Gp/Ak87D73U/vRkVO0kkeNpqF0D9l1aJCs5Ok3VOAJIQvzG/AUeZUSAihc8WtxdLJGX9iU3TcMPOSwgjVKPqCNVAWALnjON4xoh3sdsP1xeF1B/lBin3MZjrub6YeQLHPhFS7EzoHkJBi6i62j/H/4abR3t15ZKKtv/oS7sk6ThQ2gSzmHZxULW+MSqHqKToEEEqxDEg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,32 +106,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 4, 2025 at 11:05=E2=80=AFPM Mitchell Levy <levymitchell0@gmail.=
-com> wrote:
+On 04/09/2025 19:28, Lorenzo Stoakes wrote:
+> Hi Kevin,
 >
-> it *might* also be possible to use a macro and dispense with the need for
-> a closure, though I'm not familiar enough with proc macros to say for
-> sure. That would probably look like
+> This is causing a build failure:
 >
->         for_each_possible_cpu!(cpu) {
->                 let remote_ptr =3D unsafe { ptr.get_remote_ptr(cpu) };
->                 // ...
->         }
+> In file included from ./include/linux/mm.h:31,
+>                  from mm/userfaultfd.c:8:
+> mm/userfaultfd.c: In function ‘move_present_ptes’:
+> ./include/linux/pgtable.h:247:41: error: statement with no effect [-Werror=unused-value]
+>   247 | #define arch_enter_lazy_mmu_mode()      (LAZY_MMU_DEFAULT)
+>       |                                         ^
+> mm/userfaultfd.c:1103:9: note: in expansion of macro ‘arch_enter_lazy_mmu_mode’
+>  1103 |         arch_enter_lazy_mmu_mode();
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~
+> ./include/linux/pgtable.h:248:54: error: expected expression before ‘)’ token
+>   248 | #define arch_leave_lazy_mmu_mode(state) ((void)(state))
+>       |                                                      ^
+> mm/userfaultfd.c:1141:9: note: in expansion of macro ‘arch_leave_lazy_mmu_mode’
+>  1141 |         arch_leave_lazy_mmu_mode();
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~
 >
-> though personally I think the first one is better (simpler
-> implementation without too much syntactic overhead, especially since
-> closures are already used some within R4L).
+> It seems you haven't carefully checked call sites here, please do very
+> carefully recheck these - I see Yeoreum reported a mising kasan case, so I
+> suggest you just aggressively grep this + make sure you've covered all
+> bases :)
 
-Yeah, please avoid macros as much as possible. Sometimes macros do
-have advantages, but if it is just to avoid a closure, then no, please
-avoid it.
+I did check all call sites pretty carefully and of course build-tested,
+but my series is based on v6.17-rc4 - just like the calls Yeoreum
+mentioned, the issue is that those calls are in mm-stable but not in
+mainline :/ I suppose I should post a v2 rebased on mm-stable ASAP then?
 
-Similarly, unless there is a concrete advantage needed with the
-function, please avoid it too -- the original `for` with the iterator
-is the normal way of doing it and already used plenty in the kernel.
-
-Thanks!
-
-Cheers,
-Miguel
+- Kevin
 
