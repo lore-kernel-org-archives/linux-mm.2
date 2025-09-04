@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E235CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:20:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8742DCA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:25:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287008E0003; Thu,  4 Sep 2025 12:20:50 -0400 (EDT)
+	id BDF7E8E0011; Thu,  4 Sep 2025 12:24:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2377D8E0001; Thu,  4 Sep 2025 12:20:50 -0400 (EDT)
+	id B90918E0001; Thu,  4 Sep 2025 12:24:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 126578E0003; Thu,  4 Sep 2025 12:20:50 -0400 (EDT)
+	id A7FAA8E0011; Thu,  4 Sep 2025 12:24:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F11F78E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:20:49 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C69F1602BE
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:20:49 +0000 (UTC)
-X-FDA: 83852081418.21.4F3A3D9
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf03.hostedemail.com (Postfix) with ESMTP id AE86820012
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:20:47 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=G3yOV2v6;
-	spf=pass (imf03.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 92C8F8E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:24:59 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 634E958438
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:24:59 +0000 (UTC)
+X-FDA: 83852091918.15.5A1DA46
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 699134000A
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:24:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VEBSd5We;
+	spf=pass (imf12.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757002847;
+	s=arc-20220608; t=1757003097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e0t6bhmQA22wX44ktbmUqj5cgU/my1Kdps55OJZMqkk=;
-	b=DYIMC//4P8/EDLBs9bk+JtjJCZa7WDeALCuVS2Nlo6ux0rNPJ4Aznt1t0k6p1kWHHwtwMn
-	Z+pLZp/F9AU2l8BY0e7jGAILP7tejsNzOecxXSSP5YXBmxM55NGYFFI2A9/SjWSNT6bqkz
-	Q+MIFmfw6GeTDfvvAJk+mtvhgKTepcE=
+	bh=LFT2XNmKJMqJjJ79Z4MTMpVJ3yD1gMC0n0BoP0X9opI=;
+	b=2ohl1KJQqtcEU2wa5QiPhYXkkoRl7a8yYGcr9Nfj8hU93Ef/UexRQnhASAh/eG6gxlxkGA
+	2BnAK2aaTkZk7w+2kc9e9yRnbrGCtKmuPxYOnT8BT/35InHT0QUApYsvn3ke3vqSF2BpoA
+	P0EWKK9Ag0ft//HUS/ag2qH+XX62Gwk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=G3yOV2v6;
-	spf=pass (imf03.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VEBSd5We;
+	spf=pass (imf12.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757002847; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757003097; a=rsa-sha256;
 	cv=none;
-	b=WkhpW96Yifk7AyFvngvr1scjiVgaWHPXPKg9b+vRfyxmgybFfGPB8T0Ag6R7LkAtr5VICD
-	kFhYjYtH7ChQ5IyoZjxBD3IeXjfBL9c0HJfrVNWQeHGWtG09OWP/ZzpxPYoh9UJUaS+zeJ
-	wcQOY0F8ttCyNo2SF3xye4m0iuZlSfY=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-24ab15b6f09so208375ad.0
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 09:20:47 -0700 (PDT)
+	b=tL2i2iYk3vi+Zo/umApC2dMJZ4uuqbON1czaiyYImnOhjmei7cUCk24i1o81iHbXAVdmw3
+	Jyffx0zEH+Qj9stuP6yVwG3Ks60tZ590N8sZY0GCAqOPW2+477kmkpP+GIYv5CF254isqV
+	3zfqAeST7uQRmYJ8WKfwCM8+IVmvqig=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24b2337d1bfso233555ad.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 09:24:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757002846; x=1757607646; darn=kvack.org;
+        d=google.com; s=20230601; t=1757003096; x=1757607896; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e0t6bhmQA22wX44ktbmUqj5cgU/my1Kdps55OJZMqkk=;
-        b=G3yOV2v6GNo62udULjygc1x6/1R6r36KSaaBTv5Yrg83WDzXNYWXhq/k3nRCaTBIsZ
-         8LDknckfwzLL5gFQGmgSfPo5LmlauhrSexuJj3/sKjUu5KUxtmAv68tW2UBpmW/upVr+
-         sQlCFlq0ohbJ/VEEDbJXvsTylYiE/KCIS9Vz11wsBzFfNZB4f9W1X5bpTu1AABXGAIWS
-         cPTiTJozvzzMsNL5FotMnrbWarLAeq4GS/l73Jp2bAXQSjzKwN5bgnpz4eWNB9aOuqnV
-         bp8g3qcUxNjUUyhnn5vxzM03bur9BHIzvDG9yOX0UxS+gecS3vksgBsjBkRIIIMbk87Z
-         ctvw==
+        bh=LFT2XNmKJMqJjJ79Z4MTMpVJ3yD1gMC0n0BoP0X9opI=;
+        b=VEBSd5We+3Z1RL50CYwSlvLqQ6aTGGCwcfsKLMW/IxTGTLe+gKz1I2fAXGVvz5DK7l
+         aj9RLbIFXjCOH2rstrk0ccBAp5vHBD6kz3Y+07Nihcy6RLmWip0H3ozje84rMN2a3htV
+         d4D5W7VSKpwDvY4RYYJlzFBVPd3qNP3eMLncWMXYk0558NVIsVDOfR67qGHjLieCNykA
+         /e0q1kofd9c+jJN4EoYnnm3PV5QJt/v6Qybxv64xRQ7i8J9G2tJNG0T42IVzjZxF0veA
+         SEyZX3BRyGZTCb6p5PSDOpW8YhV/VHeCuxLiMcuAAHF7kUqX2IYMjSl+9zQ2zjKG+JEI
+         vUbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757002846; x=1757607646;
+        d=1e100.net; s=20230601; t=1757003096; x=1757607896;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e0t6bhmQA22wX44ktbmUqj5cgU/my1Kdps55OJZMqkk=;
-        b=oeMSQjHzrnV7C2YEHrF6SSE71VfuyY+7GwmLRbnmKyRQ7EqC698bAMCyC8wrucLIn/
-         KHd6ILRhDwYg0pf5oXnNpEcZ4ss2T671gvahxU75ik5KkTF/8kreF8fmMHaAPP5w/Q9V
-         4tHx9MYPaebfMhJdp78xGlktjJRa1iLR1At4rW26vrvw8AKQ/hw/MkSAk+FES5jErfuj
-         8cYDE2SiN4Teou0FKE3301q3T83XkjTfDqHpwqzgg5+oeEz+mGxIXaGH97nvjctKW5CU
-         Dpbmrf7+J87R8JD3F0Vhwy2pxCiRyDDVQnRqGuO8lBTnEpNSabJ07O1iLUQ95c59lO+c
-         NvMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzjv/68q9f74oeBbWtO+MX7K1X63AsL2BEpCdKrbrfObJ34q9lJbdiqJxDuRLBPhyYpJDy5bPk2Q==@kvack.org
-X-Gm-Message-State: AOJu0YxKQGuu7vNFQT6XW9b161VIplPyj33/LanbigtkoD/2diDLURJa
-	74xq8FF2WB9UlhWT11RMENAMIfrJ/2fKiFAc4F9AlLmvMZ+9LC05iwOrsB6aA3VY+lghf1Bc1yZ
-	36DSlknMbBKGq9BNBepNXxfHCWxdUalGDEHKZFdkg
-X-Gm-Gg: ASbGncsfk+22Cja+OeW3nMq8JHDGknVijcuuPdKrNI0XjdqEQ+qdD+cK2Pj9tKv805U
-	iEobjrtjBRqQ9aec2RoQc0xYBCN3kwMV3sqYi25T+MeOaL20m00UO34MTGMXdDoOvGJvc7kNP1T
-	RQ9pyyW7kA3aGi9hn1QvtrD0faZv7cx2u/2QfT/qqPbe8btv2e1Y67LfA+KxMJ4OGGjBkz/G8TV
-	9plXBsLKT6B2l+4w3TrLdkFIBK5g93rIFiRiYVY+S1TsTN6BeZrX3qyHFPQGa4ybw==
-X-Google-Smtp-Source: AGHT+IHThq6GwO2/qHwlSP0iRWoql/gtSI+KBd6TV5CKErad41aW7prfJ1BHV/t4PpXi6b9rJmJsWOcxBCxqXuBOLZg=
-X-Received: by 2002:a17:902:ecd0:b0:249:2f1e:5d0c with SMTP id
- d9443c01a7336-24ccccc4c7amr2934785ad.7.1757002846099; Thu, 04 Sep 2025
- 09:20:46 -0700 (PDT)
+        bh=LFT2XNmKJMqJjJ79Z4MTMpVJ3yD1gMC0n0BoP0X9opI=;
+        b=k8myC+RwC/IaMBrOK8J/PGmdR/rcYjoL2WBpusLAz6BHBkl1fvtZ+Vywar+/yFCtDq
+         9SWp+FILt4YDDW1GAmr5cd/cVBEjJiDXOwjGIWuOYD8ffUkWnYdsqePOU/vH3ceM9Pzp
+         QQqDHBntxZ4tyxGbiJXHINWsRE2Tx5+3ITFgywqTgZukniWxKolSZBbRZeiQ/Nt+FRYY
+         vZ/RZ2cLvhQO/StJknpIdXVlABNt4IssBoSk94WaTLfEL6m/ihy5TtsVz8AzjI0Ongw3
+         jS6TPBRsmlwOuCkT5gZAXpWpnUuUMeuYHX7Erqh0TwnEqG5gN6MfWs3GACKU9BL/G1p6
+         ib5A==
+X-Forwarded-Encrypted: i=1; AJvYcCU/rcYPxZK0S2bpVPdhjTTc5xxpQ5X8mF+Sho6/+u3ybAdWhZqcNVIkhcLA3wsSJuM7Ak4VfFQKYA==@kvack.org
+X-Gm-Message-State: AOJu0Yzov1aYE7JIuPAls5Ndvnk420W4fglHLgcLqeYe3D7S2WvuPd5b
+	/1UW5sXW7TCiHSS4NEovCW9cq0FK2LOEjelf9d70KZgUFbG0AKd/eY/ushKSRwctCKOD7d4HfdV
+	jmPw8aXfjJpwx160os9n/K5L5YWOnAnUVbAJYFJbk
+X-Gm-Gg: ASbGncvZu+kRBKRL0D0Xmqsc/jVzyBkwWHI6frlHNxwObhJnhd32Ki6KGqgf5W3VcTT
+	es2pbk8mvin6SdvUm6AqKGWKaqq+vgfNqLwWMq5CeFGNv4KnQmCJOBmu7qhkMWBy51TcZYQ6mgx
+	w4A8miQB/kjFFRCVM2YExj16y3L9aZyld35mfYeAB2d+QUAMeNfHVpVoLtyA/ZFfxCxHhNccYfj
+	xQb8QdjKgOF7GxYm4PyeDHNYny1rRmWC8XmU4nrMVvWN4QmJskfaac=
+X-Google-Smtp-Source: AGHT+IGAm0XmOGNriB4QaIFnEDqerBTh/T4Isup/MLFm4TpGRkjTg+tlhc0v5DUDCXYa4WATyHeEEilzLQTs3FmdcfA=
+X-Received: by 2002:a17:903:186:b0:24b:131c:48b4 with SMTP id
+ d9443c01a7336-24cccca62b7mr2615175ad.5.1757003095906; Thu, 04 Sep 2025
+ 09:24:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250903232437.1454293-1-kaleshsingh@google.com> <aLk_zbXxYxHs1Igk@kernel.org>
-In-Reply-To: <aLk_zbXxYxHs1Igk@kernel.org>
+References: <20250903232437.1454293-1-kaleshsingh@google.com> <3997965c-4cc6-405c-b6fe-a70b4e75afa6@redhat.com>
+In-Reply-To: <3997965c-4cc6-405c-b6fe-a70b4e75afa6@redhat.com>
 From: Kalesh Singh <kaleshsingh@google.com>
-Date: Thu, 4 Sep 2025 09:20:34 -0700
-X-Gm-Features: Ac12FXwM78mo5ZQ5cUxcmH3ulwLdG7jBYopJRFbNNqJcd7ybiS1glWTpedGl5Rg
-Message-ID: <CAC_TJvciKbEOyBv_V01s8nJF8MMKznKq-Gw6+Shv9AAppJ46+w@mail.gmail.com>
+Date: Thu, 4 Sep 2025 09:24:43 -0700
+X-Gm-Features: Ac12FXyI8cT7GjNmqWKUiyjar1SUg-FKukKdQAYqgi0-iYI-lyutgx2yN_rj1rQ
+Message-ID: <CAC_TJvc-V9=59p0HG8tmUqQHmp5Sn3E8BV3gHsPj+RHCANd0HA@mail.gmail.com>
 Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
-To: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
 Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
 	kernel-team@android.com, android-mm@google.com, 
-	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
 	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: AE86820012
+X-Stat-Signature: ri3w51oi5j1453dstx6rxkwbaxodsaxj
 X-Rspam-User: 
-X-Stat-Signature: hsjs1t54xe7yrtdhdsh4to314tx7re97
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757002847-955045
-X-HE-Meta: U2FsdGVkX1/9kigo85K6+NZTbpNftQG93wYg/ZwDtbuG65pH8US26QRSRJPMTGzKLdVV50or4qzB8WZ2ofEusDlqN7CtjUngnTbP9xr59vWpS4k85CifZ7wmpDtJOopRlFKfncIF16sjJK+lLUh6FbAKEjhgM/RaJNQAYhT4ToXxUFwn1YeamSosT4g8kC8vFYJMMN9bzLvtUrsUfAITDy/x9hzf1WQHOV/+6+GBdUGRFY/6F8LSEsHImtcunt0d2DcanjzUJ+C+AKplv3HsADn+hMI8vdNwH3wU9Oo77SmQFUaqLHMUZNE1MvjKe6n4cUG0F7EGhzBKtf9X1MMiTmREOfvQSFyyFYP3JFHoL+SptBp4ewa0n2L3oITunMjQGLWrWzCoUmQiZjxgAFFQEGwWQY+yddL1Y88Feq+e/JrnIfI7BUcM3F97XOcSdukfxZXQ8WaNAU/SmkMYdckqXTz3YBRP+f282BJVc3bv99VEElxbQGyGuZ4sZM+QHtyUTsMaxq5L0fvcjlEctDa+IzvIVxdcKEaTPWQ+LDNKqhHAoN1FluRME6OmFMNU3X/GTKCFAntNndc8tj8FmW/6skWJXPLuAbB/TOdyV5H94q5UOA3hyqYD3fsDWM7oLWr2wPoqP6CKw2LYj7MazpYLaZUwc0CnYKest+i9k4gB5+s1bZ/TJ/pjRsxidCstA2CQ2aIvMQVBC9f6dU7mJA68OGqVpIpWCuByjfWhp7O/bLw+93N00dBJWz6Bpu9dcXQn7GNDsOonB6Q0re6qXAYfPs+mGUz9M0xXzV5PyCvE/8jq6Yp0FPGp6l6dX4gp0gZONj2K1KNivrE5RUApRMvETRjdWOWK4Iclsi5nN1zm917AvEEEKjNasFset9zyB++D+fpF3xFzmQG8BY7wZDqYEcTIGmwFQ8/Q/nwetvMU85C9HBwkwgAAFbBj0K0sxXhLtO36bpkWcJx88yONRG3
- xlEezoaE
- ZnMrovmBNSqjRpvg+MAONBNgduT7ZfPsSQnEp6ibxA2hZI+40a2rvnby4yHCVy3pTngpVI7VoRkJBTEscq9zCupLwM1GQb/LzZkIJNqLuyfMxvZ+VolN+NV1A3M2bWywW42TVNOFMuM/IU+l+s/cMtAmdNhr2ta1fABBdY8zDY4LC9G78kVr5yZ1hawAdG0QlrNrK1mK+UWcT1Ssd4S2RNUm0ISlwxS4GPwSaM4xJeCHLioI5gPAGnRUETi6k7nk+Py9j4t/kiiPTp5c4od1hUKostX84uMGMNE7VNHT6UxMU+NBT/Sj4gDMlAZtl5C90vDNFGM/uGN3eJdFA9YH19v8uumu7v0sP9gUULrfWgMV+baA=
+X-Rspamd-Queue-Id: 699134000A
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757003097-538940
+X-HE-Meta: U2FsdGVkX1+Qu7yu8ZTlFi9TfV033ISf6QPhGb/yKdn3zhlWPL+2eG9+G89iaVxT46zbo2ds6oTJSPWTuiBltaoHoJxHcxoFSkP4J+vBo7ryY9VcLyf0I56RMxjYQkCUBPPwuwCDy1o4wiYkqnZeCb9xWhBf5Uw6vJLn145asBX0m445OH3as96GX9qRJxBrWchUd/RuSynzsYQf2FYBvyhyC7H4NcGbd5hKBEfQMLk9fOgEkE3mMGa0YSVrNWV9JL4fXg0sxrllsF7ynT7isFpTr9c+XhVL+7mcWDy9orc1ohPqll4be4jKOrG3gk1z1km5NCABSfR9zpX88YIjgaGMPpmH2qKIyU1PyiDo39kT714xszscED0ZubRIwAtGjl3kZIXin9UfjNFC+0sGUh4k8xMi0MgAr5d9l01noiJRbDvisFolFnEVe1vNGRb1erugxQbF/OBiNOP3ulLoZexFFOPLlRzzckTFNQFB6Vd89gNAjz45jXjdjwj5bSAsFar+xZjdsNsdm6r6VEa8YNpm9qVbj0QOHDKWWmXV9mXIPokkXZjOgYV3ubnxZP5njhR8EMXIGDFXnyVBAe6JnIqYa90S9wEOoPEpFKCfZMwpfIaU61Bk9SEoKXWOUGt7OSOa77R5fFJFDi++9gxHu5BomBirUDULMGOVTxQWMYulsXIFFE6Oe+pLLUdMgRZSKTjZphmApSyWdTQ8ReTU9QpfVnPZX2q7Jn45rzUzG3xopYQmBAj2xuzsEgak418Y3MZgSnOKr5zS/dPoLF9Mb55smUEiXlKqwRJGfDQXvXQTMBKvaWJaxRGuPqbe5CNqGP0e9tJ9PgNqngp51rajQUO+mzj4I3otd/3VdZXJO03WM0sOt3Qa3/RdDj9RhFrCz2Swv4qi81Ck7ZMq/r7ZEGnCOyvwtbZ8oxOE45DVDvkSI7fWLUF5uSKNIkGHrtnbCOZFPFd6vGMci3poPSz
+ fnDzZo/M
+ dr/6crqh6eK+IQtHNU6bfEQqHyjI4Jto9+oTx2AweFpkVGLrYd2Ile/2ps/3h8I9E6utv1YCcnLf0H/t76oqGwTCsuyaj34xrbt6GCzFsKtbtdH1YJl+OBGKCfF89xzRddccbzG3pu3c+4uBpQ3UiWHZ4Q5fspcKDCo8tLY8IWe8JL+t15T5DHah2iHFrilS+ik5JknfRSZ4P/QMdcQA5a2a6dAu032c0+RiiF3EfOZOpMC4yNQsqHZ5al3fyzpUSU3+2HcXxEI03LCw5pMdzXqfT7uMeASlsdT11SkpFtEIzHKVYzpmKDAjkt0FpR2JA2WHXP7/VuOij/O5TimmIrBhe8JQTkU3i/cU0PYo537/dRxQpZHrdQrxkKls3hkrdPS8l
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,10 +120,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 4, 2025 at 12:29=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
+On Thu, Sep 4, 2025 at 3:14=E2=80=AFAM David Hildenbrand <david@redhat.com>=
+ wrote:
 >
-> On Wed, Sep 03, 2025 at 04:24:35PM -0700, Kalesh Singh wrote:
+> On 04.09.25 01:24, Kalesh Singh wrote:
 > > The check against the max map count (sysctl_max_map_count) was
 > > open-coded in several places. This led to inconsistent enforcement
 > > and subtle bugs where the limit could be exceeded.
@@ -132,18 +132,18 @@ te:
 > > before allocating a new VMA and incrementing the count, allowing the
 > > process to reach sysctl_max_map_count + 1:
 > >
-> >     int do_brk_flags(...)
-> >     {
-> >         if (mm->map_count > sysctl_max_map_count)
-> >             return -ENOMEM;
+> >      int do_brk_flags(...)
+> >      {
+> >          if (mm->map_count > sysctl_max_map_count)
+> >              return -ENOMEM;
 > >
-> >         /* We can get here with mm->map_count =3D=3D sysctl_max_map_cou=
-nt */
+> >          /* We can get here with mm->map_count =3D=3D sysctl_max_map_co=
+unt */
 > >
-> >         vma =3D vm_area_alloc(mm);
-> >         ...
-> >         mm->map_count++   /* We've now exceeded the threshold. */
-> >     }
+> >          vma =3D vm_area_alloc(mm);
+> >          ...
+> >          mm->map_count++   /* We've now exceeded the threshold. */
+> >      }
 > >
 > > To fix this and unify the logic, introduce a new function,
 > > exceeds_max_map_count(), to consolidate the check. All open-coded
@@ -159,13 +159,13 @@ nt */
 > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 > > ---
-> >  include/linux/mm.h | 11 ++++++++++-
-> >  mm/mmap.c          | 15 ++++++++++++++-
-> >  mm/mremap.c        |  7 ++++---
-> >  mm/nommu.c         |  2 +-
-> >  mm/util.c          |  1 -
-> >  mm/vma.c           |  6 +++---
-> >  6 files changed, 32 insertions(+), 10 deletions(-)
+> >   include/linux/mm.h | 11 ++++++++++-
+> >   mm/mmap.c          | 15 ++++++++++++++-
+> >   mm/mremap.c        |  7 ++++---
+> >   mm/nommu.c         |  2 +-
+> >   mm/util.c          |  1 -
+> >   mm/vma.c           |  6 +++---
+> >   6 files changed, 32 insertions(+), 10 deletions(-)
 > >
 > > diff --git a/include/linux/mm.h b/include/linux/mm.h
 > > index 1ae97a0b8ec7..d4e64e6a9814 100644
@@ -173,8 +173,8 @@ nt */
 > > +++ b/include/linux/mm.h
 > > @@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct pa=
 ge *page)
-> >  #define MAPCOUNT_ELF_CORE_MARGIN     (5)
-> >  #define DEFAULT_MAX_MAP_COUNT        (USHRT_MAX - MAPCOUNT_ELF_CORE_MA=
+> >   #define MAPCOUNT_ELF_CORE_MARGIN    (5)
+> >   #define DEFAULT_MAX_MAP_COUNT       (USHRT_MAX - MAPCOUNT_ELF_CORE_MA=
 RGIN)
 > >
 > > -extern int sysctl_max_map_count;
@@ -183,31 +183,24 @@ RGIN)
 ap_count
 > > + * @mm: The memory descriptor for the process.
 > > + * @new_vmas: The number of new VMAs the operation will create.
-> > + *
-> > + * Returns true if the operation would cause the number of VMAs to exc=
-eed
-> > + * the sysctl_max_map_count limit, false otherwise. A rate-limited war=
-ning
-> > + * is logged if the limit is exceeded.
 >
-> kernel-doc will be unhappy because of missing Return: description. Please
-> s/Returns/Return:/
+> It's not always a "will" right? At least I remember that this was the
+> worst case scenario in some ("may split").
+>
+> "The number of new VMAs the operation may create in the worst case.
+>
 
-Hi Mike, thanks for catching this. I'll fix it in the next version.
+Hi Daivd,
 
--- Kalesh
+You are correct. Cases like mremap account for the worst case (3 way
+split on both src and dest). I'll update the  description.
 
->
-> > + */
-> > +extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int n=
-ew_vmas);
->
-> No need for 'extern' here. And the declaration should go to mm/internal.h
->
-> >  extern unsigned long sysctl_user_reserve_kbytes;
-> >  extern unsigned long sysctl_admin_reserve_kbytes;
+Thanks,
+Kalesh
 >
 > --
-> Sincerely yours,
-> Mike.
+> Cheers
+>
+> David / dhildenb
+>
 
