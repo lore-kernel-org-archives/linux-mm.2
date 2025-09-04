@@ -4,116 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1980CA1015
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 14:48:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E617CCA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 14:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 467B28E0007; Thu,  4 Sep 2025 10:48:20 -0400 (EDT)
+	id 45AC58E000D; Thu,  4 Sep 2025 10:52:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 427E28E0002; Thu,  4 Sep 2025 10:48:20 -0400 (EDT)
+	id 432C48E0002; Thu,  4 Sep 2025 10:52:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33E108E0007; Thu,  4 Sep 2025 10:48:20 -0400 (EDT)
+	id 348918E000D; Thu,  4 Sep 2025 10:52:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 228E38E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:48:20 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C885211977A
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:48:19 +0000 (UTC)
-X-FDA: 83851848318.11.F07BE07
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BFE0CC0004
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:48:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=JsbeWo0H;
-	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 245DC8E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:52:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E494E1DC9F8
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:52:44 +0000 (UTC)
+X-FDA: 83851859448.07.AB75E48
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1F4C61A0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:52:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VP2sT/EA";
+	spf=pass (imf19.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756997298;
+	s=arc-20220608; t=1756997563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g6Sf9UE3EF5HYpffcmBwy4ps10mS4KNLSqgfI9CuUyY=;
-	b=gJSF/1mXrZNWRmzvdjH3A7UnmhTugZv1GHLX82m1VlyJMgkE8HqCXQn0HNlnB2EuE1Y7uF
-	u8uoE9VrCAQ0RX+DfAq3RFLZRg+7MDRJTWBCw6ohuAxe3yAIjft8QR+J4HGw9v9HFX1/D1
-	WAtbwyn74OunGmgaYnVcmGQu0StxH9Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756997298; a=rsa-sha256;
-	cv=none;
-	b=QLP4GN4NKe5n8R583YSj5wp9+S4GK5tqm8ROLGBAxkFwrt70V2v9kvlI9QZ5XA/jCS2wgp
-	d97t7RF0i+8st8lfiIBw7q21Iokui2V7tToSZ4urwSIdvUCkpdukS8QvqdyLEj7sopyjZg
-	YVRQOCydgYCqzamYDhzS8tKq3/Inrs4=
+	bh=BazxnC+Wcptnkdd+tPophW9XIDvM64THaSvkRAFx9Mg=;
+	b=LuxngrKCRCwkvl0FE1d1Rlydj3YFxv+P/GBaiJix7gMvHSo15LAPL47u3/XWOq1SdKD9T7
+	h2KGNW8RJiGCpiIdor3zBaAE7qL8hOEQ3Lgz1quAO+GnzUJEF4Qht/lLMlHF1LOJSRDaEg
+	ozFav2JfXub+qicsBfgRU+3/A4/FRRw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=JsbeWo0H;
-	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45dcfecdc0fso8447615e9.1
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 07:48:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756997296; x=1757602096; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g6Sf9UE3EF5HYpffcmBwy4ps10mS4KNLSqgfI9CuUyY=;
-        b=JsbeWo0HWKOIZlzxWXHcN2LWbuN2j966jUUtAmAEgYMEMncpKIpJbLHalPKQUh9oxT
-         lCaqtiuIwsxhnQ66lR2zI74pqdiHipPJASMtupX43XbPDJmkJzFkoyo/jz0MmAdIesFl
-         j0Tu6g6z0VjuiAA7vJ1/Hua6/7uWV4VDuVFDbDqFk/gnX++WoCT+IFfcRc7Tt2EPXWKD
-         8To5d59QXTMISQfsi0RmFmjSqfqNv3wRGp0gaVhSTGRKvShnvE7l5sxZAxgs42ZZ0XHc
-         tHutg3Arf/ulkA5DIf1w/i+QgaS/VwzfAUMs1k0ckmaBo9XTe8P9x9AlQZ1uZLiqPnZk
-         0fOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756997296; x=1757602096;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g6Sf9UE3EF5HYpffcmBwy4ps10mS4KNLSqgfI9CuUyY=;
-        b=TSy7XwwrpoB6rZajyk/MOe+hBnxuw7IL4SNlSem6iut2sx+SJ4REsB4jWEJ49MYEB8
-         JABL4vwonyv27MNG2jFliQm+KXNkpW0SoiZ4VFqtilZGMmMCGtfBRo5BDO821gQekPx0
-         ToJuKzeA4+hG67PVVHwVTHML7rbFuLaRsub+K/5jycTVtwxLHodoXMBXHcO+5Y+39y9s
-         pOjMGajkMjb0tlzglG5v3vhPcg8YHaoVbXYUf0q0D5mRU+HbOT5Z+JvZzNgj565cmt0k
-         CQhSOKUe38svoYPDtoAcNugcRsqLtE+VPPxyxF9dj7JcV3zx3r6wx2oQDwd/BTLzUJ//
-         Nq0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUhgridZcx9wPx+qLZLvJWJECH4qM4/kilXRLZs51yhfDCBaEJC0Mxj4pCzsTUSaRwNCRpOTRH86g==@kvack.org
-X-Gm-Message-State: AOJu0YwQOYRLY4GXofbdfaHjXgMiMPGGC251DTxhi7gf39s+z9tTyR9Q
-	b6Y+UYjK1lsWPCjXYOobOB36IxRJIelg/ZZy9KCzBZL7mdqPx+48FPDtsFDsDJsq3hM=
-X-Gm-Gg: ASbGncv9xxkh25nDmRsFDANCWP/sEmbZ1jbsLLKpEntmyUhOCSaldD3SZnqaM5dX5U6
-	lbrWBSF/velN8T4+Uaq+Tq/h++Bgw1xmRtHTD/3bDL/U5Q3g8HIQPw2C5JQSEi/JwdNLvjpSM1r
-	GphUIRz9igQiloIqpHeVyuMYfqcnU51OEwkJdiC48pV1opSUYcr9ZoLyUbtw8njEMbsrq96VMbr
-	1m9YRW3FRs8DOrI/PHr/E+doPqRxvCHFybMKc/xSEvMkwDsRfaYWSvBXPLTXc2oabzY2CvU3IFr
-	3vY3jxAI3cDSZmvR63bsybayB4vshjQaBQpE1Gycr1XvkV3r6ckT1HJeX7/HKSVXqr37aDWWKHV
-	hqRLDaKMUguY4AuhZO5Q8ZX1c0dlpKWCRrGRys9wvuUT0G6mrGYM8xw==
-X-Google-Smtp-Source: AGHT+IFmEWOaYXgd2qYtZqy5eD425678QUgMGGgTXiY3gZfol0LS2F7CgHBQrjxKscsjVJaOReKoiw==
-X-Received: by 2002:a05:600c:1f0e:b0:458:a7b5:9f6c with SMTP id 5b1f17b1804b1-45b855335a8mr170497585e9.11.1756997296078;
-        Thu, 04 Sep 2025 07:48:16 -0700 (PDT)
-Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45dcfcb1497sm21106915e9.1.2025.09.04.07.48.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 07:48:15 -0700 (PDT)
-Date: Thu, 4 Sep 2025 16:48:14 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: zhongjinji <zhongjinji@honor.com>
-Cc: akpm@linux-foundation.org, feng.han@honor.com, liam.howlett@oracle.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	liulu.liu@honor.com, lorenzo.stoakes@oracle.com,
-	rientjes@google.com, shakeel.butt@linux.dev, surenb@google.com,
-	tglx@linutronix.de
-Subject: Re: [PATCH v7 2/2] mm/oom_kill: The OOM reaper traverses the VMA
- maple tree in reverse order
-Message-ID: <aLmmrvPb6mFHzqCc@tiehlicka>
-References: <aLg7ajpko2j1qV4h@tiehlicka>
- <20250904122438.22957-1-zhongjinji@honor.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VP2sT/EA";
+	spf=pass (imf19.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756997563; a=rsa-sha256;
+	cv=none;
+	b=LmPueOt8/WMSZpaQ9/MHK4thaBfZWW2chPS/+x4KnQNfyjc9L0WExb6Md7XQ/gVZNpVvKz
+	0UxhYTtzoPGp5yH9LVMwZmztL29uhy4kfp9Fgbo/OxxQ1tvMZmv5uHtD7NE9mtKF1/2XM+
+	Hu3fEYnJYm4kIuBS1KpY6JvqFLRjMiI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756997562;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BazxnC+Wcptnkdd+tPophW9XIDvM64THaSvkRAFx9Mg=;
+	b=VP2sT/EAUXPlLqopVQROh9M94Ion1zcudzMoJnrel8N+jIfL1KCXIxEfFDFMPx021vVhKV
+	11a/AjixhxvrzFLjTiaMWRw2bZz6sUwc0yuPsTF9sVn4wFR0erR7nIGlNe82Uzkd0o7Nd+
+	2RXp0vxtKXVDNTEbED+VOsrdKfLXulY=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-1O0OaGzTPK-kKLpbyr87uA-1; Thu,
+ 04 Sep 2025 10:52:39 -0400
+X-MC-Unique: 1O0OaGzTPK-kKLpbyr87uA-1
+X-Mimecast-MFC-AGG-ID: 1O0OaGzTPK-kKLpbyr87uA_1756997556
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 631281800291;
+	Thu,  4 Sep 2025 14:52:36 +0000 (UTC)
+Received: from gmail.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C81361955F24;
+	Thu,  4 Sep 2025 14:52:29 +0000 (UTC)
+Date: Thu, 4 Sep 2025 22:52:25 +0800
+From: Chunyu Hu <chuhu@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com
+Subject: [RESEND] Re: [PATCH 1/2] selftests/mm: fix hugepages cleanup too
+ early
+Message-ID: <aLmnqYrAaa4MrZZA@gmail.com>
+References: <20250827075209.2347015-1-chuhu@redhat.com>
+ <20250827075209.2347015-2-chuhu@redhat.com>
+ <87956f34-e6b0-4d03-b30e-56be4f6b84f1@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250904122438.22957-1-zhongjinji@honor.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BFE0CC0004
-X-Stat-Signature: 8gfxzinrsd3fm7c7npgenkjhde18nb1u
+In-Reply-To: <87956f34-e6b0-4d03-b30e-56be4f6b84f1@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Queue-Id: 1F4C61A0002
 X-Rspam-User: 
-X-HE-Tag: 1756997297-636774
-X-HE-Meta: U2FsdGVkX1/wGEWcR7RIyAZ/hKlQCGA10kla/dU6XmstiliCKGFfjQDfY4MY6jEbswdkap9nEoROg36kBJIzcNX/UWVefQpstLhupvSNn3DWMGcEQEwEPeBuzqJprO2YJbfp7wj4psSBQoKPjkYWnmANMbpPibXT7tp7qszpxegozBWpkIY8PLzVKc5LN3jQ504W0OC1YASP4NTRyRUY5h+MMJ4zjC1NDIw9UMKd+MbXTQiHZpEHr7rn5Huu20t7BFYy7AQ6CbZX0y1RQEQ8vR6LbOz7llJDLNMZQpGTr8n2ci9lLCKTcKJL4Z+Ydu8oEsN22Uc7Kb7A+h7UW009DgUhtn1gqz+uuhZIGrVSSMPgNXL+u+Xl2X8c1u+YF5yWhhYrGm0WrdPub+iOUE5Yj3wNfCKTcdSqa/2iZBzO5B7izs205HUuj3nPsZ6cFCHOdA0rUeus2baix6QNNSRFlqVJpZXd537gsyio6G8Vx/1/SpSwOZwrNElhBRIIGgHXxhXY9g3s6RImz/C6eTfi9ZyRYlt99aC6gEdlNZbOIfxgGfFPgV4fyb1ptQqx26W3v9q6J0tZUml+JPlOmP+ML0nbTzTdgsw/BDp/eEn0twyLMs+ZesYHbqJygV6Ac43n3wi3GjiB7HenkHduYEiuA1FJruSMuxEkl+jRgEvEWqw3uHbxqZsd+en6yvP3wjVwqL55EyHmqrEGjioN+bMBJV83uYNwDs7Mc0y8ioNQ8fV08oWZTHOFKba4O+BgmdWjq7ONQfVD3HCmRzIeOceUaHUC1NL+lzVD/v5jJ5LLH+v/R0tNFUcBKAKQn4ypbWMEufy+Nl1fuKFP5DdMFS1dBLQNGXuno0TJSvuNCQvlE+hxgEaSy/CIstxPtdRh9tOXVQOXFdhL08MY0FigMJlutyXslUt++5WgFXnimB4DyhQWDhv7T6cNHEkwInGRxmqsxj/DC+KL5TeYzWg4Egv
- NL4f48qr
- OBuqV7MnmNxhHAX5SkDgQusZMpCaFVD3HhrnAH82enVzzQr8hinC+naOPfK2vXjCsEzGl+Xzd66cPz9DBQi4FQbFI0ZwPnzgVOBE8AyuJCf/3/iGIkrFVjM4yryHKbS9D0J1qLdIWt2HmZmCt70RURACQwSFOeyk1GDwA/El64VQi/NlDk5mvOeeToH0jDUgRqKQE4bcepS84fIL1UqCUcHn6FeAKtDpM8RwmzmUWb+d5AAUEwB6eoimVqJopdh7CgPWgirCjU51W2VHeaN0aFJJ3lOvP41lL+kPYTFQmsL4OcxxuzFKTY1RNdl4y8m/ngbIAIj/ArxfTAY78oHPvM+czFQjaIyAgZfck/P+L0C+b84s=
+X-Stat-Signature: 4mz5i5wnet15gw4zx9pk9wjf4f8wjcuz
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756997562-455235
+X-HE-Meta: U2FsdGVkX18x4ZJqC1ev2wu5L9Cpr8DgcIHu0vc6RVgcxPBqNdXay+f+uiaYALF3+/P+Dp7uRHS2OXEghHvQ/8iuJRo+trCAaaItkZVVDctLqRsRsbxzMjRdNRGcRauZJKUkcNoiUD2Vt4Z/wdJbidk3SOoLXnoxqegdCaXlr6B6oS1oXYlHLFqtIUdCDjAtl6xvLRIWGrTvGaIVRtSZLl9xdLS6rtPxoca/kaFbo+3ZA7qNITIdN6NhF/Zh7F2vzRvbbS1gVMWTxoFDZGFOdtD0KKU07193aP8cCEPQmAGoMpkUrxSAzGvHEY0XjAad/gFb2ovGx+LaQs/80aZf9c/FH8NfTV9fH98zaXs9V06cnP1HHVerJCPdBtNix2AU3lPN9ZWMo/sVMksMWq1xz1qplFolciZIuzLNzNJy1XoSPgY9pBmQuhzjhQM6OFKsvELyhfuLem9D1qsqKyDHIMzJkTX2PA1+lgS7ijm0J7yU/NpGO1SSSESWXVt0TTt+h3nHWuBY34GaUtPZ/Ppm8X3pKRA1N5DW45ztd7yBTc+zcSjpTspVAoHhpHrn+9OejROedgms9dL6TOpg/m1KYbEVKBB63FYtbOnxugCP/KEXr0Y7o63a4K/p6ALa65qQxu0znxQKaMVxtGOq/H5rYFKQ/r3FWbU2gHZnuWZM6E5lqbWh7F4wZWiAc5qt/TJtz/a+VJLVGRffnUg1ioPa5dFlJiH2/a9W05lAJvImaYr0sK1o0o+wG5hU8PVmd3D/TiPEFzy6PfV6WEhyPiWuQbZmIH1LgrSiitgXyBti1sTP/sC12Rvq3ESGehD/pKVT2D7ebdDWZGFD880ourAn2HsV83VEww1CWo7Eve6Kjow/NuJQbxoLsLa0QKt1xhqJKfrixWI9qEykgW3BVjIoHuQjXFTiEwmoEV4U/Uez+3V7DDe/UghnYNdiOHpGsU+8LvveCPuljqPJXE9wE63
+ ObuTpazM
+ h6++9Q2e3U5Qh1fzwDtxFPZ54Ggl6mBb/sIdOZL5M4BUgz/4gOfvTyCbZ1QTmoAEV/ZluqcIaUIrSK+k9O+R5bybxKtelZg0OpZhDVBPXQ6cRaq8oNIzLVcaPwAyE63rmOnCjU4AmUA2cHgo8UddH6wA4BjjND+t7pCdHAlD26XfFQSlpNgVjtmtq7+wSTvmNc2lX1qYUcE479a8/HQq0Axf5RNblp18/GfZb5N3ga685pt7bD+S7N/reZYmB3kexFb0vOERxWBcoqAuj7B6QfFq7NiQcNJnqM32mgW0mNch1lpw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,125 +107,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 04-09-25 20:24:38, zhongjinji wrote:
-> > On Wed 03-09-25 17:27:29, zhongjinji wrote:
-> > > Although the oom_reaper is delayed and it gives the oom victim chance to
-> > > clean up its address space this might take a while especially for
-> > > processes with a large address space footprint. In those cases
-> > > oom_reaper might start racing with the dying task and compete for shared
-> > > resources - e.g. page table lock contention has been observed.
-> > > 
-> > > Reduce those races by reaping the oom victim from the other end of the
-> > > address space.
-> > > 
-> > > It is also a significant improvement for process_mrelease(). When a process
-> > > is killed, process_mrelease is used to reap the killed process and often
-> > > runs concurrently with the dying task. The test data shows that after
-> > > applying the patch, lock contention is greatly reduced during the procedure
-> > > of reaping the killed process.
+On Wed, Aug 27, 2025 at 01:41:34PM +0200, David Hildenbrand wrote:
+> On 27.08.25 09:52, Chunyu Hu wrote:
+> > The nr_hugepgs variable is used to keep the original nr_hugepages at the
+> > hugepage setup step at test beginning. After userfaultfd test, a cleaup is
+> > executed, both /sys/kernel/mm/hugepages/hugepages-*/nr_hugepages and
+> > /proc/sys//vm/nr_hugepages are reset to 'original' value before userfaultfd
+> > test starts.
 > > 
-> > Thank you this is much better!
+> > Issue here is the value used to restore /proc/sys/vm/nr_hugepages is
+> > nr_hugepgs which is the initial value before the vm_runtests.sh runs, not
+> > the value before userfaultfd test starts. 'va_high_addr_swith.sh' tests
+> > runs after that will possibly see no hugepages available for test, and got
+> > EINVAL when mmap(HUGETLB), making the result invalid.
 > > 
-> > > Without the patch:
-> > > |--99.74%-- oom_reaper
-> > > |  |--76.67%-- unmap_page_range
-> > > |  |  |--33.70%-- __pte_offset_map_lock
-> > > |  |  |  |--98.46%-- _raw_spin_lock
-> > > |  |  |--27.61%-- free_swap_and_cache_nr
-> > > |  |  |--16.40%-- folio_remove_rmap_ptes
-> > > |  |  |--12.25%-- tlb_flush_mmu
-> > > |  |--12.61%-- tlb_finish_mmu
-> > > 
-> > > With the patch:
-> > > |--98.84%-- oom_reaper
-> > > |  |--53.45%-- unmap_page_range
-> > > |  |  |--24.29%-- [hit in function]
-> > > |  |  |--48.06%-- folio_remove_rmap_ptes
-> > > |  |  |--17.99%-- tlb_flush_mmu
-> > > |  |  |--1.72%-- __pte_offset_map_lock
-> > > |  |--30.43%-- tlb_finish_mmu
+> > And before pkey tests, nr_hugepgs is changed to be used as a temp variable
+> > to save nr_hugepages before pkey test, and restore it after pkey tests
+> > finish. The original nr_hugepages value is not tracked anymore, so no way
+> > to restore it after all tests finish.
 > > 
-> > Just curious. Do I read this correctly that the overall speedup is
-> > mostly eaten by contention over tlb_finish_mmu?
+> > Add a new variable nr_hugepgs_origin to save the original nr_hugepages, and
+> > and restore it to nr_hugepages after all tests finish. And change to use
+> > the nr_hugepgs variable to save the /proc/sys/vm/nr_hugeages after hugepage
+> > setup, it's also the value before userfaultfd test starts, and the correct
+> > value to be restored after userfaultfd finishes. The va_high_addr_switch.sh
+> > broken will be resolved.
+> > 
+> > Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> > ---
+> >   tools/testing/selftests/mm/run_vmtests.sh | 9 +++++++--
+> >   1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> > index 471e539d82b8..f1a7ad3ec6a7 100755
+> > --- a/tools/testing/selftests/mm/run_vmtests.sh
+> > +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> > @@ -172,13 +172,13 @@ fi
+> >   # set proper nr_hugepages
+> >   if [ -n "$freepgs" ] && [ -n "$hpgsize_KB" ]; then
+> > -	nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
+> > +	nr_hugepgs_origin=$(cat /proc/sys/vm/nr_hugepages)
 > 
-> Here is a more detailed perf report, which includes the execution times
-> of some important functions. I believe it will address your concerns.
-> 
-> tlb_flush_mmu and tlb_finish_mmu perform similar tasks; they both mainly
-> call free_pages_and_swap_cache, and its execution time is related to the
-> number of anonymous pages being reclaimed.
-> 
-> In previous tests, the pte spinlock contention was so obvious that I
-> overlooked other issues.
-> 
-> Without the patch
-> |--99.50%-- oom_reaper
-> |    |--0.50%-- [hit in function]
-> |    |--71.06%-- unmap_page_range
-> |    |    |--41.75%-- __pte_offset_map_lock
-> |    |    |--23.23%-- folio_remove_rmap_ptes
-> |    |    |--20.34%-- tlb_flush_mmu
-> |    |    |           free_pages_and_swap_cache
-> |    |    |--2.23%-- folio_mark_accessed
-> |    |    |--1.19%-- free_swap_and_cache_nr
-> |    |    |--1.13%-- __tlb_remove_folio_pages
-> |    |    |--0.76%-- _raw_spin_lock
-> |    |--16.02%-- tlb_finish_mmu
-> |    |    |--26.08%-- [hit in function]
-> |    |    |--72.97%-- free_pages_and_swap_cache
-> |    |    |--0.67%-- free_pages
-> |    |--2.27%-- folio_remove_rmap_ptes
-> |    |--1.54%-- __tlb_remove_folio_pages
-> |    |    |--83.47%-- [hit in function]
-> |    |--0.51%-- __pte_offset_map_lock
-> 
-> Period (ms)           Symbol
-> 79.180156             oom_reaper
-> 56.321241             unmap_page_range
-> 23.891714             __pte_offset_map_lock
-> 20.711614             free_pages_and_swap_cache
-> 12.831778             tlb_finish_mmu
-> 11.443282             tlb_flush_mmu
-> 
-> With the patch
-> |--99.54%-- oom_reaper
-> |    |--0.29%-- [hit in function]
-> |    |--57.91%-- unmap_page_range
-> |    |    |--20.42%-- [hit in function]
-> |    |    |--53.35%-- folio_remove_rmap_ptes
-> |    |    |    |--5.85%-- [hit in function]
-> |    |    |--10.49%-- __pte_offset_map_lock
-> |    |    |    |--5.17%-- [hit in function]
-> |    |    |--8.40%-- tlb_flush_mmu
-> |    |    |--2.35%-- _raw_spin_lock
-> |    |    |--1.89%-- folio_mark_accessed
-> |    |    |--1.64%-- __tlb_remove_folio_pages
-> |    |    |    |--57.95%-- [hit in function]
-> |    |--36.34%-- tlb_finish_mmu
-> |    |    |--14.70%-- [hit in function]
-> |    |    |--84.85%-- free_pages_and_swap_cache
-> |    |    |    |--2.32%-- [hit in function]
-> |    |    |--0.37%-- free_pages
-> |    |     --0.08%-- free_unref_page
-> |    |--1.94%-- folio_remove_rmap_ptes
-> |    |--1.68%-- __tlb_remove_folio_pages
-> |    |--0.93%-- __pte_offset_map_lock
-> |    |--0.43%-- folio_mark_accessed
-> 
-> Period (ms)           Symbol
-> 49.580521             oom_reaper
-> 28.781660             unmap_page_range
-> 18.105898             tlb_finish_mmu
-> 17.688397             free_pages_and_swap_cache
->  3.471721             __pte_offset_map_lock
->  2.412970             tlb_flush_mmu
+> I'd call this "orig_nr_hugepgs".
 
-yes, this break down gives much more insight. Percentage is quite
-misleading as the base is different. Could you also provide cumulative
-oom_reaper + exit_mmap(victim) time in both cases?
+[RESEND to add back the unexpectedly dropped mail list, sorry for that]
+
+Hi David,
+
+Thank you for your review and valuable feedback. I will rename it with
+a v2 and resend the two patches. 
+
+> 
+> But it's a shame that the naming is then out of sync with nr_size_hugepgs?
+
+nr_size_hugepgs is for uffd-wp-mremap, the test need all sizes hugepages,
+it's used to save and restore the nr_hugepagees of all sizes of hugepages,
+it's a test case setup, not like nr_hugepgs which is a global/general
+setup.
+They are not the same kind, maybe they don't need to be aligned.
 
 
--- 
-Michal Hocko
-SUSE Labs
+> 
+> 
+> >   	needpgs=$((needmem_KB / hpgsize_KB))
+> >   	tries=2
+> >   	while [ "$tries" -gt 0 ] && [ "$freepgs" -lt "$needpgs" ]; do
+> >   		lackpgs=$((needpgs - freepgs))
+> >   		echo 3 > /proc/sys/vm/drop_caches
+> > -		if ! echo $((lackpgs + nr_hugepgs)) > /proc/sys/vm/nr_hugepages; then
+> > +		if ! echo $((lackpgs + nr_hugepgs_origin)) > /proc/sys/vm/nr_hugepages; then
+> >   			echo "Please run this test as root"
+> >   			exit $ksft_skip
+> >   		fi
+> > @@ -189,6 +189,7 @@ if [ -n "$freepgs" ] && [ -n "$hpgsize_KB" ]; then
+> >   		done < /proc/meminfo
+> >   		tries=$((tries - 1))
+> >   	done
+> > +	nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
+> >   	if [ "$freepgs" -lt "$needpgs" ]; then
+> >   		printf "Not enough huge pages available (%d < %d)\n" \
+> >   		       "$freepgs" "$needpgs"
+> > @@ -532,6 +533,10 @@ CATEGORY="page_frag" run_test ./test_page_frag.sh aligned
+> >   CATEGORY="page_frag" run_test ./test_page_frag.sh nonaligned
+> > +if [ "${HAVE_HUGEPAGES}" = 1 ]; then
+> > +	echo "$nr_hugepgs_origin" > /proc/sys/vm/nr_hugepages
+> > +fi
+> 
+> FWIW, I think the tests should maybe be doing that (save+configure+restore)
+> themselves, like we do with THP settings through.
+> 
+> thp_save_settings()
+> thp_write_settings()
+> 
+> and friends.
+
+For this va_high_addr_switch test, looks like we can do the save_setting,
+write_setting and restore_setting in the va_high_addr_switch.sh.
+
+> 
+> This is not really something run_vmtests.sh should bother with.
+> 
+> A bigger rework, though ...
+
+Totally agree, with the c interface to do that is better. then the
+vm_runtest.sh would  be clean. It's a bigger rework outside of this topic.
+
+> 
+> -- 
+> Cheers
+> 
+> David / dhildenb
+> 
+
 
