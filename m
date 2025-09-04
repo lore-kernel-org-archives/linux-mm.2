@@ -4,116 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 056E7CA1013
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E235CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:20:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E9778E0017; Thu,  4 Sep 2025 12:06:20 -0400 (EDT)
+	id 287008E0003; Thu,  4 Sep 2025 12:20:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C1156B0027; Thu,  4 Sep 2025 12:06:20 -0400 (EDT)
+	id 2377D8E0001; Thu,  4 Sep 2025 12:20:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D7208E0017; Thu,  4 Sep 2025 12:06:20 -0400 (EDT)
+	id 126578E0003; Thu,  4 Sep 2025 12:20:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D55A6B0026
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:06:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1B62B7E4D
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:06:19 +0000 (UTC)
-X-FDA: 83852044878.16.D149A5C
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E5A1810000A
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:06:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=flp9Z9VF;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F11F78E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:20:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C69F1602BE
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:20:49 +0000 (UTC)
+X-FDA: 83852081418.21.4F3A3D9
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AE86820012
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:20:47 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=G3yOV2v6;
+	spf=pass (imf03.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757001978;
+	s=arc-20220608; t=1757002847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TJB1/hNYsH8Q20BteySCtJnDw0ynZ68mEzNhyiDKstk=;
-	b=OuGHosUHkkvdW70xhcda4G3WhDB3y3LOJHYcAwbGquxfzKvpdZDxN5IohRAKezGz541D3f
-	ltWxO0+x5jNbB4/C2USp1y9iiNqAECSFdXinZM6bweOliBD88gkSEcPKwJpjyH98gJpMo8
-	WJy8adpjmuwJmxJFfu/z6/+/6spo43M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757001978; a=rsa-sha256;
-	cv=none;
-	b=WE40MaYVrYUXXphnmIOZKcyzjC+SO2nepAOcZ1Kj0E03ZRIgw7i6Wd1T1uq0uv3h1aSgMb
-	ljEZorZZW3iaU31oQXUzKVYFnm/nqb+iTwLE3hO4wFbl3u3vXIivGESB2yDcSyOch3xWd2
-	xX0s2fxKjBmoyHuqUFEFEYR2//AS8Ls=
+	bh=e0t6bhmQA22wX44ktbmUqj5cgU/my1Kdps55OJZMqkk=;
+	b=DYIMC//4P8/EDLBs9bk+JtjJCZa7WDeALCuVS2Nlo6ux0rNPJ4Aznt1t0k6p1kWHHwtwMn
+	Z+pLZp/F9AU2l8BY0e7jGAILP7tejsNzOecxXSSP5YXBmxM55NGYFFI2A9/SjWSNT6bqkz
+	Q+MIFmfw6GeTDfvvAJk+mtvhgKTepcE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=flp9Z9VF;
-	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-61a8c134533so2098550a12.3
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 09:06:17 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=G3yOV2v6;
+	spf=pass (imf03.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757002847; a=rsa-sha256;
+	cv=none;
+	b=WkhpW96Yifk7AyFvngvr1scjiVgaWHPXPKg9b+vRfyxmgybFfGPB8T0Ag6R7LkAtr5VICD
+	kFhYjYtH7ChQ5IyoZjxBD3IeXjfBL9c0HJfrVNWQeHGWtG09OWP/ZzpxPYoh9UJUaS+zeJ
+	wcQOY0F8ttCyNo2SF3xye4m0iuZlSfY=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-24ab15b6f09so208375ad.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 09:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757001976; x=1757606776; darn=kvack.org;
+        d=google.com; s=20230601; t=1757002846; x=1757607646; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TJB1/hNYsH8Q20BteySCtJnDw0ynZ68mEzNhyiDKstk=;
-        b=flp9Z9VFCdqo1tx0JzHYzJH1e/74+9Xfv5nbUYmbJmP0sFtiqBT3XWZLSoFkSKPGb3
-         I3x82nMOuIuVZnuuFqbXoVfeKOCe7iKX0CR8BACkEHLdHfk1mVZwACmBDXAPYzshI+Nl
-         d+IlbfTX6lDdA/GtIaj5DjLaPYoSgk+ofsEA18tiRtUuhnsuslZRJs0QzU6NZ47fVD7C
-         MyoGdC29GPoalHTDkrRnrw/nZhwOFQipYkS0ND1uFsris2bBLNs73jNu6QPEpT2BcRap
-         NUEbsheFt9GZurn+TrMIWTshQY+820gp5xQfVKEp4EUd6ypyjF+kfbUCkpYQUbeCLzbf
-         AjIA==
+        bh=e0t6bhmQA22wX44ktbmUqj5cgU/my1Kdps55OJZMqkk=;
+        b=G3yOV2v6GNo62udULjygc1x6/1R6r36KSaaBTv5Yrg83WDzXNYWXhq/k3nRCaTBIsZ
+         8LDknckfwzLL5gFQGmgSfPo5LmlauhrSexuJj3/sKjUu5KUxtmAv68tW2UBpmW/upVr+
+         sQlCFlq0ohbJ/VEEDbJXvsTylYiE/KCIS9Vz11wsBzFfNZB4f9W1X5bpTu1AABXGAIWS
+         cPTiTJozvzzMsNL5FotMnrbWarLAeq4GS/l73Jp2bAXQSjzKwN5bgnpz4eWNB9aOuqnV
+         bp8g3qcUxNjUUyhnn5vxzM03bur9BHIzvDG9yOX0UxS+gecS3vksgBsjBkRIIIMbk87Z
+         ctvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757001976; x=1757606776;
+        d=1e100.net; s=20230601; t=1757002846; x=1757607646;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TJB1/hNYsH8Q20BteySCtJnDw0ynZ68mEzNhyiDKstk=;
-        b=A/YQrGDBiyO6L2hwXcedMia0yLnAD1Sh9CJuPUNpnZffPWnQZlnJuSTYLU+H/1vhgg
-         BF8Levod3pQhigH5/Z2PixJUC7f7kZ3t7PoxEMeWicLvYEKE1Mw2Z+H/kxnkjOy2xAje
-         P4bSqtBh32wKyQJJmJ/QU4GFYG3QNug+HDqnRDn6GvVuvqUzHosQTqx4P0IEMhLm1Dce
-         beygzrrFOdXHgSWtoA5uBFb86RSQC2T4QF2h9AgGsaUCTT+AYPFlL4SoJNYUvT/IKXtN
-         iH9IehH1UrpVUfmjhCj5TrLR7tO5/s89v4pKVYzGc5oTO7J18808ivYNaI5lxxFOkRoC
-         Udsw==
-X-Gm-Message-State: AOJu0YwRevx1/gICPTQkfudvReunUNQups4aR7/RBjbIouIrP9N1Lk6H
-	prcRt/QAtHZdAij/J6xY5BDPxaAU0o/9ZDgfFUvP7xaXXdjjf/H5z7IB8ifbI7XOBRtS/nTv4QO
-	U9CvOasBD6/V6eKWAhAPCnBw88brSXJQ=
-X-Gm-Gg: ASbGnct0GmQXDUW3aqSHnIkdW/klk3o6bFvczkTd5FkNq2hyU6/EGyCmAOvLRV35dSU
-	7TiV7186RtsXqhceawW9NjjGcTkINFAcR2e2Sy6hyJcKqclcVybNAAuMMQKSMOpf0aOEaDsqau/
-	dAhckcVxgisEGfPuoPxh3634ypCeIHe6g4/Gro39p+1oM1i8/jC7q/jWV+PkhfcRLWiYmULv4+C
-	pCnB2co5sI=
-X-Google-Smtp-Source: AGHT+IHOugCOPsyWMYI/9frBi1EDh/M6MUda/nljZdBGVaeD4eAkldmiAKLHeV9fd51Mn6Vw2gFbWeyKSwJn5vu8fHA=
-X-Received: by 2002:a05:6402:2686:b0:61f:afe3:9177 with SMTP id
- 4fb4d7f45d1cf-61fafe393f9mr2096912a12.2.1757001976066; Thu, 04 Sep 2025
- 09:06:16 -0700 (PDT)
+        bh=e0t6bhmQA22wX44ktbmUqj5cgU/my1Kdps55OJZMqkk=;
+        b=oeMSQjHzrnV7C2YEHrF6SSE71VfuyY+7GwmLRbnmKyRQ7EqC698bAMCyC8wrucLIn/
+         KHd6ILRhDwYg0pf5oXnNpEcZ4ss2T671gvahxU75ik5KkTF/8kreF8fmMHaAPP5w/Q9V
+         4tHx9MYPaebfMhJdp78xGlktjJRa1iLR1At4rW26vrvw8AKQ/hw/MkSAk+FES5jErfuj
+         8cYDE2SiN4Teou0FKE3301q3T83XkjTfDqHpwqzgg5+oeEz+mGxIXaGH97nvjctKW5CU
+         Dpbmrf7+J87R8JD3F0Vhwy2pxCiRyDDVQnRqGuO8lBTnEpNSabJ07O1iLUQ95c59lO+c
+         NvMA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzjv/68q9f74oeBbWtO+MX7K1X63AsL2BEpCdKrbrfObJ34q9lJbdiqJxDuRLBPhyYpJDy5bPk2Q==@kvack.org
+X-Gm-Message-State: AOJu0YxKQGuu7vNFQT6XW9b161VIplPyj33/LanbigtkoD/2diDLURJa
+	74xq8FF2WB9UlhWT11RMENAMIfrJ/2fKiFAc4F9AlLmvMZ+9LC05iwOrsB6aA3VY+lghf1Bc1yZ
+	36DSlknMbBKGq9BNBepNXxfHCWxdUalGDEHKZFdkg
+X-Gm-Gg: ASbGncsfk+22Cja+OeW3nMq8JHDGknVijcuuPdKrNI0XjdqEQ+qdD+cK2Pj9tKv805U
+	iEobjrtjBRqQ9aec2RoQc0xYBCN3kwMV3sqYi25T+MeOaL20m00UO34MTGMXdDoOvGJvc7kNP1T
+	RQ9pyyW7kA3aGi9hn1QvtrD0faZv7cx2u/2QfT/qqPbe8btv2e1Y67LfA+KxMJ4OGGjBkz/G8TV
+	9plXBsLKT6B2l+4w3TrLdkFIBK5g93rIFiRiYVY+S1TsTN6BeZrX3qyHFPQGa4ybw==
+X-Google-Smtp-Source: AGHT+IHThq6GwO2/qHwlSP0iRWoql/gtSI+KBd6TV5CKErad41aW7prfJ1BHV/t4PpXi6b9rJmJsWOcxBCxqXuBOLZg=
+X-Received: by 2002:a17:902:ecd0:b0:249:2f1e:5d0c with SMTP id
+ d9443c01a7336-24ccccc4c7amr2934785ad.7.1757002846099; Thu, 04 Sep 2025
+ 09:20:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250822192023.13477-1-ryncsn@gmail.com> <20250822192023.13477-2-ryncsn@gmail.com>
- <CAKEwX=O-_khBw0h3F+Uqx-8joMPHb-aOBuODx6LVO3vEZ38tpw@mail.gmail.com>
-In-Reply-To: <CAKEwX=O-_khBw0h3F+Uqx-8joMPHb-aOBuODx6LVO3vEZ38tpw@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 5 Sep 2025 00:05:39 +0800
-X-Gm-Features: Ac12FXxv3acge-iILq_OS5ASCS0n5qK1Bxoju9QuUQYOMxssZswBOiwQNaPmA3s
-Message-ID: <CAMgjq7Dy1ma_jq-AutAGjOXfinFPOLVJatz7dnHi_Nc563q2cA@mail.gmail.com>
-Subject: Re: [PATCH 1/9] mm, swap: use unified helper for swap cache look up
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+References: <20250903232437.1454293-1-kaleshsingh@google.com> <aLk_zbXxYxHs1Igk@kernel.org>
+In-Reply-To: <aLk_zbXxYxHs1Igk@kernel.org>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Thu, 4 Sep 2025 09:20:34 -0700
+X-Gm-Features: Ac12FXwM78mo5ZQ5cUxcmH3ulwLdG7jBYopJRFbNNqJcd7ybiS1glWTpedGl5Rg
+Message-ID: <CAC_TJvciKbEOyBv_V01s8nJF8MMKznKq-Gw6+Shv9AAppJ46+w@mail.gmail.com>
+Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	kernel-team@android.com, android-mm@google.com, 
+	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: AE86820012
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E5A1810000A
-X-Stat-Signature: uuoixbrnyenwyqazu1dq5mqxn4bbi4kq
-X-HE-Tag: 1757001977-359918
-X-HE-Meta: U2FsdGVkX1+X7x8oq3bfjfpT5PSp5XVFy5mSZ7pFDB/9O2ulHYANsFFq+kaAwuk+WwGSQg01hzHMF+RWXIudkWOxOd4omI6OAcig2uP/MdqfA+cCdRO5o6T0jSsF6csQfjR8YQ3/uFxSEsJC64S1FGCvChOx+tIuUFfewivM2EkaWva2tbj4aeRIy0tbLFHAxRQEPqa/UU8LHEMwStvqT83lYPpZqnqoy8MqzNWUxz/7V0DcWSaBJ/KPPU1sArFDeBDm9fkGd4RKBpH8OuOr3cqJz6SKsag8pgCW+CHXSuRn1nsGuuEjf0Uj0twcZd5oPaOwCmoChbeNoYb0JYcXoI4aquW4Zm3avYRGR3rlECoPDag4hOKOmIrLX3qZCyhrsuN9cwiuXjZSfhEYMa9FdCwGiDfy9r7IhKAAC6nOFG2fndgOCb90rWQLyjKPwxsZtP5+p5XZWUKm/KF8ebrls5JCFZ5L8R/17ow3o81Ox0blLuGgtvA74smrLiKMOlYNh02UsxQI9T0iIhgivqqljgPbblpxWkKAJMWF0uieumbxnaUF8MjKvVsIsMTBgy7NJANMjdktSC14w4sZsgEMJ++GSAUk7RLW65OJhlTU0IsiBmqlbCqQMjpIJbwl1P8+ggkiMAQhvQqhJJ90n3zV6M/Hindpw8M0ZG4SM4PYaMqYQ5Ugb277Aaa4/tfoc+MbDBLj1ihpYMS45WqKRk4+18GnJCMADJY1Gr9W61F5tFcwKyMN30uTQkdjW74pCjOv920imbqVgxt/dBkxBPwjPeeYMnUky/lHSUFu9Ok/Q9N6nz4CdU+F2xEp2ipWi8tvXMAKNBBRCJh3pj/xj0veY8cQV0v2Rd9tFPZd4lNynAhEoOk+VluDDjzsq1Zb8mMg5Ry884kum9U+alnPZSox31bh2rp7apJ1jiV18JtZ8wsCD+yaBx2oXs0OfchjpTSZRAXCg68Xg317hJFEvWy
- i1J/1PIN
- oMn7WOvg/WzkOhgW1r4YYnF2QfUM106DAuAglxEO5Npgb3ThoEhAHAMaiQi7VLV7FRShSTypiZ4g0O1Gr868NnhBtVUaZda3ZT6FbxtKwvzCUIXYWklcGsiiHvW7r55YrHxCYhtRQ/hn13VMbJm3zyOZAipgZDkuAy3d1aghRzA8v1aL6XUaLsRKgSWN+OPm0s+H+2WQtFh0s7Gq9bD80lrSz0RXZO9WNML5AqW3av0b0qXCE7fZRKYnIJy78ZgjA7XF/VgHfTeyh18Hm2x7hBoq+9Jv0yn4osEK7yOoc17+JyphMyZjg8RubUP3Ku/hlfbgMg7RZ5aUOTHw5VxtPiLXFuGiNewcGqGOYAW4zD94+TwURL8/LT3gG+Jb6b61+zU0aBenjXF6OkrBZP/GEz7cLig==
+X-Stat-Signature: hsjs1t54xe7yrtdhdsh4to314tx7re97
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757002847-955045
+X-HE-Meta: U2FsdGVkX1/9kigo85K6+NZTbpNftQG93wYg/ZwDtbuG65pH8US26QRSRJPMTGzKLdVV50or4qzB8WZ2ofEusDlqN7CtjUngnTbP9xr59vWpS4k85CifZ7wmpDtJOopRlFKfncIF16sjJK+lLUh6FbAKEjhgM/RaJNQAYhT4ToXxUFwn1YeamSosT4g8kC8vFYJMMN9bzLvtUrsUfAITDy/x9hzf1WQHOV/+6+GBdUGRFY/6F8LSEsHImtcunt0d2DcanjzUJ+C+AKplv3HsADn+hMI8vdNwH3wU9Oo77SmQFUaqLHMUZNE1MvjKe6n4cUG0F7EGhzBKtf9X1MMiTmREOfvQSFyyFYP3JFHoL+SptBp4ewa0n2L3oITunMjQGLWrWzCoUmQiZjxgAFFQEGwWQY+yddL1Y88Feq+e/JrnIfI7BUcM3F97XOcSdukfxZXQ8WaNAU/SmkMYdckqXTz3YBRP+f282BJVc3bv99VEElxbQGyGuZ4sZM+QHtyUTsMaxq5L0fvcjlEctDa+IzvIVxdcKEaTPWQ+LDNKqhHAoN1FluRME6OmFMNU3X/GTKCFAntNndc8tj8FmW/6skWJXPLuAbB/TOdyV5H94q5UOA3hyqYD3fsDWM7oLWr2wPoqP6CKw2LYj7MazpYLaZUwc0CnYKest+i9k4gB5+s1bZ/TJ/pjRsxidCstA2CQ2aIvMQVBC9f6dU7mJA68OGqVpIpWCuByjfWhp7O/bLw+93N00dBJWz6Bpu9dcXQn7GNDsOonB6Q0re6qXAYfPs+mGUz9M0xXzV5PyCvE/8jq6Yp0FPGp6l6dX4gp0gZONj2K1KNivrE5RUApRMvETRjdWOWK4Iclsi5nN1zm917AvEEEKjNasFset9zyB++D+fpF3xFzmQG8BY7wZDqYEcTIGmwFQ8/Q/nwetvMU85C9HBwkwgAAFbBj0K0sxXhLtO36bpkWcJx88yONRG3
+ xlEezoaE
+ ZnMrovmBNSqjRpvg+MAONBNgduT7ZfPsSQnEp6ibxA2hZI+40a2rvnby4yHCVy3pTngpVI7VoRkJBTEscq9zCupLwM1GQb/LzZkIJNqLuyfMxvZ+VolN+NV1A3M2bWywW42TVNOFMuM/IU+l+s/cMtAmdNhr2ta1fABBdY8zDY4LC9G78kVr5yZ1hawAdG0QlrNrK1mK+UWcT1Ssd4S2RNUm0ISlwxS4GPwSaM4xJeCHLioI5gPAGnRUETi6k7nk+Py9j4t/kiiPTp5c4od1hUKostX84uMGMNE7VNHT6UxMU+NBT/Sj4gDMlAZtl5C90vDNFGM/uGN3eJdFA9YH19v8uumu7v0sP9gUULrfWgMV+baA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,44 +120,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 4, 2025 at 2:10=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
+On Thu, Sep 4, 2025 at 12:29=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
 >
-> On Fri, Aug 22, 2025 at 12:20=E2=80=AFPM Kairui Song <ryncsn@gmail.com> w=
-rote:
+> On Wed, Sep 03, 2025 at 04:24:35PM -0700, Kalesh Singh wrote:
+> > The check against the max map count (sysctl_max_map_count) was
+> > open-coded in several places. This led to inconsistent enforcement
+> > and subtle bugs where the limit could be exceeded.
 > >
-> > From: Kairui Song <kasong@tencent.com>
+> > For example, some paths would check map_count > sysctl_max_map_count
+> > before allocating a new VMA and incrementing the count, allowing the
+> > process to reach sysctl_max_map_count + 1:
 > >
-> > Always use swap_cache_get_folio for swap cache folio look up. The reaso=
-n
-> > we are not using it in all places is that it also updates the readahead
-> > info, and some callsites want to avoid that.
+> >     int do_brk_flags(...)
+> >     {
+> >         if (mm->map_count > sysctl_max_map_count)
+> >             return -ENOMEM;
 > >
-> > So decouple readahead update with swap cache lookup into a standalone
-> > helper, let the caller call the readahead update helper if that's
-> > needed. And convert all swap cache lookups to use swap_cache_get_folio.
+> >         /* We can get here with mm->map_count =3D=3D sysctl_max_map_cou=
+nt */
 > >
-> > After this commit, there are only three special cases for accessing swa=
-p
-> > cache space now: huge memory splitting, migration and shmem replacing,
-> > because they need to lock the Xarray. Following commits will wrap their
-> > accesses to the swap cache too with special helpers.
+> >         vma =3D vm_area_alloc(mm);
+> >         ...
+> >         mm->map_count++   /* We've now exceeded the threshold. */
+> >     }
 > >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > To fix this and unify the logic, introduce a new function,
+> > exceeds_max_map_count(), to consolidate the check. All open-coded
+> > checks are replaced with calls to this new function, ensuring the
+> > limit is applied uniformly and correctly.
+> >
+> > To improve encapsulation, sysctl_max_map_count is now static to
+> > mm/mmap.c. The new helper also adds a rate-limited warning to make
+> > debugging applications that exhaust their VMA limit easier.
+> >
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Minchan Kim <minchan@kernel.org>
+> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> > ---
+> >  include/linux/mm.h | 11 ++++++++++-
+> >  mm/mmap.c          | 15 ++++++++++++++-
+> >  mm/mremap.c        |  7 ++++---
+> >  mm/nommu.c         |  2 +-
+> >  mm/util.c          |  1 -
+> >  mm/vma.c           |  6 +++---
+> >  6 files changed, 32 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 1ae97a0b8ec7..d4e64e6a9814 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct pa=
+ge *page)
+> >  #define MAPCOUNT_ELF_CORE_MARGIN     (5)
+> >  #define DEFAULT_MAX_MAP_COUNT        (USHRT_MAX - MAPCOUNT_ELF_CORE_MA=
+RGIN)
+> >
+> > -extern int sysctl_max_map_count;
+> > +/**
+> > + * exceeds_max_map_count - check if a VMA operation would exceed max_m=
+ap_count
+> > + * @mm: The memory descriptor for the process.
+> > + * @new_vmas: The number of new VMAs the operation will create.
+> > + *
+> > + * Returns true if the operation would cause the number of VMAs to exc=
+eed
+> > + * the sysctl_max_map_count limit, false otherwise. A rate-limited war=
+ning
+> > + * is logged if the limit is exceeded.
 >
-> My personal taste is we should have one patch to do the decoupling of
-> readahead update and the swapcache lookup, then another patch to use
-> the swapcache lookup helper in places that previously cannot be used
-> (due to the coupling of swapcache and readahead).
->
-> But, this looks good to me :) Feel free to add:
->
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
->
+> kernel-doc will be unhappy because of missing Return: description. Please
+> s/Returns/Return:/
 
-Thanks, I think I'll just drop the readahead update for now, it is
-harmless to keep it out of the lock and it's really small change, I
-didn't measure anything different either way.
+Hi Mike, thanks for catching this. I'll fix it in the next version.
 
-We may test and figure out how to read ahead better later, not really
-related to this series.
+-- Kalesh
+
+>
+> > + */
+> > +extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int n=
+ew_vmas);
+>
+> No need for 'extern' here. And the declaration should go to mm/internal.h
+>
+> >  extern unsigned long sysctl_user_reserve_kbytes;
+> >  extern unsigned long sysctl_admin_reserve_kbytes;
+>
+> --
+> Sincerely yours,
+> Mike.
 
