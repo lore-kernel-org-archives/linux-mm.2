@@ -4,113 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E60CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 00:36:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77FC4CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 00:38:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 534848E0005; Wed,  3 Sep 2025 20:36:07 -0400 (EDT)
+	id CDC138E0007; Wed,  3 Sep 2025 20:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E5A78E0003; Wed,  3 Sep 2025 20:36:07 -0400 (EDT)
+	id C8CC28E0003; Wed,  3 Sep 2025 20:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D4198E0005; Wed,  3 Sep 2025 20:36:07 -0400 (EDT)
+	id B54F58E0007; Wed,  3 Sep 2025 20:38:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BA2C8E0003
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:36:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE59A160974
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:36:06 +0000 (UTC)
-X-FDA: 83849700732.10.DE636AE
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F2F8A1C0004
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:36:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lkrI7+3o;
-	spf=pass (imf21.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A7D78E0003
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 20:38:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D7F813B969
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:38:56 +0000 (UTC)
+X-FDA: 83849707872.11.63D6644
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6FFE4160007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 00:38:54 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MDsE2q1q;
+	spf=pass (imf08.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756946165;
+	s=arc-20220608; t=1756946334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QxvKMDBteBaFSXXMAlTTXAOeze6jB8TNVMDDZC5HWuc=;
-	b=ahCd0ICMqxdY+81ZbeyRWqOM51lPazT39iCJE8sibrLLHptaN6GZDOAgETkD7mVVrCiH5l
-	om8ylDgcY+2leQgH8u+5SnwNdNUfFzd/BqwDkJdRJpjaKaSKfJ573CCjGw6bE1IpilOTms
-	VQ5S3Gdu9f30jIkrvE3CNR3BqfzDRb4=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=M9wjahpjajRVdLTvLPg2jmwGdR+YAWepelf042yY0AY=;
+	b=BIdtO09u5rRp5G0fx20aSEJ27wa8ow/PN+wumYJrxyLjZheOyO7KIohtdM+WsIsXse8o9s
+	mlJvENhuM+lYrQDBeoPCWmvQvmBAsvlWtJ9TZ3TN5CxNz6HX3JbfTQvlYjGpIQS4Zq4T00
+	WNPJPzlMPcIzTTezStxBnDtSNyybbGM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lkrI7+3o;
-	spf=pass (imf21.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MDsE2q1q;
+	spf=pass (imf08.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756946165; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756946334; a=rsa-sha256;
 	cv=none;
-	b=5/IUPAE2uR9wkJd4BR9FStLGgEpMU76rNbmyECqZP071JQz8GPhIEZ0gC7XVn9jS9EgvgX
-	WgSoLBm/0CWhPlEx0NDSNiEbpJ7pvrOPavmzSUz7hXt53MN6Yclt9k1QNJIFibsh8G68ii
-	Jc4Fzi0HfK5w+YJHJxf00uJzhr6jbQo=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7fdddb25854so55182185a.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 17:36:04 -0700 (PDT)
+	b=Bxw5XUyBS4rXN3Qhza71CBYRx5yCkXGAYEnu1FvBQfd38I4MYIHXhZWbNmYc5vpD7iRKWa
+	i3x5FS/dQVPMHx/Bj8g3gl84XZmvahgyyuE349OSYdRJZkM30Phi2JcK1UesO3IrHRdj/q
+	iXTh75cokeXag4pW1yhOsw//eUo6ReI=
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b47173749dbso269333a12.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 17:38:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756946164; x=1757550964; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QxvKMDBteBaFSXXMAlTTXAOeze6jB8TNVMDDZC5HWuc=;
-        b=lkrI7+3oQYf98EH5yUxfbq11fmyLDhKoOljNuo0NRrfkrL1HQIBk8cP2Cifpw8B8Uh
-         SLPv0DN5jUZGPSHbzaN8vuEg+Lvt/WZLM/cg0TqzWbq469PZDuelw/IC1Bd1RZXu83SE
-         H2qoVuaRB8zJwufmmqQAYu7DN4pdnA4dyADDfGP3oexCgXitFaqEFAhIlwhup4N7rmK8
-         K7ZD2kamOHZklVslFMy1GIw/KPrS4+AxWYUiozq7e04IYjLoyx0oqntSrByn45wx3lSU
-         mnM7Noct4Cgb0dWLK06zg8IIWQRivyhsLS/u/4TndUZ0vJM5oh+IjvE3pxtaVM7OXtOA
-         jgaA==
+        d=gmail.com; s=20230601; t=1756946333; x=1757551133; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=M9wjahpjajRVdLTvLPg2jmwGdR+YAWepelf042yY0AY=;
+        b=MDsE2q1qEhdz408gwchrU/FSHC8EM21DwD9vLXdnILnZK/sm9mQf6x4h4N0tBp+u3N
+         A8w3Gd4/umHa4qOxlfSqFAlNDa6/tNNUzhWi3EGa0hfV/J9dsa5XEwqe15bxIgOXPYCb
+         aZ+wRuNaT+yH8H+sjnZcJF/VwtkRkqvzA9dn+9VZ1GjxCeAC50RzEVFOXGseeUGgUHIe
+         fN4el1+sMHrs7+B00w9gG/Wz6mjLuthdOGyum3yyIA1DClSUppzmuhncn3QaP2t6xkWq
+         8ghIdo+O5jdypTbJxsvd6YZzfaUNmzW4Np2GNwMq64fcdPOkZCEBuR7ETrhliQEwoZRx
+         Ngfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756946164; x=1757550964;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QxvKMDBteBaFSXXMAlTTXAOeze6jB8TNVMDDZC5HWuc=;
-        b=CYR1FcsS73qxNFq+hJhSo1NPFPbaXq86tcTbUoR1SQV1n12lLzxZhUaTu8Ul5rthUc
-         VtjfE/vEZh+oAdeG+F622gGbwSPXulzgl3Lm9xxDZFZsniLMPt2hslEp4bpcQVtjtZzK
-         RR1q/rc1vHUq/5J2sUX5tkcLKVI0T7F1B6jFj6BN1b7rWXqiH+4GMhUubM1yWJ3LKcB0
-         MtWwM9bn0xdP+qnjRa9FQLw80FPCwr72uvsK5Ow/Bvqa8Cx/kd9juFlsfyEkXLeAwNlM
-         p4O8I7WY3qBvU6xqY84u/7koZuqefjt1kvhlv+bglRMTzc51YEtds6RLeRqTCZfGbQYW
-         d/Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCWsg+4oQJwckeVWzUMzdYZj/JIbdUKuu4oYd7VAJnuEW2LXewGYYOY5s8SYJIeAoosq7sqdpqekIA==@kvack.org
-X-Gm-Message-State: AOJu0Ywhh4eryQOjXVqTxtBf/b7G7aZ01biKBRKSM3LIWdJhhk/CgxIp
-	IrlUuU23fmvXwocYT+77XV/+mYOwn9bBX9lf5pjxFwJfioGjYvwXTJk1ZwkMCih+6++SFu8TaKE
-	hPmh8yDXxGdSi9FtYnqTbR4S3lhZBTNM=
-X-Gm-Gg: ASbGncuKCBoYCcyPEshyB8Cwja29Z9MHZ0zKFQHM+FtlepHKJ5VFXrPdmLAWmNgTaom
-	99R8rRFDITYwihDUTwthsGbzksxUmS29LeYihzmug1+ELiX9hT+nuORyGeyS89UVPn0G3HxdRXP
-	NiEX0Ya/LTjxY+Qlic6ZL5Q6peL8pm6AntXyWFL706nCs1cCJLcqNegV29rDj0d9kpRBFw+cqGf
-	6v8mCe0gTeJptJBxmM=
-X-Google-Smtp-Source: AGHT+IFq/F2Sam+4NOp0z4+zy2UJzABdxTMpBfQMbHdmyiFJ7iPaAvDn2bswJosndms30eVWIDadlwUxUBeZy/kQMIU=
-X-Received: by 2002:a05:620a:7101:b0:80a:72d7:f0da with SMTP id
- af79cd13be357-80a72d7f181mr680707085a.73.1756946163875; Wed, 03 Sep 2025
- 17:36:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250829233942.3607248-1-joannelkoong@gmail.com>
- <20250829233942.3607248-13-joannelkoong@gmail.com> <20250902234604.GC1587915@frogsfrogsfrogs>
- <aLiNYdLaMIslxySo@bfoster>
-In-Reply-To: <aLiNYdLaMIslxySo@bfoster>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Wed, 3 Sep 2025 17:35:51 -0700
-X-Gm-Features: Ac12FXwY3PDGqO3cWcWewqS3_uvz7ErKO_WyD1D_aUPlmd9OdplVHaXualv0wko
-Message-ID: <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
-Subject: Re: [PATCH v2 12/12] iomap: add granular dirty and writeback accounting
-To: Brian Foster <bfoster@redhat.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org, brauner@kernel.org, 
-	willy@infradead.org, jack@suse.cz, hch@infradead.org, jlayton@kernel.org, 
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F2F8A1C0004
-X-Stat-Signature: xpjaa3ywpag6o4p4gytopy9f9bi5z4s7
+        d=1e100.net; s=20230601; t=1756946333; x=1757551133;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M9wjahpjajRVdLTvLPg2jmwGdR+YAWepelf042yY0AY=;
+        b=WCN442BAEu6Nsq09uZ8DoGmIs87HIfQvk4vOAsUeQb51dgQAvmHI4epMYP+eii4xTY
+         wsOk52V9L+VXjr5V7hazhHO0sXTDcPKlWhiKowiv4QoabEEUeHJ7+MERZHqrp3R+5r3f
+         3FK8AOghNDy94+GnKtYRkny/l+LieBLAFIr9dRMTuA9f0E695iIiD0s1QhweXXPZas9E
+         ImIZZvXd49xYkt5mHNkxq7BCHAeq5dK1rXOSDT8zbXX9DJw5+hkGBDC0Nzv17L72wj/P
+         iU6NIZfM+H9xafyhpxB5h89AyC5M8eYa0n9eYTSWhWV3R8wGp+4iyki9e8T90UVinucj
+         cm8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVRXXde+cHEka9fjlps0iphwwJksiob4MUK/V48Bd/5TsYG043Mg43P6UU+06YA6p0ShFJKx9HiKg==@kvack.org
+X-Gm-Message-State: AOJu0Yxr/e/ezyEI3AFEGXmAY8caqzVjTSn5oFaHr3CwIWUEExlKV+c+
+	gK5AddIfwBYobphebWi1hQCFz2njJX8scM3qUDuw5MGBoeNhG59v6F7h
+X-Gm-Gg: ASbGncuU6vJdKoY3ksj5kwMq8n05lL2OETd+OmNGrKgNFEXVY8qoh+jvMZZbV7uKGOL
+	u2iPq2PxPanB+tt1LjV75iaLaGZ7L++4hQyyXEQFMNWUt+/UNdFig7USatEho9xkIW0vW0rlxpQ
+	4AfFrsuo8R292iq7/A1L+vSRZJ0/DiBIbtddw7+T9tmVJIMDP3NLyP+ctmE0uvwvOBnMilxhxWH
+	SWMSYMBh5CaxKbCsD07GqEgZYWLd7XfFrnToYJ+O0I/DTDbcpRNyOANen0Q6eUwov/XaxbRgoBZ
+	VxwOdD2PIE3i+NSse4XoGFA88NnImbmPHPA9gDQJxE6zNmuw4o3agXTOojt+q2sQHrhvP2zBE3e
+	6JKs41ITfP1xA71daU0/Rd04=
+X-Google-Smtp-Source: AGHT+IF8fWb/70JgPLh7N7Xn466vomeY7twFDDtFD6ID6JfG4YJmNgXkQZrYmfFbnlzFyM4OYAuWoQ==
+X-Received: by 2002:a17:90b:3811:b0:32b:6145:fa63 with SMTP id 98e67ed59e1d1-32b614601acmr4849866a91.4.1756946333006;
+        Wed, 03 Sep 2025 17:38:53 -0700 (PDT)
+Received: from dw-tp ([171.76.85.3])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4fb98f9f6asm1185841a12.8.2025.09.03.17.38.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 17:38:52 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, ryabinin.a.a@gmail.com, christophe.leroy@csgroup.eu, bhe@redhat.com, hca@linux.ibm.com, andreyknvl@gmail.com, akpm@linux-foundation.org, zhangqing@loongson.cn, chenhuacai@loongson.cn, davidgow@google.com, glider@google.com, dvyukov@google.com, alexghiti@rivosinc.com
+Cc: alex@ghiti.fr, agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com, kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org, snovitoll@gmail.com
+Subject: Re: [PATCH v6 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
+In-Reply-To: <20250810125746.1105476-2-snovitoll@gmail.com>
+Date: Thu, 04 Sep 2025 05:54:04 +0530
+Message-ID: <87ldmv6p5n.ritesh.list@gmail.com>
+References: <20250810125746.1105476-1-snovitoll@gmail.com> <20250810125746.1105476-2-snovitoll@gmail.com>
+X-Stat-Signature: idajifscj3bybdrm646up6j8rjqwwih8
 X-Rspam-User: 
-X-HE-Tag: 1756946164-450256
-X-HE-Meta: U2FsdGVkX1/pzc/bdlSFDWMY89+qXt5Mdz2R8ESaA9szSb4PBIVh+ymW6EtTEckm5VzLPuRGnKnN+Txz1JUqWHIllC9X7hFCmzL+5SLAoYrNYTQOfkEXSzkTK65VzyVCuLxF5BCjILpVeWacXcV8voMgIBfKcWiRMtKLH6GjxsMsqFxHkWSDeyMXLAiE5vPvt4CvOJZelgE0Xg+FeWnpF1xVLWVo4mkyHGd4ufDtQDwJCmqIZL0UAkEy6JuRKQeXh+Bw5NtcD8NCJLDidDWJUPYUbxNrvecWgkLrUuEuqNeob/almHihBibF6REUJfSOcAu3qT/9KiWkObx3+iyeng67ZAz33NYedOIYvxVDVsTUIJbheaogoqGcHZ/FJ7ImpI1Y/CR2JaXscN43ayPuA3oml+eWxeZ7iDYddkoiAmV1C6n0FtDJ353h0XIztfNnDL7S6PAw0LFprk512NVynNxc+XLCdVswc3M6vzZXHCl3FjfYgzEVqFmviLgLS11MMTsJc8LI4pVnyLlySZiVi6eg4uE1+VZNdG78dfTde6hzcBJwsDLqy6QrPPzB5ajavgwL9oCIpD/bgqX75VHYHJ3gox7HtPXvx/5BHn95h2j+Mw/W7+yxsGAs5tgCcq/uM4Val5QlDBNF1uaWsYmcrAiRhgbHSJmJKM6R7uIySpQQy1zrtWMi1SQS5+lavlsFWFBPG2LIiQ9wCVBeBC8ShZrj+m+qBiVcgQ/KLGaaG8cn4d7IQTKLaVweQvd1LDT/m52ZQFRvFRizQ/us5q3+L9UQL78NLDssZXumN62aIn3kMvGIpY4SgG2yysWrms45dMa2fU+f5s7UN3fc4j0iGYH4FAiAC4T/eXvK0398R3z9u7dM/MOr5tH6lNRccA8TK50HvzbIgNCVlr/tI7wvIxLuNzXe/hmuxknBC2nUOLIAMI+ylBTMz0OkT1yI6Ar1VQsBe52TasLx+2q46Xw
- hrlZa+Rt
- 91i3rO4FAZC3TT2alMgtMFzcHEuCbPXZBeW2troFdUpiSBlv9ujxAHnAiWQr6xYV8c68C0IxZqq2lu7vhIXCcEof58tt8VHEY/WcbsjAn1zSTpzRfEYSQQaMqpdyZd1nDJ3E5yjjn/quuQ9PDN20soLWsU3z0sQjyAsgaf/F/D4k6f+LaQzfxqgOT/u6wSn3zLnE77DiG62C4gv1mqKj/8rDeaN4M5MbKbCm7RMajULCqpLiSb6c0oNzlltiAgcYML6SjNpy5I40IuzXTIMGiO5hz1AP6Iy3e75fF48U0RuBup0+JbW0BnGHyl9uN4j2JrS/+0v0+qb+u4bQOT6WPQxkjt7lg6sO5NrKRv5TE3W66kVX8wSxjdKcBkyvIxLcpjMVMcCKkVoWxj+oPubgpLT87CQ==
+X-Rspamd-Queue-Id: 6FFE4160007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756946334-341497
+X-HE-Meta: U2FsdGVkX1+FI7bCVLVFUaP7AMcABeJjAX+x7L7afnq79iYr5xV7nDeOIvLOWS0qYNmL2TOJMfbu6PS1L/nzG6KBDxFP04U+L7EthXKDpuPAaAQZkpXTtocxyQSF9+nalTYrA0xQrNXL0R9cKkY8LkOwtRNx1JL69kGEZC1xE42JKaZblx4aS3WHTWarHiFh4CPqTXBZPk0cXcC2Ehvf7jHbmA5VHpwkQTcCeckkwwYmxXZmDNZpI8ID+M4im43eYJvR4cIoWe9cAFf6V3AsmkVN4Yrp7SWQfGceA/bu3Z796mQg3M2g5KmcadhE+Wr3H58Ws4xqHazput9z3xYmwNqzH/RctwHRDTzfavLfxZGw0uaD/XQXiwlr80RUSxVaEADhMBm5GHq3Zo4fVdudfUKlysq/wqKceZVZAF0KnMfBP5G3FMTmyXxqFD2s1rIU0CNIlBaB1j3hLclHytCepIRWoD6CQR4A2o4hxRzorwQ28GEWxd8PjhGXicOcvKVyB0VhOYjRaoqkryjlcrGqzEeCfTEWu5LqwwouhL9UwdJRBw0w3uPq/+2wyJZe65BMX4uKvXe6XleKyAyOB1emjV1qQnLp/ieZkmhQxybEsTsRewkmHHm6WSf/91CBHTNPgxKBmdH1FjSSk+o3iWMbanUwCVvPT276Hwq3fLdup+yW3bRkwoqPoYIiX9WlZ+xIUgy3ELqeSDO+aRcuMQCKzziPeFEQ/k7HSbeTlL+onUmS37lzKtp/HWbpg+KjrA+LV+T12Vr7gQ6SC82qCFZhWRPEF+zuBhBTxZb/24gKepJI8EYe1H0YEztl9dV+zPWbLnG8QgVJBnHxDQN7Kkn68v3A8RGrs9KMu63LnnEkHcQNysWiug2UExj5+JPfK/ZbNNO7SDJa7MuTY9Gayp4MOZTA1ViI3slNzarDlg7O20Ts/mtyfsCOkwrEC/4/qdvpkFJx5xnaqLxpB5XjOJ5
+ xEyNEKIu
+ LuE9e0TF6U8BJF+9B0zqwLSuuc3V+aohL6OOW2dgYCgZhyfT4Jn5dJbdMgnPqUg0GwTkvgnHcUKzWw2sEnQCCJI7KafUk98wPanhkzQ1Q+RNuS2LvZhrr2an/HGCEqEZe67Yp1R20Jh9sNId4zV12Zf8LSxRVKC8cst8TolEOkVmm9RkwrETl0sDd5qyASK6JqB501fiBoZCHzDWqj3Pvltd4aBZEVM4xmzXfd71S99O0G3hvwp1oIgXjfhbfDHIWP6MRnwMy26BdUyNfEb+ryzuriQ7A+Lh7k4OkFACn9+KckNghSiUAj/MnPu/M5KAAg0cP3mtkQib3Mp4DcRFSy6sSb9zYy/Df4wj2ECjDyCPVgxYvi0tTZbvnwz4IcDMe16Y9dgfbXVb654tx4u8a2ElVYXs8HP0woV2vAyo7sK90h63S3iKrYgOjwggMAJ7RoB5wlx1LPK5ReCvEjD2EcWaWHI3FhMRo1mhbH+nGZylEMA/EYpId53poP9xyQdxUnrCgZnnH2HwBn12iM40kxllZD/0oZMY9x12ZlKk55yBNfG2eNRG9wCabdGu4Fjvch28gJoRgKrmA0ngSxhJVliVXNJPD/kZbGXf2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,166 +112,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 3, 2025 at 11:44=E2=80=AFAM Brian Foster <bfoster@redhat.com> w=
-rote:
+Sabyrzhan Tasbolatov <snovitoll@gmail.com> writes:
+
+> Introduce CONFIG_ARCH_DEFER_KASAN to identify architectures [1] that need
+> to defer KASAN initialization until shadow memory is properly set up,
+> and unify the static key infrastructure across all KASAN modes.
 >
-> On Tue, Sep 02, 2025 at 04:46:04PM -0700, Darrick J. Wong wrote:
-> > On Fri, Aug 29, 2025 at 04:39:42PM -0700, Joanne Koong wrote:
-> > > Add granular dirty and writeback accounting for large folios. These
-> > > stats are used by the mm layer for dirty balancing and throttling.
-> > > Having granular dirty and writeback accounting helps prevent
-> > > over-aggressive balancing and throttling.
-> > >
-> > > There are 4 places in iomap this commit affects:
-> > > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
-> > > b) writeback_iter with setting the wbc->no_stats_accounting bit and
-> > > calling clear_dirty_for_io_stats()
-> > > c) starting writeback, which now calls __folio_start_writeback()
-> > > d) ending writeback, which now calls folio_end_writeback_pages()
-> > >
-> > > This relies on using the ifs->state dirty bitmap to track dirty pages=
- in
-> > > the folio. As such, this can only be utilized on filesystems where th=
-e
-> > > block size >=3D PAGE_SIZE.
-> >
-> > Er... is this statement correct?  I thought that you wanted the granula=
-r
-> > dirty page accounting when it's possible that individual sub-pages of a
-> > folio could be dirty.
-> >
-> > If i_blocksize >=3D PAGE_SIZE, then we'll have set the min folio order =
-and
-> > there will be exactly one (large) folio for a single fsblock.  Writebac=
-k
-
-Oh interesting, this is the part I'm confused about. With i_blocksize
->=3D PAGE_SIZE, isn't there still the situation where the folio itself
-could be a lot larger, like 1MB? That's what I've been seeing on fuse
-where "blocksize" =3D=3D PAGE_SIZE =3D=3D 4096. I see that xfs sets the min
-folio order through mapping_set_folio_min_order() but I'm not seeing
-how that ensures "there will be exactly one large folio for a single
-fsblock"? My understanding is that that only ensures the folio is at
-least the size of the fsblock but that the folio size can be larger
-than that too. Am I understanding this incorrectly?
-
-> > must happen in units of fsblocks, so there's no point in doing the extr=
-a
-> > accounting calculations if there's only one fsblock.
-> >
-> > Waitaminute, I think the logic to decide if you're going to use the
-> > granular accounting is:
-> >
-> >       (folio_size > PAGE_SIZE && folio_size > i_blocksize)
-> >
-
-Yeah, you're right about this - I had used "ifs && i_blocksize >=3D
-PAGE_SIZE" as the check, which translates to "i_blocks_per_folio > 1
-&& i_block_size >=3D PAGE_SIZE", which in effect does the same thing as
-what you wrote but has the additional (and now I'm realizing,
-unnecessary) stipulation that block_size can't be less than PAGE_SIZE.
-
-> > Hrm?
-> >
+> [1] PowerPC, UML, LoongArch selects ARCH_DEFER_KASAN.
 >
-> I'm also a little confused why this needs to be restricted to blocksize
-> gte PAGE_SIZE. The lower level helpers all seem to be managing block
-> ranges, and then apparently just want to be able to use that directly as
-> a page count (for accounting purposes).
+> The core issue is that different architectures haveinconsistent approaches
+> to KASAN readiness tracking:
+> - PowerPC, LoongArch, and UML arch, each implement own
+>   kasan_arch_is_ready()
+> - Only HW_TAGS mode had a unified static key (kasan_flag_enabled)
+> - Generic and SW_TAGS modes relied on arch-specific solutions or always-on
+>     behavior
 >
-> Is there any reason the lower level functions couldn't return block
-> units, then the higher level code can use a blocks_per_page or some such
-> to translate that to a base page count..? As Darrick points out I assume
-> you'd want to shortcut the folio_nr_pages() =3D=3D 1 case to use a min pa=
-ge
-> count of 1, but otherwise ISTM that would allow this to work with
-> configs like 64k pagesize and 4k blocks as well. Am I missing something?
+> This patch addresses the fragmentation in KASAN initialization
+> across architectures by introducing a unified approach that eliminates
+> duplicate static keys and arch-specific kasan_arch_is_ready()
+> implementations.
 >
-
-No, I don't think you're missing anything, it should have been done
-like this in the first place.
-
-> Brian
+> Let's replace kasan_arch_is_ready() with existing kasan_enabled() check,
+> which examines the static key being enabled if arch selects
+> ARCH_DEFER_KASAN or has HW_TAGS mode support.
+> For other arch, kasan_enabled() checks the enablement during compile time.
 >
-> > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > > ---
-> > >  fs/iomap/buffered-io.c | 140 ++++++++++++++++++++++++++++++++++++++-=
---
-> > >  1 file changed, 132 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> > > index 4f021dcaaffe..bf33a5361a39 100644
-> > > --- a/fs/iomap/buffered-io.c
-> > > +++ b/fs/iomap/buffered-io.c
-> > > @@ -20,6 +20,8 @@ struct iomap_folio_state {
-> > >     spinlock_t              state_lock;
-> > >     unsigned int            read_bytes_pending;
-> > >     atomic_t                write_bytes_pending;
-> > > +   /* number of pages being currently written back */
-> > > +   unsigned                nr_pages_writeback;
-> > >
-> > >     /*
-> > >      * Each block has two bits in this bitmap:
-> > > @@ -139,6 +141,29 @@ static unsigned ifs_next_clean_block(struct foli=
-o *folio,
-> > >             blks + start_blk) - blks;
-> > >  }
-> > >
-> > > +static unsigned ifs_count_dirty_pages(struct folio *folio)
-> > > +{
-> > > +   struct inode *inode =3D folio->mapping->host;
-> > > +   unsigned block_size =3D i_blocksize(inode);
-> > > +   unsigned start_blk, end_blk;
-> > > +   unsigned blks, nblks =3D 0;
-> > > +
-> > > +   start_blk =3D 0;
-> > > +   blks =3D i_blocks_per_folio(inode, folio);
-> > > +   end_blk =3D (i_size_read(inode) - 1) >> inode->i_blkbits;
-> > > +   end_blk =3D min(end_blk, i_blocks_per_folio(inode, folio) - 1);
-> > > +
-> > > +   while (start_blk <=3D end_blk) {
-> > > +           start_blk =3D ifs_next_dirty_block(folio, start_blk, end_=
-blk);
-> > > +           if (start_blk > end_blk)
-> > > +                   break;
-> >
-> > Use your new helper?
-> >
-> >               nblks =3D ifs_next_clean_block(folio, start_blk + 1,
-> >                               end_blk) - start_blk?
-> > > +           nblks++;
-> > > +           start_blk++;
-> > > +   }
-> > > +
-> > > +   return nblks * (block_size >> PAGE_SHIFT);
-> >
-> > I think this returns the number of dirty basepages in a given large
-> > folio?  If that's the case then shouldn't this return long, like
-> > folio_nr_pages does?
-> >
-> > > +}
-> > > +
-> > >  static unsigned ifs_find_dirty_range(struct folio *folio,
-> > >             struct iomap_folio_state *ifs, u64 *range_start, u64 rang=
-e_end)
-> > >  {
-> > > @@ -220,6 +245,58 @@ static void iomap_set_range_dirty(struct folio *=
-folio, size_t off, size_t len)
-> > >             ifs_set_range_dirty(folio, ifs, off, len);
-> > >  }
-> > >
-> > > +static long iomap_get_range_newly_dirtied(struct folio *folio, loff_=
-t pos,
-> > > +           unsigned len)
-> >
-> > iomap_count_clean_pages() ?
+> Now KASAN users can use a single kasan_enabled() check everywhere.
+>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
+> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> ---
+> Changes in v6:
+> - Added more details in git commit message
+> - Fixed commenting format per coding style in UML (Christophe Leroy)
+> - Changed exporting to GPL for kasan_flag_enabled (Christophe Leroy)
+> - Converted ARCH_DEFER_KASAN to def_bool depending on KASAN to avoid
+>         arch users to have `if KASAN` condition (Christophe Leroy)
+> - Forgot to add __init for kasan_init in UML
+>
+> Changes in v5:
+> - Unified patches where arch (powerpc, UML, loongarch) selects
+>     ARCH_DEFER_KASAN in the first patch not to break
+>     bisectability
+> - Removed kasan_arch_is_ready completely as there is no user
+> - Removed __wrappers in v4, left only those where it's necessary
+>     due to different implementations
+>
+> Changes in v4:
+> - Fixed HW_TAGS static key functionality (was broken in v3)
+> - Merged configuration and implementation for atomicity
+> ---
+>  arch/loongarch/Kconfig                 |  1 +
+>  arch/loongarch/include/asm/kasan.h     |  7 ------
+>  arch/loongarch/mm/kasan_init.c         |  8 +++----
+>  arch/powerpc/Kconfig                   |  1 +
+>  arch/powerpc/include/asm/kasan.h       | 12 ----------
+>  arch/powerpc/mm/kasan/init_32.c        |  2 +-
+>  arch/powerpc/mm/kasan/init_book3e_64.c |  2 +-
+>  arch/powerpc/mm/kasan/init_book3s_64.c |  6 +----
+>  arch/um/Kconfig                        |  1 +
+>  arch/um/include/asm/kasan.h            |  5 ++--
+>  arch/um/kernel/mem.c                   | 13 ++++++++---
+>  include/linux/kasan-enabled.h          | 32 ++++++++++++++++++--------
+>  include/linux/kasan.h                  |  6 +++++
+>  lib/Kconfig.kasan                      | 12 ++++++++++
+>  mm/kasan/common.c                      | 17 ++++++++++----
+>  mm/kasan/generic.c                     | 19 +++++++++++----
+>  mm/kasan/hw_tags.c                     |  9 +-------
+>  mm/kasan/kasan.h                       |  8 ++++++-
+>  mm/kasan/shadow.c                      | 12 +++++-----
+>  mm/kasan/sw_tags.c                     |  1 +
+>  mm/kasan/tags.c                        |  2 +-
+>  21 files changed, 106 insertions(+), 70 deletions(-)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 93402a1d9c9f..4730c676b6bf 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -122,6 +122,7 @@ config PPC
+>  	# Please keep this list sorted alphabetically.
+>  	#
+>  	select ARCH_32BIT_OFF_T if PPC32
+> +	select ARCH_NEEDS_DEFER_KASAN		if PPC_RADIX_MMU
+>  	select ARCH_DISABLE_KASAN_INLINE	if PPC_RADIX_MMU
+>  	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
+>  	select ARCH_ENABLE_MEMORY_HOTPLUG
+> diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
+> index b5bbb94c51f6..957a57c1db58 100644
+> --- a/arch/powerpc/include/asm/kasan.h
+> +++ b/arch/powerpc/include/asm/kasan.h
+> @@ -53,18 +53,6 @@
+>  #endif
+>  
+>  #ifdef CONFIG_KASAN
+> -#ifdef CONFIG_PPC_BOOK3S_64
+> -DECLARE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+> -
+> -static __always_inline bool kasan_arch_is_ready(void)
+> -{
+> -	if (static_branch_likely(&powerpc_kasan_enabled_key))
+> -		return true;
+> -	return false;
+> -}
+> -
+> -#define kasan_arch_is_ready kasan_arch_is_ready
+> -#endif
+>  
+>  void kasan_early_init(void);
+>  void kasan_mmu_init(void);
+> diff --git a/arch/powerpc/mm/kasan/init_32.c b/arch/powerpc/mm/kasan/init_32.c
+> index 03666d790a53..1d083597464f 100644
+> --- a/arch/powerpc/mm/kasan/init_32.c
+> +++ b/arch/powerpc/mm/kasan/init_32.c
+> @@ -165,7 +165,7 @@ void __init kasan_init(void)
+>  
+>  	/* At this point kasan is fully initialized. Enable error messages */
+>  	init_task.kasan_depth = 0;
+> -	pr_info("KASAN init done\n");
+> +	kasan_init_generic();
+>  }
+>  
+>  void __init kasan_late_init(void)
+> diff --git a/arch/powerpc/mm/kasan/init_book3e_64.c b/arch/powerpc/mm/kasan/init_book3e_64.c
+> index 60c78aac0f63..0d3a73d6d4b0 100644
+> --- a/arch/powerpc/mm/kasan/init_book3e_64.c
+> +++ b/arch/powerpc/mm/kasan/init_book3e_64.c
+> @@ -127,7 +127,7 @@ void __init kasan_init(void)
+>  
+>  	/* Enable error messages */
+>  	init_task.kasan_depth = 0;
+> -	pr_info("KASAN init done\n");
+> +	kasan_init_generic();
+>  }
+>  
+>  void __init kasan_late_init(void) { }
+> diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c b/arch/powerpc/mm/kasan/init_book3s_64.c
+> index 7d959544c077..dcafa641804c 100644
+> --- a/arch/powerpc/mm/kasan/init_book3s_64.c
+> +++ b/arch/powerpc/mm/kasan/init_book3s_64.c
+> @@ -19,8 +19,6 @@
+>  #include <linux/memblock.h>
+>  #include <asm/pgalloc.h>
+>  
+> -DEFINE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+> -
+>  static void __init kasan_init_phys_region(void *start, void *end)
+>  {
+>  	unsigned long k_start, k_end, k_cur;
+> @@ -92,11 +90,9 @@ void __init kasan_init(void)
+>  	 */
+>  	memset(kasan_early_shadow_page, 0, PAGE_SIZE);
+>  
+> -	static_branch_inc(&powerpc_kasan_enabled_key);
+> -
+>  	/* Enable error messages */
+>  	init_task.kasan_depth = 0;
+> -	pr_info("KASAN init done\n");
+> +	kasan_init_generic();
+>  }
+>  
 
-Nice, a much clearer name.
+Only book3s64 needs static keys here because of radix v/s hash mode
+selection during runtime. The changes in above for powerpc looks good to
+me. It's a nice cleanup too.
 
-I'll make the suggestions you listed above too, thanks for the pointers.
+So feel free to take:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> #powerpc
 
-Thanks for taking a look at this, Darrick and Brian!
-> >
-> > --D
-> >
+However I have few comments below...
+
+...
+> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+> index 9142964ab9c9..e3765931a31f 100644
+> --- a/mm/kasan/common.c
+> +++ b/mm/kasan/common.c
+> @@ -32,6 +32,15 @@
+>  #include "kasan.h"
+>  #include "../slab.h"
+>  
+> +#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
+> +/*
+> + * Definition of the unified static key declared in kasan-enabled.h.
+> + * This provides consistent runtime enable/disable across KASAN modes.
+> + */
+> +DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> +EXPORT_SYMBOL_GPL(kasan_flag_enabled);
+> +#endif
+> +
+>  struct slab *kasan_addr_to_slab(const void *addr)
+>  {
+>  	if (virt_addr_valid(addr))
+> @@ -246,7 +255,7 @@ static inline void poison_slab_object(struct kmem_cache *cache, void *object,
+>  bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
+>  				unsigned long ip)
+>  {
+> -	if (!kasan_arch_is_ready() || is_kfence_address(object))
+> +	if (is_kfence_address(object))
+
+For changes in mm/kasan/common.c.. you have removed !kasan_enabled()
+check at few places. This seems to be partial revert of commit [1]:
+  
+  b3c34245756ada "kasan: catch invalid free before SLUB reinitializes the object" 
+
+Can you please explain why this needs to be removed? 
+Also the explaination of the same should be added in the commit msg too.
+
+[1]: https://lore.kernel.org/all/20240809-kasan-tsbrcu-v8-1-aef4593f9532@google.com/
+
+>  		return false;
+>  	return check_slab_allocation(cache, object, ip);
+>  }
+> @@ -254,7 +263,7 @@ bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
+>  bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init,
+>  		       bool still_accessible)
+>  {
+> -	if (!kasan_arch_is_ready() || is_kfence_address(object))
+> +	if (is_kfence_address(object))
+>  		return false;
+>  
+>  	/*
+> @@ -293,7 +302,7 @@ bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool init,
+>  
+>  static inline bool check_page_allocation(void *ptr, unsigned long ip)
+>  {
+> -	if (!kasan_arch_is_ready())
+> +	if (!kasan_enabled())
+>  		return false;
+>  
+>  	if (ptr != page_address(virt_to_head_page(ptr))) {
+> @@ -522,7 +531,7 @@ bool __kasan_mempool_poison_object(void *ptr, unsigned long ip)
+>  		return true;
+>  	}
+>  
+> -	if (is_kfence_address(ptr) || !kasan_arch_is_ready())
+> +	if (is_kfence_address(ptr))
+>  		return true;
+>  
+>  	slab = folio_slab(folio);
+
+-ritesh
 
