@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4EBBCA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:19:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00C4FCA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:29:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B0108E0010; Thu,  4 Sep 2025 03:19:39 -0400 (EDT)
+	id 274978E0009; Thu,  4 Sep 2025 03:29:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 060E88E0002; Thu,  4 Sep 2025 03:19:38 -0400 (EDT)
+	id 24C0F8E0002; Thu,  4 Sep 2025 03:29:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDFB58E0010; Thu,  4 Sep 2025 03:19:38 -0400 (EDT)
+	id 188EB8E0009; Thu,  4 Sep 2025 03:29:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DB8688E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:19:38 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 849CF11A927
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:38 +0000 (UTC)
-X-FDA: 83850717636.28.E657FAE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A9AF980004
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RkpRQhtW;
-	spf=pass (imf30.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 053908E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:29:30 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D55B13BCC8
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:29:29 +0000 (UTC)
+X-FDA: 83850742458.22.1BDB802
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B3F69A000D
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:29:27 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lpLYW56T;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756970376;
+	s=arc-20220608; t=1756970967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tb40G1BP2UOmzBv4K9eP2Zzmqp+7E3i2B0tVuKcnrc0=;
-	b=PL82SppBCdOCuwyoJVYCT/oDyfZ0FH1fgwvZ9aGCYqlpb5G/ihbC6TlkxprXmag6Hh/Zpk
-	C4YxxV4PG4GEO/a4iaM8xv7eK1QE6YFFohYyKz948o4Vcwxl/5TrHOrDCcjKZBYzq9JUwH
-	IaA3Z9WOavCJlyUrJX83qdtUS0CcXMI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756970376; a=rsa-sha256;
-	cv=none;
-	b=MCCjHpUtNgGGcxOl/iqjQVWpRGTDICIojnvxuRgjckqRcokRPAyiTD+6MWSmRjb6Yy7kz5
-	WU2uNA0pTcktilXhWeEetCiAJtfD/XVTnFafhgMIwDNA1PxootVCRUQ8STmXdDQ7u+ecL4
-	rRQMgYaNDbbUcZaVqKIhlfAgo94NiVs=
+	bh=PsjHqYi+v0pKX/OA0NyhPUfxs5GwGBB5+EJVUx97FK8=;
+	b=z7aThYbc0VzNnX+o8fhOUNzLoa60uwLzBgTung4dYF3u72luckFkBYUtUYEP3qn8MI7QZf
+	tIjHT/NZhs2f7nkktLcLVV3A54f0SiT3IU5myjdoXdOZn3lJqvplojtDe3RTSeBRlsOSTo
+	Jay+0sMmy4ovRj5iXNtvhKlr5BiVO+s=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RkpRQhtW;
-	spf=pass (imf30.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lpLYW56T;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756970967; a=rsa-sha256;
+	cv=none;
+	b=X6XsWCrnt+orK7QAfYvjt+HIVYJOkTniANJHGU35/kapYFpy/yQtg+Mvu2h6lOfoz7fTRp
+	/VwvQqrh0cFAYDWelyZQbw5obZiXiDxheaupreMmTycViOVX68LwQSFKO4RIQ0d2IpqDvS
+	F46d+nvLhefbkYuxukqeKAPTXO/5Dtw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AECCC6026D
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656D8C4CEF9
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:19:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C801407CC;
+	Thu,  4 Sep 2025 07:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE95C4CEF1;
+	Thu,  4 Sep 2025 07:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756970375;
-	bh=72oYlNKXXmAjA5Q5e13+DWrwi/CpM80zljJXvzw63aw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RkpRQhtW+a9Y5lrqRKRhT35FXEw1JPCeIWAQrYQnCH0PzIhHfBAOhG2Y5tMpknarz
-	 Pl6vzMh5wTJkjfijbtkfNLawzbNfsDaIq0XFhQ03u1qXSHpsWOyAsewXLQkmGGDpF4
-	 g5AZtKvc/NMoBuOSrEYboremIyftnqUZnccdN63+lyYaqC2zXAg1ev7wfVJH2lBPPs
-	 JVWLymM+QXBvbXwT51vLAHuB98LJ3hPXoXOI0XidDfDFuhAkXtfKW2uJbzeDUKLK45
-	 gu3YhlMYSQbv5cDMx39swAF/M58+EsE1FTxDMYZouqSbCtxD0PLFI34ZU+9r65T2RB
-	 b7Av9NcRTOQvQ==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f69cf4b77so787856e87.2
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 00:19:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXm3a99DPRUwyKD8eSkd0z6FIpolNhhDAOUl59RPCBS/hqP3ghMOZeBMWTZrPh035EjezRvibhesQ==@kvack.org
-X-Gm-Message-State: AOJu0YyC6ujmcAyonH0IyNfhOeJ+Y60LUXvH9Whk44+BhJsEgpJUCPmk
-	2DowX+do6stt+heDIrDoZ594K5niJGfVEaseAVItyKizaBxTuBWdQtuUucANyAtbs+vfjOG5f2Z
-	bIG97o05jUJ1AEpSB3mF5ozHF+K6Ejok=
-X-Google-Smtp-Source: AGHT+IEFvmAnCvfgO7PlnrG1BYUxZTjjsz6BPZ180OOcQw+OkZ+byNbMMbmHC7LJX6qhewccjpN/hH5j8/8g6mEFmZQ=
-X-Received: by 2002:a05:6512:239a:b0:560:8d97:8bb8 with SMTP id
- 2adb3069b0e04-5608d978cd1mr1413481e87.32.1756970373660; Thu, 04 Sep 2025
- 00:19:33 -0700 (PDT)
+	s=k20201202; t=1756970966;
+	bh=BY/OoUnvgSfJZsul+fsudIqn4N54F8eZC4uQXTXlMqQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lpLYW56T1SlyqzHeRsk5RTAV3P7jkzy9LyidtUd6wWNooqDh7q2o9Sbm29+0TOCr7
+	 4a2nVcvvjFnxoqk/kZR7Yd7KsPhuL7AuQiuGkaHE2tWjYdg8hNiDZGt+x22zSFX4Cn
+	 hDevTJvBZ74DhIuCBxBA4kVLOTPu3DQiTPaeAkKt4pxsejpFntRhe+ADew1zonNc2G
+	 4q2MTO6OkwNS2Jdr+W7X53iGmZqiUj/G9G2RVp3U9L7DQCFVH+/RkrR/bSrXATmdM6
+	 DZVOH7Tds/5rZc89LCE/g4d0RPVzOOtaDATkrkowaKz25XSGnkxVf5lzQLli9RpbWO
+	 5mpfUZYI1JIGA==
+Date: Thu, 4 Sep 2025 10:29:17 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kalesh Singh <kaleshsingh@google.com>
+Cc: akpm@linux-foundation.org, minchan@kernel.org,
+	lorenzo.stoakes@oracle.com, kernel-team@android.com,
+	android-mm@google.com, David Hildenbrand <david@redhat.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
+Message-ID: <aLk_zbXxYxHs1Igk@kernel.org>
+References: <20250903232437.1454293-1-kaleshsingh@google.com>
 MIME-Version: 1.0
-References: <cover.1755721529.git.epetron@amazon.de> <b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
- <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
-In-Reply-To: <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 4 Sep 2025 09:19:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com>
-X-Gm-Features: Ac12FXzg-Gwf5w9Dkz74akKGMbsagt1QMuLWSxeot3bSIi-D7R24FEVq60rM11k
-Message-ID: <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] efi: Support booting with kexec handover (KHO)
-To: Evangelos Petrongonas <epetron@amazon.de>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Changyuan Lyu <changyuanl@google.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	nh-open-source@amazon.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A9AF980004
-X-Stat-Signature: gs4tnct3qnu8mayoxpayz7pz3wjc4oud
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903232437.1454293-1-kaleshsingh@google.com>
+X-Rspamd-Queue-Id: B3F69A000D
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756970376-332574
-X-HE-Meta: U2FsdGVkX19I19kT0OCh7/wAeu+gCBeJqcs4BKpjVBBbO+/cNP5duYN6he8q5NnLTJJLC+z8TTPl0hI5aXWJSoKusXXnDjVklLHoI1xQ1y+ve8XiDwX3Y+2lCcD66M0nnWuXW7H8vMESp5ejFFzXFbIiQMjf+/osM5k9CKnk9dlWr2yrxNVzqUi1Hc6+e2NhIxZgGSpSbn1HaKy9Hn7xiPwhEmb8hRaCZnZTgbADLu2zopCQ5IEV1h27ccKuUiOoeYvAky0LFNudcbyu/rx9O3cXieT1hH6wEMCVTZ4WGgqqFglrHPUjAOzt+W9sM16/MWH6xWqjMOGdsSR/SYFiMsYFG43PNo4mi6TfhSpEZ1UGVyrW8vbXAOuYx9W9SFHUGOuCflfX3kQvt7BKghRf+Amrq2UDe1VJIy6uq7RhZrZuCiJ46/Y555oKhKM3Lc0hymPScvfrrAifyjXbZu4JFbtQx4Sue3h+ZmQ10yqSuW1wy1laOTC48CwfzZ7708XZDYcWW8FeWeZeHbAa41HzM4Swn0aWMiEMJ2WN4HmXCTPlV+7zK7xDrQ/wv/kEBwCr7qsaN+2Tfm3blXnWzNNQqQkxlV9JLou5Cztxfa7d4jBO1p9zgV155GgRVPaKBc0PUxfmCjfdJ8cw265VqMG5e0YwceSKlQSrkWdvabrnRyM3n/vMUOdw7qnb9zpDQwCDnHM0RcsBbVg3W14n8fwsGw/VTPcZ+X5FZHzQto63spaS/d5KzI54TvVCp1q5sboYj4+N4HOGK5bk5a/6Fjx/8xjaDNu8U3omxTqhMz2HV69bdWXBYMzi2GhljcTIGbH3aRkf4BYnqlrW4RC8WLOtucJNNWHkLLyMkz5fo45aa+PevRUKAsF0UyggUfsYKZrs2cRoFVw0jk2CYJlVlqTBWHxczYinR/3i/tN0XaHTl7lgljtyIg2NinFamRVqRV5oMZls0v16uG10aKwV18x
- iUfeq/Ka
- osvA/lNXKbFLYvC6KYHE/BiB2aHi9RYO4c4qRk06XkEngZgKpZfA0Fmc6+AkuwFx/8KROI67x9/bai+4cm+dkiu1U/70kLqXmLCrjvE+J4yELzEc0R1urI3alLlmVQjqFQFlxQOiuk0MUTs3e+s5qvn7uVatU2oBZc2z6GdoSDWoE8//ILn8yBe9S18e9kW6Vg7SbiD/jtuT6q8aIl/PkmM7Guq17wbMT7mJh15OoIdBdwMOJ5fM109naXg3Zf9y4jdMarsxOiEkMLg3jq6mOSqzfHGDKwt4SssJszDxLu9d7KLUNd97lFo4owQ==
+X-Stat-Signature: u5zppr3m9aizspjab654fent3imn4uzr
+X-HE-Tag: 1756970967-231272
+X-HE-Meta: U2FsdGVkX19vpCz25I8nwvBoQbloA4b45FA1kpYPYpMJPydl31ducHaJ9D/bTmuKhnGK0TuAJ2Q1HzBhUIVvgNzWugHWs0oS9GZg73XyZ5DO8zvLJHCieQICWuIOtsY4h3lFH8DH/csEu424SDvbOyCZDIVa90XWITrPMoynvQIF6W262T0RWg2DzgBhsHqoorkJ7z9/rTw0ObY9AwJEKZXBievSERJg9EZgD1f4Blt4E3kt0FgeyQMN/VYR9qI2PrUsgf7qiZmGucatVjn1FIfqMZHA20BR8l9FCsXjkjAnBuelkhOFB/9q2vscrp/0s1kBh4mEXueaN/Kn9hkky+OgAJujITmIMXe5ksXVSVIFCCIf+QTqh2OUdksEo3YuE63s2ToWq7mGVPiglrap25MI7J5PhDPNTMUsyO+DGDo5eqIgtoDKuH5EzmTJk7n0bZVfcmWdB5vPQrEXyHKudOnPILBvisMBJ2g0/WSEZNInLtNsd3wZ6kAVuleThhM+DNVXfw/FrUo1lOx15TaIJ/NJX50sDcjggUc7/PZCccIdbjdzXQoTCt9WcvcCExZXWgJBIJKTcFaGuFeJCLTGCWRh5DEgBmQokGOrvz6Vlv2r3fOl0E3zNPT+0eULypXY9ImueKLRlddby4ZyTMQYZUlot9h0d3kCQeQHpqq20Gvl8wv6ctZbaey9I9CxS99FsnRwXiF5jW+IQkklYiIAmSSfB3AnM6KMdG3xwrvnYL5N2cdyVabD17D8J4Qd9x3nrBIjE9E3jlFakwBwmrGYJPSEokJX3H2pH2ZUBK024RJwYkAV0g+X25/LGO9ZSlgYEsYwZv8iOprDyyCc9/S4IJhid+/qOzglAmY5MsjpwBRvdvLH7CvkJ0wNokL+gAbg0B6X9gmALM+Lu0BXFC/xk0MBXL6S7Ft8+P86vVWw3ExwNXkmgdwkwFvficte4S5kw6+qpZRtuL9nFSpKbtZ
+ +l8sulT8
+ n0frBaD4pr7TbYhGUmLfT6ycXSltn4v+LZNNEDTNduRl1iCJWQeax6x+pLJVLHbSBYL7KaLCIK8PzAMxnpvD/LREnOPiUby4wlhuFXo/hyXDNyW+e/OwkJ7ANEIWPfZvRXpYlJdAFC9SGFUuZCEY4KbFxRwuBJ5Ya6ust5xHXcoQNmryZKbm49RFPFeDGsNcnWJNU5xjS806ZB5trDAXNHJ5GMtbyESnmCPl1nb8dl17LQrhOAzpvT/84KxurrdOJ7XuOEzqqhAt7jecWAGVGq2E0A5rhAp2c9CWjskItI4EP/tee6aUwHZk0xAbjtMb/t7vctfGudWdg9cv/aU8x8YkF2JxEjIyymggjgfJYbFBqYQPm9zlrY1qVw0Ud8l2QNWqUo9K5/rzfBuWO9fq379rghnUJkjI8tN/2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,51 +98,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 23 Aug 2025 at 23:47, Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> (cc Ilias)
->
-> Note to akpm: please drop this series for now.
->
-> On Fri, 22 Aug 2025 at 04:00, Evangelos Petrongonas <epetron@amazon.de> wrote:
-> >
-> > When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
-> > early during device tree scanning. After kexec, the new kernel
-> > exclusively uses this region for memory allocations during boot up to
-> > the initialization of the page allocator
-> >
-> > However, when booting with EFI, EFI's reserve_regions() uses
-> > memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
-> > rebuilding them from EFI data. This destroys KHO scratch regions and
-> > their flags, thus causing a kernel panic, as there are no scratch
-> > memory regions.
-> >
-> > Instead of wholesale removal, iterate through memory regions and only
-> > remove non-KHO ones. This preserves KHO scratch regions, which are
-> > good known memory, while still allowing EFI to rebuild its memory map.
-> >
-> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
-> > ---
-> > Changes in v3:
-> >         - Improve the code comments, by stating that the scratch regions are
-> >         good known memory
-> >
-> > Changes in v2:
-> >         - Replace the for loop with for_each_mem_region
-> >         - Fix comment indentation
-> >         - Amend commit message to specify that scratch regions
-> >         are known good regions
-> >
-> >  drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
-> >  1 file changed, 25 insertions(+), 4 deletions(-)
-> >
->
-> I'd rather drop the memblock_remove() entirely if possible. Could we
-> get some insight into whether memblocks are generally already
-> populated at this point during the boot?
->
->
+On Wed, Sep 03, 2025 at 04:24:35PM -0700, Kalesh Singh wrote:
+> The check against the max map count (sysctl_max_map_count) was
+> open-coded in several places. This led to inconsistent enforcement
+> and subtle bugs where the limit could be exceeded.
+> 
+> For example, some paths would check map_count > sysctl_max_map_count
+> before allocating a new VMA and incrementing the count, allowing the
+> process to reach sysctl_max_map_count + 1:
+> 
+>     int do_brk_flags(...)
+>     {
+>         if (mm->map_count > sysctl_max_map_count)
+>             return -ENOMEM;
+> 
+>         /* We can get here with mm->map_count == sysctl_max_map_count */
+> 
+>         vma = vm_area_alloc(mm);
+>         ...
+>         mm->map_count++   /* We've now exceeded the threshold. */
+>     }
+> 
+> To fix this and unify the logic, introduce a new function,
+> exceeds_max_map_count(), to consolidate the check. All open-coded
+> checks are replaced with calls to this new function, ensuring the
+> limit is applied uniformly and correctly.
+> 
+> To improve encapsulation, sysctl_max_map_count is now static to
+> mm/mmap.c. The new helper also adds a rate-limited warning to make
+> debugging applications that exhaust their VMA limit easier.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> ---
+>  include/linux/mm.h | 11 ++++++++++-
+>  mm/mmap.c          | 15 ++++++++++++++-
+>  mm/mremap.c        |  7 ++++---
+>  mm/nommu.c         |  2 +-
+>  mm/util.c          |  1 -
+>  mm/vma.c           |  6 +++---
+>  6 files changed, 32 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1ae97a0b8ec7..d4e64e6a9814 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct page *page)
+>  #define MAPCOUNT_ELF_CORE_MARGIN	(5)
+>  #define DEFAULT_MAX_MAP_COUNT	(USHRT_MAX - MAPCOUNT_ELF_CORE_MARGIN)
+>  
+> -extern int sysctl_max_map_count;
+> +/**
+> + * exceeds_max_map_count - check if a VMA operation would exceed max_map_count
+> + * @mm: The memory descriptor for the process.
+> + * @new_vmas: The number of new VMAs the operation will create.
+> + *
+> + * Returns true if the operation would cause the number of VMAs to exceed
+> + * the sysctl_max_map_count limit, false otherwise. A rate-limited warning
+> + * is logged if the limit is exceeded.
 
-Ping?
+kernel-doc will be unhappy because of missing Return: description. Please
+s/Returns/Return:/
+
+> + */
+> +extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vmas);
+
+No need for 'extern' here. And the declaration should go to mm/internal.h
+
+>  extern unsigned long sysctl_user_reserve_kbytes;
+>  extern unsigned long sysctl_admin_reserve_kbytes;
+
+-- 
+Sincerely yours,
+Mike.
 
