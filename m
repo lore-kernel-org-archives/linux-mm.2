@@ -4,115 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 383CACA1015
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 06:44:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A035CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 06:45:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B04A8E000B; Thu,  4 Sep 2025 02:44:14 -0400 (EDT)
+	id 95FE88E0010; Thu,  4 Sep 2025 02:45:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 760E08E0002; Thu,  4 Sep 2025 02:44:14 -0400 (EDT)
+	id 9378E8E0002; Thu,  4 Sep 2025 02:45:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 650328E000B; Thu,  4 Sep 2025 02:44:14 -0400 (EDT)
+	id 84DBE8E0010; Thu,  4 Sep 2025 02:45:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 516408E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:44:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 108F6140A52
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:44:14 +0000 (UTC)
-X-FDA: 83850628428.14.0A3CAA2
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1A3E840003
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:44:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=fN13jIZk;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F1A58E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:45:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01FF41A09C5
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:45:00 +0000 (UTC)
+X-FDA: 83850630402.06.285E78D
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EDC3F40003
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:44:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=LV+1vr5T
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756968252;
+	s=arc-20220608; t=1756968299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UHqCMfo2LMLyGJcWsRGUvqsDIGVMcCFXVZ3lBJ2U6h0=;
-	b=HCUf2/odBZ7k++BOrlHlKA4sfCZc64Varq6fhzNKvTbn4C+09EFQ8osZAu0/MuK1iMf+2Y
-	FpYAbuIUedFNxUQiDRnEEnDkwV8vPRSrHGpyhUkTyca1VzZEnjt08H9PUR7TEAKYVky0XY
-	+lFynfBulvS/ympqy2sa2+HgS7dYRJ0=
+	bh=gZmrHXi/l2Bu3uwxMTV4r6fmpaXludQwzjRHMWeCses=;
+	b=emOKq4s6j69WeUK945EpOFnCRvKCgStj1dCO7RVAxHViRWp9GWwlzTcm5uM/s2rku22znM
+	B5eI4baAKRUqeQm3xje4wQBW/Pux5fuuotFizo3qHMRlNVe+JYgMCDAY5oaIIvgYw6BjkT
+	irbZoxuX95RS8+68Asnvrc4+L3YwgGY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=fN13jIZk;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf04.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756968252; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=LV+1vr5T;
+	spf=none (imf12.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756968299; a=rsa-sha256;
 	cv=none;
-	b=PfIgX1CNXCUcxJc7zS/pL79TrSZ06fTEsqR9PVnlsPqUkP2bNc3oVaX2zf9CDBu9yoD2nL
-	XQyFo7r3nZDPP8fDEVVDqej3zVUlvT90PxCLe/kAiRu88e3VQqXtIWhWRJSZaBE5uPwOtw
-	G63Zx174NA++C/27Za4navL1I3mTwMA=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-77246079bc9so817761b3a.3
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 23:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1756968251; x=1757573051; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UHqCMfo2LMLyGJcWsRGUvqsDIGVMcCFXVZ3lBJ2U6h0=;
-        b=fN13jIZkl5jQfuMHcRo4QzMkypeZRCGAhXCzb3qbPUyAM+L/Q+lR11aVkK1S5Ua80t
-         RJSyWcQlBBljs78aPwlk2k9ydfWFeU0qJ1F0hjx/oqpOn0vghAUfIwwmZbIioOZXh8FE
-         jj6RHqLw/zTm4xizB8E96WHhSeHkz6fVX2NPE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756968251; x=1757573051;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UHqCMfo2LMLyGJcWsRGUvqsDIGVMcCFXVZ3lBJ2U6h0=;
-        b=ajWDibb7ymrYPpTgSXSGje1YEKd6isJSsVw1qB+qID0cBymbdneIVkEq9Bo+Kcm2Xn
-         /GgbqrQvfhqOoWAEPqf0zUWX61p8Sl33QKJf2WVTOCEOVBqryFw0C+sOYYbKRR1USapa
-         ezJdMovhp+e68Ji8hQm0w/PJ5LECK9TNeaASRcTNlmCtoeyhdy9de0SyeddfplPu4U4b
-         OUWa3kaQPRjKWT+0RUi4FVozC7tn8qQq6+rXfkENMUWy9oP5zld/WGRgM6zU+UvMGkna
-         0SRPXP/h5WtmxH99zDWBVorptlr8u7P41XGOXaRAueiE4Kdf5r1HGpD/+0V/Hp4ZODg8
-         04nw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5xs5OsA2lCIiGaQxkWWP+8xxIuf4DCEdchcjMN9dTLVzqE8HwwOKjk1jItlr412a9TzrTnYYhxg==@kvack.org
-X-Gm-Message-State: AOJu0YxocFZZJLWnzaL0ooQv3CbcQjTZCwzHt1NthZXWHvocAVtlOBcp
-	ihKZfL4bU5TobVsADe0XHqMHvMv7aTSvsG6YkvN0jm7pMbiQHWLLJtAbvhVHFhQDgg==
-X-Gm-Gg: ASbGnctpAm0a2gIhBEJXbNQTFLfqOe4OqoIgOYVoyNq0MbwNRMMOB+NrOYsCTfr/8qZ
-	qelShYstWbwfUtuLtTvJbz20Js2oojpdSzeetc/pj69KsE9E6KN3QMaevdN+To/pdM95RvBzSJB
-	VgNFrjF2E3UeOnovvNIEa9mavzc09GtjVPPaaAv/rogUfKWAqazkfIZ0OWLzJSgMmE2BkeWWkK+
-	hfrvVNJ8bilGmluvqKhUlXrwZ6c75lPtivCCINbXoLe3XquNkWr1GfXAsS+ffktNF18c14vTXge
-	BYLtxdLhJ5M/MoNg4uysCRr5gjUANOpOHluDSvUdqM35O+u1ZOeCuwZkiV7zjvQu7tEPEYmopPg
-	J69rPpuIGGqKzW99Yac1eKFWQq8vnECSXfNLf
-X-Google-Smtp-Source: AGHT+IH+YV2qOYaN4nAmRg/9LL/OyAH/fMjV4M0D/ewSy12gz6JAK3OGJf1jiWaSOYJGAgUKWxuE0A==
-X-Received: by 2002:a05:6a00:b4e:b0:772:6f95:f326 with SMTP id d2e1a72fcca58-7726f95f5d9mr10062470b3a.10.1756968250799;
-        Wed, 03 Sep 2025 23:44:10 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:d677:a82d:7e38:6189])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-772818bd5e1sm3767728b3a.86.2025.09.03.23.44.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 23:44:10 -0700 (PDT)
-Date: Thu, 4 Sep 2025 15:44:04 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	SeongJae Park <sj@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kernel-dev@igalia.com
-Subject: Re: [PATCH v2] mm: show_mem: show number of zspages in
- show_free_areas
-Message-ID: <paef7bzotb4runl4sjlcfesano36cc2bflb7uqe5mil3chnpgn@axng3yfe33w6>
-References: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
+	b=EpPWRA+K680qqg/Ol7ZMGUiV/NXWt2ZBFZMARAQf7Z/4jYmeUBcOv+YfIiH6Jm6ej8Swcd
+	yXbZhyK2iZA1NMPG4Vu+1JnlZPQ8OOK8xkiqIHjJkwnsYUNGdrlElx3/NetR/jW1AJD5rS
+	eER137Yd4K7SIkfkQ8FyF3hiMCTnakw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=gZmrHXi/l2Bu3uwxMTV4r6fmpaXludQwzjRHMWeCses=; b=LV+1vr5TnEbOLwYDucpF+T7OIM
+	LWIWn5X6Bnn9lXD+SOBNZPAjiFQE9u79hY8ceIoaYVBB+rG4wxes3Rm2SIO/T9SMXtDz1WDDJMAgR
+	sEqyVAiZ8dOIT3rwh/d00dqxQja9pydA/vSzSy2tGohH0cMhzwqcl2EOSnawGlVX5x1IoMtLugTxx
+	knHvZleoFEyGIIr00wSpr62kKCud3XmrUPYtIXF21hHRhmNQqk8Cn3ZbMtE3wh9dH+km5SACk+lgx
+	OZSQvvdwMxJdlJ327jl9dk44f6BgII0+XrrASFOQRMxTzEYlx2jX3U6L47hw44gV4EoJHUl0mah0s
+	hU3DEftg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uu3iD-00000004IW4-1Zu6;
+	Thu, 04 Sep 2025 06:44:50 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 78BB03002BF; Thu, 04 Sep 2025 08:44:48 +0200 (CEST)
+Date: Thu, 4 Sep 2025 08:44:48 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"Naveen N . Rao" <naveen@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Liang, Kan" <kan.liang@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-perf-users@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 06/18] perf/hw_breakpoint: add arch-independent
+ hw_breakpoint_modify_local()
+Message-ID: <20250904064448.GU4067720@noisy.programming.kicks-ass.net>
+References: <20250904002126.1514566-1-wangjinchao600@gmail.com>
+ <20250904002126.1514566-7-wangjinchao600@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1A3E840003
-X-Stat-Signature: ts3haihe9i6z9m8wi9reuspgwwamp17r
+In-Reply-To: <20250904002126.1514566-7-wangjinchao600@gmail.com>
+X-Rspamd-Queue-Id: EDC3F40003
 X-Rspam-User: 
-X-HE-Tag: 1756968251-502741
-X-HE-Meta: U2FsdGVkX1+QqXe4RXWW/KQwJ11IHyJ3/JIswoqQ0yZnCJqOjfZXUp/tcfWVqy/ouFVKF7x+sUiisAVUQGpn8dLNA8N68ocIi5t/WtAnmugeVHWfoG9L6hanWjDGd4jcp924zr0j4kg+28LOG8YTgR9sLDxzjnBNka7N2ZYenNomyrgppv9bmROcs5k9xDDZp6Tdl7zh79PJkoHvjoc5BVsOwWz+CIPDFh1YOBBsQKwzqDfN3/G5Kf4EqMs6HWQVhs3Mws+eXjENZpuS/j1BR1LDpfvmzS3f+bHJVr3Tt7AK2rgk31WjR6ock6ztQWTCYLCLkOJo54BjvcNq2GDp/1zw3o27fRh2+Gec9oWyyYUheMP0EHH2ESSqbn4JYI2KKd5Yh4iIisbSOpw+UbPhlkF/EFkjQmh6heiqlQDGsm9gH9Jy8/8/Q8hTDNoO0JdRJxMsSkWG8IjYEiGVjCN3BBeZb86QNxHcLSoc4zQmu5qzzQN9QLMGNFqlv+jHeKZhOLKv6QZl84sEks7/oKzCS1+Wwewxvfo4swbv6vBUjSWG1wrr7Rbzui9G4FmXg0KmTY4Rb8Rz6UeOeHle3GrALDdcAIQTruH/UbAQ6m1VoHGiw/bB8ppZALFhVXWCwZjAPtZenGNDmdMVPbMnKji7of0XqGmh7khwoloXsEm5mGvXDTrT2paRnqXtuOk8mmE+p/JS/508PpibNIZCtDL52pnFQQhHUJs/7y+6OdOQfyMRo9LkKv3bsc/CFADqj6FJ73txJn3mhdccsoipFmvqWNPv2Q5qj1J8rgJRc/Mx615vea2tphy09hM07KllR+UnRbd+le7dnr5piFMofodXtMleHxfOHnBOG7+mdgubhtWYp3XPL2AtttTjMAQz0YR5z8MFEPT8PhJi5ykhRWsPgTQ1c1sUVt0/xinaKe9ieFx1ynBBOq31mM0WQn/bz8Z8nQa6W+UHeriIvX473iy
- 54M3z/Y/
- rJIEcI5Yl/wdLew8DzPXYUdCqxjCQYOvten70ErLOhWIfRuRDKDDXKBOxljNeFMgs90TD1aLkCHHiptX/jQICaoyLLTZW0/WpDCNGfPzM/J4DLO77OVQzhZOill0KJprNM2DD63jpw+iwwTEPIFvV9eud3PZjxu3x55lwQ5jnV8m8Kb0Ph9IGMtiHVaR5IYWb2fZ2wRMMz/+dZMoEnX89Oo8jVlEZmncsTWx8RZ7sDohzO2DEeAuNj25tDHTLtOgaPa2YwghgOAHqTbn/WB4xYzPcHBAlGVYVmiEs4dS1Ms3XwuUiaqmGLdm8Fn6nHwHy9DsMkvYNbOLsQePjLdAMu6nWgfWi5NLSj0T6vVhhxNYn6j009hqV9tfNFueedojGOGIjiKnbtzNKCBbsuI6f6hk0NKbn6Xhn/w/RrmNjdkIY9MJL8M9YNYQCsdM6CAY6ug5+vTaH+mlH2VaLUJiUtKkrUA==
+X-Stat-Signature: 8cr5s6up6ishajofxngwan4xkbs75ac3
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756968298-162115
+X-HE-Meta: U2FsdGVkX19pcOlSWTv4gDRZoyyPtfK3mWiwtZMGn/Pmf/wXPwUG1YZRyyFaODp9YkMFwj2F46i8fB89hQFSUHU3/UuJH2mYWGDsy45nRwoXPARms6TuT0IHmqyUkZ+eRBJlGPIXE6jp7sGgHzVARkvuN731igURIcmo4s3eQUICXSY7QdwMFDoWNFEniLIfyzoKec7atQowbWbEcrGDIgMvtltVCiqmOK+siY1Zq9HcxTAAJ5BVx2E8g6pZSrGrf/e7jtfarpGj4sefpMS6uMp/ddWduJ8yUnZjfs5A47pOVPUlhwV4otwaniuf9qnVJdEktcef++nc1P7gZMWeRG6mepYZel7AmJCvmEa38f5uRpooeA2Jbq/fk30b8RnZFopCDauRdPo2gr4xUjL77ciFboTxDJ4JwRbPtTihPoQbLgTZjXMzJ9mBdApa38WOFaUx/7pz0x+3BOs677WJrj7yuH/O9n8PFS8eil2IUZi4fRGQLoJNN/k8z0nWxU4j+FfzCK7U0nnQQkkq+Lqr2sLtZ4pyy3lLrCSPUPZc/dPa6kXktWFDN/UYQmqgi1IrVvuZpYc0NcW2decbZ4RL6qrwB0G06R7R/6qzWBZLjBdcnwxITsJ1RKBexy2fbqAXPJXLOKZ5P722GXtSSSB75pkraD873BWife9IKD6WutcXcRB2h6SsmgmtPv+j0kwxftcV+B52x10okzKLB7KSd7/I7kIp/7WUEwgTiMZLOed0SdJB5TG863zYVFTEbrDMvUK7bMKHmT/hKSDfxKfGrtQ5d7Soq+hkSwMTlWZOx7dPE3+edbbRIvY7VUO5fbOyavR0i5jEdBCWjtSM12tB69vkQyPhz01h9aR+B4MOLdBfIX/pdMPj+9pXvv+klQhevUBxY1y9mKJpwWyKV5tuWdSyxqC9TtWm9LdUUz9nItCOo+gBdEQ5qXqmDK7OGFw9I5tbqD8HOxX37JY1kxC
+ DZMlKkAe
+ GranTL5eSL+IcRL2DZsQ4XLgj0twfEt0pYuCaqk+iTkCe9R8hFrS37xGFl6XC0dGnTVFYKUoRs4f9GL06TxuFKy/2+6ZFopb9nVWoSxfrKVYrQkp5JtAKV1jEXDn+8O3XOix4DVk6lz0mezooFfFQhYPfT+WN5/zs/v7vkfZwo9dtXMXQfjk31wqN0G2PYKNLCJEyTQkXMsLI21600pPFrz477a0PyXugMan5CshrYcheRxzAqkE8A1rZMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,39 +112,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (25/09/02 09:49), Thadeu Lima de Souza Cascardo wrote:
-> When OOM is triggered, it will show where the pages might be for each zone.
-> When using zram or zswap, it might look like lots of pages are missing.
-> After this patch, zspages are shown as below.
+On Thu, Sep 04, 2025 at 08:21:03AM +0800, Jinchao Wang wrote:
+> Introduce hw_breakpoint_modify_local() as a generic helper to modify an
+> existing hardware breakpoint. The function invokes
+> hw_breakpoint_arch_parse() and delegates the reinstall step to the
+> architecture via arch_reinstall_hw_breakpoint().
 > 
-> [   48.792859] Node 0 DMA free:2812kB boost:0kB min:60kB low:72kB high:84kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB zspages:11160kB present:15992kB managed:15360kB mlocked:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
-> [   48.792962] lowmem_reserve[]: 0 956 956 956 956
-> [   48.792988] Node 0 DMA32 free:3512kB boost:0kB min:3912kB low:4888kB high:5864kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_anon:28kB active_file:8kB inactive_file:16kB unevictable:0kB writepending:0kB zspages:916780kB present:1032064kB managed:978944kB mlocked:0kB bounce:0kB free_pcp:500kB local_pcp:248kB free_cma:0kB
-> [   48.793118] lowmem_reserve[]: 0 0 0 0 0
+> A weak default implementation of arch_reinstall_hw_breakpoint() is
+> provided, returning -EOPNOTSUPP on architectures without support.
 > 
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> This makes the interface arch-independent while allowing x86 (and others)
+> to provide their own implementation.
+> 
+> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 > ---
-> v2:
-> - fix build when CONFIG_ZSMALLOC is not enabled
-> ---
->  mm/show_mem.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  include/linux/hw_breakpoint.h |  1 +
+>  kernel/events/hw_breakpoint.c | 18 ++++++++++++++++++
+>  2 files changed, 19 insertions(+)
 > 
-> diff --git a/mm/show_mem.c b/mm/show_mem.c
-> index 41999e94a56d623726ea92f3f38785e8b218afe5..c563d9adfa87765a8736e91c1f68d824b03eaea8 100644
-> --- a/mm/show_mem.c
-> +++ b/mm/show_mem.c
-> @@ -310,6 +310,7 @@ static void show_free_areas(unsigned int filter, nodemask_t *nodemask, int max_z
->  			" inactive_file:%lukB"
->  			" unevictable:%lukB"
->  			" writepending:%lukB"
-> +			" zspages:%lukB"
->  			" present:%lukB"
->  			" managed:%lukB"
->  			" mlocked:%lukB"
+> diff --git a/include/linux/hw_breakpoint.h b/include/linux/hw_breakpoint.h
+> index db199d653dd1..9453b5bdb443 100644
+> --- a/include/linux/hw_breakpoint.h
+> +++ b/include/linux/hw_breakpoint.h
+> @@ -67,6 +67,7 @@ extern int
+>  modify_user_hw_breakpoint_check(struct perf_event *bp, struct perf_event_attr *attr,
+>  				bool check);
+>  
+> +int hw_breakpoint_modify_local(struct perf_event *bp, struct perf_event_attr *attr);
+>  /*
+>   * Kernel breakpoints are not associated with any particular thread.
+>   */
+> diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+> index 8ec2cb688903..ff428739f71e 100644
+> --- a/kernel/events/hw_breakpoint.c
+> +++ b/kernel/events/hw_breakpoint.c
+> @@ -983,6 +983,24 @@ static void hw_breakpoint_del(struct perf_event *bp, int flags)
+>  	arch_uninstall_hw_breakpoint(bp);
+>  }
+>  
+> +int hw_breakpoint_modify_local(struct perf_event *bp, struct perf_event_attr *attr)
+> +{
+> +	int err;
+> +
+> +	err = hw_breakpoint_arch_parse(bp, attr, counter_arch_bp(bp));
+> +	if (err)
+> +		return err;
+> +
+> +	return arch_reinstall_hw_breakpoint(bp);
+> +}
+> +EXPORT_SYMBOL(hw_breakpoint_modify_local);
+> +
+> +/* weak fallback for arches without support */
+> +__weak int arch_reinstall_hw_breakpoint(struct perf_event *bp)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
 
-A little "preliminary optimization" idea: do we want to specifically
-refer to it as "zspages" or do we want a more generic term, just in
-case if zsmalloc goes away, or if there is (are) another allocator(s)
-for compressed swaps?
+Again, so much fail :/
+
+So we have:
+
+{register,modify,unregister}_user_hw_breakpoint()
+
+and
+
+{register,unregister}_wide_hw_breakpoint()
+
+And you choose to extend this latter with hw_breakpoint_modify_local()
+instead of sticking with the naming scheme and say adding:
+
+modify_wide_hw_breakpoint_local().
+
+Also, again, that EXPORT is a fail, these other interfaces are all
+EXPORT_SYMBOL_GPL().
+
+Also note that modify_user_hw_breakpoint() doesn't seem to need new arch
+hooks. Yet you fail to explain why you think you do.
 
