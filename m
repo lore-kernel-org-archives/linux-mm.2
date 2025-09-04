@@ -4,128 +4,210 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B6BFCA1013
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 21:46:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11AF0CA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 21:50:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B80AC8E0002; Thu,  4 Sep 2025 17:46:08 -0400 (EDT)
+	id 71CBB8E0006; Thu,  4 Sep 2025 17:50:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B31368E0001; Thu,  4 Sep 2025 17:46:08 -0400 (EDT)
+	id 6F4D08E0001; Thu,  4 Sep 2025 17:50:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1FAA8E0002; Thu,  4 Sep 2025 17:46:08 -0400 (EDT)
+	id 5E3B68E0006; Thu,  4 Sep 2025 17:50:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CBA78E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 17:46:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 190F011A477
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:46:08 +0000 (UTC)
-X-FDA: 83852901216.18.CB703A6
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4389DC0008
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:46:06 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YyfXPI2U;
-	spf=pass (imf22.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.219.172 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757022366;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B6818E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 17:50:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD8BDB9559
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:50:07 +0000 (UTC)
+X-FDA: 83852911254.12.C28C7F1
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2105.outbound.protection.outlook.com [40.107.220.105])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E937A4000B
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:50:04 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b="QpTF/WNL";
+	spf=pass (imf17.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.220.105 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757022605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2dxmIK87Es6+ed8yKW7yiT6uue3ZfsQixPgvt43/STU=;
-	b=XIdPJwsrBV7f3uTdkocSQcPu4t5HWt8p6rtQrqV2U8Zz0+w2qePzs0RcJdxtnWRd/mzAFO
-	SrZiCVrLgwmt8q5IZLTpwQS2FpgUJ3mckak4wrAfY2etAqbSAS9kiud6YHnlDDIqGWSzSH
-	7L0I4N/NB0/5TU/Sk8flSOBisBa0A2Q=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YyfXPI2U;
-	spf=pass (imf22.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.219.172 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757022366; a=rsa-sha256;
-	cv=none;
-	b=Ha0Hcv90Cs1h43iDQ7IB627CLtfla3fFUAzwpzoWFa2+dUAuc5N1LzvA/Hp7fDgRO3g1Ox
-	C2/ddAE6obS03jWmdG0EwO9A2jJzRFUxpRBhuedTsgTQ625JdttWwNlTgiKD4z6dBZTaNo
-	GHr9/gxRe/Rg/cWsUe5pp/lj6UbBvwo=
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e96fc00ad79so1478890276.0
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 14:46:05 -0700 (PDT)
+	bh=cWxG39lj1alVc5fKUWfPaW2apdrvU9ilRuy3aQcR/PA=;
+	b=BmoP56rs+s/D6B+m1oRDCStjbJJhPski4zP34CVlykOSaBXSaFU1HU4yrYYsdvri9euI4k
+	f7o0A+FwrXZDE9FcabFNEunQqSXg0lwRkUegfyYK9+efk8UeY/CJEPBCCwqV/SWKFJzx8E
+	yuGnMQPHP6N0zAaxo5gFlXXCaqYuMQI=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b="QpTF/WNL";
+	spf=pass (imf17.hostedemail.com: domain of yang@os.amperecomputing.com designates 40.107.220.105 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757022605; a=rsa-sha256;
+	cv=pass;
+	b=PK0pBeaMkEYFiblX/oqI1S+4JnDHesJPp8NLVq8ngCSNRJXumCZUkAU+seoq5E4TJ1OP6p
+	mXbncPBqK4vZ8yqd3HILmxdVs6o6Slo7AuDLRwYkf5feEJYoWKSZP2sOe3kdlFbbezQ+s+
+	hsj6BJkQSH76lxocKbz8qtho22/5JQA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K93cJKGN3RnVutBMIZolalggP2CnEBGPUigkUv0OVdcwDeN6RPXFMhSKLTEX2xF3p4QL1TjZpeV55Wq6VMqIH4jTd4Mk4KJr1g5DWtf+ErPY67VoDCcgut2kIqmzxELxZ8UlplWESayGqacFBTbsYbVYm44IXOBmSPug5Q7Ojk/d+Za6tEV8eVGKWUK1MirfiKChcLDonR3HA/Rib3UscsaiD1DM3yqaOcVj1k6MkcXpUvVXkjAtkAuHrZwZCmtlnG4GwOHTW6I/ycGjZOdKGrM6GXLQxzlwkujDDfZkssKfVC9FsPBFGdLNMj0tngB96yHemULdawN3NazuoNpmEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cWxG39lj1alVc5fKUWfPaW2apdrvU9ilRuy3aQcR/PA=;
+ b=a72neUnQB7kjuzWsFio0aqQ1d7QSVk1/m2wAPQLgY6/8pt2C7HrgcThvFJ8Zmp1Hgxlt1VMgB+nb5bTxcw2OqKS/EXHPSUrRtEsUR6+JGncUPsxgiynNsBkLKKgwtrEvUxRUjRMWLKTREWPKV1YZe6WERg+sw5GmuWClb3KTHLFkPwVkJgwbdRhUCqIwmRmGjROSvMNQ5fiGmm5fgPPWwY+Janr7Qi2l/rQ+WWZUc6AZ2cH/vR+wizGJvJTrbtkKNRCrxOUFM0QCllXZqoEWoAAdGIJKyfjp0qrFHISHOJ/EUnxEBUdQXH/sy5KyTwvUQAQRbJhxMW982smnNjH1Hg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757022365; x=1757627165; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2dxmIK87Es6+ed8yKW7yiT6uue3ZfsQixPgvt43/STU=;
-        b=YyfXPI2Uiqf3c8J0plxH2pzSJNv7HAjum7U8h22ZgZLCbqfI8K86Utcz6qp4Nnrby3
-         spnJxVjDbyowsDLCkVCX7umvcOvbrv/orj956mgG1bNiQc0C8gTVLBq2xBWICfVQpy0X
-         G/jNRz1w9BhNAA8xI8YuhSMvtC2ldA6rsIQ67LNBOUnPyK+zEV3IE6G8l9fPuAQufUur
-         583Pi61KsbH5/Ajpm5aINlwMi+jEVoHRTCrAJd3naBF05t9bPzQuchlWcBo9a8TDyr7L
-         LCECSK+VzfVe+TyEbMjVsoY+mg/jJ2WtgH34jTEKpwkNiTiNSrgp8+LrIg+Dwc8LZFOG
-         QVnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757022365; x=1757627165;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2dxmIK87Es6+ed8yKW7yiT6uue3ZfsQixPgvt43/STU=;
-        b=tPg3DT5rKcCQC9L4WiWf2UCXedYrbdBR27K4oxbnaR1kAoOOXpY2+0jtGk/JBx3gJl
-         WLegZ25nQWcjMxnfHS6KhXQYgYka/2FT0wozOMGYae7w4x2jQ8crrADC/fRxHy7yZzxE
-         VH5kURuR4k7FJaA8fFI0FQ++3KRM57hlGggCw7cp/drCDSnYqPLx5uGcGrK0bOSZ9geJ
-         R0SOptklh1IY6SCKEMn0MnXevwwsKuMSOBpALdg8l5BmuJPNPO0cORbTdslea7jTL9Om
-         StQVq6r0y7i7Hc66EsBPzzJWgIQf8ifi7IR8ZTNyNYjf2IPFDpEgq9XgGDvUX6fzRaNw
-         tlNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWB169Zb0m3ns/tpHOOL3LT13abkzqBf3mlzNFaHNB/6aNb0VYRkxfJ4p9fHRWUguBkXrSZu9qwcA==@kvack.org
-X-Gm-Message-State: AOJu0Yxt/uV6IVjV3Gv5wQiKJ8pFOkbBZyJZVDxkjw3bEn1jwPDxmZUV
-	Lm8t66XI3p0blXngFQVxcwr16hul0Af639TRPxK58TAzaNQRdh4upSEp
-X-Gm-Gg: ASbGncuyJsg7tNI0ZB5TZDUk+eEgCY13xwlsA3LsWhpwAyIMjbCLTTVDDjhOynpYQ3u
-	4fAmyBY95SgUoT9RjS/V+8eTPo/sMX+o6yeHmY9+bRMrVpWgtUJ8HcHm0F9bGfDQV4kDGIgwRCM
-	TnN0cLObd4enF+j44DEe3i/5Ghw28c4WAVGeBOS9lbqAZMwDvdFKm8QsxPTmSFlXPr7Sq67FRlZ
-	W1w7C1t7Au9JaZAAyUkj3blMp52rk35F3+T53+lw4RTnTmSajQBhpypSKo66DISW3F3x5Fj5hkl
-	2i6XgIbKnwqJ+4px4obqDAZHqOFpubtf3YaCifO5hOfG2QlKade+US+tCka1kEqrGUNNP++qMhj
-	LLp0u7NCaqjTRFPRNOsfCO1cqWNKjMTht6PawtNhDz0A=
-X-Google-Smtp-Source: AGHT+IFMi8TYlY3AfynFMyr7MO2wBtRPKgDfu06foXlotOWPPhYh6f2Czm6tvqNfbPzn8j5BUU9pJw==
-X-Received: by 2002:a05:690c:61c6:b0:721:5b31:54d7 with SMTP id 00721157ae682-7227635bbcfmr192690397b3.7.1757022365134;
-        Thu, 04 Sep 2025 14:46:05 -0700 (PDT)
-Received: from localhost ([2601:347:100:5ea0:1218:85e4:58ab:e67f])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-609d205c24dsm632727d50.0.2025.09.04.14.46.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 14:46:04 -0700 (PDT)
-Date: Thu, 4 Sep 2025 17:46:03 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for
- DynamicPerCpu
-Message-ID: <aLoIm94aP6Er0Gn8@yury>
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
- <aLi-7W21N45fBGJk@yury>
- <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com>
- <aLn4bopPt8uS4d1O@yury>
- <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cWxG39lj1alVc5fKUWfPaW2apdrvU9ilRuy3aQcR/PA=;
+ b=QpTF/WNLmqnrzQ5xemRCiPFWlYRgIsjrJavQMhxYUxykHcJvIgucWIufBSEpb6Vi8tWYFBtmakLUMo0oYQOtH50Y9QgIYYfLhNIzYp29IpH964TIm3WI6mj4fq3biBY54zDGfcUL6LQH3n2Zl58toLGVJoEw1xwPoU5JliCbfus=
+Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
+ MW4PR01MB6385.prod.exchangelabs.com (2603:10b6:303:66::19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9094.17; Thu, 4 Sep 2025 21:50:01 +0000
+Received: from CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::3850:9112:f3bf:6460]) by CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::3850:9112:f3bf:6460%2]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
+ 21:50:00 +0000
+Message-ID: <39c2f841-9043-448d-b644-ac96612d520a@os.amperecomputing.com>
+Date: Thu, 4 Sep 2025 14:49:56 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/6] arm64: support FEAT_BBM level 2 and large block
+ mapping when rodata=full
+From: Yang Shi <yang@os.amperecomputing.com>
+To: Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Ard Biesheuvel <ardb@kernel.org>, scott@os.amperecomputing.com, cl@gentwo.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20250829115250.2395585-1-ryan.roberts@arm.com>
+ <e722e49a-d982-4b58-98f7-6fef3d0a4468@arm.com>
+ <dd242f5b-8bbe-48e8-8d5f-be6a835a8841@arm.com>
+ <aeb76956-f980-417f-b4e7-fe0503bb5a2b@os.amperecomputing.com>
+ <612940d2-4c8e-459c-8d7d-4ccec08fce0a@os.amperecomputing.com>
+ <1471ea27-386d-4950-8eaa-8af7acf3c34a@arm.com>
+ <f8cf1823-1ee9-4935-9293-86f58a9e2224@arm.com>
+ <bf1aa0a4-08de-443f-a1a3-aa6c05bab38c@os.amperecomputing.com>
+Content-Language: en-US
+In-Reply-To: <bf1aa0a4-08de-443f-a1a3-aa6c05bab38c@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY5PR04CA0003.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::13) To CH0PR01MB6873.prod.exchangelabs.com
+ (2603:10b6:610:112::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4389DC0008
-X-Stat-Signature: qc9csaw8iz6za6gaen85938tu9js9cef
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|MW4PR01MB6385:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d626899-f80d-47c2-771a-08ddebfcff75
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZGNpTWh4S2tNRTdYczdJV3FUNFNrdGVrKzMyOWhZR01Nb3FxMHB2d0c5NkF4?=
+ =?utf-8?B?VXBCWWtxWkloaFNtOXlZNHkzK0YzMmp1Vzh6TlIzS3p3cjRDajJzUE0yTENv?=
+ =?utf-8?B?YU9WUVVPRDViK1pQOUg0SktlV0F4S21oR2lEZ1h4TEhLKzBWa3FXd1BKNzFu?=
+ =?utf-8?B?b0U5cHZzWGZVWEJ2RUdqT1p2bU9VYlViWGJ6SFQ0NlNRNW9VTG5MTld4NWxF?=
+ =?utf-8?B?L0NkK1lVUDhkK1Z1VTlqT21BNUIrUUxqQjJDRVFuaG5Wcml1OUJMQ1FQZWQ4?=
+ =?utf-8?B?dUVyajJ5U1BCK3FRSEM2eTN6YURJZ0h1L1YrU1JSUVM1OUJlUEpQOVpVd3F5?=
+ =?utf-8?B?Z05BZHBuMTVWYkhFTG1talJqVk1JeEE4NHk5d0lkUlFnUHVwc1BCdlB6Nnh0?=
+ =?utf-8?B?UGRTMHhFVFlQU2xXMngwdGhXZ3AwbzI0eUJPeDE3SVlSRk5KM3JqakFVK01w?=
+ =?utf-8?B?MUVuRHFmSXNTM1hxVTVDSWpobVpGT3N4Nk8vMlI5QXdVZThMTUl4b3lMeDVQ?=
+ =?utf-8?B?TkRsc01DTVNKS2xRQjdmZnpRS2pNWmRENFE0MzMrR0paMFQwU0x5dkVqelJO?=
+ =?utf-8?B?V0h1M2FvWVlsbXFZZEZTdHhxcEUxMGVjSHNaZ3YveU5HaWh3N0RuSzZ0ZFc3?=
+ =?utf-8?B?R2FBZlhyTWJtbS91Y2QzaGV4YnpVdVFBd0NzUzlRNURBdGRMSStMam9yMENU?=
+ =?utf-8?B?aklNRnhOMUZIZ3plUUhqeU1xaGJuWDkwLzV1V3QxYjJFOU1ITXpDQUQyVXNr?=
+ =?utf-8?B?N00rQ1NtbmRmQldkM1o4NEYzeTJ5dXQ1ZXdyV2RtMExFdE5yNVJKdzRGRVVZ?=
+ =?utf-8?B?Sk1oeDhaandNNmwwWUlhUkpsUmR1eDM1REJTVDZxYUNRNWxEdzNMRDdYK1F1?=
+ =?utf-8?B?RTJPKzlRbDVhWjNtZms5SmFhRW9CNGVYQWdpdldxMHZWL3NtL3VuZXF1YlVy?=
+ =?utf-8?B?MVhMb0ZqM1ZhNWdVblIwU2tOUC9DaVNCc2RxWXIrUGU5WlNVcG1tY3ZUT3F1?=
+ =?utf-8?B?NS82RW5qYmRwdGIwMnVoMFQ5R3NJUjhaMUw3ZWJIbUFnb2YxWWxLTk5mZG1n?=
+ =?utf-8?B?V2FwcU5Uc3hGVlIvRGVmeHRHbGFCSmVFeEpMRThlc0dnYzRteEJpWk10MTMr?=
+ =?utf-8?B?blNwU2k1dnB5c2ovYXFnMHRGUGJiZUdCTWsvT1dWYUQ4TGVpTUZ0M0IyUW1S?=
+ =?utf-8?B?anozL0REQnVpK05aSHd5b2FkK2ZtajVSR0JMaElINnRXV0tOODZhbEg2bmlS?=
+ =?utf-8?B?Mm5rZ2d4WXhtWGI1WlQ5WUVqRWtCZmdRL1VRclpsZ2VMbEk2amFuUDZFa2RR?=
+ =?utf-8?B?UFh4R0ZCV0xTMUFTWnpjU1JhcG8wNnptMU4wRWJoZFJsdXhDTWZmSyszUTZP?=
+ =?utf-8?B?aTFBNGxNclFJcmg5eUR5eXE3dDUyL3JSVnJtbVNnTUd0YTFWdjZDNGFsSHZv?=
+ =?utf-8?B?REhNRXVnV2VUeG14UkMwZ3dsbm43Q3NRejlwcDd2cjYvdDI3K0F4VFk0cmRM?=
+ =?utf-8?B?N2xkN2JCdi9uYnBqNnJZY2FBOWhNUnhCWkw1R2FPUDgwZHJZNjkwTTJkL3lh?=
+ =?utf-8?B?Q2o4OHpPdzYyUVRDcGJiK0V6eFN1Ty9IdTRYdjI1dlM4NnVLNVhGaXpQcTYv?=
+ =?utf-8?B?Y3NBN2hEUW5NM3FpSXdVRGk5NC9hUHAydTUwZE1FSUdiOGdLdE82bW9Icldy?=
+ =?utf-8?B?cGNpNzN2TDZ5RmhOempSNGxlN1ByY1RSa1lpZmlyZ0JLVlpDNWxiazU5TWJL?=
+ =?utf-8?B?RWJNWHpnbVF3bGV0My9SZjFQOU1WeUNLQjZXNWl6YnZ5N0J3cWQvNVNpMFQ3?=
+ =?utf-8?B?ZWhLelZiS1IwMjZrT2oxUVlnV2NLZ3ErUTlXSUVJUkVlQ0ZCR3dJZGFrWEg4?=
+ =?utf-8?B?dW4wUnBDYmNaeTNnWXhSSlJQblY2bjJJUEM1OTBzZHJSUzB4RlZuRFNVb3RH?=
+ =?utf-8?B?UTVpaWNqR2pXanhtaXAzRGFTR0RWZWNQRjBkM01hdFhwRWJvVTloNjdEdk1K?=
+ =?utf-8?B?Rm1rcFYyMll3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bXRoZ3lwNmVidFl1eGY4Yy9nUDhGVzUwUmU4QW9GdFpneUgzdG1zR0N3dVQ2?=
+ =?utf-8?B?aXJjV0xoeWR6K1hES0kzUlE2L3pEVWNQUHdUTDkrdzhRcVNUT1d2RHNFbUJx?=
+ =?utf-8?B?Qm5GaEFGVGp0eEZnWU9uMUs5WWU0U3M3QmpUbjBDeFFlam05a3k0Qnc3K016?=
+ =?utf-8?B?bE9oVC9sejh5VFYwRnVjVFRUcXhaQmtyWE92Q1F5b3F1bEwzLzN3MmRLSHNn?=
+ =?utf-8?B?TTAyU2g2Sld5YzM2Q2JqQ1czYnNkSzBOcG90RHlMWUFucDRWNHdvUmwwWE03?=
+ =?utf-8?B?QkJjbitGamJ2UW1rN0RCbEdTT3FqMW84S2YxS0J0RGE4UnNHYTNCZW81VktF?=
+ =?utf-8?B?VU5NdHJ6a1VaZjlEY0Y3ZTFERXNwc2lLcDhsUnpOUWVpSEIrV3AraXZyL0Rp?=
+ =?utf-8?B?Nzh6Y3lLcVZJd2RhbFpZdjlpZzVDWUZQYXlaVGNuaWh0elQ1M1NpajJYbG40?=
+ =?utf-8?B?ellRVnlIcTVLYUllSUM0Z3dkTk11akd5Y0RGS3RUMGdMbjVjOVZCeENiQnlJ?=
+ =?utf-8?B?Z1BrU2xXZUNOVndkcHluUEM4L1RNQXNuNTM0eEVGaGVSYk1IaHJOaUg4d2FZ?=
+ =?utf-8?B?MTVSWTdleVF5QzQzdEVVTUZKK1FRNXBmTFRmUnhTZ05iUDZYQ2NObkhiR25i?=
+ =?utf-8?B?U2ZURUFyS2NiTmM2eXdmcC9ZY3drMHZsM1hMeWN1dFJLcVFvWlFGQUlqKzk3?=
+ =?utf-8?B?SWkxdENNTUpoeTI5ZkxVQ2hFOEdJTnZyZmVhdTI4Skx0MmlWNUgvelk0WDBZ?=
+ =?utf-8?B?Qm93U3NlT1pGZGE1SWd0MStWYi9oVGRMRTYxVG9lVHNZKzhaN1dZOXdZVU5v?=
+ =?utf-8?B?WXRwdDJhT1N3cmU4SW0rbXBXMUpNRDJXc29wT2dQOEd3aTdGZmVuRVJkTGIr?=
+ =?utf-8?B?eUQ5bmpnU1ltbTBJNG95NFc5OEF1N2htUlJBRHZwbTRLR3NTWEdmUThSeGl5?=
+ =?utf-8?B?N1JTM3lRMm0zQlkxeWN3dEJsREttbXZkOC8yMHc3b3kwNStoaTcxeHpBZ0lE?=
+ =?utf-8?B?Mnc5bTFOMFZWQ1Y4cmk5QW1MQXdHSUd5TmhYVXE3NUVEdzNnSlNnQVQzZUJ6?=
+ =?utf-8?B?RkJETXljRmlKVm9iZkE0eFJta2t0T0loS0VJaXBtQ041YU9kUFhWUU9JdVRM?=
+ =?utf-8?B?V3lCS1VDV1ZVS1dtaUYzcGNJUlFVdzRJd2JOVHYwTTdieCtjcVhHUU8rUGRU?=
+ =?utf-8?B?ZTEveXlsVWF6b2VEQWx6Y1lzMzVySnkza1V5VWZwQ1RtTmVIWjJ5dXpaVG5O?=
+ =?utf-8?B?OWpjNFhtNktFcFJ4YTZVclNPeHZSOUFrMDU5UGNNU2Nlb2d6V2h4Q3VNTzAr?=
+ =?utf-8?B?RytpUzlmYjdjZlBNSmRzcjR1bWRDRUYrSGlYb0l2d1pDVDBBb1U5eHZHNUx4?=
+ =?utf-8?B?UkQzLzVPdDlOaTV0b2xYUkExTW5ENFljdXBueTF2YTN5Q1MvME5vb2h3eUxM?=
+ =?utf-8?B?TWtjUlJ1VTRKVVRBQk8rY1pPRTBycVdBNXNmMFAxUGZsekR5Zm5CR0c2ZGc1?=
+ =?utf-8?B?RktKdC9KRkxyUlM5SEVBOE1WV2Zqam04Rk94NXFPN3lBUGp6aFl1Q2ZEVnZX?=
+ =?utf-8?B?Mnh5UGJBRHJaUHVOdWYraGxNUDBpQlZqMW5KSExJMHk5TzllK3g2aXVJNy85?=
+ =?utf-8?B?Qit6QnZ6N2RsbnNGWnR1VGMxaWd0K2puZEdFM1BwZjdJS3dyUlBpeEtJZEQv?=
+ =?utf-8?B?ZitUNGRCT0ZXWGtMd3VsVEhyLzlhUXk5TThBYkhEYzdhWkNuUmhJS3ZLVXZZ?=
+ =?utf-8?B?Z1lGc0U4bkU3SVpJa2dIQWtWNnZqSmVzK2RVYXYvL3RCSlAvcklYTDRkRkJz?=
+ =?utf-8?B?WmhPL1ZSOHI2dFdmNFVIKy9OVFJIaWJ5cXRVYURaOE5LQlRWWkRCSy93d2FV?=
+ =?utf-8?B?V3RXdzFmTTBDZ2s2UW5WTCsrVTV5ekc0UlpYU1JEMU9IdVc5WDlnUzlpOHQ3?=
+ =?utf-8?B?MVVuSGYzeDh2ZmhYQmJkcUNPOUI0SW45NXZ2ZFZIVDU5TmYrUFByRnd6MjJU?=
+ =?utf-8?B?ajFyL3VHTnZsZlc0SFdrSkJrWWZ5eUNibFNyMUpSNEZOQ25iTzYya1JDM3U4?=
+ =?utf-8?B?ZTNqaytVSXUvTjBQSjZSWmpVNEhFUTA0OWptZ2dKK3RZaTRsTlN2TmRGMFBS?=
+ =?utf-8?B?TElzMmxJcE53SzlCUmt3S3JTZVcxWkQxSzR0NlVSYWJ1SVloWWxyMTNpdG83?=
+ =?utf-8?Q?lCXoyg1RdSLKXuTRHxVAl8I=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d626899-f80d-47c2-771a-08ddebfcff75
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 21:50:00.9019
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3AzyfgQg1hhjPRD4yxweJyrihwepC7OlVfGUVu8pDNgnF7mOOBg25+H07NFszKEdK9pUs0YaXJRS7eDSt7U6Zvx/aELgCu4T85HOdkuDJps=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR01MB6385
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E937A4000B
+X-Stat-Signature: h6cp93r5a8ysubxmu7u6sfdqqyui6uei
 X-Rspam-User: 
-X-HE-Tag: 1757022366-678365
-X-HE-Meta: U2FsdGVkX1/pSHxsT9TPfvS7ZibydiUzENd5wCDuiARDGQnE8vZ5xEdQZlwARLQFC6PQ822LIp70+psFu/OQrBxP1n8UeFkLfiAYCsXOhRraDCAIBK7P0t4VzxLSj9CSNRTkM++EL+pJ1Z3NXRTSExfHVI6a04RTc7TGwYV1XJzGdOzwoYfu+9aYf1nNo73h8xBZW0o6M3pmJzhHKCnik923kz8V9QPMmOp0B0hLgbcHUOr781l4PvToJ50rNkDY3ULsflelYC1F75TVhm9tms9SCvKenYf3SesJ7ciZ2+F99s9+i9iJ1jIz6BGnpXqGiz0U0k+2b0VGSffCi7HccZrUqRD+wwzR6p7fAbnhMRYcnukKq9F2IikydVB2XRB93F2kWhsymOs14o4gy0y4Wnz9fm1FcQ2+gcv4p9/8BQffQmkDhRTo6j6reanG0h/d4LYvbQSzT3rfafJhVJSwbQ2H0iLxgCKfPZcaFF5TCDj/HVDInUQnBtnrW8zyXzP6yB7k8h4QUWPzShEtqIPiBn22GQ/h57JJjkVScY2dOwRgckZfHkAK+H0xM42OF3OKcpLBHjLjcBa04WAjoVlsN7cVm3rRBkzh5/YMiRWzBXVjfc5R6EQ1baMYCznRwPyxJliUUbb525ux/5HRK1/5pTRg8cgXGkuzJA7ZkQB+vdLHiuw6ADTGCl14DhV+Rh7dP7P3EmLPN9F5epV+lFG/Go3g6HGXRAo7nL0mdu6+9Hpr7IwNvW/TaluISU/Z1KiJ3kzgYoBl2O0Pv7WApG2m4lVcZQqFJibyejnBYxPvpUlQXxVVaVs/PmGTu7IPn+b7m15jxD/eZuy6DcJsYInGwC/Zj6vhOUe/o7FnZqDXE2vcxwhEPDx/QvFQbNo15Kqh0yTL5mU/sOsX9++XuxVGUmRw6a7MdLax1/oNlh1tj7kcMfGIh9+t1HD12q7HoZ/j0DcwSI6hHLiiHW7wCPv
- Bofqyiln
- DO31iJA8Lbv4J4X7o0M3S+PWqYDExATLItt1bNlgYEWla44Pf33hiaAZGR0ERE+UpWJkInGlqf8bQt9KP69N/knwYLZr5PFOLncZGvi6PsjVjHM886g22cwpG/RzsomOKY999L/gywou0NiPwPSR8oC9/o0qjen7bn58qI+lVkuxgs6/MNjCGy4EQ+UCJJwya7rIrVFQGFCcQX7EeBKajWwreKK40v7rwKvZq0Jic8HrSXtacz4qrtPkxC8f8UZvl9PGnWCSlTUjx9uPcgI3nwk4aQdmSYsbv8idzGPrn522yaMMXLebSRLvUCOplfc7LxUXe/+TNLu8POSTe7x/rsiQPAhmgcafedWoiO0aTLWlcas69VuES6Q4vi5kxBsSbPTafQPo9yevup6Djx2qgVUJh6FJqcs6TkMgg5XzS70x93LL7Wtnt+z9+bFG+4pgRnyvWHswqeLl3JGQ3uwfUEXc8B9MJZgDUb9NRMDc8OKqZRYrmGGZ0N1XhgORGyMy5uivvto5guyf2aZ95Bov9vyOJO88EsXyee3jdOdc06abOTu5KxiLk2spd3/dha9wcsgIMcUCj2PoOStCosW1pDu6X7hD37P77Rd0X3IcOPlsfEiKzSwuMjadIuw==
+X-HE-Tag: 1757022604-862641
+X-HE-Meta: U2FsdGVkX1/tvPlDh+hGnx5fzINEQO3oSVXBhJMAuDdUWeSgjPj2kj/syGIw9h/V7yY5AGTy6vyTzC8d+wPrGclSF77tMGCpVwaRYP7tnoVOSqNNkOUnX63wYIwCJDZ9R4VzKBYo2zVqwYHyfgceAFMUtTqSwoVa2Q41gcgoChZW9oAK5e5rBU+Q13+qqCFV1PWRGu2G8+ysrcG9Vg6f9P4BPerFl1KCMn+lPqPsFpAV1cMV9rB9BkRCNMUdU2mJFQ/5kIAIO45W6lfwj7xVG0W0Wm1qVhiwUPmiOD90EqvKzOxDj86RbI4fxBHUxKJJ9UHMTE0WFYT9rQrBaCjfGw5jIYpLQsWfBEER6lTowSIo83RidVfOHkpeg3hI7xv6RZDuA6SzwrHhyI872Ef49MP8LCY9GQT+IbSj73R7t5XzFHhDDJsB90+Zgt/VyEoJieXNeWYoDxbN83wtwMImh5jYgilDTBaO6exQ9JbDo0k6C4s7QypPcJGnuRewAMXIuoJJcW3KiihtOk5KBnmyI3raMxWCd71t2kLCX3CS0LVwKzYIH6WxzANhwWCZnsFmmgL8zp22FckNJ640ThBJ2crzbAOPly3elQSMwS1fgkkNLsUrOF4sIVXyFrwRNRGQ2ZHopYZSz4Dg3fCnHkfANItLts70QvfDd4w26sbQJAMwEyjBRMC9vUJo+bUFHPFPYb4dF2IK6UFx/tezvMp8nZFOhq51kJLj2U7Pn0fRaXCrRW2TIyHBmw9iN0a4Te13AdACUujR8zwtWgvv7fLGcGwaEjUHJ4Nc4FHcmIgxBdvs3RksrINdRC8kIYp5SEF7DsBvr1RwtCukcNSZCuqXPpGHy6xGos2PZU+j4MXRnp0H13dC7+LP0/p+GL97o+iEy/uTlBjHbeVnXan20mIZ/Qa91r/VuVZBt/k3EkQsYPAE2/gQ2nLRImKlQQIFqinXQJSL2fjlsx+5JqRvwuP
+ NSFZ38hc
+ UwHyfRXH8Vrns3Y4QQjyO+nxF8f3ML72/tv/c+fGjtJzEotUX0E5s4ZX1qGMhDRv5Mizmg1cLIredJPjqKLTKQ0ASI1if6LjI0dNEg1Q/ovMiYzgFUnajNEjGSrbPWyyJbwzG5QLfFOroS3P/Na4JhbZpFM26ebDRvlI4JZ99dsbMhyylTQ2PbU6bwDUs0h93UP0tJjq2sXxNpDuaJqtdL8FQwa8Yju1gr8V7U/XmSZL+c5bzE7UILgXm1P8/N/I++Td4dyknb7DDU6tNGdcpaV0KhLp/ew4AsGlsSx5TZWnsuyXMzg77vizxy1RrWO3K8Kkyw/ZFsmjCDkDE6sZ9nXB7ZWNwI7Rm/Hgs6hFvKd6K61KHvZ3QWb9J/YzjiEDxseqOXj7sZBTqs7//16uDanzXYZVkr9OFOU0qeJUIsaSsO0lv3AkkFrEQ1jRKmE2XZVt6CeYLhnL4MI6nH7+A2GTJ2DXas8cSIhjwnLmxRj0RMMDWzcTiNcvCiX+8JFXBh11su25FtSJoB5QeID7Ybvbbz41ojorTvmDam14B03eY1dg0c1LZQcGpWHra864VN1AqkFqVTTY5a9GAJ0OsvMmYidGhS6x05RnJSBu2g5u7GWoovOtc4aAKttYMkxynJEC33BqeWJajCdzRD4PK/Umb+kTNaxObvrHq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,39 +216,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > 
-> >         for_each_possible_cpu(cpu) {
-> >                 let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
-> >                 unsafe { (*remote_ptr).write(val.clone()); }
-> >                 let arc = Arc::new(alloc, flags).ok()?;
-> >                 Some(Self { alloc: arc })
-> >         }
-> > 
-> > Is it possible to do the above in rust?
-> 
-> Ah, I see.
-> 
-> The syntax would be slightly different, probably something like
-> 
->         use cpu::for_each_possible_cpu;
-> 
->         for_each_possible_cpu(|&cpu| {
->                 let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
->                 // ...
->         })
-> 
-> it *might* also be possible to use a macro and dispense with the need for
-> a closure, though I'm not familiar enough with proc macros to say for
-> sure. That would probably look like
-> 
->         for_each_possible_cpu!(cpu) {
->                 let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
->                 // ...
->         }
-> 
-> though personally I think the first one is better (simpler
-> implementation without too much syntactic overhead, especially since
-> closures are already used some within R4L).
 
-Sure, #1 is OK if you prefer it.
+
+On 9/4/25 10:47 AM, Yang Shi wrote:
+>
+>
+> On 9/4/25 6:16 AM, Ryan Roberts wrote:
+>> On 04/09/2025 14:14, Ryan Roberts wrote:
+>>> On 03/09/2025 01:50, Yang Shi wrote:
+>>>>>>>
+>>>>>>> I am wondering whether we can just have a warn_on_once or 
+>>>>>>> something for the
+>>>>>>> case
+>>>>>>> when we fail to allocate a pagetable page. Or, Ryan had
+>>>>>>> suggested in an off-the-list conversation that we can maintain a 
+>>>>>>> cache of PTE
+>>>>>>> tables for every PMD block mapping, which will give us
+>>>>>>> the same memory consumption as we do today, but not sure if this 
+>>>>>>> is worth it.
+>>>>>>> x86 can already handle splitting but due to the callchains
+>>>>>>> I have described above, it has the same problem, and the code 
+>>>>>>> has been working
+>>>>>>> for years :)
+>>>>>> I think it's preferable to avoid having to keep a cache of 
+>>>>>> pgtable memory if we
+>>>>>> can...
+>>>>> Yes, I agree. We simply don't know how many pages we need to 
+>>>>> cache, and it
+>>>>> still can't guarantee 100% allocation success.
+>>>> This is wrong... We can know how many pages will be needed for 
+>>>> splitting linear
+>>>> mapping to PTEs for the worst case once linear mapping is 
+>>>> finalized. But it may
+>>>> require a few hundred megabytes memory to guarantee allocation 
+>>>> success. I don't
+>>>> think it is worth for such rare corner case.
+>>> Indeed, we know exactly how much memory we need for pgtables to map 
+>>> the linear
+>>> map by pte - that's exactly what we are doing today. So we _could_ 
+>>> keep a cache.
+>>> We would still get the benefit of improved performance but we would 
+>>> lose the
+>>> benefit of reduced memory.
+>>>
+>>> I think we need to solve the vm_reset_perms() problem somehow, 
+>>> before we can
+>>> enable this.
+>> Sorry I realise this was not very clear... I am saying I think we 
+>> need to fix it
+>> somehow. A cache would likely work. But I'd prefer to avoid it if we 
+>> can find a
+>> better solution.
+>
+> Took a deeper look at vm_reset_perms(). It was introduced by commit 
+> 868b104d7379 ("mm/vmalloc: Add flag for freeing of special 
+> permsissions"). The VM_FLUSH_RESET_PERMS flag is supposed to be set if 
+> the vmalloc memory is RO and/or ROX. So set_memory_ro() or 
+> set_memory_rox() is supposed to follow up vmalloc(). So the page table 
+> should be already split before reaching vfree(). I think this why 
+> vm_reset_perms() doesn't not check return value.
+>
+> I scrutinized all the callsites with VM_FLUSH_RESET_PERMS flag set. 
+> The most of them has set_memory_ro() or set_memory_rox() followed. But 
+> there are 3 places I don't see set_memory_ro()/set_memory_rox() is 
+> called.
+>
+> 1. BPF trampoline allocation. The BPF trampoline calls 
+> arch_protect_bpf_trampoline(). The generic implementation does call 
+> set_memory_rox(). But the x86 and arm64 implementation just simply 
+> return 0. For x86, it is because execmem cache is used and it does 
+> call set_memory_rox(). ARM64 doesn't need to split page table before 
+> this series, so it should never fail. I think we just need to use the 
+> generic implementation (remove arm64 implementation) if this series is 
+> merged.
+>
+> 2. BPF dispatcher. It calls execmem_alloc which has 
+> VM_FLUSH_RESET_PERMS set. But it is used for rw allocation, so 
+> VM_FLUSH_RESET_PERMS should be unnecessary IIUC. So it doesn't matter 
+> even though vm_reset_perms() fails.
+>
+> 3. kprobe. S390's alloc_insn_page() does call set_memory_rox(), x86 
+> also called set_memory_rox() before switching to execmem cache. The 
+> execmem cache calls set_memory_rox(). I don't know why ARM64 doesn't 
+> call it.
+>
+> So I think we just need to fix #1 and #3 per the above analysis. If 
+> this analysis look correct to you guys, I will prepare two patches to 
+> fix them.
+
+Tested the below patch with bpftrace kfunc (allocate bpf trampoline) and 
+kprobes. It seems work well.
+
+diff --git a/arch/arm64/kernel/probes/kprobes.c 
+b/arch/arm64/kernel/probes/kprobes.c
+index 0c5d408afd95..c4f8c4750f1e 100644
+--- a/arch/arm64/kernel/probes/kprobes.c
++++ b/arch/arm64/kernel/probes/kprobes.c
+@@ -10,6 +10,7 @@
+
+  #define pr_fmt(fmt) "kprobes: " fmt
+
++#include <linux/execmem.h>
+  #include <linux/extable.h>
+  #include <linux/kasan.h>
+  #include <linux/kernel.h>
+@@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+  static void __kprobes
+  post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct 
+pt_regs *);
+
++void *alloc_insn_page(void)
++{
++       void *page;
++
++       page = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
++       if (!page)
++               return NULL;
++       set_memory_rox((unsigned long)page, 1);
++       return page;
++}
++
+  static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
+  {
+         kprobe_opcode_t *addr = p->ainsn.xol_insn;
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 52ffe115a8c4..3e301bc2cd66 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -2717,11 +2717,6 @@ void arch_free_bpf_trampoline(void *image, 
+unsigned int size)
+         bpf_prog_pack_free(image, size);
+  }
+
+-int arch_protect_bpf_trampoline(void *image, unsigned int size)
+-{
+-       return 0;
+-}
+-
+  int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void 
+*ro_image,
+                                 void *ro_image_end, const struct 
+btf_func_model *m,
+                                 u32 flags, struct bpf_tramp_links *tlinks,
+
+
+>
+> Thanks,
+> Yang
+>
+>>
+>>
+>>> Thanks,
+>>> Ryan
+>>>
+>>>> Thanks,
+>>>> Yang
+>>>>
+>>>>> Thanks,
+>>>>> Yang
+>>>>>
+>>>>>> Thanks,
+>>>>>> Ryan
+>>>>>>
+>>>>>>
+>
+
 
