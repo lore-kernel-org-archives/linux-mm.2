@@ -4,106 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05CE3CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 06:38:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46360CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 06:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 470A58E000A; Thu,  4 Sep 2025 02:38:45 -0400 (EDT)
+	id 904658E000C; Thu,  4 Sep 2025 02:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 447B68E0002; Thu,  4 Sep 2025 02:38:45 -0400 (EDT)
+	id 8B4BC8E0002; Thu,  4 Sep 2025 02:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 384B68E000A; Thu,  4 Sep 2025 02:38:45 -0400 (EDT)
+	id 77CDF8E000C; Thu,  4 Sep 2025 02:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 27ED98E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:38:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD2721A09BF
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:38:44 +0000 (UTC)
-X-FDA: 83850614568.17.B642927
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 69B5D40007
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:38:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TEEa2VkP
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 60BA28E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:38:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D8383160A42
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:38:58 +0000 (UTC)
+X-FDA: 83850615156.25.55A0560
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A650840002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:38:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QeoahpyV;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756967923;
+	s=arc-20220608; t=1756967936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V2XVkscTs+i5+vJ4MKvvhrBrD/Sub/SqyCqSzizvVaI=;
-	b=KGq5IZuaaCR9myAmzNJZwkmmA043lWkc+Rx9F6Xk+dmaHXjANL+Hryf8YhHdAN4JSegMet
-	5sEplMsI4h45M0N0tUBM8IlWi7uctgFJuJEL7PmcCHDEkq07l1/hRrsDNtbMzBVB+Kjj2p
-	WNqIWRbIY91KBsxkO1aHD7dy2BR8qNo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756967923; a=rsa-sha256;
+	bh=40Z8U8FYm63hOytZFsIyiHCS34GyMGG+MWJKFpyeOIM=;
+	b=wd72vm1v7TS8uFkIzX9/6VXKRpS5voMpWcU4xCBaQxFndq60qBMM14fVsbAUC8yTDAUr+d
+	aZiYMcQW9J0HYkN+DLEdM9zy09wMsZyXUyw5wDl/+Dr0RvjqlekuKZA+DGuOGjShBIreUw
+	u0V5DZmMmdPJ8+APW6xJyvf5yvMYCv4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756967936; a=rsa-sha256;
 	cv=none;
-	b=a8W8rd5ngQmedz32RgGA5S4cwFr0S3wSxYviuPeEvzDhD9enYY6ZCHGo4cU5eoRNkL8GPo
-	FdepNaQu4mNytESvvFkRSf0qK5H7tcNj1kd9LbiAb0frGzjt3NWEwMYQaHQeEe4+A+xHkD
-	fIAQFbGnR/QSuy5g9rfR1Ud26khQTz4=
+	b=payhaXQD+iNILBLZvPDS2pv4O60rHpz0Y5BnUxXlTeXB/HlBhTunYTIa6p4s9RMqxBG4c1
+	7Jo+AGuj+Cajw/P6NfavK97QJHZ1SKJYB2NroRwWHW712U3v5qbWYDXRNRmQ8lYAfMBkEF
+	v8j/zffZmM6CFrvrY8Byn3q7hwIEHt4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TEEa2VkP;
-	spf=none (imf11.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=V2XVkscTs+i5+vJ4MKvvhrBrD/Sub/SqyCqSzizvVaI=; b=TEEa2VkPTiHLXKQrgzL4vG3QGH
-	gaGelYhttVsACG0Oxs7GvaX1pKbt9vf/ogJSTh7jCe67bdXmvGAHLL6R4TFru0IQdfxzjaygKBkoi
-	cPZ/vInmWvN9w3pJ7k8u6s/D9pCM4SgicC975q5p7GW+kKYCn2g3HuN7TjzB9wiTFrIuprW0p9JKE
-	vo0OLncH+axpSmIImS0pJdSIq220xc0FDW/rXZ4IYrNblbUOwgFe4ZP3sgP80fEJPUsTceVC+OXPK
-	bV2LTSSXu4+XsieyC/CIOaJ03D7WvHybOtbqZfsRXxZl628Yys0i72q+o17rgodLPRr6Cro4dYAtt
-	b/sNSGRQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uu3c9-0000000EDik-0fUS;
-	Thu, 04 Sep 2025 06:38:33 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E43A63002BF; Thu, 04 Sep 2025 08:38:32 +0200 (CEST)
-Date: Thu, 4 Sep 2025 08:38:32 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"Naveen N . Rao" <naveen@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-perf-users@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 05/18] x86/hw_breakpoint: introduce
- arch_reinstall_hw_breakpoint() for atomic context
-Message-ID: <20250904063832.GT4067720@noisy.programming.kicks-ass.net>
-References: <20250904002126.1514566-1-wangjinchao600@gmail.com>
- <20250904002126.1514566-6-wangjinchao600@gmail.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QeoahpyV;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756967935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=40Z8U8FYm63hOytZFsIyiHCS34GyMGG+MWJKFpyeOIM=;
+	b=QeoahpyV1+aNTJtG8fVAA1SVEttAGuVLP2BlsFRcVttPVLyMVXujNsEeT4i7Rxss3uql2E
+	T5r2iLFmoj7atDU1bDzuaqfU2kv2tlHh5faB7P2PuA14xpMOV+yQBzRcXgzSfVPe3QOmsC
+	6DAAO2NgNZfbrDJfv98SYjtfUfL02Dw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-_3OfDqmoM9acmvVpRh6tCQ-1; Thu, 04 Sep 2025 02:38:52 -0400
+X-MC-Unique: _3OfDqmoM9acmvVpRh6tCQ-1
+X-Mimecast-MFC-AGG-ID: _3OfDqmoM9acmvVpRh6tCQ_1756967931
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b467f5173so4905535e9.3
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 23:38:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756967931; x=1757572731;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=40Z8U8FYm63hOytZFsIyiHCS34GyMGG+MWJKFpyeOIM=;
+        b=RPngwRn7xiSKQt4EoytyVCEwEACDrJMhoP4cAbYhe3mwd3w+EI4HjFAHDeFqbvug6J
+         sXlCj0ipsxlmpfqZLBK3wAHURXtIR6LWmopS4B655xEkCUHIDPaD1vGZyzMa5wIGxFQm
+         MIgJg1Uwv8KcwjaRaWGPN9nDq84NmNIQ9lrsOrCJHmOE7UxDY3oxx9wOcaN4Eqenrnjx
+         3iEkeJSNiODxMuLa8bk24GFe/DKREsyHJhpkV5IBe0Vi6PGHjerhPN8OqzfMbJiTuV8d
+         P7bl8SK4hk3D7SY1w89tQkNGDQ+2vJoYfhvR8j2SD8BDMNd4HfyYcm3Q3P4xpzOdlD6k
+         2WbQ==
+X-Gm-Message-State: AOJu0YwWlDveNFEyIgZw9bcU1HO3aShTqVNSF3ymnFcSomsFpSGceGhM
+	AV778+2mCjIwE3nRCDTesPegGrtBL67/92WU/9GCDmRYQNnk4cGyCw0CA24cxT89aUmnSuUbOid
+	PA9jB5my//MoTWqKrH2bfvq5nCMkxJPkfqxnWGcGPwNYHmngyYYXnCmRca5ab
+X-Gm-Gg: ASbGncthR7Ach8mWu5v1fIlXvdeAWlIL+o0c2mVX9OpYDn6a8UdISa7XY7TgY+iuVLL
+	KzlPWq9m5pc8cPfIUMEWpNO2a6FN6mnyENopQtnN4wKr49+38kh+XzXxZCwHyFJS7ZICGPAN16O
+	zzjUSqTEO7AdIUsFvXAl1LhQzNRIbghzwv2chJt0g+9lOhQ0zomQl4H/iWk/BkWPho1iWOwmfFt
+	SOVByQJNVINSxOBNjZv3+vpAf+/JVQe2d92dFyZP2AP7EipLDHaXofEzqRSuvcblOgQzmL6wj7R
+	GulOcYBc/enidK956uNSCT20xJBitva9Lu4VhtzLTN+Gs5AKB0lMltRw46d7c7Fx8xuQJYth5fm
+	UTEdRA1dANtaVEjXeMvwiAvg3fIFzutYKLEehK/G48SNuuMdBR7HEAG0mLTLiOIHB
+X-Received: by 2002:a05:600c:3556:b0:45b:8822:d6c4 with SMTP id 5b1f17b1804b1-45b88321ca0mr137720215e9.33.1756967931108;
+        Wed, 03 Sep 2025 23:38:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4fbUuLgTZZ7JLLGMEzoqz2HZIPqkmpwKL8Svwx4GbQWyjvTjQ1L7Otc3gHyD/LyUPfk7JPQ==
+X-Received: by 2002:a05:600c:3556:b0:45b:8822:d6c4 with SMTP id 5b1f17b1804b1-45b88321ca0mr137719985e9.33.1756967930648;
+        Wed, 03 Sep 2025 23:38:50 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:1e00:ce4c:be3:97b3:6587? (p200300d82f251e00ce4c0be397b36587.dip0.t-ipconnect.de. [2003:d8:2f25:1e00:ce4c:be3:97b3:6587])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9a6ecfafsm106759595e9.21.2025.09.03.23.38.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 23:38:50 -0700 (PDT)
+Message-ID: <92bfeeed-41b4-47f1-894d-ad003b4714b6@redhat.com>
+Date: Thu, 4 Sep 2025 08:38:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904002126.1514566-6-wangjinchao600@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Fix kernel stack tagging for certain configs
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Kees Cook <kees@kernel.org>,
+ kernel test robot <lkp@intel.com>, Dan Carpenter <dan.carpenter@linaro.org>
+References: <20250902175903.1124555-1-vishal.moola@gmail.com>
+ <f41383c3-913a-489a-82e6-d2c8d5519eed@redhat.com> <aLdOLQLjt-A1DBGi@fedora>
+ <b0ed22cd-ebf9-41f7-b5fb-6fb078db593e@redhat.com> <aLiFK8sIgbfiK-v2@fedora>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aLiFK8sIgbfiK-v2@fedora>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: cKqHOhStYNqPQKlEgTpHZ096c0QYaak60hNOHZvgoZQ_1756967931
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A650840002
+X-Stat-Signature: d6h6ewo7dysgxyx1b8bu8f36m5dt6cqq
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 69B5D40007
-X-Stat-Signature: bbpq1zkbsm5diwa1diugq39jatg53dm9
-X-HE-Tag: 1756967921-238344
-X-HE-Meta: U2FsdGVkX1/c/cv7MCoxGM1eq2pqNwlZM5y68F29RBuEyR18HOM3jNtj28w2Dqh7CAHRbf04Hko0XP4q+rXFPqW+afxn0PO6yYin+tq0lDkIJzYbw3loDfFHEq5a2w5xWlWPiFdHV7A8Faxsp8ggscwqBY465IxaynTGPDM0jam3J9C9FfXjPBONKfNfWi1iSi5t5bvHOiOTHvOFv3Bqpikf1UDffm/fruBBtEq2wZil4/o3U219iIBoCwh/cWkVasAopacsTd7q6/AuJMND5XBQem/5V1+7HZVGHs8U2E2BF0Ni2hEFhym1zay/VaZxXSXVY23BNq2Wc1aNxc0kGmIig2XzdZhzqC9+oxhdy1j6QTc04YZKtShawHLTQoLXM2d4Ql1Z9t+xvTQ6hWCsliwCidtRHNV8zskQBKSRNoVrgk31ryxxRc50bL6ZVloB1N7iloblQl2T+WQ2TL//H0AmTJbInacDZboPkh/wr2judl6oecTlCcTQ3C4aa8tLVbfthpxrcckyAJ4oORrIYOkLncHPQ6Ukusiwt3vVS22QSsxSkAQanKKKh3i8H6gHGQ3aRnEfc/o/EMIx4ATFvSPm4jOFGjd8LVSxRdsSgIJFEYta6dG3Zitx+koiuuGSvRVyYQEQuQZW3D2rQg5qeFd6GLn+txgouluHUO3EOi1Z2QnCTLIHFUMt4fLf6VLai0VMh7+HPpOwJtHhWOjv1TVw/R04eGImWJ3MRhCmG0KAB1U7CYeK7RYdhUKUMYIzf4WZ34hF8EEj+kphlU97Ha6VtxmRLS/pHcr8vMWZ7/VHf5G2+D84CLh+rKgneuV9VuRTU+ivLNGCfWvH5OqKFSjZXlIsn8DK7TLSpmusTJ6JW1LtO1dQ0h8MwsE7lb+BJQeHKVtjWgl/1dhLTFjFsaQg13pjVoOvCtAdfR8vowICXR+KUb2tCKw+lq63+r1vUxdTYhl1TQNwleAKLtw
- 53JT9gqT
- NOpRuNN+jkmpZnmI6KB9fE58N73zb/n9+E2xdS10XoOlQf0fxNCCj1QpP9EVc6QA68gdCJBo06MqIcQIjnYemXS2GeJkL/13rO3DaxdC+jDoYimYWe8aFBA8uZ2TJAV+bZcZaB1HNZMj9I3oTCIEc8fZGwpBwXIGR2PQcY8Mvftf+AfE7Jr/UfDCfXtQLfbcBJv6cBPSbrX+SIyKlcHyl9eu2cw==
+X-HE-Tag: 1756967936-836458
+X-HE-Meta: U2FsdGVkX1/hUuxfgz0RrSpd2Ajzbheu0HeVkadcp1Wj6RE/yfoSgOwiFGkY9RFocvpr9gud1xy/RVKssnziF6zypSBTBwTAGryn7TprgnE3UzJfttHTIzOj27S4BzDUw10ahEmiMiqhe7guez0a8KaFY7dttdNQVzVBCDDg1Q9mZrqgzgnE4/cDib5NWG3AtsG9I5F/jSrn0vIEyJPZ+tUw/9uC2w1rpGQYHWfdFc3Z/yq7SNR/8IwkizWY3+rJiSoU1695Qr4GgdlXF/2IHhDGP3e//7iPLMdIPNxHFxuf1E1HtRDNCK+VtLHwv3eGX0AIGdAnAcjs8IaoLKL7ykL5r/OcCXJ5zTcNF0QtXBDc0uyq0WnblkN1LXtQQ/fnDHhGF7KtqDpCT4T49/a4Mlyi+XW4GKNRndjPVQSijfzPKFMGnbZVP1xkc7js1AMyCoRwl1/FWIfi4f49Qk6Mss4mruy1+3f9xMJi/bU2c+Jm0CGmESBxb66HP93GiaNmxkQtE6OSEiB/DuyzBPKULRw6gmI63+yav6Mog+tDPy2DDDA/mquF+hCpzkQMm5QUFEwuzfB+VN8blKttKs2V7AzW3JSAwiNp9stSUh0uGOoyVzelKCM0rUooJXjksd4IMXzktzoqOkCiz7knASg2o48FgWRrrYzVZSF0jLpkzepjXx3MCMuke4SYvjTaecTIEDYhpWBtLTTsG4mAZrwNbYCLpBpOnfEB2fL3Syk/VKajA/QHSFLU+z7jw01/XxKczPbm5AE6lxODF6qFe+dx3t9tOEWGTmXmNcrEXZ3OEaKeocqm/np1UiVdLdRjMa/LZp/4NwaDACp2G/hRVIWW9kdH4+M6y0b4ZWbhPoE+SSFF0zV1CYpgNiX5aaLfLzTbD/zKZgSaT6zPUKfsA6GIReIdVoKKjPevzpMHNhUsvWLHzz11aUiZ4XOWDuORTuC9rqzC1vNonFwdp+9jjnT
+ PwpkoWvG
+ JpPd17vMBmBUNm+2EuBgrR6KRQbkp4eooGiy5w1qR2wDtG01YlL7fYbt0K9VfOkjytMqfarhzCXevVna5vsYvgNS8aCutULHcA9NkavcGbfsK88c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,93 +180,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 08:21:02AM +0800, Jinchao Wang wrote:
-> Introduce arch_reinstall_hw_breakpoint() to update hardware breakpoint
-> parameters (address, length, type) without freeing and reallocating the
-> debug register slot.
+On 03.09.25 20:12, Vishal Moola (Oracle) wrote:
+> On Wed, Sep 03, 2025 at 09:46:44AM +0200, David Hildenbrand wrote:
+>> On 02.09.25 22:06, Vishal Moola (Oracle) wrote:
+>>> On Tue, Sep 02, 2025 at 08:23:06PM +0200, David Hildenbrand wrote:
+>>>> On 02.09.25 19:59, Vishal Moola (Oracle) wrote:
+>>>>> Commit 4ef905bda61f ("mm: tag kernel stack pages") began marking pages
+>>>>> that were being used for the kernel stack.
+>>>>>
+>>>>> There are 3 cases where kernel pages are allocated for kernel stacks:
+>>>>> CONFIG_VMAP_STACK, THREAD_SIZE >= PAGE_SIZE, THREAD_SIZE < PAGE_SIZE.
+>>>>> These cases use vmalloc(), alloc_pages() and kmem_cache_alloc()
+>>>>> respectively.
+>>>>>
+>>>>> In the first 2 cases, THREAD_SIZE / PAGE_SIZE will always be greater
+>>>>> than 0, and pages are tagged as expected. In the third case,
+>>>>> THREAD_SIZE / PAGE_SIZE evaluates to 0 and doesn't tag any pages at all.
+>>>>> This meant that in those configs, the stack tagging was a no-op, and led
+>>>>> to smatch build warnings.
+>>>>>
+>>>>> We definitely have at least 1 page we want tagged at this point, so fix
+>>>>> it by using a do {} while loop instead of a for loop.
+>>>>>
+>>>>> Fixes: 4ef905bda61f ("mm: tag kernel stack pages")
+>>>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>>> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+>>>>> Closes: https://lore.kernel.org/r/202508300929.TrRovUMu-lkp@intel.com/
+>>>>> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+>>>>> ---
+>>>>
+>>>> You sent the patch on August 20 and I replied on August 21.
+>>>>
+>>>> I did not receive any reply so far.
+>>>
+>>> Ah sorry, I didn't mean to miss your reply.
+>>>
+>>> I can't find your reply in my inboxes so I definitely missed it somehow.
+>>> I'll go find it and respond.
+>>
+>> I had a mail server config issue on one day last month (sending @redhat.com
+>> through kernel.org :) ), let me check if that was on that problematic day
+>> and it might have went straight into your spam folder due to dkim mismatch.
+>>
+>> So the mailing list did not reject it:
+>>
+>> https://lore.kernel.org/all/96148baf-f008-449b-988b-ea4f07d18528@redhat.com/
+>>
+>> And yes, indeed, it was on that problemtic day, and there is:
+>>
+>> 	Received: from smtp.kernel.org
+>>
+>> So, problem on my side. Willy already replied, but let me resend that mail.
+>>
+>>>
+>>>> And now I realize that this patch is not upstream yet and the commit id not
+>>>> stable. So the Fixes/Closes etc. do not really apply.
+>>>
+>>> Gotcha.
+>>
+>> If there are bigger changes it usually makes sense to send a v2, or a simple
+>> fixup as reply to the original patch (I prefer as inline reply).
 > 
-> This allows atomic updates in contexts where memory allocation is not
-> permitted, such as kprobe handlers.
-> 
-> Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> ---
->  arch/x86/include/asm/hw_breakpoint.h |  1 +
->  arch/x86/kernel/hw_breakpoint.c      | 50 ++++++++++++++++++++++++++++
->  2 files changed, 51 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
-> index 0bc931cd0698..bb7c70ad22fe 100644
-> --- a/arch/x86/include/asm/hw_breakpoint.h
-> +++ b/arch/x86/include/asm/hw_breakpoint.h
-> @@ -59,6 +59,7 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
->  
->  
->  int arch_install_hw_breakpoint(struct perf_event *bp);
-> +int arch_reinstall_hw_breakpoint(struct perf_event *bp);
->  void arch_uninstall_hw_breakpoint(struct perf_event *bp);
->  void hw_breakpoint_pmu_read(struct perf_event *bp);
->  void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
-> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> index b01644c949b2..89135229ed21 100644
-> --- a/arch/x86/kernel/hw_breakpoint.c
-> +++ b/arch/x86/kernel/hw_breakpoint.c
-> @@ -132,6 +132,56 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->  	return 0;
->  }
->  
-> +/*
-> + * Reinstall a hardware breakpoint on the current CPU.
-> + *
-> + * This function is used to re-establish a perf counter hardware breakpoint.
-> + * It finds the debug address register slot previously allocated for the
-> + * breakpoint and re-enables it by writing the address to the debug register
-> + * and setting the corresponding bits in the debug control register (DR7).
-> + *
-> + * It is expected that the breakpoint's event context lock is already held
-> + * and interrupts are disabled, ensuring atomicity and safety from other
-> + * event handlers.
-> + */
-> +int arch_reinstall_hw_breakpoint(struct perf_event *bp)
-> +{
-> +	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-> +	unsigned long *dr7;
-> +	int i;
-> +
-> +	lockdep_assert_irqs_disabled();
-> +
-> +	for (i = 0; i < HBP_NUM; i++) {
-> +		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
-> +
-> +		if (*slot == bp)
-> +			break;
-> +	}
-> +
-> +	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
-> +		return -EINVAL;
-> +
-> +	set_debugreg(info->address, i);
-> +	__this_cpu_write(cpu_debugreg[i], info->address);
-> +
-> +	dr7 = this_cpu_ptr(&cpu_dr7);
-> +	*dr7 |= encode_dr7(i, info->len, info->type);
-> +
-> +	/*
-> +	 * Ensure we first write cpu_dr7 before we set the DR7 register.
-> +	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
-> +	 */
-> +	barrier();
-> +
-> +	set_debugreg(*dr7, 7);
-> +	if (info->mask)
-> +		amd_set_dr_addr_mask(info->mask, i);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
+> Ok I'll keep that in mind for the future :). My mail client loves
+> attaching the fixup patches as additional files, but I'll find a workflow
+> for inlining them.
 
-Yeah, I think not. For one this is an almost verbatim copy of
-arch_install_hw_breakpoint() with zero re-use. Surely you've been taught
-better?
+Oh, I really just format-patch, gedit to then copy and paste.
 
-And why would we want to export guts like this?
+Just be careful if your mail client wraps at 80 chars as default. I have 
+Thunderbird plugin where I can easily toggle that (Toggle Line Wrap).
+
+-- 
+Cheers
+
+David / dhildenb
+
 
