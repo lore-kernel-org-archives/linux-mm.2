@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E56ACA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D82D6CA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:51:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 758958E000D; Thu,  4 Sep 2025 03:47:24 -0400 (EDT)
+	id 2A7C48E0007; Thu,  4 Sep 2025 03:51:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 708D78E0002; Thu,  4 Sep 2025 03:47:24 -0400 (EDT)
+	id 27FD38E0002; Thu,  4 Sep 2025 03:51:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F8168E000D; Thu,  4 Sep 2025 03:47:24 -0400 (EDT)
+	id 1BC298E0007; Thu,  4 Sep 2025 03:51:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C9858E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:47:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DD6B811AD20
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:47:23 +0000 (UTC)
-X-FDA: 83850787566.23.207A322
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3DE2D120009
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:47:22 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mrGnfIHy;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BAA98E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:51:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A57175C2D9
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:51:57 +0000 (UTC)
+X-FDA: 83850799074.12.D4F4E7B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D6EAF140003
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:51:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dCfOKTW5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756972042; a=rsa-sha256;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756972316; a=rsa-sha256;
 	cv=none;
-	b=phYReznmE8MYugedY5CxbbsreeqORglPCgdpmeLx0BUpoHxXXzAv/OZV0GccVcNesstcVJ
-	bEoF4F6nbqIjG3aPdSElsG1w1KlvtL0IZasQ5QGGGKE4Dw5YnS7LHnEJq3Rf3CjLywJkDw
-	ttuMtRiZJkuYVdwNKr+A84V6mZRZAFs=
+	b=as7nYulUH//aKgqUhUP25zJSi5UH9io7PaYUUskEQrytrML5wrZgvNG/G3KMzYu0H/vl+O
+	Kq6eWKUP2cMi6wYEOd21DlVfpdwWTWcT0rIszlg9qt/yXan4z4oDAymERn0w2xA4bilrnp
+	10rx5JFdKqWhxiTEIs6EO/RxQx8gZZ0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mrGnfIHy;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dCfOKTW5;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756972042;
+	s=arc-20220608; t=1756972316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zqPtmsvQdRUPF0MN5VecClzZ/UGWInhgZO8j2GdgZK8=;
-	b=Y03D0k2jvbkPNzcEgB7K6PrtprmrCvBjUr38hofpcu3rTKzHhf89riOs+l0xQU+6JQuiWC
-	elWFjSp3KhlUlZRKdRtIq63VfawBYvDgtqoVy0vl14ymQHn303iACkfg1L3uhTF0pe3XNG
-	fE8NU8mPU1iP74KnkwvrpTUMASGv+L8=
+	bh=LeIvzZVxBDGvPFwISXv5rpIJ8ywPIJ1UY9bkrlehq0k=;
+	b=DG5ZY1WYI6wv2JINeRwaSN5ZYgTNwLst2gNcT9El8r5V9AKr7mgy8Di3j9EmoecnMGf6fw
+	4mmvtx42tAG9087COEbvolM75sUsn418BG0KPa7cVZN1XUPL8JZz02L2Ev20GSvUrjskji
+	JOAmP24iZyxm+l4iMD8L4svgr1vaMso=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 60B3A601A4;
-	Thu,  4 Sep 2025 07:47:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C7CC4CEF0;
-	Thu,  4 Sep 2025 07:47:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6B02E43AA2;
+	Thu,  4 Sep 2025 07:51:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3835BC4CEF0;
+	Thu,  4 Sep 2025 07:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756972041;
-	bh=RdxnZN7SSA8WBmRvG93DF96dGRkqV/lygyU5uiMSXd4=;
+	s=k20201202; t=1756972314;
+	bh=rE0KWJrKeJt22T4AYZywb92G0O/oP+xSleFmSknemCA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mrGnfIHy/ew3+TDD2Q+GIWT/eihpT0m8aQUi7r/kFJ2QGsPaaHuRfGx9hSOOlwEo6
-	 a7M7QvX24FuWzY1GyGMrKeVe6AdzkSU9QxfZO44RrMDkjocqSFykak+lxA1G/r+xwv
-	 qUNNMt9lvCPq6b2locszWGgIF5qgLQnuAC46fb3NcSI7F0brH96Fdz5nymg7nkEyjA
-	 a6XAH+KyIkm2RwwNlWVT9Iz2x2uc8rv7zHQ6JXW0UDOngW0z0tRUiheYtEOvsmPvjA
-	 N2PcW/4cpdALn8PVZGwyYPV2w4yEHSJKDq4e8+LmY6qZZisv6e/jO9a4sWjrG++op3
-	 tx4tEm4HPgv0Q==
-Date: Thu, 4 Sep 2025 10:47:07 +0300
+	b=dCfOKTW5QmsGiI7lfLidL4A7U/TqtlUK8B/Z+xXpeK+xOv/o1wrjKImlBIm7qoqyp
+	 vWrVbcvDgLaQtrmSWW9QnceFY+vaWOifv+eJybBINP9rST+hO74eb4Hh1G6Wt2hT2x
+	 oYH7Xt4OZmWo0rLzgu7qils5+FxRsbp4e+uUQ+8jKyYxWZeWCUnNCkDNyYWUdjqt7g
+	 bJ8p8EcEjqpIpV+HifHSHDE67CtJhrDcNFsZZRE5m7jVHfjhWAlsDpevdqJdKUJbMq
+	 3I219i+m22wZU7OsFAA2EZ6VaPOVZSpZ+B3A1yVRyCh2uk7Et7rKEY6W+5qJAvvCe4
+	 y76jW/0hht3XQ==
+Date: Thu, 4 Sep 2025 10:51:41 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Jinchao Wang <wangjinchao600@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -89,22 +89,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@suse.com>, linux-perf-users@vger.kernel.org,
 	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 02/18] mm/ksw: add ksw_config struct and parser
-Message-ID: <aLlD-74aBdb-ZD5K@kernel.org>
+Subject: Re: [PATCH v2 03/18] mm/ksw: add /proc/kstackwatch interface
+Message-ID: <aLlFDQkWBF0N7xmk@kernel.org>
 References: <20250904002126.1514566-1-wangjinchao600@gmail.com>
- <20250904002126.1514566-3-wangjinchao600@gmail.com>
+ <20250904002126.1514566-4-wangjinchao600@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250904002126.1514566-3-wangjinchao600@gmail.com>
-X-Rspamd-Server: rspam03
+In-Reply-To: <20250904002126.1514566-4-wangjinchao600@gmail.com>
+X-Rspamd-Queue-Id: D6EAF140003
+X-Stat-Signature: oqcf3g9c85d4msfrbccrdu64r1q84tnu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3DE2D120009
-X-Stat-Signature: 7riedqku88idmk8ejf3ikgtfos64ea39
-X-HE-Tag: 1756972042-747032
-X-HE-Meta: U2FsdGVkX1+yr45ofMkLKLi2crlS0X/BSfKuTDR8xh1++VP100ga2QTOhQgqI/rG8MiHo4lXADHX+6Bv8mxPUUOGTeg2HGdrJ4pSp5+LIAliFFSUNRmFooaiNVqUTx7owJeAgjaucYDb2y9U9CwviJ8yToluS2R3EIi1WI+gQe06iYiEF+OJB/03ox2YrX+08+vNzQdV0QE4YCVIfim7VCR2vSnbf72ZZv3EnJDCsvvB5kHB4IjnNQ5XvWcMLPwNwNOrFzyAzk50CzPxUgBCQ886VhlgV0130KqBKf7QauRD4AbqED+cWvSaC+cjbE3dL9gficZ2gEqxaowhrjtuJ7ibSGrFMS+RutN9Qx/7dzWe4A62hCrIC7JNMgWC1SoeIi2SbQugEVHAlMUxZnnCaat5WoaovvsFuEnO1bSo+chzdW1Lwizitg4M9dgDnk5bL80GfZCaNXBBgOlQjYm3VNA8RKT4wEJMC7MthbfLd1onoQqkkj04YpuyTeGZB7MiZM/zesZ8QiGnGYlqAb0r7KJBoWEImdDCpfSDg/V48PVnQ7OWbtVFTsgB3U4WjSUlckFlBu0+5SHZHGnchSi7Mmcukw6dOeJ8tyPgoUBR9VMCptl5obnWtHThPYC5pqcdCFlY5HnNGq/A1yaYQ0hwPToOoU22rJV4Bd0thMt4VOidYVu0v56vFrTXVfqtGYAJn/+VJ94xJ1L8bYbD6igwi2nHCu9yniy5aGXcNeKp4I2m5kCz8jzk865VI9ENkP+QunD5Ceu4ZUDsYF8K6okLv9ueW/PSvdg5436qt66i/pUpQ/WKguArzYgJ9xpCXq7vAc4CDyp+B9CuajMywNSSKDjp+RDz3oittZT9wBliUJtrZjQ1KRwp8dATEgP5J+6eFHQzNMUNFuI4TFdmmaJTwbUEkjf2VgirlG0NxzkWTb//0YHOMp9WusjwbPA8YDO/5/VJH8sE17qM+dl7t72
- fVSOm2I5
- DIj62KyBaH7cyTB0DSGmmUiyiZBCsg4rdgm3eL82yNjHaJRRw8s3G4Of3cUJnaruz3f0w5vjK+MvUonGrerKV067UBDntZEeggiOYH+UvShwXg/U0Bc7PhiPFAvXtP1uyzk21HFXTDTMW+xx/toiGfUUqj/TPc22nvnSwNLP71Gl3Ix2VJJJkd1gazy6Fie7VZ5KCOZ30nP1X/cFDr5Ua/e1tSsbjI7HyiWrW12B9coN4IJZyEYKcvYFneKndw8EkOc+PnbbMGulpxPTIeBm9galAeanYQJX+srnvRJvmulDMOll2+lxz70Z8/gdhMyD9iCKDlDrbI4WKVtE=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756972315-451177
+X-HE-Meta: U2FsdGVkX1/X3coPfwiiamHqa2afUFj/HHnbIByYfXfIhkkhcFbiQB5FtscXIfgknUc01VkyptlWAgds1rOvbVP7AkQwUz3G173liQaFmASBhl3mrTA3+bYDSr9b2M28/5NhKnDnFji6mF5BtBnDz/zT5SqDutM/7yYQudkNVBdX5eZ22j/Ek8humDJdn0LMmD9VqKGTRa6tzhNcQf4/RIDijocn4FAA9+gzcF+ogw6ie2ms4NxOnsL7jAn0nSev9ATU1TPTYqKVfQyrwG+VM0CGkzGGUzFcDgRwZ0tvoGNPkry8OD/XuWw0Ig2Mmi325r8eNLtBbDbLDESPXkb15JSKv7EKqvDecKALfGbrTLY9H/WOhJvvAIB0k4iA/uYkDk/ad+uShSrRMomhev+tFcqFVYGPVdGo8b/mHDs09hyNeDU96skj/+RbONhVyTO1A90F6ropKnEYNs3QaESIoCwr7ViTv0M2JtdasuQoNHwfQovzXhUzR0v1s8mDGIVW9Z7OAxF8GVrZbFbBpDvN4p/sDonVHENybbSUeRXtrj5ubn6rVZ3dtWYH3Ovdm2b6BR281sQyfQFhUzGWhmznVvW7iRZKaAgJcbYGBYBbNEdtJj4/YuwA7P9C6q4tBDMGx+ZBGcylmbKBarmSQGSJ2jcnLt7luMuvmK3ssuVCdvF6Dis11GDgV5cQ4Q0RpzfGOoKajc+MuaafkmsSQwP6iEwUgSP4y/2RcK/gItDO4/QTH9OlfhZadA8R4H/Kf35VKHhxa1lgXbmGmKRONZn42B0sAA0BLJtdZnu9gpE5kmEopgXvBsHoC/rbg6xavYgjuFAnZMfFXgtXESIg0aSiFSXusrRiJ46m0AOcg7QXp9LwP1s2Mzs3gHjSz0ebnbN5PHgOJWL0u4YFycKo5zjJidcRYuMOuaxf3eZEJ7oGCCdma4iJkhpFBcDJDlugspKdw8t3Wx0A84dystCgXP0
+ hTBiNAbQ
+ Er4HzlyqSXVYTLdldH+Bik3OevQBNZ2phk3DIJwwGKa9VgtBlWUyLYK2KELdtebBD+tSMBjW6ast/MPgtEJc+cIiuESLAs/EA8qWBwoPAvXopTNIfCJlpArteKPUYOzJR3EObp2125XC1WWoFM5U58QkdDxFy/qo75V6F5s3NlWwL54+Wmdgz0cY3dp5ATvMWq9Hsq9Ev96QOV9fc/8LobPqAQ6Dm3Qq/Zvmswl9zEFlua12N6wO3SdTZzodtntsUruJmZQ8fjoYiX/RJ9HRp9/j7E61dYRgxzkBFiyFZGGGyp4fYkM8o5N4bBguF50G1r9/+Rn1h3yGCAQiHhaUCRgv+TOZkcjHbDPt7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,29 +113,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 08:20:59AM +0800, Jinchao Wang wrote:
-> Add struct ksw_config and ksw_parse_config() to parse user string.
+On Thu, Sep 04, 2025 at 08:21:00AM +0800, Jinchao Wang wrote:
+> Provide the /proc/kstackwatch file to read or update the KSW configuration.
+> Writing a valid config string starts watching; empty input stops watching.
+> Invalid input stops watching and reports an error.
 > 
-> Update `Makefile` to pass compilation.
+> Allocate a ksw_config struct on module init and free it on exit.
+> Manage watching state with ksw_start_watching() and ksw_stop_watching().
 > 
 > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
 > ---
->  mm/kstackwatch/Makefile      |  2 ++
->  mm/kstackwatch/kernel.c      | 70 +++++++++++++++++++++++++++++++++++-
->  mm/kstackwatch/kstackwatch.h | 34 ++++++++++++++++++
->  3 files changed, 105 insertions(+), 1 deletion(-)
+>  mm/kstackwatch/kernel.c | 140 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 140 insertions(+)
 > 
-> diff --git a/mm/kstackwatch/Makefile b/mm/kstackwatch/Makefile
-> index 84a46cb9a766..d422f0e114dd 100644
-> --- a/mm/kstackwatch/Makefile
-> +++ b/mm/kstackwatch/Makefile
-> @@ -1,2 +1,4 @@
->  obj-$(CONFIG_KSTACK_WATCH)	+= kstackwatch.o
->  kstackwatch-y := kernel.o stack.o watch.o
-> +
-> +CFLAGS_kernel.o := -Wno-error=unused-function
+> diff --git a/mm/kstackwatch/kernel.c b/mm/kstackwatch/kernel.c
+> index 4a6dc49449fe..95ade95abde1 100644
+> --- a/mm/kstackwatch/kernel.c
+> +++ b/mm/kstackwatch/kernel.c
+> @@ -1,7 +1,10 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  #include <linux/kstrtox.h>
+>  #include <linux/module.h>
+> +#include <linux/proc_fs.h>
+> +#include <linux/seq_file.h>
+>  #include <linux/string.h>
+> +#include <linux/uaccess.h>
+>  
+>  #include "kstackwatch.h"
+>  
+> @@ -9,6 +12,29 @@ MODULE_AUTHOR("Jinchao Wang");
+>  MODULE_DESCRIPTION("Kernel Stack Watch");
+>  MODULE_LICENSE("GPL");
+>  
+> +struct ksw_config *ksw_config;
 
-Can't you just add the function along with the code that uses it?
+Does a global ksw_config imply that this is a singleton?
+What happens when there are several "echo .. > /proc/kstackwatch"?
+And even more interesting what happens if they are parallel?
+
+> +bool watching_active;
+> +
+> +bool panic_on_catch;
+> +module_param(panic_on_catch, bool, 0644);
+> +MODULE_PARM_DESC(panic_on_catch,
+> +		 "Trigger a kernel panic immediately on corruption catch");
+> +
+> +static int ksw_start_watching(void)
+> +{
+> +	watching_active = true;
+> +
+> +	pr_info("KSW: start watching %s\n", ksw_config->config_str);
+> +	return 0;
+> +}
+> +
+> +static void ksw_stop_watching(void)
+> +{
+> +	watching_active = false;
+> +
+> +	pr_info("KSW: stop watching %s\n", ksw_config->config_str);
+
+This module is overly verbose. Do you really need all the printks?
+
+> +}
+
+...
+
+>  static int __init kstackwatch_init(void)
+>  {
+> +	ksw_config = kmalloc(sizeof(*ksw_config), GFP_KERNEL);
+> +	if (!ksw_config)
+> +		return -ENOMEM;
+> +
+> +	/* Create proc interface */
+> +	if (!proc_create("kstackwatch", 0644, NULL, &kstackwatch_proc_ops)) {
+
+ksw_config must be freed here
+
+> +		pr_err("KSW: create proc kstackwatch fail");
+> +		return -ENOMEM;
+> +	}
+> +
+>  	pr_info("KSW: module loaded\n");
+>  	pr_info("KSW: usage:\n");
+>  	pr_info("KSW: echo 'function+ip_offset[+depth] [local_var_offset:local_var_len]' > /proc/kstackwatch\n");
+> @@ -85,6 +217,14 @@ static int __init kstackwatch_init(void)
+>  
+>  static void __exit kstackwatch_exit(void)
+>  {
+> +	/* Cleanup active watching */
+> +	if (watching_active)
+> +		ksw_stop_watching();
+> +
+> +	/* Remove proc interface */
+> +	remove_proc_entry("kstackwatch", NULL);
+> +	kfree(ksw_config);
+> +
+>  	pr_info("KSW: Module unloaded\n");
+>  }
+>  
+> -- 
+> 2.43.0
+> 
 
 -- 
 Sincerely yours,
