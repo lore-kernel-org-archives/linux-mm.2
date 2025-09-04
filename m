@@ -4,98 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CDDCCA1015
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 14:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9868CA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 14:25:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CD098E0005; Thu,  4 Sep 2025 10:11:10 -0400 (EDT)
+	id F413A8E0003; Thu,  4 Sep 2025 10:25:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 756C48E0001; Thu,  4 Sep 2025 10:11:10 -0400 (EDT)
+	id F18E08E0001; Thu,  4 Sep 2025 10:25:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61E4E8E0005; Thu,  4 Sep 2025 10:11:10 -0400 (EDT)
+	id E2EA18E0003; Thu,  4 Sep 2025 10:25:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AF338E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:11:10 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D67DE1DC51B
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:11:09 +0000 (UTC)
-X-FDA: 83851754658.21.A2FEF20
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4577C140013
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:11:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=cOebGlCu;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=XDWBDbeY
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D25738E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:25:56 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AA15160243
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:25:56 +0000 (UTC)
+X-FDA: 83851791912.13.D72B0A0
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5E5CE40005
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:25:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KoYKVkq5;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756995954; a=rsa-sha256;
+	cv=none;
+	b=gUgTpWkROqU347HKlBmlYJrmHfuS05WJMkEAxSJODS+SxBAXKFyGnA3k3B5/RU6xFLTrpq
+	1Ds5meP0qh5lgFTfOtUqkzbGRnj9YxQ6aUtNUWGQ7WTQdOW2nEZQ9eCQKVbNJfGww327WZ
+	51m+foyS+T80AHKGOu+HifxCmMyGpWk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KoYKVkq5;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756995068;
+	s=arc-20220608; t=1756995954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cuct/RPYsog3+FtV3cKt5Z3ifZSx4ZMCF7gpniW4mCI=;
-	b=GH+Pgy3CxC1wf6Oajp3iNZ8GkIqWQY7q4l6DunrJBNNAXFqiezrNg3Nudcdj01oSa6c3RA
-	U6pjoDPFyW1+/MqaqVVd0LQzhIJZ9stBjq60QwcawAuqRAdO9wsg4OcpGsvxYqQG60M7tj
-	lOrX43SHKd3uxjjw0U+/KtBKKPzQGUA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756995068; a=rsa-sha256;
-	cv=none;
-	b=1V1dbdHeLU4LakKsODK9cVM/ja+3odXPVWcduR+GEAQW1monTGGLxRuyNNqVDC1TDhxI5D
-	IOIVkPIQANugGwQzcosVNvJmhyr3uzAECUuOvkOxqQfwtM2sW21mem6x2J/nLV4OMMDG/V
-	q9Q+N6oKDWoPJMb+ilPBDFF9mo8L5oI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=cOebGlCu;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=XDWBDbeY;
-	spf=none (imf23.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756995065; x=1757599865;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=Cuct/RPYsog3+FtV3cKt5Z3ifZSx4ZMCF7gpniW4mCI=;
-	b=cOebGlCuczRNUo4g4d4ajARv60jt0S+Wqh8jmDRu9Mf8FSF2YmYLUMztYuqnrS4XJpBsG/xg1SVS+
-	 RnSqIoV1kkhmJ4y3BDMWwp5XlyiWt/dFGIGcOHfmUIv+yMDcvE7rBC6BuBYcbNTCMLLdohKwwSWIsl
-	 nC4aiyT77ewScMsTXAI7wi46r4YPrGNI7i0JyYiDSX0gPwx1U8UKy0JTnqVk+rwcy96mexlsJ+pUsV
-	 dA/VEP8cYUpBEbkmua1h4auMdHVoG9vmCwmZNmGUM5Ek3Tug3qqjnV7ewydRTgOPCEnLgz8xfRCcql
-	 OOOQ0wMx2o5PiJZkInAIMx7sRP3Mf5A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756995065; x=1757599865;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=Cuct/RPYsog3+FtV3cKt5Z3ifZSx4ZMCF7gpniW4mCI=;
-	b=XDWBDbeYOioZ7VHX+LhpdlOj714dmqlpXCpsNZKSu/SjlWyYcRG8rDDbnJO5SdO9yda8iNTFDQHot
-	 PnZ+fFgCg==
-X-HalOne-ID: fd8e0ca1-8998-11f0-9595-c9fa7b04d629
-Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay1.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id fd8e0ca1-8998-11f0-9595-c9fa7b04d629;
-	Thu, 04 Sep 2025 14:11:04 +0000 (UTC)
-Message-ID: <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
-Date: Thu, 4 Sep 2025 16:11:04 +0200
+	bh=TXJTPFJKvzfDx5OZSoiIrukQRae9EDXqZs5oGvFGUnQ=;
+	b=Mq0AJb5wv62Bzu0VBZRXhCVBHEG6tWek3TLzWyKAtGK3F+yc+/YxiFEf6rJoL6DID7Xpi4
+	/jqRAnix0/KNC297XEnI8d/DCcqmqkvzBp0m8nCluyQI6v3ppPR/usFB5CXGQyb7g8T3lQ
+	QBhw5KqOdhHi3uFovAzvNaE40Yrl+ik=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45b7d87b90fso9441365e9.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 07:25:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1756995953; x=1757600753; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TXJTPFJKvzfDx5OZSoiIrukQRae9EDXqZs5oGvFGUnQ=;
+        b=KoYKVkq5lgMpw98kH4IVTng5aXyKVWQaMlCThHrVugzVyVAuwlCF69rRdmZY4LuIUm
+         4mEeo2cR0hosSSccemvsHr/E3t2ESLqI10BQtBLnb1h5Nv1PyUz6FwuflAWYipmt0Q9z
+         qKC3Q2PpvA3xCjKkwSGq37VAVNurPb9q2uIiE90sqi3DBrJOR5ZtWJukg1aQB0ujYdJn
+         gT0NbjK94SpMdSgj1/8AoWzJfi8uzvTcW6nt1438o/DQkDDzSwLPlHTU1nReZ84P4pgQ
+         us0GZZ0TfcHIAXGcw8ocM6Pb9OmTX85WgWfD5gCMQY3HoNAkQgsj/t85TvhL/DPjXzBQ
+         0Suw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756995953; x=1757600753;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TXJTPFJKvzfDx5OZSoiIrukQRae9EDXqZs5oGvFGUnQ=;
+        b=Ol2bfTFEazMgdeZB7jnfJFPj3fwQt0pNeMlRj5x7sdvz5tM+6Yr7Z5//i7vUtvI4vq
+         TMFstZlQGrOiQBkhBSCyFF2oYBHstVo6LDfKfK+ALmwQO0vlaVEeQD2jTuBv3C9z7EUW
+         ZJbakn8RnmgdOHBcZnXrNqqCWz+hvlUzYe0K/IsIgqSvcUb8qjJTbNSbs1EK5NPW9eEG
+         9I5FXhchGH6LOT6nBxxDWbA+2X3GNeOqJkwjda3hWODtQWX+JHDNVI6PQBfmM4NeYSRu
+         YFw2IF98+Kr+a5P5/22DHIeg/zQIc1oAMGy2g6m9mFyuDsNDPyvBrGSp5aQTgtbSqiCc
+         1C2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXwpQiNy+1ZbWNdNk0XzRrNE4wQfVYkAMC/Cl3d4hMy+zylScDLHWZvhUKrKp35bOkM6KuTS4j1rg==@kvack.org
+X-Gm-Message-State: AOJu0Yy1iiw3g/KXWajxOYOz28NGnGgv7y401iTTmyeDtbDTIBZQ3dBq
+	NC/auK7PZuudh9A7w5aI2qe0+iNewPg0VBiirWkYl95VieU23NX8A1Sj5ERNo7HexyY=
+X-Gm-Gg: ASbGncs+Ia35ysS+1gScuxsjQlneO7ShQHZJziSNKNd7/W3Z4c1Je25d2Q2zLdJt+np
+	Dha8A8h+oQ4rCeC6kYCmPj49PQeTq1XvWafHQlpi/aNarjoSre8YBOev8fSwpS1rs/CPBnQ0d0N
+	c0G/29JvxYCQ7bMG82v9n0SVGLbieqMU1XzqFBZMX0tepc/DLOI4vUqtu/a3G1NTfKDcd0m8jt9
+	cUTxad6dJlugj57CfyTPeapxztXkVnEAOJtSxh8xtUt+vWTMtz2pmL77TXLxtwTfFmA+SRvjMEY
+	QTbBGI+h0fu9di+X5Ui4JdK9LFsELdWcZEEMctqmFfRMMfBtx349AONpTgQvuC/png6+/zkTmf+
+	zPgUZOoouK8Aj8cJjFkkMxPjW+AF8FYPWW3z3VUEVyac=
+X-Google-Smtp-Source: AGHT+IGEO+0DMHgMdm6ZrKhXV6osEE1ZqnkT+7HfsartMPcj/1fM+gmIyotmbXQVSvGO+oewXkAYhA==
+X-Received: by 2002:a05:600c:4817:b0:459:d577:bd24 with SMTP id 5b1f17b1804b1-45b84c3afa3mr112855515e9.7.1756995952630;
+        Thu, 04 Sep 2025 07:25:52 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45c447244c4sm91020175e9.6.2025.09.04.07.25.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 07:25:52 -0700 (PDT)
+Date: Thu, 4 Sep 2025 16:25:50 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
+	david@redhat.com, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	linux-mm@kvack.org, wangkefeng.wang@huawei.com
+Subject: Re: [PATCH] mm/oom_kill: kill current in OOM when binding to
+ cpu-less nodes
+Message-ID: <aLmhbjtF0Sp75XXE@tiehlicka>
+References: <20250904134431.1637701-1-tujinjiang@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: remove zpool
-To: Vlastimil Babka <vbabka@suse.cz>, hannes@cmpxchg.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@infradead.org>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4577C140013
-X-Stat-Signature: aj118gwngr35yinieabdznwt6g88a7xo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904134431.1637701-1-tujinjiang@huawei.com>
+X-Rspamd-Queue-Id: 5E5CE40005
+X-Stat-Signature: gtq4kc1o4ko7nw1z7pfb5gbanb81q6sr
 X-Rspam-User: 
-X-HE-Tag: 1756995067-704320
-X-HE-Meta: U2FsdGVkX189AuSXYSs9MpDUKSDAaMsS3ie7xg7s9nJ0oZuEmd83iDx9kmKJQTZO5+GaT7K4XzeFo8QSNfcmx+bSJnauhoZQgDd6kpdnocBZtM+ofeysFugI0LdX6FIY+dBkRFVlKetdPWxwnEAuxW6LBNP7qlP3S0HbzBQ7uV1c8Nv1SQpeXcghiCH1kQiG0uRlYKYY1k6/mKvG0kPd/DAMXcPCZTmdLVnH+g7xrzSv2XeVs2Wu5iz4QsiIcpGIEiy8msYvsc+fP80C7fWJe4pvBk9nMHzs/USvljbKu4CP748CFteYKwR34JP/yYxYLQQIfm6vVDOoBcyF6to5AM45V5mbZdsmmv62ETYP6490IACA5cLedle56PBu3UbiEvQYbshxfEvKpI0v6hcWOxacoOtUwQ4JJcwgZEwb3S8ESIvOi29CnlMfF5OdxYf1dthq+NecHxYpUiXRzWgAuFqSCPJTUA2V6bciCIcY4pMUrnA1aCZu5qEpVi3zUm9Oo2SlN6MMTjTOquTn0PJF8PpDFuaZIxYasRO5fDEjhUeT+d+JJmNAQz/iMnAXnr/FKxCZY/otFT+mTlwNo7lrXJWsymyUkUdFwFTsPR3QWZfBwthB6j9A6NT2P+4wT1aEaI2GRsy9WDBXSjrUDGktStIFCDc02v/5n4HPbDSCW9hWl3I3j7cu1qvdwwQf5/BFHg0+fRdqfA3VsTHUEjEnD2WCma31TtZ+8GJsnT0BuO1YQxUcIm9F7Yq5fKnDbGOeIFzMF6ByepaIHT9s9JWN2dcuvKVcDWhq8i6E/LIHeWs0KJ4J6UYkGJfqScNwLEN14uiCJ2lFvJ/N/91phfzMVn+30yTZun8BOTmCasi+KGg+KRAJZSBJ2P1u+R4v6xJqLP9VqPmuj9WRZFPys1dfnPG4nwZYHy5zDiibXROjT1xMyw/uI9dK4x5o8UX9YhMqdiveTa7sERY3YG2SsDS
- 472NxyoX
- awUeW32G8dwr7gf+4qQs9t27YScUa0zoFoCR1viAxLqcMFos2GzOa7X/mSt4zND1Y/rHEHj9eq1dlcVNh1rlC99qMo/l8DetxWXE8EDKJ2Z1sLUmHzuhNujUo6aYN1x50hwY5dCTjYMxdCa/rMM/jRe+V1tj4zRWSst95gcCHIqGieFxCZDnvEGsG9GlX8TcTXBHm2seVTbtl+mkdnuEZZMzeINw8yZFfoYgZIgNn8iUmQQnw2sXW5DgDisCfNMjMj1PDvxHtthD0Em9Wjgnj887G5EzkYSrR0mr+Gsup7oxrJzg=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756995954-20831
+X-HE-Meta: U2FsdGVkX19Y0NkKZRuErBTTU9fo6Tk9+AQ6koCKQ9REI0oytYxn3sM/GTQpbiz5if4Zwt63Edp47yDR5o0qBqpS3Me/+xggsReemVbqcuPEol5u429QTw9aJ0Uj5ozBobCSz4JnJ8uKHCMp1lcwbSY90Q7b9mTc0kmOPK45g5CR5JQlaOoHVP03kTCOamBddac3o4GJdAfz8RwyxfrYTdQZf3EtS1Yu6NHfv5nU9lOUlYLnjJHLcOLNDNF5jmS8lGobeP9j40T7GC8WE9k8oQjmb8EGccLLMrtLz/3Yx76+L3/RYgeq6vbxrlDmLibP7O9NQfiJVnduBZuRTAKewF18OpzPa3i1svyTkfg/q+GbZmndsGFT0iFNvUqSwmltttuQD03+hfVLn7Y9awFA3z0KJ7EK5Gncr7BAoSEWswHMCS4U/dchFiSjdu2QVOOlaix7HrLi/tizesm/NjANZXLkBBPoc1tuHak4bevxDAQRb7+Qn7rexfmiSC6b3CWA0oBb7D5OprDqX8WISOVzf3ov+BW0jPfiedIFq+qIKeygU/9YwfE/+r+Y2tmmBt9PIpLLqrEeF1UwV0dXD6dEsSXpA9VX0zFnBUUQdjkmslC7r65hmFhA85k176FpMWT7T1mpyLWUqxFZkse7YS+83twWE13nV5qdHidZq8DaT8jPhztOG53Mb7wmv4MZI1zo9t2cq8ntLAs+b5wcsaVvHUHcvN6fVb4yNGoCmTCH3F4d/gulmHetB7gjxBXcU2ylgawJ+QIGqSiY9nvZq+oEJVnBNBSAPzlm08DwY1zJR7c/gvKlbnsLdt6SCZ8TyXbpROnxuGcRXe5np6v11v35NQ35mC/OK9pYZ4sgZbGSf+QwvotZ8SZzHJ59RsHUEI0Dc2H9otRn2YsaN9yM4OwRYiTYOphyWfgEQ6P2QMzOCccGYFgQ79QKi7dxy/pKsTVihzWUOHg41bLggxkvK2r
+ vEgnksrg
+ 7mRq5Usek+IUr4UYs533tIn0czRyQTSNW7jLzzNKaEqWEPsgkS1gM5tyx83+kgl89aRmFJLJ8Z1tKnrMJ3nJvy7ZbBPxaJjWdwguXKgEV/EGAu/dYCFgdrWcTU57eaxgCUSG2M3gKB/LkXdkM1+SE2uWmXSZ66EXeaZS6Q1yihanBef7lriraXlZu1iWeU1CO+42vK7YoKNnPY/+w28Xls7zV6U5oFRC0O2haEjz6ihotl/9pDOX7etr83Z3AbxA1mXhqJw3DcaXtwlSs7ft7E0WxnhGWk6Thi7EzIn4pC69iHMrjhDkrrn77xtBxhUvhNMmvAlslHZ7ghs4xlE3Z7F0UoEN59mv56K2hyMeQIgk90AUwMsHLmMT+U7XCtIe8TntQWeseWdtu0NVQcYMwpS+s1SU1T9lhPDPVCMn6nCctn10NpOcmdokf/YgOnLVuzlxB6qLA/+VnAG8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,66 +121,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu 04-09-25 21:44:31, Jinjiang Tu wrote:
+> out_of_memory() selects tasks without considering mempolicy. Assuming a
+> cpu-less NUMA Node, ordinary process that don't set mempolicy don't
+> allocate memory from this cpu-less Node, unless other NUMA Nodes are below
+> low watermark. If a task binds to this cpu-less Node and triggers OOM, many
+> tasks may be killed wrongly that don't occupy memory from this Node.
 
+I can see how a miconfigured task that binds _only_ to memoryless nodes
+should be killed but this is not what the patch does, right?  Could you
+tell us more about the specific situation? 
 
-On 9/4/25 12:13, Vlastimil Babka wrote:
-> On 9/4/25 11:33, Vitaly Wool wrote:
->>> With zswap using zsmalloc directly, there are no more in-tree users of
->>> this code. Remove it.
->>>
->>> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->>
->> Per the previous discussions, this gets a *NACK* from my side. There is
->> hardly anything _technical_ preventing new in-tree users of zpool API.
->> zpool API is neutral and well-defined, I don’t see *any* good reason for
->> it to be phased out.
+> To fix it, only kill current if oc->nodemask are all nodes without any cpu.
 > 
-> AFAIK it's a policy that unused code should be removed ASAP. And that's the
-> case for zpool after Patch 1, no? It could be different if another user was
-> about to be merged (to avoid unnecessary churn), but that doesn't seem the
-> case for zblock?
-
-For the C implementation of zblock, no. But there's another 
-implementation which is in Rust and it's nearing the submission.
-
-> My concern would be if the removal breaks any existing installations relying
-> on zswap. Presumably not as a make oldconfig will produce a config where
-> nothing important is missing, and existing boot options such as
-> "zswap.zpool=" or attempts to write to in the init scripts to
-> "/sys/module/zswap/parameters/zpool" will cause some errors/noise but not
-> prevent booting correctly?
-
-I don't expect heavy breakage but misconfigurations will definitely occur.
-> I mean if we were paranoid and anticipated somebody would break their
-> booting if writing to /sys/module/zswap/parameters/zpool failed, we could
-> keep the file (for a while) and just produce a warning in dmesg that it's
-> deprecated and does nothing?
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> ---
+>  mm/oom_kill.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
 > 
->  From Patch 1:
-> 
->> Note that this does not preclude future improvements and experiments
->> with different allocation strategies. Should it become necessary, it's
->> possible to provide an alternate implementation for the zsmalloc API,
->> selectable at compile time. However, zsmalloc is also rather mature
->> and feature rich, with years of widespread production exposure; it's
->> encouraged to make incremental improvements rather than fork it.
-> 
-> With my history of maintaining the slab allocators I can only support this
-> approach.
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 25923cfec9c6..8ae4b2ecfe12 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -1100,6 +1100,20 @@ int unregister_oom_notifier(struct notifier_block *nb)
+>  }
+>  EXPORT_SYMBOL_GPL(unregister_oom_notifier);
+>  
+> +static bool should_oom_kill_allocating_task(struct oom_control *oc)
+> +{
+> +	if (sysctl_oom_kill_allocating_task)
+> +		return true;
+> +
+> +	if (!oc->nodemask)
+> +		return false;
+> +
+> +	if (nodes_intersects(*oc->nodemask, node_states[N_CPU]))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  /**
+>   * out_of_memory - kill the "best" process when we run out of memory
+>   * @oc: pointer to struct oom_control
+> @@ -1151,7 +1165,7 @@ bool out_of_memory(struct oom_control *oc)
+>  		oc->nodemask = NULL;
+>  	check_panic_on_oom(oc);
+>  
+> -	if (!is_memcg_oom(oc) && sysctl_oom_kill_allocating_task &&
+> +	if (!is_memcg_oom(oc) && should_oom_kill_allocating_task(oc) &&
+>  	    current->mm && !oom_unkillable_task(current) &&
+>  	    oom_cpuset_eligible(current, oc) &&
+>  	    current->signal->oom_score_adj != OOM_SCORE_ADJ_MIN) {
+> -- 
+> 2.43.0
 
-There was the time when slab was the best option and it was more mature 
-than slub, which is now the best and only option. Thus, the "maturity" 
-point is indeed valid but not being backed by anything else it doesn't 
-weigh too much. Besides, zsmalloc's production exposure from all I know 
-is limited to the 4K page case, and zsmalloc is truly struggling when 
-the system is configured for 16K pages.
-
-Things keep changing, and some of the proven solutions may not be a good 
-fit moving forward. While not suggesting that we should have a handful 
-of zpool backends just for the sake of variety, I'd like to emphasize 
-that there are good reasons to have zblock (especially the Rust one), 
-and there are good reasons to keep zsmalloc. That leads to the 
-conclusion that zpool should stay.
-
-
+-- 
+Michal Hocko
+SUSE Labs
 
