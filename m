@@ -4,118 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4063CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:21:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B427CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17F578E000A; Thu,  4 Sep 2025 08:21:18 -0400 (EDT)
+	id 753BC8E000A; Thu,  4 Sep 2025 08:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 156338E0001; Thu,  4 Sep 2025 08:21:18 -0400 (EDT)
+	id 7045B8E0001; Thu,  4 Sep 2025 08:24:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0940F8E000A; Thu,  4 Sep 2025 08:21:18 -0400 (EDT)
+	id 619E48E000A; Thu,  4 Sep 2025 08:24:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ED81E8E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:21:17 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9BDC41A0168
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:21:17 +0000 (UTC)
-X-FDA: 83851477794.04.99A4925
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B1CEAC0005
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:21:15 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bgV+ypl0;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 499BF8E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:24:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D79C5134022
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:24:50 +0000 (UTC)
+X-FDA: 83851486740.16.2F794F0
+Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8070418000F
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:24:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756988689; a=rsa-sha256;
+	cv=none;
+	b=SdUsfnM8FZaa6/Ibw0q+Ssn+WDLVhj6GdPyHOIZLgq8VrihaYWtt+VZnHx0PtQ6YwsY1DV
+	63LMbkiWS1B7GdUmAv5PQOGZz5vzVG/dGLsf1sva6B86L+iBd9mECEvp3e6Kx+HD8qHoc0
+	50I8ONUr6F8RmL74Bxabl+I/HxBfiMs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756988475;
+	s=arc-20220608; t=1756988689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7KSwu43idPPiYLOiYSWlrLCZRiTpUunvv4fRRNFmcqs=;
-	b=GE+khw3Exzt3dyxtXFkzE245NhjJnbhM4sjEibb9ZYJADvTfZbCHzg1P0aHALu/SV1qRd3
-	ESYX7YJdGlSd2Ge/LGAmfcS43IDjjmYzNszuuIFWvkhmEfh5T6/js3Xy+gxA6x2/Upi5mT
-	mUGnMo9hJ8eFe5kjlDUQR3Po+PzxJSA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bgV+ypl0;
-	spf=pass (imf10.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756988475; a=rsa-sha256;
-	cv=none;
-	b=3t+ZUnyKjgNB9lEyaGUBP4q3va0uZ3ChHe8P99Tbe53MJM6FSlYrhF6YVHvFg1RI/WT3Uk
-	FNVm7g9LBDeKZywlq8HJe5WOCyI4mE1RdqX8iKGlwwGUqD30O3cJfqQrniGgnnhn/gqJUJ
-	VkKxjlK3Il5NCEq7Mcq5ryOeqW9D4LA=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45b7c56a987so4600625e9.1
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 05:21:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756988474; x=1757593274; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7KSwu43idPPiYLOiYSWlrLCZRiTpUunvv4fRRNFmcqs=;
-        b=bgV+ypl02muyHjW5ZpKhhwZb6sSTisSEnQ6sktLO9oo7sSjcGVUbW8DhClCprwI04V
-         GY/UiOtJmmx8RCJNDLnf+2QBaA2Fzbab2CCUGEw6W6F40jSNgm1p7Q1gbMnH4vWfBCn6
-         K+I6JNogRrZwfKAwKHA9qPl7E+sMEdvc6Y3GKVQESj5k22n9LuyYbcqg36jcRxstnlkQ
-         ZrGS85txW33qfSQwSoTZDydx3u7u+IqS1UtbLIMxe1hxUPlpG2aEUQvsMQuJFzUxSQ5S
-         AM9cjy4FUSlHt1jOG72zZVbV/eMsh7rVNtbvr+faW/MxZJ3mKK/k++MuNSVz24mrvdpF
-         sPmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756988474; x=1757593274;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7KSwu43idPPiYLOiYSWlrLCZRiTpUunvv4fRRNFmcqs=;
-        b=Bha4srLrde781lz5l5XLkD9vbSdAZVITuSieJrI+tF3Tu4DTLClHOLHuX+DDJqRrZn
-         Q9rOv1RVxmGAHugoU1rz09CFLeuwxhw7LvK62j2fkejSefVZoqt6zuaoqCE0NRGMbC5a
-         xl+83D0yBh2IutlnwChV1JA74EN1zCjf6nYIYrNuSLBfSMFW1b5yS/rP+gZIta7xJ7YN
-         KxDCa4sRQFqQrGaviEYK1mxaDTSELWzvv9NctmIbTVrUWy/I2xbkO31fmmI5XGicMRN7
-         TcPxMTgishUAH9m6tzqO2YSOZfEEMCIkxaceITU/7U/a7IPR2nClEhrtQfeDpYClR16a
-         hk1g==
-X-Forwarded-Encrypted: i=1; AJvYcCXBU/i206viZdmArw3a7tPkw9Oc/Nkujay5OhWcI18kaChdKYdW9ufLGbQUw81XCKyGfwxEw61h8g==@kvack.org
-X-Gm-Message-State: AOJu0YxZw0zJknKt4dmuPpEt4xng/0bDyddMRATslqxVcKwPElmGQnZZ
-	jNKnZOWiZYTgP4cwwtSvsUUsNOoAH6SqX3RorIhvh12BnseCpZPR5d8TlvbUyx+PMJo=
-X-Gm-Gg: ASbGncsfevy+gnYOm4ysyvvbFT2f1LCLXreT0i/gpGIYcQHx95/vx/5SGkQwBE6qcHb
-	V+fVqZDSAMRz8ofDu8rBDB3KOYqVaQGMr6B5NAiGr4K6Df0I5NK3lzFXzfza3mE9hXdyE1QUOaW
-	I/CYrwKq726MPw6KZiX9AReh3MWkVRWTHRzf412EvGNJGZLqSnYvED79XOjQeLFdJLt0ZSxs4FS
-	q8ZqLDTL/hAjA7NWuX49sXOzssZWNiGUtLN5rVno6bNZukAB7KnzQa1yGhpSW8ySD7QTofvyv7T
-	aMIc/4vvRl1w3JnV/+IVS1/oT7HmIQ6ww8uMckGPEI6rqeZTdjCmHGV0DbXOvDXcepewOSiywC0
-	uQ3DBR3xgtdXlbkBq/Q6X5JTfQk6xNylQGiJEZeLHKnk=
-X-Google-Smtp-Source: AGHT+IEYqo4eMGN9vgrqjAEA3arfMvfky3hDi4FW+528nveIve9E3HgvQcvsr+KoLTBqDUriy20sxQ==
-X-Received: by 2002:a05:600c:310b:b0:459:e3f8:92ec with SMTP id 5b1f17b1804b1-45b85532b05mr169657365e9.10.1756988474063;
-        Thu, 04 Sep 2025 05:21:14 -0700 (PDT)
-Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b81a9e971sm295031615e9.18.2025.09.04.05.21.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 05:21:13 -0700 (PDT)
-Date: Thu, 4 Sep 2025 14:21:08 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: zhongjinji <zhongjinji@honor.com>, rientjes@google.com,
-	shakeel.butt@linux.dev, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, lorenzo.stoakes@oracle.com, surenb@google.com,
-	liulu.liu@honor.com, feng.han@honor.com
-Subject: Re: [PATCH v7 2/2] mm/oom_kill: The OOM reaper traverses the VMA
- maple tree in reverse order
-Message-ID: <aLmENFH-g9MUQAsE@tiehlicka>
-References: <20250903092729.10611-1-zhongjinji@honor.com>
- <20250903092729.10611-3-zhongjinji@honor.com>
- <aLg7ajpko2j1qV4h@tiehlicka>
- <7rvwvuifkav5oz4ftfuziq23wek2bn6ygvrfotpaweypuy7obv@hjuf3eknscii>
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjF+V9syur5wRrS3pnRVAy9cw961+AfI5XG4rssZPQw=;
+	b=a8KESgFa/aFEpYxQb2BaagzRWy2vz254OV9/O4ORH7Tc2arrf8I0Ao9Tei1K+oyO3mzl/s
+	brObm41LEAFZFH5Mg16qMNSfh2E2AXSztF836boUC3zFl3vx7Oah/vh3bqUI1lHBKTW52S
+	UMzNWeOaOf9/shwYjOpDaxQCVEDQOL0=
+Received: from w011.hihonor.com (unknown [10.68.20.122])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4cHdvT1XnhzYlNNF;
+	Thu,  4 Sep 2025 20:24:21 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w011.hihonor.com
+ (10.68.20.122) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 4 Sep
+ 2025 20:24:43 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 4 Sep
+ 2025 20:24:43 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <mhocko@suse.com>
+CC: <akpm@linux-foundation.org>, <feng.han@honor.com>,
+	<liam.howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <liulu.liu@honor.com>, <lorenzo.stoakes@oracle.com>,
+	<rientjes@google.com>, <shakeel.butt@linux.dev>, <surenb@google.com>,
+	<tglx@linutronix.de>, <zhongjinji@honor.com>
+Subject: Re: [PATCH v7 2/2] mm/oom_kill: The OOM reaper traverses the VMA maple tree in reverse order
+Date: Thu, 4 Sep 2025 20:24:38 +0800
+Message-ID: <20250904122438.22957-1-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <aLg7ajpko2j1qV4h@tiehlicka>
+References: <aLg7ajpko2j1qV4h@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7rvwvuifkav5oz4ftfuziq23wek2bn6ygvrfotpaweypuy7obv@hjuf3eknscii>
-X-Rspamd-Queue-Id: B1CEAC0005
-X-Rspamd-Server: rspam04
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w011.hihonor.com (10.68.20.122) To a018.hihonor.com
+ (10.68.17.250)
+X-Rspamd-Queue-Id: 8070418000F
+X-Stat-Signature: ic98udcinbseouhp976prcsfa8b8yzm8
 X-Rspam-User: 
-X-Stat-Signature: fm9x3u5xndmmmtio3kqru647ki633uy5
-X-HE-Tag: 1756988475-86843
-X-HE-Meta: U2FsdGVkX188b8Id4PFalrVkYFl8AMEprbIlrYt7bPFIpk+c2Uc7G7VEAIiyknopw5CrW6a8Ws7H034wqPurdg+dBv+HIG1XvlBQhtPHloKBKXgeOfv4sGPyHkeGuXkvZHCzMfXpCT/eGDxSE5lUTHHHBWIa6HJTHMvDRwSjLeidZ/ovA137j6YTrttV8LZYum/EnZJqd0eUjdr1ZPS93M66wRHWEuytCBWeD+goW1ybFuQzmv75KQ0a6FF9WQSdEuIMbEaUMvlbbyVh7zuZnqe5vWegr/T5D2jiJlDrRqe3tIcmssAOGAqWybYJPE99Ne6sm/L3+8qWfuRhCSYJV+DbGo+o7ZHqFRlk8/Q5BYduWbLOX5xKWIRU7S7N0UtJqE8J58NUzS9Of0jQJAVmyP3yiidREoHbe8Bou70X33cPcOtYud7PQ/QBUgKe+J5Bx9fGLziq8laGSjzPGjYT9p0xdEbrqIcK+BIF41/mOLvVEqiki5ev2VszhHplTPSVoYnFHFFvEzTuqQZPtg8/p2v6vZJJFz6/YG2FIV3f0kW4D03wYlKBd/4cm/PdvO7ZOMI5ahu3K7rzdHxBeDIiq2vw51R+BvqrxV28eMqIUQCaIeuqMTe46XrGadKN/jUkAgDiIG3gbqgOzFyCgnfXGUw2ZFpa7yvLwzutOEoOUCPKyeYGGTWDM06EKb+olmFt6YJ6Az8Pigp8c2IB6JjygmcxuNNjDzkqqT4HMM+6eJY7UVmYXqdMbCfrVaa1484udlmziiiZyxBRL83M2oByGq8nKDbaIGEmUEJ3A14kIZ8zQoQhC8qt6itYy9y6miUkjjIsTi0ZBttie/dR5EHEFaBDLhR8BKyA7myt0IMqLTyhQoRf7YEvEXuuzlrACoKF17f5lqwHvFpD8skLnOS9nHOj5Rm5+8i8aGwqQQMvIw6oleIVBbPWRsnByp9Aio6qXxuZloGrOoswEocu8jI
- nDnNsCaB
- +CrjEjaCgo7cnBdIagtOtzW1NEkmVR0UEMw42p2N/I8Sca5MDixqsr+dDUmtnw9qcCju3shTC81+wCh3wGosto1xerg5VXKX2/3UXsj9oLHtqwpja0gVeIp6jSQkVGwekL6UCx3RK+9sauWaergfJeivjvVNNgdQ0FEmTYd1baY0P9uiIcRLrP/Bmjm0IPQQUsS8KZZ2Uk82IENIDnGOQelqQaM08xaErzaupRqcNaXhF3+iE8C2ru9qx+gvsqKg57cN2k9B7Ht6sNsW//jC2cYwpt9O8Ktpsji9wpOsqKDpS7FPYSnzCtlUNf5YWT09daCO2zZvOnBBn293FOMW2d09cF3cwYvyboLjydkw1BTPlXYPujM9aW0y7kmSGI43eo4+jDtQE7wlHEdgS2sjytmPlI9ljHi7CRZGxHCBwQQ+FY61UHIHi4Ave9rQJ/q8qF6l06aFXFfKfzDU4XoS6d77fNfDcAMaydih9BoFOjaOLQXDhLd/aA4Ral1NaBDO4iHU8FOchwOIlON5CgFqxFT8omuzZ0aAt5LSw
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756988688-861571
+X-HE-Meta: U2FsdGVkX191Gb4zOp8rq9eR1G0+x414b3b0fXu4TUfTDAPHHWQwN6Ax+z3uaChel6XZpANtnuJeTt9nEKpLgvrVe2nfOFKLs0+ljISjqYtAc4gVNdu/We9EZgircdW34hDz56pDSACYQuHsguP0EuH3zVocmRkwGRS6HOcyM5mK4TE0O/oobskzBOWHIFfaDjdzbkT/Xfl2Ma65+3epoYKvd1nuVh/pTltA1AG5A9PQU1IQqEqayvInDl/+PL9TbA/6IOmI/o+tziN/MTyeSdA64H6aKKgfVSLm9J1vY5L0LkGf+7WtSqVvKAORZXUqRtgIZ8YPLRe4DObU95dccq0GIWFXB8t9Y1F44o5tx0AHj9iQJSQb3/WwoKy9iqeCTPE7NrphbxCWy+EZ20A5oP3jodE0EiA8fJMS+6hICX15i7EXZT1cudbpFMX1b6KDG1CufzSNKFncemKssd1M/e0LJbqR8U7Tbs8iLJnJmVft+1e+gqFZ1YeJ9f5FMxAJeLxHYre/wflGM9NMuUvZ27GYG1vn3PyOMySyZdux7+S8glDSrQGNDmVlsLs36L+r94IH+8yn/baucyAiuq8slXumaheFE7trmFKSG4o4sp/ALgTqHfCuuofITw5CiMpW3EixiNpwGfADqgc41zgWxQECV4IPtLEsoJrPxYAqJiYdixfRI27TuKFMTWzHMQdT/12/K4jFE4rE6WyE2lav0yOMYbrnJrAewMTWlTK1x3X/AuctrXQQpys6mtYrKc8w4XnTCJI5AXwmyZGEC1z1owkkBWAAU6Lei/G4+tbgPABrexrIS6NiXFAe2rOnPZJVB4N1oDDAmWCA6kx0HbLEw740qdlREzlKpeX5R2mj0rVWmY2b7mJ5WsFNx+m2W7ly
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,32 +91,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 03-09-25 15:02:34, Liam R. Howlett wrote:
-> * Michal Hocko <mhocko@suse.com> [250903 08:58]:
-> > On Wed 03-09-25 17:27:29, zhongjinji wrote:
-[...]
-> mmu_notifier_release(mm) is called early in the exit_mmap() path should
-> cause the mmu notifiers to be non-blocking (according to the comment in
-> v6.0 source of exit_mmap [1].
-
-I am not sure I follow you here. How does this relate to the actual
-direction of the address space freeing?
-
-> > > Signed-off-by: zhongjinji <zhongjinji@honor.com>
+> On Wed 03-09-25 17:27:29, zhongjinji wrote:
+> > Although the oom_reaper is delayed and it gives the oom victim chance to
+> > clean up its address space this might take a while especially for
+> > processes with a large address space footprint. In those cases
+> > oom_reaper might start racing with the dying task and compete for shared
+> > resources - e.g. page table lock contention has been observed.
 > > 
-> > Anyway, the change on its own makes sense to me
-> > Acked-by: Michal Hocko <mhocko@suse.com>
+> > Reduce those races by reaping the oom victim from the other end of the
+> > address space.
 > > 
-> > Thanks for working on the changelog improvements.
+> > It is also a significant improvement for process_mrelease(). When a process
+> > is killed, process_mrelease is used to reap the killed process and often
+> > runs concurrently with the dying task. The test data shows that after
+> > applying the patch, lock contention is greatly reduced during the procedure
+> > of reaping the killed process.
 > 
-> [1]. https://elixir.bootlin.com/linux/v6.0.19/source/mm/mmap.c#L3089
+> Thank you this is much better!
 > 
-> ...
+> > Without the patch:
+> > |--99.74%-- oom_reaper
+> > |  |--76.67%-- unmap_page_range
+> > |  |  |--33.70%-- __pte_offset_map_lock
+> > |  |  |  |--98.46%-- _raw_spin_lock
+> > |  |  |--27.61%-- free_swap_and_cache_nr
+> > |  |  |--16.40%-- folio_remove_rmap_ptes
+> > |  |  |--12.25%-- tlb_flush_mmu
+> > |  |--12.61%-- tlb_finish_mmu
+> > 
+> > With the patch:
+> > |--98.84%-- oom_reaper
+> > |  |--53.45%-- unmap_page_range
+> > |  |  |--24.29%-- [hit in function]
+> > |  |  |--48.06%-- folio_remove_rmap_ptes
+> > |  |  |--17.99%-- tlb_flush_mmu
+> > |  |  |--1.72%-- __pte_offset_map_lock
+> > |  |--30.43%-- tlb_finish_mmu
 > 
-> Thanks,
-> Liam
+> Just curious. Do I read this correctly that the overall speedup is
+> mostly eaten by contention over tlb_finish_mmu?
 
--- 
-Michal Hocko
-SUSE Labs
+Here is a more detailed perf report, which includes the execution times
+of some important functions. I believe it will address your concerns.
+
+tlb_flush_mmu and tlb_finish_mmu perform similar tasks; they both mainly
+call free_pages_and_swap_cache, and its execution time is related to the
+number of anonymous pages being reclaimed.
+
+In previous tests, the pte spinlock contention was so obvious that I
+overlooked other issues.
+
+Without the patch
+|--99.50%-- oom_reaper
+|    |--0.50%-- [hit in function]
+|    |--71.06%-- unmap_page_range
+|    |    |--41.75%-- __pte_offset_map_lock
+|    |    |--23.23%-- folio_remove_rmap_ptes
+|    |    |--20.34%-- tlb_flush_mmu
+|    |    |           free_pages_and_swap_cache
+|    |    |--2.23%-- folio_mark_accessed
+|    |    |--1.19%-- free_swap_and_cache_nr
+|    |    |--1.13%-- __tlb_remove_folio_pages
+|    |    |--0.76%-- _raw_spin_lock
+|    |--16.02%-- tlb_finish_mmu
+|    |    |--26.08%-- [hit in function]
+|    |    |--72.97%-- free_pages_and_swap_cache
+|    |    |--0.67%-- free_pages
+|    |--2.27%-- folio_remove_rmap_ptes
+|    |--1.54%-- __tlb_remove_folio_pages
+|    |    |--83.47%-- [hit in function]
+|    |--0.51%-- __pte_offset_map_lock
+
+Period (ms)           Symbol
+79.180156             oom_reaper
+56.321241             unmap_page_range
+23.891714             __pte_offset_map_lock
+20.711614             free_pages_and_swap_cache
+12.831778             tlb_finish_mmu
+11.443282             tlb_flush_mmu
+
+With the patch
+|--99.54%-- oom_reaper
+|    |--0.29%-- [hit in function]
+|    |--57.91%-- unmap_page_range
+|    |    |--20.42%-- [hit in function]
+|    |    |--53.35%-- folio_remove_rmap_ptes
+|    |    |    |--5.85%-- [hit in function]
+|    |    |--10.49%-- __pte_offset_map_lock
+|    |    |    |--5.17%-- [hit in function]
+|    |    |--8.40%-- tlb_flush_mmu
+|    |    |--2.35%-- _raw_spin_lock
+|    |    |--1.89%-- folio_mark_accessed
+|    |    |--1.64%-- __tlb_remove_folio_pages
+|    |    |    |--57.95%-- [hit in function]
+|    |--36.34%-- tlb_finish_mmu
+|    |    |--14.70%-- [hit in function]
+|    |    |--84.85%-- free_pages_and_swap_cache
+|    |    |    |--2.32%-- [hit in function]
+|    |    |--0.37%-- free_pages
+|    |     --0.08%-- free_unref_page
+|    |--1.94%-- folio_remove_rmap_ptes
+|    |--1.68%-- __tlb_remove_folio_pages
+|    |--0.93%-- __pte_offset_map_lock
+|    |--0.43%-- folio_mark_accessed
+
+Period (ms)           Symbol
+49.580521             oom_reaper
+28.781660             unmap_page_range
+18.105898             tlb_finish_mmu
+17.688397             free_pages_and_swap_cache
+ 3.471721             __pte_offset_map_lock
+ 2.412970             tlb_flush_mmu
+
+
+> > Signed-off-by: zhongjinji <zhongjinji@honor.com>
+> 
+> Anyway, the change on its own makes sense to me
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> 
+> Thanks for working on the changelog improvements.
 
