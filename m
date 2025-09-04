@@ -4,101 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD3C6CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C710CA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 07:14:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 469F98E0010; Thu,  4 Sep 2025 03:10:08 -0400 (EDT)
+	id BEE428E0009; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 441868E0002; Thu,  4 Sep 2025 03:10:08 -0400 (EDT)
+	id B9F398E0002; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 331098E0010; Thu,  4 Sep 2025 03:10:08 -0400 (EDT)
+	id AB4E28E0009; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CB698E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:10:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B61FD13BB89
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:10:07 +0000 (UTC)
-X-FDA: 83850693654.14.C752457
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 96B198E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:14:33 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2ADE95C24B
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:14:33 +0000 (UTC)
+X-FDA: 83850704826.17.F7BA83D
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7AD6F10000C
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:10:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 10020A0009
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:14:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf14.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756969805; a=rsa-sha256;
-	cv=none;
-	b=RsVivzzJ2QXuRQjrOXE161q3eb65A5Ak7l9r45zqHIJc/rrfRzs1IW2OvLR3wBS2XwWbRU
-	WODSYSfIkpqCNfdZnQiOBb8JYmgpYRaYyabR7k0tiqZcrJpwQB/ZaMPVKuhYHqG6mr4jfp
-	A6nbzebQvTFYrXa/2MTNP0Jm79+EpC4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf14.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+	spf=pass (imf25.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756969805;
+	s=arc-20220608; t=1756970071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=28HQS0dhxfb3EtDkhwzavnP+Qfq1q2LO7iNoRzqKpY4=;
-	b=NPmtQlu0zbze1j80OFiASK9YBfR+RHx4ZqUTcUbHPBnbMUSg2TRL7W9HBFBk2vUWUVhClT
-	RKed/WQ9iJS4DrnLbgI7p1pTdnKLN2AbEgyquW7wyW0C6kV8/Hd3HJ9tMNWvvC7sGVxlfH
-	G6+b6vhqmnPicVU8B8GOEZx6l+MFlEA=
+	bh=yQFtSGmSmsUqUdi1kJEQZ5Ac2b9AfyFnN7ZWwP46VX8=;
+	b=5qFuW5r/xJ3IrzHAeGbgZhqXk8ECsviJr+V4xdgqLfC/oGB4StZGnD0ccnv1xo+0MRtxxZ
+	nXx2nDKVqvDbY0RyVk3eSZbuvDiBvc4j1lhB/bDoJh9HQqTy0XbRZsWWCXcbX/LKzfdnEQ
+	ZnhpfLqex5p0G4LSWPwrOiexY16aVwc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu;
+	dmarc=pass (policy=quarantine) header.from=csgroup.eu
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756970071; a=rsa-sha256;
+	cv=none;
+	b=KSMXuq4dzHXSE73sK9EcfaeOgjX0a2J8UzpW3jIocQlZfBEN4pwooylHfCw2xiNkLn8tJI
+	YorbCLJprcq89moD6oF9MrT0LLe092CUbWVbHZcCTwAMy22/PuPlE0nfqmG7/mNWeWuu0i
+	w9CLv9nNVFb2jzf3RQEfwyRnIz4lY7c=
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cHVwp4xsdz9sVh;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4cHW1x3QJkz9sVl;
+	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id WEv7Y2YJZkgd; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+	with ESMTP id i2kdusz8gaKW; Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHVwp4BWrz9sVk;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHW1x2g6Bz9sVk;
+	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 784388B764;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4512F8B764;
+	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id JZAEJLwTYdG3; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+	with ESMTP id 3J62ZvdVNPwi; Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
 Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 23FBF8B763;
-	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
-Message-ID: <3b333f4e-9817-4a5b-bf0a-f8a9d33575e9@csgroup.eu>
-Date: Thu, 4 Sep 2025 09:10:01 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 220558B763;
+	Thu,  4 Sep 2025 09:14:29 +0200 (CEST)
+Message-ID: <8c8fa4e8-0c81-4697-b620-696adf8e50e0@csgroup.eu>
+Date: Thu, 4 Sep 2025 09:14:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/7] powerpc: Stop calling page_address() in
- free_pages()
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-References: <20250903185921.1785167-1-vishal.moola@gmail.com>
- <20250903185921.1785167-6-vishal.moola@gmail.com>
+Subject: Re: Question: a module for wiping userspace RAM before
+ shutdown/reboot/halt
+To: Kamil Aronowski <kamil.aronowski@3mdeb.com>,
+ Danill Klimuk <daniil.klimuk@3mdeb.com>, linux-modules@vger.kernel.org,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <bfe72929-ba4c-4732-9f80-25cc7b95a0c8@3mdeb.com>
+ <eb88e58f-1515-4f51-8102-79cd3c20fea5@3mdeb.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Language: fr-FR
-In-Reply-To: <20250903185921.1785167-6-vishal.moola@gmail.com>
+In-Reply-To: <eb88e58f-1515-4f51-8102-79cd3c20fea5@3mdeb.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 10020A0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7AD6F10000C
-X-Stat-Signature: 8qifambfoimbj68hhfn3c8hqgbfjcayt
-X-HE-Tag: 1756969805-551640
-X-HE-Meta: U2FsdGVkX1+Mdk6hjvDmO/5S+7Vv6VPl/2L5wP0uXWFL5MNiekjyL64QMqVbqMJxCfP8g/STEGyNwIk9DMepnhe2fv90UtA0DoI2EGmIZEQnx0KYRBSZiy1hVLruuWq93SG6qeSLe8c6f8oKb6O7VD5b6BCUvFmaDVEElE7lPlQpj21a0YB322JmLlWim9pBwbnBAy4HeHNKQiMuhIGhYpSzjPR8N+jugnbMTjMKSBtroZA+u6/4JZsbmh7tPvNJAqVpPr2qBMbNjXSDlLxfVJ+fkSlmw+RJHZmHaEPNNop+G9oZRbib+pekrXZiTe8dSCv+8po9+pCxz8U9WajqbMUzr8JyLqZlI++YEXXpkVyAfBQq6AIa6xHeLwsvj7CbEWErywwjJ+bNpZGPcD10lAD9vonxWxu2gEpjhQsf29QoJBJJJZu2tUjz5Cj2d1n58XQIcKIjWlE21CCAbpmiJkzSEUadjJwDTBivJ996tPJ1qv7c4L7sVXskGAFXuTjUMOrjrLsLe3q8fSs2156caxZnp5XINTgY5z238sCca/O589/nIhDEozfSXNt1u5cVekIiVHqglNBImotiS8l4cnx3wz3IjRtt2FMTOdArowHDAG72csgjPYwkhPIVq/w6g7/d+EAJ/B6AXkiHTFLIKmnzBbPbZ+tAWXaztXhFaEegx+3MMzeVlIeN+FZgP1f2jIljMwLTTffsMq01rDG1ntXVQ72ZhYDiQQlDpuWSbs6nH7Q4C9eENQdnkBLsAkVnEKI1H3Xly+9Ohlnfe08/TeVgiRZZg3HMezHomDH1VmgHh7ji9WxWVsF52dRICHJJ1SSpES1gkA1eFZYwWRs+VyVNmSUpbfFgEEjL9quwsGBfcBUJ8kJbVhXGBlwHqqX1rQXFrXlF1y6ZSMDxw8rUuT5rAC3nDhLjslUfDbMt9HOqqz1TB6eO3C1C93sRV0/usM8OnisMAkwUWk5XDeU
- ZObQHwRH
- Z021970tZVL3jDXXh8kfSgVMZEtSYE+XP53pH4lWNY5GK2g2KHu5tseESGeXGT39WnADvV25XHZjYLH+kU7SdEaXTGyjO/pHYFHhSzVN2MmVR1Q/ATQwCGI7VVTmE26WdX6XlVcaqAUajp+5LqloZagxDQgXoOXHc+1Dpdrm7RPdXVn+NlIRIMRgEgAEy0Bsmz98V4gTod8/vtOpCQymfaureMxRJ54fv+yZwgli9TShVLt/prvfwGh0lXnNu1JJqjAtUT1cXHySHU/hI6+Aq7HxBfBJva5QNNppdcxwU0rbXdouhDMS7A0ZoYSOWTP3lPOnFQoGpqI0boPocCisvug/MIkyphUFCY3rw
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Stat-Signature: rkpof46pwpgbybdirfpwfgbt8bxewwur
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756970070-555800
+X-HE-Meta: U2FsdGVkX1+EmHWTNzjUQKUhTHcV/Rl6XVxVsoA/PER7lrQECwtStRUvbba3WWNcFlD7pTNjLXVU+VfEH4aZsGUtNZWNrYmhIIANd2roF3ZX2OK+0cHUWhA81lX4gAqOlgFbfwi/x6yHFBaw15cgm+Y11zlDrZuU7gyHWoRoksVUeyn6NIsVgI3ztyHLon1F3tas3ymQNwTtqbPOkNOPzeejeb9BAqj/Ec4N+M12pedNIycBhnW0W07Pti6yegswcIgrIFp16NgoINAgTGwM0XFGgThkJBUNGUm4IHBaDJ8iT4ydx8E5ftuYCPaxZtAvA1Y9J8NvVW8A0SHGqz2Q5rqYEYIWN6Mt1KCiudHWsLxKsP3JEVdmWmTw9YchSLHG7yeuQBHR3gX5ThdBdq1pkRJkSHyzFRMm600/Imv3xmr+9dTq8h6AP6WgVaJQVzeuXt5tleyPgDGSkjXuZghiagZJ1UhQ5+oNO3G8KjAvEd5XQGANoWRWwk4i2mMB9W+8uKOWfzCzq1SI1U2eLINO47QCZwJo/Hk6NljxDvYU/WJ2LCBic9DKqp1KZJ2vCZq1ZA59HvVWX0SzcfYQDnmS33TvwvVwS8FVEB6/eGPlbfmDKT80tWCR7qPSL7Slh2gjbucq9lJsOgJB7g05/retawiaga4c+v5ngrQtYKCADt0oGocoiN/zvdcOKM9eRm+J0dN+bQTR3E+bqc/VCo31pVtaZX7kEtumZYguL6Uo7N2Dzckmv58jXeCaO+JxnPXuYQuGWUXOQXLeVqUcre6lyB/cuq+vE6wvc6BY9rHiVSArYZyC5cFZBejIIJFXDIbrB9wFl+Og0WK4WD4BXrQ3WHfGuhcUeGLJV9FsVHYrDbDfGM+LA7PXYhpKXemoqhMUOMq+fIOW0VJ1LKY0Mu6r/1rCTy1WwIiVDeHAjm+2rPICa8TqVgF0i4HW/8EvuHd/AsVzTFmAdJNSS3AzRFk
+ BDv1IWLg
+ bGPAF+ZwpEY3lmslhWrQOfpJhK7AmVVy9lPnGg/s+d80st1F32yU4eGU2vPRFo6SYPCC+8grDS+i48lLZYr02W1DSbsbI6KHqwr4o/3DMS4g0S3YcyBKNbdBpEzfYZ/OOnuWZUzURMVGj+s+1kNP9MflVSGVJfNZ90Hwug69WWOk4z8lz0qYcWByIgFd7HLo0AILtuYsRKKOiD4pf2ViNvYPMLEH5Uy+Id5EmYxkmd/veDNfgqvS++nRlcz9Lceyw+AR/Lqr9qxxdpQc/OJb/8fX/8FpkfFzDSZojSrYSgvMx5SpTEl1aVhe2BS8qzmKuJuva6TTYTTkgCcQ8jdLUC9VHRspdDOvrde+QLNPvVFvp3Z0=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000035, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,33 +101,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
++mm list
 
+Hi Kamil,
 
-Le 03/09/2025 à 20:59, Vishal Moola (Oracle) a écrit :
-> free_pages() should be used when we only have a virtual address. We
-> should call __free_pages() directly on our page instead.
+Le 21/08/2025 à 14:13, Kamil Aronowski a écrit :
+> Recently, we evaluated the effectiveness of the `init_on_free`
+> mechanism, particularly in the context of preserving privacy by
+> clearing RAM for individuals with high operational security
+> requirements.
 > 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-> ---
->   arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> As mentioned
+> (https://lore.kernel.org/all/e71bd62c-5ba7-4363-9af1- 
+> d9c9de394a54@3mdeb.com/),
+> we'd like to ensure that our clients do not have their confidential
+> data leaked after their session has ended with a shutdown/reboot/halt.
 > 
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> index be523e5fe9c5..73977dbabcf2 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -780,7 +780,7 @@ static void __meminit free_vmemmap_pages(struct page *page,
->   		while (nr_pages--)
->   			free_reserved_page(page++);
->   	} else
-> -		free_pages((unsigned long)page_address(page), order);
-> +		__free_pages(page, order);
->   }
->   
->   static void __meminit remove_pte_table(pte_t *pte_start, unsigned long addr,
+> In short, `init_on_free` appears to wipe the LUKS secret key
+> successfully, but some non-kernel space snippets remain in memory.
+> Some tests have been performed by dumping memory after booting Debian
+> 13 (with `init_on_free` enabled) and then rebooting to our custom EFI
+> memory dumping application.  For instance, the mentions of
+> `apparmor_parser`, XKB, udev, or systemd units have been found in the
+> memory dump:
+> 
+> ```
+> audit: type=1400 audit(1755156467.556:2): apparmor="STATUS" 
+> operation="profile_load" profile="unconfined" name="Discord" pid=967 
+> comm="apparmor_parser"r"
+> [...]
+> 
+> partial alphanumeric_keys
+> xkb_symbols "tib_asciinum" {
+>      include "cn(tib)"
+>      name[Group1]= "Tibetan (with ASCII numerals)";
+>      key <AE01> { [ 1, 0x1000f21, 0x1000f04, 0x1000f76 ] }; # 1
+> [...]
+> 
+> I:10114000
+> E:ID_MM_CANDIDATE=1
+> S:disk/by-id/dm-uuid-CRYPT-LUKS2-00b4b79c209a4dcfadf37e310778f583- 
+> sda3_crypt
+> [...]
+> 
+> [Unit]
+> Description=Switch Root
+> AssertPathExists=/etc/initrd-release
+> DefaultDependencies=no
+> Wants=initrd-switch-root.service
+> Before=initrd-switch-root.service
+> AllowIsolate=yes
+> Wants=initrd-udevadm-cleanup-db.service initrd-root-fs.target initrd- 
+> fs.target systemd-journald.service initrd-cleanup.service
+> After=initrd-udevadm-cleanup-db.service initrd-root-fs.target initrd- 
+> fs.target emergency.service emergency.target initrd-cleanup.service
+> [...]
+> ```
+> 
+> Is this the expected behavior, a bug, or a misconfiguration on our
+> end?
+> 
+> If it is indeed a bug, we'd be happy to cooperate on improving the
+> `init_on_free` mechanism. If it is expected behavior than we will
+> consider wiping userspace memory some other way, e.g. by implementing
+> a separate Linux Kernel module as described in the previous email
+> (https://lore.kernel.org/all/e71bd62c-5ba7-4363-9af1- 
+> d9c9de394a54@3mdeb.com/).
+> 
 
+This topic seems to be a memory management topic, not a modules topic.
+
+As I mentionned already in this thread, Linux memory management topics 
+should be addressed to linux-mm@kvack.org
+
+Christophe
 
