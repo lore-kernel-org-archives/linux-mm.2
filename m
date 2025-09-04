@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 291FACA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 11:07:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 838C5CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 11:09:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75FF18E0006; Thu,  4 Sep 2025 07:07:10 -0400 (EDT)
+	id DA64B8E0002; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 710328E0002; Thu,  4 Sep 2025 07:07:10 -0400 (EDT)
+	id D7DC38E0001; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 626F88E0006; Thu,  4 Sep 2025 07:07:10 -0400 (EDT)
+	id CBA1D8E0002; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DA8C8E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:07:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11EEC113FDA
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:07:10 +0000 (UTC)
-X-FDA: 83851291020.09.FE9652F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B70618E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D92BC0125
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:09:11 +0000 (UTC)
+X-FDA: 83851296102.19.741E426
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 56B8720005
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:07:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8F8EA10001B
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:09:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	spf=pass (imf05.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756984149; a=rsa-sha256;
+	cv=none;
+	b=2byue7wyz9KolVXyaxvcB2VvgsknmG6CSy/YZhvd0Sob4afwP2JXOEa/JLjxoLETEplolK
+	39gQHB+bQP7KC5zvlwQiL8xFgsA13DhVvPE9O/T43FB6Z4bN54iBM5DrmVe7C6edypSqcG
+	6NXITpWC/KMqNsjU7y8IGm5PtgIUtk8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756984028;
+	s=arc-20220608; t=1756984149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d2LNIdr0IxFyRQU+JgR1Du2sRS2O22SqJsiSsupwl7U=;
-	b=gGQvOtgyqDCHSRwKfjVgFzdshw8B6P/W72O+VCU6mRjS1oOZgJeGfst+mvGQj5zc/5bWx4
-	HO3uTdKJHGFrpOGKGUkiu3Fn3gqFRpP995fPgB+nKiKSEqlfDi9WqRS1G1qIOXoIY2ogud
-	Cb3AhOtIoIclunhqa9/1rbPsh0qyEf4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756984028; a=rsa-sha256;
-	cv=none;
-	b=RKo+pMEm673+31tQSz8luXwmw3iV2bsFXU4YMPBK4XbgLvufPUZlHE4IGneltvZ1R+RWwR
-	8r7uuqLhAUFrNFOosbrJIREF6ZLMsmdV5LsXtUCmWs50KhWUMd2EXqb2RkPRpaPCKfN1kd
-	bRNjXNksDX/VKv5C4WJUu0Ayq/Au3T0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf13.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+	bh=oujTjuUbBnzxFvoPRkm5vktMDYZXjKawZfKYSeTKjOg=;
+	b=CloG5l+FFLrG8RK86pbFU2gflFQn3w/1x9lD9YmDngYcA1dW8cvsEqskvmqx7CS4bTpU70
+	zcsyOSPFQaI+K1LKvpwiwLE4Zc4NRmVWYjfNDq8ksE9XdUGuU0j+Gs35OPd6IhOSjC326w
+	H/MOtqxqI6iokKcr2LcnBN0CWXW5a+0=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E6A4D1756;
-	Thu,  4 Sep 2025 04:06:58 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A9691756;
+	Thu,  4 Sep 2025 04:09:00 -0700 (PDT)
 Received: from [10.1.37.179] (XHFQ2J9959.cambridge.arm.com [10.1.37.179])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 754B23F6A8;
-	Thu,  4 Sep 2025 04:07:05 -0700 (PDT)
-Message-ID: <a2ab7671-093d-4b7d-b0a2-2a6f73bb80e4@arm.com>
-Date: Thu, 4 Sep 2025 12:07:04 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 669B33F6A8;
+	Thu,  4 Sep 2025 04:09:06 -0700 (PDT)
+Message-ID: <d6e6b96e-1bee-4af0-9343-9fb365beb4b3@arm.com>
+Date: Thu, 4 Sep 2025 12:09:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/6] arm64: cpufeature: add AmpereOne to BBML2 allow
- list
+Subject: Re: [PATCH v7 3/6] arm64: mm: support large block mapping when
+ rodata=full
 Content-Language: en-GB
-To: Yang Shi <yang@os.amperecomputing.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@redhat.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Ard Biesheuvel <ardb@kernel.org>, Dev Jain <dev.jain@arm.com>,
- scott@os.amperecomputing.com, cl@gentwo.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Yang Shi <yang@os.amperecomputing.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, scott@os.amperecomputing.com, cl@gentwo.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <20250829115250.2395585-3-ryan.roberts@arm.com>
- <b3f4e006-6101-496f-a4a5-13474470109d@os.amperecomputing.com>
+ <20250829115250.2395585-4-ryan.roberts@arm.com> <aLiTzJ6E-YBIYuGo@arm.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <b3f4e006-6101-496f-a4a5-13474470109d@os.amperecomputing.com>
+In-Reply-To: <aLiTzJ6E-YBIYuGo@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8F8EA10001B
+X-Stat-Signature: am7cw5xfskx1qkoh1giikneuny19jdxs
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 56B8720005
-X-Stat-Signature: 6zy3498h9ypuo57aozr7xuc81zfexif6
-X-HE-Tag: 1756984028-730497
-X-HE-Meta: U2FsdGVkX18OPIqvzjEOPHSU02ThxONrmxxfOMTEw7wdTJLkeoFP4C7Be31WP9y2sCEMysLexscC5S3Hvgi6FE8GCIgotWFuUNYKNZEC60hRYBU35oB2BFrynQ79I/x8zXGiJCKgZ3zatFkN5qrlQKs58aVY7uhmyPmXjLLlHEfmufk2zEQqG57ASK/FP42p7BBXdgdQjlNyE49xS9l1YXkOvgp501eHCIw58b2nOq1otDzh7tA+bhvEC2cMFvSek6xCo+A9Hkwl9DDQBbPfF7wNB6Rae91tVFesXGZy0Lrqa5jeReO3/UBSd6pY1vvrAJgUc9/wndazkN0A0HLvLYJLHQg0k3yImuet1LqS6JsvwuR8VUCXtuHVeo73huzQ02lmFSYUsRZbXn8VEs5y1qdVj01tZljP7qVGfffvq1c21HuSVjYxVVjFO6zUuKoYqnNqOgdDNVrbL8ySWySDGDNqEojGlUAKni1BoSmDaGdcVLW1noYcTwdieU0FLrZbZ6TZE1NIYNuEQVcZlDvrGk6VbHeAA5Alob/I8NTYdagzd1buBFQgdTmHC7b3xmYPo0okhpuIX/v3OkudR0R7ZhpMUyjdpjhjEf1Tg3XRzXCiVgPf9K2R9tj/4etc/ZUa3mki6zdDx1GbwRvNxYoVBD6zOd13s9mLn3x6ONV8Dol3oPx3wlQXa4dZXwbKWjFpsy95FJ08LZdnYxxoOwqSAvIt/5+Pv+k+f+/AMINbVQs/fsDuPsWQdtR+ETb1oD0V1+vikgn3DRkaCkiRsZsI2qKQ8ZHyhcx/a54Wqyvs+sktcxOX2cXk1NSH7X2OP1YDq74ySX3h11Ps1gniQuRHmKs5z/8EVPuxzPHfd9RxG7KzJsL1bYxpTi2tKAMXTc+rdKamf4ofBU9flZ20ymbR5vXTiavcIQ9ngB0GOuxypRcrf0OwnVRbC+6Fed3VXtwkdVjjh4ifkjbwjUNVUi5
- vTB1lCOC
- FPGBfdQSTXkFAlFtmC7D4AwhGbJf8IepMbJCB5qpYUuyIsaLj2PUh1VaqBFQkjTHHvldi91XZ2yWz8O/h6jaQ3rlcPsj3fjrfjD1UoEDkamopsgcRn9rLSpMAaAA7LHMkTPYbREuxghOc6rceDlOu4cdZEVXrBocbFUg5UN04dm2/rybxLItlyQGUB4ZKQBbXLemLivmWEGdytxc62vVlh0BxBbi35HuHUoM771dA4OH797EmVtvwnqHMMTXDf4G349ZbiDyAxSxbS2RYJmi/Uy0BRABcoS6jXo/7bqyfX80PK1P2zXM44J1sIhGhzvqu1B+i3Mr3PX91UEEo9upT9x7P+9w7Z3DJAdGR
+X-HE-Tag: 1756984149-3228
+X-HE-Meta: U2FsdGVkX19jkxAwRO/44q56aGCr+G2oISOD/sU82ulgLI4mnt9ljDlaI+lPF38gA02Yd2YP1u+aMVbdY6vH4QLprFiGNrTdwKmpT7SXe2S3RJ5Lbx1p0mVDaj1mxxHp2ZLWZf63lNT0hd+fZc94WME4IdhpRbcw5kFE7YpzQ9he7daDKNcIUfL/gqn3q97pPUAoZtqEEx5iABwfa4RhuYMCbkZLkNVAvlUphQVDbDHopwoC9tq+jl44CxbPOEInB8pg7QgAArQvknOXmwGKD0dIfKBf0zPzvhzwjkdhUFqA/Ni8g73QApLgWe5nY8yTCPgabKRla07X/VJpHweEMzAJEKPqhhTjTqDezlwuas2psOz6H+MZGnvvleqxbcdiuiWr2picKguqYGG29K0mGzcPqbi8eAl77+jFCk9wGtJpkErBwdNYIHy3XhN5coNFmf//KzpA9pjYvpql+iZfXM8R7HzMkUS1mqXiBvqqK8PB5ERLDUzzc+2z2bWdWCM60rqy4flQQpAwkiyOhcjZvxv0hEJiYz2zAVXHith3jYaTLYnxwOIMWRBKNZUSFgMk3srahv/pGYQrkxC9ZMFGsglPi4WAN9iwOQBp6NrNunVRqj7kpe1/NwWlj05TR0W6GL8ATkRB2TMAnWOlfnzBeuWbD0X8E3Cnl47Gbl19FSFXGpI3bOcc/RSLBZ30uK4aWwI818KGuS+P1X9xCwcJN3HxNIS7bcejUrz8ppCCOejT5fgWB5q6gWLdZSBrehIn5YMNZw7FZz4bxx3OMamROn2G5+sdfAx5dgKKPnQrqzyV2F7lORLcM1/oDZxa51knDAa6Zhzxesac6Iv9JTbDmoqJhMcLGoIcNT4R6RwNelJfyNHddncGKj2qPE/Fn/Zibg1Nz7Ei0QIycxDHDeGlkwzkWyK5fDKXPlvbNKeOhGRYRnarqiLd/rjX4mQRpdUIMGAdrddW6reo1oIlyU7
+ oU5lG10J
+ qyBwXVrwY2+zfjd/vFFGs0xTrV5pBy1udXYShlIPID0tzr82ahZJDZzaiwKSk0pWEYwDR7CUfjMozeBKpYVfONGTwTI/YRzMFu+p9dErsSP0iRBVywJWfplR+mTcpkfHzRIquDwegIlxpv5//RZxeYJnIaEnQ20xJsiiz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,43 +92,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29/08/2025 23:08, Yang Shi wrote:
+On 03/09/2025 20:15, Catalin Marinas wrote:
+> On Fri, Aug 29, 2025 at 12:52:44PM +0100, Ryan Roberts wrote:
+>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>> index 34e5d78af076..114b88216b0c 100644
+>> --- a/arch/arm64/mm/mmu.c
+>> +++ b/arch/arm64/mm/mmu.c
+>> @@ -481,6 +481,8 @@ void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
+>>  			     int flags);
+>>  #endif
+>>  
+>> +#define INVALID_PHYS_ADDR	-1
 > 
-> 
-> On 8/29/25 4:52 AM, Ryan Roberts wrote:
->> From: Yang Shi <yang@os.amperecomputing.com>
->>
->> AmpereOne supports BBML2 without conflict abort, add to the allow list.
->>
->> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
->> Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
->> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-> 
-> I saw Catalin gave Reviewed-by to v6 of this patch, I think we can keep it.
+> Nitpick: (-1UL) (or (-1ULL), KVM_PHYS_INVALID is defined as the latter).
 
-Sorry I missed that. I see Catalin and Rb'ed again.
+Fair. Will fix.
 
 > 
-> Yang
+> Otherwise the patch looks fine.
 > 
->> ---
->>   arch/arm64/kernel/cpufeature.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
->> index 9ad065f15f1d..b93f4ee57176 100644
->> --- a/arch/arm64/kernel/cpufeature.c
->> +++ b/arch/arm64/kernel/cpufeature.c
->> @@ -2234,6 +2234,8 @@ static bool has_bbml2_noabort(const struct
->> arm64_cpu_capabilities *caps, int sco
->>       static const struct midr_range supports_bbml2_noabort_list[] = {
->>           MIDR_REV_RANGE(MIDR_CORTEX_X4, 0, 3, 0xf),
->>           MIDR_REV_RANGE(MIDR_NEOVERSE_V3, 0, 2, 0xf),
->> +        MIDR_ALL_VERSIONS(MIDR_AMPERE1),
->> +        MIDR_ALL_VERSIONS(MIDR_AMPERE1A),
->>           {}
->>       };
->>   
-> 
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
+Cheers! But I think we need to solve the issue where code is ignoring the error
+code problem that Dev raised before merging this.
 
