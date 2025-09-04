@@ -4,109 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 393FCCA1015
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 02:07:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D70CCA1010
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 02:45:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7639E6B0007; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
+	id 5BEFC8E0008; Wed,  3 Sep 2025 22:45:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 714AB8E000A; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
+	id 56F558E0001; Wed,  3 Sep 2025 22:45:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 602808E0001; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
+	id 45DC98E0008; Wed,  3 Sep 2025 22:45:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 49F436B0007
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DBDBA1409B2
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:07:24 +0000 (UTC)
-X-FDA: 83849930808.28.097933B
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2EBDD4000A
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:07:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nZNNTpZQ;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E4658E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 22:45:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0B18BC5BF
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:45:22 +0000 (UTC)
+X-FDA: 83850026484.03.DF0FBE6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 99D0B40006
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:45:20 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="OYKK/IYS";
+	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756951643;
+	s=arc-20220608; t=1756953920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=gR054lzuJbAO9UiIik0MBonxHsPRqVCYidSVWmTesKY=;
-	b=rp5L64hPWZfZyq8cL4+PZnaSJnIDocMsv0XxrlejKzs318Nq8hS+JiRDp2lywUt4+lMjZi
-	1La7YWilt1hyAOBTpytvy6QFiyIgL9CZBH0/JsbZrOFwjvl3me7fBh1grbQB7/WvK7bS0I
-	0XP7PSQqLxUdljzZZ/WIzZSkFwpx2ew=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vPxCu9vKoeVGljjV+zdc6Z80QMxQJE+zOXw3nyK4sH4=;
+	b=0G/kSnQj1/RCSwG+7uE8C2hxyywrUYc9wE0vacdZf4I0yvfNtHVB8o9ml8QPnTKLI1a5qd
+	s+NvFqyp0Uw2hARxr21aaf1jUyQ5iWS/t42aZoI2U4KFZAsFZk2Z5zvzSp7N4gOLifpuxd
+	E1Zmvx1I2qmhhwampk7F9+Z4glRTAMA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nZNNTpZQ;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756951643; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="OYKK/IYS";
+	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756953920; a=rsa-sha256;
 	cv=none;
-	b=JK/aNFtpHEt08AfcXz9iR0egd4KhAFhFWaLx6ZT2lgR4+tdOExXiF2L7aKZQqkkH8G9Jjf
-	Mro6hpnFVszLB965fJAdmeRI4eb6t6MiMxuFJFcAjUBx6mTlPi8VLBigHDLJQ+orEKXmYX
-	TTad5kO5sFuc1qs3LDUz4XDg4HujACE=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aff0365277aso263090466b.1
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 19:07:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756951641; x=1757556441; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gR054lzuJbAO9UiIik0MBonxHsPRqVCYidSVWmTesKY=;
-        b=nZNNTpZQLDhYb4nxM+OCmYrA6gjoUgpSVd8t0x17EeuUik/obBo8mVEvoTdop2WmP6
-         7TTH6e1KMkeW0WcbXACii6CbwRo41EVEUywhCHzVhOporWuypz8YcInluLCzokCb41yM
-         o7lKVLsKVFrZfJ3OMD8RyAor54h0PiGp/20AhslxPaduta9xyIWouyDuvAFM9XZf+a9+
-         1Fn8v4WZNhJcg4+i4Kjm5UQVqn6vgYmTtTFHITQQYJrcSmVxNv6MGeat1slqHqs9ehj9
-         mqoMafBANSRO/U/VhO+3l2hguTgXi4+q5be87aK4LpOat8aTcgtgHOEC2ueBlyWWorkp
-         jhhA==
+	b=t6Mdyf0I4oFVauaotI24Cc72jFgmjcUVSNpQS9asfeW7+D/Wo30dkCad6ehJQt+wE/JKhq
+	m/4J4bt4FcHEJXuLv1zIQJcv0LKNUcu3gZHKNlwqKPVkb4CDqnyl27KIWDuqYSVZKgo0CH
+	zaR07p9SKX8HkgyQUVWoWUTsy22uSDM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756953919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vPxCu9vKoeVGljjV+zdc6Z80QMxQJE+zOXw3nyK4sH4=;
+	b=OYKK/IYS9ervobvLRVuQuYdFhr3Tw6IU+rZMr1GEl2JLPYXRr1il+X223BfqvnTqWG4tDW
+	s3c8zkT98N5X+QJWk2C12NLnueO2nhlhgw7LakljjtZhK9LSLLeWFlaHic+Nb7C5tIwTNz
+	ZCHP54ZsRh/BeA41zXeihDxK5tMteqk=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-16-KMe9HFEcMkmxjP9cftimFw-1; Wed, 03 Sep 2025 22:45:16 -0400
+X-MC-Unique: KMe9HFEcMkmxjP9cftimFw-1
+X-Mimecast-MFC-AGG-ID: KMe9HFEcMkmxjP9cftimFw_1756953916
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-7238c2008b8so9456937b3.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 19:45:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756951641; x=1757556441;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1756953916; x=1757558716;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gR054lzuJbAO9UiIik0MBonxHsPRqVCYidSVWmTesKY=;
-        b=qaKY4nL2yqEtUPbnXyRdAEWmHoN0e7D6KG1VVBdq80ASrZ69fL+8Zaa3YIDW+FM9zG
-         t/BbmyjlLUst1tmxRnllDDalVGrenuKl+V09yvSb1hP+kT6IiBGZDgCYoYg+mhc6WS1b
-         G6oSS6/b30hNB9ToHdzi/Xxa/MhVAmPMKiJGAns5Lnu3N+3Ov7zsBVN8AoiOZNaY//V4
-         E6WgqNt2G16IfS4xWNIkYGwqx0idytE1sHL/61/Ijr0uQxQu/8UHiKoCtpPvgdOV6Xt0
-         1PIqqJuJk1iqO/X7WNIiAjC7mozC7ZWhqBFij3o7AHYmjOFm/RW3ZEZJHniRn0tAs9QC
-         GzbA==
-X-Gm-Message-State: AOJu0YwNn6kKMMkVj+rry72uusW7tMXAZ16e9m0j9qSh5vEU2PCGRnme
-	CuzvXDKFWPBDTo1xwNlCwIiWqkzLQc/QVXqhc0Va59AimQf7xRzNRFVm
-X-Gm-Gg: ASbGncuAkOcvl0cDXQCSoReTwQBjWRQjgcdilTy2vGSYOYeshg2h+PbkenUleB5Z2rM
-	mtk+zy/50jHdYxLJaQXmTsCnoGM5bhXsQNv/MvQvm8WelbrACmWGgudAXqkykfSrMP9yJKnx8lu
-	9XKfL/5j4ywhedHy6OOj3OMywWzcSHNHUGoF3koRW8kZjXf2n+rfPyN6QAFgOcRTA8AHxuG8vKp
-	+bfxjjwWqBFVyNRibNhX53x5pRupAqjdQi9pc2yQ5rUYpXpHOS+zPZc+LMPKgsk2/e2oUhqa0I8
-	ZQAnkTEgHAIzkEZu44w6ar8UsxbwhPZItPcgE38TEnmoH7r8OQ6gWDESLhOZRRy9NU104SrlTw9
-	HqD0VVLfIVaczWxUNn6QAmQIgjJe3/Cs7fyQ6
-X-Google-Smtp-Source: AGHT+IGSGmKLDBS3vvlxz8Ugf9XfqtM7Um+t1P35GAjcobTyWvIspOG9W4fxVKvysr3MyNQUjn/1LQ==
-X-Received: by 2002:a17:906:c154:b0:b04:7612:76aa with SMTP id a640c23a62f3a-b047612783dmr270263766b.16.1756951641255;
-        Wed, 03 Sep 2025 19:07:21 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b047373b000sm173962166b.68.2025.09.03.19.07.20
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 03 Sep 2025 19:07:20 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH] mm/page_alloc: check the correct buddy if it is a starting block
-Date: Thu,  4 Sep 2025 02:06:54 +0000
-Message-Id: <20250904020654.28689-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Stat-Signature: 7t8qbt4rqede3kr7c98csc4d39xcetcb
+        bh=vPxCu9vKoeVGljjV+zdc6Z80QMxQJE+zOXw3nyK4sH4=;
+        b=ur1GVnI52N8gOJb4eoBhRUkoRPGPcqqTmGmR5pV2E5HcIvHYRNfN7VVVQT/d/ApW1L
+         Osi39L2Tf6whHxTKbqp+6Ptfowc3XkvCohINSua3yS4DOtLMD4jhQpj+E/GglVWNFRI7
+         EDt/3lLmBYachrpE3fwV2JveQf7wkeiogpseEAtfKdC8PCFEECVTnvnH4omPz3EsglHx
+         sMS7DVrfnT4kC2e539fZ5p3sFmVL4wG/CVJFBfNnHiZA1TYneuGV7J1hMtiCs2Of/s52
+         pFbbrudVp3OUn8pVREzukYyBjmMuVRipMueNxG+ynvKkcs6fdseOlbTaTSu+jMUA1Qhk
+         rKJA==
+X-Forwarded-Encrypted: i=1; AJvYcCXxb4Y2cfgTJ96oSrQNwz0OM6npTcR1UHoFeC1sSCqmsurFQA8nZAWhdTmHTVo5cQ2HLs/mObm4qg==@kvack.org
+X-Gm-Message-State: AOJu0Yxs4JilfjWjUgFhH6MEBr+j1zszyVSKTdBcr154AK5oQ8XOY1/+
+	kkkEncDTZlWU2Xh3j/CX+JlVwwOx8UohiWUKYgVciEEz3XhGSiN2ucBmC4C5S+I5/N73w5gqJaq
+	btsD4W6GZi+1nsnKbb9VaMNzgb4FC/hClMUgTOLmbpRS31/KPtpv51E4SqlKb0Z6Iz13lUS89to
+	KK8qk93bBX6hkrjPWvmtdlg5Azo88=
+X-Gm-Gg: ASbGncuARkhpAT8WsDUssd9QodNk/jF8iIHBwY/PRfjZxv3LScguWeKBRZiXZgN+O9Z
+	/bAAHrjp+JePQ5dRP/+c6DKNqHbtMAoGBzEWgxrWMeXZvzzpFvPKmU2OjehTr7lH+D3tqOLZlvK
+	Dks3uKmzo7nAIbBgrAfnESh20BjnSywolnAnw=
+X-Received: by 2002:a05:690e:2505:10b0:604:3ec3:621f with SMTP id 956f58d0204a3-6043ec3697fmr1929429d50.11.1756953915875;
+        Wed, 03 Sep 2025 19:45:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGGX0I7zxt7UAjC+8zhaIcnRAoNKfZBZRVzfF1SdLbX7NsNViAzDXLJ8goQlVtnL8b6l8mfbAHDzM/108cubFk=
+X-Received: by 2002:a05:690e:2505:10b0:604:3ec3:621f with SMTP id
+ 956f58d0204a3-6043ec3697fmr1929398d50.11.1756953915472; Wed, 03 Sep 2025
+ 19:45:15 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250819134205.622806-1-npache@redhat.com> <e971c7e0-70f0-4ce0-b288-4b581e8c15d3@lucifer.local>
+ <38b37195-28c8-4471-bd06-951083118efd@arm.com> <0d9c6088-536b-4d7a-8f75-9be5f0faa86f@lucifer.local>
+ <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
+ <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
+ <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local> <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
+ <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local>
+In-Reply-To: <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 3 Sep 2025 20:44:49 -0600
+X-Gm-Features: Ac12FXzRQLYo9kZFI3Qk7n_u81yp4P3AXqlGuLWUAY0EAnPSUHNRv8g5odcdF08
+Message-ID: <CAA1CXcBVR=L5_6x5FGeR693AB_YqEF=4KAX7_2fRgGNa1j1j9A@mail.gmail.com>
+Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, corbet@lwn.net, 
+	rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
+	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, 
+	peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com, 
+	sunnanyong@huawei.com, vishal.moola@gmail.com, 
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, 
+	kirill.shutemov@linux.intel.com, aarcange@redhat.com, raquini@redhat.com, 
+	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de, 
+	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, 
+	jglisse@google.com, surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
+	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: XlNEFRRf05uf3kU5nShIh09f_PX4o2FsYzsEWhc6kGc_1756953916
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 99D0B40006
+X-Stat-Signature: 5orh51acsc4nwkn6zuz75jezhjchmtsk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2EBDD4000A
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756951642-754667
-X-HE-Meta: U2FsdGVkX19fKNMhZ0mg53YEqFQ1DO25Yd+I6qNYno/tNI0eTnaqwPglO+efAMgL6NpA9MhiCQYZVVQXVc1TKJH60C7aKp6W9hnzLLzsQszRGv9kH9AOk88RyhzRCu0KNgYnIQYh4fE4KpWgvOweV+YLn3N+J/8buGHzmOlaArcah9I2+W7dh6+Bk7tiN2y5o1T4qwS+U+xW0FJtVE3AICieNCEdrHreNLRiXL8LJyuCVCgd3aLVXwHI4x/Sc2wQ+HiPfupeDT8RGB/TWVyrGhjW3Rsbk1/VD6hXSMK0vKjfkisGpIXNgq2AB6Bsj72J2g2hqtY1qZ4RbzeBiL21tEL5DZRkhF9KHe4Wvf1zPAozqffspCfAoQbo/3olp7A+LsWXnDl8TBhz+TFVwxN9BZQejiCeLbxYZLiMIQepvANhKPI6UIge5Qb71ltcuVLwOZ9+8Dm9LXTclm34zIcK1gjDLHYAjwDh1rX4RLayT+wmtxcIJIG8WKa+AirTSFm1MZtVTmD9Q3pKCINBP7khWSMiz90Dx1vhqaqx6hzIm33ZXxoMCSWCEqZwfI3mViMPApk0XGZl9qMqX2kU7dkrwPJu5+RYb4ewyUtZxcTTIpogVHpv+iIwwIW6SbXZ8pFnRKsupcaKDlpkpS+1PtkArH9SiyS/tza4ZhpDTmZKc3dGRBFCT2ZSiBAnzMysrzSPzjyXoojrLT2thpd6uj2EfRjt/U0IPbjHnFa0qvJW4z5llVSjlsmMo+ud6UXLO1V9WFI+XbZvwT9fd/LUcenaaoqeBSsqWsgNtgIl6aNfhgpodZPi5a/4INl2AK0zdJnehu6Al3zNxOOSj7nKdCl1X6pKW7dtuDjfj8lXU8WS+bB25K4PYSmMLytxu9T9UiPtuP06bcFkEytPed9w3XvmqKDedXiLRh0mvQtBrLW2/FMC/DHLW2jiRgAp0oHagcqPT826EFr1H7gedoepcT7
- PFixU8lP
- p9wMq6gEgq8ORVksHv2W630g9v6INbeCkcrnmgEGG79CHIpBYpasVQqEh0wmKEHYv+khY66iV9a1y5qSf6EJtRjsEN1uqRNLbQoyTE73IHJRpZ0HWGLsJHWH7AYPWXQAj7Ze3AbK2hJ7sdzDUmMMzY6vPPRhVepAY2LfgyKhj/MVtkpAxPX5Tzeff71K+bJ9yDhQqjGDaQxl+og3nxkEgS3Ke8DOqIcPuy9fBU0HmITuu1/G6l5QOGCVRng+4bnrnHA8E76/YsCUDSWM+Wf3mLO2FTdZbC+sTm3CDHNHzkM1vrwRnT/fbYxO96qxbVdjAeUWZ60JJp5GfypWT2V6KoEiCP90roZ9a47cAfStJ3yY8Q2fQgrhDidpBWlduFxbBIBOqo5Q4Yvs8BFGfpCtJtcQka19Go9ZdUMAf8vdwSbmOvv2S+efLdI6fZjpO3PpMVetAm0rDQqnh6orsX6hqUxHP86sbsNpBlPSjlqgxDh8EeRTL4mNf6E3w7VROobiuPsI8Deg6FalLTH2lTN0wzuxONAmV50FxdJNmt7dZgWliaRLLln2u3HGlcpnDNPHm2E8IzNnKetLI6FRYSz8R+jWccN15cQRiN8gbWKCVdRjjkcPXMCPIkSw08qJyNb21NQF7gR/ozbXFjSa2x0IN0VUcGehAghflcS2G9qSo8nAUIaapzvZrewK17hmdI4QhUsBAe+SDHSXRkU2h0RxcwWJe/gIPqiWkNhXD
+X-HE-Tag: 1756953920-447316
+X-HE-Meta: U2FsdGVkX1/0v76jOo9jdSjM3bgPimow5T9oOJiXBhoEVeJQhy/p/7y3F6wJF2uNJbtz0c7zBYzNRBxCtQbAv6MgHm5jKzUNIiAwOQCz1w5EWMZeGZ5m1ehAA9IU421qpCQq487NpkbViCZv3whJ3MhVo5Y9JVwjaSZHp4XL0SiyyDXyFcztj9NjtHOQTy30VcHxDpiAIC43DseCBoHpbEV1VVHGtxG6FfCxRZK8iXXi9U4CHZtZcRYEdQhx1T33v2XNkbcME66rfKekQVt0X95ofYWc+euol4WaQAM5zu/13wAGpJQDtH7vI4gzxR3ZbywGAbxMmJyxiTEdOBeNgErzejbtN0wocnPQbhSZGIaSl7Kqeww/mYLQenlAov0aEgiHK7CiIgwj07l5GH/mLHTYs/5B4V7FnO194l6VqfIuyfl4J1k2BN0DApX16Tr01EuJPpimt4HqECtUiIc/x4RvLdjCk2S/2tZNdwFnn6npv60CcPbC0HG9ZjdijLgrb/eXQ7Y4IrV6y4QMZwCC8lr8HxZ01deS/oldtdHNr5YqAKc8dAW0l+bgbecG1Czw3nG+X5JXsldD2nEVWiXnBBoqHyjkCPn8kFjSVxAG7p5PIgU450wmOnXPxptVLuiydHzbGvJ7RCJ/3tXH0mtOyATTCBbKeqL9ivcT4nkPJD/DVU9LZ2tFNrd6AMKUIEBcRXlSdV+1OLwJQ8X46blC8hc4Rp/vne0/8yMx+qvKU77H+ZrNc5pKAWidc9Y9mNY2ysTSwCWXzNgThMl1BhgKUyfdfoZyEWMdsydSnVvMVsgxR6RQHruY1fF+Trv3T3WkoRt67tS+2LQMHLnKQzgbf2SvimVVvMd5XNBRGDpkGokuy3YPjIEg+iGWPWLHfhbmvGJ+gfFJyQ+4bS+km10VQ0MYC+OmpmeQqb9toWqNnTnTRPNFm4m2sohZaDjmwqOkGMpgJqP66xzsnw3lAUA
+ IAOyexVk
+ flmg79IFFVUD3sTtgdAwtSgH6X7m2og+ph64R5Gj8Q8OKtCOIlCB+I6sUeKyxMn3qz6SB/Rivl+vD/XVdqZP9a9FUFYA6JuUIOEiJ4tCXWFpjnjKv/1NMBRaKcLm6nXoxbm6rYzkXVN666hKLWG8GPUBiZ7Fnjbe7B6w46mYBNW5pw0QA+qYyz6nnlxYF7auQv3gRehG59mxaxFUCwfD5WRmUxeS3xbkfXcZ9Dgru/5bwyPKRHW1aLuS4NR+k37hAzJJpyGf6/C+f58kF35wsA3riwdSOOcCEe3FLXneozvm5fNUBdRQnjq5GK2J8JHha/ekg4Zfhd0s+DYxYTde84oOl+t77mJh2Eizj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,81 +142,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-find_large_buddy() search buddy based on start_pfn, which maybe
-different from page's pfn, e.g. when page is not pageblock aligned,
-because prep_move_freepages_block() always align start_pfn to pageblock.
+On Thu, Aug 21, 2025 at 10:55=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Thu, Aug 21, 2025 at 10:46:18AM -0600, Nico Pache wrote:
+> > > > > > Thanks and I"ll have a look, but this series is unmergeable wit=
+h a broken
+> > > > > > default in
+> > > > > > /sys/kernel/mm/transparent_hugepage/khugepaged/mthp_max_ptes_no=
+ne_ratio
+> > > > > > sorry.
+> > > > > >
+> > > > > > We need to have a new tunable as far as I can tell. I also find=
+ the use of
+> > > > > > this PMD-specific value as an arbitrary way of expressing a rat=
+io pretty
+> > > > > > gross.
+> > > > > The first thing that comes to mind is that we can pin max_ptes_no=
+ne to
+> > > > > 255 if it exceeds 255. It's worth noting that the issue occurs on=
+ly
+> > > > > for adjacently enabled mTHP sizes.
+> > >
+> > > No! Presumably the default of 511 (for PMDs with 512 entries) is set =
+for a
+> > > reason, arbitrarily changing this to suit a specific case seems crazy=
+ no?
+> > We wouldn't be changing it for PMD collapse, just for the new
+> > behavior. At 511, no mTHP collapses would ever occur anyways, unless
+> > you have 2MB disabled and other mTHP sizes enabled. Technically at 511
+> > only the highest enabled order always gets collapsed.
+> >
+> > Ive also argued in the past that 511 is a terrible default for
+> > anything other than thp.enabled=3Dalways, but that's a whole other can
+> > of worms we dont need to discuss now.
+> >
+> > with this cap of 255, the PMD scan/collapse would work as intended,
+> > then in mTHP collapses we would never introduce this undesired
+> > behavior. We've discussed before that this would be a hard problem to
+> > solve without introducing some expensive way of tracking what has
+> > already been through a collapse, and that doesnt even consider what
+> > happens if things change or are unmapped, and rescanning that section
+> > would be helpful. So having a strictly enforced limit of 255 actually
+> > seems like a good idea to me, as it completely avoids the undesired
+> > behavior and does not require the admins to be aware of such an issue.
+> >
+> > Another thought similar to what (IIRC) Dev has mentioned before, if we
+> > have max_ptes_none > 255 then we only consider collapses to the
+> > largest enabled order, that way no creep to the largest enabled order
+> > would occur in the first place, and we would get there straight away.
+> >
+> > To me one of these two solutions seem sane in the context of what we
+> > are dealing with.
+> > >
+> > > > >
+> > > > > ie)
+> > > > > if order!=3DHPAGE_PMD_ORDER && khugepaged_max_ptes_none > 255
+> > > > >       temp_max_ptes_none =3D 255;
+> > > > Oh and my second point, introducing a new tunable to control mTHP
+> > > > collapse may become exceedingly complex from a tuning and code
+> > > > management standpoint.
+> > >
+> > > Umm right now you hve a ratio expressed in PTES per mTHP * ((PTEs per=
+ PMD) /
+> > > PMD) 'except please don't set to the usual default when using mTHP' a=
+nd it's
+> > > currently default-broken.
+> > >
+> > > I'm really not sure how that is simpler than a seprate tunable that c=
+an be
+> > > expressed as a ratio (e.g. percentage) that actually makes some kind =
+of sense?
+> > I agree that the current tunable wasn't designed for this, but we
+> > tried to come up with something that leverages the tunable we have to
+> > avoid new tunables and added complexity.
+> > >
+> > > And we can make anything workable from a code management point of vie=
+w by
+> > > refactoring/developing appropriately.
+> > What happens if max_ptes_none =3D 0 and the ratio is 50% - 1 pte
+> > (ideally the max number)? seems like we would be saying we want no new
+> > none pages, but also to allow new none pages. To me that seems equally
+> > broken and more confusing than just taking a scale of the current
+> > number (now with a cap).
+> >
+> >
+>
+> The one thing we absolutely cannot have is a default that causes this
+> 'creeping' behaviour. This feels like shipping something that is broken a=
+nd
+> alluding to it in the documentation.
+Ok I've put a lot of thought and time into this and came up with a solution=
+.
 
-This means when we found a starting block at start_pfn, it may check
-on the wrong page theoretically.
+Here is what I currently have tested and would like to proposing:
 
-The good news is the page passed to __move_freepages_block_isolate() has
-only two possible cases:
+- Expand bitmap to HPAGE_PMD_NR (512)*, this increases the accuracy of
+the max_pte_none handling, and removes a lot of inaccuracies caused by
+the compression into 128 bits that was being done. This also makes the
+code a lot easier to understand.
 
-  * page is pageblock aligned
-  * page is __first_valid_page() of this block
+- When attempting mTHP level collapses cap max_ptes_none to 255 to
+prevent the creep issue
 
-So it is safe for the first case, and it won't get a buddy larger than
-pageblock for the second case.
+Ive tested this and found this performs better than my previous
+version, allows for more granular control via max_ptes_none, and
+prevents the creep issue without any admin knowledge needed.
 
-To eliminate the ambiguity, unify the handling for starting/tail block.
+I think this is a good middle ground between completely disabling the
+fine tune control, and doing a better job at mitigating
+misconfiguration.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+**Baolin actually also expands the bitmap to 512 in his khugepaged
+collapse file mTHP support patchset
 
----
-Tried memory online/offine, which looks good.
----
- mm/page_alloc.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+Does this sound reasonable to you?
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 5183a646fa09..453cd361386c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2093,6 +2093,7 @@ static bool __move_freepages_block_isolate(struct zone *zone,
- 	unsigned long start_pfn, pfn;
- 	int from_mt;
- 	int to_mt;
-+	struct page *buddy;
- 
- 	if (isolate == get_pageblock_isolate(page)) {
- 		VM_WARN_ONCE(1, "%s a pageblock that is already in that state",
-@@ -2107,10 +2108,10 @@ static bool __move_freepages_block_isolate(struct zone *zone,
- 	if (pageblock_order == MAX_PAGE_ORDER)
- 		goto move;
- 
--	/* We're a tail block in a larger buddy */
- 	pfn = find_large_buddy(start_pfn);
--	if (pfn != start_pfn) {
--		struct page *buddy = pfn_to_page(pfn);
-+	buddy = pfn_to_page(pfn);
-+	/* We're a part of a larger buddy */
-+	if (PageBuddy(buddy) && buddy_order(buddy) > pageblock_order) {
- 		int order = buddy_order(buddy);
- 
- 		del_page_from_free_list(buddy, zone, order,
-@@ -2120,16 +2121,6 @@ static bool __move_freepages_block_isolate(struct zone *zone,
- 		return true;
- 	}
- 
--	/* We're the starting block of a larger buddy */
--	if (PageBuddy(page) && buddy_order(page) > pageblock_order) {
--		int order = buddy_order(page);
--
--		del_page_from_free_list(page, zone, order,
--					get_pfnblock_migratetype(page, pfn));
--		toggle_pageblock_isolate(page, isolate);
--		split_large_buddy(zone, page, pfn, order, FPI_NONE);
--		return true;
--	}
- move:
- 	/* Use MIGRATETYPE_MASK to get non-isolate migratetype */
- 	if (isolate) {
--- 
-2.34.1
+-- Nico
+>
+> I spoke to David off-list and he gave some insight into this and perhaps
+> some reasonable means of avoiding an additional tunable.
+>
+> I don't want to rehash what he said as I think it's more productive for h=
+im
+> to reply when he has time but broadly I think how we handle this needs
+> careful consideration.
+>
+> To me it's clear that some sense of ratio is just immediately very very
+> confusing, but then again this interface is already confusing, as with mu=
+ch
+> of THP.
+>
+> Anyway I'll let David respond here so we don't loop around before he has =
+a
+> chance to add his input.
+>
+> Cheers, Lorenzo
+>
 
 
