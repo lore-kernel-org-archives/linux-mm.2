@@ -4,124 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7934CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:39:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED501CA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:39:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50AEC6B000D; Thu,  4 Sep 2025 08:39:21 -0400 (EDT)
+	id 552A66B000E; Thu,  4 Sep 2025 08:39:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B4AA6B000E; Thu,  4 Sep 2025 08:39:21 -0400 (EDT)
+	id 52A216B0011; Thu,  4 Sep 2025 08:39:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A32B6B0011; Thu,  4 Sep 2025 08:39:21 -0400 (EDT)
+	id 467486B0012; Thu,  4 Sep 2025 08:39:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 26D486B000D
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:39:21 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CC40984522
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:39:20 +0000 (UTC)
-X-FDA: 83851523280.25.E433AFB
-Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 56A051C000F
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:39:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=Tvlxv7OT;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=335a05013=suschako@amazon.de" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=335a05013=suschako@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3827E6B000E
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:39:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7B2911890B
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:39:26 +0000 (UTC)
+X-FDA: 83851523532.15.5EBD854
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 538F11C000E
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:39:25 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9MOrYmH;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756989558;
+	s=arc-20220608; t=1756989565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ULScby5e7nfE21eIVPMtirUeTHzPiyrQ91q0FcQlkHM=;
-	b=e59gwnnniSwUvIs3dvLeQl1qvN7ljVqVPnkTndM1/UVQFV9cHlKFP4N0AcWf832Vqmro/6
-	6Dzg8ftdODz6T+HN4EVrQfBO2e3NU7ElNum8ut8kARDoEtMkzDwSz0hN4jk+rcisN1SDFL
-	9vjcPKOdAiYluVPtYUpnzBq2Z6oAjJI=
+	bh=jg0hJ3sn+RKPEiu5Cfl6ZhOa/1LbrjyyZVJdQD+RjrA=;
+	b=bhDcJx9Kt8CWIyXxvXC4UwQ4j7WcG5srDqr7FR7YbcRIFl5tCKo3FzMhDgSdcu7vMCLtN4
+	t1123VQJ0gsbFV5ckUBiZPeYb3/Bq9CSA4weG0ujRo1YayyeEczkyoeatb62LxCz/iyFoe
+	ixeKa+jY2upvnOdNBsxmbXyeZtGmoNQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=Tvlxv7OT;
-	spf=pass (imf21.hostedemail.com: domain of "prvs=335a05013=suschako@amazon.de" designates 35.158.23.94 as permitted sender) smtp.mailfrom="prvs=335a05013=suschako@amazon.de";
-	dmarc=pass (policy=quarantine) header.from=amazon.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756989558; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9MOrYmH;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756989565; a=rsa-sha256;
 	cv=none;
-	b=4K8ATV/57im59V06MLAEDCIZHB7N/hs8j4DOsJturXuyltxNxUyFS39MvLUMF0Lk2Mkts9
-	MprJXVN3HaYZC9Myf3dOv9H5E/Zp/GHIZhO7CTnfrb/jKI4MlFkaAm6nUJZNvI2FmWTzhX
-	xrbTVYFL+ML3N915+W+Cac0aMaCCAsg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1756989558; x=1788525558;
-  h=from:to:cc:date:message-id:references:in-reply-to:
-   mime-version:content-transfer-encoding:subject;
-  bh=ULScby5e7nfE21eIVPMtirUeTHzPiyrQ91q0FcQlkHM=;
-  b=Tvlxv7OT5/R+n/tjOWA08AZomPW/t4bpMORNKodGH64P6yckaE02+9Fm
-   lgrL2JyNEYG6sAv+GB4/xY2oyRgB1HLOU1DQhOpv9j8HdJDaUNw/SRIkm
-   LeAQHmatYGEbUhhk45YGG+KzdfXi4x68uh4dxz8dRj1Z8BymbjBw3u+tF
-   iEDLuOSd2qaFyuSecsMYMUEUaSycESeFm1XTjcUxmn2GU8d+/Uv25RdAu
-   LZ7nkOsXZxN377w4EhEt4nIUv+ZNkDBweQcckCwAq2tAEgtI/JII1eFju
-   puLPx5RXsMtvySHQvTTzenuJ2FsFPKEK0bQNQcwy9tEsf//A0m5T4oyfW
-   Q==;
-X-CSE-ConnectionGUID: zSYct0lzSkaIIBnxJlsWUQ==
-X-CSE-MsgGUID: siHY+fGUQ/eEuX1zssW6cw==
-X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
-   d="scan'208";a="1639693"
-Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
-Thread-Topic: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 12:39:08 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:13862]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.43.161:2525] with esmtp (Farcaster)
- id 2da87af0-5385-40d0-9937-3670b0b57a6f; Thu, 4 Sep 2025 12:39:08 +0000 (UTC)
-X-Farcaster-Flow-ID: 2da87af0-5385-40d0-9937-3670b0b57a6f
-Received: from EX19D024EUA001.ant.amazon.com (10.252.50.75) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Thu, 4 Sep 2025 12:39:08 +0000
-Received: from EX19D024EUA004.ant.amazon.com (10.252.50.30) by
- EX19D024EUA001.ant.amazon.com (10.252.50.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Thu, 4 Sep 2025 12:39:07 +0000
-Received: from EX19D024EUA004.ant.amazon.com ([fe80::4608:828c:c80b:ca72]) by
- EX19D024EUA004.ant.amazon.com ([fe80::4608:828c:c80b:ca72%3]) with mapi id
- 15.02.2562.020; Thu, 4 Sep 2025 12:39:07 +0000
-From: "Uschakow, Stanislav" <suschako@amazon.de>
-To: David Hildenbrand <david@redhat.com>, Jann Horn <jannh@google.com>
-CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com"
-	<trix@redhat.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>,
-	"nathan@kernel.org" <nathan@kernel.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "muchun.song@linux.dev" <muchun.song@linux.dev>,
-	"mike.kravetz@oracle.com" <mike.kravetz@oracle.com>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de"
-	<osalvador@suse.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Thread-Index: AQHcGOKArPRLx5Gss0qhHb9N9ZVPl7R+LN+AgAAH1gCABJSBfQ==
-Date: Thu, 4 Sep 2025 12:39:07 +0000
-Message-ID: <355102b559a747fe9a09142d46852551@amazon.de>
-References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de>
- <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>,<2dcf12d0-e29c-4c9b-aeac-a0b803d2c2fd@redhat.com>
-In-Reply-To: <2dcf12d0-e29c-4c9b-aeac-a0b803d2c2fd@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.252.51.153]
-Content-Type: text/plain; charset="utf-8"
+	b=M8dPg3T/zmkXXN3V1bzPh5+OPEdwnhNK6VTb7+aAydxIixZzwJNiT5khoMN6jUPHKAnQHO
+	zLhdyzQDm+41SImSGFfNbzxbWFlb64M6IVr0cZkjJAmsWLE+KIROJEW3D9Buy1nzulbQMm
+	rqrLkxkW5iRJx+I7+Eah30MmT5BfAH0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 045FE60283;
+	Thu,  4 Sep 2025 12:39:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E171AC4CEF1;
+	Thu,  4 Sep 2025 12:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756989563;
+	bh=/dOXK4oy7iAhoUGr2MmfjWE8hXk9Y8tyleU9g8YasAc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=i9MOrYmHgSH7Y+7qHtX1Byvl1ufAKEXc1Ej/VzGCte2ENcbxl6Mjs/y7IuxfEcCQ3
+	 lkRNGXjyWdOWAjOORBHFnPRA/tQO7cxQGyxoKmvFfmz4u8IXtmkl7ciAUTWgFT+GAP
+	 myO6mgfBUImeuJUAz/Pp3nRZc3rbxvf5UZr3Y0Bck70j808roKhLMObuwp5KEXxApA
+	 xpPMEoC4Z5WrmciOCLArypa7JShIxMw4iOYxs4tM20apqeuHeoOTbvLYZ/wTsANFrj
+	 0RU+AInyj9lCuH+cdHwn1+LLbCI7dNSEn4Q4fm9jFierntGz1oHAM9EVt+WbDdjGQ+
+	 uvggoCCmg/h4g==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Jason Gunthorpe <jgg@nvidia.com>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,  jasonmiu@google.com,
+  graf@amazon.com,  changyuanl@google.com,  dmatlack@google.com,
+  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
+  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
+  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
+  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
+  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
+  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
+  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
+  leonro@nvidia.com,  witu@nvidia.com
+Subject: Re: [PATCH v3 29/30] luo: allow preserving memfd
+In-Reply-To: <aLiZbb_F5R2x9-y2@kernel.org>
+References: <20250807014442.3829950-1-pasha.tatashin@soleen.com>
+	<20250807014442.3829950-30-pasha.tatashin@soleen.com>
+	<20250826162019.GD2130239@nvidia.com> <aLXIcUwt0HVzRpYW@kernel.org>
+	<mafs0ldmyw1hp.fsf@kernel.org> <aLbYk30V2EEJJtAf@kernel.org>
+	<mafs0qzwnvcwk.fsf@kernel.org> <aLiZbb_F5R2x9-y2@kernel.org>
+Date: Thu, 04 Sep 2025 14:39:13 +0200
+Message-ID: <mafs0ecsmv1ce.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Stat-Signature: 36ow3oj59f57qp6zr3u9rx9a6j6r4hxk
+Content-Type: text/plain
+X-Stat-Signature: 8h3qj6n5qn1ygb677u5qihkxy9dy5mz3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56A051C000F
+X-Rspamd-Queue-Id: 538F11C000E
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1756989558-589403
-X-HE-Meta: U2FsdGVkX1+rxLWW5pF94H3Z+lQSS2B52qQthnki5FjPAwqmL9v0a75Kqim+bk4BDfzEeOsn2W9ZZC5JXE/wJ6yGRW+00rpIa7SJXBvJjpi9Y/bWAkLA/qoVDf9v8QPNwULonNOxjh2JAymQXhBQhZjrifPrQW5FZAxgx1rcJqDasdrZGMrRRlZK207w3DlO7nC6wXIp/NbBHp+m/obIU9cE21Zd1MMXmqwbHDiSNtE7sElxL8Cdwg5MriAef1p2QnBCFebNp63Ff9Rs64wJxkz6PsewPsLfsfT30YlCsKgmh+qW36PMzVvgybKoeAwHgy9BTF6SRzLXCcwVX56x/ygTiciCgx9QW8e1QmFtrABprVar0kvgVwWrv3RBk7Fg9o36TFANHBc5n+Zex52GT/tiBMuxO++XHr3UA/36MGtzCbD7ZMpsKg+jXw5I+XjG9OjcHPgub6PKM0wghwmkJRr+7nWN5FrN09om+e3rAgktZd+CGKJAQH0iQEC8qyowPlHUQaiwhCr90n4qGwWpcC5h76ILgrm4C4FYdMFmZWmyCiQgc4YNyKTWg9dTwBxEs4wRuj2sg5ZufD5LIhVwa4KbSlovqWWeFGszqAwS+1YZh890rA9ujJ8DtmnND0sK369P6/zRA4mnIVdTSMH/AA8uOYAXTbirNgUljjCCxTY2NmEaIjqDXhwzJOsBBSvTcVjspR6T62+lI0MbKKJMqorL61Dpg9+za4stYrOrrvJrjJaIL3/Q9dKIuKC4tw1YvjM83XBeMTDEBj2ZPFXp2432jqGJb+DM0m0woEibQ4lRmDBQ4goSNvsAdvazYJ2ngohuZZuwZoxAker7f3I7cQ87fUE0MQYaREjcbYwQmNwH+qm39T/DYQZxYaBkuLQ7euOtMy4KaTSas3BK0MS/16aee1AlK867T3wSYTp419Z0QgeOhHqVN5mm+Ta2blWPz1+le7QfRO+4wLVoKcJ
- zMGlz+XC
- 8gfQOPLhExly5kVKFpPFnpNSc1nBVUw0jiFu5kfLrv75WxBBV/BrHTOnbH9cU1GD03Q83fpejKzNjmIYeqv7VVivh3IT+b1faGG2bPwOTvYh/Z9GirH07bG87gG4/mlV07Azv56uTb6PSO1KDVIhTmvCqiR53MsUUUkMhtnPC0mta6puaaZy4fwTXB+w/m51DHKuk/Q7g6otHPVdf5Lo3NOPRxxVV8Po+vN8nHDWd5yHwM0jeJ5u2KL4p12YnlBUxiB0tvZRLCl7Qxe/7Qi6zCnTA5fFBoQ9fa8C6D6ZfRtHs5GXARjsuId/tb2+4U8fGsNFaWwLCgvbJONqdt1bC3EDjNI+sBuvIWqdOOBjgbtYmLoGod0gOwO1KAWF8uApJm8NRPmGAAai/PpcnwnM3wzw1ueSJZ1lrMmKalTAgeJZ1c6HUyCLWmTh7gGaKQs/scA79Koe/19wWGbgsegCzXJjGHB5M/xcqJ2mlCUKcB7F+LqZqyalZodlmyCCG7PCHp+tpjTCy9bo4PRjOCe5GqFgJCkb7ydsbESnvhmZVG9sTsVAqMf93hFiy9Z3yVjTu/izeXYCG/z24b+PP18gbt3MsGHdvjYEmC7fDqncQH+c/PkvPDrSM9HDXh2mD33v5FVvxS4+zq3u+zkLHS+xXA8o/1CoT8KLFkkxQxOaqSTrXb+sRQqFoeZ38VfsILf6/rqxD3PGVA3eu9J7iRzc+JwBB2/U66LrLi0VV38aYTRJMRV0evpSrYER5eGqjJQWUVP8SvfZmQhS5cky/b1odusSam4rqq562DBrSr2+tdl5N/k39VV9k2+gMV/QQEXvEEt3cM2HlqNynw/y0h2IwINdBkq9fcyU/c2VE4xbG2zGJTVrQNIaoq/iIWglruM/Ore0waVC0pm1rwtGHkwIn45fUpw==
+X-HE-Tag: 1756989565-237827
+X-HE-Meta: U2FsdGVkX1/esFpDhG11TT2I+uNCHxS1LvITnryGRLBSqe9LjyK6M4tuYyQqc0Scg4U6ggT8iIJ56jru1HC8riNjSrxuLhYAsUbG6q8oV2FXIdqLyybvQOObomDav/VqbRGIhgPzsuCRELOL7sWA49muQyRYYR/11r6ME1F6Vz+6bqlrRf/Lyq/B61o0FAd4GEhDISwdxrCeKw33LS6r9IjbT6K0k/W3jWruSfBMtW5q+zQ9xkDl0ka1oYlx0q/pR2xmZPGw13pnVc3HJwyUywnsFvS9fMqqVx/5t61UunQLwHW/h1zKJ84rxee+xquS6MjVzqiEPQ6R4iVh71Gm09OKZvEob+0MTFsfJt66ZM5hrHhKTa2xF8LbL4dbKEDZlYu9PwXcotEQpE8WHXAvGRSuJNMreK1ki1Wp6m7N6t6LDU/bsHlxJpVNauoto4+m8W2a7FTcmethsbM+92V1BMHZEJFJpTMbzpnVFzcB3Fo84cu/MGFw1IHyzi011KwOEna+8J28VzNTdp40FCNFZB2slQp/KtHLh3zKweVJRFd2DmeQj2KASJat9rgY80NoH058+AyyxYG+k/TI33IjImtUFeoulEw3yj14S9SQop3esSRg7qvF4aRhQqP3dmHKvZ0yooR0OSR+EPtlV7sMpxCLWo5dZxcV0pDnuP5WvI3rlxVXu0U8EyWjaHRHQJ1rqYgRhJ+rHUl3tuYlImJSr8k+kfLXw7z/2A8UoFgjIn/jWtVW5YSNWKDpwxjsSjvJktl06j6QTC54w0V6noHMjkYnI7sm0knAgpj+YiPl6sD7b+ttc/QhvtDHEWQTVFXTOxgDGRAZAYuLlc38+6xz1ghyXD7vafKvJPMB9guHgPuYnBDcqDbxBSksNaMQzgI70jx0WdSul73OWNrxChpsz7at+bEBPI1w+xFI0L3nqfjowo9g3a+SrhwAzWhxqmqcKFAyHwp5hrJStsijecG
+ 2BT3lZlT
+ rTx4DK3pURvffAJdDdbkHelXz8ngj/xKOkaSM7U6nwDueSgXd4zqA7USZKYiC6vdSTLy4XL+nEqLwwY3MPLttGufhJqzAGhsoLwyEmT7p3th2f/Z9qAdhxRlV7feimMM+Omx2I2JEzY3ztjJa+DkIHxlOfJOmsMtYC4mkWqzv0ms55bcgXkAwp7ICKDoV9RMbZJ/qN3fdHurl+hyjyJMTkH2DaRUzWnt2sFKrFSCmWOv5fU8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,47 +120,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SGkgRGF2aWQsDQoNCj4gRnJvbTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+
-DQo+IFNlbnQ6IE1vbmRheSwgU2VwdGVtYmVyIDEsIDIwMjUgMToyNiBQTQ0KPiBUbzogSmFubiBI
-b3JuOyBVc2NoYWtvdywgU3RhbmlzbGF2DQo+IENjOiBsaW51eC1tbUBrdmFjay5vcmc7IHRyaXhA
-cmVkaGF0LmNvbTsgbmRlc2F1bG5pZXJzQGdvb2dsZS5jb207IG5hdGhhbkBrZXJuZWwub3JnOyBh
-a3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnOyBtdWNodW4uc29uZ0BsaW51eC5kZXY7IG1pa2Uua3Jh
-dmV0ekBvcmFjbGUuY29tOyBsb3JlbnpvLnN0b2FrZXNAb3JhY2xlLmNvbTsgbGlhbS5ob3dsZXR0
-QG9yYWNsZS5jb207IG9zYWx2YWRvckBzdXNlLmRlOyB2YmFia2FAc3VzZS5jejsgc3RhYmxlQHZn
-ZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSRTogW0VYVEVSTkFMXSBCdWc6IFBlcmZvcm1hbmNl
-IHJlZ3Jlc3Npb24gaW4gMTAxM2FmNGY1ODVmOiBtbS9odWdldGxiOiBmaXggaHVnZV9wbWRfdW5z
-aGFyZSgpIHZzIEdVUC1mYXN0IHJhY2UNCj4gwqAgICANCj4gQ0FVVElPTjogVGhpcyBlbWFpbCBv
-cmlnaW5hdGVkIGZyb20gb3V0c2lkZSBvZiB0aGUgb3JnYW5pemF0aW9uLiBEbyBub3QgY2xpY2sg
-bGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGNhbiBjb25maXJtIHRoZSBzZW5k
-ZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4NCj4gDQo+IA0KPiANCj4gT24gMDEuMDku
-MjUgMTI6NTgsIEphbm4gSG9ybiB3cm90ZToNCj4gPiBIaSENCj4gPg0KPiA+IE9uIEZyaSwgQXVn
-IDI5LCAyMDI1IGF0IDQ6MzDigK9QTSBVc2NoYWtvdywgU3RhbmlzbGF2IDxzdXNjaGFrb0BhbWF6
-b24uZGU+IHdyb3RlOg0KPiA+PiBXZSBoYXZlIG9ic2VydmVkIGEgaHVnZSBsYXRlbmN5IGluY3Jl
-YXNlIHVzaW5nIGBmb3JrKClgIGFmdGVyIGluZ2VzdGluZyB0aGUgQ1ZFLTIwMjUtMzgwODUgZml4
-IHdoaWNoIGxlYWRzIHRvIHRoZSBjb21taXQgYDEwMTNhZjRmNTg1ZjogbW0vaHVnZXRsYjogZml4
-IGh1Z2VfcG1kX3Vuc2hhcmUoKSB2cyBHVVAtZmFzdCByYWNlYC4gT24gbGFyZ2UgbWFjaGluZXMg
-d2l0aCAxLjVUQiBvZiBtZW1vcnkgd2l0aCAxOTYgY29yZXMsIHdlIGlkZW50aWZpZWQgIG1tYXBw
-aW5nIG9mIDEuMlRCIG9mIHNoYXJlZCBtZW1vcnkgYW5kIGZvcmtpbmcgaXRzZWxmIGRvemVucyBv
-ciBodW5kcmVkcyBvZiB0aW1lcyB3ZSBzZWUgYSBpbmNyZWFzZSBvZiBleGVjdXRpb24gdGltZXMg
-b2YgYSBmYWN0b3Igb2YgNC4gVGhlIHJlcHJvZHVjZXIgaXMgYXQgdGhlIGVuZCBvZiB0aGUgZW1h
-aWwuDQo+ID4NCj4gPiBZZWFoLCBldmVyeSAxRyB2aXJ0dWFsIGFkZHJlc3MgcmFuZ2UgeW91IHVu
-c2hhcmUgb24gdW5tYXAgd2lsbCBkbyBhbg0KPiA+IGV4dHJhIHN5bmNocm9ub3VzIElQSSBicm9h
-ZGNhc3QgdG8gYWxsIENQVSBjb3Jlcywgc28gaXQncyBub3QgdmVyeQ0KPiA+IHN1cnByaXNpbmcg
-dGhhdCBkb2luZyB0aGlzIHdvdWxkIGJlIGEgYml0IHNsb3cgb24gYSBtYWNoaW5lIHdpdGggMTk2
-DQo+ID4gY29yZXMuDQo+IA0KPiBXaGF0IGlzIHRoZSB1c2UgY2FzZSBmb3IgdGhpcyBleHRyZW1l
-IHVzYWdlIG9mIGZvcmsoKSBpbiB0aGF0IGNvbnRleHQ/DQo+IElzIGl0IGp1c3Qgc29tZXRoaW5n
-IHBlb3BsZSBub3RpY2VkIGFuZCBpdCdzIHN1Ym9wdGltYWwsIG9yIGlzIHRoaXMgYQ0KPiByZWFs
-IHByb2JsZW0gZm9yIHNvbWUgdXNlIGNhc2VzPw0KPiANCg0KWWVzLCB3ZSBoYXZlIGN1c3RvbWVy
-IHJlcG9ydGluZyBodWdlIHBlcmZvcm1hbmNlIHJlZ3Jlc3Npb25zIG9uIHRoZWlyIHdvcmtsb2Fk
-cy4gSSBkb24ndCBrbm93IHRoZSBzb2Z0d2FyZSBhcmNoaXRlY3R1cmUgb3IgYWN0dWFsIHVzZSBj
-YXNlIGZvciB0aGVpciBhcHBsaWNhdGlvbiB0aG91Z2guIEEgZXhlY3V0aW9uIHRpbWUgaW5jcmVh
-c2Ugb2YgYXQgbGVhc3QgYSBmYWN0b3Igb2YgNCBpcyBub3RpY2VhYmxlIGV2ZW4gd2l0aCBmZXcg
-Zm9ya3MoKSBvbiB0aG9zZSBtYWNoaW5lcy4NCg0KPiAtLQ0KPiBDaGVlcnMNCj4gDQo+IERhdmlk
-IC8gZGhpbGRlbmINCg0KDQpUaGFua3MNCg0KU3RhbmlzbGF2DQoNCiAgICAKCgoKQW1hem9uIFdl
-YiBTZXJ2aWNlcyBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJIClRhbWFyYS1EYW56LVN0
-ci4gMTMKMTAyNDMgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdl
-ciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1
-cmcgdW50ZXIgSFJCIDI1Nzc2NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1MzggNTk3
-Cg==
+Hi Mike,
 
+On Wed, Sep 03 2025, Mike Rapoport wrote:
+> On Wed, Sep 03, 2025 at 04:17:15PM +0200, Pratyush Yadav wrote:
+>> On Tue, Sep 02 2025, Mike Rapoport wrote:
+>> >
+>> > As for porting kho_preserve_vmalloc() to kho_array, I also feel that it
+>> > would just make kho_preserve_vmalloc() more complex and I'd rather simplify
+>> > it even more, e.g. with preallocating all the pages that preserve indices
+>> > in advance.
+[...]
+>  
+>> Beyond that, I think KHO array will actually make kho_preserve_vmalloc()
+>> simpler since it won't have to deal with the linked list traversal
+>> logic. It can just do ka_for_each() and just get all the pages.
+>>
+>> We can also convert the preservation bitmaps to use it so the linked list
+>> logic is in one place, and others just build on top of it.
+>
+> I disagree. The boilerplate to initialize and iterate the kho_array will
+> not make neither vmalloc nor bitmaps preservation simpler IMO.
+
+I have done 80% of the work on this already, so let's do this: I will do
+the rest of the 20% and publish the patches. Then you and Jason can have
+a look and if you still think it's not worth it, I am fine shelving it
+for now and revisiting later when there might be a stronger case.
+
+>
+> And for bitmaps Pasha and Jason M. are anyway working on a different data
+> structure already, so if their proposal moves forward converting bitmap
+> preservation to anything would be a wasted effort.
+
+-- 
+Regards,
+Pratyush Yadav
 
