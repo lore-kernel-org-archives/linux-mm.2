@@ -4,134 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A4D4CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:26:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11AA2CA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:31:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A2156B0006; Thu,  4 Sep 2025 11:26:21 -0400 (EDT)
+	id 6ABF08E0009; Thu,  4 Sep 2025 11:31:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 651E18E0002; Thu,  4 Sep 2025 11:26:21 -0400 (EDT)
+	id 65CA98E0002; Thu,  4 Sep 2025 11:31:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 540D16B0007; Thu,  4 Sep 2025 11:26:21 -0400 (EDT)
+	id 54C198E0009; Thu,  4 Sep 2025 11:31:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F7E58E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:26:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 081951A025B
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:26:21 +0000 (UTC)
-X-FDA: 83851944162.07.2F01331
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CF78B140004
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:26:18 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F7448E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:31:03 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFD4285653
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:31:02 +0000 (UTC)
+X-FDA: 83851955964.13.147716B
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D6E8114000E
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:31:00 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="T wxRUM2";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JY1atfuu;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mAmwsLMj;
+	spf=pass (imf23.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756999579;
+	s=arc-20220608; t=1756999861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jC7LQ/mmOicbI45GOht/juWrWam2IipA0I2zNWPuuhI=;
-	b=xIQ3mL1xYMe3OdMhga0T3VEg0/daenStfUGBC9Oa03Mic2iKGemxpX67RVRx091AEeYSnW
-	IMgl7KXk+3UjDxvhydzVQWpVLqFB8jacwMiyiZeqVoQLza96Z8foLLJKCvbDheHt5Y+VYW
-	+qj0HV/lhfGYSq9Aq1rkUTP0Fxp5888=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756999579; a=rsa-sha256;
-	cv=none;
-	b=kNEovTqAuSi/M8h2BeN0//r7jpNGjJpeofD9sQCRgqSuG0s7+N9h5n5w0HE8HXBiwGKyXq
-	TRABjPHdvzMGJdu/cg4QC4+x7I+w17czI58fDy9fkIguxZ+2tXuerkFeo2fny1xIspwgiZ
-	kgxGR80/KYKmkCfhZxC3MaYfo2uMBPs=
+	bh=8xE4rmjGRisIQDV5Gl3u0Fv0zsZRWzQtHGzTA13lIgs=;
+	b=J0bJJpH2+HNr4RCaMJEqGsce5d2FtiHDjLMGbsbI/dNUg/Fy1y+QKzlJlRpawFqRFthOR+
+	79ZgvZq1EkVSnTToukiifyvVhhLRud7GH/DxsjBeTSfr+KZXNK2Srhq1uRzmo95x+lEoYd
+	k/mXhrVK6Mz+TgfRLrFLJN1aK0sCCd8=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="T wxRUM2";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=JY1atfuu;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id B0D80EC00DA;
-	Thu,  4 Sep 2025 11:26:17 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Thu, 04 Sep 2025 11:26:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1756999577; x=
-	1757085977; bh=jC7LQ/mmOicbI45GOht/juWrWam2IipA0I2zNWPuuhI=; b=T
-	wxRUM2QaTVTlnBa/ZJcF4rY/bJM3SJWhhweyChEn/HLKlYHBEHffhLxLHXdifdtS
-	/ba24aWFNHJk9gCiQWhzBB9VOrfbs8LKih90j2f2UIRTd4a8AyIcb5iUrtxtw3Ij
-	rmAO/hw3a73ZImmJErlxXtn8NP+KiD6mq+bnRgznIymFhz/JwTHMYWewDjm4YgKU
-	55yRTam1GX43hHM5fFbN71kHVbNGBOw7DEkR/OwB1hN0pglDGVSVK7aUMPOm/ysX
-	7LqoauChBMGHnrZX9LTmZRsk5CQMVFrYz95j/AL2NItK/4fuB7AkhDlEM+k5lct9
-	XJXmOtiI/rdInQJdFY1Pg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1756999577; x=1757085977; bh=jC7LQ/mmOicbI45GOht/juWrWam2IipA0I2
-	zNWPuuhI=; b=JY1atfuu+QwAu/e+ni+j63Vk4tgUxsBL+2ZYa3Oy6Qi+zClA9ld
-	l/3rFBqXfCVcb+yh4TvCDElXnOmBQUtCIP+OXQs9UYJmt36AKknCvifY3SB3aJzO
-	JFdaIQw58Fy4IyNbRZ1d2NkFZxLfkuAgurzYuStbuo5O7OMb0FQdrLqBztLVBqWd
-	t3gS8Ieezh4KVK0hDH2Q2VkjJtDmmwuBtRVm2tgQDjE1YjQrMBPTfcAqcV+U3S2w
-	CpF15RojmHbAB42jrwfPVLQ8n7KH1T3JnBY5I0g/vhhvBSSKrDWVQ42dCDgrOaNy
-	HRKVIviNhPbvBOAlHACQ+qpU8UJlKrt/i1g==
-X-ME-Sender: <xms:mK-5aG5Q7Uo5m_Tc3R2FnfcmU5IDBxKQDOXpELOgJzt2-U6eo1Qt_g>
-    <xme:mK-5aKuk7nXDPS-rEolkmae89IsLZ9bhBPVG2WJ3X6YrmEiErmnQ7WDBJe6tnMuTk
-    wi9NOA5YGcTguPMTro>
-X-ME-Received: <xmr:mK-5aDuLWYiJdKBDO7E3WbL6nUJJ92sa8n5AHWXpJ4zcsCnCoixBPMyrdqtn>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeifeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
-    uhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrf
-    grthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdeludfh
-    feefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeefgedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepkhgvrhhnvghlsehprghnkhgrjhhrrg
-    hghhgrvhdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphht
-    thhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphhtthhopegurghvih
-    gusehrvgguhhgrthdrtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghs
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopegsrgholhhinhdrfigrnhhgsehlihhnuh
-    igrdgrlhhisggrsggrrdgtohhmpdhrtghpthhtohepsggrohhhuhgrsehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtohepnhhprggthhgvsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:mK-5aCsCgw-2hundynXjOa1ffohr3kP4X4rv4RcdFHZ5ZUDXrURv_w>
-    <xmx:mK-5aD4P7nvpZS6ODvdsaI9eRk3WGR5m0yKv-ufabLl-OXFEBDmylQ>
-    <xmx:mK-5aFB8FII5kC9Wfg8hsNjVMkicxIYZB5KgY3NAKIzTl4hIOfbOGg>
-    <xmx:mK-5aDvqfYHOM9-5ntiRug9-vd68Z7oRilFCEoBQPv3K0suePfKNDw>
-    <xmx:ma-5aNUso35o-4sP0Do-5MeUQcSGi9iH-0D9xY5lDcSMhkdh1VxKp3A3>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Sep 2025 11:26:15 -0400 (EDT)
-Date: Thu, 4 Sep 2025 16:26:13 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-Cc: Zi Yan <ziy@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, willy@infradead.org, 
-	linux-mm@kvack.org, mcgrof@kernel.org, gost.dev@samsung.com, 
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH v2] huge_memory: return -EINVAL in folio split functions
- when THP is disabled
-Message-ID: <2psecfvsd4lbgcm6aflifi2kc6gof345txsvk7wtsytre5ehqt@4wyru36aaeel>
-References: <20250904095129.222316-1-kernel@pankajraghav.com>
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mAmwsLMj;
+	spf=pass (imf23.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756999861; a=rsa-sha256;
+	cv=none;
+	b=UFV9sNJ9yoxr37pGw1oWbs2SRgN1YsZfRRagYDc4n4rz4YJBQ2aMkUUL4FPwtnuMeh6Qk2
+	DiJ7CQVBEeI0+zN/r5wwra4Ev37L7aT1AW17gjSOV+xuwwn6bf6MpBRi/r5tqm99q9UNgl
+	V+qpAmvn8UFPFcWyO3pWtP+XKgC37Ko=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3e2fdddd01dso7127f8f.2
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 08:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756999859; x=1757604659; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8xE4rmjGRisIQDV5Gl3u0Fv0zsZRWzQtHGzTA13lIgs=;
+        b=mAmwsLMjlauziasX42uwRqBneLImFOkHnA8xwC7cyQ+cRFXc6epbMTDwJq3/YuWj1Y
+         FlORm26XKRqj5EHK+RkZXGlOWMurILkF7G7Wz6DUg+hFQsENkPcGcZwBRFJ8kMpetCL0
+         PTgdv+pabqcnPj3gHCrjrdd2uAmp7tKkRnK5uWSlULgKA9grw8vbdWX7K5uHg5w/ZBjh
+         /GRH1M9kC+HRjjjXlqE3X1JcNV3iYZ1DfcfZMdsKrehFqU2qLv1ZDPknyJtH0I3bHQjH
+         o9B6qkvy6h7wtxn+5NONqbf7Kiy069iaBRIvyMizkZoLxJPPnw1HfptM5wmIXizB6nIo
+         +FnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756999859; x=1757604659;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8xE4rmjGRisIQDV5Gl3u0Fv0zsZRWzQtHGzTA13lIgs=;
+        b=jC7cY6c6Jhlp6aZfSWSNWdr9kBF6jYXmDqq2XNNT3jXAIUXoHpoEQ6SC3a6ioZOPaT
+         51Km+6VAoKZY9zrY/jjvfeMDwObojIQTzn42IErGXlp3rww4I5e45mgwtjGf9KXVyK17
+         8yX/ZunQYWy5RA3+AG5F+HutwOsKqQu+fG/XsR00/Q20yl4UBeSdE/m8astb0Fsnk5K0
+         wHW9cpuwUAUZhdxmqbYylH0tBtwOEBf4ea0qySBPy3ExRi+VmnVb+IeYm3EeitpxfO8H
+         4v1J8hJNTyYFycTa4ywEtt3w2TfRuxy8mytesncKs+iT6QFYcOi+xUHfroGlv7X7s80P
+         aDpw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZBWKtW232TJa7jULWr0RmeMvGtX0Lug7pzXe6nPw7CiLYlDienU8W8JxDea++1pq0Yo2Oum1fyg==@kvack.org
+X-Gm-Message-State: AOJu0YxmzkvF8+1N0go9GlH32KusYlEKizBnbin58qEvpPjVPH8tce9F
+	c+csQ5X+JFdUTroeALrx2taRcio5PLIYELP7Ays9Wp6c5uBIXgeiCvXX
+X-Gm-Gg: ASbGncsr8PYRM0/JfFD3jWz7yBciG6p1Z9MFYFPJ2+AWyl3sATlG4x3oR4Pcuktrduw
+	P6jnmTAzyRW7235xdnCkGTkxD6fclsWPz7d0wXh7EOPe/8hXiv1zppcAQXCrbJcC/3jd/ARMywr
+	MErZIiYj73aDjjCqcOx4V+CpkRRDzGu0oEV6o1ectDfL6WKvyfMGEWSFPglA1r1nZgrTlr7Pn89
+	petvNED5QxOHmgA9iRHuvqzNpOIHy37hBlkjWIeeYTrDAlBKvrt0X1rDBn1iX3NvuLWnz95aNKN
+	MI9NsAX4DPUEWX4249Bmz0Eqxt/Ki3jwjw9aJviI7Y+AoQ3GQnHQwkkZ056OrfVsAO4MQXROyQq
+	FL3tmOpBpZbWwda1olfO32dgAVyvKjqBYYGou8ZEX+/qgSPt96mv9s0COZTAjwb4Ag3hLcixVsq
+	D02+SYLwfu
+X-Google-Smtp-Source: AGHT+IELB08VGh3VAq+KT32lgs3tsogmI3gmF9iQ69mvKEfdnKdejg4TzGBR9ruyPEVGthqdMWy/EA==
+X-Received: by 2002:a5d:588b:0:b0:3dc:1473:18f3 with SMTP id ffacd0b85a97d-3dc14731977mr5762689f8f.41.1756999858759;
+        Thu, 04 Sep 2025 08:30:58 -0700 (PDT)
+Received: from orome (p200300e41f1c4d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f1c:4d00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d0a1f807f9sm27264155f8f.38.2025.09.04.08.30.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 08:30:57 -0700 (PDT)
+Date: Thu, 4 Sep 2025 17:30:55 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH 6/9] arm64: tegra: Add VPR placeholder node on Tegra234
+Message-ID: <dzbefkymgrtyxfgfcdu4kq7rmgpa6khfqyhzz4a6y3qqonc4gj@yfafsqwnloia>
+References: <20250902154630.4032984-1-thierry.reding@gmail.com>
+ <20250902154630.4032984-7-thierry.reding@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4xtz2xrto4fsphdg"
 Content-Disposition: inline
-In-Reply-To: <20250904095129.222316-1-kernel@pankajraghav.com>
+In-Reply-To: <20250902154630.4032984-7-thierry.reding@gmail.com>
+X-Stat-Signature: ysuecjycytjpp9hxw9fmoh5hw8comeaa
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CF78B140004
-X-Stat-Signature: t3q6ytjhae5sc8hi3yepr1888x1yzg6r
-X-HE-Tag: 1756999578-999083
-X-HE-Meta: U2FsdGVkX19hJToYy4N+l7eSXAMpG9aIRroAHaEqdF0hLp6Xl/VzuXrBIImuUJtCDe+vRwg8rvy3EaZlMN9GmY7BHgcWDBhrnBW6Y8dsfooc3zBQ6t3Zw1m2UVivbrwqvYKKxkE5okf5+3aRP6LrTV2IFfj3owOREJoXP9HQH7z3r5tmBPea1Yu/YZFBSZHiPPUhymMke/aspZhcwt2JhGLiVQHORJ/KhvuGMav2EWdr8s3reexH8ZT1HQKg2jPl54GGgnaX1c/NlrK28UzXv74MctWkT9yoVFFMD/9tTC5G4oc7tygXiqGAAqe23GF2fSPR3Sh0S71HirKGKRAoRyib/1x/QsPOxz2QTe64oyDBHd1NocikAJ3bIoFpq80+YNc36dYiydFYGFuVRn/OSFIKc5mKzQ9UK0BMMvrjPiVQSy4Nm2dbr23v2/Chxsis56hJG1L19wJqns5DPtqif48Zt8ICaKIXfTCUgZtehun+htEadD9WoHJakZNHdy2t9IOzU+Mjiaq4U5sGn9ekh7QR2/Ds4O9pEVeCm5fB8NDqR0B4HM04yzszeholUEOUCaoOLlolKMQCmCS3wx0M5iDVM4q8eDNZokBRjaYPeS9qzQWet01+MYMn/l3FVJ/S+vkUTrdhI0Z1YRit7rX6F2Qxi8nE6ZIDgydavpCmE2Q/itfQQe7OFsv6z5asdW4q5vA83opMbJrUOuOmIZ38ga9pqG2+VrHyvrp6ihNvJTYcWZgWZtWHQG0JSHIPwbl1JeOSD8g7e8u9MiR6lZU4WqiJC9TS1/MC4xZi9SeZb1yIXzVbG1hcHSEHXpNrntMgLUwoWomKbptc+6ujgAlA3emvgUvIRnC3hpinZj41FF00D78iTpU5NspmasaIFqvBdugmtNCimVg+pokfWEt1p2WZrD6RGzHG9/WlUoPhS4srhP3uR/9UuwwYqtl5DlGlFULTyLb4J1uTkKHDugY
- qoVo2oDg
- 63knANn7a2DQZWeWjeHrobXBUFbDjniPQDO3V7XBSYXevZLOj9snGiBXoPb8GO3IjRglZxlWMr0MaR5MgRepHtm+G9tUZoop9P+GoMLjGRtegAVw9786Rlw4y4AGhlXKdMk+9BhYVMLy3BBWkdTha/tv6v9MwakzJQrS6ly4QioixtAIqyrrBXV1WE/F4w7DcBnwrCCvpTr0TnD0PFRPYLRYp9D+rBsSUasX+CQJ6sY1B7oodr+C9EdO1dohx0LO/p/KaxJJPHKYOaj0xTnJewfVJ/67EXjZOnnP2oMh1CAw+zCD/013gY/qzM4RflS0PGR3ZZq1pa3ZqA7aMKp/Y4/5yvptn6NcKKHQuwko20Aa5gmDD03xpfkhibroN5dbCegFmx1fKKm/ZiStD1xrT40prmSfvze5d4rt3vsaA63VI12e96SqvP7p9qR7X4+ZktPzTuUGKN5/Dv+o=
+X-Rspamd-Queue-Id: D6E8114000E
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1756999860-84363
+X-HE-Meta: U2FsdGVkX1/Wp1yrHaMYbUQHdPlwoeC5XVLkurdbg/iUIN8sTxawGr0zc7e9Qlf/v5eTyoZSQVccKH3+MZye1+QFQfGHGF5i5GV8xj5U2I5JgifoejvdoMu1e7rXfrIqCVNu3Y2OLtAFwfvCa1A7PSRhai0hCOveeYRew11dw2t92IJKIEDQJk1hmXt6HebQBPn/km6cXu3QoY153gg6CY+YN2RvXQavRCA+c0jnbBKmhNQGd4fuiU/DKkEaF5CnkQDwi3vECbK+10oRtpxOhGcYE7WObmyZICmpX1JmDS5Tf7jxEs8ZPd63UZH3DYuuLfih/mD2svM/ullsZ8IYwZ7Lx45QPsMi+WWp/nlp8VDS6m7WmM0KBXMw4pUmDqmE40f60ywOYuuAaF3a4VHpIhTa/FO+nGEPsnNREgYKlxaWxkcvaj9jh8Lktp9jaYNWjShm9viy7CZ3yMvvNU+dv5N1/iY/Tz/H+RperNMdceqP1FfamOAvn2fKdRrUbW9ibkIZ9lo372gfKmUeHAl6QrOR2vGconYcjbCSNRQXlY2AJVxmaZzn43TdbqNCy8lu0iqu/FqUwNIPFOdj+wlLhtwupxA7lZslDHnXVu+QzgLYeAPigSf02k8Eqq+UbXwRNje43l6GltRHUNDYZX7L1APOGGwntHJUDTP20mSLVvyCtJUevBw2TClLeUbcqkqU37WcAmhfNHQ7itnd8WSu/N50WGKq+qfDf+ltm7ecAk63nxMIXqKxk5oDqnshQbDnTVfP/Seae0qY/+UKMDhN63E9LJYpBKX2Mv9PWR6BVM82UQsEbzVnFmTcuBnp810UcyXCbdn8YpWztCIkpLORMBLxcAUHcozzrUjnVa258kq3GH4V6RQjCDiGsqge5XKESvIcNlGOvphkusm/qcvUCQHXn8Ko3gua+c9+NTwWJgdfEqdum+ekXdeS8mET+7onWZdIrG/eagjwXAXFe6n
+ nsR17QOf
+ k+t4jkEQ1tNYqchbltad4TxX0+0NkLjp2Xh/14NTsqYmFTK4eh11jaMy00B1jJC6LHR/X6bG5ttYd1PZc+a0zYBXnKSC28DDMUgtoCRpfjAmqeJUbOY2D39e2aC/3/KAFEgSmA1yeO3UbNMOmgXt1VdlHFIRq4sdBa6C0ExyjGai7MiOUDkKHRW3TGyXHKcLbXR5zhvqEKauU828UVfZzbG7aTSdS/edhjV7HypGzcQY+a6n58T51W65MRVrRlBp3+z3ELZTZ7QY61UawEhLlmLhAnf/XhnrddwiUWmLHdkLLeLQDxAv3nPeC6mmHXhMfMdnX5k1Wu/Mle9QUa4kRvWfqHNBsyn+T21nj1lrxI2+xWrKNCPj0YpotAhclzqHYal85atpcvy1pXisJMS2B1jFFebV1AWIiqwrjgxCmt/11EzP4/Vy6o0LP8qdZD8CHzh71IwvCqNj17hmkM8I6VBtAaBxV0biiKkp86jyOf6KOTkKQFzlIrcNiLGKls08iU6RkHu0ddT1AD8/4/fFf3sh5sGTdxo9kKcrBb2Ox6IqZz7QtVOcw7YwetXSbhkfGfuO93aFuzqIqmK8cB628Le5Ag/xAwQOKrmFMLRHE5j/blyUnwwZmPDa0afRyOy1rqwoGzIofdQJwxlIQI8mN/YMhkQFG6KxJNewPWtHqP8gKXSvj8+H8LMIbYILGYDtiE7KKkcs9WaP04us=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,26 +126,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 11:51:29AM +0200, Pankaj Raghav (Samsung) wrote:
-> From: Pankaj Raghav <p.raghav@samsung.com>
-> 
-> split_huge_page_to_list_[to_order](), split_huge_page() and
-> try_folio_split() return 0 on success and error codes on failure.
-> 
-> When THP is disabled, these functions return 0 indicating success even
-> though an error code should be returned as it is not possible to split a
-> folio when THP is disabled.
-> 
-> Make all these functions return -EINVAL to indicate failure instead of
-> 0. As large folios depend on CONFIG_THP, issue warning as this function
-> should not be called without a large folio.
-> 
-> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
 
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
+--4xtz2xrto4fsphdg
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6/9] arm64: tegra: Add VPR placeholder node on Tegra234
+MIME-Version: 1.0
 
-Just curious, did you give BUILD_BUG() a try?
+On Tue, Sep 02, 2025 at 05:46:26PM +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
+>=20
+> This node contains two sets of properties, one for the case where the
+> VPR is resizable (in which case the VPR region will be dynamically
+> allocated at boot time) and another case where the VPR is fixed in size
+> and initialized by early firmware.
+>=20
+> The firmware running on the device is responsible for updating the node
+> with the real physical address for the fixed VPR case and remove the
+> properties needed only for resizable VPR. Similarly, if the VPR is
+> resizable, the firmware should remove the "reg" property since it is no
+> longer needed.
+>=20
+> Signed-off-by: Thierry Reding <treding@nvidia.com>
+> ---
+>  arch/arm64/boot/dts/nvidia/tegra234.dtsi | 34 ++++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/d=
+ts/nvidia/tegra234.dtsi
+> index df034dbb8285..4d572f5fa0b1 100644
+> --- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+> +++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+> @@ -28,6 +28,40 @@ aliases {
+>  		i2c8 =3D &dp_aux_ch3_i2c;
+>  	};
+> =20
+> +	reserved-memory {
+> +		#address-cells =3D <2>;
+> +		#size-cells =3D <2>;
+> +		ranges;
+> +
+> +		vpr: video-protection-region@0 {
+> +			compatible =3D "nvidia,tegra-video-protection-region";
+> +			status =3D "disabled";
+> +			no-map;
+> +
+> +			/*
+> +			 * Two variants exist for this. For fixed VPR, the
+> +			 * firmware is supposed to update the "reg" property
+> +			 * with the fixed memory region configured as VPR.
+> +			 *
+> +			 * For resizable VPR we don't care about the exact
+> +			 * address and instead want a reserved region to be
+> +			 * allocated with a certain size and alignment at
+> +			 * boot time.
+> +			 *
+> +			 * The firmware is responsible for removing the
+> +			 * unused set of properties.
+> +			 */
+> +
+> +			/* fixed VPR */
+> +			reg =3D <0x0 0x0 0x0 0x0>;
+> +
+> +			/* resizable VPR */
+> +			size =3D <0x0 0x70000000>;
+> +			alignment =3D <0x0 0x100000>;
+> +			reusable;
+> +		};
+> +	};
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Hi DT maintainers,
+
+I wanted to get some feedback on this type of placeholder DT node. This
+doesn't actually validate properly because it contains properties for
+both the fixed and resizable VPR variants, which are mutually exclusive.
+However, the way that this currently works is that UEFI will remove and
+update whatever properties need to change during boot, so the booted
+kernel ends up with the correct, non-conflicting information.
+
+The reason why it was done this way is because it simplifies the code in
+UEFI to update this node. Also, without this being a placeholder I don't
+know what to put into this. There's no "default" for this. One option is
+to not have this in the DT at all and completely create it at boot time,
+but then it becomes quite difficult to create the phandle references.
+
+While at it, I'm not sure if I properly understand how to correctly name
+a reserved-memory region that is dynamically allocated like in the case
+of resizable VPR? It doesn't have a base address during boot and the
+kernel will allocate memory where it sees fit. Do I just leave out the
+unit-address in that case?
+
+Thanks,
+Thierry
+
+--4xtz2xrto4fsphdg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmi5sKwACgkQ3SOs138+
+s6EL1w/+O3vMzwflDNuAsOeJT5PO30EnSdPQtwSfs1kegW1Z0O7O+SxPDRbIOumH
+ZtXCWjmHUA0x4A4tV1KHYusXEpLe8kdgMeaFYK3XECONFcW/xto7lbOk9ujNo4B0
+RSBU+KmbKVeHe3JQ8ENftNYUpQqLHdBEi/FZVlgjZW8KLe+MuWHnvoZsutLTvLim
+edJeSpS/ms98AYPqE+MACLkqG92b1y0jgGhsa3dymQhX6RYbJxLTzO3SCG9WKpFL
+OkfgV5XwyRYgsBQDIkJnBu4+CtPOO2mJeUQGuHgvSlfv8Ulz6jYKIcPQj5hhJ8KZ
+qtqV5vMoRauXf76f97vKenJ86SPlWymUWCj5/K88mqtDm9EUoTtMT0LfGhCsIfIX
+TNBYgIz79w16UvFuZ/CmD2MEUPi00WpA5b2UyifcHKKnORwL08lBhLD0r5UWMf/H
+qUqNt0qtK2EuPjOeUMwB8YN5VPZCP4oWEWoSVCF3cbjUitjx2ogJRMgeazsAZdmP
+x1+CSVvTpQ1RqXIn3ezRgBkPLQ2d1KJIJdv+pdQn1zcFTuqd0nP5yFS52TiWsJ8/
+cczmrWcs3r30Aoaw3e0rW3OQHghuXLaavcm6FmLVFGs4VDlpRbFnESuLbynzAbAk
+7VfAJwgPBaLVqs2UqkC5ezADL7wV+VxmrcPUry4JBO+17jVwwBk=
+=p0GH
+-----END PGP SIGNATURE-----
+
+--4xtz2xrto4fsphdg--
 
