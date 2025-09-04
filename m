@@ -4,97 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C72CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 09:52:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0244CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 09:56:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90AD68E000B; Thu,  4 Sep 2025 05:52:05 -0400 (EDT)
+	id C49F28E000D; Thu,  4 Sep 2025 05:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BC078E0002; Thu,  4 Sep 2025 05:52:05 -0400 (EDT)
+	id C22CD8E0002; Thu,  4 Sep 2025 05:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D1448E000B; Thu,  4 Sep 2025 05:52:05 -0400 (EDT)
+	id B37B88E000D; Thu,  4 Sep 2025 05:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C0C18E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 05:52:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 437311A0A97
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:52:05 +0000 (UTC)
-X-FDA: 83851101810.11.D47A4B2
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3EA5DC0005
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:52:03 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=IzbD0+2u;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=9gUm64XN
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF418E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 05:56:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A2AC1A0A9A
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:56:51 +0000 (UTC)
+X-FDA: 83851113822.04.2C15C5C
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 12F48A0009
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:56:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="R G9qP27";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=TfdnPvfb;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756979809; a=rsa-sha256;
+	cv=none;
+	b=2wlu5oxZdT1UIQEjyR/dOV26v5Z70Pne89WiGTVruVww/GFqt7BgtlQN6PdOyQU2BcSF4R
+	VF78qM+66F2CcHBFDI46vkpbi2UfEyvxBv7A7r6f37zGm7CbT7xBr/btTAmxbt0z6ii35R
+	4LRHfDIIdS2F7sIGWhA/6VEfJdLOSck=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="R G9qP27";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=TfdnPvfb;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756979523;
+	s=arc-20220608; t=1756979809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4IuKTho9AadcM+Re0nAwehN+zaegfeyCAyeD2EXwBdM=;
-	b=VqoKuEGHO2vwlcyf16LgdKPCB/m4d1o4w7PnHynmJ1FRLMSLnDZ5y6KV7sVMLKwnPgiuPC
-	dN24fuvPxuF0NG3dFVY4B2jisr98GV1a0d4LguuVIKaLJjOau55N2is/3lyVoLo7IEb6H1
-	jzWsDkpVY9zqMQMKCGC1nbmGH2VI2xU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756979523; a=rsa-sha256;
-	cv=none;
-	b=bUMNzlqr5UnPGd9n1KCZ0HubYeeEoZUptfLs2ueN/7t8eJqeieiyvSDSaQ5CkJNadf/vm2
-	dtQytSD8YzZEZ+I15fLrqlSceFYQB0mGPVX+Q1cddvWZe90T6H+bTSiKAFKiCNlxyBWOpQ
-	YLXSk3o3peRyJkMYDdNpV2lWT8u9oBs=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=IzbD0+2u;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=9gUm64XN;
-	spf=none (imf10.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756979520; x=1757584320;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:date:subject:cc:to:from:from;
-	bh=4IuKTho9AadcM+Re0nAwehN+zaegfeyCAyeD2EXwBdM=;
-	b=IzbD0+2uO5U8AscM4gquZJ3tAqNYStOBjdL12NYAp5Dcjn9XjytYchcTeGTLBkv9MrLBGRQL5iM99
-	 Z7SzMmgVKEHmrEp+cahwgJ3hVdsZgsFe7JYrmeYLVabFh+SDMhBPZS9qXF3ypyxo7iZBN5mo+X2m/R
-	 VYtWh63Vg8yv8TfqfXXzikRsJUD3wwAXpT6HNW+hEcbT8+pik0DHWx5jqK8J/A4iOs1zGxrBZZTv2G
-	 ZtxxUkFwA/zSI7Pmv1D5H/lhj/uEHltqBju9KJCYvwpdQ8RiEHVlRIKQ7ibC/jhh210BjX0/l/0SeX
-	 1Zg+/0ryeDCbc/GaMc0+pelej8Oi7bw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756979520; x=1757584320;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:date:subject:cc:to:from:from;
-	bh=4IuKTho9AadcM+Re0nAwehN+zaegfeyCAyeD2EXwBdM=;
-	b=9gUm64XNHZ4cOo/2ZWkc5UqXi6ybhDmmSCuReZQFe5x22w732XhYI0nMT0nGI6mlW9Q8rPeC+QePM
-	 QMQ/EojDg==
-X-HalOne-ID: cca8378f-8974-11f0-940b-632fe8569f3f
-Received: from localhost.localdomain (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id cca8378f-8974-11f0-940b-632fe8569f3f;
-	Thu, 04 Sep 2025 09:52:00 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: hannes@cmpxchg.org
-Cc: linux-kernel@vger.kernel.org,
-	Vlastimil Babka <vbabka@suse.cz>,
-	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Subject: Re: [PATCH 0/3] mm: remove zpool
-Date: Thu,  4 Sep 2025 11:51:50 +0200
-Message-Id: <20250904095150.2770293-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250829162212.208258-1-hannes@cmpxchg.org>
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
+	bh=qRgjtoyz8BA3D8r3zYcx6ZaoyRe2lnSpKHe7TcKNhUU=;
+	b=psjGxM6Pf2NcJjUzZ59drPuOPSb6Ae2uKGo1lobg5tFUiYQMao4BBkwVH+wGRqFddkGgMr
+	4J0XbkF0C4ptk5g2zEvMmnX/jX5trOEzD/NzqPFxKJ08/ZEv7VqRM7rt5hRYoWbm6i0e9x
+	Sips0zQ4rxp4hupHsjkQ2437WBCw6ME=
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id CF2A514001FF;
+	Thu,  4 Sep 2025 05:56:47 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Thu, 04 Sep 2025 05:56:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1756979807; x=
+	1757066207; bh=qRgjtoyz8BA3D8r3zYcx6ZaoyRe2lnSpKHe7TcKNhUU=; b=R
+	G9qP27mwqyiII+hfHECX9yliQqY3nn2cA5PST7USHOvv/F/BCKBOMCMi02VcG/+E
+	ts9N66Ve476jEMYSvdDSvXqCm/uKIM+pY+am5dR6mQer5Erwzrw5mZRUFwTaOrdN
+	CUZItPP5V19e/zHeDDsNIyq8smsuwPrL6bmhc5C78BkHJYe8jzIiajiTu6rzQHgY
+	O9X58DyaFDgctwytnn1A8L44T8JPipZIPb02DxhG7f4oc/J2LIkigql3BUh91E6z
+	b1fcA9PtDrBrPaRRSF7sOkmMoI4gW7gqVDis0P52cdPDRLtBMR0a0BNXvx/tL4pI
+	okjJ2+lFWpsFh3fX5QNpA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1756979807; x=1757066207; bh=qRgjtoyz8BA3D8r3zYcx6ZaoyRe2lnSpKHe
+	7TcKNhUU=; b=TfdnPvfbp3X+wQSPON5F3tAxixDIGim32a6IcqbXO4YDFkhz9uS
+	NvUa8jGG7SZQ5LiypGUjc3wYPumTtzOxR/3tY4P8b0/WiNMVUrI5H4xLQ8HAlgKn
+	uM7cErR3z9OJ53mkygogwFWWMmNuaWV+gCPgs3XjplBgKSooQXjIYjWAkIhbPzeI
+	VBjbS8jUwh62PxapT65zGiHTNcN2Epfkfzgtg0SJ22qSPu6uwAKcPRrp1Tn+Cpzw
+	E74qyQqL14B4Hn8YrLBtAsViLRxK8efvKY80kVaE86nm8E0bDvsVdbwMB55hMvYU
+	SbhCZRaly+jWdYEpyfAP40uj/VvElRIYfwg==
+X-ME-Sender: <xms:X2K5aNXggyFnuM8Gf7ca_BQe2fVJFRuALkjRUZBeiK96mH_TxlNWGA>
+    <xme:X2K5aCynwOO4qZrow49r5ZU8gouZ2lBrHQ5dKNA-MUwoglk4C2Z3aDiDu1gH-pCC5
+    GjnY3fSInBEuDPnahE>
+X-ME-Received: <xmr:X2K5aKSzgDTO9IM3g8rpOvVBPtYziisnKK0-G79NYfO3ZmXRmIBHPkK35cIJ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehjeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
+    uhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrf
+    grthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdeludfh
+    feefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeekpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehjohgvhihprggsrghlihhnrghssehgmh
+    grihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpd
+    hrtghpthhtohepkhgvvghssehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:X2K5aGglJVLMEXr02yQaO1VZynVKYNzRPGjT5Vx3zkuzqjuzykj2UA>
+    <xmx:X2K5aJk9ADht_BuLSzm-Ubm2k0mLjLQ4SLqJTvRGFQFKEkZ4vedmBA>
+    <xmx:X2K5aBuFmw2OWHahmHBNklYIENKbQ6yWAJNgM0KYvUokHkpIgZIlVw>
+    <xmx:X2K5aPajPrGLcRfLKIh2N8NJGNjncrMNDNB5SxCpax78m2gfd0icZg>
+    <xmx:X2K5aKJ-LpaIFXhjkM4eMEDCsng7GTizFjY_jUod3_uREqhTxMMTVo8e>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 4 Sep 2025 05:56:47 -0400 (EDT)
+Date: Thu, 4 Sep 2025 10:56:44 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Joey Pabalinas <joeypabalinas@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH] fork: simplify overcomplicated if conditions
+Message-ID: <tzjq757k4tt7k2mkcapttjuax6zgzr3nl7ivusuvxfmok5kvb4@vub2gw7vp7vu>
+References: <357638f71edc7f1d9814b1851a64e09a8895bffc.1756968204.git.joeypabalinas@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3EA5DC0005
-X-Stat-Signature: hfi1a87xs8eayt53r8iuhb3d9qeam666
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <357638f71edc7f1d9814b1851a64e09a8895bffc.1756968204.git.joeypabalinas@gmail.com>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756979523-383199
-X-HE-Meta: U2FsdGVkX19pVdhBVjaRotMrShgnsJkqnVGI3CIg9xJL2P3EAYOlA78PU+ZKE9qRsrk301mqhS1KhMiEOxDZyKp5pizFMpF+uaJ7tUUG68FpoqlBRIzwzJWTCF/kXS4tgmvpe71QJtDfRTEs+0hAYuBkiApvsfvLH5wpEQFnUv+b7OWC4q8TeH4Imjgy1i6bEUVKYl78y6s6rPYwn+dJTvAmsAiT1/kk0g00KHHjwf2AgjZ8zvRfG1QbiO+MT9FTkPURmzJeVmx5EGON1JbmMWoU/j9BpP2LwopNCOJSlr5hQ/3j+HDQtGHdmMtdsm2wMLrKY99AwT7u38/pbyIIYvNtTxJmtTp+bamtCiN8TzMO9s4wSDt9e1yeVTWLaoMraSDKGInARtNBZGp7TBpdrIQCdVaPQLhVmeZ1g98RjRSitvu5O4SNmvvVsWNMfbml2rKv7Ymjx+Yt09xjCwFaBV6T30n6mETUkFEXR+zFh6lrvDgbEGq+Z6sCPvVVPopItTSiKw+4a72Ox1P4iF0ASTaU6BAMIMSXDPLF+gtpkb8xYSOS0HNKidljdhnCPZH62jrAn9qBLb0+T5wglsIftLz5adkADdq7SsThJ8vhbO+i2knEOLKgOOKRyYeCyZ8AeM/84ezVRzSrr09AKRf39jDGDhQmWOAN2Phe+Ae8azjzQ77tVmNGtx6lTtkxdQz8jc+kVXD6e6nfVhinV5HYXW5AS+/cANwTMLjaAO2CRH8kfDV9IqDRbLQogIbuHEdKrVENYJL3lN/92t+/hZnwaRr8pO7+9Ezxmiqn5sA588YWlWiw4qPm3FvPuZRLXFZQ/k5+zQwENt3eCkTEqVwkyYJPztoGpsn5s6wG6jdM2yA75UmNFOWu0j9bkA90xLZfHK9JTxB3kujaT2d2P6/WcdUEj6T3mNluBRfWNwiqDaZ6YqjZUl4Ua+jAZ3/3zIG54Wdj0zJ3SWw8QwyCZUH
- PvvgMmyk
- rcix2xQNYC7qpYsJFyTToG/OBMeL4IMl9mgthIjknHmOmyjp9zl9yYl839faONPmYVpmxAu7FmlxQdCeBqRAEaLgod58k/MSOXGpkygmW53K2M/IK1C+hqXiHLyqgyG3akw8eiPSlv8Di3jqEjBsUhuebQpQyHSysrHEqqCzlkc/5ZxJ4NW2P0HFsEWWH8yvYuaEV+ZUTlttb2+V9MPvqS+aWP0L2Rmkqtt9zFwAQUHJH3cM44NiDWXrTsm+3Ipqng8ogaYsYWNdYuW8=
+X-Rspamd-Queue-Id: 12F48A0009
+X-Stat-Signature: 8hp9k6qgezcrxi37rccc9jrgm1tjwxgm
+X-HE-Tag: 1756979808-618029
+X-HE-Meta: U2FsdGVkX1/potU7MeNzFMY1NW9og89EH7YSVPt+6Mub6rxAt5OZrdReyCv66s9RufA8GGzg+tDxuQcgIET9gD6SizYi3QqrJldn0wsx28R0Vxko01LRyr7rw6tbVCvnL85di8cyoigSehKno5TGCtQV2ddW9nG0pjse6S8SyETzdT2tUaZoEcgpYGD3evwxioblhKNL0E3u13tOPaBJ7RVU7Rglw2kRmjxyM+WVAw3Z/kDMtZ/UQNZG0vLdpCbTveXK+YgXsbupvnwDuA5Q3YRveXD2n0Mru6BOX4Hv50q2LJgBOeayR33NaoNWSjs/a+cNvNN6kEH644zj8NSD4cBD5UWIuc5Wp1OmrkiwinPJIYL/xS/AWO9kL7+xOvXQpsN/R/g0cE+XIWeF8QFrF9zxFkbyjQgQ8VFnWR6Vg8+KlT4v6sQnAQdzVHJ7q1L998QDFD86BQMH3IYKB69VhpgSPFTaqBBThleV0AZYMFMuP/JwEmMx2luVu0YPGh5xEtBOGTxBVel6v6u+AbgB6CCQrHsa+WHGLBLabewkuWTkLsqV121O4FQI7tKGDHfWuzH16AxOeo2Xu62EDipNPVdygsfYBFUVar7JUOO9Bgt3mwtrqxiuBaPURo9xsULdU9shlAUEiH1d8dQDregoHHzUkZJXdgO70rLZll7mPbDvHEIFtYbPUF0l5GvKbrtISQwJSMP3Ioj6qlJkZ3QQCgqj/2ZYxferBmhJSdI6nrce6ds+wIVOj1XNdIbRg9Q/4IDL2bxsoQA3+OZblXAN1L1B4nO166DBj/RIkyR6UZiVI4rvJyTlqye+RK7RV5g/VtLUCWumt78sP7K1/vgswvhpVoFDKV7MC5yRHu3wSJEbw43MiOz5g6YjxkL2PqPC4nPKKZfKT4rifvG/jZR1wcwL0PPwJaPVkhAGsGgM4EustahhrKWseZbm3K53mPE0ih7+o1qM3mLzT1Zl1RA
+ SKH/HXQU
+ 9kOlR03sAT2phbWqNBap3k7eAHlcy17YbmlLHzsOQs++dtVIiUn4CzaftHjTSAr2qqIv43RCWYeEbhgDDzASOwlyTenbNHklJ+9Ug3/2yebVv9BvHTHSh7U/OrXd3D9RYoMCy3zK6ZDPgTr/JtD4uRoHG9+YeCugMpCJ/1H22jhparugpBXHelQr3ugJgD1r6XyFbZdfHLX5+ifxZgHVNJRXO7XpbqXQGZmdAzJTpVWpdvi4r7a8YmfAz4FucBU2FieR9r1l6PCUH8PtZc/TmFexWKr4pm0QEGM5/hNSpbNNJtHAIqeKywS4Hy93YpbKKxrFb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,19 +130,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> With zswap using zsmalloc directly, there are no more in-tree users of
-> this code. Remove it.
-> 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+On Wed, Sep 03, 2025 at 08:46:29PM -1000, Joey Pabalinas wrote:
+> Since `((a & (b|c)) == (b|c))` is the same thing as `(a & (b|c))`, use
+> the second version which is simpler.
 
-Per the previous discussions, this gets a *NACK* from my side. There is
-hardly anything _technical_ preventing new in-tree users of zpool API.
-zpool API is neutral and well-defined, I don’t see *any* good reason for
-it to be phased out.
+Huh? No it is not the same thing.
 
-BTW, remarkable is that you didn't bother to CC: me to this patch.
+a = 1;
+b = 1;
+c = 2;
 
-Anyway,
+(a & (b|c)) is 1 which is true.
+((a & (b|c)) == (b|c)) is false.
 
-Nacked-by: Vitaly Wool <vitaly.wool@konsulko.se>
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
