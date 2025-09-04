@@ -4,95 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 813ADCA1010
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 01:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39802CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 01:06:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4E2D8E0008; Wed,  3 Sep 2025 21:02:39 -0400 (EDT)
+	id 8FA478E000C; Wed,  3 Sep 2025 21:06:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFEF38E0001; Wed,  3 Sep 2025 21:02:39 -0400 (EDT)
+	id 8AAFC8E0001; Wed,  3 Sep 2025 21:06:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B14798E0008; Wed,  3 Sep 2025 21:02:39 -0400 (EDT)
+	id 7C0EC8E000C; Wed,  3 Sep 2025 21:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C2528E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:02:39 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D2688699A
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 01:02:39 +0000 (UTC)
-X-FDA: 83849767638.21.AA205BD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2EBC64000B
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 01:02:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cftMC5e3;
-	spf=pass (imf17.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 66A4C8E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 21:06:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 050F413BB93
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 01:06:02 +0000 (UTC)
+X-FDA: 83849776206.22.C1A8F3A
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E5DE640013
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 01:05:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756947757;
+	s=arc-20220608; t=1756947961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZPCuCoHnE2xN7MvZJM39hRDZjUFLfe3xbedCGZhz/hI=;
-	b=AmUnuSLtWxZw++uzoxTY3hby5PXspJ0eK9HlKC8YHETFV57cx8I0H+9E7TjEB8TyupM8zZ
-	zIkvHvAIWcy1CDXlM/Vo5KBaOhQkZN/8Uthu5e32bcAxrjsnsmr97FvRc4SJWTCbTwMoOC
-	kzDRenAyhDJqERxYand95ttpCbHwU7k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756947757; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/cf8xzxgUV1snPOTNaz/GhSh78iXOfgxIAOqboaFvgM=;
+	b=6B3FJhlgy2RIWyzFMs/uAYymRok+HE/34oMV1rPZDBiP670iDejClYaYgkH2IBu/X49WUP
+	SSnwSiQXitNXnJi/ck6OxpesDL4NAfe83ZEWki3HXAz/2Z6XYcnSRcifqVhLvjY7Yw+zJr
+	uiAbM/qy/OOdcowFGPq4uD3PQ92tvQY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756947961; a=rsa-sha256;
 	cv=none;
-	b=7B0Q84MY99mfauOIuIfrABoumDeBrVOUcLP3aYODWqO182WZoms8Bw8tZ4sfYdLySKuL7l
-	DWyrR8kc8GE2Y8P9eyhkJzV7p9zkgSAEv+MLKPbly2RI1PJlNJNnJA6/SiVSPQt9XOrxpp
-	3av96iKG0bqFP2p0Kzc1P+/ZAcYETIw=
+	b=4hqGDDWgm3pdx5YGCBHGWdRLYpS7g4t2czOSccNnURu1lgy8SeARk9xOtc6hf0uw6n/HL7
+	xyE8oyviEU06yJPO7r/OEucuyG8CLhu41JA+koWDRYhpTWq4d1UA9Fj7JjQF4sAVJXBtXq
+	z7JYbjXJrA+9u3LnwWcRWWs0Hy+nZWQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cftMC5e3;
-	spf=pass (imf17.hostedemail.com: domain of mhiramat@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFF874468B;
-	Thu,  4 Sep 2025 01:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBABBC4CEE7;
-	Thu,  4 Sep 2025 01:02:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756947755;
-	bh=8nAczwppKWkmFx31kmIPa7xy1KYrypF3ToB6n147+gg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cftMC5e3pTJknQ88YxQ8XMWYUvbmiioDE+LmlC6whHTtQihOKlFkD0DgXwRskIAQP
-	 oipGG9uaqXtXJdE67auCilCzPxOQig5NUJI+BS4nyRf6nb4W7Dx1xYV1SC8eB+W1ug
-	 GDhXKkTNEH89m60LLZBO6hE3rEMMmXYX839IJhrz0J8RTNXvM9M4p4FhKkK4Ybkl/l
-	 hYzNeVNk/VXdO+zRuq6TpsM1Yn3NLAMgVaYOMEtnrYfF9+BFmLwmJU24PmNYvemT7x
-	 54dxqqEu1B8w3MPckq4A/5dFhCIJtfOxcbyMYurVADyZivTq9O4hoAtM5sxa461dLh
-	 qGpNidom8scKg==
-Date: Thu, 4 Sep 2025 10:02:31 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: akpm@linux-foundation.org, naveen@kernel.org, davem@davemloft.net,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 02/13] x86/HWBP: Add arch_reinstall_hw_breakpoint()
- for atomic updates
-Message-Id: <20250904100231.e0bb08d069db31520a6e0435@kernel.org>
-In-Reply-To: <5a6dde06-11ee-4ce7-9cb5-f0b8096e42ed@gmail.com>
-References: <20250818122720.434981-1-wangjinchao600@gmail.com>
-	<20250818122720.434981-2-wangjinchao600@gmail.com>
-	<20250818122720.434981-3-wangjinchao600@gmail.com>
-	<20250901160602.e25f0107e7b0ef4af1078fb7@kernel.org>
-	<284d5eef-447f-4e12-a121-3742d708c96f@gmail.com>
-	<20250902231152.442041a74774d888cec39201@kernel.org>
-	<5a6dde06-11ee-4ce7-9cb5-f0b8096e42ed@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf11.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cHLmf4wbxz2VRh2;
+	Thu,  4 Sep 2025 09:02:26 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 770951401F3;
+	Thu,  4 Sep 2025 09:05:34 +0800 (CST)
+Received: from [10.174.178.49] (10.174.178.49) by
+ kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 4 Sep 2025 09:05:33 +0800
+Content-Type: multipart/alternative;
+	boundary="------------A492Ru4Vmeb1KvsDwdS9HbYp"
+Message-ID: <f5dd70ab-c610-4142-be57-1fa311672b5e@huawei.com>
+Date: Thu, 4 Sep 2025 09:05:32 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] filemap: optimize order0 folio in filemap_map_pages
+To: David Hildenbrand <david@redhat.com>, <willy@infradead.org>,
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>
+References: <20250903084223.1653192-1-tujinjiang@huawei.com>
+ <3c283054-b14e-4f36-966f-78cf3bc0f3af@redhat.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <3c283054-b14e-4f36-966f-78cf3bc0f3af@redhat.com>
+X-Originating-IP: [10.174.178.49]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2EBC64000B
-X-Stat-Signature: 4x7p17kch1x7td9cx5rfnzzqfp1ibcdo
-X-HE-Tag: 1756947756-653983
-X-HE-Meta: U2FsdGVkX1/FfgvSFq3NKv/Iu64SPl/oWlatLlKhdtZfXpy7XIUPK4tiztGAD/wW4hRrKtftYXjRZ0u6H5/381j62DW4TLNKq4hlhmigXL6vWA5iFjsn9YVOa2ncagOlYQPeZa0XVYPHvZ8n5aNmLveaDlCQXHqGwMfCv9+BWgb97oV4xoEMCxDnnCNvHqIlTCJ6yNs87SsSmw8VtMGe+OL+Voz5Eqqo9+PAzt3zmWw2b7N7tDSuERmDU+RgxE5VaVlX/PuenU1aqSEZpv+jA4oqHE/YALtdV/9CQmDXMETauaRuBmJMwuusVmR3rqZp+aqyG0Ism7AJ9cM7rtCAn4BFfMDwXwD/9Wb0WnDCoqvCt4O+sN0I9uteDWAyOEXQmcw5kTAy6034l5HYIYpeMalNpgMaUHIstg/SQYJi2FtTwxNXagGr9DzRH6wRJqdx9W8J50bRKQD+Zp3CN8SfH6NQIIhdybE1GiYSuYU9aTkUEvKdO9fpD+efUPDG4pQ9VQSMZQWTvWxussH6n+odNoKkam5IlJJACdcpbzXLLxap9ZTOfC54sXOxQJJdSGCtMjAeovg/HnEoEtpmaJLj/+3Yo7eqbeItxdKaCSXvzhDqTOIFkLwFIOZ470uozfBAyoAtQAlVETcu86NfkVufRDArHsWydR2gDg1NRJLfmyttVTWWLKe719jScKiWwy9rI6raJjOernaV6aKcyWxkB4u60mHGNc7XSU3jb6nALrFDET6frP+MdCYwzLnLztU3348VstmnfBhHxY7997gO43gz1ewO8mcc66lS+iuseBWDehOMB/+C9oqMU/eBGJivyeVWm948/d4OoKbrykuHB+WGrtgSYhEtwi3+rAWNu0Yqg1zvKRMdDFKrZcYkk9B6qTnStmTW8EPKkiAIxGGJc6mOb2kYMYZSXkpvX2ONzKOMKFAObpAQvoojE9R0OPxbZx18lG6oD1u/FVam9hj
- qIVyF39s
- T7VbLvyva8m0bXuZSbVVU6Yu6inOEtS+Hz1ZGnBUDWOmEePNzxy9w+M/1j4vblDsGfGv1AxG0htrK+4zKtXjFOSuXMpZ27HL6Ra72qKJx4g+uNgwaHtf+jx7EuvPGEMdGOGlcGAFZtBWZ0imuTfxfnINWL2IUjMBhACFQSAH5wg/U0jxpy6QCoIFsDbm7tKUSUzbN/SnhSlykC1UBNyxCBBuvqE3y/PDFx8TvsZFb35sdDzEh8YyfWEHTaoSFa9jyQSjU19SodKnur1+n6fwypsZg2Or4+EimeUO4RXVR2P2CSIHwPkcFxgJVLyOfU4YQ0njcK8u6pQQCWkwZzMz5B3LB4A==
+X-Rspamd-Queue-Id: E5DE640013
+X-Stat-Signature: 8u7x9b9pbwoqtidb3gnpqwmutom3taua
+X-HE-Tag: 1756947959-378747
+X-HE-Meta: U2FsdGVkX1+MFv3Gw+gBINFqJlopz/hpqkp4iE8ABYJhrK+0cO2xfpMgBWlXoAN5zic5F2jTyAmoQMwDvb3D4vIR2IiwhOd+21vKKf1vV+iciNKkFd/EISPkqMikiOrOQUpMV2WLnDMy7JeULPlOxOwJ7FBSzQ8+EFddqIjDdHj7xAdRJCWXG/tOfCrqckTgaSHX3OEOovft/K4oS6OM/VaEX1gFHNbFsCJY4h0/06VlJPuHcRFkwQDxh00QfC9kOzuZNlbR03uMvHY9UvCFHKSxhByR8OB1nV7iDn3fCMLEcpG1AOeBUSqAKmod19cdYyImhCRjC3WYtbYSrGt4gO4klc1UHz6a1nUjMCiEA7DKjE0MSN6tchQcdQ4eTDTzrbrC5MqqM1XRxPVtbiriJUwMBXzeHNicUqWV8lNgC3KQVS6Bil3JltbfQTT95Fub9UcD7N2JjnX8f/0ySwtYnp7MqUtsZ8v78UuBK863PU80U3IQ+V83L5TjYDG5f+i5ktoIORVPYNkL+6ScO5i5by6wbvNLo8UuuLSSxLlAfXGtSY8MwfWVGq3AnQO8Jzx1kmQ5visaNOQ4n0OFS38oFkJpKUUJriJCfhxlbxh7g3G4G4nBJcdv+hKVUa+r3vQGvV5F82Wk37kMcsW25NLwm0mlAUfOYe9eCIZ8zvfVX+czfQbi1VRyIavOp4jKRKDJf9bdBkCpY7ZQBe2Inc56nDNBKoVEQ43H/YpVc0Rkdzvkq0Ntw2MZGJkADn6ZwZ0/SE1f2arrpgflZOdga2wUbgLMzf1oqxqToswJEuODLNtbWjL7CdlSe5kjijv4yrDp5Y/lg5g91uLgatLJY84FpaNl5OTehI0mj+TIKLGv+ulgNeXFg6VeCdUW+ze5ekGB3HlpMXO0riJFBvWc1gFrjZ1u2AuAbfiNw2B2l1pwSNAtgM5m0Rau8VtxtN3gUAO9WiehZMz1J6uZZBLF5Ik
+ +293Tnqc
+ KE3+2QfS+VcV+9uraFkiU6P7AWkS+1P+7UrqeiGDjuPFLc3S0K4MktpwkQNJQmb8W1I0Z/GW+CaIfjOH4NVehCBckl6JmvWBHqs4PXT7uPF214AJs+ra0t/3+PHJMupGmvbj7jL15C1DWXZF+6HICgy49oKJ/YRLnwuuL4Es36/1qy+wWPjPMNeYuX1Qp+t2sYSsUgvH1FoMeiw8awj/iYP5kBfYa934Hccw9seOE6YFN1RKVxNDEbJQs9zmkeNuKHfB75cVF/VVdQb/qFAeJoI0QxU/DryJGVx3Og7yB0tOCW8VBL2DqZ3ePsq+V0F91ADAw+sK2mjRVzs/L05nMIMiMm0zXBVQw8zdJWiOkprwWLWlhMnlV3hJHJKjSXXAaJpFFufF23zIDABh4hUq8VsneuwJXeXpgZMS6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,139 +91,420 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 3 Sep 2025 15:58:44 +0800
-Jinchao Wang <wangjinchao600@gmail.com> wrote:
-
-> On 9/2/25 22:11, Masami Hiramatsu (Google) wrote:
-> > On Mon, 1 Sep 2025 18:23:44 +0800
-> > Jinchao Wang <wangjinchao600@gmail.com> wrote:
-> > 
-> >> On 9/1/25 15:06, Masami Hiramatsu (Google) wrote:
-> >>> Hi Jinchao,
-> >>>
-> >> Hi Masami,
-> >>
-> >>> On Mon, 18 Aug 2025 20:26:07 +0800
-> >>> Jinchao Wang <wangjinchao600@gmail.com> wrote:
-> >>>
-> >>>> Add arch_reinstall_hw_breakpoint() to enable atomic context modification
-> >>>> of hardware breakpoint parameters without deallocating and reallocating
-> >>>> the breakpoint slot.
-> >>>>
-> >>>> The existing arch_install_hw_breakpoint() allocates a new debug register
-> >>>> slot, while arch_uninstall_hw_breakpoint() deallocates it. However, some
-> >>>> use cases require modifying breakpoint parameters (address, length, type)
-> >>>> atomically without losing the allocated slot, particularly when operating
-> >>>> in atomic contexts where allocation might fail or be unavailable.
-> >>>>
-> >>>> This is particularly useful for debugging tools like kstackwatch that
-> >>>> need to dynamically update breakpoint targets in atomic contexts while
-> >>>> maintaining consistent hardware state.
-> >>>>
-> >>>
-> >>> I'm also trying to find this interface for my wprobe. So the idea is good.
-> >>> But this looks hacky and only for x86. I think the interface should be
-> >>> more generic and do not use this arch internal function directly.
-> >>>
-> >>
-> >> I agree with your point about the architectural dependency. I have been
-> >> considering this problem not only for the hardware breakpoint
-> >> reinstallation,
-> >> but also for other related parts of the series, such as canary finding and
-> >> stack address resolving. These parts also rely on arch-specific code.
-> > 
-> > Yes, even though, the hw-breakpoint is an independent feature.
-> > Directly using arch_*() functions (which are expected to be used
-> > internally) introduces a hidden dependency between these two
-> > components and looses maintainability.
-> 
-> Yes, I am trying to improve this in the v3 series.
-> 
-> > 
-> >>> It seems that the slot is allocated by "type", thus, if this reinstall
-> >>> hwbp without deallocate/allocate slot, it must NOT change the type.
-> >>> See __modify_bp_slot. Also, provide CONFIG_HAVE_... option for checking
-> >>> whether the architecture support that interface.
-> >>>
-> >> Regarding the slot allocation, I would like to clarify my point. I
-> >> believe the
-> >> event->attr.type should not be changed when reinstalling a hardware
-> >> breakpoint, as this defines the fundamental nature of the event. The type
-> >> must always be PERF_TYPE_BREAKPOINT.
-> >>
-> >> The event->attr.bp_type, however, can be changed. For example, from a
-> >> HW_BREAKPOINT_W to a HW_BREAKPOINT_RW without needing to deallocate and
-> >> reallocate the slot. This is useful for future applications, even though the
-> >> current use case for KStackWatch only requires HW_BREAKPOINT_W.
-> > 
-> > I understand your point, so it also needs another wrapper which checks
-> > the type is compatible on the architecture.
-> > 
-> 
-> I think the wrapper should handle the type by type_slot, something like[1]:
-> 
-
-Ah, that's a good idea!
-
-> diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
-> index 1db2c5e24d0e..6fed9521baf2 100644
-> --- a/kernel/events/hw_breakpoint.c
-> +++ b/kernel/events/hw_breakpoint.c
-> @@ -752,6 +752,7 @@ modify_user_hw_breakpoint_check(struct perf_event 
-> *bp, struct perf_event_attr *a
->   {
->   	struct arch_hw_breakpoint hw = { };
->   	int err;
-> +	enum bp_type_idx old_type_idx, new_type_idx;
-> 
->   	err = hw_breakpoint_parse(bp, attr, &hw);
->   	if (err)
-> @@ -766,7 +767,9 @@ modify_user_hw_breakpoint_check(struct perf_event 
-> *bp, struct perf_event_attr *a
->   			return -EINVAL;
->   	}
-> 
-> -	if (bp->attr.bp_type != attr->bp_type) {
-> +	old_type_idx = find_slot_idx(bp->attr.bp_type);
-> +	new_type_idx = find_slot_idx(attr->bp_type);
-> +	if (old_type_idx != new_type_idx) {
->   		err = modify_bp_slot(bp, bp->attr.bp_type, attr->bp_type);
->   		if (err)
->   			return err;
-> 
-> For kernel breakpoints, we might also consider introducing a
-> modify_kernel_hw_breakpoint() helper, similar to
-> modify_user_hw_breakpoint(), to encapsulate the kernel-specific case.
-> 
-> [1]https://lore.kernel.org/all/20250903075144.3722848-3-wangjinchao600@gmail.com/
-
-Hmm, it seems that there is *user_hw_breakpoint() and *wide_hw_breakpoint()
-(maybe it means system-wide) so it is better to call modify_wide_hw_breakpoint().
-(anyway it is only for kernel address space...)
-
-Thank you!
-
-> 
-> >>
-> >> By the way, I have sent an updated series.
-> >> https://lore.kernel.org/all/20250828073311.1116593-1-wangjinchao600@gmail.com/
-> > 
-> > Yeah, OK, let me review the series. Thanks for update!
-> > 
-> >>
-> >> Thank you again for your valuable review.
-> >> -- 
-> >> Best regards,
-> >> Jinchao
-> > 
-> > 
-> 
-> 
-> -- 
-> Best regards,
-> Jinchao
+--------------A492Ru4Vmeb1KvsDwdS9HbYp
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+在 2025/9/3 17:16, David Hildenbrand 写道:
+>> +++ b/mm/filemap.c
+>> @@ -3693,6 +3693,7 @@ static vm_fault_t 
+>> filemap_map_folio_range(struct vm_fault *vmf,
+>>       }
+>>         vmf->pte = old_ptep;
+>> +    folio_put(folio);
+>>         return ret;
+>>   }
+>> @@ -3705,7 +3706,7 @@ static vm_fault_t 
+>> filemap_map_order0_folio(struct vm_fault *vmf,
+>>       struct page *page = &folio->page;
+>>         if (PageHWPoison(page))
+>> -        return ret;
+>> +        goto out;
+>>         /* See comment of filemap_map_folio_range() */
+>>       if (!folio_test_workingset(folio))
+>> @@ -3717,15 +3718,17 @@ static vm_fault_t 
+>> filemap_map_order0_folio(struct vm_fault *vmf,
+>>        * the fault-around logic.
+>>        */
+>>       if (!pte_none(ptep_get(vmf->pte)))
+>> -        return ret;
+>> +        goto out;
+>>         if (vmf->address == addr)
+>>           ret = VM_FAULT_NOPAGE;
+>>         set_pte_range(vmf, folio, page, 1, addr);
+>>       (*rss)++;
+>> -    folio_ref_inc(folio);
+>> +    return ret;
+>>   +out:
+>> +    folio_put(folio);
+>
+> We can use a folio_ref_dec() here
+>
+>     /* Locked folios cannot get truncated. */
+>     folio_ref_dec(folio);
+>
+>>       return ret;
+>>   }
+>>   @@ -3785,7 +3788,6 @@ vm_fault_t filemap_map_pages(struct vm_fault 
+>> *vmf,
+>>                       nr_pages, &rss, &mmap_miss);
+>>             folio_unlock(folio);
+>> -        folio_put(folio);
+>>       } while ((folio = next_uptodate_folio(&xas, mapping, 
+>> end_pgoff)) != NULL);
+>>       add_mm_counter(vma->vm_mm, folio_type, rss);
+>>       pte_unmap_unlock(vmf->pte, vmf->ptl);
+>
+>
+> I think we can optimize filemap_map_folio_range() as well:
+>
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index b101405b770ae..d1fcddc72c5f6 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3646,6 +3646,7 @@ static vm_fault_t filemap_map_folio_range(struct 
+> vm_fault *vmf,
+>                         unsigned long addr, unsigned int nr_pages,
+>                         unsigned long *rss, unsigned short *mmap_miss)
+>  {
+> +       bool ref_from_caller = true;
+>         vm_fault_t ret = 0;
+>         struct page *page = folio_page(folio, start);
+>         unsigned int count = 0;
+> @@ -3679,7 +3680,9 @@ static vm_fault_t filemap_map_folio_range(struct 
+> vm_fault *vmf,
+>                 if (count) {
+>                         set_pte_range(vmf, folio, page, count, addr);
+>                         *rss += count;
+> -                       folio_ref_add(folio, count);
+> +                       if (count - ref_from_caller)
+> +                               folio_ref_add(folio, count - 
+> ref_from_caller);
+> +                       ref_from_caller = false;
+>                         if (in_range(vmf->address, addr, count * 
+> PAGE_SIZE))
+>                                 ret = VM_FAULT_NOPAGE;
+>                 }
+> @@ -3694,13 +3697,19 @@ static vm_fault_t 
+> filemap_map_folio_range(struct vm_fault *vmf,
+>         if (count) {
+>                 set_pte_range(vmf, folio, page, count, addr);
+>                 *rss += count;
+> -               folio_ref_add(folio, count);
+> +               if (count - ref_from_caller)
+> +                       folio_ref_add(folio, count - ref_from_caller);
+> +               ref_from_caller = false;
+>                 if (in_range(vmf->address, addr, count * PAGE_SIZE))
+>                         ret = VM_FAULT_NOPAGE;
+>         }
+>
+>         vmf->pte = old_ptep;
+>
+> +       if (ref_from_caller)
+> +               /* Locked folios cannot get truncated. */
+> +               folio_ref_dec(folio);
+> +
+>         return ret;
+>  }
+>
+>
+> It would save at least a folio_ref_dec(), and in corner cases (only 
+> map a single page)
+> also a folio_ref_add().
+>
+Maybe We can first count the refcount to add, and only call folio_ref_{add, sub} once before return
+
+
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3643,6 +3643,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+         struct page *page = folio_page(folio, start);
+         unsigned int count = 0;
+         pte_t *old_ptep = vmf->pte;
++       int ref_to_add = -1;
+  
+         do {
+                 if (PageHWPoison(page + count))
+@@ -3672,7 +3673,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+                 if (count) {
+                         set_pte_range(vmf, folio, page, count, addr);
+                         *rss += count;
+-                       folio_ref_add(folio, count);
++                       ref_to_add += count;
+                         if (in_range(vmf->address, addr, count * PAGE_SIZE))
+                                 ret = VM_FAULT_NOPAGE;
+                 }
+@@ -3687,12 +3688,17 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+         if (count) {
+                 set_pte_range(vmf, folio, page, count, addr);
+                 *rss += count;
+-               folio_ref_add(folio, count);
++               ref_to_add += count;
+                 if (in_range(vmf->address, addr, count * PAGE_SIZE))
+                         ret = VM_FAULT_NOPAGE;
+         }
+  
+         vmf->pte = old_ptep;
++       /* Locked folios cannot get truncated. */
++       if (ref_to_add > 0)
++               folio_ref_add(folio, ref_to_add);
++       else if (ref_to_add < 0)
++               folio_ref_sub(folio, ref_to_add);
+  
+         return ret;
+  }
+
+
+--------------A492Ru4Vmeb1KvsDwdS9HbYp
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">在 2025/9/3 17:16, David Hildenbrand 写道:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:3c283054-b14e-4f36-966f-78cf3bc0f3af@redhat.com">
+      <blockquote type="cite">+++ b/mm/filemap.c
+        <br>
+        @@ -3693,6 +3693,7 @@ static vm_fault_t
+        filemap_map_folio_range(struct vm_fault *vmf,
+        <br>
+              }
+        <br>
+                vmf-&gt;pte = old_ptep;
+        <br>
+        +    folio_put(folio);
+        <br>
+                return ret;
+        <br>
+          }
+        <br>
+        @@ -3705,7 +3706,7 @@ static vm_fault_t
+        filemap_map_order0_folio(struct vm_fault *vmf,
+        <br>
+              struct page *page = &amp;folio-&gt;page;
+        <br>
+                if (PageHWPoison(page))
+        <br>
+        -        return ret;
+        <br>
+        +        goto out;
+        <br>
+                /* See comment of filemap_map_folio_range() */
+        <br>
+              if (!folio_test_workingset(folio))
+        <br>
+        @@ -3717,15 +3718,17 @@ static vm_fault_t
+        filemap_map_order0_folio(struct vm_fault *vmf,
+        <br>
+               * the fault-around logic.
+        <br>
+               */
+        <br>
+              if (!pte_none(ptep_get(vmf-&gt;pte)))
+        <br>
+        -        return ret;
+        <br>
+        +        goto out;
+        <br>
+                if (vmf-&gt;address == addr)
+        <br>
+                  ret = VM_FAULT_NOPAGE;
+        <br>
+                set_pte_range(vmf, folio, page, 1, addr);
+        <br>
+              (*rss)++;
+        <br>
+        -    folio_ref_inc(folio);
+        <br>
+        +    return ret;
+        <br>
+          +out:
+        <br>
+        +    folio_put(folio);
+        <br>
+      </blockquote>
+      <br>
+      We can use a folio_ref_dec() here
+      <br>
+      <br>
+          /* Locked folios cannot get truncated. */
+      <br>
+          folio_ref_dec(folio);
+      <br>
+      <br>
+      <blockquote type="cite">      return ret;
+        <br>
+          }
+        <br>
+          @@ -3785,7 +3788,6 @@ vm_fault_t filemap_map_pages(struct
+        vm_fault *vmf,
+        <br>
+                              nr_pages, &amp;rss, &amp;mmap_miss);
+        <br>
+                    folio_unlock(folio);
+        <br>
+        -        folio_put(folio);
+        <br>
+              } while ((folio = next_uptodate_folio(&amp;xas, mapping,
+        end_pgoff)) != NULL);
+        <br>
+              add_mm_counter(vma-&gt;vm_mm, folio_type, rss);
+        <br>
+              pte_unmap_unlock(vmf-&gt;pte, vmf-&gt;ptl);
+        <br>
+      </blockquote>
+      <br>
+      <br>
+      I think we can optimize filemap_map_folio_range() as well:
+      <br>
+      <br>
+      diff --git a/mm/filemap.c b/mm/filemap.c
+      <br>
+      index b101405b770ae..d1fcddc72c5f6 100644
+      <br>
+      --- a/mm/filemap.c
+      <br>
+      +++ b/mm/filemap.c
+      <br>
+      @@ -3646,6 +3646,7 @@ static vm_fault_t
+      filemap_map_folio_range(struct vm_fault *vmf,
+      <br>
+                              unsigned long addr, unsigned int nr_pages,
+      <br>
+                              unsigned long *rss, unsigned short
+      *mmap_miss)
+      <br>
+       {
+      <br>
+      +       bool ref_from_caller = true;
+      <br>
+              vm_fault_t ret = 0;
+      <br>
+              struct page *page = folio_page(folio, start);
+      <br>
+              unsigned int count = 0;
+      <br>
+      @@ -3679,7 +3680,9 @@ static vm_fault_t
+      filemap_map_folio_range(struct vm_fault *vmf,
+      <br>
+                      if (count) {
+      <br>
+                              set_pte_range(vmf, folio, page, count,
+      addr);
+      <br>
+                              *rss += count;
+      <br>
+      -                       folio_ref_add(folio, count);
+      <br>
+      +                       if (count - ref_from_caller)
+      <br>
+      +                               folio_ref_add(folio, count -
+      ref_from_caller);
+      <br>
+      +                       ref_from_caller = false;
+      <br>
+                              if (in_range(vmf-&gt;address, addr, count
+      * PAGE_SIZE))
+      <br>
+                                      ret = VM_FAULT_NOPAGE;
+      <br>
+                      }
+      <br>
+      @@ -3694,13 +3697,19 @@ static vm_fault_t
+      filemap_map_folio_range(struct vm_fault *vmf,
+      <br>
+              if (count) {
+      <br>
+                      set_pte_range(vmf, folio, page, count, addr);
+      <br>
+                      *rss += count;
+      <br>
+      -               folio_ref_add(folio, count);
+      <br>
+      +               if (count - ref_from_caller)
+      <br>
+      +                       folio_ref_add(folio, count -
+      ref_from_caller);
+      <br>
+      +               ref_from_caller = false;
+      <br>
+                      if (in_range(vmf-&gt;address, addr, count *
+      PAGE_SIZE))
+      <br>
+                              ret = VM_FAULT_NOPAGE;
+      <br>
+              }
+      <br>
+       
+      <br>
+              vmf-&gt;pte = old_ptep;
+      <br>
+       
+      <br>
+      +       if (ref_from_caller)
+      <br>
+      +               /* Locked folios cannot get truncated. */
+      <br>
+      +               folio_ref_dec(folio);
+      <br>
+      +
+      <br>
+              return ret;
+      <br>
+       }
+      <br>
+      <br>
+      <br>
+      It would save at least a folio_ref_dec(), and in corner cases
+      (only map a single page)
+      <br>
+      also a folio_ref_add(). <br>
+      <br>
+    </blockquote>
+    <pre>Maybe We can first count the refcount to add, and only call folio_ref_{add, sub} once before return
+
+
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3643,6 +3643,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+        struct page *page = folio_page(folio, start);
+        unsigned int count = 0;
+        pte_t *old_ptep = vmf-&gt;pte;
++       int ref_to_add = -1;
+ 
+        do {
+                if (PageHWPoison(page + count))
+@@ -3672,7 +3673,7 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+                if (count) {
+                        set_pte_range(vmf, folio, page, count, addr);
+                        *rss += count;
+-                       folio_ref_add(folio, count);
++                       ref_to_add += count;
+                        if (in_range(vmf-&gt;address, addr, count * PAGE_SIZE))
+                                ret = VM_FAULT_NOPAGE;
+                }
+@@ -3687,12 +3688,17 @@ static vm_fault_t filemap_map_folio_range(struct vm_fault *vmf,
+        if (count) {
+                set_pte_range(vmf, folio, page, count, addr);
+                *rss += count;
+-               folio_ref_add(folio, count);
++               ref_to_add += count;
+                if (in_range(vmf-&gt;address, addr, count * PAGE_SIZE))
+                        ret = VM_FAULT_NOPAGE;
+        }
+ 
+        vmf-&gt;pte = old_ptep;
++       /* Locked folios cannot get truncated. */
++       if (ref_to_add &gt; 0)
++               folio_ref_add(folio, ref_to_add);
++       else if (ref_to_add &lt; 0)
++               folio_ref_sub(folio, ref_to_add);
+ 
+        return ret;
+ }</pre>
+    <p><br>
+    </p>
+  </body>
+</html>
+
+--------------A492Ru4Vmeb1KvsDwdS9HbYp--
 
