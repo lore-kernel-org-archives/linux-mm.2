@@ -4,179 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 497BECA101C
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 13:21:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA7B4CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 13:21:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6EB98E0002; Thu,  4 Sep 2025 09:21:31 -0400 (EDT)
+	id 407968E0005; Thu,  4 Sep 2025 09:21:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A46C28E0001; Thu,  4 Sep 2025 09:21:31 -0400 (EDT)
+	id 3DECF8E0001; Thu,  4 Sep 2025 09:21:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 935738E0002; Thu,  4 Sep 2025 09:21:31 -0400 (EDT)
+	id 2F4D28E0005; Thu,  4 Sep 2025 09:21:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F5168E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:21:31 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3730784CC8
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 13:21:31 +0000 (UTC)
-X-FDA: 83851629582.25.C394364
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2074.outbound.protection.outlook.com [40.107.244.74])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5EC57120011
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 13:21:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Oq3c5gxC;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.107.244.74 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756992088;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CA988E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:21:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CAB48B6A28
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 13:21:55 +0000 (UTC)
+X-FDA: 83851630590.21.1287D86
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 024C2160015
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 13:21:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756992114; a=rsa-sha256;
+	cv=none;
+	b=AOqUh9wBx3dOOVYNKs+/pWn0stl/3FjxGpCk0y00c8fbpc2AkQU05B0KuXlaG2ASLNa4TG
+	wmybJvDixSQ8TMa8SAObO245l3bi9sICFi2nuoyXcM0ySflue6DgFVSXLNeK63RVUd0I9g
+	ZciCWdeF1n8aCkjHR4ZfFLENBvqvOBI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756992114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mMqYG2KyVOW8jqus7gOLWxPeGNzP+GYnML2NFZLUd6U=;
-	b=ztDPAs2lp0aa9W5nek96AXwCUFJ5aNRpWDJnXNywuvcOD9PGYd5aUGh1YmP9AiZgam+oBA
-	o2hrdDrBV9bKKi2hpRQFUG4ZU2slrweixrArne6Ef2ZRISORbKL+ik+EjkRZa5OgReXu1s
-	jtI/yov6pkx2n+lnOUftN9eDtGGlJ34=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1756992088; a=rsa-sha256;
-	cv=pass;
-	b=hGwdbBpSCJkV3pko5o1Ph+1v7gHMtYKxtaW3lKDSmH9ny4afiSKtV7biPsMRZejRkkP3uY
-	3DV3v7ypebWaTOIp4pTG52TOTWa5yA6kwl03/iUICo0zIXq+D1ywO1z8NBE1kWmBJ2maF2
-	eKci+izy4zey4iNvvNp1tPAc4+878JE=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Oq3c5gxC;
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 40.107.244.74 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fJrobyP/AJd6K81z5+mAH9mWMNfahdj67nkY/Gf/EmtIXLThqj8IX/gdXRPHLC1nc5IQVkwe9w312tvm0+JYlCVC4+rBPPm8piBCZNKz0F7g//dyuP0+b4A6ZRieksi3YnIOEjStLw6mnwMq3uBYXbMHGBmdv95F0roYC2iAEdD1bwjnP2XDblscLDceiT2heBHcfKZ0BPrT2Js8n5vM1tjG7Bi+LN2ymzBVwvtk/XBk7msYHhlCQNr1x2FpF0e82NqibEqznLS/eFzRoHXKM3SBwFC47yEcn0czS3r0uE9mX1+9YmbFayIy5A2Gti8JtncqVGiz300AcJBomkvVMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mMqYG2KyVOW8jqus7gOLWxPeGNzP+GYnML2NFZLUd6U=;
- b=ZSjXm6/2y7JuTyjJ2watF2DmBYLGtz8JTEs+FRS0wAc5UOwQXXfJvW18FLYetyPhj5VoZy5r+rqw7SAfiIVzsqTn0e0yC+qRGS705aiPLzsOVCcNbUJzevbR1YxiiwEV4lNJEyZ5SH/mKRZQwSikFGGLQeLQj+udYDnx4CruLuI2bd/Edztvh5bF9blc1wHzx2XEM+5ylULHWOByIPoA3TBaiXuaUjnCDW7KIpSKGtZFuwGCMxthsptjasffHqJJL9PQ7yO2EIeMxZ/8ER4vmnOLDfmmEdlarifcOs99As56cbUuzS6ULIqwH5pUA4K+gBLVkrTTh9TA0CNoW86aXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mMqYG2KyVOW8jqus7gOLWxPeGNzP+GYnML2NFZLUd6U=;
- b=Oq3c5gxC4MnScUr+Wdea/bbhDCTsj3gyCatOhGMHhJBgYtNg5LFyTCX2vYCxNEbaqWfSWtpBv5VbYRZFKqyvytCRc4RHhU/2Z1fxRPEA8H9/66fjmVsZ9887GHqXu24OXs99XdV1OQMvJ+cZyVRucSJhI6cIBdV7sRXWGT84oMtKsRW15PTHwIytKOQ65Qe0wRQv1HFby/J3eWVsN1PkW00qwY/Q6+WAWAeywT/O/gfDL8l/yBZw4f9oj+G9xjpJ4c2y7sZLUte9NvmSk75yTOA7KRMIWfZMI1puHGvC6+Z9CQUYFsid26Fv0671ppl15QXoXbxLQFU/9cCNfopygA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH3PR12MB9122.namprd12.prod.outlook.com (2603:10b6:610:196::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.18; Thu, 4 Sep
- 2025 13:21:23 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%6]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
- 13:21:23 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>,
- Dev Jain <dev.jain@arm.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- linux-kernel@vger.kernel.org, willy@infradead.org, linux-mm@kvack.org,
- mcgrof@kernel.org, gost.dev@samsung.com, Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH v2] huge_memory: return -EINVAL in folio split functions
- when THP is disabled
-Date: Thu, 04 Sep 2025 09:21:20 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <74886543-6038-4444-8E2F-3F3169171837@nvidia.com>
-In-Reply-To: <20250904095129.222316-1-kernel@pankajraghav.com>
-References: <20250904095129.222316-1-kernel@pankajraghav.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BN9P223CA0021.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:408:10b::26) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LyIIgnsEy8sNC03BP9Y5uyU9X6Od4/BTkRF3tf10mzE=;
+	b=TERQg470Ovc3XxrAqy8lYuQ1vD3qYlhwTTIOKrvIbMprH8vMsGPEIR3egu9W6BlCMvBEHn
+	v767VZOUK9Q25ooWRsRg6g461U08SRj1S3YY2Xl9b98PgO3243r/GIsbQIS23XWUSNOQcT
+	AZMIDVo+w3ARph18eCSJ1m5IggaH0dw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A46451756;
+	Thu,  4 Sep 2025 06:21:44 -0700 (PDT)
+Received: from [10.1.37.179] (XHFQ2J9959.cambridge.arm.com [10.1.37.179])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E876C3F6A8;
+	Thu,  4 Sep 2025 06:21:50 -0700 (PDT)
+Message-ID: <f940ddc9-9b1f-49fa-9d50-ea3b65f39a81@arm.com>
+Date: Thu, 4 Sep 2025 14:21:49 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB9122:EE_
-X-MS-Office365-Filtering-Correlation-Id: 153265f5-48e9-4b06-c487-08ddebb5f176
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6lx/jrmREEgwtUke19I4n8rIW4JfLaGG0vUM4qsB5QKHCaGDlWSHAPfUp0ZB?=
- =?us-ascii?Q?nasBLixtWj3RgX3BJDbWevNZ5rpOmPfNTl2L9r+vq1eQvi34Sw0DnCAoXq2V?=
- =?us-ascii?Q?5X3yTCPbbkTX3S8N3gmmJXVvNpqB3/HXc5IKC276wx1frTDth65kjI7IJHI1?=
- =?us-ascii?Q?d8RfuhUfHpHgHiEp97p9wIRnEXGyEE0uiQmjok0sQ8GHtaoE9tc87b4nGlPJ?=
- =?us-ascii?Q?ZH+Y550hDWHhVDH1z+1A9mnOb6SFCG8nUOGRQ6GAnmKeJb2yq50bAEeaNs55?=
- =?us-ascii?Q?hQrBbFT31cp5iBJgotuMfLkH0xNwXD7zjTrvcTnbt19MJMP5daqZkoMmSSTD?=
- =?us-ascii?Q?qAgIPgMf2kTJ9m3q2aUcyyoFBZDNBCgtP0Weu3QrePgNXjh8lqYSBw7yWY1Y?=
- =?us-ascii?Q?ML2elXXLJrpnGJrkDjsp8Ea0NmrhKZSmioxWD+AYSYbuorcXwxZjKaaWCUfy?=
- =?us-ascii?Q?dackGgaTmnN5NU3AYgo37phf3iOLbGyWEKfNQYofBDaj1LA4Q1CSuNRbqRdC?=
- =?us-ascii?Q?Bib1MH0DCwgwkEB+M1bslLnr0i5rSWNvGDaNuac3GK8/Msm/3nHnG+URR5aM?=
- =?us-ascii?Q?1ennNjQsNDQdtCNMyxUiggvVFBjQjF+mRZX2e9RgcHMoNC5okQHy3rFxoCDU?=
- =?us-ascii?Q?iI5qPBGukNOOsO+FgGJq1baC1mh+QohYoyaPx2LX57L2nw0dqJI+96xPKYoE?=
- =?us-ascii?Q?aLXdUxhaFx8DR6FAgVe5LmYzQJ+Vq79FhH2cxhP850Uh6zUJ6hzaYR+Wr4XT?=
- =?us-ascii?Q?IzVWZs+mYSgdWYufu5K8QOwwCEkjIjNeGuHroCZEF1XwfgZEjOUBA0D9XkEn?=
- =?us-ascii?Q?KkruTWUcBLy+WbbQVaesltrKq2AxrXTF60YbhHGiu5LPySsV9gv4BpNGQ+hz?=
- =?us-ascii?Q?etSi3X27D6mgpszHaMyso4tduyThGDLnb9waXA+YBvGzdEKFQLeGEZDk2MDM?=
- =?us-ascii?Q?MYd+edg4sMiHVwZhI6qWUXDCd+Ce8QKBa3R5iBazzUu2ftGq0mTTLu5bZoOH?=
- =?us-ascii?Q?YD2ZjSQhBk0wZvuQExDjznFRpJdwkpyr6tqBWIQ/1d5Ys9JuRht3omWcjjMq?=
- =?us-ascii?Q?PG3hdvyMqiIRaZyq+EBDmUNH1w73hhlr7hwBGSLmDWxNzYlnbFGb2ALC6P8g?=
- =?us-ascii?Q?GznMHufhyQPk3srGMN90wAO7N7fpiFA/BODB/wHupQPspo8vZ56cFVYHMTMl?=
- =?us-ascii?Q?d+g5MeZXeQ0ppJpAxzME/VyYgREG5KqFiiBlXJiMJlvWygz9U07oJYvHX0c3?=
- =?us-ascii?Q?KVXZPq5D7PxDBnc5QP5XjCG+oECjBPfXMJOcI7gMbjHn3InIKMKFA+BPg5c/?=
- =?us-ascii?Q?bTGPBub72M5h5Upf0QT5uBts6fjYXMGGxrOqIvVoQxql2BOaMnMyd+cp+TQA?=
- =?us-ascii?Q?9XT5XBEdk468drDpC+jZ90S/zq6deYblQCCsGS6qMCSsqNthUzDV7DVpFrtO?=
- =?us-ascii?Q?q+kOiIkhDjY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zGSs7957Fkgafw9LqQBnbS0VTsJMCFnSvSZB9Oq4Lon/Wy60GzM/z/wrwjoS?=
- =?us-ascii?Q?E2fIUKzSqdfjlCXztyDrst3WtGpRYW8NYhxM67C5uhPGm6H+XWSbQJLfpl3S?=
- =?us-ascii?Q?FlXTG37wyevVYxzKcqkiHv1rbEiECrFvdmuWZNaNXDFIu6UPUufHDfYijacq?=
- =?us-ascii?Q?/788gUhUqOOSsxX04uniRiX35y5IVV7nk/5ygAlkXjsdIyh/3ZpAUPbpQTM+?=
- =?us-ascii?Q?5WIJr+bXC+1fpxCdtn/9cEUOyar6IglRXNa/epMhGCf1oWZZNb/qqRaAWVhh?=
- =?us-ascii?Q?KR+4clEHONqNMg6hWphB5R9qTmR+Q3Umr2cdbIByD0OJtF6HGWsV5aMcbcbz?=
- =?us-ascii?Q?Ac9eYrUY8xwoY8xdNPisyd3ucwZ/23/4yDZgU9dxmSYM66Ytaaz9txQwl3qK?=
- =?us-ascii?Q?Dnt8bXee4WUdGy7nlH3cEJ/E+3DUhcpxgd+UqXkWRW9O/byFYLz3BFxwO5gQ?=
- =?us-ascii?Q?PV+xz/GtyLa275/a2XgW6oaHAn2mnZOlO+r+EeY2w5eekXuQmxKwqMFM+wfH?=
- =?us-ascii?Q?hE6ybZ2Cy8S4t9uwZLpBLMcBXy9odkfFCZt/D8mHo4xQzmKsQAa9gfTbxtWE?=
- =?us-ascii?Q?/yZC1Q22BWWoIJB549ywxftKFYbWDza4mgBeb/2buz4A7Gvnc/CG3y0AlMUL?=
- =?us-ascii?Q?qYBgBmYarG5SEticMvNnoVxJRiuIWrgixMxfwte17lR6PtEoRJc46Xwyro3W?=
- =?us-ascii?Q?ZiGA/wCTRGHF3fJ3sMzdj9/phw0zAk8Z4QATJ7NuOq6hHIr2MxVB5GwBIU/q?=
- =?us-ascii?Q?MdLcInx5UptQAupP/acYfhFsEdXB0SD0Sq0igEpzv0IfDChKFSRRVgKGvney?=
- =?us-ascii?Q?ZTTxsRFzp69XsGCKN/JdI6eLTu0b+QC+fIW5224qP9tRkEgx6z+y0rNTFIue?=
- =?us-ascii?Q?JYGy4lMX6LTIHttR1jOZ2Uk+xsr7mOrKZpSKLNzv5PxmXJrOThxEU0zet7yv?=
- =?us-ascii?Q?nKZmN7PktWJHiptqYb2OA6wZPyOJP7uk/AokC2D/FSER9IhgDJwkXF0ows2q?=
- =?us-ascii?Q?VnYn4A680lKE54txk3hfLTf+JB1X+hq8yHl19PJAfU/6bx0NTwkw87Icf+TX?=
- =?us-ascii?Q?EFoLKU6p6m4tK01lP2Dm4Pxki5TFheWeoy286W+TOxCQXQs0h/R42Wbf08Dx?=
- =?us-ascii?Q?hiRbKsszMvj7sL3eiLtAfx21knL95ZJa0Y59sVTxs0RrhqE3hK0DhhA6sZwa?=
- =?us-ascii?Q?4dSxxIyV2e0GnFbLSDJx5g40LFprJqR4+xlq5nm8ITzpYc2i/7msXh8BrHqM?=
- =?us-ascii?Q?CELDAcYJ8RZKlLMVEJRTVF33DzuMZwVg6IlO0bYfdH/cDICSQ1PtNEVdfz9u?=
- =?us-ascii?Q?sgRW/onqSOaXRpf3uFWXnfaFsgox0uFF+TC2WzcRh1eDRXCCWTPlPL+BmDIU?=
- =?us-ascii?Q?nHqmETLv9gwNQQFtvMD/5jx1qBMFOqm80tLrJCTcZkMFfsdKlWPRxQassDsU?=
- =?us-ascii?Q?Nkx974YgW3eDPo7PaOgXQ+lEwD06mI1X9sxhYrf/lGpY50U/80cW82BmN4K5?=
- =?us-ascii?Q?vAO4ofUY+6RnkzvxorMVNoA7fm7w8bK1Dlqd0Napdcl2i37J+YSCMuEtWMJC?=
- =?us-ascii?Q?fvHpJqkzthwcF1uJJ3ux9wHM9xlmjQp3FB6nRkAo?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 153265f5-48e9-4b06-c487-08ddebb5f176
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 13:21:23.0791
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dnoF175FlP5Zsqx6Fb1a7FbsQ+rQo9mTRFwHT3o9oyIg6PdT8JsAmhpwRCbln9FT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9122
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/6] arm64: Enable permission change on arm64 kernel
+ block mappings
+Content-Language: en-GB
+To: Jinjiang Tu <tujinjiang@huawei.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Yang Shi <yang@os.amperecomputing.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, scott@os.amperecomputing.com, cl@gentwo.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20250829115250.2395585-1-ryan.roberts@arm.com>
+ <20250829115250.2395585-2-ryan.roberts@arm.com>
+ <7705c29b-4f08-4b56-aab3-024795ee9124@huawei.com>
+ <42b3b394-a6ec-4d70-b5a1-941a0628cd25@arm.com>
+ <a985c9f0-1561-45d7-860f-2717a0a72d9e@huawei.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <a985c9f0-1561-45d7-860f-2717a0a72d9e@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 024C2160015
+X-Stat-Signature: u8mytu6ohx54ggz1f1qtm38irodd494a
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5EC57120011
-X-Stat-Signature: 4to6baqqxj31ymkcau4uafnqnw9h8t9i
-X-HE-Tag: 1756992088-801481
-X-HE-Meta: U2FsdGVkX1+BRkiKMxc1uG0U9+OKTWwAZE0Utal2EWwFKUemckQ+hN0D4zdAh4hpiefGJpFZEw58zP7eCTBGynqP7hEr0UPAVnMfafXPJAkVxvhz3M5P0HJu52VrGeZZcAC6sqng48iB2s9XyVP5drgsx0JLtgrabLmfxaWYe//Q2h60Dbt0hoxtBdx52JkXmofC3cJK94cegek/ReCq7RK6wFhPH+oDp+pi08pp7w6R0bqEFeeAzS5zMO5aUn812OJKYOz1tP4zisXFS5/gC90Hy87lyV3ZOVzy/oyPtgEs0N2yE5wTD1IFFZpIQI16d2tSFclMw3teDroMXntZe7jzgej1tQ8OQufQGSGTkKvpF4lggE+Xsy3ixqxr7CAb90IS7xxqh2q2M2+k1mBaQMdw8UzOCGtqkheVgKt565efOMkCu0j3yOy4Gfp0gsEPcZROWkblt5MgocfnCKqCnpyBDSyn/23B20/29pV5yAVYE9LaZJo2zwx75g1zTeV2zTdcmgfR43RdYfDJhiTT5nWcCCzsZTLFX0pm+UbZ7kiBemOWOXhwDbIerYKuUgi1oac+FtTbpsvRz5Jyh/O3VUuEoGppAUMv3KcV+St5/V3ZToRhWIkWDOjvqUnHJqoCG1OFEjJodf8Ei9L5UZu9XQ5SiiyBdvIWybn9ivHI9R8xqmCasSOVkwzOGqHw3LqYqEpQc7Vu3mXuXDVR44yzIosjchJFsu+7HGiKGkWOhjEVpm22F/nHgLbNq0HVTH8mmkkHxd7gz6tp2dKIofzC+eQJyEIPlHQHgwVof50oZtgeXn+OLDd0vjQJx+r4CCoBDnJ7nXe8eulzY/pzLHQ8B9lWGfMkD4ADfL9TVmxlqeVBPAD2iY+2B5PT1+ztzqayWQRuVyUBmRLAJEailVAAgl7iiEFDVJQkQ5+wycF1q9S7F3y1fcQcb7LBwUnSQKl7qYB6DDJdBoBSBoXoMNN
- WhwmHH+a
- 8+FX7hsKs2iIEEBcbhiPaTFGiH1qY+i8mRtqEZ1oIEVtnAgywhlFfl1pn/wRS2cblvj4ajsYCuK8kKSrFj4ybCDuCoCN0Z0Wb+AhQnT/fWfVIqOaNKagR8dEBBLHW1+vFECPmzMTNjVSTABfWT15BNe8liV3WjFEC8aGwaaHFRnMbK4DULhMD5lUIiIwKYKt/WSdbrFx1w/8pBgeRCm+qRoJwdbhjVbpS6Q/Z9RIdSmazmswSpt4GdqEDq4YmhV2km0VdQi0G+5xK+DVQCrpFaJGzAEJBlIirz7p9q6CDqZblYSWR1r71R0XA6iOlIIdBJFxKhgJDOasx2RQoWygtnGyCG/itQZe3b2m2YytWRskkARzFCRxNlnCkyB2Hrkl/3MlpO8FW2+Q+uxU+NH2/YVlr1APPWFY0FAVCBwASouteLV80JjvAzQ0WCEY0DYG5Yt3ctVF1WhseBHx3nrwIIBediDvB2MkugwTe
+X-HE-Tag: 1756992113-392598
+X-HE-Meta: U2FsdGVkX1/lVD452bGPyQWbNEKp1wN8A+cMzxqKQQhflpsd8bUnTixpC2aWKoC/NDUwkSo+Ba2aiwS4DLitaWhxXqOmZPvMbRvfQroXMsBwCLwthZAx/oAznTgL4C64HoTui+qbmFXsF2kEFthTC9vZLdOcG11iK3pjMCo2L/k2CSImBlvx9hdHSTvQkPSxq75CfaU0aWWCIi3j82zURl27DW9v9AGqkpbNluvfl1+WX31MmGyj78IoZiI8goopmbqO6J8oSaC2ykTcCtTsGEyQAhf6SrYEnC2hGvFD3vQFoiIsa1zwCtulcRo3aqyCDV54OW6fjMLSOjaHven2ls8J6PDFKr05Ci6sIYfiN0IjSlf3Gka59Ty4m0rW+dDGWz4+lh8h31ARQ8ZtYyvy/eugg1om/U9kQ3zP7pxkJFsN6QqGLDzCTQ2DwWpurOCITSbxtRCTFtvSXFFl8Qge1wKZ/T5AifVD7Z4X2f2U70VBaOSmp5nSzjtM85tTDNO6oNdhYdkpNJI4XfQFkQrEaWytUzVQu87BvliYCwzKSAj+5nm1MlmXIYMKzPtSlVrJGs1zf3dS6LZ4+u1RFsmZnroc1JIBmdqAOUFNzQ8S/nEm5u+DcYMtGojGKwqzsM0k6UILzKJYDRky9bxbmJ/ootG2y4ZtnVtEjwDwMet6eiqadAT6t1vhAtlHSHriANeENcI55aqjruSaMVQnPLBfwfLXZ6YkjRPae4PKgRMzehaNF54p28moWtuoHkAnLLzyhmVDQtIngyXzK3U7nHP9pobMNSB+/44vCKirtwxxIoWMVIU61CtbULucQbCFUZgkLPI8ZRgDoBKXr2st8EKEOsdkK25r/QXNWW/I206EcMFzidRiBqhl5BdACAu5u785ObOODzbUhG419fSQmzw+iYdAWitkPhe72CsxAyDezSXDizNsz79WbZ4U4YTHMNJPuehR02o3hpxGIdt21WB
+ swMYWCkv
+ gi/YOSIBWc5T0AmVmY46Z2yzc8QbbVlrrpWjNeRjqwPVoaH7kCCTmDPw8vjJPXuX4sNwiAxcMRS7IRGe6BW2FwLH2wmYhEk7jAI5ztHX8ZgelYKMhBW9iJ9bc3N5SK4g+JkNBHZH4CYMqr24R8RYld+moDhgdIc9ZlohnSZ4ZP0WLnLHpn1QRH9uURUlFLZGu9dNHKTZ+hXmWbHsjjEj0duLl0g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,32 +96,375 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4 Sep 2025, at 5:51, Pankaj Raghav (Samsung) wrote:
+On 04/09/2025 12:49, Jinjiang Tu wrote:
+> 
+> 在 2025/9/4 19:06, Ryan Roberts 写道:
+>> On 04/09/2025 04:40, Jinjiang Tu wrote:
+>>> 在 2025/8/29 19:52, Ryan Roberts 写道:
+>>>> From: Dev Jain <dev.jain@arm.com>
+>>>>
+>>>> This patch paves the path to enable huge mappings in vmalloc space and
+>>>> linear map space by default on arm64. For this we must ensure that we
+>>>> can handle any permission games on the kernel (init_mm) pagetable.
+>>>> Previously, __change_memory_common() used apply_to_page_range() which
+>>>> does not support changing permissions for block mappings. We move away
+>>>> from this by using the pagewalk API, similar to what riscv does right
+>>>> now. It is the responsibility of the caller to ensure that the range
+>>>> over which permissions are being changed falls on leaf mapping
+>>>> boundaries. For systems with BBML2, this will be handled in future
+>>>> patches by dyanmically splitting the mappings when required.
+>>>>
+>>>> Unlike apply_to_page_range(), the pagewalk API currently enforces the
+>>>> init_mm.mmap_lock to be held. To avoid the unnecessary bottleneck of the
+>>>> mmap_lock for our usecase, this patch extends this generic API to be
+>>>> used locklessly, so as to retain the existing behaviour for changing
+>>>> permissions. Apart from this reason, it is noted at [1] that KFENCE can
+>>>> manipulate kernel pgtable entries during softirqs. It does this by
+>>>> calling set_memory_valid() -> __change_memory_common(). This being a
+>>>> non-sleepable context, we cannot take the init_mm mmap lock.
+>>>>
+>>>> Add comments to highlight the conditions under which we can use the
+>>>> lockless variant - no underlying VMA, and the user having exclusive
+>>>> control over the range, thus guaranteeing no concurrent access.
+>>>>
+>>>> We require that the start and end of a given range do not partially
+>>>> overlap block mappings, or cont mappings. Return -EINVAL in case a
+>>>> partial block mapping is detected in any of the PGD/P4D/PUD/PMD levels;
+>>>> add a corresponding comment in update_range_prot() to warn that
+>>>> eliminating such a condition is the responsibility of the caller.
+>>>>
+>>>> Note that, the pte level callback may change permissions for a whole
+>>>> contpte block, and that will be done one pte at a time, as opposed to an
+>>>> atomic operation for the block mappings. This is fine as any access will
+>>>> decode either the old or the new permission until the TLBI.
+>>>>
+>>>> apply_to_page_range() currently performs all pte level callbacks while
+>>>> in lazy mmu mode. Since arm64 can optimize performance by batching
+>>>> barriers when modifying kernel pgtables in lazy mmu mode, we would like
+>>>> to continue to benefit from this optimisation. Unfortunately
+>>>> walk_kernel_page_table_range() does not use lazy mmu mode. However,
+>>>> since the pagewalk framework is not allocating any memory, we can safely
+>>>> bracket the whole operation inside lazy mmu mode ourselves. Therefore,
+>>>> wrap the call to walk_kernel_page_table_range() with the lazy MMU
+>>>> helpers.
+>>>>
+>>>> Link: https://lore.kernel.org/linux-arm-kernel/89d0ad18-4772-4d8f-
+>>>> ae8a-7c48d26a927e@arm.com/ [1]
+>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>> ---
+>>>>  arch/arm64/mm/pageattr.c | 153 +++++++++++++++++++++++++++++++--------
+>>>>  include/linux/pagewalk.h |   3 +
+>>>>  mm/pagewalk.c            |  36 ++++++---
+>>>>  3 files changed, 149 insertions(+), 43 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>>>> index 04d4a8f676db..6da8cbc32f46 100644
+>>>> --- a/arch/arm64/mm/pageattr.c
+>>>> +++ b/arch/arm64/mm/pageattr.c
+>>>> @@ -8,6 +8,7 @@
+>>>>  #include <linux/mem_encrypt.h>
+>>>>  #include <linux/sched.h>
+>>>>  #include <linux/vmalloc.h>
+>>>> +#include <linux/pagewalk.h>
+>>>>  
+>>>>  #include <asm/cacheflush.h>
+>>>>  #include <asm/pgtable-prot.h>
+>>>> @@ -20,6 +21,99 @@ struct page_change_data {
+>>>>  	pgprot_t clear_mask;
+>>>>  };
+>>>>  
+>>>> +static ptdesc_t set_pageattr_masks(ptdesc_t val, struct mm_walk *walk)
+>>>> +{
+>>>> +	struct page_change_data *masks = walk->private;
+>>>> +
+>>>> +	val &= ~(pgprot_val(masks->clear_mask));
+>>>> +	val |= (pgprot_val(masks->set_mask));
+>>>> +
+>>>> +	return val;
+>>>> +}
+>>>> +
+>>>> +static int pageattr_pgd_entry(pgd_t *pgd, unsigned long addr,
+>>>> +			      unsigned long next, struct mm_walk *walk)
+>>>> +{
+>>>> +	pgd_t val = pgdp_get(pgd);
+>>>> +
+>>>> +	if (pgd_leaf(val)) {
+>>>> +		if (WARN_ON_ONCE((next - addr) != PGDIR_SIZE))
+>>>> +			return -EINVAL;
+>>>> +		val = __pgd(set_pageattr_masks(pgd_val(val), walk));
+>>>> +		set_pgd(pgd, val);
+>>>> +		walk->action = ACTION_CONTINUE;
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static int pageattr_p4d_entry(p4d_t *p4d, unsigned long addr,
+>>>> +			      unsigned long next, struct mm_walk *walk)
+>>>> +{
+>>>> +	p4d_t val = p4dp_get(p4d);
+>>>> +
+>>>> +	if (p4d_leaf(val)) {
+>>>> +		if (WARN_ON_ONCE((next - addr) != P4D_SIZE))
+>>>> +			return -EINVAL;
+>>>> +		val = __p4d(set_pageattr_masks(p4d_val(val), walk));
+>>>> +		set_p4d(p4d, val);
+>>>> +		walk->action = ACTION_CONTINUE;
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static int pageattr_pud_entry(pud_t *pud, unsigned long addr,
+>>>> +			      unsigned long next, struct mm_walk *walk)
+>>>> +{
+>>>> +	pud_t val = pudp_get(pud);
+>>>> +
+>>>> +	if (pud_leaf(val)) {
+>>>> +		if (WARN_ON_ONCE((next - addr) != PUD_SIZE))
+>>>> +			return -EINVAL;
+>>>> +		val = __pud(set_pageattr_masks(pud_val(val), walk));
+>>>> +		set_pud(pud, val);
+>>>> +		walk->action = ACTION_CONTINUE;
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static int pageattr_pmd_entry(pmd_t *pmd, unsigned long addr,
+>>>> +			      unsigned long next, struct mm_walk *walk)
+>>>> +{
+>>>> +	pmd_t val = pmdp_get(pmd);
+>>>> +
+>>>> +	if (pmd_leaf(val)) {
+>>>> +		if (WARN_ON_ONCE((next - addr) != PMD_SIZE))
+>>>> +			return -EINVAL;
+>>>> +		val = __pmd(set_pageattr_masks(pmd_val(val), walk));
+>>>> +		set_pmd(pmd, val);
+>>>> +		walk->action = ACTION_CONTINUE;
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>> #define pmd_leaf(pmd)        (pmd_present(pmd) && !pmd_table(pmd))
+>>> #define pmd_present(pmd)	pte_present(pmd_pte(pmd))
+>>> #define pte_present(pte)	(pte_valid(pte) || pte_present_invalid(pte))
+>>>
+>>> When PTE_VALID is cleared, pmd_leaf() will return false. As a result, the
+>>> caller won't be able to set PTE_VALID for the pmd.
+>> Ouch - good spot!
+>>
+>> So this will break set_direct_map_default_noflush(), set_memory_valid() and
+>> __set_memory_enc_dec(). I wonder why it doesn't cause problems with mm selftests
+>> - I'll investigate.
+> 
+> This only triggers when operating on a PMD_SIZE folio and the linear mapping of the
+> folio is PMD-mapped. set_direct_map_default_noflush() only operates on base page.
+> set_memory_valid() and __set_memory_enc_dec() seems to be called for base page too,
+> or when can_set_direct_map() is required to be true, i.e. the linear mapping is PTE level.
 
-> From: Pankaj Raghav <p.raghav@samsung.com>
->
-> split_huge_page_to_list_[to_order](), split_huge_page() and
-> try_folio_split() return 0 on success and error codes on failure.
->
-> When THP is disabled, these functions return 0 indicating success even
-> though an error code should be returned as it is not possible to split a
-> folio when THP is disabled.
->
-> Make all these functions return -EINVAL to indicate failure instead of
-> 0. As large folios depend on CONFIG_THP, issue warning as this function
-> should not be called without a large folio.
->
-> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
-> ---
-> This issue was discovered while experimenting enabling large folios
-> without THP and found that returning 0 in these functions is resulting in
-> undefined behavior in truncate operations. This change fixes the issue.
->
->  include/linux/huge_mm.h | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
->
-Acked-by: Zi Yan <ziy@nvidia.com>
+Ahh so we will have split to base pages while making invalid, then when making
+valid again, they are ptes so it works as expected.
 
-Best Regards,
-Yan, Zi
+
+> 
+>> Anyway, I think the simplest solution is to replace the pmd_leaf()/pud_leaf()
+>> checks with !pmd_table()/!pud_table() checks. (and I think we can entirely
+>> remove the pgd and p4d callbacks because pgd_leaf() and p4d_leaf() always return
+>> false on arm64). As long as no code ever clears PTE_VALID from a table entry, I
+>> think this works.
+>>
+>> Thanks,
+>> Ryan
+>>
+>>>> +
+>>>> +static int pageattr_pte_entry(pte_t *pte, unsigned long addr,
+>>>> +			      unsigned long next, struct mm_walk *walk)
+>>>> +{
+>>>> +	pte_t val = __ptep_get(pte);
+>>>> +
+>>>> +	val = __pte(set_pageattr_masks(pte_val(val), walk));
+>>>> +	__set_pte(pte, val);
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static const struct mm_walk_ops pageattr_ops = {
+>>>> +	.pgd_entry	= pageattr_pgd_entry,
+>>>> +	.p4d_entry	= pageattr_p4d_entry,
+>>>> +	.pud_entry	= pageattr_pud_entry,
+>>>> +	.pmd_entry	= pageattr_pmd_entry,
+>>>> +	.pte_entry	= pageattr_pte_entry,
+>>>> +};
+>>>> +
+>>>>  bool rodata_full __ro_after_init = IS_ENABLED(CONFIG_RODATA_FULL_DEFAULT_ENABLED);
+>>>>  
+>>>>  bool can_set_direct_map(void)
+>>>> @@ -37,32 +131,35 @@ bool can_set_direct_map(void)
+>>>>  		arm64_kfence_can_set_direct_map() || is_realm_world();
+>>>>  }
+>>>>  
+>>>> -static int change_page_range(pte_t *ptep, unsigned long addr, void *data)
+>>>> +static int update_range_prot(unsigned long start, unsigned long size,
+>>>> +			     pgprot_t set_mask, pgprot_t clear_mask)
+>>>>  {
+>>>> -	struct page_change_data *cdata = data;
+>>>> -	pte_t pte = __ptep_get(ptep);
+>>>> +	struct page_change_data data;
+>>>> +	int ret;
+>>>>  
+>>>> -	pte = clear_pte_bit(pte, cdata->clear_mask);
+>>>> -	pte = set_pte_bit(pte, cdata->set_mask);
+>>>> +	data.set_mask = set_mask;
+>>>> +	data.clear_mask = clear_mask;
+>>>>  
+>>>> -	__set_pte(ptep, pte);
+>>>> -	return 0;
+>>>> +	arch_enter_lazy_mmu_mode();
+>>>> +
+>>>> +	/*
+>>>> +	 * The caller must ensure that the range we are operating on does not
+>>>> +	 * partially overlap a block mapping, or a cont mapping. Any such case
+>>>> +	 * must be eliminated by splitting the mapping.
+>>>> +	 */
+>>>> +	ret = walk_kernel_page_table_range_lockless(start, start + size,
+>>>> +						    &pageattr_ops, NULL, &data);
+>>>> +	arch_leave_lazy_mmu_mode();
+>>>> +
+>>>> +	return ret;
+>>>>  }
+>>>>  
+>>>> -/*
+>>>> - * This function assumes that the range is mapped with PAGE_SIZE pages.
+>>>> - */
+>>>>  static int __change_memory_common(unsigned long start, unsigned long size,
+>>>> -				pgprot_t set_mask, pgprot_t clear_mask)
+>>>> +				  pgprot_t set_mask, pgprot_t clear_mask)
+>>>>  {
+>>>> -	struct page_change_data data;
+>>>>  	int ret;
+>>>>  
+>>>> -	data.set_mask = set_mask;
+>>>> -	data.clear_mask = clear_mask;
+>>>> -
+>>>> -	ret = apply_to_page_range(&init_mm, start, size, change_page_range,
+>>>> -					&data);
+>>>> +	ret = update_range_prot(start, size, set_mask, clear_mask);
+>>>>  
+>>>>  	/*
+>>>>  	 * If the memory is being made valid without changing any other bits
+>>>> @@ -174,32 +271,26 @@ int set_memory_valid(unsigned long addr, int numpages, int enable)
+>>>>  
+>>>>  int set_direct_map_invalid_noflush(struct page *page)
+>>>>  {
+>>>> -	struct page_change_data data = {
+>>>> -		.set_mask = __pgprot(0),
+>>>> -		.clear_mask = __pgprot(PTE_VALID),
+>>>> -	};
+>>>> +	pgprot_t clear_mask = __pgprot(PTE_VALID);
+>>>> +	pgprot_t set_mask = __pgprot(0);
+>>>>  
+>>>>  	if (!can_set_direct_map())
+>>>>  		return 0;
+>>>>  
+>>>> -	return apply_to_page_range(&init_mm,
+>>>> -				   (unsigned long)page_address(page),
+>>>> -				   PAGE_SIZE, change_page_range, &data);
+>>>> +	return update_range_prot((unsigned long)page_address(page),
+>>>> +				 PAGE_SIZE, set_mask, clear_mask);
+>>>>  }
+>>>>  
+>>>>  int set_direct_map_default_noflush(struct page *page)
+>>>>  {
+>>>> -	struct page_change_data data = {
+>>>> -		.set_mask = __pgprot(PTE_VALID | PTE_WRITE),
+>>>> -		.clear_mask = __pgprot(PTE_RDONLY),
+>>>> -	};
+>>>> +	pgprot_t set_mask = __pgprot(PTE_VALID | PTE_WRITE);
+>>>> +	pgprot_t clear_mask = __pgprot(PTE_RDONLY);
+>>>>  
+>>>>  	if (!can_set_direct_map())
+>>>>  		return 0;
+>>>>  
+>>>> -	return apply_to_page_range(&init_mm,
+>>>> -				   (unsigned long)page_address(page),
+>>>> -				   PAGE_SIZE, change_page_range, &data);
+>>>> +	return update_range_prot((unsigned long)page_address(page),
+>>>> +				 PAGE_SIZE, set_mask, clear_mask);
+>>>>  }
+>>>>  
+>>>>  static int __set_memory_enc_dec(unsigned long addr,
+>>>> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+>>>> index 682472c15495..88e18615dd72 100644
+>>>> --- a/include/linux/pagewalk.h
+>>>> +++ b/include/linux/pagewalk.h
+>>>> @@ -134,6 +134,9 @@ int walk_page_range(struct mm_struct *mm, unsigned long start,
+>>>>  int walk_kernel_page_table_range(unsigned long start,
+>>>>  		unsigned long end, const struct mm_walk_ops *ops,
+>>>>  		pgd_t *pgd, void *private);
+>>>> +int walk_kernel_page_table_range_lockless(unsigned long start,
+>>>> +		unsigned long end, const struct mm_walk_ops *ops,
+>>>> +		pgd_t *pgd, void *private);
+>>>>  int walk_page_range_vma(struct vm_area_struct *vma, unsigned long start,
+>>>>  			unsigned long end, const struct mm_walk_ops *ops,
+>>>>  			void *private);
+>>>> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+>>>> index 648038247a8d..936689d8bcac 100644
+>>>> --- a/mm/pagewalk.c
+>>>> +++ b/mm/pagewalk.c
+>>>> @@ -606,10 +606,32 @@ int walk_page_range(struct mm_struct *mm, unsigned long start,
+>>>>  int walk_kernel_page_table_range(unsigned long start, unsigned long end,
+>>>>  		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
+>>>>  {
+>>>> -	struct mm_struct *mm = &init_mm;
+>>>> +	/*
+>>>> +	 * Kernel intermediate page tables are usually not freed, so the mmap
+>>>> +	 * read lock is sufficient. But there are some exceptions.
+>>>> +	 * E.g. memory hot-remove. In which case, the mmap lock is insufficient
+>>>> +	 * to prevent the intermediate kernel pages tables belonging to the
+>>>> +	 * specified address range from being freed. The caller should take
+>>>> +	 * other actions to prevent this race.
+>>>> +	 */
+>>>> +	mmap_assert_locked(&init_mm);
+>>>> +
+>>>> +	return walk_kernel_page_table_range_lockless(start, end, ops, pgd,
+>>>> +						     private);
+>>>> +}
+>>>> +
+>>>> +/*
+>>>> + * Use this function to walk the kernel page tables locklessly. It should be
+>>>> + * guaranteed that the caller has exclusive access over the range they are
+>>>> + * operating on - that there should be no concurrent access, for example,
+>>>> + * changing permissions for vmalloc objects.
+>>>> + */
+>>>> +int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end,
+>>>> +		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
+>>>> +{
+>>>>  	struct mm_walk walk = {
+>>>>  		.ops		= ops,
+>>>> -		.mm		= mm,
+>>>> +		.mm		= &init_mm,
+>>>>  		.pgd		= pgd,
+>>>>  		.private	= private,
+>>>>  		.no_vma		= true
+>>>> @@ -620,16 +642,6 @@ int walk_kernel_page_table_range(unsigned long start, unsigned long end,
+>>>>  	if (!check_ops_valid(ops))
+>>>>  		return -EINVAL;
+>>>>  
+>>>> -	/*
+>>>> -	 * Kernel intermediate page tables are usually not freed, so the mmap
+>>>> -	 * read lock is sufficient. But there are some exceptions.
+>>>> -	 * E.g. memory hot-remove. In which case, the mmap lock is insufficient
+>>>> -	 * to prevent the intermediate kernel pages tables belonging to the
+>>>> -	 * specified address range from being freed. The caller should take
+>>>> -	 * other actions to prevent this race.
+>>>> -	 */
+>>>> -	mmap_assert_locked(mm);
+>>>> -
+>>>>  	return walk_pgd_range(start, end, &walk);
+>>>>  }
+>>>>  
+
 
