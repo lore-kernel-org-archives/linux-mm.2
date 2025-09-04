@@ -4,92 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C32BCA1014
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 03:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B599ACA1014
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 03:52:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DBD08E0007; Wed,  3 Sep 2025 23:52:06 -0400 (EDT)
+	id D5B9D8E0008; Wed,  3 Sep 2025 23:52:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B3E88E0001; Wed,  3 Sep 2025 23:52:06 -0400 (EDT)
+	id D33CF8E0001; Wed,  3 Sep 2025 23:52:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F0B18E0007; Wed,  3 Sep 2025 23:52:06 -0400 (EDT)
+	id C70A78E0008; Wed,  3 Sep 2025 23:52:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D8548E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:52:06 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F34F51D6DC0
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:52:05 +0000 (UTC)
-X-FDA: 83850194652.07.3265840
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B63898E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:52:47 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5300FBC540
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:52:47 +0000 (UTC)
+X-FDA: 83850196374.27.A2DECF5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 551A6180003
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:52:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbckYjIH;
-	spf=pass (imf24.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9427CC000F
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:52:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k4SggvOd;
+	spf=pass (imf28.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756957924;
+	s=arc-20220608; t=1756957965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fHu+iTdIG5S01S/EIjEUwmsaaoJZJsqgpN4mWUiS2lk=;
-	b=koKCRvC00Ug4HBn5h4ihXp+INw6psFVosTzXtXxpEqqB3kG2pKCrSfsRa83Z+GIxrKdN6s
-	M6icUVDUyS91PYI5g2qWgw2tzo9F1Gqi+gs2CwiaKfvG4nFCHnH/j3Dp8OlzM3HA7336nl
-	pw2bzcWoNIrO0waypqqvWjGc9jFH7lw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756957924; a=rsa-sha256;
+	bh=GMVIz0Rq32t7Co+il06TcjOCX+8ADarlCsoswhk7B5c=;
+	b=6X1Uya+onJN5fvI26m7Dcu3tf0LvTiQjXb5QgQTsobWdcW6fH+77dWegPiUhu4wfHy/Xop
+	cxzlthgOOn9yXU5PG2Jr0kK/rH2Y2SG7+qhmVwhx9q5zyW1Y7QyFAjdr1KpLc4PUiLXq5E
+	64jO4hN0t/b5htKFtKxVu/uG/gOKr6g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756957965; a=rsa-sha256;
 	cv=none;
-	b=jcSuwVUMS9/3tbDNPz2e58ZsCGwKkparKt/58Mebr1jU3XawulZhAIxL28mrV2Rso6VS+7
-	Ag9jmT9Domoxj3uNVkT1P29ZtSsTLHRtdn4fuN/PL27Nu72a0GlIiC6T7viv00LygVh09X
-	lcV8+0/C4Jgq9va/PnRytYzD1kRtnc4=
+	b=ja8BBE0IdGn00r3MK4tiXeM688XPToW6Fhewc1ESMZNUZgPIyB9+xI9i2JaepKFSe65L19
+	zQLpBXMUYDNaqVjOfKXBwhYPkdBhu4imvJvwhpSjcArZdB1IV/1lvWNvW6rhQBQwc5Vaux
+	LXp3GcvZRBiZk8F0JHgO89KgMNCdrjk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VbckYjIH;
-	spf=pass (imf24.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k4SggvOd;
+	spf=pass (imf28.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DDF7543A97;
-	Thu,  4 Sep 2025 03:52:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13EEC4CEF0;
-	Thu,  4 Sep 2025 03:52:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9B6A044483;
+	Thu,  4 Sep 2025 03:52:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7225AC4CEF0;
+	Thu,  4 Sep 2025 03:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756957922;
-	bh=Mq4Kc9uMoIrJADgD3/HVomvbYH3TWWO8E7JKatF4Z2c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VbckYjIHgshtdKT9gVoBz9foeJDHDPTsHZpx7aFB7pMnysbfkwoOky6VDUeT2IxIf
-	 LcdKdW01cW+oSxbgcGuAnIwXWKyO+q/K3OQ8GPdHjH8sumGc9LYeDOVaHg5ON3NdDF
-	 ihonL0iDBEdk5z1IU4hYm3QAfNmUJ/8QGK9BjftJx2aHM0D83ve/WdOhBGaKa0LAep
-	 oq4Isj5gSgsWYL1iaPo0mNcBCJkVXWyJrGdaISZZEsnERJ5ZzJRE0M1ZJ7K0BrBYNg
-	 gtBhD0M/bxLJsHpvnKE7yMdmufchRPu4X5jMjw++w94uMBHPjiX+d9juBNvrQWsq3a
-	 jnkFGEBD3JHqg==
-Date: Wed, 3 Sep 2025 20:52:02 -0700
+	s=k20201202; t=1756957964;
+	bh=dW3DY0tGbJhPve03HuDNPrD6QxC9sjo3oWoZbh4z3oI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=k4SggvOd4BbUbbGwaWFPdPRseaOkhRGGpexIV08g70d9iEWifpyMcHKg1LDKhagxb
+	 X73aX3cyNra2YQJQYXiUrPpRXEjmEImKKuMFsLhD62OU6yN1wmci+wvDeF3PkMUota
+	 NnzUIVAAyJ5GmDDpNPiAQvA2UKguSTveJwuqMti483XoZH4JtePjPcbk0fG8QozNWM
+	 rfYDgshAh+BKzbWevQChmBmw8nuwjdklhR0lGWT53q7FGw3IjDG/pKVPiIzKATwmxI
+	 WtyuT5A0cPe2iwRRD+02ucfirVq48nuR2WihTkaDccXlV3ixklm/IyUa94iEQo6mur
+	 NMLqBhZPXxLMA==
 From: Kees Cook <kees@kernel.org>
-To: Svetlana Parfenova <svetlana.parfenova@syntacore.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	alex@ghiti.f, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	jack@suse.cz, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Subject: Re: [RFC RESEND v3] binfmt_elf: preserve original ELF e_flags for
- core dumps
-Message-ID: <202509032051.BF7FC654F@keescook>
-References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com>
- <20250901135350.619485-1-svetlana.parfenova@syntacore.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+To: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Svetlana Parfenova <svetlana.parfenova@syntacore.com>
+Cc: Kees Cook <kees@kernel.org>,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.f,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Subject: Re: [RFC RESEND v3] binfmt_elf: preserve original ELF e_flags for core dumps
+Date: Wed,  3 Sep 2025 20:52:40 -0700
+Message-Id: <175695795639.3712216.15743949549231818751.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250901135350.619485-1-svetlana.parfenova@syntacore.com>
+References: <20250806161814.607668-1-svetlana.parfenova@syntacore.com> <20250901135350.619485-1-svetlana.parfenova@syntacore.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 551A6180003
-X-Stat-Signature: fycu9dj1br49hsmun6ndoqgmqwu5qx7j
+X-Rspamd-Queue-Id: 9427CC000F
+X-Stat-Signature: 7t8soqsss49pixp74bsnnky51jt33cr6
 X-Rspam-User: 
-X-HE-Tag: 1756957924-968142
-X-HE-Meta: U2FsdGVkX19MQ8OuTZ7ei6kAQQS/y1GA4ueBWA4evbDhuWctE8hkPvVSYQHkeTu1LcjkR2AEt75lUkH5dqXr8cGiVeLnDQRojMeKRamBLSUolefMZyRpTPCHTJAlJ/X9Aldv3k7wKHPZprMZOArA/7JeaS6KtTUbbuQk7YQvNxZfNZ/oNSaQi5KjANv5ESxfNCJv0qs5A3I3AnWdAJ9esqdcxBXcEfMeDQTyd7GaccyGOu45OvgExXpcA1GWX8MGUCjYRvHzvvyRw30TEwdZm9ci+94ZfQKo9Kl+HMAw/nS87fypprNo+QH8NkdmUP+r3/BWNL4RcnJxoVLu14n+4QW0xX4yBSf012XadZ6n2f1k27dwq8l0FqyMSNq8Dn2dGPF8OoNnL313S771pSSCZZBj1Uanki/TEvmReWDTWt7SRMSltv98v5roUDNNhVrfgB62/Fypgj4blW/teA4r+mVis/Pg8nLRhNR+ZO18w8r6iZnBVTs5a8Fl5S1wWwcjB88Dyh8FaISAG/c22aYuNAZi7BZR4oUyEJHBcF+zoJTT0EEChmP00tt2SxMoTGgb9htq0pPUsXVuFOozjUuFKjPIh6QbjMJMyIo/vBdHHwoozXJjQwvyBoOzvaLZ2vYLfvnWYiKuPb+kXNgwj4PKBi1BR0xZrYD0GEP81O+2E/JXrY3/3G32+E7cxbOPWisOAsQlGRQwKnHZ9lQNHWvdQ2Hkrfdm/CYIBW12bDfPy59Olq3kw0oxvJpSCAyWLOAem8qUZh4xvgPVJAlV/PQ/k83UxFVkLUAhBZKNbHCJuTO1A40x/4Avk0AN8sZYg/0Gvf4ixtsTKLps0oNKPkHtXXl+KCu6NmOk3tZ567anFac03c3V1M1EpFDeFwk8c2wXd59I2RSxpHf+jEMqlNiXum9GVyjjkyCJOuq/+t+PkKFnXPGk/Evgg9OOodNP5OJ8dxqFxrrg0UDYS8JRRPB
- g9YaeAAj
- V2/uvWGO841cVMvpaXrsBT+21FKBhWP4R2DZ0m8nMrcNpqJTLSdQC4pV+eh+seWShf8x3xYKR2prmci5conaOL3Skakvz+c9lWc6b6yiBXw7BGrFi9oOgTQka0gBWmqqxXjiVdv14M5Hg/fwjel6it9cHT0vlE/nD12Fe98WxKcMouTZgANpk6dl8VGy+lMTmx/K5lt4uwrgFQILfEsSP/OAuaDTw80EgckUWbn10VRNVO7ZOEGdTEfbnE1sVV0IpCDYOZHnRN+t5Syox8okNyLQNsGOVs6HHT2xYkN6wlmWcP/c=
+X-HE-Tag: 1756957965-853680
+X-HE-Meta: U2FsdGVkX18dKagmB5AITWeUqci1b9vc5GV2K2sb8z6TiyzACQt0A6yJ+lek5ngdeIRP3qKxtnkEXpRGBxlYNDKmxgT/9ssS3Puwti1y1f2SCp8qQrq7fNLqYrDtTHgjjyQhbVE4EFNRs21HeuIJO+8d8Rnhrc4iJ2xICXemFh8rQPxAEmtKTT2q+Y5mITYBEzS4P93lYCdJPOACgsIeVZkoI+hCF7WMaZboZaKtMeBrEhEw4H6IadEOyESjRDJfjVhJbJi7ZdmVJ7kk8WL+VrSJ/0yzj4G2G6j6x13TqJczFM+t8l4iY0yluwP2MAr28wFBZImZ0Tfwi1G6ZUGIG1epBDrYAAwHCSggHfJUYQKfP8K1pdL0td1zW3sRGCmvl0T6dDlmfVuv+sd4un48aQAGmyIPZLr2/og6MW/bsVIWzwgCIl36UqjN2YxQ3lQIkaW350Cu6pbvc/HM82x24ddp0mH/UloF4Hl8su1Ds7S1uYHp9ESg6VqHw6x6ancQvRjMARgtoyuXpAESqmWM4kF1mTRAluhPSp8K0tO3PRjcYIf1F7X3PQV4t5iILc+qoobC5OA+P5Ko7aH4vFQfYxvJdXf3oPo9sCWTWfnikSvJnvF7gDUpp0r5P2EbmoxP0NkXOE3Iymu3ZJdO+imWA8WtYqqc3+c9zanOCLxk1n9+m8KC+QQFpaB9yhpc0V08LJhRDxU2bt8LQ6m50X9ekRTXydit3BHix6Em6a8YCw0lUnuGX1Hgbn4nyk3BaysyOBi93bKQrtSSzhjj/2R0KyckkBLwp+e5NmcE1tEL1ThiAgeE8+jsQsTIJcYCFb/Npl+ZKjusZ2Fzi/rNasSqSOeSj3rkYHxAy1bfD2Mrs8xSFjTi96DepYWzu2qhM+9V7KL4WH12y7CCRxBzrbU7+Xj4Idr9QhyHyax+qHehZHGJD6e5VxOOoFg/8/QVp0nJIB/+4S4R9kPHxcTKk6B
+ 3cbTCbh2
+ NUg4Gu/MZ6nhV7XuCSs5cQrO6ilcNyTScHmvBjgL2rBNim4i6S8X7zbACb+HJRyN9ilhKHi2WjBFHiwLbm2UiZ5SejRcKZqfEs9Zy0PQBatqpSlwddVP9ouQF5hTdfAn8+n0S3x6hkk03YLWmZvyaD9CD1UmT9j0IuscPnc8zMTqCJyuBRCA9iIEZnfLsv9Y2ksAxPR8gnvv3qvgkkp7TnRHsx5lb/5axOe2t9wziCUgm+xcSnqZrMkgpp/0X92o1iCSu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,24 +111,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 01, 2025 at 08:53:50PM +0700, Svetlana Parfenova wrote:
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index a4b233a0659e..1bef00208bdd 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -224,6 +224,7 @@ config RISCV
->  	select VDSO_GETRANDOM if HAVE_GENERIC_VDSO
->  	select USER_STACKTRACE_SUPPORT
->  	select ZONE_DMA32 if 64BIT
-> +	select ARCH_HAS_ELF_CORE_EFLAGS
->  
->  config RUSTC_SUPPORTS_RISCV
+On Mon, 01 Sep 2025 20:53:50 +0700, Svetlana Parfenova wrote:
+> Some architectures, such as RISC-V, use the ELF e_flags field to encode
+> ABI-specific information (e.g., ISA extensions, fpu support). Debuggers
+> like GDB rely on these flags in core dumps to correctly interpret
+> optional register sets. If the flags are missing or incorrect, GDB may
+> warn and ignore valid data, for example:
+> 
+>     warning: Unexpected size of section '.reg2/213' in core file.
+> 
+> [...]
 
-I'll take this patch and alphabetize the above select into the right
-place. Everything else looks great. Thank you!
+Applied to for-next/execve, thanks!
 
--Kees
+[1/1] binfmt_elf: preserve original ELF e_flags for core dumps
+      https://git.kernel.org/kees/c/8c94db0ae97c
+
+Take care,
 
 -- 
 Kees Cook
+
 
