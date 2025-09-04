@@ -4,91 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59F1CCA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 18:05:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E805CA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 18:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B39148E000D; Thu,  4 Sep 2025 14:05:21 -0400 (EDT)
+	id E30756B0012; Thu,  4 Sep 2025 14:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B12558E0003; Thu,  4 Sep 2025 14:05:21 -0400 (EDT)
+	id E07FD6B0022; Thu,  4 Sep 2025 14:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4D778E000D; Thu,  4 Sep 2025 14:05:21 -0400 (EDT)
+	id D1E966B0023; Thu,  4 Sep 2025 14:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 958C78E0003
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:05:21 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B3285886F
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 18:05:21 +0000 (UTC)
-X-FDA: 83852344842.07.EF93B9B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 33DD240011
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 18:05:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AsMt3fT0;
-	spf=pass (imf11.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE1CC6B0012
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:13:05 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C7401DDBFC
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 18:13:05 +0000 (UTC)
+X-FDA: 83852364330.19.B16A05F
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf26.hostedemail.com (Postfix) with ESMTP id ABE9E14000C
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 18:13:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=aisle.com header.s=google header.b="n2/Syx4s";
+	spf=pass (imf26.hostedemail.com: domain of stanislav.fort@aisle.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=stanislav.fort@aisle.com;
+	dmarc=pass (policy=quarantine) header.from=aisle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757009119;
+	s=arc-20220608; t=1757009583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=1C6OpEEtpnFao5UgAtxujgFIWdi0TwzKl6ZATQG3PVs=;
-	b=ysU52Tjt7bm1SWblIZIKWWurlOmSONLzbhoWWonezyv66a5+LIKkcYb4DW4KImWk6dWR7+
-	vBvytjbPatP49P7xhxjrgS3/MaHZdjU+m6VDjNYb9+ArRuKDGxDEs7hfaRhzuaiHMvv7xT
-	CEaoa5T18mpwtQN84qIaYulgsYEKE10=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757009119; a=rsa-sha256;
-	cv=none;
-	b=Dl/xZqE9CKhY3bsNa8aIlBYnHNf0Uk+zuld3w3T03Qt7qMlztcIibRjktSqtxXe3vzAu73
-	DK4W9fiQNwg6r9I8UK4/DDvsFtx1AN/8WIE3I0+h2Ijg9mpZH1v7lXxmpSBxncEUmjmu75
-	QAIENX+zsUeenPNyUwcamss67ZNuFZM=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SayrWq9EL+FzoaA3kSfms075bKzR1bTUIuxyks0UhpI=;
+	b=cQ/AhMRHwwHZO0xbTQGy/OzHqRHniuFdjod2dTbxQJsl9S6EYp8Ll2NQypD5sb6SXIxbnq
+	d5Y/vj7K/0JsOkQNPYv9yIizC7fLGRfSyxcWjet0G57S+fd08sN8G78308JQjUrRkHZN5o
+	blvvzzSTHRj6sAH3b8pEpX2pU0tbrdE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AsMt3fT0;
-	spf=pass (imf11.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 16D154337F;
-	Thu,  4 Sep 2025 18:05:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E680FC4CEF0;
-	Thu,  4 Sep 2025 18:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757009117;
-	bh=8ulsMfA/KMzKbG7c59/17M8ZAo7RjHes/979ig8CJtU=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=AsMt3fT0X7R+RG7pnW72ce1cRwGeubeoQGIUJsJfvQ2/+oq0+EIkhqpa6zugO4CiF
-	 nNQn/s3qUBSrkLM3OEsulmDl2IS38zMyyiME9YrzICwQ8TY/3aOFoUsDHzaRv9rJlC
-	 jSs2L3G8si2Y6ZABVogcFcCNa8PlouazAzLvo+8TpBPRPXKHhyqj9fISCWCIkpjwbl
-	 MCU98LzT9D+pdJHIYT9MD6S4S2dytQZRIlc7kODqlsPycNzT4bSXaHnX8fnMirbxTS
-	 XoRnUKWWILwsVVNe2I5lkzDXg/qE5x74MJ5pG5jYKgwhRq68Phlffw3f7UMvIk2mfo
-	 7e+B5kyxs9KUQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB007383BF69;
-	Thu,  4 Sep 2025 18:05:23 +0000 (UTC)
-Subject: Re: [GIT PULL] slab fixes for 6.17-rc5
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <c15d56f1-b1f9-4ed2-8f20-1d8111ac1115@suse.cz>
-References: <c15d56f1-b1f9-4ed2-8f20-1d8111ac1115@suse.cz>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <c15d56f1-b1f9-4ed2-8f20-1d8111ac1115@suse.cz>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.17-rc5
-X-PR-Tracked-Commit-Id: 850470a8413a8a78e772c4f6bd9fe81ec6bd5b0f
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 68f285e2647814754b9ba77b79cb32c9be2146aa
-Message-Id: <175700912239.1902706.2859418068871650704.pr-tracker-bot@kernel.org>
-Date: Thu, 04 Sep 2025 18:05:22 +0000
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@linux.com>, Andrew Morton <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 33DD240011
-X-Stat-Signature: bnodahjw1sgym5bx9okqfxi5xbbd79ke
+	imf26.hostedemail.com;
+	dkim=pass header.d=aisle.com header.s=google header.b="n2/Syx4s";
+	spf=pass (imf26.hostedemail.com: domain of stanislav.fort@aisle.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=stanislav.fort@aisle.com;
+	dmarc=pass (policy=quarantine) header.from=aisle.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757009583; a=rsa-sha256;
+	cv=none;
+	b=c0VedI9oX6L6pWYJxnnYocH7dbPfw19hR2ySfr2B7jsrdHZJouPXkd7HF+KSK2b9ySbxJ2
+	0IbCsxXdnhA3L2V90xYtvV/sDNe99k0l6E1UshGkM0pxpINf2VMMWOlqvtYaprCRLqX7LR
+	VQHsvRGcTYRY4y3F8AokBjY7hKRl9ak=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-61cf8280f02so1925706a12.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 11:13:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=aisle.com; s=google; t=1757009582; x=1757614382; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SayrWq9EL+FzoaA3kSfms075bKzR1bTUIuxyks0UhpI=;
+        b=n2/Syx4siIE1ctw9a5FAmpT3r7qXfnTYKEhnvI+4/fH/woiPtYqNnrvUJQ/D6bKwQ2
+         F/C4/jt2HlbrLlM2Isb40O5ZLkNY456eRZ05744kHiTjLsQq0zZT2CG7gqHLKbCsYyj7
+         xzX57kcnLmxRVmTAxK0dO7+2B9uVaH6hdCR+NnsZm4gjneWUaPd/1H7fCB/QIz9Prx4g
+         9vNfcZjvTt8uMgwURFGf7GR+xlzvrQkC/Pi3hshh3+LmRdCJpUZENt/5bC1SG1YZk2Ui
+         ZCbwkwfg0aaHmkRe4mhwvPLUQ4T3+BAdkmxPb1N0V/PUshI6Qk0Zd7Beu+gdzqhj8elL
+         xCwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757009582; x=1757614382;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SayrWq9EL+FzoaA3kSfms075bKzR1bTUIuxyks0UhpI=;
+        b=RquaPoz15B7IbjHvM2P5boQK6PUyXJdKfmCy6cFaOCbA3f/wTnW5dIlguZSLPCX2yj
+         TgXr29wO36mGyv8WOw5FGkTOh4O8IambISGeFAh1GkpQd2Cc7MMyPNK3UU/BSMAqNkGQ
+         jMYtVdQhztTLPipf0EqsRKGbmxxoCK4ZlwdaAKA+veo5pn0mJeuM9fDvv13kq51hBEKG
+         BAVaBty07au5YwfeRcf6KFrWQqzsnWrqnqBYX0Tes+Q01k7+trtKkL4MpV/fn3tLz+3h
+         mL2n19gnO4OXjvD3epdP2aWeEwRtJZCwh17VCuRlkwx+KM1/RVreLKel67UhPIGkcBdB
+         Lvjw==
+X-Gm-Message-State: AOJu0YwYcFofbI/6OVUzs4FZeUthP52kfc305x7KlYjz5f1pZp01mpOw
+	VI3QaBKc9xCl7cnkRwLTpKAWEYWRymI6oeC6j6RGuhahnfuUnKem4ySfzIX7kijTPbjElR+OzUw
+	qp2RBfuJ1lnFq
+X-Gm-Gg: ASbGncsp5oxzepW+hqWxVw0IjWaq3Gsqm5NUFVe7KfQJbAmU7LAOW1g7X9ydyqcWl7l
+	TVojqlPOBVSmpyJVgiv37Re84YlSdjEJfFJmuDp5vuJo3URCehw35SV4PiregLLJSDtlknbjj2G
+	xW3dnyXc5U46/6dx0wBw+nL7HQLZK75Pb3+iikAB/am11SPjH6TjRB7t0AqumpZ8oSMMrlfnFxc
+	u6qITAgvzq2aVriJTMyGjTzDwc7O+F3fBhkalqL3fcAVOk1QxKzeHOdMj6PKLlXAGaZefCo4Hm6
+	+KjNZXO1ngAhKhV+G7Tkh6Fv6BfK60NtrhV8b/xvctcPGewA3vUD83Vazlk7h2CqJu2uPResIzX
+	nt7t59FFzHsT7AFBD7xqo2uJUdJkcYhDrSzy026Ddr7q5Sz4b98uiQAoEBA==
+X-Google-Smtp-Source: AGHT+IHUoe7GgAw674k6cHcnUO6jamtfXKG5fx/D6I4lzI1hf6rw2tZLSQ+zfPP4YmYrq1x5+ZhjMQ==
+X-Received: by 2002:a05:6402:27c6:b0:620:bf3a:f6df with SMTP id 4fb4d7f45d1cf-620bf3afa52mr1230412a12.19.1757009581838;
+        Thu, 04 Sep 2025 11:13:01 -0700 (PDT)
+Received: from localhost ([149.102.246.23])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-61cfc4bbc51sm14408641a12.27.2025.09.04.11.13.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 11:13:01 -0700 (PDT)
+From: Stanislav Fort <stanislav.fort@aisle.com>
+X-Google-Original-From: Stanislav Fort <disclosure@aisle.com>
+To: linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org,
+	Stanislav Fort <disclosure@aisle.com>
+Subject: [PATCH] mm/memcg: v1: account event registrations and drop world-writable cgroup.event_control
+Date: Thu,  4 Sep 2025 21:12:48 +0300
+Message-Id: <20250904181248.5527-1-disclosure@aisle.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: pk1neotwespnk86jyaoq78txhn43cgm7
 X-Rspam-User: 
-X-HE-Tag: 1757009118-729153
-X-HE-Meta: U2FsdGVkX1/VTGiNeCCHuyCu2IDpHFrq0Y4DI/NkEklG6cVwcJUCaYF+0u4nt8YDPLT/qveZojqLYXFs0eY4cUdHIp3D9kZOYEe5XIK0/L+37sswIHEfTRy83lJQQfiof+FAZruBo0gTrt+GUZbqBsOaIEh2XSnUyfCJ+oemrWXeIUHUdnEhZcfZ+jPzbInyDIsct9h9PLLENER4HKpCgZ5AU6ZSK9bixIkruR2HnLAl8TSm81kJllxEAVnonW8i8OSo3WO8UHY4NOpKNwNwcwwNqHTXcXh37ZLerxMHzoXaahm5RjF/qGX5Ar92hJH1zNDjXWeokEXbONdp28jQT9Ng7Y40Sg22pELuZZMP6MD3xKeu/xiLgFQt55dXxr22jMEd7vDoqc1RmKFjQBGHFT7TL/KVNRFxaf7EpX0mXo7GZ5q40za8n7HIb3Ds+HKIUPuqo84ucyQPRdGvOwt+xlnesvVNrkbBMcMT70D9V+/JPagAEh9FZqcnvAg3c8QDoZQbB60ylExp5wg12/axMX8YEfSsLjaqjOy04nXwskBlYf+BG5wCfkx1FR/ZY/JRwOOnQANc7OHjK0btro10Z4VwuIIpf2GdIB2edtctYFaIa7Ec73J34sUKI25cHzbKGgJgWcodiMX7I4hfA0y+KoKxGRt1byPFYRa+rx/dhQ33hyC2vBvf89Qu8eLRoRNVYz6TMrmsx+MUp6MDkjadWjrdqMSz3OiyO/dORStRER3VmrFUaQmoIK44kUyjdD6IHGyRLxEg6tkjmrqDYiW+DkqtrfPqPj5SThwkns6v3ObMnFXxPAJwJA1XxKXqAEWUdCUITgoshAmaCuIYfhxW0j2VbGH36Cd1/2zjAfxaNqRnCihXtmtsDnloreNjZ6eyXwy6/avHpA6As2jzrZNlm37lH+idYW6proCNGjtZ/ZvM21fyqdkIWYArInizu35jkIbWr8e47oQ0EmVtlt5
- 9voAaA4u
- hrlJhZRsHnBmFNLYHp13Lwt4VuiMSA43qW/XNlC7rWkxtTp0IEgkSMayfjs8bslwOQkA0PXLuMOtO58SR4VgXo3LX1F9Uuqnx1EoXXUMi2w/EWMzdRXoPjoWGnyO2v6uRtE90gWBQSff2J+6uy7SZ3YuC2aHvhNqR5gHhu3o2G5hZ9jqQf7OoE+/00bwqERUZc5NNVOCGTzyTbAO4LXDC5j61FbnkFW5gQlccHFOrhGmeENiEKHXbSSB6Js1k3gcyX394PRd846iArzhqO2EuNz6ZK3pcsHiPnINVoaQugyHGljGsq8poWX3O93HKGPDAO3MdiIKP8kWFJPvACZVkMS0HfAp62WWGbdCyJOZ17QZ5h0YyxcQX2t49OXCF9zbvjDPtdwJqDbcDP1vs2lxOxh3tlZX8zRtz0xRSqs+v5G3NF0E9fPFY3KQ6zw==
+X-Rspamd-Queue-Id: ABE9E14000C
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757009583-716564
+X-HE-Meta: U2FsdGVkX1++hkeJF+HCbdTRSS9S/GgWRJ/NjisvsoXdgZqT0qaOKPdt8mXyjJOLyQ5rTC7a85R4WeQfObjLhB2pRw02XmaZiGMRJuWJcZKq+Om1JAP1BSYwF3zR4ZYepM2oAPIx/qdzbxPY3vUolbARew7tV8OdxL0soznLm0hRIZj6dfAf8AKSGcqbh7CtJLYl9yJiZJHRlRUC/hJd9pR6QBmhNryy+9zbg7ix6Y8IlCBQbB8Ls0p7peINBh5Ky+iMsWMAQQqu40mPndlRnlvDSNOTutH947TI0nva3xvQjbAHzuRrbmPk10APyMWujHMpwRPK+QMtsXOD7z8ehRN8g5qG9zz+je9gitJk9kY7UqpxnoAkAZ0KdYOELzrEWmnRfbJQuQYXxgZQZlXQjL79ZzdsPvFPBBc3K7ceNQa/89rgJo1rnvRhwUnySMsmttwaqTtUBuhC69ZJko3wP1XDSzxDFOHH3epI6mZTv019CpQrHx4suzBs/MohH+bHaHmon4urgodCw5Bh5rBii/9KXtwMsQVWrsC+HIzaZjBdMFPmpoJfxjW1XnjewXhcERxp9MeUx6kR7wHhVe6tRW351CB67VHXD36rh/O+ikMAHD7DmQSM+azWrJ8+gq0uAJpsrG18/jZ1KgDDHUtAiUy6+hVGDUun4aEJJFBuf2wuSgOVcXYFKlhjtFWpi7eM1zRRNo+n4/BDXEtnvN4HV9knJueUCMjDEMaI+XsCX0Q9AQY1jvKE5YCalZjqmkbofavmNpSX90Lwg6PLx+9PlnzPKdgAd0dAGISeEYolMduBs1qKGQGy2sikjViY6QzPzTazRAmSZCiFGWuaz/JjiBTH7Zneva7AVzVVhZkFEuxkseI/KxazhXbQaBLL15K1T4JZrVKcdEB6gVNI6NvTw2tWezVKIjZI6OiK4zwfR/iJmtTt5NbrbkeqZazX6vOtQIC54WWhLs2AJ/kgbVx
+ omvoRC8P
+ neYqeF20LtxKJgAMnYHvYy2/gybSIXd3y3UWTQduWR0NdkJTs+zp0WXpH8G7GO++pXsVGU0x/6SXWqQ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,16 +124,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Thu, 4 Sep 2025 10:56:09 +0200:
+In cgroup v1, the legacy cgroup.event_control file is world-writable and allows unprivileged users to register unbounded events and thresholds. Each registration allocates kernel memory without capping or memcg charging, which can be abused to exhaust kernel memory in affected configurations.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.17-rc5
+Make the following minimal changes:
+- Account allocations with __GFP_ACCOUNT in event and threshold registration.
+- Remove CFTYPE_WORLD_WRITABLE from cgroup.event_control to make it owner-writable.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/68f285e2647814754b9ba77b79cb32c9be2146aa
+This does not affect cgroup v2. Allocations are still subject to kmem accounting being enabled, but this reduces unbounded global growth.
 
-Thank you!
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Stanislav Fort <disclosure@aisle.com>
+---
+ mm/memcontrol-v1.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 4b94731305b9..9374785319ab 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -761,7 +761,7 @@ static int __mem_cgroup_usage_register_event(struct mem_cgroup *memcg,
+ 	size = thresholds->primary ? thresholds->primary->size + 1 : 1;
+ 
+ 	/* Allocate memory for new array of thresholds */
+-	new = kmalloc(struct_size(new, entries, size), GFP_KERNEL);
++	new = kmalloc(struct_size(new, entries, size), GFP_KERNEL | __GFP_ACCOUNT);
+ 	if (!new) {
+ 		ret = -ENOMEM;
+ 		goto unlock;
+@@ -924,7 +924,7 @@ static int mem_cgroup_oom_register_event(struct mem_cgroup *memcg,
+ {
+ 	struct mem_cgroup_eventfd_list *event;
+ 
+-	event = kmalloc(sizeof(*event),	GFP_KERNEL);
++	event = kmalloc(sizeof(*event),	GFP_KERNEL | __GFP_ACCOUNT);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -1087,7 +1087,7 @@ static ssize_t memcg_write_event_control(struct kernfs_open_file *of,
+ 
+ 	CLASS(fd, cfile)(cfd);
+ 
+-	event = kzalloc(sizeof(*event), GFP_KERNEL);
++	event = kzalloc(sizeof(*event), GFP_KERNEL | __GFP_ACCOUNT);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -2053,7 +2053,7 @@ struct cftype mem_cgroup_legacy_files[] = {
+ 	{
+ 		.name = "cgroup.event_control",		/* XXX: for compat */
+ 		.write = memcg_write_event_control,
+-		.flags = CFTYPE_NO_PREFIX | CFTYPE_WORLD_WRITABLE,
++		.flags = CFTYPE_NO_PREFIX,
+ 	},
+ 	{
+ 		.name = "swappiness",
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.39.3 (Apple Git-146)
+
 
