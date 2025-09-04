@@ -4,172 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4D9CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 10:31:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B1ACA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 10:41:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20AD8E0011; Thu,  4 Sep 2025 06:31:42 -0400 (EDT)
+	id 29AB08E000A; Thu,  4 Sep 2025 06:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF86E8E0001; Thu,  4 Sep 2025 06:31:42 -0400 (EDT)
+	id 24C068E0001; Thu,  4 Sep 2025 06:41:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0DE08E0011; Thu,  4 Sep 2025 06:31:42 -0400 (EDT)
+	id 113C38E000A; Thu,  4 Sep 2025 06:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0E858E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:31:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A7D25C665
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:31:42 +0000 (UTC)
-X-FDA: 83851201644.03.CB52B85
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F1A5F80007
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:31:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BVvLsySn;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EB78F8E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:41:12 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DCDC86C42
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:41:12 +0000 (UTC)
+X-FDA: 83851225584.26.5736631
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EA7C3C000D
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:41:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of 3xmy5aAkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.197 as permitted sender) smtp.mailfrom=3xmy5aAkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756981900;
+	s=arc-20220608; t=1756982471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iNez6/M9s3PJsme5pRqUUeFXGJSz6E2jhwKDhn5HC94=;
-	b=lZrgYOnfjLQOovx7FHkhP2ALHA8ktqaexM35Mqa7FZy+oUSMEbGV/vx1tCgyEe99r7Wqjd
-	9an711BsUhp/AfRcYmqdohhOwFN6pXjsocM21fCRWDYTK2ExgPheRz0bYjrcTa3dwXIFXS
-	0sTD0LyHKN4iGLb6L5ABqiu5Rcpg40o=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=d5Ydvs3V14HrC72+IwRrxXukL/IqHbo4g5cVXlx9SLA=;
+	b=TJ3K6+zOQ9+dM3o85Tw2xwutiyCuyYD8fkdtXW3i0Nkg/7htRe6f6NWqsZy0MiUdZLQru9
+	E8u8bJivU1DkknGXp07WiONGHGkfSBFvDkHcNFfmdt8CRyD5lvFVZF00LOGR0zuig3e5g1
+	J/cU31njWn+yytuqjGnDpHc+uUMb3tA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BVvLsySn;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756981900; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of 3xmy5aAkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.197 as permitted sender) smtp.mailfrom=3xmy5aAkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756982471; a=rsa-sha256;
 	cv=none;
-	b=3ifSc5HFTgX3h8C1LuT9MPdcL3sKaip9soLmVR0uUHEneoKcwsuewaRv3RCLkLBLRejxRV
-	pjOFADnDfOsia/IFpBzdatQKz/b41+mUC+kpynXuzHnXQywKQT0D9d2rLNRWsfTu7K9oxM
-	+GoyZkNrJuoqiFp+OyNqzk7MIjVxSTM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756981899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iNez6/M9s3PJsme5pRqUUeFXGJSz6E2jhwKDhn5HC94=;
-	b=BVvLsySn2Hwf6rXwH2Z9ZUCK+yYkU+jYQ9gXbbCh3/Nk8Ypejf5Kh7m1VfKkkO+HRg6E93
-	v4My+bik4rLAaLYIsGv9SshOZdmNau2OPOXRbn55FKvzLHytAGhD2cr5wBUhe4xYALx+UD
-	s/KmnMzQ7QkcnlfhWV3x0xtPYz3TeEI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-kqroy2-7MvimJ40WgAf0bg-1; Thu, 04 Sep 2025 06:31:37 -0400
-X-MC-Unique: kqroy2-7MvimJ40WgAf0bg-1
-X-Mimecast-MFC-AGG-ID: kqroy2-7MvimJ40WgAf0bg_1756981897
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b80aecb97so7363365e9.3
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 03:31:37 -0700 (PDT)
+	b=0g6VyUJetlaS52Jgsgywnq5iOtVlbkZAtNWHOhEqwx/OjeSBZdPha+qRPscwo5brgrF2Tb
+	tRbUCrAXYDVZ0sD2Xdw3AnJ7UBGoEhnk/F0/tZRWUMXyl9l2HSAdJxUrwUSv5SadVU0E/D
+	vgHLvNNKObMAba0hpMpcR3g0M+bnKEU=
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3f65e91bfa9so19455565ab.2
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 03:41:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756981896; x=1757586696;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iNez6/M9s3PJsme5pRqUUeFXGJSz6E2jhwKDhn5HC94=;
-        b=BOSEOkOOUTVcTKzgjYDii/RPajzOY+2ADAI/fTy+GmXaoVhUVVrcPPeZa+mb/tu0XM
-         uORXUbgSDPRbYDCy0NP2i2u8sTliboYrd4uncvLiUYyZ0XcKQcszWarZO2H8D8AOAfkM
-         z8aAbDN45WNKnCwxt0qGhT0MU7Q2l+RA5lD7zWZuAUf7d0oTaRzkap6RIYSxOmFx+LZM
-         ujtD4a74B5Mq7aPcAHfOH7P8huK7AEqMIza+qG0uhun/iuvKUSn5qjHlSRY7BDmfpyiQ
-         u02m30vUkhPXcmVd2FsguAkj408+SCWGvgum92quan3dfKpABMKHXHju+6znStbbQ1D3
-         XCOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVOVaK5Sw8ol5uIc46LrVpa+GeiF4VtkO/snWge6MTnAgPg9XTj6ZxTYKt7ZGpqNy0ORxjX5cfcg==@kvack.org
-X-Gm-Message-State: AOJu0YxDEaGiAw+G+sqmTZjDuXOfFJARWObS4z6HzahQb/b+AATfq2gp
-	t+SsvbLhwBV5q9L09KBvZjA1ez0YJpYeWTRjtVMlxrH4ynUskfKL0U/UVy48GLTfKJqK/gtSCO1
-	oXDwBw44ocsJIOZDqCNccQ+MZQDoJU91CMb1fT6x3eDC95I4m7IVW
-X-Gm-Gg: ASbGncudM6srylhVlmNzL5fz3QvaFJetEz6+/pZ0sqnMoEgNy7ucmHzDO7IyBPeCBdW
-	Xs/SOxdUfWOI41GARPcLlIm1lQGDRLreCyxeU3RpXBF5OKcp6UpYvCqbNSAVloObX+4PPQhTvKd
-	1HkDs8fsl3MFTPPjQORps3kKhk2+gznZJZkGLYA+Wy6OYtXc0HeZhjS0sPyYtxS9Qy/bjxZOJEQ
-	TCLWrdxLuQFgxdqsv/wR66SgXaBw1K/0asV2K2vLJmvUezae+/CXXWsRN0qrlJ2sFIb+VnfTRXl
-	k9XqajeZ7Mm3U4xpwbmJWjALX/srQcCzE2/gLLsKHSKKX0qDH7cjUAfJMRT9tTe5B3o9qWodsYx
-	zFqao+oR7TqX5nUqfqts5bndm8iDkTCCX5zqpG0OjFBWrWCYS3HHwfwiKrJYpEGui
-X-Received: by 2002:a05:600c:1386:b0:45b:81ad:336 with SMTP id 5b1f17b1804b1-45b855340e4mr168285035e9.16.1756981896476;
-        Thu, 04 Sep 2025 03:31:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3MLtM5QDjEU/zOfZe3S/gDem/oxe78HJp4IABGPJ9GtWj8bc+E5LqhZjiV2Kjt/XWKXc5aQ==
-X-Received: by 2002:a05:600c:1386:b0:45b:81ad:336 with SMTP id 5b1f17b1804b1-45b855340e4mr168284645e9.16.1756981895992;
-        Thu, 04 Sep 2025 03:31:35 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f25:1e00:ce4c:be3:97b3:6587? (p200300d82f251e00ce4c0be397b36587.dip0.t-ipconnect.de. [2003:d8:2f25:1e00:ce4c:be3:97b3:6587])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d7ac825b88sm14277593f8f.7.2025.09.04.03.31.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Sep 2025 03:31:35 -0700 (PDT)
-Message-ID: <0ba60468-fc6d-4f07-a9ea-e16b8bcd5575@redhat.com>
-Date: Thu, 4 Sep 2025 12:31:34 +0200
+        d=1e100.net; s=20230601; t=1756982470; x=1757587270;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d5Ydvs3V14HrC72+IwRrxXukL/IqHbo4g5cVXlx9SLA=;
+        b=wiPewJ2nRmH0Lsp3ahFmOGrerio3z4HVFbmWDj0FwpS3xjopqJ6Q3RvaeFAYpdIGKk
+         crZ2BMTqLQfiOr8m24Q2TE2kwFgaLaZDKLUwMS5X1NomCwhjCLxw/X7ySvACsmOlagY1
+         OOtS1uqS24jWX5IEHFTxKJwBzMaZ4JcVmvwk5oFbm2xxTzDq2T69Qvw3fUDVduJWfEWh
+         4twVMo+vimlgdk6d/iVIDQ4INS8kFrfY1Rso2C1JmvgwoBu5Ms27Jda9w8TiiWsxVJzh
+         ePu536RZzCJ9YYpubI0n+IQHUWC2/AZnGnnO1oTYfRkdAE10VM+TVeIqIXlcCrsQyCP3
+         qHMA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2P86oV8Tp9qHN4eZUEvSR7d9fSV/DAGCA3zCbEtppWzaWHUWhwLY5aMt3U0039q980N4xwOQGoA==@kvack.org
+X-Gm-Message-State: AOJu0YwYKl2L5W2SXyb/3tcR1n+vOkL7Z9Mzn0ZCyJvztdgqT4whxIDG
+	s33kO6Osiy5FpnJF1Ny2hJwTXRHaCGZSaC+Yxgk6fYdGT1xmIZtSWIrEa+qnfW/Xaw31ysF8t8H
+	HO1XslY1ZLMTGH7CsamblbkfuzoVU8NHm6IHvLmrVhWS77ly4uvuoDg55QPE=
+X-Google-Smtp-Source: AGHT+IHP5nkhSjEAlq0O+VLctUUxL4WFO4zpj1wiYJsegNjzFAFImJCBqFXsQZnjFjdVl+HZtGvW8cwfMSvoC9cURZVTAax8aBmT
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: tag kernel stack pages
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-References: <20250820202029.1909925-1-vishal.moola@gmail.com>
- <96148baf-f008-449b-988b-ea4f07d18528@redhat.com>
- <aLdLDEW2d3hK4gUV@casper.infradead.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aLdLDEW2d3hK4gUV@casper.infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -p9goVbWpLeTOjH5QHOvC2kr9KM33nIik9LU2t3-bBc_1756981897
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F1A5F80007
-X-Stat-Signature: enc1jj379fbf5g4oronb1gu1b41jdzd8
+X-Received: by 2002:a92:ca4f:0:b0:3f6:5f94:2847 with SMTP id
+ e9e14a558f8ab-3f65f9429ddmr73785585ab.24.1756982470066; Thu, 04 Sep 2025
+ 03:41:10 -0700 (PDT)
+Date: Thu, 04 Sep 2025 03:41:10 -0700
+In-Reply-To: <357638f71edc7f1d9814b1851a64e09a8895bffc.1756968204.git.joeypabalinas@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68b96cc6.a00a0220.eb3d.0003.GAE@google.com>
+Subject: [syzbot ci] Re: fork: simplify overcomplicated if conditions
+From: syzbot ci <syzbot+ci452e2303ac12cc31@syzkaller.appspotmail.com>
+To: joeypabalinas@gmail.com, kees@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: EA7C3C000D
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1756981899-992244
-X-HE-Meta: U2FsdGVkX1+VPpv4WwSFRuuTk9mmR+bnv/O1YLpVqEIEh3X0rrvaRNpB9SwSl6nouL6XheE9g/yrIvKP5EZ5sB829NZfZ7baMmmGdhHE1xwSfXchOTjT8rSAjU/ncXHBuDLGm0s5DqauUZRLc+BQIP9J7ZaV3reaIFvsKY+eSd5RvC8o7yx9H+NFQJzSVZ2kalh+t6YRNHJHTpgn6uLuXuf+91pkaEfHOPLT0AH3UbDos4RaVPiWsmIlKCmSc34JCaPcpMvozqsdIclaGMXxlHNvx1Bo3d2sx9HttAQYw61tp+NbYg5J5qwRQTWeB7NswjX4fVwTxKUU+TfMRpjqmB8Lfv/KFzqLnZ0Lq1FJ1xMnki7u6LI2UruCIY+ODhmFrpduQaTKAK1lUDwvxzFjQvrq9+PsKLEzKuxPjzGda+K4QAEDLO596Vzui2NIOYhHWeekynnwGx0q4yCBlrXHNx617f7OA/MTpwcyz3M5V2wqhgT+pUPymTrkVK1vc5nYYPOCWzuPCEDmp/SuS9FSnBrYbi6MJix8RfieeVkxFy4Y55v9Sw/gLd8JG4EI2WTxAV+xWVlDv9WTWkfHSSq1utbbOLCL7kHG0WZ5fYWNJW2sRJY7FLKWkWYVVjT2J+ZVWyTC8z8Gf7dGNPDM9O2KucjjNZGG4VZDo8OYEhiZ3QTr/7vmd34uxiMJYvq9wsfmsE11ssMu7jqc0NrV/6uBV0euOVA8mVqygG5T1lXyKe2feOT01eIbllbw8rMIJua4uoR0ESc403Pn4IKmeoXGYZwMB6EcqKi9mer8ndFlucHyG1+YNccMHvkWS4SEtAAAK+w43COd2f2l9YMDjXqVq6HFOf9dHWYq5KhACTVtdzNcZvp3qhV2O/JtwXcMeWIvIlH41gnuSnqrF2vTvFIzQvy2UtO8i5iFMNNgvKH6xtbt1XxswaCJWmqfR+hkksIJMSCzfoc7y0po7ipviHq
- uu/3Mds4
- n7txHQEnbqTkPwGbeBCC7oeb94eGXyPZF5Ezhgs0zk2fcEva2C8r72jKZ4YfPq5pywW+nvmwb/YiVjvw84fKJiMawWR39AhD9lEQbmxEBI2Ds8UgDuZ8iWM4qnrzBv5RN0eHSrlJfE5ExidHyOuj9ixKSu6aHus3yL09jkAD4L+UnL/BNT2amRXUEEU4nb234OaRb4SUjm6S47c+4PdK9U8GfytHx8LbF8UYsDUKDQhmIW4BlnN3iHR4KegJSzkQyun0f5HX4AmeFl+tFHVhkGMbBmvwVWEM+0jDrOaAtqOA+pmu+5q7sSuys++iFPe04OPkRJ4b+0HPKXWnQKwNn8TMTbm6v/c+6Bz7KWbe0FqBrb8NtzaoJ0b//SySYaifQ79BBS126rWrBX+hSAkkraBAGR7gnpZohTbSoXe6vvW1DTo15Ol9htBTaTE0+SbwVpKmQkQn2S0klRcZrgDLGgZreJdvf9t6GS59agHI7XBB16ngnb6/pPp55TMkrYXXohghaseDFN7HalyNdoKru3g+1oJSptax9g5ioEm9pPcdU2Zg=
+X-Stat-Signature: 8bz9yom7rrjizbxxutt5k6sic41gcpry
+X-HE-Tag: 1756982470-887673
+X-HE-Meta: U2FsdGVkX18Db4n9GRgSS1QQ36zy/c8JmKYfOnLsqVR9ucbyANC/mH2TPRrEehCGHwNvn0YV1bQVF56JTNe1TcUhaMX3tQJR6qC5v0hDHeb21HkhE9cS6q2NmjLGE9SAmiHjkyeHfs2WSxZID49CUEJGNSmnb+qMVNhCMCixvXM23i6zFNJDLwSdRcMU6Q9ONW645/uqyOUibkKVGeyIBjqnmVu+3DBb61OAjl/6ZpqpHOjaBvKd6ki0A24nTGQsqv+9s0fHJyRGjYe663yi5UCuTDrscx9xopdO7OdbHSR5R4RLDokgcKsL4OKmot/WmIXNtatj+64nPB3X1e4rQ5L6lbAumE19cCYHZqIHiSHRqQOk5QKOi4psDxeXEWjv1aHd1EhH8s0gouu2ufYzdL16jGhDQEKodcozCwEiSJb1Ep8zQ4nS8VHM+ES9WGF9GXxRMhSmKvcYv86YH3NhRQw5ydYDzg4Rie2rm//TSrIpN54wlrmdyOCIJnc98MIk4sZUzTx8FXao0wK8WJSAwSqhsj5x4KOggC6qmw8nJNDihIcU1FEpjPhMFBAIstcXEUNMWljGBzMQjya6E0k/vAOetFAIqtW2iCvQy2sn4FxYMdur1J71nDjo8jnCIgxuPgKlnCCw/IPJsI4+VTrb5XKL7nW9/02XDfhnxK3/QdoFFDQ4oL3spYdOCQqj2Ub6EQvu0rCNQk0fzqTvlsVyKtUXzfjTfo7p//CG3WJxcnSwawRHJgQmtdYsBqSnDmxX6PP43Vqjf+OYMmxOkb1vwTpuiftuCY1oBxW30CThV/C9s9qLGgiDpSqzrzVagcyHns1zgSr4B/3PFKN7RZmxuBDDG5vyQWUwirvzLuuqzICOe5gi2rHH31jdvZGS6BYFgrfbK7rk3iQOltYi1/rLlJV0lgKaJ2AAmeAMp0i8y3zMczcp+1MurcAMKugt8xGxlavkFb5ha0EP1K7wDwa
+ Lvu0/Tw3
+ w028APWAlRzWQD0JjwIVjwl6BTY0PD4HQLYTnXFdBJacz8Gf95BvDAPovFTdWFT1T/EBz1OwZWPOaFxJRG7wfD5Sj6IH5yWl/ETDlYBMilaNFklewjVPQdnIFFqVWR+Z6fjixKh7ErdRxLz9KkfrgHnfQByTVSddxj6xnz8acClmHQY6alZqTfEVmxmw9hUXr3grGz2tpvAq8wn4JZ0kyLIAgDE06VNWoYnFzVC1vGAAsMBfhJmzK2Tlz++GCAEkFhvqEenrLqU+ZAj3FeHIFKpbNytGgh6MalOgS6yaSOj5oY4NLIo+fVh96E0tDsvl9BtI2VLOekP84feCZbkxdqNn8BueHUCtT27LyFEdmtPMb1h7PNYU0FbyKJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,95 +97,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 02.09.25 21:52, Matthew Wilcox wrote:
-> On Thu, Aug 21, 2025 at 02:44:31PM +0200, David Hildenbrand wrote:
->> On 20.08.25 22:20, Vishal Moola (Oracle) wrote:
->>> Currently, we have no way to distinguish a kernel stack page from an
->>> unidentified page. Being able to track this information can be
->>> beneficial for optimizing kernel memory usage (i.e. analyzing
->>> fragmentation, location etc.). Knowing a page is being used for a kernel
->>> stack gives us more insight about pages that are certainly immovable and
->>> important to kernel functionality.
->>
->> It's a very niche use case. Anything that's not clearly a folio or a special
->> movable_ops page is certainly immovable. So we can identify pretty reliable
->> what's movable and what's not.
->>
->> Happy to learn how you would want to use that knowledge to reduce
->> fragmentation. :)
->>
->> So this reads a bit hand-wavy.
-> 
-> I have a theory that we should always be attempting to do aligned
-> allocations if we can, falling back to individual allocations if
-> we can't.  This is an attempt to gather some data to inform us whether
-> that theory is true, and to help us measure whether any effort we
-> take to improve that situation is effective.
-> 
-> Eyeballing the output of tools/testing/page-types certainly lends
-> some credence to this.  On x86-64 with its 16KiB stacks and 4KiB
-> page size, we often see four consecutive pages allocated as type
-> KernelStack, and as you'd expect only about 25% of the time are they
-> aligned to a 16KiB boundary.  That is, at least 75% of the time they
-> prevent _two_ order-2 pages from being available.
+syzbot ci has tested the following series
 
-I assume, ideally, you'd also know whether all these stack pages belong 
-to the same thread, not various ones, right? ("context" can matter as well)
+[v1] fork: simplify overcomplicated if conditions
+https://lore.kernel.org/all/357638f71edc7f1d9814b1851a64e09a8895bffc.1756968204.git.joeypabalinas@gmail.com
+* [PATCH] fork: simplify overcomplicated if conditions
 
-> 
-> As you say, they're not movable.  I'm not sure if it makes sense to
-> go to the effort of making them movable; it'd require interacting
-> with the scheduler (to prevent the task we're relocating from
-> being scheduled), and I don't think the realtime people would be
-> terribly keen on that idea.  So that isn't one of the ideas we
-> have on the table for improving matters.
+and found the following issue:
+general protection fault in rest_init
 
-Yeah, while possible I am also not sure if we always want that.
+Full report is available here:
+https://ci.syzbot.org/series/e9c440d7-f494-4207-a59d-773bbbf909ff
 
-> 
-> Ideas we have been batting around:
-> 
->   - Have kernel stacks try to do an order-N allocation and vmap()
->     the result, fall back to current implementation
->   - Have vmalloc try to do an order-N allocation, fall back down the
->     orders on failure to allocate
->   - Change the alloc_bulk implementation to do the order-N allocation
->     and fall back
-> 
-> I'm sure other possibilities also exist.
-> 
->> staring at [1], we allocate from vmalloc, so I would assume that these will
->> be vmalloc-typed pages in the future and we cannot change the type later.
->>
->> [1] https://kernelnewbies.org/MatthewWilcox/Memdescs
-> 
-> I see the vmalloc subtype as being a "we don't know any better" type.
+***
 
-I guess this could get nasty once we would have metadata assigned to the 
-vmalloc allocations (struct vmdesc).
+general protection fault in rest_init
 
-> We could allocate another subtype of type 0 to mean "kernel stacks"
-> and have it be implicit that kernel stacks are allocated from vmalloc.
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      b320789d6883cc00ac78ce83bccbfe7ed58afcf0
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/58676b34-5a2d-40b9-ab9d-b45b8161dd5c/config
 
-Yes, that would work.
+Console: colour VGA+ 80x25
+printk: legacy console [ttyS0] enabled
+printk: legacy console [ttyS0] enabled
+printk: legacy bootconsole [earlyser0] disabled
+printk: legacy bootconsole [earlyser0] disabled
+Lock dependency validator: Copyright (c) 2006 Red Hat, Inc., Ingo Molnar
+... MAX_LOCKDEP_SUBCLASSES:  8
+... MAX_LOCK_DEPTH:          48
+... MAX_LOCKDEP_KEYS:        8192
+... CLASSHASH_SIZE:          4096
+... MAX_LOCKDEP_ENTRIES:     1048576
+... MAX_LOCKDEP_CHAINS:      1048576
+... CHAINHASH_SIZE:          524288
+ memory used by lock dependency info: 106625 kB
+ memory used for stack traces: 8320 kB
+ per task-struct memory footprint: 1920 bytes
+mempolicy: Enabling automatic NUMA balancing. Configure with numa_balancing= or the kernel.numa_balancing sysctl
+ACPI: Core revision 20250404
+clocksource: hpet: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604467 ns
+APIC: Switch to symmetric I/O mode setup
+x2apic enabled
+APIC: Switched APIC routing to: physical x2apic
+..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+clocksource: tsc-early: mask: 0xffffffffffffffff max_cycles: 0x285d45cc0d6, max_idle_ns: 440795339158 ns
+Calibrating delay loop (skipped) preset value.. 5600.55 BogoMIPS (lpj=28002760)
+Last level iTLB entries: 4KB 0, 2MB 0, 4MB 0
+Last level dTLB entries: 4KB 0, 2MB 0, 4MB 0, 1GB 0
+mitigations: Enabled attack vectors: user_kernel, user_user, guest_host, guest_guest, SMT mitigations: auto
+Speculative Store Bypass: Vulnerable
+Spectre V2 : Mitigation: Retpolines
+ITS: Mitigation: Aligned branch/return thunks
+MDS: Vulnerable: Clear CPU buffers attempted, no microcode
+Spectre V1 : Mitigation: usercopy/swapgs barriers and __user pointer sanitization
+Spectre V2 : Spectre v2 / SpectreRSB: Filling RSB on context switch and VMEXIT
+active return thunk: its_return_thunk
+x86/fpu: x87 FPU will use FXSAVE
+Freeing SMP alternatives memory: 136K
+pid_max: default: 32768 minimum: 301
+LSM: initializing lsm=lockdown,capability,landlock,yama,safesetid,tomoyo,apparmor,bpf,ima,evm
+landlock: Up and running.
+Yama: becoming mindful.
+TOMOYO Linux initialized
+AppArmor: AppArmor initialized
+LSM support for eBPF active
+Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes, vmalloc hugepage)
+Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes, vmalloc hugepage)
+Mount-cache hash table entries: 8192 (order: 4, 65536 bytes, vmalloc)
+Mountpoint-cache hash table entries: 8192 (order: 4, 65536 bytes, vmalloc)
+Running RCU synchronous self tests
+Running RCU synchronous self tests
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:rest_init+0xf8/0x300
+Code: f6 49 bf 00 00 00 00 00 fc ff df 89 ef 48 c7 c6 40 57 fe 8d e8 e9 47 12 f6 49 89 c6 48 89 c7 48 83 c7 2c 48 89 f8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 d9 01 00 00 41 80 4e 2f 04 e8 e1 e3 ff
+RSP: 0000:ffffffff8de07ee0 EFLAGS: 00010207
+RAX: 0000000000000005 RBX: ffffffff8b79fc61 RCX: ffffffff8de95100
+RDX: 0000000000000000 RSI: ffffffffffffffea RDI: 000000000000002c
+RBP: 00000000ffffffea R08: 0000000000000000 R09: ffffffff8b79fc61
+R10: dffffc0000000000 R11: fffffbfff1f47207 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880b8618000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ start_kernel+0x3a9/0x410
+ x86_64_start_reservations+0x24/0x30
+ x86_64_start_kernel+0x143/0x1c0
+ common_startup_64+0x13e/0x147
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:rest_init+0xf8/0x300
+Code: f6 49 bf 00 00 00 00 00 fc ff df 89 ef 48 c7 c6 40 57 fe 8d e8 e9 47 12 f6 49 89 c6 48 89 c7 48 83 c7 2c 48 89 f8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 d9 01 00 00 41 80 4e 2f 04 e8 e1 e3 ff
+RSP: 0000:ffffffff8de07ee0 EFLAGS: 00010207
+RAX: 0000000000000005 RBX: ffffffff8b79fc61 RCX: ffffffff8de95100
+RDX: 0000000000000000 RSI: ffffffffffffffea RDI: 000000000000002c
+RBP: 00000000ffffffea R08: 0000000000000000 R09: ffffffff8b79fc61
+R10: dffffc0000000000 R11: fffffbfff1f47207 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880b8618000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 00000000000006f0
 
-> This would probably require that we have a vmalloc interface that lets us
-> specify a subtype, which I think is probably something we'd want anyway.
 
-vmalloc subtypes don't sound like a bad idea.
+***
 
-> 
-> I think it's fine to say "This doesn't add enough value to merge it
-> upstream".  I will note one minor advantage which is that typing these
-> pages as PGTY_kstack today prevents them from being inadvertently mapped
-> to userspace (whether by malicious code or innocent bug).
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-Yes, as raised elsewhere, if we can do this consistently today (stack -> 
-PGTY_kstack), fine with me.
-
--- 
-Cheers
-
-David / dhildenb
-
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
