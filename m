@@ -4,89 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F744CA1010
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 02:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 393FCCA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 02:07:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B07968E0006; Wed,  3 Sep 2025 22:05:03 -0400 (EDT)
+	id 7639E6B0007; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB7B58E0001; Wed,  3 Sep 2025 22:05:03 -0400 (EDT)
+	id 714AB8E000A; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A7728E0006; Wed,  3 Sep 2025 22:05:03 -0400 (EDT)
+	id 602808E0001; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 885648E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 22:05:03 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E002286986
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:05:02 +0000 (UTC)
-X-FDA: 83849924844.18.D045FF6
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EBE5B120006
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:05:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PBoO7+D9;
-	spf=pass (imf29.hostedemail.com: domain of youling.tang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=youling.tang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49F436B0007
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 22:07:25 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DBDBA1409B2
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:07:24 +0000 (UTC)
+X-FDA: 83849930808.28.097933B
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2EBDD4000A
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:07:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nZNNTpZQ;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756951501;
+	s=arc-20220608; t=1756951643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9/dDcohtOSgVy/WDEh4unk/zCXlMwusIhig033JTFsg=;
-	b=7ulLFZR8LpYOTQ0jTzYyFtjCiGioah48MLCJpu+YZIj1CE1pFq1Ex01ajoxzksARbWjpXp
-	4s5nTU+4zbwPG5JblLUvTUkJQ7I+vtNoNDThaoeSX4IxCM/uVykGLd7P8GtNmD7BfXhjZZ
-	1KYsgWBPy7mlZjSjwC/tZ3eQYEhp8Oc=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=gR054lzuJbAO9UiIik0MBonxHsPRqVCYidSVWmTesKY=;
+	b=rp5L64hPWZfZyq8cL4+PZnaSJnIDocMsv0XxrlejKzs318Nq8hS+JiRDp2lywUt4+lMjZi
+	1La7YWilt1hyAOBTpytvy6QFiyIgL9CZBH0/JsbZrOFwjvl3me7fBh1grbQB7/WvK7bS0I
+	0XP7PSQqLxUdljzZZ/WIzZSkFwpx2ew=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PBoO7+D9;
-	spf=pass (imf29.hostedemail.com: domain of youling.tang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=youling.tang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756951501; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nZNNTpZQ;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756951643; a=rsa-sha256;
 	cv=none;
-	b=Yc8ig2OWmtR9mV001THOenpk+hWe/XotZ9u1mlO27zldoC5iNQwFVnAdLFmP1rsfx5wA+D
-	a6/f2E2vZpulOr/fCUG9S6m2Q131f8UDC3ieLRkFvpmgpAo51IP7zi2lb6d0+HrDvK392n
-	sY3u3qTg/ZzWoCBkqiZvt3WJKIwQW7c=
-Message-ID: <1bc6d342-37f3-41c8-a001-36f2784db1bc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756951498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9/dDcohtOSgVy/WDEh4unk/zCXlMwusIhig033JTFsg=;
-	b=PBoO7+D9kyMr5jl78k+ypGDjwJJvjYFmS6gbmS67xly5UbTYlyse0Pb4Lwp1u2e1hH3L9i
-	qEaP9jvhOh/IBt8kcCExCKmoVxbXlwqOlyKnJccXH/EE+ocNX/ktCyzAASU5bpGzSD8bay
-	O2vwHG8gQJ0ObG49ZZJu4quvza2yu1Q=
-Date: Thu, 4 Sep 2025 10:04:17 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm/filemap: Align last_index to folio size
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, chizhiling@163.com,
- Youling Tang <tangyouling@kylinos.cn>, Chi Zhiling <chizhiling@kylinos.cn>
-References: <20250711055509.91587-1-youling.tang@linux.dev>
- <jk3sbqrkfmtvrzgant74jfm2n3yn6hzd7tefjhjys42yt2trnp@avx5stdnkfsc>
- <afff8170-eed3-4c5c-8cc7-1595ccd32052@linux.dev>
- <20250903155046.bd82ae87ab9d30fe32ace2a6@linux-foundation.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Youling Tang <youling.tang@linux.dev>
-In-Reply-To: <20250903155046.bd82ae87ab9d30fe32ace2a6@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EBE5B120006
-X-Stat-Signature: pwayne5dcdbp81xewzs7x6n1h3w6ogq6
+	b=JK/aNFtpHEt08AfcXz9iR0egd4KhAFhFWaLx6ZT2lgR4+tdOExXiF2L7aKZQqkkH8G9Jjf
+	Mro6hpnFVszLB965fJAdmeRI4eb6t6MiMxuFJFcAjUBx6mTlPi8VLBigHDLJQ+orEKXmYX
+	TTad5kO5sFuc1qs3LDUz4XDg4HujACE=
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aff0365277aso263090466b.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 19:07:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756951641; x=1757556441; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gR054lzuJbAO9UiIik0MBonxHsPRqVCYidSVWmTesKY=;
+        b=nZNNTpZQLDhYb4nxM+OCmYrA6gjoUgpSVd8t0x17EeuUik/obBo8mVEvoTdop2WmP6
+         7TTH6e1KMkeW0WcbXACii6CbwRo41EVEUywhCHzVhOporWuypz8YcInluLCzokCb41yM
+         o7lKVLsKVFrZfJ3OMD8RyAor54h0PiGp/20AhslxPaduta9xyIWouyDuvAFM9XZf+a9+
+         1Fn8v4WZNhJcg4+i4Kjm5UQVqn6vgYmTtTFHITQQYJrcSmVxNv6MGeat1slqHqs9ehj9
+         mqoMafBANSRO/U/VhO+3l2hguTgXi4+q5be87aK4LpOat8aTcgtgHOEC2ueBlyWWorkp
+         jhhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756951641; x=1757556441;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gR054lzuJbAO9UiIik0MBonxHsPRqVCYidSVWmTesKY=;
+        b=qaKY4nL2yqEtUPbnXyRdAEWmHoN0e7D6KG1VVBdq80ASrZ69fL+8Zaa3YIDW+FM9zG
+         t/BbmyjlLUst1tmxRnllDDalVGrenuKl+V09yvSb1hP+kT6IiBGZDgCYoYg+mhc6WS1b
+         G6oSS6/b30hNB9ToHdzi/Xxa/MhVAmPMKiJGAns5Lnu3N+3Ov7zsBVN8AoiOZNaY//V4
+         E6WgqNt2G16IfS4xWNIkYGwqx0idytE1sHL/61/Ijr0uQxQu/8UHiKoCtpPvgdOV6Xt0
+         1PIqqJuJk1iqO/X7WNIiAjC7mozC7ZWhqBFij3o7AHYmjOFm/RW3ZEZJHniRn0tAs9QC
+         GzbA==
+X-Gm-Message-State: AOJu0YwNn6kKMMkVj+rry72uusW7tMXAZ16e9m0j9qSh5vEU2PCGRnme
+	CuzvXDKFWPBDTo1xwNlCwIiWqkzLQc/QVXqhc0Va59AimQf7xRzNRFVm
+X-Gm-Gg: ASbGncuAkOcvl0cDXQCSoReTwQBjWRQjgcdilTy2vGSYOYeshg2h+PbkenUleB5Z2rM
+	mtk+zy/50jHdYxLJaQXmTsCnoGM5bhXsQNv/MvQvm8WelbrACmWGgudAXqkykfSrMP9yJKnx8lu
+	9XKfL/5j4ywhedHy6OOj3OMywWzcSHNHUGoF3koRW8kZjXf2n+rfPyN6QAFgOcRTA8AHxuG8vKp
+	+bfxjjwWqBFVyNRibNhX53x5pRupAqjdQi9pc2yQ5rUYpXpHOS+zPZc+LMPKgsk2/e2oUhqa0I8
+	ZQAnkTEgHAIzkEZu44w6ar8UsxbwhPZItPcgE38TEnmoH7r8OQ6gWDESLhOZRRy9NU104SrlTw9
+	HqD0VVLfIVaczWxUNn6QAmQIgjJe3/Cs7fyQ6
+X-Google-Smtp-Source: AGHT+IGSGmKLDBS3vvlxz8Ugf9XfqtM7Um+t1P35GAjcobTyWvIspOG9W4fxVKvysr3MyNQUjn/1LQ==
+X-Received: by 2002:a17:906:c154:b0:b04:7612:76aa with SMTP id a640c23a62f3a-b047612783dmr270263766b.16.1756951641255;
+        Wed, 03 Sep 2025 19:07:21 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b047373b000sm173962166b.68.2025.09.03.19.07.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 03 Sep 2025 19:07:20 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH] mm/page_alloc: check the correct buddy if it is a starting block
+Date: Thu,  4 Sep 2025 02:06:54 +0000
+Message-Id: <20250904020654.28689-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Stat-Signature: 7t8qbt4rqede3kr7c98csc4d39xcetcb
 X-Rspam-User: 
-X-HE-Tag: 1756951500-796489
-X-HE-Meta: U2FsdGVkX1+uqg4bIfWpEoLBk2kpL4yz8wBjsGZwRHq/xjgY5/MGEf8DbEdRkmIG89dYRLxkrFF+iBlwlh6Wf48U5v3BklUEi8VAHeEEK5k7ikTl4Lmj8Xv7efC+Qe3mQjdecD+PsyBCEpEp+LNW0xdlE2kD3RLjkwh/NhmdIy2JQwoh73/r16fqCbu3Zf5kqBwUnkyuOc0J2zSFJ0u0zX8s3UdwY1hzkEWfdwAi5Rz78xS6+i2tXmfIc8oIDPqdvN5OX9vvpwMZcSHTQeZIph/bRujp06FbPeEspdStMCrQUvH57T9Ba0wj6Tbgfcc4YaBWoiF9BUjcSJO6hBsP+oqO5oZfG3BGi0SlRw7jxNSO+hfVzhO8178wKWJgoAUoI+ZH/+v48WlBTH+EJHNHtgnKUznJaYF7TmHLRXM2CFqC1Nwn9v5HgvHLsFF/5PJqh6S+72n9QwFn10GSeLIqvv8TvZmbsthrJ0sBbmHDdMCUlq9z8es07M8ePGI1Dahu9hBjCE5jb581/PgHzPnqVMAgDtw4ch1VmYx7dfx5e6AWYKPMXO5zTb54TZHexS4K1CTQMFP/7CNp4QF42RuWEhSgLvzp6uLRjBdRLngGrQjPYTOcIKYAYI0GagaYiFPj/1K4dXgtwnR8Vi4WVEIEsGbkC6Jrkmu+h5YXyBgIGD0TlHvuqO+6gL1F7AchCpOiGnJxrzzASKgGlsr7x6JDaoF/E6kXu4/qcVp4gIVQh8sSd1OCPI8BC5pA4STp+o+wcm4k2/N3PVlPAQGjzROn+mdBkdh/ql2MPsUzQDVVTY7qBkSEcK5sBmGgXhWUs/Gaxunz8fXqVJT//Yoq9bC36vOx4GsHVk+RmpVVOa306WPtVA8mZlpRcTotLa7UxTbyes1VFC/OEPrffMTQT5TSOkd4i93u5/8/cG2oDejSN9NwDSLK365WkAVcfQ8PK7oewclZuZL4VRhNdsvhvOQ
- YM+KDoTC
- s2wyICq7C/3f1+vXIS828pgXgcsIATTgVbSetmrSSYM2FRHgJsIP5oCyfuYdKbHmd+POkJs39bYXY48nFGhqA0G7BZXk1z8A/nxfJpglig/2tNk5pdJ5trF2mzm09Q3JYOVo6H9wutz3oGc1P17CvUCHNzlPxnnOBcoE3QJaNPqXIuywR8ARmnBxjhM6B/Wc4y5sh/PMoADTPecJdMA0BGeT/2c+aoHObhwhhki8oSovCyl3EUAKyZcx4979FGx26X97b
+X-Rspamd-Queue-Id: 2EBDD4000A
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1756951642-754667
+X-HE-Meta: U2FsdGVkX19fKNMhZ0mg53YEqFQ1DO25Yd+I6qNYno/tNI0eTnaqwPglO+efAMgL6NpA9MhiCQYZVVQXVc1TKJH60C7aKp6W9hnzLLzsQszRGv9kH9AOk88RyhzRCu0KNgYnIQYh4fE4KpWgvOweV+YLn3N+J/8buGHzmOlaArcah9I2+W7dh6+Bk7tiN2y5o1T4qwS+U+xW0FJtVE3AICieNCEdrHreNLRiXL8LJyuCVCgd3aLVXwHI4x/Sc2wQ+HiPfupeDT8RGB/TWVyrGhjW3Rsbk1/VD6hXSMK0vKjfkisGpIXNgq2AB6Bsj72J2g2hqtY1qZ4RbzeBiL21tEL5DZRkhF9KHe4Wvf1zPAozqffspCfAoQbo/3olp7A+LsWXnDl8TBhz+TFVwxN9BZQejiCeLbxYZLiMIQepvANhKPI6UIge5Qb71ltcuVLwOZ9+8Dm9LXTclm34zIcK1gjDLHYAjwDh1rX4RLayT+wmtxcIJIG8WKa+AirTSFm1MZtVTmD9Q3pKCINBP7khWSMiz90Dx1vhqaqx6hzIm33ZXxoMCSWCEqZwfI3mViMPApk0XGZl9qMqX2kU7dkrwPJu5+RYb4ewyUtZxcTTIpogVHpv+iIwwIW6SbXZ8pFnRKsupcaKDlpkpS+1PtkArH9SiyS/tza4ZhpDTmZKc3dGRBFCT2ZSiBAnzMysrzSPzjyXoojrLT2thpd6uj2EfRjt/U0IPbjHnFa0qvJW4z5llVSjlsmMo+ud6UXLO1V9WFI+XbZvwT9fd/LUcenaaoqeBSsqWsgNtgIl6aNfhgpodZPi5a/4INl2AK0zdJnehu6Al3zNxOOSj7nKdCl1X6pKW7dtuDjfj8lXU8WS+bB25K4PYSmMLytxu9T9UiPtuP06bcFkEytPed9w3XvmqKDedXiLRh0mvQtBrLW2/FMC/DHLW2jiRgAp0oHagcqPT826EFr1H7gedoepcT7
+ PFixU8lP
+ p9wMq6gEgq8ORVksHv2W630g9v6INbeCkcrnmgEGG79CHIpBYpasVQqEh0wmKEHYv+khY66iV9a1y5qSf6EJtRjsEN1uqRNLbQoyTE73IHJRpZ0HWGLsJHWH7AYPWXQAj7Ze3AbK2hJ7sdzDUmMMzY6vPPRhVepAY2LfgyKhj/MVtkpAxPX5Tzeff71K+bJ9yDhQqjGDaQxl+og3nxkEgS3Ke8DOqIcPuy9fBU0HmITuu1/G6l5QOGCVRng+4bnrnHA8E76/YsCUDSWM+Wf3mLO2FTdZbC+sTm3CDHNHzkM1vrwRnT/fbYxO96qxbVdjAeUWZ60JJp5GfypWT2V6KoEiCP90roZ9a47cAfStJ3yY8Q2fQgrhDidpBWlduFxbBIBOqo5Q4Yvs8BFGfpCtJtcQka19Go9ZdUMAf8vdwSbmOvv2S+efLdI6fZjpO3PpMVetAm0rDQqnh6orsX6hqUxHP86sbsNpBlPSjlqgxDh8EeRTL4mNf6E3w7VROobiuPsI8Deg6FalLTH2lTN0wzuxONAmV50FxdJNmt7dZgWliaRLLln2u3HGlcpnDNPHm2E8IzNnKetLI6FRYSz8R+jWccN15cQRiN8gbWKCVdRjjkcPXMCPIkSw08qJyNb21NQF7gR/ozbXFjSa2x0IN0VUcGehAghflcS2G9qSo8nAUIaapzvZrewK17hmdI4QhUsBAe+SDHSXRkU2h0RxcwWJe/gIPqiWkNhXD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,64 +115,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/9/4 06:50, Andrew Morton wrote:
+find_large_buddy() search buddy based on start_pfn, which maybe
+different from page's pfn, e.g. when page is not pageblock aligned,
+because prep_move_freepages_block() always align start_pfn to pageblock.
 
-> On Tue, 12 Aug 2025 17:08:53 +0800 Youling Tang <youling.tang@linux.dev> wrote:
->
->> Hi, Jan
->> On 2025/7/14 17:33, Jan Kara wrote:
->>> On Fri 11-07-25 13:55:09, Youling Tang wrote:
->>>> From: Youling Tang <tangyouling@kylinos.cn>
->> ...
->>
->>>> --- a/mm/filemap.c
->>>> +++ b/mm/filemap.c
->>>> @@ -2584,8 +2584,9 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
->>>>    	unsigned int flags;
->>>>    	int err = 0;
->>>>    
->>>> -	/* "last_index" is the index of the page beyond the end of the read */
->>>> -	last_index = DIV_ROUND_UP(iocb->ki_pos + count, PAGE_SIZE);
->>>> +	/* "last_index" is the index of the folio beyond the end of the read */
->>>> +	last_index = round_up(iocb->ki_pos + count, mapping_min_folio_nrbytes(mapping));
->>>> +	last_index >>= PAGE_SHIFT;
->>> I think that filemap_get_pages() shouldn't be really trying to guess what
->>> readahead code needs and round last_index based on min folio order. After
->>> all the situation isn't special for LBS filesystems. It can also happen
->>> that the readahead mark ends up in the middle of large folio for other
->>> reasons. In fact, we already do have code in page_cache_ra_order() ->
->>> ra_alloc_folio() that handles rounding of index where mark should be placed
->>> so your changes essentially try to outsmart that code which is not good. I
->>> think the solution should really be placed in page_cache_ra_order() +
->>> ra_alloc_folio() instead.
->>>
->>> In fact the problem you are trying to solve was kind of introduced (or at
->>> least made more visible) by my commit ab4443fe3ca62 ("readahead: avoid
->>> multiple marked readahead pages"). There I've changed the code to round the
->>> index down because I've convinced myself it doesn't matter and rounding
->>> down is easier to handle in that place. But your example shows there are
->>> cases where rounding down has weird consequences and rounding up would have
->>> been better. So I think we need to come up with a method how to round up
->>> the index of marked folio to fix your case without reintroducing problems
->>> mentioned in commit ab4443fe3ca62.
->> Yes, I simply replaced round_up() in ra_alloc_folio() with round_down()
->> to avoid this phenomenon before submitting this patch.
->>
->> But at present, I haven't found a suitable way to solve both of these
->> problems
->> simultaneously. Do you have a better solution on your side?
->>
-> fyi, this patch remains stuck in mm.git awaiting resolution.
->
-> Do we have any information regarding its importance?  Which means do we
-> have any measurement of its effect upon any real-world workload?
-No measurements were taken regarding the impact on real-world
-workloads, this was merely a line of thinking triggered by unusual
-readahead behavior.
+This means when we found a starting block at start_pfn, it may check
+on the wrong page theoretically.
 
-Thanks,
-Youling.
->
-> Thanks.
->
+The good news is the page passed to __move_freepages_block_isolate() has
+only two possible cases:
+
+  * page is pageblock aligned
+  * page is __first_valid_page() of this block
+
+So it is safe for the first case, and it won't get a buddy larger than
+pageblock for the second case.
+
+To eliminate the ambiguity, unify the handling for starting/tail block.
+
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+
+---
+Tried memory online/offine, which looks good.
+---
+ mm/page_alloc.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 5183a646fa09..453cd361386c 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2093,6 +2093,7 @@ static bool __move_freepages_block_isolate(struct zone *zone,
+ 	unsigned long start_pfn, pfn;
+ 	int from_mt;
+ 	int to_mt;
++	struct page *buddy;
+ 
+ 	if (isolate == get_pageblock_isolate(page)) {
+ 		VM_WARN_ONCE(1, "%s a pageblock that is already in that state",
+@@ -2107,10 +2108,10 @@ static bool __move_freepages_block_isolate(struct zone *zone,
+ 	if (pageblock_order == MAX_PAGE_ORDER)
+ 		goto move;
+ 
+-	/* We're a tail block in a larger buddy */
+ 	pfn = find_large_buddy(start_pfn);
+-	if (pfn != start_pfn) {
+-		struct page *buddy = pfn_to_page(pfn);
++	buddy = pfn_to_page(pfn);
++	/* We're a part of a larger buddy */
++	if (PageBuddy(buddy) && buddy_order(buddy) > pageblock_order) {
+ 		int order = buddy_order(buddy);
+ 
+ 		del_page_from_free_list(buddy, zone, order,
+@@ -2120,16 +2121,6 @@ static bool __move_freepages_block_isolate(struct zone *zone,
+ 		return true;
+ 	}
+ 
+-	/* We're the starting block of a larger buddy */
+-	if (PageBuddy(page) && buddy_order(page) > pageblock_order) {
+-		int order = buddy_order(page);
+-
+-		del_page_from_free_list(page, zone, order,
+-					get_pfnblock_migratetype(page, pfn));
+-		toggle_pageblock_isolate(page, isolate);
+-		split_large_buddy(zone, page, pfn, order, FPI_NONE);
+-		return true;
+-	}
+ move:
+ 	/* Use MIGRATETYPE_MASK to get non-isolate migratetype */
+ 	if (isolate) {
+-- 
+2.34.1
+
 
