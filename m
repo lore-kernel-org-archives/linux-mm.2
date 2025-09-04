@@ -4,126 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EABB9CA1013
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9131CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39BB38E0009; Thu,  4 Sep 2025 11:12:14 -0400 (EDT)
+	id F36D08E000F; Thu,  4 Sep 2025 11:13:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3737F8E0002; Thu,  4 Sep 2025 11:12:14 -0400 (EDT)
+	id F0E2F8E0002; Thu,  4 Sep 2025 11:13:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 241B08E0009; Thu,  4 Sep 2025 11:12:14 -0400 (EDT)
+	id DFCEF8E000F; Thu,  4 Sep 2025 11:13:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 12ADF8E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:12:14 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC2A7140249
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:12:13 +0000 (UTC)
-X-FDA: 83851908546.20.9D8F0A8
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 35307160017
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:12:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sq7afq7e;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cbwbe+rR;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sq7afq7e;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cbwbe+rR;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF1038E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:13:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90E0DC0208
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:13:11 +0000 (UTC)
+X-FDA: 83851910982.14.E634DF2
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3019240015
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:13:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JRX/HJLF";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HhbyZPUX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JRX/HJLF";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HhbyZPUX;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756998731;
+	s=arc-20220608; t=1756998789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GrQcL+QO+sIg2dEOYUGJYHSlSV5m11t3/goGC+tNL7A=;
-	b=qRgDZQnyAAlL7J3OoNRu9RE28CHujl2zxfUFEkVusgq7RVk7LMEk9IfBpFl1jxOReAt/Hc
-	5Hf4R0pNq2sqwV2S7eStnfg6JFVYxD5XC0D4jIQoikSHKkkfwvkuvvooDQKAe3dBO81Daz
-	07CjASvyGZg7b9BLe+L2ka48UNjPamI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756998731; a=rsa-sha256;
-	cv=none;
-	b=DYjSDDzvbpGH6Vw0etCReEAp203ZohpdvkweDq1qs1ocPXXQJ7eT+O/opmHBYAe5cN9t4x
-	twKR/YYQvatIzG7mZ+bd41z7ZUv26nKdgjU6eibUudqSuq9Pd3JZRevsEQ048O9kwEWBdh
-	PhqpaJWmaiZKhDcwwp+DTOfHzxZrsGU=
+	bh=Uc0MFXmurty/MFvGV5vECjCPl62NXr2oSZ/7oQCP8eM=;
+	b=SGa0X29xDICPODXLx48NS1g19fouV5eIYVjG0+onm8TeS4RWP1I4acczliR7pEzncPV7Gy
+	lLmesE6zm2/iqfsuqy4/zlqLu5YjcYzOylWb3B+LCjxUz6kmegeJitfVKqVfgnnKziG2Fv
+	Nb0zEC89tSyCHLXO7sj/cJH01up7oA4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sq7afq7e;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cbwbe+rR;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sq7afq7e;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cbwbe+rR;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JRX/HJLF";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HhbyZPUX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="JRX/HJLF";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HhbyZPUX;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756998789; a=rsa-sha256;
+	cv=none;
+	b=YvZEJaKoy+DmraL5qLzeqjgJgdAQsVzqByjuJT+P+EUAOEbPJPT28im8Cx546HdpvwNaYG
+	5Gc13NNJwNYYBjYsk48seuO84auD7AXjoicjyAfgUQS0mb8yv/oBHYogVi4MghPX1FGwue
+	QaskJqJLOsdriJ0r59tJdT/a1oXKpJQ=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 50C33602F8;
-	Thu,  4 Sep 2025 15:12:09 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 826B5374EC;
+	Thu,  4 Sep 2025 15:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756998729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	t=1756998787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GrQcL+QO+sIg2dEOYUGJYHSlSV5m11t3/goGC+tNL7A=;
-	b=sq7afq7e8bEsyA9iyI2xBrl/QD7vo2p0wNO8T7p9GBK15XzhKry54RKEOSOaap8bLriFvl
-	OACcccqTniNL4NHfVcDWgWt8CkFr6cGD6rklDdNYmTaaBXPEb/yGz0l0nWuaYxDP59K45m
-	/2rSPPe8YVjHfH+8PeOYqPsbXuzVD/s=
+	bh=Uc0MFXmurty/MFvGV5vECjCPl62NXr2oSZ/7oQCP8eM=;
+	b=JRX/HJLFtZ2zK7uDWFxn8a/vcX0uyoAzkO63iDeOOwRvP2VGrn0i8DKEl5tl6D4/5vHxFa
+	LfXRrhBSOBBa30+RzeYMDva/TgI5eFf1SGVOgIYgoo8+302iZOFT8Mla6dNOOOO2ZtPkjp
+	2Wnta+ZxIrxoG4INVnjDGfQ/+eC3Gpc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756998729;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	s=susede2_ed25519; t=1756998787;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GrQcL+QO+sIg2dEOYUGJYHSlSV5m11t3/goGC+tNL7A=;
-	b=cbwbe+rR4slWIaoUwtZt96fLKUp4mO8j3MVCuIlBGuNpTsubmuIuv500iCiJUfH0OEFiwQ
-	9Rnc80OKQlPWDMBQ==
+	bh=Uc0MFXmurty/MFvGV5vECjCPl62NXr2oSZ/7oQCP8eM=;
+	b=HhbyZPUXOEhsLdadh4JNP0yAKrp4oFjWCHVhst/FoD2F44M11TMbTsbFGJF1S6WpDoVEUK
+	MZixa4GfA1x5XAAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756998729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	t=1756998787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GrQcL+QO+sIg2dEOYUGJYHSlSV5m11t3/goGC+tNL7A=;
-	b=sq7afq7e8bEsyA9iyI2xBrl/QD7vo2p0wNO8T7p9GBK15XzhKry54RKEOSOaap8bLriFvl
-	OACcccqTniNL4NHfVcDWgWt8CkFr6cGD6rklDdNYmTaaBXPEb/yGz0l0nWuaYxDP59K45m
-	/2rSPPe8YVjHfH+8PeOYqPsbXuzVD/s=
+	bh=Uc0MFXmurty/MFvGV5vECjCPl62NXr2oSZ/7oQCP8eM=;
+	b=JRX/HJLFtZ2zK7uDWFxn8a/vcX0uyoAzkO63iDeOOwRvP2VGrn0i8DKEl5tl6D4/5vHxFa
+	LfXRrhBSOBBa30+RzeYMDva/TgI5eFf1SGVOgIYgoo8+302iZOFT8Mla6dNOOOO2ZtPkjp
+	2Wnta+ZxIrxoG4INVnjDGfQ/+eC3Gpc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756998729;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	s=susede2_ed25519; t=1756998787;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GrQcL+QO+sIg2dEOYUGJYHSlSV5m11t3/goGC+tNL7A=;
-	b=cbwbe+rR4slWIaoUwtZt96fLKUp4mO8j3MVCuIlBGuNpTsubmuIuv500iCiJUfH0OEFiwQ
-	9Rnc80OKQlPWDMBQ==
+	bh=Uc0MFXmurty/MFvGV5vECjCPl62NXr2oSZ/7oQCP8eM=;
+	b=HhbyZPUXOEhsLdadh4JNP0yAKrp4oFjWCHVhst/FoD2F44M11TMbTsbFGJF1S6WpDoVEUK
+	MZixa4GfA1x5XAAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 38EDF13675;
-	Thu,  4 Sep 2025 15:12:09 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7177D13675;
+	Thu,  4 Sep 2025 15:13:07 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RDJEDUmsuWhjBwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 04 Sep 2025 15:12:09 +0000
-Message-ID: <6614bc25-f514-4a05-b45a-037d951adc77@suse.cz>
-Date: Thu, 4 Sep 2025 17:12:08 +0200
+	id vvBQG4OsuWjBBwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 04 Sep 2025 15:13:07 +0000
+Message-ID: <12b43696-d684-4502-aa48-6179702c8b11@suse.cz>
+Date: Thu, 4 Sep 2025 17:13:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] mapple_tree: Fix build error (`make W=1`)
+Subject: Re: [vbabka:slub-percpu-sheaves-v6r2] [maple_tree] 99848157f7:
+ WARNING:possible_circular_locking_dependency_detected
 Content-Language: en-US
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- maple-tree@lists.infradead.org, linux-mm@kvack.org, llvm@lists.linux.dev,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-References: <20250904090423.2293933-1-andriy.shevchenko@linux.intel.com>
- <6nk7wvp2vbsc5myxnx4mfohpq4yk4ixazkvif4hntilpuz7jtw@a2q2if4nc7kn>
- <aLmWF3V8ILOkL8W2@smile.fi.intel.com>
- <2ts445ufkl7mhtdd3ucs2c6lsp7fxbx6b5tqmu2tdecxprok55@fdr2dwppnoks>
+To: kernel test robot <oliver.sang@intel.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, maple-tree@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <202509041248.b7ece14a-lkp@intel.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -164,18 +159,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <2ts445ufkl7mhtdd3ucs2c6lsp7fxbx6b5tqmu2tdecxprok55@fdr2dwppnoks>
+In-Reply-To: <202509041248.b7ece14a-lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3019240015
+X-Stat-Signature: 8txa9rrfndowtjugcgxhsutt5q3ufgc9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35307160017
-X-Stat-Signature: org8qwicmbz1np7ng949mebzjofmfp4w
-X-HE-Tag: 1756998730-287570
-X-HE-Meta: U2FsdGVkX1+eAMfqJu1QZOv6SujanoVcKPGNmOKea4lHkTnrKdEgRibhsDatjl3pPWi8IFhmDT022FRFGInsPXcnwXT7yuRWu6C8TE+sfMI+SLVd5BSZetN8NZrZAnVv5/Wfb68/1xy22pt7nvYIg8udTuouSVghTrZdQ738KkCQ0rs+ujw+7UazFMw59g9IlYivqnEr8P2eMeRBJ9uxhsdb5yj7i35CEAgAJUDTZ7j8OQ5mwABzIP7g10sgqPrrBR3Ratj1HKbaS7f5MZd5AhJN9QuhI0dK0tS6kYowxlALBUb9d2NSjiOGJ8cg+2E/IwwQtDgZ5kZOhwZrenQgAMMceLQnric4l5mV/ZXKICMwyXj5zEr2bj3MEItqdevPkcxi7s3AbTikjTymqjBA6nF8qn9IR8i7v396maWKPakFCZa38EVh5SHV5wK/b5XI7XAk/g6EjkBNlbT6GNC6iunbObFq+eQMoXDaiXHyU1enJBvofjK5aBVx2V210iAEewkSQjk+WkHaeHUWHl/J0bId+pBCoKTsQNqgoY5XsEIuKmguYg5isOdHULRRwaWkiPH+jOA4p4+9FGDyEvRdlSziJJi4aOkzFBl42hxc8EId5eDQCMmhKlMu7hMW+f+XQurxdbpzf2QuoliDh1jV8brUe32ICnbnAT64zjsB72jzidP5Wm5qgck+GaZBiK9U/pt5ncGtmEeOyn8RSYOknFLGmn4jgncxecHboMBvjejrqt9fFxlhW0TM569Vt6AaEbZmtgJoxsds24kQtgCOCLXH6x7l26tpSF7pm/wAbVhwwwJkAWlHpYMjg4MTgKR5afng/X2YRh/tjeXLLBQMngB4JNwM8Kj3QIkrzXg2kZxmyaxtwzUAinN6KkmNbPDroUO3kGGk64NTdnqBl8HsX818DMWdr2UYVkHDRl6/0rGsw1qOZzR99CPObGUfKsJenfN9Kptt5okmGEJbuOQ
- 8syiSe9j
- ogtRrgzICXHq3TzuKiPjpQ3nsA+NH6iQB7pfF4JUDcp0z9+3IOnKUeNVnnVCGkIA+V3G6EMHTwVO4+/OHhf+esrOaUVhcR3ei/D1sVRbQJblMxEoEwRmo954qZhLWlf34f7gXlTEFtnNObOXB/ejqDFcNDKI5LuRo7JtyHdzD0uxt5hLWsGeri7Xt69nTLLc398FqttoAI1FVLU8DL8tgAqqlocrRQ7WsgGsPD0FSGjKNRg456X50kgl5s5yBpcqzk8Jc4Dn3rSe8PvGF8fMDk9ebdkyGInhbkeRHjVK7lSLvPUxRaqaXqQJl/wjSxT+tyciFecObF3omhDFfVa2SX/vmQwPeAG6/VEvmBgSSkrWjGjJIohIT1AA/RK/jgJmlO0UozJcQRxoOwTdAAILMACsF0isj44Ge0u36GYQOYK13cE4vZ7FjjT4Eq8kZl+sFxNMbbU89YqzJgXJDdTmxsjW8Fg==
+X-HE-Tag: 1756998788-73331
+X-HE-Meta: U2FsdGVkX1+DPmyr9+t32MBwse5Epy466X1zsIzpHgJu5O8e/t+1kBogQcHAexTvgUsjTQUNTYy35EsQK7Vj+Vvjp5GioDujAJHVn9ysNNVxB9+AIRiMpc1KNZg8z+Gw9dF2Sw6lNOnPzqj0gHvDLEneNifMv8Ytq1QGE10MAxgVjajcaLzPoiuy3EuMHhfVB5vU4dtgBlCSGdpwdlBoJtkFqlAd+R3/pXLd0w5EdmkGQ6LjDcb57GiAYF2F7EzmP0tdk5bU0fZGVlWmLyAr38oVuhdLMn94pPh/NqYH2yGgEcfDxQS546RNIJ/3DOzmnncP76gqj30ABUyVG+PJXjeDv1pYaZkNy99Hr2ptsJNjnrIJNhi3nXYj9G1mnIy+URNe+8R96tjRl2fMEYcusceFrR1PrX27OEGgxEoRRMsLbMEEFH/KwwFiGLs8hPBQwa3072vfN2loQTI+3djZ6C//Fs4aUgYZ+B3FlNRMRn+HpTftvu8JrlESDx3ZSlnbu1DI5sWaXJP3yx7wPZ7Ai0MeDg+zHCIfI/sT7d8cw5cqwSRUEHl0YSW3Ucb36rQrLI8NFEdB367uFHWjNH43h4rcJgdCmHdQf768bSfEX9u3ZaezLx4CXwgnfNZzAEVt1j1/0ehG16xEed7PZ7plqyElBtVEgrtOpg2ePwLnMFos5RpE2goUeB3I8Nhbu0JhxZ3QKN5jBN1rD2QTQm4SBMY4Y923OWsjrRNTDyQGOqgNtlKBOjERd6KKwgh3AIcdQ1NboUa/4Sxk6BPYmFIXXfAqg+TEb7Nd+Srv/fw5Ll1D5UZMiDhG3VOdu62AkaeM7J8SMfM+vnQnjYyKBsmXqvkQ749STqajllK7iHDEFXgc0ZN8UTDcmIy+9pDoO127HCzQa9GSsK8R+vru4Z8PPyM8m8hQmlUrDVRnIr4ZAvA+qOtyiGa5IVfBFKRmGtHynRFNP3tJjQQL9DdoDQT
+ JZAb4S/M
+ rybf833PWXTb2/X+ADHJP6FO4dslo6CJbEjRyEVWDcLaIrLRpOFsaQKDEx8x+OKAukkKwEH8OoyDRatqDAiu2f1AKoJEI+B7fEG5ZlyvO5INrdyKj4eSuktqEN8mDRnWmsBLsrh6+HEYKIKCOQZErtoeaEhCRQcupp7mYkFHnL43Mt/837GSvJPj6NV+WTfHDaMreFndu2sh+ufbb2Po2ZhRyIkPEG0cIp0zjy/ugswLEu46u4hQ1oKMfieWmDdalcymHXA33K7F0+l1AEurCjPRWFVKDV68AeJcjdTmJjxLnqzOkirmkhYLVwwNqx+0qOShUBjWOH45y1BXPq2a1yrVzUA5FllgZ0U0mP+a4yH4QLEqzNT9ZM36UVhIhveyOH0u4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,32 +179,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/4/25 15:42, Liam R. Howlett wrote:
-> * Andy Shevchenko <andriy.shevchenko@linux.intel.com> [250904 09:37]:
->> On Thu, Sep 04, 2025 at 09:32:52AM -0400, Liam R. Howlett wrote:
->> > * Andy Shevchenko <andriy.shevchenko@linux.intel.com> [250904 05:04]:
->> > > clang complains about unused function:
->> > > 
->> > > lib/maple_tree.c:179:19: error: unused function 'mt_alloc_bulk' [-Werror,-Wunused-function]
->> > > 
->> > > Fix this by removing unused code.
->> > > 
->> > > Fixes: a48d52b2d21b ("maple_tree: Convert forking to use the sheaf interface")
->> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> > 
->> > Thanks.  This should be squashed into the patch listed in the fixes tag
->> > since it's not a stable commit yet.
->> 
->> I fine with any solution, I just want this to be fixes rather sooner. So, please go ahead!
+On 9/4/25 07:20, kernel test robot wrote:
 > 
-> Sounds good.  I've added Vlastimil to the email as it went through his
-> branch.
-
-Squashing into the tomorrow's linux-next release, thanks.
-
-> Can you please Cc the SoB people next time?
 > 
-> Thanks,
-> Liam
+> Hello,
+> 
+> kernel test robot noticed "WARNING:possible_circular_locking_dependency_detected" on:
+> 
+> commit: 99848157f71c03ca5e975b0e686def1d66e8b19f ("maple_tree: Sheaf conversion")
+> https://git.kernel.org/cgit/linux/kernel/git/vbabka/linux.git slub-percpu-sheaves-v6r2
+> 
+> in testcase: rcuscale
+> version: 
+> with following parameters:
+> 
+> 	runtime: 300s
+> 	scale_type: rcu
+> 
+> 
+> 
+> config: x86_64-randconfig-075-20250831
+> compiler: gcc-12
+> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
+> 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
+> 
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202509041248.b7ece14a-lkp@intel.com
+
+Thanks, will be fixed in the next -next snapshot.
 
 
