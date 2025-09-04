@@ -4,106 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC512CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 08:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E72FDCA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 08:53:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1717C8E0006; Thu,  4 Sep 2025 04:11:48 -0400 (EDT)
+	id D608F6B0005; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14EBF8E0002; Thu,  4 Sep 2025 04:11:48 -0400 (EDT)
+	id D11336B0008; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 086D48E0006; Thu,  4 Sep 2025 04:11:48 -0400 (EDT)
+	id BD8556B000C; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ECC738E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 04:11:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9748C11AC07
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:11:47 +0000 (UTC)
-X-FDA: 83850849054.30.05010C5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B9DA9A0009
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:11:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B2l67bl+;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id A76766B0005
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 04:53:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D0001DF4DD
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:53:31 +0000 (UTC)
+X-FDA: 83850954222.06.34AF299
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9BE0D40008
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:53:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756973505;
+	s=arc-20220608; t=1756976009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Pr0Y4bkCbfd3itfrxpuVGdfdmmRa0XxzBqHDc5t+1Us=;
-	b=XsE8ETG0ObQ9gRhDhd/vRGf09JGdtZ8qLT877zUh5VMe9ayM/PXRkT81BPD6aIMaHus2uQ
-	PsZsdX0R0RmmgMcMY1Oq+BXy22fG5VWCjy1aij9EAEyCebXQ+fQs97uaWB9dBWWnVkNyIy
-	b/9nTreTAy6Z+HnQVgl7VF7N78jibUw=
+	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
+	b=D9j03aCLdGMQWWo2uvs+9wBfJYBq8sKkIfPg9a7PkJZ3L5ZU3zpMTBujJPvqw11DKCrt7l
+	4udwa9l7/6864Om01WgU9Hd7po4bXqWkeBp6rlVxtzFmtQ5QeHPLjY9verP3T98tmEdi9J
+	aHWhRWpoMg0xj65pmNc1rnE0ptrXDpU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B2l67bl+;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756973505; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zLY0z0sK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ks14tQUF;
+	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756976009; a=rsa-sha256;
 	cv=none;
-	b=c1FWL2vvrhLRSm5pUnA23+WAnVawQcM+Q9JHBYS3LcbjQFsTBatFUa0L6Brko7Q81Fll4Y
-	EynVn+5mhq9eMCQ5cGPAxghRLqWaJGhP0fHDAGKUCPUiPYffh3mUXpVN6ABqMFfRm7XkE4
-	0DY6eFDayZFq2DoEokrFpe922LNuzAc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756973505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pr0Y4bkCbfd3itfrxpuVGdfdmmRa0XxzBqHDc5t+1Us=;
-	b=B2l67bl+nNRujWUMD3lhg3SIYL6WqrAO0fP0E8ZIrILnO27zydcsFfB4C+eAJgK2Prg/b4
-	avJyng5cLjrUsVWYxBlvBe96bSykv3Zvh31g0ZVUEXnjzigwhlEay/5rjztrSCdKx8IgHI
-	BOTg+401JqWdAmo2nv9xsFki/m9QsQY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-44yZFtgQN2Gh_XbvPEWQXg-1; Thu,
- 04 Sep 2025 04:11:41 -0400
-X-MC-Unique: 44yZFtgQN2Gh_XbvPEWQXg-1
-X-Mimecast-MFC-AGG-ID: 44yZFtgQN2Gh_XbvPEWQXg_1756973499
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	b=57GPMeHVuuOswxPz0cjSX/zdzbdK4PU5g/4cRxXIDLmnkrWx4Bid+kC8f8rdkMCX+r23LP
+	w4ubyXH4BV+KynEigkmHtlvWHca7F49TKqdfgleP/Wo09L0U04UAZ2lEe7iuNf3sSS7ofe
+	DqYQDNowe2iOUerWCFAv0qdG8ZxaknY=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DF26F180034D;
-	Thu,  4 Sep 2025 08:11:38 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.19])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5AD32180035E;
-	Thu,  4 Sep 2025 08:11:36 +0000 (UTC)
-Date: Thu, 4 Sep 2025 16:11:33 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: glider@google.com, dvyukov@google.com, elver@google.com,
-	linux-mm@kvack.org, ryabinin.a.a@gmail.com,
-	vincenzo.frascino@arm.com, akpm@linux-foundation.org,
-	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, sj@kernel.org,
-	lorenzo.stoakes@oracle.com, snovitoll@gmail.com,
-	christophe.leroy@csgroup.eu
-Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-Message-ID: <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv>
-References: <20250820053459.164825-1-bhe@redhat.com>
- <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7619B33F61;
+	Thu,  4 Sep 2025 08:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756976006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
+	b=zLY0z0sKVWzhzRyIbQlPUo4m/YP4rEXl2vWzHuOLU0U5wdSzWrLpPL14PpyZwl/3qBUvTb
+	rKaEslebF5hPZjCAjVsD1OUXeyCWXPcDPw2CAfakN0tG1eRxPTorzw/JL7x3rHhN7/8Of7
+	D+3/tMdTZX6vSBZ5b6Y0kE9t0JQGgTw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756976006;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
+	b=Ks14tQUF4QfXY3dKTad0ND0t1O3z2jPZSLpeLYMg+2yG3fErY4sRXypbYiiIo6S2x88NXf
+	XLr/5Bal3QW4uPBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756976006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
+	b=zLY0z0sKVWzhzRyIbQlPUo4m/YP4rEXl2vWzHuOLU0U5wdSzWrLpPL14PpyZwl/3qBUvTb
+	rKaEslebF5hPZjCAjVsD1OUXeyCWXPcDPw2CAfakN0tG1eRxPTorzw/JL7x3rHhN7/8Of7
+	D+3/tMdTZX6vSBZ5b6Y0kE9t0JQGgTw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756976006;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nPAlW2jGM6z2VbyPzIAk1XwDtLLRv8RXQFnUCLBEOis=;
+	b=Ks14tQUF4QfXY3dKTad0ND0t1O3z2jPZSLpeLYMg+2yG3fErY4sRXypbYiiIo6S2x88NXf
+	XLr/5Bal3QW4uPBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 69A9113675;
+	Thu,  4 Sep 2025 08:53:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QCDEGYZTuWhOEAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 04 Sep 2025 08:53:26 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E8B40A0A2D; Thu,  4 Sep 2025 10:53:25 +0200 (CEST)
+Date: Thu, 4 Sep 2025 10:53:25 +0200
+From: Jan Kara <jack@suse.cz>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org, 
+	jack@suse.cz, hch@infradead.org, djwong@kernel.org, jlayton@kernel.org, 
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 00/12] mm/iomap: add granular dirty and writeback
+ accounting
+Message-ID: <5qgjrq6l627byybxjs6vzouspeqj6hdrx2ohqbxqkkjy65mtz5@zp6pimrpeu4e>
+References: <20250829233942.3607248-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B9DA9A0009
-X-Stat-Signature: i64w63ogdiqggdxicb5zn34dx3xoujxd
+In-Reply-To: <20250829233942.3607248-1-joannelkoong@gmail.com>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 9BE0D40008
 X-Rspam-User: 
-X-HE-Tag: 1756973505-998956
-X-HE-Meta: U2FsdGVkX1+ikKyEwqxtYGObLSPEMWY6sRRcnUfQ3D6ObTvF7e90idJBRsDvaG1Q7nRB60PL+b/6clifUa4t/ZQduE0Db1J6OM4Qd7dFxoUYmWm/FUDgKPOR5VwWwjA/U2tWeXB2nSsR8wAd5xHPWzrVbTGlNYBJ3P5eUt814w3kCyqmd2NoE5fVKPXgHDZHVgxTiHujHIlsWN5HTcg9TKK2StXQXNbgOc5lJH+Kxn2hDIKqMXpsvrxoRPO462lImOj4fmghmz6UOjudsjt+AnvFy4aYwPayyGfV/G8uFytXtRPJc+bquumFhboqYIH1dLCzNrL1JR3qhRVpkC1S8r4pYnZsM9x0XsHGzLpiGnVgDuZxQq3wX3YLP5DSpFHFABSbReRWQMSyAu3PqXO+wH3yNkvyKy1BHYNJT5pPtdjHZLPMjD7H0+9xY216HcEgBTz6uYxJfnll3aZ4TbHZ2GrwL4m9YPxg92iFf601GGpS3b6nudorAHK9lstiVfYYrQotA4dFqd0Q8FfNURFG6vpdFvPd3xpTfuEufHl/VgRamrp+n/Y83K5poWwmOzSS4pncpWDCZ3kU4TK4/7azlCDUxE0yUc0JKkDbNoAEc/2eIzGE3k056h22wcNsuiMystgCX+x/j3HsJAMYeqcXQnSM1L80rwTFTV688hQ1SQcaPQ2mjFiV6jCkTIPBkq8Kn/hFe7hdkpxznP+UCPxu/T5heNVgp4vVYpCSDzNGzeP9inOnMVJuoGqVNagOzX+cus+B6LLZorkRDw1MPaA07H6qF/iJe3A21KPRnHXqEPC/+6Dx9Pqp7YIbg2d0kHvyBKIdDRDilpaMvtZFeB40cCUrKml4Ja+M3ydAl1/f+WWoWX4DX0rR0rFtgCs+WKwGdq18siWaxOC6qnJV356iMbSrAdgzMvYLS9JgCFR4ER065tjUfGPgxS0/iqt464ZpJPRYXVCWstD9j3X5mFC
- NnsS52BT
- cfVavaP62ZNsYQf3EdC8GS6bWqpeYhTy5O7/70xBglEcsY3hHMHuKiE6toMQvCi8Vx3smdJkkvD7MPmyAD/dM7ZHS05jBioYS5AF1mCki1L9pStqNs1KPkLxjIJWpKtURYDaArhQKoKu7d6CfHBAXi0z8GXFWOWwnFDFK2G/v6z9r+fu9Gx3ge5wtOEQM7Q8WsOfrZH67qYx2JmB/q6tzBOktAeQJmWexlagxBTJ0Ic8T4utbC8eULodATex6Di8fJS84jQJLBWenROVYs1XxPoQsDL/Mpw+yrn6Hp8SH2JtLphAOeWCCpP/8GsNIRIr2eEJxasPZLqGQSleggqyyA043DGBDcH0ier0ziRrgfo2iWIPXl+WvnK1N4xXMVHm+aFNRLkbg0y+ZO8dn1auRisNA1002rgNDaeTqnYzBhP81Dt0/U1sonR2vfhtHoTjmgiUuBDUfzSK5DUuBYHTxIeYL7Twu/D2/3dkyLfEaABXMIOEsMLtstS4FFTsINmpQB5lMav5X7cEhy3dW/0NTJFu/9mIsSqseEujiNM0J48B+wIsInnVoqJb79vNg/aUG7xel
+X-Stat-Signature: 9bmp8app733s7ipnyo4b696a8h6rfsm1
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1756976008-796390
+X-HE-Meta: U2FsdGVkX1/d8tIKOnCKFf/XYNZbW8G84PkZkFx8v8atA42kN/qJbjY0XEiT14XYX5nz9HxrJcEwBjUwc/wiVrcxLp6HVy2PbSUcmqii1Z1bFAI1eHaH4chda1GxFWgAh3oWado49hr86asll4LT1uOtUaWXb6ZYE3/NfbiaFisCy1QGAMoyNxMuiqnc4FSjOg1e4TRiR8cXXVnijXBaIUxbYZLlgZmvhBdlZlHfUj/wQv0TwWutp1adJ0u5smUikDXKC//M6R+dKMyJr+43IZNiSZNqhKONAHcVPB1fvkH5g44taBRJ76ZdERj2b1wt+v1TfvRFsQ5S3SbpAHqaVQWzdF6Kwt3pYRM4anRZ5EOBN0sm5DLeUSLN21pWnlfhjzRrTzBjxzLfF2d5OAmAHKdBNvQg5uc7/bG12w2ePwZTg3DZ1aaPyqHZXBua0fHuZ4b/+KwQFJiHGC8gnX/L7RsFJNEfwdRHplpZFO2ip4F6TV1rdbV8S15/kINUFN+aJv/4z5wgSnyDq9vRb78pBMfBA3MxX3NeqNRvxrw0ktJ1NTtnYibRS3qXHfwoSVXow6a/rh82cAyeYTpNutkzcuxFjfccHfaQ8PdLbYhZeRP0KH7FxsY1ZxCp1phqbRmuMUetvsiWzEiG2wEqKCnwr3bdcZYoeTKbeRgch3VZP0/rgBnWUm1IPVhBVotWhkErsyJtUmM7NuBv62Faqo7sX0AKuUhet8i3BaamKB3YcLnTFqNrXfh00+6dLlTVrXA2kQksnlPAQqZTadhArA6aTnZpBnKwNZzpVSDZYhX2SvC2L+/uhP44hlq51j9p6scp6LUrBZpliuL7uN68MyAT3rkoif9FMeOz9tc+UaVWvJVKlWiERf4R6xuEh4RKd0A1gZWlwxFf2DjH74GEBQ8x/EtXb6fS821mDU8zKGqTzJ1K3/zhIpGbAvKAjrL2nfFskp5zd4fIv6uasaj/uOh
+ uUbfA56u
+ wurEUM2vtA0PeyfoFowf2IAGTQvtsz2XZDuTYQW7BxicLOtItfCxO4Yoyzb0hVNdE3ERDLciE4sEnUU1gUnE4x1KeYk56Ju/hTRk4e8+QjdmOOm5MNHEorKGn+YHXgZLQbiJuQwuxWpzWfzeniU1t7jR0wjr57e3a/RluOz46SDIJQt9bajcJK8Vo/8kugKXJrZubWkU/T5BTSZt/oqx0dWjf8pb17p1dswobaPcpvotjG7zTG1W4uhUqexphFxHUPrw+nkxHAuisHuthMzPAn+6J5ML2WnnpFN//NUy9Dp3nvgKNu+jM0oeveRNNql9JB+rZRXg65boDTCJX9VuMlbs1VNyJWsIj4hj0e7TdTIijj9g8O3m0rROt8XyvckkCJBhLSPgorMIqYXQmwVnWvUV3LYvSM0nZvoTB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,94 +135,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/03/25 at 03:22pm, Andrey Konovalov wrote:
-> On Wed, Aug 20, 2025 at 7:35 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > Currently only hw_tags mode of kasan can be enabled or disabled with
-> > kernel parameter kasan=on|off for built kernel. For kasan generic and
-> > sw_tags mode, there's no way to disable them once kernel is built.
-> > This is not convenient sometime, e.g in system kdump is configured.
-> > When the 1st kernel has KASAN enabled and crash triggered to switch to
-> > kdump kernel, the generic or sw_tags mode will cost much extra memory
-> > for kasan shadow while in fact it's meaningless to have kasan in kdump
-> > kernel.
-> >
-> > So this patchset moves the kasan=on|off out of hw_tags scope and into
-> > common code to make it visible in generic and sw_tags mode too. Then we
-> > can add kasan=off in kdump kernel to reduce the unneeded meomry cost for
-> > kasan.
+Hello!
+
+On Fri 29-08-25 16:39:30, Joanne Koong wrote:
+> This patchset adds granular dirty and writeback stats accounting for large
+> folios.
 > 
-> Continuing the discussion on the previous version: so the unwanted
-> extra memory usage is caused by the shadow memory for vmalloc
-> allocations (as they get freed lazily)? This needs to be explained in
-> the commit message.
-
-Hmm, up to now, there are two parts of big amount of memory requiring
-for kernel as I observed. One is the direct memory mapping shadow of
-kasan, which is 1/8 of system RAM in generic mode and 1/16 of system
-RAM in sw_tags mode; the other is the shadow meomry for vmalloc which
-causes meomry big meomry usage in kdump kernel because of lazy vmap
-freeing. By introducing "kasan=off|on", if we specify 'kasan=off', the
-former is avoided by skipping the kasan_init(), and the latter is avoided
-by not build the vmalloc shadow for vmalloc.
-
-Yes, I totally agree with you, I should have put this in cover letter
-and the main patch log to explain it better.
-
+> The dirty page balancing logic uses these stats to determine things like
+> whether the ratelimit has been exceeded, the frequency with which pages need
+> to be written back, if dirtying should be throttled, etc. Currently for large
+> folios, if any byte in the folio is dirtied or written back, all the bytes in
+> the folio are accounted as such.
 > 
-> If so, would it help if we make the kasan.vmalloc command-line
-> parameter work with the non-HW_TAGS modes (and make it do the same
-> thing as disabling CONFIG_KASAN_VMALLOC)?
+> In particular, there are four places where dirty and writeback stats get
+> incremented and decremented as pages get dirtied and written back:
+> a) folio dirtying (filemap_dirty_folio() -> ... -> folio_account_dirtied())
+>    - increments NR_FILE_DIRTY, NR_ZONE_WRITE_PENDING, WB_RECLAIMABLE,
+>      current->nr_dirtied
 > 
-> What I don't like about introducing kasan=off for non-HW_TAGS modes is
-> that this parameter does not actually disable KASAN. It just
-> suppresses KASAN code for mapping proper shadow memory. But the
-> compiler-added instrumentation is still executing (and I suspect this
-> might break the inline instrumentation mode).
-
-I may not follow your saying it doesn't disable KASAN. In this patchset,
-not only do I disable the code for mapping shadow memory, but also I
-skip any KASAN checking. Please see change of check_region_inline() in
-mm/kasan/generic.c and kasan_check_range() in mm/kasan/sw_tags.c. It
-will skip any KASAN checking when accessing memory.
-
-Yeah, the compiler added instrumentation will be called, but the if
-(!kasan_enabled()) checking will decide if going further into KASAN code
-or just return directly. I tried inline mode on x86_64 and arm64, it
-works well when one reviewer said inline mode could cost much more
-memory, I don't see any breakage w or w/o kasan=off when this patchset
-applied..
-
+> b) writing back a mapping (writeback_iter() -> ... ->
+> folio_clear_dirty_for_io())
+>    - decrements NR_FILE_DIRTY, NR_ZONE_WRITE_PENDING, WB_RECLAIMABLE
 > 
-> Perhaps, we could instead add a new kasan.shadow=on/off parameter to
-> make it more explicit that KASAN is not off, it's just that it stops
-> mapping shadow memory.
-
-Hmm, as I explained at above, kasan=off will stop mapping shadow memory,
-and also stop executing KASAN code to poison/unpoison memory and check the
-shadow. It may be inappropriate to say it only stops mapping shadow.
-
+> c) starting writeback on a folio (folio_start_writeback())
+>    - increments WB_WRITEBACK, NR_WRITEBACK, NR_ZONE_WRITE_PENDING
 > 
-> Dmitry, Alexander, Marco, do you have any opinion on kasan=off for
-> non-HW_TAGS modes?
+> d) ending writeback on a folio (folio_end_writeback())
+>    - decrements WB_WRITEBACK, NR_WRITEBACK, NR_ZONE_WRITE_PENDING
+
+I was looking through the patch set. One general concern I have is that it
+all looks somewhat fragile. If you say start writeback on a folio with a
+granular function and happen to end writeback with a non-granular one,
+everything will run fine, just a permanent error in the counters will be
+introduced.  Similarly with a dirtying / starting writeback mismatch. The
+practicality of this issue is demostrated by the fact that you didn't
+convert e.g. folio_redirty_for_writepage() so anybody using it together
+with fine-grained accounting will just silently mess up the counters.
+Another issue of a similar kind is that __folio_migrate_mapping() does not
+support fine-grained accounting (and doesn't even have a way to figure out
+proper amount to account) so again any page migration may introduce
+permanent errors into counters. One way to deal with this fragility would
+be to have a flag in the mapping that will determine whether the dirty
+accounting is done by MM or the filesystem (iomap code in your case)
+instead of determining it at the call site.
+
+Another concern I have is the limitation to blocksize >= PAGE_SIZE you
+mention below. That is kind of annoying for filesystems because generally
+they also have to deal with cases of blocksize < PAGE_SIZE and having two
+ways of accounting in one codebase is a big maintenance burden. But this
+was discussed elsewhere in this series and I think you have settled on
+supporting blocksize < PAGE_SIZE as well?
+
+Finally, there is one general issue for which I'd like to hear opinions of
+MM guys: Dirty throttling is a mechanism to avoid a situation where the
+dirty page cache consumes too big amount of memory which makes page reclaim
+hard and the machine thrashes as a result or goes OOM. Now if you dirty a
+2MB folio, it really makes all those 2MB hard to reclaim (neither direct
+reclaim nor kswapd will be able to reclaim such folio) even though only 1KB
+in that folio needs actual writeback. In this sense it is actually correct
+to account whole big folio as dirty in the counters - if you accounted only
+1KB or even 4KB (page), a user could with some effort make all page cache
+memory dirty and hard to reclaim without crossing the dirty limits. On the
+other hand if only 1KB in a folio trully needs writeback, the writeback
+will be generally significantly faster than with 2MB needing writeback. So
+in this sense it is correct to account amount to data that trully needs
+writeback.
+
+I don't know what the right answer to this "conflict of interests" is. We
+could keep accounting full folios in the global / memcg counters (to
+protect memory reclaim) and do per page (or even finer) accounting in the
+bdi_writeback which is there to avoid excessive accumulation of dirty data
+(and thus long writeback times) against one device. This should still help
+your case with FUSE and strictlimit (which is generally constrained by
+bdi_writeback counters). One just needs to have a closer look how hard
+would it be to adapt writeback throttling logic to the different
+granularity of global counters and writeback counters...
+
+								Honza
+
+> Patches 1 to 9 adds support for the 4 cases above to take in the number of
+> pages to be accounted, instead of accounting for the entire folio.
 > 
-> On a side note, this series will need to be rebased onto Sabyrzhan's
-> patches [1] - those are close to being ready. But perhaps let's wait
-> for v7 first.
-
-I replied to Sabyrzhan's patchset, on top of this patchset, it's much
-easier and cleaner to remove kasan_arch_is_ready(). We don't need
-introduce CONFIG_ARCH_DEFER_KASAN. Please see below patchset which is
-based on this patchset introducing 'kasan=off|on' to genric|sw_tags
-mode.
-
-[PATCH 0/4] mm/kasan: remove kasan_arch_is_ready()
-https://lore.kernel.org/all/20250812130933.71593-1-bhe@redhat.com/T/#u
-
+> Patch 12 adds the iomap changes that uses these new APIs. This relies on the
+> iomap folio state bitmap to track which pages are dirty (so that we avoid
+> any double-counting). As such we can only do granular accounting if the
+> block size >= PAGE_SIZE.
 > 
-> [1] https://lore.kernel.org/all/20250810125746.1105476-1-snovitoll@gmail.com/
+> This patchset was run through xfstests using fuse passthrough hp (with an
+> out-of-tree kernel patch enabling fuse large folios).
 > 
-
-Thanks a lot for reviewing and feedback.
-
+> This is on top of commit 4f702205 ("Merge branch 'vfs-6.18.rust' into
+> vfs.all") in Christian's vfs tree, and on top of the patchset that removes
+> BDI_CAP_WRITEBACK_ACCT [1].
+> 
+> Local benchmarks were run on xfs by doing the following:
+> 
+> seting up xfs (per the xfstests readme):
+> # xfs_io -f -c "falloc 0 10g" test.img
+> # xfs_io -f -c "falloc 0 10g" scratch.img
+> # mkfs.xfs test.img
+> # losetup /dev/loop0 ./test.img
+> # losetup /dev/loop1 ./scratch.img
+> # mkdir -p /mnt/test && mount /dev/loop0 /mnt/test
+> 
+> # sudo sysctl -w vm.dirty_bytes=$((3276 * 1024 * 1024)) # roughly 20% of 16GB
+> # sudo sysctl -w vm.dirty_background_bytes=$((1638*1024*1024)) # roughly 10% of 16GB
+> 
+> running this test program (ai-generated) [2] which essentially writes out 2 GB
+> of data 256 MB at a time and then spins up 15 threads to do 50-byte 50k
+> writes.
+> 
+> On my VM, I saw the writes take around 3 seconds (with some variability of
+> taking 0.3 seconds to 5 seconds sometimes) in the base version vs taking
+> a pretty consistent 0.14 seconds with this patchset. It'd be much appreciated
+> if someone could also run it on their local system to verify they see similar
+> numbers.
+> 
+> Thanks,
+> Joanne
+> 
+> [1] https://lore.kernel.org/linux-fsdevel/20250707234606.2300149-1-joannelkoong@gmail.com/
+> [2] https://pastebin.com/CbcwTXjq
+> 
+> Changelog
+> v1: https://lore.kernel.org/linux-fsdevel/20250801002131.255068-1-joannelkoong@gmail.com/
+> v1 -> v2:
+> * Add documentation specifying caller expectations for the
+>   filemap_dirty_folio_pages() -> __folio_mark_dirty() callpath (Jan)
+> * Add requested iomap bitmap iteration refactoring (Christoph)
+> * Fix long lines (Christoph)
+> 
+> Joanne Koong (12):
+>   mm: pass number of pages to __folio_start_writeback()
+>   mm: pass number of pages to __folio_end_writeback()
+>   mm: add folio_end_writeback_pages() helper
+>   mm: pass number of pages dirtied to __folio_mark_dirty()
+>   mm: add filemap_dirty_folio_pages() helper
+>   mm: add __folio_clear_dirty_for_io() helper
+>   mm: add no_stats_accounting bitfield to wbc
+>   mm: refactor clearing dirty stats into helper function
+>   mm: add clear_dirty_for_io_stats() helper
+>   iomap: refactor dirty bitmap iteration
+>   iomap: refactor uptodate bitmap iteration
+>   iomap: add granular dirty and writeback accounting
+> 
+>  fs/btrfs/subpage.c         |   2 +-
+>  fs/buffer.c                |   6 +-
+>  fs/ext4/page-io.c          |   2 +-
+>  fs/iomap/buffered-io.c     | 281 ++++++++++++++++++++++++++++++-------
+>  include/linux/page-flags.h |   4 +-
+>  include/linux/pagemap.h    |   4 +-
+>  include/linux/writeback.h  |  10 ++
+>  mm/filemap.c               |  12 +-
+>  mm/internal.h              |   2 +-
+>  mm/page-writeback.c        | 115 +++++++++++----
+>  10 files changed, 346 insertions(+), 92 deletions(-)
+> 
+> -- 
+> 2.47.3
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
