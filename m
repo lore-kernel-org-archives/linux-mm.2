@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A3FDCA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:59:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33F35CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 17:00:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54E7A8E000B; Thu,  4 Sep 2025 12:59:43 -0400 (EDT)
+	id 9211F8E0010; Thu,  4 Sep 2025 13:00:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5264C8E0001; Thu,  4 Sep 2025 12:59:43 -0400 (EDT)
+	id 8F86B8E0001; Thu,  4 Sep 2025 13:00:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4635B8E000B; Thu,  4 Sep 2025 12:59:43 -0400 (EDT)
+	id 835E98E0010; Thu,  4 Sep 2025 13:00:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 33DCB8E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:59:43 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F3478E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 13:00:30 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BD9D21402E2
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:59:42 +0000 (UTC)
-X-FDA: 83852179404.30.8BF631F
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F21958693
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 17:00:30 +0000 (UTC)
+X-FDA: 83852181420.30.EF315BD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 11629160015
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:59:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4767780014
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 17:00:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf08.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757005181;
+	s=arc-20220608; t=1757005228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dXdL69La8rlk4Cc+iX/4Org3UmBemAueG/dGwfzzzJs=;
-	b=VqqyTQRAisLND6kpKUDa9iNREZdVBZEogyOBay76824qgLwJ43+5CBKF2PEDamQBSs4Iap
-	OtwBtrdcqhfDLlAaDB1oL1wqyKJfqoFnhJUxrGHFB4dJlp+7xQuMdmgMDBRUXYfiuO+3t+
-	Z9GIm+MPGrbmXaPL1A33DgpFjzbliGU=
+	bh=HSuGAke0gdqeRAIfeWQr8j6H1h4Rm4Qza2dPLd6deIU=;
+	b=wUyGvmv2FDYhJkcCYxveig+95uj48kikXeScRqwlvRX9q8DKMjRYr2SftJwqoZJnTPRgG3
+	23U7s5iGz5MClB3pxXIVymMSQIZjWMkHhdxW/N7mZNC+clduHjJVfqNz+x6SDQLshaEE9b
+	8yvWkwgnwE4dC8LxQsvuEQG/Dk/tnBs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757005228; a=rsa-sha256;
+	cv=none;
+	b=yIeb2AOlighsre9ex0rc08lAISdyc4BRaUuGtKtzlxERTUPRvzYiZLOd2hlx7l7++6OGt2
+	uwWMp2uuDBe7GYSr4UR3UNfheG+Lz6SDFHbN8gUOtvZSpcGh2dWSux900d2MBSJzOltDY9
+	uSIKtE734O5m+fyJLIdr/NHRoLLgQ48=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
+	imf02.hostedemail.com;
 	dkim=none;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none);
-	spf=pass (imf08.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757005181; a=rsa-sha256;
-	cv=none;
-	b=XcpQX4sATkahlmXJKShBi+n9fbc4AFxKaTMZt2KI9Gqv03Y+sFjb3rkGcruw4CR8KNm/Zb
-	G4ErQU5Bv0x7A3zAmM9evi5WU2jFT0YfQJt7v7SIKF4MkBm88DaZh4XF1BQodFgAJ3DYSb
-	cZU/ARM8Ye1tfOa3hVYnANtKsK7rZJc=
+	spf=pass (imf02.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0843A407F4;
-	Thu,  4 Sep 2025 16:59:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC426C4CEF0;
-	Thu,  4 Sep 2025 16:59:37 +0000 (UTC)
-Date: Thu, 4 Sep 2025 17:59:35 +0100
+	by sea.source.kernel.org (Postfix) with ESMTP id 5B712434F3;
+	Thu,  4 Sep 2025 17:00:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E4CC4CEF0;
+	Thu,  4 Sep 2025 17:00:24 +0000 (UTC)
+Date: Thu, 4 Sep 2025 18:00:22 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Ryan Roberts <ryan.roberts@arm.com>
 Cc: Will Deacon <will@kernel.org>,
@@ -65,23 +65,22 @@ Cc: Will Deacon <will@kernel.org>,
 	scott@os.amperecomputing.com, cl@gentwo.org,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v7 5/6] arm64: mm: split linear mapping if BBML2
- unsupported on secondary CPUs
-Message-ID: <aLnFd1Hl_FSHZR3z@arm.com>
+Subject: Re: [PATCH v7 6/6] arm64: mm: Optimize linear_map_split_to_ptes()
+Message-ID: <aLnFpndf-XikPPFf@arm.com>
 References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <20250829115250.2395585-6-ryan.roberts@arm.com>
+ <20250829115250.2395585-7-ryan.roberts@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250829115250.2395585-6-ryan.roberts@arm.com>
-X-Stat-Signature: 9wgn89tiimaj88y51mjkeg9eewzp8isj
+In-Reply-To: <20250829115250.2395585-7-ryan.roberts@arm.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 11629160015
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757005180-55181
-X-HE-Meta: U2FsdGVkX1/D+8gRyG0QHzOFBPYqbChTPxLPONRQriijRh1uHWSacBSj0mdEhipW2clLcaakHydwlUnzvmPAIU2zf7f8wbgyW4pl/QP/JeDgJA2DCNaCX122Hxdu5RUVzI8hbVrRCmW263+Fz4pPw1FOh1I4CosWEU5O1iYDJoKhIrj4or7lddoGg7uJFHXk3LB5Gff3KAPwluT0PDEhNBQ1OD8/AjS0QlrawUPw5erAqbq7TEwf8t0ph/OJm5Akcn8xe8/suQBU91rjgQs7pn9qllwo6z84a49pTtw1YHyUVMpkQLwvFOZs72kIlGbC9J+gPnE/HUtj//8N5h4gboPhiQFXGfIWx1cZYDIR5GuJqsIfXq2m+yktN7yGLLMVrgE7bVnIVmbHuU4BasutXTa7TqZ9rlyAnNbh2U0F/8yZSPoURtqOu9YrIxzY61jvb7J0zveWjibIE2IbUXwPrxDJmVNxztcjqcK6SYXHiYJBoL9YQdhfuAplRRXeQSZSnDo9bhvjLmk7pt/hhMGx3TTAuT9OUMTspYfp07ABoyz6E2is8Bb+hyjnLbWX/vYlSh8+0VJ4VnLaMN4FGjVDvs0aS6AQZFPKOV8xS7tKKkUyRfTBsYnCmeqmyWCjgjCgtQ01QHqJmSv1r70WnbOWDSfDf6LY4eSTXOgACG7nQ8U9ee9xwA4HRObSiiXb9sQ/Gbgd1VJjld6TPcjzMqHKi7Abinb7lneQ2ap1u+adI6COELs2w3G1hfxCz4njmC1PNY3wBhzIvANwliVFRAW8lZpMApGXXKDiLCjZVsX4GymWBlwkwgwDL9Hc2aLLZ+kMNtYvMwS1eK0FcWZvHZyIU6B4mjPTNwjMYM3irXxNDLuV5wIMdd8JHVLQaI5ejt83b4odTAqZMNQKzZjlqOKkukayvj3haLqbGbMLLTYSqBkjEkMl0l4cG/Yf3BbE8lafd49xaYodqTYgNH0Idmh
- ClWb2Kyg
- 7TDdX1QkWfD+3r0e0TCecmS+4krPVpipiu3TXCX4C+dPcwkeMCHW11R8IH7JxYNGCDtVfzgrzY6yiHtw+tjqew3UfN/5JBP632iUzEWiDTX9Zq9aNVswtP7s1x9F9t44jrUv/QExw5Mtrg/hp82RThtweAklY7RTmRjI73Ix/y8nYj1H8naCDK0u78HUiWhLg5cKUDQ7b18tZcvsZLHD9SRzJojQiYO3vfafVLf5mZ2y0MV5GoWZrvU45SZGmgStftrxWRVDSqXHHblN8Yf/nWfMkvebPJyU7gpMEH74pe2CaNuW1UOuU0gC9QS6eOTC6NpSUTQPS17oXO7z/3Vb1eXZHKPflBgZObOrlRxZU+avbB0CtIPi4yFsqrfTUXUdw+YjcEaoJmaVbZAF5LU+ry94mAVKv2I0N+kK9O5IZzlUA2Gp1qu3PsEtS9jMoRi9NrhJicVuYsHjDtRakEpnwsvdGRQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4767780014
+X-Stat-Signature: z7fi8p7h8e4t9uuyxwkewatcdhn4c334
+X-HE-Tag: 1757005228-833011
+X-HE-Meta: U2FsdGVkX1/4Af7weSqsWt2V2A23sBD0FBAu6vpwikA+b+MprM8Y3CMpDoVHWXLTZjcSshr0PD3OsvzhbBs9X+ltZhz4SW05tqr/mtDaQ2lqeJTJ0PETBWBKhcd+z+UKA2c1GVpBF9hDOGDHG6jTyZzGBPxl8uGlnLVNekWCdKGkSQfjMSWhNE95gfTwVV1bkHQ+puns5h4rQt7i4A7ysJBdhYHsSdHpJoNXwy11gbqz3Y7vV+BPIkLWdq0/3JBmShbA5l5g/lyZ0hkv9tgbvviXy4GIZP5J0ET3pmNKsIl2igrLPYd2etVKVE9G3z9x/pCmj6921AZUJzKVrVRJXJeHZU9pfnUNbMtoo4eotjgkdGT7Yc43oeuFrQePSqRqQJ3ZRNnIZObmE6eL1+v0RMBhDp43q+B0gVtY7vl+tMY4qo95huQHGAPaIOrHWf9E5z0NBpeRhDu2yKKpppJVA1KrLlny8PgF0U9Vr/m+vovwtIXGDVGe+UKR2Jni+2jXFeR9NATQ1yuWgaZ/PRZaawfUJlzc3ywDlRmFkHNjSEc+e+/sGOu7S89hi0xu+KcdUNuX9aZv9XguwyZKFPA1sKvLdtSO5emSvnoTnl8YyeIiLCb+469HItHSysCFdmHBmjiuBacTDD0zXGPDMpr39F063zaq8FSzxcQq8pxdSLTWSEEOBEcUQgM+YEjhZ4xIzvtCtvxY2dtfS44Ftgg+lMS0IeBqUDY5Efq2Huowm4Q+STHh9BI4rGJrLXmlyiP5YhGk7bJaSEVUviKxDjWpP/DSlk9r0nryNY8fnJoFL6kLpyot4W9xst5711gTpE76jOeg7LBbCib/uCF+P4z/YO+ygHVkqWKans21aIypTV7e+1KA7Vjcr/y8yCa19Jf2ROajBOfo3XgsHvsit9Mze9Blwmn5/WHaGg9uBu7tgd96/B4Bn6JzmlMS7pkv3K3lVmlw1igR+qtrkXQu1GC
+ WDrzKLav
+ sE6jbCFzGhQ9m33F6DWk0ij8KKzMPLIj2PvDeKN4lv56diWpOmwcavZUOjFQLpZ6d18lHKXDk4hU/52i4n+zX4YuQp/fJM2lClSPyy3VcT5/qQeAPhyUucocrb1JLijdKorw1JtP2KW8MkEJS9uK9NvsYZDdWGcvEvPPJKY3R7HgoCGNwRGub/2V1xurpegnWvvBPq61jM6+zON8lds9/RZFl3Xh55/UZ3r1ni54B8GdEkfihCeMFZ3MbuT+1MSarrwqSNFYPdffs0XWLus4NGeAho28tTNrJMYGyWegDljh7jWdv9PNALygCt40RtLy571NzwOdXr9vtH0QKOta+lcXapUdFDy924qFTljEPaVJr7y1zaLI9U9nPoLIXQpDowpynFdDj8mHfhLRjXPrnkhqoFwBO//gItdbr6IwpTvsuifscsKCiUVlc0FWwCb4zy+lQPDG6Vq0qcICCPf8CahhCtm9qtmwem6Tv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,52 +89,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Aug 29, 2025 at 12:52:46PM +0100, Ryan Roberts wrote:
-> The kernel linear mapping is painted in very early stage of system boot.
-> The cpufeature has not been finalized yet at this point. So the linear
-> mapping is determined by the capability of boot CPU only. If the boot
-> CPU supports BBML2, large block mappings will be used for linear
-> mapping.
+On Fri, Aug 29, 2025 at 12:52:47PM +0100, Ryan Roberts wrote:
+> When splitting kernel leaf mappings, either via
+> split_kernel_leaf_mapping_locked() or linear_map_split_to_ptes(),
+> previously a leaf mapping was always split to the next size down. e.g.
+> pud -> contpmd -> pmd -> contpte -> pte. But for
+> linear_map_split_to_ptes() we can avoid the contpmd and contpte states
+> because we know we want to split all the way down to ptes.
 > 
-> But the secondary CPUs may not support BBML2, so repaint the linear
-> mapping if large block mapping is used and the secondary CPUs don't
-> support BBML2 once cpufeature is finalized on all CPUs.
+> This avoids visiting all the ptes in a table if it was created by
+> splitting a pmd, which is noticible on systems with a lot of memory.
 > 
-> If the boot CPU doesn't support BBML2 or the secondary CPUs have the
-> same BBML2 capability with the boot CPU, repainting the linear mapping
-> is not needed.
-> 
-> Repainting is implemented by the boot CPU, which we know supports BBML2,
-> so it is safe for the live mapping size to change for this CPU. The
-> linear map region is walked using the pagewalk API and any discovered
-> large leaf mappings are split to pte mappings using the existing helper
-> functions. Since the repainting is performed inside of a stop_machine(),
-> we must use GFP_ATOMIC to allocate the extra intermediate pgtables. But
-> since we are still early in boot, it is expected that there is plenty of
-> memory available so we will never need to sleep for reclaim, and so
-> GFP_ATOMIC is acceptable here.
-> 
-> The secondary CPUs are all put into a waiting area with the idmap in
-> TTBR0 and reserved map in TTBR1 while this is performed since they
-> cannot be allowed to observe any size changes on the live mappings. Some
-> of this infrastructure is reused from the kpti case. Specifically we
-> share the same flag (was __idmap_kpti_flag, now idmap_kpti_bbml2_flag)
-> since it means we don't have to reserve any extra pgtable memory to
-> idmap the extra flag.
-> 
-> Co-developed-by: Yang Shi <yang@os.amperecomputing.com>
-> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
 > Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 
-I think this works, so:
-
 Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-
-However, I wonder how likely we are to find this combination in the
-field to be worth carrying this code upstream. With kpti, we were aware
-of platforms requiring it but is this also the case for BBM? If not, I'd
-keep the patch out until we get a concrete example.
-
--- 
-Catalin
 
