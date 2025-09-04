@@ -4,108 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB980CA1015
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:11:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA4CCA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:12:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5FA18E0010; Thu,  4 Sep 2025 08:11:04 -0400 (EDT)
+	id 00BB98E0011; Thu,  4 Sep 2025 08:12:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E103C8E0001; Thu,  4 Sep 2025 08:11:04 -0400 (EDT)
+	id EFE6B8E0001; Thu,  4 Sep 2025 08:12:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4CDB8E0010; Thu,  4 Sep 2025 08:11:04 -0400 (EDT)
+	id DED598E0011; Thu,  4 Sep 2025 08:12:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C247E8E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:11:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53D5C1DAA85
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:11:04 +0000 (UTC)
-X-FDA: 83851452048.28.63E26AD
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5AC5C40009
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:11:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=L9DR4+c2;
-	spf=pass (imf04.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.170 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756987862; a=rsa-sha256;
-	cv=none;
-	b=LUZSFY0Y6IDVaOx3GnVlSme5oJMpQXy6k58M4SlyVzqb0t6314olobe7QnvZVYHqTrvK1+
-	bBFIGFN43ZuwPKbFVealHDRJtMn8GzWe1Qz3+Jpv0hDXPi1Ah7P9v5N+tu3oUBVC3lEp/i
-	jTcjuCtCWsGi42KbNcwJ7hPbB4QWQAY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=L9DR4+c2;
-	spf=pass (imf04.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.222.170 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+	by kanga.kvack.org (Postfix) with ESMTP id C96338E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:12:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A3541A0168
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:12:56 +0000 (UTC)
+X-FDA: 83851456752.04.E747692
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D7F701C0006
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:12:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756987862;
+	s=arc-20220608; t=1756987974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gjlVq8FpVKFgiAyllL0wB2r8/I9yHjQu5VbHsqkQxiU=;
-	b=57bZCbXFpuQdBVVQiP09JUmox9oRPt5aXZdE1P/ofO/ax+hwIy1ZWcMf5qNKie+2EeuMC7
-	Hkqa5nORjqOTLlTGyPW6PjeRNlnTp/jQgGf3OWqGn1UtZ6XLGD/WUII0+ESnGB6NgKzZSn
-	QxlXOY8WucrCHUOl9C86Eid65hy7vQs=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-809f849bdd6so99072785a.0
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 05:11:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1756987861; x=1757592661; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gjlVq8FpVKFgiAyllL0wB2r8/I9yHjQu5VbHsqkQxiU=;
-        b=L9DR4+c28TI4manGSkLpdAOLcQskPg92LeATfdLbk3XZQK/s8ZaSBD0pIljosgG8l5
-         H1H82gO0aJwMgD4imHdmQJuamBc4Xoq6LgbrtroZzgFQ+qTMJEqyC+2Sa3oVM7vFgm0q
-         9slREXAXoe2ur34UW5IEHSHljpFHbxWvJyP+w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756987861; x=1757592661;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gjlVq8FpVKFgiAyllL0wB2r8/I9yHjQu5VbHsqkQxiU=;
-        b=K7bFCSYL6s30bfTHPSI38YVSBz9MH566HzsAJJ2QtaHzjX9N4IUbATPe8KdWMCnQyn
-         tTjLqtTs9+ouo8WMNOnW3gJ/kzb3GzvCQttSbQTlHfJKR7zfbjNc4ehfn0HseO3yitHc
-         nDCrWMOkq7SUkP6F2qaJdxjG0uTV6J6Uq3XO10otKqJ5KT6Xw7BGjetql1MgtFF5jKoz
-         4i3Gs+Ju6kfmBpf/bU09pzrICRL2EtiZrhmXc7FR5npJBVhz6PNjhAyYWPg27ZVOFbq8
-         csjs9B4mzgVLqOxz8fwVJvgaSU4O45wtQTjCFuASH7ceBaIUKrob/GAQVJM/JmkvkGur
-         0dvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5IWt5zLswUL+cnelJDfyxGrYmvv4/Cji3TaPjPluRyNbWu4MgLtYo90OM9Y2p9VKurg+CGl875A==@kvack.org
-X-Gm-Message-State: AOJu0Yy75k8CHxfSjLgg2WC0P8l//jMOmeuq+ROB719T+CM5x6cjyM2D
-	dcrIbAhuLF+xjqbQ62a9CO5lQrM9xNnll8wJ54kZFpXDoeWRzn823nZzRnl/9S/gZ9k9Nt5bWy3
-	lyNymc4Z3pyYDfY49pgC+3hUzxZEW7/h5DPAAuEEq+w==
-X-Gm-Gg: ASbGnctqRToERdvkpXuCfsQtlSFJiXouqw1sd7429uV5Ivrd1y8J85mtGyUa5fDqNES
-	EvfRNCXdJzDoL4dDdjBaYdubmlnX2IhTpj+6poju8XJd9gT4vXRe6Lm9UpRst4s4H10N5p5ReaH
-	6aqS8iC8HWKqzE4/+ko0I6ikTx8Vaso7HExEznOABh7qfl7VsKLLt1L08qJCI9jtPEQY7EjavsR
-	PqO+0m4fjF87aZnIzfmMVGjtxu98QhIs9i3DB1gPHjtDZKfCSKE
-X-Google-Smtp-Source: AGHT+IHRBKQCViOy+3E5ogp9zVpNMNg0Q43pXtgHycVq8ia8hUOj1ReM9zgzxUU55FO82PBbTz+ok2x7oLUwMlmTuHY=
-X-Received: by 2002:a05:620a:2948:b0:7fc:c964:38df with SMTP id
- af79cd13be357-7ff2b5a713dmr2135908485a.55.1756987861094; Thu, 04 Sep 2025
- 05:11:01 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=ckXNxxNG2rUMBWxCj4OwYtb+QAP/IU+ONllBc7op+N4=;
+	b=B1O632BsZ20wJq9WaotFtNlq4KubDDd7DF2YlOhstIXARd50dzILh2axME0CM7hsVJV8ai
+	3bIs/1V09hWMWj64USaBDkE4kQnKfsxKqiZLuPFOHpJAssdKr7lsKOCzwP3IIYKLaIAD9C
+	6v766LEkxkhL6KWCVgK5lQqvg7zd5io=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756987974; a=rsa-sha256;
+	cv=none;
+	b=OA6S74DL+fJwddFhw+80tPwqcJjJvOYBilMMC0ubyUCrq3UfYLeRfu1OgDbK37QS79RZDn
+	DTzMmPxKfcu0q4fsPWAjGqO5bIobVH5C9uvFQKDlf0OE+6XwJKKH9EiVyOk/SB2b+cScqf
+	Il/SvCF0s3LQ/b4v6/w6W8jAurZdS3I=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cHdZX2BSZz24htl;
+	Thu,  4 Sep 2025 20:09:40 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 39D241400CB;
+	Thu,  4 Sep 2025 20:12:48 +0800 (CST)
+Received: from [10.174.178.49] (10.174.178.49) by
+ kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 4 Sep 2025 20:12:47 +0800
+Content-Type: multipart/alternative;
+	boundary="------------Te0gsmdQ2l0CU0PqrSMAsi4C"
+Message-ID: <0f167c1e-1444-43bc-b993-72457ee1bdb8@huawei.com>
+Date: Thu, 4 Sep 2025 20:12:46 +0800
 MIME-Version: 1.0
-References: <20250904120339.972-1-haiyuewa@163.com>
-In-Reply-To: <20250904120339.972-1-haiyuewa@163.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Thu, 4 Sep 2025 14:10:45 +0200
-X-Gm-Features: Ac12FXxDCj7qXFPJlrrixUNL9wFH0RfwVg8nWGcK3mUz3g-juiYtolyxpTYsSD8
-Message-ID: <CAJfpegswS_KRpOxsCYCR9-z3uCGKrJz_=-c1__CHimHC7Y=M2Q@mail.gmail.com>
-Subject: Re: [PATCH v2] fuse: virtio_fs: fix page fault for DAX page address
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Alistair Popple <apopple@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Haiyue Wang <haiyuewa@163.com>, David Hildenbrand <david@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, 
-	"open list:VIRTIO FILE SYSTEM" <virtualization@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5AC5C40009
-X-Stat-Signature: wojer15chhhar45p1dsbmuzb58r7q16z
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] filemap: optimize order0 folio in filemap_map_pages
+To: David Hildenbrand <david@redhat.com>, <willy@infradead.org>,
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>
+References: <20250903084223.1653192-1-tujinjiang@huawei.com>
+ <3c283054-b14e-4f36-966f-78cf3bc0f3af@redhat.com>
+ <f5dd70ab-c610-4142-be57-1fa311672b5e@huawei.com>
+ <407a9aae-43b9-456b-b626-4eec55909dee@huawei.com>
+ <8fbec487-b696-48ea-a449-411ec74ad378@redhat.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <8fbec487-b696-48ea-a449-411ec74ad378@redhat.com>
+X-Originating-IP: [10.174.178.49]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D7F701C0006
+X-Stat-Signature: do4b4zyggfyzh7w8p1wut6wfu1nzique
 X-Rspam-User: 
-X-HE-Tag: 1756987862-657581
-X-HE-Meta: U2FsdGVkX19Q/GPSkG9O4j4biOZ8SQDJFBwGA8YgXOJzt/4dXPowJBij9u+lci6X7mCaFftnjQFhlfGA28XzoH76rLe5gzwKBNXxxU9njqg60XVVX/0Z55PrRMszbn4NwnQZbLf33kcF6UHs1IRCwTXqji1+hc/8zpVow8Mq6y18UDGhx7MPZGhCdvfLsFuyvudILTKiDy4oQ7pGhTtxlD4g0i170pY0ukcXgldkthZpHIN0fYrlElczruoo7PAkHmyjKcSEnajBnsakAiUv9Tgv2FkJf2cGthrkPoniLAu3x4K3KwNNIvfspanVhrMyRfwmhw2QrEUUMf+B0svmPuMgu7v/HNaWlSiDfLygPF9MqDSadl8YAARbl/dlaWYlWrVemRs7oKSgW5gX5EXnWC7BOZ42vcEwjduMZXjEEnwEl7oHaqk4TarpftTLVcSZm0VUEWPiURbfMt8XBX1+Bw7NzfSFkvR7BvTBGQHvrmsxJeJ7mzFWOTPvwAT6+/C9ihaEd8CkqCnblq9jLPJ6I2AgsnRM5TePkXVK1hhNw6aKrzn7jlovvDNfgFwmiXEGbupvF8C00uhAyIP0hraZlE0CX/iw1UTJWqWkpq/QkEl7nEwNlMyB0kgZWd2D8jHb4PBpkv+KBYcZ0qYIgcsfTGRiwg/vncdZnKgxFC/mLln558YQmEI3EnEAOcOwC4elMCdqw4h7MSG1Ca73xSPLP/u65iJ0hij8s4hX8RSQrAFC3eFaGJIjz6AnjO182hpKacDSJbaLXHuImlDPEFTozQaTLxOIFTo4gZHIUSvrdZ5KBD+5aN9jMv1ox/iHiRi+kT1KZiC54FXauCUrni1E74BJOpyVOA40PErueSW/rQpbvj1EZewSXqBWe/s3ayj7UDilkWbXpOMBUSBqusWeGbbCOVDWD2xKAo87te7D50BiEyNfbB8obPBgKQ6+l8tZ+ptl9jWwCrjr0Vo2Ai/
- VME/7+M7
- XzXxjmfVs2cLZd3HsgN/QfNUC1J0KTGmswLl8jNe0V2zjEIR22UDvQK4YwO6Nc61byFjlXd8TjlYGxf5lPrtYx4+zSVyHIit0zhxwPjpwX3glZAmR/0fNHz0kMPi5+jIzbYEBBbjXpqfvmC8pmsic+ccSzdm9dUaKtR5K0ckRj80AgXZAOVkUKAiC6CBDkVHM80170x6bOJarb1MNwlCy6GLVp88b4fwQ9XZD79Ya8l6YYqKa/L8nRvjrAc2zH5k8oeSUu2mhMU2saP8OzvYSxDpxg3lcSM11AYNu
+X-HE-Tag: 1756987972-269156
+X-HE-Meta: U2FsdGVkX1/K1QJs7WtE2mCac/bBsi2RZj3iJW8HXDY5Xn4TxucTR0FXv0V+XYJNgjKbaUL7vPb2EjIXf1lr1xwoa4XPbgN+ag3OzF+xsYxsH88NlMxA6j81uDxOQjuq4iwg+jgM3s2T1BjdA8weMGplGfExfZ3opGMuf0Ey+5yKHX3A8knGUuYDUjFyObbdG2tsYEErhZ1PQl63seEWvy306jZRx90jNmcj4xNRydHlEpJcyQxOcsx9HzIYqJIM4vNuxRVcnCh6zNs8qAQj1qzHPfddrm+WuY8upJ+I4zlpzLpl0uWFZlLOvVpgKc0/9dUQi1jtyHua4gqPH8C3pZyZTNr7SLalvtxNtLYY8W+0EOKfbRpQ02M2M20tjn7sHmdbtkX2SGyHQGFfiPkFTGYES8OUm21w5Exb78M9vQDI9uLglnWFXvm8hbhEVWpBNwD2LQayhPv5/YfTLIEG9nHHKIrZYQlw/h5G9ijZRSYUXeGz1kIR0YGhzR6Be5BHTXKIzxp7JNxU7siwt6VrNi3AJHp8VLXadgw95swcg0ju7rJ2NHfaH3WmRIlzY64h1f974j8NkIF/URrMjMfjMaOT3kjjrAAQ05zhBKX1bViL3KwdI67eTx+pgUue3Yx1/BLgvI/S0SBajSCDwn/qmfzbnz0d9hwlipXzzBB8KVW4pBY8UyLn6uym9/jr4aVa8gUTiilBw2yaJQt0JT5ft1ZHVRdhe9ASdazxNFvM5E8qseZX8Ybi0GsZsHQ9qIsZqQIEiGH56Q4zPj00mY1V05T7iXznUl48Ati3hcURmtUemRLsa5vgTV6v5DKTOUQP3b4H9jwhIoEFXJt7biREC0pXfLKttEf5hG7U8eK2z2JwzlJ+r5LtnnJFBtt3M26J8wYhEsq8kzbNIHwW5KM/ulElRnr5PxizJG+7gaFbUFIQVF+awZPl3mFwO/bF/eh9OvgZvWsVyZCI7yjeaeL
+ S16RhvzQ
+ N7AKQBglBdJnhsfkEXuYASCzVn6drz1e3ikj921SYVcFCJ/JE+6ncanlGO2i0gCLGNLRo2qja9/mIuGUJL6VHJ1DngKXsO2KopWptR56WTLQVKTfOxwQmR9OinxRFM65EOB9yQA7WSPHtKgX4IssJ1TtHi8OcroGSu+G4t36ts1GXHptCAmv6uhslrQbmYuxD/bWuIsviw1LIFMCO4so92M381xN7tfdzwJHcEd1AW4RFcYmikW4+I/CIP+5JiELZFoDF4zUYujbAJYhA6FFvc9Cu4CJofFoVA7ooV3apPMDAWl9ZXZdger48PbHdYh6tbQVhy9/p+CFhwbSZY6NE4PDgOniZx09L+SDQaI38+tiwUsZE0MUWDvPacccEPmOR2SGiiWroZyHt6/scVX+48QVk3179/SY3CrSH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,20 +94,381 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 4 Sept 2025 at 14:04, Haiyue Wang <haiyuewa@163.com> wrote:
+--------------Te0gsmdQ2l0CU0PqrSMAsi4C
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+
+
+在 2025/9/4 14:20, David Hildenbrand 写道:
+> On 04.09.25 03:06, Jinjiang Tu wrote:
+>>
+>> 在 2025/9/4 9:05, Jinjiang Tu 写道:
+>>>
+>>>
+>>> 在 2025/9/3 17:16, David Hildenbrand 写道:
+>>>>> +++ b/mm/filemap.c
+>>>>> @@ -3693,6 +3693,7 @@ static vm_fault_t 
+>>>>> filemap_map_folio_range(struct vm_fault *vmf,
+>>>>>       }
+>>>>>         vmf->pte = old_ptep;
+>>>>> +    folio_put(folio);
+>>>>>         return ret;
+>>>>>   }
+>>>>> @@ -3705,7 +3706,7 @@ static vm_fault_t 
+>>>>> filemap_map_order0_folio(struct vm_fault *vmf,
+>>>>>       struct page *page = &folio->page;
+>>>>>         if (PageHWPoison(page))
+>>>>> -        return ret;
+>>>>> +        goto out;
+>>>>>         /* See comment of filemap_map_folio_range() */
+>>>>>       if (!folio_test_workingset(folio))
+>>>>> @@ -3717,15 +3718,17 @@ static vm_fault_t 
+>>>>> filemap_map_order0_folio(struct vm_fault *vmf,
+>>>>>        * the fault-around logic.
+>>>>>        */
+>>>>>       if (!pte_none(ptep_get(vmf->pte)))
+>>>>> -        return ret;
+>>>>> +        goto out;
+>>>>>         if (vmf->address == addr)
+>>>>>           ret = VM_FAULT_NOPAGE;
+>>>>>         set_pte_range(vmf, folio, page, 1, addr);
+>>>>>       (*rss)++;
+>>>>> -    folio_ref_inc(folio);
+>>>>> +    return ret;
+>>>>>   +out:
+>>>>> +    folio_put(folio);
+>>>>
+>>>> We can use a folio_ref_dec() here
+>>>>
+>>>>     /* Locked folios cannot get truncated. */
+>>>>     folio_ref_dec(folio);
+>>>>
+>>>>>       return ret;
+>>>>>   }
+>>>>>   @@ -3785,7 +3788,6 @@ vm_fault_t filemap_map_pages(struct 
+>>>>> vm_fault *vmf,
+>>>>>                       nr_pages, &rss, &mmap_miss);
+>>>>>             folio_unlock(folio);
+>>>>> -        folio_put(folio);
+>>>>>       } while ((folio = next_uptodate_folio(&xas, mapping, 
+>>>>> end_pgoff)) != NULL);
+>>>>>       add_mm_counter(vma->vm_mm, folio_type, rss);
+>>>>>       pte_unmap_unlock(vmf->pte, vmf->ptl);
+>>>>
+>>>>
+>>>> I think we can optimize filemap_map_folio_range() as well:
+>>>>
+>>>> diff --git a/mm/filemap.c b/mm/filemap.c
+>>>> index b101405b770ae..d1fcddc72c5f6 100644
+>>>> --- a/mm/filemap.c
+>>>> +++ b/mm/filemap.c
+>>>> @@ -3646,6 +3646,7 @@ static vm_fault_t 
+>>>> filemap_map_folio_range(struct vm_fault *vmf,
+>>>>                         unsigned long addr, unsigned int nr_pages,
+>>>>                         unsigned long *rss, unsigned short *mmap_miss)
+>>>>  {
+>>>> +       bool ref_from_caller = true;
+>>>>         vm_fault_t ret = 0;
+>>>>         struct page *page = folio_page(folio, start);
+>>>>         unsigned int count = 0;
+>>>> @@ -3679,7 +3680,9 @@ static vm_fault_t 
+>>>> filemap_map_folio_range(struct vm_fault *vmf,
+>>>>                 if (count) {
+>>>>                         set_pte_range(vmf, folio, page, count, addr);
+>>>>                         *rss += count;
+>>>> -                       folio_ref_add(folio, count);
+>>>> +                       if (count - ref_from_caller)
+>>>> +                               folio_ref_add(folio, count - 
+>>>> ref_from_caller);
+>>>> +                       ref_from_caller = false;
+>>>>                         if (in_range(vmf->address, addr, count * 
+>>>> PAGE_SIZE))
+>>>>                                 ret = VM_FAULT_NOPAGE;
+>>>>                 }
+>>>> @@ -3694,13 +3697,19 @@ static vm_fault_t 
+>>>> filemap_map_folio_range(struct vm_fault *vmf,
+>>>>         if (count) {
+>>>>                 set_pte_range(vmf, folio, page, count, addr);
+>>>>                 *rss += count;
+>>>> -               folio_ref_add(folio, count);
+>>>> +               if (count - ref_from_caller)
+>>>> +                       folio_ref_add(folio, count - ref_from_caller);
+>>>> +               ref_from_caller = false;
+>>>>                 if (in_range(vmf->address, addr, count * PAGE_SIZE))
+>>>>                         ret = VM_FAULT_NOPAGE;
+>>>>         }
+>>>>
+>>>>         vmf->pte = old_ptep;
+>>>>
+>>>> +       if (ref_from_caller)
+>>>> +               /* Locked folios cannot get truncated. */
+>>>> +               folio_ref_dec(folio);
+>>>> +
+>>>>         return ret;
+>>>>  }
+>>>>
+>>>>
+>>>> It would save at least a folio_ref_dec(), and in corner cases (only 
+>>>> map a single page)
+>>>> also a folio_ref_add().
+>>>>
+>>> Maybe We can first count the refcount to add, and only call 
+>>> folio_ref_{add, sub} once before return
 >
-> The commit ced17ee32a99 ("Revert "virtio: reject shm region if length is zero"")
-> exposes the following DAX page fault bug (this fix the failure that getting shm
-> region alway returns false because of zero length):
+> I'm not a fan of that, because I'm planning on moving the 
+> folio_ref_add() before the set_pte_range() so we can minimize the 
+> number of false positives with our folio_ref_count() != 
+> folio_expected_ref_count() checks, and I can sanity check when 
+> adjusting the mapcount that it is always >= refcount.
 >
-> The commit 21aa65bf82a7 ("mm: remove callers of pfn_t functionality") handles
-> the DAX physical page address incorrectly: the removed macro 'phys_to_pfn_t()'
-> should be replaced with 'PHYS_PFN()'.
+I see, I will send v3 as the diff sugguested by you.
 
-Reviewed-by: Miklos Szeredi <mszeredi@redhat.com>
+Thanks.
 
-Christian, can you please pick this up?
+--------------Te0gsmdQ2l0CU0PqrSMAsi4C
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Thanks,
-Miklos
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">在 2025/9/4 14:20, David Hildenbrand 写道:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:8fbec487-b696-48ea-a449-411ec74ad378@redhat.com">On
+      04.09.25 03:06, Jinjiang Tu wrote:
+      <br>
+      <blockquote type="cite">
+        <br>
+        在 2025/9/4 9:05, Jinjiang Tu 写道:
+        <br>
+        <blockquote type="cite">
+          <br>
+          <br>
+          在 2025/9/3 17:16, David Hildenbrand 写道:
+          <br>
+          <blockquote type="cite">
+            <blockquote type="cite">+++ b/mm/filemap.c
+              <br>
+              @@ -3693,6 +3693,7 @@ static vm_fault_t
+              filemap_map_folio_range(struct vm_fault *vmf,
+              <br>
+                    }
+              <br>
+                      vmf-&gt;pte = old_ptep;
+              <br>
+              +    folio_put(folio);
+              <br>
+                      return ret;
+              <br>
+                }
+              <br>
+              @@ -3705,7 +3706,7 @@ static vm_fault_t
+              filemap_map_order0_folio(struct vm_fault *vmf,
+              <br>
+                    struct page *page = &amp;folio-&gt;page;
+              <br>
+                      if (PageHWPoison(page))
+              <br>
+              -        return ret;
+              <br>
+              +        goto out;
+              <br>
+                      /* See comment of filemap_map_folio_range() */
+              <br>
+                    if (!folio_test_workingset(folio))
+              <br>
+              @@ -3717,15 +3718,17 @@ static vm_fault_t
+              filemap_map_order0_folio(struct vm_fault *vmf,
+              <br>
+                     * the fault-around logic.
+              <br>
+                     */
+              <br>
+                    if (!pte_none(ptep_get(vmf-&gt;pte)))
+              <br>
+              -        return ret;
+              <br>
+              +        goto out;
+              <br>
+                      if (vmf-&gt;address == addr)
+              <br>
+                        ret = VM_FAULT_NOPAGE;
+              <br>
+                      set_pte_range(vmf, folio, page, 1, addr);
+              <br>
+                    (*rss)++;
+              <br>
+              -    folio_ref_inc(folio);
+              <br>
+              +    return ret;
+              <br>
+                +out:
+              <br>
+              +    folio_put(folio);
+              <br>
+            </blockquote>
+            <br>
+            We can use a folio_ref_dec() here
+            <br>
+            <br>
+                /* Locked folios cannot get truncated. */
+            <br>
+                folio_ref_dec(folio);
+            <br>
+            <br>
+            <blockquote type="cite">      return ret;
+              <br>
+                }
+              <br>
+                @@ -3785,7 +3788,6 @@ vm_fault_t
+              filemap_map_pages(struct vm_fault *vmf,
+              <br>
+                                    nr_pages, &amp;rss, &amp;mmap_miss);
+              <br>
+                          folio_unlock(folio);
+              <br>
+              -        folio_put(folio);
+              <br>
+                    } while ((folio = next_uptodate_folio(&amp;xas,
+              mapping, end_pgoff)) != NULL);
+              <br>
+                    add_mm_counter(vma-&gt;vm_mm, folio_type, rss);
+              <br>
+                    pte_unmap_unlock(vmf-&gt;pte, vmf-&gt;ptl);
+              <br>
+            </blockquote>
+            <br>
+            <br>
+            I think we can optimize filemap_map_folio_range() as well:
+            <br>
+            <br>
+            diff --git a/mm/filemap.c b/mm/filemap.c
+            <br>
+            index b101405b770ae..d1fcddc72c5f6 100644
+            <br>
+            --- a/mm/filemap.c
+            <br>
+            +++ b/mm/filemap.c
+            <br>
+            @@ -3646,6 +3646,7 @@ static vm_fault_t
+            filemap_map_folio_range(struct vm_fault *vmf,
+            <br>
+                                    unsigned long addr, unsigned int
+            nr_pages,
+            <br>
+                                    unsigned long *rss, unsigned short
+            *mmap_miss)
+            <br>
+             {
+            <br>
+            +       bool ref_from_caller = true;
+            <br>
+                    vm_fault_t ret = 0;
+            <br>
+                    struct page *page = folio_page(folio, start);
+            <br>
+                    unsigned int count = 0;
+            <br>
+            @@ -3679,7 +3680,9 @@ static vm_fault_t
+            filemap_map_folio_range(struct vm_fault *vmf,
+            <br>
+                            if (count) {
+            <br>
+                                    set_pte_range(vmf, folio, page,
+            count, addr);
+            <br>
+                                    *rss += count;
+            <br>
+            -                       folio_ref_add(folio, count);
+            <br>
+            +                       if (count - ref_from_caller)
+            <br>
+            +                               folio_ref_add(folio, count -
+            ref_from_caller);
+            <br>
+            +                       ref_from_caller = false;
+            <br>
+                                    if (in_range(vmf-&gt;address, addr,
+            count * PAGE_SIZE))
+            <br>
+                                            ret = VM_FAULT_NOPAGE;
+            <br>
+                            }
+            <br>
+            @@ -3694,13 +3697,19 @@ static vm_fault_t
+            filemap_map_folio_range(struct vm_fault *vmf,
+            <br>
+                    if (count) {
+            <br>
+                            set_pte_range(vmf, folio, page, count,
+            addr);
+            <br>
+                            *rss += count;
+            <br>
+            -               folio_ref_add(folio, count);
+            <br>
+            +               if (count - ref_from_caller)
+            <br>
+            +                       folio_ref_add(folio, count -
+            ref_from_caller);
+            <br>
+            +               ref_from_caller = false;
+            <br>
+                            if (in_range(vmf-&gt;address, addr, count *
+            PAGE_SIZE))
+            <br>
+                                    ret = VM_FAULT_NOPAGE;
+            <br>
+                    }
+            <br>
+            <br>
+                    vmf-&gt;pte = old_ptep;
+            <br>
+            <br>
+            +       if (ref_from_caller)
+            <br>
+            +               /* Locked folios cannot get truncated. */
+            <br>
+            +               folio_ref_dec(folio);
+            <br>
+            +
+            <br>
+                    return ret;
+            <br>
+             }
+            <br>
+            <br>
+            <br>
+            It would save at least a folio_ref_dec(), and in corner
+            cases (only map a single page)
+            <br>
+            also a folio_ref_add().
+            <br>
+            <br>
+          </blockquote>
+          Maybe We can first count the refcount to add, and only call
+          folio_ref_{add, sub} once before return
+          <br>
+        </blockquote>
+      </blockquote>
+      <br>
+      I'm not a fan of that, because I'm planning on moving the
+      folio_ref_add() before the set_pte_range() so we can minimize the
+      number of false positives with our folio_ref_count() !=
+      folio_expected_ref_count() checks, and I can sanity check when
+      adjusting the mapcount that it is always &gt;= refcount. <br>
+      <br>
+    </blockquote>
+    <pre>I see, I will send v3 as the diff sugguested by you.</pre>
+    <pre>Thanks.</pre>
+  </body>
+</html>
+
+--------------Te0gsmdQ2l0CU0PqrSMAsi4C--
 
