@@ -4,94 +4,250 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B983ACA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBBE6CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:07:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2265B8E0002; Thu,  4 Sep 2025 11:02:20 -0400 (EDT)
+	id 20A4F8E000A; Thu,  4 Sep 2025 11:07:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6AF6B0011; Thu,  4 Sep 2025 11:02:20 -0400 (EDT)
+	id 1C0888E0009; Thu,  4 Sep 2025 11:07:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09E878E0002; Thu,  4 Sep 2025 11:02:20 -0400 (EDT)
+	id 05C558E000A; Thu,  4 Sep 2025 11:07:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EB27F6B0007
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:02:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F1B7C027B
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:02:19 +0000 (UTC)
-X-FDA: 83851883598.18.88AF20A
-Received: from lankhorst.se (lankhorst.se [141.105.120.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EFF7B4000E
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:02:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lankhorst.se;
-	spf=pass (imf27.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756998137;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E4CD28E0009
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:07:24 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86C9B16028B
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:07:24 +0000 (UTC)
+X-FDA: 83851896408.09.2C1E075
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011069.outbound.protection.outlook.com [52.101.65.69])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DA5A4120007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:07:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=LRWnoAS4;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=LRWnoAS4;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf29.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.65.69 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756998441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i9JpeMdGDbhK8fazUzUVJQYBYsV2BDfjJEzDTVjraZs=;
-	b=hyrMcmLJR5F2JQ83s88wfe+srg6gYMxEkWYOqAb8Hq0NR2fcXQ97Q+W0XemCi8EFlQy/oW
-	v5mIYYyz/9yTSPuMzLGggMYpKUBZtVOn8/Xdy/R4bHxXu+c68+FA8fmkzYfJN2fVs28WDD
-	zR4U6yr7ij6EqWB2degHQKgxlgZuDbQ=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lankhorst.se;
-	spf=pass (imf27.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756998137; a=rsa-sha256;
-	cv=none;
-	b=1L+jYoPmJ+r8Z61LNx0oHPEcCANU84LSKlObvdzHPVC8lEbPDLayhezw1nElrugdUzHKsT
-	s4I7XI1g1KDickpUAIRySoGqwvoEzgaBAYcuDcdY5z9N82SfcFIKPP/zGQRFLWy3zy3PYF
-	n37cjbK92sb6TKqD3/wi4C8C9DEqMSE=
-Message-ID: <740924f6-e241-428d-beaa-630cad8c3e05@lankhorst.se>
-Date: Thu, 4 Sep 2025 17:02:11 +0200
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ugMn6oKEOjYHvg+0JhztaCK4sS5GJrjKq1+zAszikv8=;
+	b=XIBuyQBWhErK9q1Rqz4o0H9P37LG9aJAQMEBq8RchMcecd+laEsikaZSJGkFkh11Hkoy6s
+	9AhEHu2VAVUvPLEJsGADPta9EvJpTL1RgFk0qQmtD4tQW29vEHZ/ixS+ZKbELkbwE4IxLn
+	q64+59m9DuhueSF5s+NfT6O+X5oE7k0=
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1756998441; a=rsa-sha256;
+	cv=pass;
+	b=cHeTRht77kzMmRee5RzvnvWz61Ild1O1aXlaFSJZabAMKyp6hHFtS5uvlJ8/1p2vuRuC46
+	Gc8CTSj9OEQB8ng3vk6G7r1fxmyrhommKpau0a7yHL7I7BcbM0h8xIqzKsmT7P3mUF/12j
+	r8q7sl6q2/b6kCUmyk/8tFrmR24CPYk=
+ARC-Authentication-Results: i=3;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=LRWnoAS4;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=LRWnoAS4;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf29.hostedemail.com: domain of YeoReum.Yun@arm.com designates 52.101.65.69 as permitted sender) smtp.mailfrom=YeoReum.Yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=RRlmswNYw0YOipr//mRpYd/reSU/5NRxw30PBJGTon9anEyMIOSZQjaNpXkjOjjRbGTtEQy1LMOiDTp6/ClLKV0LZsl1BkkQvOV5Adw7Uohh/2z1ELl860X+Os4YazCcwgQHfkJ6ykDVRYt03rJwothBz8FoSNxNIGZ1dCtaxIVJVJZ6Rv9gIPexT6tKZcqwcOFeWPdWI7DwUW7IcMAHnmLabutt6t5D6DwjmrqmEdzyOkC3WuMLPTP1m+OBOhjlOpec1ThVtULkgi2s/aU1Df+rPr/5Rs0tq0b/rP/dRV6Mgn/JNGio2ywhBGg0Ta9SUBbxZxu3+cxB0c8X8k7ZSA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ugMn6oKEOjYHvg+0JhztaCK4sS5GJrjKq1+zAszikv8=;
+ b=dAqiET0B80bzPJqY8/daLtl2aRt/Hmx68fTJqzIzPmna5LA468SqpjByVHon+C8nTLRzReJwP337LDWr35iq6Pc+H48d+y4qBrJJfrziCFKp5ohAP9hBySjKqCncCmeu0aDbRIcqYNn+aNOzLU/oytPFvgG6ZWiqhxX1nixrmBF6o24H9wy+bOgAf/XbDGyugnWPKGOUEVBJeNxJ3Y2n5R7Qe/U/8uvFgDghr1F4IIHCd4ke0YulxsjKoRoMeObcRkzHLKqnOVEJitkEA1sV+J4JhjdOIsbuRc7FZNNG/uVRkGSzvbrSSghridN/x8sk5c6PHLqr9RIpSSyltc3cgQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kvack.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ugMn6oKEOjYHvg+0JhztaCK4sS5GJrjKq1+zAszikv8=;
+ b=LRWnoAS4upeeqL+XK9H58yDq9mFd29Y2NQngw/n+OEZPL+N1SnAEkE/sen2AJjWkWc9ruuBwGNFxZrS3MDQ8znmb2CO6uFZE5xnspfAuzDHYyWB70dLkGtn08MZG8ga6JLfGTeArH4pnEbzSV7qpDd/bLJUdEo7nV1r6jroJL7c=
+Received: from AS4PR10CA0022.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:5d8::6)
+ by AS8PR08MB8707.eurprd08.prod.outlook.com (2603:10a6:20b:563::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
+ 2025 15:07:13 +0000
+Received: from AMS1EPF00000049.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5d8:cafe::5d) by AS4PR10CA0022.outlook.office365.com
+ (2603:10a6:20b:5d8::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.18 via Frontend Transport; Thu,
+ 4 Sep 2025 15:07:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AMS1EPF00000049.mail.protection.outlook.com (10.167.16.133) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.14
+ via Frontend Transport; Thu, 4 Sep 2025 15:07:12 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PNcXir66EFUivE5clc5Kj8Y9Rz+0DWm/A373kSs+iebfIc9rr25ByZJhBpdgff8TZ4DtCeMF/P02kCpoGKMcQf28fAIruQOKw0LV5Wf8GRJ7ViAJBmWh/NnqxsjVhk+N9cobDfTdB+VuMGeuobntNZqEYh6Lm4hCndJh2EHLDseZzwf2XI77Y4cKjzCTdwJosS0BSHP77cm5fR6dG1eGOXSatEYOarp8g+I1IzLo1Ce9vVmDREyP/9HJCiliAt/5O0rtGpbMtw3nY+eh4SVyGMyYSLxBY57mZ3l7QWJlgJLeVqiMsvZ5o94eQqDYJRDiUQw8WwUeTTKHmoIi9WgkUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ugMn6oKEOjYHvg+0JhztaCK4sS5GJrjKq1+zAszikv8=;
+ b=s74UxJYBgmpT9hChaomY4S8CEYa+GSCxLK0kH7cYwU9MFQO2o9y+yVNp2IUhMO+rS/Q/LsbkZG/3AYeef8v7IAG1o+j0mUOHwX4MWJnJ2u/QfJKpe8bjS3Ev/CW+f3ISZZWVCSSnrZFKGXDUTN2yR8FEb9LbIgfHsSjOOviYnwmukiRSxXgxVUx6q/Mm45xd0QAX3bcP7PisrIt1EUVCouZjM8kFvKmwmnLuWbJINHZbkSJIlNmGAVt7z7ZN2GhfK6VKx6fvpvG0zfn2LEY/py/KXP5M4ZohDN2u1j0Wl+nD9HADmvp47zzKrs/agXfJ/qWldIC74iDL0rUnr1GW+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ugMn6oKEOjYHvg+0JhztaCK4sS5GJrjKq1+zAszikv8=;
+ b=LRWnoAS4upeeqL+XK9H58yDq9mFd29Y2NQngw/n+OEZPL+N1SnAEkE/sen2AJjWkWc9ruuBwGNFxZrS3MDQ8znmb2CO6uFZE5xnspfAuzDHYyWB70dLkGtn08MZG8ga6JLfGTeArH4pnEbzSV7qpDd/bLJUdEo7nV1r6jroJL7c=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by GV2PR08MB7931.eurprd08.prod.outlook.com
+ (2603:10a6:150:a8::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.29; Thu, 4 Sep
+ 2025 15:06:37 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%7]) with mapi id 15.20.9094.017; Thu, 4 Sep 2025
+ 15:06:37 +0000
+Date: Thu, 4 Sep 2025 16:06:33 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 2/7] mm: introduce local state for lazy_mmu sections
+Message-ID: <aLmq+dwZV9dyTYuq@e129823.arm.com>
+References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
+ <20250904125736.3918646-3-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904125736.3918646-3-kevin.brodsky@arm.com>
+X-ClientProxiedBy: LO4P123CA0125.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:192::22) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- David Hildenbrand <david@redhat.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>,
- Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?=27Michal_Koutn=C3=BD=27?=
- <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "'Liam R . Howlett'" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <20250819114932.597600-5-dev@lankhorst.se>
- <dc21e54c-d7ae-4d7e-9acb-6a3fa573b20f@redhat.com>
- <9c296c72-768e-4893-a099-a2882027f2b9@lankhorst.se>
- <b6b13ad22345bcdf43325173052614c17e803d00.camel@linux.intel.com>
- <776629b2-5459-4fa0-803e-23d4824e7b24@redhat.com>
- <da5885a94d89a2c0dece04e09182e832e8e40410.camel@linux.intel.com>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <da5885a94d89a2c0dece04e09182e832e8e40410.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EFF7B4000E
-X-Stat-Signature: 6mnyahir936xi7ydjxd1q1utxsprc6kw
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|GV2PR08MB7931:EE_|AMS1EPF00000049:EE_|AS8PR08MB8707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 733721fb-8f1d-4d71-3e22-08ddebc4b9f6
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?us-ascii?Q?HI9BmywBGI+n6E5v4HCTATtyI6GatboYoOMoqPuBaCSmw2JJ27VT9Hohu+iA?=
+ =?us-ascii?Q?Q8/p6GDZTO/IepPkUFwqphXLyK5aoufFTG1QN++6L+WOMSaJ7cEepXvA5MW6?=
+ =?us-ascii?Q?/ybcrsoZ/FXa8rotI3lJ7/f8Q5HHrg3T6Mh825cNgtV1aOk0WfddyBo9rRXz?=
+ =?us-ascii?Q?dWTt7TzuqAFrMkoUvGVt96fmn6k1S4G/x7TC66zzXYWBVqDj7wJfBTP3y8bb?=
+ =?us-ascii?Q?Y6zOIuJVdakxZD9HxQO2SUUXIUlsYL2tBM5HJ47yJhPMfauz3tthSy3fWEvA?=
+ =?us-ascii?Q?5q61/g4tIaLZT9F0hWOJ+WCsTl7z4BFAyNIzWKInkXiDTrDgCqbneiUcGQ2O?=
+ =?us-ascii?Q?jZq3B3b9Zo/qaJ+GFtYVJ2YUrTB4wgiVC09Zasg5AfHMmO57CV3QS89aFlcz?=
+ =?us-ascii?Q?ESKIImLmQN6uf8ykJOVpsy1lP6jBLuI3GDlskuFCXWWbvUWWViTwGmJ8aPbg?=
+ =?us-ascii?Q?L2wHIokcPh/qrZPgJncOdMSIHL0Rf08j4d0EDCVV9Auv7h0ZeOIULc//6RhD?=
+ =?us-ascii?Q?p8dLnv9AY4+/ua3MzHbwKhDgVNf5ccJSnVg7+nr88JdMclEQZxgINb9ele2I?=
+ =?us-ascii?Q?nMUf1URSoGbLZyZ4+20qKlCYmEjIvEwOm6NFG6ezyYWTLNy38+qvXvokCIh9?=
+ =?us-ascii?Q?o00oQKPE3YOSK1rDGv5ru+gKPqpMHkPWPAR/fPTxpw1fGnHivtlojfS00aG9?=
+ =?us-ascii?Q?Afee/XrPFJ37loCXrXtRtvv9NL4cEKGOFgc3vS8phYsBYzWgst2MTAm7lfpg?=
+ =?us-ascii?Q?dlG+F0i5DZ2JyK0wxSkheteJh13Pc1dG6IW4UjwfDAZbFsiyMM33YzS0hDka?=
+ =?us-ascii?Q?IgXziV6gP1kw4twNXhbSbPo98i5xX/06VIRE1nkFF/bDRrL9b2H+5ERKwoQM?=
+ =?us-ascii?Q?5e7m19ADpEckviOHaiWsOJJ24tpPL6iYchnCOqlBlcamC5X8kro7jn0OTgHE?=
+ =?us-ascii?Q?HBNv2xdUpanMy/kT3LocGK8uvpJIQ00xnLulN70MQ/ZLVIRIBP2PrQkF54Fg?=
+ =?us-ascii?Q?Yy+f47p1p7FmyS24iCckAGmzDzcBEH1uCfJOvGxbNGmFdzwrB8YhVIHUaxsr?=
+ =?us-ascii?Q?Pc03p+WP9rW2pDwNRlkCr7BW8pfVH/HhxVU1yC7yBPzLqX00t8NxZ4YEVmEg?=
+ =?us-ascii?Q?ylYKqX8mreruUT0hGzdRofWu5pbQGDckTglgEa2LEyhiPGHwTfV55/sfxhOZ?=
+ =?us-ascii?Q?+Bfx+s46Dg87A/cRUUaz/5TnAktt/g1bwIGzG1t+qShv6eRl6JsgZJC63Y/H?=
+ =?us-ascii?Q?l+1kbTCvw1YUfkZe7FH4k5cJcd/ShHLKK1W8rZFGtxPjeih14Il6DlQjH2Vv?=
+ =?us-ascii?Q?lE9U+DOikJP7YrEcpm6NCXdSN+e4LscaVxlA6KkkaSS5GCs/tSbBXJKJHkGM?=
+ =?us-ascii?Q?bEn5qkoQWv31I8ElhVy9g9ljYipcT/X8nmKr3kKEQQte9LK0lUF68yv3ubp5?=
+ =?us-ascii?Q?RUIl/DLS/+Y=3D?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB7931
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AMS1EPF00000049.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	94765155-63eb-44c6-8cee-08ddebc4a4dd
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|14060799003|82310400026|35042699022|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+jyVZRQaCFISNpIDYoLrLGIy5S3t01y85fxSI5EcZRsEUSaB8AUX2gNcb4Fv?=
+ =?us-ascii?Q?g4ObXTrD+QP9TolZX8IdLjx4mBrVcdrwpjA7yqhBKrx4XepJdPVYGj4XZ/gg?=
+ =?us-ascii?Q?bvCRMTFjvyKhuV7Qu5eWD6yEZkhcee2QvLazYptS03wIdFCKwPhCnGWE/igx?=
+ =?us-ascii?Q?X+L1xdGg037FFc+TzlHm72TJcayIqeP7g2wC1KO8Q0FmlNDd+Msj4biuX1Hz?=
+ =?us-ascii?Q?9MEyO0B3n7VFL+r4FK0toKX+pmqO9lzCoWNeV3DqRkkkMcLfWk3apJfWTu11?=
+ =?us-ascii?Q?maq37/Gdf+Mgd9E4E3vI57aVv3E3Z1uVcdeHxZ0LJU9aBTC1n/mx77ug6MxS?=
+ =?us-ascii?Q?YhHZ1k6+UXUfB81UzBKiRV6y0UjgOq/ZzeZBmX5vr9YzMNW/ih3JYM65Nsrh?=
+ =?us-ascii?Q?gAnQi8DR12m6NXvOdM6HSreta6lK8JHLgCTeCGvyd4inq4yx33I8HnuvIKNO?=
+ =?us-ascii?Q?h1PJyg83pW5Xxq6XonyAQyGaPCVwBc7xA3Jriu4LhVO2LQlOoI6HLmR0ilzF?=
+ =?us-ascii?Q?wNOEceme3dmS9xj3S1k4sCgjHOrRcj/rWPdkD5hNfE6dTNIHEHSuklktNVM8?=
+ =?us-ascii?Q?NMrJKmWBGj9URUktULMMziOZAJqVuVdGNPyNfhZBnhGR3cjIkipHco22kDR7?=
+ =?us-ascii?Q?IVErC0uxwMCxhUy7jVytiyH4OP2A2qZ8b4SXR/+Nj0vWpcP4dEgNILXILkEB?=
+ =?us-ascii?Q?U/91TFpS/WmopxItWEqRXgPGZMw9EK7YsCK+dCxzZQBouOIj0qOlb56aYAMN?=
+ =?us-ascii?Q?VfOnMzOf2CRoXBhUmSJ21Ye22xr4xPhJOJsDnjC4AlPgl/fwCPZ+PWprIalG?=
+ =?us-ascii?Q?IXmbs3saq+0iZ/Xg9qFFq6hN/r8uUdUQOTblzEzx0Qnil20KihMD9ccMyv4e?=
+ =?us-ascii?Q?7UyIiohAvTb593pW/tMFUlDNOh+wzaTMvz5GDzfoCxIzqQ+XSOkD3h51T+NT?=
+ =?us-ascii?Q?CKRMjzOab1ipT+aRR/qydM01qiEbR8n/thAG4uq+LeSCZMQeSWZaQ1Ivb8JB?=
+ =?us-ascii?Q?dJfKqJEV9K0C7sXf/BK7brj4Nt6DwzBQKYq/Bg/ylHPLo7jCdFiOSFS7hKBr?=
+ =?us-ascii?Q?N54+wbBg3TL2yuY4VxOgOJnIHke4kjHBXE9lSC3QFULU+gjPaZ4SREsbsVjg?=
+ =?us-ascii?Q?7BFoICmBihDX8fSRX/fF2h2YL6oyKB+DxYQI8wGRKwMoJr7Wv3wPFzQKRFR0?=
+ =?us-ascii?Q?CC1PCcLBoSNdU5kvRqeS5k8jN78CDTEjLX+Uyy+NEn2Ze1lSkYF/XT1QVeYH?=
+ =?us-ascii?Q?lHB0de9zuckX1aY+WJIbfDZ1TYhWTAVuahbu12N+F+AudRK15iUUBdFNGkub?=
+ =?us-ascii?Q?bxHzoVHtKvL2ERJqP+T424MJ9GLEeFkGZ21f77rZGsI9xm4Brq4wnqKVnUEL?=
+ =?us-ascii?Q?mvt3i5mmUG1OOlL3Wl4WawjuKoYo6rKr/Z2Y0oXiZMZDXGmrIjJQeWzhiIat?=
+ =?us-ascii?Q?NlS+0364npsWTqv/ZUJzq0oQbb7LmUWI8aOYmvUODXcWnlPL5UqxwmIhb0iv?=
+ =?us-ascii?Q?9T0pp8IbuR0Q4DL9DMWgfrvtSOV4bWSOHlen?=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(14060799003)(82310400026)(35042699022)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 15:07:12.1297
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 733721fb-8f1d-4d71-3e22-08ddebc4b9f6
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF00000049.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8707
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DA5A4120007
+X-Stat-Signature: 3ph3m9q7g3qk3qjxoecmhrom79i59us7
 X-Rspam-User: 
-X-HE-Tag: 1756998136-869436
-X-HE-Meta: U2FsdGVkX1+ZidcvW3gXwDJsQ7BY7EtoN91k9JoeN4taIyc8g8uWSR3jW8Vdckf1GugJW5YwNadD6mS9PeIvl6EKgeTsUWTz7BCAB1w/5trizAQ39F26TxMPQllu6pDz+L22QTuR6hU2a3NGz8AZi0hd6bvMUaS+WjrEQCuTdS4rO7uYkXOn6dsp2wahqfvak8Tg6HFAwnpH3Xe3HYDEO1O0i5RgqHjWoc0bxmTRt1PyYTtHgZSHDlzGbo/g8d6NAwOUq7hDFemoO+NuAm7pA/y/b/pISnWOaWykb1NuZha0ImG2GDiagY5zlnseGZTrQGNNwZ6kDFHnnQT9LeelyEmugduRaXEaHwEg/BaLCRPi3NF+yPKcwMYrRzOjWOwzQoHNuW/EW0IpD4X5GnJY0ztqeUSI3QbaOYcNO61GB/SPjkwUddA7jGOyQ1qRQI9Z16ZrbJYMwUJ2QPaTkODHBmpXiBrEq3oR7iJA/LBGnOc3sqNwI9MMOAaM+YTxV47cC1RSnoLT9qdIr0OSzJN9y7lfGRgrKDS9pavmzczYp7jQOSWIbCNx6XBZAmeh3vBUkqIPwdjf46eQP/xoOMDi58mGxWuIGPcMI6wetbmGoc7FfZO3Ap2SFJhMwZSaCHgM1b6A2Em0CSLKY19FzApa+QcEPIxrGM3JWZdO/s/fqJxHweTeIMFh7t55vxKLsgqUA/Kx4Tz1HG2oWt57ucXNU8KGFSZoXLsmFA9Wzr4587OH4/WB3jFb46i7Q77dU9PsTLdZaz7ElgyqSioIRePmidkq9u5Rtf4I0wAxJkcjKtD+WDUvWQOlgCdkJ5Y8zmtpT0FLs2VYFLgmAJWmO0Y6FE10H2tQnkZTbdymgqX6m96nI4URbd6yzhWXLc+Et8gHxTW9kBRQ8DXTd3XUU5mjyvBjx2vvHalEMt8UT83grAUgVhwWdGCN0XkAvauLXo9PeNBbZylGmYce0BKObtb
- mhh5l+0P
- sNFk5DoGlt6BAsmodgGMR5mWBYnCeuzT6R7QKR8CDJ/BQvF45zuX4i3X6NzxyhfKwN1PgW/d0YJ7JtWAA6R0kF0N8wg==
+X-HE-Tag: 1756998440-485368
+X-HE-Meta: U2FsdGVkX18UvCO2IDz1CaoZbRqrjpglz7pr/y5TRVAyjcdq+z1NZ6Att3A1VPe+rcNi2RQgmJfXh5WZQDXz5/MIsaai5jSww5Ej7WzP4CzV0HM4v6eO395PXi6vAihSvbbZi5ZV3a4uClS4+bZFa7onfLE7r9RKymLeEdo/hmVqsS31SsAbYZg6m27Cm+N7XOjy3OyixNHB6K9PjXVuuDe7ugTcWF43wov8XEsjdynDyVejZFa8/4rLH/si+kA5b+Rkzsfxje8rsLbF+9CNHEbHezTAO1anQLTVD1RaRNsfKvW804jc466x2AzKSxCsntB5a/hUC9iiM7IwIl9hPCMeiT8AgyEE4Ka/xBANuLEICWRyZzl4Z4eKPsCTzK8kZAbkrOvCEzd0k2bl11l3Pb5WBLvndFqYkHNJwEYJ5tY/Tmd9j+qir2ZfcLJyUAI2Uhs1Pty7sToNIzZqrJ8iSiMzrfImJxuwSs5si7e0BB22ml2UxGU9Pi7KyxGIo3xGBXzphvfiKjHUwh3kXUv7BKg4RNfirtQkQ+d/24So2iZFV0KBtUNi4hDz/TXV9R/Sn2ZxVJupLF9+D0Ase4UQV9zVZKD2zxF22fhXBdeKcENtgfn6wv2P9yulTOl/FYA8btGMwPq2Awt0NGgfnOX4V0GP+iqvDJaVQUxBy+eWNgNRLOPS4utayonr2NPGvmU5qC3U0StFYyxenJOXFMtaqSkfgravxVbMrnZBFlDIYYjkWI7nNUdt2nU0yiJ7D1z2zbH4FzrCNOb3FTDweL1/zKxgrP0oOAuL+xG78DtKsmYR2RFWCXilnpYy04o6MlvmPgQ6Cbrm7txxWls5oBNbPGGvQY8FaIX82WGvoO29/IEJV0yH41vvtiLvRSrCZgTGV8IVdPIeFxCs0WOhFlPx0WU7M+HoBRkyby3IAIEMz8tJmPepf8XBgBghnCRyygcOIpzT1kRUYAVo0An51pl
+ LwcftfsE
+ ODNHU/Z0XNvPvoaqnBkTYNeHZHvlzUmAnUQLVtvMFsohJ11Islc4o3YpFX9O2VW+xqR4fhf8xKEUmQdlKqOlDPD8bT5EHLri1/AGi9mPtLw8ETaelJXhdLTMVwWVvb/QEDtoO1JzsgbwjPnfA+SMau8Ju87ZLv/JDRo7iNDTim6n9RhoEbDHCKigoUs4DXdx1D71yWgEvxMcJkQ73PN/yRCVvm67vS5Y1xTvF8IUUl11dcEK8ORUyiLvoWZWKqrLE1YV2CikcDG8ru8WIZhRtK08xczjbOF/YCwtrS/msyxGibQf/lkD88iVUiEirLKl9p/L9fXLEgPyfD96826soJU4o+5OubJS2AEtBBFE7Nsbgj/BctY24K5SaeF3aIpZfkgkvSu9EYPhJ/JbqyPjCPrvn9OMQaFpX90d+3xeROFv8EnwRC09DJwd1o2kXUHgstmK+Mn5oB+vsORMpJMOXoX8VB63QxNVOg+aSAs+XZ6SMsg+HH4DIhnNZMSepXcTg/xWqFMyKCy/06UZEViD4t7mQ0O+AIdIzfaYFBJpVE0H1AxWmPg68CgMcYBVXwQxfBC3QS7sloOqUrn3yTuKMgvw8jF7CcgDZ0qu431981fvPFpUMQEX7TFu1N58uDlg3Iembi++vGsU2N1hbUYSOvclqMQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,148 +256,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey,
+Hi Kevin,
 
-Den 2025-09-02 kl. 15:42, skrev Thomas Hellström:
-> On Mon, 2025-09-01 at 20:38 +0200, David Hildenbrand wrote:
->> On 01.09.25 20:21, Thomas Hellström wrote:
->>> Hi,
->>>
->>> On Mon, 2025-09-01 at 20:16 +0200, Maarten Lankhorst wrote:
->>>> Hello David,
->>>>
->>>> Den 2025-09-01 kl. 14:25, skrev David Hildenbrand:
->>>>> On 19.08.25 13:49, Maarten Lankhorst wrote:
->>>>>> When exporting dma-bufs to other devices, even when it is
->>>>>> allowed
->>>>>> to use
->>>>>> move_notify in some drivers, performance will degrade
->>>>>> severely
->>>>>> when
->>>>>> eviction happens.
->>>>>>
->>>>>> A perticular example where this can happen is in a multi-card
->>>>>> setup,
->>>>>> where PCI-E peer-to-peer is used to prevent using access to
->>>>>> system memory.
->>>>>>
->>>>>> If the buffer is evicted to system memory, not only the
->>>>>> evicting
->>>>>> GPU wher
->>>>>> the buffer resided is affected, but it will also stall the
->>>>>> GPU
->>>>>> that is
->>>>>> waiting on the buffer.
->>>>>>
->>>>>> It also makes sense for long running jobs not to be preempted
->>>>>> by
->>>>>> having
->>>>>> its buffers evicted, so it will make sense to have the
->>>>>> ability to
->>>>>> pin
->>>>>> from system memory too.
->>>>>>
->>>>>> This is dependant on patches by Dave Airlie, so it's not part
->>>>>> of
->>>>>> this
->>>>>> series yet. But I'm planning on extending pinning to the
->>>>>> memory
->>>>>> cgroup
->>>>>> controller in the future to handle this case.
->>>>>>
->>>>>> Implementation details:
->>>>>>
->>>>>> For each cgroup up until the root cgroup, the 'min' limit is
->>>>>> checked
->>>>>> against currently effectively pinned value. If the value will
->>>>>> go
->>>>>> above
->>>>>> 'min', the pinning attempt is rejected.
->>>>>>
->>>>>> Pinned memory is handled slightly different and affects
->>>>>> calculating
->>>>>> effective min/low values. Pinned memory is subtracted from
->>>>>> both,
->>>>>> and needs to be added afterwards when calculating.
->>>>>
->>>>> The term "pinning" is overloaded, and frequently we refer to
->>>>> pin_user_pages() and friends.
->>>>>
->>>>> So I'm wondering if there is an alternative term to describe
->>>>> what
->>>>> you want to achieve.
->>>>>
->>>>> Is it something like "unevictable" ?
->>>> It could be required to include a call pin_user_pages(), in case
->>>> a
->>
->> We'll only care about long-term pinnings (i.e., FOLL_LONGTERM).
->> Ordinary 
->> short-term pinning is just fine.
->>
->> (see how even "pinning" is overloaded? :) )
->>
->>>> process wants to pin
->>>> from a user's address space to the gpu.
->>>>
->>>> It's not done yet, but it wouldn't surprise me if we want to
->>>> include
->>>> it in the future.
->>>> Functionally it's similar to mlock() and related functions.
->>
->> Traditionally, vfio, io_uring and rdma do exactly that: they use GUP
->> to 
->> longterm pin and then account that memory towards RLIMIT_MEMLOCK.
->>
->> If you grep for "rlimit(RLIMIT_MEMLOCK)", you'll see what I mean.
->>
->> There are known issues with that: imagine long-term pinning the same 
->> folio through GUP with 2 interfaces (e.g., vfio, io_uring, rdma), or 
->> within the same interface.
->>
->> You'd account the memory multiple times, which is horrible. And so
->> far 
->> there is no easy way out.
->>
->>>>
->>>> Perhaps call it mlocked instead?
->>>
->>> I was under the impression that mlocked() memory can be migrated to
->>> other physical memory but not to swap? whereas pinned memory needs
->>> to
->>> remain the exact same physical memory.
->>
->> Yes, exactly.
->>
->>>
->>> IMO "pinned" is pretty established within GPU drivers (dma-buf,
->>> TTM)
->>> and essentially means the same as "pin" in "pin_user_pages", so
->>> inventing a new name would probably cause even more confusion?
->>
->> If it's the same thing, absolutely. But Marteen said "It's not done
->> yet, 
->> but it wouldn't surprise me if we want to include it in the future".
->>
->> So how is the memory we are talking about in this series "pinned" ?
-> 
-> Reading the cover-letter from Maarten, he only talks about pinning
-> affecting performance, which would be similar to user-space calling
-> mlock(), although I doubt that moving content to other physical pages
-> within the same memory type will be a near-term use-case.
-> 
-> However what's more important are situation where a device (like RDMA)
-> needs to pin, because it can't handle the case where access is
-> interrupted and content transferred to another physical location.
-> 
-> Perhaps Maarten could you elaborate whether this series is intended for
-> both these use-cases?
-Yeah, this is definitely for the latter case too.
+[...]
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h              | 10 +++++++---
+>  .../include/asm/book3s/64/tlbflush-hash.h     |  9 ++++++---
+>  arch/powerpc/mm/book3s64/hash_tlb.c           | 10 ++++++----
+>  arch/powerpc/mm/book3s64/subpage_prot.c       |  5 +++--
+>  arch/sparc/include/asm/tlbflush_64.h          |  5 +++--
+>  arch/sparc/mm/tlb.c                           |  6 ++++--
+>  arch/x86/include/asm/paravirt.h               |  6 ++++--
+>  arch/x86/include/asm/paravirt_types.h         |  2 ++
+>  arch/x86/xen/enlighten_pv.c                   |  2 +-
+>  arch/x86/xen/mmu_pv.c                         |  2 +-
+>  fs/proc/task_mmu.c                            |  5 +++--
+>  include/linux/mm_types.h                      |  3 +++
+>  include/linux/pgtable.h                       |  6 ++++--
+>  mm/madvise.c                                  | 20 ++++++++++---------
+>  mm/memory.c                                   | 20 +++++++++++--------
+>  mm/migrate_device.c                           |  5 +++--
+>  mm/mprotect.c                                 |  5 +++--
+>  mm/mremap.c                                   |  5 +++--
+>  mm/vmalloc.c                                  | 15 ++++++++------
+>  mm/vmscan.c                                   | 15 ++++++++------
+>  20 files changed, 97 insertions(+), 59 deletions(-)
 
-It's a performance optimization for the generic case, and very nice
-to have for the second case, to prevent unlimited vram pinning.
-With cgroups, we would be able to limit the amounts of used memory there.
+I think you miss the mm/kasan/shadow.c
 
-Kind regards,
-~Maarten
+But here, the usage is like:
+
+static int kasan_populate_vmalloc_pte()
+{
+	...
+	arch_leave_lazy_mmu_mode();
+	...
+	arch_enter_lazy_mmu_mode();
+	...
+}
+
+Might be you can call the arch_leave_lazy_mmu_mode() with LAZY_MMU_DEFAULT
+in here since I think kasan_populate_vmalloc_pte() wouldn't be called
+nestly.
+
+[...]
+
+Thanks.
+
+--
+Sincerely,
+Yeoreum Yun
 
