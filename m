@@ -4,94 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD6D5CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:03:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D6CDCA1015
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 12:04:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2410E6B0010; Thu,  4 Sep 2025 08:03:57 -0400 (EDT)
+	id AA5FD8E000E; Thu,  4 Sep 2025 08:04:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 218506B0011; Thu,  4 Sep 2025 08:03:57 -0400 (EDT)
+	id A7E1A8E0001; Thu,  4 Sep 2025 08:04:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12E5A6B0012; Thu,  4 Sep 2025 08:03:57 -0400 (EDT)
+	id 993F78E000E; Thu,  4 Sep 2025 08:04:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1CD6B0010
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:03:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 92C5C56338
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:03:56 +0000 (UTC)
-X-FDA: 83851434072.24.0ABF250
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E830F1A0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:03:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=e8qt5Hgq;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf19.hostedemail.com: domain of haiyuewa@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=haiyuewa@163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756987434; a=rsa-sha256;
-	cv=none;
-	b=2SfFL6VCbiFY0RPzP4UIdbtsw9v8CCoVvr2mOvEdXTD+vjkPPR/2UPlQ9LHL7QvukDAnmK
-	dGnWcnbOyv1/2Chym45OdETm6PvLzbz7/rpXqFU6tuLkq+4ziE3UPXGIf3xkDKMvnvyjfI
-	09CHkfSAPlOGecbQ4YDbfbRjMl3PDik=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=e8qt5Hgq;
-	dmarc=pass (policy=none) header.from=163.com;
-	spf=pass (imf19.hostedemail.com: domain of haiyuewa@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=haiyuewa@163.com
+	by kanga.kvack.org (Postfix) with ESMTP id 883CD8E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 08:04:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 50BC61DA5D9
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:04:13 +0000 (UTC)
+X-FDA: 83851434786.11.21C17F5
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 560ED40010
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:04:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=X677gz0i;
+	spf=pass (imf17.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756987434;
+	s=arc-20220608; t=1756987451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IJYiXUgYfec7n2c5/2xp13tDlxmBs6mrIZwN/MTkTps=;
-	b=4/wLE4OBaY0DPCyufJAuT1IIgZSNRFs3rN24nul9NPqLTPEWVXNDGQ2Uf6zthKNC6Aimxc
-	NYJlJGAz0eWWVEShNMg9/B/NEgxI95re0J8A70faxkRXE/Ng7vqbr/P+3XB2WfSaacZGtx
-	z88JTwOEi8gXoePq0nrmFBjWBLrgYjc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=IJ
-	YiXUgYfec7n2c5/2xp13tDlxmBs6mrIZwN/MTkTps=; b=e8qt5HgqJQXeGesonp
-	OQ/ghJaF4NC8LkBonNk1qKIGXjG73dG9YkVETF2tE5YVy4EIr2zQlj3AEdf7SQVk
-	Cmsia3nrt88eFfZo1Blw4oqC+z5rXi4bnbMn6VMw61s3/COE6H/ckgOXlO7gCNlx
-	JH1TbMzGGv5jL+VoReQxCyKNg=
-Received: from haiyue-pc.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgAn1CkigLloi3ngBg--.1994S2;
-	Thu, 04 Sep 2025 20:03:48 +0800 (CST)
-From: Haiyue Wang <haiyuewa@163.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Haiyue Wang <haiyuewa@163.com>,
-	David Hildenbrand <david@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	virtualization@lists.linux.dev (open list:VIRTIO FILE SYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2] fuse: virtio_fs: fix page fault for DAX page address
-Date: Thu,  4 Sep 2025 20:01:19 +0800
-Message-ID: <20250904120339.972-1-haiyuewa@163.com>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CYiE/pA9YF+I4gC3nqqr/NiV56Cz+ejODJOLdKJjvLU=;
+	b=fN38ThTe/HAedBIlmQB4xfou2CYVsARRg7p2yx8a52ggfxw0r5Ie+fqwxMOyPDoosN166r
+	3WDFf6WcMKs9kObsx6DFp/LLqx+zRPXG+hQo6YNcQmkhyH4hFciRWBV0fisr/KmGjgOFyf
+	dGVR48u5pbzjngGps/DSImD8fGBWKbE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756987451; a=rsa-sha256;
+	cv=none;
+	b=Rk08GeQLH8C1DnsWXaNKcmFBd0ZQDoGFSKw9VlZuXoB2RWSmAsDsRamjZhLIFznul7AFit
+	Z3zYpF+ItstmS/oWb/8TTzwkB7a6+CnWF4x4OGgmw00lfoMha1UQV/H9jJ2myC8o433ODR
+	hWjjb3QourhUaHGSl8kh6S51iJqybZ0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=X677gz0i;
+	spf=pass (imf17.hostedemail.com: domain of thierry.reding@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=thierry.reding@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45b79ec2fbeso6699085e9.3
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 05:04:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756987450; x=1757592250; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CYiE/pA9YF+I4gC3nqqr/NiV56Cz+ejODJOLdKJjvLU=;
+        b=X677gz0iiMmEVn3FNg16WaNq2QVAuPMVb2ruW/lSjDfwUdu1TqS10Q135ZTC0+0Xke
+         i/W01j5UEW6CzPa/SzNcdbbgDk1Egmi3aePbXneYsQyiA3otRtebI0l6PyBU0hwqJ3At
+         DAQZXPHPjvEPUGxDvmhBgJ7qpJRm3E/1GFA5WkbxLC4GyAuR4Dn+ev/de9/aiVzCaG6+
+         9i/b41AkMf3OZCJTgCABP+MKfCyTuzJCP7BItvKWmRdqiTwhj5evytz/TI2EnXN44prP
+         /S+047il+tyMZpKLw1KZdxE+L37KMUOxEpVOR6uVzgBBOIedlgaETwxuOjeCjVI8TToR
+         RdbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756987450; x=1757592250;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CYiE/pA9YF+I4gC3nqqr/NiV56Cz+ejODJOLdKJjvLU=;
+        b=VTx/erCuJqDzp/O/BOCv4vCUkx0IJieyZgQ3xtcc9+i+2eSkRqudFPQCLgQSvGWVSA
+         DneEQ9MdmUbiCt4wXpPBFaMqPvG2Ay8hh9xrMsjZxh8HVuhvDUn17evJGPjf3lWMiI+N
+         60QZG8VMhb3wNY5KourqkfGBQCM+pFP5+Rh49S4hTMfJP5R9UeoLwSdyVGInanjCzTS0
+         bgpr21aY2Pt+eGSk0fi1guOHY6U8n5V3H+X5LeDOFlDHOcydSHLB3S5+3MUKMqcjgZ4b
+         epqhlG4B3MlsLdnYpcYIU9xY5cWwtKENGOoa73I3SG9y6DTYRPS/9resQCjaJl3t97YC
+         6nJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ/SF+eZj4GSmRIMs7y9uEFXhisE9PQm+TNiIDArhaBzck+g99D1vD0GBEtUZkL+Qho/2Gh6wNCw==@kvack.org
+X-Gm-Message-State: AOJu0YxKHXeCTUVzCav2TwEOyVSP4sZlrzXOvPnk3rrSrZPDQ2lZ+K0Z
+	HxXMWYIeYHGfkSoJ6+9AFsrR2ieOH9k4NfgXauj41cewpBlyUQowr1eW
+X-Gm-Gg: ASbGncuZWQrjC1FfkgwHANRYp6iezCRGuLXse3ckJqs6WqWENeL64JyY16S1Vh5xZ2v
+	OHDWjiSHklyINsypwc7MalNOfaV5zXbOTeaoCaAMLatQWgxNJrqN/xaJTYefAftqVYIjii5hWHb
+	mrSdOpmJ+X9GTr35ngfcHOGtcWTRTc/SL1NsatQuOrepqVzQFVwDB5wGWghYmV/7yq06FtVerv6
+	MFS1zMqHWaU1BwTpo6Bmq0jsqQg0gk3a0GiZS3Cv7Z28FxsFFUePe2xzMLD4o5X5KOukwEHEk+6
+	+fC+ebw3jAHhWq/NncIIsIyAtgJHcmM/ZxfuZzXWfaQ6OmYGlRLqVenHaBLAyEDglj3V70sKasq
+	vrGkc1CLmqHAbJPaYpZFO43Ht5W/rKi346FwjtKpElCmjzP4KGQh8KCJfgahOvXYAnWcHaa6Q2o
+	+rP11H73wLXrF1sLEXDT0v4suQN35Ybw==
+X-Google-Smtp-Source: AGHT+IGVHgAQ3rYyWGpANjjI/b4lpqEcMAsgs+SEt1MbrHmOvH15O1otXHYn+//vwM4FBU00m/l7Ow==
+X-Received: by 2002:a05:600c:1c95:b0:45b:8abf:4583 with SMTP id 5b1f17b1804b1-45b8abf46edmr100558005e9.19.1756987449310;
+        Thu, 04 Sep 2025 05:04:09 -0700 (PDT)
+Received: from orome (p200300e41f1c4d00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f1c:4d00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45cb5693921sm79929805e9.0.2025.09.04.05.04.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 05:04:07 -0700 (PDT)
+Date: Thu, 4 Sep 2025 14:04:05 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: John Stultz <jstultz@google.com>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH 4/9] dma-buf: heaps: Add debugfs support
+Message-ID: <sb76bsg5d45r5qgq4zy3svbh42ydkk4vrh6a7vh73eibvqbfjd@3r4exdhogde6>
+References: <20250902154630.4032984-1-thierry.reding@gmail.com>
+ <20250902154630.4032984-5-thierry.reding@gmail.com>
+ <CANDhNCoM4RFX-QccF7xT=+-tduGj9OZ_8SgrTVyRucMwyVc73Q@mail.gmail.com>
+ <e6twhwxi55eesb7xirei7wezzb77qjiji2mccgqlziisjzl3q5@3ny5e6lbgebz>
+ <CANDhNCrO21O_URa1iHuroOoG-g61DL7uvECTwVxiuitCTi=i4g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgAn1CkigLloi3ngBg--.1994S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtF18JF4rtryxCrWkGF4rKrg_yoW7WF47pF
-	yUtr1UGr4kXr1UJF10vr18Xr13trsrAF18XrWxAr1kZF1UW3WDJr1ktrWUtr4UXryjqrW7
-	trs8Gw1xtryDKaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEiiSDUUUUU=
-X-Originating-IP: [114.84.56.142]
-X-CM-SenderInfo: 5kdl53xhzdqiywtou0bp/1tbiYAS+a2i5fI1csAAAs9
-X-Rspamd-Server: rspam03
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="n7xt7eiet7j4nzny"
+Content-Disposition: inline
+In-Reply-To: <CANDhNCrO21O_URa1iHuroOoG-g61DL7uvECTwVxiuitCTi=i4g@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 560ED40010
+X-Stat-Signature: 46arkd61uzhdg4a5kcyof6dspwgs88w5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E830F1A0002
-X-Stat-Signature: 5ke6z5c5bszz1yymdzi7c16dhsa7i96e
-X-HE-Tag: 1756987433-994850
-X-HE-Meta: U2FsdGVkX1+WEepTaCxNQnwNTpUF4cM42Dw1HKotnsYxFBXUAEQH7W2XLla2KpqUnIRPb9xtxpUus/0Vqaf01X/og7ysyZU1X1H50NxshSXBLmU50VVzFmdCwC1h5R8Rb2cTvDduQlcGH0QSMyZ2kIY4hIkUgF+4Ha8/ruRdm411zmIvyq1qaTCTq8rwZP9fNGh0f0tY4wpXjugM/BFWXLtud0Gp92q/CunBmkYouV7vzguGyFjy0wQ3Nae78nmjxDeMgHNgtgdQTLFo3CsA8bIQwx9AOFTWRFfqZHL8zIl52AqfIx5kDmw9mVpDYSg+P6AoklBXxZk4cM84bqe395sxG791GToNjsR0I2tn2lZ8+xjtlj9jwgwcw8c5TckFQa12cdQyYlcasiV3mn5sSy6Aji+ula07NisEYiQ8fkXKuW7teeioAlqyvefdv6lVVw91NCGKehde5IxId05cnrzDiZooBBhXz6+YW3G9C1saDGAkrLlMpfan0rMUzHCZmx0eYyGNZmqry9EF/JuY8fo5F+zM3MOrZH0gdf6xZpVfDhRO2unMgSt4vsL7qGxQX9lVceEDvljSewxJrHqLPdGwPZQGK4yOh2hWWutSdkZRRu5rxK/J6QLuDe+pcOtkQzH4dGUZunHVlH3xcev5WDVmdK9Bco9HCBFUG5Fu3dBe0226jhecF1pFh2gNx/Jj/jgGhsXBnRVpT4afmRXhixCSmXUvjPm81GUd5f3QnjEvZKbZYCjoGpqqSRbv24NgT7Pr9eaE969pVm4o0zzNbQjV5U2Gz5tj1FSCa13b/Oh3ndYmzC3AvXrE3fxeHjfPdjhCS7vBPF/h0kNj5TT/M57Vr/ueBgZkdoG6SCPy7fJiMVYDWTILj7FJxQExwKoub+J1viPch0apY/dRbWvc22/wXPJimS4MLb5Wt2lnf+zE75hVA885HtILV2Q4KIXqwvut1NUqHhgIs4ECfNp
- A4C5s/M4
- qyNgt1E2IhZ4EDw+XUpf1S3hduh+49h3F/V/1t1IzrLCBz5BpzugFuEL0pVe8R1NHsx2MCdHebd/rPV+TmFmRbSNXnVWOHZ6rAalJmPpSsSb8d4zVMP6fIM97q8a6z7/hvBA6nliCoqXkb4h2gS65uNoH/df43yYBQEd59jKwoVIhNYlKKhRCakCivkkXQvzy+f2Z7DWmoYKPoRYpTM5ZGPpjiUxqpCe0DEOFSTelbmBaPQsRv5FpkiXpqc09ayqXhGdfRmGEJ0ODtNVGtGyTjWfEWFmXkAfCmOf+TxQA2un7xx+Y67Po07qSltP7WX0JelfmGcoJTjJL4P/psJoeDcoqVQj66grjcgwTPBQ4Qc8NOVGTReA5+Fo4IWvpk1nNbc4EZThekItvPlwVLFGVfeolRxJISlnRlGa6lVQKL23KKjEsAt8gCIE/0COjmmSWenYAzA1pxH/U9Qk=
+X-HE-Tag: 1756987451-756802
+X-HE-Meta: U2FsdGVkX19sRJo7t+zOCePFYYWprpDmnRGxjkw3Ow7iF30NF9niQID+f2s8ugRS1Q7e2jlPzyWB3VuVRZvNvqbDLZNpFkizSpgQVbeKEeR5A0rFgp477HWS+6KpoA6FCYl5MgwsY7oe4r9iEqbfZc5fpzbXT3Bn6xHVY0VAIJlP/xwSD2AN2hdZkVLWNhGWVBJK2CXsHuz775r0krve0JF/ZnX2AwkXrJzlI6oq7YPGRh5AJnqxlGEXIw9cwiFQhpAJuE3ntoTcPtkXrlVHajyqz/sEKmRGboTv84ZHr/V7QU/VG2cN7UVC9cIJWEr0NDG7GvdGKQjdOGipqpPgwQXSukjEiQMwbfcTkMXCbm4eGR2hWCA3V+TAXoZiJ5cRaEbU/kcM06NDdsUWS0X6pCZK9ul2Nw1g9fj2XoU05mmUrcYTs146DHfhPew6nuwRCU5kPENns1V2RP9RPBQPxCbRV/N6IMsjhlWbA3a6cRUj7DgRCF5BpAocMTHCH88lPX/aSbAcG//yD9MH/E0QLDk4rvUr7ftupqQ1rpCfqDYlR1J9kwUN5JI/Ygiw3H5t9hyC7IM1dPgfI1pstqs54jLNPDNL/NeQcyp2LVFr68sy6N4JExtqmqV4QUuct7diJI2s3PzovGdNCqOpnRj6HsQYNqxdlsj5iWJMnfsUs56rzHHsR7awtqfuJl3FNhXm3826q07JPiHP7JzcNB3HmXwHvKNt94QDzmYRulByALQ32LZ9nA50G14aVA5mKgtQi6Sgfd+HbtUxmefu0sSphnke3y0pGQDvHtN7NnY+/bVD0zaM7nVEc+TVTrXFk9AhgQNxwg+wBb3BDrNJkgKsi95dFrP31yPXl9AkvgTB0OMKZnaEa7ayTEhQrlIUy8lpehM/H7pLq9b2yfOUAlrqoROb7CtX+qR7DTp4XkEowrCAKCQD1zMc2dUw0SJFOVawDDdLOawRwXF1tob+6LZ
+ sokIGkdV
+ wcOhpZs8oYcVy2m6m0F0gI4PBLeYpOnLjDJNpXL/PL616H3Rn+eVXjJEODLJe73yi/iC1gjkQ88Ifq+L0l31kk01oMkK9uLcEMIqvdYn5CWc13DLuM6Gr1fWqowO7zyWp59Zh+Q28Ut8yJJb0Pxrvb8R7/wKNq41TBB5gQIbpTF2n+RrsiV8vu7q4pLXbkeZA92xsbrvjScVvqK+CvekNw1fxgUy5QxACT97VunObmxdTBtsP5wDSeLtQv99x+MxsXGmOArbRoVdGVuCSHmwNx+yzIPjWtFLbRELugi2R/IjThMUWvYmwj9qyk9PXqKXUnJWWDS/rAsaboClIq+zoWQArCjPRLOebKqTfZ58DIWb/4PCn+n9SQvSjiGtdqFAkmLWk99TtUcRLRn9sxhdzxDYFMvzgKIupYcJ2acP1WB5jLI0BeR+sHp9Q/wYHDOLf8Iv5o9ZGfx9AxyEVHj7oolI6ERco7xl6++hHDvGIQ6bKjOqNj73mVUgkS8Y+6QAhS1fPIb6BSQqBagFj3Z7aCmfFiW3rquaNtp7htnU/Bpl3BaYczU8QdG1I6Ilf2wSRBX7vUeHjV89PtlWJgoAs7Ea9/MHVXqdVDaFhfT+zbwSoaI+FwANsPeEEKuwYFRFfX4IuldRl00Du6biji4fsiYeGOV3oIPaYwtZue0u3GWZua325bdU80BdpE348LoiHhGEh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,98 +129,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The commit ced17ee32a99 ("Revert "virtio: reject shm region if length is zero"")
-exposes the following DAX page fault bug (this fix the failure that getting shm
-region alway returns false because of zero length):
 
-The commit 21aa65bf82a7 ("mm: remove callers of pfn_t functionality") handles
-the DAX physical page address incorrectly: the removed macro 'phys_to_pfn_t()'
-should be replaced with 'PHYS_PFN()'.
+--n7xt7eiet7j4nzny
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 4/9] dma-buf: heaps: Add debugfs support
+MIME-Version: 1.0
 
-[    1.390321] BUG: unable to handle page fault for address: ffffd3fb40000008
-[    1.390875] #PF: supervisor read access in kernel mode
-[    1.391257] #PF: error_code(0x0000) - not-present page
-[    1.391509] PGD 0 P4D 0
-[    1.391626] Oops: Oops: 0000 [#1] SMP NOPTI
-[    1.391806] CPU: 6 UID: 1000 PID: 162 Comm: weston Not tainted 6.17.0-rc3-WSL2-STABLE #2 PREEMPT(none)
-[    1.392361] RIP: 0010:dax_to_folio+0x14/0x60
-[    1.392653] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
-[    1.393727] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
-[    1.394003] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
-[    1.394524] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
-[    1.394967] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
-[    1.395400] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
-[    1.395806] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
-[    1.396268] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
-[    1.396715] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.397100] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
-[    1.397518] Call Trace:
-[    1.397663]  <TASK>
-[    1.397900]  dax_insert_entry+0x13b/0x390
-[    1.398179]  dax_fault_iter+0x2a5/0x6c0
-[    1.398443]  dax_iomap_pte_fault+0x193/0x3c0
-[    1.398750]  __fuse_dax_fault+0x8b/0x270
-[    1.398997]  ? vm_mmap_pgoff+0x161/0x210
-[    1.399175]  __do_fault+0x30/0x180
-[    1.399360]  do_fault+0xc4/0x550
-[    1.399547]  __handle_mm_fault+0x8e3/0xf50
-[    1.399731]  ? do_syscall_64+0x72/0x1e0
-[    1.399958]  handle_mm_fault+0x192/0x2f0
-[    1.400204]  do_user_addr_fault+0x20e/0x700
-[    1.400418]  exc_page_fault+0x66/0x150
-[    1.400602]  asm_exc_page_fault+0x26/0x30
-[    1.400831] RIP: 0033:0x72596d1bf703
-[    1.401076] Code: 31 f6 45 31 e4 48 8d 15 b3 73 00 00 e8 06 03 00 00 8b 83 68 01 00 00 e9 8e fa ff ff 0f 1f 00 48 8b 44 24 08 4c 89 ee 48 89 df <c7> 00 21 43 34 12 e8 72 09 00 00 e9 6a fa ff ff 0f 1f 44 00 00 e8
-[    1.402172] RSP: 002b:00007ffc350f6dc0 EFLAGS: 00010202
-[    1.402488] RAX: 0000725970e94000 RBX: 00005b7c642c2560 RCX: 0000725970d359a7
-[    1.402898] RDX: 0000000000000003 RSI: 00007ffc350f6dc0 RDI: 00005b7c642c2560
-[    1.403284] RBP: 00007ffc350f6e90 R08: 000000000000000d R09: 0000000000000000
-[    1.403634] R10: 00007ffc350f6dd8 R11: 0000000000000246 R12: 0000000000000001
-[    1.404078] R13: 00007ffc350f6dc0 R14: 0000725970e29ce0 R15: 0000000000000003
-[    1.404450]  </TASK>
-[    1.404570] Modules linked in:
-[    1.404821] CR2: ffffd3fb40000008
-[    1.405029] ---[ end trace 0000000000000000 ]---
-[    1.405323] RIP: 0010:dax_to_folio+0x14/0x60
-[    1.405556] Code: 52 c9 c3 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48 c1 ef 05 48 c1 e7 06 48 03 3d 34 b5 31 01 <48> 8b 57 08 48 89 f8 f6 c2 01 75 2b 66 90 c3 cc cc cc cc f7 c7 ff
-[    1.406639] RSP: 0000:ffffaf7d04407aa8 EFLAGS: 00010086
-[    1.406910] RAX: 000000a000000000 RBX: ffffaf7d04407bb0 RCX: 0000000000000000
-[    1.407379] RDX: ffffd17b40000008 RSI: 0000000000000083 RDI: ffffd3fb40000000
-[    1.407800] RBP: 0000000000000011 R08: 000000a000000000 R09: 0000000000000000
-[    1.408246] R10: 0000000000001000 R11: ffffaf7d04407c10 R12: 0000000000000000
-[    1.408666] R13: ffffa020557be9c0 R14: 0000014000000001 R15: 0000725970e94000
-[    1.409170] FS:  000072596d6d2ec0(0000) GS:ffffa0222dc59000(0000) knlGS:0000000000000000
-[    1.409608] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.409977] CR2: ffffd3fb40000008 CR3: 000000011579c005 CR4: 0000000000372ef0
-[    1.410437] Kernel panic - not syncing: Fatal exception
-[    1.410857] Kernel Offset: 0xc000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+On Wed, Sep 03, 2025 at 11:48:38AM -0700, John Stultz wrote:
+> On Wed, Sep 3, 2025 at 8:38=E2=80=AFAM Thierry Reding <thierry.reding@gma=
+il.com> wrote:
+> >
+> > On Tue, Sep 02, 2025 at 03:37:45PM -0700, John Stultz wrote:
+> > > On Tue, Sep 2, 2025 at 8:46=E2=80=AFAM Thierry Reding <thierry.reding=
+@gmail.com> wrote:
+> > > >
+> > > > From: Thierry Reding <treding@nvidia.com>
+> > > >
+> > > > Add a callback to struct dma_heap_ops that heap providers can imple=
+ment
+> > > > to show information about the state of the heap in debugfs. A top-l=
+evel
+> > > > directory named "dma_heap" is created in debugfs and individual fil=
+es
+> > > > will be named after the heaps.
+> > > >
+> > >
+> > > I know its debugfs, but this feels a little loosey-goosey as an uAPI.
+> >
+> > Well, the whole point of debugfs is that it's not really an ABI. Nothing
+> > should ever rely on the presence of these files.
+> >
+> > > Is there any expected format for the show function?
+> > >
+> > > What would other dmabuf heaps ideally export via this interface?
+> >
+> > I've thought about this a bit and I'm not sure it makes sense to
+> > standardize on this. I think on one hand having a list of buffers
+> > exported by the dma-buf heap is probably the lowest common denominator,
+> > but then there might be a bunch of other things that are very heap-
+> > specific that some heap might want to export.
+> >
+> > > Is there some consistent dma_heap-ish concept for it to justify it
+> > > being under a dma_heap directory, and not just an independent debugfs
+> > > file for the driver implementing the dmabuf heap?
+> >
+> > Well, I think just the fact that it's a dma-heap would qualify its
+> > corresponding debugfs to be in a well-known location. We could of course
+> > pick some arbitrary location, but that's just a recipe for chaos because
+> > then everybody puts these whereever they want. There's really no
+> > standard place for driver-specific debugfs files to go, so putting it
+> > into some "subsystem"-specific directory seems like the better option.
+>=20
+> Ok, I guess I was thinking if the files are organizationally cohesive
+> to be under the dma-heap directory, they ought to have some
+> consistency between them.
 
-Fixes: 21aa65bf82a7 ("mm: remove callers of pfn_t functionality")
-Signed-off-by: Haiyue Wang <haiyuewa@163.com>
-Acked-by: David Hildenbrand <david@redhat.com>
----
-v2:
-  - Add 'fuse' prefix as git commit title.
-  - Add more message about how the bug be exposed.
-v1: https://lore.kernel.org/linux-mm/20250828061023.877-1-haiyuewa@163.com/
----
- fs/fuse/virtio_fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+As far as I can tell there's not even enough information in a dma-heap
+to add any common debugfs snippets. As I mentioned earlier, a list of
+buffers allocated from a dma-heap is about the only generic piece of
+information that I can think of, but we don't track these buffers in a
+generic way. None of the existing heaps do so either seem to be
+interested in this either.
 
-diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
-index c826e7ca49f5..76c8fd0bfc75 100644
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -1016,7 +1016,7 @@ static long virtio_fs_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
- 	if (kaddr)
- 		*kaddr = fs->window_kaddr + offset;
- 	if (pfn)
--		*pfn = fs->window_phys_addr + offset;
-+		*pfn = PHYS_PFN(fs->window_phys_addr + offset);
- 	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
- }
- 
--- 
-2.51.0
+It's also not like it's very useful information most of the time, it's
+mainly in this driver so that it can be inspected at runtime to see what
+the allocation pattern looks like at various stages and maybe help tune
+the division into chunks.
 
+Thierry
+
+--n7xt7eiet7j4nzny
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmi5gDMACgkQ3SOs138+
+s6Fs+g//UOYEclDiMQaLHjmLrIy415HNAOvJ45jAQXSXODXhEWUoeeT6VpX4alVY
+nX8oVWTi6ne/gxdb5ecijq0xe98suaGyb0ExszrPDOsykvikNhAMO8+hGNgfvnU4
+L/lvQqTxM8wGz/D1A7z3CyhBipu8GNIYxlF64O9ejq22NqDZGLykvHupw8SubU4G
+LQRHuwu39Yb2Hj+r8IMiSXCjWPHtelnA4HXM7hnURUkRNIKkoSp5g9UQJIlw84Y3
+U+4zSs9x9IOUr2l35QMwJEq1R168TIAj6gm1G1eSKxGDlIc5DgU4Ei4QTmki+Qhj
+hvToHncu1BTaA5YvpgcFKmgCD1jFX93fx2to90mPpWMonySn4EyL0wAqwycfUuC7
+D4mKmRF+Dj5RGmrRATN2yZ+2l+N2GgCzJ9EoNNacTl0fFy14FHVwiqn6OVlrIMVl
++olxYn2Ta8T9EMnKrQquQtoEbFJT1mfXUfAlHFDGJocYgKrO+o1zpFzZtEGd92sZ
+hpSs5qlYH7hLQaj7P2Pb29mfloQZ9XK3YSNcttTbnFU2dyEahlPvx/VJTCCQvNeY
+g03SAA1priYhlLGKdaa19fDxICteA6dmc9Ba6ejSvKXLHejTFlLooK+hkSmufJIu
+3DdzixdgWcOsgxrw2vvHlU0U5bPvKnfbiUJUL557Iwo9vw3KKHw=
+=G6AW
+-----END PGP SIGNATURE-----
+
+--n7xt7eiet7j4nzny--
 
