@@ -4,266 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C80CA1013
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 19:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40854CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 19:54:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58DC78E000A; Thu,  4 Sep 2025 15:12:04 -0400 (EDT)
+	id 43F998E0003; Thu,  4 Sep 2025 15:54:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53E168E0003; Thu,  4 Sep 2025 15:12:04 -0400 (EDT)
+	id 3EFC66B0010; Thu,  4 Sep 2025 15:54:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DF6D8E000A; Thu,  4 Sep 2025 15:12:04 -0400 (EDT)
+	id 2DE658E0003; Thu,  4 Sep 2025 15:54:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 29DFC8E0003
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:12:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E71DD1DDF1A
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:12:03 +0000 (UTC)
-X-FDA: 83852512926.28.94DD3F9
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 77497160004
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:12:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VzA0JUTv;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=jLzhWWVM;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757013120;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 180E16B000E
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:54:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8108B8EBE
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:54:05 +0000 (UTC)
+X-FDA: 83852618850.06.63EEC20
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B9663A0004
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:54:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="gv/XS6Ny";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757015643; a=rsa-sha256;
+	cv=none;
+	b=EwCSK0o3Hjx4dSCGXbWqfZ7bpdwbT24EDAuBSKBAv4bo0oCWXPy+hLCA+/grIHW8So/wpu
+	4YXQtjMpwLeMfN9JYM90yRYEWq8dx+Mi9bE7Kr0tDlOHPusA5QnW3ZZEOznBpWNFmOw/Y5
+	EDGECoKsbC4XTQAhF8W9RqNcD3AsTlw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="gv/XS6Ny";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757015643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JEmfmtMZBgYHQzNiQrd4PA0dm0L4wwUbfGDDGG5t8bA=;
-	b=xs9sBwK3pWqXkuytvdwsT3Wbjdbf+hdPDyDo+YQ7yyHIWmcL6N3M1HLum/xG/WLP3w/G7k
-	ZGWngQ2bCL6hrLPxigKROnGSbTI4Sb3WkCwa/TlEIxV9GLjqTowJ9dxmI4jCdBsvXIUiFR
-	azC55yYMsGPCwlnjYYr+thUY1eCVLGA=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VzA0JUTv;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=jLzhWWVM;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757013120; a=rsa-sha256;
-	cv=pass;
-	b=pxDROjFYzLG0zwBihI/k69+v7dal3sJqHab/nW3Egh9No9UhTVPiUjCwF66PUxGlAXpSYy
-	uw5tyx9OLVNSLd3yP+x3IAU65JyMCDk1PX8in4EXh4qnLEt02frxE5PkyTfdyP4hBlHEE+
-	uALiSAKXXjxzIYYEUz/QTZh8xwwW+/4=
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 584J4evB031855;
-	Thu, 4 Sep 2025 19:11:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=JEmfmtMZBgYHQzNiQrd4PA0dm0L4wwUbfGDDGG5t8bA=; b=
-	VzA0JUTv/tmDyejbAqzQOcFEp6t3vyV5x120U1heSmpEK6JLe3R0sTRO6mnEyQEm
-	RhsprZvegXpaW+wk6mRlaGgqspC/V2am9tsgmC1zdWah6diEGnMqG7uuzuayrU9c
-	G0p6MMDQcLfXQsNki+M7W30yajgFBnXseUOGYyzyr2qFWiYBmnDA89t07HdQOPMt
-	uB9DSSAQcOLSTgiQs3fWSPZd4F5mZI8++rKmqTi0nfTsLgtr5cIRHgQpVLSuq5Qa
-	UvGqg5alwIAocqcfPkxKoBP12ydsqDUMw1oEwycUU0d3JRTv47ghc6R7ZgigaV9/
-	TgUj7KB/a0F7G8dGDu+Tmg==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48ygkvg0j8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 04 Sep 2025 19:11:55 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 584HdRas040710;
-	Thu, 4 Sep 2025 19:11:54 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10on2056.outbound.protection.outlook.com [40.107.92.56])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrbntqw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 04 Sep 2025 19:11:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E/xgkHCfoHMoSPOfnxT7l85jWac+HNI42tb6WQKyETSvyrTHHSVFG+CDHh0Qrxkf8dU5WqP/gb4p7hhATdRoKw9V3S9lOw8iWvYfhsdzqpEhkIjlsP+eafwFJW2r+IZHuwtQZQaHEgiLu+a++ddPjlNbkntbyMQEN6+8Ds/RmZhXQ7HYBSrmu0e6F0Qx/8Hb15XxSLUqMHwYKanj/Dr2D7HjcTfmOTpZG2lWz1521lPesYsTSEriSI6c5itLeN4kqIF/QGpkvip4sn2RHvnsuslX/xD07iUHERfzIPnAjRijkDO8iqYxfE5dKOIHnStZVJLo3O3blEg3SVYVwt52aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JEmfmtMZBgYHQzNiQrd4PA0dm0L4wwUbfGDDGG5t8bA=;
- b=sFIFdSz30aILQYagbSYWU79XfEPI8TYkjsrUpAIH+sbNJ2ULQ9WsjrXclIiJl3gaxGcLFydZdgLZHgFjDUb/QgN7CbLIWeHIQAhwcE4WIKS3RKnsV6Yw7GzCwvzYphQFz0Yt2Gz3PQjsVbE7/VYbFjM5F7/oAJdErH1T7FLmN6W85jyYFuYBWuHuWCiXCnSzReE/Me+B3ZTPkV0Psxftzj90Ck1fC5ldbblhRpoCYzFM922UuaG4sFAq4Op/YYy8fnjho5hNJOIQVrxJ1ms8guiWcDpB0rZS4kc3nBxHX/dtTgYSg9+amiJsCgqMlymHKF9rsefejb53e8WubU7Wbg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=CW6N/04aVXSqAqCWFvMO/Nhy5na9bRfLZIbzmF48rh0=;
+	b=llE6kDs4S9ER20jDJu2miKnLryhSTcpuSTdOl20STrR+lVrJpD0xeruBaXN/1pU9zVxU3L
+	HzuLfSWZmDl1yxAqcXUrh2lE0l/eMDhoe5foSpL5dl9goHbuAYH9vGRiFfXWRbJAwLqmur
+	XmKS1vtCMSg5s2x0vvbTspfiYnNbHLE=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-329e1c8e079so1273766a91.2
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 12:54:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JEmfmtMZBgYHQzNiQrd4PA0dm0L4wwUbfGDDGG5t8bA=;
- b=jLzhWWVMNkf0QV26+JHHs/0+BSSKmYS+tk5wyo1mBabk7nmMwyJVD99IwyiGUomH/4b2oKPlQl+s4JHbgg8j/K8qHLOxa0z7MLKw6iNZPw9IiRlMlM0+K60IyHkAUfU+iQ+VXMItMJjN+Ejh4YloA6PtY1WwSaaGsq9LwUu3RjU=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by MW4PR10MB6369.namprd10.prod.outlook.com (2603:10b6:303:1ec::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.18; Thu, 4 Sep
- 2025 19:11:50 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c%5]) with mapi id 15.20.9094.017; Thu, 4 Sep 2025
- 19:11:50 +0000
-Date: Thu, 4 Sep 2025 15:11:46 -0400
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        akpm@linux-foundation.org, minchan@kernel.org, kernel-team@android.com,
-        android-mm@google.com, Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
-Message-ID: <e3lsreaj3gpqgt6l32edvyjbiscekyezhosaew3lgu4xvbwmsv@2bfpvwtl4bpe>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org, minchan@kernel.org, 
-	kernel-team@android.com, android-mm@google.com, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20250903232437.1454293-1-kaleshsingh@google.com>
- <827c844f-7106-4f62-a108-1f83544aa56e@lucifer.local>
- <43ryds7hzhs5bpaxznco7fppmakdb4f46agwtsc5erudqfoz2x@7y4jgbtft7jj>
- <413ee338-1795-433c-b3d4-72c870488d95@lucifer.local>
- <84aad392-3bff-4f98-b612-5e9a046edb36@redhat.com>
- <CAC_TJvc=5=iS8gCumJWqH5eF4XufFSogqtWHJmiH5WBN1A6gng@mail.gmail.com>
- <4chxl7uxr4exy2z2dcshxla3c5nzzo2tbnelsbbky7pdzrih6a@hzfnpbenfmub>
- <8e1881b8-3867-4cea-b03e-50c05ed8148d@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <8e1881b8-3867-4cea-b03e-50c05ed8148d@redhat.com>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YQZPR01CA0069.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:88::7) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=gmail.com; s=20230601; t=1757015642; x=1757620442; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=CW6N/04aVXSqAqCWFvMO/Nhy5na9bRfLZIbzmF48rh0=;
+        b=gv/XS6Nyr44vG3eeDaIlOb5ALNiIFKmi7ud/hPaEct/nP7nvjTzoF/Cd1xMEr+/Fvq
+         LHnjEm2UJECTNdgtqupKdLzJ5Pw2cIdLxxOOUNbF6mr6pzIgqhWO4PaZqugmRE4dimAq
+         r+fbskQ7PzOVNZFOlhhj6TRnClpcl7lEjafwMGh9gGA14fgWssNplUOr9kne/jtYvFLx
+         7wi/IGIIy7w6zkmWH4s71g4fBRAye9VsFd1GniYac07lTia4vtI/hchrm+/46JQU7B10
+         jqYmWOLwiBpjFnXkraMEyP+kSe3AMS5GUAR0biyP+d/4A+B8voSpLTfViHuOu+DvvEiB
+         8QuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757015642; x=1757620442;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CW6N/04aVXSqAqCWFvMO/Nhy5na9bRfLZIbzmF48rh0=;
+        b=ExUhDB4lB5/RUmYIB6Oi7JxEb6iGP6oRiGNEG6SypGhgSBlYEmm91Ua/bs+CvbqI+/
+         9fYrn/YDJdEAJCnOGlThVzS0/dpqGoREWVjlrD8WL1IWJnRH94mtuH81XKPRx5NiYXIx
+         JdKLji4//KUW4504Nc/xmpwj+/2N++g8CyGtjaLPnwu9xOeFhT7jYIvjYhReFB+G7Hz8
+         b6vVYXMjvjcuORdlxdWF5/4wp7QxtTzCBwrP10ItTK6GZy+BVi2CCnl6VAKb74SzjEvr
+         wCMakbEGBKVZ3NjDnavtrq1gFqD103B+7hQYgEqaOLLB42hRbSvc/Ucdfxq+k16roB/F
+         Hg6g==
+X-Forwarded-Encrypted: i=1; AJvYcCVVghXwmhnEJU4ZorfSefAW0XaumtzSkVeOTxEePRN2KtgPBIfToxjLyOW7drLXf6Zi6U5ZoAu2bA==@kvack.org
+X-Gm-Message-State: AOJu0YyqFe20doy45Cvu7LZlY5zqH2XnHwPSLitXh9xvpZTO/KczRknY
+	W6ckmvu8/ukX6AOQQUClvd5EKrJfXSfHBhiw7WuSXR0stFg7gSfBU/XJ
+X-Gm-Gg: ASbGnctvLhGIK3nB1H3QmBlpN6E9aogVimC+lbtFSkquGZ+ARbF1jSrqiiWrbRSIOd5
+	NzfIE+7we/7gS1MbzE3DG46zMyOSuxdnO1mHAr1LFt9oGSTq/ZMCedsx69+Z/o41dECN9zXeLAW
+	hVNk+bMKH1Q5hE8/BX0H5YcLFnt0KU/cdl5BfjvtN3/2+54qleHYtBJ1uJT57z0UUUs+gKxYjIM
+	GO15RS8jzGa3Fcqz82JPjW/zK4ZjoekktCvleQoCg6GmbSJlrflEgFza0fJsFGya02vp9XKQXRf
+	lg7yUqDyremtR00QEcDqTTSK5QHT6nwILa5Lkml4vGj5wdGyjXi//RrfT3go98Va4KhAY9/enI3
+	nk+dAZUpE86WvcxQw40xYQ0s/Co0PFGnKZy6Hfg==
+X-Google-Smtp-Source: AGHT+IG7yjTqmFrmq0f5et6mH4alxx7MGzM2q6Z+jEo61g9eRQwwTVozQdAP4sVYRYxT/Uynbist0w==
+X-Received: by 2002:a17:90b:2809:b0:32b:6223:25a with SMTP id 98e67ed59e1d1-32b62230482mr8507388a91.28.1757015642287;
+        Thu, 04 Sep 2025 12:54:02 -0700 (PDT)
+Received: from Cyndaquil. ([174.127.224.194])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b90b574cesm1442080a91.0.2025.09.04.12.54.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 12:54:01 -0700 (PDT)
+Message-ID: <68b9ee59.170a0220.a7a31.675c@mx.google.com>
+X-Google-Original-Message-ID: <aLnuV7zP28+sbl2t@Cyndaquil.>
+Date: Thu, 4 Sep 2025 12:53:59 -0700
+From: Mitchell Levy <levymitchell0@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/7] rust: percpu: introduce a rust API for per-CPU
+ variables
+References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
+ <20250828-rust-percpu-v3-1-4dd92e1e7904@gmail.com>
+ <aLi2MBAwoD65tokv@yury>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|MW4PR10MB6369:EE_
-X-MS-Office365-Filtering-Correlation-Id: b223bc0b-c36d-45b2-d70a-08ddebe6e6a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?S21rWTdKenYxYk1vaHZld05hQkUxbVMzNnlKMkVsUlhyTDkwYktMdFR1aC9X?=
- =?utf-8?B?VWpoM2dSeUxCdzNEWGhmenQrUVlTSlhsZURkNDRxMnlNcW83SmtZdE4zV2hh?=
- =?utf-8?B?My96TVlnY3NPMElmR2hJYXFSbmRLVmVvSDVIMXY1WmV6dmN3NEcxb1ZqRGJ6?=
- =?utf-8?B?RmRvSUJ4R3ZjaXVBMWprVzd5eTBXbkhTdmVqdWErUng5Yzd4MjE1SE9SUkV3?=
- =?utf-8?B?UTgzQ3pIVFRqMFJJVFJid01KSWkzM2IxYTBOWndKN1J1eXZDM3Brd2czM0dK?=
- =?utf-8?B?NDBPQmxJdGhFOTNBNDVRK1JWR2FhYzJoNjVVR0k2cWVEc056TlZnSkM0OEcy?=
- =?utf-8?B?ejRwb3ZZQ3JLOXdEa0ZHejhIdi9nejFLUXNEclZkTTEwRGlmbWFZQ0dmTXdz?=
- =?utf-8?B?QjltN3JjWGltSG1GeTZJdXc1WHlhMW4vL0tvaER0Z0xBcFBCenQ0U2NWSmJR?=
- =?utf-8?B?UCt3aTVCV0g0MG5Ycis0TzkzKy9ZN1dvL3JqZUYxR0NndEZzR2hRcUhRRXR4?=
- =?utf-8?B?cE1ya1Zwem84emRmc21SODJSR05HTStXQ3Z2MXRUYzMrck5YL0pQS1BIdU14?=
- =?utf-8?B?aEFXVGhsMllCeHFZR29pWE5NeWM0YXdUeEhMd2Y0SVpySzZ6alVtV3NQOVRi?=
- =?utf-8?B?QnZWaHNhMnZJOTdpWWJ2REdLWU9DbjFCdy94djRmMGlmcXNCSUJEQlI0K0Ju?=
- =?utf-8?B?VHV5QWZ0Z2M5SnRXeFltM25TTDNlNnNmaDBBMjdDVE80VlQrZ1gxcGYvbCtj?=
- =?utf-8?B?TWR0WkJCamU5RXZ4cGpMWXhaVWhCenRIMlJuRmxyYmNFRmw1elNWZ2s3dnlM?=
- =?utf-8?B?L0k0SVYwMDN3UzBsQzBlWGFybnhUaGhRUzJmWk8xSGNSR2R3REhvTXNGMnY5?=
- =?utf-8?B?N1ZxbU12eXZaNUJ1d0ZTT1h1U0JqSFJRQU1nT1FSUEpiU242SHllZmFSaVFJ?=
- =?utf-8?B?WndZQjFuTjh0eGordmdwTGVlQUVOaHJadlJ2RENRQ1ZzejNIbzFCd3NXQVFH?=
- =?utf-8?B?WjNjeTRLWkR4YThqbGhld1hLOWgwb1JWMkJNcUVHYVJUdDI2K0V0dU5vU20v?=
- =?utf-8?B?QkhyS1J3aGlKalhOQUN0SDNMdFMwTWNMMTFON3k3dzg1RU9KR3hIcUZVVEJo?=
- =?utf-8?B?ZFpVeUxFeEZhd0ZhTS9XV3l4MkMzNThab3E2cnlobUNxTHRpUTZmR3VUWmpr?=
- =?utf-8?B?cUVJL1RsbHJ5L2hIdmZxenRZcGw1cEpXUVFPM0Fxek01blZyV01WWnhoNXZp?=
- =?utf-8?B?My9Wd1lvaWdFTFJ2U1RYR09JOVRlYWhsZGpsUTI0aU9LRXE0ZWoxK2lwNE5x?=
- =?utf-8?B?QnlXaDRZRzJ1WHRvL2hReWh0eTJaRjZlMEtiNU81bC9ndVphVTlNaEc4WHdX?=
- =?utf-8?B?ekI2djNBUkdmTmxFa0xYRXY2bHd1MVJqN1JSdjhTNlFCd2ROVnZBQm80WUQ2?=
- =?utf-8?B?MmNOd0tKUGVUcEFneTJKWG1jREFYVlJOY2RvcG1LRUZrZ2lyME4wajVDQUVp?=
- =?utf-8?B?eGJDQTVPMnk3UmhYbEpLbjhKU3BLZ2xxbVc4b0s0OVdmaDk2ZlJZWWQ2dy9j?=
- =?utf-8?B?SmE4cXR5VHpxRlBpdlhoVnhqME5PWHJQRjlweW5MOS9sbHFuRFNqNlZEd1Ra?=
- =?utf-8?B?RWtWYkdPeTBjK3I1NkdKeGM3Umc5bElMWTZkVGE1WDRXc1B5UXl1SjBuQjNy?=
- =?utf-8?B?YnV5dkF0RnlLT05xYlV4Q0hhM0E4OCt4eDdsR2grbHI0cFZxZTNmMDhuMWdt?=
- =?utf-8?B?cGNaNkgwYWdLNFlUU2VJWjVUS1cvZEppVUpsR05Jdk1uNkRRUklLNU1xc1Rv?=
- =?utf-8?B?bTJYTHFjZlVxNk1MbUV5ZnVmQTBpTjQyUWF6ajFnRXRabHRCN0h5SmtTTXRz?=
- =?utf-8?B?dGFFa3NkUVFiNlNTUGFraEFWdFpMQ1h2TmpMSVRCYStJbDlJUGVPK25Vb0Ja?=
- =?utf-8?Q?ET7fYCj1z7k=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NVhLcnVPdER0MnVMT1JYdElDMzkwTjVYS1BDWW45SzZrZHBpcmtXYzFTL3Fr?=
- =?utf-8?B?aDVDR3hwbTJFZnNJMXVRcE9VRCtTdkR1MVdQK2NnTTZpL1VJUldyeTlES2xQ?=
- =?utf-8?B?enpQR0dZZ21OMTl6NE9SbndzQkQvR0xFdVFRWm1rdUdpTWZuZ3Y1WEVHS1Jt?=
- =?utf-8?B?SDdqdm1hSEdMQTlCNGZ4aXh2OVJRVXJ0WXc2VmNOeDVMaUJab2UzODRYN0x6?=
- =?utf-8?B?ZTBWSEwzV1lQWWpiZDRrS1FHcWZzWTkrcmIxNVpjOGhtWHErSjRnZUx6UUFK?=
- =?utf-8?B?dHJmWmx4bysyWDVweHBNVVhHSXM1VlpWNG8wNFd6VTRQcmJMOHY5Y1l6d3Uv?=
- =?utf-8?B?L09BZzlJMFJuSE5MZm9majhMYXFQbEFWNjJYNEcwMnUwVzcyeHFTMWdmb3ZU?=
- =?utf-8?B?Wk93YlYzaytBRXdhUVdrVjBoMk04MTl2T0dQekdmV2dzcHhkUjQvVDRhLyto?=
- =?utf-8?B?TkFZdHJOSzk3blIraUdkVDVkV2lPZE5zNnYrcGUvVnNkeGxtRWN2TmdDaXJT?=
- =?utf-8?B?bTF2S0dDWTBHdFIwdXRQTTlHQjUzb0praFBBYU5WNXNsbndmMlBac0JmR3BP?=
- =?utf-8?B?aW83aW5BcVZxR29kK0hHN0lJTWhVYUluTWRzZVBFWC9RN1Y0UG00QTNXVHVW?=
- =?utf-8?B?V3AzdjB5YzJ3UzVacEc1YUN4RjFJWU5oU1lkTndRVjNlamhhS2tjbDhZWG1x?=
- =?utf-8?B?cHRxK3ZSL2pkb3NMMDRiVVIxVHdadEhqcXVKMjRkL2c1SXVHbXRncDI2WE9s?=
- =?utf-8?B?MnU1dk1qbTZBNFlaaXdScG1PVXNHMWNPZ3p0d1JFTExlY1diYjZGQUxvWHV5?=
- =?utf-8?B?c3VpeDAzSFI4cTRGaHdzREM0VEIrYU4rNlJseHBTTWpjcGtSR2xaZEtISzdt?=
- =?utf-8?B?clhQOFhJYVlaaytaRzdWTGw3ZFhXM2drUHdkbHhEQUlhLzlzS0ZsVjVrdDJC?=
- =?utf-8?B?WFdma01CM0ZCZEs1K1ZFV1V4NEdMUEtqWnVmZjV1MGhsMHQyM003dkVjV0lh?=
- =?utf-8?B?eEdWOTFlbmkzZTE5cGhKT2ZsSnpwMng1azkwREt5Ri81Q2hTOGtmSHluci9H?=
- =?utf-8?B?YXpwZDV0bDRoVzBQRlU1WG1RY1pYVGRMdmpQN1dxSUM5UFVNSUZEY0c4YUhW?=
- =?utf-8?B?Z3g2R3hXeEdNVzM0VjV3TGxpWmpaTm9haWhHeVdRNHYrVDNsL09SdER1V3or?=
- =?utf-8?B?UlZwalBkcXdDeXlYSUpyQVYrMnQ5OWk1aStyU05xdlVOOGNRY1F0WE9OOXRS?=
- =?utf-8?B?RWxRYjJpYkpnWnFKc0w3U1Yva2M3aCtOdWpKb1gvSE12MzhBSE9sZWZlODJv?=
- =?utf-8?B?QW9ySmJzRlQvaVQvZEZiYWluL2x1c0gvbW5oaW5OWEMyYStvTkUxWnoxUEI3?=
- =?utf-8?B?K0t5dDBvdTF3YVp5dDV4N202OWNXY1ZEWjdEM2hpckhtQkExU2hOMVNWQWhp?=
- =?utf-8?B?allUeUh1a3IxTTBGUkxuOFN2MTJMbk1qSzRVK0pwbzdpTG9QNXNMb2JYVHBG?=
- =?utf-8?B?eDlpUmRwMGlIa3dVMHM1YzdCaGtoQkFVZFdVY2xmM0h6T0k3QisySTBueEth?=
- =?utf-8?B?UFZSVzNtRElwRWdCUEdUVzdqbVRMZ0Z5aTVEaWFMVDVLVkZ1NklSQjhOOFBk?=
- =?utf-8?B?aWE3RW9TeFhBMzhaTVpsbDRESG9vWjFkdTEySEFYL3RKZGt5UGExMWtmVFN6?=
- =?utf-8?B?RlR6WHhycXU3T0E0MDJkQ3Bxai9hTW5qQk9rZ1RWWTg5U0haQTR3T3pzcmF6?=
- =?utf-8?B?cm5JTXUxbFBtMDJ3OEJaak5oN2ZaYVBvRUdaODJ3YmtpMmxiaDhsY0xucmVS?=
- =?utf-8?B?QXc2UkxrYVFMMWdKMEZkcnE3RVFXeE9PSVpqdUJSS0hCVVdHNlF1b25pUGFZ?=
- =?utf-8?B?WWFiejFGSXNveS9QUFoyam93RFZUNnY3Rmc3YVZkZUdZWXFKVDF2ZFpwZ05w?=
- =?utf-8?B?cDAxcGIxaURKRmFzV0lrUHdSdktBaVdpUndqKzRSM3c3WTJuOTNlemVuMW0x?=
- =?utf-8?B?V1g5TDd2d0VDb1BlWjIvN3FmQjVRaWxVTldsdGhBQUp6SXJ0cWdlSkhBdSts?=
- =?utf-8?B?MlFPdW9pTzQybHdEU2M2RnJDaVoydkhOS20xYm4rcUtPZFJtbTNpU0orYUdp?=
- =?utf-8?Q?rrgO366U/H9L6O8YuQVobhb7T?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	iYgU3ZsmWunR9d9vnTskba8EauNNTdSNET4hi4egS4m/Vg8P4HeYTGLVRfazQwXyPmFOkhmPGvoKVpbEAn37iIj5jmj2Uyqz/a7tPDqwPh8A4A8CZnrbWL6JvsUf1EsC8YXkUH1GHFZRUuH53wlEmw7+qDxcjiVbDJKIgNQehOmOS+R1d4c1bbx0T6n3BlcTDmh+DhrqCg9FLLF/YwlOJbFmwadHQlPVOg1ctrh/W4ZJUQ0ojJoE2/RoGFQ9xrhEd0IRcYEjuQ6pCgWP7RFed/7/faCvpjlfT0+IIxGLBGK1XCN/ILFGa2jJTS9kZ5wX3g6tfk7NPAnGXJ6/o39QBLDvR15NOQ2tsjz5ngSpnhwPMpOMzqqH9aYxVNbZxzKQ5sYLEPomoAqeZ6FTqgtgA1KWS1IY2qH9zVGwlmCGiueF9QhMUy7jQyMYL30XkXToLXNlMuqw7DDtdEcu33Po5Ju4jLi6htYF9ly/kbz+t2JFgAN07CuBHX9Ugnuev5PN1U5rCO94yvg6bkyfTiLgNZC2+7E1rRvsCZT44LxWYeMmV2X4ayoMY8p4bvBVT/2Vo8bHChoali0LJ/wgxqps8Xd2E3Gr9BK1WdspheiC39g=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b223bc0b-c36d-45b2-d70a-08ddebe6e6a1
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 19:11:50.2507
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gQnSHXnqGVYKs+RBsUHX8K9jP/Ww4kTswomIL/YHcRX2MXnlbpRnX8zu54DiiRSY3T4oWdmPjuzH7hAnrpLVjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6369
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-04_06,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 spamscore=0
- malwarescore=0 mlxlogscore=999 phishscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509040189
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA0MDE4OCBTYWx0ZWRfX/WSt2/ixmEGi
- wR6Bw8PWxi47fApZ5pKAA55Gg4mfDhxEQ6gC1uCNfDSjcn3eWt5+++WSXOhuG8Iz62DwL3a4u7T
- AINhztJyUy11ekrVKYULCAUlZrbGKbwd+VhRrsznmP7hdHHAo3oT3cuN+8M2NUWEzRaMDFz2bXw
- Rskg/ASSjzD1b2q/WBGjD1OrL/iakdefbCepxXhcfhYkzSW4UTri8P7lhZ/bSVnrbhShx81PlXG
- jJns5q3YdAs/w5W/huG6L9wC8eLHVknutxZBoU8cJueMbqd1OHeN80GrfNYpdKu+BmHWIOfWzLZ
- PQXn6+n6nc2AtZVWQWI5mAMjCozP6vNNagBrofgwpzm9dPDsGn0GZPr1uE66U6A5i7odDlXxkOI
- HY+TJ3/r
-X-Authority-Analysis: v=2.4 cv=L6sdQ/T8 c=1 sm=1 tr=0 ts=68b9e47b cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=1XWaLZrsAAAA:8
- a=jMfA0WQcgnyDwYLyNj8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: LqsH1lh4KAEI1qtmPI9OuynI5lxBo36z
-X-Proofpoint-ORIG-GUID: LqsH1lh4KAEI1qtmPI9OuynI5lxBo36z
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 77497160004
-X-Stat-Signature: 3azuzto5f6gpzwt6fm7f5thr1j5j51di
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLi2MBAwoD65tokv@yury>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1757013120-736348
-X-HE-Meta: U2FsdGVkX1+sfkWoQuvSnRjNLPMRpo4I7BBY1HFG2gu1Nad+CB8S3R2yCavVBcPXq3ibwFXbfqQIq9lL/aj1VBl0/dVMD5Hw19o6R0j/QWbEtrMo5W4Zaz6E2LwrrILKmrydCwbF3KgfzIKfw+Kk+XblBdjUBHpJPXiE2Ah5x3Gniks6EgxMPJguV5TM3ofrnxZ9qi1+1QXBDAickC/3xkDf+u8NqhGKvYl01zwsLZB1ZhcGnkXng1aNZvWNGlgAkAOJ4/1o+hyNb1crZ10pvPxQQCSLjbStvVwZNbWGa2+RDy5GGyXhYxetWksEUgA/kuy8+SgWYDWdw+SYsokyEqJxjv/IpLBERws4Cy4Ctyih+cOuNqMSIetjWSB/qKGUww/A0U6ybVHaKVZkR/nOgosc34IynCOJ8oxChjl1UYlRjzSEmBC425wUni51Szq6zmovx4TI8nE9b9NragtANGNywzggAzcwt0cGWjUWdAMsBb92lAzWptuyOJMsqCI3GWte/Sfe3oAeX92W/ew5oIr1nHl0jUz8yzk7uEwsmDAAAILBvVmRulkxbNIs6Qlb1+6PfdwCw02Fy5/TBXWxYMPc/xnbVaE8sL/BRJB2e89eAFk3btJPlPOaC+1K31EgH/JmZYCdTgiGntTB2bToKOM30/FqDgexO1vtI0bC8iBM4LvOuH/di4KAmEc5ATPijYIZrw3EKRAyvCYq7W40iFduX0eQ2fV2hvc+JmaTrrAPfjghf48iGF4w+ttR8ocNuUcWLPQ6Bqcq7Pk8Ktuy7bnAy0gNEPUjKHagJZJdjpTcsos/uGW/rZGlrQSm8CFOO7EwJYg4SztqfQr3u/RInv/99vNXZWxMRX7vnkl8m5dV7x5kc7yZ3LbEXeSdtWCc9noFNPuGxqUu1tuQCm5ivSNBShVkoHh7hX3YJ817C/WgF3AeA1PjqauheIifc5FkmlUEhLWwR4hvAb6MyQe
- 7O/6C+5I
- YTvybwUfEaySU2boe+Pg20y0EZ592Vy81LCpy34QluFwoSBr00U0sOECSeIrd878JqRCOotJq1UuMRbDfW6wFEzrMrHB3obeXKlA+LKSs3zJdam68WgZxP6fLF9zaAaZtdtFH0EjfNumaTqyIcNwn+A1CYOYWO2faxFQEhlNV4q/6jwmrVJkqNwlFmO3rG/ESn8wQld53SFHix5WLB3RIoi6g3X8vqIQJH7UtP2HhZRDw9DthxGHXn1nhH0wlzC/kVpat2wbGlEymnjGlQ0seP2yGvVqXhuQeUa5wayL2jHeiblAn2s84L5Am9GhOb8JqJFcA0PiD9Ts4TQ+pd0A4QEbB8fbs4+V/I0/5741fABMN0CpS5Fnx2MX4QW3zmPeRznO3Cs65qZRvfPQ/ZaO663uupJn3tkZoLOkhN+ZIC3og0AcwMVLW64mInyxv9X56gNiRoAFk85GhVwKg/JrxR06Mqq3TqnzswRWijOdLLdE57+33GpCo3HjpVaT+YFHTonTHFlsoHPFNzWu1ZPq5zHK1mmFkyYIkRMMpPaqx8/63mvVyMg43K1KQ2ZSZ0wGLWfFEujg5q8bvYXmFFq5wfNu5sND7DKNgyDtym1SC8Uis2X00+x+FtkX1yVMl8Y+qEddQNFunxPwmRXyYKLPBjpdnPNkor31I5I31uO9dbfYlbMI395uJo+8z/lz1LcsqIh0n3ACAIuFYMbtt/XArwCuWXyDdj0krlkJm
+X-Rspamd-Queue-Id: B9663A0004
+X-Stat-Signature: bqjt8he53p7ar6759nyri33a9hgc34wi
+X-HE-Tag: 1757015643-165866
+X-HE-Meta: U2FsdGVkX1+V2eYv1Agqlyx6JLVmDxPtYW75GIscz8AbxmsQ5MzNh7CC9E5sSUGWPETQypj2uZcfiSrwGMUteJoF4h446GgDNY3tFp5h3LH7Y+/Tu+DX29v3lp9yww6u1qUHGmRF9jYEKpn462y3fmYXG2gAdEjESE+GulKA6RGCTSetvM71tFlgg8rHK6k7vGx5GY3dU+FNXdM6h6lG92Wk0ULbY+su93yCM9I/ag1vO1szgYycgrZ6sGyPGHKaWlPdzsYQz//YAp80Bf4A6ksndD8bvviOyRJhuObEcCbvGlRdFL84kNzovzRAKEUm1l4RcJMV1OwoiqJ72zaiBto7mfUGSI/zFZu5l18mNXtcaGJ0J2vOibxHajZRg9ezB/M/j53Q8lqebUFwRuLSdeZrjArFrDOrVhR8qt4fv5pW7DZllBC0CzngBzc/XAjsxeYBzg1KHD6UWhEnhzc+3y3fy7rGVy1WWadOQ1wie6FUUORLv4ktnLXMEH27ocBKS3BEGCqGfSaURsm5MLENC70uVHOiCFBHTy2tZAAqpifzYU0k6M2jHxCBLkMgmfeQkV9KyQVxufNz8izd3bF6Rlu4qaZf83K6GzQCW3d5N7lox/i2OD8cuFPqnunkoOtlmNub0GFtv4FeZ6aVelZMKZR8budl67ns2YY3ELWQu44pldFzW3eaftrLQTyq9YEwSloQlr64gDdGRnewyTiHamk42ZKSpimskub7VH+DH+nSl+6EUYQ1OTRHFrpaXY5LpKEI4h9Vf7volI9GiQn7jQRiRzWzPTgji7aFo0KnmrfqLMFgUTvdF1egUzJghNDbGTq35O7DnpxGyoidHP0ohdiogeb6IemKb37wTGH0P25hKahHs4+++FnJPn1ZVd/h21KdVNdYjOfMGzyFERmbkd6iSr4bqMQqO4rHQQpATk5S15aKXtc7/beiSNRZ2SGggxNe0MlrieUKiK0pKMY
+ /sUU01XW
+ dV++WLa/WyESJqaGscYCAb5FQ0IKqeK/zJrDI/snourRshtVV8qAsSUdoV7Eare4D8vtFcgXfUoz3VZ3dxCbwB59GLNH5Me7z5VrlHCxDrwd6tsk/BBP5LZrrBjWDNAZQ9gGa0UXtY/2QM2za2ES1V/ujrKbfMV2WuObvBxCHOAp8yLEFlBJS56L0psLrD1zWq5uTKTh7RwI2jmuu4NmD0vXpbBLqD1F2v+xzNGYFmIFz1tyGnURHMG0XZv8pQwHkXDxEBWC1CoWTZTh0+zuYPCOv27TxgpFGbynMA39djIZjtzrVpGbCy+DmwT9Rm+II/OylWcy7kdZluHTW2D9q2STkzQj2kiEFyMtk6qmBiV//Cp+miZRcPQ+NN6joIiopcybLfauOZcv2ULIHHSecDWnMes64XwerNhIKrLuH0B2S76xRrC+hmS5BRdWgIsrPWsVEDCF8s4E3+Imf6iFB7x/lKWuGE5VOegsaDm9AGS2KPvOGspTA5nRxomEiyN7OrxnAS2Etwlxycn4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -272,100 +132,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* David Hildenbrand <david@redhat.com> [250904 15:02]:
-> On 04.09.25 20:49, Liam R. Howlett wrote:
-> > * Kalesh Singh <kaleshsingh@google.com> [250904 13:51]:
-> > > On Thu, Sep 4, 2025 at 10:42=E2=80=AFAM David Hildenbrand <david@redh=
-at.com> wrote:
-> > > >=20
-> > > > On 04.09.25 19:33, Lorenzo Stoakes wrote:
-> > > > > On Thu, Sep 04, 2025 at 01:22:51PM -0400, Liam R. Howlett wrote:
-> > > > > > > > diff --git a/mm/mremap.c b/mm/mremap.c
-> > > > > > > > index e618a706aff5..793fad58302c 100644
-> > > > > > > > --- a/mm/mremap.c
-> > > > > > > > +++ b/mm/mremap.c
-> > > > > > > > @@ -1040,7 +1040,7 @@ static unsigned long prep_move_vma(st=
-ruct vma_remap_struct *vrm)
-> > > > > > > >      * We'd prefer to avoid failure later on in do_munmap:
-> > > > > > > >      * which may split one vma into three before unmapping.
-> > > > > > > >      */
-> > > > > > > > -  if (current->mm->map_count >=3D sysctl_max_map_count - 3=
-)
-> > > > > > > > +  if (exceeds_max_map_count(current->mm, 4))
-> > > > > > > >             return -ENOMEM;
-> > > > > > >=20
-> > > > > > > In my version this would be:
-> > > > > > >=20
-> > > > > > >      if (map_count_capacity(current->mm) < 4)
-> > > > > > >              return -ENOMEM;
-> > > > > > >=20
-> > > > > >=20
-> > > > > > Someone could write map_count_capacity(current->mm) <=3D 4 and =
-reintroduce
-> > > > > > what this is trying to solve.  And with the way it is written i=
-n this
-> > > > > > patch, someone could pass in the wrong number.
-> > > > >=20
-> > > > > Right, but I think 'capacity' is pretty clear here, if the caller=
- does something
-> > > > > silly then that's on them...
-> > > > >=20
-> > > > > >=20
-> > > > > > I'm not sure this is worth doing.  There are places we allow th=
-e count
-> > > > > > to go higher.
-> > > > >=20
-> > > > > ...But yeah, it's kinda borderline as to how useful this is.
-> > > > >=20
-> > > > > I _do_ however like the 'put map count in one place statically' r=
-ather than
-> > > > > having a global, so a minimal version of this could be to just ha=
-ve a helper
-> > > > > function that gets the sysctl_max_map_count, e.g.:
-> > > > >=20
-> > > > > if (current->mm->mmap_count >=3D max_map_count() - 3)
-> > > >=20
-> > > > I enjoy seeing sysctl_max_map_count hidden. But map_count_capacity(=
-) is
-> > > > even more readable, so I like it.
-> > > >=20
-> > > > I don't complete like the "capacity" term, but I cannot think of
-> > > > something better right now. Maybe something around "free" or
-> > > > "remaining", not sure.
-> > > >=20
-> > > > I also don't completely like "map_count" (I know, I know, we call i=
-t
-> > > > like that in structures), because it reminds me of the mapcount ...
-> > > > talking somehow about "vmas" would be quite clear.
-> > >=20
-> > > Thanks David, my original implementation started with vma_limit() :).
-> > > Maybe something like vma_count_remaining() ?
-> >=20
-> > Yes, reducing this confusion would very much be helpful.  In fact, if
-> > you put it in its own function we could change the actual name with
-> > lower impact.  map_count vs mapcount is annoying.
-> >=20
-> > vma_headroom() ?
-> > additional_vma_space() ?
->=20
-> VMA space might be interpreted as VA space.
+On Wed, Sep 03, 2025 at 05:42:08PM -0400, Yury Norov wrote:
+> On Thu, Aug 28, 2025 at 12:00:08PM -0700, Mitchell Levy wrote:
+> > Per-CPU variables are an important tool for reducing lock contention,
+> > especially in systems with many processors. They also provide a
+> > convenient way to handle data that are logically associated with a
+> > particular CPU (e.g., the currently running task). Therefore, add a Rust
+> > API to make use of per-CPU variables.
+> > 
+> > Add a `CpuGuard` type that disables preemption for its lifetime. Add a
+> > `PerCpuAllocation` type used to track dynamic allocations. Add a
+> > `define_per_cpu!` macro to create static per-CPU allocations. Add
+> > `DynamicPerCpu` and `StaticPerCpu` to provide a high-level API. Add a
+> > `PerCpu` trait to unify the dynamic and static cases.
+> > 
+> > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> > ---
+> >  rust/helpers/helpers.c          |   2 +
+> >  rust/helpers/percpu.c           |   9 ++
+> >  rust/helpers/preempt.c          |  14 +++
+> >  rust/kernel/lib.rs              |   3 +
+> >  rust/kernel/percpu.rs           | 223 ++++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/percpu/cpu_guard.rs |  35 +++++++
+> >  rust/kernel/percpu/dynamic.rs   |  83 +++++++++++++++
+> >  rust/kernel/percpu/static_.rs   | 132 ++++++++++++++++++++++++
+> >  8 files changed, 501 insertions(+)
+> 
+> That's quite a massive patch. Can you please split-out C-binders, and
+> maybe make separate patches for each .rs component?
 
-Fair enough.
+Sure, will do so for v4.
 
->=20
-> I think basing it on "vma_count" would be good.
->=20
-> vma_count_capacity()
->=20
-> vma_count_headroom()
->=20
-> vma_count_remaining()
+> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> > index 7cf7fe95e41d..2fc8d26cfe66 100644
 
-headroom or remaining have my vote as the clearest.
+[...]
 
->=20
-> vma_count_avail()
->=20
-> vma_count_left()
->=20
+> > --- /dev/null
+> > +++ b/rust/kernel/percpu.rs
+> > @@ -0,0 +1,223 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +//! This module contains abstractions for creating and using per-CPU variables from Rust.
+> > +//! See the define_per_cpu! macro and the DynamicPerCpu<T> type, as well as the PerCpu<T> trait.
+> > +
+> > +pub mod cpu_guard;
+> > +mod dynamic;
+> > +mod static_;
+> > +
+> > +#[doc(inline)]
+> > +pub use dynamic::*;
+> > +#[doc(inline)]
+> > +pub use static_::*;
+> > +
+> > +use bindings::{alloc_percpu, free_percpu};
+> > +
+> > +use crate::alloc::Flags;
+> > +use crate::percpu::cpu_guard::CpuGuard;
+> > +use crate::prelude::*;
+> > +use crate::sync::Arc;
+> > +use crate::types::Opaque;
+> > +use crate::{declare_extern_per_cpu, get_static_per_cpu};
+> > +
+> > +use core::arch::asm;
+> > +use core::cell::{Cell, RefCell, UnsafeCell};
+> > +use core::mem::{align_of, size_of, MaybeUninit};
+> > +
+> > +use ffi::c_void;
+> > +
+> > +/// A per-CPU pointer; that is, an offset into the per-CPU area. Note that this type is NOT a smart
+> > +/// pointer, it does not manage the allocation.
+> > +pub struct PerCpuPtr<T>(*mut MaybeUninit<T>);
+> > +
+> > +/// Represents exclusive access to the memory location pointed at by a particular PerCpu<T>.
+> > +pub struct PerCpuToken<'a, T> {
+> > +    // INVARIANT: the current CPU's memory location associated with the per-CPU variable pointed at
+> > +    // by `ptr` (i.e., the entry in the per-CPU area on the current CPU) has been initialized.
+> > +    _guard: CpuGuard,
+> > +    ptr: &'a PerCpuPtr<T>,
+> > +}
+> > +
+> > +/// Represents access to the memory location pointed at by a particular PerCpu<T> where the type
+> > +/// `T` manages access to the underlying memory to avoid aliaising troubles. (For example, `T`
+> > +/// might be a `Cell` or `RefCell`.)
+> > +pub struct CheckedPerCpuToken<'a, T> {
+> > +    // INVARIANT: the current CPU's memory location associated with the per-CPU variable pointed at
+> > +    // by `ptr` (i.e., the entry in the per-CPU area on the current CPU) has been initialized.
+> > +    _guard: CpuGuard,
+> > +    ptr: &'a PerCpuPtr<T>,
+> > +}
+> > +
+> > +impl<T> PerCpuPtr<T> {
+> > +    /// Makes a new PerCpuPtr from a raw per-CPU pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    /// `ptr` must be a valid per-CPU pointer.
+> > +    pub unsafe fn new(ptr: *mut MaybeUninit<T>) -> Self {
+> > +        Self(ptr)
+> > +    }
+> > +
+> > +    /// Get a `&mut MaybeUninit<T>` to the per-CPU variable on the current CPU represented by `&self`
+> > +    ///
+> > +    /// # Safety
+> > +    /// The returned `&mut T` must follow Rust's aliasing rules. That is, no other `&(mut) T` may
+> > +    /// exist that points to the same location in memory. In practice, this means that `get_(mut_)ref`
+> 
+> How long is this line?
+
+102 chars, or 103 if you include the newline. `rustfmt` doesn't break
+the line, so I left it as-is for this patch. Happy to change it if it
+poses a problem, though.
+
+> > +    /// must not be called on another `PerCpuPtr<T>` that is a copy/clone of `&self` for as long as
+> > +    /// the returned reference lives.
+> > +    ///
+> > +    /// CPU preemption must be disabled before calling this function and for the lifetime of the
+> > +    /// returned reference. Otherwise, the returned reference might end up being a reference to a
+> > +    /// different CPU's per-CPU area, causing the potential for a data race.
+> > +    #[allow(clippy::mut_from_ref)] // Safety requirements prevent aliasing issues
+> > +    pub unsafe fn get_mut_ref(&self) -> &mut MaybeUninit<T> {
+> > +        // SAFETY: `self.get_ptr()` returns a valid pointer to a `MaybeUninit<T>` by its contract,
+> > +        // and the safety requirements of this function ensure that the returned reference is
+> > +        // exclusive.
+> > +        unsafe { &mut *(self.get_ptr()) }
+> > +    }
+> 
+> Here and everywhere: would it make sense to enforce it by testing
+> the CPU with preemptible() before returning a reference? 
+
+The only thing we could do would be to panic, which I don't 100% love.
+Another alternative would be to take a &'a CpuGuard and bound the
+lifetime of the returned reference to 'a, and then we don't need to do
+any run-time checking at all.
+
+Originally, I had left this to the caller because it might make sense
+down the line for some complex behavior based on per-CPU (e.g., per-CPU
+refcount) to do all its own management of per-CPU variables using
+`PerCpuPtr` as a core primitive. In these cases, I believe there are
+some times where being non-preemptible wouldn't actually be required
+(that said, my thoughts on this aren't well reflected in the safety
+comment, since I said it must be disabled... gah). But, the more I think
+about it, the more I think these use cases would be better served by
+just using `get_ptr` --- conjuring `&mut` references seems like it would
+be a big footgun. And the safety comment already actually reflects these
+thoughts somewhat :)
+
+For v4 I will probably have this function take a &'a CpuGuard and use
+that to bound the liftetime of the returned reference, unless there are
+other thoughts on this point.
+
+Thanks,
+Mitchell
+
+> Thanks,
+> Yury
 
