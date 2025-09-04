@@ -4,120 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EA8BCA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:27:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F1ACA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5073F8E0001; Thu,  4 Sep 2025 12:27:03 -0400 (EDT)
+	id 958028E000A; Thu,  4 Sep 2025 12:32:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DE566B0022; Thu,  4 Sep 2025 12:27:03 -0400 (EDT)
+	id 92FEC6B0008; Thu,  4 Sep 2025 12:32:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F4008E0001; Thu,  4 Sep 2025 12:27:03 -0400 (EDT)
+	id 845F38E000A; Thu,  4 Sep 2025 12:32:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A35E6B0011
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:27:03 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D4A19584C8
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:27:02 +0000 (UTC)
-X-FDA: 83852097084.26.ED6F216
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D067814000E
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:27:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WOBXlLFv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EB496B0007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:32:21 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0F1361602BC
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:32:21 +0000 (UTC)
+X-FDA: 83852110482.08.3D5022D
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 40F7D4000A
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:32:19 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t6bNpHBB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kaleshsingh@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757003539; a=rsa-sha256;
+	cv=none;
+	b=5NU4f2hZorhnJhc2EpxG8u3e9kSjksoaXjxgtW7eYOTdF4s6/hgqe9wTT3tXzQccZQqEWv
+	aZUOdRjA/T3U6E1iU8cLi1qz8b44qFvL5P6PHwR9FYfcz1qgBx37sls1eL9ccImvk6xxrA
+	taBXEfJb2Uj5lQWQdGu11miVKTuYQlk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=t6bNpHBB;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=kaleshsingh@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757003220;
+	s=arc-20220608; t=1757003539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x52XGF6iKHX3+nNGSEK/taBXgCRgBT1zKgfjO9/y908=;
-	b=4Isfv39hsywNtJcleGHilTZMWM6/bMX/Zaafl85AZo0+PZwkNk99dvHt8az4EnefFhvgVC
-	IQXnNNF+DmsrVi5y9/EiwgMxV8s9A20duxq8QWDa9i3+8Pk94/Z79l0paKlc3LUJwxCdmI
-	9SdZl8rAqqVZCqdyHRvK0jMKWXUtTOs=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WOBXlLFv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757003220; a=rsa-sha256;
-	cv=none;
-	b=vefuR71d/f0Ka3YGsrxZqul489u63R2xw/9Vg1Qn1kX3LukbMOcOuQJjuiDsgi2yAPLk9+
-	BhbPBW54k2au0nochPiQkA3i1yuvk9IkLGcHlnV+dJZjE9m/5UlfVcF9Xgud4bqyGhBoEn
-	2pO3b4vTD7gQfWEvxnPojgHSoiKdaNM=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb7ace3baso229886466b.3
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 09:27:00 -0700 (PDT)
+	bh=uvquhskjT65SmB2Nkm7CV4QXCHw4k05+VhhCF0jbgfg=;
+	b=PHDapVA6wkzjC8NvlvbD49RWUBXodZZt93HyHzhMN5rGUzALF7yaU9Sz2p/bcAb0rJBDAM
+	dsioA/4KNLZAlw+P+tR8HPkq3AhR9rfefFRxniOpY6Xr0JL+bOlep+MMc44KVpp379gPER
+	CzzuubJkxlX5o0WcYqKrUPoE6kLX8q0=
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-24b2337d1bfso2135ad.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 09:32:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757003219; x=1757608019; darn=kvack.org;
+        d=google.com; s=20230601; t=1757003538; x=1757608338; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x52XGF6iKHX3+nNGSEK/taBXgCRgBT1zKgfjO9/y908=;
-        b=WOBXlLFvvQfCyxiXFuc8IZl+mN1pg51qqjSNFg4VLz68q8FI/D6ONFOTeQcturmz5F
-         gdw4hivC2fhIZREqvYCOasVFpw2beKMD9hba8Ub8Ns4o8xN8MgFwbIkQ4JUE26zfy09F
-         Q88Z5Z+PEvxDmoDiWmwUpP5fAAqF/66/cTcheXbNpmOp4+f6Q5gOYqOxYS/3QHIIMmd5
-         rgflExbpSdyHPlZFP5RogcUyGizgtHxDamOJ6RgTTaXAFu3lYwmjilWT/9YgQLKqtmVW
-         WuLFn6gLRS3DTgwPMmKICDpf2PB0AtRe4/yHCHWhtaa8fwv2nZmztArCbYSziJS4g0ZM
-         /f6g==
+        bh=uvquhskjT65SmB2Nkm7CV4QXCHw4k05+VhhCF0jbgfg=;
+        b=t6bNpHBBc1xQU8txmXFeckWs/AGMKKujozio9+gX5gv20X7+3qjop8OdHZ8xd9MwjR
+         YY/uzBecT0p7xeHfZ9Yh5a/GI25MUllv7IqJjp93B7qCLwMvprAq11vnwG9BPmsHOrD8
+         spjZAqfgmpmwRugzSaAIdomotgi0YsEZ6OqKCD66fulOPC72OvMHTkg4vpyZy9uky8Ms
+         lY1KbPsDqHaR1BuFb4NvOJSZth+1woeigBogpfGZGFoBSfI+pwK3/AI4Nqbc1dHvVS34
+         lHbMsllUt6a/+WLHK/HFj+aRl79vbh7QEqx7HJ5RCuszOOTvHPXbgHoO9J40fHIjyZ3E
+         h4mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757003219; x=1757608019;
+        d=1e100.net; s=20230601; t=1757003538; x=1757608338;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=x52XGF6iKHX3+nNGSEK/taBXgCRgBT1zKgfjO9/y908=;
-        b=MwTJqcD1btfi+HAClUBx6n5S7Y0Hws/8gtwt95StCKTLfOTKl8vExHXwaFHdK1BYkg
-         JaTYTCC2o68WX5IAGSubNOKLf7d6cNDBK2yqofLgl6KZRqi0h1DMYxLsrf/nYJNT3J0C
-         z05S63AaUXIeZV21GTkZIhvjHJr8czIus3vADVyLfvIhUj9UFZJbDf9u9uh0uixf/Q1G
-         vByeWllb/M05I0kyCvBc4ISK3Y5TMVyzrfNdMdozYb9SjUx5pl8p52f8tJJyRUBl+F/a
-         FX95SkDXILIQo09JifiwIbyPbWlj5cTOPPTiP0kJ8KHZQ4+yQ94N8jng1Dn78ieVx6yn
-         Fzxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ2SFJQ6TklkroXMV5uxzJlYTy5bapIhuqcrHVFfp/IW8qtseJjirum+GhIwJKZ+Yi1TyEIDPhRw==@kvack.org
-X-Gm-Message-State: AOJu0YxugDybS5mGPEVgzne+ykWVG7u+K3jen4iwQb88tmWpUhgW3ZIe
-	0XMJ82soMjZoC4Zu3kg1lhWGmHg1iM6QSl5itjYLvgWRn5mNv5/887JeslxBpL8wqIjCUcneUjy
-	DrIlAaci36M7ilSXDPhWuF+WIhAeh1ko=
-X-Gm-Gg: ASbGncsjxAohaJ1+sQgkTUTSxZSW07scikiBJlkrCEqARRBy+VgeOwLknZEIz5zI/bh
-	Qe5bxV/XG8b58KSPfvU6a2vENmgfHnWAedhDWBfyEmq6PeOQnYbnjmypLb/87Arf/7cYZ2sdzFs
-	4ukea9YLhcslBsKqqo+unAqtCQHAMAnuc9JUwzIIgN20YPsMmp23J1EERdvAjKUpGSa1HSOY0qc
-	OI9e0D5ND6SfKJ18zw7F3Y=
-X-Google-Smtp-Source: AGHT+IFHSx6hZlZJjgmXEk+skdNc6NPbwOFgHFtM3QRF1Gu2C6CnQMdkH8gTqKiWNIYivCF3n/UdO95dBbR/N21HyZ8=
-X-Received: by 2002:a17:907:7f0e:b0:b04:74d1:a57c with SMTP id
- a640c23a62f3a-b0474d1ae30mr464217866b.58.1757003218864; Thu, 04 Sep 2025
- 09:26:58 -0700 (PDT)
+        bh=uvquhskjT65SmB2Nkm7CV4QXCHw4k05+VhhCF0jbgfg=;
+        b=p6LZW/GiHvaYjOsuomb3EhLHhr8+c9NLl+0X+XIeh8Nb6ZQ6+M4vRxg6Th/B74jj0k
+         ScH947MF7JxiwnOfXWEXfRHNdVHdt3rk2BycYaOezvpJAWA8wnHITjNd8FRPcwC0pcr4
+         R7NutJc4ICRI0INRqD54dwdiEXPvuQygjv7qZnZNbjyxIFomIv2Qgb1VG6hEchWsrf5q
+         pzgZLsjGLtT/FiIMwUa2sZ6zWRGPY1JaqVuH8hm142fgUGMLRePXtzpCsr49KAybZ/LZ
+         R2S14Y0KcSsU/LcmgumunZXRAdMANMnBIPyHcoLM/hn8XC73bViZDG4Fon8Jm+GQUL0B
+         W6cw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsZ/2fX4H4eM4C+5FV2Xwh/i+porLUu96iEal8wrYWRxSfFI7HAvl3qD2LgeJ2YzlP1fj2v6BR5A==@kvack.org
+X-Gm-Message-State: AOJu0YyF2+QFkhV6ceJRxK17Ip8TlNGVdf7dYa/UBkrm9yH4LHPrF36H
+	gomoL99HZpG9Tz5keITxfjcYfz54+9X1R0zy+px6rMM0VCy/hosYSPVcVf2IliUAzWNwpc2Fd5u
+	wFeLMhY8lzUGwoE61xIbATYJiQiJ4KGoIh5hgHMNk
+X-Gm-Gg: ASbGnct4GF0fXLqpGR2+BIYOdixhWIntYfn8RHOh4MXGOacpvcZ0hxHBfuPq09tjAhP
+	bs0nFAROolOreuNGlbeuyn5QTfrmR6vb/aNmrX8WUBB9ru5g1xweDpdrYE9fTKYhC2NoW730Yaq
+	YMdZAtAgrcGn1T4otT+827xXMigcvWyn0n5SMlHPWQuVsQae4FfqaeDlOjFBcWrnwt1zIBCRb/m
+	CYNgiRIn4m2hv7DmbrNDpsVzDgjlsA9moVlHK+slu1J
+X-Google-Smtp-Source: AGHT+IEeBGziaJB9oHadvh0/FzyqXNghHw3ReC+VBEqjlbAdsbeZ1QpzoqIvskMkWg8yzLp4wU/6HFBGcP7p0AcBS04=
+X-Received: by 2002:a17:903:2f85:b0:24c:b69f:e4d2 with SMTP id
+ d9443c01a7336-24cccbfbb0dmr2910515ad.1.1757003537673; Thu, 04 Sep 2025
+ 09:32:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250818170136.209169-2-roman.gushchin@linux.dev>
- <CAP01T76AUkN_v425s5DjCyOg_xxFGQ=P1jGBDv6XkbL5wwetHA@mail.gmail.com>
- <87ms7tldwo.fsf@linux.dev> <1f2711b1-d809-4063-804b-7b2a3c8d933e@linux.dev>
- <87wm6rwd4d.fsf@linux.dev> <ef890e96-5c2a-4023-bcb2-7ffd799155be@linux.dev>
- <CAADnVQ+LGbXXHHTbBB9b-RjAXO4B6=3Z=G0=7ToZVuH61OONWA@mail.gmail.com>
- <87iki0n4lm.fsf@linux.dev> <aLeLzWygjrTsgBo8@slm.duckdns.org>
- <87qzwnxgfr.fsf@linux.dev> <aLk0FuezkcInlM_r@slm.duckdns.org> <87h5xi1e6p.fsf@linux.dev>
-In-Reply-To: <87h5xi1e6p.fsf@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 4 Sep 2025 09:26:45 -0700
-X-Gm-Features: Ac12FXwS8NBvLhK0GXWhEwLEcG0BPLfgFRE5uUtzqIDYNw67JkiC3-IZJcrgDd4
-Message-ID: <CAADnVQLBrOgeH5T2iXa7nNpHTtQvpzuzfOgEgPQv8T_AKEg6mQ@mail.gmail.com>
-Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Tejun Heo <tj@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, linux-mm <linux-mm@kvack.org>, bpf <bpf@vger.kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>, 
-	David Rientjes <rientjes@google.com>, Matt Bobrowski <mattbobrowski@google.com>, 
-	Song Liu <song@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>
+References: <20250903232437.1454293-1-kaleshsingh@google.com>
+ <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r>
+ <CAC_TJvd0SnHpEv0MSwXsF4UFpP0MNvRc033=JS1xTEHAOjQY5A@mail.gmail.com> <7eh332fqbhxak2afcwt6mwzaxu7s3dj2tx4hrtt7ivo3oxovcg@avz6uniwdzpi>
+In-Reply-To: <7eh332fqbhxak2afcwt6mwzaxu7s3dj2tx4hrtt7ivo3oxovcg@avz6uniwdzpi>
+From: Kalesh Singh <kaleshsingh@google.com>
+Date: Thu, 4 Sep 2025 09:32:06 -0700
+X-Gm-Features: Ac12FXyZMIliyHsJ8oJic4hRcBiiCKHL2ZYkSahpEJ8um3_mw6lFpjZ8RpCGqJs
+Message-ID: <CAC_TJveTui6MPBGdB118VtL4pr69dtNt9LTe9J+cahHMdf75xw@mail.gmail.com>
+Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
+	kernel-team@android.com, android-mm@google.com, 
+	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D067814000E
-X-Stat-Signature: qw99g4573369ebmjxe3awdecw7neec19
+X-Rspamd-Queue-Id: 40F7D4000A
+X-Stat-Signature: fhebzdmgfrcejxie3xqojbnomeatwfk3
 X-Rspam-User: 
-X-HE-Tag: 1757003220-614786
-X-HE-Meta: U2FsdGVkX1+PIdyAULlUNxWCjCrkumhEHiv0XFaANY4u098D8GAR9aLdNJR4hBkJVsaADkxPOmX7Kmt864fUTxX6vRTm2qU2abwztFyC68ZfaQZ2rCXFqwWOwgeHtcg5Bm8VDf1KI0lfV7aKfNWYH/9Q/r+PzKRKvXFVmzy60w/sT4iuykZd2wxjxLYq/LCSmT23JYIMH5ThqPKHu8p9sT6XfKg3mfaHarTgBvWT1DOm4KRP4dda0aOA9vczTR2+aHWl4uVacmDDe+mtxztX2S/uxe7eO2f4UcQ/2lk5LMnHAEbpFx2CLGJu6lguEv5iubrbTXje4i9Japw+Vf7d6bI328DbSHl2w70XglqwapEz3SwA1/lLoEdoUWf00F60qoqQbCDIj/TJuKNx6tkU7M8qVHO18FVIYfgJCWxgV0S4f6adhpCpBJZ7c+sqk5vPW3O/LG/WU/nvwyFSGAlMT6ssPU4kJ633et6eyZrlafqjAn1hGGScsE30jwN2kVq9ckdVveUt0r4H0gOl2QWZpNKKIzBDmK5RqX+SUlqTpy6qkjLjrR473o0049XHgv/f+sR3tgrC0rP6z+m5mldZLMSkJI5XthLB7v5wnw3xrrGzBlJ3/BI2bpEhlscVQkPjAlIQ2UdRP/SfBAOnFrxIwROfwDLFEV9grWD1pQI0c7obusXI3y9fPda5XTwTmfjMQ992/oCru185ku1qx5gl2qa3nj6MW/fCtOEc1ST6IfBi0FSU3Nnj1aCUWmCc7ajRtrhjo45xj/87DFusfUGfHgQ0uQ4EmiTW4i8T86vrQZmKe61Kc8iRT11lHua0kkOq3l55HUFE+FS8f141bEUzf9W5AdGta7z2PihIvEHDKrpQEZEwEIKWqvV6bOklSN3ZhUJbH7L3ogE+2lzdjNHHelYXZZ8Up7kcyw4v+ev8S3vLKM74/ld72BEyGZJp4f/fJBD6R4ajltDsrVSfY2Z
- juztVYVg
- +k9Jb2BGiSWHHfeExSfgBBgDDJNCIZ0dHuCgVeeFVUQrocD7/NZng/VQInoIEJuTIzVj76Zv0z/oa4LEw43jeADxZ04zFSX1Md/L4lU4hGBvsw0Sc6oYPxxjVG2pMDDy+VIXmchcZizuHZ813NH9hcDymd7ehST3qlezwJVGxbMkSUmi5LbJCnzT2Rh8rmOb+NJvrSgINaqXPWWqmxMmX7i7DaXezAOJzKEZaua9nMvAzZDfYxWnaD57rHp0s4GjVY5+XTF274GGlZKflSxpc00Y8Zumd8Zy2LNZrP/Qu3z+6mwUmGHQQHl1DitthYzSEZEDzkf3SNSjihIW+TkalLR/09+QlGjMRjjTuIQQRuQizQbBN6SqlbnKtLXpJ4V5ImOhwqsc/oIaB15utW4A3VnFUyw4HbvhWdM08
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1757003539-124408
+X-HE-Meta: U2FsdGVkX19HRMY6lqJlbNjbH1wXu8/W+/0QE/9OqfwLV7s+VFihPby0WJV5l7xJ/C9do0qTOso8ygsByTzSy+ehOM9yfayC2FDw4a6gFFicBsxFA+Ua7QJ7fyKClLTfVjAwDADNeXJ1fF0ey+io9bmVG9o4p/nVdLJVTwx8HKUF6ffzZujAxrQZ7NODMd+a5R7kMOlAmWR3yRJeM8p5wifYgB/ENDb8RZ7igAhtU+oCBylo+FPXXCdRhNwdMdx8K+xM7CpOX/ecqZkjSlg/TqyDYOwBuhTKmOVlphFDjyaMgpRa8IK3RtABBM63iOm1EWX/OIb/QXjKyZ7vIPtOkx1EoUsuvhyxM5cGbWcFLGwNTTUNoHiIvZSaONnOXVH7600/qaG9yQGsV0ysutNH3tg/KBkqRB1AgfO5jb28/H3tH2+WRTEP6KD4ixrmVTqd7UzN2QqGqLMaOep5mOqQntYnKczK9IGl+Towt98e5K2Bir0H6S95TjtP2WYSxdsNjz+j9S6f6RvyyaFCrxqB2CbNGqbBf4U6gREb92rYibaBMH7vUXLxjRD8y/zA+z26G28N+gDyVTncAbGR3fxQ9iTu5Q88G9F4uQ4dUtBm4zIlWPZP5xKuycJ1CEfnzhfB75ynN1x1ssxdy10ttkMir+W4SGuA5a/v+KBVODZil8jlb1Pzw3P8Wy2vuORegKwGHmuk+1ySbIoTkCnE7TCzPnbTco7ynnxCGsoPNFiR7s/J0JYzqkw67Wgz64OQT9O6EksmElTu4C7uvYKVvXcq5GZBAp5UosNOYb52VD2ei2K91uYquSVwQVql6RP0WE58RzYLBIQBeTGTeOTMO3LW0z3MARP4kDjID+3Hl4xsObgi95hXCgPluXg9FBJtMgnLa4fGxKrdR+PLay++yXm2akpmNg/EM71q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,61 +120,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 4, 2025 at 7:32=E2=80=AFAM Roman Gushchin <roman.gushchin@linux=
-.dev> wrote:
+On Thu, Sep 4, 2025 at 8:25=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> wro=
+te:
 >
-> Tejun Heo <tj@kernel.org> writes:
->
-> > Hello,
+> On Wed, Sep 03, 2025 at 08:01:50PM -0700, Kalesh Singh wrote:
+> > On Wed, Sep 3, 2025 at 4:46=E2=80=AFPM Pedro Falcato <pfalcato@suse.de>=
+ wrote:
+> > >
+> <snip>
+> > > >
+> > > >       /* Too many mappings? */
+> > > > -     if (mm->map_count > sysctl_max_map_count)
+> > > > +     if (exceeds_max_map_count(mm, 0))
+> > > >               return -ENOMEM;
+> > >
+> > > If the brk example is incorrect, isn't this also wrong? /me is confus=
+ed
 > >
-> > On Wed, Sep 03, 2025 at 04:30:16PM -0700, Roman Gushchin wrote:
-> > ...
-> >> > - I'm passing in cgroup_id as an optional field in struct_ops and th=
-en in
-> >> >   enable path, look up the matching cgroup, verify it can attach the=
-re and
-> >> >   insert and update data structures accordingly:
-> >> >
-> >> >   https://git.kernel.org/pub/scm/linux/kernel/git/tj/sched_ext.git/t=
-ree/kernel/sched/ext.c?h=3Dscx-hier-prototype#n5280
-> >>
-> >> Yeah, we discussed this option with Martin up in this thread. It doesn=
-'t
-> >> look as the best possible solution, but maybe the best we have at the =
-moment.
-> >>
-> >> Ideally, I want something like this:
-> >>
-> >> void test_oom(void)
-> >> {
-> >>      struct test_oom *skel;
-> >>      int err, cgroup_fd;
-> >>
-> >>         cgroup_fd =3D open(...);
-> >>         if (cgroup_fd < 0)
-> >>              goto cleanup;
-> >>
-> >>      skel =3D test_oom__open_and_load();
-> >>         if (!skel)
-> >>              goto cleanup;
-> >>
-> >>      err =3D test_oom__attach_cgroup(skel, cgroup_fd);
-> >>      if (CHECK_FAIL(err))
-> >>              goto cleanup;
+> > Ahh you are right, this will also go over by 1 once we return from
+> > mmap_region(). I'll batch this with the do_brk_flags() fix.
 > >
-> > Yeah, that'd look better but are there practical differences? The only =
-one I
-> > can think of is fs based permission check but that can be done separate=
-ly
-> > too.
+> > > >
+> > > >       /*
+> > > > @@ -1504,6 +1504,19 @@ struct vm_area_struct *_install_special_mapp=
+ing(
+> > > >  int sysctl_legacy_va_layout;
+> > > >  #endif
+> > > >
+> > > > +static int sysctl_max_map_count __read_mostly =3D DEFAULT_MAX_MAP_=
+COUNT;
+> > > > +
+> > > > +bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_=
+vmas)
+> > > > +{
+> > > > +     if (unlikely(mm->map_count + new_vmas > sysctl_max_map_count)=
+) {
+> > > > +             pr_warn_ratelimited("%s (%d): Map count limit %u exce=
+eded\n",
+> > > > +                                 current->comm, current->pid,
+> > > > +                                 sysctl_max_map_count);
+> > >
+> > > I'm not entirely sold on the map count warn, even if it's rate limite=
+d. It
+> > > sounds like something you can hit in nasty edge cases and nevertheles=
+s flood
+> > > your dmesg (more frustrating if you can't fix the damn program).
+> >
+> > I don't feel strongly about this, I can drop it in the next revision.
 >
-> The practical difference is that a single struct ops can be attached
-> to multiple cgroups.
+> FWIW, I don't feel strongly about it either, and I would not mind if ther=
+e's a
+> way to shut it up (cmdline, or even sysctl knob?). Let's see if anyone ha=
+s a
+> stronger opinion.
+>
+> >
+> > >
+> > > In any case, if we are to make the checks more strict, we should also=
+ add
+> > > asserts around the place. Though there's a little case in munmap() we=
+ can indeed
+> > > go over temporarily, on purpose.
+> >
+> > To confirm, do you mean we should WARN_ON() checks where map count is
+> > being incremented?
+>
+> Yes, _possibly_ gated off by CONFIG_DEBUG_VM.
+>
+> >
+> > >  Though there's a little case in munmap() we can indeed
+> > >  go over temporarily, on purpose.
+> >
+> > For the 3 way split we need 1 additional VMA after munmap completed as
+> > one of the 3 gets unmapped. The check is done in the caller beforehand
+> > as __split_vma() explicitly doesn't check map_count. Though if we add
+> > asserts we'll need a variant of vma_complete() or the like that
+> > doesn't enforce the threshold.
+>
+> Right, it might get a little hairy, which is partly why I'm not super int=
+o
+> the idea. But definitely worth considering as a way to help prevent these
+> sorts of problems in the future.
 
-+1
-Attaching the same scheduler to multiple cgroups also sounds useful.
-I feel sched-ext should use cgroup_fd too and do scx_sub_enable() at
-attach time instead of load time.
-Then scx_sub_disable() can happen at link detach.
-Looks more flexible from user pov.
+Let me take a stab at this to see how it turns out.
+
+Thanks,
+Kalesh
+
+>
+> --
+> Pedro
 
