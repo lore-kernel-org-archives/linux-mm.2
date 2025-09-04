@@ -4,114 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 648A5CA1017
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 14:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B983ACA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 15:02:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF7DB8E0011; Thu,  4 Sep 2025 10:58:53 -0400 (EDT)
+	id 2265B8E0002; Thu,  4 Sep 2025 11:02:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACF418E0002; Thu,  4 Sep 2025 10:58:53 -0400 (EDT)
+	id 1D6AF6B0011; Thu,  4 Sep 2025 11:02:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E5918E0011; Thu,  4 Sep 2025 10:58:53 -0400 (EDT)
+	id 09E878E0002; Thu,  4 Sep 2025 11:02:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DBE18E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:58:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 438C31A024C
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:58:53 +0000 (UTC)
-X-FDA: 83851874946.29.3B40F21
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4126A4000D
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 14:58:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F5XMMvif;
-	spf=pass (imf17.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB27F6B0007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:02:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F1B7C027B
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:02:19 +0000 (UTC)
+X-FDA: 83851883598.18.88AF20A
+Received: from lankhorst.se (lankhorst.se [141.105.120.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EFF7B4000E
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 15:02:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lankhorst.se;
+	spf=pass (imf27.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756997931;
+	s=arc-20220608; t=1756998137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jjoOxNGipBZMZSrHgnJO7zIqbW8l/mlQVhOAOi/XHNk=;
-	b=f7qkXQKSLKnKrsve+wjNmmfdnpJx8zabIQs172QGGxrpHFxBifIsIWJ6jbyhGo0BoJist/
-	64jaq1mIeG7rbBZForVSop6BRSd8+TZoPbZDqCFn0QuUXBGWhUyrVi+dL3Wh9DKueuqmIc
-	3ajK/32ga9XoJwAUiRBU/Q2s03SsVlM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756997931; a=rsa-sha256;
-	cv=none;
-	b=6t56IJxP19g/S7ahlHrvetihTVLZ7Smk51+JePIM60XX8RqWv3znJ9uahLXqJuoNyVv0Yp
-	WxQCKValkgkbRIkXG8AiARY4CmIiN6ps++9uMSnAVxrT8T28ETnIgmg1w810YEKiu4ZnAV
-	uPCpC6eszxnrOFngwLHj+Nh11WHpFhM=
+	 in-reply-to:in-reply-to:references:references;
+	bh=i9JpeMdGDbhK8fazUzUVJQYBYsV2BDfjJEzDTVjraZs=;
+	b=hyrMcmLJR5F2JQ83s88wfe+srg6gYMxEkWYOqAb8Hq0NR2fcXQ97Q+W0XemCi8EFlQy/oW
+	v5mIYYyz/9yTSPuMzLGggMYpKUBZtVOn8/Xdy/R4bHxXu+c68+FA8fmkzYfJN2fVs28WDD
+	zR4U6yr7ij6EqWB2degHQKgxlgZuDbQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F5XMMvif;
-	spf=pass (imf17.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3dce6eed889so841554f8f.0
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 07:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756997930; x=1757602730; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jjoOxNGipBZMZSrHgnJO7zIqbW8l/mlQVhOAOi/XHNk=;
-        b=F5XMMvif51qwzjwKHR+wwo7JnX0jNUBAOo5Us9JUiuFrtcFQXmYZgdY4eBJUmpH8rU
-         2zQrnGl3VFaAzMya4VWJLAX3bs0qtZLSTTryaszo/qgFgBd2q4qS4sADQ9brgVvqRiKK
-         mfybV1KzbUxnshbr+LwoAVv1LNm3n7XRZOwvjBkAW4PD1TSAB7hXlUZqRtJX2KimctEs
-         zwLF/maKTaSwaT6N03NP1IHBSiYRJ05MbxPXOQVfBWHXXcMvFgwDH91Lewn2b88ELs1c
-         VVLyzqm/5AkMBnI2rkOu1nAJxl8k5lTBLolhjlFN6IfFbZiMDp2TmDIhE7ZKrvjj63j0
-         VlcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756997930; x=1757602730;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jjoOxNGipBZMZSrHgnJO7zIqbW8l/mlQVhOAOi/XHNk=;
-        b=hUvfnbrn55DKQPqIYs+BhXMrJX9s91jVVcSveiOLAWmQxt2KWvr2NACwst6JLk1IUn
-         DSEu2FLazbfLAm/NESB7lT8f8FJTNf57dvajxfJX1TWbImj/18LGSObqlej43P+94e5n
-         KVEkhTn5Ug/Y3E2htaKYW9RNNsmQS01aonZJLUxiOgNGgkdKBjBzC6CutDNA01BHBoiv
-         ZLpzeVsCUfI5NmrAISXezVRZ1k5YI4R2txHrLQLrFCIkgApZ9GVi/Q8gC3SPEpgKljF9
-         ii6QETjgR0K2FfIRUBOD2Kszo3f0WepfOtmp0V8F6tPffVubB3INLsB/WZ1p5oYRcj1K
-         DUeg==
-X-Forwarded-Encrypted: i=1; AJvYcCXsPcmgiCHKVOzK6IbkuLLCO4xmSBJ2aut6+bxTlwC15lzEUGiJBK8TKxWqRhNIyGczT1Fn8yemSw==@kvack.org
-X-Gm-Message-State: AOJu0YyMHpUFPG1WeY9JZjvVH6Topty4B7cVD+7+G9xPRTUJIK3v2MRn
-	E3tO5ae6rqTGun9CyPGzk8Gg812EfhStDtU8J8OACaxm3yMRfvKr0HcvAq1oYwiCDo2b2mnvXS8
-	5stt20Hshrbp4XcBaXoHOv1IhcaTrBVI=
-X-Gm-Gg: ASbGncs3OmI+oU0ADVpy9wXG7FrZQc89Z/hDy87ZC7y6HZK1EKgxLxUkmsKyEWvXSB5
-	CRkK4+ZqsucdUXYiltWG7IbkH1VWjcyVAByGSR9phh6lr2WZACP+vazyuL87sqCBY8aF0NCKeDo
-	9zqnopUF/6FuxGHxn6GRX6oCVwXxE1bhxUlTLEgcEGSDb8UfuYtwxlbonvWZcTCdlGfPb+sbUNL
-	FRiJb8=
-X-Google-Smtp-Source: AGHT+IEOLYmXnNodyTdeKUcsNwKRu/qrjmwe1/I99spM8q/MVj2nsHb/yfnDKG0O9PUqtUVGjpAX+llHDS6iNPSghBc=
-X-Received: by 2002:a05:6000:430c:b0:3e0:4d29:80be with SMTP id
- ffacd0b85a97d-3e04d29815cmr2637642f8f.49.1756997929274; Thu, 04 Sep 2025
- 07:58:49 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lankhorst.se;
+	spf=pass (imf27.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756998137; a=rsa-sha256;
+	cv=none;
+	b=1L+jYoPmJ+r8Z61LNx0oHPEcCANU84LSKlObvdzHPVC8lEbPDLayhezw1nElrugdUzHKsT
+	s4I7XI1g1KDickpUAIRySoGqwvoEzgaBAYcuDcdY5z9N82SfcFIKPP/zGQRFLWy3zy3PYF
+	n37cjbK92sb6TKqD3/wi4C8C9DEqMSE=
+Message-ID: <740924f6-e241-428d-beaa-630cad8c3e05@lankhorst.se>
+Date: Thu, 4 Sep 2025 17:02:11 +0200
 MIME-Version: 1.0
-References: <20250820053459.164825-1-bhe@redhat.com> <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
- <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv>
-In-Reply-To: <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Thu, 4 Sep 2025 16:58:38 +0200
-X-Gm-Features: Ac12FXyGDcz59ifSydw05MuQg_P1V6YF0m9gsQ5VWAu0_B8ZIjHvT6en0L_OHZQ
-Message-ID: <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three modes
-To: Baoquan He <bhe@redhat.com>, snovitoll@gmail.com
-Cc: glider@google.com, dvyukov@google.com, elver@google.com, 
-	linux-mm@kvack.org, ryabinin.a.a@gmail.com, vincenzo.frascino@arm.com, 
-	akpm@linux-foundation.org, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, sj@kernel.org, 
-	lorenzo.stoakes@oracle.com, christophe.leroy@csgroup.eu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4126A4000D
-X-Stat-Signature: 8kkhx3yufhehiy4awhuj1pkjra4dmrao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/3] cgroups: Add support for pinned device memory
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Maxime Ripard <mripard@kernel.org>,
+ Natalie Vock <natalie.vock@gmx.de>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?=27Michal_Koutn=C3=BD=27?=
+ <mkoutny@suse.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "'Liam R . Howlett'" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-mm@kvack.org
+References: <20250819114932.597600-5-dev@lankhorst.se>
+ <dc21e54c-d7ae-4d7e-9acb-6a3fa573b20f@redhat.com>
+ <9c296c72-768e-4893-a099-a2882027f2b9@lankhorst.se>
+ <b6b13ad22345bcdf43325173052614c17e803d00.camel@linux.intel.com>
+ <776629b2-5459-4fa0-803e-23d4824e7b24@redhat.com>
+ <da5885a94d89a2c0dece04e09182e832e8e40410.camel@linux.intel.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <da5885a94d89a2c0dece04e09182e832e8e40410.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EFF7B4000E
+X-Stat-Signature: 6mnyahir936xi7ydjxd1q1utxsprc6kw
 X-Rspam-User: 
-X-HE-Tag: 1756997931-7813
-X-HE-Meta: U2FsdGVkX19zHNj3znsfZwz13nmw/kGAJJXAhsnsXSTGScz5no9HisyYn6A+dDK8TvbKJYqO+n94EBjrr2xRjADxBC9D2EU3ggH+nOyETz27Aprp3UTv+qOzRcUZfQHIelGy2xar7IgZt6IafLC1AMDhxMHwknAOLfdgTTq+poMkiGfcCR8FCDOs7/3h1EtZQ67WNIShQ15PR78EE+Lmiivj2H1x+iUpwEofiP8PBjVCFYzvJbZerAzyxBfejkiaS91FwXQ4PdIgG4bVpOoRnSTvcmrG83ff63Y8cICbyFuN0wl8N6pRPwCW27ERe3DQUWF6MNTL6b+uFdEGVmwYQyuhlwFtpsv9aAkDM/zF1Onwy4Gemygr4KzAmRmPQwYrLFODv29sJtcpdFPYCavu2y66tMJdydoN8v9/XjLln+P8OsPj5hULI1D3V+Py4jxIuJ2eMHJitca7j1z1T5ACAQWPu/Za6CiJyA4PIJzq6o/LAlA9jskknHj4Z/gtZlUXjmMtjl+vQSdAnhhPfLnrLUp66G4XoMswSDU6MDn9FYYhITmBzHCeHuy375VKrzp1VJdhTih70an1SEZ5VhbahNp+VMWZLUpe3EpWD/pFkRBCy6l8vrB42bExAl5hTK3Uiipr0itbHIDvzcAp4Z2ArJXgKJCAbmDkntHDiud2z/zTWbovJdrjGHw6HKDelHZGHsO2JOBNnYLklL2gsQZfmU6FXMJHDVwtvqo6pIKQogscUd6EXh8sqLIFMOQ9G2p+d2gMLGmm6StOn083OR24SG7tf7QRXUkJp5XS9ppa+eJ8pt8JNtOiqOHSYCMXqwYKEQQZy/qUFuNWqNcq6aiKdpXOtQROvLSOvzCr4tg4PzAt+ZmKkP7hC72KiUjCE0J3c/2EwIb3oKczmBVw57ntEJnRsXKHZrb4hRTuW9nXYAh3M5UBkwLphsSVEa0YUkqCV86iML1nBRsBMmZhb+j
- DUihbCI5
- lqb2eka8hLMLxt2ke398XtIa+uLdygSNEte5X158gxke5Zv7k6TAolGCnyCXrDiAJAUQeuuwb34TOPOw3ivX4pPCV8oLVOiZ8PGWh5elvU7lGA3TgOz04z5Jcx8MWAzyl51GhVQJia2ProakwVtl/HCnCtJzDPQc5g+U4W4gRKbc92OtoQ2A3J3aNj/PNqBSzazBLJbblQqgRhnXRjZ5dkRjy57FnT7Heb+g9ok1JBML9Qh+L9uugf+2hTcfi9Fs9OzxNeDXXfZ3sOwhkD0L4lH+lfTt+Qe8TboR+8663U9LYruBB++wjlf6MmT0V576IEHPhr+wNNEttNLuUA/xfvMYFE5ndBR3mDIBaU1nTYBMaRmFVSVW/mjyak0obVp7+HoVro1UKSgD5hf9OhQ0b4gE8X2tcGGmO+Q9XFfwxxQo1t5zqZIHL+xITMaEPAUaAjEJR
+X-HE-Tag: 1756998136-869436
+X-HE-Meta: U2FsdGVkX1+ZidcvW3gXwDJsQ7BY7EtoN91k9JoeN4taIyc8g8uWSR3jW8Vdckf1GugJW5YwNadD6mS9PeIvl6EKgeTsUWTz7BCAB1w/5trizAQ39F26TxMPQllu6pDz+L22QTuR6hU2a3NGz8AZi0hd6bvMUaS+WjrEQCuTdS4rO7uYkXOn6dsp2wahqfvak8Tg6HFAwnpH3Xe3HYDEO1O0i5RgqHjWoc0bxmTRt1PyYTtHgZSHDlzGbo/g8d6NAwOUq7hDFemoO+NuAm7pA/y/b/pISnWOaWykb1NuZha0ImG2GDiagY5zlnseGZTrQGNNwZ6kDFHnnQT9LeelyEmugduRaXEaHwEg/BaLCRPi3NF+yPKcwMYrRzOjWOwzQoHNuW/EW0IpD4X5GnJY0ztqeUSI3QbaOYcNO61GB/SPjkwUddA7jGOyQ1qRQI9Z16ZrbJYMwUJ2QPaTkODHBmpXiBrEq3oR7iJA/LBGnOc3sqNwI9MMOAaM+YTxV47cC1RSnoLT9qdIr0OSzJN9y7lfGRgrKDS9pavmzczYp7jQOSWIbCNx6XBZAmeh3vBUkqIPwdjf46eQP/xoOMDi58mGxWuIGPcMI6wetbmGoc7FfZO3Ap2SFJhMwZSaCHgM1b6A2Em0CSLKY19FzApa+QcEPIxrGM3JWZdO/s/fqJxHweTeIMFh7t55vxKLsgqUA/Kx4Tz1HG2oWt57ucXNU8KGFSZoXLsmFA9Wzr4587OH4/WB3jFb46i7Q77dU9PsTLdZaz7ElgyqSioIRePmidkq9u5Rtf4I0wAxJkcjKtD+WDUvWQOlgCdkJ5Y8zmtpT0FLs2VYFLgmAJWmO0Y6FE10H2tQnkZTbdymgqX6m96nI4URbd6yzhWXLc+Et8gHxTW9kBRQ8DXTd3XUU5mjyvBjx2vvHalEMt8UT83grAUgVhwWdGCN0XkAvauLXo9PeNBbZylGmYce0BKObtb
+ mhh5l+0P
+ sNFk5DoGlt6BAsmodgGMR5mWBYnCeuzT6R7QKR8CDJ/BQvF45zuX4i3X6NzxyhfKwN1PgW/d0YJ7JtWAA6R0kF0N8wg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,105 +100,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 4, 2025 at 10:11=E2=80=AFAM Baoquan He <bhe@redhat.com> wrote:
->
-> > If so, would it help if we make the kasan.vmalloc command-line
-> > parameter work with the non-HW_TAGS modes (and make it do the same
-> > thing as disabling CONFIG_KASAN_VMALLOC)?
-> >
-> > What I don't like about introducing kasan=3Doff for non-HW_TAGS modes i=
-s
-> > that this parameter does not actually disable KASAN. It just
-> > suppresses KASAN code for mapping proper shadow memory. But the
-> > compiler-added instrumentation is still executing (and I suspect this
-> > might break the inline instrumentation mode).
->
-> I may not follow your saying it doesn't disable KASAN. In this patchset,
-> not only do I disable the code for mapping shadow memory, but also I
-> skip any KASAN checking. Please see change of check_region_inline() in
-> mm/kasan/generic.c and kasan_check_range() in mm/kasan/sw_tags.c. It
-> will skip any KASAN checking when accessing memory.
->
-> Yeah, the compiler added instrumentation will be called, but the if
-> (!kasan_enabled()) checking will decide if going further into KASAN code
-> or just return directly.
+Hey,
 
-This all is true for the outline instrumentation mode.
+Den 2025-09-02 kl. 15:42, skrev Thomas Hellström:
+> On Mon, 2025-09-01 at 20:38 +0200, David Hildenbrand wrote:
+>> On 01.09.25 20:21, Thomas Hellström wrote:
+>>> Hi,
+>>>
+>>> On Mon, 2025-09-01 at 20:16 +0200, Maarten Lankhorst wrote:
+>>>> Hello David,
+>>>>
+>>>> Den 2025-09-01 kl. 14:25, skrev David Hildenbrand:
+>>>>> On 19.08.25 13:49, Maarten Lankhorst wrote:
+>>>>>> When exporting dma-bufs to other devices, even when it is
+>>>>>> allowed
+>>>>>> to use
+>>>>>> move_notify in some drivers, performance will degrade
+>>>>>> severely
+>>>>>> when
+>>>>>> eviction happens.
+>>>>>>
+>>>>>> A perticular example where this can happen is in a multi-card
+>>>>>> setup,
+>>>>>> where PCI-E peer-to-peer is used to prevent using access to
+>>>>>> system memory.
+>>>>>>
+>>>>>> If the buffer is evicted to system memory, not only the
+>>>>>> evicting
+>>>>>> GPU wher
+>>>>>> the buffer resided is affected, but it will also stall the
+>>>>>> GPU
+>>>>>> that is
+>>>>>> waiting on the buffer.
+>>>>>>
+>>>>>> It also makes sense for long running jobs not to be preempted
+>>>>>> by
+>>>>>> having
+>>>>>> its buffers evicted, so it will make sense to have the
+>>>>>> ability to
+>>>>>> pin
+>>>>>> from system memory too.
+>>>>>>
+>>>>>> This is dependant on patches by Dave Airlie, so it's not part
+>>>>>> of
+>>>>>> this
+>>>>>> series yet. But I'm planning on extending pinning to the
+>>>>>> memory
+>>>>>> cgroup
+>>>>>> controller in the future to handle this case.
+>>>>>>
+>>>>>> Implementation details:
+>>>>>>
+>>>>>> For each cgroup up until the root cgroup, the 'min' limit is
+>>>>>> checked
+>>>>>> against currently effectively pinned value. If the value will
+>>>>>> go
+>>>>>> above
+>>>>>> 'min', the pinning attempt is rejected.
+>>>>>>
+>>>>>> Pinned memory is handled slightly different and affects
+>>>>>> calculating
+>>>>>> effective min/low values. Pinned memory is subtracted from
+>>>>>> both,
+>>>>>> and needs to be added afterwards when calculating.
+>>>>>
+>>>>> The term "pinning" is overloaded, and frequently we refer to
+>>>>> pin_user_pages() and friends.
+>>>>>
+>>>>> So I'm wondering if there is an alternative term to describe
+>>>>> what
+>>>>> you want to achieve.
+>>>>>
+>>>>> Is it something like "unevictable" ?
+>>>> It could be required to include a call pin_user_pages(), in case
+>>>> a
+>>
+>> We'll only care about long-term pinnings (i.e., FOLL_LONGTERM).
+>> Ordinary 
+>> short-term pinning is just fine.
+>>
+>> (see how even "pinning" is overloaded? :) )
+>>
+>>>> process wants to pin
+>>>> from a user's address space to the gpu.
+>>>>
+>>>> It's not done yet, but it wouldn't surprise me if we want to
+>>>> include
+>>>> it in the future.
+>>>> Functionally it's similar to mlock() and related functions.
+>>
+>> Traditionally, vfio, io_uring and rdma do exactly that: they use GUP
+>> to 
+>> longterm pin and then account that memory towards RLIMIT_MEMLOCK.
+>>
+>> If you grep for "rlimit(RLIMIT_MEMLOCK)", you'll see what I mean.
+>>
+>> There are known issues with that: imagine long-term pinning the same 
+>> folio through GUP with 2 interfaces (e.g., vfio, io_uring, rdma), or 
+>> within the same interface.
+>>
+>> You'd account the memory multiple times, which is horrible. And so
+>> far 
+>> there is no easy way out.
+>>
+>>>>
+>>>> Perhaps call it mlocked instead?
+>>>
+>>> I was under the impression that mlocked() memory can be migrated to
+>>> other physical memory but not to swap? whereas pinned memory needs
+>>> to
+>>> remain the exact same physical memory.
+>>
+>> Yes, exactly.
+>>
+>>>
+>>> IMO "pinned" is pretty established within GPU drivers (dma-buf,
+>>> TTM)
+>>> and essentially means the same as "pin" in "pin_user_pages", so
+>>> inventing a new name would probably cause even more confusion?
+>>
+>> If it's the same thing, absolutely. But Marteen said "It's not done
+>> yet, 
+>> but it wouldn't surprise me if we want to include it in the future".
+>>
+>> So how is the memory we are talking about in this series "pinned" ?
+> 
+> Reading the cover-letter from Maarten, he only talks about pinning
+> affecting performance, which would be similar to user-space calling
+> mlock(), although I doubt that moving content to other physical pages
+> within the same memory type will be a near-term use-case.
+> 
+> However what's more important are situation where a device (like RDMA)
+> needs to pin, because it can't handle the case where access is
+> interrupted and content transferred to another physical location.
+> 
+> Perhaps Maarten could you elaborate whether this series is intended for
+> both these use-cases?
+Yeah, this is definitely for the latter case too.
 
-However, with the inline instrumentation, check_region_inline() is not
-called (in many cases, at least) and instead the compiler embeds the
-instructions to calculate the shadow memory address and check its
-value directly (this is why we have CONFIG_KASAN_SHADOW_OFFSET, whose
-value has to be known at compile time).
+It's a performance optimization for the generic case, and very nice
+to have for the second case, to prevent unlimited vram pinning.
+With cgroups, we would be able to limit the amounts of used memory there.
 
-> I tried inline mode on x86_64 and arm64, it
-> works well when one reviewer said inline mode could cost much more
-> memory, I don't see any breakage w or w/o kasan=3Doff when this patchset
-> applied..
-
-This is interesting. I guess what happens is that we still have the
-early shadow memory mapped so the shadow memory accesses inserted by
-the inline instrumentation do not crash.
-
-But have you tried running kasan=3Doff + CONFIG_KASAN_STACK=3Dy +
-CONFIG_VMAP_STACK=3Dy (+ CONFIG_KASAN_VMALLOC=3Dy)? I would expect this
-should causes crashes, as the early shadow is mapped as read-only and
-the inline stack instrumentation will try writing into it (or do the
-writes into the early shadow somehow get ignored?..).
-
-> > Perhaps, we could instead add a new kasan.shadow=3Don/off parameter to
-> > make it more explicit that KASAN is not off, it's just that it stops
-> > mapping shadow memory.
->
-> Hmm, as I explained at above, kasan=3Doff will stop mapping shadow memory=
-,
-> and also stop executing KASAN code to poison/unpoison memory and check th=
-e
-> shadow. It may be inappropriate to say it only stops mapping shadow.
-
-That's true, but we can only achieve this for the outline instrumentation m=
-ode.
-
-With the inline instrumentation mode, the (early) shadow memory would
-still get accessed all the time even with kasan=3Doff. Which can be
-considered inappropriate, as you pointed out (though this is what
-happens for vmalloc allocations when CONFIG_KASAN_VMALLOC is disabled
-and it does seem to work; but the inline stack instrumentation might
-be a problem).
-
-We could limit kasan=3Doff to only the outline instrumentation mode, but
-I guess that defeats the purpose.
-
-I'm not completely opposed to making kasan=3Doff work with all KASAN
-modes (assuming it works with the inline instrumentation), but then we
-will need to thoroughly document the behavior it creates.
-
-And let's also wait for an opinion from the other KASAN maintainers on this=
-.
-
-> > Dmitry, Alexander, Marco, do you have any opinion on kasan=3Doff for
-> > non-HW_TAGS modes?
-> >
-> > On a side note, this series will need to be rebased onto Sabyrzhan's
-> > patches [1] - those are close to being ready. But perhaps let's wait
-> > for v7 first.
->
-> I replied to Sabyrzhan's patchset, on top of this patchset, it's much
-> easier and cleaner to remove kasan_arch_is_ready(). We don't need
-> introduce CONFIG_ARCH_DEFER_KASAN. Please see below patchset which is
-> based on this patchset introducing 'kasan=3Doff|on' to genric|sw_tags
-> mode.
-
-Based on a brief look, both patch series seem to be doing similar
-things (except yours also allows using kasan=3Doff for all modes).
-
-But I like the Sabyrzhan's approach of hiding the explicit
-static_branch_enable() calls under CONFIG_ARCH_DEFER_KASAN for the
-architectures where they are actually required.
-
-So I propose we moved forward with the Sabyrzhan's series and then
-apply additional patches for supporting kasan=3Doff on top (but again,
-assuming they work with the inline instrumentation).
-
-Thank you!
+Kind regards,
+~Maarten
 
