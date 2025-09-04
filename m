@@ -4,114 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C12CA1014
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 03:02:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3515CCA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 03:36:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD6418E000A; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
+	id 521778E000A; Wed,  3 Sep 2025 23:36:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAD858E0001; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
+	id 4AB5E8E0001; Wed,  3 Sep 2025 23:36:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE9F38E000A; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
+	id 39A568E000A; Wed,  3 Sep 2025 23:36:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE7158E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:02:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C40FC09CF
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:02:05 +0000 (UTC)
-X-FDA: 83850068610.25.587CF5C
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 70790160012
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:02:03 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="KihRr/F4";
-	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756954923;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sg3/MOE3S1m7f3fF13n1hw3ITE04y8oKW6xr+zs7pi4=;
-	b=XAFCfBFawg5FOIUKGsdsG8w2uf+dFUtoCS8jsej8ZGRl98RaTJrmDNDc/2wV7Nuo3jB/87
-	2tBPrDzW1BwDklIA2djxbe1CJkIIBSKiUXX10u6utD1mmauKihohqaMlYpotHPuaYd2ZId
-	iq8IcDn63T1Xh1cvI/qXJQqEgn6A28k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756954923; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 24AF88E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 23:36:07 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 861BC1409B4
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:36:06 +0000 (UTC)
+X-FDA: 83850154332.06.3133675
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D032C10000F
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 03:36:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of 3Iwm5aAkbAGYWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3Iwm5aAkbAGYWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756956964; a=rsa-sha256;
 	cv=none;
-	b=l9PuFx1elB2QFrox9CeVReJZ+Ia3rKqAgPIycZs2qAfwoFA9jGHe/50wNSN1fm6P2x/6F7
-	sUiV1qCqJvz6SNunug36hV1DkEURlvwg06v4h3wjqdGySrHDPaKkS4DTb+lLOngaGdMrPT
-	3fBrtKoNkvORDU5/8GzWq6xinsnbTsQ=
+	b=p7+a+p4cbapRhNSCSfMPD8oyCihGo513mi0SnHXoYM+GI0Z8Svg0lXQVuOwiHPjH95sWE/
+	13n1kSe8YE/mG4XdvgWwaA5bONzNWO+EBKlHvKXWvkOkEP8l4upMB2y9SOvtQuc5irr5GL
+	ypCJsT1xnW3/yAnM/byw0XlgqQTcYAE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="KihRr/F4";
-	spf=pass (imf08.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-24b2337d1bfso109225ad.0
-        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 20:02:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756954922; x=1757559722; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sg3/MOE3S1m7f3fF13n1hw3ITE04y8oKW6xr+zs7pi4=;
-        b=KihRr/F4HwXeU3FD9aubdLs1H/vD/V2ENi4FXQbE6TyatlAeN4ieQdPERGSHgUkvNe
-         3BjTOu66NQOUo/EWFSNWLEreJvFK1zERKE8hvX9eQOh+zZrGPuOTGfMZ+ZRhYdlPa5JH
-         G+e/Z6B1cjS87qFRitMDsEe8LL7xzfiotv6d//5UpPwG245+JDXuT0hqdUxMoMueLay8
-         lBrk/MAbXWLPJapZH5FE/Z3jXCtxU6UpCUmWQveccMu7ui6tAlDL+J8XFolHqrQqXvFy
-         swz5oGKCeMJb4FPj24DPvXNrhQkSQxAuetbbc1vJhgf1IkiBPvjrtStwvskGCfqecyWD
-         OAyg==
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of 3Iwm5aAkbAGYWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3Iwm5aAkbAGYWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1756956964;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=3kJIQbdDjMaKIwu8/RgGFYQ3IVbCoHpKFlYMG3WTfzE=;
+	b=5tHWjtw36DgH85lf1ttVKjUG4p6/ST5DCMsU+AM8gjOrsxR+LwzCZ+qzXLokloV0sp44gT
+	hiPrhYAQeOoftIw9Bj/Es+qmKpxkOM134kt7qk7FMhjjxfdl5eF5pmwEl4k4mTJ+4f6yDu
+	JuL3qlUSqAakhRfeVyKDUB+uub/uGQ0=
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3f12be6bc4aso6766465ab.1
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 20:36:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756954922; x=1757559722;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Sg3/MOE3S1m7f3fF13n1hw3ITE04y8oKW6xr+zs7pi4=;
-        b=p+RVdWcoBckEKuOGWRbwcaEC3EyGpfTP1cmWAgqSPHNRnPjEpDnNG72ujCnzEvInT6
-         NoYmMovzpngph1pYLjNJPznjRBtqYpeJ4WdiMMzNe6C4jKtWp3Eqi7pIS+8m6+uQkoC5
-         sfPKCNINJXumluH/U292NHd+CWmkEDKaLjfzrLoqWhgl7kGLAkpqVhK3OcLD9GxGQC7h
-         oRhIHeLa262XYNoxxgoygJ13e9tBG2msdpPmB0uhAM6L2zsLMAPzSHXGFuPEsIBeYyrp
-         u5ZU0R2TVVi5cL2EggJJT5E6uLQxei5ctO4xx1AqfOtxpzJSfBllD9kDnr9HL0zOma1b
-         nkLA==
-X-Forwarded-Encrypted: i=1; AJvYcCXeA6rxG+BSY7xgqRh71H9gDQfz602RmnwYeDwwvRZBPMPWxgHOEt6Os6zrBA/YMWFjARRJorq2IA==@kvack.org
-X-Gm-Message-State: AOJu0YzwY0tHLwd75bwpXfQEeo63DLDk+dKjJ2yGGZiWwhD1eKSBFyKW
-	+voWOmqcByyTnKLFOqYyBLyrgpLlhud1KZnAaTHVX+khspzzf2jHpsUzU0eGg6Sm0DPCgUMej76
-	Eauc42KCq9/lpLlypdDsiOqaX9rq5O/ZqaVQE/EJX
-X-Gm-Gg: ASbGncsOjabIecM0OHqh0I5IGj+1K8eV7JjlFkrTDiVQcOyi3xOlp+S0/MF5wYHZ9Jo
-	F8VrKXrZCy/ooFDUz/8WrYzmT4b/EFKZtdttmZ0ierh3k3KKqHe4SQAMgE9q9RVscn60Qz1Bd3E
-	9aAAPdH3ua5BiAITbVw7KqKaBbuUyenIekexLBXCD8pJTUjiQ6Rwe3UUMBsC4KCwY6TvO/N3k8L
-	a+ajRNp2M7NPzaajKzWnHDIk8ML9yRLYax+2vgj6OYMuFu2vuvyuVXBeQ==
-X-Google-Smtp-Source: AGHT+IG8YHt751a8iagriEcNsKMllgaN6wY06ZE8CJTNDUcFMlf5P7pepAtKth9DhLzX66wuKthgL0uNwy/D9mA5rp0=
-X-Received: by 2002:a17:902:e748:b0:248:dce7:40e1 with SMTP id
- d9443c01a7336-24cccca7f62mr454025ad.9.1756954921579; Wed, 03 Sep 2025
- 20:02:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756956964; x=1757561764;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3kJIQbdDjMaKIwu8/RgGFYQ3IVbCoHpKFlYMG3WTfzE=;
+        b=UJ+GCTXY3WVsreOieZ8dWb3ufiDGP3o8KjovdInEgUw9evHcvtsUnvlFpUq0gYlolJ
+         W4ilwVvXEtyUhxVHxaERXMjX56QvHmcqSf1XQnzXa+1voqW+7yJjJJ/UnR2Yn7kjdDhH
+         acJ32BF80h4bq+wC1rvacuBE+MfMlUUKbjtJv7bNth6+aDNSJMVrPpfcabLtZwi2EGpc
+         sjfo2jDpc2Rho5iWsytVtfhzQiH1TXzPL2VtHSfQqnQ7OhV1DAg/9B+xNGXUDwk4IBwy
+         66MgOysoyCh/k1ZkhdUOGl6buUCnVYW9F6lauFSzkAqAefmnh6lptFKVEI4BCDpKFaCO
+         9giQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVn6msHGBG2gB2qp7Ku6OHdo3VLjgMps4J2wFYu3Q5vqhUqf+z8cfLbeKbkeSR+OP+g97g3j9A2eA==@kvack.org
+X-Gm-Message-State: AOJu0YwUbhKg79wRu4GJnNUD7/uprUMLnYWaN8qHlfH8lMEgLwOSpHEc
+	EdDje1r3aIZvIiOUcmxZckJhcr7x0BHw+406Jw4FYuATYDvRoTGEE+yoiIJVShemqAnW4QENLy0
+	idZYz84Qic5D+jzQQHIFQsf8qYtKp7eRY/W9XZwNLYJtD5P5+0KUh3ZUmR+0=
+X-Google-Smtp-Source: AGHT+IENXRrLPWSGUnbbTdfTn+b/gxfZBl4CNs9GbenLvGkYX09pwt1Lb4WmWZmlu0cLEj2iQB+7N7oCHFhDvtU1eW4rQU/TouYe
 MIME-Version: 1.0
-References: <20250903232437.1454293-1-kaleshsingh@google.com> <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r>
-In-Reply-To: <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Wed, 3 Sep 2025 20:01:50 -0700
-X-Gm-Features: Ac12FXy43GL9nI9zR7z8e9dj8Hz5wlrXATZLKUd47Qr5ZkcfHVn_XRh1JMB9T7w
-Message-ID: <CAC_TJvd0SnHpEv0MSwXsF4UFpP0MNvRc033=JS1xTEHAOjQY5A@mail.gmail.com>
-Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
-	kernel-team@android.com, android-mm@google.com, 
-	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
+X-Received: by 2002:a05:6e02:4903:b0:3f6:5621:fbde with SMTP id
+ e9e14a558f8ab-3f65621fe5fmr164563825ab.6.1756956963928; Wed, 03 Sep 2025
+ 20:36:03 -0700 (PDT)
+Date: Wed, 03 Sep 2025 20:36:03 -0700
+In-Reply-To: <000000000000939d0a0621818f1e@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68b90923.050a0220.3db4df.020e.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: task hung in hugetlb_fault
+From: syzbot <syzbot+7bb5e48f6ead66c72906@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@redhat.com, dvyukov@google.com, 
+	elver@google.com, glider@google.com, kasan-dev@googlegroups.com, 
+	keescook@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mcgrof@kernel.org, mhiramat@kernel.org, mhocko@suse.com, 
+	mike.kravetz@oracle.com, muchun.song@linux.dev, osalvador@suse.de, 
+	syzkaller-bugs@googlegroups.com, torvalds@linux-foundation.org, 
+	vbabka@suse.cz
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D032C10000F
+X-Stat-Signature: ofy7zdedjme6b5oem11rksc95niab3yb
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 70790160012
-X-Stat-Signature: 4os98qhpofmmmc6kb6n6jidnttweytcm
-X-HE-Tag: 1756954923-301113
-X-HE-Meta: U2FsdGVkX1+ZNbQZtHrEJz5T4kQ6MA8mT5A4S0US2AteiuaJSFho0mmszpo9JIiUv9OW4tj9XuUbgi/G39Wu2oh0pUHpID5Mu+4Mqmyeqh6HAqSp+UIv5122hDxO5XVJTvkGxCbZ08KGcmLpvklKWhxVthm3s7BHYCE/pS3a/r0vYqIbtn318IFMGzcCmobx4oDRJryCnotzAS6jPcuVw1xYbl8Ov48OGxjZ8odJmApZfcA+0cdnS7NJy7ZWmH9FItDXvRvzuP4R46KjuDtRdSOyJx+Cl5tJPbJ/zMU2Rgja7EZExE1jNkx+Ft3cXY9uB6CKME6nFwW9TRW8cXdg/DpL2VTITwGvK7hMTns1BLXPl0cs1wa3qfcE0Z1ThFRDq3zlozHnbkimbx4fBOlqE8WrygVHGnp0/fj+IyQeYLH6rj8pzBz/IBFfOI0zHMCHjSjXFtute5b1OJnSCfRT9/7uI2eGreAn7JxqMc6F4x2W0PMeSCc4UasiKg6Pp6QcaumtOLAgmsQPOfIr1Djsg5uhnJQLut7F7P+0iASOTakzsPvywC1uoSTM9sr84LlH7zKZAhrQ7iNDjBVOAiKKRlwE8JqzZxFAx53nJHgEcZup66BNivLSeUUTKbi1gl42vN/DQ+vwdWcISOTsu8R7wuHUBWjwErReJoYfaG5/gLDdXMbYW1260PXYfbULVwnm/YEQu5MT7/sXMUC1Ug9lnto420rDBsO1GSKjjwSmPSmy83WWxG4ZpK1Tfo4mpKOZF48DuLlKyRYrkqNMDQGvNe+B0RqcvMF3faPsWRGlI/XYGGuBJIli6IRW9VZA+fcj1wG4Q7sA3L7wbdxq8rkvD6tMC8UlfC3Gp8MzKa4741S6dqRVXBy0x1/vZ26KPba5fQBA/tplsh5GD3BvPrWWMn7eXnDwGZmPYQySAVzkpa6rrjMtO2gcSkwRKiUEkthM7pn3+PquFEOzd9EkAtW
- N/Phd9Go
- ydhbL/kJntjIIwgBJtKRNpbmMXo4WeuKqX5Up4hF4iY9KlStznbcp22vMSy4112qHPf9g6vamjV2usS9EW5W2ZTfcl+1tbamwnXx7tU3hR+yJJNeqD1XIYX8+CD0IjzkJobnvJ6g4jzquzR/WtPIYRJ3UtyszZuZLuwZW5DSw9oJ6pqOvap5OwNBel30fsHkNxupiTaVZ95uasmFqzg2tkt+qzIPZ1o9HmO+aRNZZrrOdt6HOHHGXsf8WDdHJ1rZp5zPTkcI1M7FDxpPHAAgkD9LAQCEG86Z/WVByJWJEtYKAhqGqYOsUk9YhjYRx8+0tx30ExEE5CLTLi4CcwsyxCC2G1kmmyFuUkewh51dA0pp7L6M=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756956964-732298
+X-HE-Meta: U2FsdGVkX19eA8/cE8W+lBAmm+ZWezedrW/JgBrkBVWC4AMsTiMS//dyfH+Jx64nLfKzy9IfedLQ/nMKFXXT/kIJRrX0wNEh7FbwkHa4/vpTy7zPT2xNGhih/oD1M8i7VnCm6FeqysPqMIdKXys2GJz8AskDvSzdP89TsU6HTTQ27LO3ZTsAKfb1k77uJWQiQdwOWhLIp6B/BYAhgCyV+nATkBdf9+PTzKtWaZnoff4wK+otRxCLALX2qc34for2qHGX2j4Uc9JdzwqC/14fkeu18ikWhBqy7Sx1Z1L5GXHKo616EWq9poH87xYlNZd3uzmTKt+UzE0e/yaBIsPPbV4O+WbxSmsabOp88Avjc0op07wQB3G1+ali8oBAWEeG92LF58X3hoav2HN895RuJm1YVw2UF1KtzM1gSuE5MJKCzMh1lX86VB/9n1yN4wbgZMZ+rVDNRj16euxzjGLLFWzpTJpZWX+nvYagM3g7Oxv5x9YFHPNzZDNl+d2awLI9zDauCbUgX64JJd63mQSarF68fbv5bZRaCnLeIiUYMOrnDgVOHSqM++Bd9EnDVVqjJBrPzY4t8NezHHuSqADIFMmxEeV/AZLp01eH+wxWH5B6zRb9WBR+umh6+VaBg8pC0g7z3raSlFpsWDfSFx3THR7faIurQcP7omnXc5SWp4WjG8CKniQTj03b3XH4zy9v6BCbj5sAAV0gbkDgt+zjkDfMLZZsnG3lhpY6Oazs7dXtcaV8GIf1iZ/Tl2T5xgRkRowH0QXI9wtpBDcm10FdC1onIaD8LcUvWFXrwrxjTz6vW44jAuKxomzDnQS+DhgIZs13me3lxC5i4LrctPxzDc18xNgFyGmn5z86Qw/YSR2mFCt3sp1RqFCfvGLQIu8yOIf+nJgpC+gFfwm8ZSh47PBL+uwNmRrZC60liNtp9oqvw6Er3obF6d2ndcZwosoO458iVaeZ5HC7biNJNu1
+ e7yX9mQV
+ 0XD/m3zq5hnGxm69yNXznB+1yw8kOhdBQYvw4cLc/kx29ZODuxHc7G+FxOSJTVPYPqIRIr93DGPPmyDdd3odBhoqMy3fk/PYwZvorG+JGkQ4qn5XihEhIyMrnfP+69aCWaUeRZQvX8RoEzexcB23G2Dx3oNSUJ7ZAKakX0WklMt1A0aY4ZlTXcn91bGWSRtduCW3zXUeya/0WPLgfYoQKVAg7qjAIceqXBW5aazHazLCN/iIZm4DM8L6t3znWXi9ncJsLmPAYvB1PAAvqrXuXShQ0OxOw1G3TQh0H2WhXJ+IGxhUWMdwDDYTeuZ7dLNMYKgthMDYZajsrzcHx6+IhCsyN6Kk6Bkbw84IiQ58mZ2mNhiFaJcBF3CVXMBrQpR285xH21498BILV7Vq40waOZkEXujQRYflTlasajzEeIt2y57c4kq0z8QOvS69s93KV/oUEQj/izLGFdwxaV8RwZEccXTTukxPz5SXErsHHtn1+i/ddvj0K7gvE1bR8qRPQ7zdSqOEfq4ZDsxoirix+jjFkPQciJcXvlqX+KpHriTxj/qkFrctGHEN3BK49bb2Mv1rcJfazIFRpQAFLfxmib+dYSkldoLy6gBGXel+H7fcmPBR3vl5Ufn7EC7nRaxnd+NTTB8EcK2Hi9rK5s142Svrcq5jQLk1DyYTa87C643BTDr2jJZROdsHxk4f3U19Wmarymb/zQq9Gzk4ddrLNRnNKMNjbromGQrJLPrvvrfOLo3wG3Dd+onnjpaNU9Tm7fzFGghBdd3RJcWWXXs82KkkWkwyYcbtWwo4xdI/BJMj7Z5zTKZ6Fds5eOW1qVhtYZgRQ35VM7vrDddNfvSCz6msdba7YapxsLeEIoq4+6QY0k+rTBaZQV8iNE6Vi0B1VL6OLJvXrNlreR+PWSTbBeeenWdJu73JYQN2NqIeIc4r0TYVpzdlrUR8Lfn/4j4uV1Mp0xl/fAbQwyGltgrhrE/hjzhjT
+ bmA7TByK
+ CVZzWdolppxeavU3kgP84V1CASrB0lNlDNlCuJnlax+0jihDozYJW/FYEia23L38TT/ip8LoPYZ++M05eMXlhw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,162 +103,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 3, 2025 at 4:46=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> wro=
-te:
->
-> On Wed, Sep 03, 2025 at 04:24:35PM -0700, Kalesh Singh wrote:
-> > The check against the max map count (sysctl_max_map_count) was
-> > open-coded in several places. This led to inconsistent enforcement
-> > and subtle bugs where the limit could be exceeded.
-> >
-> > For example, some paths would check map_count > sysctl_max_map_count
-> > before allocating a new VMA and incrementing the count, allowing the
-> > process to reach sysctl_max_map_count + 1:
-> >
-> >     int do_brk_flags(...)
-> >     {
-> >         if (mm->map_count > sysctl_max_map_count)
-> >             return -ENOMEM;
-> >
-> >         /* We can get here with mm->map_count =3D=3D sysctl_max_map_cou=
-nt */
-> >
-> >         vma =3D vm_area_alloc(mm);
-> >         ...
-> >         mm->map_count++   /* We've now exceeded the threshold. */
-> >     }
->
-> I think this should be fixed separately, and sent for stable.
+syzbot suspects this issue was fixed by commit:
 
-Hi Pedro, thanks for the review. I can split this out separate.
+commit 2ae1ab9934c785b855583e3eabd208d6f3ac91e1
+Author: Oscar Salvador <osalvador@suse.de>
+Date:   Mon Jun 30 14:42:08 2025 +0000
 
->
-> >
-> > To fix this and unify the logic, introduce a new function,
-> > exceeds_max_map_count(), to consolidate the check. All open-coded
-> > checks are replaced with calls to this new function, ensuring the
-> > limit is applied uniformly and correctly.
->
-> Thanks! In general I like the idea.
->
-> >
-> > To improve encapsulation, sysctl_max_map_count is now static to
-> > mm/mmap.c. The new helper also adds a rate-limited warning to make
-> > debugging applications that exhaust their VMA limit easier.
-> >
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: Minchan Kim <minchan@kernel.org>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> > ---
-> >  include/linux/mm.h | 11 ++++++++++-
-> >  mm/mmap.c          | 15 ++++++++++++++-
-> >  mm/mremap.c        |  7 ++++---
-> >  mm/nommu.c         |  2 +-
-> >  mm/util.c          |  1 -
-> >  mm/vma.c           |  6 +++---
-> >  6 files changed, 32 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 1ae97a0b8ec7..d4e64e6a9814 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct pa=
-ge *page)
-> >  #define MAPCOUNT_ELF_CORE_MARGIN     (5)
-> >  #define DEFAULT_MAX_MAP_COUNT        (USHRT_MAX - MAPCOUNT_ELF_CORE_MA=
-RGIN)
-> >
-> > -extern int sysctl_max_map_count;
-> > +/**
-> > + * exceeds_max_map_count - check if a VMA operation would exceed max_m=
-ap_count
-> > + * @mm: The memory descriptor for the process.
-> > + * @new_vmas: The number of new VMAs the operation will create.
-> > + *
-> > + * Returns true if the operation would cause the number of VMAs to exc=
-eed
-> > + * the sysctl_max_map_count limit, false otherwise. A rate-limited war=
-ning
-> > + * is logged if the limit is exceeded.
-> > + */
-> > +extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int n=
-ew_vmas);
->
-> No new "extern" in func declarations please.
+    mm,hugetlb: change mechanism to detect a COW on private mapping
 
-Ack
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1289ea42580000
+start commit:   87d6aab2389e Merge tag 'for_linus' of git://git.kernel.org..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=fb6ea01107fa96bd
+dashboard link: https://syzkaller.appspot.com/bug?extid=7bb5e48f6ead66c72906
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17dd6327980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16d24f9f980000
 
->
-> >
-> >  extern unsigned long sysctl_user_reserve_kbytes;
-> >  extern unsigned long sysctl_admin_reserve_kbytes;
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 7306253cc3b5..693a0105e6a5 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned l=
-ong addr,
-> >               return -EOVERFLOW;
-> >
-> >       /* Too many mappings? */
-> > -     if (mm->map_count > sysctl_max_map_count)
-> > +     if (exceeds_max_map_count(mm, 0))
-> >               return -ENOMEM;
->
-> If the brk example is incorrect, isn't this also wrong? /me is confused
+If the result looks correct, please mark the issue as fixed by replying with:
 
-Ahh you are right, this will also go over by 1 once we return from
-mmap_region(). I'll batch this with the do_brk_flags() fix.
+#syz fix: mm,hugetlb: change mechanism to detect a COW on private mapping
 
-> >
-> >       /*
-> > @@ -1504,6 +1504,19 @@ struct vm_area_struct *_install_special_mapping(
-> >  int sysctl_legacy_va_layout;
-> >  #endif
-> >
-> > +static int sysctl_max_map_count __read_mostly =3D DEFAULT_MAX_MAP_COUN=
-T;
-> > +
-> > +bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vmas=
-)
-> > +{
-> > +     if (unlikely(mm->map_count + new_vmas > sysctl_max_map_count)) {
-> > +             pr_warn_ratelimited("%s (%d): Map count limit %u exceeded=
-\n",
-> > +                                 current->comm, current->pid,
-> > +                                 sysctl_max_map_count);
->
-> I'm not entirely sold on the map count warn, even if it's rate limited. I=
-t
-> sounds like something you can hit in nasty edge cases and nevertheless fl=
-ood
-> your dmesg (more frustrating if you can't fix the damn program).
-
-I don't feel strongly about this, I can drop it in the next revision.
-
->
-> In any case, if we are to make the checks more strict, we should also add
-> asserts around the place. Though there's a little case in munmap() we can=
- indeed
-> go over temporarily, on purpose.
-
-To confirm, do you mean we should WARN_ON() checks where map count is
-being incremented?
-
->  Though there's a little case in munmap() we can indeed
->  go over temporarily, on purpose.
-
-For the 3 way split we need 1 additional VMA after munmap completed as
-one of the 3 gets unmapped. The check is done in the caller beforehand
-as __split_vma() explicitly doesn't check map_count. Though if we add
-asserts we'll need a variant of vma_complete() or the like that
-doesn't enforce the threshold.
-
-Thanks,
-Kalesh
-
->
-> --
-> Pedro
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
