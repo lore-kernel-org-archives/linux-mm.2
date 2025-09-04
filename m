@@ -4,101 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A01ACA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:52:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DD0CCA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 16:58:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6C9B8E0003; Thu,  4 Sep 2025 12:52:55 -0400 (EDT)
+	id 7BDEE6B0007; Thu,  4 Sep 2025 12:58:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1C238E0001; Thu,  4 Sep 2025 12:52:55 -0400 (EDT)
+	id 7954B8E0001; Thu,  4 Sep 2025 12:58:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0BBD8E0003; Thu,  4 Sep 2025 12:52:55 -0400 (EDT)
+	id 6D2256B000E; Thu,  4 Sep 2025 12:58:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E6818E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:52:55 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60B09C02C2
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:52:55 +0000 (UTC)
-X-FDA: 83852162310.07.0D464F5
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf26.hostedemail.com (Postfix) with ESMTP id EAB18140008
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:52:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XyZTQlhm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A3CA6B0007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 12:58:36 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 147C2119CB3
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:58:36 +0000 (UTC)
+X-FDA: 83852176632.24.82332F1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4F85540007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:58:34 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q7M3muTA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757004773;
+	s=arc-20220608; t=1757005114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=c4UkRm5N8iojkc8QawaylSVbj+TnqeNVuLFCRbsST4I=;
-	b=b6G61TGKVZKUTPXu5oa49cbpu+fCrOczor8LcathvkzQ4rX33vx+3LvgeSkud+YROCBoVm
-	h0fNuU6+wCQ3R4bD/RLSsOLQkvx1Y+5hJbewIAVeT9LfAFEsuDq5m7Dxq7wNXLTiBd6Zmt
-	xcKa+/Ay5RBWu6oMyMs9PcgHJ1yWSaU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2ZrjX7Lmr2cuL8US0MWB5ts0UhLbB4R42zRyeQvO8pU=;
+	b=7wEWPJ7gfAoMuLNNBdrqwTG7SCcuQvqrlI6W92SaCCgEfwVKHnYYsljleYoZe8yFSK7NmC
+	6H63Mx6+ANstIlxRPNbevEPLOR4aoo3+k6O3rOQlEJyhEeuP1lpPpqLD0ureKhU+LyFOml
+	wypEa1txl6/AWuVzJuCfOpfEnTohNck=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XyZTQlhm;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757004773; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q7M3muTA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757005114; a=rsa-sha256;
 	cv=none;
-	b=caDq6s0tYyWe6ptf4QD5zt50AQfMhBEEOBsJO6ard1vi0fa6sfwYVXFqv9muX/EKAt6SWm
-	RQ4B7/NbpTgNbm7UQCuL0URIbDwIrRC6oB3oN4jKRWyisG+oobZ3D2JU+5G2+WCGYIZdMy
-	34iQTW9CrJ1lV5hbqgQ1iVgLwJMB5Y0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757004773; x=1788540773;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=19TYjnY2OcYhkXyxuSM1TRY31pdrEDoN9ZOH23PUDXo=;
-  b=XyZTQlhmKM6r2U2Ms2kyedA7MrspAPtAzJ9dDfDZJCuNOLt5Ky7KLYhH
-   umfbTJTMmv3nWpKMWyeO/dOnhhQWdknDmhoT6ZN4PGe3Oj2saraS1sM/C
-   vyvlxzY80ypteujlb+YpvuAFW00wrt6bIAMPUtrkcGRmt67vm8tn6x3h1
-   BEqiX/6+ajnd/zc2Mi8rp3awf7obWH7mZk5lVkmIIEPESvjiolGWNXVF1
-   QFsCvaYslQvTOmhpFJLwG2HcUSwqXt556IvYgcnlbR35E2xbAJx56kQKn
-   uTOS3tkVnPBTDhhJzcdMoCmRyWaQdRjw258snTFAN9FhXo6M51SUbp3cl
-   A==;
-X-CSE-ConnectionGUID: GCe6hy3yQ16F2vjuY53gZQ==
-X-CSE-MsgGUID: /LlH75dFSnChTOHLQKZNVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81940983"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="81940983"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 09:52:52 -0700
-X-CSE-ConnectionGUID: 4hwcH9irS4q38umVVnR6Fg==
-X-CSE-MsgGUID: /IQP44JkSEi4M3Hl5atsgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="172382929"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by fmviesa009.fm.intel.com with ESMTP; 04 Sep 2025 09:52:50 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uuDCB-0005WQ-02;
-	Thu, 04 Sep 2025 16:52:30 +0000
-Date: Fri, 5 Sep 2025 00:50:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: oe-kbuild-all@lists.linux.dev,
+	b=MnuZXrqalzK8qYJmL22e9ku9TLYCArc0omcpzcnaAB2snFWN6ZNi2iyaivMQMlPfQ9MOe3
+	Aob+tJfFPWr54FADn+kvv2yNdAdSP9YuJCj+UrSOyyHM5L/uYsI/E6XRsBB037OdcE6ScP
+	a4yjSECcoFWZfZODRBB2pZW9BP0+Xjs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F20A343612;
+	Thu,  4 Sep 2025 16:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA516C4CEF0;
+	Thu,  4 Sep 2025 16:58:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757005112;
+	bh=UEa9OQ4jfJH4rBrlyyXkXe7/eodn6/EO6fsvw2kn4z8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q7M3muTAHD8kpFjXtUyq3zi080/5t6d9tcPFDyt+0GAnhnpvzR/rbfxPHP7UTk/66
+	 4ANXrAxnDo+uy+SrKkekWheeh42CvDD5kydArSKGJPRjDhEGumGaz7J8XY3bUTlRZG
+	 iDYfV8fgOqejlgb7L3KGjBGrPuX/tQIcK02DLmrAaV0KFl+nqRs1LoopsbmWE3lDEx
+	 Il3VJbfTZ2jJAhIFBQTVurI7tVRifvulia3/xJTdPY1JerP2CjTygZCrlGLGuD2pb7
+	 zEnXJP8qbxVeY7oVSLiaEs/CyKbUfDGEBEjgkT7vPUcrYyJuVT+cW8Jo63csmm8K96
+	 +xTlky2qxWflA==
+Date: Thu, 4 Sep 2025 06:58:31 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	linux-mm <linux-mm@kvack.org>, bpf <bpf@vger.kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Song Liu <song@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Petr Mladek <pmladek@suse.com>
-Subject: [linux-next:master 6141/6355] kernel/panic.c:70:6: sparse: sparse:
- symbol 'panic_this_cpu_backtrace_printed' was not declared. Should it be
- static?
-Message-ID: <202509050048.FMpVvh1u-lkp@intel.com>
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 01/14] mm: introduce bpf struct ops for OOM handling
+Message-ID: <aLnFN-jJkVzL403b@slm.duckdns.org>
+References: <1f2711b1-d809-4063-804b-7b2a3c8d933e@linux.dev>
+ <87wm6rwd4d.fsf@linux.dev>
+ <ef890e96-5c2a-4023-bcb2-7ffd799155be@linux.dev>
+ <CAADnVQ+LGbXXHHTbBB9b-RjAXO4B6=3Z=G0=7ToZVuH61OONWA@mail.gmail.com>
+ <87iki0n4lm.fsf@linux.dev>
+ <aLeLzWygjrTsgBo8@slm.duckdns.org>
+ <87qzwnxgfr.fsf@linux.dev>
+ <aLk0FuezkcInlM_r@slm.duckdns.org>
+ <87h5xi1e6p.fsf@linux.dev>
+ <CAADnVQLBrOgeH5T2iXa7nNpHTtQvpzuzfOgEgPQv8T_AKEg6mQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CAADnVQLBrOgeH5T2iXa7nNpHTtQvpzuzfOgEgPQv8T_AKEg6mQ@mail.gmail.com>
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: EAB18140008
-X-Stat-Signature: fis6u8hdm917577b7rbbcjhh1m9dgojh
+X-Rspamd-Queue-Id: 4F85540007
+X-Stat-Signature: hxrb46pdi5f5odh19ocupa4nhnqr4tkp
 X-Rspam-User: 
-X-HE-Tag: 1757004772-908823
-X-HE-Meta: U2FsdGVkX19vFEnPn5micl/nYhHxvEDtkmikKYRt6LVqYBX/JwKpzERaAFybOFWJ+P/d2bONRQzwSclPfhdPfiCQZvs9qIpXpzo8tlPT3+SCjkbBpcqsxXDhuEhZvTLJX0MEHDkmcmZsMbeG6YfInH0LMIJ70ehIFMJHkZbRKbDDc7Au4l6KfCdHv2bTcrDTV0U1SvvCo7+X7s5ShrgyOsui0B+RiT1/jd5jQAeb4l++60qddEbubrqjj22sRP9ToAQLm3FZhYh8WE+md2AUuyK2BwFhhgAj6nkJg8SvjX3Ll4jS1vLSUNe9fTP53+CvbmA72tnJF6h4pMxjoIzkhDW0c7kv1nF4OXKBuOGHtW5c4N50PVerfHfrXINq9OQVtZHzyca2jsLbUkjq8znfzVtJujUaOj8jEBl9wr7QiEHLfvIR6HqBPtgdnBmpD5+3fS2CBcvi/U71LWjGO6HYZmujlksYEbNHhCD9ULjKaAnbsUBPAiUeMDM9Gx2MF3oLJdE4t7pO0adp8n77y7Y7sjCiP0wesHpLvo6K5TRnaaVhW+PRf+FP9XpoIYEeDAmwpt0RxtUpj1FEmfCpdUrI7wPIkIOgaSfTlJ/+OaY/MqvEGvDMh2lG3Fgulnefe6R8svsxjiyzWhMfC7ViaMJCUHdVWeUXjbXyPOOICw456mDcWfUay3bpD4/1SlSVrfUd7AKJcq/rpE765RL1XBDXVzuwgxqZadardmNozkl9n4OA1D+Qkf8lPj73QXnmaZnT7eP3RqNEjiNKuRSF36LmCtQNth7zdLdgnP3plsN83dQ8OXsaJwuB9tL23GoDcxGrfEh1QTnp5YMYlJ/VprIsTlbqJokmf/MMov9jHuNU7hdUrAI/qJ1z1OnqWFXsgzsZHYEDb4a3d6nCQELjqvvU4PkoNhvn9pl21y/gorN5NbmbSh+BqB46zIhCIdsMS4FWPQSpNLPfT+kt2pcXz9v
- lRj4b1X6
- pDhswaTR8dZjus2iinIfvcGWTRyEqVb65B1VKHe582A8yd58QwtMnSyJFeJlgkMbwe57J+ktZHRn0zNWUATlx6gwb0cpxS6M3aELuT2Xe7U3P1d2R6cb1h3ff0j3D/aYCmCU9I4eqFj+yr0GXGuq0PfYICAKwcgi/yE4gz038+KHL7PYm6EKrwxJqW5XGM65RNw8Hsic/mp4Aaa7CsFGly1MOC7aeV0wcETYSF6UjY1pZKjoXl3D3EtDVRulcsQVN20qvOLeVmcwFa41auA0R6K+wEyYjIYTYz7Zha2AV/IK+zUyVkTinU+MS3Spn9bDo7q8qBWhw+1c5uxVQgGr9VfyWxwj1DnEwzFk0XfN2A2yNozqzV6b/jY3PsY2IA4xbZSBdDDCUifbDZ3yBMp7TSdPAx75R6hqze9uc
+X-HE-Tag: 1757005114-893392
+X-HE-Meta: U2FsdGVkX18T+UInGUP6hyvL0DnqLUHGnCk+nmF3XuF1LVy1v4EDreFpjhV4/pGcUlNfQawZ9u1HHvMFTQr0lZwkEhukl/wAvMomu7BU1oTaFfkD4orgXZ7c+s8AqC765b84k3PxDHup35xN4MkPpibECsMLbSLxn89QrneiLWW/m7Fao2h5kagvy088FGyK7sw7OAHHAv3yRjRFwzqHOKOiDpDVZGG4L2DREfZ/ilhqy90AmD1ektKJTQwcikqLsk3KUWt3AFswkz0XQ4xefElNrn374WhT3cnbg3Q+0Zxmr5Xg77WLbdMbtpjF4YEwu3KbeWLcUwTnknz8Th1rqXq5ExlbHxXJtBf1zDoeOSD9njK0yEA1WMPI5ba7g8SpAsgAo08Ph6J6rRWaA2an/Ot/HulM4vhtzI3RQ4+SWi5NNlXCJb/6eRqvUDEH+LQsJdgC20j06JJnHz1YXvSn5f+yj1x0FefTm5Nu6Q1qBno44sTw4KOwQU4wQL2YLVdSO3x+zzvlqyYcFpIhslNys4WdHB2xVVTmyqGB4Fmz2fwK9OTRNSkaTlCD+vR+WY/IjfCIhBMwCSDrJDsJJSDGgByZoc9sG1g+qHBpoeX4od5gkSVdQEGMuDYNtrl1Au+EVFdYpYgIQSnwRreEX2jOOcBDbgpaLIqpQv0E/sbLVzC3WI0j/H/2sPcZjHrVBaR34NiAuhppLM3I1GInO8wycYlo99xziRpiQU9bhfrdGsvecXJUdhcjwGZl0LzXwyAj2lhmuVMNUAalhlzj4v+E752m35gJHH4YOzKb30vioqNOSV5oplB0uAdYZcigjvFJOJl6tNnp73WU1aqjJ/MrjVCZlcu5wDl/IVECVMcbm2F6bA7a0azp9kYdFXIScfYemcORYQL5HbSVVjND2iEGnsFI5BMPkNtwaBwab5cuaqvCdySXuzLczSnRizaZMErZ9EZM4BzT8+fvDCDYQe0
+ QBCaUQUr
+ hXT6MwVhNt0fX/xplzWhn9f48Cn2L743Vs+YGQLnk8aYAxGyjATYRnuTTbptrsTv/00haiWDHB+kXjByxJ0qoNt344vIxTpTq9RPZahzl4NGQha9cb29MOwGHVDBW8YEfjqKtv15Py4Pe1XPb8s2h81IB4LN12eyXLJnOm22RkQ0ZcqvbDQbXztG3ZpPMMOtrcxiI/XZBKPH+v0dWw1rZpKOq5SJ/T/PmrQXwLKZXDnUJMvRmJ0jV1CGSFK4/gaRNezheNDQRv9yrke5toKxHrdMEsv9w6OoUMAMX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,29 +110,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   4ac65880ebca1b68495bd8704263b26c050ac010
-commit: 28ec7e0d834d81ef8abeb6a6c1376f1fb26f1510 [6141/6355] panic: remove redundant panic-cpu backtrace
-config: i386-randconfig-r132-20250904 (https://download.01.org/0day-ci/archive/20250905/202509050048.FMpVvh1u-lkp@intel.com/config)
-compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250905/202509050048.FMpVvh1u-lkp@intel.com/reproduce)
+Hello,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509050048.FMpVvh1u-lkp@intel.com/
+On Thu, Sep 04, 2025 at 09:26:45AM -0700, Alexei Starovoitov wrote:
+...
+> > >>      err = test_oom__attach_cgroup(skel, cgroup_fd);
+> > >>      if (CHECK_FAIL(err))
+> > >>              goto cleanup;
+> > >
+> > > Yeah, that'd look better but are there practical differences? The only one I
+> > > can think of is fs based permission check but that can be done separately
+> > > too.
+> >
+> > The practical difference is that a single struct ops can be attached
+> > to multiple cgroups.
+> 
+> +1
+> Attaching the same scheduler to multiple cgroups also sounds useful.
+> I feel sched-ext should use cgroup_fd too and do scx_sub_enable() at
+> attach time instead of load time.
+> Then scx_sub_disable() can happen at link detach.
+> Looks more flexible from user pov.
 
-sparse warnings: (new ones prefixed by >>)
->> kernel/panic.c:70:6: sparse: sparse: symbol 'panic_this_cpu_backtrace_printed' was not declared. Should it be static?
+Nothing wrong with that but I'm not sure that'd have practical
+user-noticeable benefits for sched_ext. Also, would it affect how associated
+programs can identify which instance they belong to? At least from sched_ext
+POV, that's a lot more important than the ability to attach the same
+programs in multiple places.
 
-vim +/panic_this_cpu_backtrace_printed +70 kernel/panic.c
-
-    68	
-    69	bool panic_triggering_all_cpu_backtrace;
-  > 70	bool panic_this_cpu_backtrace_printed;
-    71	
+Thanks.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+tejun
 
