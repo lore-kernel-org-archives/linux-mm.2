@@ -4,116 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A1D3CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 09:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD08CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 10:04:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A06DA8E000E; Thu,  4 Sep 2025 05:59:50 -0400 (EDT)
+	id BE7228E0002; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DEFB8E0002; Thu,  4 Sep 2025 05:59:50 -0400 (EDT)
+	id B982E8E0001; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91C328E000E; Thu,  4 Sep 2025 05:59:50 -0400 (EDT)
+	id AAD848E0002; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F4918E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 05:59:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E80A61A0AAE
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:59:49 +0000 (UTC)
-X-FDA: 83851121298.05.17C009B
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0EF6E14000C
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:59:47 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=1hyc3iTF;
-	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D0728E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 06:04:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 28BAD140A6E
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:04:50 +0000 (UTC)
+X-FDA: 83851133940.18.A7DF3C9
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4691B14000F
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 10:04:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="njQ/2kZa";
+	spf=pass (imf09.hostedemail.com: domain of joeypabalinas@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=joeypabalinas@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756979988;
+	s=arc-20220608; t=1756980288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MHOpn0x1n+X9bJMJ6KJ/yl+og8/86ttoBXUy6mB0ey0=;
-	b=gZhD+zyNAp04viqsNg04T2P4h2NZgULCov4npYoLYFaahIKZVllfHLQjQZqrehbH5k8IM1
-	6Dad5gM6HkrIGPeWJXOkZZd0M6nxqgOdYR1j90kwiBGPN4qjbSpcOhVLs+phE9h+FQ+OiH
-	4TXXbLP4CAtQg/lKJh/8bU6/aHPSrl4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=1hyc3iTF;
-	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.219.53 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756979988; a=rsa-sha256;
+	bh=UwZNvRadpxpxIRVf3m84OtosJaq4M967tWbwpaNg/Xk=;
+	b=g3TEwYangth/FClXD7OcMz6dpeVTHWj+fxxvQhMJ3TzXdMq5JdJSgGmaQMsmQL8z27fgcK
+	0dm/wtQB2W4mYT5hcEQQMRa/ST4bjptN8hLRmO+fdC6WqjsT54uQZzyd6VG7HLsOsa6sng
+	3HqCIhQJDplcvBBUaD1+VxGjX+BBYtc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756980288; a=rsa-sha256;
 	cv=none;
-	b=A7dkRLo8xxl8YGkTuwL/jXxWCkUfy0xWsIk9CpBxjdpWiwpvVMAye9yW7Enob03s6Z263B
-	sSSdAGlhkKEcqKeeIZ4glGEqbuNOl8JiwtcCmxmIFEGHXRG0ZffLtAOi13ecy0MwUj1A3l
-	V++SNDwsWrWF9hG/goiF8ayDvLn+9uU=
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-72631c2c2fbso9552006d6.1
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 02:59:47 -0700 (PDT)
+	b=y+8M6H3l+douF3QzhH9ZiGX5gryx19fa2X5q0n7BxZgUQRp589WY49kawFapFbEKgF3YRl
+	3W/YJCEqym2jOcMBFlxcy7zgqEBFtfbjESsXDLxFinji4V4XGoG1ULwyUKzLEYssprV4mT
+	2ZZT94MUBKnjHVU0/1CGHKvLm/rt0tw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="njQ/2kZa";
+	spf=pass (imf09.hostedemail.com: domain of joeypabalinas@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=joeypabalinas@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-77247e25a69so111039b3a.2
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 03:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756979987; x=1757584787; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MHOpn0x1n+X9bJMJ6KJ/yl+og8/86ttoBXUy6mB0ey0=;
-        b=1hyc3iTFFffKM0lFFadknrCWGgslUzNz3HLWZHEXqbM/QiZ6M6MnyRryzIc66VTJtU
-         6+TJ3IavwXhlj1fkJAO//sXvlx+ZdV0RR4peU3zKWjXVOTR2U/bpKOMwLORskD8Kfcmu
-         y/KtulelbLD38yTJMcnvmfaf/vqY67MozLPBPTah5dtaYpbagqW0y1JfB2GEest1iQWN
-         D/HeHdpYsTUS9zHH5ggkze0OoykMbjjhEHQKvKd0xTJYQBNOcSEAnyV2tIemPmfr8icw
-         Ni+nwDGLgqvBY+juFLD54t2YW8sA6W4cIAvHui90/di8Cm7uYpmX7YZV3+g0mjDfOmRy
-         GkbA==
+        d=gmail.com; s=20230601; t=1756980287; x=1757585087; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UwZNvRadpxpxIRVf3m84OtosJaq4M967tWbwpaNg/Xk=;
+        b=njQ/2kZapdUNASJLB25087Zj4bdkC3+WAZ7rHmDlUnDDAyb2zdqLHsmexRj+dDwRMj
+         RzuFYH9boa4j2bV4GapCqgun6GM3s/gTKSATAeGGP0RY5fK3RRATWlJ+jNz59+UcAdg0
+         X7VAG1Xco3S/KOwV8QdA6P11GCOR1dls0XuAbkVowPN3sP/JIYb8rYBCoeP2/E3QYoH/
+         OhjV6lKhdxfqprNI5bJGS31xRnFW8dyOwUbU+0xFIPEvUUnKa0Tl25CaGZIEpM45iVp8
+         SV2PXrKfxllHZAoZP3PIEBZx4icNLk9WENgLP08OOj9ahCPCDtawK06XH2TBKlRI3Mi7
+         LV4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756979987; x=1757584787;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MHOpn0x1n+X9bJMJ6KJ/yl+og8/86ttoBXUy6mB0ey0=;
-        b=jb03om83cH/MIcnbt7bvVBfm6czjkB31UWDP0HVx/wqLuXAAFVUPm/FoeaPBOG3Vnz
-         mK0r/fEWyITmm9FaD6wv/HWPTFLIT1kvVyLjR+ru9UxjGXmQCE6iPdkFTFTq780rkx0Y
-         LI1TaDQ6u5oSpiYvIAGSvq8IfssvqG6SskgzMtKeyFKPbIBdKbOes2JSS3XYBFFMVyX3
-         sUr8tzjfoJN3Fp6WsTVOZUBmAbXuRtR+ZdiChfqqJC0/XuwT5El7ljAPEwDe/zEbTNxb
-         imztwS2Hl2ARUNUuGqV0I4phptDiTaOhLnqPQmpo0dUBBIlJKOiwd86rbiaEvT9T0eb2
-         MJxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJbVAIm2gB3TBvHnl+BRKQkN851G3J7+jUUcgpw+Uac+/x9ZxSq4HJl15tcUx/2CBd26kDY/AB2Q==@kvack.org
-X-Gm-Message-State: AOJu0YxwZVNk6G8jaChxsN2aNv8jSuD66NgtjtOTVkdseFs1fEQvNfez
-	znIciOR+vOnpoPxvlVyhQ4IhyufnTP84dM7HRtFLi1NXecngGd3g/N4RwErhUIjVWqL0UJqzR4z
-	s0bLQR78QNqwgmeAhVaI9wswH2tDWHTICYoj1pkZA
-X-Gm-Gg: ASbGnctLOaQMDZSr2jLfSSpt9a2nnDMG5V/UTb/GvZlumMLOomtMzyTv0SWuOWh8wph
-	hqGtWArTit+oEdLJEMJkuKPMmTPj1VaeJ4gTnmDMwN/hGg1wYiIBpR5AxV6sS7nMQQ5oIhn1Ob6
-	8BfD3aNP3OH1ktwRJ2tvRFed3rpNRuJLQLqmt4fQiqTqUg9FLoTHJjQ8XGRskCJz2xcoV1aitNk
-	H6Cj+a9EFqVEOY+gTCpOD+Irxgc4bVpfgJ4HC+EWl7TxTtPLwAM3w==
-X-Google-Smtp-Source: AGHT+IGT4Lm1UEnlQ2bizwHe4ELvu4hzuE9iFObagSCtHAbdLbsZpQZ4v6gnTYWZ5T4wkKXfEhUwpiekj7TMD6WN37U=
-X-Received: by 2002:a05:6214:e41:b0:709:c7de:ce70 with SMTP id
- 6a1803df08f44-70fac700db8mr222215406d6.10.1756979986529; Thu, 04 Sep 2025
- 02:59:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756980287; x=1757585087;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UwZNvRadpxpxIRVf3m84OtosJaq4M967tWbwpaNg/Xk=;
+        b=Dd7VNd7ivd0n4wuj31Qj46ym2s6m6H8pnKEA4vGvLiX8UAT4nQ1bIUSSBpcoz1xcjL
+         a4cAPZ4DNK+Y4003OH5+66P8smjtHKxdx5294gYB4GZd4BEAeLYJrWKjzamvleysT4cO
+         As4dhYDw4hY6r7xTpFVs0SS83ZhrdkhzxVd9MS898P6TN2EhDleQgBgFaZsR9nkIUuWD
+         WiYZEcmPCC/zx7CSmF9RqoZfCLjzbOjtg0i0MjgGDQ2cHM8gWPgMIqNEBaq4pZKukINF
+         ADxyJyxtsO06CXcUvOxfwwlQp+Qtc0TFpvvzc1v4TDPmOKwCKm1Ou5rgZ9KWb93waqWP
+         aGZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxDvZbpvTRRCB3cU6ZU2z6+Hwn5DwA9E+ZvZbp/o2XFGO79zKrSeuIKr3zvWn2OF7JtopwOioF/w==@kvack.org
+X-Gm-Message-State: AOJu0YztZAgiClfSPLCbYepzXJ9Kb/Ih2lVtx3QDnO1Q0RSnip8KCC+h
+	mA0cvhAkKjxh0eWHhonx4dP1hpEG2OHqmSYk9Flr8149WRvgRSAKgFGMn5X8n9qX
+X-Gm-Gg: ASbGnctkNYwR/LwF+z2KhWeVVj/xxwuCwQdWtSgI/4+lzTJxwG/28kQIOdDd/AxG9Lz
+	EbG5eCF8vGkdqIMtiaTAF0wUDo/5q6lfqIQP4zsNp6BxtOqvebxUSwblCGGnyf+EJNI1iKqCoPL
+	YVFn1xcA5PktZMjhnwhKnHxNWXnPM4gohLsWHMXzxnu49RZtpycvKd9WX6etiIN8LFOXJ7cEypJ
+	o00UYC6eJYrL4BPX2gJTZQX6KHU0ZGsX6IIoAA+kM9eejb79lFdw9kLDB/LoBhTX3UiZRveR+fH
+	ZLxqt4Y1KOhc6heFZdhwl4vBKQb94pcexPZyIgcyAf+PaAvnQKLcIhc2KNqBBSpBaQIiY/X0W6i
+	wsCbD7fUIKGUoAGcudpERvZosDbFtBBE=
+X-Google-Smtp-Source: AGHT+IF+X1SXhSvLsR2STae5B7BzOvXd3uYUXi34g9hAOLpClEHMDf7lkVlOfzMYCE6WICcwBjc7Ww==
+X-Received: by 2002:a05:6a20:244c:b0:240:a2fb:f8b4 with SMTP id adf61e73a8af0-243c832443fmr17655871637.1.1756980286943;
+        Thu, 04 Sep 2025 03:04:46 -0700 (PDT)
+Received: from hobbes ([2600:70ff:f833:0:8e07:c9e8:902c:6ffa])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd28ad188sm16564555a12.26.2025.09.04.03.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 03:04:45 -0700 (PDT)
+Date: Thu, 4 Sep 2025 00:04:40 -1000
+From: Joey Pabalinas <joeypabalinas@gmail.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH] fork: simplify overcomplicated if conditions
+Message-ID: <ka3dhrfkc42ydbiiqa4ygr545ndydcpekjco36sdwf2nypuy33@vpsgevacmzjv>
+References: <357638f71edc7f1d9814b1851a64e09a8895bffc.1756968204.git.joeypabalinas@gmail.com>
+ <tzjq757k4tt7k2mkcapttjuax6zgzr3nl7ivusuvxfmok5kvb4@vub2gw7vp7vu>
 MIME-Version: 1.0
-References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com> <20250901164212.460229-7-ethan.w.s.graham@gmail.com>
-In-Reply-To: <20250901164212.460229-7-ethan.w.s.graham@gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Thu, 4 Sep 2025 11:59:09 +0200
-X-Gm-Features: Ac12FXzQlIV_NpJ1rduhtC1FclDh1AxIHe380g_TpXDcw3vnB7j2ZNk2kb8WbdI
-Message-ID: <CAG_fn=WJrdSr_6u770ke3TxyFimuMXXeTSQhsDR73POy4U8iug@mail.gmail.com>
-Subject: Re: [PATCH v2 RFC 6/7] kfuzztest: add KFuzzTest sample fuzz targets
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
-	davidgow@google.com, dvyukov@google.com, jannh@google.com, elver@google.com, 
-	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
-	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, dhowells@redhat.com, 
-	lukas@wunner.de, ignat@cloudflare.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9manew6rsi9cc1d9ha4tct4e8ywm7yae
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ymzzeawwxc2g3zor"
+Content-Disposition: inline
+In-Reply-To: <tzjq757k4tt7k2mkcapttjuax6zgzr3nl7ivusuvxfmok5kvb4@vub2gw7vp7vu>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0EF6E14000C
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1756979987-415210
-X-HE-Meta: U2FsdGVkX19uN0pA5+51R+zZjxbzhE1SzQvmXy30rt8a1Lqd8FjSCcP2ylXcuNhNQaNgk6EZTffOqyxX6iT/Nd/Ed9PChORDHXcw1AP75zQtwKtN/2G2g7EVgeJBmAqazqKZKaCt8F0Dv7brmtIwiBVk1VQXoUrukrQmgoZlyvYwZkZsWrftldFeyfRIqP37z+Jd41L11no3iB7DdX0HXEJefy84ber5iTdR/n1M2OottKDk3OgI8eOpcvQWHq7rEb+cy/W/6xsVeT7idw/qxPglW6dz2+C5r4IZvqQSAKOzjiIxw5HTUUn7+NsLyPcwaxZibLiQaEHFNzU3pQ/PvkI6FMgrbHonpLAcXXp4sm3//e9PPUY2P1jjRDPCRouOUxtVcw0dXptMTdphTuywDbK2rLcQN6biQNxKXUzoUp/SZ9UDKrG2y8uZJeRgrh6OUu7IpJHV+h0VwyKJ866luoaC8aDQ5kBFBjFPI4gplVOSJrl5Nk9PGCK1X0VU7p/wqnWJoKSYyFOjHsZnl3d77XrKBtoBLbtv9bG1qw6kCNxs//XKV0lpA22tTnrJdR7jZmMgtOfNeyexjD7gf+27oxLKqTbe/AgBgKYtyBAVmJjgv/VyIYUm0MUDaT1dERnSh9iJVRZMO8eKehUdww+ustoG0yS4ccZ0mP+DO9k40VUv6mTF1mqZZ5573v3P67iThTFeTyZnwbFGpQw8xXIW5xx4yO3zbry4dZFfAv95FrdgjK4gwOneNfc729ivJ+j2tcptV2dpYupzK2cHJNGxUy3rLrZ5/Gkpnqhl5Y02xuhE5wIXKx5VlieGiMYSyqr+KdJAKsgv2dVELB9+uaIJnVPNAoiFuj+pCmTGyCBW1vZos69OvI0EcAgxVwwOUnbYoRi+CUhG+Vnlc8MUEqcWug+xZXya5qIWhKYwphDPEWtacm26fN3OvictWFLI2IzJw7IAxOg3hd922qpnVNS
- ILlIIRmG
- Y22frr6r/uf4ofib6cOCH5P1TUBMtlr6CO/Sh0DxgDblbhBPaoddZDAW6X5pBpsKTUkVe/cn3Ov/p2L3hiv2a+srdzil1HyXMQXvg79TRqFBFsOzmrZD7uJvfwWw7hfunU2BSf8FOfxrIqpISzvGd8HsQjQTwNcf3l8Ab7NdMSRMjgmmHbV+HznrYZJu2RY7BBcsu/hEaCMBbJGx2AUhwbYZx9cDEzT1kJJnsKUQ7osPScqKGhEKTTJYhUxnlf61r4Cc5OCawj+KxIbhJvwKcwD5FRrLEzcYwL9dKcvSzUTCcn6flQ0NDsqwmog==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4691B14000F
+X-Stat-Signature: xpnk8778zaf1685dk6brutxyu3uiwzcs
+X-HE-Tag: 1756980288-682683
+X-HE-Meta: U2FsdGVkX18IceFnE4He5NGK15i2A7d5T1jECuiUvQ44y4asYEuj53my0sbSBhLyCHLJKqXTnTSdQDB0gTNzuldrxrxVCH1RxwQr40TJUzgG77RDjcCc9gdKzE4Q6Ncx9SLhmzlYZ7zFQFHxWZ7KD4TBF0Rh58Mi3eXeTzFcruRIaHKQjc2nuEyr3HYG2au6OswOpEKoLFDBt4K6Nvs9tQbRde2k3rI4oym7zBqAdrhzM/P92mhsoi5LlKXq8VVV1bZSMpDTPd5wQ5/0gCzLIwj626+ocx4GHJMlWkU+nYIN57VRY9lDdCFqxzes6AeXPJqkzgmvVr03rOHeB71VHzTTAhKguSQIiuL0unlISZtUGnXTVyl4Uk28X35EKITfL/HK7bj9g3Eyq9AtnBD56k+tt+JRMmOzioRGHZwhQEpXbKi4gz6sQvrUXuoRWwZC8oXWzqVkocfKa4PZiMjousgJ5oDoLa56dnRqD5+iIhjzZ0PhK+2zdhfFC7u6k4ZSGdDviMT0lIz+aszSCxkZ3zjOgNmBMpzqxK8hHW6dxL+LThkZuBpzzGVwcZAMCh6jfbjJGRdB8T+DzP13Ukl1VSZBEodyRrnySlcY1PQkSJokucfRUAP/xCRlJEpfyV2MIyZkmZApHwV6xnS29vq9sj7cF+rFIwMyZ7XxfBaS4grqEEDSsdLE7HtZlZZqX5HCqFJvsy/AEtHgaMg7vx2PGZJx/pXVrs0sDrZ2NfXSPh+AM9GGGZQZ9lPT1JcNg/4tmRsmXb0UWiWTG8NBk+I31cs2uzZxBu85DVb5EPg68sxYPgBqTbojN5/aYEjx8rN5x8Wiic7dFn+jXcSROja0eic4m0fAvRMsIGID7gDlkccz3X5EsvdmfCCl9OyDyKDVsITLbP4zAihKAQItsYGyJagiU7YDW7Uc6s11OkIhmvMGaGO426M/7ODeScgf96ztd00Iddys1tWt4+v5VpT
+ UBBW5bH2
+ A0JEfA9FJCNAIj5xiOx69YtCWjihDrsFRQ2Ap75i5+VGzpXYAVXfSsANH8VgJijpOySGq1tm72Gaxmv5dwrk6/SUfX8ulsk9FyRmBdZGt3y5n2oO4NAGE/WcgNNAlmdPdTMzteUqqt55JA5sGfGvl7+hcljWHrT0VKnSv/H8lkfKQUuXGHDBGl4tYdcsF1k0ymWqtpiCA24+mngeqTL+AX7SSdUzrATmE3HwU5QTtJ/5npXlTreNyHz2edsPD8y5oqdpD/lRUR4bTA2idFnVFJpIBHqqXknh3BmNSq+gq/wVP4TLxh6pm8LiQ1NpQeipI82EnH6rhEsHw1vDC2Koy9+MxBb6uWDidWdtqxzUckdm3P0q+bSdClPr68h0jNGXoyWTFBDf987H50coA3ID27qBi7GONc9vBoygzKTZvKbOJovoZYFrTn4L9uM3Ofv/MDBICkQ0iEiA/EeQPbeSt5ynG3hz6GObT1Cv4/hRU4FsHhuc5mi79Dely1F5O0MOHjl+rVPKqeo58WKrLMTEsQaGj6Yv9S+r84GXyKywIVEi6K+rw0TtCIXo3vvCOZPeIBMMi
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000100, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,25 +119,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 1, 2025 at 6:43=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmail=
-.com> wrote:
->
-> From: Ethan Graham <ethangraham@google.com>
->
-> Add two simple fuzz target samples to demonstrate the KFuzzTest API and
-> provide basic self-tests for the framework.
->
-> These examples showcase how a developer can define a fuzz target using
-> the FUZZ_TEST(), constraint, and annotation macros, and serve as runtime
-> sanity checks for the core logic. For example, they test that out-of-boun=
-ds
-> memory accesses into poisoned padding regions are correctly detected in a
-> KASAN build.
->
-> These have been tested by writing syzkaller-generated inputs into their
-> debugfs 'input' files and verifying that the correct KASAN reports were
-> triggered.
->
-> Signed-off-by: Ethan Graham <ethangraham@google.com>
-Acked-by: Alexander Potapenko <glider@google.com>
+
+--ymzzeawwxc2g3zor
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] fork: simplify overcomplicated if conditions
+MIME-Version: 1.0
+
+On Thu, Sep 04, 2025 at 10:56:44AM +0100, Kiryl Shutsemau wrote:
+> On Wed, Sep 03, 2025 at 08:46:29PM -1000, Joey Pabalinas wrote:
+> > Since `((a & (b|c)) =3D=3D (b|c))` is the same thing as `(a & (b|c))`, =
+use
+> > the second version which is simpler.
+>=20
+> Huh? No it is not the same thing.
+>=20
+> a =3D 1;
+> b =3D 1;
+> c =3D 2;
+>=20
+> (a & (b|c)) is 1 which is true.
+> ((a & (b|c)) =3D=3D (b|c)) is false.
+
+Ah, you are right. My mistake.
+
+--=20
+Cheers,
+Joey Pabalinas
+
+--ymzzeawwxc2g3zor
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEx6b1SGGPTKxTmPDYqoHu9CTxowIFAmi5ZDgACgkQqoHu9CTx
+owLh+w//U4ZIZrFjLogDei6exnHDOuFwna9rLLOTeaNNuCkYQ/bYafNjDKPxGRiG
+8G8+8Zp5E8ikB+OjsL9Hv5QlOEcSd/d/iDg0Gz7WP5QqWj40zn9i4RD1mKyOPRvk
+n856U0I63VRyihPXU9HfxD10hEkK4HY+B+6u68qt3MYom7imTqWWNJEEkdeHYhUV
+U/80q7aLhADIPwdI+dimNX5vy2GPZ0NDhPnuBgHev6dyhSBypbaGTY5Obluwa4qJ
+b8aTS9mD5gj1ig2W3P4LJWZQcarTxgC0Qgqtndwil5gta8Fsdwm6xhpMa6WKwXda
+F8YeUzc1QzWFp4OFsOcGHdLikesUGFQvkq1Dyolq3HIvkZWYJoRsXi0Y3hynvldc
+GKG64E1mbHd7u6l8pHTGPjgstUyji3IuUGLrz17hST5lO7SXKcq4SuEtquA/2Fnu
+QHtlXmD3g9Jp42A6k9FRBjpdTV06KxMZK+aFpSOgaa2pgOJYJB5XkjvlByBlWWez
+M6ujDIyXC4DryasgAAUhDK4w9wd9VporBa6dlWqmxVRE1QJgmOjqlEVjstQK2Psq
+IbUQt1UZaJ3KoQulTcQjKJVUjCstQ3sL6M92iSvt2dqvJ1US6TB8t5QQthrh+wGn
+k1abKf4f+8MxDnzmgKBkF5psz+dFfjlI8QWXBWEInRsYBBIJSEk=
+=zIT4
+-----END PGP SIGNATURE-----
+
+--ymzzeawwxc2g3zor--
 
