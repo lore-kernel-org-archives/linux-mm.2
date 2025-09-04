@@ -4,63 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 838C5CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 11:09:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E0ECA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 11:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA64B8E0002; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
+	id A25558E0002; Thu,  4 Sep 2025 07:09:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7DC38E0001; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
+	id 9D5A58E0001; Thu,  4 Sep 2025 07:09:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBA1D8E0002; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
+	id 913618E0002; Thu,  4 Sep 2025 07:09:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B70618E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:09:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4D92BC0125
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:09:11 +0000 (UTC)
-X-FDA: 83851296102.19.741E426
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 80C398E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 07:09:45 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 38D5E52B46
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:09:45 +0000 (UTC)
+X-FDA: 83851297530.03.0B63642
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8F8EA10001B
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:09:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8B5911C000A
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 11:09:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756984149; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756984183; a=rsa-sha256;
 	cv=none;
-	b=2byue7wyz9KolVXyaxvcB2VvgsknmG6CSy/YZhvd0Sob4afwP2JXOEa/JLjxoLETEplolK
-	39gQHB+bQP7KC5zvlwQiL8xFgsA13DhVvPE9O/T43FB6Z4bN54iBM5DrmVe7C6edypSqcG
-	6NXITpWC/KMqNsjU7y8IGm5PtgIUtk8=
+	b=oO5WlzXZt2QH+AbPHAhY16RbsIqweAXvqF6IAJy8dvTmyszFcfoJfae5zWBbp1pkQlqGEk
+	RwkhURCpNLyPJleHseUTKtCt0CbHwY2Y45D/po1tyDm9Pgpotweyt7tptLJD2OPICG4oSb
+	UnS0vs5LXolv5yhks7fAvt/w+ZIyhdY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
+	imf21.hostedemail.com;
 	dkim=none;
-	spf=pass (imf05.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756984149;
+	s=arc-20220608; t=1756984183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oujTjuUbBnzxFvoPRkm5vktMDYZXjKawZfKYSeTKjOg=;
-	b=CloG5l+FFLrG8RK86pbFU2gflFQn3w/1x9lD9YmDngYcA1dW8cvsEqskvmqx7CS4bTpU70
-	zcsyOSPFQaI+K1LKvpwiwLE4Zc4NRmVWYjfNDq8ksE9XdUGuU0j+Gs35OPd6IhOSjC326w
-	H/MOtqxqI6iokKcr2LcnBN0CWXW5a+0=
+	bh=K+KhCel/FG+KZ+Z3G+vFcuQ+ux/WwyPr/PSbZ+GFoDU=;
+	b=MoVsxZD1TsnUUKH/018pTehr7y4ZaUS8UX38bQmsVlzgCmxQc747z2AJxqLdcjNxT8ndMX
+	4TCONNEGpLGHW8OdF44csqZAaj/0xjMAQKXafYboWsBKou6pTjNB+mIirPslM+m28tEJBk
+	+1dRA8l3l3rHdLxept0RoC6RKjl3tAc=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A9691756;
-	Thu,  4 Sep 2025 04:09:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A24E1756;
+	Thu,  4 Sep 2025 04:09:34 -0700 (PDT)
 Received: from [10.1.37.179] (XHFQ2J9959.cambridge.arm.com [10.1.37.179])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 669B33F6A8;
-	Thu,  4 Sep 2025 04:09:06 -0700 (PDT)
-Message-ID: <d6e6b96e-1bee-4af0-9343-9fb365beb4b3@arm.com>
-Date: Thu, 4 Sep 2025 12:09:05 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE9E83F6A8;
+	Thu,  4 Sep 2025 04:09:40 -0700 (PDT)
+Message-ID: <74603a7e-74f7-4d8f-9c2e-7caa42f2399f@arm.com>
+Date: Thu, 4 Sep 2025 12:09:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/6] arm64: mm: support large block mapping when
- rodata=full
+Subject: Re: [PATCH v7 4/6] arm64: mm: Optimize split_kernel_leaf_mapping()
 Content-Language: en-GB
 To: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
@@ -71,19 +70,19 @@ Cc: Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 References: <20250829115250.2395585-1-ryan.roberts@arm.com>
- <20250829115250.2395585-4-ryan.roberts@arm.com> <aLiTzJ6E-YBIYuGo@arm.com>
+ <20250829115250.2395585-5-ryan.roberts@arm.com> <aLiU9xnZl-7LBqkX@arm.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <aLiTzJ6E-YBIYuGo@arm.com>
+In-Reply-To: <aLiU9xnZl-7LBqkX@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8F8EA10001B
-X-Stat-Signature: am7cw5xfskx1qkoh1giikneuny19jdxs
+X-Rspamd-Queue-Id: 8B5911C000A
+X-Stat-Signature: t3ud865pmz3kcw6ujq618u6oqwwcerxj
 X-Rspam-User: 
-X-HE-Tag: 1756984149-3228
-X-HE-Meta: U2FsdGVkX19jkxAwRO/44q56aGCr+G2oISOD/sU82ulgLI4mnt9ljDlaI+lPF38gA02Yd2YP1u+aMVbdY6vH4QLprFiGNrTdwKmpT7SXe2S3RJ5Lbx1p0mVDaj1mxxHp2ZLWZf63lNT0hd+fZc94WME4IdhpRbcw5kFE7YpzQ9he7daDKNcIUfL/gqn3q97pPUAoZtqEEx5iABwfa4RhuYMCbkZLkNVAvlUphQVDbDHopwoC9tq+jl44CxbPOEInB8pg7QgAArQvknOXmwGKD0dIfKBf0zPzvhzwjkdhUFqA/Ni8g73QApLgWe5nY8yTCPgabKRla07X/VJpHweEMzAJEKPqhhTjTqDezlwuas2psOz6H+MZGnvvleqxbcdiuiWr2picKguqYGG29K0mGzcPqbi8eAl77+jFCk9wGtJpkErBwdNYIHy3XhN5coNFmf//KzpA9pjYvpql+iZfXM8R7HzMkUS1mqXiBvqqK8PB5ERLDUzzc+2z2bWdWCM60rqy4flQQpAwkiyOhcjZvxv0hEJiYz2zAVXHith3jYaTLYnxwOIMWRBKNZUSFgMk3srahv/pGYQrkxC9ZMFGsglPi4WAN9iwOQBp6NrNunVRqj7kpe1/NwWlj05TR0W6GL8ATkRB2TMAnWOlfnzBeuWbD0X8E3Cnl47Gbl19FSFXGpI3bOcc/RSLBZ30uK4aWwI818KGuS+P1X9xCwcJN3HxNIS7bcejUrz8ppCCOejT5fgWB5q6gWLdZSBrehIn5YMNZw7FZz4bxx3OMamROn2G5+sdfAx5dgKKPnQrqzyV2F7lORLcM1/oDZxa51knDAa6Zhzxesac6Iv9JTbDmoqJhMcLGoIcNT4R6RwNelJfyNHddncGKj2qPE/Fn/Zibg1Nz7Ei0QIycxDHDeGlkwzkWyK5fDKXPlvbNKeOhGRYRnarqiLd/rjX4mQRpdUIMGAdrddW6reo1oIlyU7
- oU5lG10J
- qyBwXVrwY2+zfjd/vFFGs0xTrV5pBy1udXYShlIPID0tzr82ahZJDZzaiwKSk0pWEYwDR7CUfjMozeBKpYVfONGTwTI/YRzMFu+p9dErsSP0iRBVywJWfplR+mTcpkfHzRIquDwegIlxpv5//RZxeYJnIaEnQ20xJsiiz
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1756984183-696222
+X-HE-Meta: U2FsdGVkX1/VsBJ+HVtDga8ks1AwcWM9VvR4tPJgVI3L3V6vAp4CRX2Eq6RhiXIRieorgbrO/yR7meez9+dfrXGyvsEmz1zh2dX4bHnu4H36nH0A3XqKZtxtH2p4X/xGYzx+Ai/3YCqYjW8HDeXK2rTH0l/ecFzn+tedi6YK+PzofxT8UrE3hGscXd63dYGkjQ+ANR8TzQPn+netgb3+rYRI1UytPElpnT1J6QZWJTJr3td7jC0NX5x2Gbo+UfJwZsF6z0VV/HTmczfTstyFhC6+XHbDsQBF7WGSyvGiEl1Fx0++PPQ/s08tcA4DHmzlXKM2IsCk65QqgHOWUG2uT10uaQr4UhoYZkXrDiIWcYRREpK2Y5hYrfeFJfAwPR56x9Ry5kUEIGxCLV9JJSHjA7Ty8O+W1e6ERqNyLgsr5SELtjrfWsbhHcY9DHdpZUpOo2O/QHLs77zKnn7szg+B4YpaypiQHFr2NpQoBySQE12sDkrKwOPIvB3GYEhDtyiYJFUeQJkz6LfLguH9Xr2QW8/rrs/9CH4AmI7Y8zQAyIkb3XI30bsxS/LGUWDjR4eEM3yytFR3uZIvEmwZyGlC0bxnYsmjsRiZxtV9BFADnjNagxMrBCHka4dDxXBR+Fo8YTOM3YfZepEg5gzfIXbJW8DIWlFqu0Ol6+jhr5E2TBv8rbtPxIq0NLE2HnokHMygwmnsbirnASe+1DQuCwRx7VXp29g8zv2rHR4SzlTxId8o4r+Ubnbve4gTzb3PmZDuYSTklpcfvE2KK/v+kgN33VQuBAKxRwA4TflW0XXwBVi+dZ9t+1WMwGFqonSg43t9T92g6bIqWD1OOQyiQSKQuIZCNDSQ5+wpJmU4BygaGxWeaXddQNvZnLR33ZePkStEC/UQuoFIkH7K6qrpXifHsbnEIP2zpCEpDKqTVMzjAKlSXHlJE7XMMwEnrYFM+IWxj2MftqW28wSb8lAZ2gj
+ QOewZ/8D
+ SapChrBgtRP1uRhMWtN4zOMg6C+I2NuLBjxwtuRRVB2YVmIFWcsNRWryVUf2H8QyX5vUu0qsMYomnIH9+H0UD6KBtkq+nWGsPkYHOwwvr6Vkj7UWjH4/SqbuhlbmPmHWoEYYsFz9GJWD1VQiDUcggYED682e+VxeaA3+k0KRnB4ahHpPOGleGJ5totkdbxJ+G8zz5xrulI/DeTZYlm/nja2c7y2imb+VHYdbhI4n1KUj2BKAtQRNljH7bHA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,27 +91,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/09/2025 20:15, Catalin Marinas wrote:
-> On Fri, Aug 29, 2025 at 12:52:44PM +0100, Ryan Roberts wrote:
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 34e5d78af076..114b88216b0c 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -481,6 +481,8 @@ void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
->>  			     int flags);
->>  #endif
->>  
->> +#define INVALID_PHYS_ADDR	-1
-> 
-> Nitpick: (-1UL) (or (-1ULL), KVM_PHYS_INVALID is defined as the latter).
-
-Fair. Will fix.
-
-> 
-> Otherwise the patch looks fine.
+On 03/09/2025 20:20, Catalin Marinas wrote:
+> On Fri, Aug 29, 2025 at 12:52:45PM +0100, Ryan Roberts wrote:
+>> The common case for split_kernel_leaf_mapping() is for a single page.
+>> Let's optimize this by only calling split_kernel_leaf_mapping_locked()
+>> once.
+>>
+>> Since the start and end address are PAGE_SIZE apart, they must be
+>> contained within the same contpte block. Further, if start is at the
+>> beginning of the block or end is at the end of the block, then the other
+>> address must be in the _middle_ of the block. So if we split on this
+>> middle-of-the-contpte-block address, it is guaranteed that the
+>> containing contpte block is split to ptes and both start and end are
+>> therefore mapped by pte.
+>>
+>> This avoids the second call to split_kernel_leaf_mapping_locked()
+>> meaning we only have to walk the pgtable once.
+>>
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 > 
 > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> And I agree with Yang, you can just fold this into the previous patch.
 
-Cheers! But I think we need to solve the issue where code is ignoring the error
-code problem that Dev raised before merging this.
+Yep, will do. Thanks for the review.
 
