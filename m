@@ -4,122 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52FB4CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 09:38:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAE35CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 09:39:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC0B68E0009; Thu,  4 Sep 2025 05:38:13 -0400 (EDT)
+	id 320C48E000A; Thu,  4 Sep 2025 05:39:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6FBF8E0002; Thu,  4 Sep 2025 05:38:13 -0400 (EDT)
+	id 2F84E8E0002; Thu,  4 Sep 2025 05:39:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AC5A8E0009; Thu,  4 Sep 2025 05:38:13 -0400 (EDT)
+	id 2353B8E000A; Thu,  4 Sep 2025 05:39:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 89F0C8E0002
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 05:38:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4ADC813BE0D
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:38:13 +0000 (UTC)
-X-FDA: 83851066866.22.3912508
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 570EE20008
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:38:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kJFsqIdr;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 13AE88E0002
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 05:39:20 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 922901A0AA6
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:39:19 +0000 (UTC)
+X-FDA: 83851069638.04.F44FEF1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8C7ED120007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:39:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hq8dWolf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756978757; a=rsa-sha256;
+	cv=none;
+	b=ukN0+xb9W8nVV/TPVws95hV05tpGeELbP4GbyHM8/POuGM1tsSm/2zPVi97nHkE1uLSQQ/
+	gXsiYcAoPGR0KRMjOQ/76t3Y8YmDUDlu225dAi46TLQ1IPQAbD8uq4c/h+J15UZ2v9FfTI
+	T7y6gJibdNtJVqXO0UbRPttdUKi0tYA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hq8dWolf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756978691;
+	s=arc-20220608; t=1756978757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GXmjjeD0lAKEPrTViWbpBUmMT3X+JeUneOosrIyrrOE=;
-	b=KSWJuc35O+MekXDUr+7O2qa4s++HkeYn5VAWcBgP9gfrJfbiTzsr7ZfJ5md6FObrblZ9qp
-	5LSWKVq3ttP1VX/6XKormojnI0S2FE27Qmk2u/XzCEYmNITlXwSERCjt3VOnzNHxWupGIm
-	mdfgb2WaNw18hQN0n0OJfSBAOBCKo64=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kJFsqIdr;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756978691; a=rsa-sha256;
-	cv=none;
-	b=r5nF1tvwPr4Ca3Oeh15CD/hx1yKZ0I99hkd0VdIic/qYG9RmvKpsj+XbbBi/zbaio/t/CV
-	/BzSAGv7xyAu/spIITVngacXK0neNIrI/GnNG0PifxXHT3sCraJUlRIZEy8EhV4Ur9xuI7
-	swb9BhNk54iNCDBsZjCTRHNd5l7aRnU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756978690; x=1788514690;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=K2roMTDLYdK6snjjQKgov43nRYmQIvretg5aO99t3Kk=;
-  b=kJFsqIdrBSE/G+25WbWoBlFJmEZ78ODcQtd8nzV/r7MpQtXoAHFqQGAa
-   LICQhG7Bg/Y3dO9o3ME1soI1Wzs2w4V89YMNTDoszP0QDTgULz1n5G66Y
-   PgKMQkrkU8tD5TmSNkN9vxBC2UrmsZzj1t2EDjAjPuCNUTWwWb4HGASe2
-   FY4GEKcTWlOrI3NNM4fHL3/EuuEt+3jVxqhTLFe8QIMHMS7YhTgZbzwTk
-   82F5ccyrQ8pEswttB892ndIlclUueSKYlNnMs9OEN7NX84tjnDcLdQdGG
-   eKPk9UCkIiNcXhkWDtSeDTRXapOKLHn1z+SvqNMpXN4AKOtLBf/4J34Ob
-   w==;
-X-CSE-ConnectionGUID: QwGwMfMES8iKzV2GrO2C3Q==
-X-CSE-MsgGUID: 0LfYfrxlRi28iO/+2ZMhHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="69926153"
-X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="69926153"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 02:38:08 -0700
-X-CSE-ConnectionGUID: xspA0gIYSpSDftwk10r1cA==
-X-CSE-MsgGUID: hrUIlaOmSLmIcge8I0Ymgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="209028838"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 04 Sep 2025 02:38:00 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uu6PE-00054F-11;
-	Thu, 04 Sep 2025 09:37:32 +0000
-Date: Thu, 4 Sep 2025 17:37:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: oe-kbuild-all@lists.linux.dev, damon@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, Balbir Singh <balbirs@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Ralph Campbell <rcampbell@nvidia.com>,
-	Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [v4 05/15] mm/migrate_device: handle partially mapped folios
- during collection
-Message-ID: <202509041732.UTJsw3LB-lkp@intel.com>
-References: <20250903011900.3657435-6-balbirs@nvidia.com>
+	bh=wqwtBP0K+7f0j3IdSu9ZNLeR1MixCwE8h3oP16EJpvM=;
+	b=4kBtzBxJhA0Gkz/Gsx0TLHJt+BRkBP33myjtYd17dvwdd4t7TDS74pFzkrhKamqp0AY+wm
+	N6OPEzk7R1SeUX4yiT8YBscVngYt6v3ODmBDre/9U+n/NqFt0pj2Qv13fjC3kkl5v+x3De
+	F+hGmCfQpPNO53kEak73FF/PQcM9G9c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 252E744AF5
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:39:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B7BC4CEFC
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 09:39:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756978756;
+	bh=b7BACgAwQUb+uyXmCf5NXBvllTt2WyPGKAHbjgfVB+U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Hq8dWolf0lAYzF8jShP680EJaAzvGQim5Lr2AfrQ+ynHO4bA1yUoLufGdEjFWxoDt
+	 WueJWqG1gjLENcYyHwFD5cR5wiD1q96ufPzHkiUEZgiq/iJ+N/Fh/WFzgbupuusSXV
+	 J+Uxdr6+jY/CQ13BmQhYpvw7+3tqOG7fHtUC03nC5V5Wtrs1mvWDn1HVoFdWQSxg4W
+	 /GEItyCPqtMKGEHnHChwaXCQdULZQDHHXAsgppVPbyaYGyRqpYzHK9MRXPU2FRZvvx
+	 MNrqF5Tep+j54821ldD8OUoF8un94CzR2u0VZbVY7vhVxzWpxthQhZVLZWSHgJbiP1
+	 0q7SVgtv4I0Bw==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55f6abcd26bso2334208e87.1
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 02:39:15 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXA61ay0B/cFtv32c7bR/S0YQUmxwYTHpDqH/6oCr8ek+dKY27m+YqVwfV3ffoAdtwzWJPAALENmg==@kvack.org
+X-Gm-Message-State: AOJu0YyO8yRUCuGhHauVtlRUCPxgbhQzNVKjcWbPQk3igjUd4WpqOo2F
+	6Y/LFh8UUz1qxh7OBGEVoqVF3YNdkrUvOuyx42/lQLtIMUa78LS3bxelI9ciBD1rxQJ4hsS3QSl
+	6+c+jHAptKbRcgrY3sO1tPRAqjooj4r8=
+X-Google-Smtp-Source: AGHT+IE+sZix8HxDMFoQ4qCVA3ERgwP0vsD+zEJb2XElfW+EN65uuxN8+XQS8HhSU1B4zUIkMiL6fynWNcS2PalYMqE=
+X-Received: by 2002:a05:6512:63d9:b0:560:83e2:1db7 with SMTP id
+ 2adb3069b0e04-56083e220c3mr2265147e87.6.1756978754251; Thu, 04 Sep 2025
+ 02:39:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903011900.3657435-6-balbirs@nvidia.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 570EE20008
-X-Stat-Signature: 4iuhkw9qs6t4s65kijg5feemjiux8ujr
+References: <cover.1755721529.git.epetron@amazon.de> <b34da9fd50c89644cd4204136cfa6f5533445c56.1755721529.git.epetron@amazon.de>
+ <CAMj1kXFQwOHyQg2LtabMA3qxiBn_AVV_JNfki2WPSg8u_XbBcg@mail.gmail.com>
+ <CAMj1kXFzKzpoqczq7Rk-u+kKLFO057XEXMD+KM=iRMMsoUZbJA@mail.gmail.com> <20250904093455.73184-1-epetron@amazon.de>
+In-Reply-To: <20250904093455.73184-1-epetron@amazon.de>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 4 Sep 2025 11:39:02 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHTJxBMFX6J-QwcPRojLGMQsTNOH5Bz9kHk7CFdt1JApw@mail.gmail.com>
+X-Gm-Features: Ac12FXwC151u6vsYrsntF6Gl_qF6tE-aW0TPl91D1Up2Kpmz5zWqn28--0rAVOE
+Message-ID: <CAMj1kXHTJxBMFX6J-QwcPRojLGMQsTNOH5Bz9kHk7CFdt1JApw@mail.gmail.com>
+Subject: Re: Re: [PATCH v3 2/2] efi: Support booting with kexec handover (KHO)
+To: Evangelos Petrongonas <epetron@amazon.de>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	bhe@redhat.com, changyuanl@google.com, graf@amazon.com, 
+	kexec@lists.infradead.org, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, nh-open-source@amazon.com, 
+	rppt@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1756978690-748188
-X-HE-Meta: U2FsdGVkX183tCe060kWVVyIykV3s88nxQtl5nF47XHa9oexZVr7MsakwChuQJPq0hJTadM9YaZWZHAPuT9eO4peixF7i0iFxkVzFIysYHPGSKOnOjU40fyX2FeGRq0IO/juwvy9nyzxsL3E1BBL5CAXF8kneLU52hIH7N817w4P2ae3y0COdzDPG56jUuoC2oXTUH86GXuEghxrJhkdnp0ymjK7+3a2Y39n+b6YO+VIpq5uFtXy5YRBfse3yTf1HWywN8L2yJVEz4avEe1HcjotZhLjsFo7RYd/GN1Sw8RwkpwxPlUROrz1W5a9VbUyNtxgMy6Mylgxd2qdUPzjE6g7/7p/bLwgWpQf5R9XIUY7zsNOI2GLOqU7WxxgSTskM/35qotlNWBWOF+2NCbhjRzq/7BRUQjJFgNQeiM5YIYAjXNGfE2pvVE6M1qQJmyrItVztALq+WwySWwlillLgsYdRpXwMwOAml80g6+WUXD9NLlx5E4Z2I1/e1L1V+zl3z8pdMgr73yqco7VNCrRd6Rbi6PHpXw47htR3amMixe26j+Oyk35SzposmAVoBNZ1UU2JIIrxyb/+13WxCyCL7S8eGT5w5A69AKyAZQGKsld6hPA/JV8Bw5siwUatxWPSD1bZD71o/XZ8L45P1rlf5FAHNNdODB3/89LRHNQYp30QCfJc2qkz08mnbTDgY5Vp3TO21ZOu1eoF0dudvj7VzyjGrLSYUl8uD2RKSlZjiWR454acuilnjJgwEB3mUHinPIbAapuU7+AvHKMaPE0pySKmHqIOWogjrM57Mq6UlSVWjwgyZg+PyuHhRas0XnZcIHAGXd9C+rucpnYaBxY+PYoVj0nX/xhxSAWN6xhX+yntvi4US3o2vwVXLrD/uZotO7zw61Sdpy4Xfg+xalumxx4CIpMvNzUjKXzl8mVXeCvgNAmU8aA2s8VGoJjtpLjBs/BLqugNDEFNB6maKR
- I0J1IEpD
- w0qiRVQwv9BRsXFQivBEBTnjZlYAm45N4oACBYMBpbMaGG3+n6tg2RaM3hcv4ilpF+JBGei7ncPFimj4q3yw/9C1m+0UwNuKxFlxX099FjeSF+HowkE92wD9xqg88ZeUyJQEzDj0r+we0/Yu1BaFV6rB1Gn7XkHdAtbOzO8vEWIUzTfxblv8V4Lefmji5PMiEvJhafccQ8IfSIc70Vl+NMFPvbbcjMgY67vac82QWDmntMTIlDaSh/Vgvt7gdD+WU/yRrDkqjJQgaI2Xx0g4YlF2cZgOAHAMoef2LrGO6upkp+yF0AwsA/EXvjqrCJZ/khWDsUdRoN24aCl2gVc1PX8g/ji+76SbZdYkBEAFyp8NckPV5XwvJRaWJYbJ9bkIt1PXMLXJQnKLq7LlrTo5OZCPPZfjeWmrxTkbF90o4SFWyMy2bG7pM+CczlgZZqZMDprCFE+n1TRRFPz2a0ESeQZjPq0i2ylObWLsGsdbJwbg602X2LBiMCussXg==
+X-Rspamd-Queue-Id: 8C7ED120007
+X-Stat-Signature: xrqfm5ojq8nhy1dg64u7jsxk1kgxr5jm
+X-HE-Tag: 1756978757-490220
+X-HE-Meta: U2FsdGVkX1/tGa325vYTq81P9c2IKIT5/TsffB5LHVPi2mOYaw6ceEWYrNPYIjzQ0PI0Cntq+PU0XJg0i5TYdAI3lW1Ko95jyHf3sQ+vqf3yktM9cqgGaGKrXl1iB2rGC6qSOLYkNWEzmC0KcEXsz6VM8C6omfYfjQvgzdEDzOIYLqgBwSDA75BY1qxVPiWXGa9hcUYugMr0BTcTz+4s1FwLK69YhYL3NSiCvqtNIeNm4sjjahwqPgtOjyN91oRiCQ4AOCicAi058G4nboUo628QQBarkA9Xxh5CvV1XDiJ6FFtLkTGUAPaWUwo8Ejbafx7VoDxuTg+HA1K8N0hPJ94lZxKxs6jSEBg0F/LuJWXzfuwM1rxXAUdnnwqlnrucc2+SsQoiS9UBO/EAC2ZfvRCF2HKRR1v+RrHiYvStH3NkHlP1aDrzqRGjv6UjopsWi2YFOGv9vYieOIGgfwh15pgLJ7ghZOQHDnuH0uP1dHnSVHUhG7dp4PVBVs85W55q/KUOyyqsx2TQiAYzXm0NpKRRLWpAk/oDYBSZP15aUNaB9rcFTXOo06lBcFW2zqviYR2NFA1TphMhxDHN3WaVn9uBxKvHG8++EEp6PKneeVCg4pl1QFv4/doKAK2vFEqvmuBSMcTay7mT9Naht6fqxQE1552/ShjwYJsTcReX5b15h/bYwvUCf/pT27b7V+jC+b1vmXXTQ1QtbxIkCC3DU6jke+DTGAH51JzC2TacZW1Z4w1WiO80bLQMrdjoaqu1LSKJT1IfaYkB/QZSdR2nEomXLaaAgA4uJ/NM1gCwU4WNCurrYRDyzPlAmnVqBAIzwUrl+lR9KxH2SnB3QxfcCQpNqOYirOlS0b5/RDCykumJ7/TyTx/gwcjdOgsE2ryoiPLel44DYKg2pOA/yCtq8RmawFi716fI00rodgEPE7PprnUXyabv83TkP83FVFfc4OHgNjc4FF7jOdann7z
+ YpXH7bBq
+ 17nTp78qDxWjXuAK3w3Wr2X5XSPIAnbx2y/6lNkq2CQOUZr3WQDwXt2YsUuikrUObbXP8tQfFm9cyEj0VsQW34b96NQmxHKelXfjs1vZ0naUc7p2Q0A8YqqOgTx5opkelu96IKiRzDHjVKIpoED1jcDOsebAdvqujbT2RxHcX9SoL8ZM/3wmlRBZSPgs7+UP/ET1CbLJcS0kdbGVXdbZ21VFjEuevw3V0jOmgG7dqjdpZADcj9fE9QAMvefGusRXVEx4aiRFPpp1P0gyCYuUKYRfYqMPIS+pXq60mx/OXa5MFTvje11vKo7pcuUfLpv2++/zI1e8mIpk/J/gJ2C1JjqXd+Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,36 +107,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Balbir,
+On Thu, 4 Sept 2025 at 11:36, Evangelos Petrongonas <epetron@amazon.de> wrote:
+>
+> On Thu, 4 Sep 2025 09:19:21 +0200, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > On Sat, 23 Aug 2025 at 23:47, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > (cc Ilias)
+> > >
+> > > Note to akpm: please drop this series for now.
+> > >
+> > > On Fri, 22 Aug 2025 at 04:00, Evangelos Petrongonas <epetron@amazon.de> wrote:
+> > > >
+> > > > When KHO (Kexec HandOver) is enabled, it sets up scratch memory regions
+> > > > early during device tree scanning. After kexec, the new kernel
+> > > > exclusively uses this region for memory allocations during boot up to
+> > > > the initialization of the page allocator
+> > > >
+> > > > However, when booting with EFI, EFI's reserve_regions() uses
+> > > > memblock_remove(0, PHYS_ADDR_MAX) to clear all memory regions before
+> > > > rebuilding them from EFI data. This destroys KHO scratch regions and
+> > > > their flags, thus causing a kernel panic, as there are no scratch
+> > > > memory regions.
+> > > >
+> > > > Instead of wholesale removal, iterate through memory regions and only
+> > > > remove non-KHO ones. This preserves KHO scratch regions, which are
+> > > > good known memory, while still allowing EFI to rebuild its memory map.
+> > > >
+> > > > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > > Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+> > > > ---
+> > > > Changes in v3:
+> > > >         - Improve the code comments, by stating that the scratch regions are
+> > > >         good known memory
+> > > >
+> > > > Changes in v2:
+> > > >         - Replace the for loop with for_each_mem_region
+> > > >         - Fix comment indentation
+> > > >         - Amend commit message to specify that scratch regions
+> > > >         are known good regions
+> > > >
+> > > >  drivers/firmware/efi/efi-init.c | 29 +++++++++++++++++++++++++----
+> > > >  1 file changed, 25 insertions(+), 4 deletions(-)
+> > > >
+> > >
+> > > I'd rather drop the memblock_remove() entirely if possible. Could we
+> > > get some insight into whether memblocks are generally already
+> > > populated at this point during the boot?
+> > >
+> > >
+> >
+> > Ping?
+>
+> Hey Ard I was AFK travelling. I am back now and will get to it.
+> PS: Keen to meet you later today in the KVM Forum.
+>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on akpm-mm/mm-nonmm-unstable]
-[also build test WARNING on sj/damon/next linus/master v6.17-rc4 next-20250904]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Balbir-Singh/mm-zone_device-support-large-zone-device-private-folios/20250903-092241
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20250903011900.3657435-6-balbirs%40nvidia.com
-patch subject: [v4 05/15] mm/migrate_device: handle partially mapped folios during collection
-config: arm64-randconfig-001-20250904 (https://download.01.org/0day-ci/archive/20250904/202509041732.UTJsw3LB-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250904/202509041732.UTJsw3LB-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509041732.UTJsw3LB-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> Warning: mm/migrate_device.c:66 function parameter 'folio' not described in 'migrate_vma_split_folio'
->> Warning: mm/migrate_device.c:66 function parameter 'fault_page' not described in 'migrate_vma_split_folio'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Yes, let's catch up!
 
