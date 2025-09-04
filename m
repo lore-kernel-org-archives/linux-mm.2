@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02716CA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 20:27:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E040CA1013
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 20:37:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61B2B8E0011; Thu,  4 Sep 2025 16:27:48 -0400 (EDT)
+	id BF67F8E0012; Thu,  4 Sep 2025 16:37:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EBA28E0006; Thu,  4 Sep 2025 16:27:48 -0400 (EDT)
+	id BCDE28E0006; Thu,  4 Sep 2025 16:37:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DAFB8E0011; Thu,  4 Sep 2025 16:27:48 -0400 (EDT)
+	id AE3778E0012; Thu,  4 Sep 2025 16:37:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A21D8E0006
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:27:48 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE7D485A91
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 20:27:47 +0000 (UTC)
-X-FDA: 83852703774.10.9988D7D
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 19C5A1C0011
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 20:27:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mNbcGtSN;
-	spf=pass (imf18.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4398E0006
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 16:37:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 468EE13B2FC
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 20:37:07 +0000 (UTC)
+X-FDA: 83852727294.21.B7DDD1F
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 62BA140003
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 20:37:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Qjm0Djb/";
+	spf=pass (imf17.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757017666;
+	s=arc-20220608; t=1757018225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KvB00ALLfGnFg6LmNb2oOcpwz39zT9dJ6DxoEfayJGI=;
-	b=6SIpnvMyT54PIo5t1tKd9aNewg8orKOHmh5vYuCUPsZxEuiw4B7l2jAujlULmuadKOcfJT
-	3rgEMWIfxpOsl4kPEAV5CI06H4Zd2muOroUvOAaNNNKcrp1vmWPHybmkl9mpQJ0hb6fwi1
-	yBwuSeiXvAEUldV1h+gwK0MDxQzlqvQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757017666; a=rsa-sha256;
-	cv=none;
-	b=IP6SiVlrkLtMmerWKODbF34LyDIcquLidbDFGYxD4++8uhJzcyCJOYHpBfbgCUWIsUoS/a
-	q4jmfYhTCHP/3RQkySVkYHrQVe1dNli/PySPwm90H/W7zJwiL751NuUK1LkP00MulMnEDW
-	D522/ADQUqUWGDffEaMQjk5W+ivWxEo=
+	bh=EI6nD7Kb2vJ6eXm1beP+MC7SFJD+s+Tf7//wFJSVUQY=;
+	b=USycqczXvNvDVi9CdGSK5wjKSLI0A+ldzxCD4VMqnfvLwztbfifiCcZa9f5P+TA9OO0jod
+	ChhvKksky5Pjj2LWopKEcHk0MqFfTXElMicjLlhND8VeDytnzZuGffczmcu/WxCt4CSn5e
+	M6ehFSEt5LDeVvr6CNLndbjAs/vXV0A=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mNbcGtSN;
-	spf=pass (imf18.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Qjm0Djb/";
+	spf=pass (imf17.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e98b7071cc9so1535572276.3
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 13:27:45 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757018225; a=rsa-sha256;
+	cv=none;
+	b=VfJw5UUQr54xoNuatokqquncclBhV26sLVZtofOW1PKBGTKUibdMaPIP/RRKgJwr6VrND5
+	R8SjTEqc8YkK2JIdpOAGYpyH3mAfr1KKLk4ZmfDeMCIxG2NH9cnEnZsfc/UNrTaV9wYFMx
+	JRQFNurSRso3l2S+IvqKhGaQ4uHjj6g=
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-71d603f13abso16969487b3.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 13:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757017665; x=1757622465; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757018224; x=1757623024; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KvB00ALLfGnFg6LmNb2oOcpwz39zT9dJ6DxoEfayJGI=;
-        b=mNbcGtSNmz+NGpkQE1OxLjnokAiO/g8lPZ70NLWvXVDBc+7XDeF6JtXr4AMzebGEbd
-         8RtKLEw7naTEsU72TCAvNQYR024O2Ry76I0U3tBm+iNHWo7CicH4PveFnrQV8eOPjn7r
-         Nz4bz/PlBH7vE99V+wJpZEeprsViDwzrE7AvWs45ms8xubMOc+HZb2CNf+M1Ep69eYZv
-         NNXHUx4Nljrxd5ea50O01PbhnzQvBQyohlLt7qvdZqWgW36PWU4besFyoBI7nhPj88YG
-         kBXJmnJnN4uaXyWsVohS325BC/Lata9nH/aoW9HGNhK3lSDCcrIJhLFL+2zLq1g0j5dd
-         Xmrg==
+        bh=EI6nD7Kb2vJ6eXm1beP+MC7SFJD+s+Tf7//wFJSVUQY=;
+        b=Qjm0Djb/eLZ2CO1BtDEwBifLeN5xsd+SGr7NBRauWzKChSN+psZx6owgguG/wkveEe
+         KSWNqT5pQlvGSiZiOGCLa/czmAQ7EMR+00LVJOW0HBTYQOpxr11/mrfJX/o5Bj/4fYo9
+         L6iZp5DevG9UA5+sgj7e5wFqKOn4i0+vJMGt1EGj5ADgQRYIymZrByZ1pJDjElXyNypq
+         H09aGlbxEqualuUcqrfBrL+excpMUN0bcLITc3NPx/iOUGKWZrwM5vtZHlwVUeNr6dxT
+         mVlK7kDexRLHB5hnDxANqZFwQ+1PVl1jw25kfa8r9JVdbOhxEFOvzdJy1NxvJRB+k/qM
+         wAsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757017665; x=1757622465;
+        d=1e100.net; s=20230601; t=1757018224; x=1757623024;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KvB00ALLfGnFg6LmNb2oOcpwz39zT9dJ6DxoEfayJGI=;
-        b=tkxqP+yAi0rVVczie/PirItlcbBRBKmUzt+ycA4WKNilqz1qocdt2oYect8dIy//RE
-         TjejYZQBLAUiK7buoSFRgKeOvWqSKGcR3oH2XrE+sW5ASgbWF8sFZuv0yljZM94QeM4L
-         EHT2Yn1l/xzikxNOPSzBvUQ0TaLFjDT4Upp6DVR6gENEmL50T8xkJT2s6+7h79w3CN8K
-         ZercDkKhJapqe/dZHWBbQ2sjV4TiCdPWn27gPoTPCmgB0BGRG+3cfCfDuRFi6/T3qsNA
-         Q42gX+AWoTbsdmvDsZ6QbWps9/d8t0LUze6LGhz6MN94gq139SFbTfkSt2j7K3dpPC/A
-         z8ug==
-X-Forwarded-Encrypted: i=1; AJvYcCWx5b2oMuiyypR7DxVDyTujedPSWfgjGFCYJwWKYZJuMH4G959PijuXLlXhDl46HzvuWQU4ooHifg==@kvack.org
-X-Gm-Message-State: AOJu0YwZi5Tv8IKkFKFjweU3XlbZruParYFHgrxYQs2vHqAv1O/ncaxj
-	dWLCPrHSYFwz/+JKkXKisDTZQKbBTukh+PZMESs9EYLi8q5GwbRKp9Z/
-X-Gm-Gg: ASbGncvt27uB0tuYjaTwU/N9CMf1RGK8/qNd6+Jp8UOl3XHLf27iUQPmIXdF8hPyKJk
-	2trLxK7uTMPhemwOrhPJ32JdHqjgfKCfOy/BaTAEJkdYxPC5T9nBdjBxxJFBeQS7KKXeXmokIe6
-	CxH5pIYy14OxFRw2WPAa2o55l2IoFSkF+CzZRBZa3dzrOmIX0gyKYDPbK0cnyqCznu46qQuw9KZ
-	q59xDFD/iuuYzvQ0CBcsTFyu1q6eVB/d3d3IJoF59APqAlzCzRIgaUtBfuNtJWPSq4ZkPJeKWAd
-	X9LgadUjiZLUnqTl0EW46tndK9fuqJL8gqMHixcXaY1bUMpTaIOUM6ev6eBf4XXb+OCrjRvUcAu
-	wxMiBVSgbGnxyRbjTDYCsJliWw+aYoWHU
-X-Google-Smtp-Source: AGHT+IFEin3sVc/RJ0H3j23pXeDGR2NQkhbQfFAip/QeL6r8A6bl0sYH8LkbMo/F5ZLv1yUwPLRxSA==
-X-Received: by 2002:a05:690e:165c:b0:5fc:8075:1ac5 with SMTP id 956f58d0204a3-60175d7f7b7mr3511304d50.11.1757017664951;
-        Thu, 04 Sep 2025 13:27:44 -0700 (PDT)
+        bh=EI6nD7Kb2vJ6eXm1beP+MC7SFJD+s+Tf7//wFJSVUQY=;
+        b=uUNrDgyIHjJArk8TebCVBMBs+QxNy50c7y+gKErXFcScgZbQuLOllEXRXs/O8EZ2pF
+         EDkXm3PPJgBVKCD33FXd+BowvkdJESHUH6mzMDa/51W3up50KzcVtH+h0IuwLMPKinD5
+         lpsC4MYZnO1eV2ylnipZSw897fJbhmiEjlrClxmq10LxC5M3rcv0rJwnnoDKKwI9JFnn
+         LRlCuv4X0rrGIXZId9B7RkVXU2VF+/40Uq/RAiYWAsigsNhuXb3KZ5Rf7tEV2R9Svj5y
+         cv0SV/XhEATsLFOPHng6z35Ke4L5Hii08tXCGrBDWvBLgexO0hE6Zfi594RBts9H1PBB
+         9HcA==
+X-Forwarded-Encrypted: i=1; AJvYcCUg1Z605LnBgZIYWx209hOjzlKbqeb/31Fv5KSfhU/1Jo9zHFXCFe1KzcuePwgweVInG7OZ3X0ycw==@kvack.org
+X-Gm-Message-State: AOJu0YzNWtbcEenxU1tXx74hwVSYRTWjDB3mxxIbkiISgMz5si4RWtDq
+	mfXigPtNUcDyYpaX283xY9UQNkLZAfveLfWUxmRtf0g6NRtAVRoMo0vV
+X-Gm-Gg: ASbGncv9I0SIazpHe+tx6eMeDfRVSNGCXs3dLyBZEHgXARMjiMhwclyzTbFUbjtD0mD
+	8Whe9R2ByVMQG4EewnAyex+aiU2+SSvRKKLAPcDQRT1ZzN5QcKPP5SZK0AKrvWqKh2eJte8PLhr
+	01MYjQe2o8gS+x5hUkSrEkNDsi0WFJPxjvLQNJbrS6889icoKbHn5Xu7Fi9LZ5oaM/5F9mTvQiB
+	Er+G6FLBw4QPNirMl+IXbP0yrjMCieQheaNWL7nB+n1GPXDkzh06FlhcCVhNjO5fetO7uHMui7i
+	700jta02SwC9/3/zs0sSu9Q0xNo5szIE1DHI0YTvTwQ3ttNMi96Gjv6wQ0QuuewToCUKVzuaEjW
+	Y5Kk7AGGO4vujbFoTRRTdDxEuXBOuI6pV
+X-Google-Smtp-Source: AGHT+IFiE5N1M0ZHCK0VNaiwKKRp7XpL3kAlt6Jadb18nEF1ZoE40INUGXk3t/leYVgwWHl3y69GxQ==
+X-Received: by 2002:a05:690c:7002:b0:721:3efa:6d05 with SMTP id 00721157ae682-722764caa67mr246004437b3.26.1757018224161;
+        Thu, 04 Sep 2025 13:37:04 -0700 (PDT)
 Received: from localhost ([2601:347:100:5ea0:1218:85e4:58ab:e67f])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a83295b7sm24319117b3.24.2025.09.04.13.27.44
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a855a89csm23725327b3.55.2025.09.04.13.37.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 13:27:44 -0700 (PDT)
-Date: Thu, 4 Sep 2025 16:27:43 -0400
+        Thu, 04 Sep 2025 13:37:03 -0700 (PDT)
+Date: Thu, 4 Sep 2025 16:37:02 -0400
 From: Yury Norov <yury.norov@gmail.com>
 To: Mitchell Levy <levymitchell0@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -105,25 +105,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/7] rust: percpu: introduce a rust API for per-CPU
- variables
-Message-ID: <aLn2PzD1KRbu4SpZ@yury>
+Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for
+ DynamicPerCpu
+Message-ID: <aLn4bopPt8uS4d1O@yury>
 References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-1-4dd92e1e7904@gmail.com>
- <aLi2MBAwoD65tokv@yury>
- <68b9ee59.170a0220.a7a31.675c@mx.google.com>
+ <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
+ <aLi-7W21N45fBGJk@yury>
+ <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <68b9ee59.170a0220.a7a31.675c@mx.google.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 19C5A1C0011
-X-Stat-Signature: oaqzs1t3eeixaiayj9mjqx31i4ecnjzk
+In-Reply-To: <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 62BA140003
+X-Stat-Signature: 9bcda7rfxnmu6fc5fr413gntmrqq5zbd
 X-Rspam-User: 
-X-HE-Tag: 1757017665-297157
-X-HE-Meta: U2FsdGVkX1+CxXUiSATRlkWuCR4Y1DoOV/mAM7GanHRZD71PpoxjBQzZ3lBHSloIbybWdSxtR2ZnVjosY7i1IdlV5/LRiWHHdJyGiQdbeSZjVuBtE0cobLdWKoOQIk0P3ux18saOLOL/enhuR6C23wQDOtlwqHnd3B6Pk/+eJfiBmJ6/TEDInSURyzVKTIa84wM0ImgAch4agbp6fGTJ8UipQ8aXAqUrxuAxypbVu5EnH8s7sLTe9gm8IuVqXzHHlHR0ZwJCGe1xP5vveWDhVTN0OCKz6sJ2eAilEeCisg/LJf0y1ozZa3sfr3cWwtKsLi3f2DkdKQX2cL1NxWwPAR+aPgGFyOcs7ZFz2jR90TgBadRyhicr7OmC0mrpitPEL3r2J1nWEwLc7tMXy+5VW7Nuf/FFJc3jzs+Ao/OWpwvUR279EUaIW3BchyhOIQjl8YLTOFpqjKV08APyrS1XNH3c9v5zG6DhiZ6bXIQWSTBFs3+etJakICU890STm7v/Mm6MhbZdIjoSsq8kLnqgRhMfPFYZ7N6EI7D2/Ra+b4CWIt6GhfKSWoLKEhw2dECydtC2BloI3yBGeE+Ac1gvKGDi2mrAUhLxsiqmqG3qZh7oI3vLbRe8FByC+YMFjFC9q1xLvP/BM207EupdPb95ZfQcJStpV/cSeVPQaedX3w2IjOFlpG8GSrsvpHSx85Dq4lka5kW4p45een8fKXOJ8F3ipJj5JaqtusmvCvlUw+hSYLxzra4NR33pUXdEDKLBva+MMaBZIhYI6+g0UekFdkAK42bLUg54EQzoe9kS3MexkFZ+PNm+MMB3GssWNpLRHVhyuVJcGjECuTf/CbWaVni5KtOG3sK8vz8uauuV4s2HxgqbaLUlRWKT91kWuRFAMfDzHXFb5cVImY4kfeO+SbM3NTz73pAAknTYPA8k7FOVFoi2UjqIsZ7V0FUvaeL+Wzswber1EBeMA9DN3z0
- mZcdtSnD
- Znk8EdM5g1zDkHll28iBJbdJVQrxhTmhLaxpmurqdjHQrvY+cDdlTXImFolz7w23Yj8DdpB0GZvigDCbKQfqqZDeVaRdJcJpQJZDLeKOb8ndZfqof/P0g8phDUrpLF9r4ZXpZFEQPI5Afl95TUgu5ErxspLcTRZ8G/8GUciLq53lqNngghvlbwFF9ahlxr5+DfhV2W8IOzmaTdeesyBXZXb+wlOWJL04k8lNCi+vMnf6hwuPjcIZzunh9i+89FeTN9O+ufNC1W7ifoczK8ZeuXn8I0o2djN1sb/QCfaZ6cKfXCbfs/Z8TaAWyujfq9qxoQg+z7VkimVoXK6qfdl4i2VtkmejM5jNAYlEnmzo7iDUAyXSoS1jwZnGZV8D7axVBhPniDVE38NOuxktzQGU4osoOB11EP2eZt4nfjG5X4+A1IGxC5bCbjtH1zhnDm+DT9OJOepWuaRFtr5FLAnKcYqMjZITrZTuoXOgd/B/MV+TVPxY607Hs1TroU+UxF9ArkywD/2FGqfka3RXnxaDsjrQ/7n+uyG9N7XO+AvyDl6XH1p/EcT10aDEwMcd40Co/Q9ZPwaLGTdFZ6COeoB/Qm38a+jOh9LPLXyvl/X5idSzLWr0xEYPY6KrN5qtXwPUtD0H37dH7CDiOsGiLLrgRkrN/p5XiCU+HByAB6Ic7M21p/94=
+X-HE-Tag: 1757018225-855613
+X-HE-Meta: U2FsdGVkX1/1FCa7VqmpALRi0kjWsEratAK4Pz9ClHHbGmsf1FNF8ds/xKnuOAFFVHG3eNMnUiZ2CfODIrSbr8PnfMaQIYa+FKv2JCbgVkaYHQzaHLAnIJ/1B/mhOM3azfto/cPoVp0uHpELB/cntpIqspOqzg/3qYcEfZBRRkXPURx8Kw8Nx7fbnBSvCErfO2n7MVQ7Wb+U5TgeHOpE1DSKBfXXckyXkZaLRZpkfN6mShljn4bOjKNWk1FQh88hKnUjVrPqDmadixDMLmYvO6a5qfzc6uM8kWYTI5ucJSMGonhDbIRELAYTPcMvZSnhzfMCberXqVMS287vlB+TR1iirotlWpVRWfgvh2jj6ygsIZwtWSr5G8bPGTKAplTfoymBRlARxd7miwbfwTK62V4b2zATwPEnkRFLF8vbFf+V0590YHUKfcV8L63bqYyZaz4EADj9VqdHP8ENTjzta8ldceYjNQR2z1VbtX6sqZz5piJ62rUtPxP7t7PEliXYlNOFVqMpDpOWgOonZI8uOIFrhPep8vg7r2gNRosKFZRyV3TDB0aQS/lUPvjNRz5h95+4D/tP0OY5X3VSlmMBsJGXoZ7c1r0mGVHOozFV1Sii4UJsTOLu4CUx79lF/dLJYrJAFkin/FRzHmY79A00QLgysOBNh4/ShdHTXlnwd3LkVItiOC+0I25sACsNggY/M0sacDQuAJTURDAolif8B3Q3qHwSNWF641WRBtrFHwnoDaCZCkmAiDtuc5Imv1hNmTFzIPWtlBWrjujlYqwi3iDOBfbeBktqBzBTlIeP33jpd9gJ4kmnZefTKl4iZpnj/mhZG+ZW/uWU6QDw8R5g3dArBuIP3CA6LXGTOdFV/c7fhShE/y5oqvMMQZxG4t0HcsHTAvW+23h54om4V5+qCFcD8SP8/74feA2YVOwSbwqFeUkf/V4r1JLwcB6k1Sm/blyb9y0snahFNcVaCAS
+ Oso7N+BN
+ 4KbwOP3bNUSwpxA71WnD+envXejJOljZs9uvfUhDM+lLkb/+hI02hiW9p+Qpi01BemHX9+6Romli/8PYTveO63lByrKuBPLnjdUaZWJcqmvsOjFDdkQAAo3DrJSJJFRrPxl7gW6yY3XSF2JEdVsi89W8pgzRA0ejBNrBMHwHtC9pH/ZHzJuLfBxTrl0TTsjqXTkey5iZMmm0wlbemM/Do5gXI7Jx6119zYj6yNKW4Z8zZNzCSB9rGiTpFqkd63n6YgVcGHedNJC5LnEWR8FIMq1RaBpUEHcmgEQfyYgkfTZA/yDgufkgg4JCrWWTl5Vgr4mnHwhGbfcJOLKMDBaIcFl7fMMtz+rs7nfIXxzd+FxFiiGVlOV8PJ+/B6xVs1RTQSM0PTPgCpt8YVBuMgm7rwCe2VokRMK8GL6nNxKzIL7z9S7nR7g/PuQyA11KJ1WXBHZ1J9asCV6za8q0ENcgX+5HfvWfPYx2C8k36AW57ydvFEw4si6M9YHPOjhC/olMVCmD1nmi9LKqYuWwTQQQBnxt7kYxMHE34Y7TVBosvP6bsCLFYvLILxcgkFuZFNZgOz2iUrRzYr81OQ62ZvLhbHNer6vIU6mM9hbSNlU5bZsbpKY5pJ7atednlpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,79 +132,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 12:53:59PM -0700, Mitchell Levy wrote:
-> On Wed, Sep 03, 2025 at 05:42:08PM -0400, Yury Norov wrote:
-> > On Thu, Aug 28, 2025 at 12:00:08PM -0700, Mitchell Levy wrote:
+On Thu, Sep 04, 2025 at 01:26:07PM -0700, Mitchell Levy wrote:
+> On Wed, Sep 03, 2025 at 06:19:25PM -0400, Yury Norov wrote:
+> > On Thu, Aug 28, 2025 at 12:00:12PM -0700, Mitchell Levy wrote:
 
 ...
 
-> > > +    /// Get a `&mut MaybeUninit<T>` to the per-CPU variable on the current CPU represented by `&self`
+> > > +impl<T: Clone> DynamicPerCpu<T> {
+> > > +    /// Allocates a new per-CPU variable
 > > > +    ///
-> > > +    /// # Safety
-> > > +    /// The returned `&mut T` must follow Rust's aliasing rules. That is, no other `&(mut) T` may
-> > > +    /// exist that points to the same location in memory. In practice, this means that `get_(mut_)ref`
+> > > +    /// # Arguments
+> > > +    /// * `val` - The initial value of the per-CPU variable on all CPUs.
+> > > +    /// * `flags` - Flags used to allocate an `Arc` that keeps track of the underlying
+> > > +    ///   `PerCpuAllocation`.
+> > > +    pub fn new_with(val: T, flags: Flags) -> Option<Self> {
+> > > +        let alloc: PerCpuAllocation<T> = PerCpuAllocation::new_uninit()?;
+> > > +        let ptr = alloc.0;
+> > > +
+> > > +        for cpu in Cpumask::possible().iter() {
 > > 
-> > How long is this line?
+> > In C we've got the 'for_each_possible_cpu()'. Is there any way to
+> > preserve that semantics in rust? I really believe that similar
+> > semantics on higher level on both sides will help _a_lot_ for those
+> > transitioning into the rust world (like me).
 > 
-> 102 chars, or 103 if you include the newline. `rustfmt` doesn't break
-> the line, so I left it as-is for this patch. Happy to change it if it
-> poses a problem, though.
-
-Then don't use that tool - it's broken. In kernel we used to have 80-chars
-limit for the lines, recently relaxed to 100.
- 
-> > > +    /// must not be called on another `PerCpuPtr<T>` that is a copy/clone of `&self` for as long as
-> > > +    /// the returned reference lives.
-> > > +    ///
-> > > +    /// CPU preemption must be disabled before calling this function and for the lifetime of the
-> > > +    /// returned reference. Otherwise, the returned reference might end up being a reference to a
-> > > +    /// different CPU's per-CPU area, causing the potential for a data race.
-> > > +    #[allow(clippy::mut_from_ref)] // Safety requirements prevent aliasing issues
-> > > +    pub unsafe fn get_mut_ref(&self) -> &mut MaybeUninit<T> {
-> > > +        // SAFETY: `self.get_ptr()` returns a valid pointer to a `MaybeUninit<T>` by its contract,
-> > > +        // and the safety requirements of this function ensure that the returned reference is
-> > > +        // exclusive.
-> > > +        unsafe { &mut *(self.get_ptr()) }
-> > > +    }
-> > 
-> > Here and everywhere: would it make sense to enforce it by testing
-> > the CPU with preemptible() before returning a reference? 
+> I'm not sure I understand what you mean --- I believe the semantics
+> should be the same here (`cpu` takes on each value in
+> `cpu_possible_mask`). Could you please clarify?
 > 
-> The only thing we could do would be to panic, which I don't 100% love.
-> Another alternative would be to take a &'a CpuGuard and bound the
-> lifetime of the returned reference to 'a, and then we don't need to do
-> any run-time checking at all.
-> 
-> Originally, I had left this to the caller because it might make sense
-> down the line for some complex behavior based on per-CPU (e.g., per-CPU
-> refcount) to do all its own management of per-CPU variables using
-> `PerCpuPtr` as a core primitive. In these cases, I believe there are
-> some times where being non-preemptible wouldn't actually be required
-> (that said, my thoughts on this aren't well reflected in the safety
-> comment, since I said it must be disabled... gah). But, the more I think
-> about it, the more I think these use cases would be better served by
-> just using `get_ptr` --- conjuring `&mut` references seems like it would
-> be a big footgun. And the safety comment already actually reflects these
-> thoughts somewhat :)
 
-If you think that in future there will be a user who will not need to
-disable preemption before dereferencing a percpu pointer, then you can
-add another less restricted flavor of the helper.
+I mean:
 
-> For v4 I will probably have this function take a &'a CpuGuard and use
-> that to bound the liftetime of the returned reference, unless there are
-> other thoughts on this point.
+        for_each_possible_cpu(cpu) {
+                let remote_ptr = unsafe { ptr.get_remote_ptr(cpu) };
+                unsafe { (*remote_ptr).write(val.clone()); }
+                let arc = Arc::new(alloc, flags).ok()?;
+                Some(Self { alloc: arc })
+        }
 
-I don't want you to panic just because of invlid user call, but
-whatever you call in comment must be enforced in code, right?
-
-
-You can use the guard, if it guarantees the preemption disabled; or 
-you can return None; you can create CONFIG_RUST_PERCPU_HARDENED for
-panics.
-
-Please refer the recent bitmap API wrapper, and how erroneous request
-is handled there.
-
-https://lore.kernel.org/all/20250904165015.3791895-4-bqe@google.com/
+Is it possible to do the above in rust?
 
