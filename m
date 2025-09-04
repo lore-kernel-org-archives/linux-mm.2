@@ -4,131 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1BBACA1012
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 21:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28DE8CA1012
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 21:57:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39AF58E000A; Thu,  4 Sep 2025 17:50:30 -0400 (EDT)
+	id 559A98E000B; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3731A8E0001; Thu,  4 Sep 2025 17:50:30 -0400 (EDT)
+	id 530328E0001; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 289028E000A; Thu,  4 Sep 2025 17:50:30 -0400 (EDT)
+	id 46CE18E000B; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1510F8E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 17:50:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AB5B5B75AF
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:50:29 +0000 (UTC)
-X-FDA: 83852912178.05.91FF280
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A825014000F
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:50:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aj1bfNgW;
-	spf=pass (imf09.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 36A038E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 17:57:19 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE6C811982D
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:57:18 +0000 (UTC)
+X-FDA: 83852929356.23.A50C710
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id ECC7B100009
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 21:57:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WCX+Wpcn;
+	spf=pass (imf14.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757022627;
+	s=arc-20220608; t=1757023037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EzWsxCCVon/G+ryLza8yWbR2S2Ik/r0FDZw8OJQuNvs=;
-	b=40x+aDsYhVk7NsfEviF3KAu7swzvZfjbO3TUudwrHU8JHOM5tLpPxmJuFLAswLMIJr+Gla
-	NX3vAA93wnyyd13QmGf7HPMZEXY26+UCM3c2X789rsRezj8wOD6UwgYNhiE4zzR39B0/m3
-	hiyP+K1okgepZBF+JhY7ducd4170580=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757022627; a=rsa-sha256;
+	bh=rcZeZoGWZd6oDyE1JgIMLenB9ELxcn6jjg+gL7yAmkY=;
+	b=B4NdPmlZuZF0FJ5UbWOg0kp4z+EPTUMPylpikO4FvQNUjwhalRU2kB1W/grOowvMDMVIA9
+	/3n63Hc+Uul2+drAdZz/t3vfjb/smRvDY57uXiAhHgbgY/7k8vL2DYWXTro1F5DgmGqdPP
+	bnTOIGbKS5PmTFMPazv1FElbyxEmI8s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757023037; a=rsa-sha256;
 	cv=none;
-	b=hZ+bb6oYTA8fJ0oim8AWo0pIfM2iLvvnR+B9jndWhxUL/be0HH5Kos8KqZEJZtDM8spfPm
-	+EcYUmNBqTXZtUqNr358z2cPzCsMC/LVg9wlMR4QFzmVk4cDl9IBy4bxIhYah7DeA3ZebV
-	6YpJrlYcKJg52+2cJvY+/4BlD/ZJ8aM=
+	b=i19xC0Ar3hr3BjX6K0cuSg0q3u8czbgINPKrHisHZqbWRxO9WAYWKnT5ag6i3b0laYy/kn
+	cPVmXgxmn6ee3Ou2o69/wIG3iJOunyK7SG9KWDEYnaG/iKBrZphja2ad5zlpYOpGBv+bjd
+	vQdUfCcpR2ZW6kSF/wa+nyo1G9jWX4I=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=aj1bfNgW;
-	spf=pass (imf09.hostedemail.com: domain of levymitchell0@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=levymitchell0@gmail.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WCX+Wpcn;
+	spf=pass (imf14.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-77238cb3cbbso1659938b3a.0
-        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 14:50:27 -0700 (PDT)
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b520539e95bso89299a12.3
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 14:57:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757022626; x=1757627426; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EzWsxCCVon/G+ryLza8yWbR2S2Ik/r0FDZw8OJQuNvs=;
-        b=aj1bfNgWsJvWUWW0dJBsbxbHIEz8WEcj+l2m0OZc6+mDhqPw6bPe1oI8EGHHniSvCO
-         OwulBBBck1k7cHi81+1fNZVcpTV2bEMohpR2UsDjS9TEjS9BgLSvzHL4v+w3jhDd7Cgy
-         U071dh8+hXaQ+PAoj+NcJhm6d6kj3kaakDLT2KBclvFtagdhxPCQEAHVjIPQBoFTWZGy
-         oxQKBa6fXn91GtUULV8sdaEFDnWpMUGI05ZSX0XdtYPHbE9FheTYknm7Y31sIDdoWl9E
-         0SnBe64nFzgtChmU2Q20/fVttGWQEZWCjxwtF/82BIQnbroWPyPsDh4nsW6zm+iRkhiS
-         TGSg==
+        d=gmail.com; s=20230601; t=1757023036; x=1757627836; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rcZeZoGWZd6oDyE1JgIMLenB9ELxcn6jjg+gL7yAmkY=;
+        b=WCX+Wpcn5hSmyTbNThzHR063eFdCjErogPcEZzuG/icdmFKsmEV5Wz5JUF9Sb7Rx/N
+         Sa5oZqJVdGdnXAfMegtfZsIBxFp+P4PYvP+/L1SQtsp4IZB6Q9PvOyybx2x/S2UFOkCE
+         7mX0hWNvCU4mZEncI4t3Wzc/xhiBSV+mEBvHGvLSTKB3Q7cG2c194hWWODXP7+/Qmdzi
+         4O+Bq/lFwNRiKrpA582RdqaSlexZAXaxphebLm/faHcCtTS7ApU6l7c2YINwTo22EY6W
+         x3/VvRzz7NW+UflfmKw/eROxV7bARaEw98vFN8w85tPbp8FTDxB3cYdvxk2i/RkE3Ofl
+         cuOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757022626; x=1757627426;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EzWsxCCVon/G+ryLza8yWbR2S2Ik/r0FDZw8OJQuNvs=;
-        b=gx3YToWGsxd5RG19/u6oUJF7RamXZuUiVNE7Kw7O0k42WAUdCUv5Hnb8G87XdZK8BZ
-         4vjLKO567qBDpJHkX9Z34I8mb/TLdmqh+Djv1GFIo+qfCom4ItOSX5ETAjEZPznMfb1b
-         KAiOVgRAuZHBRAJ/TP1uSIyYPEhIQnUE0kk5laFCVQKWgb7PIKmI04UDEM0jxzTyGZIo
-         xSPaZUUzlQptiaeFIfT9E13InrawwohdpJa/uO4MESHV3GOofFVvI+cGd3tYIhAXuwca
-         9ww6WWv3DFWNsMSslnl3pd88r9k+tEah3bU/nDEzmqbPvjF6JC00rU4+Qd6e7Szp6ZE/
-         T4zg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUs1rWUVMNfpkucgXyAbgwjnsivdB1IBc9AIEPrpYc2rlOCxmOfs0FB3v3ZlPYFDKdowINNjWL/w==@kvack.org
-X-Gm-Message-State: AOJu0YzOeAdYmwLRpq2mxsevhYXPDTA+HpD9vg6gf2UzA0rD8tIKHoDC
-	kgXodjEgmBkqYPTomAYEsYOTCwjKavxzbpWoWzE2PNKWOr0LSleh8YvN
-X-Gm-Gg: ASbGncuAAnYIbj8wLm5+jW2YfB5QGtuK1zR7gf5xFY7klbH14RGpbeAtmKkgUQBmDPG
-	w+3SerT2sm+F3TWSaV8kZfZLJwleWrLv6jIz21cEB/R/JhGK9tHGommsUY+o73fqz6jEzaq3xrC
-	iy1eFMXQsjJg1sKpd1ShJ83VrLyiB5oUfFU7NlzMAcrVGelXUN1zA+FnmupZt/FIeX0M3cdl13Q
-	cJLz6smhuT3Ih62hBAAQ9k2ZepbkGcVOgv26S7wn7d5k/h2qOleY9peubY/tcBIG8vG/+zbevUb
-	LCMTwukxaGZOKrXm4GIG9h7RTYMomx4k7IM8Nq7t5M1D1NpqvFAqPaSCeVxCEgwUrfNuI8kjhDs
-	wfmPbcUnbhHsANXQi0Cf3nABkhOY=
-X-Google-Smtp-Source: AGHT+IE45ytdzBxMga75esb/Y7Im/l4pSAA616Pe798pih9rJgiPf5vYwPMS1Fhq7qCOSOl6pr2tkg==
-X-Received: by 2002:a05:6a00:ae01:b0:772:45ee:9b9e with SMTP id d2e1a72fcca58-77245eea098mr20166665b3a.9.1757022626403;
-        Thu, 04 Sep 2025 14:50:26 -0700 (PDT)
-Received: from Cyndaquil. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7723f4858e6sm16575595b3a.4.2025.09.04.14.50.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 14:50:26 -0700 (PDT)
-Message-ID: <68ba09a2.050a0220.84a5d.2f3a@mx.google.com>
-X-Google-Original-Message-ID: <aLoJn0T1uXHCe1T9@Cyndaquil.>
-Date: Thu, 4 Sep 2025 14:50:23 -0700
-From: Mitchell Levy <levymitchell0@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for
- DynamicPerCpu
-References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
- <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com>
- <CANiq72nnWmzOfZ1PhSid4t_e-yWEgi_hVx5Uj4hrB9wzpuP6nA@mail.gmail.com>
- <68b9f3d6.050a0220.174510.28d9@mx.google.com>
- <CANiq72nkZ0F1_YUfBg_y=JcEMnQW+uVr9v4BXONUJdor3ZJzgA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1757023036; x=1757627836;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rcZeZoGWZd6oDyE1JgIMLenB9ELxcn6jjg+gL7yAmkY=;
+        b=NTzLU1CMUZ5IUpQhN1iKhoREyR53n9DHDcW4oVo2zi2a0a92S6pTb80nOSLKEMz2hZ
+         Ksc+MZzE2tXEc5S2WBb0NnlMN8gOAW/+Av+yQBCeNtiphuFt66/Ui8w+ifixtocjiA0H
+         BaAXiCUd7Z9oHXo5ASGCEviaZdCZMoCpvM29DNhv6Id0r4AgV+6eISL65q0++O69bbYP
+         frNK/mmpiKiwfzOubO3zUkgOqWwtvnMdPhVf2nzvYl/nboHI2fH+WJaixqmmlQD33luU
+         3GebkzUBKBRxNvRq9HcoKciJlskxwAjWaLqGtA7H0+6jQrtmtk/vtRKtvOy0Pn0s3Wrn
+         7FMw==
+X-Forwarded-Encrypted: i=1; AJvYcCW565+ZHQTy34K7hZ4WVue/g4G0w7JC8AnGN32CUCvuS+0u7rSfDLpgwykSP3ogRJXJ4pBxLiKcxg==@kvack.org
+X-Gm-Message-State: AOJu0YzO9OKoLcJRhNF1r72fTZxX+Woejqlq2/8OTkb8sxjIbNwE/CTq
+	grjO2jm2R2a05g+WJIifuh/VU6xzbCA7PxVgQBRuWd1CF08aohz2wgmZnKz6pFfgXl5jy3lllPh
+	9y9ovpWGqNLB4/JeWYhalds2CbdxXGAo=
+X-Gm-Gg: ASbGnct2VnfSvi88FtJ0tOpmR8XXoJ17pJGsPFwmnq9yYLMy1bS+g7o7W1IS53Hw5eV
+	k04O/aUiu5Bb2E1dp7clH2xgKl5iaIR927yUywt3wMBeHMI4mHCiWaxTuJkLBK2Z1jxE1q5hISw
+	+7GUSn4gi3FgWytf3DYE652icmawHIOSi6ifPZoxPQi/DEesaAOCpXFJy/wADBUbeU8M5nOjgbY
+	qpS5k7hSioeMQRg564bhatgaUOUIPsYihKfZXwewaHaOc9jHX7iiPzFreFkjiP89DqmT6Ax2sfT
+	djd19wyK/g0lOc4vXXf/VmD7QewBr/F0nUas
+X-Google-Smtp-Source: AGHT+IHZzzEVWO5PSFfDM0hepN4yQvN1y0+nmWEUBQlDiGcXUbGHi5nbA08+gO7LBQf4rthVM0fgKbPH71PBos20E9w=
+X-Received: by 2002:a17:90b:1c86:b0:32b:8f2a:ae35 with SMTP id
+ 98e67ed59e1d1-32b8f2aaf59mr3254587a91.1.1757023035654; Thu, 04 Sep 2025
+ 14:57:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nkZ0F1_YUfBg_y=JcEMnQW+uVr9v4BXONUJdor3ZJzgA@mail.gmail.com>
+References: <20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com>
+ <20250828-rust-percpu-v3-5-4dd92e1e7904@gmail.com> <aLi-7W21N45fBGJk@yury>
+ <68b9f5e2.170a0220.1224d9.5d3d@mx.google.com> <aLn4bopPt8uS4d1O@yury> <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
+In-Reply-To: <68b9ff1c.050a0220.35de1d.11b7@mx.google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 4 Sep 2025 23:57:02 +0200
+X-Gm-Features: Ac12FXzzgEdE64V3Xyhcttg0HrRdfADWmugK1SarEVytCTaLM5JzuX5Un97wiHw
+Message-ID: <CANiq72k1oRcxKbBpp4B-uCmqm+Hd7_xPqwM1kt-BYikbcsUSVw@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] rust: percpu: Support non-zeroable types for DynamicPerCpu
+To: Mitchell Levy <levymitchell0@gmail.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Tyler Hicks <code@tyhicks.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: ECC7B100009
+X-Stat-Signature: chrbjoa5p6ogeso5btwhswh7d45gd798
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A825014000F
-X-Stat-Signature: 3i7ffwg1jzwp65h1pz93ibfujdpf851p
-X-HE-Tag: 1757022627-330227
-X-HE-Meta: U2FsdGVkX1+dG6apzEBfyxlJ0LSbE3nvPxlExdp6lOW8DD0rKNTBvRbY7wUHFy/fbdOFHYOLOS4/WUSwv3u/wN5ul6a/GuMW/b13CQzBgM0d4ReDN6RndRrksPh3feYkwgWVP0Jpt7oOkIT2FsNXdPG869OWktPsyR4AqpgcE/zk9ToBUQxYG1I7Mk86k/WKC9SKprf+xAL1cBDnP8lMdPR0/fi7uenj1K2H9CqXO5vH12Z30n+T/60jhijJ6CxnyP3YK4ila5g5c0ixFFTNWanLYzunBqX9eBp7mzG38U7dQVyWo2cgrkwm6WwO3xR4vmjqqbMb6iQ3GT3qUGsYX1oau3idqe0cGNxHO+ZnUQV0o8dnTxUjEV4eV9cuxdvhoi7txGyPlcCatiQPiQmM4gsKDmEzFCavVsVdSX4mVRK2iWU5K6zLUw3W2SgmLKA0csEDPXTL2OWB34kxXXZklkxoGwRJUaH9N2lwHVIcUfLH6HPglbV1Kx7xennVD/Wk6cbuI6tkpBPccONEowgevmIXxrLaP9p3OAmotf/VvYj5FITVQfUpKPY+38l86LuQtSGwkFaejM8ktl54/Fjaga11Iy+hKyzbBtd14B94r8SXIOG3HxrPj+YeGaAZeFlEc+LxWx7vjbq2Ye3zI7M1qWKLAJv516EZ188+COb1h6CGGdKL49h+ep+P6ip0ubBcmGl3aibrubMjyrfGU1M2n3pwV1rBoAH8/6tz1Fa1ZrRYcuIESHy5tQ0QkAMfqyR/QWsJP4h8B4bhvNbaqJCDBEdodCWHTeO+is4El1Du1J2r58FmWPxPuVND5rKl07V6TjNT4bUsx/IBBez5jqpxCxbqlRjBZIewR9qAFcp40D0zAXV4u9e7PcEUDgtfxe1Pf8yKTZ1r+72XXjDVtKjRrNnBYypZJD4TmRVw9DrmK6AEBrrrkDgZeSNiilSzY174gs2OphCw6/81R1oMEtH
- 9tHw/cJB
- XXEZzfR1Fq1dBD52g3p7p8LTMjHAIi6MYiFkkbizzGLfPNFjFH0HtEQIWF1UdxVWFT6estmAtPa5NsF1VhmtmOun5/kIu4hAfbVtKkvnqsy1ziZsnF8EHNBIhFiI6Gu75XACvQBhG3wroe9cwuDHNgvvIyxmbyew+kaM3G9DF3QNw5IacC9LORxp9J9u5peO4J8m2+fMSn4L5jJc2ozmM7NNbr7I9sTeVunWbnmTavCODiGCdisjYExbfHUi3apT6+Jw1DvaEno0Af/s8GntJvT+zTzHtN4kOWh/SqHh7odlNRVRaMEZ50gEb5Iu8YvEWn8gzF2SVUG0dk0actC6VZJ+5rwUquDosCOzMf6iY+nqa8oVFXQAjlXA3phj3CuYm74iD+V8qYWvdIuXl5R/2JjlaEW/Ro+MqgUnnxNe+LLfpuhB//b/ZcJqNIjyk8d80F8sLwuiDLekwJaCkSf0tSdLkLsG2sR3RuPk0vp5h+s8GZH8uPzQydDr98nitNMWU2tmY0DyoBy651PtFC5YNrzLQ1JFUO6quvCT8
+X-HE-Tag: 1757023036-831157
+X-HE-Meta: U2FsdGVkX19MUhKJKqkW+uUOM5H+0g4qed9y7aDg6madcJnxATrM/mxjS2ajeOpZs0roIBg6yPWcqa4xLq+2iQQR8g4dVLF6dPx3ZdPCIhyuuoxQJwp+VaZ5YscRN7Wc6h5celNljJuC8Wn38Dmzry+2KdCfBGYBFJptQZ/1dWcoZXDuN1Kj8kFDR+8sr24GH5xnI5JT0Z92/wkWsDgSY6QUA9ygdXO5PL8s8NCplitP95ZnY5uCcG8Bh+mkVJGwkkzd59qnvFMzbFxO2Nxe0gt+ss8VwrNB4wQpQdf477jsvT5LOVOep4hJxqPGXgtG1oZlB+gQfJi07g2WjJ+UeB94CynUjuvGVIFmTyCmmiRIdFgmYZjhEnwwY/0c6k3aSHTizJb06jObxY3oEoJtgBZr376ONHOK8mULiKgEwh638KD/RY4be3Wd8eyud5rXnxVaBVjHdfHwrLBh7ZLovwL+mSOlaNGR40EZoU0cTvm6uCyqtJmgjlpBcZGl0gwD+bBxY0te8o9eTd1NuiI8gmkoB52wrC0qQo+R2oYTsrF59Yjo4UlMjupS3izhsT2sdRR5vwSD9WSQ3iBFNwM/GWjTgilTPtj3Q0NwE74lRvXE7cY1tDufM1pBYWkeLMkgOzTK/C8mTTNWLkO8hQrqpr85939SXSP8VvlXEtR11JmFsgaxM/7MhiFjWpz3sj9ux57mcpT8pU/cEoKFsaVSDu8y6dqwJMPPm2YwA9dit24KCFbkuD0F4uo0ghccXhsLnZ5F8bMGxjxm5DzT3XDjaP3aCp582q7B5wzP2Z8bwT7FO5BY6WBcUWVuAh4pg7ffqxD4/YyYB0VB926SeLxhEWJPv5O2pB0IdW1rxfVWSqbbUiMwwTcxSIFdfBQ4G1IBHv69duq5eN2mJ8odw412GF/RBjD1ny6nk6Y2AZi9cjUsEyQyL0BJo/7YWDULHY8y/7LdZOwDzrYuOiRLzzP
+ SMNBPJzv
+ eHkGdi8NavkfAGjKouxX3HQvDotl0RXkPwCstYh1VppRvIAYFjevAkMs9REMrYCYgoV+bAowNOMd9gzVxA7JnkLrDmcv3ceUfHww+dRrhsQRv5qRLnD7aFvpL283MFsIIkGTwq8W1jgWel+OP3TgQZ0hxBRS9hcYNkQ8wHsn8bdbNloinBmKVTcAQn+9G7WwhZuJmEvKOPHrusA31LKnttV80+CR4Jz8xJ+i03rCM2KrhLXWYp2kiAwEtGP+csLtjxVmBcC5I+GQRdKl4g01p5rw6N5XSzIVm69qsU1W8xctfDBMtZbhXUzAjHbkyzLmzLNTAnZyf+0uaSKeFBkF813lG4b0/m25URFQGZomFoUGY7eDWvSN0z5IEBsVwpyUWe58o5GbLoSKlAwrTODMnqVCepkK/FCk45lduQkqhQ1Us46Kb8+cWZwfeSakyLZdCiCBDx7TXGETPXNzdJuRI6j7T1zVICQEvm0E/w1eolYLXH9czhT2OpCMWhZlcFRe5Wy7L
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,71 +126,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 10:37:48PM +0200, Miguel Ojeda wrote:
-> On Thu, Sep 4, 2025 at 10:17 PM Mitchell Levy <levymitchell0@gmail.com> wrote:
-> >
-> > Will do.
-> 
-> By the way, sorry -- just to clarify, I didn't mean to remove
-> anything, but rather split it (likely at the first full stop).
-
-Oh no worries, I gotcha
-
-> > Yes, this is true; strictly speaking, calling this function without
-> > dereferencing the returned pointer is always safe. I suppose I find i
-> t> clearer that, when a function has preconditions that are necessary for
-> > it to return a valid pointer, the "safe-ness" has more to do with the
-> > functions preconditions than the act of dereferencing the pointer.
-> 
-> In that case, I would make it safe -- we don't use safety
-> preconditions to mark "dangerous" operations, so to speak.
-
-Understood.
-
-> > In this case, the pointer shouldn't be going very far, but I think this
-> > logic applies especially well in cases where pointers might be getting
-> > stored away for later (and so the validity of the dereference later on
-> > might rely on non-local conditions).
-> 
-> But that applies to any returned raw pointer, no?
-
-This is a fair point :)
-
-> > This flows from the first requirement (that `self` is a live allocation,
-> > which is necessary for `per_cpu_ptr` to return a valid pointer). Though,
-> > as above, simply possessing this pointer isn't UB, so it's arguable that
-> > any call to `per_cpu_ptr` (on x86 at least, I'm not sure how it's
-> > implemented on other arches) is always safe. Regardless, I agree this
-> > comment should be more clear (even if the function is safe, it's
-> > probably worth noting why the pointer returned is valid when the
-> > function preconditions are met); will fix.
-> 
-> Sounds good, thanks!
-> 
-> If you have cases you think other architectures may have different
-> requirements, and you think it is likely one could enable the support
-> for other arches and break it, then I would suggest adding a comment
-> about it.
+On Thu, Sep 4, 2025 at 11:05=E2=80=AFPM Mitchell Levy <levymitchell0@gmail.=
+com> wrote:
 >
-> Or, ideally, try to see if other architectures are fine already, even
-> if you still don't enable the code in other arches.
+> it *might* also be possible to use a macro and dispense with the need for
+> a closure, though I'm not familiar enough with proc macros to say for
+> sure. That would probably look like
+>
+>         for_each_possible_cpu!(cpu) {
+>                 let remote_ptr =3D unsafe { ptr.get_remote_ptr(cpu) };
+>                 // ...
+>         }
+>
+> though personally I think the first one is better (simpler
+> implementation without too much syntactic overhead, especially since
+> closures are already used some within R4L).
 
-Yeah agreed, I'd like to get ARM64 support going soon-ish at the very
-least. My hope is that I should only need to mess with `percpu::numeric`
-and `PerCpuPtr::get_ptr`... usage of `per_cpu_ptr` *shouldn't* have any
-prerequisites, but there's just this note:
-https://elixir.bootlin.com/linux/v6.17-rc4/source/include/asm-generic/percpu.h#L29
-so I don't want to make strong claims :)
+Yeah, please avoid macros as much as possible. Sometimes macros do
+have advantages, but if it is just to avoid a closure, then no, please
+avoid it.
 
-(note, I think the comment about x86_64 might be out-of-date, see
-https://elixir.bootlin.com/linux/v6.17-rc4/source/arch/x86/kernel/setup_percpu.c#L32
-and
-https://elixir.bootlin.com/linux/v6.17-rc4/source/arch/x86/kernel/setup_percpu.c#L165
-)
+Similarly, unless there is a concrete advantage needed with the
+function, please avoid it too -- the original `for` with the iterator
+is the normal way of doing it and already used plenty in the kernel.
 
-Thanks,
-Mitchell
+Thanks!
 
-> Cheers,
-> Miguel
+Cheers,
+Miguel
 
