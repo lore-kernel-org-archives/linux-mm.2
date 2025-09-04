@@ -4,94 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27641CA1015
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 02:52:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28886CA1010
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 02:55:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8196B8E0007; Wed,  3 Sep 2025 22:52:14 -0400 (EDT)
+	id 848188E000A; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F0938E0001; Wed,  3 Sep 2025 22:52:14 -0400 (EDT)
+	id 81E758E0001; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D7E8E0007; Wed,  3 Sep 2025 22:52:14 -0400 (EDT)
+	id 734C28E000A; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 620B28E0001
-	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 22:52:14 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11DBF13BC3E
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:52:14 +0000 (UTC)
-X-FDA: 83850043788.05.0648E9B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6490140003
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:52:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zxkkfcvk;
-	spf=pass (imf04.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CB568E0001
+	for <linux-mm@kvack.org>; Wed,  3 Sep 2025 22:55:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F310D1409B5
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:55:11 +0000 (UTC)
+X-FDA: 83850051222.08.FADA430
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BD1F8140003
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 02:55:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JmjFlbDE;
+	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756954509; a=rsa-sha256;
+	cv=none;
+	b=VYMogcGtEZ7z9dWm5E4OvChZkqnUnnF2isduYQPNW/PpdgAEhKb028HY3liYQl5BkczT9G
+	bvxUHWMFWlDk6kxV3rhFwjztGCXLR1S9WjPLNoaTwcVuHLZK2dmZHKCMxbzhk3gb2cm3XX
+	eG5I3oAQJqC5nDDgEUnJ2ORga8j2bEQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JmjFlbDE;
+	spf=pass (imf26.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1756954332;
+	s=arc-20220608; t=1756954509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+mYOj5URupG9CJcSDx0w4kw+gJPvykQGLePY0//CXks=;
-	b=nPun2zqKUPlOpCa4YFSJFmfwB64c0TRjlhOOMQRPzWTkszVmSUw51bFuRCb6D48W02QCjT
-	1dMBgvpdl6SnpZ2aLbY0uAhivE0e6aT0lPDwPZoZJYkyqiUAk5RB+BDnmQLyi/zZhCbasj
-	J/AtDVk/9aGjaq1htieMyWzIkxZIRNQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zxkkfcvk;
-	spf=pass (imf04.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1756954332; a=rsa-sha256;
-	cv=none;
-	b=4e8ulEfeJrVb27+forZwrmG4d5483/ySXBA5bvOnT2CXsyYC6xNDcIhTRLdj31N5GGdkXi
-	OfjrzJD9EozoQDvpDw1GnF+f1R4jwcKG3Ppy+fqdW8B/RIJa1HVTid0I/bAkC0VHfuwbvo
-	+yGNwbIjkP26lHA+dd1NBKShcFfAV1M=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7829C60193;
-	Thu,  4 Sep 2025 02:52:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200EEC4CEE7;
-	Thu,  4 Sep 2025 02:52:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756954331;
-	bh=0i5DJbuZmuI9Lfzk2IUVqKWbuk8qk3AIewdepbN4OQY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zxkkfcvk+tOhmVcWR5704KzmEJJAw2+QiJdUGDQ0qOTc/Ok3zL8ufJJpxoXJw+wkN
-	 ylAbLjmwmdPOtKaTnNRx670rpJSeg9F1UCF4Q5veef5CvOQD1panwvLubGD+5mKbOF
-	 8x5/Btpxxs1AFmRFRd6Am8FbwEKGTOh8E1yx8YittKk22VQFZia+1/3pz10YtBJPo7
-	 yyfjuDDRDlymAbsQfSnUtbCNxH1b+GGRp1JnPcGlXrWfEY3oqmBmloiwkk07K7TRxq
-	 jorh4ovJ7RK0EGwdUKmlf5dRu/PPiHiRsmTV00kE9t51bdtsZa7++LDANmt/adK8UH
-	 V5Z9Dg9wATfBQ==
-Date: Wed, 3 Sep 2025 19:52:10 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Brian Foster <bfoster@redhat.com>, linux-mm@kvack.org,
-	brauner@kernel.org, willy@infradead.org, jack@suse.cz,
-	hch@infradead.org, jlayton@kernel.org,
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 12/12] iomap: add granular dirty and writeback
- accounting
-Message-ID: <20250904025210.GO8117@frogsfrogsfrogs>
-References: <20250829233942.3607248-1-joannelkoong@gmail.com>
- <20250829233942.3607248-13-joannelkoong@gmail.com>
- <20250902234604.GC1587915@frogsfrogsfrogs>
- <aLiNYdLaMIslxySo@bfoster>
- <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
+	bh=BFGsvyfGlZeRUoo142qkd9fYdJJZqaobhSbYex4lato=;
+	b=C+01M6twKR+7hBBuHqcNiOpfythYagvJDB3kJqUYDTKq2YtkWe1Q5XVrZImMjh35d2o0gS
+	t5y+DXRx9KmOjafyktAlGHSqHyuyi/rxVYhO2OvJp2aBN6P7gjPOIydBqMUB2rdaC/dzn0
+	6HEcgDDkbHipNHzZZFFKVLxczjJI1Rk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756954509;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BFGsvyfGlZeRUoo142qkd9fYdJJZqaobhSbYex4lato=;
+	b=JmjFlbDEySnDZF9YYVFoOFsbAnywXyUrwr9ftux3re5h2DGbfn6MZgidrMB9J5mEkuH3a5
+	IS0imKgGH5sQSOUPgoI/Aab6FSjeOYQO40zVe6YuCdo3BXn/IMRyRMPqWlNg9RxkACmkBj
+	OBjkbsLqBUyUar1PFOCdGvGA+m/B/l0=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-vLQg8eUjMRqs5lICaBeAEA-1; Wed, 03 Sep 2025 22:55:07 -0400
+X-MC-Unique: vLQg8eUjMRqs5lICaBeAEA-1
+X-Mimecast-MFC-AGG-ID: vLQg8eUjMRqs5lICaBeAEA_1756954507
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-722866d8e9fso9010287b3.2
+        for <linux-mm@kvack.org>; Wed, 03 Sep 2025 19:55:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756954507; x=1757559307;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BFGsvyfGlZeRUoo142qkd9fYdJJZqaobhSbYex4lato=;
+        b=v5TmwFxZtZlmv0rICfFZoeUVlf6JsFtZsRhXyMxvdD/h+eqekvD/p0xXcoG4tedwy5
+         4x1nPPOqI5t4SbHbI3rqKRTh1o2xAF9HoNyIBV6IhihMdQR9M18pKBmjoJHbsrudz+WC
+         ZFCBVVUrnAVOSgohtv3u1FQJJnaIQHjwt2wP1faGWEPUbl9Z47Agk3YUM/37VOY3SNOc
+         kuJtPNjgai+3sFbS45UrkUPp5CMzSsGAi5cmtT/1UO2vYM8HDCFNzArAI+LWx2lauW9B
+         gkVr8/8XeHKG8/YvbEhwvjXFfxTM5dJK0gJqNGs9jPdK30/T1ODGNBm3G8LyO5f89pfn
+         onyw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3NbZk8y48dOvBktvxfh3SrEvLNXcUAu5cH/Tvlw2XDL9TtO8bpkaTsSk1LNSEVcB2oRy9Pc1+BA==@kvack.org
+X-Gm-Message-State: AOJu0YwbvepsZ7KQlWo5bfcv6R/XF0gRhsgm6OanPVVHPQetWcXtATD0
+	lNxieaDmlyzmFs+vd4Irbp90BuktfBTZKuc04fyz0y3QQfWMTEBrGKdtpJGT6RgHyep8AMkZqwV
+	dvlmEIBGm/fCowV9jRA85e73GFEn1sN7WCnEGqsQA0z+BpYCbPIpV8SlqtX+yjqcKHmYqAqb+1G
+	sRXi4whB5ra5SE6LCE+T65herixqI=
+X-Gm-Gg: ASbGncuSh+oRUeH2UZiZrisF6lGpTROKJT1zz6RT7HiYyeNic6uP/31sqPF6I+3kr5V
+	zbLmL+6T16BNj6/sfZ3cIaMVMEDylsbGDxMYa+OqRzF1uNjJ30Aibp3Mm4dbS7miz2CzYfH8HC5
+	JgkFWY4OqPOLLezyBN5HGmxoZd2mQB6dSspkI=
+X-Received: by 2002:a05:690e:2483:b0:5fc:aef:28c9 with SMTP id 956f58d0204a3-601782d5d5dmr1244612d50.29.1756954506645;
+        Wed, 03 Sep 2025 19:55:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDp5KBBiAm/A14c1UZ2x88hWB4XMoRs9mNoQ299w19LQV6LRXEBDT8MMPS9G/48qZ5qMyz3tFyTQ/kB1gAxKA=
+X-Received: by 2002:a05:690e:2483:b0:5fc:aef:28c9 with SMTP id
+ 956f58d0204a3-601782d5d5dmr1244576d50.29.1756954506194; Wed, 03 Sep 2025
+ 19:55:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
-X-Rspamd-Queue-Id: 6490140003
+References: <20250819134205.622806-1-npache@redhat.com> <0d9c6088-536b-4d7a-8f75-9be5f0faa86f@lucifer.local>
+ <CAA1CXcCqhFoGBvFK-ox2sJw7QHaFt+-Lw09BDYsAGKg4qc8nSw@mail.gmail.com>
+ <CAA1CXcAXTL811VJxqyL18CUw8FNek6ibPr6pKJ_7rfGn-ZU-1A@mail.gmail.com>
+ <5bea5efa-2efc-4c01-8aa1-a8711482153c@lucifer.local> <CAA1CXcBDq9PucQdfQRh1iqJLPB6Jn6mNy28v_AuHWb9kz1gpqQ@mail.gmail.com>
+ <d110a84a-a827-48b4-91c5-67cec3e92874@lucifer.local> <95012dfc-d82d-4ae2-b4cd-1e8dcf15e44b@redhat.com>
+ <bdbb5168-7657-4f11-a42d-b75cce7e0bca@lucifer.local> <e34e1ffe-c377-4c9a-b28b-ca873f3620ac@redhat.com>
+ <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com> <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
+ <2a141eef-46e2-46e1-9b0f-066ec537600d@linux.alibaba.com> <f34b5fcb-6a97-4d97-86a8-906083b53be6@redhat.com>
+ <eb02c281-6d41-44af-8eaf-8ffc29153a3a@linux.alibaba.com> <286e2cb3-6beb-4d21-b28a-2f99bb2f759b@redhat.com>
+ <17075d6a-a209-4636-ae42-2f8944aea745@gmail.com> <287f3b64-bc34-48d9-9778-c519260c3dba@redhat.com>
+ <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
+In-Reply-To: <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 3 Sep 2025 20:54:39 -0600
+X-Gm-Features: Ac12FXyZ7Om70-q7zqgNTiGl13FCHecHMQ3x9cRnHFwQsUK8x6vVkC5jouQ4XXQ
+Message-ID: <CAA1CXcCMPFqiiTi7hfVhhEvHs4Mddiktvpmb7dMe4coLDF0bgg@mail.gmail.com>
+Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Dev Jain <dev.jain@arm.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org, 
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
+	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, 
+	peterx@redhat.com, wangkefeng.wang@huawei.com, sunnanyong@huawei.com, 
+	vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com, 
+	yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com, 
+	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
+	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
+	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
+	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
+	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 41CHiYIO_cwzJ0Hqr_cdSqfK2A-nQ9RTWAI8ymtBWQ8_1756954507
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BD1F8140003
+X-Stat-Signature: 4jxune4wf3ydbfwd1di7xeoy5b7qo3pp
 X-Rspam-User: 
-X-Stat-Signature: h1jy4k4bay9pmuahmfkma6rxrmbsyuzz
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1756954332-682567
-X-HE-Meta: U2FsdGVkX1/ftkVh41XZkJbu85dNoCuaAzmnTkk6orhLH2FWtWUSefqVcBrUdoATzpOCUsOy8bL/E5d0ONxYLSIyYuthSdUIyHTS9UZCtjHlEuPs2D+PDHSAjzVdKA5CkoHeoENWnSc8DTHIIyPVMT7xOg2kTxr+Kjx20tUBBdFYiiN/d76vGnOOBCzLBOFkeoXJA1s6Jf15xSpvi1QQ0GqPQdbVHm16++9E8PWGs9MA/H1W3GZ1uPZppwwqbaJCTIsIbJje7kSuna/QRnE3itPIb29ZX1uiyry7QXOAuN/jwmKBBh29esmsX7X2afNvjD3fqZsp7cozNk8Hj+gSDVFe8dkQBCnxmHoK2AKxYy8jaFxOhYHEeBYDiwiVgWxzLOl0TFnPWyFW84lLqrNRwaz+kVDCu+hkfXzzimYeyHo+x+4tGghYCqnnGTJlL0UcSvKTBGEi+dNRs0JE12Vl0kme08LDJyyM4a/3TmZ1KZmX/slBx9DcZBTPbhtpHYgoyJhzQ8ntIXWqh2kB5qf74yoVEorfVpzE+XyMcR+Nfs3+st2gfs7KNwG4fGtUH7WEJjS5yB0GAx1FgER/+StnNn+Gf0I3dOovtux/+leKxHp66ZMtBNfGkODH1ixl523kfj3uWajVnDcJRZgFs9KZ8j1SuPzW/yGQ0Ce8qg5zSe+3a5dUAmEnSn7yr2P72wFIytNC9FQRrwQflOMFgdxp0QGlnNPFab0DaNEgA4BS2sY9fYqm/CCiZ22rZsssWwPwpid4qn1fheKWs0wFPiW9dX4DbkKI67eZDPb0FxCcATHF757D+dQhBTAxUCukLI/+r3UgJIOYi1qWaZZKYibVYZo0Q8oEsFWdMNntGY7J/GlceIkr898V75qdRYjtF/9fyhUOsLN24rAxUUV0vC8ZMqtLEOoYNOW8dEArmYeOyDiHQbRflYh9G/Gh8l4/WeEmBaqbT/JSawRKk2sP8JD
- pIFz03dx
- v7yuS3Qc8ny0NhaYWhH6ueZaNbeiVG6gRhr1J5v5/cEFMeR1MLNTXT1F22CKhuyzOPCznyOTLhAgYnxly6QjW9RuYjw7sF8NY8q/JnJCVu5XrlSPXts+iScyBUjn6maUdeZZdb+JSYPiPg7JyDJkySSOj3L9K7TdQ8mVHioaVQBAROLIgMxfeQXazlXZvWyIEu+F/v4DUq1l54wwbRBZTAGRyngaS7oaZCgDgE3W9xse4axupVI8tC1yfcgdv5abhi/QH3pvA/NhtgQzdmB0P5PtfvaDv8q+1xx7j3qQXhKwbDEdolKwWOV4u3Ry4xnfKgpKt
+X-HE-Tag: 1756954509-182119
+X-HE-Meta: U2FsdGVkX1+NUKtA/8BDZRD7LCP9OQ1hekiPLqRwweHX3vFD59b29w5VV+xR2N5zefSEss/zoUJ56as7JgVjDPZ8K2ejLU2FdjiKEGdBmiofEhANZUrPPzIw/PuZhsi9q6NmT5r+8S1UFlcCv41K26Wptl+0/X7ZtxJIQQ1Cam57usVuDuU/BeFscxclHDHLYGtrCit+SMORsysKnOb6ud7tyTitao4ZSIFunQPltPYA0+FeRSM2FWGRQUcfBmbgtANvrGRgubRcW1gV/4ku9cP0ALwzwLYhXqqfZMXgY/kFyA4ZeQEYeDJem6+7kpnvsAAgpW0V1ZwpHg4vz8PE+lvLRckPjxEB21B2Rf6wkJPMBCvtX0HVpfPIRFJKMfGYyHCm42UVghYrRZpp217i7LE9BRzaMQ/PNhAOOwxCAD/vGs69b9TEE1OIL2pCiGcpXU5tRx3gNxGHiA+BAQpwdZ4enekwxJ5Zqe8hnhtmjkmnWEK4+xFdTb318NNAcEE4Vbbtcjn1jENZFs+tCWGKPNSk1UxuRDNZNQBoOluSyFMzfmUwPlFQDB7zKhVL9UFm+Dxob/HS8jONH9KQwT701DiIZiz7J8rLnvGDWnZ0co8QpxArO7iP5n5Y0tU5BC7csrTYi4lFtcjAhITri3y9qK4W3rfC94UGMIlcWWqGgEFHUTWTcjZWlYxb1WSSApX2REh9DGQ9nLgsdYsy7XU3haY9HoJH+PoZfZzC7r2zB9x4ST+2HYNTm5Z8gBXZXD155GrpFKjEXpdv29LJ/UzFz7kVO3AfgorMxeIZ0pBaQFXsaPQAoOgvAmdg6M3EGJE21+1htfebjTVvAQHDo4NkhBDj0qt7ZyD5vslpUaD5DjcxDtIMnYwxJ8Eu5SNWJzz1SiHXKTDaLnihGNmFPvANKKucepxDn9wZySxK2jILZv2UvWpr/vm8ruJpMOVMSElMwVZBQ5ZKyjJoSZHrZoj
+ Rp8YvA69
+ 5ywTkesXCNAGBssE1/CuEC4AX5TrsfQjuHpIDY733ogfUo2wvlvnIt6emFJoJNDWHUVeMCpXpy8NFVWNlmiEAgSDCPi5pbAyBkW/9C5EVDvsbUcUaUya29nUajMkZ3Ci+R1fg+0Lm99ZP1A5ORtwuEpBeNFa74PCFq04Hp1qCKDOFhet6SSUrSVkYnQeI/0nuo88stXM6hqCYNOP3JqU50lnxv8qDDACkZrpRbrGc/Ei5uCouR8xj4PVFbs76Tesh9ojASImLWPYTyVqjtNST48r3VazBo45yb9/GXoXuPVb6VSSuoW7HwdQgblfkCKIbYynRhWAnRQaepdTsIF2CGFoXiTlwwhoNhsZx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,168 +148,227 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 05:35:51PM -0700, Joanne Koong wrote:
-> On Wed, Sep 3, 2025 at 11:44 AM Brian Foster <bfoster@redhat.com> wrote:
+On Tue, Sep 2, 2025 at 2:23=E2=80=AFPM Usama Arif <usamaarif642@gmail.com> =
+wrote:
+>
+>
+>
+> On 02/09/2025 12:03, David Hildenbrand wrote:
+> > On 02.09.25 12:34, Usama Arif wrote:
+> >>
+> >>
+> >> On 02/09/2025 10:03, David Hildenbrand wrote:
+> >>> On 02.09.25 04:28, Baolin Wang wrote:
+> >>>>
+> >>>>
+> >>>> On 2025/9/2 00:46, David Hildenbrand wrote:
+> >>>>> On 29.08.25 03:55, Baolin Wang wrote:
+> >>>>>>
+> >>>>>>
+> >>>>>> On 2025/8/28 18:48, Dev Jain wrote:
+> >>>>>>>
+> >>>>>>> On 28/08/25 3:16 pm, Baolin Wang wrote:
+> >>>>>>>> (Sorry for chiming in late)
+> >>>>>>>>
+> >>>>>>>> On 2025/8/22 22:10, David Hildenbrand wrote:
+> >>>>>>>>>>> Once could also easily support the value 255 (HPAGE_PMD_NR / =
+2- 1),
+> >>>>>>>>>>> but not sure
+> >>>>>>>>>>> if we have to add that for now.
+> >>>>>>>>>>
+> >>>>>>>>>> Yeah not so sure about this, this is a 'just have to know' too=
+, and
+> >>>>>>>>>> yes you
+> >>>>>>>>>> might add it to the docs, but people are going to be mightily
+> >>>>>>>>>> confused, esp if
+> >>>>>>>>>> it's a calculated value.
+> >>>>>>>>>>
+> >>>>>>>>>> I don't see any other way around having a separate tunable if =
+we
+> >>>>>>>>>> don't just have
+> >>>>>>>>>> something VERY simple like on/off.
+> >>>>>>>>>
+> >>>>>>>>> Yeah, not advocating that we add support for other values than =
+0/511,
+> >>>>>>>>> really.
+> >>>>>>>>>
+> >>>>>>>>>>
+> >>>>>>>>>> Also the mentioned issue sounds like something that needs to b=
+e
+> >>>>>>>>>> fixed elsewhere
+> >>>>>>>>>> honestly in the algorithm used to figure out mTHP ranges (I ma=
+y be
+> >>>>>>>>>> wrong - and
+> >>>>>>>>>> happy to stand corrected if this is somehow inherent, but real=
+lly
+> >>>>>>>>>> feels that
+> >>>>>>>>>> way).
+> >>>>>>>>>
+> >>>>>>>>> I think the creep is unavoidable for certain values.
+> >>>>>>>>>
+> >>>>>>>>> If you have the first two pages of a PMD area populated, and yo=
+u
+> >>>>>>>>> allow for at least half of the #PTEs to be non/zero, you'd coll=
+apse
+> >>>>>>>>> first a
+> >>>>>>>>> order-2 folio, then and order-3 ... until you reached PMD order=
+.
+> >>>>>>>>>
+> >>>>>>>>> So for now we really should just support 0 / 511 to say "don't
+> >>>>>>>>> collapse if there are holes" vs. "always collapse if there is a=
+t
+> >>>>>>>>> least one pte used".
+> >>>>>>>>
+> >>>>>>>> If we only allow setting 0 or 511, as Nico mentioned before, "At=
+ 511,
+> >>>>>>>> no mTHP collapses would ever occur anyway, unless you have 2MB
+> >>>>>>>> disabled and other mTHP sizes enabled. Technically, at 511, only=
+ the
+> >>>>>>>> highest enabled order would ever be collapsed."
+> >>>>>>> I didn't understand this statement. At 511, mTHP collapses will o=
+ccur if
+> >>>>>>> khugepaged cannot get a PMD folio. Our goal is to collapse to the
+> >>>>>>> highest order folio.
+> >>>>>>
+> >>>>>> Yes, I=E2=80=99m not saying that it=E2=80=99s incorrect behavior w=
+hen set to 511. What I
+> >>>>>> mean is, as in the example I gave below, users may only want to al=
+low a
+> >>>>>> large order collapse when the number of present PTEs reaches half =
+of the
+> >>>>>> large folio, in order to avoid RSS bloat.
+> >>>>>
+> >>>>> How do these users control allocation at fault time where this para=
+meter
+> >>>>> is completely ignored?
+> >>>>
+> >>>> Sorry, I did not get your point. Why does the 'max_pte_none' need to
+> >>>> control allocation at fault time? Could you be more specific? Thanks=
+.
+> >>>
+> >>> The comment over khugepaged_max_ptes_none gives a hint:
+> >>>
+> >>> /*
+> >>>   * default collapse hugepages if there is at least one pte mapped li=
+ke
+> >>>   * it would have happened if the vma was large enough during page
+> >>>   * fault.
+> >>>   *
+> >>>   * Note that these are only respected if collapse was initiated by k=
+hugepaged.
+> >>>   */
+> >>>
+> >>> In the common case (for anything that really cares about RSS bloat) y=
+ou will just a
+> >>> get a THP during page fault and consequently RSS bloat.
+> >>>
+> >>> As raised in my other reply, the only documented reason to set max_pt=
+es_none=3D0 seems
+> >>> to be when an application later (after once possibly getting a THP al=
+ready during
+> >>> page faults) did some MADV_DONTNEED and wants to control the usage of=
+ THPs itself using
+> >>> MADV_COLLAPSE.
+> >>>
+> >>> It's a questionable use case, that already got more problematic with =
+mTHP and page
+> >>> table reclaim.
+> >>>
+> >>> Let me explain:
+> >>>
+> >>> Before mTHP, if someone would MADV_DONTNEED (resulting in
+> >>> a page table with at least one pte_none entry), there would have been=
+ no way we would
+> >>> get memory over-allocated afterwards with max_ptes_none=3D0.
+> >>>
+> >>> (1) Page faults would spot "there is a page table" and just fallback =
+to order-0 pages.
+> >>> (2) khugepaged was told to not collapse through max_ptes_none=3D0.
+> >>>
+> >>> But now:
+> >>>
+> >>> (A) With mTHP during page-faults, we can just end up over-allocating =
+memory in such
+> >>>      an area again: page faults will simply spot a bunch of pte_nones=
+ around the fault area
+> >>>      and install an mTHP.
+> >>>
+> >>> (B) With page table reclaim (when zapping all PTEs in a table at once=
+), we will reclaim the
+> >>>      page table. The next page fault will just try installing a PMD T=
+HP again, because there is
+> >>>      no PTE table anymore.
+> >>>
+> >>> So I question the utility of max_ptes_none. If you can't tame page fa=
+ults, then there is only
+> >>> limited sense in taming khugepaged. I think there is vale in setting =
+max_ptes_none=3D0 for some
+> >>> corner cases, but I am yet to learn why max_ptes_none=3D123 would mak=
+e any sense.
+> >>>
+> >>>
+> >>
+> >> For PMD mapped THPs with THP shrinker, this has changed. You can basic=
+ally tame pagefaults, as when you encounter
+> >> memory pressure, the shrinker kicks in if the value is less than HPAGE=
+_PMD_NR -1 (i.e. 511 for x86), and
+> >> will break down those hugepages and free up zero-filled memory.
 > >
-> > On Tue, Sep 02, 2025 at 04:46:04PM -0700, Darrick J. Wong wrote:
-> > > On Fri, Aug 29, 2025 at 04:39:42PM -0700, Joanne Koong wrote:
-> > > > Add granular dirty and writeback accounting for large folios. These
-> > > > stats are used by the mm layer for dirty balancing and throttling.
-> > > > Having granular dirty and writeback accounting helps prevent
-> > > > over-aggressive balancing and throttling.
-> > > >
-> > > > There are 4 places in iomap this commit affects:
-> > > > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
-> > > > b) writeback_iter with setting the wbc->no_stats_accounting bit and
-> > > > calling clear_dirty_for_io_stats()
-> > > > c) starting writeback, which now calls __folio_start_writeback()
-> > > > d) ending writeback, which now calls folio_end_writeback_pages()
-> > > >
-> > > > This relies on using the ifs->state dirty bitmap to track dirty pages in
-> > > > the folio. As such, this can only be utilized on filesystems where the
-> > > > block size >= PAGE_SIZE.
-> > >
-> > > Er... is this statement correct?  I thought that you wanted the granular
-> > > dirty page accounting when it's possible that individual sub-pages of a
-> > > folio could be dirty.
-> > >
-> > > If i_blocksize >= PAGE_SIZE, then we'll have set the min folio order and
-> > > there will be exactly one (large) folio for a single fsblock.  Writeback
-> 
-> Oh interesting, this is the part I'm confused about. With i_blocksize
-> >= PAGE_SIZE, isn't there still the situation where the folio itself
-> could be a lot larger, like 1MB?
-
-Yes, that's quite possible.  IIRC you can get 2MB folios for 8k
-fsblocks.
-
->                                  That's what I've been seeing on fuse
-> where "blocksize" == PAGE_SIZE == 4096. I see that xfs sets the min
-> folio order through mapping_set_folio_min_order() but I'm not seeing
-> how that ensures "there will be exactly one large folio for a single
-> fsblock"?
-
-I misspoke -- should have said "there will be no more than one (large)
-folio for a single fsblock".  Sorry about the confusion; my old brain is
-still stuck in 2015 sometimes.
-
->           My understanding is that that only ensures the folio is at
-> least the size of the fsblock but that the folio size can be larger
-> than that too. Am I understanding this incorrectly?
-
-Nope, your understanding is correct. :)
-
-> > > must happen in units of fsblocks, so there's no point in doing the extra
-> > > accounting calculations if there's only one fsblock.
-> > >
-> > > Waitaminute, I think the logic to decide if you're going to use the
-> > > granular accounting is:
-> > >
-> > >       (folio_size > PAGE_SIZE && folio_size > i_blocksize)
-> > >
-> 
-> Yeah, you're right about this - I had used "ifs && i_blocksize >=
-> PAGE_SIZE" as the check, which translates to "i_blocks_per_folio > 1
-> && i_block_size >= PAGE_SIZE", which in effect does the same thing as
-> what you wrote but has the additional (and now I'm realizing,
-> unnecessary) stipulation that block_size can't be less than PAGE_SIZE.
-
-Oh!  Yes, that's right, they /are/ equivalent!
-
-> > > Hrm?
-> > >
+> > You are not really taming page faults, though, you are undoing what pag=
+e faults might have messed up :)
 > >
-> > I'm also a little confused why this needs to be restricted to blocksize
-> > gte PAGE_SIZE. The lower level helpers all seem to be managing block
-> > ranges, and then apparently just want to be able to use that directly as
-> > a page count (for accounting purposes).
+> > I have seen in our prod workloads where
+> >> the memory usage and THP usage can spike (usually when the workload st=
+arts), but with memory pressure,
+> >> the memory usage is lower compared to with max_ptes_none =3D 511, whil=
+e still still keeping the benefits
+> >> of THPs like lower TLB misses.
 > >
-> > Is there any reason the lower level functions couldn't return block
-> > units, then the higher level code can use a blocks_per_page or some such
-> > to translate that to a base page count..? As Darrick points out I assume
-> > you'd want to shortcut the folio_nr_pages() == 1 case to use a min page
-> > count of 1, but otherwise ISTM that would allow this to work with
-> > configs like 64k pagesize and 4k blocks as well. Am I missing something?
+> > Thanks for raising that: I think the current behavior is in place such =
+that you don't bounce back-and-forth between khugepaged collapse and shrink=
+er-split.
 > >
-> 
-> No, I don't think you're missing anything, it should have been done
-> like this in the first place.
-> 
-> > Brian
+>
+> Yes, both collapse and shrinker split hinge on max_ptes_none to prevent o=
+ne of these things thrashing the effect of the other.
+I believe with mTHP support in khugepaged, the max_ptes_none value in
+the shrinker must also leverage the 'order' scaling to properly
+prevent thrashing.
+I've been testing a patch for this that I might include in the V11.
+>
+> > There are likely other ways to achieve that, when we have in mind that =
+the thp shrinker will install zero pages and max_ptes_none includes
+> > zero pages.
 > >
-> > > > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> > > > ---
-> > > >  fs/iomap/buffered-io.c | 140 ++++++++++++++++++++++++++++++++++++++---
-> > > >  1 file changed, 132 insertions(+), 8 deletions(-)
-> > > >
-> > > > diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> > > > index 4f021dcaaffe..bf33a5361a39 100644
-> > > > --- a/fs/iomap/buffered-io.c
-> > > > +++ b/fs/iomap/buffered-io.c
-> > > > @@ -20,6 +20,8 @@ struct iomap_folio_state {
-> > > >     spinlock_t              state_lock;
-> > > >     unsigned int            read_bytes_pending;
-> > > >     atomic_t                write_bytes_pending;
-> > > > +   /* number of pages being currently written back */
-> > > > +   unsigned                nr_pages_writeback;
-> > > >
-> > > >     /*
-> > > >      * Each block has two bits in this bitmap:
-> > > > @@ -139,6 +141,29 @@ static unsigned ifs_next_clean_block(struct folio *folio,
-> > > >             blks + start_blk) - blks;
-> > > >  }
-> > > >
-> > > > +static unsigned ifs_count_dirty_pages(struct folio *folio)
-> > > > +{
-> > > > +   struct inode *inode = folio->mapping->host;
-> > > > +   unsigned block_size = i_blocksize(inode);
-> > > > +   unsigned start_blk, end_blk;
-> > > > +   unsigned blks, nblks = 0;
-> > > > +
-> > > > +   start_blk = 0;
-> > > > +   blks = i_blocks_per_folio(inode, folio);
-> > > > +   end_blk = (i_size_read(inode) - 1) >> inode->i_blkbits;
-> > > > +   end_blk = min(end_blk, i_blocks_per_folio(inode, folio) - 1);
-> > > > +
-> > > > +   while (start_blk <= end_blk) {
-> > > > +           start_blk = ifs_next_dirty_block(folio, start_blk, end_blk);
-> > > > +           if (start_blk > end_blk)
-> > > > +                   break;
-> > >
-> > > Use your new helper?
-> > >
-> > >               nblks = ifs_next_clean_block(folio, start_blk + 1,
-> > >                               end_blk) - start_blk?
-> > > > +           nblks++;
-> > > > +           start_blk++;
-> > > > +   }
-> > > > +
-> > > > +   return nblks * (block_size >> PAGE_SHIFT);
-> > >
-> > > I think this returns the number of dirty basepages in a given large
-> > > folio?  If that's the case then shouldn't this return long, like
-> > > folio_nr_pages does?
-> > >
-> > > > +}
-> > > > +
-> > > >  static unsigned ifs_find_dirty_range(struct folio *folio,
-> > > >             struct iomap_folio_state *ifs, u64 *range_start, u64 range_end)
-> > > >  {
-> > > > @@ -220,6 +245,58 @@ static void iomap_set_range_dirty(struct folio *folio, size_t off, size_t len)
-> > > >             ifs_set_range_dirty(folio, ifs, off, len);
-> > > >  }
-> > > >
-> > > > +static long iomap_get_range_newly_dirtied(struct folio *folio, loff_t pos,
-> > > > +           unsigned len)
-> > >
-> > > iomap_count_clean_pages() ?
-> 
-> Nice, a much clearer name.
-> 
-> I'll make the suggestions you listed above too, thanks for the pointers.
-> 
-> Thanks for taking a look at this, Darrick and Brian!
-> > >
-> > > --D
-> > >
+> >>
+> >> I do agree that the value of max_ptes_none is magical and different wo=
+rkloads can react very differently
+> >> to it. The relationship is definitely not linear. i.e. if I use max_pt=
+es_none =3D 256, it does not mean
+> >> that the memory regression of using THP=3Dalways vs THP=3Dmadvise is h=
+alved.
+> >
+> > To which value would you set it? Just 510? 0?
+> >
+>
+> There are some very large workloads in the meta fleet that I experimented=
+ with and found that having
+> a small value works out. I experimented with 0, 51 (10%) and 256 (50%). 5=
+1 was found to be an optimal
+> comprimise in terms of application metrics improving, having an acceptabl=
+e amount of memory regression and
+> improved system level metrics (lower TLB misses, lower page faults). I am=
+ sure there was a better value out
+> there for these workloads, but not possible to experiment with every valu=
+e.
+>
+> In terms of wider rollout across the fleet, we are going to target 0 (or =
+a very very small value)
+> when moving from THP=3Dmadvise to always. Mainly because it is the least =
+likely to cause a memory regression as
+> THP shrinker will deal with page faults faulting in mostly zero-filled pa=
+ges and khugepaged wont collapse
+> pages that are dominated by 4K zero-filled chunks.
+>
+
 
