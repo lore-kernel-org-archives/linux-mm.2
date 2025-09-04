@@ -4,85 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95088CA1002
-	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 23:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9873CA1002
+	for <linux-mm@archiver.kernel.org>; Thu,  4 Sep 2025 23:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F39A86B0006; Thu,  4 Sep 2025 19:54:14 -0400 (EDT)
+	id 414686B0011; Thu,  4 Sep 2025 19:55:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE3956B0007; Thu,  4 Sep 2025 19:54:14 -0400 (EDT)
+	id 3EABD6B0012; Thu,  4 Sep 2025 19:55:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF97A6B000C; Thu,  4 Sep 2025 19:54:14 -0400 (EDT)
+	id 327BC6B0022; Thu,  4 Sep 2025 19:55:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CB45A6B0006
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:54:14 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7C795861EA
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:54:14 +0000 (UTC)
-X-FDA: 83853224028.03.17AF88D
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C39F31A0009
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:54:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nOft/nxG";
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 21E3F6B0011
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 19:55:48 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACDCE16045A
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:55:47 +0000 (UTC)
+X-FDA: 83853227934.21.77A46DE
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E442F40007
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:55:45 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YjLypLiX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757030146; a=rsa-sha256;
+	cv=none;
+	b=sQP+3g5BE5N0vinDBMHCX33ecdAcoN9R5krSBOhschGzfzmhewbnBB9VLYX9pxMaYeYJhX
+	/ED14N23+AK0yfGm+9WT04dj+3Xthju6uZBgZgo1RRbhbsy3fhZffcLGrxPPl52GNWX8Vm
+	Rmg/GiPSXTa1uKQVpu+cL+gJBE8bPoA=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YjLypLiX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757030052;
+	s=arc-20220608; t=1757030146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I2nHB0+fgG2h/YQBsdZgUFZD9bhaDf/fBMnAYUZmncQ=;
-	b=Zsj3tpgcXMGrYxAmTCiHwfwry7xytJMGgZ6ccL0wPJA01ikDkE0CPXP9+jz+JfaYcIrLE+
-	YSKLhguRbjjRwfy28YifGVPL3/C7WcPHYhmAXyrWGGG50N2lsCGtiluoY6OAZXztLoEZEp
-	0skF1zsQM8x/8NKoEKjYd7hY2X3M4ps=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="nOft/nxG";
-	spf=pass (imf19.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757030053; a=rsa-sha256;
-	cv=none;
-	b=oH0132jDynCdsTRE5m7+wPishWgKqgD3ta/b6zpKgYTGmX6/LdZYKzEneio8HDMPmJ5dlb
-	bBAuF4Hl3BvvOI1UQjSHtMkm3JqdXEULU6+2rlVXePA7IcnSWnQxw2icB+Qe2T+ulaxazf
-	OY424JhmcFlBJyRLrjBm+ofEg7vQA4Q=
-Date: Thu, 4 Sep 2025 16:53:55 -0700
+	bh=4Pr14zv5u5Jg6s/TCR/mvY66VjHG8LpXuYMxg29uTMM=;
+	b=mu4/7brKDM7H1DJitZv/lI63e7BIECON6gz5jpK8YTCZ8YE68MPiIM2ogvF3ktxqPZ4KaP
+	CJZdDwZ9Kmz+0odWylEKGd7Cdu8S/bNOEvKCnipB32iod4Z/nxeT2fsfER1mdUan9uloK7
+	ffWQe5a1M5vtX11CwiJihs/I+fjjUhU=
+Date: Thu, 4 Sep 2025 16:55:38 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757030051;
+	t=1757030144;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I2nHB0+fgG2h/YQBsdZgUFZD9bhaDf/fBMnAYUZmncQ=;
-	b=nOft/nxG9IV86fBSha/GcaPySgvaLaSunrmXTot9uMw0gpH9yf23OW+acHtm7Jdl4Y7P2u
-	LkNznH4dPpljYeGzYUBS3OFjT2YEKIOG8lSXqrs1Rn9JXfHUg+mtRdWk7lYXbnWvRAeNgr
-	mmqQfMglq1NCvSXu2X2jVVvccqdMI/Q=
+	bh=4Pr14zv5u5Jg6s/TCR/mvY66VjHG8LpXuYMxg29uTMM=;
+	b=YjLypLiXD6Ir2BWcVk0EcnqrPhfP+qYVCFd0BIO7aArwCRf3O5lYAuHvbK8RelTuh5bvTa
+	3+YOoTZrVaKX8jWRIoUdj6YyYeEpTDCGFfI+mMnYRzHO9vrOkIQGf4HwxfQBz4eetrs0Zf
+	dDEgi9Tb2Pi8clsCkKVVeCc5kDD58eA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Yueyang Pan <pyyjason@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Vishal Moola <vishal.moola@gmail.com>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
-	kernel-team@meta.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] mm/show_mem: Add trylock while printing alloc info
-Message-ID: <4lnhlnaobt6cmhjsnhh5ul635bylwd55ha77ej3fgfhdy4k5cf@grchtd457dzc>
-References: <cover.1756897825.git.pyyjason@gmail.com>
- <4ed91296e0c595d945a38458f7a8d9611b0c1e52.1756897825.git.pyyjason@gmail.com>
+To: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
+Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] samples/cgroup: rm unused MEMCG_EVENTS macro
+Message-ID: <izkhad3p62zbja2olzuqhsgbusbq5bfam5w7wsonand6ti3foo@gcc5xqhnfaac>
+References: <20250903073100.2477-1-zhangjiao2@cmss.chinamobile.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4ed91296e0c595d945a38458f7a8d9611b0c1e52.1756897825.git.pyyjason@gmail.com>
+In-Reply-To: <20250903073100.2477-1-zhangjiao2@cmss.chinamobile.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: C39F31A0009
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E442F40007
+X-Stat-Signature: faefxagcym3tsybncob9h9repsxuniuf
 X-Rspam-User: 
-X-Stat-Signature: qg57m1oh1ejcags4c6gnewm4awfk5czb
-X-HE-Tag: 1757030052-300145
-X-HE-Meta: U2FsdGVkX199DUvU1olbQ4hkZf1iczyOav2nTg39IyRLJBxff8di3SYI4n51tER0iNaZvj6bmkpfnSKP18Rm+0TE8zMwBFupCw26PJBf6cV3JI3mWwjMWO7/KyDZbfGpFfwSIzOO/r8Tm1F9lkLzKWdrZ7ZrtRejs8mPgVU+xNxzjXEE9SqQtr3Lgu+yV3lJwtFML0IGIsGJUKYbsCssrHqKsuBTqd+kaGvS1F2NzznxGUOpDAUPmohAfTk9PYc005RchzhVxjjgS9ffpNtE1bHnTjwox7HEHH5iWq2bUBju/nV9TKeo38yq1RgFY8/d4DkWSMZOzn9e00KMdLAxE/qv1sqHfDiJO2kdSwaCFijmZI8oAZ20ojBAJlbctrgTpg5eC5sY3hT91SGzDRqlYS72pMqIFIXSaAzIGbsGTkH2nFTcPcOWA9zII8EGUmJFPqNfLmQ/taR7f9VshWhalmevR095bBUudvesuTPV/5+L7UJ70Rfg43oyTGWNMfzH1MO8H+dfp9H98yHLinrXHcKPOFoAdQrzExj5XPT4u/JWxAZeN7QGjhiJZ61LnEX/sG2tYcRy3xLcDDSiNU6oT9zOlU5h46XcExvigrKjDnqyddE4XFJXFFw7nmiiOjgNQInElI3oGmNthC4jTxrEEi9B3XD98QTIRvjoTxheUDmIk83lRYFAUlCpxtgT5YOf1Pb5iIAeTObLe64dIXuAvvOhYyKJmoI/CbwkShWfjMD/XRebvX+apcQAFlVbHzMf7ghgdJUBQb9Y9R+q6DQdfdvzpr8HbqrxzVblRnk6CmVW1EzhiUTL0sEqm37hmNY2EDG62OQAsIUYQo78aHe4rdkCPqy37PkF0l1XTZ4ejntc1Wcc2204qgbbpRcctbbapUzaO6vMOqlxyquIapyIkh7XfxUgYaGSr2Jwp7ukCHjnkxVPl3KGEZ+F0N8ahOtxg/LcfJ2zcVhIq6oIRfO
- By7lyGkI
- kLn0d1DSQZ9/MHb+1R15xZNlwLQynwaqv1f0wpdagpaMFgVpO9rHGdwJ4GOYPLiCwbz7JNLfnd8ORGEEldvbkUHNVpL81+sYbUrAKeMWvC75ndKyayaxsG1qaTPXmx7L0pZ2ZJHaLucCE3ktOJMH3c0jvzvnHbTGW96FeJQzd6lZfV762XcogJAAv5AXeP65XXD20EsJbM/ti44Ot1zYSTjyA8VtseDd9PDId3F7vB3ogEvq4le6iA0WlXDfy+vpYR9zS0vQDlNSJ+CrANex4KItnnpKrl8UJ5fuXfHyQeQuX/HHdsvY9ZXoK+StD9W86p7JN6Qp8JFOzeFalOYHfq0nzNJMnykEcgImH
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1757030145-76905
+X-HE-Meta: U2FsdGVkX18s3HSXHwbY7NHKxXn1xqoDu/KPUQsS+6rSWFj4/PDVB0aDbn2SaBtPz5CYTMA7TrY6g//2a9bLjCLFwhMDZ/vkt/gLtp7durwQSEW1cbPOOxPzsDqrzB/LYFRT31dYySoG5JTPperwCa3nkvEPhpu6MA/xsRpuWTehRZ0i97ksvR2OVATsTDMxYVpB19kh/Fs4qRmF17UD7gNfnf/3WvZsGjI/f0OZJw5fe0/YS4NNZFoGPj9KtAZQhg9Cdz12QkZ0zmQIOMkoCog6k56I/VbSvk+etjunXYdrrp2KTSoQQHlLzPXyD/npQgC83O9/3j38i8NDPXf940ngzOQXxNKTcm1CBZElShld3NA51ShFSNJsFWN575Dg+7zHL/6QpOUee/e9Tj43Rdgbi2+ywv0sbCjTQJRgeZoGLVU/Qmc3Ev4Uj0EytbqptQC8OhM3mM7JB+ubICNZythBpGhavRavGwlnoXUWhrkL5hpdHuC+GX/T5SfTbcMsX4lr6e0+r4nuX+2vwFIIq5ZsiX22FGkTELN7cBOx8Bs4+PcNOJUUW4Iw2Swsuxh4T7/GFbOgO27fzIsWsRdWBovkZJNLJ14YXxhHJASntqpjlvLx/1iz2N1qoc8PxQWsqOFpoaoeZT2P2jio2mkZUwGUbYraK8yPHjFk+ef9+etqYpXcEL2E1Bk5k4QdbI2it3ffotDWMZAcFPgHmjaoEtvththhmrNtsxHgfWqyr6hcz6nfXiQ2hcRfviyV4vR5kz2iEjKn/yaN+ZXkpbgFwiPHkMC22vZXaGOKer7Lmo2ZWmNiw6C3WmP2r9QUm/HB3yyy5qh1rh4SMHf/hwJbZjv4ooM+bNus7CXI2vhwS6ywY9rb2dR27vTj3itJm0CUyzDsqC/jWQK1fV953zIqx7p+UyWwY6BslzIO7yVFyuEIkVGWBfy3jcRNXysOfsND/faqWsGUVsuzuOHKR9M
+ bn48DWWV
+ Jga+vQYXqeRl6qKHXRsBWpGqOuAgme+sjuaAebDiW5Ult9gCuI7I1/3P7ENVHvyBQhNeqTY5uVVjjRDG3xZCGFn2bmuvdPVsmXNxFQyIg6q3xhuAY9mw4Iq9vTo7JhnkD8MTYd3lAk3uIRjrCtpMG2+7puY//f/0dCdkI81RJSKCFHLpNAIG12CgLxReIxCAYzbkRt3d5gGRWIFaKXc+2TZixf2IosJ36IShljigNjpxirXGhyPKNRuobcgO7Qi4DvGett5RpqhYJ6+qqaL0b4cwn1iqOA2CnaGkwIntmcHjR7eEb64m9O/ykVpDKn/x4we3BmyjbAeBtc66WzXBZa6Lj0g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,15 +88,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 03, 2025 at 04:16:14AM -0700, Yueyang Pan wrote:
-> In production, show_mem() can be called concurrently from two
-> different entities, for example one from oom_kill_process()
-> another from __alloc_pages_slowpath from another kthread. This
-> patch adds a spinlock and invokes trylock before printing out the
-> kernel alloc info in show_mem(). This way two alloc info won't
-> interleave with each other, which then makes parsing easier.
+On Wed, Sep 03, 2025 at 03:30:59PM +0800, zhangjiao2 wrote:
+> From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 > 
-> Signed-off-by: Yueyang Pan <pyyjason@gmail.com>
+> MEMCG_EVENTS is never referenced in the code. Just remove it.
+> 
+> Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
