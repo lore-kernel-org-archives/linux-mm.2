@@ -4,119 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F38FCA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 20:48:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AFABCA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 21:21:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94FE28E0006; Fri,  5 Sep 2025 16:48:55 -0400 (EDT)
+	id 529998E0006; Fri,  5 Sep 2025 17:21:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9258F8E0001; Fri,  5 Sep 2025 16:48:55 -0400 (EDT)
+	id 500F98E0001; Fri,  5 Sep 2025 17:21:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83B6D8E0006; Fri,  5 Sep 2025 16:48:55 -0400 (EDT)
+	id 43DE98E0006; Fri,  5 Sep 2025 17:21:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7336F8E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:48:55 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 16EDD139919
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 20:48:55 +0000 (UTC)
-X-FDA: 83856385830.02.4CB1A13
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 363562000C
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 20:48:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q2GSlrrF;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of yepeilin@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=yepeilin@google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 355C08E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:21:05 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D1FB5C0342
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:21:04 +0000 (UTC)
+X-FDA: 83856466848.13.189A952
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0E55914000D
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:21:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T92UJ6nl;
+	spf=pass (imf23.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757105333;
+	s=arc-20220608; t=1757107263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0GiODW3jiNFo5GcWlFYzIpqNrxA7Q2Lf72MRDCRU/DQ=;
-	b=3mEE9PsOJRA4Idl9XJcaiceTXdEwpPflxv4O1udo4EKMjGeRv8nlKa1y9xakGFLvijNR2E
-	1+0mDGn+1wZMlUb8xx4TZCMdsOeA6Otql9q2lU5pjr1OGy0UtParpCxkCp8jwU65dGBE81
-	uHeB3hIzVmCCmMn0jHv+JoeohmcJrY0=
+	bh=osQ9Lif183itocSuB65QNUmR7DDdBX3nJ25Dd19v7/A=;
+	b=RDGLzdYj9jdxSHWi61YufRvI4A+GGi6a0Hkml4ZNBfci4X1RVIvOzJwby9uUtTXmLGWkcD
+	aS/Yho0psAKnF5D16YekyNzm3gqX8f5cKd3aWn6ktX/4xswEWclMzFvVHJmFFiS2DHAfjV
+	mkZSp7WqP70xGJZB1JRlaZ04NomJk40=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q2GSlrrF;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of yepeilin@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=yepeilin@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757105333; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T92UJ6nl;
+	spf=pass (imf23.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757107263; a=rsa-sha256;
 	cv=none;
-	b=yDq46Wwt7SoDkKRiBfFkQKMcu5FujyhT/3/B5hHvGwcSrhnGZyxIytqaR3QaiS65oJKbbS
-	qfZk7OZu3pkrCocCKBZTO0C9zRI3nPoqe1TvFD5hxxXMGZeHJuEm075w236kWEwX3/l+fV
-	0N0NCr4N3RTF3cFphUWoWvnoCz3Tm2s=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-24cca557085so17305ad.1
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 13:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757105332; x=1757710132; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0GiODW3jiNFo5GcWlFYzIpqNrxA7Q2Lf72MRDCRU/DQ=;
-        b=Q2GSlrrF15XrW36mVNrQ7XdTxbwhngu3bcR6vvkDkO6lIvUY4wsAzCd2vMVYfvY1Ol
-         k4VsLWKsFd0NhnwY0WcHq+j773MZOT4+ZHTpynkUvVgIK1QPS/6ib81VgHpFAsBNgDnj
-         LKGrjiWP7OD+tuthxH1H9HHEQrOXo21mckq8BMiYmTcM2Z/QyO4AQ4sbwxgEAy/wMROx
-         WWuVhBORZs6y4dis7cYKLp6XRq2nsiYHSRH384i+As+Nsh7KKQh5t0OJqdaPCtjQiTy1
-         PBs+McYJ741af7GQ+u7z5bdI3afSLjZWltPVA+fMI++0gmUBu+kmXQ37TVNqOV3QRug7
-         v8Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757105332; x=1757710132;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0GiODW3jiNFo5GcWlFYzIpqNrxA7Q2Lf72MRDCRU/DQ=;
-        b=SF1kpDdsx60eAEegQUdiSe4rxwECDDAQ+93RnIBia9jPb4M6rRY7UKRLl1DeHOWfqZ
-         smIWg3imxtNqQViRlkT5ooOGmcnb8jYEjFh8pPqsdnm4TO82TqMz47qZU6G/vevMC7Yx
-         jt7iUib9m7tZ2jm0EztsH0ZnYtwcqkjvVDmL7syigGewenCQNeu8iST4/Q7lf9VBBCVd
-         GoZCYztNsuoKJPDAoaBMX4nHfnAJuVWMhBRdw9jsbeO+KHyAyMblsvS19gFqPCzLseyQ
-         +sWufiK7yLf2ZshZ1sxoTiyhX35zo8qOzqcV3JSxrIz7uAzJFoCM6X/4J/L5tgNImE01
-         pc3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUiFK/PwykqkTzpPu339f/pNF7AUycegRsYClIkPh8E0aI2GhPc/hn3/E7Yk00I37ULboWmBf/n5w==@kvack.org
-X-Gm-Message-State: AOJu0YxJuaL5PrHZFNVbMOYIR/rlFC9vSrZhLgLxusyvZznUvfzkGnQQ
-	3bVoHm5wDQ55TH9avCjmC3TVHp1dgk17lppR7u4Pd3c0U/OO+qzgyG3R4X9jQjcsnw==
-X-Gm-Gg: ASbGncsMyuGE0Mh6AmsDKvjNbKmuyaHTLcxsNzTli5xf5BStncJSa77T4UoTFbvPBbN
-	RwUOtkNk2s92KlB879dzw8X101hQcKgK0AtSzq5oAH785zKbxl2pjwqTXr/1wASR7QwuwjroRpN
-	R8ooLFeD4ZXqPpIYJ/594BS0Fi4/e4lE5ZyuMb3sEZtgkw6bx14EU310PuI4Pi5qgyFSQWWpddl
-	Ea3GK+reN3H+huo8yTS/FXv02Q7+iM/atdDv8izG+lWE6CukvjfsqmZjYZ95RJ+dEb0n6fkmHGO
-	bRqJ/k8wOAsylJVGPNA51NB1yr8R4UOtzR1xEOKLZIsrr+wWqUhHoux6W78Sj24OEzmJdKq0aqD
-	jXyVqg7l4spQFQPFa7oa4xsoKax+lotw12oFD+/ypfgHy1PNDImauJLPUeftvsuEjJK8=
-X-Google-Smtp-Source: AGHT+IGxaodK2oxo1/T0jE66aVjXGi/uDMun6FTCnFGDt00e/yHDWzq7NKgwd2BLevagOtIH+S35aA==
-X-Received: by 2002:a17:902:e850:b0:24b:131c:48b4 with SMTP id d9443c01a7336-2517446fa94mr26065ad.5.1757105331740;
-        Fri, 05 Sep 2025 13:48:51 -0700 (PDT)
-Received: from google.com (132.192.16.34.bc.googleusercontent.com. [34.16.192.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24ced566602sm31649925ad.126.2025.09.05.13.48.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 13:48:51 -0700 (PDT)
-Date: Fri, 5 Sep 2025 20:48:46 +0000
-From: Peilin Ye <yepeilin@google.com>
+	b=iKz/TXSya7i+Bww3V9HLmXZ6sNn9dXwZMZtDEoOteCbgO53NKWJiQwfmAutT0uJPPHBQZe
+	PElNkuUWjKm6akFM6+kGLS7S8ZBYrCyAoeLvXGZOCpmoc6TYQL6D0JhBDWjt+eXqe0nmMV
+	mN4GKiOUgNmC/yu2JSMimZxPRtb3U+c=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757107260;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=osQ9Lif183itocSuB65QNUmR7DDdBX3nJ25Dd19v7/A=;
+	b=T92UJ6nlCLVsFWAjC543fR6YxZ7eSKX4N/EozztC9mQXQQZDNQpa1JqppUr7HfB/1DqVC1
+	eMMGdMAl5kM/wbqM9bnCE4A7yj8zaOMAzfc1girqTcnRs2VN1F4AGpd0+z+Rm87itDCCbG
+	IVdmYsC+5yZnrIvGVfOGBtML1s5j1Pg=
+From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org,
-	linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  Tejun Heo <tj@kernel.org>,
+  Johannes Weiner <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,
+  Muchun Song <muchun.song@linux.dev>,  Alexei Starovoitov
+ <ast@kernel.org>,  Peilin Ye <yepeilin@google.com>,  Kumar Kartikeya
+ Dwivedi <memxor@gmail.com>,  bpf@vger.kernel.org,  linux-mm@kvack.org,
+  cgroups@vger.kernel.org,  linux-kernel@vger.kernel.org,  Meta kernel team
+ <kernel-team@meta.com>
 Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
-Message-ID: <aLtMrlSDP7M5GZ27@google.com>
+In-Reply-To: <20250905201606.66198-1-shakeel.butt@linux.dev> (Shakeel Butt's
+	message of "Fri, 5 Sep 2025 13:16:06 -0700")
 References: <20250905201606.66198-1-shakeel.butt@linux.dev>
+Date: Fri, 05 Sep 2025 14:20:46 -0700
+Message-ID: <87y0qsa95d.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250905201606.66198-1-shakeel.butt@linux.dev>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 363562000C
-X-Stat-Signature: 7ueocmzoxq7t9bijedduputjqw9kqx7u
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0E55914000D
+X-Stat-Signature: esa86rra83zxxkk4pkehrobu7nfwhngo
 X-Rspam-User: 
-X-HE-Tag: 1757105333-135798
-X-HE-Meta: U2FsdGVkX18/ahQC74ve0vPgl/kQi6O8QoYQHoTUkzrq5fXS5+hTSSFcJFmFdaN8Cmzz8g4uVXkGhp7lwrtUPDlAKvB/lzH+q98x5OsSn/ASFPeo+E36x8vrY5zM6LIQy5ZhaysjJ9NoFRhc3n8CBY1hsY7WTYWIWU4bbEktVVF5ADsAZl/4Ml4SOroYTjzPnZUrbrTMKRPOXTuLGzPbhHGXFToSl8COCdlvMJB5Uzf3XQc++W6Xe7UX2LLcGnZvm23Rjxm8GjVLb1eohObHt6MxokF1Nfn/VDfL2PMnsvkr+JhLx7if+iupByPnOAChJYwpH6TM349S1zOEObjRZAgr9o4d8RdgvxStL3/fwL7jLW4zocI0rkdeBZRe+GAgXYDDimYdNoBYJD1U+cpuD7T9du48c/sfvLu7XGRudEF2dMzQC21RNoCg/io5Ha1wnl1yPGj2HFHIoN3smOp0p8+P57sX+XvfyhDAdXcIpCuAgesicubPQQEBbHh/gDP/w5y7jFc+PIcgrK2NiMV1f4c6QBBk8ux0xYukgXE4eyKBbquouit4WeVKb4eh4WuXXiq48XjPstofi/H31NF2LlanNgkQqz5cRm463vtzXCpvS8qP4OYtwhWh7r29SKvJPuERSISJE+u5aBOiEVd5dJOY/u84kFYjAehQHuL8NIE29oRviRmh6s41EgSwoHnGbzhEx+/24S58u/MjrljSzrgBK6eBP7H1LcV5iIgqYbUw3fx+cHW5jQwnPbK8LP6Hg92Rf3H7OmtDOHTArm7ule6b9WUwIjeyf2ryy0+D9vFLbIOLzPefCFPOZo4hb/+KBKXa3RVgP2fJkYwMfonvfhpj3id5cxFsZdmSPskKDIz2vDZjxlN0DgMiHp8li27dB9Yk0Zvatem05VGJFnmgD+sH7QxS8x14x/cIC6xqboNSerYaM5Wo4jWz5VUbp/zpm2ankJsqk0XdPOf8dWG
- LyMzhg4D
- 845sdx+1PbYas2xy3My3BuzK9yeAb1t5/DS3q/MacIuo3bj13ihPOnCysvQxUvRLk+z1dgP7oqpqGLhSy82EMGwFzaq3qie23yZZeO+d3G8UhVqx4OjNIDM/ZX4+3htKF4GF0vcLlbfRCo3q506+xd5kbibMUbWbXAx9Se0DA+6XgmNlwiYGxhjar2GgJpQWBB3wAV8BBQDmGYUhVzKoYRJJc/RNBpA/KwJmUwdFIwTZ98oj8qB53FLoD3o5AakXZSbKD7pE8ZmY8fwv3pI6vfGVtMSPmG+FSHPCIs6TjV1U822L1f0/7de2n2ZenciVlww19Bn3jmixmeZgwFAgs0k9Hz3cPg5k+wwRjoxBf3ON/mINK09wJld0D9vkIinxoenPoQyvuAxugJfRK2ftGiEW5R7Fo7Sneq+i/M5vqjy6EB6o=
+X-HE-Tag: 1757107262-765122
+X-HE-Meta: U2FsdGVkX187OUIeVKk9TqY7XuzBahQ7pSrLOIaXY9AxSexPwI1+7WJrPG84NalTlDRGY/YiR1383Qf/ST9LFSPs2nGWEJdjNfm5N5xcFg7Bhlca4bdeuBj5gZAgkcvsRwDFjwhNs7SznTGKiYdoy3jpOPz2PlcahOdiojKYFYOoMSxU6i3FJzyQ4YR+MWAV9auPq95Mo49OUzXMqBfMBqIXoMdK7bL84lzqgBx37oSDanOt4DPHPhvjDvwz8ABIL7n1TWyvAlu9WoYjF7JQ9Qc48MvdBmhpTa4Y48DWot3WJIv3H7qCJjjcnE8ug3TdCCzbVvwLLtxz5eY02uJiw8rYmTyjpVHFcmCKbgkJMe88znHRzozEN3+Mzr9f1bY0iIo9VPmn1Md7Blw0VG9+qF8NKwmZ+ZY5pJOQvgro8J1NUCAYT0qyWaAxBVMuKqPZynU15MQvPkANKvAwT5Zlo5u6AZOLP+nyuldLdThtlI3bBorLeHX24dLzvmUUFta7mKYNabFSGPmASNiui5H5sm2pdcX2a9gCfE4fJHU8YGVnfzwGqqAwtSUHlHI2BypHwRSivJU5p2DNN7H+I/r3Gm+6/xLINiiAI48Jah+Los7r5yNFctuGRBb76ME/RLx6G7RS1/BxmppeIsYT+mXPDIa84gyP4zx5l9ktgbSo0Bc9Mo9RJn8waHICLnKhv8uZKiwUW3o/hHO9OCkXVVePpyfFA7qgmBzZgzKkAZfcyqFu+O85OqnC6Ro9Uji3t1U/HH5PNP4qNhKqdxY7EOwMfe4jkdhLi0YG4mxNjYL4D0oAi4+hxnyTJtWC43YKpyW55lpVM+/UMOWruKqErRr0yiCp8zRvHSrRL2jlBBw6u5MLd25X+1jjzd90ggmZjFr4HKRmlYBWw7neubIbHFK0cElIYsFL3j5V
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,42 +90,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 01:16:06PM -0700, Shakeel Butt wrote:
+Shakeel Butt <shakeel.butt@linux.dev> writes:
+
 > Generally memcg charging is allowed from all the contexts including NMI
 > where even spinning on spinlock can cause locking issues. However one
 > call chain was missed during the addition of memcg charging from any
 > context support. That is try_charge_memcg() -> memcg_memory_event() ->
 > cgroup_file_notify().
-> 
+>
 > The possible function call tree under cgroup_file_notify() can acquire
 > many different spin locks in spinning mode. Some of them are
 > cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
 > just skip cgroup_file_notify() from memcg charging if the context does
 > not allow spinning.
-> 
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Tested-by: Peilin Ye <yepeilin@google.com>
+Hmm, what about OOM events? Losing something like MEMCG_LOW doesn't look
+like a bit deal, but OOM events can be way more important.
 
-The repro described in [1] no longer triggers locking issues after
-applying this patch and making __bpf_async_init() use __GFP_HIGH
-instead of GFP_ATOMIC:
+Should we instead preserve the event (e.g. as a pending_event_mask) and
+raise it on the next occasion / from a different context?
 
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -1275,7 +1275,7 @@ static int __bpf_async_init(struct bpf_async_kern *async, struct bpf_map *map, u
-        }
-
-        /* allocate hrtimer via map_kmalloc to use memcg accounting */
--       cb = bpf_map_kmalloc_node(map, size, GFP_ATOMIC, map->numa_node);
-+       cb = bpf_map_kmalloc_node(map, size, __GFP_HIGH, map->numa_node);
-        if (!cb) {
-                ret = -ENOMEM;
-                goto out;
-
-[1] https://lore.kernel.org/bpf/20250905061919.439648-1-yepeilin@google.com/#t
-
-Thanks,
-Peilin Ye
-
+Thanks
 
