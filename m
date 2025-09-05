@@ -4,92 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CADB1CA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 19:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B386CCA1017
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 19:44:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CB4D8E000D; Fri,  5 Sep 2025 15:44:06 -0400 (EDT)
+	id 144DA8E0006; Fri,  5 Sep 2025 15:44:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255F08E0006; Fri,  5 Sep 2025 15:44:06 -0400 (EDT)
+	id 0CF168E000E; Fri,  5 Sep 2025 15:44:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11D4C8E000D; Fri,  5 Sep 2025 15:44:06 -0400 (EDT)
+	id F05D78E0006; Fri,  5 Sep 2025 15:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EDE3D8E0006
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 15:44:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DA2168E0006
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 15:44:16 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8768CC024F
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:44:05 +0000 (UTC)
-X-FDA: 83856222450.28.AF794BE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AF4EE1C0005
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:44:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gb25GASt;
-	spf=pass (imf20.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AADD01602BF
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:44:16 +0000 (UTC)
+X-FDA: 83856222912.28.DDACE2E
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BF11D4000C
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:44:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fsH9ty3t;
+	spf=pass (imf27.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757101444;
+	s=arc-20220608; t=1757101454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pJpJiNSsEqw1lbSRsS9Ty6CbbjAd0v4LviNPJ+0RPTI=;
-	b=1ypJB2A5IyZvszZ/i8xH5hjlKnPKQjb3pChICXN9Tp7CWSdmA2KljRd50r6o9rszvb3HvT
-	1z/9Wi3hrIPUiqlAMVXsxWtQCrMRh/I0gKkmI745inYkJYUvKpXr+IXJX6d+cbqw/V4PSi
-	Z8ldRjiWYLzA6K+Mr+xqLLJwDQpHTTI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757101444; a=rsa-sha256;
-	cv=none;
-	b=5CNJIFsk3ajsWtxVaVlB1kJI+t/4x8C8chJEetiJaWUaPUk3EJEfvnrjLca0LmD5K2UiNE
-	uqlh0Db+tUSPkc/exLsmfaZ0uQlSRq4V+4TbfBmGbVUHGNnrzssFsDrdNBndO5caBejHW9
-	oxhk2PFL3OFmRp0kLKF0kLu1bo05TEQ=
+	bh=5kSIyEkKJPNtcS4C9SW12B6CjFCMmyXxFbHsBSrhHlc=;
+	b=mR7TLrxsxlQo4l2ADJT94Pi8g4ZNACTmsqHNIOnUEV25VLYe8kmWhZPnQlGjGZpC9N6Lcp
+	i/8gMJVKkPvQFNsC1m1sTWXEb9C1Bw6fpEvBTeo4RU9q518Y/FavBGrGdlbmxmHSL7YvmL
+	sANxkimuJNCL4pbNlaFFdoNLjPeBOqE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gb25GASt;
-	spf=pass (imf20.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B1E644721;
-	Fri,  5 Sep 2025 19:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895DBC4CEF1;
-	Fri,  5 Sep 2025 19:44:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757101442;
-	bh=qj5NWqYmLfQgUNyQbHqhOAioJ4HtjEhlRLgfXr/ggm8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gb25GAStY7PK4KWfMQC7rtd4cff2Ft31RumZ/kNKywLAXwUdYfICHHIJhBPjrZ6j7
-	 o7iHpATbrIqVl1AYu1jaVpoUr8IlvHC34mB3TyehId4+9gUdLyyv/gHHn98jalOtC0
-	 MX2S360mJGGFkZmz2ogHqkD/MgCf/035PnB2I9Wq5ZfXBWK5fpwd1RbY1MXhtqJPld
-	 H5GqrWgLYTQargRJ06fYCqqcMjdxQlMgkFIz1Gqzc+2aRDBKLVXuNsb4wASbw6IEl6
-	 597PZCICEO+V0BK33bDDozHnZlGhmt7NvXrmXSlYdy89LJVzrbcrFORdWilzQ/GPWA
-	 8B6Fa0HYYbdnA==
-Date: Fri, 5 Sep 2025 12:43:59 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org,
-	lorenzo.stoakes@oracle.com, kernel-team@android.com,
-	android-mm@google.com, David Hildenbrand <david@redhat.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
-Message-ID: <aLs9f9WjxIOrE3Sr@google.com>
-References: <20250903232437.1454293-1-kaleshsingh@google.com>
- <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r>
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fsH9ty3t;
+	spf=pass (imf27.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757101454; a=rsa-sha256;
+	cv=none;
+	b=6VbRqlAT9QozwZ6eRcdEp4wG6xN4qBbUIEpcxXndxKXyMQhjnGNdKojgYnS8CDtAuEIV/J
+	md9GnESWUOAYW46u2IoGNSMPDxILVyLc9tNiPcP3a8BGffja4RVDR5owzlKV7HKVks5+gD
+	5ldQGSREAt0yfDwxJwavmApJzhvvytU=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3df2f4aedc7so1502439f8f.2
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 12:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757101453; x=1757706253; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5kSIyEkKJPNtcS4C9SW12B6CjFCMmyXxFbHsBSrhHlc=;
+        b=fsH9ty3ttWzXR9ERPPjv44aFITlNTrsxeyM2QTZMcfqE7NOTmmK8OtVFzWIhclKGXy
+         EQOV6JYJRGYEOWjJMsvfDwafEsncM4K9/93S1AJVyOdJ+h9lGGwE4/GHvNpsE+YJoFT9
+         3j2EKtbEyJcbDcnQNYTxIOzbKRGJdqB1KZ5tHWpTgllMSrXANRpM5JVF0wXHXUZQoIGK
+         7SK7RReoQbshjQvw3LOmFZgUd7lEziakcuxppjsJVXgh+tWK1zPPEZEk2Dk0s5XFAQge
+         +3sgPJerATfB3o/wLenm7SDxV1iualJGzUPRfNqDxx0sHS8w5JRWbQNA//x9WhcZiOOs
+         Qy+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757101453; x=1757706253;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5kSIyEkKJPNtcS4C9SW12B6CjFCMmyXxFbHsBSrhHlc=;
+        b=moYeY11O8DiGp+qEstL1sfxApN3pZPbJGPzXzP+91Pu8wp6xOX3WEAA5cW4poBtMSp
+         MBP8h0xkVVQd0Bj3nVTgWJfwec0r1zgjg0vWkY/yX4Jvm100daRaGvGgR3w1zGsuyYYR
+         hAZnYOOx0kN+l1vb7jlY8MAhR8iytJp+lj3MLlvbxZksyLtJH8TeomtOEzFu/smRfzu2
+         FBO6RBF9SZGgKtrhG1P6rJ0a6xryaxvFrXuy2Vil6jWw79RfMEq/Itsh1q8S17+MoVjZ
+         CSKQbxxNumi65jrMMw5Jo+lS9dsNBDpR9vzVUsb5Xu24TzcU8f7FA8X4okTRtXk7AsYb
+         fuYw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6JUVWGSqxnep0gDltF8MDRBm1M1BSV8WtOc3y51YpRJ1LJxYNIXEmObdiaOLtnekiLRTASjBBzw==@kvack.org
+X-Gm-Message-State: AOJu0YxvNCqlXyOen8tyDRL4IUGI9IT5az1xaw7q6Opq//OA0ncv7a5K
+	BFAv3sDjZDEu9TtQ+c0m4/vqrfDONKQ8xL5sxZO76KKr1TgNMnFazJ57S1YslW8A36ZLi8I0ucY
+	zF4lzwnLj6S1Vdz9wcsF6tz+lE4NU5qQ=
+X-Gm-Gg: ASbGncsEFW1woSrjyw4GU0t6//YZoH/R2V6+lVBH+EYk+aUr1NCvIzVNSepyE9CBe87
+	Rz7HWV7NIm4H0OL5sxyW/4L3iC1VHT0LNo2FNPY5zYRzcgiGRnAhC7V+5XZETljVuNsV048qicW
+	emlJ3sJiRzgtFO7yLTOdtQDarIG8/9jHhrEujPWTJp53hydiSGdHRO1tKALEHVfpNiagkbj6Za7
+	ENH7GT+TZZa9IEFZw==
+X-Google-Smtp-Source: AGHT+IEIWTbj6iXai5EB56BajMtkwmQ0wX6zSMX9cOQAlzshrXJq4aBijoRGaRfyrquo9vOREnmChUojy9i9giTVk9g=
+X-Received: by 2002:adf:b188:0:b0:3cd:44a8:ffcf with SMTP id
+ ffacd0b85a97d-3d1dd81e4b7mr13383104f8f.12.1757101453197; Fri, 05 Sep 2025
+ 12:44:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AF4EE1C0005
-X-Stat-Signature: 8t38y4kr6c8i3yexfpqip64uhyuhswcc
+References: <20250820053459.164825-1-bhe@redhat.com> <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
+ <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv> <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
+ <75a2eb31-3636-44d4-b2c9-3a24646499a4@gmail.com> <CA+fCnZdWxWD99t9yhmB90VPefi3Gohn8Peo6=cxrvw8Zdz+3qQ@mail.gmail.com>
+ <c0bd173c-c84f-41d5-8532-2afb8eca9313@csgroup.eu>
+In-Reply-To: <c0bd173c-c84f-41d5-8532-2afb8eca9313@csgroup.eu>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Fri, 5 Sep 2025 21:44:00 +0200
+X-Gm-Features: Ac12FXw8jIlx5I_GnULq-nTw7_htdTiBmfe6-tGy9IZcoS0RzVO8mAQjd7gKDAU
+Message-ID: <CA+fCnZd9unSjY-UnEwc4rGkSRgZX3nrs=WgBb2eDQNEpZX10cA@mail.gmail.com>
+Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three modes
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Baoquan He <bhe@redhat.com>, snovitoll@gmail.com, 
+	glider@google.com, dvyukov@google.com, elver@google.com, linux-mm@kvack.org, 
+	vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
+	kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, sj@kernel.org, lorenzo.stoakes@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BF11D4000C
 X-Rspam-User: 
-X-HE-Tag: 1757101443-950951
-X-HE-Meta: U2FsdGVkX18fRwhJc0z1CGVFniwfADKgpwwEpCsnXbtKDKvFuOziouoK8H3OITRJFhYOI7e9iZ2+7xDUy/Fos4DYWe3h3DZ5By4HRPkoOD72SDr+g2NRhHMmCLaPYHRIkF2EDFWRybWgzcL0fhjvGIz7LjrikSfSby/btqy36xs8efAK5rhcwmIQOFRK63FEVBRtdfiLXJU2R5OhmYAKNjOqJb1hnH52BNcVa9HyU9E1gBl6rjtMYkjb/UJq0sPgBoNRW0yl/zFrSZPeimPyqSxlGzhELObnjUpT99n8i0MkHNYX4aqsIIIBVz2fx1pJAP4TufP0fCUcqyI1nIwG71t319LwZvU/mg5FO4tlKzrCsL6WhQLyjLjUf++7oN/pUIMgfrZTPWhznS+j268PQCC+I1gbqY1iSFjL/ENmiIDlp/tMCDyNc4SohlwmtigHBF1pBI40UpRbwfGiSzj57zMeuGHfwzUgZqmg9rIulh3BBMlgHWFiv9rsNwSwyJdUE2RWkNkymlcjVFwXxDKZ2esiK+rKOwxvlLoAFnXp9DU1vzjV/HMcPpevjjFTn6yKcbGGlGwtfwvlxF9PtpbeHeSYslAb/sIjlvKYMkUkpq2j64jzNbaFdGxM01bwOOtAgRxsqF8xIPc4WmWIzHkr10sKBFZnQSzQtBTsn/JhnzrW6I7HwgaulaZZVhjMDOpxVcNTMRyRVRDMu3Ua7Ywdg+o5GUk5zSsOhbBIweJEGBEeWxG7AwUBwIi0QS9o/BDovpksRC2vDZ48Q43rkQzTQfB0GPwEHOYLUXS+vscmqxMJ1uAkIN5IIgOg39FdeuG3gnUpjMRPb1eDDe3n6uuqvmim1FAsBeTvaFF0h/WyFBdasQzj1O0U3TOIVRqNcAxHdM1oIXF/PA6n8XVhNMj0EIlDOjXz2VERiOI6MzQNHr3qJoKuHN9jqdcizo74ZHZu46eI/mdCROD4f+4v6g9
- nN6k811p
- NMNpKwu7Drz0zrqr4rXCAfvpkrNCzdowpCv4MILzkxAP6za45XqCgTbEcAU5+KQ9yMD64z7c1Cs59c159MlpVSeEU/c/bvE6MoEZhZsdbFHE/CRxTLHY0y5VcVPKoF5hGyVzP8mFtL8y8Mjq326ZdH684fnnyATIG4ZMOUaO2G1MuVqHMUY4wKXtLoqFwD0GlNdfHVB95IdRVfM5DEF3yGjyBcttwHJ2ZRQ8VAnPYIyWWsHHTMy2op4ofdIuNdkn2fyyYxIE2gG/f9ix70lWL4I1OrAkA2UG50wM0AEGatnfgYEcFk44tSAASMdvZ6sJZ9UiGpOEG76tclh2+jIIE/BjrZhhq77APrKpcqoNAIMxD8/ErKMbchkuJNQ==
+X-Stat-Signature: 1csrr1zd1rczu719e8riiop3kjiydudh
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757101454-975193
+X-HE-Meta: U2FsdGVkX1/zy0aewMFduxIxUmb2p+yPFUdtG+wtRjKlnEov13DGgaYzI2cKAAFl5yOZDXgHWXbJmUfvbQ8NEhpD9RgtByfh+e/EPwUq/0eKIrdp/IXzUHjKTl97PHNd3T4HqgFv5tmT6v1a47LvIGPYNe3vzi0JL2UuIocLkXltc5hmiz2jgkvmTIRWAXo5YFhq7iIlzlABNKgcIT4yEkQDfh/mbONRqRLngymvQBb3VraFAFYr2q3Z0eUk0r/Z0hvFQx1LQoue1R62DY/8LDq6QMb7QyRv5/lzyhkoAO3tivirP6zMrZtMXOBXrKuG8uEF1sRVQ63BepOyghSgHKqkojWepDIways0KRpoSeiocTUCxRHhXdWuPM2+SBqM1rFXuxctinPElv/LtQ2wp2JxJuXLKYhYh6yuCqZmwYKqvxndzpB8Jv695T0WK3NDoVg5m9EYK3IXXMc2l3fTlXOduEhnxva5/9k5nw/xlLunC1O6znbhfhVAnzCrJkaQP8+Tq6DXmoABjUEHtvkeCQyN0FBLS5VJjTEtVLuXsEBR43ki/3S+hCkaQv4Qq7UygF8IaEs6+FbutyaIRiq5UhMbpluEmlNOYUNjfcBvoVZKzcjgQZaYI0JviCtMBuudUaDBB6udTVqcjJWYGHCGu0VcVciuS/GjeRiI2KQ2IRM03YcxpKn0Ce7lY7nklczE1/UkgbYO8aVSZnF91Xi0QrSTrLhfuEtiM07G85VIVr+LAb5FRVDvLElKkmVM0UrEoTYzwfnBSMMNSJgtfuF3kMOCrJkpseW8XMtEnpVqk8o9n6QXmb3B+KzscdycgREeT4fl00Kt7OeG4NbkZaMAax0Ah/KJiqOpYFX37K5Pix/FVhQz+o7mKn5lDvAET+JHSL1VzpOIakTCHDeeedtTPCnbEszbNYgVYJhp4/Hfpm/fpe+GmWq1T3taurWl0MYKxP0ffKl9chEHh0Yg3Qu
+ CyN+yXjs
+ kDeQpchyEEqbBPqS6zUBpRrQrnx7Tgpyg3CNWLqDnxdl2vkhrvm8BPgroZSHur6eZMOc3QBrIh4V+GnM+Rt+ot97PVJ5NkfILcm0FPP7r2P7IlaYPghj9sX5t6nAu1czlxQowzX1AWC+PqrgC9Ib8pbC9x+Hjm4DHMKdyWdDgTJ3uFFeSEUBLvtc3LY404Tq8r0k06ndDchAQmSlyoAwCI1IG+XguA7duVMqmbAnMU0YAM3L02bqY83v2Tx4CpOqu44wtBexlkxhdHh/yHmunZYPBivLcb4R0o9hfP9WfpvpS5TyL944Hrt45igOhjC2yjKa5IfaKokopfLQ/QAuLHds9ddpGnDOUNqpNSqSwEr9LPxFWM/UjrrpkZXR4C0xCjBYdocogFIdqZStvitmVFc7z6599znpUPH5cxiXoc0H/iRimdfuSYzniFREQU5e3x4lbW0sw2nQ23tCRRtc6zOBLGRhMaiNrpAvsqgnY+HnTaWA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,114 +122,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 12:46:34AM +0100, Pedro Falcato wrote:
-> On Wed, Sep 03, 2025 at 04:24:35PM -0700, Kalesh Singh wrote:
-> > The check against the max map count (sysctl_max_map_count) was
-> > open-coded in several places. This led to inconsistent enforcement
-> > and subtle bugs where the limit could be exceeded.
-> > 
-> > For example, some paths would check map_count > sysctl_max_map_count
-> > before allocating a new VMA and incrementing the count, allowing the
-> > process to reach sysctl_max_map_count + 1:
-> > 
-> >     int do_brk_flags(...)
-> >     {
-> >         if (mm->map_count > sysctl_max_map_count)
-> >             return -ENOMEM;
-> > 
-> >         /* We can get here with mm->map_count == sysctl_max_map_count */
-> > 
-> >         vma = vm_area_alloc(mm);
-> >         ...
-> >         mm->map_count++   /* We've now exceeded the threshold. */
-> >     }
-> 
-> I think this should be fixed separately, and sent for stable.
-> 
-> > 
-> > To fix this and unify the logic, introduce a new function,
-> > exceeds_max_map_count(), to consolidate the check. All open-coded
-> > checks are replaced with calls to this new function, ensuring the
-> > limit is applied uniformly and correctly.
-> 
-> Thanks! In general I like the idea.
-> 
-> > 
-> > To improve encapsulation, sysctl_max_map_count is now static to
-> > mm/mmap.c. The new helper also adds a rate-limited warning to make
-> > debugging applications that exhaust their VMA limit easier.
-> > 
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: Minchan Kim <minchan@kernel.org>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> > ---
-> >  include/linux/mm.h | 11 ++++++++++-
-> >  mm/mmap.c          | 15 ++++++++++++++-
-> >  mm/mremap.c        |  7 ++++---
-> >  mm/nommu.c         |  2 +-
-> >  mm/util.c          |  1 -
-> >  mm/vma.c           |  6 +++---
-> >  6 files changed, 32 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 1ae97a0b8ec7..d4e64e6a9814 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct page *page)
-> >  #define MAPCOUNT_ELF_CORE_MARGIN	(5)
-> >  #define DEFAULT_MAX_MAP_COUNT	(USHRT_MAX - MAPCOUNT_ELF_CORE_MARGIN)
-> >  
-> > -extern int sysctl_max_map_count;
-> > +/**
-> > + * exceeds_max_map_count - check if a VMA operation would exceed max_map_count
-> > + * @mm: The memory descriptor for the process.
-> > + * @new_vmas: The number of new VMAs the operation will create.
-> > + *
-> > + * Returns true if the operation would cause the number of VMAs to exceed
-> > + * the sysctl_max_map_count limit, false otherwise. A rate-limited warning
-> > + * is logged if the limit is exceeded.
-> > + */
-> > +extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vmas);
-> 
-> No new "extern" in func declarations please.
-> 
-> >  
-> >  extern unsigned long sysctl_user_reserve_kbytes;
-> >  extern unsigned long sysctl_admin_reserve_kbytes;
-> > diff --git a/mm/mmap.c b/mm/mmap.c
-> > index 7306253cc3b5..693a0105e6a5 100644
-> > --- a/mm/mmap.c
-> > +++ b/mm/mmap.c
-> > @@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
-> >  		return -EOVERFLOW;
-> >  
-> >  	/* Too many mappings? */
-> > -	if (mm->map_count > sysctl_max_map_count)
-> > +	if (exceeds_max_map_count(mm, 0))
-> >  		return -ENOMEM;
-> 
-> If the brk example is incorrect, isn't this also wrong? /me is confused
-> >  
-> >  	/*
-> > @@ -1504,6 +1504,19 @@ struct vm_area_struct *_install_special_mapping(
-> >  int sysctl_legacy_va_layout;
-> >  #endif
-> >  
-> > +static int sysctl_max_map_count __read_mostly = DEFAULT_MAX_MAP_COUNT;
-> > +
-> > +bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vmas)
-> > +{
-> > +	if (unlikely(mm->map_count + new_vmas > sysctl_max_map_count)) {
-> > +		pr_warn_ratelimited("%s (%d): Map count limit %u exceeded\n",
-> > +				    current->comm, current->pid,
-> > +				    sysctl_max_map_count);
-> 
-> I'm not entirely sold on the map count warn, even if it's rate limited. It
-> sounds like something you can hit in nasty edge cases and nevertheless flood
-> your dmesg (more frustrating if you can't fix the damn program).
+On Fri, Sep 5, 2025 at 9:13=E2=80=AFPM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> > Hm, I thought it worked like that, but then what threw me off just now
+> > was seeing that zero_pte_populate()->pte_wrprotect() (on arm64) resets
+> > the PTE_WRITE bit and sets the PTE_RDONLY bit. So I thought the
+> > kasan_early_shadow_page is marked as read-only and then the
+> > instrumentation is disabled for all early code that might write into
+> > the page before the proper shadow is set up. Or am I reading this
+> > bit-setting code wrong?
+>
+> But that zero_pte_populate() is called by kasan_init() when everything
+> is ready.
+>
+> kasan_init()->kasan_init_shadow()->kasan_populate_early_shadow()->zero_p4=
+d_populate()->zero_pud_populate()->zero_pmd_populate()->zero_pte_populate()
+>
+> Here we are talking about the shadow set at startup kasan_early_init(),
+> aren't we ?
 
-How about dynamic_debug?
+Ah, you're right, thanks!
 
-a1394bddf9b6, mm: page_alloc: dump migrate-failed pages
+I was confused by the name of kasan_populate_early_shadow(). I think
+we should rename it to kasan_populate_shadow_read_only() or something
+like that and also update the comment. As this function is not
+intended for populating early shadow (that is done via
+kasan_early_init() in the arch code instead), we're populating normal
+shadow for pages that can be accessed but whose shadow won't be
+written to. Perhaps it makes sense to come up with a better name for
+the kasan_early_shadow_page variable too to point out its dual
+purpose.
 
