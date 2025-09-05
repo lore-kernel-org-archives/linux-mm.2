@@ -4,125 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F084DCA1010
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 16:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 422E6CA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 16:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CE2A6B0010; Fri,  5 Sep 2025 12:18:48 -0400 (EDT)
+	id 962AD8E0003; Fri,  5 Sep 2025 12:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27F346B0011; Fri,  5 Sep 2025 12:18:48 -0400 (EDT)
+	id 913BA8E0001; Fri,  5 Sep 2025 12:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16E606B0012; Fri,  5 Sep 2025 12:18:48 -0400 (EDT)
+	id 8295A8E0003; Fri,  5 Sep 2025 12:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 045B16B0010
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:18:48 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B4B9F1A0313
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:18:47 +0000 (UTC)
-X-FDA: 83855705094.24.31AFE5D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BFA4A40009
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:18:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KNJUIYsW;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EBD48E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:20:59 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F616C02E4
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:20:59 +0000 (UTC)
+X-FDA: 83855710638.01.095D912
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 79D0940011
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:20:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=BH1gDTlm;
+	spf=pass (imf11.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757089125;
+	s=arc-20220608; t=1757089257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EF+7edAWItVoQ8dK/tjajfpamEWIGwIcYI0wVorBf+8=;
-	b=uG5d6us9nIDGQwsoekd79jsVi2wZFEAE+oAcuWL7cDR1184WIJHAPakAi9mrM4OtndydVw
-	iCrOFNSSDjYwtfAptsHNk5Msk5BpkNHnW4RCpj9B6Yxln3qperhFI2Kd9jdVzy9eyDMXF4
-	uImncIi0TU+WdvFjGiotmaxQovIOMZ4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KNJUIYsW;
-	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757089125; a=rsa-sha256;
+	bh=r+uJO0KPgHoqZtk4UB2d6cw6Lk6DbEyEjBWC0P92zgA=;
+	b=OroKSl25DbCLHuJOfNci/ocxqzANb6c+i64zAjU1bt6CGQQPhA9hf18MhBBlKWxFYsM3+N
+	VgFwNwSNORQgYWdQpho50x6szInp9+bRHDVWFARE7OU/xW8+zMhlLDYT+cxH2BgxZ0ZTCH
+	nFdWtw/706o+166USfVU7fEvwXRlWgg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757089257; a=rsa-sha256;
 	cv=none;
-	b=IblYCv9T6NEw8NcdKdq85b/czXPjRdvH06pck1khnYgPzjQrdWLpL1HDYoE1Yj6UBgpC90
-	VUyzQsVDXfw/A0CnWCxDUsQ5f6UPC4TAW5s7JFP0NudiSXF9hhPtjYlf8RmM0pgBgdZXnj
-	2z6hU8J+7IV2+R4ixOUlKb9wkhthTy4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757089125; x=1788625125;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ehK6v8309NAGVNpv3YQq74SGs25kaSg5kTmdvmyAT68=;
-  b=KNJUIYsW+efiB9eHBVBB1B27Rfpf4VlcgHR5jSD1ARQyWXDQl+XecKhh
-   4JtE0Y3LMYIi53ydshKXmiTwelKcXbewD6b8zyh1Ys7Qb7aVCZqkH9Iy+
-   ZTWxlz+HagBWN7ph9LE5jLnNHZccJaf5vjHBwY7FWkUX5QeRPVcRHJu6W
-   culBZEMJwaLwS5nVIwhCEDMZ1y9nnGhc3MAg5HSpv9xq5caRaDgkSO/JA
-   zgJE37OZGYZ9NGWPxYQVGBW7bSAN0fX/Y9WUz/eE4lNMQ7PG+UK0bvpN3
-   iRnOsoNjCFGhRyhD38uksVMguoemtEjNajuie8C+KMwkGrO3SrKLUAXZK
-   g==;
-X-CSE-ConnectionGUID: ESVuWefZT0S4B+AJHJw8TA==
-X-CSE-MsgGUID: 0c9KtynSQzCYNGyB2JV6Pw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11544"; a="70062403"
-X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
-   d="scan'208";a="70062403"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 09:18:43 -0700
-X-CSE-ConnectionGUID: Z6FviSNcQaiHuPqeR2e2Vg==
-X-CSE-MsgGUID: 0E2/mkFAQQu9I0wc4t+Uwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
-   d="scan'208";a="176537467"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 05 Sep 2025 09:18:36 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uuZ8z-0000c3-2A;
-	Fri, 05 Sep 2025 16:18:33 +0000
-Date: Sat, 6 Sep 2025 00:18:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jinchao Wang <wangjinchao600@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"Naveen N . Rao" <naveen@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org,
-	Jinchao Wang <wangjinchao600@gmail.com>
-Subject: Re: [PATCH v2 06/18] perf/hw_breakpoint: add arch-independent
- hw_breakpoint_modify_local()
-Message-ID: <202509052351.KuHBWdAF-lkp@intel.com>
-References: <20250904002126.1514566-7-wangjinchao600@gmail.com>
+	b=GPAHFsMtHQzpbkkqfwEzeHkfgcUilAVZjs60SAnmAi6t0AiFImp0wsnSrsU2mZRCVM99iK
+	/F1N3vtWF6Km9JyDCrkEUu1vJiOIaXLnWbkMoAQ9SGzXIWgiO/Zo+8neRZDbBVzBqId6Dx
+	ew8sjGsdmGCLvGqp6JqhP2n8u7QOikE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=BH1gDTlm;
+	spf=pass (imf11.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250905162054euoutp02e77d244e0cafd5d952c3328dee47f20d~ib14B25gK1750017500euoutp02R;
+	Fri,  5 Sep 2025 16:20:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250905162054euoutp02e77d244e0cafd5d952c3328dee47f20d~ib14B25gK1750017500euoutp02R
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1757089254;
+	bh=r+uJO0KPgHoqZtk4UB2d6cw6Lk6DbEyEjBWC0P92zgA=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=BH1gDTlm5/u+/rXGc9JT+K9NjInJASEOMUNJK2lpN97zPJKhgFZ4BwyWAKG5fWJ4U
+	 SwthcsWnGvBGq4ZFisO0dXzRvPNenkJ22SKsGAEN3TZeM/LeDo1/zUbv9zcz1Jnd3W
+	 ZVdWIWrJTUMJGFYQL2lzvf5ASBpb6d4tBQU3KY7E=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250905162053eucas1p1b9fec0adff4c7d35b6b6add1249d881b~ib13cmmn22364123641eucas1p1e;
+	Fri,  5 Sep 2025 16:20:53 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250905162051eusmtip1e4d21f9bc61a423579ce48c4e618b6af~ib11sI1Nb2344623446eusmtip1s;
+	Fri,  5 Sep 2025 16:20:51 +0000 (GMT)
+Message-ID: <7557f31e-1504-4f62-b00b-70e25bb793cb@samsung.com>
+Date: Fri, 5 Sep 2025 18:20:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904002126.1514566-7-wangjinchao600@gmail.com>
-X-Stat-Signature: idazar7jwyoxuu5jsjstdmrwudat4bqu
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v4 00/16] dma-mapping: migrate to physical address-based
+ API
+To: Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leon@kernel.org>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Danilo
+	Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, Jason Wang
+	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
+	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
+	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
+	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
+	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
+	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
+	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20250829131625.GK9469@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250905162053eucas1p1b9fec0adff4c7d35b6b6add1249d881b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250829131641eucas1p2ddd687e4e8c16a2bc64a293b6364fa6f
+X-EPHeader: CA
+X-CMS-RootMailID: 20250829131641eucas1p2ddd687e4e8c16a2bc64a293b6364fa6f
+References: <cover.1755624249.git.leon@kernel.org>
+	<CGME20250829131641eucas1p2ddd687e4e8c16a2bc64a293b6364fa6f@eucas1p2.samsung.com>
+	<20250829131625.GK9469@nvidia.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 79D0940011
+X-Stat-Signature: hw76kfmsq1fnc45bwb7dp4i9qgxmiwti
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BFA4A40009
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1757089124-817517
-X-HE-Meta: U2FsdGVkX19lO8PKXRS6YehhcdUt+lkYDvVbpA8z1vl1HU7vWWw56aQTS59fVir4opLxRrGoI2oAX8qf7QzArRHmWEK2wMSrMdKdDyE0z96SbH053zj488GclY/MQV7omhQkhZzz7Axe0vRFmeOHgc85Q26x6fDQMqKbfp4Cb0FNzEBXG7/LMsIU2l0EhuhLDIHHdqbqbDJUkxTVu5jqpLdEVkuTeF9b/j+tPHXue6WkWKOsguaeRVHG/IJHic15oXQermsUmJFhxJbDl7EfC0PpVS7rkFfP3t3TNKp1/LwEKnOd/yr7XBuMZnTpGrsIMLf4S1w+1p6/BoCuj/7O31t4guELbE+J2UcrAph8kAOCFHno8Ytm2SsJAImiDDRryPApZWWxvXxfe4l6y6e1kZOzg6UWWEHtxRPjyFkBp3ce+Tu1Pz4giI4pwlhjs9L+sxEFdT+XkdNjefYfVKiIIcb10tKkS7Jj0+bwylbxHMdJHTwaYVZD2FC3Tcf+yr0eaKFosQl9uSzYqJcW9SAosSeia7PhyFXfGTjIMiLtUUVxXMa3bO7AbkD3AeOF2maonmixvOPA9xzCgQKNau7UYSqMZGUdUb5w4ZWzfPuiLL7eu6+e+LKQsBuHSldvm9S6oPnIci7JAqyGcrAOmcc+JwbTcniKBOv0IJ3u0Agy3oe1bH12BDQF8PnKNmBbY0Cm0G2C2/jfVMa6sJbakxfXyRrLQDvt6jlvIviG1+B7ahSrow47L49qnedycxVPpjAhyCnhyyHrWjoThl2oEUksAyncXFfbXwompW2Yr5TdajQXO2HOcTL/s1TEd0PNGoFLzc6vhVrSeR+oIOqlsJ3a2ivKSur+o9dWpz0KteqNyJhZlXg9WXeWy9mJN/3Mu6XnRslEHctiS8CdRMxgAvNEQrVQ3ynqorIr+8aB6WV+0XpzCp51r9UVEz2MGoJlPIgLbYGz/3DbaaAkoZHJq7v
- kDUsKhA2
- BOOzIvwPZvWUn8QZEOC2JhLjPwl2DUqoL6BdepD+E/7oVnFVnMOboeWRhApQtRnHxXoHseM7szoQVKoz83GqLq+kfRNJU7eenckoNo5irxUgX5m/brdeoh/cJkHIA7wDAa571ZiOdXqwQGxFCVcNgAIbLWm9z/GGOlObFUojAsLa1XWO1+20sPV0Mt5cEsDmoWoHpWwN0Ak8qN6KITykToPCDpv6yH59tU84b+RQw+wvgCI2bL8Ck619T3ldJUX/vkpYDcKd3eEHxdyY6aFxvC/Z0SUOU58UjQ+PVbHQHCV+Nhapsn7Pf64y7Lv36toa0J02+uRHhw7DUxm9vpqbJWJcAMxvsFMGJ1GcVu64U8NyCQWQ=
+X-HE-Tag: 1757089256-375091
+X-HE-Meta: U2FsdGVkX18/pivkOn3IV8r3kTDEgsJifjtPveQcBIQCwgW+Z+FPSCpUhBHXeFP/RFjR0F+qS5ukkx1Zw2dZXYnG6SNhPJSARfxH5yqdV0UWCa+tXruCeyR24h5bHdWOutx8Oz69nXd2CI6XC6C9Ez+mUntP7nnZVwuMUufyVBOUF7L7yG+p4Sbt0YokWAH1qCGY9dKRNZAlyo6PWmw6WyIHpmZ0lHX8GZOTbc4J9qAStWGPmxpAH0IUKdX115KMGt1ws4AyTJGg0ybv1LKMaH5jAzP7zz8WnTxRgSzq617L6MlfbZyTzeTNb8yIucuumcUGVOv4FdP5HEZv8Kgf2zY2p8dStt+eTUPl/Fz+UjqERYGTCIEVUWbjobhQqUweCXQ715gdPITvOScpGVKGqC08RjZCToN2Vmxe6LYXi1CQ9QieAH49Nzi4IwPF56pPPxnxLd1Htc2fLuKiTHxd8XSHkZovYq1VmY+56e+V/+viy2qtiEhjhkHzjzwgvl7VoUPqwFX2pBoMeceql6rvN1+xGHMNmrNxke+7ZVfk2pTv+F2EK8jbxMWi6Us9iJBZ263eyGby4b4qXjSpPM0D7GtqMVVhByRWN5n4uEOtlYZZIJya1+5BuPjg6DHqA73StG3E6qi8Sk4E9dOsdpki7R/hLosmlqw7Rlg7edd6gzt2kCSpYqiCg47RzUKDTxhCmxmT6OxBML0lHdq56D3OlvvbTEhaWVK0n1QNlzNSg3KzkHYI3D2x5pkN/cPSS7PjbYxfFqJ2x4vL9LIMMiBs3sBGduLnBglWB2tMBl64jqT/l+9G0ALEN9vmiQsG5KrhiKCemsYGpVmyuiuaZosqyzTCr/X0rzGJ/7pnBI2BNUqftEtrywoMDWqIPRDlF1+EiX1X0J5d3zAKlFFd8gztIJvlGg+THs4zAJsiG4GjppyDYMyfIWe+66wPWzJ/PCw90SWrtlWJUnLUiW1ApHK
+ 0tepRf27
+ 0M5TalgAH15tXD3VJUbvKncSJ8fqbdVXKHGR9Km8ZbCB3ExyrsbQPUZf9m7t1vqPUbrrThQ/Yrs7rSIrIcNwHBqlzXG40+94TqdP9LXsyXplpSCZPCMsooCsPOMi1MBh2uqv/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,49 +122,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jinchao,
+On 29.08.2025 15:16, Jason Gunthorpe wrote:
+> On Tue, Aug 19, 2025 at 08:36:44PM +0300, Leon Romanovsky wrote:
+>
+>> This series does the core code and modern flows. A followup series
+>> will give the same treatment to the legacy dma_ops implementation.
+> I took a quick check over this to see that it is sane.  I think using
+> phys is an improvement for most of the dma_ops implemenations.
+>
+>    arch/sparc/kernel/pci_sun4v.c
+>    arch/sparc/kernel/iommu.c
+>      Uses __pa to get phys from the page, never touches page
+>
+>    arch/alpha/kernel/pci_iommu.c
+>    arch/sparc/mm/io-unit.c
+>    drivers/parisc/ccio-dma.c
+>    drivers/parisc/sba_iommu.c
+>      Does page_addres() and later does __pa on it. Doesn't touch struct page
+>
+>    arch/x86/kernel/amd_gart_64.c
+>    drivers/xen/swiotlb-xen.c
+>    arch/mips/jazz/jazzdma.c
+>      Immediately does page_to_phys(), never touches struct page
+>
+>    drivers/vdpa/vdpa_user/vduse_dev.c
+>      Does page_to_phys() to call iommu_map()
+>
+>    drivers/xen/grant-dma-ops.c
+>      Does page_to_pfn() and nothing else
+>
+>    arch/powerpc/platforms/ps3/system-bus.c
+>     This is a maze but I think it wants only phys and the virt is only
+>     used for debug prints.
+>
+> The above all never touch a KVA and just want a phys_addr_t.
+>
+> The below are touching the KVA somehow:
+>
+>    arch/sparc/mm/iommu.c
+>    arch/arm/mm/dma-mapping.c
+>      Uses page_address to cache flush, would be happy with phys_to_virt()
+>      and a PhysHighMem()
+>
+>    arch/powerpc/kernel/dma-iommu.c
+>    arch/powerpc/platforms/pseries/vio.c
+>     Uses iommu_map_page() which wants phys_to_virt(), doesn't touch
+>     struct page
+>
+>    arch/powerpc/platforms/pseries/ibmebus.c
+>      Returns phys_to_virt() as dma_addr_t.
+>
+> The two PPC ones are weird, I didn't figure out how that was working..
+>
+> It would be easy to make map_phys patches for about half of these, in
+> the first grouping. Doing so would also grant those arches
+> map_resource capability.
+>
+> Overall I didn't think there was any reduction in maintainability in
+> these places. Most are improvements eliminating code, and some are
+> just switching to phys_to_virt() from page_address(), which we could
+> further guard with DMA_ATTR_MMIO and a check for highmem.
 
-kernel test robot noticed the following build warnings:
+Thanks for this summary.
 
-[auto build test WARNING on akpm-mm/mm-everything]
+However I would still like to get an answer for the simple question - 
+why all this work cannot be replaced by a simple use of dma_map_resource()?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jinchao-Wang/mm-ksw-add-build-system-support/20250904-082544
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250904002126.1514566-7-wangjinchao600%40gmail.com
-patch subject: [PATCH v2 06/18] perf/hw_breakpoint: add arch-independent hw_breakpoint_modify_local()
-config: sh-randconfig-001-20250905 (https://download.01.org/0day-ci/archive/20250905/202509052351.KuHBWdAF-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250905/202509052351.KuHBWdAF-lkp@intel.com/reproduce)
+I've checked the most advertised use case in 
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=dmabuf-vfio 
+and I still don't see the reason why it cannot be based 
+on dma_map_resource() API? I'm aware of the little asymmetry of the 
+client calls is such case, indeed it is not preety, but this should work 
+even now:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509052351.KuHBWdAF-lkp@intel.com/
+phys = phys_vec[i].paddr;
 
-All warnings (new ones prefixed by >>):
+if (is_mmio)
+     dma_map_resource(phys, len, ...);
+else
+     dma_map_page(phys_to_page(phys), offset_in_page(phys), ...);
 
-   kernel/events/hw_breakpoint.c: In function 'hw_breakpoint_modify_local':
-   kernel/events/hw_breakpoint.c:994:16: error: implicit declaration of function 'arch_reinstall_hw_breakpoint'; did you mean 'arch_uninstall_hw_breakpoint'? [-Wimplicit-function-declaration]
-     994 |         return arch_reinstall_hw_breakpoint(bp);
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                arch_uninstall_hw_breakpoint
-   kernel/events/hw_breakpoint.c: At top level:
->> kernel/events/hw_breakpoint.c:999:12: warning: no previous prototype for 'arch_reinstall_hw_breakpoint' [-Wmissing-prototypes]
-     999 | __weak int arch_reinstall_hw_breakpoint(struct perf_event *bp)
-         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+What did I miss?
 
+I'm not against this rework, but I would really like to know the 
+rationale. I know that the 2-step dma-mapping API also use phys 
+addresses and this is the same direction.
 
-vim +/arch_reinstall_hw_breakpoint +999 kernel/events/hw_breakpoint.c
+This patchset focuses only on the dma_map_page -> dma_map_phys rework. 
+There are also other interfaces, like dma_alloc_pages() and so far 
+nothing has been proposed for them so far.
 
-   997	
-   998	/* weak fallback for arches without support */
- > 999	__weak int arch_reinstall_hw_breakpoint(struct perf_event *bp)
-  1000	{
-  1001		return -EOPNOTSUPP;
-  1002	}
-  1003	
-
+Best regards
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
