@@ -4,87 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14B04CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 21:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 747D4CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 21:35:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A8678E0011; Fri,  5 Sep 2025 17:35:11 -0400 (EDT)
+	id CEA378E0012; Fri,  5 Sep 2025 17:35:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 658BC8E0001; Fri,  5 Sep 2025 17:35:11 -0400 (EDT)
+	id CC2218E0001; Fri,  5 Sep 2025 17:35:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 595D78E0011; Fri,  5 Sep 2025 17:35:11 -0400 (EDT)
+	id BD80D8E0012; Fri,  5 Sep 2025 17:35:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 444588E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:35:11 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D40B416035F
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:35:10 +0000 (UTC)
-X-FDA: 83856502380.21.1458F0F
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1F60340006
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:35:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UiHjw1EN;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A87898E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:35:27 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A4EFC0352
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:35:27 +0000 (UTC)
+X-FDA: 83856503094.11.9A9357B
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5C6734000A
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:35:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PNeT/oWS";
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.179 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757108109;
+	s=arc-20220608; t=1757108125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jrQKavBU+8BmecuzRiyEZQztOguoe+vmV+LZaMwWF5I=;
-	b=p+G7Hcl0MYNQzgVdkDhRhj1AV+a0yKpFtM9XOyRqiYqxJNiieaBYFolAye3j2SlPijJ/9c
-	vfvSZa0TGRPmz1zY4Tjtm7JwUgEYTlo/v6wolKOzv48vXWi70zWaaWP6gg5WVrRgp2ed0L
-	sVhS5TujCDAMTahSJ+h+ZtQyTO9qY5Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UiHjw1EN;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757108109; a=rsa-sha256;
+	bh=hEZdWRv/z7iciKhuDKF1kowxhp5PcLo5vzJehKUARp4=;
+	b=BFH7VvrfGJ6KxqFTrjqZ7ltEWuqLUxA4DTdl9rfskEZjmEcRg9OC/VnDieVvD30h04/6Wr
+	H8pXAt89l5ea9WykLliRkYlq6EIPaPRGtOrhz8AifR/6TYlUekahBrzq5706qwanhw7VPM
+	hPkCEeAB/FViAxqsRHdm0IT8uBDGHtA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757108125; a=rsa-sha256;
 	cv=none;
-	b=lY/ZVBtObZ7XsWR14JV7H2e0G7zmabNfp9uw3fxUjOGzD4CM7LQTuc5C890/VEM9pFwywH
-	hmUERWFGs7H9+NXGEt+7dpOZLOYebHTm8sOTbunVil29An4W1AZLCVyFXEB6pD5KpgBrGq
-	KvFqrA+Dz+ZoILWTDYXnpu75Rdn6+Ps=
-Date: Fri, 5 Sep 2025 14:35:01 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757108107;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jrQKavBU+8BmecuzRiyEZQztOguoe+vmV+LZaMwWF5I=;
-	b=UiHjw1EN6zSseiXPwP5jOU+PMDzIc5lDRuJklr0LtbxbOnKRv0OBc74hK64Q7ZYoIvXBaO
-	Wq623BrT+QGhpDBcPFFbmUD1vf/VtKJXe0/D/S08x24NNwQ8Rcs0a9N0q+UI1Z5a+LddBJ
-	+imMdsHZoN3p2RWEu0H8/Rrt9ZN4kkQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Tejun Heo <tj@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Peilin Ye <yepeilin@google.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
-Message-ID: <uattgslnbiit2yhz5hzh6g7mc4g4nnbkqospnjuqikzliskyo4@z5i66op4jhdp>
-References: <20250905201606.66198-1-shakeel.butt@linux.dev>
- <87y0qsa95d.fsf@linux.dev>
- <aLtVTo-Egnqdjxi2@slm.duckdns.org>
+	b=bUHPPy3xL64WggsDiJ5Fn9IQ3hWU3AO9UWNQ+j9SD8Fk/osu9dvLLG/1tMgFFFvQ9zTrz8
+	MspWx3m3vW7IXr5uCClfinO9eE7ZsTJTnpCJsY0aLNpYm9Lc6uQ0ABXkfo53pq5ccMtKza
+	ktdaMQfN9ayPm0q/ZKtEOXSuoFdr3zQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="PNeT/oWS";
+	spf=pass (imf12.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.179 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3f663c571ffso26673405ab.1
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 14:35:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757108124; x=1757712924; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hEZdWRv/z7iciKhuDKF1kowxhp5PcLo5vzJehKUARp4=;
+        b=PNeT/oWSMj9TiNNf5vbQvmg5CXBV8t63KO+Z0xee1MjNnedGdjcNXZeL7cy9f/OyEk
+         wOlkgEfgC872k7F92AzyvT4DS/0rGdx3mPuZRwrum2G+VQAu2z1SEUJxETBdhwK39odQ
+         NNAXTbEts4w8mS1dkNusKpAnBITqYbK1y8Mkv993ZqDn6Ilv0Fm0CrdIxV5jYFjoewXX
+         5ItG7wovJvtIaD/M9vLFYajvKXwu7YWiJfN210EkIj8UgKe7+NdJyRvVm7gIObSML2H/
+         2Ka/EJply6Cp0fBaJaghCzCUAbqIFK0N4JvKuD8qOA9FdMa+pzLkBN/HaVOEN6keDmur
+         Okzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757108124; x=1757712924;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hEZdWRv/z7iciKhuDKF1kowxhp5PcLo5vzJehKUARp4=;
+        b=Rxv5PiywmjuonQuBZwKVk3B1YyHKKHV2XS+6LLbSkabloRXttfp45tfxEsEc7KHHE8
+         374UZ/BGLvV4FqE9fJbiCQ42xrOhsjWZVJ5c0/IxUsN3fLFL06Ld6V6beCU9buOj/HvS
+         d8DY3lxcaCLtDYh68fumWdQq3AJMy37ZC+t9qtiIM8vFx5YRVF/ghex/DsyjhV1mOD6s
+         rJ9ipcfiQh41ACv8T30KEO4Ry9OCavsy4aR3nsHTu3Npo99gZa91cKv4Suvp0IjTPL8t
+         1gL384iczc8b2dkd9lyBcJCPjDuidWnqd4zhgtgXw24tmNObgQuJALjNissJLFNDMzck
+         6HpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnAlXEtBbOWAqUVXBOgpNtcFZ7y07OWmisbTTelfuYyVQCKkwlN3Uk5fyOBOaRKIf9oTUktKQ39g==@kvack.org
+X-Gm-Message-State: AOJu0YymNxRGen6p9QGsR9E6D7ACzTAaUU5SLtA0C/Z3nHJPKe/Cy6Br
+	+EbH/65MolLSZYoK/S4tsZGmJ/CmEBRj0xIs12cQ8g2qTz35dfo8ym0cHYZOcOOnrezBNNzBADb
+	FTri4nrl73NKFWdaXP0n0NY7FjzMN9I8=
+X-Gm-Gg: ASbGncv6T/6OXSUto8abJV8+KmpMV2J1yYN4064yGTuTvLALspKflIt5Tdi3tnsaZdK
+	PlaFe4LybwNI/GbNGcFcdA0L9WnL9v2kh7WAF1pA7smFiYdB77jHIAaJzQE2XM1NM/K3d6ut+IB
+	7cf0FuGHgGKwmKMXyIFnHV0sbGRXOIRkl/41Wuclh6dpcsf3HqlkAa/eIMWPHCWjXi9cY7NnsuG
+	JP/VZEHDYegLbK1hIU=
+X-Google-Smtp-Source: AGHT+IF8WVpB/g1JMlOdobaIjwrWwlXDO20YTmdhB82E33R4jbv8LdlESlw9MlPJrT6Dgk8ja2BuPEbvb3+xGqZlJy8=
+X-Received: by 2002:a05:6e02:164e:b0:3fc:d8b1:7a96 with SMTP id
+ e9e14a558f8ab-3fd8e98d13cmr6645145ab.8.1757108124237; Fri, 05 Sep 2025
+ 14:35:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLtVTo-Egnqdjxi2@slm.duckdns.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 1edrznbcrib4dw3tkabswcfrufrsmo6e
+References: <20250829162212.208258-1-hannes@cmpxchg.org> <CAKEwX=M8ccnsOUc4_ZcFrg-8MSwDDF250=LCFKctvTrL5vJZ6g@mail.gmail.com>
+ <4vpqew3bfs74kesmgd6kaafgm6nr6zbtt2t3hl2khkc6ds4zep@hllgy77hdumf>
+In-Reply-To: <4vpqew3bfs74kesmgd6kaafgm6nr6zbtt2t3hl2khkc6ds4zep@hllgy77hdumf>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 5 Sep 2025 14:35:12 -0700
+X-Gm-Features: Ac12FXz1xIEuR5P_UzNwabExfIPEV8sQerJraRtHn2GEfVW4UeX0axaUNE1zkPY
+Message-ID: <CAKEwX=P=2cm7X4VMGO==xqmcFfBj4tq_YU9DqCSbyAmCioDccg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm: remove zpool
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5C6734000A
+X-Stat-Signature: 6grc73fnxzsbn8mama4s8dcshw8eyn64
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F60340006
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1757108108-748670
-X-HE-Meta: U2FsdGVkX182CQvNDrzaaoBJ+OiAdJP96fLxIy5ER8yJ8WcejFVEllK9FdBa5HqivOhnX8emqmb/5zw590TNlwRRekmpSKLnIJMyTZrRd6SKPc0kP8NsuOMORDIy3Rt7Z04aWlOAtZNsSyg2GPDjEefPq81xlYqxdpQSJbgIDI/mAexyx9h71GRYcwRXXn4ORvYgHeeivROxBfqwlWLhpUYwEOuMopC0kvl8nl3gYa97bi3bSYRvuOnqWSjBZlQbIpNshU5QX/N7p0XjLkfTo6Gf952v38LX0s8vIsmYyAsobv7Z+o/HzAXf8tvni9eV32EOrH6UUyckk+lfZRZIOoLiY7fi2Y/PCu+CV8l/tzX063whFw4TG8fPNkIV+nQdwOPBZNfKwx3yhlcRDim8Ztcb6WY0u8y1jayE5cqDTkljapEC9NKoeWeCAvwmDZcFGGU9crK/IdRCTOSBLlOQ3Gg1Jk6gXGuEK8pMYGYbhZTM5fuVHZMfHweKIn6IoEpXabPWC6SMz+6fY58yTOMMxsEVO/f1la2ez/YXpTSkYQtWpbnXh7xH4n8ZDcfQmwh2RCB5TRrnA+IGtd1saCte6ytgrUUmm8w6SLmBao4vu1W9UjJlB+LSnrm1R1kJdF1l+C/cqS+YrXxUQLkr9OYuTSLvFR1PkrTqH+D8FO9orZOwLTFwTV07W2XwMjUv4Dc2hHi1qVr0UOmam+R5WoieWNdSUxOQDEYncEOow992VUXSki1JPD862EVjM+zaXbIkfzbKK3OtF7MKUR4p/iYskkzFyXwSDCuQ7D1aP89P/KtONeiopZ0+khdkSkfGWMGtfChcmu2lasFTOZlG/iFFCSHITbcv5ak6fMCDvB1pDjuC733Gxqdhy/xE5FMyUj4uSgZ6UuZ58xJd3CvwUqVVKLY9U/fLnCVsMj1lAVKRZrc1FCVQrxmG6XbdUCBfesnnHHfLhdj6J32iSodrkpg
- Qn9NcC1d
- hiF6EtXBlOXb4I0N7Tx7+AYXO3G9oi/zwNOM6wH1X1Xv8+Tl+YQZxaPDVYCMpnwzMZ+8YaRNx1TLxjauSgOTD0mzmzyfRn0/QcIn5TX3Em+bOTwyFKLsjYj1bIHyr8htIhN1PLlSA6Vo127I8qnn1J/B8RkXb5LQFKnCwFlOpRuHWbYDzKSVftf/s/YtzzGnNKWVI3Lf8Hws0GIJVEYxBKVCXQqsOf1UYw3KvoWgJypOC7SPTXBT8MkGXEunt8czI2ou8
+X-HE-Tag: 1757108125-150432
+X-HE-Meta: U2FsdGVkX19drL3mpMcaC9fgLW8J7hOBvycnB0tPTr0CS8fiBb9/rjypqR6fDjHGXjuwj3JkZB8M6mxzkCXpvMqZ34HR78ACUXvtHq7rReWtXTb+iDS3wp4oPKyYh5R+O25uckTFm9iDErRtwYAWiJKWsYXcS1WZww7cHlymt7Wv5ZpbDrYr7gk3bQfEbFkZvblHqyPWAjEUgvi9O+LJxmrkHiRwWfB+945LxY582liNoazyapXZTrPRQc3NjGp/zs9066PpQbFOiNIRb714fkLs6s70bVKcSPnx5Uh9YeV7jehR1PXuq0rR/JW8S3TcjEFP8KiTvKxN1zuO3p67LUbBFreUcJEcRvM9iZnFJxuJQ8udkkxVbNR6SlMmniI8r9fqh1/eaX7ifNbTN57YQJVfbwk21SijqS/GZ4q84qVLWaDU8j7Cs1j7HoMKD6WD7b8hK1/AQUW/5+JfJpR5SHjtAjVh4cuThkvkWpBrEY03n+xpa0hz24mrtRbzIpJyWWjJOaODqJxvqSOjs6RC7q3CEsP0Pvcjy21jnylDshsyfPkImut6IU1oegcroKlJi7LuaWwkcU989aJlbvZD0qYqxP/5fgGCJESK7CaYYFD8y8ZnhA98lwKlajPPJZVE2/+Ekfmaiha0h7bV28JJyv+mwA2SzNzpR3p2L9bdXTd2LtRFkqEAt0m11wM04WvUmo9l6QyYo3oxShENJf6lW/611exvfRJYxYQY4VlUV3XpDRJ9rqp83K57rrjyvECS3e72GE/8MJULfQm0aGwmXgz6InqWp3ZzGaJlsAoLtOVamZQAbFLHWTZkghENNUAbPL4anBKtA8I2FEc4pDhGDBmhdUz/GlEjvVErfT4Md6+Tyf1zKIWxdZf8Wp7VVbw/Z5EztfYsK3H2uNqfeZc4XdcFAp6TVw3F+8NMNmE29ttu6IXbcgEyhADo05uyHDCwYFq9nzXmuAiadopPOMw
+ 7jz11lHJ
+ E9faLWjFi1FcuVrdgMN8msyyEdkCoP3cWmK+ecoRHtULjGIuf1uiB4h4/bLGnYnvL/Nocfl7BpQKk8Melt+yRr/b2m3iS47sN4U4KIp5ULuhtKV8Py5m+/ew5zxfr4p7v9pHpTE+1KIU2CsIwibOT7kMNZX3Cpie05eyOrHPUhgY82gTPWVHa0DvYag3AB6/GhKqKrJ47Wg9PKsdcQVMBCbc52G3oHrOkyyc/sY+i8VcFEPn1tLetXLGsVHJJI3rRj72zdi+mpm27quKReXXC2VqGlwNycAa3+izPANSojnRQXUabFzNcdk9POTtt2mjIqwj/MnO7gYGRgdcNPRrYffxFDMlOiwpg6NePDSG8NAlSKRl33rqVPja/8gnyJ6lFSTiD105VeZPsTI46TVJmN2elNxCj2wUlVMDJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,30 +118,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 11:25:34AM -1000, Tejun Heo wrote:
-> On Fri, Sep 05, 2025 at 02:20:46PM -0700, Roman Gushchin wrote:
-> > Shakeel Butt <shakeel.butt@linux.dev> writes:
-> > 
-> > > Generally memcg charging is allowed from all the contexts including NMI
-> > > where even spinning on spinlock can cause locking issues. However one
-> > > call chain was missed during the addition of memcg charging from any
-> > > context support. That is try_charge_memcg() -> memcg_memory_event() ->
-> > > cgroup_file_notify().
+On Fri, Sep 5, 2025 at 12:45=E2=80=AFPM Yosry Ahmed <yosry.ahmed@linux.dev>=
+ wrote:
+>
+> On Fri, Sep 05, 2025 at 10:52:18AM -0700, Nhat Pham wrote:
+> > On Fri, Aug 29, 2025 at 9:22=E2=80=AFAM Johannes Weiner <hannes@cmpxchg=
+.org> wrote:
 > > >
-> > > The possible function call tree under cgroup_file_notify() can acquire
-> > > many different spin locks in spinning mode. Some of them are
-> > > cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
-> > > just skip cgroup_file_notify() from memcg charging if the context does
-> > > not allow spinning.
-> > 
-> > Hmm, what about OOM events? Losing something like MEMCG_LOW doesn't look
-> > like a bit deal, but OOM events can be way more important.
-> > 
-> > Should we instead preserve the event (e.g. as a pending_event_mask) and
-> > raise it on the next occasion / from a different context?
-> 
-> Maybe punt with an irq_work?
+> > > zpool is an indirection layer for zswap to switch between multiple
+> > > allocator backends at runtime. Since 6.15, zsmalloc is the only
+> > > allocator left in-tree, so there is no point in keeping zpool around.
+> > >
+> >
+> > Taking a step back, even if we do have needs for multiple allocators
+> > for different setups, having it runtime-selectable makes no sense.
+>
+> Honestly I think we should take it a step further and make the
+> compressor selection only at build/boot time and completely get rid of
+> supporting having multiple pools. We'd create one pool at initilization
+> and that would be it.
+>
+> I believe this will simplify things considerably, and I doubt changing
+> the compressor at runtime has a valid use case beyond experimentation.
 
-Oh good suggestion, I will check irq_work as well. Though I think that
-can be a followup work.
+You are completely right.
+
+And, even if there's a setup where we benefit from multiple
+compressors, the current setup is definitely not it. How are we
+realistically going to use these sysfs knobs? Change to one
+compressor, then quickly change it back? How is this remotely useful?
+
+Let's remove it all. In the future, if we want to do multiple
+compression tiers, or per-cgroup compression algorithm, we will need a
+completely different architecture anyway.
 
