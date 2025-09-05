@@ -4,97 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3AC5CA1015
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 05:42:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA07CA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 06:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34BD68E0005; Fri,  5 Sep 2025 01:42:40 -0400 (EDT)
+	id 98B208E0007; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC178E0001; Fri,  5 Sep 2025 01:42:40 -0400 (EDT)
+	id 93BB28E0001; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 238F08E0005; Fri,  5 Sep 2025 01:42:40 -0400 (EDT)
+	id 82A3E8E0007; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E9698E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 01:42:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5F6411AA92
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:42:39 +0000 (UTC)
-X-FDA: 83854102038.14.506EF09
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9610BA0002
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:42:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="mLgtGvr/";
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=JaXDkq5Z
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757050957; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A48A8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D814E11AA8D
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:30:48 +0000 (UTC)
+X-FDA: 83854223376.12.C2FDA9B
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 19214180009
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:30:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757053847; a=rsa-sha256;
 	cv=none;
-	b=mlaFBMqOk7JILG1Wl17O1zgAqGyoe5jwFviVKxdkfiItxZ0d+RuMyUg34qwZJy7haKrBVH
-	nmYa3cgRoJiL98+2p0GPKPrqKJf1+OofBEVpnR0+3l0Y9xlQqXNCvo6gdrk0MWQ8Iljmyn
-	mBnFHvHSnEJjH2gXJuuJ01+zg7GX81c=
+	b=VIiEz4JQIyx18cYGwMXyBRp+GZB+Auprmukyt4CRhDdzrcXzS+b5NNLTiLfodYJY8BXL9A
+	PWP/yw0Ec+nXgN0hI91xzoTTNsswKbWAQYQ8Cd2Bh7nO0RvGTm8oNgq00ceoBsv3Csu7QD
+	bH6ujp1rcBTseMNeTMvs642tglSXLu8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b="mLgtGvr/";
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=JaXDkq5Z;
-	dmarc=none;
-	spf=none (imf15.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757050957;
+	s=arc-20220608; t=1757053847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6uIYavXuvVkxql4mic1RNmmJBV9tJQbXNRB/J1rntf0=;
-	b=mdeBnNJDkk8m60Y7Lxn115SUuDXj1chf+RF1rVMRuXqXOqyMY/5CZHxcJu3/w0TrbzUtk9
-	67Z/wLxOF7cMrZNtX5GDfSkKpfZDqpOEDrBSAJMcoQ2J3WbcciX5WNZ7nNUpp99qp/a+fO
-	w91ovJhPMiUOyCUk4qYoi4b7EpHjTCg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1757050955; x=1757655755;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=6uIYavXuvVkxql4mic1RNmmJBV9tJQbXNRB/J1rntf0=;
-	b=mLgtGvr/BTlnRFn/pTvavaa4974fH12hdES+j8R3lvvB+FxDQbDhvD+4UdTaC5Qa+BeE5nQKwzufk
-	 MDkikHh1KVRdK/Cn/d8FB9sjxfFmyEDr6dkVS0JK4b8fwQT09poQbbznFo48JZfM8wfnUFamJUIxS2
-	 +p+1JMcx3Ib5MH2tQR3YV7fPEnRSWA3ebm6lw2tT/21xEpnRPe+5g708cZfN1LthhglEW61hLi9Yyz
-	 owLpWVLHXmoYE8acBc56ASyeMnjzAEnXqOMawWvItOkIBapfHdB49tjH7cGtJmHm/T/lDBMy3fxych
-	 +0xE8d4/pnySdV4t3HvgQIGGMNr2rTg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1757050955; x=1757655755;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=6uIYavXuvVkxql4mic1RNmmJBV9tJQbXNRB/J1rntf0=;
-	b=JaXDkq5ZOIXjTTFAUqiTpU/5uDNa/k1YWbiF+9kYGW0Pm6bX2LmPpdLOXda1ahGuRVrnTZJaTQ5zS
-	 xUcO1u9DQ==
-X-HalOne-ID: 1f4ec321-8a1b-11f0-8613-e90f2b8e16ca
-Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 1f4ec321-8a1b-11f0-8613-e90f2b8e16ca;
-	Fri, 05 Sep 2025 05:42:35 +0000 (UTC)
-Message-ID: <f0869789-ee30-4eb9-840a-502d031df1f5@konsulko.se>
-Date: Fri, 5 Sep 2025 07:42:34 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=kdTeirI2rw+R2fhuC0nJS43LeWQ2L/0KNlJACOs8gZg=;
+	b=GQoYq77VSqoik6xTellwIS4dsple9xyR49bECI9XfNiY5JnL665IGG9ecIMz6XlfTZloXV
+	7zL+U1gK9IW2XXLelaT3xaS2pRDVxJG9lbXiO2bpAQH2Z/QhEE7D0kwFbVxJRdfip9YR1w
+	p+6lISLrNjopxDPJ7j6uRTxTqeyD0F4=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 5 Sep 2025 15:30:42 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Fri, 5 Sep 2025 15:30:42 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+Message-ID: <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330>
+References: <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330>
+ <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
+ <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330>
+ <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
+ <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
+ <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
+ <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
+ <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
+ <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
+ <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: remove zpool
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
- Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <20250904164710.210731847fe25d9419203886@linux-foundation.org>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <20250904164710.210731847fe25d9419203886@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
+In-Reply-To: <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
+X-Rspamd-Queue-Id: 19214180009
+X-Stat-Signature: sir6wre3jk5sdto5grqeytf3y41xr3fy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9610BA0002
-X-Stat-Signature: eidwmm1yijie85j1nffp5wo6dt6fgm1u
-X-HE-Tag: 1757050957-18868
-X-HE-Meta: U2FsdGVkX1+KZ5X2S7vVamFpp+Efe8v0NJJeS1alD7APhRjGqw4SAvubl9jbH+jwMHJskYQUsfaUZ9UqYbW2i/w2+MHaNsp9KHhV0Bn9WM8tY81oAWNsYONbzMYCXiq1S3L4InmJ60DwxxmXV1FlQeN4zcC0XQdxVSRWlVEZB0dnLdr3W2GLjLUF2jSMCRZumdAcFcGCKNo/EKn/z3M5rhzUvNeUz3VE6cHeHJlEpbf7yVD8U0rWPoVgVcSm029lTML64DGcWW7QWTbXyhg1Htu5MIHaCrO4krqPraiG+mUtTMs9WfFE8+Cd8C3nMTuJFv1hzEv7qJAqzumLjMP0xHDW8ZQuZklevxo/faeAdDZTLyJ647r79fceyCfKX9fD9d5kp7p0KwSRuzT/4QTYETkmv5jbSyqBs1tRzwXrf0yynjy/4OkIqIiCwW8np72qNzyyYi82VQvhlF22KctWB4bRsj4Ym8HOMSvICCSMW4WjIS8R/gx0tyo7/l2Pvik2OJIVavsyR6W/XoUNxWHlhbKta3pL5uWIcdli6Jhf6Rk46QZeNA5N++fXcczJzICcPfGID5iLKP/P8Sh6UyPY11UobpVUTMSB1UioJSIZl0eEU5c4Qm+n23naubPml7xlS8fpW4YSC6jkxRtlO1xLfE02TwZycRjoeG61N+RJEp+/D5jYlCmfyix9JySWd39rBDF/cuRSpFPY+yZlOU4G9jsfoZHeZm1yP54fLq+2F4p9JIAKeh3ruUggwmLm/cfUIVOq7PAKsaIGzJHJwt21dL5x2XW6dCriI5s76KnD5aAhTNOC5FN/yr9Y7Rdgiru+A78/M/gBoXi/Gg8qa3up4PvRf7osdlNG+piDqte3lIawNM+4jCoBBRMhDWPztTJ5NJwjhqIidEeR8zCxr1Vnh8F/6jpUXXnlYJyMzSrhMlkea3Dulfitlo4VXFD29M/qHzusWTLqv2Bwr2EvsmV
- SOUqY23I
- LSDYXwd+mzCIdHRNLz1UGhpfKrOPVOorL293tV9herQPgdXGBrIMo494fJu+/tu6MTeDf3HdliVXnlizDG3VTKgDovZ/x03hwWPa9STrhHD/84qKfZWlRO3LWq7SQP538RjOZSp79AYlk4eHUv6gv7Rm91MzS5o3c/07WyPd+VFYQ8FWlT0ANB/YzqgwLWfltq55kvnKyzwD8VMaXH3IOHsgDf/lD7VRspMyU7j4bKYOV9Mn/V23EBX84xH6913u/xRCl2QKfJY2wZTegzoKqCa/LBKnVNmApABgSjdOBXgu5oWjrnuhP4LY0+Wv3l0K5VREl6CL/5kKhXAo=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1757053845-683549
+X-HE-Meta: U2FsdGVkX18AOtvMYfN6hhvi2D3FIZofrcda+bRHi+lh439CZeZ1aBNwS2YE/JGcknM02kkXVcZcUQ7tNORV2BPDg3qCRsWc9xHS7Cuvmpac28PpZqPoh5GFcyBt1i+m/78ebjePcjsNPLcaKtwWUKOz1EoO0u75Nc6wUopnXBhJ4VcoVjj7JTKOXwC9Y1ozmfWS4cbXoRybAw/QhmbBBSGNIviSUSlPFBf2ifh91Lf/3Ji7NebkgRxbnC08zEBbKJywRh2YCijMAFM0xcLc0hk4Y6uEEG5bFUPht1Btp6duXQhzRzKiG8Gx9TnTuciH8lb0ER/skm/NtA/q44pqlI1nf0WGxACamipk/mYNRJlBwIraZbgsyld8P8dUwmVrOxPmV4Gcww4D2dNON8Rd6fDcxf3SqMUuzXv33QaDLifWpsXf5lMkDMUTVw5MmHiGs9kUVonXOLJKPfdNpLhzF+MrSTNadfhIkppEaFikusrFH6ODRQEhouMdmcXCz1v40Cvb1ZtUUBnMWgP1UCIzu0XauhKUJG7cQUAOHh+/JOCnb+Xlc177zAxKXWY1VYJjiqtFGE6teXnVQ63678bNa6gr7Hn3cQsUVrM5YoTIy93Lrgn0mNOqVkomN0xx48QUkX5eB4tWGuRlmiaEGHPqS3f789SNw1mllHoNRMkIMqpNirChnCg6IoevuPMpg8NeuF1uvasayzsQtbSXVlBoTjqkZsbRiEkTIC/AOYCX9UGkTDp1Li5wvdsMn9zWjLXWap74+7+WCegINK8iJfeg8SzHaIP6gMlMCQIcsr8lyq6CehsP47q0LTpZUQ5Jp2eN8SoQIszemnWYAganF1Cnd8OwIPPydI/tSjr7Ypia325pSRC8bucwkaD85IgW3yAbPl6iA3eVXHx5lYPImhzu6U/VJjZYZqjXGCVnZ7x/zqU/nf8aYCaKUNyuY5fjETJb9r9k5J72rSEgC/kB3HU
+ s5pi2xL2
+ H8FaI5KzrANW3sensDSh1VWMuQpX4OXdKGK6s6Y1wrGfSw9CUiPB2/1i5b1uKvpdvJkhFOmfIMx0o39v5fmTJUnuDiB5le65+ycKeLJxSyD/nX0HHv5KNwbAMY56319AlkFS4VwOxobmHnAkwttpzbcIBvXqm4Niyt7OFN+MMKdGp7r7aZhDXMwVQaZicAVQXEL0IIFY+JDEFF0gLlo2vqV3MXAZLtD5w3QjKYJDYzz54WIZjaD/R6VpTJw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,29 +101,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> Yes, that works. I would skip the "add" keyword.
+> Also I notice that we can allow " " in place of "," as a separator as well.
 
+Yes, supporting both " " and "," sounds convenient.
 
-On 9/5/25 01:47, Andrew Morton wrote:
-> On Thu,  4 Sep 2025 11:33:24 +0200 Vitaly Wool <vitaly.wool@konsulko.se> wrote:
-> 
->>> With zswap using zsmalloc directly, there are no more in-tree users of
->>> this code. Remove it.
->>>
->>> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->>
->> Per the previous discussions, this gets a *NACK* from my side. There is
->> hardly anything _technical_ preventing new in-tree users of zpool API.
->> zpool API is neutral and well-defined, I don’t see *any* good reason for
->> it to be phased out.
-> 
-> Well, we have the zpool code and we know it works.  If a later need for
-> the zpool layer is demonstrated then we can unremove the code at that
-> time.
+> Maybe instead of "remove hdd", just "-hdd" which is similar to how to
+> operate on swap.tiers.
 
-The whole patchset [1] depends on zpool, with the whole intention to use 
-it on the Rust side.
+Agreed, "+" for add and "-" for remove is simpler.
 
-[1] https://lkml.org/lkml/2025/8/23/232
+> Oh, you mean the tier not listed in the above will be deleted.
+> I prefer the above option 1) then.
 
+That makes sense. Option 1) looks simplest overall.
 
+> I don't understand what is this "removing" and "in stage"...
+> What is it trying to solve?
+
+That came from an idea to pre-add a new tier before removing another.
+But I now think returning an error on overlap is simpler, so staging is
+not needed.
+
+> What do you mean by "visible"? Previous discussions haven't defined
+> what is visible vs invisible.
+
+By “visible” I meant a staged state becoming active. I realize the term
+was confusing. and it is not needed as I already explained.
+
+> Trigger event to notify user space? Who consumes the event and what
+> can that user space tool do?
+
+I agree, sending user events is unnecessary. It is simpler to let tiers merge or
+be recreated and let the allocator handle it.
+
+> If you remove the
+> swap tier. the range of that tier merges to the neighbour tier.  That
+> way you don't need to worry about the swap file already having an
+> entry in this tier you swap out.
+
+Should the configured mask simply be left as-is,
+even if (a) the same key is later reintroduced with a different order (e.g.,
+first → third), or (b) a merge causes the cgroup to use a lower tier it did not
+explicitly select? 
+I infer that leaving the mask unchanged is acceptable and this concern
+may be unnecessary. if you consider this unnecessary, I am fine
+to follow the simpler direction you suggested.
+
+> If the fast path fails, it will go through the slow path. So the slow
+> path is actually a catch all.
+
+I think my intention may not have come across clearly. I was not trying
+to propose a new optimization, but to describe a direction that requires
+almost no changes from the current behavior. Looking back, I realize the
+ideas I presented may not have looked like small adjustments, even
+though that was my intent.
+
+As a simple approach I had in mind:
+- Fastpath can just skip clusters outside the selected tier.
+- Slowpath naturally respects the tier bitmask.
+- The open point is how to treat the per-CPU cache.
+
+If we insert clusters back, tiered and non-tiered cgroups may see
+low-priority clusters. If we skip insertion, tiered cgroups may lose
+caching benefits.
+
+Chris, do you have another workable approach in mind here, or is this
+close to what you were also thinking?
+
+> In my original proposal, if a parent removes ssd then the child will
+> automatically get it as well.
+
+I now see you mean the effective mask is built by walking parents with local
+settings taking precedence, top to bottom, preferring the nearest local
+setting. Conceptually this yields two data structures: a local-setting mask and
+a runtime/effective mask. Does the above capture your intention, or is there
+anything else I should mention?
+
+A few thoughts aligned with the above:
+- There is no separate “default setting” knob to control inheritance.
+- If unset locally, the effective value is derived by walking the cgroup
+  hierarchy from top to bottom.
+- Once set locally, the local setting overrides everything inherited.
+- There is no special “default tier” when tiers are absent.
+- If nothing is set anywhere in the hierarchy, the initial mask is treated as
+  fully set at configuration time (selecting all tiers; global swap behavior).
+  However, reading the local file should return an empty value to indicate
+  “not set”.
+
+One idea is to precompute the effective mask at interface write time, since
+writes are rarer than swap I/O. You may have intended runtime recomputation
+instead—which approach do you prefer? This implies two masks: a local
+configuration mask and a computed effective mask.
+
+And below is a spec summary I drafted, based on our discussion so far for
+note and alignment. 
+(Some points in this reply remain unresolved, and there are additional TBD items.)
+
+* **Tier specification**
+  - Priority >= 0 range is divided into intervals, each identified by a
+    tier name. The full 0+ range must be covered.
+  - NUMA autobind and tiering are mutually exclusive.
+  - Max number of tiers = MAX_SWAPFILES (single swap device can also be
+    assigned as a tier).
+  - A tier holds references when swap devices are assigned to its
+    priority range. Removal is only possible after swapoff clears the
+    references.
+  - Cgroups referencing a tier do not hold references. If the tier is
+    removed, the cgroup’s configured mask is dropped. (TBD)
+  - Each tier has an order (tier1 is highest priority) and an internal
+    bit for allocation logic.
+  - Until it is set, there is no default tier. 
+    (may internally conceptually used? but not exported)
+
+* **/sys/kernel/mm/swap/tiers**
+  - Read/write interface. Multiple entries allowed, delimiters: space or
+    comma.
+  - Format:
+      + "tier name":priority  → add (priority and above)
+      - "tier name"           → remove
+    Note: a space must follow "+" or "-" before the tier name.
+  - Edge cases:
+      * If not all ranges are specified: input is accepted, but cgroups
+        cannot use incomplete ranges. (TBD)
+	e.g) echo "hdd:50" > /sys/kernel/mm/swap/tiers. (0~49 not specifeid)
+      * Overlap with existing range: removal fails until all swap
+        devices in that range are swapped off.
+  - Output is sorted, showing tier order along with name, bit, and
+    priority range. (It may be more user-friendly to explicitly show
+    tier order. (TBD))
+
+* **Cgroup interface**
+  - New files (under memcg): memory.swap.tier, memory.swap.tier.effective
+    * Read/write: memory.swap.tier returns the local named set exactly
+      as configured (cpuset-like "+/-" tokens; space/comma preserved).
+    * Read-only: memory.swap.tier.effective is computed from the cgroup
+      hierarchy, with the nearest local setting taking precedence
+      (similar to cpuset.effective). (TBD)
+    * Example (named-set display, cpuset-like style)
+
+      Suppose tier order:
+        ssd (tier1), hdd (tier2), hdd2 (tier3), net (tier4)
+
+      Input:
+        echo "ssd-hdd, net" > memory.swap.tier
+
+      Readback:
+        cat memory.swap.tier
+          ssd-hdd, net     # exactly as configured (named set)
+
+        cat memory.swap.tier.effective
+          ssd-hdd, net     # same format; inherited/effective result
+
+  - Inheritance: effective mask built by walking from parent to child,
+    with local settings taking precedence.
+  - Mask computation: precompute at interface write-time vs runtime
+    recomputation. (TBD; preference?)
+  - Syntax modeled after cpuset:
+      echo "ssd-hdd,net" > memory.swap.tier
+    Here “-” specifies a range and must respect tier order. Items
+    separated by “,” do not need to follow order and may overlap; they
+    are handled appropriately (similar to cpuset semantics).
+
+* **Swap allocation**
+  - Simple, workable implementation (TBD; to be revisited with
+    measurements).
+
+I tried to summarize the discussion and my inline responses as clearly as
+possible. If anything is unclear or I misinterpreted something, please
+tell me and I’ll follow up promptly to clarify. If you have comments, I
+will be happy to continue the discussion. Hopefully this time our
+alignment will be clearer.
+
+Best regards,
+Youngjun Park
 
