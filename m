@@ -4,107 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E225CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:44:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 303B0CA1013
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:47:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 068148E000A; Fri,  5 Sep 2025 05:44:36 -0400 (EDT)
+	id 8838F8E000E; Fri,  5 Sep 2025 05:47:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03F5B8E0006; Fri,  5 Sep 2025 05:44:36 -0400 (EDT)
+	id 85B598E0006; Fri,  5 Sep 2025 05:47:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E70858E000A; Fri,  5 Sep 2025 05:44:35 -0400 (EDT)
+	id 770EB8E000E; Fri,  5 Sep 2025 05:47:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D38238E0006
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:44:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 845E516061C
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:44:35 +0000 (UTC)
-X-FDA: 83854711710.28.B14FB41
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 95B9512000A
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:44:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=aisle.com header.s=google header.b="Y/eVRq/I";
-	spf=pass (imf29.hostedemail.com: domain of stanislav.fort@aisle.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=stanislav.fort@aisle.com;
-	dmarc=pass (policy=quarantine) header.from=aisle.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 636448E0006
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:47:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0FC26BA70C
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:47:01 +0000 (UTC)
+X-FDA: 83854717842.01.EA79A3A
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 90DA3180003
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:46:58 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VMha2oUb;
+	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757065473;
+	s=arc-20220608; t=1757065618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RElUv6d6ZKdbX9YUWuQEPJnZdgmMS4xC3czLm/ptRu0=;
-	b=kPl4B/vp6W/W0XVMZ8/vIw2GEfdDgXm3Vo9NUbV3q8Mi+aMB+T5mmcFpYS9I+MtmnUBhvT
-	EU4scSDtkH8RN2e6eKZ4I1Zb+yNDPYb3zJoT87y6Bu1jaZ/E+F4Y9gUAfCKX4QXQEI8AGt
-	JwvQdH34jpD0PW9bHRhoyjJaRr6d9QA=
+	bh=6wm0ttcidOnuuW+7W5s4enprUWnKXFXXBpVS5cSOiYc=;
+	b=anmkMHw60Z/K+NoQmFMEyRXjQEx7BlSVlPfbAuMFIh5HK+pQo10NJXc+5kIRSBGbiyStvi
+	oiqppLvr3mtyHvsEwBsy2Y9ocfoOmassCh/Odv1W4HyYMkyKmx4vfbJ/hoL6NFtbdV73U9
+	X8A8WNM0vax1ymk2y+g3KbPV4GWpJok=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=aisle.com header.s=google header.b="Y/eVRq/I";
-	spf=pass (imf29.hostedemail.com: domain of stanislav.fort@aisle.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=stanislav.fort@aisle.com;
-	dmarc=pass (policy=quarantine) header.from=aisle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757065473; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=VMha2oUb;
+	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757065618; a=rsa-sha256;
 	cv=none;
-	b=gZwqSuf+M0PHNp1Rl7z5rpJr7cix5HwhKTNUdIn+H0L/fN5kt84PhvkCXAYMla5VGYGMlG
-	2KAVIE0m9xGtCsFcbZqMhOf559u8U1ZBZHIHpmFBNFWBJHi3w6Z5G41QDgbjPHYV3gkNih
-	mIPiMZvWWczc9uv6OFn4pKRdQQE5uWE=
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-61cf8280f02so2897318a12.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 02:44:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aisle.com; s=google; t=1757065472; x=1757670272; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RElUv6d6ZKdbX9YUWuQEPJnZdgmMS4xC3czLm/ptRu0=;
-        b=Y/eVRq/IAwRYki54rJddGSzRJZptoeg6lQBsks7cMqxi3mxIe6ubonjL2BLoIrGo+O
-         jrYvkH3JAl58Ncterec6HFiAse2MZM5VNDAO2WUX4VvAP39PYSGwECUTZPsXBtVjH+08
-         0Gf/Z7Wn0E8BhrNoHojHB0PPwbZ/aqwmbePRXxJfpTpxmg63uKiji93a34jXo/edfXDI
-         /McAPPeSHZGt/NLQCDiMOaVWGhS1icDz46YdJj684oZ56KWzCGGOUOBQaZezK+m5MIoZ
-         DvT85sTMsaxAyfKx9QC+3jCvzlOGR08Msv4gsSmk/FuwIVNKh83yC8ikHrf6rOmO1euN
-         F/4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757065472; x=1757670272;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RElUv6d6ZKdbX9YUWuQEPJnZdgmMS4xC3czLm/ptRu0=;
-        b=GsFJgJ55clQAV8eVBVklWzXt50QfdD6szexq+g8jFh5kcfU1zNcqnvzRIcK0Z1Zkm1
-         hb6zUc/c2HgNWTve6y0tYQS1dWqKR2qfo7OOgs8ZPeqzzdy/ZRXWqVh7iMtFh++Xrvso
-         SeD+Kh4I0ok8cL6lJYjvnYU0y1MlN9bwhyJlyhrr7UQKzhW7BNaOGN/wGlvRF0bcZw8w
-         lZ43tQLaf9SXoqpL87+LuZirSS/aTKy2G3tub5Iy3lC0AccEZCecOE04urPebtTON1ki
-         RmLj3PA7ijzuZ9mmidEXBznkGGY4UuAp5XBROwwpJiKd3zBJd8VK2EzF9w+j8vBT4REm
-         UwrA==
-X-Gm-Message-State: AOJu0Yx29ghtqBCNehPjxsKbm55LkMNuIPhVcO6sG4YWimpSZx9ykh0O
-	cKhcK4WvBd0He2gOomSkOMhPlfb00/xvFjRXMhhfO84DfNTe9frk3utk5ATQcrZQmCOde+Wbe/h
-	rkXOg89/AQyLHQMOI+HjMKk/rOChJ/PSlwoXeSzY/1A==
-X-Gm-Gg: ASbGncsfLIpm4hsSR7dFsAb5GvkTIKMDt8xFJNPfBLZaFQaE6i+Wlwlk+PNw2qs9kRW
-	EaK7wdh0URk9AjZGKfecMTmuQkJsrVzUBip1ssmEwonVUY5uItd/4xRKSL7zyJG0DSxTOEIuJcS
-	IALy4SxQqslbV8zfp8sSl8Y5hSyWrGIt7sH2RKMInpvqS9en20/VqDLNgN6txgEjoqA9cKIteMI
-	gLysHOogXFtLquLtzI=
-X-Google-Smtp-Source: AGHT+IHZaRkabOxi9U4ocp/n0B85qNMDuksEzX4r1tCiG20H9U5BC6i2PuhhwN8R+ybZsm+aRg31k6GW1GmgCNUhcQo=
-X-Received: by 2002:a05:6402:13cd:b0:61e:ee01:292a with SMTP id
- 4fb4d7f45d1cf-61eee0130d9mr6564597a12.32.1757065472023; Fri, 05 Sep 2025
- 02:44:32 -0700 (PDT)
+	b=qXwys7BzACXBoIBhuzhT1dFUMOrIDC6FG5vbpFEWWpUE+jfPX3NEMLr2TayMHa+aplrKYY
+	hW0EWZFpskgemAh6pmc4ppTeFZvjnjA8zxqZdTp8fDr9C2721bslNuQHNDZgjN1ImMQxNv
+	FRX8r6Vi408mCm9ipUDERiW/jiOsBrg=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5858E7UF022544;
+	Fri, 5 Sep 2025 09:46:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=6wm0ttcidOnuuW+7W5s4enprUWnKXF
+	XXBpVS5cSOiYc=; b=VMha2oUbllfJfLMtOLr57qJJz6vzFJD7LJ8gk5XShnJjc7
+	IbrZHVpXb0CrQB5ykpgaxxSFsvvfNEanPBHuuHOGbETD14NXO2pqfL1MNf784mVy
+	uvjiyf12/QVwQ2mZmkqASP9O1WaaViYltK6jPW1ia7fc4z77ZZIcxHNd6zZP5Nha
+	CbH/zL34/kidtMFkhDHPIOsMEJbRBMwe8T8wEPT/Ddq6WBOoaLYfsZ8bm+i7vTSv
+	P1GmCBCUdyPpWD67R2YaTENZDIlFGnxT+oj4rEpMuGkVtfQCqHsL9/re90DkKZLP
+	0DLbyK939ud6LvSGoOT7rBnWZkhI2AUGLtGlCZgg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usurfkcd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 09:46:31 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5859bi0p009310;
+	Fri, 5 Sep 2025 09:46:30 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usurfkc7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 09:46:30 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5856Gg3M013959;
+	Fri, 5 Sep 2025 09:46:29 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48veb3rk09-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 09:46:28 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5859kQ0M52101484
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Sep 2025 09:46:26 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BCE5220040;
+	Fri,  5 Sep 2025 09:46:26 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF00220063;
+	Fri,  5 Sep 2025 09:46:24 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.88.103])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  5 Sep 2025 09:46:24 +0000 (GMT)
+Date: Fri, 5 Sep 2025 11:46:23 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 0/7] Nesting support for lazy MMU mode
+Message-ID: <9fd076c7-f163-4b92-8201-d8a259a338c1-agordeev@linux.ibm.com>
+References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
-References: <20250904181248.5527-1-disclosure@aisle.com> <sa4mytppu6dfpquytx6jwdvak7bkyruztnr27vibbzhux2rjsl@pnrxdi5ecua3>
-In-Reply-To: <sa4mytppu6dfpquytx6jwdvak7bkyruztnr27vibbzhux2rjsl@pnrxdi5ecua3>
-From: Stanislav Fort <stanislav.fort@aisle.com>
-Date: Fri, 5 Sep 2025 12:44:21 +0300
-X-Gm-Features: Ac12FXyerNPuu-nXG3YLRZNwRrZtvQsuZQAbKDsg94s9SDim6d-29bX2iJoFPew
-Message-ID: <CA+uRpKSm_u_RDrR8nP5DFFeV4vy5vT4tp1xX=rVNd-ehTCzkMw@mail.gmail.com>
-Subject: Re: [PATCH] mm/memcg: v1: account event registrations and drop
- world-writable cgroup.event_control
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, akpm@linux-foundation.org, stable@vger.kernel.org, 
-	Stanislav Fort <disclosure@aisle.com>
-Content-Type: multipart/alternative; boundary="0000000000004eaf24063e0aaffb"
-X-Stat-Signature: irag9rro51i3zqbdzg8mhtsoqowgrqbr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904125736.3918646-1-kevin.brodsky@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMCBTYWx0ZWRfX0b7vKa9wIqUd
+ 15JIKVxY/eFyoNy0/rx0rVDv/Yc4PB6ogniG6U5JZlC8qyn8Y0NgFv6oYYbeCaWjZF7P/Etub/q
+ /XnEYzafYNkoOrYQMbqj6nFHYpYxymufPYjcGAjaRnVt2jxUzS3zPb6lpNjC6s5Oxrs0WYMRvbR
+ dBvy+J/7pMy+teTA+x9T/E6ggkXyizQGe//4AxcBxcrhCKNqzem6rRKcxJLTefmrfU0CU2VW6uC
+ 5x2JqlOAMSNtXM1AfGSytrxIFOr2S3XPEdTEP1QyOTNlKzTtGtrjaWkIbxQVZc7XyWa9Ggbdnl8
+ wkgYg373aI71Rh0ZOzmEr1tWX4M68Yz9HwoQbCiqMpeXkMBa3EZ9mW+HowhL506x5+1yPvl4rLU
+ 90pIQxaV
+X-Proofpoint-GUID: NmMecPGQNEFV5Z6yet56qjNF4vqqAdRy
+X-Proofpoint-ORIG-GUID: 1xCeVzb0bz4EbY7yd5ySncyf5nvF03Hn
+X-Authority-Analysis: v=2.4 cv=Ao/u3P9P c=1 sm=1 tr=0 ts=68bab177 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8
+ a=PE-dCK3ueRk4C2obWmcA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_02,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0 impostorscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300030
+X-Rspamd-Queue-Id: 90DA3180003
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 95B9512000A
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757065473-605010
-X-HE-Meta: U2FsdGVkX18XGQr792Nfe3UeMp+624tyMmnOArtYSLP5H/XsB5QWBH/RgeyG4EOmMllyPz8lkCc9JexDT5AFJ1rvR46gcZsK61KO2OkidCy8BgGtatjbikVZeMssxYAU3rnKiP35z9QBGl5pIS7AgLUFoPyAxF6oLD3PX3ILcRKhUk2r/aSYVpk43rWFX3EZm5dMqnhQ7aK4bPRQmTHu/idmk/hrIqAEzH543PAhRl8dw1oebdIBpVc4KuzppgwyI67zCOHGBfBuMYHmVQERe6lJMZgifod9ShlnzonKclX1WT4+QCdIR+QaiLdZ4sGjfwd55dzvvealaQF+dpbsdOM4ucTDcMdxSvSgheT4MiApQxLbd0Ws9tGqlv8VQZgweHHhYnCLae8sQN8E+Qu55ReYmk06udrK3I1J3HYE5voorokHnjlOaNz3PXBqi7s3TY2f75k/Ujp4LqN9KKDEQxOdmJqOUA3YpWYe82IfPUS6yoExEWUyEvghOMkn/JZ2jJqNcZgTA0z57eFc5oYd698KACgda64u30Sso2Uq3n16+F0DafuVmcDr3lvI34o4KTQwSanuthMf8EQmx/6xSN0fVAqW1mASJByAbZNjUzKb0vcVxPG7WZN4MSVfHxMvjdKwHx6ChwBwwVP83atfKwFSRJBUGtjwo+sgZYqLfBu1tABK4orgOM+dxFKd6mHVIrOcJSWq3CwN/OKjVa07WG/LT9VnNLWrfG5MphjR1BjhaAMLp7Afpj9ZjLSfkGlkWvSwT63pqy5IukfC7ZEXd5h0UYDmS0Q7hregokAXJDqXHRiXKa0P82w5G2UUPdvQru1Yr4t0By5p5/7vEE2Br6tJS4mpMc8aiYlOpvZxKQcU6YDUZNOeq4ZnVECq48RjbC41t0sf2M571jxxDB/mDzJ7ivJYmKmKQ6yPuZamTjNU6YgsffS9U6kqahs7kaLwnbcq687gkNY=
+X-Stat-Signature: 56tuzaq4ngcexp4bahgxhsedzn5j7idq
+X-HE-Tag: 1757065618-998141
+X-HE-Meta: U2FsdGVkX1/u/a1GoaxQ1M3Ry9aVlDcAFilfLdT2e412Q2RflEkwC/GlZaV7z1ZcAl6WS2P43/A9XLCof+84pPao6mmBIhvxIr4IGCTzFBX9+GSdVl1ZtLBAhTZ2JTaCMYvyqVMRUOFoar+QVnT+a/AI3K0ifhvPJSS3hGxcWANMsgSkS6t+mS3+5lzO8SorgqHZVar+QQQZxvxvnMSOwq6wROUv4v5sjXP2Fg7KQMn071FAwHl/vSXWUq60KAUGkvUh0zakVtktvlXcbWRzPQnIUyCUGEQ7XY3Q1xRsYqg6orkvYcrZBIdD6dxPbUxDDnzfy7FUNkE/o0KnP17dlPbZZF3A8o1ROdhrpXJ0ZicwygGN28P2VrUl3IyczrUDE2WPkKF0qPlhgy0typq7FnQRNBPTwDzkIhu5/2aJgWv9Jl8ok+WQQXD+jWRVQY0RDgwJv3UB8KoYNyjWeQdo4OGLga1wz6/iSKOQpExemLk4stDPj9nSGD+qbwyowvLS8jX2TFgokJW39hXjEKkbp9MzER0GfkWjps1mFDsUIdfELatD7kJFhUH1IiM9Cluty3+YDqliWvhcb945O8SMQXk7kZ/BVfVryseVtB14VDmcyFTyFqetTLNF4vOLD2bIzxqOjZLAK18Jyq5iSmrmCWZRHe5fCg00UBRGkd1aUxKNaGNac2lj7l7ZDf+satnZ8oClteLjgxrzV8/iRUGUHki4x/MhbAfsLdsVcWq+0mWamjjksi0niCBNkZHfpYwHq6+ctFo0CpTMdsfqywhoxRftvPaaNjEhItP7fLtqCm9rkGw9PkI/NGesAlMSYaTMGoD/GktulQzPM2Z5AgSISyyFL1Xvdk5vWkk7qPlTiGOHHCUGPt3SN3OJAfyH2pyngCyN5olKL+t2KM4IgsXP3/BV6t9v2FM3pPCgjnRTqTQ2ed30dCndT2iqM0ZQGaqYa/CrpKIU2yASO4Jkq7h
+ PrDW5Gcj
+ jyFImAAMp+0WUTsxZsI/GZUIa+hnMSbQ/vejBgj6PR/IumdN/S+vmCIBleFqCJu0GE82lU3vDY0C8INzV2VW84MYYon88KZEvkL5QPPux/CF0uOfv/ICWM8ft9CqNdW78rTyq1cxd0+bZHlonxLQ9l3oNVZeTW7I6Y2GHep37q5+yipvl2E+uWpZir576Ff1035x6t8TbS3iZXf3iRTqaZyiTTmgcamngbeP0GD1auLUY0krGIYEnsfUKlzCzewabcT1Oq9uwATmBNzJEA4JQGqapHfuxZ56KBYj7csY5v5aaDeeFCooD66yvg5WBjYhsADj6BGJhQsJSVebhF0UxwHLbxzbedl6hEaPYIbQ0NTkVz+lAWUbzzk4oq034XjbismGDGpjzxe/clPc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,105 +163,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000004eaf24063e0aaffb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Sep 04, 2025 at 01:57:29PM +0100, Kevin Brodsky wrote:
 
-Hi Roman, Shakeel, Johannes, and all,
+Hi Kevin,
 
-Thanks for the quick reviews and acks.
+> When the lazy MMU mode was introduced eons ago, it wasn't made clear
+> whether such a sequence was legal:
+> 
+> 	arch_enter_lazy_mmu_mode()
+> 	...
+> 		arch_enter_lazy_mmu_mode()
+> 		...
+> 		arch_leave_lazy_mmu_mode()
+> 	...
+> 	arch_leave_lazy_mmu_mode()
 
-I=E2=80=99ve sent v2 switching to GFP_KERNEL_ACCOUNT in all three allocatio=
-ns.
-Otherwise unchanged.
-Link: https://lore.kernel.org/all/aLqvzCiPCGzA5eYo@b7823f61de85/T/#t
+I did not take too deep - sorry if you already answered this.
+Quick question - whether a concern Ryan expressed is addressed
+in general case?
 
-If you=E2=80=99d like me to respin to restore any tags into the commit mess=
-age
-(e.g., Acked-by: Johannes, Reported-by, Cc: stable) instead of adding them
-while applying, I=E2=80=99m happy to send a trivial v3.
+https://lore.kernel.org/all/3cad01ea-b704-4156-807e-7a83643917a8@arm.com/
 
-Let me know if this looks good.
+	enter_lazy_mmu
+		for_each_pte {
+			read/modify-write pte
 
-Best wishes,
-Stanislav Fort
-Aisle Research
+			alloc_page
+				enter_lazy_mmu
+					make page valid
+				exit_lazy_mmu
 
-On Fri, Sep 5, 2025 at 2:46=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.dev=
-> wrote:
+			write_to_page
+		}
+	exit_lazy_mmu
 
-> On Thu, Sep 04, 2025 at 09:12:48PM +0300, Stanislav Fort wrote:
-> > In cgroup v1, the legacy cgroup.event_control file is world-writable an=
-d
-> allows unprivileged users to register unbounded events and thresholds. Ea=
-ch
-> registration allocates kernel memory without capping or memcg charging,
-> which can be abused to exhaust kernel memory in affected configurations.
-> >
-> > Make the following minimal changes:
-> > - Account allocations with __GFP_ACCOUNT in event and threshold
-> registration.
-> > - Remove CFTYPE_WORLD_WRITABLE from cgroup.event_control to make it
-> owner-writable.
-> >
-> > This does not affect cgroup v2. Allocations are still subject to kmem
-> accounting being enabled, but this reduces unbounded global growth.
-> >
-> > Reported-by: Stanislav Fort <disclosure@aisle.com>
-> > Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Stanislav Fort <disclosure@aisle.com>
->
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->
+<quote>
+This example only works because lazy_mmu doesn't support nesting. The "make page
+valid" operation is completed by the time of the inner exit_lazy_mmu so that the
+page can be accessed in write_to_page. If nesting was supported, the inner
+exit_lazy_mmu would become a nop and write_to_page would explode.
+</quote>
 
---0000000000004eaf24063e0aaffb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+...
 
-<div dir=3D"ltr"><div dir=3D"ltr">Hi Roman, Shakeel, Johannes, and all,<br>=
-<br>Thanks for the quick reviews and acks.<br><br>I=E2=80=99ve sent v2 swit=
-ching to GFP_KERNEL_ACCOUNT in all three allocations. Otherwise unchanged.<=
-br>Link: <a href=3D"https://lore.kernel.org/all/aLqvzCiPCGzA5eYo@b7823f61de=
-85/T/#t">https://lore.kernel.org/all/aLqvzCiPCGzA5eYo@b7823f61de85/T/#t</a>=
-<br><br>If you=E2=80=99d like me to respin to restore any tags into the com=
-mit message (e.g., Acked-by: Johannes, Reported-by, Cc: stable) instead of =
-adding them while applying, I=E2=80=99m happy to send a trivial v3.<div><br=
-></div><div>Let me know if this looks good.<br><br>Best wishes,<br>Stanisla=
-v Fort<br>Aisle Research</div></div><br><div class=3D"gmail_quote gmail_quo=
-te_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 5, 2025 at =
-2:46=E2=80=AFAM Shakeel Butt &lt;<a href=3D"mailto:shakeel.butt@linux.dev">=
-shakeel.butt@linux.dev</a>&gt; wrote:<br></div><blockquote class=3D"gmail_q=
-uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
-04);padding-left:1ex">On Thu, Sep 04, 2025 at 09:12:48PM +0300, Stanislav F=
-ort wrote:<br>
-&gt; In cgroup v1, the legacy cgroup.event_control file is world-writable a=
-nd allows unprivileged users to register unbounded events and thresholds. E=
-ach registration allocates kernel memory without capping or memcg charging,=
- which can be abused to exhaust kernel memory in affected configurations.<b=
-r>
-&gt; <br>
-&gt; Make the following minimal changes:<br>
-&gt; - Account allocations with __GFP_ACCOUNT in event and threshold regist=
-ration.<br>
-&gt; - Remove CFTYPE_WORLD_WRITABLE from cgroup.event_control to make it ow=
-ner-writable.<br>
-&gt; <br>
-&gt; This does not affect cgroup v2. Allocations are still subject to kmem =
-accounting being enabled, but this reduces unbounded global growth.<br>
-&gt; <br>
-&gt; Reported-by: Stanislav Fort &lt;<a href=3D"mailto:disclosure@aisle.com=
-" target=3D"_blank">disclosure@aisle.com</a>&gt;<br>
-&gt; Acked-by: Johannes Weiner &lt;<a href=3D"mailto:hannes@cmpxchg.org" ta=
-rget=3D"_blank">hannes@cmpxchg.org</a>&gt;<br>
-&gt; Cc: <a href=3D"mailto:stable@vger.kernel.org" target=3D"_blank">stable=
-@vger.kernel.org</a><br>
-&gt; Signed-off-by: Stanislav Fort &lt;<a href=3D"mailto:disclosure@aisle.c=
-om" target=3D"_blank">disclosure@aisle.com</a>&gt;<br>
-<br>
-Acked-by: Shakeel Butt &lt;<a href=3D"mailto:shakeel.butt@linux.dev" target=
-=3D"_blank">shakeel.butt@linux.dev</a>&gt;<br>
-</blockquote></div></div>
-
---0000000000004eaf24063e0aaffb--
+Thanks!
 
