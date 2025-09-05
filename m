@@ -4,171 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67082CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:40:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D04CA1013
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:42:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF81D8E0001; Fri,  5 Sep 2025 05:40:50 -0400 (EDT)
+	id B37858E0007; Fri,  5 Sep 2025 05:42:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCF516B0007; Fri,  5 Sep 2025 05:40:50 -0400 (EDT)
+	id B0F268E0006; Fri,  5 Sep 2025 05:42:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A97468E0001; Fri,  5 Sep 2025 05:40:50 -0400 (EDT)
+	id 9B02A8E0007; Fri,  5 Sep 2025 05:42:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 966126B0005
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:40:50 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4479B140423
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:40:50 +0000 (UTC)
-X-FDA: 83854702260.25.03BD63B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F040018000A
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:40:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c9eeM+E5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8A30C8E0006
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:42:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5FFE613BD0D
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:42:14 +0000 (UTC)
+X-FDA: 83854705788.01.C6402D1
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4F35918000F
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:42:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=UTKVHBh2;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757065248;
+	s=arc-20220608; t=1757065332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1QoVoPbILYJ1+I01JkZn/InNWSrN6NXwr249ONpvW0g=;
-	b=Y7oTTkqU+a/xY3y182+El6wLjgKB/wMMUVeeufXs6tu9NB78MXzoV+CfXpyRaZW9lrtT08
-	WWrgAz03aRgJGFzOk2Fz4/+gz1IwCLauLPDOGaU+HdiK4fdfcfp+YV6yWpbl17k8yEEFJg
-	OjJhLMx7Mmn5JBJvPWTSOP2KS6f1O4Q=
+	bh=5cF3nbEEsUR8WnbK9SQ1WTh/tehrYBkeXJ+lrjf3eIw=;
+	b=c9EwOF+Oj1aZEfE9s5FvmSEGIw1C+BaXvc+2OzOSWTr3woBq/JX8KOmNhwymJVVg4B8ywB
+	0JzEVPVrcu5LyOiLutPGoWRogxI3pxuFC7TSEVqziFtS/QeyngOtM8s4NybMaDuujpIAwO
+	XI0SKCyqc+9gJ24OOBc/TpsZ1B68quc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c9eeM+E5;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf06.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757065248; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=UTKVHBh2;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757065332; a=rsa-sha256;
 	cv=none;
-	b=gAMTp0dxDht1CsAgmwRi1s2E/K9KEJQmkgezZ1sfyRMBm3AX7ePI0mfJuuoDA1IhilpIbn
-	CRIq/I2liyDqsC4HRaE1BlftQjQZxr2G44kzJgs4WKEDTitkRxPYHKUcpaE+eVTNlmDK1l
-	Ip4h3jzPu37Ki46ZrLfFPhX1R7akue0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757065247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1QoVoPbILYJ1+I01JkZn/InNWSrN6NXwr249ONpvW0g=;
-	b=c9eeM+E51SQx23WrE54xtxwm/77TWdEeKSvOgxMAPCKgK/4vj4ZP2eOeK6ZZBSPbbxTqXk
-	x/n1Lk6Gl+BCjQZKd7BHtH0GfjnwCOCeeYrElhhPIPlu2vTfwaLA8cPE6e26TPpwG8jteD
-	27WhfY56xZ9z6upf6MxG0dPl/y4WEgA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-dpxSBRi1OJSHVEP7czyR5Q-1; Fri, 05 Sep 2025 05:40:45 -0400
-X-MC-Unique: dpxSBRi1OJSHVEP7czyR5Q-1
-X-Mimecast-MFC-AGG-ID: dpxSBRi1OJSHVEP7czyR5Q_1757065245
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3e26569a11aso865392f8f.2
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 02:40:45 -0700 (PDT)
+	b=4GCPz0lWh6dfha0EKRmB8pmCA/7KRqTzDMcx/yG+vWBGHIBI/GUEhtBRavjj5jy9hS1xGN
+	n3p7euXd/Ma0HhmgWVkJkT41ih6Z2MCiqbn6c1ckAssXUFAfKImmhAraPf8PALul9JZGl3
+	7UwYJ4EKsb9saUbMFbGJGjbGMBkctVE=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45b8b8d45b3so18327695e9.1
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 02:42:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757065331; x=1757670131; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5cF3nbEEsUR8WnbK9SQ1WTh/tehrYBkeXJ+lrjf3eIw=;
+        b=UTKVHBh2n28gZv1bG5hZK5StyhqPzfzADpohb4uET3oH3rMyGWjCjYEAlZtcBWeP+g
+         OXK/lUbmQ4zZ78FVK+vBRyPt24fPbXslE9QDM2lNtTFjfTBMkvsgLEUcZwV5phTMf9LK
+         R/FVbaRcNsXM1zSF57Epw59QyI5DRqt4+9ci+uMh9ZhTpmJQsFdY+rzhTYGDLCHvMhKl
+         WWvROSRMrfLNeDPPS367OHqDpaQ2RI4atHfObAHzDVunr8NPIa+37OuJzy2S1o9l9Cp0
+         ElfUAEhYOfluyRiUPqI7+ZXiby5zx98s7jNLw8mLS4LRQyXfd2/7Y/AM0qwWvJ97W7zD
+         Wo9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757065245; x=1757670045;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1QoVoPbILYJ1+I01JkZn/InNWSrN6NXwr249ONpvW0g=;
-        b=Lqrd2ov4oWq0EC1l8muANPUNB3W8d8PXxGopsco5NXF3CPGmRt2uj19K9ifFhXrBOf
-         Y+JoxQGWK12ikPqZ7KYFpY4v4YGiSozjhjY+6jDzTbbgAEk2/VoIraGy4ZXvB87u03Ki
-         n69NFY+XR0Xv+Xk7vNfPAjDnm0yKpBZIXfCu8e7ZVxXpy9TbUU+vUq3xNA5wcVL8erAy
-         K2MD1pnkm4A/ih7ijKvirUJBiyUGv2gbCKEXhk3cUXYbLwabpLDVpbL9dRaBJuXIqRFM
-         V0q6mvjPYkZjLTmQvbz+SQ+bkAqKroqQiUHFTIFhrXixZwTfGtHap6ijZz2YaH3wdMBB
-         fotQ==
-X-Gm-Message-State: AOJu0Yy96b5ENZ7BDRnr8/i76DQOXSuwjPyBYoS7ES4F4I3a+DlLXnxl
-	hCmg3yB119IhX66501Gx1QRJrmdP3ly/mdmVGXSMKGzgeYbCLvZE3QV7A4uaDCN8Lr5PLdFONrL
-	tfNORESWu0E+iYyl9bF642MO7mBgP5j+Vr74QNge361fqPQdY5U5bOffJE7iM
-X-Gm-Gg: ASbGncs+98gqJq9AVx2i4hEJJedYh/b5KBnIxYs+3+qmas5f8lOUtRcvov3VqKN87W/
-	O6okbuagIthKoXGNnNo1PavAkdBi+DK3STg1knRG0Fv4XOJUXc5DDrUKs6vxkguYp6kdE9FkVbA
-	Oru2L3CY3jWUaFI8ehXsvrpGlq3NZ7n9HMPh4hnHht7qcB2zY5kjZVsaYM1ABTdjn+jEF0gKnFt
-	wHASfwFUxw51t042+H2Bz73mQwzdwCcJ1OYDB916R6l3T8iNlJ02C/cWF9bZhs1oHsS2PJpIe7s
-	awPQaUJap5ek2Juj+mjxUzKlyGHmNy4s7ROBKqWjBQ1Gne9w5va//WcFlLzZp2UD/ibOzvq04Cy
-	ndlLF/E34rk//gdMtqjPUkxxec2xU8bNq5apMHEduGLO3RZfRKjbdT9lu
-X-Received: by 2002:a5d:5f93:0:b0:3db:dd47:b5e4 with SMTP id ffacd0b85a97d-3dbdd47b6femr7470973f8f.2.1757065244632;
-        Fri, 05 Sep 2025 02:40:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHsEQ7vYPeoftKHjOSmlOOsaI4uHVEvtZaUkQ+0CW6oWuN5Sl87AdayqC1r/YqNS2f0lL3kuw==
-X-Received: by 2002:a5d:5f93:0:b0:3db:dd47:b5e4 with SMTP id ffacd0b85a97d-3dbdd47b6femr7470953f8f.2.1757065244155;
-        Fri, 05 Sep 2025 02:40:44 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4d:e00:298:59cc:2514:52? (p200300d82f4d0e00029859cc25140052.dip0.t-ipconnect.de. [2003:d8:2f4d:e00:298:59cc:2514:52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd063fc8dsm34549275e9.7.2025.09.05.02.40.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 02:40:43 -0700 (PDT)
-Message-ID: <83f5643f-7a6f-4954-a989-4d76a206d0a9@redhat.com>
-Date: Fri, 5 Sep 2025 11:40:42 +0200
+        d=1e100.net; s=20230601; t=1757065331; x=1757670131;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5cF3nbEEsUR8WnbK9SQ1WTh/tehrYBkeXJ+lrjf3eIw=;
+        b=JxYtbQgKxomBDPaXQoIxyUjl+L2IpcbQksUBtlcEKfef3CAsLbqOffEB6N3BH37X0S
+         Sg48zegolh1ZVY5pVqwjWa7cL1kzwkIEPSidUQ8Dnd3cxH1QGihwXpvDpUy4NNR2kg5j
+         QFXR2VV7JPCqpnkMVuejyT9sx9CZrtBi6fh24kXhHjNlsTByGU29YvMafptrIj8CgWgE
+         LuOU8x8BkO6PT7qdK6pazQ2McIs3hc+x40RA8qkI+Hu6bu9er5/6DhDW8QR4tDqEoUPg
+         QXyvlqfGI09Ix6nUbasWzQD+1Oiut7QdvsQSpluOMWbOvr3t113bojAESVlyd/9Ugw/E
+         9K+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXKCJO8s33jKzHFXGhUYNotzX2Ndt6HmeAMxmms1/jyHZfhxRI3oU11d91NqsqGjUgVcuI7sCQy9Q==@kvack.org
+X-Gm-Message-State: AOJu0YzJmfmfB/ccniBZix6AYANyAR9LwSzzwp6Bki73qAHKj9rJT4ZB
+	NPlId6AivXXyPWuhIHrGkvtn3iqYXP8oo62+MliM8w11VXR6ZnNWm7zBSz5wYjM7EWYi4+3hB+O
+	PUXuo
+X-Gm-Gg: ASbGncvdeemCQ2/fCY0vWWNmMcR1s6/jTlWiZKJ77ey9h6ZNO2Pp+AO2HFGuxm35ngN
+	4zbyK+L5qNi+b4r4MiGLQRW/V4CZ5PWq4PAbTmBpH5H1/KI8iOr1IK0deuG0rRk56MKu6PwJDA6
+	0SmbIigDnuNIaXbZzqYUX+Z7JB34JMnSKLef9zGVQC+CkNQD7UFdo9A1lJMfVp25QZP9jU4/HbZ
+	Tn5NIK2Fzd9OALx03DgAV2UAl9Cg/wiup1586VuE2wDYuXfZa88IeL21WS29ZeadKmKzquJ8GPY
+	B0Fkn9+XoI26k7vmYCNmaG/vChjzdM/dYh9Fg+JoRtLXz/8gg68kHgHtn7Fs9A4h8o+XWLbJHAY
+	AJTDuukiN+nqBZJacI5hmE4L5OJKIYJMad9b16wkiN00=
+X-Google-Smtp-Source: AGHT+IEBLrXRp2KCZS6+xHdnkZeuu3XXC1zndCZW60HghXtSplaPkTzQ80wMNW+TFzKZNFfyFQ5ZDQ==
+X-Received: by 2002:a05:600c:6304:b0:45b:7782:b4a3 with SMTP id 5b1f17b1804b1-45b8555d31emr157150355e9.14.1757065330803;
+        Fri, 05 Sep 2025 02:42:10 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45cb61377a7sm113904485e9.13.2025.09.05.02.42.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 02:42:10 -0700 (PDT)
+Date: Fri, 5 Sep 2025 11:42:09 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
+	david@redhat.com, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	linux-mm@kvack.org, wangkefeng.wang@huawei.com
+Subject: Re: [PATCH] mm/oom_kill: kill current in OOM when binding to
+ cpu-less nodes
+Message-ID: <aLqwcXHzsaTxN3dM@tiehlicka>
+References: <20250904134431.1637701-1-tujinjiang@huawei.com>
+ <aLmhbjtF0Sp75XXE@tiehlicka>
+ <f088cdda-9799-43ef-a4f0-fba563be4076@huawei.com>
+ <aLqadzgmyGGjSck6@tiehlicka>
+ <87e085b9-3c7d-4687-8513-eadd7f37d68a@huawei.com>
+ <aLqo9NKQ-xDfJ-14@tiehlicka>
+ <69180098-9fcf-44c1-ac6b-dc049b56459e@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: check the correct buddy if it is a
- starting block
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Vlastimil Babka <vbabka@suse.cz>
-References: <20250904020654.28689-1-richard.weiyang@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250904020654.28689-1-richard.weiyang@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: irkwZTENLDOFgwykWj2PyHS0Rd9Fk1BwCXHU76rveYk_1757065245
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F040018000A
-X-Stat-Signature: qo58c3q353qz98a6s5d6wtnbfynwq5op
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <69180098-9fcf-44c1-ac6b-dc049b56459e@huawei.com>
+X-Stat-Signature: upgi4epjhww9cqs8tdex8psc5hxts7rr
 X-Rspam-User: 
-X-HE-Tag: 1757065247-5723
-X-HE-Meta: U2FsdGVkX1+DkbUsT9gK+cuywlmHkhSXCn4J3Bwzu7n8tgLdKu/wB5wZDWnDZnH85EJqYkqpeLejp7LQfDwiIzDvo62tl4ae7aEy6mwFcRJC5Y9Ez1gOlbOc/CMzUG/hDK1xH6sfGxCGua4IqIcUKSWbJzTaAdX4EQKgH4lOcecvfamaU2R1rl/HSQdlbQa7BKGc1fkJOFnnH4ji+8WIvp6xXHKkDQdjJ8A84JzIz4d7ERzeC2kGeaIrAP+RMNV/0lbUFAkNUGtKcE0TGn8+CZs06IQuytfHQdgynv7pgZPHq2VdDJXzw+LIcsLhTE0wsan52l+ps3gtoFWpQ7N0lw47ALh7EX3Q71yIt+XZiO3H/IA4307/iCD/0/To0c//eNESpWHoupU8qENVzJSSs1gjhyz+WRpoaFbF3yLkZw96A5CixYAstFS9ZbRR3mdMUGFA1TbP22awFfkqhc+/h54Tl2elVcNjp4CR2ZsxiTm3IcHOvmGTbgncHmvfjrDFDnPgWACs2O+bT7zJizlU/+VEmbw1ktL5YeoUJy2dne8mwka8KOQ0Dt060PGiaqNFaxF4g1fXcqLem+uKZpfQRRhNobKmki0VcvC1zrDhEQxBgp3+lq5PV8xwPvXMjkZlmKPRm0LtZVa2dRI++Eziy+wtO9Vb+BzpNBZuB+XDGef8uvTeeB7zXbtQJqO6WXi+RFm+wFFMnWDglqSuLlz3Fi6nvJyw5EXN88QNE/w+/I2jiIZqblZgHo8CvqQnI6LGhsfB1k+JIFQZRlGbXi+wNKCRSrRJcrQ9+OB6EzZ8gTc3bEIELKpeYhkhAYbhk0vQlbzYzVhTYRCalGfzz15r0jWvEigIy6FiCrlk3o7td+iAS+tKuQZG8yuJfOQOvTGOapSyNwllt2YxA/mjqIG8d/wCWNnfu7tL+Vuvpt2NGlakz5svTRBeOGJ0zhVD40FjZqVEFKaHe0BFRKfvGrl
- 55DFbt3h
- yqlhJMpwyki4o0gK9D6S7FpkXFawrodMbsuQJ0TuspOVdCsrF6HLs4WU9WoNlwHYQ3FFVCipYruMz8z6xJZ5dLf5u9pvjffwAbokqL4oa00ZgWt+VW+mi95ByG7TeMSpT98UJZPeVFJQtENs4nC4ZgvjH9gDa2l2QTWnk2GBqtLCWTRi/q4DeDbl8lRzYS6YQWibrmzvCPCOtk2QliH1V812nBCa4nKkk3knQov/Gdzw8S7IpqMLNXSKYYkJUwQMs8wbbpYXRwx9lwB9F2hccc1jIemHslMJGAqR4xA19bfNe0hqCLMGXqa+Hh05jWZm2a960xNf/SHjhKAJk63RIR0g7NSp6aEI6IA6EEHZoVgBpR5cR47g06U/z2F7YGKkD/ldbdSyPJvrhi3gGQ6k7OnT51Z8dvrrUTznhE5A9dv/biPQY3CCW7IxbMBTHTAsOp+Kl/k/sRYGLVfNN9hRMaipCNaWva0isko5bfMR06VDt9bAK1MfjyZNAL8gk33XJYEORVw+fmmF49hQFJje8UXZmRBrZvGcvsIN3z+b8NdXzWeJVe7r0DW0dh7GkFBdHyz0scUOAuq3cMiVJqFwqLVAfBd5g34y95MGb9GwtzSlpoKqEcVNA3Dl3m9tRzvQMLCfj1AmUUuHMqoAn/w3D0fuEv7e3jE8xwqbZwcKs5bDG6emm6LHfCW6LRA==
+X-Rspamd-Queue-Id: 4F35918000F
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757065332-612387
+X-HE-Meta: U2FsdGVkX1+4l2wYa6IenK3UzqGgorb1weQjCq+ofW1Fk1yWPtxEc3TuNzFfpllPYs9aOVqlwo59xsNbTXTYUVY0KasaJrrVysPjZ5R4C31wrR6bELDonwE6KTUUmQDFlDyTWJMLEnvP/jQ5NZeTLgEyFYa3p8lfMMYIei7zvLiNlf1ctmmhW8BkAPIqoaTJHak+dqr3uJX8UAA/GopZq0mtc6WJpjE0B7d8z/0kT/NMYH0/ICPu6qmlfXV+6GFjU+L86kDnU5362QTD3P69DBi3oflQFFTW02L8zXT1RTELhl5Jypb6AOoIaAd22H33goHTGctohyC+A3WwA3ImNh1jF39cGcKE96OpzGOWcmQNxpIZRJs0dvLx9KK/wdZQZeHwJ3uFI23cMISJX2sTFFUzqzCOvvAq31FW6BoiPwO8XKP/qT793L3eTUWMcpivog9vqTHKbXK90F9JUIr4VTq+QAlFSYi+88X+DktYcKmGInrrYGB1qNLKkub5giIDiFtMoaazbdmM+rOCTkzUwBFxmUbhfAAC8F7B1DmJtC0+uqBdgRSnbrEOETkvsagzLEHJ0CW+Ys/aiWm2xmwSNFOBBBurE4awWjpecoS+98GjcEkfhWrqfI7glYBEgVJbnYgcWtNCMyBjiVsZKAMs+3GudI/pX2Y8JZVgtzicMHt/MzDCcha5rAEaP084vNDjzy4yZT/p055Tls9gL5Uth8TNtIkP+qXdxWiQl8D92rVJswR4q2wHU8qcwH2ChaVOFZoZ9UEhN7vSG7sk6L4TMhi82XQPjJqc3LTBQbVHH+xokMz7PybhqeiG37kcx3xlL56bf9eXV+KgOe0n9wV5T01UPUlRi4psaUALHxIluKHxTgXMl0uaYe2wt/CrpIdfsgoTtXpP1okYoLoM61C6WJ0swxonkFH+XFtj3ygM91Bo9bkYDmXmge/GtC7LzPQ5HDeldR5PkbJ7mFM/JBN
+ 1euO3fct
+ 6IB5NEjGHPRrKD0t4I53Gr1pDLqXvppvJMhEtB+snhAP/uo++eb2hJkW1+hjSOuZeY41xoK4SCndou6dWGq2M/puipH+b54blpCMoK6Z0sRU+MhwWew0SNjLEm38CjMEbA/lZ0UtO9NXOGguQsl7C6AYLUdFUpzR7nIw+GQpiF9bIXh7JuIIdhoSf7Pl8TrnH2lLaTcvp9vIGy2VjAJZKbyP9/r4+mH0aik57HaIpAAJsY7R62NHGZ01J/M4gQbHJV+/Z0yupzsgGGK5Xq8GcB4mc8LT2ecpfJ01p3t2SrBbNAY1W4wvwn5BseUL/aXlYHf0Y6v0r5hdfgyGt+Mrn8PD1oBFKwqQQJjpBTacBUsdP35ndzG6vjEWnHmjo95mNOYu8FmUlXoDsLbeRckYvC8eARmUjDYwMB5IlqnEnc5stCXxrEmrJ2Zdff11p/GQYOK3v6unwFWh96iQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,71 +131,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04.09.25 04:06, Wei Yang wrote:
-> find_large_buddy() search buddy based on start_pfn, which maybe
-> different from page's pfn, e.g. when page is not pageblock aligned,
-> because prep_move_freepages_block() always align start_pfn to pageblock.
+On Fri 05-09-25 17:25:44, Jinjiang Tu wrote:
 > 
-> This means when we found a starting block at start_pfn, it may check
-> on the wrong page theoretically.
+> 在 2025/9/5 17:10, Michal Hocko 写道:
+> > On Fri 05-09-25 16:18:43, Jinjiang Tu wrote:
+> > > 在 2025/9/5 16:08, Michal Hocko 写道:
+> > > > On Fri 05-09-25 09:56:03, Jinjiang Tu wrote:
+> > > > > 在 2025/9/4 22:25, Michal Hocko 写道:
+> > > > > > On Thu 04-09-25 21:44:31, Jinjiang Tu wrote:
+> > > > > > > out_of_memory() selects tasks without considering mempolicy. Assuming a
+> > > > > > > cpu-less NUMA Node, ordinary process that don't set mempolicy don't
+> > > > > > > allocate memory from this cpu-less Node, unless other NUMA Nodes are below
+> > > > > > > low watermark. If a task binds to this cpu-less Node and triggers OOM, many
+> > > > > > > tasks may be killed wrongly that don't occupy memory from this Node.
+> > > > > > I can see how a miconfigured task that binds _only_ to memoryless nodes
+> > > > > > should be killed but this is not what the patch does, right?  Could you
+> > > > > > tell us more about the specific situation?
+> > > > > We have some cpu-less NUMA Nodes, the memory are hotpluged in, and the zone
+> > > > > is configured as ZONE_MOVABLE to guarantee these used memory can be migrated when
+> > > > > we want to offline the NUMA Node.
+> > > > > 
+> > > > > Generally tasks doesn't configure any mempolicy and use the default mempolicy, i.e.
+> > > > > allocate from NUMA Node where the task is running on, and fallback to other NUMA Nodes
+> > > > > when the local NUMA Node is below low watermark.As a result, these cpu-less NUMA Nodes
+> > > > > won't be allocated until the NUMA Nodes with cpus are with low memory. However, These
+> > > > > cpu-less NUMA Nodes are configured as ZONE_MOVABLE, can't be used by kernel allocation,
+> > > > > leading to OOM with large amount of MOVABLE memory.
+> > > > Right, this is a fundamental constrain of movable zones. They cannot
+> > > > satisfy non-movable allocations and you can get OOM for those requests
+> > > > even if there is plenty of movable memory available. This is no
+> > > > different from highmem systems and kernel allocations.
+> > > > 
+> > > > > To avoid it, we make some tasks binds to these cpu-less NUMA Nodes to use these memory.
+> > > > > When these tasks trigger OOM, tasks that don't use these cpu-less NUMA Nodes may be killed
+> > > > > according to rss.Even worse, after one task is killed, the allocating task find there is
+> > > > > still no memory, triggers OOM again and kills another wrong task.
+> > > > Let's see whether I follow you here. So you are binding some tasks to movable
+> > > > nodes only and if their allocation fails you want to kill that task
+> > > > rather than invoking mempolicy OOM killer as that could kill tasks
+> > > > which are not constrained to movable nodes, right?
+> > > Yes. It't difficult to kill tasks that use movable nodes memory, because we have
+> > > no information of per-numa rss of each task. So, kill current task is the simplest way
+> > > to avoid killing wrongly.
+> > There were attempts to make the oom killer cpuset aware. This would
+> > allow to constrain the oom killer to a cpuset for which we cannot
+> > satisfy the allocation for. I do not remember details why this reach
+> > meargable state. Have you considered something like that as an option?
 > 
-> The good news is the page passed to __move_freepages_block_isolate() has
-> only two possible cases:
+> Only select tasks that bind to one of these movable nodes, it seems better.
 > 
->    * page is pageblock aligned
->    * page is __first_valid_page() of this block
-> 
-> So it is safe for the first case, and it won't get a buddy larger than
-> pageblock for the second case.
-> 
-> To eliminate the ambiguity, unify the handling for starting/tail block.
-> 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> 
-> ---
-> Tried memory online/offine, which looks good.
-> ---
->   mm/page_alloc.c | 17 ++++-------------
->   1 file changed, 4 insertions(+), 13 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 5183a646fa09..453cd361386c 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -2093,6 +2093,7 @@ static bool __move_freepages_block_isolate(struct zone *zone,
->   	unsigned long start_pfn, pfn;
->   	int from_mt;
->   	int to_mt;
-> +	struct page *buddy;
->   
->   	if (isolate == get_pageblock_isolate(page)) {
->   		VM_WARN_ONCE(1, "%s a pageblock that is already in that state",
-> @@ -2107,10 +2108,10 @@ static bool __move_freepages_block_isolate(struct zone *zone,
->   	if (pageblock_order == MAX_PAGE_ORDER)
->   		goto move;
->   
-> -	/* We're a tail block in a larger buddy */
->   	pfn = find_large_buddy(start_pfn);
-> -	if (pfn != start_pfn) {
-> -		struct page *buddy = pfn_to_page(pfn);
-> +	buddy = pfn_to_page(pfn);
+> Although oom killer could only select according to task mempolicy, not vma policy, it't better
+> than blindly killing current.
 
-While at it, can you please rename "pfn" to "buddy_pfn" ?
-
-> +	/* We're a part of a larger buddy */
-> +	if (PageBuddy(buddy) && buddy_order(buddy) > pageblock_order) {
->   		int order = buddy_order(buddy);
-
-Yes, I think this should work.
+Yes, I do not think we can ever support full mempolicy capabilities but
+recognizing this is a cpuset allocation failure and selecting from the
+cpuset tasks makes a lot of sense.
 
 -- 
-Cheers
-
-David / dhildenb
-
+Michal Hocko
+SUSE Labs
 
