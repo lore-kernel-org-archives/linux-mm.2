@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21BD9CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 10:37:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABFAFCA101F
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 10:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 217038E0017; Fri,  5 Sep 2025 06:37:38 -0400 (EDT)
+	id 4C9588E0008; Fri,  5 Sep 2025 06:37:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0691A8E0008; Fri,  5 Sep 2025 06:37:37 -0400 (EDT)
+	id 1F04F8E0016; Fri,  5 Sep 2025 06:37:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B65B98E0016; Fri,  5 Sep 2025 06:37:37 -0400 (EDT)
+	id C9E7D8E0019; Fri,  5 Sep 2025 06:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F82B8E0017
+	by kanga.kvack.org (Postfix) with ESMTP id A141A8E0018
 	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:37:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 651C35A78C
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5EF67160665
 	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:37:37 +0000 (UTC)
-X-FDA: 83854845354.18.311FD36
+X-FDA: 83854845354.21.F48EAA0
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 79C8420016
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:37:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	spf=pass (imf13.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757068655; a=rsa-sha256;
-	cv=none;
-	b=7QHkUSv6rP3slLHDoom6qdcOGKM8zLSssUJFFDABW00VKSq/SG5v6kYYP0Jkot/Rc0MKGF
-	Y7Wsi+dxHvUbi/KdKblEgjrHtp3Y7sWho+ZBNt2GUNFC3XJvdmPTZdDPML2PcvCzR3kDoh
-	6DWUYf+zdLwzSG0EnGO4sQ/YOtl/2Uw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn;
-	dmarc=none
+	by imf11.hostedemail.com (Postfix) with ESMTP id 51D8040016
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:37:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1757068655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pXTm2zsY6t3q25PYKJ2Sq5SbQxToWtUPsqUMt0qwsdA=;
-	b=dvJ6CUoGK/5DQ4M5pcOOiFkrGVVa4oBWLpX2RMPlDJx6Od6EZe6p9dJcLvEkkrcCxpFXkE
-	m0kYvlitLViSSNtAOTrkVcOMemcAq0a21wilSE0JTTo0T5ZmE9MdFpdk3H3KDlMKf1yljQ
-	vgz+irfFQEbQO2/zqrHeAGtzA1otnP0=
+	bh=C4rMXI662tXlPUgZz1tZHQFISwliqndcRvNpZcbyqzc=;
+	b=k8fRH18izf5XQ1K3g7w8I6YV+CyGOEt/oItchgv31ItGUfe+AGqiBZapau73n6/CR3mEJJ
+	FI/HETxbyH0mmCCDhIoo3IFNEiz557LzmF2m28MM9jw9AJhHtCdCUMAaGlyYD3ay05MAO/
+	koLyePnHT99Ck29g6BUzzTCVj2gQ+wI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of zhangchunyan@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=zhangchunyan@iscas.ac.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757068655; a=rsa-sha256;
+	cv=none;
+	b=ht4RDYFGDPyT41nkQBKYvNp+TyCDr8rcOT0fkaUPKDJNka667dogW3EoIkVLuRXUNztaou
+	AnF+GIhWgSQT4hnSBYbUCfSMVlFsk0iwbwpO/85B0lT4P5ZZeYcYgvXz++5CqP5lGQwafC
+	j5V3ylBRkgGEpfQMU3fnnm6z1FgtzFs=
 Received: from ubt.. (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowABnwaNMvbpoocLNAA--.50311S3;
+	by APP-01 (Coremail) with SMTP id qwCowABnwaNMvbpoocLNAA--.50311S5;
 	Fri, 05 Sep 2025 18:37:02 +0800 (CST)
 From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 To: linux-riscv@lists.infradead.org,
@@ -70,42 +70,42 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	Wei Xu <weixugc@google.com>,
 	David Hildenbrand <david@redhat.com>,
 	Chunyan Zhang <zhang.lyra@gmail.com>
-Subject: [PATCH v9 1/5] mm: softdirty: Add pte_soft_dirty_available()
-Date: Fri,  5 Sep 2025 18:36:47 +0800
-Message-Id: <20250905103651.489197-2-zhangchunyan@iscas.ac.cn>
+Subject: [PATCH v9 3/5] riscv: Add RISC-V Svrsw60t59b extension support
+Date: Fri,  5 Sep 2025 18:36:49 +0800
+Message-Id: <20250905103651.489197-4-zhangchunyan@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250905103651.489197-1-zhangchunyan@iscas.ac.cn>
 References: <20250905103651.489197-1-zhangchunyan@iscas.ac.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABnwaNMvbpoocLNAA--.50311S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxtrWfArykKr1DKrykXw4UXFb_yoWxKw4kpF
-	Z3Ca4Fq3y8JFsYg3yfJr4qqryYqF4Fga4UJryfC348X3y3G345WFsYqFyFvF1SgFy8GayS
-	vFsFyw43Gr47tr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+X-CM-TRANSID:qwCowABnwaNMvbpoocLNAA--.50311S5
+X-Coremail-Antispam: 1UD129KBjvJXoW7ur43JrWfJw1ktrWrXw4fKrg_yoW8tw4Upr
+	s5CryrCrWrWwn3uw4ayr95u3y8Xws8Gws8Kw48u34rJrW7ZrWxZw1vy3W7Gw1DZanYqrnY
+	gF1Fgr18uw48tF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPCb7Iv0xC_Cr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
 	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-	8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF
-	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcV
-	CY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIE
-	c7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I
-	8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCF
-	s4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x
-	0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC2
-	0s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI
-	0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv2
-	0xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2js
-	IE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZF
-	pf9x07jGv3bUUUUU=
+	8067AKxVWUWwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
+	64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcV
+	CY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv
+	6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c
+	02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE
+	4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7
+	CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l
+	x2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14
+	v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IY
+	x2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z2
+	80aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI
+	43ZEXa7IUnw2-5UUUUU==
 X-Originating-IP: [210.73.43.101]
-X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiCRAQB2i6ooVpxgABsV
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 79C8420016
-X-Stat-Signature: oz8dztoeiqs5tberq3hg86bhemkknje9
+X-CM-SenderInfo: x2kd0wxfkx051dq6x2xfdvhtffof0/1tbiCRAQB2i6ooVpyQAAsb
+X-Stat-Signature: g38gpnnf7ipgxqokhjpgmsobh5y75tub
 X-Rspam-User: 
-X-HE-Tag: 1757068654-306067
-X-HE-Meta: U2FsdGVkX1/jvil7pjjXljedOQjjtq2bXji7XZMG+78yI4v0opizINfBZWE7yWH7TVII3sceVb+u6RrW+SvFD0TVivAIdEnSzPcT/TZTsz/5fsPIvK5CaBr3b9puUtP+SVyJekm/dAUk7VdGMgTkLQ0vuea36WvcV8xOmkFIc1wLRhDCH0pqCQ5+uJhgyxw2V8xasb9XDf8ROQPwTm3CXdTofGBdEWikw731uDxU2mvKYCjtatJ6wOxceRyaLhkPn+les390XFwBHghx/mGf4aW59f7OQHikWPCJ97yXkGo6NUr979KFrkXvKOLuaH0pgfE1at/UIymCHc8mDAWhT7eNwPcbbHrmtwK692x6/EMmPsMHmpS4m3NZ1wlblXrG1UyEY0GY3jbV1lL+1GC82CDzsoPUkWO9oyf4ORWtBIYTZEfnFM6Iq4+az8Kj9ONhA0Voof0oTgUYWsk1/WydNf5RlGmHSATw2hGLHrRKZlWXLJ4DVPND0KppZHr3u2aJCe7Pj4zdtBKcGDgQD7WoBMpK6FV6EKdzwMeEhvcQtp28+IG598CDIcxmqMtJ/byzHnC9zLGYbc6Nv6PJjuGYxV/ATF2LkzVPMughOdkkUJiMRRpFZyLgprAaomKWzwgeUstvhH+ISMw55n7qGkJp62R27Al/Wd1dZlhyF7Dooszoagf7gjGP+BpWDMyrTzqePje0MBar76sNIrK1b1CHLX3x3vUuac8l1Q+12AXg3Ivu9i9hZcX3un+ohKzyJhQPMdeCWNj+fRlilm3N8kAwj2fy8HMElGQod4DcNH97arGrOTG1aZTSHv/tDmU+qzQc/fbu3QPMbti/gsoThE6zPEUWDa58usVEpCB953MdL3ZzL65hhlRPjJ1xek+HM6xmac+dezH0ZEDU7l90wEfzH3YcvdQcgf7wgnkMt7LB9CbH8RKTCkjts0mDahJIIwYv/RxgsWNdTb0/R5KjtzN
- YDQr/Exg
- IehZy/iXCjP2X068tQwybvZnCxRv3bbfG3zuDZ6uhkDj/0HGUKk52XPy7eoCncWnlREzfIW3cWXPQb1HgVP67kHgDnLVLRZIvZLdZ6BlUyQk1ECBXPo9nBAzwK8fav7pB4e0W5diRdox4y5JOX/3w3+QYyGACg+yZhflaqxaRdfKnCwmSLPo87lMiYP38I6y+T+8nU+dpBoRq4W8matX8RM/RoiQGnLnVlLn15ay2sUIxndHsH1qLJCarBNjrrBd26m+ozhhAOpvcCPj8H9LMDmq2wro4A7/g6LLBlRydrkGML7GTH442o1ceRpdh8V39MKjM
+X-Rspamd-Queue-Id: 51D8040016
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757068653-546906
+X-HE-Meta: U2FsdGVkX18locUcJuW8yNPlr14iTeDg7gnDZXjRwQ2IP12u/3G21qE0VYXGpDarc7DqLStq7RvZXnD7mDvlQVc80CikQ3qZmzMiJeHbMIcPUNhbmmcaeAwHeBvjaQshbEBKqII9esTV82gclUn9sn+1K3y+cPY33F2zoLgeQ8a9f+Jf/WQo4Yla+CxYG7lkkO0E7c89qAeVloT26oXgO/eKkaiAj4nXU6uWUauoCqE77o8rVjeksTqrHmu8EUF0VswQsE3+FDWUfH1zRmj5xOZv3GsZbU0G+gTvUG6mi32ViJc4igGVGNS85AIUvhog5BL6a+5JYvjoTPMfZjRb8d1UeoC5eN1BaYJtI+QW+C6sqdyJBdnIcjuigjc2CH9fLngWUcyPQ4YcwNYkBm8VGcF04Vn213LylyA5vcDUuU1I7KXImnvRf1DaksCdrmhrxFN9kA42+587GY2zXjR33TmSTbo3R9Q5HysaNrqZxmHxdE6mQnRnjHSNyoe0DRtxLst7d3VR2gdXx/jAhKJpr5GbbMz8StNHHbFvS1fOjlUw2xAsP7N/OhPoN9iUAyQyPDmlIBaoCpAkW+4ph0BcyPeYjcCAYNFcMpKGNOIWmAgyz1nhBWy6jgewfBYj1+d07fpy+wUAlkDEZxtCrFI/dsG3SBKEgzRj5trUrKS18akM8OwNBkQA0q4YAu+IFXVp3tFs0vxsmguuQm+ASwZy6aWI64YxO0c5vCU3eMrPaaadUliyc4EfGrMqbYnXyGd4uXMvxgg+XQ+7WYWArqXOjovm2Natz271Fnbbydv9OHB1M6zb3gIhBcqi7cM/ud65olewFmJwTyPIDWK5tuuYDpNsKRFcprQFAUvpAHtDHUa8P51hakCs7XDfrW9C6P6nvK/i63RZXtxoqgH6xCX8+kPEG8kI+tNFW+WMsxcOUY9ADclz4S2kxu38XZ5IyiSsakWAmYwYw9ZzyTdCIgH
+ kSRB+IuF
+ j+2YpW6ZR4vaTpiAOWPGKF0D/SCaMKGcrLVlGHQTripeAIpeALfvC6nzCW5eeivVoKvoYXJOHl9jPiCbH1PCMMgI1vuIbKQm60Mi5xqcpl9nTxJh9b6MXJ3Js8Ab59cqMmTlek9DCvaM7ydkewiC3ygPvnE8iL6ukUzcVB/uk8KL8+zs0Ax1JEKhfv4qITdvgU4tB3CiM68zBQejnVUQip52EO78XPOuuzCIXBmUDUk8e1euO1mGH5jGkay6l+daiJvnikO0Xlk0o0gdnhqXeczaAzCYu7i+KMMGe5Dgz4eYZ2+DIwdUU7CW2gurE3lG7ECOS1x7gV/CjSC7x7/FvwqXkXrzO7Up3Ol32
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,216 +114,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some platforms can customize the PTE soft dirty bit and make it unavailable
-even if the architecture allows providing the PTE resource.
+The Svrsw60t59b extension allows to free the PTE reserved bits 60
+and 59 for software to use.
 
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 ---
- fs/proc/task_mmu.c      | 12 +++++++++++-
- include/linux/pgtable.h |  9 +++++++++
- mm/debug_vm_pgtable.c   |  9 +++++----
- mm/huge_memory.c        | 13 +++++++------
- mm/internal.h           |  2 +-
- mm/mremap.c             | 13 +++++++------
- mm/userfaultfd.c        | 12 ++++++------
- 7 files changed, 46 insertions(+), 24 deletions(-)
+ arch/riscv/Kconfig             | 14 ++++++++++++++
+ arch/riscv/include/asm/hwcap.h |  1 +
+ arch/riscv/kernel/cpufeature.c |  1 +
+ 3 files changed, 16 insertions(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 29cca0e6d0ff..32ba2fb92975 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1058,7 +1058,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
- 	 * -Werror=unterminated-string-initialization warning
- 	 *  with GCC 15
- 	 */
--	static const char mnemonics[BITS_PER_LONG][3] = {
-+	static char mnemonics[BITS_PER_LONG][3] = {
- 		/*
- 		 * In case if we meet a flag we don't know about.
- 		 */
-@@ -1129,6 +1129,11 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
- 		[ilog2(VM_SEALED)] = "sl",
- #endif
- 	};
-+#ifdef CONFIG_MEM_SOFT_DIRTY
-+	if (!pte_soft_dirty_available())
-+		mnemonics[ilog2(VM_SOFTDIRTY)][0] = 0;
-+#endif
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index a4b233a0659e..d99df67cc7a4 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -862,6 +862,20 @@ config RISCV_ISA_ZICBOP
+ 
+ 	  If you don't know what to do here, say Y.
+ 
++config RISCV_ISA_SVRSW60T59B
++	bool "Svrsw60t59b extension support for using PTE bits 60 and 59"
++	depends on MMU && 64BIT
++	depends on RISCV_ALTERNATIVE
++	default y
++	help
++	  Adds support to dynamically detect the presence of the Svrsw60t59b
++	  extension and enable its usage.
 +
- 	size_t i;
- 
- 	seq_puts(m, "VmFlags: ");
-@@ -1531,6 +1536,8 @@ static inline bool pte_is_pinned(struct vm_area_struct *vma, unsigned long addr,
- static inline void clear_soft_dirty(struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *pte)
- {
-+	if (!pte_soft_dirty_available())
-+		return;
- 	/*
- 	 * The soft-dirty tracker uses #PF-s to catch writes
- 	 * to pages, so write-protect the pte as well. See the
-@@ -1566,6 +1573,9 @@ static inline void clear_soft_dirty_pmd(struct vm_area_struct *vma,
- {
- 	pmd_t old, pmd = *pmdp;
- 
-+	if (!pte_soft_dirty_available())
-+		return;
++	  The Svrsw60t59b extension allows to free the PTE reserved bits 60
++	  and 59 for software to use.
 +
- 	if (pmd_present(pmd)) {
- 		/* See comment in change_huge_pmd() */
- 		old = pmdp_invalidate(vma, addr, pmdp);
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 4c035637eeb7..2a489647ac96 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1538,6 +1538,15 @@ static inline pgprot_t pgprot_modify(pgprot_t oldprot, pgprot_t newprot)
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
++	  If you don't know what to do here, say Y.
 +
-+/*
-+ * Some platforms can customize the PTE soft dirty bit and make it unavailable
-+ * even if the architecture allows providing the PTE resource.
-+ */
-+#ifndef pte_soft_dirty_available
-+#define	pte_soft_dirty_available()	(true)
-+#endif
-+
- #ifndef CONFIG_ARCH_ENABLE_THP_MIGRATION
- static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
- {
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 830107b6dd08..98ed7e22ccec 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -690,7 +690,7 @@ static void __init pte_soft_dirty_tests(struct pgtable_debug_args *args)
- {
- 	pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot);
+ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	def_bool y
+ 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
+diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
+index affd63e11b0a..f98fcb5c17d5 100644
+--- a/arch/riscv/include/asm/hwcap.h
++++ b/arch/riscv/include/asm/hwcap.h
+@@ -106,6 +106,7 @@
+ #define RISCV_ISA_EXT_ZAAMO		97
+ #define RISCV_ISA_EXT_ZALRSC		98
+ #define RISCV_ISA_EXT_ZICBOP		99
++#define RISCV_ISA_EXT_SVRSW60T59B	100
  
--	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-+	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) || !pte_soft_dirty_available())
- 		return;
+ #define RISCV_ISA_EXT_XLINUXENVCFG	127
  
- 	pr_debug("Validating PTE soft dirty\n");
-@@ -702,7 +702,7 @@ static void __init pte_swap_soft_dirty_tests(struct pgtable_debug_args *args)
- {
- 	pte_t pte;
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 743d53415572..de29562096ff 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -540,6 +540,7 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
+ 	__RISCV_ISA_EXT_DATA(svnapot, RISCV_ISA_EXT_SVNAPOT),
+ 	__RISCV_ISA_EXT_DATA(svpbmt, RISCV_ISA_EXT_SVPBMT),
+ 	__RISCV_ISA_EXT_DATA(svvptc, RISCV_ISA_EXT_SVVPTC),
++	__RISCV_ISA_EXT_DATA(svrsw60t59b, RISCV_ISA_EXT_SVRSW60T59B),
+ };
  
--	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-+	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) || !pte_soft_dirty_available())
- 		return;
- 
- 	pr_debug("Validating PTE swap soft dirty\n");
-@@ -718,7 +718,7 @@ static void __init pmd_soft_dirty_tests(struct pgtable_debug_args *args)
- {
- 	pmd_t pmd;
- 
--	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-+	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) || !pte_soft_dirty_available())
- 		return;
- 
- 	if (!has_transparent_hugepage())
-@@ -735,7 +735,8 @@ static void __init pmd_swap_soft_dirty_tests(struct pgtable_debug_args *args)
- 	pmd_t pmd;
- 
- 	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) ||
--		!IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
-+	    !pte_soft_dirty_available() ||
-+	    !IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
- 		return;
- 
- 	if (!has_transparent_hugepage())
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9c38a95e9f09..2cf001b2e950 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2271,12 +2271,13 @@ static inline int pmd_move_must_withdraw(spinlock_t *new_pmd_ptl,
- 
- static pmd_t move_soft_dirty_pmd(pmd_t pmd)
- {
--#ifdef CONFIG_MEM_SOFT_DIRTY
--	if (unlikely(is_pmd_migration_entry(pmd)))
--		pmd = pmd_swp_mksoft_dirty(pmd);
--	else if (pmd_present(pmd))
--		pmd = pmd_mksoft_dirty(pmd);
--#endif
-+	if (IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) && pte_soft_dirty_available()) {
-+		if (unlikely(is_pmd_migration_entry(pmd)))
-+			pmd = pmd_swp_mksoft_dirty(pmd);
-+		else if (pmd_present(pmd))
-+			pmd = pmd_mksoft_dirty(pmd);
-+	}
-+
- 	return pmd;
- }
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index 45b725c3dc03..8a5b20fac892 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1538,7 +1538,7 @@ static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
- 	 * VM_SOFTDIRTY is defined as 0x0, then !(vm_flags & VM_SOFTDIRTY)
- 	 * will be constantly true.
- 	 */
--	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-+	if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) || !pte_soft_dirty_available())
- 		return false;
- 
- 	/*
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e618a706aff5..7c01320aea33 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -162,12 +162,13 @@ static pte_t move_soft_dirty_pte(pte_t pte)
- 	 * Set soft dirty bit so we can notice
- 	 * in userspace the ptes were moved.
- 	 */
--#ifdef CONFIG_MEM_SOFT_DIRTY
--	if (pte_present(pte))
--		pte = pte_mksoft_dirty(pte);
--	else if (is_swap_pte(pte))
--		pte = pte_swp_mksoft_dirty(pte);
--#endif
-+	if (IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) && pte_soft_dirty_available()) {
-+		if (pte_present(pte))
-+			pte = pte_mksoft_dirty(pte);
-+		else if (is_swap_pte(pte))
-+			pte = pte_swp_mksoft_dirty(pte);
-+	}
-+
- 	return pte;
- }
- 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 45e6290e2e8b..0e07a983c513 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1065,9 +1065,9 @@ static int move_present_pte(struct mm_struct *mm,
- 
- 	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
- 	/* Set soft dirty bit so userspace can notice the pte was moved */
--#ifdef CONFIG_MEM_SOFT_DIRTY
--	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
--#endif
-+	if (IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) && pte_soft_dirty_available())
-+		orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
-+
- 	if (pte_dirty(orig_src_pte))
- 		orig_dst_pte = pte_mkdirty(orig_dst_pte);
- 	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
-@@ -1134,9 +1134,9 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 	}
- 
- 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
--#ifdef CONFIG_MEM_SOFT_DIRTY
--	orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
--#endif
-+	if (IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) && pte_soft_dirty_available())
-+		orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
-+
- 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
- 	double_pt_unlock(dst_ptl, src_ptl);
- 
+ const size_t riscv_isa_ext_count = ARRAY_SIZE(riscv_isa_ext);
 -- 
 2.34.1
 
