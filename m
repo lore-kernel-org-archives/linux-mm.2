@@ -4,89 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FD0ECA1012
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 03:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696A1CA1002
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 03:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9476E8E0007; Thu,  4 Sep 2025 23:25:20 -0400 (EDT)
+	id 94B268E0009; Thu,  4 Sep 2025 23:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F7B28E0001; Thu,  4 Sep 2025 23:25:20 -0400 (EDT)
+	id 9229A8E0001; Thu,  4 Sep 2025 23:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7388E0007; Thu,  4 Sep 2025 23:25:20 -0400 (EDT)
+	id 812AA8E0009; Thu,  4 Sep 2025 23:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A6A58E0001
-	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:25:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E15516010F
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 03:25:20 +0000 (UTC)
-X-FDA: 83853756000.23.395BA44
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7BC4B8000B
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 03:25:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fU5nbkX3;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 682C68E0001
+	for <linux-mm@kvack.org>; Thu,  4 Sep 2025 23:26:51 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2008113B90E
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 03:26:51 +0000 (UTC)
+X-FDA: 83853759822.27.D0BBFD7
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 70A9240004
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 03:26:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dUUMQ1uf;
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757042718;
+	s=arc-20220608; t=1757042809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MesJNkOvq9Wb1HsUV/prYAwe2kfli+4DW5QClvaxYC0=;
-	b=WTqSEgJYs51SY3EyyGqjNlEacjBA7pnmbsFD0vR4XitGfN/pCn7WqHaceuimDFhGkkSy7p
-	iiaRYp0ShrxC760yXpeuIKxiTfm26yoQzmgCu/C4vVdnHSu32vHEC7FMTqVh7k1cUb8Ib8
-	PVn7kjmTZcXmcA2edpiOF21jD5mSssU=
+	bh=oeyi3n01t4aIJzA9XIk7XbjaZ2H4gsDQPYY0+pkWYng=;
+	b=yMcRjlsbFeIzvHDg2IcmyOr+8dmIcozBXNuJkEPssBkAacv2CeVK9NMdt8BJcys89VsA4q
+	Mlil5bW2h/sCMIQBySo2lWK+VqYA1fKTvHhFFEJUORRW7lz64IAPHeW9W2xJ9lymRrJl4s
+	lPmyNQD3qzlCvYq41NA5T36Kg4lIluk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fU5nbkX3;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757042718; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dUUMQ1uf;
+	spf=pass (imf27.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757042809; a=rsa-sha256;
 	cv=none;
-	b=C/jzGqCib7OVq5XAs8oQDIXU+lvcky/hByYRH2hcLfqTvg+1zHN/DSI1+KspSpMW99eWnL
-	gvKxkU/mJwUDZPJHuUpMrWBQVPE6QJHM9/YQXeWuITK3qECaeMq3ZVIJ6si0JOo0GZbY/2
-	E2ZmYync/6k3KhHifycRbRX7i/NNk1s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A255B601A3;
-	Fri,  5 Sep 2025 03:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09907C4CEF0;
-	Fri,  5 Sep 2025 03:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757042717;
-	bh=7qJMpdvaIN/eDT1GmnJzpsYiZoU8MetcVjdUONSfLOE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fU5nbkX32e0+VE4qXAWqMKWRgi9ZgIB1nFXjoRReIewPDwY1v/WGVKsi7/c8nUdZ3
-	 ES7L0gFLOt9k+9hNKNXYMO4L3DLn+ko8Xp8d8Xp+6ZbpCg7BO/2KenKBhrsgXmfn5L
-	 elHpJp+Y6Ty5Rq7qyOfmkap2oPNmTgO1ed3fhVoU=
-Date: Thu, 4 Sep 2025 20:25:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, Johannes Weiner
- <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH] mm/page_alloc: check the correct buddy if it is a
- starting block
-Message-Id: <20250904202516.3e091ef653fe5a2d9adcfc1f@linux-foundation.org>
-In-Reply-To: <20250905031129.lgipzjwz2swhxlg7@master>
-References: <20250904020654.28689-1-richard.weiyang@gmail.com>
-	<D9D94987-8A36-41F0-B0A8-3BB47910223E@nvidia.com>
-	<20250905031129.lgipzjwz2swhxlg7@master>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7BC4B8000B
-X-Stat-Signature: a97zoutbwjz4k7moa9bj3zmeiu35xuhf
+	b=JwqLp6f6Oc9lt+KUwbRNqsYxAPum8jeskWQFz4bZzqYNWtfsYBBZP3BVCVDgWJa5kebAOc
+	aza2aLOH04XGbs35lc90hpIpje4vvdcrighxvk85YRwaawfMrsfr9hLbgYH9vJbeXvAOam
+	Z8mroriKJ1kOP77uHbmPMDOduX5Knqw=
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b4dc35711d9so1140210a12.0
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 20:26:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757042808; x=1757647608; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oeyi3n01t4aIJzA9XIk7XbjaZ2H4gsDQPYY0+pkWYng=;
+        b=dUUMQ1ufYIDAlE3xKQz7TReyUHhnERnBZDQGOp2XKzoKXbZfjJYJxPAgWh3a0jslFu
+         4qZUjf6GTaKpCD+0qNs8uzb71ymWGxZIXMN7BQinjXo+lF7QxMyhjBiVQQ+XivXwjV5U
+         3ZTF9FnW/1v7pHlNntYll8IukwcCWIxwBBd6xQLyLOiEUtcYdN4ULE7mIhakvxBqER+m
+         VBAevL6ZVoVjuP9NS/7PIoAT5R3FMTh2OLpDSS0XgIQg/7CuNjgA8Aatshnsw49yor9k
+         DWc32sL3Rybt8gIRPgNzvHPU8B6o7SlNST4QcGfncOUdMkJlpkrNUAf6llK18cdT4Oi+
+         LAEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757042808; x=1757647608;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oeyi3n01t4aIJzA9XIk7XbjaZ2H4gsDQPYY0+pkWYng=;
+        b=dMHeDSYWZx6liVJOemLDXwS9YvmlK72Dk6vNuObSRuvqjcCQ4tFsyzHCiTwnVuFVmS
+         1zsgGnzo5Ij0LsvZJzPCAm9CHrtK9VR3Ud0a6BjHUwQCbztj4NMxw7lYWrO31F3QYl1s
+         6CH14kmmDnCyfIs2ECWQkIomtNB5awGo5+m1NqTnpTDtNRCkRkx0n0Erpb5hkfSuaa9Y
+         eZG0pCn3GdmN7EAsz2GJLmI1guvbQqhbwRnh3Okt56T9wBeeilgKVo+FpMu1DCXDFdNJ
+         wwZp4ZrYjbpjjHhVz73APAyDqDBuQ5wjeEWbh79SDxjm1hOfjcvgQRZOPsWrcYItC49r
+         7JlA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjCDvXo7UuojbSsgxR+x/BEClSqxx7ML4OsqfNfI4k2KkxgiCU9LX75R0vsSyMppmj3RYZ/QuczQ==@kvack.org
+X-Gm-Message-State: AOJu0YxQIbAp87U5YLPeZj1tQM83FtJwccRxORcuIQ3JnUj4jwu8IQSs
+	SqG5LOgP82axw6lEdXFj57MxM8kTqBma7r8nfhOnGBMckVfrvOJGyAmH
+X-Gm-Gg: ASbGncsfyHRmXL+78u+DQLpO/gL8jKr/IJ7TFjwMrvMe2uGd0gyD6VTXyS92AjucERV
+	+Q8nCqawKKAfLsCemUTyn6CW7lCTY+f9+VYVsLcHOtl8bkrH4HM0MRWqeeqOZf0p4QFwTR6NR5V
+	mlxDGzidCUPxqzj42C77+FunWi9bfqcw65cEHI0186K9poi42Lukk0j1W/03reyrNLO8biUX8Cc
+	t9p2nKNt0weT9EJu3WpxMy+NZu6TCnveB0LA1tZrDpu5sWti4UjlqGdHbV4c1XjyHgyGW4QdaMo
+	kSpS0douSfl5rQDRpro0SYymE/6DgQMwQ+1WRSy0OUgtSPEggPIFpqOgeZgSAOOL9p+r6Ztg3w+
+	ZWPNMSvaZH2Uq4SmmOioy7LgcFlkz6GGDZVTXi95KrZICeQQb7A5g//P/
+X-Google-Smtp-Source: AGHT+IFXVMkMUJN3DFZuthUkwDTftqC1d/ccwMy5XAIwLxCjAlYyFXNSSGpD37z9EqnlLzHSbLAqgQ==
+X-Received: by 2002:a17:903:3d07:b0:24c:92e6:3921 with SMTP id d9443c01a7336-24c92e63c8cmr116818025ad.17.1757042808165;
+        Thu, 04 Sep 2025 20:26:48 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8900:32e7:81b8:10d8:f0c:6aca:dc2d])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b9e92d6e4sm2747793a91.8.2025.09.04.20.26.44
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 04 Sep 2025 20:26:47 -0700 (PDT)
+From: wang lian <lianux.mm@gmail.com>
+To: kirill@shutemov.name
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	usamaarif642@gmail.com,
+	vbabka@suse.cz,
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH] tools/mm: Add madvise tool
+Date: Fri,  5 Sep 2025 11:26:13 +0800
+Message-Id: <20250905032613.76910-1-lianux.mm@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250904175729.1029735-1-kirill@shutemov.name>
+References: <20250904175729.1029735-1-kirill@shutemov.name>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: n9xc3mi1ihwr56pw4o7kegpp43ddwx74
 X-Rspam-User: 
-X-HE-Tag: 1757042718-283549
-X-HE-Meta: U2FsdGVkX186k8qzfZhf2624WzdI7o7sQxVKDWLl3ZdaAw00s+XdAILHvn+A/A61F0MtAOOuH1RW6SqJAeMLW3u1fv4owUetyJ2JLrTZDZD1ZKKNrDKjvA+rDPe1PuraFxtVqCJZlhvw452Fa3JWK519lpwcwOIqyuSZjeNZ8U4hdHOKj8ZVohv3haEwvNiDW9FDf+UwJlikRv/KG3JaN9k7JmpG6mBuZpFL+8cdl0gUtBqOWx/uFHyLTIVTIE6S992FyH0uWjCTVbEp0X/4Kp4rfP0zUGWgoxZwaodCquYhPbEyIjYSnwoqbuuJ58SMlPrBMuQM1H9w0ZPq3o9o5VNebZPnrJbc60uJ7BJIYfRrX6jdoUxwi7naMPypMFAhOgOQdYlbA1JCgy6dsQnmDTyMF/EZVYil+6YjVxnZdXanh1aI/93nDHBhgi+q+MmmxGrbwl3cNohAbJEUiAJLB2uvbD+lSQ76D4wAGVRHOE4vYr6kx2kFE67yX0PKCzwAVOV8yP/jLCPLfW69zyNH94BjJacXTw6Bw9uCd25T+zAtl+ZU7t2/vQgoU82EDai6J76fVt/adgl8VnA7bvkUpAqFu4Ix377qxjZb/0Q1BX6zbnXn2/JyHXq1r41M9XWWr9PIPltmto1pe1OGH2WFYpXfL4JmOk28+OQgQRcKcCmHmlLQza/V220eGpFwcvflJjQVziTNt3hGC9ka4ZjedylZBCCsi2FlgGrCl4qkaADcqRg56TOHaIwKn3w4V79KvVwM+r12QYnpqZBQJqaJP4ZGoKUjCVyVM12UiMhRy/br2TO7twfRQ3xUWPmaSsGofAvbwaMelis/W4X8dS/abr0kedWv0w0CSluFbyG0FHxsl1RgvIaxhsJ/pPK6pj0uDFA/s8uOvkkI+5xhRle9WfWaKvgseOGKWmdALmbZ4KuZrPYANrZ62AIDScQ1t2gSmE3ZwrOx5jdXFFq0LaT
- 6XImYFKz
- g4qAd8jsw7h8Bw+nAVaV7XNOQeWbewGjyULdzGQxe92+6q8awaVwuUiyQNcdnPeuNFb4g3axIqLjlKSuWtVqLuDruQwi7A9DPt/su4xGzaiuenWhI32Ih7eKtAqYq9MOGjojZodulOjTqY4DQbQdJZ2cavOYgzZ/mDu2Bwueez0bkzxJqvITQAZpwVjR5a/vKILij7wHNom4qzVcZ9y06+sX6QMtGertd7Ub60rLRdgHcKl6auv0rD4T5MT0x769zI4VLXYgigbIUMlkYFXPcZo/gH/x8qcQUlNPeakRw1Tg7cOmW7+vw9negtGkm4Kp3rvajbXr58sPPQxijqDvEJg7VY27lZ5ViQvhl3SXFfCP+biGZ0lddMGeyPziVUZZhdyRdtcHbQYQbE3N2rAvQcvVLnvest2LRUFn7bmU/SAEdlPVLmRxdG2K+bVtpDLjPuV7KiRRt/mC4mA5CR87y26AuRf0aY8tl24BcE0Vpk0ceRTkeUfZcMC2UMgiQhh5neBfgbR1wuCI3+6TofoYho3UbiCBUulolA4CVM8emNb/bHHl6GpO/l2OODD60v8gJmej2StnqNV31CW4mFYUyRKAWPVA++Xlz/oe+119JX/dMVlTMOc1XX92+Rw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: 70A9240004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757042809-562742
+X-HE-Meta: U2FsdGVkX19DIdkgLQFngF3L+FSnJcPBzGje9ENLBsvf/IBoAFvSN+KNy84fmcVwJyBxHX4AzS77CY0I92HS5WUddd1EuD6HjITW+xonN5/SzEu3I41T2GmSDK9yID4ORzZ5ia9sGJ5eqjsUe1JVsTwiODE1MyqOudA1TDydSmyJNaIoQeD/VeCrUubUR37zUvfOXbkvjvO30g0slhx4YjirIQMMlvw3LVGwvWIp6qVjDX1l2Pbj8NC2hK+ZSpoXlSCeQbgBsBcopMKXzA85+iC3UXCUGSrEkXwth/y/GWYS2adK7cAz2mnVSQDxq9nm5FkkC95g5m41+/oLrNMoszZA3ZhlIzW9+F4fgl2lFyJ1LGtvSq/CqMEDmbz5IBAoO/GwX1fUBPcFJnXxVfSk++hl2jAoW5qnCRuRXxthh0t8S5ckytNL9kiNGYWY60T99e7KZKs8ozG+faFTmiiJyA7IqhVNEIb+dUKgTs1W+7UqMemsiURBXp/7w7SX2AtMCwD7K4mCb9cmLrOxo+L82EAKevqrFvhIHwYOq4HJbQWZiZGz+Fg2HXyLsG8kXS2F106JiPssFLpeNVCoJZPCkmtij6ZxiZvH6RUgFusWD6F9jHoQtL5ZkReSgiN7oLUBWRL+wIkXykWpBrY+z2/v9X6gNtTYtfiCFL041fOK+NG6qRtbQhaBXsw2IiLcv1l5vieItDGUhSn8YyMuzUo0LJRdKxbct69p8K5A5P94Jbr2X2ptmceM6BO5EWy+U37kw33kTw179EbXCEW8PZt9cmQXzvNJlUHW62WfYSKtXFpc3rsg+fJDKq0j8FBStprHR0/mwnGIBq31ZDB2Qf6fMrwJOziU36aa0NhVjWSluWqQPj1AUOYzkVDT+46Q93Rexew2dIEOSlUcArLU2mYNaU0Eqv68YOQr8tbpxZA0CeT3AIwMGCiUnF13gTFIsf2Kf8/je/4PMTk7H9f1qM3
+ 5kCqkn1S
+ YgVbYBYbSBYZmLHhtkcM6YSp7dDSwJ6qqJlMlqguo0ma/NPu3mef18/mHA15gjKGBFzNaSZ5V4Rr9lyfEHM1FPriByeA8spgnIE+YXgP6APNvLjptpt3bh1IXgdKth6YRYB+VOAGw6LGqapKIPn3abpoAxeCAZGQJZxh5
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000005, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,72 +128,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 5 Sep 2025 03:11:30 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 
-> >>
-> >> The good news is the page passed to __move_freepages_block_isolate() has
-> >> only two possible cases:
-> >>
-> >>   * page is pageblock aligned
-> >>   * page is __first_valid_page() of this block
-> >>
-> >> So it is safe for the first case, and it won't get a buddy larger than
-> >> pageblock for the second case.
-> >>
-> >> To eliminate the ambiguity, unify the handling for starting/tail block.
-> >
-> >To fix the issue, check the returned pfn of find_large_buddy() to decide
-> >whether to split the free page:
-> >1. if it is not a PageBuddy pfn, no split;
-> >2. if it is a PageBuddy pfn but order <= pageblock_order, no split;
-> >3. if it is a PageBuddy pfn with order > pageblock_order,
-> >   start_pfn is either in the starting block or tail block, split the PageBuddy
-> >   at pageblock_order level.
-> >
-> >
-> >Otherwise, LGTM. Reviewed-by: Zi Yan <ziy@nvidia.com>
-> 
-> Thanks.
-> 
-> @Andrew, if not bother, would you mind adjust the changelog?
+> Add a simple tool that allows to issue an advice on a process or a file.
 
-This?
+> It can be useful to experiment with effects of an advice on a workload
+> without modifying the workload itself.
 
-From: Wei Yang <richard.weiyang@gmail.com>
-Subject: mm/page_alloc: check the correct buddy if it is a starting block
-Date: Thu, 4 Sep 2025 02:06:54 +0000
+> Only supports advices available for process_madvise().
 
-find_large_buddy() search buddy based on start_pfn, which may be different
-from page's pfn, e.g.  when page is not pageblock aligned, because
-prep_move_freepages_block() always aligns start_pfn to pageblock.
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> ---
 
-This means when we found a starting block at start_pfn, it may check on
-the wrong page theoretically.
+...
+> +#define PMD_SIZE_FILE_PATH "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
 
-The good news is the page passed to __move_freepages_block_isolate() has
-only two possible cases:
+Hi Kiryl,
 
-  * page is pageblock aligned
-  * page is __first_valid_page() of this block
+Thanks for this patch, this is a very nice and useful tool.
 
-So it is safe for the first case, and it won't get a buddy larger than
-pageblock for the second case.
+I just have some super minor nitpick on coding style:
+(a) Maybe move the #define PMD_SIZE_FILE_PATH to the top of the file, 
+right after the #include statements?
 
-To fix the issue, check the returned pfn of find_large_buddy() to
-decide whether to split the free page:
+(b) use consistent comment style like this /* */ 
 
-1. if it is not a PageBuddy pfn, no split;
-2. if it is a PageBuddy pfn but order <= pageblock_order, no split;
-3. if it is a PageBuddy pfn with order > pageblock_order,
-   start_pfn is either in the starting block or tail block, split the PageBuddy
-   at pageblock_order level.
+(c) when i test, when process_madvise test fail it give some message,
+i think it should add into in the prompt message ,like this 
+> printf("madvise TARGET ADVICE START END\n\n");
+printf("should run as root\n\n");
+printf("\t\tStart and end addressed for the advice. Must be page-aligned and valid target pid address.\n\n");
 
-Link: https://lkml.kernel.org/r/20250904020654.28689-1-richard.weiyang@gmail.com
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Other than that, the patch looks great to me.
+LGTM!
+Reviewed-by: wang lian <lianux.mm@gmail.com>
+Tested-by: wang lian <lianux.mm@gmail.com>
+
+Best regards,
+wang lian
 
