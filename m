@@ -4,136 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02609CA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:13:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E61CA1015
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 614B08E0010; Fri,  5 Sep 2025 05:13:23 -0400 (EDT)
+	id D68658E0011; Fri,  5 Sep 2025 05:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EBEC8E0001; Fri,  5 Sep 2025 05:13:23 -0400 (EDT)
+	id D3FC48E0001; Fri,  5 Sep 2025 05:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DB6E8E0010; Fri,  5 Sep 2025 05:13:23 -0400 (EDT)
+	id C2EBA8E0011; Fri,  5 Sep 2025 05:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 38E6E8E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:13:23 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C1BA7C0628
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:13:22 +0000 (UTC)
-X-FDA: 83854633044.05.459502C
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BF517160007
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:13:20 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AB1E58E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:13:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45DCFC05F1
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:13:45 +0000 (UTC)
+X-FDA: 83854634010.12.F9A8FC0
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 532F7160007
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:13:43 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k slJTM8";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=TefHZ+pH;
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	dkim=pass header.d=suse.com header.s=google header.b=Pa+4wjQZ;
+	spf=pass (imf08.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757063600;
+	s=arc-20220608; t=1757063623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zvW/hg9ERJRbmThtCLmqLLOoe41n9axYJsJRtI2T5qA=;
-	b=cK9jGCFDKjbmGGpFCjrxfeFJB9MSRqGuju8uxFqkXSSpG9hrkWuVeZ+Q+B6CsJ55dxeRqN
-	/YqF7EvPPs3iMlL0pBpKDxhpN+J6zIWBNi5JcWhhUful+HaNdHb7Nw827EgXyBysN3o2DZ
-	hfU4VpGhbfCW9Xn131/ODwncyQ8L3Yc=
+	bh=PvFTLDPpNit3hMOVyUmFR9b9foOVm9W8HVS2a5TvYeA=;
+	b=2wMoqgg8fNk4AxC4ZqpQ/ay3VrA7/4LXaZ0ZeNzQXiclq+BPyDWCqT/br/90asTq1/QYXq
+	ksSW5826M0AbjU2GVIJGi+2BvWjQgXUQhTf4/qXMogSHg4A8aOoYUxV0XsgMCqX14Db2uU
+	vkD6QhIVZI6OxQ5ZFGsbLCIYSIwmwvQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757063623; a=rsa-sha256;
+	cv=none;
+	b=G441VXIVFTkQAGg4WROTZnhPQWvb5rboRUN3SUNAPq+4TuKRs9zToQGrGFW9boPrgSuYgi
+	Pw9fZGra4/DgrYUit4KkkqeM0Ifnu0RdjqQ7f16Rsh/mjSO6mwvqHRCSXcXsjwGkUG1CVU
+	AxtVWgJ2g3aDtbb40hzbtm/+GMpO83I=
 ARC-Authentication-Results: i=1;
 	imf08.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="k slJTM8";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=TefHZ+pH;
-	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.153 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757063600; a=rsa-sha256;
-	cv=none;
-	b=T/MRzDF9j9OSjzvmVb/n1jvi3olHJc2EWi86YO3NjgEaik1iippk7LZpjL99d/Jt9JRBTa
-	hzO9TCLlh8VzgWc5azc1TV1sTDbcyzjkImBkOlezNNTsMW3XCnYYldElOaFfETUdEnBpHk
-	Kpa8HV5Epv0R6xc8EtYQ1F9oHOuXbbQ=
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 1474114001D4;
-	Fri,  5 Sep 2025 05:13:20 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Fri, 05 Sep 2025 05:13:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1757063600; x=
-	1757150000; bh=zvW/hg9ERJRbmThtCLmqLLOoe41n9axYJsJRtI2T5qA=; b=k
-	slJTM8mM/EtG3Q0W5/9/HaJQiPhlky4EZ5azB1v4Xi01lgs8RkyOK1BAmiOQZ30Y
-	QvnHc3zZULYIYjzWnCwsbcUSMYO5JYBkgNY7D9BVz8baDRYOUGEoSu20O4IA2x32
-	lbMM1L+Z68lGRb8WuHhfRU09EDZ7RCViCs32X0EJ9BsT+s+glSvaBfHwkyqfjW2p
-	zbGq7fCcvYahdE1oymVXEo1pcJ1TJNWfCuE1Ps+Mr6CF0RUPFOS2qvlpOfjyv3Vi
-	l9sBV9ueQCmtbW2vDyeBT+e5jIco6bE9ZcYlNcl2Moyse7eoW585cA4qGanlISFk
-	UaP+LT06v3sgI9loBoIew==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1757063600; x=1757150000; bh=zvW/hg9ERJRbmThtCLmqLLOoe41n9axYJsJ
-	RtI2T5qA=; b=TefHZ+pH9cAGPWeyqK8FSXoqcoFVZWwXXvIj5435CMtdFXipY0B
-	K4XbSfIGnuGwq6d54CwiDoqfCOmA2jGINcbstNcdZ8Rvzx7792le8bvkTJeMNgCZ
-	GmZ4lhtmHyh4SwTPq6ssio9Xq6X2Do4EXt95ZuGcTgEZfXUs26IWQto6dmlAAKy9
-	HGq35AE0wUJ0thCeSD31Gf9N7EYIjzfETHqJbt0GD8r78gGX3gU7mcvz9YHU3XNQ
-	jxCbCDKkZaG+2+Y61GRZZ0I0I4bXmz19brRakk3xaZZ0YME7vgUsCA0OuINXNqtI
-	L06Ahk5WtPEzw5URcHr7xNwD8T7WOzfsBig==
-X-ME-Sender: <xms:rqm6aNJEB7QAafjD40tRcith5kLIZGOfgFDIwLFI-qPFAfsoQyhcSg>
-    <xme:rqm6aD-LvYvtECUsa47R3tata_5zB__gvOIEN4k3qV9PbfazMils1D6nnx8bkKZsg
-    rEgtzQ0Iv-xvPdRoOA>
-X-ME-Received: <xmr:rqm6aD-wCp2n4lolg1AGQNDDKBXv6ddhMWMIKDt9LFsGTDb4AFJWTDXDcAkt>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekhedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
-    uhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrf
-    grthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdeludfh
-    feefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeefgedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepkhgvrhhnvghlsehprghnkhgrjhhrrg
-    hghhgrvhdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomhdprhgtphht
-    thhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphhtthhopegurghvih
-    gusehrvgguhhgrthdrtghomhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghs
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopegsrgholhhinhdrfigrnhhgsehlihhnuh
-    igrdgrlhhisggrsggrrdgtohhmpdhrtghpthhtohepsggrohhhuhgrsehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtohepnhhprggthhgvsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:rqm6aN9c4Z0hpq8qkIPnU83Ui4u24jcHGp6ts-mA73TJ5589Qma0qg>
-    <xmx:rqm6aOJliJWVRrfu88Vkl6niWCz9YoqCeXBGFJO6PuIWd2mYY8KESg>
-    <xmx:rqm6aCS40ilsEHq5qw9DF_lZsStTSXvXzxhvL_sz0wFDCYBe3bJeaA>
-    <xmx:rqm6aH_brdZ_N-1lWlXXBrebaPFwcAZOVHv9C4WlpJ3WAUKqIdkscw>
-    <xmx:sKm6aKNdHmCUGuMNUDId2EVBAgnksRZ-fNPx2a_S90qOgSTjKFc3z_e8>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Sep 2025 05:13:17 -0400 (EDT)
-Date: Fri, 5 Sep 2025 10:13:15 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Pankaj Raghav <kernel@pankajraghav.com>
-Cc: Zi Yan <ziy@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org, willy@infradead.org, 
-	linux-mm@kvack.org, mcgrof@kernel.org, gost.dev@samsung.com, 
-	Pankaj Raghav <p.raghav@samsung.com>
-Subject: Re: [PATCH v2] huge_memory: return -EINVAL in folio split functions
- when THP is disabled
-Message-ID: <uw7ullt3ztwxiibsdffvphehi7r5g2nxqepcggilgalhv77gso@3h5uqgwodzl3>
-References: <20250904095129.222316-1-kernel@pankajraghav.com>
- <2psecfvsd4lbgcm6aflifi2kc6gof345txsvk7wtsytre5ehqt@4wyru36aaeel>
- <e8d5eafe-db58-4b78-b029-de6a59fc4fd7@pankajraghav.com>
+	dkim=pass header.d=suse.com header.s=google header.b=Pa+4wjQZ;
+	spf=pass (imf08.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b89147cfbso20775085e9.3
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 02:13:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757063622; x=1757668422; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PvFTLDPpNit3hMOVyUmFR9b9foOVm9W8HVS2a5TvYeA=;
+        b=Pa+4wjQZZQM8JNfk9Tl5OMiztJf/3aiBdM05E+1JJNEVj+si51+WiTktK/Cn2D9ZVP
+         vXr0VzGnCbPXMRR2do+BKwTtwjccVDc8s4IazZt47X90T0k/BPoA7bT5ty7ISwq4IArB
+         A7XBZJMCXluU4UPrudiRWDKHJJFodFyNRE9sxiyliGT6QTzv6MGugiW/To8BUm29JzI6
+         v3TbitaeLaLDRGplND52Dq29uTFKkKxtLd75PtX0ABk8SKax6KAZ/3vWTn/CudZBwQrx
+         V/IQNEYduURvUyHS/1lcLp/dIKjj2e8iyy84/68sriVX7OxA28PpcPU6idTOqv7QBy1e
+         C3Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757063622; x=1757668422;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PvFTLDPpNit3hMOVyUmFR9b9foOVm9W8HVS2a5TvYeA=;
+        b=OrhP4IQ0y4K2LmHkDdvZARzi+rI6s9bIoLbhmpqGnRMdcaMl/D+PJVccPnTHG8t5U1
+         5lDkjbFFWxmh8daCiv8gmGWIUN5UASg0Y7lFl7OJHczalPmtxc7fy3O8traXC7NI4/Yy
+         RtYtGmeoNx3u3D3poHkpi1hNvLdfXvLtxuV6NYdg+JZ5mJhAvlgDPs2HRwJaZbeqIhxq
+         VqCnbM2KEp2qRn5uF8StmvPm4UZubI8lSg1IWy5Hu5ZbWQGoARK4LQ11W4qerHq2mXc1
+         rk6pdkAomjCo51aFE7t6nGuua8CQ9XMcyd0rhzaoO0KLel7rCMQY+bQTP3LtXnNDWjTT
+         NPnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRmnN8ernqN6ZleGz6aFECLq8lZqG8i9U4GeGbChcvQNIVFH4E6IFAWoQetREnRvJGtQJfoL/HGg==@kvack.org
+X-Gm-Message-State: AOJu0YxGFwpcNxEOJP0xtirpi6SdD86+pt3MLXNLSQ0Tf3XAqSr+aJtd
+	Yp/yjfBWtgTp4Exb+crCyQjswHMnHI6Q7DqpjrxdmO43qw9tIS7L87gH1K3OA5eGmhE=
+X-Gm-Gg: ASbGncv8YuiEMGdscsFbem+4wCFZgh4ydajFTu1YDcubGsRxiCgxw7KMqxYdoH+Hssy
+	zJV13v27rhrDr6B4rjxKO4eE32mLN/MB3+1Ac5iddRwUjrYtYI2p5NlM18gpYMJKPRIrTt0/yRs
+	PajikARQ7R7lJEPRdQj8y66FCU1ZB95qBuBAjE2oI/5TfqDdlalsaiWgbNt0QobYtj7iMahF57t
+	agPG0loHbomtMTfCHt+WJw9AW1WsVFcK003l+0GYIiVAWcp+XLB+nlvmdWKJf8MmAN9maZViXvr
+	6jD+KQ9uWQKZCLUUstezjY2fPRE+5XLLqW821UgPhGiF5NFvQ7JGHG/7k/fMiGLFJtw7E5Mjj2X
+	r77JPUPOh92N8q41sVgimK4LNxBVblT0F
+X-Google-Smtp-Source: AGHT+IEYH2t+HLKybE9fCX0tdMhhQPT73xjKgDELDCewHk60i42q1kwx7dAVO56aCSC8fZB5al8euA==
+X-Received: by 2002:a05:600c:4f56:b0:45d:d286:6e06 with SMTP id 5b1f17b1804b1-45dd2867096mr46407595e9.17.1757063621802;
+        Fri, 05 Sep 2025 02:13:41 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45ddbc70fffsm1962545e9.3.2025.09.05.02.13.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 02:13:41 -0700 (PDT)
+Date: Fri, 5 Sep 2025 11:13:40 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: rientjes@google.com, shakeel.butt@linux.dev, akpm@linux-foundation.org,
+	david@redhat.com, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	linux-mm@kvack.org, wangkefeng.wang@huawei.com
+Subject: Re: [PATCH] mm/oom_kill: kill current in OOM when binding to
+ cpu-less nodes
+Message-ID: <aLqpxGYI_WHww20s@tiehlicka>
+References: <20250904134431.1637701-1-tujinjiang@huawei.com>
+ <aLmhbjtF0Sp75XXE@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e8d5eafe-db58-4b78-b029-de6a59fc4fd7@pankajraghav.com>
-X-Stat-Signature: 1hesrjz6cxnw9y4rzz6b7w3wdt51iwht
+In-Reply-To: <aLmhbjtF0Sp75XXE@tiehlicka>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 532F7160007
+X-Stat-Signature: nwe65i5zqqhke95gpfy9x6oax9cg6ky6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF517160007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1757063600-817079
-X-HE-Meta: U2FsdGVkX185FKYAVwraTBR9rITpAP2amh+IsYuaD/Myz9iYlmp0/bHXLbAiwkRrLxROLzzN95caxEIkmG1K/Pz/eMy/64QXovvHGn+dkCEuA70sX//+N2FII1TFEevCWRV8reYD+M1Yog1hhmG4ON3w7Pk7mm/Go39zaJnZxmIq/9NXA5QVX2JHVEKnxhiuvp0EnzQdI8psZTpotZysY1OIB7OqszHNwNbibzjRtaogpAUzthK6OfZWrDKU8NOseXTPCcHgpDg0OV3XD7eNgguwl71iC7weNdxGibAWMHiY5IZJclUzmGwK8C9A6oZshd7rmiUqXqzAoywfBsvPNqb9Kj9ykWXD1HXR0m1djA74pM2bRg88SwfPp4Q5HfVguSCshZ2D2J6Hn+mhdzJXsBVCcj/BKJYmyF0IEvZnss5jnCVinGZiDm9espVqOJPa1bvcG89bP/TeyHP9hY63T0qxRX4yHExqao7d17puwHUQ6zq5WSyWXEk1JCKbnjogbKP6dhpW3K0+ixw3afjmcfffz2QoiDsFdVMgT5rnlBw0jQ9mtU6ihbfhnrJErJqYZRwtE69SutXlmiaAxQecRMP/cNRcQUPQRqQz/CaidsHH4UWv0s6wP4Rt5aLKt/3ZpGR8THDAeySzjzjQXW9gN3rLPdYkue1qW0y6MjavA09x55ev1+0GMqUNTqxLsTzavKBLvIvzrxuK+iMtzfUp2rQQhUC5YneEu8/JZDEAnNujmGS9CPCL8NP+Hs8jrzpPasvCXDh0W1EVMlvGYcY8QWTDy9xjajH9rVSVEccXVMfrit3mIBGuY0/BeE27vlc3y570tNDur7bUouMm1ArLM/n0/WVLQo7Dd6q2sKreL8pLs0HNEBU08Mby7/6RNWgujKDxhtova4Uqabzt3lqWHY6Freh8kU6mhZ6DPYvtFAP1RwPEXhbj31We6QZtb+Yg6gkafM2Owmuld/r05C6
- fMevlIu+
- O69HU831fVgjBA1k9levWmNy38kwhQ4CzOWpFlNykBLdHqZ72AWH4hLtce2jO7E5T9Q4asDCDLe0xE4Z2fZJLXCtH7zV0URAysOzjZ7LmDKXlFvpJsKIr7IyNoY9D+sS4Pdkd90uIlenNIswh5U0QwdtJ7aUBRNQPMOCDfNBMKEYrDX9Zra47Fyja+Jdi0M1SnMBm2Ax0yV9Ccpq6pzt4RqavoVPGscZNhtWIBflHOJrBWfLq+MkARe+pDs29HJQLcs7k97BHVGmXm/3DqcVMjCIDKKSKi7pis8fJrDEdP9+Vj5XSxQ/gtLVuT1UnPjuqkXtbTxjiQ4im3TJiRkpLk+DQ+VwRrmpsIo6lr+Wb3CO844LUUfUp9kwOSerMjdD/n5QaoGZ88yiGbiOGHyZ7MVOA8zWCpyIJ7pRU7pTKaCsP5gjDECFTbSTYemA30j/qBC/BRGG5rQ6BRhE=
+X-HE-Tag: 1757063623-438549
+X-HE-Meta: U2FsdGVkX1/L0rqw8hx2Ka0LZNr02IHB7+5N5otS4rLYg/837wGPuklFXjtFCcGEN9j4jUkZEC+pFrfWnDbw9raPHAzZrpo20AsQA0MlQPNmPLAlED+ttZIgh7AcXwA2CPeWDSrcHnJFQorW6ok0thB55Xu4RSQcVexG776wcAR1HEYnWYQr7+fN8i/cRhLXxL8Js7zEPafQdUdc3e9l5ZS3vZXGvf1th8fmfsNIYIpMk1K1xocqffLfTX7SxSLPiWeMARG3CWlUwI+SB7dq6kO2jlzcArM6m0/mikLoO/tiJQYGxyPRbZIPo0ufRQRhVQXFcTAN0SuD5B7ixWQ6Bio1fp37HMzYtPqoXF7u5H8OCdfsPC9kINY9OUwLyMPn1Pj/3uBBmiVGZxeSjZ2ZvTtK4s6Fjk+J5+1809xephvyfe9Mu2IYqvZ09/4+AfgEc/0WgiqHIX12TQHfHsST1B2IFdKxHO3OIMEreguvzICA6Id0zk1r1fwACjCQvZ8eKjMV8pZlJ5sADIAxo08vAzTy8j2jqsYqv8a/wUFuMqkU4m30XTq7db8UwYdtP9Hil7USeVSrwpq6u8E4YBMHTH+I1HMryw9J8t7C0A5Dg+VtI/5Tx4CcphO6Xk1GfqkbjynL3vwUQTrl6OpR+xft2l+zMva6cPALBpH/MGYVaH19MeIJx+grUhrgIGFtRHLYf/oi42o2lqyfwVwNIrf84i8ksGq262CaoSKE48074YvKyFfZI9mw3wOR5Ht6P/+p+Q9h0rm1bxxjszNXE+eGnLwxrF7AHfDiaWmTb3iDtfRpFjb3NB5844l2xOfGSsaQSs7EoKYYidwtQUbWPoQD6BdxaeeKyLD4Sz+FQaCduQFQsWM10Xah1fR13gNj5jOpsXaREeuuqF/hTPr1eeiJBMdBS9cSVAZmDY+oP+mUka/m0NRSyRm9WJG4I4Ajueq9jWhCr7j2gA+h5ZJ7mgl
+ HrCz41Yf
+ sOg+UP5qeE4S9E1HhKhX8ETQNvGM3cYGBfqw1P2m8U3/5PN9dLTn3yk1ijgNZNsK35lfF2/PjLLDbKh9CI5kGf4hCvM2bMBA6Ob2n4pFWBR6pT5g1Tyzu6YKUv67+U53b9HqIXuLU8zZKLydjYnWLQt1z/dmLCvmER9SUP+dOhmurMDZeiHyyEL8ubPoBm7vJenAOrOylZn5C/M8jzZ1iaUWIK38QzuZxdOV61m3WWq8dtvbix6SM0XYUuGZFA7mN//RZB9Bxe6swmrfU7/y9nDVK91uK6Sfj0f0jn4cMNGvzuNONWFUgnUyHHWh6iMZYv+HRoT9w2Ra0DKcztfMDMeg/G2kJ7S37pN+rtDFpTeS06CpSc8tRNgnBbTDcdWdOGgYKCDb9VPBouw8kv/s4hsOXAOp1++CbVJiTUl64k48tYpdyO3If6VOJgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,38 +122,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 10:13:05AM +0200, Pankaj Raghav wrote:
-> On 9/4/25 17:26, Kiryl Shutsemau wrote:
-> > On Thu, Sep 04, 2025 at 11:51:29AM +0200, Pankaj Raghav (Samsung) wrote:
-> >> From: Pankaj Raghav <p.raghav@samsung.com>
-> >>
-> >> split_huge_page_to_list_[to_order](), split_huge_page() and
-> >> try_folio_split() return 0 on success and error codes on failure.
-> >>
-> >> When THP is disabled, these functions return 0 indicating success even
-> >> though an error code should be returned as it is not possible to split a
-> >> folio when THP is disabled.
-> >>
-> >> Make all these functions return -EINVAL to indicate failure instead of
-> >> 0. As large folios depend on CONFIG_THP, issue warning as this function
-> >> should not be called without a large folio.
-> >>
-> >> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
-> > 
-> > Acked-by: Kiryl Shutsemau <kas@kernel.org>
-> > 
-> > Just curious, did you give BUILD_BUG() a try?
-> > 
+On Thu 04-09-25 16:25:52, Michal Hocko wrote:
+> On Thu 04-09-25 21:44:31, Jinjiang Tu wrote:
+> > out_of_memory() selects tasks without considering mempolicy. Assuming a
+> > cpu-less NUMA Node, ordinary process that don't set mempolicy don't
+> > allocate memory from this cpu-less Node, unless other NUMA Nodes are below
+> > low watermark. If a task binds to this cpu-less Node and triggers OOM, many
+> > tasks may be killed wrongly that don't occupy memory from this Node.
 > 
-> Yes, I tried BUILD_BUG() but it actually fails the build because truncate_inode_partial_folio()
-> calls try_folio_split().
-> 
-> It won't be called in runtime because there is a check for large folios before we call this
-> function. So a runtime warning is better in this case.
+> I can see how a miconfigured task that binds _only_ to memoryless nodes
+> should be killed but this is not what the patch does, right?  Could you
+> tell us more about the specific situation? 
 
-If truncate_inode_partial_folio() shouldn't ever be calling on THP=n
-kernel, it also can be BUILD_BUG(). Just saying :P
+Now I have realized that I have misread the patch. You are indeed trying
+to kill the allocating task only if the allocation nodemask _does_not_
+intersect with nodes with CPUs. This is better than I original
+understood but still rather ad-hoc heuristic. It doesn't represent the
+movability of cpuless nodes and also adds a heuristic that would be
+really hard to get rid of later on. As mentioned in other reply I would
+recommend looking into using cpusets for this purpose.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Michal Hocko
+SUSE Labs
 
