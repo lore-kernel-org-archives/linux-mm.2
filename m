@@ -4,107 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7128CA1015
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 12:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCA2CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 12:11:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 376F46B0008; Fri,  5 Sep 2025 08:03:51 -0400 (EDT)
+	id 24FF38E0006; Fri,  5 Sep 2025 08:11:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34E8B6B000D; Fri,  5 Sep 2025 08:03:51 -0400 (EDT)
+	id 1D9AF8E0001; Fri,  5 Sep 2025 08:11:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28BD06B000E; Fri,  5 Sep 2025 08:03:51 -0400 (EDT)
+	id 0A1E18E0006; Fri,  5 Sep 2025 08:11:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 188766B0008
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 08:03:51 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BBEEBB5EDA
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:03:50 +0000 (UTC)
-X-FDA: 83855062620.03.DDFFF79
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 411EC40014
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:03:47 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=NZ4B7WJy;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=ZErcmkJW
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E72668E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 08:11:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A1BD4140156
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:11:54 +0000 (UTC)
+X-FDA: 83855082948.01.E8F6FE6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 83F11A0019
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:11:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757074313; a=rsa-sha256;
+	cv=none;
+	b=dyNEu037fAgj/hQ34XHL7p10kscCM03AADxRUjPer7CK4KCsLqSGgbTh/4OkBHqwAlt/LQ
+	VnSweVm0kZmf1/jCehA2yA3LY/pcnrFWVsyGKXfaTOIknUz/VOwgmDGgg/bPlKskZVjMqL
+	NJFW6e91cP+RuA0EYy9wvGt8F0GuSDo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757073828;
+	s=arc-20220608; t=1757074313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4lT96qRu0B7WnFHrHqRSMSqB3AcU/t9e++Ul2OxkBts=;
-	b=GJIF20zK+h2igS4k7kBMuJd64kg/+Hilev5GmW7RbnDhdKsGQ2GpMFHdDRRLflRHDF4R+t
-	XG5tYBC9saDvWnF14ZvpivkK18RtwkRnC9/vNuxin3RXauxbnfRjvziZ4+cicl5nEsGDUo
-	tj1yuSRqeaRukv1p/5dUwnoyOZ4N5uM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=NZ4B7WJy;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=ZErcmkJW;
-	spf=none (imf12.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757073828; a=rsa-sha256;
-	cv=none;
-	b=e31G5v4+eG51DkO5mg6337rtdLRDcZmM+qU5SMh5CRHVoIL1M6ClWbrzaSZUHlDBjeEyKn
-	Mal/2jtXkBxd+cs5+uIcwg7FHpimBYSKsLIoiYZnfJO6V/c2BktjCnz8zhgmOJLUqt1aRB
-	rPCVxuufNSKBOcM8rWxFH168N2EU30Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1757073825; x=1757678625;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=4lT96qRu0B7WnFHrHqRSMSqB3AcU/t9e++Ul2OxkBts=;
-	b=NZ4B7WJyCkuvvWe+8/kOVc88qCQz1R09Sm/iphxSmGP/cLkImXIEZJteH9drIeedFoVO721rcI1ZB
-	 7YORVBtpEAQlSwSiguNyZZpy6fuO1wHBAMWSN3VakwZWxVGoelpCd2xUbS5/LO1EcjORfrktjwl+vk
-	 vwVN5O6R8AW4rt6zjiBbFUAdm0Ir/gu5F1qVFt9xi7Rr35STwviiq+q1J+3JD1oFXoZf8UZeu15QOG
-	 SPh7LX8XFG10s0TlsW6Cr/VrUiTpDiyS544OaLqDWUvTx8NrVV5MzAeNDEuJytjHC/IUl2ajexRh39
-	 0It9pSzN2mksSd3a2XXFhh8PtpOccwA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1757073825; x=1757678625;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=4lT96qRu0B7WnFHrHqRSMSqB3AcU/t9e++Ul2OxkBts=;
-	b=ZErcmkJWrxAGuYVv6lFP9TeOcvcbIhp0ZtAnQMhQL89kJyKB8BCTmxnHMoBJLgdZ06kpqV1HOyeNh
-	 NaKweGRAQ==
-X-HalOne-ID: 5e268e94-8a50-11f0-a450-d510462faafc
-Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay4.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 5e268e94-8a50-11f0-a450-d510462faafc;
-	Fri, 05 Sep 2025 12:03:44 +0000 (UTC)
-Message-ID: <8feaad36-7d58-48a0-b83d-d503e3343ed6@konsulko.se>
-Date: Fri, 5 Sep 2025 14:03:43 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=AYbnAayVJ5j0xB1k23z8SMycFu9vSF8PiQYLB5iMyog=;
+	b=aCnvvb342fs5ZTE3zQDQ1YM3le3VeaL28LeLWO55qrZeb1eNU1syd/kemYtnSJIGdB4/YS
+	5iNLRnwYDZGnqfk6R4KDofY5HUpMLsmHLawgvHja6YC78rHmqFXl84nyb8LJewlqpA9A4k
+	pnptO3iwkOsHJ8DGXHf8q5MSt1y/Yqk=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0A1B153B;
+	Fri,  5 Sep 2025 05:11:42 -0700 (PDT)
+Received: from [10.57.60.42] (unknown [10.57.60.42])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 65F093F63F;
+	Fri,  5 Sep 2025 05:11:45 -0700 (PDT)
+Message-ID: <66335cf3-d49d-4b27-a37b-0a8a5e2c5d78@arm.com>
+Date: Fri, 5 Sep 2025 14:11:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] rust: zpool: add abstraction for zpool drivers
-To: Vlastimil Babka <vbabka@suse.cz>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250826124454.GA1502@cmpxchg.org>
- <CB3E7E9C-2192-4C60-B79A-932AD6CB005A@konsulko.se>
- <c0b9d34e-1a21-4a97-b898-c33f7c8b49dd@suse.cz>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <c0b9d34e-1a21-4a97-b898-c33f7c8b49dd@suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 411EC40014
+Subject: Re: [PATCH 0/7] Nesting support for lazy MMU mode
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
+ <9fd076c7-f163-4b92-8201-d8a259a338c1-agordeev@linux.ibm.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <9fd076c7-f163-4b92-8201-d8a259a338c1-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 83F11A0019
+X-Stat-Signature: 8xgnd676h45cfhcboj5bxqi116hm5ano
 X-Rspam-User: 
-X-Stat-Signature: eachaw9kwg11qowuc3hj1xfd5eyka6j8
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757073827-794636
-X-HE-Meta: U2FsdGVkX1+Pguv+ybD7O/bNsLSqC/DwQBkSdTeEMoBIakzRN+ZoP5hmur39ZiRckLuEsrQhFqWaQZ57GqmnCE8owVRmuU+20dsHkA1u05XhXLGRs0f/TnEEFeeqdoU77T4/+pmn/o8qksiQ401Y6XcWyEkW20zXH87VDyBTEAXFOJg0EMuPfDAB5jzuj2eEHGoWBXjK+wSwPtWfroSARLCI3Ls5X+4QLtgOu1jmvOy4SYtSlOfIACF/uT8Jh5CMVVzTNNf0YoK5BaowI2BJOEJjG6l5DubAnoHJ0I/BHYb6CLA/II/vxjuMUeuKC8nVjlQh5u43JNdx0kzGxUwKkr253OiQv05qgql60q4rTYzSHdHC4BbPPFS5wbgXbo1WqP9Y532tsrnEb1YiNoudyYNlzHy8WZYadYZOfsDIj2qARijN7lHU4EXf3kzbNA37eYgSUgpi2EMfyeENzEwDDyyD8o+dUM49gr8g1YB73CyFlrC30debUxhyeDw4BWLlK8sWSQ0UbD4pucNeC1XUh1xf07WiuazpUHvNDaDVLj9kQuq0R1XyI39UXQXzfd48wXv/dIEzYTVg5ff32yZBlBMYPYu7PWpO5KS9smRrHKEvMul6VRGExSpMpEZwpBc7DfDnCswYozws4PeTYVNRNboz346SmvvjNfSSv97dzuPcjFzqteZ2geUUTZS6T7/1S2bMSHTEOJyFoSq04vjRsKWTIcyVZ1mjJui5RrQvneuxwV3DJhq1ssjED2Q8RmoDO/F+3BW0hLgdfG9MgiETRiC2WhtzMDUl9CgqLm28dkqVzWOiit7e4tXX6MYXz1/J1mNAF9O2ZUGIHoEWgIBjGPqe01cGZyCc6JVg+SLVW1jH/ecSD1LXdUvO5dyO3ghaYBb7C0sFXJ2X8603DUmrVwo85ZwtizcKNFrxgG2NCUXNQ3MWdB3L88PbdxzHiUByi3Az0E6DDDg0cpjyjm3
- BdgqInPv
- wHfBjR2s27sh5Z/on7DZoMzHcv4mSCxEcoda5MP3ZPnnNxpmqSjGMJ+sCqLMnp5VYl33kGj0Yl/ULuHjfoakjJ78o/W+U8lVPAciZQTZZN+XmGsORZsXjSEyolZslB+pC+LRfPw2gQbZQ36xC+NdtdO7YIukLdIr3qe6VJu/pubL6F7JpsZWATAO9BjjEWoRL+HNuVOz/SoEIzL5doUP+4lJB0/xUQoCFOrilFPnLxoGKBfr4tmat1wxwhO0QJ37kFSOXLrwj/KlXEevWtIHezCxPb8Vczou6I58ZWV9yT2s73zra6g8mSNWTfdPhjYEzZAxfXuUT/Z/LRrlvuDukvQ8D1w==
+X-HE-Tag: 1757074312-163821
+X-HE-Meta: U2FsdGVkX187B8KCY5dDhpcrPH90XXxeMVPttsZObfdLr020q41URNfaKaQ6yCFt46lq6JuAT5sPS5g8bZoQVvgXGPFK6utdyYqa4cGa2QbNR7j1J6ySilMZ9gWJ5MhQdSjaKp/km9AzaZZVGZaHF29keu3id7wvuOtPhh6qRhfIdNSHUR5OD/NhGT2qIbD4Tv0BlSHbELOWlikJ3l7QbQ2rt/uX3b6Kx5N/eIPu6FSSt7zQ9dtU7c37i86dggOqf5OWD1dJduhTBovNoMDIwhMg6blkUQfjp8bUyZpvTO/PYSaAXW8/Q/kQan+8SwWzqrvxD0K49wiIrrtP4HEhD6Hbcb/EGL9WX1v57ZPon9NYhYWT5UKVTbQcdNd1x0IuwMu/pkL+vTxrEmhiS3JaKOJGM13FP9s+6eMf2IxLq5edznNZElC8UcrOGfcOKbgWAqOymzDtye1B+E3FFCYvhdwMHewSSMPrzgIeGFm9HzANPRkPIa0TsBPcPBkpEye8Qb9dErrKAlguSysLjDgCIOyUqA5coDLkTGa47osc8e2pg5WFjIj++Q2CmN3T98qhuaBi63R2gJFFZkB30gj1CZWjMDEZUhjU5M8d6ip2W1LSKu9CRdwucHhm+OdJe0h95r5xyfblsR+ozQ23o/4HuXMYAg4HIEb8DoRxDoJ31q5Px4wQ5rOuQ/kWarT4vC+bQnCLRFszY1JbBGK3wisdS8ZDrz5JhRmZ93csxipSzewm+3kFHsfJDGz9s8i4HNMSvCR/pwqxmT1rznHgLxWUT4uyWxa6Etntx1I5eC2IDZe5yxFMaDVqz4fXVa8Yw8ekJtxOAG42/lysnrhvpM7BZlxxqhLC686J4TXIYhMMGpafgs5AVeZ11k7rHqvKutbl/FU50p9Tuj50Hmpm9JIF6uLeT9ABALSUCnVqcyr9VKqdr908i3a70WLS9FTul64zUQokJQhe83YV3YHFZiA
+ xKxtjZfF
+ 41BKdWqn94waFRvO0pg4+vREil7VboYat03Gdbjisq1pk/csL+SPhHP6bhytVaoqB4ftTS9zGDgMTrLZJNxjtPRLVJBz3/Awip0fPoBEvwFO6CluUVwM612LNFTbPLviNppUU6qzH2XbnhbkpwyT/UUJsPyt3SDDuSah5oH+lwdEdljwATAn5+YuAcV02PjZ1lFn7Usj/0wqfI4XGbHOc/4VuvT4r+LFXfkEu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,66 +105,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/5/25 08:58, Vlastimil Babka wrote:
-> On 8/26/25 16:56, Vitaly Wool wrote:
+On 05/09/2025 11:46, Alexander Gordeev wrote:
+> On Thu, Sep 04, 2025 at 01:57:29PM +0100, Kevin Brodsky wrote:
+>
+> Hi Kevin,
+>
+>> When the lazy MMU mode was introduced eons ago, it wasn't made clear
+>> whether such a sequence was legal:
 >>
->>
->>> On Aug 26, 2025, at 2:44 PM, Johannes Weiner <hannes@cmpxchg.org> wrote:
->>>
->>> On Sat, Aug 23, 2025 at 03:04:19PM +0200, Vitaly Wool wrote:
->>>> Zpool is a common frontend for memory storage pool implementations.
->>>> These pools are typically used to store compressed memory objects,
->>>> e. g. for Zswap, the lightweight compressed cache for swap pages.
->>>>
->>>> This patch provides the interface to use Zpool in Rust kernel code,
->>>> thus enabling Rust implementations of Zpool allocators for Zswap.
->>>
->>> The zpool indirection is on its way out.
->>>
->>> When you submitted an alternate allocator backend recently, the
->>> resounding feedback from the zswap maintainers was that improvements
->>> should happen to zsmalloc incrementally. It is a lot of code and has a
->>> lot of features that go beyond allocation strategy. We do not want to
->>> fork it and fragment this space again with niche, incomplete backends.
->>>
->>> It's frustrating that you not only ignored this, but then went ahead
->>> and made other people invest their time and effort into this as well.
->>>
->>
->> I don’t think we have a consensus on that.
->>
->> And zblock is, after some additional improvements, just better than
->> zsmalloc in all meaningful aspects, let alone the simplicity. It is fas
->> easier to implement in Rust than zsmalloc, too. Besides, zram is a good
->> candidate to be rewritten in Rust as well and after that is done, zblock
-> 
-> If your target is zram (not zswap) then I don't understand why insist on the
-> zpool layer, as zram refused to adopt it in the first place?
+>> 	arch_enter_lazy_mmu_mode()
+>> 	...
+>> 		arch_enter_lazy_mmu_mode()
+>> 		...
+>> 		arch_leave_lazy_mmu_mode()
+>> 	...
+>> 	arch_leave_lazy_mmu_mode()
+> I did not take too deep - sorry if you already answered this.
+> Quick question - whether a concern Ryan expressed is addressed
+> in general case?
 
-The target is zswap in the first place.
+The short answer is yes - it's good that you're asking because I failed
+to clarify this in the cover letter!
 
-Then, I apologize for quoting myself, but what I wrote was "zram is a 
-good candidate to be rewritten in Rust", and I still hold on to this 
-idea. zram can be greatly simplified by that rewrite and the code line 
-savings will be far more than 700.
+> https://lore.kernel.org/all/3cad01ea-b704-4156-807e-7a83643917a8@arm.com/
+>
+> 	enter_lazy_mmu
+> 		for_each_pte {
+> 			read/modify-write pte
+>
+> 			alloc_page
+> 				enter_lazy_mmu
+> 					make page valid
+> 				exit_lazy_mmu
+>
+> 			write_to_page
+> 		}
+> 	exit_lazy_mmu
+>
+> <quote>
+> This example only works because lazy_mmu doesn't support nesting. The "make page
+> valid" operation is completed by the time of the inner exit_lazy_mmu so that the
+> page can be accessed in write_to_page. If nesting was supported, the inner
+> exit_lazy_mmu would become a nop and write_to_page would explode.
+> </quote>
 
-So, back to my point in the initial post. When/if zram is rewritten in 
-Rust it will make more sense for it to use an allocator which is also 
-written in Rust rather then zsmalloc, provided that the allocator 
-written in Rust is good enough. And *that* will leave zsmalloc a niche 
-backend.
+Further down in the cover letter I refer to the approach Catalin
+suggested [4]. This was in fact in response to this concern from Ryan.
+The key point is: leave() keeps the lazy MMU mode enabled if it is
+nested, but it flushes any batched state *unconditionally*, regardless
+of nesting level. See patch 3-6 on the practical implementation of this;
+patch 7 also spells it out in the documentation.
 
-You see,
+Hope that clarifies the situation!
 
->> will be even safer and faster. So while not being “incomplete", it’s
->> zsmalloc that is becoming a niche backend moving forward, and I would
->> argue that it could make more sense to eventually obsolete *it* rather
->> than the zpool API.
->>
->> ~Vitaly
-> 
-> 
+- Kevin
 
+[4] https://lore.kernel.org/all/aEhKSq0zVaUJkomX@arm.com/
 
