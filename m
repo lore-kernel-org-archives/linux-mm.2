@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA58FCA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 21:42:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3D11CA1013
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 21:50:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E75D8E0010; Fri,  5 Sep 2025 17:42:16 -0400 (EDT)
+	id 3BE088E0006; Fri,  5 Sep 2025 17:50:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 297D58E0001; Fri,  5 Sep 2025 17:42:16 -0400 (EDT)
+	id 36D028E0001; Fri,  5 Sep 2025 17:50:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D5678E0010; Fri,  5 Sep 2025 17:42:16 -0400 (EDT)
+	id 282EF8E0006; Fri,  5 Sep 2025 17:50:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CED68E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:42:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B936F1A0331
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:42:15 +0000 (UTC)
-X-FDA: 83856520230.23.47E561E
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E8E96100003
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:42:13 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t2KycOcQ;
-	spf=pass (imf05.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 159BD8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:50:27 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C528CB857E
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:50:26 +0000 (UTC)
+X-FDA: 83856540852.28.614C977
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1508280006
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 21:50:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="AsvpR/nI";
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757108534;
+	s=arc-20220608; t=1757109025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JdQSZQn4Ae0lf5/FOhW87b1E1rxb0mDC0qFKSsqhQ4I=;
-	b=dth9efLLCqVYfjkGAPEVUsDwyavO/T7a5RjBmEAHYg7VPjGdsf+eghfvSnTa7wEqdioPsB
-	ID0H05PbUx/Z4coLzuGRdeU2NWBeyCbKVAGRN9qB6ao72UHptnb8aPeHUoLoacw1wEpCNi
-	P7AvfcQx4WIUGzC2bbP+P/iwUwh7FrY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757108534; a=rsa-sha256;
-	cv=none;
-	b=rvhTQSQOW0Dub6j99jLtzPIrL1fPAR6xVYFkDAa/FWYvkgXCDKPQSZ+krTJCK0JGhxelYm
-	O31GLDMJz8iXsjHfNeQvra1Ex/0TlNSQriyrUWj1isxOX7qCw9mxWWzLVWb7zj9pWZuJSv
-	9Vrn9wGdJNvMhuRbbJH5ljxnjSQb/KQ=
+	bh=i+4lbkYAVJItZbl2lUeNDlNahLiQUZCJiaL54ViPkiY=;
+	b=xmg6pj1Cd1ET4TB43m+KsO2N1jdlAdtzM+zgYoaSFKhhUMhQXct8eapidt+5EOyTLXJjWB
+	p7URuJtC5nt62aaxnsrXGTEQvALtxtDKt8dyttjJUCxhmp67fyOaKNsAc+uRJS6W7DHIlT
+	FZo/ZecOHwih3gvESphXPJtfoOljRwY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t2KycOcQ;
-	spf=pass (imf05.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="AsvpR/nI";
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757109025; a=rsa-sha256;
+	cv=none;
+	b=YsOKw8BdiZX20yCzMO2wgvQqDqsyel+3EnhgyVwOJE3izuN3RVlTatR03qvbwlGxi0nNNS
+	3YGfBhluXfBp/fqO3gWnMGhNZD4qQ0GYFIVW3meWjdR4QxGs8Od4s/7RvDqHXPrrwbgo60
+	9OSfuizD1g7hLQVGgBi96isAarMlUTM=
+Date: Fri, 5 Sep 2025 14:50:17 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757108532;
+	t=1757109022;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JdQSZQn4Ae0lf5/FOhW87b1E1rxb0mDC0qFKSsqhQ4I=;
-	b=t2KycOcQC6+Wj1X+FCLqCY3UI+yAR/kc8EnpBUKQbcoiI3YaZw2E1d0/VODIOXL7PgHDxn
-	cx8ZeTr9MJKBB+M9Js3cGU4Q+EWNRrxXAo2+/JlZABHc0nnNHLckybReBlDjxAcxjFpJGM
-	v9oWfeEywqHvK8z6TmlnCITZK8pSRzs=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Tejun Heo <tj@kernel.org>,
-  Johannes Weiner <hannes@cmpxchg.org>,  Michal Hocko <mhocko@kernel.org>,
-  Muchun Song <muchun.song@linux.dev>,  Alexei Starovoitov
- <ast@kernel.org>,  Peilin Ye <yepeilin@google.com>,  Kumar Kartikeya
- Dwivedi <memxor@gmail.com>,  bpf@vger.kernel.org,  linux-mm@kvack.org,
-  cgroups@vger.kernel.org,  linux-kernel@vger.kernel.org,  Meta kernel team
- <kernel-team@meta.com>
+	bh=i+4lbkYAVJItZbl2lUeNDlNahLiQUZCJiaL54ViPkiY=;
+	b=AsvpR/nIzurNpoIFa6XwntMf4OD07BIqdrNjj5pHASfxQjM6hDQZxoKF+RNqMmjRn+bwxD
+	QavQmwYEnsXt2x7J0YcXG8R67lsjb9n5gKD4blTaP7+Qk9IW5ox/72XJLYPBLhcvy0J3Vq
+	6nEtKlfioHa8Yera73WK9RMGQRYsHEE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Peilin Ye <yepeilin@google.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>
 Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
-In-Reply-To: <mai3ndkvqrpkfpblkazbyejvpkizrp7dh22374tpkmepfji32o@3troawzsuvqe>
-	(Shakeel Butt's message of "Fri, 5 Sep 2025 14:31:13 -0700")
+Message-ID: <6bcjnhdsbyfmlua2x7olz6w3gheejfatnrtn5qu7ls5svegrok@zeatti7whrnq>
 References: <20250905201606.66198-1-shakeel.butt@linux.dev>
-	<87y0qsa95d.fsf@linux.dev>
-	<mai3ndkvqrpkfpblkazbyejvpkizrp7dh22374tpkmepfji32o@3troawzsuvqe>
-Date: Fri, 05 Sep 2025 14:42:01 -0700
-Message-ID: <87ecska85y.fsf@linux.dev>
+ <87y0qsa95d.fsf@linux.dev>
+ <mai3ndkvqrpkfpblkazbyejvpkizrp7dh22374tpkmepfji32o@3troawzsuvqe>
+ <87ecska85y.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ecska85y.fsf@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E8E96100003
-X-Stat-Signature: ypoe37ma1sf8kmgo59e3go87oiunxbt3
+X-Stat-Signature: mw594hk44zd1xacmeuutzdaimgskak6h
 X-Rspam-User: 
-X-HE-Tag: 1757108533-152007
-X-HE-Meta: U2FsdGVkX19fAJf8tA5Fkl3kccCzxirOBMmN7mC6FmFwKEzJhrHTBVTzssazNLxXsldoOEM5QbUmGtONkIBd+pPPBLGHU2LlSi/o9s7LQeyljr1l/R28PKgnPDHLqSHOufOCdwNBmZAC92zqe0x62S/8p+bCsHxrnaIGXKSTM0gX4S98E9vZ1VhKml70L7I/7d2pIw8Ml5NLrtX+lcNWxEBrw17Fskf0h6K8PDzRALmPljWELeW+/hAQpvOcto6O3n4y95sHalXTUE3yZO7rcR76FXRA640CKYHDHwcvLfLxVmCCGg+LCAThnTZ7XodToDV+iopdqhMghf1KQOSHMS9e+asd9OE2qkjqsDV+AtiZR18vg+CrPhM988rth6BumqMaM2AHLVViGfcYk0BtjgUutJJ0TFFtHc43P5lhdnZWcyM8sk7cvbqEC040CXHTgJyUE57dEYblmEWr19aJh9CKUuZGNno6cgn25K4SaaMh7YljDVE9sbJsjjC+mmZ2CpinC5vY5GLebWZPMdSOhcDe7hmSTWLmuFRE0QcTNW9hHI9yeKKnFThirH3UwpsAN1RqUhWjfVVu6I9TMYbLd95pXxqQKMxBo16uLxgZG8nNjviXLCCuffro+4rbvXgvlFSmRLwOsOl/75XeM8Urt3nGA3I+L1DtYasqg8JauhQliCdvYKxYiVxPlMdAKSi/7TG1Lg3fJ5E0VXLHEfkTje4RJ5EbsYVNEoZKWCxUttq30h0wmANzk4juVAGnzAmAABQvTcyxCQyfZQ8CTlR5rUVJ6lHuupT7a0SH0eMgh9zDCbZqb1X1ndi34k3cs3MmL2PhQn0RmQwIhcLYj6dbxiUP/DbrKlSjpMWB6qCU1/n10IQP0JzF8wT4l4UW26QjOZ6NYI7RrVHDYnegWtZawkC+aK5c6CXp+vNwEpj119HtmsRaDZIcQS5lf1EIBQPAkXHeTFA3KRvz+2HUZdO
- FuD00o1Y
- hseXshTBTR+YZstk1RQ55BN5eO8z/aA3He9xwpL3V2gTPmLFd2c1dI66if0b6XgAqF5nDrQ6q2vGuuwnnJJSyG1aodnhjAMtXNQcJTCVbAMQCqme5qeM/SryNvJL8Hvvmd7c3zkWm0ErjUoUyh9fhBQka3D6LoOtdHwzg6pw7ridmBkIz3H3s27t5x3R6ILGQVnrLyEh+MtD/PnM=
+X-Rspamd-Queue-Id: 1508280006
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757109024-842483
+X-HE-Meta: U2FsdGVkX19MNTprg/9thPxjoEK2FfCLaKxh+mvaI7lq38E4SWqRx2N2YNbg5usoX1db8tuRxBPJCvyOL7nwrvDFyRLK/bkFW/YZ+0zgd3GDLsG0YoQeI21/HWk9yGFnfbAFdFI4geHS+ADsVN/yp4P4sesN9//uP17L7WJDBhC5Vp5aN5JJWRYw9xknMCPWIHBb+7gqJA+oGZpyjVQa2/2OK4LdyE72jFLHZe84ZbAuaLCcok7KMENyZv9H7zm9CtrmC0+5/tBtZyo7sTmvzLlm1e/M2iZtxqrvIxnjxGYhtZH0MFd2suiuZOPl+YAelciYBu0JhCExcY/wImCRxPTWyrPCJNh9pjJdRfSLikErzFlir2PWb4CAFZs7L2IdVnfz13QoLO9qr9KQoDPRZsc7Na2fBkeyn8lnUd0WfkmKYvaia1GVXkKkPBvDY14OppPo913YTpCNttHx4f3naAHa9+lnN0oF0uIVblm+VvFphcecUpmY8jFHjSm8FSKXDlYxKuOoBiobUUepDZJZFms/9EeNxF0TIHbgwjCVLgqxb+T78T+mxMOg5LhcuezaY4sjWMq3FiAjtVxkkQlVLzhr+EhTeAn5fks4B14hbnjXGOqpCo/3+XCM9sxCjHu1Gx916+lOvc7MDCr8Gu/QXF4RwVFf9Uj1v/Ln1EDc/nw3giQ4G3UpRKDCWquSjmrz9HGt/5eK5tS5sKJf07Mxabcbm0razpBuTLeKlMcDeOOjn/LB94V8RQn0/iUK7qt3iMfmmt8vROohOU0k4Et7AMoONajdEmOvtJSVF9Y+gEiriW3eZGPhf3BZnHdJKurVlMSSU7hEUiKe3Rvh2KSyqrPqVwwWaBmdCX859+AphlfN4FzyBHzk8EjWL+Bj0aNw7j6QXo4gIyHRHa6A8BJVNCD9N1kQ4PcqmvNaaY5JpD93Ml6ni2r50RVzTDOMRwdmnHDb+n8xS6y+Rc6/9XG
+ D2IlIK5n
+ 9kq12vXgitAgsQsmcm8UmtlFC9HxHdk0Cd/pdp993DKVq1UC74GJV/Jlpmw+/NobCrLRgL1qRtzmux9N9Vd2Ae+50tYZHuO+KFQYhFlCdaU2/rY6Kth4kqXlPwaPv9zncATO5oKsIjyrOcLzFsY+h62gHRmqLBYqhUN4E/Bw6/cHvzNFv/OIz9t6M8QG5qHzqHzL5AHO40sxs6iKvKIcOyfmti9sGCoZAiAfICQrvkFcfBT9Vdo36WSSM44TANRQf6oVd
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,40 +94,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Shakeel Butt <shakeel.butt@linux.dev> writes:
+On Fri, Sep 05, 2025 at 02:42:01PM -0700, Roman Gushchin wrote:
+> Shakeel Butt <shakeel.butt@linux.dev> writes:
+> 
+> > On Fri, Sep 05, 2025 at 02:20:46PM -0700, Roman Gushchin wrote:
+> >> Shakeel Butt <shakeel.butt@linux.dev> writes:
+> >> 
+> >> > Generally memcg charging is allowed from all the contexts including NMI
+> >> > where even spinning on spinlock can cause locking issues. However one
+> >> > call chain was missed during the addition of memcg charging from any
+> >> > context support. That is try_charge_memcg() -> memcg_memory_event() ->
+> >> > cgroup_file_notify().
+> >> >
+> >> > The possible function call tree under cgroup_file_notify() can acquire
+> >> > many different spin locks in spinning mode. Some of them are
+> >> > cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
+> >> > just skip cgroup_file_notify() from memcg charging if the context does
+> >> > not allow spinning.
+> >> 
+> >> Hmm, what about OOM events? Losing something like MEMCG_LOW doesn't look
+> >> like a bit deal, but OOM events can be way more important.
+> >> 
+> >> Should we instead preserve the event (e.g. as a pending_event_mask) and
+> >> raise it on the next occasion / from a different context?
+> >>
+> >
+> > Thanks for the review. For now only MAX can happen in non-spinning
+> > context. All others only happen in process context. Maybe with BPF OOM,
+> > OOM might be possible in a different context (is that what you are
+> > thinking?). I think we can add the complexity of preserving the event
+> > when the actual need arise.
+> 
+> No, I haven't thought about any particular use case, just a bit
+> worried about silently dropping some events. It might be not an issue
+> now, but might be easy to miss a moment when it becomes a problem.
+> 
 
-> On Fri, Sep 05, 2025 at 02:20:46PM -0700, Roman Gushchin wrote:
->> Shakeel Butt <shakeel.butt@linux.dev> writes:
->> 
->> > Generally memcg charging is allowed from all the contexts including NMI
->> > where even spinning on spinlock can cause locking issues. However one
->> > call chain was missed during the addition of memcg charging from any
->> > context support. That is try_charge_memcg() -> memcg_memory_event() ->
->> > cgroup_file_notify().
->> >
->> > The possible function call tree under cgroup_file_notify() can acquire
->> > many different spin locks in spinning mode. Some of them are
->> > cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
->> > just skip cgroup_file_notify() from memcg charging if the context does
->> > not allow spinning.
->> 
->> Hmm, what about OOM events? Losing something like MEMCG_LOW doesn't look
->> like a bit deal, but OOM events can be way more important.
->> 
->> Should we instead preserve the event (e.g. as a pending_event_mask) and
->> raise it on the next occasion / from a different context?
->>
->
-> Thanks for the review. For now only MAX can happen in non-spinning
-> context. All others only happen in process context. Maybe with BPF OOM,
-> OOM might be possible in a different context (is that what you are
-> thinking?). I think we can add the complexity of preserving the event
-> when the actual need arise.
+Only the notification can be dropped and not the event (i.e. we are
+still incrementing the counters). Also for MAX only but I got your
+point.
 
-No, I haven't thought about any particular use case, just a bit
-worried about silently dropping some events. It might be not an issue
-now, but might be easy to miss a moment when it becomes a problem.
+> So in my opinion using some delayed delivery mechanism is better
+> than just dropping these events.
 
-So in my opinion using some delayed delivery mechanism is better
-than just dropping these events.
+Let me see how doing this irq_work looks like and will update here.
 
