@@ -4,116 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93B09CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 23:30:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E2DACA1013
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 23:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3F7F8E0001; Fri,  5 Sep 2025 19:30:18 -0400 (EDT)
+	id 164C18E0006; Fri,  5 Sep 2025 19:46:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C15B06B0012; Fri,  5 Sep 2025 19:30:18 -0400 (EDT)
+	id 13CCF8E0002; Fri,  5 Sep 2025 19:46:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2B828E0001; Fri,  5 Sep 2025 19:30:18 -0400 (EDT)
+	id 053CD8E0006; Fri,  5 Sep 2025 19:46:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EB746B0011
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:30:18 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C60558CC7
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:30:18 +0000 (UTC)
-X-FDA: 83856792516.01.4943FCA
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2417040012
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:30:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RZe6lPhD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757115016; a=rsa-sha256;
-	cv=none;
-	b=3ortNT1v7tsk5uqjqVbI6t+FbOVPaQYZYEnd/4QQTjZrSAKONEEo2pU4Rcq80jlZx02Iqb
-	oYgEAHOAvC3j4BuUM9fuVx2NUll0WVlcHxWH4rfnm4R9swBuRB5VHNrE17YS7GjpanGqmQ
-	kx3a2LX8LR6F1tzVyoS1n3xt+BhNt2k=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RZe6lPhD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E10CA8E0002
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:46:05 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4920016039C
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:46:05 +0000 (UTC)
+X-FDA: 83856832290.07.2CC8383
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5F0E34000A
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:46:03 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9UeiWT7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757115016;
+	s=arc-20220608; t=1757115963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EF+XVyk/Jfc7wXpcoymcEIzdCHfNoD/Izz/T8+YHh+I=;
-	b=oHddzEJxJH8GCs+ZVlxSxjRkwFR6KiQbRvNzw8Z6wVpKhC1tmfd8UZzV/OXsqG0CYUkSZn
-	X4xeXwOCRJgqZspChpYkkxjH3fEEljyG9KN8Gki3i44Dp7GMFrh7bQ6tXwM8BgKL+37viW
-	UqZseBDUsgnJEQiwcLLSeUapoepDxH4=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4b5f5712451so5770111cf.2
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 16:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757115015; x=1757719815; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EF+XVyk/Jfc7wXpcoymcEIzdCHfNoD/Izz/T8+YHh+I=;
-        b=RZe6lPhDT0JJVeJuwVs802q8HtQwT8pqHxA1wojg/zXO/oL536I10MxAiU/bNR7peY
-         XjmNJwFvvz8sYNEuLOiU9p/P2xG4Qe7PFKhdXvne/+nM9husfjhSyZyD6eMr297LYUwE
-         RTsePDXMvFWCZy4gsJ/ChCB829T+YBCj1W8K2wu5FUuWiYDbBOQyVm2JiFIpVLJVe9qU
-         iUNfljO9UaFX6LUw+PamgSXpPkfQlk6KK6HQC01tThlWmNAVLsrLcc7k4PxMDxoe6RWK
-         3xt/5E3Gol6S9Eva2THsuVFNIZXPMGDCCShmP02e8AQPzkp4ljjE7bSIHCPsy9uVlwSZ
-         urQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757115015; x=1757719815;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EF+XVyk/Jfc7wXpcoymcEIzdCHfNoD/Izz/T8+YHh+I=;
-        b=fo+KlJyd/rQRFnHS491L05fG07hGxdxNsTfHrXs0bjTXKUCeSIglgAApQJkfZfsVUH
-         yB4nORk7HobBmHfRIR4a5iYrlXGgo4Yi7GUEUNvEyEKZgTJpgcw+eGr84NDYA+M/aQGI
-         GaO901mP623PcY4TmvpljQFLbs3BuQoebIEohtGNDiciEkBFQzcHH6Ymv3aFSEwWjU0P
-         Z4BkS8swcO01CTIMd7xcEjbcp3eud1QDp58FQhM6elMqFFkPlgWEEteIqekjOBG+aYXc
-         jId1WDcoNcYCfdQwN8OD6qEKju9BJkjOTIOh1c01UubsPzVf/qcqoNGYd1MBM9Nw5oEl
-         QwBg==
-X-Forwarded-Encrypted: i=1; AJvYcCXS1qvVQS6Ql1Ucx2yEgQOs8a39eqKwjaF0I46lU8Chy7cfbrH4ujqKTuZdJgQRkdCWnumMd+sacw==@kvack.org
-X-Gm-Message-State: AOJu0YzBczCpVdQ39csBioZ7fiXTq+XqlLWvk+CxPmzuaC0uPNQvUOtk
-	wzspfxlySM4YXD/fuGWsvCqLCAKsEk7xykuOnIVDUhZ0dpvuf6cMMtJc8n63fx2UbWnuDI5pt8X
-	H7ABDtlaUeEXfjq3h6w8dQDqLTGDb1aQ=
-X-Gm-Gg: ASbGncvF/nhXcf8oCk9LJgBx5hIIOqM02fA6A5+uvrEivQr1+1bzvqFudkcqYE72MpG
-	jEynI1Gog1aCDTSM41NEUYMkTzH24Sum0L5iV2BOW4IqaPc5CAo6IRzzGFqCTAS3P8c8tT/4zOh
-	zh5Nh+E7Hf1SrHRWUHLK4Zkv1CLxSfq9ZbEbXULQ7ruAyQKhU+ggJi37a5bjKcdnJ/SL4XoA58b
-	eTfKvEN
-X-Google-Smtp-Source: AGHT+IEm/7sv9TgmQJ9gQ5gdWa/6muLJPHRmIjLUZ8FuBE6psy68phxWZ6f+MuRrCcfshIzQgD7k6jz3MLj++RNUJuQ=
-X-Received: by 2002:a05:622a:28a:b0:4b5:e903:7784 with SMTP id
- d75a77b69052e-4b5f8570e2cmr5052141cf.64.1757115014985; Fri, 05 Sep 2025
- 16:30:14 -0700 (PDT)
+	bh=JYEeQwfE1PSPvhZ3Xdx/F1fzy/83a1p+9iCQU3pnces=;
+	b=IVn7J28fC9XiAYM8IH/xlMiwe/d/go14MaflPshn/GbMGxHPKBABeJ4aJXffp510yn49Fe
+	SGKw9PeHcTnv8cGBYGr+zqPFAwZtds23ndf9bVHSzJk4vT1uzktwZ/mwLNMwXYSIqPYmhX
+	JVPsJScdrVdD0K6zHdfusV10pBU8/hU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V9UeiWT7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757115963; a=rsa-sha256;
+	cv=none;
+	b=yUrGdce8zvHPkSkgbks67Yhsp3f/1OgkVAznPuoP1XfZtFW3KPiArcCZDEyhUkw68fPdZu
+	f71ugWEhU2FqMTbF2se6ZjjJxyJTZUi9/z1P17JYbf/Uum4rW9KhlfHCpFF3fUCLL/iU6A
+	tlagkd2kH5zWRyhagjN/SBqJ0x561oU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 90A43602A2
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:46:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE11C4CEFD
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:46:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757115962;
+	bh=zXqNohIJ1dL5P65i8pty3P3f/0+3nm3CYqBdYwi+Eiw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=V9UeiWT7a3rertJj4XY1EhP9h8fR64Rrza7I8sy+cmFG2q9py/NzW8xcg6BmW2Nft
+	 mTOHQztpBPR44qWpJHqcweKifpkmaojUqArsOoxB/ns762wwufafrLw8O9M7cLmhl+
+	 MO6JV5ujXZQkXcHzKtYCnzm5xB0uZ9d/VtbNE25T2lkHnEKq5cUkCt+x6/fhrqOsRv
+	 WKnKviiH5XoDTNXAdvxNInipaLSPPzNJSV6kPh3JnvV7HXkWMvUMjUdyWjbMRqVoS4
+	 +jhBRF9Wfa6o93subFwv0XDzxajxukO6ovTOWHU9eHdj0CLuIQ/D7BW6wcoZVpuB+n
+	 xznlVd/nEgq5w==
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45ddca76f22so12295e9.1
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 16:46:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWChlfGKyBz4+/l7imEn/CZHVDcTL1U0/zJGz0B0DtEZ5aRW3E2OEa7kDjZD0N1XSb5kXle4a2mfw==@kvack.org
+X-Gm-Message-State: AOJu0YwSj2ttS0h7prxDWS5B6Y1AKbyndsFneghttcogCUFnEZJQbPTe
+	SbSXT/S2Q64Gcus6g+cB3HOpmDs7eLxGgi9TYsVRJcYhcGGcKIhzok9SAA469s9qDPlEQflXBqS
+	MO5Ejqv63gzrmJEAlcyuSneCoXqGx4+n4nNU0ECN2
+X-Google-Smtp-Source: AGHT+IHFEBMIsi5MrtRcGdq9hoDsiULLBoI3XaBc2RJeZ7zpvvmLW8mr74ycrYbukebT+vEmsG0mOxtcJQ1aqRhFJKY=
+X-Received: by 2002:a05:600c:a408:b0:45b:7d8f:4bd4 with SMTP id
+ 5b1f17b1804b1-45dddad7944mr471065e9.4.1757115960274; Fri, 05 Sep 2025
+ 16:46:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250829233942.3607248-1-joannelkoong@gmail.com>
- <20250829233942.3607248-13-joannelkoong@gmail.com> <20250902234604.GC1587915@frogsfrogsfrogs>
- <aLiNYdLaMIslxySo@bfoster> <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
- <aLl8P8Qzn1IDw_7j@bfoster> <20250904200749.GZ1587915@frogsfrogsfrogs>
- <CAJnrk1aD=n1NzyxgftoQfvC83OO73w2E7ChvGHAh5xfxKrM86Q@mail.gmail.com>
- <aLrG_eOwiROSi-XB@bfoster> <rzgqmgmovfkreo5gdl36sxoxixcortjwkii2ilgmwsbhrwqx2z@3ncosg2erpta>
-In-Reply-To: <rzgqmgmovfkreo5gdl36sxoxixcortjwkii2ilgmwsbhrwqx2z@3ncosg2erpta>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 5 Sep 2025 16:30:02 -0700
-X-Gm-Features: Ac12FXxwfm5tl2soXeTwfC7VqiVLsMYobl5WnJQYv0WBsRtRBt8RqcQkElEHmZI
-Message-ID: <CAJnrk1ZEmihX5yhmz0f7_sd77quCgxww+zkXfEXkWDZfFRp+2w@mail.gmail.com>
-Subject: Re: [PATCH v2 12/12] iomap: add granular dirty and writeback accounting
-To: Jan Kara <jack@suse.cz>
-Cc: Brian Foster <bfoster@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org, 
-	brauner@kernel.org, willy@infradead.org, hch@infradead.org, 
-	jlayton@kernel.org, linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+References: <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330> <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
+ <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330> <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
+ <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330> <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
+ <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330> <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
+ <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330> <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
+ <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330>
+In-Reply-To: <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 5 Sep 2025 16:45:48 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
+X-Gm-Features: Ac12FXzV1gsLBVEgGHywni-KyXL7Dk-qXpPbPBljTzv3lMg18XUf0ZsoyULLQz0
+Message-ID: <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
+	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>, 
+	Wei Xu <weixugc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5F0E34000A
+X-Stat-Signature: 5rqjsaxxixfimpybiix3fq1f71p71a4k
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2417040012
-X-Stat-Signature: bdbmgyxr6u9cdxcnpd4nzfrdtfc1f7tp
-X-HE-Tag: 1757115015-918702
-X-HE-Meta: U2FsdGVkX1+EEyFEQz7XONa9SqrSxPOlc9Qm5BA6AiuthSWz8lSoE2PL1HsuRWSnmJRW6HGDpookVdNzf7mB35bM16KKBBVYZqqf62cImwrYzsIKA5GH7LUFGzGNVNf5WoU+WFikHjTh2aL4qCfMAq0mX6jrL63i3ixh7tuX1/F/iHar4X+F3zlWDf/n8hD0oWTYX+6fDG5+8lne+4NVvWrWF40GMZ7CAhubpkSg8JFj6zobFOXptHFcVrJdroMIuavj8psmY1kNhgDZs53WcxYYpL9zOZDxAqtJ3P++lIMltsd29mvXDb11URmHxdSMerYtfThOIa56l6O4yb5TZnriRy6Fi7PgfbzN7QwjXHLqGS607VytpSrA3T7MLVOkRz8XD9f2JS/skmb1cLS9l9BVsK7MRM+1FQABuT5CiowGaVwhXXACAw2JxBhGVOVTdGXtWKuGnZJJwTk4MamLwjJgIoFPvNBNeVWbgHMD5Q+aqKzQJ6xOh9+y6wRRGJcsSBGRHZX2mIvKEiqjEcoW1xlxpFb3Ifxn/uSxYPBhdBEGvBhNwotH3SxS3cp1ZqFEfS5k5olELsLRviyT2UaPtVs8T9sovMwBQcGqaM69QZU93+p5LOHnYN+ZkQgfzooo8I21a2pqg/uINl4ibpp9FuJlr8SHLkXLJ1fFjffoWC7+Q9/wmwcvi+Yaj7QXlIU9Xb222z0KcIIgGu7xed4zqrvcfy7s4HyEekYFC3JhGLHUhrVfKLDkPYEpAAvp+Gg1esAUBinDOlhfO6dET5oAxg4YXSJDui1NgQSIuGyTsgL7NY9TSlPmdf5eOfxQHPhn9TmM/RfuyQxYE/Mtyl8ebpSgx+P0ASlVgpORJ1i1feIAkrpJTBvV1C5IHieXgc9IRqrn5NjybwstLKP2EsSbFoOdjlJQnhKoXRcs+2XRURRow/H7uaq8NGJOfCQGe+j7XXSTfAn2vJxgVNFYYqL
- 0iM/eyMQ
- JNrAtJ4+lKa15iFT5Sbtot6mDUSfCiULiJzNO1kjFCuaAD5HMH3UWFwvnAepu9WPMzFK0/nwTnV0uL1p6qpz7i3YcL67ZG/2Cd4TtnZoUhBXvQxvgmCMI9+nl0ZOGJRRoVX/azTYQNtiYM8pKHOKMn2qEw9M1HzLTfSrLEPvBIomNrvt9gto00yI/J7pinvJbNtObo/FCRZRLJT9UN3BSlwwVLdTpDQWzmJcuP209rbuw1pxp7bckIQ8tuNcPp7jUG4ivja0ONXKazcvyN6kqOIM8XiY8qXaUlpQrpXb5r+P/AIVNQJut52i+GDYUUMRBgVlFI18PgKlyaHGI640PjqpvbME+frEKNs25/hzGBdOzHiA01uk8VQIem5a8oGL2tV+LmHJ3OOhADuTAzyKsDRMzU7uAPEjNibmvRXog+ZYnA/2a7ySEC6BYFqR8fEpjb+E+UVvdPS+SeaneBBxhPy9zWg==
+X-HE-Tag: 1757115963-949582
+X-HE-Meta: U2FsdGVkX1/WtWpYGKzeyP7JAFRwBHIC9cfZqJS/WYagxAJlX8c56X/lW1qfk2gCwEaVG5UxAhLAyoyPzSvPoIigWMBD0hy81HwVPzA59NsFsMuHsdrURxd3Dq2HNy1y9/I7ZcZfjf5MGgLmkA/nKHKwcMw2McdTvHkSqtD3RbLJ4DFDL2KhbNV8aPkfhcm6l90eTJvmUohnkQ6pNcftIPesi4x9qZ0jf7eVLd5rT2ZS4uP/Ylh/qUt/kNNxwsTdjS8jUrqQHS6cX/X/wN8O8EhHrdaU1Viyek61LO1Lzo0sRfWSVKZERrkAp2LVV717//LBWNuId0Z/zx0DnQVynDshHsA1S+5q4eCYzmp6CwR18sD/F9JA9mAHUGSkOWbztWvp31UGKiI9oYR4kQAPIguLHQX/ccGmAL+M9HAYZM0iwC7p4/SeOpWXLVmlmti+KuUKauY1HtWH6HK/m6Ij7HdrYxtoAawA0iTIdapIAjM9yDjR+HtMJOUdH26zyxd+0QMZNtVyyFlVWyefqoIO1dK57yM+MBxrsktGPBO8jGrAnzWOmeY3+LPmqhbfCgZ0EeUNSxJymlfFQ9YwOwLUYLmlqjKcECy/qO6s0p3Yib8mALZbA5fX0/AttLmDNUskN1+mAJuQXiQjBN4Lb1X22NMVb6vmXjHIAiJsLma1QIlvC6Dhy9Z4yew7CLLDVBn8PYz+QgSHrrOv4yLFmG186jF7tEPbb43NtApYQmrgm0fSOfpSkCvgTL3Dp1Mm5Q9gpEzIvcFVEiBdCpJWcKNSMvsYpRqhGgTIWkklljvmm47A/nthA5b9er2B4uo1bdT77EFwS4EZnJnoz6ApCDjeLvJpPyrccUDw6ZxYRBg7OhJBFvPGre+1sGZDnB6Y+kZi4Nu2NQwW9ZsLn77qSAWjqe2AsPW5ZShbhvCbM4UR9hahm6A5ssIrq9cbDYySvOxYC1mj5xOasbVVG/fed+4
+ OaYKUQFf
+ eL31Sy6vj6IFAjgk7VUfaw1quRPx9UOI/NiuqDZCE3+HHVKokqHC9dlCWW/IV3I3Ry1M2lk/MhSyn1W5PdjloVUa35HvcU4230Am2W9PximS11lBmuo+hbt/C28aTA+Aoy4YHALCt8eoM3qz5DAnpvqCfRBNJ+0lt+nQk+rL67mIWao+cB9kXhMCyMFvPUD1pOFNPPMOYEEy5qm9gv7G+Lz+guVCi+aM35+yUUa8R+gxPzWs/gY9QUMZVlaZ8z+xirlM/6vQY59vrhenGawLgykbKTK7u1ZovYwPXAA32PP1JoO9ztVkUcmlxuw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,270 +117,427 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 5, 2025 at 5:43=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+Sorry I was busy with some work related tasks and haven't got a chance
+to reply to your last email.
+
+On Thu, Sep 4, 2025 at 11:30=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
+m> wrote:
 >
-> On Fri 05-09-25 07:19:05, Brian Foster wrote:
-> > On Thu, Sep 04, 2025 at 05:14:21PM -0700, Joanne Koong wrote:
-> > > On Thu, Sep 4, 2025 at 1:07=E2=80=AFPM Darrick J. Wong <djwong@kernel=
-.org> wrote:
-> > > > On Thu, Sep 04, 2025 at 07:47:11AM -0400, Brian Foster wrote:
-> > > > > On Wed, Sep 03, 2025 at 05:35:51PM -0700, Joanne Koong wrote:
-> > > > > > On Wed, Sep 3, 2025 at 11:44=E2=80=AFAM Brian Foster <bfoster@r=
-edhat.com> wrote:
-> > > > > > > On Tue, Sep 02, 2025 at 04:46:04PM -0700, Darrick J. Wong wro=
-te:
-> > > > > > > > On Fri, Aug 29, 2025 at 04:39:42PM -0700, Joanne Koong wrot=
-e:
-> > > > > > > > > Add granular dirty and writeback accounting for large fol=
-ios. These
-> > > > > > > > > stats are used by the mm layer for dirty balancing and th=
-rottling.
-> > > > > > > > > Having granular dirty and writeback accounting helps prev=
-ent
-> > > > > > > > > over-aggressive balancing and throttling.
-> > > > > > > > >
-> > > > > > > > > There are 4 places in iomap this commit affects:
-> > > > > > > > > a) filemap dirtying, which now calls filemap_dirty_folio_=
-pages()
-> > > > > > > > > b) writeback_iter with setting the wbc->no_stats_accounti=
-ng bit and
-> > > > > > > > > calling clear_dirty_for_io_stats()
-> > > > > > > > > c) starting writeback, which now calls __folio_start_writ=
-eback()
-> > > > > > > > > d) ending writeback, which now calls folio_end_writeback_=
-pages()
-> > > > > > > > >
-> > > > > > > > > This relies on using the ifs->state dirty bitmap to track=
- dirty pages in
-> > > > > > > > > the folio. As such, this can only be utilized on filesyst=
-ems where the
-> > > > > > > > > block size >=3D PAGE_SIZE.
-> > > > > > > >
-> > > > > > > > Er... is this statement correct?  I thought that you wanted=
- the granular
-> > > > > > > > dirty page accounting when it's possible that individual su=
-b-pages of a
-> > > > > > > > folio could be dirty.
-> > > > > > > >
-> > > > > > > > If i_blocksize >=3D PAGE_SIZE, then we'll have set the min =
-folio order and
-> > > > > > > > there will be exactly one (large) folio for a single fsbloc=
-k.  Writeback
-> > > > > >
-> > > > > > Oh interesting, this is the part I'm confused about. With i_blo=
-cksize
-> > > > > > >=3D PAGE_SIZE, isn't there still the situation where the folio=
- itself
-> > > > > > could be a lot larger, like 1MB? That's what I've been seeing o=
-n fuse
-> > > > > > where "blocksize" =3D=3D PAGE_SIZE =3D=3D 4096. I see that xfs =
-sets the min
-> > > > > > folio order through mapping_set_folio_min_order() but I'm not s=
-eeing
-> > > > > > how that ensures "there will be exactly one large folio for a s=
-ingle
-> > > > > > fsblock"? My understanding is that that only ensures the folio =
-is at
-> > > > > > least the size of the fsblock but that the folio size can be la=
-rger
-> > > > > > than that too. Am I understanding this incorrectly?
-> > > > > >
-> > > > > > > > must happen in units of fsblocks, so there's no point in do=
-ing the extra
-> > > > > > > > accounting calculations if there's only one fsblock.
-> > > > > > > >
-> > > > > > > > Waitaminute, I think the logic to decide if you're going to=
- use the
-> > > > > > > > granular accounting is:
-> > > > > > > >
-> > > > > > > >       (folio_size > PAGE_SIZE && folio_size > i_blocksize)
-> > > > > > > >
-> > > > > >
-> > > > > > Yeah, you're right about this - I had used "ifs && i_blocksize =
->=3D
-> > > > > > PAGE_SIZE" as the check, which translates to "i_blocks_per_foli=
-o > 1
-> > > > > > && i_block_size >=3D PAGE_SIZE", which in effect does the same =
-thing as
-> > > > > > what you wrote but has the additional (and now I'm realizing,
-> > > > > > unnecessary) stipulation that block_size can't be less than PAG=
-E_SIZE.
-> > > > > >
-> > > > > > > > Hrm?
-> > > > > > > >
-> > > > > > >
-> > > > > > > I'm also a little confused why this needs to be restricted to=
- blocksize
-> > > > > > > gte PAGE_SIZE. The lower level helpers all seem to be managin=
-g block
-> > > > > > > ranges, and then apparently just want to be able to use that =
-directly as
-> > > > > > > a page count (for accounting purposes).
-> > > > > > >
-> > > > > > > Is there any reason the lower level functions couldn't return=
- block
-> > > > > > > units, then the higher level code can use a blocks_per_page o=
-r some such
-> > > > > > > to translate that to a base page count..? As Darrick points o=
-ut I assume
-> > > > > > > you'd want to shortcut the folio_nr_pages() =3D=3D 1 case to =
-use a min page
-> > > > > > > count of 1, but otherwise ISTM that would allow this to work =
-with
-> > > > > > > configs like 64k pagesize and 4k blocks as well. Am I missing=
- something?
-> > > > > > >
-> > > > > >
-> > > > > > No, I don't think you're missing anything, it should have been =
-done
-> > > > > > like this in the first place.
-> > > > > >
-> > > > >
-> > > > > Ok. Something that came to mind after thinking about this some mo=
-re is
-> > > > > whether there is risk for the accounting to get wonky.. For examp=
-le,
-> > > > > consider 4k blocks, 64k pages, and then a large folio on top of t=
-hat. If
-> > > > > a couple or so blocks are dirtied at one time, you'd presumably w=
-ant to
-> > > > > account that as the minimum of 1 dirty page. Then if a couple mor=
-e
-> > > > > blocks are dirtied in the same large folio, how do you determine =
-whether
-> > > > > those blocks are a newly dirtied page or part of the already acco=
-unted
-> > > > > dirty page? I wonder if perhaps this is the value of the no sub-p=
-age
-> > > > > sized blocks restriction, because you can imply that newly dirtie=
-d
-> > > > > blocks means newly dirtied pages..?
-> > > > >
-> > > > > I suppose if that is an issue it might still be manageable. Perha=
-ps we'd
-> > > > > have to scan the bitmap in blks per page windows and use that to
-> > > > > determine how many base pages are accounted for at any time. So f=
-or
-> > > > > example, 3 dirty 4k blocks all within the same 64k page size wind=
-ow
-> > > > > still accounts as 1 dirty page, vs. dirty blocks in multiple page=
- size
-> > > > > windows might mean multiple dirty pages, etc. That way writeback
-> > > > > accounting remains consistent with dirty accounting. Hm?
-> > > >
-> > > > Yes, I think that's correct -- one has to track which basepages /we=
-re/
-> > > > dirty, and then which ones become dirty after updating the ifs dirt=
-y
-> > > > bitmap.
-> > > >
-> > > > For example, if you have a 1k fsblock filesystem, 4k base pages, an=
-d a
-> > > > 64k folio, you could write a single byte at offset 0, then come bac=
-k and
-> > > > write to a byte at offset 1024.  The first write will result in a c=
-harge
-> > > > of one basepage, but so will the second, I think.  That results
-> > > > incharges for two dirty pages, when you've really only dirtied a si=
-ngle
-> > > > basepage.
-> > >
-> > > Does it matter though which blocks map to which pages? AFAIU, the
-> > > "block size" is the granularity for disk io and is not really related
-> > > to pages (eg for writing out to disk, only the block gets written, no=
-t
-> > > the whole page). The stats (as i understand it) are used to throttle
-> > > how much data gets written back to disk, and the primary thing it
-> > > cares about is how many bytes that is, not how many pages, it's just
-> > > that it's in PAGE_SIZE granularity because prior to iomap there was n=
-o
-> > > dirty tracking of individual blocks within a page/folio; it seems lik=
-e
-> > > it suffices then to just keep track of  total # of dirty blocks,
-> > > multiply that by blocksize, and roundup divide that by PAGE_SIZE and
-> > > pass that to the stats.
-> > >
-> >
-> > I suppose it may not matter in terms of the purpose of the mechanism
-> > itself. In fact if the whole thing could just be converted to track
-> > bytes, at least internally, then maybe that would eliminate some of the
-> > confusion in dealing with different granularity of units..? I have no
-> > idea how practical or appropriate that is, though. :)
-> >
-> > The concern Darrick and I were discussing is more about maintaining
-> > accounting consistency in the event that we do continue translating
-> > blocks to pages and ultimately add support for the block size < page
-> > size case.
-> >
-> > In that case the implication is that we'd still need to account
-> > something when we dirty a single block out of a page (i.e.  use
-> > Darrick's example where we dirty a 1k fs block out of a 4k page). If we
-> > round that partial page case up to 1 dirty page and repeat as each 1k
-> > block is dirtied, then we have to make sure accounting remains
-> > consistent in the case where we dirty account each sub-block of a page
-> > through separate writes, but then clear dirty accounting for the entire
-> > folio once at writeback time.
-
-Agreed, in the case where we do need to care about which block maps to
-which page, we could parse the bitmap in PAGE_SIZE chunks where if any
-bit in that range is marked dirty then the whole page is accounted for
-as dirty. I don't think this would add too much overhead given that we
-already need to iterate over bitmap ranges. Looking at this patchset
-again, I think we can even get rid of ifs_count_dirty_pages() entirely
-and just do the counting dynamically as blocks get dirtied, not sure
-if there was some reason I didn't do it this way earlier, but I think
-that works.
-
-> >
-> > But I suppose we are projecting the implementation a bit so it might no=
-t
-> > be worth getting this far into the weeds until you determine what
-> > direction you want to go with this and have more code to review. All in
-> > all, I do agree with Jan's general concern that I'd rather not have to
-> > deal with multiple variants of sub-page state tracking in iomap. It's
-
-I agree, I think we should try to keep the iomap stats accounting as
-simple as possible. I like Jan's idea of having iomap's accounting go
-towards bdi_writeback and leaving the other stuff untouched.
-
-> > already a challenge to support multiple different filesystems. This doe=
-s
-> > seem like a useful enhancement to me however, so IMO it would be fine t=
-o
-> > just try and make it more generic (short of something more generic on
-> > the mm side or whatever) than it is currently.
-> >
-> > > But, as Jan pointed out to me in his comment, the stats are also used
-> > > for monitoring the health of reclaim, so maybe it does matter then ho=
-w
-> > > the blocks translate to pages.
-> > >
-> >
-> > Random thought, but would having an additional/optional stat to track
-> > bytes (alongside the existing page granularity counts) help at all? For
-> > example, if throttling could use optional byte granular dirty/writeback
-> > counters when they are enabled instead of the traditional page granular=
-,
-> > would that solve your problem and be less disruptive to other things
-> > that actually prefer the page count?
+> > Yes, that works. I would skip the "add" keyword.
+> > Also I notice that we can allow " " in place of "," as a separator as w=
+ell.
 >
-> FWIW my current thinking is that the best might be to do byte granularity
-> tracking for wb_stat_ counters and leave current coarse-grained accountin=
-g
-> for the zone / memcg stats. That way mm counters could be fully managed
-> within mm code and iomap wouldn't have to care and writeback counters
-> (which care about amount of IO, not amount of pinned memory) would be
-> maintained by filesystems / iomap. We'd just need to come up with sensibl=
-e
-> rules where writeback counters should be updated when mm doesn't do it.
+> Yes, supporting both " " and "," sounds convenient.
+
+Ack.
+
 >
+> > Maybe instead of "remove hdd", just "-hdd" which is similar to how to
+> > operate on swap.tiers.
+>
+> Agreed, "+" for add and "-" for remove is simpler.
 
-I like your idea a lot.
+Ack.
 
-Thanks,
-Joanne
->                                                                 Honza
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+>
+> > Oh, you mean the tier not listed in the above will be deleted.
+> > I prefer the above option 1) then.
+>
+> That makes sense. Option 1) looks simplest overall.
+
+Ack.
+
+>
+> > I don't understand what is this "removing" and "in stage"...
+> > What is it trying to solve?
+>
+> That came from an idea to pre-add a new tier before removing another.
+> But I now think returning an error on overlap is simpler, so staging is
+> not needed.
+
+Ack.
+
+> > What do you mean by "visible"? Previous discussions haven't defined
+> > what is visible vs invisible.
+>
+> By =E2=80=9Cvisible=E2=80=9D I meant a staged state becoming active. I re=
+alize the term
+> was confusing. and it is not needed as I already explained.
+
+Ack.
+
+> > Trigger event to notify user space? Who consumes the event and what
+> > can that user space tool do?
+>
+> I agree, sending user events is unnecessary. It is simpler to let tiers m=
+erge or
+> be recreated and let the allocator handle it.
+
+Ack.
+
+> > If you remove the
+> > swap tier. the range of that tier merges to the neighbour tier.  That
+> > way you don't need to worry about the swap file already having an
+> > entry in this tier you swap out.
+>
+> Should the configured mask simply be left as-is,
+> even if (a) the same key is later reintroduced with a different order (e.=
+g.,
+> first =E2=86=92 third), or (b) a merge causes the cgroup to use a lower t=
+ier it did not
+Can you elaborate a)? I am not sure I understand it correctly.
+
+Let's say we have 4 tier bit, firs two is default on/off.
+
+bit 1: overwrite default on. bit 2: overwrite default off, bit3: zram
+on, bit4, zram off
+
+In this example, if we delete zram  how does the mask leave as it is
+and follow a)?
+I suspect you create a hole in the priority range and make swap
+devices in that range not selectable.
+
+> explicitly select?
+> I infer that leaving the mask unchanged is acceptable and this concern
+> may be unnecessary. if you consider this unnecessary, I am fine
+> to follow the simpler direction you suggested.
+
+We can leave them unassign as well. So after delete we have a hole in
+the priority range. The swap device in that hole will not get more
+swap out written to it, because it is not selectable from the
+"swap.tiers". However the swap in can still happen on that device
+until the device is swapped off. That sounds fine to me. I actually
+like that better. Thank you for the suggestion.
+
+> > If the fast path fails, it will go through the slow path. So the slow
+> > path is actually a catch all.
+>
+> I think my intention may not have come across clearly. I was not trying
+> to propose a new optimization, but to describe a direction that requires
+> almost no changes from the current behavior. Looking back, I realize the
+> ideas I presented may not have looked like small adjustments, even
+> though that was my intent.
+
+I see. We don't need to jump to implementation details yet. I can help
+you resolve the swap allocator internals as well. Let's have the
+user's visible behavior settle down first.
+
+> As a simple approach I had in mind:
+> - Fastpath can just skip clusters outside the selected tier.
+
+That part will need to hack the current swap allocator regarding per
+cpu cached swap.
+
+> - Slowpath naturally respects the tier bitmask.
+
+Ack.
+
+> - The open point is how to treat the per-CPU cache.
+
+That is what I consider the fast path modification in the swap cluster
+based allocator. Let me think about it a bit. On the other hand, we
+don't need to worry too much about the internals right now. We get the
+effective tier selection bitmask and the swap cluster allocator just
+honours it.
+
+>
+> If we insert clusters back, tiered and non-tiered cgroups may see
+> low-priority clusters. If we skip insertion, tiered cgroups may lose
+> caching benefits.
+
+That is why I think the cluster cache which holds the current
+allocation offset within a cluster might need to move to per swap tier
+level or swap device level. Might be both.
+
+> Chris, do you have another workable approach in mind here, or is this
+> close to what you were also thinking?
+
+I think this is close to what I am thinking, just some details haven't
+ironed out.
+
+> > In my original proposal, if a parent removes ssd then the child will
+> > automatically get it as well.
+>
+> I now see you mean the effective mask is built by walking parents with lo=
+cal
+> settings taking precedence, top to bottom, preferring the nearest local
+> setting. Conceptually this yields two data structures: a local-setting ma=
+sk and
+> a runtime/effective mask. Does the above capture your intention, or is th=
+ere
+> anything else I should mention?
+
+I talked to Wei about swap tiers a bit. Add him to the CC as well. He
+made me realize that we need two level things in the cgroup
+"swap.tiers".
+What we have discussed is the  "+ssd" with possible parent lookup
+behavior is a kind of operation. The end result of the operation is a
+tier bit set to indicate which tier is allowed in the swap out. The
+end result tier netmask doenot need to have default, default is part
+of the local operation selection. For the operation we also need two
+bits per tier so we can specify on/off/missing.
+
+For the operation, each tier will need two bits, including the
+default. One bit select this timer off, one bit select this tier on.
+e.g. we have 16 tiers including the default, then all 16 tiers take up 32 b=
+its.
+
+For example:
+a/swap.tiers: "- +ssd" # default off, only allow ssd.
+a/b/swap.tiers: "-ssd" # don't want ssd. the rest inherit the parent.
+
+> A few thoughts aligned with the above:
+> - There is no separate =E2=80=9Cdefault setting=E2=80=9D knob to control =
+inheritance.
+
+If there is no default knob. Every swap.tiers operation will need to
+walk from the root to the current cgroup.
+With default knob, the walk can terminate at the closest the parent
+with the default overridden.
+
+Also without default, how do you start with no swap then each child
+has the option to add their own swap tiers?
+That will force the parent to list and turn off each tier at the top
+level memcg.
+
+> - If unset locally, the effective value is derived by walking the cgroup
+>   hierarchy from top to bottom.
+Ack. In my mind, with or without local operation value, it needs to
+walk the parent unless local has default override. Any local default
+override will terminate the parent walking chain.
+
+> - Once set locally, the local setting overrides everything inherited.
+I need to think about that a bit. This is different from the original
+inheritage appended from the parent operation syntax.
+e.g. previously parent has "- +ssd" (nothing but ssd). child has
+"+hdd", in the original proposal the effective is "- +ssd +hdd",
+If you override the parent, then the child will become "- +hdd" (hdd
+only). If the child wants to inherit the parent ssd behavior, it will
+need to walk up the parent chain and set "- +ssd +hdd" instead of just
+"+hdd".
+
+It seems the append operation has the most flexible inherited
+behavior, also more consistent. Need more discussion here.
+
+> - There is no special =E2=80=9Cdefault tier=E2=80=9D when tiers are absen=
+t.
+If there is no default tier. Nothing is set in any of the
+"swap.tiers", what is the behavior? Are all swap devices usable?
+It seems we need the default in the swap.tiers operation. But the
+final tier selection bitmask does not need default.
+
+> - If nothing is set anywhere in the hierarchy, the initial mask is treate=
+d as
+>   fully set at configuration time (selecting all tiers; global swap behav=
+ior).
+>   However, reading the local file should return an empty value to indicat=
+e
+>   =E2=80=9Cnot set=E2=80=9D.
+
+Seems a bit arbitrary. Global "" is all and local "" is nothing.
+
+> One idea is to precompute the effective mask at interface write time, sin=
+ce
+> writes are rarer than swap I/O. You may have intended runtime recomputati=
+on
+> instead=E2=80=94which approach do you prefer? This implies two masks: a l=
+ocal
+> configuration mask and a computed effective mask.
+
+We can have more discussion and give more examples here. I still like
+the "- +ssd -zswap" as well as "+ -ssd -hdd", that kind of operation
+syntax, which seems to have more consistent inherage story, more
+flexible, and less make up rules. It can support incremental add as
+well as incremental subtract. I can be convinced otherwise as well. We
+just need to allow each tier to have two bits, one bit for off and one
+bit for one.
+
+Wei also raises one very important point. Because zswap is not tight
+to a swap device. We might want a predefined tier bit to describe
+zswap. e.g. the first tier bit is always given to zswap and the tier
+name is always zswap, the priority range can be assigned from
+mm/swap/tiers interface.
+
+> And below is a spec summary I drafted, based on our discussion so far for
+> note and alignment.
+> (Some points in this reply remain unresolved, and there are additional TB=
+D items.)
+>
+> * **Tier specification**
+>   - Priority >=3D 0 range is divided into intervals, each identified by a
+>     tier name. The full 0+ range must be covered.
+Not necessarily true if we allow removal of the tier and generate
+holes removed range as we discussed above. Unless I understand the
+previous hole idea incorrectly.
+
+>   - NUMA autobind and tiering are mutually exclusive.
+For now. Ack.
+
+>   - Max number of tiers =3D MAX_SWAPFILES (single swap device can also be
+>     assigned as a tier).
+That will make it a bit less than 32 tiers I think.
+
+>   - A tier holds references when swap devices are assigned to its
+>     priority range. Removal is only possible after swapoff clears the
+>     references.
+
+Ack.
+
+>   - Cgroups referencing a tier do not hold references. If the tier is
+>     removed, the cgroup=E2=80=99s configured mask is dropped. (TBD)
+
+Ack the TBD part. That also means removing the tier from global tiers
+list we will need to walk all cgroups and clear the tier bits to get
+used. Because removing is a rare operation, maybe that is fine.
+
+>   - Each tier has an order (tier1 is highest priority) and an internal
+The order you mean swap device priority order or the tier internal bit orde=
+r?
+>     bit for allocation logic.
+Ack the internal bit.
+
+>   - Until it is set, there is no default tier.
+
+Does that mean you can't do incremental add or incremental subtract tiers?
+
+>     (may internally conceptually used? but not exported)
+
+My suggestion now is "swap.tiers" is an operation rather than a
+bitmask. It can include "default", Each tier can select on or off or
+missing so 3 operation states. "default" tier has no name, if
+specified, must be listed as the first in "swap.tiers"
+
+
+> * **/sys/kernel/mm/swap/tiers**
+>   - Read/write interface. Multiple entries allowed, delimiters: space or
+>     comma.
+>   - Format:
+>       + "tier name":priority  =E2=86=92 add (priority and above)
+>       - "tier name"           =E2=86=92 remove
+Ack.
+
+>     Note: a space must follow "+" or "-" before the tier name.
+>   - Edge cases:
+>       * If not all ranges are specified: input is accepted, but cgroups
+>         cannot use incomplete ranges. (TBD)
+>         e.g) echo "hdd:50" > /sys/kernel/mm/swap/tiers. (0~49 not specife=
+id)
+Because removing the tier will generate holes in the priority range
+anyway. 0-49 is not specified in the same as if a tier is there
+previously then gets removed.
+
+>       * Overlap with existing range: removal fails until all swap
+>         devices in that range are swapped off.
+Specifically a new tier priority landing in the middle of a tier
+range, the new tier will split the range with the existing one.
+
+>   - Output is sorted, showing tier order along with name, bit, and
+>     priority range. (It may be more user-friendly to explicitly show
+>     tier order. (TBD))
+Ack.
+
+>
+> * **Cgroup interface**
+>   - New files (under memcg): memory.swap.tier, memory.swap.tier.effective
+
+I don't think we need two interface files. We can live with one just
+"memory.swap.tiers"
+We can list the local one first then effective one on the second line
+or separate with "#"
+
+cat a/memory.swap.tiers # will show:
+- +ssd # ssd
+cat a/b/memory.swap.tiers  will show:
++hdd # ssd hdd.  The ssd is from the parent a/memory.swap.tiers.
+
+>     * Read/write: memory.swap.tier returns the local named set exactly
+>       as configured (cpuset-like "+/-" tokens; space/comma preserved).
+Ack.
+
+>     * Read-only: memory.swap.tier.effective is computed from the cgroup
+>       hierarchy, with the nearest local setting taking precedence
+>       (similar to cpuset.effective). (TBD)
+I suggest that as the second line or after the "#" separator.
+
+>     * Example (named-set display, cpuset-like style)
+>
+>       Suppose tier order:
+>         ssd (tier1), hdd (tier2), hdd2 (tier3), net (tier4)
+>
+>       Input:
+>         echo "ssd-hdd, net" > memory.swap.tier
+
+Ah, that will only allow incremental add, how about incremental subtract?
+
+>       Readback:
+>         cat memory.swap.tier
+>           ssd-hdd, net     # exactly as configured (named set)
+
+I think it is hard to store the range. I was thinking about the locals
+as each tier takes 2 bits, on/off.
+In that case if we want the exactly as configured, we need to store
+the original expression as well.
+Can we show the +ssd -hdd kind of evaluated tier operation there.
+Store the original range expression will have complications when
+removing the tier. It is complicate to clear the tier from the
+original range.
+effectively split the range. I was hoping the local internal storage
+is the already processed bits of on/off.
+Need more discussion here.
+>
+>         cat memory.swap.tier.effective
+>           ssd-hdd, net     # same format; inherited/effective result
+You might just spell out all the tier by name. The inherited behavior
+will make it different from local, then the same set will have
+different expressions to output it, using range or not. Just spell out
+the tiers set might be simpler.
+This is for debugging only anyway.
+Consider joining this with the "swap.iter" output with a separation by
+new line or "#".
+
+>   - Inheritance: effective mask built by walking from parent to child,
+>     with local settings taking precedence.
+
+I was thinking that the parent "swap.tiers" would be appended with the
+child "swap.tiers". Only override when the child uses default on/off.
+Need more discussion here.
+
+>   - Mask computation: precompute at interface write-time vs runtime
+>     recomputation. (TBD; preference?)
+
+Let's start with runtime. We can have a runtime and cached with
+generation numbers on the toplevel. Any change will reset the top
+level general number then the next lookup will drop the cache value
+and re-evaluate.
+
+>   - Syntax modeled after cpuset:
+>       echo "ssd-hdd,net" > memory.swap.tier
+>     Here =E2=80=9C-=E2=80=9D specifies a range and must respect tier orde=
+r. Items
+>     separated by =E2=80=9C,=E2=80=9D do not need to follow order and may =
+overlap; they
+>     are handled appropriately (similar to cpuset semantics).
+
+Need discussion for incremental subtract. That syntax is incremental add.
+
+
+> * **Swap allocation**
+>   - Simple, workable implementation (TBD; to be revisited with
+>     measurements).
+
+Ack.
+
+>
+> I tried to summarize the discussion and my inline responses as clearly as
+> possible. If anything is unclear or I misinterpreted something, please
+> tell me and I=E2=80=99ll follow up promptly to clarify. If you have comme=
+nts, I
+> will be happy to continue the discussion. Hopefully this time our
+> alignment will be clearer.
+
+Yes, I leave comments on the part I think needs more discussion.
+
+Thanks for the great summary.
+
+Chris
 
