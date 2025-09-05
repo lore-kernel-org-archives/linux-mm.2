@@ -4,100 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC05ECA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 13:14:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B14CCA1013
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 13:21:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1074A8E0010; Fri,  5 Sep 2025 09:14:07 -0400 (EDT)
+	id D9AFA8E0012; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8498E0009; Fri,  5 Sep 2025 09:14:07 -0400 (EDT)
+	id D72FB8E0009; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F37B18E0010; Fri,  5 Sep 2025 09:14:06 -0400 (EDT)
+	id CAFAF8E0012; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E197E8E0009
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:14:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A663CB6B60
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:14:06 +0000 (UTC)
-X-FDA: 83855239692.02.AFACE17
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B5FE840013
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:14:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=usitMJHy;
-	spf=pass (imf01.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B7FAF8E0009
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5B704C01CB
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:21:29 +0000 (UTC)
+X-FDA: 83855258298.17.251E343
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7185EA0004
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:21:27 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qGeu3sbv;
+	spf=pass (imf15.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757078045;
+	s=arc-20220608; t=1757078487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=vI0YATYp7h2PCES+jpwfqumtKhHQsNMcqq9Q5sVv1i8=;
-	b=MUtVpkPtmCLZXuzNCV9HBAtCSXfMcMI74GXTEckTi2a8ggFvUwr+Pk7p1jD3+xQ3q2zyje
-	9Y25TC0PH0qr8truObBBz5jOx5dMx//zZAI03MTjA/gNJ5UDMhWVN1Qi6G4S/S1BgzCmgI
-	5gQ1UhrDxaXfKtAL2o4DQUVA5h4XVTc=
+	bh=+ErkcM5ydIShVlp/tyt/SXag8Ues3JjwXCCvd9mJD34=;
+	b=Pdprm/hLrKJPUBkwnBaH3BOUz9VC9iz5BsIJzxpX1rYjhT8mp1J92ZHqVDCHOfLIT/fw5Z
+	NYY8W/KRPIAUYyOBRQFyqd8rkftCOW6AjWGY/CKpo5BvKEbh4FvK99x9TZT2vmNjWyavQH
+	KH0AhwjQEMCu+kpKmZ8d5/VwS7WI7fQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=pankajraghav.com header.s=MBO0001 header.b=usitMJHy;
-	spf=pass (imf01.hostedemail.com: domain of kernel@pankajraghav.com designates 80.241.56.152 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com;
-	dmarc=pass (policy=quarantine) header.from=pankajraghav.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757078045; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qGeu3sbv;
+	spf=pass (imf15.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757078487; a=rsa-sha256;
 	cv=none;
-	b=HbQcE+GTiS7jgwZ+fQQ9CkWs5FDMoPu+tABdr9pdFgjuTCKj2tRi7PhyY55/Stw5pcMveD
-	uLR+mojR4/jxehT+bBajV4H9VIO6NBJNBKG+xO24T8EoimlTsOtaceOGIDtZZpCRERabmp
-	BRHTihgd/ebJSYrunLQk1ytrtuk+oE4=
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cJGyJ0HnJz9tlt;
-	Fri,  5 Sep 2025 15:14:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1757078040;
+	b=lpHRkt0ENMXfAOsSMS/k+nPvf5fFtxkrsGPfsfbi5+uPD3UqQZyxMLH5mpgUYc5rKC1s+8
+	W+0GJVJymLBtmtIEk61aoCd7f+DRqgdsCClOFiDEVlzZwh38IhPmCTNRyAuLo6z1I/LevU
+	FMCu7uRmKYYhNb4ZOYCah3hjXrzXLe4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757078485;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=vI0YATYp7h2PCES+jpwfqumtKhHQsNMcqq9Q5sVv1i8=;
-	b=usitMJHyN/fOige9DO7Nq3zdziseh+9Pv08/2JJP0L1e7y0s4fbFkJduVcfFHGzFe2+1sa
-	nSNVjJNACSlQ7uvpVnkHD1+8jFylp7gWd9ee9gLijsKORXMBrk53kmC71teDQxdSSPJ2A6
-	8D3077pM8ITeQOitBEmAPk8NAOmueP8OughNAf1SvI3KmUpKLs0Ehcs7MSVAs8wBwDqwzX
-	wcf5XCYeWEgL0eTpdZpwMUsLHPEB04HijdV3v1jHxxF0QF3cYHNzMB7ttg3C18Joe/X326
-	8D4mgF+cE1urIzgCW/aQLaK2h9q5W/VO+kzBAnT0Vg0LRwwpF2KgvoaTK7gMnQ==
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: David Hildenbrand <david@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nico Pache <npache@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	willy@infradead.org,
-	mcgrof@kernel.org,
-	gost.dev@samsung.com,
-	kernel@pankajraghav.com,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH v3] huge_memory: return -EINVAL in folio split functions when THP is disabled
-Date: Fri,  5 Sep 2025 15:13:52 +0200
-Message-ID: <20250905131352.88069-1-kernel@pankajraghav.com>
+	bh=+ErkcM5ydIShVlp/tyt/SXag8Ues3JjwXCCvd9mJD34=;
+	b=qGeu3sbvk+L1QKKYBhlIRF/rq4VAH22HI9Bl+BusQN9C4CgQhqRvbK9EtlLMfJ9HnYNQKI
+	8cjWc1ZxpTsLzOLIozlvtI3Wl0cd18Z+0Tq8GSD4MCSppQG+UxXdlX7k+PemCmImmhUECn
+	qaUoPE9F+Vohqoptq22pqqVMSgPuxLQ=
+From: Yajun Deng <yajun.deng@linux.dev>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Yajun Deng <yajun.deng@linux.dev>
+Subject: [PATCH] mm/rmap: make num_children and num_active_vmas update in internally
+Date: Fri,  5 Sep 2025 13:20:19 +0000
+Message-ID: <20250905132019.18915-1-yajun.deng@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B5FE840013
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 7185EA0004
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: hia6417jz1q1ewbhzxhzz341aiin8gy1
-X-HE-Tag: 1757078044-3905
-X-HE-Meta: U2FsdGVkX19OBYa/PVUFJMu2/fzsO4Y2CBNPelob2uPXepKzHD0K7DG3/usMdi1a1miT7u9LnuZi7sBpOyG2DVcAwgkCHGtMJakpad2Xbw3YWsqb2gcDfOb45VutzfCzylV6cVpqUeZrzKD8lqJDq+7aUUSBUVVh3QQRG2hSdP/BT2f7fg3fmWlG4ov6xaKqCGC3qlC1Xi8Lrk2Sk5RWDq1GF1GoimTE3OmPgiD6NeNosyAh+FL4aASUV/doew+fzTijvLAcwQQDjhOb7tknoEqnODvAlWRkbUbmquAepkTDTSajQ380M+nVC+GJuBqUmACS0kHGIbx1yhSZxu+ybyovaHTy5Q0FrUMjTBvTuidnP9EZ4eKvQ3C0TAKXQgrRPXKL6xJd2U4f4Bphp33qI+Qb9azlzDNX+/Nrr4aC0sf2YV3QQgtlZ0MjyohLwvpwnuExooaHVYkB409srbNB0Ru9HVEHeE+SUH2HYW8Pysc1pPNyVHMMa+Mwgzjz2rvKHMZsWNuAG0+qC72FkoJGrmmqXx87+8FxkVUbMPSqv8Whgj3TIAB9qdceSN9Q4BnuS+S4uPwDTrdIfqaR32gHZD/rInihxYQ06Kcclb90n+GPezzemrAzwWltLVEAxxUa5XlxySrxV3SwfF3brp+CPtdWdKNHXk3pDKoO88xcMRRVEmBJ7V9D61JBCzUk94ij2LHjRoaew+xYkk7V8qtXCTKpvaGm+87x/Gw3wbS9J0hjpvbka61EjjHq58LOP9oKVP8MwSDtmgA4Q3UIcF7PfOR8GFyCtfAXdb/g/UJ6HKZtKfUErGUd2QnstycA0EjRdZhA4mTsboG1FLmomIA/DKSZ5l83/rUPnL2noURinfTEzf0O2igU3nQ5Ej2DYuZj63AYOTLKtBfC4D5woJ0XVJ7SipZjYSy/BET3gbbJU3lyArrxj1DPbzf+Romh8RlA3cpSqew1d9ELSvVHLcZ
- PBlhSgrW
- JsI93iSTeSjFTgwzUi3edT5nW4nIYQW+cAj6Fn4fSASxzmXnMNkNqbibvMKnQD3VrUkKzBk1FPZ+9i93n/svlFCKG5AYM0iueYIY9H7/fdx3EuH4UNGw0TMGNTaXaM1ghGAtAMayyhxzOR08Y3JgGPyESdFjBlh8e1SCbXMLAGtxi3qH0XL/mdFZ/emRfEZAuZ5A+HR5iqVYu4eWvqpEm1qXvT3PcqvPgfDfxGhuYmBe7UlKsec8cqLIvwUf46VV7gTL0pbeyYdlEmxm9dtAj4v70ep4ipzIUSk1MfoyJ/mmnbHhT2Ea/slX4ll6UFcUeQQvzWti+mK5tUPBZi365XgHcZAforMGMpBQU1tQqSXbKDIfU+SxsGbe0i7iih25O6AoV4FpPuiZGOFqVeL4aZYV7pRpCWvUab5VrZxHd7VeQbWO0GJiUhLvUnlBy5vxuMJVenmUdvJ8aoPbufHZj9wdbyLuJU76N1MRKn+sWOTsiPNEVV2wOmWkZi1FuKRXhPiKj
+X-Stat-Signature: yyyyhpmu7kgatizz3114ky1c1m7aryw6
+X-HE-Tag: 1757078487-378060
+X-HE-Meta: U2FsdGVkX1+D+kPUjXq9PtpOenZ8ZLiR4C9WenC7fktO9pkPvN0JLB7LzIL2gl/wnDIxSpQaZ9zh8w3s3Ny1Yy14KKdmstnOSOhTFSHlUzXLFufoK7QQyNyvnRjYXsHQx53EzrxYNt6dK86hz00+IsCnkOKFx9AUluR0EabpAy3AR5VwnHhjOmUyvfEu4/XW1wcIqUdA9ZEO4vJi2klixQ4arqrsu/MlYwuCJUMHY2n3KLHsC9EOgNffJ61pzXP7zuCZLsyV/gCd+NtXSxeFtNOqmSLRs07DB5oo7vrJVSyNAES+UOvt+Tf5sW8wA1zCJU4IJtYUeEZmMIfWh9YBE1sqIvq23G78FhiobqcdqUAV9qRN2dDwp7mfeeMekC/EKZdmikGERdjRUpKS6DemfPoArsiBegYqFASMpnQoMfz2M0w455N6+PQaW/d+S2inpfbCpG2L4QCLYCEWah/St958Mr8/qSHhqNWg3Wr4BcpFxvaT/eV4xQvAQHUp03eGHxlDyPai6IDCPUPr7vrYZDlmtsP3aZrwm9aAAyxOL2bHLWIutCp+hhNe8ew1b7y6WIo+b4ItLhYOWbeEBR2K5q6MiIYyIIiQolJIhn9aZp70iiHGOiY+Vf/fru30ITd/GvmNEdcM9vAJCP1lxsmAcEPd0HEt4MPzy0OR8fFD/C+0elkuEmDUuwoYamRaf6rbE4xzIuiX5IHwxc6rTNp629QD9c4q1Kg+6w2PTRX0zcFUGtBA3v+Ayb/9zr+mm0QNhH/6KHYK9dYgc/ISEOx60WMDsTHGhHylZASJY7BsNencb/yaGn/BZNeYwkqYE0cZajLFVn9j0BTjxBZ82Tsxyq2YFCLIgzZfYe0VdgY+Vc2W3xj+RmLEX3gdSXMcbzhI4xhn1/2zqQtpSvBfMK/1XIbEZ5PCgGTOoNKCq+q7LN+nDB+FPXY534TPTP2LBbuPlKLb/7rangd5LM32hBp
+ b77Qx+wm
+ CZ1VT2DxqdX/v/ofONYeqBh5XaRneRosvd04IdY/YuSR5GptfUssID+QJ8rRMWGD62aHWevb5zJIVM+dvT2nryUKuMPWkLUrLMZTxfOADf4QdqNLxk4rQRHFg/BQM0XUTf9RTebCPZzHgrDFkDzyXx5BxfxdaFDc0VyQlU0HrTWVmba/bEIKGLjRfXx+r6MlIkUxpDXGyUdpXgopuAojRmwBIMZWBsH2qOhIvCxCiMvoMJoY0PjHfa5nVQ3Z3UgDsR4ayq1T5QVZPf+i+6BGHeO7AXw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,71 +91,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pankaj Raghav <p.raghav@samsung.com>
+If the anon_vma_alloc() is called, the num_children of the parent of
+the anon_vma will be updated. But this operation occurs outside of
+anon_vma_alloc().
 
-split_huge_page_to_list_[to_order](), split_huge_page() and
-try_folio_split() return 0 on success and error codes on failure.
+The num_active_vmas are also updated outside of anon_vma.
 
-When THP is disabled, these functions return 0 indicating success even
-though an error code should be returned as it is not possible to split a
-folio when THP is disabled.
+Pass the parent of anon_vma to the anon_vma_alloc() and update the
+num_children inside it.
 
-Make all these functions return -EINVAL to indicate failure instead of
-0. As large folios depend on CONFIG_THP, issue warning as this function
-should not be called without a large folio.
+Introduce anon_vma_attach() and anon_vma_detach() to update
+num_active_vmas with the anon_vma.
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202509051753.riCeG7LC-lkp@intel.com/
-Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
 ---
-Changes since v2:
-  - use page_folio(page) directly in VM_WARN_ON_ONCE_FOLIO
+ mm/rmap.c | 63 ++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 32 insertions(+), 31 deletions(-)
 
- include/linux/huge_mm.h | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 7748489fde1b..1aeec06a89f7 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -553,22 +553,26 @@ static inline int
- split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
- 		unsigned int new_order)
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 34333ae3bd80..2a28edfa5734 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -86,15 +86,21 @@
+ static struct kmem_cache *anon_vma_cachep;
+ static struct kmem_cache *anon_vma_chain_cachep;
+ 
+-static inline struct anon_vma *anon_vma_alloc(void)
++static inline struct anon_vma *anon_vma_alloc(struct anon_vma *parent)
  {
--	return 0;
-+	VM_WARN_ON_ONCE_FOLIO(1, page_folio(page));
-+	return -EINVAL;
+ 	struct anon_vma *anon_vma;
+ 
+ 	anon_vma = kmem_cache_alloc(anon_vma_cachep, GFP_KERNEL);
+-	if (anon_vma) {
+-		atomic_set(&anon_vma->refcount, 1);
+-		anon_vma->num_children = 0;
+-		anon_vma->num_active_vmas = 0;
++	if (!anon_vma)
++		return NULL;
++
++	atomic_set(&anon_vma->refcount, 1);
++	anon_vma->num_children = 0;
++	anon_vma->num_active_vmas = 0;
++	if (parent) {
++		anon_vma->parent = parent;
++		anon_vma->root = parent->root;
++	} else {
+ 		anon_vma->parent = anon_vma;
+ 		/*
+ 		 * Initialise the anon_vma root to point to itself. If called
+@@ -102,6 +108,7 @@ static inline struct anon_vma *anon_vma_alloc(void)
+ 		 */
+ 		anon_vma->root = anon_vma;
+ 	}
++	anon_vma->parent->num_children++;
+ 
+ 	return anon_vma;
  }
- static inline int split_huge_page(struct page *page)
- {
--	return 0;
-+	VM_WARN_ON_ONCE_FOLIO(1, page_folio(page));
-+	return -EINVAL;
+@@ -146,6 +153,19 @@ static void anon_vma_chain_free(struct anon_vma_chain *anon_vma_chain)
+ 	kmem_cache_free(anon_vma_chain_cachep, anon_vma_chain);
  }
  
- static inline int split_folio_to_list(struct folio *folio, struct list_head *list)
- {
--	return 0;
-+	VM_WARN_ON_ONCE_FOLIO(1, folio);
-+	return -EINVAL;
- }
++static inline void anon_vma_attach(struct vm_area_struct *vma,
++				   struct anon_vma *anon_vma)
++{
++	vma->anon_vma = anon_vma;
++	vma->anon_vma->num_active_vmas++;
++}
++
++static inline void anon_vma_detach(struct vm_area_struct *vma)
++{
++	vma->anon_vma->num_active_vmas--;
++	vma->anon_vma = NULL;
++}
++
+ static void anon_vma_chain_link(struct vm_area_struct *vma,
+ 				struct anon_vma_chain *avc,
+ 				struct anon_vma *anon_vma)
+@@ -198,10 +218,9 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+ 	anon_vma = find_mergeable_anon_vma(vma);
+ 	allocated = NULL;
+ 	if (!anon_vma) {
+-		anon_vma = anon_vma_alloc();
++		anon_vma = anon_vma_alloc(NULL);
+ 		if (unlikely(!anon_vma))
+ 			goto out_enomem_free_avc;
+-		anon_vma->num_children++; /* self-parent link for new root */
+ 		allocated = anon_vma;
+ 	}
  
- static inline int try_folio_split(struct folio *folio, struct page *page,
- 		struct list_head *list)
- {
--	return 0;
-+	VM_WARN_ON_ONCE_FOLIO(1, folio);
-+	return -EINVAL;
- }
+@@ -209,9 +228,8 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
+ 	/* page_table_lock to protect against threads */
+ 	spin_lock(&mm->page_table_lock);
+ 	if (likely(!vma->anon_vma)) {
+-		vma->anon_vma = anon_vma;
++		anon_vma_attach(vma, anon_vma);
+ 		anon_vma_chain_link(vma, avc, anon_vma);
+-		anon_vma->num_active_vmas++;
+ 		allocated = NULL;
+ 		avc = NULL;
+ 	}
+@@ -306,10 +324,8 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
+ 		if (!dst->anon_vma && src->anon_vma &&
+ 		    anon_vma->num_children < 2 &&
+ 		    anon_vma->num_active_vmas == 0)
+-			dst->anon_vma = anon_vma;
++			anon_vma_attach(dst, anon_vma);
+ 	}
+-	if (dst->anon_vma)
+-		dst->anon_vma->num_active_vmas++;
+ 	unlock_anon_vma_root(root);
+ 	return 0;
  
- static inline void deferred_split_folio(struct folio *folio, bool partially_mapped) {}
-
-base-commit: e6b9dce0aeeb91dfc0974ab87f02454e24566182
+@@ -356,31 +372,22 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
+ 		return 0;
+ 
+ 	/* Then add our own anon_vma. */
+-	anon_vma = anon_vma_alloc();
++	anon_vma = anon_vma_alloc(pvma->anon_vma);
+ 	if (!anon_vma)
+ 		goto out_error;
+-	anon_vma->num_active_vmas++;
+ 	avc = anon_vma_chain_alloc(GFP_KERNEL);
+ 	if (!avc)
+ 		goto out_error_free_anon_vma;
+ 
+-	/*
+-	 * The root anon_vma's rwsem is the lock actually used when we
+-	 * lock any of the anon_vmas in this anon_vma tree.
+-	 */
+-	anon_vma->root = pvma->anon_vma->root;
+-	anon_vma->parent = pvma->anon_vma;
+ 	/*
+ 	 * With refcounts, an anon_vma can stay around longer than the
+ 	 * process it belongs to. The root anon_vma needs to be pinned until
+ 	 * this anon_vma is freed, because the lock lives in the root.
+ 	 */
+ 	get_anon_vma(anon_vma->root);
+-	/* Mark this anon_vma as the one where our new (COWed) pages go. */
+-	vma->anon_vma = anon_vma;
++	anon_vma_attach(vma, anon_vma);
+ 	anon_vma_lock_write(anon_vma);
+ 	anon_vma_chain_link(vma, avc, anon_vma);
+-	anon_vma->parent->num_children++;
+ 	anon_vma_unlock_write(anon_vma);
+ 
+ 	return 0;
+@@ -419,15 +426,9 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
+ 		list_del(&avc->same_vma);
+ 		anon_vma_chain_free(avc);
+ 	}
+-	if (vma->anon_vma) {
+-		vma->anon_vma->num_active_vmas--;
++	if (vma->anon_vma)
++		anon_vma_detach(vma);
+ 
+-		/*
+-		 * vma would still be needed after unlink, and anon_vma will be prepared
+-		 * when handle fault.
+-		 */
+-		vma->anon_vma = NULL;
+-	}
+ 	unlock_anon_vma_root(root);
+ 
+ 	/*
 -- 
-2.50.1
+2.25.1
 
 
