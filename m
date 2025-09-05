@@ -4,100 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4F7BCA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 13:56:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C45CA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 14:04:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 475568E0014; Fri,  5 Sep 2025 09:56:55 -0400 (EDT)
+	id 12B708E0005; Fri,  5 Sep 2025 10:04:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 425768E0003; Fri,  5 Sep 2025 09:56:55 -0400 (EDT)
+	id 103AC8E0003; Fri,  5 Sep 2025 10:04:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 314A68E0014; Fri,  5 Sep 2025 09:56:55 -0400 (EDT)
+	id 018BC8E0005; Fri,  5 Sep 2025 10:04:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 210708E0003
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:56:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BF8E2118BD1
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:56:54 +0000 (UTC)
-X-FDA: 83855347548.11.F86AFCC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 091FF1C0005
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:56:52 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hDh3QCZs;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DF9D28E0003
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:04:14 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8708E139FED
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 14:04:14 +0000 (UTC)
+X-FDA: 83855366028.04.B34C472
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F20FB140002
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 14:04:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="k/nKj3Ew";
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757080613;
+	s=arc-20220608; t=1757081053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cq1VwmYPIFqwq1cstMX0CZx8nozQQ5V0/967/UbxTaU=;
-	b=jXR3gT8/ShVI4PVlc2gIlSSjFcQG00ZKwFLNbq6IX93zbvbzUz+Rt9e9163I9NLktjg0Ku
-	3FbJf+IebLGShNDPf8LexbFx0lzZxuFL6hGAhZmgn5JINVcCJR+dU/BkKWN9NRVI8nVEnr
-	n7gMM1kr2XFn3shW3MRzSZ+CVIHyBuA=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=T3nUGVasVr9vweRN8CMdQ24qkdI2jYVSOynxcLsSz3o=;
+	b=VDM2LE6exjJmGTZHL613lObTbQxE6GFHev+wDXmQcringcpuoJ2h1g6uySMPVBsJ/XcbQ0
+	gC4UfyoEmJ5k86fU+LklUKRJl1i3YzHVKBMlTogey3OY+IMrrrYnu05JrEIPTByqMwDwIL
+	Yp4GC1yIFGr+t/mg0CHr+vld9Rrbuzo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hDh3QCZs;
-	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757080613; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="k/nKj3Ew";
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757081053; a=rsa-sha256;
 	cv=none;
-	b=OQ64KwHT4wLQjR4k9+87kZwKAmyU29EnmWxzzY7UvpBynytD+ii2R/K2t98DCBVOlRTS/K
-	FKrT/49Gz5mCuH4yh4GRrqext5RmMve6ZF7jw/TCacs4Syg4Bmcoj6TLR3idMlVJL4i8fP
-	gAMAXr8I1f5TRzixgtmAOvgozwzddnU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 60ACF60280;
-	Fri,  5 Sep 2025 13:56:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CD5C4CEF1;
-	Fri,  5 Sep 2025 13:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757080612;
-	bh=1hGzZmdSJuzP6spOIHTVvRRo8NvllbiyNgNqPn97QRA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDh3QCZsHal0nfKVKiKhtfcfsqwRmVQVOYhj+FFcwmyIIXx8vo4av1o20+NpQ6S5D
-	 0IJiWYqaGqwgT9w5qluI13urzk17W3xfoqse3h1Yxafcd6Kh9r4K/oYz6FiVG8zQ8p
-	 gCxAyG5otPef4WWbi95PY3Enc6ZTE+D4D0COGQNF6jTOSECS5P/nUbVpKoydV1/RjM
-	 irEjFYHWw0GI+yOejyTiHxwOgkQr1JNRKqGZfriwOMIvm0s9RMdYq3PXSBbQemKkSH
-	 P8NnUtlyV6Z69age1VkFMIujuaDqEMGuYa79i6460y+dKoc6OeiVgVs8dzQTD7pzoV
-	 SYCkBkdyUU/FQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Haiyue Wang <haiyuewa@163.com>
-Cc: Christian Brauner <brauner@kernel.org>,
+	b=Cu+lyIyW6adVl/TazbXwnAorRIUox604Pb5S+dKBJHZqK0BMuSNAlPFW5+/DKePeip4uwP
+	gKHG1/4U7cydpcXIJ0Qlzah4lW78lLAURQay44A31Ag78xmMtc3E8/Ry7Hm0GoGLLNV3Hn
+	yuEVDR8wyQpBWpRK3q3Tu5VqGpwXyF0=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b04679375f6so365942966b.2
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 07:04:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757081051; x=1757685851; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T3nUGVasVr9vweRN8CMdQ24qkdI2jYVSOynxcLsSz3o=;
+        b=k/nKj3EwXYJpB3AUNpxdNvjUj8OvaMjD1B5W8ew2pFdUSS4BORIrXtoVVbS8z0XOUJ
+         /lMXOEYNdHGyGhSYn9lh3DJsPAIX9K4XCBXXqO6qwHARS5tvmfavSAZ2ou5XXfu56EaW
+         khVJ45iy301bU2DRenGaCmezY1B4QpVndvtMUjrqulApIs0+MsI5oYrvLsqsU0CoSwmw
+         0QJThtp7b9uw5DvkN2j5aRXDt1LFwkQ4msY8lSMa9j2ntl1gvXhAJk+U2cHGyVwgzJv0
+         1mLKXgo+klTFI64SBCXGxRvvDRJtmCf5TJ3Fuj/Lq3tdP3mH3VtRg+O7KlexAsZrjHw0
+         vk9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757081051; x=1757685851;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T3nUGVasVr9vweRN8CMdQ24qkdI2jYVSOynxcLsSz3o=;
+        b=crrNYANzYjT9svzcJlCTHbp31r8n+863jwf+SsbrC62+SLYGgGEq08uyELMJN6aJ76
+         uA4fJx3wb7i8cXSKskBQr6AS0fujWTH87uq/M6ALWfoxTUcRXfUtV9ORcqMqhner8vXf
+         p5wdzAD3X0EdO/kHp99ccNSYmLTLkXRnqY2R5eoh9dmkFTmV0cqTGrmrsFezFbM/xssv
+         f5JiNTWObQTR0rDw+l64xRA22q3aYRv3j5po9NUzUnjgTlB9lQGgWAVru6RLSDFlLAp7
+         i8mO6Xtpihr+2U9n10/vaQIiz+kMdpkGUAQ/Zbv6enRCgbzqojvi2qcYLcCHVU1bQTQq
+         filA==
+X-Gm-Message-State: AOJu0Yz8RJvPX74p0ojp1jZL1wkBpYN5hGadOah0i249FmdldEx3uMc4
+	LA+GZwvjNkdBHyBbkAU6IhDFulJnghC9JZrnKd9JvViOR6v0gUDREUvWiQPs8Q==
+X-Gm-Gg: ASbGnctiTu/ZnrpX1m8QRxBL2GcYJ7xjTCEsikhQe49dWQHx7ZWmrWzRbOaK7ipsh2p
+	Dj1FAap1GMzuqZMVcMTcQQGAutPCP+OdDGBjjKKd1dkl71Na1rRWoj9Tcj7VgSN0Agw2EBDuv1E
+	QfgCM/ARncCxWtLC5PzuSJQ8Uts9hI4QYUnq2OP80DLHGTNt+bRFJEn1q+6LFxBcAQWDyoZrAEz
+	99YKQunNqxspoYu/TQC+eTn1x0rRYTan4W8vfTB3ReIwAr6nJcvtEQG7YtdPYkWYlnqw1o7FN6P
+	Ps8XPVYBwCT2386RBlw/3734MgZLF5a7oYoc7KR59Sex8GDDgZ5PUNW6+F6rE8TWtyz95UFmZpS
+	6XfjWOY7Sk5vuTR686Ev9CwvQ+LmLXZmL+zeU
+X-Google-Smtp-Source: AGHT+IFNG2k/NpGP4kzvCu8T1J9Gj5Tb93hLEzJ4cDQoy/ZanyU9IKxWtJUMxykvv+2uhxiZOOW0VQ==
+X-Received: by 2002:a17:907:a0c8:b0:b04:3513:5138 with SMTP id a640c23a62f3a-b0435137355mr1763996366b.41.1757081050986;
+        Fri, 05 Sep 2025 07:04:10 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc4bbc07sm17051606a12.30.2025.09.05.07.04.10
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 05 Sep 2025 07:04:10 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
 	David Hildenbrand <david@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2] fuse: virtio_fs: fix page fault for DAX page address
-Date: Fri,  5 Sep 2025 15:56:40 +0200
-Message-ID: <20250905-einsicht-berglandschaft-8d4c6a189aa1@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250904120339.972-1-haiyuewa@163.com>
-References: <20250904120339.972-1-haiyuewa@163.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1266; i=brauner@kernel.org; h=from:subject:message-id; bh=1hGzZmdSJuzP6spOIHTVvRRo8NvllbiyNgNqPn97QRA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTseiOnflv19CROG+fp5+tSaqyOm4bWPmmcZqKT9frB9 ftGLpW/OkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbykIHhv9vPR7cv2HZzfUir 2+J//smsrxuFvwso53J1WJbxi+894svwVzbcZNZBgY2lNUX/dmj07njYWqIvocRwlWFjQ+TK3D2 Z3AA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 091FF1C0005
-X-Stat-Signature: fs3cmmt87sr6s7j3b3qr55fabtfrou44
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [Patch v2] mm/page_alloc: check the correct buddy if it is a starting block
+Date: Fri,  5 Sep 2025 14:03:58 +0000
+Message-Id: <20250905140358.28849-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Queue-Id: F20FB140002
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1757080612-112815
-X-HE-Meta: U2FsdGVkX18wX49DDVAdfq/M7j0zAUnR/OK4guRI75RSzAuQtZ9N8pF/oLUlZ+G7nBZ6CsgOcvmyyFWSPQHvNKdB7pnxi+2YpLtZmDKjjoa5lR7fz/8U5Qnd+3qIR1o7G1249Xo0n6+q2AcMLOXnML57T73t7WvoWRn4M8xrV/xun/kWdSfC3oTSgJtFTvUY5tMUHDSA/MRgW+7EiklwhJBV2NwfNorG40Rv6Q/JPa7HXtWLVTRqEOozzQ//2k6cSoQdwRq8D6bpJNb/UR1hm3KFUp2nejkbDnSj95Ng7wYrtlt8PHgzh0Us2ucugdcXcbYryP9TVZOoaN7aNkNG2aep3oA/MNOveDs2520VMu3XB+JUouiNPRjEJp9wr/R85r9/GS1zkattuok8bMLJ9173nga3rN4rUOVCxWXM7jEzZ/ipqG/OqwA51Fi0Pv53zcuar9XXOWj4vCvjL700gUxfFtkNszRrvdaCzBPrek2bHLqw1lbUQAwr9s8yGC6Bo7hF+jNnAQWkZ+WP7+dOpQ/k81k1PGBJmSGDhyL6G1m0CW6v477978mdxxAJjjogtiCwsxSZVjHzBojOjRmJYZvTK3apovumBDbGVn3cIzzYiR952HkSLCxWmoCX/4MYRtVovAawHHL7a3ZE9rn71bSsvK/2skB8ME/r4SBO3ciN60qoSh0iSTjMIF562appEI/SFLqpxhp3u0UnhQNXtIfH0nJFqFaxLh5xIZJku+RwgRlui9eLaGySRkgT9BIcRpXmekux7lFRnFxhVxKv+9KuY93g6KDr+0mtK+E2yDy51w2ilavAUs7ShyQUBjissZuQ2aRYdq3S30c+5+2rJ3sjj5maci3lTaECrjekOSbLXIOltSVXfAgYgbubz/Gh/4tXKrvVsCXR82YHnCUmzqOO+6t1OAFaU5w/+5t/lAotnkaya4fpbfwVxTq8/rKqs1pMkoe6S+VfbXw/Sxu
- Y5lHOGhT
- qCTaKie+w0NT6RURQVyD/nTPYHIrs/JmwrwnN/LkMoUbzTJJ2Efh+Ox8U3ytoSWw/HJ9rZdR9uuCFVn0+Ioi26069vyDwxuDtHrXbtDHxOfbxagtvu0jvyF4zNraOpCUr9apQwiT7j1jzgzqDPM7J1NOY7HHY43asoMw81pCleA6BUFyxAorw8e4lUghASY1L/Kox/4KE1xIq1luGZGNrFbg87ttW9auPdOLErBHSdfm/q61FJJpW9I1lBbcZM4VWgMBWe7DCAI9LCB4Tz1Jcm9Ds1ieiYwGBj/wgMH9XeKmec2CAKCjQWcjPJOtbfFVcjWlTM7svqpQaMuL90Y6KhpIlMg==
+X-Stat-Signature: 1uszhwp19qt9wudn59t8ooipr9fnptke
+X-HE-Tag: 1757081052-777514
+X-HE-Meta: U2FsdGVkX18JPyEKSnbzzaN6+lrmsrZ0FWM1/3dNnnFSiKGS+3aXmZp0dZ5DKtXFhWG74yyPiyHV+f0qs2jPXjn5oJPdBVSGhBEzNFVvgq8oNrN3KbmMFOVzJlWU/+PU0uBwIK3AFIOxVB8Kb96yCLzAJ649F/SLaSvqOl9BwG6pce9U7thwF2p39bbB+WZr7vN+1CYkKitY7tUmrMDS6cvXmDk+mMIEMt6Ucvb8MJCTfJxL1gt1k4+mt026PjTKsCALilDTsJSwc9AifJS+I/bkBJekZG0TZ/nzmo5WvN7m36i03EEHaHVLbeC8pbjLCyLaythxxLWmhrYe+CVze76F+a/LfzKYsurUhDrgVebhm84xqWqGwrs3reVcOJnMCYR7M+XLNbfWgYUDntFtybJ4HaRm/BVZYThdZaEFVAX9pD82iYHBqGegAIl6Nz4e+EhQfCoiblggLZj0jUHAmbRSOS5jxj9NHjEjpUZ7GYYC/ddR6VOWFKAB55tAmnoeu0nS6Nh4izykXqBlyBOvZdfpiF6NItoRPccRBLUwe+D/5DZbcD4hU/cwyP9iOCbJ3pprkBYxkm+0y4TPGOWxfdmazpfZE8CrGPxYhLV0NbbiojkgmnBV2MxE/N5bugPY8Sp5A1kpRqpoJa6qqzXEevMSpPf/kgVrf8tzYB/6oX/P9kMWr980aDHLb6tU0q7m8QRWT7CU11qJ7iude3CNpngkQ5RrT+6ZNERgxtkwFCKft8GEI2SbT9/dg+vppC4FPND+qhIz328D5QU3/RVxkSWuE6fa1ltrrlQABxa0L6lWKKNCrC6cB5+KdgfjhadDmfjMaBXfDUIlFgKMhwyNw0ls5Zf+dPCa4O36albi4C1v5JHI/ian8iJFG+k5Ed+qGopJ48f4Kgk1XsTyZJLt9ujEhx40kREOlFytH0oBD2qBctj2hChcQ4MskmJqO2YQeDSUHtenUUzl1Z01+li
+ 2mYXlXx8
+ CpLYgfXw25I1bsfI0eAwQnlBBrjBRSrLtjIoWGmwYjthUFroeBEp4nHe+sYyLhXd8VA6bVGpvHsC2nc6UR2PSO2Kg8gu9dDJ/hs2I4GF/zKGMy6DaIR+dEvz9gdDfYBdSzRY8zqIZh2iMOHaz5f8IAvFmKuQeUnVoWAch02bXgOaSMnIEBc+uuJPkXPphsazgvSu+e6Xl9je5zz0+kzt+1/U96g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,32 +115,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 04 Sep 2025 20:01:19 +0800, Haiyue Wang wrote:
-> The commit ced17ee32a99 ("Revert "virtio: reject shm region if length is zero"")
-> exposes the following DAX page fault bug (this fix the failure that getting shm
-> region alway returns false because of zero length):
-> 
-> The commit 21aa65bf82a7 ("mm: remove callers of pfn_t functionality") handles
-> the DAX physical page address incorrectly: the removed macro 'phys_to_pfn_t()'
-> should be replaced with 'PHYS_PFN()'.
-> 
-> [...]
+find_large_buddy() search buddy based on start_pfn, which maybe
+different from page's pfn, e.g. when page is not pageblock aligned,
+because prep_move_freepages_block() always align start_pfn to pageblock.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+This means when we found a starting block at start_pfn, it may check
+on the wrong page theoretically. And not split the free page as it is
+supposed to, causing a freelist migratetype mismatch.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+The good news is the page passed to __move_freepages_block_isolate() has
+only two possible cases:
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+  * page is pageblock aligned
+  * page is __first_valid_page() of this block
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+So it is safe for the first case, and it won't get a buddy larger than
+pageblock for the second case.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+To fix the issue, check the returned pfn of find_large_buddy() to decide
+whether to split the free page:
 
-[1/1] fuse: virtio_fs: fix page fault for DAX page address
-      https://git.kernel.org/vfs/vfs/c/e1bf212d0604
+  1. if it is not a PageBuddy pfn, no split;
+  2. if it is a PageBuddy pfn but order <= pageblock_order, no split;
+  3. if it is a PageBuddy pfn with order > pageblock_order, start_pfn is
+     either in the starting block or tail block, split the PageBuddy at
+     pageblock_order level.
+
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+---
+v2:
+  * adjust changelog per ZiYan's comment
+  * rename pfn to buddy_pfn
+---
+ mm/page_alloc.c | 25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index db3d902c4be0..c8ce46d0909a 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2090,9 +2090,10 @@ static inline void toggle_pageblock_isolate(struct page *page, bool isolate)
+ static bool __move_freepages_block_isolate(struct zone *zone,
+ 		struct page *page, bool isolate)
+ {
+-	unsigned long start_pfn, pfn;
++	unsigned long start_pfn, buddy_pfn;
+ 	int from_mt;
+ 	int to_mt;
++	struct page *buddy;
+ 
+ 	if (isolate == get_pageblock_isolate(page)) {
+ 		VM_WARN_ONCE(1, "%s a pageblock that is already in that state",
+@@ -2107,29 +2108,19 @@ static bool __move_freepages_block_isolate(struct zone *zone,
+ 	if (pageblock_order == MAX_PAGE_ORDER)
+ 		goto move;
+ 
+-	/* We're a tail block in a larger buddy */
+-	pfn = find_large_buddy(start_pfn);
+-	if (pfn != start_pfn) {
+-		struct page *buddy = pfn_to_page(pfn);
++	buddy_pfn = find_large_buddy(start_pfn);
++	buddy = pfn_to_page(buddy_pfn);
++	/* We're a part of a larger buddy */
++	if (PageBuddy(buddy) && buddy_order(buddy) > pageblock_order) {
+ 		int order = buddy_order(buddy);
+ 
+ 		del_page_from_free_list(buddy, zone, order,
+-					get_pfnblock_migratetype(buddy, pfn));
++					get_pfnblock_migratetype(buddy, buddy_pfn));
+ 		toggle_pageblock_isolate(page, isolate);
+-		split_large_buddy(zone, buddy, pfn, order, FPI_NONE);
++		split_large_buddy(zone, buddy, buddy_pfn, order, FPI_NONE);
+ 		return true;
+ 	}
+ 
+-	/* We're the starting block of a larger buddy */
+-	if (PageBuddy(page) && buddy_order(page) > pageblock_order) {
+-		int order = buddy_order(page);
+-
+-		del_page_from_free_list(page, zone, order,
+-					get_pfnblock_migratetype(page, pfn));
+-		toggle_pageblock_isolate(page, isolate);
+-		split_large_buddy(zone, page, pfn, order, FPI_NONE);
+-		return true;
+-	}
+ move:
+ 	/* Use MIGRATETYPE_MASK to get non-isolate migratetype */
+ 	if (isolate) {
+-- 
+2.34.1
+
 
