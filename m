@@ -4,124 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 676BCCA1010
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 17:12:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4946DCA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 17:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C7F48E0006; Fri,  5 Sep 2025 13:12:31 -0400 (EDT)
+	id 794CD8E0009; Fri,  5 Sep 2025 13:14:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89F498E0001; Fri,  5 Sep 2025 13:12:31 -0400 (EDT)
+	id 76CC78E0001; Fri,  5 Sep 2025 13:14:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B4EC8E0006; Fri,  5 Sep 2025 13:12:31 -0400 (EDT)
+	id 6A9758E0009; Fri,  5 Sep 2025 13:14:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 675538E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:12:31 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 083BB140325
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:12:31 +0000 (UTC)
-X-FDA: 83855840502.09.856BC6F
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 026B5A000F
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:12:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lhxgxpeW;
-	spf=pass (imf25.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 59E458E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:14:58 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05A77B833B
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:14:58 +0000 (UTC)
+X-FDA: 83855846676.21.D1DA0F1
+Received: from gentwo.org (gentwo.org [62.72.0.81])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5491C40004
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:14:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=boDejP83;
+	spf=pass (imf27.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757092349;
+	s=arc-20220608; t=1757092496;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YRexvvNjPPJfK1uT0OSGvRNA7ydx0We94Cj4HRzyUo8=;
-	b=YbLOCX85DOuoHeq4K7PmLTHWgx6AZif735mLVKzHC4Z9x6mr4rfQ397ogZvTnUwnwEN+C6
-	LIFFlDjly2IIW6m5WRwaxBHS21ZQ41Q2hB95ebuOxUX5uX4zKLvGjzlyQBvAkvI/lbd7fu
-	k4bOrk7R9dDwXROgDxP6M3qrm/RVujo=
+	bh=Qirg4842vXSI8wcxTP5sZqL8C5JuE+RDKuDJaU7fnCQ=;
+	b=ZGhNGJr5DyNuGCwklLrxGFm+oX54VTzLLuKlyWoCJqN4+kbYXCw4fUS/NLyeGpW5GueKf4
+	w3W2k4vdR6OL/C71mTYqK+QiX0eOIHXc+YwVZGla5/Ib4FOBoKHAA8kGxNErpBgUnB7woX
+	RjKgtCwPBHWUsJGNYVmemLC2glTgqVw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lhxgxpeW;
-	spf=pass (imf25.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757092349; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b=boDejP83;
+	spf=pass (imf27.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757092496; a=rsa-sha256;
 	cv=none;
-	b=iRj5AVGzCyDoRVafs71uRnuWkTvownAJZQkO3oFLzzCBmNJ1kk1zHCJLVw39IozdCBPPbI
-	ml+FOFggANugr1wfHlDUQsFOwTzngeMppB1rLEAdHGURk5i5nrcWesJO7ZxKXkxPxtF4K2
-	GCLHMFrjzEQxxDycLkr34zNcSPuap74=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b89c07bb2so689695e9.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 10:12:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757092347; x=1757697147; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YRexvvNjPPJfK1uT0OSGvRNA7ydx0We94Cj4HRzyUo8=;
-        b=lhxgxpeWWH7XFnPUjfe3YUfjarlaVp7/gQi2rya6HWX/FX+QNKNQMd2tjZhssqOBze
-         rmeV7h1Fw6eNdhzcDXMDi2a9oWmcJ4T02GO8aydkpGEx8qgLKBiGxU395UhwYNX5r9AN
-         l8JlTcGa35syT5gecnMopAeKU98ZAw7h5izqn5NENCSkF5YOLzwHQFlV9IDzFzwINxsp
-         XQ0xZS6kbVewcLmsw5JP51ujdpMlrKIatahB+x+0BmaA5hspDN9QsM+v0txtZ0GSPJ/J
-         aQbeShNa4ZJf1NZsVhQd9M2eLZCD26a/ipi8fr4rldlwX3GVYkqt7C6aLohv16Gz7DuM
-         +NNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757092347; x=1757697147;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YRexvvNjPPJfK1uT0OSGvRNA7ydx0We94Cj4HRzyUo8=;
-        b=XFuctnb6ZYkasUU+Ai0Mry7z3KUiXRFIBbxyHDybU7yawqA7eSEofbkpSnxabRHUv3
-         CArJM5zO8dtQ8OZ1kEuFBDOASV7wE88ejBCgKLN+6qWe1tzSFH1gdMs/QhjkElgH51mT
-         Gqh8TcPoWuBkztO4zKsO/LEG5rcyRSK/ig8izwlR0BlfyNyd8uQ6F6Uk2/lHNBcyN5qo
-         ySUBtppHFXqOfe6yEvanPd7pa4VnvmVa+rYRq//W/GwPShRjHPWSy1sfLsRINjVRNPiW
-         957/6WoWuz89/z5sSUFoxJqksbdH+jYeOjrCr6A0eBPgNvS6UdkQJ8N44fyU4aHHdnjD
-         S9TA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoggDBMjF6f9GCmiQffF83wxxd1j11p1crqK/pXFXPfXf2ObIC14gm7Tb1ayaPVrKs8t7rEIQRWQ==@kvack.org
-X-Gm-Message-State: AOJu0YzkmuofkbV2rx1sGV/sF7EnqLxbZTlRz9ZLUuLq/fuEcnEegJ+P
-	VbyTdIgDpnjE2FCoIMYbXW48lJeqQibKmVadJ5P3K55aigWkACLKKtNl
-X-Gm-Gg: ASbGnct9So3JFh455MCpIIgQpsSah8iGum76Qq8DtBu+MlEghcIJksuAdJRbDfaF1VF
-	yqNu6nAx35kO7jipf1WWR73lq4M3LglIGIWH7vt0ukezdoEBMs3lkM0NuP9Hj9GSlyjuCL4fcPV
-	4dPKCEsQgkphfY+AKJVxJ5fKrvaJcV5HcgMiY3TAFUIT4cuFANITxl3Nowd0DWw5pSd3rO1sVxU
-	YPBz0/TDt8uZc3Amyp42x0gRzU2gUM2+tH0Yo+aoFrpW5Cs37DUgFen9L9CjOXVPCv8rz7EU6PE
-	logFhCWOkutB34LI0h+T5cHZpAGG4X3NEH/YM06J74UaS+oUh9DZ3xEsiUs1ZnX6kO3yLGiRvny
-	hMghbwrj0FE4NieDkzWEVtRwY6IyYObYBk/jemiu1SmnfaBc1YlV8x9tsBGUJwLgq1r00d1DBaW
-	7pQJiVLRXeJG0IOFs=
-X-Google-Smtp-Source: AGHT+IGlC1bZMx0rOOObifxr+isGVzwQ1CKTbVGeV1N0+/Jd+6iR4EncAxNpQwTB91Ey6108bNX3uA==
-X-Received: by 2002:a05:600c:8b10:b0:45d:d0a9:18b3 with SMTP id 5b1f17b1804b1-45dd0a91aecmr33464465e9.4.1757092346974;
-        Fri, 05 Sep 2025 10:12:26 -0700 (PDT)
-Received: from [10.213.233.28] (109-92-217-44.dynamic.isp.telekom.rs. [109.92.217.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e8ab14esm369577925e9.21.2025.09.05.10.12.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 10:12:26 -0700 (PDT)
-Message-ID: <75a2eb31-3636-44d4-b2c9-3a24646499a4@gmail.com>
-Date: Fri, 5 Sep 2025 19:12:01 +0200
+	b=NTa6QrvLzvyTTCLE0gRfImaEXevBehXvYtAFwa8DItoyT/uzrg8yIoovE2uJuOi0gtdMy+
+	+URChT2Cv1r5syXBeQQuAANIjntoAoJbE2URG8KKD/uheRFSgm2rFHUUvHE1KhOUSau4Nm
+	8lNOUQnXhpuPhyUmQ/juDPpDMM/9ivI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1757092495;
+	bh=/AhB4CQ2nuWJ8A8/U316hv8jOOa1C2KJNEDiEoM2kJY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=boDejP83rZwIqDyJdwlUNbEjuWwQm0Sw7wSJ4hr2M88IpVUG5Vch8tHShhrx3AYLw
+	 zH0K5/QhCGw24B/azv2cIc4eVWoIpXtcBz82EIN4o8DTPpzbH85QG1AtiTZqy0ax1x
+	 YAVVDs/WqSQ/fXBFIfLQRJR6/tCcccrG1qyqHQoM=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id 277F94028B; Fri,  5 Sep 2025 10:14:55 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id 26A2A400C8;
+	Fri,  5 Sep 2025 10:14:55 -0700 (PDT)
+Date: Fri, 5 Sep 2025 10:14:55 -0700 (PDT)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-mm@kvack.org, 
+    Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH] mm/percpu: Add a simple double-free check for per-CPU
+ memory
+In-Reply-To: <20250904155146.485ab7def1b89ed7317b76ad@linux-foundation.org>
+Message-ID: <7d57bb57-9939-df2e-243a-a0290f79c6f6@gentwo.org>
+References: <20250904143514.Yk6Ap-jy@linutronix.de> <20250904155146.485ab7def1b89ed7317b76ad@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/12] mm/kasan: make kasan=on|off work for all three
- modes
-To: Andrey Konovalov <andreyknvl@gmail.com>, Baoquan He <bhe@redhat.com>,
- snovitoll@gmail.com
-Cc: glider@google.com, dvyukov@google.com, elver@google.com,
- linux-mm@kvack.org, vincenzo.frascino@arm.com, akpm@linux-foundation.org,
- kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, sj@kernel.org, lorenzo.stoakes@oracle.com,
- christophe.leroy@csgroup.eu
-References: <20250820053459.164825-1-bhe@redhat.com>
- <CA+fCnZdfv+D7sfRtWgbbFAmWExggzC2by8sDaK7hXfTS7viY8w@mail.gmail.com>
- <aLlJtTeNMdtZAA9B@MiWiFi-R3L-srv>
- <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <CA+fCnZf2fGTQ6PpoKxDqkOtwcdwyPYx2cFwQw+3xAjOVxjoh6w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 026B5A000F
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 5491C40004
 X-Rspam-User: 
-X-Stat-Signature: zfqghw3pefzkxrx7ci5undbnuf46x41q
-X-HE-Tag: 1757092348-62640
-X-HE-Meta: U2FsdGVkX1/k4bXmekuojkBqX/FwbOhwssxvz4GwLOha+frFzxeFatSsWsIYRcopSfHkAK2EvYscF55DwsLdc8AP8VLxihxX0m2Rbo0Bhwe9kOYZeU7rVi85xo/A3lqZZovTz8QSEtrnoukMJTduSbN/yoLsBiqWZcDKHYaHGFxpJOXNT4+xEVnrBeu5p/3K2FgVKdgGCkcD0fXMc+V5K00y4sN0rxGXRrXxN4oZvOr0eF+773Ay4oEUsNa4s2htsYby2Incy7vF8pOmlQQ+9AEj0xm+QHtapfrztXdIw1IZAKQMOiaVdNXBEQ7jwxh1hEB/d3WTTpQrhEakg/sHp0jPd3sO9KDC+RTzzFJA6Ii9qDEl0kpV7fY+hOzngdFs8Y1R5yNgPAnI5+xfWqd2jVwFzM9pg1CbrjV/iMTtETGwMXV1i34bxs8fRWNdrxyRoiAqEJM7YR2MGrJJeZjLKVYuo2lh10MVKaZ+dxKjcTZpcwrc1ZvIEE+BLamGmeQRs9rJkdP3siY1OihNtOQJAnWnSZ/OCe9lHATfhF6zGy1Efno+TW1oyGIXwe+LJ+e6c/e5ZHYceANkxhaxpRN0TMXc2kZcnrCEYwHKbICerP+gVDhULY/4oEeoEL5Uum1rM29T/A2EaHcAoPHwL4i1ZdvRjCpzCBYWqn1VOXVUOkYtXWTvMrpMFfo1fJkDIEV6nL3FKkGzgrcKh5pSyTjV/ivbuVnpL/ADD3dRgPXQuEpxDfaCdZbV8Myb78G/KfSOEjt0ToGNJhnKWsDz0tkl1vR1OnDMC+iW0JIVZ2zr0Ny+mlzvn3w8bEpiy7DB5ZPG+RRPYGqF5BTLKlsokEzU0Ws2l/JtlY1qHCfxnG80FkjblDomPVCng7tQ5ryMsG6ZDWXCcj5AJnAU9r7s79e5IlFgEd2cnKc3v6oQSuu4xDvIJGECvNkNZp/P+LmU4XWik7uAdSIEvjrTgJJ/4Pp
- 32XVs+Hu
- yJMltz5DZpf1C3IUwcKqR0ajdlD51ua0PGLNn8g14hRU9OSwRm1gN7LgoS8SNcMcXKaaUO+2DRIwqsd+Rcmm82HS5/6wmRkGIPSDMbnBMpDzD92LtquB4D8h/RP6UmWvTdIQK85DJHuYrxQ+LdajxyEaoomgJy6OkM92QeqEbYB7bF7XpD/X90d8e1SCe6820WFjqvKHUvfPq8k34FAl5sTvGx+cxisPuM4DvF2dJzROFS5SN6FzKeBk0rnrFOibloQJqcBAhmjd5PAVguuJsiF13JPeKHiMaOpjbRYe4mv/jSCoZEryFGC1YhIPP1AJVntBZBEVZbmUTHiUbrs2U5dqCTvFUOYf1lC5fuhmDlYkzDuU/6ZSAOUMjFXW/JQoEhvQcnG7eXFqsO5IIb2cOwWbj+aaUDVtouknM9pCaH3upFfVwBXnn9xxGqJMXorh3sMI3H8uz7LNMEKvYwvLY18oJkVz8y5hVp/nlA51dK2Bs4OmvlUjSfVzha1TTRmvadCMLSaGfF/R2n3rOhtp7nndeYMLPw3t1WpFPh2MKbIznZjdEyAclldpMoQ==
+X-Stat-Signature: 9mchq769sgh38k4obau3z81fcdh5tsu1
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757092496-585973
+X-HE-Meta: U2FsdGVkX19uHmlGi0g8FImBSw2Dgj3IWxf3hsCv3LzSjRFZPqwH61vAEWAM3y2J3SPrEveevdSSELgi7G/Wvq7b8lmVacw4xbPzs9OXKdSfOs2nGsM+TsDqBldOvy48O+UIfeWowl27KBRLIaZE7iv4Ozqf0MYh+/NL2vx9cbPJtxlzN/4BogfyEAaGcj4k9wkmBXcubEqu8vwI3yKcxz5gC5ej5RGgleFXi/lXl7JkITu1fUQtxbHYDg6YG2Gza10LrW21iOq+EIyyE0jwkTMSM3jByUPxfpUo+e/HcljApwXNHsAMdPYv1x61eGw7rlnRRJZC3FrGQl+RGhDLBX8qOuUZ9RnRNKRVV7zyQWPVKQ9ZVvTF3LCONCMJDQffCAPaqYp19gwPNUI8ayH+5aQr8hCnuEk+km1QBwi3UltZk13z/3ylrNSe4UaRco0CokfygTs4gTmdUvGJO2HMyDZ6TUrg1FNiJW0wEXsGOAxf9wg/RX9R+5bfQ+5CWUd1VJGqvTLbA+MpVeUktOUv2DbOqSC864YEJG3cMj6vafETx3g4wgfaGuzccEg8DFFilPPVujJK+W4DxaTa7oNcQuw/GYLK6yQpZFMvayLHmpIb3MK8HzZKBiiHudEGv9QCGJuz4CrK8fzJBluvhzsne06lIvIcEKkgqiLM0IH1Nnzf8TzJ0IGnqDylTLYUVEI+rNqu21BkPcwQXlySNEpbVlBHuZZ3JFKfa5rtpDKLkfimHc1uZgYPyNwSgQa+083iXUHlYDPVKKX1JPyP+RsoVC/kERMNVh5HRHU7WxADnV7uQwjqpM3pPq8a/bh/rqVheXFkw+U5bRArM+3Rr5yLB7Jckse1VM60WRz9AQfVuKhHRwfHKTNF4AbvKZczXjvOb5Z02jiUpU/TfbCyzZKkEhaegKYCdQWN0vP35BsnLt1op6de21nz5yTOX04rfSsbn9YAF0YzvpdK0EGJA+k
+ XASTFj7i
+ 8hBriYU+Q6r09jcV7s+Dv8hVs6MhlRWQIeNhezUqaXm1NqILK8eCDkBj/Y6OtmFKEKqOEmPcMInIH/wR1D7ClCP/7iJnMb8h8eao6zDUKnr8SZXpFqldg069IDjUnJIEcYNO2o2qvX//gZ/w68nDWhjhS5BajqxdXaLR9bGIJJt2N8OCEFD2+qAy+9xF4PfvYCTavnkW/Qx7A/DTeeeXDQYn8DCLCEKZNSsMl6kDPDJ/2pjhaYSTqFTjll43fgyB4iseLWgrRu/v29II=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,59 +88,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/4/25 4:58 PM, Andrey Konovalov wrote:
-> On Thu, Sep 4, 2025 at 10:11 AM Baoquan He <bhe@redhat.com> wrote:
->>
->>> If so, would it help if we make the kasan.vmalloc command-line
->>> parameter work with the non-HW_TAGS modes (and make it do the same
->>> thing as disabling CONFIG_KASAN_VMALLOC)?
->>>
->>> What I don't like about introducing kasan=off for non-HW_TAGS modes is
->>> that this parameter does not actually disable KASAN. It just
->>> suppresses KASAN code for mapping proper shadow memory. But the
->>> compiler-added instrumentation is still executing (and I suspect this
->>> might break the inline instrumentation mode).
->>
->> I may not follow your saying it doesn't disable KASAN. In this patchset,
->> not only do I disable the code for mapping shadow memory, but also I
->> skip any KASAN checking. Please see change of check_region_inline() in
->> mm/kasan/generic.c and kasan_check_range() in mm/kasan/sw_tags.c. It
->> will skip any KASAN checking when accessing memory.
->>
->> Yeah, the compiler added instrumentation will be called, but the if
->> (!kasan_enabled()) checking will decide if going further into KASAN code
->> or just return directly.
-> 
-> This all is true for the outline instrumentation mode.
-> 
-> However, with the inline instrumentation, check_region_inline() is not
-> called (in many cases, at least) and instead the compiler embeds the
-> instructions to calculate the shadow memory address and check its
-> value directly (this is why we have CONFIG_KASAN_SHADOW_OFFSET, whose
-> value has to be known at compile time).
-> 
->> I tried inline mode on x86_64 and arm64, it
->> works well when one reviewer said inline mode could cost much more
->> memory, I don't see any breakage w or w/o kasan=off when this patchset
->> applied..
-> 
-> This is interesting. I guess what happens is that we still have the
-> early shadow memory mapped so the shadow memory accesses inserted by
-> the inline instrumentation do not crash.
-> 
-> But have you tried running kasan=off + CONFIG_KASAN_STACK=y +
-> CONFIG_VMAP_STACK=y (+ CONFIG_KASAN_VMALLOC=y)? I would expect this
-> should causes crashes, as the early shadow is mapped as read-only and
-> the inline stack instrumentation will try writing into it (or do the
-> writes into the early shadow somehow get ignored?..).
-> 
+On Thu, 4 Sep 2025, Andrew Morton wrote:
 
-It's not read-only, otherwise we would crash very early before full shadow
-setup and won't be able to boot at all. So writes still happen, and shadow
-checked, but reports are disabled.
+> On Thu, 4 Sep 2025 16:35:14 +0200 Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
+>
+> > The free path clears the allocation bits in pcpu_chunk::alloc_map. A
+> > simple double free check would be to check if the bits, which are about
+> > to be cleared, are already cleared.
+> >
+>
+> Nice idea.  It's hardly a fast path!
 
-So the patchset should work, but it's a little bit odd feature. With kasan=off we still
-pay x2-x3 performance penalty of compiler instrumentation and get nothing in return.
-So the usecase for this is if you don't want to compile and manage additional kernel binary
-(with CONFIG_KASAN=n) and don't care about performance at all.
+And it could be improved by checking the bit instead of finding the next
+one.
+
 
