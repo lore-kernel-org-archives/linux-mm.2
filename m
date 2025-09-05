@@ -4,95 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA07CA1010
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 06:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4CA6CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 06:41:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98B208E0007; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
+	id ED17E8E0008; Fri,  5 Sep 2025 02:41:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93BB28E0001; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
+	id EA8D88E0001; Fri,  5 Sep 2025 02:41:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82A3E8E0007; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
+	id D986F8E0008; Fri,  5 Sep 2025 02:41:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A48A8E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 02:30:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D814E11AA8D
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:30:48 +0000 (UTC)
-X-FDA: 83854223376.12.C2FDA9B
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 19214180009
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:30:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757053847; a=rsa-sha256;
-	cv=none;
-	b=VIiEz4JQIyx18cYGwMXyBRp+GZB+Auprmukyt4CRhDdzrcXzS+b5NNLTiLfodYJY8BXL9A
-	PWP/yw0Ec+nXgN0hI91xzoTTNsswKbWAQYQ8Cd2Bh7nO0RvGTm8oNgq00ceoBsv3Csu7QD
-	bH6ujp1rcBTseMNeTMvs642tglSXLu8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C850D8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 02:41:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B344597CC
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:41:33 +0000 (UTC)
+X-FDA: 83854250466.18.F7724EA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0B98220005
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:41:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EpW1p9MM;
+	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757053847;
+	s=arc-20220608; t=1757054491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kdTeirI2rw+R2fhuC0nJS43LeWQ2L/0KNlJACOs8gZg=;
-	b=GQoYq77VSqoik6xTellwIS4dsple9xyR49bECI9XfNiY5JnL665IGG9ecIMz6XlfTZloXV
-	7zL+U1gK9IW2XXLelaT3xaS2pRDVxJG9lbXiO2bpAQH2Z/QhEE7D0kwFbVxJRdfip9YR1w
-	p+6lISLrNjopxDPJ7j6uRTxTqeyD0F4=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 5 Sep 2025 15:30:42 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 5 Sep 2025 15:30:42 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-Message-ID: <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330>
-References: <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330>
- <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
- <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330>
- <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
- <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
- <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
- <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
- <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
- <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
- <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oF3HN1Q6ZNxZN3c5DymWi4LgFv8yUurotu5FuTflls4=;
+	b=pd3HgXqXV9h4xDi6KS8es/ao8iABWps4b5EfafkVOK88aek289z0ZEtnDDvAHsY4Clc4Rt
+	Lj8FbVCljAPE3TmOmrQTgbD5ouUaT1n4oVN2DHgdIWPrUFWbY1wfiQ0KaSciqeQVoHzR5z
+	zZy2ENiyA5EjY23bfL19a1FNTTI9MmA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=EpW1p9MM;
+	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757054491; a=rsa-sha256;
+	cv=none;
+	b=qMhJvTGKI7HACnQn6IXYok2Vx4rznDMIWcraWlu8gBSosX4rIhMN81uwlHS+hErVBBKXs6
+	jNH3+khV/a7kYMOlJl4M92OJ7zo47DvuVUo0AlN82zI0dpTu4axyVEv8/lG8HhXewbbyeT
+	w0yXb1i+XgPzz5VYl37eFJrB1Vbhpeg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757054490;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oF3HN1Q6ZNxZN3c5DymWi4LgFv8yUurotu5FuTflls4=;
+	b=EpW1p9MMbSDUi+SxAEcAL7HZbTLcxXjgKuaRcCee2TDI+3yZ8eGcUiDWKX1LvVr1KMVCwy
+	T7qi/fNDlIqPoU6ENhlQYJskkfhBCl2fSkz8yo+wadhzWXbqUY27ziyTlMA8I3rIjIU15r
+	IVbvW8HRUhpw8oXoa+xYLYjM4qDzqN4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-aGh6PuTTMn-ZaT691JMZAA-1; Fri, 05 Sep 2025 02:41:29 -0400
+X-MC-Unique: aGh6PuTTMn-ZaT691JMZAA-1
+X-Mimecast-MFC-AGG-ID: aGh6PuTTMn-ZaT691JMZAA_1757054488
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45cb6d8f42bso15001195e9.2
+        for <linux-mm@kvack.org>; Thu, 04 Sep 2025 23:41:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757054488; x=1757659288;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oF3HN1Q6ZNxZN3c5DymWi4LgFv8yUurotu5FuTflls4=;
+        b=wbFrXBzlrb5+21zwLzmWqnBRLdFxRoZfvQfL5dHritiNh0VZ5r9ZbHLCsXFGFD+bBZ
+         Nww/VzaTr0taexyWrKl+Sp5IhNjPDa2Xm+6wGHQLdCnsvux27SSMbUaZKj2oYig7XR0m
+         61Pq7wMh52fta/0B4P/faPqPOY4HdxXCHFQjzrzuWrKbikZbN/zJfubpEUr+1Pjxif45
+         DeCupNRrzD8egnbSTeUuFUj7O1NX3B/yAEsV9CNazBE3yl5BE7lp1XkDFCwdyaO7p8iS
+         Rep7EkK4GwD220EvRwUgol7iQEye27/yYwoOW16ENRJuWXvXJei4E07ynDUVFGqSwgaS
+         iymw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6DgtWIM5/2YiM1Z9nK3r9XMdM3bh/iHbjBaGHBRat5q/NqXAwiabRc4RBAmDaRo3NYVdXCyKIEg==@kvack.org
+X-Gm-Message-State: AOJu0YxBLOBlVI42wSbWp1pIcladWmfc2LqPR7236cTrGkJ36PeXWkZ4
+	VRwUhTjXE39stS6/jtGHyPfUKxHjfczSreNCG8FTSjojeVqk41ivf4IUYCD7ZYaNZK249IYa65Q
+	9Ls6iV7qb5vAdA7A6JCn0Du8wrf8Cv41i2YowT2eN27UYxlapeLe/
+X-Gm-Gg: ASbGnct1xV961bEthLqt1jVRMxWw0bS8cA32cEzrgN1n3MBVeGXeoYsC0O7XjPQtdwR
+	LF0amRH2Cmr6iMM48ynD2eoEVL7GX412pMDIKVPLB3TPvQtycGNbbD1sIRExtqUpiBl9tD3Z9Lp
+	+mBoZv/MFM6dcmW+4qNiC+5714wEp2IKa+bLZJYH46DFe+5NIz1wca9FuHtuNIveLu0o0jKIYDD
+	oTOZD/jdL5Gdxxc+3HPzq1GR64dH7MFwRhG2/7NgEABSRkJf38wamNYCOtmT3NN2VPQWiev+It7
+	vo3aIUYvuEJjrCevVpBOg15tUjV4AUDL7F/+9kXftgzIbqOkuk5hn2JSi6c28uWk4ZDE7N15fvv
+	Y8kpy2NQo8hEqFx07EC60Etqw6Q0eay+6qFy2FmYwycjIiGc1k8y++WUd
+X-Received: by 2002:a05:600c:4ec9:b0:45b:7ffa:1bf8 with SMTP id 5b1f17b1804b1-45b934f6a56mr114233045e9.23.1757054487754;
+        Thu, 04 Sep 2025 23:41:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHEj1Q4ueRZg61r58J+1sq7/RpmSeqvAcWabr/Sq37OcVKAf1elh8/EonCz3Jhepl0SBZP4Cg==
+X-Received: by 2002:a05:600c:4ec9:b0:45b:7ffa:1bf8 with SMTP id 5b1f17b1804b1-45b934f6a56mr114232615e9.23.1757054487185;
+        Thu, 04 Sep 2025 23:41:27 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4d:e00:298:59cc:2514:52? (p200300d82f4d0e00029859cc25140052.dip0.t-ipconnect.de. [2003:d8:2f4d:e00:298:59cc:2514:52])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e8879cesm316420125e9.12.2025.09.04.23.41.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Sep 2025 23:41:26 -0700 (PDT)
+Message-ID: <5090355d-546a-4d06-99e1-064354d156b5@redhat.com>
+Date: Fri, 5 Sep 2025 08:41:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
-X-Rspamd-Queue-Id: 19214180009
-X-Stat-Signature: sir6wre3jk5sdto5grqeytf3y41xr3fy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 19/37] mm/gup: remove record_subpages()
+To: linux-kernel@vger.kernel.org
+Cc: Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+ Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
+ Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
+ Zi Yan <ziy@nvidia.com>, Jens Axboe <axboe@kernel.dk>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-20-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250901150359.867252-20-david@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9CR-krrEGLDUI4xdtg2PrCcy8qhgl6Z7z3AjynXv66o_1757054488
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bmqiiswyqgnrg6ihmd1h796jb6p9smga
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1757053845-683549
-X-HE-Meta: U2FsdGVkX18AOtvMYfN6hhvi2D3FIZofrcda+bRHi+lh439CZeZ1aBNwS2YE/JGcknM02kkXVcZcUQ7tNORV2BPDg3qCRsWc9xHS7Cuvmpac28PpZqPoh5GFcyBt1i+m/78ebjePcjsNPLcaKtwWUKOz1EoO0u75Nc6wUopnXBhJ4VcoVjj7JTKOXwC9Y1ozmfWS4cbXoRybAw/QhmbBBSGNIviSUSlPFBf2ifh91Lf/3Ji7NebkgRxbnC08zEBbKJywRh2YCijMAFM0xcLc0hk4Y6uEEG5bFUPht1Btp6duXQhzRzKiG8Gx9TnTuciH8lb0ER/skm/NtA/q44pqlI1nf0WGxACamipk/mYNRJlBwIraZbgsyld8P8dUwmVrOxPmV4Gcww4D2dNON8Rd6fDcxf3SqMUuzXv33QaDLifWpsXf5lMkDMUTVw5MmHiGs9kUVonXOLJKPfdNpLhzF+MrSTNadfhIkppEaFikusrFH6ODRQEhouMdmcXCz1v40Cvb1ZtUUBnMWgP1UCIzu0XauhKUJG7cQUAOHh+/JOCnb+Xlc177zAxKXWY1VYJjiqtFGE6teXnVQ63678bNa6gr7Hn3cQsUVrM5YoTIy93Lrgn0mNOqVkomN0xx48QUkX5eB4tWGuRlmiaEGHPqS3f789SNw1mllHoNRMkIMqpNirChnCg6IoevuPMpg8NeuF1uvasayzsQtbSXVlBoTjqkZsbRiEkTIC/AOYCX9UGkTDp1Li5wvdsMn9zWjLXWap74+7+WCegINK8iJfeg8SzHaIP6gMlMCQIcsr8lyq6CehsP47q0LTpZUQ5Jp2eN8SoQIszemnWYAganF1Cnd8OwIPPydI/tSjr7Ypia325pSRC8bucwkaD85IgW3yAbPl6iA3eVXHx5lYPImhzu6U/VJjZYZqjXGCVnZ7x/zqU/nf8aYCaKUNyuY5fjETJb9r9k5J72rSEgC/kB3HU
- s5pi2xL2
- H8FaI5KzrANW3sensDSh1VWMuQpX4OXdKGK6s6Y1wrGfSw9CUiPB2/1i5b1uKvpdvJkhFOmfIMx0o39v5fmTJUnuDiB5le65+ycKeLJxSyD/nX0HHv5KNwbAMY56319AlkFS4VwOxobmHnAkwttpzbcIBvXqm4Niyt7OFN+MMKdGp7r7aZhDXMwVQaZicAVQXEL0IIFY+JDEFF0gLlo2vqV3MXAZLtD5w3QjKYJDYzz54WIZjaD/R6VpTJw==
+X-Rspamd-Queue-Id: 0B98220005
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757054490-911856
+X-HE-Meta: U2FsdGVkX19GRB2QQI4/3Vzil6yw9dvJgv7LVPtEhE01G0bPxSdDoxcjPRV+aps3Xp2+Xorka55dFCE2ZTlEAU2teExjbadzeekKZ8j5EJu9FuJ2W6t9SSEb5n3/J5B5f0xvvVIpwJtJ4Yg3n/lxkh8gtBsZiTHuxGdw1PO8Sb2KetXT/2PwP/zikl9wA/tfIpfuPv4ge4I7D4bxnJj7DkiRITnqT70E2LoYbaYJkO8dgdq4Uj3pYQe7cV7dsk4wdfOPymFZCFPUvEJ5qIFUaGTg23gm7jJbIZZf7VfJ3SVUfNQw3ueSrEplmzu23wZbq6fLZF844AfdKQONEqo4tNX7VKYnXEIbV6ouSY43yw2Jn9ocXCy3XP5xt2tp4TvjojWo8MJ8AXrqtCYAJYj9aN2T+GkX62vDsIpgjz2bJUbwubyEtKiTiwSJib3KZdqE6wBjL2sUowqUtTZfT9pS/q2BHgEg9oQHxdXlbo1ZEKwH3K0iRepGkvpIbqU/M4qALKFt8Vj32adu/sk/ycMaIjxxS4mbrQ3gn7uidbPBNTe2qsFI9g+99BFEaBwraezVIUEsMBh0mBLJS16vvugFHAcyY6061+jot4/EuQSIvVM5h2Yi+3A9/ojIBbSDx7WHi7NnDdf4F2M5UHKhzkQnitopIdjKBIhW4Ag2sprBrKPavQOOnnh4CZx6CKMQTOET+n0em0KxpErQvESUUcVhTxqc78tUBJRkx55sejRmTX9hQEUxb2VHvWg40KnG8/vDaySHZIq0fjqNa8bxoZpGycccsuYi9etOyc+RmXKJMTsh5ujTNwWTl+WJeRyDRJwAfDvgdbpKcOzrwXNfH+OLiw6qVcJPP9VdcLRIt7i6T55mUePXxdTT7bt2fQzWSE/bLPkXP6tVF1SW7czx2dreVo0p3ydvdaKM7KdpP0ZFhtL3fxArNhAsIM/arvY61bs9Acc4j0VuTOMTDoXxchD
+ 5JQrRn/Q
+ xmetjU2E7CzSWPGvzmhJDa+KZnak7Zg9OO8EEiewnrfv6RPbIYItvXFGw3rE+lRO/bUG8rWo93tnMZkCSCw5OavaVgXCrYN3MFWJ/ukTFYrqRWOfySsSsVDXL0XrI5jhB/5sM0itOtWQU78F/GVX9/CvB8+fvyqxurWonN1EIspUBgT1v7/HcFt0yy+7d9aYMuqqFjDMKO2hlIcuDq0nqSzbwdtd1FTj6lAJe96Oj9weQZjfdelKuGVMd/UwCVrB1BVyQzqJ+zIPcx/3HpWhKrgKZMbjDVRrbzsHXxd/MkWVZgA1GOTGRshenR4yuAuvYsKasqZAwqgSCOGVSzm0rllBdDf3Fbo3k9/X3Nl11KRjtqLhJf1T154pZsKxWiCSv7k+saOKtAq/i+Tqe4+o4lnapoW/ts2ikTdvXBJ9TCIt8hHZ216Rhj8QS25Sv6l2eFDCEykoLZhFHSIPMRTcRNZMFwQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,178 +199,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Yes, that works. I would skip the "add" keyword.
-> Also I notice that we can allow " " in place of "," as a separator as well.
+On 01.09.25 17:03, David Hildenbrand wrote:
+> We can just cleanup the code by calculating the #refs earlier,
+> so we can just inline what remains of record_subpages().
+> 
+> Calculate the number of references/pages ahead of times, and record them
+> only once all our tests passed.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   mm/gup.c | 25 ++++++++-----------------
+>   1 file changed, 8 insertions(+), 17 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index c10cd969c1a3b..f0f4d1a68e094 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -484,19 +484,6 @@ static inline void mm_set_has_pinned_flag(struct mm_struct *mm)
+>   #ifdef CONFIG_MMU
+>   
+>   #ifdef CONFIG_HAVE_GUP_FAST
+> -static int record_subpages(struct page *page, unsigned long sz,
+> -			   unsigned long addr, unsigned long end,
+> -			   struct page **pages)
+> -{
+> -	int nr;
+> -
+> -	page += (addr & (sz - 1)) >> PAGE_SHIFT;
+> -	for (nr = 0; addr != end; nr++, addr += PAGE_SIZE)
+> -		pages[nr] = page++;
+> -
+> -	return nr;
+> -}
+> -
+>   /**
+>    * try_grab_folio_fast() - Attempt to get or pin a folio in fast path.
+>    * @page:  pointer to page to be grabbed
+> @@ -2967,8 +2954,8 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>   	if (pmd_special(orig))
+>   		return 0;
+>   
+> -	page = pmd_page(orig);
+> -	refs = record_subpages(page, PMD_SIZE, addr, end, pages + *nr);
+> +	refs = (end - addr) >> PAGE_SHIFT;
+> +	page = pmd_page(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+>   
+>   	folio = try_grab_folio_fast(page, refs, flags);
+>   	if (!folio)
+> @@ -2989,6 +2976,8 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>   	}
+>   
+>   	*nr += refs;
+> +	for (; refs; refs--)
+> +		*(pages++) = page++;
+>   	folio_set_referenced(folio);
+>   	return 1;
+>   }
+> @@ -3007,8 +2996,8 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
+>   	if (pud_special(orig))
+>   		return 0;
+>   
+> -	page = pud_page(orig);
+> -	refs = record_subpages(page, PUD_SIZE, addr, end, pages + *nr);
+> +	refs = (end - addr) >> PAGE_SHIFT;
+> +	page = pud_page(orig) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+>   
+>   	folio = try_grab_folio_fast(page, refs, flags);
+>   	if (!folio)
+> @@ -3030,6 +3019,8 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
+>   	}
+>   
+>   	*nr += refs;
+> +	for (; refs; refs--)
+> +		*(pages++) = page++;
+>   	folio_set_referenced(folio);
+>   	return 1;
+>   }
 
-Yes, supporting both " " and "," sounds convenient.
+Okay, this code is nasty. We should rework this code to just return the nr and receive a the proper
+pages pointer, getting rid of the "*nr" parameter.
 
-> Maybe instead of "remove hdd", just "-hdd" which is similar to how to
-> operate on swap.tiers.
+For the time being, the following should do the trick:
 
-Agreed, "+" for add and "-" for remove is simpler.
+commit bfd07c995814354f6b66c5b6a72e96a7aa9fb73b (HEAD -> nth_page)
+Author: David Hildenbrand <david@redhat.com>
+Date:   Fri Sep 5 08:38:43 2025 +0200
 
-> Oh, you mean the tier not listed in the above will be deleted.
-> I prefer the above option 1) then.
+     fixup: mm/gup: remove record_subpages()
+     
+     pages is not adjusted by the caller, but idnexed by existing *nr.
+     
+     Signed-off-by: David Hildenbrand <david@redhat.com>
 
-That makes sense. Option 1) looks simplest overall.
+diff --git a/mm/gup.c b/mm/gup.c
+index 010fe56f6e132..22420f2069ee1 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2981,6 +2981,7 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+                 return 0;
+         }
+  
++       pages += *nr;
+         *nr += refs;
+         for (; refs; refs--)
+                 *(pages++) = page++;
+@@ -3024,6 +3025,7 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
+                 return 0;
+         }
+  
++       pages += *nr;
+         *nr += refs;
+         for (; refs; refs--)
+                 *(pages++) = page++;
 
-> I don't understand what is this "removing" and "in stage"...
-> What is it trying to solve?
 
-That came from an idea to pre-add a new tier before removing another.
-But I now think returning an error on overlap is simpler, so staging is
-not needed.
+-- 
 
-> What do you mean by "visible"? Previous discussions haven't defined
-> what is visible vs invisible.
+Cheers
 
-By “visible” I meant a staged state becoming active. I realize the term
-was confusing. and it is not needed as I already explained.
+David / dhildenb
 
-> Trigger event to notify user space? Who consumes the event and what
-> can that user space tool do?
-
-I agree, sending user events is unnecessary. It is simpler to let tiers merge or
-be recreated and let the allocator handle it.
-
-> If you remove the
-> swap tier. the range of that tier merges to the neighbour tier.  That
-> way you don't need to worry about the swap file already having an
-> entry in this tier you swap out.
-
-Should the configured mask simply be left as-is,
-even if (a) the same key is later reintroduced with a different order (e.g.,
-first → third), or (b) a merge causes the cgroup to use a lower tier it did not
-explicitly select? 
-I infer that leaving the mask unchanged is acceptable and this concern
-may be unnecessary. if you consider this unnecessary, I am fine
-to follow the simpler direction you suggested.
-
-> If the fast path fails, it will go through the slow path. So the slow
-> path is actually a catch all.
-
-I think my intention may not have come across clearly. I was not trying
-to propose a new optimization, but to describe a direction that requires
-almost no changes from the current behavior. Looking back, I realize the
-ideas I presented may not have looked like small adjustments, even
-though that was my intent.
-
-As a simple approach I had in mind:
-- Fastpath can just skip clusters outside the selected tier.
-- Slowpath naturally respects the tier bitmask.
-- The open point is how to treat the per-CPU cache.
-
-If we insert clusters back, tiered and non-tiered cgroups may see
-low-priority clusters. If we skip insertion, tiered cgroups may lose
-caching benefits.
-
-Chris, do you have another workable approach in mind here, or is this
-close to what you were also thinking?
-
-> In my original proposal, if a parent removes ssd then the child will
-> automatically get it as well.
-
-I now see you mean the effective mask is built by walking parents with local
-settings taking precedence, top to bottom, preferring the nearest local
-setting. Conceptually this yields two data structures: a local-setting mask and
-a runtime/effective mask. Does the above capture your intention, or is there
-anything else I should mention?
-
-A few thoughts aligned with the above:
-- There is no separate “default setting” knob to control inheritance.
-- If unset locally, the effective value is derived by walking the cgroup
-  hierarchy from top to bottom.
-- Once set locally, the local setting overrides everything inherited.
-- There is no special “default tier” when tiers are absent.
-- If nothing is set anywhere in the hierarchy, the initial mask is treated as
-  fully set at configuration time (selecting all tiers; global swap behavior).
-  However, reading the local file should return an empty value to indicate
-  “not set”.
-
-One idea is to precompute the effective mask at interface write time, since
-writes are rarer than swap I/O. You may have intended runtime recomputation
-instead—which approach do you prefer? This implies two masks: a local
-configuration mask and a computed effective mask.
-
-And below is a spec summary I drafted, based on our discussion so far for
-note and alignment. 
-(Some points in this reply remain unresolved, and there are additional TBD items.)
-
-* **Tier specification**
-  - Priority >= 0 range is divided into intervals, each identified by a
-    tier name. The full 0+ range must be covered.
-  - NUMA autobind and tiering are mutually exclusive.
-  - Max number of tiers = MAX_SWAPFILES (single swap device can also be
-    assigned as a tier).
-  - A tier holds references when swap devices are assigned to its
-    priority range. Removal is only possible after swapoff clears the
-    references.
-  - Cgroups referencing a tier do not hold references. If the tier is
-    removed, the cgroup’s configured mask is dropped. (TBD)
-  - Each tier has an order (tier1 is highest priority) and an internal
-    bit for allocation logic.
-  - Until it is set, there is no default tier. 
-    (may internally conceptually used? but not exported)
-
-* **/sys/kernel/mm/swap/tiers**
-  - Read/write interface. Multiple entries allowed, delimiters: space or
-    comma.
-  - Format:
-      + "tier name":priority  → add (priority and above)
-      - "tier name"           → remove
-    Note: a space must follow "+" or "-" before the tier name.
-  - Edge cases:
-      * If not all ranges are specified: input is accepted, but cgroups
-        cannot use incomplete ranges. (TBD)
-	e.g) echo "hdd:50" > /sys/kernel/mm/swap/tiers. (0~49 not specifeid)
-      * Overlap with existing range: removal fails until all swap
-        devices in that range are swapped off.
-  - Output is sorted, showing tier order along with name, bit, and
-    priority range. (It may be more user-friendly to explicitly show
-    tier order. (TBD))
-
-* **Cgroup interface**
-  - New files (under memcg): memory.swap.tier, memory.swap.tier.effective
-    * Read/write: memory.swap.tier returns the local named set exactly
-      as configured (cpuset-like "+/-" tokens; space/comma preserved).
-    * Read-only: memory.swap.tier.effective is computed from the cgroup
-      hierarchy, with the nearest local setting taking precedence
-      (similar to cpuset.effective). (TBD)
-    * Example (named-set display, cpuset-like style)
-
-      Suppose tier order:
-        ssd (tier1), hdd (tier2), hdd2 (tier3), net (tier4)
-
-      Input:
-        echo "ssd-hdd, net" > memory.swap.tier
-
-      Readback:
-        cat memory.swap.tier
-          ssd-hdd, net     # exactly as configured (named set)
-
-        cat memory.swap.tier.effective
-          ssd-hdd, net     # same format; inherited/effective result
-
-  - Inheritance: effective mask built by walking from parent to child,
-    with local settings taking precedence.
-  - Mask computation: precompute at interface write-time vs runtime
-    recomputation. (TBD; preference?)
-  - Syntax modeled after cpuset:
-      echo "ssd-hdd,net" > memory.swap.tier
-    Here “-” specifies a range and must respect tier order. Items
-    separated by “,” do not need to follow order and may overlap; they
-    are handled appropriately (similar to cpuset semantics).
-
-* **Swap allocation**
-  - Simple, workable implementation (TBD; to be revisited with
-    measurements).
-
-I tried to summarize the discussion and my inline responses as clearly as
-possible. If anything is unclear or I misinterpreted something, please
-tell me and I’ll follow up promptly to clarify. If you have comments, I
-will be happy to continue the discussion. Hopefully this time our
-alignment will be clearer.
-
-Best regards,
-Youngjun Park
 
