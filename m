@@ -4,117 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86119CA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAEF6CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 09:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E30C68E000D; Fri,  5 Sep 2025 05:33:25 -0400 (EDT)
+	id 31A2C8E0003; Fri,  5 Sep 2025 05:38:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBAA18E0001; Fri,  5 Sep 2025 05:33:25 -0400 (EDT)
+	id 2CA7D8E0001; Fri,  5 Sep 2025 05:38:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA94B8E000D; Fri,  5 Sep 2025 05:33:25 -0400 (EDT)
+	id 1E0438E0003; Fri,  5 Sep 2025 05:38:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B14748E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:33:25 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D975C056A
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:33:25 +0000 (UTC)
-X-FDA: 83854683570.01.83DB4A3
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 815EAC0006
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:33:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=minxI2uA;
-	spf=pass (imf22.hostedemail.com: domain of glider@google.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AB3D8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 05:38:59 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 98209869F1
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:38:58 +0000 (UTC)
+X-FDA: 83854697556.09.39DF47D
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9627920005
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:38:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=aisle.com header.s=google header.b=odKXiILQ;
+	spf=pass (imf03.hostedemail.com: domain of stanislav.fort@aisle.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=stanislav.fort@aisle.com;
+	dmarc=pass (policy=quarantine) header.from=aisle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757064803;
+	s=arc-20220608; t=1757065136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8dxTlO6r9HaqREYsy2WnogBnYUWROJNvm/8zDKLkYW4=;
-	b=XIMgt3BSpU23+96ldWnA+2bacSjXvU0HDTIYNshyM5DQTURJjq1/YrGEOfEEpFHEdZBzJi
-	hat2Sm0MUhmxZNksmVO8Pu9bxEkHqPNWLjBribcGB7IZrkYaouWhtn7qL1k3RsmOJf4AtN
-	tlmcMXFt3JAFNzgg9ss1TCkdl6o1ahw=
+	bh=i8Lga1GkOl1oDiE+1dVHrqOvB9vstlkU/NOIqsz7Q7A=;
+	b=nCE+c6U7u4/oDjQcSdAxoRUbW1Hr2jA6wqHBoyxrAWSeJllffCUk/yJwjXoOzsQrUz3PjX
+	L0qJqQxmOZ0Xa1v5EylSLJk5MGOpaME3Ag6QjAhO42n3A9qXLnoJkeTF+TdtjRZBmjXVnG
+	svHbGSWXkKdWXKZxkpce30q3kiikHg0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=minxI2uA;
-	spf=pass (imf22.hostedemail.com: domain of glider@google.com designates 209.85.219.48 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757064803; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=aisle.com header.s=google header.b=odKXiILQ;
+	spf=pass (imf03.hostedemail.com: domain of stanislav.fort@aisle.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=stanislav.fort@aisle.com;
+	dmarc=pass (policy=quarantine) header.from=aisle.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757065136; a=rsa-sha256;
 	cv=none;
-	b=zjALXlRWk8fwIdCTnwU/eqDmyvO0/qq7/fYasMiDe5vLFKhMJcbH/EfAZVkWJIzrF/oyIo
-	k6dHqCWXGb0WOYv5Xl5n1YTmZHn//wnHmhSKQp/vMiR++PTrcnhs5ETluz6bBFJ66D2V+A
-	1MtDVoaMINnuBiLAlyW42YV7izYnBYA=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-72374d6a6caso20501506d6.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 02:33:23 -0700 (PDT)
+	b=uz2co2dklPavG9NO0VbaNuZgKeyE/e4w86GG1Ss7zSCO8QjhcHS+jUYQW7NJebhfkDR7P4
+	zoVob9uWGrtiVHQS0qu47kWHic+WqfL8Ot9AVqjABWsYernNtRBHwAGv6ce2qcz99gOptl
+	0gIT3qXGXfXlk+Pvz0r0iv3I+Zc7dHk=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-619487c8865so5529761a12.1
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 02:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757064802; x=1757669602; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=aisle.com; s=google; t=1757065135; x=1757669935; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8dxTlO6r9HaqREYsy2WnogBnYUWROJNvm/8zDKLkYW4=;
-        b=minxI2uAnscKecn+LJPLxb9VJtA2qUO0tQAKu/PjrTyu2ugj3PLJ6YV/eWmZbuJdJp
-         0tWqB0D58sqFc8VBRWd06MxBMggarp01bTECydkkZ0pk0bJZdiEKw+PFBcIIeMzN3Q8l
-         igE10SAlFC3R2w8bFgFNpnlxqyhAv0pqtWt5sLMvw1kkZQ35G1oI10WMkzwnilum1SV5
-         C62hhYVyuTVmCa1FtsnfeVemBui9T6jBBXwx2PzLsMBbOHbbWEp+++ckUWmxhB/BBSAx
-         aKQEZXLhvaLaqti+Dx+HG9B7nd331S0G3ddzT6ktu9bsPLf+7yst8SQjhUSvcdVwhNY8
-         GuFA==
+        bh=i8Lga1GkOl1oDiE+1dVHrqOvB9vstlkU/NOIqsz7Q7A=;
+        b=odKXiILQnmUIlOhiPqwYkFEmM/QBrFz8zZAfiM8LHklDT9wSTwBl7BDrhAOeqckkWq
+         tAFi4tj4/ruKVRrhK42pgIwQvtd9F5zsSmLsawCNnOivYU1+tjQpKVe8576W0r8vGZgg
+         s0HPB+vIqOUh0C6bwqQ4LqEGa89sNaUvVpj/elXJtqp2qIPNDC6UBgonpL7Ev/DKP6DQ
+         1D6NGWnkRSx5JiWMTQ/qfaDk/+gl6hB42q9nyqZrslbXyi48iZNiZQpFpPP/85yHDFdg
+         AVPTxSfB/Af+65bzecEGHNanAfVK611xB4mEQ3HTi0uXnNtM7uhHsobzAQwS/TG6qLE3
+         svUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757064802; x=1757669602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757065135; x=1757669935;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8dxTlO6r9HaqREYsy2WnogBnYUWROJNvm/8zDKLkYW4=;
-        b=b2pkcieZpaYcZBq1qXs+9dujPe31BR0GhFh3MMUhH9LEmlnwfNkF6SehanOBX578k1
-         ylwQvCMCRhpqZ7az6vZBWd2uordxvu6HYbnhTyVMNb0rVHAow2vM0vYdoWtUio3HOvTx
-         95dxJJFjSrYDcegyNsHwCDUBOiMrC7S0CgL3LEfQUo2OXGU2ECbOgLK52oUMGx3dKdHM
-         78EcqMyhWd2nSN1Cpg/3cBgP6RejASHgystq47qi16UxZ2SMwO4Z74TEGH/9jsVhDgp7
-         PpJ17dQ1j2cmnh13fYt5jVjh4vh+qwpqlamHmYa6sD+yoguNtDL7H1Zvp9RFA5Yw4QE0
-         uWiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3VAGwIbaRBXmkeWFPrOseq8oqP6iYfBm3AdSwlMJetbOabS6NXyvN2wSmAJA3DUw8ynzMn+whgw==@kvack.org
-X-Gm-Message-State: AOJu0YxdFuzQXWoW6z+FwPawfw9WgK5dVSrbmOpwJaLQuVY/o9+Vmchp
-	URUy5R8b7LFJkOXwgWogRQkjwOYGv0O6ifY0Ln9f8PGOtkW1s7Qa8c27968oi/gvBhQrLQEzKoj
-	imadksGk+x5m63Q+L0WBpeT9bRulfYamlxfrsCXU2
-X-Gm-Gg: ASbGnctslf2O7e1/YOzANacsDKQatnttHxaBtUSh0svLy4oxuivziT5JPCQjO3y9a4t
-	AWsoFqETEWjmjQxRKYhQfJraWTuXKlyWNKyo/2WlWSn03E6gdATt+OIbr8bj+ZZwd5CCsiBMF30
-	xNZMqCy+6GRE50x98gcwTKDkGwDxKXZIFjyTTDfcvq+2oWEggRWSwSzQwTqOZxpI3BKOXbi4k1r
-	zYweEuuFnA/7ek0aXYqvBTuJPRlEC5+uw/bPcqibrl+SgqbTBATHEI=
-X-Google-Smtp-Source: AGHT+IGQkQamDqV7XCEOyIUgjXvJXRgsMMyMEK/W8ipJeEavgvLDykrYzw3fu54iUR6ZTuvy7C3FIAyRxwYRKqoZ2rM=
-X-Received: by 2002:ad4:5ae7:0:b0:71d:9d4c:1907 with SMTP id
- 6a1803df08f44-71d9d4c3002mr190638486d6.11.1757064802234; Fri, 05 Sep 2025
- 02:33:22 -0700 (PDT)
+        bh=i8Lga1GkOl1oDiE+1dVHrqOvB9vstlkU/NOIqsz7Q7A=;
+        b=oU3s/KvAwovtmCaUW1lOSq1dvi/UY9SGn1FR2orMCafXUFBTrNq7MvRIvtwQXrPSfq
+         y0U6/GZZeBHIP7/WSg1jB0/z2hgw7h5QAamcltMLxh3C+N378OF7S3Hfvhcfgrix431+
+         RqeAts4nN0pWFlsm7o2YoPflVPnExQyn4u2dfXcc5I9Ey5zMhlP2zyKC7B2zJHVf1yFf
+         m0/C0LZbDbmwBuObVDuRF8mM3CeET0JAm6KldTSJXO7lfU/uchELqR9bKpwwSe9Iazhf
+         vQBTgYr7FmQKIHfrayu2NsXLZyxvbOKoiUuEeTzEFFdj02julUW4JfIFQtyMYZgebHCN
+         9Ujw==
+X-Gm-Message-State: AOJu0Ywsy7wl+s5qIRnFWHLjdcPSW3oJXFzvOUq9O87lfWwv3cLnoaop
+	Tft1OcEhvqpBSrriB7GAYMYcSBEB2i4i11WJtOvgws2wBhKM4MJ28TrM2tTqVJkeugg15og9g8k
+	5EfT8liJKjUXl
+X-Gm-Gg: ASbGncvHhEtI/lvAUxNeKPyuaaT9NMK3stjMo7iHhH2Q5BO+E7Uq9UgNnEAOQqMmb/R
+	CpfXaALmQV+tziNME1EkXu2I7ik7AGVKNQJXYwMgoEaSHQMyHAD4ZsfFq7x15Vem2Wm3E96JRvs
+	rSIE/3HbYaUY/mjxMd1mbsqoa400GASpmPmejHhTFp4aJVFFYxWlIcAbOXRbRSRddku21qo0iUw
+	fMeDUHq96AkSOpPsRhDG40assWrutVd8yIBwVexmyIx4yx2eq7qRi7xW/Zk/kQ7xFR/DnfKtZO8
+	YT2xgqB4dDHpiXnvlri0aFcOx48BzY9ug7MMgGVNTTSCjeuYxUUYJpMNmtGYX1i2UPOaofQhqct
+	u4jYRKe0igmzG8l+XFNFSYu1NMQN/ltBwUJnEWUProJr+/go=
+X-Google-Smtp-Source: AGHT+IGybuK6K/kujLTwnL+Fz49sav06Z8CCw7Z9351OYmVQ4LWXK44fzX23p7+KrdEaFzCMcOmACA==
+X-Received: by 2002:a17:906:b24e:b0:afd:eb4f:d5d2 with SMTP id a640c23a62f3a-b04931b6715mr240740366b.31.1757065134805;
+        Fri, 05 Sep 2025 02:38:54 -0700 (PDT)
+Received: from localhost ([149.102.246.23])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b046df9a44dsm561055366b.70.2025.09.05.02.38.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 02:38:54 -0700 (PDT)
+From: Stanislav Fort <stanislav.fort@aisle.com>
+X-Google-Original-From: Stanislav Fort <disclosure@aisle.com>
+To: linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	stable@vger.kernel.org,
+	Stanislav Fort <disclosure@aisle.com>
+Subject: [PATCH] mm/memcg: v1: account event registrations and drop world-writable cgroup.event_control
+Date: Fri,  5 Sep 2025 12:38:51 +0300
+Message-Id: <20250905093851.80596-1-disclosure@aisle.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20250904181248.5527-1-disclosure@aisle.com>
+References: <20250904181248.5527-1-disclosure@aisle.com>
 MIME-Version: 1.0
-References: <20250901164212.460229-1-ethan.w.s.graham@gmail.com>
- <20250901164212.460229-2-ethan.w.s.graham@gmail.com> <CAG_fn=UfKBSxgcNp5dB3DDoNAnCpDbYoV8HC4BhS7LbgQSpwQw@mail.gmail.com>
- <CANgxf6wziVLi5F5ZoF2nwGhoCyLhk5YJ_MBtHaCaGtuzFky_Vw@mail.gmail.com>
-In-Reply-To: <CANgxf6wziVLi5F5ZoF2nwGhoCyLhk5YJ_MBtHaCaGtuzFky_Vw@mail.gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Fri, 5 Sep 2025 11:32:45 +0200
-X-Gm-Features: Ac12FXwv0qVlytn5UPR2kOevtwfln-V7rGK7j7x55WfwpJGZ-qo_gaxhqOnmQY8
-Message-ID: <CAG_fn=VL1j42TxEoWD8Z3jO0uvU0j1JNzPS3BfUXd5AGE-nDkw@mail.gmail.com>
-Subject: Re: [PATCH v2 RFC 1/7] mm/kasan: implement kasan_poison_range
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, andreyknvl@gmail.com, brendan.higgins@linux.dev, 
-	davidgow@google.com, dvyukov@google.com, jannh@google.com, elver@google.com, 
-	rmoar@google.com, shuah@kernel.org, tarasmadan@google.com, 
-	kasan-dev@googlegroups.com, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, dhowells@redhat.com, 
-	lukas@wunner.de, ignat@cloudflare.com, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 815EAC0006
-X-Stat-Signature: nqhd4y49cgsjrjzbnekrnogec6san7jz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9627920005
 X-Rspam-User: 
-X-HE-Tag: 1757064803-100587
-X-HE-Meta: U2FsdGVkX1+8MhX5p11fOm7TJIj1KkzQKVRli2k7gMYlQrrkHG9UxaRfx83Ru2Ba4u4K+1z9nZJaiCEeZQot73IJGe+zkdEZb/RHV1dh+emsyegc9jUYQekEk+BYnH9Gs0RxgUPwrkDRS3uc191XLVT06DzANWXnQDmvDuSOb2p34C/ZFbptns+9XEX0F1OSsKc/MHDYeG3VdpPmuhXlQpMzq+K1QwZTCVQw7lZk9FcCk4oHI6jZwZdzvZ8zBIQ361V77dcHIpcddMEiziDjdjbKfeUgCXw9G/5aDlK8zbyTMnciI8AJhv4bsuhCWTYmpLf82itAdnKLyC5OOfNgixBK74Cs8JomvGZ1QrSdgvbWgIMl5LeZ7BKejfxG4h/NPoF/gX7cbaQfrYx5+frF6fhcEmW5kbc+2U1cl/1NqN20LrdFlvUjdJzfuicJ+qF6LtjPZMchLBv8aWMFG9IC+ewmwcHcksnVYGMsgRhrRlT0EV5DYEiBykfyMwc+o/lCAmrR0YQsHQHyv5dP9bOIYxTLGjewHL+xmbSZdg0ikknjWfTUx0VTZ8tCgkFMDhL4JSKE39Mnj/ORYuOWjCfWeMKMo9HpiSrZTftuB2rHzbryRPS318C1hKQoO0kGtDeXwq1NTtTeO/E6ubxbDHDn1A+oh9L7HCY891+Nng4BG0Ac7Oy20nUdYksWr80g3mZ0O0QTPe6I0p3rXssCk4pHP1zK3ID6a2tJW9WicRNmekSFiOBsa6AMzWz3Ij8FQlbPFa2nhu/agH9UWIagRv9TgrI5/W8wfkRiH7dxT6nsPgRfaI2ofwgNWQOOIp9kHaSGGjqPjmUFXA2Q2cI8Bbrpuleiue/PK1duGqYk/E2SXEpJLsf7HuLEZ/iZUPVg3gqGTMMY3tRxAEMk5AFgZlypi0DZjvP4gjeP+Zjb5Uae7lURgmM4vfm1d8wEx74PLcY++cOkTXW745z1SI2v6IU
- 80MQg2Z5
- HXKpKcUM0YoNfTvuQqyP1YNc3/kRUw/3MlmcmmcK/Jqu8/xqQccWK090MXJbWvh8onxz7Vi5uzM6x7tzlBf4f/RtLbvni64Y39FtyJE6yJU+eiLhMygzAyewgRSk6PS18bGWETpmL8gCcrVjsRcsdaqFu8d4jPnVuGUeEJLZVQZdUobrT/2wDqovU4wkOM3tQYiSiszq4aVKyL946OtEMz0mR31q4+qeHHEkGzbjlB8IR/jaCfcOo7QsDwAmR2ipe3wJwfS+Ki22xP+hY8Ww25bAeI4QfyhaZHsUhkiBaQHEQd4fui454ZUyiQQuwJX8A+7CSLgBkVtwPxcbacBpM6u+OXBbC+NJZPlAV26NKrAz+Z70=
+X-Stat-Signature: 8meaqeqf4gm3rr81njbwjf6udrr4oq6e
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757065136-152019
+X-HE-Meta: U2FsdGVkX184MFerAoNTtBE+lh77yAgczlAeoKQ9g3QRcTGtFgZEj/gWJDigfilEXSKCnG6l/pidMMOWuOSZie+CUKpJMpYxgnmMsxl67vECldr0mZdKfhUQ8J6jwPVXWwXVyMG/nKrRF0w3pyW+V8L3xCwX/PVjvKyPi3Ml2Pv7ftTSyhlZiBVgmYaiMjO6jBIojn6T5fc75Kxb/grvEB03VxxoU3Lnl3rHRXRdp+mQQg8eMHAMjf4Zt4/bYctT6zAiHkrJfuUrrCoY8Jpd+U2zlL4QuyxzdJgRJCQjt4TwpKZFJUIRlwkOiUAF+TGWGC2h5SLjCrd3tQMVzHskl595O4ilODpXK8S4EuSc7y9WT50nbSMfOj7UKdHpm4jGmyH/hXZw6j7xfb/PNA3XpsVGVbgvLxlIFNwOLq/+Pnb9ese6aB3amrS9dztKDQzdWseW5UAtBaUYKB8w10AJ/8V5ggSh+PljmigKurybgkRqxbfunxsK4rET/l83euTjcj5I4PTrX4wMLOfShschecLYg0BsoOB3bTVXbODhqKpymy7q3UlpooSB0hNu4kSPQH34eIZiNeJgQF2MP0vyHSO6G+tXjA/ZG5Cgok+BM5ltggOg2+GOcxGmtDH0cE63oIg8/lr/UdEOn2HN+mKKZl7tYTpabis7OcI0kh67W7ekXUBGINL4O8E3hKNKkiAAE83N8ex0/4ys7pnDLx79Tt6uSbVrcz1chV9znwAhhKcIoCwIhZAHTrr/hKTYfZ7kuO6VX2XDoiIX8JzO1nu+faGAIjKlTFMN2S3Z+Vb22QuSGGR3EoniWSCU5zjMKkfMMC/fqY2TEdjQTO+2wq2dZwW8eZ8FvluzjSEMJGDH7RTezq/t5xa4kzI7Xr9m++3d6VWf7lKobou5WwN2n7sYwMvtBF7doL71fX09UeXL023gNAHharfBnyrzl+7pFBBcqZGTiEz4AzxkWmmQ1u8
+ 0np3b4mw
+ oWLl8XjBRI8xV1IQ0ulHMTyem13NNyfcZjMcaeio5yXpxwKY6gAaW6WPxxUJBHORFn73HRuBw+be0/rVrhhw1K45LKPeRusgRi9vkJXyCDUWpXlmFmJ6iStoAWQU10N7zsgYbFfxXJ8Ib15iRIqSugpoJ+PYmXuuTL47WAPajDDB/lt2CIJ6HQZLaWm3PuwSQEuNBN0/7WGC63xMjJtZCAdBCOqTNwPsJgDFT0Sku3zRinWnagKRGZA4/bkkc8mNfDBYzwGuIGTBR3Vo17NtM1T5nvxx097Rf2ybHOEwXNwHJNsFBx/tZNhpG9NY8kcF70l6JvHPCbEIJ9ONjD5qGIP4bS8L6AEGPo3Ck7SmcdqemutfnsczZrXl0jQRBN3L7LUMb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,40 +127,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 5, 2025 at 10:46=E2=80=AFAM Ethan Graham <ethan.w.s.graham@gmai=
-l.com> wrote:
->
-> On Fri, Sep 5, 2025 at 10:33=E2=80=AFAM Alexander Potapenko <glider@googl=
-e.com> wrote:
-> > > + * - The poisoning of the range only extends up to the last full gra=
-nule before
-> > > + *     the end of the range. Any remaining bytes in a final partial =
-granule are
-> > > + *     ignored.
-> >
-> > Maybe we should require that the end of the range is aligned, as we do
-> > for e.g. kasan_unpoison()?
-> > Are there cases in which we want to call it for non-aligned addresses?
->
-> It's possible in the current KFuzzTest input format. For example you have
-> an 8 byte struct with a pointer to a 35-byte string. This results in a pa=
-yload:
-> struct [0: 8), padding [8: 16), string: [16: 51), padding: [51: 59). The
-> framework will poison the unaligned region [51, 59).
->
-> We could enforce that the size of the payload (including all padding) is
-> a multiple of KASAN_GRANULE_SIZE, thus resulting in padding [51, 64)
-> at the end of the payload. It makes encoding a bit more complex, but it
-> may be a good idea to push that complexity up to the user space encoder.
+Switch __GFP_ACCOUNT to GFP_KERNEL_ACCOUNT as suggested by Roman.
 
-As discussed offline, it might be good to always require the userspace
-to align every region on KASAN_GRANULE_SIZE or ARCH_KMALLOC_MINALIGN
-(whichever is greater).
-In that case, we won't break any implicit assumptions that the code
-under test has about the memory buffers passed to it, and we also
-won't need to care about poisoning a range which has both its ends
-unaligned.
-Because that required alignment will likely depend on the arch/kernel
-config, we can expose it via debugfs to make the userspace tools' life
-easier.
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Signed-off-by: Stanislav Fort <disclosure@aisle.com>
+---
+ mm/memcontrol-v1.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 4b94731305b9..6eed14bff742 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -761,7 +761,7 @@ static int __mem_cgroup_usage_register_event(struct mem_cgroup *memcg,
+ 	size = thresholds->primary ? thresholds->primary->size + 1 : 1;
+ 
+ 	/* Allocate memory for new array of thresholds */
+-	new = kmalloc(struct_size(new, entries, size), GFP_KERNEL);
++	new = kmalloc(struct_size(new, entries, size), GFP_KERNEL_ACCOUNT);
+ 	if (!new) {
+ 		ret = -ENOMEM;
+ 		goto unlock;
+@@ -924,7 +924,7 @@ static int mem_cgroup_oom_register_event(struct mem_cgroup *memcg,
+ {
+ 	struct mem_cgroup_eventfd_list *event;
+ 
+-	event = kmalloc(sizeof(*event),	GFP_KERNEL);
++	event = kmalloc(sizeof(*event),	GFP_KERNEL_ACCOUNT);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -1087,7 +1087,7 @@ static ssize_t memcg_write_event_control(struct kernfs_open_file *of,
+ 
+ 	CLASS(fd, cfile)(cfd);
+ 
+-	event = kzalloc(sizeof(*event), GFP_KERNEL);
++	event = kzalloc(sizeof(*event), GFP_KERNEL_ACCOUNT);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -2053,7 +2053,7 @@ struct cftype mem_cgroup_legacy_files[] = {
+ 	{
+ 		.name = "cgroup.event_control",		/* XXX: for compat */
+ 		.write = memcg_write_event_control,
+-		.flags = CFTYPE_NO_PREFIX | CFTYPE_WORLD_WRITABLE,
++		.flags = CFTYPE_NO_PREFIX,
+ 	},
+ 	{
+ 		.name = "swappiness",
+-- 
+2.39.3 (Apple Git-146)
+
 
