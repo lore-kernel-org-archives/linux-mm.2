@@ -4,196 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DCDDCA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 12:39:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F96CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 12:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF1A28E0008; Fri,  5 Sep 2025 08:39:01 -0400 (EDT)
+	id 492198E0010; Fri,  5 Sep 2025 08:43:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA26B8E0001; Fri,  5 Sep 2025 08:39:01 -0400 (EDT)
+	id 443338E0001; Fri,  5 Sep 2025 08:43:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 943238E0008; Fri,  5 Sep 2025 08:39:01 -0400 (EDT)
+	id 331B08E0010; Fri,  5 Sep 2025 08:43:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D3738E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 08:39:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFB0183F23
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:38:59 +0000 (UTC)
-X-FDA: 83855151198.29.D14C0FA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5AE63C000A
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:38:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="b/MM0b5n";
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 198AE8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 08:43:08 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B79F3160189
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:43:07 +0000 (UTC)
+X-FDA: 83855161614.18.C73FEB6
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 44EDF80003
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:43:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o7KysnkI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KFbx6kpV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o7KysnkI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KFbx6kpV;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757076185; a=rsa-sha256;
+	cv=none;
+	b=a3p53BJBuAGHxLwToGF31DBgFUdVx8hNkQyA1Snqjg31gixMK65d1EQYDSUK8IoCj966+L
+	ABuIa5NXSfg4EVsGMUCgzMZ8126ALxBJF74bB2EV1hOK7FkAU8RkugJJHCTVU80Kq2U1nJ
+	JouV6yKCkEgfbGL2P/SgQ3oXE42pp4A=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o7KysnkI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KFbx6kpV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=o7KysnkI;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=KFbx6kpV;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757075937;
+	s=arc-20220608; t=1757076185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6snvWLEWnQ8R9SKAeGg2E7wEesWjYiyxgM50DESCJmU=;
-	b=6sUY6EKGU+wqrvVreLfsxZBUAWqEVWG4KIQ+jouDNfG/hAec5uysmYrsd4S96Hdcut5yMd
-	6vMneqtNXHIAwE0hEZECXYX1WTbHkxjfAKVQbZyuVS3vi0oTH3S7hW4wA3xyw7xdwgOMwd
-	VBeiNLEoVNeAiTrWqoifwtgdmHaZ9Jw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757075937; a=rsa-sha256;
-	cv=none;
-	b=UIpAqSzw4iEQPm7CdGq9gc9B0P35qfNM1D7sBTssmuoOHlt1RJHxtkmQN/kTCmv88GU8Bk
-	5G1Es9nKpt/7OFsDnOXk4hFcmGZzEji4X+1El+3I67tHT+rEFs0YrsuljVChozyeejXBqk
-	OTNNRUNgxhv4iHbPtN/hfNIElvdViys=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="b/MM0b5n";
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757075936;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=jxmMeXIzJ2Wh9WP8qskRrAQeSVmxcl9C++2LzjV3anA=;
+	b=ZMNFRbYKPeQS+sW0kwjBUPLbCASn0LEIOyCtGxJ0azqCdPIGe/92O7FVZ6cHDsKV+3TiOp
+	1+GfRBGX4g6i3fNshtpK27pHTHMKTjU+ZPOZIMLRQevodOzgkem2Fr9KjN07XD0hu400HQ
+	8DsJVJ7Bqz1dbbrgn5jGlH+7eZOrCMs=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9C4E138616;
+	Fri,  5 Sep 2025 12:43:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757076182; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6snvWLEWnQ8R9SKAeGg2E7wEesWjYiyxgM50DESCJmU=;
-	b=b/MM0b5n3fSyG+r9B7cYKQsNHSwyVlZBQzRfJT5efwZ8W4i8XkjoUZYglg6YbPu0oorvyR
-	HhvgEBaZsNrmgkarwyrJfZuPFe/fqwF+XDqn6Xg9fm7/ghpi2c1uuRyAAkdKUGTZzvaZiy
-	KmTHrqUe2GRfzwENz6TQvEviM+zqS84=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-204-gegfcxmQOkqK5H6W38xPdg-1; Fri, 05 Sep 2025 08:38:55 -0400
-X-MC-Unique: gegfcxmQOkqK5H6W38xPdg-1
-X-Mimecast-MFC-AGG-ID: gegfcxmQOkqK5H6W38xPdg_1757075934
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3e40057d90aso266738f8f.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 05:38:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757075934; x=1757680734;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6snvWLEWnQ8R9SKAeGg2E7wEesWjYiyxgM50DESCJmU=;
-        b=svcHwm4EiMvPODiTRae9wyrl4uF0sP9jtQBoEkkMLUiAkzD1EoalfEGY0VA62eVeW7
-         wbJNx1cTsdZhJf7WYDZlj77nbbRaj87zRN/qhx9GzUT1GLieVdQB3co96fFAoG6bxvuZ
-         x9Hvn5ZR0OeLWrq9zTz6+lnsz79QpDN6T0jROwsEZSxirTTzVQh2aaxD8eU+sc8erO+0
-         JHSRwz0a3Krx1P1tRCENd7EYhKXsrswaGQuOMSpb5vU3fCSN1Z9N9twyI/Pjo4ZL3GZy
-         USX4TqoexkuisbddYEohVO/dohPG2xxWATH3h5CZufRrPMssBw0P8OLk6vMsFn6u/Dnv
-         XD2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW34i7aS76S52iveFMEbBPbAqt6OUoVGMlCeNAoN7M3dWirIkEFgBMHLRI/x/lN6XcWS89sAAgeEA==@kvack.org
-X-Gm-Message-State: AOJu0YwU6CPzVIo3hUL85qw61ZFYeDW80uWwqGyMDKVT6P07x6xUpGuG
-	eYBJzsmIolB1BGNw9WHZiiRfB3riBhgSFVgNmJ6QkXQIAqvJltwz+rbUpCsBEg8H7xsuQyWUiRT
-	UqnJneM4cil5WlkCBk6dXyXrf+FHdBJ2NnPXHlblmZfYPcvEZABaJ
-X-Gm-Gg: ASbGnctPFmanccqeD8/dPewo+ZymXpFX/jJUNfzXEp3CC7CRWSXmhydpaXl7FxNgfCb
-	ypZ9KMVNs648F8Cy4QZcNbnq8R996LrJTZvH3kCIOymdqEcxwIJyh5+IiCWaM078oAAqavJhpN0
-	IMr0jpXwMaYRLm94AknVuM/ScBzSRb+HzhzUu7E7sFCcnizdS9u4NapH2307G5SHjBns2Xva5c/
-	a3ld9g7WO6z6VEqec2gM/VpyIUjw+FI+Tr+iZMiWbb08FMR68wtNxgF3EmRLmpFqTlF//tgSr7s
-	ibRKsXR2yvpE/TZ3iRsAoolQ8z/lpz/HFnzpUfjR9aVt0V1Ms6+zUVtpDhTJuUIfULFn2xLgwQZ
-	HbK3q6YLQVmYk5CTRUVfvZQeQ4SmbqU1Zk73vpYPnz+PaaMOcHUN/wnxf
-X-Received: by 2002:a05:6000:178c:b0:3d7:f363:2f0d with SMTP id ffacd0b85a97d-3d7f363361dmr12009709f8f.28.1757075934208;
-        Fri, 05 Sep 2025 05:38:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPRAo1/FEwKPT8167eG3CiF7EnCpIk1sO63oxm+Ap3csbu4tc3YQieqLS+bjZktZf+gj9E+g==
-X-Received: by 2002:a05:6000:178c:b0:3d7:f363:2f0d with SMTP id ffacd0b85a97d-3d7f363361dmr12009660f8f.28.1757075933652;
-        Fri, 05 Sep 2025 05:38:53 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4d:e00:298:59cc:2514:52? (p200300d82f4d0e00029859cc25140052.dip0.t-ipconnect.de. [2003:d8:2f4d:e00:298:59cc:2514:52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3df4fd372c1sm9458282f8f.29.2025.09.05.05.38.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 05:38:53 -0700 (PDT)
-Message-ID: <fbafc497-00c9-4612-8e9b-16d86770321d@redhat.com>
-Date: Fri, 5 Sep 2025 14:38:50 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=jxmMeXIzJ2Wh9WP8qskRrAQeSVmxcl9C++2LzjV3anA=;
+	b=o7KysnkIOqUfNgWUL1pdAx8jVtfPfL+Fo9MuZLfWBXE+orlUtC9cpIeZLqxrckM5mJY6SJ
+	ibttRv/PD5Wu7bJCmkZoCBzE2da2VZrBpGlUTdqU+NPXSFNE+UrfwgqckJ3zaEn5bzlWmS
+	56ZiDWZHUiKJjQAlxMX1GnvyqBOxOA4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757076182;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jxmMeXIzJ2Wh9WP8qskRrAQeSVmxcl9C++2LzjV3anA=;
+	b=KFbx6kpVfIyZkk2MgvsOPzxDHqwWlYuvUGj7c7pQ/IQx7mHHNlrwcx/uixrxMn+5OHkdlO
+	+BIBA1x1p1Q3ayCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757076182; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jxmMeXIzJ2Wh9WP8qskRrAQeSVmxcl9C++2LzjV3anA=;
+	b=o7KysnkIOqUfNgWUL1pdAx8jVtfPfL+Fo9MuZLfWBXE+orlUtC9cpIeZLqxrckM5mJY6SJ
+	ibttRv/PD5Wu7bJCmkZoCBzE2da2VZrBpGlUTdqU+NPXSFNE+UrfwgqckJ3zaEn5bzlWmS
+	56ZiDWZHUiKJjQAlxMX1GnvyqBOxOA4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757076182;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jxmMeXIzJ2Wh9WP8qskRrAQeSVmxcl9C++2LzjV3anA=;
+	b=KFbx6kpVfIyZkk2MgvsOPzxDHqwWlYuvUGj7c7pQ/IQx7mHHNlrwcx/uixrxMn+5OHkdlO
+	+BIBA1x1p1Q3ayCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C904139C2;
+	Fri,  5 Sep 2025 12:43:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8cNkHtbaumghZwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 05 Sep 2025 12:43:02 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A1B2FA0A48; Fri,  5 Sep 2025 14:43:01 +0200 (CEST)
+Date: Fri, 5 Sep 2025 14:43:01 +0200
+From: Jan Kara <jack@suse.cz>
+To: Brian Foster <bfoster@redhat.com>
+Cc: Joanne Koong <joannelkoong@gmail.com>, 
+	"Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org, brauner@kernel.org, willy@infradead.org, 
+	jack@suse.cz, hch@infradead.org, jlayton@kernel.org, 
+	linux-fsdevel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 12/12] iomap: add granular dirty and writeback
+ accounting
+Message-ID: <rzgqmgmovfkreo5gdl36sxoxixcortjwkii2ilgmwsbhrwqx2z@3ncosg2erpta>
+References: <20250829233942.3607248-1-joannelkoong@gmail.com>
+ <20250829233942.3607248-13-joannelkoong@gmail.com>
+ <20250902234604.GC1587915@frogsfrogsfrogs>
+ <aLiNYdLaMIslxySo@bfoster>
+ <CAJnrk1Z6qKqkOwHJwaBfE9FEGABGD4JKoEwNbRJTpOWL-VtPrg@mail.gmail.com>
+ <aLl8P8Qzn1IDw_7j@bfoster>
+ <20250904200749.GZ1587915@frogsfrogsfrogs>
+ <CAJnrk1aD=n1NzyxgftoQfvC83OO73w2E7ChvGHAh5xfxKrM86Q@mail.gmail.com>
+ <aLrG_eOwiROSi-XB@bfoster>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/13] khugepaged: mTHP support
-To: Usama Arif <usamaarif642@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Nico Pache <npache@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, ziy@nvidia.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
- peterx@redhat.com, wangkefeng.wang@huawei.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kirill.shutemov@linux.intel.com,
- aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com,
- catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org,
- dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
- jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com
-References: <db2320ee-6bd4-49c1-8fce-0468f48e1842@linux.alibaba.com>
- <c8c5e818-536a-4d72-b8dc-36aeb1b61800@arm.com>
- <2a141eef-46e2-46e1-9b0f-066ec537600d@linux.alibaba.com>
- <f34b5fcb-6a97-4d97-86a8-906083b53be6@redhat.com>
- <eb02c281-6d41-44af-8eaf-8ffc29153a3a@linux.alibaba.com>
- <286e2cb3-6beb-4d21-b28a-2f99bb2f759b@redhat.com>
- <17075d6a-a209-4636-ae42-2f8944aea745@gmail.com>
- <287f3b64-bc34-48d9-9778-c519260c3dba@redhat.com>
- <ad6ed55e-2471-46be-b123-5272f3052e01@gmail.com>
- <CAA1CXcCMPFqiiTi7hfVhhEvHs4Mddiktvpmb7dMe4coLDF0bgg@mail.gmail.com>
- <61afc355-1877-4530-86b7-e0aa2b6fb827@lucifer.local>
- <65ce71c1-72a5-415e-9059-027167abf129@redhat.com>
- <71d11a43-e9ff-46e5-988d-b39905e10f61@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <71d11a43-e9ff-46e5-988d-b39905e10f61@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: kh0IMwN44p7FFmeNHUyKBtn70r034txlM4VH4Srd9kE_1757075934
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aLrG_eOwiROSi-XB@bfoster>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5AE63C000A
-X-Stat-Signature: ozon9umzj8ah3ht88okwmg5wszd1aw3m
-X-HE-Tag: 1757075937-336902
-X-HE-Meta: U2FsdGVkX1+74Sh39jCVdVNmkOte4iT8EawVIJUKXN4Hpke9dRtd7yWON0V3jg2tqoJbLqw9Hw5hTpMw9E9EKuMNXSTh/nnKPm9keoUQ3GZikx0daCz56Q9X1KCCFFEJmzADETUVlDjDN0/Vo/LeVvSqJ4PWXDdWHyfr7bngqQjfNsf9+rZPptIlxEKvrdPGiZDFGAQES1wzEZhm9WCHYKpNif7oicNbJLbrA6BTTzjfTA1R78hgwlqVUd0H6wyVNiH5qyVuC8HHN+aHUvAYEliuDuwwPFHm5XRAM3Ne1aXYofDs7EgIZNfRFb9G8xr2wV6gzuSc4hDq4zxtyWcMtDAixXmxzzAbaOAZ0MxD3nEHwsOuwFKd2ZVu8ZGY3PaA100dlm/qoeBMGVmVk6JnvzOblofv0fermUP1/JnDN5BhEaCrjBMAVsQVKrSP3KpbmGcbntrPQGUh19BaT45a0Wvas//Guzjip05exLoxSYKZVs6NQa/Q52vsxTKjqss+cXC94a/EPohfJKbBaSHreuK0d+XfnnwLveMdMSpGvOXcDqkO5+0bmCrdlo5hCCfX26j8yLPOsfX+yrELff72FbTDfrBzt6Tkk1m7TAD5mvvzMc0L5XKunjwY38u98kkVtHuOalMyNDVcxPLxJivdV2f9AarVQEfN4+pa/1BPrY6g/+0UF6i2/5V/Emvw/hf0pnGSdczmMWufiNDsPiEDbKFxrwSu9rvmw80CvYZWQMWbqfT26i99SHq1zRpnAQGnVBa0bufQP3rw3OSujdRtVV9BqMaxdxnrwqxCvjOXuKuAEPuRcuuN4J0sdW6f6+nJ3xIPfRRp4dBYLhcDyRrAM14bR9LJkPYtN6ASHclUVFGAtXZ7Ke9M/lNiInXbZIuAzgmLLRPiGsZN2HqF6y6dw4Vp1jsJ005Xr2HoCgmz6jGEE7A77oLyI9gVr2YXjQBr35YX+oxrs2iETifuKMj
- sAoYIUI8
- E1Fk2wKSdkPAud9od8SkuJP2eRW4xczi2CtL93GOJH+cLJeitRYANyrrWvuwKY4UqxlHLy57Odi0VNbHwozRYkxMnfRqVnGjzB8Ls/uRW7BpxjUvupgvHgefdglbJ3fURz3nFdiE7d5lpowqltIAx2DnUtr7Fbjh2fnpQb/NO41/VTmtFI9MT6uq2N9z3ZBj8Z+iBefLuAfMEiv87t0tUMesr4WJOVTcL7sYUwZkab88FYZrKV2Sc3Xffx6AP2Es3DrtOVPUFeNF0bgSFPRJ4lkwVRbt66h7DCG8mkT9k8dvKPVmgaTlIX9P8fFm/+IC7SQwduA3mTMlrMmvmvX3g8YsJJyiTSz0500HZ7Ubkmvo+NNgsldPIHAN8vS+KQN+4rrqKapq0Wi+/KZkUXiwlKTr0o+wEB1iD56poQ4/LrOouumVB1aGDZNFMa7n9LaAessQUCPuXiX3fp+SjBQGNLwRk0oefPHXGsY1ZRQEEnXFOv/oGNz3uo9vn3sbnDdgxf0eqHeOiNcBTZRIy40FQC/MX3oWTwCePeZrCjz8/oHzPdBo=
+X-Rspamd-Queue-Id: 44EDF80003
+X-Stat-Signature: 6zparukzc7fmeznmsbfrss7zdztqczac
+X-HE-Tag: 1757076185-808075
+X-HE-Meta: U2FsdGVkX19q1ypAa1EGU/i2abI++2Z0iAv+Vl4L6WQxV7QwaOV9TaBa0nMugUn2Jyk/E+K0+iCOAiCptMokvTJ1Fz5VAJCIouLREwdwGFFV7nCUJABNoUcXUtJA9iQxFlunddDIcK+lheJ9zcoqzXpXAyKmjyZ0C4jDHWvPxgXNxm3TiaUp66XXjj2TIhPAKEScjChgbX66ms5v8ZidLheixM8LwyIBu3p6oTN62tt6tGG29MookHvpJl9KT3Rt95VwGiPrhlVxSdBOBXCpVMo2okdmXZynMy7XZ/n3mqSlVHM9LNqL4w23OhyLfkOFXnEkRQezBX7tvF30191oyi12CDt7MZHSROwx/He5sPpsgBeaWes9Q4vauzEx5c0SAeMDQCS253eSg/oyc8P3ByOeKE5aPsGuUq54fiRdhqch7xdeqY9ZBBLaN+4MQo4mdP0XQPhHJVMXiUGDg753pSK04+zyck2GxJgtPwC2PY+FvYq+UcN6b36iST77yUJU7obKowSSz3m32nmnNzklfDqBrn51yKAtf5nskOjaTpY8p68kh+pCDd28TTw4krhDNOzkoknituY1DANAB2OI5bcklDgQrcKk/0xtL7mCM5GAS/vwaLY/sqSrUusFYIAjphAZKz3ZTsat8CWUyDU48nRnYpstOwewvKDsjG8F0G3M9bQwB6DRSKnhx0D1HILJwYk+sVERjKGxNl3KZbioFMYBmFK+27hM6JpvaIflhNwEn/lDeNjBYaGmBeKjSVJiK0T1hy+SImhP2VF3jkZUwnzBRWsO+hjjvgPC38oLVKchQPXJCgpJxVjC9u6yQrPuxoGXq3arKKIfIm1Fo1ikejdlTf0dZevcOKEl/fvpFJZoEMGTAlFFE3v872/imhq2YpTTMP4KragL4u7reKXbtRm9K+c+t0GXg9sBEEGb8ylzN4DjMIbqdYAUaZYbWodELWJpPgM0U0bOJmPmxf4
+ faOPhYnn
+ 7QWvNjBW9z1D/5sTX9LrIajj3joeCbAlKMsgSzAhqfeOS5gvANukmlIAgIU6JmLw+Lu/Pmh5PnoCE9jlVytkaxSIbwuDcWknatgMVP3DB9PguDYgk5W+YPJV3yx7SaBn3rlmNn9mxIwFv3MuEfRmMa2/Rhdc6HJeE0WXyg+D3+Bvst50NEg3OQ8a1O2FJ0C7z1ieEvhhul/UIw0yyFonLfvyaqP/6QRH47aBgDlVuNXffHafXNi/QlYoQ+pxf84cRf5CAM9Hxml82pFoChfN+y9LNJdlyWAdCpkAEuyNtH5zSLARE2osijEZeVdKrAdo62QvGb/Ru3+1IhxGD+ctH7gCoJg4+XRJSLFuodocoxB0FJG9sMbjAL7Q2bmoZjCk3CwX7gahjQTNsW4Sn1H37RdMZxA/3XddUP/jY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -202,93 +150,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05.09.25 14:31, Usama Arif wrote:
+On Fri 05-09-25 07:19:05, Brian Foster wrote:
+> On Thu, Sep 04, 2025 at 05:14:21PM -0700, Joanne Koong wrote:
+> > On Thu, Sep 4, 2025 at 1:07 PM Darrick J. Wong <djwong@kernel.org> wrote:
+> > > On Thu, Sep 04, 2025 at 07:47:11AM -0400, Brian Foster wrote:
+> > > > On Wed, Sep 03, 2025 at 05:35:51PM -0700, Joanne Koong wrote:
+> > > > > On Wed, Sep 3, 2025 at 11:44 AM Brian Foster <bfoster@redhat.com> wrote:
+> > > > > > On Tue, Sep 02, 2025 at 04:46:04PM -0700, Darrick J. Wong wrote:
+> > > > > > > On Fri, Aug 29, 2025 at 04:39:42PM -0700, Joanne Koong wrote:
+> > > > > > > > Add granular dirty and writeback accounting for large folios. These
+> > > > > > > > stats are used by the mm layer for dirty balancing and throttling.
+> > > > > > > > Having granular dirty and writeback accounting helps prevent
+> > > > > > > > over-aggressive balancing and throttling.
+> > > > > > > >
+> > > > > > > > There are 4 places in iomap this commit affects:
+> > > > > > > > a) filemap dirtying, which now calls filemap_dirty_folio_pages()
+> > > > > > > > b) writeback_iter with setting the wbc->no_stats_accounting bit and
+> > > > > > > > calling clear_dirty_for_io_stats()
+> > > > > > > > c) starting writeback, which now calls __folio_start_writeback()
+> > > > > > > > d) ending writeback, which now calls folio_end_writeback_pages()
+> > > > > > > >
+> > > > > > > > This relies on using the ifs->state dirty bitmap to track dirty pages in
+> > > > > > > > the folio. As such, this can only be utilized on filesystems where the
+> > > > > > > > block size >= PAGE_SIZE.
+> > > > > > >
+> > > > > > > Er... is this statement correct?  I thought that you wanted the granular
+> > > > > > > dirty page accounting when it's possible that individual sub-pages of a
+> > > > > > > folio could be dirty.
+> > > > > > >
+> > > > > > > If i_blocksize >= PAGE_SIZE, then we'll have set the min folio order and
+> > > > > > > there will be exactly one (large) folio for a single fsblock.  Writeback
+> > > > >
+> > > > > Oh interesting, this is the part I'm confused about. With i_blocksize
+> > > > > >= PAGE_SIZE, isn't there still the situation where the folio itself
+> > > > > could be a lot larger, like 1MB? That's what I've been seeing on fuse
+> > > > > where "blocksize" == PAGE_SIZE == 4096. I see that xfs sets the min
+> > > > > folio order through mapping_set_folio_min_order() but I'm not seeing
+> > > > > how that ensures "there will be exactly one large folio for a single
+> > > > > fsblock"? My understanding is that that only ensures the folio is at
+> > > > > least the size of the fsblock but that the folio size can be larger
+> > > > > than that too. Am I understanding this incorrectly?
+> > > > >
+> > > > > > > must happen in units of fsblocks, so there's no point in doing the extra
+> > > > > > > accounting calculations if there's only one fsblock.
+> > > > > > >
+> > > > > > > Waitaminute, I think the logic to decide if you're going to use the
+> > > > > > > granular accounting is:
+> > > > > > >
+> > > > > > >       (folio_size > PAGE_SIZE && folio_size > i_blocksize)
+> > > > > > >
+> > > > >
+> > > > > Yeah, you're right about this - I had used "ifs && i_blocksize >=
+> > > > > PAGE_SIZE" as the check, which translates to "i_blocks_per_folio > 1
+> > > > > && i_block_size >= PAGE_SIZE", which in effect does the same thing as
+> > > > > what you wrote but has the additional (and now I'm realizing,
+> > > > > unnecessary) stipulation that block_size can't be less than PAGE_SIZE.
+> > > > >
+> > > > > > > Hrm?
+> > > > > > >
+> > > > > >
+> > > > > > I'm also a little confused why this needs to be restricted to blocksize
+> > > > > > gte PAGE_SIZE. The lower level helpers all seem to be managing block
+> > > > > > ranges, and then apparently just want to be able to use that directly as
+> > > > > > a page count (for accounting purposes).
+> > > > > >
+> > > > > > Is there any reason the lower level functions couldn't return block
+> > > > > > units, then the higher level code can use a blocks_per_page or some such
+> > > > > > to translate that to a base page count..? As Darrick points out I assume
+> > > > > > you'd want to shortcut the folio_nr_pages() == 1 case to use a min page
+> > > > > > count of 1, but otherwise ISTM that would allow this to work with
+> > > > > > configs like 64k pagesize and 4k blocks as well. Am I missing something?
+> > > > > >
+> > > > >
+> > > > > No, I don't think you're missing anything, it should have been done
+> > > > > like this in the first place.
+> > > > >
+> > > >
+> > > > Ok. Something that came to mind after thinking about this some more is
+> > > > whether there is risk for the accounting to get wonky.. For example,
+> > > > consider 4k blocks, 64k pages, and then a large folio on top of that. If
+> > > > a couple or so blocks are dirtied at one time, you'd presumably want to
+> > > > account that as the minimum of 1 dirty page. Then if a couple more
+> > > > blocks are dirtied in the same large folio, how do you determine whether
+> > > > those blocks are a newly dirtied page or part of the already accounted
+> > > > dirty page? I wonder if perhaps this is the value of the no sub-page
+> > > > sized blocks restriction, because you can imply that newly dirtied
+> > > > blocks means newly dirtied pages..?
+> > > >
+> > > > I suppose if that is an issue it might still be manageable. Perhaps we'd
+> > > > have to scan the bitmap in blks per page windows and use that to
+> > > > determine how many base pages are accounted for at any time. So for
+> > > > example, 3 dirty 4k blocks all within the same 64k page size window
+> > > > still accounts as 1 dirty page, vs. dirty blocks in multiple page size
+> > > > windows might mean multiple dirty pages, etc. That way writeback
+> > > > accounting remains consistent with dirty accounting. Hm?
+> > >
+> > > Yes, I think that's correct -- one has to track which basepages /were/
+> > > dirty, and then which ones become dirty after updating the ifs dirty
+> > > bitmap.
+> > >
+> > > For example, if you have a 1k fsblock filesystem, 4k base pages, and a
+> > > 64k folio, you could write a single byte at offset 0, then come back and
+> > > write to a byte at offset 1024.  The first write will result in a charge
+> > > of one basepage, but so will the second, I think.  That results
+> > > incharges for two dirty pages, when you've really only dirtied a single
+> > > basepage.
+> > 
+> > Does it matter though which blocks map to which pages? AFAIU, the
+> > "block size" is the granularity for disk io and is not really related
+> > to pages (eg for writing out to disk, only the block gets written, not
+> > the whole page). The stats (as i understand it) are used to throttle
+> > how much data gets written back to disk, and the primary thing it
+> > cares about is how many bytes that is, not how many pages, it's just
+> > that it's in PAGE_SIZE granularity because prior to iomap there was no
+> > dirty tracking of individual blocks within a page/folio; it seems like
+> > it suffices then to just keep track of  total # of dirty blocks,
+> > multiply that by blocksize, and roundup divide that by PAGE_SIZE and
+> > pass that to the stats.
+> > 
 > 
+> I suppose it may not matter in terms of the purpose of the mechanism
+> itself. In fact if the whole thing could just be converted to track
+> bytes, at least internally, then maybe that would eliminate some of the
+> confusion in dealing with different granularity of units..? I have no
+> idea how practical or appropriate that is, though. :)
 > 
-> On 05/09/2025 12:55, David Hildenbrand wrote:
->> On 05.09.25 13:48, Lorenzo Stoakes wrote:
->>> On Wed, Sep 03, 2025 at 08:54:39PM -0600, Nico Pache wrote:
->>>> On Tue, Sep 2, 2025 at 2:23 PM Usama Arif <usamaarif642@gmail.com> wrote:
->>>>>>>> So I question the utility of max_ptes_none. If you can't tame page faults, then there is only
->>>>>>>> limited sense in taming khugepaged. I think there is vale in setting max_ptes_none=0 for some
->>>>>>>> corner cases, but I am yet to learn why max_ptes_none=123 would make any sense.
->>>>>>>>
->>>>>>>>
->>>>>>>
->>>>>>> For PMD mapped THPs with THP shrinker, this has changed. You can basically tame pagefaults, as when you encounter
->>>>>>> memory pressure, the shrinker kicks in if the value is less than HPAGE_PMD_NR -1 (i.e. 511 for x86), and
->>>>>>> will break down those hugepages and free up zero-filled memory.
->>>>>>
->>>>>> You are not really taming page faults, though, you are undoing what page faults might have messed up :)
->>>>>>
->>>>>> I have seen in our prod workloads where
->>>>>>> the memory usage and THP usage can spike (usually when the workload starts), but with memory pressure,
->>>>>>> the memory usage is lower compared to with max_ptes_none = 511, while still still keeping the benefits
->>>>>>> of THPs like lower TLB misses.
->>>>>>
->>>>>> Thanks for raising that: I think the current behavior is in place such that you don't bounce back-and-forth between khugepaged collapse and shrinker-split.
->>>>>>
->>>>>
->>>>> Yes, both collapse and shrinker split hinge on max_ptes_none to prevent one of these things thrashing the effect of the other.
->>>> I believe with mTHP support in khugepaged, the max_ptes_none value in
->>>> the shrinker must also leverage the 'order' scaling to properly
->>>> prevent thrashing.
->>>
->>> No please do not extend this 'scalling' stuff somewhere else, it's really horrid.
->>>
->>> We have to find an alternative to that, it's extremely confusing in what is
->>> already extremely confusing THP code.
->>>
->>> As I said before, if we can't have a boolean we need another interface, which
->>> makes most sense to be a ratio or in practice, a percentage sysctl.
->>>
->>> Speaking with David off-list, maybe the answer - if we must have this - is to
->>> add a new percentage interface and have this in lock-step with the existing
->>> max_ptes_none interface. One updates the other, but internally we're just using
->>> the percentage value.
->>
->> Yes, I'll try hacking something up and sending it as an RFC.
->>
->>>
->>>> I've been testing a patch for this that I might include in the V11.
->>>>>
->>>>>> There are likely other ways to achieve that, when we have in mind that the thp shrinker will install zero pages and max_ptes_none includes
->>>>>> zero pages.
->>>>>>
->>>>>>>
->>>>>>> I do agree that the value of max_ptes_none is magical and different workloads can react very differently
->>>>>>> to it. The relationship is definitely not linear. i.e. if I use max_ptes_none = 256, it does not mean
->>>>>>> that the memory regression of using THP=always vs THP=madvise is halved.
->>>>>>
->>>>>> To which value would you set it? Just 510? 0?
->>
->> Sorry, I missed Usama's reply. Thanks Usama!
->>
->>>>>>
->>>>>
->>>>> There are some very large workloads in the meta fleet that I experimented with and found that having
->>>>> a small value works out. I experimented with 0, 51 (10%) and 256 (50%). 51 was found to be an optimal
->>>>> comprimise in terms of application metrics improving, having an acceptable amount of memory regression and
->>>>> improved system level metrics (lower TLB misses, lower page faults). I am sure there was a better value out
->>>>> there for these workloads, but not possible to experiment with every value.
->>>
->>> (->Usama) It's a pity that such workloads exist. But then the percentage solution should work.
->>
->> Good. So if there is no strong case for > 255, that's already valuable for mTHP.
->>
+> The concern Darrick and I were discussing is more about maintaining
+> accounting consistency in the event that we do continue translating
+> blocks to pages and ultimately add support for the block size < page
+> size case.
 > 
-> tbh the default value of 511 is horrible. I have thought about sending a patch to change it to 0 as default
-> in upstream for sometime, but it might mean that people who upgrade their kernel might suddenly see
-> their memory not getting hugified and it could be confusing for them?
+> In that case the implication is that we'd still need to account
+> something when we dirty a single block out of a page (i.e.  use
+> Darrick's example where we dirty a 1k fs block out of a 4k page). If we
+> round that partial page case up to 1 dirty page and repeat as each 1k
+> block is dirtied, then we have to make sure accounting remains
+> consistent in the case where we dirty account each sub-block of a page
+> through separate writes, but then clear dirty accounting for the entire
+> folio once at writeback time.
+> 
+> But I suppose we are projecting the implementation a bit so it might not
+> be worth getting this far into the weeds until you determine what
+> direction you want to go with this and have more code to review. All in
+> all, I do agree with Jan's general concern that I'd rather not have to
+> deal with multiple variants of sub-page state tracking in iomap. It's
+> already a challenge to support multiple different filesystems. This does
+> seem like a useful enhancement to me however, so IMO it would be fine to
+> just try and make it more generic (short of something more generic on
+> the mm side or whatever) than it is currently.
+> 
+> > But, as Jan pointed out to me in his comment, the stats are also used
+> > for monitoring the health of reclaim, so maybe it does matter then how
+> > the blocks translate to pages.
+> > 
+> 
+> Random thought, but would having an additional/optional stat to track
+> bytes (alongside the existing page granularity counts) help at all? For
+> example, if throttling could use optional byte granular dirty/writeback
+> counters when they are enabled instead of the traditional page granular,
+> would that solve your problem and be less disruptive to other things
+> that actually prefer the page count?
 
-511 is just what a page fault would have done, so I think it makes 
-perfect sense. More than anything else, actually.
+FWIW my current thinking is that the best might be to do byte granularity
+tracking for wb_stat_ counters and leave current coarse-grained accounting
+for the zone / memcg stats. That way mm counters could be fully managed
+within mm code and iomap wouldn't have to care and writeback counters
+(which care about amount of IO, not amount of pinned memory) would be
+maintained by filesystems / iomap. We'd just need to come up with sensible
+rules where writeback counters should be updated when mm doesn't do it.
 
-It's just not optimal in many cases.
-
+								Honza
 -- 
-Cheers
-
-David / dhildenb
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
