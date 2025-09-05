@@ -4,98 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D840CA1010
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 17:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88E42CA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 17:46:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D6A38E0019; Fri,  5 Sep 2025 13:44:05 -0400 (EDT)
+	id DD0BC8E000D; Fri,  5 Sep 2025 13:46:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AEBA8E0001; Fri,  5 Sep 2025 13:44:05 -0400 (EDT)
+	id D81038E0001; Fri,  5 Sep 2025 13:46:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EBFA8E0019; Fri,  5 Sep 2025 13:44:05 -0400 (EDT)
+	id C70478E000D; Fri,  5 Sep 2025 13:46:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BB3C8E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:44:05 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 269541A037C
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:44:05 +0000 (UTC)
-X-FDA: 83855920050.12.69F8EF4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6EFC280008
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:44:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlX8viSt;
-	spf=pass (imf30.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B47DD8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:46:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44E8A117ABC
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:46:44 +0000 (UTC)
+X-FDA: 83855926728.23.0195450
+Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 594A220013
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:46:42 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mwd6rVRu;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.178 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757094243;
+	s=arc-20220608; t=1757094402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KNT2gsi3S4yMvtrMU71K0IZFF3RxJBHNjVA1pU4BCY0=;
-	b=s2sfL8s0A48POief7b4ioOqYABHnCupE+rcAxawS61GWnSw/Q8+oGnC5u+OlMrJ4MTN0RB
-	cI2ScBlSLJd6BapwPcrxxWSk/l6oYpcsZ/HzRz+CgCkM9Id5a1/v1LLA5Vh5IG/SQdaz+h
-	8VZd6K2td5S4PV9Nf3VAGu/TmOtocew=
+	bh=bpSR1HTJo6nPim1htqd1MlTdSRYvLLWGux9NsjKArVA=;
+	b=hCSL4HmyTJJeT2BkdXuRhXLsABQxJdY8opvB51wgclDuwCcP46XMsbecEgWdR5Uz0UNRhn
+	SjaafnhUcWL6k8+9ht0hJSnwqTFO0d2VlOxl5RaB+/LstsUj8dL3exnSwqwttyHiLciEUO
+	1t3/Rr6OAxvyIIYqqkKgqL+JbNceYsE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlX8viSt;
-	spf=pass (imf30.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757094243; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mwd6rVRu;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.178 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757094402; a=rsa-sha256;
 	cv=none;
-	b=z2ShUoJVNcDr+n3TB6gcrtBwvilb7p3v/UDHVXJKisBJ8eJDVttNl45x6q+QQoCE0Xe2xX
-	RHrTbfofrrSpJo135S0v9A24FoZBITt+xYLGKxACXaLbSP0AFK+Dtd69JxSPlpPR6U7XDT
-	eWPs1AXJWEcsaNy5Gjg/5fY7EJJEAWw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1C90944C5D;
-	Fri,  5 Sep 2025 17:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F5AC4CEF4;
-	Fri,  5 Sep 2025 17:43:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757094242;
-	bh=0R6uBNi0AxfzUpfBexoCE08XIxfXyiwY7sLKg5k0QaA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nlX8viStcFxK79FfJuuymzNpbjrTTtyuePmbEcriYprpXNyHMPVynqL6XQhSJCXiW
-	 4vhqgm49kw8WKmrk6DdElWfQmQfP7+Or1iQEMwjD0WJUicJccWcmFH4mUnXxjAlLqD
-	 gsu66JjFHfS6Du7juXWBtoZ1G5Tq+zQfyT71Kg/oV0EpczIOFG6uL0+r+M/5kur/r9
-	 X1eciZId07CH09tPojFm6OMji6KQ4FV8//PSWz+jVcNLPEjNbwbLGvQxBCwk57VDuQ
-	 bru1m+TRFmp+EbI4MP1c3j3cR13WPotrZMNKrjvhdRmUeLkKk43RrCkFBh1B9Pt1uu
-	 pSwr9Lo+72vIQ==
-Date: Fri, 5 Sep 2025 18:43:53 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@redhat.com,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, corbet@lwn.net,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	hannes@cmpxchg.org, baohua@kernel.org, shakeel.butt@linux.dev,
-	riel@surriel.com, ziy@nvidia.com, laoar.shao@gmail.com,
-	dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	ryan.roberts@arm.com, vbabka@suse.cz, jannh@google.com,
-	Arnd Bergmann <arnd@arndb.de>, sj@kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kernel-team@meta.com, Aishwarya.TCV@arm.com
-Subject: Re: [PATCH v5 6/7] selftests: prctl: introduce tests for disabling
- THPs completely
-Message-ID: <c8249725-e91d-4c51-b9bb-40305e61e20d@sirena.org.uk>
-References: <20250815135549.130506-1-usamaarif642@gmail.com>
- <20250815135549.130506-7-usamaarif642@gmail.com>
+	b=DwC704NdpVDEIEYfa7/zPMKJnkNPo++/u6xPe54LGsK0etdPsQh7QnUfmWi+W2/+hR4CfQ
+	HguP4eU6mKWwJzfyu+0ko33kqJ8XbbmR5cESfASxYWMlARNtm7DF7Qlwy6/vae1c207MGS
+	s+643nXCHU+OEtI+pRjvoaXktA8BP3g=
+Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3f2b6e0b938so17944825ab.1
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 10:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757094401; x=1757699201; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bpSR1HTJo6nPim1htqd1MlTdSRYvLLWGux9NsjKArVA=;
+        b=Mwd6rVRulhiresR9iKycQW8SZ/bbRkHI7CBORpmUSkW3GmcLPIbY7keivt7QP0QeLW
+         ZGST1iz8e/OAhYByRhE1Qlqx1OPPf0i3LGPuwKrCtMkzysIDgBA9kUgPNE2hwRI4FpcD
+         b1NiaVhkM1ht9GZj4oV5QVFXA3h4p4eTv4pnF7+lHprkxbqMjNE21DJ6jAWTfHglAAz8
+         kramctkuEwBEZED3U356FxigtgI+p8jdjdS+ON4eHPoyMHgb0gJhalCSuahH49NPChoZ
+         rXgzVxgAFRfclB8ielIiZ/IpVVls3f8z7pDVeEEotFrBN8xI0JzCcu8JjhpwUniRWfqt
+         cCXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757094401; x=1757699201;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bpSR1HTJo6nPim1htqd1MlTdSRYvLLWGux9NsjKArVA=;
+        b=Z0Gyk19IS5N5wrMDCJGERyKzthqp6iMZFKqrmrfsgoBHPHjxK5d0PGRa+x4A2qbv/U
+         a2B7j0ODTRxE2Wj3750D5yJDKEMHyncJ9xjfweCy40d73Gagf9/BZf9FAFUNi3DW3RS3
+         OBVKq+4AnKNdfjnAOXsLWh91s2vkN73SSyhxs40CqnADpquUmK03j1IV/urL1IIzbf4w
+         USMiUVtiaWskWoS2b06jpvjbBGkrWkN99TH+6jo8QWiBtjKfSdEUYLIfq8UzSeHI+soV
+         7ywqwbU/5/FLWQ98wkIQh8q6hqSpu/sjbv3uYjp6Dn8Y/1fWS5TAJ+fAiSn2G8ZuP2ru
+         lO4w==
+X-Forwarded-Encrypted: i=1; AJvYcCWzK/OrBVi7MwPSrMATdCgyFXDdzQ3nGfmPXnlTniActYrp7iE8KOi2+HbmsE6nxIfGjJg43vlnHw==@kvack.org
+X-Gm-Message-State: AOJu0YwAW8VA9Hf36PFdtbHL1cWLGtq2xh2yWHMBIK5UAYCpUY+wmj9i
+	MABP/jn/mEoqsJVzAwK/OX5By1Ph/mhYoTu/d0+YDLYXZ+Jh+qfPeoJHo32spPK3JVPymVcMKrf
+	OoMm5kuTBhi8u4C1HiF2PQir9ro+im/M=
+X-Gm-Gg: ASbGncvS8/sU3hax5V0PyjxjYSlNtJCVwO1q86bY4mKYRoxu1w+ZdtpqcvP3VR+eSpu
+	LUpDhPeRAry6BwSBtanyXhx8HFt35OAlpHEoJNWz06qNuTDjqXmGlCkLn07+M76b9GsUwI1xt9/
+	8TGcF+GTiaUs4RRFWHq1YMDR78bUpaibQ8hjtcPIixl0zsQnp0YD59wrlK591Q0gntg9x5VKkSl
+	bwh
+X-Google-Smtp-Source: AGHT+IFk5Xz55Lrwaeg30ggic9C4Fnk5btiTmEEBZkVEbj3Gn6+4gdw2Oshvs2RpuY9fAkh+7wPvJ0+It5jjM+pHCSo=
+X-Received: by 2002:a05:6e02:1d98:b0:3f6:6ad8:6fbe with SMTP id
+ e9e14a558f8ab-3f66ad871c0mr88436955ab.27.1757094401258; Fri, 05 Sep 2025
+ 10:46:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wfr62XQcW9Sye/W3"
-Content-Disposition: inline
-In-Reply-To: <20250815135549.130506-7-usamaarif642@gmail.com>
-X-Cookie: Yow!  I threw up on my window!
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6EFC280008
-X-Stat-Signature: rxtuyx78xrj334u9dag88hnepjcif95z
+References: <20250902-show_mem_zspages-v2-1-545daaa8b410@igalia.com> <paef7bzotb4runl4sjlcfesano36cc2bflb7uqe5mil3chnpgn@axng3yfe33w6>
+In-Reply-To: <paef7bzotb4runl4sjlcfesano36cc2bflb7uqe5mil3chnpgn@axng3yfe33w6>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 5 Sep 2025 10:46:29 -0700
+X-Gm-Features: Ac12FXzSy6TF-VgA3w4rWead4D6W38SYTeqqM6XV4n8p8HfQa0Ka1hCs1_kico8
+Message-ID: <CAKEwX=NE3ngvFnyHQTAofX3M08JkeZZcfaKi_mkOUuiB4zh6Dg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: show_mem: show number of zspages in show_free_areas
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Minchan Kim <minchan@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, SeongJae Park <sj@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-dev@igalia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: m7f3ozkby5kodrxwhex716u37eyubgoz
 X-Rspam-User: 
-X-HE-Tag: 1757094243-815597
-X-HE-Meta: U2FsdGVkX18Bz7403fOJsdbDZqg8VbFQgR0bv/oQZKr6k1FkGqeqBwVulNXF5sEF/MVrgmNN55SKffUHv9WCiULsDV5Nzu3LmKAmEkYajf7xSzynQhhJkXyezu9SXCaJkmZAHrbqLZEhCbfKuq09noOBt0b8I/bGuaOeAECQhYJKrnLs2MBx7nemL3OosCh58140nh0Zlae1wEsYdlHWBxegtcT+wjK9EZ6VYClfIv1BNwcTbbkFDDOFRLEyHd1fQ2/j1WBg7K0hvl3Mchp12RYgcurbZ+drc68g2ZXdau6A3iBS9JnkOPd0igxjRtZ9Oqp4I5hQ1bD0zLLnN83crw3yFRw9UEXS3l7dimzhHf6bVJZKjodawWEqf/NrZGwTlrR35FvHg91BU/WdlvXq8m8OcYwQbxmJw97f7878T+P208UhDvvP6aPzZHLdoaxR7p/iTe93hYU3pdfQMWw4t2cezS3xAMq4miQjyoL6VTsTa9u+ek09QvVrVlqovDEtXo+vggas9SjXPBj2NxSyiVQLslfBT+4qgflKYQIZ0ZyfcjwoKncoo60wXBucfUnFSwSqsQeWqzetxH+m/qZP98ir2ETumG6c4Ya/HnrIhCKMkS/S0fM1AbeeZNvn2rdyu0W4XPa0D+JrvZMRtHDt9oPIHS8o3wUvFspzFfuKReWb5d1bxQIiZOfNkNxSs1b1C7iB8O99wFTekpz1TONk+HLd7ISfkvn5A6BVtzaDm6YduMJ6Cs5i0AvcUaNzTtT4a1Q1cnJ5xOU2vh107sWVlCCvN1PqEElnHI7++Q9BcPIzp3TCxeZXU0nG/ItZBleAnmUVzJhaR0Wje/FMHUOUuySLTkZqXOKn4ztNM+SOVNZrLNyEszl4hCiLvsmUoJy5ujeeXz2EA7ayx5rWcG1p2kPkFJYOnfYfYVp5oc6UjCXoSNUZUlpQASeCmNOcrw9uDmgzcRG4hL7ZQpKSrwI
- owRFlxEX
- Xrtn6+fdXKBMb9uRTA9d8FOQW5XQ8iHzjAnsgXAF8RfSmb7swWyReWrhlWQ==
+X-Rspamd-Queue-Id: 594A220013
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757094402-678816
+X-HE-Meta: U2FsdGVkX19nD1dm62jNpLToPunLjs7r95fgmh5tFqiG4sFS/aEPtGMHTfKkl3CYZXjci0/V+lRXDLHUQTdZ86T+odcwP51uFQGlT8zk9nU0Ox9aVsVx8BeuXN0/8eSA6p8k2kDvYO6bvuaYRxWQNwEJdYusRHDEVbDe0tndHv6xaB3n9vvy/NojUWi0pqwOAeBbiIxBz5GTr5iJxLZ64OzoVBAKc3IrPwkYy3LLgG4jfH834dq4Qpx+ROnRGpcEzj8P3AdP3f+zTQckC+N3RtqwofrV0kjodyGoLmd1sgeRTq7Kk9f0/5uwRc0/5hnJhs3T+Dib201hUWNVK2nDtsKINZJqycWsnEM0U64H98Bz/rp28uQ3BUoNUG/prQlUC/MDR/Z6uzlDQ2XuK4C5+V+3GI9zUuW442r+zkPJg11/VLsVlUrrIcjqprfThDDrYcXia+MRtM0qL4cUm6GS4TZcvRDn2CUE2mKMb+UP9Yu2hSaZ+T3QZXSzJI+EqYk9ZE43KKO0nVSrj4D0BJJxLq1OuYy25IMpUZFE5+8qVHkXZohV435A1ZoVkK7+16L65RvK3k30wW5vOnW8uJuNLaJ554A30XPPFR8XUrETJtZ94YpOeSi/J0CvF/kUIdABeWpyLMI1lzFojTiGaBTTbM8mWYsQohX8z0KfjewTHY7iSKFvwuy43N3vqvbDijL4LARAx48xVwQfxMA+ieNLpwlQrSTACiG/fdnt2bjzz9D+m5ERXWT9Kddp62f12pjhMibKeXNS5AHaPNXGIzqrcT0P+gwHIoMijDjDHQTHFVi1RNgEGisV7gx9MOSaWy6HQ/OGTBA75atmBUvNrGiXABI8tFEDoLVz421BMYmBrbOXfpNbDh+CWhhX2J/TvUfz8yQL4+LKCCQ25MgL3/icyDaNzFuL9QBi4QjjbOnqJ2NgwrL8wG0LiHY7Xv7bD9s/p9mWhs0OucyIK4pcDqw
+ E8vIdfcU
+ diNCitAXX+KWRqhsIIZFK0Mss3YFgpjljLbJ6VviXEYDj7zHA9UAgbmsA+dbI7tORqWeNy8JMKOMd4fWea/obX2M3luR+NONXK0dpypN49+9N6y3jkvM4Ej1X0nvmRPg+7obzQDGUNuviYd4NfRDkNYuqG0quF02hI/ofa8V9dmV3A6ZXfT5rGixHh24i4nb0IO/4AsNDPmDpBwCBEiVt/ZSzIt4IFekGK0AvZqJyXsUxKtIBNs94kGkb4sXTXxbGaLshJMQ7bik4QNbo2lu7xG9BbKYxwBI9n6PfrkHnB6HMejN/qtV9mqLA6ZpVuVhWXzsmSQKemouz3WwD3ShbYOfvYCkKio+eHY6DalG9CRRYBDrNCuESabJHrsGdgx2G1/fGG+w1R75CBfrrFGkEdir779QIi+/bR3nyG8CYcjLC0ooFjxMPo4RpD65pOKaUhwkIoO+u82QXcjZhQy56FPdbCXa7sJk/mFUYqN18kkRkTtw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,68 +121,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Sep 3, 2025 at 11:44=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> On (25/09/02 09:49), Thadeu Lima de Souza Cascardo wrote:
+> > When OOM is triggered, it will show where the pages might be for each z=
+one.
+> > When using zram or zswap, it might look like lots of pages are missing.
+> > After this patch, zspages are shown as below.
+> >
+> > [   48.792859] Node 0 DMA free:2812kB boost:0kB min:60kB low:72kB high:=
+84kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB inactive_a=
+non:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB =
+zspages:11160kB present:15992kB managed:15360kB mlocked:0kB bounce:0kB free=
+_pcp:0kB local_pcp:0kB free_cma:0kB
+> > [   48.792962] lowmem_reserve[]: 0 956 956 956 956
+> > [   48.792988] Node 0 DMA32 free:3512kB boost:0kB min:3912kB low:4888kB=
+ high:5864kB reserved_highatomic:0KB free_highatomic:0KB active_anon:0kB in=
+active_anon:28kB active_file:8kB inactive_file:16kB unevictable:0kB writepe=
+nding:0kB zspages:916780kB present:1032064kB managed:978944kB mlocked:0kB b=
+ounce:0kB free_pcp:500kB local_pcp:248kB free_cma:0kB
+> > [   48.793118] lowmem_reserve[]: 0 0 0 0 0
+> >
+> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> > ---
+> > v2:
+> > - fix build when CONFIG_ZSMALLOC is not enabled
+> > ---
+> >  mm/show_mem.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/mm/show_mem.c b/mm/show_mem.c
+> > index 41999e94a56d623726ea92f3f38785e8b218afe5..c563d9adfa87765a8736e91=
+c1f68d824b03eaea8 100644
+> > --- a/mm/show_mem.c
+> > +++ b/mm/show_mem.c
+> > @@ -310,6 +310,7 @@ static void show_free_areas(unsigned int filter, no=
+demask_t *nodemask, int max_z
+> >                       " inactive_file:%lukB"
+> >                       " unevictable:%lukB"
+> >                       " writepending:%lukB"
+> > +                     " zspages:%lukB"
+> >                       " present:%lukB"
+> >                       " managed:%lukB"
+> >                       " mlocked:%lukB"
+>
+> A little "preliminary optimization" idea: do we want to specifically
+> refer to it as "zspages" or do we want a more generic term, just in
+> case if zsmalloc goes away, or if there is (are) another allocator(s)
+> for compressed swaps?
 
---wfr62XQcW9Sye/W3
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hmmm, zpage? z is a common prefix for "compressed".
 
-On Fri, Aug 15, 2025 at 02:54:58PM +0100, Usama Arif wrote:
-> The test will set the global system THP setting to never, madvise
-> or always depending on the fixture variant and the 2M setting to
-> inherit before it starts (and reset to original at teardown).
-> The fixture setup will also test if PR_SET_THP_DISABLE prctl call can
-> be made to disable all THPs and skip if it fails.
-
-I don't think this is an issue in this patch but with it we're seeing
-build failures in -next on arm64 with:
-
-  make KBUILD_BUILD_USER=3DKernelCI FORMAT=3D.xz ARCH=3Darm64 HOSTCC=3Dgcc =
-CROSS_COMPILE=3Daarch64-linux-gnu- CROSS_COMPILE_COMPAT=3Darm-linux-gnueabi=
-hf- CC=3D"ccache aarch64-linux-gnu-gcc" O=3D/tmp/kci/linux/build -C/tmp/kci=
-/linux -j98 kselftest-gen_tar
-
-  ...
-
-    CC       prctl_thp_disable
-  prctl_thp_disable.c: In function =E2=80=98test_mmap_thp=E2=80=99:
-  prctl_thp_disable.c:64:39: error: =E2=80=98MADV_COLLAPSE=E2=80=99 undecla=
-red (first use in this function); did you mean =E2=80=98MADV_COLD=E2=80=99?
-     64 |                 madvise(mem, pmdsize, MADV_COLLAPSE);
-        |                                       ^~~~~~~~~~~~~
-        |                                       MADV_COLD
-
-since the headers_install copy of asm-generic/mman-common.h doesn't
-appear to being picked up with the above build invocation (most others
-are fine).  I'm not clear why, it looks like an appropriate -isystem
-ends up getting passed to the compiler:
-
-  aarch64-linux-gnu-gcc -Wall -O2 -I /linux/tools/testing/selftests/../../.=
-=2E  -isystem /tmp/kci/linux/build/usr/include -isystem /linux/tools/testin=
-g/selftests/../../../tools/include/uapi -U_FORTIFY_SOURCE -D_GNU_SOURCE=3D =
-    prctl_thp_disable.c vm_util.c thp_settings.c -lrt -lpthread -lm -o /tmp=
-/kci/linux/build/kselftest/mm/prctl_thp_disable
-
-but the header there is getting ignored AFAICT.  Probably the problem is
-fairly obvious and I'm just being slow - I'm not quite 100% at the
-minute.
-
-Thanks to Aishwarya for confirming which patch triggered the issue.
-
---wfr62XQcW9Sye/W3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi7IVgACgkQJNaLcl1U
-h9BkKAf+JqqrHvX7cSXvElB+KK5JJPomvr2GjT43I3RCnUxuhhf+HNozf1vZSVsh
-8ouaFjM+bdFsoFZGH+lHQrwf1jASur/DGPQf77HWkWGyXoT9DU0TC4/aFBydTyHD
-HOhxlD64/GHWMcf4EiYbqAQUVwWItGmpA7A02pWTHKMqP2mRlNfAIBnuGYhX+yng
-T5icV/TPDU+vgWkkGTq5gNCWwwsD6aoxTE5mXDPkiGvQwJ5APXoYiAei4h7bj3Ob
-aWBr719s4YylshIwSt4XX7WP6FYex3GtCSrOGUCFoV9JA18UBWbWKb/Kemgb/drt
-Um6GBJNcKG8OSXdAFAeidRIrg5wqGg==
-=7I+y
------END PGP SIGNATURE-----
-
---wfr62XQcW9Sye/W3--
+I'm honestly fine with zspage though. We can just have any new
+allocator call it zspage too ;)
 
