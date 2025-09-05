@@ -4,120 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A19DACA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 10:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65286CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 10:56:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07FF98E000D; Fri,  5 Sep 2025 06:47:05 -0400 (EDT)
+	id 9BDA18E0015; Fri,  5 Sep 2025 06:56:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 057BB8E0006; Fri,  5 Sep 2025 06:47:05 -0400 (EDT)
+	id 96D328E0006; Fri,  5 Sep 2025 06:56:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAF228E000D; Fri,  5 Sep 2025 06:47:04 -0400 (EDT)
+	id 85D168E0015; Fri,  5 Sep 2025 06:56:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D9A888E0006
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:47:04 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2257186B66
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:45:43 +0000 (UTC)
-X-FDA: 83854865766.27.E184CD6
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FD288E0006
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:56:30 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 223AC1392C3
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:56:30 +0000 (UTC)
+X-FDA: 83854892940.14.CFFBFA6
 Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 05AFF40026
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:45:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HoesHaSt;
-	spf=pass (imf11.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by imf24.hostedemail.com (Postfix) with ESMTP id 332AC180010
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:56:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=MijrOyM3;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757069141;
+	s=arc-20220608; t=1757069787;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vIeg0yqzETdeSHkZIWTN6hmtEKVJ541dSozjEpreLoc=;
-	b=ruvjhk7yQMiyzo63SFCqkaVv3XiJP//O9Aa5uPv3byqSdSr9xcaWHKJ/0x1q+J/WDDa46u
-	RxtVdT+Iz8ebccBKPXbEriY+vQm1YFiD4+vQovPEz3dqOTfnyEOADQOxJYAez93dpvxG7z
-	tlPuURY2HLf2FJ57sC1vbWTMAqS7oao=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757069141; a=rsa-sha256;
-	cv=none;
-	b=risvlATut13g65c1sQt9Cy8rlBv1RpDVGylmlZpX91zhrKnQQF1WYehu78ffztyPd9FgKw
-	U8D2NEPbJJ81SyZDECQiFXa5AzfjkFtA+ip4rx80sxvk4Y0AJjTgkrQGT6PiekWljiS3OJ
-	examWVVMQ1oincMBWGmxXGLiedEQiyI=
+	bh=QjsU1N0XRrRnM8naRkACSYSwdOlKjw+PQpIIkp+9bj8=;
+	b=WvZVD6W2+Y5A7O0RTKigMQaChBNm+Dh0rIexyygBVWYEyJl+DPrOULLWF+MjDbGliK3T2W
+	E6YBV8A4zL1MmufXlY+m68QGmq+/xzqxn6rJT8gvUSOFVQjDVnfnqqmjds6c48JeUeatSB
+	078qrEBezBJu6Ad5IB7TyWVPYPBeLJk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=HoesHaSt;
-	spf=pass (imf11.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45cb5492350so13252875e9.1
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 03:45:40 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=MijrOyM3;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757069787; a=rsa-sha256;
+	cv=none;
+	b=nY92uUbdKmWlrX8MaRdsCkoA7yU0N22+OJg90J6sfrBua/G6jCitTUiDHEgNMAJ+oksu8q
+	wBk5jUnJPsI8ZxwaMedMHj9dSJ23fNm1Z4VeCts8NaLPrGYzDj66zwNxze4HdYuxLthSUD
+	LVPC+juao43jVOs5sMVrtT6r+XK4qo4=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45b8b2712d8so18286875e9.3
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 03:56:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757069138; x=1757673938; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vIeg0yqzETdeSHkZIWTN6hmtEKVJ541dSozjEpreLoc=;
-        b=HoesHaStzrM2UDOUTRU0Vteme3PISyX718dDr29hoYARdWcZIaNiysGbspy1SGGYgR
-         fNiX/Npib0g2bcrhdDIevqQE05s5HjQxaiXBYjav7hrrRauz4r7rQ+mn3shhJao9RagD
-         OaGOe0ziuPgM/+nEoMILbLmNPThP267lgA3wjs8A7aNtIZfeYWaXQ/zUl5ECjZm68Z2n
-         hP+T8IkLW8LsazzzN6Ufw7sTlwog/PMRPQAWJGt4+knlbYEWkSBqNHz87tyK/lyrJVEX
-         TCRJ06PaQ4j5cErQcX8H6yNni9EP5JqKFRtYwCpr1zwelCxILDg+evG7aaxcsUZITUiP
-         yXag==
+        d=suse.com; s=google; t=1757069786; x=1757674586; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QjsU1N0XRrRnM8naRkACSYSwdOlKjw+PQpIIkp+9bj8=;
+        b=MijrOyM3iiB3qJc8cvWEI4VrvIS0HrGWSyIK75nLWnbNMa/1KPLKZZ518VJzr7+iCF
+         4DYxsDlURYwWy5ahDWzGNwQRfyM25kSO7vcNcX5ZuXwlMIeTHUtxZJSlQZCPnBtxPLU/
+         CCZ0GylS2EG2dvort1oXRftqtX6dGqee+6Uj04d1pzM+QCWUpdd+K6FjiLqyc9sJLF/G
+         KVpzom0xAfwKD4aDE85L7t5eLSDuK08kJrug4qOanOQYJoe5/MRS2dy4aB48/+byANEL
+         TFC1iIEcrtnnbLcIMNUaafLSxAfCLWBMbueEmmzWuGOxRCRiOm5QcFINBonHU2NqUKAK
+         qgng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757069138; x=1757673938;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vIeg0yqzETdeSHkZIWTN6hmtEKVJ541dSozjEpreLoc=;
-        b=AbvSKJJ9A9PHTz0Dc3KyC1CSofI54UwWiWrz/GGFDkvqGrmcd/5ZGBlYToFwcnHCp6
-         3Xn99zU/8H+He5nxMLcVkq/vfTFb6g3AhbHLK4ZZN4zVbtwIyyw1bhLQRog+5R3XnpXm
-         h90724x9SvhJ/jA1eJX2ktK1UwZUB+v4PKkRDjCCaygHIgtyLmqZaVPyHmd77sFC2jYj
-         FI40wXCONjCIEnb1YELggiC7eTNsIQGzHIRUXUSmMQU5ALYfTXy4OdJzQE5CB63NxjiD
-         eg96+uchtEbZ8C7xqpXoEHDK4XnbQbGQrUZsw2aYZwd0UV3QKmn1n1S1K4tqjI5FnCFL
-         Y2eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgujI/0Uxq6HKWlbfTDE/xer8Ap5olQR6lAmv2S5LF3WbtIef5svo8qk6yjznoPhmJExbRhfD7Uw==@kvack.org
-X-Gm-Message-State: AOJu0YyJlFmtRL3wfCZVmOl0VIQlzKS1F6rGs2/V2mZV8c6q3w9i825Y
-	cQ3Y4QN5Fi9bE66PE0y4GfTHL1Q6Kr4yS6mkA+5ebSMiVugE4RwkhzaW
-X-Gm-Gg: ASbGncva+odr+S/iFBc/HUV4WenNXMG6HLHfVRh8aLR9k96uTh9HZNysaIHxqHh9bbl
-	PP2sDSsjoQVcTWuQofIsmNFLrthDTTsS9NhLukvmeUNp/u+WBxxud/bDEumE9UCTnJcP1EgnfGR
-	mfvc78iTLgDXEC5jwdOs8OghRRcTDijBjRLkvNTNgJrxyvSFJKsD09nzYjmdBMYyAlpsBfM6Gny
-	g6UCivlVHbU9+gmHoth20WU/2NGOcnCgSWlhi/LRQpP+EC7CNiCSVghTY6PdVFtXAahgN40diuP
-	IcD3qnYSCyHYXdWyfwkbknafuRorukdQMonLPWmtTAgWcm/rMJZOa2459Z/UOQlFUA0HFk9LhOC
-	dM/c4ftVzFQC7e2jo0L3bZf1M0nYDkT3qs3DNHNfzr/e135Bmaq5UOpDbqK1JwK2F/ONo/Jw=
-X-Google-Smtp-Source: AGHT+IF7zH6O/IARVMa6C/x7M1EW7/WLvxsTy/oeKFSx4oRsBGT1cL9nVQpPjnDqP/DV4lTAFT8owg==
-X-Received: by 2002:a05:600c:5253:b0:45d:98be:ee91 with SMTP id 5b1f17b1804b1-45d98bef030mr60621485e9.9.1757069138227;
-        Fri, 05 Sep 2025 03:45:38 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1126:4:1449:d619:96c0:8e08? ([2620:10d:c092:500::4:4f66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45ddb779eb6sm8583055e9.8.2025.09.05.03.45.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 03:45:37 -0700 (PDT)
-Message-ID: <981d7f32-96b4-4b40-8765-fecd53c372af@gmail.com>
-Date: Fri, 5 Sep 2025 11:45:36 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+        d=1e100.net; s=20230601; t=1757069786; x=1757674586;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QjsU1N0XRrRnM8naRkACSYSwdOlKjw+PQpIIkp+9bj8=;
+        b=fnlI75ngUYtDfRxwUk+g/5kGzebkOnOat8AmHxi1bp5W1a/NzeKebH+2OxB07Pr+/P
+         O5cSZcpzVqWXRQ25iuX9rxjR1RiwzRiR7DLJWxBEy3PUX3jOqoYRO+NwQmHCimrkgEuT
+         W0eEFmVe8OQCFTn1Wvk2folMrQxSuupuBTfkwwvf/ZNf4ymwfklzjVU+GRWAwkKuXiR4
+         Iqtr/b7XvyLps+740+fJUPgiyrIFpiP7q1PGEWNhPTTJo7InCN6hThQwRKz/8mqqNs4X
+         mpN0W3K07NIwWUw6jCKCg80N/+7SzrjkK5Sco20CNF8PQz08T347l8LbdT56L5yO0dpR
+         kBQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU58vgwSPLj/4MyjoLqDKHnpGpV5oTo7Ud7zfAJkMkisxy4uSEHzNekz18UFrAX4FpBkVSZlkcqqg==@kvack.org
+X-Gm-Message-State: AOJu0YyenjSLFjZMd96jPncs30HZ2j7ylrQuo/jxwWpF8VCqnCieq+jz
+	uB/uz5n7fjBtBwF19AY6uNUkL4+ba8ug4yQu/POe+T4YAkaIW5s4MWdhCrev3szmPJg=
+X-Gm-Gg: ASbGncsHWTJd2MB5Z3IcwHn0iG8byLviPmbwyvA5GM58/P9FwJooknsEi+t1uDn+UBd
+	4PtD5mWed9LaVkgv3skIy9UP0kzM0oNcAV6OC0suvk7WPMpX7Jwgb10L4qoQJzPSPhv81zBz2ZK
+	ni3G205ciyqRpaT+t6qQMOZa5heFWvTwiN45A2tbOqyvToVzwmb5Qf60TzBmDSrVLk/uZ/hjpvf
+	Voo5ep2IattB+A5eKp7TOS1iS4cIxlAWaoy0ebcJ8PBNSM/zgQDCzqbn35dlS+o6z06gAxbEhrn
+	rjUPE1DVhgO56SATTaafTDUFd70S9c22Iv95afT5oPweB9TbYDFtXi3M/iZyIchRPTc5WucCGzB
+	PQ/7ilu47zg0MyTfkLwTijZjRKaE+tvlvZvDNRs977hE=
+X-Google-Smtp-Source: AGHT+IHKcjOQAGCFSDmIiTPjPBAoOQfqrO/QLL132oFQqrU7VwFwL2dQqD8N3XwGwHZoV/q1HPgKEg==
+X-Received: by 2002:a05:600c:19d4:b0:45d:d6fc:24f7 with SMTP id 5b1f17b1804b1-45ddc18fbf3mr4339665e9.32.1757069785704;
+        Fri, 05 Sep 2025 03:56:25 -0700 (PDT)
+Received: from localhost (109-81-31-43.rct.o2.cz. [109.81.31.43])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b6f306c22sm411797985e9.13.2025.09.05.03.56.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 03:56:25 -0700 (PDT)
+Date: Fri, 5 Sep 2025 12:56:24 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: kirill@shutemov.name, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+	Usama Arif <usamaarif642@gmail.com>,
+	Kiryl Shutsemau <kas@kernel.org>
 Subject: Re: [PATCH] tools/mm: Add madvise tool
-Content-Language: en-GB
-To: kirill@shutemov.name, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org
-Cc: Kiryl Shutsemau <kas@kernel.org>
+Message-ID: <aLrB2D-DjK8pFLHa@tiehlicka>
 References: <20250904175729.1029735-1-kirill@shutemov.name>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20250904175729.1029735-1-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <aLqqlkTpEM1SkvaE@tiehlicka>
+ <0b22e23d-f00b-47da-8e62-c8b0ced05e4e@lucifer.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b22e23d-f00b-47da-8e62-c8b0ced05e4e@lucifer.local>
+X-Stat-Signature: ktakc5bmdomj8y1r1z7ihk86gsnuazif
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 05AFF40026
-X-Stat-Signature: n1amqfug6jiwq61gytf841nim9gxb6e4
-X-HE-Tag: 1757069140-420560
-X-HE-Meta: U2FsdGVkX1/OFZsvyVe6kbt9B7CWFwt2ZsEDUjjpWE1zQ3ynFUsOlweiUrBWV+gnJT4FPp50tC6K/EZl6CqdwPtdgmS6VY8h8nVt82rIA1EkQoqjU10Vc1zKARUAhAGOSt3TkGVDf+Q3/AzdZHxpIG0sssQGjzKQ5C1aQcyeNLLS7I/2Heix5TEf94s6z93HMzkVPW+5NMagoXiyPySildJAf01QSGWHoqClwJ/PPNtpGWe4IvZo1dubMv+FpHniXjMLlkTI5lvoKvqV2TwPv7PZkpvix6QF55fLSxhAfvcPMrADVUOOWZMG/IXvoJ+bVrCeLrAvAD7HTOfpcFFOy0R6Q6KsvYq0KNKkWU0LJ5YqxUy0uHTDDPWV59+Bgjxpds2cYpv4r7hVoLCT1GutV6cS7BfItUlAIub/7vEG4P4MwLUxs3vSM8ez5qskoylTgVVSIcRjoNRFg/ql59lo+ghM2ogJjxXqj8gLJEAcoGY1VwPo5hKPdc/5MqAYVJa7gDcl1xEeqcIvdfoePtMD97NQev4s9cAxNRrVS8DaMH6N54bRbVSJgvQBcrC0xptv5kQeAsSOLgXgKw0ewAUpJnb7LAXBBJNid2TsXE0AzMctTKF8gPu271rRa9Ifu9KoABBu0wfGG/6N0A7VJpaUOp1JjKP2G640/548wXt5b99fc2rYHDh6W3MoVcnF+28tp9N7NuKl82vXF4yYwMQk+un4TgOIy3dA7011wHGwLo9ZsrvyCZ+wYbLehBb/ZMX+Lt8itdN1lzQ6S6p5qKmRR7n6jOUjAHEvaKBgwEPQ4ks7zOa0PjI0Jd0n7b5C/nL5rNV3x+sOzdqkoUNvPW+Bjoo9vFYfvNOFxotP8b0/ZKKZNBfoQPHQFEvS4fiOdZUa/B4tOSASiAfbSn2DvuE37QahlVHpN1gqioDu13pEEN0rQsTAixgFwpPHSX3BwoIaAsKVdGLxGRHXsK9XoUz
- cWJ9WQ0B
- Y0l40Zhc0zumXBbJnElPuMmU+M86drVTh7FcaCXDF3wZUDhv26umbCaOYLxYqFPS7mbH8c3SgAF98IScl2PYB1VI2AWU2xtmhIaoX+An55YXy7lQSrxaVgagZkoKB67EcmYZ4AP2KxbxsyQjK3SVyVbXloSXYqA8xFduMl5B/fr46O54ipOmi1I4irZgtonnxf9pso7E4fSNjvJyFiWnb6ci02EL4b0KGFzNlkb2PnRrJJKmFxKymPU8ulnz55P8fR4y7I3VOodiCjy7alwBjwSeqOJbyIeaRK/MoOxbcPipeWFWWFeWHVZ2XMB0kpi32mgWfwLYH3KFuDZ5yX1hdy/igGkf9P+4Wp1pxTjVyK8RNszlFntiMlOG2yOJ9GnM8bVrl9nJUkWAgZjcG63UuUfSB+4wJ3h2fni5mh0CsYQWSlMcInrrGKyWmO5NTMSePE1etv7CeqKSq2fEMxDZkqt5h6GbzX+sNQuES8RcNJC2WfjkcEYwaXcN0nc6EMzi57x7QaCd+obhTNhybnNSSFWH1XwhRq3mMSONORdrdOXESQoQ6wdzaV3jUVWubiPWtOolE
+X-Rspamd-Queue-Id: 332AC180010
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757069786-530365
+X-HE-Meta: U2FsdGVkX1/czdOw0ypgPNwtDuWbPlk53EiAmJ6mvxVn1ciUeujg03W5C9AO0G4IoRH9QGhq6fGiDT0N2oJtH1Fs+rYObFKMB/ITL7Nd5NEnz0pbIzLZc94+mdj0jYPNa8a+IoPRmq80x1oFmJEvLJMtFRS6tNL48XQKj1impfTicFy68V5ogvvcJkKTMYCSBscHrSiXpOxhYlzSiAczBNCtzq07yDgS2RoaXFfQ0ZFrrN0Ti6TClp1bJ/N+Sh6VkdGPOe4aip1V+yu2zjVXmFM3d7cvWY5SSsAOM763qIFYqtTNmpFqnmch0k9KBvUzLrFcRMVMgdd1lNMTR7K/lFbwsODPJl2cvuPOxKdJCsCLTW2BnVQu3puPsCmI42i7G2t/NbEbllOMRdec0+7SDg9pwr2QOB3khdQPBJFnyhTFECgkZ0bsDD064Qt1j6o2ImN6X0KPdMZYTpaLnx6O1fk5W6afdJbHGUN0c6Gu5HVm2lJiJhyiIjbv7QMgXscbpd620XlADbKWw6SHVsxOpcWzldgEUQqg/QlzXdhCPlVygWmN5h6QQJeWZYEp5zZEeglfVv/QiVu9127n0bNsh7Jb852SDt93uA00ZpqlEUKUyAJtZT4ciOSdYyoiI/SNeEyRCU2z0o0f3MeH0J1moAciUe9jcDWKgVOsj5zJlz+AeLPJ39ijRM/ahZNdyvFwf8YiU0Hd+1hrRH+5fDmV6Qk9YsVTPymclKTUPNle6Zllf7QxmBhtaCNEFKHpw8S1wZPLEMKUhoDf/sVGyKZO5VJWxOUFQRJJK99Kw8DT6uGelVyS44EcPPMk2mjVal0W7oqcdNViku6DNlWtoo5HIFyq+F7DNXxUEHT7Wo7yeMnKsUzECyGvDylNvfnDYMD5XioyBhaWxqIPNDCvXVsFRWem9++k5cPI7vuw6/k6WXVzYvjzCjcj5N13qFGDy6vQ2H3XRkEJDJU5t0IdLHN
+ Jfq64pU9
+ R8EOR/i/XBn6dZuOb3+MK56g8bgguUK7jwxUIJYkBPRE9VVw8/LG0CWPlZ3bhUrjfAUdqrxyiOtV9LafsTnUUHJMA0LWcaQ1Gx1fAhFYVc0tJuEoF1M2Eao+BONqUiwSbGtOjl6LddPSxqMnHe6XqmzEGBlcqImHC8ey43X9RyeeGubY5+Nr35x0zpBHcGlYaiC7zqZJtYaFZcoPRPVvD32MV/CB6++GHEfwjUEQKDfgVpX/nyB+33VNL93nbk2JR0IBocSxdiecBfVIQusqElJQ9LtI8Ld/nDoMbtmNjZAEOtUM9AgP6coBp+/WrdyAIrEzC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,229 +124,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri 05-09-25 11:16:38, Lorenzo Stoakes wrote:
+> On Fri, Sep 05, 2025 at 11:17:10AM +0200, Michal Hocko wrote:
+> >
+> > Is there any reason to have this in the tree? This seems like a very
+> > trivial tools that doesn't really need to be in a lockstep with the
+> > kernel source.
+> 
+> To give my own 2 pence on this :>)
+> 
+> I think this is actually quite useful because it invokes process_madvise() and
+> so can be used for experiments against other processes in a way that'd you'd
+> have to write code for otherwise.
+
+I am not questioning usefulness of the tool itself.
+
+> I think it's useful to keep in sync with kernel as if we add more remote process
+> madvise functionality this can be updated with it.
+
+I just do not see any value in having it in the tree. It doesn't use (or
+rely on) any kernel infrastructure and it can happily live outside of
+the tree. New madvise functionality requires a runtime support rather
+than a support in the current source tree.
+
+We are certainly not pulling in other potentially useful tools
+into the kernel tree in for some it was even really hard/impossible to
+be merged yet they would benefit from a close lockstep with kernel
+sources.
 
 
-On 04/09/2025 18:57, kirill@shutemov.name wrote:
-> From: Kiryl Shutsemau <kas@kernel.org>
-> 
-> Add a simple tool that allows to issue an advice on a process or a file.
-> 
-> It can be useful to experiment with effects of an advice on a workload
-> without modifying the workload itself.
-> 
-> Only supports advices available for process_madvise().
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> ---
->  tools/mm/.gitignore |   4 +-
->  tools/mm/Makefile   |   2 +-
->  tools/mm/madvise.c  | 170 ++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 174 insertions(+), 2 deletions(-)
->  create mode 100644 tools/mm/madvise.c
-> 
-> diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
-> index 922879f93fc8..b713fcf4a2e0 100644
-> --- a/tools/mm/.gitignore
-> +++ b/tools/mm/.gitignore
-> @@ -1,4 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -slabinfo
-> +madvise
->  page-types
->  page_owner_sort
-> +slabinfo
-> +thp_swap_allocator_test
-> diff --git a/tools/mm/Makefile b/tools/mm/Makefile
-> index f5725b5c23aa..db315a48adcd 100644
-> --- a/tools/mm/Makefile
-> +++ b/tools/mm/Makefile
-> @@ -3,7 +3,7 @@
->  #
->  include ../scripts/Makefile.include
->  
-> -BUILD_TARGETS=page-types slabinfo page_owner_sort thp_swap_allocator_test
-> +BUILD_TARGETS= madvise page-types page_owner_sort slabinfo thp_swap_allocator_test
->  INSTALL_TARGETS = $(BUILD_TARGETS) thpmaps
->  
->  LIB_DIR = ../lib/api
-> diff --git a/tools/mm/madvise.c b/tools/mm/madvise.c
-> new file mode 100644
-> index 000000000000..038b3e1076ea
-> --- /dev/null
-> +++ b/tools/mm/madvise.c
-> @@ -0,0 +1,170 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#define _GNU_SOURCE
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <stdarg.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <sys/mman.h>
-> +#include <sys/syscall.h>
-> +
-> +static void usage(void)
-> +{
-> +	printf("madvise TARGET ADVICE START END\n\n");
-> +	printf("Arguments:\n");
-> +	printf("\t<TARGET>\n");
-> +	printf("\t\tA process ID or a file to give the advice to.\n\n");
-> +	printf("\t\tUse \"./\" prefix if the file name is all digits.\n\n");
-> +	printf("\t<ADVICE>\n");
-> +	printf("\t\tcold\t\t- Deactivate a given range of pages\n");
-> +	printf("\t\tcollapse\t- Collapse pages in a given range into THPs\n");
-> +	printf("\t\tpageout\t\t- Reclaim a given range of pages\n");
-> +	printf("\t\twillneed\t- The specified data will be accessed in the near future\n");
-> +	printf("\n\t\tSee madvise(2) for more details.\n\n");
-> +	printf("\t<START>/<END>\n");
-> +	printf("\t\tStart and end addressed for the advice. Must be page-aligned.\n\n");
-> +	printf("\t\tFor PID case, it is addresses in the target process address space.\n\n");
-> +	printf("\t\tFor file case, it is offsets in the file.\n\n");
-> +}
-> +
-> +static void error(const char *fmt, ...)
-> +{
-> +	if (fmt) {
-> +		va_list argp;
-> +
-> +		va_start(argp, fmt);
-> +		vfprintf(stderr, fmt, argp);
-> +		va_end(argp);
-> +		printf("\n");
-> +	}
-> +
-> +	usage();
-> +	exit(-1);
-> +}
-> +
-> +#define PMD_SIZE_FILE_PATH "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
-> +static unsigned long read_pmd_pagesize(void)
-> +{
-> +	int fd;
-> +	char buf[20];
-> +	ssize_t num_read;
-> +
-> +	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
-> +	if (fd == -1)
-> +		return 0;
-> +
-> +	num_read = read(fd, buf, 19);
-> +	if (num_read < 1) {
-> +		close(fd);
-> +		return 0;
-> +	}
-> +	buf[num_read] = '\0';
-> +	close(fd);
-> +
-> +	return strtoul(buf, NULL, 10);
-> +}
-> +
-> +static int pidfd_open(pid_t pid, unsigned int flags)
-> +{
-> +	return syscall(SYS_pidfd_open, pid, flags);
-> +}
-> +
-> +int main(int argc, const char *argv[])
-> +{
-> +	unsigned long pid, start, end, page_size;
-> +	int advice;
-> +	char *err;
-> +	int fd;
-> +
-> +	if (argc != 5)
-> +		error(NULL);
-> +
-> +	pid = strtoul(argv[1], &err, 10);
-> +	if (*err || err == argv[1] ||
-> +	    pid > INT_MAX || (pid_t)pid <= 0) {
-> +		// Not a PID, assume argv[1] is a file name
-> +		pid = 0;
-> +	}
-> +
-> +	if (pid) {
-> +		fd = pidfd_open(pid, 0);
-> +		if (fd < 0)
-> +			perror("pidfd_open()"), exit(-1);
-> +	} else {
-> +		fd = open(argv[1], O_RDWR);
-> +		if (fd < 0)
-> +			perror("open"), exit(-1);
-> +	}
-> +
-> +	if (!strcmp(argv[2], "cold"))
-> +		advice = MADV_COLD;
-> +	else if (!strcmp(argv[2], "collapse"))
-> +		advice = MADV_COLLAPSE;
-> +	else if (!strcmp(argv[2], "pageout"))
-> +		advice = MADV_PAGEOUT;
-> +	else if (!strcmp(argv[2], "willneed"))
-> +		advice = MADV_WILLNEED;
-> +	else
-> +		error("Unknown advice: %s\n", argv[2]);
-> +
-> +	page_size = sysconf(_SC_PAGE_SIZE);
-> +
-> +	start = strtoul(argv[3], &err, 0);
-> +	if (*err || err == argv[3])
-> +		error("Cannot parse start address\n");
-> +	if (start % page_size)
-> +		error("Start address is not aligned to page size\n");
-> +	end = strtoul(argv[4], &err, 0);
-> +	if (*err || err == argv[4])
-> +		error("Cannot parse end address\n");
-> +	if (end % page_size)
-> +		error("End address is not aligned to page size\n");
-> +
-> +	if (pid) {
-> +		struct iovec vec = {
-> +			.iov_base = (void *)start,
-> +			.iov_len = end - start,
-> +		};
-> +		ssize_t ret;
-> +
-> +		ret = process_madvise(fd, &vec, 1, advice, 0);
-> +		if (ret < 0)
-> +			perror("process_madvise"), exit(-1);
-> +
-> +		if ((unsigned long)ret != end - start)
-> +			printf("Partial advice occurred. Stopped at %#lx\n", start + ret);
-> +	} else {
-> +		unsigned long addr, hpage_pmd_size;
-> +		void *p;
-> +		int ret;
-> +
-> +		hpage_pmd_size = read_pmd_pagesize();
-> +		if (!hpage_pmd_size) {
-> +			printf("Reading PMD pagesize failed");
-> +			exit(-1);
-> +		}
-> +
-> +		// Allocate virtual address space to align the target mmap to PMD size
-> +		// Some advices require this.
-> +		p = mmap(NULL, end - start + hpage_pmd_size, PROT_NONE,
-> +			 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-> +		if (p == MAP_FAILED)
-> +			perror("mmap0"), exit(-1);
-> +		addr = (unsigned long)p;
-> +		addr += hpage_pmd_size - 1;
-> +		addr &= ~(hpage_pmd_size - 1);
-> +
-> +		p = mmap((void *)addr, end - start,
-> +			 PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED | MAP_POPULATE, fd, start);
-> +		if (p == MAP_FAILED)
-> +			perror("mmap"), exit(-1);
-> +
-> +		ret = madvise(p, end - start, advice);
-> +		if (ret)
-> +			perror("madvise"), exit(-1);
-
-Would be good to munmap here and check output?
-
-> +	}
-> +
-> +	return 0;
-> +}
-
+-- 
+Michal Hocko
+SUSE Labs
 
