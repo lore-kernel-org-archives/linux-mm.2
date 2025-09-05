@@ -4,129 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D4ECA1010
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 14:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E71BCA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 14:23:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 141BD8E0005; Fri,  5 Sep 2025 10:11:47 -0400 (EDT)
+	id B94C48E0003; Fri,  5 Sep 2025 10:23:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F2EE8E0003; Fri,  5 Sep 2025 10:11:47 -0400 (EDT)
+	id B6C966B0007; Fri,  5 Sep 2025 10:23:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F23808E0005; Fri,  5 Sep 2025 10:11:46 -0400 (EDT)
+	id A829D8E0003; Fri,  5 Sep 2025 10:23:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1C448E0003
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:11:46 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA08A1A01E2
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 14:11:46 +0000 (UTC)
-X-FDA: 83855385012.30.F5C85C7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B7A66160013
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 14:11:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LHA/OtVF";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757081504; a=rsa-sha256;
-	cv=none;
-	b=n5Tb1pjldd94/BN5ev09KpzJyOL9NEW5N7/FjcDP4uscZwhOKjGhg7HbQRHTtDyMDuciBG
-	BAEsLXWtzCi5NDMhO/9c20zABTzqnrzuR9js/DVDleCUTVTZDyXyZPHgVS9CskPcdd3cNw
-	eHccSwjeEK1GLQmt6RF5G+TgiQtrzgk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="LHA/OtVF";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf08.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 98B796B0005
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 10:23:30 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 39FDC1A0236
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 14:23:30 +0000 (UTC)
+X-FDA: 83855414580.20.411D366
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 263BDC000D
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 14:23:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nyK5zd5I;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757081504;
+	s=arc-20220608; t=1757082208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=GgsRFe2do3K+Eon4rEy4MOebN7y4W7Y0WG9L41KSk7Q=;
-	b=2Ca1zWnb9qMuvIhKQ64PEl5r1w91H4gaf6jm1EHjb3/1e32SUxboAqeAtpv8xoIPeFgmdf
-	93qKMs64Yad9FBfvbKOBqH+kqEauRkpdESKyEJCukNj0cNUZlf5u7fcKHypnTkXo8EeQTG
-	S1e3IEXCFEFR/6cYGAPK3jdMlGLaJI8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757081504;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GgsRFe2do3K+Eon4rEy4MOebN7y4W7Y0WG9L41KSk7Q=;
-	b=LHA/OtVFlXXDhbQFKAR2waWwJlKXNddxRU/ZD6t63FMytJh6SGZNRF5EsTHqWwcbL7vdRz
-	YCiRaliHWn7e4oiE8xcD13eSUr7SRLj4keVVPFXTPD/8SMbfssl+6utx/BbPIb23urdQXu
-	y7pPXMX1EMPpuKvcjFbIgX3wajBgTrg=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-rpTkVGvuN4eVQKqhIuEj7w-1; Fri, 05 Sep 2025 10:11:40 -0400
-X-MC-Unique: rpTkVGvuN4eVQKqhIuEj7w-1
-X-Mimecast-MFC-AGG-ID: rpTkVGvuN4eVQKqhIuEj7w_1757081500
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3e1e7752208so914288f8f.3
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 07:11:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757081500; x=1757686300;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GgsRFe2do3K+Eon4rEy4MOebN7y4W7Y0WG9L41KSk7Q=;
-        b=jXI9NEpDTL0Txtb0OEEf5dR1U21sphElVpA8Ikoqae6Idw5GR0nBRGk+z+ESNuY/aX
-         PIyjfHrXZY+N6hPbujtBlFdM6wuOP9FyQzI98LiOsRBxcTavr5lhuSqKOhVGZOOCsN4M
-         8jVik+0UfzjcANhIQ7NS1MVRtacbiT89zU/YXVYOUyGEoxZxpXgjX2hk0cBQyhwTC4yp
-         9qga7EAS6W38+vSXCr1fAipuV/ru2cQ5gTBdDvLTMD6mFloFQ25oFzv7BPnapKonhoL+
-         V5Fy8FKMREqJbhZHBeGKdiAIZjkirgfZDcW/YzcWopzXe80GJk0MVzBUV8HK4lG7MHfe
-         5HQw==
-X-Gm-Message-State: AOJu0YxHtNWkngqdVjdEAoaA1GQojmY+DQiAkpB94WkYAEIOyaRR4e1H
-	wnWvQ/UVDiw2SKNlR3uTfylRBaRK6kvZp+SwOpN7Q4S0Z0dI7fcmgKG6OJ4TWNTxAV40lx9cLW5
-	J9YeZyYmmooQhP5Eec/kN2+hozS0O/V+3UShx5PS82H9v4XbJC06v
-X-Gm-Gg: ASbGncs+Uv3jSh/JzKYohFeTutQr/3vC//EGcdf/LRa2DrMHIaQXnUPcFnVY4UxECaY
-	s/ZwGphDw5dh1sNLxafy5Co98MbEe/WD/qXZyRT+P7XyiKb/FJuXwQ4ORmtHIKGTNao0az0SGKR
-	bGupn4laJTxFLOxaZ8z9Mw/RNk715tTCWmRNciE795qGUOKffI3imnGhGRF2k55SOo/Nt/dlIYg
-	hnEQUW1CmzdgudnrnBRUQARU6bjKmh6KXriDUWnUu1CH8Fhs6TU2TkjsGHYagcmfZn5HxrkTb/Y
-	/0v0P6NC4s09kI3513qjnSPjtghVz58eT26Qb9D3p3mrZjJ81VZdXkTlsw5NBZDMZ7wxPIcn9eE
-	QrmRJDPKN4PxFPIw6sic=
-X-Received: by 2002:a05:6000:26cf:b0:3da:e7d7:f1eb with SMTP id ffacd0b85a97d-3dae7d7f7a8mr11388552f8f.22.1757081499578;
-        Fri, 05 Sep 2025 07:11:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHbS3uPY4JafB96Ovf66PFgi6ZGs7+8QsZrgTjUwGTDYPGb2ZrMAPKBqZ7pui9VY1zMR2lTfg==
-X-Received: by 2002:a05:6000:26cf:b0:3da:e7d7:f1eb with SMTP id ffacd0b85a97d-3dae7d7f7a8mr11388511f8f.22.1757081499075;
-        Fri, 05 Sep 2025 07:11:39 -0700 (PDT)
-Received: from localhost (p200300d82f4d0e00029859cc25140052.dip0.t-ipconnect.de. [2003:d8:2f4d:e00:298:59cc:2514:52])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3deb99d10a0sm10156163f8f.37.2025.09.05.07.11.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 07:11:38 -0700 (PDT)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zKIawRGkQ1oNY6imJm2+Vz4bfWaTD1iiGqCi5EFkJ4c=;
+	b=v/aBNYCGKpywOMIfwXrtgbPsV1IHgIqLE/l+XXr5jCc0UNVppCZ4P2K0dyqT0hq7Igp+wL
+	9qdYTUs5DQcrTJ0m00cWPWJzuSTC83W+xnMxvdXkMsQfY6eAZQ802ft9FvHu3/qiG01LpZ
+	bUOIdS3i1mjNuUANqX3+lJJiQ5fiwac=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=nyK5zd5I;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757082208; a=rsa-sha256;
+	cv=none;
+	b=hG0D6wGETzmzSfj4g4+gxY5rOdlKg1F3jqcP2zZA89J8Iw39bOKBPscmCzRpgR1UBXw3bH
+	sAwTGVvpmuEXq9TYPqpC8HusAF8b7uBjp/Gizaejq1g2cH5/e7NWJIGJbs//xNV1KdZBEe
+	IOInedgMERx/nWqGynMOAKcc62cahMM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757082207; x=1788618207;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=Ly1A1t8zkl1UDjDmh1rwf+3iMany95fQ+o+inhdQpTM=;
+  b=nyK5zd5IIyth8i8QLmi5yVxcnoc0QVCbGKBVVsdFkR7nk41py6xfbEO0
+   oRE+ieIkXSm6rtAw79Fv+UiNrq0o1hyMhaGieGKPZo23LBO0N+laohEWZ
+   zU0743bqzKvmclF7Dt/u80cDceSfoGvEIai1Lwt7RpXPBkTUH0n1xexTb
+   AsDgFNjr0quSyVMSaR0sl3raYr07CWLNdkMwIBByvL5lZBKG3w8UGIGT8
+   9anDJNSRmAmVohhaH2OgmTWEYIZc9oRnekhE3iq1MCw9XZL1ohrkrdnNp
+   NNtc3AZhlMyG3OUX5xeSi847wTVvmBMzx1ZM2cdkZNsVAMIVJxaQiIxBy
+   A==;
+X-CSE-ConnectionGUID: bxdon4ulRtiEGqsfE3QeMQ==
+X-CSE-MsgGUID: 1JdCIdiySs2bA2xvpAR4tw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11544"; a="84870608"
+X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
+   d="scan'208";a="84870608"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 07:23:25 -0700
+X-CSE-ConnectionGUID: 96JjQF4cQleGatjBOlysKg==
+X-CSE-MsgGUID: /CWSAJoIT8a9uzcDYukCJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
+   d="scan'208";a="172050926"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 05 Sep 2025 07:23:24 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uuXLV-0000VD-21;
+	Fri, 05 Sep 2025 14:23:21 +0000
+Date: Fri, 5 Sep 2025 22:22:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pankaj Raghav <p.raghav@samsung.com>
+Cc: oe-kbuild-all@lists.linux.dev,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Usama Arif <usamaarif642@gmail.com>
-Subject: [PATCH v1] mm/huge_memory: fix shrinking of all-zero THPs with max_ptes_none default
-Date: Fri,  5 Sep 2025 16:11:37 +0200
-Message-ID: <20250905141137.3529867-1-david@redhat.com>
-X-Mailer: git-send-email 2.50.1
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 332/339] include/linux/huge_mm.h:591:16: error:
+ unused variable 'folio'
+Message-ID: <202509052234.q4rNraUm-lkp@intel.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GDDZMsmwhNuBj10tDYEJnp3Q3q723RZYu90NzeERRdA_1757081500
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: B7A66160013
-X-Stat-Signature: 3kf34adgjnyhic398pn9khryh9654yxf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: eufrkf8r86ouy4e4hwdjsth3odfju9ws
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1757081504-953831
-X-HE-Meta: U2FsdGVkX1+zq+IHNSzo7yCnmz10wHA08PynTjFjlE5qo3t1Y69hLttxb6aL0PM7YXAPmIZmLTIhJgKKDNZL5JVF7/ZeU1n4c1thMUQ32CZGYF8tRmBLm8qe1GDK0oLhm2VBDeIFqtbridlXge9flihI1JfPXtn0FVnpoDZr/rxUJoyWfS7F341VUSjrKQ3FS8M00MmWlBKZgEFSDyi+De8MUA9HVs+G4vA+GLZgDk7pUOKB6WcQOyblTLc8psBp6JZ757Ohpuep/zutDwcNRM0qaWdDTwWUFN1+XVpcDw2gsQIYR0aLxZsi7JuKrtCj2hO/aRFC6P2ga9piGW8zW9qKkhH3UISZR1MuUMcNeluI/flxPaRLLM6BzBUDS6nG3u72znXd///4BK9aGM3M7IL9aCZjvgltxI4KKCW/M6hFqhIzLjnb7YmBql4Z+/IXBmcCMP5uKXDImiFhglZuVcrEFoqqiZ4LKIrTSGlOvPwm9WiUTXhQJftk+5fhl+6BmKU8YO/snhNwhu2cbNhEk9WdSPzlKP4STS1gy2s9E2SB0L4W8RpSJDDyyZly01206wGu4hxl5VOObDC2tcddnYU9DiLQpd+QYGiHz31IpGII9RX34nWZgXhlp0U/aYJOhMMwuPPS+W4MrS14d09pCHdUEfadLryOCXAsNgooDJSE3YLJk57OuAixwkCKuSKmR4gmuWSXceTGJXDQISg7EKGcae+E7VFcLlx7EJ+KrxrxdMUq1ADFcOnQXJQs3HY4AqmyXrWSc/Ew1HGsccwvQWF35L7Cs2xxalVGAK0ayKZ3YPUUjabwc7BwF5az4VM8obX86Q+yslPnCSu0sP0rP5kSFgStWNcJ25bdNc7DR/zkh/Yc6yxkWkOhY6Zluih+YyTqKzRScudLZwcC08cl0W3HOgNSm5u/CHO39w9X5JGg6tieJqPs2BUk6ISGSc3ieQX8MKuuPoBTEPFYESn
- p6UsJOg/
- eqz6AyIueFDVVCvPwt1V+VKDqX4v6BNM0l2IWssUUBj32yomL4o6tYGzTYGObn8sfrPhPTV6Vd5SWT1DLnSswUSGKKnjbFwGkU+fC5QeN59znbbreLHakSsTMX1VeO+k0KdLN2/HXyOTSL/A3R9n+yFt9qKLT6rjy7QWAthEZg02l5NyC9OQtxdsv6pXGDMCMYs4g
+X-Rspamd-Queue-Id: 263BDC000D
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757082206-161257
+X-HE-Meta: U2FsdGVkX1//NOhyrPtQ3vZyKKn8ooJRyodpUQgWXIO4SYVosTSjpFXKK0XEdIKzWaejqDye5TEEW5OL7VgYeRP3KBnfjoXV3y4kaStsu8CQREnP7+ziOZTlnjP/jSWmIAzzTUEDgBTXMBtmgLYDCi1BysoBLVMr4O63Zku+gB0821rI7/1o/m2EI8z8+zRS8Pq+UCDA3UMMfY5RkVcTiYTZofQrbbA8MNqbOoYn1kY3VPIvofMrl91xSKV6mpbGJmDfh7mwrmUpOr0MkJLWmTIi7ZbSMBXAQ+dLaGRBMomAZLBk1tNi/AVezg2tUgmuehE8tW/zna0BKfqEziJuq/pXG5gKlmTY31+UaUxczbo67v9u9iB8Tgbnsf3aUtjDE7IfdGhueWKHWGvL9bGPLWua0x5PSQoJ+wCqclwNabtN2GIRAsw4b5PjUVzQMX8J0SJGfbYajEYVLRx/9AF2OdRuxOZFjzcCo33H0GRnEhZ38awWbYkLkRDb3zgT14t+XwhO0rY8vmDGZjhes2B4pxE8AC5DsveS1JSm9IVvwZJLVmJgaTq1Qb17WLnfOomxrMU3EBckvd41/6TNVHfK6I1lFta6LqYvCfEcJDdcZQJWk6a1RzOAIZFqHW0TWc49Iz5PDYhMNkXPLoBkREcvInYO5siBZXj1ZbAlsbuzdrqPnzA2n98uCL0Srio1jf5n5wvhA7gydG++yWCPRUVgmolp20h+1TgiOmu1qVOpAAz6xLFV3ur3uig+gD2O0GGUI+rFGyNv4VniOZsJGx29V0QnoDgyZEhN754zyQQP78oDpnYdBc26mV5U4b3ma6jTju0TNsz9GTEYRGrjIEQBlr6CkRbOvLMkH+90WKrKfxJNZtvG4yA0onljwmwD+W9H9imxa+Q4Nvqy/JdOZ74N/2ubmApsh3111CMzo6ycC+oTRZzr2RWo1vicOg07CftuX97JpRIs69X8laOFx/L
+ PsKI+LZT
+ Ib9OGf5rbZPg8rLzf8uuAGF1U2S4LtZAzegubfuScrhxMPX8BxE9e4iZwFmy/EP2dU/t+nycjLBdlovNuijoK3PBBULbCFmtFv80Sf8rgYystM2HCwd5GmezrKN9QU3W1S89ybGkOdqml0QIO90MnlWWw9v09RLWy8Bh2NyZdp9KqaIE4zseJNlbiTPsaWvlDeajDGrjoPs2TAu15MP5UHnMIW8mVD59LdTwGbMDdiobkKExqRXrZnITuDFOAagV+fOPIAGdNa4orvl14K9Yxn5D0zY+FSrp/yS4z7O2Rr2wyNtTD8TOO8O27Ho0a08YFU59joxNEQPSF69cmAg2ntmADoUZ4bO1CtQq61KOjhoY3f2/QCxVnXK7WJt6AA3/E8GuWNjwXR+WEP0ipNnkowBCGTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,103 +105,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We added an early exit in thp_underused(), probably to avoid scanning
-pages when there is no chance for success.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   0d1fe06d55b12fa3b8907412d97541b2b7eff16e
+commit: c0b55300a1dec35aa8bad62ba520e368c9b1f041 [332/339] huge_memory: return -EINVAL in folio split functions when THP is disabled
+config: nios2-randconfig-001-20250905 (https://download.01.org/0day-ci/archive/20250905/202509052234.q4rNraUm-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250905/202509052234.q4rNraUm-lkp@intel.com/reproduce)
 
-However, assume we have max_ptes_none = 511 (default).
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509052234.q4rNraUm-lkp@intel.com/
 
-Nothing should stop us from freeing all pages part of a THP that
-is completely zero (512) and khugepaged will for sure not try to
-instantiate a THP in that case (512 shared zeropages).
+All errors (new ones prefixed by >>):
 
-This can just trivially happen if someone writes a single 0 byte into a
-PMD area, or of course, when data ends up being zero later.
+   In file included from include/linux/mm.h:1081,
+                    from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/nios2/include/uapi/asm/elf.h:24,
+                    from arch/nios2/include/asm/elf.h:9,
+                    from include/linux/elf.h:6,
+                    from include/linux/module.h:20,
+                    from lib/test_bitops.c:10:
+   include/linux/huge_mm.h: In function 'split_huge_page_to_list_to_order':
+>> include/linux/huge_mm.h:591:16: error: unused variable 'folio' [-Werror=unused-variable]
+     591 |  struct folio *folio = page_folio(page);
+         |                ^~~~~
+   include/linux/huge_mm.h: In function 'split_huge_page':
+   include/linux/huge_mm.h:598:16: error: unused variable 'folio' [-Werror=unused-variable]
+     598 |  struct folio *folio = page_folio(page);
+         |                ^~~~~
+   cc1: all warnings being treated as errors
 
-So let's remove that early exit.
 
-Do we want to CC stable? Hm, not sure. Probably not urgent.
+vim +/folio +591 include/linux/huge_mm.h
 
-Note that, as default, the THP shrinker is active
-(/sys/kernel/mm/transparent_hugepage/shrink_underused = 1), and all
-THPs are added to the deferred split lists. However, with the
-max_ptes_none default we would never scan them. We would not do that. If
-that's not desirable, we should just disable the shrinker as default,
-also not adding all THPs to the deferred split lists.
+   581	
+   582	static inline bool
+   583	can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
+   584	{
+   585		return false;
+   586	}
+   587	static inline int
+   588	split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+   589			unsigned int new_order)
+   590	{
+ > 591		struct folio *folio = page_folio(page);
+   592	
+   593		VM_WARN_ON_ONCE_FOLIO(1, folio);
+   594		return -EINVAL;
+   595	}
+   596	static inline int split_huge_page(struct page *page)
+   597	{
+   598		struct folio *folio = page_folio(page);
+   599	
+   600		VM_WARN_ON_ONCE_FOLIO(1, folio);
+   601		return -EINVAL;
+   602	}
+   603	
 
-Easy to reproduce:
-
-1) Allocate some THPs filled with 0s
-
-<prog.c>
- #include <string.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <unistd.h>
- #include <sys/mman.h>
-
- const size_t size = 1024*1024*1024;
-
- int main(void)
- {
-         size_t offs;
-         char *area;
-
-         area = mmap(0, size, PROT_READ | PROT_WRITE,
-                     MAP_ANON | MAP_PRIVATE, -1, 0);
-         if (area == MAP_FAILED) {
-                 printf("mmap failed\n");
-                 exit(-1);
-         }
-         madvise(area, size, MADV_HUGEPAGE);
-
-         for (offs = 0; offs < size; offs += getpagesize())
-                 area[offs] = 0;
-         pause();
- }
-<\prog.c>
-
-2) Trigger the shrinker
-
-E.g., memory pressure through memhog
-
-3) Observe that THPs are not getting reclaimed
-
-$ cat /proc/`pgrep prog`/smaps_rollup
-
-Would list ~1GiB of AnonHugePages. With this fix, they would get
-reclaimed as expected.
-
-Fixes: dafff3f4c850 ("mm: split underused THPs")
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/huge_memory.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 26cedfcd74189..aa3ed7a86435b 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4110,9 +4110,6 @@ static bool thp_underused(struct folio *folio)
- 	void *kaddr;
- 	int i;
- 
--	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
--		return false;
--
- 	for (i = 0; i < folio_nr_pages(folio); i++) {
- 		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
- 		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
 -- 
-2.50.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
