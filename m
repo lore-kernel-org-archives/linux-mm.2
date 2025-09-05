@@ -4,116 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95A6FCA1010
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 17:47:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0168FCA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 17:52:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 017A08E0006; Fri,  5 Sep 2025 13:47:45 -0400 (EDT)
+	id 5532E8E000E; Fri,  5 Sep 2025 13:52:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F31AE8E0001; Fri,  5 Sep 2025 13:47:44 -0400 (EDT)
+	id 502848E0001; Fri,  5 Sep 2025 13:52:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6E748E0006; Fri,  5 Sep 2025 13:47:44 -0400 (EDT)
+	id 3CA698E000E; Fri,  5 Sep 2025 13:52:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D6DF58E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:47:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A55B8160229
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:47:44 +0000 (UTC)
-X-FDA: 83855929248.21.9831226
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C7277A0011
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:47:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mQbXEPoq;
-	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2690C8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:52:34 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 699BC1DB82D
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:52:33 +0000 (UTC)
+X-FDA: 83855941386.09.E345327
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8466B80008
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 17:52:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ksxEymcA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.179 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757094751; a=rsa-sha256;
+	cv=none;
+	b=NxIjbS9Z5B4fZX9XNle5VT6Yo5OEcpEDYZsTakUPaqfLubwP9VkjFIqWhOo1Gly/MjQZ5v
+	B70K36XS7TpQA1eIQK+VfkXk0AL4aHwZZ0em9Zg/IpeHaiRyce8a+BYnKTKzmgohTGrMor
+	9GbnnXVM59fqT8B063KMZNH8FXfh8Ig=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ksxEymcA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.179 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757094462;
+	s=arc-20220608; t=1757094751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iGdmOjhJX6hBoAVuN78EeIW768m+7wCUaHh9ZJvY08E=;
-	b=1PZTi5ext3b1cvkXmciwLUipjnpaA7GWCa0tjdnza92CwsBo1owwVRT/odcbrBV1Tm9FGR
-	O0uETdyFRl7ybppdgF8Q8NKQ1OXgGanXzZiKMvAVfcAfDP1Fu7kZzpDRtLGX4fG4V7Hynt
-	e+wr1KPys2ola3tvnRwzgP/emgHFxhU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mQbXEPoq;
-	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757094462; a=rsa-sha256;
-	cv=none;
-	b=D99VkZ0nmoXdvNMGWkX3lfLQJoarpTuNrUbvhFgGB1Euuq233Ak3u1jrRLVzDaZPI1o7XA
-	RZx6NMiFKy1piDn6kVYR3o1xPQO1xtjThAS/xIKnogamOvmJzb319bUmXPcu8Tw4MFBIra
-	rPDRPJkz65/xicu+Er+JxR/bkfuProE=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7725de6b57dso2865752b3a.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 10:47:42 -0700 (PDT)
+	bh=rODzLRofJcFgARvay8orMOiUJ1s8/nrDQHaYoswCTWQ=;
+	b=HUdjhkQNSMtczrGudtXTv0bQ1ITDGh+4nzMYwdGg3dA1s7YRzzU8NFsd5ilQUuLjUbPljE
+	kH8Obt/hxbRVYGwR2ENbeDrlH6cKrqcKRoMfJRccqCazigikIHcZm0KW+9sqDUISlBqXbP
+	3fIfMmvaRxBZNp1JohrOeO9pruukr6I=
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3f664c47adaso12844785ab.0
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 10:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757094461; x=1757699261; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iGdmOjhJX6hBoAVuN78EeIW768m+7wCUaHh9ZJvY08E=;
-        b=mQbXEPoqfzhVQX1g+7YuxzhzBhAxvJJZSTFNtwWF9nk+nrUmpwlXcDtJx+1wpQrngm
-         0i1NOtkMDLZg08jxRTZldbcnTxjw1ZHQbhMQhNUQWG9YG0ovY3mBuH4yiRsx/iKRK8On
-         0duVx4vhC4uXSMqO7/BNAGqxtqa6keJ4VAoQ6i+Qy6m/BPn6aQ1lloDKCWDKCDvJncx8
-         s8SbTdETXTC7SMC9sd7ng0a63HtvB/5pPhRenfUw2JIrZvkHY+JsYxvZAX+dPBOdVCvV
-         Bikrh7NBMaOejiG6zJHESa4b4M/TmPNlIoJjburn9o4A3AhbX9SlioV204m14nX/HlaK
-         6BtQ==
+        d=gmail.com; s=20230601; t=1757094750; x=1757699550; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rODzLRofJcFgARvay8orMOiUJ1s8/nrDQHaYoswCTWQ=;
+        b=ksxEymcAiuG+2Lp/LnN3C67ZF3xgw/LRbN4TNMw3k7IJNy5FodiVaI7HRqoMf3tvD5
+         Sw5C6ovRJ3LwhweT62HMaMz2iSImjf8PNSNmgZA3KQ0fA8Ho5Nu+04mnXRP6j+1IyTE2
+         y497/C2eIc6DKVmd2Zcaf8+2AiK1YPqrZo4aWmZZUkn5TNRCGgYTaVbA/09Zsewm6Tfr
+         +8SHBZyCv8gKlw97Cod+dWOvt1WKBJmyphrvREoMOLpk0jaHpfhMdiF/GaNFm06275vM
+         q9Oq5LecXGEqdjnOUhQ1i4ri3w+jPGoutWzp4jHcmMcwSsfCtIijeQzlSBTgRswwrVeN
+         Chrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757094461; x=1757699261;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iGdmOjhJX6hBoAVuN78EeIW768m+7wCUaHh9ZJvY08E=;
-        b=DPycuuv4/zPpj6IkOWNbMV1VKH3xgFm6To+EIY3eJHj6vpLk8IXrjE0I3P9m1qXfQa
-         K3OwmTp29cK6vDr1TUCOPOeE3OZcItCr0vdQJ2G7Di0pkSTwPXTPv1bqDM0r/4A46Dsb
-         +ax0YL3jEuACosb21qSBaYXSfAph67owEipakdTC66MoCfQOHHZC1cxz5HhSW2F9sdd8
-         914sPxEGLVdGbzFXRAAl5Yi+n/QtRMKtbwoxY5ZvKUGGbANx9xYqMln66FmJLEpLrFdd
-         +kOhozuKvKtLFM/1jnvcjJDw0YA5Ryv+c8Lv10zZvS8ZiIEAXe4+Cv3bGjtqrxvLKYZp
-         aP5w==
-X-Gm-Message-State: AOJu0Yx4/jzpEVyqDV9ryJcMKwZAcQaFreA7WcVdpzsaFYz5JorfKTYJ
-	IYOoaB2guWSbMXLPcSM/m/kx9+n19odNi2EetUUl8htlvDHLA9tJEdEY
-X-Gm-Gg: ASbGncsuov5Yo09UWlTH3x86e1l9F7vwJQGAshwbjMY21qTGQuF4nZ4t2ZYHmWJa7HV
-	kI52t5GIgkiwL0uVKijOi/qABjKkKoREo7idKMOHwqvFB8QrnG4kEuoAmfMuqWVaVl2SFE0zpYH
-	iZ1Jk0CnoRzfAdWrAzD0XCUasJ1YLO1QqA9wqtg1XVr/nzho9iMsckKc87gmySfvR3FCE6ygWTW
-	Ju60iVY7URpD7HZccX8GQ9x4nNbiTFr6ZGGOFy+0cmalIaKDMEbd+4s15C61/rnBsEBlkFyAqax
-	JYGo+hMjv40p/YGWF6KWZPD9IiHZ5NN7NqpA+E22OCrJHShvRtxpGGda7xnX10Fq5stzX7xZtep
-	NtjbG/onuJB1HCW0yGjfImyJ6e/RlIBPse1h7vJAYLE3BL4E5g5+Kz0tnQnaMH4O4
-X-Google-Smtp-Source: AGHT+IHE2lRExnIyHB3Qcc28VDoQK8iZdwHIwmBowH0wlHh4c9ugPDIVctlxj9Nc+It2M+MIg5ro8g==
-X-Received: by 2002:a05:6a21:999f:b0:24c:48f3:3fd2 with SMTP id adf61e73a8af0-24c48f34120mr9732610637.24.1757094461464;
-        Fri, 05 Sep 2025 10:47:41 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4f8a0a2851sm12010238a12.37.2025.09.05.10.47.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 10:47:40 -0700 (PDT)
-Date: Fri, 5 Sep 2025 10:47:38 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] mm: tag kernel stack pages
-Message-ID: <aLsiOvvxhJnTzKO6@fedora>
-References: <20250820202029.1909925-1-vishal.moola@gmail.com>
- <ea48bc1f-7ee7-48b4-b389-c3622fc4d3d1@redhat.com>
- <aLiGnSHFJdaTpMc-@fedora>
- <84297d37-b766-4cfe-9c3f-bff1cb3cb4a4@redhat.com>
+        d=1e100.net; s=20230601; t=1757094750; x=1757699550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rODzLRofJcFgARvay8orMOiUJ1s8/nrDQHaYoswCTWQ=;
+        b=pRHaBPlDl4gKxyMuJSaPPf51idN0ZeEZHsWC7OnVJ6VGulaihaMurBw/k4YDtx3wxB
+         GOGirDvw3PmnQRLjOmBCNA6Az0ct6aySZGkZgM2k2GHElaGwBg1VDod7v7WjU6ItbOzq
+         OefpUcrtsvQlY/gTnTte1e8GjqEuuKIbiWzJYKjpAPAC/EoMhyTBL+K9VUQp9fjAAoog
+         wVoRVBYBMzuQ+r/4IBKfBh+4vaWgDlgtYhk4Q7kicxAubziaRMPFUT5sQlbVmgr4TcYm
+         YneGgBYVnYw2+3cYF/bkTG7TK4CeXTTPGOa3u6tef4kSP+s2dwCP8U6Rh/on/ILStBZ+
+         rJ4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWEmpTOmIhCIHhWGw7CiBiCMsa9E5gWtqBRH/qBuh5jlCcrkjinCygv9aXztXC4GHIuISbqLy35tQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx1EJSfqYuhGYF0nHF4qPnRzSymzDWBHkLdH5S7fwJ61dm1lJ1S
+	dtrM28QIufCP7nt/J5dpFXHO47XSvzCRjMbqh4MCVIUCKvtjUQGaLRXWMPIe1nD3orrBsLs59Ga
+	yrHblunnQb8YYVcgjnPe5NlMGbsHlNcA=
+X-Gm-Gg: ASbGncvPZtr0E+UbXddsbF9iw7NZPWc5hI2LVlNlNtecalhO0XgfSjQZRJtMA6PGbjL
+	wOv/4iqR/URSB7xmWzgjSuZzBwVgeOxqS9ZR8jsrpddDbJjWs8fYkVQTHDrcgfBQCvE4FdT32PI
+	pHxiDEZukABOr0M821giThS9Z2JsWUJYyhNQ0AqmMDaQMLaEjAt5bSGoNdfM1FOlFztCjTRUACb
+	nk0eAdtoaBe2+I=
+X-Google-Smtp-Source: AGHT+IEDol+/lohZYi9Y/NFSKM0lfOTzS3L6PZJihsXBE1JGsvkJpojYVq9ljMlryr8XwDq86UdBhoVCt6bas5s2oqY=
+X-Received: by 2002:a05:6e02:3a06:b0:3f0:b1ba:f72e with SMTP id
+ e9e14a558f8ab-3f4021c42d0mr408790765ab.25.1757094750404; Fri, 05 Sep 2025
+ 10:52:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <84297d37-b766-4cfe-9c3f-bff1cb3cb4a4@redhat.com>
-X-Stat-Signature: gpyi66ryoxqorjokmw8uj1zcgewwrwkk
+References: <20250829162212.208258-1-hannes@cmpxchg.org>
+In-Reply-To: <20250829162212.208258-1-hannes@cmpxchg.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 5 Sep 2025 10:52:18 -0700
+X-Gm-Features: Ac12FXyArcg8HLTO3HVVGOFdyzJb6hPsDWKqbopHOKNws0wa2b1mtcYW9LCU0KM
+Message-ID: <CAKEwX=M8ccnsOUc4_ZcFrg-8MSwDDF250=LCFKctvTrL5vJZ6g@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm: remove zpool
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosryahmed@google.com>, 
+	Chengming Zhou <zhouchengming@bytedance.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8466B80008
+X-Stat-Signature: fkofg55tgcpgeggh9p6ktiamomyn78p8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C7277A0011
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1757094462-205589
-X-HE-Meta: U2FsdGVkX1/FN8uaUVJRXacHpxJeymk0dVp2yeWGZTvnTZFvFryC5WACPrfS94ZYZYmPB9+Q1rmiU0CIHsh/FpXiRIXdqlOe+uVdWAtEzSwlU2gc/7x1e8J0frT9sY1eS2hKMYExbfMTEZNoNMuvlfcWoMzpTZecPD9E03JBTNQBMKfy2BYIORql8gN02SJ/cG9L+L1T0fRPZmn7N8ua8ItWbl2eJxwkgQ3ZHdBxNR4/JyROVP7RpwG55pxbasiSZJ1yrlDCxknSaLlAsjLSufKiW4ipOUgqmC83b05dDf/3rqt4+MSjq31tHPIo0cZQyJJBC2ugNUDnj+nMHdXLqdFoW/u0oYA9hNL1b11zECrBMp4O8DR2RWAAU9ymAq6Fj07Z6wc/lBsi57g52RbH/nbL3KCGLdsL/hPlAhIX1P+AbdUFMrD3YD+yCw4dN7Hp9OcfmtqoYN8kUnhu30eENUOyli84WwUSOIqURH5pRi87KK2Oo+4hCXDiea4efYRrTtXZ9xb0pR9RYErGA05n64hPG4ug5OlO2cICHzj59yN2/vCe8P3d7qsouL8mwD+7fR3r5JAmWfqhmxvyVDMQnrMe+ihESTc6fgywJPBWYtZjXFN+GioydoRzfKL8wJSeqL1V7FRX+FAEWtj7GzuBRS06Wvg1V6kR5Z2vdDW5iD0qkX3aDS3RkM51q7S2CStmd+x+zrowCfWdftviDBcwj45rDYwcPi8JksZz1L3z5jnpYqzEbenLbb3Xhr+uorD8cSe88s794E/FptL1Db7tvcIfiJ4vkRmUUF4kDyzalY1XEOfzqemVj7Z5qEeLaJruYMRvW4QASDKezdcH+3frjt/BquI0xOTGJRpgKFADWkZDz1WOD5BCFtG7kCKmJ26kFs3za/fPh73LwFIh1gfuwQEBbdSWQMLqThge0VQ/VB2mZLjnnTOHfMZz2h2v6gAwpkUAZqDWvR8frW7BjI6
- qljrXTkT
- lCeYi/TMxUOZ+iF28PpYL8KmaX+V0BGBKmOI6apxVkgIlZdzbeXiKCdQIRaIfIYlX48tkzc+AgGOM/vKwtv4HcHMOTf57EvVZVGxAkonWDJ/IgpzWftRISK4FMh9QsBB0NeIDPY9CFOJYVzKJYBvos9E5FlD2lozEbbTt6i99SDD93mLLYrW8NOAmSjX7WxvXrYCFjMFYeoZ4X6HwZ8R7G8PwyCaib7P4YUmqM4vDyDepLDs/rSq84rhaPVawnHcTccSqH+oXeSSfBHa9V53ioiqvCCd1vyriEQ6gTpMjAtGvKQcslDweB/fKwAJ6YfOM7An+48UP63OPmO+Ke1jiMpwtO41YImN0cWD/z1Oo3GKyjfJrmEOCAblk/yrU6lArju88f6YQ6pkPX332q6a6HholUdUVX/DZ7KfClotWRvzN89P1tzkiFhK03AlUgcakPOcCFlQ8ivp5PnZAmJGoAnlwppvnnRiIhUVoHTFwXd/Lx7o=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1757094751-764562
+X-HE-Meta: U2FsdGVkX1+LwNfqTAFcgBFWH5CRDLTf2mRzRUIIpIxaaUJTlxOKz4uYcW9nhbwsNu+0mYalDUIaEuiCHj/IAcBsHefeLgEyWzmWl3YSgxUZwVP9I5TMOODH3wyvmE158uEMO6BdcKHGUY3MYCTQ5K67sx1mF6PnWpKU5VZlbQd6yhAFqMHXO5QxM4pPENcEKlID0UI40Q13cN64yhhc1r5qi0U1wMqIj0iqqsuv1ipXt6f8h9MA3zXaDkFE0yohOQ5VqFDbhIOxb8Po0NdIHBLGMVMCuI/Jp9FtAgwhJ91TPI9+X/xNNwIXvnkZp1q3mEyoeWzX5Ps9VoAA+VBSYrCAooXURf/VLhq69GvDyUxmOSn5wOXnOPWvBD5SB/iTFlOHnn4OULPcJSsEYj+okaJfNnQlC8IhW78hyfg8QTShIriVaI19KUZg0j1zWgHtSqspKqSqYfMW/gUPc9n58fDXY73HqA5CQB/iSEon0+9WNG/iNeQum5OJyUgv5i2OSpyzJvqw6eug1ayfkAlVJv/uozJaegMiP7uTOrfgunsep8qr7YUm01+Ud4FeBOk/uUS1qPc9M9GH8j3JDqOhfhGhVVAgpB1fweGF0koDIvXOIeGNlQDc/EYsq0D5axYq4j1+W9XmZ/2sydY2rE5+cFQ5KGqYUur02m1omUIbtWgFxdbJBvZTkHOaaKEtDmhr+2C/tX1rd9L3YRrm2cCqYoHI837oIcs0MHTriAy9W8CebdloecaNkTFSZxox0iRX3gk54R64FMkKXd+dXgpXM16hNfw/q2zMJ6eBoqpIlxyFhjUazM69eGpPpK+mmLJN0xMaGwiqH6/ulN92VChGylxzUIs3k2Sr264mKCe+YsxiglhCfmGUnGoHrbfDPL16xVZZS3kT9wx0GdLKIFRlZ2clqie9GF8/Wb7Fp1WkfHyo3wnLFgoQOTpGDPay6GmoHbeIO6oQyGPJQdrBQng
+ 3w94Wh3F
+ miHim7QYueRaWxbQjV/r1z9kT0qjoVTpL502Xplm9l9jvNJzVW8jp/lEPIgCw1nkDcmrVNyYnvGCI9lINbIRE2/7+FNC8fBBcxJlJX+rX1OayyKV7bgAtceTanstndRjjYo7FEwM/3iIns9Kn2Nq5D98Rfi3z8I3161SuPgK6TNJfrQlLFBVLDA0qZrG9ZCl5+BfBu6YRTyxKwy9q8yjSud/58l/Eh50Q4t9lMAM4EZJLvHnQMQQvlHVN86mfU4pbAR7Z/iwAHnwgx9iKjWcDfMeo3QxPEwN3tY7UGR+H2d4w+i2w/SmIHybfVe0s7XTJLtm/BJ7RNQL9thJRk3cNmBl8awJvaMQL+6CxQD5GJ+ZWwo68GDbp+zoJiOTmKcrYW7X5CWHO4KbIYav9YmyEJkIvNP5TEZ6YLBjPR4nuBP1trwnXCyelssYSCw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,60 +117,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 12:23:31PM +0200, David Hildenbrand wrote:
-> On 03.09.25 20:19, Vishal Moola (Oracle) wrote:
-> > On Wed, Sep 03, 2025 at 09:49:06AM +0200, David Hildenbrand wrote:
-> > > [resending my original mail because it might have landed in the spam folder]
-> > 
-> > Ah, indeed the original mail was found in my spam folder. Thanks for
-> > resending.
-> > 
-> > > On 20.08.25 22:20, Vishal Moola (Oracle) wrote:
-> > > > Currently, we have no way to distinguish a kernel stack page from an
-> > > > unidentified page. Being able to track this information can be
-> > > > beneficial for optimizing kernel memory usage (i.e. analyzing
-> > > > fragmentation, location etc.). Knowing a page is being used for a kernel
-> > > > stack gives us more insight about pages that are certainly immovable and
-> > > > important to kernel functionality.
-> > > 
-> > > It's a very niche use case. Anything that's not clearly a folio or a
-> > > special movable_ops page is certainly immovable. So we can identify
-> > > pretty reliable what's movable and what's not.
-> > > 
-> > > Happy to learn how you would want to use that knowledge to reduce
-> > > fragmentation. 🙂
-> > > 
-> > > So this reads a bit hand-wavy.
-> > 
-> > My thoughts align with Matthew's response. If we decide "This doesn't add
-> > enough value to merge it upstream" thats fine by me.
-> > 
-> > Otherwise if we think this is useful, I can respin this with your
-> > suggestion below.
-> 
-> As raised in my other mail, I assume there is no way to just have any stack
-> pages in any kernel config marked appropriately (slab allocation
-> discussion)?
-> 
-> If so, I prefer to not add it.
+On Fri, Aug 29, 2025 at 9:22=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+>
+> zpool is an indirection layer for zswap to switch between multiple
+> allocator backends at runtime. Since 6.15, zsmalloc is the only
+> allocator left in-tree, so there is no point in keeping zpool around.
+>
 
-I agree, this shouldn't be tied to specific kernel configs. We can leave this
-out of tree.
+Taking a step back, even if we do have needs for multiple allocators
+for different setups, having it runtime-selectable makes no sense.
 
-I didn't know a page could only have one type, and trying to handle that
-doesn't help explore what we're interested in right now anyway.
+If you just need one particular allocator per-set up, then it's better
+select it at build/boot time. And we have ways to do it, without
+adding 700+ LoCs boilerplate.
 
-> If there is a way to just make it consistent, then no strong opinion from my
-> side. Willy is the page-type guard :)
-> 
-> BTW, I was wondering if page-owner could be useful instead.
+So:
 
-Thanks for the suggestion, page-owner looks useful for playing around with
-different kernel stack allocation methods :)
-
-> -- 
-> Cheers
-> 
-> David / dhildenb
-> 
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
