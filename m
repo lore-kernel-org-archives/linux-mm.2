@@ -4,85 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B14CCA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 13:21:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F1FCA1013
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 13:25:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9AFA8E0012; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
+	id EB5758E0015; Fri,  5 Sep 2025 09:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D72FB8E0009; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
+	id E66948E0009; Fri,  5 Sep 2025 09:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAFAF8E0012; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
+	id DA36E8E0015; Fri,  5 Sep 2025 09:25:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B7FAF8E0009
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:21:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5B704C01CB
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:21:29 +0000 (UTC)
-X-FDA: 83855258298.17.251E343
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7185EA0004
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:21:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qGeu3sbv;
-	spf=pass (imf15.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C78278E0009
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:25:37 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5F1B057488
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:25:37 +0000 (UTC)
+X-FDA: 83855268714.09.AA1FED7
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A159B16000A
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:25:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of 3zuS6aAkbAM8DJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=3zuS6aAkbAM8DJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757078487;
+	s=arc-20220608; t=1757078735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+ErkcM5ydIShVlp/tyt/SXag8Ues3JjwXCCvd9mJD34=;
-	b=Pdprm/hLrKJPUBkwnBaH3BOUz9VC9iz5BsIJzxpX1rYjhT8mp1J92ZHqVDCHOfLIT/fw5Z
-	NYY8W/KRPIAUYyOBRQFyqd8rkftCOW6AjWGY/CKpo5BvKEbh4FvK99x9TZT2vmNjWyavQH
-	KH0AhwjQEMCu+kpKmZ8d5/VwS7WI7fQ=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=/4Elh7QOytx4ZZgIek2zTHwssf7pXDqP3udNq6JZzVo=;
+	b=m0xsvEUEgsYm2jr5a+Tl9KDWhIyJ6MtqRn7HKpUrA+KND7Ky0Mdp973D0WiCGIKgov4Beu
+	RQkZ8AKOG9FLXkzU9WZGRPZtMXP1AziRbEvEhQhHo89GcpxuhkB86qgXo18QGa++1Z1eY8
+	YUJ+4TsBpb82n+X4KeaEhMfn1N5z/Z8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qGeu3sbv;
-	spf=pass (imf15.hostedemail.com: domain of yajun.deng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757078487; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of 3zuS6aAkbAM8DJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=3zuS6aAkbAM8DJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757078735; a=rsa-sha256;
 	cv=none;
-	b=lpHRkt0ENMXfAOsSMS/k+nPvf5fFtxkrsGPfsfbi5+uPD3UqQZyxMLH5mpgUYc5rKC1s+8
-	W+0GJVJymLBtmtIEk61aoCd7f+DRqgdsCClOFiDEVlzZwh38IhPmCTNRyAuLo6z1I/LevU
-	FMCu7uRmKYYhNb4ZOYCah3hjXrzXLe4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757078485;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+ErkcM5ydIShVlp/tyt/SXag8Ues3JjwXCCvd9mJD34=;
-	b=qGeu3sbvk+L1QKKYBhlIRF/rq4VAH22HI9Bl+BusQN9C4CgQhqRvbK9EtlLMfJ9HnYNQKI
-	8cjWc1ZxpTsLzOLIozlvtI3Wl0cd18Z+0Tq8GSD4MCSppQG+UxXdlX7k+PemCmImmhUECn
-	qaUoPE9F+Vohqoptq22pqqVMSgPuxLQ=
-From: Yajun Deng <yajun.deng@linux.dev>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yajun Deng <yajun.deng@linux.dev>
-Subject: [PATCH] mm/rmap: make num_children and num_active_vmas update in internally
-Date: Fri,  5 Sep 2025 13:20:19 +0000
-Message-ID: <20250905132019.18915-1-yajun.deng@linux.dev>
+	b=KghN7QJe7ZWRtc+uxFdVwPwBsO6Ll0FOw0NVZ1h0Dl4O9HcOwQDKA8PNGP0qs6zz3Aqg2C
+	zcx0KdYLHKkKhm/LQBMcR8bL6y348GeD7W5f4ZQQRNOZg3OpnFA+5ODRpvr/obxpBGr09W
+	oMHmmjmjtPTy7PE9GqrLg4mRiv4Ozp0=
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3f90a583e07so4613045ab.3
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 06:25:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757078735; x=1757683535;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/4Elh7QOytx4ZZgIek2zTHwssf7pXDqP3udNq6JZzVo=;
+        b=SC4MmImyB5vVJKztc4X6hhQy16GuxptwUO9p56wLf1C9rpe52AlxztRWt40CVVL2iu
+         tTrvozgFbVFwrAZnmsU833PegdvdxDeNoCO/0D+sIf2n7gWugkG99RGAH7HfkDGHKS8k
+         SjNCgwcL7YLZQ2b42YxAOLmyUIQJKqyRyXY/ImwcNUSRUcgccCybbsWMhdfsQCveY0Az
+         TZMJ9kQ1xeRCNAi2bBFVqvPYB2kMsK/hRg1OgiSIkUAcZftt+LiCnGYyXjxXvN39ZLTi
+         +Yt8H/BXr7UcdWWHWyILEFbT90+gwxtG1sKpMtXppnA9JFxP7es5r08zMcEdVD8n5fov
+         fSZg==
+X-Forwarded-Encrypted: i=1; AJvYcCXgjtzTJAen4RtJ9fkqW52lQectw6dcudPG0zdwyUxWjNmeAjBLRcF7NvHfXUYN+87hQfcoX1Oidg==@kvack.org
+X-Gm-Message-State: AOJu0YwZkWgV2zehgGuCT3LyATRJKw8OFDtlAea+rdKHVqk7I26lMPLS
+	RvM9Ks8F7hAJPSVbTm/M8gu5uwPraMdqAmgoUPDS+eZ1Bjm+zWYNcfb197ZpcSS7H9vfIU6zznx
+	g8LbaF1OavdAWRJzOqmBjQ0QmYNxmLbqyq9ht9rbuw7sCi3BFyO8CVnfLoG8=
+X-Google-Smtp-Source: AGHT+IHwnwdRge0T4S8uURmNjM4GphB5kqRkJAS0qTVE25vmjSTY4Dd9PV0NRYsZElZozbPfLsk9iw1nBRpF7YF20+/HvE18CegU
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 7185EA0004
+X-Received: by 2002:a05:6e02:228f:b0:3f9:6c36:ca1e with SMTP id
+ e9e14a558f8ab-3f96c36cc58mr21575495ab.4.1757078734659; Fri, 05 Sep 2025
+ 06:25:34 -0700 (PDT)
+Date: Fri, 05 Sep 2025 06:25:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68bae4ce.a00a0220.eb3d.0014.GAE@google.com>
+Subject: [syzbot] [mm?] general protection fault in unpin_user_page_range_dirty_lock
+From: syzbot <syzbot+0d2f32dad7098551e15d@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@redhat.com, jgg@ziepe.ca, 
+	jhubbard@nvidia.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	peterx@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A159B16000A
 X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: yyyyhpmu7kgatizz3114ky1c1m7aryw6
-X-HE-Tag: 1757078487-378060
-X-HE-Meta: U2FsdGVkX1+D+kPUjXq9PtpOenZ8ZLiR4C9WenC7fktO9pkPvN0JLB7LzIL2gl/wnDIxSpQaZ9zh8w3s3Ny1Yy14KKdmstnOSOhTFSHlUzXLFufoK7QQyNyvnRjYXsHQx53EzrxYNt6dK86hz00+IsCnkOKFx9AUluR0EabpAy3AR5VwnHhjOmUyvfEu4/XW1wcIqUdA9ZEO4vJi2klixQ4arqrsu/MlYwuCJUMHY2n3KLHsC9EOgNffJ61pzXP7zuCZLsyV/gCd+NtXSxeFtNOqmSLRs07DB5oo7vrJVSyNAES+UOvt+Tf5sW8wA1zCJU4IJtYUeEZmMIfWh9YBE1sqIvq23G78FhiobqcdqUAV9qRN2dDwp7mfeeMekC/EKZdmikGERdjRUpKS6DemfPoArsiBegYqFASMpnQoMfz2M0w455N6+PQaW/d+S2inpfbCpG2L4QCLYCEWah/St958Mr8/qSHhqNWg3Wr4BcpFxvaT/eV4xQvAQHUp03eGHxlDyPai6IDCPUPr7vrYZDlmtsP3aZrwm9aAAyxOL2bHLWIutCp+hhNe8ew1b7y6WIo+b4ItLhYOWbeEBR2K5q6MiIYyIIiQolJIhn9aZp70iiHGOiY+Vf/fru30ITd/GvmNEdcM9vAJCP1lxsmAcEPd0HEt4MPzy0OR8fFD/C+0elkuEmDUuwoYamRaf6rbE4xzIuiX5IHwxc6rTNp629QD9c4q1Kg+6w2PTRX0zcFUGtBA3v+Ayb/9zr+mm0QNhH/6KHYK9dYgc/ISEOx60WMDsTHGhHylZASJY7BsNencb/yaGn/BZNeYwkqYE0cZajLFVn9j0BTjxBZ82Tsxyq2YFCLIgzZfYe0VdgY+Vc2W3xj+RmLEX3gdSXMcbzhI4xhn1/2zqQtpSvBfMK/1XIbEZ5PCgGTOoNKCq+q7LN+nDB+FPXY534TPTP2LBbuPlKLb/7rangd5LM32hBp
- b77Qx+wm
- CZ1VT2DxqdX/v/ofONYeqBh5XaRneRosvd04IdY/YuSR5GptfUssID+QJ8rRMWGD62aHWevb5zJIVM+dvT2nryUKuMPWkLUrLMZTxfOADf4QdqNLxk4rQRHFg/BQM0XUTf9RTebCPZzHgrDFkDzyXx5BxfxdaFDc0VyQlU0HrTWVmba/bEIKGLjRfXx+r6MlIkUxpDXGyUdpXgopuAojRmwBIMZWBsH2qOhIvCxCiMvoMJoY0PjHfa5nVQ3Z3UgDsR4ayq1T5QVZPf+i+6BGHeO7AXw==
+X-Stat-Signature: fcj786u6m48k54k6u6ww87xrgjfxetid
+X-HE-Tag: 1757078735-884685
+X-HE-Meta: U2FsdGVkX1/ob5ZTZiZPl/hD1eCGBTyFwZYw7ocRpbTVZ7bH/tSm2UAYslSihEFzmLH8AElP8OAr7JXqmnQjgireCniOuNMwDSNWoZnxOLL+yHqJZMYdjy/cM2JBtH4n/SJ27A1gKXYyw7RsA+rnT7AG/DKTlQ/g2mpaxC8MxTru2AIogRX8hveQodg6vJ2t3sMokIxwzQseWrC/L4vdo//kuLE4yO9vAUNt1/J9NDxFBmvE5kskWqZGAc08TbGHKFNEFMX4Uz/soQmtYrdOY+aLbpUkqg0HQ/19qQGNzm0lZ2GZpS91eoo0jMdXrzAN95E/OxTSce4NsBuVGg1MMo0+CDAZe5SZzhHqHWHOvIcBlUk3bWM+zCynBjGaDGm4b/gebSxZLyGmlNpF+GDgOjDPhRc/VWgil8xUWPR6DDNw2838josog4l232CfL0tBvQDw6KPUdm/SOBpljybBUdxwLz9GoXHs7297qgp4Q29iXL+QQEW9ya7g5V46fVUv6LxivyJyQQtM9UWtd6lassPQrr4UNyOAYT+7ucBySLg+3zB1Vpff31ycfM312zGlg7ahHd6wBnjwXODrsVeRfltBPFfeOmFPgTiW0s7MJ8IbaomFgTRXKk28xrauBdyysjbSgVv6IgK3qdvjx5PET8il3r3sEVtcAlLgrnPAHyyItZs18g887lhb8o++DC1Xj16cyM6K4fCK2x2Uuum95h57hxhWU2zXWkfFVwFDZf20JI7UFHaruhKFbgsTTR44Lrjs62PRJsijaq/k3kWFRd5pSHjGVZWmYzDWQfeqB0dl5HsYgpR5drLpk7sL60ZroLjBPB1T6oI4yt7soDqB59azVmlN1gVfgc8hSaa4xKmSxuuz7LCwTrtXzpN7o0/iQEZFcogLAagd23ajv0qVpn3VfAxiRZrkaaOkMg+E1inzz/O/Pkw06mHPFtLgd8JmHf4exWG8zv0vknIvlY9
+ 2a/qeklu
+ Fz62zYpAoDS0obKEVciIcYY34nK9hUUGn2LEVRgNqoDquparKj6Fo5nQtpAIt25QkWPC3JfXzMrLHe+0lEK92LEPU8eKCdJspv86tda9LmkdqJbbkZG6j6fAq4YlO/EeEOErrDktiwFQZuQQpWYiF1zOa5PaNFR3bH+bpFPcxlIUllLcyrX+mZ3BBXUwEma84o1y+ju2LT3E04C5yHwWLSe/ogUbP/iCltel6afL8R0lPE1O0zaEi79pnf/PuK7ZAQ2ed7o9q2b0b/xvJvXOrgNBErM6JOQaoY1MJ2QQ5XfPNLzV1NFUZlk4I4neg5VL+Gjf21PmaufnRyJd4eCXxuY2oz2k5b58Sye4V2En3FoBWBg/YmuRSPFcImaPmmBCTByuuDbize0dAb8F47STX/gTKKFTAYPh4C0Q98XkV+3UfEPjgvv9QBPprPzov08Cs+M6bx0sOOLE0yXN8zbesoN5qMZnxFRNhZEDDc4v6cvPwlhObVczl0QelDpt8U36Vkhf2nzcAsllEPYCPM4Npmd0rMP9UBGSMZQG1T4bka+MqpGPIbm/b9K8V5zvyIg+4gskBcN+AUGTsY8lzuNSWMLBtXTKfswjigPQX43jhYG/ef9P4imiO16qnDf73oPWuTnYS02oBGdQS7orpYSRvPucfIhBAFhFbWY7+lq5DoXrj/49chjQ/Nw6Rpu0SL4XItSif4E8y8OSVJuECArbbDFtDfefGK3f8sJs/u60fjKQOveO+n6BfSSkWXVuD4aJ4DjXxJexx4R82VPn3K6dqmMqi/E/vl6cNk7Zag2P4vTj5cOxG7fbQ1WPAPpTg2gA7XLSSnrcTK1bqke6E+eFzfFZKNn/aUYhXmU9eTakY2R4/OUhqsOo7k52W2mRuJPz1e5k/0T9Pwyy0Q21PYhCVO+rsML2zhPqcUW+uQqGP+fqLCAVfv5190U2NhxuME7XwgxkywjdKR2scfD6/ZQdb5MN2Sj9/
+ o1AW9Lfv
+ XyRCkpZ9pwzqasF4auNWaSGQaEjyY7zFsgvqgERDmTrQrc9zMvsIYVcwZPsdNVBlqTNWeYZTOwxx7wtD7tAK0UZyI7NLlQ+W/RBmQj5ASrRU0aCG0VGacirCWl6wJGzWUNC5DBZrvBPU160yBP/aVA89i27dQF+uiBenW16jIzKEZMBZ9NfW81g/TrjibLtzTOhwnpXcg1ZSfwy6wI+DFlJnRrFJlXTki7D6aBMxWDMiwLvK5NMjKrwK8cAcLwQp3m271MJxLVUARtEn5p0J+jusEjYLPe1boTCzQh+woGVGD8TK/fyHGX6ZMI+flribQjYHO3bL9PryuF8YwE5GUvO4WBuDDdwTT2IYy9xuauSexegzavFvIK49mfGw25kzesWSaljzkFC5+A+S2J9/h/McVYHSrg1Z8fwGdLXHqbj+QyXPjaIphxOuFJ+UooXiZ6u2sE1PaUP7vQLQ9sF9vIXJ0VkTevPhfIrKqaaeI2iWhs2KdTDeXnNne45xvhnz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,170 +97,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the anon_vma_alloc() is called, the num_children of the parent of
-the anon_vma will be updated. But this operation occurs outside of
-anon_vma_alloc().
+Hello,
 
-The num_active_vmas are also updated outside of anon_vma.
+syzbot found the following issue on:
 
-Pass the parent of anon_vma to the anon_vma_alloc() and update the
-num_children inside it.
+HEAD commit:    4ac65880ebca Add linux-next specific files for 20250904
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=138b087c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=fbc16d9faf3a88a4
+dashboard link: https://syzkaller.appspot.com/bug?extid=0d2f32dad7098551e15d
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16a8a134580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=159de962580000
 
-Introduce anon_vma_attach() and anon_vma_detach() to update
-num_active_vmas with the anon_vma.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/36645a51612c/disk-4ac65880.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/bba80d634bef/vmlinux-4ac65880.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e58dd70dfd0f/bzImage-4ac65880.xz
 
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0d2f32dad7098551e15d@syzkaller.appspotmail.com
+
+mmap: syz.0.17 (6062) uses deprecated remap_file_pages() syscall. See Documentation/mm/remap_file_pages.rst.
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 UID: 0 PID: 6062 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:_compound_head include/linux/page-flags.h:284 [inline]
+RIP: 0010:gup_folio_range_next mm/gup.c:241 [inline]
+RIP: 0010:unpin_user_page_range_dirty_lock+0x63/0x4e0 mm/gup.c:369
+Code: 45 31 ed 4c 89 74 24 18 4c 89 6c 24 10 49 c1 e5 06 4b 8d 1c 2e 48 83 c3 08 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 ff 3e 1c 00 4d 01 f5 4c 8b 23 4c 89
+RSP: 0018:ffffc9000413f6d0 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000008 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: ffffea0002d10037 R09: 1ffffd40005a2006
+R10: dffffc0000000000 R11: fffff940005a2007 R12: 0000000000000002
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  0000555587af6500(0000) GS:ffff8881259fa000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000000 CR3: 0000000074024000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ batch_unpin+0x3eb/0x560 drivers/iommu/iommufd/pages.c:691
+ iopt_pages_unpin_xarray drivers/iommu/iommufd/pages.c:1711 [inline]
+ iopt_pages_unfill_xarray+0x813/0xaa0 drivers/iommu/iommufd/pages.c:1747
+ iopt_area_remove_access+0x2c4/0x3f0 drivers/iommu/iommufd/pages.c:2196
+ iommufd_access_unpin_pages+0x33b/0x4e0 drivers/iommu/iommufd/device.c:1357
+ iommufd_test_access_unmap+0x28c/0x300 drivers/iommu/iommufd/selftest.c:1448
+ iommufd_test_staccess_release+0x6a/0xb0 drivers/iommu/iommufd/selftest.c:1489
+ __fput+0x44c/0xa70 fs/file_table.c:468
+ task_work_run+0x1d1/0x260 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop+0xec/0x130 kernel/entry/common.c:43
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x2bd/0xfa0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fdd6e78ebe9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd897539d8 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+RAX: 0000000000000000 RBX: 0000000000019b27 RCX: 00007fdd6e78ebe9
+RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000789753ccf
+R10: 0000001b31420000 R11: 0000000000000246 R12: 00007fdd6e9c5fac
+R13: 00007fdd6e9c5fa0 R14: ffffffffffffffff R15: 0000000000000003
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:_compound_head include/linux/page-flags.h:284 [inline]
+RIP: 0010:gup_folio_range_next mm/gup.c:241 [inline]
+RIP: 0010:unpin_user_page_range_dirty_lock+0x63/0x4e0 mm/gup.c:369
+Code: 45 31 ed 4c 89 74 24 18 4c 89 6c 24 10 49 c1 e5 06 4b 8d 1c 2e 48 83 c3 08 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 48 89 df e8 ff 3e 1c 00 4d 01 f5 4c 8b 23 4c 89
+RSP: 0018:ffffc9000413f6d0 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000008 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: ffffea0002d10037 R09: 1ffffd40005a2006
+R10: dffffc0000000000 R11: fffff940005a2007 R12: 0000000000000002
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  0000555587af6500(0000) GS:ffff8881259fa000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000000 CR3: 0000000074024000 CR4: 00000000003526f0
+----------------
+Code disassembly (best guess):
+   0:	45 31 ed             	xor    %r13d,%r13d
+   3:	4c 89 74 24 18       	mov    %r14,0x18(%rsp)
+   8:	4c 89 6c 24 10       	mov    %r13,0x10(%rsp)
+   d:	49 c1 e5 06          	shl    $0x6,%r13
+  11:	4b 8d 1c 2e          	lea    (%r14,%r13,1),%rbx
+  15:	48 83 c3 08          	add    $0x8,%rbx
+  19:	48 89 d8             	mov    %rbx,%rax
+  1c:	48 c1 e8 03          	shr    $0x3,%rax
+  20:	48 b9 00 00 00 00 00 	movabs $0xdffffc0000000000,%rcx
+  27:	fc ff df
+* 2a:	80 3c 08 00          	cmpb   $0x0,(%rax,%rcx,1) <-- trapping instruction
+  2e:	74 08                	je     0x38
+  30:	48 89 df             	mov    %rbx,%rdi
+  33:	e8 ff 3e 1c 00       	call   0x1c3f37
+  38:	4d 01 f5             	add    %r14,%r13
+  3b:	4c 8b 23             	mov    (%rbx),%r12
+  3e:	4c                   	rex.WR
+  3f:	89                   	.byte 0x89
+
+
 ---
- mm/rmap.c | 63 ++++++++++++++++++++++++++++---------------------------
- 1 file changed, 32 insertions(+), 31 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 34333ae3bd80..2a28edfa5734 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -86,15 +86,21 @@
- static struct kmem_cache *anon_vma_cachep;
- static struct kmem_cache *anon_vma_chain_cachep;
- 
--static inline struct anon_vma *anon_vma_alloc(void)
-+static inline struct anon_vma *anon_vma_alloc(struct anon_vma *parent)
- {
- 	struct anon_vma *anon_vma;
- 
- 	anon_vma = kmem_cache_alloc(anon_vma_cachep, GFP_KERNEL);
--	if (anon_vma) {
--		atomic_set(&anon_vma->refcount, 1);
--		anon_vma->num_children = 0;
--		anon_vma->num_active_vmas = 0;
-+	if (!anon_vma)
-+		return NULL;
-+
-+	atomic_set(&anon_vma->refcount, 1);
-+	anon_vma->num_children = 0;
-+	anon_vma->num_active_vmas = 0;
-+	if (parent) {
-+		anon_vma->parent = parent;
-+		anon_vma->root = parent->root;
-+	} else {
- 		anon_vma->parent = anon_vma;
- 		/*
- 		 * Initialise the anon_vma root to point to itself. If called
-@@ -102,6 +108,7 @@ static inline struct anon_vma *anon_vma_alloc(void)
- 		 */
- 		anon_vma->root = anon_vma;
- 	}
-+	anon_vma->parent->num_children++;
- 
- 	return anon_vma;
- }
-@@ -146,6 +153,19 @@ static void anon_vma_chain_free(struct anon_vma_chain *anon_vma_chain)
- 	kmem_cache_free(anon_vma_chain_cachep, anon_vma_chain);
- }
- 
-+static inline void anon_vma_attach(struct vm_area_struct *vma,
-+				   struct anon_vma *anon_vma)
-+{
-+	vma->anon_vma = anon_vma;
-+	vma->anon_vma->num_active_vmas++;
-+}
-+
-+static inline void anon_vma_detach(struct vm_area_struct *vma)
-+{
-+	vma->anon_vma->num_active_vmas--;
-+	vma->anon_vma = NULL;
-+}
-+
- static void anon_vma_chain_link(struct vm_area_struct *vma,
- 				struct anon_vma_chain *avc,
- 				struct anon_vma *anon_vma)
-@@ -198,10 +218,9 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
- 	anon_vma = find_mergeable_anon_vma(vma);
- 	allocated = NULL;
- 	if (!anon_vma) {
--		anon_vma = anon_vma_alloc();
-+		anon_vma = anon_vma_alloc(NULL);
- 		if (unlikely(!anon_vma))
- 			goto out_enomem_free_avc;
--		anon_vma->num_children++; /* self-parent link for new root */
- 		allocated = anon_vma;
- 	}
- 
-@@ -209,9 +228,8 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
- 	/* page_table_lock to protect against threads */
- 	spin_lock(&mm->page_table_lock);
- 	if (likely(!vma->anon_vma)) {
--		vma->anon_vma = anon_vma;
-+		anon_vma_attach(vma, anon_vma);
- 		anon_vma_chain_link(vma, avc, anon_vma);
--		anon_vma->num_active_vmas++;
- 		allocated = NULL;
- 		avc = NULL;
- 	}
-@@ -306,10 +324,8 @@ int anon_vma_clone(struct vm_area_struct *dst, struct vm_area_struct *src)
- 		if (!dst->anon_vma && src->anon_vma &&
- 		    anon_vma->num_children < 2 &&
- 		    anon_vma->num_active_vmas == 0)
--			dst->anon_vma = anon_vma;
-+			anon_vma_attach(dst, anon_vma);
- 	}
--	if (dst->anon_vma)
--		dst->anon_vma->num_active_vmas++;
- 	unlock_anon_vma_root(root);
- 	return 0;
- 
-@@ -356,31 +372,22 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
- 		return 0;
- 
- 	/* Then add our own anon_vma. */
--	anon_vma = anon_vma_alloc();
-+	anon_vma = anon_vma_alloc(pvma->anon_vma);
- 	if (!anon_vma)
- 		goto out_error;
--	anon_vma->num_active_vmas++;
- 	avc = anon_vma_chain_alloc(GFP_KERNEL);
- 	if (!avc)
- 		goto out_error_free_anon_vma;
- 
--	/*
--	 * The root anon_vma's rwsem is the lock actually used when we
--	 * lock any of the anon_vmas in this anon_vma tree.
--	 */
--	anon_vma->root = pvma->anon_vma->root;
--	anon_vma->parent = pvma->anon_vma;
- 	/*
- 	 * With refcounts, an anon_vma can stay around longer than the
- 	 * process it belongs to. The root anon_vma needs to be pinned until
- 	 * this anon_vma is freed, because the lock lives in the root.
- 	 */
- 	get_anon_vma(anon_vma->root);
--	/* Mark this anon_vma as the one where our new (COWed) pages go. */
--	vma->anon_vma = anon_vma;
-+	anon_vma_attach(vma, anon_vma);
- 	anon_vma_lock_write(anon_vma);
- 	anon_vma_chain_link(vma, avc, anon_vma);
--	anon_vma->parent->num_children++;
- 	anon_vma_unlock_write(anon_vma);
- 
- 	return 0;
-@@ -419,15 +426,9 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
- 		list_del(&avc->same_vma);
- 		anon_vma_chain_free(avc);
- 	}
--	if (vma->anon_vma) {
--		vma->anon_vma->num_active_vmas--;
-+	if (vma->anon_vma)
-+		anon_vma_detach(vma);
- 
--		/*
--		 * vma would still be needed after unlink, and anon_vma will be prepared
--		 * when handle fault.
--		 */
--		vma->anon_vma = NULL;
--	}
- 	unlock_anon_vma_root(root);
- 
- 	/*
--- 
-2.25.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
