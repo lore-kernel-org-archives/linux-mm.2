@@ -4,64 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCCA2CA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 12:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93695CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 12:23:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24FF38E0006; Fri,  5 Sep 2025 08:11:55 -0400 (EDT)
+	id C54926B000D; Fri,  5 Sep 2025 08:22:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D9AF8E0001; Fri,  5 Sep 2025 08:11:55 -0400 (EDT)
+	id C2C466B000E; Fri,  5 Sep 2025 08:22:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A1E18E0006; Fri,  5 Sep 2025 08:11:55 -0400 (EDT)
+	id B692F6B0011; Fri,  5 Sep 2025 08:22:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E72668E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 08:11:54 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A1BD4140156
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:11:54 +0000 (UTC)
-X-FDA: 83855082948.01.E8F6FE6
+	by kanga.kvack.org (Postfix) with ESMTP id A58DD6B000D
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 08:22:59 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E737B63CA
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:22:57 +0000 (UTC)
+X-FDA: 83855110794.02.3A6DDFB
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 83F11A0019
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:11:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8F60940012
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:22:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
 	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757074313; a=rsa-sha256;
-	cv=none;
-	b=dyNEu037fAgj/hQ34XHL7p10kscCM03AADxRUjPer7CK4KCsLqSGgbTh/4OkBHqwAlt/LQ
-	VnSweVm0kZmf1/jCehA2yA3LY/pcnrFWVsyGKXfaTOIknUz/VOwgmDGgg/bPlKskZVjMqL
-	NJFW6e91cP+RuA0EYy9wvGt8F0GuSDo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757074313;
+	s=arc-20220608; t=1757074975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AYbnAayVJ5j0xB1k23z8SMycFu9vSF8PiQYLB5iMyog=;
-	b=aCnvvb342fs5ZTE3zQDQ1YM3le3VeaL28LeLWO55qrZeb1eNU1syd/kemYtnSJIGdB4/YS
-	5iNLRnwYDZGnqfk6R4KDofY5HUpMLsmHLawgvHja6YC78rHmqFXl84nyb8LJewlqpA9A4k
-	pnptO3iwkOsHJ8DGXHf8q5MSt1y/Yqk=
+	bh=ywmDAG7PE2fj1+B2GkU5RbYTyU3sAGy8lTlonC3Qgos=;
+	b=5ddhZ1ms1rKtdmCYSCNH6iQt3dS8q+mtr6fT2MSVHofiRwDsN/uSG3Ovo36CeXefheha7/
+	HWw8oKjv5FuBqYA4C1e+Hhb5dRCItZ8iz6nynpmLWweM5cTUgPTRvD405F8b9uN+7eOGZQ
+	AsxRwRZd3wfNgSFMOfvfIz52ZsBWEkc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757074975; a=rsa-sha256;
+	cv=none;
+	b=BlcNYuxmiFImFe2uuqrv/IHp2CoD7kb8EKiV9fNr+BwYbVmPZptPrpPaFnllyJOJQ/Wbhb
+	cqLC76V9QqJc3vjYvaM9e3PB4BN1SEO6EBrT9HNbfPRfPcMoS8w9DsXl2KeJGfkjUCCCqp
+	WaVoCjkKt6bfjK7rfEqSLGs8Eat/0dI=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0A1B153B;
-	Fri,  5 Sep 2025 05:11:42 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2012D153B;
+	Fri,  5 Sep 2025 05:22:46 -0700 (PDT)
 Received: from [10.57.60.42] (unknown [10.57.60.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 65F093F63F;
-	Fri,  5 Sep 2025 05:11:45 -0700 (PDT)
-Message-ID: <66335cf3-d49d-4b27-a37b-0a8a5e2c5d78@arm.com>
-Date: Fri, 5 Sep 2025 14:11:43 +0200
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7BF93F63F;
+	Fri,  5 Sep 2025 05:22:48 -0700 (PDT)
+Message-ID: <a18f9cbd-490d-4270-8707-4ed6d730cfcd@arm.com>
+Date: Fri, 5 Sep 2025 14:22:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/7] Nesting support for lazy MMU mode
-To: Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH 2/7] mm: introduce local state for lazy_mmu sections
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
@@ -72,8 +73,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
  Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
  Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
+ <Liam.Howlett@oracle.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
  Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
  Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
@@ -83,20 +83,24 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org
 References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
- <9fd076c7-f163-4b92-8201-d8a259a338c1-agordeev@linux.ibm.com>
+ <20250904125736.3918646-3-kevin.brodsky@arm.com>
+ <22131943-3f92-4f5a-be28-7b668c07a25c@lucifer.local>
+ <75db1f58-98b3-463c-af4f-2ce9878cba9f@arm.com>
+ <2aed0b3b-1a70-4c89-9177-8de4fabb2237@lucifer.local>
+ <e6072568-1b98-4a7f-8d30-65417a440bb7@lucifer.local>
 Content-Language: en-GB
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <9fd076c7-f163-4b92-8201-d8a259a338c1-agordeev@linux.ibm.com>
+In-Reply-To: <e6072568-1b98-4a7f-8d30-65417a440bb7@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 83F11A0019
-X-Stat-Signature: 8xgnd676h45cfhcboj5bxqi116hm5ano
+X-Rspamd-Queue-Id: 8F60940012
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-HE-Tag: 1757074312-163821
-X-HE-Meta: U2FsdGVkX187B8KCY5dDhpcrPH90XXxeMVPttsZObfdLr020q41URNfaKaQ6yCFt46lq6JuAT5sPS5g8bZoQVvgXGPFK6utdyYqa4cGa2QbNR7j1J6ySilMZ9gWJ5MhQdSjaKp/km9AzaZZVGZaHF29keu3id7wvuOtPhh6qRhfIdNSHUR5OD/NhGT2qIbD4Tv0BlSHbELOWlikJ3l7QbQ2rt/uX3b6Kx5N/eIPu6FSSt7zQ9dtU7c37i86dggOqf5OWD1dJduhTBovNoMDIwhMg6blkUQfjp8bUyZpvTO/PYSaAXW8/Q/kQan+8SwWzqrvxD0K49wiIrrtP4HEhD6Hbcb/EGL9WX1v57ZPon9NYhYWT5UKVTbQcdNd1x0IuwMu/pkL+vTxrEmhiS3JaKOJGM13FP9s+6eMf2IxLq5edznNZElC8UcrOGfcOKbgWAqOymzDtye1B+E3FFCYvhdwMHewSSMPrzgIeGFm9HzANPRkPIa0TsBPcPBkpEye8Qb9dErrKAlguSysLjDgCIOyUqA5coDLkTGa47osc8e2pg5WFjIj++Q2CmN3T98qhuaBi63R2gJFFZkB30gj1CZWjMDEZUhjU5M8d6ip2W1LSKu9CRdwucHhm+OdJe0h95r5xyfblsR+ozQ23o/4HuXMYAg4HIEb8DoRxDoJ31q5Px4wQ5rOuQ/kWarT4vC+bQnCLRFszY1JbBGK3wisdS8ZDrz5JhRmZ93csxipSzewm+3kFHsfJDGz9s8i4HNMSvCR/pwqxmT1rznHgLxWUT4uyWxa6Etntx1I5eC2IDZe5yxFMaDVqz4fXVa8Yw8ekJtxOAG42/lysnrhvpM7BZlxxqhLC686J4TXIYhMMGpafgs5AVeZ11k7rHqvKutbl/FU50p9Tuj50Hmpm9JIF6uLeT9ABALSUCnVqcyr9VKqdr908i3a70WLS9FTul64zUQokJQhe83YV3YHFZiA
- xKxtjZfF
- 41BKdWqn94waFRvO0pg4+vREil7VboYat03Gdbjisq1pk/csL+SPhHP6bhytVaoqB4ftTS9zGDgMTrLZJNxjtPRLVJBz3/Awip0fPoBEvwFO6CluUVwM612LNFTbPLviNppUU6qzH2XbnhbkpwyT/UUJsPyt3SDDuSah5oH+lwdEdljwATAn5+YuAcV02PjZ1lFn7Usj/0wqfI4XGbHOc/4VuvT4r+LFXfkEu
+X-Stat-Signature: jt66bmia9aptsid4byg9jud89o5ab7xq
+X-HE-Tag: 1757074975-43265
+X-HE-Meta: U2FsdGVkX1+ypyEWi/+2t0D4nUtHmtQIO1WOLJQgLa+css5VhbPDh5ScfVtfMOYObvBsAuUOTQzjncU/LLHYFkq18t6z3xX3y1poJaecNQ0URt8lxbHlyJDgbZM4txjJW47e9pIAjZYgqK/YjP0Jdvw+mC1CRtHx9e8A9pZ3Eopn5jivXa9adiyvWhUwUQ9QNRh+2sKdbI+wXve9IHCT4ozpjUhM1/J9+mq92V1mgTrcRuI3JM6B8dJsITw66OpT+eMUEIvRalajQGbwMGfOKZXJcQr1XPPJJ9699aaE/6i+/3MvUOrKIIpLDeyNV+m9n1+YkhDIL7SzI/V1Iy5ojnQFzzNPzU7mlKxjN8yTTwig8Va7PlcCyULt0je1DjCnfL7dQDjkrRN66zDIUeCoX105vLmV7DQUFrrEIzWxtohIhJDvcVbWe2smPYoxU4wkEQNqs+kXSHzzkKgsOHIQTe+8S9AmrIT6r4KnWy2ysoEwwX9FZrUIliBFJeiETJYBNiSVk3oLEnPIG6bC5Io2JNzZy2E/R4gc8ftlqJycg9DrppX74/GSds76pnp/GJGU65bloiWJJeCa4u4Ebp1BRP1ylnTpc5vqoJZy3v9IZcXE284iCQwlyZr/W3wpnRpfdOHuN9TVH2vnAJC/GLPO9cVHDRURTY7d1zV3XMjJqOC8XcreJBIuOAKSOFELZ3WtekMpnJ9SNlHDcDUuIe8yugZn7OzdVpUSFgeGi8WObD9O3BrLoAR2BF8SahGP53fD1TMerHeRGi2AGm+iCrplEmd0P1cbPh9OSB7QMAeRROy0cBZDchrHO+ehiwmw5ZPOy8+WvF6l1Nfk9/uPVpYqWrjShtayxpDebDeSM3Yh5TslSnXMQ8Y1wheekzlIW+Rj2q8OeKnRINMZsqxDg7g4ikKIKjsNXRWoT6x+PTxUHIBRsnxhEq20gwFPBDM+syJYZq+y4YguCnQQhFSl53k
+ cbyZzeon
+ DnUiJJP7OgVtgyCoulXlFA1vkxlnAAuOUH70h3XZsxxpmE0YGm1gybdj7J3DTjlIRl1t/0TprT3PxqsKLfvGSFLT8Nj8tBn2jJxo9uSiG/UyDBO5SqGTlVSWx5twqcMsgy3qbi2imq9xyXx3wvUJoJE4YqAMV5psUhkk4lmAEdiAjAb8/668wuxLRJtE6hry50YSK6Xga7zSMI0zuo/pQsY0vfw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,60 +109,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/09/2025 11:46, Alexander Gordeev wrote:
-> On Thu, Sep 04, 2025 at 01:57:29PM +0100, Kevin Brodsky wrote:
->
-> Hi Kevin,
->
->> When the lazy MMU mode was introduced eons ago, it wasn't made clear
->> whether such a sequence was legal:
+On 05/09/2025 13:37, Lorenzo Stoakes wrote:
+> On Fri, Sep 05, 2025 at 12:21:40PM +0100, Lorenzo Stoakes wrote:
+>> You should really base on mm-new.
 >>
->> 	arch_enter_lazy_mmu_mode()
->> 	...
->> 		arch_enter_lazy_mmu_mode()
->> 		...
->> 		arch_leave_lazy_mmu_mode()
->> 	...
->> 	arch_leave_lazy_mmu_mode()
-> I did not take too deep - sorry if you already answered this.
-> Quick question - whether a concern Ryan expressed is addressed
-> in general case?
+>> You need to account for everything that is potentially going to go
+>> upstream. mm-stable is generally not actually populated all too well until
+>> shortly before merge window anyway.
+> Just to note that mm-unstable is also fine. Despite its name, it's substantially
+> more stable than mm-new, which can even break the build and appears to have no
+> checks performed on it at all.
 
-The short answer is yes - it's good that you're asking because I failed
-to clarify this in the cover letter!
-
-> https://lore.kernel.org/all/3cad01ea-b704-4156-807e-7a83643917a8@arm.com/
->
-> 	enter_lazy_mmu
-> 		for_each_pte {
-> 			read/modify-write pte
->
-> 			alloc_page
-> 				enter_lazy_mmu
-> 					make page valid
-> 				exit_lazy_mmu
->
-> 			write_to_page
-> 		}
-> 	exit_lazy_mmu
->
-> <quote>
-> This example only works because lazy_mmu doesn't support nesting. The "make page
-> valid" operation is completed by the time of the inner exit_lazy_mmu so that the
-> page can be accessed in write_to_page. If nesting was supported, the inner
-> exit_lazy_mmu would become a nop and write_to_page would explode.
-> </quote>
-
-Further down in the cover letter I refer to the approach Catalin
-suggested [4]. This was in fact in response to this concern from Ryan.
-The key point is: leave() keeps the lazy MMU mode enabled if it is
-nested, but it flushes any batched state *unconditionally*, regardless
-of nesting level. See patch 3-6 on the practical implementation of this;
-patch 7 also spells it out in the documentation.
-
-Hope that clarifies the situation!
+Thanks for the overview - I had a general idea about those branches but
+I wasn't sure what the standard practice was. I'll rebase on mm-unstable
+to start with.
 
 - Kevin
-
-[4] https://lore.kernel.org/all/aEhKSq0zVaUJkomX@arm.com/
 
