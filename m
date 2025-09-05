@@ -4,99 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18D97CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 22:20:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E03D8CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 22:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33D6A8E0003; Fri,  5 Sep 2025 18:20:54 -0400 (EDT)
+	id EB5698E0006; Fri,  5 Sep 2025 18:40:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EE268E0001; Fri,  5 Sep 2025 18:20:54 -0400 (EDT)
+	id E8C198E0001; Fri,  5 Sep 2025 18:40:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B6108E0003; Fri,  5 Sep 2025 18:20:54 -0400 (EDT)
+	id DC8CB8E0006; Fri,  5 Sep 2025 18:40:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 014198E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 18:20:53 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAD1E140382
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 22:20:53 +0000 (UTC)
-X-FDA: 83856617586.01.9F5B584
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F1383180011
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 22:20:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=TCqeOMh+;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=dPtpTyrI
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CD2868E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 18:40:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3798C8595B
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 22:40:30 +0000 (UTC)
+X-FDA: 83856667020.02.66C7786
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6522E40009
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 22:40:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="O+JMAAC/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757112028; a=rsa-sha256;
+	cv=none;
+	b=B1pMcakbB4hD6rRl6SXqazECcv00yeyL7wxcCZDtnhEbTc4VQxOjcKUxdZ6lyixQ7fU4sd
+	W49r7/ey0I7b3Y4R3eEf6/cJm69MEO46MqpFNC/Z1l6MBW6KaZ0z1Hw3diFVZ3RuChgIBU
+	OAyNHR7mL6Gvho1ohe4Gt6xrFeQHgbk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="O+JMAAC/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.166.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757110851;
+	s=arc-20220608; t=1757112028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=odc26EmzyJ8HGpXoYPMXxK2vau/006W/+LwKY/jri00=;
-	b=PZyQifcmoUbZck1qbqiqlrV+C+1WdIdVdW6aY7rGnuphJgmBp8fVurBv7kw+Pfz5pen37N
-	wUCq+aA/3AvHOJfybQhJHIs4i4t+8Ep+2YtiBLp/jfs9Ml1edIRLIvAEHTbaVxLDOMEnx4
-	638fLtwiTMduURVtrRwBg5obtne5iy8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa2 header.b=TCqeOMh+;
-	dkim=pass header.d=konsulko.se header.s=ed2 header.b=dPtpTyrI;
-	spf=none (imf16.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.212.3) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757110851; a=rsa-sha256;
-	cv=none;
-	b=McvZ1j2A5RqfoI65zFODYiYqXz7MSDvx61sYGUmiKV8gC1C2SvYfUSV4fYI6V7ZYIPRkOR
-	P50SG5z4D7AJiGD6nelG5Wgss2ArUEV5G5DmS1Us19VghZQBH2k655YXcED70YOtzSaMFS
-	2eN5u+4iu8JBpqYXp9bSRa6ASbIgL8Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1757110848; x=1757715648;
-	d=konsulko.se; s=rsa2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=odc26EmzyJ8HGpXoYPMXxK2vau/006W/+LwKY/jri00=;
-	b=TCqeOMh+LiJj3QUTqFaSc9rzXgwRa+HQTJ25aT2mgd20EMKIVRaXBH0FMSMI669cEEap4CsRjCbMy
-	 eWYwom2px4Ts9s+/xn/aLTmU6Idnb67yIfMwjgVsloQpv20pNINeboBaDFrMJOzYqcHwRL6SCDCILm
-	 2gk86JTdrXLYQl+i4fZyfj5d6/ziZsOFPriAwZejwWjW98MS6rMT2J6IjcGdq4WqzsNPurpcr1j1BF
-	 hmWWW0S1fA/4n7x3/UpslHS7konv+VM43ZeEF8ZM4o9uejj7Xkr6LhoQBApGeeR9xB2u6VHg9esu5N
-	 7yMahW/zvA5UdWu4r66iSuMYXHJShuA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1757110848; x=1757715648;
-	d=konsulko.se; s=ed2;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=odc26EmzyJ8HGpXoYPMXxK2vau/006W/+LwKY/jri00=;
-	b=dPtpTyrITZpEsdUxVo9uhiVbg8GNRG6UIPYCNNOMgE/ZpxiviHFRR7Yu2R67F5QhZbOAMEZkA/kOq
-	 nNyT+vtCA==
-X-HalOne-ID: 92c59c38-8aa6-11f0-9393-632fe8569f3f
-Received: from [192.168.10.245] (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
-	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 92c59c38-8aa6-11f0-9393-632fe8569f3f;
-	Fri, 05 Sep 2025 22:20:48 +0000 (UTC)
-Message-ID: <16998440-84fb-45a4-9134-5dcff71ee68d@konsulko.se>
-Date: Sat, 6 Sep 2025 00:20:47 +0200
+	bh=qCejKM4XYsS3Mc8jT+/6eMCCnzQlKMfy/kZQZZSu9UA=;
+	b=nIC3OiR/ZW2wXnLV8MYXIb5RAH1wvI37J1gl0cIttuKcx4uAEngwk/637I6YDl875WnYlp
+	CeDmYiR3XDARkFH0yhbHW7DpmDDL2nonhOPHpBOwLP0rlpWKwt+Sopk48pfKvnS4CzMABT
+	uMDkwpp2kNhmW39ZvOK49euR6J63amg=
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-8874def0cf1so124669439f.1
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 15:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757112027; x=1757716827; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qCejKM4XYsS3Mc8jT+/6eMCCnzQlKMfy/kZQZZSu9UA=;
+        b=O+JMAAC/W35BxTamUPEEOla2oWXfIshioZkGXa046BPS17CY8tckQKfzN1mvbnMsjB
+         Kp+STYloVCz4dHRQnl2KK/La0KJwF60HnEOtRpj8mxSf3HsPnXbJeQqbAT2UmcUZ2Qnr
+         vjgtsBmL5X6XmZjYsFt/UIrX6vEJuVGMM9L78rlN6yxUNybol2NYN4Q/DezLF5eeSoyz
+         xuGorcOKowblq5Ony6CCGtpTv79COSNkUWkRtYrvEGxBYvWcjZywe1siKgi4jVZTpa+k
+         4lC5S6g+FOs4miPiGzgmi4LTe0FD8s1scUxc72EN87FLY9heCN0nM3vS7gC/QytpCD61
+         ufPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757112027; x=1757716827;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qCejKM4XYsS3Mc8jT+/6eMCCnzQlKMfy/kZQZZSu9UA=;
+        b=wI6/jcBQu0bGRj8sldS+Xc6lexBrZHk9sl4T3JM8MhdEOHLccXg9+6Z9U4yhugBlv9
+         QNnqcz6o6tDhW9TG01XtwQz7iar28ILwP0BPfaUUM0OFSYXymFI/xkNToCS+baO8KbdD
+         xF/E3bItg/iIzn1VEEnUArQQjBNCPCZRawl+BpFHwOss4/UR+rSVA3UPFJq4huFO8N6Q
+         qzyLt6gjOvLGcfjszA1C6xABGURm4Erke2fJqTJO0PCPkNuScmH6nhXGelMLkph9qnpr
+         W4yr/lK9O6nynXrKSO+473y0ciVBEijL3FQN2/svfXWYcYORtdHoKVhd+1xMNlSV6x0q
+         EcVA==
+X-Gm-Message-State: AOJu0YzPghcEPJMxzXEL0iNqfR0Ua6F8F2NAXyn0UcKezd59UGdKapzU
+	V1xvBUKbJ5eXWNAEAXw5cRMC1NJXBfrsiRw1Zko6P1ffZa1jJfUdTSRLp5ri0s4qPBw3pz+zI7D
+	ns4jR+KqlzDzRGokxIz+NYircQcvVctM=
+X-Gm-Gg: ASbGncteCb6bcXa5Yt1+E6JgAT3aOz1K+vZwhwtneSzXy0CZwBkAT66FQnb7s4WM9+J
+	n4iEtDij3v39HbPkOZGee0/V5wySJyHpK7yJMxT9R8qXzR7Ch0sT4AbBoq95D0LXMRGpZolNLH1
+	HSQ5t8aDbJHtqh+FSNErsaTgYF/vKm+8k+zvdAil7iXiRbVePrtWnDn2Y9epUPbqc8uAsD3JlES
+	JWjEAem
+X-Google-Smtp-Source: AGHT+IG55bRnjpEXdc2WowZ5rrMS7XLGIAtuFag6uplP7dR8JDmhZUxRNCDeLpq1gfeQR+Z4TeVn2mE+C2ogz8I/qSk=
+X-Received: by 2002:a05:6602:3420:b0:887:6d06:3604 with SMTP id
+ ca18e2360f4ac-8877768ad3amr76211239f.14.1757112027235; Fri, 05 Sep 2025
+ 15:40:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm: remove zpool
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
- Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
-References: <20250829162212.208258-1-hannes@cmpxchg.org>
- <20250904093325.2768507-1-vitaly.wool@konsulko.se>
- <20250904164710.210731847fe25d9419203886@linux-foundation.org>
- <f0869789-ee30-4eb9-840a-502d031df1f5@konsulko.se>
- <20250905113043.3fb70f94c86445617266c958@linux-foundation.org>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <20250905113043.3fb70f94c86445617266c958@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F1383180011
-X-Stat-Signature: gzm1cye3j1ttawcurxjs73bso5rwzx5n
+References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-4-ryncsn@gmail.com>
+In-Reply-To: <20250905191357.78298-4-ryncsn@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 5 Sep 2025 15:40:16 -0700
+X-Gm-Features: Ac12FXwf1n-35Lk16KT3TkdmL6NzGPHTW0aRJyCAC7z75wlx6fkzmLWV7yOp5YA
+Message-ID: <CAKEwX=Ndtbsy7UoGhwcd+by6bz2gt82o6EPOkiXbqNv=uPb8wg@mail.gmail.com>
+Subject: Re: [PATCH v2 03/15] mm, swap: fix swap cahe index error when
+ retrying reclaim
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
+	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6522E40009
+X-Stat-Signature: r8qdufsjxei97k454yo5m91ke3oykgpe
 X-Rspam-User: 
-X-HE-Tag: 1757110850-338282
-X-HE-Meta: U2FsdGVkX191hjEumEFZtZzYogK0TvupICFP3CgpVnvmFPtUJIvoEHDfzHeHIpvzKVNnRFL/2X6wZqNAY0D0wCd7GJbmfxWhphn70jPfh+sCzHN04Vd5iGIVi+RgC8dd9LJYKD+DZid3gOLEqM41ws+fsj1RNm4omwk2KrtnnKsjWGvR3+DXkJVpD7kl2JjT476O4c2WFvbtIAhKAKFU70OvmGROfxVqiM0Fobbk/GLlbmu+qLjmlsxkc5zkfka5/BkOfGHemnml8nEpWvryv+MdQ5dwB9/l2SF+wUPEuZSYZetLLwJ39f2GfgZv1FaONxLT7K7OwvX4cjvyoH8IX6fJ/q3s1yW5jYxRbyO7zB1iNe+kiSKJpo9yFskc9PU+kZS/3iWBjZiELeF4SAafxqWG8+jdMeOXCTNwemtfFoXuHZRZIDxDAtdvA65QBRWUxcwNqctiHZhqb8vA+05iq3AXK4/vkt5xDtGg6hRFBXfJ9lSmj26eeu8cta083IT1DLf/05HWt2LRLPstuF0sZBUUcdYR5CjoRR/dRLyCd5ZohPFfYmpTzVzWPbJOyTTp1ye3hKUuHCdD45JD8ZoZrvfG9k5i7345yNsB9PQ6sVSddYn73jMmvZ27uO8beyyQ49YnYYva7tsdTW4onFdrsLcIP36+VsWs/GiH9FxCNyx4C0Lp/ubVvEP0yDKc/rvlrC20M5xKlwjjczHMgLb80GsL4TeKj8A6UHuyhUqIiu/EY7GzQwrwpeHiv1U0ECDmFC7vqb9IXCi6OuROQNjLithsDoBMXZiZovfbIBJ6jbIuaT4LFisR1zLARKO00kcbCNNzNh3OHOmBLHe8dXAABiLImvV5/c40tQ9/ue5llFm5GovVuua2D3bP91uBkvLe9x0RtcQzMtq2OrHf3oWmi5RgvZ8v1wJzi7E8p9A/8yeM4dL5wo3C3j1asz1W5EJxGvXMRZCQAvy4qLTwCrM
- 8Bo9a7vl
- XNGmMuJ80d9Aut122Qsf0UtiGSlkBiW9gFWx64vtPpG4WN0Zcg1Ubx8yXVvaxrslmsHHY33iJkad9vikCCOF/6ErztFLk+K8kl4yGYZHHC5b4DI2FBwSoLsNM4m0K4CLoLIUxjz9bM8dk+GSf4bCEmQ3f1qmvcZicnfa2PI/X5H6EnNmfrCEPcga75aLVn+UOj1bVc4dkxRhQKBnuN9vJ7HCODksN8f9oZSGs5VJZLWuMLSLrEi4josOQkk0INQT5CoI95pZk3ts+m/zgF2FvrLbsHogfaYST4s/xqwv5zMjHWT0Q1HVHCFXpkD/QxwpN7w/AZUSarOtEKu1SZifh8lRIKIXd5r+spChB
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1757112028-956632
+X-HE-Meta: U2FsdGVkX1/5fgDckOnqSX2k8dZ/3lYI8fogmRAQ2uwc5gyOhUpKXhnqMDMtMkkEza6bn6cw9/LR2O4YWH3e3R2IDAjgljq35RjugMQom/ivxJStjFm4+fURByBm2QoC7UEgW+0q8Vn1qjD4mUslBht7sXrcvVSANklZ5da36JazJ/UrAME00DTKKoIVtmxcc1y/wi6JLrtMnt+7N+ME6H0rtq4RqoVUff29sHdZaYpcXVv8K6kHGLbrl/rmu3iDb0G9ydu2I+YFC4De0lJp7jm/BGa3unPnTd9ZsTyKeUg7rASdTM2De8Vsar22hB7Z9YJU6GJUiBLajzyAYb/C4ZjGq0m1AQmkRe6vRETg3INQbB1DwCRhdLKq+mp3qeJXKMZcs44pajHHoUTdHi0EApDBrgGOwaxixH4sRE74G/5r0wYe3FvfhsfBFUxr0PhQ0lDqKOT0LQWdATzIMWNN/W0PoEt8O5a72xhzvYuQ5S9KSz7vWTJaKe1zpQJ1HY9KrTHaUgT+MeoSUPy4vJ15ImwT3/RKlUuBrNBT65R/6CCcYshwxql8XSzOw5Ho4whnKUQtTXwmpi3IFMWdmho4XIaJdxFkdG4aV8EEMi/wStM13Q7MlorFWfQk5e8ym4824cq5uZoa4Egtcep7HQ1Gw62Ba2NKSGCwDbwZtF/juwR/LFnA0BKyi1lohDfs8lp+0wazhNC7PNVHlvGalvQPLxqEW/3gKn3hsmlKP6ZRG6EvV4xkcfMTTUJmftO9+t59JEepxq2Z+JyUPS913VyH8c/MeBp9zmUbixoT41oGmbK7202EaebMBmpja+rcItd+ER5b7Xe4LNx66z3Mm7TnNFu5ZXQMUwgluTbpDD0+2mdzLpp2KidIZE08CqxELrXFpzCa6GmlETkjmXkODygXHaBlj5r1t5C+aSSwipPJtWrdooD1Jo2bKlQZq3AAvT5lFCFHsqrtCM5Kq4NDl/M
+ DAOgX2xo
+ dHAiq6cfCHCdPhi3o8GVrBq2xzhHZ3VdAyr/P0Tz7Ck/QHUMfeMEJAFVOJEzcJFeTV8/BQ13R7zLWTgOB7uxFesD4L1vzTLJxspew07g8i3Th0aFcBuaIdFUWKJawcOwrc6aWrrTDgObyEkJAIeuw16AqSK63yrNOjQQBuC6IXI1v0zpeLod2oELgNhDCbhaO/+xT1SlhjF4SryHvOw7NwsWhr0+qrhC553lvBWxFZK3dJrLyVJICaKrSLmChETN+CaJ/tTxkMreFafgO29nUxj6rgmW/jzb/yakUW4PgF81LeQTIh5zq3t0RY+bA62DGmyWWN6cYab26iRq4vHugAmr5qUgA9UQ2uaLGESqdO3r+C4qxWmupvB/pBZpCF9vzReBzpubY7Qyvjh6Lf/8apd9k0w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,40 +122,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Sep 5, 2025 at 12:14=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> The allocator will reclaim cached slots while scanning. Currently, it
+> will try again if the reclaim found a folio that is already removed from
+> the swap cache due to a race. But the following lookup will be using the
+> wrong index. It won't cause any OOB issue since the swap cache index is
+> truncated upon lookup, but it may lead to reclaiming of an irrelevant
 
+I mean if there is a race, folio->swap could literally be anything
+right? Can the following happen: between the filemap_get_folio()
+lookup and the locking, the folio can have its swap slot freed up,
+then obtain a new swap slot, potentially from an entirely different
+swapfile (i.e different swp_type(folio->swap)).
 
-On 9/5/25 20:30, Andrew Morton wrote:
-> On Fri, 5 Sep 2025 07:42:34 +0200 Vitaly Wool <vitaly.wool@konsulko.se> wrote:
-> 
->>
->>
->> On 9/5/25 01:47, Andrew Morton wrote:
->>> On Thu,  4 Sep 2025 11:33:24 +0200 Vitaly Wool <vitaly.wool@konsulko.se> wrote:
->>>
->>>>> With zswap using zsmalloc directly, there are no more in-tree users of
->>>>> this code. Remove it.
->>>>>
->>>>> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->>>>
->>>> Per the previous discussions, this gets a *NACK* from my side. There is
->>>> hardly anything _technical_ preventing new in-tree users of zpool API.
->>>> zpool API is neutral and well-defined, I don’t see *any* good reason for
->>>> it to be phased out.
->>>
->>> Well, we have the zpool code and we know it works.  If a later need for
->>> the zpool layer is demonstrated then we can unremove the code at that
->>> time.
->>
->> The whole patchset [1] depends on zpool, with the whole intention to use
->> it on the Rust side.
->>
->> [1] https://lkml.org/lkml/2025/8/23/232
-> 
-> Well, that puts a Rust wrapper around zpool.  But what user-visible
-> benefit does it (or shall it) enable?
+It is very unlikely, and in many setups you only have one swapfile. Still..=
+.
 
-There's at least one user ([2]) of that interface in the pipeline.
+> folio.
+>
+> This should not cause a measurable issue, but we should fix it.
+>
+> Fixes: fae8595505313 ("mm, swap: avoid reclaiming irrelevant swap cache")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-[2] https://github.com/vwool/linux-mm/blob/rbtree_experiment/mm/zblock.rs
+Yeah that's pretty nuanced lol. It is unlikely to cause any issue
+indeed - we're just occasionally swap-cache-reclaim some rando folio
+haha.
 
+Anyway, FWIW:
+
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
