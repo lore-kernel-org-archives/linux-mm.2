@@ -4,119 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98D84CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 13:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E1BCA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 13:35:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F40AD8E0015; Fri,  5 Sep 2025 09:35:05 -0400 (EDT)
+	id A5F226B0006; Fri,  5 Sep 2025 09:35:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F184D8E0009; Fri,  5 Sep 2025 09:35:05 -0400 (EDT)
+	id A36CB8E0008; Fri,  5 Sep 2025 09:35:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2DD78E0015; Fri,  5 Sep 2025 09:35:05 -0400 (EDT)
+	id 925C26B0011; Fri,  5 Sep 2025 09:35:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CE39B8E0009
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:35:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 794B2C01DE
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:35:05 +0000 (UTC)
-X-FDA: 83855292570.28.EF20D16
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7929040012
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:35:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="B/nPyn0I";
-	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D97F6B0006
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 09:35:22 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C0031401C0
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:35:22 +0000 (UTC)
+X-FDA: 83855293284.19.C8B1B6F
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DD9BC160018
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 13:35:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="B 226WBY";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=NNnCnrJ9;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757079320; a=rsa-sha256;
+	cv=none;
+	b=zLE4b/I9iVFdxWJG8NCdtBK25fC++VTvt6umgqGTPzOyAzcMV0OxS1bOPJiZlCLuWkj+zo
+	bQepRhnXxNQJolJB/TCUmy5Lup2J8/iX7MuzAP6pteEptqfcq09Ch+z3iU0piIH8P6a5LQ
+	7DiCgM+AOgG1js570IeBbcVhImnN7Lk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="B 226WBY";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=NNnCnrJ9;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757079303;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1757079320;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5BkdIDYEs3n/1rabog/8RZvJo/R1/y+A/HldPG5Tl8U=;
-	b=n5kkNhbTdXhRt+18DPKNZZo7rL6l0LmDfhT2k37Va9wjxFZoPQxs+0GWdQMykVwS1Zssyf
-	KY9vEMEAKsrVGcW0NJP+JHacYuN4LWjv/5nzzyNQf3/XwtBHyeInMxC7hzd2iZK0VBS+9Z
-	gkX40wxbrHDIB6yef43PSQyefvJ3WNs=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="B/nPyn0I";
-	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757079303; a=rsa-sha256;
-	cv=none;
-	b=K+Zgot2WRsO7OGinOEgxf1UU/Ni2566+GQQ6U9+bsNCR26KYTtd1YR+QBCKO3oAaRcIH71
-	MkzpDqPOD2s558TioKJnRNkWQlhIsd28lyvf+LVJwTbOq0D7ojuVknK78yi9WgYnxgxDWc
-	tlReE1mbGJkW8fbvBvA66Fu47rUtrfI=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b045d56e181so316276966b.2
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 06:35:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757079302; x=1757684102; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5BkdIDYEs3n/1rabog/8RZvJo/R1/y+A/HldPG5Tl8U=;
-        b=B/nPyn0IyD9jIfkHiwkHiEjNYd3VIzHIVAqiQqSHplIf7YitCdMTKFOXh6inOhst16
-         IofdOaSQtzGvElpjicZ5pGaiAy+5X12yyn74tmD0JFLUViBnd5OPOybmz5vJIi5Ai9b3
-         T9RN8eK1I0dxWsmoBsMl+jDeO7+ZbY95BAg00fnbYCpU2tXOPBSpvNoMwwRcelRfQOaP
-         F5ai5oQByntJuDObxN39dtNCijV2oFtH4+ghg5fMshTlc9rMNDL8a+y44AWy9R4OZlms
-         FdUWKF3pw+QGtsj/M9GouqzThQ8SY7oXSiknl1H11NRP2LY29QKHDpmb3AZuj/AuXwaV
-         m3lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757079302; x=1757684102;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5BkdIDYEs3n/1rabog/8RZvJo/R1/y+A/HldPG5Tl8U=;
-        b=plLRVAfOhJElYBvx7Qgjd3aiLGGz0TfCaPkwXFDVS8oJgItWIZISvfA/2Y0XClPbDt
-         MntRbGkPfOokXVe1G3yZOE+0lr1VIEadkPivF+SFleo0BSMQ4S/LDVUpjslFUCp2z0vA
-         2BnVZkw3TG2jmFXDIJ/p0VJfROihJoPtcbEq+rSSlcUHQmLf7PAIfygl+dHdr9NGJ8dQ
-         WLNL6FWwocV3uevMgT+Z2ltf8SwkpmPEErc8BYDizuwwcAJZ3OM0oLAEsoUa1qd7MTBO
-         y5xxFOtEHnAh7NuA3RyWvW1g3h4Fh/58/IJR9Hv1acxGECXRt50oYH69wIXm+dc/Q1Ii
-         HMlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpQE+aaHUyiZxoEcZDhRb7bGJ8B6ngJfXpnza7odtJZVXYWD1WbN1GM7xW/seVX7s6JC3+ahh6iw==@kvack.org
-X-Gm-Message-State: AOJu0YyVDofmUWUGPpKM3elEIwtGE/X72x6eXy04hkpC1n+UIkCjSeNn
-	aJVkd6RD6gZLPsgL70F4mJByK8Ttg1l91NtG1FqvbGHz+0qjSYptU04U
-X-Gm-Gg: ASbGncuekjn88PoSXUODbzrSf8zKo1jmH1Pz+0V/LVLlm7DnBUvKCJLoQ/VWScWATfm
-	EZYHRQ2N39zYI/2sozm5ALIwsoAzXGTTut/EfvQEk4q/x8QN1C8bdGVxExJoeTKuofNbKuPE3jf
-	nTspeUlDf7ZvmfSMOcI1SEwESBdiziFuWDdE7mWoVz2qnNykL0TVzkYYAgKxJOEkdePssadhXNh
-	8vD4qQwplPPKhTmLcsSFgxe9si/YNPT1JBJ4C6XYnkEk+ANHA5UUtXay7BJ2oC8eXq/nOLtcdi5
-	ygNQAXoQlp7Wpmgtx/QscLfTyqnZ+hOfm6Hw03zObTiGAcG8GZMHiAefkMIXY3rDWfaYoxh7P+l
-	y+uvykNf9eXyxYBdSDxrRP4A+/A==
-X-Google-Smtp-Source: AGHT+IHDFusZm2qgvus4Spg2jq8nE5DaWjLI70ezr8ffZrKFXfL7OL0L4Eso3kbY+yJ5O4V7VzGxIQ==
-X-Received: by 2002:a17:907:72d6:b0:b04:6bb6:c91d with SMTP id a640c23a62f3a-b046bb6cb5cmr993120966b.1.1757079301578;
-        Fri, 05 Sep 2025 06:35:01 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b04323984ffsm1157875366b.64.2025.09.05.06.35.00
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 05 Sep 2025 06:35:00 -0700 (PDT)
-Date: Fri, 5 Sep 2025 13:35:00 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH] mm/page_alloc: check the correct buddy if it is a
- starting block
-Message-ID: <20250905133500.kwg34fshukg573mh@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20250904020654.28689-1-richard.weiyang@gmail.com>
- <83f5643f-7a6f-4954-a989-4d76a206d0a9@redhat.com>
+	bh=WvoqT+34WcjwxPrkxl1DFeCqulJwxB+n8f4vjSGJs9Q=;
+	b=mZuYb/eR9zjjS/5FQeUmPomLWvfrj5KYyOWQbEGgpLzMIKyA6KujuRBs5iMw0R1hXmOBxY
+	usm5qQPs3MeFd0NFJkD+vmgNWCYp4f8aDUbns/jWvOj4+u5g+Ilp7jhQEfQZROzxNPfCfO
+	zH+Z4mZTjICf2qKH8JzwlZtjHXs0+Fo=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 2BB12EC040B;
+	Fri,  5 Sep 2025 09:35:19 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 05 Sep 2025 09:35:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1757079319; x=
+	1757165719; bh=WvoqT+34WcjwxPrkxl1DFeCqulJwxB+n8f4vjSGJs9Q=; b=B
+	226WBYwyxCxI5qR7sTMKLd4OqO3G5qzYlDXerCNRFTVEMOGAamZfzJKxjK7WK5VD
+	x9U0XwdL4FdgkjUfq6nAU6gnKx4VcUEhSErrl1gjGplXBJu+AEXm4C6SDTvVpMeh
+	yYrUG0W9ajzwG5pGZ7Vkym9vQy3FPxSHEwdwixxqGSJJ5CV1r4Bh3KwU7OJIpmT/
+	alGjouFMzL2S50SxoLFUbfEIeCIr8pqXzMV0FcN3u9MP/Z0oaZLzqSuyyU5Ty/MB
+	+a7qeZ3U+DtjTJs0GvntWVsOrtZi1AS7uY9//1oV9FNv4DOOYnzvCy59bP4Hleee
+	asQigJ0avdRxDITzUjE4w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1757079319; x=1757165719; bh=WvoqT+34WcjwxPrkxl1DFeCqulJwxB+n8f4
+	vjSGJs9Q=; b=NNnCnrJ9emwtICgTlEgcKpn4BF71s7+UdWlgjhMVaWUcDHj2H6X
+	nzkJ9yW8RQXzvfnEFriqsX0F2xNZccew0igZw5lRLC6WeeCQLWUciYyQUybrW2+f
+	g/cpV2MRGgZCI91F6bgYxKAbxlgQEvqHdIc4bzCkcsvFA9l/1nZn2B+FBK2ydzkL
+	9fooS6UtwPFp02yDUKgErkOaa9p8+RTphe6OCEkhbKYL1SZb+EiyDB/jhZfkYa42
+	B4vb6fOAXeHnHsWzAwnjo9pMwZUU6ovLMFBdN4V3hyCjN3TeE1339p7FjbYhWKzp
+	F1n4iQRAhR1NgAEutSr7e/7HJYNy2mzdang==
+X-ME-Sender: <xms:Fue6aNXg6kE3t2xqQ_VTEsZKGooodoFWbTFa6Xz9uIG2kGqYDKdSYQ>
+    <xme:Fue6aEIiAyeODo8nhVKd6uMgGnV5zU-6gHKHB9J-vsWMU-RiLe9XTYYERwYFt8-5O
+    9JbdoMI3A2Rn7t3EPs>
+X-ME-Received: <xmr:Fue6aLE_2FKE2HlDjb1YT8isZmGyWBKU-ZquRbmrYEKo9jzvVEA2bxzwbi5H>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeltddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
+    uhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrf
+    grthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdeludfh
+    feefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedvtddp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvsh
+    esohhrrggtlhgvrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgu
+    rghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthht
+    ohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghpthhtoheprhhpphhtsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthht
+    ohepmhhhohgtkhhosehsuhhsvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmheskh
+    hvrggtkhdrohhrgh
+X-ME-Proxy: <xmx:Fue6aJx2Z3YZ2ogZb6u_fcFSaI0HnrK-agjn8a61SOM5by7aSod-hw>
+    <xmx:Fue6aIjgIyNSObyOEsRhGF58q3DqfOEq4a442QfTx766_N9-MRac2Q>
+    <xmx:Fue6aGK-vznOcdSz9Z7HjNyrtQDudjvdBKw7Rz1KAwV1M6yp8ay85g>
+    <xmx:Fue6aDDz2dbCG-Q5f3I7ecShpEGFFSI39oi53LyHQI1E8dMPy-yeFg>
+    <xmx:F-e6aMDQg9RtNquIC-LHZ71Bdl34tiDcoMrbl5oeJ6IDr1dLbAZWbrjJ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 Sep 2025 09:35:17 -0400 (EDT)
+Date: Fri, 5 Sep 2025 14:35:14 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	Usama Arif <usamaarif642@gmail.com>
+Subject: Re: [PATCH] tools/mm: Add madvise tool
+Message-ID: <bhnshjoy2ce332xlxrrgx3rz27etop635csj5cypwlnavvs3yl@rdfd2ujkfkdk>
+References: <20250904175729.1029735-1-kirill@shutemov.name>
+ <f229a315-8b76-4d27-97b9-6ec3103a36e0@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <83f5643f-7a6f-4954-a989-4d76a206d0a9@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: itnhe5fr9pzzgjqj5sg44d73qcfk4c91
+In-Reply-To: <f229a315-8b76-4d27-97b9-6ec3103a36e0@lucifer.local>
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7929040012
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1757079303-639995
-X-HE-Meta: U2FsdGVkX19T2NunsYCF+llJTTiXk5tSonJR40wZZa4NI9XLkFvFOKd9tEAYx6EMNrjgJjMjlrtPdRnPQUbaCNvJ/5vfLT8s4CPDSGup8SFSv58mqRQRLOgcrJMdHsV7+Pp928iTTvmjDKL29n8X9lmMern7b2a8of3f4B8dcrvgO6U4T4Lke7KQvLZGf3Lt19YH/D1wPiuLVXBXwkQXZhT75n5Nx0ldeIA5Q4GL8P9l7UxcxZlpQWqVkCZBRzXm1eK2CkvGlQY0Q1hHe0FeP/9Blv9LYQBCRt5ezzxbGmBRL9XF8HaBKB6EZV4ZdDDpd8G3fCfth4q37RiJdUhlnsYdAAcP7EyojngvvJBDXz5QgAHN8mK2ahTQehQnQRfIlH3ZIyK5fsoYMJ/TgtpDz7gSv56FiVnj18EhUI//eepc05FaU9NGPLWaer70nch5c7xqg8/a6i16GgBRL5BFufVLg3TlKHFp97lxzxBQgwqPu2Ac5w2FQLWEh6Hoq52tGVfYv7HngGU6lbMAVnRaps7qem+LyjW3no+3msCbHVQxQCPN7H+T0xBUvQmCDV2k1V1mINjecGqRA4FLPL7ptVqd+gxx7ec6NUZFFEhDgbxCHH3CHpMx2U59vuV7qcDb66XuW/z+y7hPEPt+JWkzTRBAYIXZrAJRpYHyBhviFpbqPISuD6GWaVfVQYFAQopSb1EtWdDWaGhOuYZGjOLGpW8LfXLBibU1Pkn6LrgZcU/g9kcK3Lecj+AHPZfJJqsDsBtWEvVDABq6eGXn1XPIO0fVBt/ZZdslUEPAd52+adzwZQr+R+VB6LsUBvXdSjlBy1s2PyI8gCAHcethkdG32YSwScXU8Y+5P0IFFKq+a8iTgI/2OTTuekfZrPbR4W/RX/y2aHXlQVX8MlctE1V9zvbIIEBnwBGQo+WW0x79VsKSacI4tn/wQzqhQ+2IsiePQ2GrQCRF6uoVadlHCRt
- ZrIV9b9C
- /KzGDGTMaBOE2KRzJcRqU2QVNXJGRHjk9BKrkugOOAe3H3pexQyvs/pR3NUwvJhvpiw8u46K96x+cHu6P+SDxkL8txKO+4ywNrAGPZMl74I62KsAjgnFZwi9/v6QHDsRLN+2Qn1rlmy1ech1TxY4VfAnpG0pC1g5vNP2CX9wfzJkfhfh3vpTQ7ZBdpWEud1A00ZpIjNY7vURCqOAmDW8pTZGWkTWnVTDaN7drBJtKOw81PMqiXIVpDCMaFDt3xG1NS1zlrZfG0/OZo7/sVdhrQfzfdNWBJxvyBqRYCH91/GA5NiFy5teLNsplN3WaE3mCIbUBe2u9DvBDnvuD8Hf9xSL0C+ZxIe14Ru0Is3uAoNjd7FSTqwEJtTBIGMdDYqXIFlrA1cPyvvWfo4+1clcv372bamUXUmb0Si2afjaoDzNXg9mhTUvf7c6PzlJupVGM6jnFXQ+8ria4TqwhYK1+B7UMPgUYSYnHvJV0lNI+NTLKawzzpTOt1w7FDv5gu/yVD7dkCwj+ldBdvJ+FFUK20mvHN21eFTZqzoPJZXTh7Kq1G8ON/IpKrdQY/bimVVxke/vunfKr+5ACO7sbwk6NQyQDwXdSNRPsxXYhbKuGfWbyWWzOEYgs11qHFlLkY4va0dsr/cgSS4eGo3zjm7CPlcv3/znOGhcF5pp+WhhKL+NsD1i/EIxHILW5MIG4kaEM1af517hFBhZ0KsKhMhOZu5HT52PcFbnms1L03B27Z+4fOBy71EKoVQmJVmz6t7Fjq+kYZ0BhNjIijwC5MoUvISZ7iwsbqLc1JByDiuvEORh5eSP2SNhdLoXdp4d6NPQ9kapZ0lalnnX2j5V7ua3kupmThW5mkC3Baz1PMyZHSQi2UKi46jvHacNayKQYXxgMFUTbNv4exuRnrhXpYOLadOrZdQx5lQR/35Hkl0eN6Q2MPD2eE+LEIHUbsQ==
+X-Rspamd-Queue-Id: DD9BC160018
+X-Stat-Signature: rutfy3b3mydqqskp66bwuctswuuxdbt6
+X-HE-Tag: 1757079319-457087
+X-HE-Meta: U2FsdGVkX18sd1a97376glLbPq7/qgC7U5RIm3MD3Ynjk7dar7HYSk4zJ4yQTPdlvlOy5aPxLu/bFWXmtMP9lwMLaY9dwGQliFYh3xrM3JjPAZ8Jen5361E4YQw6ZLemNHfksHs61/WDqTWfXbSnVCDXYJLevnHwbongjUjYu/TrXoY5DIaVdmaBhgIc1LKbQCjisUcRaObmlPkJI8D8x1JlDpYi06PEJV4jQlexcYdT7NtPIezbMXXKCwpENHSSXUMDep3Jwrm3ETDMhZaSBxeLMLu40x5FIwhvkeLTiNzQIjwZlD9qBJh01QchVAGYBhszcnHJ31FTgGWEhjwMLLLNfda08oVc21SsSzQ76M8GVdPdQTbnKsVINIEfKSSW4rJ79P5oJKq/dC4hCfHWtuP8owqx7WyoGkJHKfD0FGinTc5Zph7NLF7+WnfzHlg14lnlKSiDhigMhh5WdID8WebiJeHrQu7dgI6+uc7L287IM2NAmrUAKSCafNysuJ0i6rX1En4QS0g+lTDzpAChjzKkxaIqrLT4pTducJm2hT2dtM5RzvVy5dxivoPnjHbzz3UyXAdorJoaoEQCVpePuyw4YmEdhzgBBmea9x93myGibx5GMx+QKZ+515SR2aCB/Dayf5QucHs0up1dMmWYOMSPHHIj4IXywKI6x9pXJPQSUTG06uMx/pnA55FY0s0ngzTJHJY6uILt76T5bkR2FyHdn0PhEW80qP5qr4oN5eA2r846z9aFROGezQBVcSAO+tLxWUY5H7M7MKROmIh7xFpvnYeA8xu6mcsr/7pFboh2GioPxQdJQ0d87HtbtMzoO44ooCL1GPNSB9gPCZpM6Bdx7ntiG3heefHElgh3uy4fPn3kZncpxwwXO/MGjoTz2rWBJu66qm4QOxHdQ237Dguwl5cbNaemqKhx7pa+RI1EeM2PUmKwrxM1hhoFao3wJ5ILAoqDAYKUDAuWtQK
+ 7Aagsdey
+ k6DAqLsY9uOO3d8obyysIXHne+QXIPKOBxBNkVx4kOofrIjiXNP+GEpqTyYABDXwV6pt8O+NwKsqG+uB1k33l0m5/UAWx52JMZSR2ZDY45zsmmh3MxxAn6RCeoc0mdFrpHPIV1FeZWOwWyyD0xvS+V1Z/bgDfff9DoMaIorITq6YjUf0mzE5DyDT83EUP594rXwmfEUPr4XRNCdzBTp5YWFRQuQkAAj5LUNVUuqvHMEulyVcaoG026DJXvCGJy/lT49q5TJyZdGCRnX+/ZofFnbAtk08yARB9rZs/7TLCMe1ynEl3CBotWMAaE9EJyBvm4KzfJ4cNPLph5USZAA0jZrXkJYMKUzNsD6bhg2j2hMFS0vS25poCJVebhSaCnLy89ZFjc5awVx5smDNTerG5PJdJiChmNmy7EueD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,74 +138,288 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 11:40:42AM +0200, David Hildenbrand wrote:
->On 04.09.25 04:06, Wei Yang wrote:
->> find_large_buddy() search buddy based on start_pfn, which maybe
->> different from page's pfn, e.g. when page is not pageblock aligned,
->> because prep_move_freepages_block() always align start_pfn to pageblock.
->> 
->> This means when we found a starting block at start_pfn, it may check
->> on the wrong page theoretically.
->> 
->> The good news is the page passed to __move_freepages_block_isolate() has
->> only two possible cases:
->> 
->>    * page is pageblock aligned
->>    * page is __first_valid_page() of this block
->> 
->> So it is safe for the first case, and it won't get a buddy larger than
->> pageblock for the second case.
->> 
->> To eliminate the ambiguity, unify the handling for starting/tail block.
->> 
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Johannes Weiner <hannes@cmpxchg.org>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Cc: Vlastimil Babka <vbabka@suse.cz>
->> 
->> ---
->> Tried memory online/offine, which looks good.
->> ---
->>   mm/page_alloc.c | 17 ++++-------------
->>   1 file changed, 4 insertions(+), 13 deletions(-)
->> 
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index 5183a646fa09..453cd361386c 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -2093,6 +2093,7 @@ static bool __move_freepages_block_isolate(struct zone *zone,
->>   	unsigned long start_pfn, pfn;
->>   	int from_mt;
->>   	int to_mt;
->> +	struct page *buddy;
->>   	if (isolate == get_pageblock_isolate(page)) {
->>   		VM_WARN_ONCE(1, "%s a pageblock that is already in that state",
->> @@ -2107,10 +2108,10 @@ static bool __move_freepages_block_isolate(struct zone *zone,
->>   	if (pageblock_order == MAX_PAGE_ORDER)
->>   		goto move;
->> -	/* We're a tail block in a larger buddy */
->>   	pfn = find_large_buddy(start_pfn);
->> -	if (pfn != start_pfn) {
->> -		struct page *buddy = pfn_to_page(pfn);
->> +	buddy = pfn_to_page(pfn);
->
->While at it, can you please rename "pfn" to "buddy_pfn" ?
->
+On Fri, Sep 05, 2025 at 11:37:23AM +0100, Lorenzo Stoakes wrote:
+> On Thu, Sep 04, 2025 at 06:57:29PM +0100, kirill@shutemov.name wrote:
+> > From: Kiryl Shutsemau <kas@kernel.org>
+> >
+> > Add a simple tool that allows to issue an advice on a process or a file.
+> >
+> > It can be useful to experiment with effects of an advice on a workload
+> > without modifying the workload itself.
+> >
+> > Only supports advices available for process_madvise().
+> 
+> It's a mega nit but 'advice' is plural already (also used in the singular
+> because English is a troll language but there we go!)
 
-Ok. 
+Oof.
 
->> +	/* We're a part of a larger buddy */
->> +	if (PageBuddy(buddy) && buddy_order(buddy) > pageblock_order) {
->>   		int order = buddy_order(buddy);
->
->Yes, I think this should work.
->
+> >
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> 
+> This is nice. I really only have nits, so with those addressed LGTM and:
+> 
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> 
+> Thanks for doing this, this is useful! :) may use it myself in fact.
+> 
+> > ---
+> >  tools/mm/.gitignore |   4 +-
+> >  tools/mm/Makefile   |   2 +-
+> >  tools/mm/madvise.c  | 170 ++++++++++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 174 insertions(+), 2 deletions(-)
+> >  create mode 100644 tools/mm/madvise.c
+> >
+> > diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
+> > index 922879f93fc8..b713fcf4a2e0 100644
+> > --- a/tools/mm/.gitignore
+> > +++ b/tools/mm/.gitignore
+> > @@ -1,4 +1,6 @@
+> >  # SPDX-License-Identifier: GPL-2.0-only
+> > -slabinfo
+> > +madvise
+> >  page-types
+> >  page_owner_sort
+> > +slabinfo
+> > +thp_swap_allocator_test
+> 
+> Nice to add this at the same time :)
+> 
+> > diff --git a/tools/mm/Makefile b/tools/mm/Makefile
+> > index f5725b5c23aa..db315a48adcd 100644
+> > --- a/tools/mm/Makefile
+> > +++ b/tools/mm/Makefile
+> > @@ -3,7 +3,7 @@
+> >  #
+> >  include ../scripts/Makefile.include
+> >
+> > -BUILD_TARGETS=page-types slabinfo page_owner_sort thp_swap_allocator_test
+> > +BUILD_TARGETS= madvise page-types page_owner_sort slabinfo thp_swap_allocator_test
+> >  INSTALL_TARGETS = $(BUILD_TARGETS) thpmaps
+> >
+> >  LIB_DIR = ../lib/api
+> > diff --git a/tools/mm/madvise.c b/tools/mm/madvise.c
+> > new file mode 100644
+> > index 000000000000..038b3e1076ea
+> > --- /dev/null
+> > +++ b/tools/mm/madvise.c
+> > @@ -0,0 +1,170 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +#define _GNU_SOURCE
+> > +#include <fcntl.h>
+> > +#include <limits.h>
+> > +#include <stdarg.h>
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <unistd.h>
+> > +#include <sys/mman.h>
+> > +#include <sys/syscall.h>
+> > +
+> > +static void usage(void)
+> > +{
+> > +	printf("madvise TARGET ADVICE START END\n\n");
+> > +	printf("Arguments:\n");
+> > +	printf("\t<TARGET>\n");
+> > +	printf("\t\tA process ID or a file to give the advice to.\n\n");
+> > +	printf("\t\tUse \"./\" prefix if the file name is all digits.\n\n");
+> 
+> It kinda sucks to do it this way, why not just default to a file but have a -p
+> or --pid param for pid?
 
-@Andrew, looks I will send a v2 with updated changelog. Thanks
+I wanted to keep argv parsing trivial, but I can change it.
+
+> > +	printf("\t<ADVICE>\n");
+> > +	printf("\t\tcold\t\t- Deactivate a given range of pages\n");
+> > +	printf("\t\tcollapse\t- Collapse pages in a given range into THPs\n");
+> 
+> Is MADV_COLLAPSE useful for a file you map and unmap? Maybe make
+> process_madvise() only?
+
+It is actually the primary case I am interested in at the moment:
+collapse tmpfs file under workload. It works, but it is very fragile and
+fails easily.
+
+MAP_POPULATE is a workaround. We shouldn't require PMD to be present for
+file collapse. It also put an question if MADV_COLLAPSE suppouse to
+imply populate?
+
+Alignment requirement is also silly for file mapping as we can still
+benefit from file collapse due to PMD mapping in other process or from
+less entries on LRU.
+
+I also saw -ENOMEMs I cannot explain yet. I don't see why it would give
+up easily on allocation.
+
+> > +	printf("\t\tpageout\t\t- Reclaim a given range of pages\n");
+> > +	printf("\t\twillneed\t- The specified data will be accessed in the near future\n");
+> > +	printf("\n\t\tSee madvise(2) for more details.\n\n");
+> > +	printf("\t<START>/<END>\n");
+> > +	printf("\t\tStart and end addressed for the advice. Must be page-aligned.\n\n");
+> > +	printf("\t\tFor PID case, it is addresses in the target process address space.\n\n");
+> > +	printf("\t\tFor file case, it is offsets in the file.\n\n");
+> > +}
+> > +
+> > +static void error(const char *fmt, ...)
+> > +{
+> > +	if (fmt) {
+> > +		va_list argp;
+> > +
+> > +		va_start(argp, fmt);
+> > +		vfprintf(stderr, fmt, argp);
+> > +		va_end(argp);
+> > +		printf("\n");
+> > +	}
+> > +
+> > +	usage();
+> > +	exit(-1);
+> > +}
+> > +
+> > +#define PMD_SIZE_FILE_PATH "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
+> > +static unsigned long read_pmd_pagesize(void)
+> > +{
+> > +	int fd;
+> > +	char buf[20];
+> > +	ssize_t num_read;
+> > +
+> > +	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
+> > +	if (fd == -1)
+> > +		return 0;
+> > +
+> > +	num_read = read(fd, buf, 19);
+> > +	if (num_read < 1) {
+> > +		close(fd);
+> > +		return 0;
+> > +	}
+> > +	buf[num_read] = '\0';
+> > +	close(fd);
+> > +
+> > +	return strtoul(buf, NULL, 10);
+> > +}
+> > +
+> > +static int pidfd_open(pid_t pid, unsigned int flags)
+> > +{
+> > +	return syscall(SYS_pidfd_open, pid, flags);
+> > +}
+> > +
+> > +int main(int argc, const char *argv[])
+> > +{
+> > +	unsigned long pid, start, end, page_size;
+> > +	int advice;
+> > +	char *err;
+> > +	int fd;
+> > +
+> > +	if (argc != 5)
+> > +		error(NULL);
+> > +
+> > +	pid = strtoul(argv[1], &err, 10);
+> > +	if (*err || err == argv[1] ||
+> > +	    pid > INT_MAX || (pid_t)pid <= 0) {
+> > +		// Not a PID, assume argv[1] is a file name
+> > +		pid = 0;
+> > +	}
+> > +
+> > +	if (pid) {
+> > +		fd = pidfd_open(pid, 0);
+> > +		if (fd < 0)
+> > +			perror("pidfd_open()"), exit(-1);
+> > +	} else {
+> > +		fd = open(argv[1], O_RDWR);
+> > +		if (fd < 0)
+> > +			perror("open"), exit(-1);
+> > +	}
+> > +
+> > +	if (!strcmp(argv[2], "cold"))
+> > +		advice = MADV_COLD;
+> > +	else if (!strcmp(argv[2], "collapse"))
+> > +		advice = MADV_COLLAPSE;
+> > +	else if (!strcmp(argv[2], "pageout"))
+> > +		advice = MADV_PAGEOUT;
+> > +	else if (!strcmp(argv[2], "willneed"))
+> > +		advice = MADV_WILLNEED;
+> > +	else
+> > +		error("Unknown advice: %s\n", argv[2]);
+> > +
+> > +	page_size = sysconf(_SC_PAGE_SIZE);
+> > +
+> > +	start = strtoul(argv[3], &err, 0);
+> > +	if (*err || err == argv[3])
+> > +		error("Cannot parse start address\n");
+> > +	if (start % page_size)
+> > +		error("Start address is not aligned to page size\n");
+> > +	end = strtoul(argv[4], &err, 0);
+> > +	if (*err || err == argv[4])
+> > +		error("Cannot parse end address\n");
+> > +	if (end % page_size)
+> > +		error("End address is not aligned to page size\n");
+> > +
+> > +	if (pid) {
+> > +		struct iovec vec = {
+> > +			.iov_base = (void *)start,
+> > +			.iov_len = end - start,
+> > +		};
+> > +		ssize_t ret;
+> > +
+> > +		ret = process_madvise(fd, &vec, 1, advice, 0);
+> > +		if (ret < 0)
+> > +			perror("process_madvise"), exit(-1);
+> > +
+> > +		if ((unsigned long)ret != end - start)
+> > +			printf("Partial advice occurred. Stopped at %#lx\n", start + ret);
+> 
+> With a single iovec this should never happen. But I guess no harm in having it.
+
+process_madvise(2):
+
+	The advice might be applied to only a part of iovec...
+
+As caller controls the range, it seems possible to me.
+
+> > +	} else {
+> > +		unsigned long addr, hpage_pmd_size;
+> > +		void *p;
+> > +		int ret;
+> > +
+> > +		hpage_pmd_size = read_pmd_pagesize();
+> > +		if (!hpage_pmd_size) {
+> > +			printf("Reading PMD pagesize failed");
+> > +			exit(-1);
+> > +		}
+> > +
+> > +		// Allocate virtual address space to align the target mmap to PMD size
+> > +		// Some advices require this.
+> > +		p = mmap(NULL, end - start + hpage_pmd_size, PROT_NONE,
+> > +			 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+> > +		if (p == MAP_FAILED)
+> > +			perror("mmap0"), exit(-1);
+> > +		addr = (unsigned long)p;
+> > +		addr += hpage_pmd_size - 1;
+> > +		addr &= ~(hpage_pmd_size - 1);
+> > +
+> > +		p = mmap((void *)addr, end - start,
+> > +			 PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED | MAP_POPULATE, fd, start);
+> > +		if (p == MAP_FAILED)
+> > +			perror("mmap"), exit(-1);
+> > +
+> > +		ret = madvise(p, end - start, advice);
+> > +		if (ret)
+> > +			perror("madvise"), exit(-1);
+> 
+> I mean we exit immediately so it's probably not all that important, but not
+> munmap()'ing or closing the fd here.
+
+We have kernel for this :P
+
+> 
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > --
+> > 2.50.1
+> >
+> >
 
 -- 
-Wei Yang
-Help you, Help me
+  Kiryl Shutsemau / Kirill A. Shutemov
 
