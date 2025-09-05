@@ -4,131 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92242CA1010
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 06:58:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7332CA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 07:03:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D443E8E0002; Fri,  5 Sep 2025 02:58:06 -0400 (EDT)
+	id B5B428E0007; Fri,  5 Sep 2025 03:03:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF4BC8E0001; Fri,  5 Sep 2025 02:58:06 -0400 (EDT)
+	id B05098E0001; Fri,  5 Sep 2025 03:03:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBD548E0002; Fri,  5 Sep 2025 02:58:06 -0400 (EDT)
+	id 9F3688E0007; Fri,  5 Sep 2025 03:03:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A916F8E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 02:58:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 51985140578
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:58:06 +0000 (UTC)
-X-FDA: 83854292172.22.2B40028
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E8898E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 03:03:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 304C8140581
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 07:03:35 +0000 (UTC)
+X-FDA: 83854305990.09.2E144F9
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 243B9C000D
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 06:58:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=y8z22so3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0IzuDVqN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=y8z22so3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0IzuDVqN;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf18.hostedemail.com (Postfix) with ESMTP id A805E1C0003
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 07:03:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cru9ELLZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ti5XDrz5;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=H6cma45P;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mhTlUizg;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757055484;
+	s=arc-20220608; t=1757055813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TvK9ixWwRei4oCEeYPKW9uWdDzojNqzJFZHBSy8S3W0=;
-	b=oLqjyytGPxxIq1Av5iPhja9JxTkPyJLozwcSDfThyqLiv2nS+Tu+XI6ivj844ENpVG2RAm
-	2l1MbAvSI6vSzXTjEAW5IjSAzZy6fbRgjnfIVbKP25Y4pBe2dEeLazHd9E8EmUIwLNG6QO
-	dbwmYBDRfHaasiu1wAAF4GTz1mbgcOY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757055484; a=rsa-sha256;
-	cv=none;
-	b=lXdNuOoXzEhtqxG7QYHyqrNBrVOMEZKBAK6khGivQzDQoeIoB6hhbGG6OBwCc4KoAudqph
-	35Z6aO5p+LpDQEL32qmzYwd3LkeWSbbY0MiD5AAuEWCZbGaFFQukSLAzFsNrz9srSicD6y
-	dgRhI73U4uNU232c9CmFsqiq2INvEuo=
+	bh=jDNWK+o1y/YS0I0en7giH/VTc//fJxSmKllevpf87QM=;
+	b=0PtK97qlo3VMVaoymBf3V2YyHBFb2q/C0gdgjWjpTNTunkvzXcqX/W5RqhrHMEnLlYpcas
+	tOzVyAAG/nkdPXFwE9RYrWCeIRkaVJNXXlUqtyany185eHsB25SBGi4a7zkFztIpSi09j+
+	xDD2WPkS0hqVBfu8RaHFzR2ZmX2kJx8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=y8z22so3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0IzuDVqN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=y8z22so3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0IzuDVqN;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cru9ELLZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ti5XDrz5;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=H6cma45P;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mhTlUizg;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757055813; a=rsa-sha256;
+	cv=none;
+	b=wpyR1xKaBHMBxVbc3E1/5sfTXjBO0JQRb2l8q1czWlgQRwZyfFQOZW/XXP+/WlMxUFo9ok
+	xCl0CUdb+3NJawMdcv7+QAvirY+tiWgNxxR2gm6qL6lImeMnoefcXzy6CkYJh5v3lT7zuF
+	1jvRU5Vzvi0aIr0CA6iF12NIJdvKyAA=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2C60F76F71;
-	Fri,  5 Sep 2025 06:58:01 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E41FB77546;
+	Fri,  5 Sep 2025 07:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757055481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1757055811; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TvK9ixWwRei4oCEeYPKW9uWdDzojNqzJFZHBSy8S3W0=;
-	b=y8z22so3t/LCPlVSsXuM4LY9tNaUh5bXHnsvWbMk+++SMpnxNiV0jh2PkM2xRdiMVVgWRM
-	fjhdyHbrnbswMmoOgZvWmod1KYfcJ/MLcbWyfDyK3ch+XjDanm19thfdhk7SjBnIhZ15qi
-	7C+UfHVOwxuAdwpPrQnvCMGXZgFz1ao=
+	bh=jDNWK+o1y/YS0I0en7giH/VTc//fJxSmKllevpf87QM=;
+	b=cru9ELLZ7vFm1hK3pc3dq8HZYa0y6Zy/Wsqk4YcYCOuMwAz7MXpVltRmJX6arKSKyUo80G
+	cPPBjGFZS9pm+kPG92CWTodhyJzUt5uqU1Dx2pqeOh+HdeOxWX/8NYZERUUj6V2rF10Cw6
+	YaD+CedpZC3VWEtQHW4GWFC5I/Pg2dY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757055481;
+	s=susede2_ed25519; t=1757055811;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TvK9ixWwRei4oCEeYPKW9uWdDzojNqzJFZHBSy8S3W0=;
-	b=0IzuDVqN9K4MgCv9kAMVpxGhM7rgfTOsV+giY2sHFmdIG9TPjv/zYxUsoJDU0jsQkdE0FW
-	3nwow3eMQLvoKpAg==
+	bh=jDNWK+o1y/YS0I0en7giH/VTc//fJxSmKllevpf87QM=;
+	b=Ti5XDrz5bE95df90H7aDmTBCfiR2MYC/p616nHahMw2v4zfdc7UuhzdzvOIaE9nCZNIU/E
+	cesRJLZqhy3/kRCQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757055481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1757055810; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TvK9ixWwRei4oCEeYPKW9uWdDzojNqzJFZHBSy8S3W0=;
-	b=y8z22so3t/LCPlVSsXuM4LY9tNaUh5bXHnsvWbMk+++SMpnxNiV0jh2PkM2xRdiMVVgWRM
-	fjhdyHbrnbswMmoOgZvWmod1KYfcJ/MLcbWyfDyK3ch+XjDanm19thfdhk7SjBnIhZ15qi
-	7C+UfHVOwxuAdwpPrQnvCMGXZgFz1ao=
+	bh=jDNWK+o1y/YS0I0en7giH/VTc//fJxSmKllevpf87QM=;
+	b=H6cma45Pko6dHyuctdaUcpBLRePQTjTqD+usWr+0LEENBjgNz4qLgJEA7Ea9uJ1YmEYJ7g
+	TLft15KRHmCvFFlSCjx5Fu92iHcJrCR3oMRvcZSXY6UMfj5krgDWosul4O2x1IbXfaLwXd
+	IkOg7RAPCLof/Hr+oi2MzoRKQLx91rM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757055481;
+	s=susede2_ed25519; t=1757055810;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=TvK9ixWwRei4oCEeYPKW9uWdDzojNqzJFZHBSy8S3W0=;
-	b=0IzuDVqN9K4MgCv9kAMVpxGhM7rgfTOsV+giY2sHFmdIG9TPjv/zYxUsoJDU0jsQkdE0FW
-	3nwow3eMQLvoKpAg==
+	bh=jDNWK+o1y/YS0I0en7giH/VTc//fJxSmKllevpf87QM=;
+	b=mhTlUizgM90FEVoygwbWmbCkbgC46Y6adCQELffj6rkoDztQg9KC2UAvRnkdTlFFBnCEAo
+	92k0WMQK4TdS1LCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EB2CE139B9;
-	Fri,  5 Sep 2025 06:58:00 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D0245139B9;
+	Fri,  5 Sep 2025 07:03:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Rh+/OPiJumggfgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 05 Sep 2025 06:58:00 +0000
-Message-ID: <c0b9d34e-1a21-4a97-b898-c33f7c8b49dd@suse.cz>
-Date: Fri, 5 Sep 2025 08:58:00 +0200
+	id cvEQMUKLumiPfwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 05 Sep 2025 07:03:30 +0000
+Message-ID: <b371c436-1af9-41f1-811f-0425bcc468d3@suse.cz>
+Date: Fri, 5 Sep 2025 09:03:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] rust: zpool: add abstraction for zpool drivers
-To: Vitaly Wool <vitaly.wool@konsulko.se>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250826124454.GA1502@cmpxchg.org>
- <CB3E7E9C-2192-4C60-B79A-932AD6CB005A@konsulko.se>
+Subject: Re: [PATCH 0/3] mm: remove zpool
 Content-Language: en-US
+To: Vitaly Wool <vitaly.wool@konsulko.se>, hannes@cmpxchg.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Hellwig <hch@infradead.org>
+References: <20250829162212.208258-1-hannes@cmpxchg.org>
+ <20250904093325.2768507-1-vitaly.wool@konsulko.se>
+ <7b1ca42d-1b89-44f4-bffb-e6b09f86fdc5@suse.cz>
+ <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -169,18 +161,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <CB3E7E9C-2192-4C60-B79A-932AD6CB005A@konsulko.se>
+In-Reply-To: <1d42c513-cc83-4f08-a10c-cbd6206070f4@konsulko.se>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 243B9C000D
-X-Stat-Signature: 4j76qf7w5dhxj9fqkytz8numw4w5sedt
+X-Stat-Signature: xnkaa6jrqqj87bfyderpcq9xwbxtaegf
 X-Rspam-User: 
-X-HE-Tag: 1757055482-968963
-X-HE-Meta: U2FsdGVkX18SEYWjqlKicKnmg8Gq15598yw9bWAypzu9kszj/4AwNrEpqY9QXDBgwf+GaL8ZvOwqWfUzuiadfGpkvUe2BphhFy6Ge9Ik2GSdg0XhM9MsGoNarSn+iC3JFWuM65E9oDe/gnbsGzmf/olFiPKgPbEYWGF/iLAJW4uyZNYBOIh65Ss+JqShVMdonxbMAl8ysVyMJ1EVBuZl2PzLsanqvLE//rmG+7v31q8RXexb1j2nQBGgvOriLdKrLlOZx2eVayYel7Z7KP6xPM+cqlrYrdLbWQMJe7EpxyUb8TldcI1Xkqx/01Q0ZfpaQT76GhPSFjGJS4oi2xnb/6x+KSe2lXPRa6A6GL9FGykogjV3vpiRzAtDdESnxE8SU7Dfep9TKM/SSnG3dmC0PYsJVcHDUJjZ4pFTdaGyCpZzO9/GwaIfuobRyFbEp1MDiHRjY6YRVELpZ3d5LnH5yW5BSw8y0NJoU6VB2tW0XmpYGSAuyFb/P55ydS2F4JqE/vd2QiZa3Ew5bo20tlO7BHz3wUDQ/UbRNFfy+rHnbvyM50hRkdANh8QITXkKaufF3t9dg27T+RRa7OYDdp2HQj+FDOuAFbvcTvW1YDYXtTZPmaygrHZ02CWakGyiuCmHA038MkR9XkbgEzMr079vYJeR8nisWETmQmQ7DMmTbNBMK4amDZ6twjr+KZQEP2/P4ZILLQeHlIVgDnL9RtPDP0GiKussm6uJTTJoM7envxsU07mjLGSswVq5n9eo4L/xvJ1YqGJhBT0QczDZlc74uOv7Bo64A8ZxIhUf6fMdcseNdCC7/bmgHBVm9Ujfb8gOXjqs92XVPitx1lAtK0wUBg2oVeS1e/zAgphcwrhnQrimUUVjVLRTjQNFxZH8r2jkkzAUMSNjXkO9RywgYwoEqkH6IIhGAZ2kirDqaoJIZMkrrAmGPJD63shitQrNhW24GRzFaMCBhZ/iKEhzuSM
- fL99dS4b
- k5xLamtbgKIgd3SmGV9cT1Tt0x6hPRZe2EyK1ZUwYaoJfUgXKLnULELnIE/KD1dG5dQu0i+bLOXimuKHFhW/Igv7kUIo2v7TCj0LAQ+mtMFrutmSwXwLmYjmIkCJyoKliqjDbuYR1X1B8JhlyWOgmgJYBJu82QYtMF0IH8viFa0uoRF2Q1tRBVwv5trC71x6jYXIwdvvz/78y+68lNlxFWCU/j7blJsEdMlzNn33W3k+0UoQw6ZXGLJOOeR4HXef7nxsxOozqxyITdFcPAA4X8fbHCGmxI6OJaIJRTz4HD1V99SwSq74SvwVxzO1F2Y6hOga6u3hipio/ZKV7weBM2khCIUbk5WEFJfLlZuW0BaOIHP7WvxWPoY+NTM5WYjFPKteX8WHVIQs8vYK1PWNsFc71sbhyukOZqwriDEZyK17KVj+sFl13msHO5WINUrfhrRLN
+X-Rspamd-Queue-Id: A805E1C0003
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757055812-102499
+X-HE-Meta: U2FsdGVkX18yBSf70balCLkw7PGwgixt5oNyyubenupipp3DDzD4E5vQiAvQhRvhmXyLgPfUo6Dxu/+9NkWi9NW2zeFmX7Fiz9qV+v0chGzCFCJ8m831Z+0Ud8HV2JIKSS8P13Eqefey2iZ8ruFf4q67IcuvkREcstOf33J98lWdu9Uc+Ddc0RJQGfaigHkaiDXe9HZrYjn2hh8ryPls6w6hnCVSFQ8cOm600crRdar6JmefbR2WbZH0x8ZQeTQ0SQrseLJ0W6kpiFwtmnkkcQySE0qBSBIIfVIWANLCgxpUqdQ3rV5IeE/C0GFdzkBXrkCPGRBS9QW4x4KgzUcvvhf1RMVa9M10S+gq/KzEwfMRzOQByi0VEGJvJaWE/7DSXIqEW40JoYEMlWYMo27loZviD/S5ges919wITTfAXax22drXINx22Nnfgg0R24CC7OH/jA1C160LgNY7cb5F235UsskMLmIL/RXJ1SPuHvVTLNewYBZGvNpIy6rfd8LiWOryQ1NEZoNCxcYEykspT6g9CIIZqBtHE8tIgu4QdTiUdIHz87tuHE/FJofDfETogZTNzsloZIwj+M4UN2LSgbWATEgedPmK3HJzyeSEHtZEb5xwbt1w4gpHN0lGlDZdUYQP7EeVWPBQJHdyWV1xV3y3GO+QXn9LmI9AHXPf0cPW3ULXYVoW4xXtybenFXoV6mAEZkaPna3avJuGQC/l/4SuYKZQJMU96pFffxoLC1GQy44jnSqIyD5PBYhKFkHE/uSYeZKkl820k4A6CbRoLxpTGvWNY5HL9V+9DGpl0zditmdRAQaMSwVOhXeI8NsiVvkkKaP7MHME+TqLgO5FObBKY44lurZDpINSJp41cNamcqq3tJN5B2VaER5uKiSjMgk35ooq4ecPiAGFUrhRUowU7xTZoXaTSXYyPr1VCmQGkHeUie5zuKzWKqwPfKxXZCP0njHfN1K0oV8KS9b
+ 6pjgwGoq
+ yfeyl6QdZIa64TdWlXevgpIVSk9R+CbSYuY6X2OPFuyCg5bUR0qGmLvwPxws66tJzZhZacCf74zTH/yfVzZNwtyESTIcm62IBlCjEh6wjYFVWVLAWf8n+5BTxJG4mjdmkqMOIGtyYQk0F+FmXhCHeTHMiS5h+ZZS+69gX7XOvTcj5Nzlq6jc8ro+qywRyVIDQ0DSIW5yXd9DqAz4iFhk8JGCGKymrzIsX6kdmRwn3EPPvuwTxNnEFvJPTAoLntaAlN02mP78WDAqpOxsetTV9QkFjLQJ9Piknzpqz/Pc7ThInQEFINQDEWUKG3A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,46 +181,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 8/26/25 16:56, Vitaly Wool wrote:
+On 9/4/25 16:11, Vitaly Wool wrote:
+> On 9/4/25 12:13, Vlastimil Babka wrote:
+>> On 9/4/25 11:33, Vitaly Wool wrote:
+>>>> With zswap using zsmalloc directly, there are no more in-tree users of
+>>>> this code. Remove it.
+>>>>
+>>>> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+>>>
 > 
-> 
->> On Aug 26, 2025, at 2:44 PM, Johannes Weiner <hannes@cmpxchg.org> wrote:
->> 
->> On Sat, Aug 23, 2025 at 03:04:19PM +0200, Vitaly Wool wrote:
->>> Zpool is a common frontend for memory storage pool implementations.
->>> These pools are typically used to store compressed memory objects,
->>> e. g. for Zswap, the lightweight compressed cache for swap pages.
->>> 
->>> This patch provides the interface to use Zpool in Rust kernel code,
->>> thus enabling Rust implementations of Zpool allocators for Zswap.
->> 
->> The zpool indirection is on its way out.
->> 
->> When you submitted an alternate allocator backend recently, the
->> resounding feedback from the zswap maintainers was that improvements
->> should happen to zsmalloc incrementally. It is a lot of code and has a
->> lot of features that go beyond allocation strategy. We do not want to
->> fork it and fragment this space again with niche, incomplete backends.
->> 
->> It's frustrating that you not only ignored this, but then went ahead
->> and made other people invest their time and effort into this as well.
->> 
-> 
-> I don’t think we have a consensus on that.
-> 
-> And zblock is, after some additional improvements, just better than
-> zsmalloc in all meaningful aspects, let alone the simplicity. It is fas
-> easier to implement in Rust than zsmalloc, too. Besides, zram is a good
-> candidate to be rewritten in Rust as well and after that is done, zblock
+> Things keep changing, and some of the proven solutions may not be a good 
+> fit moving forward. While not suggesting that we should have a handful 
+> of zpool backends just for the sake of variety, I'd like to emphasize 
+> that there are good reasons to have zblock (especially the Rust one), 
+> and there are good reasons to keep zsmalloc. That leads to the 
+> conclusion that zpool should stay.
 
-If your target is zram (not zswap) then I don't understand why insist on the
-zpool layer, as zram refused to adopt it in the first place?
+Johannes already suggested it's possible to do that by reimplementing
+zsmalloc APIs without the runtime switch layer and choosing at config time.
+It would also mean zram would be able to switch.
 
-> will be even safer and faster. So while not being “incomplete", it’s
-> zsmalloc that is becoming a niche backend moving forward, and I would
-> argue that it could make more sense to eventually obsolete *it* rather
-> than the zpool API.
-> 
-> ~Vitaly
-
+Your argument was "zpool API is neutral and well-defined" but we don't
+really care about API/KABI/etc stability inside the kernel:
+Documentation/process/stable-api-nonsense.rst
+So that's not a sufficient argument.
 
