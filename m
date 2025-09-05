@@ -4,101 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81C13CA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 15:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA7D8CA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 15:58:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE5FB8E000D; Fri,  5 Sep 2025 11:57:14 -0400 (EDT)
+	id DC26A8E0014; Fri,  5 Sep 2025 11:58:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBDDA8E0001; Fri,  5 Sep 2025 11:57:14 -0400 (EDT)
+	id D73CB8E0001; Fri,  5 Sep 2025 11:58:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD3598E000D; Fri,  5 Sep 2025 11:57:14 -0400 (EDT)
+	id C62648E0014; Fri,  5 Sep 2025 11:58:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BA6828E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 11:57:14 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54F34B7F2D
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 15:57:14 +0000 (UTC)
-X-FDA: 83855650788.04.AC73CE4
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 59E684000D
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 15:57:12 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bVMAtGwF;
-	spf=pass (imf17.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B326E8E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 11:58:48 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 585B613A7D4
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 15:58:48 +0000 (UTC)
+X-FDA: 83855654736.29.55B02BA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 05B75180006
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 15:58:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LHp0aIcY;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757087832;
+	s=arc-20220608; t=1757087926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T307WFdeH75VLzRB5+iWmitggBHVAbxN1ojM9RIT92Y=;
-	b=jR79sldpt5HpvbnHnD/5NTAIpYB5j2npV9SDSvOF4/mipArNTZziDmpt3Z5t/1v6zanCd3
-	vhmgKnDoL1zBPYZ3xf426w2LL09WWcYDQ8CghLQUIJEElFRIR7Zb4BLbQh2OVRwM3FhUi+
-	xu8po4yX/xWeqB7kyyHUO4zYzZwPpzM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bVMAtGwF;
-	spf=pass (imf17.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757087832; a=rsa-sha256;
+	bh=evLRFYt3UNymMNEcAX6nqhM5iAqoK2ROkZRbyKGwjHg=;
+	b=fgOqmylPTvVQfsLqpAN26t39a2uo//hFkpLqGHe7xEirx4nGtStRUiGDgD7XxCbCVpn/a4
+	dF2cEvblvNXDunL5cknNyBMkZWPC9MnWkaqJG/eHNGZfBBblWlQIGggXPqV1dBGHGXSpcc
+	/CMaR6kLM+lLAeDJLzoRF/2kSa8VQTs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757087926; a=rsa-sha256;
 	cv=none;
-	b=j//lHUUlDOi14IfMFnnY1sVYCuPERBlnSUo+UGxswTAQX4ZyI3+cJTjnkZd89weD7nfSLt
-	j15OzQVojQ8Iq7K59GdEjEC5DIgEnCWiQ9zPzKQ88sqi369EXJWoKo1xdVO+DKcMHn+4uj
-	6aDNTT8jsSgPFPJ0Gl77+4xNEIYe26c=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45dd16c484dso13080355e9.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 08:57:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757087831; x=1757692631; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T307WFdeH75VLzRB5+iWmitggBHVAbxN1ojM9RIT92Y=;
-        b=bVMAtGwFzw1PwOITBTHUskgHui+ixzvCXyMbGgNuL6BtJYWAvMa2SopXqteatyx1MQ
-         EQel9ovVoXvoytNd29R0/FUUl+a2wy6uMyDFnsh3Hwd0mBFeRZrI8nmo+M4f5EB6LWlq
-         FFKOynUG//EZvoVrrybahUc373s5+kBKXzy0Ca9rGtcMt/dWGIpqgr1BkMg9RyKwgi50
-         FXLwBEVa1aLhlH+rd4+slxencYAQOmwpJsA9eDKymagorfO/CaF2CmRdsmY+/iVI8KvM
-         Ao7Ea5zex6kMITbotNv4a27PnjjokkDE0vZ75MZyecLbDDfext/FuJkvjUhraX5S0muD
-         Mljw==
+	b=s0ZDyuim9zS3EXdslwc6DPEitBDfsOstQmX4owwyfIzSFfneQAvMnz9Z+X56SMOSpkm53L
+	1xW+KXgbKSR32L8R8E6yb8ouL5MSGY8JIup8Tw3WSS/YqiT1Guf/sReD4E6fuFTcmg2vA+
+	JCmLr06Bx0z9tblAORF9yGnw1fFwkEM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LHp0aIcY;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757087925;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=evLRFYt3UNymMNEcAX6nqhM5iAqoK2ROkZRbyKGwjHg=;
+	b=LHp0aIcYy10IlAUusxPh0mqCHQgRWroaivU9AyZQAIRd4JFIiWhBUryVvOYziLfddMDlBb
+	pNVldnshWMRGetNwOHQZOKQMS9BevIw8d+N0eCo7Ku54GpTjPAslfZeWCnA86ggQSRN/5C
+	bnVIxkpBSeleLzxAW9M6Dd1LMMwTDJw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-IVDJLEbBOsKlceH0yIAfQA-1; Fri, 05 Sep 2025 11:58:44 -0400
+X-MC-Unique: IVDJLEbBOsKlceH0yIAfQA-1
+X-Mimecast-MFC-AGG-ID: IVDJLEbBOsKlceH0yIAfQA_1757087923
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b96c2f4ccso14855125e9.0
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 08:58:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757087831; x=1757692631;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T307WFdeH75VLzRB5+iWmitggBHVAbxN1ojM9RIT92Y=;
-        b=oUYDdglXhKQXwBfJ+uK+5C7WVwafj5MMHSarE4M+Ox2jLPo8FcbygA6Al/bxUk/mBi
-         3qOWhxfaY+I31tDcdTfzw2b4qXjlrnXGdI0pT1YzO2nbGjRl6U/unbiyNY61BIXYiz5Y
-         zMb1+gDxoNDIOd/56830UVGVL55/vNuHUsDGvfH+LrCThRZgtNC973ZHtOvv30fniqCC
-         ll1d/D9NKTNYL5qYL92dt9rKS3nRBeYbXpa/kjnD/N+H1zLepmxlF2u7FPEgTG5n1TNL
-         iY3gC07iEvkqOFSe3ONSsY+5V/zAR5LRYWiiG0n7pumzOx5WD6TQhFwjtBWLjs3ijnco
-         FT/w==
-X-Gm-Message-State: AOJu0YwbHJ1jMhrHSabC/M6zTpFtYEujorBBw+OhqzabWlzowcpeq9ec
-	zMHUAic/ly83e8Gom+5JsQBdeM39kYfukuXjZkMXiD9FfKv1tQnqNZp7ca0o4HUSfdk=
-X-Gm-Gg: ASbGncskUU/pPckXcxz2crd11NQxeK5TnufLG2UEq7tvHExYHE0EUQnij3efn1iVVLW
-	/WCecbRxme1f+A7uMX4iKY0ABxcFcV7f2i/UjZeGLhdzzGMkmHOxED3GI1IapxDY6e4ruIKsh/t
-	ekckcOtxlIKtgFrAwjHxcaa514ivswrg0v6I+IRokpy3mpXhK5f9s3nx1h+CrDz5N7ylcaxmPpm
-	FvtJbmiu4HPcA10w8ywoZHnE9lm7e4tWoQ/VkYuvBD6r30+XCat7u0i/GAEf85ulxVfWleFtHc/
-	bmj9+/rKJj9Kq3Nc/53v1nG4i863es/z2VhiDHWW64jHfPavAM7iIurDtfFF8+24YNKGRT5KM6H
-	t+Pr5IwU3GGR+ZDJut/l59VHR3uDdAhjeVbM8Zdc8dMR/4uWyMuC2zeQW66ZqSQvtqQFLlhw=
-X-Google-Smtp-Source: AGHT+IFLhKjW4Fe8S8wpI/2bRVPjo1z45/c0rrhsn3wSoJ918bHUq1R21JnyukRzj20J+gUQTw8xlQ==
-X-Received: by 2002:a05:600c:4fcd:b0:456:19eb:2e09 with SMTP id 5b1f17b1804b1-45b85528589mr219556995e9.8.1757087830802;
-        Fri, 05 Sep 2025 08:57:10 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1126:4:1449:d619:96c0:8e08? ([2620:10d:c092:500::4:4f66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45cb5693921sm136327205e9.0.2025.09.05.08.57.09
+        d=1e100.net; s=20230601; t=1757087923; x=1757692723;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=evLRFYt3UNymMNEcAX6nqhM5iAqoK2ROkZRbyKGwjHg=;
+        b=MU5Bwzyjk+//4xWGGN/EgE3jsyMrfepAcuj6Nc3eJ5d6KA/e6YQ/iGqyrkZcAU/PTd
+         9WtmO0xH29I5PI9OYyHlubpoj3MVFjj2lY/b5hEVVhkVKcA8hoDTokzdiD98ES3sUVrR
+         FiikXdhhvECbi/ABDWW/vHcyM9daL2tjrmM864IlI69CH4LZ/A7mvvcKpNtAgyIlIVMt
+         UpkIIVfu439Y6jrMn5FticoYlqyOOLTP2uw1rgNJoDwaIVSgc7Kqlsmfcd46ViMr5giv
+         80sC7ehZIA2MntT7ouAugW7XJHQeWk8n0jYgSzNNm51keWgeNv7qaluQVvjoDoRLi1Bq
+         Lrbw==
+X-Gm-Message-State: AOJu0YwiDanLnhVSO3c9OR5dIKX+oBYsybjcOSwk55EmRbu618q/CoPV
+	qQetS1m0tICqRjV/uoLfC2yadJWcsdianJSK531LnbF1HvMejZhOzlpkLmG9UcgVxeUNoHsJpBl
+	TIYxavVa0xibcyFftmsvIMKA0NhmPG4uTfJV7qCkS3XapYWZqNbrz
+X-Gm-Gg: ASbGncs+zrkaohkrOqE8nojuxLU5i0Qa1ciUH1+8tV4hC36dOwRi/b8xqZoBxhL5y0C
+	SDntketZ4ErwKba/6lLjvwPAjtGVWLsis0mIdAmoKRPEkY3eR+nDenJ/VkF/IEZ2S4kd+D/JUPN
+	Re3vilZCupo+Ug/FC4M8eyf7m1rF+OzG78+Wh68EToUIPUqaH5/03LfbvroZpYAQICkWjEGpv4f
+	e36w56tu6iaAvJZSJQwnMErEuqNcR7HdapPH7gtJ1rzjPR8MsQ1h6v/opi/DCGMno15tmoWYN3k
+	+1APaydffyUWfzpkkZsaMUrbTPf9kYvGTS300dyorAe8rO4OrLKQZQv24rTjqLIiCtzZtYt6+sv
+	oL+Jzp9w61/S5OdPeYrWZqWoLcD2XXBa27om43im0+9DZJDW9JqaLrlNn
+X-Received: by 2002:a05:600c:1387:b0:45b:615c:cd2 with SMTP id 5b1f17b1804b1-45b85525da3mr231052865e9.8.1757087922813;
+        Fri, 05 Sep 2025 08:58:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFlYTbzshuwgip8AqARcntuswSYuXuNnM+V4fp0Ahk+2j2BHbQnTrjYIr7ArN49BJka1MwcfQ==
+X-Received: by 2002:a05:600c:1387:b0:45b:615c:cd2 with SMTP id 5b1f17b1804b1-45b85525da3mr231052395e9.8.1757087922244;
+        Fri, 05 Sep 2025 08:58:42 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4d:e00:298:59cc:2514:52? (p200300d82f4d0e00029859cc25140052.dip0.t-ipconnect.de. [2003:d8:2f4d:e00:298:59cc:2514:52])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f306c93sm420569445e9.14.2025.09.05.08.58.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 08:57:10 -0700 (PDT)
-Message-ID: <3a8a3ede-b14d-4b42-a2a1-5d62ef132f2a@gmail.com>
-Date: Fri, 5 Sep 2025 16:57:07 +0100
+        Fri, 05 Sep 2025 08:58:41 -0700 (PDT)
+Message-ID: <701d2994-5b9a-4657-a616-586652f42df5@redhat.com>
+Date: Fri, 5 Sep 2025 17:58:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1] mm/huge_memory: fix shrinking of all-zero THPs with
  max_ptes_none default
-Content-Language: en-GB
-From: Usama Arif <usamaarif642@gmail.com>
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+To: Usama Arif <usamaarif642@gmail.com>, linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -115,17 +121,66 @@ References: <20250905141137.3529867-1-david@redhat.com>
  <3c857cdb-01d0-4884-85c1-dfae46d8e4a0@gmail.com>
  <aadf50b1-151b-41c6-b60c-5f1f2a4f2d8e@redhat.com>
  <d48af6f4-2ded-40f5-849d-7aa991727a59@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
 In-Reply-To: <d48af6f4-2ded-40f5-849d-7aa991727a59@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DlMrNEIUhoDpXwffzh4G0Fd1hsjKtF1BPwbFcpIeCWE_1757087923
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 59E684000D
 X-Rspam-User: 
-X-Stat-Signature: z6g4m1qhse434g7m8efrkm9nf8t3u1nt
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757087832-151050
-X-HE-Meta: U2FsdGVkX1+Q9/+tTSOCbyc0ShSqZ5stvflF9Nd1Xt7mzqRm0uHZR+TnAUcXpgZWE9JrrbiUNOY0qyfL+XA0omtOv4GupA+B8FULmz0HMzuRHVO9HNMHdrQ3USDh75YiDj7sFfe6w3c1mAINHnnEvpptO9iRTNDMIqsLm6ZlyMF/L9vccNVEzYgqjpd6cO73aKwbLpvgh6rsmOheW4kj/tfuyqmpJxdae58bglL9EtneIqmuxtZjesehxINC6lriMPw7eyIpWsuI70qy3JeSkdvW8JQeZo3rEk28coS7psZJ0cc5v0xNKSoUmCPp1/co7KmwkcJCzT79jppvDHfuUY+k2ysRb7HZBUJwzBsn+G+wxpIx84TKU85BABgSLlGuptOk3cehuwYgwe1P+jGaC3NdhpmGUj0lXdAcRpm2BZ+RJxxwiLJ7jojV09fvs4M+LWW7wvceGv4XBG2cZr5kGiXJo0haUSYiG6m2zAYqHEk4F0v4rwznFf4WNDOzN4PN4RkZN+Gkths2kUphxo1v9450FsLFat81cJ5rMjRCM+mHu60C858c5W8pQ/HMfc6x6ipeYbvh/e0lRRcJ5gH/BLTDIGH8/I62i33+bzjdCF7EoyLanrlxudKtaIUwrREeg0kS+eoz5qbr7zOhau3dGLm8M+cuWgdo8p4hQydZuoMEt8Z9W+EGd9VJiLRVgI+gfr9OxM+ovrkdK7lsRrqDwuFC8Au70NXVloFy9V21DozPTZar6AYd97jI1Ul4o7jB3b3MQjv4FOTFciaGAsjR0sB4AhKg4h0sUnU73rix64R9ooAzVuk+d/puys6R1Bsh/3pGlOVvAnS5w9BrW78tRl9r3tsF87fT88AxibIHeOxntEKGHywlOqdWu4JFnjPUbzxzKzcS/dQeH7eZHa+9NiUZjbIjfr1pFsqVohgInP9ar6VcMp3+aAih/kAG9N32odjLDsXOjN2Ad/C3m0J
- +g/jjZpl
- LAzZSURiu1pyEMq6Gjoy62LenJg4+BFyyfA9gSceqfcKPJcOwf1ZCFXoRgVm1W9/6pjKd5CRXOUafgqRXd+zMaL8GDQWvrXq8zzq5YWjUK48OgwXWdLLV3y3gOFf9UnuVNZhvrzDt2d46mn+UhvjT1A9IjZaF1O1RTli6+89STAgtSDpPKhqJyeadViHm44bsUpGvDqYPFq/HKvf2LXqit9cGJ9ksSEwDft2JqGdyWxz6hv//OCtiRbPOytGjD45ckL3tVkzHWRX0uUzuS/zbdL5h3F6KzY5CEKGUbDcwV/7iM5UNTtBDbPhj7cJ8E5iBC9SRRMUSlM/GZxc6dd7jCq/jIhA7NsmBIuHBeER8nVzHUCBpwduA60IgnTxl5xysvsXjLFtyGgc+3ehuFwF93BGcUytQ61u4CcbtqyJ+Jx9ANI6NNGBGeXbLXpVmNozZNtrYGCGzqNQEx/aCD6nMrcMWcyI1Qo5ptNADAi1eVmNDUJsnVMWxWR/iZPWCAZDYrOIDsFoQX9cZCF3C0GCkx3Lk8r3xJfWiBhL1QiOz+Fr0zLOe5zXiuowEA3Bp8BDgKGHcsofgnIfTuYRqjqdXDhIGiCjGHt2mXXWH
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 05B75180006
+X-Stat-Signature: 6xqh5caqmgjmdf5h8sfcpxepzzseysos
+X-HE-Tag: 1757087925-595663
+X-HE-Meta: U2FsdGVkX1/TLxUeHTv2BeihHiSYWU7NVKDKX2aQRqquXkHtCwJdus+3uVeuCZqYCkInZ2x3Y3pcJe8vdkEFWBCPEqVe5vm+t8n+qumBHro1c+hzfcpnMi0GBAvv7TqqqudzgrhuQsTig8Sk5m0bHYFkfzsDjFMtxVqZjS7XwD4Dgm9AvlXmrLXSx4MQ6G68LcHCMw/Tu0049UHdIKq7BrDP7Wq4M8iYpvYafwvB+QgvpuL5wbCtJPssdY4AQ7nSb4ewaM8Z5OeOoCx4oIHHyITIznSDh4Cm75N1kdyqvLESmDoZ42javE89GmqzrglUwmuG0JoB9msHEhZJroD229lKnV9yDaujb2oMiRdqk98qyMvHDuCG2eZeQlPQVr3GSq8CNt0Lanrd2cX1B9+1Fe/7rifpcr8Mt8DMankHCH7xe/5QbqeWsQGcY1w/oftAR6wu7VmsjP+TcQm2mbMpCe/4L02za7MIIZ2CSMk9vph3qSoPeLVRlciHO10xfdycWHD5gCYhbLyA8iXcMwd6zupJY+GhhpiXgFokH8cljhGpMNf2/3+H6pJBWcsx3Q7bRDBMW15E5ahs8zJE45PAP2vKzS6R/0ut0kUp9RWOXjgMLQebaCjVDspEC7Dfm3pL0PTHHLP2cOQO07V2b5w6rKeBOZpHjbG99NTApk8Ez22KF1ULPeks5bfxEfISfuqm49usfL8tv97QTkUvzz+mXseXgtDf7XZpDM+UYWFJjb2CGU09/CpWGdv1FZtl2OgywU/caYEmdFMOYa5pdVhJwQLbPc5ueH1ipv8vYZftBR/homavoL3Ymw+gqdX695LLNEbP9xVRiaINLGbqQMmdYECLWk2BVldSMIqWrd+gcP/WP73UrBu+gQ9zvH28eZflGWwVZIubMJDquwa4ya3OV4uUl1+8Q3lQwIYejxAjr3exDqiGKghwtkYnqsvGZAiVvPGpdGkNyYqT7Km4Zj4
+ gUvKCGVl
+ AjIBAO5aW3hdk9syLadUhxsN4FcjXO+TG3uEs3E2aAXTv29BZHwGWNhdLVlOcMKaigR+dZ6M8nwCslaiPT4bRUfKmPilyFZsFYviQqqZLzKf+7KLkldNISP+NH58i9R66t2CKuw3uQkwz2xcq1VVXAdBn88niQpdKDhIoX0vh5L0YCq2kRs7IPt0COyLuc8SleXz1AKnXl/fjo3cD0CTp5ufJqHGgRRHEdJjSiEJub0oDIMu/VDrIvhb3qIOhmqiPjUVY+xgRYnb5kcFf086RRVOnSbRZlSutfDf24j1jV7OYeZkzEuwc+j04/LaB+3cnTaL9BwemtOExdiJhjplzJ1WZ2gYM9unCyUPoEfgmKK0E8i09URtBeWcZsyuvb2yqMQJgdoM5ZSu2uevDwg40f50UUYa78MeU1XDPXOyh3suVFFxA2/kP5/93Cznija8UwNnhxRQ/tegWGmeQ8uZU8bhIBpZsvziAwzEwUBeHGCxougDWUGT9nqStkO37vVAZRn3HO7fV+poNBVw9rRlqsakl0qGKHPJJSn8ZJM5raW6Irb5qdeHsvDuPEx4DBSAFD92G05UWXQIiAC57WCnpvNnrgxG7czXClySh0tfvAlhrQS8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,9 +189,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 05/09/2025 16:53, Usama Arif wrote:
+On 05.09.25 17:53, Usama Arif wrote:
 > 
 > 
 > On 05/09/2025 16:28, David Hildenbrand wrote:
@@ -196,40 +249,40 @@ On 05/09/2025 16:53, Usama Arif wrote:
 >> Author: David Hildenbrand <david@redhat.com>
 >> Date:   Fri Sep 5 17:22:01 2025 +0200
 >>
->>     mm/huge_memory: always add THPs to the deferred split list
->>         When disabling the shrinker and then re-enabling it, any anon THPs
->>     allocated in the meantime.
->>         That also means that we cannot disable the shrinker as default during
->>     boot, because we would miss some THPs later when enabling it.
->>         So always add them to the deferred split list, and only skip the
->>     scanning if the shrinker is disabled.
->>         This is effectively what we do on all systems out there already, unless
->>     they disable the shrinker.
->>         Signed-off-by: David Hildenbrand <david@redhat.com>
+>>      mm/huge_memory: always add THPs to the deferred split list
+>>          When disabling the shrinker and then re-enabling it, any anon THPs
+>>      allocated in the meantime.
+>>          That also means that we cannot disable the shrinker as default during
+>>      boot, because we would miss some THPs later when enabling it.
+>>          So always add them to the deferred split list, and only skip the
+>>      scanning if the shrinker is disabled.
+>>          This is effectively what we do on all systems out there already, unless
+>>      they disable the shrinker.
+>>          Signed-off-by: David Hildenbrand <david@redhat.com>
 >>
 >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
 >> index aa3ed7a86435b..3ee857c1d3754 100644
 >> --- a/mm/huge_memory.c
 >> +++ b/mm/huge_memory.c
 >> @@ -4052,9 +4052,6 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
->>         if (folio_order(folio) <= 1)
->>                 return;
->>  
+>>          if (folio_order(folio) <= 1)
+>>                  return;
+>>   
 >> -       if (!partially_mapped && !split_underused_thp)
 >> -               return;
 >> -
->>         /*
->>          * Exclude swapcache: originally to avoid a corrupt deferred split
->>          * queue. Nowadays that is fully prevented by memcg1_swapout();
+>>          /*
+>>           * Exclude swapcache: originally to avoid a corrupt deferred split
+>>           * queue. Nowadays that is fully prevented by memcg1_swapout();
 >> @@ -4175,6 +4172,8 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
->>                 bool underused = false;
->>  
->>                 if (!folio_test_partially_mapped(folio)) {
+>>                  bool underused = false;
+>>   
+>>                  if (!folio_test_partially_mapped(folio)) {
 >> +                       if (!split_underused_thp)
 >> +                               goto next;
->>                         underused = thp_underused(folio);
->>                         if (!underused)
->>                                 goto next;
+>>                          underused = thp_underused(folio);
+>>                          if (!underused)
+>>                                  goto next;
 >>
 >>
 > 
@@ -238,6 +291,14 @@ On 05/09/2025 16:53, Usama Arif wrote:
 > 
 > In the case of when shrinker is disabled, this could make the deferred split scan for partially mapped folios
 > very ineffective?
+
+I hope you realize that that's the default on each and every system out 
+there that ships this feature :)
+
+And don't ask me how many people even know about disabling the shrinker 
+or would do it, when the default setting is mostly not splitting many 
+THPs ever.
+
 > 
 > I am making up numbers, but lets there are 128 THPs in the system, only 2 of them are partially mapped
 > and sc->nr_to_scan is 32.
@@ -248,11 +309,12 @@ On 05/09/2025 16:53, Usama Arif wrote:
 > With your patch, the worst case scenario is that the partially mapped THPs are at the end of the deferred_list
 > and we would need 4 calls for the shrinker to split them.
 
+Probably at some point we would want split lists as well, not sure how 
+feasible that is.
 
-And I am hoping people are not dynamically enabling/disabling THP shrinker :)
+-- 
+Cheers
 
-
-I have ideas about dynamically changing max_ptes_none, maybe based on system metrics like memory pressure,
-but not enabling/disabling shrinker.
+David / dhildenb
 
 
