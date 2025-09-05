@@ -4,125 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EF14CA1013
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 23:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A1BECA0FED
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 23:58:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A53F88E0002; Fri,  5 Sep 2025 19:55:03 -0400 (EDT)
+	id A5A858E0006; Fri,  5 Sep 2025 19:58:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A030A8E0001; Fri,  5 Sep 2025 19:55:03 -0400 (EDT)
+	id A0B728E0001; Fri,  5 Sep 2025 19:58:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F21A8E0002; Fri,  5 Sep 2025 19:55:03 -0400 (EDT)
+	id 8F9408E0006; Fri,  5 Sep 2025 19:58:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B9EA8E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:55:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3E93B6E29
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:55:02 +0000 (UTC)
-X-FDA: 83856854844.12.3CC31E0
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 167B71C000B
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:55:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VlyNoGPi;
-	spf=pass (imf18.hostedemail.com: domain of yepeilin@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=yepeilin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 80BE28E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:58:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F3B7485D59
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:58:17 +0000 (UTC)
+X-FDA: 83856863034.15.E279B05
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0101914000A
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:58:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m/2tIAu6";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757116501;
+	s=arc-20220608; t=1757116696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UFjoh0yun9Jt3uWvDF9Z6Ur8uctyhnqqciFXlHuyWmo=;
-	b=Tjnb+PVWbiQ5Yb913xf1Jv9FceUZV4MoIC3OqcTa1Hqxw3YXXfyFThT9qEfF6C5Qf4qH+x
-	6M+wNf8KmYiMvAmjBrBziIUdy8xz+zDOaP+hf95eKnoPPJKycCcGjQSQfWtiV6hW6Kmwxl
-	lAv5i4GRpIDZCUT5dZlqwjGehTpiIsU=
+	bh=RXHsSLKRdEz/0gzt3BLA8jLGOAHyduS5LK9Kzbr6hrQ=;
+	b=rrvi5ICz0sdyQSQUa94AtCko2Xg1h9NXs+vakplAhtGP2DqNX/lygjMKZa4izrh8b8kdoG
+	6STc1YD5J7gN11OVcXzFOyfbzp/EkG6+GWbfBaIfiuG/YDKcn+jdxT5MOEyZaDfFkM0bqm
+	+2FmXt0vkVVO09u8QG8cTNRvgCsSjk4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VlyNoGPi;
-	spf=pass (imf18.hostedemail.com: domain of yepeilin@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=yepeilin@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757116501; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="m/2tIAu6";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757116696; a=rsa-sha256;
 	cv=none;
-	b=oIhkQ60xDBSKqq4OrHOuOcZ0+jSnEzdc5n9UknSHAzHQCK2cjppk/chdIruNALDqAmEJyv
-	kUDqpmAMxsMmvRnb9FezG6mAnchH/hMcO7fvPp6R05Vi7HXEfNx9yzeZIp4uc/Fff1JupU
-	ZxVjY+QaWGsdFoEPlM0xZuqQRhLhJdY=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24cf5bcfb60so61095ad.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 16:55:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757116500; x=1757721300; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UFjoh0yun9Jt3uWvDF9Z6Ur8uctyhnqqciFXlHuyWmo=;
-        b=VlyNoGPiz0AfMJSTUK5uSw3upMZzZpdkH0cWUWVjaVZ2Df4FPLUcunui0Qan8vRb0m
-         mjmLeOmtjVl8nnYO6idfo/UVMSEwQHa0vPs8ZdXo/SH8OGdWZ7XiuH+MgkSYN5cuQjim
-         BPv0G2mjR3NP95d4veA3tJbXIV/RuKeY6fG6SpmnQEs9MKfabeXvOU4NupzltAX4bj+R
-         6cnUsw+IyLRIJtLXRoicyE+ASH7egs147UoJZzYAUATeJYqLQ508oUaMT/Du4z/mAtmW
-         bI7r+JYeDyiK4EmyucQ/4nFtY6IbiM5j6lCioG3SqPiQp/ZbXt/BRr8PlKxxdJ28GazA
-         Xlzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757116500; x=1757721300;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UFjoh0yun9Jt3uWvDF9Z6Ur8uctyhnqqciFXlHuyWmo=;
-        b=PHGY/TXFs/xl0Wr/YXPHs1ic3YZ/w1b9lnSSzvN8VZgWbynEAsBrJstKe8u6Dprl4n
-         rY6rWAFch7GZPX/K2xsh5N5DkEtw6NMCP2Mi2cgGCPvH9e0yhnt+91eoMU37jwnoNZnh
-         R9Y1zFusLfFCFMIbGB+16q60exKaxmojtnOKJwwKS3dAknBFCY8GXA53KHbzvynZss2y
-         h6aLq+27NoUFzljNg1JcO+NVi80WwlEKcQ0ZiCVXq6TPl9LQIxuCLT144xa1W3R9KVQ1
-         qzdEGxRJRptBtrhDqRmMpdb5VLIwdvRcR4VuphwHd0TcS8uKiIHl4M4NsKDOC8UaQu4H
-         rtqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWsVh5w9FdoUm45JIw1k5qnds+t3F5ytQJJM6MyWazKRD3KZxjXDSZu1FN45zjmAeh3vVZW+WCUiQ==@kvack.org
-X-Gm-Message-State: AOJu0YxpLl38+1esYr4JNPdCsfb0WtoxRdiwGeyeoW7nWdjB6x9zTNzz
-	lEM1a/Sx8qlVCanTqFMm/X+HJrJql3gs+EiUoeZs9kAlzJWfnsZ2bYCV42p9TWQgOA==
-X-Gm-Gg: ASbGnctpCJpYXLB8kvdPEPawUS/6RXEEubZ4Im01HbcOlbI13OZndnn4H+/qYUx/HIA
-	fcL8lwEAw1wb/4bQ+kID2uweaIUHkRyq7AvoH8p7ncq+A9dyFua7HLOuYOOtvJQpctiocMyZIUL
-	/BdP97f2XdxkVymYLDNqafN71D+xvcN4synCZATJ540NpDk9kGsojtJUgnubUxYEP0siHb/FvQE
-	rkikwM+MrJEhVM4++EF79m0pY18b1B8Suac/npBGkYnTBLhuMhg2khp56UH44CA/IUnjUxpgOua
-	jObQqHnbhaBzS4cO4iA7dCUTv4dm6q7IIRCUioYaCXKLsWUe+pb8TX+nqajBQLRXJwuEfo+YkQz
-	SfoNXU4rfNm0azT39Pwk6nhQnN6V5bQq54ltJyxMb382h+Ouob9fE3NGqgn/9ZGkva/Izr1L97I
-	rGug==
-X-Google-Smtp-Source: AGHT+IEWOdZEWK6OGKrlJi/++b9kR9pvklbQTGYdOvIZsaWRdSDtHRwHhrXyU2eEfngOzkqrg5CSOA==
-X-Received: by 2002:a17:902:cec1:b0:248:79e8:9a3b with SMTP id d9443c01a7336-25119470048mr1579015ad.12.1757116499518;
-        Fri, 05 Sep 2025 16:54:59 -0700 (PDT)
-Received: from google.com (132.192.16.34.bc.googleusercontent.com. [34.16.192.132])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-329e9fd022dsm11563888a91.3.2025.09.05.16.54.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 16:54:58 -0700 (PDT)
-Date: Fri, 5 Sep 2025 23:54:54 +0000
-From: Peilin Ye <yepeilin@google.com>
-To: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Tejun Heo <tj@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Josh Don <joshdon@google.com>, Barret Rhoden <brho@google.com>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH bpf] bpf/helpers: Use __GFP_HIGH instead of GFP_ATOMIC in
- __bpf_async_init()
-Message-ID: <aLt4TuoFy-83hkt2@google.com>
-References: <20250905234547.862249-1-yepeilin@google.com>
+	b=z9MCL33WF/0HXBCFGhBjzRElyuz+9W0TenSiLIHcc604vSl6i2gn+vygiVOa3PshisPoPU
+	kDJzVoG5n2Ih7bxvbUjkBFExjNFg+EahcnGiGH7xaSQRCdaBBzexcCVIU6MX7wYRxd8ZJG
+	lRmb5tIi5pSwLsY9/1JdHsj2Bu+hiyI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AAA7045037
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4EBC4CEF9
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:58:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757116694;
+	bh=xB5ldmJy/DKXYeTMwYcDhf1eR32/RPQBu7v5T1o/n7w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=m/2tIAu6bl0xHutiFPSbyYbcwRX5gXZlX1sh2+38LVJVYW6P6a+4JuRYz6227h9b3
+	 BAMEJjX3r5Wh8e69KKyxt2GFO9GfR4XriwhuEiqPyd8f17I30YKJfSUQWR8CztT4ZK
+	 h6PDG/SLY/Db1cxC1kFix7Kp/m7bOuJjuaweddSG9o3L3gKCicA/cTAPu7R4tYBaXg
+	 M7fYegu5aorXe0vzygwBHlownqHf6Or4ue5vTusiJAIrOKttr6gQtyvfIUjY6gGD8e
+	 a8UduOfutdoZd7ngvECIhSW0tqL8W+chvAeljUQdoS9EZSpfoOSvSh3xplQhcZ6NY5
+	 ml6isXoJHs82Q==
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45dd9d72f61so28695e9.0
+        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 16:58:14 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxCLc8Ll/IN/mmqokaGj/NKMC0CcxQwJKfL1fzGVEYy3bgZM/8c
+	57cPWhdnan+RtndErZ2jBvBGP6ifsQ5ZELWsRv/m59AJqu2nhDMmP5/rOqI484dFwXPMgNi1i58
+	cZbGV4RzBF7sLUBAUwxYGqT15p7pd4Dl65JsKnITP
+X-Google-Smtp-Source: AGHT+IHCcH4kCuVMxmKbBqGME1oVT80rXJRAfI0UrcAzfpUu4NxvH2ftBru08vDxTQGrCxVYHM9hISQJY85M2TQRNns=
+X-Received: by 2002:a05:600c:a408:b0:45b:7d8f:4bd4 with SMTP id
+ 5b1f17b1804b1-45dddad7944mr480225e9.4.1757116693112; Fri, 05 Sep 2025
+ 16:58:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250905234547.862249-1-yepeilin@google.com>
-X-Stat-Signature: h19noyghefm94zn9bw1jm7xgjk8mi99n
+References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-2-ryncsn@gmail.com>
+In-Reply-To: <20250905191357.78298-2-ryncsn@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 5 Sep 2025 16:58:00 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuMsGGtOuPpDwFKq0sNhX7HKbQWWK31uWpqeqW-RGTo-0A@mail.gmail.com>
+X-Gm-Features: Ac12FXzUSSTKBB1nYWslF_7FFwdhOBxjZwGBNQCXiV0WHLUStmYdDSFHfZgnMRw
+Message-ID: <CAF8kJuMsGGtOuPpDwFKq0sNhX7HKbQWWK31uWpqeqW-RGTo-0A@mail.gmail.com>
+Subject: Re: [PATCH v2 01/15] docs/mm: add document for swap table
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0101914000A
+X-Stat-Signature: mo8wion8gdqkqn4hwk1mk87aa9seioq3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 167B71C000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757116500-111496
-X-HE-Meta: U2FsdGVkX19jt6ulJ1MYFUjZdKOg5UwYys0wEIYrOtdGVyKXnxdz10K6ZMd+fb773enp+dosFS6BQG6pN3wjO6QOf2XnhouuWdFqLUX3vt7/hZbzqJOKWOOLq7ZlDf4AjobdEiR9N5uvc5ljTYokA/e27UkEhSYlaaWMOWGBym4V9ggxEXEX7iH2pOmdoYF/lkYrWHTdVClOaMT8tyfEBxZ3TIsRFcxTDBlr7KDg+qzIb8HssuQ2/4HiwLLz/GRc0SFszOGFdqVvexT4sdGc+jUicnw42MZJ6Z9a67fJmXMXH9wFSSEjYhakOETgIljLXWNHkWQJEEl+YnxfTvWYsFMP7JouqgmW/kTztX+B53ZCRriXvSI4GMcU18B8GhDRWStXozghWtx8V+uZVcc0el/tQKYUkIU+22ZZc5Vjz5M9tw3wntKl5E0pDC61WAI0GWG15zbAC07xlkMPiZErhzFqHsC+WRy21TASUX7GMGtQRCkhLFOXMjnpZ7MXbMibD0toT4V8v9G0y7ZBWTnHyPLd1zIL06b6f5h3aeVCIj2aKcbJur+dGYM1YFMEhlbxyZnI3wN5Ij8GRJONKsgIB/+2owmGUqtewCFM+W38pu1V9t9DvD9xqTusRE7I5IoZhImqD9U0y64d4ekMbbY7c3IIlejSI9upoDCOXQRupyGxtcuUsbszdVtUXklscUYc+IE6xP6x9xYjGy+o87blvIgqhuvVafAMA7dYT9tbPJ3EeLJSu5W+5Rg/C6rqrI3kmk1o9dQnUqlNT5K/TpK74+A/IZsDXqQXmVhFRm77id2fmbeZBOnrcEJcY+u1tbIvxwtUkcxktbAIQVO5Xf6qOZLWcKU2V7V88IVwGGXWNav8lgj4p5arDLeT14447tNjsLXV9PKG6yUXxVd3PajkSjmBHfQiteaBg76daHxU4tBmqDA1BwExTTYBOF1GSqWB44ekV6p8h8QO4rLsN4q
- of3PcLiU
- r+93aR1jxmh3eXjhjuAhAZH37XtDCSgF3R+67YtCoUm9EZxrxhOg+joV6ncsP4F/8mapjeOKcJ2154OL9Giofi8AnihYf8s19XF2rbepwFWdiIzCTLgfLDNjhcIGADL7qjKyLtyXVu0ZyY20SsyJwr+yr2bp+WUIOXa9sKtSYeTpIJVPWzAP/yBZ7uyMhLYdv9gU+o41PchkKBmS8NnHd1S5Hld5xTPxOPsMFH4M7H7vmpvSZpgDYHuPIlVzxkHiF89rbqjvHqMwdj66zmHaw6aZDlu2+8EkWVz+epv86uFu0lSH0E1YV2EQVIWBxUu93rFvCSPeU+DmYJ0BCk3diZBx5JPbNbkWljukcXDv7QEWETNqXxKlXsfYKJzBbX6hogrGIWnaiVVQNcWvjPYo/qP2qxYPEzlJZYnIplktAwlKN04RTxi6RFqjyKwLffWM8YzLyIdOpKVGTqVsQgM1aTdNPV9eie2ojb2530bkHsKEl8aLk+chquJmLOkhwg+anUXcHerqHjy3d5t6fcbgE044PzQ==
+X-HE-Tag: 1757116695-483218
+X-HE-Meta: U2FsdGVkX1+n9HW6FvRiAL0AYYCU7+1nfQhZJGLZ5FuBjXOrOU+gXZKdq2LjsBmFZA83G/X+7LJ6GrNEFdJXRk/RGZ3Xbh4XYtleOs/4l/fPw91IheRkJP5vHRlamguCMACGJgUcuoj259t9m9dSoibtI3mqpcDohoj0ZJfwf1wh7dS3vxZJ0P+h3QyByhlxcMZqKjlYe81eShGV53wWaJCaG9qaf36IyFT2RgCzfMQ1oLOCqemdCfwDWxTvakeJmJj5x6UXHRlQtI7fqnGWLdzzUr6e8Tthb18SmfZYvWcst7hi7h+Yg82MLXszY1nhDcrY97HhEq+UBV5ryMx4LeKuuN28CJFA8MXYwpdepnmRygQHGwfqFCKyHZBIXjMefdyYyh/6kb5NRoxDhYT2Dw98TcR7ZUCkmJOXBrT621ZbGrQM9IpHAr+V99BBdm34TlkDdQwIJQKrLsE4XVaiNIQe/1BfhOqjQacF/mzQ8/R2WKIzwbMN768S2VUFV88MN7yRCjQ8Dk+wXoO+fx6JBYjILYfjDs5Nm/ODCtHMQ7pRDwUZBwaC1O1RBQwi7nlnYR+mRmGqcYTAV+6TEeCg3jLJdTU9lwRycnpH44uKYzRruT6+bNpGcgAFllB0LO/r20sIMwo5p1Hq8bDoDftTS7syysK1O3rGmdu6fMvic4Kz1r4HoKSJmCNK5KlTJCNnwzSBHW4KCmerpKkphkf3YupwRMtMqBE+56Cgyw/hF88RvhLQ9ITYCMpyqcTe3CrP+mt2gHtp7925Xr7MJHOBayAvrz0UJAbWtfuNAmWx6n6oAk1yZOGPGkjg+O9unonDopYheIy/7tyNGRRWHi+4NiVNekAhHmzwt3B3cgUyqqy8KyhNGs6v12Fkok5MjrQxmkT6gzCBwXEGMN0rmwJGAcZBBfxpn0rYpGera92bKDajFAVnlj4K14Ls3JsdNc5hjIUUIaH7OqZUTGpwLQO
+ 7oXnQJMa
+ XxyST5PhCYEg1AeRAbNhIpREms6HIOx4cjdJfCZ3T8yH689MrqonSHauLKwtUTGXxAZcv6O08JgYlt8kRqroY83Kbtwr7JKnrB91prB/wvp3GEmBFlHUOc9SBvClTS7/7SKRhcR5VitOsXFfY2Ghp2hR+pylJFvBOEb00DdcUcmvWPF6MCwLB+L2ksmT8J/RyiVRKt/y3AtZz0To6RsoUDh5/sO942wjAcmID7MGwW1yaF0ytq+UEzM0RO8Y2Al9yWK45EPt6Pz3UPon4Si/qFZ2kcEeO3mqybx2vU9zdllVhheyavWChN6PlvWvOc3IhvK7kFOsH2GyrfziUL5o6yE0pjO7XG85vOFMgwPy44VRN83g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,16 +109,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Fri, Sep 5, 2025 at 12:14=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> From: Chris Li <chrisl@kernel.org>
+>
+> Swap table is the new swap cache.
+>
+> Signed-off-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  Documentation/mm/swap-table.rst | 72 +++++++++++++++++++++++++++++++++
+>  MAINTAINERS                     |  1 +
+>  2 files changed, 73 insertions(+)
+>  create mode 100644 Documentation/mm/swap-table.rst
+>
+> diff --git a/Documentation/mm/swap-table.rst b/Documentation/mm/swap-tabl=
+e.rst
+> new file mode 100644
+> index 000000000000..929cd91aa984
+> --- /dev/null
+> +++ b/Documentation/mm/swap-table.rst
+> @@ -0,0 +1,72 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +:Author: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
+> +
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +Swap Table
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +Swap table implements swap cache as a per-cluster swap cache value array=
+.
+> +
+> +Swap Entry
+> +----------
+> +
+> +A swap entry contains the information required to serve the anonymous pa=
+ge
+> +fault.
+> +
+> +Swap entry is encoded as two parts: swap type and swap offset.
+> +
+> +The swap type indicates which swap device to use.
+> +The swap offset is the offset of the swap file to read the page data fro=
+m.
+> +
+> +Swap Cache
+> +----------
+> +
+> +Swap cache is a map to look up folios using swap entry as the key. The r=
+esult
+> +value can have three possible types depending on which stage of this swa=
+p entry
+> +was in.
+> +
+> +1. NULL: This swap entry is not used.
+> +
+> +2. folio: A folio has been allocated and bound to this swap entry. This =
+is
+> +   the transient state of swap out or swap in. The folio data can be in
+> +   the folio or swap file, or both.
+> +
+> +3. shadow: The shadow contains the working set information of the swap
 
-On Fri, Sep 05, 2025 at 11:45:46PM +0000, Peilin Ye wrote:
-> Depends on mm patch "memcg: skip cgroup_file_notify if spinning is not
-> allowed".
+I just noticed a typo here, should be "swapped out page"
 
-For context, currently the above mm patch is pending at:
-https://lore.kernel.org/bpf/20250905201606.66198-1-shakeel.butt@linux.dev/
+> +   outed folio. This is the normal state for a swap outed page.
 
-Thanks,
-Peilin Ye
+Same here. "swap outed page" -> "swapped out page"
 
+Chris
 
