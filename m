@@ -4,117 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F9B2CA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 16:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 242E5CA1010
+	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 16:30:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D94C8E000F; Fri,  5 Sep 2025 12:27:04 -0400 (EDT)
+	id 3111A8E0008; Fri,  5 Sep 2025 12:30:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0EF8E0001; Fri,  5 Sep 2025 12:27:04 -0400 (EDT)
+	id 2E8EA8E0001; Fri,  5 Sep 2025 12:30:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C7038E000F; Fri,  5 Sep 2025 12:27:04 -0400 (EDT)
+	id 1FE998E0008; Fri,  5 Sep 2025 12:30:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4806B8E0001
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:27:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F16871A02F5
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:27:03 +0000 (UTC)
-X-FDA: 83855725926.13.09B1192
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4BEFB100014
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:27:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="k7Zmm/l4";
-	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	by kanga.kvack.org (Postfix) with ESMTP id 10B468E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 12:30:54 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D107F119A42
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:30:53 +0000 (UTC)
+X-FDA: 83855735586.14.034E295
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C2423160005
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 16:30:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="B yJ+FIf";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=X2XmmMHo;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757089622;
+	s=arc-20220608; t=1757089851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JratdkJhfp1iQGSSFRxxu72lgWMqyE2NX54DSFPZHRY=;
-	b=i+05HEI6MH3GQdn1RwhYg+o79zSRj288caaVzuP34KrR2lbvG/xLydEBAFsmfXFkNdYlXY
-	QzSTqJMJD47kQc8wrbs2Rk+J8d80hBgmLLCrAyS/bx2dX1lsHWIyUzl43suKoH3hKCRQQH
-	AwEryYZx4dG9cciB3nOcaN7TalTvvdU=
+	bh=WvoqT+34WcjwxPrkxl1DFeCqulJwxB+n8f4vjSGJs9Q=;
+	b=5LAh7qPQCB2BQ5cHcxBIey0ON788oSCAMipH90cQQKIxhQrEUowrTkee3xGlF7Q5egb5CT
+	DHokE2JTEUpkqad8Sv695qSiUCSzzliL86snyRYBVRNK6BwtkiFVVb+/RBhfWj5xZPQj69
+	VQJel9v7AScVUgsrBE8l1cf94bVKfHI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="k7Zmm/l4";
-	spf=pass (imf05.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.12 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757089622; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="B yJ+FIf";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=X2XmmMHo;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.157 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757089851; a=rsa-sha256;
 	cv=none;
-	b=G+wCbH6g9hT2fq3hYyPxBh7Bv/Vv2IJwfFpMoVY0urz3ycYVSlj8bizqLIzJmy3QtRFMRX
-	XfCTgixAxk7cYev2vyTj5yMBeefwvGW0LIFmUKDN5v2i7C2qj4CXmRcgviT9Q2jk7t9Utn
-	csrHSN+fAdtnZJOLi6+QdApxdnIs5+k=
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250905162659euoutp0209439914e512e98f87c7003f3b7cb2ad~ib7L2Tvq02121121211euoutp02j;
-	Fri,  5 Sep 2025 16:26:59 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250905162659euoutp0209439914e512e98f87c7003f3b7cb2ad~ib7L2Tvq02121121211euoutp02j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1757089619;
-	bh=JratdkJhfp1iQGSSFRxxu72lgWMqyE2NX54DSFPZHRY=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=k7Zmm/l4ml+LB1qItvZOEqZY+Sox4+FPDDVEoRVLzx1Wvrm8UN4/WmasRnz/XdrC4
-	 Uz3NPTnr8v6KtMSyeOqg/plUlqcNjUQLJ68wa1aVQkIC0f+6gNInm3vAulUU4bbtBs
-	 bFH/HZYMbbkZGGDU62q/7lnZ1i5322h/6rAkdcfU=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250905162658eucas1p1a568426150516afc440f0b45dae6597c~ib7LZwBNr2591525915eucas1p15;
-	Fri,  5 Sep 2025 16:26:58 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250905162656eusmtip2af2311515d499a88f1b631068b965d1d~ib7JPIWTy2564625646eusmtip2E;
-	Fri,  5 Sep 2025 16:26:56 +0000 (GMT)
-Message-ID: <afcd9cd4-d563-41c3-9e50-7440365b9152@samsung.com>
-Date: Fri, 5 Sep 2025 18:26:55 +0200
+	b=bQl/SIWmtaMqgjwYOcEAY8/nl1fz8COcqSTjsw7HtHvKPihdRRUOeyO6ALpOnxBCkpy2hc
+	UCQI9Uf/aVAQzBQ2tQ6M6F0SD9Zg/hn7sh14ALLUjxiuU0HJ9t9ci2vrBedgoRSIwiuoZH
+	IW75L7UkKWeC66p/3wViH052qieUSeQ=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 12BA6140040E;
+	Fri,  5 Sep 2025 12:30:51 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 05 Sep 2025 12:30:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1757089851; x=
+	1757176251; bh=WvoqT+34WcjwxPrkxl1DFeCqulJwxB+n8f4vjSGJs9Q=; b=B
+	yJ+FIfZaANMrFYAagtKrhCZVqVE3VR30JuDhD3eZUMW06b5S741S8jAUGbZkNdYM
+	rKmi0UGQS7jPg7UXqY1TgaG0Q5vhLSLgjNyWRUKQE/IIjlOq/0Qj8lFukrYPwjxW
+	22Cy54w7CCrJMY+/xJLub6bH1oTTra8XFLCXemY7aE+tqAf+DNw3fNJDQ49zZpX8
+	0x5OF8vDfwDTDYFhq1vUjxTx8WEUi9735xnNX5OjWpQJbyBFgcWbqtLDvU3VcZKS
+	3QQ0QZbMGvPMcKWfDR0FskLaZB1ygHKwFdQ6N+oJE5mqMe/7cozcdhdEZsFMQcxY
+	8rq6k/BHWCwhq7dV1Ax9A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1757089851; x=1757176251; bh=WvoqT+34WcjwxPrkxl1DFeCqulJwxB+n8f4
+	vjSGJs9Q=; b=X2XmmMHopjpk9eEjUFO295TheFMUZ0Dh3rBtzk87C7kk1d1LvJ2
+	7tN8jejKUp7tBffuXDXCSvVYVo8vsLOzTOHTu5BXnwk44VWaHRGF30buVnc1SHO6
+	ajxWqyWEbgZfz5riiKDla/5wc5HuSeR02eXlKtA3sGSu5DWmMtodH0qZ3/kmnRqd
+	CkM1ylzhj/Gt/hxHMFUwgweOPTJw5Z7hkSN1LEGJ8GuSsO1amM0XJo1Jsj52W5Kl
+	s1ROlRkZ8aOurwS4ACyfOIjtP57MwZaLNTNWfybAKH2cQPASONwUjzw8Lu/dIGlK
+	Szchmywg0v2XMJNrd+Y/8Ad9eMHVXg5quhA==
+X-ME-Sender: <xms:OhC7aIVRPWU7urXb0M2gfTgnPpDTn9lW_g9GPmFUSIGxKHea_T11aQ>
+    <xme:OhC7aDI9m8SYROm_qWdMVZrqBjFtEijt5ic9dDUggLN86LNyYdd24UWW5t71ZZmoP
+    5LZy5a82wYnb_lE7MI>
+X-ME-Received: <xmr:OhC7aOFXDwrOtMuT7F781OShxUCq8MeGnWzozX61f2pKiGDmXnra_MxpJs-OwA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdelfeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
+    uhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrf
+    grthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdeludfh
+    feefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedvtddp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvsh
+    esohhrrggtlhgvrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgu
+    rghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthht
+    ohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghpthhtoheprhhpphhtsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthht
+    ohepmhhhohgtkhhosehsuhhsvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmheskh
+    hvrggtkhdrohhrgh
+X-ME-Proxy: <xmx:OhC7aAzj1-RkyrTN1Dms2iVOKT7-sXN__lZg6K2fwsoI56uUxUz2SA>
+    <xmx:OhC7aDisrkHrAjMf-YrrYwYLVh6I1nvSbIjxKEwoEReWi9vuzeytFA>
+    <xmx:OhC7aFKYGFQ6vu5byVGDhfjR6OwN0PWk7pJbjSi08z7k87C8u__L7Q>
+    <xmx:OhC7aGBevOuD4RD1k8TXo8Gdo9TLi9OHN1U1S0OmTPYXDCIP2L5-Fg>
+    <xmx:OxC7aPDOGBrEQoLFZbqdoGfUPqCYg-RmKSvgOue8BwMxdwK0bCnIFmF->
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 Sep 2025 12:30:49 -0400 (EDT)
+Date: Fri, 5 Sep 2025 17:30:47 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	Usama Arif <usamaarif642@gmail.com>
+Subject: Re: [PATCH] tools/mm: Add madvise tool
+Message-ID: <zdh2h3lkd4kv6yt7cnxlomb4nvavjgpwvq4bralbzpt4mefofy@sdhkf6g3t4qu>
+References: <20250904175729.1029735-1-kirill@shutemov.name>
+ <f229a315-8b76-4d27-97b9-6ec3103a36e0@lucifer.local>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v4 03/16] dma-debug: refactor to use physical addresses
- for page mapping
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Leon Romanovsky <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Danilo
-	Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, Jason Wang
-	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
-	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
-	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
-	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
-	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
-	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
-	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
-	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <478d5b7135008b3c82f100faa9d3830839fc6562.1755624249.git.leon@kernel.org>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250905162658eucas1p1a568426150516afc440f0b45dae6597c
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250819173739eucas1p104ee9e80546f92ef250115edd799fc6d
-X-EPHeader: CA
-X-CMS-RootMailID: 20250819173739eucas1p104ee9e80546f92ef250115edd799fc6d
-References: <cover.1755624249.git.leon@kernel.org>
-	<CGME20250819173739eucas1p104ee9e80546f92ef250115edd799fc6d@eucas1p1.samsung.com>
-	<478d5b7135008b3c82f100faa9d3830839fc6562.1755624249.git.leon@kernel.org>
-X-Stat-Signature: pmwsfbhbqu8uj4gofpdzgofjrwe8r6bc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f229a315-8b76-4d27-97b9-6ec3103a36e0@lucifer.local>
+X-Rspamd-Queue-Id: C2423160005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4BEFB100014
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757089621-281861
-X-HE-Meta: U2FsdGVkX1+rr25iEu6y+3xW7+ZnadDG1ReHuN2AIbROkTVscHxJWt0cSbaU+FCOdb7k0TPqfrW5QORJgmFHprxZ+jU6nodoBUPXDBIEjFdq9uKW/ezs6KdaxhJXy2MZlLTtfDPtSit2EvHc4Gx2YUaU8T+WnkYZr70XZ6ML17KxZrz3XL7CnE2+8k8N3Z4xnfmJkvgYvI0AOns0wFOS0jq0Rur0caKEG0ToLQ5paw6uMuwQyFI1PG1yuyGyrIm8ZuzSDFPeTVb1vLCeCWKn6kK6e3qt5v1QamNIalQIQ4E8DyEZp1vJyPjXp0uEMEvif+5B/D71lLlTeQ6VjdCBiNHwoxu7X+xVjkp5r4Fx34ecnueAS828AxgJiAq6h6LD/tQ+vHuDFD663pq7FShYUrNUUpBhxOhylWg5cA8Smk7MFzdbQLXkLcltMsH/DquupsXR6j4KeL2RqTQtySY1zVhEKsNJXHM0z+N851sXfvDeTv6wde2y31+LtPH+FYQl8fpX7McZUBatAXYzdJJPw6NX8FepHSSBTSnvPu5eyS5yZTd53ujYPlf3bAy1MwT1uuWW4iiX4IfFtd2Zm7mOXQ0a2dZEx1yyYfTFjCc6cYB0AwNEPM8r9WBhhxzun0NEPvKT5pWPflvnlb2rpuT7c9ARJAHzBe3FG3wcz+mJFCGpSOcAgz/9kx9JBWk6yFrvprJ2X3WRVkSiQRMwOQZ/q+SGLLtJVWSkIFSCiNdsLea7NIKoeJgZYzA0IQC9urwKb5t+U2GE6Ph0n/7m74XC7muJOmirPo+x7NX53hskU6KlFbL/q/vIYVIG4/Q+JvE1pd6ZvWqlTl6cmZfRApFqPE/+t73YTWktupothjyDAmIRmp8CVl0ax5ur1PgZ/orlKHWfIhIwic6eHz2yWF9j6x31vJPl1vZjQCKHXfUMjmCq5oh47PhLfsrZVBCvzAsybPJ3dI2DS/ClAppjRjv
- dvLmdd5B
- PzySwpaCrJG1sECErrIDcKn0jjtDWaow6L4jBYxtnNCbxBRucdz8p4vNIU6cTlNkgvxDOPRnFZ2dN0nzCynvGFef2GUrJxWK/T4tTU4/eoVDovFR6XrqENcIat+rnLjP3QjHNJJzEOADhxMc=
+X-Stat-Signature: u9ieiajtjjmoa7fiq7ftotgghoiq6e6p
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757089851-672293
+X-HE-Meta: U2FsdGVkX1+tWCTlmHeYg4D9KSNGOvNUIR7oraNdwc/pVAdqfJEnIJjeedaTDbn8Wrf4Xi0Uo7PwI6iDsG8iRoVziguqSnOO73KE/7nUSVhs/XBBbivkziAlgJiOBXrxepryDqqnB6xnVq3ZQA2RjIiAh8AIBdffE4k4GhAAGlWz6Fi4PTK48OlIE/WQpkJusabGbJxqde0SBJM2463qh+IvHqOP9orpmjtGiBXNGhxzm8O8vm7YmguqlwvSXUj2WUcUgBOBybkGGDG5CBukSeIWn8IwW5x+45etojNfaJgdTPwoVhooAB1ZBWytohOz1U+EzFI93y8LZRGMfSeA9uMxzyExw9Ax4rDZgM2DuW6juHgctfhztHJLxiL7LVb43ItcmjyQ+cihgwvbNoAAXjK6cZZEP7kOT9A9Lv/DrkQCREPbaXJqnoMPAlqTQlsx8bbsT0YchK4cTFGot/96pR3YLvXCg6StdiJWBn1zbIGbL/N5KAk0Yz0wUQ+e5olrjk6fT7bFUvRYAMl1aG7hlEdowplIQ1LearbhyjBUebwnDoAXwoXOmDhRwAKfJCcsSmcoTX1XMQpjljTuAlvqHjAsGlEaRGyzo+bnOJ4ZFPPeUta1CWQ+UTci120g7VxoZWnAguwCpLip0UigcguZBH9roODpa4icPfVZxh5g4zarLFUlQKP5szx0BDHWarZeJGa7oKgFn7ZIAHkCgyzZ2f3RHzJSofVK6sVnXyAcSZds1VNiHhTiod7QUqpNymj/iJ9+cAlOu1JEnSvMz2uX1J8qnkXyWEgk5YQG2tCPr5UkJXxMraV8iY6BelCZUD7R5SgRgC/2ba4B5ZxLeYGe/K16aAqwsqTbe/mpcf8/MYhZFb7/QrGrkgrFWXhe5bT1AJA50SsvU4KCjHbdr29kT0uPpjNbYBBDmdT10847dsjdNHBQv9+nS2UM7wGO6g9uWV8BtsIzpvdPWpxeuyZ
+ jV5lXaFc
+ t1pesmWCGwiUQl5UPN+FJMUeh7ArW5Cy3I1ef3oDVhXGranr7T3bsd5+TD/xSCm71Sap9to/9gjfm1yYzhNFTwq3mP33fFmynY85hE1rPd707NIAQja/GSwrnvj879mzt2HAWHdpGojG7+vCY5qgGF4lVEuEG+pv/CyxcD/lY8sAE0YzOW4QKmCmdOB/3hWHhbw0TyguX6jm4s3w2AkRgI7CsNGfbRgkfBoteh4fWDowuaL5fyr1AkQV4S77ZBIu8myyj6fi8De8GBsXLgaKRh/2tu/wqdKjXNUony1bT4Ww8DlX/y+dVhJ3lHouV3+VDlw1NnNfHRW7C0TRRpzzmaoFFco0XAEBQWhvFFoOZzJTU6q1kuL4++4f520hhNJEAET+r0fkMPitJnsCHUEeDZaWRTtkc7ODGKJRU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,242 +138,288 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19.08.2025 19:36, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On Fri, Sep 05, 2025 at 11:37:23AM +0100, Lorenzo Stoakes wrote:
+> On Thu, Sep 04, 2025 at 06:57:29PM +0100, kirill@shutemov.name wrote:
+> > From: Kiryl Shutsemau <kas@kernel.org>
+> >
+> > Add a simple tool that allows to issue an advice on a process or a file.
+> >
+> > It can be useful to experiment with effects of an advice on a workload
+> > without modifying the workload itself.
+> >
+> > Only supports advices available for process_madvise().
 >
-> Convert the DMA debug infrastructure from page-based to physical address-based
-> mapping as a preparation to rely on physical address for DMA mapping routines.
->
-> The refactoring renames debug_dma_map_page() to debug_dma_map_phys() and
-> changes its signature to accept a phys_addr_t parameter instead of struct page
-> and offset. Similarly, debug_dma_unmap_page() becomes debug_dma_unmap_phys().
-> A new dma_debug_phy type is introduced to distinguish physical address mappings
-> from other debug entry types. All callers throughout the codebase are updated
-> to pass physical addresses directly, eliminating the need for page-to-physical
-> conversion in the debug layer.
->
-> This refactoring eliminates the need to convert between page pointers and
-> physical addresses in the debug layer, making the code more efficient and
-> consistent with the DMA mapping API's physical address focus.
->
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> It's a mega nit but 'advice' is plural already (also used in the singular
+> because English is a troll language but there we go!)
 
-This change needs to be based on top of this patch 
-https://lore.kernel.org/all/20250828-dma-debug-fix-noncoherent-dma-check-v1-1-76e9be0dd7fc@oss.qualcomm.com 
-so the easiest way would be to rebase this patchset onto 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/mszyprowski/linux.git/log/?h=dma-mapping-fixes 
-branch (resolving conflicts is trivial) for the next version.
+Oof.
 
-> ---
->   Documentation/core-api/dma-api.rst |  4 ++--
->   kernel/dma/debug.c                 | 28 +++++++++++++++++-----------
->   kernel/dma/debug.h                 | 16 +++++++---------
->   kernel/dma/mapping.c               | 15 ++++++++-------
->   4 files changed, 34 insertions(+), 29 deletions(-)
+> >
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 >
-> diff --git a/Documentation/core-api/dma-api.rst b/Documentation/core-api/dma-api.rst
-> index 3087bea715ed..ca75b3541679 100644
-> --- a/Documentation/core-api/dma-api.rst
-> +++ b/Documentation/core-api/dma-api.rst
-> @@ -761,7 +761,7 @@ example warning message may look like this::
->   	[<ffffffff80235177>] find_busiest_group+0x207/0x8a0
->   	[<ffffffff8064784f>] _spin_lock_irqsave+0x1f/0x50
->   	[<ffffffff803c7ea3>] check_unmap+0x203/0x490
-> -	[<ffffffff803c8259>] debug_dma_unmap_page+0x49/0x50
-> +	[<ffffffff803c8259>] debug_dma_unmap_phys+0x49/0x50
->   	[<ffffffff80485f26>] nv_tx_done_optimized+0xc6/0x2c0
->   	[<ffffffff80486c13>] nv_nic_irq_optimized+0x73/0x2b0
->   	[<ffffffff8026df84>] handle_IRQ_event+0x34/0x70
-> @@ -855,7 +855,7 @@ that a driver may be leaking mappings.
->   dma-debug interface debug_dma_mapping_error() to debug drivers that fail
->   to check DMA mapping errors on addresses returned by dma_map_single() and
->   dma_map_page() interfaces. This interface clears a flag set by
-> -debug_dma_map_page() to indicate that dma_mapping_error() has been called by
-> +debug_dma_map_phys() to indicate that dma_mapping_error() has been called by
->   the driver. When driver does unmap, debug_dma_unmap() checks the flag and if
->   this flag is still set, prints warning message that includes call trace that
->   leads up to the unmap. This interface can be called from dma_mapping_error()
-> diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-> index e43c6de2bce4..da6734e3a4ce 100644
-> --- a/kernel/dma/debug.c
-> +++ b/kernel/dma/debug.c
-> @@ -39,6 +39,7 @@ enum {
->   	dma_debug_sg,
->   	dma_debug_coherent,
->   	dma_debug_resource,
-> +	dma_debug_phy,
->   };
->   
->   enum map_err_types {
-> @@ -141,6 +142,7 @@ static const char *type2name[] = {
->   	[dma_debug_sg] = "scatter-gather",
->   	[dma_debug_coherent] = "coherent",
->   	[dma_debug_resource] = "resource",
-> +	[dma_debug_phy] = "phy",
->   };
->   
->   static const char *dir2name[] = {
-> @@ -1201,9 +1203,8 @@ void debug_dma_map_single(struct device *dev, const void *addr,
->   }
->   EXPORT_SYMBOL(debug_dma_map_single);
->   
-> -void debug_dma_map_page(struct device *dev, struct page *page, size_t offset,
-> -			size_t size, int direction, dma_addr_t dma_addr,
-> -			unsigned long attrs)
-> +void debug_dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
-> +		int direction, dma_addr_t dma_addr, unsigned long attrs)
->   {
->   	struct dma_debug_entry *entry;
->   
-> @@ -1218,19 +1219,24 @@ void debug_dma_map_page(struct device *dev, struct page *page, size_t offset,
->   		return;
->   
->   	entry->dev       = dev;
-> -	entry->type      = dma_debug_single;
-> -	entry->paddr	 = page_to_phys(page) + offset;
-> +	entry->type      = dma_debug_phy;
-> +	entry->paddr	 = phys;
->   	entry->dev_addr  = dma_addr;
->   	entry->size      = size;
->   	entry->direction = direction;
->   	entry->map_err_type = MAP_ERR_NOT_CHECKED;
->   
-> -	check_for_stack(dev, page, offset);
-> +	if (!(attrs & DMA_ATTR_MMIO)) {
-> +		struct page *page = phys_to_page(phys);
-> +		size_t offset = offset_in_page(page);
->   
-> -	if (!PageHighMem(page)) {
-> -		void *addr = page_address(page) + offset;
-> +		check_for_stack(dev, page, offset);
->   
-> -		check_for_illegal_area(dev, addr, size);
-> +		if (!PageHighMem(page)) {
-> +			void *addr = page_address(page) + offset;
-> +
-> +			check_for_illegal_area(dev, addr, size);
-> +		}
->   	}
->   
->   	add_dma_entry(entry, attrs);
-> @@ -1274,11 +1280,11 @@ void debug_dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
->   }
->   EXPORT_SYMBOL(debug_dma_mapping_error);
->   
-> -void debug_dma_unmap_page(struct device *dev, dma_addr_t dma_addr,
-> +void debug_dma_unmap_phys(struct device *dev, dma_addr_t dma_addr,
->   			  size_t size, int direction)
->   {
->   	struct dma_debug_entry ref = {
-> -		.type           = dma_debug_single,
-> +		.type           = dma_debug_phy,
->   		.dev            = dev,
->   		.dev_addr       = dma_addr,
->   		.size           = size,
-> diff --git a/kernel/dma/debug.h b/kernel/dma/debug.h
-> index f525197d3cae..76adb42bffd5 100644
-> --- a/kernel/dma/debug.h
-> +++ b/kernel/dma/debug.h
-> @@ -9,12 +9,11 @@
->   #define _KERNEL_DMA_DEBUG_H
->   
->   #ifdef CONFIG_DMA_API_DEBUG
-> -extern void debug_dma_map_page(struct device *dev, struct page *page,
-> -			       size_t offset, size_t size,
-> -			       int direction, dma_addr_t dma_addr,
-> +extern void debug_dma_map_phys(struct device *dev, phys_addr_t phys,
-> +			       size_t size, int direction, dma_addr_t dma_addr,
->   			       unsigned long attrs);
->   
-> -extern void debug_dma_unmap_page(struct device *dev, dma_addr_t addr,
-> +extern void debug_dma_unmap_phys(struct device *dev, dma_addr_t addr,
->   				 size_t size, int direction);
->   
->   extern void debug_dma_map_sg(struct device *dev, struct scatterlist *sg,
-> @@ -55,14 +54,13 @@ extern void debug_dma_sync_sg_for_device(struct device *dev,
->   					 struct scatterlist *sg,
->   					 int nelems, int direction);
->   #else /* CONFIG_DMA_API_DEBUG */
-> -static inline void debug_dma_map_page(struct device *dev, struct page *page,
-> -				      size_t offset, size_t size,
-> -				      int direction, dma_addr_t dma_addr,
-> -				      unsigned long attrs)
-> +static inline void debug_dma_map_phys(struct device *dev, phys_addr_t phys,
-> +				      size_t size, int direction,
-> +				      dma_addr_t dma_addr, unsigned long attrs)
->   {
->   }
->   
-> -static inline void debug_dma_unmap_page(struct device *dev, dma_addr_t addr,
-> +static inline void debug_dma_unmap_phys(struct device *dev, dma_addr_t addr,
->   					size_t size, int direction)
->   {
->   }
-> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-> index 107e4a4d251d..4c1dfbabb8ae 100644
-> --- a/kernel/dma/mapping.c
-> +++ b/kernel/dma/mapping.c
-> @@ -157,6 +157,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
->   		unsigned long attrs)
->   {
->   	const struct dma_map_ops *ops = get_dma_ops(dev);
-> +	phys_addr_t phys = page_to_phys(page) + offset;
->   	dma_addr_t addr;
->   
->   	BUG_ON(!valid_dma_direction(dir));
-> @@ -165,16 +166,15 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
->   		return DMA_MAPPING_ERROR;
->   
->   	if (dma_map_direct(dev, ops) ||
-> -	    arch_dma_map_page_direct(dev, page_to_phys(page) + offset + size))
-> +	    arch_dma_map_page_direct(dev, phys + size))
->   		addr = dma_direct_map_page(dev, page, offset, size, dir, attrs);
->   	else if (use_dma_iommu(dev))
->   		addr = iommu_dma_map_page(dev, page, offset, size, dir, attrs);
->   	else
->   		addr = ops->map_page(dev, page, offset, size, dir, attrs);
->   	kmsan_handle_dma(page, offset, size, dir);
-> -	trace_dma_map_page(dev, page_to_phys(page) + offset, addr, size, dir,
-> -			   attrs);
-> -	debug_dma_map_page(dev, page, offset, size, dir, addr, attrs);
-> +	trace_dma_map_page(dev, phys, addr, size, dir, attrs);
-> +	debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
->   
->   	return addr;
->   }
-> @@ -194,7 +194,7 @@ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
->   	else
->   		ops->unmap_page(dev, addr, size, dir, attrs);
->   	trace_dma_unmap_page(dev, addr, size, dir, attrs);
-> -	debug_dma_unmap_page(dev, addr, size, dir);
-> +	debug_dma_unmap_phys(dev, addr, size, dir);
->   }
->   EXPORT_SYMBOL(dma_unmap_page_attrs);
->   
-> @@ -712,7 +712,8 @@ struct page *dma_alloc_pages(struct device *dev, size_t size,
->   	if (page) {
->   		trace_dma_alloc_pages(dev, page_to_virt(page), *dma_handle,
->   				      size, dir, gfp, 0);
-> -		debug_dma_map_page(dev, page, 0, size, dir, *dma_handle, 0);
-> +		debug_dma_map_phys(dev, page_to_phys(page), size, dir,
-> +				   *dma_handle, 0);
->   	} else {
->   		trace_dma_alloc_pages(dev, NULL, 0, size, dir, gfp, 0);
->   	}
-> @@ -738,7 +739,7 @@ void dma_free_pages(struct device *dev, size_t size, struct page *page,
->   		dma_addr_t dma_handle, enum dma_data_direction dir)
->   {
->   	trace_dma_free_pages(dev, page_to_virt(page), dma_handle, size, dir, 0);
-> -	debug_dma_unmap_page(dev, dma_handle, size, dir);
-> +	debug_dma_unmap_phys(dev, dma_handle, size, dir);
->   	__dma_free_pages(dev, size, page, dma_handle, dir);
->   }
->   EXPORT_SYMBOL_GPL(dma_free_pages);
+> This is nice. I really only have nits, so with those addressed LGTM and:
+>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>
+> Thanks for doing this, this is useful! :) may use it myself in fact.
+>
+> > ---
+> >  tools/mm/.gitignore |   4 +-
+> >  tools/mm/Makefile   |   2 +-
+> >  tools/mm/madvise.c  | 170 ++++++++++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 174 insertions(+), 2 deletions(-)
+> >  create mode 100644 tools/mm/madvise.c
+> >
+> > diff --git a/tools/mm/.gitignore b/tools/mm/.gitignore
+> > index 922879f93fc8..b713fcf4a2e0 100644
+> > --- a/tools/mm/.gitignore
+> > +++ b/tools/mm/.gitignore
+> > @@ -1,4 +1,6 @@
+> >  # SPDX-License-Identifier: GPL-2.0-only
+> > -slabinfo
+> > +madvise
+> >  page-types
+> >  page_owner_sort
+> > +slabinfo
+> > +thp_swap_allocator_test
+>
+> Nice to add this at the same time :)
+>
+> > diff --git a/tools/mm/Makefile b/tools/mm/Makefile
+> > index f5725b5c23aa..db315a48adcd 100644
+> > --- a/tools/mm/Makefile
+> > +++ b/tools/mm/Makefile
+> > @@ -3,7 +3,7 @@
+> >  #
+> >  include ../scripts/Makefile.include
+> >
+> > -BUILD_TARGETS=page-types slabinfo page_owner_sort thp_swap_allocator_test
+> > +BUILD_TARGETS= madvise page-types page_owner_sort slabinfo thp_swap_allocator_test
+> >  INSTALL_TARGETS = $(BUILD_TARGETS) thpmaps
+> >
+> >  LIB_DIR = ../lib/api
+> > diff --git a/tools/mm/madvise.c b/tools/mm/madvise.c
+> > new file mode 100644
+> > index 000000000000..038b3e1076ea
+> > --- /dev/null
+> > +++ b/tools/mm/madvise.c
+> > @@ -0,0 +1,170 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +#define _GNU_SOURCE
+> > +#include <fcntl.h>
+> > +#include <limits.h>
+> > +#include <stdarg.h>
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <unistd.h>
+> > +#include <sys/mman.h>
+> > +#include <sys/syscall.h>
+> > +
+> > +static void usage(void)
+> > +{
+> > +	printf("madvise TARGET ADVICE START END\n\n");
+> > +	printf("Arguments:\n");
+> > +	printf("\t<TARGET>\n");
+> > +	printf("\t\tA process ID or a file to give the advice to.\n\n");
+> > +	printf("\t\tUse \"./\" prefix if the file name is all digits.\n\n");
+>
+> It kinda sucks to do it this way, why not just default to a file but have a -p
+> or --pid param for pid?
 
-Best regards
+I wanted to keep argv parsing trivial, but I can change it.
+
+> > +	printf("\t<ADVICE>\n");
+> > +	printf("\t\tcold\t\t- Deactivate a given range of pages\n");
+> > +	printf("\t\tcollapse\t- Collapse pages in a given range into THPs\n");
+>
+> Is MADV_COLLAPSE useful for a file you map and unmap? Maybe make
+> process_madvise() only?
+
+It is actually the primary case I am interested in at the moment:
+collapse tmpfs file under workload. It works, but it is very fragile and
+fails easily.
+
+MAP_POPULATE is a workaround. We shouldn't require PMD to be present for
+file collapse. It also put an question if MADV_COLLAPSE suppouse to
+imply populate?
+
+Alignment requirement is also silly for file mapping as we can still
+benefit from file collapse due to PMD mapping in other process or from
+less entries on LRU.
+
+I also saw -ENOMEMs I cannot explain yet. I don't see why it would give
+up easily on allocation.
+
+> > +	printf("\t\tpageout\t\t- Reclaim a given range of pages\n");
+> > +	printf("\t\twillneed\t- The specified data will be accessed in the near future\n");
+> > +	printf("\n\t\tSee madvise(2) for more details.\n\n");
+> > +	printf("\t<START>/<END>\n");
+> > +	printf("\t\tStart and end addressed for the advice. Must be page-aligned.\n\n");
+> > +	printf("\t\tFor PID case, it is addresses in the target process address space.\n\n");
+> > +	printf("\t\tFor file case, it is offsets in the file.\n\n");
+> > +}
+> > +
+> > +static void error(const char *fmt, ...)
+> > +{
+> > +	if (fmt) {
+> > +		va_list argp;
+> > +
+> > +		va_start(argp, fmt);
+> > +		vfprintf(stderr, fmt, argp);
+> > +		va_end(argp);
+> > +		printf("\n");
+> > +	}
+> > +
+> > +	usage();
+> > +	exit(-1);
+> > +}
+> > +
+> > +#define PMD_SIZE_FILE_PATH "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
+> > +static unsigned long read_pmd_pagesize(void)
+> > +{
+> > +	int fd;
+> > +	char buf[20];
+> > +	ssize_t num_read;
+> > +
+> > +	fd = open(PMD_SIZE_FILE_PATH, O_RDONLY);
+> > +	if (fd == -1)
+> > +		return 0;
+> > +
+> > +	num_read = read(fd, buf, 19);
+> > +	if (num_read < 1) {
+> > +		close(fd);
+> > +		return 0;
+> > +	}
+> > +	buf[num_read] = '\0';
+> > +	close(fd);
+> > +
+> > +	return strtoul(buf, NULL, 10);
+> > +}
+> > +
+> > +static int pidfd_open(pid_t pid, unsigned int flags)
+> > +{
+> > +	return syscall(SYS_pidfd_open, pid, flags);
+> > +}
+> > +
+> > +int main(int argc, const char *argv[])
+> > +{
+> > +	unsigned long pid, start, end, page_size;
+> > +	int advice;
+> > +	char *err;
+> > +	int fd;
+> > +
+> > +	if (argc != 5)
+> > +		error(NULL);
+> > +
+> > +	pid = strtoul(argv[1], &err, 10);
+> > +	if (*err || err == argv[1] ||
+> > +	    pid > INT_MAX || (pid_t)pid <= 0) {
+> > +		// Not a PID, assume argv[1] is a file name
+> > +		pid = 0;
+> > +	}
+> > +
+> > +	if (pid) {
+> > +		fd = pidfd_open(pid, 0);
+> > +		if (fd < 0)
+> > +			perror("pidfd_open()"), exit(-1);
+> > +	} else {
+> > +		fd = open(argv[1], O_RDWR);
+> > +		if (fd < 0)
+> > +			perror("open"), exit(-1);
+> > +	}
+> > +
+> > +	if (!strcmp(argv[2], "cold"))
+> > +		advice = MADV_COLD;
+> > +	else if (!strcmp(argv[2], "collapse"))
+> > +		advice = MADV_COLLAPSE;
+> > +	else if (!strcmp(argv[2], "pageout"))
+> > +		advice = MADV_PAGEOUT;
+> > +	else if (!strcmp(argv[2], "willneed"))
+> > +		advice = MADV_WILLNEED;
+> > +	else
+> > +		error("Unknown advice: %s\n", argv[2]);
+> > +
+> > +	page_size = sysconf(_SC_PAGE_SIZE);
+> > +
+> > +	start = strtoul(argv[3], &err, 0);
+> > +	if (*err || err == argv[3])
+> > +		error("Cannot parse start address\n");
+> > +	if (start % page_size)
+> > +		error("Start address is not aligned to page size\n");
+> > +	end = strtoul(argv[4], &err, 0);
+> > +	if (*err || err == argv[4])
+> > +		error("Cannot parse end address\n");
+> > +	if (end % page_size)
+> > +		error("End address is not aligned to page size\n");
+> > +
+> > +	if (pid) {
+> > +		struct iovec vec = {
+> > +			.iov_base = (void *)start,
+> > +			.iov_len = end - start,
+> > +		};
+> > +		ssize_t ret;
+> > +
+> > +		ret = process_madvise(fd, &vec, 1, advice, 0);
+> > +		if (ret < 0)
+> > +			perror("process_madvise"), exit(-1);
+> > +
+> > +		if ((unsigned long)ret != end - start)
+> > +			printf("Partial advice occurred. Stopped at %#lx\n", start + ret);
+>
+> With a single iovec this should never happen. But I guess no harm in having it.
+
+process_madvise(2):
+
+	The advice might be applied to only a part of iovec...
+
+As caller controls the range, it seems possible to me.
+
+> > +	} else {
+> > +		unsigned long addr, hpage_pmd_size;
+> > +		void *p;
+> > +		int ret;
+> > +
+> > +		hpage_pmd_size = read_pmd_pagesize();
+> > +		if (!hpage_pmd_size) {
+> > +			printf("Reading PMD pagesize failed");
+> > +			exit(-1);
+> > +		}
+> > +
+> > +		// Allocate virtual address space to align the target mmap to PMD size
+> > +		// Some advices require this.
+> > +		p = mmap(NULL, end - start + hpage_pmd_size, PROT_NONE,
+> > +			 MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+> > +		if (p == MAP_FAILED)
+> > +			perror("mmap0"), exit(-1);
+> > +		addr = (unsigned long)p;
+> > +		addr += hpage_pmd_size - 1;
+> > +		addr &= ~(hpage_pmd_size - 1);
+> > +
+> > +		p = mmap((void *)addr, end - start,
+> > +			 PROT_READ | PROT_WRITE, MAP_SHARED | MAP_FIXED | MAP_POPULATE, fd, start);
+> > +		if (p == MAP_FAILED)
+> > +			perror("mmap"), exit(-1);
+> > +
+> > +		ret = madvise(p, end - start, advice);
+> > +		if (ret)
+> > +			perror("madvise"), exit(-1);
+>
+> I mean we exit immediately so it's probably not all that important, but not
+> munmap()'ing or closing the fd here.
+
+We have kernel for this :P
+
+>
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > --
+> > 2.50.1
+> >
+> >
+
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
