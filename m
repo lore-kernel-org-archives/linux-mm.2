@@ -4,105 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6711CA1012
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 11:58:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30DF4CA1012
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 12:57:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90EAF8E0003; Sat,  6 Sep 2025 07:58:58 -0400 (EDT)
+	id F39138E0001; Sat,  6 Sep 2025 08:57:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BE9F8E0001; Sat,  6 Sep 2025 07:58:58 -0400 (EDT)
+	id EC2AF6B0007; Sat,  6 Sep 2025 08:57:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AD848E0003; Sat,  6 Sep 2025 07:58:58 -0400 (EDT)
+	id DB1078E0001; Sat,  6 Sep 2025 08:57:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B6598E0001
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 07:58:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC8DC13B2FF
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 11:58:57 +0000 (UTC)
-X-FDA: 83858679114.24.4B75A02
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C1855C000F
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 11:58:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OeBjEByJ;
-	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C01806B0006
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 08:57:02 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4291A85D31
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 12:57:02 +0000 (UTC)
+X-FDA: 83858825484.18.FBBEDF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5D7B1160007
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 12:57:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgAXVKHZ;
+	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757159936;
+	s=arc-20220608; t=1757163420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkbvYiCc5FNF/QDK4AC4j2iWKQBXch2lEyheo86P8dU=;
-	b=wzEPjsI7ST/dUCFIf8r8SgH20JcwCPDGxe6pjqH/+RiDInT0NpkXfUn+Z3ppebKMvxyARV
-	uY8AUUC82Zd9giEkeFHEwlI2m9op1jmw/Hf+2XlQtaFPSB5xxDhBl2bZbZN+QVkpQJ6mtR
-	84dA42ONo8uKPBHpBLU8SDppUSPsxe4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757159936; a=rsa-sha256;
-	cv=none;
-	b=4k9Lr7ivZavKpXspk9HK++UcqQoEyLCeHg2+Pc/O3OS33iogAcpyf5dn38zxv/PxQfWe1E
-	enDrQkTwk29Q8sVx8jWDqZrJf5wcUdHjUxH5vyGO8z0oaeGKz9ZY+WPPno4lItNX18LyWy
-	QyTWP71jCTzalFhuy+TojzbeVk2tLOo=
+	bh=uWMVRXks1rLqkDvQiFNTKUdHQ/+BHnhBPzzUSGVSoVA=;
+	b=l+kQ9zmmLn9JvJmS22v2UZZxqFfy/7zA2EPsTkHFkEB7CkyMgPD4EYz8LPrbShxxhkoC5w
+	7BLH3/xvt2KdE9qDcB5RNPrqm9+GAd10Oy4JEhfG53vgIRjPWKrCwBdF5nqvF2QtUCFNIY
+	ajHNMAv+ssUUKnOPUjd8hvSrlh5LEwc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OeBjEByJ;
-	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HgAXVKHZ;
+	spf=pass (imf08.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757163420; a=rsa-sha256;
+	cv=none;
+	b=FSJzZtdQse5orZcMO3kmMbE5XL/LawHEnJNB9iZGUFzpLoGp6WlUvGdGe2WPgXMg82ZHxB
+	62/10kdjKaa3Aw5B7zXzAUUBaM4tD7zqKQpbTR0a8MfT0htGzNi+k8WhE8cecCaxeVDqdH
+	BCbadi/HrRRGfIICHWthc2vQq0A8E6E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78A1945084
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 11:58:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB7CC4CEFD
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 11:58:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 916AD6033A
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 12:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDFAC4CEFB
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 12:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757159934;
-	bh=Y+R6OdqfM70uWhWnuBfHr9o5HKUIm94zXuJivP6hw4s=;
+	s=k20201202; t=1757163419;
+	bh=2+CbUHoB1zKzsjwROR9vhcpkdWtjxfGZ7lHc4QKUz2A=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OeBjEByJku7Yc2fSJnPtWiWQVZWsK3hgRrEfXSNiiFkKsVFh90/1j6XQD5XIhrDA5
-	 ZEnHcc1tOWVqANRmQwebPZvDP2hR4OznAfJTILuV4B3C+t+IN061O5Pc/vWvMdmvpz
-	 cAl4ajwrSIrwh3/tgpk/XZlo1aztmkXn/YFeKgzqAJjiYgYX2MWVUrDIlwwMe4MVRO
-	 DyfA7jUzffVpXRLrSutSpqBcy0qEkcSWceMEBjDTHXdO3FiESuWA4YNfJlu43RiePD
-	 btY4ipsgjE7/C7cbW+09o3Qb8aI6CYdv72rTEXEKuQCJjgA5ife3j0AXzk3/zgEzeI
-	 6loDtZJvfCT3A==
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45dd9d72f61so46895e9.0
-        for <linux-mm@kvack.org>; Sat, 06 Sep 2025 04:58:54 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yw/b0xRUQfsTifl74YSrFD31N1ZOm8mbdw59W15zCbWPfZ3biX1
-	wqyjQ86qMNwtwFuXuRmRE0IKv8FzKuJ64K/aMKQ/SCGI9oiKT4/MqXvraq2sHWWUxPOFlzXZjHp
-	0p+VfKmCPJ75zfCiVdXvze13uy069pOyW/bdbi82o
-X-Google-Smtp-Source: AGHT+IEdfbwBEn4ztTNn03ZcNZmiIGdjx6/+5WFlkp555xMk8nvWcFO4gxEF1owQmIfOxcr9ircCaRUpI4x2hMJXAAY=
-X-Received: by 2002:a05:600c:34cb:b0:45c:b678:296 with SMTP id
- 5b1f17b1804b1-45dde17c034mr899185e9.5.1757159932937; Sat, 06 Sep 2025
- 04:58:52 -0700 (PDT)
+	b=HgAXVKHZI2uQF5R5wdjGujNMhMGfRg2iGUWbfmM+FkTMVXbRJ4vsjRJ94XBuNJJzt
+	 jaZvmDbb9OAQxcLsrG+19FSXf+gAtVQzrc0+qUYDwew78EtlHNOXmLSeFQHHZLdfI+
+	 8PLrGgzZ0xibG6Zni2Xg4XgIOUTUdBdd4pgcHHRlV1GAcM5ZMW5OWDexMTvFtIHemX
+	 BdGPz0/MstRjr5mJFnOPBvH1CYURfKIBxbvSCindkzzGouVNxg54TiNaUEPF6ZzPBr
+	 LDAeFbRK+qQeQhY5Qa48ss9xtl6jlY7cP5uDMnhxCeygScKUeYDeF2j33g5ZYTWP4D
+	 IEXJfJDAovdSA==
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45dd9d72f61so48135e9.0
+        for <linux-mm@kvack.org>; Sat, 06 Sep 2025 05:56:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUHr+oTCkfnQpfzZfPYSEZAjz1LSmWBXqdDa7E3eSalp+k3XXghosuEItjwbkFCVNCK3BpdIbo68A==@kvack.org
+X-Gm-Message-State: AOJu0YwucaCthbuNtnOOZVNxg9iQgcLBe/K9+vQCEoj/IgG6VBu6gs6B
+	XNd4RPQjp5NfOUGulEzSU+oCV4SNhsN4eZplkVs8sfrTpsZoIQREciPkGwiDO2kiA/icDp3pHmR
+	3d27p2h0FWJVIh0a4xChygWdnaM9wFx/syeas2tZZ
+X-Google-Smtp-Source: AGHT+IEfNnKp45M5qcJUuL7/qRCjDosf5G04QAshQBHa3kDT57AM/PVPd+iJmcobbRI9DLXVVHkKzrE+E8Z9vBogcHs=
+X-Received: by 2002:a05:600c:4f50:b0:458:92d5:3070 with SMTP id
+ 5b1f17b1804b1-45dddad796amr1216725e9.6.1757163417539; Sat, 06 Sep 2025
+ 05:56:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-4-ryncsn@gmail.com>
- <CAF8kJuNhLDovRO+8Y25ArdMBVFjXnYBVjmASzMBtdsdZkQ0NLQ@mail.gmail.com> <CAMgjq7CyXEy3+98JdATscgPu9b9oLbE6CM7-2pFpiQP2QrsrpQ@mail.gmail.com>
-In-Reply-To: <CAMgjq7CyXEy3+98JdATscgPu9b9oLbE6CM7-2pFpiQP2QrsrpQ@mail.gmail.com>
+References: <aKsAES4cXWbDG1xn@yjaykim-PowerEdge-T330> <CACePvbV=OuxGTqoZvgwkx9D-1CycbDv7iQdKhqH1i2e8rTq9OQ@mail.gmail.com>
+ <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330> <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
+ <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330> <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
+ <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330> <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
+ <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330> <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
+ <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330> <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
+In-Reply-To: <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Sat, 6 Sep 2025 04:58:41 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuM1M=gDwkuQF0tU_d4YXxf9dpZfNe13ycPjgMcr1RUkJA@mail.gmail.com>
-X-Gm-Features: AS18NWDL9WLHuN5sS1DbFEP7WJoIPUp7pl0etFR5WWyMwBy3lQ4adYkPyeehV-o
-Message-ID: <CAF8kJuM1M=gDwkuQF0tU_d4YXxf9dpZfNe13ycPjgMcr1RUkJA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/15] mm, swap: fix swap cahe index error when
- retrying reclaim
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
+Date: Sat, 6 Sep 2025 05:56:46 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuNW2kmxKYRE9t8WvSOad9JkLYt0WSAcFOQ9r9=2=XGc9Q@mail.gmail.com>
+X-Gm-Features: AS18NWCEh99GxS8T81OQ6NK4C2x78uuoL8QD9vp2Gdy4X-qQSM3YgnmgvY2sedw
+Message-ID: <CAF8kJuNW2kmxKYRE9t8WvSOad9JkLYt0WSAcFOQ9r9=2=XGc9Q@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gunho.lee@lge.com, 
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com, 
+	Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>, 
+	Wei Xu <weixugc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C1855C000F
-X-Stat-Signature: 1oqxd4mc5pz3x8kh3gd1in4kd7o3odnh
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 5D7B1160007
+X-Stat-Signature: 6jjr9pna5zdgmxim9yitinfbfibi5w44
 X-Rspam-User: 
-X-HE-Tag: 1757159935-551636
-X-HE-Meta: U2FsdGVkX19B4FTNCQCs1GMzH+F6E96UwjGyh5kSaVLtb91XtaA+X6ztThR4VG53yTpyxAym8pwx6V4TWNZAmD7H4rzKmYy+IEBVOntg/lmTWSonZzu1BDJnqWoBN67sTCtMyUiFT4M8q1HdsJnBxvqpPqyKP6eY3PsiPvX6u+HRulc4QlTkAAz/tTBNxStA4nYYc4fF0u35bZckKhtbjSaY5gtrbnXB3J3DoqjulSKjExtGNH9zbxynHOZYA7mbVVPnX6AoQhj9JWl7zEb3apUluK3V/5NLWheOPEiBwJtOlie9H78dYUCdSWaqqZdIy90SEdwOMMDH0lB1a2DQ6FN0UKE4VPtUGJ/GisrIKIPSaceC3aDXQ5KXoSTBaTx6z6NZQuCO70M5fDMO5/A0K7sT2AgYLe6+12SYSWOQMjzsR7XQnEfWHNbgYJ32UKclfHOX2k1aHA6aVkcyDIycHZNIw25RS3yHvaBjUnnpEzr9MwtyACVjvW2mHXmYEbkD6759VijljDkZLT43AZjyv/Z7SboHK0J+9uy35Ogdudsk7Su5t4Rg5VWO1ngxjgD+unKQ6VJUZ5lV2XkHWFEtX3luu0lPsw4tiuF2C8jDL49VsIT0hi621P0J4k+S4/OuTP8z7HLs9HCGC3Gqgxe30BhdZElHz9hlo56r6JWrGLUFIB+KJvkRnTJRebfoy0SuvWrET76Y5Q4uBE7BsIN5U942j1+3Oe/Lt5EAt62eaaZFNVU+NbWHBr+TIQbADO2Yq5TIEBn+RrKSBL/U4FWxIcAi4HRGaP9S/l6Di6vufiNYFRCArhkj7UnrTXqdkNFlCsxrz7daud6NZTmuxIX8ALIVCj8jnC80CA8Mho2NYL2Q2nui7SPaA5DVa5z9Ezg82yJHIjAj6oGGv8qZF6R8GN/kLQLDtqRtHIbhr/rccnPDjy1OzL7RnRcSHtk8AhnskbzolI8Qjms2HyixOQB
- tqULRf9c
- /R/oxd/O2f1P7lL5ndctK93fpSpOzr7hfyeaMAI5iM0C2TvruCl/poil06CsStaktfwL0UmEGvgTpVPoCQv/j6mLbfgnWoEe0lJtPjx5e2hvllu1/DURO9qyFhX/kP9cvSj0Wpurn/oXsPYWXuy2Kz4nC3D6lDxqidvXeo3OUxJpPLL/kIz1FLP+02tG+rX1iJPlsU4SveIGiCzAeTBu9nZuy7dZenBtdwrZDbgykbDQiz6uqJrXeQgbR2UQqUY7RPpStK039q76hbw8+IrPHqRpUZQ6XYZCG2Oytkf176sD3eotgWpDbzgd4PAmN282CwwV7UsHgBJsKbDz2NwVZVUC9pG7TEkYsLftbnkOhniWomrc=
+X-HE-Tag: 1757163420-286670
+X-HE-Meta: U2FsdGVkX1+bOfA65HioCo19KQJwZEYN5bTtgJJc4ORVRLHNSGvQ+KEZhvrKuqhttQGb6Uslxb1mR7K16dz/7i3SVs/2rcnm+Te0dcfuJ+bmgCszvmidAyOUPTokIGGx23Ujx0f1kwM1IxmptqWAr+f92mjkDuSZdp+pGLwrfSHKID2Sc7qt3/hLjH27XZfvBULlcZVVcDRY73f2fAzDc7ph79ZiJj+pag8am4escaIfWk614RAdCkQvQCJkNcn6wygufTfKKKn7cxEV7F7p9dnt1FAJ9S2gN1KNsn7BJg49OVbDUhcL/NbBmVGLNe41xwpqYizqmje8jhh1bT384cyGTuNtfTiaBSthghL75sM2zzacsEup3bgaZNJpfhIey6E6dlBK7+4fR9KwXFTusy7Fob4w1H17i6i2gWGtqN9XAznW45hwQJGucg5jyNeT2KXB013U8nGgXfrqWTj3RZ5SdsLuCSbvLakGjNl7EzWALp95gcHG94n4GjeuDi76K6Ljh+2u9OKx0+EBquU0Fm7b9SW4KFdxkm505+11SM3ZiLsUzVGFtcHv/IJES4GTRzVTcxQRtsXxkbBEpLk8x2RwaUv0QQ3EjaKCipLPo4yLLVlsXAO7uG7pYO4mdXrgdXQaPIrYtGrdDGsG4qyB7Ho8oatnOfCSmoa6KfeX68+CtQtQ3qXzOSx/uEUsOvhGuPrkOZtNdSrrzY/Oih8hkiM+Zm2kz0Bfz4r1f2h0TlXiH6djMC1f5hiRIXa/uHjCMYqOC0Vf+Tz0JgpVzP+MCprtPSrCTmAzOml8Ddnc6yiGXQ6FVupnpyJ2pHWNqFks3fVdtrWlANAAsW8L35CmrsE2LrdEOrRr+ED7Pl/g+VuMs8kYFEgxwSbGzuaI4gx5rtIWma8iVcdMN5RhEmPXdLh1Ipes5zUB5/KjKzD8rPbaVsRt9XyKdop9xetQNyVBEqhJJH2RyUNrEJ1yxVL
+ qLES6pIk
+ 5bzrgxUM9RsZixHWp2wXsHZ4M3hYJRTa/dxtLUPfRv+AAvps9qdfZ1ImAib+G0mJ7Hf6Z1AoRVlcp38HZ0yrm1/2Ns4xPKG7+INLWyVFzZzKFjW6wwlXMBj6HVk77RHWGfB7IzISqbDd+dMA7hGPKosOLYe23fvmR6Mg3n8x6TKLy01QY6bTBIybxyGuTSeA5AYDEOAdrWuAqOnxybFYTU54ZI3NN9SMsBSDPec0qyJvPyT2RCdh206CC0AywdxC9NFZUr6rHAa08dmWlEDgNFwV9PPqeGrEBQGY80PtCyKFm9BqfPDM7CTsG4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,80 +117,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 5, 2025 at 11:29=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+On Fri, Sep 5, 2025 at 4:45=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+> >   - Mask computation: precompute at interface write-time vs runtime
+> >     recomputation. (TBD; preference?)
 >
-> On Sat, Sep 6, 2025 at 11:19=E2=80=AFAM Chris Li <chrisl@kernel.org> wrot=
-e:
-> >
-> > Hi Kairui,
-> >
-> > The patch looks obviously correct to me with some very minor nitpicks f=
-ollowing.
-> >
-> > Acked-by: Chris Li <chrisl@kernel.org>
-> >
-> > On Fri, Sep 5, 2025 at 12:14=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > >
-> > > From: Kairui Song <kasong@tencent.com>
-> > >
-> > > The allocator will reclaim cached slots while scanning. Currently, it
-> > > will try again if the reclaim found a folio that is already removed f=
-rom
-> > > the swap cache due to a race. But the following lookup will be using =
-the
-> > > wrong index. It won't cause any OOB issue since the swap cache index =
-is
-> > > truncated upon lookup, but it may lead to reclaiming of an irrelevant
-> > > folio.
-> > >
-> > > This should not cause a measurable issue, but we should fix it.
-> > >
-> > > Fixes: fae8595505313 ("mm, swap: avoid reclaiming irrelevant swap cac=
-he")
-> > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > ---
-> > >  mm/swapfile.c | 6 +++---
-> > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > > index 4b8ab2cb49ca..4c63fc62f4cb 100644
-> > > --- a/mm/swapfile.c
-> > > +++ b/mm/swapfile.c
-> > > @@ -240,13 +240,13 @@ static int __try_to_reclaim_swap(struct swap_in=
-fo_struct *si,
-> > >          * Offset could point to the middle of a large folio, or foli=
-o
-> > >          * may no longer point to the expected offset before it's loc=
-ked.
-> > >          */
-> > > -       entry =3D folio->swap;
-> > Nitpick:
-> > This and the following reuse the folio->swap dereference and
-> > swp_offset() many times.
-> > You can use some local variables to cache the value into a register
-> > and less function calls. I haven't looked into if the compiler will do
-> > the same expression elimination on this, a good compiler should. The
-> > following looks less busy and doesn't need the compiler to optimize it
-> > for you.
-> >
-> >            fe =3D folio->swap;
-> >            eoffset =3D swp_offset(fe);
-> >            if (offset < eoffset ) || offset >=3D eoffset + nr_pages) {
-> > ...
-> >            }
-> >            offset =3D eoffset;
-> >
-> > This might generate better code due to less function code. If the
-> > compiler does the perfect jobs the original code can generate the same
-> > optimized code as well.
->
-> Right, this part of the code will be gone soon so I think maybe better
-> to keep the change minimal, and it's not a hot path.
+> Let's start with runtime. We can have a runtime and cached with
+> generation numbers on the toplevel. Any change will reset the top
+> level general number then the next lookup will drop the cache value
+> and re-evaluate.
 
-Ack. It is nitpick anyway. Most likely doesn't make a difference to
-modern compilers anyway.
+Scratch that cache value idea. I found the run time evaluation can be
+very simple and elegant.
+Each memcg just needs to store the tier onoff value for the local
+swap.tiers operation. Also a mask to indicate which of those tiers
+present.
+e.g. bits 0-1: default, on bit 0 and off bit 1
+       bits 2-3: zswap, on bit 2 and off bit3
+       bits 4-6: first custom tier
+       ...
+
+The evaluation of the current tier "memcg" to the parent with the
+default tier shortcut can be:
+
+        onoff =3D memcg->tiers_onoff;
+        mask =3D memcg->tiers_mask;
+
+        for (p =3D memcg->parent; p && !has_default(onoff); p =3D p->parent=
+) {
+                merge =3D mask | p->tiers_mask;
+                new =3D merge ^ mask;
+                onoff |=3D p->tiers_onoff & new;
+                mask =3D merge;
+        }
+        if (onoff & DEFAULT_OFF) {
+                // default off, look for the on tiers to turn on
+        } else {
+                // default on, look for the off tiers to turn off
+        }
+
+It is an all bit operation that does not need caching at all. This can
+take advantage of the short cut of the default tier. If the default
+tier overwrite exists, no need to search the parent further.
 
 Chris
 
