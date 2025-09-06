@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50247CA1012
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 17:17:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FFBDCA1012
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 17:17:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F5138E0001; Sat,  6 Sep 2025 13:17:52 -0400 (EDT)
+	id 09A5B6B0006; Sat,  6 Sep 2025 13:17:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37F006B0007; Sat,  6 Sep 2025 13:17:52 -0400 (EDT)
+	id 04AEB8E0003; Sat,  6 Sep 2025 13:17:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246028E0001; Sat,  6 Sep 2025 13:17:52 -0400 (EDT)
+	id E7BF48E0002; Sat,  6 Sep 2025 13:17:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4766B0006
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 13:17:52 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F95813B477
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 17:17:51 +0000 (UTC)
-X-FDA: 83859482742.09.BD583CC
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9C8B640010
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 17:17:49 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ow9K+NQ5;
-	spf=pass (imf01.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D2F2F6B0006
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 13:17:58 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 800E61DE80A
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 17:17:58 +0000 (UTC)
+X-FDA: 83859483036.25.72FB7B0
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8E908140008
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 17:17:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hlCaD5Xz;
+	spf=pass (imf26.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757179069;
+	s=arc-20220608; t=1757179076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KLznC9wbj6fsrEsXcR7N+oZqquNx2F+cSjxXWY46pjI=;
-	b=AS9cd6VY5EMHgq9zeUwSeBVMgcxsuOgkLZ4HHCsocEQ3w9BmUQUUbUbipMJ89BsJxWLSUx
-	5zbFU3QSQPBztyHMdX/sSCMe+lbrZoSYVBtta198e9qEO/HrN1HRO/8zS3Cl7w8mhRGdF0
-	2IQU2zNnkWMr+LiVfnq50VsDfKipXc8=
+	bh=8m7gNbOiJ7wFumA8eH5KhxcoFHJTBnL28AX35/mxZ5k=;
+	b=cxYKePJO1+shwnayVuXLdmuguVSbA/8bgFKeqwVZJq3ClzYm4O/RLQwg1mlN8MA23oZt7Q
+	y/Hc+cu9fmA+kpavmwrMyZHch/4xJzuV/dZ0WZQJE5FqQ071vX0MGKGmYVJ9TP2/UQ2KyS
+	NQKSdWleRD9gKPjV2NWcFJCTYTT9p3o=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ow9K+NQ5;
-	spf=pass (imf01.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hlCaD5Xz;
+	spf=pass (imf26.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757179069; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757179076; a=rsa-sha256;
 	cv=none;
-	b=fuU8tyxmjOtErhIBTzetNxCaUPc1olCUb6jr/uYivzRSIXQDoMCgR3lk2U1yUV477Suern
-	HEP1BhV8rET5rH2mV5wJZYD8He5iE3344S+Sw/70UfpLh4K9kvK36dQdDD/1s6CiEFu0kE
-	Ro59ee7PF3Vz0Gr5GLPYB9SOn4ymAo4=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45dddfaeb21so4631345e9.1
-        for <linux-mm@kvack.org>; Sat, 06 Sep 2025 10:17:49 -0700 (PDT)
+	b=EkOnuFmMKHFhMtPkUCagZHMHmI/4K0OXD1O0ltSWOgLjgPsthJz89fEA3olVp0lfWzAPbN
+	LpPaP058W1TGHwqXHoq/gEIVeRWAnRANvyV6gVZW7fEQcmzJ67kb91Ap1KzUFhW1RKRvrL
+	beBHQQc3NyfluhV4Sy7ZWNYN4MFAFd8=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3e537dc30c7so1144786f8f.3
+        for <linux-mm@kvack.org>; Sat, 06 Sep 2025 10:17:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757179068; x=1757783868; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757179075; x=1757783875; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KLznC9wbj6fsrEsXcR7N+oZqquNx2F+cSjxXWY46pjI=;
-        b=Ow9K+NQ5VsnYjLiEZZNVo2/7/xAz5uUnytnGjK/tV89uMt/igwV5nid+wo71YRCkje
-         oS4EsqMmvrNl5pGTffEqFCyCRBzUS0oGgOQ4awxXdE+AZPlJHYdjq+KF7k0Hw3h+LeXB
-         dYmsU7OO3ThDHfSN/CAtJjAHcbugUWiAe5zEfVD8RvSDGbFzPCPgtAPWwsUBwhuU5Xal
-         xQBophqHzvAHpe8AAV0QTTxuH8wcHRHjUOTaE7P4uOMzCE1dPNEJdB8DvU+hqXdUJ1k/
-         ABLrc/qZQYRRbrMfZDqF2v/uHHy9pHCfh8kAG4oC1Cm4owf6yCZT+gIQtloSI7H3iBFB
-         aEiA==
+        bh=8m7gNbOiJ7wFumA8eH5KhxcoFHJTBnL28AX35/mxZ5k=;
+        b=hlCaD5XzhlwFMK2sN0/JLKUixB+1IllhzUfN7viWRhED3/KEtPMTwm0q8BonRE4RH0
+         LWVsIjS20wsSMQbbWricgcWXo+WcaDIe/aGkjd+LCBFWSNkPwBNPgqmCyVzljNKZ8Qym
+         xY7FWcaGvD9MwK/HKHNpZ9JQ8ulooSASrw6asskhKjZykERi+AORbidCpmjGXLGRJG+Y
+         GvQq4lFyr9DfYa0zHsoBP2/jYmfliAa1USFyo+y31xLviejxD8TZ2DIAySvufdEacj2S
+         8pDYSmVWoRoz63pUKXOpGr9g8rNC5JOZ9KuuNkTU+efsUzo36FVeffbiKBK3686mapNd
+         OTVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757179068; x=1757783868;
+        d=1e100.net; s=20230601; t=1757179075; x=1757783875;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KLznC9wbj6fsrEsXcR7N+oZqquNx2F+cSjxXWY46pjI=;
-        b=YoRRtmOUMPmxDZkUpjwhjK58fFrwDz64YQjRiVLelNYhg0XkvY43JydeckH0XUMkj8
-         yrBn6CWmjfx0wkLpIfbJoii6BtBjSpgFICfzPgLwG5KSIdmMfu04xiF2JtIUlNGj0tEz
-         yGCkoHmltcDuVYjJd6QXPXaAUSgHTa8RspJcK39i19wFHM6cph4a/sOhaYdelORxlMnh
-         fxRhMJWxMu7DEEZKsuvuDXEIrRRZGQo7djyuz5ERvUXE9IAIjanloz0xkLU1bxfHmZFY
-         q7geuAn6/2CD+9DkPXRK70Pxk0KCv5UST4+3/s/wxbt2RzYi9umFt4p8fHmS3WyNOZnT
-         9lqg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVdfE8KMpUKaRXpwwZFu3aeqBiF7znmkl1g4s9MFho7uwF9OnrTEd5cvLecwr/VsHv3fpmSYe05g==@kvack.org
-X-Gm-Message-State: AOJu0Yz+PweGQgabIr0l0vRzbLE+YVombEqOd83JmK7AR8gneeoUeI/J
-	ikje7hwSInkPSl36Rvnv5k9XMcSOnNbQtDBR/yIU42kT4VTfcWcqXA/ehRa1nfjlc7gNYdRcUIT
-	xQc6/3iEw9NvkTy1AKCXFH6kgrb3Ffzs=
-X-Gm-Gg: ASbGncvZ8K+JiHp4neMdsNWigtGXePxEHgBSeJ/YeSrftcx4zqUx9P+/PF+lN2K864J
-	FVOR/sQbhiQDSgx2NamTynBoX5Lw9D+bLwlsuPeNSS6kADPFoW+vNnjzT+KRO7MvNd2SjNzHyrV
-	Uj23750DWVSaKEpM6hQ9q7fG6j5k83tfViWfMOEhyLw1vd9bF9erSGfsXcxU6UO1P05OhD9GvXt
-	2Q3UDuw
-X-Google-Smtp-Source: AGHT+IGTe20HJiXqLSJfJyxPwH5laIdS/e09aggAl2LoVQ0seNUv6wq8RVdpjnRNLbGjxROfKqJvUGIbnoDiK2kwDcQ=
-X-Received: by 2002:a05:600c:3b1a:b0:45b:9291:320d with SMTP id
- 5b1f17b1804b1-45ddded3454mr23011575e9.31.1757179067563; Sat, 06 Sep 2025
- 10:17:47 -0700 (PDT)
+        bh=8m7gNbOiJ7wFumA8eH5KhxcoFHJTBnL28AX35/mxZ5k=;
+        b=gXyEJxcCqKyM1+RQF/vF5RzulKOo//mOpVqRqMC8hlWl41yQl53yDwS2+4tMp7WUyp
+         1ZvPRYJvZ5okoiMoBhtl/BcbSEFcp6TgRO8RCzNtfZmO3wZ2L4/4gdbBCCt+2O/esjwx
+         XNqhFvbDFa0aisAaUXAkr+C1Hkd9kffMp4wHl+oCJJamXN9MuiyDy4WMoyFuFkIkRNw6
+         C+tcvbI5hrrD9fgdgfOBrj/PKojXCIIl5ziOHc2uPq3QJ+xXYXVGPr73hcWXO5fkhFjJ
+         8+VlKSNf0W1DeF2hFDLnmhgI9h/D6PEYBJQfT7AhrAPywKCYbs0K/+Mywcv/PXQARuI6
+         Tfjw==
+X-Forwarded-Encrypted: i=1; AJvYcCUo1NUzgEnOM4fLbNRL4GxnpHoVvzT0kwTpogDxmPFQV4y4ZpcT/iIUdWIlMDT60gxrGI42Maa7Rg==@kvack.org
+X-Gm-Message-State: AOJu0YyApf7FEtxO82J5lGWbhczEc3JMbwJeRiu4PJt4Bv/z+BTT8Kpk
+	bFTuM1F4sRNymF4W04DN5c0OTVXrlCvU8owKd+019Ud+gbkchEGjQGp4KW1tlsPmFxFLfKm65rE
+	A+1SnLWnAvMgHM1+0tnlMSx/0ts6HTBY=
+X-Gm-Gg: ASbGncs5tB3OKDtuFExtjKOysesjzf+bjAEKPV3deiBtW6YWr1y3kp1rsy/50Bt+GhX
+	+/Ez6+rHF0M9qEWXI49+K0rIyRPMJvHtU9gaMcRKXVRugGEjF/uQP/Ov0HO93OP0+Hv27ZuScrn
+	0bvMUvgHLEdOqSON+9RYk4LN/dMXMlIOKM4Lz8L8twrRRN2xVhznHeEr4YbshKXVeN6iSmxqlas
+	JQLg0iw
+X-Google-Smtp-Source: AGHT+IEVaxv1flhMNQ21ny8HzxKdUksbjU1IsnfWBaLSu+i+o5RQBFuNsHWY/aKwSfi08c9LffaO8ru3O0fOtcOI6wM=
+X-Received: by 2002:a5d:5886:0:b0:3e4:64b0:a760 with SMTP id
+ ffacd0b85a97d-3e642026e72mr1764739f8f.18.1757179074706; Sat, 06 Sep 2025
+ 10:17:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1756151769.git.maciej.wieczor-retman@intel.com> <98d2c875da80331a51a5c61e8a67ca43fc57cbd3.1756151769.git.maciej.wieczor-retman@intel.com>
-In-Reply-To: <98d2c875da80331a51a5c61e8a67ca43fc57cbd3.1756151769.git.maciej.wieczor-retman@intel.com>
+References: <cover.1756151769.git.maciej.wieczor-retman@intel.com> <7cb9edae06aeaf8c69013a89f1fd13a9e1531d54.1756151769.git.maciej.wieczor-retman@intel.com>
+In-Reply-To: <7cb9edae06aeaf8c69013a89f1fd13a9e1531d54.1756151769.git.maciej.wieczor-retman@intel.com>
 From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Sat, 6 Sep 2025 19:17:36 +0200
-X-Gm-Features: AS18NWBlGrTUf2BbYo1ooSpg8yIusv-EYuyVF2j8Xf3UqWFYOvg4hL7GWGKDqp4
-Message-ID: <CA+fCnZeUvsvGy02k4zQwkGUkL7KbuLzah5XC7kp1m5uwp4bPVg@mail.gmail.com>
-Subject: Re: [PATCH v5 03/19] kasan: Fix inline mode for x86 tag-based mode
+Date: Sat, 6 Sep 2025 19:17:43 +0200
+X-Gm-Features: AS18NWAccC9JiiN3oBmxBjTrrK8-6qYxZFkRTV1lkD1J_h60FmCfpfZ83r4hey8
+Message-ID: <CA+fCnZd7tM5i5jOriaYyR1GgjgREv0PhyxpFuEC5506FkndzAg@mail.gmail.com>
+Subject: Re: [PATCH v5 04/19] x86: Add arch specific kasan functions
 To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com, 
 	kbingham@kernel.org, weixugc@google.com, Liam.Howlett@oracle.com, 
@@ -125,14 +125,14 @@ Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9C8B640010
-X-Stat-Signature: o91jtfgrr1xy79g86tee9736qsy143nb
+X-Stat-Signature: 1w3nrhgyyy1oiwdaw9bpycgshf3doxuy
 X-Rspam-User: 
-X-HE-Tag: 1757179069-637861
-X-HE-Meta: U2FsdGVkX193eUnRVrxAMxCxdE9PLgSlSwSsGHoc7ezItxdfL46cVCvlSi368sLus7TwQ5GePZuQe57I3tUngsUHKVgN0JYuzF0opiGovSHRhbdRoiWpC+/QRJe5QfjJzcof2vInup9wAiJsFpF4Lh9oUi6ARKzPeH9aiw9NVipv8AqXaUzbZpqtloniwqd+rc5fn8cZV55IdcRvvMfGt5LbRysZFgNKtG+0j47yQS5yAjlLkDpy07CELJFcz7d/iguQU8KXEC65HUBA3733vpoUukFEjy7uRcIlKSzLYT1mqiCX6tOEEiogNkOy2l9FlnZLNodrsbpYuzvaDjNDr4FlCz2Cw3oKSxNr3BZlv0VheYKr0KmxgcbxyAZT6gsPtcnxT/IHExbO+PCQEoq+M/65ZPzszbptoSGbLA33nw0OGia5wEs8WS9eNbLionP50ZyCJsH23fMafx5Z4fNOKWsN8i82ZTwxmT0Msa1jy5dC4HG8M1UvVFacq2Z2fj+GOHrjbFVY7J1jZIiC0YWy4HT1x7jH7Q31NJM/B5/IFuIlygxjCr3cePg7Y6a92Z+wYrKvvPCxnerHpmLRXLpGrTz5FgIfshKnu/1YO3Zu12sej1LVCdHXbaefH7jtVw10/JLR/TI2n6pB22CiTamsRsmseLooX2XvC5WIVJkxQ2sdzcdngQkQHfd6YaAiYTKUys5Y+VGHFEVywNHeoV2Zl8p3+HizLY/vqtNqLiuEZGm7Vgwah08kNifiRegRumQwBTI1UU6NH1q4dXblhXzjwjrJhQbt3CqK0I2mW9A51GjDMeSGGiDQzol47yAq1+MCUA8psWtf9TzzUqvo4Ifk/GTMYATpsaKjroXWjI9tELPbo0ZBWn3CsUQOtAe7m0S8qtP58od4ZdV7wjao99qRqGxKHSXRJ08byhl8B/FDM6c4K8mEEsT0Qd0fyxDO73OfDCgVzPXiTazvhXiQS/K
- CaD+q70e
- STiGtVZ6XwFphJ7vVY6G+sgRGy869m4IIMIq8dupJMg+zYlBKl5eR2k4LgBcC2ITqJRoWjy2Jrc86Esw9n1EgHt1vk/xp9JMqbijuPaCP7SY++rr7+e0N8/7dKlJl6Rkde63/LEaOb/JhAStvDVVegDKKbkkEqiVBFIl+iIZOjJwKQVMU9zmpXFmlFyQWXgdYLWKIy5KtmMpDQVJq3Z0b6fLiK0Uf1Sl7zhUmlQ4JiL024uK62fGJqkmNaGeBhv8TZZZ0aoOo7tp8wRoA1ildoyMdA2qHlCV4ARjDVjFu+es/zvr/N8T/v13PBnqPgIET9/NbdzrEv5EWTwYquFBvohdc0YWFC7JX9XnVZymt0/MwgVeNNh1BLMaw7o0D9OpVH+Fc1V5Yhd1bedR/s8F+nK1j7uMIIzDdFsl5w7tvNEW3PuDeS5SYR4rP0GVtQeT+TZDtHHBJmLw3/FrkBWCnpK4CoBCqrwwtwCKK
+X-Rspamd-Queue-Id: 8E908140008
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757179076-922393
+X-HE-Meta: U2FsdGVkX19u3L7yCBquomtKT8tI/BTlNfd0ENMCk7vsmpU+bfLtQTphkhwOXkpKOWpsqLsoH/bCwJSb7j81LmJCpdRl9mf7+cCmWAdZqDasmur56w5cdejcpfeHC6bUjGxZqunh6MtTebWZLG0sHLkMW4WUnTO5USHtTQ3LjAX/f3v6nl/M8udWUTgok+nSGUjNteTFTs2kiEzWL3uCJtZk/NtYHpJjHYyGxLOiXzIU0cweMWVUuR/xgdK1vkAGg6OMo96L4W5YIcA5/cHjZKHdKey8S8kiseaUzjRlw6d3+DR9qqy+NdXMM0waEJItCYIt/26I8t4F1naNTqr50k9NcQDxH7xTHZd+/Q7m2MEAQFZaQ75YlJ5GIHmbYleN1hhjqdMlWTYOe2FCv7bbdLRGC7sPJvHduGGg0PLroL4sNktkoeCcm0oKw9YuT0yn2ki9QgS4cl60TswgTTDFTV9d7+S0Tz6UjG5oKD/xUcGYRgbGB9f6d/6qKKz48zpsOsZ3i4c+KQPEGnGPRQnSBgeSG90Rdw9m3uncOpGu4uvVdo75JU6frlZ6odLRBJbgsi1fbDE5WUwmWC2cmqrUJiMNutNh4JqZ/DvwixkS4PITscL9KL4EjbptrUGl7kELrSRtaLWhOls8zvoXIL9t5pOdEk5bjSqY8ditHKjg9Wov+DyC+gxMWMeWVcZ4ht8+TDjr+q/s9/92S1EZMgyFpiWcVaGBPXUq9H/la6PtDc2qCOtpvdyiwQP08kctzb6xV31WQ8LitQkNHu74Eym41OmUqo7Gs2O2R6sVJP8Ntoiy/ZROZuIoy2Pgb75QThRZ4C8zCSP404enJ3gCAGUM6uer5IYyj2SZzSYA1nHxeC0Enn2X6jPDUjhI9fsEcVXHrNhKzMWzDT3HEPSCdwobSd/PJ3w8qChU51nUsxjCTOmvkxOJWsKMH5Kwk+qfhEPIPIB/J4NpbjD4v3cnhxt
+ NeF/2yZC
+ jjbqzsu+lAo3F+0T0xczW2F8UWTWaQ6szWF0tIuF8mavD0fQeZdmEfdIZtlrkpOr2QfWdU9TSCFo4j183dES+JUyt7O3uqGPdVhQTvUFfxV+xi3ccGATT1L5Q/UOgZKxpV3TKkTaPDxl3Hzu4fADX9jHoTP76BwkSsRDQJZlHGshZ5Rlubst2BFlK/8YNBGSfTZPLNuuRWd5kJ+XC8H7XMa8sxGnnU0vKiXVLqzAeCrOqwYOXlIIhTAM6aGlKxl5lD7LYKfKW52etNIF8pwEZPfccJAfbAXjc6jsZFAI+2vJuivVfGYF+nEZ5UOYxUnsdpnSHtLq66xtRP/m9AsisQHHYfBlwDm986kn+tcDq6tN8yEA3jROuPtyB1SUmmaVbVBgrrL/xqrNsz/5gmQgK3ZJ59rrCDGOyy5pwBeRnOHZf6K9zFbOgVNDzlGnP64fnVFza
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,53 +141,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Aug 25, 2025 at 10:26=E2=80=AFPM Maciej Wieczor-Retman
+On Mon, Aug 25, 2025 at 10:27=E2=80=AFPM Maciej Wieczor-Retman
 <maciej.wieczor-retman@intel.com> wrote:
 >
-> The LLVM compiler uses hwasan-instrument-with-calls parameter to setup
-> inline or outline mode in tag-based KASAN. If zeroed, it means the
-> instrumentation implementation will be pasted into each relevant
-> location along with KASAN related constants during compilation. If set
-> to one all function instrumentation will be done with function calls
-> instead.
+> KASAN's software tag-based mode needs multiple macros/functions to
+> handle tag and pointer interactions - to set, retrieve and reset tags
+> from the top bits of a pointer.
 >
-> The default hwasan-instrument-with-calls value for the x86 architecture
-> in the compiler is "1", which is not true for other architectures.
-> Because of this, enabling inline mode in software tag-based KASAN
-> doesn't work on x86 as the kernel script doesn't zero out the parameter
-> and always sets up the outline mode.
->
-> Explicitly zero out hwasan-instrument-with-calls when enabling inline
-> mode in tag-based KASAN.
+> Mimic functions currently used by arm64 but change the tag's position to
+> bits [60:57] in the pointer.
 >
 > Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 > ---
+> Changelog v4:
+> - Rewrite __tag_set() without pointless casts and make it more readable.
+>
 > Changelog v3:
-> - Add this patch to the series.
+> - Reorder functions so that __tag_*() etc are above the
+>   arch_kasan_*() ones.
+> - Remove CONFIG_KASAN condition from __tag_set()
 >
->  scripts/Makefile.kasan | 3 +++
->  1 file changed, 3 insertions(+)
+>  arch/x86/include/asm/kasan.h | 36 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 34 insertions(+), 2 deletions(-)
 >
-> diff --git a/scripts/Makefile.kasan b/scripts/Makefile.kasan
-> index 693dbbebebba..2c7be96727ac 100644
-> --- a/scripts/Makefile.kasan
-> +++ b/scripts/Makefile.kasan
-> @@ -76,8 +76,11 @@ CFLAGS_KASAN :=3D -fsanitize=3Dkernel-hwaddress
->  RUSTFLAGS_KASAN :=3D -Zsanitizer=3Dkernel-hwaddress \
->                    -Zsanitizer-recover=3Dkernel-hwaddress
+> diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
+> index d7e33c7f096b..1963eb2fcff3 100644
+> --- a/arch/x86/include/asm/kasan.h
+> +++ b/arch/x86/include/asm/kasan.h
+> @@ -3,6 +3,8 @@
+>  #define _ASM_X86_KASAN_H
 >
-> +# LLVM sets hwasan-instrument-with-calls to 1 on x86 by default. Set it =
-to 0
-> +# when inline mode is enabled.
->  ifdef CONFIG_KASAN_INLINE
->         kasan_params +=3D hwasan-mapping-offset=3D$(KASAN_SHADOW_OFFSET)
-> +       kasan_params +=3D hwasan-instrument-with-calls=3D0
->  else
->         kasan_params +=3D hwasan-instrument-with-calls=3D1
->  endif
+>  #include <linux/const.h>
+> +#include <linux/kasan-tags.h>
+> +#include <linux/types.h>
+>  #define KASAN_SHADOW_OFFSET _AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
+>  #define KASAN_SHADOW_SCALE_SHIFT 3
+>
+> @@ -24,8 +26,37 @@
+>                                                   KASAN_SHADOW_SCALE_SHIF=
+T)))
+>
+>  #ifndef __ASSEMBLER__
+> +#include <linux/bitops.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +
+> +#ifdef CONFIG_KASAN_SW_TAGS
+> +
+
+Nit: can remove this empty line.
+
+> +#define __tag_shifted(tag)             FIELD_PREP(GENMASK_ULL(60, 57), t=
+ag)
+> +#define __tag_reset(addr)              (sign_extend64((u64)(addr), 56))
+> +#define __tag_get(addr)                        ((u8)FIELD_GET(GENMASK_UL=
+L(60, 57), (u64)addr))
+> +#else
+> +#define __tag_shifted(tag)             0UL
+> +#define __tag_reset(addr)              (addr)
+> +#define __tag_get(addr)                        0
+> +#endif /* CONFIG_KASAN_SW_TAGS */
+> +
+> +static inline void *__tag_set(const void *__addr, u8 tag)
+> +{
+> +       u64 addr =3D (u64)__addr;
+> +
+> +       addr &=3D ~__tag_shifted(KASAN_TAG_MASK);
+> +       addr |=3D __tag_shifted(tag);
+> +
+> +       return (void *)addr;
+> +}
+> +
+> +#define arch_kasan_set_tag(addr, tag)  __tag_set(addr, tag)
+> +#define arch_kasan_reset_tag(addr)     __tag_reset(addr)
+> +#define arch_kasan_get_tag(addr)       __tag_get(addr)
+>
+>  #ifdef CONFIG_KASAN
+> +
+>  void __init kasan_early_init(void);
+>  void __init kasan_init(void);
+>  void __init kasan_populate_shadow_for_vaddr(void *va, size_t size, int n=
+id);
+> @@ -34,8 +65,9 @@ static inline void kasan_early_init(void) { }
+>  static inline void kasan_init(void) { }
+>  static inline void kasan_populate_shadow_for_vaddr(void *va, size_t size=
+,
+>                                                    int nid) { }
+> -#endif
+>
+> -#endif
+> +#endif /* CONFIG_KASAN */
+> +
+> +#endif /* __ASSEMBLER__ */
+>
+>  #endif
 > --
 > 2.50.1
 >
 
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Acked-by: Andrey Konovalov <andreyknvl@gmail.com>
 
