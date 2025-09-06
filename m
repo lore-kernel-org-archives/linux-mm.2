@@ -4,103 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E58CCA0FED
-	for <linux-mm@archiver.kernel.org>; Fri,  5 Sep 2025 23:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA58FCA0FED
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 00:56:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBD816B0005; Fri,  5 Sep 2025 19:59:45 -0400 (EDT)
+	id 7AD3F8E0003; Fri,  5 Sep 2025 20:56:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B956B8E0007; Fri,  5 Sep 2025 19:59:45 -0400 (EDT)
+	id 784718E0001; Fri,  5 Sep 2025 20:56:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AABE18E0001; Fri,  5 Sep 2025 19:59:45 -0400 (EDT)
+	id 674228E0003; Fri,  5 Sep 2025 20:56:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 975476B0005
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 19:59:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E23C85D69
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:59:45 +0000 (UTC)
-X-FDA: 83856866730.23.8E89D71
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 465DD40005
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:59:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SmpDwfbr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757116783; a=rsa-sha256;
-	cv=none;
-	b=R3/zbalkHUdgpnE9mTgtPaD7cjwExscdBFEqeVOLe7ODN2c68fx5mb6rc3psUndpIjisS4
-	15Aw1ZCWAdtC4lkbi9TA5M9ANyMXXus+PFsuqMiA0OtWcUZTo9SMmhrX5Uy/RhByOwGE4R
-	dXd/wKrHaDR8z2KPQSbHtI8TcnEtLAI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SmpDwfbr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757116783;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 544268E0001
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 20:56:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6DB21403BF
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 00:56:44 +0000 (UTC)
+X-FDA: 83857010328.30.1D242F5
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2043.outbound.protection.outlook.com [40.107.92.43])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DD81820007
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 00:56:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GYPa3otQ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.92.43 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757120202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U4hPAkPCz+M6YoWLVVBm11xFdNgXSZVF2RsS6Y1cVv8=;
-	b=iwwD4QcBc9CwmeepDnw8WUy4EGjcRdVlwgih3VCbgkbaJpjK+DcKG279g2aHq0BNvgreHL
-	iH3L9wew/1lRhg1Xiyvq6WQ2dEwOPKgpPsbzG/iG8MiNlp7mfg1qKkUFLtulJ6yNDOz6qL
-	9IBM2zmksDLpIjkuYXzcB95b0ktD4r0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0C1144F99
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:59:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8238C4CEF8
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:59:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757116781;
-	bh=prHCxbT/FKtcefzvbDhaSmgNNkguHFw4eGJyO0KdfRQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SmpDwfbrED7Ni+w3AVNeL6q9DVVBWikM4nb7Js4t7wgpDeKxXKuSBik/+/ygBTIE8
-	 dcE91xuEKdv3WT+lN/X68ufH+x+xaHQSjZbt7h+JDYX66dgjd5M0WjPBVAFiZjjVlT
-	 e4MYwEpXX77Oc2udy1tmHVrY1wRP2h5f2W+44zInQmA9unJMPD4EZsFU3TnQYw1ggB
-	 ZhmMoPk/VkkoH9N4MNv3J2J6TRzf9KsdR0rtvYuKin++p9We7fIO3vKrD3t9DZRlZ2
-	 8U1StK5bcirvcKyHNX+KdgTj+7NZsz99cHL7eqP7jARGpWS31m1dgZ0aXcQDXiinGe
-	 y4I9aGQ3kCJZw==
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45b886f92ccso32975e9.0
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 16:59:41 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyGNBi9IWSVSSzIY3nk/bzRZOrGc0dfFO5aNXNICfuxCHjPagBz
-	moJ0C3Fc8O2FA8CAhxgSOdxbaHGO40r+okwQJGZ+F+m/0+Oklij3iQTbV5vognr1l6jETW0WfmT
-	K7C4uYSjbMR5NNylUaNYs4BiyAYdGB5VGdiorJRvO
-X-Google-Smtp-Source: AGHT+IEmNVdm/ZNO2xj7Acuf0/0sMnvEPvL2QiE++x0zfKILopxcWbw9wOaJ79Q+cHCzvynH0RqPluUDHwM3LCki7ro=
-X-Received: by 2002:a05:600c:3ba3:b0:45d:cfca:a92d with SMTP id
- 5b1f17b1804b1-45ddda4e7e5mr480365e9.2.1757116780368; Fri, 05 Sep 2025
- 16:59:40 -0700 (PDT)
+	bh=ulyrv72imzgvBEmRd4gms/VVhvwxfm/xNHNteLnPDUw=;
+	b=KHy3/vtal+4EbEnFN4rsDfm2Kkr/ORUgjVTnaZOhug962G7jO1BqK6bUP6gzEXFSTJ9sRs
+	LOI4hBtffBMjH7sVwOvlq7nQEkYGkB81M6wssfAw0X7suLyCNdwya5YQelKGukikbuyNAK
+	HaElHfBP8N9D/dlQDE6iYiN1qHD+lc8=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GYPa3otQ;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.92.43 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757120202; a=rsa-sha256;
+	cv=pass;
+	b=srbQhZOP4/2JhAscBRhx2CABMiBUj2oU3gYYxc8wkVBJDN6ojOJcTJYwFVJiepVCJYQcNn
+	Z2DnIgYYRf3fs5wJlu/33acWBvQHpCWQp43nJ0BgJBI3Z3tQ1GOpShZkmkwklH4Sybpuad
+	OQJ+tj7foAbr+T29GfucioFOVF048YQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rqx7y9eNIV/J32Pe66dXlgUZOZ34NLHMF98iDRICvWz+QP0ugEKrSJl1PrM67Ore/WYZ0mAtBn+3O/qs6fIAhDXbSMQSoWBsG+krpcyTOASfouVmhr5ED9pDbp6xd3NAyKI6Vj54QsfWmZoKrM4Pfr4pD4QjaZrXCs4/u/oiS1M5CJ4KV+ktd3F6mrFOpNmFUlNcFT3hJgcSZcjOUbTqKTrAwah7dkPiUqSxp9XRFM6GbHjbImI4vdvfHIGwS2Kn9Vid0KZTC3dd12C8JK50hzYSZ8DWKpiP3oa4hJ1jhm1dd8hhfvknQDcsaoubjBWdDrfwT3UAEpAq18pJZxYzNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ulyrv72imzgvBEmRd4gms/VVhvwxfm/xNHNteLnPDUw=;
+ b=YO6W57sZ4V6W3Ksl+C3/MyvkY3VDpS2KamfXf0/1dXYSS2PPc8FrFZ7XsSXOxNNPSvbeg41WER4MNCZqp92YZ7AsQYNjuoM4abGqWRbtsdoqQJG6MQpIzjfQpOsiQV1rtFEQT4iOsld3SClbVz573t9aFD+mvgE7V7LDsY525te3kzU/1hDCq/g5mc3NiXCMkmXY6iJD0LJluxsCwU7cEvvK8FYiQQgls5s7o8c8lX31igPj6zPLaRWeLW2DHixdZLf0xL4EvXHUxxrlmk9Tp6EUoQvH4aO2mjbcgRuLs0rV7ttymtalUCNSSFHPsi+CYK3zp6erbW9ebTrc8lutJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ulyrv72imzgvBEmRd4gms/VVhvwxfm/xNHNteLnPDUw=;
+ b=GYPa3otQvYtMEwnTXbpBtF6VfL4hReenOq1+lxtrXl23MvtIi/B25sT4gu/IvHx3nXYVLIF2qbqPRru2Vdfx230ov5r8JReboHS1AbB406LtDuj8MGGx+HRqljjpynSL1t0NErxGx9gDyQIZf8HTNMKAOcHF1/0jWnhk99cjJcs4EvUV6OFM6C0yGY1End6j4vB0fxGr9Ef/iPZAtAR/TNlfJzVWgip98NJ/4Gg7yUPeNIeimtrbSnw6BV4++qAWcUgSpY+v79MbKToJemiTXvWHkF4sejbEJAuoAOtzq1f1+xwGH0XGA5CZh82/aivcfg7g/ycuQROb6Da0tQa9LA==
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
+ by CH1PPF931B95D07.namprd12.prod.outlook.com (2603:10b6:61f:fc00::619) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Sat, 6 Sep
+ 2025 00:56:38 +0000
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4%6]) with mapi id 15.20.9094.016; Sat, 6 Sep 2025
+ 00:56:38 +0000
+Message-ID: <5f3b6bf9-1762-48b7-bc36-705055c99ce8@nvidia.com>
+Date: Fri, 5 Sep 2025 17:56:35 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/gup: Remove dead pgmap refcounting code
+To: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+Cc: david@redhat.com, osalvador@suse.de, jgg@ziepe.ca, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, dan.j.williams@intel.com,
+ Jason Gunthorpe <jgg@nvidia.com>
+References: <20250903225926.34702-1-apopple@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20250903225926.34702-1-apopple@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0117.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::32) To LV2PR12MB5968.namprd12.prod.outlook.com
+ (2603:10b6:408:14f::7)
 MIME-Version: 1.0
-References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-3-ryncsn@gmail.com>
-In-Reply-To: <20250905191357.78298-3-ryncsn@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 5 Sep 2025 16:59:29 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuP3TePwm-Yv9k=8caDN_OHsEXLjkQyqzX8Zi5rByAxRzw@mail.gmail.com>
-X-Gm-Features: Ac12FXwQoJgVKBu9ZgwBfG40kCMz84rUJdGEibuR9rX3WbxfQjIbxFt_Dtiuufs
-Message-ID: <CAF8kJuP3TePwm-Yv9k=8caDN_OHsEXLjkQyqzX8Zi5rByAxRzw@mail.gmail.com>
-Subject: Re: [PATCH v2 02/15] mm, swap: use unified helper for swap cache look up
-To: Kairui Song <kasong@tencent.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|CH1PPF931B95D07:EE_
+X-MS-Office365-Filtering-Correlation-Id: d27d84c4-bb2f-4036-4137-08ddece03be2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dXBQOWVsT3RJRDZRSjE0aVdSOFpRME5hZXdFUWtnN2VkcWtCR2ZyR1d6R1VO?=
+ =?utf-8?B?cHM4S1pDditSL1RBOUlMV1JTcW1mUlFDZXRTcTh6amNVR0thVlBPbkt0TGxN?=
+ =?utf-8?B?NXRVRWdxYXZ0Y3JBTE1oODUyL0dIcjdQaUlnYXlzVURGaldhNlpNb1RZckxJ?=
+ =?utf-8?B?R2lGbEVLRkhlNjIybUI1UmoxYlJiUzFUMEJMbUhPUEpYV2FuY3lwT0Z1ZmVl?=
+ =?utf-8?B?Z3JKSFFsSW94dkpxZmM0c0hZVFNUYnd2ajBkaWJSTk8yU3BKcUdraGp1Ti9B?=
+ =?utf-8?B?R3VZWnVTODhaSXBSeXhmeStMbnJkdGE5VDVZeS9ENHIxeU9LWU4yNzRldlBT?=
+ =?utf-8?B?dEthUjdlaldSRU5uMEZlYlJGVk4xaU80NzIxTkxaOG5HZVhNR3d3MHNZSDh3?=
+ =?utf-8?B?RWZIV0czQUd1bUk5YzdrSkY2ekVxWHZURWUwQWwxWWprZHlZaldWWXYrcHQ4?=
+ =?utf-8?B?cnBsN2lmWnJwQmY3Wnk3VVNuc1ZOY3lheUhXYVUzdTRnc1VIdG9SeHFxV2lV?=
+ =?utf-8?B?L0hXR0d5aDFQb2FPZUJCMmg5MFBXcUxEQmJpMzR0TEFrRGxMY3NGZUR2anBI?=
+ =?utf-8?B?c0dsTzhYOXpuRHdiL0RUdFpnLy9CVWFsRjRJVllCSXlvNVdMQkRlOEs2bUZ2?=
+ =?utf-8?B?N2puSlByRk01dWg0ck5mQytmM3k3dTRyeUQ5RTB1ekJuRmxHSEVDd3ZGenBD?=
+ =?utf-8?B?UUs3cktodlgrd1phVTNFSkNrYXBuSTNldzRlV3J4bjN5cGRqNG5xSHZsTFIv?=
+ =?utf-8?B?V2dqdG5aZzBoa2dLQmgwYWExT2pqTUtSNms0M2dSdnByQnV6dDJBd0toaWtu?=
+ =?utf-8?B?RTdzUmZKM1BzODBXaUNlbUFLZDFJSGxRbng5Ujk1MFE4T3I2Q1FTVHhVVFVJ?=
+ =?utf-8?B?MGRxbngxTXgxU3ZSdWQ2OXpDWlgzMmtJNzVmcEtTODl0STZFdTlCUXRwVklZ?=
+ =?utf-8?B?RFpiTXFLeWVYS0tXaU56NnVvcSs5aGV3YnhEd1JRL0FCUm16QnJzRWJvU2F3?=
+ =?utf-8?B?dHFobDFuTXgzYjlMczIva0RHMy9vYU56bk1mbHYzV044TGdlakc0bVpldWNt?=
+ =?utf-8?B?NXdUOThNMFJlSnYyM0dWN0YrTVV1Ni9sQW5uVnlrWUg4QVl4VkFxYWlNc28w?=
+ =?utf-8?B?b2srRTIwOUhEWkppNlhGY3oxK2NNVjA3VUNzMVVJVldCUjdGSTc0SnQvbXRz?=
+ =?utf-8?B?VVVETzRlcWRybFliMGhGdFhWNG9TZVA0UC9kNUs5Qk51b1gxejVSVEd4a1l2?=
+ =?utf-8?B?Sy9NMm1HOUYxQXd4NklsS1h6SmRtdzhOMGpzNUZrVDdJY2ppSmw2czJDYXBC?=
+ =?utf-8?B?MWt0QUpFNjdBYVhkZXNmL2hDL0Ivcm9vb0pmeVU4UDNPTWxIbjFzbjNFeVBn?=
+ =?utf-8?B?TTViclNyYW1LZ2lGQlRobWRCSHpDZFNINlN4ckN5d2xhTnpVcDV5Q3Mra0lQ?=
+ =?utf-8?B?V3JGNE83K1FMdmptV3o2aGtkcmYrdVlxTnlrZXQrb1dKRzdUTVgxYlJ2aHlF?=
+ =?utf-8?B?cUI4dDJsdWF3eXZNVzlwWGRWdTVITVlUTm5pa3lWb0hQRjFkYitJR21HWUU2?=
+ =?utf-8?B?UXZ5bEZnWHdUUjd1SjFrb3AxY3pOYWZsbmJsRjJuWjRaOVRBUGltanJ4QUtH?=
+ =?utf-8?B?QWQ3MFZPM2MrZUNwbGNsSUxDOXVLK0xid2xCZEZkQlR4eElVQ2Q4YUNpRHlp?=
+ =?utf-8?B?VkVILzVpaS9wb3VqOEtITW5yYUhSek13bnBYY0l4RUlITDQ5eVNBMjhZTkY1?=
+ =?utf-8?B?Z3FkdzA4SlhVVTlicS96VEpjeU42c1ZnbVgwa015NW11NlU0Ti9mcHVUZ25C?=
+ =?utf-8?B?RElVaDkrUWU1eDkzNEE2Z0RHczI4TUZkcXN5M25jUWRyMzNFNzJ6QXJQVFFz?=
+ =?utf-8?B?dnZiekt2S25UdXJ2blZNQTNzRkFmclpKd3k4V2phalFERHlkQm5hcmROd2FO?=
+ =?utf-8?Q?OxmwGKZwfi8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Si82MzAwWHVpL1Y1a1laOUxYeEsrZkhRQzJZTTdNc1EvaDR1RTR6YWlXMURX?=
+ =?utf-8?B?UDcvaTkwYXlaV3FKVTc2TWNSK3A3NktjVmdTTk4zTzBNQUFPdDNXZ3MvM2ta?=
+ =?utf-8?B?NmNBQVRrc2RXdXdiNWxGd1g3dTVPQWtsM2xKT1ljRjJoQWtEVWl3NzBVcHJp?=
+ =?utf-8?B?SVZhSEZGakczY3BycllkdGdpWlp3NExocVh6dkVDc2FVMXpZQTVwbnR2NmhD?=
+ =?utf-8?B?NUhvM21HaURTcEVMMXMxK2ljVm5kb3BVZ2xVeHhHNEZXVUVBMXc3OGxYcW5R?=
+ =?utf-8?B?NmhFM2haREFXb2I1UE9PM3dQS3lkSXlBeC9qTUF0QXE0a0JCU3Npa3VVZjdt?=
+ =?utf-8?B?d2ZMMHNPYlBSWG9sNVNYVU1BSkZtZGdkdTJleDNkWnFZRk1JTEdrMGJwL0cz?=
+ =?utf-8?B?UTVsZW8rektZMnA5SC95WmFGY2NLc3htMW1peUllQ3Z4VTlTQ2ZMRDhIMHlz?=
+ =?utf-8?B?ZWVSM2JzeERWYzBMb0VPSjl6NHNMMTNqTmNNZ21ZYy92OGZDcFBhZVFpWjVE?=
+ =?utf-8?B?Wmdsb3I1SmxKV0lTVFhDaDg1d0EwVXJJSDl1Z1dvRU5Ec3c1R1JtTFB3TGpD?=
+ =?utf-8?B?N29NN1ZnZ3JFcnZuSmZ6RWNlaHV0YmUvTEszRW9PeHhGeDBxbGFjeHVzQUww?=
+ =?utf-8?B?NlZ0L3EzUlMyVHpqUEpHQWtvcWowN2MwME02VSs0a0RFZU12NnJhZTJMNTYr?=
+ =?utf-8?B?ZnJMMVZLdXdBejVjbGZWbnRFcURXM3ZNeDNnWjlJVjNqNWJ6Q2VFYUNPZXlT?=
+ =?utf-8?B?M0txY3lSOGY1UFdGclR2L2RXd3BxK0hyendxYXV3TExSald4NHcwUCs5a1la?=
+ =?utf-8?B?RzJVTk9Id0dTSGp2NlJvMGFmdGI5ZVp2WXJ2Y3FienFvTFB3T1BqeWxJMTBV?=
+ =?utf-8?B?RzNZWWlQUHA3NkFLMlJEc2RLdWRKN1dmTTRvc0RYdFM4blpRT0hzZmxsUnJq?=
+ =?utf-8?B?YWwyaTZUY1BOMjJwR0dFeFJHZzluZmtOenRUZTYrcWMrenpPM0xNRlRTR2t3?=
+ =?utf-8?B?STRTSzlsdUg2TTVCL2JBOW5BQzdTRW9zaWx5UTk2YmVRbnNBNnNpK0ptVWlo?=
+ =?utf-8?B?c1YwNFhCWVBkdDRjenZKb3k1TkRhWFF1RHhWQmwrdEdMaTUvZnlKNjhoa3la?=
+ =?utf-8?B?QjdSSWwxN2ZXZVBjeXJFS0hHV1VOK1M4ZGlrajd4RlU2RXAvcllZZEpBQUpF?=
+ =?utf-8?B?eXUxcW9JdlF5M0FGSHdDSGxoN01xY2VENkJXcGZUNGgxaXhoRE8vcTN2UVlI?=
+ =?utf-8?B?bld1NVhGeVZUc2tkMVQ5UGU0VHN0TUxiSGVheGZvUGFUY1BMTG9IRDVEMnVJ?=
+ =?utf-8?B?OGNyRHBEYVQyRlhGc00rRGRYc3VQSVQzdGdjNzN0NHBJM1FDTHRJWXZLQ0lC?=
+ =?utf-8?B?SUptOEo5NlVXQ0Y2d2NFOHowMXJCZkd5UzFGWWgxdFp1ajJ1TmlCSUtGdHV6?=
+ =?utf-8?B?RTRjdHRrblNLZ0IrQ3Z2enMyM0tQaXpNS2hVRFEvL0VkYzNrOGwrWDlMWmRW?=
+ =?utf-8?B?TEUvUmtRNmJJTG1lR3FOUHdudGN6YjdETGEyZTRqWUUwaktZajBhMmliQTFX?=
+ =?utf-8?B?VFZNVmdmWm5mY1VyZk9xempOQXNqTjJOeE1MVmJ5Skp5RXI4Wk0vMDNZQitS?=
+ =?utf-8?B?RWIwaU9IZGMvY2xJNE9ic3NsQU5CbXdiUEduNk1iMHpVRXNnZTF3V3IwMWR4?=
+ =?utf-8?B?WjA3ZnlLeEtJOWxJNUttOGk5OFRQMWNyQVFQYUk4K0pFa2ZQSHRLanhaalpt?=
+ =?utf-8?B?Ym4zbHlmMHN5VkNORk9YV1BkcU5WUGVLYmtzNy9jUEFINlZqbXFvcFhhWTlS?=
+ =?utf-8?B?ZkR1Q2Z1allJRlVVNHc4VGJDY0JsNlJmMWRLdVVBYzErak5nVzVHZXNsSXEx?=
+ =?utf-8?B?MHJkUlAvanR5U1V4ZVo3K2xIL25vVjlyeSs3Q1hKWHZpWlM2ZjZjcWZhTk5N?=
+ =?utf-8?B?WkJ3T1JtMXRVMkx2Y2FONHMrblhtZTNDZlBLeklrL0RacDI3N3BEd2RHcTE1?=
+ =?utf-8?B?SUtYMDV0a0lGeXNMTmRpcVE3Y0Z4TDh6amx2L0c0ZTdiY0JHekVKZDJyZVdp?=
+ =?utf-8?B?ZlBFQ3hkQVN0UzhmZ3dwN2VhbkJZVlN6MGZta01TWHNrKzFmbC9xMUVmTUJP?=
+ =?utf-8?Q?QGPa0BGuCe/bad1Gu7FFGLkAA?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d27d84c4-bb2f-4036-4137-08ddece03be2
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2025 00:56:38.0180
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eYI5WIo9vKtoe8KhUTC9nNRJYbht4WtXNHwuAcHONQmItRrJqlHCh9hF3OtuOeFAxckbba2keiF3xbfkhHsUYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF931B95D07
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DD81820007
+X-Stat-Signature: 1yg196qnzpjrf9tn7dpb85ziwmgi1xf6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 465DD40005
-X-Stat-Signature: 1q74zighft45i6oi6nc9shi5o8w9qo3t
-X-HE-Tag: 1757116783-440627
-X-HE-Meta: U2FsdGVkX18+E2/gXhBBIvzPLORlp1CHdaZw/pmJTSD4M6SpDZPmu/sbLlvu7U/Ivrt+WjpnXROUOv/mulp7j+7m4yM849cPPJaMBTiO0tSDg1Nkby2AxX6m/MX1WwcVsS2UxVzDN22iGlvZS+++OfzPt+whitx5ZWMMrL+jXunFhAuSI8y8NRkQlnw15A3/Vm1IUzrr8v/J/sSvOWQTzCFKw/2eFQS4GpaW76BJwTf2b0Tq+/fcHq2PABXRMXOAKmdJSMA7R9L3R8b2Iq/4WdLEud5sy0amVlHxNi3erRUnjIVUG1wOP7PMsGkI7sVoRNqzf71LaD1OBTKaqikW+4xfbS62Wzl0pMxGUhhUh6P3xdZPDs5WCGC4QHTOcIE72Qdbqzt+vMr0l9coavC1YDyzsaZCeeUpa6ixzOViOG7ydpA7Nbw7e9zkcZNFxamar6xbn3oJyQQ3FGbqwqUOIG91WUa1wOc1ejutBiDCr9Qd/1Wtd7DnAtbJiNvKezv3C6P3Q5722ZlMr0o29TAxfnetK+7jxRRFgYlwd/0CH2S34xJCf6V6SJyF6q+NA4bM4ad6IZWmLW1mIrx0dSUSn3ZPmxF0SDG2VPzIdxo+gFKUw1Y8WpA6lwDmD12zGWokbeQabgZOi230BZVvajx4al6DXPF2BzmxMHQ65MrBC5JZ7cWWTvadILlR7ydS5oUiThT/eRJmUFO9JT9TSBgeOn/VRMDzhzmTgpRMz1M2NC3w9W9PmtvEt7P+i4JCe7DmX7HWV3crZ1bjsf/y/0yrT6mq9tXcCWGWlR/FTwjPsx3lE3wBU6iuICrGieIkICVGso7oRWcyM/I3xjrSXN/t9fpL6zycf0chC/4oO3LDWMts93sOZp/ZVqSqdMf6I8Dg2W8xZTcXIo5XzClB3XfxvH/+b7swc0oqJRx9GI62FfKPYpi59VHkJ4i/CG/T1DVeFhAJSUDDXrtkCryU87a
- sDsQ/48c
- W9hKqRBM3QNH3j0W2Gmbl6kSGLBIxTekYtEV8JbbJF9BbG9Z8eUonpSJMM8+h8vW930+tDaLfY5bAIAmQAu+VmbCMzrODWV7QMrt5IWfu9etYeT3Y06nbLWEYhw5MfbDBNtsIXy3OfGg4ek7t8eEK7qODpMvuNxD9T9Udc+gJcDdEYnpJorzMINsq7Fej5lHxLrGYL+MYppm9TJ+cVNsq5GiK360+3Fbg6n/iQRv+Cr4/qy5GQYHv3ehLk5LfaQG3ptfOwpVoVP/E+J0GgiHYCxpTrx3E1Ti2of1c/5dq1u1iBPPzM88w2FfQVwDULoc3wZQzVeOSLtLgVtsOnhV149grXgVmSqWmkmhvcbMpJMq0ZlDpluHbKFZljpYyiUzInskg
+X-HE-Tag: 1757120201-278519
+X-HE-Meta: U2FsdGVkX19t0LrHTwxRNOluL/+NaGsSTt8KGtpzSFckjNOCHlCm9E+SA3o/VdGDvjUbhn8qfAp0fUdXkMCxsmPIrtEodr4t3Z0lr3k8PGJyhJtdL0ToKlkCHm6gAMYtzfs+ODuuHrK0Ub/zOYsYTevkUFMiwYtiOubnFeS3geJJu9Ctia2w1II/z9S3TV12mJ1k/iQTUyb94aaUw3zKCK8s9NFisSL90kt559dfVx7XSNNA9C5nCB34ywoKn7wEmT0EHKXvzdQf0VcYuV2RUtDF7YmftK+NM9SApDDEcry+Q7LXDuIfigRHgUceKdd61/w9rsoCYyruMQdW8uZrlc8qib4BQ58CnlSDRaL1M+0qZyRucjpBUofh/QJMHEBPF4MdN8bWD3DD9ZkYYY0aD96yiBUJdcuYtUasEG63m03hnoBLR0u2WjYJMNkHSRW05FlY/JV2NQ3S3iFSV52CS+CO4ZzeIMvORBeo31b8aa84hJtiVN2WLKc/YwoM9YcRcfBrDvrbq88n67dgSaAxaUK/swYRJbW5ZsvYroZPM3D2KCUC4BpKdpWmT/cRypqc7h67LyBC5beAihAGWP9xuqlODCW0d5PkV8i3mQPRLRz0aPAwVnwahWq+Y8/sb6clPiXDQwPRGRy4ix/UzP6xJ7IMCU3JYhpaQuy/Qu1GTiRxphC5Fag8vp7ERp8MpnHN8WGXWjDBuEmdksqgOnot2tTFXKrizn5jHZWDAEXZiL1YwseMe72tYYIB79NS78xb1sJuiHFD4hgQyTb98/SnfNNSBFlun6PR35+n0t2K05Ib2LQrVuOQkx4xj6KNJGqJV2KxZut6k45URicsTrz6CXUE0Jgf6JgFuwSF8n4l4yBSL4toUKIgjUaK/YLdj8nxqFufmcJlly+zLWHsR7/yxbzRATAy9YPhy5oNiBIN6yovVnDJmLxvzDuMweKsj0ozUtuMwE/zvUlAwieHaGZ
+ 8vdEqA7V
+ 6yHgj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,384 +201,312 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Acked-by: Chris Li <chrisl@kernel.org>
-
-Chris
-
-On Fri, Sep 5, 2025 at 12:14=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> The swap cache lookup helper swap_cache_get_folio currently does
-> readahead updates as well, so callers that are not doing swapin from any
-> VMA or mapping are forced to reuse filemap helpers instead, and have to
-> access the swap cache space directly.
->
-> So decouple readahead update with swap cache lookup. Move the readahead
-> update part into a standalone helper. Let the caller call the readahead
-> update helper if they do readahead. And convert all swap cache lookups
-> to use swap_cache_get_folio.
->
-> After this commit, there are only three special cases for accessing swap
-> cache space now: huge memory splitting, migration, and shmem replacing,
-> because they need to lock the XArray. The following commits will wrap
-> their accesses to the swap cache too, with special helpers.
->
-> And worth noting, currently dropbehind is not supported for anon folio,
-> and we will never see a dropbehind folio in swap cache. The unified
-> helper can be updated later to handle that.
->
-> While at it, add proper kernedoc for touched helpers.
->
-> No functional change.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Acked-by: Chris Li <chrisl@kernel.org>
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
+On 9/3/25 3:59 PM, Alistair Popple wrote:
+> Prior to commit aed877c2b425 ("device/dax: properly refcount device dax
+> pages when mapping") ZONE_DEVICE pages were not fully reference counted
+> when mapped into user page tables. Instead GUP would take a reference
+> on the associated pgmap to ensure the results of pfn_to_page() remained
+> valid.
+> 
+> This is no longer required and most of the code was removed by commit
+> fd2825b0760a ("mm/gup: remove pXX_devmap usage from get_user_pages()").
+> Finish cleaning this up by removing the dead calls to put_dev_pagemap()
+> and the temporary context struct.
+> 
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  mm/memory.c      |   6 ++-
->  mm/mincore.c     |   3 +-
->  mm/shmem.c       |   4 +-
->  mm/swap.h        |  13 ++++--
->  mm/swap_state.c  | 109 +++++++++++++++++++++++++----------------------
->  mm/swapfile.c    |  11 +++--
->  mm/userfaultfd.c |   5 +--
->  7 files changed, 81 insertions(+), 70 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index d9de6c056179..10ef528a5f44 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4660,9 +4660,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->         if (unlikely(!si))
->                 goto out;
->
-> -       folio =3D swap_cache_get_folio(entry, vma, vmf->address);
-> -       if (folio)
-> +       folio =3D swap_cache_get_folio(entry);
-> +       if (folio) {
-> +               swap_update_readahead(folio, vma, vmf->address);
->                 page =3D folio_file_page(folio, swp_offset(entry));
-> +       }
->         swapcache =3D folio;
->
->         if (!folio) {
-> diff --git a/mm/mincore.c b/mm/mincore.c
-> index 2f3e1816a30d..8ec4719370e1 100644
-> --- a/mm/mincore.c
-> +++ b/mm/mincore.c
-> @@ -76,8 +76,7 @@ static unsigned char mincore_swap(swp_entry_t entry, bo=
-ol shmem)
->                 if (!si)
->                         return 0;
->         }
-> -       folio =3D filemap_get_entry(swap_address_space(entry),
-> -                                 swap_cache_index(entry));
-> +       folio =3D swap_cache_get_folio(entry);
->         if (shmem)
->                 put_swap_device(si);
->         /* The swap cache space contains either folio, shadow or NULL */
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 2df26f4d6e60..4e27e8e5da3b 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -2354,7 +2354,7 @@ static int shmem_swapin_folio(struct inode *inode, =
-pgoff_t index,
->         }
->
->         /* Look it up and read it in.. */
-> -       folio =3D swap_cache_get_folio(swap, NULL, 0);
-> +       folio =3D swap_cache_get_folio(swap);
->         if (!folio) {
->                 if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
->                         /* Direct swapin skipping swap cache & readahead =
-*/
-> @@ -2379,6 +2379,8 @@ static int shmem_swapin_folio(struct inode *inode, =
-pgoff_t index,
->                         count_vm_event(PGMAJFAULT);
->                         count_memcg_event_mm(fault_mm, PGMAJFAULT);
->                 }
-> +       } else {
-> +               swap_update_readahead(folio, NULL, 0);
->         }
->
->         if (order > folio_order(folio)) {
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 1ae44d4193b1..efb6d7ff9f30 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -62,8 +62,7 @@ void delete_from_swap_cache(struct folio *folio);
->  void clear_shadow_from_swap_cache(int type, unsigned long begin,
->                                   unsigned long end);
->  void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry, int=
- nr);
-> -struct folio *swap_cache_get_folio(swp_entry_t entry,
-> -               struct vm_area_struct *vma, unsigned long addr);
-> +struct folio *swap_cache_get_folio(swp_entry_t entry);
->  struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
->                 struct vm_area_struct *vma, unsigned long addr,
->                 struct swap_iocb **plug);
-> @@ -74,6 +73,8 @@ struct folio *swap_cluster_readahead(swp_entry_t entry,=
- gfp_t flag,
->                 struct mempolicy *mpol, pgoff_t ilx);
->  struct folio *swapin_readahead(swp_entry_t entry, gfp_t flag,
->                 struct vm_fault *vmf);
-> +void swap_update_readahead(struct folio *folio, struct vm_area_struct *v=
-ma,
-> +                          unsigned long addr);
->
->  static inline unsigned int folio_swap_flags(struct folio *folio)
+>  mm/gup.c | 67 ++++++++++++++++++++++----------------------------------
+>  1 file changed, 26 insertions(+), 41 deletions(-)
+> 
+
+Wow, nice culmination of a lot of work. So good to remove this
+complication!
+
+Maybe I'll post a quick follow-up, in fact, to remove page_mask
+as well. No need to pass that around all over the place, I think
+it can instead be computed by the single place that actually
+consumes it.
+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+
+thanks,
+-- 
+John Hubbard
+
+> diff --git a/mm/gup.c b/mm/gup.c
+> index adffe663594d..be5791a43c73 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -28,11 +28,6 @@
+>  #include "internal.h"
+>  #include "swap.h"
+>  
+> -struct follow_page_context {
+> -	struct dev_pagemap *pgmap;
+> -	unsigned int page_mask;
+> -};
+> -
+>  static inline void sanity_check_pinned_pages(struct page **pages,
+>  					     unsigned long npages)
 >  {
-> @@ -159,6 +160,11 @@ static inline struct folio *swapin_readahead(swp_ent=
-ry_t swp, gfp_t gfp_mask,
->         return NULL;
->  }
->
-> +static inline void swap_update_readahead(struct folio *folio,
-> +               struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +}
-> +
->  static inline int swap_writeout(struct folio *folio,
->                 struct swap_iocb **swap_plug)
+> @@ -661,7 +656,7 @@ static inline bool can_follow_write_pud(pud_t pud, struct page *page,
+>  
+>  static struct page *follow_huge_pud(struct vm_area_struct *vma,
+>  				    unsigned long addr, pud_t *pudp,
+> -				    int flags, struct follow_page_context *ctx)
+> +				    int flags, unsigned long *page_mask)
 >  {
-> @@ -169,8 +175,7 @@ static inline void swapcache_clear(struct swap_info_s=
-truct *si, swp_entry_t entr
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	struct page *page;
+> @@ -688,7 +683,7 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+>  	if (ret)
+>  		page = ERR_PTR(ret);
+>  	else
+> -		ctx->page_mask = HPAGE_PUD_NR - 1;
+> +		*page_mask = HPAGE_PUD_NR - 1;
+>  
+>  	return page;
+>  }
+> @@ -714,7 +709,7 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
+>  static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+>  				    unsigned long addr, pmd_t *pmd,
+>  				    unsigned int flags,
+> -				    struct follow_page_context *ctx)
+> +				    unsigned long *page_mask)
 >  {
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	pmd_t pmdval = *pmd;
+> @@ -751,7 +746,7 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+>  #endif	/* CONFIG_TRANSPARENT_HUGEPAGE */
+>  
+>  	page += (addr & ~HPAGE_PMD_MASK) >> PAGE_SHIFT;
+> -	ctx->page_mask = HPAGE_PMD_NR - 1;
+> +	*page_mask = HPAGE_PMD_NR - 1;
+>  
+>  	return page;
 >  }
->
-> -static inline struct folio *swap_cache_get_folio(swp_entry_t entry,
-> -               struct vm_area_struct *vma, unsigned long addr)
-> +static inline struct folio *swap_cache_get_folio(swp_entry_t entry)
+> @@ -759,7 +754,7 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+>  #else  /* CONFIG_PGTABLE_HAS_HUGE_LEAVES */
+>  static struct page *follow_huge_pud(struct vm_area_struct *vma,
+>  				    unsigned long addr, pud_t *pudp,
+> -				    int flags, struct follow_page_context *ctx)
+> +				    int flags, unsigned long *page_mask)
 >  {
->         return NULL;
+>  	return NULL;
 >  }
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 99513b74b5d8..68ec531d0f2b 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -69,6 +69,27 @@ void show_swap_cache_info(void)
->         printk("Total swap =3D %lukB\n", K(total_swap_pages));
->  }
->
-> +/**
-> + * swap_cache_get_folio - Looks up a folio in the swap cache.
-> + * @entry: swap entry used for the lookup.
-> + *
-> + * A found folio will be returned unlocked and with its refcount increas=
-ed.
-> + *
-> + * Context: Caller must ensure @entry is valid and protect the swap devi=
-ce
-> + * with reference count or locks.
-> + * Return: Returns the found folio on success, NULL otherwise. The calle=
-r
-> + * must lock and check if the folio still matches the swap entry before
-> + * use.
-> + */
-> +struct folio *swap_cache_get_folio(swp_entry_t entry)
-> +{
-> +       struct folio *folio =3D filemap_get_folio(swap_address_space(entr=
-y),
-> +                                               swap_cache_index(entry));
-> +       if (IS_ERR(folio))
-> +               return NULL;
-> +       return folio;
-> +}
-> +
->  void *get_shadow_from_swap_cache(swp_entry_t entry)
+> @@ -767,7 +762,7 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+>  static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+>  				    unsigned long addr, pmd_t *pmd,
+>  				    unsigned int flags,
+> -				    struct follow_page_context *ctx)
+> +				    unsigned long *page_mask)
 >  {
->         struct address_space *address_space =3D swap_address_space(entry)=
-;
-> @@ -272,55 +293,43 @@ static inline bool swap_use_vma_readahead(void)
->         return READ_ONCE(enable_vma_readahead) && !atomic_read(&nr_rotate=
-_swap);
+>  	return NULL;
 >  }
->
-> -/*
-> - * Lookup a swap entry in the swap cache. A found folio will be returned
-> - * unlocked and with its refcount incremented - we rely on the kernel
-> - * lock getting page table operations atomic even if we drop the folio
-> - * lock before returning.
+> @@ -813,8 +808,7 @@ static inline bool can_follow_write_pte(pte_t pte, struct page *page,
+>  }
+>  
+>  static struct page *follow_page_pte(struct vm_area_struct *vma,
+> -		unsigned long address, pmd_t *pmd, unsigned int flags,
+> -		struct dev_pagemap **pgmap)
+> +		unsigned long address, pmd_t *pmd, unsigned int flags)
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	struct folio *folio;
+> @@ -912,7 +906,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+>  static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+>  				    unsigned long address, pud_t *pudp,
+>  				    unsigned int flags,
+> -				    struct follow_page_context *ctx)
+> +				    unsigned long *page_mask)
+>  {
+>  	pmd_t *pmd, pmdval;
+>  	spinlock_t *ptl;
+> @@ -926,7 +920,7 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+>  	if (!pmd_present(pmdval))
+>  		return no_page_table(vma, flags, address);
+>  	if (likely(!pmd_leaf(pmdval)))
+> -		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
+> +		return follow_page_pte(vma, address, pmd, flags);
+>  
+>  	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
+>  		return no_page_table(vma, flags, address);
+> @@ -939,16 +933,16 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+>  	}
+>  	if (unlikely(!pmd_leaf(pmdval))) {
+>  		spin_unlock(ptl);
+> -		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
+> +		return follow_page_pte(vma, address, pmd, flags);
+>  	}
+>  	if (pmd_trans_huge(pmdval) && (flags & FOLL_SPLIT_PMD)) {
+>  		spin_unlock(ptl);
+>  		split_huge_pmd(vma, pmd, address);
+>  		/* If pmd was left empty, stuff a page table in there quickly */
+>  		return pte_alloc(mm, pmd) ? ERR_PTR(-ENOMEM) :
+> -			follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
+> +			follow_page_pte(vma, address, pmd, flags);
+>  	}
+> -	page = follow_huge_pmd(vma, address, pmd, flags, ctx);
+> +	page = follow_huge_pmd(vma, address, pmd, flags, page_mask);
+>  	spin_unlock(ptl);
+>  	return page;
+>  }
+> @@ -956,7 +950,7 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+>  static struct page *follow_pud_mask(struct vm_area_struct *vma,
+>  				    unsigned long address, p4d_t *p4dp,
+>  				    unsigned int flags,
+> -				    struct follow_page_context *ctx)
+> +				    unsigned long *page_mask)
+>  {
+>  	pud_t *pudp, pud;
+>  	spinlock_t *ptl;
+> @@ -969,7 +963,7 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
+>  		return no_page_table(vma, flags, address);
+>  	if (pud_leaf(pud)) {
+>  		ptl = pud_lock(mm, pudp);
+> -		page = follow_huge_pud(vma, address, pudp, flags, ctx);
+> +		page = follow_huge_pud(vma, address, pudp, flags, page_mask);
+>  		spin_unlock(ptl);
+>  		if (page)
+>  			return page;
+> @@ -978,13 +972,13 @@ static struct page *follow_pud_mask(struct vm_area_struct *vma,
+>  	if (unlikely(pud_bad(pud)))
+>  		return no_page_table(vma, flags, address);
+>  
+> -	return follow_pmd_mask(vma, address, pudp, flags, ctx);
+> +	return follow_pmd_mask(vma, address, pudp, flags, page_mask);
+>  }
+>  
+>  static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+>  				    unsigned long address, pgd_t *pgdp,
+>  				    unsigned int flags,
+> -				    struct follow_page_context *ctx)
+> +				    unsigned long *page_mask)
+>  {
+>  	p4d_t *p4dp, p4d;
+>  
+> @@ -995,7 +989,7 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+>  	if (!p4d_present(p4d) || p4d_bad(p4d))
+>  		return no_page_table(vma, flags, address);
+>  
+> -	return follow_pud_mask(vma, address, p4dp, flags, ctx);
+> +	return follow_pud_mask(vma, address, p4dp, flags, page_mask);
+>  }
+>  
+>  /**
+> @@ -1003,20 +997,16 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
+>   * @vma: vm_area_struct mapping @address
+>   * @address: virtual address to look up
+>   * @flags: flags modifying lookup behaviour
+> - * @ctx: contains dev_pagemap for %ZONE_DEVICE memory pinning and a
+> - *       pointer to output page_mask
+> + * @page_mask: a pointer to output page_mask
+>   *
+>   * @flags can have FOLL_ flags set, defined in <linux/mm.h>
+>   *
+> - * When getting pages from ZONE_DEVICE memory, the @ctx->pgmap caches
+> - * the device's dev_pagemap metadata to avoid repeating expensive lookups.
 > - *
-> - * Caller must lock the swap device or hold a reference to keep it valid=
-.
-> +/**
-> + * swap_update_readahead - Update the readahead statistics of VMA or glo=
-bally.
-> + * @folio: the swap cache folio that just got hit.
-> + * @vma: the VMA that should be updated, could be NULL for global update=
-.
-> + * @addr: the addr that triggered the swapin, ignored if @vma is NULL.
+>   * When getting an anonymous page and the caller has to trigger unsharing
+>   * of a shared anonymous page first, -EMLINK is returned. The caller should
+>   * trigger a fault with FAULT_FLAG_UNSHARE set. Note that unsharing is only
+>   * relevant with FOLL_PIN and !FOLL_WRITE.
+>   *
+> - * On output, the @ctx->page_mask is set according to the size of the page.
+> + * On output, @page_mask is set according to the size of the page.
+>   *
+>   * Return: the mapped (struct page *), %NULL if no mapping exists, or
+>   * an error pointer if there is a mapping to something not represented
+> @@ -1024,7 +1014,7 @@ static struct page *follow_p4d_mask(struct vm_area_struct *vma,
 >   */
-> -struct folio *swap_cache_get_folio(swp_entry_t entry,
-> -               struct vm_area_struct *vma, unsigned long addr)
-> +void swap_update_readahead(struct folio *folio, struct vm_area_struct *v=
-ma,
-> +                          unsigned long addr)
+>  static struct page *follow_page_mask(struct vm_area_struct *vma,
+>  			      unsigned long address, unsigned int flags,
+> -			      struct follow_page_context *ctx)
+> +			      unsigned long *page_mask)
 >  {
-> -       struct folio *folio;
-> -
-> -       folio =3D filemap_get_folio(swap_address_space(entry), swap_cache=
-_index(entry));
-> -       if (!IS_ERR(folio)) {
-> -               bool vma_ra =3D swap_use_vma_readahead();
-> -               bool readahead;
-> +       bool readahead, vma_ra =3D swap_use_vma_readahead();
->
-> -               /*
-> -                * At the moment, we don't support PG_readahead for anon =
-THP
-> -                * so let's bail out rather than confusing the readahead =
-stat.
-> -                */
-> -               if (unlikely(folio_test_large(folio)))
-> -                       return folio;
-> -
-> -               readahead =3D folio_test_clear_readahead(folio);
-> -               if (vma && vma_ra) {
-> -                       unsigned long ra_val;
-> -                       int win, hits;
-> -
-> -                       ra_val =3D GET_SWAP_RA_VAL(vma);
-> -                       win =3D SWAP_RA_WIN(ra_val);
-> -                       hits =3D SWAP_RA_HITS(ra_val);
-> -                       if (readahead)
-> -                               hits =3D min_t(int, hits + 1, SWAP_RA_HIT=
-S_MAX);
-> -                       atomic_long_set(&vma->swap_readahead_info,
-> -                                       SWAP_RA_VAL(addr, win, hits));
-> -               }
-> -
-> -               if (readahead) {
-> -                       count_vm_event(SWAP_RA_HIT);
-> -                       if (!vma || !vma_ra)
-> -                               atomic_inc(&swapin_readahead_hits);
-> -               }
-> -       } else {
-> -               folio =3D NULL;
-> +       /*
-> +        * At the moment, we don't support PG_readahead for anon THP
-> +        * so let's bail out rather than confusing the readahead stat.
-> +        */
-> +       if (unlikely(folio_test_large(folio)))
-> +               return;
-> +
-> +       readahead =3D folio_test_clear_readahead(folio);
-> +       if (vma && vma_ra) {
-> +               unsigned long ra_val;
-> +               int win, hits;
-> +
-> +               ra_val =3D GET_SWAP_RA_VAL(vma);
-> +               win =3D SWAP_RA_WIN(ra_val);
-> +               hits =3D SWAP_RA_HITS(ra_val);
-> +               if (readahead)
-> +                       hits =3D min_t(int, hits + 1, SWAP_RA_HITS_MAX);
-> +               atomic_long_set(&vma->swap_readahead_info,
-> +                               SWAP_RA_VAL(addr, win, hits));
->         }
->
-> -       return folio;
-> +       if (readahead) {
-> +               count_vm_event(SWAP_RA_HIT);
-> +               if (!vma || !vma_ra)
-> +                       atomic_inc(&swapin_readahead_hits);
-> +       }
+>  	pgd_t *pgd;
+>  	struct mm_struct *mm = vma->vm_mm;
+> @@ -1032,13 +1022,13 @@ static struct page *follow_page_mask(struct vm_area_struct *vma,
+>  
+>  	vma_pgtable_walk_begin(vma);
+>  
+> -	ctx->page_mask = 0;
+> +	*page_mask = 0;
+>  	pgd = pgd_offset(mm, address);
+>  
+>  	if (pgd_none(*pgd) || unlikely(pgd_bad(*pgd)))
+>  		page = no_page_table(vma, flags, address);
+>  	else
+> -		page = follow_p4d_mask(vma, address, pgd, flags, ctx);
+> +		page = follow_p4d_mask(vma, address, pgd, flags, page_mask);
+>  
+>  	vma_pgtable_walk_end(vma);
+>  
+> @@ -1376,7 +1366,7 @@ static long __get_user_pages(struct mm_struct *mm,
+>  {
+>  	long ret = 0, i = 0;
+>  	struct vm_area_struct *vma = NULL;
+> -	struct follow_page_context ctx = { NULL };
+> +	unsigned long page_mask = 0;
+>  
+>  	if (!nr_pages)
+>  		return 0;
+> @@ -1418,7 +1408,7 @@ static long __get_user_pages(struct mm_struct *mm,
+>  						pages ? &page : NULL);
+>  				if (ret)
+>  					goto out;
+> -				ctx.page_mask = 0;
+> +				page_mask = 0;
+>  				goto next_page;
+>  			}
+>  
+> @@ -1441,7 +1431,7 @@ static long __get_user_pages(struct mm_struct *mm,
+>  		}
+>  		cond_resched();
+>  
+> -		page = follow_page_mask(vma, start, gup_flags, &ctx);
+> +		page = follow_page_mask(vma, start, gup_flags, &page_mask);
+>  		if (!page || PTR_ERR(page) == -EMLINK) {
+>  			ret = faultin_page(vma, start, gup_flags,
+>  					   PTR_ERR(page) == -EMLINK, locked);
+> @@ -1474,7 +1464,7 @@ static long __get_user_pages(struct mm_struct *mm,
+>  			goto out;
+>  		}
+>  next_page:
+> -		page_increm = 1 + (~(start >> PAGE_SHIFT) & ctx.page_mask);
+> +		page_increm = 1 + (~(start >> PAGE_SHIFT) & page_mask);
+>  		if (page_increm > nr_pages)
+>  			page_increm = nr_pages;
+>  
+> @@ -1524,8 +1514,6 @@ static long __get_user_pages(struct mm_struct *mm,
+>  		nr_pages -= page_increm;
+>  	} while (nr_pages);
+>  out:
+> -	if (ctx.pgmap)
+> -		put_dev_pagemap(ctx.pgmap);
+>  	return i ? i : ret;
 >  }
->
->  struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
-> @@ -336,14 +345,10 @@ struct folio *__read_swap_cache_async(swp_entry_t e=
-ntry, gfp_t gfp_mask,
->         *new_page_allocated =3D false;
->         for (;;) {
->                 int err;
-> -               /*
-> -                * First check the swap cache.  Since this is normally
-> -                * called after swap_cache_get_folio() failed, re-calling
-> -                * that would confuse statistics.
-> -                */
-> -               folio =3D filemap_get_folio(swap_address_space(entry),
-> -                                         swap_cache_index(entry));
-> -               if (!IS_ERR(folio))
-> +
-> +               /* Check the swap cache in case the folio is already ther=
-e */
-> +               folio =3D swap_cache_get_folio(entry);
-> +               if (folio)
->                         goto got_folio;
->
->                 /*
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index a7ffabbe65ef..4b8ab2cb49ca 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -213,15 +213,14 @@ static int __try_to_reclaim_swap(struct swap_info_s=
-truct *si,
->                                  unsigned long offset, unsigned long flag=
-s)
+>  
+> @@ -2853,7 +2841,6 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+>  		unsigned long end, unsigned int flags, struct page **pages,
+>  		int *nr)
 >  {
->         swp_entry_t entry =3D swp_entry(si->type, offset);
-> -       struct address_space *address_space =3D swap_address_space(entry)=
-;
->         struct swap_cluster_info *ci;
->         struct folio *folio;
->         int ret, nr_pages;
->         bool need_reclaim;
->
->  again:
-> -       folio =3D filemap_get_folio(address_space, swap_cache_index(entry=
-));
-> -       if (IS_ERR(folio))
-> +       folio =3D swap_cache_get_folio(entry);
-> +       if (!folio)
->                 return 0;
->
->         nr_pages =3D folio_nr_pages(folio);
-> @@ -2131,7 +2130,7 @@ static int unuse_pte_range(struct vm_area_struct *v=
-ma, pmd_t *pmd,
->                 pte_unmap(pte);
->                 pte =3D NULL;
->
-> -               folio =3D swap_cache_get_folio(entry, vma, addr);
-> +               folio =3D swap_cache_get_folio(entry);
->                 if (!folio) {
->                         struct vm_fault vmf =3D {
->                                 .vma =3D vma,
-> @@ -2357,8 +2356,8 @@ static int try_to_unuse(unsigned int type)
->                (i =3D find_next_to_unuse(si, i)) !=3D 0) {
->
->                 entry =3D swp_entry(type, i);
-> -               folio =3D filemap_get_folio(swap_address_space(entry), sw=
-ap_cache_index(entry));
-> -               if (IS_ERR(folio))
-> +               folio =3D swap_cache_get_folio(entry);
-> +               if (!folio)
->                         continue;
->
->                 /*
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 50aaa8dcd24c..af61b95c89e4 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -1489,9 +1489,8 @@ static long move_pages_ptes(struct mm_struct *mm, p=
-md_t *dst_pmd, pmd_t *src_pmd
->                  * separately to allow proper handling.
->                  */
->                 if (!src_folio)
-> -                       folio =3D filemap_get_folio(swap_address_space(en=
-try),
-> -                                       swap_cache_index(entry));
-> -               if (!IS_ERR_OR_NULL(folio)) {
-> +                       folio =3D swap_cache_get_folio(entry);
-> +               if (folio) {
->                         if (folio_test_large(folio)) {
->                                 ret =3D -EBUSY;
->                                 folio_put(folio);
-> --
-> 2.51.0
->
->
+> -	struct dev_pagemap *pgmap = NULL;
+>  	int ret = 0;
+>  	pte_t *ptep, *ptem;
+>  
+> @@ -2926,8 +2913,6 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+>  	ret = 1;
+>  
+>  pte_unmap:
+> -	if (pgmap)
+> -		put_dev_pagemap(pgmap);
+>  	pte_unmap(ptem);
+>  	return ret;
+>  }
+
+
 
