@@ -4,101 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 909B5CA1012
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 07:56:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9267CA1012
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 08:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62B9B8E0003; Sat,  6 Sep 2025 03:56:35 -0400 (EDT)
+	id 1040F8E0005; Sat,  6 Sep 2025 04:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 602C38E0001; Sat,  6 Sep 2025 03:56:35 -0400 (EDT)
+	id 0DC178E0001; Sat,  6 Sep 2025 04:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53F8C8E0003; Sat,  6 Sep 2025 03:56:35 -0400 (EDT)
+	id 0189F8E0005; Sat,  6 Sep 2025 04:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4201A8E0001
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:56:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D241A85CB3
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 07:56:34 +0000 (UTC)
-X-FDA: 83858068308.25.F61D56D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0D4EA140005
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 07:56:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JDPgr7UR;
-	spf=pass (imf26.hostedemail.com: domain of lossin@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=lossin@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E5A2F8E0001
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 04:00:46 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 72F0613AF95
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 08:00:46 +0000 (UTC)
+X-FDA: 83858078892.10.F574A08
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E0196160002
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 08:00:44 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mfgbgrxj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757145644; a=rsa-sha256;
+	cv=none;
+	b=vsVT8NJOpnu03DP5X8vGL977/mTW0j60h5ROYsyX/W2voKZUz01WR4R3wMlb4yxnau77Ty
+	YRatWihnUJ2OBwvyU1ILNMXqcXlsJ33Jxv+hSwjYr+Rg8kpCSvmwpBK2gF72g50strnIQM
+	LRkbKay249RJcUmu6xbQ8DqctkKItrA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mfgbgrxj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757145393;
+	s=arc-20220608; t=1757145644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QxlpDa4GqZ4XRVsLXFjUQ1YImqTwGPMi438uU6ntMko=;
-	b=cG3LKjpGbH/M5Imwa7VIdF3NnmTf710v/C5b5SIRLU8mSdG8b6dMQ9vhQe/Jtl0O7i7eqW
-	JsdqgqEJLAaCi+6hHiuKMg7HlGVRkpn45jixMGvXN1LgAhuyJ7c2w6vEnWgfmCQqxPtLUC
-	1FpzpihUkzYGxUQ0p+WFfPgBk445+rA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757145393; a=rsa-sha256;
-	cv=none;
-	b=NX0M+Qsk0IbLrwX9bqRhGz4d7aW7jIHKXrqEjLMiOgrf0JqSxzBUQKgyaoNalyn2OOIneC
-	fhoQHcquTgBwf5gYqKYMhNemAPUfyzgUYtIQu0KQi8uLaBRJmuGG3OMjtJMrqpMcMOyRbg
-	a33bMdePQ+oFmT355A7MsZ61zCQnk/k=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JDPgr7UR;
-	spf=pass (imf26.hostedemail.com: domain of lossin@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=lossin@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=02cnhVonm/O4IkPwEVbuli2JQLVOE0cQbBtK5D0Ka5I=;
+	b=TFppbIDmqM/Xn5VxM1FMD1BoxW2i/lx4LLvozSDgkzUK5A/7vC+TKaFlNyhXlUnI/2ouoo
+	TmLrhjnT30Pd8DuOxQ/BSCSLqen7w0d8jBzcMK1mIW6kHI/bGRcZyJ0LEHR0YKJIWZbmCg
+	OBGKiTt1DDsIVD+T5p91RULvd0EzfP8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8930B44946;
-	Sat,  6 Sep 2025 07:56:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1806C4CEE7;
-	Sat,  6 Sep 2025 07:56:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 17DA4601B8;
+	Sat,  6 Sep 2025 08:00:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09034C4CEE7;
+	Sat,  6 Sep 2025 08:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757145391;
-	bh=6MpzkwaTQMjmEYFnZViHjiIwAE3okFT2YcFGwEWrMu0=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=JDPgr7URW8s7vw/k79cIlH8pPnGb6W1TRtu+NcgwNT+haAornpO/O5/b02eZY3tOw
-	 vvzGi9grirM0MP4Oky1dwoVR4tRHa9eQDEUCTyinM4bPPHCwxcB+oGtX8brxFP4K0N
-	 66cSVv1nOkSKtaW9mhxLnbkcWLyAVz0nkRXTmMY9+kaKmBxQjiRZOFdY7H5VNBURWz
-	 xgD39ulj6KwxWdYWKrfNm63CPXIjTJLFNOwmKgaLwFreHeLB1wbzERLMRGH6HORPgT
-	 MDZf/Yd+PsjNIB5vOkiWjf8fhc5o9GtXk5RcK9sxaHH+HPpsThbDaY6v41hpYnKIrl
-	 6pWiNQqdJv05A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Sep 2025 09:56:25 +0200
-Message-Id: <DCLK1YG1L5TZ.1VMGX131LII9V@kernel.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-Cc: "rust-for-linux" <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
- Roy Baron" <bjorn3_gh@protonmail.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Yosry Ahmed" <yosry.ahmed@linux.dev>, "Nhat
- Pham" <nphamcs@gmail.com>, <linux-mm@kvack.org>
-Subject: Re: [PATCH v4 2/2] rust: zpool: add abstraction for zpool drivers
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250823130420.867133-1-vitaly.wool@konsulko.se>
- <20250823130522.867263-1-vitaly.wool@konsulko.se>
- <DCCIRTHGQFNX.1M8GXO4TYA7DF@kernel.org>
- <DFA3B588-3650-42DA-8875-7AB7D20A2BCA@konsulko.se>
- <DCDC2M7N28X2.3Q8XYNEDOGK6A@kernel.org>
- <9c63dda1-0a4b-4131-a5e7-12ad2e88c6d6@konsulko.se>
-In-Reply-To: <9c63dda1-0a4b-4131-a5e7-12ad2e88c6d6@konsulko.se>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0D4EA140005
-X-Stat-Signature: cte4exrbtakfkniu49cgjau6t3833kif
+	s=k20201202; t=1757145643;
+	bh=4x0+31hirmJLFHqn1Gbe0i4lASpQFclhxfD/Z965jcM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MfgbgrxjfUUGBQw34eWYTowBbHzbhcpGWKdpiWiSOIi2ZqMnBgb4YhZk8Fyu/wsEC
+	 DGHBHCRddCy78RgseoO649PcLuY79falVTct9qfShmyh+VkD1WU5kUXPUIs04dZH7W
+	 ncg93jZY9xo/UxEYesta0MZfFFYd8XfKvTBS1Wpyt8ws2US5QNGaLD0J5eqgiDPXRQ
+	 cR/BCRyw8PMOkuKQj2tYAjjMCG5lS/qgpcR8R11aNMmFLZUcY/YsVtf3jbX9wEIwcE
+	 GJi3nfww0zy+zas8F+a4+EhO4IpdK+OaRI8bJgOB8V/9z+oLnjCdqoOkwzaEMIaxE5
+	 I8bBTIlanrIyQ==
+Date: Sat, 6 Sep 2025 11:00:36 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	Usama Arif <usamaarif642@gmail.com>
+Subject: Re: [PATCH] tools/mm: Add madvise tool
+Message-ID: <aLvqJKtOgGEZxPeN@kernel.org>
+References: <20250904175729.1029735-1-kirill@shutemov.name>
+ <aLrCfvlhWRCEmwXc@kernel.org>
+ <txdm2edac7x6bfxcnjri5g4e5qoz4qhbtwi7bpdta6yqeseroo@iqspqwpo24i5>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <txdm2edac7x6bfxcnjri5g4e5qoz4qhbtwi7bpdta6yqeseroo@iqspqwpo24i5>
+X-Rspamd-Queue-Id: E0196160002
+X-Stat-Signature: x7ycxmkpdo8kjwgow6km5mxkifgbyfcg
 X-Rspam-User: 
-X-HE-Tag: 1757145392-912498
-X-HE-Meta: U2FsdGVkX1+ET4e+DURkcrc47nIoeyaTAPH/lSdBQ+/a3KRpt4e5bZVshFtx+w4ObfzUXxTB9Nyzw+WVyrQgg+QWGGLl7Oe0E/z9GQN1rO566/DFQB1NjENWvbnfKU8jGi8I5GAgu1/JxXGgBc4hyqrcsusMtDvgRA0HEOB6xmHzyN1dFXNGjTCbyzvL7Lb7qH3ONTKgt5Sn0yYPo2vE9EBdHRAFB4YTZQCbLI5fLWlOBVMlv23tsOfIeMYiAo4KzS5oE056ZzdrF1wjp+rbofFMbM9ow3gtB/kxJuPnnfKYpGvi+KCXA8WOMB3kpyWfyiyDNPekBaSiEXy/uUvtBvWFt37ofGfxDD2jfNtKaFZT4fhkPlF2VetxrafQfqKrlmtMELWM3uRHqyoeQbn7936alySXpXOnP7IjlHrsWl4kpXL6N9COwZFLhZeS9qKRuw9nSmIWKexsZ7BoQHhZG7gCrvPtTZM56FaAhT5yCPmvRK0XYA9lNsiMndT7jKL7WhnzLkHrs8TtY6aoAZCjdUVqJGsHAD9D1Qym9jbzWqInGq2pDzDpWbEcnapQnDCewWLx2aDSg85fi+md+GhNNErY7yU+/bwZnLYtwUV3biLtX1Tot0yJAilL3r3GFvHyRwW3KJcAGSd9kzSexs/Pv8gAbh7FYYdu9+FhZnJteXEFCjpxcHmpS/diZ3B/vSEJoGOsuEB4HXk8bGVoqGCuW6716hXkjpZAFmbadwbDLpPKofj9v9RE52FuamJVmqP4w4HAeNH6JCNsr4vxukbdaBk53pHvC8y8R/l95yLZSuBDg2oXWlie1+qwfATRPG0vAYTqBH2Ybdfwut8qWIDcVilZ+by4v9QWUjlKwRh9PdbkrtBIrMsi+4v/cRqpszY1JBBXw8fKXkXriM6DO2MY75mTzAl6NPkCIgNFmKhrG7LHSYEn75ldUZjSspirWro3u7JTZG7F8et3tLOGbWL
- 746NPvRS
- udDPxhA6kFcjSnTBLW0d23R4OdNshqmcpiWIJ3NJ2f9UI8JsHZ44ay3147z0WDug2cYdrlFVPJpdBw+qWmssj2WP7Nl87knADC1l7E3ElqOlcU40+cHAPdh8ZDECKBcVXm8W6TibetsNHUF5UKWbxqD8Nwi/442DmmFAms68mhHa/yi69uy0632VVsIdc+z/Jh/kWR0FeeIV7puVUVMb9Du1/2ht9kX2k9kJwXSHuxxSfsR4y9GtDsScxal81zpD6EBdH5H2Od1+FqVxL0ptXynySeG0zHGO/yVk1xfUT7G9QxIoB0Flf/JbgyJaI+ozX5daQtLSazutmbfTjTNhdYvb0IQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1757145644-318813
+X-HE-Meta: U2FsdGVkX1/SqvnGLWjzacJegMb1UEczORJrgpLMS96Vyd/6lMukTwlPstUMywpIuT+f5dzd795vTYmRFT6CI+VF0CAOwmYqjHPavrrev55sA8i018th9nitMwA+nHaSIcVlFg2M8jKi5PM7SW96llDPpSGNNcRRHHv/EvVDi5EK4NpRXFvF59WGn0aYHhL6EWORHVtl8tROod7ko/pLF9nz76BRKyRZ03H9qMM8l77pNEbb+7cxnununps26nNBi8UXU3vXWBp2BUHc9/7eBM9oGCFY8Z3tVhSRuS0o1LjiE+383ntuHMdutkfF5MeV8HZhjdfHgCUBtGddf9aVQTOqX1oVO1DvOPyQKp11udX8XhjPhgo24zBF7CVXNjwqaPLiWk6xM5h2mbQ6Sl9992JQzdc5HRe7LonJ5z4h8z15aAzC+9hoPDeyXX5itcFiRvoZ+tOW94pvNKdTCWpj3nzW+nNrsozI3WlC9AHk6s6divcrKl6azZ0VOAUVoiujWh6LXdb02IsXRtqFRHhJZYRF0Q+SOJTCXWKX8yudCAqyZvppNHvVAL0V71ia405y8jCWeNkP3gFOTjlflQnvRXKz1iWhxTIkAP/fAr97ZqbrugyVqyTWFAIE3co+jIT3FnR+X1YG2AvbsOzNTSupYeIbm/d5YJ+8s2d7lNAfXEWhIqvZVitFd0xrzHm65cZFJbyZsf/m7mvm81kB8Ftf0C7vfSMInKGtM1SJmWmlgO2bSlRSIo8V+M6VVvPWJRU3oNXO+Bs1/8BPQ4CuuWZMxw7jD91dEa33xdWZT7qkxkUKpRPwVU5B+U21GruY1Dmmr/2+UdSXuG8Ic8juOUnb5X4bQ6wglqksKyfv7AWfrq6ZXHIXdgK+Fxffh3HF1c7yeGB2y0JvOGxxBoJ3YiZjtMurzvXznKwJJFyLvYw/W0DkrpHWYBqsd9FJpuoqNhpyezkLMjMfUwWAiORtuPX
+ 3ImiyEdS
+ jyy8Bzi5O0S1/SiNHh5QOoI8Y6yXw1v0isKVhCQafhxlemNb9WMepf7560VDOXbqf87neVBg1Z+Avoir2IaaXkJCw6iKaVgjQlpZ+Xd6gqU1an/lhpNIDGflqqNsMNF4gswur3RxJOakoS4piYWTHNNz40A5C86zLh0cp58fmBgyRqWMW2yM2V9MW3OsC3Q1F05Ydhsyh3aFRJsGn0zRc7KEvpz73LddIYeYFYGqgh78oMJBPwhklXOwfXl/uljD/XlHOxL9L07rW7UubKz0bbGxsVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,146 +99,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Aug 28, 2025 at 9:22 AM CEST, Vitaly Wool wrote:
->
->
-> On 8/27/25 17:59, Benno Lossin wrote:
->> On Wed Aug 27, 2025 at 4:24 PM CEST, Vitaly Wool wrote:
->>>
->>>
->>>> On Aug 26, 2025, at 7:02 PM, Benno Lossin <lossin@kernel.org> wrote:
->>>>
->>>> On Sat Aug 23, 2025 at 3:05 PM CEST, Vitaly Wool wrote:
->>>>> +pub trait ZpoolDriver {
->>>>> +    /// Opaque Rust representation of `struct zpool`.
->>>>> +    type Pool: ForeignOwnable;
->>>>
->>>> I think this is the same question that Danilo asked a few versions ago=
-,
->>>> but why do we need this? Why can't we just use `Self` instead?
->>>
->>> It=E2=80=99s convenient to use it in the backend implementation, like i=
-n the toy example supplied in the documentation part:
->>>
->>> +/// struct MyZpool {
->>> +///     name: &'static CStr,
->>> +///     bytes_used: AtomicU64,
->>> +/// }
->>> =E2=80=A6
->>> +/// impl ZpoolDriver for MyZpoolDriver {
->>> +///     type Pool =3D KBox<MyZpool>;
->>>
->>> Does that make sense?
->>=20
->> No, why can't it just be like this:
->>=20
->>      struct MyZpool {
->>          name: &'static CStr,
->>          bytes_used: AtomicU64,
->>      }
->>     =20
->>      struct MyZpoolDriver;
->>     =20
->>      impl ZpoolDriver for MyZpoolDriver {
->>          type Error =3D Infallible;
->>     =20
->>          fn create(name: &'static CStr) -> impl PinInit<Self, Self::Erro=
-r> {
->>              MyZpool { name, bytes_used: AtomicU64::new(0) }
->>          }
->>     =20
->>          fn malloc(&mut self, size: usize, gfp: Flags, _nid: NumaNode) -=
-> Result<usize> {
->>              let mut pow: usize =3D 0;
->>              for n in 6..=3DPAGE_SHIFT {
->>                  if size <=3D 1 << n {
->>                      pow =3D n;
->>                      break;
->>                  }
->>              }
->>              match pow {
->>                  0 =3D> Err(EINVAL),
->>                  _ =3D> {
->>                      let vec =3D KVec::<u64>::with_capacity(1 << (pow - =
-3), gfp)?;
->>                      let (ptr, _len, _cap) =3D vec.into_raw_parts();
->>                      self.bytes_used.fetch_add(1 << pow, Ordering::Relax=
-ed);
->>                      Ok(ptr as usize | (pow - 6))
->>                  }
->>              }
->>          }
->>     =20
->>          unsafe fn free(&self, handle: usize) {
->>              let n =3D (handle & 0x3F) + 3;
->>              let uptr =3D handle & !0x3F;
->>     =20
->>              // SAFETY:
->>              // - uptr comes from handle which points to the KVec alloca=
-tion from `alloc`.
->>              // - size =3D=3D capacity and is coming from the first 6 bi=
-ts of handle.
->>              let vec =3D unsafe { KVec::<u64>::from_raw_parts(uptr as *m=
-ut u64, 1 << n, 1 << n) };
->>              drop(vec);
->>              self.bytes_used.fetch_sub(1 << (n + 3), Ordering::Relaxed);
->>          }
->>     =20
->>          unsafe fn read_begin(&self, handle: usize) -> NonNull<u8> {
->>              let uptr =3D handle & !0x3F;
->>              // SAFETY: uptr points to a memory area allocated by KVec
->>              unsafe { NonNull::new_unchecked(uptr as *mut u8) }
->>          }
->>     =20
->>          unsafe fn read_end(&self, _handle: usize, _handle_mem: NonNull<=
-u8>) {}
->>     =20
->>          unsafe fn write(&self, handle: usize, handle_mem: NonNull<u8>, =
-mem_len: usize) {
->>              let uptr =3D handle & !0x3F;
->>              // SAFETY: handle_mem is a valid non-null pointer provided =
-by zpool, uptr points to
->>              // a KVec allocated in `malloc` and is therefore also valid=
-.
->>              unsafe {
->>                  copy_nonoverlapping(handle_mem.as_ptr().cast(), uptr as=
- *mut c_void, mem_len)
->>              };
->>          }
->>     =20
->>          fn total_pages(&self) -> u64 {
->>              self.bytes_used.load(Ordering::Relaxed) >> PAGE_SHIFT
->>          }
->>      }
->
-> It can indeed but then the ZpoolDriver trait will have to be extended=20
-> with functions like into_raw() and from_raw(), because zpool expects=20
-> *mut c_void, so on the Adapter side it will look like
->
->      extern "C" fn create_(name: *const c_uchar, gfp: u32) -> *mut c_void=
- {
->          // SAFETY: the memory pointed to by name is guaranteed by zpool=
-=20
-> to be a valid string
->          let pool =3D unsafe { T::create(CStr::from_char_ptr(name),=20
-> Flags::from_raw(gfp)) };
->          match pool {
->              Err(_) =3D> null_mut(),
->              Ok(p) =3D> T::into_raw(p).cast(),
->          }
->      }
->
-> The question is, why does this make it better?
+On Fri, Sep 05, 2025 at 02:36:36PM +0100, Kiryl Shutsemau wrote:
+> On Fri, Sep 05, 2025 at 01:59:10PM +0300, Mike Rapoport wrote:
+> > On Thu, Sep 04, 2025 at 06:57:29PM +0100, kirill@shutemov.name wrote:
+> > > From: Kiryl Shutsemau <kas@kernel.org>
+> > > 
+> > > Add a simple tool that allows to issue an advice on a process or a file.
+> > > 
+> > > It can be useful to experiment with effects of an advice on a workload
+> > > without modifying the workload itself.
+> > > 
+> > > Only supports advices available for process_madvise().
+> > > 
+> > > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > > ---
+> > >  tools/mm/.gitignore |   4 +-
+> > >  tools/mm/Makefile   |   2 +-
+> > >  tools/mm/madvise.c  | 170 ++++++++++++++++++++++++++++++++++++++++++++
+> > >  3 files changed, 174 insertions(+), 2 deletions(-)
+> > >  create mode 100644 tools/mm/madvise.c
+> > > 
+> > 
+> > ...
+> > 
+> > > +		unsigned long addr, hpage_pmd_size;
+> > > +		void *p;
+> > > +		int ret;
+> > > +
+> > > +		hpage_pmd_size = read_pmd_pagesize();
+> > > +		if (!hpage_pmd_size) {
+> > > +			printf("Reading PMD pagesize failed");
+> > > +			exit(-1);
+> > 
+> > Shouldn't it fail only for collapse? Other advices don't depend on THP.
+> 
+> True. But aligning everybody wouldn't hurt.
 
-No, thanks for sharing that function. Then the question becomes, do you
-really need `ForeignOwnable`? Or is `KBox` enough? Do you really want
-people to use `Arc<MyZPool>`? Because `BorrowedMut` of `Arc` is the same
-as it's `Borrowed` variant (it's read-only after all).
+Right, but this make the tool unusable for kernels built with !THP. 
+ 
+> I would argue MADV_COLLAPSE shouldn't require this either. You don't
+> need PMD to collapse page cache folio.
+> 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-If you can get away with just `Box` (you might want people to choose
-their allocator, which is fine IMO), then I'd do so.
-
----
-Cheers,
-Benno
+-- 
+Sincerely yours,
+Mike.
 
