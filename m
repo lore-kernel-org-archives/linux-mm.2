@@ -4,117 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 034DBCA1012
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 06:32:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AB77CA1012
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 06:36:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 389A78E0005; Sat,  6 Sep 2025 02:32:50 -0400 (EDT)
+	id 74A018E0006; Sat,  6 Sep 2025 02:36:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 349658E0003; Sat,  6 Sep 2025 02:32:50 -0400 (EDT)
+	id 721A18E0003; Sat,  6 Sep 2025 02:36:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 286308E0005; Sat,  6 Sep 2025 02:32:50 -0400 (EDT)
+	id 65E938E0006; Sat,  6 Sep 2025 02:36:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 16DDF8E0003
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 02:32:50 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD01C118DD3
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 06:32:49 +0000 (UTC)
-X-FDA: 83857857258.27.0684499
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0749FA000A
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 06:32:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MqdaZ5zK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D2E18E0003
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 02:36:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 02AD7140232
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 06:36:12 +0000 (UTC)
+X-FDA: 83857865826.05.50092EC
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9C78F180003
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 06:36:10 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MGbr7vuP;
+	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757140368;
+	s=arc-20220608; t=1757140571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6kK5t+pdYQgl9moKxVuT5DIsEPulHjxs1HUx0Nbs+gs=;
-	b=R/9FJfSdBvcg/izGq7EZHIB2kgdEd8e8lSRpX8CrHmAsLS7ET0eHyeIAlBC1TGv2SJF6zC
-	Sf4Jft8zHVrjpelXK2nuAanw9qdwXZPMl2GKwyybfpe2g98wqfzvSBwo+zSmB6BmJM0+q3
-	hgbWOyZ0e+/BGt/HnPzIJbJbhrnl9QU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MqdaZ5zK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757140368; a=rsa-sha256;
+	bh=hZI+7xxBYSUjf2DkYRpNjguP0eowa/Qcb8yf8x4bp6o=;
+	b=jnwDO7Fwktj4SkTxq0cle2GgJOaCBtCfs4l9EIiYax5tu0KZdxdFVqX9n5czM9vaw//Jwj
+	GKhtqnnqet08rf2P4ZewGQYl0+DvadnwBOWu6ElJR1u7ramBjLuri5eAYOQOh1jpRR/IfZ
+	zyQuljbxY2nUKG6sydap1JF54bTzX7U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757140571; a=rsa-sha256;
 	cv=none;
-	b=wA4BmHX6AHSpt415uxbO2vFqc88yqBABw6xHfN3Weot5EY/8jvZIX9P5iwypUirVeA+TQb
-	PUD9DqfUIUA08Cujhd+0Y6NEEG/0WM7vPsVjo+5EpDXqKeaVyRv23ksrAG/8D/lqOQVzZJ
-	rsld9KV0bPZHkV+FBL9Ixx0P1bZMewg=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so3030573a12.1
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 23:32:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757140366; x=1757745166; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6kK5t+pdYQgl9moKxVuT5DIsEPulHjxs1HUx0Nbs+gs=;
-        b=MqdaZ5zKHnYzVcyLqmVhfN45OGXZVPXiE3HSe4ci7OwFZDW3WqTjFnrAl5IojaBE09
-         zV1kqtonOpl5HswUjyXsYgBL4QrOOFPNasPOD8890TqrNGxD/A/N0ycaFiqTyrdFz1bf
-         7xYru/+Zj58W2RjrgMyArg6n7PTMVZXs7xhYpsoM6/rKIaGse83dJ3uqsZzfr+d2w5n1
-         tLhB8zIhrKYmfMWvQZk0ofDaYK2Wc1W0ZtnPqDfeg3zoW+ZvxNXsX04YCD35A0kVIm9U
-         gWKUh8TanjPBJFKYdSd4lE1JjkYGPboMmLInnrS1r06yWzO0YwrNpLMd2kYHY0PzO25E
-         QN6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757140366; x=1757745166;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6kK5t+pdYQgl9moKxVuT5DIsEPulHjxs1HUx0Nbs+gs=;
-        b=XrCvF0tnOisNIS/qAJ2nnYTfELcL/MN9qnaC9PltMA36RbYmmUFC1pgV2NdvK8kvMW
-         yXQBDmB9wubDRFLSLzRRVWNDYZOEWK9uSxo8zwYeVo9UStbsOH9JaC8xKQtbWxfRo2qg
-         zAc1WQvRhEHsK66L/XYEOtfQwO8KOgnqAJEcqknXipKdzR9eMwEMKgQlLa+hGzHmZXs5
-         4LNa2oPjSJwb3BDuBS6V8lPiYeDFb2vXUwMddv2R9L10QzNLmG8NBpr8A+h6YB/SOEJI
-         H11DUjhgbZwQ3ww+WiFUafZVTuq+Vqj3xt1NosW0218nXVyQ7qahYOJM0H9SwFYgbXvL
-         hVlg==
-X-Gm-Message-State: AOJu0YwpUvb1kroMG51BAlTKidzVfqwUT/XkCO11qYTfzgpmvsq5BFfM
-	cNK+QR6QDSSaLLNNbvt+rtrt84VsaSkmPftYVGxliKh81LFnV6TXLK1RVjySflfA1GAY8hqDxch
-	losMaEm8ytcojStMHsCA7/n04N+FcpT0=
-X-Gm-Gg: ASbGncssRLz0bHmWI4iLfOGwpCzK7YfQEivExaBP2z1kll7mE2wxeNBCLNm4vFXLbMA
-	DnAu0cBwT7ILMGBjIYfdyDM1ZXk9Hw++Ce99OJ9UR+dXgERmN2FgxUBdQULQrssnqF0CbA0ZA2k
-	+6e27SldLuwZFa3v5CmY+SAlOaK+8kVlzkyWZePO+PpycsZc1CXwsfhkP7EzxID6Pv+qvWXffLZ
-	MlJnqN/8HQ4BGmzpD6OmA==
-X-Google-Smtp-Source: AGHT+IGZNDdkma+UR16y6zplIu4ueK4Pamyx6VF+j01x7vICoEVtRmcp7DWVNtzU2Xbnd8nWKOnwDIdltdp9Fb9DRhs=
-X-Received: by 2002:a05:6402:4308:b0:61d:6bf:12d with SMTP id
- 4fb4d7f45d1cf-623783645bcmr1473765a12.26.1757140366516; Fri, 05 Sep 2025
- 23:32:46 -0700 (PDT)
+	b=fTTR6PkrBcATJyr1Cw+4xiiKHDu57j56btM2op11EpTIfOdfvzvegBkOtFCvlhlx6hy/tl
+	2ZRwaBnLWpxBqBPS1Qo1Msjp2zs5axk3Xvm3LQ2jEQlujgtRaWXtuZNldIW8/v94YWHMMW
+	qelca93SJVOwfYWwV3yh9vVNPj7ticA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MGbr7vuP;
+	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Forwarded-Encrypted: i=1; AJvYcCXMPNKismehuD4MvPJs/rGd6MsfCKuKXnhINbPDIjW0Fl3fxw/ZbFVYuzQ63WzM5gXtQgTrvukS4g==@kvack.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757140568;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hZI+7xxBYSUjf2DkYRpNjguP0eowa/Qcb8yf8x4bp6o=;
+	b=MGbr7vuPvLbBEG7xfZrVys+nQblKZ+RbeJznQLP7LibZmJ+2DF4t9UA35xoA1dcla/NaB/
+	aEU2y3HNYDPUv2aRQO5GlMmRpoKCUen8pl8VFSSjsxmL+TW6dmd9sW6oJSY0f6SYg1HFJ+
+	mv6ESF5qQ95Q1Cgtr9PAYocX4kCzPgk=
+X-Gm-Message-State: AOJu0Yy8zXZQD5iTg8412c6Ieo2viiea+JgS7lz7IzGdnT3fVfo9tOLF
+	6EucxAguhhlrBdAu0t8ovsaOlsd/hRDcWqVbKZzARNtha92fUVZQThuEGw3IV3Yb3XjJ7XvLfXy
+	VeZ0sP1N4XSlQa3OAWAcG9pdhE9PAboU=
+X-Google-Smtp-Source: AGHT+IGNxstH+GnVHJBOvOkXVFQ94aleFh61ynH/0fgSb7qxhJXuopaMmAthk78PTShzywiIxlJt1lhTtSRXJ8mx3gI=
+X-Received: by 2002:a05:6214:2302:b0:712:9051:c001 with SMTP id
+ 6a1803df08f44-73922f67c33mr15297266d6.12.1757140556079; Fri, 05 Sep 2025
+ 23:35:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-6-ryncsn@gmail.com>
- <CAF8kJuM1Qjq2QjX-=XiUZ3EATPcX8wY0_COdce+Zf8nb=1v8Aw@mail.gmail.com>
-In-Reply-To: <CAF8kJuM1Qjq2QjX-=XiUZ3EATPcX8wY0_COdce+Zf8nb=1v8Aw@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sat, 6 Sep 2025 14:32:10 +0800
-X-Gm-Features: Ac12FXxno4Q-NpwwKgRz1yo_NwUomWZKwH5I0eRlSUqSUkTlzqqlpVCECnitMLs
-Message-ID: <CAMgjq7CD73QJFSna4gNuDBGiFnVVjiOJv0O1Yh=8q94SXaAMHg@mail.gmail.com>
-Subject: Re: [PATCH v2 05/15] mm, swap: always lock and check the swap cache
- folio before use
-To: Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Barry Song <baohua@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
+References: <20250905141137.3529867-1-david@redhat.com> <7B0B1E09-5083-449F-851D-FD63D32D2B3D@nvidia.com>
+ <2f4141b3-bd66-415d-b2ff-00544b03b908@redhat.com>
+In-Reply-To: <2f4141b3-bd66-415d-b2ff-00544b03b908@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+Date: Sat, 6 Sep 2025 14:35:18 +0800
+X-Gmail-Original-Message-ID: <CABzRoyb7_WfO6GmTnoUdDtejvchvW=xtsTbrdYtuhXD_9=cBfw@mail.gmail.com>
+X-Gm-Features: Ac12FXwZXUX6523e25WuhUjfg2Wk6VLSjA3TWPpSs5qJfKafZ8u7MZFwTj20LIg
+Message-ID: <CABzRoyb7_WfO6GmTnoUdDtejvchvW=xtsTbrdYtuhXD_9=cBfw@mail.gmail.com>
+Subject: Re: [PATCH v1] mm/huge_memory: fix shrinking of all-zero THPs with
+ max_ptes_none default
+To: David Hildenbrand <david@redhat.com>
+Cc: Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Usama Arif <usamaarif642@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0749FA000A
-X-Stat-Signature: r6brrugfnafywdt5yee7eygx37uhxd9h
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9C78F180003
+X-Stat-Signature: qwem7d58fcseezmxgqwuqoznhane4sws
 X-Rspam-User: 
-X-HE-Tag: 1757140367-605443
-X-HE-Meta: U2FsdGVkX1/ckO8pKQ/IvEVhovmQg0YvM2qfRe38gTCXP3xpl+Ywk3CyvN5Iy5c3t593Tk4vCmkyNv0LczwZBP5u694y0IYyFHu2uqm9K9xKByC9DcxJZNdyZNkbVFQ/EYVMoyD1pOOg8aTPSZBc3X1VIimTjw7y9LX8P1Z+ddjvd3+TXmX7hAgsWQpLaAR/4kkty9hyu+OQG1HUTrc0mk1vjUNQiNjJMz/iDjzI13yuMlABPOmicSUDOB7tws1ap379pSs2Y6/sc5DrTkf7NQtiLD52ZMENTUEjkrQMMQhbtbhwrk9oMV3GXU0dEpnxxAvoI/seV1YxupZqvzvtX2KIPfjJgQhDdHTBmo+V5kLn1JSEo4gb0dqj4vlQ9Jpqm/naOf+uRAK/ifMg79ROY06Ppkv3Z4Zy3qCxSJsWWiPDSBHEAUz82s8+4HXbRKkDmcCDg4Q/TNu1N3Xfex6s8P0Cpsiit6ArhENp6yTa31uxE5lNwtqvzfD3UG677HID9BwluVnTt+8EhhLA48fXYp/gXfrp0XMpkGFuAORub70oqv1PybGqfNqp00ktooDayU1Sb+oxsDSYVu0Y0x4Hsjd46d+82sacjNRNKFGDRTSnKhseZgoyWfLdXQRJyiy18CRlv3LG9z63GCLJz1F2Q+Q1cZC6zZ5wBX1Gesw6WDNEziPPdHMHRe1vt+Z0UK0V+3/Kjk4SslP4w2BMpYsLb44VkdvtOh2HNqyE5r5Iz2sCC12JUkRXKXaWncteqGBnDHIzIBUjYVJkHTKbs4KKL7P8S5/sf1C62taMtTgXbSdSVb3IFkYXZJbhsKjUe1Y9OBrdY0ZpCXRsbZeJyRVawdWkFGDZ3/JPcxx94Obc1QS/pQG3qgifXbTQQ1UNLNvaS9aG9MwHzQ0iq8c9BLR8P8RCzcL3ynBgGr3jZwVfBDcO1kl1MB6yggqFqCLdEMUG96u+1N+MzZrXFq0i2nB
- EI7yLhrt
- bVt3hrS+gYUs06FNDAL6mmNaDYJawjdtEETkYGbGDmtFbJjxEzg5ts+vUJkUFSLDaI6eJoE6sXUKVSCOkLZxY+B6HtW6S7dSw8r+6vRYC1A37pnjjzL3eQRretiRYO7Q+qWiXnYVIK7lJEzdHSeQQ+hM06MKCt0g0PC2f+ZP5i7uBKrWBiqpgwxdo/6xQGQcEp9bE+9OiSC5DwWuoeqsDA9IR1DntZNGxwAQK4q4fuYlzOdnuq+mC1ckwvd7cM6unElmw7MDaWmKvkkEtjm9bDYniBTHcMqzxSoen/v3IUO6yBFAO/A6Tcrt5/Np+Yv8O3i+bph311yW2NPpErD/iQ+/aSbyHsjNxzZVpO6RHkKJPuH8f+NfZmlmQvWNyMOy92c1zK+Ih4Qboou9Y7noKPbnsWLLNZNDQoTzPNwj31eIadZs=
+X-HE-Tag: 1757140570-66868
+X-HE-Meta: U2FsdGVkX18H4ey+nDpjRl3ctfObQ4Ube3oabIMwufFJ3uOnSGhqa4dPdQFjkpdECyFTmqNHd+glA8q9c8RZWXp0RtsBNJb7cPvaVqWyFxCvKfZzaGaGqxRT1L2KKalduf1WQfbXVW1WkWt3m53XzCRR14svHM0VPvM+Fcppk3vvdW6QMDDD/VYmdADi3fAvcLEhz9pCzFZvew4WxIT2I7jS7x277jfuarcTacxCRAKKU+mpijwlrxUi0Byoo4Aqq+nkNw1kw4Sg/WLvh+SOjiojsDO7cOUHiFKKp5M+mQ1AIvlQ/t+ViHYC8J4RRbiQF81UyM23R4wPtpBt+cMNtXALLVFiv0Io9ECcDGyPEs6az/kMpWDHaoZqgMRIttP8T7XP/tzfaPwcAApxqFRuzhpDBuzTUcgCqzDAmAYG9vRzKydbHZKoavEKGvICUXs4ZUPc06P6nb/tSKnWw5QKHsJKMK3cD5D+ytqZc/Az3rSXpE2dJSLusUlRhiuApVa/67EzsjccJ/2ZDpXBto+ZcJg6JXSZgNMkwu3nZvkbqkzHyKweTO9K7hxDXVbqW+taOLLaUZG60iSyau3ARTrb2lMnQen4mTwx8RKncAkaebEzOGNS8zkDbsZG3vzT0QoMSXvCFSNhNkAN0k1w2Ad+SPOzHrbV3BxagpIsYO2zRzGo5RKrA9CMsxxnO1FW+Mk+/9Y3Q+paX76ymc3AH/20NlVoFuQ/OyurnzidsSWgmZLivx7dTvXWtWTCrBvkN8a5NGjr6ofG6uq7hQYzr4q/xaRDZMuQcjO1JFd8fwCpkHZniS1luYJfq03J72jEpq4Bp8DZKex3HSBD8iCLVREk2Cuo9eUhbbnnPbGH4AdVJ4jznwuF2dHrFpsPqZ/MbB/yZ+oX/D80XFYF7FWWW8589csR1NFp/jt0w5DC/v1PU5/n1cEDfyDaZIKB55YMS4VDxcEuUqPfB/IKu062Z4I
+ TgxAXCTk
+ 8LLB3rJoQ5tnXpTi56mvdX0xjS9RssnOmIYiZTcG3eLCAa1Rj2XlsDtMoEwvJuu27N2aPIJgR1TfcsRb+9161xGQx/VjpnIi4CBuW9kgUMqOkK9G1M3g6eZOiab5bSi6EEqU6c7UgVBwoQ+laeI2F/mQvVeLLt0hILOBmHcahre5x8zfj7hjObTWSS3tXIrrTaUF/vTZKahRKcl4sMRM0FnruabTqAehycNfUFPIf8Yw7U+FgyE20c3K2iRp5hDA+ysHkPvYWPIWK4blwTYfwfSBi6+nRCk1DVIqCG2M1Az7ruFhO07af++4nJBVS2p2c1DkrE88IhE+t8Y2n4qtgYj6oCKI2J32RTJwvClBUW5sh+zfwPRzfWFoC63y8os5vQXBQc6HeF0VHadEYCU8yW7U6cDPCaLBDn+qi5L4CDfZnjf1iD7L8ScAY8bJzYHb50vtlthsFNS65TAjeB1vy8/YFJaFULtrxMtZZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,106 +104,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 6, 2025 at 11:51=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
+On Fri, Sep 5, 2025 at 11:17=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
 >
-> Looks correct to me.
+> On 05.09.25 16:37, Zi Yan wrote:
+> > On 5 Sep 2025, at 10:11, David Hildenbrand wrote:
+> >
+> >> We added an early exit in thp_underused(), probably to avoid scanning
+> >> pages when there is no chance for success.
+> >>
+> >> However, assume we have max_ptes_none =3D 511 (default).
+> >>
+> >> Nothing should stop us from freeing all pages part of a THP that
+> >> is completely zero (512) and khugepaged will for sure not try to
+> >> instantiate a THP in that case (512 shared zeropages).
+> >>
+> >> This can just trivially happen if someone writes a single 0 byte into =
+a
+> >> PMD area, or of course, when data ends up being zero later.
+> >>
+> >> So let's remove that early exit.
+> >>
+> >> Do we want to CC stable? Hm, not sure. Probably not urgent.
+> >>
+> >> Note that, as default, the THP shrinker is active
+> >> (/sys/kernel/mm/transparent_hugepage/shrink_underused =3D 1), and all
+> >> THPs are added to the deferred split lists. However, with the
+> >> max_ptes_none default we would never scan them. We would not do that. =
+If
+> >> that's not desirable, we should just disable the shrinker as default,
+> >> also not adding all THPs to the deferred split lists.
+> >>
+> >> Easy to reproduce:
+> >>
+> >> 1) Allocate some THPs filled with 0s
+> >>
+> >> <prog.c>
+> >>   #include <string.h>
+> >>   #include <stdio.h>
+> >>   #include <stdlib.h>
+> >>   #include <unistd.h>
+> >>   #include <sys/mman.h>
+> >>
+> >>   const size_t size =3D 1024*1024*1024;
+> >>
+> >>   int main(void)
+> >>   {
+> >>           size_t offs;
+> >>           char *area;
+> >>
+> >>           area =3D mmap(0, size, PROT_READ | PROT_WRITE,
+> >>                       MAP_ANON | MAP_PRIVATE, -1, 0);
+> >>           if (area =3D=3D MAP_FAILED) {
+> >>                   printf("mmap failed\n");
+> >>                   exit(-1);
+> >>           }
+> >>           madvise(area, size, MADV_HUGEPAGE);
+> >>
+> >>           for (offs =3D 0; offs < size; offs +=3D getpagesize())
+> >>                   area[offs] =3D 0;
+> >>           pause();
+> >>   }
+> >> <\prog.c>
+> >>
+> >> 2) Trigger the shrinker
+> >>
+> >> E.g., memory pressure through memhog
+> >>
+> >> 3) Observe that THPs are not getting reclaimed
+> >>
+> >> $ cat /proc/`pgrep prog`/smaps_rollup
+> >>
+> >> Would list ~1GiB of AnonHugePages. With this fix, they would get
+> >> reclaimed as expected.
+> >>
+> >> Fixes: dafff3f4c850 ("mm: split underused THPs")
+> >> Cc: Andrew Morton <akpm@linux-foundation.org>
+> >> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> >> Cc: Zi Yan <ziy@nvidia.com>
+> >> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> >> Cc: Nico Pache <npache@redhat.com>
+> >> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> >> Cc: Dev Jain <dev.jain@arm.com>
+> >> Cc: Barry Song <baohua@kernel.org>
+> >> Cc: Usama Arif <usamaarif642@gmail.com>
+> >> Signed-off-by: David Hildenbrand <david@redhat.com>
+> >> ---
+> >>   mm/huge_memory.c | 3 ---
+> >>   1 file changed, 3 deletions(-)
+> >>
+> > LGTM. Acked-by: Zi Yan <ziy@nvidia.com>
+> >
+> > I also notice that thp_underused() checks num_zero_pages directly
+> > against khugepaged_max_ptes_none. This means mTHPs will never be regard=
+ed
+> > as underused. A similar issue you are discussing in Nico=E2=80=99s khug=
+epaged
+> > mTHP support. Maybe checks against these khugepaged_max* variables
+> > should be calculated based on nr_pages of a large folio, like
+> > making these variables a ratio in other discussion.
 >
-> Acked-by: Chris Li <chrisl@kernel.org>
+> Yeah, factoring that out and cleaning it up is my next step.
+>
+> But note that mTHPs are not a candidate for the shrinker right now. (see
+> my explanation in reply to Nicos patch)
 
-Thanks.
+Right. IIUC, the logic in deferred_split_scan() is gated by
+!folio_test_partially_mapped(folio). This creates two paths:
 
->
-> With some nitpick follows,
->
-> On Fri, Sep 5, 2025 at 12:14=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
-ote:
-> >
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Swap cache lookup only increases the reference count of the returned
-> > folio. That's not enough to ensure a folio is stable in the swap
-> > cache, so the folio could be removed from the swap cache at any
-> > time. The caller should always lock and check the folio before using it=
-.
-> >
-> > We have just documented this in kerneldoc, now introduce a helper for s=
-wap
-> > cache folio verification with proper sanity checks.
-> >
-> > Also, sanitize a few current users to use this convention and the new
-> > helper for easier debugging. They were not having observable problems
-> > yet, only trivial issues like wasted CPU cycles on swapoff or
-> > reclaiming. They would fail in some other way, but it is still better t=
-o
-> > always follow this convention to make things robust and make later
-> > commits easier to do.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >  mm/memory.c     |  3 +--
-> >  mm/swap.h       | 24 ++++++++++++++++++++++++
-> >  mm/swap_state.c |  7 +++++--
-> >  mm/swapfile.c   | 10 +++++++---
-> >  4 files changed, 37 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 94a5928e8ace..5808c4ef21b3 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4748,8 +4748,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >                  * swapcache, we need to check that the page's swap has=
- not
-> >                  * changed.
-> >                  */
-> > -               if (unlikely(!folio_test_swapcache(folio) ||
-> > -                            page_swap_entry(page).val !=3D entry.val))
-> > +               if (unlikely(!folio_matches_swap_entry(folio, entry)))
-> >                         goto out_page;
-> >
-> >                 if (unlikely(PageHWPoison(page))) {
-> > diff --git a/mm/swap.h b/mm/swap.h
-> > index efb6d7ff9f30..a69e18b12b45 100644
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> > @@ -52,6 +52,25 @@ static inline pgoff_t swap_cache_index(swp_entry_t e=
-ntry)
-> >         return swp_offset(entry) & SWAP_ADDRESS_SPACE_MASK;
-> >  }
-> >
-> > +/**
-> > + * folio_matches_swap_entry - Check if a folio matches a given swap en=
-try.
-> > + * @folio: The folio.
-> > + * @entry: The swap entry to check against.
-> > + *
-> > + * Context: The caller should have the folio locked to ensure it's sta=
-ble
-> > + * and nothing will move it in or out of the swap cache.
-> > + * Return: true or false.
-> > + */
-> > +static inline bool folio_matches_swap_entry(const struct folio *folio,
-> > +                                           swp_entry_t entry)
-> > +{
-> > +       VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> > +       if (!folio_test_swapcache(folio))
-> > +               return false;
-> > +       VM_WARN_ON_ONCE_FOLIO(!IS_ALIGNED(folio->swap.val, folio_nr_pag=
-es(folio)), folio);
->
-> You should cache the folio->swap.val into a local register value.
-> Because WARN_ON_ONCE I think the compiler has no choice but to load it
-> twice? Haven't verified it myself.
->
-> There is no downside in compiler point of view using more local
-> variables, the compiler generates an internal version of the local
-> variable equivalent anyway.
->
-> > +       return folio->swap.val =3D=3D round_down(entry.val, folio_nr_pa=
-ges(folio));
->
-> Same for folio_nr_pages(folio), you should cache it. The function will
-> look less busy.
+1) Splits for mTHPs that are partially mapped. These set the flag and
+corectly bypass thp_underused().
 
-That's a very good idea, that should also reduce line length so it is
-easier to read.
+2) Optional shrinker splits for new or collapsed THPs. These don't set the
+flag and must go through thp_underused().
+
+So, thp_underused() is only for whole, PMD-sized THPs right now. Please
+correct me if my understanding is wrong here ;)
+
+Cheers,
+Lance
 
