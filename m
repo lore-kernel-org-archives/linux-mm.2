@@ -4,93 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B12E3CA1013
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 03:05:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AB04CA1013
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 03:21:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC5946B0006; Fri,  5 Sep 2025 23:05:34 -0400 (EDT)
+	id 6A4338E0002; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9DA16B0007; Fri,  5 Sep 2025 23:05:34 -0400 (EDT)
+	id 67D6F6B0010; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2B26B0008; Fri,  5 Sep 2025 23:05:34 -0400 (EDT)
+	id 590C18E0002; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 869BF6B0006
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:05:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2A52B1A040E
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:05:34 +0000 (UTC)
-X-FDA: 83857334988.14.3EF6233
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6EFCD1C0006
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:05:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of 3-6S7aAkbAIAw23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3-6S7aAkbAIAw23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757127932; a=rsa-sha256;
-	cv=none;
-	b=TazHDcByA1+dfGYhTs9ecKp981kbN4/JfgnxOE+Qis+6bTnG1KajCeHkbHCsXJJDELq6dc
-	DC/KEdZ7ib1bbrfdmDuudawo67GGBZEPx4GBg7Qw0rtuVNkvmILVirYeepk5gs2WUwcEY0
-	wkgD4cM0sku9dUsjp/xAl3G3WHHTys4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of 3-6S7aAkbAIAw23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.208 as permitted sender) smtp.mailfrom=3-6S7aAkbAIAw23oeppivettmh.ksskpiywivgsrxirx.gsq@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 488D46B000C
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C1E7D13AEA5
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:21:34 +0000 (UTC)
+X-FDA: 83857375308.25.7E88973
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B860918000B
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:21:32 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nPOx88R7;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=33770fdbf=ajgja@amazon.com" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=33770fdbf=ajgja@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757127932;
+	s=arc-20220608; t=1757128892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=dhbeaXnx83Fb2lfzAWcOqLQld5cNabOaz6o4t5ofhkY=;
-	b=JemjuhCA4nrOPVahRZknIeCFAsxOR90WQ/Tt4YYtLZVpc1qvu5GxiIwfduBjO4FjnKPQzL
-	92+w+Yfi/SbJqVsXj7DBCYufsTc3+4+P0LZctdAvCSFQ6p7vcYnqZvHwR+pIm5sE7Zpy+w
-	veL3EEWXgz1ozjaSuYiFaQBesArKy2o=
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3f761116867so51100735ab.3
-        for <linux-mm@kvack.org>; Fri, 05 Sep 2025 20:05:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757127931; x=1757732731;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dhbeaXnx83Fb2lfzAWcOqLQld5cNabOaz6o4t5ofhkY=;
-        b=a2K5VaAnPFaDHQaeMVWGvulgdVz7xi3VRtsngHCJL6snctOvAdI/G7Spnau7/Db7/u
-         Tl542+imVA07iR7ZONBITRcW4qftRlUMqxbzSfZYUExuchstUch8xbGwLSlUHMHbuRwI
-         iqKFfkaPUm3Zb+qd7dTUxVblMHm1rjZbdWK9rAlNyvByex5F9BTiFNJvvFzOxUFvoc5X
-         mVmg48ilEnK5A0OBoH2IFUjyhLKgCaNypvYuguBOjtnRtoOrkulEvJhxg7OJfqhXpMwP
-         uPVbLRnXYCp8FMSoV2Aia/+TVbWxM0FJ0RIrEu6vkJKKLD576qz5xPbz6uvMI33YSfXF
-         azuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKiKvP0KEXCXy0R93bxdYtyO3sz3KhOTAeGDjD0Yv/IMZ9sPQKHPNGZelzDqCtht4I5k0568Ylag==@kvack.org
-X-Gm-Message-State: AOJu0Yxz7Tj1GPx0XyNIASkkuZXAtBFyFLW8UUQ4Qxv0wOeaA4RnRs0Y
-	Q2AXvRkRX/voDPf6lxypU2iZz8Qtj8ITIYGHml3Cqm50UVQF5nr325DrHJGLMF4Zw/OG/Vc2VgI
-	yvgbyaeIQ33Lnl9J9AU2+4rJUWCNIM9SNWpWlGrF3wb2v6uuzlvQ9OAjbtiw=
-X-Google-Smtp-Source: AGHT+IHbLSjCSpzMa1FxgbReZpAP0Xo4NYYl3cezd64zahz4WtpKwVLFOU20wOS1n20JLubTlkCny/zOU5yqSvW5GxCYCiY1+Ej0
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ukV1P46xm4LSs6P9dPGvdjimOnGmu5wrUw+EGUHyxAE=;
+	b=oeWT212eGpfouW1qZGWPDjeEoA+pX53feIZUEOrbH3yLU5cJUJxXL4DV4RBrIaE6Rq1Y10
+	hAGbWKTznjcRx9tVYeroXL/J1H/XjTnSblcsWmIPlXIfmRWk0SIlBKapThUK875VasyMlm
+	SGxMP5zUh06G4ngYK+JMqOS0NRODy34=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nPOx88R7;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=33770fdbf=ajgja@amazon.com" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=33770fdbf=ajgja@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757128892; a=rsa-sha256;
+	cv=none;
+	b=oIeCrSXZVbDB563L/x/6G3ThTRpCaU9SM6QNCpvAw6qS92FlhDwIY0Y8g1BtMI+fjESzrM
+	A1O92MCMKaJH3Jq/1wF/MvhrnEZFeu3XfAvhJW51tVMFiB/xnD1ymtSNiRQa+UALpPQmdM
+	YaJMRvte2m46LjbUo3oFEK9tIYWRzD8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1757128892; x=1788664892;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ukV1P46xm4LSs6P9dPGvdjimOnGmu5wrUw+EGUHyxAE=;
+  b=nPOx88R7xmye1MYC0TOlNT739TuYt6I8gknMHVpGtGGQYErQsm9Wwl5V
+   3rSW1nh4QPynrILpQp1MmBf5MRX7yF/yc0p35xMG1HwRKEzVHff3GczlX
+   9E2wxWUgW1fDaOU2sDUm2obS7XJcupyy9GQxQbC4NPxknzxhYseRgL7Ae
+   uLvuZonEZGqAQf1LbJAEwZbykCswU4uBTeGv8t1RkqTcQ2ajMor/pDksp
+   CJ4cvR+JfTdxOo7E0D9ZxcoSnz15oHzFgdFYN7n5/kLR5nkr1UGUEITnM
+   0irbee8/nFtls8/MSjougIsMDbA3drCBOCeNTqhbj3mZ46IQzowG2RXaI
+   A==;
+X-CSE-ConnectionGUID: 0UUPTMG0Q8e/TgRO3JA41g==
+X-CSE-MsgGUID: zGTnETyJT0+2svpF8rOm2Q==
+X-IronPort-AV: E=Sophos;i="6.18,243,1751241600"; 
+   d="scan'208";a="2522412"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2025 03:21:31 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:28382]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.63.19:2525] with esmtp (Farcaster)
+ id ff3684f7-82cf-4557-bb86-378b3641385d; Sat, 6 Sep 2025 03:21:31 +0000 (UTC)
+X-Farcaster-Flow-ID: ff3684f7-82cf-4557-bb86-378b3641385d
+Received: from EX19D032UWA001.ant.amazon.com (10.13.139.62) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Sat, 6 Sep 2025 03:21:31 +0000
+Received: from dev-dsk-ajgja-2a-6a9b5603.us-west-2.amazon.com (172.22.68.79)
+ by EX19D032UWA001.ant.amazon.com (10.13.139.62) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Sat, 6 Sep 2025 03:21:30 +0000
+From: Andrew Guerrero <ajgja@amazon.com>
+To: <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <hannes@cmpxchg.org>, <mhocko@kernel.org>, <vdavydov.dev@gmail.com>,
+	<akpm@linux-foundation.org>, <shakeelb@google.com>, <guro@fb.com>,
+	<gunnarku@amazon.com>, <stable@vger.kernel.org>
+Subject: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
+Date: Sat, 6 Sep 2025 03:21:08 +0000
+Message-ID: <20250906032108.30539-1-ajgja@amazon.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a61:b0:3f0:1ad0:2c17 with SMTP id
- e9e14a558f8ab-3fd8981ee41mr16611315ab.23.1757127931615; Fri, 05 Sep 2025
- 20:05:31 -0700 (PDT)
-Date: Fri, 05 Sep 2025 20:05:31 -0700
-In-Reply-To: <68a68107.050a0220.1f0557.0000.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68bba4fb.050a0220.192772.01a4.GAE@google.com>
-Subject: Re: [syzbot] [kernfs?] [mm?] INFO: rcu detected stall in hub_event (2)
-From: syzbot <syzbot+039eab266c6321a174bd@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, pasha.tatashin@soleen.com, 
-	syzkaller-bugs@googlegroups.com, tj@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6EFCD1C0006
-X-Stat-Signature: ekiwbhbjxgn7ee59au56ah61ud4r8imi
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.22.68.79]
+X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
+ EX19D032UWA001.ant.amazon.com (10.13.139.62)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B860918000B
+X-Stat-Signature: wejhrkz5aqupqn99g148gfqec3maajzd
 X-Rspam-User: 
-X-HE-Tag: 1757127932-673078
-X-HE-Meta: U2FsdGVkX1/T/blAiGtOLlZcRZiZsw+0i1ttoTAROwFMP9DxYigtGhuP8ZV3r7YaYvg52TZTd7rV44iKTsQJVaDXGG/HUBcE1RKAndIH/ilcDmH0NYwXt2v5N/RsgboPJPYScbAUmjv+V9+6+nUE+YrWPNudYLZMocUOuYvO08mw4lC8kkBUWLZckZcbDVEjZU+8tj2K+Feaeje3pR1hBy9ZJN6eyPI+BeWT7mztde6WnlJqC/J4FFErQjWyKDqZ7814C8B1r3IoS7wsmwTiKf6DMNByIQ+Na4OWRHCM/FnsIFHtE1Z4hKHTBRkObvZ3xY3c+Gtp99xAjxNwqIu7q7Nm7VZlwVgbYUegUoNAsfuoP0cyr9K2ajsIpMA9CUmxVhrxPuKtL46VY+PlQ9MTGA3X5YQPCUcoFA+1WY1nckvaxtSgl+dWKHJBKiX4B73duIWdFyMytWvJKAvz7qz9xmbATIPrDm+p0zKWRcxHkgM2QykrpDLBFi1xxRltL0YVwKNno0ptsKMMV+0WUNHf3KtkdYKWaCjz4DGCqlD33vZPs8wOkqNNIUj0eQs8HCjToadAf/0BDrUCd5TBARBS6TDZI7vj5FvAaSJ1Y7+dxGQYDHfht+fjapO/gqdpRV6OK/s07v1pHSOkRukIJiMan4FF7+C9q6IH6L0AvLILST7hIPQlwRYqd+mNhab7qvHOsYdwmEb/LPM+KpHDj4MKDe2CnHUdn5za0WhtU5StEhCkQffF2Z0B5+3pDh8d3wjkZ30NaM+fpSuEBwgD/D0y9haehk1oH1PMCeldVEG3A68e2WLiMknm21Vto/HLV34M6EGHmcA43MrqC8feduN1NOP5TXMok0ZYOkevrVEcawA9cadj6xFNoc7jDkZizUk8A/CYvSKTDd3+KeUNkWhibC2ZD5fdnh2tMLCZE+R29pGogTSd+0yZUWW6ki/ueGGC8Ej2fD6S8JIMeS4lh6b
- HL7njHRB
- j8iyVvI+370W5g3O8660AOuYLcG5/SpguYwksFnUGqOQ6+0zPDY9kTkUnGcayi5NuMt0x7HhueXpqMuDj8oMZgxj2nWqvi8cFC5InmttxpdN+VGzwY5HqTO9A9cogax3OyMfV7fkr+hnQjAAQ34OovPIodNwbjMb5eC6u1fPfW+p82IIQgrbWeOuXa0ciSdlSJNFXzKsh2C5QIduVCBt+bTB+QW5Z30zXrTExzlEBRFrD9Wrdak1HazGoyHl3rSQKHNUqEeUZnV5bK9telM/2MsmldBiCOQ+ZC6CmvWdFlhAcNkt1UYqWHAHcH21Qaa5NaphXmXvsdC7pD57qnfVUj1JZqGJRcX33b7m0PRCzggqtuZZofAlmtu+8x1gfONjom7LIuDkGGuI6UGynhPuShcnPBXmC+kAIhfZd2+yR8VaoxNwd1HFvdzQzKSWA4IzaHtzhPmtldaB3MdadftWcyLusMqVek1lWTP4hNlLCzvtOIuq4EqvWHhMUJ5ygqbTAFkVzaRMTZV0gYV8oOTSppd4xyKQ5ifmk6sDtEiKgi5WbNlEmDOz4VoDAgujc8zeEKsUiRaocyVba3TCm19SUIxQGmWK95Z3LCGPWGrRXHJ6fJNa8GsgIYwgt7fYxVdLqWk7RBx6qXc6RgX4GqQonKM2kwssm7sTzxJF7zGuNBYOEkLaFvnUcyTy/iJFVUQg7YF5QwZhaY95WXu3RW8jtpWCcPG03vsHEoUSrj5H60ng1HR0wf6EfC34mtnN8yk9ORAMKmcnmCuVDEdViVovNXyzYWUns7uxS8n3z2rXYHAbVRQps29vu73h3pvKsdgevyayv72BIPwIWg1gHtKC/1J3mgWL42Ui9E7cBOgffPklsnZ+LBHU7IsA2EKrhzznbCPA8iTANG2gRDpywczb5Rtdt70k+tSVqJQHyrz3FlJ7QeaaDMdH9JDIxqY6zqXJDy5MpGlFWjTfgG31hhI7G39RUNnE7
- 5G29bpx8
- YUUkp9MWeg8smaLDp7b7ejy2DhtnRSTMMGcp5A5wG2w3HgzOSzLJnqqw0M5IMK/T4QhuUUgl9Pj3OhIdJFPjnVHrkP9oinOUgob0KtGcipkUz7D8Vr6jokaVIluQbCF/mPzCzrEoknNv/2dWUv1kd2Ld1cPTXxcIF4JPd7XTLSVe2nHKdU3Z2nQGTYnvwpRVd/pcGzwrA0DHbc8vWf+Mxu4N48FeTNf2xsML3sQiq0zlj0bOpV3OIq7eyxDbleq1Atj3FL3KoYYPjskFZJuyHF5kbvCciF6A9jOnBBVpnVJwMgS/Fz3atkR0Qp8GCFIODSVt1dy8hvfnHc3en0/sa/NtOmy2IoRhswg9X4m7uvYPUEEztsSHDOzZJz5j1i6amagWemJENDS+oZWldoGqqg==
+X-HE-Tag: 1757128892-962290
+X-HE-Meta: U2FsdGVkX199kQbN1tgOS32J/0I2aM6yXV7tjfWHZLHy6zm7rVlx8nEdKfspSd62lANA3vpuaqk7BldQpkjoFJ9TLuJH54u1MmDs2W1oUNp6tqomNScNJ9mCLUx6upTtMGtalDbvZUFHhCawnvaZWEsqKBRFL5jW15lTPnwGb2c3FvLp4XEUk7UwgES6Uex5wj+E2gauOFNxAYuMnW/HnlAqW29a8yzIy7b1j6ZY9Krx14IwMzABEPdxK8kqsx70b0TrpShLTjs5YW8e4gpaHMU3VbqgETg60MQRK5s2OM3xSFKmFAZsDMcK6/paJdpsmqsLClF9Sc9Ftqgpsu9bCmK+SJAjK4JxTq5xRvWBSSKU64+t4XcXdDdksAG92J0TCilFlQDfmAMDid5pF9xIbUFax2BFmOddZ561Z0ty3QI5SPjpKoC5lYjLw9WUgQaEd8NBDf7QkOzLb9Vn20xM9XZjdVPm4vajaQD3YJCfFXdHglwc/P7dVq2V3kaOseGQg/vChmCSHM4ygYC3rF4E5q0Zv2b+syGtoNUYHmazKvUVACN0SRGS7K4b14/hFmmMik2ZL1QvbNgS3tTSGZnZXH0V+PUgSjp2XszI/bNEDJLdpnxzELj5i5IaApQycr5XM3BPnjb7UN9GMVVBWPLIHMRbbJvN1YZJhM5Wdg0MKd/QHeIarZEdGXzvNgcMelY1bQ71lR6RwE0Y2LmMs+uw7oNltGO/sDaSxBYeIbNKcV4szmOCts0jKumUiG2zN35oZ3N8L7DzuorJVbTubLBstxI4+2e7zK/W6v1AyJPUOBwzD3ly9rL19K0QY6/lmfs3UyDHaiYEDWC8jTPfvhUesnzC66Z99r4TSSLQ1s857xJNLlLSeQnJcIKqiyJjm9OQAFwC7i1q9P1LwuH46TUeMbrn5Ef8MIdI/fY+yVHMas/wyzU6YiLv3k5Abb5EqeOg7aRfpBhkLIrpmX6HaAb
+ UmxVktHz
+ 619tEbGJfafdU/aXI/1yBbFmpnDEsFxQE15M89QZJtndl9Kpq2VEiv/XT5hpg1vdDTw7q3Wxe/Ao5NS7QZMbmSZuUksePVT4bD9oOLPXWVeGI8hybvAFWHiKHB0KZarYa995OdoDyivXt9WZK/9UA7TtexGSBQn6yaLMx5GWEVCYd3fShto9aqaByAeAfSqLW6LLk7VO2OVU6YGNgvprwJ3/R91fvXSiPKGkhTxwvmrg8WBk0wyWNvBB0D+qVALkHS2KKPap9AllfTKicRVSPVDUXG8gT441XJX3+fARI/aAOPHq+Szwwr3F7wlMzS2al13Uj9yJi6JmmaJ0u+x3BPdIYhceTBwfdHzAiXik0O4tYUh6mIvxxYVdKN+AyVcoh4VY5eX9rWpDYBsHIMcDDAQapg3IVa/rlZDuqAXsCWrdSGS2hp0iCE9hVpogRsQpWYn/7BzaPOQNL26aAC9dtfmBoPuNCx4OYoOBizxtQ9K+FFHwzl6RN/rGzUnkQRgUPMvAJQ9T0fgtBkntXoTalD4qPrG+7kDUvH5abQK/sZv7hGnX+9H+tdQDsXq6cMfOrCehBBMYtmiUlNXyPANrjI/rriM5DNW9JP5Ea024NcZBuvOpigX97tCkmKett7GpMZwUY9jtWJuMrYf9rzULG0+m6ymDjoCt3caEA3DXGWCBnF0YpOtBpADqvU0Pv6gdsmwdNs86oEOUCzbZzgyCH2syiws146BxaI3JT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,347 +111,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+A filesystem writeback performance issue was discovered by repeatedly
+running CPU hotplug operations while a process in a cgroup with memory
+and io controllers enabled wrote to an ext4 file in a loop.
 
-HEAD commit:    c8ed9b5c02a5 Merge tag 'drm-fixes-2025-09-05' of https://g..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11bd5312580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d4703ac89d9e185a
-dashboard link: https://syzkaller.appspot.com/bug?extid=039eab266c6321a174bd
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16e32962580000
+When a CPU is offlined, the memcg_hotplug_cpu_dead() callback function
+flushes per-cpu vmstats counters. However, instead of applying a per-cpu
+counter once to each cgroup in the heirarchy, the per-cpu counter is
+applied repeatedly just to the nested cgroup. Under certain conditions,
+the per-cpu NR_FILE_DIRTY counter is routinely positive during hotplug
+events and the dirty file count artifically inflates. Once the dirty
+file count grows past the dirty_freerun_ceiling(), balance_dirty_pages()
+starts a backgroup writeback each time a file page is marked dirty
+within the nested cgroup.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/692cc72cb948/disk-c8ed9b5c.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9b6b3b9063a8/vmlinux-c8ed9b5c.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c1e4adfb8df2/bzImage-c8ed9b5c.xz
+This change fixes memcg_hotplug_cpu_dead() so that the per-cpu vmstats
+and vmevents counters are applied once to each cgroup in the heirarchy,
+similar to __mod_memcg_state() and __count_memcg_events().
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+039eab266c6321a174bd@syzkaller.appspotmail.com
-
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P6120/1:b..l
-rcu: 	(detected by 1, t=10502 jiffies, g=10197, q=29931 ncpus=2)
-task:kworker/0:6     state:R  running task    
- stack:24872 pid:6120  tgid:6120  ppid:2      task_flags:0x4208060 flags:0x00004000
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1190/0x5de0 kernel/sched/core.c:6961
- preempt_schedule_irq+0x51/0x90 kernel/sched/core.c:7288
- irqentry_exit+0x36/0x90 kernel/entry/common.c:197
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-RIP: 0010:kernfs_root+0x189/0x2a0 fs/kernfs/kernfs-internal.h:76
-Code: ff 48 c7 c2 c0 58 c3 8b be 4a 03 00 00 48 c7 c7 20 59 c3 8b c6 05 d9 b6 32 0e 01 e8 a1 9c 36 ff e9 c9 fe ff ff e8 67 b2 5a ff <e8> e2 ec 3e ff 31 ff 41 89 c4 89 c6 e8 96 ad 5a ff 45 85 e4 0f 85
-RSP: 0018:ffffc900039cebe0 EFLAGS: 00000293
-RAX: 0000000000000000 RBX: ffff88805d1fd0f0 RCX: ffffffff8260dac6
-RDX: ffff88807be50000 RSI: ffffffff8260dbc9 RDI: 0000000000000005
-RBP: ffff888074793960 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000001
-R13: 00000000000041ed R14: 00000000000041ed R15: 0000000000000000
- kernfs_new_node+0x11f/0x1e0 fs/kernfs/dir.c:713
- kernfs_create_dir_ns+0x4c/0x1a0 fs/kernfs/dir.c:1083
- sysfs_create_dir_ns+0x13a/0x2b0 fs/sysfs/dir.c:59
- create_dir lib/kobject.c:73 [inline]
- kobject_add_internal+0x2c4/0x9b0 lib/kobject.c:240
- kobject_add_varg lib/kobject.c:374 [inline]
- kobject_add+0x16e/0x240 lib/kobject.c:426
- device_add+0x288/0x1aa0 drivers/base/core.c:3627
- cdev_device_add+0xc2/0x1e0 fs/char_dev.c:556
- evdev_connect+0x3a4/0x4c0 drivers/input/evdev.c:1383
- input_attach_handler.isra.0+0x176/0x250 drivers/input/input.c:993
- input_register_device+0xab9/0x1180 drivers/input/input.c:2412
- usb_probe+0x10b2/0x17c0 drivers/input/misc/yealink.c:928
- usb_probe_interface+0x303/0xa40 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:581 [inline]
- really_probe+0x241/0xa90 drivers/base/dd.c:659
- __driver_probe_device+0x1de/0x440 drivers/base/dd.c:801
- driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:831
- __device_attach_driver+0x1df/0x310 drivers/base/dd.c:959
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:462
- __device_attach+0x1e4/0x4b0 drivers/base/dd.c:1031
- bus_probe_device+0x17f/0x1c0 drivers/base/bus.c:537
- device_add+0x1148/0x1aa0 drivers/base/core.c:3689
- usb_set_configuration+0x1187/0x1e20 drivers/usb/core/message.c:2210
- usb_generic_driver_probe+0xb1/0x110 drivers/usb/core/generic.c:250
- usb_probe_device+0xec/0x3e0 drivers/usb/core/driver.c:291
- call_driver_probe drivers/base/dd.c:581 [inline]
- really_probe+0x241/0xa90 drivers/base/dd.c:659
- __driver_probe_device+0x1de/0x440 drivers/base/dd.c:801
- driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:831
- __device_attach_driver+0x1df/0x310 drivers/base/dd.c:959
- bus_for_each_drv+0x159/0x1e0 drivers/base/bus.c:462
- __device_attach+0x1e4/0x4b0 drivers/base/dd.c:1031
- bus_probe_device+0x17f/0x1c0 drivers/base/bus.c:537
- device_add+0x1148/0x1aa0 drivers/base/core.c:3689
- usb_new_device+0xd07/0x1a60 drivers/usb/core/hub.c:2694
- hub_port_connect drivers/usb/core/hub.c:5566 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5706 [inline]
- port_event drivers/usb/core/hub.c:5870 [inline]
- hub_event+0x2f34/0x4fe0 drivers/usb/core/hub.c:5952
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d4/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-rcu: rcu_preempt kthread starved for 2845 jiffies! g10197 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=1
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:R
-  running task     stack:27784 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00004000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1190/0x5de0 kernel/sched/core.c:6961
- __schedule_loop kernel/sched/core.c:7043 [inline]
- schedule+0xe7/0x3a0 kernel/sched/core.c:7058
- schedule_timeout+0x123/0x290 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x1ea/0xb00 kernel/rcu/tree.c:2083
- rcu_gp_kthread+0x270/0x380 kernel/rcu/tree.c:2285
- kthread+0x3c2/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d4/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-CPU: 1 UID: 0 PID: 36 Comm: kworker/u8:2 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-Workqueue: events_unbound toggle_allocation_gate
-
-RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:210
-Code: 66 cf 55 00 48 89 df 5b e9 ed 56 5b 00 be 03 00 00 00 5b e9 82 fd 27 03 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 34 24 65 48 8b 15 d8 11 1b 12 65 8b 05 e9 11 1b
-RSP: 0018:ffffc90000ac7880 EFLAGS: 00000202
-
-RAX: 0000000000000000 RBX: ffff8880b8442000 RCX: ffffffff81af8ea1
-RDX: ffff8881436fa440 RSI: 0000000000000000 RDI: 0000000000000005
-RBP: 0000000000000003 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: dffffc0000000000
-R13: ffffed1017088401 R14: 0000000000000001 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8881247b6000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f829e1729a0 CR3: 000000000e380000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- native_pause arch/x86/include/asm/vdso/processor.h:13 [inline]
- cpu_relax arch/x86/include/asm/vdso/processor.h:18 [inline]
- csd_lock_wait kernel/smp.c:342 [inline]
- smp_call_function_many_cond+0xdfb/0x1600 kernel/smp.c:877
- on_each_cpu_cond_mask+0x40/0x90 kernel/smp.c:1044
- on_each_cpu include/linux/smp.h:71 [inline]
- smp_text_poke_sync_each_cpu arch/x86/kernel/alternative.c:2653 [inline]
- smp_text_poke_batch_finish+0x27b/0xdb0 arch/x86/kernel/alternative.c:2863
- arch_jump_label_transform_apply+0x1c/0x30 arch/x86/kernel/jump_label.c:146
- jump_label_update+0x376/0x550 kernel/jump_label.c:919
- static_key_enable_cpuslocked+0x1b7/0x270 kernel/jump_label.c:210
- static_key_enable+0x1a/0x20 kernel/jump_label.c:223
- toggle_allocation_gate mm/kfence/core.c:850 [inline]
- toggle_allocation_gate+0xfa/0x280 mm/kfence/core.c:842
- process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d4/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_ctl_callback - urb status -71
-yealink 2-1:36.0: urb_irq_callback - urb status -71
-yealink 2-1:36.0: unexpected response 0
-yealink 2-1:36.0: urb_irq_callback - usb_submit_urb failed -19
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-yealink 3-1:36.0: urb_irq_callback - urb status -71
-yealink 3-1:36.0: unexpected response 0
-yealink 3-1:36.0: urb_ctl_callback - urb status -71
-
-
+Fixes: 42a300353577 ("mm: memcontrol: fix recursive statistics correctness & scalabilty")
+Signed-off-by: Andrew Guerrero <ajgja@amazon.com>
+Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Hey all,
+
+This patch is intended for the 5.10 longterm release branch. It will not apply
+cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
+later release branches:
+a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
+
+In 5.15, the counter flushing code is completely removed. This may be another
+viable option here too, though it's a larger change.
+
+Thanks!
+---
+ mm/memcontrol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 142b4d5e08fe..8e085a4f45b7 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2394,7 +2394,7 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ 			x = this_cpu_xchg(memcg->vmstats_percpu->stat[i], 0);
+ 			if (x)
+ 				for (mi = memcg; mi; mi = parent_mem_cgroup(mi))
+-					atomic_long_add(x, &memcg->vmstats[i]);
++					atomic_long_add(x, &mi->vmstats[i]);
+ 
+ 			if (i >= NR_VM_NODE_STAT_ITEMS)
+ 				continue;
+@@ -2417,7 +2417,7 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ 			x = this_cpu_xchg(memcg->vmstats_percpu->events[i], 0);
+ 			if (x)
+ 				for (mi = memcg; mi; mi = parent_mem_cgroup(mi))
+-					atomic_long_add(x, &memcg->vmevents[i]);
++					atomic_long_add(x, &mi->vmevents[i]);
+ 		}
+ 	}
+ 
+
+base-commit: c30b4019ea89633d790f0bfcbb03234f0d006f87
+-- 
+2.47.3
+
 
