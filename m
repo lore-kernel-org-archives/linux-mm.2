@@ -4,105 +4,196 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AB04CA1013
-	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 03:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 500DBCA1016
+	for <linux-mm@archiver.kernel.org>; Sat,  6 Sep 2025 03:27:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A4338E0002; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
+	id 8D3CC8E0005; Fri,  5 Sep 2025 23:27:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67D6F6B0010; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
+	id 883AA8E0003; Fri,  5 Sep 2025 23:27:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 590C18E0002; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
+	id 74C048E0005; Fri,  5 Sep 2025 23:27:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 488D46B000C
-	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:21:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C1E7D13AEA5
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:21:34 +0000 (UTC)
-X-FDA: 83857375308.25.7E88973
-Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B860918000B
-	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:21:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nPOx88R7;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=33770fdbf=ajgja@amazon.com" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=33770fdbf=ajgja@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757128892;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 626B58E0003
+	for <linux-mm@kvack.org>; Fri,  5 Sep 2025 23:27:09 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F2DC2160146
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:27:08 +0000 (UTC)
+X-FDA: 83857389336.30.E6F74D4
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2084.outbound.protection.outlook.com [40.107.94.84])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 030E340009
+	for <linux-mm@kvack.org>; Sat,  6 Sep 2025 03:27:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=P3PjElwo;
+	spf=pass (imf17.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.94.84 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757129226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ukV1P46xm4LSs6P9dPGvdjimOnGmu5wrUw+EGUHyxAE=;
-	b=oeWT212eGpfouW1qZGWPDjeEoA+pX53feIZUEOrbH3yLU5cJUJxXL4DV4RBrIaE6Rq1Y10
-	hAGbWKTznjcRx9tVYeroXL/J1H/XjTnSblcsWmIPlXIfmRWk0SIlBKapThUK875VasyMlm
-	SGxMP5zUh06G4ngYK+JMqOS0NRODy34=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=nPOx88R7;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=33770fdbf=ajgja@amazon.com" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=33770fdbf=ajgja@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757128892; a=rsa-sha256;
-	cv=none;
-	b=oIeCrSXZVbDB563L/x/6G3ThTRpCaU9SM6QNCpvAw6qS92FlhDwIY0Y8g1BtMI+fjESzrM
-	A1O92MCMKaJH3Jq/1wF/MvhrnEZFeu3XfAvhJW51tVMFiB/xnD1ymtSNiRQa+UALpPQmdM
-	YaJMRvte2m46LjbUo3oFEK9tIYWRzD8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1757128892; x=1788664892;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ukV1P46xm4LSs6P9dPGvdjimOnGmu5wrUw+EGUHyxAE=;
-  b=nPOx88R7xmye1MYC0TOlNT739TuYt6I8gknMHVpGtGGQYErQsm9Wwl5V
-   3rSW1nh4QPynrILpQp1MmBf5MRX7yF/yc0p35xMG1HwRKEzVHff3GczlX
-   9E2wxWUgW1fDaOU2sDUm2obS7XJcupyy9GQxQbC4NPxknzxhYseRgL7Ae
-   uLvuZonEZGqAQf1LbJAEwZbykCswU4uBTeGv8t1RkqTcQ2ajMor/pDksp
-   CJ4cvR+JfTdxOo7E0D9ZxcoSnz15oHzFgdFYN7n5/kLR5nkr1UGUEITnM
-   0irbee8/nFtls8/MSjougIsMDbA3drCBOCeNTqhbj3mZ46IQzowG2RXaI
-   A==;
-X-CSE-ConnectionGUID: 0UUPTMG0Q8e/TgRO3JA41g==
-X-CSE-MsgGUID: zGTnETyJT0+2svpF8rOm2Q==
-X-IronPort-AV: E=Sophos;i="6.18,243,1751241600"; 
-   d="scan'208";a="2522412"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2025 03:21:31 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:28382]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.63.19:2525] with esmtp (Farcaster)
- id ff3684f7-82cf-4557-bb86-378b3641385d; Sat, 6 Sep 2025 03:21:31 +0000 (UTC)
-X-Farcaster-Flow-ID: ff3684f7-82cf-4557-bb86-378b3641385d
-Received: from EX19D032UWA001.ant.amazon.com (10.13.139.62) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Sat, 6 Sep 2025 03:21:31 +0000
-Received: from dev-dsk-ajgja-2a-6a9b5603.us-west-2.amazon.com (172.22.68.79)
- by EX19D032UWA001.ant.amazon.com (10.13.139.62) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Sat, 6 Sep 2025 03:21:30 +0000
-From: Andrew Guerrero <ajgja@amazon.com>
-To: <cgroups@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <hannes@cmpxchg.org>, <mhocko@kernel.org>, <vdavydov.dev@gmail.com>,
-	<akpm@linux-foundation.org>, <shakeelb@google.com>, <guro@fb.com>,
-	<gunnarku@amazon.com>, <stable@vger.kernel.org>
-Subject: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
-Date: Sat, 6 Sep 2025 03:21:08 +0000
-Message-ID: <20250906032108.30539-1-ajgja@amazon.com>
-X-Mailer: git-send-email 2.47.3
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8NZq95Dxek2ACTXZ/dVV1YBRQS+bOa+Ru8QZatFm01E=;
+	b=r4JExIFnP491MABYn5stFA4BAC7fRf/p0vbOnosWD7lzRxbZmEiu1AzCFCjj9dxZkh/3+Y
+	wgh+elmer8A+d1M9ZSMRclgQVBAE7To5Y9mMTMp8hgHKqehtPhJkPOgYGj9Op5ZOEG4qqo
+	VZompfF/2yhDG9cuRa4uEbEnq5c1wx0=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=P3PjElwo;
+	spf=pass (imf17.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.94.84 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757129226; a=rsa-sha256;
+	cv=pass;
+	b=s6SyxyZBaTr87VRWupso2MuKStvJ2RY+Hu5Gqfc6jnasjz5vPkp395RhIs3OfYtNlCLHhL
+	aBMngCcQYs3MLKqDggLYlCitFshhHdVtAVbiG+3nWfho6c5C23MSX4SF+iIrMPllIA4l5i
+	M4VXwKbnIXyhZ6ZNLm/Xg8c2hfCPIZI=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bzobIGJVLkx3uC26rXQFZN932CYYhSz5qUoBXNZHC7NB5P3RkbvmY3LGGOp36QZ5veOssU0Ykp8HiRks4tOQqBwv8N9V9ZCtcWq1fltStTUj5/qCALfuzCoVZqrEJiZuMr+PWOj6sWwtg4RecV26pTlAJMBDnie9etOJZuXKGVyj+efE0faC0+f3OV4o0w0G4XJqy+q6peRFId+2i/4cGFaeF2C8ljux6jETPl+4V9q6oUEXk1BvcF13SI92NEghgFuS9npl8StxMEy6OGybyIufDEZOXW1EnpQICxP27itKKloU9TxBlZHtj4VTPSpSS7VSCVhxvSbhkwP3FklsQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8NZq95Dxek2ACTXZ/dVV1YBRQS+bOa+Ru8QZatFm01E=;
+ b=g8Om3fF34cvVgOhK0TVMhDyYhqVLIeJ6yaXzKuVOtJxVdpuJxpt+0jotS/fXEx5uZA/0Dnur4vOitfHPbvxHDdBCgotyvBe59wwTUfKiyEXtpk2KyjPW29+J/CDCKacae7OFKi63+KtS5N4+qDNddN4ht4Wuja3fEmZEHKHgyLtJNG94PMC5Y74JneAj9Zc7Cx/PteOQ65agRRvyBZNPyRP+ihhTBtzCPUvK3ehiqk+ox4wdC+YezQiVcvuG9QaMUyk/Xx88Bqd1KrVuSKT9U1cn7FVySFA2USJpSLALzYrVYYYeOxNLpMEBEzWL9cFCrgelRzPD5E3F1vq5MNiepg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8NZq95Dxek2ACTXZ/dVV1YBRQS+bOa+Ru8QZatFm01E=;
+ b=P3PjElwo9BVymJAB/k05ty+704twi3So3CL9EuLYPGi4RMmzfpetsiGEWA6DODt8RNhh8GCW04LqixsUi2tD2CtkP5E5vKQi9CtZDU3fU4Q7xfthnn3JxO/dY++4rpIBPCTgHrM/nB1YEKuzbvsWp/9aWqcu0oTtMhIK7zt8Co3dPNxES/OJceVyjT3kVDzpdsS4NjCj37a9Z2vhRsY6wlNX54uIEUEWMUBTfS1ru43O82Y+gNXJ1yl/2fMw+q2W9HbdAJVNQ24FvXq01sgqCTZzPU9iEETK1U9qGY3AWAG88v6bNF08x4bjs5RmKxitxPf3oqUwqVjus4h86EpJeA==
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
+ by CH0PR12MB8461.namprd12.prod.outlook.com (2603:10b6:610:183::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Sat, 6 Sep
+ 2025 03:27:02 +0000
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4%6]) with mapi id 15.20.9094.016; Sat, 6 Sep 2025
+ 03:27:02 +0000
+Message-ID: <1ffb22b9-98e2-4073-8399-217f4ed4d9d9@nvidia.com>
+Date: Fri, 5 Sep 2025 20:27:00 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/gup: Remove dead pgmap refcounting code
+From: John Hubbard <jhubbard@nvidia.com>
+To: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+Cc: david@redhat.com, osalvador@suse.de, jgg@ziepe.ca, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, dan.j.williams@intel.com,
+ Jason Gunthorpe <jgg@nvidia.com>
+References: <20250903225926.34702-1-apopple@nvidia.com>
+ <5f3b6bf9-1762-48b7-bc36-705055c99ce8@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <5f3b6bf9-1762-48b7-bc36-705055c99ce8@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR04CA0018.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::23) To LV2PR12MB5968.namprd12.prod.outlook.com
+ (2603:10b6:408:14f::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.22.68.79]
-X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
- EX19D032UWA001.ant.amazon.com (10.13.139.62)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B860918000B
-X-Stat-Signature: wejhrkz5aqupqn99g148gfqec3maajzd
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|CH0PR12MB8461:EE_
+X-MS-Office365-Filtering-Correlation-Id: 995e0192-b407-4a61-c59f-08ddecf53efe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?R0N0TzRpUE96Y3NtU2FMak5CRkwxc2dMWmhhUmRKNnpFTlpTVWQ3S3dKSFZE?=
+ =?utf-8?B?S2FySDMxTFFIZmNIZGRaOW1BcVIwaWMxVXNtSnF5NHRkbmI1NW1rS1E0SnNx?=
+ =?utf-8?B?WTdUdVNXWmlZZVVvQm9JNGVlVTJUVzM0cTdvMlU2NzIxUnQ2SWR2Q1ViVXVM?=
+ =?utf-8?B?MzRrMmUrWWkzb05oaCsyUVpsbDUrSjNRUUR2Y0daSTRza1VwMVBMTy9jdzIy?=
+ =?utf-8?B?SElidEVwU0sxWEtsKzhXNzRqdHpYVjRIcU5NU3VsSmFJK1poZ3dnMWZIdGpy?=
+ =?utf-8?B?VmxEWFk4OEtHTWpPd3duZFU5V0IxVTNRcmdIOEdWZ3E0S1pnOVVOM2s2dVNa?=
+ =?utf-8?B?aG1kaVAxWWVtWU5yTC8xNGdJbG9ma2M5NUxFUG1NaTU3OGpCZEdMcVpqa2ZR?=
+ =?utf-8?B?V3dZNm1OYmYxemo4RTByWStrb0Z1RlJSODZmZXcrUUFSWTRkM0pQajJWdmtE?=
+ =?utf-8?B?aWdrU003Z0lmazM3SWl4aHBsQk9OTmczQmpPK3pCeXpFcm5iZVo5c21zdmVy?=
+ =?utf-8?B?UG9jQ3J4NHlyMzI4cDJQWk1wODkvT0JyYUg5dmx6clJpU1ZWNFBwQWZwZmRk?=
+ =?utf-8?B?NXI1b09KUHZLVDVQeUxaTEV6R291VzBzUVBvNHlGMWdvU2pOZUJuWWJtRkJt?=
+ =?utf-8?B?bldHUFlrbGRKYUxhSTBYNkN5aUF4ZkdRNFZxUEpBM3BKZzNyczJYV0hkOWEr?=
+ =?utf-8?B?ekNHUWhJK3N5Tkpxd1BMaFVmVUlGdGZZbDVWazl6bVhyaVZiSStkTk1GaVBT?=
+ =?utf-8?B?cHNXTmZOWDFuR2h4N2ZjTjBUUEhNRXNrS25xa1cvYWJKdWppSkpKVEVZS3dX?=
+ =?utf-8?B?RVFJSi9QWlVDQ3hzR0JrRnFMWHJ6Q3NESHF3TDNvSmFiRkx1WEE2YmRrTEpq?=
+ =?utf-8?B?b3liT2xyckRDd1Ryb1UvVElWd0NwRDNvd1V2ZU1wQXppTFRJV1UwMVFUdjIw?=
+ =?utf-8?B?eCtiaGhlTmtzclhNdWw5U0dqVllYc2Y1QTdGbDNjNVB2RHBlY2pBWHZUbjZJ?=
+ =?utf-8?B?VTQ5ZkRwUXFJRnR4Z2c1akRaSXBQUjR4Rmg3L2h5WWprS2xkbm54WnZtNDY5?=
+ =?utf-8?B?RDVWSlpYcDVCeGQrOUdTTFR5RVYyQmF0M1lPWmp2QzlRY2h3dk0zTVM2dXE5?=
+ =?utf-8?B?RUlIbmNockJiMzZwYTRzald4QlRKSlRwMGR1VEdKMHpScEw2UllBZ0thdnZR?=
+ =?utf-8?B?TmJnayt5TVVRQkIwVVRPZlhSdlNsWjY1SllaMEc5RGpVN3F2bzkvQlY1aWFS?=
+ =?utf-8?B?ajJpdFFGbk1mKzUveTBSNDdjMlFUeEZ3blAxVU1RbEZ6dk5Bc3BhZmxCTEQ3?=
+ =?utf-8?B?Qm84Z0lqQjlCK3ltdUJHOTRnd1BFTVpjWGNVWmVzVG5YMWRKSkJFWHB0M29I?=
+ =?utf-8?B?aGRwdU05MUR6MGNiMzZPSmtKY2dJVnZMa0s1WExhdURubnYwMDJpV2tvZFV2?=
+ =?utf-8?B?WWtqcEFVbXBwcUEzOW42c0dyWjhsWTJjOGlrM2RDT3VSTmZCTlZmMTB2U1pE?=
+ =?utf-8?B?OHdGTDNJMHcvOTAyeFNySURVa0FURVZuazNUdEN6WnBVdFZNTUQzekhBVkNh?=
+ =?utf-8?B?b1NzOVhieFZnNldEZ0x2a3hWcmx3RURDcTBLUmpBQ0x0YnNuNE9qVFdIaDJL?=
+ =?utf-8?B?dDFKdmc3OXZjTXB4Z3VwSEp4NUZNRlQzcXkrZmVmcjNsRUtOUlY4WjRGUWtB?=
+ =?utf-8?B?cVBBN0h0eU5IdmU3OHlWMUFoSnEyU0E1alVmZ3hWNnNmbEtFcC9aTkhpSWZs?=
+ =?utf-8?B?R2FlaGZpbklFc2NSWTVwYjUreEhENFpIcVNkUlZlM1RrUEFNSTFPQW00Vld6?=
+ =?utf-8?B?QmNlL05VRk5CSzM3YWV0OW9vUCtCWGw5N09zQmtjemx3Y25Kd0xST0JYbitv?=
+ =?utf-8?B?TGJwdlNOZ0dENGxsZWJ0QmxUYWx5elhNUkZlRmNwS1B0dTZwdlJLT29ZZi84?=
+ =?utf-8?Q?UUAn5uzq7tE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NlU3b1plakRtTjFKOVFwVWhVdFdreEpvM0sySVhKMHU5Z2huUzZkRUJZcUxs?=
+ =?utf-8?B?WCtBblYxcVMzaWJLaFNsR05WTVRJaHpQUCtBczJpdTNrNnVBVjFIUThoWExo?=
+ =?utf-8?B?dEZPQ3p0YXh3eFJ3eDAzY2hWNkJsR0loTitNVFZnVTVKSHVNV3hMOFVwMkgx?=
+ =?utf-8?B?SEpMQVJuSk9xZTNqaXdtaVhHc0lQUXpwUTRkc2JoOW1ydWttRnJ6VXBXbzJk?=
+ =?utf-8?B?T0Vwa3N1ZHFFZnFIemNSNnZSSzFsanRINFh5RGJNUmFJYithK2x1MEdlbURD?=
+ =?utf-8?B?U3h5T0VZYVBnL3FTZmlIb0pyQXMybFBMaWkxWjBScmdjMUZiU2VEWUZBTzJo?=
+ =?utf-8?B?R2lWRGwzbHhjNHJMdkxjWjZqRUJoMTVHMmMvYnJJUzZabzZEMm8yWUFmYTMy?=
+ =?utf-8?B?Y093KzhWY1RTVk9hYU5iMHRGdE9PRXFRVFdlVFNqR3BZeGt0V21CdlIzNENO?=
+ =?utf-8?B?SG91OCsvN21aYW12d2phNnlQUDUrRHlPWjJiYVlPeEJlMnVrbUpMTTA5OUV6?=
+ =?utf-8?B?SkZtUGI5d2pmV2c1OUxSYnpxZHUraEhITWpGNGJJd2h2c2M1SzViK0RWNnIz?=
+ =?utf-8?B?NG5KSDNaOUJxS3R1WHlad0tTTklYVE1CeHQ0eVIwVmpzV1E2ZmFUcENzZDQ4?=
+ =?utf-8?B?UkkrMFdKaWxOWUJKNkRtWFRlOEdPNWg5TFJJTWhnMG1jR3p2Q0dGVGRkMUFY?=
+ =?utf-8?B?dk9DOUdKVjhEMlVTUlYyUU5jU3dWQ3c1eEpXdE9VenFDaUdRWjJzNUtRMVla?=
+ =?utf-8?B?Wjh6ZWVoNXBQa3NaYVhoZU9hTkN5WU5jRUx4eVhZeHl6b2N6Nm9qQ0VPTXV3?=
+ =?utf-8?B?WnB2RitCa0tEK2pSVS9LRzVBL3AzWTZneGkvOCt5dGdiczVNRXFha2lxdGtn?=
+ =?utf-8?B?TWluWlp6SVBWdGZPSXB3SnExblpaS2J1WmV4SFlXNVlMYjc3SklGUW9abFBD?=
+ =?utf-8?B?aVpTOUpQZHQvdHY0VjNzYTZnNDJ0dm0wUUN4c1lIYm8zVTcrbU9QZ2NKcFpr?=
+ =?utf-8?B?U0V2QXhwbWpldVJOVkFyaWhOQ0R6QkJXcmlUR0FxS0lEQVBvR1hpWlgvNEU3?=
+ =?utf-8?B?bUZscU0xNmdBYUdUOWtMTXl1cVB3c2tKOWNhR3ppd2pNdkFsWHlVanlxd2Nx?=
+ =?utf-8?B?TnhEejFiWUg5Y1laT3FEelh4TGVoOWltVFNuRHh4WVAzaHRRcWhGWlBpS2tN?=
+ =?utf-8?B?b1B4K09ZaGNXVDc2Z3pHaHhrTlY0UVY3N3QvSTFoU1hrQ3NxMFBwcm95VU9X?=
+ =?utf-8?B?NEVQSmtkTlJWcjliYWNPby9FbFJrbjNPRFZVUmliOHVFcmlFTm9KUmhISUtY?=
+ =?utf-8?B?OTNZYUVUTkp5akdyODNGQktFWVkwUDhuYmw0VUJ3VC9UNWJsaWJPS2xjQ0ps?=
+ =?utf-8?B?ZmdYTXhwczM1aHVseFltbzlrNlFTQkJJV1l4MGsxOG56Smp4c2ltWnQ4MVRZ?=
+ =?utf-8?B?QVBjMmYxbUJDOTBtZExLM2tNbmlieDBBMlViM1JHRXZHMUJQUWwxTE9kaUQ0?=
+ =?utf-8?B?Y3AySnpEWUREYnpUd1MyZjhXSUJtRUdrMzJLQ3BOemxLOWJyNk9YRUlIYzRu?=
+ =?utf-8?B?bkcrUDh5YmllcnpXZGNEL25aYUp2TnR6ckVDa3A4eUF6b3cra3BiTnkraVBy?=
+ =?utf-8?B?YUN2YUVPcVFhWllGYnNQMWpBMlRicU5ZaXJlakh3WVNqK1dlRi9TaDdIcWJs?=
+ =?utf-8?B?VThlQXdoNjRFYTVaVWwxSnJ3dmJhbHpIamQyZVRZbExxVE1EZHp0bk5IQTYy?=
+ =?utf-8?B?aCtUZFdqSGMxaHBtVVB1ajc5SFZvREx2aDl1UkFHeUcrUFhJODBhdElHeGFa?=
+ =?utf-8?B?WENONFgwYitwa3d2RVYwckZrTjJ2bFFSOUYzRnBqUDZxbjA0Rjk0aVVnK2lU?=
+ =?utf-8?B?eUpHazJTbGw1THFFajREeE1vZngvejdaVmlvaWNYVjI2LzZzQXlBZVcxaXBy?=
+ =?utf-8?B?SGo2a3FTY0x5MVNlbzBjd2JWMndHdXFack9mZ1ljenhDejEvWkJkQ3dNRXFp?=
+ =?utf-8?B?WjRZcDAxd0pkbFJCMTdzUUNHdHpDV3ZOMTUxWTBYRm1SamkwMnFjSVQzeXIz?=
+ =?utf-8?B?RnlLQnFPTmhlUXo3d1hEdzlZRmdGcmhXZlh6WllUU0JoQk9uRlRuL1hCclZV?=
+ =?utf-8?Q?Hf+PQmactWbIykD3hMWRryagO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 995e0192-b407-4a61-c59f-08ddecf53efe
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2025 03:27:02.6851
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0DNcx8T4/r+jruWU6jLAe4TJ/0QfBWH5TWyijWn/qmiqOLDF0QdiSuZ5gMHG20tMmwVhPd0UgVcjPm1TIFRluA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8461
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 030E340009
+X-Stat-Signature: jhb33d1aw5xbtaxdta8fpe75uqsmb3pf
 X-Rspam-User: 
-X-HE-Tag: 1757128892-962290
-X-HE-Meta: U2FsdGVkX199kQbN1tgOS32J/0I2aM6yXV7tjfWHZLHy6zm7rVlx8nEdKfspSd62lANA3vpuaqk7BldQpkjoFJ9TLuJH54u1MmDs2W1oUNp6tqomNScNJ9mCLUx6upTtMGtalDbvZUFHhCawnvaZWEsqKBRFL5jW15lTPnwGb2c3FvLp4XEUk7UwgES6Uex5wj+E2gauOFNxAYuMnW/HnlAqW29a8yzIy7b1j6ZY9Krx14IwMzABEPdxK8kqsx70b0TrpShLTjs5YW8e4gpaHMU3VbqgETg60MQRK5s2OM3xSFKmFAZsDMcK6/paJdpsmqsLClF9Sc9Ftqgpsu9bCmK+SJAjK4JxTq5xRvWBSSKU64+t4XcXdDdksAG92J0TCilFlQDfmAMDid5pF9xIbUFax2BFmOddZ561Z0ty3QI5SPjpKoC5lYjLw9WUgQaEd8NBDf7QkOzLb9Vn20xM9XZjdVPm4vajaQD3YJCfFXdHglwc/P7dVq2V3kaOseGQg/vChmCSHM4ygYC3rF4E5q0Zv2b+syGtoNUYHmazKvUVACN0SRGS7K4b14/hFmmMik2ZL1QvbNgS3tTSGZnZXH0V+PUgSjp2XszI/bNEDJLdpnxzELj5i5IaApQycr5XM3BPnjb7UN9GMVVBWPLIHMRbbJvN1YZJhM5Wdg0MKd/QHeIarZEdGXzvNgcMelY1bQ71lR6RwE0Y2LmMs+uw7oNltGO/sDaSxBYeIbNKcV4szmOCts0jKumUiG2zN35oZ3N8L7DzuorJVbTubLBstxI4+2e7zK/W6v1AyJPUOBwzD3ly9rL19K0QY6/lmfs3UyDHaiYEDWC8jTPfvhUesnzC66Z99r4TSSLQ1s857xJNLlLSeQnJcIKqiyJjm9OQAFwC7i1q9P1LwuH46TUeMbrn5Ef8MIdI/fY+yVHMas/wyzU6YiLv3k5Abb5EqeOg7aRfpBhkLIrpmX6HaAb
- UmxVktHz
- 619tEbGJfafdU/aXI/1yBbFmpnDEsFxQE15M89QZJtndl9Kpq2VEiv/XT5hpg1vdDTw7q3Wxe/Ao5NS7QZMbmSZuUksePVT4bD9oOLPXWVeGI8hybvAFWHiKHB0KZarYa995OdoDyivXt9WZK/9UA7TtexGSBQn6yaLMx5GWEVCYd3fShto9aqaByAeAfSqLW6LLk7VO2OVU6YGNgvprwJ3/R91fvXSiPKGkhTxwvmrg8WBk0wyWNvBB0D+qVALkHS2KKPap9AllfTKicRVSPVDUXG8gT441XJX3+fARI/aAOPHq+Szwwr3F7wlMzS2al13Uj9yJi6JmmaJ0u+x3BPdIYhceTBwfdHzAiXik0O4tYUh6mIvxxYVdKN+AyVcoh4VY5eX9rWpDYBsHIMcDDAQapg3IVa/rlZDuqAXsCWrdSGS2hp0iCE9hVpogRsQpWYn/7BzaPOQNL26aAC9dtfmBoPuNCx4OYoOBizxtQ9K+FFHwzl6RN/rGzUnkQRgUPMvAJQ9T0fgtBkntXoTalD4qPrG+7kDUvH5abQK/sZv7hGnX+9H+tdQDsXq6cMfOrCehBBMYtmiUlNXyPANrjI/rriM5DNW9JP5Ea024NcZBuvOpigX97tCkmKett7GpMZwUY9jtWJuMrYf9rzULG0+m6ymDjoCt3caEA3DXGWCBnF0YpOtBpADqvU0Pv6gdsmwdNs86oEOUCzbZzgyCH2syiws146BxaI3JT
+X-HE-Tag: 1757129225-357956
+X-HE-Meta: U2FsdGVkX1+fQp7LCjvV14rEffzt3krWt/i6J6QvktTtRtGgtRPqD3ZBzEdzJGSuL+vGw/1rqzq7ZOI30OWQ02WTq+w3jiOAxkSJHwNjwc1AVUKGquTP8QdrGQ6l8rKyj4lLoQ8WvBLEa3T+kSPxocRVVTUXzbKUTWdbaLZgzYX9AsNRnz0CacPi6IbiBWWuGwopo7TkCbPakjSVsTtfC1apdp7Y4aKsufvmXDeybHjKpAmS/rlyxe3u77HngjaXx4jxORZHMYtG8zTnTJgABCJIzyl7boi4J5pPK4F4/5bb52DazcMhDWcaKlm3Iy+l1y7mKPHjglBIKs3H3lQBzlLU7+RqrvN3cHSAvAPUh/UfrRoztzucPpISDMa75O6dHpVdpf136QLhzBT6O8pgJ3h5cCVtsOqMs0DYCPkAmC3G6xMBa21UeTrMqaOFUmmFOKP2mCa8sRxnoGJFOSM8KK47foANshbWHIONHj6qeHonub74FL2/iWZsxx9cdkNs4rFdt3UuYRagZJIpoHxJyJ/XfDFCUSW7RJxRm2q0eep96B01tA3tN5CIYubl7YznC535Ak2GXgtggwq+GMTPRSweI0dNIJ8C2Gk2aaEANBvzFHWCw9thZJn6tlXf7XogIrOAcQnxTNGhLbBi/r5BU/pjQFZCg2bydSFz2ZSw8zqx5hGaL5DXrd7Zozg4A07qjDvxlV1kGCVBqDrYkecD6wrgKAg+vkCQQURvU1MooR+uCrQCefB/Mr1ZJxkXwlDBV/VX2I9jhXc5sgxo5IqA6iVpAXpTwE53wTFbnf4YNy2ZsqH0le0OcClNnSlY616rwWTQe7f4QO5uH4xAFewSf9xgv7Hduxvv9L21dXreXCF1bPeAnQvIqku8eAT+hqFgBeWnKELLahagWkzFQhdAxyP72Zi4AFfSRqGARMdONcgSsJwis0mZm4okKUv4L9D8L32fMg/1I+6aaJ0ZoZR
+ +0U9lKdf
+ b4/1B775omqZ7UO9cUeJ9xBUUy3lrhsTZ4Ip/IvI+PGGqmwrtSFDp3kdHNCUU6o/AdXlRNjYJORq0rY0g1E6wQcgIaPcNavHnfF9ELdgNgY52qGN8LJ+Dy4vmJHPhQjK7wQV9kv1BG7NQdYFw6pE166BRiX6aVKg0fm27oeiHLN1MckfH2iDTTRz/ILc1CRiaji8ubMEpiisLKs4vuRbrDKqDxwLugi/P5f1oqTgguTKwg8ZVQWukPDdNGqKwZixzEvChFVxHPZFFExcdtRoZP5IAiwFSbRtm48Or4kfsfsaHX5WgCQ5zZsbqm/gHyT/d7/R7r7yes4xgPDLM0GayVkAISmRbh/Ls7+jkQpMg/gModyxsf+V9RmEDgp4QO1BBL7r2+4unwVc1urquGFYhhZ7kxnSxTdGa5b/AGh1WC53ycW9qbZGlUAXmFOpt9sbQ2mxvP5UrQyBNuPWnLuydLjg5pUuP939HEcxznBfPwi20s+GTwszL1KOuwNaztniYGSM6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,68 +202,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A filesystem writeback performance issue was discovered by repeatedly
-running CPU hotplug operations while a process in a cgroup with memory
-and io controllers enabled wrote to an ext4 file in a loop.
+On 9/5/25 5:56 PM, John Hubbard wrote:
+...> Maybe I'll post a quick follow-up, in fact, to remove page_mask
+> as well. No need to pass that around all over the place, I think
+> it can instead be computed by the single place that actually
+> consumes it.
+> 
 
-When a CPU is offlined, the memcg_hotplug_cpu_dead() callback function
-flushes per-cpu vmstats counters. However, instead of applying a per-cpu
-counter once to each cgroup in the heirarchy, the per-cpu counter is
-applied repeatedly just to the nested cgroup. Under certain conditions,
-the per-cpu NR_FILE_DIRTY counter is routinely positive during hotplug
-events and the dirty file count artifically inflates. Once the dirty
-file count grows past the dirty_freerun_ceiling(), balance_dirty_pages()
-starts a backgroup writeback each time a file page is marked dirty
-within the nested cgroup.
+Almost, but not quite. The problem is in the -EEXIST return code
+case for follow_page_mask(). In that case, we also need folio
+size (PMD, PUD, or normal) to be returned. The page_mask argument
+does that now, and as long as we are in C, it's awkward to do
+anything else. 
 
-This change fixes memcg_hotplug_cpu_dead() so that the per-cpu vmstats
-and vmevents counters are applied once to each cgroup in the heirarchy,
-similar to __mod_memcg_state() and __count_memcg_events().
+oh well.
 
-Fixes: 42a300353577 ("mm: memcontrol: fix recursive statistics correctness & scalabilty")
-Signed-off-by: Andrew Guerrero <ajgja@amazon.com>
-Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
----
-Hey all,
-
-This patch is intended for the 5.10 longterm release branch. It will not apply
-cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
-later release branches:
-a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
-
-In 5.15, the counter flushing code is completely removed. This may be another
-viable option here too, though it's a larger change.
-
-Thanks!
----
- mm/memcontrol.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 142b4d5e08fe..8e085a4f45b7 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2394,7 +2394,7 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
- 			x = this_cpu_xchg(memcg->vmstats_percpu->stat[i], 0);
- 			if (x)
- 				for (mi = memcg; mi; mi = parent_mem_cgroup(mi))
--					atomic_long_add(x, &memcg->vmstats[i]);
-+					atomic_long_add(x, &mi->vmstats[i]);
- 
- 			if (i >= NR_VM_NODE_STAT_ITEMS)
- 				continue;
-@@ -2417,7 +2417,7 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
- 			x = this_cpu_xchg(memcg->vmstats_percpu->events[i], 0);
- 			if (x)
- 				for (mi = memcg; mi; mi = parent_mem_cgroup(mi))
--					atomic_long_add(x, &memcg->vmevents[i]);
-+					atomic_long_add(x, &mi->vmevents[i]);
- 		}
- 	}
- 
-
-base-commit: c30b4019ea89633d790f0bfcbb03234f0d006f87
+thanks,
 -- 
-2.47.3
+John Hubbard
 
 
