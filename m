@@ -4,95 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3673CA1017
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Sep 2025 17:51:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09421CA101F
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Sep 2025 23:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E992A8E0005; Sun,  7 Sep 2025 13:51:30 -0400 (EDT)
+	id C25F16B0005; Sun,  7 Sep 2025 19:53:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E70AA8E0001; Sun,  7 Sep 2025 13:51:30 -0400 (EDT)
+	id BD64A6B0006; Sun,  7 Sep 2025 19:53:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D86A68E0005; Sun,  7 Sep 2025 13:51:30 -0400 (EDT)
+	id AC4F96B0007; Sun,  7 Sep 2025 19:53:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C4C008E0001
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 13:51:30 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 79F941DF505
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 17:51:30 +0000 (UTC)
-X-FDA: 83863196340.28.8E69E8D
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B967B18000A
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 17:51:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 957CF6B0005
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 19:53:37 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 367791A087F
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:53:37 +0000 (UTC)
+X-FDA: 83864108874.03.F678AAE
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5926E120006
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:53:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mJProFy6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757289215; a=rsa-sha256;
+	cv=none;
+	b=Evbkefhu0MzD7J/HzlKXBDQh9vv9ADEewvaMjfMB0igXkFaF2E6XfTRRGEb1PSjmAzgUoy
+	vi1cQnQQR/NZJNj4AmmXVwrqzm/AIBvgRgF0JIPEpkuYBcgr680g08jmz1GP3gWR4lXPRL
+	p2nPjzRX5kDv/51jaa6s3cWYMcT7LOA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mJProFy6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757267488;
+	s=arc-20220608; t=1757289215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UqSUBcaUaGvMCXj0T8YtoBxTk5+pyRO33HmMycuMOv0=;
-	b=3my+FhVDP/5upFO4SKdWHXlIb98pFgLFQ4b5e4Bq0N2x6P5/py2R6oBAnhH5bfX+8MFZxT
-	JhqsoO7W6Zqq6OKG7FK9HAMmTWjc+Z7guuQA1rSFmB0FYw1vZsSrTiBhYOvC3BXVTIaWWS
-	m4VT7qVfZNnj8BpnoFARhQp9a7fZFKY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757267488; a=rsa-sha256;
-	cv=none;
-	b=v1+oyOVWWePhk9PWl4hJDqcyT32UM2Eg7HKSzjghdy4PFewZ+XdJhbFMBtCdoKoIG+yEh8
-	utv5GdvmjytiZXPuP9paUwtrg/TYRoC+iQzrzh6Rp0bSzynDEVs3LZYFBzl3pbuywG514O
-	j8YP8wR1CklcVM4fiEug9dXiSPbXFc0=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 8 Sep 2025 02:51:24 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Mon, 8 Sep 2025 02:51:24 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
-	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
-	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>, Wei Xu <weixugc@google.com>
-Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
- cgroup-based swap priority
-Message-ID: <aL3GHJJ6+elPD7OP@yjaykim-PowerEdge-T330>
-References: <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
- <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
- <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
- <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
- <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
- <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
- <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
- <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330>
- <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
- <CAF8kJuNW2kmxKYRE9t8WvSOad9JkLYt0WSAcFOQ9r9=2=XGc9Q@mail.gmail.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iMHej19+bbRiGvdkiB2p5yaTRh1Z3yRBnJ9zIpV6AGg=;
+	b=YZNc8TYUVYhm3Iw8yqBG30Eoa17gpqv7ru0uR9URxsAW6Z88cRxr4Qzli/W9VG/NIrH8Na
+	QvqUaDqKov65w0SgRQz4yHWVSJMGkWNqlwtZsexmMESmRGhzKW0ux/igflXeW7A+zb2uLn
+	AEhHjwW/mukSiwGJxbGH7eTj1ep65/o=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-71d60504bf8so37013617b3.2
+        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 16:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757289214; x=1757894014; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iMHej19+bbRiGvdkiB2p5yaTRh1Z3yRBnJ9zIpV6AGg=;
+        b=mJProFy6VIpaYcNX+7iKJ4/M7l85XY5zrJ5W7Ak7pjIsMpEi17tkeGK6uocwM8UYvL
+         qbbArb57Og6r5MjRyW+ZK7wQHpESI/LO/eFolb2SfzqHcIDKE9mXOVoMb9suYAV3SXm2
+         ip62PA+4dyZtCd6lZLAX9SekZMqEmE23fHZmM2UpPhGo6xDj9OzmVdiDwsdXLDBX4zF/
+         Hy4CJkUeS2JeudTkRUJzakIUIHBfkG6DfK0jRw9gJvwx/TrJfGbJyvHChWhXOlZfqrk/
+         G1SqKRLpPP4B4Bjx1a25rj6cC51JQ3NRzW78mQI/7Bv1ooKHCCiNaOoEJ4zqgUegTJ3J
+         iaJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757289214; x=1757894014;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iMHej19+bbRiGvdkiB2p5yaTRh1Z3yRBnJ9zIpV6AGg=;
+        b=GnRhGnYCOLfgVEV+uIeF/jP6ARXjNfG4tCBa0bGyct191wo4lsYshUsleq6uEYaCML
+         DHIFPcAxqJR5AAWnl/pPWBDHMjw2wCU5nQ99e3jaJNSfeUotIFJRdeATAOYPwucXrYSQ
+         dC7DEhdcTy+e0g5ZbWvTMAFeOKoFNxUsW46mENszx4BoIlMtCtePdnjS2SdrH0FQ8FFq
+         8yXOdtFU1xF4mzHMX/9C5Glln/xFfyZz0vUszvjjz6Vcm8TQ8+J/imuOpkvtjz6e81OD
+         oiJLyWJaxnRSsI/8wzTJ+3e0EZ4DEDD1Ey0soctM/xiujwV2F1dH/mCDCwUsgScjTS+Y
+         CPnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUI1dAvCB9xvyYc8hS3DGr2VOvtkrlBr69bipnknyEYfsGvxP9in4tbpKgjVYIA+cbtN4fVhLdtYQ==@kvack.org
+X-Gm-Message-State: AOJu0YyBqTABPVmp8HvUHyfJ7/bjW5OZXdsk7FI6lTi1Pz2lUl1yApvj
+	rfdBOWdMw1c9USe44Tr0a1j67CfIr4biI4TxS0bj0Nm6M9L3bBwz+Den
+X-Gm-Gg: ASbGncv0Jwk0ut64DzFdAM7J3BbnmgEmVnpA+NaB9//l/5Pf7+PtBaNs8X4Db1/fFQ1
+	zvcuH92SO0InibVdltfXKjSgg8ZJk90WY3l0l67Cd/Tj9hyrssgzlsljBpvvX8RhYA0Ii3JpCWg
+	RvXRBIC+tb+NmYpKkH/GzrU4HhqI2Cqo7e98DmTMCv7HoYyTbGprolOb2wDpHMwGoUygBZfX5kc
+	/J1MqpN2GxyMdwstRhfCCmaftPLWSWBLMKU08nfaymdKOzs7nZPRTO/jIamE84vWlOB1NbvMuJL
+	Pd1Ig1L4dmouKSPYNS5qGxy34V9hupjwFGm68v+VuFRjHtjhIU4Zlpr4zfoAg9IDmp1Sae/uPhx
+	EYpRiQXH4rqY0kttPAwUCRK3zb4WKIJCFloFdhfGibfTPam3gP6BIFLDcngvMCKZD
+X-Google-Smtp-Source: AGHT+IEpu6QZfFLJHGF2kOjvkUSt3rcdARfVMcNb3qxEOMGfRpQjg6afnJIPRstWXrZYfYYSjN0spw==
+X-Received: by 2002:a05:690c:4489:b0:71f:b944:1000 with SMTP id 00721157ae682-727f6628345mr53689367b3.51.1757289214270;
+        Sun, 07 Sep 2025 16:53:34 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:70::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a82d95easm48406367b3.4.2025.09.07.16.53.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Sep 2025 16:53:33 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Cc: akpm@linux-foundation.org,
+	david@redhat.com,
+	joshua.hahnjy@gmail.com,
+	ziy@nvidia.com,
+	ying.huang@linux.alibaba.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	apopple@nvidia.com,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/mempolicy: prevent the risk of division by 0
+Date: Sun,  7 Sep 2025 16:53:31 -0700
+Message-ID: <20250907235332.931050-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250907160829.91628-1-chelsyratnawat2001@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF8kJuNW2kmxKYRE9t8WvSOad9JkLYt0WSAcFOQ9r9=2=XGc9Q@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B967B18000A
-X-Stat-Signature: haad9weibzphx7ygtn9yxi6zo6mcpwj6
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1757267487-849842
-X-HE-Meta: U2FsdGVkX1/kgGo7dqCIgbcrefg9kmA+q43aHlvzuESbzYFzwBYShihWQRr1EMsw9x8uBvIY2no8GWZrlHyyaXj/1Y7+472DDfibz48ymMNMFOC+WEfHcKCyMsV85aFKdMcKQQMY9ODaIJPZnP166yE6a+vfZVjOY3SLmjHLuccegvf+wSkHEy0EbiTXoBw5Zy/fLWoBwXO+yKteH8Y5K9pti4kmOptS4eBnQR+wVQC3P8pvWofG5aF4aLIc8y+uiL5HX8Uc4KZTqkUAF2U8sazpr3crIMhXXA5Eb0lJGHpfQBfapFomAuhYE/BTYeylow9V/3lNtE5dBeHFw4GkXIEjwvJbiNeeRWkYG4tDU94oG/gIvBiJ9PN6Qf/IgHNi8pu53/Sd6j5XAyjIaiiN9Y60x8129y7MWzdeZ/KS/9nRD0pAYXbp3ZLEgV5af5J1onBDkOtVhsSq6vhJJuXh0odDH1Okj8t7dZoDDiRgxhUoteLyiLLpj3336IljTZQsrtZBiHHs+xxEMBrFc8ANrMcPS+/EXi6ORaLQIYiKWHSToEsCH+86FbrcUthtEscTW0vw4CxRGK+qWMT6MH2svVkwfOoybWH4hCg5x81JjykrOXrWi574V7whlbtdg0WQb4jmHXJXjJ8b/jpV0wXM4tPK8B/3ou5/V+a4BvS6NEgcCIPc91ZjMD3C9Lo5S4DMqqNj7ARtf0GpoiH4C5ywASJuavLDcobhKCWRlp/XUi/Fm9PwkJKtJ9mxKVqVmozdiz8oAuldWqgY2WHXgWrsS0c4uAHeUgEPIXcBw3KMXShMT/XIEYXkH/UAigaFEroQAHzY76wViSb1iU+UUtfeniEWfypm+YIroep/capBPNm9z1Hoya5+GzwTBq3H+JOWA3u0iT3ORcqua6cTZbPmcWweitfq5/sN60j/S/eUdDHdDg5K3iXzMYGqKunhbXa5IbX//8oGPlSJC0CS6uR
- UeIQhW7N
- Fmp2bTXgmNOSn/PVEbiq123sot1cUHKhujxqtO85vdw2TQCGoSRFpJ/L70dBsUt0FMdprzAM7Pzf3Uf+TRLPNXmikj/AmyzonumosYSw4TBBVNqFXFxYPzcou8TVEw+t7ntTJxcgnJruVohT/nFSQaj8cmSNPbh51WXgo2ANvCIDet9/PmcCBAXR2SSeTka/PIWMqcqBiNjsNQY/2wKgCvBxvHpoSfR2EZV9JhjnZMoet2wxKMcNCLqn4YOU3R8EwbMD5W8cFVtvDj5Q3TQuNrb6oW9XOFXPUyzIXFjkjhmgEcXkkSI3VHHGzjg==
+X-Rspamd-Queue-Id: 5926E120006
+X-Stat-Signature: roe93wqbt9cpzjbi4dcif7imrjnkemfz
+X-HE-Tag: 1757289215-864222
+X-HE-Meta: U2FsdGVkX1+ZiiyNZHSN4VNqxoD5wqZGyvkPVH6+m66FLAp/SKQ5ZnxnvMF9ZSAUFMUlWrMdqF9WnIu7hGmydlTVAZQKAvKhyiZ1FkC9lVgvv490AqOMSMGGT8t3kxItw62hVG3PrsZHrumt7B6uFN44H8/jswWGS2KbeRj33B2iTPIwNPDlU2ZrO7x8cM2wxlOBTzXeA65/YuYwI8XYKkPJnP2kn41luIW9Pkv6JsSklQhPBAcX8tNBII4JO9wye67TpmCHw1VypXJd/rAycf0fMOghNRqxoH3xDSv2x3ryMK0DIdWeMsNZEkYnBsoi0eJt8+40ywS/kqjShz9Q3hVZbYdFuv23qjNWjNVE1YrP8ZU87VuJ2n9yksD9I0yXhrAF6Hq+95cZUEGi7X5uy2N4uv5k5aOIgcUa99Bt4DGI41trmX71fOeGHzHlBUpBDIRG7Z85aV6eYOVj7LjfBOEgVH+NgTBwzFLQc1yRMT8p7dmz/oQwpKNGxMSp90G8RyKOzp4JDm2N44ML4VgyCtUZ4bU/MT37TbZxJGpEyMD9xGl+3lyAt29BtPIV4H8iKG9wBKvWNr/C8XKruFbPYQf3d7yJKqYbjHn6+WSDSnGalJKHNO9YViSt/AH4AWpb0Pu+VnTjh9pOjPKUuToMjx4XyKbwyrrRUHHyNrYlWV4DSpNEzFKnAu+LV9PIi6G6+6dfeRv+ePM0/OoFFgsFrz4N2bObcHyXVfar+L+K1s9CCSLK6t5hteSxiTOSgJrjyCVqTgAUhvMu4Q61r36JhDDlgE6qn3jOTLDhXQcc3HawFHM/ma9gfTI8sjsqdocz6mYMbrgJK+c+mvNi8mpQjG4otWIBjgwU0ysodUfxM/lJrOcrg05+ch1+SNrQmh2O9HJqhZEmY6M71HL/S37yG6aw3kIFz2UDWhdmlsVtJrCfpod9gcczNWOtbQ6zuZVO2Yjv9+lx+mDkJ0RCbzW
+ QRa8HIgi
+ 1HJyYwNrRKvUQCfPdIrr5YzccsB088TJcnW6jXzi/uxc5QyeEeCoCTZyPZKNKjA0M6y6xMl3CG+zaHORLbQmE1tyHJPcrgUnFS0MxXmYsOdm4Ca6nPOD/vIcc/lRR6x7kQnbKUcyNpVPa0O0HT37HWNQkNy9Iusu7OLKIDKFW+6MVg15YI5J80bZF3jQJYwlbmAu1gs8jdYuUnFnPYWlx5LmWdGZA2udNx4a0V5A/N33dYy3Us+/JcBFGPPbaX/D1B2uKlhvhZVnJfu+K0nRxzFPyKDUoB7goMuwK0yRLkbrewMfpjYYfE8d/bx6PZMiTmMbfjmWOMPvj68zNolKqYaJkzOrZySLUFe8bGWT2MxWbRZ0IbWwlK6dNhYMM4TuW0/2a/Ghb0PYKWbEIt2udkxQmOGjzQz9zXvSSL20aPqcHCqCrFT2zrlewgqcUbMuPd9l4hHS20AHw19x9sVoPEF4n1pSGRpLcajEX+XIyXu2yfroAiuiJKa8cG93jaW3xzUd9QSRTaMEognUm4iDP1mU+Hoghea6pa2E55W8PY1OlaKZO896cmLrBYOYoZRXj/q8TjVCZypDtw9+VuQxlpHi53w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,62 +125,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Fri, Sep 5, 2025 at 4:45 PM Chris Li <chrisl@kernel.org> wrote:
-> > >   - Mask computation: precompute at interface write-time vs runtime
-> > >     recomputation. (TBD; preference?)
-> >
-> > Let's start with runtime. We can have a runtime and cached with
-> > generation numbers on the toplevel. Any change will reset the top
-> > level general number then the next lookup will drop the cache value
-> > and re-evaluate.
->
-> Scratch that cache value idea. I found the run time evaluation can be
-> very simple and elegant.
-> Each memcg just needs to store the tier onoff value for the local
-> swap.tiers operation. Also a mask to indicate which of those tiers
-> present.
-> e.g. bits 0-1: default, on bit 0 and off bit 1
->        bits 2-3: zswap, on bit 2 and off bit3
->        bits 4-6: first custom tier
->        ...
->
-> The evaluation of the current tier "memcg" to the parent with the
-> default tier shortcut can be:
->
->         onoff = memcg->tiers_onoff;
->         mask = memcg->tiers_mask;
->
->         for (p = memcg->parent; p && !has_default(onoff); p = p->parent) {
->                 merge = mask | p->tiers_mask;
->                 new = merge ^ mask;
->                 onoff |= p->tiers_onoff & new;
->                 mask = merge;
->         }
->         if (onoff & DEFAULT_OFF) {
->                 // default off, look for the on tiers to turn on
->         } else {
->                 // default on, look for the off tiers to turn off
->         }
->
-> It is an all bit operation that does not need caching at all. This can
-> take advantage of the short cut of the default tier. If the default
-> tier overwrite exists, no need to search the parent further.
->
-> Chris
->
+On Sun,  7 Sep 2025 09:08:29 -0700 Chelsy Ratnawat <chelsyratnawat2001@gmail.com> wrote:
 
-Hi Chris,
+> If no bits are set in the policy's node mask, then nodes will be 0.
+> This patch adds a check if nodes == 0 before dividing.
 
-Thanks a lot for the clear code and explanation.
+Hello Chelsy,
 
-I’ll proceed with the runtime evaluation approach you suggested.  
-I was initially leaning toward precomputing at write-time since (1) 
-cgroup depth is might be deep, and (2) swap I/O paths are far more frequent than config
-writes. Is your preference for runtime for implementation simpleness?
-(Any other reasons I don't know?)
+Thank you for the patch! I will start off by saying that it probably does not
+hurt to add a check like this. With that said, I think it's best if we clarify:
 
-Thanks again
+(1) Have we seen this happen before?
+(2) Should we add a Fixes tag?
+(3) Do we expect to hit the nodes == 0 case, or is this just to be safe?
+(4) If so, should we do more than just return 0 (i.e. WARN_ON?)
 
-Best Regards
-Youngjun Park
+From what I can tell, I think it should not be possible for the policy to be
+interleave, and the nodes to be null. If we look at mpol_new, there is an
+explicit call to nodes_empty that checks if the nodes are empty, and returns
+an error if that is the case (of course, excluding MPOL_DEFAULT, which actually
+throws an error if the nodes are not empty).
+
+After all, it doesn't really make semantic sense to allow interleaving across
+0 nodes ; -)
+
+But as always, it is very possible that I am missing something that you are
+seeing : -) Please feel free to correct me if you believe that is the case.
+
+With all of this said, I do agree that it's a bit scary to do a div0, even if
+I am confident that the value shouldn't be zero. I don't have any strong
+feelings about adding redundant checks, so I will let other mempolicy reviewers
+chime in with thier opinions. One thing I do feel strongly though, is that if
+we are to move forward in the patch, some explicit clarification that we
+have/have not seen it happen before, and a WARN_ON would make sense. 
+
+Thanks again for the patch. I hope you have a great rest of your weekend!
+Joshua
+
+> Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+> ---
+>  mm/mempolicy.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index eb83cff7db8c..faacc604fc16 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -2530,6 +2530,8 @@ static unsigned long alloc_pages_bulk_interleave(gfp_t gfp,
+>  	unsigned long total_allocated = 0;
+>  
+>  	nodes = nodes_weight(pol->nodes);
+> +	if (nodes == 0)
+> +		return 0;
+>  	nr_pages_per_node = nr_pages / nodes;
+>  	delta = nr_pages - nodes * nr_pages_per_node;
+>  
+> -- 
+> 2.47.3
+
+Sent using hkml (https://github.com/sjp38/hackermail)
 
