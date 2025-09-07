@@ -4,116 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77C19CA1017
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Sep 2025 16:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE33ECA101F
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Sep 2025 17:40:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E8588E0005; Sun,  7 Sep 2025 12:08:43 -0400 (EDT)
+	id AAF436B0007; Sun,  7 Sep 2025 13:40:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BF7F8E0001; Sun,  7 Sep 2025 12:08:43 -0400 (EDT)
+	id A865F6B0008; Sun,  7 Sep 2025 13:40:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FC658E0005; Sun,  7 Sep 2025 12:08:43 -0400 (EDT)
+	id 99C3B6B000C; Sun,  7 Sep 2025 13:40:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C3128E0001
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 12:08:43 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9E951A043A
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 16:08:42 +0000 (UTC)
-X-FDA: 83862937284.14.5F1F870
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1F46B1C0006
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 16:08:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cnhuTERj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of chelsyratnawat2001@gmail.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=chelsyratnawat2001@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757261321; a=rsa-sha256;
-	cv=none;
-	b=XipI3aPcqIUg7zwmcG+dICyEbjoLt7RYAGjyClRl9k/IeM1PNrpSF+TiJBMJnDxtyjT4Pk
-	HTFhqN8CHpH7bXXNsexPP5m8hUyzHEMwnZUYCyGXMN0gJoocPfgvMSjca5HRB584T5u9O+
-	Uv7lZFTghL83DEn7ljRxR7+YLRKpl2U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cnhuTERj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of chelsyratnawat2001@gmail.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=chelsyratnawat2001@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 781E86B0007
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 13:40:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E14E9160820
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 17:40:00 +0000 (UTC)
+X-FDA: 83863167360.09.28C141D
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0AD2420008
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 17:39:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757261321;
+	s=arc-20220608; t=1757266799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=yQnuV9+K/RP9Hv9kFvq53N68LodSsoEzjZ/8chvxMGA=;
-	b=Zzl/dkgzUaU723nuMHUUs7xZ6h2g5mJy9+IierQTquaxIk6wAUdxPf6yFEOAPeLWGxeKis
-	o/reHidIps91eqx2+BqBqMhrjMuhOdBqIIJdrQoWQLwPFGG/oVzA5N3llmVJlm5gC+J0Zt
-	7TWvqpwxwOPvKOuwgLeCr2ISSfM25LU=
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7e86faa158fso411505585a.1
-        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 09:08:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757261320; x=1757866120; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQnuV9+K/RP9Hv9kFvq53N68LodSsoEzjZ/8chvxMGA=;
-        b=cnhuTERjfDKdcR9n0NBovA2Af/6BnhQYctyl3gWCXuHPv6LlTP44i4r+lKHYWjXQop
-         T1IAlSCloXg/hegyix+JPsFbrGJ6R9OI1rkmI1Kx5XP+ICYWCO2N/2bwaeC9GZOy2Zk6
-         FXZS8uZVKRdETHpHSpsxjNe+ejk48UgnippG70wBRaaadeH/SflaNG5PzluJERzvL0S3
-         GMGNZVJm4GoDswEHL3diQRgABM4uNxMdmT5jI+3V4dSg2PEi0uUzSW0/BcSJsgJLtYs8
-         atUjAKX/0GhS5JhXrwR6eNqstf9YQ01gwnReCjv7dFmvO+wuWAqyUi+zt9Q+g1b4QmfF
-         44GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757261320; x=1757866120;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yQnuV9+K/RP9Hv9kFvq53N68LodSsoEzjZ/8chvxMGA=;
-        b=pIZ3VAWskpU+EIZ5iOdbdzUdSnH8ZmMLyVBL2PgrvjzKXpeRsqnD9swEy+4Y/yXmor
-         lpeQciEPDFLRyJ6CfodNTO1tdZC0eBLX6UjASFUi9aEShAXM9SdBRqT05AQA8JQJ4q5Q
-         FpNUt4Vjuq/m9Tvo5LUpDRomf5ekAq0AZScc689fN2xUbVmdwiB3a3UywiaEtuReUpW+
-         m8QzvN+fzdBoG3hV6jpDoScM3zEmZGXaTAjqsmgmqoA+IhMIOa4vDaUtSn52n2OZbFTO
-         uAxpMR0haoO/MM8yj8UCDBxmlHqNKmV15kU9sDl50l/dhSgjqCSXSn98qZ1DfCoWS0aP
-         bEog==
-X-Forwarded-Encrypted: i=1; AJvYcCU/f8TRHI822rh+MA5LPtmAn5+alE6O4GY7feMdylSFNfaTfYLpe2Hmg+BUVq9VqBKIeVBXcx2Mhw==@kvack.org
-X-Gm-Message-State: AOJu0Ywonzt+PyvzQoQtNCosUJSFTXroT/TPJP0kAymjPCLHZckSqerG
-	ECxQr43DS5Q9BgF6y2MAA3qEY8CCW5XYjeXmW/+3PAiqZgNnMAaHBbbF
-X-Gm-Gg: ASbGnct8Ln/nZV8GKDCrv2dupN/E4r0TM6Kpb2wHzTjJnvKTu7M3DHHi0K94Wzg2puu
-	HKcw4BVUiYNYceCNVZIlFM1LrJ1gatBAMk9QlNUGEajawFWj7JXX8gBGcJBOKglaR28oM+Vx0B5
-	yQKYIcI7sCTanYXK2/ETlidasmdEmEJ3lKXHwhrtAKUx4t1HzLnJlYizbewD0yMHE3rjU1HWDSs
-	XssNgtC4Bh4mjjOjogWniLKrvfngk/S6ovTJj/wR0rIfQvGUIIyL7HOjo10OMGnpRJF3H5yYrO2
-	FF+OXRBfgMzKASJVnc76pMC0CZU4LJcEtnvw0E1JNPhf2OyHjEkM9jEl5nRJ9EWI4ssyNpoAEa6
-	25nPIBQM6H4q1gexNHwmygaiolnnts5Q7W8xwpntt7WK1b4KRL/Upf+tvCkF35w==
-X-Google-Smtp-Source: AGHT+IE8FsLQ2VymIvRsF2ZuIwOTx+4ZDlS+GI/ezuoIX8sR5zhWFIikKuPXylhlABTyXdIpL8IwYw==
-X-Received: by 2002:a05:620a:17a7:b0:815:1717:8abe with SMTP id af79cd13be357-81517178f44mr386285385a.19.1757261319849;
-        Sun, 07 Sep 2025 09:08:39 -0700 (PDT)
-Received: from cr-x-redhat96-client-2.fyre.ibm.com ([129.41.87.1])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b48f7838edsm80514721cf.39.2025.09.07.09.08.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Sep 2025 09:08:39 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	joshua.hahnjy@gmail.com,
-	ziy@nvidia.com,
-	ying.huang@linux.alibaba.com
-Cc: rakie.kim@sk.com,
-	byungchul@sk.com,
-	apopple@nvidia.com,
-	linux-mm@kvack.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH] mm/mempolicy: prevent the risk of division by 0
-Date: Sun,  7 Sep 2025 09:08:29 -0700
-Message-ID: <20250907160829.91628-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T/NPu1TbqdbV47JB02VcG81ReauvFzynMCtpZaKo+RU=;
+	b=dcATvH0Ey+9juFX7cUR9B+z7qA1NRKXi55HCeEyVHHV8n+Lvua1UYag7cZKLcyRZX0r+07
+	epvlxKja4e8ypvrE/p3hiko31aMhkIXnhT/1viA/vEw3kRtI4//Ptk8TT0t6hJTu26H+Xi
+	L4iem4hGxSzKMT277kNjtYD829oXXvE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf03.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757266799; a=rsa-sha256;
+	cv=none;
+	b=YWqNumPrPUcAMojcnsklHpHhLKDRQnDxhbhUWwlxFJj1AcjyEc1WdmPUE/wjZrTcW6I2lo
+	SfMfPXTkjc6+hAj9gv9zlmIjJnL65UfLsMDgJIVjPQ1b3YWxwRENWtzgOXk+6OpKd2Yy7Y
+	EW5efOI0Rj+8v85sloy88ZK2tdT2KAc=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 8 Sep 2025 02:39:54 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Mon, 8 Sep 2025 02:39:54 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	akpm@linux-foundation.org, hannes@cmpxchg.org, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, gunho.lee@lge.com,
+	iamjoonsoo.kim@lge.com, taejoon.song@lge.com,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Kairui Song <ryncsn@gmail.com>, Wei Xu <weixugc@google.com>
+Subject: Re: [PATCH 1/4] mm/swap, memcg: Introduce infrastructure for
+ cgroup-based swap priority
+Message-ID: <aL3Dav4RLvtLliYC@yjaykim-PowerEdge-T330>
+References: <aK2vIdU0szcu7smP@yjaykim-PowerEdge-T330>
+ <CACePvbUJSk23sH01msPcNiiiYw7JqWq_7xP1C7iBUN81nxJ36Q@mail.gmail.com>
+ <aLJ4fEWo7V9Xsz15@yjaykim-PowerEdge-T330>
+ <CACePvbW_Q6O2ppMG35gwj7OHCdbjja3qUCF1T7GFsm9VDr2e_g@mail.gmail.com>
+ <aLRTyWJN60WEu/3q@yjaykim-PowerEdge-T330>
+ <CACePvbVu7-s1BbXDD4Xk+vBk7my0hef5MBkecg1Vs6CBHMAm3g@mail.gmail.com>
+ <aLXEkRAGmTlTGeQO@yjaykim-PowerEdge-T330>
+ <CACePvbXAXbxqRi3_OoiSJKVs0dzuC-021AVaTkE3XOSx7FWvXQ@mail.gmail.com>
+ <aLqDkpGr4psGFOcF@yjaykim-PowerEdge-T330>
+ <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F46B1C0006
-X-Stat-Signature: swq4r4ngtn6zfqbn9rypaihrts5sfd6m
+In-Reply-To: <CAF8kJuPuOWUEMg6C9AnAA-mddgHRjuMVqURrbk6bUHxAmEvgFQ@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0AD2420008
+X-Stat-Signature: fb9akqhxo778ahiyaw74tjs4x8oqfry4
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1757261320-357806
-X-HE-Meta: U2FsdGVkX19VYVARdyVSgrPjK43FmfckB58AK/l9+TeFEh8fp2JIPn2iYLDJH3MTr9yFT1slJ27amVXet5ZOtqQQgFIvJooEfW9OFMAfTYGgtMnx6u0adKLFByBvc0fewr37MCTExk+Tz0/NZnjSQZvXowHWP2p7u++WgEwipgNa5RffSi+b3uTE8i4uV5dQrbGbtaioq12eTdJiKDhRbELF7lQfNbJe37D5Vf3Z3TBoYVQVn5tbNzVkNpnoLZxXQ/JABeSoG6nOKr9nI8xHpjstVA4bW3OTpqN8G63/cZaBDYKl0JW1Hy9qF8XcsJ0XOcWqRXX94ntvYz5P4MK9MLPKB0yNnkp98jqQZeCgBRaCkpjsqEJUf9dlgWWGvm9sJT5raC1vEc3tQKCGUV2V3/eTPHP+n3UIPsPaoso3LHouj1v0d2S6zkKeD0W21w1D3BCdwFzPTVMmUdx4y+ZazeUFok+ZBILmPJ9/5N4YrglPyrmVL2vx0pyQrmD7+o60+Cuzs+6P4TAETScvNgSXSBBMl4YseamPqR6HY3n632VRwwysKHl5N5TQnjwjMHMHqM8fMm+k+6IgfEjnt3tr1hxMLn4qVA8XW1w422ypZXsfEXqRN6eO5arRCnYsXnv6Uh8112EhYBwVxa+zeRJ+at9+7w52jqH8vTNn5Cbs6JoMyGTPvCwxQmhn1bcHPPr69ipPhonuVh7fTDdo0poZ4saGSdLa+ZaiLFZMlCnVCVZZYSRRhJySiQ2Db+Bh2mSz0UV+b4Iytcr+aMXx4b8bu5/RwIAIxhpWY2sjgR4iJDZSQXQlg0HFlzUy0f9axF5vba8HC/Pvo3BsRrAOyBFwdfXGAV7jRVy+msrC9L2ny3ssNJx6D0iB1Eo30Q8XaCEyQ9N2ZLYlXNcDqCH5xZ20jBrP1GtXpSxePFILMtnkfOZMQ1jAMTwJciKGjSsdlHIIccFa0Pwg3/C41zmA6uU
- bzra6UPJ
- e7ZFGhIz2i1hp5qjhIXt5u88QFYEIbfoz+TYbgQ5DDwQFWCDiVgCl1EwRQJylepP9FAc2TGqrFXtv1DMHr1/7/koxuUXl3lZQYK9gzfY2opp3aIqebEelHfzpkQJp0s0vgf36weOScMgQwKcmetWHwdfro7bmleXAjKqzkWtaOoFPfMnS6ZAf2tLXfmslP5qRNkXGHCCgJgs3nS73dyWNGFXN8WQngZfEL5ZhuPHv18K5Nq4J8laaykWAjQNUWwD4mdLPHD3A6HnxDOswDyOqxYC+WYJcTiEqK1yzhPrGpUAyzaFg8g+hw3JQ3MDzDqFMBIwASXsnvUzlJVih45TuWPE5PpIWRC5KdS6cLALf0W12sURRT3+JBAC+Uv88Nt3fjioWJHsTESJIc0fmWAQLqwy6mEjzHtSBwsvJ9u7dGF4s2eWUFc4wsCPDjYaPR4npH+lYeQGeyF9O4tI9bMG1Bf8BS1/CW0/P07xn
+X-HE-Tag: 1757266797-404582
+X-HE-Meta: U2FsdGVkX18Vs+41C8xzXeoW/hcznO9GAmVVF1vOGTSUa++/sqIKoi5yn9FllSdlZ+dmJeaPT7tUC4jHrbs/pqsR6FZsv2G4H/T1JLgRP4I3GqUGOT11LF1lEd6n2wwebOyt4u5yi1d6+/jBd1CmoeZzIhZawwoUALRE6igT8IkJEa8JQFqh4ueIn5S78+A3erSIExFTbMmDt8sqFfWa3ExRifNLXlgi4wM+i+PT4ICU59sBAr1b2lTYOhFRO262InlamHwbj01c4b7R7LhkZET6jL6Qet/aKoJPy5n6YHGHmTH2KWQu+E/4h6yZgV3Aevr4DC0nSBfmWMqfxguxbYwVxey7DSATeRFInR9XssuY2FVkLXRUiNU0mf2pRoEJQFykbJ4nCDKIPBsdlhkgZGshm5TOH6XtObkSLqoOJUwbggQv4Av3Ccpi2x4K83NDclbb2yEcrDyVUs5SzzYcEvroxJ0J2N3JeN1QCvL3ET5a0y3ouIojyUrmbQvqNU0b2tenoJHHbgrQLf0W2KXkfEcK46oSVn1+iH6wmCspvm81l/VQ7lQ1NS57tIhFh3A2KnVT4KA9tzsF8tvTC9yN/IIPS+HKlckHmJrObnRWadwGB6eODwXe1uHt5zak6AHsj1fSaQG7p7GZ3l+Gqx16tQ1LLEH9P+zRmz430SB5ZXP6CL2+6TehAsN0g8NRO7ep6jhLOp0v+FUnxnqRKQiEV+Tndg3eOm6pOXJiNIZGfl53f/OH4TRp+kSahl70FcxGmBIFglC8GmB4zTGTMBo2hdgmGrSopba+6N6F8Pr1d+BPDOFpSgTJ/0fBCl9/dQZMHEX4ti/hPcufS9aNuESRFp4GNketiGW2wJhkFmDYo6HkpKo/Sn9fC6XsDm7UTxPxkNosNSd7FiTG/73d6IJFRZ47UahUOkHcp8rgeamWv6rqaXanfX4UCINq2IoJrcBkcDRRHzSJlG4Dj/Xsbpe
+ OOg0kqPZ
+ 9K94hzqvxOdMGmLCp+Y5dNpb6MqmmEMYP/vUp+I4UqzYY9ohbNDmjtTgWNrwpEjjPpTxNnyYRl4GomKcpcEt5qzyeV3c/wA+KOIjgqLA6+R8n6YFjygHbvUfSNPh0hnWCwSy1pNe7fgd3hV5sP8sImutNtiYRzFlyFuXzoNByFFRgljy5W3jA9iEsA8QV98N96qXGesOLJwASGCQIC8OQdyRz7201U63AnumAreh3v61+IAAKV9bwF/eUJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,28 +101,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If no bits are set in the policy's node mask, then nodes will be 0.
-This patch adds a check if nodes == 0 before dividing.
+Hi, Chris Li 
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
- mm/mempolicy.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thank you for your thoughtful and quick feedback.
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index eb83cff7db8c..faacc604fc16 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2530,6 +2530,8 @@ static unsigned long alloc_pages_bulk_interleave(gfp_t gfp,
- 	unsigned long total_allocated = 0;
- 
- 	nodes = nodes_weight(pol->nodes);
-+	if (nodes == 0)
-+		return 0;
- 	nr_pages_per_node = nr_pages / nodes;
- 	delta = nr_pages - nodes * nr_pages_per_node;
- 
--- 
-2.47.3
+> > If you remove the
+> > swap tier. the range of that tier merges to the neighbour tier.  That
+> > way you don't need to worry about the swap file already having an
+> > entry in this tier you swap out.
+>
+> Should the configured mask simply be left as-is,
+> even if (a) the same key is later reintroduced with a different order (e.g.,
+> first → third), or (b) a merge causes the cgroup to use a lower tier it did not
 
+Let me clarify my concern with a concrete example.
+Suppose:
+1. SSD → tier "A" (31–40), HDD → "B" (21–30), HDD2 → "C" (10–20), HDD3 → "D" (0–9)
+2. A cgroup uses tier "A"
+3. SSD is swapped off → tier "A" becomes a hole
+4. Tier "D" is removed
+5. Tier "A" is reassigned to range (0–9)
+6. Then a cgroup configured with "A" cannot actually use "A" (0~9)
+7. Later a new tier "E" is added and assigned (31–40)
+8. A cgroup now configured with "E" refers to the same numeric range (31–40),
+   but the meaning has changed compared to when it used "A".
+
+This feels unintuitive. I would prefer invalidating the mask if the referenced
+tier is removed, so stale references don’t silently point to a different tier.
+
+> I think my intention may not have come across clearly. I was not trying
+> to propose a new optimization, but to describe a direction that requires
+> almost no changes from the current behavior. Looking back, I realize the
+> ideas I presented may not have looked like small adjustments, even
+> though that was my intent.
+>
+> I see. We don't need to jump to implementation details yet. I can help
+> you resolve the swap allocator internals as well. Let's have the
+> user's visible behavior settle down first.
+
+Ack. Let’s settle user-visible semantics first and defer allocator internals.
+We can revisit per-CPU cluster cache handling as a lower-priority topic when we
+move to patchwork.
+
+> I talked to Wei about swap tiers a bit. Add him to the CC as well. He
+> made me realize that we need two level things in the cgroup
+> "swap.tiers".
+> ...
+> For the operation, each tier will need two bits, including the
+> default. One bit select this timer off, one bit select this tier on.
+> e.g. we have 16 tiers including the default, then all 16 tiers take up 32 bits.
+
+My understanding is:
+
+Per tier (2-bit state)
+- `+` → always on (bit 10)
+- `-` → always off (bit 01)
+- missing → inherit from parent (bit 00)
+- `11` is invalid
+
+Default tier
+- `+` means inherit parent as the base
+- `-` means start from zero (ignore parent)
+- missing means (this is the part I want to confirm) nothing?
+
+So in my view “default” is an **inheritance control knob**, whereas in your
+explanation “default” is also a **special tier** with its own 2-bit state.
+Is that the right reading?
+
+If my understanding is correct, I’m also happy to adopt the interface format
+you proposed.
+
+Over the weekend I kept thinking about it, and your proposal looks like a
+more flexible interface. It also has clear similarities to how cgroup
+controllers are added, so the format seems acceptable to me.
+
+I have one remaining concern about cgroup semantics.
+The inheritance and resource model we’re discussing seems to diverge
+somewhat from existing cgroup v2 conventions. Since we’ve aligned that
+this effectively acts as QoS control, it also makes me wonder whether we
+should proactively propose a doc update to the “Resource Distribution
+Models” section so the concept is explicitly covered. This may be me
+being overcautious, so I’d appreciate your view.
+
+> Wei also raises one very important point. Because zswap is not tight
+> to a swap device. We might want a predefined tier bit to describe
+> zswap. e.g. the first tier bit is always given to zswap and the tier
+> name is always zswap, the priority range can be assigned from
+> mm/swap/tiers interface.
+
+Ack. Reserving a predefined tier bit for zswap makes sense.
+
+As a passing thought (not a strong proposal): a few common tiers (e.g., zswap,
+ssd, hdd, remote) could be predefined and non-removable, with users inserting
+custom ranges between or apart from them. For example, if an SSD tier is
+predefined, `swapon` for SSD devices could be limited to that tier—this would
+align with grouping by service speed and nudge users toward sensible configs.
+
+> > * **Tier specification**
+> >   - Priority >= 0 range is divided into intervals, each identified by a
+> >     tier name. The full 0+ range must be covered.
+>
+> Not necessarily true if we allow removal of the tier and generate
+> holes removed range as we discussed above. Unless I understand the
+> previous hole idea incorrectly.
+
+Ack. I prefer allowing holes, so we don’t need to enforce covering the full
+range simply. 
+(I had considered usage making full-range coverage coexist with holes, 
+but on reflection that doesn’t seem necessary. complicated)
+
+> >   - Each tier has an order (tier1 is highest priority) and an internal
+>
+> The order you mean swap device priority order or the tier internal bit order?
+
+I meant the order implied by the priority ranges. In the interface I suggested,
+the `-` operator specifies ordered ranges, so a notion of tier order matters.
+With your format this may not be needed or not that important.
+
+> >   - Until it is set, there is no default tier.
+>
+> Does that mean you can't do incremental add or incremental subtract tiers?
+
+> >     (may internally conceptually used? but not exported)
+>
+> My suggestion now is "swap.tiers" is an operation rather than a
+> bitmask. It can include "default", Each tier can select on or off or
+> missing so 3 operation states. "default" tier has no name, if
+> specified, must be listed as the first in "swap.tiers"
+
+When I said “default tier,” I meant a conceptual tier that covers the full
+priority range when nothing is specified. From your reply, your “default”
+sounds closer to a *default value* (inheritance control) rather than a
+standalone tier. Did I get that right?
+
+> >     Note: a space must follow "+" or "-" before the tier name.
+> >   - Edge cases:
+> >       * If not all ranges are specified: input is accepted, but cgroups
+> >         cannot use incomplete ranges. (TBD)
+> >         e.g) echo "hdd:50" > /sys/kernel/mm/swap/tiers. (0~49 not specifeid)
+>
+> Because removing the tier will generate holes in the priority range
+> anyway. 0-49 is not specified in the same as if a tier is there
+> previously then gets removed.
+
+As discussed above, we’re allowing holes, so we can accept inputs that don’t
+cover the full range.
+
+> >       * Overlap with existing range: removal fails until all swap
+> >         devices in that range are swapped off.
+>
+> Specifically a new tier priority landing in the middle of a tier
+> range, the new tier will split the range with the existing one.
+
+If swapoff is complete but removal has not occurred and a new tier comes in,
+we can allow splitting. If a tier reference is still held, splitting should not
+be allowed. A corner case: a tier spans 50–100 but only priorities 55 and 60
+have active swap; inserting a split at 70 (no active refs) — to keep rules
+simple, I’d still **not** accept the split while any references exist anywhere
+in the original range.
+
+> > * **Cgroup interface**
+> >   - New files (under memcg): memory.swap.tier, memory.swap.tier.effective
+>
+> I don't think we need two interface files. We can live with one just
+> "memory.swap.tiers"
+> We can list the local one first then effective one on the second line
+> or separate with "#"
+
+Ack. One file is simpler; show local then effective. For now, a newline
+separator looks clearer than “#”.
+
+> >   - Syntax modeled after cpuset:
+> >       echo "ssd-hdd,net" > memory.swap.tier
+>
+> Need discussion for incremental subtract. That syntax is incremental add.
+
+I think the format you suggest (+, -)
+is appropriate from a flexibility perspective.
+
+> > * **Swap allocation**
+> >   - Simple, workable implementation (TBD; to be revisited with
+> >     measurements).
+
+Ack.
+
+Best regards,
+Youngjun Park
 
