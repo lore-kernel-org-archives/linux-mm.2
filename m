@@ -4,115 +4,218 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 227D0CA1017
-	for <linux-mm@archiver.kernel.org>; Sun,  7 Sep 2025 04:24:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C241CA1017
+	for <linux-mm@archiver.kernel.org>; Sun,  7 Sep 2025 05:14:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D698A8E0003; Sun,  7 Sep 2025 00:24:37 -0400 (EDT)
+	id 94F8E8E0005; Sun,  7 Sep 2025 01:14:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D41908E0001; Sun,  7 Sep 2025 00:24:37 -0400 (EDT)
+	id 8D7C28E0001; Sun,  7 Sep 2025 01:14:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C570A8E0003; Sun,  7 Sep 2025 00:24:37 -0400 (EDT)
+	id 751298E0005; Sun,  7 Sep 2025 01:14:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AC7158E0001
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 00:24:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37230B9710
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 04:24:37 +0000 (UTC)
-X-FDA: 83861162994.18.9B55DFF
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 59C49180003
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 04:24:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=YPiI7CTT;
-	spf=pass (imf24.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757219075;
+	by kanga.kvack.org (Postfix) with ESMTP id 57B608E0001
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 01:14:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E23741A024F
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 05:14:34 +0000 (UTC)
+X-FDA: 83861288868.22.AB834CF
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2079.outbound.protection.outlook.com [40.107.220.79])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EDEC8A0005
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 05:14:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GJCW+3DS;
+	spf=pass (imf25.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.220.79 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757222072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gTPgPzRrBAxJrCac5XmQ2yTlMqaTokhJ/jQ8/1ljY9I=;
-	b=G5SVeuP6J+VsEWVMs6y9uoD++zgBqIVXGrS+Fr9jxQmDvHcTf9JP22i7zukub+3AMzmy+I
-	03TmmLxOtzjlk7dWSE051mqKX3fvw+bcgbBREy3uA/uGHKFTLLgFI/0k4ohz6vOxi0xxq2
-	km0Df9qgi3m2Wx9WwR0OUr/fmb/3CBg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=YPiI7CTT;
-	spf=pass (imf24.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757219075; a=rsa-sha256;
-	cv=none;
-	b=5auej6DRr3Zf4q8C352kpNGAaldVkP6xn2RSCLrSYTFCjXLJsaGuoL1+wHb2SXTxPYD+LZ
-	5Nzb8Pag/BGA2iedO2vWkkROT9Lk3WOrppF3haBnqPFG0OsbfFtXzE16BsQOVPOKk0YxJD
-	o07mylqMgsAAQzBaCPik05t80sME4yQ=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24cf5bcfb60so146125ad.0
-        for <linux-mm@kvack.org>; Sat, 06 Sep 2025 21:24:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757219074; x=1757823874; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gTPgPzRrBAxJrCac5XmQ2yTlMqaTokhJ/jQ8/1ljY9I=;
-        b=YPiI7CTTV80JpHGsoRSFuYde3vKMWdc7gRc2AM59mJ2VMdu2Am25AK+Zrf1Rfmafpq
-         e3rENlRcj0QIJ9xrVEW5ClIyQ7Ie2tquVB+ONd5uDDMOlqY4REez8pWgTbOwvGhTlQTU
-         PbdXRYlDwkzau4FGG0BGiAiS2soJMck4MMYPxBsHx8vG/YGMth5ZIeG2kA7d3eEgItxY
-         lzq6DIBKtBUFDjuJp9nq3XB8Sb/5hRsZr8kHSleZOh1GOl41FzWn5uJwqKXTY3fUyl1I
-         ZwJshMc3BmhQTB2kMi1SYHFmU5oSYWzhfmWpOm+Ut9LYjRGE5sNEo+uhbFxOZOB9VLz4
-         paeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757219074; x=1757823874;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gTPgPzRrBAxJrCac5XmQ2yTlMqaTokhJ/jQ8/1ljY9I=;
-        b=D0BroA73djMFNV4kJZ1I9rpAVweDY5tUUMv68oIgmAN45v5dL0XFGr9ykBmS5mDFsJ
-         4EwPxU6CCRXfqc1LaAMH0aLyu0i2KQsClAMJ3l+noeRZ58LOlvYPDJQnusrBLxhGCdaI
-         UWQGGUXgdAvIEK+Rs+t+WtocBNyjDZJGa+jHD4c6xk+7GR1NUjteeku61ZvbUP25WkIo
-         +kfrOF4P8OItggjxiVHdh2tIkj8eT9xMSSbOBHavw5kuLn3Xyk0bOQ52MhWySzWgVlMw
-         +sRvqo+ovm68qQ5hzz6AgMVOYdI1UDJSIGX4LrHPNLXgEtqkyPz/8/XlawHzJBhaAhH7
-         C1yA==
-X-Forwarded-Encrypted: i=1; AJvYcCXnzsyTD1g0NC81nVzaqU+yobkYh26oR7zb8nNs3vgPjEsDcq3iWC0Ai8rz2PyoxA3ykdyMJfflFg==@kvack.org
-X-Gm-Message-State: AOJu0YwojYHMfdmU9WuQ8u15+O2OjqnuIEm32KyRjHzfXJf+yaw3AScB
-	+nUxxrmidDHUu77542jDYMVMsozm0gnJQ5M8CHvxxz7uNRm7a0pJ15OAakIq9GcAXxgbDtIZq7D
-	v5GeTp/VnMWhYPLK76RWB1IIKgsQVlFOjrGybpwQA
-X-Gm-Gg: ASbGnctgDVguomUePl/0yXXHqwe6nA3u0vb7KOxDg58Ba7L+osTce4udNFc832SJPqN
-	VE6Asf/v3X9PzdRI0VSKeKewOEbVpCjA3Otkog+y0Rm/Wq1X/B/NpfWrpCEDSzjIuODG5To8Waq
-	EZKRQYvFPzzT2YNVu9H8UTtEYdhR6mt5HCJOuHSWadWY6xhUqlSBJt5oOgN8rlJKgphgSCjJXhq
-	BgGC5c5P8K3LDxjXtmXUKEm1BU3RszKphzufjeyYe6WHA84iJE8lvMAXA==
-X-Google-Smtp-Source: AGHT+IGYa0lPcHnn6yyQH0nLs+W33hFAxTRTwUNtazygW/FTP7faT7GUxA8+33u94005mbOApW9X6E+kBz9mCu3EfpY=
-X-Received: by 2002:a17:902:e887:b0:248:d063:7511 with SMTP id
- d9443c01a7336-2517484234fmr2374415ad.9.1757219073688; Sat, 06 Sep 2025
- 21:24:33 -0700 (PDT)
+	bh=ZBp52V91Gxr27f7RudT0aNk9Xj8vFIecZ5YmKsPh8yA=;
+	b=ndurdZ7j63WLt/pdLCcx4235LyswHuSbJzGbHGtcI6YFtapTUoIIIo0UcESctif61Fq9Ur
+	ScagN/itBbk089J2NgDlDdzFw9v1BaXtOdDl+J9HhzzysOrMVb/M3CBE0xjccxmYNPLPj/
+	P/Av5UMhkUQHWyfJuUYQTyPB4z//+wc=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=GJCW+3DS;
+	spf=pass (imf25.hostedemail.com: domain of jhubbard@nvidia.com designates 40.107.220.79 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757222072; a=rsa-sha256;
+	cv=pass;
+	b=Ks6rmd/VenVXKrWOB6LXPrfD5KSzjeLsCFWOwY5DmNFRC0Q6WwWSBfF5jVyvJhzcKv9kci
+	/6BI6eZ475kPcfCio5p997NdVEZg57+FvP2V0yKrHIGvoJq7u52ZcvnVk0M6ach5EYKBzq
+	hE00dfT4ENkiRmux5DOowrxuArXqZwE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yUBsZoa48ubr5UfQCm1JGG4S8RpaYQuK3qinFtfTVoIyblstuFvs1UtepWrL6qmhVxym1pIpbEsbMAvn8OLpFtnGKLdFRogzsXju1CrLLfxBypz+Hkszu+T6TOwyetB17oSLAcgJzki+fDcVYN+oiTtl/ehsF6gZlXmpmGbHNSDpgD44y8PNgeLafTwUoVPHuULARbhwZIgo3c8tKzUiTcLIbjk9SxJ0Ts4DKpyC1PPtY5Ts15C7DoSWyHHrOZcmwjhmNkBgLbdBHDWKr41d/hH0Iq4wl03K3165j0jxtSFnMsVtfLQLsKI5Op+VEBMmGm8nEPF6cEUtHrz9CFbJvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZBp52V91Gxr27f7RudT0aNk9Xj8vFIecZ5YmKsPh8yA=;
+ b=GGSMAlpnRrdP4a44ktU29+KpniQMk+UW6Gda+8KCQog3qwPiGbBpp73s+/BJXgR5l5bJpq0nocNaVsitWzZ27gkvAs7+LxMqwmYUV2xlKVIBVq5LtnfXWkMzSe/DZQIkP8OYzgKltBhzt4+fC0FDtL1N5BxRrHQ6eiPyq6WPHX7Mw70yooOKJZYN8RX93Z/eXOoJCFvUeMmcLM1q/RmGzGzlKZ0t8Hie845b//12OtmTUXi4bBsLE8ZzjltETh8kwzNO/DLMfeCGMi39ZmzVvGlWny5kJms7IhwCe7n+ssvUIfmauKp8Nas/sp0t4pEIwgYbDOC5YTUN1q3j61eICw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZBp52V91Gxr27f7RudT0aNk9Xj8vFIecZ5YmKsPh8yA=;
+ b=GJCW+3DSmriH1MADLp7VlsqRk2CVBWqYaaZCnkrNj9TbrTt6BEgQdv1kl/bPCLxxWONcA5b3HSE64EHr5tjCu6yjJpMegbjJgswtpzQdoqLvQOiiujYIZT3K0YBRTycLIXZ6Ou7WG3XMLHyTM/e0/txaULr9tJCar2wjSGunmmp/paDLnohvQsoxjL2yYEpwgWaCnYt3R61pMuTiBf7SZU14mP6PbMIiMe96MNr5AzKQ1lYjYeivnO3lExo92w7ONdvD0naIzzrKG43FmjQU26Y1sHC7eistWEzdn2W5ldnyprC9DRSDIom6a/g/qJD3t2BQfO6vC9HdWZQheuBdjg==
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
+ by DS5PPFDF2DDE6CD.namprd12.prod.outlook.com (2603:10b6:f:fc00::665) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Sun, 7 Sep
+ 2025 05:14:26 +0000
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4%6]) with mapi id 15.20.9094.016; Sun, 7 Sep 2025
+ 05:14:25 +0000
+Message-ID: <0a28adde-acaf-4d55-96ba-c32d6113285f@nvidia.com>
+Date: Sat, 6 Sep 2025 22:14:19 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 19/37] mm/gup: remove record_subpages()
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, kasan-dev@googlegroups.com,
+ kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
+ Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
+ Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
+ Zi Yan <ziy@nvidia.com>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-20-david@redhat.com>
+ <016307ba-427d-4646-8e4d-1ffefd2c1968@nvidia.com>
+ <85e760cf-b994-40db-8d13-221feee55c60@redhat.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <85e760cf-b994-40db-8d13-221feee55c60@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR05CA0048.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::23) To LV2PR12MB5968.namprd12.prod.outlook.com
+ (2603:10b6:408:14f::7)
 MIME-Version: 1.0
-References: <20250903232437.1454293-1-kaleshsingh@google.com>
- <qa7b7pvrycejnn6pjytxysu57xckhexupjrzefmk4j5hlaxka3@ayeg2vzpfe3r> <aLs9f9WjxIOrE3Sr@google.com>
-In-Reply-To: <aLs9f9WjxIOrE3Sr@google.com>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Sat, 6 Sep 2025 21:24:22 -0700
-X-Gm-Features: Ac12FXyluFsg8rwjLeiuUN8OqbXpgEL5Ij8nUCZC_bTtjwaiTP3umbB2xEe5lA4
-Message-ID: <CAC_TJvdXNJSqNjRQS92jAOBUJ+3qyS9+eZAGSJMokGQQHaxqoQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: centralize and fix max map count limit checking
-To: Minchan Kim <minchan@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	kernel-team@android.com, android-mm@google.com, 
-	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 59C49180003
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|DS5PPFDF2DDE6CD:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89b9ab1e-80e3-48bd-897d-08ddedcd6976
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N3VhS0huWjQ4a3lsVHYzQ0ZwUFpBUjlPQjE2VXV6aS8zdmFuZzZLajVkaXpz?=
+ =?utf-8?B?bEpMMWxBZ1BOWVU3QjZRaVpkNFA2dFdMTXJ0VmJCc0tSYmJTd1ZSQjhWS0NR?=
+ =?utf-8?B?L2JCYU5wYXhNU2tweXhzcFUwQlVkSTgwQjRaSCsxUWdwSHpvU1NqYWo3eWlN?=
+ =?utf-8?B?YWphSzhUcWxUU1dsY2VtdDdvZmRHRC92Sk1nSmZCeW1tTFQ3YUVia0pxZGtv?=
+ =?utf-8?B?aTRMa2hmMEYzVEZTejRBck5nSXdWb2tHbnNaOWkyMDNmV1FTWUNYNVRHMmFw?=
+ =?utf-8?B?cUJmdGM5WmJDTk1SWkREeTlUR2E5cFpRTjFDTHdkSFRLZ3FNNFVXQmtyMnZY?=
+ =?utf-8?B?MlZCS1JScTJPWWNjaWRnYSt3STA1Nm94bGorSHlkZ05iM1RrQmNVaFRzRjM2?=
+ =?utf-8?B?b0s5MnUwV0w4RVArdXVLcmFtUW9JT0VORFpqbEFOYnROZDQ0Uk1idHNnSnZQ?=
+ =?utf-8?B?TzdIVHZpRExrMFRjV2Y0YUtKU0NJRnRxR3hhbHIxQ0RmNG1rczd1NWtDWVZs?=
+ =?utf-8?B?ZTdJQTZGSmFHczhaWHRCVjVQWjdiVnA3MW9wdXNPQVp6djJVU3lFTTcybFNo?=
+ =?utf-8?B?UFNHTkg3Z2RCZEYyTVVFSUVna2thM3Jwd3hZYkFuUm1oZlFtUDRnRTZxVGVq?=
+ =?utf-8?B?N1ZDVjk0UE9seTRvTmxDTVYrUFJ0Uy9yV2xROEliWk51eEtDdXU0Z3pYWXJp?=
+ =?utf-8?B?anBGUkt5bnRwSFo2a2ljNmVxTEIwKys2T2lQSFhwTkQrdkVvY2hxU0VUWThS?=
+ =?utf-8?B?OHgweUV2elJuR2VmYU1kb0VBRHNnYXpyODFueFEzSktNQUNMTnRzTkRKbDdP?=
+ =?utf-8?B?RlBvWGVvMm1uV0tlcmc4cTlRMllKTGYvUEpmMmVVTTNnWFJrMjhMSlRtNzBG?=
+ =?utf-8?B?ZDArTVhwaHJZdXVoOXhFYXA1QVJRWFRJd1NkTnBmdngrWGxnVWNhUUVSUmov?=
+ =?utf-8?B?K1RLQnNvQUM2NzM0WE1ONzNjUzdFeUl2RjB1NmFVRDR6VlJLTHpMdTNlOHNB?=
+ =?utf-8?B?SVNXa05oOUw2UDhkWWZmZmpLd215c3lubnphcWUrMHpKSkxSR21MOEJDMllY?=
+ =?utf-8?B?aWFVbEd2cnc4WGhkcEdMTnJKaVFBNHl0YVBVV0FxclZEb0JoVjlEV1AxNHFh?=
+ =?utf-8?B?Kzh5d1JQcmNoRmlpalRrc2ljTGtKQVc2aUJJdlZML1pGVVVCZTByTGFFWW5N?=
+ =?utf-8?B?eTRIOE5Nb2Y3OGFucVZSVGtMaW5xeHdwV0tad1E4cE9GUk12MDJOU0w1U25N?=
+ =?utf-8?B?dDgrdzZWbUd4VjFXZTk1OFZMZmxMbi93cXp5c0Z2UHBWOXc3OHpJUEhCOHFQ?=
+ =?utf-8?B?MUk5RG5DeWs1MXVLOHE5TTRCMkl3cXFTRHA0WWxxNWhVV0gwa3phRitqTlNC?=
+ =?utf-8?B?c2pTdlpFdW9wblI3c3AyYmQrNDFvNWFYT0dzM3YwRnZXUk9SUHFEUTJqM1pp?=
+ =?utf-8?B?M1FJRUVVOWpEd1hTOWYwUjAzVjJpcnlNZkhWTnhIdGJ4NzhlTGJIK2NabTgv?=
+ =?utf-8?B?OGxGNUQ0cU43UTZuNXErdGVnanJuTEd2M0VFaTlDNzJOZXQwOTVYQ2tkWnlO?=
+ =?utf-8?B?K0cyMEFKUGFzL1R2ZXlYLzVRbWpTNUZMeU5qSGVVYXpCOTV5OFcrdlFrL0JT?=
+ =?utf-8?B?cEFROEViM1JtN3FySDd4b0xJbXpyemgyN0x6QmkxYWpZUlprU3VMR0oyYlVQ?=
+ =?utf-8?B?M1FNY1lpVjhhYmlhVVl3U1JBTUJ4SjFVOUdURFZDVm1RdFB2Q1hMS0lCeEY4?=
+ =?utf-8?B?NUtsMjNRa0NQUHJHU1MvMURkK3BEcEEzY0ZUcDBjR1N1Qit6RTJHU1kreEVr?=
+ =?utf-8?B?MUxxZW11V1JCSGR2R0w0RTRzNENkeEc5dGtFWDZKanBZaGNGVDBsL0VjdzQy?=
+ =?utf-8?B?U0FKMWs2N3lqR2txMkI0Sm5kMEdkeGpSN3U1dDhHZzg4Qnc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z2FmbGhrTlFWREJvWjdCU1VYNHgya0haRTlqdUtTa0c0Z2VPbG4rS3NOQ3VP?=
+ =?utf-8?B?aTc3dURUbGo5WXg3ZXNRWEJQVWdabGRxOWw4R2RUS3UwczltdmtmdnZlUlRz?=
+ =?utf-8?B?OVp6R3NaazB0RXVzZUxHTld4Ny9jU3BxMWd2ZVF6YlFhV2lYQnVrK3orK2pZ?=
+ =?utf-8?B?aWMvOFN2UG1DTDVZaDFtUVVkQ3pRV08yTVNYRTdkMTIvbTB1OWh0Sm1HMCs3?=
+ =?utf-8?B?WUpNTnVkSytmdHZmOVZvR2tVbTNxQjlkb29xZnB1bzhObzliaU84UG92RW9E?=
+ =?utf-8?B?M0lzeXUvYnpkelJiQk1zLzhWazN1dThSN0JnRzkyQWZMSVdnMjY3cnViQjhZ?=
+ =?utf-8?B?QkhxUVpFZHpGRDRObnkzbTA5QnJlMlhnaXYrSCtWMXBQZ0V2MktGVTJhbTRn?=
+ =?utf-8?B?bGJFeU5EUlpPVGwyd3hxc0JSa3ZOUTh3NmxZdkkrOUZRVUR4ck0zVTh4dzlY?=
+ =?utf-8?B?YTdUTXBtZHhMdUQxRzJwdDB1YmFiRUQ0YzFCa0JjQ08zU1V4N0tVUGJjTmVo?=
+ =?utf-8?B?RE5JTUV5VFlOaVlTMEFzaU03UitTVnprSXZoOWxwU0doN0ZsK0JCRlJMaitY?=
+ =?utf-8?B?UmFHeXV0ekg3QVZoNENJaEc2QjQ5WUpaMWp5bTBwMnllTGs1Z20xZ0x3a0Fs?=
+ =?utf-8?B?Q2NKblU2NUVEV0lqQjZBUUYzN0w0RE9kUk9ySlM2eDVqTG1ERzlTOWUzMjJj?=
+ =?utf-8?B?M0JrZXN1MmxoU1RLNFZMK0pwLzA3NHdCUTNmazZJM01zYTcrNGsrYXNIZWVM?=
+ =?utf-8?B?TlBlT245aDZ1VHlVcVlDdUxEMWw2QXRNU1BFVW5UajduclBnenMrNXBRNUMr?=
+ =?utf-8?B?NWFyQ3FsVzhuNGNmSnY1Mi9ISndPWjliWW0rS0xJc2V5QzVKSTRvalA2aFUw?=
+ =?utf-8?B?SE1KTkVpTEVFQmtKUTg2VmkvbXF2L1NLdFBMRzNDS1I2MDAwKzZuZmtzd1FV?=
+ =?utf-8?B?TjhreGszMlJkdFJyK3RRbnpQZ0RxVzEranZVNS9kRmNQUHIzNzBNNWVOUHVi?=
+ =?utf-8?B?RGYyVU9qVStQQXUzR0lYaXlKOENCV0RWOFVDT1dOZ01tRGNRdHhVazNKKzdB?=
+ =?utf-8?B?Q25OT3FaNThIV3RWVmVDV0paV2FJU01sb3IwTTVrRzZEaWRzY3pBUmJlRit1?=
+ =?utf-8?B?MmhJbmp4ajI5OENiYTNra2RlaEZjRmhiRmFPVDZZdGN6YUFyc1N1MDlrVlJ2?=
+ =?utf-8?B?TnpqdWJpVWxyRTFXN09MSDMvUUdjZ1lrdGZhN2xEeldEQjRGRjA1RWV4cGdS?=
+ =?utf-8?B?eTBMZWRFU3NLMnYrTXdTMGFEbXI2V2M1SU1KZVVIVGF0dFkxV0xMNmdWNWhF?=
+ =?utf-8?B?dDBUZ0l1Mm4zU3Y1UWR0dnVsWExuL0Z2bHVEQ21ML09TWlgwQXJRTzhaQTJr?=
+ =?utf-8?B?SDVvQ001cFV1NmdNaGF0ZUJneEFlam1zWlAwY0lzTWVjelEzNnFscGhZbGtv?=
+ =?utf-8?B?S0crbnF2MDc3U1QxLy9WS1ZvSUdqc0cyK2wyWk9mRnZXWGIxaGE5WWFwbWlZ?=
+ =?utf-8?B?UjNMT0hIQTRhUHV3MFNVVFNjSEtmbklKamVzMDZpOVdNRGdnNG8wbVpKakdo?=
+ =?utf-8?B?eXpGaDZobXM5NWVTZnY2VUcvN1dJek1YT0w1UFduazVqOUR2RjVHQ3lZOG5E?=
+ =?utf-8?B?cHhzSHpmeXBQYmEvTHNEdWlFVjVtdTFoMzZpVVVZaGxQc2oxNUt4bFBIT0do?=
+ =?utf-8?B?SEhDMDRJK2NHOUZpaVNqWkxxNFF1WkNRTlZ5amJhcXBIS1BDYzVhcnVVNUI0?=
+ =?utf-8?B?Vy9vOWFWWG1HcHNOWEtCRHR5L2JqM2drU2pFSHZmcVJ0Wm53Q1NGdktNMDl1?=
+ =?utf-8?B?dU9VUUdMaldtdkQyVTJRLysvR3ZKZHZmem85alRmUGtzSlQxZlFOdkZHVlJy?=
+ =?utf-8?B?OHBkYTZ4OWdia2tXTXk5dE5EZkdTQVNrSmc5QXlDNUdDU1BQbmo2c3ZaNEY1?=
+ =?utf-8?B?YTBlelUxU0F3Z2h5alpQNUdkM3pwNDFwSHRkV2lUbWIrTUVscVljeUVlbUsy?=
+ =?utf-8?B?eWkwdDF1Vk5uUDB6N1pDU2UzSVVoZXUvU2JWRjhTK0NMZFppUzhLbEgrTkUy?=
+ =?utf-8?B?NXo3KzBPdkFPNXpTSUZaY0R4Z2hMbkZpaXhpeWxCbzVhWExlZUtxUmM5T0Ri?=
+ =?utf-8?B?NmNoNmZJdXZTRU04OGRJWjhMU1FDZTZDUGlhVHRxYm8zZzRVQWtQamFCdm41?=
+ =?utf-8?B?a1E9PQ==?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89b9ab1e-80e3-48bd-897d-08ddedcd6976
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2025 05:14:25.2162
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nMH9E6FIAuGh537ODX0TA1FL8Y+H+9s2oVS0wOHG+o0yolAQXZ6PgvaRmfySFg15SGYvEm2Bjkc1N1v56jE8Fw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFDF2DDE6CD
+X-Stat-Signature: pe348q5okyezaeatrithb1chtzr8zb61
 X-Rspam-User: 
-X-Stat-Signature: ffa5w374syd5sfuznrnztgywudio71m7
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757219075-910635
-X-HE-Meta: U2FsdGVkX18/3repEqlCXiTl6IJmwLhCWAFuP93JZ9EhwtgRfggQS6txQmOtDhd+56dkK248qwJrGH5AMFCKpDDscEqx6ZPg17xwMjFhdG0wwiKlPYJZbltCajDNl6rQ7P++G0ihlh08E2Jd8UEynMwQqQzOJuOMGDJ21Wa36fjR9b9rpULvM9qRa5j7PKTmM8zSmBx4cQP6FCLONHv0YPN5gj7TwS70kTBic/OUkKRhko6lw2+MKk+qWCcbb1+KaZLFEOiWdlB1sTyvxDQDKqsKgmg7Qv97ii1Pm013d+AHlSOGnQRH1TLBLF2OKanRGNC2FVYXONZUDZZ2P447VzS4NwGXbf8YHVgJkH1YCsVou6Y8Ek8tlANj0ZfMVAMPjgqh2z2Bpv7aO/9HF9hkLUxffu3c0FWwOtW54I7gso/uO7EeDSbD8guRcsc0o5xRiUYmfbo8DHwSyQWK1YjVGv0XC96TvWCqGocIrG0kswCXgoJEsfopxUfJfccsZUV0DOpmaTZDCHpGBGAbDYjiBoOgDHZeEED3QdXP3U7DOUzYGNQcsU0rLJaXsca3NkB7aYhphTlWxEaaliLLEnlEVCPFwHdc6Bb4EFs/dYVEFq0nN21wrJN/8Ek9vc3tm69xLjmorMzQNUTSW/lexrpU2oe6g051miaSxmxGXfsO0GZk3vwzpsPQCTGH584sSUtalOim95IF2R7qfhf3jQZ9z3IZMIIwodeyIrGXnRBjazhDk+o3WLNSCrqXy4VrsT4X9mCkCofI2pR1S4orv3FPll0XNTkzl7vjal+aspSfMhlbEa8D/qjtNCLJK08S46ZE8KKzIrA4kxU8SKujsDFIClrEgHVEJqwcl8WKwSE14b1lSIcevPDbZWeY9rjjAzD0KycbUtn/5TJgRxczQMsnNsbKh3JmOCmx6PnbYTGe2AZZzZ87nxRC/YQGncEZQ7vEN4zhAvUVt3Z12OCX9Iq
- 8txYENNz
- UfANZpEzN/gprbw7T5+Ajo6Qe6hMwDUwIWf6+VugXuTounOJsuIDuCgHJHga/nuc0ZFFrjm+G5073m0f+f1cm4TtdfmwqYAeW5Va7E72N4CIvMRckCKPMChD1oOUOiNSZnY5pmVcoyi8UaEhosgDQ4YbLJRqB5hEhHOvdyJcDPqgi55+qmIvdMZ1ZkhRaOJLtb5yfuJ/DG6JYgT5FnPKTUq0z4Qw5MV2AZT+Hzee4+LDZX6AjvrIlfZs8zaNuSCWcmzjfVe6ybTNPgrcMa7f3cw5io09aCRL4rpJBsVoRjIQl+jlHqaZprkK39DmAVOVo++/2yWRqwxX+Trzh+/cGAilFoUWmOeIJpB9NQLz/I9H6Kl0=
+X-Rspamd-Queue-Id: EDEC8A0005
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757222071-396324
+X-HE-Meta: U2FsdGVkX19C2BkoDVplfhKtx7Qk1U4S/wqmBnJr7W/6j6ytDrRQriW11m6cCepw+7eCTYE2kMTrhBLUJV4UX8rzxMWXIhyYKOxIVorI1C5yfUge11X0a+W2ypojTIeOrJmGf8uP7tyobxSvgu1c+LzPhIk4ReljjJVh7rCFQifO62cMf9gNRJFRQd9wv5M4W+13xOY6HK7/4QummPRGjv0pl1v+PFrWal6nR+TqHlb1khHpNrgohg2ZyFkzcNUMUCkC/NBa2b6Z6G8y7tsm2I/Y4BH+/iEm66RsYelpP2AK9chnd60UkbQo6stNjwlmYOMsF7ri0qcLPhONTNHn/aSxoqMVjO0qBCOcsJTymEqnIehwGCUsCirIM4QBHfztLNpiPPDb8w2L4xxva2G+gcieNUdGJmOvp4Keka32skHbFZMu1R61CPJcUqDV6QHiF5YKv0ZLO1M7z09HC0LyvXjihbumtEZSLY/8UQ281oA6QBRtnaLlm+qM1kjQjOK6eX9HIOlYR8qtn+GZH0khGRLI+fFMpQl0TVjPzHY7u9uFYpK5VzfsyXVvJDHLjwdg/UrlJi7lfrjN1tM3d8Xd626NVGYhBlToGHClSYztBJBp/QnO9tEz7ef5b3V6dRJD5BXrJ/rEYFTVYlBaq6vpl037KA9tQWYZj3vH7KRWfmaaKdU0C9fISL0C3zJZQ4Y/7ckKZZ6OkvGfecJm+dnVX1uWYqIX5k9jYYm23Zb4OXemw7Kb7NO97GiMopZ5w21PenO5R+Je5Z5EIcoCYmCBZ7SqG9L4Z6Iy17OFOAUW2aKRVMZep/IXtE9AR1P69TTBlTode5ds4OgokoMnu1gvKa2HqcoRjwcpOMDVpyFyJNnsCtFXGa73A8IYcLvVLXpzboeYARuhb0shBj0nDj8C1dNUqWJhd5OLusuYrcxUV/cIfMbA7bwVFvcQtCF1pkq0tZTj+LPb3h35u4jv2kK
+ HjY2Ka26
+ ralr8W+g0Z1Ek1zN+plHth/sEH/9bj3WKwovEQ32G5AEGgA+REeytxjHOj/XdpG0iHQKVSoNX0dxM0ga72dH2hT3DpZ6BPYUDor4KveBkCtlU7GtLwM6m9x4sNimld9VUVOcvvQZKbFiE9mXLAJgyie6ZX2yVTHTzydhJ+J0fTb088VKHmHzokB3pxOtphnx0bEHdLMTEisTyd3emgzvMXt+jaZZ6nGxMZ8gYSTMp3vme0rxdquEHS9lf2W/iLHCIH5AzqI1lMURFFBCgEAwMGX4M0E6GdMCmMBuEHKAxSkyZX4TGpoi25XPEv1apZanmm7lgODGoQhpyaU7liHyizDrM+/aMoCUtLXtPy1g6KyKt0F/tVDlnmqX7BNQt5r3XnlkcKf2oxiWgdQxH7uFV3jEFDVJyVkhjWQwrZeXpCWLk2PO2GjUH/Ddm8SYYL3+3GdOnDTIV4oo8l9u6w+Cis3TRD9k56vewA0cslm+FgyiD1F3SzlIN4SwiLR32RrYAFlwLIJIcPEGzWaA5wXNuOci+O3su+PMw3tXQmrb/UZYBIzoez+qKMxu3/mOUOPJniHcr5vprh15KpoQn0Uw3mJdN4FurlxNY8Rx4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,147 +224,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 5, 2025 at 12:44=E2=80=AFPM Minchan Kim <minchan@kernel.org> wr=
-ote:
->
-> On Thu, Sep 04, 2025 at 12:46:34AM +0100, Pedro Falcato wrote:
-> > On Wed, Sep 03, 2025 at 04:24:35PM -0700, Kalesh Singh wrote:
-> > > The check against the max map count (sysctl_max_map_count) was
-> > > open-coded in several places. This led to inconsistent enforcement
-> > > and subtle bugs where the limit could be exceeded.
-> > >
-> > > For example, some paths would check map_count > sysctl_max_map_count
-> > > before allocating a new VMA and incrementing the count, allowing the
-> > > process to reach sysctl_max_map_count + 1:
-> > >
-> > >     int do_brk_flags(...)
-> > >     {
-> > >         if (mm->map_count > sysctl_max_map_count)
-> > >             return -ENOMEM;
-> > >
-> > >         /* We can get here with mm->map_count =3D=3D sysctl_max_map_c=
-ount */
-> > >
-> > >         vma =3D vm_area_alloc(mm);
-> > >         ...
-> > >         mm->map_count++   /* We've now exceeded the threshold. */
-> > >     }
-> >
-> > I think this should be fixed separately, and sent for stable.
-> >
-> > >
-> > > To fix this and unify the logic, introduce a new function,
-> > > exceeds_max_map_count(), to consolidate the check. All open-coded
-> > > checks are replaced with calls to this new function, ensuring the
-> > > limit is applied uniformly and correctly.
-> >
-> > Thanks! In general I like the idea.
-> >
-> > >
-> > > To improve encapsulation, sysctl_max_map_count is now static to
-> > > mm/mmap.c. The new helper also adds a rate-limited warning to make
-> > > debugging applications that exhaust their VMA limit easier.
-> > >
-> > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > Cc: Minchan Kim <minchan@kernel.org>
-> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> > > ---
-> > >  include/linux/mm.h | 11 ++++++++++-
-> > >  mm/mmap.c          | 15 ++++++++++++++-
-> > >  mm/mremap.c        |  7 ++++---
-> > >  mm/nommu.c         |  2 +-
-> > >  mm/util.c          |  1 -
-> > >  mm/vma.c           |  6 +++---
-> > >  6 files changed, 32 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > > index 1ae97a0b8ec7..d4e64e6a9814 100644
-> > > --- a/include/linux/mm.h
-> > > +++ b/include/linux/mm.h
-> > > @@ -192,7 +192,16 @@ static inline void __mm_zero_struct_page(struct =
-page *page)
-> > >  #define MAPCOUNT_ELF_CORE_MARGIN   (5)
-> > >  #define DEFAULT_MAX_MAP_COUNT      (USHRT_MAX - MAPCOUNT_ELF_CORE_MA=
-RGIN)
-> > >
-> > > -extern int sysctl_max_map_count;
-> > > +/**
-> > > + * exceeds_max_map_count - check if a VMA operation would exceed max=
-_map_count
-> > > + * @mm: The memory descriptor for the process.
-> > > + * @new_vmas: The number of new VMAs the operation will create.
-> > > + *
-> > > + * Returns true if the operation would cause the number of VMAs to e=
-xceed
-> > > + * the sysctl_max_map_count limit, false otherwise. A rate-limited w=
-arning
-> > > + * is logged if the limit is exceeded.
-> > > + */
-> > > +extern bool exceeds_max_map_count(struct mm_struct *mm, unsigned int=
- new_vmas);
-> >
-> > No new "extern" in func declarations please.
-> >
-> > >
-> > >  extern unsigned long sysctl_user_reserve_kbytes;
-> > >  extern unsigned long sysctl_admin_reserve_kbytes;
-> > > diff --git a/mm/mmap.c b/mm/mmap.c
-> > > index 7306253cc3b5..693a0105e6a5 100644
-> > > --- a/mm/mmap.c
-> > > +++ b/mm/mmap.c
-> > > @@ -374,7 +374,7 @@ unsigned long do_mmap(struct file *file, unsigned=
- long addr,
-> > >             return -EOVERFLOW;
-> > >
-> > >     /* Too many mappings? */
-> > > -   if (mm->map_count > sysctl_max_map_count)
-> > > +   if (exceeds_max_map_count(mm, 0))
-> > >             return -ENOMEM;
-> >
-> > If the brk example is incorrect, isn't this also wrong? /me is confused
-> > >
-> > >     /*
-> > > @@ -1504,6 +1504,19 @@ struct vm_area_struct *_install_special_mappin=
-g(
-> > >  int sysctl_legacy_va_layout;
-> > >  #endif
-> > >
-> > > +static int sysctl_max_map_count __read_mostly =3D DEFAULT_MAX_MAP_CO=
-UNT;
-> > > +
-> > > +bool exceeds_max_map_count(struct mm_struct *mm, unsigned int new_vm=
-as)
-> > > +{
-> > > +   if (unlikely(mm->map_count + new_vmas > sysctl_max_map_count)) {
-> > > +           pr_warn_ratelimited("%s (%d): Map count limit %u exceeded=
-\n",
-> > > +                               current->comm, current->pid,
-> > > +                               sysctl_max_map_count);
-> >
-> > I'm not entirely sold on the map count warn, even if it's rate limited.=
- It
-> > sounds like something you can hit in nasty edge cases and nevertheless =
-flood
-> > your dmesg (more frustrating if you can't fix the damn program).
->
-> How about dynamic_debug?
->
-> a1394bddf9b6, mm: page_alloc: dump migrate-failed pages
+On 9/5/25 11:56 PM, David Hildenbrand wrote:
+> On 06.09.25 03:05, John Hubbard wrote:
+>> On 9/1/25 8:03 AM, David Hildenbrand wrote:
+...> Well, there is a lot I dislike about record_subpages() to go back 
+there.
+> Starting with "as Willy keeps explaining, the concept of subpages do
+> not exist and ending with "why do we fill out the array even on failure".
+> 
+> :)
 
-Hi Minchan,
+I am also very glad to see the entire concept of subpages disappear.
 
-Thanks for the suggestion to use dynamic_debug. As you may have seen
-in the discussion, it has moved to a capacity based helper
-(vma_count_remaining()) based on feedback for better readability at
-the call sites. Unfortunately, a side effect of that design is that
-we've lost the single, centralized failure point where a dynamic_debug
-message could be placed. I'm going to stick with that due to the
-readability benefits. However, you've raised a good point about
-observability. For this I am planning to add force increment/decrement
-via vma_count_* helpers and perhaps we can add trace events in the
-helpers to get similar observability.
+>>
+>> Now it's been returned to it's original, cryptic form.
+>>
+> 
+> The code in the caller was so uncryptic that both me and Lorenzo missed
+> that magical addition. :P
+> 
+>> Just my take on it, for whatever that's worth. :)
+> 
+> As always, appreciated.
+> 
+> I could of course keep the simple loop in some "record_folio_pages"
+> function and clean up what I dislike about record_subpages().
+> 
+> But I much rather want the call chain to be cleaned up instead, if 
+> possible.
+> 
 
-Thanks,
-Kalesh
+Right! The primary way that record_subpages() helped was in showing
+what was going on: a function call helps a lot to self-document,
+sometimes.
+
+> 
+> Roughly, what I am thinking (limiting it to pte+pmd case) about is the 
+> following:
+
+The code below looks much cleaner, that's great!
+
+thanks,
+-- 
+John Hubbard
+
+> 
+> 
+>  From d6d6d21dbf435d8030782a627175e36e6c7b2dfb Mon Sep 17 00:00:00 2001
+> From: David Hildenbrand <david@redhat.com>
+> Date: Sat, 6 Sep 2025 08:33:42 +0200
+> Subject: [PATCH] tmp
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   mm/gup.c | 79 ++++++++++++++++++++++++++------------------------------
+>   1 file changed, 36 insertions(+), 43 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 22420f2069ee1..98907ead749c0 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2845,12 +2845,11 @@ static void __maybe_unused 
+> gup_fast_undo_dev_pagemap(int *nr, int nr_start,
+>    * also check pmd here to make sure pmd doesn't change (corresponds to
+>    * pmdp_collapse_flush() in the THP collapse code path).
+>    */
+> -static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+> -        unsigned long end, unsigned int flags, struct page **pages,
+> -        int *nr)
+> +static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, 
+> unsigned long addr,
+> +        unsigned long end, unsigned int flags, struct page **pages)
+>   {
+>       struct dev_pagemap *pgmap = NULL;
+> -    int ret = 0;
+> +    unsigned long nr_pages = 0;
+>       pte_t *ptep, *ptem;
+> 
+>       ptem = ptep = pte_offset_map(&pmd, addr);
+> @@ -2908,24 +2907,20 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t 
+> *pmdp, unsigned long addr,
+>            * details.
+>            */
+>           if (flags & FOLL_PIN) {
+> -            ret = arch_make_folio_accessible(folio);
+> -            if (ret) {
+> +            if (arch_make_folio_accessible(folio)) {
+>                   gup_put_folio(folio, 1, flags);
+>                   goto pte_unmap;
+>               }
+>           }
+>           folio_set_referenced(folio);
+> -        pages[*nr] = page;
+> -        (*nr)++;
+> +        pages[nr_pages++] = page;
+>       } while (ptep++, addr += PAGE_SIZE, addr != end);
+> 
+> -    ret = 1;
+> -
+>   pte_unmap:
+>       if (pgmap)
+>           put_dev_pagemap(pgmap);
+>       pte_unmap(ptem);
+> -    return ret;
+> +    return nr_pages;
+>   }
+>   #else
+> 
+> @@ -2938,21 +2933,24 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t 
+> *pmdp, unsigned long addr,
+>    * get_user_pages_fast_only implementation that can pin pages. Thus 
+> it's still
+>    * useful to have gup_fast_pmd_leaf even if we can't operate on ptes.
+>    */
+> -static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
+> -        unsigned long end, unsigned int flags, struct page **pages,
+> -        int *nr)
+> +static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, 
+> unsigned long addr,
+> +        unsigned long end, unsigned int flags, struct page **pages)
+>   {
+>       return 0;
+>   }
+>   #endif /* CONFIG_ARCH_HAS_PTE_SPECIAL */
+> 
+> -static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+> -        unsigned long end, unsigned int flags, struct page **pages,
+> -        int *nr)
+> +static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, 
+> unsigned long addr,
+> +        unsigned long end, unsigned int flags, struct page **pages)
+>   {
+> +    const unsigned long nr_pages = (end - addr) >> PAGE_SHIFT;
+>       struct page *page;
+>       struct folio *folio;
+> -    int refs;
+> +    unsigned long i;
+> +
+> +    /* See gup_fast_pte_range() */
+> +    if (pmd_protnone(orig))
+> +        return 0;
+> 
+>       if (!pmd_access_permitted(orig, flags & FOLL_WRITE))
+>           return 0;
+> @@ -2960,33 +2958,30 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t 
+> *pmdp, unsigned long addr,
+>       if (pmd_special(orig))
+>           return 0;
+> 
+> -    refs = (end - addr) >> PAGE_SHIFT;
+>       page = pmd_page(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+> 
+> -    folio = try_grab_folio_fast(page, refs, flags);
+> +    folio = try_grab_folio_fast(page, nr_pages, flags);
+>       if (!folio)
+>           return 0;
+> 
+>       if (unlikely(pmd_val(orig) != pmd_val(*pmdp))) {
+> -        gup_put_folio(folio, refs, flags);
+> +        gup_put_folio(folio, nr_pages, flags);
+>           return 0;
+>       }
+> 
+>       if (!gup_fast_folio_allowed(folio, flags)) {
+> -        gup_put_folio(folio, refs, flags);
+> +        gup_put_folio(folio, nr_pages, flags);
+>           return 0;
+>       }
+>       if (!pmd_write(orig) && gup_must_unshare(NULL, flags, &folio- 
+>  >page)) {
+> -        gup_put_folio(folio, refs, flags);
+> +        gup_put_folio(folio, nr_pages, flags);
+>           return 0;
+>       }
+> 
+> -    pages += *nr;
+> -    *nr += refs;
+> -    for (; refs; refs--)
+> +    for (i = 0; i < nr_pages; i++)
+>           *(pages++) = page++;
+>       folio_set_referenced(folio);
+> -    return 1;
+> +    return nr_pages;
+>   }
+> 
+>   static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
+> @@ -3033,11 +3028,11 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t 
+> *pudp, unsigned long addr,
+>       return 1;
+>   }
+> 
+> -static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
+> -        unsigned long end, unsigned int flags, struct page **pages,
+> -        int *nr)
+> +static unsigned long gup_fast_pmd_range(pud_t *pudp, pud_t pud, 
+> unsigned long addr,
+> +        unsigned long end, unsigned int flags, struct page **pages)
+>   {
+> -    unsigned long next;
+> +    unsigned long cur_nr_pages, next;
+> +    unsigned long nr_pages = 0;
+>       pmd_t *pmdp;
+> 
+>       pmdp = pmd_offset_lockless(pudp, pud, addr);
+> @@ -3046,23 +3041,21 @@ static int gup_fast_pmd_range(pud_t *pudp, pud_t 
+> pud, unsigned long addr,
+> 
+>           next = pmd_addr_end(addr, end);
+>           if (!pmd_present(pmd))
+> -            return 0;
+> +            break;
+> 
+> -        if (unlikely(pmd_leaf(pmd))) {
+> -            /* See gup_fast_pte_range() */
+> -            if (pmd_protnone(pmd))
+> -                return 0;
+> +        if (unlikely(pmd_leaf(pmd)))
+> +            cur_nr_pages = gup_fast_pmd_leaf(pmd, pmdp, addr, next, 
+> flags, pages);
+> +        else
+> +            cur_nr_pages = gup_fast_pte_range(pmd, pmdp, addr, next, 
+> flags, pages);
+> 
+> -            if (!gup_fast_pmd_leaf(pmd, pmdp, addr, next, flags,
+> -                pages, nr))
+> -                return 0;
+> +        nr_pages += cur_nr_pages;
+> +        pages += cur_nr_pages;
+> 
+> -        } else if (!gup_fast_pte_range(pmd, pmdp, addr, next, flags,
+> -                           pages, nr))
+> -            return 0;
+> +        if (nr_pages != (next - addr) >> PAGE_SIZE)
+> +            break;
+>       } while (pmdp++, addr = next, addr != end);
+> 
+> -    return 1;
+> +    return nr_pages;
+>   }
+> 
+>   static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
+
+
+
 
