@@ -4,84 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C44CA101F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 02:16:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 717A9CA1013
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 02:40:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39BD76B0007; Sun,  7 Sep 2025 22:16:35 -0400 (EDT)
+	id 99DF16B000C; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34CD36B0008; Sun,  7 Sep 2025 22:16:35 -0400 (EDT)
+	id 94E956B000D; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 262336B000C; Sun,  7 Sep 2025 22:16:35 -0400 (EDT)
+	id 864706B000E; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 146FA6B0007
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 22:16:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE39716090C
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:16:34 +0000 (UTC)
-X-FDA: 83864469108.08.BF352FB
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A0BEF160002
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:16:31 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wUvIXf5n;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 75FCD6B000C
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D1B3E11B02C
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:23 +0000 (UTC)
+X-FDA: 83864529126.02.1EE3ADB
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 06CC880009
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fr5iBAS3;
+	spf=pass (imf02.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757297792;
+	s=arc-20220608; t=1757299222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fSRS+R1XjsTFSUxoGD2Q9a4ybrs4HDjecpHqO6RVh1k=;
-	b=6ygh25lkhR/iGmdUGFiSRTvlNptEN35s1uZoBj4hkmtT6U43iBWVsq9b++7oy5OcsZJxVp
-	VK+mUlp/gf/eGZxMsoNqC1KJyFn4+6zdBCeMLrGfLnIlXqvJZ0HzfBOibL4PBW90yCg4rQ
-	/RXvE7cT9Fy7AjLQF34c/gH7TWiSB+A=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=F05Pyb/PPuwSrMwUArE1DpgL89Fb2LA8TTTDyvg9QlU=;
+	b=Nl5TjDFX5Wob2z3e3xt/37QzCPkzqjZvsj5ry2XoCEiDREBLxYm61IQRozQbCVRMz41gvF
+	BV9rzExbSlLrXVSB9yt1cDks4CotuJtW6UbNdhsT+Si2Ey+sgfIW/Lr9myvafHO8rzlLbJ
+	UpIIPbp2EZ8mp2TSoUizQnZ+K8Me0Jc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wUvIXf5n;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757297792; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fr5iBAS3;
+	spf=pass (imf02.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757299222; a=rsa-sha256;
 	cv=none;
-	b=TQlXrtVvKxBSuvi5DW7/HXEtq/cWdBquLvivM3uacs6Fd5xtk04NTIqC3gIoFcn740X8kM
-	nv16UkvklL1j9gXVfUrpJFRGkQOrV87SN9/Ip9wT/yuFka948lZ/IdyQ5S/qbBPZ+LYUOT
-	rJyRyfLdJjPVEVdrKMxSyjHzhSOJLjo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757297788; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=fSRS+R1XjsTFSUxoGD2Q9a4ybrs4HDjecpHqO6RVh1k=;
-	b=wUvIXf5nuETDaTveafAgCXqmQuumqXnvGyeV4zUaBg8Ext0T38qi9I47ppJbWWUqikaJmec0UfwPvwoND9JOa7WkwJpkd6f8T9BujnZbjuxYvYufv3Sji85VUlx3oGu3dZGBW4TvMdZ2Stf5PeLzrUtZfk5ghbPZNsc/z7dpt6k=
-Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnQBVtb_1757297786 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 08 Sep 2025 10:16:27 +0800
-Message-ID: <d86ea841-b18e-4f6f-902e-0763492f5aeb@linux.alibaba.com>
-Date: Mon, 8 Sep 2025 10:16:26 +0800
+	b=PD6hsoaPc2B0Bu6+jMSEUwzy2kDaRFoPRlegpi6hqocqCMacm8M+/Vcz+N871HO7H3q+r2
+	zIJ7alkodSCHyYUnI7eN7XfGl48M8J49btqrv8TmN1blffWWGz4/VzfVkFcDw80R/fyVDQ
+	0GLvckqLKRiWFkDDcWOSRMJzYF/W/Lk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757299219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=F05Pyb/PPuwSrMwUArE1DpgL89Fb2LA8TTTDyvg9QlU=;
+	b=fr5iBAS3xtbxwNClTulvrLmfA/JJvTJAT3KtveSe2z0hFXo0yVj/1fda3i1QlaIrleXhtc
+	GvHsxEiPkHMJL4jWlf6qJIn16bJzkjbF99An9Fae6Y7VFq3By5N1+KRgGRVcNxfCiM5t19
+	CEZLoeOWf8pOwgkXp9az3AYNQqiBg9c=
+From: Jackie Liu <liu.yun@linux.dev>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Cc: hughd@google.com,
+	baolin.wang@linux.alibaba.com,
+	liu.yun@linux.dev,
+	liuyun01@kylinos.cn
+Subject: [PATCH] mm/shmem: remove redundant entry_order variable in shmem_split_large_entry()
+Date: Mon,  8 Sep 2025 10:39:14 +0800
+Message-ID: <20250908023915.28907-1-liu.yun@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/huge_memory: fix shrinking of all-zero THPs with
- max_ptes_none default
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Usama Arif <usamaarif642@gmail.com>
-References: <20250905141137.3529867-1-david@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250905141137.3529867-1-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pc6um7ggpfn5gkj53ubnoxo1aergf7o6
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: x478nrrhasbngqbbxwgq4ki7iasg8m4u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A0BEF160002
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1757297791-176131
-X-HE-Meta: U2FsdGVkX18fLJEPXwweJjj2xD3Ij9E503+8J90YgOzg9vAgfE901+qzN8pmLnOO8Pzvc0y9FYgHegxaItTT6m2uKH5AAFghDlFf2YugXQBtHIg1dxpOHi0yeY4/13zTSd5IqQGoNou35i27S9r0OQlahcANasqgc0lpnkQBEVvjdLOBiBrqxD0kDBQf4SaERJJeM8aDFr7mI0oEvdSB0VOAePRWhS1MZfkRW9DFDCU9U2GCIQzJRynC2NiNKaFq9tzGJsRtvZ77QRc2/ZHhMBKy161A9o/PVAcy9NOdssbsZSgqnlyI2x9rPIL7Urrw32ZHS3qN7ZTcoxcXZMQ2BhHRcAgDew9bw32Q7VqljZQZoxL+ILGDK3wP/axElxkvuT4TbSXf46Nn7Jb08IzFpzJPm+suWy09fwXDYxUrUF68wvONmL/LmL/KvRb9rFgIT2jeQIoaO/60BdBOx4cpPSaHIcZRDyK3Pfhcz+998WcSJ8mYRr7g382ZoZbb/Grsc/ASJ2WBpfeEyLGP/kk5uoMtLzHGHp/WnjK+3xQN41/zjnLn32EJNTm8HzbhvEcQrWphi7rbQW9Z183CqQ3/o5QoiabB0UgMRuH4/ztr2gz0ZhOUxXY+iKfV4ru/d9Nmf0jgiG1ofNLUgq8U4qo7WqdZ9KcFhyVTeL7HXS2CFMIUap4eV55dM6bJRbBTe7bv/TJUs8aYpkPHptvIOAtgEmdW80683wdQL7fcXey0NHRjDhbtXFiLJZ3HQ2h0LTHWu2fjRMfhMpC1kDcwuDh5ptclcuN5neeSjE4ZrEidXKegu8dxA1XMO8b0Ck0DlH6cdotMKQOO0j9F0z/X3ktdFa7RGzDa8q4ZYyE2+c0U6whltLyrS7y5o2PKCkjV7CTq7vAFJ2F/LVoNZw1AE38te6RJdX5HMMq79eCCZ8FpKmKZtA5dNuhkoVyHPfWxBDsPPbKSIc8TSnevMy6GwEQ
- fXk0tXy1
- DFDpZzOg6Ab/RwH+sFxx3T+GlpDqgeU/KEOLYIT4o63lNt6H8sdAtDvLDeRx9Y7JsLXfB79v+INL4X7/ckb9E0J5WDT834s0q/WH2/HqVUFoxfmfbR8M2+sqjiqd44MJs/PK3k7PoWFeI0k05Tn2XzVADAW7xzK6Qdi0NYPVCelyZexXNuCbrypp+bUoUqETKHVNBEfzzLVqkxEGZdirYMeCVcugfAjLrrfDntf86IPeDBhWlQtDp/TCmRETc0EXpE+lETyy0ZTt2Q6hGAcHibT6sxbgXpVwd1uUFIzJFS/mtjQrMoM+pAc+ASgJ+HrKZ1lBC1Rqt+8MaGlOsTL7lz5zT5E9i7NIhMOiIgM1X/HxulHmvTJvgdAc008o7J1WY1ThXnHJQuKZ5bJ969AmlivQeL9Y6vE0A5/AUtsL9nPkteSMrmjabW5EbSXPEs1a6lq1mCjXWvX6SL8ofANlhqBIwcRWB+jtBBYUCey8Xkvz+75njymtFx5nk4hG4SjEN3KWc3+EKXMHjsK86MZSt6dB76NlPj7shpmK3tqyzsX77JNemy71jS4NDoYWiFm6Lb5NaU9aM1Bl6QWU=
+X-Rspamd-Queue-Id: 06CC880009
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757299221-314863
+X-HE-Meta: U2FsdGVkX19qdWBBTDb/j1TRcQqiju+PP/LTPx7lEEhx7u4hrx8V1S4V320N8IZHEfn5KjEKCbNS/TxdUp+FLk2Lz2PaS/XqxEh9QFuGmcsvduVb2Ab4aDTiizDYAwxrYXZO6VhmXyxNGogd0kR0ba0Gvh67HT/GGiRukPe7SfYSLqMzHRybRMi4j3JNBmWVbqA/S3TGHd/79VgHu5FuLL4Quoo3xqThDOtd0s7DAVRrno+IdjiamUnqQw/fSdDGqWUa4wEYJPUCQhrcYRU7QtYpGt1/NdtULBGAGKZqm0poPdrL0eiSZWlGyA71h2VQs8ITS/LHXvKV/aEqDo5p2LCJnT1sKZpNiAGSo5qDNznKHW3ugAzHiGq6InwnhidVHELxS5NbODwWMWH35+kTHC++8203Iul3mwnXoFKtmhl9QmhEifl8YR8wsrcT68xjmkDKCPUJE3flIH/rVKB8uLYiS2YmAjNfWbVWTKt0M2zgrfm8UcjAj7kZZiqBm49vMQitxLtgCBIRA/FU17wMR+yJKjeYV7nG1IVVc02p24akRuYBZbTAH9MqXbYmWAz6neWwPJgjcjhV0vJOHfedFcuLCcTqJdiWvCPWd1TB662v7bbd7IPvg8asRcHw+qmQuTjQnQ2kerxwebcAjQKYQiuYp7ENs9KE6t/r5BA28VT7C/Fvh+Zt7VdFOFMmRzFc80l3abqfmhBNL1fYfU6d1rNz64UomTVhE4pyFQE/fVvW4DIVPg9uxN+6jU/g4FLKQ4TYXLjzGkddo9hP0Yiu+9AE9c8bKAZNbCqSg0FFy9nHRRF9n9of9kFoATO+//UK8UEfpoOUqZ5LiYDNUzug+ZzvefIIvS0AxbNDNLuAhRfvjirfs1eLGSNgdlTu/ekgmzOMpQJbTNloTC3YI23sCQYUwuxJ2J1HK9Ed+rRp8K9K2KC/EMeCXlO8rQAjSC4h7E9BM7CAtDjouoA9x7V
+ 58UR4k1m
+ wLhonp2xKalSTtywR7MVoLiJVSj+5ha31y2YQSEqyU4HN0UMbqCKjX8JvOZzRV1zKmKT5e9zppVunpusYuC2Y7TuPiI7U5es3muxvWKxWlziH2OCWX6cT72hkT1MIY2rzFAWY7nRQ7k6BUbN9TxiGIF0zkPlm46WZ4B+F7f6BguE62IQaJG0oHLrkbsUaTcTUp4oI8lkQX3DhuwxtdMiHuYLFlnSrrrFGT5C6Pw27/r1/pBQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,108 +87,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Jackie Liu <liuyun01@kylinos.cn>
 
+Commit d53c78fffe7a ("mm/shmem: use xas_try_split() in shmem_split_large_entry()")
+reworked shmem_split_large_entry() to use xas_try_split() and simplified
+the splitting logic. After that change, the local variable `entry_order`
+became redundant since its value was always immediately copied to `cur_order`.
+Remove `entry_order` and use `cur_order` directly to simplify the code.
 
-On 2025/9/5 22:11, David Hildenbrand wrote:
-> We added an early exit in thp_underused(), probably to avoid scanning
-> pages when there is no chance for success.
-> 
-> However, assume we have max_ptes_none = 511 (default).
-> 
-> Nothing should stop us from freeing all pages part of a THP that
-> is completely zero (512) and khugepaged will for sure not try to
-> instantiate a THP in that case (512 shared zeropages).
-> 
-> This can just trivially happen if someone writes a single 0 byte into a
-> PMD area, or of course, when data ends up being zero later.
-> 
-> So let's remove that early exit.
-> 
-> Do we want to CC stable? Hm, not sure. Probably not urgent.
-> 
-> Note that, as default, the THP shrinker is active
-> (/sys/kernel/mm/transparent_hugepage/shrink_underused = 1), and all
-> THPs are added to the deferred split lists. However, with the
-> max_ptes_none default we would never scan them. We would not do that. If
-> that's not desirable, we should just disable the shrinker as default,
-> also not adding all THPs to the deferred split lists.
-> 
-> Easy to reproduce:
-> 
-> 1) Allocate some THPs filled with 0s
-> 
-> <prog.c>
->   #include <string.h>
->   #include <stdio.h>
->   #include <stdlib.h>
->   #include <unistd.h>
->   #include <sys/mman.h>
-> 
->   const size_t size = 1024*1024*1024;
-> 
->   int main(void)
->   {
->           size_t offs;
->           char *area;
-> 
->           area = mmap(0, size, PROT_READ | PROT_WRITE,
->                       MAP_ANON | MAP_PRIVATE, -1, 0);
->           if (area == MAP_FAILED) {
->                   printf("mmap failed\n");
->                   exit(-1);
->           }
->           madvise(area, size, MADV_HUGEPAGE);
-> 
->           for (offs = 0; offs < size; offs += getpagesize())
->                   area[offs] = 0;
->           pause();
->   }
-> <\prog.c>
-> 
-> 2) Trigger the shrinker
-> 
-> E.g., memory pressure through memhog
-> 
-> 3) Observe that THPs are not getting reclaimed
-> 
-> $ cat /proc/`pgrep prog`/smaps_rollup
-> 
-> Would list ~1GiB of AnonHugePages. With this fix, they would get
-> reclaimed as expected.
-> 
-> Fixes: dafff3f4c850 ("mm: split underused THPs")
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Usama Arif <usamaarif642@gmail.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
+No functional change intended.
 
-Thanks for sorting this out. Make sense to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
+---
+ mm/shmem.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
->   mm/huge_memory.c | 3 ---
->   1 file changed, 3 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 26cedfcd74189..aa3ed7a86435b 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4110,9 +4110,6 @@ static bool thp_underused(struct folio *folio)
->   	void *kaddr;
->   	int i;
->   
-> -	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-> -		return false;
-> -
->   	for (i = 0; i < folio_nr_pages(folio); i++) {
->   		kaddr = kmap_local_folio(folio, i * PAGE_SIZE);
->   		if (!memchr_inv(kaddr, 0, PAGE_SIZE)) {
+diff --git a/mm/shmem.c b/mm/shmem.c
+index e2c76a30802b..53d28ea6e52b 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2235,7 +2235,7 @@ static int shmem_split_large_entry(struct inode *inode, pgoff_t index,
+ {
+ 	struct address_space *mapping = inode->i_mapping;
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, index, 0);
+-	int split_order = 0, entry_order;
++	int split_order = 0;
+ 	int i;
+ 
+ 	/* Convert user data gfp flags to xarray node gfp flags */
+@@ -2253,15 +2253,12 @@ static int shmem_split_large_entry(struct inode *inode, pgoff_t index,
+ 			goto unlock;
+ 		}
+ 
+-		entry_order = xas_get_order(&xas);
+-
+-		if (!entry_order)
++		cur_order = xas_get_order(&xas);
++		if (!cur_order)
+ 			goto unlock;
+ 
+ 		/* Try to split large swap entry in pagecache */
+-		cur_order = entry_order;
+-		swap_index = round_down(index, 1 << entry_order);
+-
++		swap_index = round_down(index, 1 << cur_order);
+ 		split_order = xas_try_split_min_order(cur_order);
+ 
+ 		while (cur_order > 0) {
+-- 
+2.51.0
 
 
