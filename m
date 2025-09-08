@@ -4,96 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62CDDCAC582
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 19:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C86CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 19:55:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A50428E0009; Mon,  8 Sep 2025 15:52:06 -0400 (EDT)
+	id 96DF18E000B; Mon,  8 Sep 2025 15:55:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A288A8E0001; Mon,  8 Sep 2025 15:52:06 -0400 (EDT)
+	id 945AA8E0001; Mon,  8 Sep 2025 15:55:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 965978E0009; Mon,  8 Sep 2025 15:52:06 -0400 (EDT)
+	id 882618E000B; Mon,  8 Sep 2025 15:55:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8644E8E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:52:06 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20C1313A2D2
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:52:06 +0000 (UTC)
-X-FDA: 83867129052.06.9C776BD
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5F6F1140008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:52:04 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of 34zO_aAkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.199 as permitted sender) smtp.mailfrom=34zO_aAkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A3668E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:55:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 238B41A0293
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:55:39 +0000 (UTC)
+X-FDA: 83867137998.07.6830AFA
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3A62E18000A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:55:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XNWgsIPt;
+	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757361124;
+	s=arc-20220608; t=1757361337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=6E6CGk2tmAlq5+OVCzHjqNr7fmm4smeKYiarZdZ2kMw=;
-	b=6OYFdCnA/fvPS3+idk0bdHRI2W7eikideJwaAK8Ewojx0enRDVQimYB7rXhOXV4XIgPR1j
-	u+T0LwpwcP8417DprnBRSwwDNYR1UVgNkV6bCQ7h3+2bi+qqzMR43YMS/W0utIASEe2vmi
-	IBMeVds9XYXLqrImfPrcxG6XbN+gkOo=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tmr9R0O7RWkWQ6LWG3LXCf5yq/w4BQPFAFSdkpU6lPU=;
+	b=bT6tApBsLWzHcGw0kAjg2r3pxwNWj00kX/yLkN7jSC9k6kw1rBDsEneCDL5cBfi3uITf4v
+	xEQEGwAtTa7eTqI3wCvxMhhAZGZxNmh+3JzKxk4dsG1wBnUHZi/M5dZvBDxInnHSl78eK4
+	/OW1W4OljMxrtkCuYCIyjqaqQay8BOw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of 34zO_aAkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.199 as permitted sender) smtp.mailfrom=34zO_aAkbAJQGMN8y992FyDD61.4CC492IG2F0CBH2BH.0CA@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757361124; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XNWgsIPt;
+	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757361337; a=rsa-sha256;
 	cv=none;
-	b=R3OTzg8d21W/9yxEzGZ4hd/FcunBL4+6AhXRQK+OPJwK2dflKySZfUNfz+A1flqgHtT35a
-	fMpx9KboP9rT0YSCTwaHptor6bJxz8LcJdDD1va+xLl4/S+dxVuNecZLwwYpA1BgO3O77p
-	KAq+/5C89/WF4h1L2ULLsdBEjoS2/lA=
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3f6f0058e9aso108938595ab.3
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 12:52:04 -0700 (PDT)
+	b=2tl+xk3FrKq5sO4zVimIYsbPoqff/EaguvdnpDgmgJdZpL/2himmcznAm+7sWq2t4N8NUA
+	z1qtwTJWpV+dsGcxLRlaVBD2EYhwWOkfumclvNNBOQ6NyOIzTkqEmvJkD0sHyDJeHs4FYJ
+	GlOUKUmTZlcx/1pkbw3zlHI1m5FBg5U=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b5d6ce4ed7so978501cf.0
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 12:55:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757361336; x=1757966136; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tmr9R0O7RWkWQ6LWG3LXCf5yq/w4BQPFAFSdkpU6lPU=;
+        b=XNWgsIPtslzssg5sJcxMFOwt5TInPTPDBqthSuslvyHjpUzRzuxP6ebCJJi7DfCD6p
+         iDFa0PRrJUYRA9HeigN0TxCzbTzkVxM1iJW3hp49ctUFQNfAKtEjYGq6ELz5I+f1NMct
+         r+U4crWpaznxWs2vF8DmY8blAtJqUuQR2NR8Cl+XeCsWP/S2D6H+aQPFScwIC/j3o8Wf
+         ZgmACtTheUacbmv8mZu5vl0A9YT+VJ0KN4ykHD4Wl89zK4y4epNU6ckb09GeTIxDLOpu
+         5PWvk1JwK9XHK79Y9MUrE7S7c2jqA4fulDAXnW9gyzdpG2Gk3pfwSCsChhKmIl0FIbUu
+         AhPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757361123; x=1757965923;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6E6CGk2tmAlq5+OVCzHjqNr7fmm4smeKYiarZdZ2kMw=;
-        b=vNix/wBnU9bsUA2ye46kLQ05ZqKS60bUco5APn/oRR+VncZ5IbLzeW9mHwQ4fZ4nMR
-         hdrStPPYMZALGbIr5qYftfwvX9ji4RMOAa3zPtyh4xHVIg9r0nBBbqmBRPD72x2PRwxk
-         IUrOgCIfU19yOq93bY5c95sUbAusjKjej+X7E2Ub+SesfqEmzXtLd/acd384d1HX7rGo
-         7JqpPHszieA8PThusbPIUJt8IO61Tuz3e3oAUEhC+7Y42fjvkgMkMQbprIGAdlnvWerv
-         WdQ19YG3BV3lnMxjZ78UyjtXQ+poJH/2gEQMnUYrdzot3aEC96SRmp5skNWUiwpZ/G80
-         1Ffw==
-X-Forwarded-Encrypted: i=1; AJvYcCXb+b7qEXduYmIVk0Lz5oy4BDg7xTH6CrPJ2074nnoksxpJk/OTh835sGpT4qLvySsAYq5GH5BZJw==@kvack.org
-X-Gm-Message-State: AOJu0YzCKA+tgg+kWClBZb7Xwra6wl0hFHNm1SoZuUBq8w9QV2hanoLy
-	XRnpoARBgMB9ASdel/0/BqyxkIyhJKg1Kz+bTVjLVX2cP5NVnBTYK1ZxcvWRWWF2sfSAeoU3XeX
-	52E27a5AKC/BM1gZ8UUqYDsdaQ7Vz+x9MpMSa3f+9AniOv0fQ5C9y95icGOU=
-X-Google-Smtp-Source: AGHT+IGXg7L5kD0uoY5KYmviwfxTBneLi5Cm1Bw2Zj7cRXNgGfxtx4v4PIo7McUtRBfK4wibi8nrfPuz44FeC2vNCprnp34kScX8
+        d=1e100.net; s=20230601; t=1757361336; x=1757966136;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tmr9R0O7RWkWQ6LWG3LXCf5yq/w4BQPFAFSdkpU6lPU=;
+        b=azLHopBpqM5IeZVTCwFaIx+R6FNTzwr3JcJE2OWEKvIe7ImhEFesI/nSisj1BI7bOB
+         Xpkyk4GZNXCuKPDagPnUAucCthV2hajWRph3o8BPlID6axYgbhcH++bfvB8e5BQDeXJY
+         KP+1zGnE+UjVwDmDFjnTEcZzr9Mj6xokaMbW/RXUaAImr4DOVrFqqTXj/89qWDtfGsjb
+         Q9vhnPouQ8N41FGt+KR/02nQr7GROMqJ0kMO6It4jLAGC+gSjHAiVW1Fc2Bhw6rG886O
+         xYZhFh07PehBFzchT39XB54GPYIc9QF87wjaj84Ws9pKwYXgX/5+w352XQFfqGP2Xy0G
+         EfDA==
+X-Forwarded-Encrypted: i=1; AJvYcCVAz0E1ZBki5Y0QWDh7Zv3TWAEIhb+bfFxcyFVMyNmt4/MfheEuJAfvInaP4fxGRn5XZR7ux+jaCg==@kvack.org
+X-Gm-Message-State: AOJu0YwkJSGR38xgel8I4zk0wU3evuDW8GC90+/9u8oAjfEP30Ka7zps
+	WxJMwti0gdJ2VxsarxS8nvgUnw/1WBG5B3mnMd18RR7cjrZcpb1h9l9Rbr4AyZVkcJNTYJdk/Mh
+	EjG+vY7bUL8rNpehigSWKe4ln8p+GRCm19tluNqv3
+X-Gm-Gg: ASbGnct7fSYUnzLPqc/KITfwYbGTy/o4AD7113mhlcNZX2081G6y3dzDBt6VsQJwJZl
+	uFv4X5FK3dei6VAhFCs4CkJRQsAtLIe5nBt+ofsRlH8ET1t+sgfU3lGlrCY8qtjtxPvYe3wzCSC
+	cE6c0CCvM2JhY48nvJkDFPPvpZgf6i8vic0ykGTLVLNSEAVTFtUnZOfV5CtScK21saJw0Q9PVm3
+	PgCwA==
+X-Google-Smtp-Source: AGHT+IFht5pppNMMGMtPH/agZlekP76+Bq9kz9lTs1Z+7HZ8Zxgz+fKXs2YuHK6UPaXwGsTfuhgnxU+LcWW0vB3VTXg=
+X-Received: by 2002:a05:622a:3d3:b0:4b3:4ed0:c6f6 with SMTP id
+ d75a77b69052e-4b5f6f80a58mr13347131cf.16.1757361335849; Mon, 08 Sep 2025
+ 12:55:35 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1985:b0:407:51a8:6b5c with SMTP id
- e9e14a558f8ab-40751a86cfemr66244445ab.32.1757361123448; Mon, 08 Sep 2025
- 12:52:03 -0700 (PDT)
-Date: Mon, 08 Sep 2025 12:52:03 -0700
-In-Reply-To: <68bf244a.050a0220.192772.0883.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68bf33e3.a70a0220.7a912.02c3.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [ext4?] WARNING in ext4_init_orphan_info
-From: syzbot <syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com>
-To: adilger.kernel@dilger.ca, akpm@linux-foundation.org, apopple@nvidia.com, 
-	byungchul@sk.com, david@redhat.com, gourry@gourry.net, jack@suse.cz, 
-	joshua.hahnjy@gmail.com, linux-ext4@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, 
-	rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, tytso@mit.edu, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
+References: <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
+ <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com> <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
+ <aK2/Vesgr9Xcl5gy@devbig569.cln6.facebook.com> <CAJuCfpHJMSd16j3ANrtJGVfLieHdeO_Epq=U9OKty3TV362ckQ@mail.gmail.com>
+ <aLFKHGe2loD657fu@tiehlicka> <zerazodfo2uu5az4s6vuwsgnk7esgjptygh5kdgxnb74o2lzjm@fkziy4ggxrxc>
+ <CAJuCfpFynEuwBSu28UiRDjWrayN-raX4Nqqh283MwRoJLi8bMQ@mail.gmail.com>
+ <uoyjzkybkqd3wkvauofmorv72gnjisoq3owvijsezpt3wbrazz@at562ngtvszd>
+ <CAJuCfpG17E_yoZeqEDrN0PFn8UBKqiGT28KDwEDmBm6byFje-Q@mail.gmail.com> <cca3gvk5gco6i2vbjvtarmi77imgj5y64kqb7bebcrbjagdwca@4p6zq4iaiqr6>
+In-Reply-To: <cca3gvk5gco6i2vbjvtarmi77imgj5y64kqb7bebcrbjagdwca@4p6zq4iaiqr6>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 8 Sep 2025 12:55:24 -0700
+X-Gm-Features: AS18NWA5R6z4os11O0uAZbscD0giAOrKc3pAZnMY5I0U-VPDOAWS3MM6jGMGM2E
+Message-ID: <CAJuCfpE-dTF_TRJkSffTxtD_P8A10MJUOHd83xBg4B7ATknGGA@mail.gmail.com>
+Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, Michal Hocko <mhocko@suse.com>, 
+	Yueyang Pan <pyyjason@gmail.com>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Sourav Panda <souravpanda@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, Johannes Weiner <hannes@cmpxchg.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 5F6F1140008
-X-Stat-Signature: 1bkhd41f6kk9p4u3c3caek6hcoxmubui
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 5mgo17bq3pprjgemjnhrptw1jirs1wgz
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757361124-200759
-X-HE-Meta: U2FsdGVkX19+/3VlLtyFV9qt9WpApCw3Lw60bpi5dikwrHYNS8nDcduS23w3Kfkh3U9i8DmhIny+3NM/WK3ZDXrBEQtK6ci1dd8cp9F7PNxVNENlhpFp9xbEZlOSdBHADSW9MOZBCpafPoVDpjr/jTidBTVo2rOpB0icZALka+CcqO4i5UlsQF6x7xAdVMOzwoQ1paU61VpAeJ+BfZjf88/0p/ecTRWeTy9Sz14m6dJNq6EhLhRV17G97gCNTLS9MjRA9weu++kug0/6b7PhpFmUfsggt2SsU6EykTVUp8o081D8GWLRBkX86KZNKoGbmtBpEyd7/HBAUkuJbz07guposbRYmWlVL5YRfU1c6rXl7ldLPkJm4UMNmOig+KFnjB7rTbGTjv/1MEcq4IfijfmHXd0mSCUgvdkv6UBCSy5nJvJ3ZgLMVMCBxFXIZ1n6h/57az4TtwPttHwP70vpk9ivWTj9uvpUqHPTkzZWUyoF6iGBzi7E5QhAdAfEmb+3xr9pesyHKLJRSpbIx/Nae94cL3RByygSS+BLS01ufEWtmMAZju/X84FBzSWMa6Yv1+zvw6dW0m7ePNIs5NqKzgjXyT62xyDdBbWKUbceoWTncK1JUTyJVhnZCgBwf0tzi1aJvRzQsjC0fgTx8hbX+CRObwNI+JtkWZ65X8UQNWPG99W0B53yfRPU3mmSSfCLR2/F0nMt1qftdXhiteBwxcVxEi1gHv9LZIkVCZsxq0s31k3Q2MUMu83VVTTRe/Qfj6YedJ6c5raFrMg0AOJQmsxyBpQnJsulAczSg7lq7lCCTD3CDJNG5LgAriEJWKo2ubN77KzDAAhEaVNxK23jyKCB8kgfgtEYpP085YD8yKaaxCqOmI73ES8IR0kpCoJxgAbNODyxAF5sKrwAiPQpEWhyyKMd9ebitL+r7SUNBgddyqr5pls0LPF7yQFXcGjuW8ix+m5pViykIOPbRly
- RCZm3sFq
- zg5A8fK6WERs40GK6z+46R1gUCBspFHT6V87dNxYgFHXnkgHbyCV5q62gqK0q36rRru/94F59VeqEyz3r3PvrJMY3ft8GDSMpeHiokVnLApQ1qaDUiyhxHRHY9lMrdvAWVqcl/p+rnysvfLBNT1hFOBfHvzHlrYiUv5XggEHJFBC1RwbrD68uIFNJJUGcvtM6TCowpoXaCiaiZzLoGPCMpEE+nQpp7yJZBErUVFa0fu656Vd8XMAz4cvWwwnsJbtVzYfEcNJCCy6xt7QmRy9/ekL92wZm3TXk4k8cKxXrHGsSwRXzRbyjPloQ0K4/jNmSQ9ixXnGcAgmBOZUHREj+o4Cdr4mmP2t6YFssg/G6gh/y9Er1ACdCVyyOE4SFeIaxmVkkowi+thB5bFOPoUItbGg6qFkSXvLmHSR16/6p15GVd490MSZOxdz2HUhopbxJuHBM3s4fzUuFkLguAMRhj3JRl6vUVTBMlxBvoz5Hc53TXTQHYNWrQxxKk0XzHGsQsizXVIi/t1nwf2Hawz02tY/dJrU93MBea6vW7L/iGtjfxOx99s1l3t3GYfSyiGIQkGIFgkC0o/Xw9YWXJ4qJEVKF5b93B8AG9qlCZh/6ZwEnp+CXAFUt6iL3tMw/pS/aIrsjmbo+y0M19mlMGwbHXdsUzwi/TccfMshWuD+Rk5Mb0V7h5dRHGXk4EXKKdOgnzPa6OO77FrZUxCuoDnE5FGkVBW72AoJVB90f3tRbzj/dKFU37PudVD/5I/RuKUi+nK3zON/etmnRhvbC3YbBVEDToDn1rgHokzaX028mC/U83PzLIYlvKDZL27/cdLRFIyD7pDBrdNocLq2Al96WI+L6VIbXLGPExVvlQDvE2sjQqaJOlIM6d/fgR7/IdDAPs4AxwP2bV6IV95XDZH4+Ok1tRTgY0g8DBB4Voq8eN+1IzQm6fc8uOelPwtyFiFLhOm7o2v+DHMYNvL905YmRT/N+sAGK
- iTasr3iv
- ktbHlB6h5Hj9cPVsUi9/n7+/uD2pjf9akSpqexDDKovf02M5MnK7c1RXPmHLDgWcs/QoJuwgH8IgTrSueAqeVfba4H0cNLUu+wv3RdZK7cuCo6rFF7pGt9AvT0i04z4ULBDyClagcE2E/T27YpUlLNYYyrdX3sID
+X-Rspamd-Queue-Id: 3A62E18000A
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757361337-120402
+X-HE-Meta: U2FsdGVkX18FEKFuWUjMWt55+L+VCBA1+1yzorvYp+J03YdTdaOmtLMyFhmJRX9tpemzvlFIVtWcL+wqhuxUBhb1T6g56TK3S9aNE0toc8BThJWSzPH/QTlAS4ZMeBq7e7d5Kzl/IHM/fxyGjnispNAzDd81YurxjwmJg0X0deTIoy38ccOKRb+/S6cEKOTChPpSvBTP8mFs5JAReJXz/1Q2toode1H8poWHp/XFzm7qvT5akWH2I5Yeyioi+kPCJBrsM1Mm9oLbFbijXQ1fc11HGKQRC74kBGNK0poK8iy3zbt6/Dj+wxTs1URAwdOBXf7WGnSJWtiOLJDR7mAwsnJNq8FTHY2E5sQ2pJmTCkA3yiqPVGQOVpYtlzlJzr2o6/dn12fNH+MWvVrLdFr3tU12scdt28aw58d9GtruHimuj0m00x8b9JFaxGk0cMOI0nHEuCWH5bvy0GednTcTIz1StMqs/UGL2iBVOT3qeh09xVTuFt15YFXJnVlO0GUDRpOHqeoVYtTjCLEe7J7LcdusreMyWwXlHvywWks2EBWpeis4lSXSPSJl/tCjevOr+PuiUuGSoMWM+YtJ6Ot3Q7uYn6KE2Kn39rlH9AVgmSoeUM//ANuoW4b/eJHMRdXZM9svLx/oyzM/6AJ7bt6UUU9gXt3w1N0WPLwjnmUoCwXxBRI8/smjAg55oLwolQ8aMg8QOQ4ejkV6vdRIw+wv6eJuZNzk+vCiICJmhp52+6xQdnZOt/HeZ4KrCUkWsms97Piu0l8YfO2icUja8PEqNjDzUGTIQHYSZdkugd2rjT2jt7DsIf6RcS4UOqe2/t/nr4S+XT0JB/4B0SDTtiLt2xtrOPa5weR9fHrmSht/vKUb63mdNd2dxBII2ENnxx/8SAMw9oSmIQX3s/st7dml+EVz7RBqsolQZIxRjc35Agwie6nmjFErJhZhTSZ/ezb40zef4fLQq6YbtE1ibtT
+ dXX4hT8n
+ 53LmUSQzYvECo3kTX5KpXiuL0SZNQ7mLsKRTEYS65zR5GZ2C95hgWnGXNzezPH3OdF14xZciUUwKUNU1H3MnIoVS+Gzk018mAkn2gvi1b1gxZKZNlhRwyhM9Q1JvH0AuYQoun/mGVJu1rzavfXa+AVuH4L8XCULoVZrSg7tDWR3vCJP0Pdg8KYsAoVb5uHVelsZMR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,26 +124,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has bisected this issue to:
+On Mon, Sep 8, 2025 at 12:08=E2=80=AFPM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> On Mon, Sep 08, 2025 at 10:51:30AM -0700, Suren Baghdasaryan wrote:
+> > On Mon, Sep 8, 2025 at 10:49=E2=80=AFAM Kent Overstreet
+> > <kent.overstreet@linux.dev> wrote:
+> > >
+> > > On Mon, Sep 08, 2025 at 10:47:06AM -0700, Suren Baghdasaryan wrote:
+> > > > On Mon, Sep 8, 2025 at 10:34=E2=80=AFAM Kent Overstreet
+> > > > <kent.overstreet@linux.dev> wrote:
+> > > > >
+> > > > > I think that got the memcg people looking at ways to make the acc=
+ounting
+> > > > > cheaper, but I'm not sure if anything landed from that.
+> > > >
+> > > > Yes, Roman landed a series of changes reducing the memcg accounting=
+ overhead.
+> > >
+> > > Do you know offhand how big that was?
+> >
+> > I'll need to dig it up but it was still much higher than memory profili=
+ng.
+>
+> What benchmark/workload was used to compare memcg accounting and memory
+> profiling?
 
-commit 02f310fcf47fa9311d6ba2946a8d19e7d7d11f37
-Author: Jan Kara <jack@suse.cz>
-Date:   Mon Aug 16 09:57:06 2021 +0000
-
-    ext4: Speedup ext4 orphan inode handling
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=16645562580000
-start commit:   76eeb9b8de98 Linux 6.17-rc5
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=15645562580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=11645562580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=429771c55b615e85
-dashboard link: https://syzkaller.appspot.com/bug?extid=0b92850d68d9b12934f5
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=168d2562580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15869562580000
-
-Reported-by: syzbot+0b92850d68d9b12934f5@syzkaller.appspotmail.com
-Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+It was an in-kernel allocation stress test. Not very realistic but
+good for comparing the overhead.
 
