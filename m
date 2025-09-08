@@ -4,253 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E972ACAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19965CAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FF8E8E0011; Mon,  8 Sep 2025 08:25:59 -0400 (EDT)
+	id 7714C8E0017; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AFD58E0003; Mon,  8 Sep 2025 08:25:59 -0400 (EDT)
+	id 748CF8E0003; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32A348E0011; Mon,  8 Sep 2025 08:25:59 -0400 (EDT)
+	id 610988E0017; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 196158E0003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:25:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB2C61D9159
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:25:58 +0000 (UTC)
-X-FDA: 83866004796.08.6832837
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5CA2A40006
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:25:55 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Yq9X96wx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=IqeccymP;
-	spf=pass (imf04.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757334355;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4FE5E8E0003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A940137B6F
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:26:18 +0000 (UTC)
+X-FDA: 83866005636.07.3AA2392
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C7D05C0008
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:26:15 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757334376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=53wKw2g6VGPUuZaRHCvrwdm1JFezKOAM+wGnQSwVruc=;
-	b=A98FX8SRAkw3Paqn3QJwRCrzS+tf3PX0y/FjCbZtD5QuhOizZgr2uOXlrgClXJ6E1bs0q1
-	83IBjNmUct6QcXkrv2HRsZFnTihQ3dRLkDdybqhzmhfBUVi4KojUINWndtpnx0XVih/4g+
-	rn2WEn/iilfKZp3JkGJteCCQ0BvY/yc=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Yq9X96wx;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=IqeccymP;
-	spf=pass (imf04.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757334355; a=rsa-sha256;
-	cv=pass;
-	b=AOTvi5OR3fbJUnIDlwVeHygRHR+gwgub3fRBQYDoUUJl3nK9MQhTbqyQw2DXDEmbfshhBZ
-	daRNpGh8Q3hHMONEIBqQWMFAPjq+uRdGygo0qtYkAX9SNAyhfVE9/p4Z9HMQgZ6jx5yg0q
-	L0oG1I+yW33whmz+Wdlvhik6/YM91CM=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588CP7jD014784;
-	Mon, 8 Sep 2025 12:25:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=53wKw2g6VGPUuZaRHC
-	vrwdm1JFezKOAM+wGnQSwVruc=; b=Yq9X96wxA3CfzTABtseWQzsGSSeUCoft9q
-	t6iAjhGycVuKAQULuJuZ2DYhI9WsQ7Z6oW3gel4eUbIEAc+5RRsx3xuJV+x4oy2W
-	Eq5H6jFHKxisAyIlZqdCEFIUSOuovJ93u7YbREMZSAnHomJaGBHqQIBjsgYWJQMo
-	i+d05KrG8kOPEyn7kuH2qeByDm0jKB5uz5CLDeBR4OmCB5anvniT/oGsudFftPyI
-	npxKe6j5/R6Uam9Wr++GUkgRvAIMaiWS4F7+1agb02r4RtfQyaEo76flw0BGgXZl
-	b7sw5sRo+7XD0P8yte4tHu2FNTDEhZHgDTCzaHP6udZBGg+ANRRA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 491y4br012-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 08 Sep 2025 12:25:40 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 588C2iqE030831;
-	Mon, 8 Sep 2025 12:25:40 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11on2089.outbound.protection.outlook.com [40.107.223.89])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bd83vx3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 08 Sep 2025 12:25:40 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S2vDSYtXzyy/PPVJV60nIIDwcGTR8dzrbX2ADuOHUjcl+27+H2xUPowgm+VdbFPpTbNEoUR5sR7TSI0ILciU3BSchDAZJ7PAwlHX/sTUTNs98tGFWsSr/BHdMh/5fxX9HqvepaL+xHzjPZTmy/ka5tLrj6xWUYHCLmnYsbQQKy36Ax2KPRhj36pf2Rv7gMAFXT7qouwJmJvhBGT+lSppR+g7ec/7E5w5HyYVR4Lb3Ej2R6VcQYquky4nRHtaOfjqG28kpZ7UqglYjSNMERfW4kKxxP0xjORBwUmtaU6hZWB9I70K4Ydv2yj/CZvlaTscr9+aRa8Vlzx0J/9eCjbYFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=53wKw2g6VGPUuZaRHCvrwdm1JFezKOAM+wGnQSwVruc=;
- b=btkcrvhgapf9qsqCKrZVb9F67sQeQpZFaCRLtU4JrUKFWGOmub6MgNNyeXafmINNLbtNiVmwALTh2x2L5JZQacTDpy858FV2sPwB+m/5IIFI5Vn7VCZ5nRImz0bU6eOCMPubmxGlJ9tRGi/Pu4Nf09eQSdZlsKsiBOn/fm7uFJCpuHB3CCybl46ifQwQttDTZ+9zRNs1LS+pe4ZICntFf4KfKyYjYk1N9T9Msa4ki5AHYiaEy4WrSKa5R6F8vMYXIHupbFij+lekPT7BxITqxN1Bj8BzhKQvUJMotPxYB22LTLicsQgtAr3FqNCsFKnMox87SgHs0eUsomN6Y66M7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=53wKw2g6VGPUuZaRHCvrwdm1JFezKOAM+wGnQSwVruc=;
- b=IqeccymP58NxisIPZgsqinUw307nLpl2tVa6MYTpliL3sf7cqvj+JDiRW4eu2XiT0QdLjl2CgDWFPJ4HXWfYcjD8s//tBDuL/F/2ExV806Yy4sUCaNoWqiT3it8QpX5f5fOy8PllwrLPwGncvEtmW4XCUcHF3vfqllcCdh7gbxM=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CYYPR10MB7673.namprd10.prod.outlook.com (2603:10b6:930:cb::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Mon, 8 Sep
- 2025 12:25:34 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
- 12:25:34 +0000
-Date: Mon, 8 Sep 2025 13:25:29 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
-        Alexander Potapenko <glider@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Brendan Jackman <jackmanb@google.com>,
-        Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
-        Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
-        io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-        Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-        kasan-dev@googlegroups.com, kvm@vger.kernel.org,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
-        linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
-        Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-        virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
-        wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v2 19/37] mm/gup: remove record_subpages()
-Message-ID: <727cabec-5ee8-4793-926b-8d78febcd623@lucifer.local>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-20-david@redhat.com>
- <016307ba-427d-4646-8e4d-1ffefd2c1968@nvidia.com>
- <85e760cf-b994-40db-8d13-221feee55c60@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <85e760cf-b994-40db-8d13-221feee55c60@redhat.com>
-X-ClientProxiedBy: GV2PEPF0000662E.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::3c4) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
+	b=p1a5Ze+ihnaMKiD4clhjOnEYD7hEOb/WhRl3pWSSPsmsf8W/4IIQ/KIpaxDFaIS8L68pHG
+	Bc5kcBCugshtySngKY9fFqG1VncTWjKF3tIEo6E1ENCYefA3XtSA1KzdIXJVKkAK0f9cqL
+	lSPQMGRtcRGddFNVSS4UlCb8Q7uoCDM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
+	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757334376; a=rsa-sha256;
+	cv=none;
+	b=x1bLzIna8Hrv4ZiF3sdvvyD+VFd68e/EamvYNUyjRpzyMyL0WS+Pt4U9yi4jXFSbbPyJya
+	hh/I3yyXpQdwFGnQWQuExTEhS5tNV0aUTyhnMSkjKpm2Z7IfBZS5Pft0qOQ3dxpaXUX8cM
+	htHyXTuHxsSILiFPssjwkNwqO91YCdI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 306546BF8D;
+	Mon,  8 Sep 2025 12:26:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757334372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
+	b=sVdZd8po7eWGx5Ww9w3Avpn5gXpxLOF9LEyI3qvJoivDJ433rPmpDycz1Y/NWrxS024LC7
+	BubEWxx8UPvfAB4uynAFWv1pyC8UUoUX9XpyW8BFVZUtkKFzMCtb6xQie2/sz1SjLWSVY9
+	XuJRk4XhjLazNrPZUMpX1N7qLQV0xhw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757334372;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
+	b=zFSsZDC6Yc+HndyH6cao9U/6LThplTGnuWttOH5MYaPdxd/oRpmVEgE46ZRVwl7J3XlldY
+	OHjot5ea72H9D9Dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757334372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
+	b=sVdZd8po7eWGx5Ww9w3Avpn5gXpxLOF9LEyI3qvJoivDJ433rPmpDycz1Y/NWrxS024LC7
+	BubEWxx8UPvfAB4uynAFWv1pyC8UUoUX9XpyW8BFVZUtkKFzMCtb6xQie2/sz1SjLWSVY9
+	XuJRk4XhjLazNrPZUMpX1N7qLQV0xhw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757334372;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
+	b=zFSsZDC6Yc+HndyH6cao9U/6LThplTGnuWttOH5MYaPdxd/oRpmVEgE46ZRVwl7J3XlldY
+	OHjot5ea72H9D9Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DD4413946;
+	Mon,  8 Sep 2025 12:26:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hSHfAWTLvmiqIwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 08 Sep 2025 12:26:12 +0000
+Message-ID: <be0ba18e-f752-4df3-a224-fc978431236c@suse.cz>
+Date: Mon, 8 Sep 2025 14:26:11 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CYYPR10MB7673:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5750c2a8-fab2-4063-4113-08ddeed2cefd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3tTs0cj4xXVauyOIAm2253fzIqp28Yom061AjUaHEoKmODlbhitru8APc/dw?=
- =?us-ascii?Q?W1XUYzMzUBaVB5uUSA6GGSlal5NOLjmgZCsDNs2sBcEFoqUIZvfTxzuObUem?=
- =?us-ascii?Q?I4Ubr5mNXhc6SHZzVthJBgPpZHs+JmWItvXnSwtGZCTtyKJCX74QlEsdfH8G?=
- =?us-ascii?Q?+lS2ccdYvladrZzKIEDIm9SkL0nOKqNWbItyfG3qTKkNbDGY0ox3bkhjgAVI?=
- =?us-ascii?Q?777l82kHfPGVGPmkuU7WQLyHw/Lm7cKkZlehYm9+SxrJY98B4meIQvzI1aQj?=
- =?us-ascii?Q?Md589xJBkG6pVXemkMVmiBUIROETa+D12vjdEd2AXGXPrIQduAfL3tFSlOiO?=
- =?us-ascii?Q?O/cEBlOnnQnXmbn9XjTblznxE+/TJ1J1PGLAbfQ648HsSqclGDKqltZd9q3A?=
- =?us-ascii?Q?N2wI1kcog3MrbJ3ramVuKDudOsvky+0NIOEDWwb0FpqcASGULsd5pX4Wh229?=
- =?us-ascii?Q?1EMJc9eO6fk44J0QCaYL2QyavuxTCibus4ESJcioiCtDXnIZ+yEKV5TopxK1?=
- =?us-ascii?Q?0jvoVgjM5YRfK+QZF1SfFAzG2HQ8AfO6ruwy4Y5AkmSVDNvxKRVLGYiSRA7/?=
- =?us-ascii?Q?nvT6nqsAq9worJWTaokgn64UNmNzHH+79y+ysLvLHU1QeLUwl7R0/Z2SlMEA?=
- =?us-ascii?Q?Gk/NjVfuHQgGWaPZUvAz/CyvI4JH1sDy7EPlRdZGs8Qut/L4Gn/USVB0AGT0?=
- =?us-ascii?Q?b7cLyO0qeK6hl6WagN17LOfqBAXKWmQvKCcuqca2U1qZr+1Z1RCPfMTdCAwH?=
- =?us-ascii?Q?Kv/h+UppwB4DfVqdYikcqk9/nxNFdBrJWqOVcaDoQKdEnBGm7+c62UifMCx7?=
- =?us-ascii?Q?qC3qZbGR7fEtVDKlUXuwrsPDJTCwEUX0wEEq7ZuuP8RDg8/lL1fvrUhel0Dc?=
- =?us-ascii?Q?2QkqkkQ5ek2yW5N84Ana/CRNSysizexaGpYK810xN8kaD9vOxgBis6TFf3tj?=
- =?us-ascii?Q?1U8IfMW4coeClTCPYve02bn3MXCEQo/3+Si2F1FQnm1bxchqS2uXrf7KZfyD?=
- =?us-ascii?Q?fRIwkjTH/2nTzso0t7cmYyFaK3xc7odmBngkb45HPrFBFboMyunlr4sgIbLl?=
- =?us-ascii?Q?J12+G9uCLOQHjh0B+D6+3bVjnPbRUV5hFcH8nmQCuWMZsZtUbkkyrdAnOZsQ?=
- =?us-ascii?Q?6UBoCAYNj3eYiA4z86w47LcP0wrjxoPB0W6hHkbv/d9rk40nPYTevnGNQ3vw?=
- =?us-ascii?Q?GiHC6zVs2wjQwD77cmUeGxPUeYkDsdzSuhaKy2HmG7tYZkzrXA7yfmeiMPZY?=
- =?us-ascii?Q?ZEfTyBlzktuRt0hNapf1fie866BGrtL4Z5zmfNdmtBHEOV70XXK5iCusvSgS?=
- =?us-ascii?Q?5ntrBjxiApLlCvZDtW9u8CgPofoZ71q9GUOa+OZ4daRvW/NnX81GRGboF2/7?=
- =?us-ascii?Q?BN0gHFyprod+a0k+60UYyr1B39BxRnt+I5TeYnxQPpkAJp11S+wbfVO5VSrB?=
- =?us-ascii?Q?O1XsXFT+ut8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?H7coq9Mqpm+ZLzgV+GEnc5CzkOphc6zI7U7YExlG3nPLk1l4Mpuv8BKTCdvg?=
- =?us-ascii?Q?CIdkfiYJONceg/JjQWy8mWPXlSPqRly2q6GlZsSFwKWzCpUwdmuPlCusHWyo?=
- =?us-ascii?Q?eLgk2BVjHfY1h8wh+umWuiFSjATmh9sDSzPmNhDa/ogA1RliA5ByYjXpAaHX?=
- =?us-ascii?Q?RRnyHqm46zaPOsVjeXW2MLk9/n4/WVFlsw+mt0Vkw14HTMeTbK8mpZjQvNLB?=
- =?us-ascii?Q?J8EQQ+y+6qyIghf87eQvIwl2JD31hABYQwFg9cM5ZKGxWwGs+dxlVsez1GGb?=
- =?us-ascii?Q?a1WAK+eWQL8zg1O7yjtBxbzxFmGnPMU2Ol6DKe2XZZFcpuIlWiMoSpZZV0ji?=
- =?us-ascii?Q?n/thfzusPMv4IMg6/TprXD0rQbdunFmdNIDh15z1ibCT0+uuR0OHYDh57FCN?=
- =?us-ascii?Q?P8CW+9xp9cmcNGkdsknaO+rgjqWl/8GzlCxr2zJVTlHmUOgvFDBlQf0V+end?=
- =?us-ascii?Q?byIxBPUmkpq6424KOS3KD66qbHO43iU5pQixvl6spAAJWeWnh9cL4U8MS6tY?=
- =?us-ascii?Q?1HzfSc5jCvnR3SE4mzfp5UH0OcPAUKfIiJQJA1SvgZ7f5qTBONRDhMh4zSv1?=
- =?us-ascii?Q?JXnw8c3MIClcGkBJCfEBISR086t5UGNQmp3ALqqEHf5yubGcnhxuPYh+pKUe?=
- =?us-ascii?Q?yyn0APYtVu8zqp5dujtwblN4g786G7YmuUdtgxo23kS0YRQwR8ovITegfRKO?=
- =?us-ascii?Q?3E0l4s+0/SnhOTzQZQglQcUS4xGRkPtAINKIQqmF0bggxWGF/j7C/Hb+QN4m?=
- =?us-ascii?Q?k6P19jpUF8Zz8QoMr6OSK7+AMPd/ERWYhooE/ypEW3rSTSgfxiVlhshhCzXV?=
- =?us-ascii?Q?ZNlWMfO5cyvbGFFmCSNl+HkIZcN2bIGoAjOp0qK/Vfs1rwyKg/W1GNDY4lxP?=
- =?us-ascii?Q?u/nwuL/lk4DxTQj9V4cjG9tOPOjzXnew6XR82yO6EInNvXkzBv73VoPvlMEP?=
- =?us-ascii?Q?05fCPQzLFkX9+q0SNoXDqZI8h/mddK0v5p95c81Bf2EX/5RbOnbXj+2CuNA/?=
- =?us-ascii?Q?pBPaGmBZiypz+owiyHFP/KcOEUWbnWbgnA5IST6bkIowdqfqYnaMSTtzdAzH?=
- =?us-ascii?Q?X7rWbwPoDI1Pcs8bBzDcS1i4V4+P8F+GIP6kcYOfGWI8/tSw3mRLdq7FiCz2?=
- =?us-ascii?Q?cNbOkQ8HVgDYT7Epr0wAVfmm5MLVzpkQjb6/XAul01xfli15LGhZmsJCJQ73?=
- =?us-ascii?Q?Aw34nkRdO0KT8srwhl4FobaC/0uABN25livuLqtXyB+SUAgCsDNb1xJqcoqi?=
- =?us-ascii?Q?NIf/dJ4C89xFvqlEzknu4VRZqoK07njyPyTOOxADI6rX0iGZH0jK0xdsis17?=
- =?us-ascii?Q?XWGVGQ9scDhsZMnqX7Rppq3yfzn2ORlb6s55lSa+RCY792XbM20ipwG/yROy?=
- =?us-ascii?Q?xQK5MiY6+2gYNh5YBbfsnty0CNDcOA9l9aLf92NVOe736HBrJihfWL9jivu4?=
- =?us-ascii?Q?S3ixDsYlzpmWr/Zw/nD1KeM/1/qvgEB3YtUql7k+YB+5x69Jni8AH9+pcQ2u?=
- =?us-ascii?Q?sxPs6amuFsCArO4wgWN72nGtKQh2didbfZCgciyj0FMnUTIKpxn+WhrJIZY9?=
- =?us-ascii?Q?hN2uafv8E8zNa+kWlbQQF5vHHs4LzsmhHtn/gN8CdhrvkHSZy7qaGBoKLXCK?=
- =?us-ascii?Q?uQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	ac10MGhiqySDHa33095kp8FasLvKLi2Dj17881A2xt8O5ZvM2MvGoZMxGKvtvKsvQS66pZKg/i91VX12ZVulBvnLFZMzaFqL6RnR0+Jn4VBjIgFWYt4O1m/sFwuGrbBVTfUStp+wzx6a4jKnQ29f76k8hgmwHwfxn+dlOMWS8OzZxOkrmb+ZWaRZYzY3sMzYzJMGJc4n7lFlOgo/GS96ndQPuyKeI6BE53acI7FOb8xx/tKk5OcQnZySWy3XG4NdyawGFmuyOaAgzBMLF16muoJomFu1jIwQystGCRTgX5gWZSZZdyupK5JRwypZ6gMYvjIocdyqLIbM+CcREdBdxQhjVhu8CKrB0GofEliXnOLsiWGYtNqlNvXtyKoSbFpl3BriHkcwI0hxY7BPYs8qx2bkgxaM8oU8TGrb8VQPmhFpWFWqceNASrLBGsEOt5E/cSui1UVxoQqqNvO37w2z+SReWUkZiN4MFEiDPFwoEIJKdzFoBqgDlqW96k2u9uqL/dBm+p7eRVfe+sGKd6xZSGGvZ5nVyBg1U2+r8nvInyHYwdw2vTccL/uH0c8yM3y10xiIYEuOc0Bx7pkgehWOXoSya4KYzi0xfx0ggklSoG8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5750c2a8-fab2-4063-4113-08ddeed2cefd
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 12:25:34.1779
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sWGwxNqZpbEJ+4UAeXbj9YDKxHxK1P+ilMEvD+x1SMdvVH1ZyUqDj4AuTMNjyjU6WRWkFhDi28+WeJZy48q00NsI+gV2GLV0Pb2ke3xKNgk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR10MB7673
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-08_04,2025-09-08_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509080124
-X-Proofpoint-ORIG-GUID: YgmznCMtqbhv5Z0yqJFXbP7wAIF2jrsu
-X-Authority-Analysis: v=2.4 cv=ILACChvG c=1 sm=1 tr=0 ts=68becb44 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=cfmsvUbG8TYeAjVIuM4A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDEyNCBTYWx0ZWRfX3gj54xl72R9c
- 1Z2J0Fb7AC1lcJ9ITlao5qJf78fO1Jlg2+odNQgvSB6p+FvqK+4283VeDxDbaa9O1enI48v0FVQ
- ZDcs4VTkmoLj4JcGd9lbj80i7gTE3Ynsn9Ie55Q+5Syon01JjIo419OeGQsyLVcACCuQVeUBaIH
- lurM7RbxkElHeySN/GAAvsOWrfSkLu2vFJ1YJlx31G7WO6z5DjKhZKm2QZTRm9+vBlq+XWH5Wwm
- n8sditDcdPt4EXj448RPVUqtE1vKPf3S84Aso605cuu2NATX2bwECGJQVdoYVUJUPky2Sm0GCVI
- iLFv7xBxbWWMguBB45CmtVhNmPfTasztxoZQEVctCZsglRX0M9hvKSG98IiBtMYUsmbdAb5gvuK
- bzGm+Nv+
-X-Proofpoint-GUID: YgmznCMtqbhv5Z0yqJFXbP7wAIF2jrsu
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5CA2A40006
-X-Stat-Signature: j8b1mjpjd3n364fho1copkqxodtkjauu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 03/21] slab: add opt-in caching layer of percpu sheaves
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
+ <20250903-slub-percpu-caches-v7-3-71c114cdefef@suse.cz>
+ <aL672Jeqi99atefN@hyeyoo>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
+ AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
+ AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
+ jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
+ 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
+ Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
+ QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
+ 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
+ M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
+ r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
+ Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
+ uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
+ J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
+ /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
+ IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
+ X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
+ wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
+ PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
+ lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
+ zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
+ rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
+ khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
+ xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
+ AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
+ Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
+ rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
+ dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
+ m6M14QORSWTLRg==
+In-Reply-To: <aL672Jeqi99atefN@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ookax6uxs9w7zsx6cdzmso4d3mg5f95y
 X-Rspam-User: 
-X-HE-Tag: 1757334355-691601
-X-HE-Meta: U2FsdGVkX1+Dtd2YyHIMKk2BqtKp5+VO+C81XCb0T8ZFHuDdF0OkhxyUS0wMVp6HNyo5TXd5NMbw596GmpwLKxJbWtj3niVr+21dQsvPcimoFs+jHq6WhoS0Zi23/7OplYDeXywmqztKIb9/0nHhlDFsahqVZeQt0dAZpnaBbl7se5jeT0cSuHMZuTo5naZlNgaQkmBYt2/1MBjmJhDIqpt+v7ju1r6bA6sReYCn+/CgOcd5VTTF8JW1awUkWNS7O5CEUgvekQB6STkT7kxRn5pWhcQcJzRdqLkNrzrAvsrZfWviaMvxps8n7MOePCOXheI5hk9hvfVnVMUFBbT1oSnQ7FQD90UqGV78HyFkGGccs7h2x0KYq0X9xBuvj/UBfdTMRTWwmfBfJTOtrc6v6tcZru/0a0dml62k+Qes1DLI/Na/NjJ7lakumhBzCPyXQJ9HjlKUuTS1xs7sjvG6SxJgNiWcmXOaNcbQoG8y1NXRfaiokyRqiAcNPWDwc9VQ1PrD7+2i32+Wu63fUqlhHRbKuR2S/La1xhaO1nXn/jchTdr0QwNjicwguX+huRJSYVPXRNPd5hFuDraxZo4gcoPSqA4eOMUcKYM46E5e/15qCWyb6RC9fWpkv0q+7DbUN2B68vqdJ3WP4TsWfnPPGwfrAVKzixdz7VyX8TfnU2gpoSbXzhz7liY3lLlWD4E0eSffZ8pktFphj8v7L9zwOFN6n/M+1dEghgHKwMQnETp/j/EfM7sOA3MeZASzMlkj+NrS68t8jH/ixbQNZP7jYj6CquriJqdM3xpDNX2cXUgYFZvaK9S5HCyWqre7EFncFACVbFuVUelku0L5lZiOKPNTRQXzgqeHVVr3mTA2tBQcR82bALpbVh+lsfWR+iiT5G7e2Kli8M5wWoZ1aVsWKDkJHxkvpDaRG7abRdqwfkACiNy8CqpIDNLGf1JHlQDe2kLcdsMIR7M3BRagmmU
- 33LBwFWs
- 3/yzoDajTdf15tSzKlDlpRPx9nhPQFFnP2oWM3HT3XVRFmDsZz9g4Au/OhhIPQTQMYSbGKuAijJ/V1bbaSWLt/ALAGz6GfksNsYYT/kvj1I3l1sgleNkqpIsCtx309bCMpPAgXR5gpzGjw/phn+T+ZV9aWC5Y/hmayfG5DuAq61LGfrrUmCMB5QILA5GP637cDiPG9Q9cmqgRZAg/kTC83Ce40YnF1uoipaP2rsyeQiacfnAaAadk0o4EkuhrZ9h47iB/yPuH9zlRccykDSvUhCHVBhNEnehIsDxvc05seEucCfK7J1FeG9MM0FLUxLqKSvlN5oJnhUoowoENQ9wj8KovfnU4fv0CLOZ4fOlDthoMqKa+K6uvsQCRYdTk8JOlmM8N+6iW5+tRYwE5GpHR8kV1pVQ1cFahpUUO3aNX25P9lbiUxOl3HblyrFMfcxFcFSvaaOtmmCnMJ0I+B1zxWVGIf3ZCCIclj2H4r9cALOMYh4/+bEtDDmm1rCzsX3Uy3SJV7+HiBJKZLmL0yJ187cYkniQvtWVYeoCJuzIF7PIYX2pxtpuA3wxBLexCNlRNV53qoiSxG4zkHH2rK0MTSBiMZ8rVwZ3HG5zgChfnVlbSmwkMaS/XZQyjsPTkte4WQ/T/crcOs7CW5f7dtpBxZy9y+0EnWlH7SEJh++f7Guaf7ngx+LJx89iOb9lXEaTrlSY4drFTn1HkI0NmZhfa7LT6qOpEe6W6NAxHX40msEVcj8cPerGMNzz51Q==
+X-Rspamd-Queue-Id: C7D05C0008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757334375-711319
+X-HE-Meta: U2FsdGVkX1/e4W4TjArwZztP3dArwa3gSN4Db/DLmqgQjHiK5mZqMp6aOBcx/HPhtx7LUaOZXUhksZryWr+b09jUZJj6kWsBG+SKLKkzUNVPz/66JRlxAocsPwoorh/Q2WuXW5pArlkbGtzeQ6zOXQvbZeiNYx9oi6RSTgG4X2oPccqubJvEtv/DEiJFqpUqnLmWqX3xxW6QzZq60/V1o5Y93qMHvGAuwgpOVtBpJCC2MMvY/iF8qp8Zdm5GGDSaOnBjFLOLlv5dHKNEv7euiT8kQ7Ru8ebPlmZ2DBzKVHKN9hCIt433uv4loD5Lu+//FXnz2dsqtn1rv4F42FrWYt9PgD7gUKKKGQWKs5Ox2URCB0x8WplUEa/cHClBhPbBkZEyV2exdmEGA31ZcLgHQtA672a+Aq46zW6tmAzrlFl3yM+a6VNUMEkX+ZSj6Fhp6wZfigvJJn+AI96mB8Ozs7E+e4d3ALkHPXJ0yGh492bD8SkiW03oln3uQn8Vo5azSR30HWq3S+mctJxq34n7tcZR6ln/Smxo3Im2p8+OChL4kZw0hlLyM5XbCQU9p4hGgCkGvvQ1M+S7WTg3Xi0DHH6K6RLOTCq6ohT1vIWaY7xCdkyVr11tff3ao5BbJr9BQ5NmB/Bb4gVqgHly3+D/YOAZVBs3IMqsg0AF7zXHnb13Bc7cLQtJcai4GT6qjZi82x8WWD0JMOhAGzAjBB6VXPNE47a3kcSyB4HIlsEK40pN4gOAreMYBdme8gdnMZxDdk/dt6zN1KkMYNi45J0XJUlDX+ONBbDICgliY9IId4hlR+jBWfB1svNbFuDZ42tPmJ6PRsUgJ72ipN51uDOVRTrE8Oplh8i3+cMN5dscSSLAX7EJUFlJ5B5KskKUR/eUb2fBXMQvRK7+C2Oibl8Nk6SL0v90/u9eIkdelb9H2da+4TdQSIiYsy9BEs4bhCugTmEWXoJbUQZOC5s4Ii/
+ J1/RJX4s
+ ojqk89e9ZYXTQDnFOmsyt+9/4tIJLp/DWvFZ4UdJQuJ6PxS378dUBh6XfEFN6uWh1k2ClqMeHqny+cDkv8yPsZWi+UIu210MshH2+hhjzd4LugyKKERjiExeX7rJlLlbg+EFwE5OfJeX0uWrPGY7wmbiaRnC913j2hjA4/s+CYql9qDU1N+pV8/66u53WE7SDPYkVhrCBZWll8voF66SGMqVcA/a00QphOCBfMpJmUHxd1EaT/VbJIGh3MHOmQY4qLoGUcS0khBTk+K4cRfU4IwFVLheHxoLIk1OZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -259,283 +184,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 06, 2025 at 08:56:48AM +0200, David Hildenbrand wrote:
-> On 06.09.25 03:05, John Hubbard wrote:
-> >
-> > Probably a similar sentiment as Lorenzo here...the above diffs make the code
-> > *worse* to read. In fact, I recall adding record_subpages() here long ago,
-> > specifically to help clarify what was going on.
->
-> Well, there is a lot I dislike about record_subpages() to go back there.
-> Starting with "as Willy keeps explaining, the concept of subpages do
-> not exist and ending with "why do we fill out the array even on failure".
+On 9/8/25 13:19, Harry Yoo wrote:
+> On Wed, Sep 03, 2025 at 02:59:45PM +0200, Vlastimil Babka wrote:
+>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+>> index bfe7c40eeee1a01c175766935c1e3c0304434a53..e2b197e47866c30acdbd1fee4159f262a751c5a7 100644
+>> --- a/mm/slab_common.c
+>> +++ b/mm/slab_common.c
+>> @@ -163,6 +163,9 @@ int slab_unmergeable(struct kmem_cache *s)
+>>  		return 1;
+>>  #endif
+>>  
+>> +	if (s->cpu_sheaves)
+>> +		return 1;
+>> +
+>>  	/*
+>>  	 * We may have set a slab to be unmergeable during bootstrap.
+>>  	 */
+>> @@ -321,7 +324,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
+>>  		    object_size - args->usersize < args->useroffset))
+>>  		args->usersize = args->useroffset = 0;
+>>  
+>> -	if (!args->usersize)
+>> +	if (!args->usersize && !args->sheaf_capacity)
+>>  		s = __kmem_cache_alias(name, object_size, args->align, flags,
+>>  				       args->ctor);
+> 
+> Can we merge caches that use sheaves in the future if the capacity
+> is the same, or are there any restrictions for merging that I overlooked?
 
-Yes
+I think we will be able to merge. It will make more sense if we get to
+enabling sheaves for everything and set capacity automatically, with the
+args->sheaf_capacity serving only as a lower bound. Right now we can leave
+it as is I think.
+>> +static bool has_pcs_used(int cpu, struct kmem_cache *s)
+>> +{
+>> +	struct slub_percpu_sheaves *pcs;
+>> +
+>> +	if (!s->cpu_sheaves)
+>> +		return false;
+>> +
+>> +	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+>> +
+>> +	return (pcs->spare || pcs->main->size);
+>> +}
+>> +
+>> +static void pcs_flush_all(struct kmem_cache *s);
+> 
+> nit: we don't need these functions to flush sheaves if SLUB_TINY=y
+> as we don't create sheaves for SLUB_TINY anymore?
 
->
-> :)
->
-> >
-> > Now it's been returned to it's original, cryptic form.
-> >
->
-> The code in the caller was so uncryptic that both me and Lorenzo missed
-> that magical addition. :P
+I'll check but also if this is true I would expect to have a clang warning
+report already. Maybe they are called but don't need to?
+TBH we should get rid of SLUB_TINY at this point, maybe have only a boot
+option that disables percpu caching and keep the code compiled.
+>>  /*
+>>   * Flush cpu slab.
+>> @@ -3358,30 +3793,18 @@ struct slub_flush_work {
+>>  static void flush_cpu_slab(struct work_struct *w)
+>>  {
+>>  	struct kmem_cache *s;
+>> -	struct kmem_cache_cpu *c;
+>>  	struct slub_flush_work *sfw;
+>>  
+>>  	sfw = container_of(w, struct slub_flush_work, work);
+>>  
+>>  	s = sfw->s;
+>> -	c = this_cpu_ptr(s->cpu_slab);
+>> -
+>> -	if (c->slab)
+>> -		flush_slab(s, c);
+>> -
+>> -	put_partials(s);
+>> -}
+>>  
+>> -static bool has_cpu_slab(int cpu, struct kmem_cache *s)
+>> -{
+>> -	struct kmem_cache_cpu *c = per_cpu_ptr(s->cpu_slab, cpu);
+>> +	if (s->cpu_sheaves)
+>> +		pcs_flush_all(s);
+>>  
+>> -	return c->slab || slub_percpu_partial(c);
+>> +	flush_this_cpu_slab(s);
+>>  } 
+>> -#else /* CONFIG_SLUB_TINY */
+>> -static inline void flush_all_cpus_locked(struct kmem_cache *s) { }
+>> -static inline void flush_all(struct kmem_cache *s) { }
+>> -static inline void __flush_cpu_slab(struct kmem_cache *s, int cpu) { }
+>> -static inline int slub_cpu_dead(unsigned int cpu) { return 0; }
+>> -#endif /* CONFIG_SLUB_TINY */
+>> -
+>>  /*
+>>   * Check if the objects in a per cpu structure fit numa
+>>   * locality expectations.
+>> @@ -4191,30 +4610,240 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+>>  }
+>>  
+>>  /*
+>> - * Inlined fastpath so that allocation functions (kmalloc, kmem_cache_alloc)
+>> - * have the fastpath folded into their functions. So no function call
+>> - * overhead for requests that can be satisfied on the fastpath.
+>> - *
+>> - * The fastpath works by first checking if the lockless freelist can be used.
+>> - * If not then __slab_alloc is called for slow processing.
+>> + * Replace the empty main sheaf with a (at least partially) full sheaf.
+>>   *
+>> - * Otherwise we can simply pick the next object from the lockless free list.
+>> + * Must be called with the cpu_sheaves local lock locked. If successful, returns
+>> + * the pcs pointer and the local lock locked (possibly on a different cpu than
+>> + * initially called). If not successful, returns NULL and the local lock
+>> + * unlocked.
+>>   */
+>> -static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list_lru *lru,
+>> -		gfp_t gfpflags, int node, unsigned long addr, size_t orig_size)
+>> +static struct slub_percpu_sheaves *
+>> +__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, gfp_t gfp)
+>>  {
+>> -	void *object;
+>> -	bool init = false;
+>> +	struct slab_sheaf *empty = NULL;
+>> +	struct slab_sheaf *full;
+>> +	struct node_barn *barn;
+>> +	bool can_alloc;
+>>  
+>> -	s = slab_pre_alloc_hook(s, gfpflags);
+>> -	if (unlikely(!s))
+>> +	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+>> +
+>> +	if (pcs->spare && pcs->spare->size > 0) {
+>> +		swap(pcs->main, pcs->spare);
+>> +		return pcs;
+>> +	}
+>> +
+>> +	barn = get_barn(s);
+>> +
+>> +	full = barn_replace_empty_sheaf(barn, pcs->main);
+>> +
+>> +	if (full) {
+>> +		stat(s, BARN_GET);
+>> +		pcs->main = full;
+>> +		return pcs;
+>> +	}
+>> +
+>> +	stat(s, BARN_GET_FAIL);
+>> +
+>> +	can_alloc = gfpflags_allow_blocking(gfp);
+>> +
+>> +	if (can_alloc) {
+>> +		if (pcs->spare) {
+>> +			empty = pcs->spare;
+>> +			pcs->spare = NULL;
+>> +		} else {
+>> +			empty = barn_get_empty_sheaf(barn);
+>> +		}
+>> +	}
+>> +
+>> +	local_unlock(&s->cpu_sheaves->lock);
+>> +
+>> +	if (!can_alloc)
+>> +		return NULL;
+>> +
+>> +	if (empty) {
+>> +		if (!refill_sheaf(s, empty, gfp)) {
+>> +			full = empty;
+>> +		} else {
+>> +			/*
+>> +			 * we must be very low on memory so don't bother
+>> +			 * with the barn
+>> +			 */
+>> +			free_empty_sheaf(s, empty);
+>> +		}
+>> +	} else {
+>> +		full = alloc_full_sheaf(s, gfp);
+>> +	}
+>> +
+>> +	if (!full)
+>> +		return NULL;
+>> +
+>> +	/*
+>> +	 * we can reach here only when gfpflags_allow_blocking
+>> +	 * so this must not be an irq
+>> +	 */
+>> +	local_lock(&s->cpu_sheaves->lock);
+>> +	pcs = this_cpu_ptr(s->cpu_sheaves);
+>> +
+>> +	/*
+>> +	 * If we are returning empty sheaf, we either got it from the
+>> +	 * barn or had to allocate one. If we are returning a full
+>> +	 * sheaf, it's due to racing or being migrated to a different
+>> +	 * cpu. Breaching the barn's sheaf limits should be thus rare
+>> +	 * enough so just ignore them to simplify the recovery.
+>> +	 */
+>> +
+>> +	if (pcs->main->size == 0) {
+>> +		barn_put_empty_sheaf(barn, pcs->main);
+> 
+> It should be very rare but it should do
+> barn = get_barn(s); again after taking s->cpu_sheaves->lock?
 
-:'(
-
->
-> > Just my take on it, for whatever that's worth. :)
->
-> As always, appreciated.
->
-> I could of course keep the simple loop in some "record_folio_pages"
-> function and clean up what I dislike about record_subpages().
->
-> But I much rather want the call chain to be cleaned up instead, if possible.
->
->
-> Roughly, what I am thinking (limiting it to pte+pmd case) about is the following:
-
-I cannot get the below to apply even with the original patch here applied + fix.
-
-It looks like (in mm-new :) commit e73f43a66d5f ("mm/gup: remove dead pgmap
-refcounting code") by Alastair has conflicted here, but even then I can't make
-it apply, with/without your fix...!
-
-
-
->
->
-> From d6d6d21dbf435d8030782a627175e36e6c7b2dfb Mon Sep 17 00:00:00 2001
-> From: David Hildenbrand <david@redhat.com>
-> Date: Sat, 6 Sep 2025 08:33:42 +0200
-> Subject: [PATCH] tmp
->
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  mm/gup.c | 79 ++++++++++++++++++++++++++------------------------------
->  1 file changed, 36 insertions(+), 43 deletions(-)
->
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 22420f2069ee1..98907ead749c0 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2845,12 +2845,11 @@ static void __maybe_unused gup_fast_undo_dev_pagemap(int *nr, int nr_start,
->   * also check pmd here to make sure pmd doesn't change (corresponds to
->   * pmdp_collapse_flush() in the THP collapse code path).
->   */
-> -static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
-> -		unsigned long end, unsigned int flags, struct page **pages,
-> -		int *nr)
-> +static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
-> +		unsigned long end, unsigned int flags, struct page **pages)
->  {
->  	struct dev_pagemap *pgmap = NULL;
-> -	int ret = 0;
-> +	unsigned long nr_pages = 0;
->  	pte_t *ptep, *ptem;
->  	ptem = ptep = pte_offset_map(&pmd, addr);
-> @@ -2908,24 +2907,20 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->  		 * details.
->  		 */
->  		if (flags & FOLL_PIN) {
-> -			ret = arch_make_folio_accessible(folio);
-> -			if (ret) {
-> +			if (arch_make_folio_accessible(folio)) {
->  				gup_put_folio(folio, 1, flags);
->  				goto pte_unmap;
->  			}
->  		}
->  		folio_set_referenced(folio);
-> -		pages[*nr] = page;
-> -		(*nr)++;
-> +		pages[nr_pages++] = page;
->  	} while (ptep++, addr += PAGE_SIZE, addr != end);
-> -	ret = 1;
-> -
->  pte_unmap:
->  	if (pgmap)
->  		put_dev_pagemap(pgmap);
->  	pte_unmap(ptem);
-> -	return ret;
-> +	return nr_pages;
->  }
->  #else
-> @@ -2938,21 +2933,24 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->   * get_user_pages_fast_only implementation that can pin pages. Thus it's still
->   * useful to have gup_fast_pmd_leaf even if we can't operate on ptes.
->   */
-> -static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
-> -		unsigned long end, unsigned int flags, struct page **pages,
-> -		int *nr)
-> +static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
-> +		unsigned long end, unsigned int flags, struct page **pages)
->  {
->  	return 0;
->  }
->  #endif /* CONFIG_ARCH_HAS_PTE_SPECIAL */
-> -static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
-> -		unsigned long end, unsigned int flags, struct page **pages,
-> -		int *nr)
-> +static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
-> +		unsigned long end, unsigned int flags, struct page **pages)
->  {
-> +	const unsigned long nr_pages = (end - addr) >> PAGE_SHIFT;
->  	struct page *page;
->  	struct folio *folio;
-> -	int refs;
-> +	unsigned long i;
-> +
-> +	/* See gup_fast_pte_range() */
-> +	if (pmd_protnone(orig))
-> +		return 0;
->  	if (!pmd_access_permitted(orig, flags & FOLL_WRITE))
->  		return 0;
-> @@ -2960,33 +2958,30 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
->  	if (pmd_special(orig))
->  		return 0;
-> -	refs = (end - addr) >> PAGE_SHIFT;
->  	page = pmd_page(orig) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
-> -	folio = try_grab_folio_fast(page, refs, flags);
-> +	folio = try_grab_folio_fast(page, nr_pages, flags);
->  	if (!folio)
->  		return 0;
->  	if (unlikely(pmd_val(orig) != pmd_val(*pmdp))) {
-> -		gup_put_folio(folio, refs, flags);
-> +		gup_put_folio(folio, nr_pages, flags);
->  		return 0;
->  	}
->  	if (!gup_fast_folio_allowed(folio, flags)) {
-> -		gup_put_folio(folio, refs, flags);
-> +		gup_put_folio(folio, nr_pages, flags);
->  		return 0;
->  	}
->  	if (!pmd_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
-> -		gup_put_folio(folio, refs, flags);
-> +		gup_put_folio(folio, nr_pages, flags);
->  		return 0;
->  	}
-> -	pages += *nr;
-> -	*nr += refs;
-> -	for (; refs; refs--)
-> +	for (i = 0; i < nr_pages; i++)
->  		*(pages++) = page++;
->  	folio_set_referenced(folio);
-> -	return 1;
-> +	return nr_pages;
->  }
->  static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
-> @@ -3033,11 +3028,11 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pudp, unsigned long addr,
->  	return 1;
->  }
-> -static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
-> -		unsigned long end, unsigned int flags, struct page **pages,
-> -		int *nr)
-> +static unsigned long gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
-> +		unsigned long end, unsigned int flags, struct page **pages)
->  {
-> -	unsigned long next;
-> +	unsigned long cur_nr_pages, next;
-> +	unsigned long nr_pages = 0;
->  	pmd_t *pmdp;
->  	pmdp = pmd_offset_lockless(pudp, pud, addr);
-> @@ -3046,23 +3041,21 @@ static int gup_fast_pmd_range(pud_t *pudp, pud_t pud, unsigned long addr,
->  		next = pmd_addr_end(addr, end);
->  		if (!pmd_present(pmd))
-> -			return 0;
-> +			break;
-> -		if (unlikely(pmd_leaf(pmd))) {
-> -			/* See gup_fast_pte_range() */
-> -			if (pmd_protnone(pmd))
-> -				return 0;
-> +		if (unlikely(pmd_leaf(pmd)))
-> +			cur_nr_pages = gup_fast_pmd_leaf(pmd, pmdp, addr, next, flags, pages);
-> +		else
-> +			cur_nr_pages = gup_fast_pte_range(pmd, pmdp, addr, next, flags, pages);
-> -			if (!gup_fast_pmd_leaf(pmd, pmdp, addr, next, flags,
-> -				pages, nr))
-> -				return 0;
-> +		nr_pages += cur_nr_pages;
-> +		pages += cur_nr_pages;
-> -		} else if (!gup_fast_pte_range(pmd, pmdp, addr, next, flags,
-> -					       pages, nr))
-> -			return 0;
-> +		if (nr_pages != (next - addr) >> PAGE_SIZE)
-> +			break;
->  	} while (pmdp++, addr = next, addr != end);
-> -	return 1;
-> +	return nr_pages;
->  }
->  static int gup_fast_pud_range(p4d_t *p4dp, p4d_t p4d, unsigned long addr,
-
-OK I guess you intentionally left the rest as a TODO :)
-
-So I'll wait for you to post it before reviewing in-depth.
-
-This generally LGTM as an approach, getting rid of *nr is important that's
-really horrible.
-
-> --
-> 2.50.1
->
->
->
-> Oh, I might even have found a bug moving away from that questionable
-> "ret==1 means success" handling in gup_fast_pte_range()? Will
-> have to double-check, but likely the following is the right thing to do.
->
->
->
-> From 8f48b25ef93e7ef98611fd58ec89384ad5171782 Mon Sep 17 00:00:00 2001
-> From: David Hildenbrand <david@redhat.com>
-> Date: Sat, 6 Sep 2025 08:46:45 +0200
-> Subject: [PATCH] mm/gup: fix handling of errors from
->  arch_make_folio_accessible() in follow_page_pte()
->
-> In case we call arch_make_folio_accessible() and it fails, we would
-> incorrectly return a value that is "!= 0" to the caller, indicating that
-> we pinned all requested pages and that the caller can keep going.
->
-> follow_page_pte() is not supposed to return error values, but instead
-> 0 on failure and 1 on success.
->
-> That is of course wrong, because the caller will just keep going pinning
-> more pages. If we happen to pin a page afterwards, we're in trouble,
-> because we essentially skipped some pages.
->
-> Fixes: f28d43636d6f ("mm/gup/writeback: add callbacks for inaccessible pages")
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  mm/gup.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 22420f2069ee1..cff226ec0ee7d 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2908,8 +2908,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->  		 * details.
->  		 */
->  		if (flags & FOLL_PIN) {
-> -			ret = arch_make_folio_accessible(folio);
-> -			if (ret) {
-> +			if (arch_make_folio_accessible(folio)) {
-
-Oh Lord above. Lol. Yikes.
-
-Yeah I think your fix is valid...
-
->  				gup_put_folio(folio, 1, flags);
->  				goto pte_unmap;
->  			}
-> --
-> 2.50.1
->
->
-> --
-> Cheers
->
-> David / dhildenb
->
+Yeah but it shouldn't really matter which node we use for the empty sheaf
+return. And in case of the full sheaf below it's actually better for
+preserving numa locality to use the original barn.
 
