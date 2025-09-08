@@ -4,178 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19965CAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF85CAC586
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:30:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7714C8E0017; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
+	id DE3ED8E000F; Mon,  8 Sep 2025 08:30:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 748CF8E0003; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
+	id D942F8E0003; Mon,  8 Sep 2025 08:30:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 610988E0017; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
+	id C0EB68E000F; Mon,  8 Sep 2025 08:30:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FE5E8E0003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:26:18 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1A940137B6F
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:26:18 +0000 (UTC)
-X-FDA: 83866005636.07.3AA2392
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C7D05C0008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:26:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A93268E0003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:30:11 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F8EB14012E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:30:11 +0000 (UTC)
+X-FDA: 83866015422.20.37E3497
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0E9EB40006
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:30:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pkj2NyBS;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757334376;
+	s=arc-20220608; t=1757334609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
-	b=p1a5Ze+ihnaMKiD4clhjOnEYD7hEOb/WhRl3pWSSPsmsf8W/4IIQ/KIpaxDFaIS8L68pHG
-	Bc5kcBCugshtySngKY9fFqG1VncTWjKF3tIEo6E1ENCYefA3XtSA1KzdIXJVKkAK0f9cqL
-	lSPQMGRtcRGddFNVSS4UlCb8Q7uoCDM=
+	bh=mAbu1qtNRXPF8YYyixaj0bXNlf5VN6++naM09nLWj/0=;
+	b=DGHxTQjw7JOmYt2ll4+lYUPQ5sy4N6reCdCqqqDuo2n768FJIHD79Pd8JjkS4Cg1idA8mH
+	p+bkZrzQLOGlucLu1yVfklvKSS9NlFz4CNcRZo7IDTMTGv7fNOQAFi2rQakqAOfs0VTd7d
+	r0t+9Sg0OFwhXUcs9XfIrmUDFNdnqiU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVdZd8po;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zFSsZDC6;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757334376; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pkj2NyBS;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757334609; a=rsa-sha256;
 	cv=none;
-	b=x1bLzIna8Hrv4ZiF3sdvvyD+VFd68e/EamvYNUyjRpzyMyL0WS+Pt4U9yi4jXFSbbPyJya
-	hh/I3yyXpQdwFGnQWQuExTEhS5tNV0aUTyhnMSkjKpm2Z7IfBZS5Pft0qOQ3dxpaXUX8cM
-	htHyXTuHxsSILiFPssjwkNwqO91YCdI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 306546BF8D;
-	Mon,  8 Sep 2025 12:26:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757334372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=CpOMj9HLkQNQBPqVi5U8SsZ6fkt+vBkdlU8tuVo1wW55k4q7qu8Zjrl3/4NncfHGmVvOQ8
+	WUyzDuC25AC2VaDWbTiH2CwtsC099/w0JxRqTKPVB3K/LvglIIBHrr0WW/kMz5xom97EC3
+	0MgEGYQbhF5rrUbq9gAj8TM4SxGtVP0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757334608;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
-	b=sVdZd8po7eWGx5Ww9w3Avpn5gXpxLOF9LEyI3qvJoivDJ433rPmpDycz1Y/NWrxS024LC7
-	BubEWxx8UPvfAB4uynAFWv1pyC8UUoUX9XpyW8BFVZUtkKFzMCtb6xQie2/sz1SjLWSVY9
-	XuJRk4XhjLazNrPZUMpX1N7qLQV0xhw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757334372;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
-	b=zFSsZDC6Yc+HndyH6cao9U/6LThplTGnuWttOH5MYaPdxd/oRpmVEgE46ZRVwl7J3XlldY
-	OHjot5ea72H9D9Dw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1757334372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
-	b=sVdZd8po7eWGx5Ww9w3Avpn5gXpxLOF9LEyI3qvJoivDJ433rPmpDycz1Y/NWrxS024LC7
-	BubEWxx8UPvfAB4uynAFWv1pyC8UUoUX9XpyW8BFVZUtkKFzMCtb6xQie2/sz1SjLWSVY9
-	XuJRk4XhjLazNrPZUMpX1N7qLQV0xhw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1757334372;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DRQnfV7KacqgKnXu/9rxHwsFubE78Co0XLB4BS11uuo=;
-	b=zFSsZDC6Yc+HndyH6cao9U/6LThplTGnuWttOH5MYaPdxd/oRpmVEgE46ZRVwl7J3XlldY
-	OHjot5ea72H9D9Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DD4413946;
-	Mon,  8 Sep 2025 12:26:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hSHfAWTLvmiqIwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 08 Sep 2025 12:26:12 +0000
-Message-ID: <be0ba18e-f752-4df3-a224-fc978431236c@suse.cz>
-Date: Mon, 8 Sep 2025 14:26:11 +0200
+	bh=mAbu1qtNRXPF8YYyixaj0bXNlf5VN6++naM09nLWj/0=;
+	b=Pkj2NyBSbaC2LhNk4WdBiH6wkE8j1GuhUuQ51Jgrp1SeLGGUUxYHcOel853QgoLRy2O7Hq
+	AQuUmhHpRyJlOeeKKrhqPm0kaEyEIpPgph9gjrQneloX5Gn1IGwL8vrS1b3G+zKfukM2Ti
+	aCy4ciqorFDpyi8aNWY0uNe0FdFxiJg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-oHVA-1q6NVOxYD5hquGeNQ-1; Mon, 08 Sep 2025 08:30:07 -0400
+X-MC-Unique: oHVA-1q6NVOxYD5hquGeNQ-1
+X-Mimecast-MFC-AGG-ID: oHVA-1q6NVOxYD5hquGeNQ_1757334606
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45ddbfd44aaso19669645e9.2
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 05:30:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757334606; x=1757939406;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mAbu1qtNRXPF8YYyixaj0bXNlf5VN6++naM09nLWj/0=;
+        b=MRaEat/fzsSiOAwb8eyyy/1aIXo1WZwPCER1lfT7Pm3OtuRA70bumJCOYle5hVx2rb
+         utbfj2JkIZ5UzzJzbKeKOlzsaKrfIopJnaHiu24Q8t4W70tT3HKA2U4S48WoZOiEWf+V
+         PMkorVaLwPif1+h+ocLMIjLewrsqjUF65fW2L64/GNlfASD0ySNYP2Idz3KXCnU5KPH6
+         tOQKnWMooh6x3skY4RavKTYVStnZVh/6TdlcwKLuaVZ6QBJ0JRotxifFhtJqiW2uOWf2
+         jINXoAw1zo00AEijupZe+kSuocwPgBmi5IWkwPHXgfsqF9gm5pzx9iFBqT/w2+HVaJlW
+         Q+iA==
+X-Forwarded-Encrypted: i=1; AJvYcCUY3rXnalsDV9O9JVjj/9C7HEvtcAhZoqA32mpZAmYaiG/+dh6HGev+QZXJ7GM92Zb4D628ZUUaWw==@kvack.org
+X-Gm-Message-State: AOJu0Yw9h0n5ObckMxvkjH46n9pk3G0ymVhqQhRq/tJK/otZ7VVBTz6J
+	Fb3i0BFOhydSZOGcJJ4ETGH3f+lZlf8AxUYVuW2hycyWMLJ7ZyIRHW2zvp18UYo3mWBplBKctCq
+	HgNEH+XzMW8jT2WXzz+XURL/xSgH6fq2lAgmERtsXRsIU0Pmpuqih
+X-Gm-Gg: ASbGncvaaLP0ZPCrLPYAVDbwaaVBZkmVyzvHu9ZVoevUShbG4CWlrdZn/NRuB6/tOJv
+	JWA/TUgXq4c4htCKvaUDzC+oY0EsrJKlsUOl6tGRsuXRXY0k4T4MpBjBl7hLwnNQZK+tAo57+F8
+	2EVDx922cBNwIuYIkWpturs2XEFy/fvVgI3CpBSZwZxvd8EJ87ej378Zr3xjKyG+fnhaBCd/kVL
+	qYSS3svyD9KGFbVJwkzCfeOWyO3jemfVqD0pxzQCdWB23WdhaeiojWNcWEjy2Plx+13rL9/P3I0
+	sP+Sy85484rkaTOyHv+1MWGEz0007mRowfBic4VQJV7y3TlDThVIWzEgMUhk1xqmU5ryJpDgbkl
+	dOE2fzvQc+wNrvQuqCpN+7slx0zYkTh79hi3/LBjgPndp/fBg5j4KfQq7WTsaMtYg
+X-Received: by 2002:a5d:64e7:0:b0:3da:e7d7:f1ec with SMTP id ffacd0b85a97d-3e646257889mr6040230f8f.32.1757334606067;
+        Mon, 08 Sep 2025 05:30:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPQ5u6lrJW7FYhM5BnRr+Yf5LHURy0+3MyMH+KFiHP7c+8mYlMSKgheCV33eJ2ujN2PhjoPw==
+X-Received: by 2002:a5d:64e7:0:b0:3da:e7d7:f1ec with SMTP id ffacd0b85a97d-3e646257889mr6040206f8f.32.1757334605599;
+        Mon, 08 Sep 2025 05:30:05 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:700:d846:15f3:6ca0:8029? (p200300d82f250700d84615f36ca08029.dip0.t-ipconnect.de. [2003:d8:2f25:700:d846:15f3:6ca0:8029])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd2df4c8dsm171493185e9.15.2025.09.08.05.30.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 05:30:05 -0700 (PDT)
+Message-ID: <c2ff433c-35d4-45e4-bf06-e725726fa515@redhat.com>
+Date: Mon, 8 Sep 2025 14:30:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 03/21] slab: add opt-in caching layer of percpu sheaves
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Uladzislau Rezki <urezki@gmail.com>,
- Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
- maple-tree@lists.infradead.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
- <20250903-slub-percpu-caches-v7-3-71c114cdefef@suse.cz>
- <aL672Jeqi99atefN@hyeyoo>
+Subject: Re: [PATCH v2 10/15] mm, swap: wrap swap cache replacement with a
+ helper
+To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
+ Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org
+References: <20250905191357.78298-1-ryncsn@gmail.com>
+ <20250905191357.78298-11-ryncsn@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
+ FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
+ 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
+ opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
+ 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
+ 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
+ Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
+ lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
+ cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
+ Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
+ otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
+ LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20250905191357.78298-11-ryncsn@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: F3QFGr6f6vhJfpQ5wx84plvaQlRfXLcsttn2qxyBxDk_1757334606
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aL672Jeqi99atefN@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ookax6uxs9w7zsx6cdzmso4d3mg5f95y
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0E9EB40006
+X-Stat-Signature: ehaxab4yefz44gci7ajdrax67xwq9mpd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C7D05C0008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757334375-711319
-X-HE-Meta: U2FsdGVkX1/e4W4TjArwZztP3dArwa3gSN4Db/DLmqgQjHiK5mZqMp6aOBcx/HPhtx7LUaOZXUhksZryWr+b09jUZJj6kWsBG+SKLKkzUNVPz/66JRlxAocsPwoorh/Q2WuXW5pArlkbGtzeQ6zOXQvbZeiNYx9oi6RSTgG4X2oPccqubJvEtv/DEiJFqpUqnLmWqX3xxW6QzZq60/V1o5Y93qMHvGAuwgpOVtBpJCC2MMvY/iF8qp8Zdm5GGDSaOnBjFLOLlv5dHKNEv7euiT8kQ7Ru8ebPlmZ2DBzKVHKN9hCIt433uv4loD5Lu+//FXnz2dsqtn1rv4F42FrWYt9PgD7gUKKKGQWKs5Ox2URCB0x8WplUEa/cHClBhPbBkZEyV2exdmEGA31ZcLgHQtA672a+Aq46zW6tmAzrlFl3yM+a6VNUMEkX+ZSj6Fhp6wZfigvJJn+AI96mB8Ozs7E+e4d3ALkHPXJ0yGh492bD8SkiW03oln3uQn8Vo5azSR30HWq3S+mctJxq34n7tcZR6ln/Smxo3Im2p8+OChL4kZw0hlLyM5XbCQU9p4hGgCkGvvQ1M+S7WTg3Xi0DHH6K6RLOTCq6ohT1vIWaY7xCdkyVr11tff3ao5BbJr9BQ5NmB/Bb4gVqgHly3+D/YOAZVBs3IMqsg0AF7zXHnb13Bc7cLQtJcai4GT6qjZi82x8WWD0JMOhAGzAjBB6VXPNE47a3kcSyB4HIlsEK40pN4gOAreMYBdme8gdnMZxDdk/dt6zN1KkMYNi45J0XJUlDX+ONBbDICgliY9IId4hlR+jBWfB1svNbFuDZ42tPmJ6PRsUgJ72ipN51uDOVRTrE8Oplh8i3+cMN5dscSSLAX7EJUFlJ5B5KskKUR/eUb2fBXMQvRK7+C2Oibl8Nk6SL0v90/u9eIkdelb9H2da+4TdQSIiYsy9BEs4bhCugTmEWXoJbUQZOC5s4Ii/
- J1/RJX4s
- ojqk89e9ZYXTQDnFOmsyt+9/4tIJLp/DWvFZ4UdJQuJ6PxS378dUBh6XfEFN6uWh1k2ClqMeHqny+cDkv8yPsZWi+UIu210MshH2+hhjzd4LugyKKERjiExeX7rJlLlbg+EFwE5OfJeX0uWrPGY7wmbiaRnC913j2hjA4/s+CYql9qDU1N+pV8/66u53WE7SDPYkVhrCBZWll8voF66SGMqVcA/a00QphOCBfMpJmUHxd1EaT/VbJIGh3MHOmQY4qLoGUcS0khBTk+K4cRfU4IwFVLheHxoLIk1OZ
+X-HE-Tag: 1757334608-534671
+X-HE-Meta: U2FsdGVkX1/aPDSu9zUMd69cxvhhsouyMX22zD3nSItA/pJ3u2uHZjLv8gzuv4yuJyFJFzN9M6tySzGcso++vKx0MFQGjugiA+pDxM+cxNkzTyLseY+SPTNXi799I92BFNv1VdE0AsG9cwhZB0RF+VxzAD3z1RpinAbWVV//fYomJPQE/GeT+oC+udkld1PKboPcylEOOYGMbsgTEH6ZPoq5xr2OJDF/TURIgWxJ4cWhlGCUJ0hgAsoXgz9ReS6WkhLtUodYroZvbH4KlhPPAQs0UlcLsgLPqtFuybG54t5hfTdCVOVo7D8CwWGvGAqAdlyc4q/brR7amyZZFRu8vr8Y3ygwWy/80FnSdPb5PkBKwD1M6iWS3S6YZXRF0MKk2OstkM9yVzVCT0zMiFRShN0drU2j5jujPd84knSKIAnr7UEfQeM1ySFGzpw6llhMxim9+9ZCLcgGgmY88jhfIqtS7ao6y2OcnGTQL6tE7oTAGbEtDBVQwtqizNnYVXixhZMZpBMQRGzjhwMbFGV+p/1grEkz9cHTu9e608gOaQViwcU33LgNjoYycuZsiyOARGRcMYIMVCkpFgkplkOBFO3FG/8Ort4DB2+TYXMdPxgFSJ0hZFSrx4GJtymWFxgr2z54tic6v7PXxiQk102AjzGeCnDtz2mrpFj8cvdf5fIWJRdE4UYfvIP5xAjQVKFPNRCZKJBZ1JzjjXRIxpPc9mmdIVAFBT/en5oS1eVRQ3T64nd8K1D4Ivp5/la8GJSxkQOgiVUsidsLTtGzVnfKOn8vq+oZ9UN2Ifuk4cruiodganBnPbiUdUGXAXxoKnz8cn//6KiDJq23sLg1ZeVvmybIaMJ+PGVtlDFHFRTUD7kjhy49jpxP/+dY+qS3w1ZaUNIvfwoWsotI+DwmVpGflNRwpcASL4fbQgP9twTrgZCZq8ao49aOQS6YoHJpT9F0DbRkZODI4GChxqnJHAG
+ s1mvF9AY
+ oYlInfBXm0An82IciwafFA6BmyKgLavse29Ms3Z7GaoEb4sUuWfViO6fkepA1bMPb8YVlCa4iLaXGTskBvOmSKHL8kp21wHXx+JDwMPASwA/KN8n5kXQ1CI4aA4I/zPo434q1d2ZTNo2ONilpoi0EupjvCgILGN0lqC7qkV/d8FthjdN7DwhwudyhKjdJOSHXX7+JnWvc9cDvIVDYdfDnBLPPuo9TFGEihe5mJYBYeV526VULnkk7yG1khPolCzWHcNbYRAu+TZwPYEFHePD7l2BgN9kb7LPJtSB+W+bN0W8hXvxsLqrxewETzJPkHVklZyAILbRLxEqSdI9RGMCLHGL7jiHr/dn8L6jHfLOgwZpOZ5UyJT2SaB4ySkQksQ2VGPTpntIlXbF6OMVdzaw/EOQIRO9S8d+IZ27R6UHQKS7qRnR024yPLr+zNCdpSaM9yE1kPmNrR24PtYwaBRvLPT2+Nit3wb1Wwh+c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,204 +186,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/8/25 13:19, Harry Yoo wrote:
-> On Wed, Sep 03, 2025 at 02:59:45PM +0200, Vlastimil Babka wrote:
->> diff --git a/mm/slab_common.c b/mm/slab_common.c
->> index bfe7c40eeee1a01c175766935c1e3c0304434a53..e2b197e47866c30acdbd1fee4159f262a751c5a7 100644
->> --- a/mm/slab_common.c
->> +++ b/mm/slab_common.c
->> @@ -163,6 +163,9 @@ int slab_unmergeable(struct kmem_cache *s)
->>  		return 1;
->>  #endif
->>  
->> +	if (s->cpu_sheaves)
->> +		return 1;
->> +
->>  	/*
->>  	 * We may have set a slab to be unmergeable during bootstrap.
->>  	 */
->> @@ -321,7 +324,7 @@ struct kmem_cache *__kmem_cache_create_args(const char *name,
->>  		    object_size - args->usersize < args->useroffset))
->>  		args->usersize = args->useroffset = 0;
->>  
->> -	if (!args->usersize)
->> +	if (!args->usersize && !args->sheaf_capacity)
->>  		s = __kmem_cache_alias(name, object_size, args->align, flags,
->>  				       args->ctor);
-> 
-> Can we merge caches that use sheaves in the future if the capacity
-> is the same, or are there any restrictions for merging that I overlooked?
 
-I think we will be able to merge. It will make more sense if we get to
-enabling sheaves for everything and set capacity automatically, with the
-args->sheaf_capacity serving only as a lower bound. Right now we can leave
-it as is I think.
->> +static bool has_pcs_used(int cpu, struct kmem_cache *s)
->> +{
->> +	struct slub_percpu_sheaves *pcs;
->> +
->> +	if (!s->cpu_sheaves)
->> +		return false;
->> +
->> +	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
->> +
->> +	return (pcs->spare || pcs->main->size);
->> +}
->> +
->> +static void pcs_flush_all(struct kmem_cache *s);
-> 
-> nit: we don't need these functions to flush sheaves if SLUB_TINY=y
-> as we don't create sheaves for SLUB_TINY anymore?
+>   
+> +/**
+> + * __swap_cache_replace_folio - Replace a folio in the swap cache.
+> + * @mapping: Swap mapping address space.
+> + * @entry: The first swap entry that the new folio corresponds to.
+> + * @old: The old folio to be replaced.
+> + * @new: The new folio.
+> + *
+> + * Replace a existing folio in the swap cache with a new folio.
+> + *
+> + * Context: Caller must ensure both folios are locked, and lock the
+> + * swap address_space that holds the entries to be replaced.
+> + */
+> +void __swap_cache_replace_folio(struct address_space *mapping,
+> +				swp_entry_t entry,
+> +				struct folio *old, struct folio *new)
 
-I'll check but also if this is true I would expect to have a clang warning
-report already. Maybe they are called but don't need to?
-TBH we should get rid of SLUB_TINY at this point, maybe have only a boot
-option that disables percpu caching and keep the code compiled.
->>  /*
->>   * Flush cpu slab.
->> @@ -3358,30 +3793,18 @@ struct slub_flush_work {
->>  static void flush_cpu_slab(struct work_struct *w)
->>  {
->>  	struct kmem_cache *s;
->> -	struct kmem_cache_cpu *c;
->>  	struct slub_flush_work *sfw;
->>  
->>  	sfw = container_of(w, struct slub_flush_work, work);
->>  
->>  	s = sfw->s;
->> -	c = this_cpu_ptr(s->cpu_slab);
->> -
->> -	if (c->slab)
->> -		flush_slab(s, c);
->> -
->> -	put_partials(s);
->> -}
->>  
->> -static bool has_cpu_slab(int cpu, struct kmem_cache *s)
->> -{
->> -	struct kmem_cache_cpu *c = per_cpu_ptr(s->cpu_slab, cpu);
->> +	if (s->cpu_sheaves)
->> +		pcs_flush_all(s);
->>  
->> -	return c->slab || slub_percpu_partial(c);
->> +	flush_this_cpu_slab(s);
->>  } 
->> -#else /* CONFIG_SLUB_TINY */
->> -static inline void flush_all_cpus_locked(struct kmem_cache *s) { }
->> -static inline void flush_all(struct kmem_cache *s) { }
->> -static inline void __flush_cpu_slab(struct kmem_cache *s, int cpu) { }
->> -static inline int slub_cpu_dead(unsigned int cpu) { return 0; }
->> -#endif /* CONFIG_SLUB_TINY */
->> -
->>  /*
->>   * Check if the objects in a per cpu structure fit numa
->>   * locality expectations.
->> @@ -4191,30 +4610,240 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
->>  }
->>  
->>  /*
->> - * Inlined fastpath so that allocation functions (kmalloc, kmem_cache_alloc)
->> - * have the fastpath folded into their functions. So no function call
->> - * overhead for requests that can be satisfied on the fastpath.
->> - *
->> - * The fastpath works by first checking if the lockless freelist can be used.
->> - * If not then __slab_alloc is called for slow processing.
->> + * Replace the empty main sheaf with a (at least partially) full sheaf.
->>   *
->> - * Otherwise we can simply pick the next object from the lockless free list.
->> + * Must be called with the cpu_sheaves local lock locked. If successful, returns
->> + * the pcs pointer and the local lock locked (possibly on a different cpu than
->> + * initially called). If not successful, returns NULL and the local lock
->> + * unlocked.
->>   */
->> -static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s, struct list_lru *lru,
->> -		gfp_t gfpflags, int node, unsigned long addr, size_t orig_size)
->> +static struct slub_percpu_sheaves *
->> +__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, gfp_t gfp)
->>  {
->> -	void *object;
->> -	bool init = false;
->> +	struct slab_sheaf *empty = NULL;
->> +	struct slab_sheaf *full;
->> +	struct node_barn *barn;
->> +	bool can_alloc;
->>  
->> -	s = slab_pre_alloc_hook(s, gfpflags);
->> -	if (unlikely(!s))
->> +	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
->> +
->> +	if (pcs->spare && pcs->spare->size > 0) {
->> +		swap(pcs->main, pcs->spare);
->> +		return pcs;
->> +	}
->> +
->> +	barn = get_barn(s);
->> +
->> +	full = barn_replace_empty_sheaf(barn, pcs->main);
->> +
->> +	if (full) {
->> +		stat(s, BARN_GET);
->> +		pcs->main = full;
->> +		return pcs;
->> +	}
->> +
->> +	stat(s, BARN_GET_FAIL);
->> +
->> +	can_alloc = gfpflags_allow_blocking(gfp);
->> +
->> +	if (can_alloc) {
->> +		if (pcs->spare) {
->> +			empty = pcs->spare;
->> +			pcs->spare = NULL;
->> +		} else {
->> +			empty = barn_get_empty_sheaf(barn);
->> +		}
->> +	}
->> +
->> +	local_unlock(&s->cpu_sheaves->lock);
->> +
->> +	if (!can_alloc)
->> +		return NULL;
->> +
->> +	if (empty) {
->> +		if (!refill_sheaf(s, empty, gfp)) {
->> +			full = empty;
->> +		} else {
->> +			/*
->> +			 * we must be very low on memory so don't bother
->> +			 * with the barn
->> +			 */
->> +			free_empty_sheaf(s, empty);
->> +		}
->> +	} else {
->> +		full = alloc_full_sheaf(s, gfp);
->> +	}
->> +
->> +	if (!full)
->> +		return NULL;
->> +
->> +	/*
->> +	 * we can reach here only when gfpflags_allow_blocking
->> +	 * so this must not be an irq
->> +	 */
->> +	local_lock(&s->cpu_sheaves->lock);
->> +	pcs = this_cpu_ptr(s->cpu_sheaves);
->> +
->> +	/*
->> +	 * If we are returning empty sheaf, we either got it from the
->> +	 * barn or had to allocate one. If we are returning a full
->> +	 * sheaf, it's due to racing or being migrated to a different
->> +	 * cpu. Breaching the barn's sheaf limits should be thus rare
->> +	 * enough so just ignore them to simplify the recovery.
->> +	 */
->> +
->> +	if (pcs->main->size == 0) {
->> +		barn_put_empty_sheaf(barn, pcs->main);
-> 
-> It should be very rare but it should do
-> barn = get_barn(s); again after taking s->cpu_sheaves->lock?
+Can't we just use "new->swap.val" directly and avoid passing in the 
+entry, documenting that new->swap.val must be setup properly in advance?
 
-Yeah but it shouldn't really matter which node we use for the empty sheaf
-return. And in case of the full sheaf below it's actually better for
-preserving numa locality to use the original barn.
+Similarly, can't we obtain "mapping" from new?
+
+-- 
+Cheers
+
+David / dhildenb
+
 
