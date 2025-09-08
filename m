@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 451D6CA101F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 03:23:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20216CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 03:42:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C78C8E0007; Sun,  7 Sep 2025 23:23:43 -0400 (EDT)
+	id 595078E0009; Sun,  7 Sep 2025 23:42:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89EA28E0001; Sun,  7 Sep 2025 23:23:43 -0400 (EDT)
+	id 51E838E0001; Sun,  7 Sep 2025 23:42:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DB788E0007; Sun,  7 Sep 2025 23:23:43 -0400 (EDT)
+	id 40D1B8E0009; Sun,  7 Sep 2025 23:42:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A7F08E0001
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:23:43 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 153F7140928
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:23:43 +0000 (UTC)
-X-FDA: 83864638326.09.0D48CD5
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6056C40003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:23:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FEfKE3Q1;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757301821; a=rsa-sha256;
-	cv=none;
-	b=omDaZyJR0rlx2wW4PngIi8BxqOFvnzLa8o7kwftT+r0/nlgzmlWC/WkPSrGP4it84aHIG1
-	OAUSxXqEABSXyBlmGWZq81CE1NHvFOz2J3sFzleePJfpVXxph8GsV7/eVDaagsrFB2wpuZ
-	vjlCEPcPuKI81UVa0Bhr7q7upqfTH8g=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FEfKE3Q1;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 28A3E8E0001
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:42:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76AE813BEFE
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:42:04 +0000 (UTC)
+X-FDA: 83864684568.10.B02E99C
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0691720005
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:42:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FxSao6EC;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757301821;
+	s=arc-20220608; t=1757302922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lfmam1n7TdC8vpNeNDuwecMrTMDdFYZ9Uj7AdA9Dih0=;
-	b=OkkcHICXU4++goD86diZVNHe8hUc4l3FoC/jl6mJViNId3AueC5xpXQX8eFMdH1PuV1vu/
-	kRYQaKsBju43BXmb2Ebu+kbg/FrN/MBq24+vIIcKri+cEOtP31U0O8OzdQl/iXuynz4Axx
-	2II1hK6N8irDfh5z1PdmrM5YJotkTaM=
+	bh=p59BzXNdtsBBH4YiiOWeXAEJSDW7oZS3ScEZ3ZTPVpk=;
+	b=OEeQFaUQ9mCwqIoKizB7y1CBUIMPTyf/FXbHD6waxLTF2qgwl1JpHyo4lJ4hoz2vHld9nJ
+	HGKkoDvQwxtwWh/4ZEyBSvEIj2kcjvu9WuZqroFzs0fOnkVBvcUyyvahKJa5PU4rro1TLV
+	UUkRD9I+1RgHAUz8a6zYfPumdDJQZnQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=FxSao6EC;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757302922; a=rsa-sha256;
+	cv=none;
+	b=Pi31ezqb/PocB/JUgt3YWMGPFEFnhpt6omjA1si9tNHfIA0zLwIpaVOeUCfyXNO84FOxkl
+	rGnUmdvOzYh+kpwQJWAjfkYKQHt0B1rnMLmndO2Qup7g2gWGMkRoLH2owEkZQ277aggcOi
+	mAo5thHq09Qj5ERkUcyMg0D0fZzLlOI=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1757301817; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=lfmam1n7TdC8vpNeNDuwecMrTMDdFYZ9Uj7AdA9Dih0=;
-	b=FEfKE3Q1QT46ABR5quufM12i88i6NQSRmQJku8Y5zTd1PJsRrZ804E5cWwLRQ7cdjZWxPhEoMQTGCXnQP5zNBMxK2+6VRgANqwebL1YHL5m3yTHCXosZI9YLojwpWBgBlgw7s6RF93s/yyAFKSt0uVMqxMY68SjWTR0IK8fIrT4=
-Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnQYNOE_1757301815 cluster:ay36)
+	t=1757302917; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=p59BzXNdtsBBH4YiiOWeXAEJSDW7oZS3ScEZ3ZTPVpk=;
+	b=FxSao6ECRjGebVd0LcDlAQkpYfYsWvIRjufLGpXoid8idpu9CB4EGXmItZYs2VPxY1vGsYYie7DcdlR1ZLxRmpWclojzGFcuLuqn4cVMrdnth/7dTfhp0MLilFgXKQ1CBpDjIefPbmEbtYIcgQ0Uycel8CWKF2d33//AXjyrMFw=
+Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnQj7q5_1757302916 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 08 Sep 2025 11:23:36 +0800
-Message-ID: <73120e6d-0856-4ded-af87-1455c554bfe0@linux.alibaba.com>
-Date: Mon, 8 Sep 2025 11:23:35 +0800
+          Mon, 08 Sep 2025 11:41:56 +0800
+Message-ID: <f8051ae4-1b9d-42dc-8272-24a05741d86e@linux.alibaba.com>
+Date: Mon, 8 Sep 2025 11:41:55 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/15] mm, swap: cleanup swap cache API and add
- kerneldoc
+Subject: Re: [PATCH v2 10/15] mm, swap: wrap swap cache replacement with a
+ helper
 To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
@@ -75,19 +75,19 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  linux-kernel@vger.kernel.org
 References: <20250905191357.78298-1-ryncsn@gmail.com>
- <20250905191357.78298-10-ryncsn@gmail.com>
+ <20250905191357.78298-11-ryncsn@gmail.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20250905191357.78298-10-ryncsn@gmail.com>
+In-Reply-To: <20250905191357.78298-11-ryncsn@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
+X-Stat-Signature: mpur9hbmf4b7ewt8hwatfo14hw6w83b6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6056C40003
-X-Stat-Signature: btwq4xs4ugef789feny6k6xp8x99kt8b
-X-HE-Tag: 1757301820-85603
-X-HE-Meta: U2FsdGVkX1/+IJKqqMAuh22Hi0fPo7RceafYgTE7cj1Zj2Gdyug3ZW7FP285BRovmMWL5IlO9GTCZ1iga7D21Qmiu0M2381nFL5pJ1pptmPvHUVW6B4WMbePz7qTE484agsnls0Wy3YHtdWvqlpU6iQQ3seD1S4lJKZr6J6oPpCclLBf7nYTBpZxd8ean0VlZwb8Mbcn77Hqlji9ItQyNPSO7QiJDSLWy91jRqKsWh5OKVAJCZaIpsGy53IHWBmSNN5aotH2Jb99+FdckSosWyJsIV7V828vd7X20JAHwx3RHiRAE7vuhZAnA39+NDbw34L2G9WHAiNe5Ii2iFY+pZMIkxB6TwRFQCdb6j9mFyho+yj14Dx5+oyee0jUR/72k/qEujAG5KStYE7PhjS2Ld123H8k+BFBsR701Y/E5cXWWauIerWCjW/KqlpbXl+oDMW13EWBwtvplPO1DVfIe/Dc2lvUn/m/Rc8ZSbUEU4QjjJhfalwylH7NrGIA1LuxLIlkDrjQQD3xHHucP9sozmO9xUADXv5TosEQIZ+A5mwHlhHm3EUqLCOzRH8EN8U32WIdW3+2jntrXJa/WGqwcI5qfQ8+PqeLyxJ9u/yfKQMctqrtnzK80tuBl1bjHv+HFi9FrrPeTI7Vahvj4XisG50ZNkdiOwkEzYnG1CLSR4E232PGvJxzm7TThCqYV/W3SOWL4khksqkHrUEmFfDiWi/KH03I7dUDJPwWXPXxpggSuBF9EadjZxLP27tEzXBDGFr5HxzllboFOdhFgpDxKbIQcyx4MHr9dJ3Ab2jPL4iDZ5KUONpZVGuGF3XGLXTo/MW41ZF1SUuUelz+zTM6Ztd1HeKBJjzlpe2EmQ1Cz9Ph1BDNfAJIGz2/fadfIFqf5oD29qHFjPD+Opd5TrmeXpvyckPGAqDVsuP3p/NlgGHJJiJ25Nvc/Qkcb5ODLV9WtHUKxnpVlFmVQFeP78F
- nVKxoDid
- hzPsMcRzbrbzN+ttFWPO+inzhoxophCh62DZFNSkpTSat3e4oSRZ/FZxtYlgvStg9MijqTp3GB4kJF/cuTZMjyKtd+xY1LSniqR4s5Ro0zC6NijTMWe+6Z01qzK9TGZF+dAG7XFDTkqT21Sn6xRgknawDo+bpNQudEUr5cr4SKr8e7Z5QflU/CXt0qvtas904ojOE32gS+gvjZYowYCEyDziP4zRwiEZQYbtL9Pn6al1xXij7KXS83jAaqbydPhz6Of+G8wgkYDjKTi/f5G3KDloUiU3aqNQ0nYJWNqvNReWJZlgvRvugMORYKmALwQf8VToP8RakVBHORq8=
+X-Rspamd-Queue-Id: 0691720005
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757302920-217044
+X-HE-Meta: U2FsdGVkX19OthFdvqjeJ3syIc71hzMpOYbaQqUUCC5yS9lg+QtREL33jYkSLlN4sU8QuevUf9xF4g8LbMCc4LP8AOn7DJtqGEm2ewmks953XVAuTtzG0aZdEPJmKdyUoqs3qTE1TdOGMCWuWUFoK5bb+ATo6aB5LlBmeVj5g2i/JuYuZsCk7xvvZ0qh+tAXMQpz2fRYDxh2DQlJDbGVBbTZrdCObpLaDChNC2cggecTCqBTzA6z8fCIxwo8RbBwZvI8HlR7PnXtaQyq1bKQsvGBrbeEzPP9qXQ1jYD6dfrLICd8BFxUp3IWaXkiXmarDhGiNK76wExIEFSJgS0NazyulkPhYX9/5Fh0nTpZYKHgeZ58XbOjYW6qCQcJpLfV+9HFYX8nml4ogiZcSyIHRlu1c9+3UINBfkP7xCIVggq2LddUF1ItHK2Kvl2u9nOcKVAIFF1LaqAj7AC7Vae13fP3nCq258rcaer8SFZxK0pvtsX2mf0OpJW8Df1e+co5FCvqw7u8zNvTtqo4fNg533au5ZxCIpOfyEGhCtKl6DYRbUsLkr71j87dLnyoiNjvE25hmnp2s4yLVNz6YYV3IDHPDXHHeY6cCVp5BVL9DNKH5cdL2mHln0HVoVZSqVi4/HTBrZYt80ICfaUEIA8b1hBEHC+ZQal7vwS6gy+4vCHIoZxw1aSAiQjSDDON7MrELAi4CWCDn4rNlYi3Hm6jbTk/hGUJxvUMkwyL1zh1sBOrLkEBAusyC7HWYouBVogrFq4VziUkCY9mis4GHnvuFPJquecgcLF2d24ylRFM9viF9xpWcLsjYtx56kM4XuhE5X71V1FFpOzRzC/G8G9I1cVfsismCuad58yzaz0WSiCQOrVDSQm9ETfzJhg2rqNFrU7vzx4lVpjSBbT8u0ZfpJ9Bz+UYNPbi3WjVMLiOkjl6MsW001dpi+ExU1HHNL0Wn+tRSlPlMsZUCe+KtV2
+ tcv4xTQ0
+ Wts00PX3KNd2McvqIcS98sDTeurmeRAaddjXyoUgTQgOee7NTr3MPVPldlhPaQS1cjt61D+zlRGDfZrjxmupLuyAb4QLr0/QWfF1Kh2oE1RFjkPuipBaPmXlwhmbf0+6jGQS3m3+Lrz4JieBkn3Y1/0WbR2tgZSqVyN03Py2ZDOd0qVgP3l1Ch0f9MGdaorTb/YopDohiN5XydDdfcV6Eoy98GBra/HHQ2c5z7YF1AHIw4gLE/7nCRx4vAqVpGzl29JMFHmwPkR5iyMJWuRsHsofP2NPAcROrnMc5+RnYDWzATjtB18WxfOyCSuZUeuoP9LIlzN8MoxIH6QZb4kKB0+Sniw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,15 +101,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2025/9/6 03:13, Kairui Song wrote:
 > From: Kairui Song <kasong@tencent.com>
 > 
-> In preparation for replacing the swap cache backend with the swap table,
-> clean up and add proper kernel doc for all swap cache APIs. Now all swap
-> cache APIs are well-defined with consistent names.
+> There are currently three swap cache users that are trying to replace an
+> existing folio with a new one: huge memory splitting, migration, and
+> shmem replacement. What they are doing is quite similar.
 > 
-> No feature change, only renaming and documenting.
+> Introduce a common helper for this. In later commits, they can be easily
+> switched to use the swap table by updating this helper.
+> 
+> The newly added helper also makes the swap cache API better defined, and
+> debugging is easier.
 > 
 > Signed-off-by: Kairui Song <kasong@tencent.com>
 > ---
+>   mm/huge_memory.c |  5 ++---
+>   mm/migrate.c     | 11 +++--------
+>   mm/shmem.c       | 10 ++--------
+>   mm/swap.h        |  3 +++
+>   mm/swap_state.c  | 32 ++++++++++++++++++++++++++++++++
+>   5 files changed, 42 insertions(+), 19 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 26cedfcd7418..a4d192c8d794 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3798,9 +3798,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>   			 * NOTE: shmem in swap cache is not supported yet.
+>   			 */
+>   			if (swap_cache) {
+> -				__xa_store(&swap_cache->i_pages,
+> -					   swap_cache_index(new_folio->swap),
+> -					   new_folio, 0);
+> +				__swap_cache_replace_folio(swap_cache, new_folio->swap,
+> +							   folio, new_folio);
+>   				continue;
+>   			}
 
-With the shmem parts cleanup moved into this patch:
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+IIUC, it doesn't seem like a simple function replacement here. It 
+appears that the original code has a bug: if the 'new_folio' is a large 
+folio after split, we need to iterate over each swap entry of the large 
+swapcache folio and then restore the new 'new_folio'.
 
