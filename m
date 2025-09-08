@@ -4,89 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED1C5CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 07:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57461CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 07:56:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 575EC8E000F; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
+	id 7A46F8E0001; Mon,  8 Sep 2025 03:56:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D548E0001; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
+	id 754EF6B000C; Mon,  8 Sep 2025 03:56:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48A998E000F; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
+	id 6433B8E0001; Mon,  8 Sep 2025 03:56:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3837D8E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D881A86F37
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:51:22 +0000 (UTC)
-X-FDA: 83865312804.21.358F56D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 37B111A0009
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:51:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757317881; a=rsa-sha256;
-	cv=none;
-	b=yUMi2fp2Ce3442/wzH4U9wOvdNiEbqBywEXX7rdcVyuHOml+tPm4XO3NpiY6oekn8+mM1p
-	oOG6Wep4eaRuWsWn/4jzYf6q0RzzjVqRzTK0BE8c0TPSw717g/nqdkt94sJihE7c4zhgBD
-	M2IIFpL3lh27h+7d8X12HCvceYGVkwA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 510F86B0008
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:56:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 289441A09FE
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:56:22 +0000 (UTC)
+X-FDA: 83865325404.27.0728E8E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B6AE318000A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:56:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YSlRAU6D;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GHMMiDL7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YSlRAU6D;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GHMMiDL7;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757317881;
+	s=arc-20220608; t=1757318180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JWlLIQPSaqWHPooV4ErDwsPilGU41UKwerA8nMa6tRY=;
-	b=bfJk3tn7KaeQgEt3HQ0xEKuHHOhOuqxTzsCRjhLh8yH5r5FvDQ8iP4PzBN70F5nujIuFjt
-	3n9qOiyYPolMeRXl7nXWY54jtmLAWGv0Va7aDja818OAf2FDcUGzJttpsUFEP216ZAAk1p
-	eisgW/Pv8mcuU8/sf4o0IUxPDV1xLvI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2880F169C;
-	Mon,  8 Sep 2025 00:51:12 -0700 (PDT)
-Received: from MacBook-Pro.blr.arm.com (MacBook-Pro.blr.arm.com [10.164.18.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 36CB43F63F;
-	Mon,  8 Sep 2025 00:51:15 -0700 (PDT)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	kas@kernel.org,
-	willy@infradead.org,
-	hughd@google.com
-Cc: ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	baohua@kernel.org,
-	richard.weiyang@gmail.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH v2 2/2] mm: Drop all references of writable and SCAN_PAGE_RO
-Date: Mon,  8 Sep 2025 13:20:28 +0530
-Message-Id: <20250908075028.38431-3-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250908075028.38431-1-dev.jain@arm.com>
-References: <20250908075028.38431-1-dev.jain@arm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qM4bq6PnJkBcjlPI/Ktkkc/3++g3plbsOJZEHlsH588=;
+	b=LYv3TXdLt5hBtiAWcZVY2xY7AsSQ8ywEJB6W7K+VJyttrkg/hAW+mNwznj4zYjw28nr3gL
+	rfUC6aMr8su6H/4wbfF2nVsNcDnaMwGUMVFjaCU2paoEsgU27tHy4ntOt9xUY3yGt78ERv
+	wurOUOcSeRQ/kXQgEdhW8RQHHSjENnA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YSlRAU6D;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GHMMiDL7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YSlRAU6D;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GHMMiDL7;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757318180; a=rsa-sha256;
+	cv=none;
+	b=LU54tbcIIVDsBPYE4mQRZz4UOPTFQ7qaDDCRBi8momHMvLLro/M2Sgw3vuviaNgxTePeYm
+	ueZtWyt4kxckeNh6DjPbWEanEOCS14DfYZ5L50wJ9KVRdETLOktIpkozqetNzfRhTCvfgL
+	QkLnDwsHurDvgZdY6pH9fg2WFqUOANQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 652C85CC39;
+	Mon,  8 Sep 2025 07:56:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757318177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qM4bq6PnJkBcjlPI/Ktkkc/3++g3plbsOJZEHlsH588=;
+	b=YSlRAU6DSmqdTWajfOxYVrLJq+x5B25SpQgvijT0IYpAoN0+s71vY/QcPlbuYOb5Jf5DCO
+	gL7ho3NI4IRSHG/SKJ8toqsqGBb2nSDHNO7d6M+0IXbMs5OzrIrKCQvMFgbyXjrNIlZP1J
+	fbI0A3ffiVlWrzpguxbK4xa8S+WCNkk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757318177;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qM4bq6PnJkBcjlPI/Ktkkc/3++g3plbsOJZEHlsH588=;
+	b=GHMMiDL7NKd5CTaRDxZ+PD4xUenbDQb8QpBEoHng7qjV9mZhayLPQPyHDrArWv33++fwzq
+	mscrX9m3JTEqk1BA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757318177; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qM4bq6PnJkBcjlPI/Ktkkc/3++g3plbsOJZEHlsH588=;
+	b=YSlRAU6DSmqdTWajfOxYVrLJq+x5B25SpQgvijT0IYpAoN0+s71vY/QcPlbuYOb5Jf5DCO
+	gL7ho3NI4IRSHG/SKJ8toqsqGBb2nSDHNO7d6M+0IXbMs5OzrIrKCQvMFgbyXjrNIlZP1J
+	fbI0A3ffiVlWrzpguxbK4xa8S+WCNkk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757318177;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qM4bq6PnJkBcjlPI/Ktkkc/3++g3plbsOJZEHlsH588=;
+	b=GHMMiDL7NKd5CTaRDxZ+PD4xUenbDQb8QpBEoHng7qjV9mZhayLPQPyHDrArWv33++fwzq
+	mscrX9m3JTEqk1BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 42FDD13A54;
+	Mon,  8 Sep 2025 07:56:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Pa8DECGMvmidSwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 08 Sep 2025 07:56:17 +0000
+Message-ID: <fbfc21ab-c947-422d-94c6-0db897ee25f3@suse.cz>
+Date: Mon, 8 Sep 2025 09:55:45 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 37B111A0009
-X-Stat-Signature: xh78ha6sppjxfuby6zis59fs7by8ad8d
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/21] SLUB percpu sheaves
+To: Suren Baghdasaryan <surenb@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org, Alexei Starovoitov <ast@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Pedro Falcato <pfalcato@suse.de>
+References: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250903-slub-percpu-caches-v7-0-71c114cdefef@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: wx7hpxgr9cx87dw9h5nsx59dmg1zdbcz
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1757317880-552908
-X-HE-Meta: U2FsdGVkX1+qMq8htgvj/rhHxyJRveunqWw8tnGEN8xNpGlUEfhCxxA1xknhQrJFg56DyuHE3kwhwfzIX4Ou6Edrw0FnNLrIUEcJFEb46jvRR2cH9TsCsUOnmGlVYgoU+Pj2RFGRRt3YiTLNp6rEsxt0r/bQgpcvxZ29Bwj+MPg/BRgRL7sV63Od/BBhynI+xVUTYCFB2OEc9aziFbznxVB1+bIYqQ7K5NhrSbD8SvJoE1qoCdU3ksT18d9TEFJtkaxV18FRDR4YtLwqm8Kd4+AvkWOV/ouriFGLAXl518LHs2tcgs9PtdAqNeOqGQyypGSUNkP3cMKeMpbpIt2/uXFsKM/MOpTxmHKUmx6XWIBCQctlICHQUqAeOVqgpqcXGittI6xcBO7X4LjqaBVxG/fggm8r2AerIm2nkC4zO9+2N7XvVDebd5FKF3MCZ4S3XNIIG+VBeFtMrqcSViSf0pLrpFgmHgV1rAOXE3ohPZr2BgQReH1jaQq7X+u3bNkz9mZb9oQ4Tc2SCk1KPux/nDA3tk6VQtSAhctsajt9wxIU2N5wLAoZ+Ijf6ZMUdz0BA48HJC5/bHceh1hY28RUXTIZTwe+9K8Bcg8nGGyDjzvXNtlvXdF1V6AsjjETB2S9KK+uGkTfyT8kSEyMJo9Vk7tcDM61aYwCBSwKvHmrJVMlk1axqSHxQUuffL3uRgc3nIXr0n4cllGRpOhotyLar6Dp0kh9+7KIIHa7lIBBISQmik341D48JIx3Jmx6bJD6KSu/TTkc6WtLRsao1Nx4h1BZXxCCG0apvOygDqMMhJDEdzyAicogNi36X0AGQ6+7Erd70rL8WjwTF7Jt/gXb2ORFjUJdj9F3FRmp8Wm4+c0Aec3/sH2B1rcn+fU6NkZxkCMMnviRLuYUsL8OuKz+CRnbx35P79TjrS5z8YZ49kxCM50vSxquZIfarYG/zNsYuqNTv5YxxITPa6tNJdY
- mz2AgfdS
- ReIm7umEcMgZ3Oq6r4vf2lcuiXDUi10QmzAFjKdvG1fceTq4EwSoXTewz9JRwigEPwo9jzL0y+YDioygHRvKh+I2zP5AN0X+zcX6YfQWMd7XBvg6+kQ1JMvb2Kr+miT19uBPYdj1xERFQ1sx8f7RTPZBkV9+vZHJWX4LKiQq7ibBLu+KqweVYk4J77A0zNfexa8DjD7x0qPFfjh4+T+F431dMjT1m6Gke6KENDdvy07PQ1Yr6d4BDc97JpBGyOwxRKrSdnhExYrjtAJVeaVxtBSY2U1GkmcUFN4bphMKO4pTd5tcJqtNMBUuYaPCD1tk0CBqDJGTQPGLa1Q9DCnlyvFT9BzNAkuvYXdVRtbG7dNyVK4QCskjAd9OzSsC5rLcyi+RFjl1+Mx07EtusjcVUCqzrV1qKxHOp6v39IT0zp0acm6o=
+X-Rspamd-Queue-Id: B6AE318000A
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1757318179-813087
+X-HE-Meta: U2FsdGVkX1/ULhePGzltwMp+rvDlDeHvD8sy+EAENRYhWB78CKbFEuR1oIHu5hgGWusaudVcN161ysbyNBBzDPoI2vETjpV4MrO3vPPwkD+UQbarSygOj290nskaFWcAtdGnBa8UekNZrSHFL/gBWdG8SsZbtJb4d+nQYbss3nm419DCNdWE08f5IdmdoV65M9Ef67T7ZnnZejEdHyAR8WSCdp6vvrMOQCETdRX3yFNW+7BVlGksf68bVXHjNyCT/CwB9KMWmnBeWkRwCZ9uliEHZCB1IjxOU93wVfShD1HWTtHV+svYJ81k4JL0czUb6X28DYwCJFktRCb97vmU2c6+Zb614tL1MBV1MOSCk80rjJ/EMmtfz7sU7HeudXI4G9q/Wbpl9OZrNmTIbeuRJpGCmXWYUFsrGTHuUwP4QZHeXVMVMr3g26Rmg48Le2k0pGH5VFx/EEVqyzV/OsG2YT7un5wVlusuYf3ZEHOxjn9YxpZOc8YNJLA8aHkp3uzMViuqC5omUJqS5dLcP0iG9uaGls8QjBp1PicZTaHeF5aTNTaWkfhV8s7O3JHXotm72bEnypLTh3cjAZqAvYwhfiYyM2biQSe+7cVBuMStuxIa6opK/2gO+fQ0wHZOuW1LGpt4fqWReOxtAsX5uYR0iTAv4iuW6xsV7EMimT1oth9cR4kp14KrnfqRBxNHaxeESA5gWW/tzxIA2F2W//whlZEx/vDdvwNraGCQdSOEbG+38UWaoG5aOVRFrT6jQVc9WwSpMQYrmeOTyHK0unkXXw5EfsyXX0Gb/JzRwfv8eMI7G4rORnlmTL/GithkhwvsXl/+VRGEEIQzk7blx3qlevBWwXRZ8GLG108jSoEKddB6NngfW86ZAuR4dC9KDwHXxDov8I9kU7V0T0qtk47JCrTzqObB9bVIQT8vZznsblZi2oKfyDjiPNjxRoIupDT+zPbMPUo2UoOTa5y0uej
+ 90RMUnsO
+ s/j2ytBko9TwsNQaVA9iphJ3myZHJrPhirg8t+kUGGLhNVtPgRGGTHnQHjj8fUIni5qJgp4QDxjDFB7HjXs/3TGni9seVvNU95ETCfdtoPuBn57AWvi10wJr15yELJI0Q1Kl8uFkPFv9s4Li4JHdAcVbhzHoQ7ufYCKL6jF97QAYFEmJvoRVe3pE1gwKnuInMiXSly3yXvUbpQLmIQmif+8pswf9R1WPQPC+oqwHaYfDDwVdEUH2UkOwjW9ECoidTxmDaDwuqaQheMM8Ku8XdFfMJ/EWke/XzwZ6cbXpj6N6+OAOhTrQj/utsFtqdZ3I0dc6IKZPryVV/NZr5JKFsy2+dNA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,177 +184,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that all actionable outcomes from checking pte_write() are gone,
-drop the related references.
+On 9/3/25 14:59, Vlastimil Babka wrote:
+> Hi,
+> 
+> I'm sending v7 as there were some non-trivial fixes needed since v6. I'm
+> including back the maple tree part that I sent separately the last time,
+> as some reordering between both parts was necessary to avoid
+> intermittently breaking the userspace vma tests. See the changelog at
+> the end of the cover letter for details and links.
+> The v7 will replace+extend the v6 in slab/for-next.
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- include/trace/events/huge_memory.h | 19 ++++++-------------
- mm/khugepaged.c                    | 14 +++-----------
- 2 files changed, 9 insertions(+), 24 deletions(-)
+Liam made further changes/cleanups to the maple tree side, mainly the commit
 
-diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-index 2305df6cb485..dd94d14a2427 100644
---- a/include/trace/events/huge_memory.h
-+++ b/include/trace/events/huge_memory.h
-@@ -19,7 +19,6 @@
- 	EM( SCAN_PTE_NON_PRESENT,	"pte_non_present")		\
- 	EM( SCAN_PTE_UFFD_WP,		"pte_uffd_wp")			\
- 	EM( SCAN_PTE_MAPPED_HUGEPAGE,	"pte_mapped_hugepage")		\
--	EM( SCAN_PAGE_RO,		"no_writable_page")		\
- 	EM( SCAN_LACK_REFERENCED_PAGE,	"lack_referenced_page")		\
- 	EM( SCAN_PAGE_NULL,		"page_null")			\
- 	EM( SCAN_SCAN_ABORT,		"scan_aborted")			\
-@@ -55,15 +54,14 @@ SCAN_STATUS
- 
- TRACE_EVENT(mm_khugepaged_scan_pmd,
- 
--	TP_PROTO(struct mm_struct *mm, struct folio *folio, bool writable,
-+	TP_PROTO(struct mm_struct *mm, struct folio *folio,
- 		 int referenced, int none_or_zero, int status, int unmapped),
- 
--	TP_ARGS(mm, folio, writable, referenced, none_or_zero, status, unmapped),
-+	TP_ARGS(mm, folio, referenced, none_or_zero, status, unmapped),
- 
- 	TP_STRUCT__entry(
- 		__field(struct mm_struct *, mm)
- 		__field(unsigned long, pfn)
--		__field(bool, writable)
- 		__field(int, referenced)
- 		__field(int, none_or_zero)
- 		__field(int, status)
-@@ -73,17 +71,15 @@ TRACE_EVENT(mm_khugepaged_scan_pmd,
- 	TP_fast_assign(
- 		__entry->mm = mm;
- 		__entry->pfn = folio ? folio_pfn(folio) : -1;
--		__entry->writable = writable;
- 		__entry->referenced = referenced;
- 		__entry->none_or_zero = none_or_zero;
- 		__entry->status = status;
- 		__entry->unmapped = unmapped;
- 	),
- 
--	TP_printk("mm=%p, scan_pfn=0x%lx, writable=%d, referenced=%d, none_or_zero=%d, status=%s, unmapped=%d",
-+	TP_printk("mm=%p, scan_pfn=0x%lx, referenced=%d, none_or_zero=%d, status=%s, unmapped=%d",
- 		__entry->mm,
- 		__entry->pfn,
--		__entry->writable,
- 		__entry->referenced,
- 		__entry->none_or_zero,
- 		__print_symbolic(__entry->status, SCAN_STATUS),
-@@ -117,15 +113,14 @@ TRACE_EVENT(mm_collapse_huge_page,
- TRACE_EVENT(mm_collapse_huge_page_isolate,
- 
- 	TP_PROTO(struct folio *folio, int none_or_zero,
--		 int referenced, bool  writable, int status),
-+		 int referenced, int status),
- 
--	TP_ARGS(folio, none_or_zero, referenced, writable, status),
-+	TP_ARGS(folio, none_or_zero, referenced, status),
- 
- 	TP_STRUCT__entry(
- 		__field(unsigned long, pfn)
- 		__field(int, none_or_zero)
- 		__field(int, referenced)
--		__field(bool, writable)
- 		__field(int, status)
- 	),
- 
-@@ -133,15 +128,13 @@ TRACE_EVENT(mm_collapse_huge_page_isolate,
- 		__entry->pfn = folio ? folio_pfn(folio) : -1;
- 		__entry->none_or_zero = none_or_zero;
- 		__entry->referenced = referenced;
--		__entry->writable = writable;
- 		__entry->status = status;
- 	),
- 
--	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, writable=%d, status=%s",
-+	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, status=%s",
- 		__entry->pfn,
- 		__entry->none_or_zero,
- 		__entry->referenced,
--		__entry->writable,
- 		__print_symbolic(__entry->status, SCAN_STATUS))
- );
- 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index a0f1df2a7ae6..af5f5c80fe4e 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -39,7 +39,6 @@ enum scan_result {
- 	SCAN_PTE_NON_PRESENT,
- 	SCAN_PTE_UFFD_WP,
- 	SCAN_PTE_MAPPED_HUGEPAGE,
--	SCAN_PAGE_RO,
- 	SCAN_LACK_REFERENCED_PAGE,
- 	SCAN_PAGE_NULL,
- 	SCAN_SCAN_ABORT,
-@@ -557,7 +556,6 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 	struct folio *folio = NULL;
- 	pte_t *_pte;
- 	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
--	bool writable = false;
- 
- 	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
- 	     _pte++, address += PAGE_SIZE) {
-@@ -671,9 +669,6 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
- 								     address)))
- 			referenced++;
--
--		if (pte_write(pteval))
--			writable = true;
- 	}
- 
- 	if (unlikely(cc->is_khugepaged && !referenced)) {
-@@ -681,13 +676,13 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 	} else {
- 		result = SCAN_SUCCEED;
- 		trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
--						    referenced, writable, result);
-+						    referenced, result);
- 		return result;
- 	}
- out:
- 	release_pte_pages(pte, _pte, compound_pagelist);
- 	trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
--					    referenced, writable, result);
-+					    referenced, result);
- 	return result;
- }
- 
-@@ -1280,7 +1275,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 	unsigned long _address;
- 	spinlock_t *ptl;
- 	int node = NUMA_NO_NODE, unmapped = 0;
--	bool writable = false;
- 
- 	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
- 
-@@ -1344,8 +1338,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 			result = SCAN_PTE_UFFD_WP;
- 			goto out_unmap;
- 		}
--		if (pte_write(pteval))
--			writable = true;
- 
- 		page = vm_normal_page(vma, _address, pteval);
- 		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-@@ -1435,7 +1427,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		*mmap_locked = false;
- 	}
- out:
--	trace_mm_khugepaged_scan_pmd(mm, folio, writable, referenced,
-+	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
- 				     none_or_zero, result, unmapped);
- 	return result;
- }
--- 
-2.30.2
+76fcafc3894f ("maple_tree: Drop bulk insert support")
 
+but it affects some later patches too due to some conflicts
+
+for now the result is here: (and in slab/for-next)
+
+https://web.git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=slub-percpu-sheaves-v8r1
+
+I don't want to spam with new vX too often, so will send in 2 days but can
+can do earlier if there's interest.
 
