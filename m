@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22444CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 07:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED1C5CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 07:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E6108E000E; Mon,  8 Sep 2025 03:51:18 -0400 (EDT)
+	id 575EC8E000F; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7972C8E0001; Mon,  8 Sep 2025 03:51:18 -0400 (EDT)
+	id 54D548E0001; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D4538E000E; Mon,  8 Sep 2025 03:51:18 -0400 (EDT)
+	id 48A998E000F; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 58D128E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:51:18 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F403311B1AE
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:51:17 +0000 (UTC)
-X-FDA: 83865312594.03.BAF793C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3837D8E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:51:23 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D881A86F37
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:51:22 +0000 (UTC)
+X-FDA: 83865312804.21.358F56D
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6C05AA000C
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:51:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 37B111A0009
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:51:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757317876; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757317881; a=rsa-sha256;
 	cv=none;
-	b=TDgsFPArxqeis9METF3T+HVZx64EjkjZklgL86Ytgvg6Qq8HrQLT2H9r7gKqPbbctDYsHf
-	QwC5uZVWdQ2ZzIVwYOmahA6uxBQd1k9skQTa3Fsc1kjcWeTHT+38mpqLMeNlPqkbRASdrm
-	fUbJ4o0WG2dSivsUQ9BibPsAL39vyzo=
+	b=yUMi2fp2Ce3442/wzH4U9wOvdNiEbqBywEXX7rdcVyuHOml+tPm4XO3NpiY6oekn8+mM1p
+	oOG6Wep4eaRuWsWn/4jzYf6q0RzzjVqRzTK0BE8c0TPSw717g/nqdkt94sJihE7c4zhgBD
+	M2IIFpL3lh27h+7d8X12HCvceYGVkwA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757317876;
+	s=arc-20220608; t=1757317881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=C9jIjBFcc7Huts7AxxCJhUqCPCbvoR5OBOUZEecIpsA=;
-	b=gpyvPnEWP8EuSkHd8qYl4vuBMYHsgKUM7yqH7ShhgJfaNmkkpaW5o+QqxctaBegr0TYv+2
-	WOVo74+QC+boRhvW9rFtbI5GU1Ic+DxNhR/X/nD8VRNxGM0IP+QtmBtCjeXkm2Hnh5URqq
-	7VKvdHZK1d8RvLcbm2bBdmHvrqD/Mak=
+	bh=JWlLIQPSaqWHPooV4ErDwsPilGU41UKwerA8nMa6tRY=;
+	b=bfJk3tn7KaeQgEt3HQ0xEKuHHOhOuqxTzsCRjhLh8yH5r5FvDQ8iP4PzBN70F5nujIuFjt
+	3n9qOiyYPolMeRXl7nXWY54jtmLAWGv0Va7aDja818OAf2FDcUGzJttpsUFEP216ZAAk1p
+	eisgW/Pv8mcuU8/sf4o0IUxPDV1xLvI=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5DC7E169C;
-	Mon,  8 Sep 2025 00:51:07 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2880F169C;
+	Mon,  8 Sep 2025 00:51:12 -0700 (PDT)
 Received: from MacBook-Pro.blr.arm.com (MacBook-Pro.blr.arm.com [10.164.18.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 759E33F63F;
-	Mon,  8 Sep 2025 00:51:11 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 36CB43F63F;
+	Mon,  8 Sep 2025 00:51:15 -0700 (PDT)
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -71,22 +71,22 @@ Cc: ziy@nvidia.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH v2 1/2] mm: Enable khugepaged anonymous collapse on non-writable regions
-Date: Mon,  8 Sep 2025 13:20:27 +0530
-Message-Id: <20250908075028.38431-2-dev.jain@arm.com>
+Subject: [PATCH v2 2/2] mm: Drop all references of writable and SCAN_PAGE_RO
+Date: Mon,  8 Sep 2025 13:20:28 +0530
+Message-Id: <20250908075028.38431-3-dev.jain@arm.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250908075028.38431-1-dev.jain@arm.com>
 References: <20250908075028.38431-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6C05AA000C
-X-Stat-Signature: 3kd8dmnpegg6ywsbwmqrq9rk5uk9hori
+X-Rspamd-Queue-Id: 37B111A0009
+X-Stat-Signature: xh78ha6sppjxfuby6zis59fs7by8ad8d
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1757317876-878974
-X-HE-Meta: U2FsdGVkX190XKP9xpuQA5e2X2EvHUgRuN88ll//hw/F45QX+C48sAhxyljiUzv8BeQJmhef0mC16PbEPowSm1FtH/26+ofG841LVoMAV+fonTuAu+FuOFgfCvsQnTs9spu7alYvwGg9NeX0ojI6lIgxy0pyndL+L3XZOr1IbcVZeBBscjJrKC+YC7DguwfWVquB7LC5AuAD/JdkcRC94wkxe8Zk28vf2Po9CAsQnQTgRmo4cX4JvfU2WVwY6dBNyJYSmd07ar6FwSbfIMGeddJXTBnWjJ18EMmJ1IrWQ70lANRYnXUbJyYLkf9ut/cpkPYXte4DBUp3GloTcYma9TwLEKKMezYge/TslFC0RjCFbZEOjE/Drx0bXhaS+EgfjqqH14Lu4SS9/AXgOr+E/IXwUsiE9rY6AaY/w3StOiU/muAubBs+2ilFFsby46ZUdcTwE4kJsPhFqXyqdxjE270/OkU6Ry9hnUT4QlBXTQy3NFQRLhioodgOE9KYxnbZlwXnIn0NaiebGbvNteiFMNt2C/KmYu9c1R7pnsMtTuiS5GN8H5RsEzpB4v8VNTkn35KV1RWxus85uvRi50MGI0s70JFy6ghFstfDL2ir8YAAcVCuOzi2b4d8qyw8qd34tzCi9dkto4hIYAQ1M07y3GmbXfyWoJYmUIaV7OWL8egMAeZxYe7HR9MX8STV2q42CgpdOoD88PJsvmp/aCsu8zEYH1B7/wPhgsnpgh+B0O/TTgXA4s0IWous79jJpdoD5eygP2rTOZ7c0QWnynSD2O5MS9H2WwqnyEmlcIB97GxJ/DB+wsi5zBt6nwULnlrV4SSZe0d7nLpNmz3cpPFfPekBMPP1ft4GYF9bplro2+8tYz/zP8guzAEPDLEjuNoIloLNvKKWloG1apFDkaucCZWiaUuq1wYF64WxzW+l2hzy8GE4wyhca2RsWN6HQ3SEijsZ5rRDLgE3sO15hyZ
- Fg6Sv+ft
- 9PgzVie8S7nvNQU5ahTGFZkYBzLqhtsd0C6wPUWU1B8RHQmAtdH4zFlBdhynCCJyoWkr40oOCCl0fVIvc8casxsIKCAkERihTd/K/0qhg2TGry7Er0ARbHRxiggMqxs/0cQjY2AznhJhSnHnG7NkMlZJcahwX0wHkfA/jp0GS6VJG3E/2sJi8wzW7oFn1lCuBsrFfkL7atD+TuOXzv7cI3B2DrJFcqh9Brqcb7eh7WKrHqrLW5mYiyYFCFaY9Fmodt5hmW07RTaSUnxEWnpdOWHl/JtUe2NEp5DL2l7yVPgXfnqOUJt110KSsNdY7RKG0hY3B9UojbaFNFHO8kjic45BcZPpnhLK5megAQQj1Dn0Gy4k=
+X-HE-Tag: 1757317880-552908
+X-HE-Meta: U2FsdGVkX1+qMq8htgvj/rhHxyJRveunqWw8tnGEN8xNpGlUEfhCxxA1xknhQrJFg56DyuHE3kwhwfzIX4Ou6Edrw0FnNLrIUEcJFEb46jvRR2cH9TsCsUOnmGlVYgoU+Pj2RFGRRt3YiTLNp6rEsxt0r/bQgpcvxZ29Bwj+MPg/BRgRL7sV63Od/BBhynI+xVUTYCFB2OEc9aziFbznxVB1+bIYqQ7K5NhrSbD8SvJoE1qoCdU3ksT18d9TEFJtkaxV18FRDR4YtLwqm8Kd4+AvkWOV/ouriFGLAXl518LHs2tcgs9PtdAqNeOqGQyypGSUNkP3cMKeMpbpIt2/uXFsKM/MOpTxmHKUmx6XWIBCQctlICHQUqAeOVqgpqcXGittI6xcBO7X4LjqaBVxG/fggm8r2AerIm2nkC4zO9+2N7XvVDebd5FKF3MCZ4S3XNIIG+VBeFtMrqcSViSf0pLrpFgmHgV1rAOXE3ohPZr2BgQReH1jaQq7X+u3bNkz9mZb9oQ4Tc2SCk1KPux/nDA3tk6VQtSAhctsajt9wxIU2N5wLAoZ+Ijf6ZMUdz0BA48HJC5/bHceh1hY28RUXTIZTwe+9K8Bcg8nGGyDjzvXNtlvXdF1V6AsjjETB2S9KK+uGkTfyT8kSEyMJo9Vk7tcDM61aYwCBSwKvHmrJVMlk1axqSHxQUuffL3uRgc3nIXr0n4cllGRpOhotyLar6Dp0kh9+7KIIHa7lIBBISQmik341D48JIx3Jmx6bJD6KSu/TTkc6WtLRsao1Nx4h1BZXxCCG0apvOygDqMMhJDEdzyAicogNi36X0AGQ6+7Erd70rL8WjwTF7Jt/gXb2ORFjUJdj9F3FRmp8Wm4+c0Aec3/sH2B1rcn+fU6NkZxkCMMnviRLuYUsL8OuKz+CRnbx35P79TjrS5z8YZ49kxCM50vSxquZIfarYG/zNsYuqNTv5YxxITPa6tNJdY
+ mz2AgfdS
+ ReIm7umEcMgZ3Oq6r4vf2lcuiXDUi10QmzAFjKdvG1fceTq4EwSoXTewz9JRwigEPwo9jzL0y+YDioygHRvKh+I2zP5AN0X+zcX6YfQWMd7XBvg6+kQ1JMvb2Kr+miT19uBPYdj1xERFQ1sx8f7RTPZBkV9+vZHJWX4LKiQq7ibBLu+KqweVYk4J77A0zNfexa8DjD7x0qPFfjh4+T+F431dMjT1m6Gke6KENDdvy07PQ1Yr6d4BDc97JpBGyOwxRKrSdnhExYrjtAJVeaVxtBSY2U1GkmcUFN4bphMKO4pTd5tcJqtNMBUuYaPCD1tk0CBqDJGTQPGLa1Q9DCnlyvFT9BzNAkuvYXdVRtbG7dNyVK4QCskjAd9OzSsC5rLcyi+RFjl1+Mx07EtusjcVUCqzrV1qKxHOp6v39IT0zp0acm6o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,65 +95,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently khugepaged does not collapse an anonymous region which does not
-have a single writable pte. This is wasteful since a region mapped with
-non-writable ptes, for example, non-writable VMAs mapped by the
-application, won't benefit from THP collapse.
-
-An additional consequence of this constraint is that MADV_COLLAPSE does not
-perform a collapse on a non-writable VMA, and this restriction is nowhere
-to be found on the manpage - the restriction itself sounds wrong to me
-since the user knows the protection of the memory it has mapped, so
-collapsing read-only memory via madvise() should be a choice of the
-user which shouldn't be overridden by the kernel.
-
-Therefore, remove this restriction by not honouring SCAN_PAGE_RO.
+Now that all actionable outcomes from checking pte_write() are gone,
+drop the related references.
 
 Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com> 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/khugepaged.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ include/trace/events/huge_memory.h | 19 ++++++-------------
+ mm/khugepaged.c                    | 14 +++-----------
+ 2 files changed, 9 insertions(+), 24 deletions(-)
 
+diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+index 2305df6cb485..dd94d14a2427 100644
+--- a/include/trace/events/huge_memory.h
++++ b/include/trace/events/huge_memory.h
+@@ -19,7 +19,6 @@
+ 	EM( SCAN_PTE_NON_PRESENT,	"pte_non_present")		\
+ 	EM( SCAN_PTE_UFFD_WP,		"pte_uffd_wp")			\
+ 	EM( SCAN_PTE_MAPPED_HUGEPAGE,	"pte_mapped_hugepage")		\
+-	EM( SCAN_PAGE_RO,		"no_writable_page")		\
+ 	EM( SCAN_LACK_REFERENCED_PAGE,	"lack_referenced_page")		\
+ 	EM( SCAN_PAGE_NULL,		"page_null")			\
+ 	EM( SCAN_SCAN_ABORT,		"scan_aborted")			\
+@@ -55,15 +54,14 @@ SCAN_STATUS
+ 
+ TRACE_EVENT(mm_khugepaged_scan_pmd,
+ 
+-	TP_PROTO(struct mm_struct *mm, struct folio *folio, bool writable,
++	TP_PROTO(struct mm_struct *mm, struct folio *folio,
+ 		 int referenced, int none_or_zero, int status, int unmapped),
+ 
+-	TP_ARGS(mm, folio, writable, referenced, none_or_zero, status, unmapped),
++	TP_ARGS(mm, folio, referenced, none_or_zero, status, unmapped),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(struct mm_struct *, mm)
+ 		__field(unsigned long, pfn)
+-		__field(bool, writable)
+ 		__field(int, referenced)
+ 		__field(int, none_or_zero)
+ 		__field(int, status)
+@@ -73,17 +71,15 @@ TRACE_EVENT(mm_khugepaged_scan_pmd,
+ 	TP_fast_assign(
+ 		__entry->mm = mm;
+ 		__entry->pfn = folio ? folio_pfn(folio) : -1;
+-		__entry->writable = writable;
+ 		__entry->referenced = referenced;
+ 		__entry->none_or_zero = none_or_zero;
+ 		__entry->status = status;
+ 		__entry->unmapped = unmapped;
+ 	),
+ 
+-	TP_printk("mm=%p, scan_pfn=0x%lx, writable=%d, referenced=%d, none_or_zero=%d, status=%s, unmapped=%d",
++	TP_printk("mm=%p, scan_pfn=0x%lx, referenced=%d, none_or_zero=%d, status=%s, unmapped=%d",
+ 		__entry->mm,
+ 		__entry->pfn,
+-		__entry->writable,
+ 		__entry->referenced,
+ 		__entry->none_or_zero,
+ 		__print_symbolic(__entry->status, SCAN_STATUS),
+@@ -117,15 +113,14 @@ TRACE_EVENT(mm_collapse_huge_page,
+ TRACE_EVENT(mm_collapse_huge_page_isolate,
+ 
+ 	TP_PROTO(struct folio *folio, int none_or_zero,
+-		 int referenced, bool  writable, int status),
++		 int referenced, int status),
+ 
+-	TP_ARGS(folio, none_or_zero, referenced, writable, status),
++	TP_ARGS(folio, none_or_zero, referenced, status),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(unsigned long, pfn)
+ 		__field(int, none_or_zero)
+ 		__field(int, referenced)
+-		__field(bool, writable)
+ 		__field(int, status)
+ 	),
+ 
+@@ -133,15 +128,13 @@ TRACE_EVENT(mm_collapse_huge_page_isolate,
+ 		__entry->pfn = folio ? folio_pfn(folio) : -1;
+ 		__entry->none_or_zero = none_or_zero;
+ 		__entry->referenced = referenced;
+-		__entry->writable = writable;
+ 		__entry->status = status;
+ 	),
+ 
+-	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, writable=%d, status=%s",
++	TP_printk("scan_pfn=0x%lx, none_or_zero=%d, referenced=%d, status=%s",
+ 		__entry->pfn,
+ 		__entry->none_or_zero,
+ 		__entry->referenced,
+-		__entry->writable,
+ 		__print_symbolic(__entry->status, SCAN_STATUS))
+ );
+ 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 4ec324a4c1fe..a0f1df2a7ae6 100644
+index a0f1df2a7ae6..af5f5c80fe4e 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -676,9 +676,7 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 			writable = true;
+@@ -39,7 +39,6 @@ enum scan_result {
+ 	SCAN_PTE_NON_PRESENT,
+ 	SCAN_PTE_UFFD_WP,
+ 	SCAN_PTE_MAPPED_HUGEPAGE,
+-	SCAN_PAGE_RO,
+ 	SCAN_LACK_REFERENCED_PAGE,
+ 	SCAN_PAGE_NULL,
+ 	SCAN_SCAN_ABORT,
+@@ -557,7 +556,6 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 	struct folio *folio = NULL;
+ 	pte_t *_pte;
+ 	int none_or_zero = 0, shared = 0, result = SCAN_FAIL, referenced = 0;
+-	bool writable = false;
+ 
+ 	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+ 	     _pte++, address += PAGE_SIZE) {
+@@ -671,9 +669,6 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+ 								     address)))
+ 			referenced++;
+-
+-		if (pte_write(pteval))
+-			writable = true;
  	}
  
--	if (unlikely(!writable)) {
--		result = SCAN_PAGE_RO;
--	} else if (unlikely(cc->is_khugepaged && !referenced)) {
-+	if (unlikely(cc->is_khugepaged && !referenced)) {
- 		result = SCAN_LACK_REFERENCED_PAGE;
+ 	if (unlikely(cc->is_khugepaged && !referenced)) {
+@@ -681,13 +676,13 @@ static int __collapse_huge_page_isolate(struct vm_area_struct *vma,
  	} else {
  		result = SCAN_SUCCEED;
-@@ -1421,9 +1419,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		     mmu_notifier_test_young(vma->vm_mm, _address)))
- 			referenced++;
+ 		trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
+-						    referenced, writable, result);
++						    referenced, result);
+ 		return result;
  	}
--	if (!writable) {
--		result = SCAN_PAGE_RO;
--	} else if (cc->is_khugepaged &&
-+	if (cc->is_khugepaged &&
- 		   (!referenced ||
- 		    (unmapped && referenced < HPAGE_PMD_NR / 2))) {
- 		result = SCAN_LACK_REFERENCED_PAGE;
-@@ -2830,7 +2826,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 		case SCAN_PMD_NULL:
- 		case SCAN_PTE_NON_PRESENT:
- 		case SCAN_PTE_UFFD_WP:
--		case SCAN_PAGE_RO:
- 		case SCAN_LACK_REFERENCED_PAGE:
- 		case SCAN_PAGE_NULL:
- 		case SCAN_PAGE_COUNT:
+ out:
+ 	release_pte_pages(pte, _pte, compound_pagelist);
+ 	trace_mm_collapse_huge_page_isolate(folio, none_or_zero,
+-					    referenced, writable, result);
++					    referenced, result);
+ 	return result;
+ }
+ 
+@@ -1280,7 +1275,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	unsigned long _address;
+ 	spinlock_t *ptl;
+ 	int node = NUMA_NO_NODE, unmapped = 0;
+-	bool writable = false;
+ 
+ 	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+ 
+@@ -1344,8 +1338,6 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 			result = SCAN_PTE_UFFD_WP;
+ 			goto out_unmap;
+ 		}
+-		if (pte_write(pteval))
+-			writable = true;
+ 
+ 		page = vm_normal_page(vma, _address, pteval);
+ 		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
+@@ -1435,7 +1427,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		*mmap_locked = false;
+ 	}
+ out:
+-	trace_mm_khugepaged_scan_pmd(mm, folio, writable, referenced,
++	trace_mm_khugepaged_scan_pmd(mm, folio, referenced,
+ 				     none_or_zero, result, unmapped);
+ 	return result;
+ }
 -- 
 2.30.2
 
