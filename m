@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA93CCA1013
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 05:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2021CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 05:23:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A3908E0005; Mon,  8 Sep 2025 01:21:06 -0400 (EDT)
+	id 408C16B000C; Mon,  8 Sep 2025 01:23:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254838E0001; Mon,  8 Sep 2025 01:21:06 -0400 (EDT)
+	id 3DFEB6B000E; Mon,  8 Sep 2025 01:23:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 143558E0005; Mon,  8 Sep 2025 01:21:06 -0400 (EDT)
+	id 2F64E8E0001; Mon,  8 Sep 2025 01:23:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 01A1C8E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 01:21:05 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A1E3216099D
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 05:21:05 +0000 (UTC)
-X-FDA: 83864934090.06.D34A638
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BD20B14000F
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 05:21:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EQkxRxhS;
-	spf=pass (imf23.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 1FBDC6B000C
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 01:23:35 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D414FC09A8
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 05:23:34 +0000 (UTC)
+X-FDA: 83864940348.08.AAD3B5F
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	by imf18.hostedemail.com (Postfix) with ESMTP id F17581C000B
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 05:23:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mjqffgwg;
+	spf=pass (imf18.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757309013; a=rsa-sha256;
+	cv=none;
+	b=5BqyoRYfA3DX0ArHriRIMKQ3sSDstBWt1qx/CU3eWw7WwDMNoHqv6lG+sXkjMjnXUSBCAU
+	DhQguCSqHW4CjSUHfmje2SqmLEpuC8CthrmBxPx5v8R157w+7dvYl5mPBrrCsLoIYS6j0F
+	0vNRxkaYKSjG2hg76xr/59nkwJ3h04A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mjqffgwg;
+	spf=pass (imf18.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757308863;
+	s=arc-20220608; t=1757309013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Z309ZEqczozAMKKKB/xzAoGf/4FE4TavsEKgcsqpes=;
-	b=KUF6772DKFV930NY5aEBmu//i9tVtU0SPsa9C4r312oXQWAvS5g14Wddzk3r0tpJXyvfri
-	gjBGNwVMTTiQFp/5QS1Wouabx/I2TU9aWwGjwj9JzcpXU/IIOhQYF7jIzBwidP/ksxtiwQ
-	Gj8fhWoLGNZS4cn+G0n9tk2P0zeUcLM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757308863; a=rsa-sha256;
-	cv=none;
-	b=U8LSHnezMWj1FXaTWoBiERSb2t9NOpkiSFyOeXGOZqPC5iu1/dYleEHj/BGvnmRYu6mu10
-	J9O7Vh5t4jj6/K1pm1FxPner/T3uazA/UXpyaPaFja/UjKUerRtZpZ97uRkuryIk/BrzTb
-	mkYAkCVMPv1QM/grB0pZKM8alrxVH5Q=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=EQkxRxhS;
-	spf=pass (imf23.hostedemail.com: domain of wangjinchao600@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=wangjinchao600@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3280264a6e8so3033269a91.3
-        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 22:21:03 -0700 (PDT)
+	bh=BWu2XYOMOTFu9B0WNwW06nL3LV01SW2Lw7noABGOmtw=;
+	b=RxxZTlH5JBiOG9cpWmOq4hLItWQLARAS2tteybFPkcGJ5neNAcwgMWZr0uvzjutFGIjlQc
+	9s6nMTEwdg/cq+2ZNG4KLWUHjhzW5pDqY+vGhp8XF8PNwm0hW4U+qUCv2tlYgqVtvvoNo5
+	Qb153pSWVkW4wIjQAFWxcSCnAwvdi84=
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-77287fb79d3so3177195b3a.1
+        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 22:23:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757308862; x=1757913662; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757309012; x=1757913812; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Z309ZEqczozAMKKKB/xzAoGf/4FE4TavsEKgcsqpes=;
-        b=EQkxRxhSGChfnsu0Dp1izldo4HHCZuyv+tftVDkbIvWm9fc1l4gLiSlSI6A4gGF2JK
-         Wy0GvkAzU66xIgmQWu7an2n6Zk5Eg8PlERQrKzzL87vBzappOVjaGre3+D8hvmEf0y9Y
-         Z/feeZFt6+FiHTCFkg3pDhdu8AbOacr3hDoj3RO48XX9R6pFGIIR8SnMcftA3iLHhBmw
-         2YALz1mC5s/i8D8tsPuzUx2095rDEmF3MHigEY90PBJmAPDF9HJTGvRXsK1P/9OYGcgT
-         3lbejRVJgWJ26IWVJGBjgX7Ln8AQbdFbDztiCJ1zBSplmB3VV3QlNRnDttiZpNQLQ3CD
-         iOYQ==
+        bh=BWu2XYOMOTFu9B0WNwW06nL3LV01SW2Lw7noABGOmtw=;
+        b=Mjqffgwg0W0HlMIfYr50/CC21UFf+8n5+Yk6nHq50FeSZXJPDV8y6/3+uT3MMtOTe5
+         cNH86CPM9HF6Rub+uS+MYjLapUpzV38qobnFU5G+ZIr09gOtV8feOowuBKNaj1cnSouW
+         aNmBomS2u2dFy4W+75PeM3X0tksGsBciNWVhL22383DVidlcFFvLTefHqQSxwOatiZMV
+         u26vgjEZywuMhTAfxH4Q7WrYqot0vFE1W+0rWO/dtt7ICAtt0mrDiKqH9vW2T7mUcrQ5
+         tg7s2yjl/4CPggr0bHO7abtsZsU6hUUJh1kPiaieZqOTc0zDu4iUH+cfmHV6Kdoq3Gn9
+         eP1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757308862; x=1757913662;
+        d=1e100.net; s=20230601; t=1757309012; x=1757913812;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6Z309ZEqczozAMKKKB/xzAoGf/4FE4TavsEKgcsqpes=;
-        b=aztF0+n6SPX59pJePDQ3Ap9486z96iukeenZXwsZ4J6CH3n3KfsXZAL81kZOrHEr7u
-         D5CKf4qr9tGOKHOzLM8PZLUaq0LncUkG0M/7wQp47FfLjMw5cKEZ02AU6xzXDazqO/N5
-         4soLIJF2T7lmA2pcehM3UwYtzh4j+5FXiNRjlg/7zvjsQ2Ytke1s/VXiGkl8u5hNd7GC
-         0SCyR7U+RI2+EQn0g4w9mDHHGHXVbYY7N4MzqtvTdTMRti2vofp4gt8JMjYhC0qYUAWG
-         /N7fuy1pJqVZ9zlgmwYPYK1tbkLldIafHw0mzwO14n1inIDVlpY2JjOovQ46VLT2RxD8
-         /syg==
-X-Forwarded-Encrypted: i=1; AJvYcCXICX91x6k7IkbUFIxg6/DxoEy0MQ1mK6hdJZs41xgcE8p/segl1SEeWzBXLo/oFVNrOefdn6mFXg==@kvack.org
-X-Gm-Message-State: AOJu0YzzbaXF6ZeQMEQC9E0iFAssSuPlhhzA+z71zh98t3LN4jpLjv1e
-	ne4eXt+dVmYhTPjI+c6xM4Lo2L/Pda4H2bHW4pqfc2HUOCHH36VZhWx3
-X-Gm-Gg: ASbGncuRlVxoaFngTJHMCZEN7ZE4FODPlCz+CsJE8h/ywyGZWRX0IOuP0k6I7g7vrSS
-	NXXepzFOIKplPSATeJpxzo1qrjMG7oPXPeTs/9Bd4FKDDQHOLob5VcJL9MQ/kReiosb0aVvYAE7
-	hacwJJKqoATCzamHXzA5BydcRXkyz9cCs4NP5UKDTRlaoXuQYq9FB/NZysHLbgPUn6EeWPoUix3
-	DJvbgJ/h5EKCP1o9G4bUwto+o7Xjxf/TkEEBPZCHNnswjdkbUWpFQ/Am5Rqavo7QrpKawwDybCz
-	Mt0r4c2d8zKLSRqhrhD/ORi2fdEERQGc0MbC0vMx6Iloh9ttETPnJdvsonTAh7thYo6tPBPizha
-	K6vfefHYm3b7xWRbnhtBrkZJlGBfyzJ7Z8PJRQ7VaUeLJ
-X-Google-Smtp-Source: AGHT+IGPcXqmogWZILkA0EiWDB3UUSk4oq5HV5nWmW/FIF6iyzxQCslm6c7L4gk90ECEmg86Ndwr/A==
-X-Received: by 2002:a17:90b:4ac9:b0:32b:dfd5:3527 with SMTP id 98e67ed59e1d1-32d43f2e436mr8617642a91.9.1757308862448;
-        Sun, 07 Sep 2025 22:21:02 -0700 (PDT)
-Received: from localhost ([45.8.220.62])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4fb15f50d6sm11758299a12.0.2025.09.07.22.21.01
+        bh=BWu2XYOMOTFu9B0WNwW06nL3LV01SW2Lw7noABGOmtw=;
+        b=OTA0wOTRxeN4wW5s1Sy+M1MbV1EqMBmDTw7hS7PlQLNvkponcfEu9JGzqTm+0kMBGo
+         Rwg39DlO0va968MPppwzuNtjxDWapzgCqJi40b78Ty9pRNWaYWoFho/nF8gpv6XNv+Ml
+         jYa6d4nQM6jDJvMwMXPMGk1v9s9YvabRJ/mNHxS1fg2tangsCnl6F/bj0/JZRVE0GzXX
+         cJ859aH1Ruv2cMz+QSWsnntwGTzdxeIeR+RzYV9TjdACrVCAWoQdhK9e/OnNz+LNmnLf
+         C/RgL94Z/Zug3IRQbf6XoUcoI1v5WIh19IV+PTnWWoQTncGDcj9RxdmibCyLPqSUss3b
+         bgqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0BWkhQtTTanXuojLFbIH5u4Im+JGKsVki+xKZmGmpwiR7O+HQdpTLGUg7zNUz73Hdd76abFJI2Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyq6Hs7f+JzkT0Xds7rOCroh4Clem5r82hkFbwgRWHNHQzjfWHM
+	tbZbZCsbHzIA5gtuchhxLj2hJzQoZ2EXLqiXlv3+hHkk86NMwak1NgrZ
+X-Gm-Gg: ASbGncteqRNNYHEuEIj0huocg0b/bxbZNp+CCkjDJVFRFL3Al3B5f4ZARfrd1uomn2z
+	z/9kfKYw7rGTXCRCFF+rQNs3llwg4Fnx43zrDO8HfKYJiJIYRCSWC9hElRZEhHVq7QXn3tqTCUu
+	U2gmbvTfCCQg7As+X2cyJMrJ9qmu9yLTLexU7PzumbYU/5E3Al0n8qNL4/pdwqEpNY/5Vjjoe8B
+	qYU32lflhPlBrIH+4P/XRT5CZk51CU1XCoQtLCnYOG8SlEzUIC6KZFpI1qMOm+ywhmexxSVa/b7
+	ARJaVjIvpI2hJ0O5O8lk9FOkhz1eLYCImk1TN+wqDwVMq1/YgE3DksgQArZuupUHJDi7cYEraL0
+	5+jN8d/qPkDLBYbwqQS6SSv7W0DOU8CZRIenCnQufV0CojP9I
+X-Google-Smtp-Source: AGHT+IHhHv4Iu58ATI59YbrWBaYVLbKFXM/ClLr8aEJoJiAWuzKMQN7cVpbbtrr/dTshWaOeTRjAbw==
+X-Received: by 2002:a05:6a20:7344:b0:24b:3b75:b059 with SMTP id adf61e73a8af0-25344130942mr10522566637.55.1757309011718;
+        Sun, 07 Sep 2025 22:23:31 -0700 (PDT)
+Received: from localhost ([103.121.208.62])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4f992d3de9sm14051191a12.14.2025.09.07.22.23.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Sep 2025 22:21:01 -0700 (PDT)
-Date: Mon, 8 Sep 2025 13:20:51 +0800
+        Sun, 07 Sep 2025 22:23:31 -0700 (PDT)
+Date: Mon, 8 Sep 2025 13:23:28 +0800
 From: Jinchao Wang <wangjinchao600@gmail.com>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -114,24 +114,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@suse.com>, linux-perf-users@vger.kernel.org,
 	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 05/18] x86/hw_breakpoint: introduce
- arch_reinstall_hw_breakpoint() for atomic context
-Message-ID: <aL5ns7h1NaoD9LPg@mdev>
+Subject: Re: [PATCH v2 07/18] mm/ksw: add atomic watch on/off operations
+Message-ID: <aL5oUJEWSuRpH5S-@mdev>
 References: <20250904002126.1514566-1-wangjinchao600@gmail.com>
- <20250904002126.1514566-6-wangjinchao600@gmail.com>
- <20250904063832.GT4067720@noisy.programming.kicks-ass.net>
+ <20250904002126.1514566-8-wangjinchao600@gmail.com>
+ <20250904064659.GV4067720@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250904063832.GT4067720@noisy.programming.kicks-ass.net>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BD20B14000F
-X-Stat-Signature: e8nyyg9tw7xhx5x51mrpep5g1m6n1n16
+In-Reply-To: <20250904064659.GV4067720@noisy.programming.kicks-ass.net>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: F17581C000B
+X-Stat-Signature: ebhfmazm1muhyo4q36ztsqqetaigr834
 X-Rspam-User: 
-X-HE-Tag: 1757308863-526105
-X-HE-Meta: U2FsdGVkX18O4bSs2/brhKaQAQTOlQZd1b9DQ3p/b/YbhtKXp5pbt2NCpaO3e7yGZkyH+DNXtG8rgAbUOkYpz1osEkUHPagr4i6GbGs67+BR6g7wRI8z++9NWLEPxz8F3qUfmLx5dgY5RdV25e0eWof3fqClCv7jcc3acb3Ai1R5gU7dgx8Yl+IefSyReyK8Ldbu7aZsq2FqNCqoCSmowWRolEIW8/8XZBtjIo2D5CjTysRElShJLKFPAbViYe/d7yPipeH43N/P8dfBzbuUURPM1BCZ3yfjvYddWeiw0y7AXZK5llZYPGQ7Z3BQVksWGWjxGW5gCCwzj2kUFbpzlYZFT2Pgu1FlZ2R2PUNbiSjdJwUaNR0JWnt+l2gKuy8ilN41YdaQphRWpmf3CEeyNukc1BM3dhcxujGMxYLW/np/U4f0pkSsCEgFfvj/m9RtcHsb9dMSUsEkDBcqNwnFEXcixW988EL6pW6YR2qYYluq/ZXxUbnet7IdBs45ZkCqmE5fY4gKz4t66xyfsohaijzcZTpePIvQLSIm2Kg1zhyotUbrhzF4bE1Ep+ifTfo/wocmLUpLbPNuB7UEfwdQCnQXzg3580bfVG+w8GjF9ssi5UtpSNOrr0NK/jo0HZkN2rmC79u7qUSV4ORxIhr5DKCmJypwLmRjfA6dTGuSI4OmRMFExlHUvXcZREh0A8Q4nz6IScUwS2TqOGo7iO9n/S5mbIhRkAvf8+h4R6Di2yZkGOLjVWnfqrIEopFQvjEw+N6SE7EJa4jVMRdqJaFs5eUQTF3BhYEg4dwXiZ6S0PfzRQUlxnND7v3WuCb0HdluD0E2s7tEW0Qr+4UPP1RRMEHj1ydKSRW9NCOSFHrRfJC5GUFyMEYnewt6CLg8VhEoxBPN3XbsQCs+kuqoIy2jBB05tbRnbQCnHuxXSjF3p5uAkoxpQm/Iux7wDbxttdD1B6JyTBPNY1obkyNdqBT
- 7yHl5hlq
- Lcl2DhNLmoqFliktGjJvZNhu2tIPNEnH4PdLd2G+C4tDtaGj72plLmlyoEmvyueHOvbLUAOVh/vziDMxUZM3q81Bxqb+/IFRBeCrrQW874EPFFwLJIKETcyvCGkHGTHF+ovcWhRZHJHe3aX59ywdVwTb2+hAzsW4VGNeek1S8iVDxbKBfMp30tZkh++lD5F2caXvhxPfyF0ISa4hRs1NWonUdWc1GpwVS6K1OHemaSrCf47zMyBB/AvQERaER3Q9HLIpaKSUtqtcZIt28auPkF51yzvrxVaVZRwoXR5HGP3yRgJ17jpMEUS+mvLhUf6S+sEtdLDOqEBYOHlA2k0tFu4v9nntDOtg1CCUQHmQgnGgiPMzjjKAmcOkuidTexWQTJdQlj1HKZOl9YhelKMwQaC5XHwHSmTu2qnTiPPJZEVySRJSoVMkykFj0c0rTyFfy1VT4wTgSyEqRUjMAcAk873Q7PKonJ3Uu4/zr6KN/Yha7voe5dUWmTCeLr1bIWazFWMZiuo4tEYxa4x/dvu6xxSQ4ga4q/RL+NC7vcnvwePl0ZhpCHV7VIJIVNChIBeB+3T0K
+X-HE-Tag: 1757309012-757066
+X-HE-Meta: U2FsdGVkX18A+pYQCiYpiqH8wjmlr/SIqokLKNP4vYXlQ/oWIoO0hVTA70Dd8hHJqIpqwp9WseOzrEIMVPzyeNv9X/B778ShXk+4RLvzOKhdIDDOYHqzW1+GBKIxqc/MSSnpNro71Z75xhl+lpCWZzgxIxu6NudJfrp3ltrssFZ5fNkxBLFRa94TF7Tdzk9+XurR4KTDhYswlxCcczrppOo8yAu2GPBVQUINWLh95kOe7Ra+ytry70srkjqHCQcqj65EEhYXclJDjZSmcSZdfZwEnrQ5VBinZ7EZtccNfd9IPPeJYHM/fp6MqBlz+MGxEdQdE2O1DOSvCmLOFFK8/Q4YByJOxKGTpy2VYIYb2XCJA0p+o9RoPKaEg5BMfvyVS4qlRdT7aNvQQZ3L7v2ZN2vfbmSUbiazjiWc+k3fvNth4h86AB7IG9LopUlkYT12tXgH0GsIfo+Gyj9qHW1bM1fhOrAdzH8g7Sd8+muPLxo2J32kruANZWSAclUWgjmti6kXrqfuRcXLkMN8h5jcCHB7Dd0qUPQ9nQ8+70Z9HsT0NTH7oiwzuxlAw+6lBInwCgGuxSGMM9gpXy04mNP0cal5L9uLY/OnZX0JdINk/xwD10ZpTcPkyT/ykNkB9y8vFsduaQEHcpZAeUFrLxeRTi70TpAsiIPoPNmuAwHoQKgLleIo4US75XBQ9Sila9WI5S/l5ysHNICe+uHqV79zaTWKisohlFzux4qAZHTkHhYfQkT+lRyzlpXYRXrKZWYizPFV/aVhtvbJUmAOQ/mkYYKpqgppobVHfdZ4ZDeWPfiNDkDDO49lQeeip+1N0ZV8XdEmpuNx9BU6MR8m+PJXHapjRTJn+1PseNcu2ATXJZ+/CNOL2WjwkMetYILxXqo1BXGnMK29UceO5vHZh2FNcDyan3kilqhEk0azVOjVqOL+4sJv4yCmG5qn2KND8J/7VkfKWZzaILnYvBgYx4i
+ USGCYX/m
+ D3lAIptLis0r+VLSybzXfUCHcNn+5/kEbig0adWxGU18MliZwnul74g7fXlyw4VCqVcPP4azwn/9kq2I9tEb6aiE1dSLCo6gkxsJnWl2BSFo/kUyZEvb+15etnp6WJpnXjoGxDDV/skTuzHuXFX1dH2hGTxHk37aRM4c8ks6hWAQrhAT+Si50TUXd4/0dQvtOcTjBc1rzc3LNa6bE2AYlFrLgNsqrtHWyQ/Opxs7+4p565+XJ50qTq2nQBfiTkMns4bExNheBkrJZoQaN2RZ4qTsY6zWEQMrG3v7Ik8D8btm9Q4c8F69ILgDVJkJ/EF+iLVoaNHsMaueNg4cYB2igKkD90o3trKZJtVzb0skj0YpkmUwpvg3nFM6ktol4TkeXdP+9mN9WUs12bU4k3dH27zgkMk6PmXto/KPMbFzGYt40ZfiC8UJwinNLXAAKp6dY6SsOa9+z9nYR43C6/ySL9gJJaMM6qxL9K2mk8XgkkM6tlgRxSX/OACVwG8nS9yp2uOd5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,104 +139,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 08:38:32AM +0200, Peter Zijlstra wrote:
-> On Thu, Sep 04, 2025 at 08:21:02AM +0800, Jinchao Wang wrote:
-> > Introduce arch_reinstall_hw_breakpoint() to update hardware breakpoint
-> > parameters (address, length, type) without freeing and reallocating the
-> > debug register slot.
-> > 
-> > This allows atomic updates in contexts where memory allocation is not
-> > permitted, such as kprobe handlers.
-> > 
-> > Signed-off-by: Jinchao Wang <wangjinchao600@gmail.com>
-> > ---
-> >  arch/x86/include/asm/hw_breakpoint.h |  1 +
-> >  arch/x86/kernel/hw_breakpoint.c      | 50 ++++++++++++++++++++++++++++
-> >  2 files changed, 51 insertions(+)
-> > 
-> > diff --git a/arch/x86/include/asm/hw_breakpoint.h b/arch/x86/include/asm/hw_breakpoint.h
-> > index 0bc931cd0698..bb7c70ad22fe 100644
-> > --- a/arch/x86/include/asm/hw_breakpoint.h
-> > +++ b/arch/x86/include/asm/hw_breakpoint.h
-> > @@ -59,6 +59,7 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
-> >  
-> >  
-> >  int arch_install_hw_breakpoint(struct perf_event *bp);
-> > +int arch_reinstall_hw_breakpoint(struct perf_event *bp);
-> >  void arch_uninstall_hw_breakpoint(struct perf_event *bp);
-> >  void hw_breakpoint_pmu_read(struct perf_event *bp);
-> >  void hw_breakpoint_pmu_unthrottle(struct perf_event *bp);
-> > diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> > index b01644c949b2..89135229ed21 100644
-> > --- a/arch/x86/kernel/hw_breakpoint.c
-> > +++ b/arch/x86/kernel/hw_breakpoint.c
-> > @@ -132,6 +132,56 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
-> >  	return 0;
-> >  }
-> >  
-> > +/*
-> > + * Reinstall a hardware breakpoint on the current CPU.
-> > + *
-> > + * This function is used to re-establish a perf counter hardware breakpoint.
-> > + * It finds the debug address register slot previously allocated for the
-> > + * breakpoint and re-enables it by writing the address to the debug register
-> > + * and setting the corresponding bits in the debug control register (DR7).
-> > + *
-> > + * It is expected that the breakpoint's event context lock is already held
-> > + * and interrupts are disabled, ensuring atomicity and safety from other
-> > + * event handlers.
-> > + */
-> > +int arch_reinstall_hw_breakpoint(struct perf_event *bp)
+On Thu, Sep 04, 2025 at 08:46:59AM +0200, Peter Zijlstra wrote:
+> On Thu, Sep 04, 2025 at 08:21:04AM +0800, Jinchao Wang wrote:
+> 
+> > +static DEFINE_PER_CPU(call_single_data_t,
+> > +		      watch_csd) = CSD_INIT(ksw_watch_on_local_cpu,
+> > +					    &watch_info);
+> > +
+> 
+> > +int ksw_watch_on(u64 watch_addr, u64 watch_len)
 > > +{
-> > +	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-> > +	unsigned long *dr7;
-> > +	int i;
+> > +	unsigned long flags;
+> > +	int cpu;
 > > +
-> > +	lockdep_assert_irqs_disabled();
-> > +
-> > +	for (i = 0; i < HBP_NUM; i++) {
-> > +		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
-> > +
-> > +		if (*slot == bp)
-> > +			break;
+> > +	if (!watch_addr) {
+> > +		pr_err("KSW: watch with invalid address\n");
+> > +		return -EINVAL;
 > > +	}
 > > +
-> > +	if (WARN_ONCE(i == HBP_NUM, "Can't find a matching breakpoint slot"))
-> > +		return -EINVAL;
-> > +
-> > +	set_debugreg(info->address, i);
-> > +	__this_cpu_write(cpu_debugreg[i], info->address);
-> > +
-> > +	dr7 = this_cpu_ptr(&cpu_dr7);
-> > +	*dr7 |= encode_dr7(i, info->len, info->type);
+> > +	spin_lock_irqsave(&watch_lock, flags);
 > > +
 > > +	/*
-> > +	 * Ensure we first write cpu_dr7 before we set the DR7 register.
-> > +	 * This ensures an NMI never see cpu_dr7 0 when DR7 is not.
+> > +	 * check if already watched
 > > +	 */
-> > +	barrier();
+> > +	if (watch_info.addr != 0 && // not uninit
+> > +	    watch_info.addr != (unsigned long)&watch_holder && // installed
+> > +	    watch_addr != (unsigned long)&watch_holder) { //not restore
+> > +		spin_unlock_irqrestore(&watch_lock, flags);
+> > +		return -EBUSY;
+> > +	}
 > > +
-> > +	set_debugreg(*dr7, 7);
-> > +	if (info->mask)
-> > +		amd_set_dr_addr_mask(info->mask, i);
+> > +	watch_info.addr = watch_addr;
+> > +	watch_info.len = watch_len;
+> > +
+> > +	spin_unlock_irqrestore(&watch_lock, flags);
+> > +
+> > +	if (watch_addr == (unsigned long)&watch_holder)
+> > +		pr_debug("KSW: watch off starting\n");
+> > +	else
+> > +		pr_debug("KSW: watch on starting\n");
+> > +
+> > +	for_each_online_cpu(cpu) {
+> > +		if (cpu == raw_smp_processor_id()) {
+> > +			ksw_watch_on_local_cpu(&watch_info);
+> > +		} else {
+> > +			call_single_data_t *csd = &per_cpu(watch_csd, cpu);
+> > +
+> > +			smp_call_function_single_async(cpu, csd);
+> > +		}
+> > +	}
 > > +
 > > +	return 0;
 > > +}
-> > +EXPORT_SYMBOL_GPL(arch_reinstall_hw_breakpoint);
 > 
-> Yeah, I think not. For one this is an almost verbatim copy of
-> arch_install_hw_breakpoint() with zero re-use. Surely you've been taught
-> better?
-I introduced this to modify bp_addr in atomic context in my RFC series.
-I thought it was clearer to split the introduction and refactor.
-And then It was used in the wprobe series, so I left it as introduced
-in the RFC series.
-
-I agree your suggestion is right. I am willing to refactor after wprobe.
-
+> What do you think happens when two ksw_watch_on() instances run
+> concurrently?
 > 
-> And why would we want to export guts like this?
-I wanted to introduce a real-time stack corruption debugging tool,
-which needs a helper to change bp_addr in atomic context (kprobe handler).
-And wprobe needs it also.
+> What happens if a CPU comes online/offline concurrently with
+> ksw_watch_on()?
+Thanks for pointing that out. I did not think much about it.
+I will think more and address it in the next series.
 
