@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EAE6CAC586
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C1DDCAC586
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:48:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3EC8E001A; Mon,  8 Sep 2025 08:48:11 -0400 (EDT)
+	id 02EA46B000C; Mon,  8 Sep 2025 08:48:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBB558E000F; Mon,  8 Sep 2025 08:48:11 -0400 (EDT)
+	id EF3756B000D; Mon,  8 Sep 2025 08:48:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF8F78E001A; Mon,  8 Sep 2025 08:48:11 -0400 (EDT)
+	id DE39F6B0012; Mon,  8 Sep 2025 08:48:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BED0D8E000F
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:48:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6DE4316011D
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:48:11 +0000 (UTC)
-X-FDA: 83866060782.09.2650BB9
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C7FE46B000C
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:48:18 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A2AF138719
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:48:18 +0000 (UTC)
+X-FDA: 83866061076.20.6469491
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B880F1C0003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:48:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B20qYeC3;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757335689; a=rsa-sha256;
+	by imf18.hostedemail.com (Postfix) with ESMTP id DFE921C000B
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:48:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W1uoCkuP;
+	spf=pass (imf18.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757335696; a=rsa-sha256;
 	cv=none;
-	b=GPnLkNzeTrI1vBop6Vsmj2hS2jWatEej0H57YWdNSDvz+Qg5iMmEvaxF/yhLwMZuyAONEO
-	Kc1IPPvxQ/FE8gZf+yKqLWlENiEgkgXr22AP/rjhk3gO7FGqI50R0B2PCHIt8jKq5jtQSn
-	D6jo7PnHaRMiTsdMuuA+M1AtcYlJwMc=
+	b=srHCYFD1wwCOxiJpqy5GaB/qxrvXyOwZqRxjs+PdndtPMUmV3/U06XHktNwJpScoMqGemO
+	OGzVKQlIhttTzIUGZT4lP9fj3TCU0fR/gyZ7Q1IQwiRUDoUZnWbghqU5jiBeOFghFgxvI8
+	3DT4yUk1+NiHcW1vkAiFXUZbTxN/m20=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=B20qYeC3;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=W1uoCkuP;
+	spf=pass (imf18.hostedemail.com: domain of chuhu@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=chuhu@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757335689;
+	s=arc-20220608; t=1757335696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MLbuXhCNUOaSCGuiLR8P48OXtpr7aN3m52JVUEWvATc=;
-	b=m4UHH32bnEHgsxyc2C9U9UUL2YOySvA2girMrEKUBuUtwUpVJEPLO52OTitibRM4cLhXgw
-	Deu3RzSk+CuKuihOjeF51qG6Ehuf/0wHNhkTtlud9fvyHBKrWANmYooSC/INxXE6lX49E+
-	+C9BtpUZhBXQGBhOE2XjxzsaxGVAg3g=
+	bh=L1wY981ud5Z3idUNSxCEbfzkX8eAnGBWH4r/ijktaZU=;
+	b=7iW7OxpIhlbEefYj2kKvYtcBJv2FU5MFpD0uxLdTwG1SD3WPTvEfr1T+qFAaFnkb1D3V4G
+	U2SFFXCic5b9LYA0MoLbELtDJHX75YynvV2OHwe7vjUGC6Kefdut0sLRZcpl6ojKITHRGQ
+	D2luZ0Do87erGMmpP8GdwK5mu9NAqOg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757335689;
+	s=mimecast20190719; t=1757335696;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MLbuXhCNUOaSCGuiLR8P48OXtpr7aN3m52JVUEWvATc=;
-	b=B20qYeC3NWH0YBRG16r4CjGtFIOITX8wmoVB7CeYOlaai8iFakNXK9QgYP8+sb+0jnponU
-	kFLbkkZNdDTjwc1N6oIUa0DJK3O5WbfPNxhFdlkqjjgr0JQvdQpUBRau7tCUC/IrFPnY+B
-	iJNBSXzTjSJDiCHkiOVUvutiq03FsZE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=L1wY981ud5Z3idUNSxCEbfzkX8eAnGBWH4r/ijktaZU=;
+	b=W1uoCkuPsgBcipDlWZiSR5NfVPl4p1MmapTKIhmMnFyeeqKIZwuxuwQTjlYEJ5/UoPrxU1
+	4BZcRJbnp8jIrWUBgTf3J86ryInnelcDA1daxhyjbnM+BVUyLHD4UmcM4od8sZluQEY5N9
+	Tt269j9I/PnYwI/4ZRZ10r8b5SbuAfI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-Mj6eiP3BNKKdj_HKkAuYjA-1; Mon,
- 08 Sep 2025 08:48:05 -0400
-X-MC-Unique: Mj6eiP3BNKKdj_HKkAuYjA-1
-X-Mimecast-MFC-AGG-ID: Mj6eiP3BNKKdj_HKkAuYjA_1757335684
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-354-bEnPIl8DNjOC7LI3ZP-KAg-1; Mon,
+ 08 Sep 2025 08:48:12 -0400
+X-MC-Unique: bEnPIl8DNjOC7LI3ZP-KAg-1
+X-Mimecast-MFC-AGG-ID: bEnPIl8DNjOC7LI3ZP-KAg_1757335690
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 05677180057E;
-	Mon,  8 Sep 2025 12:48:04 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5675F1955F27;
+	Mon,  8 Sep 2025 12:48:10 +0000 (UTC)
 Received: from dell-per7425-02.rhts.eng.pek2.redhat.com (dell-per7425-02.rhts.eng.pek2.redhat.com [10.73.116.18])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 31F3830001B5;
-	Mon,  8 Sep 2025 12:47:57 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB92E300018D;
+	Mon,  8 Sep 2025 12:48:04 +0000 (UTC)
 From: Chunyu Hu <chuhu@redhat.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -88,23 +88,24 @@ Cc: linux-kselftest@vger.kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
 	chuhu@redhat.com
-Subject: [PATCH v2 2/3] selftests/mm: alloc hugepages in va_high_addr_switch test
-Date: Mon,  8 Sep 2025 20:47:38 +0800
-Message-ID: <20250908124740.2946005-3-chuhu@redhat.com>
-In-Reply-To: <20250908124740.2946005-2-chuhu@redhat.com>
+Subject: [PATCH v2 3/3] selftests/mm: fix va_high_addr_switch.sh failure on x86_64
+Date: Mon,  8 Sep 2025 20:47:39 +0800
+Message-ID: <20250908124740.2946005-4-chuhu@redhat.com>
+In-Reply-To: <20250908124740.2946005-3-chuhu@redhat.com>
 References: <20250908124740.2946005-1-chuhu@redhat.com>
  <20250908124740.2946005-2-chuhu@redhat.com>
+ <20250908124740.2946005-3-chuhu@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam03
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DFE921C000B
+X-Stat-Signature: g9bbbw4n3i913s5cxqcodja534q8qura
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B880F1C0003
-X-Stat-Signature: srwyfiwdt55stof6ci5azxz9jfwy6a4z
-X-HE-Tag: 1757335689-954553
-X-HE-Meta: U2FsdGVkX19fkYci1ZGyvi9/4sr7xGgxjaKd5yGAJCat7EeCVPczEVfwAIs1jsBRRuBIhmeYl/MwP4HjeAR/AplSJxVuq6mEhlBzoS5Nko8Zto5uS0oiW9CVOCbtB1dE5GqXQbjbq0Z839JTpaBeJE58uG90gIYCxG8hrf7/Z4oq5oftd+jHeSim/pwC731xXdNB+X+JDR44lZd1HKO3UttExLXOmkm8UbSPh6dz8xHQEbVpdz4hiq6ewQuudHaMa3SQepX1DKXJxt03IJ2oESXQxdPyId3WM5l5SMKwC1k8aQ8ONRY1vE5ZPFX+5PXhOw3Xon1HCA7AzWot/n8DAZHLEQbZS/0fNhXegx5pqXqkoReMBiMw1aYaRh4FccfsYbHL7aG5His7zW5t7ijUDalZn9GrVIpT0QLO93ztNFFAKMfUqxTlzcIQjYmIcmD57pY9mpsyvc9ZLsvEnXNKsWjzW35rYRNsYwdBD+JF73cucMckkVHoc/G6EFOM0K5iXWKjkAhuzjhpsvhZRzNb2JSt+Fikx+cPstHGBLffGOeQfqKNiJFNAS5DqIUaH99X75je2m4I50edbpre/Tml1L3qWJ2oxtjQC4cioFcqcMAQGPVNRmSI7Pr2SK83fUk301U6ZVwMnZ9uc+ZGvZt2pfAOkVHXfetTJytQxiRgZfp8XmfcpnN6lmjGjsJh+wPPSposT0Uc6AiTtqnuwgr5VhtT/G3mkekBg8AH/Uqr2RFi9tYnszTC0LEIOsL29u9aCZqquuRhlpuk6CiycgZ+HLsGWNvzuARaBmpvCsNbDdLjbi+uNoHyHNkk0jVmeThUAEFsQriSYxs9RuR/n2xeO31HjPPluovZp846nQWJ6hINVwD3FeIGvdktO7aV4IFvDlZzpX/XS2P6Zn3PwHWxJ0Gveibn/3guJovocSv5iD94XpAcIHYitfqKAwUcLaEoUliSc8mciLB397PSkZV
- cFofICVL
- GqM7Y/DSJlaPkpJGaTaGo90C39G6S9OPwrkT1h4ZxJqKU6V89S9O//MUm94eqO54B8V9WINCwhRQb8n8kWWuu3mFpbLo69W6yBMfkLgJtkZCc8GGA3sTBxdI8I0m6I0s7Kl1abp+zhNhKMLK/FZ1MxuCdiq1S1daOrQ/rpSnxKKzkJ51rVRAhio7Aja0oX6lLfGcNaI2FPyfpky7mocoo/nRLKwUWTobCLGCbfW5HwUIi37C2WVfzHxN8Di87aWKdezaze5qcce9OTyReN7xoHhh5HTSsztJSaqF//DDbMaNW04hKSmPB/s/Wu/XLqPwFwcgz5cc0C+BsUBAGE7j+ff9UsSnxR8cfQWPS0Mz18bG6iPTb05vPzla7fFmdKIsAQATAYTzP1ywZFCOKTpkvS1NsoX3PQYiofhkY
+X-HE-Tag: 1757335696-711562
+X-HE-Meta: U2FsdGVkX18P6G59/2eJrXoiRjdt2cHDNgnaNbZpL8Tgdq7lodrDk3ybwC8/XZBxzp8Ds0tGjvGkna1oyly+PWoxm9BAGdpKNL6aYHqpQw7injUBN3m3icYFopWYeb3LaIASZfCW90oQEjHx3sDq5d9Dbh+jv9b48h4JZGFNuSNcspmPn2UPOvr3iLYDuKH8+LYZt+DHKCQ+kLu5b9McFQ4Hr0ycOpwcMNGbOi91gVFN7GdKKt/M4lqD/nJ5s3A3g5mlQrq1I57gVkR4K83ZCFHizsH5BSlvcOSNuU502hlPSXE9KoRsesMh4Tf6RKEYED28dHXem4nXrXAcPXZtRYTnepheOCzUut8aVnO5evG1K/ELTEq0XhDdvO+xZ5Zou+wGmB+8qlT+pJM5sD0ZB5v1xiwXVW3tzwcMJLBYPevAxbHF6fv7Su/cRLIn/kdWYcgaYncPCIktEywBuNqE7coJIRUlUwOnH7GmgUntyxuIRFJuWwZwxkde4U7mxVXjn7bfV1oOaDJZEdc/J1KvkdijF+728Cw6P8npZjhULSfGKk5U5N0QMmZnzEY6NTCcmWvN2TXWo2tRUF02gEY/euOo4ZPr5UJuiISUhUksdn5BLelih2WhqIq3e9Hid3pZ3oWYeN+k17iwb7DWGStgk85KGH1pzulQjHIbxS7Brqi7NguOjzt2DEptR0ez1hn4BgjPTIFhgZD22VXUxmDVHAcNcbJ/VQg1jVjFYtrG0er1dECnhuH/RpHWe4LM87ztv+jcS4H/EyPWC5rU0LxnvUmtRtxTXNyR4XVcxr+lVpSFM70F97NRz96pvoo0qXVSY1iVx/DAdtejdhIam4PxVOpgFYYvMEEegFl9P+lqzYf+6XFAG8W90AXHfX9A6+ccBJYU06UBnjatcheo/GU9EIT9/N+niI1iHWJ6gnrjgTOGuLMYx2ixS+PFzTht1Wzm34e5y8gdJnEqplh5CP4
+ 9gjNizEb
+ XhS1+hSgdvBnNpGBe1P9GP0jbIim+VjUZQWw5JgHdHQhBbGWNrUe7qoZfpXKzVW26TuRF+lmG3pyu21aX/GSKZfo1OZ3pv5kGc/dqbIrd1oJk109+ezSiDw/+/MpBannSrkCJsnISfLhxJ5JufRFR1Qzv/dV8UWV5YqwD2koVvDwrfaP00X7phAok5RXeHWfe1g+iS0magPPVVy//Sjd0CEMvpSPYAZgWe9QE6jSggf1WdPEgswxgzIRX2ENHBpH+i/vii6dv+z0aEqDi0HZ0oMmypccEKzIpGfFKDnD89K18Au/D8nCLG7dCBBd8NURhqN7PAOXsEtnKa5ThEogMfbckJzxWXbA/Gtm3FSjhEY9/dBAXYoC04S5is8/n+y4FTsnh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,73 +114,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alloc hugepages in the test internally, so we don't fully rely on the
-run_vmtests.sh. If run_vmtests.sh does that great, free hugepages is
-enough for being used to run the test, leave it as it is, otherwise setup
-the hugepages in the test.
+The test will fail as below on x86_64 with cpu la57 support (will skip if
+no la57 support). Note, the test requries nr_hugepages to be set first.
 
-Save the original nr_hugepages value and restore it after test finish, so
-leave a stable test envronment.
+  # running bash ./va_high_addr_switch.sh
+  # -------------------------------------
+  # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
+  # mmap(addr_switch_hint - pagesize, (2 * pagesize)): 0x7f55b60f9000 - OK
+  # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
+  # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
+  # mmap(NULL): 0x7f55b60f9000 - OK
+  # mmap(low_addr): 0x40000000 - OK
+  # mmap(high_addr): 0x1000000000000 - OK
+  # mmap(high_addr) again: 0xffff55b6136000 - OK
+  # mmap(high_addr, MAP_FIXED): 0x1000000000000 - OK
+  # mmap(-1): 0xffff55b6134000 - OK
+  # mmap(-1) again: 0xffff55b6132000 - OK
+  # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
+  # mmap(addr_switch_hint - pagesize, 2 * pagesize): 0x7f55b60f9000 - OK
+  # mmap(addr_switch_hint - pagesize/2 , 2 * pagesize): 0x7f55b60f7000 - OK
+  # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
+  # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
+  # mmap(NULL, MAP_HUGETLB): 0x7f55b5c00000 - OK
+  # mmap(low_addr, MAP_HUGETLB): 0x40000000 - OK
+  # mmap(high_addr, MAP_HUGETLB): 0x1000000000000 - OK
+  # mmap(high_addr, MAP_HUGETLB) again: 0xffff55b5e00000 - OK
+  # mmap(high_addr, MAP_FIXED | MAP_HUGETLB): 0x1000000000000 - OK
+  # mmap(-1, MAP_HUGETLB): 0x7f55b5c00000 - OK
+  # mmap(-1, MAP_HUGETLB) again: 0x7f55b5a00000 - OK
+  # mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB): 0x800000000000 - FAILED
+  # mmap(addr_switch_hint , 2*hugepagesize, MAP_FIXED | MAP_HUGETLB): 0x800000000000 - OK
+  # [FAIL]
 
+addr_switch_hint is defined as DFEFAULT_MAP_WINDOW in the failed test (for
+x86_64, DFEFAULT_MAP_WINDOW is defined as (1UL<<47) - pagesize) in 64 bit.
+
+Before commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
+functions"), for x86_64 hugetlb_get_unmapped_area() is handled in arch code
+arch/x86/mm/hugetlbpage.c and addr is checked with map_address_hint_valid()
+after align with 'addr &= huge_page_mask(h)' which is a round down way, and
+it will fail the check because the addr is within the DEFAULT_MAP_WINDOW but
+(addr + len) is above the DFEFAULT_MAP_WINDOW. So it wil go through the
+hugetlb_get_unmmaped_area_top_down() to find an area within the
+DFEFAULT_MAP_WINDOW.
+
+After commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
+functions").  The addr hint for hugetlb_get_unmmaped_area() will be rounded
+up and aligned to hugepage size with ALIGN() for all arches.  And after the
+align, the addr will be above the default MAP_DEFAULT_WINDOW, and the
+map_addresshint_valid() check will pass because both aligned addr (addr0)
+and (addr + len) are above the DEFAULT_MAP_WINDOW, and the aligned hint
+address (0x800000000000) is returned as an suitable gap is found there,
+in arch_get_unmapped_area_topdown().
+
+To still cover the case that addr is within the DEFAULT_MAP_WINDOW, and
+addr + len is above the DFEFAULT_MAP_WINDOW, make the addr hint one
+hugepage lower, so that after the align it's still within DEFAULT_MAP_WINDOW,
+and the addr + len (2 hugepages) will be above DEFAULT_MAP_WINDOW.
+
+Fixes: cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*} functions")
 Signed-off-by: Chunyu Hu <chuhu@redhat.com>
 ---
- .../selftests/mm/va_high_addr_switch.sh       | 37 +++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ tools/testing/selftests/mm/va_high_addr_switch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/va_high_addr_switch.sh b/tools/testing/selftests/mm/va_high_addr_switch.sh
-index 325de53966b6..a7d4b02b21dd 100755
---- a/tools/testing/selftests/mm/va_high_addr_switch.sh
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
-@@ -9,6 +9,7 @@
- 
- # Kselftest framework requirement - SKIP code is 4.
- ksft_skip=4
-+orig_nr_hugepages=0
- 
- skip()
- {
-@@ -76,5 +77,41 @@ check_test_requirements()
- 	esac
- }
- 
-+save_nr_hugepages()
-+{
-+	orig_nr_hugepages=$(cat /proc/sys/vm/nr_hugepages)
-+}
-+
-+restore_nr_hugepages()
-+{
-+	echo "$orig_nr_hugepages" > /proc/sys/vm/nr_hugepages
-+}
-+
-+setup_nr_hugepages()
-+{
-+	local needpgs=$1
-+	while read -r name size unit; do
-+		if [ "$name" = "HugePages_Free:" ]; then
-+			freepgs="$size"
-+			break
-+		fi
-+	done < /proc/meminfo
-+	if [ "$freepgs" -ge "$needpgs" ]; then
-+		return
-+	fi
-+	local hpgs=$((orig_nr_hugepages + needpgs))
-+	echo $hpgs > /proc/sys/vm/nr_hugepages
-+
-+	local nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
-+	if [ "$nr_hugepgs" != "$hpgs" ]; then
-+		restore_nr_hugepages
-+		skip "$0: no enough hugepages for testing"
-+	fi
-+}
-+
- check_test_requirements
-+save_nr_hugepages
-+# 4 keep_mapped pages, and one for tmp usage
-+setup_nr_hugepages 5
- ./va_high_addr_switch --run-hugetlb
-+restore_nr_hugepages
+diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
+index 896b3f73fc53..bd96dc3b5931 100644
+--- a/tools/testing/selftests/mm/va_high_addr_switch.c
++++ b/tools/testing/selftests/mm/va_high_addr_switch.c
+@@ -230,10 +230,10 @@ void testcases_init(void)
+ 			.msg = "mmap(-1, MAP_HUGETLB) again",
+ 		},
+ 		{
+-			.addr = (void *)(addr_switch_hint - pagesize),
++			.addr = (void *)(addr_switch_hint - pagesize - hugepagesize),
+ 			.size = 2 * hugepagesize,
+ 			.flags = MAP_HUGETLB | MAP_PRIVATE | MAP_ANONYMOUS,
+-			.msg = "mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB)",
++			.msg = "mmap(addr_switch_hint - pagesize - hugepagesize, 2*hugepagesize, MAP_HUGETLB)",
+ 			.low_addr_required = 1,
+ 			.keep_mapped = 1,
+ 		},
 -- 
 2.49.0
 
