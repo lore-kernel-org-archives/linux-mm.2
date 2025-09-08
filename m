@@ -4,255 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43ABDCAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 13:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF86CAC586
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 13:09:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DCE46B0024; Mon,  8 Sep 2025 09:09:20 -0400 (EDT)
+	id 381E28E0010; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68CE36B0027; Mon,  8 Sep 2025 09:09:20 -0400 (EDT)
+	id 331F48E000E; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 554A46B0028; Mon,  8 Sep 2025 09:09:20 -0400 (EDT)
+	id 221178E0010; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ECDB6B0024
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 09:09:20 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DFBE884154
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:09:19 +0000 (UTC)
-X-FDA: 83866114038.05.49C8CEB
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 439B91A000D
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:09:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jF78wreb;
-	spf=pass (imf19.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757336956;
+	by kanga.kvack.org (Postfix) with ESMTP id 0E1758E000E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 09:09:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5E38138B08
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:09:32 +0000 (UTC)
+X-FDA: 83866114584.16.1E3F0E7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3D4FDA0016
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:09:30 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gILwwbE3;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757336970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FjDS2RNuu/O6CJuKey+gDijD5Fc0hZzwS5894PX4Fjw=;
-	b=Dn4R584dtNLqDCnmNfQvwewvTdXqFO4IHruZ16GaiIHZ80m0EM29a/+12If7eFFR1Th+mi
-	6l3TdyJjqR8sV+7O5HvV/Lls79+blczSGOAZe0f/mvfA0cRVnIYU1B3FXWldKOAw/1oiLw
-	9usGBnjY31BWNISklprJSt75xTNzIos=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jF78wreb;
-	spf=pass (imf19.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757336956; a=rsa-sha256;
-	cv=fail;
-	b=BVwFrReBrvhp702DSzUtiD7IpC5aEU/jdCnzsY1JVn2i76R8p3thfTmxgUx4rCqRVe+s9Q
-	cPqnNDyHfeQBCfLgSQOJdx7VEWKdDnAq1Y9Pcc7GAihwSpT8gnODDc1o2R6FucRKwZqNhA
-	zHBm/Waxt0QZ4VlH1N18pG1aW9WifYU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757336956; x=1788872956;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=Pr+EaIwAvW4IBb++WrtWAL8SkjD7WDJagCPvbHp7ffg=;
-  b=jF78wrebBkWcUUTl0KNLTY9iCaKe6WOe3YwjHaeqDMSqSL8zHmjazQKn
-   0KTckwhzfarM1FBlbRRiE/OKC/H3v1KW6MPii2lmNIgmwuEim7l6s6w0W
-   N2JyuAVnMVH40x0gPNeIw9RFBqPiPwpqjMhYnEpl81M/f30H7+f8odKvD
-   5ZaCjq72RDgD8rjVOtsJ2IodSxiBy8pDjgEgKi9cci/+AWga+TX7AejfX
-   WKnm40JJOS59BnOat6kGBgrQxPieL4gSkmBimQ1dbrKMxsL+GB+52mgIg
-   JfipUps9aWLTuKxecqvJNumUSV6aN5A8p6McBy00nwEfPBI+kmjmoM+tN
-   Q==;
-X-CSE-ConnectionGUID: ub1lLe2BRVaSqhZnKFtwfg==
-X-CSE-MsgGUID: JeYo7UwqS4in7SzVkn/otw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="58632655"
-X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="58632655"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 06:09:14 -0700
-X-CSE-ConnectionGUID: G+xMS0fpQCiWmIAYqbC3sw==
-X-CSE-MsgGUID: T3EE4dq+RReSfVXd9T43pw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="196425867"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 06:09:14 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 8 Sep 2025 06:09:13 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 8 Sep 2025 06:09:13 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.68)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 8 Sep 2025 06:09:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tg907FeTnUKH9XERy6Uo1b11ANgnLMkpPeeKjZur93b09ZAc60UofAnu1k7FO3iR0OLSVKF0RReiLoJxGu0t0fbreOnARBOdi+uP68RCpZxEasCneX3W4cJVC1I3JOXBQPMVuM25WuH4xIJC9UHenkiw5apJ1PDhKxLHAtCXoiyR556xvTtDnt4EI1Q6fFxnYiu+HRJSXUDhYC16kVwCXvS6V1IRiGE7BaDiIgElc5ShWdb/doagx26ZgCejXDhe7Gwec6uEAeqSYtjM7qqKuH2Y+Miyj8cruMDrh0fCK5LSZPIo9uUbHO50bt5GTxrHDQBBDOjH7cPfYZgRqOnQBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FjDS2RNuu/O6CJuKey+gDijD5Fc0hZzwS5894PX4Fjw=;
- b=ljIuTdkoFaVuyx8Zwpul1BalCAisYp9ZiIDA6gTwdRTHE7z5O4IDpzt17vj4cd87r80JaoSBw0WYBqQVqeVPtPDIYnwVfj8xETiw+DdLVJ4wFwV4IxIeyB8eDpdO2l1UsOwIPW+BoWsGcn2BPTpYSZujpZR4B+s9matNfXki8n2qZqgYQYDhFcwmWCBqkZp2E3BfZ+1mkaY+xz8SdewqabQWBmrOpAGtMHCMT86rH8iUpl6Jwee3VR5aWgcARsDjO9403sXV6oImUMXE8udWfj1bBXMHFXknyi00RUk3W5PKV2PJGVktMYhE9FiNrrh3jjnVlejL0vXbyLuXZkO79A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com (2603:10b6:208:152::20)
- by SJ0PR11MB5024.namprd11.prod.outlook.com (2603:10b6:a03:2dd::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
- 2025 13:09:09 +0000
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2]) by MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2%3]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
- 13:09:09 +0000
-Date: Mon, 8 Sep 2025 15:08:52 +0200
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-CC: <sohil.mehta@intel.com>, <baohua@kernel.org>, <david@redhat.com>,
-	<kbingham@kernel.org>, <weixugc@google.com>, <Liam.Howlett@oracle.com>,
-	<alexandre.chartre@oracle.com>, <kas@kernel.org>, <mark.rutland@arm.com>,
-	<trintaeoitogc@gmail.com>, <axelrasmussen@google.com>, <yuanchu@google.com>,
-	<joey.gouly@arm.com>, <samitolvanen@google.com>, <joel.granados@kernel.org>,
-	<graf@amazon.com>, <vincenzo.frascino@arm.com>, <kees@kernel.org>,
-	<ardb@kernel.org>, <thiago.bauermann@linaro.org>, <glider@google.com>,
-	<thuth@redhat.com>, <kuan-ying.lee@canonical.com>,
-	<pasha.tatashin@soleen.com>, <nick.desaulniers+lkml@gmail.com>,
-	<vbabka@suse.cz>, <kaleshsingh@google.com>, <justinstitt@google.com>,
-	<catalin.marinas@arm.com>, <alexander.shishkin@linux.intel.com>,
-	<samuel.holland@sifive.com>, <dave.hansen@linux.intel.com>, <corbet@lwn.net>,
-	<xin@zytor.com>, <dvyukov@google.com>, <tglx@linutronix.de>,
-	<scott@os.amperecomputing.com>, <jason.andryuk@amd.com>, <morbo@google.com>,
-	<nathan@kernel.org>, <lorenzo.stoakes@oracle.com>, <mingo@redhat.com>,
-	<brgerst@gmail.com>, <kristina.martsenko@arm.com>, <bigeasy@linutronix.de>,
-	<luto@kernel.org>, <jgross@suse.com>, <jpoimboe@kernel.org>,
-	<urezki@gmail.com>, <mhocko@suse.com>, <ada.coupriediaz@arm.com>,
-	<hpa@zytor.com>, <leitao@debian.org>, <peterz@infradead.org>,
-	<wangkefeng.wang@huawei.com>, <surenb@google.com>, <ziy@nvidia.com>,
-	<smostafa@google.com>, <ryabinin.a.a@gmail.com>, <ubizjak@gmail.com>,
-	<jbohac@suse.cz>, <broonie@kernel.org>, <akpm@linux-foundation.org>,
-	<guoweikang.kernel@gmail.com>, <rppt@kernel.org>, <pcc@google.com>,
-	<jan.kiszka@siemens.com>, <nicolas.schier@linux.dev>, <will@kernel.org>,
-	<jhubbard@nvidia.com>, <bp@alien8.de>, <x86@kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-mm@kvack.org>, <llvm@lists.linux.dev>,
-	<linux-kbuild@vger.kernel.org>, <kasan-dev@googlegroups.com>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5 13/19] kasan: x86: Handle int3 for inline KASAN reports
-Message-ID: <epbqhjyfdt3daudp2wx54jsw6d7jf6ifbr3yknlfuqptz7b4uq@73n5k6b2jrrl>
-References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
- <36c0e5e9d875addc42a73168b8090144c327ec9f.1756151769.git.maciej.wieczor-retman@intel.com>
- <CA+fCnZcMV0BOJyvx2nciCK2jvht-Hx0HnFtRzcc=zu+pQSOdVw@mail.gmail.com>
- <couuy2aawztipvnlmaloadkbceewcekur5qbtzktr7ovneduvf@l47rxycy65aa>
- <hw7xa2ooqeyjo5ypc5jluuyjlgyzimxtylj5sh6igyffsxtyaf@qajqp37h6v2n>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <hw7xa2ooqeyjo5ypc5jluuyjlgyzimxtylj5sh6igyffsxtyaf@qajqp37h6v2n>
-X-ClientProxiedBy: DB9PR05CA0002.eurprd05.prod.outlook.com
- (2603:10a6:10:1da::7) To MN2PR11MB3934.namprd11.prod.outlook.com
- (2603:10b6:208:152::20)
+	bh=eB7yatq5EqoBSnA27Lv1hI77502SZNq+gzJVQ8jsFR0=;
+	b=P86GfaGgN472RGg8m5giHdXMM+Wammdg4K0vuLTzx3ZWMaVe6qMeLgSyq3wFnJB8cp74NJ
+	svW2VQ6m6Y5bIas50XTsp0bmmYde0cXpJY3OyAk+OGqSdlCkCSWIpcDR7i4wnCEBjy400y
+	OaYXUWyR1coIHR1eWHq9emcCq27fgVY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gILwwbE3;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757336970; a=rsa-sha256;
+	cv=none;
+	b=8iqae894Tj5galK7eH18+beOD37B/te5DnvADqg/xiW6veSjUnidfzLIseiRZYLM92Fy/C
+	jl8EEpQdYLkyl7ZHFSYK7sBhVLsJ3CHsH40RGgwWEED559dCfwL1PaM5UXrqidsjcloFmX
+	8fWpN2MtauCFtBcb3Fu87e8twrFI+pA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757336969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=eB7yatq5EqoBSnA27Lv1hI77502SZNq+gzJVQ8jsFR0=;
+	b=gILwwbE3vcdy8EpcyTeGdnFYXjErP4fOzNk7INBvOABHzOI9vJK58a8JmxKMvfrG3Bh5PK
+	qURFqzZnlhz8CFj30MuBDL+AvgjxXhu+QgzLfCQ9FTAli/Fcosq2IKfLw8b331SMNDuVgw
+	DBGEcJ/KVv9E6BB/KU4if5yBl5DJ1lk=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-498-orXerZTTOqqPVB1-PwA3EQ-1; Mon, 08 Sep 2025 09:09:28 -0400
+X-MC-Unique: orXerZTTOqqPVB1-PwA3EQ-1
+X-Mimecast-MFC-AGG-ID: orXerZTTOqqPVB1-PwA3EQ_1757336967
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3e61deaf253so1398442f8f.1
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 06:09:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757336967; x=1757941767;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eB7yatq5EqoBSnA27Lv1hI77502SZNq+gzJVQ8jsFR0=;
+        b=Wfts7QeiGgYWFP4e5AkMsz58sEvXGitDAV08GSNMsbvN7FvHlnQn1Z4rZzSSEPjKNG
+         7RzbWm/IywnBq6DaU52N8QV7mK4hh2AP/2BCzhw/VYNqpobXlQPVgl47PtgZ40XVSqJA
+         OZJ24GljBchLWvBGOeSkp/whflmJWuvndjSVqm02MhtsX5Ty2zeIuG2liOUX0uM+Nast
+         Qr3kTvL5udj9ht8QkLgydyu5MEuUxla881Ng+iMcV06Rzp0OPRzXa2GEx1SIvgXVhSwx
+         UpjBlexy6nII3HUWI2xpEt44ACeM0UFSRdknkTait2jv2w0kz0+HeEfKtdnSV7yUSpBN
+         +yRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUl1UrDmOLIy4d7U0M7bPKimFzWbmSbqrdV7trd1vskkqjhs7QcxJaK9embeCqiUJSStsDiM56QrA==@kvack.org
+X-Gm-Message-State: AOJu0YxbwG508VCw4jN+eyzFWyOZ2TIS6ZTY6wQ85QwkBdePB+GMcxTb
+	aoJ8LKZTnhJ2L6fVlEUU8UbMwuUFbQ4EkaBFhwiWgp7kR4aGf8jw8OnSbwL+mG3EIpBWE0Ho38R
+	Pt7NJ8k4qOm4w13or+sGPcUPu2Ys3xVBhzJzYZMUSRZyPdYw+uwas
+X-Gm-Gg: ASbGnctfJvT3zcS/qYwdsV+mu94ukUMy+Lzu3CQvU5/jXngExmj2xRM8gnrA3B7VV1k
+	VlINQ7khvVQC5bvbNIRIsacxYOsqvsQas01cUHho84KFmj2rPt4zSXzmJOxlMBk9rNI7Nnd83D6
+	gT5hJGz1kX3kFaT/DFnGbqRYlSApL54w2m9+0P3hPPMyyY9d+5dFKZiDMWm8xzkT05ERIsi3hq0
+	Ry2GI3U9pIb9U3IjuDck4XPU9y2VgiEG+6M4K47gLt4jECtaHXppcfkcKsIGwb4f9Jc+y3Ml99N
+	gJ2cowDwYViC0nrwkv6LICIHmebC51P8dONRavbeLihzEn+inABaq+1jaY+RrwGz4cBxh62NpRk
+	Et3wv/7w6KqpNYrqFRzACfhsw460Vl7KFSzt0ehDintLQiq3A4m7NVLZztKtSwKCA
+X-Received: by 2002:a5d:5d82:0:b0:3e3:5166:e098 with SMTP id ffacd0b85a97d-3e63736f7e7mr5576550f8f.17.1757336967060;
+        Mon, 08 Sep 2025 06:09:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiYFgngxAXgT4Go5511IJKu0xHmBuhnWeb/Br+tBYfFuPdCYNIOJjBBUAXrdUS1YwoE0FAWA==
+X-Received: by 2002:a5d:5d82:0:b0:3e3:5166:e098 with SMTP id ffacd0b85a97d-3e63736f7e7mr5576494f8f.17.1757336966470;
+        Mon, 08 Sep 2025 06:09:26 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:700:d846:15f3:6ca0:8029? (p200300d82f250700d84615f36ca08029.dip0.t-ipconnect.de. [2003:d8:2f25:700:d846:15f3:6ca0:8029])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf34494776sm41332226f8f.61.2025.09.08.06.09.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 06:09:26 -0700 (PDT)
+Message-ID: <22a9dd3e-0755-4f7f-a59c-a79a52871f56@redhat.com>
+Date: Mon, 8 Sep 2025 15:09:24 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR11MB3934:EE_|SJ0PR11MB5024:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12af760c-c2b2-4262-b3e8-08ddeed8e5bf
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RS8wRjlmZEh6cDloYkZHMENTTzhEQnY5Z2ZJTTQwajBPVWU2aXNLNUs5RnNm?=
- =?utf-8?B?RXhrWFhIVnBVMEFJYUdtWEl3NUJYaytBeHpuOFlMbGNzUmFVdjRERnVVbFBB?=
- =?utf-8?B?QmZOaTgwdkZGYUh5NXVIWkpUdEFXTlFSSGxKWll6dDZHd0dWaVFiZGptbEsz?=
- =?utf-8?B?U2dVSVpoNXhLaEY0cE1TbEtFSTJOT2ppNzZobG1TUDJJbGZERXBzY1BKNEVQ?=
- =?utf-8?B?YVhxSXNNZFN0RUxDL3g4WHRka0xOdG92alQzdzZ2UlFlTWxybmNSeWFWVG1q?=
- =?utf-8?B?Y1hNbTRNSSs5UTFyTG8xSklDaFRJL3BrdG9oOUxNS0VTcTdVc0xCdWFvT01I?=
- =?utf-8?B?TFJNMTYzNllEYko2bjNoYS82dmJWQlp5Z1htMU5MWkQyM3RZT01uL09BeDJF?=
- =?utf-8?B?NmpzYk53NitmTVBpZjgzczUxZmpQWW1ZdTEvVmsxWXltS0tncDhxRXZZM3NN?=
- =?utf-8?B?Sm1oZWFLYUxsSXhhRGE1WkZRakIrL3lZN3dOWTBvUWd4QlhYbjJNb0JTTGV2?=
- =?utf-8?B?K21CYjdSZFNoVjlGRDB0RXZITlA5RGVuNDA3cGRUUFNRTDltckFiYjFNZ1hW?=
- =?utf-8?B?L1BDUmpnTXRib1paaFkxYTVEOFYzS0YycDJNMjVrYmZ4czNqWDlOWDE3RXV3?=
- =?utf-8?B?bW15bWJSOEFadU53NWY2UUNLSlRLdWFqSHN5aTFhWFEzWitNVHBDaEtxWEVK?=
- =?utf-8?B?NlBtdE9YVjVHRGdWQkt2N085UWhpbllaWlNEbU93MlBIYkY0U095VEFaU0Z1?=
- =?utf-8?B?MGprZGl6WFEvNDJCVnpRMThHeEVxSlJqdlNqenloOWZGV1ZiK2l6a0ZFTzZa?=
- =?utf-8?B?VkorTHNsQjluSkMxU3RLK2dRVkRXZUpGNXlpN1RWdENUc1kxeEZzdEN4M3Y0?=
- =?utf-8?B?eGpEVHpSUXZubWo4dklvWEMxeWtkQUdGekVQYmdETElWZWtveU0vMjVxWndL?=
- =?utf-8?B?aTJGaVBlUzltc0JXZlk0Q2FXYzA1Mm8wcXhYZ1l0RVhWZkU1cnhTaVdIS0pz?=
- =?utf-8?B?REIxY2w4VjZsUko5SGNRc1dtTkd4UnBwMkM1b3k4N2NKTVpJN1Y5bSsxblEv?=
- =?utf-8?B?clEzQm1SR0pzckFBOERzZ1FINldTZUxSbk5hL3NiRDl3STg4dVR6VWpmdXF1?=
- =?utf-8?B?SG5WeTJ3K3BVdy9sQ0VOdGE1WURwSExSamFtbFFtMFJ0QnFkMFJKQmNxeldS?=
- =?utf-8?B?QndhV25PTGFZRy9rNW96ZGx6VE5USndTWjkzTTdva2dZY250RFlrdkNTM2dp?=
- =?utf-8?B?ekMvaDlEVzUzZUMyTGM2TkZ2eTVYblZTZnBoaDAwMW9tVC9aQ1kyTGs4YUEv?=
- =?utf-8?B?bGlhVlplZFJjUVczbC8rV1NybStLL2xGWUJlNDJKSzN1V3BEYlhVeXlHMm41?=
- =?utf-8?B?aDNJcm1OeU9kWXRtdWlXaDZCaXNYeGFXZGtiU0FUMUZvVWdBeDhYZU55SlNo?=
- =?utf-8?B?cG11MFBhQW0vVGUzM3c5VmtoWjcxU21mTVVSZTVXU2h1RlVKWU12elhvVHVD?=
- =?utf-8?B?SHFWVUQ2RzVoSFVaa0xtTm4xaE5YZU85WGtuczBGQVhWbEJBRWVtSFpzSlNp?=
- =?utf-8?B?bnVOZWJtR2x4QzJFKzc0bkVYaGFaci9wZk9sVW9NZm5GK2Jud1QwaGdXYk8z?=
- =?utf-8?B?MnRDS095YldNcEtIZWZZQ3cyZXdZV01DNmJJMDJaeDA4RFZCUXdXZTVqTzUw?=
- =?utf-8?B?Q1Z4cy9QWmNyM3hOVXI5TWZaaU1MNXFWeVpIUzloN1UwUXpMcHdkRnlJY0RW?=
- =?utf-8?B?Qk9BRko2aUNEZmVWYjVCYkl4YkxEaDJ0UTZaaTQvbmhENjdOaE1jT0ErYnlX?=
- =?utf-8?B?UDR3Q2lGemkwTlUzaC9iSUx6cUxFbzcwZytFK0RLTHdKWFNHb3EwcE5ha1JH?=
- =?utf-8?B?QmpXK1FIVG43Qi9GTHd4K0hXc1FiaTRTUEJqSGtFbDR3RW03azJaSTY2UHhr?=
- =?utf-8?Q?6iwkNU5kOiM=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3934.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YkxpdCtvV0YzMWRHVktaTGl1SnlrN0MvcW9HQzB6bHFrQUthbkR4TnB4K3pJ?=
- =?utf-8?B?eXlRWTRZOTlRMU9rS016Zmk0TzdyUUdSQmVuN29CQTJuNlVjSFpOTzcvbG5k?=
- =?utf-8?B?eHJKZnNNTWtFZnF1NmVQakxQNUNmalR3V3JUWVloTFhQVHpwcEJjdUdqYm5n?=
- =?utf-8?B?VnF1clFkakZUbXVoYVdLR2FsdWx3SWsxRlNUVkhEQmlDLzBCRGc2SWdKM25l?=
- =?utf-8?B?dkk4VnNiNnlFR2tLcEpHa3ZEWCtaRHU1cUNQdUxHamtWQW5LalRkcldxWkFl?=
- =?utf-8?B?NHd5aGIvc1pPVUJnTHlQdFhkOWtoWGd4RVZiT2k4dDBPWi9EYUJZaDRwcTd0?=
- =?utf-8?B?REVZUm1tc0hYUVRLOFo5OUJ6emFQWjUxVU1HaXBSdDVwUE51NGpvc0djVHc0?=
- =?utf-8?B?NFkvYTJ3M3FsWXFYTklNVFJYalBzWmI0S1h6alVYMDk3ak1FeG1SMHhqd3hj?=
- =?utf-8?B?bzRIaWlMUkdvdk5lYWl0eTRsNHdtMTQ1aE1RdlJHL3h0UjJMbWd3SmlYM1JZ?=
- =?utf-8?B?d3lLRy9vclhJZHpMcUYzdmVVREtCZXFYSW5GT2NTWmgzNFNETkpoQ201QnAr?=
- =?utf-8?B?OVFSSWpZM2w5bkZYY0JRMzN2YlI3UHdJcXlOcm9vaEtOclVzR3Q1YThCUGU2?=
- =?utf-8?B?emhmQkhXby9uR2VNa1VTaTliMktpa2FMcDEyV1RidzRibjZnMDdYZFVaV1Zr?=
- =?utf-8?B?YTRSRGF3cDRxLzFSdGxpZFBFWlZydUl1WnFDSjI1MWdNV3lLTVFMY2tYWWcy?=
- =?utf-8?B?WmdlQ29CWU4xbm04cGdsZ1c0eUNFb25hYUh6bHVNZ2g1R1F1MWRUbHE2Y2c3?=
- =?utf-8?B?L3FxcGdTWlVxOTNIOG9XM3U0eFFyenRUM05nOUFmdjNWZUlXQzIwT1doQTd3?=
- =?utf-8?B?OHJ4VnVjbE93WEQ5T3oxRkN1Vkw3YUF4YVJsZDd3a3MvNFpoZjZtcFkvbXps?=
- =?utf-8?B?Um5vNDk0WXArQ1ZuclZwS0xIcG5MNEdraXJ1QnYyYjBPTmcvMXRrMmVaTUVJ?=
- =?utf-8?B?ekpLVFJvaWVPcWlvZ3ZFMGZmcUZ4eU83WVJBNEhLdmxqOXp6dGY5b1F5WEk3?=
- =?utf-8?B?SGo2eG1ZSjc3am5OMWpGOXBlZW0vRTVmeUdEUTdzZmF4cGhUSFpmUk5YeTJ6?=
- =?utf-8?B?blVSUDdaN2RvOGhLL3FLcVVqNnpaaEY1VktEdkRpUVo5b3lSVzV3TjFwb3d1?=
- =?utf-8?B?TkxSRCtkNzNRQ09ZbmZseHpWYm43R1NTYWhCZElORVIrYU9xd0JjOWJES2ZV?=
- =?utf-8?B?N1k5c21qVWpBYWdtQ3IyV0tMdzBueXBya0tHMkdHQm43WlJ5OGRLY2ZoaWhy?=
- =?utf-8?B?cmpoMTZvMDhXSHplbHRkYzFqU1BlSXVWOTdSc2dsV2dmS3NRSHNZVXJ3dmxL?=
- =?utf-8?B?ejlVMnNNTnZVQ1ZhZFpCYkZUYjVzQWRwZ2pkM0Z6aFJGVU5GdHVjYXNVWWhp?=
- =?utf-8?B?eGFvOS9XM0RiR2xlUEViM3NIbXMzRjN3SEFtOEE0bGs5SEtSWXE5RFJHbjky?=
- =?utf-8?B?NUZoMDN2dkxpdW4xTnpBelRZRVhjSStHeE5kQThXSUJCSDdFMHlKQzdHaGxX?=
- =?utf-8?B?c09zMkwwN29GVzNrV0hkMXY4VEZMK09mbjh3aVFzVEhtN0lVT1FYK21BUkd5?=
- =?utf-8?B?dzhqVEhIOVU1a2U0T21OWGJPRUxTYkVOTG96a0VvSDVKT0xPRGlIMFgvcVNj?=
- =?utf-8?B?M212Q3JLSWJOQTBEK2pKTEdOZUxVT2tmZ0tqdkdIakMzWFBXdGpOM3I3WXBI?=
- =?utf-8?B?MW9SZlZHa3lPbjV0T01tcndVR1dQZGJBRFpZM1RyamI4RWlMcVhOcU9JOXRi?=
- =?utf-8?B?VnpvRWc1UGhWbzhDZ0F1WUcralhjUXp1clFUZzdEOVZHUFZEbTRqNTZHNDZq?=
- =?utf-8?B?VWo2ZzNmYStZcVFtTVZxOG5LTHBOWUxrMjVsUk1tRDY1d09YbUhBdUhWRlAx?=
- =?utf-8?B?eVpzMTZuQWpaQXdMK2VNTHBOZGdtY3ZvNjZ4dHBwcXFabzBBc0dYNEdqRlVn?=
- =?utf-8?B?Y3UrN25HTzNwRDdXRTVVUUJEMEExRXo0YVpmTFI5eWc2ckVCRkJEZVVmcFpM?=
- =?utf-8?B?U044QmxHbWFRYUdUeXJSZG13amV6TmptaldQb3hndGpaU1Q5MVVpWER3REl3?=
- =?utf-8?B?YUVUMmczejFxSER0bndranEyU0RUOVJvdjRrRTlTcGFhZjJmZGMzTzRRZkZV?=
- =?utf-8?Q?acsPwr7Lt8SC6BkMEqMRz2A=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12af760c-c2b2-4262-b3e8-08ddeed8e5bf
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3934.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 13:09:09.3570
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 085ghfueQO9Rendb+Qnh4CjbQQ8ddOgfISxHA8ZuHjuMesSghAML8P9qIjJ2pe1dE3o29DMVVU/L5f4IRrEBhzD2i6YS4K75isHisTP9UGw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5024
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 439B91A000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] selftests/mm: fix va_high_addr_switch.sh failure
+ on x86_64
+To: Chunyu Hu <chuhu@redhat.com>, akpm@linux-foundation.org,
+ shuah@kernel.org, linux-mm@kvack.org
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com
+References: <20250908124740.2946005-1-chuhu@redhat.com>
+ <20250908124740.2946005-2-chuhu@redhat.com>
+ <20250908124740.2946005-3-chuhu@redhat.com>
+ <20250908124740.2946005-4-chuhu@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250908124740.2946005-4-chuhu@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: PtNaTqGHInYh0WBWimlYK17_jc7K5LRxRd-jlpAjDnY_1757336967
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: o9jf4kdrw5pdnp41o4ch4d8bbs4q5r48
 X-Rspam-User: 
-X-Stat-Signature: g6tp73o6t5tysjwa8wf8tpqb4jaqgy81
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1757336956-192588
-X-HE-Meta: U2FsdGVkX18z3kPr79LhwcHObMPXde4rl9ZXzTCvH+0PhcEN4NiXDgExOALqEyVkT+0+RjyerbWTYGpjyHhnLe2hZbQxBEEb9Ncspge6u98YiejnaK01cOQXIjLNFmtXFEOmtUQ8sey0LDHd1b0jLNiwUzOxm0lQu4Q/u2N6eN6JzJAzOGBJAZ1Ni0qU0ne/ik2j+4j6wsF7TuvDYTP3X8lqDX8KHDNy7EIQ8ugIAEZnqw11hbl/VSKkQjNpBYYTnk+zj6Ri9gwl/+62ok0JHalljKqXnDPa0lpPkJAvn9LVlU512DZS2+3RLbzibquHQmmJi9QQZCs3rvb26lhzZW4lDFxpCQsyCzZbrPLuKoxqQGG+WCh6Pl1CKXSyAtBxC6UBZVXhbwfQegKs84nIMtDoS9BpKqsGsAWZGQuzsqYWvgV5e/0A3dNeHHvBO3McvsD/DFZlir4ajgyfb3aSRlgoe8ma2daMtcPkoollQL/5OuJ9/Vf+9xpr1+yncSggxkzXfVIItMn3DCaEC0fgGB7fMmEefOtWZcc1QeI24HNtxNxnFnBU2JhW8DU/XUUFFbir8JCGo4YGGTgaEjz84hEOHn4nC9UxE4DoEeUfjx1HqsP04WAuJsikvwvzezfgCFIj0IlN9mrRK/MF1lBebhEW7A3+rQVAvXv5MAlaDB5d7sZ7Vn2LVWgmYZEY7BYcn/M7yVAZMgGoksl0/BdBwfmHGd9H93ghCNYc+0qgPZV3L64u26vJZ/yiKXLYtuGyXmrSiJtNaNaGNRjsG2yT+0hO6aGTtDQguzAnEJqfa8cM9SdGBEVnkL476fty9l3MnOhbfflQ4s2cJSCI/I+N83cGzjiRh0DBD6ZJlGsPSk83PmrrziFRe5/Tkn/POXKfcHyAprqzYkohwZTaQ3T/LSSUIaBKJSawwtaqsSBWR9ze5rdkvBvM3roDGvQQvKTXm18fv0pJv0v8MN+f/Ym
- JTUlBjTh
- eIX1s/bWAIuPM/35nYMgwjWVxB2uQHViLztLK+lMQ611OvE6Uqbwu7jwjG90MywJtK/fRiXv8T4uwRVInf4y72WAC3PSPG2JmruP7juRWFzxnW6vLkTQaT4N8CqXf8HBh1aC9j+rxskOZtksFh4jISHNIn8UbGojfz2Yg6olI8kGaQz7+Dg2WjilvAsiBOKys7RJRJF/Q+eYj0C4mpR0E4aZMen+3Knzyjrqi4Wlv8tZ3SJkp35+FxgcUY/P/jOycgKuWx+Ruq06wpm5rmL6fW/mxyG91eBP0Dd2vU8jcrTfZlekIwInRs2OYhhGAQm190VREuEw3g+BlRmgGG4gI2MFqMLW6ruySNuB7TUt966mxUL6g8f2T6ZXAfuBIuBNHEkb4OL73mX+kpZ1tzJm1LB/i7lHgZn6dAzOHAqnXdN96M+uw/icUYKYAjG0qSUEoU2dWGtrRs00BTug34s/mK2oNXmDY3Wf78ZBRZaE9XOLMDZWUEBXkQkHq0XSLKB0GslmyiTASQkm0KLPb4nSd0Wa5eLb2bo5aHjOkt2pG8g3/92+DxPzs1rG8jF4jpQxx0LaUSNn4T6hgZPYCVmx54U0lHWE0CzSWGabKAewPu6ZPZkD1TRcZqrmAID5OB9BO0nTtdV4GBmmJaUsuqI0kMaLJdnqfFSf2Ub0K
+X-Rspamd-Queue-Id: 3D4FDA0016
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757336970-554962
+X-HE-Meta: U2FsdGVkX1/ovgmaxVMvRljKocVsbo5yN1UIOAFC53OPP61CIWiQdjQqbnVkF/Xc2vVfQw5JdNR+MozSJHk9FAvcvtjZ393d9XSc/35g6ellzaD+C4mZBM7AvG2G1x2sXIaIompA0Mo1vBvKgzaimEWSonQm2Hl11kOLSYKa8dlztufTWXvyXeA5ySc6jq4mt88U4XiH8utkZuw3vRdaCMQqjSlCYycggT8t797mkzqdBEHS2mIHScOpXKAb1rbW6MmMzNLmQ+7YfavSjhuB5NA4U8BTT5hMMeIvf58ibTgAzX/e+1XKwOkxog8Ww0zgwqsEV4upvRtxPf/sBFEjOTQaoguAm5pZ+6wB0jKUHrao6g1fW7BXW5yMFvbveW4dY+I7PI84ma0Ur5gmjDDcr23IPqku6wNTmcXz6RsIui+5V/Eo5rgP4+EeopBVmhZEdjXHF6t/RrM72unw4WpIUdgYRvBdRn5Ek7WuZdDBW8l0sbkt/2zHlGxxwWvvbV92t7Uxd5BPATh8QiioGWUzJpazRCkEzeXGFs+V8h0qbIKsIj16aFy9PWH9biCISIDV3n4DSsmnj88ptqFX70logedtCK9Fiugc0R0XanzH2UfwL2QS7m2pzsh2LxQgHTy3DRWHUNOyFETNfigaF8yRlM4DLBfIXhu2bxhb0qu22lFsWjIfRlJ+UHJfNUhPIloVSS9SsMLP+voCg2DE/XJ1GHZLIoury5jwZh15rJPQOMeWHfFPeN6OzCirZPUOsirHyUs4DShOyz0Czo42veNPHL2bxztoVprGRmD/V0xW1XOyAXapZ6EXQ7UUH6meV/gh9HxEsWJLI5ToYrtjwUJWgdoUndU37rzaHb/Hl+nNEmhaYjs3VuMfGtgW2LXvzW6RZL858/uzPgQ6Cez+43kCpavcSC2yTuIYQiazCf6GhNgwU8jfxDy1BMFRzAknNSVSruuwtxFcPLzoFxszs/0
+ dhIAP6Kb
+ sgja32bd4wQfnHLGx4PWstU0NXO0qaY8AhLWnAkXPiEFR4BWtV99fk7GbymGunGndkc5SumxxaiDQxNPtpAgdtqDnPzJQCkXZrBoH/i1JnPlQ69D45+Mtzi9aiAavOonSD2w8izb51S2gZKupFi/lF6hgL8CCqZdADlqJuMra8yaYTa3lhOUSUpBdZWosq1DXqBFxwVJ7S7/qZ8pDkO12bpFGD0MeDkhI6NSqdAxf2HfDhnsTbQxbZNZATfyH6VAhu16cNvAMecPe9bpnU0NqouZQKaeBBlFGZX+58WRsg5XU18PwWRI3Q/+4O/MBcUUWHcRyR9d7pAlIaMt1KBIY7uH+pU0G6h7mBrVX8nSLxS61tt3nwiKB35nzbLAqJttnhO6RSmH7Ei86b43qP/BBM65p9w5jFTYJY84UmWY9Bxde93r/YSHMmRBbJAR/E2PzeqKDpPiX4CfFWbN/1LRGcw6Fxg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -261,70 +182,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-09-08 at 14:54:32 +0200, Maciej Wieczor-Retman wrote:
->On 2025-09-08 at 12:38:57 +0200, Maciej Wieczor-Retman wrote:
->>On 2025-09-06 at 19:19:01 +0200, Andrey Konovalov wrote:
->>>On Mon, Aug 25, 2025 at 10:30 PM Maciej Wieczor-Retman
->>>> diff --git a/arch/x86/mm/kasan_inline.c b/arch/x86/mm/kasan_inline.c
->>>> new file mode 100644
->>>> index 000000000000..9f85dfd1c38b
->>>> --- /dev/null
->>>> +++ b/arch/x86/mm/kasan_inline.c
->>>> @@ -0,0 +1,23 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +#include <linux/kasan.h>
->>>> +#include <linux/kdebug.h>
->>>> +
->>>> +bool kasan_inline_handler(struct pt_regs *regs)
->>>> +{
->>>> +       int metadata = regs->ax;
->>>> +       u64 addr = regs->di;
->>>> +       u64 pc = regs->ip;
->>>> +       bool recover = metadata & KASAN_RAX_RECOVER;
->>>> +       bool write = metadata & KASAN_RAX_WRITE;
->>>> +       size_t size = KASAN_RAX_SIZE(metadata);
->>>> +
->>>> +       if (user_mode(regs))
->>>> +               return false;
->>>> +
->>>> +       if (!kasan_report((void *)addr, size, write, pc))
->>>> +               return false;
->>>
->>>Hm, this part is different than on arm64: there, we don't check the
->>>return value.
->>>
->>>Do I understand correctly that the return value from this function
->>>controls whether we skip over the int3 instruction and continue the
->>>execution? If so, we should return the same value regardless of
->>>whether the report is suppressed or not. And then you should not need
->>>to explicitly check for KASAN_BIT_MULTI_SHOT in the latter patch.
->>
->>I recall there were some corner cases where this code path got called in outline
->>mode, didn't have a mismatch but still died due to the die() below. But I'll
->>recheck and either apply what you wrote above or get add a better explanation
->>to the patch message.
->
->Okay, so the int3_selftest_ip() is causing a problem in outline mode.
->
->I tried disabling kasan with kasan_disable_current() but thinking of it now it
->won't work because int3 handler will still be called and die() will happen.
+On 08.09.25 14:47, Chunyu Hu wrote:
+> The test will fail as below on x86_64 with cpu la57 support (will skip if
+> no la57 support). Note, the test requries nr_hugepages to be set first.
+> 
+>    # running bash ./va_high_addr_switch.sh
+>    # -------------------------------------
+>    # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
+>    # mmap(addr_switch_hint - pagesize, (2 * pagesize)): 0x7f55b60f9000 - OK
+>    # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
+>    # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
+>    # mmap(NULL): 0x7f55b60f9000 - OK
+>    # mmap(low_addr): 0x40000000 - OK
+>    # mmap(high_addr): 0x1000000000000 - OK
+>    # mmap(high_addr) again: 0xffff55b6136000 - OK
+>    # mmap(high_addr, MAP_FIXED): 0x1000000000000 - OK
+>    # mmap(-1): 0xffff55b6134000 - OK
+>    # mmap(-1) again: 0xffff55b6132000 - OK
+>    # mmap(addr_switch_hint - pagesize, pagesize): 0x7f55b60fa000 - OK
+>    # mmap(addr_switch_hint - pagesize, 2 * pagesize): 0x7f55b60f9000 - OK
+>    # mmap(addr_switch_hint - pagesize/2 , 2 * pagesize): 0x7f55b60f7000 - OK
+>    # mmap(addr_switch_hint, pagesize): 0x800000000000 - OK
+>    # mmap(addr_switch_hint, 2 * pagesize, MAP_FIXED): 0x800000000000 - OK
+>    # mmap(NULL, MAP_HUGETLB): 0x7f55b5c00000 - OK
+>    # mmap(low_addr, MAP_HUGETLB): 0x40000000 - OK
+>    # mmap(high_addr, MAP_HUGETLB): 0x1000000000000 - OK
+>    # mmap(high_addr, MAP_HUGETLB) again: 0xffff55b5e00000 - OK
+>    # mmap(high_addr, MAP_FIXED | MAP_HUGETLB): 0x1000000000000 - OK
+>    # mmap(-1, MAP_HUGETLB): 0x7f55b5c00000 - OK
+>    # mmap(-1, MAP_HUGETLB) again: 0x7f55b5a00000 - OK
+>    # mmap(addr_switch_hint - pagesize, 2*hugepagesize, MAP_HUGETLB): 0x800000000000 - FAILED
+>    # mmap(addr_switch_hint , 2*hugepagesize, MAP_FIXED | MAP_HUGETLB): 0x800000000000 - OK
+>    # [FAIL]
+> 
+> addr_switch_hint is defined as DFEFAULT_MAP_WINDOW in the failed test (for
+> x86_64, DFEFAULT_MAP_WINDOW is defined as (1UL<<47) - pagesize) in 64 bit.
+> 
+> Before commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
+> functions"), for x86_64 hugetlb_get_unmapped_area() is handled in arch code
+> arch/x86/mm/hugetlbpage.c and addr is checked with map_address_hint_valid()
+> after align with 'addr &= huge_page_mask(h)' which is a round down way, and
+> it will fail the check because the addr is within the DEFAULT_MAP_WINDOW but
+> (addr + len) is above the DFEFAULT_MAP_WINDOW. So it wil go through the
+> hugetlb_get_unmmaped_area_top_down() to find an area within the
+> DFEFAULT_MAP_WINDOW.
+> 
+> After commit cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*}
+> functions").  The addr hint for hugetlb_get_unmmaped_area() will be rounded
+> up and aligned to hugepage size with ALIGN() for all arches.  And after the
+> align, the addr will be above the default MAP_DEFAULT_WINDOW, and the
+> map_addresshint_valid() check will pass because both aligned addr (addr0)
+> and (addr + len) are above the DEFAULT_MAP_WINDOW, and the aligned hint
+> address (0x800000000000) is returned as an suitable gap is found there,
+> in arch_get_unmapped_area_topdown().
+> 
+> To still cover the case that addr is within the DEFAULT_MAP_WINDOW, and
+> addr + len is above the DFEFAULT_MAP_WINDOW, make the addr hint one
+> hugepage lower, so that after the align it's still within DEFAULT_MAP_WINDOW,
+> and the addr + len (2 hugepages) will be above DEFAULT_MAP_WINDOW.
+> 
+> Fixes: cc92882ee218 ("mm: drop hugetlb_get_unmapped_area{_*} functions")
+> Signed-off-by: Chunyu Hu <chuhu@redhat.com>
+> ---
+>   tools/testing/selftests/mm/va_high_addr_switch.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
+> index 896b3f73fc53..bd96dc3b5931 100644
+> --- a/tools/testing/selftests/mm/va_high_addr_switch.c
+> +++ b/tools/testing/selftests/mm/va_high_addr_switch.c
+> @@ -230,10 +230,10 @@ void testcases_init(void)
+>   			.msg = "mmap(-1, MAP_HUGETLB) again",
+>   		},
+>   		{
+> -			.addr = (void *)(addr_switch_hint - pagesize),
+> +			.addr = (void *)(addr_switch_hint - pagesize - hugepagesize),
 
-Sorry, I meant to write that kasan_disable_current() works together with
-if(!kasan_report()). Because without checking kasan_report()' return
-value, if kasan is disabled through kasan_disable_current() it will have no
-effect in both inline mode, and if int3 is called in outline mode - the
-kasan_inline_handler will lead to die().
+Wouldn't it be more deterministic to do the alignment/rounding ourselves?
 
->
->What did you mean by "return the same value regardless of kasan_report()"? Then
->it will never reach the kasan_inline_recover() which I assume is needed for
->inline mode (once recover will work).
->
->-- 
->Kind regards
->Maciej Wieczór-Retman
+(void *)(ALIGN_DOWN(addr_switch_hint - pagesize), hugepagesize)
+
+Unfortunately we don't have an ALIGN_DOWN helper available yet.
+
+We could just move the one in pkey-helpers.h into vm_util.h
+
+
+But now I realize that, likely,
+
+	.addr = (void *)(addr_switch_hint - hugepagesize),
+
+would just work and be aligned?
 
 -- 
-Kind regards
-Maciej Wieczór-Retman
+Cheers
+
+David / dhildenb
+
 
