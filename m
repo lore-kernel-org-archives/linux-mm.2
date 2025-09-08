@@ -4,117 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38A0CCAC586
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB061CAC586
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:11:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 763F18E0009; Mon,  8 Sep 2025 08:04:15 -0400 (EDT)
+	id DDE208E0005; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ED5C8E0005; Mon,  8 Sep 2025 08:04:15 -0400 (EDT)
+	id D8E578E0003; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B47D8E0009; Mon,  8 Sep 2025 08:04:15 -0400 (EDT)
+	id C564C8E0005; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 410BF8E0005
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:04:15 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EFDA016013F
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:04:14 +0000 (UTC)
-X-FDA: 83865950028.01.D4FD1E3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AD5378E0003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14D5214012E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:11:53 +0000 (UTC)
+X-FDA: 83865969306.25.974FD4C
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7908E1C0004
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:04:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fzUphNzE;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id AC7D9A0006
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:11:50 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BD2nANK/";
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757333052;
+	s=arc-20220608; t=1757333510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZQY5mtCsJ6G72X3ReunddNY+XFovjNM7Q+qStzUuS7A=;
-	b=0fJ1LEkSKXIaV9T7YaMDXSx5JaClpCfmroZuXSj88RZBzXtATDqYrrgP6qtjCYwrorhGSg
-	pXI1e2CH+4R74X52bJKG+hhv+uYqOvU2Je/BZilVjgDBSltjd08apkCelx6Io2V+AF+VVx
-	HnUCSa8vPxaLESgtNsH4YCDlFrrUbe4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fzUphNzE;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757333052; a=rsa-sha256;
+	bh=2jdiX8cmz33Wge7GjULKTSlElQOy4rRPNl1+9C4dPY8=;
+	b=WEr+ePy05EBCrhzBuslqCHwpc4v7Y6XSy1qVmLJH7ESVQW9oeTDV0NVc+xJbIu7ku57gdH
+	/gdFFZy/WJ3c+JUstaSsz5qGtk1lLa81J+cBJ4U/TtW8gBRUjTVevTSsiZreUT2QxL18Q3
+	XIamRcnHPQEbzeFYaSS+VyIz7t/oh2I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757333510; a=rsa-sha256;
 	cv=none;
-	b=ods1pdCGH2S0OZBawSn2JKdsStXt/TfjM2hoRKYIoZAlt9sWRnaZyLPlKb0GRbBcZc7wo+
-	ZUTRl/+gOy0TbCuDzQFpGj/q7eYIxLso8FOjajAcJueQ7OrqFE5KY3XkO/tkDfG7vmTrCA
-	s8Wzf8hOZQyWP25by/GV/0UebUsZW7A=
+	b=kxTYJgj3jYkJJ5bDFsZVIJRZQ/gogSoLMPxNhoDO7jP3k8C9p2/cIHxBuaf4TsehGCgY60
+	x+W9vLmtez2g4joiRosMsBYdV+rGDZ/FSub1diGl5ANbvptNK7e5kadVVMrNj9A+CTY8ob
+	ciK26KyIeT9N5Df/4/hEnIdlz6fupE4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BD2nANK/";
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757333051;
+	s=mimecast20190719; t=1757333510;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZQY5mtCsJ6G72X3ReunddNY+XFovjNM7Q+qStzUuS7A=;
-	b=fzUphNzE1GyyIzfRW9GcgJ2azNCcdZUDSF9CKp/9j7OiYPoNwqItU8kOu8/nrunIWJ/STW
-	5UsfjHE3IsL5mP+zdBq4wtLK1P3BINdabwLFARSTQr69dJJKik2pyND89w94UhV0X3/dUw
-	7pHoTs9P+YLlUt06SHn3iytnzeP5fb8=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=2jdiX8cmz33Wge7GjULKTSlElQOy4rRPNl1+9C4dPY8=;
+	b=BD2nANK/Z/abuaE9R2k3id1lWvIEwB4A0qTIpPco9wIqGSxLOxzDqc7FaA9xd9Qfw/sQ0D
+	Hi/nCm95iG2mUvG7ncgtWFy5g16fMOwzbqWrNBPDWLU8Q3f+6ZrfwFuxF6+mPGKt+ikilW
+	RR9kzKUUw+Wu6DlFV5eOqhb1NySCN8A=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-385-rYYFvzGoO0eKUyCplzx0DQ-1; Mon, 08 Sep 2025 08:04:10 -0400
-X-MC-Unique: rYYFvzGoO0eKUyCplzx0DQ-1
-X-Mimecast-MFC-AGG-ID: rYYFvzGoO0eKUyCplzx0DQ_1757333050
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4b5f4e4fe41so110305251cf.2
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 05:04:10 -0700 (PDT)
+ us-mta-457-PUSZOkIwNQKNMjpFlqHssg-1; Mon, 08 Sep 2025 08:11:48 -0400
+X-MC-Unique: PUSZOkIwNQKNMjpFlqHssg-1
+X-Mimecast-MFC-AGG-ID: PUSZOkIwNQKNMjpFlqHssg_1757333508
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45cb5dbda9cso27056815e9.2
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 05:11:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757333050; x=1757937850;
+        d=1e100.net; s=20230601; t=1757333507; x=1757938307;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZQY5mtCsJ6G72X3ReunddNY+XFovjNM7Q+qStzUuS7A=;
-        b=mTd2HttOCw/IuXeD547I+1EPM12niQYoiHpvHP67cEQsqKMMifao3j99CePNmN7r8/
-         btk00KwkRH40B//uOn45+EE0op/sDPkHVXv+46uHGJLIrThgfcmuIc6MU7GfiuKzlRpi
-         AY06Z6iTXTEO8P6Y8lYidj3zrLhkXKpYTfrJd+iYTH/nJwdq4lGpcYS+MIGRyA3UskUa
-         fh9VExoPrnaAXaun6olnFhTaTxUt9u62mdrp4SfwF2hArut7B6K6Mn4FKjEJ3kEedwVW
-         MokiNNJP8MVK8PhHXwCGIMZehhomNcdAibqTdwPqmdaDQunq++sveVhShAxYT6vUpytD
-         f7EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6mgPUl2RyGENA78IvfzgHZgZABv+79CGbQmYrfUlxAPPyPzJ9vWwSbQ9ClXqFw1fFF4ve4twgkQ==@kvack.org
-X-Gm-Message-State: AOJu0YzZnipihpZry1cJczqtFE/N7ZyWDNHpTZm99Fbpd69VbZU4UJoP
-	PvfBUdYxlClvLZog8zffu51YU6LUrNF1wpoo48EvYNcjXt4zul0mbNY/xLQQSWoajc4KxgJ+93c
-	A/RrO0ZyyQkl3U/VTleaHRQ9cYvb30lRFeAgvF492hvh2CNG54HnH
-X-Gm-Gg: ASbGnctUYSxb0TF2DUFuUc7oc2EAB4cJIrQUkLj69eYGI5R0QZVkzD6LBK3YKqLPgPA
-	aH5Znjijqpngq4CytV+K6M7yEbQ+YiccNcjl5mnWWW+jYG6OdPSPFN5yYKNecsrdk55VPeQi8Cb
-	1mN7AnLEZENslX5VBAHF1dO73/Flmgl0ws9LRQ5oTkktmGzWX37yCntTKenB48HwLyUm0nQ1RaL
-	BSgENgC4H45vOe1r9BbVBcUVisN2G6yue3aqkrh28kNEwcybRuVHdZ6vNqCh9nYTIbwlVcDf23T
-	bkNjtPcg1+F7x7fpYR2r06k6dJl4E/YwRvSsp7idX9GiswnEPgbQaFo7T/YRuNh5xT57hSektbL
-	vktOezDXUElgWVnKwRrc13SdpfSW0c18c3qUSTchmmUtJCZygvEiQfZDzios1yjpN
-X-Received: by 2002:a05:622a:256:b0:4b0:907c:918a with SMTP id d75a77b69052e-4b5f83860edmr90178071cf.16.1757333049935;
-        Mon, 08 Sep 2025 05:04:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJ0m+xqdk6+V/miczYIvEh+2/fCRGk0GUT37l9KKiOekcHaZPTLhCb/GFJBksR4DqtSb8WDg==
-X-Received: by 2002:a05:622a:256:b0:4b0:907c:918a with SMTP id d75a77b69052e-4b5f83860edmr90177261cf.16.1757333049154;
-        Mon, 08 Sep 2025 05:04:09 -0700 (PDT)
+        bh=2jdiX8cmz33Wge7GjULKTSlElQOy4rRPNl1+9C4dPY8=;
+        b=b5SjCHjeWXBPA4ITI6fViJzXyew5ZzOLQ2Eu1N6KmdIQ8jlIR25ne22IKz82Gkrkbi
+         zFmCSrnufTsGU2BcMHqef+9G93vPWcuyQF2AsioDM9elkoUGrYIyQS6juJENLZ9g9G8A
+         wUy5rwnPR20WRB9Mrup4y/ePcfNEdjgNcubc9Ymy3i1sWEb5jBRKoBR+ZrG8pjNcV752
+         BisnvVCBl/HA9MdtsFUMI/fxz6GjWU4Dpt38wizwiY08jj/rJgu12mZ6ROUIVk83ZBVT
+         jXDJFPV5dvaCMvgcEKx/IBd3TN2SNf3wTItg1DXm9y/k+1ca+X6sjqSB4t/A+CJHZISx
+         clQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXA6yXe12ClERzCpfSacRC9fP65fhsqivboMB99xs/PXC7INPQ8CsSsiA99J2DjjFqXjiVdARt7bA==@kvack.org
+X-Gm-Message-State: AOJu0Yx1eigGFdzS0sT41BD1LHWiXZLQxx0R35ASYYODeiJCLMy2XrrQ
+	3nnemG/TDb0paNbmWid+tO9nAjiMPep8VgFwAcs/XIZwTQlWw4QnGgYsowS9FAn9rrGVp70MjDo
+	0NobtUNhw0yA2h8ubmRlHECd3X5yMDbqt4Bqta5RMQRBM5Z0KVFLz
+X-Gm-Gg: ASbGncuBdelIv6CY6VC4eIQ1CqLjU1Mrz5JzBOpcRCe6iL6JBSmMUNlpQB2XjSOT4lg
+	FXCRtxuY9FDCpb0BBVUsfeAFtsT3hacEesTeq0ojLClkQkc9UhHRBEltWp4jMTdT+Cga+WpwTZJ
+	EzdfYURyYtY/zP9/ugKiZsPWMhXc/Nt4NM8YGk5zq3H+/79fAs7nMaSrPpcpLyXPy3aNIHrOcyO
+	ShVuDQ06SipfIATWwiG1YkTJCw3xstCEyMFt9pioMYoVmCRs70n06W2ymdkQzo7pfjhNoDkLSyY
+	HpeVhc6VA/1BzvEuSrcK8tUA7McDKkmr+8uz6NVB0OIvaMdPwrYPDTYJQxljieBtfuJho01T69S
+	eo61DRvDz4oKiC9Tu+T7s900GVOBDd0WLgnUiy85o0xq1X41VuwJu9L72Rj+lGoNn
+X-Received: by 2002:a05:600c:a47:b0:45b:6275:42cc with SMTP id 5b1f17b1804b1-45dddeefa72mr65846385e9.28.1757333507671;
+        Mon, 08 Sep 2025 05:11:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFaf4eOc85QPP9D7Vpk6e+Udi31BlmbPwrs+IAuKckaQTcUAkvKTJbOWZ69fZd37sZP1st7g==
+X-Received: by 2002:a05:600c:a47:b0:45b:6275:42cc with SMTP id 5b1f17b1804b1-45dddeefa72mr65845955e9.28.1757333507230;
+        Mon, 08 Sep 2025 05:11:47 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f25:700:d846:15f3:6ca0:8029? (p200300d82f250700d84615f36ca08029.dip0.t-ipconnect.de. [2003:d8:2f25:700:d846:15f3:6ca0:8029])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b48f7a531asm102949671cf.49.2025.09.08.05.04.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45de15de2b7sm82239365e9.14.2025.09.08.05.11.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 05:04:08 -0700 (PDT)
-Message-ID: <f58a472f-4a36-40e7-94d2-229125ae7373@redhat.com>
-Date: Mon, 8 Sep 2025 14:04:05 +0200
+        Mon, 08 Sep 2025 05:11:46 -0700 (PDT)
+Message-ID: <bd8338cf-6723-46ef-9043-3ced8be56e62@redhat.com>
+Date: Mon, 8 Sep 2025 14:11:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mm: skip mlocked THPs that are underused early in
- deferred_split_scan()
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- Liam.Howlett@oracle.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- dev.jain@arm.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- usamaarif642@gmail.com, ziy@nvidia.com
-References: <20250908090741.61519-1-lance.yang@linux.dev>
- <niywtremc5kfhs3lenmfxvbiiizyexnaw3m25twedmzovfoeno@lk2o46tfdklk>
- <9a0c07b9-5bf0-4251-8609-fbaf0ca75bf9@redhat.com>
- <5j6i2o6umqwxabdfncbrdytmvdma4yrraxe6hu4csckcniduya@sm3mlablwbad>
+Subject: Re: [PATCH v2 04/15] mm, swap: check page poison flag after locking
+ it
+To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
+ Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org
+References: <20250905191357.78298-1-ryncsn@gmail.com>
+ <20250905191357.78298-5-ryncsn@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -160,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5j6i2o6umqwxabdfncbrdytmvdma4yrraxe6hu4csckcniduya@sm3mlablwbad>
+In-Reply-To: <20250905191357.78298-5-ryncsn@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: CRGvUpNhKtm5jdmi_60MANKc0Bj-ifWIk5n2Nc6Xj2k_1757333050
+X-Mimecast-MFC-PROC-ID: hyHJz1CZXiTBxM1cAweh1jBpHr1v4z0-42LPsKV4ta0_1757333508
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ggg35in8hh7ue9bi11x5e9f4e8zj691a
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AC7D9A0006
+X-Stat-Signature: s5zmu8tu1eeu7bj9b4xqg5qkbmprxyt1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7908E1C0004
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757333052-709677
-X-HE-Meta: U2FsdGVkX19dq92DIGDljQP00yXRq9rrxJRZql3GACbKLtT3pgEXtpivfRhfbW4oz26T+r0aVZNFpWHYcGBxSnSGP829ScDTXI1p4mq/2Bu6Wum/ON0NWosKaTQfrbij8eyc8AOPZoCEYsrlD5Pd/2IBFiuErvJiq847FwLCAOe86NHFqkPIhOdieRPIvxqST7b6Vu964Ax+sl3BdvMVVKtsWhrkhEK7Vtn44FrF3zeMLLpBUmja2w/wCrTW+gHLYe+9o5WFsG/XE862RpfiypbnZR1MX2cJcl77nqyv8LDFtdz17pAw3+LxbZ8Dm+f1z6oVFQmybphCVPwOZxtlYvXaDcP8vyomir+SrDDmmoWGkD6gdV94/FP/HcyyesO8TYWY7CyGZ5vjuK3Aayqt5LiFdmV5sSQiaZbvA2/DDhOQk7+RoKImh01VeKwjoMUQK0jm45vGOG3tjALgmBLvcm9NYFx/EPsBKbzIMJGDvwNLkGlRmenCsl+NeVGuEwyTFbXNdRXCWNv/9zCvsW358afPJ482LeR8V3bthSKOCIV1Q2wPX/mbLpuVBu+sUOJHhPlNR6vWHVKEuKjSf3YD/2EUsC7/V5QhvNcqoUaSEiI+CBAD/uqR9DOoUq8q2wkTNw+ddSv/y1UBd1sTsAzKFWXO8r5cRkwMnRCajTsuxQ8S9BaK5tSJv4X/V1TxHoyz0ZIB+6+v7AdQrFCmO/hgW8H4x3jL9mMAAQLU8kOwAdBacD0QI0p+2MTJWomoXN+lB81AVS+3manncb/Qsf6Bm6osUV8BqKM3gApl3weM4uk05Ql0TPc8Qr4E302gTaal/h/qjKJ6QBJMppr4j0/B5K7HEFhDF1ALmUMouBRcRYebTLe6GeE6aupNP5d2slZVtGF+zx9WHk5E7rrROj/T+rHfT5kaglNxR/C1ReAeaCApmLtxMobwh2XmpRkRlGVJ2hmH6VppDh9AZlwwvze
- ioizRbyD
- pxYFMTN4MSK8n8azqoDKJ5AeArKueypeESIMZqvR3JRlHo9UAm9FrpLdCVoNEhjLnrZ8PjZK7nPRL75yDfMdoSXLzg1SIWjEPc8/HysdpGch6BFeH2XPuXa7vVX9/rWBIj/OIu/54Xs0jCjrpK8caEfUzcCkfA4wZu6N7idiOYKXpCDO9148MNebfiSrpLwfhzT9BwLIGDMwwy6ahWQ6D1nuYJWPyQoaYqfCbwdqk06FeifUGsUxmZ4b2RAWbv1UEziAfwVJBkvIhvYx7dj+xV6uYpLLE/nNDRJxNHcq0HPuRk8JsHtBRn8OxQqsa4JLXp0So5NLp1GdPsuqwk+nMSI6DfXqxkK4AAqkHk7FI4Keh8ierY+mkNmDd4fZUwh1jFBx1FnUjXDtFszZ9ozKYNVAA51hexzL6pBJVrdwatY4/iCUVCFfxycKy6NlDa7Y3JDTSB1u58i4jAkivngy/KZCMIytQ3RFqEyZqTAPy5TBgqWOkOKhOEKdkXBxJEPLlRr3BsLWpVSDKCuf/MovkEDoNFx+cIE4Ld35QCy9Cjb6WlXY9l4dZXZOgmAMs+Gjn2OUR37YX1nA1KlpdJSj/qfVdL7quX0kiw4yN
+X-HE-Tag: 1757333510-372934
+X-HE-Meta: U2FsdGVkX19ClUnQRHXOK9oPa+UfUYj862YnZrXPnbxYjq5rubtI9w1NwiKnPHpxNMXVlP1rkB+LCT+QjYmyXvxyK1wjc1niU4QLqMuMGQq0SZcJ/T+K5VB3gvRXTZV7dxAd3345ns2RGhP4GWjxIsr9CKtc+SCn8Xb0NLnQTB93sHtqpe+cwXgE275PVU4zM3m296fCaE55IlpkX8rCM5jZwgOs9dPGVnbGkvRjnnq5zjhhX9XPvItmKm1zB2BDdiNMUYLP1UOYI5NjuuUEDNvBp85Equy+S8I4IL8uXFcYFdu8tyEB12fZe+/5OJK/NgdybMq1q3HXVjim3sFdxOSTbnbwnhckEtXCLh0pVcCsdY59zAcKsHLesJfGQ+/GmMuGlEopdEktaDjuaYkvPJsR14ziuXN6hp/DFf0d1a2btdkEEm+7ar35qP0Bnm2ac9JZXmkkNJVjyAsk6dgOainnKbG3UsGYkNO1kKa6EPIkM57e2uiKAxaBUq95EELhqYQm2SU7J6Z6rMXS3nACDxIIO92RV4tV43zWKGyVow8fAP7MNY4fJaH6ZNat/GCEPyjKShvfvPsmpLqz17UuC6dMCa2gD4qZ5xiwITDNQriCa3IQd0Q7Fw4I+LUzgs5e9Je17QA9vu0ZFtwbCHL+5PtXdpW6CM6NvqF5qOX3XSbC4/B6Jyh+QEYGbNHE+j6KG1tCG74ZtBGTbBENkzdJLmmf9LZHmkLKMRa+8MaGaRTkFmoEqVUsmGvWIr52psbioomrEvqhpo5AzZxmbWC1AmhqYD+MAdjRkiGEOX6o2esNh2j8RfNs80C221wAjReS8mxbSiYEYmxwkzqa8AWZzT+9ExFoNgJhCHbgHaZXXhKQyrp08zXV0IY6afBb+X1NYIhlfPoUhuOmefphIRrYcvuj2Xpj/lc1dQjPwBwrZp9A0OLXbUub4YMgR87IwICesAvB64+jQPIt1DVUGJ1
+ EQ7SkyaB
+ ydDr/yCdcUVECfRNkb8BDHozrmJxXqfEI/lbwGTKxaTkNmAdYlB448rjD+d1q7VXxfM7wBYpKWX5Tl6fMaa1kvkF0NY4hsMLBzWVCVzeNDqwfA8f0K4OWuz3w73uSza85IrMwG7lw0Ul7PLDOuYwoX5R5Gj7bSbnNB1uFuGUAeZvCHLHq3mPhBCnq7w1HbWBFVgNtWPmGlkTjYh0+xHKVeaRzkJy9+K0PcbHj/c0MbKuFd+uwDqFLPA4Ou/hAHhW1hWRXkk1Wr6FARjjz5sRWEn/933NF6zcX80W4g1cTCCCKQYdlD2z7T2ezhAgpIMDv2DPfPjExl9z4hy24ZUT52L5DThm9sJIMm1EfRS/HXkkb1TxZ6jYthZHdVsOYNjwppsa1XSrq2HaK+jN2FZJqBw3ONaRvCS8mduHD7s8GhRbAI5Q1ZdveDK/Unwd5m7aVsuhoBuR0l2twues=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,77 +186,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 08.09.25 13:44, Kiryl Shutsemau wrote:
-> On Mon, Sep 08, 2025 at 01:32:05PM +0200, David Hildenbrand wrote:
->> On 08.09.25 12:38, Kiryl Shutsemau wrote:
->>> On Mon, Sep 08, 2025 at 05:07:41PM +0800, Lance Yang wrote:
->>>> From: Lance Yang <lance.yang@linux.dev>
->>>>
->>>> When we stumble over a fully-mapped mlocked THP in the deferred shrinker,
->>>> it does not make sense to try to detect whether it is underused, because
->>>> try_to_map_unused_to_zeropage(), called while splitting the folio, will not
->>>> actually replace any zeroed pages by the shared zeropage.
->>>
->>> It makes me think, does KSM follows the same logic as
->>> try_to_map_unused_to_zeropage()?
->>>
->>> I cannot immediately find what prevents KSM from replacing zeroed mlocked
->>> folio with ZERO_PAGE().
->>>
->>> Hm?
->>
->> I assume if you're using mlock and at the same time enable KSM for a
->> process/VMA, you're doing something wrong.
->>
->> In contrast, THP is supposed to be transparent (yeah, I know ...).
+On 05.09.25 21:13, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Yeah, I guess it is user error.
+> Instead of checking the poison flag only in the fast swap cache lookup
+> path, always check the poison flags after locking a swap cache folio.
 > 
-> Maybe we should make ksm_compatible() return false for VM_LOCKED?
-> KSM breaks mlock() contract.
-
-I was thinking the same and falsely remembered that we would already be 
-checking for that.
-
+> There are two reasons to do so.
 > 
-> But it can be risky if someone already relies on this broken behaviour.
+> The folio is unstable and could be removed from the swap cache anytime,
+> so it's totally possible that the folio is no longer the backing folio
+> of a swap entry, and could be an irrelevant poisoned folio. We might
+> mistakenly kill a faulting process.
+> 
+> And it's totally possible or even common for the slow swap in path
+> (swapin_readahead) to bring in a cached folio. The cache folio could be
+> poisoned, too. Only checking the poison flag in the fast path will miss
+> such folios.
+> 
+> The race window is tiny, so it's very unlikely to happen, though.
+> While at it, also add a unlikely prefix.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>   mm/memory.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 10ef528a5f44..94a5928e8ace 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4661,10 +4661,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>   		goto out;
+>   
+>   	folio = swap_cache_get_folio(entry);
+> -	if (folio) {
+> +	if (folio)
+>   		swap_update_readahead(folio, vma, vmf->address);
+> -		page = folio_file_page(folio, swp_offset(entry));
+> -	}
+>   	swapcache = folio;
+>   
+>   	if (!folio) {
+> @@ -4735,20 +4733,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>   		ret = VM_FAULT_MAJOR;
+>   		count_vm_event(PGMAJFAULT);
+>   		count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
+> -		page = folio_file_page(folio, swp_offset(entry));
+> -	} else if (PageHWPoison(page)) {
+> -		/*
+> -		 * hwpoisoned dirty swapcache pages are kept for killing
+> -		 * owner processes (which may be unknown at hwpoison time)
+> -		 */
+> -		ret = VM_FAULT_HWPOISON;
+> -		goto out_release;
+>   	}
+>   
+>   	ret |= folio_lock_or_retry(folio, vmf);
+>   	if (ret & VM_FAULT_RETRY)
+>   		goto out_release;
+>   
+> +	page = folio_file_page(folio, swp_offset(entry));
+>   	if (swapcache) {
+>   		/*
+>   		 * Make sure folio_free_swap() or swapoff did not release the
+> @@ -4761,6 +4752,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>   			     page_swap_entry(page).val != entry.val))
+>   			goto out_page;
+>   
+> +		if (unlikely(PageHWPoison(page))) {
+> +			/*
+> +			 * hwpoisoned dirty swapcache pages are kept for killing
+> +			 * owner processes (which may be unknown at hwpoison time)
+> +			 */
+> +			ret = VM_FAULT_HWPOISON;
+> +			goto out_page;
+> +		}
+> +
+>   		/*
+>   		 * KSM sometimes has to copy on read faults, for example, if
+>   		 * folio->index of non-ksm folios would be nonlinear inside the
 
-Could be.
+LGTM, but I was wondering whether we just want to check that even when 
+we just allocated a fresh folio for simplicity. The check is cheap ...
 
-Staring at QEMU, we have the following parameters:
-
-	mem-merge=on|off
-
-     	Enables or disables memory merge support. This feature, when 	
-         supported by the host, de-duplicates identical memory pages
-         among VMs instances (enabled by default).
-
-And
-
-	-overcommit mem-lock=on|off|on-fault
-
-	"Run qemu with hints about host resource overcommit. The default
-	 is to assume that host overcommits all resources."
-
-
-Now, I would assume that anybody who sets "-overcommit mem-lock=on" either
-
-(a) Has KSM disabled on that machine.
-
-(b) Sets mem-merge=off
-
-as well. But QEMU would allow for configuring it.
-
-
-Interestingly, mm_populate()->populate_vma_page_range() wants to break 
-COW. [*]
-
-But if the app later calls fork(), we still allow for cow-sharing pages 
-with the child. (another case of "don't do it", like KSM I guess)
-
-
-[*] it doesn't do it for mappings that start out R/O. I think we might 
-end up with sharedzero pages in that case, but not sure if worth fixing.
 
 -- 
 Cheers
