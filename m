@@ -4,116 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09017CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 17:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56011CAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 18:12:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65E9E8E0011; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
+	id AAD528E0003; Mon,  8 Sep 2025 14:12:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 636758E0001; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
+	id A85388E0001; Mon,  8 Sep 2025 14:12:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54C318E0011; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
+	id 9C1A58E0003; Mon,  8 Sep 2025 14:12:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 41B528E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 175BE160232
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:51:46 +0000 (UTC)
-X-FDA: 83866825812.27.B6F7EFA
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3BE34120003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:51:44 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VftsaFls;
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A7598E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 14:12:35 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D7135797F
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 18:12:35 +0000 (UTC)
+X-FDA: 83866878270.01.FE14DF3
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 53A8CC000A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 18:12:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="OTQ/fPJh";
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757353904;
+	s=arc-20220608; t=1757355153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4G8OjR9ssKy/HeocTqhx3l5d0C6Xda9h262DRWrvvKQ=;
-	b=3D5j9Qjiuy/lfuGt6GvnKrF5QRwB60ixtvgm+TidHrXLiBjDo2RQawA8A8uv9nR755hkDQ
-	m+DhmhFV2Cp55lbfB8t9vGWCDKvyB7z2dpgqCQS7P02cPnNTf0jhnuPfeUB200ZTB1bAd/
-	wgrGyR1nxjT0vFizvIY6pgFMvhVQTqE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=VftsaFls;
-	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757353904; a=rsa-sha256;
+	bh=Uj4ReL0NH0lAk0pIHHnSUHGCYEXRjz9HW1ZVSj9cAuU=;
+	b=gv6+0lp5xcvHy8KMTVGAi1+ocl7ojWXrDRdudXxrOcE9rdewC3LdfxspDzTcmB6Wayuv0H
+	lHYMUOOZlprjDhBvzXeRRqZEy6njAca1sOaMkM3fqs6H56KB8n+TGqqSbWfvdC3/HK3pOf
+	dpiQWBi5xC/7ZLTS9YkzxrnKZo8AXxU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757355153; a=rsa-sha256;
 	cv=none;
-	b=s+D2tIQS3YKqgMaP/Fcyei4rqNOr0FmceHhK2ovZKM0ifEHPSvmECfWxG//xUN8SkF9yEj
-	uE6PhCLqEW78+glVoB1e7z9FKfsxcBO+QmvNyCVFf8DRk4+HnPrY+O1biVLXVen63xp7SS
-	e+uZBh6Kb3BYbXEq+S3zTlimOlBgwbg=
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b4bcb9638aso1081621cf.0
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 10:51:44 -0700 (PDT)
+	b=OMtaRPzp1oW/m/qma2ssiPw8KjOw6BduvFSw+72UbvPwg2Si/ED4Ajt7jAIPVc6JY+Rzs7
+	BZqRF+TGLLEh50WZK5y+B9QPWSF4A771VhyfHRi+r1X8Q5l6ZXqPDTIgbiBdVLqFKleHkj
+	ZByks//CGIjPhft/Dw+illPbt9XcIuY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="OTQ/fPJh";
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.53 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-70fa947a7acso13224936d6.2
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 11:12:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757353903; x=1757958703; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4G8OjR9ssKy/HeocTqhx3l5d0C6Xda9h262DRWrvvKQ=;
-        b=VftsaFlsy+2tadKklR/WuXAvzlBmY2kpV969NznM1asN7uys07c5F5G71f2HpNEmdi
-         DVgeWbZLPQZoO2vWPbIoQywedo/CN5MCXvIMjcWvAyxyyhI/j/5TVqzGiiaAtvkimQKs
-         xa/GB4TJg2AtOmS1+zOsfYSw0ms0g3eHCrFpFerSAmXq06wMVnZ4DNiJpsuYSJ5dnR4X
-         UWvkuY3yvA27o4LdcXMbF69Vm2YH5u2vfEjBKeNp3rYh7/EXRRLElYpD588UM2LYyh4L
-         AF0hemvZxEZiitfA1UupljUrVr62F/JFAzBMtcVVyGYmMz9yVurVigwODiIGau6zp4h5
-         ZjiA==
+        d=gourry.net; s=google; t=1757355152; x=1757959952; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Uj4ReL0NH0lAk0pIHHnSUHGCYEXRjz9HW1ZVSj9cAuU=;
+        b=OTQ/fPJh2XMpyFmQbqm/sT2cfyI59CM3biNsJCZj63AJGvUrmjqDOq4mxU2LSHex5u
+         +xsa/UhAR0ihTQSe1pUfWng1vtkoT4sw2dIYqJ4WFkyuHEzFa570yNbVMA1RihTvGGth
+         xEEwOe3HbZBE+MjBsLRtWwdHERi/675HrNRbAHkJBzG8CvfLGaBAZXWeQxgI5Efne5rN
+         b1X4lIvqu9/xTnBdMmz4yyWrenwvU10SIevYJdAyQKnal4C3M+pVn5tx2B+bgBTk5Kq7
+         dmC41jz4lFs5lYrFaiDtKEw8BWtzIEFNtIwrBmpF/OXZPaBkpCAOBRWS7jv1liKmlzME
+         b6cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757353903; x=1757958703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4G8OjR9ssKy/HeocTqhx3l5d0C6Xda9h262DRWrvvKQ=;
-        b=a1z2FnMmbHKDTEKj8v1x5X50lk3M0eAfbCfi7TAkzt0+UUdHjjKmpJhHZ4LPyzVr/G
-         SqHgShNb5TlT23BwJwo166OBEexJihseMVYX3SZFvVCSc6XUD47NehauU1atPn2L+b7e
-         J6kbZthGNmbnHGWBMhFiGrdkgJaZNwnZFZ1hWDqTn6Cl09qhA01lRv3SOZBLIcEwmEu5
-         GIqw+7qbuGrmpqyHpacA+BATRaM6OGDCDVhYJ35Zyk9Zbg3JEi7MiVE8+yqVp/A05ox8
-         rqGIySlt4woshXeFp919UV5JgphocsssZPEM0dp8CrcFSgzI1ZEdVnULnO9/UvbcJYwQ
-         YMSw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2YLBHqezuPtIfiOd3dA8tkhCLOND5OQgQlg8MQBMe1akAmdT32TcwR6U1tZvAymjpHs0eN3d5qg==@kvack.org
-X-Gm-Message-State: AOJu0Yz5sntedyUOwYVp7gUmpEGQmXainnwQpLnfinT7oJVU86OSUGHu
-	ccX7zHnaq0MMe5ij35VQPC8pvzOX4IdG7taPe2b8+0WwAJpKwtFqQMwxijiTSXZ0aak/HOmYuT+
-	2Bi1DLjoVFq4w83TOsmQGnq+GaKDia5939yQoZCXI
-X-Gm-Gg: ASbGnctu5v8GoxQIj1USUQ2QzZMM7cZNob7wOOEsBA1sSnk+9evoXM4e6HOv3pd0sn5
-	xcEFzmpX+fzPCFqESnydtKxUqZ1ABnaPPuybcyY2lAesvVf9aUPhx38tQOAYLz3V3NOAWZhUc+A
-	gUsWQCpXwJ951ZD8gQDW6jMzm9vkltSvoB5l5ammh5xQBborq2hiFSb4UMYq5TepTjYNUCtXToc
-	rlTPqXXggRniipX9ol5Gpk=
-X-Google-Smtp-Source: AGHT+IFX5M5+t7hmlxY9Bks+Ly9Dc9jsstbdD0XJ6NCNG5zc5agHlOjwp6nPJ4I+6VcViwGGr1N8NMZ0XWuJy7AaxH4=
-X-Received: by 2002:a05:622a:d0:b0:4b3:50ee:579e with SMTP id
- d75a77b69052e-4b5f839899fmr9996781cf.11.1757353902829; Mon, 08 Sep 2025
- 10:51:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757355152; x=1757959952;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Uj4ReL0NH0lAk0pIHHnSUHGCYEXRjz9HW1ZVSj9cAuU=;
+        b=sDS00VP9OvTlFqe+IUhb55s1imYz8CZwLkL8cwYiWj8uWw+yirz9A1uARX1ckjIHvd
+         Z3xa05lAtMo5pL6h2qx20+Wizwq2HPe/Scq+uSaUzrMu0Bop42iIYaJOZjNNyNA5+pk8
+         xF/Ab2pSnpHPpbcrzRQclIY5cHFCkRRP4DXiu7eK+oPVm7uZZZopx/xVVxVOV9wBo8tW
+         tsmjhtjtEu2LyHPFMkN3MNqvE1ArqX4ZDgQAbQN7ojNsg735IS1gTKQlZIjtGQWoiwHG
+         vTpgv5LxK1XoJTX/nrUh/twZalb1L9Kquq6LobpH38kuCktE7TtfO0r/JvydvLVhLs0w
+         BByA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyOfZLU4eA5Y9TfRVFR9l6jEsoDHQn5eQj7+oMInSuVqM6HekelDo45nByRTfffS7coLOWRks1WQ==@kvack.org
+X-Gm-Message-State: AOJu0YzpFHmATZHc6D1yJ0qz8k4lewz9zO/HDZFQtDavlZVc/7qtyDJg
+	fTP4fnVDURJU24G9dNFF42pZqz/gckbFsSBuLhac4HQCOPOJE+/te5o2Bkle05s6yiCSg+XNkWd
+	MToxz
+X-Gm-Gg: ASbGncvlY/TkIpbhmQQwM+9vlQTFQ9O49I5wIsre+BHyx8+MjLiOCEmflbaZPtbzZEg
+	8b8pq9uV+EbYbUgcLG2RtU/hbidXieixF1Sx+zz293rp/xMUz2BoGobUjJEyxfl5kaXmzngtfib
+	vYiXChtd8+wtv9RKgRfqIRfFL7HXycAR0oSP5w/r2nUZYjIqSiEPj4S/Fszla2BG2GSZcO5Haj2
+	rFLrOE4jxEUfU78r/pnRH2cZBdjmObilMX/pOOmxGeUx6t3XlpCdqj262ev391pIWs2Cindc4pb
+	LgdaU5XSnVQ5TIPnKWtszqYXrY9UafdC0cxa5edMjEZxMNjUghTOcQkVigV5K09AS3TgW24/Mt9
+	6uGcgjYEUm1JVT3gJPqPaptnJSje1syheemOItQRCAPmoiEhB6faWQde5uFrHxrIHN6KakJuRTp
+	skMGGueK6Xqnqf
+X-Google-Smtp-Source: AGHT+IHkQPfYoxKtWu7CMTYM+b3wnO+oGNkhruiQEKn/RX4SytWQAfGxekDvg/b0gwP5jynytPYZQg==
+X-Received: by 2002:a05:6214:5281:b0:706:aae8:ad48 with SMTP id 6a1803df08f44-739403158a1mr78540096d6.35.1757355152367;
+        Mon, 08 Sep 2025 11:12:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-42.washdc.ftas.verizon.net. [96.255.20.42])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7243de51ad4sm109175846d6.53.2025.09.08.11.12.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 11:12:31 -0700 (PDT)
+Date: Mon, 8 Sep 2025 14:12:29 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, joshua.hahnjy@gmail.com,
+	ziy@nvidia.com, ying.huang@linux.alibaba.com, rakie.kim@sk.com,
+	byungchul@sk.com, apopple@nvidia.com, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/mempolicy: prevent the risk of division by 0
+Message-ID: <aL8cjd1mIAamBzXo@gourry-fedora-PF4VCD3F>
+References: <20250907160829.91628-1-chelsyratnawat2001@gmail.com>
 MIME-Version: 1.0
-References: <cover.1755190013.git.pyyjason@gmail.com> <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
- <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com> <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
- <aK2/Vesgr9Xcl5gy@devbig569.cln6.facebook.com> <CAJuCfpHJMSd16j3ANrtJGVfLieHdeO_Epq=U9OKty3TV362ckQ@mail.gmail.com>
- <aLFKHGe2loD657fu@tiehlicka> <zerazodfo2uu5az4s6vuwsgnk7esgjptygh5kdgxnb74o2lzjm@fkziy4ggxrxc>
- <CAJuCfpFynEuwBSu28UiRDjWrayN-raX4Nqqh283MwRoJLi8bMQ@mail.gmail.com> <uoyjzkybkqd3wkvauofmorv72gnjisoq3owvijsezpt3wbrazz@at562ngtvszd>
-In-Reply-To: <uoyjzkybkqd3wkvauofmorv72gnjisoq3owvijsezpt3wbrazz@at562ngtvszd>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 8 Sep 2025 10:51:30 -0700
-X-Gm-Features: AS18NWDsU1J1RP4dbV6eRyI9elf2CPlWHKgnI901gTzxBYcnOYe7IoD0JikeTzY
-Message-ID: <CAJuCfpG17E_yoZeqEDrN0PFn8UBKqiGT28KDwEDmBm6byFje-Q@mail.gmail.com>
-Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>, Yueyang Pan <pyyjason@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Sourav Panda <souravpanda@google.com>, 
-	Pasha Tatashin <tatashin@google.com>, Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3BE34120003
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7t3gcfmyqem1q3j1c1tyw15fn1mzmg4o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250907160829.91628-1-chelsyratnawat2001@gmail.com>
+X-Stat-Signature: 9rt9iys5yxtip4z3qmjxys1ny3p7ud7y
+X-Rspamd-Queue-Id: 53A8CC000A
 X-Rspam-User: 
-X-HE-Tag: 1757353904-672398
-X-HE-Meta: U2FsdGVkX19cNAueBEy27434dtCZUrh1x4NozpFLWynswDXDuJ3iiTMAaUNR/uIXmPcf70fCpNUu6vdWx4hrDcbN625hKGgCxV3VOySPld/BEcXEuYJI91FQqkom1YnbctndWF9Z5FXGghigf8JWdTt6uCxTnMyWLLxIq3+XGLYmSN1d3U7p1CV1SWOAc6sCfG/+SWwYhUNb5F1fLXcpIskyElp7//Zl9cCH+VY3GohXcwkAxVPfAyAbykTZD/PL1Unp1fBAo3KzrLu0O8L8DXJCiv6+M939iweY2JKaBN7subTxz4wwlunFFRix42FrVjHct99rgd9a0E+6Y+I49rQQtiSJNkV8OXJCcLsH8HBRFtXfVFYlQi7ks+Da3KvYOVuo2qSyZ3y+Xp7OWQKoUeVUjyx4ARgDeTPaISkxJ95NY4RBLo0Cnez3Zm5iMKagi2sHYeWP4DqXjVxpwkfBPd2fzBzfA64TeDoVCG6K6dL3bMSPrvokXrC1nK+scWMykpWxe8dT0VPjFsGxRl1lVQwDIC449/Dyz2Ch/mfLS1FikpcalFUl3tYurN0r4ZXd+XqiJl1/rbYyHpbX+6y2HkRqzuBKfQCm3cJnKdZX/c+JUGnZFVRIBpEUrtsA9mf1KSZhCa5jpk8WuN6NBnKshzA6iyTD37xziME50u0w9ZHOdfhxjW5wHfCNmU9UlZ1zfdl5CPfr3Sy+OynIEgnpOgeLeyjWlzei05WQLE+cV37GgOMi9erG9JTOsEDjsTDsmQ6DFhXKqTUmQ9CRZEfRinKPUXIO6TKoKMHspqJK9dHL5tgvXosEZ5WzYHAiFKG64Y6k35DS1aen68J8vaWKEfVuDZdXRfotfiIJ677r92XpRjsjv37/rHqiSTGAKe97PdOWnY9t5VODEDqHWQKKnfRgj15CqPyJxazZnQkjrO0xuyPeyISjjQHMaXA6uzk2c5l9VGzBOeV+bln85EW
- y7rq5u4U
- JaFtikOXGYNDJvJOTOFobi5YSEfg0P8F3r53RRTAtz5e8DE6hzKJmimIU0VZMzvHVZYMVmoccS+znsWtxNHWHVcnvipztADZSssdQkNAeDKUbB26Pl8mtcOdYH1z06PsNsqR95LrdbJMrwd7b4s+qPQXomao0weWNEFJ82d+WeC/jFC9Q1EVLeFomVjXjfRKsCt+r
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757355153-28753
+X-HE-Meta: U2FsdGVkX19/p2UETM49lPGRSxROZ7/GJJ60VEngO8VPPtpqkBBpZ9FbfWlFcyajp66vMYnqnuCUNi9OVicLyfNE8i+rJa5MeFxfqlXZfpPhTVe6a8BCElqYiKd9O6oUOpaK7uo/E8MUYQGnp8H7FUplJaRt91Kk1pO8gYIusZhUea43agLmVEivwJMEJGvzpdG7dNbfBf690SOK9ciiEjjDig+7CDuaPs0qV+OPGViyTG8riBQ4lKTzNrNdCxOzAuw16esq7Q3Sve3ojAfLjbKozxJQn1noIic9iXh1Hvc/R4KY/0cEQdnEFT2ho3Eg+ZJFtsvrjle23vm4JuKRQ6dgybHDWQMpDXHqnTzwu+UGwjistB8zfDtl6IQnAJ/HDFOADwpZe4Ke30RzzAcorUMOmI5LfooSmJIkVTZ8KDi8t6Rz4rOELL2NTjx5kkf8khhyaj9f0GM4spv9wWhB25GR4atnAAOKD0asSiUG5HYtikOtGhO/03MMbcjo/fXZZn1CFGn5m1wgHVVXy5+ohWEL3d3XqeeCn7PG1j2bKlDOKlIiIfmfaNqfE1KQUPxlJJFFlU9xmWiC6aEspmyoxFa5z/jUAVwQI014srJVy1oRA81uGExAkwXcLlOuGzyB5YfVWD8EvqH5kqbHH9xUI8NFLpRTNWrpqr3qWs8F5mlD4T5DG3cOda8BoH9B0H2HMJIBJlkfrtWJjDxKXnJ/AmLKqwmNXcR6Yj1rdRQujisbRWrX32cDESy2v+nXhM/1k4BmuKpA+0V84pzIFY/zqZD7+i1mFzcQQfDb+oCFVoqvDtPnRMeWg9Ee79zVW7EO+yB/sv3nrOcH87CwmDzUVCIaseDOE7m9H2IrI3mn4zPm83b1J5RnpMb6zgpfPDMQ+ZaNsG2yRrLtDXfUFDdTqkLSoTUqAn8vGcx3Nmuhndwsz1MoVDh5GaVKdUxKf/TzkEiSMZYRStVitCGRUyN
+ vnnhRJEs
+ kvyD8MYDbiwH4jASCKEgupvLjeAdMeFk2iWX1Y6wwwvBc5VyJC5l5JDfQEIV8oTlp1k0+R8jIpqJuIkt1Gsgc0HIJ8lfqRs4Phza5BnTAgpglQPeJRcFuOmeJiNR5+DqfKan2V7H8/KfVUwj8ZPG9EP4rq1ohP4vmk0GyKck3FnbGsmoCSLOVH+qBOcOL9Vo8mrO8n21i4gPo15NNyuW+1HPbaxYyP9DnkbsTF1HYX68kbPozy0u7Trsc2w/N+MS85iqIr9nGRBNhg4V50oIlI6lDHHa27nvYz4lZSPO7eEOjHg7pKgul5VwnuNHNSLLFgGkxC2pIz0BWHDE98Z8U44VhV1EWfMCussCPQKcDPRcV13FaQUqxVngkyrHiZwzOh8PGcqP47fpn07+1ePmoGCdo102z1+Nzw3LiFVnCjBZcysY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,21 +120,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 8, 2025 at 10:49=E2=80=AFAM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> On Mon, Sep 08, 2025 at 10:47:06AM -0700, Suren Baghdasaryan wrote:
-> > On Mon, Sep 8, 2025 at 10:34=E2=80=AFAM Kent Overstreet
-> > <kent.overstreet@linux.dev> wrote:
-> > >
-> > > I think that got the memcg people looking at ways to make the account=
-ing
-> > > cheaper, but I'm not sure if anything landed from that.
-> >
-> > Yes, Roman landed a series of changes reducing the memcg accounting ove=
-rhead.
->
-> Do you know offhand how big that was?
+On Sun, Sep 07, 2025 at 09:08:29AM -0700, Chelsy Ratnawat wrote:
+> If no bits are set in the policy's node mask, then nodes will be 0.
+> This patch adds a check if nodes == 0 before dividing.
+> 
+> Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+> ---
+>  mm/mempolicy.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index eb83cff7db8c..faacc604fc16 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -2530,6 +2530,8 @@ static unsigned long alloc_pages_bulk_interleave(gfp_t gfp,
+>  	unsigned long total_allocated = 0;
+>  
+>  	nodes = nodes_weight(pol->nodes);
+> +	if (nodes == 0)
+> +		return 0;
 
-I'll need to dig it up but it was still much higher than memory profiling.
+3 second look at this code would tell you the only way this can happen
+is a mempolicy where MPOL_INTERLEAVE is set and the nodemask is empty
+
+The only way this can occur is
+
+1) someone setting that explicitly, which is invalid and protected by
+   a line in mpol_new:
+
+   else if (nodes_empty(*nodes))
+	return ERR_PTR(-EINVAL);
+
+2) or a rebind event occurring due to a cgroup task migration or
+   cpuset change - which is protected by a check in the rebind:
+
+   if (nodes_empty(tmp))
+	tmp = *nodes;
+
+
+I doubt this bug was observed in action.
+
+>  	nr_pages_per_node = nr_pages / nodes;
+>  	delta = nr_pages - nodes * nr_pages_per_node;
+>  
+> -- 
+> 2.47.3
+> 
+> 
 
