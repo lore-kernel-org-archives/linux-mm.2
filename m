@@ -4,98 +4,259 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E5BCAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 11:07:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF232CA1013
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 11:11:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF3346B000D; Mon,  8 Sep 2025 07:07:53 -0400 (EDT)
+	id 0AC7D8E0005; Mon,  8 Sep 2025 07:11:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCC356B000E; Mon,  8 Sep 2025 07:07:53 -0400 (EDT)
+	id F24698E0007; Mon,  8 Sep 2025 07:11:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C08778E0001; Mon,  8 Sep 2025 07:07:53 -0400 (EDT)
+	id D6F4C8E0005; Mon,  8 Sep 2025 07:11:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B065E6B000D
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:07:53 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 515D311B252
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:07:53 +0000 (UTC)
-X-FDA: 83865808026.16.81A0DC0
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F08C940014
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:07:49 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B88028E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:11:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C1F7BCCFD
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:11:27 +0000 (UTC)
+X-FDA: 83865817014.20.604559A
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 23BA940008
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:11:23 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757329671;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eSyQIy2Y;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="DQQi/FUJ";
+	spf=pass (imf01.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757329884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9DJh/PA4q4+ObKVmprXH0NoXkk36iB8jeDWGoTQj/SA=;
-	b=iGijGkEUBk5WePdUCTnS1fy4QOZDGOX4h9qZ+v0UuKQudAegqCO3nR0PcM/x66u10oeVFA
-	QivIJInOXehbU0JlkfbWMsFQ8ckR9WiodOnmjkw4nrUAV8ro75hkFPyy3xpcDELkfrpzgl
-	7znHISZq4xAHQ7ilklbufCTtbU/MZp4=
-ARC-Authentication-Results: i=1;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EWb6AFsZtXP/CoF5V/0efsXWpLqky8tkue6pBkjyArU=;
+	b=7NFfS6qJCfhDTa6Jor5g4iNKMZN6/r2MwbCl9nDf7wUMVWBuF5WVLBJzZIW560J4JCr3a0
+	F6vTbB/L36GDKGWZyDZs6+qYR2eNLZHR5rhP1uk7WkC1NxFZV26TAXhHK90ikndMq8mx8D
+	H24ahNPW0AFn7f3cd3b64sg6IJR7MN4=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757329884; a=rsa-sha256;
+	cv=pass;
+	b=o8JY0wi+wIXiolK+RVt6A+KzP1iUgGUdxkn/IDuDjErb1BccnZDQDlKRPg99Z2X3P+fYC9
+	wZ1Ke29utQVbm67Fwzbl2fuXuupWVLWZ9xdUQ+ISWYLQOMKUE1zJAJbAxmCRQa4Q4psJ0L
+	rWR9w5+eg2pmAB+9jeaUNAX3XMHUMPc=
+ARC-Authentication-Results: i=2;
 	imf01.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 45.249.212.191 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757329671; a=rsa-sha256;
-	cv=none;
-	b=n4uBff8im8HKD8qDggl14/cyFyNJ/hlzTvYDxJnFJ3NjaovsyjSLVQnhebMyCRSrQM/Q+X
-	fMMw2d/j1+8LQdC2ziQ4pO5KSUxbt1WnTdgmtE/px2Spqkvv2yNHCAWdo88QGoIGWZt4vW
-	+SSjnjAMtu7ROjWzQ6Z5tNGfJPEt2UM=
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cL3xX1YzBz24jCF;
-	Mon,  8 Sep 2025 19:04:32 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2DF7418005F;
-	Mon,  8 Sep 2025 19:07:45 +0800 (CST)
-Received: from [10.174.178.49] (10.174.178.49) by
- kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 8 Sep 2025 19:07:44 +0800
-Content-Type: multipart/alternative;
-	boundary="------------A9rDRIXDBV3Qwp5MpBa0syLK"
-Message-ID: <ffb328a4-c52b-42be-a2c9-aeb2e5a00fcd@huawei.com>
-Date: Mon, 8 Sep 2025 19:07:43 +0800
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=eSyQIy2Y;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="DQQi/FUJ";
+	spf=pass (imf01.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588B9FGN007849;
+	Mon, 8 Sep 2025 11:11:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=EWb6AFsZtXP/CoF5
+	V/0efsXWpLqky8tkue6pBkjyArU=; b=eSyQIy2YovMrz5K+r24cZS/713etOy6L
+	lBUEfJ2d89k6HMuSq/gItTAgg3bW2cBJ35xU3yLzHERfFGXq/9PMwJVSRURhsveu
+	bwOpLKaUhKW7r1Mwf7EBW4DJu6S/Cbm4UPzbKuM9/IX9CgbWXIEbBsuHnOurPuk5
+	pzqm3bqigrGzXUKj0J/Hcri4VBhB/ewMX7NyJ08P8P/+OGKJkIAzj/VsLjJOcPgZ
+	BKTLBKPIRZeRoi4y4so6nxMVaEaWeqKZm87Tqvts0Q3555ciI8vmU90Xi4xVpEtp
+	fxkq2yiYzpG3oj6kPYAjt8MWTKl9m6CFqteOylp+q7Pj4cHGS7bicw==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 491x16g028-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 08 Sep 2025 11:11:00 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58896Ias025964;
+	Mon, 8 Sep 2025 11:11:00 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12on2073.outbound.protection.outlook.com [40.107.237.73])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 490bd81muw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 08 Sep 2025 11:11:00 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VQNKZaiLuwXKRWUb7wMSG3bTzcyVxbg/pm9f+eBlM6vPciSmhxHm4p2WyMJ/og0q6Ew0hzJImA6YMxZ7KxUhD7GHIHS/30upM/R+ZfTVlUeaX59N/rjwGeZp/e2XglVsCEG+JxGszuljO6EjPjPhE0aLgabFkoInzBkE3aSXhmghYppIcNg+eG4hZE6a4l4EzmTnnXtQYcceDN+W6FrKU3qatEenYLHr5FY5prb6EnX2VkMS0nRPIXulpI3m4Q6IDv24BKEOI0Y0D9a6QVFDgAK5AmD3lEo8ROo88VoCObRP31nYrPECbWFz46KpWL9ycVG2NLqIAA4Psfkp1wYrtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EWb6AFsZtXP/CoF5V/0efsXWpLqky8tkue6pBkjyArU=;
+ b=KLOPYuLP3XVIUW8qsU4SdOkRYZ1mBd7YkrErGCCBCUy2B7w7aqNu7MSU0u3L5tsav8nqKvvgX+3JTa8OfmnUik72GJjg1cPHUFOVrGpkKsbxkbn01jRXqnWcUiokot8bVe6qFysdTFNNSqjIUsyqUn4M8md/C8TJv1paYfrwiESC5wBfb/ZNUNxsl27inWy9CKua6lRIL3JKzcFchd1d2HhIIAVDzRiLocHHmbg3WcDuqHOH2Ct9jQWgPJm9j5y3wCRe6nnobsJ2F5RGeCDX513bTapkOADgW/0xwqCPy6sZr9IZeuZOR0x28xBYI50oaKaVLTBfOleG4AYug9X4MA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EWb6AFsZtXP/CoF5V/0efsXWpLqky8tkue6pBkjyArU=;
+ b=DQQi/FUJxmApLHcyOpI5wj41wNPRiCKvjKPfvclLIDzOADz8OtULLuf+6SaL6aJWef82L6pxZDvIXux/OfpDoEmgaVGRASx7zJTexzictXgEDp2kt3lAZRu7/3IEMYuPafvU9sI3Ah8TmaGMDJW6V090OdadgyX6bZlnJN6eccw=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by DS7PR10MB7155.namprd10.prod.outlook.com (2603:10b6:8:e0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Mon, 8 Sep
+ 2025 11:10:56 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
+ 11:10:56 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
+        Guo Ren <guoren@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        David Hildenbrand <david@redhat.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+        Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>, Jann Horn <jannh@google.com>,
+        Pedro Falcato <pfalcato@suse.de>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-mm@kvack.org,
+        ntfs3@lists.linux.dev, kexec@lists.infradead.org,
+        kasan-dev@googlegroups.com, Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 00/16] expand mmap_prepare functionality, port more users
+Date: Mon,  8 Sep 2025 12:10:31 +0100
+Message-ID: <cover.1757329751.git.lorenzo.stoakes@oracle.com>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: GV2PEPF0000383E.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:144:1:0:5:0:13) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/oom_kill: kill current in OOM when binding to cpu-less
- nodes
-To: Michal Hocko <mhocko@suse.com>
-CC: <rientjes@google.com>, <shakeel.butt@linux.dev>,
-	<akpm@linux-foundation.org>, <david@redhat.com>, <ziy@nvidia.com>,
-	<matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>,
-	<byungchul@sk.com>, <gourry@gourry.net>, <ying.huang@linux.alibaba.com>,
-	<apopple@nvidia.com>, <linux-mm@kvack.org>, <wangkefeng.wang@huawei.com>
-References: <aLmhbjtF0Sp75XXE@tiehlicka>
- <f088cdda-9799-43ef-a4f0-fba563be4076@huawei.com>
- <aLqadzgmyGGjSck6@tiehlicka>
- <87e085b9-3c7d-4687-8513-eadd7f37d68a@huawei.com>
- <aLqo9NKQ-xDfJ-14@tiehlicka>
- <69180098-9fcf-44c1-ac6b-dc049b56459e@huawei.com>
- <aLqwcXHzsaTxN3dM@tiehlicka>
- <8616715a-fa08-47d1-bee2-2608a5c4d9f3@huawei.com>
- <aL6JzhRjQWFQB0DI@tiehlicka>
- <47c4e0c9-9719-4dae-94c8-3a1863b1b321@huawei.com>
- <aL6dtpEQL1A_PcOh@tiehlicka>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <aL6dtpEQL1A_PcOh@tiehlicka>
-X-Originating-IP: [10.174.178.49]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Stat-Signature: ee1z6m9ujzf8df7dspw9y1khx6ag863t
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS7PR10MB7155:EE_
+X-MS-Office365-Filtering-Correlation-Id: d07ee87a-3f8d-472b-a40b-08ddeec861d1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?R8Iam1nXMBXXR2jWc8mol32ZeV9TKuQqJfAv46HuhQFzJBK2bPfh9oX6j+9d?=
+ =?us-ascii?Q?kYQsmep3PmW9f+cNhjodcqPE+3SLM39/t5mWHDimnsLKEFfW+MNfZHTbI9vp?=
+ =?us-ascii?Q?o7frHrotifIzrKXUzAM6fSV8dWcYL7ER8gy25/LfCaKu17QZTSH57Al20CdP?=
+ =?us-ascii?Q?eanMJFn/y8HUpECHE4TRNSSv3KbTfBdVt09ZMwJR0biLBgPN6ZY6hnmhB+RV?=
+ =?us-ascii?Q?2Sy1Y74aselbqMJ5VPecBlo104TVKub9JX4lZP6s7Kj20qbdSw7E/vdXbukR?=
+ =?us-ascii?Q?5Dd3O8U34R8pH4VBzlOhWsBfigdA3nL6D5wBLrJfBjn7NQfOD3qqELGTZJqY?=
+ =?us-ascii?Q?rgz5hwoh7jWLfvI4ZVH8I9bHF6H4aLADNE3ytidDKIaOESYJUcBSLq2RXLvB?=
+ =?us-ascii?Q?LzIVf2IQ/qGDTEqGyD0vyrHffdCveOuXSFf1w7R5bjc1u98jK8xB38EuntTf?=
+ =?us-ascii?Q?5AxmpJ9/G/RKy/v5BlDmKH+TbI2ZqLxtknrRuwvQPt9ZkfGTdY5KqGRyHWiE?=
+ =?us-ascii?Q?EfFhUSE4yYbMvXD9qJ4/14dbk51PC8Sst2zTIwB57WjsLk5rs8ALEImlYHkE?=
+ =?us-ascii?Q?op7fkad8U4hLvjHQGF3Hfnr2YR2w9CvVPQelnGT3cqWkfXsVR2b3Iq3VejOa?=
+ =?us-ascii?Q?2EXMGTnWEzmv3xhcNwIe2wnH20HPqTgH1ZoUaniRZv+YiqKGAN4lUGrA4ZDE?=
+ =?us-ascii?Q?/ISms0VlKPdTEuco+lKVkBxFdhRVLWLfAhc8Xm80z7uWpcDMyqkXjrAFkZNS?=
+ =?us-ascii?Q?pvJ2HIE/T6nN76mjtuMFtObxsQjhSjg75xEtp/ODOs1Bj8YqrkQPeRp4uQXv?=
+ =?us-ascii?Q?i6/kCV2xoSqSIYSyamilbxb74MAKBlaiIuka1YvqTSC//wJn6LokTBDSxDjj?=
+ =?us-ascii?Q?H3R3CUt+L++bGhjbE3FWl5c25Jq6mmbFDmm+N0MNxnfGgOSg2kP5FE0+X20R?=
+ =?us-ascii?Q?2p0yMZ50ggblDovhkczqeSDJCK7FOFOicrNA6/f4kz/WLjx//tqVhMHNnbNp?=
+ =?us-ascii?Q?C23uTGCHSDhKxBJSK4vQiN7oPMCrIazsF8ONXnkqtUlzeYxbaqNdP6njqEh5?=
+ =?us-ascii?Q?FDO1zxVKZJcIzQjcE9jX1LHl0gXmgz3UeDgDzuWvuL49RN40+IChDgz6tMPF?=
+ =?us-ascii?Q?8/gfoEcTgM5omRmrA5PwdLlGfxvFAWcAEBLQPLSo8a/y8PPJXQYsmNPHiFlU?=
+ =?us-ascii?Q?akSq4T6dWJkEs77XBKMqt9gAPI59JThaFN8fd/fZbrqZcc/KEP7yHRYN3b1i?=
+ =?us-ascii?Q?8Bl/z+wZa7wki7dLzwY2SEXxMA48qE1n6eL7Klysn3EgMu3xh27M9u38Lp7k?=
+ =?us-ascii?Q?ZcIg92VeFgWKa8vwAVN6mk+o9Jqd0+utSSDpnIthmon3QJAhBXWm7XSUjHQP?=
+ =?us-ascii?Q?Zxeyo/h/IIrflBu9LNaox3c4/MJwFCb/O9WLCXzTwJB/ouf0NSF7Vsf6X+HB?=
+ =?us-ascii?Q?WyGNbSVxEkg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uYPp4RuKjHQ86KZK49xvu0rMBfGKumeSN6UnLIGfBiDtAkggZiljmDiho0z2?=
+ =?us-ascii?Q?iYlqMmohZoJ22qmZmii5mmfO/R3w4S6T5VnZQYLzu6uHfHCaFCLC15MPnSMo?=
+ =?us-ascii?Q?V/Fm9PSVeKmzCz39LJTYi+lprLN763MqQ12sUm6TLcT305vAzsgiasRamjbD?=
+ =?us-ascii?Q?pYp0l5bxJ55IM3uIt96Var8oG1J9gUjrktEd/jmSm0PWW0FO6LjaLoIorOW3?=
+ =?us-ascii?Q?jNYh5V2kYr7ZWg/r3Q6XP/CWkR0teevRCKiZdpnvTCN0Nrne+185kLN6WUIW?=
+ =?us-ascii?Q?KtBE479iLCZdDfC8zoyFITYybv6PevJHFQW1VV7zrcYsGfCeN3R/HRFNbJyF?=
+ =?us-ascii?Q?gDTpesZIa8NkVNDQBDOpsRlE5IV6aggnOGny/I2BmEiWIfn+TpcUnsG4ji4T?=
+ =?us-ascii?Q?AdYWSMeWdnELyp+1xA4VorIjr/ysYAa4aWCVFbbOZVfxZD4TPMMW2pslzEP0?=
+ =?us-ascii?Q?r0XIPc6hbTsheJQACqx1UiJg1axNMWvuJTZLK4UzVe1wCbT9by4LWJxxy4MC?=
+ =?us-ascii?Q?VbNZeh43X4c0x/xg+synHbbyOs8JHK8Pw0sXILYri0MRTDFLWe28Y3CCnvV3?=
+ =?us-ascii?Q?NH/cvtA+FK/pMtDU+zdXyv8nF/4FWSbnBHCqThiZ10DTuCJyUyC/kr92nezD?=
+ =?us-ascii?Q?zmLdkGnwNSSeS382psVgMHZzMXONGcGSy0Zkd+9/5IjGTkVWeOqQo+HO8q/r?=
+ =?us-ascii?Q?bxBn7NKZSvoWtq8eSyiioGP7yfotvqQDq59rZ0xd0RmrcA19IgDBuV3ILyQ7?=
+ =?us-ascii?Q?Lk8XrEN+F5RQRUNMI4JLnZ/abs0sI5v3xUIw9+ey23SOouiqWvxWcwcwozWU?=
+ =?us-ascii?Q?b+0Zgpf6Yi8a5jNqBKZjeHMFBeCqgITq588xSPs4ZPWEywSg1TL78VHmmdTu?=
+ =?us-ascii?Q?9GBc60gXieiQedmFR6lSXWMMd3oKr8nbffMLRnEhx888Tdk+xv0p+cDwGWxf?=
+ =?us-ascii?Q?A+N1N0+V3g7QfqfhdIXxz0qWbLJkr24RPVdzDwGD7VCNVgavDbcgmb6LnFYn?=
+ =?us-ascii?Q?8p4TG8dW1Z2YS+8XC1uAaptW8gjH4UrTRXch8ILR5NdAnQz0r5TVUCvaoEkE?=
+ =?us-ascii?Q?/pp3eySQ4mgLHe3ksxWKTdKG1jLPDa/2RFlrgSpJF/jjr3JOR9Tk+FK7GHHA?=
+ =?us-ascii?Q?LGSy1hHbcPJAN2KnwxWdjr3fqBS7yca+d88Fw2jEa/wzNWVQhLIXNJjgwmIz?=
+ =?us-ascii?Q?3l8CmuBBe2evJ9VyTy7sFpDYLLhJXftTHIMJCWLBoV5GFvvFpUgI7pM8XPeR?=
+ =?us-ascii?Q?SGYgRU0xwnnjTmEc4FYHgm5p8PUPO9jj3UaPygMAl6dITKNAhCytgng1iHPr?=
+ =?us-ascii?Q?4w+9Nbcz1lKZx3mJl0GMZZhMfML6AIID5WBQueUFrbl8qO6cTLDN/3c2Pp7N?=
+ =?us-ascii?Q?Zp9oj/RaWOVFj6XjNXSOjSqgGshf5bIW2lfTtH9sadizXOgbLbaamSIalbEx?=
+ =?us-ascii?Q?xISHkCi/MozEnQWLn1BIDHm866KDzKk3HF4I+RvUwVS0aIIjLvtypjvviVxe?=
+ =?us-ascii?Q?PyQZXp5KgBTuimej48eMCbZoPmYm0nFUipFwtfO4NetiIVJQVtLv2KQqOHBT?=
+ =?us-ascii?Q?tM/afGJEM5le/v9/dRQEIxyDih06RFOeaNftecAWsaNJoMvAddfXCr7nqVKs?=
+ =?us-ascii?Q?Pg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	okc4lnHfCE/Zc452CCwwI3RvZrq4nN7qesVAtF2iNghw0ozWlh84KiS3uKHltGwWEyO8gZQBaCeQlarwS+Q7q3jZaTzqFWkheo1QZrFnZuW+EvTEoq5NoxQLDDK8EYwVCj3cOMLBIajSZKekAh4jMumuOiRWnZA0X1cvo7/+zBwGG/Ik/G/stYwC3n83AniSrvCOMTRi78MGe3NF6o0pPuzrsT72OjQVN4erDTuxazfbcSFq70juAYnYD5cSv5b7jeLj/OTNUBp+fwyyge+Ts9J5QNaYunFiXTYlaBBBdIg6jf8OPvp9zYD/CGgkYtOI/14xejzMjnK9kvxem01GuBiTgCw+K8m3PMQKso9/IY97EDrbLvFi9EXpiv2d+L/wNgk0G1wk63Lo5GnwTSjrcRUgwfV+XJX2UuMRYLZHg+WlbyRPXOmQCqdNl8Otivj9CzbYAevJQlPYZ0MNORrACF60vCRgh2JwYsiytjlad9Qj5O206iXFpigFskPcDLu8uuGGlGsQF0WLauYgWvaUrWtoGgpeAe+IV1CnEPywb9g+8eS4NxeCH/FlI0jWyoBMIPWp7QSG696dB7fS+Y2FFQImtdZ1wcF0EKFc+Y5xgQs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d07ee87a-3f8d-472b-a40b-08ddeec861d1
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 11:10:56.0390
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IQ8iwPI5tBc53cM23xSpvx6NaYHzh4VFNQ8ouM/bRyp/ihQ0p/qALULEnAyTuAssZxheMCq0DTvruF/9xATQQotfYFJuRZjqQulLZKmGKJo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB7155
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-08_04,2025-09-08_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 suspectscore=0
+ mlxscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509080113
+X-Authority-Analysis: v=2.4 cv=ULPdHDfy c=1 sm=1 tr=0 ts=68beb9c4 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=yJojWOMRYYMA:10
+ a=GoEa3M9JfhUA:10 a=K8RJmEQGKBSf3h_esIAA:9 cc=ntf awl=host:13602
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDExMiBTYWx0ZWRfX0dDoqpPNY8qz
+ EBzKWdo1krMvIfpWSM57kEQsaHmSe91wLPob+4VwMm7Gs+cKj4ioJ1JiAlTKrzS2uK3HR5xpBDr
+ uQpkDUjeqFJPKguubnwO8hkQzxFuOJdguGBFKyZoExwuj2Wl4ZraLVGcBLNffRRR6hWT90JiRm1
+ CBuQciMzWRD4Vze8Ysb04KHuhrx0mDJnyWpVOSNWUqpMkhhCfUQ7aqjdC/57wgS+RXORDHKi87h
+ /6qbLzfhH3rS8e73lEVDI43VOSB9+SYxiGCISYJRY6PcKvT0EGdx5knOkixvp9icOEMLwrf46ay
+ I7wFpGMOU4b/8mKZeASwUrCdLMQtee0BTKRHWY0/thJClBnyv/RoNPKozk7ZgyMQr1llHB2kjgy
+ rriQJv1o/rW2W7BJ6FBqGsdQf3yZDw==
+X-Proofpoint-GUID: -lLm35riCO2pDnBurG9BncbC9G2SEz-d
+X-Proofpoint-ORIG-GUID: -lLm35riCO2pDnBurG9BncbC9G2SEz-d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F08C940014
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757329669-484448
-X-HE-Meta: U2FsdGVkX18kFPU80xafIpBl734+KfgxEAjcuSw1m6cmZdHNRplU6RHKbEKxOZ24yb3xhZ/FwwBspiAHRgq0pCgXHK9fZWghh1SisI6BD+SJG4vWTDO4J3Be/gFhu4SX5QpmfGGKWXwBYHABzIf+k5/YikWmkwo+xVWi51CvNbq+m7XnxhNz5+Z6Tgrs0OWjegjPGwvuz6j42ZAN8ukE0gfmmkbWsdw8KSKvUz3HKD55TjZz2qUMhezv5qTgKaPjog+NDlhTVw98HCA80mC5Cy64OwpSrN5cQljBU24jlK5yRTQb91HXIkKn3Qyt1jW++gQ6oPl+DyTiBhU+If9d9ZgQn7ebJnrRi2XlCMTZgUFTFGAfvB3nrefNzJoBgi0sY+2S73yNtMzMiRlAXr0uL6B5QPFBIQaCoY/okgF3iMXKxuyvq4Fiuo1sZC90+3W6JV47dkOfFM0d7Pf/Y9NCSaWN2iWZEOU3JM/kF7MK1cbltRY8GJXWjq6Mg2SCRLp94lSXN9HwQu5ti7zzNIMPZmqP6csYnPd7ZOH159z/Mvaq1aPZQoVLa1DOqDrdMZDluT0PZkK8ZXe7SRCJq6xNLtb8N8U3FpD/UDwDvtyU/CTtZjRLGCbBtRAIDQq18ezTk2rtReVyJU9c57t9CKGMqJ9YTDNIau/nNEs7gY5jfSJ16B0Pmcwr2gjWq3QXDmNCaoJXgP+zrlI5kG22bk9xR48WfnKqyNq/o0yVHHIhasOMVONP2WlnbeBusAHggELEvDlEm9GZkPqFv29wpDpJSNKWdliF54bGuyn/CwcsfyuaLv8nAtsuSoK5pXl0seo9AyeMSHXBHF+MhOFsgZBO5pHahUmPB5ioPD2CNxNLfF150o4nvoYcdDijIMjuQFZa7AEsCkp9PTjcWe0sFAxKrBGWhnUIzmFX8jsxkAQBIbyhBrrRA63E2Ch1L0Zn+QWDfB0rUbCImhTRVPzLQzx
- AavIMd90
- fQKFCfD2LcUNYaY0BZsE8MkmqvGmysTDJHY4G1w++gq+N2rhXLDOfknxkEUHYo35vQvTiLR+KJXC3XE2X/SJYrcGYOZHRUIa5LlhtSVsDPi7PycHcNcnge6GIRPNNxmiCioRLgCOVQEiGKnubkwnxGuw95/0YAi+XJa3un+tHUQnZtZ7PG3IwuXJfwtWSFJoNZHf9CKvaiLGQDjoPqYXrG17Eh8PxKvlg92c+SbYeXRfzLPePFufbRXy6hLHj7WXTiu0AOGKhpfWpE/neIDWuqkABUYoHcSLtYRiYsaWF3pIh1HmXvIlT89YxKpMXr3SvfCcYgnZx23AK0zT9BXXxI0E7/GTIsPv7MHfpr1W8saNoUQHLSzk9KrSA8oGClPXEh2NpLGB1AKTHgKF19GEpu5tA6qcBGkdAYsLmSobHNKOqQWw6DYeinCxmt0yS/MuMiQ7FX2wJ6Mc+1fG1UCrt/n6ycw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 23BA940008
+X-Stat-Signature: 91ephambyucksbf5zfikb5c7it19jzqu
+X-HE-Tag: 1757329883-919897
+X-HE-Meta: U2FsdGVkX1/DPfuYAzaTCfhnseIOHoOtDqQ7urxeQQbjy8mZj5x2I1UJyep/qG44oigGsemECT3ibKpQJWmtiXuyF7QuF8+KDjRpbyqfjOEFdwMerrWhi/gUZp0ZbnEoTrsuJ/fK0EfDHf0TR9Ny9Fx5Ee8iTCM78GiQq7Dd90drl45ZzCbsunmiJzxMacgk7imkVUxL2MARB1k4ei+zrw1YxdQ74ueCAHRO+MesUCa9g7HtBAHs55qI+NL47xCHBVwXdS/rJTJG6cEVtgOhFlEm3w0UkE5wFb4cKcHxAdUbBytN7pt2GILkE2n1T72LNvQtnXjoasSx3Av5RXruk3YlvD0OnrL2m/7wF/mgzqaZ8LDqWDfAGFLxGP0grZ3wZcf61uhV3m8l2oTOGDdi6/qoutVhu7G+Q8nS9X6O8v7adr6t64lOcm35itmrgejR3ZEJ754ZqYmdHBiccT8GYSK1KUA2BuM/+l7p8uNiIyd0QSfUwnBMJ/X/1huXfV4EGUKGMrsH4+qe7SjoL25lSyiAPX3uE6PU6DCluIYDVVsv7DcTP+0920IrrWDsRR/JA05Ts4tPsAVZlDSTh8nNTFzqperE1xU6k+E2T+8+zO1nkM75poAA3D1CRRzHbH3TyptLHSgeeOLGqxVyzi00Vz5vj3SOABgqrwJWlH9GMAC4VvV4a2UEVQrN4Rd4BzmaZ7XGvWtmry0rDblRYF1Gb4lcZzBcvgl3v6MNHBpyid32w8SKX5LlTbIP+wJKfYTl2mh+IlGQvyoADBeHVni8Gssr2S6glVDos7kvbvGicaGJtVYdUdGxbb59BH7UX8Y2o0J+3rPemEdQJCpU6ITGN6IwSJWimk1ZUCEhZ+DJYDfn7Fr8cRJghqauaPH3ccpguiMhwVRfOMThJM5ENHcrFC9WdE3P9Q6wP1F7oRIYDiszU6jOvgBsPaiF2x7PD2npc9G+WNwAzAbrbOh84WA
+ VVpY91sd
+ zXdoY0Y+rizxtsk6Fnuj3+VElpKCOnOr0oiVlQKkUWDIeASd3sqZ4TAxrribat/RURojWJTXxG1zpQqXsWf+joJswJM1Lq5Nz/fGN9wDZFZurE5EWekWQ/D7d7NlEcuIXWmX2cy/jEjxuvqm/BTT9j23vTUYqCAMSyWcVoB770eCBYnHbyug6IioQZ/GU7X9zyzhqjDV/v6X4hcPBCGrU31t3mXUTy6+GfEoMqhFxTsCNGbwRGhop6SR8VcraAga951xd+Ez0SYerfE8aqDurzqOYL9NHXIBtryqU8IHtvVp6Sbo1+QDWdcq9ol3nj3i+wYpZ62FAf2AIDXecf0a/IXwIw9+qwsHNWgGfgRZSZMLKd2m7+71B2Jk6+GH0gs4Y60H9PXhBzcxSt4Fl3/1DxVEIWlVh/F7kjgxt2vPWfVYfuoOO3uUG0Pm3zEvvwlE1d4ilt3g42dHpJbYWAQr2jEumvt2+3d6x6KXixiA/Rjcgq8zKOyAdUeFBdR4D4W0uQpv/uFqptOaB7o7YJeXrgxKTLoqgZT2jrGla0ZySWfYd5Tdlqd+mXxNAcz5B9JMSdWVbWZU8raqKNk+H35fBqWAVhK+5ceFwknyWTAXVpiwMAYtZtmXZD6ntGD4H+rhh2XZloQa5l4u5d5f5RuKIdUbvYekPXJiQZwv9C2F0i/NEaBa/Hwe+mbn7wpjQff8SXJlNtNNXHWRmFDYuATkkiUtxB9sIw75sVcDsfUfMHm4Yc4Gem6/JrCds7dc0r/ZXEmFOC5gSRAuQazfU68QUiB/T4k2uK/neOyVp4gmySBPNkqI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,129 +265,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---------------A9rDRIXDBV3Qwp5MpBa0syLK
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Since commit c84bf6dd2b83 ("mm: introduce new .mmap_prepare() file
+callback"), The f_op->mmap hook has been deprecated in favour of
+f_op->mmap_prepare.
+
+This was introduced in order to make it possible for us to eventually
+eliminate the f_op->mmap hook which is highly problematic as it allows
+drivers and filesystems raw access to a VMA which is not yet correctly
+initialised.
+
+This hook also introduces complexity for the memory mapping operation, as
+we must correctly unwind what we do should an error arises.
+
+Overall this interface being so open has caused significant problems for
+us, including security issues, it is important for us to simply eliminate
+this as a source of problems.
+
+Therefore this series continues what was established by extending the
+functionality further to permit more drivers and filesystems to use
+mmap_prepare.
+
+After updating some areas that can simply use mmap_prepare as-is, and
+performing some housekeeping, we then introduce two new hooks:
+
+f_op->mmap_complete - this is invoked at the point of the VMA having been
+correctly inserted, though with the VMA write lock still held. mmap_prepare
+must also be specified.
+
+This expands the use of mmap_prepare to those callers which need to
+prepopulate mappings, as well as any which does genuinely require access to
+the VMA.
+
+It's simple - we will let the caller access the VMA, but only once it's
+established. At this point unwinding issues is simple - we just unmap the
+VMA.
+
+The VMA is also then correctly initialised at this stage so there can be no
+issues arising from a not-fully initialised VMA at this point.
+
+The other newly added hook is:
+
+f_op->mmap_abort - this is only valid in conjunction with mmap_prepare and
+mmap_complete. This is called should an error arise between mmap_prepare
+and mmap_complete (not as a result of mmap_prepare but rather some other
+part of the mapping logic).
+
+This is required in case mmap_prepare wishes to establish state or locks
+which need to be cleaned up on completion. If we did not provide this, then
+this could not be permitted as this cleanup would otherwise not occur
+should the mapping fail between the two calls.
+
+We then add split remap_pfn_range*() functions which allow for PFN remap (a
+typical mapping prepopulation operation) split between a prepare/complete
+step, as well as io_mremap_pfn_range_prepare, complete for a similar
+purpose.
+
+From there we update various mm-adjacent logic to use this functionality as
+a first set of changes, as well as resctl and cramfs filesystems to round
+off the non-stacked filesystem instances.
 
 
-在 2025/9/8 17:11, Michal Hocko 写道:
-> On Mon 08-09-25 16:16:38, Jinjiang Tu wrote:
->> 在 2025/9/8 15:46, Michal Hocko 写道:
->>> On Sat 06-09-25 09:56:16, Jinjiang Tu wrote:
->>>> In our use case, movable nodes are in all cpusets, so that movable nodes can be
->>>> used by all tasks. Even though we move tasks into cpusets that only allow to allocate
->>>> from movable nodes, oom_cpuset_eligible()->cpuset_mems_allowed_intersects() returns true for
->>>> all tasks.
->>> Right but this is because you allowed _all_ tasks to allocate from those
->>> movable nodes so why would that be an unexpected behavior?
->>>
->>>> Maybe when oc->nodemask == movable nodes, only select tasks whose mempolicy intersects with oc->nodemask.
->>>> Like the following:
->>>>
->>>> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
->>>> index eb83cff7db8c..e56b6de836a6 100644
->>>> --- a/mm/mempolicy.c
->>>> +++ b/mm/mempolicy.c
->>>> @@ -2328,6 +2328,9 @@ bool mempolicy_in_oom_domain(struct task_struct *tsk,
->>>>           if (!mask)
->>>>                   return ret;
->>>> +       if (!nodes_intersects(*oc->nodemask, node_states[N_CPU]))
->>>> +               ret = false;
->>>> +
->>> Nope, this doesn't really make much sense TBH. I believe you should stop
->>> special casing cpuless nodes and look into the actual configuration and
->>> check how to make cpuset based OOM tasks selection. Your underlying
->>> problem is not about no CPUs assigned to a numa node but an allocation
->>> constrain based on movability of allocations so you need to find a
->>> solution that is dealing with that constrain.
->> Many tasks are in the root cpuset, systemd for example. The root cpuset
->> contains all nodes, we couldn't exclude cpu-less nodes.
->>
->> If we reply on cpuset based OOM tasks selection, tasks in root cpuset may
->> still be selected.
-> If you start by killing tasks from the cpuset of the currently
-> allocating task then this shouldn't really happen, right?
+REVIEWER NOTE:
+~~~~~~~~~~~~~~
 
-Yes, indeed.
+I considered putting the complete, abort callbacks in vm_ops, however this
+won't work because then we would be unable to adjust helpers like
+generic_file_mmap_prepare() (which provides vm_ops) to provide the correct
+complete, abort callbacks.
 
---------------A9rDRIXDBV3Qwp5MpBa0syLK
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Conceptually it also makes more sense to have these in f_op as they are
+one-off operations performed at mmap time to establish the VMA, rather than
+a property of the VMA itself.
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">在 2025/9/8 17:11, Michal Hocko 写道:<br>
-    </div>
-    <blockquote type="cite" cite="mid:aL6dtpEQL1A_PcOh@tiehlicka">
-      <pre wrap="" class="moz-quote-pre">On Mon 08-09-25 16:16:38, Jinjiang Tu wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">
-在 2025/9/8 15:46, Michal Hocko 写道:
-</pre>
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">On Sat 06-09-25 09:56:16, Jinjiang Tu wrote:
-</pre>
-          <blockquote type="cite">
-            <pre wrap="" class="moz-quote-pre">In our use case, movable nodes are in all cpusets, so that movable nodes can be
-used by all tasks. Even though we move tasks into cpusets that only allow to allocate
-from movable nodes, oom_cpuset_eligible()-&gt;cpuset_mems_allowed_intersects() returns true for
-all tasks.
-</pre>
-          </blockquote>
-          <pre wrap="" class="moz-quote-pre">Right but this is because you allowed _all_ tasks to allocate from those
-movable nodes so why would that be an unexpected behavior?
+Lorenzo Stoakes (16):
+  mm/shmem: update shmem to use mmap_prepare
+  device/dax: update devdax to use mmap_prepare
+  mm: add vma_desc_size(), vma_desc_pages() helpers
+  relay: update relay to use mmap_prepare
+  mm/vma: rename mmap internal functions to avoid confusion
+  mm: introduce the f_op->mmap_complete, mmap_abort hooks
+  doc: update porting, vfs documentation for mmap_[complete, abort]
+  mm: add remap_pfn_range_prepare(), remap_pfn_range_complete()
+  mm: introduce io_remap_pfn_range_prepare, complete
+  mm/hugetlb: update hugetlbfs to use mmap_prepare, mmap_complete
+  mm: update mem char driver to use mmap_prepare, mmap_complete
+  mm: update resctl to use mmap_prepare, mmap_complete, mmap_abort
+  mm: update cramfs to use mmap_prepare, mmap_complete
+  fs/proc: add proc_mmap_[prepare, complete] hooks for procfs
+  fs/proc: update vmcore to use .proc_mmap_[prepare, complete]
+  kcov: update kcov to use mmap_prepare, mmap_complete
 
-</pre>
-          <blockquote type="cite">
-            <pre wrap="" class="moz-quote-pre">Maybe when oc-&gt;nodemask == movable nodes, only select tasks whose mempolicy intersects with oc-&gt;nodemask.
-Like the following:
+ Documentation/filesystems/porting.rst |   9 ++
+ Documentation/filesystems/vfs.rst     |  35 +++++++
+ arch/csky/include/asm/pgtable.h       |   5 +
+ arch/mips/alchemy/common/setup.c      |  28 +++++-
+ arch/mips/include/asm/pgtable.h       |  10 ++
+ arch/s390/kernel/crash_dump.c         |   6 +-
+ arch/sparc/include/asm/pgtable_32.h   |  29 +++++-
+ arch/sparc/include/asm/pgtable_64.h   |  29 +++++-
+ drivers/char/mem.c                    |  80 ++++++++-------
+ drivers/dax/device.c                  |  32 +++---
+ fs/cramfs/inode.c                     | 134 ++++++++++++++++++--------
+ fs/hugetlbfs/inode.c                  |  86 +++++++++--------
+ fs/ntfs3/file.c                       |   2 +-
+ fs/proc/inode.c                       |  13 ++-
+ fs/proc/vmcore.c                      |  53 +++++++---
+ fs/resctrl/pseudo_lock.c              |  56 ++++++++---
+ include/linux/fs.h                    |   4 +
+ include/linux/mm.h                    |  53 +++++++++-
+ include/linux/mm_types.h              |   5 +
+ include/linux/proc_fs.h               |   5 +
+ include/linux/shmem_fs.h              |   3 +-
+ include/linux/vmalloc.h               |  10 +-
+ kernel/kcov.c                         |  40 +++++---
+ kernel/relay.c                        |  32 +++---
+ mm/memory.c                           | 128 +++++++++++++++---------
+ mm/secretmem.c                        |   2 +-
+ mm/shmem.c                            |  49 +++++++---
+ mm/util.c                             |  18 +++-
+ mm/vma.c                              |  96 +++++++++++++++---
+ mm/vmalloc.c                          |  16 ++-
+ tools/testing/vma/vma_internal.h      |  31 +++++-
+ 31 files changed, 810 insertions(+), 289 deletions(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index eb83cff7db8c..e56b6de836a6 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2328,6 +2328,9 @@ bool mempolicy_in_oom_domain(struct task_struct *tsk,
-         if (!mask)
-                 return ret;
-+       if (!nodes_intersects(*oc-&gt;nodemask, node_states[N_CPU]))
-+               ret = false;
-+
-</pre>
-          </blockquote>
-          <pre wrap="" class="moz-quote-pre">Nope, this doesn't really make much sense TBH. I believe you should stop
-special casing cpuless nodes and look into the actual configuration and
-check how to make cpuset based OOM tasks selection. Your underlying
-problem is not about no CPUs assigned to a numa node but an allocation
-constrain based on movability of allocations so you need to find a
-solution that is dealing with that constrain.
-</pre>
-        </blockquote>
-        <pre wrap="" class="moz-quote-pre">
-Many tasks are in the root cpuset, systemd for example. The root cpuset
-contains all nodes, we couldn't exclude cpu-less nodes.
-
-If we reply on cpuset based OOM tasks selection, tasks in root cpuset may
-still be selected.
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-If you start by killing tasks from the cpuset of the currently
-allocating task then this shouldn't really happen, right?</pre>
-    </blockquote>
-    <pre>Yes, indeed.</pre>
-    <blockquote type="cite" cite="mid:aL6dtpEQL1A_PcOh@tiehlicka">
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------A9rDRIXDBV3Qwp5MpBa0syLK--
+--
+2.51.0
 
