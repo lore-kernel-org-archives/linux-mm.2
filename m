@@ -4,180 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB061CAC586
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E1ACAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:15:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDE208E0005; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
+	id C87668E000A; Mon,  8 Sep 2025 08:15:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8E578E0003; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
+	id C36988E0003; Mon,  8 Sep 2025 08:15:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C564C8E0005; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
+	id B25168E000A; Mon,  8 Sep 2025 08:15:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5378E0003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:11:53 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14D5214012E
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:11:53 +0000 (UTC)
-X-FDA: 83865969306.25.974FD4C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AC7D9A0006
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:11:50 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BD2nANK/";
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9D9938E0003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:15:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D84FC0127
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:15:18 +0000 (UTC)
+X-FDA: 83865977916.15.3CEF876
+Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8DBD2140015
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:15:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757333510;
+	s=arc-20220608; t=1757333716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2jdiX8cmz33Wge7GjULKTSlElQOy4rRPNl1+9C4dPY8=;
-	b=WEr+ePy05EBCrhzBuslqCHwpc4v7Y6XSy1qVmLJH7ESVQW9oeTDV0NVc+xJbIu7ku57gdH
-	/gdFFZy/WJ3c+JUstaSsz5qGtk1lLa81J+cBJ4U/TtW8gBRUjTVevTSsiZreUT2QxL18Q3
-	XIamRcnHPQEbzeFYaSS+VyIz7t/oh2I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757333510; a=rsa-sha256;
-	cv=none;
-	b=kxTYJgj3jYkJJ5bDFsZVIJRZQ/gogSoLMPxNhoDO7jP3k8C9p2/cIHxBuaf4TsehGCgY60
-	x+W9vLmtez2g4joiRosMsBYdV+rGDZ/FSub1diGl5ANbvptNK7e5kadVVMrNj9A+CTY8ob
-	ciK26KyIeT9N5Df/4/hEnIdlz6fupE4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jWdYV/7I+JjDHZWui78RkH0ZKSkniqiC7z91rtvhp4Q=;
+	b=vtkRnMtoheR5BGrGCw9513cwXsxbwf+kHEDp0WuIxfYiRSiK4G46Vr/rjuswNsrGCAAN1s
+	zEYCMAdHPhOBfs6Ee8bS3UkalH4AYKJUo3XN0Ul7+KjBvO+nOVaWQnkbsKQwUomXPqMrHN
+	8efFC4fgL2X2C/18S9KENUtBC20+4Bw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="BD2nANK/";
-	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757333510;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2jdiX8cmz33Wge7GjULKTSlElQOy4rRPNl1+9C4dPY8=;
-	b=BD2nANK/Z/abuaE9R2k3id1lWvIEwB4A0qTIpPco9wIqGSxLOxzDqc7FaA9xd9Qfw/sQ0D
-	Hi/nCm95iG2mUvG7ncgtWFy5g16fMOwzbqWrNBPDWLU8Q3f+6ZrfwFuxF6+mPGKt+ikilW
-	RR9kzKUUw+Wu6DlFV5eOqhb1NySCN8A=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-PUSZOkIwNQKNMjpFlqHssg-1; Mon, 08 Sep 2025 08:11:48 -0400
-X-MC-Unique: PUSZOkIwNQKNMjpFlqHssg-1
-X-Mimecast-MFC-AGG-ID: PUSZOkIwNQKNMjpFlqHssg_1757333508
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45cb5dbda9cso27056815e9.2
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 05:11:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757333507; x=1757938307;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2jdiX8cmz33Wge7GjULKTSlElQOy4rRPNl1+9C4dPY8=;
-        b=b5SjCHjeWXBPA4ITI6fViJzXyew5ZzOLQ2Eu1N6KmdIQ8jlIR25ne22IKz82Gkrkbi
-         zFmCSrnufTsGU2BcMHqef+9G93vPWcuyQF2AsioDM9elkoUGrYIyQS6juJENLZ9g9G8A
-         wUy5rwnPR20WRB9Mrup4y/ePcfNEdjgNcubc9Ymy3i1sWEb5jBRKoBR+ZrG8pjNcV752
-         BisnvVCBl/HA9MdtsFUMI/fxz6GjWU4Dpt38wizwiY08jj/rJgu12mZ6ROUIVk83ZBVT
-         jXDJFPV5dvaCMvgcEKx/IBd3TN2SNf3wTItg1DXm9y/k+1ca+X6sjqSB4t/A+CJHZISx
-         clQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXA6yXe12ClERzCpfSacRC9fP65fhsqivboMB99xs/PXC7INPQ8CsSsiA99J2DjjFqXjiVdARt7bA==@kvack.org
-X-Gm-Message-State: AOJu0Yx1eigGFdzS0sT41BD1LHWiXZLQxx0R35ASYYODeiJCLMy2XrrQ
-	3nnemG/TDb0paNbmWid+tO9nAjiMPep8VgFwAcs/XIZwTQlWw4QnGgYsowS9FAn9rrGVp70MjDo
-	0NobtUNhw0yA2h8ubmRlHECd3X5yMDbqt4Bqta5RMQRBM5Z0KVFLz
-X-Gm-Gg: ASbGncuBdelIv6CY6VC4eIQ1CqLjU1Mrz5JzBOpcRCe6iL6JBSmMUNlpQB2XjSOT4lg
-	FXCRtxuY9FDCpb0BBVUsfeAFtsT3hacEesTeq0ojLClkQkc9UhHRBEltWp4jMTdT+Cga+WpwTZJ
-	EzdfYURyYtY/zP9/ugKiZsPWMhXc/Nt4NM8YGk5zq3H+/79fAs7nMaSrPpcpLyXPy3aNIHrOcyO
-	ShVuDQ06SipfIATWwiG1YkTJCw3xstCEyMFt9pioMYoVmCRs70n06W2ymdkQzo7pfjhNoDkLSyY
-	HpeVhc6VA/1BzvEuSrcK8tUA7McDKkmr+8uz6NVB0OIvaMdPwrYPDTYJQxljieBtfuJho01T69S
-	eo61DRvDz4oKiC9Tu+T7s900GVOBDd0WLgnUiy85o0xq1X41VuwJu9L72Rj+lGoNn
-X-Received: by 2002:a05:600c:a47:b0:45b:6275:42cc with SMTP id 5b1f17b1804b1-45dddeefa72mr65846385e9.28.1757333507671;
-        Mon, 08 Sep 2025 05:11:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFaf4eOc85QPP9D7Vpk6e+Udi31BlmbPwrs+IAuKckaQTcUAkvKTJbOWZ69fZd37sZP1st7g==
-X-Received: by 2002:a05:600c:a47:b0:45b:6275:42cc with SMTP id 5b1f17b1804b1-45dddeefa72mr65845955e9.28.1757333507230;
-        Mon, 08 Sep 2025 05:11:47 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f25:700:d846:15f3:6ca0:8029? (p200300d82f250700d84615f36ca08029.dip0.t-ipconnect.de. [2003:d8:2f25:700:d846:15f3:6ca0:8029])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45de15de2b7sm82239365e9.14.2025.09.08.05.11.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 05:11:46 -0700 (PDT)
-Message-ID: <bd8338cf-6723-46ef-9043-3ced8be56e62@redhat.com>
-Date: Mon, 8 Sep 2025 14:11:44 +0200
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of zhongjinji@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=zhongjinji@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757333716; a=rsa-sha256;
+	cv=none;
+	b=gEi8zznXu4dw6CHJK670M5lTFS/UqoFk5CuxrTCpK4G82aDlvEG818NWV3Dr0rUpjzU2g4
+	+bwdu75o7Hezw9Dlz0ZlyuqHQXeMs84I7pkyd3a8hnSNC0sg3erg3zViDlna58cis+0XG4
+	Xg3h4GaW8e0QBjU2Sru9509cnrBW+So=
+Received: from w001.hihonor.com (unknown [10.68.25.235])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4cL5VW2CxrzYl3PR;
+	Mon,  8 Sep 2025 20:14:43 +0800 (CST)
+Received: from a018.hihonor.com (10.68.17.250) by w001.hihonor.com
+ (10.68.25.235) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 8 Sep
+ 2025 20:15:08 +0800
+Received: from localhost.localdomain (10.144.20.219) by a018.hihonor.com
+ (10.68.17.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 8 Sep
+ 2025 20:15:07 +0800
+From: zhongjinji <zhongjinji@honor.com>
+To: <mhocko@suse.com>
+CC: <akpm@linux-foundation.org>, <feng.han@honor.com>,
+	<liam.howlett@oracle.com>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <liulu.liu@honor.com>, <lorenzo.stoakes@oracle.com>,
+	<rientjes@google.com>, <shakeel.butt@linux.dev>, <surenb@google.com>,
+	<tglx@linutronix.de>, <zhongjinji@honor.com>
+Subject: Re: [PATCH v7 2/2] mm/oom_kill: The OOM reaper traverses the VMA
+Date: Mon, 8 Sep 2025 20:15:03 +0800
+Message-ID: <20250908121503.20960-1-zhongjinji@honor.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <aLmmrvPb6mFHzqCc@tiehlicka>
+References: <aLmmrvPb6mFHzqCc@tiehlicka>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/15] mm, swap: check page poison flag after locking
- it
-To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
- Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
- Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosryahmed@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org
-References: <20250905191357.78298-1-ryncsn@gmail.com>
- <20250905191357.78298-5-ryncsn@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250905191357.78298-5-ryncsn@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hyHJz1CZXiTBxM1cAweh1jBpHr1v4z0-42LPsKV4ta0_1757333508
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AC7D9A0006
-X-Stat-Signature: s5zmu8tu1eeu7bj9b4xqg5qkbmprxyt1
+Content-Type: text/plain
+X-Originating-IP: [10.144.20.219]
+X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To a018.hihonor.com
+ (10.68.17.250)
+X-Rspamd-Queue-Id: 8DBD2140015
 X-Rspam-User: 
-X-HE-Tag: 1757333510-372934
-X-HE-Meta: U2FsdGVkX19ClUnQRHXOK9oPa+UfUYj862YnZrXPnbxYjq5rubtI9w1NwiKnPHpxNMXVlP1rkB+LCT+QjYmyXvxyK1wjc1niU4QLqMuMGQq0SZcJ/T+K5VB3gvRXTZV7dxAd3345ns2RGhP4GWjxIsr9CKtc+SCn8Xb0NLnQTB93sHtqpe+cwXgE275PVU4zM3m296fCaE55IlpkX8rCM5jZwgOs9dPGVnbGkvRjnnq5zjhhX9XPvItmKm1zB2BDdiNMUYLP1UOYI5NjuuUEDNvBp85Equy+S8I4IL8uXFcYFdu8tyEB12fZe+/5OJK/NgdybMq1q3HXVjim3sFdxOSTbnbwnhckEtXCLh0pVcCsdY59zAcKsHLesJfGQ+/GmMuGlEopdEktaDjuaYkvPJsR14ziuXN6hp/DFf0d1a2btdkEEm+7ar35qP0Bnm2ac9JZXmkkNJVjyAsk6dgOainnKbG3UsGYkNO1kKa6EPIkM57e2uiKAxaBUq95EELhqYQm2SU7J6Z6rMXS3nACDxIIO92RV4tV43zWKGyVow8fAP7MNY4fJaH6ZNat/GCEPyjKShvfvPsmpLqz17UuC6dMCa2gD4qZ5xiwITDNQriCa3IQd0Q7Fw4I+LUzgs5e9Je17QA9vu0ZFtwbCHL+5PtXdpW6CM6NvqF5qOX3XSbC4/B6Jyh+QEYGbNHE+j6KG1tCG74ZtBGTbBENkzdJLmmf9LZHmkLKMRa+8MaGaRTkFmoEqVUsmGvWIr52psbioomrEvqhpo5AzZxmbWC1AmhqYD+MAdjRkiGEOX6o2esNh2j8RfNs80C221wAjReS8mxbSiYEYmxwkzqa8AWZzT+9ExFoNgJhCHbgHaZXXhKQyrp08zXV0IY6afBb+X1NYIhlfPoUhuOmefphIRrYcvuj2Xpj/lc1dQjPwBwrZp9A0OLXbUub4YMgR87IwICesAvB64+jQPIt1DVUGJ1
- EQ7SkyaB
- ydDr/yCdcUVECfRNkb8BDHozrmJxXqfEI/lbwGTKxaTkNmAdYlB448rjD+d1q7VXxfM7wBYpKWX5Tl6fMaa1kvkF0NY4hsMLBzWVCVzeNDqwfA8f0K4OWuz3w73uSza85IrMwG7lw0Ul7PLDOuYwoX5R5Gj7bSbnNB1uFuGUAeZvCHLHq3mPhBCnq7w1HbWBFVgNtWPmGlkTjYh0+xHKVeaRzkJy9+K0PcbHj/c0MbKuFd+uwDqFLPA4Ou/hAHhW1hWRXkk1Wr6FARjjz5sRWEn/933NF6zcX80W4g1cTCCCKQYdlD2z7T2ezhAgpIMDv2DPfPjExl9z4hy24ZUT52L5DThm9sJIMm1EfRS/HXkkb1TxZ6jYthZHdVsOYNjwppsa1XSrq2HaK+jN2FZJqBw3ONaRvCS8mduHD7s8GhRbAI5Q1ZdveDK/Unwd5m7aVsuhoBuR0l2twues=
+X-Stat-Signature: wa9hnd4drd7ita3bts5fz51gshrbayaq
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757333715-100773
+X-HE-Meta: U2FsdGVkX18l5diqrIdIQqI0dfTTMNKDfTD7HsyyWvqZROdNd1pHI80Ie5rw+n6nJL03M/iw5G2DDnjEAGr86604R3cVBi3H6l4z7ER6zpyc+DPUh/35Tef0sxqHDlBv3oAbPVbaPhb9nVFowy4VsG24W8kL5NMh3WFVLeiocvOOARzJSyJlb5WrHeN4pQuT/+CIPDj7RCND+6gOLTxU106YhC1KAJN779e2e2CMNA2UQ+FWMJ/ki+585SvOfOPdLDS+dW6qj0tUr281kYm6eZjE629Kbq2P+faNOuhDrl+Lr9lBVzRVJmDg9DN6hCb24K8qQKaBBZUwNsvMPtzWbqwDUCeu5mnO5ID7G8sXYQG2hk2F1iR4hx6EyGd4LPvsB1qJo34nApIBrZPC3gh4uZw57WM6FwtOFo7enH2QghxUXL0QTCZUnTLLutEUZ2UF8MjL1HGvyf5FJ/rTfOvDsM+gPrmwgP/qgE9A+y40pnqnSyBUixikt29II9uHsjIRZ7TQVx/aFCgJanXrWqcay4h9NX+mjCJUtMrf1pjzXsKmR5MAAsBEA+8fdyXVndLfQU6FS6VDqurC5//mmMOq794kWeVzUtcK34sBQTgZivDc8yYdqXQoFz4P5F8b5I2iO2ZRl27pcOsIO/EAyGKfYFs2BUJipq+I0497oRj061u882Cd8H9qmARidTH8MyYSoXo4Cm3c2ltDQwNU7NiCPYkFXz6eyXrAxb0CLp4CP7yNDl2m7IyjKcrlzEcuUXHfx1ojEGRm6NeseaiEAcw9kGP+JskKUXB/kvCtByRCkLfS/uRXfygnK4lzqqig23012q2k6X5jD8/1rovivgj/+tp1/4vZBsSpJZtvj8ezC9kserhh0amxNxW1z8U+N7ZkEMKLwbgoVMhfyIwN4Ce5yKf9+QmXi+ClWXDnRdIy1dQCWTwQh1sIYhzwsNX7+9cKJRr6vEdU3kQB7ltE/yG
+ vRp4dSrj
+ L+L88gp3y9LAJojHzBODwGS05d21/W6QiI4iKvEs0AJMl96weKa5DiZiIBAdd3XHRoKhskn0C9MFRdXr8ko6iW7rjMq+IanRDuQ58uDr2TKqB7UT1y/XjHxy5FgCwi3BTjx3HsPhdpxcAofonWLk8WpgjzCjFjEneUgEz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,94 +93,334 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05.09.25 21:13, Kairui Song wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> Instead of checking the poison flag only in the fast swap cache lookup
-> path, always check the poison flags after locking a swap cache folio.
-> 
-> There are two reasons to do so.
-> 
-> The folio is unstable and could be removed from the swap cache anytime,
-> so it's totally possible that the folio is no longer the backing folio
-> of a swap entry, and could be an irrelevant poisoned folio. We might
-> mistakenly kill a faulting process.
-> 
-> And it's totally possible or even common for the slow swap in path
-> (swapin_readahead) to bring in a cached folio. The cache folio could be
-> poisoned, too. Only checking the poison flag in the fast path will miss
-> such folios.
-> 
-> The race window is tiny, so it's very unlikely to happen, though.
-> While at it, also add a unlikely prefix.
-> 
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->   mm/memory.c | 22 +++++++++++-----------
->   1 file changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 10ef528a5f44..94a5928e8ace 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4661,10 +4661,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->   		goto out;
->   
->   	folio = swap_cache_get_folio(entry);
-> -	if (folio) {
-> +	if (folio)
->   		swap_update_readahead(folio, vma, vmf->address);
-> -		page = folio_file_page(folio, swp_offset(entry));
-> -	}
->   	swapcache = folio;
->   
->   	if (!folio) {
-> @@ -4735,20 +4733,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->   		ret = VM_FAULT_MAJOR;
->   		count_vm_event(PGMAJFAULT);
->   		count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
-> -		page = folio_file_page(folio, swp_offset(entry));
-> -	} else if (PageHWPoison(page)) {
-> -		/*
-> -		 * hwpoisoned dirty swapcache pages are kept for killing
-> -		 * owner processes (which may be unknown at hwpoison time)
-> -		 */
-> -		ret = VM_FAULT_HWPOISON;
-> -		goto out_release;
->   	}
->   
->   	ret |= folio_lock_or_retry(folio, vmf);
->   	if (ret & VM_FAULT_RETRY)
->   		goto out_release;
->   
-> +	page = folio_file_page(folio, swp_offset(entry));
->   	if (swapcache) {
->   		/*
->   		 * Make sure folio_free_swap() or swapoff did not release the
-> @@ -4761,6 +4752,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->   			     page_swap_entry(page).val != entry.val))
->   			goto out_page;
->   
-> +		if (unlikely(PageHWPoison(page))) {
-> +			/*
-> +			 * hwpoisoned dirty swapcache pages are kept for killing
-> +			 * owner processes (which may be unknown at hwpoison time)
-> +			 */
-> +			ret = VM_FAULT_HWPOISON;
-> +			goto out_page;
-> +		}
-> +
->   		/*
->   		 * KSM sometimes has to copy on read faults, for example, if
->   		 * folio->index of non-ksm folios would be nonlinear inside the
+Since the perf report is too complicated, let us summarize the key points
+from the report.
 
-LGTM, but I was wondering whether we just want to check that even when 
-we just allocated a fresh folio for simplicity. The check is cheap ...
+Conclusion:
+Compared to the version without the patch, the total time reduced by
+exit_mmap plus reaper work is roughly equal to the reduction in total
+pte spinlock waiting time.
+
+With the patch applied, for certain functions, the reaper performs
+more times, such as folio_remove_rmap_ptes, but the time spent by
+exit_mmap on folio_remove_rmap_ptes decreases accordingly.
+
+Summary of measurements (ms):
++---------------------------------------------------------------+
+| Category                      | Applying patch | Without patch|
++-------------------------------+---------------+--------------+
+| Total running time            |    132.6      |    167.1      |
+|   (exit_mmap + reaper work)   |  72.4 + 60.2  |  90.7 + 76.4  |
++-------------------------------+---------------+--------------+
+| Time waiting for pte spinlock |     1.0       |    33.1      |
+|   (exit_mmap + reaper work)   |   0.4 + 0.6   |  10.0 + 23.1 |
++-------------------------------+---------------+--------------+
+| folio_remove_rmap_ptes time   |    42.0       |    41.3      |
+|   (exit_mmap + reaper work)   |  18.4 + 23.6  |  22.4 + 18.9 |
++---------------------------------------------------------------+
+
+Report without patch:
+
+Arch: arm64
+Event: cpu-clock (type 1, config 0)
+Samples: 6355
+Event count: 90781175
+
+do_exit
+ |--93.81%-- mmput
+ |    |--99.46%-- exit_mmap
+ |    |    |--76.74%-- unmap_vmas
+ |    |    |    |--9.14%-- [hit in function]
+ |    |    |    |--34.25%-- tlb_flush_mmu
+ |    |    |    |--31.13%-- folio_remove_rmap_ptes
+ |    |    |    |--15.04%-- __pte_offset_map_lock
+ |    |    |    |--5.43%-- free_swap_and_cache_nr
+ |    |    |    |--1.80%-- _raw_spin_lock
+ |    |    |    |--1.19%-- folio_mark_accessed
+ |    |    |    |--0.84%-- __tlb_remove_folio_pages
+ |    |    |    |--0.37%-- mas_find
+ |    |    |    |--0.37%-- percpu_counter_add_batch
+ |    |    |    |--0.20%-- __mod_lruvec_page_state
+ |    |    |    |--0.13%-- f2fs_dirty_data_folio
+ |    |    |    |--0.04%-- __rcu_read_unlock
+ |    |    |    |--0.04%-- tlb_flush_rmaps
+ |    |    |    |          folio_remove_rmap_ptes
+ |    |    |     --0.02%-- folio_mark_dirty
+ |    |    |--12.72%-- free_pgtables
+ |    |    |    |--0.53%-- [hit in function]
+ |    |    |    |--35.81%-- unlink_file_vma
+ |    |    |    |--28.38%-- down_write
+ |    |    |    |--17.11%-- unlink_anon_vmas
+ |    |    |    |--5.70%-- anon_vma_interval_tree_remove
+ |    |    |    |--3.71%-- mas_find
+ |    |    |    |--3.18%-- up_write
+ |    |    |    |--2.25%-- free_pgd_range
+ |    |    |    |--1.19%-- vma_interval_tree_remove
+ |    |    |    |--1.06%-- kmem_cache_free
+ |    |    |--2.65%-- folio_remove_rmap_ptes
+ |    |    |--2.50%-- __vm_area_free
+ |    |    |    |--11.49%-- [hit in function]
+ |    |    |    |--81.08%-- kmem_cache_free
+ |    |    |    |--4.05%-- _raw_spin_unlock_irqrestore
+ |    |    |     --3.38%-- anon_vma_name_free
+ |    |    |--1.03%-- folio_mark_accessed
+ |    |    |--0.96%-- __tlb_remove_folio_pages
+ |    |    |--0.54%-- mas_find
+ |    |    |--0.46%-- tlb_finish_mmu
+ |    |    |    |--96.30%-- free_pages_and_swap_cache
+ |    |    |    |    |--80.77%-- release_pages
+ |    |    |--0.44%-- kmem_cache_free
+ |    |    |--0.39%-- __pte_offset_map_lock
+ |    |    |--0.30%-- task_work_add
+ |    |    |--0.19%-- __rcu_read_unlock
+ |    |    |--0.17%-- fput
+ |    |    |--0.13%-- __mt_destroy
+ |    |    |          mt_destroy_walk
+ |    |    |--0.10%-- down_write
+ |    |    |--0.07%-- unlink_file_vma
+ |    |    |--0.05%-- percpu_counter_add_batch
+ |    |    |--0.02%-- free_swap_and_cache_nr
+ |    |    |--0.02%-- flush_tlb_batched_pending
+ |    |    |--0.02%-- uprobe_munmap
+ |    |    |--0.02%-- _raw_spin_unlock
+ |    |    |--0.02%-- unlink_anon_vmas
+ |    |     --0.02%-- up_write
+ |    |--0.40%-- fput
+ |    |--0.10%-- mas_find
+ |    |--0.02%-- kgsl_gpumem_vm_close
+ |     --0.02%-- __vm_area_free
+ |--5.19%-- task_work_run
+ |--0.42%-- exit_files
+ |          put_files_struct
+ |--0.35%-- exit_task_namespaces
+
+Children  Self      Command            Symbol
+90752605  0         #APM_light-weig    do_exit
+90752605  0         #APM_light-weig    get_signal
+85138600  0         #APM_light-weig    __mmput
+84681480  399980    #APM_light-weig    exit_mmap
+64982465  5942560   #APM_light-weig    unmap_vmas
+22598870  1599920   #APM_light-weig    free_pages_and_swap_cache
+22498875  3314120   #APM_light-weig    folio_remove_rmap_ptes
+10985165  1442785   #APM_light-weig    _raw_spin_lock
+10770890  57140     #APM_light-weig    free_pgtables
+10099495  399980    #APM_light-weig    __pte_offset_map_lock
+8199590   1285650   #APM_light-weig    folios_put_refs
+4756905   685680    #APM_light-weig    free_unref_page_list
+4714050   14285     #APM_light-weig    task_work_run
+4671195   199990    #APM_light-weig    ____fput
+4085510   214275    #APM_light-weig    __fput
+3914090   57140     #APM_light-weig    unlink_file_vma
+3542680   28570     #APM_light-weig    free_swap_and_cache_nr
+3214125   2114180   #APM_light-weig    free_unref_folios
+3142700   14285     #APM_light-weig    swap_entry_range_free
+2828430   2828430   #APM_light-weig    kmem_cache_free
+2714150   528545    #APM_light-weig    zram_free_page
+2528445   114280    #APM_light-weig    zram_slot_free_notify
 
 
--- 
-Cheers
+Arch: arm64
+Event: cpu-clock (type 1, config 0)
+Samples: 5353
+Event count: 76467605
 
-David / dhildenb
+kthread
+|--99.57%-- oom_reaper
+|    |--0.28%-- [hit in function]
+|    |--73.58%-- unmap_page_range
+|    |    |--8.67%-- [hit in function]
+|    |    |--41.59%-- __pte_offset_map_lock
+|    |    |--29.47%-- folio_remove_rmap_ptes
+|    |    |--16.11%-- tlb_flush_mmu
+|    |    |           free_pages_and_swap_cache
+|    |    |    |--9.49%-- [hit in function]
+|    |    |--1.66%-- folio_mark_accessed
+|    |    |--0.74%-- free_swap_and_cache_nr
+|    |    |--0.69%-- __tlb_remove_folio_pages
+|    |    |--0.41%-- __mod_lruvec_page_state
+|    |    |--0.33%-- _raw_spin_lock
+|    |    |--0.28%-- percpu_counter_add_batch
+|    |    |--0.03%-- tlb_flush_mmu_tlbonly
+|    |     --0.03%-- __rcu_read_unlock
+|    |--19.94%-- tlb_finish_mmu
+|    |    |--23.24%-- [hit in function]
+|    |    |--76.39%-- free_pages_and_swap_cache
+|    |    |--0.28%-- free_pages
+|    |     --0.09%-- release_pages
+|    |--3.21%-- folio_remove_rmap_ptes
+|    |--1.16%-- __tlb_remove_folio_pages
+|    |--1.16%-- folio_mark_accessed
+|    |--0.36%-- __pte_offset_map_lock
+|    |--0.28%-- mas_find
+|     --0.02%-- __rcu_read_unlock
+|--0.17%-- tlb_finish_mmu
+|--0.15%-- mas_find
+|--0.06%-- memset
+|--0.04%-- unmap_page_range
+ --0.02%-- tlb_gather_mmu
+
+Children  Self      Command    Symbol
+76467605  0         unknown    kthread
+76139050  214275    unknown    oom_reaper
+56054340  4885470   unknown    unmap_page_range
+23570250  385695    unknown    __pte_offset_map_lock
+23341690  257130    unknown    _raw_spin_lock
+23113130  23113130  unknown    queued_spin_lock_slowpath
+20627540  1371360   unknown    free_pages_and_swap_cache
+19027620  614255    unknown    release_pages
+18956195  3399830   unknown    folio_remove_rmap_ptes
+15313520  3656960   unknown    tlb_finish_mmu
+11799410  11785125  unknown    cgroup_rstat_updated
+11285150  11256580  unknown    _raw_spin_unlock_irqrestore
+9028120   0         unknown    tlb_flush_mmu
+8613855   1342790   unknown    folios_put_refs
+5442585   485690    unknown    free_unref_page_list
+4299785   1614205   unknown    free_unref_folios
+3385545   1299935   unknown    free_unref_page_commit
+
+
+Report with patch:
+
+Arch: arm64
+Event: cpu-clock (type 1, config 0)
+Samples: 5075
+Event count: 72496375
+
+|--99.98%-- do_notify_resume
+|    |--92.63%-- mmput
+|    |           __mmput
+|    |    |--99.57%-- exit_mmap
+|    |    |    |--0.79%-- [hit in function]
+|    |    |    |--76.43%-- unmap_vmas
+|    |    |    |    |--8.39%-- [hit in function]
+|    |    |    |    |--42.80%-- tlb_flush_mmu
+|    |    |    |    |           free_pages_and_swap_cache
+|    |    |    |    |--34.08%-- folio_remove_rmap_ptes
+|    |    |    |    |--9.51%-- free_swap_and_cache_nr
+|    |    |    |    |--2.40%-- _raw_spin_lock
+|    |    |    |    |--0.75%-- __tlb_remove_folio_pages
+|    |    |    |    |--0.48%-- mas_find
+|    |    |    |    |--0.36%-- __pte_offset_map_lock
+|    |    |    |    |--0.34%-- percpu_counter_add_batch
+|    |    |    |    |--0.34%-- folio_mark_accessed
+|    |    |    |    |--0.20%-- __mod_lruvec_page_state
+|    |    |    |    |--0.17%-- f2fs_dirty_data_folio
+|    |    |    |    |--0.11%-- __rcu_read_unlock
+|    |    |    |    |--0.03%-- _raw_spin_unlock
+|    |    |    |    |--0.03%-- tlb_flush_rmaps
+|    |    |    |     --0.03%-- uprobe_munmap
+|    |    |    |--14.19%-- free_pgtables
+|    |    |    |--2.52%-- __vm_area_free
+|    |    |    |--1.52%-- folio_remove_rmap_ptes
+|    |    |    |--0.83%-- mas_find
+|    |    |    |--0.81%-- __tlb_remove_folio_pages
+|    |    |    |--0.77%-- folio_mark_accessed
+|    |    |    |--0.41%-- kmem_cache_free
+|    |    |    |--0.36%-- task_work_add
+|    |    |    |--0.34%-- fput
+|    |    |    |--0.32%-- __pte_offset_map_lock
+|    |    |    |--0.15%-- __rcu_read_unlock
+|    |    |    |--0.15%-- __mt_destroy
+|    |    |    |--0.09%-- unlink_file_vma
+|    |    |    |--0.06%-- down_write
+|    |    |    |--0.04%-- lookup_swap_cgroup_id
+|    |    |    |--0.04%-- uprobe_munmap
+|    |    |    |--0.04%-- percpu_counter_add_batch
+|    |    |    |--0.04%-- up_write
+|    |    |    |--0.02%-- flush_tlb_batched_pending
+|    |    |    |--0.02%-- _raw_spin_unlock
+|    |    |    |--0.02%-- unlink_anon_vmas
+|    |    |     --0.02%-- tlb_finish_mmu
+|    |    |               free_unref_page
+|    |    |--0.38%-- fput
+|    |     --0.04%-- mas_find
+|    |--6.21%-- task_work_run
+|    |--0.47%-- exit_task_namespaces
+|    |--0.16%-- ____fput
+|     --0.04%-- mm_update_next_owner
+
+Children  Self      Command     Symbol
+72482090  0         #APM6-IO    get_signal
+67139500  0         #APM6-IO    __mmput
+67139500  0         #APM6-IO    mmput
+66853800  528545    #APM6-IO    exit_mmap
+51097445  4285500   #APM6-IO    unmap_vmas
+21870335  0         #APM6-IO    tlb_flush_mmu
+21870335  1371360   #APM6-IO    free_pages_and_swap_cache
+20384695  485690    #APM6-IO    release_pages
+18427650  1814195   #APM6-IO    folio_remove_rmap_ptes
+13799310  13785025  #APM6-IO    cgroup_rstat_updated
+12842215  12842215  #APM6-IO    _raw_spin_unlock_irqrestore
+9485240   14285     #APM6-IO    free_pgtables
+7785325   428550    #APM6-IO    folios_put_refs
+4899755   642825    #APM6-IO    free_unref_page_list
+4856900   42855     #APM6-IO    free_swap_and_cache_nr
+4499775   14285     #APM6-IO    task_work_run
+4385495   114280    #APM6-IO    ____fput
+3971230   714250    #APM6-IO    zram_free_page
+3899805   14285     #APM6-IO    swap_entry_range_free
+3785525   185705    #APM6-IO    zram_slot_free_notify
+399980    399980    #APM6-IO    __pte_offset_map_lock
+
+Arch: arm64
+Event: cpu-clock (type 1, config 0)
+Samples: 4221
+Event count: 60296985
+
+Children  Self      Command  Pid  Tid  Shared Object      Symbol
+
+kthread
+|--99.53%-- oom_reaper
+|    |--0.17%-- [hit in function]
+|    |--55.77%-- unmap_page_range
+|    |    |--20.49%-- [hit in function]
+|    |    |--58.30%-- folio_remove_rmap_ptes
+|    |    |--11.48%-- tlb_flush_mmu
+|    |    |--3.33%-- folio_mark_accessed
+|    |    |--2.65%-- __tlb_remove_folio_pages
+|    |    |--1.37%-- _raw_spin_lock
+|    |    |--0.68%-- __mod_lruvec_page_state
+|    |    |--0.51%-- __pte_offset_map_lock
+|    |    |--0.43%-- percpu_counter_add_batch
+|    |    |--0.30%-- __rcu_read_unlock
+|    |    |--0.13%-- free_swap_and_cache_nr
+|    |    |--0.09%-- tlb_flush_mmu_tlbonly
+|    |     --0.04%-- __rcu_read_lock
+|    |--32.21%-- tlb_finish_mmu
+|    |    |--88.69%-- free_pages_and_swap_cache
+|    |--6.93%-- folio_remove_rmap_ptes
+|    |--1.90%-- __tlb_remove_folio_pages
+|    |--1.55%-- folio_mark_accessed
+|    |--0.69%-- __pte_offset_map_lock
+|    |--0.45%-- mas_find_rev
+|    |    |--21.05%-- [hit in function]
+|    |     --78.95%-- mas_prev_slot
+|    |--0.12%-- mas_prev_slot
+|    |--0.10%-- free_pages_and_swap_cache
+|    |--0.07%-- __rcu_read_unlock
+|    |--0.02%-- percpu_counter_add_batch
+|     --0.02%-- lookup_swap_cgroup_id
+|--0.12%-- mas_find_rev
+|--0.12%-- unmap_page_range
+|--0.12%-- tlb_finish_mmu
+|--0.09%-- tlb_gather_mmu
+ --0.02%-- memset
+
+Children  Self      Command    Symbol
+60296985  0         unknown    kthread
+60011285  99995     unknown    oom_reaper
+33541180  6928225   unknown    unmap_page_range
+23670245  5414015   unknown    folio_remove_rmap_ptes
+21027520  1757055   unknown    free_pages_and_swap_cache
+19399030  2171320   unknown    tlb_finish_mmu
+18970480  885670    unknown    release_pages
+13785025  13785025  unknown    cgroup_rstat_updated
+11442285  11442285  unknown    _raw_spin_unlock_irqrestore
+7928175   1871335   unknown    folios_put_refs
+4742620   371410    unknown    free_unref_page_list
+3928375   942810    unknown    free_unref_folios
+3842665   14285     unknown    tlb_flush_mmu
+3385545   728535    unknown    free_unref_page_commit
+585685    571400    unknown    __pte_offset_map_lock
 
 
