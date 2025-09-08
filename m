@@ -4,108 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4E7CA1013
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 04:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF1FCCA1013
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 04:14:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15438E0003; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
+	id 233648E0003; Mon,  8 Sep 2025 00:14:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C4768E0001; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
+	id 20ADA8E0001; Mon,  8 Sep 2025 00:14:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B4008E0003; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
+	id 121228E0003; Mon,  8 Sep 2025 00:14:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 727218E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3CA111B0EB
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 04:07:34 +0000 (UTC)
-X-FDA: 83864748828.17.83CEE1C
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3741C1C0007
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 04:07:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EE64F8E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 00:14:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 91A051DEE7A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 04:14:12 +0000 (UTC)
+X-FDA: 83864765544.12.2B8E86E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7104040009
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 04:14:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NtjX64P9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757304850; a=rsa-sha256;
+	cv=none;
+	b=LB0o1IysAUMMN0YDhllVQO1XAEgm4sxQm5LtdwOS9NzFXSVZ5rw38HE6vvH2q2UIuYj9Pj
+	vZUI+6LaXgug0yDbWksDqooCGubM2tMElOE2QavKmV8DK7Zo4fGK70sE0C3HO2iak96iop
+	+DxLipgS+Sm3DLvCjIkQZ834dKYCGes=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NtjX64P9;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf27.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757304453;
+	s=arc-20220608; t=1757304850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=409De3dycyXy94pFQxmNYxL/WmjZWt0b3HPL18vEbd8=;
-	b=5YT1gt9LfJqgKMsmk/SNopnJN1jmUi5DHtRhLbzyp85rKf7ssDuV2iOl/mXozHbWjgh+sU
-	zUlrL3Tq7ycKDVgMcgoK1Qko45+PIxZZSEkN/w0tj/Hun5Ns15fCJyMItRZBNP1iKHHSPg
-	6lWbWlmJeYWYSvDw8IEV+PzNvIJyVAU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757304453; a=rsa-sha256;
-	cv=none;
-	b=5YY3TSyyjv/XbMO97cmJ/em+UmUAK/h30LYXC5g6EN9MdnCzKXTPDmd7FGIRoJX+/UjtPa
-	NBKuseUMrvFbngJqyold5suhKgDuNc+ZSR8JtL+zF1KUoeRfJ/o3D8cdIJgfn0mGT+edAQ
-	tWWMx2QE/1P91FffWnrqzLlOb/GakIg=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so11711445e9.1
-        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 21:07:32 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xJsCe6eTTTGDK/V3oOGv4fFA8SBbBbHuaXgk/m4NaJ0=;
+	b=x24BU4wmN399oTjEcwhMho+2ZZ4TGyZn3R1gp3AGILjylkGstWedIFm8K7za7niTP+ucLi
+	Dw6jNtoYWHdMYrdnOXnUPNCCKhLcp8NYNs+JTX+NkY4YxJuJciK7Zf5Tn847rP+Shm+gjr
+	scD+7beDxW9YqxSfmC7puZePXa2kBXM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757304849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xJsCe6eTTTGDK/V3oOGv4fFA8SBbBbHuaXgk/m4NaJ0=;
+	b=NtjX64P9GhojYmSTLhlImsEdmiHDzKZMFKPhVhzQVyfnHzIfN7BB6HNduRnUM7oQKGUo6c
+	j/hSChb0CFtXiQ1i2QRbUOliJxiq9RVQA72VHYkBqkxGKP83pfz1bc303IgOqVVO9ljle9
+	CWdw9PVu+qFkrkexxGKL1NGTMxzgzgw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-628-Dc2CxtFaMam_omtt4azRMA-1; Mon, 08 Sep 2025 00:14:08 -0400
+X-MC-Unique: Dc2CxtFaMam_omtt4azRMA-1
+X-Mimecast-MFC-AGG-ID: Dc2CxtFaMam_omtt4azRMA_1757304847
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45de14da365so10468995e9.3
+        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 21:14:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757304452; x=1757909252;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=409De3dycyXy94pFQxmNYxL/WmjZWt0b3HPL18vEbd8=;
-        b=ZXGutzbU09Cbhph87pnQMLZaOM2KSX2lNOQggGhsdgvua2Blk1MreHuN9vwnlvKDM6
-         ynXYrYE6CFBzKYulFM2H4b3quxgHNrq4FsDseYpo+gM9qGIK73lDW/PRh05KGgcuXy6C
-         MEzTHkuJg/4juCL0Z+tIl4+nEK0Erk4pAm41a3T0tQToiHaOnApkn+V0rIeMp99BMmUN
-         HYYenV+B3NtTywTQ5qDggy+kg32MfNifxR+MLpGh4LTy0zeS2g7Ypp/tjL/h0Rj1kko8
-         OL6zwZFOYn6rhHxFiDS1Z2GRL53tbGpzq8bsDQSdqC4mjFoU4tBnagfBplQMRPjbFwkU
-         2B2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUEqUskru68Zdo20WPUJH9nzXiPXkcn5w4K9HoOpP2UurtooV01yHeChSi6TJdrLuFWlsTTzrGTeQ==@kvack.org
-X-Gm-Message-State: AOJu0YzjpaeUxbKYBtTkWjrpI5mKXpdOvj4199xlXYggXO40JYkFDv5s
-	8ZqMnpxNWDhXaYOOov8DcKwBceD0GwIQ5nwYekXNqQrjlP+fVNvQDXzD
-X-Gm-Gg: ASbGncuVu3H4YVo7uUdMNuLsACDi/+aA9qvTb32Tos8cSM8fbjL7aZPOM/htIqmLtq3
-	0rNBfhm0I7N8PRPsNFxiH05jr7cWJYt7KOc+YbUegONA+mCJGW4IuWAIrQYk+/bSB5POsElLP1k
-	MRGi88/pXfayVaZUlj1PIpwsxY0scmmc/laDP0Ef7pmG39gnL1cvzmnIn9f9MHPCaHoWisHSVNL
-	pFQMueXT+ONcQexLskx+0Tv066tuL6NV2QvDBvE7VjJTz6Tw3mvlLgfh3i8QsdnH0q59TXRlOHo
-	kmMSnd5p5HOmtCs654EmwyX4Qx1TR9MCdgbFRJk6PWj7lfuvRQ3zWrqZRwXDBHzyV+0S8rjZdKh
-	xa6LNxOcPim96VupNGSv1dpRLubM=
-X-Google-Smtp-Source: AGHT+IHHc0KQu4fVuvjX8fgbXi8r9B9WeHJTzec9xAQPc3wb88MrF8wCXiddTK5zZ0XCMEdTfP3iDQ==
-X-Received: by 2002:a05:600c:c8f:b0:45c:b55f:466a with SMTP id 5b1f17b1804b1-45ddde9295dmr54866415e9.15.1757304451344;
-        Sun, 07 Sep 2025 21:07:31 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([2a04:6f00:1::ee:b:1086])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45cb5693921sm228428405e9.0.2025.09.07.21.07.21
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 07 Sep 2025 21:07:31 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: david@redhat.com,
-	Liam.Howlett@oracle.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	dev.jain@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	usamaarif642@gmail.com,
-	ziy@nvidia.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 1/1] mm: avoid processing mlocked THPs in deferred split shrinker
-Date: Mon,  8 Sep 2025 12:07:13 +0800
-Message-ID: <20250908040713.42960-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1757304846; x=1757909646;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xJsCe6eTTTGDK/V3oOGv4fFA8SBbBbHuaXgk/m4NaJ0=;
+        b=Aqt/NzZikzEnC/lCUw04QHx/pj2NDEzbPa6u3xOERMQnTj8BiEhit04Zc0497VQXO7
+         JreA4jn+SLlkrmUII06ecNTNJQNxC52s2/8+ZJK+awXQ+3RfRHQnt6FwSeaoEm1Tgxxk
+         P1p3uVOnRdoXw441ZMac4eNXDeotY3NdmSWShf1FvYcH/JWXtS57ry3ckAE1qJkvJJh8
+         w0UCXXnNmpNcCoLKCkKMQewbglRnqD0Kl5EObVraY2CCpeRzQPxxMvkp1iJXtMGpmBLw
+         9eXzJ4Gb1nxvCFb+2woGfMi0Gqdd+nCP6ekwidODC3L0KmtPsCOJ5fRVOMFfqZZQPeYE
+         XQTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXMKUQQCjfOCVHB6rdhrpoAHeafQMRrn0eS+j7tovEY9ybKT7t7glNYBN2Fmwf6Nme8PKiVRyX2LQ==@kvack.org
+X-Gm-Message-State: AOJu0YxfHjU67DgVTmBT5KG9kk8rCFILhbA39Jz6KWK5lKbm3MIGvLhX
+	fKTFNlgWuuHULd1bUnQ3rEVCFb5Gqtv8gXsIeR4NIj9bxGJHpl0yFEsXtjPG24qxAWjJF8s/wVN
+	11MXMmnTumnWPJkVdipLT9ctDxoqWdZAo2yLFTV//bMKHYSpr7JA23W2VWd4hXA==
+X-Gm-Gg: ASbGncvPaWbRwzGFNY3zka60zYfglABZQ5ZUDgisMfshTxI45Y0ZpCGM5uAZarfaQpI
+	t5008tSMoInJLlT858l+cU/M9CEluoBHetUjyyRTkWAGFOjkJIBA/boamvKFjjEq7lloWHGlt9F
+	Vyq/anW7TPDQhOs0R59nfJLlcu4PkLC2A7H+LQunzjuccpIjqty2jVAkThWrZl/8YPkhz4wxujJ
+	sytnCZlenr/DyeUPYFh9G9upw/cf8c+FV66JqbzaBjlqw0EZBHAZJ/Ck8rg02qYSx27OcOlMAeB
+	F/NMvrbZqz2xUpyhB0zUTYDGO2oZSCGdI2zILwkBG3wI6I3tTPD+l+t4VyJ420HWoQ==
+X-Received: by 2002:a05:600c:458d:b0:45d:d50d:c0db with SMTP id 5b1f17b1804b1-45dddea5102mr52603675e9.15.1757304845803;
+        Sun, 07 Sep 2025 21:14:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFutUyjnY3i7VNpdhUwrQ7pqW1CmodIEYjJPgtpuIcj6TCRCx7EUrnPJPxT8ek+IEd6gcbzjw==
+X-Received: by 2002:a05:600c:458d:b0:45d:d50d:c0db with SMTP id 5b1f17b1804b1-45dddea5102mr52603475e9.15.1757304845375;
+        Sun, 07 Sep 2025 21:14:05 -0700 (PDT)
+Received: from [192.168.1.86] (85-23-48-6.bb.dnainternet.fi. [85.23.48.6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd4affb6bsm142588705e9.1.2025.09.07.21.14.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Sep 2025 21:14:04 -0700 (PDT)
+Message-ID: <e6b795de-f522-4952-9ec3-00a2359c43a9@redhat.com>
+Date: Mon, 8 Sep 2025 07:14:02 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v5 05/15] mm/migrate_device: handle partially mapped folios
+ during collection
+To: Balbir Singh <balbirs@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: damon@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+References: <20250908000448.180088-1-balbirs@nvidia.com>
+ <20250908000448.180088-6-balbirs@nvidia.com>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20250908000448.180088-6-balbirs@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: inQy86A1VJj5pF0dd0C8uZtjwC1eiW2fQEVxvjpCnfU_1757304847
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3741C1C0007
-X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7104040009
+X-Stat-Signature: w8qufubm1kgtau3g7fdim55jwj9pfaz1
 X-Rspam-User: 
-X-Stat-Signature: cmef5ewxshb914j4b7t4tbuqwzktp4q4
-X-HE-Tag: 1757304453-433237
-X-HE-Meta: U2FsdGVkX1+x5qBtPekLcmmwko334aSpGGL0fGaIOVCf2uEiUw4sBmCiC4LsVfPASWDyFCjz4OwZ0WmI3gvK+vupUl9d9g/U5kYEwsyglshA97Ty57f52TAxYhu32t2YTkjc4eiOkR31kK4yd4sWva7pncyTiAtLX+t5mROVRr6NcjwrRGCpHzhJQkmzfnk6SsCNhdbDCGtebxtwwFrvD357FQ58GLWidRNcrGdHWxRJsYrN2hY8+hPjjgeuva4yplGqW/G7d44WyGeGBRN7kMVr2VjSY1wS3IE16PcEc5yLZ4engStGXEJauIn5iwWn3LzgJ4NfSQdy1zBjw8Mhcfl8dWk1fNsTJ33Q875aNQic8zCTT3qHltlD3826CjmRafeSzS8dHmjE2BEbUHkQFEsz7T2eEKouq5LLuJRHXen/+FLWdfTUFiBwYCEL82TjX74TQFBusHyMlm9/qlDnbjqf1eF8Hav3TufnFqu6xUS5wkXkk/lKO34JLM3fcF9cooOMOeXUzYEBahVNfhAK+Y4frP2iNJvHgfSP4F4lSBECZPzwVxpFjuHUagBQecl+SaUXBWHMZMT/GMjU970Ot1YErMqNeOLMzJ9PnFga69GboEEjek1VOYW8qiRFidPFaX9p5bymbGSkI4anBHVbFG9A58Q23FJom03tnOHJoTxc3w4m9ih3NL/+aLKKzdi9brmlR2QO2Y9dQP7c2OMKHQYnkK/TQiDJzVrPtV8nh73z5KjKdic4tClr5pZgKg+9KsxL7dTTxtwXismx7RpCyyhnEUawWdsi0WwNCy+/imFgLXZMP/5SzEPBlz8+uXzTWymuR8nVSzdJZLTR/o7WpCYA4eGzxFRm7VBrKUrLw8aweYVNKLP/Iq6vMNf7aVomHIMhTWI8yPAZxhzP62k0uVDVj/eIHrsNtYnVYIBqcVWplMgRNF8aEqR3bXYH4B5pUlyGMBnDxnzfo5kSg16
- +wjgSf1f
- gaNTl1i8lZQbxT7d9E1p7GByQLtwP0dDnK8ik1qB9vkMYWuDZORcdeORWVerQdmcMG2ufNnF2/VUL/dUUwsPZGYisqxwMGV31tgDUzzGH+/grtnZuwnzCBOU6Y7gdnLb5PiDgJqAYHlOh3IIfJ30Mf/5eLDh9BvLhnRE7x9yLG0nJRU6v+puKiDq9gup1KuRGHU9gUFuuOxaJheLE3jfeOJokLLBy+uCapBkjdHyAEihjpnCcfjuzD00yY3FEB8Wcxr2TyjQK0DdOAN3xG/W7CALc4frB2eQYmzg9ZG6qVW7P8yTTeKyQsII+375esO951uoJ59YpiBLACW9ga3dnZOlMZdHim+cZv7ilvsy4JkKMAhEjO3bxyJBJMN9YXheLCNFwW9igUwLDekuRQ5w2M12MFntbRKaGoABTZg9wycVX14vRdzBhwLLvntoNq576Wtkl
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1757304850-978382
+X-HE-Meta: U2FsdGVkX1/uvJLv2n6TDWJjUK0li+HMJV3tqm0Ph9gsYo0Lf7MarPMSmBAj5wefom+b5nVDV9DGhu4cep9Zl/xbiF4Ydk/xRwUVDdC3CsnCxOSPnIRtLWoWJa8URXc0/sip4Soih1yf08ZI9BgaExhpBSUEaTHlBFyW/cXEDM8p+ypclj8/ruxDK4Fa1LfUyZOFQNXc/Ul0yMTF7Bs6l+O8kSt043PoV/h8e2Yzw5d83Ur0tr/C6S4hvrkf75VXd0uxcAXge8OEzyOC4JgsU2dGFJjL70oWikIJc0csQai9VjmANOOetQJZDzD9yHNDOTkl3e69N4+/x/PXyTk0ZxiINYV9dIPeyjqetP5XsXt+lO4kDap6ZNeOc6ZkOho/7XCd3AZQXzG68Mx5o+N1jIoT29x4WPWrvEJHypO+BPC1FeNQjEsSYS7pa5UEEhs2PCEKgshgU+v+NjJVyrEFdeGHsJAqLsVbgkzZv43lpq7CmLQa+gDjsnglAcofry014dDpFQBhLtecqPDnJVf08JTfVRopspBSjHgsp3+Ax24YKHPPvRjktsSvbsupibv10j3HBK5c1CXJMEOEFGQh1+s82uNGJBZuZN+k+e30/QKDh2l59blOI2tSAAtgQqzxnbzWjxbC7oiu+BQA0/faU5tCb9OGoFe5pWtJ5jUhyl8yDIiLfkf+qRx59L8coK6zfHmsqbOOwf9qCyMb+d30t9Mr1fEwbLG+08JcumVy6h8Ce07jZH+X/MjzXqdMXNQJYtuWu+x6Gsw7ZNba1r8R6RfWM0n1SBhpJGuWfI58peoF0af6hN1Q/pzocEQZhlJxTipZIkWc+b3V6u325/mbtAaHVmEgHuwQw/Y3rHTMGwQOjx8ICo0RqsQkAAiOXNMuVl6K5MY/WkVnul6HBTja3DOhIxI4H2JAbH3OGVV1LxE4huwIBEuQks304OXDjjDAsNFvaS+t+FR/N7ouoWl
+ eUVV8cUv
+ bOgxHqdpZTIOT7Ea/cbpLmxqkquhESk2Y2Q3P18BwKiXi3hv4yfgaFQ6/9W19au6MLMAH4RFDY9ZWI67OLcGsD954kpSYWTrwQ4mVrW0b8vHKAQeEtHMujxZt1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,43 +147,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+Hi,
 
-When a new THP is faulted in or collapsed, it is unconditionally added to
-the deferred split queue. If this THP is subsequently mlocked, it remains
-on the queue but is removed from the LRU and marked unevictable.
+On 9/8/25 03:04, Balbir Singh wrote:
 
-During memory reclaim, deferred_split_scan() will still pick up this large
-folio. Because it's not partially mapped, it will proceed to call
-thp_underused() and then attempt to split_folio() to free all zero-filled
-subpages.
+> Extend migrate_vma_collect_pmd() to handle partially mapped large
+> folios that require splitting before migration can proceed.
+>
+> During PTE walk in the collection phase, if a large folio is only
+> partially mapped in the migration range, it must be split to ensure
+> the folio is correctly migrated.
+>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Cc: Rakie Kim <rakie.kim@sk.com>
+> Cc: Byungchul Park <byungchul@sk.com>
+> Cc: Gregory Price <gourry@gourry.net>
+> Cc: Ying Huang <ying.huang@linux.alibaba.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Nico Pache <npache@redhat.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Barry Song <baohua@kernel.org>
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Mika Penttilä <mpenttil@redhat.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+>
+> Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+> ---
+>  mm/migrate_device.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 94 insertions(+)
+>
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index abd9f6850db6..f45ef182287d 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -54,6 +54,53 @@ static int migrate_vma_collect_hole(unsigned long start,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * migrate_vma_split_folio() - Helper function to split a THP folio
+> + * @folio: the folio to split
+> + * @fault_page: struct page associated with the fault if any
+> + *
+> + * Returns 0 on success
+> + */
+> +static int migrate_vma_split_folio(struct folio *folio,
+> +				   struct page *fault_page)
+> +{
+> +	int ret;
+> +	struct folio *fault_folio = fault_page ? page_folio(fault_page) : NULL;
+> +	struct folio *new_fault_folio = NULL;
+> +
+> +	if (folio != fault_folio) {
+> +		folio_get(folio);
+> +		folio_lock(folio);
+> +	}
+> +
+> +	ret = split_folio(folio);
+> +	if (ret) {
+> +		if (folio != fault_folio) {
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +		}
+> +		return ret;
+> +	}
+> +
+> +	new_fault_folio = fault_page ? page_folio(fault_page) : NULL;
+> +
+> +	/*
+> +	 * Ensure the lock is held on the correct
+> +	 * folio after the split
+> +	 */
+> +	if (!new_fault_folio) {
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +	} else if (folio != new_fault_folio) {
+> +		folio_get(new_fault_folio);
+> +		folio_lock(new_fault_folio);
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  				   unsigned long start,
+>  				   unsigned long end,
+> @@ -136,6 +183,8 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  			 * page table entry. Other special swap entries are not
+>  			 * migratable, and we ignore regular swapped page.
+>  			 */
+> +			struct folio *folio;
+> +
+>  			entry = pte_to_swp_entry(pte);
+>  			if (!is_device_private_entry(entry))
+>  				goto next;
+> @@ -147,6 +196,29 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  			    pgmap->owner != migrate->pgmap_owner)
+>  				goto next;
+>  
+> +			folio = page_folio(page);
+> +			if (folio_test_large(folio)) {
+> +				int ret;
+> +
+> +				/*
+> +				 * The reason for finding pmd present with a
+> +				 * large folio for the pte is partial unmaps.
+> +				 * Split the folio now for the migration to be
+> +				 * handled correctly
+> +				 */
+> +				pte_unmap_unlock(ptep, ptl);
+> +				ret = migrate_vma_split_folio(folio,
+> +							  migrate->fault_page);
+> +
+> +				if (ret) {
+> +					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+> +					goto next;
+> +				}
+> +
+> +				addr = start;
+> +				goto again;
+> +			}
+> +
+>  			mpfn = migrate_pfn(page_to_pfn(page)) |
+>  					MIGRATE_PFN_MIGRATE;
+>  			if (is_writable_device_private_entry(entry))
+> @@ -171,6 +243,28 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+>  					pgmap->owner != migrate->pgmap_owner)
+>  					goto next;
+>  			}
+> +			folio = page_folio(page);
+> +			if (folio_test_large(folio)) {
+> +				int ret;
+> +
+> +				/*
+> +				 * The reason for finding pmd present with a
+> +				 * large folio for the pte is partial unmaps.
+> +				 * Split the folio now for the migration to be
+> +				 * handled correctly
+> +				 */
 
-This is a pointless waste of CPU cycles. The folio is mlocked and
-unevictable, so any attempt to reclaim memory from it via splitting is
-doomed to fail.
+This comment is still not changed, there are other reasons for pte mapped large pages. 
+Also now all the mTHPs are splitted, which is change of behavior (currently ignored)
+for order < PMD_ORDER.
 
-So, let's add an early folio_test_mlocked() check to skip this case.
+> +				pte_unmap_unlock(ptep, ptl);
+> +				ret = migrate_vma_split_folio(folio,
+> +							  migrate->fault_page);
+> +
+> +				if (ret) {
+> +					ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
+> +					goto next;
+> +				}
+> +
+> +				addr = start;
+> +				goto again;
+> +			}
+>  			mpfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
+>  			mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
+>  		}
 
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- mm/huge_memory.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 77f0c3417973..d2e84015d6b4 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4183,6 +4183,9 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- 		bool underused = false;
- 
- 		if (!folio_test_partially_mapped(folio)) {
-+			/* An mlocked folio is not a candidate for the shrinker. */
-+			if (folio_test_mlocked(folio))
-+				goto next;
- 			underused = thp_underused(folio);
- 			if (!underused)
- 				goto next;
--- 
-2.49.0
+--Mika
 
 
