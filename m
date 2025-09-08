@@ -4,86 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EBF0CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 17:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC86BCAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 17:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83F9D8E000C; Mon,  8 Sep 2025 13:39:57 -0400 (EDT)
+	id 20EF78E0003; Mon,  8 Sep 2025 13:47:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 816B18E0001; Mon,  8 Sep 2025 13:39:57 -0400 (EDT)
+	id 1BF2C8E0001; Mon,  8 Sep 2025 13:47:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 753A78E000C; Mon,  8 Sep 2025 13:39:57 -0400 (EDT)
+	id 0D56B8E0003; Mon,  8 Sep 2025 13:47:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 639A78E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:39:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1D60EB73DB
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:39:57 +0000 (UTC)
-X-FDA: 83866796034.04.E9D5DCD
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4468D14000A
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:39:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLOjI2W1;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F115E8E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:47:20 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A8AFD1A021F
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:47:20 +0000 (UTC)
+X-FDA: 83866814640.06.6911D38
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D06504000A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:47:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="mi/V/vex";
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757353195;
+	s=arc-20220608; t=1757353638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UqG1+1cfzn6SRqfp+y4ls9je7NnsECHyQJszT61fGcM=;
-	b=P+RJtst5NRg5perOHcZ2u/8AO7/btHd6HVAbW8jGWnuakEB/SOZTU4OV9J9oy3s9Nb4jUo
-	Ww8rOPdgHK5nVaXshchOKMSzDm7LtCeyBbE0OX1jey36CRLhtHg5eAZm3nY2+1eRZoCa+7
-	XyDTD9HqkPKrqEvQ1uB7YrCE/btaSN4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757353195; a=rsa-sha256;
+	bh=siEsv2pirHTuHZt6M2d3vtcT7Pnt/qFkT+meHrSYc7I=;
+	b=dl0qztIcgK6YS5vt7+nGQHubwojsuU4U6a0WQKMJKDjn0awyg3G6hF6QYVnT1O1P/jouTE
+	UaayrgKsTWKtHiSiLUaFl38uveF+JeajQxyLpIfJgtjtrIdmQN+PoGYwGwDD8drqulgl4p
+	onSWu854yQc3lW7aGn6bNRGpPXm7KP4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757353638; a=rsa-sha256;
 	cv=none;
-	b=5/T2Ap5SHAtz8XQ3m0YC0VfGpTmyz/9M39IuBj4g0txlFfAy3YOSPTKzBxjoEyoBM5Xzik
-	gmFtZx761SLhDS+Qb6LTS/+6h6U2Pk5Qkun38sKgGFQhKTEAnDmn3gZieT7645yohZyHjT
-	zzG4vzD2Wtzl3iRJ8M7o3y0gF/8UIDM=
+	b=rpJuyLp8lqod5TQIBwTCfNiJ/rGnBLJCXGiI6AQ+YYR0LSpA1DGSq6hGGtcfb5cmYLmMpe
+	8Je5QeM8FB2NzCTsJoK0xO2gj69E+zKJfS42kToCcmGBinbJs821FVy1lKHQcLepbJr7vG
+	G9WwRSsUyu/xcLf0NpKvfqyQJGZuHeI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZLOjI2W1;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Mon, 8 Sep 2025 10:39:46 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757353193;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UqG1+1cfzn6SRqfp+y4ls9je7NnsECHyQJszT61fGcM=;
-	b=ZLOjI2W1TsnO+n+7Msg21yOwuialHG5Vd0MmH0abjFtTCfZ3QMyzLoEnQTRKlrQwkqV+kk
-	C6APWTp9lt1ST7AUs4vBXG67D5ERA6iCOLd/ctnisLUuvCqViq2DHM6M/ihnFFV/MFmvtl
-	6SY8zJVbkuDu4au4nxL0QF6VsJbbklM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Peilin Ye <yepeilin@google.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: skip cgroup_file_notify if spinning is not allowed
-Message-ID: <lhmdi6npaxqeuaumjhmq24ckpul7ufopwzxjbsezhepguqkxag@wolz4r2fazu2>
-References: <20250905201606.66198-1-shakeel.butt@linux.dev>
- <aL6htMt-jHAaCGLv@tiehlicka>
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="mi/V/vex";
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4b5d6ce4ed7so924971cf.0
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 10:47:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757353638; x=1757958438; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=siEsv2pirHTuHZt6M2d3vtcT7Pnt/qFkT+meHrSYc7I=;
+        b=mi/V/vexDEadaLJKUGhaAEYwqV7lOPlk7YN8aNZx7TYnAQ8glYP4/MdZ74j2XzPyo4
+         wftzzMSuyDmM0rWoGlKGEJv62RThZOKg5o8BOv8xKPKSm/2Q3UisMHJm2Ul5jQtQWsMB
+         fhxWZjWh10bsMhvkLlgFVRJki5lhNvXL9uGY/x1gb/ZyKoyj0aHEHA+2BjudN81JRERo
+         cp5E4kNALZ6t7SFI8A1x6MMeTP+rY98cdef2v8WEaTewVyh7FVJfUzwbfAp/TovmLz/m
+         35Wk/IdriBhbx3Gcdthp3RInt1xpNvr255jIj39KQuOPJ14dqQcgdP3r9qlDWo2W7eUW
+         cW9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757353638; x=1757958438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=siEsv2pirHTuHZt6M2d3vtcT7Pnt/qFkT+meHrSYc7I=;
+        b=PLWNtTUjAcEwo1wvImzCYrux7KDaUnyICpGv5MGQHuiLKsnMN53PUpmknGA2mwZWJf
+         EvmiAoXTE2Sx4ravx0Yqs6VPCJYb5njAfe/6/DaYvX9LyiWtWQyTZa5COxxoQAZoMzTJ
+         5O8Ag5/KK1rvwlRR5znusXQfiL7EOApVDYyDxw4S23Qzp3zMWjLLZQbG5omAbcUy9KqO
+         cZr142OKiqsXJ3X6vcqzCAqZ4asuuzLeLDaBb3nlFyOuG74iwWYrXvcuMoBcsp+mU5wy
+         6Yjlv86DOMsQEKNZCcKlVtNs5YnBtXKTFywGGjCT1Wwlk1PAgBQGF9/fNWT7TlYklDdA
+         PVVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUbMoJkDLQtr6zn0kxVzIVZWW7lGHtIpf9dPkAV4OAtDtEz7NbqBAq1CLIyZG9VlnOSekzKQ9Kyw==@kvack.org
+X-Gm-Message-State: AOJu0Yxu0hRMoze1B6N0EJI4x83R1DcMPAW6i5P97Nk5ydc6/Uo5BuBK
+	sh8JAg6rKAGwK9GTDf3j4Oqgo2sZoJyOqoTAeOHKBIlEcjIftndH3KIlXrvXRnXKJplIuZ8ywa5
+	AqvvzfaHA0nT/JK7//Gyal1SjGpwW4eP9Z9OPVxUc
+X-Gm-Gg: ASbGncvPpGXmrzv2+m5t3fFttRQHZ1JCtx6MSUBuG8YD+uUUD5i3Q/R5UROD+w4LOL8
+	S0tZ1T24Aq3C2ksCCWb9295jGx4kCV3SkDhO5YcWOWh2LzGuoHh6V602/s/hWdQYLeeTxKx7Ski
+	YDo8TggllAwrEvAMrN7uWkRm/k/Iu0CHmFKkMpC9iH251ly1O59bKxwRNBUTkI2O+I964IC2ZIX
+	Av0rIlW0pv1
+X-Google-Smtp-Source: AGHT+IHBpoBHctX0ggJPD9Xzmyyd8HgpBtBxge974et/uW/ujee4+Lwr6N52wAFhOd568mp126yqL4bB50l9eB9dkl4=
+X-Received: by 2002:a05:622a:1a9b:b0:4a9:a4ef:35d3 with SMTP id
+ d75a77b69052e-4b5f83a34bcmr11651441cf.7.1757353637363; Mon, 08 Sep 2025
+ 10:47:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aL6htMt-jHAaCGLv@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4468D14000A
-X-Stat-Signature: yw3rccjk4985b7dc1cusp5jd15qwe33f
+References: <cover.1755190013.git.pyyjason@gmail.com> <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
+ <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com> <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
+ <aK2/Vesgr9Xcl5gy@devbig569.cln6.facebook.com> <CAJuCfpHJMSd16j3ANrtJGVfLieHdeO_Epq=U9OKty3TV362ckQ@mail.gmail.com>
+ <aLFKHGe2loD657fu@tiehlicka> <zerazodfo2uu5az4s6vuwsgnk7esgjptygh5kdgxnb74o2lzjm@fkziy4ggxrxc>
+In-Reply-To: <zerazodfo2uu5az4s6vuwsgnk7esgjptygh5kdgxnb74o2lzjm@fkziy4ggxrxc>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 8 Sep 2025 10:47:06 -0700
+X-Gm-Features: AS18NWBVRSHhKmkbky6crK-2Tia3zeDy6qS8rf1MalWs3LSVJvFAqHjRkt7WLkg
+Message-ID: <CAJuCfpFynEuwBSu28UiRDjWrayN-raX4Nqqh283MwRoJLi8bMQ@mail.gmail.com>
+Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>, Yueyang Pan <pyyjason@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Sourav Panda <souravpanda@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D06504000A
+X-Stat-Signature: nk7qpjcz1yk7o75q3fu1i4wbyt1aonuf
 X-Rspam-User: 
-X-HE-Tag: 1757353195-884823
-X-HE-Meta: U2FsdGVkX18LshckiAj1peCE8T5IeftJpXpjDWYbF9++KBVdQRhBGD5HeaHIxAsKTPdJ4omVVQi0IlamLxM5xTCLwa4pp51+u7yOrp3jPY5i0t53SVkLw2ewjjVGBL5uP0i5DFLcOGQMiknVHlP4Zj9icsJlX7EWvDyjN3Wgs3aOpzUhiVPUverydZ3qy8dMeaoTNHwliqsRCOzI1hPj1qy4v4nwQBWByBwtymKH444QmJ+O26v6JeMitmR8+6MgNBqbYJLWMflcUFkcFgnPtihsMPZmOViXz5slQyPp/PLMxczZvjIVkMYBFUCD0hX3MLgY/dtnsGPpqS7XuZaCOrYLAUc/lEjuKL4NTwJ0ulg7X4ZvzbOzuoIWoxpdmfS7tWkgCqFNyRS+pBJxelKNVAOhFEybzgvNoa7BKVMmny7Z0Jzd3ZCkfBnoGy61o+7D69a//gUrLqLisynt0a7tO5FPz1xvRa2XYUQrf+2GjaW/zQ0XeokpcoQTiVZ2GPP78523ctJtAKHQ2gyFjd3cnW1Rf8mRx0CPsUxhAK5HmaDqs2LmJz3MrOqvX9N0TD47nOzSOQE/z4cFHm5E8PDCwrsYUQ+2j0QA7ODPPv9DRIIpRK0z3J8lweDYbMNlq+EaFytOebwqKzm79Iwz2vh+3ir48muUuI2eEdXx0qSlFZMWdpqJCAp2VCcmdpOEBlqTAkqPcpm83l/TcCU6ecTmIucHCy96+35lPYhNm5QGzjw9o1lVvBPo7AusUP29hit5drf6OzkOg2xutPzPK6fm/Am0Hh8lMmapBo9OPajwzCVy7K+d36jrc9ch4VL2d7xh7tZo3/b4SSuMzw8nfVynLwEtlbz5p8HzAmNprzuKY2oM7m/ERQfoMQLr7yK6sGiaD2VIo53zR30YQG1fsu3ULqbEgvlbyC0+1M5phmqr1VhqryyLiBYCOJ3yBmJo8OUnHu0hBMWMFUvp5ZT/OPz
- HsYfEBef
- fdcUXuRQh/Ih3RTbYdLckAI/nnoHGhhrS8Lfe33C91cKpJP0YJh+Hc+aw8JJE+hKt0r1qAnHQup+Hq+1ZYg8xijIFyXiJ02S2aivZbAXn1Au6LsJnQyhdGHRLd6jqVHNYKI0hzoDjAtZdhehel/3n2Ns+bxOWh1QiQTIwStQxB6b0emXzCtYJY5IfpPB3RLyWAPd0ClUUxQJZiFG2wyWlVftRBMKQbSpuovyOZnPGhy5MrgN/soKXkW8OaX48t2XOhxekm63roEaM5651asOZkQf3YlNgKfw3QBg97gDSHY04AruA+1A3nfqEiij77TUKy+i/yoBDaaozyUn0WkPyFm7Uv/u88sBrmCrc
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757353638-973362
+X-HE-Meta: U2FsdGVkX1/QQalVchbASJi5DNZYfBV6BYHRlhOfB3roefF82vb3Xb7ZI4JUkMeHKGRtGaEMW1MDDNBFN/zhv9CrmFtFZAb91N+rNK5UIFKWUGczbc4vdU5v1yIh+ftbE/RHMq3LR/81kaN/BXnMpXpY3fCAyyHaUfqphAMjj0jdb0zBeMz4Bnxqqw3omkGTj/0nzS+lXDKvYCnzAg5lHMfJwZSqe34MH2tekvROBem3du4mz4tRiGG7E2O0xxYCCzy0/vlNQZHtpf7SOds/UPE0QyzDlYJF0q7pH8qWnJq4m7oUfUCPlJVcKdhZKjEphsN2Os4hir1UttPfgVyIDeYmAndQ5WhX+lUajCs3NmYxdfwEL3h1q0UiGlNxOIiTZ8buOGqUQq92n+e+y1pWN+lWU1CUtvahEyMlFpk9nswXcI2Y/6tXOfVSEfOZKhbFKCNjjPJCxAU6OWpACK+z1kZ3OJxZS2Ii1nkU2SowoUbXCwEfWmlIy/I7cTF4iZifm6ZUF692pwSF+wJHgM83wfV3XeShiIdorHGGP28EFfKXMHv97YfLuK7yqXSTeRyKRkHCJY/9JTAkqg3mJZZfqqAYH8D2SMHH88aVkr0TfrMhUnJDLbOUWpHAkwpgrSICfpi0zUrAhq3sRqD53lRV1oZjVdNtpUOuNabeGd/aaQ/gG73ku14r89R5GFPG9ZEZ91T/gBCu1fRl3z65xLGiIc+zaPGSV77NDUwY7+Y6Y981ml0MD5KdRAgmcGYya/RCkWVEXdjyAy/DroAAd859Mv0O2B9P32Nkk1ubTSTE3CBBzPAxeZi9vhbBD3GSOPNfVCoW9yCRoOTy6GhFOX0s+NvUv51Q1VC+6ZhyaDGrHgRelRDxmi9R2bIlq6CmEElGwcMh3STFzlGKDm8T8+fvlA+a0zCGr/33REL5h+3JCM0marH3xLfF5kuy5tPkiMh2cUatkpzbBxI5hSR63Ym
+ bI8D5hUD
+ TmMHYZlJGcwK9BPfSxk1ax3aeMJigexIfNqybqoRrHPjfwU/zVdB8fzEn5z7c99hVxkNhHjDlR//NmwSweekVKB26JU/YYQm7y9/wCV4OKJuusIQ31Af1yz0OmIRQIh6jb/hz/+FAlnefMakpsmx0uAove2SF5jg4iq0CrojeGY+N8HtOV0O2IGxhFxuO6leaQxJyaX2LGskjywQ82u5KGAddaoFHpv7tcXZNf6NNlnc0f53jT8prSSF1Yg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,56 +121,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 08, 2025 at 11:28:20AM +0200, Michal Hocko wrote:
-> On Fri 05-09-25 13:16:06, Shakeel Butt wrote:
-> > Generally memcg charging is allowed from all the contexts including NMI
-> > where even spinning on spinlock can cause locking issues. However one
-> > call chain was missed during the addition of memcg charging from any
-> > context support. That is try_charge_memcg() -> memcg_memory_event() ->
-> > cgroup_file_notify().
-> > 
-> > The possible function call tree under cgroup_file_notify() can acquire
-> > many different spin locks in spinning mode. Some of them are
-> > cgroup_file_kn_lock, kernfs_notify_lock, pool_workqeue's lock. So, let's
-> > just skip cgroup_file_notify() from memcg charging if the context does
-> > not allow spinning.
-> > 
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> 
-> Acked-by: Michal Hocko <mhocko@suse.com>
+On Mon, Sep 8, 2025 at 10:34=E2=80=AFAM Kent Overstreet
+<kent.overstreet@linux.dev> wrote:
+>
+> On Fri, Aug 29, 2025 at 08:35:08AM +0200, Michal Hocko wrote:
+> > On Tue 26-08-25 19:38:03, Suren Baghdasaryan wrote:
+> > > On Tue, Aug 26, 2025 at 7:06=E2=80=AFAM Yueyang Pan <pyyjason@gmail.c=
+om> wrote:
+> > > >
+> > > > On Thu, Aug 21, 2025 at 12:53:03PM -0700, Shakeel Butt wrote:
+> > > > > On Thu, Aug 21, 2025 at 12:18:00PM -0700, Yueyang Pan wrote:
+> > > > > > On Thu, Aug 21, 2025 at 11:35:19AM -0700, Shakeel Butt wrote:
+> > > > > > > On Thu, Aug 14, 2025 at 10:11:56AM -0700, Yueyang Pan wrote:
+> > > > > > > > Right now in the oom_kill_process if the oom is because of =
+the cgroup
+> > > > > > > > limit, we won't get memory allocation infomation. In some c=
+ases, we
+> > > > > > > > can have a large cgroup workload running which dominates th=
+e machine.
+> > > > > > > > The reason using cgroup is to leave some resource for syste=
+m. When this
+> > > > > > > > cgroup is killed, we would also like to have some memory al=
+location
+> > > > > > > > information for the whole server as well. This is reason be=
+hind this
+> > > > > > > > mini change. Is it an acceptable thing to do? Will it be to=
+o much
+> > > > > > > > information for people? I am happy with any suggestions!
+> > > > > > >
+> > > > > > > For a single patch, it is better to have all the context in t=
+he patch
+> > > > > > > and there is no need for cover letter.
+> > > > > >
+> > > > > > Thanks for your suggestion Shakeel! I will change this in the n=
+ext version.
+> > > > > >
+> > > > > > >
+> > > > > > > What exact information you want on the memcg oom that will be=
+ helpful
+> > > > > > > for the users in general? You mentioned memory allocation inf=
+ormation,
+> > > > > > > can you please elaborate a bit more.
+> > > > > > >
+> > > > > >
+> > > > > > As in my reply to Suren, I was thinking the system-wide memory =
+usage info
+> > > > > > provided by show_free_pages and memory allocation profiling inf=
+o can help
+> > > > > > us debug cgoom by comparing them with historical data. What is =
+your take on
+> > > > > > this?
+> > > > > >
+> > > > >
+> > > > > I am not really sure about show_free_areas(). More specifically h=
+ow the
+> > > > > historical data diff will be useful for a memcg oom. If you have =
+a
+> > > > > concrete example, please give one. For memory allocation profilin=
+g, is
+> > > >
+> > > > Sorry for my late reply. I have been trying hard to think about a u=
+se case.
+> > > > One specific case I can think about is when there is no workload st=
+acking,
+> > > > when one job is running solely on the machine. For example, memory =
+allocation
+> > > > profiling can tell the memory usage of the network driver, which ca=
+n make
+> > > > cg allocates memory harder and eventually leads to cgoom. Without t=
+his
+> > > > information, it would be hard to reason about what is happening in =
+the kernel
+> > > > given increased oom number.
+> > > >
+> > > > show_free_areas() will give a summary of different types of memory =
+which
+> > > > can possibably lead to increased cgoom in my previous case. Then on=
+e looks
+> > > > deeper via the memory allocation profiling as an entrypoint to debu=
+g.
+> > > >
+> > > > Does this make sense to you?
+> > >
+> > > I think if we had per-memcg memory profiling that would make sense.
+> > > Counters would reflect only allocations made by the processes from
+> > > that memcg and you could easily identify the allocation that caused
+> > > memcg to oom. But dumping system-wide profiling information at
+> > > memcg-oom time I think would not help you with this task. It will be
+> > > polluted with allocations from other memcgs, so likely won't help muc=
+h
+> > > (unless there is some obvious leak or you know that a specific
+> > > allocation is done only by a process from your memcg and no other
+> > > process).
+> >
+> > I agree with Suren. It makes very little sense and in many cases it
+> > could be actively misleading to print global memory state on memcg OOMs=
+.
+> > Not to mention that those events, unlike global OOMs, could happen much
+> > more often.
+> > If you are interested in a more information on memcg oom occurance you
+> > can detext OOM events and print whatever information you need.
+>
+> "Misleading" is a concern; the show_mem report would want to print very
+> explicitly which information is specifically for the memcg and which is
+> global, and we don't do that now.
+>
+> I don't think that means we shouldn't print it at all though, because it
+> can happen that we're in an OOM because one specific codepath is
+> allocating way more memory than we should be; even if the memory
+> allocation profiling info isn't correct for the memcg it'll be useful
+> information in a situation like that, it just needs to very clearly
+> state what it's reporting on.
+>
+> I'm not sure we do that very well at all now, I'm looking at
+> __show_mem() ad it's not even passed a memcg. !?
+>
+> Also, if anyone's thinking about "what if memory allocation profiling
+> was memcg aware" - the thing we saw when doing performance testing is
+> that memcg accounting was much higher overhead than memory allocation
+> profiling - hence, most kernel memory allocations don't even get memcg
+> accounting.
+>
+> I think that got the memcg people looking at ways to make the accounting
+> cheaper, but I'm not sure if anything landed from that.
 
-Thanks.
-
-> 
-> > ---
-> >  include/linux/memcontrol.h | 23 ++++++++++++++++-------
-> >  mm/memcontrol.c            |  7 ++++---
-> >  2 files changed, 20 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index 9dc5b52672a6..054fa34c936a 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -993,22 +993,25 @@ static inline void count_memcg_event_mm(struct mm_struct *mm,
-> >  	count_memcg_events_mm(mm, idx, 1);
-> >  }
-> >  
-> > -static inline void memcg_memory_event(struct mem_cgroup *memcg,
-> > -				      enum memcg_memory_event event)
-> > +static inline void __memcg_memory_event(struct mem_cgroup *memcg,
-> > +					enum memcg_memory_event event,
-> > +					bool allow_spinning)
-> >  {
-> >  	bool swap_event = event == MEMCG_SWAP_HIGH || event == MEMCG_SWAP_MAX ||
-> >  			  event == MEMCG_SWAP_FAIL;
-> >  
-> >  	atomic_long_inc(&memcg->memory_events_local[event]);
-> 
-> Doesn't this involve locking on 32b? I guess we do not care all that
-> much but we might want to bail out early on those arches for
-> !allow_spinning
-> 
-
-I am prototyping irq_work based approach and if that looks good then we
-might not need to worry about 32b at all.
+Yes, Roman landed a series of changes reducing the memcg accounting overhea=
+d.
 
