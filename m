@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 717A9CA1013
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 02:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE6FFCA101F
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 02:40:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99DF16B000C; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
+	id E80016B000D; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94E956B000D; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
+	id E30898E0001; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 864706B000E; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
+	id D6CFF6B0010; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 75FCD6B000C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C7A896B000D
 	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D1B3E11B02C
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:23 +0000 (UTC)
-X-FDA: 83864529126.02.1EE3ADB
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 06CC880009
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fr5iBAS3;
-	spf=pass (imf02.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8DD9711B02B
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:24 +0000 (UTC)
+X-FDA: 83864529168.01.2E60DBB
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E71F61C0006
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mA5K7eN6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757299223; a=rsa-sha256;
+	cv=none;
+	b=rmr4lzWJIXJYehldjAgMWyjEl9fncbOiQ4QmZ1F0e3yozuNkqM3WQTlErPQj0kIO95NflN
+	m6o9Yhhb8UJukhVrL41AnTQUicgAZNPxzf0FJ8zxgKlmS5YJkgLabGNaLP6oDyjO4/45Ed
+	l8A0bt7VaUxexJbXnYbfqdajMi4wApA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mA5K7eN6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757299222;
+	s=arc-20220608; t=1757299223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=F05Pyb/PPuwSrMwUArE1DpgL89Fb2LA8TTTDyvg9QlU=;
-	b=Nl5TjDFX5Wob2z3e3xt/37QzCPkzqjZvsj5ry2XoCEiDREBLxYm61IQRozQbCVRMz41gvF
-	BV9rzExbSlLrXVSB9yt1cDks4CotuJtW6UbNdhsT+Si2Ey+sgfIW/Lr9myvafHO8rzlLbJ
-	UpIIPbp2EZ8mp2TSoUizQnZ+K8Me0Jc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fr5iBAS3;
-	spf=pass (imf02.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=liu.yun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757299222; a=rsa-sha256;
-	cv=none;
-	b=PD6hsoaPc2B0Bu6+jMSEUwzy2kDaRFoPRlegpi6hqocqCMacm8M+/Vcz+N871HO7H3q+r2
-	zIJ7alkodSCHyYUnI7eN7XfGl48M8J49btqrv8TmN1blffWWGz4/VzfVkFcDw80R/fyVDQ
-	0GLvckqLKRiWFkDDcWOSRMJzYF/W/Lk=
+	b=iIS8A2I4cQCB0VWu2io1sEaJK+asPEoTzvqQTCavgyWnfDwBb61eag9gwBix79BOZAVja3
+	pu8dKi/8p9NZF/M8Zr4BiiqQHZ5Tui1IFQCcGMpBB+v4Ls/r8xQczi49SHf9enSHq3OouO
+	795oj8BUkPRtdxBjP+QSwnpx3G3CPo0=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757299219;
+	t=1757299221;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
 	bh=F05Pyb/PPuwSrMwUArE1DpgL89Fb2LA8TTTDyvg9QlU=;
-	b=fr5iBAS3xtbxwNClTulvrLmfA/JJvTJAT3KtveSe2z0hFXo0yVj/1fda3i1QlaIrleXhtc
-	GvHsxEiPkHMJL4jWlf6qJIn16bJzkjbF99An9Fae6Y7VFq3By5N1+KRgGRVcNxfCiM5t19
-	CEZLoeOWf8pOwgkXp9az3AYNQqiBg9c=
+	b=mA5K7eN6CSGnj975CFEr2X3wpDGCOCFa/TLk5K07it46WUr5PIqalYHlAsMRCnBn3mmqFK
+	w2gAtfWapxBlXSy+aDC9mLpD5MkYlFjOBxZrDhmzxK2khmgI/MKJdDGp1nCvtVnn/nrcDU
+	2eWeK4R2A5Bv8kYrX1GKEKYAI4IJa4w=
 From: Jackie Liu <liu.yun@linux.dev>
 To: linux-mm@kvack.org,
 	akpm@linux-foundation.org
@@ -66,19 +67,21 @@ Cc: hughd@google.com,
 	liu.yun@linux.dev,
 	liuyun01@kylinos.cn
 Subject: [PATCH] mm/shmem: remove redundant entry_order variable in shmem_split_large_entry()
-Date: Mon,  8 Sep 2025 10:39:14 +0800
-Message-ID: <20250908023915.28907-1-liu.yun@linux.dev>
+Date: Mon,  8 Sep 2025 10:39:15 +0800
+Message-ID: <20250908023915.28907-2-liu.yun@linux.dev>
+In-Reply-To: <20250908023915.28907-1-liu.yun@linux.dev>
+References: <20250908023915.28907-1-liu.yun@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: x478nrrhasbngqbbxwgq4ki7iasg8m4u
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 06CC880009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1757299221-314863
-X-HE-Meta: U2FsdGVkX19qdWBBTDb/j1TRcQqiju+PP/LTPx7lEEhx7u4hrx8V1S4V320N8IZHEfn5KjEKCbNS/TxdUp+FLk2Lz2PaS/XqxEh9QFuGmcsvduVb2Ab4aDTiizDYAwxrYXZO6VhmXyxNGogd0kR0ba0Gvh67HT/GGiRukPe7SfYSLqMzHRybRMi4j3JNBmWVbqA/S3TGHd/79VgHu5FuLL4Quoo3xqThDOtd0s7DAVRrno+IdjiamUnqQw/fSdDGqWUa4wEYJPUCQhrcYRU7QtYpGt1/NdtULBGAGKZqm0poPdrL0eiSZWlGyA71h2VQs8ITS/LHXvKV/aEqDo5p2LCJnT1sKZpNiAGSo5qDNznKHW3ugAzHiGq6InwnhidVHELxS5NbODwWMWH35+kTHC++8203Iul3mwnXoFKtmhl9QmhEifl8YR8wsrcT68xjmkDKCPUJE3flIH/rVKB8uLYiS2YmAjNfWbVWTKt0M2zgrfm8UcjAj7kZZiqBm49vMQitxLtgCBIRA/FU17wMR+yJKjeYV7nG1IVVc02p24akRuYBZbTAH9MqXbYmWAz6neWwPJgjcjhV0vJOHfedFcuLCcTqJdiWvCPWd1TB662v7bbd7IPvg8asRcHw+qmQuTjQnQ2kerxwebcAjQKYQiuYp7ENs9KE6t/r5BA28VT7C/Fvh+Zt7VdFOFMmRzFc80l3abqfmhBNL1fYfU6d1rNz64UomTVhE4pyFQE/fVvW4DIVPg9uxN+6jU/g4FLKQ4TYXLjzGkddo9hP0Yiu+9AE9c8bKAZNbCqSg0FFy9nHRRF9n9of9kFoATO+//UK8UEfpoOUqZ5LiYDNUzug+ZzvefIIvS0AxbNDNLuAhRfvjirfs1eLGSNgdlTu/ekgmzOMpQJbTNloTC3YI23sCQYUwuxJ2J1HK9Ed+rRp8K9K2KC/EMeCXlO8rQAjSC4h7E9BM7CAtDjouoA9x7V
- 58UR4k1m
- wLhonp2xKalSTtywR7MVoLiJVSj+5ha31y2YQSEqyU4HN0UMbqCKjX8JvOZzRV1zKmKT5e9zppVunpusYuC2Y7TuPiI7U5es3muxvWKxWlziH2OCWX6cT72hkT1MIY2rzFAWY7nRQ7k6BUbN9TxiGIF0zkPlm46WZ4B+F7f6BguE62IQaJG0oHLrkbsUaTcTUp4oI8lkQX3DhuwxtdMiHuYLFlnSrrrFGT5C6Pw27/r1/pBQ=
+X-Rspamd-Queue-Id: E71F61C0006
+X-Stat-Signature: x478nrrhasbngqbbxwgq4ki7iasg8m4u
+X-HE-Tag: 1757299222-457985
+X-HE-Meta: U2FsdGVkX1/S9uKkDwC+EiYlKVbe8k4qp+OneBTwB6C6NFdK3MX2Qsd2f/mhdvKf89bGtl8fruyGvsZ0RNRfqtICD1oDoiuBJe++tHxcAsX3kHLirnCvSn9b0+X0R+zeAm8E6/c34lZAH7kw5TO3Z/7Y0Jh7QNGtnxqv9D4Nt9ECVT+9EWgiN1QcsV698TQ8FfJ5wZXghhg9pHoL7+gTMvUTstoP2Ss86UmSIouEW7ZXV05KEuzbcJCRS+1telfX6IFzDU4VccpFDQW2pvtZ9Dqz+nr4X3fLFhDbFpgc9klC6b8vDTSE0Mw1LQrZom4XOg9EtABLssi4loSjQXAaIJC7qiekirGnZ+hd1Efs12pSjZNT40Nztgxix85m6p9jwqvOEg8DqP5eHqJoxGLMYbtdjqd5xjkjppVm9cHxhTQhZZC45WBgF1mWOYju1kjwRAPf1cvO2xdlA91zcifILOZCng123/xAgOE8d6GfjPHvEME6ngCeg8+EYmrmWZLwdpHAcWOVou+x1HGbdtTr8bI0B6MZS3vrWBNvg6XnEur8skubp4DjzzGnLmvPwtDuSyG/UYp69k7bh3UbHRhWXzzF4Gqx5C0xqrL97mzk7VrhLFqDfXP5GQToWTm2VEGKCUgN2MwtO7CydEfxnjcGwA9KA4RsIGwrXKPKR/60yXbEiGvFCimNHI7onmq084RtXi7aHLtiFHn+XUYUfTNFP9PC1p33gCUTMBfC0CgHPIf/4NX92KQGsGcoh33Wih7kOjvMq7Bt1YiGmxjVRuCio1yo67AcIorprIuS3gh5qYpPPK1AU3LGByL1HERyCLv/S6/Lu8Bb86bOpoml4i+x2aDhOvezqDQb7TrRYAOS6jpbR/5uu3rspZJSIhGXc2ikFvQL3ybJQ8DQBcXqKv1jJfvdnJ1F/CRPammNTNs8DnSM/1UeHkrDMtQfWUEHuC6lLJYfiy9/ebZTqQy4J56
+ aDdbpzVJ
+ F3/FxCZ0/KQ4vfanotvWCvXAW5/Sa3ou2xLxEUReJv3hUuGRku4tI+6/KnVeIzbmkyCZosjo/EQzyZYBsIUHphFoiNTMHQ2HBLea+4H7rd6UOl4YwDnT716U7QlsjQF+hFjO4LiyK1Nc2F6Ur9RnDM3qe0nkrRFCRWqwo6ryjQOu7m/l363Z9gMdR8go+Bpo8L46SNhCwLm6YZFZU/M1w9eprjw8OG1H0/dD6XvUgX0aGDX0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
