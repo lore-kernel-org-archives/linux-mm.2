@@ -4,118 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A092FCA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 15:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F03AECAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 15:15:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D2818E0015; Mon,  8 Sep 2025 11:10:46 -0400 (EDT)
+	id 486356B000E; Mon,  8 Sep 2025 11:15:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 083568E0001; Mon,  8 Sep 2025 11:10:46 -0400 (EDT)
+	id 45E5B6B0010; Mon,  8 Sep 2025 11:15:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB43A8E0015; Mon,  8 Sep 2025 11:10:45 -0400 (EDT)
+	id 374316B0011; Mon,  8 Sep 2025 11:15:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D3FBA8E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:10:45 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CBB01601C1
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:10:45 +0000 (UTC)
-X-FDA: 83866420050.30.CFCFD61
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 89B7A20009
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:10:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="X3/19SQk";
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 26A276B000E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:15:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A90921601CA
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:15:13 +0000 (UTC)
+X-FDA: 83866431306.01.B10341F
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C784380003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:15:11 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nH9y+YEn;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757344243;
+	s=arc-20220608; t=1757344511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/dO3Pa6dEWUP8pelQvefMYAqpzf+ZorOHLTvnJ330hQ=;
-	b=5QT5BbHY5p3/Zcnfh7Mww+0bGphjcx7qaCC+V58Cki/kVvsID/pzgIKQl31nSm8NB9wVps
-	vWikfMNogUoY7ELcUHPzpHsqIPxYFXlEBKhD7rclsGUZvdoZqUdPOcRTAo2zWHW3xMq2LJ
-	3Lrp3r5iEYKnBMuqPkgFNa2U14ZdCfQ=
+	bh=cXA2Jum3C80Q1Y4JkqkK6rtU/2eiC3aTbCjeS9iNmzA=;
+	b=Vrau3bVPfLtiqKBVqDIz4d5HFnf239tLzDFa2K0VGuHC1kDVARBqSQkR3l1Gh/MQ6eq0MZ
+	FzIyWqtIZSNZeL61XMJXT+vww/RoNaQPt2vmeKeXpI8cwFLQCGx7W1FGhDUVi9frRLuTJ/
+	/LV3FNLSTuKFMSlbVxs00uiUO4a45B8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="X3/19SQk";
-	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nH9y+YEn;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757344243; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757344511; a=rsa-sha256;
 	cv=none;
-	b=LCzzhP2gnXM0G1Q9mwCSBIi5dljU7xWWNa3kfPf5J95mx8Wn16rh9XFtvXmvmIQKOPM/S5
-	xV3lhhVnZvR8cWoK/iN8y43oyJSOlyUjX3KhyE0Jb6rl4pyD/sFYMITFlQ8YY6wKOYL53G
-	tArJ1TvA8KX96wxgFC+PyTSZVqo93+0=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-62105d21297so6486111a12.0
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 08:10:43 -0700 (PDT)
+	b=n4CgEYry+qpZBP/E2PxDNB5fwZGG5aSqT3GoD5G/ZJqdS9innLNd2lMYNCiGE3rbUN4App
+	inNwl5RgpofyCd78wIU9vyoqZ2qSCr9I1fx18ADrFtjRI96URLhO0yoXGixd8Q8UH/VDKf
+	QqYEaV3//1N9aiOjlb28Sa8unmhrNG8=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-62733e779bbso1032358a12.1
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 08:15:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757344242; x=1757949042; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757344510; x=1757949310; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/dO3Pa6dEWUP8pelQvefMYAqpzf+ZorOHLTvnJ330hQ=;
-        b=X3/19SQkNGNhzorz5AEhhkA88ulKA9yzKGPb1U+wP6lPHZHGjL/By6m/dFGOi1rz9f
-         3gJmFr3KZIqsEPCqHLS4ZDXB/Q337qdlAR06Fh5XhBttleHM1s8flhSIqwPRnU0RdKWV
-         r2pfS9uNQmjEPPNpAuwyerLD5GBTu7RVhligXPq3CEiQ62fbbIbTAB4koUslqaQJ2a2j
-         FuUHW+ZD5GBYzfueMMEqzJZbVamVY2QOfV6I9BkvLNxDfcjmyfqqEfeXkVAL1f1A7N8y
-         7e2EfO/hfpDs6rq5Tx/0VdU9ShJifSt6e36LMYs5y26jGfe8AVlqfBCHFsfknTonORX+
-         ZNIQ==
+        bh=cXA2Jum3C80Q1Y4JkqkK6rtU/2eiC3aTbCjeS9iNmzA=;
+        b=nH9y+YEnWywti2TLKlX5uh6Hfq9rvmwooG7pK7dxvfsTxvlw57Jklt7Urm+ADLpG/4
+         l5nFQe3bAA4QDOWAwWBjPaay4EnoAtVfxQxmv82COb5uex3IBKmlotJHXExwFmnl64eb
+         tYxt3IODtqKIAilbUhVr1xhfnvAK9pNMOw7dxv2JtCGModRMBUkImWBwzDdbOlCuRfU9
+         ckh7Ue3Jr4aXoADlAXsVqRf63Nw01t9emTZLJpTd06GqFIRgDmdAi6ocp0vB42Hbdu2E
+         4OqTzHyRTCGNt/G9aUjiBSsTDPAFEhBfmo8K5QdGaA8bjcwKXKjdFndP87cuxn5m1jf5
+         ss/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757344242; x=1757949042;
+        d=1e100.net; s=20230601; t=1757344510; x=1757949310;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/dO3Pa6dEWUP8pelQvefMYAqpzf+ZorOHLTvnJ330hQ=;
-        b=XCwhqyLp6UE1Wl/J+/OK86WR08m8xyvSCtSTwHxeJt3oSZd/PvvNN3hmJT3rgbRsxI
-         Q4XjdFvSFofV/NfMppf1BMkBhMq6Ij7xNxu6e2IskWU1ifF0+8C//zR8LjJkX/1Y1O6t
-         7tzqQLRlB+1kxy0ZfhnE57vE0nWL3zGz4FQG5IMv0kxL2TvYEHSS7gV0PEzz7Pl7b06w
-         yLHY8OA9n8GtezIBMY3isPLHIoai5/zatv1Lhub0faJ36mKv/bUujSNgzs5Sx+RLAVJa
-         ioPKD37kvENBbJ5j4eMtA+Tosqbsq7Mc/0U4VSifOHYghPN7R3W1AXbmgenfK/EWfacd
-         zWkQ==
-X-Gm-Message-State: AOJu0YyoArQzPt6FQv3YOUqFfKgp47H8QvU9bXAvO7ED1rRlC9nZTMWc
-	JZpCOVuPBzFeLFJu9JAr3icWUhs91Feen/DyF5py8Jl194X9izVtVObP9JwXKRQH/RnWvjSHu19
-	IB5r+6Uk1+ACaadDRYzymfvWq6Z1cMWKRLryjMyU=
-X-Gm-Gg: ASbGncuU29XuAnDhjEWXDu75zFZLb5kQcWz+PgPyNaE7JjzNLF7uijsp5vqbMFN5hYL
-	pLBSDHtUVrKLXDJsogJ/wZUI6GqXctq3z2mbWztws3DYjPijelkCJwFjIqxshj0doGpD+XGQZf5
-	Zh13X3+XsLVUrO7W//Mtb3LJetlCPdiX30SXr8J32aufMJ7bBhggY85Hn8B+4mD2ewbzKqSMN08
-	qOEqBqg/ZM=
-X-Google-Smtp-Source: AGHT+IHnINkBVpoQfKvgRMifbAKSbbKVvSSsU75fh0HsrYLeTsWizN/4a6ihqC0j6vCvL42vfQxG+u48mAibFUSQ4OI=
-X-Received: by 2002:a05:6402:2553:b0:617:b28c:e134 with SMTP id
- 4fb4d7f45d1cf-6236d2ca6cfmr8301330a12.0.1757344241773; Mon, 08 Sep 2025
- 08:10:41 -0700 (PDT)
+        bh=cXA2Jum3C80Q1Y4JkqkK6rtU/2eiC3aTbCjeS9iNmzA=;
+        b=RxByGmImQFT1D7swNSEfUSEL1ZDMXCgjgrgmUWlgQCQHzLrvaMFA7bi30LKFxTN3M1
+         iMWkqvl/NH54EMQ/ngsSoTxos87Uubtn6fXrVeylYTEfGwdvVWCZHbufkMRWzoKgof4L
+         0XGzfpocwl3oQvDZoob6ID4Bih5lKU9oU+yb/WUbDLrjoZ39uzZrrE4pJ+mW9/AE7cTK
+         IvMGCwp0s3TVTlMRsH/zmj3H6Yf2VnXpgTEnC5P3cKlU0dXfMpzh7Y+Dm7fHmLTGAXvQ
+         XnKMhozt+HyZUN8Y8Pf6JSBAym7acAXqBFaAG/y4IafpWx0NQVlZGZRu0TjNH2pP+0O2
+         /+cA==
+X-Gm-Message-State: AOJu0YyCySUPPovgUCO+hX4Wy1YuFKW/sNMBTv2WNJ1bNZP1VD/Lzw4f
+	pAMBHdfxl2+2Zjx3hpJK5UZcQhgzyrK4xngKt2XWPQi1eQx/xWs4l0CZtRgXdKriN3TFSWrR1D2
+	0p8wgX1W8tYPyqqN0zt8MHGpCb5qNB4Q=
+X-Gm-Gg: ASbGncuSEnwupMoCUYGTL1jbzF01Yxl5RNhBL7iZIMnPPfYVOqTtdefv1+nnwpz8WEZ
+	NgxLa1WRQQcLuGF4NFJADTfuhkEdEuhy++DBCxwCjA/vI2MjRCjkh+Mv8orRL9QTo1pKCFTfdW3
+	2SBYjfN4Bp5qmPp6sP5bIVVdQ4eme0ajQ95Y3ri0AfLVB5zwdv+6bryZuf0uBVZgsA8fNrt9Lon
+	1DxZjT/rVG3s7tZVBnbqg==
+X-Google-Smtp-Source: AGHT+IFfzgh7slkI9APLqBFcPALe6N6LfPwpqVZHZal2suURwJH/Q0oQbDMfDqtIwsdF4Gq5DaUCBzS9zexyL7jPqeM=
+X-Received: by 2002:a05:6402:4415:b0:61e:a5c8:e830 with SMTP id
+ 4fb4d7f45d1cf-6237aec0166mr7232307a12.1.1757344510250; Mon, 08 Sep 2025
+ 08:15:10 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250905191357.78298-1-ryncsn@gmail.com> <20250905191357.78298-12-ryncsn@gmail.com>
- <vj7utcgrseaot6ktpbwgshthmjza7w7vk2glede273tza7yfi6@cyxppxoney5u>
- <CAMgjq7CLSuSfRwMYqNL9ZU3ehpZfR6oewHsYtLD4CTXcvEKOTg@mail.gmail.com> <eu3s6hqfcbkymjqk2rrngzx7qxjzpivfty2dr4lrduxohxuuuv@g63qihvder5d>
-In-Reply-To: <eu3s6hqfcbkymjqk2rrngzx7qxjzpivfty2dr4lrduxohxuuuv@g63qihvder5d>
+ <4e0847db-0503-406b-95b4-02ee7e8f9604@redhat.com>
+In-Reply-To: <4e0847db-0503-406b-95b4-02ee7e8f9604@redhat.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 8 Sep 2025 23:10:05 +0800
-X-Gm-Features: AS18NWAOZumiwP4vIZdf4GKuXoH9G7uXKNhi2ON0m9FsP07PZ039SG3x5bSA-As
-Message-ID: <CAMgjq7AHZ+X83pOUiOfhXWkV158uAvv=NQE6ibh33BQVgPJ5iA@mail.gmail.com>
+Date: Mon, 8 Sep 2025 23:14:33 +0800
+X-Gm-Features: AS18NWD12hxIhTxyJKTGDZ2indGJ3CbXeECCYM7JzuKXWB8xNJgaDKDEKpvdK3M
+Message-ID: <CAMgjq7DwOe_OJ4qyfY-2=kmaY4tfvQGaedie+6NvPPX7YD0YGA@mail.gmail.com>
 Subject: Re: [PATCH v2 11/15] mm, swap: use the swap table for the swap cache
  and switch API
-To: Klara Modin <klarasmodin@gmail.com>
+To: David Hildenbrand <david@redhat.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
 	Barry Song <baohua@kernel.org>, Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
 	Ying Huang <ying.huang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@redhat.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	linux-kernel@vger.kernel.org
+	Yosry Ahmed <yosryahmed@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 89B7A20009
-X-Rspamd-Server: rspam05
-X-Stat-Signature: fo7xysmbc9ke6aqc6f7hpmgtq4ge9jcw
+X-Stat-Signature: xnkjrop3gruf87c3robhgo5qz3ceozuq
 X-Rspam-User: 
-X-HE-Tag: 1757344243-63584
-X-HE-Meta: U2FsdGVkX18GK45T/7U303DPka1GnvSAnKnkNtsR23ilhWggIgIiCTcklo8Uxk/462YSlUf1G5Us91oZAAoaD+9MWABZSzbBe0djZP1cqmkNE7VDLTnSprhD04gPqEpFpyYeNO5u4KZ/xPsJypj4leqklRN802BsOtEEi6of3VoctsYUckJKdArZ+KWvPzbAHkWFY+fS8+XynkmjARTcqlOjay3RtgDaThY/KHySoczPI/+cmRkwQP9JgLLVafsWF5FRwRLIyDU0LtlABFIO2nFCKvjyeVFyW21JdESqdF3VlpRV6rvVWajWHAJKTSGJMhkhc4AnfAYeI9M2L6j452UkeTIa1TttId3FX7zHPVAPdvY1qS+FxuKkwURtDGrL6eJ6CI5cIbiDIa52GsWxOO2rjS3D+n5S7YNE2c7TMgbnRyo5V50z5yQPXmmLw+ZuI2NcnCQ9iEiO08JGUx3iqp45iCFWe9dZoiJ+mxfHYLSw4IVyWr3iEiNXe45SR+5WPYmB/v3Siorqy6fiFztyU463ejK+X4JWvEuWVIsb7vnKMgJSOAPVCbI/9KqofT0Xt+N3QzIOvbSuOmZkek6P2SYGxdorq+25zq2XE6i8IoCL1fVyEMr13fYcGffJeBMWD8lO3PYWsbR5pcXElxGgRAX01RcPS271TjzWXIG38bi+q9RhdAftLPbYASFaL+qo1sJ5jfzZxEopbAaHES+mdiQ/p9h+THxHGUlzDWG4+iKpAStWZaHntxFtRpKc+8oFS7I+sUzg+hClE23Aoyx10BdM5luyjA5iZMwY12rOj9B2iouPLLrtJugFBU1adnXSEeHdQP46QgupnY7UKCgS0yRyd/qLsfCILPWdUMH+ecsugwofvmqfu/lB2i+RiNITVwKF+MLQYY22SkUt7qH3enkYVR4jtUoi7cgm8RY8GROieJdYjxNT9Fr6j+c0r1YjFdvOoovQcJ6lQFXh4RV
- YGxZssBI
- m93q44O4BU2oMlWh7OyXsvpgaC0hOMMCDvJJVQNnAHOf9vEP3Q3VA08vQai/p7GdwBelsca+cieS0TKiKYSscU7k1EK7EqAB52R5EuvBI0483Wk7bgBRv5KSoxC/ipvgGn/FLx9Alsrk829zriN/ypBnpdN88YEah4Uxz3ouVDNz1Xla1JP0Bn7cyBTtPdIXw0Fe9nUuPzoJFj4TvsD/8dEiM6mgFys6/B9IJE9pcMfJ64Yf/qnILZ2j3nwCmM/EtM/ZyynTU/qxcvpeKveKLCp8JuORoVZ6tqfjdzdYrvV/ZVR8dg+CYqOi/J0+fNntTeK6gDrw8wyT90/iwaRHpUZIC2EtAyqkf/C8hMPjMmYvRabezB563rFLmnUvuKTmCfCpbNMupIW7Wdz8G3VXVR6INKo3GcHMxo3AiYOATVu4My9NuFnSanJUztQss+uRiB1I1Y84x9QbArR4=
+X-Rspamd-Queue-Id: C784380003
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757344511-298111
+X-HE-Meta: U2FsdGVkX1+ZFCW2B/BEvtDvoG98ymXMGMm5VkPgrSIwL4vCCyrJgVvO5C9XOZov2BNQvaWzLUQ7QyF08tpeaYglYFJYmP88zmgyMviR2Rh4H/E8zpLFOO2aB1+IAQo220D+fu9ErWjA22tikhyVWXaVKQtuGYsQTXjq3Xy7TVRmP2odr363yDT0hgWsoZfGRw8UBCnP9bLD3LrX2izTb20etmoQl7IoRqpDofb0SlkmBxn/K9o76PHvrJzSbI8zXJ8rRzx9tC/bl9mQnUjZ4R/XSCIS4xSdO+/N8pFffvTRTUP47O3LpX4Rj/Lt1CQdqnfehCbcOYJaaDxo8E/I1az/kef9l7BRCA6GPW8dAlMcN6v00wpnr3acRoYTa30BLXsv5JgYx8X5aeGASVwdqkmclQei5xezKFibfiiiNKioC28KZDoq5fOa7i6EJhkAMxPD0mNht/p+3VF9LDBoPGv+wlLT1BRoXt+HZeZE2v5VJPdQ1euLjNFQoO4iUvYf9E9lOBMPSnRckk8w0TbMyPiAARwrrJsveiyyaR2kr+mLnfCj6jBL0PxrorRBUy+l5pF8dYqlQoqB2+9HoiSKAeY4lUW9aqA8uqgWbuGv2dRTd5zv16ED5Zf6EJWvfR8lZnUuq2V5h0wm7TvJ1IzOILkWpQ7g3pTnA5/k1Yp7vijmdLKzXyapuNi8UziB6ZvWr1e9wSa8yfY6Ln9CSjwQZeksXzMqgIbDOc0Z10Lzdkycq8cFMj2bWBfYcPfCoxgTcfiSMUPEABiMDtU+Wvkd8HAuPHw3TaR0lANFfHgvPuPvEWZY5lwHY2ddRWnCG0Enb+6Cp4l3PC0wtxxH7sgYmJlfhcRuom9osq5kN8hcATIqrzDS9bcU22BzHJBFgKiVrrqEahmjknT4KTIT8MW2/Hq7UXbZbAUVOc97Py2bV0A3sphg9WJeOXND5mikFHpgbcaTXTrIynzMfzOdWr1
+ B8ukk2Uu
+ 2L+sgJPipCllvyei3ABAq7guUlii9ni65cB8gFaBs+qaTc/mo/HMIFJtcB4O+6lDyjmFsAIKT2oHGUd/VlZKQzG1UMV3BINGQmBAIcThGxKho54T6WPyzzPJxK80uuGinG3j1VizjvXgkwUlsw+jvrGOgucgps2IzaQBjyxNKIWEzdYeV5s7M7fQK+kGnBcxSdd0LTxZIIi9Ip16SacbQR72m/pGo5reuFnj52s7JUsQ0ZGu7zPnLWsmnTQ/1y71F5TQwBVHnYfKjY4Esj5/ge6WlI+LdXL756xNV1KAvUCjXI+p8fwqGqrnYNejllcFfwdbZwiyXAaBTpnjzSY1uOp7U9QorSyi4LaLoyacxtOS/3B9fHoyFQcoXj1cH/0fnASCgLRSyjP94D4p88MuLmjxf2LTwcV+Z1f8L
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,180 +122,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 8, 2025 at 11:01=E2=80=AFPM Klara Modin <klarasmodin@gmail.com>=
- wrote:
+On Mon, Sep 8, 2025 at 11:09=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+> > +static inline struct swap_cluster_info *swap_cluster_lock(
+> > +     struct swap_info_struct *si, pgoff_t offset, bool irq)
+> > +{
+> > +     return NULL;
+> > +}
+> > +
+> > +static inline struct swap_cluster_info *swap_cluster_lock_by_folio(
+> > +             struct folio *folio)
 >
-> On 2025-09-08 22:34:04 +0800, Kairui Song wrote:
-> > On Sun, Sep 7, 2025 at 8:59=E2=80=AFPM Klara Modin <klarasmodin@gmail.c=
-om> wrote:
-> > >
-> > > On 2025-09-06 03:13:53 +0800, Kairui Song wrote:
-> > > > From: Kairui Song <kasong@tencent.com>
-> > > >
-> > > > Introduce basic swap table infrastructures, which are now just a
-> > > > fixed-sized flat array inside each swap cluster, with access wrappe=
-rs.
-> > > >
-> > > > Each cluster contains a swap table of 512 entries. Each table entry=
- is
-> > > > an opaque atomic long. It could be in 3 types: a shadow type (XA_VA=
-LUE),
-> > > > a folio type (pointer), or NULL.
-> > > >
-> > > > In this first step, it only supports storing a folio or shadow, and=
- it
-> > > > is a drop-in replacement for the current swap cache. Convert all sw=
-ap
-> > > > cache users to use the new sets of APIs. Chris Li has been suggesti=
-ng
-> > > > using a new infrastructure for swap cache for better performance, a=
-nd
-> > > > that idea combined well with the swap table as the new backing
-> > > > structure. Now the lock contention range is reduced to 2M clusters,
-> > > > which is much smaller than the 64M address_space. And we can also d=
-rop
-> > > > the multiple address_space design.
-> > > >
-> > > > All the internal works are done with swap_cache_get_* helpers. Swap
-> > > > cache lookup is still lock-less like before, and the helper's conte=
-xts
-> > > > are same with original swap cache helpers. They still require a pin
-> > > > on the swap device to prevent the backing data from being freed.
-> > > >
-> > > > Swap cache updates are now protected by the swap cluster lock
-> > > > instead of the Xarray lock. This is mostly handled internally, but =
-new
-> > > > __swap_cache_* helpers require the caller to lock the cluster. So, =
-a
-> > > > few new cluster access and locking helpers are also introduced.
-> > > >
-> > > > A fully cluster-based unified swap table can be implemented on top
-> > > > of this to take care of all count tracking and synchronization work=
-,
-> > > > with dynamic allocation. It should reduce the memory usage while
-> > > > making the performance even better.
-> > > >
-> > > > Co-developed-by: Chris Li <chrisl@kernel.org>
-> > > > Signed-off-by: Chris Li <chrisl@kernel.org>
-> > > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > > ---
-> > > >  MAINTAINERS          |   1 +
-> > > >  include/linux/swap.h |   2 -
-> > > >  mm/huge_memory.c     |  13 +-
-> > > >  mm/migrate.c         |  19 ++-
-> > > >  mm/shmem.c           |   8 +-
-> > > >  mm/swap.h            | 157 +++++++++++++++++------
-> > > >  mm/swap_state.c      | 289 +++++++++++++++++++--------------------=
-----
-> > > >  mm/swap_table.h      |  97 +++++++++++++++
-> > > >  mm/swapfile.c        | 100 +++++++++++----
-> > > >  mm/vmscan.c          |  20 ++-
-> > > >  10 files changed, 458 insertions(+), 248 deletions(-)
-> > > >  create mode 100644 mm/swap_table.h
-> > > >
-> > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > index 1c8292c0318d..de402ca91a80 100644
-> > > > --- a/MAINTAINERS
-> > > > +++ b/MAINTAINERS
-> > > > @@ -16226,6 +16226,7 @@ F:    include/linux/swapops.h
-> > > >  F:   mm/page_io.c
-> > > >  F:   mm/swap.c
-> > > >  F:   mm/swap.h
-> > > > +F:   mm/swap_table.h
-> > > >  F:   mm/swap_state.c
-> > > >  F:   mm/swapfile.c
-> > > >
-> > >
-> > > ...
-> > >
-> > > >  #include <linux/swapops.h> /* for swp_offset */
-> > >
-> > > Now that swp_offset() is used in folio_index(), should this perhaps a=
-lso be
-> > > included for !CONFIG_SWAP?
-> >
-> > Hi, Thanks for looking at this series.
-> >
-> > >
-> > > >  #include <linux/blk_types.h> /* for bio_end_io_t */
-> > > >
-> > ...
-> >
-> > > >       if (unlikely(folio_test_swapcache(folio)))
-> > >
-> > > > -             return swap_cache_index(folio->swap);
-> > > > +             return swp_offset(folio->swap);
-> > >
-> > > This is outside CONFIG_SWAP.
-> >
-> > Right, but there are users of folio_index that are outside of
-> > CONFIG_SWAP (mm/migrate.c), and swp_offset is also outside of SWAP so
-> > that's OK.
-> >
-> > If we wrap it, the CONFIG_SWAP build will fail. I've test !CONFIG_SWAP
-> > build on this patch and after the whole series, it works fine.
-> >
-> > We should drop the usage of folio_index in migrate.c, that's not
-> > really related to this series though.
+> I would probably call that "swap_cluster_get_and_lock" or sth like that .=
+..
 >
-> Interesting that it works for you. I have a config with !CONFIG_SWAP whic=
-h
-> fails with:
+> > +{
+> > +     return NULL;
+> > +}
+> > +
+> > +static inline struct swap_cluster_info *swap_cluster_lock_by_folio_irq=
+(
+> > +             struct folio *folio)
+> > +{
 >
->  In file included from mm/shmem.c:44:
->  mm/swap.h: In function =E2=80=98folio_index=E2=80=99:
->  mm/swap.h:461:24: error: implicit declaration of function =E2=80=98swp_o=
-ffset=E2=80=99; did you mean =E2=80=98pmd_offset=E2=80=99? [-Wimplicit-func=
-tion-declaration]
->    461 |                 return swp_offset(folio->swap);
->        |                        ^~~~~~~~~~
->        |                        pmd_offset
+> ... then this would become "swap_cluster_get_and_lock_irq"
 >
-> (though it's possible I have misapplied the series somehow).
-> If I just move the linux/swapops.h include outside the CONFIG_SWAP ifdef:
 >
-> diff --git a/mm/swap.h b/mm/swap.h
-> index caff4fe30fc5..12dd7d6478ff 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -3,6 +3,7 @@
->  #define _MM_SWAP_H
+> Alterantively, separate the lookup from the locking of the cluster.
 >
->  #include <linux/atomic.h> /* for atomic_long_t */
-> +#include <linux/swapops.h> /* for swp_offset */
->  struct mempolicy;
->  struct swap_iocb;
+> swap_cluster_from_folio() / folio_get_swap_cluster()
+> swap_cluster_lock()
+> swap_cluster_lock_irq()
 >
-> @@ -54,7 +55,6 @@ enum swap_cluster_flags {
->  };
->
->  #ifdef CONFIG_SWAP
-> -#include <linux/swapops.h> /* for swp_offset */
+> Which might look cleaner in the end.
 
-Oh, I think I know what the problem is here. You disabled SHMEM too.
-Most users of swap.h includes linux/swapops.h already. But for
-shmem.c, it doesn't include linux/swapops.h when !CONFIG_SHMEM
- so swp_offset is undefined.
+That's a very good suggestion.
 
-It's true that the problem is in swap.h, it should include swapops.h
-for !SWAP too to avoid build error like this. Thanks for the report!
-
-
->  #include <linux/blk_types.h> /* for bio_end_io_t */
 >
->  static inline unsigned int swp_cluster_offset(swp_entry_t entry)
+> [...]
 >
-> it fixes that issue for me, and my other CONFIG_SWAP builds do not seem
-> to be impacted. I attached the config in case it's useful.
+> > -struct address_space *swapper_spaces[MAX_SWAPFILES] __read_mostly;
+> > -static unsigned int nr_swapper_spaces[MAX_SWAPFILES] __read_mostly;
+> > +struct address_space swap_space __read_mostly =3D {
+> > +     .a_ops =3D &swap_aops,
+> > +};
+> > +
+> >   static bool enable_vma_readahead __read_mostly =3D true;
+> >
+> >   #define SWAP_RA_ORDER_CEILING       5
+> > @@ -83,11 +86,21 @@ void show_swap_cache_info(void)
+> >    */
+> >   struct folio *swap_cache_get_folio(swp_entry_t entry)
+> >   {
+> > -     struct folio *folio =3D filemap_get_folio(swap_address_space(entr=
+y),
+> > -                                             swap_cache_index(entry));
+> > -     if (IS_ERR(folio))
+> > -             return NULL;
+> > -     return folio;
+> > +
+>
+> ^ superfluous empty line.
+>
+> [...]
 >
 > >
-> > >
-> > > >       return folio->index;
-> > > >  }
-> > >
-> > > ...
-> > >
-> > > Regards,
-> > > Klara Modin
-> > >
+> > @@ -420,6 +421,34 @@ static inline unsigned int cluster_offset(struct s=
+wap_info_struct *si,
+> >       return cluster_index(si, ci) * SWAPFILE_CLUSTER;
+> >   }
+> >
+> > +static int swap_table_alloc_table(struct swap_cluster_info *ci)
+>
+> swap_cluster_alloc_table ?
+
+Good idea.
+
+>
+> > +{
+> > +     WARN_ON(ci->table);
+> > +     ci->table =3D kzalloc(sizeof(unsigned long) * SWAPFILE_CLUSTER, G=
+FP_KERNEL);
+> > +     if (!ci->table)
+> > +             return -ENOMEM;
+> > +     return 0;
+> > +}
+> > +
+> > +static void swap_cluster_free_table(struct swap_cluster_info *ci)
+> > +{
+> > +     unsigned int ci_off;
+> > +     unsigned long swp_tb;
+> > +
+> > +     if (!ci->table)
+> > +             return;
+> > +
+> > +     for (ci_off =3D 0; ci_off < SWAPFILE_CLUSTER; ci_off++) {
+> > +             swp_tb =3D __swap_table_get(ci, ci_off);
+> > +             if (!swp_tb_is_null(swp_tb))
+> > +                     pr_err_once("swap: unclean swap space on swapoff:=
+ 0x%lx",
+> > +                                 swp_tb);
+> > +     }
+> > +
+> > +     kfree(ci->table);
+> > +     ci->table =3D NULL;
+> > +}
+> > +
+> >   static void move_cluster(struct swap_info_struct *si,
+> >                        struct swap_cluster_info *ci, struct list_head *=
+list,
+> >                        enum swap_cluster_flags new_flags)
+> > @@ -702,6 +731,26 @@ static bool cluster_scan_range(struct swap_info_st=
+ruct *si,
+> >       return true;
+> >   }
+> >
+> > +/*
+> > + * Currently, the swap table is not used for count tracking, just
+> > + * do a sanity check here to ensure nothing leaked, so the swap
+> > + * table should be empty upon freeing.
+> > + */
+> > +static void cluster_table_check(struct swap_cluster_info *ci,
+> > +                             unsigned int start, unsigned int nr)
+>
+> "swap_cluster_assert_table_empty()"
+>
+> or sth like that that makes it clearer what you are checking for.
+
+Agree.
+
+>
+> --
+> Cheers
+>
+
+Thanks!
 
