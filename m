@@ -4,114 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACA41CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 16:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 304AECA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 16:34:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003B36B0022; Mon,  8 Sep 2025 12:32:43 -0400 (EDT)
+	id 75A6F8E0005; Mon,  8 Sep 2025 12:34:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF6A96B0023; Mon,  8 Sep 2025 12:32:42 -0400 (EDT)
+	id 70A7B8E0001; Mon,  8 Sep 2025 12:34:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C2B6B0024; Mon,  8 Sep 2025 12:32:42 -0400 (EDT)
+	id 5D26F8E0005; Mon,  8 Sep 2025 12:34:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CC4746B0022
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:32:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 981E6C01F2
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:32:42 +0000 (UTC)
-X-FDA: 83866626564.17.BD87C05
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 62205C000C
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:32:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bN66nQ+8;
-	spf=pass (imf28.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4712E8E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:34:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DD5741187D1
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:34:41 +0000 (UTC)
+X-FDA: 83866631562.06.C0D6EA0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A1DBF40006
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:34:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757349160;
+	s=arc-20220608; t=1757349280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w+0WKcZRkSZVexNJkaEUVOZobbDOUey9tRoQsX6OtrY=;
-	b=If+V/MFabCnOu2/3wBCQN2n7oILQpH0vPv2z1Vbl89DKgfqYy5N97RpfH78Sa00/yGjxGs
-	8YAzkVJPMkx47mPEETISccRZ5akRd4IqF+iBwADHB035+gk2BdHJzv5DxBtGJOXUPvDHPO
-	fbW3VjcBRSaN0ccc8KeiqvcreYP6MmM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bN66nQ+8;
-	spf=pass (imf28.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757349160; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=KRchr8pA8KC0RWN0Y1UtmU8dNv+O/thXnplqZUD9t1U=;
+	b=BSJPBoxSMhG4KkPMEsm+sQ70zsjuJaovMU0bpfn9gIO6PXQmUkQsJ+Efkp4XlCw3raUXZg
+	tauZJf/4SZAu8fW+sdZklGMYxptAlBzX+U2g5I0cFKdLte/eDtOerKHYjFANy06PVh3BOK
+	PadslWlJ99Net42FdevI4oDEAqtAgqM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757349280; a=rsa-sha256;
 	cv=none;
-	b=As2MRAtalfq/3kf8w/uQq6I9+z0oeoXUgUjslXpTVeyiqH4N+MJ0en6TQPvf5lYjWeAfwH
-	YQm9n59yoqe5ebg+GFRTDjejrHNyH4O4tJ5ub69UFIdfi88SBmv8o+4n6KmoGcJM4edeha
-	S7Eg+oefTGTWaNGh2dj9jqVnqBISuZo=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-24b21006804so48557385ad.3
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 09:32:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757349159; x=1757953959; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w+0WKcZRkSZVexNJkaEUVOZobbDOUey9tRoQsX6OtrY=;
-        b=bN66nQ+8ZTfpm7lav3DQxr1xkomqqccpGpU+Sg+yxMVGQvocxDBbbfBDDd5sxzq3Sf
-         wg0szcedSlYJdOXVddAqqtsrU5piEwJmhdIQmSpH+2hlr9b+JOsPSsyi0quLEu2k2HwZ
-         wHFL6ChmtbX98dQGvNYs4czDzcvR6U7DoQTSkWFOd8XX5SWLxnVW2eWMRHo+O00iihJP
-         x0omUznAwEiJo4zfem2eAC4CV5NbOpSlmEiWP24gUsOqymNJAFNBwUPVyGoAkG5qguej
-         Hn9thGd1pJuILPghJsLgdpbF2M30TeSdL2bbfIXKf98jD8fDSpB8/62O0yekWykIft/B
-         Mgfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757349159; x=1757953959;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w+0WKcZRkSZVexNJkaEUVOZobbDOUey9tRoQsX6OtrY=;
-        b=GWvGQjXVbmnXgvQ6tjXzawA6vk2LLHsKr/pnCtLU1sGk59UT/+R95q4EwDOZmu3rLU
-         gO8cGyeDbEDt3rrZPopL/Q6L/N2EAqYBcJu8z0vGqTqS8QvhDOHdgHmhD3YB7ab2ZU0W
-         lMNazuDqGvg3XyPJZFpGMlGFI/Cv8IRDHEc6uPaAQTIB8Nm084aB00OQyAu9TnX12XKL
-         nTTvFcEVdy1eCcEYaBinLg5Jl2yEh323m4xxlkBfiJSAzkN8f5Vt6V2F1TrBS8/UCw0B
-         jj5vSnkCPmBdcM7tdxOVq02gkPrC0bF71Zf8B0JayyKDV8ya04plxpR3T8qq1mM8hE05
-         Ugyg==
-X-Forwarded-Encrypted: i=1; AJvYcCW49ItL0e8SI3A174GbTyMaojwS4mYpIOR3EpRJOvekIelj1KpLDj75PuUbY6aM0J3NPJ4DuNyQeQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx64/32aHHB1WvcIcfyRo1jHVq3Cas/a6aqyOO5OCF8jeOBy/9Q
-	BxCdiVJU7OKA4q8xFixG7XiBXQ7O8bKe4fhH/AwJfeRp6bky4Jzg8D6yCLNyObNQf1p3dsEj0p3
-	sfmmGlStYSDFjKcUtYDJJlie0/yxC92M=
-X-Gm-Gg: ASbGnctuAAGTFxxcHV+IqAlAoS7iyzfM7RYw1bDyLTldhi5Zo4QeeKsVueg0VPGPC/I
-	JT2O9/aezacAhZHHdr+a9wDO4be7rHGIrkK3jsYFejGazxnHyF3q4GGpNolT0ld0vA+h7QsQ1mm
-	GrJrGyy5O7V2SXoYmYo0deiarD0MTGdfK6grsUdG9RCCHyCYmVQD9KcmDNbLilH03v033jfNIVx
-	zGAf/ltsxlPNWpHPQ==
-X-Google-Smtp-Source: AGHT+IETc3c3cLRTFof5BKTTblzeGAw5qubihFCD5fgwYnPWwAqzknEw27hmimwnbjSTr9fXTHNyB/WBEs118AnTKKw=
-X-Received: by 2002:a17:902:fc8e:b0:23f:f96d:7579 with SMTP id
- d9443c01a7336-2517330a5e7mr103859335ad.37.1757349159078; Mon, 08 Sep 2025
- 09:32:39 -0700 (PDT)
+	b=lKtIQik2CE6qavnbd8yOd0Yk3GVM112SbEewaJok8OsU0JeS0AaXhRXdqIfC8j43TEcWoR
+	CArXddEBMF1Me1fkwqSn/ItngibVFA4LTGnhOLpKsSYvhUM4lfqZarLR8hNund7pKcA7BF
+	9N698hGEm5INb/hQ7BkE/obPc9fVrXs=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 581001692;
+	Mon,  8 Sep 2025 09:34:30 -0700 (PDT)
+Received: from [10.57.91.39] (unknown [10.57.91.39])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C9E13F694;
+	Mon,  8 Sep 2025 09:34:36 -0700 (PDT)
+Message-ID: <d7cd4004-bacf-47b0-9cd8-f99125e02238@arm.com>
+Date: Mon, 8 Sep 2025 17:34:34 +0100
 MIME-Version: 1.0
-References: <20250908013419.4186627-1-tweek@google.com>
-In-Reply-To: <20250908013419.4186627-1-tweek@google.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Mon, 8 Sep 2025 12:32:28 -0400
-X-Gm-Features: Ac12FXxJdxahVvmzM4YiQBodWGcP75VV7B_u38XfqggRVTZSjI_XSg54VA1OJx0
-Message-ID: <CAEjxPJ5q0eriGjo1tdfN+pzBBN5OeyfMaYp_sNQcOg-rDaXVCA@mail.gmail.com>
-Subject: Re: [PATCH v2] memfd,selinux: call security_inode_init_security_anon
-To: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	Hugh Dickins <hughd@google.com>, Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, 
-	Jeff Xu <jeffxu@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Isaac Manjarres <isaacmanjarres@google.com>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/6] arm64: support FEAT_BBM level 2 and large block
+ mapping when rodata=full
+Content-Language: en-GB
+To: Yang Shi <yang@os.amperecomputing.com>, Dev Jain <dev.jain@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Ard Biesheuvel <ardb@kernel.org>, scott@os.amperecomputing.com, cl@gentwo.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20250829115250.2395585-1-ryan.roberts@arm.com>
+ <e722e49a-d982-4b58-98f7-6fef3d0a4468@arm.com>
+ <dd242f5b-8bbe-48e8-8d5f-be6a835a8841@arm.com>
+ <aeb76956-f980-417f-b4e7-fe0503bb5a2b@os.amperecomputing.com>
+ <612940d2-4c8e-459c-8d7d-4ccec08fce0a@os.amperecomputing.com>
+ <1471ea27-386d-4950-8eaa-8af7acf3c34a@arm.com>
+ <f8cf1823-1ee9-4935-9293-86f58a9e2224@arm.com>
+ <bf1aa0a4-08de-443f-a1a3-aa6c05bab38c@os.amperecomputing.com>
+ <39c2f841-9043-448d-b644-ac96612d520a@os.amperecomputing.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <39c2f841-9043-448d-b644-ac96612d520a@os.amperecomputing.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: f8gi8pwp7ggwxwnb97z38e6648wmjt5s
+X-Rspamd-Queue-Id: A1DBF40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 62205C000C
-X-Stat-Signature: xiayomc4ia7n54yasspcpnmg1wyoiob1
-X-HE-Tag: 1757349160-498344
-X-HE-Meta: U2FsdGVkX18vxJajWhuSixw40g3xWHHd5vHH7SosN7oYMCgwql8bCPKKhLpP64++A0vpPEOV34YNX5jGoK3gRfS+bR1yiAKnmfH6NO5eWxbxhK2h71eIeWGfASkS/QKBabS9Tqefomu3/UQXRPu6gQ0F7+JbPQbvoCElTmanM2KjLNkQ2yAW2+fe/kCDN4TKsRqCbSSWLEIl1dLwpKsD5NnhEkz0GRH7aX7K5VQhxtxvrzSo5CuH0CIvhDbpOiEp4c36KghjJ6xXseOWOyivfGyGCvxTh98shEWBfmSlu78ljxq86kwgGdQ2EwzlPzm6klGccXJJgUK+OEw98CofkQmrkzeZjpCFnbZAC54EEhqFITo4bC6mgyozg7c3Ju1hbF+HXoRIxFOiy85qUWAC1WI1VGY0Wf+HNVn3z4+jDY/59//lRvz1lzByD3CNJMzt/5LWVifruVT2dzFl0kpUJyCFZ4GalRVRZ/qQ19Jeaix8Q65ttw2LgXHL//5kiGLm3g5O6IBEMPrfD+q+UJXPGJmCc6L2W6VVRW9XHVtNW2x4zLgZKysix09SmtWzCrArEcaAn7bNuVIkoXfpeoSdzUEp3aMye/iHoJOmNxA+tUT7rp32PbvPbwgILN7L8hgfzzq+BMPCxn0doNWIz+TXJ30O5K+UC0FM/1hhQ3UF+5jQpKykvSU3yWG/VE+LXn93AjyxHCM2LcE/hJFR88aoIwALG9i7FbGHLhEx9HeFEa83C6TiW1vzx7N9TViNf/b10v2f2dNv9PuB9M+YSGR9FzKy8g5gzLfPBFFtLCuMGG6szufySMsLqwHRv1gYt1ztGt1v2iN+KhDF4WU2w2cx/mmilpLki0wncoGDyI0HQT+AXuGWiPN6HSEqLbYxWK31wC8UmFEt9GyaDYR4W60iLf78a8kvckrIbts6hGZRUw3SW5KY2G6QjLvrnuuytvKroYENWXX8HuGeteIBqYB
- PD/e8xid
- Ly00SQyWciEkJzCzvMqX4O5Kla5hHAmS+9OgR/TuuO1hLv8fGdUCv8Ta7wE2piFKoOSQcfDXJu9To1qFTaJJMLWvBXdUHraUaVkWADseMoKgfTdnlFghkrw0cElf7EwX/VpxKZngihm8JmCODQW+7rkNqJKfjKZKA3QOZVhFI1eqEUr4H8Y8XuNLZ1Bnf5vA8QV5Tu4LVb77ASG4oe+pIet5CaIYfD5jZtUGQpfFvoMxnnW+LW1n4yahTgTQVcbHPX8wsOBNFQbGVJTkxyqF1eEjIBiDoamiaAKWPBcjIw6dHij34/ul+u5m91ZpFIaeWD9jWKzNTd0BDvcLKMif93sd33FncmsdoFztD/is2InJCT6X50RKNWS26XKg3INs7WNc+OUJBjmerhWPKtMjmo+AWmcI2zMXKjyQcXoP1LnpcOUowxUtp+TnuYJWcyyVdjyhyZtuiqlB4k9nU0KhsU51Whv1YpypaBmjf4S4I+TzqIYZI1ysLNRGQsE/rUwFurl0wQych8MR/wE7JjvqobBZ0IQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757349279-850110
+X-HE-Meta: U2FsdGVkX18+G0wNKBZWUpadM6GG+dhHQAKmMbJQSNiY9LyYeziweJkHIgW19sboS+vCf1e3QDEZ5JRpplDVI9hmjOYo76V/owE1Vwg2c3HMaoD1ulnORt7HVCPFUWp3qUmbfiAyacdI8cRDTs4XZHpQipCHXWrO10ZCFlqbuUD/9CXPOYvNcYNoE4C5dYU/sJffgR81ttkcwCyyQ0KiNksO/wps/Nt5qCUhoZcswcMORGggo58ygm2zbhA99qbwRZS/P7BgPzqrgPF5liyLeH3a5IHDn6YIXN79SjhKIt/jPjQv2Ff80GrVHwZorvISsoifGbIJXTjo2P53PQsIb8QCDPqCIjYuLFp/lfTkTuhpaPN5/2OZ5YJf1cRjl0+fp8cU1IAw8HDWSkvkykCIinXW4PBQULrzygDdTfObWhUfNcmKHK+DqbWD5kBE2so1hpxcVvX8g4dXJWPZ2Wlb7bJ4ikabwA3lJEXSkx2FzxS50PuDFLv8rCnNqcG4LTPGYL9fq9hcV/8ZZq7DCDSQsqIC8a9ADB1rmagxSKoJzsS3z0g6jSSlu59eouGno30fJHVEehtXtqek0cle16Zp+IoT3Ync7e3QwUJ/PD7RYsjOT36SlSnHilVdecZg5ShrdxkaSLREFofw97IONYS6BE9Vp0s4Vsd8Ew3rwYKWKz78zC5q+zFX/74WxBoxNl83P53/G2mSah6yqHC2223jryP9IvNLZkElHJvh5v1QwjtdeCRm1ZCZ0r1dO110+xfbZi+Bm6mY2yLkEbruh0CgN/NHg7LPCMxN+8zsU/LtYbhDUIhd+xSkBHc4q7UKG3DN8pF4rynGI260UI9bTXaLlOt3KEb+oqkwpE2iUP4jMnVP+1/Zm2baM3QCyIfRjfIIMvquAfOxEWoS4vQsqDbpvixd5T41oDbIaE6L174y+QmlsBTPHw3Sx1/H5NpdhZy0gIs3CfuYyfBSzF0W6h4
+ oXp+FAOr
+ ZWaVx5gC1M2jR8uxhDGzUn12x6tgWkyNJtyEGN8NsIoIdXesDg2uie/jtj1UcRMLPQkP/INEzdQfugr19hZ2E/9TroOyVt8/JCxrxLwQ/G2ipKFWBl4FFzmqbEAxPORPpBbvsOsJAVhZ4uRqCST5ps77YZXt0CoCfH0cL6m1+SuJnjJ7v8TIDiODUwGmmZyUlSPg8p3klLx/h/G/IPfTbYPus0w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,88 +99,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 7, 2025 at 9:34=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@google=
-.com> wrote:
->
-> Prior to this change, no security hooks were called at the creation of a
-> memfd file. It means that, for SELinux as an example, it will receive
-> the default type of the filesystem that backs the in-memory inode. In
-> most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
-> be hugetlbfs. Both can be considered implementation details of memfd.
->
-> It also means that it is not possible to differentiate between a file
-> coming from memfd_create and a file coming from a standard tmpfs mount
-> point.
->
-> Additionally, no permission is validated at creation, which differs from
-> the similar memfd_secret syscall.
->
-> Call security_inode_init_security_anon during creation. This ensures
-> that the file is setup similarly to other anonymous inodes. On SELinux,
-> it means that the file will receive the security context of its task.
->
-> The ability to limit fexecve on memfd has been of interest to avoid
-> potential pitfalls where /proc/self/exe or similar would be executed
-> [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
-> similarly to the file class. These access vectors may not make sense for
-> the existing "anon_inode" class. Therefore, define and assign a new
-> class "memfd_file" to support such access vectors.
->
-> Guard these changes behind a new policy capability named "memfd_class".
->
-> [1] https://crbug.com/1305267
-> [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.com=
-/
->
-> Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
-> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> ---
-> Changes since v1:
-> - Move test of class earlier in selinux_bprm_creds_for_exec
-> - Remove duplicate call to security_transition_sid
->
-> Changes since RFC:
-> - Remove enum argument, simply compare the anon inode name
-> - Introduce a policy capability for compatility
-> - Add validation of class in selinux_bprm_creds_for_exec
->
->  include/linux/memfd.h                      |  2 ++
->  mm/memfd.c                                 | 14 ++++++++++--
->  security/selinux/hooks.c                   | 26 +++++++++++++++++-----
->  security/selinux/include/classmap.h        |  2 ++
->  security/selinux/include/policycap.h       |  1 +
->  security/selinux/include/policycap_names.h |  1 +
->  security/selinux/include/security.h        |  5 +++++
->  7 files changed, 44 insertions(+), 7 deletions(-)
->
+On 04/09/2025 22:49, Yang Shi wrote:
+> 
+> 
+> On 9/4/25 10:47 AM, Yang Shi wrote:
+>>
+>>
+>> On 9/4/25 6:16 AM, Ryan Roberts wrote:
+>>> On 04/09/2025 14:14, Ryan Roberts wrote:
+>>>> On 03/09/2025 01:50, Yang Shi wrote:
+>>>>>>>>
+>>>>>>>> I am wondering whether we can just have a warn_on_once or something for the
+>>>>>>>> case
+>>>>>>>> when we fail to allocate a pagetable page. Or, Ryan had
+>>>>>>>> suggested in an off-the-list conversation that we can maintain a cache
+>>>>>>>> of PTE
+>>>>>>>> tables for every PMD block mapping, which will give us
+>>>>>>>> the same memory consumption as we do today, but not sure if this is
+>>>>>>>> worth it.
+>>>>>>>> x86 can already handle splitting but due to the callchains
+>>>>>>>> I have described above, it has the same problem, and the code has been
+>>>>>>>> working
+>>>>>>>> for years :)
+>>>>>>> I think it's preferable to avoid having to keep a cache of pgtable memory
+>>>>>>> if we
+>>>>>>> can...
+>>>>>> Yes, I agree. We simply don't know how many pages we need to cache, and it
+>>>>>> still can't guarantee 100% allocation success.
+>>>>> This is wrong... We can know how many pages will be needed for splitting
+>>>>> linear
+>>>>> mapping to PTEs for the worst case once linear mapping is finalized. But it
+>>>>> may
+>>>>> require a few hundred megabytes memory to guarantee allocation success. I
+>>>>> don't
+>>>>> think it is worth for such rare corner case.
+>>>> Indeed, we know exactly how much memory we need for pgtables to map the linear
+>>>> map by pte - that's exactly what we are doing today. So we _could_ keep a
+>>>> cache.
+>>>> We would still get the benefit of improved performance but we would lose the
+>>>> benefit of reduced memory.
+>>>>
+>>>> I think we need to solve the vm_reset_perms() problem somehow, before we can
+>>>> enable this.
+>>> Sorry I realise this was not very clear... I am saying I think we need to fix it
+>>> somehow. A cache would likely work. But I'd prefer to avoid it if we can find a
+>>> better solution.
+>>
+>> Took a deeper look at vm_reset_perms(). It was introduced by commit
+>> 868b104d7379 ("mm/vmalloc: Add flag for freeing of special permsissions"). The
+>> VM_FLUSH_RESET_PERMS flag is supposed to be set if the vmalloc memory is RO
+>> and/or ROX. So set_memory_ro() or set_memory_rox() is supposed to follow up
+>> vmalloc(). So the page table should be already split before reaching vfree().
+>> I think this why vm_reset_perms() doesn't not check return value.
 
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index c95a5874bf7d..6adf2f393ed9 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2315,6 +2316,9 @@ static int selinux_bprm_creds_for_exec(struct linux=
-_binprm *bprm)
->         new_tsec =3D selinux_cred(bprm->cred);
->         isec =3D inode_security(inode);
->
-> +       if (isec->sclass !=3D SECCLASS_FILE && isec->sclass !=3D SECCLASS=
-_MEMFD_FILE)
-> +               return -EPERM;
+If vm_reset_perms() is assuming it can't/won't fail, I think it should at least
+output a warning if it does?
+
+>>
+>> I scrutinized all the callsites with VM_FLUSH_RESET_PERMS flag set. 
+
+Just checking; I think you made a comment before about there only being a few
+sites that set VM_FLUSH_RESET_PERMS. But one of them is the helper,
+set_vm_flush_reset_perms(). So just making sure you also followed to the places
+that use that helper?
+
+>> The most
+>> of them has set_memory_ro() or set_memory_rox() followed. 
+
+And are all callsites calling set_memory_*() for the entire cell that was
+allocated by vmalloc? If there are cases where it only calls that for a portion
+of it, then it's not gurranteed that the memory is correctly split.
+
+>> But there are 3
+>> places I don't see set_memory_ro()/set_memory_rox() is called.
+>>
+>> 1. BPF trampoline allocation. The BPF trampoline calls
+>> arch_protect_bpf_trampoline(). The generic implementation does call
+>> set_memory_rox(). But the x86 and arm64 implementation just simply return 0.
+>> For x86, it is because execmem cache is used and it does call
+>> set_memory_rox(). ARM64 doesn't need to split page table before this series,
+>> so it should never fail. I think we just need to use the generic
+>> implementation (remove arm64 implementation) if this series is merged.
+
+I know zero about BPF. But it looks like the allocation happens in
+arch_alloc_bpf_trampoline(), which for arm64, calls bpf_prog_pack_alloc(). And
+for small sizes, it grabs some memory from a "pack". So doesn't this mean that
+you are calling set_memory_rox() for a sub-region of the cell, so that doesn't
+actually help at vm_reset_perms()-time?
+
+>>
+>> 2. BPF dispatcher. It calls execmem_alloc which has VM_FLUSH_RESET_PERMS set.
+>> But it is used for rw allocation, so VM_FLUSH_RESET_PERMS should be
+>> unnecessary IIUC. So it doesn't matter even though vm_reset_perms() fails.
+>>
+>> 3. kprobe. S390's alloc_insn_page() does call set_memory_rox(), x86 also
+>> called set_memory_rox() before switching to execmem cache. The execmem cache
+>> calls set_memory_rox(). I don't know why ARM64 doesn't call it.
+>>
+>> So I think we just need to fix #1 and #3 per the above analysis. If this
+>> analysis look correct to you guys, I will prepare two patches to fix them.
+
+This all seems quite fragile. I find it interesting that vm_reset_perms() is
+doing break-before-make; it sets the PTEs as invalid, then flushes the TLB, then
+sets them to default. But for arm64, at least, I think break-before-make is not
+required. We are only changing the permissions so that can be done on live
+mappings; essentially change the sequence to; set default, flush TLB.
+
+If we do that, then if the memory was already default, then there is no need to
+do anything (so no chance of allocation failure). If the memory was not default,
+then it must have already been split to make it non-default, in which case we
+can also gurrantee that no allocations are required.
+
+What am I missing?
+
+Thanks,
+Ryan
+
+
+> 
+> Tested the below patch with bpftrace kfunc (allocate bpf trampoline) and
+> kprobes. It seems work well.
+> 
+> diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/
+> kprobes.c
+> index 0c5d408afd95..c4f8c4750f1e 100644
+> --- a/arch/arm64/kernel/probes/kprobes.c
+> +++ b/arch/arm64/kernel/probes/kprobes.c
+> @@ -10,6 +10,7 @@
+> 
+>  #define pr_fmt(fmt) "kprobes: " fmt
+> 
+> +#include <linux/execmem.h>
+>  #include <linux/extable.h>
+>  #include <linux/kasan.h>
+>  #include <linux/kernel.h>
+> @@ -41,6 +42,17 @@ DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+>  static void __kprobes
+>  post_kprobe_handler(struct kprobe *, struct kprobe_ctlblk *, struct pt_regs *);
+> 
+> +void *alloc_insn_page(void)
+> +{
+> +       void *page;
 > +
+> +       page = execmem_alloc(EXECMEM_KPROBES, PAGE_SIZE);
+> +       if (!page)
+> +               return NULL;
+> +       set_memory_rox((unsigned long)page, 1);
+> +       return page;
+> +}
+> +
+>  static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
+>  {
+>         kprobe_opcode_t *addr = p->ainsn.xol_insn;
+> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+> index 52ffe115a8c4..3e301bc2cd66 100644
+> --- a/arch/arm64/net/bpf_jit_comp.c
+> +++ b/arch/arm64/net/bpf_jit_comp.c
+> @@ -2717,11 +2717,6 @@ void arch_free_bpf_trampoline(void *image, unsigned int
+> size)
+>         bpf_prog_pack_free(image, size);
+>  }
+> 
+> -int arch_protect_bpf_trampoline(void *image, unsigned int size)
+> -{
+> -       return 0;
+> -}
+> -
+>  int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *ro_image,
+>                                 void *ro_image_end, const struct btf_func_model *m,
+>                                 u32 flags, struct bpf_tramp_links *tlinks,
+> 
+> 
+>>
+>> Thanks,
+>> Yang
+>>
+>>>
+>>>
+>>>> Thanks,
+>>>> Ryan
+>>>>
+>>>>> Thanks,
+>>>>> Yang
+>>>>>
+>>>>>> Thanks,
+>>>>>> Yang
+>>>>>>
+>>>>>>> Thanks,
+>>>>>>> Ryan
+>>>>>>>
+>>>>>>>
+>>
+> 
 
-Sorry, I should have mentioned this earlier, but usually we try to
-avoid triggering silent denials from SELinux since it provides no hint
-to the user as to what went wrong or how to resolve.
-Arguably reaching this code would be suggestive of a kernel bug but I
-know that BUG_ON() is frowned upon these days.
-Maybe we should WARN_ON_ONCE() here or similar? We also rarely return
--EPERM from SELinux outside of capability checks since usually EPERM
-means a failed capability check
-(vs -EACCES). Defer to Paul on how/if he wants to handle this and
-whether it requires re-spinning this patch or just a follow-on one.
-
->         /* Default to the current task SID. */
->         new_tsec->sid =3D old_tsec->sid;
->         new_tsec->osid =3D old_tsec->sid;
 
