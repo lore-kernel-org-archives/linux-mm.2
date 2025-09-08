@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D50E8CAC582
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:19:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C168DCAC582
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:19:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FE928E0012; Mon,  8 Sep 2025 16:19:26 -0400 (EDT)
+	id 29EB28E0013; Mon,  8 Sep 2025 16:19:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D5C58E0001; Mon,  8 Sep 2025 16:19:26 -0400 (EDT)
+	id 2763E8E0001; Mon,  8 Sep 2025 16:19:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EBA08E0012; Mon,  8 Sep 2025 16:19:26 -0400 (EDT)
+	id 18C708E0013; Mon,  8 Sep 2025 16:19:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CFC88E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:19:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE77E1DAE44
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:19:25 +0000 (UTC)
-X-FDA: 83867197890.13.7724D7F
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DE6FF2000B
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:19:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z+USXrc0;
-	spf=pass (imf03.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AE398E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:19:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CAD6F13A258
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:19:29 +0000 (UTC)
+X-FDA: 83867198058.10.8A8571F
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DCD2B18000A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:19:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LMnPDVgS;
+	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757362764;
+	s=arc-20220608; t=1757362768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wK9/DwHmthANAPoxGvgtMIu4IcfAIwwBdfEzyf7aCYc=;
-	b=VwFWnU1t5SUc8V8Uvqi3526Ibh8JEaKsCwU3jZdd4dEg9pTSVCVaO5AYOeBUDnEnKei5HI
-	E3NtodeCu8tvB5s30aNfSaRugvvNRu5rGB6DgCH8t3P3rmNspX+M7cyBaYOhejqz+zLaW9
-	E0ngfcMlyKHqPKSudjxRDf7k1tekATA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757362764; a=rsa-sha256;
+	bh=bEKhAzri7BBrxNHU6CjKqcmbERBZnrPEV1ur7Br4EzE=;
+	b=5iSz7MGiN+m3VemygEHJSvA8pAJHgzL3vyBxhACTnHhp6GbeS8LmcDb0+uWMrMsSQlZWk6
+	lAIIbz9iBVFfMZk3YZE0j1qmo2go+YE85JdI8wCSYgs9RMOQn1O17itsKczdRJtzM/8zBI
+	x6oSKKMb3rpAkgo3QdwPB7QQMg5dkok=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757362768; a=rsa-sha256;
 	cv=none;
-	b=IsumZEIs5U72RfRQuc1FW9na9KxeDHtgxcCunlbP30c0Zy9EbojCfmc3EJ8GkCKb7GBfLD
-	9h4WNqvgDMCjQ+tkujvUhLcjTmUXo44OSQafYpaEiSMDQPUIVsMucmHrHXL8wDPL06WFMh
-	T29UhlARjzymOR0KkvzUNfuAdaY1ZM4=
+	b=DS7KxxjJ088mSWDsrHDQh+i+c0aQexSYqZ1trZKULE5qRYOMUfLEXUmv5yzO8JeiEcMbYs
+	m5ZFCaJhZ77GHCSDKOj/ZUNcCLr0jNR+EiNmq8PF1zvfaOtb13wNIA193jCopL+T7X3idv
+	tmTbIBvOP8b41pCtRJ9LhlQr9yOsqc4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z+USXrc0;
-	spf=pass (imf03.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LMnPDVgS;
+	spf=pass (imf24.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45de1f2cdeeso11344315e9.0
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 13:19:23 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45de6ab6ce7so8740685e9.1
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 13:19:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757362762; x=1757967562; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1757362766; x=1757967566; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wK9/DwHmthANAPoxGvgtMIu4IcfAIwwBdfEzyf7aCYc=;
-        b=Z+USXrc0tMhB4hFC04eBf5hvVqf+N4V7pWHu4knae89o0SYx/SbLl11AZMrxDxhRx8
-         t5Hb+6DY3WME9Sb4ldfisnv8SQ1llW4lAL2wJMjRNzx69bNoyzS+IjFG4RMMuy7BUH/z
-         P6nRgCwb7lSCRoSFZJ5sbW865YK4rYlgSuqyC1+iCbjpFC78/55spPvlsSqLrn5KDzDO
-         7DyZAaGCAPBmSeFRnaV6jOR6ipk3RyulevcslkRk6bXgbHuhGUb0B+B2DbrqT90ZDJlu
-         DMIWvPgjVkR98DtXguctpOGnLhqIY5n7zrvZ3yGM8NhayQtUVfdzeYXWklwL1BCvHPfo
-         NcAw==
+        bh=bEKhAzri7BBrxNHU6CjKqcmbERBZnrPEV1ur7Br4EzE=;
+        b=LMnPDVgS73QqcoedsHGUCktnJoPF/o/KWky4uHn2N/ZUI+RxIqflFrZGHZIbrbzg4N
+         TBt+xyM7sYFXmkY7eR0ffKnHsDMWpb+gvlXrts4fLWBDy3znMO0DAYGstLHr/L9unyIY
+         AQoziETR1KwjxXN8H9Ua2t2XQOzSYCvJblyFJgKi0Kf3R5dWpPq88/bIUa+wJ+VC/1cV
+         dIp2JRILCU+pHOl7r4DSfvxlIg3Ua/ZbV/+1ZVFqfsMaN+0uBP1s0ynQT7OTE/VsmTUz
+         QgRvNHtBdK74tXMMMWtp3ZQGgHrJfk55FIH/wSV/e7ufIZhsxfh0OrEJ3rBg+5FNWPn9
+         hH0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757362762; x=1757967562;
+        d=1e100.net; s=20230601; t=1757362766; x=1757967566;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wK9/DwHmthANAPoxGvgtMIu4IcfAIwwBdfEzyf7aCYc=;
-        b=pA+DYDPfJova5NmKg10/jys4EXhi4+/hGIu/2bEHiFUsATAnYbphy3YOR3SA5jgd/j
-         8INzuuZTpYhL+5Zfv8ara/zoiifWaloj3iOUE5LiSHGC8jysshoMqRFG/985lXACXWdH
-         enNVkd10OWjqnMVMq93ZG45QpWDaDHGTVT8H3CBZz6AlQeOL7K/SEeIZYACz4rtTL+95
-         8j9Ma8hEGT0YHMXemCqcXBColzA7XoVqEgrR5ZKr14VWcbyqCjzKbVtIzYj33a3WcG+x
-         N1S7Y+BPBav7PiHqNnw1Nrbgh3LoMaOShaBlOE3NoTaMro9huRnfMX4LTPoaiCM+7Zea
-         nmFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBjHv11EbA5RHkinp7GgnQu3fdB19w+9ZPqzUoCwh89zcKqHmRLMDSIHYOU11SvczTG9g8YroEvg==@kvack.org
-X-Gm-Message-State: AOJu0Yw6/hw3zz8G/Cto4P79NXUnnAqyDFmQZxIRdXOxRBsmi5lRfUHm
-	D7a9UZdTMruGJF8bj/kAXaIz9OVwSJdulQnbgEkzOuZj/zRJ8fnB82h0ia1pP2Sbwe0EQH9isIT
-	HvHHcCGfHYTTzBQCe+1XdCboFqNJHvLQ=
-X-Gm-Gg: ASbGncuhEx6Ss0ulNMiEMu7p2M2iU2a+vmxU7gor1n3Bk7mSlP3jKQPz9NeMkeZcdUT
-	bczXSJsIT6pAIlDZgws51hhlQU55HvJW2sDpIUWHiXNgz728aMCsP57/KKXA1M9pRWyJtWAcZDV
-	Z1AkOBeySkNsJLdCByclrh8mC0Sb3EYyxiipzt6lHNQg/G9H6QdBvyoXIfaS8OrxSTz7vgv+DgL
-	ZwlW1NWnbYvHifhB/pf4Gaw3h5X0g==
-X-Google-Smtp-Source: AGHT+IGZZE8d/HSpoC7P4Nb+5HTeJindRu57Gsc+Nhd8qWOwEu57WmXSWCXboRHxBoCyR49CB3xV2W8zqJ5HdS1yk+8=
-X-Received: by 2002:a05:600c:1c97:b0:45d:e54b:fa0c with SMTP id
- 5b1f17b1804b1-45de54bfc44mr65122055e9.17.1757362762024; Mon, 08 Sep 2025
- 13:19:22 -0700 (PDT)
+        bh=bEKhAzri7BBrxNHU6CjKqcmbERBZnrPEV1ur7Br4EzE=;
+        b=whk7RmX5lC8ll87UPPw8WhkgDXh1Jb3Meboz3pmVg79t6NjxnljzIZhEdolwomcEmo
+         s3PcSR4tDd4oKrYq+867S4fyzxjBimZUaS9ldsDaEmuZqyAFHdl944LINlygHGAezPMi
+         U62kmM0ax3Q/dd8pT7mPpJC7jH88d57qlBSbBbT5iL2M9pvXLK8kW6osSilSZxMrJMgB
+         ZCqv+Y6MB1biGrGZR0YykygG+g3Zs/2vw4qnI1NG0pvPCE+14+avSsywxOwQIoatWpch
+         xO49ZWDQxqJrQtO4rICW6HfxhlPbjudgUK3dKxd4lGeDrIhAshNSU7lswKH4VuS8AVFM
+         GflA==
+X-Forwarded-Encrypted: i=1; AJvYcCVruXQXyFa8X//OG2b+qVOml0+xxQTF80qAzrqnEm/kxxCNoGExH0ypBndMs6EG5Y3BT/E33s68vg==@kvack.org
+X-Gm-Message-State: AOJu0YwShZHbUWrafNQpTKk1Vs/b3poWoHAUnmzYmRCVlfgM0VxFRZ4w
+	HjztlQGdHm5mP+VBNxbSy84N5YX+YTHjnDXJTC5qUYvZky9cXwSqfksncl+9NZdc59jJ57wZ7Vn
+	YZkWCc8QThzLLNIs+RWTaKQdp/nkLuNc=
+X-Gm-Gg: ASbGncux2lD2lwQi7vyi1t1tm1mM5lyIEYhj4gK57WJqeHlS/T+lXlKBrwgk/D9h2tP
+	vJzpA5QmHBtxXF1zkGD5CF4V4AHDmNCnT6iZKGa8BQRW4P2CjJfAPBps0ULb3JRW8JXDXAZRvpF
+	cdTPILoIle06FxG/LfOCTRlvDYMItVu+h6bvik1VZtxupdje6d5Yqwue0E0YdDU1X4xaSdfSpAj
+	UctjoOGCf02wKfbZfA=
+X-Google-Smtp-Source: AGHT+IETXcCyuhskt8NfiuIvMZk4HNrRqt02JjM5fpQLtTPCEi8+CDkXKLs0cMppBKfL27M9u+6qWLgrHDP5cvo0P64=
+X-Received: by 2002:a05:600c:35d3:b0:45d:98be:ee8e with SMTP id
+ 5b1f17b1804b1-45ded05bcd0mr4878465e9.1.1757362766098; Mon, 08 Sep 2025
+ 13:19:26 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
- <2f8115faaca5f79062542f930320cbfc6981863d.1756151769.git.maciej.wieczor-retman@intel.com>
- <CA+fCnZf1YeWzf38XjkXPjTH3dqSCeZ2_XaK0AGUeG05UuXPAbw@mail.gmail.com> <cfz7zprwfird7gf5fl36zdpmv3lmht2ibcfwkeulqocw3kokpl@u6snlpuqcc5k>
-In-Reply-To: <cfz7zprwfird7gf5fl36zdpmv3lmht2ibcfwkeulqocw3kokpl@u6snlpuqcc5k>
+ <3339d11e69c9127108fe8ef80a069b7b3bb07175.1756151769.git.maciej.wieczor-retman@intel.com>
+ <CA+fCnZedGwtMThKjFLcXqJuc6+RD_EskQGvqKhV9Ew4dKdM_Og@mail.gmail.com> <2xfriqqibrl7pwvcn6f2zwfjromyuvlxas744vpqrn2jthbzu6@nrhlxafjpfnr>
+In-Reply-To: <2xfriqqibrl7pwvcn6f2zwfjromyuvlxas744vpqrn2jthbzu6@nrhlxafjpfnr>
 From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Mon, 8 Sep 2025 22:19:11 +0200
-X-Gm-Features: AS18NWCIvLKT4zY1Ax7hHZz8nFS_pHxT1rFM_aQWd_F5XVIT_8vgGZz-WQhHzM8
-Message-ID: <CA+fCnZe52tKCuGUP0LzbAsxqiukOXyLFT4Zc6_c0K1mFCXJ=dQ@mail.gmail.com>
-Subject: Re: [PATCH v5 15/19] kasan: x86: Apply multishot to the inline report handler
+Date: Mon, 8 Sep 2025 22:19:15 +0200
+X-Gm-Features: AS18NWDjLBMTDDx-3GcgskVrIFrWTkldm4ARgshAhph95s8X05Rv1arvNW2pjfU
+Message-ID: <CA+fCnZeem3pBPfhQyPiSAUfp5K0YdHFuRs0FZykF03YXVS-f1g@mail.gmail.com>
+Subject: Re: [PATCH v5 18/19] mm: Unpoison vms[area] addresses with a common tag
 To: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com, 
 	kbingham@kernel.org, weixugc@google.com, Liam.Howlett@oracle.com, 
@@ -127,14 +127,14 @@ Cc: sohil.mehta@intel.com, baohua@kernel.org, david@redhat.com,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mhuiq4qopfjgzsnxfbsztn6f8wy9gd91
+X-Rspamd-Queue-Id: DCD2B18000A
+X-Stat-Signature: trg6n4tn5a18jo5rtf3sjnjfbjy9jx8i
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DE6FF2000B
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757362763-667898
-X-HE-Meta: U2FsdGVkX1+81HBPImOHf4Kw4pfNaoV3ZnEcsh2jMs7F6Lsi/RaqTrfwn2k8hdy53jVIQDg8Y7KK5B8OJl7GO6Ey5WUBPamUhdEjLnKQJPqAvXdQsV2NtV1cOO3jbLGxOYIzlKcKIkr1MpTT9vXNJkkd7d7z0ElhMPyTjNyafEZUGWqNj9f/Z0J0nrGNVcZBww7xyFd5aaTIiGNwc+0I1jIDvFbqN13MkRd2UlAP9YS1qTqeYMXLEdVbdPu14kD8kQtTwXto0/6kE7VEXXOswTOxiHaQGLkEM/pm/zqrV5lr4lijvJ617KnnsZa7qPg3vPCRWcx/Aaxjspgl83oNTDoYrvgocBKsMVi3Vpr1xiSWajokUzYFTD0Tn0B8prF7GM/6Sb6XFYe+pvVPybhk6aGkYILHUfJ4ho2PN/lvoeXeSBGTM+0Hy9ZBjOsT4cLvvJ6J5kTrZ/8e5Ik4WgqC3aMG0k9fsWA+HDLojQIPYjm4opn+2JoM5DUoT8r75jQUbR7s6gL8p0FFTctfbEcI2on4ctFlAm2c6FKkIzLQ0auIvAAcBrRuixLw7QXrMTCr42TlWebYypfT7ipLnOXLNSJYdGwXJ0IP7cK7xQiC5hNb/CI8iOnuQpQkXglwrdUvG2t9DF69RONu0qHmgFx2F3l0DZyoVjNIhQg5plpdi2C2ux1jyq4gNmm2RtkBEEYpgUFfEFSwxVF9iyJA2Z2tRqSsdscILa3HbVSgNsBhnSLEvgBAn1u1+EykMgKK2lT7rYbUuvc/IqrCCF9KfALdZFD8YLJA+NRswv+pX1ts1A2AK0/a5fEM+4wgHeNFb7c6i5K+v7+wY8Y0nyjkBhWegDmEWTFOeN31SYz+fkD0KQ7tsQr3nf1+dDpAU2oGyUs2je+p+l8L1SikBSQ36pg09bYmbsen1jpZs8XLfoX/BWu6tArVQney+0AjWqGvAVcypX2Rflkp2tL2clfeV0G
- Bv7r1F8V
- GwwLYiyhsxeOaY2r4OY7AzUDzrEbt/FqjV1hSE06YZiHk5VN3KFelFdQecErN3LypVSL1WUuYviStNBiwnW5A7ZcbfXRmpPgBdeIEfFZQ0sCUUFJ8SlYTnYVoffQ1iZQl6e6uFICq4RWKMwgDBESIb2SB8UrMr3OY9KUV0t16ZzPt2EMXIb5QJci5EItDrV/y4eyo8bOWFQSnXGJunUGZONl5sYepQks+YrsOvHxO4Z/5EKMuE/CoZnnslz5jRcONqbFctTwo5iW2r/oZCS9/SF7UueLBJNbX1zcb9nQGrS8xR3J4w2Oj6180DkJS78wBKxzJpeJuVkrlBwrLSHDQqQY4T4V30bm4oDbAhyTFy3iTjiqYhwB9pkyVQ2fGmYMgMK+GH+wLzBM8kAXN2LkIRu6JM1sFgjbyCmKwGEi7OmXY4tppAh9sYKrPNdHjj8zzAI5jzteh2PwMDJI=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757362767-173500
+X-HE-Meta: U2FsdGVkX1/MOO22ZdzLrRzOd8YWxhEC7Hn20B8oNcUnbzJkkQ+R7kCkhVlvT6lJl6++T8HNnd7t7Uuzl8NP2FaBrCy7fgLc/K5Nc0LsaYUinhvY6ONwmLXb9Y8TFdZAuZq8EqP1b8Syat+Y5WpZZbbQPrzwsSP0s4nIBRbnraNDWhx3+yXVRdrM5/nmk541p9MUX9hdAKTJpuiBvojhMBneArvyqY+9q/6F4iDXytr9OT6DohWC89qPFRkruG+MwVybIn4tZxkj5RS7o9hQCB2cUWQedSB5e9wHF/GNBfgVdLmSeeR015b3hfBBjHVnGHQlgLUJGQ/DZzedOkM36bUPDtZgOK0Q+GM3P+H7cDm7lCQqfm3aVjB72gAuQNeN+AbRs/1WUAH6xkzqSM64MXimGPUQ5I8wVaSGXou3W1wTcxafAzBB91faVQOKS1AWJRaY+zhkCHH3BbNjPlHjcm2I4l6N8lSaje5eJujqU+oezkF1EilLiLVOtkjYcgolIy0ekEk/fCXFjqKUjpjwvs84afV7OwkHkLs0Ak9GIyqa3yFu3HNsls8Br6uX3edit4toSBGkx7zX5F7lT90Zwubzo21sSw/hroYama2jpjGTo86pA127KFq5jhG18X7ycjjicyE9mMGqZCAPJExKiTTqO0MqvHV61r4ViUNe0UkIUmK7hdeBMkJxDcw8WGz95uXBkcolwbYwAjyFxg0aIyqbmTGaSlmTkB0tKaLEv9sZzONkmDNOlakPSDfumwWY1Pq+LYwNCwFuRGDvxiXCcsGC79CqCrnkBEvIiAYff4uqfsrJArHldIKh9G8dOTf6vCjC2BngkN7NgJzlgyKPOaVE+yWWfJwkwGLCbWzXNB7CLPaBqE43HB2T/Nq3W0uv7vby7K/hHLKsGg8byMXE6A5xq6E8XtFas5w4Gcy4ReCmvfU/53yjiCOxutZz4DXWkQgcjtA5GunVwMBELWe
+ 0CPNOMUs
+ KxCqYGXDcgDUa+73+AKIZsaUmi3PutvWEETUcHQ79pHu3563BdNOw52EQWeEWMCmd168pG2abJaliZ6IwcFLtSQ2ynzBAjC8LS2KxOD+VjXc/YKyALowz2o/yRMc15Gg54OPAlvyn+KVFAY2yadUYixu9TCLVJtbj5z9DZ0FplaQ2+zLa4NZ3ldvi64GrD3byf30CJ8ByuzmpRSY7PO3MEd5mBiJZ4/MCgem6ZgAqFSTpFcP7Pv951NhODJcw6wwU+bu1QPMW5+3HWF43rusWYLB8/kNsd0ecjXIltHDp/Gr8Cpg/l+cilqAqArFHpRrmjfVNSWcROjWQFum0vIpXi5hT+DqRKgTXMS/Y9+XgA8mT78le6oJF8Z+D/rstO9VGuNNGnUVoq/kcqzhtOogVUZTtC4GQ1EL1C7fMEy8MkilQqfwBDTn+9CpTu+IFMB2Gasfo/ImxsMWOkwc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,24 +143,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 8, 2025 at 3:04=E2=80=AFPM Maciej Wieczor-Retman
+On Mon, Sep 8, 2025 at 3:12=E2=80=AFPM Maciej Wieczor-Retman
 <maciej.wieczor-retman@intel.com> wrote:
 >
-> >> +       if (kasan_multi_shot_enabled())
-> >> +               return true;
-> >
-> >It's odd this this is required on x86 but not on arm64, see my comment
-> >on the patch that adds kasan_inline_handler().
-> >
+> >Do we need this fix for the HW_TAGS mode too?
 >
-> I think this is needed if we want to keep the kasan_inline_recover below.
-> Because without this patch, kasan_report() will report a mismatch, an the=
-n die()
-> will be called. So the multishot gets ignored.
+> Oh, I suppose it could also affect the hardware mode since this is relate=
+d to
+> tagged pointers and NUMA nodes. I'll try to also make it work for HW_TAGS=
+.
 
-But die() should be called only when recovery is disabled. And
-recovery should always be enabled.
+Ack. I suspect you won't need to provide two separate implementations
+for this then.
 
-But maybe this is the problem with when kasan_inline_handler(), see my
-comment on the the patch #13.
+Also, could you split out this fix into a separate patch with the
+Fixes and CC stable tags (or put the fix first in the series)?
 
