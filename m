@@ -4,84 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE6FFCA101F
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 02:40:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69734CA1013
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 03:04:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E80016B000D; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
+	id 9AC0A8E0002; Sun,  7 Sep 2025 23:04:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E30898E0001; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
+	id 95D748E0001; Sun,  7 Sep 2025 23:04:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6CFF6B0010; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
+	id 873668E0002; Sun,  7 Sep 2025 23:04:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C7A896B000D
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 22:40:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8DD9711B02B
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:24 +0000 (UTC)
-X-FDA: 83864529168.01.2E60DBB
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E71F61C0006
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 02:40:22 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mA5K7eN6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757299223; a=rsa-sha256;
-	cv=none;
-	b=rmr4lzWJIXJYehldjAgMWyjEl9fncbOiQ4QmZ1F0e3yozuNkqM3WQTlErPQj0kIO95NflN
-	m6o9Yhhb8UJukhVrL41AnTQUicgAZNPxzf0FJ8zxgKlmS5YJkgLabGNaLP6oDyjO4/45Ed
-	l8A0bt7VaUxexJbXnYbfqdajMi4wApA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mA5K7eN6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of liu.yun@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=liu.yun@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 771318E0001
+	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:04:06 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1970F160939
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:04:06 +0000 (UTC)
+X-FDA: 83864588892.26.97AD91F
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C6AF240007
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:04:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=h2lDSaLq;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757299223;
+	s=arc-20220608; t=1757300644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F05Pyb/PPuwSrMwUArE1DpgL89Fb2LA8TTTDyvg9QlU=;
-	b=iIS8A2I4cQCB0VWu2io1sEaJK+asPEoTzvqQTCavgyWnfDwBb61eag9gwBix79BOZAVja3
-	pu8dKi/8p9NZF/M8Zr4BiiqQHZ5Tui1IFQCcGMpBB+v4Ls/r8xQczi49SHf9enSHq3OouO
-	795oj8BUkPRtdxBjP+QSwnpx3G3CPo0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757299221;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F05Pyb/PPuwSrMwUArE1DpgL89Fb2LA8TTTDyvg9QlU=;
-	b=mA5K7eN6CSGnj975CFEr2X3wpDGCOCFa/TLk5K07it46WUr5PIqalYHlAsMRCnBn3mmqFK
-	w2gAtfWapxBlXSy+aDC9mLpD5MkYlFjOBxZrDhmzxK2khmgI/MKJdDGp1nCvtVnn/nrcDU
-	2eWeK4R2A5Bv8kYrX1GKEKYAI4IJa4w=
-From: Jackie Liu <liu.yun@linux.dev>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Cc: hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	liu.yun@linux.dev,
-	liuyun01@kylinos.cn
-Subject: [PATCH] mm/shmem: remove redundant entry_order variable in shmem_split_large_entry()
-Date: Mon,  8 Sep 2025 10:39:15 +0800
-Message-ID: <20250908023915.28907-2-liu.yun@linux.dev>
-In-Reply-To: <20250908023915.28907-1-liu.yun@linux.dev>
-References: <20250908023915.28907-1-liu.yun@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ch8Enmtj/KH0mQ+evioqR/00NLP1dhKFZnhe/KioV9E=;
+	b=eOCEMhxKtKoXFDdhn7YXppt0X4MM1bT+yAwQpYAsIkCK1HpbJ76RUoUrpEJEeFKyr3xLnG
+	wQ4v+a0CwH8pLTAnTny9+RJNJqyds17x76sDlASyVrbrcX/nEJzW2p/Xgd4b0hDASw76sV
+	A7Xf9iNN7P7nu1EBaZL5CQe4Ji6y7lE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=h2lDSaLq;
+	spf=pass (imf01.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757300644; a=rsa-sha256;
+	cv=none;
+	b=4dRhpfiPmjD/CGK+zkkPpuK2/K/TFhPsi8d9ci5khJZLdIaWzFWKdTskvCd7+30RVwXZlb
+	eJlFhSWnvZkWUoww63I+ZMXbC/s1fl4231yUbHlVgvO/qJRLwdDRi6zbG7R1Mn+65e72bV
+	bGCMbr+Wx613ZeAQZ0brzfINRg8xoYc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1757300639; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Ch8Enmtj/KH0mQ+evioqR/00NLP1dhKFZnhe/KioV9E=;
+	b=h2lDSaLqt3GGx4AldojmsSXQsBXp9d8K5VGO8lE1fpLCVLzlv6qJkVYeZPLE10HHNU2JSbIKcu9z+E5/xI0DjSSTo3Q3FtazUQSZC+bZP3axlMZ3lsrOudOzDv6BSCAWwlvKQFhlvX0GW6QJx8CebgIGFBo82ao0H05o1i1I604=
+Received: from 30.74.144.132(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WnQXU.e_1757300637 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 08 Sep 2025 11:03:58 +0800
+Message-ID: <91aa3a4f-5c20-4591-ae2f-bcd57c2533c2@linux.alibaba.com>
+Date: Mon, 8 Sep 2025 11:03:57 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/15] mm, swap: rename and move some swap cluster
+ definition and helpers
+To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
+ Chris Li <chrisl@kernel.org>, Barry Song <baohua@kernel.org>,
+ Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>,
+ Yosry Ahmed <yosryahmed@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org
+References: <20250905191357.78298-1-ryncsn@gmail.com>
+ <20250905191357.78298-7-ryncsn@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20250905191357.78298-7-ryncsn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: fszcnkkugjh1who6dx7gtahqo8eypr7b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E71F61C0006
-X-Stat-Signature: x478nrrhasbngqbbxwgq4ki7iasg8m4u
-X-HE-Tag: 1757299222-457985
-X-HE-Meta: U2FsdGVkX1/S9uKkDwC+EiYlKVbe8k4qp+OneBTwB6C6NFdK3MX2Qsd2f/mhdvKf89bGtl8fruyGvsZ0RNRfqtICD1oDoiuBJe++tHxcAsX3kHLirnCvSn9b0+X0R+zeAm8E6/c34lZAH7kw5TO3Z/7Y0Jh7QNGtnxqv9D4Nt9ECVT+9EWgiN1QcsV698TQ8FfJ5wZXghhg9pHoL7+gTMvUTstoP2Ss86UmSIouEW7ZXV05KEuzbcJCRS+1telfX6IFzDU4VccpFDQW2pvtZ9Dqz+nr4X3fLFhDbFpgc9klC6b8vDTSE0Mw1LQrZom4XOg9EtABLssi4loSjQXAaIJC7qiekirGnZ+hd1Efs12pSjZNT40Nztgxix85m6p9jwqvOEg8DqP5eHqJoxGLMYbtdjqd5xjkjppVm9cHxhTQhZZC45WBgF1mWOYju1kjwRAPf1cvO2xdlA91zcifILOZCng123/xAgOE8d6GfjPHvEME6ngCeg8+EYmrmWZLwdpHAcWOVou+x1HGbdtTr8bI0B6MZS3vrWBNvg6XnEur8skubp4DjzzGnLmvPwtDuSyG/UYp69k7bh3UbHRhWXzzF4Gqx5C0xqrL97mzk7VrhLFqDfXP5GQToWTm2VEGKCUgN2MwtO7CydEfxnjcGwA9KA4RsIGwrXKPKR/60yXbEiGvFCimNHI7onmq084RtXi7aHLtiFHn+XUYUfTNFP9PC1p33gCUTMBfC0CgHPIf/4NX92KQGsGcoh33Wih7kOjvMq7Bt1YiGmxjVRuCio1yo67AcIorprIuS3gh5qYpPPK1AU3LGByL1HERyCLv/S6/Lu8Bb86bOpoml4i+x2aDhOvezqDQb7TrRYAOS6jpbR/5uu3rspZJSIhGXc2ikFvQL3ybJQ8DQBcXqKv1jJfvdnJ1F/CRPammNTNs8DnSM/1UeHkrDMtQfWUEHuC6lLJYfiy9/ebZTqQy4J56
- aDdbpzVJ
- F3/FxCZ0/KQ4vfanotvWCvXAW5/Sa3ou2xLxEUReJv3hUuGRku4tI+6/KnVeIzbmkyCZosjo/EQzyZYBsIUHphFoiNTMHQ2HBLea+4H7rd6UOl4YwDnT716U7QlsjQF+hFjO4LiyK1Nc2F6Ur9RnDM3qe0nkrRFCRWqwo6ryjQOu7m/l363Z9gMdR8go+Bpo8L46SNhCwLm6YZFZU/M1w9eprjw8OG1H0/dD6XvUgX0aGDX0=
+X-Rspamd-Queue-Id: C6AF240007
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1757300642-177181
+X-HE-Meta: U2FsdGVkX1/wtbPZCmzwKccHgYcUudtRlLDjuf+TEI6WzJlTyPF3gGh3YzeLVPEjjN0XVjiqqAhR6Us0Q/Ua5CsRrSQHCVdQYP+pO123M3DfZDHtCDZhGPEtITICjGtQbqQgOVterVKnQvClC20spLYIDd2Nz+dfrKmmAblr/7WZ6ROdyipUrvBbjO4i+cxDPdZnGfU1WJeEv7KjHF4QcQ134kgWOJl8A+MPyIIU1lwBmBj4gmRNOSwAT+j9hKD5VBeSJLBAc/8BVxJnewsUcdwLSpBm0KsoQFndkv68O+RsJDED/iVRJBPVrKFG/Oljng7SwTT5moMBtVQOhSu2Tc9ajijA47gIy4uDUnBZAMUZb/oobQ7hQWb4+JPL5yLN+Uf5D24jEk52M+EQrvGzpdkiYcT+4WbZ0/wZFy2p1E7y7mH0q2SFnmKVyR5pKaG0LWW74EIdftp3ycali5gJsN8BWC/FGsw/zGT2hItUHAjfGoxQWi6Sf+ohnQxsqORNUjPbiV69v+grnvCBmpByKmmI1xy8Scx2oMeT+T7FrlnnRiaEwH8qyHEAdra3j4q66l/ZpYSCRwJuYLIdSMqYuJXsGei5GzMxLefWgdB4YBVS9KHn2dCDCGRVLQA4S4XpYLH9S4EZ7Id4fOwm4NyRHdwpIpkyCVF5BUnFAcA8o8lO3p3zFc9QESigsmiAzGJWtLOAd3KfLH4KPMRCeM1aC4jszkFaGkcgb2YiaEPF34H0MdtRbCDR1s2Jv8Rz2pGQDQ9f1lWfcsSmZ5FtgdPfrHda2T+lnxiZvmhUwDCnVkrWOMYK1IMGLz+hNFdHgDp6IlnXka885/6aPjSWU+rTMA/8t4IkaXVBJdTEw+VO57Lha8WkDQfOZRv5uI3Xt5KJwIZyRgvnJgvW0z+I3HU2NK5YZG1d1SNvz9FNLf7D/l1W8TsBHVEfMhk2iNzr1JkPxgHZRGQj1GHM/802m4R
+ jL+QRhqW
+ mOGuL8BappZxWfx4Rv+A7BpIR/udrKTH1m5xdn8MZB9ptiU2J2NiF9+IdleiRQSWz9mBa0WGkuDyUxF530OGkbL6DUzRrIAyvMQE+/LIKh6X3JhVxyFPVHpZ/wkuzB+IlbJrbFfRqK8WUFKBOBMFT+0JTGC+LLwtlBG19MGwdGEeiYd1Tmq+TyMk8JFQF122w+e9JJLKS6LSHMfqlQ+K/yZHPdtO7mbV1Gx0zJXqWrv8IipHrfgX8y8Ii9wyuvHfqEatFfWGjkSg0SXIky7tc5ldBI4HTsW1ybn6xsp4n4WnVcdCn25mgbjUdq66BOkJnB+DhD5CT8jY0CWqnDEe5X9/B8D+lGq4KfezZVKXxiWusFOrT8SRPGj0BYA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,54 +96,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jackie Liu <liuyun01@kylinos.cn>
 
-Commit d53c78fffe7a ("mm/shmem: use xas_try_split() in shmem_split_large_entry()")
-reworked shmem_split_large_entry() to use xas_try_split() and simplified
-the splitting logic. After that change, the local variable `entry_order`
-became redundant since its value was always immediately copied to `cur_order`.
-Remove `entry_order` and use `cur_order` directly to simplify the code.
 
-No functional change intended.
+On 2025/9/6 03:13, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> No feature change, move cluster related definitions and helpers to
+> mm/swap.h, also tidy up and add a "swap_" prefix for cluster lock/unlock
+> helpers, so they can be used outside of swap files. And while at it, add
+> kerneldoc.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Acked-by: Chris Li <chrisl@kernel.org>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> ---
 
-Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
----
- mm/shmem.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index e2c76a30802b..53d28ea6e52b 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2235,7 +2235,7 @@ static int shmem_split_large_entry(struct inode *inode, pgoff_t index,
- {
- 	struct address_space *mapping = inode->i_mapping;
- 	XA_STATE_ORDER(xas, &mapping->i_pages, index, 0);
--	int split_order = 0, entry_order;
-+	int split_order = 0;
- 	int i;
- 
- 	/* Convert user data gfp flags to xarray node gfp flags */
-@@ -2253,15 +2253,12 @@ static int shmem_split_large_entry(struct inode *inode, pgoff_t index,
- 			goto unlock;
- 		}
- 
--		entry_order = xas_get_order(&xas);
--
--		if (!entry_order)
-+		cur_order = xas_get_order(&xas);
-+		if (!cur_order)
- 			goto unlock;
- 
- 		/* Try to split large swap entry in pagecache */
--		cur_order = entry_order;
--		swap_index = round_down(index, 1 << entry_order);
--
-+		swap_index = round_down(index, 1 << cur_order);
- 		split_order = xas_try_split_min_order(cur_order);
- 
- 		while (cur_order > 0) {
--- 
-2.51.0
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
 
