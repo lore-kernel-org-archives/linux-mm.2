@@ -4,114 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8126ACA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 22:51:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0902DCA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 23:17:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48C96B000D; Mon,  8 Sep 2025 18:51:33 -0400 (EDT)
+	id 0D62E8E0008; Mon,  8 Sep 2025 19:17:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFA928E0008; Mon,  8 Sep 2025 18:51:33 -0400 (EDT)
+	id 0AE178E0007; Mon,  8 Sep 2025 19:17:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A364C8E0007; Mon,  8 Sep 2025 18:51:33 -0400 (EDT)
+	id F05E68E0008; Mon,  8 Sep 2025 19:17:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 92B516B000D
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 18:51:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38E04140346
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:51:33 +0000 (UTC)
-X-FDA: 83867581266.19.B3A77F6
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 47CC0180002
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:51:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=35b23ybX;
-	spf=pass (imf16.hostedemail.com: domain of tweek@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=tweek@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E04DC8E0007
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:17:46 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E2C1B8253
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 23:17:46 +0000 (UTC)
+X-FDA: 83867647332.06.1E1888F
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 49F4480003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 23:17:44 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="o/yhZAT6"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757371891;
+	s=arc-20220608; t=1757373464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B7r/MdVFkxF8UOpjUQVzgKnL7FVHjfWobr88oKr636Q=;
-	b=vnGlktyqvVQOP9W3cqeC9++e+dAXdsWum0LhwzDXjbwqhErG2mAYa4UNt+9bA30QbPrh9N
-	XDpXLI8P7lRKIklJ7w/Ag7ue6O+h1AesSL+Uu4ElX2mdx0d6+RMBsv4p5VIHza5cKRVjo4
-	MnFSzqgJLLSQZ+/8JULoPAWVUiN4HSY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757371891; a=rsa-sha256;
-	cv=none;
-	b=SxlUeZDecUj5MPf5GmDZpvy4PMVUDUXXYYjeo0Ljj+bzOZJpptavTijSyQl6Xqdsu+fFwb
-	XlCbon5W6rASY42uCzcGyvlmT3FoBxBCAVkzQojcaCiIWIe7UFV+LZzflG4qY2Wc8B/Z0m
-	LyQDHl+IPYfsReZ9qqco9EKfQQz+28Y=
+	bh=CMlqYlKj+ILUokIqP1ABAMFD7Ot5oBLbcsJFMFm2zE0=;
+	b=hwfPV8vV3EbADKElha6qG0ROWWqUPHnM2DaQnGlwaI75KBJyy4lXwcYxY2uqUZQgJs3w66
+	NIgjiwlrd5Bvs5mSP92hvueIF/erpHnC34DYiAzFINcwtvFBgk/nRiR6YkCoMgs7n/wOEs
+	fCo452jL1HnJrYo07gTr7Z5Z13O6Zis=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=35b23ybX;
-	spf=pass (imf16.hostedemail.com: domain of tweek@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=tweek@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55f62f93fdfso14153e87.0
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 15:51:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757371889; x=1757976689; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B7r/MdVFkxF8UOpjUQVzgKnL7FVHjfWobr88oKr636Q=;
-        b=35b23ybXG6d/5oAn+De5vlmxBFN72H9vM9QgH+EhkcvuMXUkiDAov8f/Wp3oJfZR6a
-         saWIE/b+K/GwzBPBPH12fCF3pKl7NwWp4M6NATsPC8L/hhvFzvBOjbXJKGrdRxgcd5/c
-         DANp62V0nBrLum6upqDZOZiBPytm1UXplDV6HAtukqrBrNIvtl9m00QTO3H6xdKlP1gm
-         IsSO6OWuv1XaegiMEYm3S26LaenUZM8od74mBU3vglu14kjLjHJL/1KZjIBtucaoYDxi
-         xCp8MWDyHRLOlqSj2zGtdPpMvpj+bBrrSlECyhI1iDlMJSCaESeDM6qbbpa1h2f4XWoy
-         coBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757371889; x=1757976689;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B7r/MdVFkxF8UOpjUQVzgKnL7FVHjfWobr88oKr636Q=;
-        b=mNbm+XUAAmq8nM/XjyewTcMM3o9sn72jY9SSJ85GZ79HKVzoOufShUSd0TCjOy93MI
-         Es+cHoLYgoHa3HICQ7IQufIbAoSb2AYXj6hHlpkv4Yy7dTh2Qe9TWcIx6Hd5rwCzt3Un
-         pG8k0y8YsTOCboNV4QtZDl9mDgZzMv2w7f1L53rH8dCzcSVI81y/RhoZxiXRBiaBZk7k
-         rfUDg0w4mMhmMCp93UxWIfMrX8iKQAR0/39uqNSfxJ+KUDyDUOlpTDBM+ODF0r3Fyxk0
-         zXF0fZVus/DoDxLt6qsTNfP5aOejLOC3DNqzQmhkeXvVi8SC+dnXjHTewkvc+EWUae8z
-         t1Yg==
-X-Forwarded-Encrypted: i=1; AJvYcCXq+czBcR2U0s8Fo2hpNUYvEdSMeVOrlOksTi6GBBU3i4U8TmKxU6aDv7tbulC3b2MACgd1amF14Q==@kvack.org
-X-Gm-Message-State: AOJu0YyxnVJ5w12MIzVaSI2jK9FyDWmJy6piXomLiv5lMHbBn3Ncx7VR
-	AlMLphEo+fcDNvaP+wr0585LokL+JGOx2N4fLwPXoKqZfaaRj0uniCcL1eVpovAD8BVlv5F7gFs
-	5cBKF83pT+IdL/DI7McE2IVDmTIhRnFQH2AZPZaxh
-X-Gm-Gg: ASbGncshnYAYtlMVq83fallohiTlDmCQzqEigk1LbIShQpkzulAkALSZ/ZCfeBoquG4
-	B/gPjmvYwn3R+s/E+KJSCIMn9Z+ldXUNWae2xKLyPIqbdB+Gd3OTn8/Z6evNZc2uCMt+bSjhhCg
-	s2Zpwt1Gx41Jd0bFdnYXP4YR9eS93aSKau+s9aSJOhKpkGHE61PFulvOOKKpKSO8CmZKg9R8Cff
-	6IIki48uWoY723OGL91hs54RV5OptJ14Ebqs2Smx1GvvA==
-X-Google-Smtp-Source: AGHT+IHGlPCHT+44DAvJB9zRm+3LM/HXySp5XwuN4EFQvOUkmZCnoZLTNZDiAYuGffXb4da9PPxUbTsQPmLHNTo18Sg=
-X-Received: by 2002:ac2:5b92:0:b0:55f:6c68:400c with SMTP id
- 2adb3069b0e04-56272295585mr463209e87.7.1757371889119; Mon, 08 Sep 2025
- 15:51:29 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="o/yhZAT6";
+	spf=none (imf02.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757373464; a=rsa-sha256;
+	cv=none;
+	b=mFHE0Mjk3I3OHqded63VaxxxNZ6x2aUF+4Dj9IdQmWmV/5dWFGwQ2i9FzX1oBZV7RUzAL+
+	R74yaMQvsRU2vJOlOM48ob0KdjlgA0zug7lxlpfx12nL0fgEn9NlC2QQOZ5SYgPW4XwdwN
+	ZjsMIO5kOD4JVuu312FeBlGoPMxd4ow=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=CMlqYlKj+ILUokIqP1ABAMFD7Ot5oBLbcsJFMFm2zE0=; b=o/yhZAT6Pleqpfj3cap4+Ocr0X
+	SQndNm93uEb+a4QqInydfI6lMJSJFzsSu3/0qeMTKdhPtlmWw3TUQRbR6L2wKk2W3Fv+UH9KsOJEg
+	9qPRFInLAK8DjwwP3kbclODQZmsO+zdGm2eIzKDYqjx3wV8Z9WwBemPbQiE4A+eNMuh7m64z6qIdV
+	KXBfJtcalLtNb7nUQOkOJ5v6vc4bBx6ZTya7R+MDIox9Nxyg/2OCB4wbhLPO78J0Opb4io0rwvic4
+	NDpaGlW9vP1blgirQfaegykINHE1UsAXggKwlIZNRbsS5mNDQybb9YhDkcTYBLtgKyHdfGed+PEsS
+	przXJOJw==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uvl6s-00000002unf-1xHe;
+	Mon, 08 Sep 2025 23:17:18 +0000
+Message-ID: <c0d7df5f-ac43-4e15-8400-155bf87d5e77@infradead.org>
+Date: Mon, 8 Sep 2025 16:17:16 -0700
 MIME-Version: 1.0
-References: <20250908013419.4186627-1-tweek@google.com> <CAEjxPJ6QfUZijh3PEpHs_Yw6Hmte92-rg8gkvMw9cD=JxA+CMA@mail.gmail.com>
-In-Reply-To: <CAEjxPJ6QfUZijh3PEpHs_Yw6Hmte92-rg8gkvMw9cD=JxA+CMA@mail.gmail.com>
-From: =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
-Date: Tue, 9 Sep 2025 08:51:12 +1000
-X-Gm-Features: Ac12FXzaXfPJRpw8SIYa0ofw9A3koHJPN82BozBv8c8kOd4rvQR4t_4Herx7EQg
-Message-ID: <CA+zpnLdbLjuGrk-178coxAH1pzpEA1jRzGn8zU9DHZ1rQspP4A@mail.gmail.com>
-Subject: Re: [PATCH v2] memfd,selinux: call security_inode_init_security_anon
-To: Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	Hugh Dickins <hughd@google.com>, Jeff Vander Stoep <jeffv@google.com>, Nick Kralevich <nnk@google.com>, 
-	Jeff Xu <jeffxu@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Isaac Manjarres <isaacmanjarres@google.com>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: tfoijwgtjyw1bdykieer81qusuokiwwx
-X-Rspamd-Queue-Id: 47CC0180002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/16] doc: update porting, vfs documentation for
+ mmap_[complete, abort]
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
+ Guo Ren <guoren@kernel.org>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+ Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
+ Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
+ sparclinux@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
+ kexec@lists.infradead.org, kasan-dev@googlegroups.com,
+ Jason Gunthorpe <jgg@nvidia.com>
+References: <cover.1757329751.git.lorenzo.stoakes@oracle.com>
+ <1ceb56fec97f891df5070b24344bf2009aca6655.1757329751.git.lorenzo.stoakes@oracle.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <1ceb56fec97f891df5070b24344bf2009aca6655.1757329751.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1757371891-558581
-X-HE-Meta: U2FsdGVkX18lVBl7G6lbVvjCJQAyVhARu7B/clqklO+S5m1KhipA62I0gQ24aYEUp0THI51Za8pVz5jAHaYndyfmyrxj2eYzrrhFDEz+d4TE4nyeXz9mVGtsaVFSsDeMmMuJwhlerdRyarJ0592e/+M2xJ/DkGD5fIJe1R13k+xYi7btM0FLcL0P2ATBk2Qiv59FrAzpOTPw9XL/uYHdePYpy5HcCuPSq4Jj+gW6bc5n5+2BvdTqXwLZGZteLvBwBEmTja6RUabS57U947gumYggOQ9kYUyzq4abB5YhP44fpajg/XKIz+XdqbNfzdEOxiHwM8ULHzHevPcpXQ/9QNNwNsEFDF51ljZniO+ggKSAao2MRsoNrGANxm1NaHe0EymHcWqlNj7jE/UXh9ib9sLDwOCKrI2GVEL4b4f7mgbUpKD1TARaN7tabHkjdzMFqvkWmFVQuolrmpB/dFBrcojmNNQCfa429fkXapWxO8N9FAmPFBAk31HmNrUES22WFRLBGgu6i15YVBehAxfmrP21eefxYRGcE2ydT5KySA82VDHerUt/HiC0A4g3DHdIK0FxSiy4Jv6m40ci9SHE9qezP/E6m9EK2QocW4PU17pHYOzO5tlH8OmTK12vmnB9d31pC4VYKrNLGw0E7RiEhDdStxC42J67tD4HhyKONfgitlN4UJh//aDQ0hJX0R/4BQFkwSiVgHSNPbA4I96aD+gOTHkJ4XLZ+O9WOIYsw7FfLSteIzumWq7vOFgHIdtwf/PDN25W3vZW0TkfhYUOE+WCWiUy4Rl2iFDyQ7h5KbiEH39J2XM5SB/Wi7CVYTs7uqIJ/q+ahgjYkKUzRxF1B6SUfQX+YTRGDDyc/lsNATaBkxSQBFX2zvausw9v+gA7BfD9gMKW3apDDxdsNjmrhBaGE34I4JOEQ8UHTYvh+Pc9S7WuhzzJmfPU+8zWx7yDnDemRbb94miiXTgEDUw
- aYytwsQv
- NjUo7LR4PGXoswNFKzaCq9x5S4ery3aSiN+0fpyEmPwGt5vlpMD4fgVawSR6JMmgcp5Xh0hLjCFinvXOevRpFzAgiYpWN3xk6h5fsryeHmzoO8kU26lky8gO2XfvUZcnHE0Vg8serzjZDcQjZ2jxAL6whjXx2+FApSHxEL+F9HgrDFXTn2OGkZL7HcZsiMUknXhLNjsl8tCbULxkpYWDstkp4jWxlPis89LJt8gBUTisOAe0tk6jIQGpnNNvoKZGCNuYbSlwda3JxvhhEjKQEDkgwP35FQm5WhJLa+wq2hQuaKgUwYQkH88byfI9Sk14ldP9SdKsujAqYbwcpwP7kxG1901LD7ZceyKmscQc/nd5ZCRH1XaQH3jyLQ02ODS3W6vTCDxlTfTPxB83luFPrMVWtmQmUDX5NmAwueKoRcLWAIMd9l0/7pZ+hAZfIZlny0ui6aoSCWqdhFLI9uPGozm8xlw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 49F4480003
+X-Stat-Signature: 33dkydx6eogg157tidbf4b43se8sbjee
+X-HE-Tag: 1757373464-943304
+X-HE-Meta: U2FsdGVkX194wghVx6Y3mFZQJjGuafVAUS9tw6sewglsKVtSAToqsj+/IrcaeuqXYB9U05heM/3KV8jUJGKHlnK/YSR5/DogR3m2YFj/vpB27F2v+75wZ/PpaNHNsXkuy9sRAPmO+7atgLyXjGGTlP3gavMvqSoGhnDcI3UNqVh41iQ4FkHdEtREdX7m6VDmu0gngDWNt0kEtAEWnGDCCz2iNxdai73ol1I8D0oUw1wwTWSoPhdhnV7DOxo7GF+vRlgeZtJJSZGZ76p97HmCNK3sUaMX1Dl/p3Vt/S8l5Xcl8sT7G8gPuV/0/UthqAfSP3aJ08CSQOuzjPiVHQo4dqdZV2XqR8ir3jQL8Wlb3aeaZ4O2WstNs6RzSYjAiiETlpT8rsdyvkBhz7OaJfAAt+UNbo2iwbV11F3YhrAuzxRhrb5tLdUXP+yCJ8u6JrfvGuQeQkQPFtJnM28IUUHs0UEe1ww+ZZEsk81ucLhDzD+OC9kmwFS/F8fM9bKuw0DWE4mcIsovWfHTb8/LHpUhTVNt7ehceCBAdlP9zmqfOkIwbszx2M6meATiiv7S7098jG7ThdpejKVRLKz8dD+elxZagK2X+ZKRVt5m5VMl/hbUn3opEUVOOi59qp/k4pNE3gMt1DloQdrb7NXQLCVrRy2KQCPvKRclWh0yBHXtpTXrGw0YQD5Whg25BYvUrcQfdIJkiCv5rx+H1EFYqnaR59sqjEtc9avR+DRClhyAPknYQPRIs78OdhcgBotqSHYvH2J1zGh8qb/mO+caLzhL+TKCjrcz3fHNJhMzYb/DPgKMMUqwp8wEGqG43vRxT8SHC1LexIVrlqv8Y3my+BrrHnfYmoW9nyb43I19AogGM0gpRw3ytJxMnjUvs2FMoDDansP0Dmcsc52rSmvS26tIE9gcIvomOKQCiVX+TR4Q3YvJVWG393cnG4UVXaVCIFG50G+I0UHr4UXICV6fJxg
+ P+LXTJlS
+ Id8kBfy2UjzSYfIkR7bx69LaTNPWRGSBIC4u9e7NvTfLw9TizrhxM3zukILvAmONuTwtFNLIOw4KQTNsDi/rDB5lIs9u8XK80dimLTrilFJVelUD0nOTp/y3KhXYaL0SLLR50XkcaRlP7RLBZ+RkStblHIemBiDb4vKozDrhRLDcNOH0G5lELA2uzjFPrMCv+jtoTOJqjbePpFg2HdCknTaoIRCxJdATEHW7h68+GVpRuuUOVysJyxZtKxXKrgE9oBL4i+VCJXm1NETq2qfzB7/DeBlcRkpJ5hXe2uDlm0VmA0Z9ie2VLMUd9AA5/wA1V6OxvonKt9Hgz8LE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,55 +126,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 9, 2025 at 2:27=E2=80=AFAM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
->
-> On Sun, Sep 7, 2025 at 9:34=E2=80=AFPM Thi=C3=A9baud Weksteen <tweek@goog=
-le.com> wrote:
-> >
-> > Prior to this change, no security hooks were called at the creation of =
-a
-> > memfd file. It means that, for SELinux as an example, it will receive
-> > the default type of the filesystem that backs the in-memory inode. In
-> > most cases, that would be tmpfs, but if MFD_HUGETLB is passed, it will
-> > be hugetlbfs. Both can be considered implementation details of memfd.
-> >
-> > It also means that it is not possible to differentiate between a file
-> > coming from memfd_create and a file coming from a standard tmpfs mount
-> > point.
-> >
-> > Additionally, no permission is validated at creation, which differs fro=
-m
-> > the similar memfd_secret syscall.
-> >
-> > Call security_inode_init_security_anon during creation. This ensures
-> > that the file is setup similarly to other anonymous inodes. On SELinux,
-> > it means that the file will receive the security context of its task.
-> >
-> > The ability to limit fexecve on memfd has been of interest to avoid
-> > potential pitfalls where /proc/self/exe or similar would be executed
-> > [1][2]. Reuse the "execute_no_trans" and "entrypoint" access vectors,
-> > similarly to the file class. These access vectors may not make sense fo=
-r
-> > the existing "anon_inode" class. Therefore, define and assign a new
-> > class "memfd_file" to support such access vectors.
-> >
-> > Guard these changes behind a new policy capability named "memfd_class".
-> >
-> > [1] https://crbug.com/1305267
-> > [2] https://lore.kernel.org/lkml/20221215001205.51969-1-jeffxu@google.c=
-om/
-> >
-> > Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
-> > Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> > Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
->
-> When you revise a patch, you aren't supposed to retain other's tags
-> since they haven't technically reviewed, agreed to, or tested the
-> revised change.
-> That said, I have now done so and thus these tags can remain!
->
+Hi--
 
-I'm sorry for that. Thanks for the clarification, I wasn't sure what
-the process was. And thanks for the review!
+On 9/8/25 4:10 AM, Lorenzo Stoakes wrote:
+> We have introduced the mmap_complete() and mmap_abort() callbacks, which
+> work in conjunction with mmap_prepare(), so describe what they used for.
+> 
+> We update both the VFS documentation and the porting guide.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  Documentation/filesystems/porting.rst |  9 +++++++
+>  Documentation/filesystems/vfs.rst     | 35 +++++++++++++++++++++++++++
+>  2 files changed, 44 insertions(+)
+> 
+
+> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
+> index 486a91633474..172d36a13e13 100644
+> --- a/Documentation/filesystems/vfs.rst
+> +++ b/Documentation/filesystems/vfs.rst
+
+> @@ -1236,6 +1240,37 @@ otherwise noted.
+>  	file-backed memory mapping, most notably establishing relevant
+>  	private state and VMA callbacks.
+>  
+> +``mmap_complete``
+> +	If mmap_prepare is provided, will be invoked after the mapping is fully
+
+s/mmap_prepare/mmap_complete/ ??
+
+> +	established, with the mmap and VMA write locks held.
+> +
+> +	It is useful for prepopulating VMAs before they may be accessed by
+> +	users.
+> +
+> +	The hook MUST NOT release either the VMA or mmap write locks. This is
+
+You could also do **bold** above:
+
+	The hook **MUST NOT** release ...
+
+
+> +	asserted by the mmap logic.
+> +
+> +	If an error is returned by the hook, the VMA is unmapped and the
+> +	mmap() operation fails with that error.
+> +
+> +	It is not valid to specify this hook if mmap_prepare is not also
+> +	specified, doing so will result in an error upon mapping.
+
+-- 
+~Randy
+
 
