@@ -4,120 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0902DCA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 23:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 182CDCAC58A
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 23:22:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D62E8E0008; Mon,  8 Sep 2025 19:17:47 -0400 (EDT)
+	id 489FA8E0009; Mon,  8 Sep 2025 19:22:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AE178E0007; Mon,  8 Sep 2025 19:17:47 -0400 (EDT)
+	id 43ADC8E0007; Mon,  8 Sep 2025 19:22:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F05E68E0008; Mon,  8 Sep 2025 19:17:46 -0400 (EDT)
+	id 377578E0009; Mon,  8 Sep 2025 19:22:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E04DC8E0007
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:17:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E2C1B8253
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 23:17:46 +0000 (UTC)
-X-FDA: 83867647332.06.1E1888F
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 49F4480003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 23:17:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="o/yhZAT6"
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2763A8E0007
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:22:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE4CC11935A
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 23:22:24 +0000 (UTC)
+X-FDA: 83867659008.03.F1812E9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 17BF44000E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 23:22:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KIA54G99;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757373464;
+	s=arc-20220608; t=1757373743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CMlqYlKj+ILUokIqP1ABAMFD7Ot5oBLbcsJFMFm2zE0=;
-	b=hwfPV8vV3EbADKElha6qG0ROWWqUPHnM2DaQnGlwaI75KBJyy4lXwcYxY2uqUZQgJs3w66
-	NIgjiwlrd5Bvs5mSP92hvueIF/erpHnC34DYiAzFINcwtvFBgk/nRiR6YkCoMgs7n/wOEs
-	fCo452jL1HnJrYo07gTr7Z5Z13O6Zis=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="o/yhZAT6";
-	spf=none (imf02.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757373464; a=rsa-sha256;
+	bh=eYh9/YxENPVIiL4bSKRIgSVOH1pez+hoaivpjUTRnXQ=;
+	b=pomGIjgfrOkRp+yHmGWI1OZIQlzZkTgp8xd5BBQwnvRuBpAOkpkfR4ZK+zJhRLc3uAKkKh
+	6bU3Xce8oTxzN8LZvCDZCzpTqAA3GngaFHkvkfOFxIAtyz1FwS7KhLMgZVr5CE7xVUazVp
+	v2fwnf9e344GF5jOsKgtJsTI5eZB0ps=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757373743; a=rsa-sha256;
 	cv=none;
-	b=mFHE0Mjk3I3OHqded63VaxxxNZ6x2aUF+4Dj9IdQmWmV/5dWFGwQ2i9FzX1oBZV7RUzAL+
-	R74yaMQvsRU2vJOlOM48ob0KdjlgA0zug7lxlpfx12nL0fgEn9NlC2QQOZ5SYgPW4XwdwN
-	ZjsMIO5kOD4JVuu312FeBlGoPMxd4ow=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=CMlqYlKj+ILUokIqP1ABAMFD7Ot5oBLbcsJFMFm2zE0=; b=o/yhZAT6Pleqpfj3cap4+Ocr0X
-	SQndNm93uEb+a4QqInydfI6lMJSJFzsSu3/0qeMTKdhPtlmWw3TUQRbR6L2wKk2W3Fv+UH9KsOJEg
-	9qPRFInLAK8DjwwP3kbclODQZmsO+zdGm2eIzKDYqjx3wV8Z9WwBemPbQiE4A+eNMuh7m64z6qIdV
-	KXBfJtcalLtNb7nUQOkOJ5v6vc4bBx6ZTya7R+MDIox9Nxyg/2OCB4wbhLPO78J0Opb4io0rwvic4
-	NDpaGlW9vP1blgirQfaegykINHE1UsAXggKwlIZNRbsS5mNDQybb9YhDkcTYBLtgKyHdfGed+PEsS
-	przXJOJw==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvl6s-00000002unf-1xHe;
-	Mon, 08 Sep 2025 23:17:18 +0000
-Message-ID: <c0d7df5f-ac43-4e15-8400-155bf87d5e77@infradead.org>
-Date: Mon, 8 Sep 2025 16:17:16 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/16] doc: update porting, vfs documentation for
- mmap_[complete, abort]
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Matthew Wilcox <willy@infradead.org>,
- Guo Ren <guoren@kernel.org>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, "David S . Miller"
- <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Nicolas Pitre <nico@fluxnic.net>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
- Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
- Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Uladzislau Rezki <urezki@gmail.com>,
- Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-cxl@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
- kexec@lists.infradead.org, kasan-dev@googlegroups.com,
- Jason Gunthorpe <jgg@nvidia.com>
-References: <cover.1757329751.git.lorenzo.stoakes@oracle.com>
- <1ceb56fec97f891df5070b24344bf2009aca6655.1757329751.git.lorenzo.stoakes@oracle.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <1ceb56fec97f891df5070b24344bf2009aca6655.1757329751.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+	b=IW5Q9ghD4ix0zX72BMP4N01wWPvOJzZVGSl/AX+WbPVUYAj/FYtsnS1AxBXT1dcZ85iDPv
+	DJue0tNe8SCsysUjzdsK6dvA2xISyF6DpZmS2W3eX3sHLD9BIH/Cn5/hMTYlXML8KeASLK
+	8FjJOJlsQk/ldJj9H8uJzLszxqGshmg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=KIA54G99;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 144B26013F;
+	Mon,  8 Sep 2025 23:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55235C4CEF1;
+	Mon,  8 Sep 2025 23:22:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757373741;
+	bh=PGOjmTeDDIr1B4cY4+ySaxe5KyHC4GKYSebwfsJjMn4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KIA54G99aZ/SbV3nV5TTXVGVXCoktdxmU0ZGeJa/ej2vW3PYBVwvR2YM/am6bsXMO
+	 3ErRqUje2RCK6wmQI9vJksf43BD1LRY/Anurm4T+e2IHvHKoQ28dL6m5WrCC8hsL1L
+	 heIcW5pfsue1NRscA1YgEE/fXZF4FF4o9IT/5/G8=
+Date: Mon, 8 Sep 2025 16:22:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: hughd@google.com, baolin.wang@linux.alibaba.com, da.gomez@samsung.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Vernon Yang
+ <yanglincheng@kylinos.cn>
+Subject: Re: [PATCH] mm: shmem: fix too little space for tmpfs only fallback
+ 4KB
+Message-Id: <20250908162220.480d7014cc6c6ad2e14748c5@linux-foundation.org>
+In-Reply-To: <20250908123128.900254-1-vernon2gm@gmail.com>
+References: <20250908123128.900254-1-vernon2gm@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 17BF44000E
+X-Stat-Signature: w5569zkojnwocnzfa4c9xd7doonj73zo
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 49F4480003
-X-Stat-Signature: 33dkydx6eogg157tidbf4b43se8sbjee
-X-HE-Tag: 1757373464-943304
-X-HE-Meta: U2FsdGVkX194wghVx6Y3mFZQJjGuafVAUS9tw6sewglsKVtSAToqsj+/IrcaeuqXYB9U05heM/3KV8jUJGKHlnK/YSR5/DogR3m2YFj/vpB27F2v+75wZ/PpaNHNsXkuy9sRAPmO+7atgLyXjGGTlP3gavMvqSoGhnDcI3UNqVh41iQ4FkHdEtREdX7m6VDmu0gngDWNt0kEtAEWnGDCCz2iNxdai73ol1I8D0oUw1wwTWSoPhdhnV7DOxo7GF+vRlgeZtJJSZGZ76p97HmCNK3sUaMX1Dl/p3Vt/S8l5Xcl8sT7G8gPuV/0/UthqAfSP3aJ08CSQOuzjPiVHQo4dqdZV2XqR8ir3jQL8Wlb3aeaZ4O2WstNs6RzSYjAiiETlpT8rsdyvkBhz7OaJfAAt+UNbo2iwbV11F3YhrAuzxRhrb5tLdUXP+yCJ8u6JrfvGuQeQkQPFtJnM28IUUHs0UEe1ww+ZZEsk81ucLhDzD+OC9kmwFS/F8fM9bKuw0DWE4mcIsovWfHTb8/LHpUhTVNt7ehceCBAdlP9zmqfOkIwbszx2M6meATiiv7S7098jG7ThdpejKVRLKz8dD+elxZagK2X+ZKRVt5m5VMl/hbUn3opEUVOOi59qp/k4pNE3gMt1DloQdrb7NXQLCVrRy2KQCPvKRclWh0yBHXtpTXrGw0YQD5Whg25BYvUrcQfdIJkiCv5rx+H1EFYqnaR59sqjEtc9avR+DRClhyAPknYQPRIs78OdhcgBotqSHYvH2J1zGh8qb/mO+caLzhL+TKCjrcz3fHNJhMzYb/DPgKMMUqwp8wEGqG43vRxT8SHC1LexIVrlqv8Y3my+BrrHnfYmoW9nyb43I19AogGM0gpRw3ytJxMnjUvs2FMoDDansP0Dmcsc52rSmvS26tIE9gcIvomOKQCiVX+TR4Q3YvJVWG393cnG4UVXaVCIFG50G+I0UHr4UXICV6fJxg
- P+LXTJlS
- Id8kBfy2UjzSYfIkR7bx69LaTNPWRGSBIC4u9e7NvTfLw9TizrhxM3zukILvAmONuTwtFNLIOw4KQTNsDi/rDB5lIs9u8XK80dimLTrilFJVelUD0nOTp/y3KhXYaL0SLLR50XkcaRlP7RLBZ+RkStblHIemBiDb4vKozDrhRLDcNOH0G5lELA2uzjFPrMCv+jtoTOJqjbePpFg2HdCknTaoIRCxJdATEHW7h68+GVpRuuUOVysJyxZtKxXKrgE9oBL4i+VCJXm1NETq2qfzB7/DeBlcRkpJ5hXe2uDlm0VmA0Z9ie2VLMUd9AA5/wA1V6OxvonKt9Hgz8LE=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1757373742-650998
+X-HE-Meta: U2FsdGVkX18cRv/2/XD9QqTOwHjOjPSiaF960ZmWjWq4qRKlLMfVwLH1LO5d6yBHRNM229UoACiAYenw1R4W/UiqU8bd5OMpuXiVAc3AxXsITJjp7QZ+3V3kGEqq/+kaUBATAB5Hslre0GfMPu/ovLy+QYl4YwbpP5viK326cxUsXqoMKqXZub6BTnQ6M5203GPStLERwvBiVK2AIh64mXwkb3Kc6w8PePf7Qtp6fF6h+6GWW12zCQXcv+FyZQUkvLTmpL8q3X7diEVJ59f5BSJ7448i7O2BIEZ9BCHZpeKKcajCyIOzbxF8woj8dEc8lELmegRJS7uUKYtMdMKInXoTEnQKbWtrS1NbUaLyFDpedhESe9SH29yf7RGpmKGyI20TSHNPV9+14ez+oRysoIsDbFE5QmVLtZpxT+mXI3llrddPSFDl3EtePEzzYkQCgm6yIl1R7y6qGjbP4pu7JOvftKeNzD989BT0kxRAfc/b21tEPLtV+axLTRX68WCRXIjKO2Cl6uu9MifbbrZbyn7akzOG8TPUIoLvs9duQYw4cKPtnTXvbMHg1PYzeY/c9hwiwMymGS7nL3JjHc/bA9gI0OTwv9QvLNZwu1kqqgngG+dLSLzccaCbYpwkUSEucFUZkZAwC4fegeevwtCkJn776Lmy194C6aXqwPbAaqgL56sXy6kGRn9k0MDwQG8kODfNhfst23U0zj6JfDQe81KirSWeVVsHyHq5VaOljLf2qqYcHdo5Z2p5DnGzZPeuGAvrvLbR6ISTc7CCWCx2fRAeEWv+SJxLPxAULVnbJ0S03zjyRsdSwKqSkDJuskTB4DfeIoABlLB8/SDUszoasDAu1QR7G0qwIyd2qY3vIOGp/nd5o29gVgSosPtOHYWvmcNAP0DHQNffQneRAnRtxEqNlG/R7nYddUJ4hx2/HaMFCrvKBVrr3vS2t7KxAHbN082E3ZASA6RWVyJ+o1A
+ 4sG7aXdv
+ 1GB6GS9VCBb3/SoyJh+Ot1Csir7CppEZ8wSeiI/FTGM/Meb2TffWM2DWP0+QS9qk5qpA60Q6d5F7wnwfXdFYn2i4HC5mfGMPGMqDI5YodVtpSwuo7tSiUCkZvn/pKmjWVeaMXh71nW2HesPCMHFtRezmMciQfLGMAGnlUugtoy3NmYs4jmqc1/KDi4Gu+ba6tn0mo1gSTgUFd2y2c1zZIgNoAF//2/lYrqTTzOXmJyQiu69E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,56 +92,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi--
+On Mon,  8 Sep 2025 20:31:28 +0800 Vernon Yang <vernon2gm@gmail.com> wrote:
 
-On 9/8/25 4:10 AM, Lorenzo Stoakes wrote:
-> We have introduced the mmap_complete() and mmap_abort() callbacks, which
-> work in conjunction with mmap_prepare(), so describe what they used for.
+> From: Vernon Yang <yanglincheng@kylinos.cn>
 > 
-> We update both the VFS documentation and the porting guide.
+> When the system memory is sufficient, allocating memory is always
+> successful, but when tmpfs size is low (e.g. 1MB), it falls back
+> directly from 2MB to 4KB, and other small granularity (8KB ~ 1024KB)
+> will not be tried.
 > 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  Documentation/filesystems/porting.rst |  9 +++++++
->  Documentation/filesystems/vfs.rst     | 35 +++++++++++++++++++++++++++
->  2 files changed, 44 insertions(+)
-> 
+> Therefore add check whether the remaining space of tmpfs is sufficient
+> for allocation. If there is too little space left, try smaller large
+> folio.
 
-> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-> index 486a91633474..172d36a13e13 100644
-> --- a/Documentation/filesystems/vfs.rst
-> +++ b/Documentation/filesystems/vfs.rst
+Thanks.
 
-> @@ -1236,6 +1240,37 @@ otherwise noted.
->  	file-backed memory mapping, most notably establishing relevant
->  	private state and VMA callbacks.
->  
-> +``mmap_complete``
-> +	If mmap_prepare is provided, will be invoked after the mapping is fully
-
-s/mmap_prepare/mmap_complete/ ??
-
-> +	established, with the mmap and VMA write locks held.
-> +
-> +	It is useful for prepopulating VMAs before they may be accessed by
-> +	users.
-> +
-> +	The hook MUST NOT release either the VMA or mmap write locks. This is
-
-You could also do **bold** above:
-
-	The hook **MUST NOT** release ...
-
-
-> +	asserted by the mmap logic.
-> +
-> +	If an error is returned by the hook, the VMA is unmapped and the
-> +	mmap() operation fails with that error.
-> +
-> +	It is not valid to specify this hook if mmap_prepare is not also
-> +	specified, doing so will result in an error upon mapping.
-
--- 
-~Randy
+What are the effects of this change?  I'm assuming it's an
+*improvement*, rather than a fix for some misbehavior?
 
 
