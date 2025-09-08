@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D199CAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 17:50:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09017CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 17:51:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BC828E000D; Mon,  8 Sep 2025 13:50:50 -0400 (EDT)
+	id 65E9E8E0011; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 745FE8E0001; Mon,  8 Sep 2025 13:50:50 -0400 (EDT)
+	id 636758E0001; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60E048E000D; Mon,  8 Sep 2025 13:50:50 -0400 (EDT)
+	id 54C318E0011; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 48D538E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:50:50 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 066D014021F
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:50:50 +0000 (UTC)
-X-FDA: 83866823460.15.4CAED8C
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 17F7B100019
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:50:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=eVl2qHQc;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 41B528E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:51:46 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 175BE160232
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:51:46 +0000 (UTC)
+X-FDA: 83866825812.27.B6F7EFA
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3BE34120003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:51:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VftsaFls;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757353848;
+	s=arc-20220608; t=1757353904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dF1xj2feIA70FeXCDtnqFCxI24aighX3ylk5DZ7hmoY=;
-	b=7zSjzRAzF4VT74Njj7K9g5osCJHfiRYx8Xs4Ey6vQMCARPiNX+pqS0UHOpzCIrT5z8CwoY
-	TMGZfZfGo84CEFyZwHpe35zhMMzTZnZOFmzx4R60NAgo2ZkrkRjKFQZLw+T/kUQ+2BxChq
-	KXBONp932ovybpjivB+pttZx5b+rOmg=
+	bh=4G8OjR9ssKy/HeocTqhx3l5d0C6Xda9h262DRWrvvKQ=;
+	b=3D5j9Qjiuy/lfuGt6GvnKrF5QRwB60ixtvgm+TidHrXLiBjDo2RQawA8A8uv9nR755hkDQ
+	m+DhmhFV2Cp55lbfB8t9vGWCDKvyB7z2dpgqCQS7P02cPnNTf0jhnuPfeUB200ZTB1bAd/
+	wgrGyR1nxjT0vFizvIY6pgFMvhVQTqE=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=eVl2qHQc;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757353848; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VftsaFls;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757353904; a=rsa-sha256;
 	cv=none;
-	b=WSAB7zu+BKqTbUd4pr8hT9REu7g1wWmbvsGhMAI3RsQOi/9tTWPiKr42ub7Kmu7Ty26ey7
-	2rEKJQtbi4JZePKuFvhkestbxrKmHVIcbBLxN+9J1pGpYIJxgr77/xw0jHAQo7j9vva4qe
-	CKt0kqZ9jVdoNKC553gKAMGRaN55lXE=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b5e4fc9b4fso24842191cf.2
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 10:50:47 -0700 (PDT)
+	b=s+D2tIQS3YKqgMaP/Fcyei4rqNOr0FmceHhK2ovZKM0ifEHPSvmECfWxG//xUN8SkF9yEj
+	uE6PhCLqEW78+glVoB1e7z9FKfsxcBO+QmvNyCVFf8DRk4+HnPrY+O1biVLXVen63xp7SS
+	e+uZBh6Kb3BYbXEq+S3zTlimOlBgwbg=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4b4bcb9638aso1081621cf.0
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 10:51:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1757353847; x=1757958647; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dF1xj2feIA70FeXCDtnqFCxI24aighX3ylk5DZ7hmoY=;
-        b=eVl2qHQcy0bLdyaI16ZHNoRzIZLUpUAthDwOlTKI8kkUflhwrxJT3vhmt2X3ViYuN1
-         cbvvp57KdqIZeZGHah743yPuH09sXsovI9IWRuKFQa/UV0mIlNihPm2PsfRcfpCr3/Bi
-         tv++udFtTvc66S3+pkY8lc2cVktxw7FSdHyXVA06rcnAIwL5MAYA3g1HNiFRGSUl8mhK
-         UmtfVZaJAo1+qI9ZeIwB6j4hwnzBB7nhmxrHcEgP4Ir46/Kbv+6CLE3IzwZ82DkucEer
-         QzinG4R0i+CXfjuEv7hd7yAafcCdW6G1u5OXqXWQdfxvfBGfRIOFohkMdjnfAJOyFTgy
-         fNsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757353847; x=1757958647;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1757353903; x=1757958703; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dF1xj2feIA70FeXCDtnqFCxI24aighX3ylk5DZ7hmoY=;
-        b=ve5lYI3bFwpeLjhRsv7+6cEzt4BGVS5M/BWhudO333q/HnlVdtYIB/uYrOHbh9Y+hr
-         wuUMBtAyGtokWMjZekxfod5ECv3tA4132CEMNni2YuOwVcUq3xklKnj6YFH7Wr/3usDm
-         +BxD/MCP7K/OyHcDYsQndXVpRu7hQVrn/5x1HTNak40bh7B59jngBaQU3VZst30z8kOA
-         HjEVjFWC2OWIM+HvnSry2fjtp2CCtkMIHuNqNwXf0RsvO4C0mEl1u38Yyl3JgiEKOVsO
-         QArulKhDZoBjX4AALsLx2muiv33uuo3BFRB15sx/CuryEeL0NoMNXjynbPjqEdC8Jw62
-         yMTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXzwpDSPvQH8P54cOSG+XrSFxAaf5bEHuvSEhs5Ar3eHOwBOJdwQotoOL7e34Fk1LcZxrzWLSih1Q==@kvack.org
-X-Gm-Message-State: AOJu0Yxo7PMWW9BnfwlnhkpMv81/cm3PgDyvdAQw0ph8w6dUDo/veRAZ
-	84XzH6OWJwLVg3vLo/7IUBDAdZ/d0Oltp5vMm6tYYMWb4JOlbul/c1MGwhN5UI/wKGA=
-X-Gm-Gg: ASbGncu9VpXsybt48JhrDsfkP6KrTMg+yKTTTqJK2KfK0/w/jZBnGx+DIhCiqtaA4Jx
-	7DiLrFSYkfJq+WnorWZyEgPoiqVAProRZPdZYxb4+fj1P/xkOI9DkvdUOVlSIDUgq+EIRMvz0Ys
-	qXNSCRT2Z1O7I2DncSlMLhDngaNIV7ZaUIMLoT+15+j+S640GzzWeIUR2FHMkXDKTpbo0LoBrdS
-	uox1ppyM5TKo7gAzReMAtNzHX2ySX+K2nPX7kpILhVX1Z2298Irbn8+aiiHyTSKDNVRTEfYLU/J
-	EMdRkJSMD74dAuvNuzA4YJ8LHPlyB9A5rYGwgxQKBIhVzsO+Hvl1Xk1pj7J+cNyeHKFXSIWVL74
-	DUyaKMvGMle5j3mealD1WjSy9K4OoYAItn56lp8Ivml4HqEg/4HvSLuxj4bZKrPD2vE1eYeUa04
-	vvgQ==
-X-Google-Smtp-Source: AGHT+IFv6k94O5ab+utE872MZVk69x6/YL7XE67E6+Q/rJaTrlxps7XrhdhFQdjVAkN1VDp+aZrbHA==
-X-Received: by 2002:a05:622a:1495:b0:4b5:f60b:2079 with SMTP id d75a77b69052e-4b5f83ae2f8mr98864861cf.21.1757353837787;
-        Mon, 08 Sep 2025 10:50:37 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-42.washdc.ftas.verizon.net. [96.255.20.42])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b48f756d16sm102123611cf.34.2025.09.08.10.50.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 10:50:35 -0700 (PDT)
-Date: Mon, 8 Sep 2025 13:50:33 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: mhocko@suse.com, rientjes@google.com, shakeel.butt@linux.dev,
-	akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	linux-mm@kvack.org, wangkefeng.wang@huawei.com
-Subject: Re: [PATCH] mm/oom_kill: kill current in OOM when binding to
- cpu-less nodes
-Message-ID: <aL8XaWy6uBQ8iVGv@gourry-fedora-PF4VCD3F>
-References: <20250904134431.1637701-1-tujinjiang@huawei.com>
+        bh=4G8OjR9ssKy/HeocTqhx3l5d0C6Xda9h262DRWrvvKQ=;
+        b=VftsaFlsy+2tadKklR/WuXAvzlBmY2kpV969NznM1asN7uys07c5F5G71f2HpNEmdi
+         DVgeWbZLPQZoO2vWPbIoQywedo/CN5MCXvIMjcWvAyxyyhI/j/5TVqzGiiaAtvkimQKs
+         xa/GB4TJg2AtOmS1+zOsfYSw0ms0g3eHCrFpFerSAmXq06wMVnZ4DNiJpsuYSJ5dnR4X
+         UWvkuY3yvA27o4LdcXMbF69Vm2YH5u2vfEjBKeNp3rYh7/EXRRLElYpD588UM2LYyh4L
+         AF0hemvZxEZiitfA1UupljUrVr62F/JFAzBMtcVVyGYmMz9yVurVigwODiIGau6zp4h5
+         ZjiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757353903; x=1757958703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4G8OjR9ssKy/HeocTqhx3l5d0C6Xda9h262DRWrvvKQ=;
+        b=a1z2FnMmbHKDTEKj8v1x5X50lk3M0eAfbCfi7TAkzt0+UUdHjjKmpJhHZ4LPyzVr/G
+         SqHgShNb5TlT23BwJwo166OBEexJihseMVYX3SZFvVCSc6XUD47NehauU1atPn2L+b7e
+         J6kbZthGNmbnHGWBMhFiGrdkgJaZNwnZFZ1hWDqTn6Cl09qhA01lRv3SOZBLIcEwmEu5
+         GIqw+7qbuGrmpqyHpacA+BATRaM6OGDCDVhYJ35Zyk9Zbg3JEi7MiVE8+yqVp/A05ox8
+         rqGIySlt4woshXeFp919UV5JgphocsssZPEM0dp8CrcFSgzI1ZEdVnULnO9/UvbcJYwQ
+         YMSw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2YLBHqezuPtIfiOd3dA8tkhCLOND5OQgQlg8MQBMe1akAmdT32TcwR6U1tZvAymjpHs0eN3d5qg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5sntedyUOwYVp7gUmpEGQmXainnwQpLnfinT7oJVU86OSUGHu
+	ccX7zHnaq0MMe5ij35VQPC8pvzOX4IdG7taPe2b8+0WwAJpKwtFqQMwxijiTSXZ0aak/HOmYuT+
+	2Bi1DLjoVFq4w83TOsmQGnq+GaKDia5939yQoZCXI
+X-Gm-Gg: ASbGnctu5v8GoxQIj1USUQ2QzZMM7cZNob7wOOEsBA1sSnk+9evoXM4e6HOv3pd0sn5
+	xcEFzmpX+fzPCFqESnydtKxUqZ1ABnaPPuybcyY2lAesvVf9aUPhx38tQOAYLz3V3NOAWZhUc+A
+	gUsWQCpXwJ951ZD8gQDW6jMzm9vkltSvoB5l5ammh5xQBborq2hiFSb4UMYq5TepTjYNUCtXToc
+	rlTPqXXggRniipX9ol5Gpk=
+X-Google-Smtp-Source: AGHT+IFX5M5+t7hmlxY9Bks+Ly9Dc9jsstbdD0XJ6NCNG5zc5agHlOjwp6nPJ4I+6VcViwGGr1N8NMZ0XWuJy7AaxH4=
+X-Received: by 2002:a05:622a:d0:b0:4b3:50ee:579e with SMTP id
+ d75a77b69052e-4b5f839899fmr9996781cf.11.1757353902829; Mon, 08 Sep 2025
+ 10:51:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904134431.1637701-1-tujinjiang@huawei.com>
-X-Stat-Signature: f33gyqr59mphnnqs3a9qf98773zmmbg9
+References: <cover.1755190013.git.pyyjason@gmail.com> <6qu2uo3d2msctkkz5slhx5piqtt64wsvkgkvjjpd255k7nrds4@qtffskmesivg>
+ <aKdw6Pkj2H4B6QDb@devbig569.cln6.facebook.com> <tiwa6wnkdf6q2pfchxbbqb6r42y7moykqumvnzauckhavyemg2@zc5haja5mlxs>
+ <aK2/Vesgr9Xcl5gy@devbig569.cln6.facebook.com> <CAJuCfpHJMSd16j3ANrtJGVfLieHdeO_Epq=U9OKty3TV362ckQ@mail.gmail.com>
+ <aLFKHGe2loD657fu@tiehlicka> <zerazodfo2uu5az4s6vuwsgnk7esgjptygh5kdgxnb74o2lzjm@fkziy4ggxrxc>
+ <CAJuCfpFynEuwBSu28UiRDjWrayN-raX4Nqqh283MwRoJLi8bMQ@mail.gmail.com> <uoyjzkybkqd3wkvauofmorv72gnjisoq3owvijsezpt3wbrazz@at562ngtvszd>
+In-Reply-To: <uoyjzkybkqd3wkvauofmorv72gnjisoq3owvijsezpt3wbrazz@at562ngtvszd>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 8 Sep 2025 10:51:30 -0700
+X-Gm-Features: AS18NWDsU1J1RP4dbV6eRyI9elf2CPlWHKgnI901gTzxBYcnOYe7IoD0JikeTzY
+Message-ID: <CAJuCfpG17E_yoZeqEDrN0PFn8UBKqiGT28KDwEDmBm6byFje-Q@mail.gmail.com>
+Subject: Re: [RFC 0/1] Try to add memory allocation info for cgroup oom kill
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>, Yueyang Pan <pyyjason@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Usama Arif <usamaarif642@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Sourav Panda <souravpanda@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, Johannes Weiner <hannes@cmpxchg.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3BE34120003
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7t3gcfmyqem1q3j1c1tyw15fn1mzmg4o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 17F7B100019
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1757353847-940551
-X-HE-Meta: U2FsdGVkX19C3jci6X9mkfYGqTPl6Af52Wici343elS3PLu1kpITRmXy2KJvWL67eiKEK+5CpnG9p+GoGve4NbQLsW9YhB1UUKKUbp+7ifq1OOQ83+TbctzE3bsK/N0EgD0RNqO9ie8PshR6DkmgBElnv904iy/o5BIlBZ3nSnbO/PGyTmaIIceteiBkAm/Cce6xXys9yOkwASrFfyYk6jOR5XjJP7oEO2lXv7+47pGsrx+wpXtRL+Gcw8Ntm7RwmWbJAPHdzuK4MJf5SPNk2F/SYxmAappUleQBCbzn7fATE3bTfOqu93WaYGMrjwV+zwDhfWsZKq2fUYLgJWFtfDwQW169Q8f7OfWp2D3Przt4qve+RvPmtFs/Db9UVFrHNGN10kXcfn4GbU6HvIWuUypcz3GDHwZ5UQdWK4z5gppfas0CpLSPomeLt1VhHSOymCgePS2+86gZeRy/djSFJcTwUPNj3lijWsInxxj64d9SUPx0rmj5kcUA8VLzwhRD2aSlFPA2r09UP3sm086aYHcP+hnEsPgcg50jcoA59mf5u4N4lmj88E/KOBTiebLTABXV9RUCfizCRTTH1wEvh+ii5y3rU+CfwCXvgde0m5io3QJcZC8akeBE/jZZb0s1YW+waKtFJTlboLtM8/3oSvL6hPG0thMlN7hpGLiLgVW37+DWueWLZQWwxwPhz70AtM9ePW2AQaJxPEtRT4l61i+LzW59ZPOyI3wRLiRhEHDoyLyKnyZh36uv4kus5ZwTWikEhinENitsOatX7LN+Uf0Yfgc9RAElNtfXaLe/O43Ikzuue8QISp30b9tQuc6bejj/FpZ2MuHp3xEATXmHba2xddzBq41zcVvPyQWmBMX6GTz5oKqtiiSCMenDvFqARZ4PS0ot3XVxhwrFJdm7AXvYJJPeSgNHjz77VPizhijbA2wmwlVUbz8rFAc339A14MvP/ZFbIJ9Pn1kJN0u
- O8xUNsti
- CJRY/HSwC69BTA60s+NX6O8lp6sA79YprfVNv4mfnU2zohq09P1gE3dw3Dgarg3LSPiSIeFTea7OH3mIEctr2XoYaH5tRpCWeH6bcQTRu6dIY6P00AfOO2nej8WraBDEx2Pe5kbXG8iubxU1By55nU9wy/Z4cP6veCr2qZjET+aZ/ExA51qw6Q0w/48uHJ5PVgCofqw0K+vl1Ocf2oqA4Gy9hw8Zu700k/FZm2aBNp+i5tb+Lq+m0wuSyvAWJNmI1fpAN6us7cOYjFGlT4MN5Cw+j6lwXJkc9EGwjx529JgECxTcjt+uwSgluW0hJIQ2URkXJ4qKt8fpeatGyUgNYdXzTsr2g8wAl+9uHSwgM3JFOJIpNtcXCGQLmhnDVQUBb68+A50WmljLsSCFN4zLFWAozXwWsniYo7EGy9HDjrgF6r+Q1pYAW5xEK95ZRKmykuILg
+X-HE-Tag: 1757353904-672398
+X-HE-Meta: U2FsdGVkX19cNAueBEy27434dtCZUrh1x4NozpFLWynswDXDuJ3iiTMAaUNR/uIXmPcf70fCpNUu6vdWx4hrDcbN625hKGgCxV3VOySPld/BEcXEuYJI91FQqkom1YnbctndWF9Z5FXGghigf8JWdTt6uCxTnMyWLLxIq3+XGLYmSN1d3U7p1CV1SWOAc6sCfG/+SWwYhUNb5F1fLXcpIskyElp7//Zl9cCH+VY3GohXcwkAxVPfAyAbykTZD/PL1Unp1fBAo3KzrLu0O8L8DXJCiv6+M939iweY2JKaBN7subTxz4wwlunFFRix42FrVjHct99rgd9a0E+6Y+I49rQQtiSJNkV8OXJCcLsH8HBRFtXfVFYlQi7ks+Da3KvYOVuo2qSyZ3y+Xp7OWQKoUeVUjyx4ARgDeTPaISkxJ95NY4RBLo0Cnez3Zm5iMKagi2sHYeWP4DqXjVxpwkfBPd2fzBzfA64TeDoVCG6K6dL3bMSPrvokXrC1nK+scWMykpWxe8dT0VPjFsGxRl1lVQwDIC449/Dyz2Ch/mfLS1FikpcalFUl3tYurN0r4ZXd+XqiJl1/rbYyHpbX+6y2HkRqzuBKfQCm3cJnKdZX/c+JUGnZFVRIBpEUrtsA9mf1KSZhCa5jpk8WuN6NBnKshzA6iyTD37xziME50u0w9ZHOdfhxjW5wHfCNmU9UlZ1zfdl5CPfr3Sy+OynIEgnpOgeLeyjWlzei05WQLE+cV37GgOMi9erG9JTOsEDjsTDsmQ6DFhXKqTUmQ9CRZEfRinKPUXIO6TKoKMHspqJK9dHL5tgvXosEZ5WzYHAiFKG64Y6k35DS1aen68J8vaWKEfVuDZdXRfotfiIJ677r92XpRjsjv37/rHqiSTGAKe97PdOWnY9t5VODEDqHWQKKnfRgj15CqPyJxazZnQkjrO0xuyPeyISjjQHMaXA6uzk2c5l9VGzBOeV+bln85EW
+ y7rq5u4U
+ JaFtikOXGYNDJvJOTOFobi5YSEfg0P8F3r53RRTAtz5e8DE6hzKJmimIU0VZMzvHVZYMVmoccS+znsWtxNHWHVcnvipztADZSssdQkNAeDKUbB26Pl8mtcOdYH1z06PsNsqR95LrdbJMrwd7b4s+qPQXomao0weWNEFJ82d+WeC/jFC9Q1EVLeFomVjXjfRKsCt+r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,32 +122,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 04, 2025 at 09:44:31PM +0800, Jinjiang Tu wrote:
-> out_of_memory() selects tasks without considering mempolicy. Assuming a
-> cpu-less NUMA Node, ordinary process that don't set mempolicy don't
-> allocate memory from this cpu-less Node, unless other NUMA Nodes are below
-> low watermark. If a task binds to this cpu-less Node and triggers OOM, many
-> tasks may be killed wrongly that don't occupy memory from this Node.
+On Mon, Sep 8, 2025 at 10:49=E2=80=AFAM Kent Overstreet
+<kent.overstreet@linux.dev> wrote:
 >
+> On Mon, Sep 08, 2025 at 10:47:06AM -0700, Suren Baghdasaryan wrote:
+> > On Mon, Sep 8, 2025 at 10:34=E2=80=AFAM Kent Overstreet
+> > <kent.overstreet@linux.dev> wrote:
+> > >
+> > > I think that got the memcg people looking at ways to make the account=
+ing
+> > > cheaper, but I'm not sure if anything landed from that.
+> >
+> > Yes, Roman landed a series of changes reducing the memcg accounting ove=
+rhead.
+>
+> Do you know offhand how big that was?
 
-I don't think mempolicy is the right source of information for this, as
-mempolicy is non-restrictive.  Mempolicy is not necessarily respected by
-reclaim, for example.
-
-A task without mempolicy can still end up using cpu-less nodes for a
-number of reasons - for example pro-active reclaim, shared pagecache,
-shared file mappings (KSM), etc etc etc.
-
-If mempolicy were restrictive by default, this would be a different
-story, but I have to agree with Michal that I don't think mempolicy is
-the right source of information for this.  It seems much more appopriate
-to use cpusets to inform oom_kill.
-
-> To fix it, only kill current if oc->nodemask are all nodes without any cpu.
-> 
-
-This feels very heuristic-y and way too narrow of a use case.  My gut
-reaction is that there must be better way to get what you're looking for
-
-~Gregory
+I'll need to dig it up but it was still much higher than memory profiling.
 
