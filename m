@@ -4,88 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C45CAC586
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 14:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A1ABCAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 14:08:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 125E06B0008; Mon,  8 Sep 2025 10:06:20 -0400 (EDT)
+	id BFF8A8E000D; Mon,  8 Sep 2025 10:08:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FD906B0011; Mon,  8 Sep 2025 10:06:20 -0400 (EDT)
+	id BAFBF8E0009; Mon,  8 Sep 2025 10:08:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03A1D6B0022; Mon,  8 Sep 2025 10:06:19 -0400 (EDT)
+	id A77868E000D; Mon,  8 Sep 2025 10:08:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E532E6B0008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:06:19 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90FC8C0197
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 14:06:19 +0000 (UTC)
-X-FDA: 83866257678.23.3AC75D2
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 712B1140011
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 14:06:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hmtlGjzm;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of yajun.deng@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757340377; a=rsa-sha256;
-	cv=none;
-	b=Nvzst+fAWp4XRm2yD5JBiCAKGXbu1X+DBaIkU1m7X+XYbhM5EWVwhA6M9ZZiUCW6hSqQiW
-	Tn3yvl2nvQsPtIPk5YmH87zqd/kRdi58Eu2KvcKgByoKcESr+oE0bb24qJfj2984j4mZyF
-	+xs7xPTfhWyRlxOOGmDKMXx/O7oXAvU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hmtlGjzm;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of yajun.deng@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=yajun.deng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 91E018E0009
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:08:12 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40C2681B50
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 14:08:12 +0000 (UTC)
+X-FDA: 83866262424.07.542B8B0
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DE4CD1A0009
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 14:08:09 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SzQwiTNf;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757340377;
+	s=arc-20220608; t=1757340489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=VDoikzz6aWVYuIc2+JSxHrk0vkVl4ua3xQEWiywgjQ4=;
-	b=6OSWCneU1gIVZJqw1oqdWY6eRfW9OoMvgxpmWbfNnH7okP6fPqa7tAV4rrresm37xU0zCH
-	T8ucpd+BdQDC7eGcuFQsZesB5LZm9TsgMkDFNAiQwbWW4ZyGTQHv5SF72MZbK7cEwcSAkb
-	r4MqqdF4Tw0SpKETziWkcEhIEKlxwIg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757340375;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5RW7uj9j6VpLJ7e/ThoSXbMV/AQpqw/iOnSCU64Tv5A=;
+	b=xRVZISg8k7Gqu/Dxv56kpLtZ0E9IrfiZSZue1/Kmas1JmXiuQ25tDyXFddkYxA5VwMY04U
+	wyOn23si6Vxh1bkdK9hQN9N4IxQG8r2C2/P0j2Rt03uPl2mqPcqAiPRu4xYn53FbAyWnPf
+	AZJqXo8i7CiyVOvP6YlrB0F8x92XpFE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SzQwiTNf;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757340489; a=rsa-sha256;
+	cv=none;
+	b=VKyy7MLhhSpRVkIkHLkBD16292pM1rxqTqOPCRZANOp9Br+KYg2nCusGID1Uwru0K3DaXd
+	UAicj5knMBHzXcAs2X8WoacZO/d/0yaaUdj/PU2+t0hkulXpLyNyLvo4Nk9NucLAo2Jpqw
+	g1cMnpx4ih2mTBEw/ppn1IMG2N++f4s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757340489;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VDoikzz6aWVYuIc2+JSxHrk0vkVl4ua3xQEWiywgjQ4=;
-	b=hmtlGjzmkfcppimA56uWjEYY1cnvcf7MPxwCd9vwT/tKgyuIdhuI9MtM1Iy3ovuS0YOXf4
-	UuQJgbo6L1fW9aGeUptsvj12mEN6JNArM86CWBX1Dj0ev2zl4ZTh3B9pi+Wv9dYRNaMRnZ
-	rBZI3c2C2YBuCoOY97r6hoJ6HNpCvyg=
-From: Yajun Deng <yajun.deng@linux.dev>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	riel@surriel.com,
-	harry.yoo@oracle.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yajun Deng <yajun.deng@linux.dev>
-Subject: [RFC PATCH v2] mm/rmap: make num_children and num_active_vmas update in internally
-Date: Mon,  8 Sep 2025 14:05:04 +0000
-Message-ID: <20250908140505.26237-1-yajun.deng@linux.dev>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5RW7uj9j6VpLJ7e/ThoSXbMV/AQpqw/iOnSCU64Tv5A=;
+	b=SzQwiTNf+rxNUOcQ/XAXSnQSLCAnvMFBqxnooG21nyIyk3l8PCJRxLDSCEJGIfVjI5PCph
+	mVq0o6GNTjXGnpP3UrF1F9mOFDob0o0votVCxA0YjGAo4vToUJw1CJ1Fd4NGWpBZTVwpXz
+	xo+WpDCu0k5IYN1RP4GMwfJ+uXaaP84=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-414-x1jqVJlgPkmHcg_5RDC_uw-1; Mon, 08 Sep 2025 10:08:08 -0400
+X-MC-Unique: x1jqVJlgPkmHcg_5RDC_uw-1
+X-Mimecast-MFC-AGG-ID: x1jqVJlgPkmHcg_5RDC_uw_1757340487
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3dbf3054ac4so2613769f8f.3
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 07:08:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757340487; x=1757945287;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5RW7uj9j6VpLJ7e/ThoSXbMV/AQpqw/iOnSCU64Tv5A=;
+        b=fagnF5JLiF51m77RtGk11BDarhVPyezlxvXkXnbfModNvk7Z4zouMZ4fs8FpVbIrBX
+         4rNEyw2+PIU+oWoXQvRKnutZLQ8QdSxjo2zZkRVbZnP9iTvNFvLckZmxz1c4V+KK+7eD
+         XRXrBqJ/cX2mJGwEjhWYWX/Ax29+fh86whNT/w6MAwvJLtQq8cUtiIB2qJSNtLPoPdiK
+         /KCpsJB5NSkWqlLTBzJHw1V+67gkyzKFuRiXtcryAit4mp+WWCneitN3O9o8n30PrUZP
+         kqXsJF0oRSx5fmwEsxd8T7ccv+OkHNinDIdIiwsuoTEDs92I6RBaFwkpH4ZIf+0C9g2R
+         PS5w==
+X-Forwarded-Encrypted: i=1; AJvYcCV7zsAZd93NMpA3zwdxqCnz2ts7iDSCWppp7u/cfwxc/ooBEXvSz9MSB4a2gBJXJJxBishr6atwkA==@kvack.org
+X-Gm-Message-State: AOJu0YzMBZjeOIgDHkfLMwKoZJkKHNCTS8uK9mqC6jzX5lmUcCkhkCHD
+	3eU6tRMeWGeh2Awl7zlvkQLZjc4N7ZjaVzi7q4BbsnDKEBkyULuyyk66XUW1jq1Bzz8skiZZhBS
+	KUj6RsX85q+gL3+mgDhQwBFekfyhk8tCG/4lbuLyABT9iyJdm9cxq
+X-Gm-Gg: ASbGnctdNlfyMJ3sBZkDbiRDiq6eHX4soM/9QHQSo51kxuBOzcGPD56QknAOTGUqnmD
+	7d01lxokcu5b8nHr5af7rMK+aIck59LC7vjLAJ4Nw39shRDDo7usY9FRrFOb/NF82zdNhUahNzR
+	/MgZxHofvsY/O1wFvvsnL8zi+ltVc2wNPk1ROEUVmzWLn7nnNFwoiH381l9OAYqt3fRfSgIr607
+	KdIe8VvN9PLQ7SmkX6ECDu7IBMRtwWcCQ0LtlmgUjz3d0/vO2vkL8f2w320VmA+/E2Xpx/oQj0Q
+	jbTlLcq0M97Tb5e61886gP3f+d+ioh37Tw6nN8Jn4Y7Kz8GWvkte3750XHYy5AXHJCEzcg9HNCR
+	Yh+XtKjsiHbzfXQYiku5NUGg8jXoFC4Z6Y55YfR23aWbw1LVwXqCF/mq1y5wdryKQ
+X-Received: by 2002:a05:6000:230c:b0:3d0:64c1:1a40 with SMTP id ffacd0b85a97d-3e64374116cmr6007192f8f.46.1757340486664;
+        Mon, 08 Sep 2025 07:08:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyB0IO3PALAsa1/2Q9RjoytWxnek+k4rCfl8hh9plqBM6DuIG8BW9C6h/pNo7GIvytXSRWWw==
+X-Received: by 2002:a05:6000:230c:b0:3d0:64c1:1a40 with SMTP id ffacd0b85a97d-3e64374116cmr6007154f8f.46.1757340486206;
+        Mon, 08 Sep 2025 07:08:06 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f25:700:d846:15f3:6ca0:8029? (p200300d82f250700d84615f36ca08029.dip0.t-ipconnect.de. [2003:d8:2f25:700:d846:15f3:6ca0:8029])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e74893acecsm4580959f8f.36.2025.09.08.07.08.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 07:08:05 -0700 (PDT)
+Message-ID: <1f714ba0-cdda-4122-b6a1-e1e0ea44b1f2@redhat.com>
+Date: Mon, 8 Sep 2025 16:08:03 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 712B1140011
-X-Stat-Signature: 8pf1opoab4oihjj91mnn4xngjd7qfp9c
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] mm/gup: check ref_count instead of lru before
+ migration
+To: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
+ Shivank Garg <shivankg@amd.com>, Matthew Wilcox <willy@infradead.org>,
+ Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Alexander Krabler <Alexander.Krabler@kuka.com>, Ge Yang
+ <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
+ Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Konstantin Khlebnikov <koct9i@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+ <47c51c9a-140f-1ea1-b692-c4bae5d1fa58@google.com>
+ <e54b1d8c-ad63-4c7a-8b1b-b7c3d76446f2@redhat.com>
+ <b008aef2-f69f-e2fb-d4d7-71a42d308529@google.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <b008aef2-f69f-e2fb-d4d7-71a42d308529@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nINWofDeYLIckVdYJ9oiVhhNaJwTR1OP3q9CNfbFsFo_1757340487
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DE4CD1A0009
+X-Stat-Signature: 5g6nriirxiomk6kg77qqo9cf38jqjkri
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1757340377-115440
-X-HE-Meta: U2FsdGVkX19bkG2jsIBs12SdFW0/Bij880FItkxhpgOmsWUlZKIWr9/SQmQYSlQjO4EpamEpG3NGY6KTmdN9JNgOxKdYhkldRo+HDuIalGbVY5QabASB1Tl1Px/3StB+F/xSuStg2alZ+HW0RkpWUiAnQwXgpBSGzs+lY6YbOAPUvedQZPwDyQuH0oCQbGylYEd8EV15yDA7SV8rfvRBAi6ooFSVzQBXrxLLyTRJicjqo3UbhzGGX+q8j2naKsrX9jpNsL0EhDkbxBvwggjb/qQrzSGlioIQn+rK6pr26bH6cO4/+OMcV2lRHjLBaQ0baeCGC2Lc8AuI66mGBmY4IQH1ot4RykN8uZfYbG0IKGRKYuNqJUUPogBbUZlaogINHfdtL//iYllVEEXhC8jLKCoJTOXMfuSulooqE+lARUfxGmxvphApNWHeEV4/N62oBk6Zjg0NbpqBi7vE2K1NFneai7/CNt664WtJ4EpS0mwnVnvqD6AlfHL0Ikny8MHmeb25HYKmkqLmSHp0zCex+Xt0CvQUfqzRfQngmeL5Vghge1GmYKECmVFqoo9lio1OfPLqsAvy9N8xvgdGXw/Uh9iWOvr1bx0VvmTEEKqitodhJjgRFE3yZUNLaySNh3SYexLgjFOl/OnuTczjgJoMRuwhZCXM55jwRWeSMecB6f7e63VtfBa5ywj3o1qzwvwsCC6OveBnnNt1vRkUnnYqvnFFdWEANINXUsDcnt/Ivr5h1WPBXE6S2lzEbW5thyNkaSIPh6cDgRXjxHI/zZmAIdRjCB3o2BYhc097EF29YkwiaE5+0ej0VqwDRFs1YgkofEYGl7yqVSGwGGXtDcQI5EK2MOzz3iKEXp2KSie+p6uKHVtj+FJvERcmI/f4BNbcEKxAX2Bzf5RhqefxyNc2hRbl3zwVnj6O8DQUft/arwPOZNDL1xEvZ1T6gMIY71ATXoLYw/FrVkQhu6ezc2D
- 9fNl1uwn
- HQlincLQEN9FqJvcmNfJvZ2v9RltjwFfIhEP0KQnZJA9dLZ3/gKptWETrcidVB5AEaxhMPevmQl7VSKmLAdliNindMXNqp4/vnpGJzzPr1LEJLPz74b2oGGCbSbYM93600O6PDmDCgld+CghB18OiIkrnc7sS2T3hnh+sehJxjelcdcLtP3UgrorJZcTLUH0KlPImcOH7/dGgZ8TJF9XpqZixdcfokVxKdV0+XYC0/3zA+cM+BLml4n/n6FrVClRyKK4MbRfPw7rwL6MluFkc3gs4PzzUiQmRUTvHrV6wAjkvzLo+jR3HJ9xaRw==
+X-HE-Tag: 1757340489-641163
+X-HE-Meta: U2FsdGVkX18jNxXl4JD2OHBMl7sQJV0oQPI8Fu5l+CxEpeMdND1PDbMWj+0DjbnDOhqOSpTqXgsGCGEYOmEi/gBL2V9i/CT8HJ3EJQgrYsOXdp49MRrsPd41Ck4ukK81xh8YQQQndivwGsC3hTycrRjx2srKmMfWy2mRZizesvilNKSGMBWSvdUGG9O3laIV4LDXaNQlWkBmcl3kdKQtLrZqvJhg9Req5MOTHgonvjrbmpO5wOeBL4k92nztlyQ5MuehswRsE5j5kHT1Z9SxTEVqkxfDIjw5K1sOvsUnRfmw4GizoKwmcP1HyqeY0L+qzNyXo0zbRqsdSnE8+sEUpAUJeqgiRhG0S+bxoaXPiEeW82Hhm5Izmoggm4ZzD+9fYPwJ//u6eNP9PkOtBWLgzN1xWkLVlC9S3tk7KavkAX6u6ALAgLaUXaAJxS5XO3bCcG29RePageajJ7plG9QZ2RfS25gbyPVJWkoDr1Hsi33FBwrVMxFYp5k/6DVUo9vC6hVG6eAZHtjZN1OExn1AbhGGTSo26MRHM5GRfwM4/uaLs2T4FcfMN2KvD27Pov0e7IEBydr8SOmnSJ4Y1ZkZWDy85T8pC5VpXFvPXS55Cwf6hOD8GymccrGshTWQFe+SNFhjRKRhYgFbpHANw42KEoIeciQQkXhXNtPI16S6MgO3Y5Ht9Q5d2LkZOkiGdqCS648+yxkXg2uQUUqpEpAfFN/aDNUpYHKBhUiEkLvRuAhAoU2G20Btz+x7ZDMVA47GkQnvpvgdsmW46H19g24alUeBT4arBFEBjXFSYuMpDeg2iTetFLf5c+7FGNt7tMATXW4OapjuD2zlcp8IyKXr4j4NOwpTt/qkc9g0rsrLKqP/rIewcz3iWxyrGA95yJrJmKzS/ka8y0CmQ9R0tyovEOU4gRSsTMwbCiBvJphgojUyYS062ciBRpSraXDN3j36CBH51g8ZmV3c/GLdt8e
+ jHfqprJ9
+ lZHcxbxb/gLAu3ONYGXIXQYEmnvX5UmLmNuSPiftBKoS3md1fr3DtfKVVl0KUplnnKQJoVgiVbEai3b7sjynEB7xS4Dc/PekJEx89PzRgE89/SINy8ryohZaGen9fonP+t/4HEFGzLBOw2dEKjmGz5W4xX+MyQGFCOzEhKDtf15J7h0v4F2NiYbXin5HQHdDzE004IFgKofOvCUIG2U0EYWJm5a8Fv7rwvFatMIcgBwrYOSlp6b0XJxKUA/X8q8qbpkDMqqKruyboxwljVYC+xSvBRB+eocd1ZAiXhbBIA8RCMSaVL0yxkFGiSyV8v1eIdiAsg9EGq9viauFDoc3If5mxrzJw4U+1nnNWHohx4d/F0R+VmoOKh8AB/6PvKRQyQF3vsk6XTcfNQyJUZ70Q5O50LtrFUzYPRQebxMieFD+1i6TMh2NeVY0LG15LVOlDL268nqVZSB1WDO8goEs3Xqz13Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,200 +191,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the anon_vma_alloc() is called, the num_children of the parent of
-the anon_vma will be updated. But this operation occurs outside of
-anon_vma_alloc(). There are two callers, one has itself as its parent,
-while another has a real parent. That means they have the same logic.
+On 08.09.25 12:40, Hugh Dickins wrote:
+> On Mon, 1 Sep 2025, David Hildenbrand wrote:
+>> On 31.08.25 11:05, Hugh Dickins wrote:
+>>> diff --git a/mm/gup.c b/mm/gup.c
+>>> index adffe663594d..82aec6443c0a 100644
+>>> --- a/mm/gup.c
+>>> +++ b/mm/gup.c
+>>> @@ -2307,7 +2307,8 @@ static unsigned long
+>>> collect_longterm_unpinnable_folios(
+>>>      	continue;
+>>>      }
+>>>    -		if (!folio_test_lru(folio) && drain_allow) {
+>>> +		if (drain_allow && folio_ref_count(folio) !=
+>>> +				   folio_expected_ref_count(folio) + 1) {
+>>>       lru_add_drain_all();
+>>>       drain_allow = false;
+>>>      }
+>>
+>> In general, to the fix idea
+>>
+>> 	Acked-by: David Hildenbrand <david@redhat.com>
+> 
+> Thanks, but I'd better not assume that in v2, even though code the same.
+> Will depend on how you feel about added paragraph in v2 commit message.
+> 
+>>
+>> But as raised in reply to patch #1, we have to be a bit careful about
+>> including private_2 in folio_expected_ref_count() at this point.
+>>
+>> If we cannot include it in folio_expected_ref_count(), it's all going to be a
+>> mess until PG_private_2 is removed for good.
+>>
+>> So that part still needs to be figured out.
+> 
+> Here's that added paragraph:
+> 
+> Note on PG_private_2: ceph and nfs are still using the deprecated
+> PG_private_2 flag, with the aid of netfs and filemap support functions.
+> Although it is consistently matched by an increment of folio ref_count,
+> folio_expected_ref_count() intentionally does not recognize it, and ceph
+> folio migration currently depends on that for PG_private_2 folios to be
+> rejected.  New references to the deprecated flag are discouraged, so do
+> not add it into the collect_longterm_unpinnable_folios() calculation:
+> but longterm pinning of transiently PG_private_2 ceph and nfs folios
+> (an uncommon case) may invoke a redundant lru_add_drain_all(). 
 
-The update of num_active_vmas and vma->anon_vma are not performed
-together. These operations should be performed under a function.
+Would we also loop forever trying to migrate these folios if they reside 
+on ZONE_MOVABLE? I would assume that is already the case, that migration 
+will always fail due to the raised reference.
 
-Add an __anon_vma_alloc() function that implements anon_vma_alloc().
-If the caller has a real parent, called __anon_vma_alloc() and pass
-the parent to it. If it not, called anon_vma_alloc() directly. It will
-set the parent and root of the anon_vma and also updates the num_children
-of its parent anon_vma.
-
-Introduce vma_attach_anon() and vma_detach_anon() to update
-num_active_vmas with vma->anon_vma together.
-
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
----
-v2: fix a WARNING in unlink_anon_vmas and optimize the code
-v1: https://lore.kernel.org/all/20250905132019.18915-1-yajun.deng@linux.dev/
----
- mm/internal.h | 17 ++++++++++++++
- mm/rmap.c     | 64 +++++++++++++++++++++++++++++----------------------
- 2 files changed, 53 insertions(+), 28 deletions(-)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index 9b0129531d00..12bc71bb2304 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -953,6 +953,23 @@ static inline bool free_area_empty(struct free_area *area, int migratetype)
- 	return list_empty(&area->free_list[migratetype]);
- }
- 
-+static inline void vma_attach_anon(struct vm_area_struct *vma,
-+				   struct anon_vma *anon_vma)
-+{
-+	mmap_assert_locked(vma->vm_mm);
-+	lockdep_assert_held_write(&anon_vma->root->rwsem);
-+	vma->anon_vma = anon_vma;
-+	vma->anon_vma->num_active_vmas++;
-+}
-+
-+static inline void vma_detach_anon(struct vm_area_struct *vma)
-+{
-+	mmap_assert_locked(vma->vm_mm);
-+	lockdep_assert_held_write(&vma->anon_vma->root->rwsem);
-+	vma->anon_vma->num_active_vmas--;
-+	vma->anon_vma = NULL;
-+}
-+
- /* mm/util.c */
- struct anon_vma *folio_anon_vma(const struct folio *folio);
- 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 34333ae3bd80..de557707c34a 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -86,15 +86,25 @@
- static struct kmem_cache *anon_vma_cachep;
- static struct kmem_cache *anon_vma_chain_cachep;
- 
--static inline struct anon_vma *anon_vma_alloc(void)
-+static inline struct anon_vma *__anon_vma_alloc(struct anon_vma *parent)
- {
- 	struct anon_vma *anon_vma;
- 
- 	anon_vma = kmem_cache_alloc(anon_vma_cachep, GFP_KERNEL);
--	if (anon_vma) {
--		atomic_set(&anon_vma->refcount, 1);
--		anon_vma->num_children = 0;
--		anon_vma->num_active_vmas = 0;
-+	if (!anon_vma)
-+		return NULL;
-+
-+	atomic_set(&anon_vma->refcount, 1);
-+	anon_vma->num_children = 0;
-+	anon_vma->num_active_vmas = 0;
-+	if (parent) {
-+		/*
-+		 * The root anon_vma's rwsem is the lock actually used when we
-+		 * lock any of the anon_vmas in this anon_vma tree.
-+		 */
-+		anon_vma->parent = parent;
-+		anon_vma->root = parent->root;
-+	} else {
- 		anon_vma->parent = anon_vma;
- 		/*
- 		 * Initialise the anon_vma root to point to itself. If called
-@@ -102,10 +112,18 @@ static inline struct anon_vma *anon_vma_alloc(void)
- 		 */
- 		anon_vma->root = anon_vma;
- 	}
-+	anon_vma_lock_write(anon_vma);
-+	anon_vma->parent->num_children++;
-+	anon_vma_unlock_write(anon_vma);
- 
- 	return anon_vma;
- }
- 
-+static inline struct anon_vma *anon_vma_alloc(void)
-+{
-+	return __anon_vma_alloc(NULL);
-+}
-+
- static inline void anon_vma_free(struct anon_vma *anon_vma)
- {
- 	VM_BUG_ON(atomic_read(&anon_vma->refcount));
-@@ -201,7 +219,6 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
- 		anon_vma = anon_vma_alloc();
- 		if (unlikely(!anon_vma))
- 			goto out_enomem_free_avc;
--		anon_vma->num_children++; /* self-parent link for new root */
- 		allocated = anon_vma;
- 	}
- 
-@@ -209,9 +226,8 @@ int __anon_vma_prepare(struct vm_area_struct *vma)
- 	/* page_table_lock to protect against threads */
- 	spin_lock(&mm->page_table_lock);
- 	if (likely(!vma->anon_vma)) {
--		vma->anon_vma = anon_vma;
-+		vma_attach_anon(vma, anon_vma);
- 		anon_vma_chain_link(vma, avc, anon_vma);
--		anon_vma->num_active_vmas++;
- 		allocated = NULL;
- 		avc = NULL;
- 	}
-@@ -355,38 +371,31 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma)
- 	if (vma->anon_vma)
- 		return 0;
- 
--	/* Then add our own anon_vma. */
--	anon_vma = anon_vma_alloc();
--	if (!anon_vma)
--		goto out_error;
--	anon_vma->num_active_vmas++;
- 	avc = anon_vma_chain_alloc(GFP_KERNEL);
- 	if (!avc)
--		goto out_error_free_anon_vma;
-+		goto out_error;
-+
-+	/* Then add our own anon_vma. */
-+	anon_vma = __anon_vma_alloc(pvma->anon_vma);
-+	if (!anon_vma)
-+		goto out_error_free_avc;
- 
--	/*
--	 * The root anon_vma's rwsem is the lock actually used when we
--	 * lock any of the anon_vmas in this anon_vma tree.
--	 */
--	anon_vma->root = pvma->anon_vma->root;
--	anon_vma->parent = pvma->anon_vma;
- 	/*
- 	 * With refcounts, an anon_vma can stay around longer than the
- 	 * process it belongs to. The root anon_vma needs to be pinned until
- 	 * this anon_vma is freed, because the lock lives in the root.
- 	 */
- 	get_anon_vma(anon_vma->root);
--	/* Mark this anon_vma as the one where our new (COWed) pages go. */
--	vma->anon_vma = anon_vma;
- 	anon_vma_lock_write(anon_vma);
-+	/* Mark this anon_vma as the one where our new (COWed) pages go. */
-+	vma_attach_anon(vma, anon_vma);
- 	anon_vma_chain_link(vma, avc, anon_vma);
--	anon_vma->parent->num_children++;
- 	anon_vma_unlock_write(anon_vma);
- 
- 	return 0;
- 
-- out_error_free_anon_vma:
--	put_anon_vma(anon_vma);
-+ out_error_free_avc:
-+	anon_vma_chain_free(avc);
-  out_error:
- 	unlink_anon_vmas(vma);
- 	return -ENOMEM;
-@@ -420,14 +429,13 @@ void unlink_anon_vmas(struct vm_area_struct *vma)
- 		anon_vma_chain_free(avc);
- 	}
- 	if (vma->anon_vma) {
--		vma->anon_vma->num_active_vmas--;
--
- 		/*
- 		 * vma would still be needed after unlink, and anon_vma will be prepared
- 		 * when handle fault.
- 		 */
--		vma->anon_vma = NULL;
-+		vma_detach_anon(vma);
- 	}
-+
- 	unlock_anon_vma_root(root);
- 
- 	/*
 -- 
-2.25.1
+Cheers
+
+David / dhildenb
 
 
