@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DE0DCAC585
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 17:11:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F7BCA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 17:11:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AA2A8E0008; Mon,  8 Sep 2025 13:11:13 -0400 (EDT)
+	id 564518E0009; Mon,  8 Sep 2025 13:11:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95A628E0001; Mon,  8 Sep 2025 13:11:13 -0400 (EDT)
+	id 5149F8E0001; Mon,  8 Sep 2025 13:11:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8705A8E0008; Mon,  8 Sep 2025 13:11:13 -0400 (EDT)
+	id 38F0E8E0009; Mon,  8 Sep 2025 13:11:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 775A88E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:11:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EF0931A01EB
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:11:12 +0000 (UTC)
-X-FDA: 83866723584.10.AECF47E
+	by kanga.kvack.org (Postfix) with ESMTP id 276338E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 13:11:16 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E467F5760C
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:11:15 +0000 (UTC)
+X-FDA: 83866723710.29.6CDF9D2
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5386520008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:11:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=krlmfCOt
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7ACB01C000C
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 17:11:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=s6op184R
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757351474; a=rsa-sha256;
+	cv=none;
+	b=HffXrbL15spPsmCGYtBDv+qt8s9TXK/dK2f7hC/8d0APlI8gD3UM7yjp8kObX4VKY7P/9I
+	Z2spn42tpNJzHyifryBUXvyPcTZxaUoQlx+D4SN3OZc/R/7x6nu5+vNu8x+Kv6/+eW4WBg
+	UTkU+mBqxoVjtMpDUm/4l9ly/1MfdD8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=s6op184R;
+	dmarc=none;
+	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757351471;
+	s=arc-20220608; t=1757351474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1A1SpJsgvlzRTLF2tzYzjTDHSoZiZjmEw7h5Uarz6NU=;
-	b=YbVUAR8zCRUvn22H1U+48eUHojT/v5iTLWgkZioVC5ECFTjKnT+hUcjbZjOqKRdqCRBFD4
-	XqDZmitPInHE0dwd5wTmBHyO54F5lQEloCy28MGeDHYmLijANP6yzvqrSBuw7CW/E/Eb7I
-	g+pSIkJmWEg4OLZz5AZrDH+QUPR7pcc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=krlmfCOt;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757351471; a=rsa-sha256;
-	cv=none;
-	b=Xr8Gy/x9hr2/zJyRU/D8WI4QB96EbnHrEeZ21VXFMXBJ5To6KJZjzNvH7FZCtOykfIjC90
-	hwwJE5e189eqUZUlxYfh2cG/KF6NQtPQ9cnDBbWl40k4iIwhhTpPWSOKVwXpbdtmHU8fUi
-	dnzgYY7PkNpNStZb+oLAJyowmXXGcvg=
+	bh=Y0Ppi9mOUpn3LaqfcTI6Q3tvaRjeoIU5df66lidM3a4=;
+	b=2pqd1OICZh5DgDYpfuAgoL3CMV4ivXZlpIV4ar05VjZfWP2aTpuGH4OiAsLq+bl10Iro0X
+	9ObfovHurwuGbBPei1fru186I9llmSlAhnCUj/oDqS57j93yyYD80Tu+TCpkG+quel0SqB
+	xcrytAhW8t27wofuvQxcmY2GsCcs3qE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=1A1SpJsgvlzRTLF2tzYzjTDHSoZiZjmEw7h5Uarz6NU=; b=krlmfCOt15H4gRohnVOcvgGQ3O
-	6oXFmQjelo4ib442Fxp9I7IGDo7uyhaHoao9DN5WGdNK9qLguZYW8BR8MG1fnS1BkYZZaZuIm8mQa
-	UU802u0YQvr5ktNg1M1NRtlldR+L6KaAZmyi6u0+u745TKB0iwBxKHyfFlWTGO6uCtyyttVjYJkox
-	ZwJTGGhe7vStvorV6Eqqi6/Qd4qg/3XdruJh5w0GWjXIZHHA+XKnrDXDdEDmhPO+h2o9+shgqIxUH
-	auxzUiLx/yZK1ivNReh/w7DzgLhp6HNPwS/t1lw0PzbI70xVmC+WcPXkTDcJ6dDnyrNH64O7ge4Aj
-	0raZArWw==;
+	bh=Y0Ppi9mOUpn3LaqfcTI6Q3tvaRjeoIU5df66lidM3a4=; b=s6op184RkZFsm4qkT3FDQXi+bm
+	sxuiYzM+1LDviqHqg/HK3ByK1vXGBnSyedNi1/tNQHWt2Tz4O2PgRnLhZDdL7vjHIGDlvYgC98iiT
+	QTdDZq+7u7tY2evNQ6BNDjezBbF5QDKW9kOhZqc6WtUgP2M26wvN4weViiuW5tOH1aPlWL2erqCGl
+	X10/UcjMG8I4z1kpTgXIVznRlX5wcFm9WQ8+sY4Cs871AXleHzT5DkXGldubHJfXr4/GRI0D6G7h8
+	EFwqd/9zBchOOCtLEzCxET12wko2mcpx1x6dv4xoGQkIdEgFmSHuymeYjjV2JdbLtk0TZAX3yzdC/
+	2OXnESRA==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uvfOU-0000000A6pa-3Uwf;
+	id 1uvfOU-0000000A6pR-3Bb8;
 	Mon, 08 Sep 2025 17:11:06 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	linux-mm@kvack.org,
 	Vishal Moola <vishal.moola@gmail.com>
-Subject: [PATCH 3/3] ptdesc: Remove ptdesc_to_virt()
-Date: Mon,  8 Sep 2025 18:11:02 +0100
-Message-ID: <20250908171104.2409217-4-willy@infradead.org>
+Subject: [PATCH 2/3] ptdesc: Remove references to folios from __pagetable_ctor() and pagetable_dtor()
+Date: Mon,  8 Sep 2025 18:11:01 +0100
+Message-ID: <20250908171104.2409217-3-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908171104.2409217-1-willy@infradead.org>
 References: <20250908171104.2409217-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7ACB01C000C
+X-Stat-Signature: prn5ddaq8g6i3hxmqutz71hzfwgxqxur
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5386520008
-X-Stat-Signature: r371kgz1gn7s1uifeea1b77zp61nf94f
-X-HE-Tag: 1757351471-869425
-X-HE-Meta: U2FsdGVkX1/IaECJ0z4QjjXJxgmNr6BlGyI4pA3L6wxMNTl6qhBgSAu2swaV2cbcjVMEutdwufTfM7ge5MCd7mnhSCykPZN6MfsBtsCRKChRQZeClr70C13MBZg95OXuHdDCJOuCsPyg/bgt7ys0yD4enKAfaQL/ljd2355wifsTXxOZXbjE+zRN2pvEJ+9xYVKKsA0F9JyEAoYwkYeYOtwprm4zKJvLi8Ah7cZY8/n/G7sZFClLhY+j0FXuhqLE/jWHqB5drhzxiSetL906njU0FnKn1m42kIL2TXlsT/RNh/IKXwoOV0hqGOlNVp1+U23ZB/gdVU6WXxREq1lc97ijMT+pIZXTHjqnq2pEazN98E1RN0niTF7nvlpo1dkAdB36odwQ53IK9aWrb2H9j5/V7lozyd+V4q3uF5M2OY+S6VaddeVhlPd6axMRFuNAwUs+aSmbKhoNFURsGH0U5E2K7I2lWr+TkcspZc3BiF9+WCnqXLwi8QwTqH3QTnbdblEI3oW4tAbnEaXFSHHj7hz0MuFqVi5YrCRGoW7fAGe7/tTmI66TWLbu92R4Wo0td9Nj/rMhGXo4kRGAZ6L/QbpunWzCf/ikQ38iw7WddUim8FSW/v4hgNpQIIxtfjHVHHoS3NDKuA+4et997h5jthlygziz35mhlONfknBL5SzqPAsjeuOMVbQFuCYvPVT9/THSE7AV5A/ogEzrPpQO555GgTW9k1b/QPZUwuobY23nBU28q5cbzOg1gtiH307ZyWvZyf54PFXj8n+nBN54eQLXWT/s0KdPJ/UK7JuceY+gIg/RZPMLrdrniiFZBXcLCAXFsKOgat3tjvy00mALrmKqXKPYdYeM76ImPX0OuX5kvIyk5gJ78mNGycqSRmUPTG1L9G1x7oBuFmqkP9ZuVG1R6S5L1HRKjihg3AaMjQTz1uY3BqEkCwPStRhXttkDttHiWRmR9L0dQnresnM
- EMFZX0ZJ
- 0mKc+p0POWG7tfSHuPXNueoSGSuN8NWscLyGPxHz9GVmgYt3YPLCt20PO7VarMKQFk0jrvwvH+bzh/xiNZbyItnRFTWjm7psI5W9L/WssnTI4oTretEvvpZk02HFXNoEqdANynzVC1Jsj/e60jiJ72RrIr+2+3U/vZm2FsEHbiE8BaQZTS97YMhKZsdp5CFrBweW9UY1j+G5Af5S2Aa2EAcInuCM7CL4raTJ/Ju7BSjp1jvzgLTc4cS5cbA7V+pfw3cF+d60jaPD0mDlbgUkY9EsSQQ8dun9pUbLyGV6ul8EKblYCXbL6TMUBczb6qW2aW0hZvRNCCaMpdYyFf3XcHLm65Q==
+X-HE-Tag: 1757351474-194183
+X-HE-Meta: U2FsdGVkX18YFmPazbgjWvWiyyDB+IblfWfTfS+duZVNGR4x3Sq0SoyNoylfpc9KStHun4o7OzdBs+RLq+qyWdBdobBjK91GZxmGqNEUl3GNmtLUI6DggHB8R0MATGGgG9BMy7DI1W4gUl4XTUACEf0Vxkr0q0KeA8w4Zukl6tVXtKJfAihobHdU6GO7/yCAWZmVhkI2uqq9NNrew2eq1KQjU3Sn+wKrW5rmTZSRz+euctJRLOPk7DJZCmtOCg8s9OILlo5/LzY7SzqtXYlg49+sPVXYpa/PwJ9TwLUYHUG/xcdJVA/ne3goYsF0j2bsiiBX/e+hHXRt5ZTPOoD/GtnO4sVJsJwhQbQFpvk1t/lz3VraCoZBGQJrw1zw+hXCrGYwJGdDtkFA6kwlzP3WBeOuYkTtfqkujlbDGvNHX9ivZpq3yom0xtDlxe/Oaiv5agXbha72JNNjA1eA/4FHo6r64yuhPw1K7Q6XPgw4uifl4U+dDWHLGVH5u9XtXezpYAMbeq1prkYK74clNFfZ4Vi84aPceQoEIKseEkA/L1tg2St99zZfN1r+d1uQtrz8LIb/A+ohDh4lPP0c8uBO9a1D1PtPGKoSeqMcUQJc0mG2Wwtc+47wFx6KeHzDMv+vicf1frnjsKAnDihrd9Vj5MUgVKpX/f9TQt8FsBdWwtVoz0pl5tyd4/MXuRN7tSzNMHVTl1M/jZLZ5T73bqNIdh3aFTcG2u5wtLFBiLfWd2pII7h2ivM4pY+RoZrjzgQSNw7GCpb3AJ+mu+YMOZHurpMSGsLBusoRadUb3894osS5a0t8Vg5dqoK9jnqlVFml7x4WawX8MCqGbbR0djtqcodiiLkPdjXuOQh3iHzu7FTKVqz03cXe8uJDkSt3xA0rfa2FZvkeXV/G+kqwsNQj/Y7UNP4flAqUkuiHPfdGrsARZqbt7w9hkiuPi4KkE1kw8fVgs2V0aIhMpkk69TO
+ gJhATqIG
+ tsO+tMyIjgpMQyLiaQFw+DU6T3DTjhZwjaCMT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,82 +88,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This has the same effect as ptdesc_address() so convert the callers to
-use that and delete the function.  Add kernel-doc for ptdesc_address().
+In preparation for splitting struct ptdesc from struct page and struct
+folio, remove mentions of struct folio from these functions.  Introduce
+ptdesc_nr_pages() to avoid using lruvec_stat_add/sub_folio()
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- arch/arm/mm/mmu.c      |  2 +-
- arch/s390/mm/pgalloc.c |  6 +++---
- include/linux/mm.h     | 11 ++++++-----
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ include/linux/mm.h | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-index edb7f56b7c91..8bac96e205ac 100644
---- a/arch/arm/mm/mmu.c
-+++ b/arch/arm/mm/mmu.c
-@@ -737,7 +737,7 @@ static void *__init late_alloc(unsigned long sz)
- 
- 	if (!ptdesc || !pagetable_pte_ctor(NULL, ptdesc))
- 		BUG();
--	return ptdesc_to_virt(ptdesc);
-+	return ptdesc_address(ptdesc);
- }
- 
- static pte_t * __init arm_pte_alloc(pmd_t *pmd, unsigned long addr,
-diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-index d2f6f1f6d2fc..f56ee9aeac83 100644
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -21,7 +21,7 @@ unsigned long *crst_table_alloc(struct mm_struct *mm)
- 
- 	if (!ptdesc)
- 		return NULL;
--	table = ptdesc_to_virt(ptdesc);
-+	table = ptdesc_address(ptdesc);
- 	__arch_set_page_dat(table, 1UL << CRST_ALLOC_ORDER);
- 	return table;
- }
-@@ -119,7 +119,7 @@ struct ptdesc *page_table_alloc_pgste(struct mm_struct *mm)
- 
- 	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
- 	if (ptdesc) {
--		table = (u64 *)ptdesc_to_virt(ptdesc);
-+		table = (u64 *)ptdesc_address(ptdesc);
- 		__arch_set_page_dat(table, 1);
- 		memset64(table, _PAGE_INVALID, PTRS_PER_PTE);
- 		memset64(table + PTRS_PER_PTE, 0, PTRS_PER_PTE);
-@@ -146,7 +146,7 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
- 		pagetable_free(ptdesc);
- 		return NULL;
- 	}
--	table = ptdesc_to_virt(ptdesc);
-+	table = ptdesc_address(ptdesc);
- 	__arch_set_page_dat(table, 1);
- 	memset64((u64 *)table, _PAGE_INVALID, PTRS_PER_PTE);
- 	memset64((u64 *)table + PTRS_PER_PTE, 0, PTRS_PER_PTE);
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 3a339bd7a2f9..2c3b99f60297 100644
+index 46eb2a7c4fb7..3a339bd7a2f9 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2912,11 +2912,12 @@ static inline struct ptdesc *virt_to_ptdesc(const void *x)
- 	return page_ptdesc(virt_to_page(x));
+@@ -2065,9 +2065,9 @@ static inline long folio_nr_pages(const struct folio *folio)
+  * page.  compound_nr() can be called on a tail page, and is defined to
+  * return 1 in that case.
+  */
+-static inline long compound_nr(struct page *page)
++static inline long compound_nr(const struct page *page)
+ {
+-	struct folio *folio = (struct folio *)page;
++	const struct folio *folio = (struct folio *)page;
+ 
+ 	if (!test_bit(PG_head, &folio->flags.f))
+ 		return 1;
+@@ -3034,21 +3034,26 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+ static inline void ptlock_free(struct ptdesc *ptdesc) {}
+ #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+ 
++static inline unsigned long ptdesc_nr_pages(const struct ptdesc *ptdesc)
++{
++	return compound_nr(ptdesc_page(ptdesc));
++}
++
+ static inline void __pagetable_ctor(struct ptdesc *ptdesc)
+ {
+-	struct folio *folio = ptdesc_folio(ptdesc);
++	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+ 
+-	__folio_set_pgtable(folio);
+-	lruvec_stat_add_folio(folio, NR_PAGETABLE);
++	__SetPageTable(ptdesc_page(ptdesc));
++	mod_node_page_state(pgdat, NR_PAGETABLE, ptdesc_nr_pages(ptdesc));
  }
  
--static inline void *ptdesc_to_virt(const struct ptdesc *pt)
--{
--	return page_to_virt(ptdesc_page(pt));
--}
--
-+/**
-+ * ptdesc_address - Virtual address of page table.
-+ * @pt: Page table descriptor.
-+ *
-+ * Return: The first byte of the page table described by @pt.
-+ */
- static inline void *ptdesc_address(const struct ptdesc *pt)
+ static inline void pagetable_dtor(struct ptdesc *ptdesc)
  {
- 	return folio_address(ptdesc_folio(pt));
+-	struct folio *folio = ptdesc_folio(ptdesc);
++	pg_data_t *pgdat = NODE_DATA(memdesc_nid(ptdesc->pt_flags));
+ 
+ 	ptlock_free(ptdesc);
+-	__folio_clear_pgtable(folio);
+-	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
++	__ClearPageTable(ptdesc_page(ptdesc));
++	mod_node_page_state(pgdat, NR_PAGETABLE, -ptdesc_nr_pages(ptdesc));
+ }
+ 
+ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
 -- 
 2.47.2
 
