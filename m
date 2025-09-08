@@ -4,236 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E9ACAC582
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46F61CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 20:59:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C2E18E000B; Mon,  8 Sep 2025 16:59:41 -0400 (EDT)
+	id A27608E000C; Mon,  8 Sep 2025 16:59:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19ADD8E0001; Mon,  8 Sep 2025 16:59:41 -0400 (EDT)
+	id 9D8408E0001; Mon,  8 Sep 2025 16:59:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 062708E000B; Mon,  8 Sep 2025 16:59:41 -0400 (EDT)
+	id 8A1278E000C; Mon,  8 Sep 2025 16:59:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DF26C8E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:59:40 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9021F13A546
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:59:40 +0000 (UTC)
-X-FDA: 83867299320.16.31AF4B2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E91AB18000A
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:59:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=czK3TzSd;
-	spf=pass (imf24.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757365177;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 767F78E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 16:59:49 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 09BBE84FC7
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:59:49 +0000 (UTC)
+X-FDA: 83867299698.29.5748A36
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1AF9340002
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 20:59:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Z+xd2Nic
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757365186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pjzv5pfoEc1H33x8W06orfBOSm/9HozpGpt1ZTJIBUE=;
-	b=slGIIX2cI+KHaAEgjzOFsPfRibEjBU9K8B5V+CLHPNlT2XFdbOnKosa+sqwCdF1YFcuL1i
-	JCr0IndOEZ9PvZw8P2XmcT4rDyRqINR6Z1MhHUuHJaiSo+Uh1f9ObtooOLZsN0FF/Nneq2
-	mTQ05KI4EKSGIK6PKUK1FxntpgKtO7Y=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=czK3TzSd;
-	spf=pass (imf24.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757365177; a=rsa-sha256;
-	cv=fail;
-	b=E3vTPRWtt6j+E2gUlikOL42mQnVHKu4UWdfEu+Gr9T4aUavLaiVywtQqKspXKgP1xTkI2B
-	mOFcL1IvLby+jmsjsZf2w2j4aAVLybJSt5F+gs637RISku6ObO/IiHphb9GGqscYQDoJWl
-	lwa9+O6twIjfZ4oKy/15jbv1BiK/ZTo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757365177; x=1788901177;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=RMaQDe5CfxR6sYXhoTmn2mXn6CUTtNmpwzB3Rdhr+Sw=;
-  b=czK3TzSdSnLHUdXXCJfxWh9jWGEAdT5c7+DxkDSqLu3IbgTQ2+LTK6RQ
-   iuvXApUPfUAQy+5VhORq6vvxBSX9NiFq2OWdds5TTVnRzLta32KY6yd4b
-   dHsny7xCfquEhsGiFb/s+j/lFwKs6UDbhdUa2q5Rhg9syYeqthIuzXB8J
-   FQIALgy4UmtyTJeVH+yfrD9bUGaJkNaO60FPc6aMoR7Og1nqheV9YCEMT
-   InpaMrm6ftMUKrQ0mViT1taYb76CfhdKXE+GtQpl0YoyNnKWnPe2xH46f
-   rK17DpOT25TayKmZiLBAS/9bEcGLNA9cANV5vnWQdDNyE7LMvrpVGQXx6
-   Q==;
-X-CSE-ConnectionGUID: jYXWZ3MQThm8PYDtXzIGyg==
-X-CSE-MsgGUID: lhRlvQXZQbun3znRuRmzKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="85081971"
-X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; 
-   d="scan'208";a="85081971"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 13:59:36 -0700
-X-CSE-ConnectionGUID: knqWQYpNQDWHifqeSKyrjQ==
-X-CSE-MsgGUID: 90O0eOtGRCykEvRPlPtXWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; 
-   d="scan'208";a="177205288"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 13:59:35 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 8 Sep 2025 13:59:34 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 8 Sep 2025 13:59:34 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.43) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 8 Sep 2025 13:59:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WhZ32KmqpFP+DjQowhGL3g2mt2OGj78n6KqQpvYxlIRxiae1uPcufLbYPvyS4blLmS8sOVyCfZ/VZOa0DLunC22NTIG6P6/6p38zv+i21zicaPVofvs1wa9QWWSE10tiAPYjfvQXSk3H/Z7nXUo+QfzUsopMERSJOSQISiIMPNGlzFNWyCtzbUksq5Uh9FxperZuly3rstMUDK4xZLYSD099ipqSTMaFBmAPZD4EoudT9PaJQD82gbCxmWhosq7yFqX38CfXH6aadRmW0lIHrjg9bmxMWeHELyFB5XngU/mm1xoN2nUWFfT4pGJsyuLyTuyLCFHZz0n7MtPJL7dVfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pjzv5pfoEc1H33x8W06orfBOSm/9HozpGpt1ZTJIBUE=;
- b=XhokJdTqbQd3EvB3ktWnLIUCZwHkpjcz4Wy0A0nS1G9v4yO0rxwLeqv6JO21/aVVL1rwDuRBDZ71SkxgsEaOTEmL3euA70MBn0I2cvNElqH68I7AC40nG6/ITnZyjOjcttEOvnF4NSlA/SDAnxE4oLju4y3TfTSxHZXl8ekxww6l32Bzlu0ceLrBro1C1nZRaZPmPZkEX/slTjMPZg0ugdW2HS7fV9SlPJ/O/hTrRqhoDGIq1Q9Y52BW/Ph0ZjP/KRWNeiswvamD4SeZJW9MbOOB53a2dqdEnUAGWpniQAxlbwQkQ7lKXSNitrAUjoRJBXPAmxxleDhFZ38JBiL6BQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SA3PR11MB8118.namprd11.prod.outlook.com (2603:10b6:806:2f1::13)
- by CY8PR11MB7873.namprd11.prod.outlook.com (2603:10b6:930:79::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
- 2025 20:59:31 +0000
-Received: from SA3PR11MB8118.namprd11.prod.outlook.com
- ([fe80::c4e2:f07:bdaa:21ec]) by SA3PR11MB8118.namprd11.prod.outlook.com
- ([fe80::c4e2:f07:bdaa:21ec%4]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
- 20:59:31 +0000
-From: <dan.j.williams@intel.com>
-Date: Mon, 8 Sep 2025 13:59:29 -0700
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, <james.morse@arm.com>,
-	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, Will Deacon <will@kernel.org>, Dan Williams
-	<dan.j.williams@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "H . Peter
- Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>
-CC: Yicong Yang <yangyicong@huawei.com>, <linuxarm@huawei.com>, Yushan Wang
-	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "Mark
- Rutland" <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
-	<luto@kernel.org>
-Message-ID: <68bf43b1dd06f_75e3100ed@dwillia2-mobl4.notmuch>
-In-Reply-To: <20250820102950.175065-4-Jonathan.Cameron@huawei.com>
-References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
- <20250820102950.175065-4-Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 3/8] lib: Support
- ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR07CA0072.namprd07.prod.outlook.com
- (2603:10b6:a03:60::49) To SA3PR11MB8118.namprd11.prod.outlook.com
- (2603:10b6:806:2f1::13)
+	bh=8W7OV22si8PaHmNjeiI92VUYfmd2gxuh+1FV7aVnSGk=;
+	b=1z6UfkhNq9xE4CNLPGamfKsUxt3QwIOs4COKbc57xlehiIGM4h6PpSTJYEwgf1s115DaOx
+	Hqs0P5kS+LaZxM9A7QPVamb1ILmPl3GUR2187r01c1U1pVJ9T7v0W5EN59bo7u6MRK5qv7
+	Ggu8k1f+PY3SAUqIK0z2k7ZTBiwzjyc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Z+xd2Nic;
+	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757365187; a=rsa-sha256;
+	cv=none;
+	b=TkVP4M8AG1ETZZ7vp2pLmGAwboiA3KnRF5f0cS26iDcrXiDe2Ou8f/MmNgrbDA3YC1OFGU
+	3EFsc2FcWZmpab/Y7QxEmyATmeESPjk3oBkLZO/Pm6x0d2iOsjX7wTWRomlHzcfFKCvkBO
+	A6DPfE3oavCMo7TcBQlm2X+8+NMyOnM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8W7OV22si8PaHmNjeiI92VUYfmd2gxuh+1FV7aVnSGk=; b=Z+xd2NicQ2DByD7bGMjprgGPMX
+	SKT2BJDH/LasgqPAOPXPqwPpYDmgPDz0eSB7nN/nKHhP+QH+uH3zWsG3PK4s+RWMFPr2OTUSIRuEm
+	zCqEzsWGaYPi5Rm+rKou+Jh5MkQ4Ho3NWZ6xY5e9iDI36U0UmdJy984A/oQXMN4WL9iMkNRNpJPIv
+	xAicaKFMDQD9saIZpslJaMtrc6QlDwPyxZmnMzdYJ5+3CwenizlADAySpEff6iW0tId6T+Ow7pJcd
+	ltrpwoNZU4Qoqs4i+XtHIkUIqseck3yVgCm6PkV0Kj7/qxFrBVgKHfFekOytv5KytQYDVNIZaRJBh
+	VDkcu66g==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uvixU-0000000Cyxf-2WaL;
+	Mon, 08 Sep 2025 20:59:29 +0000
+Date: Mon, 8 Sep 2025 21:59:28 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
+	bp@alien8.de, brauner@kernel.org, bsegall@google.com,
+	corbet@lwn.net, dave.hansen@linux.intel.com,
+	dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com,
+	jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com,
+	khalid@kernel.org, liam.howlett@oracle.com,
+	linyongting@bytedance.com, lorenzo.stoakes@oracle.com,
+	luto@kernel.org, markhemm@googlemail.com, maz@kernel.org,
+	mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
+	mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de,
+	osalvador@suse.de, pcc@google.com, peterz@infradead.org,
+	pfalcato@suse.de, rostedt@goodmis.org, rppt@kernel.org,
+	shakeel.butt@linux.dev, surenb@google.com, tglx@linutronix.de,
+	vasily.averin@linux.dev, vbabka@suse.cz, vincent.guittot@linaro.org,
+	viro@zeniv.linux.org.uk, vschneid@redhat.com, x86@kernel.org,
+	xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
+Message-ID: <aL9DsGR8KimEQ44H@casper.infradead.org>
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+ <5b7e71e8-4e31-4699-b656-c35dce678a80@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR11MB8118:EE_|CY8PR11MB7873:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a71e961-95fa-45ae-0213-08ddef1a9b7f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eE5FYzA0Y3d5aHpzNzh2dzBnMWxIeHVQTFloakZ3amJJL0JHMWR2aGVkQmxi?=
- =?utf-8?B?bEx5V1NPRXhveVpkZHFIRTMvcGIzdmxWTkN0dStvVHluZjV5YjhwbUNTWDQ0?=
- =?utf-8?B?RWk3OGxaY2Nqbmp3WlU2eUc5Y3hvWlVxL0JaUVd6NXg2VTFWZjNpNEY2RVla?=
- =?utf-8?B?RmwzQ09zM2lDb0g2cUdOSHNobFFnU2czVm51Z3d5TWd0SS9mZWVTd3pCZGtW?=
- =?utf-8?B?MzJJeWVHdXYxMTF1U2dnNzFmNW9YMnZMRHVEbzFWMTBXN0JjR0ZzdnI2OE1E?=
- =?utf-8?B?a2N0ditSbDArZ1ZHYW5tUTY2Nm5uSW9kRllWT0szcFY5Y2dQR2dxTEREVTRx?=
- =?utf-8?B?a0RuNDZJaXNDbWYwVTNjN3BpK0NFRG4rUzIzUmRidFhnd1lReE5FS0t5TnBm?=
- =?utf-8?B?b1JtZUk0Qy9wN2xYejhnRzBuWXk2VityMXhMMkFrZmlDcWpOWUdHWTJnNCtl?=
- =?utf-8?B?NGw5dkw3YmNESmVkRGJvYk5SS0UrREE2S2FxMEJyT0JvUS9NbEpMbzVqSEwr?=
- =?utf-8?B?c2RpRVI2b0hwNU9GZGtZdUVoNG16TUpzK3pWbDVXZGExcnFrWHJMalRJSjdw?=
- =?utf-8?B?ekxaaGtQVWpkdGQxM2tLQnZodWFLV05obnJObDFLTjhUak0zUC8rS2lpNXpB?=
- =?utf-8?B?a1JEdEpERG5OV204czJKTzZNeHJwbjVNejJWbHVwelpLUU9PMHBoekdiRFMr?=
- =?utf-8?B?djE1akVqb3ZLTWFTaCsveU5UeUE4ajBRMmVvRlc0NW9sU09HT2hENisvY1U3?=
- =?utf-8?B?OVJJTmhobWVzODMycUxTUDZnTnBqQzMzRXFDWWR4K0ZEZlVpUWs1YW5WWTB3?=
- =?utf-8?B?eDgvR1U0SE1kVzNCdkVkemxzdW1XUHV6d1NmOTZZdXp5U1JZSEtMNlIrSzM0?=
- =?utf-8?B?cDdtbm5ZTFJPcFR2YlZoSXhnRWl3QUVUWGhmdWZrQjVmSUF0VnE3T2VlVVZZ?=
- =?utf-8?B?cmlYNzNYbGdOTGI1eEFJK2FBaHlTYXJmRnhJRHE4M2U2NllqTDNEUC91VG53?=
- =?utf-8?B?M3dHTS9LR3hlbldWdVdhTlJUNU5lSkRHQlh4d0I2NGVWVkZQa0Foa3dqOHpn?=
- =?utf-8?B?Mjd1SzVkV1ZYUzVJbkcyRkJZOElkVzRjekg0SGVlY21xdFB1N291R0lJNS9j?=
- =?utf-8?B?NjdQaXVkcWZhMUxKekZ0RWdmaVkvSDFjUFVzYWt6ckRHU2Jwa0tSaHNvRWFB?=
- =?utf-8?B?NjBYb2xRanI3M3dKVDQ1elI3YnBFWHhFMDY0OUVWTURqeG01MHVnd1dVOHpj?=
- =?utf-8?B?SFk0RWtualVrWEJ6dDFCOXRMZkdIMndzajBPQmpyajdmYnZHZ0trTzM2YnF0?=
- =?utf-8?B?K2hZU0cyMVVGQ0ZzYkdZMWx4c0M1NzhDTTkvRGhmUHRLVlFQNmJFV1BYcmVM?=
- =?utf-8?B?MkVGVkFydkx3QlRGQmhmT2dUbUhnUTdoMVZISjlnSE9kd0wyUEMyWGZpT2Jy?=
- =?utf-8?B?NlgzblA2aWk4SFVPc2ZuYk9iK0VNVzAxbHVtQ1loZ0VKNVU4Nm1GWDJNZkxj?=
- =?utf-8?B?NENjRDNRQVdoWlhnbWNTdGZOY3lKeUQwUmFtN1RFRldoaUNvRjZwcGI2VFNu?=
- =?utf-8?B?NnlVZlNQQURyaXhUa1BvQ1RBNlVqTUROc0o4Z3hHMXYzM2xyWGtlM2xRdXNF?=
- =?utf-8?B?YVpMdFB3bmVQdWkvVUtWeVowUXIzek01bjA1Sjk4cUkya0ZKOXVKREVVdGtx?=
- =?utf-8?B?aFZWemtNU1JwNW53REtyalhpYzJIeWxxS01aQWlqaFp1T1dFS1R6Mlp2eWRH?=
- =?utf-8?B?RVkxaE1WVkdReStmUkw0eDNiUlgxNkd1bXFLZzhKVUE2M05qQmI3QmxqZm9D?=
- =?utf-8?B?cGM0ZFQ0ZGd6d0JOM1hpRGF0K3pZbVlMK3BkUVAzdXM5M0lzbDdIdXdFOHQ3?=
- =?utf-8?B?aVFuREFMQ1JvU0MwZ1hjcWZjK0dFVW42VHlvMnF2SXBUVVdwSUtGRENlM2t1?=
- =?utf-8?B?SmRTMmcrWTIxeXAwWm5Bc1ZsUkZYRDBGcXFOM2xpVmZQYi9ScDRzTU01dStI?=
- =?utf-8?B?cUQ3ZDNZVCt3PT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB8118.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a3dLYmhoZ3l5WmtOL0ZmVnlQS1ZSZ1FVRTUyTXllU2w1OXI2TUtvdFBQdHoy?=
- =?utf-8?B?TGRiOEZidUViNGZWYjg3UVJrYmkxY1N1U252d085cFJXWHp4OGR4d0ZqWFhX?=
- =?utf-8?B?SmZUZG5MMGRWUTJVcGFiREJWdTkrNm9FZE55SGphb2VQU2FjM1UzK01HZ1FZ?=
- =?utf-8?B?ek1aQ0tSbWxCb3VEeEZvNEFTMTRxY0lFdVFqTTRvUElXYjhrM1d0MmpsTkxl?=
- =?utf-8?B?K2d1eEY0Z3RaSWJBQ1FTbXJrUWovKzFiQnl3UTVMTVk2a1BIajBVNHc5N0Nu?=
- =?utf-8?B?ZlZRRHkzQmRMeWJROHp5aGhCRUNLZ2l4Tnc3dklmajlwa0IrN3hMT0xmdG05?=
- =?utf-8?B?S3pBWjFtVjBSSkNCMWc3eGxkemQrRzNWQUFKa0hnRDVVK3AxL0lHdXEvQm9U?=
- =?utf-8?B?K3FaSkQ5U0cyVW5acXRvVnY5cXIvKzZGeVNnS1BBQUpjWlZsR0EzSVVuQXo5?=
- =?utf-8?B?eityQzlDS08wOFhremlHSGw3MExEN2RTbFBkaW90Mm9kT0RyemFtWHU3TnJy?=
- =?utf-8?B?T3M2M3BpZmU5ODExamkzR3lqWXpDZjdlejAySjZTNi9wZ1puZE9aTUJsZ09S?=
- =?utf-8?B?dm5hL3lVSUIwOHlpSEdtTzVjWnpySU9UamVTa0t2K25FMlQzNzdRUnRrVEZt?=
- =?utf-8?B?R2t1RkpoVExJemRyZnp6THk4NzNMU1dwRE1paUMvcllaVFlUdlgxQlVndmlr?=
- =?utf-8?B?THJ1WHZZUWp2MHpnaTZrazY4eklYdUxWTElVV0dDb0kydS8zMVZ2NHA2bmRa?=
- =?utf-8?B?WHUwa1JkQnd2SnZENkhXeHBBT2liSC8rZWo1TzRJYVdFSVEvdys2d1BPU3hq?=
- =?utf-8?B?cFBsd3dhQlFMTEJxb2xoMy92Y3Q1OTQ3MERRRU5kVFZxVnBnRk5UTW9XOTI0?=
- =?utf-8?B?Yy9TcEZlNUMrdWF6YStlSmhiNDN2b002VDgrRktNUVlUb1dQZHNWeDNXdUU4?=
- =?utf-8?B?eS9wa2pxcGhoTHUrRW50U1Z0TFh2RkpXeG1pYzhMbjdvcjQxSnA5WTdBdklk?=
- =?utf-8?B?aE9oQ3pJNGZQeFUrL2Q3U2NzRy9RVTR1aHdIeEtrUC9jY2pWM0FoWCs3VnVM?=
- =?utf-8?B?ZFFCNVFTU3NHSW9PdGlzbDc3VTlEVmlndXF0NmY2dGlVV2k5RjBEUDNVL3A0?=
- =?utf-8?B?aHYxZFFuREYyWjI3dm9BVHdBeWxjcDU1TkhHZDZrd05TKzRidDRDbDYvb0JH?=
- =?utf-8?B?MkVDNzdxenhLcnhQUUFKdEdKWHlKMWV5NjRUbkhxTmxzcTlGa0x3MllDdGVw?=
- =?utf-8?B?am1TSEFEQnBNbEU3ZkZ5cHVTUjVvbWVxZUR5b2RNNkl0a3UrZmNDRkFzenRv?=
- =?utf-8?B?MnBMMUFCazdISUlqUnJDTkw3K200NHJZa2JDL2VuS1l3SkQ5bmpjUDcvdjBU?=
- =?utf-8?B?Q200c0lhRXltc3I5ZmtCbVdmZXlCWFlUTU9DQ25Nd1lHMkZwZ2VibERhUjFa?=
- =?utf-8?B?dDJzdFJqT2lYK29jc2VJUkM4K24vQThnRDlyNzRML1BrRDdYaWxrcHM4cXZ6?=
- =?utf-8?B?cjVvT1dqYWQrTW9FZEpzUDd6K1JVa1dtSFdkNGlhZTVDMEVQUS9CQ2NOay92?=
- =?utf-8?B?YTRKcTk4UmQzdHEvWTdVQjd1ZXBLMURNN1B4bi9saHBONVdWNkg1dEI0WCsx?=
- =?utf-8?B?T1JIM1RERnZobjFlQ1BEUld1Y0xoNHI5Sk5nY3dHbUoveUlqK3R4WTByN0JG?=
- =?utf-8?B?WW53MExkNVNUckpjMlUzM0ZvaWRNdGVOYTlxaXZ0WXBaV1dHOVkrdS9FTC8x?=
- =?utf-8?B?K2xMZDNtU1NjckdyZ04vK1F0UVBwUHpBMFJ2NW9qWWFIQVRMTnVJb3Bqczdy?=
- =?utf-8?B?aTFlakIzdVpGZjJ5ZkFZS2xqOFAxM2Y1OXNWSXBRZzVxazR6QmQvVStVa0x6?=
- =?utf-8?B?cGtveXg2Yk94S2dDMVJ0U3N1Y2Vpa2FDOUg5UDFiM1ZOYWdvWVhUbjlhZ3px?=
- =?utf-8?B?bWw3VWx0OTJNa2dUWXM0YnhmZ3VBYXVOQ2N0Tmx6WXBsVDhQWjloaGQ1V3hD?=
- =?utf-8?B?aFJaNldxK2IwZURGM3ZubjZIZm5KK2J1c0l3dTZVUkdkdGZrbm9LbDlpYjdB?=
- =?utf-8?B?dzdzOUs2Y05uNktLa3NSZEhKcmYyWHU3dVNoUWR5MzZ1cUJMdk9Vakp0RnVj?=
- =?utf-8?B?MTg5dDFKeXNLM3JhZno1dENQT0Zsbzg3Y0F3SnBobjNwT0llbitaeGMrTzFo?=
- =?utf-8?B?aHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a71e961-95fa-45ae-0213-08ddef1a9b7f
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8118.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 20:59:31.6108
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5oR0VdE4xYgi82WrmqkLnh+4Z8ZDfH/CYcf/d0UCpd35VUVCotFO856s1vmG4Skfil2xtl+/6oWIPA4O8NmCUElGOlgqlFC0Pt53gMclij4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7873
-X-OriginatorOrg: intel.com
-X-Stat-Signature: bixf8gxg13pax94c6uff5sa174z5mj5j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5b7e71e8-4e31-4699-b656-c35dce678a80@redhat.com>
+X-Stat-Signature: jwninj6winwgd3yjqxad48hyftf3sb4s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E91AB18000A
+X-Rspamd-Queue-Id: 1AF9340002
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1757365176-466390
-X-HE-Meta: U2FsdGVkX19vxAJnz7fkdYIaMA4RNeXrtvFCsk82lh+bDhhUOMYLKAjv2ED6YgB3pT+/Cd5orI30HqWU4RaWVFDw/wfLULY5t5fGcVUAEDPby2XIMGAHhLnWMlq1fmlGWlTBdOkrr2JkMXcN7Fz3UD7JC8IkVLDJQliCl1v9e+aXHKA77xI+294jMvRct8zzb7sQcceJ91TmN5nuTyIs3q397BfGiqxDq/N7QQT7bKMntS7ZUd5Tz8FBLuJmMxl28VTj7Gi2U2c4X8kfKB+Ywv1iLs0qTkUJTNWg8X8YjW7OynLLahS0fsOTAKXEivg44k20tGboYvCMXVblvJj9b8gUvIvsHe5/Ha7wpLWQEViqVOh/sH/m4sL1ST3tIqcNeJk8QMyITpA31SRl/sPNcQDsGuDl9ek4kC5dNpb1ImBB188eXDgTDUfmlDvKhgIDtlwyx+KCWy+X8rQXuwwyAa8GjfsZnkXbN63Csrbr86llDsqq0RHcqdiWVl4lMliMYqkXn5Rwz9R+vCpYImYYLvgxOMVQL2graf3kZCQjUl2s98MH7cfJsCfR1WEU4NXFkQ8/t59LvgOFvU/7hdTksIzxcE1zHh3MelT2sMqs31C0mYn0sGHIfBlZxB/dzhnnIrFogTEf0e261s6hQCuMN/AeWzlN1Ek4RPueZ5y/8onRWNj7EQe6KsTPa3tByfxw/axmBn3o5X69O83yorw/q+Np2e2Auj7AjT4DnlKJNLHCdNGptseLBT5LLxwkqnnpHkzZTMVSNpaDj0Pz/lD6UhZBQYSQrKHFarH9wbEBBHKxfFPHWQ5zYF1mhay0m6PTMk0rFldNQGnhzouJW27WR+TJNN3AUlHwacNteACp5r++LB5uT9aXuT+paWYkIEjs/rF0C2KhTz2PtzomBiuh7JgoRJoOL5NRTod5Dul5+uzYMWcj0pq4BGuKrFRrtQrPqMiNUjDV6yAS4GO5lba
- ouFwB2o7
- Fr8ELpR5IakvEZaE2Dybm24YchRWl8a8fQost0IJci8RymzeKsNU2CMATYZjRdKhHU9H/4iDwTu95tGesIWA1gmKflR2z8lukzJBXI4JEL1LRo7ZxGGSJr4OIPvCcly8dsFObZq68xbiSwNAtt+R7or0nLjEzD/30RYOVJ7MjPWdeODENw2/zety86Nq+/PYMwqWdZ7Anwi+mx/Qi9tGoMDEPo4AUhwNSVl8mZ4R2SWKiyHRHjJXFgdHTiL9Arq9mfy+a2ctASMBQ5eXPxvl2yaUkGhf8nTSpz2nvNHO4F56ELDuNIt79KMdtmVGUQf25pZQgujiztn26jWJCD5LZP6AKakRnJFnIMRZEr2yAvOo+Nn5/sFHASoedUktN3f43vZUecWPk7AQPiFeqtb2rrfc8dffam7IO3NR4uhRuRwmicOpNMrXxlzLCY7k9dT8XXkhE+v/ZiFB6hT1ifVkDAzmMO/rx8FX6dF2PPE89P+wVxJVJK3HyeENcRTK6EHmRcaC8MfRP58BTnYCHWrpXaphJSVnRQAkKb15A1EmKSdxwuwZRVbeM6Abu2Ftzsqj+NPK1cXrkA3/xvSqUyHKYU829LerpcifvXbV9nug/elE/jDgxulPgu1iCLEaadi6IphPOpfqJPSsukQzjhEvsN0r2Yg==
+X-HE-Tag: 1757365185-53786
+X-HE-Meta: U2FsdGVkX18dtkuJOdnstrb2sq58WEDytjx5qup7H/xPPq0e2ZeyknoCvOTmXczK5COrKIfFeZT+uBqYfFtoMajH0hM4mRJZZtRXBHYgVeWUmSlgySwQ7nJgEjtbqjDIPJTltcUaNqnbFfCAOoUVGhNPoBzWq60sljAm4QqI4EZc9A4QiV3NbxBqZ5tEUPpBROOXu6n28NLW1DS/xHqK0s9tmjeibSsvW7MpqDcTR0BiEZS4VKbo99Gteh7/dzTIVFRVq+Z/uINxP7740SSkFVCX6sIfKSJgwCVF26TYJoVXKpUwk4KtoUdsov5f2tk5Mry0l08EHJZZQTPGWgnVU0SX7ZbpZW5QsimKj6DXZtZqmOj0BY1iTIzOazcPKepxRitLvEwqRqZ48Ql9DSwu/nmyV3pQG2xlUHZfZNRlpd0/m0m8qAKSr5N9M9iVu/3Hxj0K3ZEB+Gx1+JZEJ3XlYBPxeUhy/RcId5vnedctSDOA25/O2Ste3ldXd+qK5/YIdGKMyFVrXoXIzZ4DA1I2GsO8g80uR5kVkBbAW8qquubviFtTJ6NaNja7K2Bd65XztpU/Uv4nSwtDlkW1NKOtXuNjaqyJsNIoLNYPqRVTU0MtZKSSlacB6LDty1nrQOsIB2YMEEq/MYtFm9TORFRWZDF9+ee6Xnlqlw7kRyEgSgXDE2kU/V0HjrVVWm0PhdnzAjta6tTT67KtjmWaDY7I8V7/+v38sb/+ja+Ft/Fyj2RtfDohHiDIqfMnGKH2OWZBczZHz9qGHzC3hEJURPiqJu9jtwxbWuAOdvQgIQC4xDbFSF6aoosbKTRdG47iRhxy9Z6LSsodQMTsPcIOXMmX02w26oBXofE3fYWnbwMcwHp0VQJzGjpqEq7hek2PKipSe7DVfQhkG7sJIukrdzHj/7Nie58OE1lbRemKnD8cQxe/EJZakh6yo7zHTq/x0Gvqpw8j6xCUf8vd8otbH+B
+ IwXfB/p4
+ b2h9LvIe6DOhqrFzFm492rYTd8TqNMiDQRGz0Kqy8sTss4kXot5czfoKbvnKmgtbnVZWzUgL5MBRuRzDeJJk/2KBvgwY85WU6ZGN0NnRh35oyDtXFhs5YYJxIPR678xcOdMI2ugWxmpMu8FgFHgqInSSwd+ytaI3adrZimDvMLRgat7/G9uFsMHDwj3VxioGz8aImZ9YieoO6d2Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,194 +104,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jonathan Cameron wrote:
-> From: Yicong Yang <yangyicong@hisilicon.com>
-> 
-> ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION provides the mechanism for
-> invalidating certain memory regions in a cache-incoherent manner. Currently
-> this is used by NVDIMM and CXL memory drivers in cases where it is
-> necessary to flush all data from caches by physical address range.
-> 
-> In some architectures these operations are supported by system components
-> that may become available only later in boot as they are either present
-> on a discoverable bus, or via a firmware description of an MMIO interface
-> (e.g. ACPI DSDT). Provide a framework to handle this case.
-> 
-> Architectures can opt in for this support via
-> CONFIG_GENERIC_CPU_CACHE_MAINTENANCE
-> 
-> Add a registration framework. Each driver provides an ops structure and
-> the first op is Write Back and Invalidate by PA Range. The driver may
-> over invalidate.
-> 
-> An optional completion check operation is also provided. If present
-> that should be called to ensure that the action has finished.
-> 
-> When multiple agents are present in the system each should register with
-> this framework and the core code will issue the invalidate to all of them
-> before checking for completion on each. This is done to avoid need for
-> filtering in the core code which can become complex when interleave,
-> potentially across different cache coherency hardware is going on, so it
-> is easier to tell everyone and let those who don't care do nothing.
-> 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> v3: Squash all the layering from v2 so that the infrastucture is
->     always present.
->     Suggestions on naming welcome. Note that the hardware I have
->     available supports a much richer set of maintenance operations
->     than Write Back and Invalidate, so I'd like a name that
->     covers all resonable maintenance operations.
->     Use an allocation wrapper macro, based on the fwctl one to
->     ensure that the first element of the allocated driver structure
->     is a struct cache_coherency_device.
->     Thanks to all who provided feedback.
-> ---
->  include/linux/cache_coherency.h |  57 ++++++++++++++
->  lib/Kconfig                     |   3 +
->  lib/Makefile                    |   2 +
->  lib/cache_maint.c               | 128 ++++++++++++++++++++++++++++++++
->  4 files changed, 190 insertions(+)
-> 
-> diff --git a/include/linux/cache_coherency.h b/include/linux/cache_coherency.h
-> new file mode 100644
-> index 000000000000..cb195b17b6e6
-> --- /dev/null
-> +++ b/include/linux/cache_coherency.h
-> @@ -0,0 +1,57 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Cache coherency maintenace operation device drivers
-> + *
-> + * Copyright Huawei 2025
-> + */
-> +#ifndef _LINUX_CACHE_COHERENCY_H_
-> +#define _LINUX_CACHE_COHERENCY_H_
-> +
-> +#include <linux/list.h>
-> +#include <linux/types.h>
-> +
-> +struct cc_inval_params {
-> +	phys_addr_t addr;
-> +	size_t size;
-> +};
-> +
-> +struct cache_coherency_device;
-> +
-> +struct coherency_ops {
-> +	int (*wbinv)(struct cache_coherency_device *ccd, struct cc_inval_params *invp);
-> +	int (*done)(struct cache_coherency_device *ccd);
-> +};
-> +
-> +struct cache_coherency_device {
-> +	struct list_head node;
-> +	const struct coherency_ops *ops;
-> +};
+On Mon, Sep 08, 2025 at 10:32:22PM +0200, David Hildenbrand wrote:
+> In the context of this series, how do we handle VMA-modifying functions like
+> mprotect/some madvise/mlock/mempolicy/...? Are they currently blocked when
+> applied to a mshare VMA?
 
-Why is this called a device when there is no 'struct device'?
+I haven't been following this series recently, so I'm not sure what
+Anthony will say.  My expectation is that the shared VMA is somewhat
+transparent to these operations; that is they are faulty if they span
+the boundary of the mshare VMA, but otherwise they pass through and
+affect the shared VMAs.
 
-This is just 'cache_coherency_ops'.
+That does raise the interesting question of how mlockall() affects
+an mshare VMA.  I'm tempted to say that it should affect the shared
+VMA, but reasonable people might well disagree with me and have
+excellent arguments.
 
-Are you sure that this structure does not need something like "priority" or
-"level" indicator to know where the ops should be sorted in a list? Or is
-it the responsibility of the arch to make sure that the registration order
-of the ops structures follows the hierarchy order of the caches?
+> And how are we handling other page table walkers that don't modify VMAs like
+> MADV_DONTNEED, smaps, migrate_pages, ... etc?
 
-
-> +int cache_coherency_device_register(struct cache_coherency_device *ccd);
-> +void cache_coherency_device_unregister(struct cache_coherency_device *ccd);
-> +
-> +struct cache_coherency_device *
-> +_cache_coherency_device_alloc(const struct coherency_ops *ops, size_t size);
-> +/**
-> + * cache_coherency_device_alloc - Allocate a cache coherency device
-> + * @ops: Cache maintenance operations
-> + * @drv_struct: structure that contains the struct cache_coherency_device
-> + * @member: Name of the struct cache_coherency_device member in @drv_struct.
-> + *
-> + * This allocates and initializes the cache_coherency_device embedded in the
-> + * drv_struct. Upon success the pointer must be freed via
-> + * cache_coherency_device_free().
-> + *
-> + * Returns a 'drv_struct \*' on success, NULL on error.
-> + */
-> +#define cache_coherency_device_alloc(ops, drv_struct, member)	    \
-> +	({								    \
-> +		static_assert(__same_type(struct cache_coherency_device,    \
-> +					  ((drv_struct *)NULL)->member));   \
-> +		static_assert(offsetof(drv_struct, member) == 0);	    \
-> +		(drv_struct *)_cache_coherency_device_alloc(ops,	    \
-> +			sizeof(drv_struct));				    \
-> +	})
-> +void cache_coherency_device_free(struct cache_coherency_device *ccd);
-> +
-> +#endif
-> diff --git a/lib/Kconfig b/lib/Kconfig
-> index c483951b624f..cd8e5844f9bb 100644
-> --- a/lib/Kconfig
-> +++ b/lib/Kconfig
-> @@ -543,6 +543,9 @@ config MEMREGION
->  config ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
->  	bool
->  
-> +config GENERIC_CPU_CACHE_MAINTENANCE
-> +	bool
-> +
->  config ARCH_HAS_MEMREMAP_COMPAT_ALIGN
->  	bool
->  
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 392ff808c9b9..eed20c50f358 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -130,6 +130,8 @@ obj-$(CONFIG_HAS_IOMEM) += iomap_copy.o devres.o
->  obj-$(CONFIG_CHECK_SIGNATURE) += check_signature.o
->  obj-$(CONFIG_DEBUG_LOCKING_API_SELFTESTS) += locking-selftest.o
->  
-> +obj-$(CONFIG_GENERIC_CPU_CACHE_MAINTENANCE) += cache_maint.o
-> +
->  lib-y += logic_pio.o
->  
->  lib-$(CONFIG_INDIRECT_IOMEM) += logic_iomem.o
-> diff --git a/lib/cache_maint.c b/lib/cache_maint.c
-> new file mode 100644
-> index 000000000000..05d9c5e99941
-> --- /dev/null
-> +++ b/lib/cache_maint.c
-> @@ -0,0 +1,128 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Generic support for Memory System Cache Maintenance operations.
-> + *
-> + * Coherency maintenance drivers register with this simple framework that will
-> + * iterate over each registered instance to first kick off invalidation and
-> + * then to wait until it is complete.
-> + *
-> + * If no implementations are registered yet cpu_cache_has_invalidate_memregion()
-> + * will return false. If this runs concurrently with unregistration then a
-> + * race exists but this is no worse than the case where the device responsible
-> + * for a given memory region has not yet registered.
-> + */
-> +#include <linux/cache_coherency.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/container_of.h>
-> +#include <linux/export.h>
-> +#include <linux/list.h>
-> +#include <linux/memregion.h>
-> +#include <linux/module.h>
-> +#include <linux/rwsem.h>
-> +#include <linux/slab.h>
-> +
-> +static LIST_HEAD(cache_device_list);
-> +static DECLARE_RWSEM(cache_device_list_lock);
-> +
-> +void cache_coherency_device_free(struct cache_coherency_device *ccd)
-> +{
-> +	kfree(ccd);
-> +}
-> +EXPORT_SYMBOL_GPL(cache_coherency_device_free);
-
-Why do you need a new GPL export wrapper for kfree?
+I'd expect those to walk into the shared region too.
 
