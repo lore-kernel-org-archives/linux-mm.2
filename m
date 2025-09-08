@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03D2CCAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:18:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B5E3CAC586
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 12:21:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 625D08E000C; Mon,  8 Sep 2025 08:18:27 -0400 (EDT)
+	id 039288E0007; Mon,  8 Sep 2025 08:21:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D65D8E0003; Mon,  8 Sep 2025 08:18:27 -0400 (EDT)
+	id F2C2D8E0003; Mon,  8 Sep 2025 08:21:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C51E8E000C; Mon,  8 Sep 2025 08:18:27 -0400 (EDT)
+	id DF3D38E0007; Mon,  8 Sep 2025 08:21:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C9538E0003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:18:27 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C75D8B3C13
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:18:26 +0000 (UTC)
-X-FDA: 83865985812.16.9CA1693
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE1898E0003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 08:21:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7950EC0142
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:21:26 +0000 (UTC)
+X-FDA: 83865993372.22.CE126B5
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9877140003
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:18:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gcGAcF/Y";
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2D9DB180006
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 12:21:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X/viAak5";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757334084; a=rsa-sha256;
+	cv=none;
+	b=IZOMHfkvnzpLOzSQjpVKeF2GK6KUryArnrQdeA2JOcoRXdlu/fh0aO/sXVZuxeqbep8pic
+	0HwAVBDjjJnIlQcLM+DxjMqiyHKy2976u7pCirDrWpccFRonHVXjemrRk8XQawIzf4Cgn+
+	b4d1xptfdyTjPO81piwLLgV9Sn9Nifg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="X/viAak5";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757333904;
+	s=arc-20220608; t=1757334084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PuXzt75qqZ88CE8il4yCnMJ+l8oPsUDRiV/gr28llhU=;
-	b=3cgTH/+Z7Vf9eKVvUquc0arZDo7CvqAOk3gaNnwrN3RQQsSKX2Sl3wyAuWE1+ktVZFUQE5
-	gI2Wkyo8phhMnUrwFmGrOLufw1X2KKBW5tT86sjFmcDc4hdEF8UOsfnbKcc08/HS3yTAg9
-	6U7Coc6icLMqlnmdz7jzzKs35euG69M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757333904; a=rsa-sha256;
-	cv=none;
-	b=43dJ05ke8FIYXOv3tM3wNMsr7B3nXg+btrYxL8UZtJvUymWgSEDMnQ8eDuDAPp0ZmBJhdX
-	e3dz3dwa6vtpKWBNKJsuwnpXzl4FF+heZ13ewnnNXGDjSqfo54a2k4D9guXTq0WhBm1ZNo
-	PccGq6oQ0G4kglyvaDM39qjPJH4nkYY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="gcGAcF/Y";
-	spf=pass (imf12.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=b4LGF6/6A+Ec1kKIYxFDi7dxUU3JUaFn3tA0l45b07A=;
+	b=tzTCYQkVRwJurgF5m5DSrSjvV6WcYLGC6wfLYmXfRk/0GOkiApQvj7hsDJm3iuCtJYHORV
+	RD81onYC3sYqSGCaMpJrVABNBigajSGAYQdkxXpZNOuB7I4cWopaMDbbqtGjpMjPqmdNuV
+	QoDCav5k1LVjgnETHIUMnaWlvGfq8yU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757333903;
+	s=mimecast20190719; t=1757334083;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PuXzt75qqZ88CE8il4yCnMJ+l8oPsUDRiV/gr28llhU=;
-	b=gcGAcF/Y6qHI68e1mb67bi820AsT3kWYHh6LoIPiqr8kUslp8HMqPwVvyCK6Yy8nVD2ury
-	QUYNG42AmTvLXJiIhciPH+5mPi0HcJ48yvMKs805soD5zh1SAhPVC2EoF7vdB8pZtxWzyr
-	5LMNw0HxsSZxAc4DIx1ghRF+DliUwYc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=b4LGF6/6A+Ec1kKIYxFDi7dxUU3JUaFn3tA0l45b07A=;
+	b=X/viAak5wY5dhICcjNlil7cDmIc6CLKvcSANeC8x/tWafZzFdOdxfbd4zf8SdQmKsDBFFS
+	Cgmjf9Mau/P7bUbQTwGn4nqNOsA1XXwr7Y9lFHl17oiIPLvl3+94Ad8oFb4rRaDvMwsKuI
+	TH+XlMNJg1HyipqaU8gZKyxeKpIZT0s=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-503-OTArQoTVPriB0Gj2f3oj_Q-1; Mon, 08 Sep 2025 08:18:20 -0400
-X-MC-Unique: OTArQoTVPriB0Gj2f3oj_Q-1
-X-Mimecast-MFC-AGG-ID: OTArQoTVPriB0Gj2f3oj_Q_1757333899
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3e26569a11aso2108210f8f.2
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 05:18:20 -0700 (PDT)
+ us-mta-35-1qJhNCnWOJGYzc05ZaJmdg-1; Mon, 08 Sep 2025 08:21:20 -0400
+X-MC-Unique: 1qJhNCnWOJGYzc05ZaJmdg-1
+X-Mimecast-MFC-AGG-ID: 1qJhNCnWOJGYzc05ZaJmdg_1757334079
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45a15f10f31so30266895e9.0
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 05:21:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757333899; x=1757938699;
+        d=1e100.net; s=20230601; t=1757334079; x=1757938879;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PuXzt75qqZ88CE8il4yCnMJ+l8oPsUDRiV/gr28llhU=;
-        b=G51AbM2eLj7v2hy9Rh1I2vqC3ZtNSt+tq0diU83izjZMu2KM24GVZY8gpmp2zOK5sK
-         OFTeM3KLrMjbhM7Cix+r2MeeYkE7gD1S5VnY3k/DX8WpctJFCg4Wuxc0Z58fzVBpvmbN
-         8UUF+BO1qfoF6vhKgo7azYAu6T2JhNMWgbtc30Z43tFhZFAIkXS6twoaeWwQLrUKmcwn
-         Zp4p8o7RH7FhvGIolMM5zfITRi8Qt7+TEnNjx22F3xGXEetWe2bkhkOox1X9ZUqSu4rw
-         ZMb2cj9r1X30+8Plvj4wFzYAaJpAMQ/knR1kGXKGm+ldl0dJ+Epse4HNZSsHY9bO2o4h
-         TY0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWZJDGoNRTpiRRThHJD1Tvb1DSwSGXInMIYUpczk/9KLcnP62P1Hl4Dp5rbYcKAw8Wj6aR2izBEsA==@kvack.org
-X-Gm-Message-State: AOJu0YwL4m5pVKBZKspcgXJ8/S7XQN7zh0iOL8pxTpkMYIuhGJAMFdUD
-	LTOmheLhyWZaWwPtSfitI/vdnc4pyFEcIc6NPXuEiZ35IpoQ1MFz4nkfJenrWd6V012rPqc17FA
-	I9glydEJYEZo0NpJhfwo60qxBvG8UOlqUUgkHmFRoyh96Tc+goxbz
-X-Gm-Gg: ASbGncu4L1rTrSfz2mZiJQmNQT0gfWS2u0DRB0N6qKGhw04i7d6en5HQO6gLI4s9nOR
-	BXagvEH/88mlNTGR0dmVKiP5mlMJrd4s+OHDIys3lw/1dzlW7xwlClhHbPxlDVNWO5+dCr1jyhJ
-	TVx0GNoDOZaX1zysv15L/jXuDmIyKbcD+NxvoRo+A0aMb5CeWPXoC/q8fbD9D7opY0P7tDLFWBl
-	7Gpe4A0kVtOseUDFrPjL1tM7JhnVjCsk/QlE8sB7Vzu4SYGoQlk5LuDvMI5BoQKmEg6wrbmZgJH
-	wRlZJOTPBBSghC0uGqlUb+g0/dilLpdFJrwHS9NVF0B08fAw/xDyNqCcaxipJc9lMt+UyQNdY+L
-	GpKKDcSBzYMg+pYEEKicZSOYUwOUVZkYrH0e7e4qKD84ZFmGToe7iC1IqM8YbHE9z
-X-Received: by 2002:a05:6000:1449:b0:3e4:ea11:f7df with SMTP id ffacd0b85a97d-3e64392b8c4mr7476348f8f.40.1757333899315;
-        Mon, 08 Sep 2025 05:18:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+yeVQRYSd8nkCUCllIs0DiL5pm4cULTomNXgzijKtbB7fyh7LoqFBush3PDSaV4UKlqAXEA==
-X-Received: by 2002:a05:6000:1449:b0:3e4:ea11:f7df with SMTP id ffacd0b85a97d-3e64392b8c4mr7476311f8f.40.1757333898904;
-        Mon, 08 Sep 2025 05:18:18 -0700 (PDT)
+        bh=b4LGF6/6A+Ec1kKIYxFDi7dxUU3JUaFn3tA0l45b07A=;
+        b=tGwUhn+hJZKYE10VfuE6MnWRQW4XPijeB5J9Epb0tMZFOhf0yFAHE66e7Wj41P9/3S
+         MNeboSZHD1ZU1LqURFhvYu8/SOoUN+wRLlrq/ZNlfQQ+AJYmD7xlj+UuDR6IelrhR308
+         bqBlpkYfh1R4q9v1ucAE7x5ADoD+rg49PuksT9Wg5uNfGqmMk+s1OdN/DAuF/g3hK8NW
+         b8JLqGL8Yy3XhGJLZT3LnLleNLk6b2hl/TIhKokKPxzBOOpJK1mAW3gr37NHwBZ9j8Mc
+         Nr1ojvl1+Le2aB6ah0hVgcNqGC6xZU+wbG4Z9p228REsK8jKzVCbMbpCKgKvhgjqOK41
+         TBrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrHJMB4dZpkOdSxesVup1yKDYMb5UtevPS3YBqnyL8rYv3irpxtMXOAicPyWGlwIQ4deFrZdPYKQ==@kvack.org
+X-Gm-Message-State: AOJu0YyhuBWaInm7/qG4VTERiRW0eZUSJyVPZa+7K0RYtzTeATb204pi
+	kb0f+jevkcLA0L9MFga3N5fbEp4RQmI8LZxnb7uq58Eu1xmX3GocREmsj8MpiQLJEYRwTEnT9Ja
+	M63ek/gY1+5J5zdVQjo0RHMLBo/6h1Lr8xc1J9jMsxwK4WdIIy+O9
+X-Gm-Gg: ASbGncuL/ceD0DikU0TONC2pm9TUHZRv7+14WC6epJGt96KuO1e6jnsrIjqVsZDMlyW
+	9rahosVeqG+PUZuFCm4JK0PyzdtvTjKrwxwePvdLt2BDmqQMeXtzUWTYFOj1qU6ldU9TNBH8VLy
+	T2ztmifQXoOB9fyK0HOmFVS0pZ8FjcaTCBdfXuPfQSlhdEOb/PiOF559ln8UDoT6zUZONtSLork
+	SYDo5JWnQptAx3QOawuDUy/2h0IGlEUHYPqnxwwIwCGd8QhKvkAKkkRcguhefum5XKOrERbzVLN
+	abMWFE67aSLq/dqvvBwlxUXN6NEjolDsh56D5y1wRslBnUXXiDzvRu4VTLOaA+81OmR5U/IC+33
+	hJXrvv0CD6ZgHRJMf9I64OyjryPkGJu3OoPVB+IBc5VlroDJZwT/YMavY6Ev+OS3T
+X-Received: by 2002:a05:600c:4f4a:b0:45c:b523:5a09 with SMTP id 5b1f17b1804b1-45dde21d0c0mr67037445e9.16.1757334079238;
+        Mon, 08 Sep 2025 05:21:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOfP/PckjNKVTxCMvCkIOKSMsum91MTyZE+ZCSe31JnH0/HVLXj8wHIDxlH9JiUcB3ZBOyuw==
+X-Received: by 2002:a05:600c:4f4a:b0:45c:b523:5a09 with SMTP id 5b1f17b1804b1-45dde21d0c0mr67037165e9.16.1757334078820;
+        Mon, 08 Sep 2025 05:21:18 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f25:700:d846:15f3:6ca0:8029? (p200300d82f250700d84615f36ca08029.dip0.t-ipconnect.de. [2003:d8:2f25:700:d846:15f3:6ca0:8029])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45de24ab648sm74672245e9.5.2025.09.08.05.18.17
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd2df4c8dsm171199905e9.15.2025.09.08.05.21.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 05:18:18 -0700 (PDT)
-Message-ID: <0bbda135-068a-45bd-afd6-3f5cdf4e570d@redhat.com>
-Date: Mon, 8 Sep 2025 14:18:17 +0200
+        Mon, 08 Sep 2025 05:21:18 -0700 (PDT)
+Message-ID: <84d3ab47-a960-4709-b127-ffbb8d85ac23@redhat.com>
+Date: Mon, 8 Sep 2025 14:21:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/15] mm, swap: always lock and check the swap cache
- folio before use
+Subject: Re: [PATCH v2 07/15] mm, swap: tidy up swap device and cluster info
+ helpers
 To: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
@@ -117,7 +117,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  linux-kernel@vger.kernel.org
 References: <20250905191357.78298-1-ryncsn@gmail.com>
- <20250905191357.78298-6-ryncsn@gmail.com>
+ <20250905191357.78298-8-ryncsn@gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -163,21 +163,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250905191357.78298-6-ryncsn@gmail.com>
+In-Reply-To: <20250905191357.78298-8-ryncsn@gmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QjgmIiw1kDpB-_lTUAnXcP8rHLTRcYca1V0ypldfbxk_1757333899
+X-Mimecast-MFC-PROC-ID: Mzr98yoLAm3BGA3rxOKtWVpg8F2eZCF3oa-gkWZn83c_1757334079
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9877140003
-X-Stat-Signature: uee7ytzu8jm7n7z4n87cscj4ox1gc1di
+X-Rspamd-Server: rspam03
 X-Rspam-User: 
-X-HE-Tag: 1757333904-808659
-X-HE-Meta: U2FsdGVkX1/nsUu8G3edaWpmznAap6xyKNZzduua4/ig/VkXsNkiIokyJgFNdIBhSTFKWa77EU88af5bxL0h6J4nKqsK1Cpy1OQlgcSQqdUTDA0o4lx7GFZ/IPsz1CkqFavboMzQ5HobzqmQS6zjWaTZF9NRtD/nYFviCpw0Z9PezzcQ2Ld8Xjfuk+LHgjeAKwGRbWM/3XaK8icwBtK/fR75OHFi0KtCheXBp5N/ZZLGb6Gz1/JGLiyJ+E/+wS11lh0Mw38e0M2NhmHAbtJTMAOHKCAWQ/zLafKk36W4pB2l7xK47m8Kf69XDX4+TCARGRQeQUZICN7sp6TFWEsjSIaLAFDWsKarzo+3U2yLjxIRAUbzemWSxHTfIARZIuXcWTuvCZQKO+WF2xAx15pMX9fGgV2bab5osF3gQaWioQH2rBFFnDTlck7lsYjM07qdc4bKJdsWxBLsAPSF41u++XTzZFsFEvgB+PzWblTf6tGpbcr9HZ1mM30G+DY2pIwBTdidCx1z5dTJunZDBlBFpshUzWUosgl6vusQQNEvfZr4n1q56pTp6dCEwlvHcjh6cTisHjySpTn66oW+PUVDFXOODpSanTd9fG9qBRg9sVgiPjDNu+n8bgA8Kk773pmvs8OJ7PYbkP8Z9PUCJhqmMkY11U87Whp4QH62yqQKwVjNidD47fb0ldBxGv6KY7EIcuCPPIDmSWbRUOjQgX1GSHAq0efI+6EJMNCnSvQa6CORwOQp1+wKK46Alt7jOnbLwtHTTBxNYx42Mulx5v6Ao0RLq+e+g57zp2InMvHVVkcCAEptmsqUFy55v3Nt86NnR+BLT+1SA4lOQxqaOrH72e/C5AvUWovDk+VLLhtFTA9Tk+0Xpr3O5pqg/YTimtA6c501b3B5DN58Gk+JbichxmwrIB3bHgRqbjmM7Oise+/T0/CA7QSpLA3DGVMzK8sYxohpJ2LYjW4b0Y0CBpi
- 0krtQX1C
- 47rNcFXH6hEMwD77EVlBY5RHVtbDz/oKiKBR2z5noUX6UgwA=
+X-Rspamd-Queue-Id: 2D9DB180006
+X-Stat-Signature: ryxwktp6bqj1xzxeazfodqgr3od5j3dn
+X-HE-Tag: 1757334084-91856
+X-HE-Meta: U2FsdGVkX1+hCXPrw8vg1TtJRNLAYkEm9Je7F9Pn2T4Hla/UpQAeZ6z1gtgtBwsMaqanrdRZbrkoAXsASEdhs2MHvWcUNjIUYK3TNpDtFsPmRJ7lSfHxbAW/kc7G+26gC7Muif0nxunnOWE+MNpGC4ZtJgJurMAogKBLIhjxdt0Oro1OYPBgy5bJmQEAW3L2V1SxDxPJQfz5RNCpHDlLohSfGmhnRUwpt3keQjWdcQTPj1UqkBcgG97YjG4NO8//VhAO9IoFtBiQf75OWPCwzeXdMmpKK52jXY9R6+pZxQOOufT2tnD1NnIFcAcR3zG+fSW3NBnDSF+hQBnwBRZgsKqX/ty+xN7u71cdy/xeBskbyycoqqsRxD/dMSPwKQGJ1Vt+HwCmPQllAiGk27nmxMcaC0STgi9zyHzIehDSKdMnKzAvCHi+wUCDhzXasnDFD0vRswZTJSrRgRXrKxi4Yg3fl/hBphMmlciIkMq3efrZFtgrLC9nJk5CnTJ/UjQrOIDUto/GTUlb2QunWZ1H5UNTraIUv0AKeaRObdphCZHV7vLIcoU9YgOaYHPMhtchrA2Wi7ETaG+num/RKzUd8je827i5q/XklmfqkFk/TiLuR5VI4Nu6G1x7uhmFeCyWZBOYRVPWxCnP4r5NDssQ7QXJyqX15hTbQn+bXhjYi4ik3XaWEfbfkCqlkItdYvQEs1BRFVB+x9OqmkoqTkIkTKh2hECdWiE7H+SllM+FbizvqUFzl4wbXroOd3YnI0J5IJBJvOdWq2QWM/nP7hm0eFFoCKZwlcc9axfOoB1WOxIr5LxESj1LKXf8t+PoriDlayWiaXcRcRy/Or4ey+XZdh1vntPTHtlFDUd8fIJpSJ9KYBQ+xHo3L3B6hZNosa7Rx6fi67MPEp3EX39k7p7ZZpyTnQ2w1COFkgw+lktv3HR2GBMWO4x/DDwFTBAr3A6Shimf8bB9xvQJDgx00zl
+ 34xeUfeK
+ r9sZ4SfMOPTzYLEfp46RFmNGd6Al1PCm4/P4aXY9rtsV1mkVYZAgaRDvSrOrXgTC88tFwP8VD2TqrZrDNZWUTt77WT7t+b1F+Bx2sbnHmMFJ9uohz6rScDV5SDWlGoplXyf4dzKMZfnj4G+3MEk03/7mjRKotD9C4IVEncf072ziwEjoMuCDL7dG0ArmTEcYEd62vgmjJ1pzi4rSfIdTyL4r3e3PQ9rq7GoDYN+A7HdZQ2xW6lUcpT/4TsTIOR8K7lfTEKIaVy1FjuqyOEpi13Cig3gz5j83m+mGj434KoJ6OrsWjViOmhjn/Hmql42PwvfFMWyEtvv7vex6V2mnQNghsEYCFZhekBf7bHCjapiupFQ8lJwP1whP1lrFtjX6LfzSRxsb45pZCBlrtFt+iN+0fupNm6/5hWx6YR7EF4sgBrnPhbMeR86cDevVTJ/0Ib5D1Wu4AUXfAyoaSED7NhSRoGg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,18 +186,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 05.09.25 21:13, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> swp_swap_info is the most commonly used helper for retrieving swap info.
+> It has an internal check that may lead to a NULL return value, but
+> almost none of its caller checks the return value, making the internal
+> check pointless. In fact, most of these callers already ensured the
+> entry is valid and never expect a NULL value.
+> 
+> Tidy this up and shorten the name. If the caller can make sure the
 
->   
->   		folio_lock(folio);
-> +		if (!folio_matches_swap_entry(folio, entry)) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +			continue;
-> +		}
-> +
+"Tidy this up and improve the function names." ?
 
-I wonder if we should put that into unuse_pte() instead. It checks for 
-other types of races (like the page table entry getting modified) already.
+> swap entry/type is valid and the device is pinned, use the new introduced
+> __swap_entry_to_info/__swap_type_to_info instead. They have more debug
+> sanity checks and lower overhead as they are inlined.
+> 
+> Callers that may expect a NULL value should use
+> swap_entry_to_info/swap_type_to_info instead.
+> 
+> No feature change. The rearranged codes should have had no effect, or
+> they should have been hitting NULL de-ref bugs already. Only some new
+> sanity checks are added so potential issues may show up in debug build.
+> 
+> The new helpers will be frequently used with swap table later when working
+> with swap cache folios. A locked swap cache folio ensures the entries are
+> valid and stable so these helpers are very helpful.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Acked-by: Chris Li <chrisl@kernel.org>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> ---
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers
