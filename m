@@ -4,264 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB9D5CAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 19:10:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10CCECAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 19:15:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A5078E0009; Mon,  8 Sep 2025 15:10:24 -0400 (EDT)
+	id 659D18E000B; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255C58E0001; Mon,  8 Sep 2025 15:10:24 -0400 (EDT)
+	id 631AB8E0001; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CF438E0009; Mon,  8 Sep 2025 15:10:24 -0400 (EDT)
+	id 520668E000B; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E67F48E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:10:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9965557CFA
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:10:23 +0000 (UTC)
-X-FDA: 83867023926.19.D28D7DC
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1F4B38001A
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:10:19 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=C41TvhKD;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aXQit2Mc;
-	spf=pass (imf30.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757358620;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C2E98E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF92D1191CE
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:15:36 +0000 (UTC)
+X-FDA: 83867037072.25.50EAE3A
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D05D6180006
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:15:31 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=GN8GDlNl;
+	spf=pass (imf16.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757358934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M5lCHM2BXFp5PND4Fl4O2N8zW/sxOBXRJH32aPZAeDM=;
-	b=DpJHSdI6AjNlK0I7NGLcmqjRsmCKx3MaxelJc3LPaELssiYknTggJO+Ro7XBDgMIyfJwW/
-	1NCKuxHwCNjyVNJq7Z5cMABkkLgrScUxe3EknilbbSNXooFhflOmC0E7ITPrfA6CLezUB2
-	2W994lyUu4WGzpCU0+Bxu4Hw4gzaFik=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757358620; a=rsa-sha256;
-	cv=pass;
-	b=4N0I+vYHrBjV3MGd9otxo0mi/Dt156Oe3+3PpnsJkjJR7CSUR99ru+hyB09yBRi7fUzxbF
-	6pL3GYbZ2K5Q1+K8U155Ob3vTTp2wRq8KS071ierj3XfcYcZ5vuiCrp8F84xX6l4SRD1aF
-	lSmbKoQFwL6yg96d5pGmdgmZAS4Qmqo=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=C41TvhKD;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=aXQit2Mc;
-	spf=pass (imf30.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588Hfqf0023827;
-	Mon, 8 Sep 2025 19:09:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=M5lCHM2BXFp5PND4Fl4O2N8zW/sxOBXRJH32aPZAeDM=; b=
-	C41TvhKDcmy8msdS7OFN+gtsWEmj4zsRYh7B3ke50eE4oRXz8KnN5TzrMXH6yr7K
-	/ZjbPoRpu8q0W79oALkqs9ENUVrDAf+mQCfLf65xyx+nD5FDDDmlMpCpiX3ZseIy
-	zci5z3SHchMjTo2tHsQgN1X5H+5DBEg/CB+V5gUMYASlY30slkiUxKmKQWMXkMUm
-	Bngrur65Ry6ESh4kCMo36mXwEBYobSMZov0M4tLF9I+XsJ3F2Rhree4wT5+t/3tx
-	RVeBug+B+NamXFSStLdgcfYg+DysyBbdUv18kv7AkABOhA6CQxcyBB5Nlx6YbbKG
-	OTSkR7Su4uffI81I27FBvA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49226srcry-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 08 Sep 2025 19:09:50 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 588HmvL5026344;
-	Mon, 8 Sep 2025 19:09:49 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12on2041.outbound.protection.outlook.com [40.107.244.41])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 490bd8mfpj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 08 Sep 2025 19:09:49 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bt3FBqjUZdXQiaeDQRtYjj0qiLhx3RaqTbN3moTN0zUTbOjxHe7rQMPPJyANgBhKByJHbhCY5xKIb68zG/TpMLxZ1s3bIMnX5KthC00cKslNp8A4rQMMRopLnJiHOvcnervv8e5+baeH+xrwkhTlw0IGxp8ZMFCTc2FQOuNfDjqSTdThUNpfsCqh7VEFs4d6x+6t+IuYyddC7iXav2O488oWfgny6ZiN2bIsE1nRx18B19pLoUlAd0fxyz/IOexzGywEH90b0RNb4jei58nVK1Sn1y0Pmq0XJTDbuO8Mxp3Gak5b1D8zyEIle9dGbUoxK8Q81pi36jhJ8cFZGZs9zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M5lCHM2BXFp5PND4Fl4O2N8zW/sxOBXRJH32aPZAeDM=;
- b=Wf6wCqgspvw6VESUH8nnLL8PEkrrRD+5exP5KHAhQcY4mD/3/9LwzerOYeNIEvhd4yCK2kpR1U4zfNZg6TOEWlMg4wFCARasXG3D5422qRXMCoTPbLQX+77MP54bInkRolvaOP6SxF6taG+LYrnIl8ab2CP+N5xQr4DbWlhJkvLGsX99z9jzIGPcpEggcQnNoBefX1cJDVXZYmniEWxwds6OFRoIHx3n2OxKp6zosDxm8ktjrEBKHLYqMuPkuEh/LdCbSSi5v2CvAeqX/9MjIvfDW8nfh3xoOI5rSUMP2ih2uyzvUwBy3Grcw8kjS9UReFOsjjolhPQx1ybLjb5h8g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M5lCHM2BXFp5PND4Fl4O2N8zW/sxOBXRJH32aPZAeDM=;
- b=aXQit2McsXeSeYUxqbYHlErAA67U1r6j7A+NWet1BWCaIwHRertCuTYcZKSXZhIpNXEj/DlPbUhT11Hne6UF8ZlP3XAOWcMmm4h7+BbFxs9vv8MPQGPZRLCey/EDUCedL7wb7Pjp09uqUYnmv/QGtj8EuhfPuWPBdjUl1Lbwdsc=
-Received: from MW6PR10MB7660.namprd10.prod.outlook.com (2603:10b6:303:24b::12)
- by BLAPR10MB5058.namprd10.prod.outlook.com (2603:10b6:208:320::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
- 2025 19:09:45 +0000
-Received: from MW6PR10MB7660.namprd10.prod.outlook.com
- ([fe80::41fa:92d3:28b9:2a15]) by MW6PR10MB7660.namprd10.prod.outlook.com
- ([fe80::41fa:92d3:28b9:2a15%5]) with mapi id 15.20.9094.021; Mon, 8 Sep 2025
- 19:09:45 +0000
-Message-ID: <db2f17fd-6711-4521-8d2a-73c3fd8d914e@oracle.com>
-Date: Mon, 8 Sep 2025 12:09:40 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/22] mm: Add msharefs filesystem
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-        akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
-        bp@alien8.de, brauner@kernel.org, bsegall@google.com, corbet@lwn.net,
-        dave.hansen@linux.intel.com, david@redhat.com,
-        dietmar.eggemann@arm.com, ebiederm@xmission.com, hpa@zytor.com,
-        jakub.wartak@mailbox.org, jannh@google.com, juri.lelli@redhat.com,
-        khalid@kernel.org, linyongting@bytedance.com,
-        lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com,
-        maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
-        mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de,
-        osalvador@suse.de, pcc@google.com, peterz@infradead.org,
-        pfalcato@suse.de, rostedt@goodmis.org, rppt@kernel.org,
-        shakeel.butt@linux.dev, surenb@google.com, tglx@linutronix.de,
-        vasily.averin@linux.dev, vbabka@suse.cz, vincent.guittot@linaro.org,
-        viro@zeniv.linux.org.uk, vschneid@redhat.com, willy@infradead.org,
-        x86@kernel.org, xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
-References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
- <20250820010415.699353-2-anthony.yznaga@oracle.com>
- <lgwf5d2y2ok2f52l7xi6klln4hbncnoyn2s2jdi3k4wi5ngfz4@kbtqjwirdnqj>
-Content-Language: en-US
-From: Anthony Yznaga <anthony.yznaga@oracle.com>
-In-Reply-To: <lgwf5d2y2ok2f52l7xi6klln4hbncnoyn2s2jdi3k4wi5ngfz4@kbtqjwirdnqj>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR13CA0013.namprd13.prod.outlook.com
- (2603:10b6:a03:180::26) To MW6PR10MB7660.namprd10.prod.outlook.com
- (2603:10b6:303:24b::12)
+	bh=zOecQmwq+DoDshGPB4oxxE5lmlvV6iB0dGFX8T5PHy8=;
+	b=l9BsWMhzYReY5dRmUFMG3woEuJezfHaaoAfn3RXOdNzNcDH2xbMxUdnLAzTnfJbPgMF+CO
+	+NXlrD9qEHhffZ3QZ/RH6ZkqnaWhZ26Splh8Kfsm7LxtvAC+CuM/roYYFw6h8zh8Q5w9Vl
+	wexETiBIXY26iy6BAf7HHi1UaWn1AI4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b=GN8GDlNl;
+	spf=pass (imf16.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757358934; a=rsa-sha256;
+	cv=none;
+	b=GSRGt67EDE/YyzZZWrSs2fTpH+bV0yAIH9wB1hqhNgTu9CAViNpneIrT9gxeX57YP1+jLU
+	ooE2FbT9h0cpiiQJU/VAjQf4uuZMCIGv8Mzgp+dILwdYfufCagHW8rFgqXfVAFBpKiFNnd
+	YmkWdR8mPrxjUhPgPeoDKLtanW9uFJo=
+Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588I2wxm007907;
+	Mon, 8 Sep 2025 19:14:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=zO
+	ecQmwq+DoDshGPB4oxxE5lmlvV6iB0dGFX8T5PHy8=; b=GN8GDlNlNhYylpGGye
+	zge9N2XOMeb58LuWTEOnE6aF2ravmwwyDyJ6Ur/pwbn4EK+r711pmj1EN0Rq748d
+	K8TYpryqrL5pOUtU+MhP4FWTkZikd0tDxnup5kXyE1nxRlG6cX0uwLU3RED8keqE
+	CM6+wcIPdA0F0829UmveTqQwO0SmQlFnLhbJPdTLSYpsEdNsHpIDFpbLv36mfS5s
+	gpVOUqMeZvrXOQgrekWrmbyQEdPOXdcShFzbaRg1KquQI/SAuRVW7fDpPxSjPsFs
+	nTdD8brbC+TC0djjT/dvpiLyttWABdvmGN9cQ5ZVA2kXO8kPNqNbNQJ+JuTNuvAp
+	hlMg==
+Received: from p1lg14881.it.hpe.com ([16.230.97.202])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 491x8qmesh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Sep 2025 19:14:58 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id E274B805E2F;
+	Mon,  8 Sep 2025 19:14:46 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 5A013802FD4;
+	Mon,  8 Sep 2025 19:14:44 +0000 (UTC)
+Date: Mon, 8 Sep 2025 14:14:42 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: jane.chu@oracle.com, "Luck, Tony" <tony.luck@intel.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com,
+        "Anderson, Russ" <russ.anderson@hpe.com>, rppt@kernel.org,
+        osalvador@suse.de, nao.horiguchi@gmail.com, mhocko@suse.com,
+        lorenzo.stoakes@oracle.com, linmiaohe@huawei.com, david@redhat.com,
+        bp@alien8.de, akpm@linux-foundation.org, linux-mm@kvack.org,
+        vbabka@suse.cz, linux-acpi@vger.kernel.org,
+        Shawn Fan <shawn.fan@intel.com>
+Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
+ BIOS asked
+Message-ID: <aL8rIgSImDh7Nj7E@hpe.com>
+References: <20250904155720.22149-1-tony.luck@intel.com>
+ <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
+ <aLsHh70jI6BGHjaN@agluck-desk3>
+ <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
+ <aLspJ5Tpqp4qRDk2@agluck-desk3>
+ <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
+ <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR10MB7660:EE_|BLAPR10MB5058:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50b3792d-f962-4254-99c6-08ddef0b45d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dkUrc0pqQnlGd0Rha0VLZ0ZoUnFFNTZEWkllOXpEd1ZMRXZhM29UekI3QWhl?=
- =?utf-8?B?Mko4YWpaT1VjMGw0Z3RDQ1BXNy9wZVArV0wzRzVad0U3Q3IxNng1ZzJSOURl?=
- =?utf-8?B?NE01QTVJL2N0aXljY1l6UC9aTmhFV0l1Z3Q0emgydUFVbW5DMlFIU1pHRHpi?=
- =?utf-8?B?NCtrZnlScVJ4L2U5MitDL1l1R3pwaDBOY1gzdGY0SmFvRzRoSFptblRJcnhE?=
- =?utf-8?B?bzd6NUR2THdhcWlFU2dNWjZiVnpyQkxvNGYwZHFocjArS2tFbjJKcnlLVTkz?=
- =?utf-8?B?ZFVXWVNQYloydDMzZ0F2NWFNdmREWTQyQnJnODByaCs1T3M2OGdnK0Y5U0hH?=
- =?utf-8?B?Y0lybkFrSDRaemNvajNycm1SYU5qSjF5a3RBZ08wM0tMMFhpSklUeHNZS3NM?=
- =?utf-8?B?d3U4Y1JUakRGUDdnbTBkelQvelYwRnBoYURJRzJ0NFVHTlVrTWJLZHZ0dzBR?=
- =?utf-8?B?UENjOUhJckRzNnpDNldNdHdjM0E5MVRHMnUrRW90dmhxakN3OHF1M2txQjZ5?=
- =?utf-8?B?Y0JIUVRTZlNDdHFuQTlsNmZzZlozYjZ3VVNSNTVuV1prUHcvelZ1cjlwa3NX?=
- =?utf-8?B?ZHpobFRYTDJCWEI2eCtXYkFEN0VQc24wVzFjRGlHUWUrWENvWmszL0hSdDJo?=
- =?utf-8?B?dFp1WXYvNC9WL25pUElhNk9GVUJCVk00anl1bXFsU0x3NDB5cmRXTDJYc0pR?=
- =?utf-8?B?cFkvb2dWbWQwSFQvUmVqQitlVVVFUFB0SFhNWWxrTG1oZXhHekF6ZndsS1k4?=
- =?utf-8?B?VDdsQWRsOE1UM292ejU3aUdMMTk4ODJITDlabi9NNTNXSEJpN3Njakw5M29q?=
- =?utf-8?B?N3loTFl4eUV3QW85MWExdEREdzJVam5pZHZKN3czaFIyciticlptMWdSVHYz?=
- =?utf-8?B?SDVEekZDdTYxNGQzWjR2T2xKSHI1TnBra2JmQ2VmVVdiTlBqTjV0N2tKZUNq?=
- =?utf-8?B?NEVLaXowQVJlWjJkMEt0aEo4b3ZvUmdzZ05LZjFFWmV3cG9vUmN0YVUxazE5?=
- =?utf-8?B?Q09mN3ROQmtmRW56a2d2aGNqM0oxL3JucmNlSVY0cWxhcFkxTFVNUExUT0Nh?=
- =?utf-8?B?S3BnMzloK2svKy90RlpOZkI3cDYzZU5wTlN1enZjOXBBK3ZUOGFPb1o2MklG?=
- =?utf-8?B?OGdncThJVkhZWis4a0N5ZkRoQzVnZ0FEQy9JWDN5b21OQ1hUdW9nT2NQaVZO?=
- =?utf-8?B?R0ZwVi9WL3RyRk9nWkcxcDIzdXBpdVV6VzlZS0thZDVROEd1WjU2azI3VzdC?=
- =?utf-8?B?QzdjQWhCUnRWWkxhalYrS0JUVEx1cFQ0MVp4N1FIWis0RHJlY2ZKVVoyQzlM?=
- =?utf-8?B?VmFPOGhPdkZzVGpXTWVIZExxNTlyL0ovT1c0Vld1ZXR2WWtEcFhOMmNTdEtW?=
- =?utf-8?B?NFBhb0RCUEF3TXlJUWZnSXJXTEJQbHprQ3I2dzVFdVNPSUkvWVBuS1dqeHB6?=
- =?utf-8?B?SXBsLy8zbDBKZUYrVE1acHN6dmN4TXQrN1FOWnNMbFpqdGNlLzFQekx0c0c1?=
- =?utf-8?B?WlE4S1JhRWxId3ZudmRjbDh0MGw3S2NiSitkMko4TDVFYU9VUCt3SW5XZzFm?=
- =?utf-8?B?Z2xkTFZpSXVDNWZkcFlGRzJFUUdlaEV6dEtCWGJmSHZOM2NzSmR3Q1NpMWQ2?=
- =?utf-8?B?UGJWNEVZd2p4K20xWU1qWFhsZ1ZXZEpHcEJpVDBrZ25iVzU2aGhTTm9VcC9I?=
- =?utf-8?B?QzBnSkNJZzd3dVVDbUl0NW5UbE9MOS94QjRpNzhBa013dVI1UE5rd24vRUpL?=
- =?utf-8?B?bnNWT1gzQ0dUbytIaEpVSElVaDg1dXhRTFFsY1hHTXVZc0xxcGMvK3BFT01L?=
- =?utf-8?B?cHdDVkhIamdCbWxxL1hJSlQxeHJWUVliMmRVUzhnUURpNGE4L1pJL3BSWWQw?=
- =?utf-8?B?YkVLd3I1WUVES0xLYnFIdWJEV3hQRm4rR0xoMmFzWURHMnZSTXpyNkxyZklY?=
- =?utf-8?B?M08yNWZnMEh2T0Q1WHErRmJ3TnR1ZXZOQjMyRTRNQTU2MU1NU3hhUHV2MEZ5?=
- =?utf-8?B?aUxHWXZpMmlRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR10MB7660.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bitrdFVtNzZRb2Nrc3JSOHE1dHM3cmpVUEFYcmJtTUdFWk4vUnZHWTFscWUr?=
- =?utf-8?B?R2YvL1lpR2NFMGtKTmNpL2l3NDhiMUNlblBrSkU2UkFqb1JvTlhBU0NRQzJD?=
- =?utf-8?B?TllJMFpEWjMwQnlhdWpTbE1OV2JFZys4eUhjcW5PQlNlcDMza1Y0d0RNeVUr?=
- =?utf-8?B?NTAycjMxbmp5aWVzZ3lOQjhqQkNqbWJBdzVFTXRObjcxejhUSW1yaEFoV2ZM?=
- =?utf-8?B?M25tbUpNdzhuVnFjdUR3cUh0b0hzd0owbng1M015RndQTys5a0hTTW1lZld0?=
- =?utf-8?B?MTZSd1JabERrNFI4NVdPdkFGcGsvUlN1R2taaGd0ckpiUXZrdnBKNVR6eTlo?=
- =?utf-8?B?QVVGd2l2cTV5REpxdzlsUS9yNFBQWDVzcU1FbmdJQWJUWk5COW44MkxkR1dz?=
- =?utf-8?B?N2VoUk40bXFEV2FUVjg3UmRyWEF3eFhJa3I3c1A3ZlQvYk9qdVhuMHRWTzll?=
- =?utf-8?B?NHBBZWRmUlA3WUw2bUorbUhqeURwNGxxWmFjUktNS0sxOEF0cVFQd3JqVWpO?=
- =?utf-8?B?YnBZUFR2R2x1ZTRNeGxScXJQd3Z3NXBHZWphTW1IUXVwVmdPQUtCS2VKdGhP?=
- =?utf-8?B?ZmJ5NUJybUtsdjhrVGI3WFBhUnE5ekNjMys4SmFOKzduMTJuL3NXV2ZKYTJH?=
- =?utf-8?B?N1lWa2VBa3o4cXlVTXFvM2M3QzBwRWFFc096MFJzTHA2Uk1CUHMycFVpa2p1?=
- =?utf-8?B?RU5UYmFyN05ZMnJQazZobG5kWi9qM2V5RldodEVQb050WlFTdVo0alhWdnNK?=
- =?utf-8?B?ekxpSXh4Ym9nbGhEcTBPdUg4SHl3dUNacWQ0R0lFR1AvSFlhN2VVRFhFZFYv?=
- =?utf-8?B?RlFqc2ptZEUzSHRVbllNN3d6QnVLWGcyL2c4N0ZJaFFjOFNmQkpTS28yaXBM?=
- =?utf-8?B?VXVPMENYaUFpUHRReHp3RTU1b3J3b3hsek42RjFaUEtPQm83Tmo5R0preStp?=
- =?utf-8?B?UjJEdnZiMHhRblh0ZWN5U3FzZWpDcUVJYktMalZzVm9mQWp0cnpieEVwWCsx?=
- =?utf-8?B?S2hkYkYyYkMvVHF4VEJjRkgrU1ZnVzdJY1RQTGZhMG41QVRRRFAxYzZsSDVn?=
- =?utf-8?B?VlROcjJvcnpXV2xnRU1hQkQ5OVQvaHMzZm1xdUQ4M1o4RmJuNytuaVZPbm14?=
- =?utf-8?B?UTExNnhWT3U1V3BoZ3BhQ2t0cWNFYlJHVkJVcDFkTVJpNEpiRUk1a3hiRkdP?=
- =?utf-8?B?UzhFSEJLcktGVklZL1ZmbENPRkJZWUhaN1M1cVlNUGpzWUJsaXpER2hSTXBE?=
- =?utf-8?B?cjJqd2tGZ1ZuaDhhUVRsOGsvWnZ2MnlxTDQrS3cxZ3RWdEhycnl3a29uOGxZ?=
- =?utf-8?B?NFR5OFNlaUFVckRDUFFOQi8xbmRQSGlBTTY5K1hCTlNWeWc0ckpiVTJHUzJ2?=
- =?utf-8?B?Mk9sUkRQUWhDS2d5bFRZb3ZzWG85MXBsSDZMQWhqaUc4ckVNWG8wNS9vT2dn?=
- =?utf-8?B?SFhxUW9DZnZaNVkwR0RVZVY4aVhNdndRMTFlbEFsZG5vVkF4NEkrVlpVZlli?=
- =?utf-8?B?eWVlenNJM0RyNms2cHRRKzdxV1BDWlc5azVWUlRjN1NuWnRCNjdwYzRvRnlx?=
- =?utf-8?B?eGsvVWJtdC9hdXhkdERmYVV1N2VkUzNHSlZFUHlkK2ZqMmRjRFdJcVJEYWhp?=
- =?utf-8?B?U0FTQ3E1emdGcGdPRVFTd2YzQTJZMzQ1cElxcXU1aVB4dkJWS1cwK05rMEtt?=
- =?utf-8?B?Wld1bXNKQ3N3NGRPbWlKU3Z4eWRnRHVkWHJDc24rdjNaZUwrTFh2UHdwcE93?=
- =?utf-8?B?cTlVUDZiaEZkN1orVkhjNmpSOGFicXFubUhBRndhY1RMYVRpbEVYVDYxUm9V?=
- =?utf-8?B?TWt5YXM0K2FVNSs2UXZxRnVNK3JFOTEzdWNYWEljektpMGxpczFUdG5HOHc5?=
- =?utf-8?B?ckRtZDY1SzVmWmhKM2RDaGZMM1l5bXRwRXBmUTB0YzhLQzNJeWpvc0RQcWhP?=
- =?utf-8?B?R2taUy8zdER1WXNQUGk3M3c4aG45MWdZd3FoVGRXa3gwZTlDenZia1EySm1z?=
- =?utf-8?B?TlNtNURDNzlpN3R4R0d3NjlxNmRtNFNSMkhKakpUTnliQTBiTG1BMHV5bUFq?=
- =?utf-8?B?VjR3QWpBb0NReDUrSCs4Z3JCSjJvNUw0NXVSajBSSWQxWS90TWxtSkdLalhO?=
- =?utf-8?B?aHdNQURwZVoxejl0aG5QaFBPSWhrMEtwQlpZODdvU0JPY1VheFc5QlBNaDY1?=
- =?utf-8?B?VWc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	rbS94WjPuh7pOSKa6U5UAa3mJmjrvOAq9xKETxCS5CbRB5rzCBcyxf642WVaC9vZPEjKlhTNEeDf5E7frC3sUDoa58yETXR93RJQRn6ENNIZoP6wTzaK4Q1GHzPBoYK9aG786u9GC0m2IsRlEQxNz6tpTx0GPWI3jYhcCIKh0GL6wN3EzMOVjcmEiBncseE3gnR3l0B0xeNEHDJuqES8Q6e3afTuS1Y7QPw4J9tOrsFa4M/YP9QUab15EA/ctRhEhdXyvD55/XJl3IbLBM9V1AmtN4yoqzdqXIVuFoPgMMnrssLOqcoPtjQ/OzKf22Pa+867K1Kn+aa+ASBkDLxGLbY2FHur+zZ6g/EBO9e0f4G0SREGlOn6+/HIyxeboGuf9K8O+XGNI3vbH5wcyP8EF8HQG0jJ4D1E/AsI0WaLZYot0OElqXqaQcni6GEBq7l+d2pqc9+1o55jDVdlmQpG6XnnetwjmL3xrKjhzFW7hrssKDusW64xqMGfTyAduY+/ll6zH059FWGoH1qtIOu2u/3tFJsngW1VPgr2Kmeg+O/Q5ULm9db5J+fHqpQHTDuYo7hpKGZ6HZlNnjOOjnicEfZbm3OzaR7zBkzXVBuoWK8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50b3792d-f962-4254-99c6-08ddef0b45d5
-X-MS-Exchange-CrossTenant-AuthSource: MW6PR10MB7660.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 19:09:45.3561
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GOwnrYu6F4V94jV1y8LHzHWksSwksVgY4ihnJyu104vE88Os+XYh/DITIVDQEdcXBR3H/j0jdIfPXJkUyknJ1qt1mqnAhRQP5tVNB1UUbDA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB5058
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDExNCBTYWx0ZWRfX9h5ZGXmPvvws
+ MWHA6QxpDtNHnKvEtXivLGKwkMt9sAgdbyGgyNgBGJFNHHCbg/Lw5MJUk62fyxjcr2nFtVi9i+T
+ jMSU+eaw831+iNBrs8usa1MzW8TQApJw7s5EncaIXAckxxQRQfOcL0H8z1h+K7JKP1OIxqOhnwA
+ JR+fM8n/lX1vrQrnn2LYRLTfMjnovNSRaQm8A7uW9SlBKUdPfUF0pJeq2wprLnIHogmldjyCvLq
+ iYEZj2QMYBj5A9vH7k8PETzimn9yZ2aOjOI1yNw6c/DFD6EqL9qAU0bPI99NU4i3BENBNxPBRim
+ ckmCS9yROHZbuDWyIFe+VjvCuKm/lJ8JwUP06gmtg9elwOZmhHggV0MKdcNsFPIco2uHpZ0x44z
+ R3bDwrOC
+X-Proofpoint-ORIG-GUID: lzDVQmIxlZm2_XmX0P6I_MbY6uRwcZUk
+X-Proofpoint-GUID: lzDVQmIxlZm2_XmX0P6I_MbY6uRwcZUk
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68bf2b32 cx=c_pps
+ a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
+ a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8 a=168LhWg8FaowOX8s28cA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-HPE-SCL: -1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 suspectscore=0
- mlxscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509080189
-X-Authority-Analysis: v=2.4 cv=QeRmvtbv c=1 sm=1 tr=0 ts=68bf29fe b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=VwQbUJbxAAAA:8
- a=NeSQVN01N5FM5_svAXAA:9 a=QEXdDO2ut3YA:10 cc=ntf awl=host:13602
-X-Proofpoint-ORIG-GUID: OnGwgNgwg-e37oNfmBq-KXqbEeNhRuT7
-X-Proofpoint-GUID: OnGwgNgwg-e37oNfmBq-KXqbEeNhRuT7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1OCBTYWx0ZWRfXxlrs0T2mdBN5
- hE1D+dVdImNbIE2YAquJkP1HSg/5Gl03anFJJTcq8CkeShJWXP3GCn/YL0lbaoy2ELaegt51iMj
- HQK/HlvvUeLjvwigcgaWXTEOiC46U87nHy6P+iUSSZVcq/rb/Oxon/u0jF8wzu+F+BUT3P8aCjT
- b6Oz5LuO8Vtj1u/8ljM0o6NoKupQoE6UVub7Z+/eMvVHL/xTLzvGEIaHETfgvCQsna2Q6RU9Sd1
- btX9c+bCJdshW0Pbf5U75eh1FPwkB/vj1zlyX4nyZjsTYq6PFM26WYZy7cYZmeE0HpVjdJmIqZq
- OCgAtSgY8EIQCnqyhvQr9MVF6vOXxShVuONqhUNF7NQlEvgF6NoCDcR73bsJVNVbUA6VxBlrHmk
- gIYV+YsaxazbZ5xTeUbIrR8Y5ccHYQ==
-X-Stat-Signature: uhhwqeau5mzzk3sxmxytitituxa1actf
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 adultscore=0 suspectscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509080114
+X-Stat-Signature: 8qhzzxbhm7xzpsokecgj57ush6wzwdyt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1F4B38001A
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1757358619-375391
-X-HE-Meta: U2FsdGVkX1+vpgBRyvWDysNwFVjI9CPvF0I/wuD4WHRwNFzVvu02oTWKqgXWzNY/VrBpMRXi4rUKJZIAX0Drb8vRMzl81R6xQe9qf9Jt9W9dNQwVhNhlPQq4OEVhhnD859FUffX1ELaV1rBBZA79YVnsGEs5FdMuQJtapopWEDvDblVMXfkV7nX4Lfl9t/iwKxwLPeEqrUdjiSZT1l4mpaPmu5fGoPAU3lHF/hbtA6xRRHbE7+3uA6BOYh8Kl3OAlNEZzdS369LwkOT5gmeZW6XvptSFqNBmVwQ3nhpTW5ndB5s/JphhS3xR2ChTcyifvrJHTFYTmUAMXwzh7sugIlfOCmhMVY+eN5hsLKAVCz13p28sob17WQqWfaJClgl1ZmDVd3umwIJcWTa0z4I0wEL629l3FvyYH64uG7OaqA+8ydFptFbC5SWMUHLjmMQ4Ya7HHj85+te7t8VezimgJc5i2IR5SQcQdRtY627onHWzO66r/uu7SMDhAdUVowEjwbb9d8M3aUDyoWd1fUgISXVDCrZ6cHqr7ukc6sm9eLlWvR86N0N+8HFL7q9hUHDN7ubQuyo9hPooM8Ojs+TbxxBse6ArjkgBf+OdtmMme7Tzie0VbyrqZfrpJ/yPRoMNV76+bV8o48ZULrErRTLp5Z2I5WY61gkk2MG2sEgwTDKa02WNSe84UbZLllqitgCBXZn7lQfWAhEX9oFyDfBgUeaiyIeyl3lBOOzGjj3xZpqyFQZvsHfj75hqCiQnh0C234hNdw1lOCi9nnPjKt/IxBIeg8pvIiYYmrRy00oQazjG5S14dsWOVdmeIO/Ze8yM6D3dT9fdM3QdJTjqnU9Tg36uy+UDYNsZ1rwZG3mk0UtQjqSio5vG7KwvcAJy/j6VszihVkfEGQM+7OqRxup7M5UL6z6YQq9RSl93yHYhY3/sarEjTuuHVIplpOH+Q7l51d/C181yLnsGVTv6BbA
- 2Rs2QcZS
- bE+jkZx50lcIJjzAfy50IvSLJnOIbeHKGwVF+yr6Hm89lr1zr67ve7AX7ycRy3vE4WvSIkpbsTCGmM6+s6mNBxFMokzapxU6r1mV+DevchJugSssMye8yDAF70iTgX89jH7/I1PvQGm1O3ww/mDXoQ1zwFCsQGNKlKFo0Z65qWTkm+KX+rAtGwJjtQmkkrqocCQbGIuqJzumpwyc7Q7DGAIAV3LLjmmpkX60v6/cQqQq7U8Uhn1YJw7jY439joYESqytfzqXsS5Q+buTzgVhnxZLBUHAHY/vbu5O8nGzapoSZOWeCPeSGrMbb28gWQ3Tk7YvvnGlJY1OPNCUojIgnsvOyX0Rs8eIlkbZwlywQnUO/5tquexQjxhgnRo9xmJe3Lk37PV/xLBpLw5egr+Q4RjR0OZSNexnxLcO58GXvMNglQMreG7Eki8g8PWPxgMQxj96bBjs+rmLG9+kPurvIjiGfIY0FaujWjOknde+wZTgqUu+o3LMa+Ot/HdhLIwjFySih9i+bmwVfuFEh2vy7hxmHl/DDJzeywykVMClVyTbL80CDD+UsS7XjUDwAWswESWhcaJtZRLsa+Qo/3+LXwU8qdaeK0DWsubqi5cxSpgi7BpSqBCWLmkmhQRSNSogVCmIvDf1h89ZAhFRHrdJ1DbND/U8j6FdQvClCyCxrslG87yxLY49+VIKzSAGWX1jh1H4TYZOsj+JH0Q5PHLjAdiMgfI+d7ll+Nv7bfQCGWNDK1PJZI7yhB0De59UNpz3rXXLa7bYpH8ZdVnodEF9qMaOFMpWxnoQoPpEwrc3TjOIpoBV7d3C2pv4HgzGSEVe+w+oZBV+N8jRebrU=
+X-Rspamd-Queue-Id: D05D6180006
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1757358931-464124
+X-HE-Meta: U2FsdGVkX18QqZR84MiprWI6/T+3I2ugW2J5gz3HHq0o3P19CuU7sy7rxwno27o4AhT7TH0Raipj7Eho/Z9aw5Fp58R2VU50PgtJ3u+KXdHjl+3VY2HsmzaVqxFGRGvbFcdOJ/mvz6Kk+GAaI6taD3WPPn9tldeI5GanQ+pa8jpcNE8OEEXrMyazbBtxAq5J7S+7PYMXem13osTfgrTpwyg3x85h7V76bzHSCbyJlRl9OkWJ821dGQvOd/mhd324xEyP05ry4IpQUVrDifjFf0JJ/N4o5xW2nWN4A20IKNLWxLb96c899hdbgd72Ne7e5nRBzjQSASbHyuRADeq4VW76AQBpj6T69zQZOcJRPoSVBNA4pvRA63OuAWc/j2yIKhBNaTDMzabmkXUkPMoPq4WtW2DGrm/PDAQMOtwYhV4OXKGAcu5Od48dcKFgj0wslLvGYkfPgdQh+nd5mZOXnK8UO8ZenXP49rV3XQuTuJNyOZrOPyl6b3D3VjUIEC/jx5qyUISOUDgfPvzQK3dhZMPBVoK+/0QgkBUEoxrMxvstaA22ODrgAFJtigpRMs8415jh8gIGkojkJKDsRoW5tVYPnfBxXPaIHZQgIkgjVs9pleZTWt8/AMvzGSlDVPK/G7QnA7BjU1TVIAJ4vLrR/4lNTLG63ecaD7MlMoBQCcQwYlkkHEESWbXohxPmXahs8BsfZ7xlPXh0Mev44aeaZRU1cF+dI06H872BhWhMLDeG/zlQwy6ikw07AL7llxcGxrvR7joeUOiFuPTBtx5o89Ue3Nxpa785yGw+agngJ9bMTXrfDIUNsF22l5HI7v7fUvf5EdnVBjmTui+3oqB+91WpKqYJPH+0iVBZRrs7U6jGFgBidbbaStTi4nJ9wwzSBq1cbm5UdPQhDR+Lc0+jRZ/ke3VfXN1QoIPqwtMMundfu9nKOCLtFCpxWRu1lzOOhPQ80GdR9s54ed01V9T
+ Wtbrfz3k
+ idEuJyCB8hilLmYDC/HBccx0/i2ZgROGL22g9vjR2d+pVW3JcoSHc5MXRrVuRHSYfvnDvN2HQ9GXybsDfnnXRMPs2SAWWNnxm2XXfOjuqrtN4OetBsa9DZ+mqkNzPdSy4agwtuf9OrHcGtnSt+phiIFOPkTP3qfGr/yxOsTPdEgSeI1nUNWhKJ3BhlyMwO+wxqOyL0oUBClWqgWFPomDJIlYX+Xpt0NGGWNYvN/tzraLgIA1bEOTt498atB4eNlvBT1FtDiK8qXaADxAKQmpx55KzLCV1y3CPiIzXPuJXujIBRrlC+5xf/vpWOsFdzUn0RgoG72gPtuzcpS2UvKsiVmimw5FMU31k+AIxPObt8kh2mtGWFWg/U6pWzeLVvEJ4tYmD7CaZK3mNYJiP6Mh+2+jFP5eQ0DPYpV980cq07iKsAGs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -270,311 +144,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/8/25 11:29 AM, Liam R. Howlett wrote:
-> * Anthony Yznaga <anthony.yznaga@oracle.com> [250819 21:04]:
->> From: Khalid Aziz <khalid@kernel.org>
->>
->> Add a pseudo filesystem that contains files and page table sharing
->> information that enables processes to share page table entries.
->> This patch adds the basic filesystem that can be mounted, a
->> CONFIG_MSHARE option to enable the feature, and documentation.
->>
->> Signed-off-by: Khalid Aziz <khalid@kernel.org>
->> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
->> ---
->>   Documentation/filesystems/index.rst    |  1 +
->>   Documentation/filesystems/msharefs.rst | 96 +++++++++++++++++++++++++
->>   include/uapi/linux/magic.h             |  1 +
->>   mm/Kconfig                             | 11 +++
->>   mm/Makefile                            |  4 ++
->>   mm/mshare.c                            | 97 ++++++++++++++++++++++++++
->>   6 files changed, 210 insertions(+)
->>   create mode 100644 Documentation/filesystems/msharefs.rst
->>   create mode 100644 mm/mshare.c
->>
->> diff --git a/Documentation/filesystems/index.rst b/Documentation/filesystems/index.rst
->> index 11a599387266..dcd6605eb228 100644
->> --- a/Documentation/filesystems/index.rst
->> +++ b/Documentation/filesystems/index.rst
->> @@ -102,6 +102,7 @@ Documentation for filesystem implementations.
->>      fuse-passthrough
->>      inotify
->>      isofs
->> +   msharefs
->>      nilfs2
->>      nfs/index
->>      ntfs3
->> diff --git a/Documentation/filesystems/msharefs.rst b/Documentation/filesystems/msharefs.rst
->> new file mode 100644
->> index 000000000000..3e5b7d531821
->> --- /dev/null
->> +++ b/Documentation/filesystems/msharefs.rst
->> @@ -0,0 +1,96 @@
->> +.. SPDX-License-Identifier: GPL-2.0
->> +
->> +=====================================================
->> +Msharefs - A filesystem to support shared page tables
->> +=====================================================
->> +
->> +What is msharefs?
->> +-----------------
->> +
->> +msharefs is a pseudo filesystem that allows multiple processes to
->> +share page table entries for shared pages. To enable support for
->> +msharefs the kernel must be compiled with CONFIG_MSHARE set.
->> +
->> +msharefs is typically mounted like this::
->> +
->> +	mount -t msharefs none /sys/fs/mshare
->> +
->> +A file created on msharefs creates a new shared region where all
->> +processes mapping that region will map it using shared page table
->> +entries. Once the size of the region has been established via
->> +ftruncate() or fallocate(), the region can be mapped into processes
->> +and ioctls used to map and unmap objects within it. Note that an
->> +msharefs file is a control file and accessing mapped objects within
->> +a shared region through read or write of the file is not permitted.
->> +
->> +How to use mshare
->> +-----------------
->> +
->> +Here are the basic steps for using mshare:
->> +
->> +  1. Mount msharefs on /sys/fs/mshare::
->> +
->> +	mount -t msharefs msharefs /sys/fs/mshare
->> +
->> +  2. mshare regions have alignment and size requirements. Start
->> +     address for the region must be aligned to an address boundary and
->> +     be a multiple of fixed size. This alignment and size requirement
->> +     can be obtained by reading the file ``/sys/fs/mshare/mshare_info``
->> +     which returns a number in text format. mshare regions must be
->> +     aligned to this boundary and be a multiple of this size.
->> +
->> +  3. For the process creating an mshare region:
->> +
->> +    a. Create a file on /sys/fs/mshare, for example::
->> +
->> +        fd = open("/sys/fs/mshare/shareme",
->> +                        O_RDWR|O_CREAT|O_EXCL, 0600);
->> +
->> +    b. Establish the size of the region::
->> +
->> +        fallocate(fd, 0, 0, BUF_SIZE);
->> +
->> +      or::
->> +
->> +        ftruncate(fd, BUF_SIZE);
->> +
->> +    c. Map some memory in the region::
->> +
->> +	struct mshare_create mcreate;
->> +
->> +	mcreate.region_offset = 0;
->> +	mcreate.size = BUF_SIZE;
->> +	mcreate.offset = 0;
->> +	mcreate.prot = PROT_READ | PROT_WRITE;
->> +	mcreate.flags = MAP_ANONYMOUS | MAP_SHARED | MAP_FIXED;
->> +	mcreate.fd = -1;
->> +
->> +	ioctl(fd, MSHAREFS_CREATE_MAPPING, &mcreate);
->> +
->> +    d. Map the mshare region into the process::
->> +
->> +	mmap(NULL, BUF_SIZE,
->> +		PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
->> +
->> +    e. Write and read to mshared region normally.
->> +
->> +
->> +  4. For processes attaching an mshare region:
->> +
->> +    a. Open the msharefs file, for example::
->> +
->> +	fd = open("/sys/fs/mshare/shareme", O_RDWR);
->> +
->> +    b. Get the size of the mshare region from the file::
->> +
->> +        fstat(fd, &sb);
->> +        mshare_size = sb.st_size;
->> +
->> +    c. Map the mshare region into the process::
->> +
->> +	mmap(NULL, mshare_size,
->> +		PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
->> +
->> +  5. To delete the mshare region::
->> +
->> +		unlink("/sys/fs/mshare/shareme");
->> diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
->> index bb575f3ab45e..e53dd6063cba 100644
->> --- a/include/uapi/linux/magic.h
->> +++ b/include/uapi/linux/magic.h
->> @@ -103,5 +103,6 @@
->>   #define DEVMEM_MAGIC		0x454d444d	/* "DMEM" */
->>   #define SECRETMEM_MAGIC		0x5345434d	/* "SECM" */
->>   #define PID_FS_MAGIC		0x50494446	/* "PIDF" */
->> +#define MSHARE_MAGIC		0x4d534852	/* "MSHR" */
->>   
->>   #endif /* __LINUX_MAGIC_H__ */
->> diff --git a/mm/Kconfig b/mm/Kconfig
->> index 4108bcd96784..8b50e9785729 100644
->> --- a/mm/Kconfig
->> +++ b/mm/Kconfig
->> @@ -1400,6 +1400,17 @@ config PT_RECLAIM
->>   config FIND_NORMAL_PAGE
->>   	def_bool n
->>   
->> +config MSHARE
->> +	bool "Mshare"
->> +	depends on MMU
->> +	help
->> +	  Enable msharefs: A pseudo filesystem that allows multiple processes
->> +	  to share kernel resources for mapping shared pages. A file created on
->> +	  msharefs represents a shared region where all processes mapping that
->> +	  region will map objects within it with shared page table entries and
->> +	  VMAs. Ioctls are used to configure and map objects into the shared
->> +	  region.
->> +
->>   source "mm/damon/Kconfig"
->>   
->>   endmenu
->> diff --git a/mm/Makefile b/mm/Makefile
->> index ef54aa615d9d..4af111b29c68 100644
->> --- a/mm/Makefile
->> +++ b/mm/Makefile
->> @@ -48,6 +48,10 @@ ifdef CONFIG_64BIT
->>   mmu-$(CONFIG_MMU)	+= mseal.o
->>   endif
->>   
->> +ifdef CONFIG_MSHARE
->> +mmu-$(CONFIG_MMU)	+= mshare.o
->> +endif
->> +
->>   obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
->>   			   maccess.o page-writeback.o folio-compat.o \
->>   			   readahead.o swap.o truncate.o vmscan.o shrinker.o \
->> diff --git a/mm/mshare.c b/mm/mshare.c
->> new file mode 100644
->> index 000000000000..f703af49ec81
->> --- /dev/null
->> +++ b/mm/mshare.c
->> @@ -0,0 +1,97 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Enable cooperating processes to share page table between
->> + * them to reduce the extra memory consumed by multiple copies
->> + * of page tables.
->> + *
->> + * This code adds an in-memory filesystem - msharefs.
->> + * msharefs is used to manage page table sharing
->> + *
->> + *
->> + * Copyright (C) 2024 Oracle Corp. All rights reserved.
->> + * Author:	Khalid Aziz <khalid@kernel.org>
+On Fri, Sep 05, 2025 at 12:59:00PM -0700, Jiaqi Yan wrote:
+> On Fri, Sep 5, 2025 at 12:39 PM <jane.chu@oracle.com> wrote:
+> >
+> >
+> > On 9/5/2025 11:17 AM, Luck, Tony wrote:
+> > > BIOS can supply a GHES error record that reports that the corrected
+> > > error threshold has been exceeded. Linux will attempt to soft offline
+> > > the page in response.
+> > >
+> > > But "exceeded threshold" has many interpretations. Some BIOS versions
+> > > accumulate error counts per-rank, and then report threshold exceeded
+> > > when the number of errors crosses a threshold for the rank. Taking
+> > > a page offline in this case is unlikely to solve any problems. But
+> > > losing a 4KB page will have little impact on the overall system.
 > 
-> Probably needs a new year or year range and another author?
-
-Yes. I'll make sure the next series is updated.
-
+> Hi Tony,
 > 
->> + *
->> + */
->> +
->> +#include <linux/fs.h>
->> +#include <linux/fs_context.h>
->> +#include <uapi/linux/magic.h>
->> +
->> +static const struct file_operations msharefs_file_operations = {
->> +	.open			= simple_open,
->> +};
->> +
->> +static const struct super_operations mshare_s_ops = {
->> +	.statfs		= simple_statfs,
->> +};
->> +
->> +static int
->> +msharefs_fill_super(struct super_block *sb, struct fs_context *fc)
->> +{
->> +	struct inode *inode;
->> +
->> +	sb->s_blocksize		= PAGE_SIZE;
->> +	sb->s_blocksize_bits	= PAGE_SHIFT;
->> +	sb->s_maxbytes		= MAX_LFS_FILESIZE;
->> +	sb->s_magic		= MSHARE_MAGIC;
->> +	sb->s_op		= &mshare_s_ops;
->> +	sb->s_time_gran		= 1;
->> +
->> +	inode = new_inode(sb);
->> +	if (!inode)
->> +		return -ENOMEM;
->> +
->> +	inode->i_ino = 1;
->> +	inode->i_mode = S_IFDIR | 0777;
->> +	simple_inode_init_ts(inode);
->> +	inode->i_op = &simple_dir_inode_operations;
->> +	inode->i_fop = &simple_dir_operations;
->> +	set_nlink(inode, 2);
->> +
->> +	sb->s_root = d_make_root(inode);
->> +	if (!sb->s_root)
->> +		return -ENOMEM;
+> This is exactly the problem I encountered [1], and I agree with Jane
+> that disabling soft offline via /proc/sys/vm/enable_soft_offline
+> should work for your case.
 > 
-> I don't know the recovery here, but what about inode and inode link
-> count?
+> [1] https://lore.kernel.org/all/20240628205958.2845610-3-jiaqiyan@google.com/T/#me8ff6bc901037e853d61d85d96aa3642cbd93b86 
 
-If d_make_root() returns NULL it will have called iput_final(inode) 
-which takes care of freeing the inode.
+If that doesn't work for your case, I just want to mention that hugepages might
+still be soft offlined with that check in ghes_handle_memory_failure().
 
-> 
->> +
->> +	return 0;
->> +}
->> +
->> +static int
->> +msharefs_get_tree(struct fs_context *fc)
->> +{
->> +	return get_tree_nodev(fc, msharefs_fill_super);
->> +}
->> +
->> +static const struct fs_context_operations msharefs_context_ops = {
->> +	.get_tree	= msharefs_get_tree,
->> +};
->> +
->> +static int
->> +mshare_init_fs_context(struct fs_context *fc)
->> +{
->> +	fc->ops = &msharefs_context_ops;
->> +	return 0;
->> +}
->> +
->> +static struct file_system_type mshare_fs = {
->> +	.name			= "msharefs",
->> +	.init_fs_context	= mshare_init_fs_context,
->> +	.kill_sb		= kill_litter_super,
->> +};
->> +
->> +static int __init
->> +mshare_init(void)
->> +{
->> +	int ret;
->> +
->> +	ret = sysfs_create_mount_point(fs_kobj, "mshare");
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = register_filesystem(&mshare_fs);
->> +	if (ret)
->> +		sysfs_remove_mount_point(fs_kobj, "mshare");
->> +
->> +	return ret;
->> +}
->> +
->> +core_initcall(mshare_init);
->> -- 
->> 2.47.1
->>
+> > >
+> > > On the other hand, taking a huge page offline will have significant
+> > > impact (and still not solve any problems).
+> > >
+> > > Check if the GHES record refers to a huge page. Skip the offline
+> > > process if the page is huge.
 
+AFAICT, we're still notifying the MCE decoder chain and CEC will soft offline
+the hugepage once the "action threshold" is reached.
+
+This could be moved to soft_offline_page(). That would prevent other sources
+(/sys/devices/system/memory/soft_offline_page, CEC, etc.) from being able to
+soft offline hugepages, not just GHES.
+
+> > > Reported-by: Shawn Fan <shawn.fan@intel.com>
+> > > Signed-off-by: Tony Luck <tony.luck@intel.com>
+> > > ---
+> > >
+> > > Change since v2:
+> > >
+> > > Me: Add sanity check on the address (pfn) that BIOS provided. It might
+> > > be in some reserved area that doesn't have a "struct page" which would
+> > > likely result in an OOPs if fed to pfn_folio().
+> > >
+> > > The original code relied on sanity check of the pfn received from the
+> > > BIOS when this eventually feeds into memory_failure(). That used to
+> > > result in:
+> > >       pr_err("%#lx: memory outside kernel control\n", pfn);
+> > > which won't happen with this change, since memory_failure is not
+> > > called. Was that a useful message? A Google search mostly shows
+> > > references to the code. There are few instances of people reporting
+> > > they saw this message.
+> > >
+> > >
+> > >   drivers/acpi/apei/ghes.c | 13 +++++++++++--
+> > >   1 file changed, 11 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> > > index a0d54993edb3..c2fc1196438c 100644
+> > > --- a/drivers/acpi/apei/ghes.c
+> > > +++ b/drivers/acpi/apei/ghes.c
+> > > @@ -540,8 +540,17 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+> > >
+> > >       /* iff following two events can be handled properly by now */
+> > >       if (sec_sev == GHES_SEV_CORRECTED &&
+> > > -         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+> > > -             flags = MF_SOFT_OFFLINE;
+> > > +         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
+> > > +             unsigned long pfn = PHYS_PFN(mem_err->physical_addr);
+> > > +
+> > > +             if (pfn_valid(pfn)) {
+> > > +                     struct folio *folio = pfn_folio(pfn);
+> > > +
+> > > +                     /* Only try to offline non-huge pages */
+> > > +                     if (!folio_test_hugetlb(folio))
+> > > +                             flags = MF_SOFT_OFFLINE;
+> > > +             }
+> > > +     }
+> > >       if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+> > >               flags = sync ? MF_ACTION_REQUIRED : 0;
+> > >
+> >
+> > So the issue is the result of inaccurate MCA record about per rank CE
+> > threshold being crossed. If OS offline the indicted page, it might be
+> > signaled to offline another 4K page in the same rank upon access.
+> >
+> > Both MCA and offline-op are performance hitter, and as argued by this
+> > patch, offline doesn't help except loosing a already corrected page.
+> >
+> > Here we choose to bypass hugetlb page simply because it's huge.  Is it
+> > possible to argue that because the page is huge, it's less likely to get
+> > another MCA on another page from the same rank?
+> >
+> > A while back this patch
+> > 56374430c5dfc mm/memory-failure: userspace controls soft-offlining pages
+> > has provided userspace control over whether to soft offline, could it be
+> > a more preferable option?
+
+Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_offline:
+
+0: Soft offline is disabled.
+1: Soft offline is enabled for normal pages (skip hugepages).
+2: Soft offline is enabled for normal pages and hugepages.
+
+Maybe something like...
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index fc30ca4804bf..efa535d405a8 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -64,11 +64,17 @@
+ #include "internal.h"
+ #include "ras/ras_event.h"
+ 
++enum soft_offline {
++	SOFT_OFFLINE_DISABLED = 0,
++	SOFT_OFFLINE_ENABLED_SKIP_HUGEPAGES,
++	SOFT_OFFLINE_ENABLED
++};
++
+ static int sysctl_memory_failure_early_kill __read_mostly;
+ 
+ static int sysctl_memory_failure_recovery __read_mostly = 1;
+ 
+-static int sysctl_enable_soft_offline __read_mostly = 1;
++static int sysctl_enable_soft_offline __read_mostly = SOFT_OFFLINE_SKIP_HUGEPAGES;
+ 
+ atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
+ 
+@@ -150,7 +156,7 @@ static const struct ctl_table memory_failure_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= SYSCTL_ZERO,
+-		.extra2		= SYSCTL_ONE,
++		.extra2		= SYSCTL_TWO,
+ 	}
+ };
+ 
+@@ -2799,12 +2805,20 @@ int soft_offline_page(unsigned long pfn, int flags)
+ 		return -EIO;
+ 	}
+ 
+-	if (!sysctl_enable_soft_offline) {
+-		pr_info_once("disabled by /proc/sys/vm/enable_soft_offline\n");
++	if (sysctl_enable_soft_offline == SOFT_OFFLINE_DISABLED) {
++		pr_info("disabled by /proc/sys/vm/enable_soft_offline\n");
+ 		put_ref_page(pfn, flags);
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	if (sysctl_enable_soft_offline == SOFT_OFFLINE_ENABLED_SKIP_HUGEPAGES) {
++		if (folio_test_hugetlb(pfn_folio(pfn))) {
++			pr_info("disabled by /proc/sys/vm/enable_soft_offline\n");
++			put_ref_page(pfn, flags);
++			return -EOPNOTSUPP;
++		}
++	}
++
+ 	mutex_lock(&mf_mutex);
+ 
+ 	if (PageHWPoison(page)) {
+
+> > I don't know, the patch itself is fine, it's the issue that it has
+> > exposed that is more concerning.
+
+Thanks,
+Kyle Meyer
 
