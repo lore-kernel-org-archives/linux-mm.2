@@ -4,216 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F515CAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 15:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A53CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 15:06:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C29A6B000D; Mon,  8 Sep 2025 11:04:14 -0400 (EDT)
+	id B28A78E0010; Mon,  8 Sep 2025 11:06:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09AA46B000E; Mon,  8 Sep 2025 11:04:14 -0400 (EDT)
+	id B00BE8E0001; Mon,  8 Sep 2025 11:06:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECBAC6B0010; Mon,  8 Sep 2025 11:04:13 -0400 (EDT)
+	id A3C948E0010; Mon,  8 Sep 2025 11:06:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DC0E06B000D
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:04:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B16701DA853
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:04:13 +0000 (UTC)
-X-FDA: 83866403586.10.6784864
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2066.outbound.protection.outlook.com [40.107.236.66])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 15F761A0010
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:04:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Q2MzGcEC;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jgg@nvidia.com designates 40.107.236.66 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757343851;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9559B8E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 11:06:27 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FEAA13938F
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:06:27 +0000 (UTC)
+X-FDA: 83866409214.05.E1216D8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6313640003
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:06:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KJMZiDJg
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757343985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0pFnbzELzeABeu7YvtCA3xdHcGUwbc7/fpG0pw6zzHc=;
-	b=kHemthvYsfciAeUhKuHfjsIafp8mnYlvHwewx6ND/lkKHgEjZnQ/eMACsjkuHuWq/ujhny
-	QS/3FCaJUDYEvCN1hXj8+luFqCPxwctpCtzBKX8iqyQ6mf0nqrRbswtlKvCgs/FyyoUtuD
-	UEoCY9ItrBjCylcvr3zYVNmh2z1RFf0=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757343851; a=rsa-sha256;
-	cv=pass;
-	b=wFAIrOlBE0F7F+BocNhBh510Nmh2Grb8tyOu99Ji/kOVsT/Fp/mAkW9jARAzZOUU6J61Sj
-	d6Wh+pVi9R2pnrcwM8OK4kEUaCobGR4Lfc0LRr3A1QWdzs9Mg8HTfmpKoXdJihmLP4l16A
-	QheCm91gXDFCMDeL+CzQfBT2Fp8fyAs=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Q2MzGcEC;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of jgg@nvidia.com designates 40.107.236.66 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cNhATiDXxoFtcXXEfZFveZtxUvaOdSgRFL87FojrjLtUX7F7YyTNjVayDqd1Ca+GWRHCnjQBSryhJVklAtfdsXWlIcSwUrOSwpaDFZJK0aQG8rAMHcXcrUpp9AwT3nesGtlOlRy9T5P5svslpKNOEV9o2pyC73xh/t1YzOQAKjOkz8noQc0FU83LKKXNC+XcgkaSzoleUNjL9DSA6PKzshUr3FhyK9bjCrRU8jOMfPGS+QGZIWqovmqSJRCbDvqRVV0Qbkz0ACiv8scDtWnNcQ2JGCs87yW8i6iDWfi9BULUBQio6L0F5Nk22BFw361Vurir1UgNdxyjt3FxCZ+0EQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0pFnbzELzeABeu7YvtCA3xdHcGUwbc7/fpG0pw6zzHc=;
- b=JbNF0PEHKsiRn3ahD26ObuNuldEy05kWswRBYq1b5Pz0kUKTXH2HJ1pGR1qIEUpD0KpRJ2F3IBVKk3fp0AQdG5VKBeWvIL2e4+lgEU2oyyUE2AUpdXDy1Mw+0R/1PYk++Ccn6FlEZlV6ae6OP07MLKthe5nfP2cMs69jusJ01AY7sfqDS4X2nDkgUhP04GVQSMDVXflku9DkLsYQfd/Vzc9dJU2hWo2GRa1NzuVGFsUrZ20YTGFmlmUMpdPbK8e9haPw0HIIXm4SboXaVI1sI38KPcl2wYgdp2EaqEa3mldCWslOxBLfldkHWIitvbMeb+gGKeS1AHAZ1RlPhcOa1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0pFnbzELzeABeu7YvtCA3xdHcGUwbc7/fpG0pw6zzHc=;
- b=Q2MzGcECnZy3UGYlfh3mpEOvxJGFyo6TRtkxNULiffnOcWJPLQTJY+6FCE1uTE0bbwSMJQHofYezzzJBsvpEXdIzrsrhs6rOzCO6V7grN4omlYgfJm8ie1ofxslPsibU3CjPk9/jd6tI6yfOsUUmEPl9qfrefxgXKmPycURNouuxcfE8kagP0ALB8Y2HL531ycJBznbIpZWGa9kvt62Xtco3WwoVwvmKxQevARL6l3YHVvLBvKn0PUVbKv6SvkxLZHKQx95lSFXHzF3HUUYzL0mKo8nV4J7GuLpT2jbBXK1rZDF2B5o2bxI4oezDpOKETL/sLDs29JkkzWwbK44bMA==
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by MW4PR12MB7288.namprd12.prod.outlook.com (2603:10b6:303:223::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
- 2025 15:04:06 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9094.017; Mon, 8 Sep 2025
- 15:04:06 +0000
-Date: Mon, 8 Sep 2025 12:04:04 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Matthew Wilcox <willy@infradead.org>, Guo Ren <guoren@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Nicolas Pitre <nico@fluxnic.net>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>, Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-csky@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org, linux-mm@kvack.org,
-	ntfs3@lists.linux.dev, kexec@lists.infradead.org,
-	kasan-dev@googlegroups.com
-Subject: Re: [PATCH 00/16] expand mmap_prepare functionality, port more users
-Message-ID: <20250908150404.GL616306@nvidia.com>
-References: <cover.1757329751.git.lorenzo.stoakes@oracle.com>
- <tyoifr2ym3pzx4nwqhdwap57us3msusbsmql7do4pim5ku7qtm@wjyvh5bs633s>
- <9b463af0-3f29-4816-bd5d-caa282b1a9cd@lucifer.local>
+	bh=XRKdWPBqgxOOD4haFDefsclhOM8qE/foLVBPNAM3ND4=;
+	b=SOPBpP6Mx8A96m8w0boGyttQha9aLfeUcSwfSjcTRkFVMthFA4EFAPslH+FxmcIzCz/+l4
+	iccIACPxm5ln62KvSJK9ZyMXqWlUOXsoqreGz+pLiIaqfXSqcV18JVlo5cFO5d/4NPe1gh
+	xENr+tusMr9ZD0sfI73uDsEgsKVpXtM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757343985; a=rsa-sha256;
+	cv=none;
+	b=yQAewYLq0bs+nbbbhqw0k+SPIQmEZgy8ety13gI1V22vYLBUp4d+vn+6hAyD0wnKbalvie
+	ESUuu3MFr/KDN71JEmTX3YlfuBOTDy1Ezk5L8PjdO/pGVBMW5unEWGwjC2I3QHvFKrX5Po
+	lDEUiF2HFEmPe7jY3zrE0hxW2cwcKFU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=KJMZiDJg;
+	spf=none (imf04.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XRKdWPBqgxOOD4haFDefsclhOM8qE/foLVBPNAM3ND4=; b=KJMZiDJgZSjSvrkiLoBzlDQ3fY
+	oaIifBFepzZkP/eDQFau5WyJdZTeWYTG+aCWbu3GSzU59ERFD24hJKAuZqGFcBPX7LtKSP/WNqCYn
+	wNnWkMojKtUKCns7ttt6tjKGhNUSTH5i74HLkMha4GJVppiDNTcq2XsrkzjHet4Lj7I6oi0nrdRYK
+	BBflvfGs3g+E6KUN8RIjnM8+jNk5o7WOFNLOQbgLVSBHrmz0ccf09+/U1Qwv9CyOtkijC3iZbqS30
+	rDfTvSk//9KB6TGNt42V6Cjzx91BA91DRJCf0QdCJh9gnwDeb2GxG2ECWM4n2bSSRzxg0NmBIKZVn
+	WIvZFaSQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uvdRb-00000008eVw-15VO;
+	Mon, 08 Sep 2025 15:06:11 +0000
+Date: Mon, 8 Sep 2025 16:06:10 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Hugh Dickins <hughd@google.com>
+Cc: David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Will Deacon <will@kernel.org>, Shivank Garg <shivankg@amd.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alexander Krabler <Alexander.Krabler@kuka.com>,
+	Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>,
+	Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	David Howells <dhowells@redhat.com>, ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/7] mm: fix folio_expected_ref_count() when PG_private_2
+Message-ID: <aL7w4qrJtvKE1cu5@casper.infradead.org>
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com>
+ <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com>
+ <aLTcsPd4SUAAy5Xb@casper.infradead.org>
+ <52da6c6a-e568-38bd-775b-eff74f87215b@google.com>
+ <92def216-ca9c-402d-8643-226592ca1a85@redhat.com>
+ <2e069441-0bc6-4799-9176-c7a76c51158f@redhat.com>
+ <3973ecd7-d99c-6d38-7b53-2f3fca57b48d@google.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9b463af0-3f29-4816-bd5d-caa282b1a9cd@lucifer.local>
-X-ClientProxiedBy: YT4PR01CA0279.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:109::17) To PH7PR12MB5757.namprd12.prod.outlook.com
- (2603:10b6:510:1d0::13)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|MW4PR12MB7288:EE_
-X-MS-Office365-Filtering-Correlation-Id: 62cb388d-db7d-4d65-be8c-08ddeee8f497
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4LMm5Y7Xx8YyZ3nMNGj77qXb5JeM+tvTI8NUduVrJnLlYbVIS2ygM7wuY0Za?=
- =?us-ascii?Q?ni5upQdYk8wLppaCwEffq9sBJ1ltqZuolcA5WL/M7y6lMQWQJVmmfQcGa+tr?=
- =?us-ascii?Q?fFumPC2YHtuzr5ov5ubplkLBAeNo7Xtv4cg6as3aAkmfiqaETYcfySTerce6?=
- =?us-ascii?Q?xcwBP7qXahbG1UykKFmMwtYLAf4hEXrAPhuJCyad2lRscBXnAv/fzfnIQWLZ?=
- =?us-ascii?Q?DJcxipnKqa6h18WIKJcX6Bu6bd5vTzHPqXXRGL7i/zatElgoNspz42/dLVR2?=
- =?us-ascii?Q?P6pRNCpo8SejbuZ2BDkwgxVaW25oleH6NS0F28R9OMwqTg2iwPBA4w+6oy4+?=
- =?us-ascii?Q?9Uhztg6XzN06O8VAJWIAODzM0/TndqiX32KaEmiog7ZYNazfjBDNJlB2fut5?=
- =?us-ascii?Q?bqWC90sdVtApiSZIlDc7m8AaUuw1ovmOZDVK2VjmqW+JQ0Hdqnka52vl3Lz3?=
- =?us-ascii?Q?xzBxQkli2mfUIKuQy2E++Si1riQ1+2hK/RQsC9D59ahWc+asas+WTULpeJ75?=
- =?us-ascii?Q?JARsSCclz3xWXnxBc4UE8qBGh5V9j29KxIQJPJ/3T14xEWa7bRWi9ZlX77RO?=
- =?us-ascii?Q?CMmiRKtCHipIMb9K7Axd0Z8TRsJcrz+bXNqhV97rUelGPtzy6VpGkZcvcOH2?=
- =?us-ascii?Q?zlUeBr0B/9Fve0QWlIX3WokcSg0iJf2+bCT9s1ZTdboMHAv6cxRa3PgJKrD7?=
- =?us-ascii?Q?RHsxtKMuDjQ5I7ILXvJnzCyJ1/2+9Ng0+YvY/qIM5ycDJ1g2tm3558PHWPZl?=
- =?us-ascii?Q?a3QOCV2w2Zm8h8e/stwrNLOS9b1ZsBob4HBMM79CPp2sdpEwump1wwPmUK9R?=
- =?us-ascii?Q?SUAZntV6gJOzLQYbrE7Q3W7Bd/1yZz8McI/pvNvnoeO9JJTebSSmQIlE0rl2?=
- =?us-ascii?Q?U16H1KtCsq0EPTSJUpNtsyQGY49FTmH4qkKgOHL1hjVdsdZEf7e/h5rKEQ5p?=
- =?us-ascii?Q?lNjPbwqdOh/wrsf/A/LFtuz8ghc9RlyuyLR+Y3o8dwP/V5ObCZPok2XDvK0L?=
- =?us-ascii?Q?09CLrJe4gK+beBlHg2kx87FBSbPZ9x2ctYnMAIC7UfeZ3kUwRPdZyiatZLmn?=
- =?us-ascii?Q?UBMOgmM8fOkpvmx4r1mhJnm1iUx7MC3cjgOm0/JmMIIzYZoQfeX+m7mhKB2M?=
- =?us-ascii?Q?zk7X7ucBwqcl8Af3X8Xuejl6ai37FrQcdDuhUs6giuQyFxPYJyVaLE8NeX9m?=
- =?us-ascii?Q?ZsCKpriy94Gq54th6Ii3+fTogUtRvqcUU8357k3sA5mvYOqo9/bePFaeVMQw?=
- =?us-ascii?Q?Y6jz8oDLzLiOh1JzQ8acwW5J5bOcjzL6VY3vPiyCoBamv3w+UO3yt2X6i/0c?=
- =?us-ascii?Q?OeH3+npk5UscsERBvjou6EWdZ08mIHDP4/bK0ZGmcNSJuAA30jibJBxp7brS?=
- =?us-ascii?Q?z/c153j7t3nVFKM+hTGaTWi1YYqVRNQ33xYpQu8XmXhlqS57R2D+EhR242B1?=
- =?us-ascii?Q?TsgTFMEbCmg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RdjXWPDyZNBWQnk6yjfmYmYMos5vLyvhYHvMy2zFV1T1ANTtF9kb/Pnu5dK7?=
- =?us-ascii?Q?baTJoQjgUebzcnGg25kLlGIC4O4iFlRoI9BCnue3NYlSpYceXfxsMZ0gei3V?=
- =?us-ascii?Q?6l4UhTqgL1XsOCkrTW2R8cJNc/sSQZD1pBLRptOTj/UdtIk/jpmyNrqdkwga?=
- =?us-ascii?Q?Szrcp1yK0PxFOnkCnLTHDd3uMzi4YxXLHaARHz/uI8jc7rwYfUqync3iNfTb?=
- =?us-ascii?Q?z85263l1cqVbcAzvKCeDG9zdJUrWJwc8gdq86n24QwCLlx1FfDHJBasURTbT?=
- =?us-ascii?Q?RPGuFSIYIWnjC+ZYVsOd02dkqwS3W6WqCxQbORtExCJiRvui4jrrVgzlJoFc?=
- =?us-ascii?Q?VdYau3AqVxQxx7DKFH6V4lP3g2YGZWQBX3VLyznAzorTWcMTOVCnQSWALMCJ?=
- =?us-ascii?Q?kM1IG8GPtCzllps232vX0eXduf9A/i5yLKL+9TJyeJoGVhFE9Y9ru7ba3sV0?=
- =?us-ascii?Q?n6fkvq55e3NKz1RiKma6ZVYj4GfVUT+6Se62TuLPHq8Q9vh3X20Ft+S9xlp6?=
- =?us-ascii?Q?ixd91sLzQOKhsTxDhK1xTuJxdclsKnqjU8sO9BH9GRqoxP5em2UQLtQRkohO?=
- =?us-ascii?Q?pZDZL8szWFB/2zDkfMoUEod9K3IMMQg/uerfMUAA1rM1DN4OuRMhZer0Y37o?=
- =?us-ascii?Q?Hp4jQ7WSR374MmPP2Bun3j4Lid2uoC0LMjqZFDFVnx/xFM3DtbbkOAe0br/k?=
- =?us-ascii?Q?XnzMAAFnX9i2HiwP6GpQFZtAuz0d1QlC5IxHhbWImR8HGYp5kyVXSypQK6/+?=
- =?us-ascii?Q?Vtz+Pjn3ml9Ku3JEvj33MXfo6zdAQ4rk9IV++OzB3T3TjTpnDuTYOn2NH6Va?=
- =?us-ascii?Q?bq8tZIERd0usTMhczrzyFBJMtLH3nCI+/X7oRlWX25fLc7PkmElK2Y86m5jI?=
- =?us-ascii?Q?0DiIe7Q9jkCPJB1zTP1RDqxgtGO7Bzad2YN+DiskuNgt7ELwThj/tO3Kedo5?=
- =?us-ascii?Q?OqOpRPn1Iuh2XqLf97INXjjagwKszpr6ZwARf8kSiXR7oVsRfhNaD8tUIvtl?=
- =?us-ascii?Q?x4j3CfC7G3Jlk/xgFiQRcJcjZWMm29hX/6QWJI5OoplK6o7HWmCZtaWJ7P3H?=
- =?us-ascii?Q?u/CTa319oqFEdE6VHINnX1TieQ6joW/s3lM3s6DJF51IJpVPCe8fjzAck4LV?=
- =?us-ascii?Q?NnmOIBZEyasJIA6Wv6qWHbsb/e1IFa5399VXS/l7zEyrlS2Nee8c9MkDfR/S?=
- =?us-ascii?Q?e7Eqw1h1v5seSLOmsYpLMBEwoZDD8ov+/XjEoc4uaW+FTTe1L/ilZXgyoLGH?=
- =?us-ascii?Q?EO6x59EmtiQ1AYfzDcYL737oqsWEGrLtbpa4ORWtk+Ahkyjqjwb10zXkBDPN?=
- =?us-ascii?Q?2l5Qydrf89Sb45YttVqKFV17uXaH1Wp/I/NfMlNO87FIbiphD1xgDMDYFctL?=
- =?us-ascii?Q?VUz/6ZXVnbwYYpKnW0s8eWUGilC3bWIKbXct5VNaCgBQegNlNMB/DyNH7L3U?=
- =?us-ascii?Q?1K+jx7y0GLNdYBXZjVGwjzHLAWA9c+JtkVbK78D78hRNOTkvPk6wnBeFpSnd?=
- =?us-ascii?Q?sDCmn5r3LqGjrfxWSjqxmYqKULxL2mjj4UjE5RhXbPO+Q4NFZPTx5GFTRLmo?=
- =?us-ascii?Q?UjJ684ZdKqQs3SomQZU=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62cb388d-db7d-4d65-be8c-08ddeee8f497
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 15:04:06.3779
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mUQlgCPve6Hrk1P15+DUvQRHcERo6HvLEhI+4lf3XlL+h/wnNHrEduK/fYdHAwT8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7288
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 15F761A0010
-X-Stat-Signature: wdehqnid56s79s47esiy6iusje4xsegj
+In-Reply-To: <3973ecd7-d99c-6d38-7b53-2f3fca57b48d@google.com>
+X-Stat-Signature: 53b5o3kbrzku6483gxbktbo6cf4acc67
+X-Rspamd-Queue-Id: 6313640003
 X-Rspam-User: 
-X-HE-Tag: 1757343850-103593
-X-HE-Meta: U2FsdGVkX1+mEbw4gfAEFufKhc8yrI4gwMBgPOdUYG7kYwa/x2Voz/+9gmdMfuYjonR/kxXo1Xl6V6EzF26jKls9BksazOOrbbJqMYSlTFQMbt9Z7DWxlFjE1w85uhlskwY6hJ4qVaSBqQYX7MoRoTd9WB3tFWb7XC3GclZUUuecvJzoSR7eO65JLK3V3p1EIJsd7rHo9yr8rZC5Aeqz8MIKYJKPmYyx7tzE3ZGhLkXb7rfd0S/D15raywtyyAGr30rvcSLjaDfj5Utup7d+OjAHz+O9k5e54swOpoUG4OitKMrH/m9VhgXanrYdgpm/fJaB8IUdcYYsPZ/KV0mBF9VmbUxgWf0LqNwtIaKIg5K+sSvhh4KkuJlkqd6L7yIxCMuwOv7XQsvvTwEi04FUunBAvbZslRv7S4582K3ozG9i33iPAVfx3CMaXtiE14+Wgb52gLfkY5XW0RGICOD40EV+2I8DUpyf55rsRmMEKIYaVQNVL8ER3bt5tmT9FApWcGHIZGoNhPvC5gVUL13Uv5PFVzaQ8T/yHn2+VhTpO3++hRiwaEyiuF4Yp/o+hoXtfduLitym9xpceIx5CVMMf1QAecPrrVY4XTUDEr9Lq2BZTAeOFDRTtwKqJ0nG7vN09Z5yzH8EFWoiLHfi1pwiCjLFj8oszn0J9C3IdEfG8e9FnhL1DOArp9GwGKICN8sxkqs5LNUVdp0gUp7EAxxbWl/iEOxuncbntLWDT6EyVbId2bTKQkviOBkvud8rbs5kaHzHuKoDEhBLxGtNZ5RTzh/pbf2K4SVwvgy6m3Sn59/EbbbpnlR5p6TEXxHc+jtaRP7FYNoiKlvd6gcjpusHCS/izwZVyWhNKFno/o44SQeN29dt73QN9I1DJ5rCrjwI6VsgX2fTO81XOcyirAU6yLTZHLs0w9q1z5WUqzgCdqVcLB9dAywAaIgYEF/hfXrUzGdheu7RWFLAvVyTVLO
- QwK4lY2I
- 9OwrtqO65fQewYS1l2coQCYxTm7HUXgQppp6iT72Yi8CtxbU=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757343985-172757
+X-HE-Meta: U2FsdGVkX1+QkHkFOrH/swAehF8NBk4M2dRoN31KNhe2Fejk2o5w+dn7AiBQLbuvO6Rr8R99UQln+LbS6po+DlXIvOvxmPm6nd165erfxBDPw32R3TdfYRc1VsEj2P3Hz5LLOZWnHpLvj5OvGFkSkDrZxE69sdHXJwD7rlATk9+uEKok/qjLBfeARsAF59hnQISZCMNM+yRcVzIgyC8UtXx0LUKzSceflLSOxKvQu5FX7k+LALxLzQ8kGmUMWzPMDppR6Cv1uEhvOgCSI6AP5cZ/bP+Agk1gFDGhZyGjXjVTpfBwNEMp0lwLSzK9ztndLwsovM/e1nMzD+DJvYS+K9PfhhO0eYzqYQ8FCzCFPaSN4sa0Rnd6aaAZjir7JAn9QwI9EFWsRpk3bsa1W+2/7A2yGIVSYHt7CU7bO4J23/uMMaDAajSeYlg2ShQ2hTWWFiLNnXABLcy52l37S9pkOkpDipktBmsv7uJCiLTN91LuaJSkfsVqdmxQL8hRIKJFG2tpl8xxgilqtKfQ/aYCf45+2aeOH7s2KKMIE5ZoFWzJGklt9zakNZcYmyAzYdUP4O8mSxjar5LtG8cF5qVKmF8+R8ikxHAhd2ufuyGqQjDLujkodxUcJW/zp8nleUK4Txh5SX6f+p2ChIOlxYHgpLu5UKBDzA9WurnFpOu5aT2gK80h8jkXW7W0l5BUoySjSYYwhsIGH0bdCy9KX4biV3QFwzKNzJi3UGV5f+PbPGsDGi8Qb6Z0l4EaMddxdgeQFNRfiK1gAC85+/nBEwFBPZCfy1iDxZCL+lTeVfLTgLxrLUEY4+yc97eARR05JVlaQNgT2mm/Of36XTg5eKti2o4cRnoitryt0W2usdOsq3/0IQ94rI93WI0ZJBllC4dt9nXjPELVz/p5NBFVEmYadhfvLVlYqPppa3yV5oyA4pbUIBslD+Vj+xStNttcLa/cb9ZUeiwsdIofJMfq9FQ
+ yBDbU2bV
+ KPdGq6cb4+4Cz/8ZGHkZfNtVa4oomCq5yGkVOuN8qfE4DS8LgnwURn6kD47tokT43RaH3u70lJbV8P1vMtjqjDTybIU3s+Tn0ifeWdUO5+Zkw6L5mli7nYed/or0zIItpPjXiPVjVvQZiLpSVBuzU3WPG5m+kqILiVxZiW2y5pekpTS2c597TWY5QxT19u0m4c9XYgRjMjoZAvOQn7RZtiBToVnLuk5wngSgB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -222,30 +109,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 08, 2025 at 03:48:36PM +0100, Lorenzo Stoakes wrote:
-> But sadly some _do need_ to do extra work afterwards, most notably,
-> prepopulation.
+On Mon, Sep 08, 2025 at 03:27:47AM -0700, Hugh Dickins wrote:
+> On Mon, 1 Sep 2025, David Hildenbrand wrote:
+> > On 01.09.25 09:52, David Hildenbrand wrote:
+> > > On 01.09.25 03:17, Hugh Dickins wrote:
+> > >> On Mon, 1 Sep 2025, Matthew Wilcox wrote:
+> > >>> On Sun, Aug 31, 2025 at 02:01:16AM -0700, Hugh Dickins wrote:
+> > >>>> 6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
+> > >>>> which (like PG_private, but not in addition to PG_private) counts for
+> > >>>> 1 more reference: it needs to be using folio_has_private() in place of
+> > >>>> folio_test_private().
+> > >>>
+> > >>> No, it doesn't.  I know it used to, but no filesystem was actually doing
+> > >>> that.  So I changed mm to match how filesystems actually worked.
+> 
+> I think Matthew may be remembering how he wanted it to behave (? but he
+> wanted it to go away completely) rather than how it ended up behaving:
+> we've both found that PG_private_2 always goes with refcount increment.
 
-I think Jan is suggesting something more like
+Let me explain that better.  No filesystem followed the documented rule
+that the refcount must be incremented by one if either PG_private or
+PG_private_2 was set.  And no surprise; that's a very complicated rule
+for filesystems to follow.  Many of them weren't even following the rule
+to increment the refcount by one when PG_private was set.
 
-mmap_op()
-{
-   struct vma_desc desc = {};
+So some were incrementing the refcount by one if PG_private were set, but
+not bumping the refcount by one if PG_private_2 were set (I think this is
+how btrfs worked, and you seem to believe the same thing).  Others were
+bumping the refcount by two if both PG_private and PG_private_2 were set
+(I think this is how netfs works today).
 
-   desc.[..] = x
-   desc.[..] = y
-   desc.[..] = z
-   vma = vma_alloc(desc);
+> > > Now, one problem would be if migration / splitting / ... code where we
+> > > use folio_expected_ref_count() cannot deal with that additional
+> > > reference properly, in which case this patch would indeed cause harm.
+> 
+> Yes, that appears to be why Matthew said NAK and "dangerously wrong".
+> 
+> So far as I could tell, there is no problem with nfs, it has, and has
+> all along had, the appropriate release_folio and migrate_folio methods.
+> 
+> ceph used to have what's needed, but 6.0's changes from page_has_private()
+> to folio_test_private() (the change from "has" either bit to "test" just
+> the one bit really should have been highlighted) broke the migration of
+> ceph's PG_private_2 folios.
+> 
+> (I think it may have got re-enabled in intervening releases: David
+> Howells reinstated folio_has_private() inside fallback_migrate_folio()'s
+> filemap_release_folio(), which may have been enough to get ceph's
+> PG_private_2s migratable again; but then 6.15's ceph .migrate_folio =
+> filemap_migrate_folio will have broken it again.)
+> 
+> Folio migration does not and never has copied over PG_private_2 from
+> src to dst; so my 1/7 patch would have permitted migration of a ceph
+> PG_private_2 src folio to a dst folio left with refcount 1 more than
+> it should be (plus whatever the consequences of migrating such a
+> folio which should have waited for the flag to be cleared first).
 
-   ret = remap_pfn(vma)
-   if (ret) goto err_vma;
+But that's another problem.  The current meaning of PG_fscache (and also
+that has changed over the years!) is that the data in the folio is being
+written to the fscache.  So we _shouldn't_ migrate the folio as some
+piece of storage hardware is busy reading from the old folio.  And if
+somebody else starts writing to the old folio, we'll have a corrupted
+fscache.
 
-   return vma_commit(vma);
+So the current behaviour where we set private_2 and bump the refcount,
+but don't take the private_2 status into account is the safe one,
+because the elevated refcount means we'll skip the PG_fscache folio.
+Maybe it'd be better to wait for it to clear.  But since Dave Howells
+is busy killing it off, I'm just inclined to wait for that to happen.
 
-err_va:
-  vma_dealloc(vma);
-  return ERR_PTR(ret);
-}
+> I'm just going to drop this 1/7, and add a (briefer than this!)
+> paragraph to 2/7 == 1/6's commit message in v2 later today.
 
-Jason
+Thank you!
 
