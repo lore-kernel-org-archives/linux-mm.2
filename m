@@ -4,138 +4,262 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10CCECAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 19:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D5FCAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 19:21:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 659D18E000B; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
+	id 332798E0011; Mon,  8 Sep 2025 15:21:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 631AB8E0001; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
+	id 30A238E0001; Mon,  8 Sep 2025 15:21:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 520668E000B; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
+	id 1D20A8E0011; Mon,  8 Sep 2025 15:21:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C2E98E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:15:37 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF92D1191CE
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:15:36 +0000 (UTC)
-X-FDA: 83867037072.25.50EAE3A
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D05D6180006
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:15:31 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=GN8GDlNl;
-	spf=pass (imf16.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757358934;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 068A48E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 15:21:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 71201160292
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:21:57 +0000 (UTC)
+X-FDA: 83867053074.14.500C461
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DEBBF180011
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 19:21:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=sC5hatoP;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ysP+rb/f";
+	spf=pass (imf06.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757359314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOecQmwq+DoDshGPB4oxxE5lmlvV6iB0dGFX8T5PHy8=;
-	b=l9BsWMhzYReY5dRmUFMG3woEuJezfHaaoAfn3RXOdNzNcDH2xbMxUdnLAzTnfJbPgMF+CO
-	+NXlrD9qEHhffZ3QZ/RH6ZkqnaWhZ26Splh8Kfsm7LxtvAC+CuM/roYYFw6h8zh8Q5w9Vl
-	wexETiBIXY26iy6BAf7HHi1UaWn1AI4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=hpe.com header.s=pps0720 header.b=GN8GDlNl;
-	spf=pass (imf16.hostedemail.com: domain of kyle.meyer@hpe.com designates 148.163.143.35 as permitted sender) smtp.mailfrom=kyle.meyer@hpe.com;
-	dmarc=pass (policy=reject) header.from=hpe.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757358934; a=rsa-sha256;
-	cv=none;
-	b=GSRGt67EDE/YyzZZWrSs2fTpH+bV0yAIH9wB1hqhNgTu9CAViNpneIrT9gxeX57YP1+jLU
-	ooE2FbT9h0cpiiQJU/VAjQf4uuZMCIGv8Mzgp+dILwdYfufCagHW8rFgqXfVAFBpKiFNnd
-	YmkWdR8mPrxjUhPgPeoDKLtanW9uFJo=
-Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588I2wxm007907;
-	Mon, 8 Sep 2025 19:14:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	bh=+c3a0V8lka9Afee1Nw7nJmCm0dx1rrGMyatPnpE9y+k=;
+	b=mc2t2NenjOczvybJn1/J1CicM60j1rEHI/sgd7xH11J3vxx8WXr9Pn3COVFNYtXbKtWcGK
+	vrPdQodAJ5W5TYhzMoHwOUQGue5CD7JBTiCtKPX+q/co79JPZQigDXTPDm/CutQghvbWrK
+	M6k6CC/S4syL5D+QZuweLd1QhJ4W0LU=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=sC5hatoP;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ysP+rb/f";
+	spf=pass (imf06.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757359314; a=rsa-sha256;
+	cv=pass;
+	b=Z9E8z6Ltzzi0QIZIUgLDLEY0gP8+o0T3Ffyg4wOzxdMLZL3u/iWbprANyXQUImkwrwdDeN
+	VLR5OSy6EYZ80SqivU3LM5WhrCKxqzEqi3W6yFOSwnDM5oSs0uKBRXyuNVDfxCsvAIhD8K
+	DOIeTBrKa4or0Tz9Jxpz/k+DUg1JaKc=
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588Hg4MG007494;
+	Mon, 8 Sep 2025 19:21:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps0720; bh=zO
-	ecQmwq+DoDshGPB4oxxE5lmlvV6iB0dGFX8T5PHy8=; b=GN8GDlNlNhYylpGGye
-	zge9N2XOMeb58LuWTEOnE6aF2ravmwwyDyJ6Ur/pwbn4EK+r711pmj1EN0Rq748d
-	K8TYpryqrL5pOUtU+MhP4FWTkZikd0tDxnup5kXyE1nxRlG6cX0uwLU3RED8keqE
-	CM6+wcIPdA0F0829UmveTqQwO0SmQlFnLhbJPdTLSYpsEdNsHpIDFpbLv36mfS5s
-	gpVOUqMeZvrXOQgrekWrmbyQEdPOXdcShFzbaRg1KquQI/SAuRVW7fDpPxSjPsFs
-	nTdD8brbC+TC0djjT/dvpiLyttWABdvmGN9cQ5ZVA2kXO8kPNqNbNQJ+JuTNuvAp
-	hlMg==
-Received: from p1lg14881.it.hpe.com ([16.230.97.202])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 491x8qmesh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Sep 2025 19:14:58 +0000 (GMT)
-Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id E274B805E2F;
-	Mon,  8 Sep 2025 19:14:46 +0000 (UTC)
-Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 5A013802FD4;
-	Mon,  8 Sep 2025 19:14:44 +0000 (UTC)
-Date: Mon, 8 Sep 2025 14:14:42 -0500
-From: Kyle Meyer <kyle.meyer@hpe.com>
-To: Jiaqi Yan <jiaqiyan@google.com>
-Cc: jane.chu@oracle.com, "Luck, Tony" <tony.luck@intel.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com,
-        "Anderson, Russ" <russ.anderson@hpe.com>, rppt@kernel.org,
-        osalvador@suse.de, nao.horiguchi@gmail.com, mhocko@suse.com,
-        lorenzo.stoakes@oracle.com, linmiaohe@huawei.com, david@redhat.com,
-        bp@alien8.de, akpm@linux-foundation.org, linux-mm@kvack.org,
-        vbabka@suse.cz, linux-acpi@vger.kernel.org,
-        Shawn Fan <shawn.fan@intel.com>
-Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
- BIOS asked
-Message-ID: <aL8rIgSImDh7Nj7E@hpe.com>
-References: <20250904155720.22149-1-tony.luck@intel.com>
- <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
- <aLsHh70jI6BGHjaN@agluck-desk3>
- <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
- <aLspJ5Tpqp4qRDk2@agluck-desk3>
- <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
- <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=+c3a0V8lka9Afee1Nw7nJmCm0dx1rrGMyatPnpE9y+k=; b=
+	sC5hatoPixIwnAB8UnxXLgLhN/R8BODVCSbybmlFGk0cbPSyyZ3KJvxTweRAHGtl
+	mGQ9uVco2DgROsidXdvIX9LT2On0EtcBV0nQ05HSqQGBjgUbSMM8/4/tN90FFQ6D
+	MBFWV07ykzJQR8Oq6n1/1JyBUK95nQLS6Ibu4pGmRl4QfY6nopVZo1S9JbnWNYZL
+	9zDIB133U+6quvdgh18mp+hSAe7GCrAQKJFtpTOZXbV1i3PHPBHGhhlTP7R/KtTy
+	0UBOuViKGx5QXZW3L4EMrXTDyNZbacVt0pNYB9vP/ebST6HIsl24tVrZdYnz9aZN
+	Ei8QG69efRshHK83FcpZ/w==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4922x909qf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 08 Sep 2025 19:21:22 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 588HFsns031484;
+	Mon, 8 Sep 2025 19:21:21 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10on2070.outbound.protection.outlook.com [40.107.94.70])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bd8m3sg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 08 Sep 2025 19:21:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=De6J9q8pa//8Nj40Hc2BQ25XUC3CdcXPzxwEbbX0RqPlTwKwIjvqqdWBYi/7qNq0SdDgUIJE1GYm06HuoyELegAMQtSSww0h2MitgyumSc3PUF295wmBq4Xji742Aka+loLttag0a/Y1bubawx0IIHMSK9gFmJPh2sF1VMN+Zz2o00cqXlu4KpCP3QSnf98foKAra7QlRBPpfxMVSCq5P90Nfejczg9nzRdkjt3K2NW/3cxoG8/Qrs/7gAyk7JN+Ii6AlhgxruiciZFgPN5EjUCCbzwWKQ5FIZ9HTmjb1MMW6N+vYaa773GQ8JIVyAPiPWw1xYcQZfXhZoDwDTPLMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+c3a0V8lka9Afee1Nw7nJmCm0dx1rrGMyatPnpE9y+k=;
+ b=gDk53tcuKk0vKq6giLZwLZAQSTfwbbF3TVXWbvbG8A20JZaRiV53xztuASurr7aQd003p5bsAS/vvt6ZDe+t5mona836GlNuxNal21Tu00pNFHDJk5+TsfgI/2AjlytAiq+peE5wX/QC3ElS2y6PK5MjL1ZbECKE3u3DR2s4pYjVD/Pf2777TjB/TFvK485KDP5WyGHHN8bRbOnYOONI/+iZFk4lkhpPj83SozQXhmCzGouBYX36ImZj4k6N50abpZa2SiDId/ByBEA0LXaSvoq0uy08ebeF0HPjH5s05gvVZYkzBZ4J+Q2RVeJCN3mejIyr1jhCFY/YV5A4G+sg0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+c3a0V8lka9Afee1Nw7nJmCm0dx1rrGMyatPnpE9y+k=;
+ b=ysP+rb/flTyqRev5Qqe0uxKX0wwFJSv2Ss1W9OC6ZZvFOnZB6hJIybKqFtWW2+PQpEEWFPagoFp/SJkm/zt+ZRmcGSB9fxA18DJsJBWsbDPeRmAUMigBNUVqA0QNAihPVSC09JuSjYZXXtfZC73sWy9N9mZpefYjiXPBhOE/Z58=
+Received: from MW6PR10MB7660.namprd10.prod.outlook.com (2603:10b6:303:24b::12)
+ by PH0PR10MB7006.namprd10.prod.outlook.com (2603:10b6:510:285::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
+ 2025 19:21:18 +0000
+Received: from MW6PR10MB7660.namprd10.prod.outlook.com
+ ([fe80::41fa:92d3:28b9:2a15]) by MW6PR10MB7660.namprd10.prod.outlook.com
+ ([fe80::41fa:92d3:28b9:2a15%5]) with mapi id 15.20.9094.021; Mon, 8 Sep 2025
+ 19:21:17 +0000
+Message-ID: <3752d094-e754-4453-b404-75d92de3e364@oracle.com>
+Date: Mon, 8 Sep 2025 12:21:11 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 22/22] mm/mshare: charge fault handling allocations to
+ the mshare owner
+To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de,
+        bp@alien8.de, brauner@kernel.org, bsegall@google.com, corbet@lwn.net,
+        dave.hansen@linux.intel.com, dietmar.eggemann@arm.com,
+        ebiederm@xmission.com, hpa@zytor.com, jakub.wartak@mailbox.org,
+        jannh@google.com, juri.lelli@redhat.com, khalid@kernel.org,
+        liam.howlett@oracle.com, linyongting@bytedance.com,
+        lorenzo.stoakes@oracle.com, luto@kernel.org, markhemm@googlemail.com,
+        maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, mhocko@suse.com,
+        mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de,
+        osalvador@suse.de, pcc@google.com, peterz@infradead.org,
+        pfalcato@suse.de, rostedt@goodmis.org, rppt@kernel.org,
+        shakeel.butt@linux.dev, surenb@google.com, tglx@linutronix.de,
+        vasily.averin@linux.dev, vbabka@suse.cz, vincent.guittot@linaro.org,
+        viro@zeniv.linux.org.uk, vschneid@redhat.com, willy@infradead.org,
+        x86@kernel.org, xhao@linux.alibaba.com, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
+ <20250820010415.699353-23-anthony.yznaga@oracle.com>
+ <a0238ff1-3ca2-4f0b-8452-26584b531724@redhat.com>
+Content-Language: en-US
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
+In-Reply-To: <a0238ff1-3ca2-4f0b-8452-26584b531724@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PH8PR07CA0033.namprd07.prod.outlook.com
+ (2603:10b6:510:2cf::20) To MW6PR10MB7660.namprd10.prod.outlook.com
+ (2603:10b6:303:24b::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDExNCBTYWx0ZWRfX9h5ZGXmPvvws
- MWHA6QxpDtNHnKvEtXivLGKwkMt9sAgdbyGgyNgBGJFNHHCbg/Lw5MJUk62fyxjcr2nFtVi9i+T
- jMSU+eaw831+iNBrs8usa1MzW8TQApJw7s5EncaIXAckxxQRQfOcL0H8z1h+K7JKP1OIxqOhnwA
- JR+fM8n/lX1vrQrnn2LYRLTfMjnovNSRaQm8A7uW9SlBKUdPfUF0pJeq2wprLnIHogmldjyCvLq
- iYEZj2QMYBj5A9vH7k8PETzimn9yZ2aOjOI1yNw6c/DFD6EqL9qAU0bPI99NU4i3BENBNxPBRim
- ckmCS9yROHZbuDWyIFe+VjvCuKm/lJ8JwUP06gmtg9elwOZmhHggV0MKdcNsFPIco2uHpZ0x44z
- R3bDwrOC
-X-Proofpoint-ORIG-GUID: lzDVQmIxlZm2_XmX0P6I_MbY6uRwcZUk
-X-Proofpoint-GUID: lzDVQmIxlZm2_XmX0P6I_MbY6uRwcZUk
-X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68bf2b32 cx=c_pps
- a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
- a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8 a=168LhWg8FaowOX8s28cA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-HPE-SCL: -1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR10MB7660:EE_|PH0PR10MB7006:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1848be74-9ed4-467e-35b8-08ddef0ce245
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UDBDaWJxZnhvRkJhc1JTYi9hK0xxOWJTcjBxSTcyK2tlTCtmc0ozSXViN1VU?=
+ =?utf-8?B?R0lqSDFvK1lYUXdJWXNhMHNWVXNDU0U3bW5mR0NHVjFlcGoyN09JSi8zQWRv?=
+ =?utf-8?B?ZkQ1cHlqejhkQzlxeGFzYyt5b0ppcmp6ZUVkeU1Wbmhzdi9mWnhMbU15UnVX?=
+ =?utf-8?B?VU9EQTVCeGQwME1mcDJkeERLS2E4c0tzQjNBYW85QjIyWFVzRCtWSGhZWURY?=
+ =?utf-8?B?ajlVSTlsUlUzRVJPT0ROMWJ1L2E0RWsrM2NTTERiVGd4M1JBUFdEdUR6b29P?=
+ =?utf-8?B?Y3JOZldFTW5KNVZSMG9CeEJPM2RJRlFnMElZa2dkQ0kxQjRlL3lkYlVQT1lW?=
+ =?utf-8?B?NmM4Z0IwOTRHWTZIZG84QmtlNGRWMjNveWxmYmJXbEhPZWdiMUwzNDJTcHk5?=
+ =?utf-8?B?SW8wb29Xa25MdVQrZTRqRUVsTDJVQzhuMkYxOEJIa25zSTJHdnlGTXF3SC9m?=
+ =?utf-8?B?TjBHYlFsNG52MTMycGp5ZDJXK2V6ZWk1QVlwT2VEZUsvY0VtL003K1lvVGll?=
+ =?utf-8?B?VFlITnRsNjBpRnFKQ1VxYzFHUkY5MWltQzBScFdwOHU5UnFKVmlWQW1DcUFJ?=
+ =?utf-8?B?dktFSFRTRzBxZVVIUkhSWmNiK21VSTVCK2lFTjJaemR1NHFleUFteDlXOVFz?=
+ =?utf-8?B?OWEyVFBGN0N1RTQzVmhIZ29qZTQ3YkswbVROWE5iMytNYk5jZU1DdUd4T1Va?=
+ =?utf-8?B?SzdtcUE3MHlOUC9XaUYrd0xuMTF0c1JQb2s1dms0SFdFUCttWDZzTHVHR3JI?=
+ =?utf-8?B?VnVBUHNyaDJrTU5sT3M5M2owbFlWcTlKSGYxZHVEN3FtaG5nVFQ3azMxNU5w?=
+ =?utf-8?B?Q3NuZytraGJtMDdsa0hVN3dVNlpXS0UxYVV3a2tuZ3JkSU9XR0F4aGFmVEt2?=
+ =?utf-8?B?VnA2bitQT25obUlXZ2JIL0FqMXptWmNNeFNEWmExRFBaTytVN3NGdzQ5SUlt?=
+ =?utf-8?B?STZmSXh1NnBJY0JKd2puNEVzc1MrQW5GeUtRb2N1blo0REpIb3ZvN3FJUGlE?=
+ =?utf-8?B?SDdxUi9IWG5TUGF2RjNPYzBNQ01RdUhxQ1hMMDVaV09DUWo2ZGJ2aGgxNzhl?=
+ =?utf-8?B?M3pFb3lJNC9CUjJ3VnJVYXVjVTFzMkZ6NFhQYlpqK3NpMGN2b0FuNmltYUVt?=
+ =?utf-8?B?cGRnNkJQTUQyakRjOXJOZmZ4QTBjRUx6SThQRm5PZXFxa0t1MTZ4RmRsbUI2?=
+ =?utf-8?B?MkFIRlhkVjF2TUZJM2pMRVQxa3Z3MWhSVzBBTFVEeFhCQzIyYWZnSERUQlpr?=
+ =?utf-8?B?bHd6citSMWExS0dBV1c0cmpDemlBeVJpdTIwVVF6RDJIbHd4b0pUd3h6MktZ?=
+ =?utf-8?B?K2hqaitva1docEh5Z3R4Mlg4R2VhNnJBc2NUNVI4aTRvSi91bkNtRGlQbURM?=
+ =?utf-8?B?NXVLQjdMMG1pQzVTRkJTWm84UXlXek5ZY2JGUkFaenJja3NCTzlobG1xb0U0?=
+ =?utf-8?B?N21qSEI3bXQwdVFEaXNVTmJTd0Jxb290QmJIS2o5UldUeXRIaXRMSkQzc0Mx?=
+ =?utf-8?B?emNHUzh5V3lsTkxUeFUrbUtKM29aMXA5NkRDRWJWZi9vb0xRYk5mN1lOZHhp?=
+ =?utf-8?B?b0hnVG9iajI1S2NDWGxGYm1acmk2clZnZlBIRlovcVBUQjFvTUo0Mk1qUkRH?=
+ =?utf-8?B?S3FweU9zem1iUG16QjkrU2RRa0duc2pidGRLWmorc3NRd3BEMHdSY3E2SUxV?=
+ =?utf-8?B?amhrM1dNN25pNSthdTdvaGZVdVpSRUxYUkgwK2Q0SkQ2MytTaE5ZS0hydFlH?=
+ =?utf-8?B?V0lxVTFFMkJEdXA1dzBYSGFIZ1RNbFluem55Q2o3S0FWN25uQlNQQTdydmZU?=
+ =?utf-8?B?T25lN0o2WWM5RlIwT1ljdTBFOVlRZjBwZ2ZJYVpJV0plRHVjZXhvQVlHYmZ4?=
+ =?utf-8?B?SUwyaDB0cng5cE9DaXlNekpSSjJtdXh0K3lPMnVnRFBoVGc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR10MB7660.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b0VPQXhWRHg0ZFFhclJBNHFtajJmMDN0aXFoQ3pYejB0WDgzWmptWkErOUIv?=
+ =?utf-8?B?SmdNS09aME9CTUZsL2FUK0ttaTZVWUFzQkVaQUZDOEkrV2NKbFA0dXp5c3o1?=
+ =?utf-8?B?MkNBZ3JpcGtSM0lUeTRLaGlnKzdaNnVFNXZERTgvSnh0RmVnMHNiTDIrZFJP?=
+ =?utf-8?B?TXExTFd3T3ZmOUJOMVI5L1JhSG9TSU9tRS95bE5PblptVmdycG9tRU05OGRM?=
+ =?utf-8?B?ZzltUVZ1c2xybnZEQlN3Tkw5ZDg3N3dvdXdET3E1WU44aHBBNmRNQ0tpUzEx?=
+ =?utf-8?B?QlpQVGJ4T0d6VVJBU3I5SUpGanZJcjc1UUlYTVdPN1NxK081RmdXTUQ4Y1JO?=
+ =?utf-8?B?UFlsQ3FSU1Z0UHdNT01SclQ1MDNmYmNMWFhnSCt3d24yLzRJRGgzc1lyVGww?=
+ =?utf-8?B?aW51V3NDT3Zpb2MvZytkWjBCWFJ4eWtYaDNnM1p4S3RFZ21UeEJ6bjc3LzFX?=
+ =?utf-8?B?dzZLSDVkQUgzUTdnalIyaEFHeFVPd0JEN2g1d0UyVGNTRXY4WlZjQzhKVE9h?=
+ =?utf-8?B?Y1EzNUdYcmFXNlBqeHlZVm9PUGQ5QzVnMFlVWStxSWtMb2xTa1crWFdCTStw?=
+ =?utf-8?B?OW4wL3dIVmhkVVY2b2pkWkE5NXVjQlhPSUZhMzhJazdxcERRZ29SenQxOVRK?=
+ =?utf-8?B?NlpUY1NSOXJJSmZvQzI5TTFMc3oyUThsVElTUlVGZnVMSkIybDUrN3QydG53?=
+ =?utf-8?B?VndXNHRYRnY0NTBrMXlHeExPYU9QUmJ3OE5wUk5Jb2Z4YVF3ZEhJQ0dacXdm?=
+ =?utf-8?B?VVUxZVJ2OG5sa3ZpZmU5UXU2Wmd6Ylp1UjlmVWNhSkduamU1OEJIS3I1dEJo?=
+ =?utf-8?B?SWVwbFRPd3V6eFRtZmN2Qm1yU2liNTZ3cWswRzYzQmtVOTZ1RXZuUkJINW1t?=
+ =?utf-8?B?dkRaWlkvcXVkODhkSTBscDc5V28zM0pCbG5zVTNyU3RmamhmZlB5TUVtakJh?=
+ =?utf-8?B?MngxT05SQTlKTFpyeE1EWWVwT1A5K3BpUGFXZ3lpNnZTNENmeElLZEp5aDNU?=
+ =?utf-8?B?MUtkSG1ySHpLT0xTMHYyU0ZsL0Zwc3U5VXlCcG45dytGaHNaSlFZQk4yQ0pD?=
+ =?utf-8?B?U0hLZkgzNXVxT2dHT0JBNjdJUEpjWXJEb21hbDcvRXgvREs5ZVhqMGlTV2Ft?=
+ =?utf-8?B?bDJDOTdZdm9xaVlhMVptdkNIWkdyZlhYbnFFcVNkRDlWd3pDZ3IzeEdUaHVa?=
+ =?utf-8?B?ZHYxVXVneVdOZnZBc0ZhTDVJeDI4WWZxRytBZXljQlVFa0pmTUI1R3RnaXFj?=
+ =?utf-8?B?MTNIeVFscWRZdElIMXI4MElmU0tyc3RBaHlqZ2MzWkZXTTRUays1U2R3OElq?=
+ =?utf-8?B?dG82NjNDMHBaQUxwNlMxVWtrZlFEcGk4QTJ3aVhJcktlS0R0QTRNQk11ZlBR?=
+ =?utf-8?B?bkxqeXZWUGZtc2kzVUw5ejY5UVUyMFFCK2pMWkRIWFVCdlptemJYalVqWm56?=
+ =?utf-8?B?M2JPa0xkWEgrNXMwbHBnajdsZkpJZDdsVlI2SjVYMTc5bmd2VDBHdjBrVUJ3?=
+ =?utf-8?B?M1VYY1RzekduYkhsdGh5N1lCTUd2eUZqYXZ3QjVzSk05OXZibHhvNEVTcXV1?=
+ =?utf-8?B?TnNUdzN3UlRZc1FFSlVFRWVMQ2pXVEZwQjZTdmFYY1YwR0RwZjZGRDF6OGgz?=
+ =?utf-8?B?dUhjRHAwTUhiSjhUUWZnTTlhUlNTM0VIS3hwcFl0cjRTd2VYNWZhaUMwamUy?=
+ =?utf-8?B?WFpTdVQxZTMxdVBjT3lDZFJWeVFFUTNzOTBKMnBtNW9XRlRiWmVUVTVjMUxI?=
+ =?utf-8?B?OVcwRUJpcDZ3SjFvUU55cjQ2dE9ud29EY0RoeHROV1l0R1MzdGI1ZFZMMzVN?=
+ =?utf-8?B?dXg4VnpxWFhuRFB0bWtuVWRCQkxIWVFqSDZSbWVRUWlUbVJTZmR1OFNudFZZ?=
+ =?utf-8?B?VW9xa2U2VjRMWlN1R2MvaWtqVGMyOWVSQ3NpTTNFYVFIZGowYlo5UXQxODFq?=
+ =?utf-8?B?Rk1Dam94Z2JLcjRheWJRRExaRWs3SHJ5eS9kajR3TXJZYld1V1dZSlJRT3h6?=
+ =?utf-8?B?a1Aya1FNUGk2Wjd6Z0o0NU1rSGUvME5ucDY4VSt5YzdrNndYWHNDSU9PdjVB?=
+ =?utf-8?B?MllsODlZalhEcHJFeVh3T291VkpZRzZVM0prRk55MmJLcnVzMGQxazg3LzBj?=
+ =?utf-8?B?TmNpc1pxcUQyVjVGQlJrUTV1TS92RzdXR1llemtVRkhzT3IrR1hxVnJHOElM?=
+ =?utf-8?B?SkE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	IKCLa0RF4XyKKNhJ/zHnOb4e2SExCGLWtkMRRf11etT9IR2RC6o0vo2PxS/2Ax/IlYxVfJoNNX9qiBbGNSNNHDceKRDghhtQhWHmgC1J4CKEiFjedJ2AVhKjzzx68lcutIp+F/vI5jq/FWltiMwXDuUQNrd126ZalG7/j/GedeQ/diQIY3zRyXIdL3h81rG0Fn3WRVnm3M4s+4fxQPm/7GevaJKhoRj77/+DRmG7KYmTo/DYIxcuLtvGds4PURovlWVSNzgzs4GZ+fV3bs8uYJC0JMV1mQNdLsbdMMS+r7TT+mpcDoPodV8s7zDZACbYaFRlCsDOtJWH5xW9F7cNq/fZxBh/8rpqjdien9827RM5aB/W381SV7cOYF6sMXn3nUCaVfnT6gYxiztuybTjxyQmp12GXX8mn1c5IEBHx/NgV+RaNhTH41HGEQJpz9V/z57rAf2gDtlKiRg/OdFlqqx8vIR2o+lE1p5u2rL57NWi5qxJQY8wr6RPLgjXomBp8/Ke7wGoFO93OB/Gp2uXHRqk/oRp9s6ogkEFicKwFpQ3adzkCSlavfSH41yiFHZoZEsOEQ4XCjcbVzs8Ha1vgO+KmvxT5Sitoo9PKx6vFU8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1848be74-9ed4-467e-35b8-08ddef0ce245
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR10MB7660.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 19:21:17.6694
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 15A8VJjveglQv/TWYOY+OvRA8g24zPDx6Wmi4APT2M535vj0lT8c0joFc9sZtB3fV0jVlCpQ9Gvue4BpsriUJBfWrrRufWQ+I1hkjWcCXxM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB7006
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 adultscore=0 suspectscore=0 clxscore=1011
- malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509080114
-X-Stat-Signature: 8qhzzxbhm7xzpsokecgj57ush6wzwdyt
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509080191
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE2NiBTYWx0ZWRfX2j4HS46EWcFs
+ gB6tdpYLMq3e3MLBkrPjJ16i9j+AFLLF+0O6tK/3ZAWUkQ8dD0+fT4gRpHNLus4rIUvd47HCTcg
+ NK2l2eKi8m4FTMHTmT2z8VZKvx+EIbe3kBmS77GUvua+5DVO7KRbcYIU9MQhadjRMFdwbJ+tMBW
+ fvKCOufqUFKUz28/0vHFvz+j2O37seoD23Z0z/I07YM6Ymglrf9Qvsxa3F9cYd9be3Y/SPi/wgH
+ JRCwQzo5uzUd41VU1aSoDJPXzbKSAAmq1UkMBqB3LQs/UmdwjRekd30sluFqHiXkevovK4GOt5e
+ Jp/h/UVBnovlQSWNfKexywmausHGDpBXsojEEOanZ6Q+EWau9ximztEdA4eeHmx4f2w6Pml1pou
+ wmbiX30D
+X-Proofpoint-GUID: zb-CzWDmkudGcKj-_1bSh__ZxwfUODY_
+X-Proofpoint-ORIG-GUID: zb-CzWDmkudGcKj-_1bSh__ZxwfUODY_
+X-Authority-Analysis: v=2.4 cv=LYY86ifi c=1 sm=1 tr=0 ts=68bf2cb2 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=i-pEsNv00SWCavqrx0oA:9
+ a=QEXdDO2ut3YA:10
+X-Stat-Signature: w533hb6ig6d7ymczpmeqdf7gp4yt96qq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D05D6180006
+X-Rspamd-Queue-Id: DEBBF180011
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1757358931-464124
-X-HE-Meta: U2FsdGVkX18QqZR84MiprWI6/T+3I2ugW2J5gz3HHq0o3P19CuU7sy7rxwno27o4AhT7TH0Raipj7Eho/Z9aw5Fp58R2VU50PgtJ3u+KXdHjl+3VY2HsmzaVqxFGRGvbFcdOJ/mvz6Kk+GAaI6taD3WPPn9tldeI5GanQ+pa8jpcNE8OEEXrMyazbBtxAq5J7S+7PYMXem13osTfgrTpwyg3x85h7V76bzHSCbyJlRl9OkWJ821dGQvOd/mhd324xEyP05ry4IpQUVrDifjFf0JJ/N4o5xW2nWN4A20IKNLWxLb96c899hdbgd72Ne7e5nRBzjQSASbHyuRADeq4VW76AQBpj6T69zQZOcJRPoSVBNA4pvRA63OuAWc/j2yIKhBNaTDMzabmkXUkPMoPq4WtW2DGrm/PDAQMOtwYhV4OXKGAcu5Od48dcKFgj0wslLvGYkfPgdQh+nd5mZOXnK8UO8ZenXP49rV3XQuTuJNyOZrOPyl6b3D3VjUIEC/jx5qyUISOUDgfPvzQK3dhZMPBVoK+/0QgkBUEoxrMxvstaA22ODrgAFJtigpRMs8415jh8gIGkojkJKDsRoW5tVYPnfBxXPaIHZQgIkgjVs9pleZTWt8/AMvzGSlDVPK/G7QnA7BjU1TVIAJ4vLrR/4lNTLG63ecaD7MlMoBQCcQwYlkkHEESWbXohxPmXahs8BsfZ7xlPXh0Mev44aeaZRU1cF+dI06H872BhWhMLDeG/zlQwy6ikw07AL7llxcGxrvR7joeUOiFuPTBtx5o89Ue3Nxpa785yGw+agngJ9bMTXrfDIUNsF22l5HI7v7fUvf5EdnVBjmTui+3oqB+91WpKqYJPH+0iVBZRrs7U6jGFgBidbbaStTi4nJ9wwzSBq1cbm5UdPQhDR+Lc0+jRZ/ke3VfXN1QoIPqwtMMundfu9nKOCLtFCpxWRu1lzOOhPQ80GdR9s54ed01V9T
- Wtbrfz3k
- idEuJyCB8hilLmYDC/HBccx0/i2ZgROGL22g9vjR2d+pVW3JcoSHc5MXRrVuRHSYfvnDvN2HQ9GXybsDfnnXRMPs2SAWWNnxm2XXfOjuqrtN4OetBsa9DZ+mqkNzPdSy4agwtuf9OrHcGtnSt+phiIFOPkTP3qfGr/yxOsTPdEgSeI1nUNWhKJ3BhlyMwO+wxqOyL0oUBClWqgWFPomDJIlYX+Xpt0NGGWNYvN/tzraLgIA1bEOTt498atB4eNlvBT1FtDiK8qXaADxAKQmpx55KzLCV1y3CPiIzXPuJXujIBRrlC+5xf/vpWOsFdzUn0RgoG72gPtuzcpS2UvKsiVmimw5FMU31k+AIxPObt8kh2mtGWFWg/U6pWzeLVvEJ4tYmD7CaZK3mNYJiP6Mh+2+jFP5eQ0DPYpV980cq07iKsAGs=
+X-HE-Tag: 1757359313-40067
+X-HE-Meta: U2FsdGVkX19o7ua9CxWSkQfV0YNii0Y67PLhFjIVzoFg8ospuI7H5YbNsvdDZF96IPCgxYCLgXKneY7P23N9ovoHRStfSUowTXTAtKCJh0v4TPBB4MOdIEaFGbQwpiCP9GLbxN2ckVbX05OaL3b9lyW2x+CWN0xk0xCkqOa7WEQTe77QaWMkjBj9ND4wfMWY/xI1Th91WgDMpfC3EJdeAFjCIFIKrZRrQLBmnBipEiw70pgLSr1YL2odQo5yBiAo3kjn4m8LvVCMlSSNba6yhtkhh3nZZ7HnLFeEU3YFwzj5bme3tZ2oYcem8VvaiAaD6lOPj6sFywOqQyTaAh3//D/12V5AD1qR67yt6Ahvb59VbwjEz/D2rToC1+SUzbXvZfgoIrnZrlhs3v7kyczbvOdhfPLGHgG7D69nHjiqeiG9Wl1aftLfLBUWYw+O8KhQd7vomZCzdq9wCsb2QAR0g37pivMtJsf7w0Sw13lT3t8R6PzV16ofHyJPHLs6BYmp1+wSACv0XdkqtvW1E7VZPyJNtIal5OTfntm1fbWRwmWtrrHhq/4hfU6RgCdpi+mLpDpep7Js6x+tpTN1YbD5WagiPYoZqsgZeUiEju9nTOqsQQdkSIRIabYrcm4UrhLrbbVfESlCWEkazKMrEhROdbaImKZsQ3s5wEG6X5w2FPXba8B6hZPDvVC+6Qwp2N5ud3jKT+eT8KvVYH83K6OxSiO1JLzKYZ+CTiaHLLf98aF/m+3rkEwBLAUOPu+gdGdeV1zpdZMx0mKFszJqgsjLF4XOAegVW45JBK58pQJDPrHK4pLnUPdFdGkbkSBI+TVWbYEBkS/Cr0RQLVYzUvm5wLTOWQ2szCbIXPyG41OYH7qYVaNNrfjYW/1B7KgGL2Ac8xFQqzpghNnjZ/prSb+aD4GqWqCGzKuyi42B3LIcTUSWX0NBiclX+UDejl08zo93FP4cbF2xWXiHT9Uhr6Y
+ qANPuA3P
+ upYJJmbFJ/khYkMV2T7sLril7Go5PWNhVfE0pQMX/84P2x3fDA5oLYriKd4JZSKp4aSFPwxxBWE68c8ym20u+I9D+sGwrNb5DNAW016qFbzGBo0hiKdMBNpWsywV4Dpov4MqAiUHdjsC9x0UsZzGjh6yRyTg+jWkmfC/B5KWbf/CyDoqDAD3M0ozzxJVn8x4S58mniDzkOZ1mwDPRL2vG+P9eh2EImaYa56AY4QFEMyLFgssxwzw4k3SLF/XvANrXtklVqvxxvNuAGZ4L5ce1a7cYTJqTFSAv0DEF/UONLHGjcfWjZHKL90X3LUbF4c2ArgivkD+NBgOr6XwGVMCgn6ef0l4ll0xsApE8WY67j7qTXfh4yvTIuJZr+A6Cmnzw9X/NiZHr4RidsL1Bq8zFChEBsbnT72nJmF+TZZjhsMHc+2mL8MpPb0c8ESjIJKUwx1bqjUeeGMO3ov6G0JFjK+p+DOFxVM275MFk0bAYBtWV33rPzJB/x/KL5aX2I0pkyL9Aib5JqyQPrEFM0M6+doqElWwDin5s+6uRXzlsgmad6h/G+JUgM7P9++s6Dy5B1h98K1iJrK8NCGxW8Ox2AqtvTrZZzbkSI/1ou4bHYeG12AJ3V4/P7znnhmF9Pwdz8drB+MPXPhd0aOhA9hemKrr3t54WIj6Zse2T7U0VMYJFiTa3Z5h39rKzvfjjhCHsQTuqNp+q1XCkCjughaLdg3pTaYh5pmPIJRE3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,177 +268,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 05, 2025 at 12:59:00PM -0700, Jiaqi Yan wrote:
-> On Fri, Sep 5, 2025 at 12:39 PM <jane.chu@oracle.com> wrote:
-> >
-> >
-> > On 9/5/2025 11:17 AM, Luck, Tony wrote:
-> > > BIOS can supply a GHES error record that reports that the corrected
-> > > error threshold has been exceeded. Linux will attempt to soft offline
-> > > the page in response.
-> > >
-> > > But "exceeded threshold" has many interpretations. Some BIOS versions
-> > > accumulate error counts per-rank, and then report threshold exceeded
-> > > when the number of errors crosses a threshold for the rank. Taking
-> > > a page offline in this case is unlikely to solve any problems. But
-> > > losing a 4KB page will have little impact on the overall system.
+
+
+On 9/8/25 11:50 AM, David Hildenbrand wrote:
+> On 20.08.25 03:04, Anthony Yznaga wrote:
+>> When handling a fault in an mshare range, redirect charges for page
+>> tables and other allocations to the mshare owner rather than the
+>> current task.
+>>
 > 
-> Hi Tony,
+> That looks rather weird. I would have thought there would be an easy way 
+> to query the mshare owner for a given mshare mapping, and if the current 
+> MM corresponds to that owner you know that you are running in the owner 
+> context.
 > 
-> This is exactly the problem I encountered [1], and I agree with Jane
-> that disabling soft offline via /proc/sys/vm/enable_soft_offline
-> should work for your case.
+> Of course, we could have a helper like is_mshare_owner(mapping, current) 
+> or sth like that.
 > 
-> [1] https://lore.kernel.org/all/20240628205958.2845610-3-jiaqiyan@google.com/T/#me8ff6bc901037e853d61d85d96aa3642cbd93b86 
 
-If that doesn't work for your case, I just want to mention that hugepages might
-still be soft offlined with that check in ghes_handle_memory_failure().
+I'm not quite following you. Charges for newly faulted pages will be 
+automatically directed to the mshare owner because the mshare mm will 
+have its mm_owner field pointing to the owner. On the other hand, 
+allocations for page table pages are handled differently. 
+GFP_PGTABLE_USER causes the accounting to go through 
+__memcg_kmem_charge_page() which will charge them to the memcg for the 
+current task unless unless current->active_memcg is set to point to 
+another memcg.
 
-> > >
-> > > On the other hand, taking a huge page offline will have significant
-> > > impact (and still not solve any problems).
-> > >
-> > > Check if the GHES record refers to a huge page. Skip the offline
-> > > process if the page is huge.
-
-AFAICT, we're still notifying the MCE decoder chain and CEC will soft offline
-the hugepage once the "action threshold" is reached.
-
-This could be moved to soft_offline_page(). That would prevent other sources
-(/sys/devices/system/memory/soft_offline_page, CEC, etc.) from being able to
-soft offline hugepages, not just GHES.
-
-> > > Reported-by: Shawn Fan <shawn.fan@intel.com>
-> > > Signed-off-by: Tony Luck <tony.luck@intel.com>
-> > > ---
-> > >
-> > > Change since v2:
-> > >
-> > > Me: Add sanity check on the address (pfn) that BIOS provided. It might
-> > > be in some reserved area that doesn't have a "struct page" which would
-> > > likely result in an OOPs if fed to pfn_folio().
-> > >
-> > > The original code relied on sanity check of the pfn received from the
-> > > BIOS when this eventually feeds into memory_failure(). That used to
-> > > result in:
-> > >       pr_err("%#lx: memory outside kernel control\n", pfn);
-> > > which won't happen with this change, since memory_failure is not
-> > > called. Was that a useful message? A Google search mostly shows
-> > > references to the code. There are few instances of people reporting
-> > > they saw this message.
-> > >
-> > >
-> > >   drivers/acpi/apei/ghes.c | 13 +++++++++++--
-> > >   1 file changed, 11 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> > > index a0d54993edb3..c2fc1196438c 100644
-> > > --- a/drivers/acpi/apei/ghes.c
-> > > +++ b/drivers/acpi/apei/ghes.c
-> > > @@ -540,8 +540,17 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
-> > >
-> > >       /* iff following two events can be handled properly by now */
-> > >       if (sec_sev == GHES_SEV_CORRECTED &&
-> > > -         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
-> > > -             flags = MF_SOFT_OFFLINE;
-> > > +         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
-> > > +             unsigned long pfn = PHYS_PFN(mem_err->physical_addr);
-> > > +
-> > > +             if (pfn_valid(pfn)) {
-> > > +                     struct folio *folio = pfn_folio(pfn);
-> > > +
-> > > +                     /* Only try to offline non-huge pages */
-> > > +                     if (!folio_test_hugetlb(folio))
-> > > +                             flags = MF_SOFT_OFFLINE;
-> > > +             }
-> > > +     }
-> > >       if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
-> > >               flags = sync ? MF_ACTION_REQUIRED : 0;
-> > >
-> >
-> > So the issue is the result of inaccurate MCA record about per rank CE
-> > threshold being crossed. If OS offline the indicted page, it might be
-> > signaled to offline another 4K page in the same rank upon access.
-> >
-> > Both MCA and offline-op are performance hitter, and as argued by this
-> > patch, offline doesn't help except loosing a already corrected page.
-> >
-> > Here we choose to bypass hugetlb page simply because it's huge.  Is it
-> > possible to argue that because the page is huge, it's less likely to get
-> > another MCA on another page from the same rank?
-> >
-> > A while back this patch
-> > 56374430c5dfc mm/memory-failure: userspace controls soft-offlining pages
-> > has provided userspace control over whether to soft offline, could it be
-> > a more preferable option?
-
-Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_offline:
-
-0: Soft offline is disabled.
-1: Soft offline is enabled for normal pages (skip hugepages).
-2: Soft offline is enabled for normal pages and hugepages.
-
-Maybe something like...
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index fc30ca4804bf..efa535d405a8 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -64,11 +64,17 @@
- #include "internal.h"
- #include "ras/ras_event.h"
- 
-+enum soft_offline {
-+	SOFT_OFFLINE_DISABLED = 0,
-+	SOFT_OFFLINE_ENABLED_SKIP_HUGEPAGES,
-+	SOFT_OFFLINE_ENABLED
-+};
-+
- static int sysctl_memory_failure_early_kill __read_mostly;
- 
- static int sysctl_memory_failure_recovery __read_mostly = 1;
- 
--static int sysctl_enable_soft_offline __read_mostly = 1;
-+static int sysctl_enable_soft_offline __read_mostly = SOFT_OFFLINE_SKIP_HUGEPAGES;
- 
- atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
- 
-@@ -150,7 +156,7 @@ static const struct ctl_table memory_failure_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= SYSCTL_ZERO,
--		.extra2		= SYSCTL_ONE,
-+		.extra2		= SYSCTL_TWO,
- 	}
- };
- 
-@@ -2799,12 +2805,20 @@ int soft_offline_page(unsigned long pfn, int flags)
- 		return -EIO;
- 	}
- 
--	if (!sysctl_enable_soft_offline) {
--		pr_info_once("disabled by /proc/sys/vm/enable_soft_offline\n");
-+	if (sysctl_enable_soft_offline == SOFT_OFFLINE_DISABLED) {
-+		pr_info("disabled by /proc/sys/vm/enable_soft_offline\n");
- 		put_ref_page(pfn, flags);
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (sysctl_enable_soft_offline == SOFT_OFFLINE_ENABLED_SKIP_HUGEPAGES) {
-+		if (folio_test_hugetlb(pfn_folio(pfn))) {
-+			pr_info("disabled by /proc/sys/vm/enable_soft_offline\n");
-+			put_ref_page(pfn, flags);
-+			return -EOPNOTSUPP;
-+		}
-+	}
-+
- 	mutex_lock(&mf_mutex);
- 
- 	if (PageHWPoison(page)) {
-
-> > I don't know, the patch itself is fine, it's the issue that it has
-> > exposed that is more concerning.
-
-Thanks,
-Kyle Meyer
 
