@@ -4,131 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4C6ACA1013
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 10:38:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA238CA1013
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 10:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 236296B0005; Mon,  8 Sep 2025 06:38:32 -0400 (EDT)
+	id 4D2608E000E; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20D866B0010; Mon,  8 Sep 2025 06:38:32 -0400 (EDT)
+	id 4AA2E8E0001; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14AF78E0001; Mon,  8 Sep 2025 06:38:32 -0400 (EDT)
+	id 3E6F98E000E; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 014486B0005
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 06:38:31 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C3AABCCB6
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:38:31 +0000 (UTC)
-X-FDA: 83865734022.30.7DFFD65
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 90DE7180012
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:38:29 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 29CBB8E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 06:41:09 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01574C0AD1
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:41:08 +0000 (UTC)
+X-FDA: 83865740658.17.DEAC0B4
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0225B180004
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:41:06 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="S vdiaH7";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=gXfecqra;
-	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	dkim=pass header.d=google.com header.s=20230601 header.b=cFpe2Jdy;
+	spf=pass (imf06.hostedemail.com: domain of hughd@google.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757327909;
+	s=arc-20220608; t=1757328067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eXniMLCiqQTMUody1zzwv3fUVrwRPJjmN26qgb3DM98=;
-	b=7Qxg8AWY/7Kt0FW45rWKdtIX1H8BHygL0GMsU8gWFsqDrWXCXfqaJqCkOEUod6KKW7k3HT
-	A8SW60YEmmwgPt5BaO1Hdh+t3Xf4ygzFa5fDjHfO/wZokPldp3xprYO3yfb0alfttJYfXH
-	su/28ZGZVjM0wE3Ax/e4OZTaFssH0iI=
+	bh=PgQX2wVjrXWCDgPEti9JrRCjB/uTC6KZSt3aT19EMWA=;
+	b=NU5EM9x3YEpGAvZfiZNfWif8xKIUZtkz1s0kta8ux3/YC+O7waQJGgwNHqEr4OjkIpxCQ+
+	3h9h57ZWq6oROhtGyYl1aveRwjkt+Zw+VeCx8O/vAKn2ENeslBWEeIzII2SLBrWc+LBHvi
+	NKSbH5YK0FP+0ajCfVTO+2ffPB8N39Q=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm2 header.b="S vdiaH7";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=gXfecqra;
-	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757327909; a=rsa-sha256;
+	dkim=pass header.d=google.com header.s=20230601 header.b=cFpe2Jdy;
+	spf=pass (imf06.hostedemail.com: domain of hughd@google.com designates 209.85.219.170 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757328067; a=rsa-sha256;
 	cv=none;
-	b=xcaTeyveNR3j/iBZYrQwZXQx4xSfu47uZDoyX09XJNWe1fKZcJm8MJCRbCbHleeZXymqqk
-	781q4NsRCGR5vi87R1WAC74dDnVj2DUAm8f+WFd8MXcJZ2fk/zM63Hi0u4loZsmdde+xCP
-	YwZduVfoMn5tHyARV/f9OCqmV3/qJdY=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 4404E1D000D0;
-	Mon,  8 Sep 2025 06:38:28 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 08 Sep 2025 06:38:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1757327908; x=
-	1757414308; bh=eXniMLCiqQTMUody1zzwv3fUVrwRPJjmN26qgb3DM98=; b=S
-	vdiaH7yTVuslaE3BszjLcuRbCTa0WXuayxZFpsNJvMRFOr5HL+ko6YOK1rbcoCIF
-	3wsZiHR0xT64TLaXj0YTqCsbsWwryehZvSN5ywp/I1CWPCRibWM9xFCZ1e607jl0
-	KKgqdMaoxjS1DeisHPw5srvkO2pu/OpvMfYu2o5q93rts2tP5M3cFbuiZCTLdmSX
-	GsXs+Xro7bYmsX1MbFfeYUlnLLcRq1bQbpEDGzKlxoKJF81WaewOrBWZasIlLfdm
-	QfM04d4D/v8IHGBJpITuFwz5hqpJzXY6Elexn9CR2c5s98oIbJJGacKNGIiuICBx
-	k8KPpxKjc/s5CnQV1pFhg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1757327908; x=1757414308; bh=eXniMLCiqQTMUody1zzwv3fUVrwRPJjmN26
-	qgb3DM98=; b=gXfecqraAjS9e/kHJUWSkipJgdxF1vCrh1jZZo7MNspz+MkYkb0
-	6+xKbIZKQhvvWDzoikPDUlG1qWJD+HKjLXcr50NH69fwHw8b+xJus38p7Zxe598l
-	0Krow51l5t9gkFUY1RsLg9LtfCzE0dbn1W4j2I/7/iyfKwt3p5EBX26qiIrxGsJV
-	gJP+3X4UEJ89kDM1HEqE6OCbA9+OmDOh98HOY6EhGZg46jz4ymoePfgnXN70lOZM
-	92cX7aJB8w2H9ylInkOQbeBH5xfDoBQPinwp9nOrAai8fY337pMPaiNWrqgF3SXV
-	NxAHYiX3MeQRusjJjV6iKXtTfgMdkUAERYg==
-X-ME-Sender: <xms:IrK-aNwyPJqk8RAX8eyK9qLoa4NVvuGwrUqCGke7__atON0G63r9fQ>
-    <xme:IrK-aCZmx_XrQ2LkhBsiki7LOdk-Ak0o68gwtMjsSAv-eNk_dNRPLUwldgOF2Yns-
-    1qJpZxnJy8iAHhUy-4>
-X-ME-Received: <xmr:IrK-aOmrZTr91I02nRduiYx6lIZwoYlerLKnbPwFxBIWOaxmiQ2cTEApWD0GfA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddujeefudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeejheeufeduvdfgjeekiedvjedvgeejgfefieetveffhfdtvddtledu
-    hfeffeffudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvdek
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlrghntggvrdihrghngheslhhinh
-    hugidruggvvhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhn
-    rdhorhhgpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhmpdhrtghpthhtoh
-    eplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopegsrgho
-    hhhurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsggrohhlihhnrdifrghngheslh
-    hinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopeguvghvrdhjrghinhesrghr
-    mhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrgh
-X-ME-Proxy: <xmx:IrK-aHFpN7yD3L3v68dpSVMjqtgsCyUPZlNVx3nvsh3WBmUiNMixbQ>
-    <xmx:IrK-aFi-olsfiMcbQVZOUByIyjtHhPRenpYPtp3hYYcrd3uY0M1Bbw>
-    <xmx:IrK-aJkFKek9xQqFNHOWw3mhUIr38xR4E7NdN2MGtMsEfQgCtVI85Q>
-    <xmx:IrK-aOdb1nRV3qw4-lsnNHpQUflhtRGh8iI5_IDItHQxP_jspy1hww>
-    <xmx:JLK-aDBfv8WSueAMnt9H00NY5N0c4M6DEJ-hSaFcA5Imto2AdNWRUj2M>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Sep 2025 06:38:26 -0400 (EDT)
-Date: Mon, 8 Sep 2025 11:38:24 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, Liam.Howlett@oracle.com, 
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, dev.jain@arm.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, usamaarif642@gmail.com, ziy@nvidia.com
-Subject: Re: [PATCH v2 1/1] mm: skip mlocked THPs that are underused early in
- deferred_split_scan()
-Message-ID: <niywtremc5kfhs3lenmfxvbiiizyexnaw3m25twedmzovfoeno@lk2o46tfdklk>
-References: <20250908090741.61519-1-lance.yang@linux.dev>
+	b=geXY5HYnT2kAJ5DaepR1jTdsE8FprVd3JsEJuPTfy2cpES6wHC0+73g6sEfQjxNXYjUykA
+	zAfdcEhGmhYFlSenEGtOwOMF9rL9qXto8kXj2VtEZZs7DqkqEf/Xmr2xb+8XtMTFzXRONb
+	RQyHjmAM0l/UpotGrMVl1UckGxUdZGs=
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e9d5e41c670so3962707276.0
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 03:41:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757328066; x=1757932866; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PgQX2wVjrXWCDgPEti9JrRCjB/uTC6KZSt3aT19EMWA=;
+        b=cFpe2JdyeTi5htGppIvD5z+1ChESP6IphNWPn00k9Mw7CXmy6K+Wk+35324VGz8zy3
+         RCV0L7biIJkwcp5vJssjdGxREXbLB0WpuZBd9NsG/Te3YRIan3SC6Kp8yAKS/ECxeyBY
+         j5zLLLgF6LEEm3fcjhCx0AsMGTttEqnWBZUA4yYq+7GQw9qA7TbWnmvqPx+VyiF3OnAA
+         s4d+38kASxT+ZW9RzWliGJDcGjtZzWYcTP0HYcxgK1gZOMEygqeKdSMrkpBHg4Xx+L7D
+         hTq/BQzVYsbSqqboGHAAOyZpwaFO/Kl2j+NHLYmCD1rTv3EQMFMWDeVCdHJfLbuSEvnA
+         DRxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757328066; x=1757932866;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PgQX2wVjrXWCDgPEti9JrRCjB/uTC6KZSt3aT19EMWA=;
+        b=f0TWVQ3t0VuN3AvqvN6vXTiBlmzm1m53gPHf+JlEjAxgPCFRZ1AGbNXRQQi05Zin31
+         lxnd4+QZjYef2xOcn9ZAiCcmDwdRGopr/j7xLLVAuZeRXGAj3Pbr57abd1B2NcLaBKJK
+         p6MHe6UQmsokSo0VfVT2G0l/58kCa2BXqklG4nhhY1RebqO2W8Cil4qMcrwnGon4rvhu
+         THxxt8bjnSVnGiowtzD3ZfsdvCkoWicpyp+Q/srlvawQaZnhkUvTxCOVZzeqKXJOkM1a
+         lOzBtGR57uAoP4ioJxZtFowKGZCzqthEVq6Ym9Iil3NrZveNI1HrnUhiQIAkz3gLnoZW
+         Yq2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWP4UqZ/vC98JoimBlI6DcCF8+OzhWchQwCIdm3XhRx5XGHw8wkMy1aaQ3TdLynLqKFFJ4jz57JPw==@kvack.org
+X-Gm-Message-State: AOJu0YyMBbs+PHjM/EoHot89CuKu21r6VzrOG7XzM7tUW30zWsWOmCMz
+	zLXtS19pXB8TqMaB5pAIyuw37+iXv5E/yPLLgaKoaF9IOzrA1hKSJrxEhp4OndPghg==
+X-Gm-Gg: ASbGncsm/TijB6YVAPA9cdIi1ilhcl++4gCujzQTiA5oq2QyoJYIHwCILu6GdJtw4rN
+	USiXqE8fAw5N8ZNswy06M93+u2mWv0wpMMpoKQxcLNle2kdpZhyVp3buPZ+fKtItO+xf0HqENtP
+	jrLe3jIZ2yHCIln6bc9ECeiuRWywMFfTBY0/HnIN8VTtOcvdD7LW15oQv99lrl2rDvgCZpXl14V
+	4FTgqZhTdC47xUgy7c3Gk+Z+tH91I7REfvTWsbQ4CzMtIZu3BJ2F9eKVzvD8j+VImNs6P9DmkRH
+	AUBogE+lhNtD7ZNgNNLfHKpYvtdcy9eJbAbK+ZGjes3mdoJ7e5TKwic9fRekWcfcAIoEP5cu53S
+	vV7FURY9E66c62uziZZ/F1ZfSQw2hgCHV1or9vC6wPT90Rz+YgU2QU/IbJG3uxDcuEw07dw9B5r
+	eyDlwEJi2BlqmmBu2CBKRK9/sd
+X-Google-Smtp-Source: AGHT+IFPUzPrmMuGqYymtA/EsR5L9cPsDdw3hltvchIp0nKAJ6ffXeCZG+zbzSfw+JCOtbL6FoAJJQ==
+X-Received: by 2002:a05:6902:6317:b0:e98:8b69:f437 with SMTP id 3f1490d57ef6-e9f67ea5375mr4369860276.43.1757328065893;
+        Mon, 08 Sep 2025 03:41:05 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e9bbe08a7b4sm5448785276.25.2025.09.08.03.41.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 03:41:04 -0700 (PDT)
+Date: Mon, 8 Sep 2025 03:40:47 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: David Hildenbrand <david@redhat.com>
+cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+    Will Deacon <will@kernel.org>, Shivank Garg <shivankg@amd.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Christoph Hellwig <hch@infradead.org>, Keir Fraser <keirf@google.com>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+    Frederick Mayle <fmayle@google.com>, Peter Xu <peterx@redhat.com>, 
+    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
+    Alexander Krabler <Alexander.Krabler@kuka.com>, 
+    Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>, 
+    Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+    Axel Rasmussen <axelrasmussen@google.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+    Konstantin Khlebnikov <koct9i@gmail.com>, linux-kernel@vger.kernel.org, 
+    linux-mm@kvack.org
+Subject: Re: [PATCH 2/7] mm/gup: check ref_count instead of lru before
+ migration
+In-Reply-To: <e54b1d8c-ad63-4c7a-8b1b-b7c3d76446f2@redhat.com>
+Message-ID: <b008aef2-f69f-e2fb-d4d7-71a42d308529@google.com>
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com> <47c51c9a-140f-1ea1-b692-c4bae5d1fa58@google.com> <e54b1d8c-ad63-4c7a-8b1b-b7c3d76446f2@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908090741.61519-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 90DE7180012
-X-Stat-Signature: u7m6t1mssmosasyge5eu8hufe1ye6xo9
+X-Rspamd-Queue-Id: 0225B180004
+X-Stat-Signature: 3t5a7iph95t8jxp1j7atc5xar5zwdh5j
 X-Rspam-User: 
-X-HE-Tag: 1757327909-141091
-X-HE-Meta: U2FsdGVkX18PZvYmEMnL+MOcrzsCeaY3AxNuNZEqjfWbrtpK8fs/iDCH+fLjxPfgzs+lyhwPBmYcRxWAARmqbmMWB+dAl7M0CwhHct7Z/Gqh8k+2CWDAkPA+1RvwK5ni2OMUOIaEvHmb9GBp/+6Dj4nwwLSX/QrQXKw4lNO8LQGhR9IxkF9sLm4M5retczZQpM7SwpUmt74v1Bnkj0WYMuCIBBxPM7vv8IkDCreJVWmAbSm7GF7Jqp1RjhvA0v8wXjqA2krq2IR6YRfqcYs9owKDuKrSrt6MfnjshQ4iOgV4e0D/E9vzn2Aw+BvoC8HqU6fQLuxAbsKcjgbN5a/A6ZcJ2Vy5aJOoQWC/S4ciLxcypnN4FayRv12bjiFjSgZ195P3dtnlN1V93uo3zxl8IoLt8oeDiX39gu8+2iUuQ2UP2mbSMgx62S+MZ3FhLrGXbLv1jDmdcXN5kLoQpGz3Xf9VhhyXHVqKKnogEXObG/mGCxeoszWX40Ww3kdcmVr4DDNrwuTu8QC2vjynCLMfAVAnQVuFwpx9qBgq5UwFXkiTrxh7+L8qOib1mIFj5RiVBNlHcr0bDpQjxM/x3aveCtTdjeqahypaV8U4BHYU+3XYljOdoKNM7lEK5NNNkptUZzppsToosTRF6QDEVc7Dlpj3xTew8CBcWVMDzGMsEPheLrEiQt1Q0FY07qTMtl9TJ8nJuaIZB02+iHQS+kU2duGOyzoUKHA9riRum2mzTiNE2J/nAs8ahH4SWYKo2/Rn0lCRdceNffJ3lvO6taoai7F/7Hr9sZr1eG5ByEqsUj5PRoPjFlKj7KZicO1pkciyfgCq3i2RULVpPIG+kz38IR8WRvBZFuvSorYQ+7qdyTiMHTwOkIQfvAYfyiNeZbtjwb0lR2OAPuoM4dZrwexbdw0khAqEolK1fxR8OoMAy5PEc7z9576mk7YdqO71L0gMg2UJtiEWMdddI+cym3B
- xbXzSNcr
- 8oTjYCnOKFKfmCiFqyS0u7tAykqcrGNS6i8CNfVHLNrsl7bi3d2Sd8eceZi6O8PZMBY9gIbgvsgfCYdI+4KfjnX6hFoDDUceHtHRJtDtjLmjX3VL1jVu0uDjZ6ME9M87pxUp+F98kNAA0yMOCMbVvIGQ1HKTAOuxTRxkL4oy63KE7woMAaPFyo5vlwZNlnQaVNSSz7r9HU3b5mCE7LTTGghqcw4WZbKds4ZDhdX7V2efWEs2EbzeuEQtoQnWV8cid9zfG9H/gVAmx/cLYtz6SxMle+MmmL3cgRpN4Ut/RG2g9gM92wZF4KTwnWMDNK9m0V6slSeC+6HPSSLo08JEldQFF2xwxe4PnpqnlV3irC+b2dshOGiici+2qmBA0ApyVyvZHzKWWz0qNG/8z8+h/itZDteEfb2z1oX59BNrYlWqF5shnyf19ImWedEPyR0GjPAwHKo9UxGMfKjo=
+X-HE-Tag: 1757328066-339811
+X-HE-Meta: U2FsdGVkX1+YujVtxMdC/pUgTJj6c6n1q8ZLLw77sPtnsddxdfwPd4E4HcshXRKOQ1WFGAePhJ4VzgCR7n14HNG3UDc8vC2b5EkOjjDnS8bo8CLxk0g4vic3eV7Hc9tLemveivCii0msWuT8bSYDfceMRPTL24kH+ksGbhLgV4qTCRRiIc7eZXxN42w36RLPuD8JjwWDLWSZKKl0p2rATDNdBzuHN6XaiY62NSO6uVqhBOZbtmGwHwhOkOUag0vpwShUFqSgTXshbvuhuNxKU6oEUIsWX0fkSmEDvrXEo2vEKTUrvdDh2THSzyTxk6Jim37VFMcPe6szwwWc4M0EEHYCMScK8bc9c50GcLtIradyt3+e+IyPcmgJqsKhSpCGqZXlalu0dkaDX0PuvQdFlw4fFu10YYnUR8ignaZSddLN2Nv0g74a4HHEIPtVpxN4imZoHlmLA1nISZTPpotvllbCWwUIgFtmODDhAl3S3cGByJr2qIuXzF3DO5ePGHcy/HpqW6PzNVzTkFEBzxlftgJ4XyZR2+wos4KwFyIhuyWhCOxeUcgfvmufGyQot/fvjYWpQTEk9x5aO+IEo+4LWQwkPSfMlxh6VumR8akEZj88lERzG1VYzJ1yBrVe939DSQ1UsyfyZf5J/jbU8Dx3MFvERc7RvOW5bbNWfjnZy/RCeZ4v+7AnVwk8i0I9eXpAJHjBkwVLGO8GVtsk0oblWmAZDPkTuWaOUIZsZLuYqSeArGpyJZsEQGOpA/arH92UvDdEdG80+5wv8LATkXw1UO9FBE5waL3yC34Mf5jLoaY9avgUCMJP4ANLMkwpQnNXZT1SBAg/XB8C4k3jw3sYCgbPwASlYssBIpBZ63+moNLHgvooxhp9WAQKtnLKOoKeqLn+dNG/JDJHq/rVOOoxcA0pEDV8OP5AsETSvF5KEFHIxtrUb+g393luRbs5KVlZW7cxM/1XpYbCuU5JrVm
+ vWORD5/4
+ tm3hRzFBRtPDoeLX4WAntZA6Z1IbVumSI0VrnzlB0uLLJ1iPad6oEjGpQCBeO7ic1jH8/DEKdqHO7Ltmi9fevjzXtOkGtMocYO+vmXyM0mm/Gh/HWstlyq6/XRPchN4tmg/g+CALICLlDu0EXh4Qinu6ZflGsl6AnliXdYO0ABm58oSpc5FVOQplBpfIK0MOLtkcjYQ4z5o2YyD1UBqfGIR/iDOIH7UGe51eCyOuzs0qgYQjcyWWMSHaBI1tlyme0K6lg8bB2+Zbmtux8Kv5tMZaN6z2SLCEYeeglBUDm6DeERioa/OeHP8c2PER4NBu+Nwg3KN84c/NCLYKgRaJMpNiUMP9acsmVfOELNbVEkzbgOS5fum5NI0qAnkOU1FvzL2m5npp7C8FHh6llDGLyodAyAizzunzQ4UBYqv+SbOqBr2UaMhm+Fxxyjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,22 +130,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 08, 2025 at 05:07:41PM +0800, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
+On Mon, 1 Sep 2025, David Hildenbrand wrote:
+> On 31.08.25 11:05, Hugh Dickins wrote:
+> > diff --git a/mm/gup.c b/mm/gup.c
+> > index adffe663594d..82aec6443c0a 100644
+> > --- a/mm/gup.c
+> > +++ b/mm/gup.c
+> > @@ -2307,7 +2307,8 @@ static unsigned long
+> > collect_longterm_unpinnable_folios(
+> >     	continue;
+> >     }
+> >   -		if (!folio_test_lru(folio) && drain_allow) {
+> > +		if (drain_allow && folio_ref_count(folio) !=
+> > +				   folio_expected_ref_count(folio) + 1) {
+> >      lru_add_drain_all();
+> >      drain_allow = false;
+> >     }
 > 
-> When we stumble over a fully-mapped mlocked THP in the deferred shrinker,
-> it does not make sense to try to detect whether it is underused, because
-> try_to_map_unused_to_zeropage(), called while splitting the folio, will not
-> actually replace any zeroed pages by the shared zeropage.
+> In general, to the fix idea
+> 
+> 	Acked-by: David Hildenbrand <david@redhat.com>
 
-It makes me think, does KSM follows the same logic as
-try_to_map_unused_to_zeropage()?
+Thanks, but I'd better not assume that in v2, even though code the same.
+Will depend on how you feel about added paragraph in v2 commit message.
 
-I cannot immediately find what prevents KSM from replacing zeroed mlocked
-folio with ZERO_PAGE().
+> 
+> But as raised in reply to patch #1, we have to be a bit careful about
+> including private_2 in folio_expected_ref_count() at this point.
+> 
+> If we cannot include it in folio_expected_ref_count(), it's all going to be a
+> mess until PG_private_2 is removed for good.
+> 
+> So that part still needs to be figured out.
 
-Hm?
+Here's that added paragraph:
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Note on PG_private_2: ceph and nfs are still using the deprecated
+PG_private_2 flag, with the aid of netfs and filemap support functions.
+Although it is consistently matched by an increment of folio ref_count,
+folio_expected_ref_count() intentionally does not recognize it, and ceph
+folio migration currently depends on that for PG_private_2 folios to be
+rejected.  New references to the deprecated flag are discouraged, so do
+not add it into the collect_longterm_unpinnable_folios() calculation:
+but longterm pinning of transiently PG_private_2 ceph and nfs folios
+(an uncommon case) may invoke a redundant lru_add_drain_all().  And
+this makes easy the backport to earlier releases: up to and including
+6.12, btrfs also used PG_private_2, but without a ref_count increment.
+
+Hugh
 
