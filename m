@@ -4,112 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 176E0CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 22:12:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D76E2CA1016
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 22:12:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71ECB8E0007; Mon,  8 Sep 2025 18:12:36 -0400 (EDT)
+	id 1C7DD8E0009; Mon,  8 Sep 2025 18:12:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A8188E0001; Mon,  8 Sep 2025 18:12:36 -0400 (EDT)
+	id 178B28E0001; Mon,  8 Sep 2025 18:12:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 596A18E0007; Mon,  8 Sep 2025 18:12:36 -0400 (EDT)
+	id 067338E0009; Mon,  8 Sep 2025 18:12:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 43E788E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 18:12:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D17A011998D
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:12:35 +0000 (UTC)
-X-FDA: 83867483070.08.23E2CAC
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F31411A0008
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:12:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HYMcx9nT;
-	spf=pass (imf19.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E44258E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 18:12:41 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88AF713A511
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:12:41 +0000 (UTC)
+X-FDA: 83867483322.19.3613DF5
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 084E01C0013
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:12:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0XFX+w9k;
+	spf=pass (imf20.hostedemail.com: domain of hughd@google.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=hughd@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757369554;
+	s=arc-20220608; t=1757369560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Xl1XVxoSqwI0ZoraVsh703ayp8eVzWrOHFDUHS3EOo=;
-	b=Kq+KI1WIXSymnwX0WFhp6Sh1p5kFnqElTcbcpmhCdKg5WVjBDwpAVY4WUKPag8CQi/hTAz
-	6i7GcMCBXm/18G+fl2VtM0PginNy6idgb96FnumjgPo+7zZvIANweaCeNdT3bSUvxe4WBA
-	rNG1jDrbjvsDQxvrRWSA0+ItHcFtVZo=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gNtbdDCHgk+DiPqbiXpsjFsPHOrdOzQKbMxRyjp9MVM=;
+	b=A99rsvH94dyjLXt3VJuV5Ay5LxW5wGbi/2HqkJM0baNrp5Y+8jDPY7PiwI/WqS4cZLxRwu
+	ddO19r9nfoyf/q6/F//szJE2BsRkYBfLDiCUcxEwMMxRcHrr9/m7F6Y2nLMKfWUnRlKfBY
+	bUIcoI1Tuo5dWdg2r6wOoq7S1mzwn4M=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HYMcx9nT;
-	spf=pass (imf19.hostedemail.com: domain of lokeshgidra@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=lokeshgidra@google.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0XFX+w9k;
+	spf=pass (imf20.hostedemail.com: domain of hughd@google.com designates 209.85.128.174 as permitted sender) smtp.mailfrom=hughd@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757369554; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757369560; a=rsa-sha256;
 	cv=none;
-	b=dT9syiOFcjDdCAgE71thIWCZ+pJVYzDfRsnH4ci5vODEhOroG4hxRIeYImIdiQJltgB3q/
-	MQGU0f3e1kVgGSTQSCkdUGIJ9fKJ6X7AbvO8q38/piCpE1tfW/U9RxoS28iJES5S/nOucR
-	0sidxDn/4SPevn7vw+xWkIPbnk0MWhQ=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-621c6ae39b5so25379a12.0
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 15:12:33 -0700 (PDT)
+	b=uHkVM1ZB93tu2+XoSyuWz8vjQm6hx9jJ5aj78AF9gIGndCpCd7Lki4o5aSxAwxoSQBS5wu
+	KTfrbi3TDLBNRoEUMArkP4NGNmReuVk9PSeEPtXZIifOc1cY9S/PB9+zVu5lefr2g/i5uY
+	v1dKV2JvWQsF4BgZbIHcj04D+OPoLCM=
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-71d60528734so39080407b3.2
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 15:12:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757369552; x=1757974352; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Xl1XVxoSqwI0ZoraVsh703ayp8eVzWrOHFDUHS3EOo=;
-        b=HYMcx9nTIkISHvj3jck9obAiSNhi95qE9uUHvhPc0vvRxn7071O37mJ0Zh1s0Scjtg
-         o5RgJJZ3cXnTiIhjoEfVNDSZpE8wBNdnWajLGuYr8yAzCwnykhPJvfVqoDZFS8G4gNH5
-         RxhX8TVFnJe6bY8HroWxhaOn00igcC0VYeWlwxG6ZveIw2P25y3JUeZyt1MD4G3uOojm
-         7RU0SnmVDg4S74i9LGvvt4RdJHKfSkf57TUtHqu3ZJekuRjAF6w+CqX/FGFs/DGngsNu
-         0bi+H/HUla8ZRVS/MKkktk9oRuBPRH3MB81gskam6twOM73Z+XvQDYkbcfmsaqEH4qbk
-         xwDw==
+        d=google.com; s=20230601; t=1757369559; x=1757974359; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gNtbdDCHgk+DiPqbiXpsjFsPHOrdOzQKbMxRyjp9MVM=;
+        b=0XFX+w9kOrLxO/aoGy2m3rILRjUkcFoqYjSujENlZdY156kgUz+QWY4sSMeoaEVChq
+         jcz8cloiwl/r3RMGUObVkDATgbtdTqPrXvv6jSR3Un2TipwGPT7FcbLYcLP0pybb602X
+         989bl4+JObU8vl3G+A8uKb2lprfWP5kiOMKEntgryWC4UEENoExdNIm+7WnWrzAXf/9U
+         mN48cgAVTzELzeBsrOsZ4B9MyJvnhLnkK1XIt8DAUS/SqAblaDR4F11wE7MM+Kvh8qwp
+         4sP0c461ALhQS2lAd3zo5eaGI3TR2tkKVeDXHMMPGHtURjrKaFI9vHBRUn9FzdXBP5uh
+         2ARg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757369552; x=1757974352;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Xl1XVxoSqwI0ZoraVsh703ayp8eVzWrOHFDUHS3EOo=;
-        b=BnnOIrLyGPpZIZ18V8/Rxgrw1cz9CgThoxMeO85ESOadqrO3iLj/407DXfmrEgOniy
-         n6e0L27UDNIyyh6Czc9aFvVksLpZKAEjPMZ1X6FdUZXt1XScVwIHurb56Z36sPTjL9L6
-         H9gWnuFyocMD0qdYIboM1ZqZNqiU95mvObbWWjai1Rsz3tijNOaVvqU9ZLps9J8Y8Yxg
-         /+j0UQ++IAOWpT8YRzqY+kXNpTwN9VtnM7XD6yO4nOPaGFuJA3ue31txNceiX7c61rXE
-         AUvdtmW1TO7X4b4deiewIgnFoviUEmxseQLuQS9huwfh8Ez2i7wnTzsP5qCjukPc9QMR
-         Pe1w==
-X-Forwarded-Encrypted: i=1; AJvYcCV7LaqRjy3ZpFBYjHKr5eWykWtNIq/HVvQsbdZvcECFwmCfM/DpvX9Wt1u2HvODuwwCzyj2rgW8fA==@kvack.org
-X-Gm-Message-State: AOJu0YzQ7e+MA2uHqmka1n5ItwsDmx9/nwCAS6LipJG8WQ64eXT+dZnh
-	zrYzikKjxGJWviPj48K+OLzsTDKBDpSyn6mf3P1ae1mFulwKzrJgMAySW8nq9Y1JSmUyyXpDs9M
-	QMlT39zyhqqRV10iECJYP+HN9Lcu2dVBCsgh+HKVZ
-X-Gm-Gg: ASbGnctK14k9rFw/G7YKrGE/12VJnwe/m/DtnX6FO6u+MjHznHRYTuveJ9rpu0Nileu
-	zN5fjeYDntIIkxFQBNfMLwtKnsgYHid+abO4CSpszalWDnH6DatxFU68F923aOE7Fh9vk85JQ7E
-	XUAG9blYZoMWH99XuShZIbl2WIWACs4gCo4BsySyxzoZbHGTl+GLDWPGWCvq9il8D+ZSPHKXFjf
-	oz4A7XJsuvXHJLOvQT9If74Z7Ss+x0x4FEXg2xVF9jM9wbr+nuSJMrMLvs=
-X-Google-Smtp-Source: AGHT+IH9odSsS/MEJl64A2Wsm9yxFRCaAThe4F3JEGy9jCyQRTU1Kgqv5DK9xlMH7xXkcP4LWiI0Pmdcp/kwuYbIT6c=
-X-Received: by 2002:a50:ccdb:0:b0:61c:1dbc:67a with SMTP id
- 4fb4d7f45d1cf-623d4bf0798mr160253a12.3.1757369552124; Mon, 08 Sep 2025
- 15:12:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757369559; x=1757974359;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gNtbdDCHgk+DiPqbiXpsjFsPHOrdOzQKbMxRyjp9MVM=;
+        b=Eyqqikzqi1cCYIwsa3Ab1vftF3DJUPVzQ6GOUzCIiTZkfmiaAJPhj9Bs5h/ecM4jA6
+         AqlNcjB8y8lJvUvEhRE4CQwNVkSuiHAjHiOBUAuxCkiYFd7rhicfS7p4KIeJMY5pU4we
+         xZ02ChI2dix3gr9uwBR2h/1nHR+j3NKqCCxzKvqffb6RdY6bTLwWUo/RA9EhGRhe6ZvY
+         8Doa9YXjXUG/7e+32z8vcKGpWnUkefChKKQiyHd1Z2zwVlPVu1kpSiGuN45yYAXo0MBr
+         mT67XYC+if8WpdJujo/AhOTAnHPp8Y3M+UYO21VanotcG0G/A6L7as0rNpZhlp2C9gnu
+         L8Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3tTj9uPzW9XQQ4Zc4oR0vwY7ozqnpiZaiZ6ynIOLEuIABsPixsaUXzPXq3YGrw3Dvwc3n0OGxFg==@kvack.org
+X-Gm-Message-State: AOJu0Ywwc0dRqPzK/I2N0Str2atMAz3KKAtpHwQrzEtgmLQTOeYjhFhL
+	W3FUxLYOU4+TUlGV3DbKjwacf56nsSWkfhZ56Qz1ORVexa07ScgYskDjwkkasB46sg==
+X-Gm-Gg: ASbGncs4hq5wcF47j1zeOas2LjXF0q4YhJ4XoTOWAwft2CBdJvIdcybrJUCFyfKLBPd
+	yFcPJOU9KBpwGnbEazE7UK7vtB8HnBlpHXqb5Vdiq6b0UOZOCBXyLtBCj9cqoWof20T95Dw4BOZ
+	xu3FNdvq52FNhcdfZuAZKczZS4L7q9SRJI1R0bbbwVyq9pzf4JDjYbFxlKArVxmzKkXBGpJ8yin
+	BLbzBGAIzD1/sA5tXMEr4gY9rQgFU52Yu63vBtNHm8zVXWaIv2AIHjiUtX2pOTktcQwXhwJL8Ty
+	tQpzx/UNuoX+FP2ImKc6iVQPJ1Wv0NzMhidoGBcI0DqcYB8Yo6ajiLtq/L8yEGjouwyt/LQ2qO7
+	mf45RCeaNvSd8IjaEUZImfQfn72ZNwj1ratfDXCoQK4XM9orF3z5GH9iN/TjyPq1doQAsICv7mY
+	WKYd792rQ=
+X-Google-Smtp-Source: AGHT+IEcR9qj/dDVqywaUNohOEcHuvPXDWkQP4kYVA1b3P4MwbJPWFYGGqkq8v1AvH1FCx7J7AOhzw==
+X-Received: by 2002:a05:690c:6087:b0:721:6b2e:a07a with SMTP id 00721157ae682-727f5f3e326mr79337167b3.51.1757369558683;
+        Mon, 08 Sep 2025 15:12:38 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a85a0cd9sm56756867b3.69.2025.09.08.15.12.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 15:12:37 -0700 (PDT)
+Date: Mon, 8 Sep 2025 15:12:20 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: Alexander Krabler <Alexander.Krabler@kuka.com>, 
+    "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+    Axel Rasmussen <axelrasmussen@google.com>, Chris Li <chrisl@kernel.org>, 
+    Christoph Hellwig <hch@infradead.org>, 
+    David Hildenbrand <david@redhat.com>, Frederick Mayle <fmayle@google.com>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, Johannes Weiner <hannes@cmpxchg.org>, 
+    John Hubbard <jhubbard@nvidia.com>, Keir Fraser <keirf@google.com>, 
+    Konstantin Khlebnikov <koct9i@gmail.com>, Li Zhe <lizhe.67@bytedance.com>, 
+    Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>, 
+    Rik van Riel <riel@surriel.com>, Shivank Garg <shivankg@amd.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, Wei Xu <weixugc@google.com>, 
+    Will Deacon <will@kernel.org>, yangge <yangge1116@126.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Yu Zhao <yuzhao@google.com>, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v2 0/6] mm: better GUP pin lru_add_drain_all()
+Message-ID: <41395944-b0e3-c3ac-d648-8ddd70451d28@google.com>
 MIME-Version: 1.0
-References: <20250908044950.311548-1-lokeshgidra@google.com> <CAGsJ_4zuj1nNpS0Ap=x-_dqERTU_NiCZAiHD=JULY1FQn+NwMw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zuj1nNpS0Ap=x-_dqERTU_NiCZAiHD=JULY1FQn+NwMw@mail.gmail.com>
-From: Lokesh Gidra <lokeshgidra@google.com>
-Date: Mon, 8 Sep 2025 15:12:20 -0700
-X-Gm-Features: Ac12FXw48nGuqW0IQGvyigU3wDeh4bbS_2gG5bE9Ue6xaCVGsZxYg8pSE4MSgaE
-Message-ID: <CA+EESO6H7zkgEOnmDEZoPL8+5EBD6UrJOBAvcU_gXyxCNZSOZw@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] mm: always call rmap_walk() on locked folios
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, kaleshsingh@google.com, 
-	ngeoffray@google.com, David Hildenbrand <david@redhat.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Peter Xu <peterx@redhat.com>, Suren Baghdasaryan <surenb@google.com>, SeongJae Park <sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 084E01C0013
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F31411A0008
-X-Stat-Signature: dm5xakriczh8gugkzy9zeyytjh53cw86
-X-HE-Tag: 1757369553-763772
-X-HE-Meta: U2FsdGVkX18Q8lTpfqCFoNerptTvPc0pp7xjykHyg6QeIhMkiUVioJAlAnvRBFETQevcjCYKhQGh/vJkTzrXVltKzBDfYsMvOUgSZI/XqPBIcOhskgnI9EF62WpLiYe0Q+wQRJdBj5m+cAHpzw3SgttE0gvynbbX3BzmyWQV5hPHEQvyml0gExvrS2YXCpIqKxt3YNHL9Q6w7fD66EhAHy9g6vJU4T6iUFRpt4l3vdcixoMIZgBFCMLlDme3BeciLH/HqQIjrDxbaJdfpBbO48V8N+50O3BZ113i597tW61jArQAEFLeUUjsWq7IsvHYvyhWm9jzlDHciuhc03nodC/cTsmJ+gsF2hAPkr6Zpj50rnQHSokT5580okGnF/RFkufqgiaL66Q/JJaLgtpWeTvCvm3eCUK2qKTRFe38fnLdEaMjLba10LcVsRhtIzK9gh5w9iXavomv8ISbbk4h1go+Mza7vbmmcnnZc97wBu+JMz5RJBpcOXrTWyVrtDJzZMTPqeHMg6r2dNdBALeOJuHqL6Csn3VRBxDQJ1BMFtcOH9N+l/B9VRvxxuzOUfMB25vgfon7wGAYvlkV4lmLU0ENvEaHLQKZBNkbyvV3uYCUMhyV57/f5e8lp3urhQ4XbBmvHpm3YY0g0/ve/vjrVDHUKmn1Mtvgz3/g9ed2IOOhAPTOADC/cfLYeUMA3qDoyrF32IMB/rbYlb3VZrbc/l8FL/TU1UWC6z+141WozFoz4b5jNWJbY0KM/iz6hdBTTeVaEBPEgqxDzHrelCwXggBr4qo3UifUMTtb3xbuG4PJ+RswzpinYZfTRt4cm/jILHhVFH2zfLtEyim42ezWEPhMGhNwKi01t7BAjRkCBgb788aQwgwGwWY2Jb5YwjjtNwdkGuXBWg4rWissB4KpAcTtKJ4CCfgkSVltITb2IIcznFHZdXX8O4g34wNQMmgopeJLVPqznOW0VIwHCTM
- yQpVqHXU
- VWMQdrr6DA7zeaXZ5NAO2FWgByV2p6u5BgKn9spT4ct5xVdmngjUBCUiluGPuSqq9S4z9MunA6etE2ZtWXRw2+BWL7aW7pl/XYTuxUvtOMuh4/c1934ol0EYWS1+pGmO7fl9h0ONWHa+UAUG5i/dr/OGGbRfTkB+ZrQ+MwwJ2WGalXjFMYrq/uSH+mgf6PUg7fo+He528SUuZEpZHGMKEKX8qrPvoOX+X5Wh1/f+td6/KQAxcnujfu0UxZ7t1Fgr56SDuyK+A0kD6S1EdkOaH82L8S11CQeclTBHQM4J3xp946LD3Uy9Yy5owmF86cxXqRsyLHBfmGOIVlNY=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sso8gkcwge5po4hrczu6ck6haistoish
+X-HE-Tag: 1757369559-36027
+X-HE-Meta: U2FsdGVkX19cDT6ikkAGFGYqc7Dev3sNCvQwd2fj5IF9kulmfH6iTzuNsp29Vxgu1ETBZ6yGiN9E5G92QkM7tK4XUx9aSdLIzTS4fuB/oJSgnC6kSm0JJogPrpwx0YCrH6avKfEqvHx4ENDFS397psH65T8Q+qsu/Bm+HewwjRZhknb2SeIYHnv9GgZydo/FJwgMgcaTGlScwgNdGbCLIV+sBQOl406iGIbA3/vpb5obqGeANHH9KECwmBIIPHVMc45vA/gZITcAPAeNmVLsFSOCaDhKkeNCbbTqlNZGJoskdt+uCWILGuiIRXnoP4x41klsvZ+iJODaLBHoQEMEJPWiPWl8p/360DkITc5XqhKvMM7dQH9B02T+MMsXX9Zd7uW04wZSeIpBMLVeweDbX9AT5LFcvOqQmJ6DidEi9f8KVKXtyFDGfUp3bal7Lq156Kv9zz82eaZNc9sfdkdZz7jJHXQ04faHHaWN4be6O0WHr6V1EsMzpgOYftKmIHK3Fe9Ca0LQiINxmyX3KtFYPS6wuBKRRPK+EwD0EX2+NpT78ex4idHBEA/kBPi291ens7gOk2e8UJbZKcZi9T0oeN8O57OA9Y8DgQDN6ROLp+ZjGWoQlmuQ729u2/jONxU5jl+kauBnjqdUz3kP1S/b2oa9veHibHJ7otJ6vk6Ui06hLSN6cbm4cTtDPymDCBm3fBKW2BNsQHOaVd+mLLOglUj9w++Sqvyy2/vY+W+zry+ksh2CqmmuxEQO7ZOJOAFf92LdaQqtV3d2qNZIUqn0cxsx/+gzV9M6ormkt9wmvvNyfEdvjnWvfDtP/afxb2osm+d+XP2f7p5HT8wJnSptovNrKQQjZk2A+wZ4YrKAsrW11lWtp+MGKW+iv74s49SFlDEoRWv2BhtazKH86URtHZx610L9O+3TRZIdwsCTOLjv7Z5yLW++v+XIHKzXmAYopfPU9exZKqAycbfBAjs
+ hmTuj6jz
+ ImOW/j9NHrd2qPJQebNS0+VwHIpq26qNSzFh6TeGNpdu9hZk3rpIztg0VLZ++AiGS3p91
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,52 +125,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 8, 2025 at 2:47=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
-:
->
-> On Mon, Sep 8, 2025 at 12:50=E2=80=AFPM Lokesh Gidra <lokeshgidra@google.=
-com> wrote:
-> >
-> > Prior discussion about this can be found at [1].
-> >
-> > rmap_walk() requires all folios, except non-KSM anon, to be locked. Thi=
-s
-> > implies that when threads update folio->mapping to an anon_vma with
-> > different root (currently only done by UFFDIO MOVE), they have to
-> > serialize against rmap_walk() with write-lock on the anon_vma, hurting
-> > scalability. Furthermore, this necessitates rechecking anon_vma when
-> > pinning/locking an anon_vma (like in folio_lock_anon_vma_read()).
-> >
-> > This can be simplified quite a bit by ensuring that rmap_walk() is
-> > always called on locked folios. Among the few callers of rmap_walk() on
-> > unlocked anon folios, shrink_active_list()->folio_referenced() is the
-> > only performance critical one.
->
-> As I understand it, shrink_inactive_list() also invokes folio_referenced(=
-).
-> Shouldn=E2=80=99t it be called just as often as shrink_active_list()?
+Series of lru_add_drain_all()-related patches, arising from recent
+mm/gup migration report from Will Deacon.  Based on 6.17-rc3 but apply
+to replace v1 in mm.git.  I suggest all but 6/6 be hotfixes going to
+6.17 and stable.
 
-I'm only talking about those callers which call rmap_walk() without
-locking anon folio. The
-shrink_inactive_list()->folio_check_references()->folio_referenced()
-path that you are talking about always locks the folio. So the
-behavior in that case wouldn't change.
->
-> >
-> > shrink_active_list() doesn't act differently depending on what
-> > folio_referenced() returns for an anon folio. So returning 1 when it
-> > is contended, like in case of other folio types, wouldn't have any
-> > negative impact.
->
-> A complaint was raised that the LRU could become slightly disordered:
-> https://lore.kernel.org/linux-mm/20240219141703.3851-1-lipeifeng@oppo.com=
-/
->
-> We can re-test to confirm if this is the case.
-The patch in the link you provided is suggesting to control try-lock
-for anon_vma lock. But here we are dealing with folio lock. Not sure
-if the ordering issue will be there in this case.
->
-> Thanks
-> Barry
+v1 was at
+https://lore.kernel.org/linux-mm/a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com/
+amd its
+1/7 mm: fix folio_expected_ref_count() when PG_private_2
+has been dropped from v2, per Matthew Wilcox.
+
+1/6 mm/gup: check ref_count instead of lru before migration
+    v1->v2: paragraph on PG_private_2 added to commit message
+2/6 mm/gup: local lru_add_drain() to avoid lru_add_drain_all()
+    v1->v2: lru_add_drain() only when needed, per David
+3/6 mm: Revert "mm/gup: clear the LRU flag of a page before
+    v1->v2: Acked-by David added
+4/6 mm: Revert "mm: vmscan.c: fix OOM on swap stress test"
+    v1->v2: Acked-by David added
+5/6 mm: folio_may_be_lru_cached() unless folio_test_large()
+    v1->v2: folio_may_be_lru_cached(): lru_ per David
+6/6 mm: lru_add_drain_all() do local lru_add_drain() first
+    v1->v2: Acked-by David added
+
+ include/linux/swap.h |   10 ++++++++
+ mm/gup.c             |   14 ++++++++---
+ mm/mlock.c           |    6 ++--
+ mm/swap.c            |   53 +++++++++++++++++++++++--------------------
+ mm/vmscan.c          |    2 -
+ 5 files changed, 54 insertions(+), 31 deletions(-)
+
+Thanks,
+Hugh
 
