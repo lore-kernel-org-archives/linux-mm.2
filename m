@@ -4,81 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D518CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 03:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4E7CA1013
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 04:07:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A871E8E000A; Sun,  7 Sep 2025 23:49:10 -0400 (EDT)
+	id A15438E0003; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A37BE8E0001; Sun,  7 Sep 2025 23:49:10 -0400 (EDT)
+	id 9C4768E0001; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94D3C8E000A; Sun,  7 Sep 2025 23:49:10 -0400 (EDT)
+	id 8B4008E0003; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D76B8E0001
-	for <linux-mm@kvack.org>; Sun,  7 Sep 2025 23:49:10 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20686C0943
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:49:10 +0000 (UTC)
-X-FDA: 83864702460.28.796F9E1
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 647BA4000A
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:49:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Li3hIYhw;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757303348; a=rsa-sha256;
-	cv=none;
-	b=jvkXxtRjxOGSM5mmX5ZDLfXRveOkqMMxGkubPHx/p6Iody+8iKzqJEj+8UsAQTD0MBjHdZ
-	c5Fkbos9ImmuJDIv0btblBrumA/fiD0UKE4ZoL9rnqdtNlXpWtPIceX1bEbw+an5pNVdAe
-	SvdWEqsprx2wi1cCS6kD/xwG3rbz8Gc=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Li3hIYhw;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 727218E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 00:07:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3CA111B0EB
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 04:07:34 +0000 (UTC)
+X-FDA: 83864748828.17.83CEE1C
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3741C1C0007
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 04:07:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757303348;
+	s=arc-20220608; t=1757304453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xzr2/A/9cRnXL9ljRehbzAVPu6ab6EXNNePw10uMb2I=;
-	b=He9o49E4Idc9umuIfwIbAmgG3+chRZGDWTd8KzYyy+L+UogZTGFMeLu6EwZ2Fi/iXygo6O
-	2y7nT+jqPsQgOS7c+5Z7ZVkKiOym4uDV9+AVGylYVochgOJSMiRTyY4exgvrCjyhKjrHAE
-	kzCFUP5macp70TKIQcbtsts57C4NQtw=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1757303344; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=xzr2/A/9cRnXL9ljRehbzAVPu6ab6EXNNePw10uMb2I=;
-	b=Li3hIYhw7VUuOtZoswUCZ7L9OxCeB94XW5PmdCcy8EqYj/4+AZpsyoqapvwIudg84Pyzturwl0SOG7HY4WekPB2iEHSWJIroPfbVgW0p0sxVZtRGnJxumqn6Vsu1pA+YNu2OejN7wvHvnV7l3jT10X5N+DPUbgYpt9TJLdtan3w=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WnQjwli_1757303333 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 08 Sep 2025 11:49:03 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,  Joshua Hahn
- <joshua.hahnjy@gmail.com>
-Cc: akpm@linux-foundation.org,  david@redhat.com,  ziy@nvidia.com,
-  rakie.kim@sk.com,  byungchul@sk.com,  apopple@nvidia.com,
-  linux-mm@kvack.org
-Subject: Re: [PATCH] mm/mempolicy: prevent the risk of division by 0
-In-Reply-To: <20250907235332.931050-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
-	message of "Sun, 7 Sep 2025 16:53:31 -0700")
-References: <20250907235332.931050-1-joshua.hahnjy@gmail.com>
-Date: Mon, 08 Sep 2025 11:48:52 +0800
-Message-ID: <87ldmpwqmz.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=409De3dycyXy94pFQxmNYxL/WmjZWt0b3HPL18vEbd8=;
+	b=5YT1gt9LfJqgKMsmk/SNopnJN1jmUi5DHtRhLbzyp85rKf7ssDuV2iOl/mXozHbWjgh+sU
+	zUlrL3Tq7ycKDVgMcgoK1Qko45+PIxZZSEkN/w0tj/Hun5Ns15fCJyMItRZBNP1iKHHSPg
+	6lWbWlmJeYWYSvDw8IEV+PzNvIJyVAU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757304453; a=rsa-sha256;
+	cv=none;
+	b=5YY3TSyyjv/XbMO97cmJ/em+UmUAK/h30LYXC5g6EN9MdnCzKXTPDmd7FGIRoJX+/UjtPa
+	NBKuseUMrvFbngJqyold5suhKgDuNc+ZSR8JtL+zF1KUoeRfJ/o3D8cdIJgfn0mGT+edAQ
+	tWWMx2QE/1P91FffWnrqzLlOb/GakIg=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so11711445e9.1
+        for <linux-mm@kvack.org>; Sun, 07 Sep 2025 21:07:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757304452; x=1757909252;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=409De3dycyXy94pFQxmNYxL/WmjZWt0b3HPL18vEbd8=;
+        b=ZXGutzbU09Cbhph87pnQMLZaOM2KSX2lNOQggGhsdgvua2Blk1MreHuN9vwnlvKDM6
+         ynXYrYE6CFBzKYulFM2H4b3quxgHNrq4FsDseYpo+gM9qGIK73lDW/PRh05KGgcuXy6C
+         MEzTHkuJg/4juCL0Z+tIl4+nEK0Erk4pAm41a3T0tQToiHaOnApkn+V0rIeMp99BMmUN
+         HYYenV+B3NtTywTQ5qDggy+kg32MfNifxR+MLpGh4LTy0zeS2g7Ypp/tjL/h0Rj1kko8
+         OL6zwZFOYn6rhHxFiDS1Z2GRL53tbGpzq8bsDQSdqC4mjFoU4tBnagfBplQMRPjbFwkU
+         2B2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUEqUskru68Zdo20WPUJH9nzXiPXkcn5w4K9HoOpP2UurtooV01yHeChSi6TJdrLuFWlsTTzrGTeQ==@kvack.org
+X-Gm-Message-State: AOJu0YzjpaeUxbKYBtTkWjrpI5mKXpdOvj4199xlXYggXO40JYkFDv5s
+	8ZqMnpxNWDhXaYOOov8DcKwBceD0GwIQ5nwYekXNqQrjlP+fVNvQDXzD
+X-Gm-Gg: ASbGncuVu3H4YVo7uUdMNuLsACDi/+aA9qvTb32Tos8cSM8fbjL7aZPOM/htIqmLtq3
+	0rNBfhm0I7N8PRPsNFxiH05jr7cWJYt7KOc+YbUegONA+mCJGW4IuWAIrQYk+/bSB5POsElLP1k
+	MRGi88/pXfayVaZUlj1PIpwsxY0scmmc/laDP0Ef7pmG39gnL1cvzmnIn9f9MHPCaHoWisHSVNL
+	pFQMueXT+ONcQexLskx+0Tv066tuL6NV2QvDBvE7VjJTz6Tw3mvlLgfh3i8QsdnH0q59TXRlOHo
+	kmMSnd5p5HOmtCs654EmwyX4Qx1TR9MCdgbFRJk6PWj7lfuvRQ3zWrqZRwXDBHzyV+0S8rjZdKh
+	xa6LNxOcPim96VupNGSv1dpRLubM=
+X-Google-Smtp-Source: AGHT+IHHc0KQu4fVuvjX8fgbXi8r9B9WeHJTzec9xAQPc3wb88MrF8wCXiddTK5zZ0XCMEdTfP3iDQ==
+X-Received: by 2002:a05:600c:c8f:b0:45c:b55f:466a with SMTP id 5b1f17b1804b1-45ddde9295dmr54866415e9.15.1757304451344;
+        Sun, 07 Sep 2025 21:07:31 -0700 (PDT)
+Received: from EBJ9932692.tcent.cn ([2a04:6f00:1::ee:b:1086])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45cb5693921sm228428405e9.0.2025.09.07.21.07.21
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 07 Sep 2025 21:07:31 -0700 (PDT)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: david@redhat.com,
+	Liam.Howlett@oracle.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	dev.jain@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	usamaarif642@gmail.com,
+	ziy@nvidia.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH 1/1] mm: avoid processing mlocked THPs in deferred split shrinker
+Date: Mon,  8 Sep 2025 12:07:13 +0800
+Message-ID: <20250908040713.42960-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 647BA4000A
-X-Stat-Signature: j45xib1u3z7aip9aafktsepk3wq1tpb7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3741C1C0007
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1757303347-423778
-X-HE-Meta: U2FsdGVkX1/VCo4AicnHaOPKb2UlCoYOFZh17S0dwVBElR3qUjHYommrFZH6mnj2t5d2XNYBmzznvaZB3s8k7Qf3/z+wjo5erZUo5E6jeNGMT7S+hVyFN4DghJa5JyNucHs8CTDl7c6tuFsbMq2TfWP5cfhSy5BoYw8kMeJbpwEUXa7dZ8d4keXK6Wyuy9lQ1weLhwboD8cI76zDsR4DvCBUKnCYWqcFn3a9pKN+vcCN4J0Yx15Kn3E+FyDx2zFjX/EZ+mHNJNRgJ5ieZI0csxHIBjr6JycmhN2FDniXLRzOJDYhw2wdOp4Qas0Mq+iXAQbj6n61jhClYtPl7phjpTCUoY4ajfWd3JSj1y/nE3z4Dv8GP2GJWg7WJHNXvb829Bilj1BLCwxrgvFre5pSthnupLb3+wxyEC77kuG7Axz/TbPneF0PLAwRzGD3vBULEWXToQX93yaLAi7aj+52PSlisB6XVUTCVxXNvnYBYfqUZOFv8Q9R8Cc90swwYFUWTv+NENHpu9ctwIOiMsaCFb8tqlTNCcL4TkOFOcupnsglROMB6fHX+L3KzujXsLyADuRMlzbYxz5JEXkhTs/cIPuQVKtPLIQxOTEKATKaIBXQlERkydEt3wqcUaVru40uUa9Z44X20bs93EyqBe9ErMdPxCbEy/LvsskEX52BsCaugTc+gOwrsBTI7bqh1BVRRNQCaaypNjwaGiHouVlcc8+PncJ65nledepgSRaabuYrnFEhoEZpPZevqTNoVQ22qPgvmlwO5xQaSGgCDwYb1lDPI6IjM2SCcaEfnjv+dFgkqqDlz5VDIOXiM6fbIoREVhg8cuSLjN3S5j1y05IRROlpd7KC9y+/ZpHiY1lkJdjRhVhNeXRCL6jNfZeOk3Ih3UZso9kla1lV1fe97e+JEGg8tq+pBmTlXwU7hiJBE34MzghJciwUaMcpDxsa2dYReVzBDCBYiXcDCC4k335
- 1R9vWUrp
- t+GyyZ6dcdQ8XvKYXlqYVUabouvCJ+rA81UKx54My2ppa0IDwNUShUPGA+yqC9+PrlI5bLNeRq4n1WZYr/KLkM0Ir910GdrM8c4DyEVVIn+SMEx6o5zu0R9THhV5fOGnVjkxt437gXnjUqAILNc76gVdSRWRJZ/j2NVzGXTtu4rpvMkwGGGfgmoj0C7EVT5gKLwjvviS5oQvGfuKsCtI5VFA/FM5UHAVKkvG+sJ1oYmt46lJf6NvYM2fb5xlsZ0HE2mit+jRQpDxZY2Ip3NZyz2u0y48xTRNolIQD6H5encIu5gWE+S0F1P6o90LzmiSHme2j3mgK1QdK+IrQ4NPXDS9/LNPRoGDUhYt5h6evtCbR7lo=
+X-Stat-Signature: cmef5ewxshb914j4b7t4tbuqwzktp4q4
+X-HE-Tag: 1757304453-433237
+X-HE-Meta: U2FsdGVkX1+x5qBtPekLcmmwko334aSpGGL0fGaIOVCf2uEiUw4sBmCiC4LsVfPASWDyFCjz4OwZ0WmI3gvK+vupUl9d9g/U5kYEwsyglshA97Ty57f52TAxYhu32t2YTkjc4eiOkR31kK4yd4sWva7pncyTiAtLX+t5mROVRr6NcjwrRGCpHzhJQkmzfnk6SsCNhdbDCGtebxtwwFrvD357FQ58GLWidRNcrGdHWxRJsYrN2hY8+hPjjgeuva4yplGqW/G7d44WyGeGBRN7kMVr2VjSY1wS3IE16PcEc5yLZ4engStGXEJauIn5iwWn3LzgJ4NfSQdy1zBjw8Mhcfl8dWk1fNsTJ33Q875aNQic8zCTT3qHltlD3826CjmRafeSzS8dHmjE2BEbUHkQFEsz7T2eEKouq5LLuJRHXen/+FLWdfTUFiBwYCEL82TjX74TQFBusHyMlm9/qlDnbjqf1eF8Hav3TufnFqu6xUS5wkXkk/lKO34JLM3fcF9cooOMOeXUzYEBahVNfhAK+Y4frP2iNJvHgfSP4F4lSBECZPzwVxpFjuHUagBQecl+SaUXBWHMZMT/GMjU970Ot1YErMqNeOLMzJ9PnFga69GboEEjek1VOYW8qiRFidPFaX9p5bymbGSkI4anBHVbFG9A58Q23FJom03tnOHJoTxc3w4m9ih3NL/+aLKKzdi9brmlR2QO2Y9dQP7c2OMKHQYnkK/TQiDJzVrPtV8nh73z5KjKdic4tClr5pZgKg+9KsxL7dTTxtwXismx7RpCyyhnEUawWdsi0WwNCy+/imFgLXZMP/5SzEPBlz8+uXzTWymuR8nVSzdJZLTR/o7WpCYA4eGzxFRm7VBrKUrLw8aweYVNKLP/Iq6vMNf7aVomHIMhTWI8yPAZxhzP62k0uVDVj/eIHrsNtYnVYIBqcVWplMgRNF8aEqR3bXYH4B5pUlyGMBnDxnzfo5kSg16
+ +wjgSf1f
+ gaNTl1i8lZQbxT7d9E1p7GByQLtwP0dDnK8ik1qB9vkMYWuDZORcdeORWVerQdmcMG2ufNnF2/VUL/dUUwsPZGYisqxwMGV31tgDUzzGH+/grtnZuwnzCBOU6Y7gdnLb5PiDgJqAYHlOh3IIfJ30Mf/5eLDh9BvLhnRE7x9yLG0nJRU6v+puKiDq9gup1KuRGHU9gUFuuOxaJheLE3jfeOJokLLBy+uCapBkjdHyAEihjpnCcfjuzD00yY3FEB8Wcxr2TyjQK0DdOAN3xG/W7CALc4frB2eQYmzg9ZG6qVW7P8yTTeKyQsII+375esO951uoJ59YpiBLACW9ga3dnZOlMZdHim+cZv7ilvsy4JkKMAhEjO3bxyJBJMN9YXheLCNFwW9igUwLDekuRQ5w2M12MFntbRKaGoABTZg9wycVX14vRdzBhwLLvntoNq576Wtkl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,50 +114,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+From: Lance Yang <lance.yang@linux.dev>
 
-> On Sun,  7 Sep 2025 09:08:29 -0700 Chelsy Ratnawat <chelsyratnawat2001@gmail.com> wrote:
->
->> If no bits are set in the policy's node mask, then nodes will be 0.
->> This patch adds a check if nodes == 0 before dividing.
->
-> Hello Chelsy,
->
-> Thank you for the patch! I will start off by saying that it probably does not
-> hurt to add a check like this. With that said, I think it's best if we clarify:
->
-> (1) Have we seen this happen before?
-> (2) Should we add a Fixes tag?
-> (3) Do we expect to hit the nodes == 0 case, or is this just to be safe?
-> (4) If so, should we do more than just return 0 (i.e. WARN_ON?)
->
-> From what I can tell, I think it should not be possible for the policy to be
-> interleave, and the nodes to be null. If we look at mpol_new, there is an
-> explicit call to nodes_empty that checks if the nodes are empty, and returns
-> an error if that is the case (of course, excluding MPOL_DEFAULT, which actually
-> throws an error if the nodes are not empty).
->
-> After all, it doesn't really make semantic sense to allow interleaving across
-> 0 nodes ; -)
->
-> But as always, it is very possible that I am missing something that you are
-> seeing : -) Please feel free to correct me if you believe that is the case.
->
-> With all of this said, I do agree that it's a bit scary to do a div0, even if
-> I am confident that the value shouldn't be zero. I don't have any strong
-> feelings about adding redundant checks, so I will let other mempolicy reviewers
-> chime in with thier opinions. One thing I do feel strongly though, is that if
-> we are to move forward in the patch, some explicit clarification that we
-> have/have not seen it happen before, and a WARN_ON would make sense. 
+When a new THP is faulted in or collapsed, it is unconditionally added to
+the deferred split queue. If this THP is subsequently mlocked, it remains
+on the queue but is removed from the LRU and marked unevictable.
 
-IIUC, the patch is to catch the bug during kernel development.  And, if
-an exception can be generated for dividing by 0, it can be used to catch
-the bug already.  If so, IMHO, the patch appears unnecessary.
+During memory reclaim, deferred_split_scan() will still pick up this large
+folio. Because it's not partially mapped, it will proceed to call
+thp_underused() and then attempt to split_folio() to free all zero-filled
+subpages.
 
-[snip]
+This is a pointless waste of CPU cycles. The folio is mlocked and
+unevictable, so any attempt to reclaim memory from it via splitting is
+doomed to fail.
 
+So, let's add an early folio_test_mlocked() check to skip this case.
+
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
-Best Regards,
-Huang, Ying
+ mm/huge_memory.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 77f0c3417973..d2e84015d6b4 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4183,6 +4183,9 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
+ 		bool underused = false;
+ 
+ 		if (!folio_test_partially_mapped(folio)) {
++			/* An mlocked folio is not a candidate for the shrinker. */
++			if (folio_test_mlocked(folio))
++				goto next;
+ 			underused = thp_underused(folio);
+ 			if (!underused)
+ 				goto next;
+-- 
+2.49.0
 
 
