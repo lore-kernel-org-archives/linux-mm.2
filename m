@@ -4,252 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7ECCAC581
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 10:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0A53CAC581
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 10:28:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 506436B0012; Mon,  8 Sep 2025 06:13:09 -0400 (EDT)
+	id EA25E8E0003; Mon,  8 Sep 2025 06:28:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DD938E0003; Mon,  8 Sep 2025 06:13:09 -0400 (EDT)
+	id E519E8E0001; Mon,  8 Sep 2025 06:28:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A55F8E0001; Mon,  8 Sep 2025 06:13:09 -0400 (EDT)
+	id D40628E0003; Mon,  8 Sep 2025 06:28:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B7226B0012
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 06:13:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A58CB13C085
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:13:08 +0000 (UTC)
-X-FDA: 83865670056.03.21CF55C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0F739C0006
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:13:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fV5Tim1z;
-	spf=pass (imf22.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757326385;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BAAD78E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 06:28:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83B2C1DF72D
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:28:06 +0000 (UTC)
+X-FDA: 83865707772.24.C34A304
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id ADBF44000E
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 10:28:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UMAyGG5T;
+	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1757327284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DvUYqL9o/y8Kfnr8mVVqHhIYQ5BX6R6wR/K6AF/Cbmo=;
-	b=EkDuiC+1d1j6uZjyAKD6yM+SxAtGd1dZQAqd5YuFP4N2UcsPDYWbzaBaAi8buI2nU0nljA
-	e94YEeA6GSqobe5dkF7exX0/xxrhH+yI9jErszUktoooThIfG00dK7iijd5sJAI7eyRJ4T
-	YZKA1kBoHFlHIBja/3kFAMK/JC5Nvfc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1757326385; a=rsa-sha256;
-	cv=fail;
-	b=4kzK310NwPTZ2cNbdomT201eUcmPDEmdyBoAeRhF6ecVOKIiEEyZatsMerx79b5biFWy9m
-	PKiNXAX+0KyYGuhz0yd5gZBbleidNcv8JUk3upjAVgqqVMOKYWOkxRsS+foCDUwKbCgpu+
-	BOYtCWVyTbVpu9gaH+o0uwKm+cDRMzo=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=fV5Tim1z;
-	spf=pass (imf22.hostedemail.com: domain of maciej.wieczor-retman@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=maciej.wieczor-retman@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757326384; x=1788862384;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=SzzROfrst6ymJc0ZfddjslsnjWLkzNEgWkXwkK0WV1c=;
-  b=fV5Tim1zvRm+geBnF6p9HiqwvflihpeTp0S3UqcV/3lwZ/D883ALqISl
-   Yt+FKWCkLsOa7O2lliR7Vxxn6SjB3rPtGkBc/4CcUruDCLjLQk1iOm8fD
-   GZFK9+LSRaCqfx9Usb1N6GSONkjosD8Bp23TQelArzj0J9pLsfA+wgDtJ
-   zR1UWOi0DGJjB0UMUO0EvjnV+q0bq9sq2TMg38RH4SFaivlrux1GHpxSs
-   x3zV1blsgY3eebQ108sXcnkFiiWi0MAmtv7w/SwL2DOKD/eqHVLZ/9RIC
-   Xs+JutbHq2BFIo0d0PUipEFLLGure839FFg2LQK/QeSkjVZ27KG1NGXyh
-   Q==;
-X-CSE-ConnectionGUID: WH+btTEHT8Cz3GKO9j4Udg==
-X-CSE-MsgGUID: b95PkbRITvu8n0X+vypX1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="58619091"
-X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="58619091"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:13:02 -0700
-X-CSE-ConnectionGUID: szq24UfkSaq9ZdIgUrgELw==
-X-CSE-MsgGUID: e8yuTRAFQjWqMpM1WR7vag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="173546511"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:13:01 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 8 Sep 2025 03:13:01 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 8 Sep 2025 03:13:01 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (40.107.96.53) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 8 Sep 2025 03:13:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uQ3NsFdp2q0xRhEzj6opmKO/Bf10fsnSsZzfLiOQ3LE3jsssw0DgibdRF8Ax+XspD4zY9ISTPL2UABjPQbeV8rtulTeuPUTAvCtQJpgGalKm9QXmtA/BXk0O0h4vGyOSxvq0OkXOJNdcsknIPA6cWq1NXaxQKMnkVUXpjuqWzLMD6loT4Dn64YeJGztTOb7a9mo29nJa3rOUQC0lzESWQIWKw/uFMXdd6/xRSOdiA8S3XuF8722SA9aNg0tTZE8lX7H1Mg7Qppxj1p1fMTJVFDL2KWNEl/3H6raUoedq4BhdTOg3refkwoy18o9PfAjXQpq2xgWn1DMMdCq42zQ3uQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DvUYqL9o/y8Kfnr8mVVqHhIYQ5BX6R6wR/K6AF/Cbmo=;
- b=wPYoLdo7lp0AQ7wKbBJp4k+euqeCNucNS4jr38OeKUk4/IqAMvliLFdIlfnlD01S2cr5FTUkl/GtRa5rTYfXppfg/WXFEOLH3shbkLlpxbE7zHXabqHoGFgdNCmCIPIRvE5K03Pl+p7KOfKDCNcCVozgYaFKtqQ84dnbl/mFO3yoA1tPdWSQXW6BV16ko48mDuAJo+HQ4aspXDGwi1h3Z0PFIAlEOwV7ieAyzO4gm0fHN1dYGcF0bxW/Lgf8z8VonF6t0gVnVqm1wQUV3p9IZQUrOp2E70+oE2EZAa68uDJVB3tjbb35T7SYMmjW0Fl3u0d+nTYjfbeE+K6F+uouWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com (2603:10b6:208:152::20)
- by PH7PR11MB5795.namprd11.prod.outlook.com (2603:10b6:510:132::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Mon, 8 Sep
- 2025 10:12:52 +0000
-Received: from MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2]) by MN2PR11MB3934.namprd11.prod.outlook.com
- ([fe80::45fd:d835:38c1:f5c2%3]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
- 10:12:52 +0000
-Date: Mon, 8 Sep 2025 12:12:35 +0200
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-CC: <sohil.mehta@intel.com>, <baohua@kernel.org>, <david@redhat.com>,
-	<kbingham@kernel.org>, <weixugc@google.com>, <Liam.Howlett@oracle.com>,
-	<alexandre.chartre@oracle.com>, <kas@kernel.org>, <mark.rutland@arm.com>,
-	<trintaeoitogc@gmail.com>, <axelrasmussen@google.com>, <yuanchu@google.com>,
-	<joey.gouly@arm.com>, <samitolvanen@google.com>, <joel.granados@kernel.org>,
-	<graf@amazon.com>, <vincenzo.frascino@arm.com>, <kees@kernel.org>,
-	<ardb@kernel.org>, <thiago.bauermann@linaro.org>, <glider@google.com>,
-	<thuth@redhat.com>, <kuan-ying.lee@canonical.com>,
-	<pasha.tatashin@soleen.com>, <nick.desaulniers+lkml@gmail.com>,
-	<vbabka@suse.cz>, <kaleshsingh@google.com>, <justinstitt@google.com>,
-	<catalin.marinas@arm.com>, <alexander.shishkin@linux.intel.com>,
-	<samuel.holland@sifive.com>, <dave.hansen@linux.intel.com>, <corbet@lwn.net>,
-	<xin@zytor.com>, <dvyukov@google.com>, <tglx@linutronix.de>,
-	<scott@os.amperecomputing.com>, <jason.andryuk@amd.com>, <morbo@google.com>,
-	<nathan@kernel.org>, <lorenzo.stoakes@oracle.com>, <mingo@redhat.com>,
-	<brgerst@gmail.com>, <kristina.martsenko@arm.com>, <bigeasy@linutronix.de>,
-	<luto@kernel.org>, <jgross@suse.com>, <jpoimboe@kernel.org>,
-	<urezki@gmail.com>, <mhocko@suse.com>, <ada.coupriediaz@arm.com>,
-	<hpa@zytor.com>, <leitao@debian.org>, <peterz@infradead.org>,
-	<wangkefeng.wang@huawei.com>, <surenb@google.com>, <ziy@nvidia.com>,
-	<smostafa@google.com>, <ryabinin.a.a@gmail.com>, <ubizjak@gmail.com>,
-	<jbohac@suse.cz>, <broonie@kernel.org>, <akpm@linux-foundation.org>,
-	<guoweikang.kernel@gmail.com>, <rppt@kernel.org>, <pcc@google.com>,
-	<jan.kiszka@siemens.com>, <nicolas.schier@linux.dev>, <will@kernel.org>,
-	<jhubbard@nvidia.com>, <bp@alien8.de>, <x86@kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-mm@kvack.org>, <llvm@lists.linux.dev>,
-	<linux-kbuild@vger.kernel.org>, <kasan-dev@googlegroups.com>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5 05/19] kasan: arm64: x86: Make special tags arch
- specific
-Message-ID: <mjuxddfbpdvjpjetctqbs5kg4iz4ngsnwl5ovvv63k2gc3f2ir@n67fqqlnyuz6>
-References: <cover.1756151769.git.maciej.wieczor-retman@intel.com>
- <7a85ceb0918c6b204078e6d479b85fef6a6c1768.1756151769.git.maciej.wieczor-retman@intel.com>
- <CA+fCnZecdx5QsYcwn6ZyNoOkQRqmonUmSmfiihYTF8Ws_0O9KA@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+fCnZecdx5QsYcwn6ZyNoOkQRqmonUmSmfiihYTF8Ws_0O9KA@mail.gmail.com>
-X-ClientProxiedBy: DUZPR01CA0047.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:469::16) To MN2PR11MB3934.namprd11.prod.outlook.com
- (2603:10b6:208:152::20)
+	bh=QstgO/h652tnHFsITLWw6M/Son5KgedEpVG+JcbZcbs=;
+	b=3gAvdl3JsOpmBhxw8LFs9KyxLuQmLC7WS12PLJ6AQAp2VVmBzEbHYYLmXB+Ljq2miSDkZL
+	tOm9jY05ie4Urd3T0iSMPum13RS0JxrhWv8/waLGM+cWV9YqJQAVeVcVaIZ6yQ71hogxPB
+	ZKg4X8Bh4844/8BuBex4i2hixKNa7J0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757327284; a=rsa-sha256;
+	cv=none;
+	b=qvRAkD2Mm8StYcKFaCpoPIlWrjkk4J9mhFlxrCF7GjU+kBrelohTdYjHKBE+j+FY9b5we5
+	ho4CbBt50HJ5oe0TAB21xWaK+6LBasVDQyTx42pu7/4t37tN0Qf+PMFOveVOHYpxyBK7xQ
+	Uf2LmI+0c/rllk92AjTVs9+sBY4wezY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=UMAyGG5T;
+	spf=pass (imf11.hostedemail.com: domain of hughd@google.com designates 209.85.219.174 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-ea0848f6244so683700276.1
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 03:28:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757327284; x=1757932084; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QstgO/h652tnHFsITLWw6M/Son5KgedEpVG+JcbZcbs=;
+        b=UMAyGG5TmvRMsmGMJFZJJJTBN3tjT5zDnQFC+vpE0e19N6SxBYySmESz8PtIsRuGg9
+         F7181Hay3dmnf78JfDoJNiXxZWvohbToZjWym59BptvdBkk0bnepAwL87UWNs1BwUviT
+         AXOLKkXPKQ8TNMAxrMcW5l5SsTNmDtqZG7mFlMnHhvkWtLatcSwUtHvitxeLYOjXPeL0
+         t+nVf8xtaQCD1dVjlR9bMLalKysAKIoDFxYR5+6UMjuleJRkHU0Ops4JDocnIMFyG2DQ
+         eHIhDoq7Ih4TSNM/k2VMsjmYcIskvhI6G77erCJmk9e8724KOBQlQJOoiv7CO6x0x2AH
+         R//Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757327284; x=1757932084;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QstgO/h652tnHFsITLWw6M/Son5KgedEpVG+JcbZcbs=;
+        b=NGzaa57Eira1B5dT9Kmm0qiXinuEUlP8XZJIgqIuI7DhhcElGY/8+/h4r/YVC+RD6a
+         xMXpa8gkitcOJ+jV7ZkwtKwRoKesPS08IVVlfqjmUoKzOSr2A07fHWn6rHhCcq8Ahz4w
+         qOKLZ22N0H4KjtKG3rTp0iboQW2CkSiO6afUqMi5OiUWw5aAEvzDz0bdyIv82Ar7Mih/
+         mYWLnV0FIjIDAqbB/4Vc+KsJ1rF1B3yrLO4bpnrVmbkVNyP6iSsoyNeNAXpPuClNxCBq
+         N0bENrDcZHECEfRDl+67U0dqTygmeHTSfP02Lo8iLATN9vKs5O/N8ehHI+z8t2KM7kcT
+         u35g==
+X-Forwarded-Encrypted: i=1; AJvYcCXHzqd/uMxEPCKKpfMX2LFg027u1ygrEmGtzRA9Q+7xepuKUB9dsANd/uWusvH3ESvU+xfay13XLQ==@kvack.org
+X-Gm-Message-State: AOJu0YwZmDDo3CHv9Gg8STqJzHnRFPzTUrvpgPKMIF9ZYACVYDteGxqx
+	4iYaC8idX6FsfEqcGSgpDhd6ICzrrvCQY3H0Zepv6GYizhVAdtSHXIAWo3AkqKbieA==
+X-Gm-Gg: ASbGnctyXgBVb/l95FQzHw/7NuxHwtu58kDQRB63Fn/SN9YpPNe9yrzSxMpr1MpHXqE
+	q9oDwMeSgkZC6gRMF3EBq1yxrQHdBpIKCzVl52i9xIJMemLyKhWyXJUr/HCHZwMuSZL5d0hOr92
+	X6q08foDN2oWW3zFbleH76CJ6QS0AvTyZl+zvtdWZw7PWzWKvOIKVwPVv3bRdtyUi5JICCmBKb7
+	u33AwmmDV97nECaHSeqfGAHKmvN3v455QMpLq2JBUqz8JMLGno8yZhjpwGP+VkOephTcViEiPi6
+	eaAQRzHQ8Snj7G2p3S+I4s0gWM73f5u9Rh2nqI9oqrvFbxKQGLAiL0413t7ltaF2ouOCy/wuf1U
+	COUJuIWk+kkzNsMvEUuclzVvhPDYCN3nH4u7bjNMHU0o7kkIbERqAloI4bNsGMHG8/SViml5Gh4
+	zdiqjh6eOKYLE3Ng7/vrq9ezbn
+X-Google-Smtp-Source: AGHT+IEG0zC/H9tZD5Bx0cYfI7uzkElpcV9FNOtoZ7SRGcnoij3YDPgfHLSxfLTqn763yITqfrPidA==
+X-Received: by 2002:a05:690c:368e:b0:722:7d35:e08d with SMTP id 00721157ae682-727f2dbf41amr79303667b3.10.1757327283278;
+        Mon, 08 Sep 2025 03:28:03 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a85ae667sm51092367b3.64.2025.09.08.03.27.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 03:28:00 -0700 (PDT)
+Date: Mon, 8 Sep 2025 03:27:47 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: David Hildenbrand <david@redhat.com>
+cc: Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, 
+    Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>, 
+    Shivank Garg <shivankg@amd.com>, Christoph Hellwig <hch@infradead.org>, 
+    Keir Fraser <keirf@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+    John Hubbard <jhubbard@nvidia.com>, Frederick Mayle <fmayle@google.com>, 
+    Peter Xu <peterx@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+    Johannes Weiner <hannes@cmpxchg.org>, Vlastimil Babka <vbabka@suse.cz>, 
+    Alexander Krabler <Alexander.Krabler@kuka.com>, 
+    Ge Yang <yangge1116@126.com>, Li Zhe <lizhe.67@bytedance.com>, 
+    Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+    Axel Rasmussen <axelrasmussen@google.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+    Konstantin Khlebnikov <koct9i@gmail.com>, 
+    David Howells <dhowells@redhat.com>, ceph-devel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/7] mm: fix folio_expected_ref_count() when
+ PG_private_2
+In-Reply-To: <2e069441-0bc6-4799-9176-c7a76c51158f@redhat.com>
+Message-ID: <3973ecd7-d99c-6d38-7b53-2f3fca57b48d@google.com>
+References: <a28b44f7-cdb4-8b81-4982-758ae774fbf7@google.com> <f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com> <aLTcsPd4SUAAy5Xb@casper.infradead.org> <52da6c6a-e568-38bd-775b-eff74f87215b@google.com> <92def216-ca9c-402d-8643-226592ca1a85@redhat.com>
+ <2e069441-0bc6-4799-9176-c7a76c51158f@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR11MB3934:EE_|PH7PR11MB5795:EE_
-X-MS-Office365-Filtering-Correlation-Id: af827897-fbcc-4868-1387-08ddeec04569
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Ty9RNHNzZG95TlNXaGdSUk1rV1dSaXd5bTcwUyt3OTNqQjBKdnpQRStSdkp6?=
- =?utf-8?B?ZzdYK3ZOWmtvNHNGelVqOHRWNkQ1UGRiaXJ3OWduMTN6T0NqSXU3Z3Q1QUYy?=
- =?utf-8?B?b0VxNXorR0NqQWx5eVJ0TGpwd29nTFB0OXZRVDZwV0VNY1lVRGFaajEwZ2ZG?=
- =?utf-8?B?a05TQmRUY3pYdXBHendlZW5oa0NoNHhHOFZQMFZTanJiQlNsUGdkS0xRSzQw?=
- =?utf-8?B?UHZsbTJFbVJaV2dIdzNMaUpxcnVCK0JTSEJCUmloWTRUV0U1cjVaRGp4MHFB?=
- =?utf-8?B?Y21Scmh6VkNyVUpEZk9kWVplWE0rb1BmZUI4Qm56MVZ0MEdDaHdTUjlSZnJP?=
- =?utf-8?B?ZG5CSTBrMWZRZUxuTzhCZG5WQTZoWmk2ajBQekJMRVM4emxRZ0tjemcybXd2?=
- =?utf-8?B?OEIvMXdHeUNWV0w1ZWs0REZKR0EyaCtacmVOWFlSVUJBanVLbzc2aHRDZks1?=
- =?utf-8?B?NzZuTFFQU1A0aUpKdGdFYlhkQTNnVnBqbjhacEJMcmdvR3RjNlYwSVdlUk0z?=
- =?utf-8?B?dkdGd2M1MUJZa3BiMFcyWmF3R1QxRWx2MnVxc1JVbXZRVzRhVTNZVDdXQjdV?=
- =?utf-8?B?czBteTh3VEg3OU1qZmRELytmcC9sYWwxYk9Deko5SmlJV3piL3NKZWdUVmxC?=
- =?utf-8?B?S1c4VGpvNHB2MmFKYUwzM1RBenhSWUwxR0U4aXFOcGliVUpFMlNmUG9JMDNI?=
- =?utf-8?B?d0xqRm80Yk1nOCtsY2FEQzJSYkkzNTNRUGNpQlFrZkdRUGhScDZ0Tm1wdnNa?=
- =?utf-8?B?ZWRXVEZGQmdmYzR6WCs0S2FRY08wVzdrWTJpT1ZhVVJleklhMFlEei9jU2dp?=
- =?utf-8?B?b2hieU9ZOWJxZy9seTR6a2ZkbkNDdU9zdENIaFNUZHQ4OW82eERUNXQvQXds?=
- =?utf-8?B?cmVsU2I2NXc4dExQQlUyamFYd2tGK0tjN0dHdUcyMTR5TXZJbmlZODMyTDBM?=
- =?utf-8?B?cGlKc3FJWGJtQUVoQTJ5eFhjL0RVRTVXWnIvTjUzdWZuR25MN09HRGxmMEw5?=
- =?utf-8?B?b3FzaUZCZklLVUgyNXE1QkZZMisrR3RmRGY4Yk14dEp4RUc0OWhXN1pmMjV4?=
- =?utf-8?B?aStmcDRoRGE3UG4wT1A1NmZwY3N0MzBSY3ZEOWZETEt3VGl5cXFzZGtYeGJh?=
- =?utf-8?B?NTlUL0JqMXNtSm9yL29lSGYwSElNQ0h0bTZXWGVqUlkzZEVQMXZYTnJ3ejFK?=
- =?utf-8?B?ZU9lRmFZeTE5U2hBNTY4RDAvdHpQTlVNSHBkVHpoUlh6RUh2YWVFVGJiUXpS?=
- =?utf-8?B?UGNUeXZ4RTRCdXBTazd2THRKT1BabU8vNGFxUnoxQko5MUg1N1E4UUVaSkZs?=
- =?utf-8?B?eDEwbk9pbjRJTFJmdWl4V1ErOGlLWGpPTVJsMjMzOHlKT21raEg5ajduQmhM?=
- =?utf-8?B?TGp3TlZvclI4VlNMQ3dEcGlJRFA3UkVackhJd05yU0gzcW1rbWg2SEFaSVl6?=
- =?utf-8?B?cjMwTDNVMzhEZ3lYZEpDSkxaaStLMkRRL0lXWVVRVVkwOUdKNkdwTmNMU25T?=
- =?utf-8?B?OWpkZlJ6bW9CeDZFTTFTeWNQWFduWTBOMktkZUd1cUt2dVlOS1ZCV1JOQ1Jm?=
- =?utf-8?B?TFhtWjlDSGo0dFFZa3E4eWNaL0l2Z0MzZ25KMlVwclQ4MC9GeXpXR2xHNWNy?=
- =?utf-8?B?SC96Z1pXYkRvT00rSGVOYTdnTm1pS2xlUHNnak8rdXhyV1BUVWxoYlB2cnVr?=
- =?utf-8?B?TWY3TUJsOThFVWY1YTBNNkxNOWVaSkFScGNGUnA2K2drNGpGbGl5cVZsY3Vo?=
- =?utf-8?B?YjQ2SFVaQmxPSWlSUnBDTksxQzJ1MnFlQUErS00reFNmZ0VaMkEzV2k0V0ZQ?=
- =?utf-8?Q?J/H5ejuP44p8bGtbWC90Qc1F4MkIDb8qwNDnY=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR11MB3934.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UkZGK1pRSjdEd3llS2J6RENYc0xvOXV4SW95MEJPT1p3eVJMREgzdWtyOXQx?=
- =?utf-8?B?ZzNUK3dlTkdJa2xIRUxScWM2SXpidHczYUhXWDNuNS90cHdVckhDQmxlZ3I4?=
- =?utf-8?B?OVN1QktvQXptdlF1eDlJZjlWTExFdWJ2akJiVmhpREZTbWZzdVdNcllaQ2JV?=
- =?utf-8?B?bUVSS29LdnR1SXo2cjFNVEFsa0tObzFsWHJhQWJjaGJHV0F1SkVQcXFwRSsr?=
- =?utf-8?B?OS9QZ0EvRXBrZk1YeVFWNXh2L1FJcndtUllQTTNwK05jeXlVcUh5ZjY2R0tX?=
- =?utf-8?B?UUVHbXpIc0lJbWRNUkdLajRCUUxqZ2t3a0Z5Mk5LcU9kbmtTdERENUFqNFJW?=
- =?utf-8?B?ckJyRjk1ZzlSbmFYZWh1cmpvbUlOM1B3ZGRIZTlYYTcrMjFPR3YrejdVbERo?=
- =?utf-8?B?SzA3ZFMvY1o1bFdVR2xnQlY4T04yMjVsemFQbW9MaWdydVh1SjVLeFAvNW1p?=
- =?utf-8?B?Y2JRdk1CaGU3RTZIWXpIdG1adnpmSEM3WS9LWWlZaDJUNDVFdEE0UVcvN3NZ?=
- =?utf-8?B?bHFGV2Z4TUFtVG5CeGUzQXh3S1QwNlZmY3QwZ1pIYnJRNVFwekxCRVIwZC9r?=
- =?utf-8?B?d3ZaSEdhMDhqZEQ2RU9FaTdtNWRhYk4wTjdoK1JNYURtclE5VDEyVWp2ZVA1?=
- =?utf-8?B?Y1BwRzdlSWMwSFlNZjUvc2hEKzE2REVsQjFPMi92N2NRU3YzN2tUYW05RnFD?=
- =?utf-8?B?VCs3UmxyOXNRR0kyWjJnZER2S2puQXRabFI0WVl1aGNtclp5SDFQU1dUM1dS?=
- =?utf-8?B?ZCtmQ0hLTVRaZXhmMHRuazk1bWRSVk5mR240TmV5KzdQdlpWdWEycDA2NUNG?=
- =?utf-8?B?eVByVUo1aTdlQ0svd3pJSEVjbVRWZCt2S29lR0ZCeC9OYnluZW9xL1VlZFJE?=
- =?utf-8?B?d0FSRlR4TzBCbUVmNXVYUkdNSDBpcWJoU2xub0JLSXl5TmdUOUVCeTkza1Mv?=
- =?utf-8?B?VmZWOVBCRzJCOHFkNXVJRGlSL3ptbDUwT1Q3eU5FQjJLYk1BOHhPUG5rR1Z5?=
- =?utf-8?B?UkpQQ2E4bnZSNGdQc2xZbGFxODFHa2pzb2EybjZGMmdwbnloTmhEUFlXcXlS?=
- =?utf-8?B?MEQvVUQ3dnJHalJnUlVTVWEzTDFwSE9Ndm9MUzQrYVF2NEJaSUFZSFFlYVo5?=
- =?utf-8?B?M0wzcThPejVpNS9haTB3MFF1V3lhYmhvQVh4Ymt0WFNxN05PZ2VvUCs5eW5B?=
- =?utf-8?B?WHhTNmdiR2wvMkpzdWRKdVE2V1FEbFZtYjN5WmgvdEtKQ2ZNeEZqaDhidFdR?=
- =?utf-8?B?elV5NHJwYWpyajIzbk9jZ1dWTC9kVFVycXErYjBTSk1vWEc1SjM2bW5aUEJ2?=
- =?utf-8?B?YmVLemxTMVRSRWkxWkxkdmRFbThTdG9LOUFlcERjYkFGalVTRTR5dGw5QVFT?=
- =?utf-8?B?NjN4Y3lvbTR4K3lzMTloK1RBeng0eFBkaXg1RG5aRVRra1J1ZVlTTFozT0Ex?=
- =?utf-8?B?SDFqaFI2R24rNW4rRmlhRlh6S2lCN3JtajliTDlzL0pzZHljNHRHZnlNOFV1?=
- =?utf-8?B?VVlMK01yYnhyM2w4Zk53bHUwbW43MHlqdmsrY0lwMVlIYjFLZnJsK1NFaVBi?=
- =?utf-8?B?allUeXg3MUpIRlplM2UyM05zeVNaVThEVzl6Zmp5Q0hCdXdSaExKWHgybHdy?=
- =?utf-8?B?UlBUMzlsM01Ka3Z0NzZIcmxZQlJKM2JHMFhvd2RGTzBUTHQ4VDhac3EvVXRj?=
- =?utf-8?B?TVJkV0ZwRE91T01sbnZBdFNHRURHVStIMUNOZGRGU1BpQ0lOVzhEMWd3Mi9j?=
- =?utf-8?B?bVkxZUdxSDdqUE5la1d3Mmw4aUhIeDhCZklyVU80c3FwWGRvYVR6bGpvQ0Ux?=
- =?utf-8?B?WWZkWHc4Z3M1WXAxUXFFWkhaa2N4eUJ5VFRZNUlJUmRYMG91M0drcUVPWWtT?=
- =?utf-8?B?MlN2dDNzaDBBb1QwSHg4WlR5dFpxcnQ5Uk9XYktRMlIzcnFtMmlnYXpQVEpI?=
- =?utf-8?B?TU05c0l2Z1FiU0k2Y2hJMHNqNTdPNGFpV2ZNNUtDQWNJVFF6dEFVWWttSWk2?=
- =?utf-8?B?Vzl5Z0hGSUs1Q1o1V2U4V2FpOHhtTG5zYkkvb3pRM2FkazZCQ3FIZTVEZEoz?=
- =?utf-8?B?bFd3c2hmdzdwbDZ3TW85ZXFNbWtlSUdrOUVkZlU1VURiUVFKMzNDWG1vaUh5?=
- =?utf-8?B?bnM3NjlxV0NONmRlYUpNTWZXWHo3MmxLL1FzT1NmYllwRkNlVWpKUGJGMXU4?=
- =?utf-8?Q?CrBH4euudSgvoXXjIf1TbI4=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: af827897-fbcc-4868-1387-08ddeec04569
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB3934.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 10:12:52.4865
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lbmhOa57ctadh/YENOffhjPokll1wVrJ4vZOoELfIIaJWgDNRXeDwd9sfN0nK1yAo3Tx++gAn8xzr2JfFnkiUNQg2fxNtCEzFL9lXX0+4Bg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5795
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: ADBF44000E
+X-Stat-Signature: q9aaqg8ftwsirg46aahxm9nkpkk4rxzn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0F739C0006
-X-Stat-Signature: uznk4mbs8suggeejhbf34xk39tcukfog
-X-HE-Tag: 1757326383-468623
-X-HE-Meta: U2FsdGVkX18em6Xy/fhIDD0BsDHgMemVYL1HHUziuFEUvCTOCj+1RYP3h6FOccOL9JlBhSeSR4SAzDIO8SnuSHFdoDuohaiBAV7fMIU1vYwZu3IWGyWdB7pOTFpk+MyLV5KU/RkIoKf3hjCDk1Dr1hol9RKu2zt6nMhKvUJhLveM9on9OK7fTXOlt3yN2AJZ7BECy7IPYgT1l7iF0QM/4nWWISdGW9cQcKrkYudbQe1WTpOl3+6DR9kZnSYXYt/fsAAMIC0gJj4w0J5Xo0X9J5te2AK9lgoMw2bh39hzBFwnotn5OYSaS6ZD8zaPsf7oCZZHqH4d5DXbVs8UtXVBC+PP4eFUQ6ITCN0Jpn5nPkooWIk/24JqJejJh1/bcw+ky4bDQqURRfoNN06Y6DC32XWa8fUXQXIt6oZDlI9kvg1jzKyEbdsxm8iXA573woqS3COtUjnvsbxpjxb5WPa/wbcOoqHNzMTgUEzSg0nTtq+4P614+esfz35TvkKvsGlHhP+f29EaDg9XTHwRrtyVmBPxMb2vigMoCd6QIdAlAaF9YBXoixEyNX2oUCV6hrlvvi8ktObW8QeaLbiP5U0aBPAcO67wloF7cLDJMfjVX3pweI8WvcYtc0vqAZOtGucvLUSTMSwx5yTVASrjDxdb0TZej/oRdHHZhuFzXeWnarNB3XfT/wVBpf+HVSbyPy+lfUxM3+lwNq5LgFajoEsKKstSK0iF6Uk8A33k6ZWSv1ZZYkNJeuxJKrn46ffBVNueeR6FI8BJ/YOEiMu4kGUY7xTFCsJh8KLJf/oWl+Ww1FCcyhh1vmnhuCKV0qaZd0s14xWPFHbpIUuk07la0v3AJonZ6vtLarWoh6xSg2SiYWJuRP944UcHwu1y5G93pCQNkSD136664Px67TyiH+3ygOUtdsufDiQLNMegwal9P30z8gd25wga7ytil98Q7X/U+x//V7obwZBOU7/JtJE
- f4e2vNGS
- DTidZNEdz7XX+o0XF8iOW4FPV33P8B5NvxRTGzf87qdOw9MZhRf4spxyjZ5jg4qtpTYGcbh4GPUcxFBeVpm2SJonNuFwGogxpzwgH1rJQXeVMBS/MG/kqsB2iod9/ePIwcpG8ah0NJC5e6Vycb4jHE13k9SgKlZdX0r7Uke0qQOE2Vlp4f/4pgbaw89ufSR08zYmRkBxnfV4ic8g5fCxpkRvoEDfSZWymV5pat9mZmoNHytvshIaHAGdf+N51Y9zjpil8LtR3Gm2LLXiMVTeuS5XHgi9Tg8U5HK6AfBYmYtuP96ORfbdigq0gQIszM4ZW6oJ79iPEUXjrkqX4eTNEKzip4vEl9gTvqqEXabP0iRKViLYUTsQQvVC4b21ipeeiT3PHMebwxSSpHCLE6WGV25R0SetKIdgSmc49GkaNd841RkE2oyHNd3G1oRn9hWdAGkAefN0MJ13T/CE1hOba/3Q1qhJ8cRGzCaUjMO1YVCwEe8tqgnu2Zeim7fMhqkVbKSKY1S15DRAHVQTI1udCyWjmEL3WvJu9wXvTVTPfq4dmTplY8DrmLv0qwFDzR/VDx/dTDdu+zN/Ig0BPFMhvV3qurSmifzXWzb6Mkz0IZHYdpVZe4C1ckhVu4jHJzNtw42Qn8vI6WAQfryc6C7h9LUEwBxdjDxMgvAxcP5lN6/FIE9iaiWGFH692sy2uv5kRyXM1clY3e4gJRCpPnhdWBIqs43ZjkSfMXK2nJAfj7oLCSDwn+ZY2awcylUDHYVXdI8SpCIR2OQAaD0ayqGcEmnp2WgETxxmg0dQWHFcG9o2N33HCU3vysA06FA==
+X-HE-Tag: 1757327284-30950
+X-HE-Meta: U2FsdGVkX18bDVNvxphrLm9OOzUbmAn6fROhKnHN2r7NnMWYruB63LMKZ6OoNS0djXDNSfvpp1okbV12OCcPIzcWerOYS71srlzkYBe2CIaziD/hrReUjTy6rX2Z4NU052O4QncQdt+/WFQeuohUhofh1q9m4YEt+9q8iX9ELRbGwGlEJkIDi+NRaTTC6uvyF/w0nt/jGcsnfhUYKPD5k8LLL0n+osKmmyD6jKUmwYOULqiAfPX2Pfr4NA8C1ocCJpDW7f4i8Qa6dcsvHaj4xVCSYSgxcHYNf/LCcOYxqmFbd4ON4NnJ69KJ7Km0Ae3OweWsypcsp/f2Xci4KKLQfi21WnBR9vk+3FrwYqWWXLjXeGhwx74apwK5pSFV3N/jAN7wt6tJx7xRZxYtDu4dRRkFRkrxe4IyBzBBuOdPJgO5VcZdGcz68MLFKAwoqvxl/UMqfNexw0Dctea3T754WWhr2LlF1ARrKbdae3D5LqvhY/EbjiU+sl6BVK3Qf6XtRJXKM4utcutDztlvpwE0QIaAa5vDiqelGwRW9reSZUxUJTlHjq/AduxLU1NeXABevVUaV6IRxMXgmB1v9lYIx7AP3RARA0b0OHEL1NBy672qmDq5QfyE8ChiJqBnvSRW5HknRCnSOCbPcPjR7oJUYOisvV0VpzwnUHMWfHSMISlfmzVrUVEEz1lN98Wo9HoiMqHBKlYq73HRITOalnP0fArniC8KVrbeqvRlKuOnrGyPbX6BBCXN7xEgjMl5JU37hY66XH+6T6dQXJjosM+rs1f8Ndi08HZd08KycExooMMJq4VKVVnwLCxGRnLqCNmU3xQBqRfRoLZ7cvqNjoUn1mVEPF3HyvNNsvRxr0Y5ZY/y/jquyrci8bhbGZ5ouaN+LKNs2bp8+AK7MynwiI+avQ3QAAKw3Cn5dKXre8YFzHu9mrcg30vKVcKil1WGvgW5SOpQTS7o8qiRkAKeyyk
+ PWf+zBTT
+ vreAcYfRK+3G2OMbcwFa+Z+Pcg8aFqhIbczIqqzSDgDfc2Gi7elfbCldQXbYTdEwckBLsToGH1EM0niRcHmY3ITy+bz2XnfQltumbSa22g3xTbOJU55h5rVV/n3LEsRI0DbUxAwncr7S92AEku2lnuZh2+rh83Ou6ZBljDt7WXrE3Pxb7B2lT2T8PbGqM/lp2Yztr4wix9soE/iLFJnrxYiLOgBBj4lAK3Jf9CtwZCFSUVnLCjeKJ8H+yQcaUcj5gZzKH0+QB7tErFRhzlnJ4sUfvdfrZmezAVF3HSKXrDeOV8BkLawdXBhArsmxxZAehZlIRPZaioSuXMiBA7bVG/1M2i8oXG0R4vMDRAdi1tTd/NsdWxTC+8a7CkrZhnqWyiA7FqgEjyc+fEM5lqVlGohvQK6pt4g5tC7lkbkd3ff549dJ28NmCJYH1pSVo2sUMEIwJMDyIyDrXO9Nd86Fw7E0pNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -258,253 +131,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-09-06 at 19:18:33 +0200, Andrey Konovalov wrote:
->On Mon, Aug 25, 2025 at 10:27 PM Maciej Wieczor-Retman
-><maciej.wieczor-retman@intel.com> wrote:
->>
->> KASAN's tag-based mode defines multiple special tag values. They're
->> reserved for:
->> - Native kernel value. On arm64 it's 0xFF and it causes an early return
->>   in the tag checking function.
->> - Invalid value. 0xFE marks an area as freed / unallocated. It's also
->>   the value that is used to initialize regions of shadow memory.
->> - Max value. 0xFD is the highest value that can be randomly generated
->>   for a new tag.
->>
->> Metadata macro is also defined:
->> - Tag width equal to 8.
->>
->> Tag-based mode on x86 is going to use 4 bit wide tags so all the above
->> values need to be changed accordingly.
->>
->> Make native kernel tag arch specific for x86 and arm64.
->>
->> Replace hardcoded kernel tag value and tag width with macros in KASAN's
->> non-arch specific code.
->>
->> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->> ---
->> Changelog v5:
->> - Move KASAN_TAG_MIN to the arm64 kasan-tags.h for the hardware KASAN
->>   mode case.
->>
->> Changelog v4:
->> - Move KASAN_TAG_MASK to kasan-tags.h.
->>
->> Changelog v2:
->> - Remove risc-v from the patch.
->>
->>  MAINTAINERS                         |  2 +-
->>  arch/arm64/include/asm/kasan-tags.h | 13 +++++++++++++
->>  arch/arm64/include/asm/kasan.h      |  4 ----
->>  arch/x86/include/asm/kasan-tags.h   |  9 +++++++++
->>  include/linux/kasan-tags.h          | 10 +++++++++-
->>  include/linux/kasan.h               |  4 +++-
->>  include/linux/mm.h                  |  6 +++---
->>  include/linux/mmzone.h              |  1 -
->>  include/linux/page-flags-layout.h   |  9 +--------
->>  9 files changed, 39 insertions(+), 19 deletions(-)
->>  create mode 100644 arch/arm64/include/asm/kasan-tags.h
->>  create mode 100644 arch/x86/include/asm/kasan-tags.h
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index fed6cd812d79..788532771832 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -13176,7 +13176,7 @@ L:      kasan-dev@googlegroups.com
->>  S:     Maintained
->>  B:     https://bugzilla.kernel.org/buglist.cgi?component=Sanitizers&product=Memory%20Management
->>  F:     Documentation/dev-tools/kasan.rst
->> -F:     arch/*/include/asm/*kasan.h
->> +F:     arch/*/include/asm/*kasan*.h
->>  F:     arch/*/mm/kasan_init*
->>  F:     include/linux/kasan*.h
->>  F:     lib/Kconfig.kasan
->> diff --git a/arch/arm64/include/asm/kasan-tags.h b/arch/arm64/include/asm/kasan-tags.h
->> new file mode 100644
->> index 000000000000..152465d03508
->> --- /dev/null
->> +++ b/arch/arm64/include/asm/kasan-tags.h
->> @@ -0,0 +1,13 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +#ifndef __ASM_KASAN_TAGS_H
->> +#define __ASM_KASAN_TAGS_H
->> +
->> +#define KASAN_TAG_KERNEL       0xFF /* native kernel pointers tag */
->> +
->> +#define KASAN_TAG_WIDTH                8
->> +
->> +#ifdef CONFIG_KASAN_HW_TAGS
->> +#define KASAN_TAG_MIN                  0xF0 /* minimum value for random tags */
->> +#endif
->> +
->> +#endif /* ASM_KASAN_TAGS_H */
->> diff --git a/arch/arm64/include/asm/kasan.h b/arch/arm64/include/asm/kasan.h
->> index 4ab419df8b93..d2841e0fb908 100644
->> --- a/arch/arm64/include/asm/kasan.h
->> +++ b/arch/arm64/include/asm/kasan.h
->> @@ -7,10 +7,6 @@
->>  #include <linux/linkage.h>
->>  #include <asm/memory.h>
->>
->> -#ifdef CONFIG_KASAN_HW_TAGS
->> -#define KASAN_TAG_MIN                  0xF0 /* minimum value for random tags */
->> -#endif
->> -
->>  #define arch_kasan_set_tag(addr, tag)  __tag_set(addr, tag)
->>  #define arch_kasan_reset_tag(addr)     __tag_reset(addr)
->>  #define arch_kasan_get_tag(addr)       __tag_get(addr)
->> diff --git a/arch/x86/include/asm/kasan-tags.h b/arch/x86/include/asm/kasan-tags.h
->> new file mode 100644
->> index 000000000000..68ba385bc75c
->> --- /dev/null
->> +++ b/arch/x86/include/asm/kasan-tags.h
->> @@ -0,0 +1,9 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +#ifndef __ASM_KASAN_TAGS_H
->> +#define __ASM_KASAN_TAGS_H
->> +
->> +#define KASAN_TAG_KERNEL       0xF /* native kernel pointers tag */
->> +
->> +#define KASAN_TAG_WIDTH                4
->> +
->> +#endif /* ASM_KASAN_TAGS_H */
->> diff --git a/include/linux/kasan-tags.h b/include/linux/kasan-tags.h
->> index e07c896f95d3..fe80fa8f3315 100644
->> --- a/include/linux/kasan-tags.h
->> +++ b/include/linux/kasan-tags.h
->> @@ -2,7 +2,15 @@
->>  #ifndef _LINUX_KASAN_TAGS_H
->>  #define _LINUX_KASAN_TAGS_H
->>
->> -#include <asm/kasan.h>
->> +#if defined(CONFIG_KASAN_SW_TAGS) || defined(CONFIG_KASAN_HW_TAGS)
->> +#include <asm/kasan-tags.h>
->> +#endif
->> +
->> +#ifndef KASAN_TAG_WIDTH
->> +#define KASAN_TAG_WIDTH                0
->> +#endif
->> +
->> +#define KASAN_TAG_MASK         ((1UL << KASAN_TAG_WIDTH) - 1)
->>
->>  #ifndef KASAN_TAG_KERNEL
->>  #define KASAN_TAG_KERNEL       0xFF /* native kernel pointers tag */
->> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
->> index b396feca714f..54481f8c30c5 100644
->> --- a/include/linux/kasan.h
->> +++ b/include/linux/kasan.h
->> @@ -40,7 +40,9 @@ typedef unsigned int __bitwise kasan_vmalloc_flags_t;
->>
->>  #ifdef CONFIG_KASAN_SW_TAGS
->>  /* This matches KASAN_TAG_INVALID. */
->> -#define KASAN_SHADOW_INIT 0xFE
->> +#ifndef KASAN_SHADOW_INIT
->
->Do we need this ifndef?
+On Mon, 1 Sep 2025, David Hildenbrand wrote:
+> On 01.09.25 09:52, David Hildenbrand wrote:
+> > On 01.09.25 03:17, Hugh Dickins wrote:
+> >> On Mon, 1 Sep 2025, Matthew Wilcox wrote:
+> >>> On Sun, Aug 31, 2025 at 02:01:16AM -0700, Hugh Dickins wrote:
+> >>>> 6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
+> >>>> which (like PG_private, but not in addition to PG_private) counts for
+> >>>> 1 more reference: it needs to be using folio_has_private() in place of
+> >>>> folio_test_private().
+> >>>
+> >>> No, it doesn't.  I know it used to, but no filesystem was actually doing
+> >>> that.  So I changed mm to match how filesystems actually worked.
 
-I just checked and you're right, it's not needed. I think it might have been a
-leftover of my dense mode code.
+I think Matthew may be remembering how he wanted it to behave (? but he
+wanted it to go away completely) rather than how it ended up behaving:
+we've both found that PG_private_2 always goes with refcount increment.
 
->
->> +#define KASAN_SHADOW_INIT KASAN_TAG_INVALID
->> +#endif
->>  #else
->>  #define KASAN_SHADOW_INIT 0
->>  #endif
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 1ae97a0b8ec7..bb494cb1d5af 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -1692,7 +1692,7 @@ static inline u8 page_kasan_tag(const struct page *page)
->>
->>         if (kasan_enabled()) {
->>                 tag = (page->flags >> KASAN_TAG_PGSHIFT) & KASAN_TAG_MASK;
->> -               tag ^= 0xff;
->> +               tag ^= KASAN_TAG_KERNEL;
->>         }
->>
->>         return tag;
->> @@ -1705,7 +1705,7 @@ static inline void page_kasan_tag_set(struct page *page, u8 tag)
->>         if (!kasan_enabled())
->>                 return;
->>
->> -       tag ^= 0xff;
->> +       tag ^= KASAN_TAG_KERNEL;
->>         old_flags = READ_ONCE(page->flags);
->>         do {
->>                 flags = old_flags;
->> @@ -1724,7 +1724,7 @@ static inline void page_kasan_tag_reset(struct page *page)
->>
->>  static inline u8 page_kasan_tag(const struct page *page)
->>  {
->> -       return 0xff;
->> +       return KASAN_TAG_KERNEL;
->>  }
->>
->>  static inline void page_kasan_tag_set(struct page *page, u8 tag) { }
->> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
->> index 0c5da9141983..c139fb3d862d 100644
->> --- a/include/linux/mmzone.h
->> +++ b/include/linux/mmzone.h
->> @@ -1166,7 +1166,6 @@ static inline bool zone_is_empty(struct zone *zone)
->>  #define NODES_MASK             ((1UL << NODES_WIDTH) - 1)
->>  #define SECTIONS_MASK          ((1UL << SECTIONS_WIDTH) - 1)
->>  #define LAST_CPUPID_MASK       ((1UL << LAST_CPUPID_SHIFT) - 1)
->> -#define KASAN_TAG_MASK         ((1UL << KASAN_TAG_WIDTH) - 1)
->
->So we cannot define this here because of include dependencies? Having
->this value defined here would look cleaner.
->
->Otherwise, let's add a comment here with a reference to where this
->value is defined.
+(Always? Well, until 6.13, btrfs used PG_private_2 without any such
+increment: that's gone, so now it's consistently with refcount increment.)
 
-I'll retest with a couple of configs but I removed this change and everything
-compile fine. Thanks for noticing that
+Confusing, given David Howells removed deprecated use of PG_private_2
+then later reverted the removal: I've not looked up which releases those
+came and went, but reverted in stable trees too, so story all the same;
+but maybe some of Matthew's mods interleaved between removal and revert.
 
->
->>  #define ZONEID_MASK            ((1UL << ZONEID_SHIFT) - 1)
->>
->>  static inline enum zone_type page_zonenum(const struct page *page)
->> diff --git a/include/linux/page-flags-layout.h b/include/linux/page-flags-layout.h
->> index 760006b1c480..b2cc4cb870e0 100644
->> --- a/include/linux/page-flags-layout.h
->> +++ b/include/linux/page-flags-layout.h
->> @@ -3,6 +3,7 @@
->>  #define PAGE_FLAGS_LAYOUT_H
->>
->>  #include <linux/numa.h>
->> +#include <linux/kasan-tags.h>
->>  #include <generated/bounds.h>
->>
->>  /*
->> @@ -72,14 +73,6 @@
->>  #define NODE_NOT_IN_PAGE_FLAGS 1
->>  #endif
->>
->> -#if defined(CONFIG_KASAN_SW_TAGS)
->> -#define KASAN_TAG_WIDTH 8
->> -#elif defined(CONFIG_KASAN_HW_TAGS)
->> -#define KASAN_TAG_WIDTH 4
->
->This case is removed here but not added to arch/arm64/include/asm/kasan-tags.h.
+> >>> I'm not sure if there's still documentation lying around that gets
+> >>> this wrong or if you're remembering how things used to be documented,
+> >>> but it's never how any filesystem has ever worked.
 
-Right, I'll correct that.
+Not how btrfs used to work, but it is how ceph and nfs work.
 
->
->
->> -#else
->> -#define KASAN_TAG_WIDTH 0
->> -#endif
->> -
->>  #ifdef CONFIG_NUMA_BALANCING
->>  #define LAST__PID_SHIFT 8
->>  #define LAST__PID_MASK  ((1 << LAST__PID_SHIFT)-1)
->> --
->> 2.50.1
->>
+> >>>
+> >>> We're achingly close to getting rid of PG_private_2.  I think it's just
+> >>> ceph and nfs that still use it.
+> >>
+> >> I knew you were trying to get rid of it (hurrah! thank you), so when I
+> >> tried porting my lru_add_drainage to 6.12 I was careful to check whether
+> >> folio_expected_ref_count() would need to add it to the accounting there:
+> >> apparently yes; but then I was surprised to find that it's still present
+> >> in 6.17-rc, I'd assumed it gone long ago.
+> >>
+> >> I didn't try to read the filesystems (which could easily have been
+> >> inconsistent about it) to understand: what convinced me amidst all
+> >> the confusion was this comment and code in mm/filemap.c:
+> >>
+> >> /**
+> >>    * folio_end_private_2 - Clear PG_private_2 and wake any waiters.
+> >>    * @folio: The folio.
+> >>    *
+> >>    * Clear the PG_private_2 bit on a folio and wake up any sleepers waiting
+> >>    for
+> >>    * it.  The folio reference held for PG_private_2 being set is released.
+> >>    *
+> >>    * This is, for example, used when a netfs folio is being written to a
+> >>    local
+> >>    * disk cache, thereby allowing writes to the cache for the same folio to
+> >>    be
+> >>    * serialised.
+> >>    */
+> >> void folio_end_private_2(struct folio *folio)
+> >> {
+> >>  VM_BUG_ON_FOLIO(!folio_test_private_2(folio), folio);
+> >>  clear_bit_unlock(PG_private_2, folio_flags(folio, 0));
+> >>  folio_wake_bit(folio, PG_private_2);
+> >>  folio_put(folio);
+> >> }
+> >> EXPORT_SYMBOL(folio_end_private_2);
+> >>
+> >> That seems to be clear that PG_private_2 is matched by a folio reference,
+> >> but perhaps you can explain it away - worth changing the comment if so.
+> >>
+> >> I was also anxious to work out whether PG_private with PG_private_2
+> >> would mean +1 or +2: I don't think I found any decisive statement,
+> >> but traditional use of page_has_private() implied +1; and I expect
+> >> there's no filesystem which actually could have both on the same folio.
+> > 
+> > I think it's "+1", like we used to have.
 
--- 
-Kind regards
-Maciej Wieczór-Retman
+I've given up worrying about that.  I'm inclined to think it's +2,
+since there's no test_private when incrementing and decrementing
+for private_2; but I don't need to care any more.
+
+> > 
+> > I was seriously confused when discovering (iow, concerned about false
+> > positives):
+> > 
+> >  PG_fscache = PG_private_2,
+> > 
+> > But in the end PG_fscache is only used in comments and e.g.,
+> > __fscache_clear_page_bits() calls folio_end_private_2(). So both are
+> > really just aliases.
+> > 
+> > [Either PG_fscache should be dropped and referred to as PG_private_2, or
+> > PG_private_2 should be dropped and PG_fscache used instead. It's even
+> > inconsistently used in that fscache. file.
+> > 
+> > Or both should be dropped, of course, once we can actually get rid of it
+> > ...]
+> > 
+> > So PG_private_2 should not be used for any other purpose.
+
+Yes, ghastly the hiding of one behind the other; that, and the
+PageFlags versus folio_flags, made it all tiresome to track down.
+
+I have considered adding PG_Spanish_Inquisition = PG_private_2
+since folio_expect_ref_count() ignoring PG_private_2 implies that
+no-one expects the PG_private_2.
+
+> > 
+> > folio_start_private_2() / folio_end_private_2() indeed pair the flag
+> > with a reference. There are no other callers that would set/clear the
+> > flag without involving a reference.
+> > 
+> > The usage of private_2 is declared deprecated all over the place. So the
+> > question is if we really still care.
+> > 
+> > The ceph usage is guarded by CONFIG_CEPH_FSCACHE, the NFS one by
+> > NFS_FSCACHE, nothing really seems to prevent it from getting configured
+> > in easily.
+> > 
+> > Now, one problem would be if migration / splitting / ... code where we
+> > use folio_expected_ref_count() cannot deal with that additional
+> > reference properly, in which case this patch would indeed cause harm.
+
+Yes, that appears to be why Matthew said NAK and "dangerously wrong".
+
+So far as I could tell, there is no problem with nfs, it has, and has
+all along had, the appropriate release_folio and migrate_folio methods.
+
+ceph used to have what's needed, but 6.0's changes from page_has_private()
+to folio_test_private() (the change from "has" either bit to "test" just
+the one bit really should have been highlighted) broke the migration of
+ceph's PG_private_2 folios.
+
+(I think it may have got re-enabled in intervening releases: David
+Howells reinstated folio_has_private() inside fallback_migrate_folio()'s
+filemap_release_folio(), which may have been enough to get ceph's
+PG_private_2s migratable again; but then 6.15's ceph .migrate_folio =
+filemap_migrate_folio will have broken it again.)
+
+Folio migration does not and never has copied over PG_private_2 from
+src to dst; so my 1/7 patch would have permitted migration of a ceph
+PG_private_2 src folio to a dst folio left with refcount 1 more than
+it should be (plus whatever the consequences of migrating such a
+folio which should have waited for the flag to be cleared first).
+
+Earlier, I did intend to add protection against PG_private_2 into
+folio_migrate_mapping() and/or whatever else needs it in mm/migrate.c,
+as part of the 1/7 patch; and later submit a ceph patch to give it
+back the release_folio wait on PG_private_2 it wants.
+
+But (a) I ran out of steam, and (b) I couldn't test it or advise
+ceph folks how to test it, and (c) guessed that Matthew would hate
+me populating the codebase with further references to PG_private_2,
+and (d) realized that this PG_private_2 thing is a transient
+condition (more like writeback than private) which probably nobody
+cares too much about (its lack of migration has gone unnoticed).
+
+I'm just going to drop this 1/7, and add a (briefer than this!)
+paragraph to 2/7 == 1/6's commit message in v2 later today.
+
+> > 
+> > If all folio_expected_ref_count() callers can deal with updating that
+> > reference, all good.
+> > 
+> > nfs_migrate_folio(), for example, has folio_test_private_2() handling in
+> > there (just wait until it is gone). ceph handles it during
+> > ceph_writepages_start(), but uses ordinary filemap_migrate_folio.
+> > 
+> > Long story short: this patch is problematic if one
+> > folio_expected_ref_count() users is not aware of how to handle that
+> > additional reference.
+> > 
+> 
+> Case in point, I just stumbled over
+> 
+> commit 682a71a1b6b363bff71440f4eca6498f827a839d
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Date:   Fri Sep 2 20:46:46 2022 +0100
+> 
+>     migrate: convert __unmap_and_move() to use folios
+> 
+> and
+> 
+> commit 8faa8ef5dd11abe119ad0c8ccd39f2064ca7ed0e
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Date:   Mon Jun 6 09:34:36 2022 -0400
+> 
+>     mm/migrate: Convert fallback_migrate_page() to fallback_migrate_folio()
+>     
+>     Use a folio throughout.  migrate_page() will be converted to
+>     migrate_folio() later.
+> 
+> 
+> where we converted from page_has_private() to folio_test_private(). Maybe
+> that's all sane, but it raises the question if migration (and maybe splitting)
+> as a whole is no incompatible with PG_private_2
+
+The commit I blamed in my notes was 108ca835, I think that's the one
+that changes "has" to "test" in the "expected" calculaton; but yes,
+8faa8ef5 is significant for skipping the call to folio_release.
+
+Hugh
 
