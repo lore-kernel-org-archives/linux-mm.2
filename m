@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A49CA1016
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 07:41:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54418CAC585
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 07:41:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F22218E0013; Mon,  8 Sep 2025 03:41:06 -0400 (EDT)
+	id A66CF8E0014; Mon,  8 Sep 2025 03:41:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED1E38E0001; Mon,  8 Sep 2025 03:41:06 -0400 (EDT)
+	id 9F0918E0001; Mon,  8 Sep 2025 03:41:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC1028E0013; Mon,  8 Sep 2025 03:41:06 -0400 (EDT)
+	id 8DFBE8E0014; Mon,  8 Sep 2025 03:41:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C596D8E0001
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:41:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D554C0A47
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:41:06 +0000 (UTC)
-X-FDA: 83865286932.12.4B34CEA
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 738B08E0001
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 03:41:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37F8FC0A52
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:41:11 +0000 (UTC)
+X-FDA: 83865287142.06.8CAED7C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BCDEA4000A
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:41:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+	by imf13.hostedemail.com (Postfix) with ESMTP id AD5852000B
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 07:41:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757317264;
+	s=arc-20220608; t=1757317269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EhKNqTm0VPwIV+TJCnfOAdRU6AcIQZTQAVGXVHxTG+k=;
-	b=QKWJVhxOSWwg6LDiRQQ2yw2wCXZ7oYfjjvugs+v/NjogTuwb4Djcgvx8hSgmBL53/qyBIq
-	v9E49BFi75XYUlzHFWDSnRkMWyb8Y76Ngpo97S5D15xSWUcFxcL3GXvsk5nLD951DLp/tI
-	7v2IV+/kTnwmzqg9PtrKUH6u7x8osak=
+	bh=46V8/3D4h6GmtbNpT0VfZMpez9sqUl6d0gc+rk27e8Y=;
+	b=JmLuk1md/fiOcmVn4PVxW14Ol8T+3s9iTujsDPbGOopl8u0WUfvRBTLLi2rHA0JBOFx6d2
+	ERBFUtIEnMc8RuR7EDD3mpyZU1J7CmsLgcOH0UjSlZT6uRtbZOtN+jsNzSnh77sikdl13G
+	+fN6JWR+EzW4ac6Foxr+/vljBBWxoe4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
+	imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757317264; a=rsa-sha256;
+	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757317269; a=rsa-sha256;
 	cv=none;
-	b=8J7D+m8aTrA6IpM3jIELEidmeRVO7iuC2pcYi7TD6trzD/DKjuvCm+90OBTlVJ1P8THisN
-	rQqqnG0bCT46MIc8ZYEhT4CiE55qkcuPxZe5EM0y5NwmiG18weNf8fFgIAHDZvAVa5GIXO
-	C+g9VtrW0Mwe1VaImOK94k3ThO9O7wY=
+	b=Sp7B4rM6lkFkF6OsJEijgHgy0Ni7TkAl+z3I/6AoOU5Sz/W9spFCmFZZHri7Fva0wqrEAG
+	fJiAq8m2GteY3cmyS6bOK7Xo4k/c6d4jGDIqWUowt9ptylBsflnD3ZrKYmEKv/snRHVkkv
+	ggOGFKJ22/GSox4u/AuCST0fvDkN55c=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A803E2C46;
-	Mon,  8 Sep 2025 00:40:55 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A58261692;
+	Mon,  8 Sep 2025 00:41:00 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 553163F63F;
-	Mon,  8 Sep 2025 00:40:59 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5128D3F63F;
+	Mon,  8 Sep 2025 00:41:04 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -90,22 +90,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v2 6/7] sparc/mm: support nested lazy_mmu sections
-Date: Mon,  8 Sep 2025 08:39:30 +0100
-Message-ID: <20250908073931.4159362-7-kevin.brodsky@arm.com>
+Subject: [PATCH v2 7/7] mm: update lazy_mmu documentation
+Date: Mon,  8 Sep 2025 08:39:31 +0100
+Message-ID: <20250908073931.4159362-8-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250908073931.4159362-1-kevin.brodsky@arm.com>
 References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BCDEA4000A
-X-Stat-Signature: ht44nqsh78a3frc1tpjfyfqgwrrhd3rh
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: AD5852000B
+X-Stat-Signature: agsbgr1stjskgcxz99z7kiadtx9b571u
 X-Rspam-User: 
-X-HE-Tag: 1757317264-74882
-X-HE-Meta: U2FsdGVkX1+fa4v7L0VLGfz6++jICidbIGaU8Ma2mRhcYCfjUqeZVikVMO6xbFENN4eokUwy4QByJCycLdxXb/gefIa41MkX2IRMn5ZgIR8t0hCDo1W4xh2VmhllpJ62eLaqrRZx6xqihWzo6Whlx/thEr+uFsZnmqL2qFB5vp2SG97UpFc+4furQ6ens9LFSjR7/fAPla2mMfrFsBoZDolNOWpPP99SbQerP+x6ZAC6xmxIRI08E0h06u9JwB1ojZk//nH9O0uT6dHmTn3r+5af/c4aRBbUfSzznWEB+Rh+a5qbJNEcYl+xiSTJcpjZN5ShI5R/Q4QMByh9T1lJ70IVyKMG9S3TnnUEAAaVdl2ryYH713Y/ThqvblZKvsgmt1Sy2ZZHDhn31U1dbZuNrZumJuISt8S6mwUCWybYsbiFppDn38mgaGLdr37PKtLvG/t8dnUmjglKyfdyxdwjWXT8HDasVbqtVIgQpUx1yNhCwtGJyxoMWhtaRPpDZkAOUSHCRn6m+n+VIiUnW1veIl5i9ZkP4CO3xgKqfbmcnjZk22e+jx8Xf9TdqRZSSVomrfOFZOOPqb9udrvyIcK6lwftNGVxkE+ME9yEdDNcIDLJvVJ0ksa6RQDzljUs25Fwg2trXedyz4Kh5XXABPwcOYAubmMo4X2+J0u5ZDBPja/zRh2Qt7/CtuOp0FL7bS1twGgYkQq0SjDHu++Ef7vuJYxc61pq+IguK1KEgBHF3lqGE/ZOoKzeBSdMwoWWtacK5kNfrl55YmCkHhgls4f2oK9U+moYoknpILQPha6flPgNacqr8k9x7mRm0la/PqADNBWP5pGXW9PSg5DSp5otFpHMnZ/KyVgmKL2dlcHCrLX6iJqZeKYW+chm1OOABjvrl20jNf5rlrh5D2ZEadpHCZ/6FhANbjkpW0otpACHVGjE95ok+CPLqxrFi/zGHhx86GO7bz4H7ki2ssLW2MT
- np5ORd5j
- sPdYrF5mbXTY37lA+zQHbLZFdy10klj9LatBkv2+kNFWZ6o4MIZ+F32ppDxIH+3whZqF33SMo8Acxw2P66xfWyJ5LzkKmxNt14OPK9FkakWcCRwWkOE+PcHq7TZfBV8y7Pz4kiKa+IlHPxI35hGqFQejjaC0Khe/TtSg/uHLE/mvv4o/0h5ivCfG+dR1yuQfCnbMCMcVbiFi5iq8=
+X-HE-Tag: 1757317269-631475
+X-HE-Meta: U2FsdGVkX19BiTbHRFe7dvmMTh5WO2ChSau2sL4m+0OCngXa3w9D7afnFOVarqFlP27ZnjdWi4hiBpC5iz/CxlGAzFzyCG4OIdnDHyEDti7agYc8vh59O+zLnRLSm7iZTGOrBR2OnpmRKxe3a0TSqs9OLbkXktXe1volWd7Sa8x7+SnRRvDRXsKcSBi+Z/ZnRnPAyWXc0fwrtiYXlrBuFrec9cn2OCwbCobagYePqXNYM/zDEXcOt96wuorBsUCYRuoMC5FiwdeqxRYdErQfNeso/jgujRzq4TLfDCx81GshPwP0CaKoEuRRz1EjjNax43oKQZhUv8qBU44HaLUBvTzDSD4PelqKuvu792T/plXeZfthewxHO3p2Tzg5mNdHgjbCUYBjk/C41VTIaInOUwdtw03qC+BFiPd1QaXmQ+c4qqg+V8Qxwb9tnMjN7ECZ0XyX4jOiAWSCbhEyERQwkRQ7owrB+7Lh+5Fpth1Z7aoZLn/HlA9XdKTemRCS8e/i09zrqmj/ccppYWyxe1aPsCe2KgaerzlV/b5q1VRVheQLMoa8WEPDKdMwdLb2E33BHDkqLpLkE+genmxvFRgoi1KoqURXiLIXAmbX7Hs/zgeD2NanJktTQgHaFMA4fZsdORWXN32EREEW/8m8DOng+5Z04V5VRRvaSqOsZCkVGO+mEUsS5M7tsNQ5DSFCt7se5ReqZ6Hto+CyS5V6VOgoRWQCXW0xIvXzeReovC/iNRBao82zWUivadAwi/Jbbgp6RDhxBqSeCKki3hfT0mtgCYVxY2HJLZuk7dUVglW8Vfkj7RAgHC26MMYiRaBgkewWxe4m5a2j+Ml9eP9k8U9mSsKxnK5YTmWVJsydiWUP3EYZ3PS15z3YGFOyX48/D6ns2DjLEy+7aB1SgX97JSP8PJjkWcAJoBboZ5vPbWw0wkEjzlSE72mwWJDqlzOEEiuER8mjidHMgwY1K4t4ew3
+ 228a9HVy
+ 7aF/V0mEg8fPsS+Vd6AmTBKNnhsbjDpIpzMUGaL3vZkD0x/P5Scigq0qN3WTtU8Cr8nx64roZpp3rBbMF8Dmitgl/J2qk78XeI6/luVYT3FwYq2jMJR41XxM1NdTx0JWCk/JiPzRNxoL/vE21sI7r2Q3q6gh1Gt/yzq/07Rccen7tRG4lyFZ20TMFN/pYTXDqkN/2ku/5YFvaj6LP7LU1+wpmnAnFQgQKXs33dBZYsP5wMwITIdn1lx6mj9qo2olSLe1r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,57 +114,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The lazy_mmu API now allows nested sections to be handled by arch
-code: enter() can return a flag if called inside another lazy_mmu
-section, so that the matching call to leave() leaves any
-optimisation enabled.
+We now support nested lazy_mmu sections on all architectures
+implementing the API. Update the API comment accordingly.
 
-This patch implements that new logic for sparc: if there is an
-active batch, then enter() returns LAZY_MMU_NESTED and the matching
-leave() leaves batch->active set. The preempt_{enable,disable} calls
-are left untouched as they already handle nesting themselves.
-
-TLB flushing is still done in leave() regardless of the nesting
-level, as the caller may rely on it whether nesting is occurring or
-not.
-
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/sparc/mm/tlb.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ include/linux/pgtable.h | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-index bf5094b770af..fdc33438b85f 100644
---- a/arch/sparc/mm/tlb.c
-+++ b/arch/sparc/mm/tlb.c
-@@ -56,9 +56,13 @@ lazy_mmu_state_t arch_enter_lazy_mmu_mode(void)
- 
- 	preempt_disable();
- 	tb = this_cpu_ptr(&tlb_batch);
--	tb->active = 1;
- 
--	return LAZY_MMU_DEFAULT;
-+	if (!tb->active) {
-+		tb->active = 1;
-+		return LAZY_MMU_DEFAULT;
-+	} else {
-+		return LAZY_MMU_NESTED;
-+	}
- }
- 
- void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
-@@ -67,7 +71,10 @@ void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
- 
- 	if (tb->tlb_nr)
- 		flush_tlb_pending();
--	tb->active = 0;
-+
-+	if (state != LAZY_MMU_NESTED)
-+		tb->active = 0;
-+
- 	preempt_enable();
- }
- 
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index df0eb898b3fc..85cd1fdb914f 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -228,8 +228,18 @@ static inline int pmd_dirty(pmd_t pmd)
+  * of the lazy mode. So the implementation must assume preemption may be enabled
+  * and cpu migration is possible; it must take steps to be robust against this.
+  * (In practice, for user PTE updates, the appropriate page table lock(s) are
+- * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
+- * and the mode cannot be used in interrupt context.
++ * held, but for kernel PTE updates, no lock is held). The mode cannot be used
++ * in interrupt context.
++ *
++ * Calls may be nested: an arch_{enter,leave}_lazy_mmu_mode() pair may be called
++ * while the lazy MMU mode has already been enabled. An implementation should
++ * handle this using the state returned by enter() and taken by the matching
++ * leave() call; the LAZY_MMU_{DEFAULT,NESTED} flags can be used to indicate
++ * whether this enter/leave pair is nested inside another or not. (It is up to
++ * the implementation to track whether the lazy MMU mode is enabled at any point
++ * in time.) The expectation is that leave() will flush any batched state
++ * unconditionally, but only leave the lazy MMU mode if the passed state is not
++ * LAZY_MMU_NESTED.
+  */
+ #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+ typedef int lazy_mmu_state_t;
 -- 
 2.47.0
 
