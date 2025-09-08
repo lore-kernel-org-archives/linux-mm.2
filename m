@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7820CAC582
-	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 22:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD581CAC582
+	for <linux-mm@archiver.kernel.org>; Mon,  8 Sep 2025 22:25:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CE878E0001; Mon,  8 Sep 2025 18:23:23 -0400 (EDT)
+	id 36A776B0008; Mon,  8 Sep 2025 18:25:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AA5E6B0007; Mon,  8 Sep 2025 18:23:23 -0400 (EDT)
+	id 342A36B000C; Mon,  8 Sep 2025 18:25:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFE968E0001; Mon,  8 Sep 2025 18:23:22 -0400 (EDT)
+	id 258446B000D; Mon,  8 Sep 2025 18:25:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DB2436B0005
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 18:23:22 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A256B140329
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:23:22 +0000 (UTC)
-X-FDA: 83867510244.21.1361F8C
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BDFB480007
-	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:23:20 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="gH+gX0Y/";
-	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1367F6B0008
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 18:25:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 95D001A0347
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:25:01 +0000 (UTC)
+X-FDA: 83867514402.05.5A54CD1
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C1C0220009
+	for <linux-mm@kvack.org>; Mon,  8 Sep 2025 22:24:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="mWfBe9/6";
+	spf=pass (imf03.hostedemail.com: domain of hughd@google.com designates 209.85.219.169 as permitted sender) smtp.mailfrom=hughd@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1757370200;
+	s=arc-20220608; t=1757370299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g7abeCEsm9hQSHKcfKnUycTIfAV4deoEGxrAOakrims=;
-	b=MeR05+4kfak2+3oJxZJmRCXLzzX304qIVt0c0B4603rC+HtZzb53ZkLBd4yo1EtgwQYpRF
-	UnAQ2qr0LmEQg9fCSnh61fBVoeK7S9+5FcJwdRuXRWxdf4z1f1eCEJVo3oQ52Gal6TNfsh
-	N0ARVYrSswOoI075lWUoF9zoIFY6yUs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="gH+gX0Y/";
-	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757370200; a=rsa-sha256;
+	bh=rv8hMh0LMqevWYFZ+srlns+vtAjMl4A4z3f9Z1Buf8k=;
+	b=Ua/mYkfIBsRRgOoqSRwH2jGEYo+tMaghB2jyr3Chys/jxS36dl0YuWsKxBp0IAr5L6J0aX
+	Owv64/Ia4kT0BO+yXcHtHX2E+cTdRPQSj35CQfKJ/ayx4eFg7fqtnXDYxc4mE5y4MaOYxZ
+	aEGqaJ5n3MYGeAV5GooXNSR/E7kE8SI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1757370299; a=rsa-sha256;
 	cv=none;
-	b=uHu063+5UF2EHGbtTsc4TBPPvYIvCrzQO8O/gEeZj0SNWDVu9RtuuwKdhM9IVpgiG9CurG
-	8Ejk9oZOv1YElYRqrTFA/6mcMchDWxgjnFWdbmIDkcf14ZxdYgbQCkIAw5uQ51a4gU22Qr
-	0JTXJyLPtMLsq5aD78UxPh7h4Odo+ss=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d5fe46572so50860657b3.1
-        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 15:23:20 -0700 (PDT)
+	b=Ze/MsYl4kJbHvWBD9XNWH89R12BoWLAA9TS7Hq4TsFINoUaRqG/dGR0lwBaWyn71JHb2s1
+	6Fo6aPXZ0TdgX1Z8Yszry0ZlmP+xOB8vonkUfeywiWn2Xqku183lf/fjLENemcfkuYXa2n
+	Poni4A1mcIolDgNufstbqZ7zux6T2QA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="mWfBe9/6";
+	spf=pass (imf03.hostedemail.com: domain of hughd@google.com designates 209.85.219.169 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e96e987fc92so4071764276.2
+        for <linux-mm@kvack.org>; Mon, 08 Sep 2025 15:24:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757370200; x=1757975000; darn=kvack.org;
+        d=google.com; s=20230601; t=1757370299; x=1757975099; darn=kvack.org;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g7abeCEsm9hQSHKcfKnUycTIfAV4deoEGxrAOakrims=;
-        b=gH+gX0Y/sFF5p6avIwLjmP6RlSaBndYafr3P5eMqck2ynN7cTYXJxKojc9f8XQlpCK
-         0OMfsxAYUw4hry/MdZ/gDvcQvuNIN48+7fJFAMcmEC8UYQ7DSWBDVU9Hf7x1F0hhLdOq
-         ykIoK1XgXlg8atTsbTxbpZk1BVWjgvD3DivNms2MXoZUzxWO4l+evW/hU6mz54rdo4El
-         6eeo4AW2NBsgRxwICemdBYcmFd2TJbME8CtxP4Lw5ZAX+Mafwol9erFVCMYJ6JYnQm20
-         qlaZa5lv6nBPbKBJYWRVEdNVppt58zOWvQJFhy7wVdJgkjF8KzOBijR85JKJbsFYFVD6
-         NOqw==
+        bh=rv8hMh0LMqevWYFZ+srlns+vtAjMl4A4z3f9Z1Buf8k=;
+        b=mWfBe9/6Oiv0PlAfgRasLsx8YHFISbgB3/IG9eGqlHGTXV7jo5XBV5fOLDzyfNOQFb
+         RAtWpmzOx98awM2LElHG/FREXGArXXcoulA/Jg5LM5YWTj/L7zi1mJtQUkfhy+7zetrL
+         qsdQjUKlwDuR3j6PpTvgu5M1NJssBh2m55i4GL5MymAbUWDSjt3ypmzjOk6oYpxi8m/0
+         zkNC0e3gq1Q6tB9fVx9LRFHaKHEkOy9xpWsWP0JlC1UGU+EZo8hJCasKvfurBQJ3HrHD
+         hFP92wDUwJSsWXvP9gF2yRo+HKp1F4LmemEaH0FM23qOSO22aNrAaqk9iY1J/ksg0qjj
+         60Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757370200; x=1757975000;
+        d=1e100.net; s=20230601; t=1757370299; x=1757975099;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g7abeCEsm9hQSHKcfKnUycTIfAV4deoEGxrAOakrims=;
-        b=b33aT9EvMpQlgMlmzl3p9HXtqbTnMNFNq2fqXqDm6UsCrZLmSxD1U0wRA38yjrPoSQ
-         CRnyyu4aVMA3W0ywnPCxaBpNGfYrxgat2rv+gUWs5Tc7Rk3s8w9YqAeM6DudLHh6w986
-         OaTG7T8MOEua7bNWNqrGFTb4wh2IRl1Oaj6y9UxRmklMsmvEiIT/KCF/tjqZnFKJ+5qD
-         LMrwyf69xeu9q1CmAQFyYbq0FwzihHa7WtEb/177hQa3F2BtbVbywGdrOrHdwWOGElXg
-         n+u82UJMVgWF1RGynj6vuEheArlyoGEiRQgvs/VJg6POyPSh5UbFfJZr9i3sG92JcYQR
-         znVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXndZvBxOjEQn0sTuLuVvzfXTlKY+qe7O4KDuTb1ubs9qofO9wYSJJ58q0eCYfPZOLDttZBlwxYNQ==@kvack.org
-X-Gm-Message-State: AOJu0YxM567tVVvOZv3OVBd5UAhAJSW/9fyQyZd0x4+bVJ+aV6OTKGRu
-	yuYQCIxn76cB+z1B3WQCHw+u+FahnX0P4lOAnRyW4rC/d15k1Z4tooUa728Gmb9lDg==
-X-Gm-Gg: ASbGncuRdwmg6ipdCUIERTv/qx7xZu/NxEtvTd/dEHUjqO4Y2BbjxVXv6yzuqcp3EI2
-	6FMcSTcqcCiLrJebcjK+pgssIypOsjN5lgp4E/htnQgm4mx1NN0SRagZpdIu3z4faLPLTbUk2Zn
-	Mam90I7gDUDtnjBX6cHexfs6PNrv8K7qNI5/yEhHnETz5H5sYe8yy2T14VikzNIpxnpbEcbItQi
-	XvHs3zifggy3Pz0P+purfN/TWqzyMNbUm1FZ6hJRaGE70fKNWr2LkXuuWp21X18paoQ3Y85ov/y
-	/VpBwLe3PZXkMzwCydAIvytbl0ZQCOAU4xCPYuYhjby5gUvGME2nmnLfJQBjzg+ipBFwRAcBhER
-	Q8kdlbt7NzbOVvoUVf6cxnPboox69h29HVI0tiA0H1ORHPGiLjKe9U1eRc1KHNSdFPujUw8VMqb
-	x2b9SIbxte/iSsW0sL8w==
-X-Google-Smtp-Source: AGHT+IGaXcFHRTY5jFLccQQrjPx7QNGVNECmiV5ybnGf1NXLoPyxyEw6ZGSR0hlBxX5NCPzGYoRJWA==
-X-Received: by 2002:a05:690c:c8e:b0:71b:f0ae:1d6d with SMTP id 00721157ae682-7280a4487a6mr78339217b3.18.1757370199485;
-        Mon, 08 Sep 2025 15:23:19 -0700 (PDT)
+        bh=rv8hMh0LMqevWYFZ+srlns+vtAjMl4A4z3f9Z1Buf8k=;
+        b=xD30NjNLSWIyAdWDXY294VFM44dgxA3DN3Y1m/ep2zKmupNvKxKi/XvysqX5vHMaIo
+         HB52Bnrc+Q/2XJWezd4YhReq355htq4gV2/00YZ2Z8GZWQ9HlLeSeApie/G2D5RipAHN
+         miwB3fxgW5QsOOksgk0VSryxm51qrQ/dsoDOCXLVVoRMvz9hLF5p/BtqP2nS29Vt+5tr
+         eVfwjKN+eyz003tVIOXLMp0a/dXmNtjd6xZ0mk3F2ZaE2KVqPgWzJTXbGYwPWNZqE+w9
+         rze8I+jOd5oNeXuqTFpDcRtXnJnr58P5mrKK55KJ5eonhAX7PPQ1WiQGMNcYpeRThf+V
+         D0Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCULbeKHVqmePXMzTlWpGai8Kml8Hzy6+lM9ZMhtuNYg7cVB3Ek8SZzxsoQpP64znd6PBis1To78JA==@kvack.org
+X-Gm-Message-State: AOJu0YwLJmDbnhem7SVpjX9rz7etuvM7pXMxwmz8rYz8VMjw8U4aabja
+	PfxFc0NcWBUuzm19pjPopIdwd49FodzV+GYgBQhBXjZ9C4Zsz35dy65jD8SvnGQajQ==
+X-Gm-Gg: ASbGncvYVW3txPD41J/jSenJ+lZ8UlpzzQr3U+wobrCdD3DvyHfbJPeJe7xIYOzsGDx
+	ZWqUZT0LblTos70fCm2qv+3Grj6/8mTqBUmszvaI3vOhlcR+3lu/F/FvKEpN6Dym0YZREH3i0DH
+	9B+VPKCV8MunTfhrNqcWsNaJx3hVqUlEW+GcZ1+/uHbVsWJehQDU/X+iakz1hDmvx+ttW5r4OII
+	D0cqq6H64D/XuDLoDY9g+xHEWA0LgR5bg+y0a54VSs8dS3Efzv0v02BneJBm/NDyHrQESo0lRfH
+	2swt/oAe47O1Ly5U4kdU98G8QAgMwpLd1WYuF6TFI9RCF516fIPce7E9bYZ3KwjVrPA4ouIZswa
+	MXnKP/6BM82CechoeFtDwMu7Eh3FYYfVqh22FlAUOk2HxiuhGwYQtApz8+6lMbhRtBWaDD2/A2c
+	2CpzJvncuPS5cS+tWxS4psO/Tz
+X-Google-Smtp-Source: AGHT+IHz12RLu2qSx6kJKbJC54vlA6AVMAsAUr7Wd4XmRnv8FjgUsgD4d7k9E9m4cnAD0yWlnXIlxA==
+X-Received: by 2002:a05:6902:27c8:b0:e95:1dc3:8838 with SMTP id 3f1490d57ef6-e9f66fca8a0mr9322667276.21.1757370298464;
+        Mon, 08 Sep 2025 15:24:58 -0700 (PDT)
 Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-724c8ba45b2sm36567057b3.53.2025.09.08.15.23.16
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-ea14b2e7ac4sm1647569276.35.2025.09.08.15.24.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 15:23:18 -0700 (PDT)
-Date: Mon, 8 Sep 2025 15:23:15 -0700 (PDT)
+        Mon, 08 Sep 2025 15:24:57 -0700 (PDT)
+Date: Mon, 8 Sep 2025 15:24:54 -0700 (PDT)
 From: Hugh Dickins <hughd@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 cc: Alexander Krabler <Alexander.Krabler@kuka.com>, 
@@ -106,21 +106,21 @@ cc: Alexander Krabler <Alexander.Krabler@kuka.com>,
     Will Deacon <will@kernel.org>, yangge <yangge1116@126.com>, 
     Yuanchu Xie <yuanchu@google.com>, Yu Zhao <yuzhao@google.com>, 
     linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v2 5/6] mm: folio_may_be_lru_cached() unless
- folio_test_large()
+Subject: [PATCH v2 6/6] mm: lru_add_drain_all() do local lru_add_drain()
+ first
 In-Reply-To: <41395944-b0e3-c3ac-d648-8ddd70451d28@google.com>
-Message-ID: <57d2eaf8-3607-f318-e0c5-be02dce61ad0@google.com>
+Message-ID: <33389bf8-f79d-d4dd-b7a4-680c4aa21b23@google.com>
 References: <41395944-b0e3-c3ac-d648-8ddd70451d28@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: ew8hf9w6ws64y8p1fd9dyrmw8yrc9r8y
+X-Rspamd-Queue-Id: C1C0220009
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BDFB480007
-X-Stat-Signature: 4ec3y5g59ae449fnmka4nr3i7pgqng8k
-X-HE-Tag: 1757370200-208188
-X-HE-Meta: U2FsdGVkX1/z7UoyNyX/NEQMiT2mzQFQaBClHRiSwm/KssGfc1XnHyEkwDCVEkV8etXg1Nyj4UjgFEtJhPqC1PHB3frd9xMn0taCXMpWwfr0u4lQXq0OWkaw8rHEVibtGGpl17tm8VDgulAp+bhk05ckXjgVBr7evsKmjsheQSlXHRRcdi2nZC7e+m51VYyMG64SIDRo4YUeId6ILQpKbMIyeNPiSa2i+SVvogHeAI1JNKsrcHnxAHMqbPSmIp6TgFOsCnAVbIVSBUf7sQm8yHQ8K/qLcIDWANqGDAi4j1iHJuOTZs5HZcMd2eWbYJxlzhhZEQuyHDCGoYgXpzzLcsjyuShoZ1m3HFrYzJE5KU11YWVWRb8WipK+uiJrZVzGrw5IIrpGHyuPAallIf5hOl4xQy5/8HyVZMS4PH1oc68pErnnfTCbr8H+YtR2PwKoSZ6wz8q+dtQ25LUztJLfv6VLDikrwjNRdoFc4TF81s40xL/XqDTwH1c17W64O10fpmGx6+hYseZqJDdkbqtVcro1BUWehDhIURyTMqD1sbpv5jUXoOlZMwMHMfPGc4/lKKSKH/KmPlntxWckr80LGD6oMGgytEvCTEhipv0ODYiXscvZqpBHJ1kGUAs3/3VnFxJ5TFP6NXCS4YSwUC8nQKFRZUTB3rb9XWikM6znVn7l23WLOx3SgqxuKPvXu0YP+KIl0X7jD4NHNGurNrjnP7APK1c4CQl5dKcgC5igCSfyqQHqHntJP85ZNKxt3qgWMARe/aOrmWTo0m9QtWr/4eBx/D5ppzA76JMHj1m5FzrvK4F+2H3krdoT5ZvSZsYIQIiVy4HPxeHcTz8F7CYtsEK5kI0r58AmASy5TVlLPNxW4m5qyyXdMNfP9Nsr6MLvmijIJAonLTp2hfBRanjjf5tGG5x9Maame2xP2epqETzWSm31dSQgqmF7jwJyFfR7Uophmn9z/1OcKL99zET
- OndUQtWH
- c9bYtdGJ8QE7+zC7IbTTav4nDgfd/JO57h9alc05nZUHJ4ql9vZdbgD+d7at7+co8FTetpSrL815ss2MgXNu36rynwbyUCq9tkKvrk4qgFROBRKY4ywz2bZkDcW0Ye8oCtb71+1hWZMI9NHVuGC6zL8i0ozV2OTanUND9ef0ZuShB7s9CMs+s9tqz7CxvgP+YU44KYNNg3FWQZAQk35R9y/Q1kfDzNXjQSiiNUDKTvN+f2SS8FwZQglhKgKPwadhjeVBfD1FVS2B+GFKB/DOPj6iMQxhMxnkKNJuveHeFzIZ/Wx+5CF2HYtxKnKBKpEyMDKJTarc6uEQD2hPAay1pecDucVft4eiOlfvyWvGOawT4CzzPMUL3BBwKYreoDAYPVoIKG499bLPUbttP/795Epv5v01aBR28QNyUPGxmQ5BZdR+hT941NJ7GAKsvg/UGSzfCQWBNchJJdnusmmde1tORYp56GxOU6sGU
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1757370299-244345
+X-HE-Meta: U2FsdGVkX1+7kg6yRdvaOoTCe9E56yo6zsUowub/SUH2+2mxJImJY7SLk/hLcLZh49Yn2HIo3MnzISfM4mSQiouZoohu00lThQr/JV4rm2b5O+spQxM9xlJ3msevIsIrmlcy2BQ2kTUNJzLPGbpJngy5RD9hLXWZ7n/747pR0TNR1esOGXSIfmWFWOmOygF0BEEmCA3j1J/CPnJZgxVw17drVquQ5KYW8mSvSExwyjxYOq/N913zt7qGe3HXTYLoXWztQcRU/FQAPwnC4U9CbJljFNi04XY3awxNyniSn24wXV6Yf2m1JoIBUlqdm+LENZFQPQ3Rog3q6pQjq2GYA4ANN+Wvyz1iYY58xMAwWtlBMuxI+xthLXkbOPnrtydhkRP9RsFLPCt1diq2Hqgu5+2zdWQPC83lw6WkdfhlkqE6kagBHwau+BtgDJuLNtDPGyvHA4qVUPOC4j/kcFqCEHZpz+PbkIjnSZCrTKvq8spmQl6Ht49TSmjZykia/hY800Ts5fJhKsRnySgjh7Ux+xnDq145dvPnqki+UcWv6czQA6vfnuB6k9IxC/TYoO4/8C1tfmBeCBPQVqdQ9tZgLLvwCPZW/+8Tb/dj+8UZEzbandCXHX37h2IKPfBiB4mvheVcMs7OK7GFe4CXkU8VKVHkvQgW/5fV/E3q+Rg8yX8PZzb+86nJ6nxWayTF/31uP7ksSvNlgYvvl9rvvEJHE/8qIIU2zU8mWAPza0U18qGIkbYUVShty+THyTIkZjMAPySOBqsJApeQlMk6cS088oJBkvoty5Xj8w7h4m2EakCmsjE7xsyOP5d4iS2UX8/ymdC1RPzo23JoSExODtfN/pHE7XZF+Nj52FjextVAo6vG6jrIcfUtAkgyP+lkJHhYghj/ovfRU7uyuTE5J5fn2flgPBOm4b4mQC8SuBb9GVcfAbcMc2D7Zt5+Z7QswPs6CCkm8M2sSBDBQWZBTsL
+ I9NOoQQ9
+ DR0oqfCkLfywtka3wnTkDcAcjBKwx79/1lHLPl2xAwuJc429G6bvfDP+O6IugYoFmv1BdG6eiT1tf749rVXd7+Rr/KeK/XTVnxXcnDxDOr0+of3fcRpGnB3x8IPXbMaYSGNG2ibhzw2gFRuj2nynefG7Q4+Fj06D4bGxQx+RhcIFuOiKQtC4DzNl05CJxzSgxOyfa3g7EU5k6EY9h+lA8zAoPjPEG2wFI9ay34wmYvJTRCizANSSGy2BQscMYS3O0K/2RPH+Q4ySlvpSRfz5UwnEEGYUNuI5D3OTZ5aRnXZLYsnGdVAwVxzqh8r1845XkfLFsqAeZrzcCnvmVP6q24l2C+dINdZGBZHpg9zURB/RbS0m5rEUh86xu6UaMOsap/hAV2idtl0nJIBo8qCQ+7l3UFQ8HaxHj6A1N
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,117 +129,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as
-a large folio is added: so collect_longterm_unpinnable_folios() just
-wastes effort when calling lru_add_drain[_all]() on a large folio.
+No numbers to back this up, but it seemed obvious to me, that if there
+are competing lru_add_drain_all()ers, the work will be minimized if each
+flushes its own local queues before locking and doing cross-CPU drains.
 
-But although there is good reason not to batch up PMD-sized folios,
-we might well benefit from batching a small number of low-order mTHPs
-(though unclear how that "small number" limitation will be implemented).
-
-So ask if folio_may_be_lru_cached() rather than !folio_test_large(), to
-insulate those particular checks from future change.  Name preferred
-to "folio_is_batchable" because large folios can well be put on a batch:
-it's just the per-CPU LRU caches, drained much later, which need care.
-
-Marked for stable, to counter the increase in lru_add_drain_all()s
-from "mm/gup: check ref_count instead of lru before migration".
-
-Suggested-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/swap.h | 10 ++++++++++
- mm/gup.c             |  4 ++--
- mm/mlock.c           |  6 +++---
- mm/swap.c            |  2 +-
- 4 files changed, 16 insertions(+), 6 deletions(-)
+ mm/swap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 2fe6ed2cc3fd..7012a0f758d8 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -385,6 +385,16 @@ void folio_add_lru_vma(struct folio *, struct vm_area_struct *);
- void mark_page_accessed(struct page *);
- void folio_mark_accessed(struct folio *);
- 
-+static inline bool folio_may_be_lru_cached(struct folio *folio)
-+{
-+	/*
-+	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
-+	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
-+	 * will be sensible, but nobody has implemented and tested that yet.
-+	 */
-+	return !folio_test_large(folio);
-+}
-+
- extern atomic_t lru_disable_count;
- 
- static inline bool lru_cache_disabled(void)
-diff --git a/mm/gup.c b/mm/gup.c
-index b47066a54f52..0bc4d140fc07 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2307,13 +2307,13 @@ static unsigned long collect_longterm_unpinnable_folios(
- 			continue;
- 		}
- 
--		if (drained == 0 &&
-+		if (drained == 0 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain();
- 			drained = 1;
- 		}
--		if (drained == 1 &&
-+		if (drained == 1 && folio_may_be_lru_cached(folio) &&
- 				folio_ref_count(folio) !=
- 				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
-diff --git a/mm/mlock.c b/mm/mlock.c
-index a1d93ad33c6d..bb0776f5ef7c 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
- 
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
-@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio)
- 
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
-@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
- 	 */
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, folio) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
 diff --git a/mm/swap.c b/mm/swap.c
-index 6ae2d5680574..b74ebe865dd9 100644
+index b74ebe865dd9..881e53b2877e 100644
 --- a/mm/swap.c
 +++ b/mm/swap.c
-@@ -192,7 +192,7 @@ static void __folio_batch_add_and_move(struct folio_batch __percpu *fbatch,
- 		local_lock(&cpu_fbatches.lock);
+@@ -834,6 +834,9 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+ 	 */
+ 	this_gen = smp_load_acquire(&lru_drain_gen);
  
- 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
--			folio_test_large(folio) || lru_cache_disabled())
-+			!folio_may_be_lru_cached(folio) || lru_cache_disabled())
- 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
++	/* It helps everyone if we do our own local drain immediately. */
++	lru_add_drain();
++
+ 	mutex_lock(&lock);
  
- 	if (disable_irq)
+ 	/*
 -- 
 2.51.0
 
